@@ -4,115 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6700F1099B36
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:57:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FC4C1099B37
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:58:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ABBF6B011B; Fri, 20 Mar 2026 14:57:43 -0400 (EDT)
+	id EA6486B0119; Fri, 20 Mar 2026 14:58:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982A06B011C; Fri, 20 Mar 2026 14:57:43 -0400 (EDT)
+	id E65EB6B011C; Fri, 20 Mar 2026 14:58:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 877076B011D; Fri, 20 Mar 2026 14:57:43 -0400 (EDT)
+	id D7B876B011E; Fri, 20 Mar 2026 14:58:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7261F6B011B
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:57:43 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 29CE01A0347
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:57:43 +0000 (UTC)
-X-FDA: 84567350406.14.6DAC0AC
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C60216B0119
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:58:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 772C2160358
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:58:16 +0000 (UTC)
+X-FDA: 84567351792.24.C468B43
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6AC7B4000A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:57:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="d1UmBx/K";
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id C09CB80003
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:58:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=umTHJqmO;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774033061;
+	s=arc-20220608; t=1774033094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yOCeyT41RQ4q0Ldt4caCTxCUQgxrA4Vf7UCRbnq694c=;
-	b=EGU4ehs8g5dZ01IA2tUZ4upK/hleZ9wn7QvGmlGRKOBWAsfqYAvnXC5R+rZUZqRiH8ESzs
-	lpWSix8Yx9hZMZtBTKp4l8eBQhigF7kV/eJmrulB9CLvE/11YKistBhq0M2l3uuv3ox8j4
-	uMosKXWpncVPwYrbIy9x4wRq6BjyFOE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774033061; a=rsa-sha256;
-	cv=none;
-	b=Rj3nIbZqeVgHCSaiH3M/yOAT+BrjhLom7WMuzobXhjVqwpzU5IuF9sqiY08iW4/R3aP5Ei
-	5kGFwE/UOIAceIO94x/o9jTImIv5cX7bTvfQ9ZvwnYJPDK6kLxxmCYtMj9nl/iPYLdfXNS
-	klTjLJoHo0Y34oXcI+J/hCxhcU665L0=
+	bh=JipdzKui5zYpXBb0yoWNua5GvOzwF2m3pP3MDhjP8po=;
+	b=JfWDr47CKF7njIkiydYXZqOYu68zVW9zMHVGlY6lft0UV/Bs1qADT2KwMs/qduWlQGKfcV
+	QWkvsIgP4H1C94Tep1/xXCnAUoT6QDE2MIFhzsNdDoV++mVX78TynJNweMXwmV8xVIm64Z
+	duYWwRn4eRx+O+qQz0VBrhynBZdrcS4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="d1UmBx/K";
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=umTHJqmO;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774033094; a=rsa-sha256;
+	cv=none;
+	b=n06oXWntGwRVL79oC7wWY1Yh87YofCc6mSxboVH7oTfdU/lue7KWJBXRSogrX6T41rdQgG
+	ktpnkxUMNB3ikKsIDi/SxBozCB/3DvXuFUU+9oe924LvrGn5AnYzGTGG7t777QRM8Oxyvs
+	BbVb7j1tj2jy0p6s0JiufwWNfDGBo+A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 80C8060126;
-	Fri, 20 Mar 2026 18:57:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C94C4CEF7;
-	Fri, 20 Mar 2026 18:57:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4205C6014C;
+	Fri, 20 Mar 2026 18:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD023C2BC87;
+	Fri, 20 Mar 2026 18:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774033060;
-	bh=a8ys166E/M77dCSrucnKwE5heGp6aoVZbHs9H3pgrKI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d1UmBx/KAU+ZajRc0Utu3iGMoA6qXkfpo2A3GmQu8VB00T2ciUsv0bUxBPTN6cpTm
-	 m3xxfTtoFLkqoxFN2UkxrqdyEtIRum9BSaNPu6j+994kGaQQ67cuDJi2oDwvWgDmKh
-	 6PWVHSUzCXkNdeUl6lKfFgj/jcJTsJl9L7GIzzLjsbklBRc7rOGYW4Fn923e39Uvvr
-	 ttgPeY3wAum2TPoqAT48arege0caAn/E8yJkUN7Up2QA4ZleyQSJbDwORXj7psDga2
-	 /GC2DRXLDgEDvmGPPLRO944+KOeHvwAeZxrk9FTglWfQhRpZGclw4Gn1hTFIShfbwA
-	 AZE7RKjyLC7dQ==
-Message-ID: <608ba54c-f19e-4e27-8142-0870f91d6514@kernel.org>
-Date: Fri, 20 Mar 2026 19:57:29 +0100
+	s=k20201202; t=1774033093;
+	bh=112L6+1HQkp7RU6SoFW4SCnLVUouDEUQ8DohNJdWZnM=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=umTHJqmOXzuqRvcnq49/eTrH3uEqKQl0FoPkF59JOVazrjJ/vBLoCJe+4MudQXyHx
+	 IGZ1vIyiFX3V2wxWWMwCVIDAMEOI2g8PfW+knsd+MNYjzwBDdlJmI2RHnfhUReMbqY
+	 AsIJgW8UBuhD9EICaSbT4uJk/mbjGzA2vXWk/s7Tarvw+TNg9oArzsJkCG7CgqdsN2
+	 e+g2ExpFCL/NWu47hEGiQJQXqIZPRaTODtG29BDJxEp5NzmvjLijkkVFjjntZi6b8l
+	 d7rEpArMPDTiD6lOrcyUyVoOYSS0wQWP9gF1h8WCDAPpgzXDMkTFY30waezYVBSp/5
+	 qjU2UeXZwwNaQ==
+Message-ID: <1a05e4c5-01b4-4614-bcc5-43e142fe4b9f@kernel.org>
+Date: Fri, 20 Mar 2026 19:58:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/16] fs: afs: correctly drop reference count on
- mapping failure
+Subject: Re: [PATCH 09/14] mm/sparse: remove CONFIG_MEMORY_HOTPLUG-specific
+ usemap allocation handling
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+References: <20260317165652.99114-1-david@kernel.org>
+ <20260317165652.99114-10-david@kernel.org>
+ <f23aa64a-d78f-4c57-a08b-5c589889b7fc@lucifer.local>
+ <306f0fd2-cba1-4f48-af05-248be2bc9506@kernel.org>
 Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Bodo Stroesser <bostroesser@gmail.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-staging@lists.linux.dev,
- linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
- linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>
-References: <cover.1773944114.git.ljs@kernel.org>
- <018cd0d8b2dae44de6d3952527e754e52ef02da8.1773944114.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <018cd0d8b2dae44de6d3952527e754e52ef02da8.1773944114.git.ljs@kernel.org>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <306f0fd2-cba1-4f48-af05-248be2bc9506@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C09CB80003
+X-Stat-Signature: dmapepyfxx6faqjptx7kh4oc1ff7zpea
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6AC7B4000A
-X-Stat-Signature: uoqqgjimg4gpkefkw7fqbzhroowgeu3b
-X-HE-Tag: 1774033061-263903
-X-HE-Meta: U2FsdGVkX1+dMCgYSR4I9vvUZ6B8jD01zFvCbAY30Mi5Poc6WXdzr6u/s62d6pBbSdm48I2sPN5qsmhbwGCbYkDc7lOGZUs3pHu74egotPN5qVc6q+oF+6h055O264lxXBDyTh0hB875xjG2/l2/CxVCczUFmLcNARSzuOGDxEo7G6Zp+RE9KXNoICYlxpzalgab1sljA0CjKZur8JpE86K3UlfYOF4Cdp/Ld+MX22YRmbHSTJ9ZmNEtWINOkh4QmfOVpMEnlLECKugbbCzxz8kh1nNt2eGf3hi+oo2bgeMqo2HX0wHEqbyFW7hG1QiSmBondC8duZdB28S73akGyrTODD0XAs2nHfAxJDVzZQTbYfXvJt5/GpJIMKLiUjk2sNZjMZBgaphEr/McCR8RKvbKGla0cIYHADgslaU9c4Am3d67hyhMKjBPMlatLuKP497mAP8gK2k5qHVXYQdE8qIMov/r4MrRL1O598TRxuJU8W90Q7vCYC65pRvKGsomeTiLrLWDUoXFn1d2gVUguR6Yu8WjI0TZygKEK0yiitNYIWqJPcflKVS4pbJy/PXWIZKGalrGadoFSdcpozFmyTIohWfrn0tCy8X6Sup7t/YxCxEsKHUnZ7zMqkGWqPARLalE+RboYMwm2xBcTbY8IJ5S3LDrEQ0xxqD8dY9EWZoxCpmTeXMDM2wIrlK2A0qEaLN6XePclYVVJZQhlK1dgGHBlannHDSvjEmp5ck9qh7M4F7Gye1/tc7EiMe85l0RqeF70unw1K3W6+ZsiW8PVXLzcRjdMjWPyBjc4ZlMEE319b0ZfSOBqsT7VvwgDXFdXLT14vCU/getW6Fy36uX5o8SmvKmekmkn1WQKfiDLIkBgzFBXEnUoYEzqKdMHrJuysdQ0BtzJJiXKtaTUHyAwoon/Lzw1Ct/1cQYDzok3CjQ4r536beKearOfDafI1PXffbCfemSNG39U1U4D67
- 9g229nWW
- QpVyjuKz4qxQHs/TDCn8k5qf7/YR6wN2a5YuQtp7jCq2NKRQOOiHrwY3a4B4F9MaWW3YIS6lWcX3awuh3yS3TSkae5B5bKTEUcGO+3gt4NHjHd0gR/ervowO9mQ1TpeCLJ9l+lrcNNJ8FyDznWRp9JNWO7ER1NM71f9Koh4YrRXXSu0n9jGas0tEdfEVoA6u/gsCte8yR/Vn7ehnJzQK8BI1mYwa7fgmRk6vNOLO0RV2VcO8KNzfMKB23MAkFl4I4thCZLuNq6tt5OvL5CSoDfygp+h32CBJgqIhXTCrQyecerHyY2nXGwHZStLtDojrkg2Aet0kzRwFG1W3ofml3FOxwK2S7tx1CGocD
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774033094-796968
+X-HE-Meta: U2FsdGVkX18IP9ciptWrclODlJntak4eGUO4SFuNr2Xz9cDH8otAM5jfiAzS5nb5h+EGsSo9UHW2AgWNkMASwg7M9T5+tgDerAqHYFrIQHWLr0xx134OtpgRWjRVFsg/mjt762LeExypmV3Y17IGWXRDv+hRy0TpY9egcOa9EljbhLvtLxZ7koAtpsOwUk7OU0uwpLaSj6ooDarLHQhQmfAtNzoOchsy/BeAJJ15+jKschFCQUGcZZiBGe0rKgNKSbCUEeZWI/nd62CpcfsXv/KPLCZGkFm9USzkj4hcosj4jhEUDSxCvW1B4/VV3yHDC9ZZoAH2bYfInO+Kc57wUpdU/We/bKdwFJ5ouhe5FJt90Zi/yDjwg28RHGjhf785yhLMgnaErXXQXnu0qRpoKUxti+TSXA67atHd9VngXmEXUof12fBXN9wHBb0Z6ZYmcJDonQM6nKfHd3DeLiIhFz1zQYKbwt3M8Uc5p/Hpu1HXOZwhrb/xTYXrEWCpGOUJ+tNUXMMQH2cCuvOsOxM1AxtWpPo8/Q8p6q27DXd/6dAx4tlMoVxvwXXQEsXx9puxyZkf4AzJeOQTFDz6sEqElMuxd1/ZzPE+XZEKvuBc/+guRJrYotk8ovGgegr4qihee1q2ZiW/yb5/WVSXzlN50k4Z1Ts2lTTjSPd39yLPhNNl0LrV0EzdQ5v0r95vxOSXm/Z6beEQyTyXx3C010EmPEc9iQwzpXR6jsqFUkdxPkiWGcwb50eFkaW/PCLK+P2gEWaAS62KyD1xocBDao2YjKyKZsxUFvS1otoEvYNZvxJT5cHGIHHeYmLzYLo/PLVlXTPsMRXvnfHmuGvEfioHtxO5Oo7WC6u62q2f7Iobt8t9++Amw8yyLPXef8p1QAAJ2EPby0sej0WHk3xw5Pes5yJboztUwxeKK7V1VdGBF/XF/MSuyUMjmHSY0rXaiH3TpMA0PdURyVERpTya3bJ
+ fBRb6fHT
+ G/DFc3sMRR54Lzr0azsXloUl/Fz+1QUEv6WQpbg4Oe1O9f/bJ8OFA6iSI9r29DzWMUZs6M6TDRt1WsKE12+cV0SNcbpMfFf7nQR9+Tp+5bAguva321P7rHoJBwyfQlozeIdt3hrwC1subx//SJTfjVlLoWch9XBLJVwayvG4RABACfZlCDh8MoVuuwlqtz7SOQE+L56I9zcrnqDmCXYys61qglCtU6nrNxz2yGNNwku3oZrRryU5a28QC8rPtzIrG3KppI0zaDl1u0yC1wKEmmIlAyfW5iBFwYxSKCWmpwQBbkUnLxU8ZKdRbtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,114 +146,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/19/26 19:23, Lorenzo Stoakes (Oracle) wrote:
-> Commit 9d5403b1036c ("fs: convert most other generic_file_*mmap() users to
-> .mmap_prepare()") updated AFS to use the mmap_prepare callback in favour
-> of the deprecated mmap callback.
+>>
+>> Anyway I'm also confused by 'given we don't free the pgdat any more', but the
+>> comment says a 'pgdat can prevent a section being removed' rather than anything
+>> about it being removed?
 > 
-> However, it did not account for the fact that mmap_prepare is called
-> pre-merge, and may then be merged, nor that mmap_prepare can fail to map
-> due to an out of memory error.
+> Well, if a pgdat resides in some memory section, given that it is
+> unmovable turns the whole memory section unremovable -> hotunplug fails.
+> 
+> Assuming you could free the pgdat when the node goes offlining, you
+> would turn that memory section removable.
+> 
+> And I think that commit somehow assumed that the last memory section
+> could be removed if all it contains is the corresponding pgdat (which
+> was never the case).
 
-So that means a file can become pinned forever? OOM is probably only a
-problem with fault injection in practice, but the merge case can happen. And
-9d5403b1036c is pre-6.18 LTS. Are we going to need Fixes: and Cc: stable then?
+I decided to just drop that whole comment block completely.
 
-> Both of those are cases in which we should not be incrementing a reference
-> count.
-> 
-> With the newly added vm_ops->mapped callback available, we can simply
-> defer this operation to that callback which is only invoked once the
-> mapping is successfully in place (but not yet visible to userspace as the
-> mmap and VMA write locks are held).
-> 
-> Therefore add afs_mapped() to implement this callback for AFS, and remove
-> the code doing so in afs_mmap_prepare().
-> 
-> Also update afs_vm_open(), afs_vm_close() and afs_vm_map_pages() to be
-> consistent in how the vnode is accessed.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> ---
->  fs/afs/file.c | 36 ++++++++++++++++++++++++++----------
->  1 file changed, 26 insertions(+), 10 deletions(-)
-> 
-> diff --git a/fs/afs/file.c b/fs/afs/file.c
-> index f609366fd2ac..85696ac984cc 100644
-> --- a/fs/afs/file.c
-> +++ b/fs/afs/file.c
-> @@ -28,6 +28,8 @@ static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
->  static void afs_vm_open(struct vm_area_struct *area);
->  static void afs_vm_close(struct vm_area_struct *area);
->  static vm_fault_t afs_vm_map_pages(struct vm_fault *vmf, pgoff_t start_pgoff, pgoff_t end_pgoff);
-> +static int afs_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
-> +		      const struct file *file, void **vm_private_data);
->  
->  const struct file_operations afs_file_operations = {
->  	.open		= afs_open,
-> @@ -61,6 +63,7 @@ const struct address_space_operations afs_file_aops = {
->  };
->  
->  static const struct vm_operations_struct afs_vm_ops = {
-> +	.mapped		= afs_mapped,
->  	.open		= afs_vm_open,
->  	.close		= afs_vm_close,
->  	.fault		= filemap_fault,
-> @@ -494,32 +497,45 @@ static void afs_drop_open_mmap(struct afs_vnode *vnode)
->   */
->  static int afs_file_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	struct afs_vnode *vnode = AFS_FS_I(file_inode(desc->file));
->  	int ret;
->  
-> -	afs_add_open_mmap(vnode);
-> -
->  	ret = generic_file_mmap_prepare(desc);
-> -	if (ret == 0)
-> -		desc->vm_ops = &afs_vm_ops;
-> -	else
-> -		afs_drop_open_mmap(vnode);
-> +	if (ret)
-> +		return ret;
-> +
-> +	desc->vm_ops = &afs_vm_ops;
->  	return ret;
->  }
->  
-> +static int afs_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
-> +		      const struct file *file, void **vm_private_data)
-> +{
-> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
-> +
-> +	afs_add_open_mmap(vnode);
-> +	return 0;
-> +}
-> +
->  static void afs_vm_open(struct vm_area_struct *vma)
->  {
-> -	afs_add_open_mmap(AFS_FS_I(file_inode(vma->vm_file)));
-> +	struct file *file = vma->vm_file;
-> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
-> +
-> +	afs_add_open_mmap(vnode);
->  }
->  
->  static void afs_vm_close(struct vm_area_struct *vma)
->  {
-> -	afs_drop_open_mmap(AFS_FS_I(file_inode(vma->vm_file)));
-> +	struct file *file = vma->vm_file;
-> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
-> +
-> +	afs_drop_open_mmap(vnode);
->  }
->  
->  static vm_fault_t afs_vm_map_pages(struct vm_fault *vmf, pgoff_t start_pgoff, pgoff_t end_pgoff)
->  {
-> -	struct afs_vnode *vnode = AFS_FS_I(file_inode(vmf->vma->vm_file));
-> +	struct file *file = vmf->vma->vm_file;
-> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
->  
->  	if (afs_check_validity(vnode))
->  		return filemap_map_pages(vmf, start_pgoff, end_pgoff);
+-- 
+Cheers,
 
+David
 
