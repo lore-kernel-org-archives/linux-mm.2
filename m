@@ -4,97 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C79C10987A1
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 15:56:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D60010987A1
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 15:57:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FA906B00D2; Fri, 20 Mar 2026 11:56:34 -0400 (EDT)
+	id DA9B16B00DC; Fri, 20 Mar 2026 11:57:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D1B96B00DC; Fri, 20 Mar 2026 11:56:34 -0400 (EDT)
+	id D81C16B00DF; Fri, 20 Mar 2026 11:57:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20E886B00DE; Fri, 20 Mar 2026 11:56:34 -0400 (EDT)
+	id C98316B00E0; Fri, 20 Mar 2026 11:57:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1067E6B00D2
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:56:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3B39B7654
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:56:33 +0000 (UTC)
-X-FDA: 84566893866.20.ED54366
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2A2FE4000D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:56:29 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b="bn3Bg17/";
-	spf=pass (imf27.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774022191;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B858F6B00DC
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:57:23 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 61F811A027B
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:57:23 +0000 (UTC)
+X-FDA: 84566895966.23.AD11F2A
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B7B9D80011
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:57:20 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="F4SoQ/1Z";
+	spf=pass (imf02.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774022241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CA+8hnD1UcyY5V73KLuUWNPdACXCtzhVUU8X6g3h/pI=;
-	b=EnxWdXzvIwqIEvGk4uCI1X7pXaHj2urzLsVKXUHlbxtsRQ0dbW6AkFnL5A9ESTS+i6f6lT
-	AwYEv2GS/bia1WCzDw/9ELIU8f9VzAT8+/4+4Tx5oRwx4Upc6oE+4QRC/tJlrOFiwDJ7YL
-	gpGQ5EGxhmIP6bvcwk6Al8yS6fxUWAM=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b="bn3Bg17/";
-	spf=pass (imf27.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774022191; a=rsa-sha256;
-	cv=pass;
-	b=LL9okM1rom0yk+MyjkAtnApRaEljpZVfoFyYI+kQjTdqCuvNggO2+fs8hlPTqb98ISrDqc
-	oixiIY2cimvorjAjjhjPOTsUCl4ln5xqcayGh9263gjEVqNu/P/wgMxKIBomxhagFoQAqD
-	ZtoL7n/VBd59J1RdFyssw+jwmQ72K/Y=
-ARC-Seal: i=1; a=rsa-sha256; t=1774022171; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=GvM1y9O7vXkIlcCHrvTBJtnv9HCQV4Gc/c0zB74+2dB9SSYoBC18N/JP6Rtz+oK+2jvH00Bfv2IguP5GkWiYHAGZnbmdVzsITZ7U4PfuuZJ4hKl4yZnspmLxhaof3Dkc3tjB7oXNdeQzAbOwMXXHdGSVQ4HlcE8pzS3oGBiWnc4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774022171; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=CA+8hnD1UcyY5V73KLuUWNPdACXCtzhVUU8X6g3h/pI=; 
-	b=kQ0gDcoQsX9q9f+AhuNhazwq8AHv8/Oe1nZaAQYnV8uBDwWrlMjadBB820LR0NxpyVb310A/Endhty1pcD4JpFpY6kK1Z/BjtLqxhZhCQ2os6B6ctqF1pKfkn1hvIk3VIYDDE+e7zfJYlQt3Kh87LL5rWWbEDbLesFmHEKllF6s=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774022171;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=CA+8hnD1UcyY5V73KLuUWNPdACXCtzhVUU8X6g3h/pI=;
-	b=bn3Bg17/9HkWaxtWz8egaSn05oV6OjxGB3ufD6xBy4RG1mT4kMZ8YhAyagwBNebZ
-	FXv5c+17OnuT8rlXwXR6eYdyNzrCIc06Y50QrPNmYECUh9F0zl5vDTfrq0NKLh8wKsM
-	wzCdTrQjBatcthNN2D/2Mc//3nFu9tz0MokOrQkg=
-Received: by mx.zoho.eu with SMTPS id 1774022169790495.36152178791474;
-	Fri, 20 Mar 2026 16:56:09 +0100 (CET)
-Date: Fri, 20 Mar 2026 15:56:09 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_2/4=5D_mm/damon/sysfs=3A_check_cont?=
- =?US-ASCII?Q?exts-=3Enr_before_clear=5Fschemes=5Ftried=5Fregions?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260320155115.101025-1-sj@kernel.org>
-References:  <20260320155115.101025-1-sj@kernel.org>
-Message-ID: <E4735091-5CE2-42C7-BAF8-B74E49791829@objecting.org>
+	bh=oK6vwbMjQIiUdNKsZRuAWsUjoKK5vttOS+cqd5buiAI=;
+	b=AkRLG12t+bbhmjoNG6Dfrlf2zElXvxLlPGduL8aUxIkH0B85RHgT4ZV7eiHNcseo78ciGf
+	TW0QtB1KEYOqy/Ez3ZzBaXw9/gtFG9ncWvz+OxcpoSGS/mnztuk2FOJifXrVfYD+Pae4wZ
+	52F+24DBR8OHp+CDZ8SmoTgAPaSCyPA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="F4SoQ/1Z";
+	spf=pass (imf02.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774022241; a=rsa-sha256;
+	cv=none;
+	b=a2m3KienvLFfspGZE+hKtOXl5XXVa09/bs3m6+l+ZRkF9DXYdnlQQyAseTN4Fw5+jZyhUl
+	x7eclSZGms2OLB8z+xsw72mbhkCwZ7Fq4iejALQcQlS1FqD3Vz1wd07pVjMff3ZLhvRMq9
+	n6ayG3Cp0IcPJc2d9/F/WGPS2lXSmk8=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8CAB940E0251;
+	Fri, 20 Mar 2026 15:57:17 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id i_66GO8Hl-pe; Fri, 20 Mar 2026 15:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1774022234; bh=oK6vwbMjQIiUdNKsZRuAWsUjoKK5vttOS+cqd5buiAI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F4SoQ/1ZCCAN46Y/6n7nC9Xgw35pEYUtEmr06Sbu7uWqtgoF+NlFhArtM4fb0EeYg
+	 XzQMWFk0LFbHVdcaQ8Y8CuLtK5uQJSDAUI1R/MS52Biv2rtEjO/e8weNxOGjTpF6nq
+	 LTpMJe68dgrteo1pGT0mzRtsjo3zLj0CQlpoFHg3hBs4Vjzis6JkPTQF6SrC3Dzcgc
+	 /qv0n1FggvdE8Q1HVsUWs25WUAgB3mTvzfWe4mSH96xQrnZbRl6QX192jy/9zb6AEH
+	 jFM6ae4kgKhUfppnZ5T6RU2Sb3wZwaDDKeh0RYT79BEfi7AHWGwNxJAliX6j/ig5Gg
+	 7jeLbunK8Lg2bbAjkgWHWmhTZHSii0aXLF192MCTXaPw3D9Xs2VFXYf6JzN0WgojUn
+	 ht6DyzR0fEW62CUpcUadEjrfQH3zJ1RjcLO8zHQWlRa81arYSo1dKeP54bAw+F5bPT
+	 ewypeezs5qhKUXhqu880qTD8jPxmPKPVsuYhcA7ClVfd6PXDXAl4FSN2njJYAJybhK
+	 3a/x7d+4W1D9jlb5FX2pBSvk0ZPHMJcc6HzE/48JRlyHgSQkiZDRtVJN6NpmPU8JBV
+	 ZuL5TAuABQ8RJZKPV8C7jvmXkKCPhk0WwhD1R8ivJCfAQTPS8F7qI0ocFbnZg4djKK
+	 2TlAgM89Jf+bf8aQDDB5a1pQ=
+Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id DB6CD40E024F;
+	Fri, 20 Mar 2026 15:57:04 +0000 (UTC)
+Date: Fri, 20 Mar 2026 16:56:59 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Aleksandr Nogikh <nogikh@google.com>
+Cc: tglx@kernel.org, mingo@redhat.com, x86@kernel.org,
+	linux-kernel@vger.kernel.org, dvyukov@google.com,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] x86/kexec: Disable KCOV instrumentation after
+ load_segments()
+Message-ID: <20260320155659.GDab1uSxYFWCUGcvbN@fat_crate.local>
+References: <20260317220319.788561-1-nogikh@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 2A2FE4000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 63qtpf1ysae4q1cbbrgpg4y187fw1x9g
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260317220319.788561-1-nogikh@google.com>
+X-Stat-Signature: 8jwxjdz594rh98e5c5h5ekq5by3y3yfd
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774022189-842291
-X-HE-Meta: U2FsdGVkX19xIECcftnmlmZStzwA/zTEhjFGTYRqiT1Zx81ebdC/7H59dXbQ3AYBRZTFGYCBDm2RxJa9qT24QYGIkSshSlpn1GnkmSyPzdV9+2EmVDBF+c4Ka1+t1Gwihs+SocpSox+kOl5Y5U7RuPNZb5OzpmBk2FMy7cMob/tAGDc0WISlmyOndBqaW7YD2hqmFScy5O9L1WrS3VXkMTEoutiORh9FHbG0A0Qyyld2loZECUibnNrCcH3IZLpCovteBHbDBuGLfVNZRB6GIOGijNGMP1JNxWU421Vs4sJWUl7W0nYxkuUpoz0LOeBAwR2yO7AA76NtEYh2CtoJh/TgkmQflHbgOzi5eGpdLNMMmASPEIpKpswgqJIiCJUbo23RkOEZNDNrMMNJF0i0AKBgvOzHGx0F1i5RHSFb/RcsDjUl7H1lncKPmorJ4ZoIfHpcnXRx3tHf3FmcyaSttaAK+zY3Bd2Zlf3hase1/4xkN27p9ndm+KTYXo8368D+tA0vHbRzQipWphz9pW6x8wLWOmid1UjeDNNdjBUY6GaPHeeU2KuKAPjf9eb4qPU/tX46HNprBXGXTWdQer0OZ8Qjw3fCvzcIIBo9mLqFPbtrd+Kc8xD2VLE9T3Bs6fRIwbUyE3rEOfRkN1cCqm5632ShADbSAY1F5+oB321d8BIT8WvfbXNwFsqZ9I0E6Zy7XTayJZeiCWclMxqHKwkAB/JAdwpgrwJsLl7fJHli6+/EGJTu7Fn1qaHjHDJeiJzQi1uhHAvpm83h5nX24vDYzof00xOaodcdTLRSyaEI/37vh/wQYopioYoiNvID62N1pcWQZsYZSbZ8Tt3cKhHCqiolsO14csC0aHRI/lNZL142m3P+/3rfJp5AODW4FinkalCRiaz6e1dltH9jzR7DGuuldzUsIjM/3o2azSPwEukHSGwXtkcgMQyzIMMfSBPQxbL4uI7Hl/apKo4fvsi
- xqG3oMSu
- tThvWydZh4NKhnndzXK8yctqh/Qu50JSugw8RXBkpoojsUsV6CdVfPt8lsf/fPPZeKcJAyEnwrlFymz1dwWEDKlyHl6y1VmyqHafg3Ne4N6Vmelm09GCT6SYNeVw+/eYM3PGvTZnCo+Gv2V99GKjdzZm2X0gy27YraP3Oxne/pq/tYiTqldglxxxn8sVEerVr821ZVr5aJ5chmVTGeVa5xoaLVH0pAMpVV/iGdYVys72/ZzDlySFjPiGJgHwyxk/TwaNtYjhRcFEdbSfxnhvBoFaXwkuh+XSn5/QBr9h93GWsceffDBJNKQ6IK9Bxa70qgX+skQGp7E8yOynyuYt06N5b4AXO68ec1bvN5Hgq2jInhIScqWIZ8VgpuqrfTc+7/l29zDy+RJ7v8+YpUmvgmv5vBunB0Svrd8+LghDl+kMWsYfiI8ceYl1DANv50LaLfqfxNQ2qnC+yCgUW477WEAu0OiVuSE9F8NSmzMsHMKTJe1Zh9dK+L9uSABEvekd6lsdDrS/nXg+TKvbJ75ZIK1dmxs35U2isuJIKybUs+D0bvNdJnpps8zEfDCtey25DCd96EmyzAafgf3rMsCOwfvBndw==
+X-Rspamd-Queue-Id: B7B9D80011
+X-HE-Tag: 1774022240-699200
+X-HE-Meta: U2FsdGVkX18AMy3IpmeWug8x+y9pdpxeCDvGVUwFNl2H92VWcWzdm3YuQbq6r+FamkUCivt5JcNe5UOzkHF0EO0R29J1oTQPjhccWIaJqJKLRETVJ0CeCnhFj+wlsijq26Ye2AruT2EDhz+1/FxbLTSIuKom3rizZg58/6RufnX2AAYF1mEuQIPdGEavKo9Ua5m2B40L+AYQCqGPktI/LOjkdd939W/AjA42Hhe18k3cGB9lz1xUF0Pj6xIwjk8va+RdGmS6NpvMcI6YvFCPbTtTzd2UsmwoxAVedPIhQiy7HpcokjdLDq5IYZqT0+1TMqXM4N0W5FEkSvnj0F6UKlPohbp4l7eYAs+eAbRacMgTYQtNvLejWMwXcziOxdd/KixBwT+wpA3Lp0WewzAWyApvcUEAEwe7KayA08OFOidoO/Xc+1YWRrNKOVAMVYzyyQpuxGl4BF3iIdrKVRN5iQ+jVoUJuCxwuntmevyWanzAwaZN6voUbtUc4lg0bmVK+OdeePuJxdn9m5ggucbXpHK8c5PxfPmQhrji4OFRJpDp+gu4vT19D3uvE2RVn+uVnN2Y0x/EZhBnfQZLJe8tkpImrWfD8xWSm1Ta5wvyLKsiSu42yuTbXrnCAo1FbFfV+yxttHUuj7BxMX9164jlKhoWXOFY474Lnz9bbBRbUMrNo6oXQLusgwPpbC5EiEnVPBc9Fms+ePhWlTXl+7NnlTMYgnp+QtJevmtA2TMpIW1hpdjt1xPF93AnZjjTVTGswHNKRKKitwbV7NqrvNHk+pj+wD7uaj4ZPS6bvNoTxYShID50vOR2LZA+GcB3453PDSI7u+KTFMN8gXGhPIvZdW9ym6heqbvb9nhjwm3XopYqhdRFEfy9ku184dvOj1IHxv5Hnz9WW/JNB8TPQnIR03NzBR/fJqauSlpzkIb6CSpV6Yu0Nt25Y5XF1nelymqnews4HLabKRenGcLzTl6
+ jmsMVwg6
+ zd2yuoehEyMcFmaIsxksaUZIc2RdIWFiz9hyXoHlXuAKMMKnaTqTW6OyEiLlpcAGcuNcnE0bksBw3yxSFqLjlYTqD/cay1gbmMqMA2gzxk7DE2OVCahvkep+wC5BjoTT9JwzCIeZF2aBxxTfxptSrH43NlrZ6TWpOJ965LTEH0jEpGJ0uTNi6WUfietwIvbUYiiNbyM0Gw6+fh+DPtm4d/WIke+tLtlhMrpZoweOKb/iBwn9jbPN2C0YW4IOvpunnBBLtESxn6umHyjTj3wXZHNpUatghrYHxDbFF0yYjAP5bJxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,101 +105,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Mar 17, 2026 at 11:03:19PM +0100, Aleksandr Nogikh wrote:
+> The load_segments() function changes segment registers, invalidating
+> GS base (which KCOV relies on for per-cpu data). When CONFIG_KCOV is
+> enabled, any subsequent instrumented C code call (e.g.
+> native_gdt_invalidate()) begins crashing the kernel in an endless
+> loop.
+> 
+> To reproduce the problem, it's sufficient to do kexec on a
+> KCOV-instrumented kernel:
+> $ kexec -l /boot/otherKernel
+> $ kexec -e
+> 
+> The real-world context for this problem is enabling crash dump
+> collection in syzkaller. For this, the tool loads a panic kernel
+> before fuzzing and then calls makedumpfile after the panic. This
+> workflow requires both CONFIG_KEXEC and CONFIG_KCOV to be enabled
+> simultaneously.
+> 
+> Adding safeguards directly to the KCOV fast-path
+> (__sanitizer_cov_trace_pc()) is also undesirable as it would
+> introduce an extra performance overhead.
+> 
+> Disabling instrumentation for the individual functions would be too
+> fragile, so let's fix the bug by disabling KCOV instrumentation for
+> the entire machine_kexec_64.c and physaddr.c. If coverage-guided
+> fuzzing ever needs these components in the future, we should consider
+						     ^^
+
+Please use passive voice in your commit message: no "we" or "I", etc,
+and describe your changes in imperative mood.
+
+Also in the comments below.
+
+> other approaches.
+> 
+> The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not
+> supported there.
+> 
+> Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+> Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+> Cc: stable@vger.kernel.org
+> ---
+> v2:
+> Updated the comments to explain the underlying context.
+> 
+> v1:
+> https://lore.kernel.org/all/20260216173716.2279847-1-nogikh@google.com/
+> ---
+>  arch/x86/kernel/Makefile | 10 ++++++++++
+>  arch/x86/mm/Makefile     | 10 ++++++++++
+>  2 files changed, 20 insertions(+)
 
 
-On 20 March 2026 15:51:14 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->On Fri, 20 Mar 2026 15:14:54 +0000 Josh Law <objecting@objecting=2Eorg> w=
-rote:
->
->>=20
->>=20
->> On 20 March 2026 14:47:40 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->> >On Fri, 20 Mar 2026 07:06:48 +0000 Josh Law <objecting@objecting=2Eorg=
-> wrote:
->> >
->> >>=20
->> >>=20
->> >> On 20 March 2026 02:13:17 GMT, SeongJae Park <sj@kernel=2Eorg> wrote=
-:
->> >> >On Thu, 19 Mar 2026 15:57:40 +0000 Josh Law <objecting@objecting=2E=
-org> wrote:
->[=2E=2E=2E]
->> >> >Not necessarily blocker of this patch, but seems all the issues are=
- in a same
->> >> >category=2E  The third patch of this series is also fixing one of t=
-he category
->> >> >bugs=2E  How about fixing all at once by checking kdamond->contexts=
-->nr at the
->> >> >beginning of damon_sysfs_handle_cmd(), like below?
->> >> >
->> >> >--- a/mm/damon/sysfs=2Ec
->> >> >+++ b/mm/damon/sysfs=2Ec
->> >> >@@ -2404,6 +2404,9 @@ static int damon_sysfs_update_schemes_tried_r=
-egions(
->> >> > static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
->> >> >                struct damon_sysfs_kdamond *kdamond)
->> >> > {
->> >> >+       if (cmd !=3D DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr !=
-=3D 1)
->> >> >+               return -EINVAL;
->> >> >+
->> >> >        switch (cmd) {
->> >> >        case DAMON_SYSFS_CMD_ON:
->> >> >                return damon_sysfs_turn_damon_on(kdamond);
->> >> >
->> >> >If we pick this, Fixes: would be deserve to the oldest buggy commit=
- that
->> >> >introduced the first bug of this category=2E  It is indeed quite ol=
-d=2E
->> >> >
->> >> >Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
->> >> >Cc: <stable@vger=2Ekernel=2Eorg> # 5=2E18=2Ex
->> >> >
->> >> >
->> >> >Thanks,
->> >> >SJ
->> >>=20
->> >>=20
->> >>=20
->> >> Hello, did you give Reviewed by you? Or not=2E=2E
->> >
->> >Are you meaning Reviewed-by: tag?  If so, no, not yet=2E  I want to ge=
-t your
->> >answer to above question first=2E  Could you please answer?
->> >
->> >
->> >Thanks,
->> >SJ
->> >
->> >[=2E=2E=2E]
->>=20
->>=20
->> Well, two is in the same catagory=2E But seperate fixes may be best=2E =
- Because patch 3 dont call that function, so it may be screwy, i mean, if y=
-ou want me to=2E Ill guard it=2E But its a bit on the hacky side
->
->I agree there could be more cleaner way=2E  But these fixes need to go to=
- stable,
->so I'd prefer a change that also easier to backport=2E
->
->So, yes, I want to=2E  Thank you for kindly accepting my suggestion=2E
->
->Could you please re-post this series for the first and the fourth patches=
- as
->they are, after adding my Reviewed-by:, Fixes: and Cc: stable tags, and a=
- patch
->checking kdamond->contexts->nr at the beginning of damon_sysfs_handle_cmd=
-() as
->I suggested?
->
->
->Thanks,
->SJ
->
->[=2E=2E=2E]
+./scripts/checkpatch.pl /tmp/current.patch 
 
+...
+ 
+WARNING: The commit message has 'stable@', perhaps it also needs a 'Fixes:' tag?
 
-Absolutely!
+> 
+> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+> index e9aeeeafad173..41b1333907ded 100644
+> --- a/arch/x86/kernel/Makefile
+> +++ b/arch/x86/kernel/Makefile
+> @@ -43,6 +43,16 @@ KCOV_INSTRUMENT_dumpstack_$(BITS).o			:= n
+>  KCOV_INSTRUMENT_unwind_orc.o				:= n
+>  KCOV_INSTRUMENT_unwind_frame.o				:= n
+>  KCOV_INSTRUMENT_unwind_guess.o				:= n
+> +# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
+> +# the GS base, which KCOV relies on for per-CPU data.
+> +# As KCOV && KEXEC compatibility should be preserved (e.g. syzkaller is
+> +# using it to collect crash dumps during kernel fuzzing), we could either
+> +# selectively disable KCOV instrumentation, which can be fragile, or add
+> +# more checks to KCOV, which would slow it down.
+> +# As a compromise solution, let's disable KCOV instrumentation for the
+> +# whole file. If its coverage is ever needed, we should consider other
+> +# approaches.
+> +KCOV_INSTRUMENT_machine_kexec_64.o			:= n
+>  
+>  CFLAGS_head32.o := -fno-stack-protector
+>  CFLAGS_head64.o := -fno-stack-protector
+> diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+> index 5b9908f13dcfd..ea3a31b54e49e 100644
+> --- a/arch/x86/mm/Makefile
+> +++ b/arch/x86/mm/Makefile
+> @@ -4,6 +4,16 @@ KCOV_INSTRUMENT_tlb.o			:= n
+>  KCOV_INSTRUMENT_mem_encrypt.o		:= n
+>  KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
+>  KCOV_INSTRUMENT_pgprot.o		:= n
+> +# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
+> +# the GS base, which KCOV relies on for per-CPU data.
+> +# As KCOV && KEXEC compatibility should be preserved (e.g. syzkaller is
+> +# using it to collect crash dumps during kernel fuzzing), we could either
+> +# selectively disable KCOV instrumentation, which can be fragile, or add
+> +# more checks to KCOV, which would slow it down.
+> +# As a compromise solution, let's disable KCOV instrumentation for the
+> +# whole file. If its coverage is ever needed, we should consider other
+> +# approaches.
 
-Will do
+Instead of repeating this big comment block, just say something along the
+lines of:
+
+# See "Disable KCOV" comment in arch/x86/kernel/Makefile
+
+> +KCOV_INSTRUMENT_physaddr.o		:= n
+>  
+>  KASAN_SANITIZE_mem_encrypt.o		:= n
+>  KASAN_SANITIZE_mem_encrypt_amd.o	:= n
+> 
+> base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+> -- 
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
