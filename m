@@ -4,113 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8EFC1099B32
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 516261099B36
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:42:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D7666B00AE; Fri, 20 Mar 2026 14:40:37 -0400 (EDT)
+	id B688A6B0139; Fri, 20 Mar 2026 14:42:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AE556B00B4; Fri, 20 Mar 2026 14:40:37 -0400 (EDT)
+	id B40CA6B013A; Fri, 20 Mar 2026 14:42:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C4C26B00B5; Fri, 20 Mar 2026 14:40:37 -0400 (EDT)
+	id A566A6B013B; Fri, 20 Mar 2026 14:42:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C6866B00AE
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:40:37 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD5FE13A898
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:40:36 +0000 (UTC)
-X-FDA: 84567307272.01.DB5F601
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E075B40007
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:40:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RwJM0zyZ;
-	spf=pass (imf27.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 944426B0139
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:42:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32E5C8AFAB
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:42:07 +0000 (UTC)
+X-FDA: 84567311094.16.467A486
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7E28DA0013
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:42:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M5oOwz0D;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774032035;
+	s=arc-20220608; t=1774032125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6scTfZdpNdLDWYVNA+QDpQesm+T9ccRyDBvKNA1+6k8=;
-	b=U6CBmA0r3Gs9MMoktYv/ujgKh97Q6dTI7RCihXP0hZl6YXR7QJhIS9d74TbkDbgdR7w0YI
-	Vg0kNDPk/ofoPY0axnI+ukxrbRMSpNPV9tTz0xK393h1TzZX7+3FKaZg0bIbGQ0NqKFB6y
-	xvooiY5saiCZCp8GszpkqCOYNmLCFr4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774032035; a=rsa-sha256;
-	cv=none;
-	b=qJHz9BGL7eNf+r4eYrlmB7kKPRbi/D8Syb93j7ioUBDAAL8be8yrdj05Fy5+PFk7GwzkXw
-	3uJAIkalEOXL291FsSIHuGaRgdiWZNWsbGKucuB/UUoE2A4UequiJVcDpP7C9EzxtFermr
-	ZN8uaPGV5+VBYy2N03xG1BVnifMdDns=
+	bh=5rN4D+NzQsYNbSxB+JvjqFly7NPVq6QkCg8cLNr+Qzw=;
+	b=WBvXZ83R2m+s2AneQzJT3stRt8KODSKT5v/fj6w5J3RE0DpD82FZFTNmN34hf6VVqRoUQ7
+	mFgddQt+dz8WOkoBM/5YGGYe85+3ZrVFtoM6ww0EJgyTYObcDASP/F1Iq6GoFv06b55m5N
+	5KJ7mM9dkRtBkWhHvaPOMMTiAjiPvXA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RwJM0zyZ;
-	spf=pass (imf27.hostedemail.com: domain of audra@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=audra@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774032034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6scTfZdpNdLDWYVNA+QDpQesm+T9ccRyDBvKNA1+6k8=;
-	b=RwJM0zyZVJeknxpXS+wtU8qfRgE/XLSljMRG3WPkKC9/INOYMifMOxJlg2HL+wMeFPzssf
-	e1Q45XC3hG8AfwVQageugV2XRWQRh6TwWHkGvEc0GXt5AYmwYfixFa5m5xekH4eebK9s0O
-	+IbnZ7BNuKC0QDMAyuVimnIvoYwNTDA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-5SC89gtyOjGTIYdEmEjR1A-1; Fri,
- 20 Mar 2026 14:40:28 -0400
-X-MC-Unique: 5SC89gtyOjGTIYdEmEjR1A-1
-X-Mimecast-MFC-AGG-ID: 5SC89gtyOjGTIYdEmEjR1A_1774032026
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 847B21955F6A;
-	Fri, 20 Mar 2026 18:40:26 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.22.80.202])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 204B81953944;
-	Fri, 20 Mar 2026 18:40:23 +0000 (UTC)
-From: Audra Mitchell <audra@redhat.com>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	usama.anjum@collabora.com,
-	colin.i.king@gmail.com,
-	avagin@google.com,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
-Date: Fri, 20 Mar 2026 14:39:15 -0400
-Message-ID: <20260320184010.759461-2-audra@redhat.com>
-In-Reply-To: <20260320184010.759461-1-audra@redhat.com>
-References: <f7fef55d-4334-4d1d-b6c6-b409fea7e2a1@kernel.org>
- <20260320184010.759461-1-audra@redhat.com>
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: HZQbYMhKSi6XOGelqUH1SEqMTdpS5hyz5o1pp-GucS8_1774032026
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M5oOwz0D;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774032125; a=rsa-sha256;
+	cv=none;
+	b=Br5KdpH00g1TuPjHGLmIfZe+XSitYZem1oYqfS3HquJUDrNXV7pKhkKhoEpb9446ba9vj5
+	d+lfowD6rVTza3I8DU8I1mLGV5cIQz6FmssXY2CrgC6S+pDq5tqPkxNV5OvOX/RTSAjuyD
+	ge/+RkcD4OS0/ReVP7XQrBMQwfu0VRg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E9C2A60126;
+	Fri, 20 Mar 2026 18:42:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24243C4CEF7;
+	Fri, 20 Mar 2026 18:42:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774032124;
+	bh=k60VAliyD9e7Jl3y8MTPF7eUTQbTmx5vspuyZkF1b7Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=M5oOwz0DIXcF++ngTUjv/9dAJbzfA6WH8yBsnWcfBXFBcC2Xt0n2w6+yo+yZf6rmZ
+	 oE35H3aTlgNP6bRaw77kuybonV36iYt6+pPb1OWIqvwBK/5a4g8QXFtluy4yO8sDSl
+	 YDbGtIvzCYzE8/74q2y5oGgKLqU2dCrgZGqoFWJM=
+Date: Fri, 20 Mar 2026 11:42:03 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin
+ Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau
+ <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 00/13] mm/huge_memory: refactor zap_huge_pmd()
+Message-Id: <20260320114203.b1d0e565162c68b965aa5cb1@linux-foundation.org>
+In-Reply-To: <cover.1774029655.git.ljs@kernel.org>
+References: <cover.1774029655.git.ljs@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E075B40007
-X-Stat-Signature: edp1c1tbayybj1owdw5o499wt6argh7e
-X-HE-Tag: 1774032034-201898
-X-HE-Meta: U2FsdGVkX1+Kh7NqRP9A2wZD4yWZr+ATWZGCj8mljP3WRnababZCbIQrLmZasQiwPuFmUFcfp9ralJbfnnO5w98ly13bQSvL9a4oG+X8voGRwovWKorqL/5oKneOSFzyNMewD9LRoYXl++DDLpXvtZeSTMJmzYzhpHvLeP9Je4rgHCIjeo7f7zrQ2BZgbLyiGmOCmj1PAWWSFEv0UErGeisHNbPUUEufSbKvjvvsl2vDQpjYieYAVpqYqDnZOFSK1kRGJXyt8fmCDO0+6FPew4XCBlwNSbE4m5aL/USAU0SyAzuOYcn/nxj5EyLTwec5KwgFQc654vDg5v11kYm4LDk5HPO1+1PubOaUmUHGzO/ARz6WExnE6kSWY7G47aYDmX/K1nxH1hBszfzuFvMPU8VXzVnb9I7xLlgsemTpBwvsEpVDDfG+6Zk5KWUk/xnqfPl5/b84fMAGNZ3k+uMmFsrShiWOelXCNedvpXHDqw9mhOTQ/iHztzK5HO5SGHnexnFyh5gUH32AWN72sQF5J2/c1eK2jUw1L2Fq/YSXp+fm3YBxhhk+gWYc5oDqEanVdNsUIiBT+cmgKH8HxbWuHIt7xa0OGqhYioVBJzuuReH+Gov51/X0M44bY51bBIbKd972AmxAnS5cnKKZ0aCnxs9huTRqJY+gSXrn/4d7yQm7NeGvk03L2IEmSynyYk6FLY/OnwBZJgSEaoPYp8acK37ZQI9ItvRsVBq4dJYDZ44KPPfmsSnGnrbY5yIADoOCPO24sJ9bf6oaA+ND/qHuf8KgdFpu2j18FcE858zhjprQdEO0wK33j9OcCaEZ/vfK+QGfVO6tNt9kn204Nnwq3CwYuoe8P+7Epf6mAZ2s3bX/o+c65F79QHjTc7iDG+3GaRIcoFCvkHkyKzbK1BSK201AvNq2aUx3uoodQEMKnHsQrA1KZEPEOkLBhtE3xk+3NzmvFfl9SNTsrp9OZZP
- Qf4+g5fK
- xvXyZrngDkvNgVlwyc0K4gSu8drA9M/LBYrWQAnFs/TKOwb0XG4o99lgrPJwQ9d2FAGnF76S6rEf4Ww1pNgfh0PwHBssHYIj6ip2qS05XHyH6fSinvnzHaNaijByJvnUM2qZrLqBLij4Urd5jRdxZfa/H4V0gK9TkeFj3VSTwCz9CTzI4LUN2nh3r2FBH61BAhNQz8fnA4gnEhxFFxMol8uctErOh+J13lXHy+9A3isSeShBG23pfvzaP0rRS5lbPtVqFz92YGAAsCZqgNlArYnxyC+96MqswOcFKpm42hnh2W5/Z0JkWeo6cUWZZUs965akB8m8BXejGfiaAwxFNj5VjVYNtaqgBlQ0NDwBnJMGyEq9vOSMETIoGFc8POphrCabYBZLHWeCe0YCeMgVbPSzCTpO7UPtT9693
+X-Rspamd-Queue-Id: 7E28DA0013
+X-Rspamd-Server: rspam08
+X-Stat-Signature: zpptqnwtkqt8ou17h1mnjfwdpif3whww
+X-HE-Tag: 1774032125-620773
+X-HE-Meta: U2FsdGVkX19lvFXpQYNCo5QoTuiVX0k4PdZXlGsc1H1WgcVAtp0mAW6VpyT+I5Tmgba+Jkd2QoCmd2fGXAAdE32YUJy6IZnht2BVHFk6JqJfG4m1cHNEwkBhGsodoVdNItZysekfg07ibj1ZUn6rTR24pcIDMhE03IZlI2XI3N6A0NPiexn1RZQMMjvEZCZXY/i4oSc+kRHJw7JVyxPqiqEkB8WtoRaBpq2GXwmL/uX0JAwxLuuD4v4KB1T/sx+GL15wk1unTmKz/7hRbBxA5HBtYUT+TVj8w7oo6DXtAATYE5T4iRkcIhG23erIuAxZRZT2fv9uqrcwFNnWM4bSdH4Es6T9/A1NU9X5Pv+AFahU8lHnqQqzQEUs6mgKW+cHD8ZXKgM6OqdCP3J9hmq/RH6VYPiS4YU042r2YiQ1c1SWrjCAgne6Fh/FDJ34EwiFRFAiUGz5glZdllLkD1avBEK8JDKKIyy89Z7+FdD2aSZpJsYJeAX91um+N8AhBfUVZwR0cR2LDuHmUx9XAGM6paiHsgrl38QdUmMmHvenBrAGKoibCvkd+PHygirvQ4uJD3nZXsIdh4dUYB6+AkBKszxrS6DDdYYotRSocQ8hCcxgSLsi/YSThZ81r2+zfwOy5FeJNrRjHv9olBXP8PsHEy4JWSeadDkVFvybZ+5XQsrnE5HQ3R/Itu79XBr7IOmfu/A4domB+URQl0n3ib0peBUPVmPwAvrI1+BH/65c7AgEbMlFfWX0OJ69l2lyoCgO6BPAnL57lX/fjj7iPWFGl0DSI6Cs3nzMAmDfqzpFXzpqDaldF6CzakPCo9m/2qdVGvGjV1z09sXFPMeZ6BkMBRruDYR07ItmLd5nRP7Nwze7sYKXiA+TgADArvb8b2meKjycDt9oPWEIZzxMZ0/gwyC+HHSPO5PROklfITmS0/V/FmR5VqeKajlVs/DUZbYHNh1CCkiSbqiztwaJlKL
+ dRpD0Luw
+ 7DDJiUFIhEc3Lyy9mg8K9Yc1IpjZMgyeZzvdWwglwxMIdjDyfAUO9d5ya30Ai/pY18DDOX1de6s9H1Ehk2/2Fe/bur3fsK20cIMGIdpZn534zPErtIeZavPoI4g9zTs74KsJj+ZTxQdOJUl6rbhCK7fI9/BsAUIBNN2yFFonA6OK5O+XkSEoLF2r80bsfKr0K86ti8JR8AGKrd2SY2AzWd222taJcAM1gaDCHkmOsk1pKgyUTUUkxEdc0sB7a0KQB3Z0HNhgSHgfGCTSr4MG83CMrlfdeiZhHpOEpMqjJGqrjmEb25Sb4Oknx24ja2tGagx7v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,94 +95,268 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On architectures with separate user address space, such as s390 or
-those without an MMU, the soft-dirty kselftest may fail when checking
-to see if the feature is supported.
+On Fri, 20 Mar 2026 18:14:50 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-  # --------------------
-  # running ./soft-dirty
-  # --------------------
-  # TAP version 13
-  # 1..15
-  # Bail out! PAGEMAP_SCAN succeeded unexpectedly
-  # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-  # [FAIL]
-  not ok 1 soft-dirty # exit=1
-  # SUMMARY: PASS=0 SKIP=0 FAIL=1
+> The zap_huge_pmd() function is overly complicated, clean it up and also add
+> an assert in the case that we encounter a buggy PMD entry that doesn't
+> match expectations.
+> 
+> This is motivated by a bug discovered [0] where the PMD entry was none of:
+> 
+> * A non-DAX, PFN or mixed map.
+> * The huge zero folio
+> * A present PMD entry
+> * A softleaf entry
+> 
+> In zap_huge_pmd(), but due to the bug we manged to reach this code.
+> 
+> It is useful to explicitly call this out rather than have an arbitrary NULL
+> pointer dereference happen, which also improves understanding of what's
+> going on.
+> 
+> The series goes further to make use of vm_normal_folio_pmd() rather than
+> implementing custom logic for retrieving the folio, and extends softleaf
+> functionality to provide and use an equivalent softleaf function.
+> 
 
-The soft-dirty test will initate an ioctl with the PAGEMAP_SCAN flag with
-an invalid address for the page_region. This is done intentionally to
-have the ioctl return with an expected EFAULT and with the correct
-categories returned.
+Thanks, I updated mm-unstable to this version.
 
-However, on architectures with separate user address space, such as s390 or
-those without an MMU, the call to __access_ok (used to validate the
-variables provided with the ioctl) will always return true and we will not
-fail as expected.
+> v3:
+> * Propagated tags, thanks everybody!
+> * Fixed const vma parameter in vma_is_special_huge() in 1/13 as per
+>   Sashiko.
+> * Renamed needs_deposit -> has_deposit as per Kiryl, better describing the
+>   situation as we're zapping deposited tables, not depositing them.
+> * Initialised has_deposit to arch_needs_pgtable_deposit(), and updated huge
+>   zero page case to account for that as per Kiryl.
+> * Dropped separated logic approach as per Baolin.
+> * Added 'No functional change intended.' caveats.
+> * Removed seemingly superfluous, inconsistent pot-folio_remove_rmap_pmd()
+>   mapcount sanity checks.
+> * De-duplicated tlb->mm's.
+> * Separated folio-specific logic into another function.
+> * Added softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio() functions.
+> * Add and use normal_or_softleaf_folio_pmd() to make use of
+>   vm_normal_folio_pmd() and pmd_to_softleaf_folio() for obtaining the
+>   folio.
+> * Add and use has_deposited_pgtable() to figure out deposits.
+> * Added a bunch of explanatory comments as per Baolin.
 
-        if (IS_ENABLED(CONFIG_ALTERNATE_USER_ADDRESS_SPACE) ||
-            !IS_ENABLED(CONFIG_MMU))
-                return true;
+Here's how v3 altered mm.git:
 
-Let's simplify the check for PAGEMAP_SCAN and provide a valid page_region
-address so that we get a non-errno return if it is supported.
 
-Fixes: 600bca580579 ("selftests/mm: check that PAGEMAP_SCAN returns correct categories")
 
-Signed-off-by: Audra Mitchell <audra@redhat.com>
----
- tools/testing/selftests/mm/vm_util.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ include/linux/leafops.h |   39 +++++++++++-
+ mm/huge_memory.c        |  115 ++++++++++++++++++++++----------------
+ 2 files changed, 102 insertions(+), 52 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index a6d4ff7dfdc0..82998406b335 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -67,20 +67,26 @@ static uint64_t pagemap_scan_get_categories(int fd, char *start)
+--- a/include/linux/leafops.h~b
++++ a/include/linux/leafops.h
+@@ -603,7 +603,20 @@ static inline bool pmd_is_migration_entr
  }
  
- /* `start` is any valid address. */
--static bool pagemap_scan_supported(int fd, char *start)
-+static bool pagemap_scan_supported(int fd)
+ /**
+- * pmd_is_valid_softleaf() - Is this PMD entry a valid leaf entry?
++ * softleaf_is_valid_pmd_entry() - Is the specified softleaf entry obtained from
++ * a PMD one that we support at PMD level?
++ * @entry: Entry to check.
++ * Returns: true if the softleaf entry is valid at PMD, otherwise false.
++ */
++static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
++{
++	/* Only device private, migration entries valid for PMD. */
++	return softleaf_is_device_private(entry) ||
++		softleaf_is_migration(entry);
++}
++
++/**
++ * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
+  * @pmd: PMD entry.
+  *
+  * PMD leaf entries are valid only if they are device private or migration
+@@ -616,9 +629,27 @@ static inline bool pmd_is_valid_softleaf
  {
-+	const size_t pagesize = getpagesize();
- 	static int supported = -1;
--	int ret;
-+	struct page_region r;
-+	void *test_area;
+ 	const softleaf_t entry = softleaf_from_pmd(pmd);
  
- 	if (supported != -1)
- 		return supported;
- 
--	/* Provide an invalid address in order to trigger EFAULT. */
--	ret = __pagemap_scan_get_categories(fd, start, (struct page_region *) ~0UL);
--	if (ret == 0)
--		ksft_exit_fail_msg("PAGEMAP_SCAN succeeded unexpectedly\n");
--
--	supported = errno == EFAULT;
-+	test_area = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+			MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (test_area == MAP_FAILED) {
-+		ksft_print_msg("WARN: mmap() failed: %s\n", strerror(errno));
-+		supported = 0;
-+	} else {
-+		supported = __pagemap_scan_get_categories(fd, test_area, &r) >= 0;
-+		ksft_print_msg("errno: %d\n", errno);
-+		munmap(test_area, pagesize);
+-	/* Only device private, migration entries valid for PMD. */
+-	return softleaf_is_device_private(entry) ||
+-		softleaf_is_migration(entry);
++	return softleaf_is_valid_pmd_entry(entry);
++}
++
++/**
++ * pmd_to_softleaf_folio() - Convert the PMD entry to a folio.
++ * @pmd: PMD entry.
++ *
++ * The PMD entry is expected to be a valid PMD softleaf entry.
++ *
++ * Returns: the folio the softleaf entry references if this is a valid softleaf
++ * entry, otherwise NULL.
++ */
++static inline struct folio *pmd_to_softleaf_folio(pmd_t pmd)
++{
++	const softleaf_t entry = softleaf_from_pmd(pmd);
++
++	if (!softleaf_is_valid_pmd_entry(entry)) {
++		VM_WARN_ON_ONCE(true);
++		return NULL;
 +	}
- 
- 	return supported;
++	return softleaf_to_folio(entry);
  }
-@@ -90,7 +96,7 @@ static bool page_entry_is(int fd, char *start, char *desc,
+ 
+ #endif  /* CONFIG_MMU */
+--- a/mm/huge_memory.c~b
++++ a/mm/huge_memory.c
+@@ -104,7 +104,7 @@ static inline bool file_thp_enabled(stru
+ }
+ 
+ /* If returns true, we are unable to access the VMA's folios. */
+-static bool vma_is_special_huge(struct vm_area_struct *vma)
++static bool vma_is_special_huge(const struct vm_area_struct *vma)
  {
- 	bool m = pagemap_get_entry(fd, start) & pagemap_flags;
+ 	if (vma_is_dax(vma))
+ 		return false;
+@@ -2325,6 +2325,63 @@ static inline void zap_deposited_table(s
+ 	mm_dec_nr_ptes(mm);
+ }
  
--	if (pagemap_scan_supported(fd, start)) {
-+	if (pagemap_scan_supported(fd)) {
- 		bool s = pagemap_scan_get_categories(fd, start) & pagescan_flags;
++static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
++		pmd_t pmdval, struct folio *folio, bool is_present)
++{
++	const bool is_device_private = folio_is_device_private(folio);
++
++	/* Present and device private folios are rmappable. */
++	if (is_present || is_device_private)
++		folio_remove_rmap_pmd(folio, &folio->page, vma);
++
++	if (folio_test_anon(folio)) {
++		add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
++	} else {
++		add_mm_counter(mm, mm_counter_file(folio),
++			       -HPAGE_PMD_NR);
++
++		if (is_present && pmd_young(pmdval) &&
++		    likely(vma_has_recency(vma)))
++			folio_mark_accessed(folio);
++	}
++
++	/* Device private folios are pinned. */
++	if (is_device_private)
++		folio_put(folio);
++}
++
++static struct folio *normal_or_softleaf_folio_pmd(struct vm_area_struct *vma,
++		unsigned long addr, pmd_t pmdval, bool is_present)
++{
++	if (is_present)
++		return vm_normal_folio_pmd(vma, addr, pmdval);
++
++	if (!thp_migration_supported())
++		WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
++	return pmd_to_softleaf_folio(pmdval);
++}
++
++static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
++		struct folio *folio)
++{
++	/* Some architectures require unconditional depositing. */
++	if (arch_needs_pgtable_deposit())
++		return true;
++
++	/*
++	 * Huge zero always deposited except for DAX which handles itself, see
++	 * set_huge_zero_folio().
++	 */
++	if (is_huge_zero_pmd(pmdval))
++		return !vma_is_dax(vma);
++
++	/*
++	 * Otherwise, only anonymous folios are deposited, see
++	 * __do_huge_pmd_anonymous_page().
++	 */
++	return folio && folio_test_anon(folio);
++}
++
+ /**
+  * zap_huge_pmd - Zap a huge THP which is of PMD size.
+  * @tlb: The MMU gather TLB state associated with the operation.
+@@ -2337,10 +2394,9 @@ static inline void zap_deposited_table(s
+ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		 pmd_t *pmd, unsigned long addr)
+ {
+-	bool needs_remove_rmap = false;
+-	bool needs_deposit = false;
++	struct mm_struct *mm = tlb->mm;
++	struct folio *folio = NULL;
+ 	bool is_present = false;
+-	struct folio *folio;
+ 	spinlock_t *ptl;
+ 	pmd_t orig_pmd;
  
- 		if (m == s)
--- 
-2.52.0
+@@ -2357,56 +2413,19 @@ bool zap_huge_pmd(struct mmu_gather *tlb
+ 	 */
+ 	orig_pmd = pmdp_huge_get_and_clear_full(vma, addr, pmd,
+ 						tlb->fullmm);
+-
+ 	arch_check_zapped_pmd(vma, orig_pmd);
+ 	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+ 
+-	if (pmd_present(orig_pmd)) {
+-		folio = vm_normal_folio_pmd(vma, addr, orig_pmd);
+-		if (folio) {
+-			needs_remove_rmap = true;
+-			is_present = true;
+-		} else if (is_huge_zero_pmd(orig_pmd)) {
+-			needs_deposit = !vma_is_dax(vma);
+-		}
+-	} else if (pmd_is_valid_softleaf(orig_pmd)) {
+-		folio = softleaf_to_folio(softleaf_from_pmd(orig_pmd));
+-		needs_remove_rmap = folio_is_device_private(folio);
+-		if (!thp_migration_supported())
+-			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+-	} else {
+-		WARN_ON_ONCE(true);
+-		folio = NULL;
+-	}
+-	if (!folio)
+-		goto out;
+-
+-	if (folio_test_anon(folio)) {
+-		needs_deposit = true;
+-		add_mm_counter(tlb->mm, MM_ANONPAGES, -HPAGE_PMD_NR);
+-	} else {
+-		add_mm_counter(tlb->mm, mm_counter_file(folio),
+-			       -HPAGE_PMD_NR);
+-
+-		if (is_present && pmd_young(orig_pmd) &&
+-		    likely(vma_has_recency(vma)))
+-			folio_mark_accessed(folio);
+-	}
++	is_present = pmd_present(orig_pmd);
++	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
++	if (folio)
++		zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
+ 
+-	if (needs_remove_rmap) {
+-		folio_remove_rmap_pmd(folio, &folio->page, vma);
+-		WARN_ON_ONCE(folio_mapcount(folio) < 0);
+-	}
+-
+-out:
+-	if (arch_needs_pgtable_deposit() || needs_deposit)
+-		zap_deposited_table(tlb->mm, pmd);
+-
+-	if (needs_remove_rmap && !is_present)
+-		folio_put(folio);
++	if (has_deposited_pgtable(vma, orig_pmd, folio))
++		zap_deposited_table(mm, pmd);
+ 
+ 	spin_unlock(ptl);
+-	if (is_present)
++	if (is_present && folio)
+ 		tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
+ 	return true;
+ }
+_
 
 
