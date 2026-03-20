@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 730A11099B43
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:14:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E582C1099B43
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 22:14:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E06D16B00F3; Fri, 20 Mar 2026 18:14:36 -0400 (EDT)
+	id 5F0CE6B00F4; Fri, 20 Mar 2026 18:14:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB7CC6B00F4; Fri, 20 Mar 2026 18:14:36 -0400 (EDT)
+	id 5C8BA6B00F5; Fri, 20 Mar 2026 18:14:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA6C26B00F5; Fri, 20 Mar 2026 18:14:36 -0400 (EDT)
+	id 506406B00F6; Fri, 20 Mar 2026 18:14:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B9FC36B00F3
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:14:36 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 94EF713AA02
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:14:36 +0000 (UTC)
-X-FDA: 84567846552.20.5B6CE44
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 40D9D6B00F4
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:14:41 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 14EE11D9B9
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:14:41 +0000 (UTC)
+X-FDA: 84567846762.22.C8A3AA7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E00D5140014
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:14:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=he83wHJ6;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 73ED78000F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:14:39 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TslszDhS;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774044874;
+	s=arc-20220608; t=1774044879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GjZkwcZnHcoysgZGRhm9lBLN0WuFvf5aQ/6CJIR1XZo=;
-	b=Lr0Xmm6zKjZWjPgPR7Iu7wWC/agfmJg9n1gdPQnXEwD+TmL+aKpcqlV750XTD3WMspg0fh
-	4iZUiZn1uoQLPP21L6QoJNaml7BkeUH4hHqd5h9VUmifoxD/5JRzrquEgS/ugA1dBb+Vj1
-	qBm4d1Em7p/rpmTUMVyFZ2YHIkOLo3U=
+	bh=x/1ctJgZFjwJnEt9D488YF1w3aSO7eSWrdVytrypd5Q=;
+	b=Jmm5OQjTEsZiZxgLEy0KtiQTJy889lms+W/kwQl5kMGgsjqit7R4skWdhpJTEiQ4+3uSsN
+	rOPJh0UsBpB8WDg6DZ4LxTdGHJh/Gu4A11iMFIEYRtoTnpI1Ro77nRv2GSaPmxGiEpeSjG
+	3AsRLP/27jA9/h7sYGkYdyt5/kVbAwI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=he83wHJ6;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TslszDhS;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774044874; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774044879; a=rsa-sha256;
 	cv=none;
-	b=R1qwCSckNNawUflvrJW7czI6+0B9wxHRD9iE3hkvN+4TSaXsgaSPSA0EeRb4HWxpJLZHAM
-	Nk/BpT9535O/AK7Cy3iIQR2+vaLYJWrZStzljQ4DsCLjyx5bmR4JsIzXORumYSEAlc2uct
-	C+tHtWCQX+sPyC/5m1mscMkTSuB4ZFQ=
+	b=2YVYEM++CBJX4l1kUkPcj5HrrlFpv/0COGxv/4+fX2N99EzEPnAiGO8Sq6Km96qfs+IMPw
+	3qd/TcqOJ/yRZTCTRanJJNAj5r0agHwBu5FLi4lUjLlUG6T5aUurXVcPUsCvDRkINUvUxe
+	MpNRMw/B77Uw5glFw7hPiYBhSK1xdHA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 733B260142;
+	by tor.source.kernel.org (Postfix) with ESMTP id F1CE46111B;
+	Fri, 20 Mar 2026 22:14:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B066CC4CEF7;
 	Fri, 20 Mar 2026 22:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80082C2BC87;
-	Fri, 20 Mar 2026 22:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774044874;
-	bh=XAHrKqjSHvtKR09gmzZ7AHRzSFFlyVf9ZATZwJh+JJg=;
+	s=k20201202; t=1774044878;
+	bh=y3sgZkTrQ7ucF18Vg7qRa+O7aPCnDHgstTSd5M9UBOY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=he83wHJ6PtaTiQddZeECQUCHe56n6mKcu8hA4rCvY8qPeiTp9pvI0nuQaIgKVVheS
-	 fwqIjKoF6a2O37LFplX2/a8iqRJ2y5b88VJmAJjAexMzHSr/d+OXTwuH0/n/aw/2kG
-	 pe8AoJbYZCphhAsSJt9zKgebzodTB5GHH/Koby6PCMOF8Iu1iXweiApBOX/ngZQOY8
-	 Ut4FR3P0CEhcyvu0plHJrghUEKD+R8c6gIhegpQU8Pn0h1NNnXjHlTCsHWDRdaxfCX
-	 tzIzJ9xom8PLs1C920nHcEa68Y4UbWrSPDJXagKphEeyEcTAcA/nAsU3gkKICSeI50
-	 plec3jOq8bwZQ==
+	b=TslszDhSAzMDVRIyuMv6paGVgSsd2CzTi2m+XDZauLL+oMPD8nN2y19WOg5QAxcN8
+	 MJkxnPJI13xWM/TQBuUVFa8i2WBfcrPqP1pN4JyiIYxzvSpK68kow0YUXzxMwjLIvA
+	 PZfMcLRp38aeBp/XZ/scY6XOVW8u6R2Vl2bxg7ZCjPYl5+Zw1cWeOJK9ueZjsjOuBI
+	 /f+WZSPbGmI8Ms+0wdaf/gI3Ef6Dwbp58ZS76mf9o54sv2J4dxehoWLmTRoayHRyve
+	 UXsBVGWUjpn8Bff33KBzLTvQ6RK33x76NgUJDEqM9svExTt2X8h0wOTNQ+4FrOCJLF
+	 6X7zc7Xpdr5tg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 20 Mar 2026 23:13:44 +0100
-Subject: [PATCH v2 12/15] mm/sparse: drop set_section_nid() from
- sparse_add_section()
+Date: Fri, 20 Mar 2026 23:13:45 +0100
+Subject: [PATCH v2 13/15] mm/sparse: move sparse_init_one_section() to
+ internal.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-sparsemem_cleanups-v2-12-096addc8800d@kernel.org>
+Message-Id: <20260320-sparsemem_cleanups-v2-13-096addc8800d@kernel.org>
 References: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
 In-Reply-To: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
 To: linux-kernel@vger.kernel.org
@@ -86,14 +86,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-cxl@vger.kernel.org, linux-riscv@lists.infradead.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.13.0
-X-Stat-Signature: 3dwrie7uycbmnkghfgudixdej8qcbxyh
+X-Stat-Signature: kbuxyhdidwpoq9scdzoyyy9pq779zk1m
 X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E00D5140014
-X-HE-Tag: 1774044874-26994
-X-HE-Meta: U2FsdGVkX1//3uoRpYZP0gelVgos9sb51RMgz8CqfRC0K8SXuNzED40SNZJSWQsy9f6pHOBzNOHoWyzPvY6T3BNiVC0qqGfN6hjIcXvor7sf1HSFoo+CEQXlE/igJ0vk+Kyd4cnJ7xJwdpFQe1Qg9t5nF7SpZff8nSLNKOs53uFAiFdzEMlADbPi1nnqgaUHHogEBXpBQF8iDAuDMN5TNrx3X043ocrlqBe9H9elMtPCy/Be+U10HVTnyWkSL5rrDGaCEP9nub7kz7oCq8WI6p+GFkJE7wTAXlqK5YvAitwOwpfO1KJAlD4UCJyXMzM0xGSWqxrvBO5ms98fDjZicNInEe7qPLniy8taEHG2weOyindPz2a0YuMVctnGgi9WwDu/HLIjvLjJhTAdep0lJBkXl9EK2ydyNodo47Z8SWv0uZ4paK3kCHi6T77AaYvp++Dd9xL2fP7fNw6EkJKzvo6q23Clf26Rh3za4ZGnFgGwqIWpGAF1PUatC+drsgg1Zj92V74+xacengo0CFcg62/2lyY7AdUDxyK7WJssaakFMe5zy2yot+gb7xSwxK7tCLpA0gXh9/IY8Zq7KoOSXfKogKsXWOYfEgyQuSBE7pI3KdMSkQHCT0XBwdYmNsb1yb7WF+LzfRa4s/GsZZlF+t/HSIRoUlqh7PGY3brw6YuJnePEoXPoFCDcDmT6t7j7YYxdpCnG6eymQmXZM8EGHK43ZGqItuDgCMaV6tR1QV3hgl3/yr4TXmvvr2VhF1QwMb19y3rIt58z0ZBUdni7luzaHJ/MwylT+xkK8CHXEEqk5n+Qt8SOXRNdDZEq3TiUQDxazZWb2uK2jdXBW9mmyvnFMrGPlyK8pVe6iLkZour7oSWZwlOYyzUpD8jX0ahAMtUo5ZS73ClSjrjp9JPc5xyHUDognK2NdPwgzhw40Lg3FUKDXWozH5jPSDGmLKQZgEfW2sjDB4ApLRklLqH
- PaESx9mu
- 2D7AbscCwDVpAsjapw05Ot87TFkPcPI95pGLVlVL7biPJf6s/JuG4eNrkzjTBclELVJhPfs+4WfMUMYFcln3UjZHwRkQ/kht5Ig0fMLszpMzFz3atuX7kxtsDhnOcHcg5ZwQfTw+v+tYF4ja74QLVMb4W+19qGTHuAViCfw6IL9HhNnh6uT/K6bl7vSJWSlhRlAc0sHSmgubDcLi3JOwAPFzhVfqFMZTUcTcn8IaedbrXJ3yE+7ppRdhqJMIXg9PbV0X6dKFAMbcF2JAEaK+Sdt5nJEb6HnrTa4R9
+X-Rspamd-Queue-Id: 73ED78000F
+X-HE-Tag: 1774044879-446762
+X-HE-Meta: U2FsdGVkX18s9IlKCpgy540hznynFOdk0VLVrGbt27pBh/S/98rzbfo3mcagWas3MvOpvqHZ91rYER6d2UC7g4RwAkPNjgo84lnbHPGwPXuUnQyEViGoMlJiSI4QGTWuFijeUyt+n1ojdr5nF3LcUOhdrXL/jLUMrKD1rwA6ktPJcpslyMbuWXrBMUrcgFHMp2pBFXTjyQ7qRFu1cBQfIqv53wH3eXZ9Mo0f2/umyj7nk3nSBwi2USsC3OI1fzrSPku3D4kMb9SjWjAeiYseIrlg+IEhgXe7e4FVJUfk0eoov13F1c+KFks6G9cynQ70r6HCfE0TRS/R1VomFcmgYTylB5Tm5TRTbUxiZaVUjOUSVcvHYTp9bamEj/OjzZgv2i4kySqnzYvAT8VLmn/FaMtCKc5Qkk23sIlgwZT4jBB0oDy1cPR013ySBmBak7Ozo5G0gk1gV2VjPsM5PBMrTqns85N5zIUbcRbaWU6zJBIS8ZLWAKTwY4z62lQcaVI34yHMv1/A05+w347Mlm/0LosPeFSUbcUbeUqm3WCXPQ5OlxxAV6d7G0ig/fcI7CIAr4aggNcV4Lrz7UwCeE2/Ng2541vBiBI1MQuQSKsegZZAlp5pHYh8uQ2TU2KMCA88IxVgFDWoDnOax7amaQcUubCQ0h4oP5RvaqNefHTHDn19lGfYw0kh/kMARgdh3eWShIxZlY8sM22mjNAetXjrkRWGtlQYGhtw93vih6pPXQIuW/1b0Vv4SJWasoJ5oQHgZZu5eFoxp1jr0CM1jIxWAH+BY92JRUpkRehhvGEZnmW4M3uwo0zLfawMbcDwrXiymyPFu1YcCYYfk2O8GGANESfH1CJkprOySO8FnFIxY5P59Cb6Lo+VLeMm4Ri5mk5k4wpKWQJ0NAlpwT/q/jedp+KQadzpwubYDef6gYb0E+dBzg/wjAkAA5MS1SRW/xGcZf9GDjBqkmhE/CP7Abf
+ 9nZJvXEW
+ ZEiw0wPAKC531r6HZtY3i5Rgvt25//mYsi8M4+Iv1zY1TxsPRFJIXagd57fLlb2C3ZZgRAKp/UuggoKjE2KrlGPfWfAoP+keXLcAAsWkbLzdgj/p0Fzcicc+IWsjH5jwojAy08MD3LJvlfwokrM+llSCADuiQaroVzivg1w5NRUTXlVmcB8QrhNoufwdAdDXQAEPrIbHXKaA29rDVz1nKunvQxpNu3v5g/RUDS9PlaLEzg4u3Aeh+1i6oLMq+qKu4IFaL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,41 +101,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CONFIG_MEMORY_HOTPLUG is CONFIG_SPARSEMEM_VMEMMAP-only. And
-CONFIG_SPARSEMEM_VMEMMAP implies that NODE_NOT_IN_PAGE_FLAGS cannot be set:
-see include/linux/page-flags-layout.h
+While at it, convert the BUG_ON to a VM_WARN_ON_ONCE, avoid long lines, and
+merge sparse_encode_mem_map() into its only caller
+sparse_init_one_section().
 
-	...
-	#elif defined(CONFIG_SPARSEMEM_VMEMMAP)
-	#error "Vmemmap: No space for nodes field in page flags"
-	...
-
-Which implies that the node is always stored in page flags and
-NODE_NOT_IN_PAGE_FLAGS cannot be set. Therefore,
-set_section_nid() is a NOP on CONFIG_SPARSEMEM_VMEMMAP.
-
-So let's remove the set_section_nid() call to prepare for moving
-CONFIG_MEMORY_HOTPLUG to mm/sparse-vmemmap.c
+Clarify the comment a bit, pointing at page_to_pfn().
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/sparse.c | 1 -
- 1 file changed, 1 deletion(-)
+ include/linux/mmzone.h |  2 +-
+ mm/internal.h          | 22 ++++++++++++++++++++++
+ mm/sparse.c            | 24 ------------------------
+ 3 files changed, 23 insertions(+), 25 deletions(-)
 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index b694c69dee04..dcbbf36ed88c 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -2008,7 +2008,7 @@ struct mem_section {
+ 	/*
+ 	 * This is, logically, a pointer to an array of struct
+ 	 * pages.  However, it is stored with some other magic.
+-	 * (see sparse.c::sparse_init_one_section())
++	 * (see sparse_init_one_section())
+ 	 *
+ 	 * Additionally during early boot we encode node id of
+ 	 * the location of the section here to guide allocation.
+diff --git a/mm/internal.h b/mm/internal.h
+index 5f5c45d80aca..2f188f7702f7 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -965,6 +965,28 @@ void memmap_init_range(unsigned long, int, unsigned long, unsigned long,
+  */
+ #ifdef CONFIG_SPARSEMEM
+ void sparse_init(void);
++
++static inline void sparse_init_one_section(struct mem_section *ms,
++		unsigned long pnum, struct page *mem_map,
++		struct mem_section_usage *usage, unsigned long flags)
++{
++	unsigned long coded_mem_map;
++
++	BUILD_BUG_ON(SECTION_MAP_LAST_BIT > PFN_SECTION_SHIFT);
++
++	/*
++	 * We encode the start PFN of the section into the mem_map such that
++	 * page_to_pfn() on !CONFIG_SPARSEMEM_VMEMMAP can simply subtract it
++	 * from the page pointer to obtain the PFN.
++	 */
++	coded_mem_map = (unsigned long)(mem_map - section_nr_to_pfn(pnum));
++	VM_WARN_ON(coded_mem_map & ~SECTION_MAP_MASK);
++
++	ms->section_mem_map &= ~SECTION_MAP_MASK;
++	ms->section_mem_map |= coded_mem_map;
++	ms->section_mem_map |= flags | SECTION_HAS_MEM_MAP;
++	ms->usage = usage;
++}
+ #else
+ static inline void sparse_init(void) {}
+ #endif /* CONFIG_SPARSEMEM */
 diff --git a/mm/sparse.c b/mm/sparse.c
-index c96ac5e70c22..5c9cad390282 100644
+index 5c9cad390282..ed5de1a25f04 100644
 --- a/mm/sparse.c
 +++ b/mm/sparse.c
-@@ -765,7 +765,6 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
- 	page_init_poison(memmap, sizeof(struct page) * nr_pages);
+@@ -256,30 +256,6 @@ static void __init memblocks_present(void)
+ 		memory_present(nid, start, end);
+ }
  
- 	ms = __nr_to_section(section_nr);
--	set_section_nid(section_nr, nid);
- 	__section_mark_present(ms, section_nr);
- 
- 	/* Align memmap to section boundary in the subsection case */
+-/*
+- * Subtle, we encode the real pfn into the mem_map such that
+- * the identity pfn - section_mem_map will return the actual
+- * physical page frame number.
+- */
+-static unsigned long sparse_encode_mem_map(struct page *mem_map, unsigned long pnum)
+-{
+-	unsigned long coded_mem_map =
+-		(unsigned long)(mem_map - (section_nr_to_pfn(pnum)));
+-	BUILD_BUG_ON(SECTION_MAP_LAST_BIT > PFN_SECTION_SHIFT);
+-	BUG_ON(coded_mem_map & ~SECTION_MAP_MASK);
+-	return coded_mem_map;
+-}
+-
+-static void __meminit sparse_init_one_section(struct mem_section *ms,
+-		unsigned long pnum, struct page *mem_map,
+-		struct mem_section_usage *usage, unsigned long flags)
+-{
+-	ms->section_mem_map &= ~SECTION_MAP_MASK;
+-	ms->section_mem_map |= sparse_encode_mem_map(mem_map, pnum)
+-		| SECTION_HAS_MEM_MAP | flags;
+-	ms->usage = usage;
+-}
+-
+ static unsigned long usemap_size(void)
+ {
+ 	return BITS_TO_LONGS(SECTION_BLOCKFLAGS_BITS) * sizeof(unsigned long);
 
 -- 
 2.43.0
