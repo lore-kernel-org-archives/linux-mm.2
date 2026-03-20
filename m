@@ -4,141 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B949108B8EE
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9564108B8F5
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:08:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6B2D6B0088; Fri, 20 Mar 2026 07:02:25 -0400 (EDT)
+	id C95DF6B0005; Fri, 20 Mar 2026 07:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1BC86B0089; Fri, 20 Mar 2026 07:02:25 -0400 (EDT)
+	id C46FD6B0088; Fri, 20 Mar 2026 07:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90BA36B008A; Fri, 20 Mar 2026 07:02:25 -0400 (EDT)
+	id B352B6B0089; Fri, 20 Mar 2026 07:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 801216B0088
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:02:25 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4AC92135D5F
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:02:25 +0000 (UTC)
-X-FDA: 84566152650.22.8EB4469
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 70D8840018
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:02:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MCH5HHFr;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F6386B0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:08:26 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 51B921A0170
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:08:26 +0000 (UTC)
+X-FDA: 84566167812.09.67D9D31
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AABB8140007
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:08:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lM0U/sma";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774004543;
+	s=arc-20220608; t=1774004904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+mRbU5D9sCt/Q3Wq0ahJl/cSS8u5A6Q8bPsIRrDxeI0=;
-	b=TGY+vWt8jlcvNFpejeXGZBakSa52iqmewBSmROs/yLUiJJ5Cm2L31V439t5GXnvj1rRTS7
-	RAmR9QUfilUwqiOZ5kQUmMRovL1oMjU3N5j5izF27PS+9Lo77rLVatYj9xZkeTzZ+nG1ZU
-	TLXgtkJP+xf7g9dZMr8rbmq1bW4i5hg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MCH5HHFr;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774004543; a=rsa-sha256;
+	bh=w/82aNgfvf4YFc1fjX6IqLmObJKB/FevM1+RgKnik5U=;
+	b=Xn45E3AwoLWabbNbltgIXE1KwY9wvLpQWLtO0omVQIe2tmemvt4LVsmUXKKrc1tCRTt5EV
+	+Od/v/AJx4WNAHCCP9Z/vh7BxJBe+HV+HKCGgbaieTXPGqSH7oSNKk2LlYeT7q852u968n
+	R3dR355C8NmAncvljkFcgNjTWEiKCII=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774004904; a=rsa-sha256;
 	cv=none;
-	b=itPWROREG7rZ9m94QA8X5Z0OJezXDCmd+Eu584J9zWYq+2aGZWzPihOuVfEmkwwfSdA/1U
-	o2YIKG96PNiQtRA/z467z5Tg8WodMCpP3LiJkV7KUjG6jMW2BcuMFVtIpLIPBSt5hIbNlS
-	0KfNfbw6Ao04Y+0Lm/1SXu5fMH3OR4E=
+	b=hmduP2Ko/DMUTAr+7XFopHEDHIYnngJbRnmLnBwuP0J/CppCgW3iNsvGgZYWdOira7Nnna
+	7tAYm1qGZzuStS0f4TsGDdv+5u8bZhxcldBFCFUOH3ztzsZPAP04ZlXqVMEZN7EVlu0p7L
+	DIFYiOHDXcpv/HU6Pnte9ckNyNIZBOE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lM0U/sma";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88F7043D69;
-	Fri, 20 Mar 2026 11:02:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDA2C4CEF7;
-	Fri, 20 Mar 2026 11:02:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EB41D60121;
+	Fri, 20 Mar 2026 11:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E98DC4CEF7;
+	Fri, 20 Mar 2026 11:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774004542;
-	bh=XpLec52ItJ0+gRJkeZWPIY35ZXQoan83ep8refy/6XA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MCH5HHFreYLZP9q/UZVa+yTPwO7SCnwKkdPvCoPvQthhg2jXVgZm99SlpcROp4nb7
-	 V3LH271yUrM/+rY8B8rPYiPh2s6QKsrDno0p3T10pOBXKh6AAzxu7WT9c6fzDWSkDI
-	 r0KLHjCpmcEA+wSyB72VBmSw9lZnxDcf0imNLM9+Bi0PxRvPn7EhiQ4B3LZmtIbDlr
-	 LCRmsS+01mhNTuSMC1OMd0ICBwLfcXgiVnKvdzhftF50nZXzmFS/GigNkGyl01J98u
-	 qTWV9XZKbPRlb2wfPDXVXMPo4YD1SZNgfCkrGW2sL14eIHqyKytstAIEXlIdBuFXqV
-	 6WZyEfK1p4MpQ==
-Message-ID: <076b36f7-1ed3-49ce-a892-eefd189870df@kernel.org>
-Date: Fri, 20 Mar 2026 12:02:17 +0100
+	s=k20201202; t=1774004903;
+	bh=IubUj+jqwRzKoQPj58xDc4nZfpvuDGr1R52SQV2ZLLA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lM0U/smadkBEflGyTvmy4GTZW1CFk/3otou6bjFy+dQmA00CHj/ypWe+e73C+zMZQ
+	 jhmmO/CjnbFULEMKZS8VBpTbomAMt/cjPAVKyMfPOEREZs8pQlH04qTV/9MvL9x8YN
+	 TrPExLO4WzXOykz6o15XYE3r5fRQKyGZ8l0sR0R7p7noB+1Xlz9xivuUpaESQBfpJp
+	 Uyof/p8lwb2nc+aKhxOi6BQIC0quLodlIc6P0Iz2eYTTYq69lyrHX9jDbzPea2sYop
+	 DmVdpjbcONP/eCN6f1cRlmFQAT+Qh0Z77PP3l/hk1KZKNUaP6VaiRb7tSkfT2VopkI
+	 oaRAH25ZcMSnA==
+Date: Fri, 20 Mar 2026 11:08:08 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Kees Cook <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian Cain <bcain@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH v3 22/23] mm/vma: convert vma_modify_flags[_uffd]() to
+ use vma_flags_t
+Message-ID: <7e22cc48-aa04-406d-b4d0-8ebb182b34b9@lucifer.local>
+References: <cover.1773846935.git.ljs@kernel.org>
+ <98a004bf89227ea9abaef5fef06ea7e584f77bcf.1773846935.git.ljs@kernel.org>
+ <0b5765da-67e9-4e2e-99d8-08501730bf76@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm/mprotect: un-inline folio_pte_batch_flags()
-To: Pedro Falcato <pfalcato@suse.de>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
- jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-4-pfalcato@suse.de>
- <2da1181c-165d-49cd-94cb-5ccbd3bb93b3@lucifer.local>
- <69382383-5f08-408f-8c13-d674e82c4dfd@kernel.org>
- <fcc2665f-014b-490f-8451-ca907730e60c@lucifer.local>
- <tv6pcikk456ynfx7lz3lrql3yafg4njuy3bzi4v6yi5hpe27gi@hakvdy2jmewu>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <tv6pcikk456ynfx7lz3lrql3yafg4njuy3bzi4v6yi5hpe27gi@hakvdy2jmewu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 70D8840018
-X-Stat-Signature: jai7e7atca3mbx3rh6u35oms1x6e14oz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b5765da-67e9-4e2e-99d8-08501730bf76@kernel.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AABB8140007
+X-Stat-Signature: 94a5cjqzwwa6fqpx59c6j187gs9c1odw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1774004543-906337
-X-HE-Meta: U2FsdGVkX1/EPeuf0YvIKmsmltByPMout+eznMHODTAVupyTP/kZlOoPH6XZfOAeF8H/bifxdut86wLdiyQEjM0SWB8bpIVTQFECYIf4t1EZCRe3FCr1OKElYdxeOb8cjAvqM5DFv23Ul93m8fjTYBoHOxpPeSMkaybzI2s0tc3Yhq7Sskxh5ojxKkd51wuSeKOo2m3gIT895K+uR9PctklrwOuvQTulhhQzK3Ny08lmaR/c5oZ7nawRAWlc9jh6UZjSIr0lblD1u5QAaGI/6ncpIDCtiymrlbgfiyjGONJhqVGxfEpABNo8JZgl/E9KU2tP/EAPyDjMprsJnVrJRhpyU5HLODAMxfnEsjVUmXXcweBk0LuMUyyXHA9ZHZ5xueE9n9RvyWMcJ1DkBrXzwA0jHAStySugxpd3bn0SOvEPrjyP/G3aXBICYmheN0H3mqQ8mnTuw0+MpSHyUE8bKBZ6m7lKQrjKcRGgCoadJwp/rjN8tVntaQYFzFy19fthJlT4R3z75Dw4VpsKbbDbf631M8DWBswJuwN3taNbDZotQe7/V5L7a6dWFGl5/X1c255qeIaNeUcgGOoU6I9R9ZtbrYgKKpuCQX5TGuUmmQJwlIz11Pd+r27QWAiJSbbYLoVtTza9+yqlHho5ek0DtAhP84ABKnikB/5y8YZUqKdYVQIu76WLEwyVLQ2Cxaf3P2n3ZMiH7WudqMx5kAcuZb3MosMSn7HOu7QAQL+iZSeXj8eLnMSIL7lSzAIKD2/10LjIHcS0ORWAuJeuv8LwieY/wyfQKr17lm6NvRqUdxYZ0MpJawVH/XxqZtQhiFTDA589B7PlBBulRzBuU9d6oX5l+q02Rb2b4irwzPfPFHb+vxxuYHr97XHEI+R8BKbsjocmG51II7A9mtL11GN1t3GnkUHIOM84MlhkNE8fnMAi+JQ48jU6lt18oBGkJxmkfNrSN5UUVZwVbab+VGA
- 4jl/XlAU
- 3o480Q/xBPoFOPNhR45r2AillKvjbts+41sp+sjpVcV+sOQlLoJUsDW79o+55HtqJbkIiSsUMqOtmrHn5Sx2R/cMJQNzVd4Bi3JupvMTGFJTB93FMC/2Kg5oZTqeqUbtYVwkEpT0RbF2TdYoFJ1vfLiAAMBgltcBDMaVOJnekqUPiDcfM1YI1Up3+WgMvQOGlxfeKv+VEUT31o0r+WR7S6TMBG4D4diSjOYJX6+9GHJR2/GEqpWjg2AY4L3/H1wDRtoQRXlzLa3ePcwyl0FBORX9EGv9FKIavclhGE9BYQD30UwXjvi1iqXFxeINZ3glBtPIGZJaLtyAbsv8=
+X-HE-Tag: 1774004904-907458
+X-HE-Meta: U2FsdGVkX1/OjBqXyxU4QhKQ1MIqWDEwJ46yK1QYi0oD3aXB3rXQ5NtbMIr9JNiDmLwlI/ecIVIZi46ypl63gAl2iwsQCy2NjY3zA8LKko93XAScYoP9UE1+TIHSaenPga7LF0jqnHg7WdPpRQMmFBWsoriVDFpzZI4wUskHWqHTYU+B27DbAAE8KPd2B01OLSEkRXOGbmGtGEe9u6Im7jHhexVdAGlvsl+mZfCMOXaHZuxCap+izO/YaJJQV1Mrxp9Ld7qf0B5LwXEkYD6vQgxH8Z97Qmq8xAJl6zIIuSS1Np6x995CEd+mhacU7ARbfagLfCNAuC6Zd1AhxDSryfE668M4AmMlGekQolDfJqTtCeM6SxWCBAOzjtTiG5ySfny+7ymA6T14p198Z34SmNjiuh/Kq6Qsgv8Mdv6uhAK+Lw8cPVxwgKjVKnmjSME7KAiOyc6vPZSPiN2HdkWWxyHMqYnEaYHVB6qrSBP+fxnxGrNTZYBCz8sYzVHMxQ+xEc1bsaxkG7xdqqb+w6VyJ+5GvPwPPo70Rww/N4uVhOm/jRGMuxV7q23/l+weNrGZbY0ajTnOjcBk8voOaKGKgc8xg6H6kHczJF2Wo/1ELY5WuiFH4aQkEtXfyM0S0gIrMu5+DTaC6Ps73L6C7mLrs9A+Z/x7kQyfl/IxMbwrBy6xPREFbmEKRVxoe/Tlk7dilQsjoLLxCjArNQz/xkRYaCskHHVSREHDtByYAj/SkjdnIXXmzTFp+RIxMWBy7isCWOzwyoZbYped/xx8VKy6Osb2JY4Oa7oIbxjxhM+SG4sLX3LgaEKrWOlpbpW2nCcmrjljr4snSjie/yzs/j4zfkAqEXQeK/xYX8xfBkkzfA+YlmQ/aOEgCpmwW1uZLnJW9hSMNU/ixP0JMrXVkTlOPqFlzcNFArjF8xnL456hu9DZA83bFoETX4uIV/+Pqa0dndh9hVj+XtJzCj7envn
+ 3xUKK7K1
+ OqaNXTMzBEBL5FmbEDu78G6FITX5U9wjTnXiG0abIGwxTUkiDgq7VKUEfaGNna5nyCpNznkagjir27qxBO8U0h0aQtL2C37g2j1BhomGtyZk8YmCHVDAcMr9xFNqsg/8vF9rUbodq6dQanCRCiZRC2TtPEhI+AwNXPqljQfvKNDTvUbXMlhG+Dh5h+VMMRJ0fwHAq2rzW7OFOHbQfxQ1S5RopGqbN+sFscxmw5tLbwIsZ+Eewh4YmJa8u9k76eWDlWXmCbh5MuYvtz+khqTfXrLdjWgfL/nrfBzVEc/XjdKRFFLHhxO4FnXEnsQLD8UfCM3VmxWEW9syZss/0u82xS/55nHvbMJ2QSmN4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,20 +118,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Mar 20, 2026 at 11:39:58AM +0100, Vlastimil Babka (SUSE) wrote:
+> On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
+> > Update the vma_modify_flags() and vma_modify_flags_uffd() functions to
+> > accept a vma_flags_t parameter rather than a vm_flags_t one, and propagate
+> > the changes as needed to implement this change.
+> >
+> > Finally, update the VMA tests to reflect this.
+> >
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>
+> > --- a/mm/mlock.c
+> > +++ b/mm/mlock.c
+> > @@ -415,13 +415,14 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+> >   * @vma - vma containing range to be mlock()ed or munlock()ed
+> >   * @start - start address in @vma of the range
+> >   * @end - end of range in @vma
+> > - * @newflags - the new set of flags for @vma.
+> > + * @new_vma_flags - the new set of flags for @vma.
+> >   *
+> >   * Called for mlock(), mlock2() and mlockall(), to set @vma VM_LOCKED;
+> >   * called for munlock() and munlockall(), to clear VM_LOCKED from @vma.
+> >   */
+> >  static void mlock_vma_pages_range(struct vm_area_struct *vma,
+> > -	unsigned long start, unsigned long end, vm_flags_t newflags)
+> > +	unsigned long start, unsigned long end,
+> > +	vma_flags_t *new_vma_flags)
+> >  {
+> >  	static const struct mm_walk_ops mlock_walk_ops = {
+> >  		.pmd_entry = mlock_pte_range,
+> > @@ -439,18 +440,18 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+> >  	 * combination should not be visible to other mmap_lock users;
+> >  	 * but WRITE_ONCE so rmap walkers must see VM_IO if VM_LOCKED.
+> >  	 */
+> > -	if (newflags & VM_LOCKED)
+> > -		newflags |= VM_IO;
+> > +	if (vma_flags_test(new_vma_flags, VMA_LOCKED_BIT))
+> > +		vma_flags_set(new_vma_flags, VMA_IO_BIT);
+> >  	vma_start_write(vma);
+> > -	vm_flags_reset_once(vma, newflags);
+> > +	WRITE_ONCE(vma->flags, *new_vma_flags);
+>
+> It's not clear to me, how is switching from vm_flags_t to vma_flags_t
+> allowing us to simply do WRITE_ONCE() instead of the full logic of
+> vm_flags_reset_once()? Won't it fail to compile once once flags are more
+> than single word? Or worse, will compile but silently allow tearing?
 
-> 
-> which the compiler FWIW tries to inline it all into one function, but then
-> does a poor job at figuring things out. And the CPU gets confused too. It
-> was frankly shocking how much performance I could squeeze out of a
-> 
-> if (nr_ptes == 1) {
-> 	/* don't bother with the loops and the funny logic */
-> }
+We only care about tearing in the flags that can be contained within a
+system word, but true we should probably do this more carefully, as I did
+for vm_flags_reset_once().
 
-Yes, same experience with fork/munmap.
+I will reimplement this as a new, hideous, helper function.
 
--- 
-Cheers,
+I am not a fan of this being a thing to handle races, it's a hack. But I
+guess that should be addressed separately.
 
-David
+>
+> >
+> >  	lru_add_drain();
+> >  	walk_page_range(vma->vm_mm, start, end, &mlock_walk_ops, NULL);
+> >  	lru_add_drain();
+> >
+> > -	if (newflags & VM_IO) {
+> > -		newflags &= ~VM_IO;
+> > -		vm_flags_reset_once(vma, newflags);
+> > +	if (vma_flags_test(new_vma_flags, VMA_IO_BIT)) {
+> > +		vma_flags_clear(new_vma_flags, VMA_IO_BIT);
+> > +		WRITE_ONCE(vma->flags, *new_vma_flags);
+>
+> Ditto.
+
+Yup.
+
+>
+> >  	}
+> >  }
+> >
+> > @@ -467,20 +468,22 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >  	       struct vm_area_struct **prev, unsigned long start,
+> >  	       unsigned long end, vm_flags_t newflags)
+> >  {
+> > +	vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
+> > +	const vma_flags_t old_vma_flags = vma->flags;
+> >  	struct mm_struct *mm = vma->vm_mm;
+> >  	int nr_pages;
+> >  	int ret = 0;
+> > -	vm_flags_t oldflags = vma->vm_flags;
+> >
+> > -	if (newflags == oldflags || vma_is_secretmem(vma) ||
+> > -	    !vma_supports_mlock(vma))
+> > +	if (vma_flags_same_pair(&old_vma_flags, &new_vma_flags) ||
+> > +	    vma_is_secretmem(vma) || !vma_supports_mlock(vma)) {
+> >  		/*
+> >  		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
+> >  		 * For secretmem, don't allow the memory to be unlocked.
+> >  		 */
+> >  		goto out;
+> > +	}
+> >
+> > -	vma = vma_modify_flags(vmi, *prev, vma, start, end, &newflags);
+> > +	vma = vma_modify_flags(vmi, *prev, vma, start, end, &new_vma_flags);
+> >  	if (IS_ERR(vma)) {
+> >  		ret = PTR_ERR(vma);
+> >  		goto out;
+> > @@ -490,9 +493,9 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >  	 * Keep track of amount of locked VM.
+> >  	 */
+> >  	nr_pages = (end - start) >> PAGE_SHIFT;
+> > -	if (!(newflags & VM_LOCKED))
+> > +	if (!vma_flags_test(&new_vma_flags, VMA_LOCKED_BIT))
+> >  		nr_pages = -nr_pages;
+> > -	else if (oldflags & VM_LOCKED)
+> > +	else if (vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT))
+> >  		nr_pages = 0;
+> >  	mm->locked_vm += nr_pages;
+> >
+> > @@ -501,12 +504,13 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >  	 * It's okay if try_to_unmap_one unmaps a page just after we
+> >  	 * set VM_LOCKED, populate_vma_page_range will bring it back.
+> >  	 */
+> > -	if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
+> > +	if (vma_flags_test(&new_vma_flags, VMA_LOCKED_BIT) &&
+> > +	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT)) {
+> >  		/* No work to do, and mlocking twice would be wrong */
+> >  		vma_start_write(vma);
+> > -		vm_flags_reset(vma, newflags);
+> > +		vma->flags = new_vma_flags;
+>
+> This also does lot less than vm_flags_reset()?
+
+Well let's look:
+
+	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+
+Are we really at a point where this is problematic? Do we hit this? Why are
+we specifically checking only this case on every single instance of
+resetting VMA flags?
+
+	vma_assert_write_locked(vma);
+
+Note the vma_start_write() line above. I want to separate vma_flags_t
+helpers from asserts like that, because:
+
+1. We might be operating on a VMA that is not yet added to the tree
+2. We might be operating on a VMA that is now detached
+3. Really in all but core code, you should be using vma_desc_xxx().
+4. Other VMA fields are manipulated with no such checks.
+5. It'd be egregious to have to add variants of flag functions just to
+   account for cases such as the above, especially when we don't do so for
+   other VMA fields. Drivers are the problematic cases and why it was
+   especially important (and also for debug as VMA locks were introduced),
+   the mmap_prepare work is solving this generally.
+
+	vm_flags_init(vma, flags);
+
+Analysing what's in this function:
+
+	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+
+Duplicated.
+
+	vma_flags_clear_all(&vma->flags);
+
+Only necessary while you're only setting the first system word of
+vma->flags.
+
+	vma_flags_overwrite_word(&vma->flags, flags);
+
+Again only necessary when you're only setting the first system word.
+
+So yeah it's doing the equivalent and (intentionally) eliminating some
+noise.
+
+But I'll add the S/D check back I guess.
+
+>
+> >  	} else {
+> > -		mlock_vma_pages_range(vma, start, end, newflags);
+> > +		mlock_vma_pages_range(vma, start, end, &new_vma_flags);
+> >  	}
+> >  out:
+> >  	*prev = vma;
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index eaa724b99908..2b8a85689ab7 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+> > @@ -756,13 +756,11 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> >  		vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+> >  	}
+> >
+> > -	newflags = vma_flags_to_legacy(new_vma_flags);
+> > -	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
+> > +	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &new_vma_flags);
+> >  	if (IS_ERR(vma)) {
+> >  		error = PTR_ERR(vma);
+> >  		goto fail;
+> >  	}
+> > -	new_vma_flags = legacy_to_vma_flags(newflags);
+> >
+> >  	*pprev = vma;
+> >
+> > @@ -771,7 +769,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> >  	 * held in write mode.
+> >  	 */
+> >  	vma_start_write(vma);
+> > -	vm_flags_reset_once(vma, newflags);
+> > +	WRITE_ONCE(vma->flags, new_vma_flags);
+>
+> Ditto.
+
+I mean overall these cases are hacks in my opinion to work around code that
+should have solved their problem another way.
+
+But sure, as above I'll add a helper function or such.
+
+>
+> >  	if (vma_wants_manual_pte_write_upgrade(vma))
+> >  		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
+> >  	vma_set_page_prot(vma);
+> > @@ -796,6 +794,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> >  	}
+> >
+> >  	vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
+> > +	newflags = vma_flags_to_legacy(new_vma_flags);
+> >  	vm_stat_account(mm, newflags, nrpages);
+> >  	perf_event_mmap(vma);
+> >  	return 0;
+> > diff --git a/mm/mseal.c b/mm/mseal.c
+> > index 316b5e1dec78..603df53ad267 100644
 
