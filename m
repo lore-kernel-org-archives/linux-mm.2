@@ -4,93 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 577BC108B8F7
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:27:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D624E108B900
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:34:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEE546B0005; Fri, 20 Mar 2026 07:27:41 -0400 (EDT)
+	id 2343B6B0005; Fri, 20 Mar 2026 07:34:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC5586B0088; Fri, 20 Mar 2026 07:27:41 -0400 (EDT)
+	id 1E4806B0088; Fri, 20 Mar 2026 07:34:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02876B0089; Fri, 20 Mar 2026 07:27:41 -0400 (EDT)
+	id 0FA256B0089; Fri, 20 Mar 2026 07:34:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E39E6B0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:27:41 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1FBA6C07D4
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:27:41 +0000 (UTC)
-X-FDA: 84566216322.11.7B99940
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3ADF11C0002
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:27:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DANRyTA1;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 020FF6B0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:34:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A48A4140172
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:34:56 +0000 (UTC)
+X-FDA: 84566234592.30.33871F8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4A077180007
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:34:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bFfhqtIq;
+	spf=pass (imf16.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774006059;
+	s=arc-20220608; t=1774006494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kT5yFeL+gDvTON2O10niF1oYxXjGyj6Ksro/yEkhc08=;
-	b=eUJl2ScvNVT2+Tz2QKS9ByUN268pnuRPyv4MVLttqEr2HPaZlO1GXrpeqSEUE/lLeyBsNU
-	eoRuXB9uoqRt3ue+6CNmq0dbTS/w/3sAnv38gC44s/kPA+I1ZSG6WGH7Ao8X5CBpqFFqbr
-	W5AJceIeJ377wB/o9R0qqyycbhS/MtM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774006059; a=rsa-sha256;
+	bh=/XAFuMj8200/2Yl3T2tu1n7OQ463xMtcQ3l4BrZLY4E=;
+	b=A9ERdrLWtD/sJoMi6iXm710wOu8iDv6ZToa512QaXzDof2rPSVJ+VN6IrybjQrCGOf35yM
+	PdW3f5fe9xQNv6j5IvKQLN/JwY0FG6MZdvVtmripdoTvVOFyX2HQuMWgImIKKIlU04NClC
+	CrdCgRtyi2layjHCf7k4bX3va1oL16I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774006494; a=rsa-sha256;
 	cv=none;
-	b=CDKc/NHKcRq1Ide0rZuNrAMpiGIOZfFVa4ZvGx3SxMt9WniGNtf4MLNCyy3waEdlCg4E2e
-	sigBlwKXCCYOvqEIhNRJAa5RD9KI5rEJVf5MaEx7nKuNIDgEo+2imfw3hCh4imgJHEvqBD
-	VOrSy5uV49qD+lElnZbMbhx/Ic5Mg7U=
+	b=QK1huP4oL5r1v8W74L1L7M8cF8httrucoRGrhJVJn7eKUGWJZAb+wSIee5WMGjBhr/Gygu
+	03L+idY8V6wGyjZgi4PE+1DhJ2UgkV0voaLo038FZ3kw/GWfeYFTF6K/anw07wRyVoDJjg
+	yW1XRwn84AlZUcqfrvb10nx+LL2ZAB4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DANRyTA1;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 214CD4033A;
-	Fri, 20 Mar 2026 11:27:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A90DC2BC9E;
-	Fri, 20 Mar 2026 11:27:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774006058;
-	bh=IJKvox6QaTG0mgCKG6pc9awot4JDTa3WVfzN1VU/eFA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DANRyTA1Ro5gqbIJBoXEAOXZTSFb5/RS0WG7t0ZdvMl5bj3yYFNa7PwgFCUoUskwX
-	 WrNvAoAlYJKasFXxqXncsiWF9rsMRHxFafsMuuKnQFOEVBle4PHVOYO+awxkVONDbB
-	 eoCotQIopA90QAdiW2lbghfU/fFNZGfZDHmCeSOA3Pe1DN3RKQNrzU7hOAQVnL9zyC
-	 jBohVlLrmpUz5OfVA38cH+2hcPKFjtbqnCDhwjaXQkKn6ItdwkONOZ+X9nGqVFwxsU
-	 EmNnGay2JI/KbSqM21v2bIMYiwifQlP17wg/fiSVixLYfY8QXNJpyB/P8shtB2Xl10
-	 MjTScUpBb4Rmw==
-Date: Fri, 20 Mar 2026 11:27:32 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>, 
-	Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] mm/mprotect: un-inline folio_pte_batch_flags()
-Message-ID: <a9d6947e-f1f1-4053-adde-189b5546dbb1@lucifer.local>
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-4-pfalcato@suse.de>
- <2da1181c-165d-49cd-94cb-5ccbd3bb93b3@lucifer.local>
- <69382383-5f08-408f-8c13-d674e82c4dfd@kernel.org>
- <fcc2665f-014b-490f-8451-ca907730e60c@lucifer.local>
- <tv6pcikk456ynfx7lz3lrql3yafg4njuy3bzi4v6yi5hpe27gi@hakvdy2jmewu>
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bFfhqtIq;
+	spf=pass (imf16.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774006493;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/XAFuMj8200/2Yl3T2tu1n7OQ463xMtcQ3l4BrZLY4E=;
+	b=bFfhqtIqeBuElOI+hN5D54U35GC8X9VERCpC2ZNHsRKqiKBy4DWxVtwsUYT/lt0/4ev+ft
+	igUXOg3zmrqSsp1vt48vbcPHiZFwIQh9e+tlDg/kb2PPCpvMsPr48tCvZ2AQpMYiTaDS+4
+	eW4Rbe7LnhcvNPiYtByDZsMsit+4rTI=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-137-B2E9rSmhPPWNUb3dmgy9Eg-1; Fri, 20 Mar 2026 07:34:52 -0400
+X-MC-Unique: B2E9rSmhPPWNUb3dmgy9Eg-1
+X-Mimecast-MFC-AGG-ID: B2E9rSmhPPWNUb3dmgy9Eg_1774006491
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2b08025f240so13027665ad.1
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 04:34:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774006491; x=1774611291;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/XAFuMj8200/2Yl3T2tu1n7OQ463xMtcQ3l4BrZLY4E=;
+        b=cGx11WI2TpshQU5QDamsSe01sFOraC8RrhoDDMceFnDNgbzZVKufL4q0E1AasiIAP7
+         RzEMSv0JYAw6htYDKxQwR73ykvhyvdtMD0pnsm+N7zP003nfH3Pyapx1YW2uATqyBejV
+         78cYbost+gYUpL5CUCF2qSisme+FBq4BV5G4IorKrkWfkj5PKu+q/zqx62NvCU9DH2sq
+         DSzkvKqiWOjCiU47BGR3LJYKuIjoy36HynLd8giRCJhEmUJYR94LENGK5/skO5FOHHlD
+         ouPV+0KQViqfXStycZIzAlaPHaPSHl9qMMYDbhgR6evnCkdhrOz0Aksa9YZPf0DmstWx
+         Z3rw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeC1ifYmQ2qFkRxERKWwNnX9rW9t08INnX+vUTlXH6HLsQuWbXwj4ZfALGNhO6Ke/VUeE1YABwnA==@kvack.org
+X-Gm-Message-State: AOJu0YwnZsVeY9StxTJVdZ8lygHJDa4K8kEhojRMYPM1JUdUIkfTlzja
+	iX+BXqbUUEC3hczb5gVPegWHRkvBhvx7UFRabS+UNnUFpemIkfKNa2FHigoZNNc0q66ozC2PKa0
+	t5tI3EXHtpp2YZ/BINiIEBidiIYWEM/vcFxBHSC1vh8UQwSwK9pBn
+X-Gm-Gg: ATEYQzzjivBLKg8PPMJS1XsUY8D2CkCPV+qrMTAzTYiZWoUd9T5ingTWdanugphLONT
+	NX1tXAUBx9WPX72cSrSeVIyheGnMpbqCmntY0BkVatq/eOGJq3MuAI1/p3y/5ZB0ru1Qar7xzfy
+	xc0kDQqGb0Jzh/BV00cXtLqzjZmr5fVC7o+D23NVHVgZM+Lv4ml06Re3mQDnvJTp7Un2bOjyV1g
+	3qgWNzz1Qn/E4Ad8MM/0c08KDfWp2G1b6qOka9fsKBZB5C2BDeM+CkndkJZhOZUcfFVPZZYpapV
+	7F64CAkz1giXZ4IgvAQroPjntIKiPEaSIDgN/2xPsHaTm8DB8/NSqxfFfBqAkKQIIyPzcohUCu9
+	wfQdiWFWdB7gklHMQ/A==
+X-Received: by 2002:a17:902:c40f:b0:2ae:4d6b:b2c7 with SMTP id d9443c01a7336-2b0827564dfmr22400255ad.9.1774006491326;
+        Fri, 20 Mar 2026 04:34:51 -0700 (PDT)
+X-Received: by 2002:a17:902:c40f:b0:2ae:4d6b:b2c7 with SMTP id d9443c01a7336-2b0827564dfmr22400125ad.9.1774006490957;
+        Fri, 20 Mar 2026 04:34:50 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836a3066sm19628795ad.75.2026.03.20.04.34.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 04:34:50 -0700 (PDT)
+Date: Fri, 20 Mar 2026 19:34:48 +0800
+From: Li Wang <liwang@redhat.com>
+To: Waiman Long <longman@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Sebastian Chlad <sebastianchlad@gmail.com>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
+Subject: Re: [PATCH 3/7] selftests: memcg: Iterate pages based on the actual
+ page size
+Message-ID: <ab0w2PCcYBEKxm2B@redhat.com>
+References: <20260319173752.1472864-1-longman@redhat.com>
+ <20260319173752.1472864-4-longman@redhat.com>
 MIME-Version: 1.0
+In-Reply-To: <20260319173752.1472864-4-longman@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: uCoY5GecUUZ9EhhV-FunIGVv62LvcxAn9W9lGmuaajU_1774006491
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tv6pcikk456ynfx7lz3lrql3yafg4njuy3bzi4v6yi5hpe27gi@hakvdy2jmewu>
 X-Rspam-User: 
-X-Stat-Signature: qtzouh4egnjrd7fuynx74nzbm6ip1ccg
-X-Rspamd-Queue-Id: 3ADF11C0002
+X-Stat-Signature: fwhzjyas97grqndzh7ae1x7qt8nj8595
+X-Rspamd-Queue-Id: 4A077180007
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1774006058-102514
-X-HE-Meta: U2FsdGVkX1/wown9g9Fs0kErn4HHpptUbZ5GU5gYu2CfF0rBrgYCGj92QLzi8935RwZAS5BnqYitcHMuGNFO15nFS+kIHQB94I+6lhVr6bfZ88N8Tvyjj2he0rq+n1XRupzbN0OmEy/Mt3wqkpDal+N8chq245EXZ/JEsfsAQMGVEpmzOH7Uu86EOLS32F87Ukq/JyeoLOg3Q0e1Cbk+d5dqh1Qs1CgQHttyaAB5jZKahwjggpznyRy0fxYReYqRW6RwZDWhZeBuMAcnrjcnn06Khhb/rwbc47wKxhZsIvewElxuksMYpLZEIVBiOsQpWswX2rbcITsYtLVM3arRrVm8B8hfI9Ro4C1eRm0aM20JINKzGAbnawTR2pglm4LfLilUc6Y/cXNwMG4wtnq6CSy73M6kr6pYGjnqigC868xJjtn9xb8JVxImF9CIBr2FSuJyu6Cj9j28aDsy+kuNEMA+RoKrl0+HqkFrpoF2IGEe3+zDC/SZV3wA+LN5Y81lXhch9vygr7E/z49OuQrgBEIodU0zItjL4G/JpedS60Q++5KtkM1fYeaK98nfXw+o/TeYvddvG8sr/OawAhOWBB481b04m2FnPKSfNboTxizd6Tkn5JLtaCjoXb2jDwb/Wd8Y3rZoGy8x9IAx+0ukPcNZMAjc3od4BZ7TNuo+3U2sKBn+IGqGMfq5EWcCy/XlZ/6s6o4DqzrbwQM738p7RLQgLZeCg3YDcpn6rtlU25NNRPnpwXbuTXLGyuyN7UWOJlvrOiwdSbSHoXz1kRoH29jy2gmWKqGlDD/1hdCMtFOVgnc90d6HXf8LyoJ66BVUfC11f+rV60IlktFPdni7qE/AWnO7gBYM7XKxHe05OvwJHJgCy7hF4dTFK6JcjPawoZdW6bTP+epTMFgOv7jfJ6m1colIVnsh0ZDLLK+djfFDzeJuviV149BPVWOnrbya/ML647WRyO9nuTkJ0CK
- MfCsU14E
- h+FJLdg1OyO9R4DYWEf8LQSf7qeO0WCCxY1qthsp0Lr1XznpTlSxtnXw/cGh8DG1gRFPcs4gztoQN5vpZD3MsNjWZQY+hLRqWlo4/N1HSLHbtlPlPcXH9Q4rmTeROi6OTBMvv5hLi17GeRnwTZ1eJzkk59nwlQZwQPw4c7FKgJy9wvdNS+zhnlakgYef8L/DloBc0sS+zCZflNcSoGsjOVsveN2FiPx8awH0SQQ7oPY1G1DDBnuDTDDeZacA+UQmWZMZc
+X-HE-Tag: 1774006494-727464
+X-HE-Meta: U2FsdGVkX1+4V+P1CsP8LQmZMf/IBvG50OPcyzquua4HCo471imMNTTLhXbhgNQcz8NWo+A3fHc4wrNN5G5ICnN95hXEajVznn+GQBTaA1lKq9Xod3ZGOfld4CpL1ph2PZ/bez+vd2x9chhe9hAWC7nDaPCuzgGtFKy0NATVcqDwmnHcnlr+/Uz6iRNoDCoEn6rQuoMOdPubmUBwwZJybICfplSGY0VZDDwR4jC4ouO9dgQMMX5tq+JzbADH9JiLos0tNW8VKJT1ooGki1cqzMe62zh+Nfc8F5Td//auqEmu3tL+zeB50zgY3nouhiU6AXmgWzHnfeJWYeTA+jlwyVyvb8f2Sv4cxySZhsLnUVwGJW0D6zKhpaOudcQDxLf/hN56GJ09dvjAbW6JpUBd+9vA1V3UKN+5zwziPuUbFfstl4v5WxcI4bGUs3wfdaksfuUnskwvz9K4d9RC52Qzdz//7LTOnJJYOdrbWsI8R+tNA8kZOlDYRW0DtEwnRLrMqdDpD829xShSwnW4F0bkAbTp4pGVjZrE44w7c5GU8R5t6v8wyrOfWaKRa5E9KXXKb0B9J2iaNr7ce7IUBL9wDNIScLO6GSoQ/kPUNyp64QcIZCIMV82KnB3gEQICYbJoubpoFAr7sQ91l31/AzvYxgj+zw0gWK2V2lvKTvXVeQdfiBCw8O9IJMtC1/hRbGGSm6HxQfDAA2fQ8mMAzH5P7gbs6zH+I0YV+3XYHG6kJN6TrJZ00Uc3frr+r1KBPC9CUVxGIZQoCmrM4DaikbM/bCw0jFR7ZNRBdToLW664V90SZoY4ysndWi3XXbES4y1LGYhUUnARhHNKuxA3icJC47ZbExECnuUIdgwsQ0HrUqN+dMoUKSxm/GQlbXNYB9VgKzeRMXtzeJwIb6+ATkuHj+CucRWZklZReir8uzh87Z/1zK3zCpLppbZVqPCaUXrogT97R8DXny5dCUpFAZI
+ zpqJnr82
+ 4NYP4uMnUxBMUMHp60jKyj00YsYzTtla868LKXbYiNPK854+QvsUvQaCTv3nfClkVeUUmyLNgrDp5gLy2XI1E5oQqA9GhlHChQNjqy7BaOduMrMNfCkE6FTa+875PymbrLtJSRbvhKjKkw4CibnKxhJQnTCS3SJQVQSrQzBVR3kVheRvkCn/qxqFoYqgQ6xzQr5EXcrzHAJhu7o8x77WJAgUKuMNotekmsX5AsZ/s/Xyyx0ZKSL6O+3rQdWG086bCUvFzYmFPE+p1Vvdf2AKbnhNzqeG2BVsRzskD+tNrvF/iBmQZORo1TLLrzU3l67JHJps5SGddM3fYz1MRq9ilXJQzNogxbydMXhuW1p3VpoI9RW/OciiUlcwT80T7ixUu3W3VQu4gbFHRc1MyAviljk5F+GIQFh+oIl5e7IVAv+NSRdvOmHHOzIN4z/nx+quxUpzrnjkWCzLoiIk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,158 +139,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 10:59:55AM +0000, Pedro Falcato wrote:
-> On Fri, Mar 20, 2026 at 10:36:59AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > On Thu, Mar 19, 2026 at 10:41:54PM +0100, David Hildenbrand (Arm) wrote:
-> > >
-> > > >
-> > > > This is all seems VERY delicate, and subject to somebody else coming along and
-> > > > breaking it/causing some of these noinline/__always_inline invocations to make
-> > > > things far worse.
-> > > >
-> > > > I also reserve the right to seriously rework this pile of crap software.
-> > > >
-> > > > I'd rather we try to find less fragile ways to optimise!
-> > > >
-> > > > Maybe there's some steps that are bigger wins than others?
-> > >
-> > > What we can do is, collect similar folio_pte_batch_*() variants and
-> > > centralize them in mm/utils.c.
-> >
-> > I'm not sure that addresses any of the comments above?
-> >
-> > Putting logic specific to components of mm away from where those components
-> > are and into mm/util.c seems like a complete regression in terms of
-> > fragility and code separation.
-> >
-> > And for what reason would you want to do that? To force a noinline of an
-> > inline and people 'just have to know' that's why you randomly separated the
-> > two?
-> >
-> > Doesn't sound appealing overall.
-> >
-> > I'd rather we find a way to implement the batching such that it doesn't
-> > exhibit bad inlining decisions in the first place.
->
-> Yes, you make a good point. At the end of the day (taking change_protection()
-> as the example at hand here), after these changes:
-> change_protection()
->  loop over p4ds
->    loop over puds
->      loop over pmds
->        loop over ptes
->          nr_ptes = loop over ptes and find out how many we have
->          if (making write) {
->            loop over nr_ptes
->               loop over ptes and find out how many are anonexclusive or not, in a row
->               loop over ptes and set them
->          } else {
-> 	      loop over ptes and set them
->          }
->
-> which the compiler FWIW tries to inline it all into one function, but then
-> does a poor job at figuring things out. And the CPU gets confused too. It
-> was frankly shocking how much performance I could squeeze out of a
->
-> if (nr_ptes == 1) {
-> 	/* don't bother with the loops and the funny logic */
-> }
+On Thu, Mar 19, 2026 at 01:37:48PM -0400, Waiman Long wrote:
+> The current test_memcontrol test fault in memory by write a value
+> to the start of a page based on the default value of 4k page size.
+> Micro-optimize it by using the actual system page size to do the
+> iteration.
+> 
+> Signed-off-by: Waiman Long <longman@redhat.com>
 
-Let's maybe focus on generalising this then to start?
+Reviewed-by: Li Wang <liwang@redhat.com>
 
-I think David + I are in agreement that these are obvious (TM) improvements. But
-let's see if we can generalise them?
+-- 
+Regards,
+Li Wang
 
->
-> I would not be surprised if the other syscalls have similar problems.
->
-> >
-> > I mean mprotect_folio_batch() having !folio, !folio_test_large() checks
-> > only there is already silly, we should have a _general_ function that does
-> > optimisations like that.
-> >
-> > Isn't the issue rather than folio_pte_batch_flags() shouldn't be an inline
-> > function in internal.h but rather a function in mm/util.c?
-> >
-> > >
-> > > For
-> > >
-> > > 	nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte,
-> > > 					   max_nr_ptes, /* flags = */ 0)
-> > >
-> > > We might just be able to use folio_pte_batch()?
-> >
-> > Yup.
-> >
-> > >
-> > > For the other variant (soft-dirt+write) we'd have to create a helper like
-> > >
-> > > 	folio_pte_batch_sd_w() [better name suggestion welcome]
-> > >
-> > > That will reduce the code footprint overall I guess.
-> >
-> > I mean yeah that's a terrible name so obviously it'd have to be something
-> > better.
-> >
-> > But again, this seems pretty stupid, now we're writing a bunch of duplicate
-> > per-case code to force noinline because we made the central function inline
-> > no?
->
-> Yeah.
-
-I guess we can discuss on other part of thread :)
-
->
-> >
-> > That's also super fragile, because an engineer might later decide that
-> > pattern is horrible and fix it, and we regress this.
-> >
-> > But I mean overall, is the perf here really all that important? Are people
-> > really that dependent on mprotect() et al. performing brilliantly fast?
->
-> Obviously no one truly depends on mprotect, but I believe in fast primitives :)
->
-> > Couldn't we do this with any mm interface and end up making efforts that
-> > degrade code quality, increase fragility for dubious benefit?
->
-> Yes, which is why I don't want to degrade code quality :) It would be ideal to
-> find something that works both ways. Per my description of the existing code
-> above, you can tell that it's neither fast, nor beautiful :p
-
-I mean the code is terrible in most of these places (mremap() is much better
-because I put a lot of time into de-insane-it-ising it), but it's less degrading
-quality but rather:
-
-static noinline void blahdy_blah(a trillion parameters)
-{
-	... lots of code ...
-}
-
-Developer comes along, modifies code/params/etc. or uses function in another
-place and degrades perf somehow and suddenly what made sense at X point of time
-no longer makes sense at Y point of time, but develoeprs don't understand it so
-are scared to remove it and etc.
-
-Which is why it's better to try to abstract as much as possible and have some
-way of then putting the sensitive stuff in a specific place like:
-
-/*
- * Lorenzo-style overly long comment with lots of exposition, a beginning,
- * middle and end, ASCII diagrams and all sorts...
- *
- * ...
- */
-static noinline void __super_special_perf_bit_of_whatever_dont_touch_please(...)
-{
-}
-
-That's wrapped up in some saner interface that people can use at will with the
-perf-y component safely locked away in an insane asylum^W^W another compilation
-unit or header.
-
->
-> --
-> Pedro
-
-Cheers, Lorenzo
 
