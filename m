@@ -4,91 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB1501098784
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:28:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA3DB1098782
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:32:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28EF96B0088; Fri, 20 Mar 2026 09:28:06 -0400 (EDT)
+	id 1FB036B0088; Fri, 20 Mar 2026 09:32:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23FEC6B0089; Fri, 20 Mar 2026 09:28:06 -0400 (EDT)
+	id 1D1DA6B0089; Fri, 20 Mar 2026 09:32:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156626B008A; Fri, 20 Mar 2026 09:28:06 -0400 (EDT)
+	id 0E8016B008A; Fri, 20 Mar 2026 09:32:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 04BDD6B0088
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:28:06 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3AC4C09FD
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:28:05 +0000 (UTC)
-X-FDA: 84566519730.21.F9583D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1DA2080009
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:28:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pUepx+r+;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774013284;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 005976B0088
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:32:08 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0A66B70BF
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:32:08 +0000 (UTC)
+X-FDA: 84566529936.24.B5272DF
+Received: from YT6PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11022095.outbound.protection.outlook.com [40.107.193.95])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 81C561A0002
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:32:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b=iiIVQ17q;
+	spf=pass (imf19.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.193.95 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774013525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6O4h0+opLFRUmpIf4LRqAamoPjFzwH0T4T5yg2VavMY=;
-	b=YkDR8XtWqOVrLC0zsnBoNeOtLftcnIcbP9kQJwUai1rP5aUcopDj+sBAQdYbjN851uHhCl
-	qHzeZV/QvXHhkgdJhgqruun9XuAGHFJ/iC6yHqNv4tcAoOD1TkoVbu/HiEXW/Nd4wEjGc3
-	C3a6WQMssv2GNVZtn1A/d2rIVO/y664=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pUepx+r+;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774013284; a=rsa-sha256;
-	cv=none;
-	b=AslsSI1fvrQwlCtRCzaJt0GEYFOIpN6a9uhe69DQTLoK9B2jkEKa1D2TwaenbhJYnIQyda
-	/HWlYAes5J0q7kPJr19qjmYuCfsZ6Byw7WEV5wC3HTkTb34t6sf21pR+JU4ocXrNp/hnOs
-	SeJbPHBzkBg0w8S4H1M4AeO3P2vB6Mg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 820BE61850;
-	Fri, 20 Mar 2026 13:28:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1FCC4CEF7;
-	Fri, 20 Mar 2026 13:27:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774013283;
-	bh=u5l4x5uZN5shVbY3PU85+mwh0difgnGZQOyXwfxun/c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pUepx+r+sgYzj79NAcYPBsSpbBmA4dWap2FkzCydY1qsT3ymg7SRHk3c0rTqiRZS9
-	 ozkynsYcBsUDjEGKtyLK3q7F1k0XXT0tdxq1oiy9olLpv6O+Tpz/y4mZiPByP3+3ti
-	 MLF1oNDnMWYbQcrBlBuPvgj9k2e7uhXmxEb/52dGPXMXjODiWEKxkIKsXhCHnMAgAP
-	 2O3pXUCVF6FUPAZ+2umbUO1b05UgvtI1F0ATK6y++Znz65jJPdPRnhslvynY4GZae6
-	 8gtScmN+PLT19RMIfcL+674X0dJ0MB+p9K1TgMTyaWFnYfDUrm/R0Pc0TrPIoEaSFO
-	 bkXz7sKw6Gxsg==
-Date: Fri, 20 Mar 2026 13:27:57 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH v2 0/9] mm/huge_memory: refactor zap_huge_pmd()
-Message-ID: <8ae5a5a3-f2ad-4be0-89b4-b8beadd957e9@lucifer.local>
-References: <cover.1773924928.git.ljs@kernel.org>
- <20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
+	bh=euh5OcS9euhYAEwp44Kv5PxdvVQVVcQhqzS5c8ceE4c=;
+	b=qcpjDxsKPm8Nbra75qQn+bUD5iD7Fu2QU2XYWD+UPQV11ut8+MSeK8HyMVJXI4miKVFZDp
+	/MNYM31BvAafdVhag3sJz8n30zUWsY9/656HAcg1iq73HzvOyd+Uz5JmTaamuyMSprwNx4
+	bipH+jLQ7UlAb244oKTax+GDhIq8F+0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774013525; a=rsa-sha256;
+	cv=pass;
+	b=Gyu2MiHBuadIkU6aItViUYLqvOLE/KdxjJkfO9ICUBV9kC0FdzGfRWuWTo++0xg8RPClsA
+	Ph8Gf5gIVUWf+vR+wxV1/cEmU5BhdOndu72EieBXdxqw18s5L1yEdshMz33riEv8dNViYl
+	Do9s2em2sfvNdNp2/0bAPAJssRPHvik=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b=iiIVQ17q;
+	spf=pass (imf19.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.193.95 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J2FxIj9CmWLF4Rlsi9DFmqMEltwGfcYnN3ct/252uADWUHHWlOuFCsxi4w7eh0QFRGAS/AoL9oe2esUONGUvpNitMPRN/bzaR6mT8E1AP+6JcImxlAo+Uw0R3yPrrj/lWZY2qdUegv4+g95Ys9tIG9dfBsVFxkL/4Mji6BeLR0eGBEhGzoEzjpaEXd4b1viYogOJLlYAabdA4frYdaYpmB+A4EF2sgPQIC87dHY5fu8VHiJmdMGXwtmjRaXp9QppYlj+ztpJETTdBRXFNRJ/7MwpXC74IW0a4v6aWwDe+e9+R+ovOpXxXqsx/0sjJHyJrqtWorK8fydnP67HARqMLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=euh5OcS9euhYAEwp44Kv5PxdvVQVVcQhqzS5c8ceE4c=;
+ b=xsbOeSnaVAfrP4mCm4pAOWbhM8Ra/TR3Crg80zwhCM18Bv5iilEo6boL/KiFnLm0PTLtLiIDvzE+CPgnOt+elS6A6YCQgACbqngPQpf3Z/9fyZdsbxlPRVg4QOV+1/uI2HJUB0Fga4A3cyBbv+PvoUxl6Q3IQLV5CZQsr/3gdWNeLdlj5lg2qiVn0WNAKAcyIMFEGixY2glc3fIB/eROrRe/cskjvhk2ljoRB1HgixN8bNLEIIyn4zi4ME63JDCFgeF28QLE4IMPv/xHS2JUUymw0rlXoBfJ28RE5Cccv0XIA30uafgTGANOApKCM0k8a/pdpAs4lvjdI7KI1TRRhw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=euh5OcS9euhYAEwp44Kv5PxdvVQVVcQhqzS5c8ceE4c=;
+ b=iiIVQ17qF4oIvneOS+vf8+5OD/Rrkic75RM5Apca0iNLW+cAlzInj/QvOfFCRce+va4ODIhddA5m3nAyrTbRfgnayzRjTrkpMA3VTHtf7M0gHKZUIvCxIeFyJif0GOYKWxP8MXlJ0xMNeLyB90WUb43VkogzBXsx0vNlGLJ6uLCor7dVA/TwJc2J/SfJBxFcbycdu78+fR0Ji8VNiekSBIh40wlsQvIwAmFxCu/F9StJDwpC7hsLceXW0yvBruwFxVmBzeCLwFqiu3dz/3Q4P5wecMFo+eVx3roDDqgi9t2X5WzbGJtijKYnLGa7p1rc5D7wowKnIRQFsHy+t6SZPg==
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
+ by YT2PR01MB8438.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:b5::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.22; Fri, 20 Mar
+ 2026 13:31:58 +0000
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::6004:a862:d45d:90c1]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::6004:a862:d45d:90c1%3]) with mapi id 15.20.9723.022; Fri, 20 Mar 2026
+ 13:31:58 +0000
+Message-ID: <7458d8fd-5922-4e0b-9cd5-91880282aaa3@efficios.com>
+Date: Fri, 20 Mar 2026 09:31:57 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: NULL pointer dereference when booting ppc64_guest_defconfig in
+ QEMU on -next
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Nathan Chancellor <nathan@kernel.org>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Michal Clapinski <mclapinski@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
+ <tglx@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260319233745.GA769346@ax162> <abzKcGiRSR_E8lLN@hyeyoo>
+ <7780a471-9d99-40a7-ade7-0c4594ac36c7@efficios.com> <ab1J9ODkX5iChu-C@hyeyoo>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Content-Language: en-US
+In-Reply-To: <ab1J9ODkX5iChu-C@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQZPR01CA0039.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:86::24) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:be::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT2PR01MB8438:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82068799-6116-498c-7f3f-08de86850fc1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	IatTAdeCCT64RG4ZE55RJsgtcYGblHZMpURWOgMD5qn/qn49SyAZU1ob4t1WBzIxcrZYfSITWALBpNshBBklzUTeE5o/euoRVa1BhPX16kSFZNXGH4Yb/EvIFXjKo23bstaWctoLP7t7dS+B3lhjZtn5oW1J2DnTAcZy2PaLaua4BBl/JHpBUGDfwKtSUkSHXuKm3o3KDxh8u/x4mPMRJwcJQUVs+5FIrmqjmYiu2sKncwM/DU55hes3UsZwOAaAWPvXkJ0vRyP+MKe7bpzj7DsBTKGN3g0SHNBZ+4qluQw6Gy2trUbkJhwYt+FMNy1vXHRK5bpbh+E5XNF2Erba6gkKYZLEGHFJd0Z5S0BuYifZLxrNBrt23duTYA8Ay9Y3d+w+BHaJXt7zVL9KbHx//c/MzDniFlUXYHNVxGXsy5wJ41dwcsvpgc7GpnSIjB6EmoWz8y6TkNC/dr8zno9oCCd4B3pXddGVJiQl+16cGNaMQyut6QOrBA4kP8pq2EFx92N5jIqCSu+XgVVBSihr0NOtxTjf5LgFtCBdk7cP93RaIj4CHoS6RqQL4MqCzFkOCat1b8sIAGwZn3KVIJi8owkyuslG/rMdn9rP8DtH/oYO/2faOfLgJDdmjsAa5ORrTbjFmdU7eHpPKjz3Sl2TiRV3Y9RjgJX6fEzP9NZoZFrBhOMVUlrhh/j/wjKcmjjI
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OHVlK005TkVKTWFNcXozMjY4YWhMUmhzVU84NStKVlVJc1JxZk1UdmxQd0Mv?=
+ =?utf-8?B?Wm1Yb2tTUFhac3NKYjVTenNTS1E5VnhXVXBvSThZZjJETDFVdDJSdW0wWmF2?=
+ =?utf-8?B?eW9NQ2V4R1FKY0cvWXo1cHEwalliMi9GTHJEUExUaW5kc0xQK0RteTBXaTRl?=
+ =?utf-8?B?MWlUcmJJMWpWWEliTitZMFFBYzZwbjFFYzhoVmJNNGJ5NHZlb2FKMDhTUjFW?=
+ =?utf-8?B?ZXRDOEtmdEY2ZUlQZUFEMmF0QlVwZXF0WDh0SHl4aVJTakJUQUtzdmNjZ0xU?=
+ =?utf-8?B?SkZtR0NLdjVHNmhtNHZoenB5OFhmMFZjTThNelA3bXBaS2hZeW5IUWRER0lS?=
+ =?utf-8?B?Z2tyMC9VYmdqbTkzQ0xKUVpiYkRMZmI3QU12d3ZVR3Q3bUNPTkZmaEFpZGVq?=
+ =?utf-8?B?b3lXNS9nSHZ4WHY4R3dSZzhKZHV5cGYrRUR1c0JQR0ZpK3g0ZWhIV1ZJL1BQ?=
+ =?utf-8?B?alZpT0F1bkl3eW5ta00xTUM1UEp5WmhqSERJMmtUMGF6dkdmbitGWDFFY3E2?=
+ =?utf-8?B?TWtSUExFTmpWQ0JZbWxmMWg3QitqT0FrUGlSMXZMTzdwNW5aUjd2WXZ0TDB2?=
+ =?utf-8?B?aUQrVGdHSGRhb1JuVGtMNkYrQitzVHkxbHZSQ1FJQ1FaNU9PTWNyTDRocERZ?=
+ =?utf-8?B?emFKU2UrVjFPelJNYkQ5YU5sRVdmZVJNcXdFdDk3dGNmKzZUdVN3a1pCdVBn?=
+ =?utf-8?B?WVZkVnFJS1d4Sy9EdGc1QSsxKzBKc1hVVW5KbmlUTTNmYS9qVnJWVjRES2I4?=
+ =?utf-8?B?Y3JrWXNEdTY2QUc0KzVndkc0QndvcW81TitpVW96U3JrVkJMaTNzbE1vOTNI?=
+ =?utf-8?B?UitnOTR1Sy9KLzNiQkpoSmwzTS81dFRydFFiNzYyVWxiMEJMdGorUWdDK2VT?=
+ =?utf-8?B?K0Rkc2E1N1B6TFhOaFdMTTlZQW1BanYvT3NobHhMQ2laUUtBRld4KzRLb2Ns?=
+ =?utf-8?B?WEUybVNWWmMzTUJKeWMyZjBRaFMrNzB3b0dpZkdiSHNBSGV5azl5QTk4eFdq?=
+ =?utf-8?B?SmJWdTZwT2RpNHl6N1FpREVGSFhSTXlsSmc4ekxIYU80OVRpYUlURGxYa0pJ?=
+ =?utf-8?B?LzdSRXVyT1ZwL2krczlNZXVYRXZnUVZwZStydVRFbU16VnE0b0hEM1V0NHdU?=
+ =?utf-8?B?RWZQYjJzQnVXQ0tVSlFLaE1YZ2hETk9vWlhiY1JQdVROSHlCSWVmNm5SaWwx?=
+ =?utf-8?B?VmdTOUJFbmdsc1BZQTJVWlBnaHNHODhJdHpVZGNXSkZuYUc2eVlCYTZraEZ2?=
+ =?utf-8?B?MDdWSVNIamJvRHhlQW03eS9FZk1nakRBR2tqNWd2eDAzN2U3N0lCZ25Cc3Jt?=
+ =?utf-8?B?eHEvTlhlcmpGR09MYWdHVlQ5NVlnV09zeGNQNCs3cjYyUHE0Wlh0SWh4cXR6?=
+ =?utf-8?B?UmhtM1BCYjEwQU01VUpUNFpvRDVGV09NK3l5MVFMeVE1OUVWUUJjQ2RiYzJh?=
+ =?utf-8?B?MCtreklONDR0a2NIdUpGNkg3K1FVWmNOTS9SOEViVXlGL24xODJ0NzhPbnM4?=
+ =?utf-8?B?TGhOdnhmVUt3SWQvOFYxcy9DOThOWU5JWVZnaW9MRmluejBqQ1QxZEpadVpi?=
+ =?utf-8?B?YktMSEpGMkhVK2NLSTBkbjNwcUsvU0hHYVNCckloak1TTzVSYy9JbjQ3aURY?=
+ =?utf-8?B?dGluTE1Ca3pBYTJJNnVyQ1FJNHVGZEYzZW1SME1ia044ZEZhTmVoNDhrMlNR?=
+ =?utf-8?B?Z1RJajB5NlZVTjFIbHFxejNJdk5FWmJLOW9UbUh3c2JFRmZZczRlOXlpOEFW?=
+ =?utf-8?B?bkh6ck52cUJJcEhwV3M4ZGRWUmZaK1lSdERZL0o0eWtmWkpmQldpNTBHekJN?=
+ =?utf-8?B?TmhGS2RzME9EalJKV3hVbmV1MGxTZ01WU0xhRXA3d1NsTElSNkRzYVVobFhr?=
+ =?utf-8?B?K1pOR0ZRdHpVWGxsb2NSNHNRcHFMeXl5MlF3QlNERVhsaEg5cGpkK3pQc2Ri?=
+ =?utf-8?B?cjF6TGZIMVVPV3YxSHY1OG5Oei81SmNxbUhpUlZDSlFoTjEyUEpsa3NmRTFW?=
+ =?utf-8?B?N0o4QWZUa2hiRjVUNjhBZVpiU1dnOFZNazkxdStHbjNmNGVpQ0VYVnpINEJF?=
+ =?utf-8?B?dHNnZVg0Rzg4UDY5ano3VGtkclhNb1JZTGUyK3BHS013K3dtUlgydnhJbWNC?=
+ =?utf-8?B?QVRSRloyTTYrcVl3emx5MVVRZlFOUXVBcE92OHltNGZXT2VXY0RGUEIra3lS?=
+ =?utf-8?B?TFczNVQrcDRNY05wLzRNSEpldHZ1aEs4bTQ5dHdDRkl6WjJ1aTA2WDRpVjFV?=
+ =?utf-8?B?NjVLQ1Jodjh4SnhsZk4xNWVCWkpPdlZWNE02bEUxNHgrVG5kL1JndzFLTXBL?=
+ =?utf-8?B?cEtWbWh6ZG9KTWRsZFBjMnlmQVRiZEhQT1QyTHFjdXBRNi85ZzVKbngwbHBC?=
+ =?utf-8?Q?dlaYOy/sTe3s82bv+/ziXyXV+2yNayvw0uKr+?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82068799-6116-498c-7f3f-08de86850fc1
+X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 13:31:58.7818
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: biqDI1BaxURJLyfnHGo+1nssRAiGjB97bmPFeVf1cV0vZ/qOHgJotj5El4gAK0rAeQTKb9DtT8KUP+oA3uXUsb+SY6cSwMsrGmmsK78dp8M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT2PR01MB8438
+X-Stat-Signature: 167xrit9mpiqbmgp4o5xzigfmsi7ggqo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1DA2080009
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 7b7e9w3jyr8cnhj8mx8e8imi1b43fnrg
-X-HE-Tag: 1774013283-632014
-X-HE-Meta: U2FsdGVkX194CYrCWpj82/RF3lsb5qvQCtPaaPKU0ezISXxmS7tGHbmLGkT67/MrfNNR+/BXLveSRzW6nILMo8YIaMmT9parPgUwiNLxggQXDpi+yFA1mmP2RufsNZGgBVdEnwVc9yeGfhWjrx5WvOdM9otn+C/Rq6IgbLsaKSakzlZmEkmY0VpJqU/lNScK3AtcO/I5UCXalcjVex1dUcEL+aXikaylrQWhdQZa80QS99+BudDA+MTpKjwNuUlTr1dn8DtkIUV5jx/VtrmRaaSM7osZKl+dwyeEVa1dOGx1rbU0nL3PbsKaI2mwy8j0HpyxjUG6pNvD/uqLWK+6IrPTWFzzywijmtRZ/Bcda+Ml/X+fuDUCt8vW5l/3Dpe276BXpK3jZdvxOsCXNN3ypuaZewpbpgQREcc1jUapkunPLQf0pZxSya16SgaKXsx9mwVYqszBgwDeSGC4UbickK0f1emyEJBf+gxU350Jn3og/3/Aw362AEQslash+H95YoTcNO1v03RESwKNokrbi15rCh/kvbNLEN7zg/+DTEDelUSRDFEZiHTy2w26lykwbJuoPgU+1+6bIWs/SMJ5vHvwtln+QbS3Htyz2wPssZg13cr/kuj+vj2unhTExcYxxh69AT55w9pxafufjnEqJ0Xc4D9CzHjPuc7vz1d8Sj1w7u9Tw5B9vrsbHS+s0iybC3RB4pcXR5/SmjoBlj5V54/3jS2/FII/vUlbYEPLu0Uksm6TrvSXIYLbVXWW6ZfLNnjDKAjiNpYN7U9ZW0Dh2eCT2ijblJTkPgSiHjZP/jnPuDN6QXVlCqp/o4HRUjV5AUyCfn51jSbasG0ch8GKeOw/jO+6z7Yl2DOnnnZ2EU3BbkoetRH7cV4KqSkO6LvcTOGnHDmtTBL8k9YchWrFmWl6/uyuY0w9iSxURbFY8a1YrqTGgT9RRgtc1LqlchXE8CVevhzqB9WE4tcAynq
- yuOrquGB
- zqSYho19Azx3s+ehYAOVaDrhe+ALTDK4/Nyal58NlVvVQkM/QZGyqROWFoPIDEJcLKBOZ0Y3lkF8cSgXuAKCUuoCvgaJplxsrNnQJyxvj7VytOoMTq+SA1wWSeosEvdk+/XCZk/mIBta3ibbZu7J2XNx/TCqo6NJFtmuXXKfK4k8gm6XU3/MeOhFoqK8YTCOTPRvZCS0DcWSRH4GCqkucTdExSqNVJIIh/JBspzqKNrolVNDtpt5U6ecOu6y26ZadFMZB+eZRT/e7NHOU/FpiZ07/CAZRWeBL8D+QU/TOxw/GjMYPXiInznad6+X42cAhUPADRI+ExN+JhC5ayMHKzjjqoQ==
+X-Rspamd-Queue-Id: 81C561A0002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774013524-54585
+X-HE-Meta: U2FsdGVkX1/bToJyPy3cDQEAgpTwJMaGW2zNJoIaaAYzX/rQY/wTZHJrE4cHW+Wp4yNSU7Gdmqi7oYNgD9Jbfla4T6m6Nq9fRya3ypNAQrrCBQqcuBYV0HURJnm7cPqc6f6udiNofZUqOyEwUwm/37xbwfCZkZSBTKxQiqsKU2Yn7tExOPQk1u3pizD3JEW+qkVqDt79q3agkiXCtbyyqk7VNOlPDZ8+bgxsT8iGlwGw+og8m1yt2M+/4YtyA0jbgc0C0Goyas2Kbv8t3PkzQa7kMVVZt75BMzu5DIfbY47J6S1aQpEpLgO9EJUz63fidi1vTd+CUqDH/ZdT0QWZ2YgrGLs09waEmlKW+ZfOytr8xrBxCPHiwypa+3mjv+yEFQz68yGWDO5QzoOLjrbybw3t1it79Uf30DmRcmHcllBD9rjMISjhzwzKAwdqVyItXYX3B6IBWdyHanjjePKwO9RtULTVyXRWr3QMGsRVwiGsIrYY8tOl4F9Q7Lb3iXfn36IxZIW5hzMQe9cQNgQ/Othna2uBwxfxFhqOukxqCFyFy2fd+GRLFWV+X9Rx7RlCWKEQ4c8xwjE1RIhOTQPTfLXUTY340XCL0qJokiwsezpCHx7bbVbMUvTYc+A3AEf5tPDrmu/vwcnD/UV8ztcU7pXv1maOfTrdI7MU+bNq22sm3qquYTsfk6YBd5IKZYv1nPh1CsN0QUk5V2YwLxIMrSKJHuqqfot5UYxgC81c5greEVKgrYNnZahl9ISpRqk72L8iiiSCsE6KWaQXMHByefCtG6mqIIuHvodDAmE84Kx+9hOVynMc20tBKX2fsuWd25DSwkq+UomFr1E6NU3Z2BbWe0RWv/goKFlXG8xhHWsEBiSAxaJVQWc4NYygSdsa7/ehl/QAUDeO9+ogv4GVEF2KK/YGH+KAqgbZ/rAUsjmYKiBoqgC7XgGZFHiPlcw+DbFOE7HOhtjghQ/z7i+
+ /tXByHW3
+ Fo9si+KbpIY3zTY5Gg5x8QQ5Xc85MmJPT8i0yVHJJq1q0JwYUUzdfPFSJ7Re40QWiF9sPhmvVne2wbF2E6EgT2GzarMjDVsj5IGlkwvjgAiu0R41qnsV4izjtGoLK1mFw8Qmn3xevn9NhDAgRb9Anmlrfpj8Tjcr3aim9vhiSVn3nXhdQ4Fr1MSmwehk+bXNxYrBSV12ccAaY74P9q6apG8gCCGSmIy+Yg+pcDNty6IWXNNah21Ii/9WtOU2Lgsmt2Ffm6cMN6ehthqVgzNiGhA+VVav+4AmMUwP3uVAkYvUY78hNqr1OMltVqu48rTyS9a8xvtgGV3x0CssmSKw8Wc6pxzfecXgQlkI242U3mySIoOHv8kpc/lyT68kB6dozNcT61exbFNrR3K2gZehBSFDbDwZDPTXBXomNJ6JaelcbHLezgKA8V2SZ6ZJIlote8jFlc8MACIgIupRuKp6boxGV9oFn9Let5X37G23pZ80zwPUEaeYjGvKGI0wcrXomnOkzOYSh0zr9RvSaHwwY9a11LN2EVKb/ZZUOvKx0xrqXNB0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,70 +178,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 08:09:17PM -0700, Andrew Morton wrote:
-> On Thu, 19 Mar 2026 13:00:06 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
->
-> > The zap_huge_pmd() function is overly complicated, clean it up and also add
-> > an assert in the case that we encounter a buggy PMD entry that doesn't
-> > match expectations.
-> >
-> > This is motivated by a bug discovered [0] where the PMD entry was none of:
-> >
-> > * A non-DAX, PFN or mixed map.
-> > * The huge zero folio
-> > * A present PMD entry
-> > * A softleaf entry
-> >
-> > In zap_huge_pmd(), but due to the bug we manged to reach this code.
-> >
-> > It is useful to explicitly call this out rather than have an arbitrary NULL
-> > pointer dereference happen, which also improves understanding of what's
-> > going on.
-> >
-> > [0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
->
-> AI review has questions, which I assume you've seen
-> 	https://sashiko.dev/#/patchset/cover.1773924928.git.ljs%40kernel.org
+On 2026-03-20 09:21, Harry Yoo (Oracle) wrote:
+> On Fri, Mar 20, 2026 at 08:35:46AM -0400, Mathieu Desnoyers wrote:
+>> On 2026-03-20 00:17, Harry Yoo wrote:
+>> [...]
+>>>> [1]: https://lore.kernel.org/20260227153730.1556542-4-mathieu.desnoyers@efficios.com/
+>>>
+>>> @Mathieu: In patch 1/3 description,
+>>>> Changes since v7:
+>>>> - Explicitly initialize the subsystem from start_kernel() right
+>>>>     after mm_core_init() so it is up and running before the creation of
+>>>>     the first mm at boot.
+>>>
+>>> But how does this work when someone calls mm_cpumask() on init_mm early?
+>>> Looks like it will behave incorrectly because get_rss_stat_items_size()
+>>> returns zero?
+>>
+>> It doesn't work as expected at all. I missed that all users of mm_cpumask()
+>> end up relying on get_rss_stat_items_size(), which now calls
+>> percpu_counter_tree_items_size(), which depends on initialization from
+>> percpu_counter_tree_subsystem_init().
+>>
+>> If you add a call to percpu_counter_tree_subsystem_init in
+>> arch/powerpc/kernel/setup_arch() just before:
+>>
+>>          VM_WARN_ON(cpumask_test_cpu(smp_processor_id(), mm_cpumask(&init_mm)));
+>>          cpumask_set_cpu(smp_processor_id(), mm_cpumask(&init_mm));
+>>
+>> Does the warning go away ?
+> 
+> Hmm it goes away, but I'm not sure if it is it okay to use nr_cpu_ids
+> before setup_nr_cpu_ids() is called?
 
-Nope but I'll have a look through and see what's valid.
+AFAIU on powerpc setup_nr_cpu_ids() is called near the end of
+smp_setup_cpu_maps(), which is called early in setup_arch,
+at least before the two lines which use mm_cpumask.
+  
+>> Alternatively, would could use a lazy initialization invoking
+>> percpu_counter_tree_subsystem_init from percpu_counter_tree_items_size
+>> when the initialization is not already done.
+> 
+> So this probably isn't a way to go?
 
->
->
->
-> This isn't going well from a workflow POV.  I merge stuff (this was v2)
-> then half a day later a bunch of potential issues are identified.
->
-> If these reviews are useful (they seem to be, enough) then I guess I'll
-> need to further increase the lag between seeing-it and merging-it.  But
-> if there's a 2-day lag before I get onto a series and I'm the first to
-> look at Sashiko then that won't help.
->
-> So it needs to be something like
->
-> 	- series is posted
-> 	- 24 hours pass
-> 	- submitter takes a look at the AI review, maybe prepares a new
-> 	  series.
-> 	- 24 hours pass
-> 	- rinse, repeat
-> 	- it gets merged, hopefully with some Reviewed-by"s.
->
-> Not unreasonable, but it requires that submitter be made aware of
-> Sashiko's comments.  At present that's via me being tiresome.
->
->
-> Anyway, early days.  I'm thinking that an emailed reply-to-all from
-> Sashiko will help.  Much hinges on how useful submitters find these
-> questions to be - something which I'm paying close attention to...
->
+I'd favor explicit initialization, so the inter-dependencies are clear.
 
-Please not yet, it produces a lot of noise. I've responded at length on the
-thread on this [0], and while I appreciate the tooling, it's not ready to
-be treated as giving entirely valid feedback yet :)
+> Hmm perhaps we should treat init_mm as a special case in
+> mm_cpus_allowed() and mm_cpumask().
 
-I think David's on the same page as me on this.
+I'd prefer not to go there if boot sequence permits and keep things
+simple.
 
-Cheers, Lorenzo
+I think we're in a situation very similar to tree RCU, here is what
+is done in rcu_init_geometry:
 
-https://lore.kernel.org/all/39e6b4d2-8a30-4eaa-908d-5d11b746f8d5@lucifer.local/
+         static bool initialized;
+
+         if (initialized) {
+                 /*
+                  * Warn if setup_nr_cpu_ids() had not yet been invoked,
+                  * unless nr_cpus_ids == NR_CPUS, in which case who cares?
+                  */
+                 WARN_ON_ONCE(old_nr_cpu_ids != nr_cpu_ids);
+                 return;
+         }
+
+         old_nr_cpu_ids = nr_cpu_ids;
+         initialized = true;
+
+Thanks,
+
+Mathieu
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
 
