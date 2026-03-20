@@ -4,66 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36B241098784
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 758D31098782
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:43:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BE936B00FA; Fri, 20 Mar 2026 09:43:37 -0400 (EDT)
+	id 42F596B00F8; Fri, 20 Mar 2026 09:43:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 085956B00F7; Fri, 20 Mar 2026 09:43:37 -0400 (EDT)
+	id 3B88A6B00F7; Fri, 20 Mar 2026 09:43:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA3D36B00F6; Fri, 20 Mar 2026 09:43:36 -0400 (EDT)
+	id 1E5A76B00FB; Fri, 20 Mar 2026 09:43:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C1DB86B00F3
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:43:36 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 98DBE1C9E8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 054AF6B00F7
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:43:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5E50138835
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:38 +0000 (UTC)
+X-FDA: 84566558916.20.BAF94B2
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 69CEE1C0004
 	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:36 +0000 (UTC)
-X-FDA: 84566558832.08.98289C0
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5277240011
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:43:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ATv3OKAS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ta9pKvWw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ATv3OKAS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ta9pKvWw;
+	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774014214;
+	s=arc-20220608; t=1774014216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KhUzaLHg+OLOZbhWiHDNOxpEYIIhembkQfX6Xqdkb1k=;
-	b=mNwM8IHB17+g9kmCPmQg+l/ClSZjBC7bQaeACeRDOo9iGTzWYY9DKfE4wkIFUpNV3JmlW6
-	Ah0qM5RgBdDDXQbAWLa1Lno6wC8VLrwiAhufZnHg5SUbabxnyveQtIZk7CVcYU2oHyI2U3
-	EuU805Avpx6voySMNk1V51E6EEXkOfU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=abL9xBa4aZB+6Lfi+vHDS/FUcCTLKDXx7t2msCZ3Hc0=;
+	b=OTmTBcmt6hff0LfwKLUKIObKZiNXiJlBacF3hGZkPRdb7TOg3dgAYW18bPBH06x5vuOOjc
+	r+cXPC/jK9atfNu3mmS4Fcy9J2ikwede26Z3AO7R37tTs0aifPrtKiQhao10bq9kkyQgrQ
+	PfJFKmqpJTME7hjbKQzPMZh2MstilPw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ATv3OKAS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ta9pKvWw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ATv3OKAS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ta9pKvWw;
+	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014214; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014216; a=rsa-sha256;
 	cv=none;
-	b=uqXgDH110kn5bgff1Ll4KB52SQlDIXg6Hs9I5ebzKZLFa9HI73/H3djKlKFzTeMXDWGFmo
-	LUe8jh+28/RPxUAhMrtwNTq+WgaLI8DqDumaem2AZcNj8kItPX6WHwmvkmoqH6wNzz2fYJ
-	rh07m1NNFDPFr1HHxTrsjayj1hNs8Qk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=oSy49qulPXB6HF5B97whpMqv782Vx2QXYHRyy5MsqFMXH0O5XT7lnpFAuvH9LqQ3y3CXxS
+	BQWmfb/h1MmPPh0ntsHDWc6hsJpqQIicINcVlKb6VjGy2Qv9eYeVbGzMSmdk/TuBDUla9A
+	YIYuT2Bbc5l+eYpArHcE2EvoNtGQe7E=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C6F774D429;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BDFE05BEEB;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774014105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=abL9xBa4aZB+6Lfi+vHDS/FUcCTLKDXx7t2msCZ3Hc0=;
+	b=ATv3OKASBdjf3U3vWdPgZTIqL3LcgfgQct9p6SRk3HXoNzeT/C5fdMGz+BPLRUS0tqn2z4
+	qsJ9NU7iQ/KBGLBTN8mVSBHGu+9JE+mhaoCh3PK8bsAksvbZxbLqVbp+EmvGIeTO/wOEQ7
+	Dnp4bI84IvnYtvx/phLsVdie6gaR/Lk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774014105;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=abL9xBa4aZB+6Lfi+vHDS/FUcCTLKDXx7t2msCZ3Hc0=;
+	b=Ta9pKvWwDUyDVYWN1RAuw/0strxWRgpZVe8N9pwCIM3JD4M2RrkZmOeio74Bc9EdNizSNA
+	nRrDMMFjPsPV51Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774014105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=abL9xBa4aZB+6Lfi+vHDS/FUcCTLKDXx7t2msCZ3Hc0=;
+	b=ATv3OKASBdjf3U3vWdPgZTIqL3LcgfgQct9p6SRk3HXoNzeT/C5fdMGz+BPLRUS0tqn2z4
+	qsJ9NU7iQ/KBGLBTN8mVSBHGu+9JE+mhaoCh3PK8bsAksvbZxbLqVbp+EmvGIeTO/wOEQ7
+	Dnp4bI84IvnYtvx/phLsVdie6gaR/Lk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774014105;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=abL9xBa4aZB+6Lfi+vHDS/FUcCTLKDXx7t2msCZ3Hc0=;
+	b=Ta9pKvWwDUyDVYWN1RAuw/0strxWRgpZVe8N9pwCIM3JD4M2RrkZmOeio74Bc9EdNizSNA
+	nRrDMMFjPsPV51Aw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BB2144281A;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B468842817;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Hs6tLZlOvWmUCQAAD6G6ig
+	id +zoJLJlOvWmSCQAAD6G6ig
 	(envelope-from <jack@suse.cz>); Fri, 20 Mar 2026 13:41:45 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 83373A0A9E; Fri, 20 Mar 2026 14:41:45 +0100 (CET)
+	id 7AD97A0AFD; Fri, 20 Mar 2026 14:41:45 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -81,31 +125,24 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 35/41] fat: Track metadata bhs in fs-private inode part
-Date: Fri, 20 Mar 2026 14:41:30 +0100
-Message-ID: <20260320134100.20731-76-jack@suse.cz>
+Subject: [PATCH 34/41] bfs: Track metadata bhs in fs-private inode part
+Date: Fri, 20 Mar 2026 14:41:29 +0100
+Message-ID: <20260320134100.20731-75-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260320131728.6449-1-jack@suse.cz>
 References: <20260320131728.6449-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8966; i=jack@suse.cz; h=from:subject; bh=QgGjN7c4BxfRd0ABPBq3l3E98TILcHEVPdX1WPwyso4=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU6KVzjrAXwYd+c5QPGypEMK4TFB8QYv8MQul UtIQkDZw9CJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OigAKCRCcnaoHP2RA 2cobCADKwUSnOjgiClgfB6psXW26C/z1qDULnxQ4+nohcpiWLODZ5u/jUz/absOxIH3a/RR0ORD CszYoOlHuEiUPvW4W0XId15Drh8UpbZ4BttnRPPZpiGOy2kHHpOXlbnTpQNGFpwQPQ6rj+r6V3a oGsrYoU/AuqU0pBRPay2gIx8+vQ53FQyp1i1FLguPs2GKkywxVHBJXfHKJV6Fk/Nxe58G879VK3 k1Nu8Ga1tY9bi7H79XRzo8jGRv2eb37QMLaMlqmH0kZNTkO4MzrO7eD3+bk8QI6RBM/N/5RW/CK lvRKb9MGwueLLaEULyKe8HjkvecUVLYxMSG4CESE0E2TUiGN
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3109; i=jack@suse.cz; h=from:subject; bh=VGn/pIRcK5eqeKsls80+M3Fo5nsCbthSQy6MRfgwTJE=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU6JkoTdFIeB5g6YyXAUMYBxuc0lm0vwR57wS 9b2iHYsY0uJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OiQAKCRCcnaoHP2RA 2XhVCAC+YJifHwYZzLl6Oueau4kUtprTKTXcIWWXJushrDVu/nuZDc/4AETd6K4Z0O18UbR7bk6 FsPN6YSkCxd2ivtBVfR9hajkKNv25qeR8JDLdgYyL+hv5p/iFQfjKpZCiopmbCjXMP8qewnqqN1 oZiQVUEfmztaP7RdRwsLOeF/sP46FCRMPdlDo58NkES0loHaVoBhrDemn3NreeUgiBLPFmkkzyU C68I5VkKhwq3V1D4tKOoASV/nqGFP3k6GXF9+HACH4ZaF4ibWuxpQoGOIVPPg+DnzdDirzQCm16 fABzxAx06tQ3kU1y/raCptDEpbnODHcVOgkyOKEqdWDPWHXH
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5277240011
-X-Stat-Signature: pd6cf85hywbcqermmtffagbsi6fjobwp
+X-Rspamd-Queue-Id: 69CEE1C0004
+X-Stat-Signature: ewunmn1orr9j9dp6s6t7fzqo7k7pjrd7
 X-Rspam-User: 
-X-HE-Tag: 1774014214-844833
-X-HE-Meta: U2FsdGVkX1+DUGTuKR6TgZwoRtZcGb531MvzZNCQ0ok/IaY/QDjwS2zssP726AWJCwz79oyzrBln1ExuxAp2UaC4C7qtFAiNSWLZYpHcdXMew1A0mPzeb5YyP6xWc9BB08ZbgqqYN0vK06OrTs9wGgO/puh4nQkj7fcAiVirC5upy521ly037cE/KxKfBLLKuii5nubi2sp5Um3O9aJjn8VjmOXSVP1Z2/lb1SMiuCIvDgz4EPOtKpWSUEu1XnwPV3V3QdtJu1Ky+EDpxG0jtbsycvPmjmp0nZopowX4ipyeytRpznZ28YAykpekRA9OudVzLJx3BmBnXut/I5JqE/ZQCq1CL5oRL6O9959St6iEJpb+F4xMrxIfNQhaUV6CMgzFSh3MbnRIDKgEdtgeBU5WvQLg1BivxfZZQ9FerBrpIBgVqFyw0p6wHmxLu09i+8GwOF7B+ov1C24RcFJ4KsD5EpnMSD+ms5EyveWx3HnZ8rxazDbP4AZO1zuEWiSJSHZll6POSJiryWV8ew8Gb3Yy1hPNmTTELMptN3Y7IzCNkMYGtKoNXgI3uHTZmjBwBkOAYVfbzVPb7R8Nfg9SRxA+FGnM7bUSQU8dEtKI1OIBup6ZnIwd/spVGkhf7XKR6Ksv+MHEmUfs4Tqn067+KDgBuKlFsuN7EXNe9NY8WIgcp9mCdlL289G47Bro5e4bZ/DPaGQJyIrfDpprMIbCHrFRsushcF/RU1AeVeeUuyj5kRTisOIsMjw+KVHXsZZ4nrfOc9999spPfgbrw4aQiwBGbJ+ZvobJLHh+V8EI98PiG1UkIbVzQ1x/tC2jigtd9uzWa8UJV9ghfpWUXsSowaglqpdsibWm9IxhviuaXrBOEAdGW7NLfPTQveytrnMVSOZYdzsMe+HEoCri2cGqoD/ou3RCePKd8hGJRg7/D+XGrUDlEo+e0YjDemvBScEmoAJFN+i4RjluvZEYrIC
- sVTUE+FF
- iLaBc1hsaKXhswIjZFEmFh/lnAG7RwIXC2Djw+dHsdQMvkatmLEc++jRQyaJCHKTV1OV7bVEPoOzno1IBuMDm25pbzDTptWMDT/jJHP7Icr1yyKfFtRCctLmO0jamTlId0COYxZpkS3+GeyVvsC5FzQ7QNw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774014216-907057
+X-HE-Meta: U2FsdGVkX18uo72J5djTgu3yGZlTqilZxycAJfshBtE00CSaGYYlU19jSO0Cmg4e+WFz6dfH0LG+ggD/mET+9BjWzDO9jJvDhG5SB02wDZnh49xRdAnFg0Jr4D/eu4GmQRu7PtJ8fBQR7gXZiYWf+RB7mK/74mruvpcrSjU0KBGraESVJMVRZp73Q8EzwKy0LdIz91MTedjGGUsjys6gvD7KqyId/xYJLRA56oIgGceyF3VhUNLceyhlVQXDtPBAxOL7A2iB+ebPtOr65hd+oz/de0eBV9uv+Eh1o8/rdOcy9ZaaIP5pKQefF9wwyi2Njl4igmCTWWZ2nY5i/HmCJj55/3BCAXf9OiUj44KGp+DitswbItiyLk7UYJBDCqNnOtg614SuKzSvh9bDUsDP4mHYjJDL2cUTeWFP74J3oATDr33KeF2DMI1QBOAI5yZroEbGKY5/VfSIzTG0PHIUqESvgMftPtLXqKq4DsNVr5/4xetMyzyx97WzwC9g8k8/OUIO3lJMdMXeyuKSetqKk7ZZvkfOwa2D188YT/acLdPE2/hcrFopaPsb5j50Rnz9Q/4o+PR90J5euuOTxUBfCLjMPFzcwWmXXhuvkGVaR0SHcQ5d+tQs0qT5CRBw7mEs/YM+3ycXvBTiAGxlYkOUkQcuv9OzwNMRQaNym3L0z07i4IT+v21O6U3fOTHXDkG9/aB2NsU1Z8DQO+Kc4OX8Ej2uUH/PF/CW08uUfOta4//Y6OLYdeogWtJGrdO4bLzBDaRihLHS1YvMzcNj8DIWEwwX5KBlQvhmmYo+DoRHLwNYmaqMzd7ktc61uYLHnVhAfu5xA9dN1To2jKtsNjDAjXJG15ni1Of7S1r/+tQYrfFyU1SbXJrn9s4E6/ZOXMxWqu6qxx/5hCQL3X0U5YYoc/UXIAvb3BXA2/XL87dddoOb+hEQ9R7Qht9aQ4PZDiaebF35on49bYx1dO/AdPh
+ S+ywnwe+
+ 44nrBKUeo9Ce2zfI9nA63ROVgWEFrtE7RX9UOgo+1638YUxXci4YCkFNx3ZJrzyibo5le+lB+apk3CoktLU6+cSX97nmo4j7Qx9guwpqn6T9vDzXhdzZ8TI3ZjMQLUo9z6dYw1J0NPAyewxBWiiMQYQbjYpu1sgzdZEFDe/IcwWFcEihnrQxHrYgE5+fKwmE5fRH3vz/ahMKSiOqOvYtuWuhdiEPDZ9NCp4P07hg9oE1wMd2npwElMEx5cXA+BKDIXsHQkesP5qePaT8cV3OBBKqAio4z7h/wRcnDRINfYh8VMSR8GdbtDHxgWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,239 +154,98 @@ Track metadata bhs for an inode in fs-private part of the inode.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/fat/dir.c         | 17 ++++++++++-------
- fs/fat/fat.h         |  1 +
- fs/fat/fatent.c      | 15 ++++++++++-----
- fs/fat/file.c        |  8 +++++---
- fs/fat/inode.c       |  5 +++--
- fs/fat/namei_msdos.c |  6 ++++--
- fs/fat/namei_vfat.c  |  2 +-
- 7 files changed, 34 insertions(+), 20 deletions(-)
+ fs/bfs/bfs.h   |  1 +
+ fs/bfs/dir.c   | 16 ++++++++++++----
+ fs/bfs/inode.c |  6 ++++--
+ 3 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/fs/fat/dir.c b/fs/fat/dir.c
-index 4b8b25f688e4..4f6f42f33613 100644
---- a/fs/fat/dir.c
-+++ b/fs/fat/dir.c
-@@ -1027,7 +1027,7 @@ static int __fat_remove_entries(struct inode *dir, loff_t pos, int nr_slots)
- 			de++;
- 			nr_slots--;
- 		}
--		mark_buffer_dirty_inode(bh, dir);
-+		mmb_mark_buffer_dirty(bh, &MSDOS_I(dir)->i_metadata_bhs);
- 		if (IS_DIRSYNC(dir))
- 			err = sync_dirty_buffer(bh);
- 		brelse(bh);
-@@ -1062,7 +1062,7 @@ int fat_remove_entries(struct inode *dir, struct fat_slot_info *sinfo)
- 		de--;
- 		nr_slots--;
- 	}
--	mark_buffer_dirty_inode(bh, dir);
-+	mmb_mark_buffer_dirty(bh, &MSDOS_I(dir)->i_metadata_bhs);
- 	if (IS_DIRSYNC(dir))
- 		err = sync_dirty_buffer(bh);
- 	brelse(bh);
-@@ -1114,7 +1114,7 @@ static int fat_zeroed_cluster(struct inode *dir, sector_t blknr, int nr_used,
- 		memset(bhs[n]->b_data, 0, sb->s_blocksize);
- 		set_buffer_uptodate(bhs[n]);
- 		unlock_buffer(bhs[n]);
--		mark_buffer_dirty_inode(bhs[n], dir);
-+		mmb_mark_buffer_dirty(bhs[n], &MSDOS_I(dir)->i_metadata_bhs);
- 
- 		n++;
- 		blknr++;
-@@ -1195,7 +1195,7 @@ int fat_alloc_new_dir(struct inode *dir, struct timespec64 *ts)
- 	memset(de + 2, 0, sb->s_blocksize - 2 * sizeof(*de));
- 	set_buffer_uptodate(bhs[0]);
- 	unlock_buffer(bhs[0]);
--	mark_buffer_dirty_inode(bhs[0], dir);
-+	mmb_mark_buffer_dirty(bhs[0], &MSDOS_I(dir)->i_metadata_bhs);
- 
- 	err = fat_zeroed_cluster(dir, blknr, 1, bhs, MAX_BUF_PER_PAGE);
- 	if (err)
-@@ -1257,7 +1257,8 @@ static int fat_add_new_entries(struct inode *dir, void *slots, int nr_slots,
- 			memcpy(bhs[n]->b_data, slots, copy);
- 			set_buffer_uptodate(bhs[n]);
- 			unlock_buffer(bhs[n]);
--			mark_buffer_dirty_inode(bhs[n], dir);
-+			mmb_mark_buffer_dirty(bhs[n],
-+					      &MSDOS_I(dir)->i_metadata_bhs);
- 			slots += copy;
- 			size -= copy;
- 			if (!size)
-@@ -1358,7 +1359,8 @@ int fat_add_entries(struct inode *dir, void *slots, int nr_slots,
- 		for (i = 0; i < long_bhs; i++) {
- 			int copy = umin(sb->s_blocksize - offset, size);
- 			memcpy(bhs[i]->b_data + offset, slots, copy);
--			mark_buffer_dirty_inode(bhs[i], dir);
-+			mmb_mark_buffer_dirty(bhs[i],
-+					      &MSDOS_I(dir)->i_metadata_bhs);
- 			offset = 0;
- 			slots += copy;
- 			size -= copy;
-@@ -1369,7 +1371,8 @@ int fat_add_entries(struct inode *dir, void *slots, int nr_slots,
- 			/* Fill the short name slot. */
- 			int copy = umin(sb->s_blocksize - offset, size);
- 			memcpy(bhs[i]->b_data + offset, slots, copy);
--			mark_buffer_dirty_inode(bhs[i], dir);
-+			mmb_mark_buffer_dirty(bhs[i],
-+					      &MSDOS_I(dir)->i_metadata_bhs);
- 			if (IS_DIRSYNC(dir))
- 				err = sync_dirty_buffer(bhs[i]);
- 		}
-diff --git a/fs/fat/fat.h b/fs/fat/fat.h
-index 0d269dba897b..5a58f0bf8ce8 100644
---- a/fs/fat/fat.h
-+++ b/fs/fat/fat.h
-@@ -130,6 +130,7 @@ struct msdos_inode_info {
- 	struct hlist_node i_dir_hash;	/* hash by i_logstart */
- 	struct rw_semaphore truncate_lock; /* protect bmap against truncate */
- 	struct timespec64 i_crtime;	/* File creation (birth) time */
+diff --git a/fs/bfs/bfs.h b/fs/bfs/bfs.h
+index 606f9378b2f0..b08afe733e63 100644
+--- a/fs/bfs/bfs.h
++++ b/fs/bfs/bfs.h
+@@ -35,6 +35,7 @@ struct bfs_inode_info {
+ 	unsigned long i_dsk_ino; /* inode number from the disk, can be 0 */
+ 	unsigned long i_sblock;
+ 	unsigned long i_eblock;
 +	struct mapping_metadata_bhs i_metadata_bhs;
  	struct inode vfs_inode;
  };
  
-diff --git a/fs/fat/fatent.c b/fs/fat/fatent.c
-index a7061c2ad8e4..f0801d99dd62 100644
---- a/fs/fat/fatent.c
-+++ b/fs/fat/fatent.c
-@@ -170,9 +170,11 @@ static void fat12_ent_put(struct fat_entry *fatent, int new)
- 	}
- 	spin_unlock(&fat12_entry_lock);
- 
--	mark_buffer_dirty_inode(fatent->bhs[0], fatent->fat_inode);
-+	mmb_mark_buffer_dirty(fatent->bhs[0],
-+			      &MSDOS_I(fatent->fat_inode)->i_metadata_bhs);
- 	if (fatent->nr_bhs == 2)
--		mark_buffer_dirty_inode(fatent->bhs[1], fatent->fat_inode);
-+		mmb_mark_buffer_dirty(fatent->bhs[1],
-+				&MSDOS_I(fatent->fat_inode)->i_metadata_bhs);
- }
- 
- static void fat16_ent_put(struct fat_entry *fatent, int new)
-@@ -181,7 +183,8 @@ static void fat16_ent_put(struct fat_entry *fatent, int new)
- 		new = EOF_FAT16;
- 
- 	*fatent->u.ent16_p = cpu_to_le16(new);
--	mark_buffer_dirty_inode(fatent->bhs[0], fatent->fat_inode);
-+	mmb_mark_buffer_dirty(fatent->bhs[0],
-+			      &MSDOS_I(fatent->fat_inode)->i_metadata_bhs);
- }
- 
- static void fat32_ent_put(struct fat_entry *fatent, int new)
-@@ -189,7 +192,8 @@ static void fat32_ent_put(struct fat_entry *fatent, int new)
- 	WARN_ON(new & 0xf0000000);
- 	new |= le32_to_cpu(*fatent->u.ent32_p) & ~0x0fffffff;
- 	*fatent->u.ent32_p = cpu_to_le32(new);
--	mark_buffer_dirty_inode(fatent->bhs[0], fatent->fat_inode);
-+	mmb_mark_buffer_dirty(fatent->bhs[0],
-+			      &MSDOS_I(fatent->fat_inode)->i_metadata_bhs);
- }
- 
- static int fat12_ent_next(struct fat_entry *fatent)
-@@ -395,7 +399,8 @@ static int fat_mirror_bhs(struct super_block *sb, struct buffer_head **bhs,
- 			memcpy(c_bh->b_data, bhs[n]->b_data, sb->s_blocksize);
- 			set_buffer_uptodate(c_bh);
- 			unlock_buffer(c_bh);
--			mark_buffer_dirty_inode(c_bh, sbi->fat_inode);
-+			mmb_mark_buffer_dirty(c_bh,
-+				&MSDOS_I(sbi->fat_inode)->i_metadata_bhs);
- 			if (sb->s_flags & SB_SYNCHRONOUS)
- 				err = sync_dirty_buffer(c_bh);
- 			brelse(c_bh);
-diff --git a/fs/fat/file.c b/fs/fat/file.c
-index 1551065a7964..3bac06b41420 100644
---- a/fs/fat/file.c
-+++ b/fs/fat/file.c
-@@ -186,13 +186,15 @@ static int fat_file_release(struct inode *inode, struct file *filp)
- int fat_file_fsync(struct file *filp, loff_t start, loff_t end, int datasync)
- {
- 	struct inode *inode = filp->f_mapping->host;
-+	struct inode *fat_inode = MSDOS_SB(inode->i_sb)->fat_inode;
- 	int err;
- 
--	err = generic_buffers_fsync_noflush(filp, start, end, datasync);
-+	err = generic_mmb_fsync_noflush(filp, &MSDOS_I(inode)->i_metadata_bhs,
-+					start, end, datasync);
- 	if (err)
- 		return err;
- 
--	err = sync_mapping_buffers(MSDOS_SB(inode->i_sb)->fat_inode->i_mapping);
-+	err = mmb_sync_buffers(&MSDOS_I(fat_inode)->i_metadata_bhs);
- 	if (err)
- 		return err;
- 
-@@ -236,7 +238,7 @@ static int fat_cont_expand(struct inode *inode, loff_t size)
- 		 */
- 		err = filemap_fdatawrite_range(mapping, start,
- 					       start + count - 1);
--		err2 = sync_mapping_buffers(mapping);
-+		err2 = mmb_sync_buffers(&MSDOS_I(inode)->i_metadata_bhs);
- 		if (!err)
- 			err = err2;
- 		err2 = write_inode_now(inode, 1);
-diff --git a/fs/fat/inode.c b/fs/fat/inode.c
-index ce88602b0d57..1e54091c80fc 100644
---- a/fs/fat/inode.c
-+++ b/fs/fat/inode.c
-@@ -658,11 +658,11 @@ static void fat_evict_inode(struct inode *inode)
- 		inode->i_size = 0;
- 		fat_truncate_blocks(inode, 0);
- 	} else {
--		sync_mapping_buffers(inode->i_mapping);
-+		mmb_sync_buffers(&MSDOS_I(inode)->i_metadata_bhs);
- 		fat_free_eofblocks(inode);
- 	}
- 
--	invalidate_inode_buffers(inode);
-+	mmb_invalidate_buffers(&MSDOS_I(inode)->i_metadata_bhs);
- 	clear_inode(inode);
- 	fat_cache_inval_inode(inode);
- 	fat_detach(inode);
-@@ -763,6 +763,7 @@ static struct inode *fat_alloc_inode(struct super_block *sb)
- 	ei->i_pos = 0;
- 	ei->i_crtime.tv_sec = 0;
- 	ei->i_crtime.tv_nsec = 0;
-+	mmb_init(&ei->i_metadata_bhs, &ei->vfs_inode.i_data);
- 
- 	return &ei->vfs_inode;
- }
-diff --git a/fs/fat/namei_msdos.c b/fs/fat/namei_msdos.c
-index 048c103b506a..4cc65f330fb7 100644
---- a/fs/fat/namei_msdos.c
-+++ b/fs/fat/namei_msdos.c
-@@ -527,7 +527,8 @@ static int do_msdos_rename(struct inode *old_dir, unsigned char *old_name,
- 
- 	if (update_dotdot) {
- 		fat_set_start(dotdot_de, MSDOS_I(new_dir)->i_logstart);
--		mark_buffer_dirty_inode(dotdot_bh, old_inode);
-+		mmb_mark_buffer_dirty(dotdot_bh,
-+				      &MSDOS_I(old_inode)->i_metadata_bhs);
- 		if (IS_DIRSYNC(new_dir)) {
- 			err = sync_dirty_buffer(dotdot_bh);
- 			if (err)
-@@ -566,7 +567,8 @@ static int do_msdos_rename(struct inode *old_dir, unsigned char *old_name,
- 
- 	if (update_dotdot) {
- 		fat_set_start(dotdot_de, MSDOS_I(old_dir)->i_logstart);
--		mark_buffer_dirty_inode(dotdot_bh, old_inode);
-+		mmb_mark_buffer_dirty(dotdot_bh,
-+				      &MSDOS_I(old_inode)->i_metadata_bhs);
- 		corrupt |= sync_dirty_buffer(dotdot_bh);
- 	}
- error_inode:
-diff --git a/fs/fat/namei_vfat.c b/fs/fat/namei_vfat.c
-index 87dcdd86272b..918b3756674c 100644
---- a/fs/fat/namei_vfat.c
-+++ b/fs/fat/namei_vfat.c
-@@ -915,7 +915,7 @@ static int vfat_update_dotdot_de(struct inode *dir, struct inode *inode,
- 				 struct msdos_dir_entry *dotdot_de)
- {
- 	fat_set_start(dotdot_de, MSDOS_I(dir)->i_logstart);
--	mark_buffer_dirty_inode(dotdot_bh, inode);
-+	mmb_mark_buffer_dirty(dotdot_bh, &MSDOS_I(inode)->i_metadata_bhs);
- 	if (IS_DIRSYNC(dir))
- 		return sync_dirty_buffer(dotdot_bh);
+diff --git a/fs/bfs/dir.c b/fs/bfs/dir.c
+index 1b140981dbf3..1dbce745d1ad 100644
+--- a/fs/bfs/dir.c
++++ b/fs/bfs/dir.c
+@@ -68,10 +68,17 @@ static int bfs_readdir(struct file *f, struct dir_context *ctx)
  	return 0;
+ }
+ 
++static int bfs_fsync(struct file *file, loff_t start, loff_t end, int datasync)
++{
++	return generic_mmb_fsync(file,
++			&BFS_I(file->f_mapping->host)->i_metadata_bhs,
++			start, end, datasync);
++}
++
+ const struct file_operations bfs_dir_operations = {
+ 	.read		= generic_read_dir,
+ 	.iterate_shared	= bfs_readdir,
+-	.fsync		= generic_buffers_fsync,
++	.fsync		= bfs_fsync,
+ 	.llseek		= generic_file_llseek,
+ };
+ 
+@@ -186,7 +193,7 @@ static int bfs_unlink(struct inode *dir, struct dentry *dentry)
+ 		set_nlink(inode, 1);
+ 	}
+ 	de->ino = 0;
+-	mark_buffer_dirty_inode(bh, dir);
++	mmb_mark_buffer_dirty(bh, &BFS_I(dir)->i_metadata_bhs);
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+ 	mark_inode_dirty(dir);
+ 	inode_set_ctime_to_ts(inode, inode_get_ctime(dir));
+@@ -246,7 +253,7 @@ static int bfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 		inode_set_ctime_current(new_inode);
+ 		inode_dec_link_count(new_inode);
+ 	}
+-	mark_buffer_dirty_inode(old_bh, old_dir);
++	mmb_mark_buffer_dirty(old_bh, &BFS_I(old_dir)->i_metadata_bhs);
+ 	error = 0;
+ 
+ end_rename:
+@@ -296,7 +303,8 @@ static int bfs_add_entry(struct inode *dir, const struct qstr *child, int ino)
+ 				for (i = 0; i < BFS_NAMELEN; i++)
+ 					de->name[i] =
+ 						(i < namelen) ? name[i] : 0;
+-				mark_buffer_dirty_inode(bh, dir);
++				mmb_mark_buffer_dirty(bh,
++						&BFS_I(dir)->i_metadata_bhs);
+ 				brelse(bh);
+ 				return 0;
+ 			}
+diff --git a/fs/bfs/inode.c b/fs/bfs/inode.c
+index e0e50a9dbe9c..89f3da14e8c6 100644
+--- a/fs/bfs/inode.c
++++ b/fs/bfs/inode.c
+@@ -188,8 +188,8 @@ static void bfs_evict_inode(struct inode *inode)
+ 
+ 	truncate_inode_pages_final(&inode->i_data);
+ 	if (inode->i_nlink)
+-		sync_mapping_buffers(&inode->i_data);
+-	invalidate_inode_buffers(inode);
++		mmb_sync_buffers(&BFS_I(inode)->i_metadata_bhs);
++	mmb_invalidate_buffers(&BFS_I(inode)->i_metadata_bhs);
+ 	clear_inode(inode);
+ 
+ 	if (inode->i_nlink)
+@@ -259,6 +259,8 @@ static struct inode *bfs_alloc_inode(struct super_block *sb)
+ 	bi = alloc_inode_sb(sb, bfs_inode_cachep, GFP_KERNEL);
+ 	if (!bi)
+ 		return NULL;
++	mmb_init(&bi->i_metadata_bhs, &bi->vfs_inode.i_data);
++
+ 	return &bi->vfs_inode;
+ }
+ 
 -- 
 2.51.0
 
