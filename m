@@ -4,95 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ADD210987B6
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 16:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C96D71099B20
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 17:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9936B6B0095; Fri, 20 Mar 2026 12:56:20 -0400 (EDT)
+	id C83786B00E0; Fri, 20 Mar 2026 13:03:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96B206B00A1; Fri, 20 Mar 2026 12:56:20 -0400 (EDT)
+	id C342E6B00E2; Fri, 20 Mar 2026 13:03:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 880E26B00A4; Fri, 20 Mar 2026 12:56:20 -0400 (EDT)
+	id B49D56B00E3; Fri, 20 Mar 2026 13:03:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 739C26B0095
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 12:56:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 178311D8A1
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:56:20 +0000 (UTC)
-X-FDA: 84567044520.17.EC9F25C
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4DECC18000D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 16:56:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A2CE16B00E0
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:03:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A873C16B5
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:03:23 +0000 (UTC)
+X-FDA: 84567062286.20.B025424
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 725E880018
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:03:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+	spf=pass (imf30.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774025778;
+	s=arc-20220608; t=1774026201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d8k5tYET5c7sHmOyLEGXMti0SXXXcwl6FzKQmUPn4pg=;
-	b=kdweM2Ez6P6POKzu195VtOU/U58AecGKKBJ7iDSvCUJkwqm5gGFmZub/L+k40k+ws09Aj8
-	DkKRemkXxWAo5C/otgCbY9BG5gTJhhPdWUuqaED/2QZUmAs9vR60KE5+bJCtZviv+qaod2
-	dxhGgmHRnwA2sUSiOF0h2fwic2Q3V5g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774025778; a=rsa-sha256;
-	cv=none;
-	b=l5v7LjrP2ioaUnMrx6HxEIf9QsT71jt+BVopO3/hdd1GCA1gfMROc9yHj4jaPX+P7VW2gm
-	/IUuX/7fYafQQs1IOxWWO23N9774uBuWrFLQliM2/YKW86wNUyZGzEnBr51pemRVy1FT1b
-	ZXK//UbhepWCvpKOBiyA9/yAU55z/eI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=NVB3adPuuRSdZoIYsViGbhamzs8cgNf/u+PLJmrHrxQ=;
+	b=Qsn1sLa1FFmFDXZ33oYvKY3hNk2eBhK8pE34xREncwDK/n9Wz0H3+TXMJ+o4pDJ16ocxVD
+	4mf4RbkTN7Ypcdj2CrHwwkD5XHu5LkFLObXjUoH7uyAwKsVA2L5JHGb4NOWKuq/zdAB+9n
+	yRQi0cLaHR0KpWraE4USMUiFxd1kg4s=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
+	imf30.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fcpZy61S8zJ467Q;
-	Sat, 21 Mar 2026 00:55:06 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2434E40086;
-	Sat, 21 Mar 2026 00:56:08 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 20 Mar
- 2026 16:56:06 +0000
-Date: Fri, 20 Mar 2026 16:56:05 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Rakie Kim <rakie.kim@sk.com>
-CC: <akpm@linux-foundation.org>, <gourry@gourry.net>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<ziy@nvidia.com>, <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
-	<byungchul@sk.com>, <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
-	<david@kernel.org>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
-	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<dave@stgolabs.net>, <dave.jiang@intel.com>, <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
-	<dan.j.williams@intel.com>, <kernel_team@skhynix.com>, <honggyu.kim@sk.com>,
-	<yunjeong.mun@sk.com>, Keith Busch <kbusch@kernel.org>
-Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce
- socket-aware weighted interleave
-Message-ID: <20260320165605.000024c0@huawei.com>
-In-Reply-To: <20260319075512.309-1-rakie.kim@sk.com>
-References: <20260318120245.0000448e@huawei.com>
-	<20260319075512.309-1-rakie.kim@sk.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	spf=pass (imf30.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774026201; a=rsa-sha256;
+	cv=none;
+	b=sR5YVOzM1ZuHWaIyLb1iGj3jAm/i7icKgQhFQ8vCu66mTo5lCzdqdzL/8MPl94NpER+9aW
+	pgIft43kz+Bcal315yE5UcTKuDU0GqLKXWQXmdCWgHY+FENGs7rEXH1+q97p12HD11f/01
+	kJdtDu9X4g3hAvH9RfrnBPK11qMRxEk=
+Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 21 Mar 2026 02:03:14 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+From: Youngjun Park <youngjun.park@lge.com>
+To: rafael@kernel.org,
+	akpm@linux-foundation.org
+Cc: chrisl@kernel.org,
+	kasong@tencent.com,
+	pavel@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	usama.arif@linux.dev,
+	linux-pm@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v6 0/3] mm/swap, PM: hibernate: fix swapoff race and optimize swap
+Date: Sat, 21 Mar 2026 02:03:10 +0900
+Message-Id: <20260320170313.163386-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml500005.china.huawei.com (7.214.145.207)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4DECC18000D
-X-Stat-Signature: 6bzaojfu5qxibpecxksgy3g7nbnc55tc
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1774025777-643913
-X-HE-Meta: U2FsdGVkX19avRFpIG6XH2pXL2DWUKvD0xs3r2Ot415PzAbkRI/Ccdl9kVlUed2u0qMYgD/Zj0RpVa6kkAzI1AsavOdBNDHEhscvqfX1GTbzj/sBgkLKWdGv1x6gxbAOkMMRY/GR3lKe1CUrxV00GL3u/6HqSgrQLyeDSc6Fb62pZ+ZygyUtDtB3d7N8ZGuxQkI62tiwRL+SvBSJHc4yD7tx4X11jCMgvfTYz8ZaVbOn1VlpvdkZ/nDyIsRInnUB0LRkI5dbm3X9tO8ju3Yz8rTz/CGeIWOJ/sqfsSA9yUILmZuFIe1IcLCY7M1wl9HXGCH0mQ2mYZgjIaGyGqR4FX2hRYygODsnf6zLJ1ikh9vvd4MGnsf2+YPbMVw3CMPyV7JWzZvquBN6tKW2kMv94fQcOXvJ/c7yevT7wsSzIa6yeSh9BcCD9WzbHwqO4JTm40oqlF/an+sRLS0RN2sn57BSg5Kq84aOafrQU2UC5wcXwB0N039cFsJURGeP3z476kPzqX7v6o6B5MjcNxbo2bHlR+2xlHP1QS+dCLay8CN6/ncYgYAYegZOeTgx4hQJ2aVrmOLuX2g9OcRzMJjFVpoyR3Cl5tWxs5BP+uC5b9y9Ibt+taJuWauBIkXvZVbL1UjPZv9qfHtONzs2H76rQ91AZJiB3hTLHoOgEOdIjVilz/ikvoJg0CbGW+1iyUhf/O+6lCE6E+5sLHCaQMnBU7+AW5F2kZ5bzveaWU3DA6qWWhwXe7Rch51sJAvHiNc8bzezQdvnW5yqA5o72wgpFlglq7rlJ/l7BwETCxRs1BlIZDE4iZf1vst0NebFJ5rTT3UcXmZ4cYFVGit6zMezMRAZC5WhkUPBt1s9GeNRndnTQcCtSiXGhEYDp8y/2OfppRht5BkOtYVueUbf4t8fC55HBlRKQ5fkfr3egFh3q4LuZG6u5kpe1Skk7XTZdtAEhnbICE1uKhraxPbkQFp
- kKv1NR1+
- 12NNoN+GiqqYXfM13WQ7aVb7shE1jNgATi6qKbZjag4t6bt9GpAkVhfE4hSM3jWdxqa1qKwy2w8lNkWFV6fizTKLtuYlfgzLQIJcrvGzCVWqUYHRLd4bMxpr/gCglcHmMdhqBmiNpDjlcHHj171KeoYRpSA69ZIWk3fsLU75HIDCLVce4Lb0sEjO/Dkuu984TqmsopjLi5pZLLAYKb4ebP5TbtdejHg6v/iC0nf22JtYZu0lhK9X3fSdKYFlcUba9UvhVJL6o+mC+hIpfWJE8dSZSZNXSUQ3+rHVu81Zbh2RB454=
+X-Rspamd-Queue-Id: 725E880018
+X-Rspamd-Server: rspam08
+X-Stat-Signature: u71zi8pkf5dt5hwngo5a7bjiiraem7em
+X-HE-Tag: 1774026200-722527
+X-HE-Meta: U2FsdGVkX1+Kf31qUXpF+ioyspz3qP7SXBSvDmYxEhSqvj+gIkPMUqJUfDZjgWBeH7gBcI6tIGacUUgQkIkxS2TKugM0BkxftgpYKxDuP6I7oZ0FBY6JlHFA9oxUAjm3HjdBLQwHySvFVcKbwQLXDOWm6l89XpljgqwarlEU4f928Z/vFhuSdQK9s4PomlJRMRYeVuXvCoVDkGRdNyP6a/hzaaN2PGHWDf2Ib42LswbsHG7DHEvEt1YnvpdgQA3qlFGBrXK8SmH6guBk4jGbetg2otrz3PRi/TkHRt+NFLZR0/Tb7uLK2ZosGAxmslISO0Ig+XkEidwf7aDd+VoKA4YToj+WQBA7RKQIxyRwyEhnPvQJVcqgEiH7gsVU2MJgaY0aYrKbPT5mWrIH2qhNn3APSoGVn6Bzxr3ydxjg1OX1HZDZHV6eRh2cFNrg+Gqmfir7d+f+fjvCouk6Evm4ZbeV0UJAtEfzzV14htK1I6lSyy0d1vlzNSFBmJGKe8VbHBemwES4e6Qf31OgEFq1s+r0qDUhwZ8tsjqLVDDA0qlFRtqAznRNrnS/ZEZWetdD7mXMkt4FIRQ2xzMUP4NNSd95nm4guxdnyJGWGnlbx0PQx32NkB7IjjozDfbedBG1yGvOjk0gUM06FCdVfWpx6v56iH5YcCaB9iKOp3Af/YcxHrnCLusRlIPfB5YieIWcEkeN+Y8zGpCHvgk6LXDO4o1rSO+Ci3paRAYwuyZn9EFqcskbHF8uM3BxwDciHnzsm0gPNn8waMSGKQE6I1MBTqUCVrMaHtTDzyfH9GVezI3km7uPjcolIARJsvCJz4BWR/tF5AUcy1KO0ucA17TG7evxRB/L0uWxcQF/oujikjLeEZvDnDxazlqruPLiD0tRkSzCD9tMIPmPr//YJiHXSMWeJQYdQ0IogAeAN98KbSGLAHOA5ft6uWJ0GkImEiwgjRAME6dNb+GHYvvqnZD
+ kFd8fAWA
+ e3yfKaPVrPIyNl1rnoydTENn4YfkcnfEnLZ1CqXqSQRRwm7EODdrNok0nk6+NTnJ+bov4GSqVCWvf2YeJq90NPqD/w42OgTKVOXafsNRCOLeGeBO5ZOpaS7CUgiUxx6Xv9jICfVH9sb4LGO+I49v9c+5P6zKAqwiyUAWC1hxItMJzsJqmFxHCk+SFAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,105 +86,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Currently, in the uswsusp path, only the swap type value is retrieved at
+lookup time without holding a reference. If swapoff races after the type
+is acquired, subsequent slot allocations operate on a stale swap device.
 
-> > > 
-> > > To make this possible, the system requires a mechanism to understand
-> > > the physical topology. The existing NUMA distance model provides only
-> > > relative latency values between nodes and lacks any notion of
-> > > structural grouping such as socket boundaries. This is especially
-> > > problematic for CXL memory nodes, which appear without an explicit
-> > > socket association.  
-> > 
-> > So in a general sense, the missing info here is effectively the same
-> > stuff we are missing from the HMAT presentation (it's there in the
-> > table and it's there to compute in CXL cases) just because we decided
-> > not to surface anything other than distances to memory from nearest
-> > initiator.  I chatted to Joshua and Kieth about filling in that stuff
-> > at last LSFMM. To me that's just a bit of engineering work that needs
-> > doing now we have proven use cases for the data. Mostly it's figuring out
-> > the presentation to userspace and kernel data structures as it's a
-> > lot of data in a big system (typically at least 32 NUMA nodes).
-> >   
-> 
-> Hearing about the discussion on exposing HMAT data is very welcome news.
-> Because this detailed topology information is not yet fully exposed to
-> the kernel and userspace, I used a temporary package-based restriction.
-> Figuring out how to expose and integrate this data into the kernel data
-> structures is indeed a crucial engineering task we need to solve.
-> 
-> Actually, when I first started this work, I considered fetching the
-> topology information from HMAT before adopting the current approach.
-> However, I encountered a firmware issue on my test systems
-> (Granite Rapids and Sierra Forest).
-> 
-> Although each socket has its own locally attached CXL device, the HMAT
-> only registers node1 (Socket 1) as the initiator for both CXL memory
-> nodes (node2 and node3). As a result, the sysfs HMAT initiators for
-> both node2 and node3 only expose node1.
+Additionally, grabbing and releasing the swap device reference on every
+slot allocation is inefficient across the entire hibernation swap path.
 
-Do you mean the Memory Proximity Domain Attributes Structure has
-the "Proximity Domain for the Attached Initiator" set wrong?
-Was this for it's presentation of the full path to CXL mem nodes, or
-to a PXM with a generic port?  Sounds like you have SRAT covering
-the CXL mem so ideal would be to have the HMAT data to GP and to
-the CXL PXMs that BIOS has set up.
+This patch series addresses these issues:
+- Patch 1: Fixes the swapoff race in uswsusp by pinning the swap device
+  from the point it is looked up until the session completes.
+- Patch 2: Removes the overhead of per-slot reference counting in alloc/free
+  paths and cleans up the redundant SWP_WRITEOK check.
+- Patch 3: Fixes a spurious WARNING in the uswsusp GFP mask restore path.
+  (Found during uswsusp test)
 
-Either way having that set at all for CXL memory is fishy as it's about
-where the 'memory controller' is and on CXL mem that should be at the
-device end of the link.  My understanding of that is was only meant
-to be set when you have separate memory only Nodes where the physical
-controller is in a particular other node (e.g. what you do
-if you have a CPU with DRAM and HBM).  Maybe we need to make the
-kernel warn + ignore that if it is set to something odd like yours.
+Links:
+RFC v1: https://lore.kernel.org/linux-mm/20260305202413.1888499-1-usama.arif@linux.dev/T/#m3693d45180f14f441b6951984f4b4bfd90ec0c9d
+RFC v2: https://lore.kernel.org/linux-mm/20260306024608.1720991-1-youngjun.park@lge.com/
+RFC v3: https://lore.kernel.org/linux-mm/20260312112511.3596781-1-youngjun.park@lge.com/
+v4: https://lore.kernel.org/linux-mm/abv+rjgyArqZ2uym@yjaykim-PowerEdge-T330/T/#m924fa3e58d0f0da488300653163ee8db7e870e4a
+v5: https://lore.kernel.org/linux-mm/ab0YEn+Fd41q6LM7@yjaykim-PowerEdge-T330/T/#m8409d470c68cb152b0849940759bff7d7806f397
 
-> 
-> Even though the distance map shows node2 is physically closer to
-> Socket 0 and node3 to Socket 1, the HMAT incorrectly defines the
-> routing path strictly through Socket 1. Because the HMAT alone made it
-> difficult to determine the exact physical socket connections on these
-> systems, I ended up using the current CXL driver-based approach.
+Testing:
+- Hibernate/resume via sysfs
+  (echo reboot > /sys/power/disk && echo disk > /sys/power/state)
+- Hibernate with suspend via sysfs
+  (echo suspend > /sys/power/disk && echo disk > /sys/power/state)
+- Hibernate/resume via uswsusp (suspend-utils s2disk/resume on QEMU)
+  - Verified swap I/O works correctly after resume.
+  - Verified swapoff succeeds after snapshot resume completes.
+  - Verified pm_restore_gfp_mask() WARNING no longer triggers (Patch 3).
+  - Verified SNAPSHOT_FREEZE followed by snapshot_release() does not
+    trigger pm_restore_gfp_mask() WARNING (Patch 3).
+- swapoff during active uswsusp session:
+  - Verified swapoff returns -EBUSY while swap device is pinned (Patch 1).
+  - Verified swapoff succeeds after uswsusp process terminates.
 
-Are the HMAT latencies and bandwidths all there?  Or are some missing
-and you have to use SLIT (which generally is garbage for historical
-reasons of tuning SLIT to particular OS behaviour).
+Changelog:
+v5 -> v6:
+ - Replaced get/put reference approach with SWP_HIBERNATION
+   pinning to prevent swapoff, per Kairui's feedback.  Renamed helpers
+   from get/find/put_hibernation_swap_type() to
+   pin/find/unpin_hibernation_swap_type().
+ - Removed swapoff waiting on hibernation reference.
+   swapoff now returns -EBUSY immediately when the swap device is
+   pinned.
+ - Updated function comments per Kairui's review.
+ - Updated commit message.
+ - Fixed pm_restore_gfp_mask_safe() to use saved_gfp_count
+   check instead of saved_gfp_mask, and hold system_transition_mutex
+   for the check.  Addressed AI review finding that SNAPSHOT_FREEZE
+   followed by snapshot_release() could still trigger the WARNING.
 
-> 
-> I wonder if others have experienced similar broken HMAT cases with CXL.
-> If HMAT information becomes more reliable in the future, we could
-> build a much more efficient structure.
+v4 -> v5:
+ - Rebased onto v7.0-rc4 (Rafael J. Wysocki comment)
+ - No functional changes. rebase conflict fix.
 
-Given it's being lightly used I suspect there will be many bugs :(
-I hope we can assume they will get fixed however!
+rfc v3 -> v4:
+ - Introduced get/find/put_hibernation_swap_type() helpers per Kairui's
+   feedback. find_ for lookup-only, get/put for reference management.
+ - Switched to swap_type_to_info() and added type < 0 check per
+   Kairui's suggestion.
+ - Fixed get_hibernation_swap_type() return when ref == false (Reviewed by Kairui)
+ - Made swapoff wait interruptible to prevent hang when uswsusp
+   holds a swap reference.
+ - Fixed spurious WARN_ON in pm_restore_gfp_mask() by introducing
+   pm_restore_gfp_mask_safe() (Patch 3).
+ - Updated commit messages and added comments for clarity.
+ - Rebased onto latest mm-new tree.
 
-...
+rfc v2 -> rfc v3:
+ - Split into 2 patches per Chris Li's feedback.
+ - Simplified by not holding reference in normal hibernation path
+   per Chris Li's suggestion.
+ - Removed redundant SWP_WRITEOK check.
+ - Rebased onto f543926f9d0c3f6dfb354adfe7fbaeedd1277c6b.
 
-> 
-> The complex topology cases you presented, such as multi-NUMA per socket,
-> shared CXL switches, and IO expanders, are very important points.
-> I clearly understand that the simple package-level grouping does not fully
-> reflect the 1:1 relationship in these future hardware architectures.
-> 
-> I have also thought about the shared CXL switch scenario you mentioned,
-> and I know the current design falls short in addressing it properly.
-> While the current implementation starts with a simple socket-local
-> restriction, I plan to evolve it into a more flexible node aggregation
-> model to properly reflect all the diverse topologies you suggested.
+rfc v1 -> rfc v2:
+ - Squashed into single patch per Usama Arif's feedback.
 
-If we can ensure it fails cleanly when it finds a topology that it can't
-cope with (and I guess falls back to current) then I'm fine with a partial
-solution that evolves.
+Youngjun Park (3):
+  mm/swap, PM: hibernate: fix swapoff race in uswsusp by pinning swap
+    device
+  mm/swap: remove redundant swap device reference in alloc/free
+  PM: hibernate: fix spurious GFP mask WARNING in uswsusp path
+
+ include/linux/suspend.h |   1 +
+ include/linux/swap.h    |   5 +-
+ kernel/power/main.c     |  18 ++++
+ kernel/power/swap.c     |   2 +-
+ kernel/power/user.c     |  21 +++--
+ mm/swapfile.c           | 178 +++++++++++++++++++++++++++++++---------
+ 6 files changed, 178 insertions(+), 47 deletions(-)
 
 
-> 
-> Thanks again for your time and review.
+base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+-- 
+2.34.1
 
-You are welcome.
-
-Thanks
-
-Jonathan
-
-> 
-> Rakie Kim
-> 
 
