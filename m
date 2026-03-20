@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CC821098784
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C57401098782
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:42:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DC376B00A0; Fri, 20 Mar 2026 09:42:09 -0400 (EDT)
+	id 628FB6B00A1; Fri, 20 Mar 2026 09:42:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 738676B009E; Fri, 20 Mar 2026 09:42:09 -0400 (EDT)
+	id 5DBE16B00A3; Fri, 20 Mar 2026 09:42:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B2656B009E; Fri, 20 Mar 2026 09:42:09 -0400 (EDT)
+	id 454B36B00A1; Fri, 20 Mar 2026 09:42:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 398786B009E
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:42:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50F8557270
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:08 +0000 (UTC)
-X-FDA: 84566555136.20.34F0C0A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E3894180006
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:05 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C43A6B00A1
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:42:10 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0546E16023D
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:09 +0000 (UTC)
+X-FDA: 84566555178.16.34C3C86
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CF5F3160004
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:42:06 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774014126;
+	s=arc-20220608; t=1774014127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rQjYWpmlv+mrYq33bT5muxtF1MpY60GigZl8eb0xVu8=;
-	b=Uca+Rotiu8/zGkqtiqWQpVD7MlRgMOly6VeT90k0Q7F/lLdW9mVT39C5UX9UJuu91cosTH
-	N1QRpdBqODFBLjDNe5XTYiv2Xu6sDPLiE2xLOmB2ptG27RP7l01ivwU7c7lfXY60jbB5yQ
-	8uxzGmAO86jCqx3touk5ALWsZWqZh8E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014126; a=rsa-sha256;
+	bh=UKch3cA360fq6oe1hSv7172yeidWMBNx7GuKOSTC8+c=;
+	b=rdjjBXeEfVcuM5lgd8js2il97uM5wJoxTg9JqkkMEg8F7MEoohHMrahoF1bUhstyDXm+FB
+	SwnF1Y7ObVr+mLcNnp1xIFRp/MlhuPTptFC63vO/UlquhKGIKoQ+VXhKY9Tt8rk0rXGAzg
+	MZdKQacWYIgJwQVOZs956Jmg0b/6Cio=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774014127; a=rsa-sha256;
 	cv=none;
-	b=zM3ggtTFDWA5ntXN5Q+peEXJ911xKdbOl4WaKDgeperWbDrdc11Kjre+W3ME/eqeB90YSC
-	njYQRnbw6JoaXXVcNCnNW1YWFth3/B8MVt//qs+ilFRZVWEGRDbAF5famdfk/L1qXOz6cn
-	F7A57GiifhXkHqgEgIdGsHjKgfDabjY=
+	b=y6OiLSCdBgl8S+sFWzjdTLtdJhlYBE34b1neiu/9FVTY2A7rVaVXamyE4dZQ4En+YgRVLi
+	tVDl2tqBuOCvq4xusDxJDBB4rFI7BwLBU4vi5gVp8QF+vD0Ia6Opd9Og9bwKMEExNgjY6/
+	5sdLT8fowRUKMyviJ4p0Mw4pt5O92uY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
+	imf08.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 19A774D283;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0464F5BDF9;
 	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B88F42819;
-	Fri, 20 Mar 2026 13:41:45 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EC89C42819;
+	Fri, 20 Mar 2026 13:41:44 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RYWjAplOvWlhCQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 20 Mar 2026 13:41:45 +0000
+	id 6za/OZhOvWlWCQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 20 Mar 2026 13:41:44 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 9A466A0B51; Fri, 20 Mar 2026 14:41:44 +0100 (CET)
+	id 81C92A0B4A; Fri, 20 Mar 2026 14:41:44 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -81,14 +81,14 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 09/41] minix: Switch to generic_buffers_fsync()
-Date: Fri, 20 Mar 2026 14:41:04 +0100
-Message-ID: <20260320134100.20731-50-jack@suse.cz>
+Subject: [PATCH 06/41] ufs: Drop pointless invalidate_mapping_buffers() call
+Date: Fri, 20 Mar 2026 14:41:01 +0100
+Message-ID: <20260320134100.20731-47-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260320131728.6449-1-jack@suse.cz>
 References: <20260320131728.6449-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1129; i=jack@suse.cz; h=from:subject; bh=beao/EQDuzv4ZgO4qf+fvb6RxeVSXsvs/lpSC/KX04E=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU5zll2aMdMKGEBu1la1q7D7+GVZBmHAWorp8 HB/ahbbPdyJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OcwAKCRCcnaoHP2RA 2XBGCADcx8JSeA6kqqWEFGGtLfqPM0lpVz6MmX3FbSnDoUQJiTcPh4Y87rHfPcIcNIigHR0W1fE jyLCEvhn3zZHc9M7T6O+QgdML6ZGvs29IPZ5UOUFS2nJPsngwQ7zSeLOaKv9kzpY76S9/a+yQs4 p3qpHASif3rGi3+vtrde4I/wuLJeCAgwjcF0RyLSqY933/kAbv3vDk1fhQRDRaFFJIr7sfm5IFD I5jIBFxwhCKoGGgFezAG9Rq0cGslIPKwJhrOF+W6AKv8H/W2HRWPYa6rqKARx7S+ALvdcLs44OF VcmIctWNMAIuu9VoERJPcgd6GNIKzpQDc/bXed2HqRlESb9B
+X-Developer-Signature: v=1; a=openpgp-sha256; l=595; i=jack@suse.cz; h=from:subject; bh=RkkBpF3L87rXPRrGMrmQZXeEBfTEFrhE0WIyjhBNgtA=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpvU5x1WeqiG0jNa0YkM8N4dWqoWPubtNi4LGzk SOQHx+qqECJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCab1OcQAKCRCcnaoHP2RA 2am1CADHew0GopYyiq30ItPAhV+oZoPkZPa9CPzEQKSw4r4HN+iVRkJp3k3Q3ik4UIxQzC7hD37 Vb/61LnMaqwohPFzoteJ/pvw8TwKEid13EcbJ4kYM6jg58ZE9DROj4xBsiH8XJeyI7l1Ac7qvwg F6taZ628Locbt04Hp4gBQFB/u7b6pm5I+4zb555RJ5jHcrQMBDZlJt0u1X9WbEsJjkAAwPEf2Qq 5xI5qBVskv3riuTGkLuP+r/5jLVwODXPkVAtxSSEfAfNHnUcK2sBEovCfvW8jT+UAZYt4/Vmhub bWXbwrAfcLW1o+CUTXG/hlAtuMsHM7WZStmfM5JjWCYXoNCS
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
@@ -98,14 +98,14 @@ X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E3894180006
-X-Stat-Signature: cz9tp94nkmjozw53szg6jdujwzrkyke7
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CF5F3160004
+X-Stat-Signature: hw5obpjb661yibddui4rtprjjotxff7s
 X-Rspam-User: 
-X-HE-Tag: 1774014125-276855
-X-HE-Meta: U2FsdGVkX194qgyyOVS0xtgG6DPfZ3MGagQKx6c7sAkuLlYoUDkP3hWETyEqBy1xOHQAflVFfdM3l5VewbkjJemSOxsiGw1esMRfSIo0iz+nlORA0nfsbAL5yZCY+VVj8exokqBPcY5oplgaGR2ew9JeWKJlTlOml7X/uMyN5I9mZILLczljcAwWL2s5CY5Oyz//4lqJi640MEIjGXs2YW0Tfov0a3ImNjBNRxYYe1hLLn55JPQuuKFa2sFVDiTdSz7ZjhzGitRxsFZ0KVlEa19kRELzPjAsa13jkfmDU5hoZZizFzmzMTaiPp65dnaF+HqTAiIX7GSHHuEYTq6EQBrdZ89QBWFMiH/hXu3KAhJiqmFXpsNvjcWRjtSSIXHw5VjXRUaYvxk3X8N1lgkwKzKpULiZG0/3ohEqnGra3hZOGYvSgsOkQyC92Yg6agYhVQbgVNnkKL8SmgnjJ7zcY/qr3wHyZ7MyPy+2r0XQaqlwNgk0tVS7WNDSxiJl2VIqdCR764yneaPioKM8VIMj0DFAO11yi20g66sJCGRwR15w2kpy6WMerwUcUdZbzOsJZLUGM9nMJDsFjLRybFszysOg5HMIo45myH+5VyYAQ14YVud6gTEL1D/roftbdxw9qdqm/a+0FoIiyRZkCB5xOCEbAF4Ttk2LxKpZGT3yLgJCM+LOA83dWHQJCehjzxmzJ4q9hkgweGTSwUgY5EUa/qtHhiewgor3S8X0a1nUHUAaEoSj0uEiigOfFBaDDQ26LPgDHZiRKpATwWw8CkgkS31P5cEbd+qm2qbxrrlvjbLTp1WSFVW3DPQCyXpC2tq/G+767/r3Z6X7XiIty+mDu7MGSr1dehDc9V21ImALwXQx7YmqZYLThpMYLIKtc43kMclHJnu0LxG+aen1KGG7dibNkN6Qo+2XkuT0vWagzgoz2JF9qkcg4riDueha3KqUDm74GvVl5/hTWLw0f6C
- 7jQkKd7T
- PiRNW3w1kbUpA/ar2hq2KgIqOnbW54Y6YtPvVfitGRPuL+ANnBhLT0oB9rrS2AirNZIOUy9CyxtqsQ5zXieurCQok0NFCFKHpBWioLODjgytcxU2irpQlGHnRjDecxrhb1kJEIUlzAdF3ijWSiRUuYLorElTTkPNp+is0BJO5wKdnr5WHZqNf9tXK6/0qzoLXzJPu
+X-HE-Tag: 1774014126-585041
+X-HE-Meta: U2FsdGVkX1+ZXRJM+tfNYma6YQwc8SoV1ZmIaajSvEG7NdbS48YAdn4C/tByr95okd2EeGOWFIJfhg4MCIR/jQ1B3zKBX/QYADWY4lvUoGzPQVtZ6XiARntWLtRlEapFJvHv9LBgyqSbEa7P0wrshRQh1q4tjJdMNVYr63WDvkxRiZBFb8/jBZwYGBFrE6uTC0QTLieNoNYWFmtYPDI8YY6b8+xCxITQfRUPvQKbAwE6ILn6X2AdORxkryBRnu7fpH72hgLhAwxeUwbgEkZ9Wlo6Q7dEozPejX+a04EogQRv5q93vcdpVjuUn2XNjkHR0pVmVaymg1TyoWNsM1X9OF1pWlFLq7Gr2cDf3GnngYeQcQdTDDWjQDqcxMxdh14/m1zlyyHRPjWZ82X+q2+ONIdjK2KBs8vbInvVWijqKbLhushMkcN0eSfufB1yoBCZaqt6+xy+4PHi/1QCelrPb9JINlv7vLJoGS8+uKMaLayGxzbJEBEdn4t6mQ45lEh9fTc+uPHAczVdDJflqqVdyC1bS28ztyXrWbtZ/8uqMxftT6BjW2m3YKo1+8fhhkg2PWkM1paLV1HCtgUvrq1Po2FMWlArryhHyHALu6DH3WRo15vidazUafczZMZHKFKYk+VwgRlstT0Gm6oQDOznc/nPBFqwxltvNuEac4/rDLxTwdtyn2YW+7W+69yuySvLGGYgwOwWBjfiH0VOSlgwPCViQN5N9V1UliM8DIi5tZvN6ElPZE4gc7H3Nvm2VB2rrrChS1JaMjnJhfx/sdFO1NzCcbRldx1H8j3F/putghbjWmbB2ubaRvYMY6U6C78HEBAp4nUPISuthVc9L9UvkKt5M0y75u7ueAvUm7ndW4wmDhj1D8bKfMpMLwdTVNzJVY9eka/ExULeq4/yGS1FOceJ1baFklIv1bUitBWtZMwM4OqFvMpJi/r6ohuBK+ToolAudrsk1aJ5PO2gah0
+ CMX90UbJ
+ eJdamGUqjxZV0E38LQtSwwuKdhWRekrWnaxSe4O+2JYsOQUVjX5tVVNmf1My1otRRIsu9SIKsbaklogBzu6f+TkGS3rkUTO+H+WI+tV2+UDsmBJ54zlSqQY6wEHDwWy07DiILFyE8Gh9/ztSxKPqo+3KQS3naerSgHjBD7VoA0d1HCk3PxMWUS40T36a5VIv0j81x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,41 +113,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Minix uses list of metadata bhs attached to an inode. Switch it to
-generic_buffers_fsync() instead of generic_file_fsync().
+UFS doesn't call mark_buffer_dirty_inode() and thus
+invalidate_mapping_buffers() never has anything to drop. Remove the
+pointless call.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/minix/dir.c  | 2 +-
- fs/minix/file.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/ufs/inode.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/minix/dir.c b/fs/minix/dir.c
-index 19052fc47e9e..a74d000327fa 100644
---- a/fs/minix/dir.c
-+++ b/fs/minix/dir.c
-@@ -23,7 +23,7 @@ const struct file_operations minix_dir_operations = {
- 	.llseek		= generic_file_llseek,
- 	.read		= generic_read_dir,
- 	.iterate_shared	= minix_readdir,
--	.fsync		= generic_file_fsync,
-+	.fsync		= generic_buffers_fsync,
- };
+diff --git a/fs/ufs/inode.c b/fs/ufs/inode.c
+index e2b0a35de2a7..77617a31d517 100644
+--- a/fs/ufs/inode.c
++++ b/fs/ufs/inode.c
+@@ -853,7 +853,6 @@ void ufs_evict_inode(struct inode * inode)
+ 		ufs_update_inode(inode, inode_needs_sync(inode));
+ 	}
  
- /*
-diff --git a/fs/minix/file.c b/fs/minix/file.c
-index dca7ac71f049..282b3cd1fea3 100644
---- a/fs/minix/file.c
-+++ b/fs/minix/file.c
-@@ -18,7 +18,7 @@ const struct file_operations minix_file_operations = {
- 	.read_iter	= generic_file_read_iter,
- 	.write_iter	= generic_file_write_iter,
- 	.mmap_prepare	= generic_file_mmap_prepare,
--	.fsync		= generic_file_fsync,
-+	.fsync		= generic_buffers_fsync,
- 	.splice_read	= filemap_splice_read,
- };
+-	invalidate_inode_buffers(inode);
+ 	clear_inode(inode);
  
+ 	if (want_delete)
 -- 
 2.51.0
 
