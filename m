@@ -4,108 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9856A1098783
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:23:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB1501098784
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 13:28:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD2CA6B0093; Fri, 20 Mar 2026 09:23:01 -0400 (EDT)
+	id 28EF96B0088; Fri, 20 Mar 2026 09:28:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAA006B0095; Fri, 20 Mar 2026 09:23:01 -0400 (EDT)
+	id 23FEC6B0089; Fri, 20 Mar 2026 09:28:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBFEB6B0096; Fri, 20 Mar 2026 09:23:01 -0400 (EDT)
+	id 156626B008A; Fri, 20 Mar 2026 09:28:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BC8C56B0093
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:23:01 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BBE856731
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:23:01 +0000 (UTC)
-X-FDA: 84566506962.18.A2534E5
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AC29820011
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:22:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Ktc2KFA/";
-	spf=pass (imf03.hostedemail.com: domain of 3Mkq9aQgKCBE0rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3Mkq9aQgKCBE0rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 04BDD6B0088
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 09:28:06 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3AC4C09FD
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:28:05 +0000 (UTC)
+X-FDA: 84566519730.21.F9583D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1DA2080009
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 13:28:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pUepx+r+;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774012979;
+	s=arc-20220608; t=1774013284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GUDqodDk43yn3drXIlYhMhMKH+w2qm8q4A3+LPiJy1Y=;
-	b=fWx2vnzLgezZqJJDm5B4xAu6V/lyiM+7OnfCG7wPco5cYS27pJHASLa9eekowHa1gMtgoD
-	9+7VqvBGjww76uG3GmOJV/GCivbQhxExELR7sYk+XxzpyQJQYx4ZsTOHWZ3e518QmFks8f
-	HWSurjvX8IxO7RjOGIK284s6qK2TBe8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774012979; a=rsa-sha256;
-	cv=none;
-	b=DLxlT6BKd2AijhASb7HJJALqfx23kj/S+NawCAF2zVhmOkXvuaPVesf03sZNygHq2WQxwF
-	Hg5dZxjHtueyijuJzMQXp974sJhmeIcwDt+6+aoGdmfhwfH/wuSr+MG/SmAe9DcBbHhh5v
-	O6yJq2uv2NGTKMG9Y8M2NDr85ghT870=
+	bh=6O4h0+opLFRUmpIf4LRqAamoPjFzwH0T4T5yg2VavMY=;
+	b=YkDR8XtWqOVrLC0zsnBoNeOtLftcnIcbP9kQJwUai1rP5aUcopDj+sBAQdYbjN851uHhCl
+	qHzeZV/QvXHhkgdJhgqruun9XuAGHFJ/iC6yHqNv4tcAoOD1TkoVbu/HiEXW/Nd4wEjGc3
+	C3a6WQMssv2GNVZtn1A/d2rIVO/y664=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Ktc2KFA/";
-	spf=pass (imf03.hostedemail.com: domain of 3Mkq9aQgKCBE0rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3Mkq9aQgKCBE0rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-486fa35b005so18600685e9.2
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 06:22:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774012978; x=1774617778; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GUDqodDk43yn3drXIlYhMhMKH+w2qm8q4A3+LPiJy1Y=;
-        b=Ktc2KFA/76+Vh27yb2IOgHZqWhGwF6Xldkr59BeItQrzIcmj5hWC8cOj8WOAPyYV3j
-         9lfDWEvkScn8H5sBRvTz8C+blvMkKTKs/sWn3R/p/4zPpTNyNi3kp480EhNVE0fUYG6w
-         sKLbv06h4BuXdl9QxA9Yav2LyoUGPa5QRab/mT1DcF9g+h56GbSHzGfE+Pp8cWAO7FBv
-         NPipyn+kHVRpeFjvRMk5RMVeY+VbnTv5SiSfx6LuFz86city/v91/aXvprgJvygXMy7T
-         ljygBPeYibKrmU+Xk9nTPgvFwnl16gJisJXdmWmJFYBdUnwCP1GqoFXg/YJkCvBHtevK
-         QnVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774012978; x=1774617778;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GUDqodDk43yn3drXIlYhMhMKH+w2qm8q4A3+LPiJy1Y=;
-        b=AX6vd1+r67NUwP9OlSFD6+gY2keOiQwrED9Uw1m3x/2eP/0U087jJBajrrFsrUkSlB
-         VFeEbngFabxSysHM2uOQwiMfdL6GLS4mzcsC0TshBP9VOUXi2bJhZFxLJkE2oWDm8UIe
-         +NXS5Zk+Pt1Kg2+K9/fTLzT/KLLpA2V74tb0EymJ0gS6Ll5eXigJVMSUlDoQn3ykwjDR
-         eb1pJviuC9MTdDhgcJNoBXzmalh93QrKQ+JRAt7SFxPCP2Jc2eyh5/WwXUF5UvtYpnFY
-         hOfR4vPBYZoe57eW3ljAPK30L64Zh9YTnilzOtD61oxJUlgazXEi4I9zwl1B/waGUowk
-         dL3w==
-X-Forwarded-Encrypted: i=1; AJvYcCUqMlC838ZdV4kNCbneVdU2eq051+l8n4ia9Pp2j+egJZeutolrIsFElEeNu8Awv/qE7CDAxLSjZg==@kvack.org
-X-Gm-Message-State: AOJu0YyEIOZ+WUWsTOWYtmx2SjNKw4BvC2p3Cheq1AmpsGP6pAAmJ4/c
-	fNc63AEgxrcBP4py/IiFRJgPZ8ciRaxsOTveIHIeoTmWeEQ1Nv7D9GM9QmJKmzwcdzqk51PzXrW
-	XFXcX6SiM5lKTVA==
-X-Received: from wmbdx7.prod.google.com ([2002:a05:600c:63c7:b0:47d:5bef:a379])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c167:b0:486:fab9:a578 with SMTP id 5b1f17b1804b1-486fedc3843mr45048705e9.11.1774012978000;
- Fri, 20 Mar 2026 06:22:58 -0700 (PDT)
-Date: Fri, 20 Mar 2026 13:22:57 +0000
-In-Reply-To: <DH7IJRSKJFFH.36UW4MCZXCYWC@google.com>
-Mime-Version: 1.0
-References: <20260319-gfp64-v1-0-2c73b8d42b7f@google.com> <abwqq28hWXMLqa5P@casper.infradead.org>
- <DH6Z95PTZYVF.3K64RCJC06GEJ@google.com> <abxs9k__wWWLL2hb@casper.infradead.org>
- <DH7IJRSKJFFH.36UW4MCZXCYWC@google.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DH7N46W8JRAP.1KOGS4T4NIUGB@google.com>
-Subject: Re: [PATCH 0/5] mm: Switch gfp_t to unsigned long
-From: Brendan Jackman <jackmanb@google.com>
-To: Brendan Jackman <jackmanb@google.com>, Matthew Wilcox <willy@infradead.org>, <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Uladzislau Rezki <urezki@gmail.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: bkttgwnm1a9ub1pwbe17q7riehtkm83o
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pUepx+r+;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774013284; a=rsa-sha256;
+	cv=none;
+	b=AslsSI1fvrQwlCtRCzaJt0GEYFOIpN6a9uhe69DQTLoK9B2jkEKa1D2TwaenbhJYnIQyda
+	/HWlYAes5J0q7kPJr19qjmYuCfsZ6Byw7WEV5wC3HTkTb34t6sf21pR+JU4ocXrNp/hnOs
+	SeJbPHBzkBg0w8S4H1M4AeO3P2vB6Mg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 820BE61850;
+	Fri, 20 Mar 2026 13:28:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1FCC4CEF7;
+	Fri, 20 Mar 2026 13:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774013283;
+	bh=u5l4x5uZN5shVbY3PU85+mwh0difgnGZQOyXwfxun/c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pUepx+r+sgYzj79NAcYPBsSpbBmA4dWap2FkzCydY1qsT3ymg7SRHk3c0rTqiRZS9
+	 ozkynsYcBsUDjEGKtyLK3q7F1k0XXT0tdxq1oiy9olLpv6O+Tpz/y4mZiPByP3+3ti
+	 MLF1oNDnMWYbQcrBlBuPvgj9k2e7uhXmxEb/52dGPXMXjODiWEKxkIKsXhCHnMAgAP
+	 2O3pXUCVF6FUPAZ+2umbUO1b05UgvtI1F0ATK6y++Znz65jJPdPRnhslvynY4GZae6
+	 8gtScmN+PLT19RMIfcL+674X0dJ0MB+p9K1TgMTyaWFnYfDUrm/R0Pc0TrPIoEaSFO
+	 bkXz7sKw6Gxsg==
+Date: Fri, 20 Mar 2026 13:27:57 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH v2 0/9] mm/huge_memory: refactor zap_huge_pmd()
+Message-ID: <8ae5a5a3-f2ad-4be0-89b4-b8beadd957e9@lucifer.local>
+References: <cover.1773924928.git.ljs@kernel.org>
+ <20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AC29820011
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774012979-47923
-X-HE-Meta: U2FsdGVkX1+95/kbXHorUW7kcG5pxp0rh7XwielkLoQJQgyJKh0w6EcJYakcDDNPMVUydPSJVrZnFgDwT4lNxLlyPiTD5KCpu2zJ24aW3TQGLGPQhvQ0cfFygTi3r1IA5tW9veFg3r5BHDvj/uY6JzoyVNj7Uuwf/+8AY2yCOpEOujDY8TzvkgYCUmWAWdJbD0z1v6c7ZoLFjErmEFvHq5dwlGaY9oLnHEmm9IpzPswMB9NLbWgoWzHpCULJ0a3n9+9VMJODZdMUK2p8ONUiyTZVBNlPwzisa8y5ZgOlEgEfZcMTFnuTm2vodEt6YOrWguBNTszCR1jEd+SdrjlLLNpNexCNlQTRgwmZq8I5dUARmlRFEbngzSxSah+oWS3uIZBRG2Z1VsGU/h70HSicQozkLvHcaRZvpKYwHRPJUH24WP6VGYU5GRQfPLB7uUtqpB4G7xqM8aoAfsbuMVL+f6jQQ8To88E6ddH/yTpuXNANaETtYINhGNNVffJM1Ghuch8M+mk0hctpSBsgfpifh5K7DBBlUAuXOc65RbDZ2teJOpAw+24x6vxWrQRL23mQWi0UzcfPxOEO4JyH0v/cDzSLMTh0IgTlZGvF0rebqedLOuITE0yKmgx0FXrXP2zMNkuJ98bGkGC/2svlm5waaqNCM3y/u+N8wWCccWjj1Rugd/SPPN+HnkoPX0j/+UjYiyUKRNcDHpI4/hyNzpZLwZX5ZpsXsBupK4xYfj+ySnk0por7V1baISfugEjXqTAl0l7HREBz8xgzF9nrzvUsxKXpoOpjEPwW8cv8rvj15NClHmaBIH8YU4+fvjb+Go60wsDPBAozL4jD5JbnXP/SjMjfA3MGbnpn6PFbNFaStM3qfVbHEbIDFYUYdBr9bsqlgX49Yl1ISvXyKZ7XtyDTEDHQ3cMtQkCF/pvxohw/ad+wWMUaYnGpTuNC2p/rd6mT5/gmGW96w7rJScIFyv6
- qgWYsJLT
- PnC8t41nxQ1sSPS1T3u//PKdVNlaURt6sNQCjxmbf2tqFry81zGfLYfGMtPe7IegFZS8eS3OqCVXtvv1IpHQRk/5Jiqmhac6mlx+74YygCyRzGyOlCgKiJ5jLdVtm6eC3sELLpmXBWKP/y+tGscytBRBcfda+oXbgitWnhM61ClXjmYI2Mv2uu+TgY94VYgExD6B09SlJ5HywIrGc+vYmPolFMnQOP4v9m05d5v3jSJJ2sRAm+J6XQIEcEhl5NdqUituXb527aF9i88lRTUW6IEK834GPXbXpRt0Oic2JLjLPSn2DZCFzT3gWU7j2m9LF+vTiit0e0oIgQJOX3K3mgPSegcjIsoynjreGb/u7AaLJLHQUDaEd0O4e7FP6tMQK3RP/hR/Y/iG9jywYfWtCB/1IwDuMR7mJrZYcYQJHEaYol7rqaI1BNAi0eWhkR/LPn6XE/KRn5S3pQHXdBYRnJpfSCUADLYwHarjZjcTrfaOVl/tks6ZnQzvAreREIkM/CFaDh3+xw+fObdTV0ve1ucD4vsZGki0NjyoXLP9FVFVTZ+M78JxUkDqZBGAvTY54hRk4P0aZJ/evLUAt2f9zA6iaylkh/Nu21k6aEVUo2TOYjGP5t6Ai5kLKlQ==
+X-Rspamd-Queue-Id: 1DA2080009
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 7b7e9w3jyr8cnhj8mx8e8imi1b43fnrg
+X-HE-Tag: 1774013283-632014
+X-HE-Meta: U2FsdGVkX194CYrCWpj82/RF3lsb5qvQCtPaaPKU0ezISXxmS7tGHbmLGkT67/MrfNNR+/BXLveSRzW6nILMo8YIaMmT9parPgUwiNLxggQXDpi+yFA1mmP2RufsNZGgBVdEnwVc9yeGfhWjrx5WvOdM9otn+C/Rq6IgbLsaKSakzlZmEkmY0VpJqU/lNScK3AtcO/I5UCXalcjVex1dUcEL+aXikaylrQWhdQZa80QS99+BudDA+MTpKjwNuUlTr1dn8DtkIUV5jx/VtrmRaaSM7osZKl+dwyeEVa1dOGx1rbU0nL3PbsKaI2mwy8j0HpyxjUG6pNvD/uqLWK+6IrPTWFzzywijmtRZ/Bcda+Ml/X+fuDUCt8vW5l/3Dpe276BXpK3jZdvxOsCXNN3ypuaZewpbpgQREcc1jUapkunPLQf0pZxSya16SgaKXsx9mwVYqszBgwDeSGC4UbickK0f1emyEJBf+gxU350Jn3og/3/Aw362AEQslash+H95YoTcNO1v03RESwKNokrbi15rCh/kvbNLEN7zg/+DTEDelUSRDFEZiHTy2w26lykwbJuoPgU+1+6bIWs/SMJ5vHvwtln+QbS3Htyz2wPssZg13cr/kuj+vj2unhTExcYxxh69AT55w9pxafufjnEqJ0Xc4D9CzHjPuc7vz1d8Sj1w7u9Tw5B9vrsbHS+s0iybC3RB4pcXR5/SmjoBlj5V54/3jS2/FII/vUlbYEPLu0Uksm6TrvSXIYLbVXWW6ZfLNnjDKAjiNpYN7U9ZW0Dh2eCT2ijblJTkPgSiHjZP/jnPuDN6QXVlCqp/o4HRUjV5AUyCfn51jSbasG0ch8GKeOw/jO+6z7Yl2DOnnnZ2EU3BbkoetRH7cV4KqSkO6LvcTOGnHDmtTBL8k9YchWrFmWl6/uyuY0w9iSxURbFY8a1YrqTGgT9RRgtc1LqlchXE8CVevhzqB9WE4tcAynq
+ yuOrquGB
+ zqSYho19Azx3s+ehYAOVaDrhe+ALTDK4/Nyal58NlVvVQkM/QZGyqROWFoPIDEJcLKBOZ0Y3lkF8cSgXuAKCUuoCvgaJplxsrNnQJyxvj7VytOoMTq+SA1wWSeosEvdk+/XCZk/mIBta3ibbZu7J2XNx/TCqo6NJFtmuXXKfK4k8gm6XU3/MeOhFoqK8YTCOTPRvZCS0DcWSRH4GCqkucTdExSqNVJIIh/JBspzqKNrolVNDtpt5U6ecOu6y26ZadFMZB+eZRT/e7NHOU/FpiZ07/CAZRWeBL8D+QU/TOxw/GjMYPXiInznad6+X42cAhUPADRI+ExN+JhC5ayMHKzjjqoQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,43 +96,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Mar 20, 2026 at 9:48 AM UTC, Brendan Jackman wrote:
-> On Thu Mar 19, 2026 at 9:39 PM UTC, Matthew Wilcox wrote:
->> On Thu, Mar 19, 2026 at 06:40:59PM +0000, Brendan Jackman wrote:
->>> I will paste the diff at the bottom. I _think_ all the problematic
->>> expansions are downstream of struct xarray, but it's quite likely my
->>> sense for problematic struct expansions is weak.
->>
->> Urgh, no, it's not all xarray.  There's one in address_space which we're
->> trying to shrink, not grow.  
+On Thu, Mar 19, 2026 at 08:09:17PM -0700, Andrew Morton wrote:
+> On Thu, 19 Mar 2026 13:00:06 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 >
-> Oh sorry I just assumed that one was xa_flags.
+> > The zap_huge_pmd() function is overly complicated, clean it up and also add
+> > an assert in the case that we encounter a buggy PMD entry that doesn't
+> > match expectations.
+> >
+> > This is motivated by a bug discovered [0] where the PMD entry was none of:
+> >
+> > * A non-DAX, PFN or mixed map.
+> > * The huge zero folio
+> > * A present PMD entry
+> > * A softleaf entry
+> >
+> > In zap_huge_pmd(), but due to the bug we manged to reach this code.
+> >
+> > It is useful to explicitly call this out rather than have an arbitrary NULL
+> > pointer dereference happen, which also improves understanding of what's
+> > going on.
+> >
+> > [0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
 >
->> There's one in struct sock too.
+> AI review has questions, which I assume you've seen
+> 	https://sashiko.dev/#/patchset/cover.1773924928.git.ljs%40kernel.org
+
+Nope but I'll have a look through and see what's valid.
+
 >
-> Huh, I suspect I am embarassing myself with this question, but why are
-> we sensitive to the size of struct sock? It's currently 784 bytes in my
-> build. Are the adjacent fields very hot, and we need to look up the GFP
-> flags from hot paths?
 >
->> I don't think this idea is worth it.  There are other projects of greater
->> or lesser churniess which will give us some flags back.  For example,
->> we could finish the GFP_NOFS and GFP_NOIO removal.  We could finish the
->> radix_tree -> XArray removal and get back three bits.  
+>
+> This isn't going well from a workflow POV.  I merge stuff (this was v2)
+> then half a day later a bunch of potential issues are identified.
+>
+> If these reviews are useful (they seem to be, enough) then I guess I'll
+> need to further increase the lag between seeing-it and merging-it.  But
+> if there's a 2-day lag before I get onto a series and I'm the first to
+> look at Sashiko then that won't help.
+>
+> So it needs to be something like
+>
+> 	- series is posted
+> 	- 24 hours pass
+> 	- submitter takes a look at the AI review, maybe prepares a new
+> 	  series.
+> 	- 24 hours pass
+> 	- rinse, repeat
+> 	- it gets merged, hopefully with some Reviewed-by"s.
+>
+> Not unreasonable, but it requires that submitter be made aware of
+> Sashiko's comments.  At present that's via me being tiresome.
+>
+>
+> Anyway, early days.  I'm thinking that an emailed reply-to-all from
+> Sashiko will help.  Much hinges on how useful submitters find these
+> questions to be - something which I'm paying close attention to...
+>
 
-Oh, but also couldn't we get those 3 back by expanding struct
-radix_tree_root as I suggested a few messages back:
+Please not yet, it produces a lot of noise. I've responded at length on the
+thread on this [0], and while I appreciate the tooling, it's not ready to
+be treated as giving entirely valid feedback yet :)
 
--#define radix_tree_root                xarray
-+struct radix_tree_root {
-+        struct xarray xarray;
-+        gfp_t gfp;
-+};
+I think David's on the same page as me on this.
 
-That seems to make sense as a way to avoid the xa_flags overload even if
-gfp_t doesn't grow.
+Cheers, Lorenzo
 
-(_If_ we can tolerate radix_tree_root expansion, which I have no idea
-about. Otherwise, yeah seems like finishing the radix-tree migration is
-a good path to more GFP flags).
+https://lore.kernel.org/all/39e6b4d2-8a30-4eaa-908d-5d11b746f8d5@lucifer.local/
 
