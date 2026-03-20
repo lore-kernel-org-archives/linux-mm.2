@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE6A109316E
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 03:09:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F48F109316E
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 03:11:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 509756B0421; Thu, 19 Mar 2026 23:09:36 -0400 (EDT)
+	id 951926B042D; Thu, 19 Mar 2026 23:11:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BAA06B042D; Thu, 19 Mar 2026 23:09:36 -0400 (EDT)
+	id 928CD6B042F; Thu, 19 Mar 2026 23:11:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D0576B042E; Thu, 19 Mar 2026 23:09:36 -0400 (EDT)
+	id 866436B0431; Thu, 19 Mar 2026 23:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 299816B0421
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:09:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E7D661DD00
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:09:35 +0000 (UTC)
-X-FDA: 84564961110.28.3DD621F
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AC618180006
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:09:33 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=j7VGs8Kj;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 74C936B042D
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 23:11:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20ED0140856
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:11:02 +0000 (UTC)
+X-FDA: 84564964764.24.560807E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 535FD20005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 03:11:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z71svX0W;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773976174;
+	s=arc-20220608; t=1773976260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VWrUuwn6/3D2jBpHTBrix7nCaDc+sDPWfC/Ra1XXa8Q=;
-	b=DS5UG8f4D8h1Uv0KmFO8qVoumj4rYXWNfYvetwZKWCF6E7rEQ2tIVcH3yy85yPeT4IDwB/
-	NAA/cuBsmeiyU4GL/XM5LbP+1G8TSSeo9rzI5ve1tJVw94sVfNU7tot9neI/g3gnMWxDTv
-	pgf+NyEh7wVdpwKnTNVV3nRvMgmaUy4=
+	bh=rsx2towfWilL6iLCd+Hbbd67kMffYO1gq0QffXV1D9A=;
+	b=0+LZ1Y5DRW4xdrJyWjDhqnUhhpfIfiTEqbP5d4R/VLOvxocfrR/9vytaLb+Hmfm1GMmkhy
+	QGs6/g3NUfJeZi2/wD01AfpYKn1VwIxSOIVuZq0MozcwWCYILtNABIJ8ujKZlvSs0Fjd09
+	wNj/4qirM0TbHj5jxoXmcmja+w6CFuo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=j7VGs8Kj;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773976174; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z71svX0W;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773976260; a=rsa-sha256;
 	cv=none;
-	b=mFcAuyNriwvre/gr5UESWomUh9kc1y4pMYSV/FfW5j5pjvD+2DBW9B+LnA3kQKWCpDMyMm
-	WERsJeij1YZxt05RJiFABvxGv24lquCfoPfju0yIIrt70lRF7c8parV0lphVo3Scz/5dA7
-	1HZnw76WQG94fihB5w4+hETrd0WHmmQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773976170; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=VWrUuwn6/3D2jBpHTBrix7nCaDc+sDPWfC/Ra1XXa8Q=;
-	b=j7VGs8KjVuuuzQ1cQvvGaD/P/rZRDoIb2hSGGkSaYazWS9aMVrPy3EM/GFinsa3FmB7EW832UoPIAb/fL86fZER3F0IzAPD1PgXdbnNkseuF4Rbd+3Rol4vmur4hB+4+FPxap/HdH3kkREaQoCnvwpj4j0jLo6ern/fcRlfe6os=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X.K9Y71_1773976168;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.K9Y71_1773976168 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 20 Mar 2026 11:09:29 +0800
-Message-ID: <a745d7ad-5d6b-4bef-b102-09139f56556c@linux.alibaba.com>
-Date: Fri, 20 Mar 2026 11:09:28 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] mm: change to return bool for
- pmdp_clear_flush_young()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-arm-kernel@lists.infradead.org, x86@kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
-References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
- <eb513ed809685f78e0abdeb7f7b6ebdec0fcca18.1773890510.git.baolin.wang@linux.alibaba.com>
- <60e7cc1b-1459-44d8-8088-30b7ba3e9b44@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <60e7cc1b-1459-44d8-8088-30b7ba3e9b44@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AC618180006
-X-Stat-Signature: k1wxhd1eh73qmzdjzjnxa6r3thchddms
+	b=VcyqBLaj2AEX5pbHfGCgvFDLkU34QB07xnkhYhssoNRrTvF5tts/dUs0uNm6fh3KldEnDy
+	jdwHH4okceDJokvVG+/az+4WdUrejL+QcjTHkuEFR8f69PFds4TyT0GZnFnPxlLgqjNlXV
+	LDd6O1bcOGMOdRURpDgRrFN5IqTKyHk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 57EA240BFF;
+	Fri, 20 Mar 2026 03:10:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA4DC19424;
+	Fri, 20 Mar 2026 03:10:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773976259;
+	bh=PWVgh1useoiif8rGVsyxHxI0CYpzSQvYe+hudbWgJgk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=z71svX0W9IEG9X0CljZclwmdPxrS2xt0DgkYPV0miyW6uLliBKplyUI9cqLWsAMID
+	 HknlgTOQAMOZMIJ0rHvOhVmKRO4JG7rzBzNqhHQadyrhW2vHnOnPmp9Trx7zagjUeA
+	 Gp5Uj70ZJr6CbF0U6zE8qTTGLs0kE3eFTNqcLYV0=
+Date: Thu, 19 Mar 2026 20:10:57 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>, Peter
+ Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben
+ Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
+ Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, David
+ Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Uladzislau Rezki
+ <urezki@gmail.com>, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, Andrey Konovalov
+ <andreyknvl@gmail.com>, Marco Elver <elver@google.com>, Vincenzo Frascino
+ <vincenzo.frascino@arm.com>, Peter Collingbourne <pcc@google.com>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan.Roberts@arm.com, david.hildenbrand@arm.com
+Subject: Re: [PATCH 0/3] KASAN: HW_TAGS: Disable tagging for stack and
+ page-tables
+Message-Id: <20260319201057.05d57006408a2f77342eedc2@linux-foundation.org>
+In-Reply-To: <20260319114952.3241359-1-usama.anjum@arm.com>
+References: <20260319114952.3241359-1-usama.anjum@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ykx33tqqzedoucx9ruzh6fgepdmywibu
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773976173-534626
-X-HE-Meta: U2FsdGVkX19RA+9yyDYo71y/kx1K9yIKTlkohsNNexcwWYZFqVCReQrrjayVHI0xbew/E6lRlkb+UeJtdBrbnsb99g5cVFUXLcqGHUKtORFLCbzpSA3VRmHigNmdUQaIlqAmqD1x9565YJ0ZupTKFKMrW/qsSi/P3V/HwBWUYo20ud+bbgwJrytxU+Nd6R10sDUVoebemJE8AFlvMkFXOSqnDkCCQA9pE1jCARQvxXTyr3zrWCv6K3SBxlUBwBk5O9A01y21aQNA3+xT92pHPmYaWC2ZWzZ0ioj7XVyN/wCnRklnsGOsid479RT9fCYJOh0xRj3vrY1v/+jO94OYzglBKjExjC0Pu2LMC2R+G5qfn/2/KA0twX3okMQCvglCEv1jJk9NqVHcwyTGe5P7TMEkObiU2g1mv201WFqFMkg7A+Yeu1vr4bxpHYgJLJzeUiR5Ekn6LuNDY6AN8KiAPLR9HnxzXiRvZ2CoNmpwm2UG0dTkRV8VDrHryreRhvx2k8cWj4rC0rOrY2MOReUPoAdbT31a/Sde+thO2eHph5d/MGnY4Na+G172K/aLBxczfNG8iknqWy9/lnt9EALCZ5gRmOm5XRc+PA3Lc1FHBaj9BOpkGiUrL5uFxK0AF37agbHAzvVCKm3W7OAVgxijsHef3vBbKNIVZeJTOcJL7+2xcGvMCPcv5rQeLE6mr47XEddBCvsN6lJ6bJa8wFOGz55nXKza551fJkEN1Zq0YvJS6Jzu5yFebNFtAocEXTFKSM8DpKCO8s/vJBYLOcicTxM6obrHxf5S+lfaJjr8zpK0NTPgm8DYEb0PPHm8m79T2DAtlVSlZtl9pKhffQCK4aU4MuI2VA+5yojvzhwfNT140dYy+MDBgrgMAwaCwy3JbXiI051mcElQYoQ0XHfeTA76EagyD48DISjwR3PqxiLKkPCVt84o+2uZ2tzfy9ytuL7dWVUkwdWxPhx+Z9R
- jCYGdZDX
- wu11r+sq3UM/STLeki1073fEUnbQGKLLqWJO/8EGviKfu3WOgPayOUa+jJirYkeSqOWC64Besr+h0rBC2zEYTZMgY9rAfIyU2/WTz2o9BIpXitLyvrtl84K8S1uYai9e2dc8qKAxCpTfgGVsR8sZLWPYRuaEGTmyNmgbLh9V5D7yMyFGCG5wTgzY0AiWwM/8r/GeMPPtvydWF7y3JCOnpgkuwBYoxdYxF7x2lJv8/hhDWarep8P7Av9WYlATZBCJgHoqWYhbl2mV7B2oIhfjLCa+AgbHRFq1F5J4sv6MNtF72o8RXzwBeskFUZlk4LMkxMLlO+rLHdzoAj7ORnFs0yfcd4fUjYJjOjnTwhFxhAiRyflY9P17tr9+IRTeSOGuH0kkH/HZTu2fsuW7x/Rxz1lmR6Q==
+X-Rspamd-Queue-Id: 535FD20005
+X-HE-Tag: 1773976260-81625
+X-HE-Meta: U2FsdGVkX1+obmSLky+X52yz4AHwcBqTP9IV5W4lm32GMTle5oE+74aQbB5kYbNiKbHNsW7k6RYeu4jc7LEmJTpbZt4GZnG42hoTuH5ENTS99Ocu23dWNAJIq2auDwO/037HdomNbLnVrvISCbzuHqA1l2NRzXqnZeBiDkQh9jrX248IEKvOgxx+MHKa2+bPRMPEoJchgj5G1jAhU/xrWAgdMbug4TtCL0Iy7LXVZtYxx+1ekHa8pgKBDCsG0kBGvVoDeIEzizDm+g26dUgtgqUr8auQMkfPewVD6fGtLrI8UOWU0Sh6hXhm3QuETCQVhT9DsiQuUI1OZU+gaI7QI08F47Y+bmSIXcOG3FE7fgkOU1QtkiMLcQiMBT8X6JgQsaAygSggTt37hzAB5Rc+4O7cGyLgv6X9kVQMBHwnDokMZQRj0uKeOj1Tn1XdSSbzeUhsg69KcQwUHBWegg3dqr/ruRlZJcIFnH+XjYMXCDiAdok5YAmlTMqSG/ILr02H5kf5couFN6JWJMAT5rtJDwNZOACAVlPduMjzWyzYJyERDXLZdpOKfJX/LApKzkQRx9b3Xodq+q3Upnies8WWAOoHMEKFiCr0a9HTh3Ql4hISqMI+R5/7ECgvnd5j70u1PscaUiGrtX3o7F1EtVO3yhOLAB06R/uil2JW4tvbPtiW97D2etx4c3tDTuSsgKWYQhO983kBMql8QFYN9W2f/NMqqxIN6c94uR+eqlRco895PpSJrrVhCd6bYBGU8J/Kvka0KTfKrAmrcpp7djOKxJyaqnQtI1Pf987Amg+pj32hd1dDM5wLSG/OOdNNz4vj6sHWmGgR5gKcon93mtoPGTr/s4ol3pZV8P3gb9uGiPjbbsnu8MPaqzSPNvNSvdjjKQUUAH07+pAR/KYzg2EpJjd75voxLOeR+Iz0+sE8MkFYWneAHprBOHZGwpHl4F4RppVKKXlyyAZOpCwi9ag
+ F2fNdKBn
+ wbM4zj8gD8ZtEjMabh+54ykDmUvmFj03wJ662cKZyC4pRpm3o/KATfaCGvZNzedr+ELt/72cCBIB0h0CAGb6oxbEnGD0ErEmmwCeX6b5w6MqEK7kndkv4RDYrt5YsJVWEQ3KkgRwlqzVxGTTBfGpF7Bo+LViod4/cHNn0CCXPje+onA+4FcPcOb2299ophhidu7Uii6iknxeqCRrn7jF4WafgpikB4QlQCCqk4dyR01jv8kCR/I45ni2EmGBsjOf/3Gjodpl2BA/50mKX7ccnusrSAj1iRvAgQ+sOCLuCcDT7d3w78CFHw+HEo4u41aH12qSi+gXrKSHMpuLsF3gkUqn0co2F5x52xds5bLb6nImjRFZJVRvEs2P15G84VJQSbO1aVuvWqzccbMa1rzjLBslYAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,98 +104,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 19 Mar 2026 11:49:43 +0000 Muhammad Usama Anjum <usama.anjum@arm.com> wrote:
 
+> Stacks and page tables are always accessed with the match‑all tag,
+> so assigning a new random tag every time at allocation and setting
+> invalid tag at deallocation time, just adds overhead without improving
+> the detection.
+> 
+> With __GFP_SKIP_KASAN the page keeps its poison tag and KASAN_TAG_KERNEL
+> (match-all tag) is stored in the page flags while keeping the poison tag
+> in the hardware. The benefit of it is that 256 tag setting instruction
+> per 4 kB page aren't needed at allocation and deallocation time.
+> 
+> Thus match‑all pointers still work, while non‑match tags (other than
+> poison tag) still fault.
+> 
+> __GFP_SKIP_KASAN only skips for KASAN_HW_TAGS mode, so coverage is
+> unchanged.
+> 
 
-On 3/19/26 7:33 PM, Lorenzo Stoakes (Oracle) wrote:
-> On Thu, Mar 19, 2026 at 11:24:03AM +0800, Baolin Wang wrote:
->> The pmdp_clear_flush_young() is used to clear the young flag and flush the
->> TLB, returning whether the young flag was set for this PMD entry. Change
->> the return type to bool to make the intention clearer.
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> 
-> Some nits, but otherwise LGTM, so:
-> 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> 
->> ---
->>   arch/s390/include/asm/pgtable.h |  4 ++--
->>   arch/x86/include/asm/pgtable.h  |  4 ++--
->>   arch/x86/mm/pgtable.c           |  6 +++---
->>   include/linux/pgtable.h         | 10 +++++-----
->>   mm/pgtable-generic.c            |  7 ++++---
->>   5 files changed, 16 insertions(+), 15 deletions(-)
->>
->> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
->> index 1f5efb7be71d..90bba85ca4b8 100644
->> --- a/arch/s390/include/asm/pgtable.h
->> +++ b/arch/s390/include/asm/pgtable.h
->> @@ -1693,8 +1693,8 @@ static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
->>   }
->>
->>   #define __HAVE_ARCH_PMDP_CLEAR_YOUNG_FLUSH
->> -static inline int pmdp_clear_flush_young(struct vm_area_struct *vma,
->> -					 unsigned long addr, pmd_t *pmdp)
->> +static inline bool pmdp_clear_flush_young(struct vm_area_struct *vma,
->> +					  unsigned long addr, pmd_t *pmdp)
-> 
-> Same indentation comment as with other patches, 2 tabs you know the drill :)
-> applies to all such in this patch.
-> 
->>   {
->>   	VM_BUG_ON(addr & ~HPAGE_MASK);
->>   	return pmdp_test_and_clear_young(vma, addr, pmdp);
->> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
->> index bd02ee730a23..f9439449c9bd 100644
->> --- a/arch/x86/include/asm/pgtable.h
->> +++ b/arch/x86/include/asm/pgtable.h
->> @@ -1301,8 +1301,8 @@ extern int pudp_test_and_clear_young(struct vm_area_struct *vma,
->>   				     unsigned long addr, pud_t *pudp);
->>
->>   #define __HAVE_ARCH_PMDP_CLEAR_YOUNG_FLUSH
->> -extern int pmdp_clear_flush_young(struct vm_area_struct *vma,
->> -				  unsigned long address, pmd_t *pmdp);
->> +extern bool pmdp_clear_flush_young(struct vm_area_struct *vma,
->> +				   unsigned long address, pmd_t *pmdp);
-> 
-> Drop the extern please!
-
-Ack.
-
->>   #define __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR
->> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
->> index 10a5e0b2be36..8c336edf0e65 100644
->> --- a/arch/x86/mm/pgtable.c
->> +++ b/arch/x86/mm/pgtable.c
->> @@ -503,10 +503,10 @@ bool ptep_clear_flush_young(struct vm_area_struct *vma,
->>   }
->>
->>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> -int pmdp_clear_flush_young(struct vm_area_struct *vma,
->> -			   unsigned long address, pmd_t *pmdp)
->> +bool pmdp_clear_flush_young(struct vm_area_struct *vma,
->> +			    unsigned long address, pmd_t *pmdp)
->>   {
->> -	int young;
->> +	bool young;
->>
->>   	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
->>
->> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index e53220b0a9a3..8b8838f19af3 100644
->> --- a/include/linux/pgtable.h
->> +++ b/include/linux/pgtable.h
->> @@ -536,18 +536,18 @@ bool ptep_clear_flush_young(struct vm_area_struct *vma,
->>
->>   #ifndef __HAVE_ARCH_PMDP_CLEAR_YOUNG_FLUSH
->>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> -extern int pmdp_clear_flush_young(struct vm_area_struct *vma,
->> -				  unsigned long address, pmd_t *pmdp);
->> +bool pmdp_clear_flush_young(struct vm_area_struct *vma,
->> +		unsigned long address, pmd_t *pmdp);
-> 
-> Ahh! Here you drop the extern :) AND use 2 tabs :)) thanks!
-
-Right. Because this is the mm subsystem, and I know the maintainers' 
-preferences:)
+Some questions from Sashiko:
+	https://sashiko.dev/#/patchset/20260319114952.3241359-1-usama.anjum%40arm.com
 
