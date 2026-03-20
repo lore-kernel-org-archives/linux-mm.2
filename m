@@ -4,99 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C93A108B905
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10BDE108B906
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:57:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB4EA6B0005; Fri, 20 Mar 2026 07:52:21 -0400 (EDT)
+	id 678156B0005; Fri, 20 Mar 2026 07:57:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A66086B0088; Fri, 20 Mar 2026 07:52:21 -0400 (EDT)
+	id 627BD6B0088; Fri, 20 Mar 2026 07:57:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97B966B0089; Fri, 20 Mar 2026 07:52:21 -0400 (EDT)
+	id 516686B0089; Fri, 20 Mar 2026 07:57:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 870786B0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:52:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF8A21B6D8D
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:52:20 +0000 (UTC)
-X-FDA: 84566278440.26.2711D13
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EDA5540009
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:52:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pDdnElzp;
-	spf=pass (imf07.hostedemail.com: domain of 38TS9aQsKCKQNSSRaSROERKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--joonwonkang.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=38TS9aQsKCKQNSSRaSROERKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--joonwonkang.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E27B6B0005
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:57:14 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CAE7388415
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:57:13 +0000 (UTC)
+X-FDA: 84566290746.22.BC6395E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 04619120004
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:57:11 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cuDpamLL;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774007539;
+	s=arc-20220608; t=1774007832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gU69MYAltTpsVwDKd9QeUs/oT95TyhbpJovXUD5z/eo=;
-	b=eUbqVQAVij4VaFhw/AUA4UX3CEMrX41qgyCyEL3p0GXTHny3P/SlYXSdIYX0vp1ID+tTTq
-	jJM5Yp/ozFWMu+jvg+f13CUe7NUU7VtCdwe10GxP2Hoa2qGGS6Pw4z9l8ptF5X3YDTMBsA
-	5ORMqd2mZg6pgX4du+dod0j3G+Vnw9E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774007539; a=rsa-sha256;
-	cv=none;
-	b=XhDfwwbgqzcwOOtjVCO2fm8Vt8kylT2B9kl3jnyh9y7iW/NEu1cNJz2cVoNrDqIjrPj9v0
-	b+SZEG12RhdGG3qOpau6Jp98WsAukWA2pPWUn7hZKWzpMmNCiVOrK/zbfFt1oHCWtHup34
-	dW2BAV76eAhd0lIYYeiLLVV/AMXyitg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=f0Avv2YVnMjut1nZHkcEN2Xio1w9aceLXv7p5r9+qm4=;
+	b=cF+PCtg9TbVo2dS2jj+CI3YcNB798qvxh7TXhg1Z6opHtDgJywTzcTez9HiCiaZrDtiWPH
+	gPWHKN36DYqO6EmsSTZFvTKlGzyVbdQ/a8ymPgJqCyXj3M4zbc6JheK1QT001WihTxjYPw
+	lGbth1I0+nF6jCeKiOutMRnv5CbIBys=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pDdnElzp;
-	spf=pass (imf07.hostedemail.com: domain of 38TS9aQsKCKQNSSRaSROERKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--joonwonkang.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=38TS9aQsKCKQNSSRaSROERKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--joonwonkang.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35842aa350fso9349875a91.0
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 04:52:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774007538; x=1774612338; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gU69MYAltTpsVwDKd9QeUs/oT95TyhbpJovXUD5z/eo=;
-        b=pDdnElzpYKtQBguH8YeToR0wxqY1wXKhJkt612MPIqf+SlAy7n1uUs8moa9g1otbvL
-         dVQOVixnOjqSXQHl78KuF5O7GuzdNKW9swLUzLQ87xt1WhrDnaDrn9n7FzQwOBrWEjeC
-         tgFhaNGW4CtzeqS10NiJuuJfD731vKS+UZGaXgds7nY/r143p5aDmRNpyWyYIRCpkW5W
-         S2dFw1+6cS9lvAmoVEPmEPYuVsOSyMrTv/xjFTq1SHHtpyEDFKTfhDVVn+voXATX58JP
-         tHVYXlo6SPjqqSaCAM7KSqjALKcTrvMRCBxzmTNc8avWSGzSM6A4v6yw6kp1sLWQ0H80
-         UrVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774007538; x=1774612338;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gU69MYAltTpsVwDKd9QeUs/oT95TyhbpJovXUD5z/eo=;
-        b=kfIY2JfqW1N4Ij7kzIxM3hLMCPWhwAua6RabJOdD+5WFch2hsJUqfflEgO5UrFK4Ge
-         ElvxFCNd6MSE815Kaa3I9oME1UC5P06t9prVjPTOFq89xbvlomBV6GcfIDTyoDzcpqOt
-         bBJa8A95BzmQe4GPOM4HirK7ZbBdGY0gL+IVq0LlAHwQaFnZp12cEjouIg5Jy0e9ydSL
-         VEhT/bMwl4BqNdp+dBCpeH5gpQWQLo4G+YqYvOt7G1+8jaILuL1fY8Yxi9Ni1JeGepwh
-         vcQsa0zA6phqlTim4z3v+PnWrMKXiT/ILBb2eZ2u8fKbqPEiqm8fXZm2wUxshwx4fMc/
-         L70A==
-X-Forwarded-Encrypted: i=1; AJvYcCUspraSdjc5fDzftC3pCVIkZdozjgJePNeTKAfnbsEFuub17S10YZJpnioEiqeO8U7HpCV5FZcfCQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy7XgCmuzqPJektEE0Q0icpAUzr4wREhDgPGMd5vress8h6NFR/
-	l9/8CDGSCYT3Z/HmriIYsabqQmMDxNNC3spewgsfhffE2J5Qr8QI3nFo236VnPUVw8naxweJgeG
-	bDixs2x2JhS1Lkx2TOtv5L0N5Zw==
-X-Received: from pjzd9.prod.google.com ([2002:a17:90a:e289:b0:356:1f2b:7ea1])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4c8e:b0:35b:93d8:6aaa with SMTP id 98e67ed59e1d1-35bd2cf8065mr2240997a91.19.1774007537556;
- Fri, 20 Mar 2026 04:52:17 -0700 (PDT)
-Date: Fri, 20 Mar 2026 11:52:14 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <20260320115214.143933-1-joonwonkang@google.com>
-Subject: [PATCH] percpu: Fix hint invariant breakage
-From: Joonwon Kang <joonwonkang@google.com>
-To: dennis@kernel.org, tj@kernel.org, cl@gentwo.org
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Joonwon Kang <joonwonkang@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cuDpamLL;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774007832; a=rsa-sha256;
+	cv=none;
+	b=LYyTzvlwz4VfmdnBu5/pgpc+R01zSdeiAVvpzFfobbW60ra8B7KvFyjrCS52MTvmKfgV1Q
+	PAcP3Mc7P0K0AdY4a8cjmFoCwfOi3508KCY41VRdhkEHxFhgWV0zS+WhOWZVCosRXr+e+e
+	n0nxb76j/zqRq4hDTMF+H5t7CgM44wk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0223C4090D;
+	Fri, 20 Mar 2026 11:57:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12487C4CEF7;
+	Fri, 20 Mar 2026 11:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774007830;
+	bh=Mf6a4DBjpHPIv99A+jyu38p3Ewxs7HRLba8NEsfOQGI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cuDpamLL0C3greMzg3QB3iyxDWrB+iPjvn/sWXP2e2e9/imSZKeqLOJuj86hB5fR5
+	 MpMlIXyYEJ3MpstWS2TNTxc7fPtpr78amYFwSOMT/Z4EbHpHbONMyV4YsJuR3t98Nb
+	 FEbnlbwER8qae1AsGU6GnwW4+9cfxLDAC0qs0oHPsO7egT+TylsTJvINu9itZrSjl7
+	 EPJyLWEeAHwlxiL2kwGHiSjDsnGPHWFbJdp6Rbm6cCGki04+T39gZ1hT16wjCd1Gxr
+	 c3zL8LsHoRAxuJJWym+LonC/toJ20E1OUQ+JRmG7wDErFQEtivfSVdjL3z2Qo7++7u
+	 jKz30Jywr94ww==
+Message-ID: <373186fb-5000-47ba-85a3-4085658a7101@kernel.org>
+Date: Fri, 20 Mar 2026 12:56:56 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 22/23] mm/vma: convert vma_modify_flags[_uffd]() to use
+ vma_flags_t
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+References: <cover.1773846935.git.ljs@kernel.org>
+ <98a004bf89227ea9abaef5fef06ea7e584f77bcf.1773846935.git.ljs@kernel.org>
+ <0b5765da-67e9-4e2e-99d8-08501730bf76@kernel.org>
+ <7e22cc48-aa04-406d-b4d0-8ebb182b34b9@lucifer.local>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <7e22cc48-aa04-406d-b4d0-8ebb182b34b9@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 04619120004
+X-Stat-Signature: jjfpkick61ywmc68m999am8fpiik4j5y
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EDA5540009
-X-Stat-Signature: s37a5ff9an5ebpjruekmdft81hbdajwy
-X-HE-Tag: 1774007538-14581
-X-HE-Meta: U2FsdGVkX1/GqeNWbc3LYpP47S7zqnHIMdU/A/y60hXbl60OR2x46nuVeni0GehBuUR82DSpmNtGTiEGhWVBJUn4EJpFtUXfU3Tn60iYdxqd5GXF3yyp+UtAUhnK5xWrbZKjz+z2T+aYKoAN4GocrUiFdhGwjx1akBKYZFJTaY20j5Y5NwDswVFf6Dji9NudZFyd8eMZklYgTNz4HEJHQdscZ4vVN0b6JzDYZuWgaTY9+q8rLnTQakSjcRcrnt6gl/O59UYDmE+NMLalrrc9D8v6/BDGLzbWtGcJjA/h9hByDC28JwqpZooXUrwX1AWoNinAC+hlDeCdrT3Xmixfx/5tUew+BR06Ijz9Ewy+v2mo9m4B7DlXEWzATOydlZXFuPW0+70QACzSkpPJ0E+gnjOGSp58m7u5fBYIB2uSrIMOGyaSFAmIQZTHzMzoupN3q5rNXqGHWBW56gJKp36RbKuEZL8KuD39Q7efhDXnmqxSqUpsZT5yl6rMI8G7Wpns6/DuF2xEoEisqmT3lX6Rf3g7D4DBpoAQ+9MKe4BQjrkFgnesOPOw5UDivOuNqhA+0A6mWbrkViPzRa7T/D+Cb809JPf/XmLIw5bdDmGNKeahFKvC522Tr7V29rDWwhf8vTcSsQEE4m2v85loZ5LUVMuFH2Xo6niIaXQFQdI+qR38usbHSluTqCAry9EFm8XtongqhTucjF1T5V/OjnYZTEGDqRU+9ZKgnwOcU6tP7RN1Xm3eeXiuh5cbYYU2ysy7pPY6DYqtb7UV/5nENPwUD3YY5RxCtlN7UWbUy0H1y7ovW9jWoDGXX1iEkT371bq5MoJa1+t2XcW0UmatFU9IDu6L+GUAwYd5fB7W2Je0XrrH11Q5GqxpLvmbIFnqajlLcqn7R85QNP/bjqgVqzL6sYGsRM48BLIZJ76m4lvpMI2Xs/Xjk0ltCdBpL1sTyZR5/rdiwCtdgeYcHxdkkNK
- kFzs1+00
- OGOCHGZ9rBFIx3Aw1kM0Lwfs6fBfYFGmvcDypsmqtKSyZPIcx4kqaqY5c7RhJw2U76Vo/2BR3y7xHRrPMdLgzIjAFP81nvfvVq2hBZN/G4idor4f8hXRBT+TfpGafYg74cc8Glj7KvI1b/ecs1PtJpbEn8iC96nanCbatQzYanNMMQt3kXHR7NkUpWKjhnKxUq2IiONlwdpVKi3WOxYn7LV7XLqeuKjRYo5froHqJCjcVVWtJXznHAMDQxM/1yAI8IFrJIFFBC6Y3+Mu9ItbVuwxUYmN6K6wyXffw5grzTeeZh9SIeFrL43fVw1hWCSyey/Ta+yv1mc04+n5FD7WFVNXoZZfa2ZTlAj/UIonV8Ue9YjkY31HIrOKVH4pdxxJXMjbvUEaslOD12dTL4A9GAZXysr9yqV2ly2YWz5zJORs/n5sy+Vmv4T2fDoON7piDrQXsJ3H6PxjnreKtmjF/m6ZNZSnlcacyySYGGzF6mfWZ7to4SN2wGNSXj3VN7qpM24IeQA+8c0UJ+awpjBUKYQFe+pse+muyFejlIMDVyj9vR1Uiwk0fewmW22/N6UxBpaZoMCBrsshTUvb+2hYyHPai0JtCq6L3aivRbO9rvs1MgN/qrGCK4UqyiOevYw/tq6BBhmnaBtJfcKel1qKFVPjt0rHi/TS9Eodv
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774007831-686779
+X-HE-Meta: U2FsdGVkX18duIglVoUubV8tl/c2vPmVBn588CT/Op/GtlozjocczE8E3hDyYVh9a/1MBuWyE3EUYT9YCu2aKDjMjxcouDcqAHKiBtV36SZ0ndXm0xJP1+Ut1pJSQ/jLpa8yfOLT+uBtioY3ggFJh3WJ3Aj9Lq7EE3dWl5O6o41KY2YXX9BeH/NdXS4fzHtG3UU+9eVjrrFebDqQK9+AlN3R7YEFFqCZZTbhPK6ZtYUQuPzbY1EuDMLXDB6wKf/iFPoVitG3Y0/05nCApWxaYbOBkVUTWFRI0FeHfu3Ai09rXO6GduyUElMznWWEVVVB0MYxG+K+6yxIIyC18akEcBRDUlAqMCd9rThwmA3a3E/les4zz6mcE/f7pxF8mlMAsYycsvElsEGCRohmQB3012I3J3cI+WYviR5SzqEPIbygZApO66zZ4HXCbOKTJWfIAhcqWZcKIszwgdMUIqqmG4koaNyOnxNpMsNqmGMCtrRM10rjLFPXS1SipMqKG5wC/CAnYu4Pos7DvbpzwxSzuyakODIpgCi0IPB1GYTjg5CS3Mo8jYfGBzzFZYIZMnKS0L9XKlZo4N4GmrYlXaB1kAOhA/suFSEj3RA9RwnI0QU3f95T9/s/lScwa7iBcJrx/asoJaids1UINlurWUWwxC5rC2PBvByNi9mQ6G4HgMTGOvqRirn0ntiwZv/EJ8e2MPG1hybmVoknR3L9szWnMZ0xdIcfnd3/csfHKZMC/C6LUrwMVYpXYPb8BR8ccJc8QctCb81DQVRqm/GTab/Drw0h0KJPz3eoWJ2IRMpwxTOOlL5ZXIAyJOUKCqGmifSbXuW1TxjQ/ilatHmmtGhiJP1KoCGS6zKDuO8gNBjHUyDSHFBNz45AKRv5pEd7apQrCcFAGq+3nua+BNeL3OkqkrUBo4yn54ARbfVJP2CgenV9s2FiLTS4cqzBbRi6ojP9/19xWERZ4+ZWvvwDUDx
+ tMwHc7hz
+ TKYG6WNbLhdjvU2GqfohYjr+nFN8lNmQw7+eLxuuBB/AvcyGeRfeFJZRWqTk8U4s9PWrAqYiY0NxtSAuHsmnUzSf3aKaAcccietTveUAvNOtnrIFmDT0LTqNLIRs3zQrhSHSZJVF0dnwm+3fU1ZVSFkXjKQQPPNjoCyOjiketa1afjzjeQh9wnLNDrepWIkTJBII4ZUxI/qgVaZyNv65idJ2QsTLasOuNoQdIBCeuQhEPlSxEhsF7vA8wsyBgC738GqD5c+NPC3HTZBMLjd62c7FkB7YfkEOT9CDzvemCGoyc+TDYyDzqmBaPj7DvuLsELv3bUl0Ze6A4ZhlcZ4pAS4UxcaSCXFWmLGon2mM9CxyPgtjqDDc2clc9fzxZRSNvXXUvRotJN/gBc4sesVVp3WqM9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,126 +131,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The invariant "scan_hint_start > contig_hint_start if and only if
-scan_hint == contig_hint" should be kept for hint management. However,
-it could be broken in some cases:
+On 3/20/26 12:08, Lorenzo Stoakes (Oracle) wrote:
+> On Fri, Mar 20, 2026 at 11:39:58AM +0100, Vlastimil Babka (SUSE) wrote:
+>> On 3/18/26 16:50, Lorenzo Stoakes (Oracle) wrote:
+>> > Update the vma_modify_flags() and vma_modify_flags_uffd() functions to
+>> > accept a vma_flags_t parameter rather than a vm_flags_t one, and propagate
+>> > the changes as needed to implement this change.
+>> >
+>> > Finally, update the VMA tests to reflect this.
+>> >
+>> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>>
+>> > --- a/mm/mlock.c
+>> > +++ b/mm/mlock.c
+>> > @@ -415,13 +415,14 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+>> >   * @vma - vma containing range to be mlock()ed or munlock()ed
+>> >   * @start - start address in @vma of the range
+>> >   * @end - end of range in @vma
+>> > - * @newflags - the new set of flags for @vma.
+>> > + * @new_vma_flags - the new set of flags for @vma.
+>> >   *
+>> >   * Called for mlock(), mlock2() and mlockall(), to set @vma VM_LOCKED;
+>> >   * called for munlock() and munlockall(), to clear VM_LOCKED from @vma.
+>> >   */
+>> >  static void mlock_vma_pages_range(struct vm_area_struct *vma,
+>> > -	unsigned long start, unsigned long end, vm_flags_t newflags)
+>> > +	unsigned long start, unsigned long end,
+>> > +	vma_flags_t *new_vma_flags)
+>> >  {
+>> >  	static const struct mm_walk_ops mlock_walk_ops = {
+>> >  		.pmd_entry = mlock_pte_range,
+>> > @@ -439,18 +440,18 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+>> >  	 * combination should not be visible to other mmap_lock users;
+>> >  	 * but WRITE_ONCE so rmap walkers must see VM_IO if VM_LOCKED.
+>> >  	 */
+>> > -	if (newflags & VM_LOCKED)
+>> > -		newflags |= VM_IO;
+>> > +	if (vma_flags_test(new_vma_flags, VMA_LOCKED_BIT))
+>> > +		vma_flags_set(new_vma_flags, VMA_IO_BIT);
+>> >  	vma_start_write(vma);
+>> > -	vm_flags_reset_once(vma, newflags);
+>> > +	WRITE_ONCE(vma->flags, *new_vma_flags);
+>>
+>> It's not clear to me, how is switching from vm_flags_t to vma_flags_t
+>> allowing us to simply do WRITE_ONCE() instead of the full logic of
+>> vm_flags_reset_once()? Won't it fail to compile once once flags are more
+>> than single word? Or worse, will compile but silently allow tearing?
+> 
+> We only care about tearing in the flags that can be contained within a
+> system word, but true we should probably do this more carefully, as I did
+> for vm_flags_reset_once().
+> 
+> I will reimplement this as a new, hideous, helper function.
+> 
+> I am not a fan of this being a thing to handle races, it's a hack. But I
+> guess that should be addressed separately.
 
-  - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
-    scan_hint_start < new contig start) && the new contig is to become a
-    new contig_hint due to its better alignment, then scan_hint should
-    be invalidated instead of keeping it.
+Right, thanks!
 
-  - if (new contig == contig_hint > scan_hint) && (start <
-    contig_hint_start) && the new contig is not to become a new
-    contig_hint, then scan_hint should be invalidated instead of being
-    updated to the new contig.
+>>
+>> >  	}
+>> >  }
+>> >
+>> > @@ -467,20 +468,22 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>> >  	       struct vm_area_struct **prev, unsigned long start,
+>> >  	       unsigned long end, vm_flags_t newflags)
+>> >  {
+>> > +	vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
+>> > +	const vma_flags_t old_vma_flags = vma->flags;
+>> >  	struct mm_struct *mm = vma->vm_mm;
+>> >  	int nr_pages;
+>> >  	int ret = 0;
+>> > -	vm_flags_t oldflags = vma->vm_flags;
+>> >
+>> > -	if (newflags == oldflags || vma_is_secretmem(vma) ||
+>> > -	    !vma_supports_mlock(vma))
+>> > +	if (vma_flags_same_pair(&old_vma_flags, &new_vma_flags) ||
+>> > +	    vma_is_secretmem(vma) || !vma_supports_mlock(vma)) {
+>> >  		/*
+>> >  		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
+>> >  		 * For secretmem, don't allow the memory to be unlocked.
+>> >  		 */
+>> >  		goto out;
+>> > +	}
+>> >
+>> > -	vma = vma_modify_flags(vmi, *prev, vma, start, end, &newflags);
+>> > +	vma = vma_modify_flags(vmi, *prev, vma, start, end, &new_vma_flags);
+>> >  	if (IS_ERR(vma)) {
+>> >  		ret = PTR_ERR(vma);
+>> >  		goto out;
+>> > @@ -490,9 +493,9 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>> >  	 * Keep track of amount of locked VM.
+>> >  	 */
+>> >  	nr_pages = (end - start) >> PAGE_SHIFT;
+>> > -	if (!(newflags & VM_LOCKED))
+>> > +	if (!vma_flags_test(&new_vma_flags, VMA_LOCKED_BIT))
+>> >  		nr_pages = -nr_pages;
+>> > -	else if (oldflags & VM_LOCKED)
+>> > +	else if (vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT))
+>> >  		nr_pages = 0;
+>> >  	mm->locked_vm += nr_pages;
+>> >
+>> > @@ -501,12 +504,13 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>> >  	 * It's okay if try_to_unmap_one unmaps a page just after we
+>> >  	 * set VM_LOCKED, populate_vma_page_range will bring it back.
+>> >  	 */
+>> > -	if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
+>> > +	if (vma_flags_test(&new_vma_flags, VMA_LOCKED_BIT) &&
+>> > +	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT)) {
+>> >  		/* No work to do, and mlocking twice would be wrong */
+>> >  		vma_start_write(vma);
+>> > -		vm_flags_reset(vma, newflags);
+>> > +		vma->flags = new_vma_flags;
+>>
+>> This also does lot less than vm_flags_reset()?
+> 
+> Well let's look:
+> 
+> 	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+> 
+> Are we really at a point where this is problematic? Do we hit this? Why are
+> we specifically checking only this case on every single instance of
+> resetting VMA flags?
 
-This commit fixes this invariant breakage and also optimizes scan_hint
-by keeping it or updating it when acceptable:
+I'll admit I don't know, but sounds like we can stop being so paranoid when
+converting code to the new API.
 
-  - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
-    contig start < contig_hint_start), then keep scan_hint instead of
-    invalidating it.
+> 
+> 	vma_assert_write_locked(vma);
+> 
+> Note the vma_start_write() line above. I want to separate vma_flags_t
+> helpers from asserts like that, because:
+> 
+> 1. We might be operating on a VMA that is not yet added to the tree
+> 2. We might be operating on a VMA that is now detached
+> 3. Really in all but core code, you should be using vma_desc_xxx().
+> 4. Other VMA fields are manipulated with no such checks.
+> 5. It'd be egregious to have to add variants of flag functions just to
+>    account for cases such as the above, especially when we don't do so for
+>    other VMA fields. Drivers are the problematic cases and why it was
+>    especially important (and also for debug as VMA locks were introduced),
+>    the mmap_prepare work is solving this generally.
 
-  - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
-    new contig start < scan_hint_start), then update scan_hint to the
-    old contig_hint instead of invalidating it.
+Perfectly reasonable!
 
-  - if (new contig == contig_hint > scan_hint) && (new contig start <
-    contig_hint_start) && the new contig is to become a new contig_hint
-    due to its better alignment, then update scan_hint to the old
-    contig_hint instead of invalidating or keeping it.
+> 	vm_flags_init(vma, flags);
+> 
+> Analysing what's in this function:
+> 
+> 	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+> 
+> Duplicated.
+> 
+> 	vma_flags_clear_all(&vma->flags);
+> 
+> Only necessary while you're only setting the first system word of
+> vma->flags.
+> 
+> 	vma_flags_overwrite_word(&vma->flags, flags);
+> 
+> Again only necessary when you're only setting the first system word.
+> 
+> So yeah it's doing the equivalent and (intentionally) eliminating some
+> noise.
 
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
----
- mm/percpu.c | 60 ++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 39 insertions(+), 21 deletions(-)
+Ack.
 
-diff --git a/mm/percpu.c b/mm/percpu.c
-index 81462ce5866e..a0e4f8acb7c2 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -641,19 +641,13 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
- 	if (contig > block->contig_hint) {
- 		/* promote the old contig_hint to be the new scan_hint */
- 		if (start > block->contig_hint_start) {
--			if (block->contig_hint > block->scan_hint) {
-+			if (block->contig_hint > block->scan_hint ||
-+			    start < block->scan_hint_start) {
- 				block->scan_hint_start =
- 					block->contig_hint_start;
- 				block->scan_hint = block->contig_hint;
--			} else if (start < block->scan_hint_start) {
--				/*
--				 * The old contig_hint == scan_hint.  But, the
--				 * new contig is larger so hold the invariant
--				 * scan_hint_start < contig_hint_start.
--				 */
--				block->scan_hint = 0;
- 			}
--		} else {
-+		} else if (start < block->scan_hint_start) {
- 			block->scan_hint = 0;
- 		}
- 		block->contig_hint_start = start;
-@@ -662,20 +656,44 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
- 		if (block->contig_hint_start &&
- 		    (!start ||
- 		     __ffs(start) > __ffs(block->contig_hint_start))) {
-+			if (block->contig_hint > block->scan_hint) {
-+				if (start < block->contig_hint_start) {
-+					block->scan_hint = block->contig_hint;
-+					block->scan_hint_start = block->contig_hint_start;
-+				}
-+			} else if (start > block->scan_hint_start) {
-+				/*
-+				 * old contig_hint == old scan_hint == contig.
-+				 * But, the new contig is farther than the old
-+				 * scan_hint so hold the invariant
-+				 * scan_hint_start > contig_hint_start iff
-+				 * scan_hint == contig_hint.
-+				 */
-+				block->scan_hint = 0;
-+			}
-+
- 			/* start has a better alignment so use it */
- 			block->contig_hint_start = start;
--			if (start < block->scan_hint_start &&
--			    block->contig_hint > block->scan_hint)
--				block->scan_hint = 0;
--		} else if (start > block->scan_hint_start ||
--			   block->contig_hint > block->scan_hint) {
--			/*
--			 * Knowing contig == contig_hint, update the scan_hint
--			 * if it is farther than or larger than the current
--			 * scan_hint.
--			 */
--			block->scan_hint_start = start;
--			block->scan_hint = contig;
-+		} else {
-+			if (block->contig_hint > block->scan_hint) {
-+				if (start < block->contig_hint_start) {
-+					/*
-+					 * old scan_hint < contig == old
-+					 * contig_hint. But, the new contig is
-+					 * before the old contig_hint so hold
-+					 * the invariant
-+					 * scan_hint_start > contig_hint_start
-+					 * iff scan_hint == contig_hint.
-+					 */
-+					block->scan_hint = 0;
-+				} else {
-+					block->scan_hint_start = start;
-+					block->scan_hint = contig;
-+				}
-+			} else if (start > block->scan_hint_start) {
-+				block->scan_hint_start = start;
-+				block->scan_hint = contig;
-+			}
- 		}
- 	} else {
- 		/*
--- 
-2.53.0.1018.g2bb0e51243-goog
+> But I'll add the S/D check back I guess.
+
+Thanks for the detailed explanation. It's fine to drop legacy stuff, it just
+wasn't obvious if intentional or by mistake. Maybe just mention the
+intention in the changelog?
+
+Thanks!
+
+>>
+>> >  	} else {
+>> > -		mlock_vma_pages_range(vma, start, end, newflags);
+>> > +		mlock_vma_pages_range(vma, start, end, &new_vma_flags);
+>> >  	}
+>> >  out:
+>> >  	*prev = vma;
+>> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+>> > index eaa724b99908..2b8a85689ab7 100644
+>> > --- a/mm/mprotect.c
+>> > +++ b/mm/mprotect.c
+>> > @@ -756,13 +756,11 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+>> >  		vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+>> >  	}
+>> >
+>> > -	newflags = vma_flags_to_legacy(new_vma_flags);
+>> > -	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
+>> > +	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &new_vma_flags);
+>> >  	if (IS_ERR(vma)) {
+>> >  		error = PTR_ERR(vma);
+>> >  		goto fail;
+>> >  	}
+>> > -	new_vma_flags = legacy_to_vma_flags(newflags);
+>> >
+>> >  	*pprev = vma;
+>> >
+>> > @@ -771,7 +769,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+>> >  	 * held in write mode.
+>> >  	 */
+>> >  	vma_start_write(vma);
+>> > -	vm_flags_reset_once(vma, newflags);
+>> > +	WRITE_ONCE(vma->flags, new_vma_flags);
+>>
+>> Ditto.
+> 
+> I mean overall these cases are hacks in my opinion to work around code that
+> should have solved their problem another way.
+> 
+> But sure, as above I'll add a helper function or such.
+
+Great.
+
+>>
+>> >  	if (vma_wants_manual_pte_write_upgrade(vma))
+>> >  		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
+>> >  	vma_set_page_prot(vma);
+>> > @@ -796,6 +794,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+>> >  	}
+>> >
+>> >  	vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
+>> > +	newflags = vma_flags_to_legacy(new_vma_flags);
+>> >  	vm_stat_account(mm, newflags, nrpages);
+>> >  	perf_event_mmap(vma);
+>> >  	return 0;
+>> > diff --git a/mm/mseal.c b/mm/mseal.c
+>> > index 316b5e1dec78..603df53ad267 100644
 
 
