@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 458801099B37
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 590F11099B3B
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 19:39:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48B36B0174; Fri, 20 Mar 2026 15:39:14 -0400 (EDT)
+	id 6B5726B0175; Fri, 20 Mar 2026 15:39:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFAE26B0175; Fri, 20 Mar 2026 15:39:14 -0400 (EDT)
+	id 68DE96B0177; Fri, 20 Mar 2026 15:39:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C23C6B0176; Fri, 20 Mar 2026 15:39:14 -0400 (EDT)
+	id 556C36B0178; Fri, 20 Mar 2026 15:39:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 82B4E6B0174
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:39:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 47CD613A8DA
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:39:14 +0000 (UTC)
-X-FDA: 84567455028.09.00EDA20
+	by kanga.kvack.org (Postfix) with ESMTP id 2BE556B0175
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:39:17 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF5461C34E
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:39:16 +0000 (UTC)
+X-FDA: 84567455112.21.C0C563F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BAF9240006
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:39:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lpAQUmdy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 04C98C000F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 19:39:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n9G5Rfle;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774035552;
+	s=arc-20220608; t=1774035555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=170DByzvbvP9k4XcrU8GXJj5O6OctxAxX7WxB8sLaRU=;
-	b=HO/qGyQLbiE7SVcAgSNOnCSsXj9lyPXAcpVZ9QtdfrzmC8FGvmDZxbRIdy91j5QJpXUXIf
-	YdsvFWrBqs8wsn1Io0Nb3PGgO0xDpYfw4UZRIR+VaCT4zl0YkoWyJ5dt24DHSqwRz5Qsbq
-	Tf83XLnFeIkpygawE45LIdjpk3KbXRQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774035552; a=rsa-sha256;
+	bh=5K7eKfDaNC8F0R4YEvVj595iph2zwfv8FNQbISthhlI=;
+	b=SmEcqmafVyfokNonNC2YZqulnyMdW0vrVnbF12gyuf8Cmb4M0bPGPNJuzXgC6m3H2EK0Er
+	s+KNomvuGLvaqH0zp/iUdmCB+limJO++zMRLoqhIJSs8pSCDCi4Ypro4ZEPEI27THZNIJL
+	8yjS1f9MGxFW0E7kfinOGHz+K/Kg2lE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774035555; a=rsa-sha256;
 	cv=none;
-	b=c8vz8VU8vOzsPtNkyM2C4eCrllqIKik5EpFfaENp/PKmrPbfPbvkCLYHdba0AseaRCCcJL
-	hS6KLWP21tiCzIp+Lqnn+LPrEkJukDT7m1+1ftzLjL/UX/jUxDlKkmNdWIHsi3HiJQ59M4
-	WkPec9NhBt9C2jWoHklf8/ndSaArMOk=
+	b=1mosOTKxBDS4VR2N0R+aAsj4Wx5vRMjcHSRcL6k7hwN66AlmZDMsfsIAgyC/X/W5Nrr+xm
+	0T3XS4Vxtp+xg7QCXZIkS/kOh5wVefFZpOzwQEIlaro2I6bONhaApBr1ONqUxoy0pHM+wb
+	aJ7pphlGsx+HjW+kgpYojVX7fywQ+1Y=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lpAQUmdy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n9G5Rfle;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D349C400CE;
-	Fri, 20 Mar 2026 19:39:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE2FC19425;
-	Fri, 20 Mar 2026 19:39:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1489D43420;
+	Fri, 20 Mar 2026 19:39:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CADC2BC9E;
+	Fri, 20 Mar 2026 19:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774035551;
-	bh=lxWfA+t9zzqjUdufUd1GoiM48lK3fJwyqfSRLCG77ro=;
+	s=k20201202; t=1774035553;
+	bh=LrLBS64c+lmBUJM2XbvLHLJnGjK9/zMfbb5TL2UTCws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpAQUmdy3kgCqV/DDmFMnnZRjXoNAbs/BsNWZ+K0NoSYku9PqAhb2cykSq5iWBG1l
-	 JvOTJHZtZswImdZxa8eLnCY+1N5PeGjAIS5K3BxtBGyeu3R7ht0+Ppuq/Mc50fMpxS
-	 iuFJqqfY7xOSlNw+79DoCKgp+EAGa79eY27hDApsJoCETY+/9FcUljejok72YO5obI
-	 yWlUx+bxQan63XtiSTYdzVqJyuWJh2L2qBUHTUpo0qcY+fS7yH5jAeAfglZZDcwzRw
-	 9SKCWACa/HCKMiMunraFqBWV0oyVtNm666sTvGctVHd4l9q2gPrM0aQ1RoAqtQivfT
-	 szMXMGmvK6KLA==
+	b=n9G5RfleSKlgF5IOVA2zXMw7RB/0EsB8jsXdwJANrb3vkQfRndWlRknI8JoQlRPuv
+	 zgCX6aDwrYZVTz75jLr+KIPFYcBrUDvMT9XX7hAb4vlckyEtjaKsjouuzE4QE6Dcl1
+	 o2HwpJagChgQY9sNvxa2V3D81uvsfl9/SrEthaNA3o+Sr88oot/AuaCYgDeBFOySyl
+	 q6XeWSPRQJ3LJkLYxCqrpBHPF/1/0pG+jUNSe8+4vHsB1eeoQfAb1rWhYw6UW/7T+1
+	 OvSzcnuLb+EqzJMxiNiIU7Wkgy6v68h8V5rWxiRLmLjJMLfpRprBXEC9xhv69y4Xd8
+	 BPa+YjeIoj8Pg==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -126,22 +126,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-um@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: [PATCH v4 11/25] mm/vma: introduce [vma_flags,legacy]_to_[legacy,vma_flags]() helpers
-Date: Fri, 20 Mar 2026 19:38:28 +0000
-Message-ID: <d3569470dbb3ae79134ca7c3eb3fc4df7086e874.1774034900.git.ljs@kernel.org>
+Subject: [PATCH v4 12/25] tools/testing/vma: test that legacy flag helpers work correctly
+Date: Fri, 20 Mar 2026 19:38:29 +0000
+Message-ID: <3374e50053adb65818fde948ae3488e1e29ae8b1.1774034900.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1774034900.git.ljs@kernel.org>
 References: <cover.1774034900.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BAF9240006
-X-Stat-Signature: pepy7u4tq7t9eyegb4x4qg4me3zhjghc
 X-Rspam-User: 
-X-HE-Tag: 1774035552-871037
-X-HE-Meta: U2FsdGVkX18gY3YAiBnKfeT7X0y7OBiEGQvMO1onbjB7MkLFOZmaZZGeknH8hP2mEag7axRcKBUEtzTlCgH2aKSJVCJ1LdJlJJ9QC47Sqgr/BKeawK964waG9v5Qi9gWfGmOCkGSwFCUcOgYevIZrhUgaU6ouMYju1b/Rn0icXY1jQJoaqUELC0KT+NRko9odRjH67R+aGgRcwyybgJ71usiefRz4dfk3sSyMU7YTVSM+Pwp2l1R1EBwbcDOI+Cj1ED8Pq7pLU6Wp3ymvv2n/6+OC1wYSoWT2JsHiDNz/iLyxUMETq6gyTLNPEV7BUwup1UPg2MbHc+kg1t8kazjAY5bxbmYDsf3SpSpLadm4xf6YKv3FK/BLGL0qXse0hPjr/2whliESd0iebf6p9nT7DZAuO9v65Ic/h+dFKaDc6IMR0nnrvIeGvOT0LK/lWqvMaz5E0z0bgpZ30DTjQkvdRnq9ighZ8iCtP13Sh9cnm3yl/KHbNUZr6zEFOYhHOU6Y9DDKlk1iwKsEKmBjh+wBaN1XdpSoPOwWHQf0niTMiQ69kZsSHx0R09JCIIChz778XPczmJg97xsHjaL1nF16An2w4rV2lIZc1nRI/3GJ96CVRQpnCvrFbyZ3njfFfGx0zJ3svQGOXfvVPDeWchL7euEGOvieQArrS0nvQ8wtQQiOOKhK7QdBGsk+zBScdXuPSkcrsAJRxI9qseOhaNdlt7PXBG5F2Sygq11lebF7coeZveA9DiaKZ2jsZa5TWgInhj9Y1WBDmIZDIzrfu+XvCo1UrspJKeUP9at1e+4SEDEjJRlTu2MCYbiDbntEg0gwM7Ireg3KkYn3rbu0ZWQXE+2nJmBjwHlufGwNMWeFqf4WOkxvZgnao+bJP/sSGcndIrI9a9nZ+EOP7T9zTVIokZB4L83h2g0qPOkhv5f4V9gMTdzF7MqpJPKgaZePELFc0IFJNf/Mq2IEVwIiyZ
- 6i1BFC5Q
- MeDv92+VSH06Pehr2lK/ZOc2kWhi1rck0ENrdQ5/clNoZpyR7yfg3rhaxTGcCHk36DJu4NGGyNEb8rA9j4lJCsP0ofBk2e29cfvV/Uiy/Yzyg77I=
+X-Stat-Signature: 4yztug7dmpkzj1zhako3so14kgjsgid5
+X-Rspamd-Queue-Id: 04C98C000F
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774035554-960608
+X-HE-Meta: U2FsdGVkX1/UjqH2IGRZY8mcYLNd2+9noMx4GuPZ1gd5Xt81dNYNjO/djQe8CaWrAtXlm2uN3Flf29EbcW3q+6iBPK2QFdYCFwBN3P5uoILBJ8W6FMW6117HR1hbXnfg9EpnSL4nnxDY4RKSrK+NBuIj/x5qkPJvJ5Zv/OhvPv6zV9TU1Ss8N355HUrj2uW4oKsm/9gq6m5Eeejs0tyAYNrqhpvR2vaa44htSLiZTmngxlIJFykDzIcJhI+NfytRY6OY1eJ3XIVjy3ozsMyQgD4OIbhokkYwH0LcaZ/Qvajag1v15Je6KFsPnRdE+uJehiygJ6sZP4acHmTOQ3A+i9Lo4rxKgQZu5BC5H6pcoLBvoymdsCT6Knu3rJp0PkTbhVA6gazU/vIF0UL2E73H4zQufDS9oY6YP5m/FqAgH7mFEYjBTDf8n9D5q7B0ZSvResmHogcE4yy0n8FTCfX1WbB/5K+0YQ4OfSC7jddIWG2l9VLIOGsnhvOFl701fMMuniarFE+ma/2C6/Ln9LiyF2dPDEnG83B3WTwEvJKkz9XixW9wCwWono3397ybPixiKyjDmo8tTHf/gbOWqBRkTGTuQRbtXqaeUmCFu9Vr6v4pkn/x/v9D+UW9Iu+mzAvUo3qfePohpcowjg9nUtVj03HRpdEHn2q+sDek6NrcRAF6Y3UUjYQkqf3QmZ4mGej82hRW4tq0jwHjCTr9sRTZDb5X1Duf64BPUmzqgt0Qc+/78pMNaChj12pQLig/lVIY6gZUdLYguITqY8vfuSCYJOwtuwaiM6xdxgrjcZGxOJ1Gu0BXW5FQHIuPOakmv6SQeCs2gHnCnhln4XzQUVaEHSk+tDNggs5XuSdueTGcJTAszPQ+tasNbHIt7KVg86YsLrqAKfejM6ew91/wRr99v8PaWbfrzKldfUFFKaDtv5AX/TvKixwybTu2PnnwC8VGo11VgUgiAPjeeEty0oa
+ W0hqFLGW
+ PUcT4r0hIao5+bh40vJE6Dx8YKsMUbdsr1NWlQnfLwbOqwhAnCu5sWexC9WlLrm4pJDY9ZSmVIgOtv4sBW4hbq+x2gec2GnQT3q8f3d2IbWx+T1ScHhS3MPwiPxa5lwv0ZCaOWdyhhXVxCMXtWzQVa+XbI9bN5meSa1hfF2N5i6Cuzrm1KhLeZSl/OUoRxTVW1F2b0Gb/pKnYNV2zG9rOzeAfQ+8pqirCGO/bP3UIoEwmeLxAapA2spfNjy0iRwltdrpl472eR7yO5vPfeQryRKoHj7Cr9lQDvtyfuoMCrcZ7NnHNcn+Da8HxFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,144 +149,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While we are still converting VMA flags from vma_flags_t to vm_flags_t,
-introduce helpers to convert between the two to allow for iterative
-development without having to 'change the world' in a single commit'.
+Update the existing compare_legacy_flags() predicate function to assert
+that legacy_to_vma_flags() and vma_flags_to_legacy() behave as expected.
 
-Also update VMA flags tests to reflect the change.
-
-Finally, refresh vma_flags_overwrite_word(),
-vma_flag_overwrite_word_once(), vma_flags_set_word() and
-vma_flags_clear_word() in the VMA tests to reflect current kernel
-implementations - this should make no functional difference, but keeps the
-logic consistent between the two.
-
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- include/linux/mm_types.h        | 26 ++++++++++++++++++++++++
- tools/testing/vma/include/dup.h | 36 +++++++++++++++++++++++++++++----
- 2 files changed, 58 insertions(+), 4 deletions(-)
+ tools/testing/vma/tests/vma.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 47d64057b74c..c5ad55b8a45b 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1069,6 +1069,18 @@ static __always_inline void vma_flags_clear_all(vma_flags_t *flags)
- 	bitmap_zero(flags->__vma_flags, NUM_VMA_FLAG_BITS);
+diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
+index 98e465fb1bf2..1fae25170ff7 100644
+--- a/tools/testing/vma/tests/vma.c
++++ b/tools/testing/vma/tests/vma.c
+@@ -5,6 +5,7 @@ static bool compare_legacy_flags(vm_flags_t legacy_flags, vma_flags_t flags)
+ 	const unsigned long legacy_val = legacy_flags;
+ 	/* The lower word should contain the precise same value. */
+ 	const unsigned long flags_lower = flags.__vma_flags[0];
++	vma_flags_t converted_flags;
+ #if NUM_VMA_FLAG_BITS > BITS_PER_LONG
+ 	int i;
+ 
+@@ -17,6 +18,11 @@ static bool compare_legacy_flags(vm_flags_t legacy_flags, vma_flags_t flags)
+ 
+ 	static_assert(sizeof(legacy_flags) == sizeof(unsigned long));
+ 
++	/* Assert that legacy flag helpers work correctly. */
++	converted_flags = legacy_to_vma_flags(legacy_flags);
++	ASSERT_FLAGS_SAME_MASK(&converted_flags, flags);
++	ASSERT_EQ(vma_flags_to_legacy(flags), legacy_flags);
++
+ 	return legacy_val == flags_lower;
  }
  
-+/*
-+ * Helper function which converts a vma_flags_t value to a legacy vm_flags_t
-+ * value. This is only valid if the input flags value can be expressed in a
-+ * system word.
-+ *
-+ * Will be removed once the conversion to VMA flags is complete.
-+ */
-+static __always_inline vm_flags_t vma_flags_to_legacy(vma_flags_t flags)
-+{
-+	return (vm_flags_t)flags.__vma_flags[0];
-+}
-+
- /*
-  * Copy value to the first system word of VMA flags, non-atomically.
-  *
-@@ -1082,6 +1094,20 @@ static inline void vma_flags_overwrite_word(vma_flags_t *flags, unsigned long va
- 	bitmap[0] = value;
- }
- 
-+/*
-+ * Helper function which converts a legacy vm_flags_t value to a vma_flags_t
-+ * value.
-+ *
-+ * Will be removed once the conversion to VMA flags is complete.
-+ */
-+static __always_inline vma_flags_t legacy_to_vma_flags(vm_flags_t flags)
-+{
-+	vma_flags_t ret = EMPTY_VMA_FLAGS;
-+
-+	vma_flags_overwrite_word(&ret, flags);
-+	return ret;
-+}
-+
- /*
-  * Copy value to the first system word of VMA flags ONCE, non-atomically.
-  *
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 65f630923461..f49af21319ba 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -766,7 +766,9 @@ static inline bool mm_flags_test(int flag, const struct mm_struct *mm)
-  */
- static inline void vma_flags_overwrite_word(vma_flags_t *flags, unsigned long value)
- {
--	*ACCESS_PRIVATE(flags, __vma_flags) = value;
-+	unsigned long *bitmap = flags->__vma_flags;
-+
-+	bitmap[0] = value;
- }
- 
- /*
-@@ -777,7 +779,7 @@ static inline void vma_flags_overwrite_word(vma_flags_t *flags, unsigned long va
-  */
- static inline void vma_flags_overwrite_word_once(vma_flags_t *flags, unsigned long value)
- {
--	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-+	unsigned long *bitmap = flags->__vma_flags;
- 
- 	WRITE_ONCE(*bitmap, value);
- }
-@@ -785,7 +787,7 @@ static inline void vma_flags_overwrite_word_once(vma_flags_t *flags, unsigned lo
- /* Update the first system word of VMA flags setting bits, non-atomically. */
- static inline void vma_flags_set_word(vma_flags_t *flags, unsigned long value)
- {
--	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-+	unsigned long *bitmap = flags->__vma_flags;
- 
- 	*bitmap |= value;
- }
-@@ -793,7 +795,7 @@ static inline void vma_flags_set_word(vma_flags_t *flags, unsigned long value)
- /* Update the first system word of VMA flags clearing bits, non-atomically. */
- static inline void vma_flags_clear_word(vma_flags_t *flags, unsigned long value)
- {
--	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
-+	unsigned long *bitmap = flags->__vma_flags;
- 
- 	*bitmap &= ~value;
- }
-@@ -803,6 +805,32 @@ static __always_inline void vma_flags_clear_all(vma_flags_t *flags)
- 	bitmap_zero(ACCESS_PRIVATE(flags, __vma_flags), NUM_VMA_FLAG_BITS);
- }
- 
-+/*
-+ * Helper function which converts a vma_flags_t value to a legacy vm_flags_t
-+ * value. This is only valid if the input flags value can be expressed in a
-+ * system word.
-+ *
-+ * Will be removed once the conversion to VMA flags is complete.
-+ */
-+static __always_inline vm_flags_t vma_flags_to_legacy(vma_flags_t flags)
-+{
-+	return (vm_flags_t)flags.__vma_flags[0];
-+}
-+
-+/*
-+ * Helper function which converts a legacy vm_flags_t value to a vma_flags_t
-+ * value.
-+ *
-+ * Will be removed once the conversion to VMA flags is complete.
-+ */
-+static __always_inline vma_flags_t legacy_to_vma_flags(vm_flags_t flags)
-+{
-+	vma_flags_t ret = EMPTY_VMA_FLAGS;
-+
-+	vma_flags_overwrite_word(&ret, flags);
-+	return ret;
-+}
-+
- static __always_inline void vma_flags_set_flag(vma_flags_t *flags,
- 		vma_flag_t bit)
- {
 -- 
 2.53.0
 
