@@ -4,101 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E22201093170
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C9F1093170
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 02:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59C506B041F; Thu, 19 Mar 2026 22:37:51 -0400 (EDT)
+	id 0BD416B0422; Thu, 19 Mar 2026 22:39:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54D346B0421; Thu, 19 Mar 2026 22:37:51 -0400 (EDT)
+	id 06DDC6B0425; Thu, 19 Mar 2026 22:39:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 462F66B0425; Thu, 19 Mar 2026 22:37:51 -0400 (EDT)
+	id EECEE6B0429; Thu, 19 Mar 2026 22:39:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 374806B041F
-	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:37:51 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1E221407D0
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:37:50 +0000 (UTC)
-X-FDA: 84564881100.04.2234DFE
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 83F88A0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:37:48 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6HaNDa7R;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf15.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DE4BF6B0422
+	for <linux-mm@kvack.org>; Thu, 19 Mar 2026 22:39:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 88F5458FC1
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:39:17 +0000 (UTC)
+X-FDA: 84564884754.23.730F210
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E7E421A0010
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 02:39:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ypH57gKq;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773974269;
+	s=arc-20220608; t=1773974355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tLcE4PEVNw3coDhaVjd8MvjBLXVdiuTUjCI49uSmTVs=;
-	b=ZoWOjVV68xlxSCT7ykHBbxc3pWukwIY9XLE5eprG2YDeVyHYL/K1UKM7RbuVmJkYqjHKkN
-	xiXr9Uisb1QO/2Y+PJaj8CLAoXC99mnrODzlT83NGzsyKrm8omLmApHr9+OzrccN5OVz2N
-	G4lp4jq4RFeY+WZVVQphCed7vCNIb5E=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6HaNDa7R;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf15.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773974269; a=rsa-sha256;
+	bh=fGiUso6XOkYhObhwBirbnCAilTMqjJwMQqr/MnCgaF0=;
+	b=iq8drQgMg5wE4mGhL7YzvWmIUoDBml0I1S9olNGaAduXmBgMfD18W+xX1jWN5mOvkwCQJJ
+	efMSS2YNOqLed7swRvGYhUEmlUK009ceZDj8dwH3hDAV+QaTTR6/YwMPVzKkEC++9wzYuc
+	QQNuZi7HeSgrnfsY6HKhHJNuwZ96ogw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773974355; a=rsa-sha256;
 	cv=none;
-	b=WXmj4+7st8dBCBSCyN65cBzJsdbjpfUm5qZAg9xqCLO2PWsf2cv/tphcM0za5gerJjZHKv
-	ZjPkaEDQK7YeF72ZZEnyJ/fNftyo7BkALJGSTiZfWcztiCKHldhCMAR7AVGz7nAVdGvAKu
-	NcRDKYR7ei5fNT19IaY1ZB5ENNYB+/s=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=tLcE4PEVNw3coDhaVjd8MvjBLXVdiuTUjCI49uSmTVs=;
-	b=6HaNDa7RtROPSfMEwZ/FWcwrc83A1T1E/3ECqVWJ2DsWfaenW2UJ+KvIiJ+ng5IDrac9bv5WI
-	4Nem6HWFl7a8x6eDvhv2geX0e2mG6NkTTrTOx7y48nJedEstjJZEvAz6jkayVSOrqT0hZXnaruD
-	bHPxkS7zfstJRWCXdi6AH0E=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4fcRRL0HhHz12LDC;
-	Fri, 20 Mar 2026 10:32:14 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6F61740567;
-	Fri, 20 Mar 2026 10:37:44 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 20 Mar 2026 10:37:44 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 20 Mar 2026 10:37:43 +0800
-Subject: Re: [PATCH] mm/hugetlb: fix memory offline failure due to hwpoisoned
- file hugetlb
-From: Miaohe Lin <linmiaohe@huawei.com>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <osalvador@suse.de>,
-	<david@kernel.org>, <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>
-References: <20260318020711.3596947-1-tujinjiang@huawei.com>
- <0374ef8e-0da1-ad3c-c669-4946f5268881@huawei.com>
-Message-ID: <b8bc5933-74d7-6b40-f58c-99ace8e10103@huawei.com>
-Date: Fri, 20 Mar 2026 10:37:42 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <0374ef8e-0da1-ad3c-c669-4946f5268881@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 83F88A0005
-X-Stat-Signature: djjjyctxa5jki5ie48zsmjdzts3wrtz6
+	b=h6kWmZlUu9GY51ptt5ep2hJlNLDPDKPPm69hUkjDXscgoNxebnl98tU4yb6LZkzfvs7sXH
+	mIlDxvtMKmmBUpFmcYeHO+9ylf8/WFjq6ERYsgG+d9WGTcX6tinrv+IzYDrgJ9GQYQyK1Y
+	GEasJSG3xAesY2F9VMMLyWwY2VS0a3w=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ypH57gKq;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D55260097;
+	Fri, 20 Mar 2026 02:39:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD69C19424;
+	Fri, 20 Mar 2026 02:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773974355;
+	bh=DI9Kcp+U8vLohFD58fGlbWJnlUtiSZ9bu+o5I9WX6hc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ypH57gKqZ0OwuS4fW8MKdbyIUFOBAIY62ge8wCa29QezHhC9yDlXbHSuDTqAqiRit
+	 0nrRhN4kKvLaF3Cot165iP6LM4ifmdtzdwdQ9o+THs1G+Ia4c8j6RKJsXvBl0+a2l3
+	 Bk+Jg3XbtZrDAMkhXknHaU2pjg6/iA+FxqrmW+yE=
+Date: Thu, 19 Mar 2026 19:39:13 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lisa Wang <wyihan@google.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan
+ <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, rientjes@google.com,
+ seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
+ michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
+ dave.hansen@linux.intel.com
+Subject: Re: [PATCH RFC v2 0/7] mm: Fix MF_DELAYED handling on memory
+ failure
+Message-Id: <20260319193913.eac97eee63f451ca325dd775@linux-foundation.org>
+In-Reply-To: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1773974268-88322
-X-HE-Meta: U2FsdGVkX18HI+0eNVxhWspeba8ftWqpqLegV+iNFAQTuRzaE4jxUd8EhBu0x7RTHDWmsPcmTGSS7z1xBKU6rVYLo9Xg8VBrR80hmk2bIKEXLV6CyxD5FpYq0Sbw1Oi4GwvMS11gNW57pAaKJwUtDQDIb/NPctzD+4TBNp5/lce+ub4KaZmtHJVaZqOypEjrph1u9MUxURXwepe8Wg2pSJ0Scs9vNZ4W/PKdzIxEaszSE/i1OoRBbl1GMCM45BeOc2/E17Y6vQxSG1Np5sWsWGcA4EIVacWsb9fsa9tg/Nd1RmvFKwtYZWVYGlRc3exmAL3xubVn9jQ6y3Acmjfym+iCM6DwWH/iEZJKQewghriSO2Q41Z0rhG31WIFMxd8K14JhBosW3e1Zf9pJn4rDpUGw8xVQyc6Btm2wuBINsRL29Hh/AYYNGdWL22SDVfGzpmePPFQZvnnw4Gd+TGaBYD+w/RamDQD6TUfs7zXjj/P8HLMRsDaqHNUnAB3bmf53NvY3gIsoQE8pS3FfoDsS2xen0kKes8s/b7/HeZUZvcsZtakzCOVwTqDlP7LnZI1L1e2iTMCJWL+8saxVlJMECBcxtrINOKXII9XKVY+fKsTVjmgfjy7AAFxeIJRWw48j2ypxt6Z+3tA13TtBiiaK8c2qE93xw2RbXRQBUMEoZ8KQh+fTYJBYhzAiopL6TfoKyPjHZ/O7lxkHQdzwKLK2wV/oG/+MEH/jZRVzomzLUyjp9oLRsgwd7Z+BBPW1ubpukieK36jhdxWgvblGJjNNwq8FzOWWM2mNSYhtCUo8Zf/4lQ2Z0KZQNbcgEP915QFFcfYMsa2Vi3wA6bVGYT/JcA4NJQBweaoHn3fMOcYpY9mS/5h1WG5GHfueYFdmSITZUrzJ/5q6PZwlV4Xo2FQrfT1sks1L6sScztKmpeDc+WOPj0WCVSGqrK6wkIwRJRNgX3hLb6bsMrav1nzYaqS
- ALYghbsh
- E+eZ6XgwIbUC00AmCCjB3FLG1tQ==
+X-Stat-Signature: d1t83uynmsscj8b8xt3cbojn7z3a5t7k
+X-Rspamd-Queue-Id: E7E421A0010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773974355-927452
+X-HE-Meta: U2FsdGVkX18eAPT58USRHttEv3Mr/dG/h9WIDn2OfQiiaugI22pg913yoUvC+Qk5vXFTk8feg6pMpaOC945u7MTvcqc5zvinKHVVo5Xs5TZRuQ6MSZC0Z9OP/ETWD4aR6FKapfUzAo4wrrLUCm95d0U0aDg9IH6e14aaeFcnpDuSCElldprhemDQy5sYQYoq0xLPfnR4TxvFLtLD3dPHijktT3V7zE6qOEqZg3tX45IwWIBc6qDblh1/mL3Q9TMsp1MCsh3fPWsT7QnrIvBh+eYCfx3D/Q8OWpLMidl9R1KeAha5f5UvVWeZKuDOXGJb3UvLOQB79ynbvRLZUyTLBQd40kUD+HE9s29WeAJe5cq+1B/pnemRXwt/qx/gl6OlvZYLDHJG0aOZh884hZdeRG9O4sWSz2J9ypyUQpT33DBIklS27wWjLRRmpWk14T5koa61z4YZg9XGZT7FodfkAphNk0Ki9cu4vnqLoCmQwGho65Pj43RM57TbOyWFG52L55/OABPKoQezjJAsEwUE9V7celE7LZmkQCbhOrkjBf7Xv5nchtoAfROHk+3mKPsW3CS/ZzSn6/Zl7gTjgg81bc/HDbEsdxjHWwn/rRNhtHHke7s+tL+j4ao2H1Q67bjEjVSvj4I2a99eauRFGmSAKiahgSv2POQjDLrHlDUKHwsuN/fxR/sdZfnDCSqqw2DcnJHLo0jTLXZRGrgEWv9DWQoaCjRWwpUT5obqCoPjiP13PiVYTWWV5xEzGkBjzotWSanXWNbgMA0S4LXzQlpmAd9ElPQUl/tq8pundMntnttIos343qTIgcQwsZqvTbPa4C5pNzi/fR35JHE1zdR8k2WtQpSseLzNMmzghSI3CW6HfqVAMaSGdZqGofrlat3g/splg1ilpyqpoq8Y3LDdaJ2e/jM9Nqyb9NWSjju1SEgTQPkJ3QE8d5HgfInJ/NHyD8GBBWm6Plq7K5Xl+1d
+ AdFQlmyD
+ d17N2nto5Ej15NlHD8SAAAVjEWvZtY2HPpiqtVx5sJ89XgkiKFL6bC75BDgtD3/96Mwa3Q5TRL6WYNlHgTnFgXH7dozX/iAENM3pv0oAJzTv9+1akMod1ng//qHsAY3BWKrSRpSENKwslzTGPevLR7fStZRB3K6f/SnFuxJkiXYWtrJv3UC+ZgXeSSjUnCZQFYYXqsJejXxULmDmnHeT3Cv1RXzG3o4wyVNWAJDrj0NUHdOzLVZBVRRBZfXXCKHdgL5KLtPTL+rgYWO52TQKEaer0BXpXoPnT+Hu/h0CG7q1mgydx5oKqR+M0KIdQk22Akfjo5ppfUPDtYF5Rar47qIFWpU4p8/RlL0Lqa14ROaj/vuHW21aRDd8YVt4Ru0bLza55BCQs3ub8i+zH8D3eXuXtNW3BG4IWbnakJ6fj61EZXJIVtBonYH9YBpz33Yfjheh/UDeD9PWP7ZabhvrCUM83LIF3itvg8YvN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,75 +100,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/3/20 10:34, Miaohe Lin wrote:
-> On 2026/3/18 10:07, Jinjiang Tu wrote:
->> When a file hugetlb folio triggers UCE, me_huge_page() will keep the
->> hugetlb folio in pagcahe with refcount increased and PG_hwpoison set. Even
->> after the hugetlb file is deleted, the hugetlb folio is still leaked.
->>
->> If we want to offline the memory block that the hwpoisoned hugetlb folio
->> belongs to, it fails in dissolve_free_hugetlb_folios() due to the
->> hwpoisoned hugetlb folio isn't free.
->>
->> I can reproduce this issue with the following steps in qemu:
->>  1) echo offline >/sys/devices/system/memory/auto_online_blocks
->>  2) in qemu monitor:
->>        object_add memory-backend-ram,id=mem10,size=1G
->>        device_add pc-dimm,id=dimm1,memdev=mem10,node=2
->>  3) echo online_movable > /sys/devices/system/node/node2/memory136/state
->>  4) echo 5 > /sys/devices/system/node/node2/hugepages/hugepages-2048kB/nr_hugepages
->>  5) run ./hugetlb_file. This process will receive SIGBUS.
->>  6) remove the hugetlbfs file.
->>  7) echo offline > /sys/devices/system/node/node2/memory136/state
->>
->> hugetlb_file.c:
->>   fd = open("/dev/hugepages/my_hugepage_file", O_CREAT | O_RDWR, 0755);
->>   fallocate(fd, 0, 0, HUGEPAGE_SIZE * 2);
->>   addr = mmap(NULL, HUGEPAGE_SIZE * 2, PROT_READ | PROT_WRITE,
->> 		MAP_SHARED | MAP_HUGETLB, fd, 0);
->>   memset(addr, 0xaa, HUGEPAGE_SIZE * 2);
->>   madvise(addr, HUGEPAGE_SIZE, MADV_HWPOISON);
->>
->> To fix it, when deleting hugetlb folio from pagecache, mark the hugetlb
->> folio temporary, and put the refcount increased by memory-failure. After
->> the hugetlb folio is deleted from pagecache, the refcount is decreased to
->> zero and the hugetlb folio is dissolved.
-> 
-> Thanks for your patch.
-> 
->>
->> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
->> ---
->>  fs/hugetlbfs/inode.c | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
->> index 3f70c47981de..6bebe2e67f3e 100644
->> --- a/fs/hugetlbfs/inode.c
->> +++ b/fs/hugetlbfs/inode.c
->> @@ -603,6 +603,11 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
->>  							index, truncate_op))
->>  				freed++;
->>  
->> +			if (unlikely(folio_test_hwpoison(folio))) {
->> +				folio_set_hugetlb_temporary(folio);
-> 
-> I think it is not needed to mark the hugetlb folio as temporary because
-> offline_pages() will call dissolve_free_hugetlb_folios().
-> 
->> +				folio_put(folio);
-> 
-> __get_huge_page_for_hwpoison() will always set hwpoison for hugetlb folio
-> even without page refcnt increased. So this folio_put() might be unexpected.
-> Please see [1] for detail.
+On Thu, 19 Mar 2026 23:30:27 +0000 Lisa Wang <wyihan@google.com> wrote:
 
-Sorry, I forgot to put the link.
-
-[1] https://lore.kernel.org/all/a3ff8c7b-69c1-fecc-3564-ecaa3e8a7e67@huawei.com/
-
+> Here's a second revision to fix MF_DELAYED handling on memory failure.
 > 
-> Thanks.
-> .
+> This patch series addresses an issue in the memory failure handling path
+> where MF_DELAYED is incorrectly treated as an error. This issue was
+> discovered while testing memory failure handling for guest_memfd.
 > 
+> The proposed solution involves -
+> 1. Clarifying the definition of MF_DELAYED to mean that memory failure
+>    handling is only partially completed, and that the metadata for the
+>    memory that failed (as in struct page/folio) is still referenced.
+> 2. Updating shmem’s handling to align with the clarified definition.
+> 3. Updating how the result of .error_remove_folio() is interpreted.
+> 
+> RFC v2 is a more complete solution that includes parts 1 and 2 above to
+> address David’s comment [1]. Selftests are included for all the above.
 
+A few questions from Sashiko:
+	https://sashiko.dev/#/patchset/20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a%40google.com
 
