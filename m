@@ -4,134 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D624E108B900
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:34:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A6F108B901
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 11:35:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2343B6B0005; Fri, 20 Mar 2026 07:34:57 -0400 (EDT)
+	id 31F4B6B0088; Fri, 20 Mar 2026 07:35:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E4806B0088; Fri, 20 Mar 2026 07:34:57 -0400 (EDT)
+	id 2D0206B0089; Fri, 20 Mar 2026 07:35:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FA256B0089; Fri, 20 Mar 2026 07:34:57 -0400 (EDT)
+	id 197FF6B008A; Fri, 20 Mar 2026 07:35:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 020FF6B0005
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:34:56 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A48A4140172
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:34:56 +0000 (UTC)
-X-FDA: 84566234592.30.33871F8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4A077180007
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:34:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bFfhqtIq;
-	spf=pass (imf16.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 087716B0088
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 07:35:31 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6E741401A0
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:35:30 +0000 (UTC)
+X-FDA: 84566236020.21.9A5A64D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 202DA14000F
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:35:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t4ETvcgG;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774006494;
+	s=arc-20220608; t=1774006529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/XAFuMj8200/2Yl3T2tu1n7OQ463xMtcQ3l4BrZLY4E=;
-	b=A9ERdrLWtD/sJoMi6iXm710wOu8iDv6ZToa512QaXzDof2rPSVJ+VN6IrybjQrCGOf35yM
-	PdW3f5fe9xQNv6j5IvKQLN/JwY0FG6MZdvVtmripdoTvVOFyX2HQuMWgImIKKIlU04NClC
-	CrdCgRtyi2layjHCf7k4bX3va1oL16I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774006494; a=rsa-sha256;
-	cv=none;
-	b=QK1huP4oL5r1v8W74L1L7M8cF8httrucoRGrhJVJn7eKUGWJZAb+wSIee5WMGjBhr/Gygu
-	03L+idY8V6wGyjZgi4PE+1DhJ2UgkV0voaLo038FZ3kw/GWfeYFTF6K/anw07wRyVoDJjg
-	yW1XRwn84AlZUcqfrvb10nx+LL2ZAB4=
+	bh=xycleNK2sIci1vynO6W7JkfEo0hraNqpapd6SkyQhBI=;
+	b=SURn0Wx46ndrldTAHIWTXbpVq9lW0Zuw17E6S3EndACUXr6WgdGAT5lSWcJfIpB+pivwrn
+	cAkcLPxMIqmZrNr5q6EDAnAnE7y+Ak/AtdmjZCaH9XkOUB251qwBNIVwQuZpG/Zawqs3qK
+	6jfIk1IDco9met8SsDU0YqwzjaF2uts=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bFfhqtIq;
-	spf=pass (imf16.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774006493;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/XAFuMj8200/2Yl3T2tu1n7OQ463xMtcQ3l4BrZLY4E=;
-	b=bFfhqtIqeBuElOI+hN5D54U35GC8X9VERCpC2ZNHsRKqiKBy4DWxVtwsUYT/lt0/4ev+ft
-	igUXOg3zmrqSsp1vt48vbcPHiZFwIQh9e+tlDg/kb2PPCpvMsPr48tCvZ2AQpMYiTaDS+4
-	eW4Rbe7LnhcvNPiYtByDZsMsit+4rTI=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-137-B2E9rSmhPPWNUb3dmgy9Eg-1; Fri, 20 Mar 2026 07:34:52 -0400
-X-MC-Unique: B2E9rSmhPPWNUb3dmgy9Eg-1
-X-Mimecast-MFC-AGG-ID: B2E9rSmhPPWNUb3dmgy9Eg_1774006491
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2b08025f240so13027665ad.1
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 04:34:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774006491; x=1774611291;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/XAFuMj8200/2Yl3T2tu1n7OQ463xMtcQ3l4BrZLY4E=;
-        b=cGx11WI2TpshQU5QDamsSe01sFOraC8RrhoDDMceFnDNgbzZVKufL4q0E1AasiIAP7
-         RzEMSv0JYAw6htYDKxQwR73ykvhyvdtMD0pnsm+N7zP003nfH3Pyapx1YW2uATqyBejV
-         78cYbost+gYUpL5CUCF2qSisme+FBq4BV5G4IorKrkWfkj5PKu+q/zqx62NvCU9DH2sq
-         DSzkvKqiWOjCiU47BGR3LJYKuIjoy36HynLd8giRCJhEmUJYR94LENGK5/skO5FOHHlD
-         ouPV+0KQViqfXStycZIzAlaPHaPSHl9qMMYDbhgR6evnCkdhrOz0Aksa9YZPf0DmstWx
-         Z3rw==
-X-Forwarded-Encrypted: i=1; AJvYcCUeC1ifYmQ2qFkRxERKWwNnX9rW9t08INnX+vUTlXH6HLsQuWbXwj4ZfALGNhO6Ke/VUeE1YABwnA==@kvack.org
-X-Gm-Message-State: AOJu0YwnZsVeY9StxTJVdZ8lygHJDa4K8kEhojRMYPM1JUdUIkfTlzja
-	iX+BXqbUUEC3hczb5gVPegWHRkvBhvx7UFRabS+UNnUFpemIkfKNa2FHigoZNNc0q66ozC2PKa0
-	t5tI3EXHtpp2YZ/BINiIEBidiIYWEM/vcFxBHSC1vh8UQwSwK9pBn
-X-Gm-Gg: ATEYQzzjivBLKg8PPMJS1XsUY8D2CkCPV+qrMTAzTYiZWoUd9T5ingTWdanugphLONT
-	NX1tXAUBx9WPX72cSrSeVIyheGnMpbqCmntY0BkVatq/eOGJq3MuAI1/p3y/5ZB0ru1Qar7xzfy
-	xc0kDQqGb0Jzh/BV00cXtLqzjZmr5fVC7o+D23NVHVgZM+Lv4ml06Re3mQDnvJTp7Un2bOjyV1g
-	3qgWNzz1Qn/E4Ad8MM/0c08KDfWp2G1b6qOka9fsKBZB5C2BDeM+CkndkJZhOZUcfFVPZZYpapV
-	7F64CAkz1giXZ4IgvAQroPjntIKiPEaSIDgN/2xPsHaTm8DB8/NSqxfFfBqAkKQIIyPzcohUCu9
-	wfQdiWFWdB7gklHMQ/A==
-X-Received: by 2002:a17:902:c40f:b0:2ae:4d6b:b2c7 with SMTP id d9443c01a7336-2b0827564dfmr22400255ad.9.1774006491326;
-        Fri, 20 Mar 2026 04:34:51 -0700 (PDT)
-X-Received: by 2002:a17:902:c40f:b0:2ae:4d6b:b2c7 with SMTP id d9443c01a7336-2b0827564dfmr22400125ad.9.1774006490957;
-        Fri, 20 Mar 2026 04:34:50 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836a3066sm19628795ad.75.2026.03.20.04.34.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 04:34:50 -0700 (PDT)
-Date: Fri, 20 Mar 2026 19:34:48 +0800
-From: Li Wang <liwang@redhat.com>
-To: Waiman Long <longman@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Sebastian Chlad <sebastianchlad@gmail.com>,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
-Subject: Re: [PATCH 3/7] selftests: memcg: Iterate pages based on the actual
- page size
-Message-ID: <ab0w2PCcYBEKxm2B@redhat.com>
-References: <20260319173752.1472864-1-longman@redhat.com>
- <20260319173752.1472864-4-longman@redhat.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t4ETvcgG;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774006529; a=rsa-sha256;
+	cv=none;
+	b=Mq+xeeb7i/py/vvqT43IRoZ72N7za8NSxfrHDm0GubzJ97rQC7Akb4ZbueZ3zPtcJVh9Uv
+	VBPzHAQAe8vjdKdJIQs9QZXsBYxfY+6VqFQ697htyvkgmgrU+xYP0opDz+yFj3avY98ARZ
+	G1fMYXxF/FkY3/f3x3LsQTSzfIy8IDY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 80D4C60126;
+	Fri, 20 Mar 2026 11:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1331C2BC9E;
+	Fri, 20 Mar 2026 11:35:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774006528;
+	bh=9pNvu6S6oDhM5h9WgjMrUwgzjvJ+ZdQO7AyPrErzbh8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t4ETvcgG+DtBZacynsUwUuZzc9gslv6ATrxqYuzM5SYDxYfMTJwJDAsaphiO+bvvO
+	 OICL23t3UAxusfjHjVPExe4XEhAXpYpoOdlmD5QaRgAoXbGt/+EU1rx4kdZui/NOSJ
+	 oEGXus0qrZn9Mu47YVU9qp2UUNi3kVi2ss0cmW8LbGfxEz4wc4/HRpost/ZSflILHB
+	 rD3hTQAh7fiymU01Hv+QWJg80hKaQ4b2uEY3XwFrWPkHiOy5rBU3msgnspXcikMgT2
+	 VMvXXysLtGhQ6LOTSijog2x7X8hA5lpL2caBJ588S+wvIMyL8V7pF3NM5Gfy6SCArG
+	 b5FdpcagKWM+A==
+Date: Fri, 20 Mar 2026 13:35:21 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Chenghao Duan <duanchenghao@kylinos.cn>, pasha.tatashin@soleen.com,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, jianghaoran@kylinos.cn
+Subject: Re: [PATCH v1 3/3] mm/memfd_luo: use i_size_write() to set inode
+ size during retrieve
+Message-ID: <ab0w-XnXgosQLOKc@kernel.org>
+References: <20260319012845.29570-1-duanchenghao@kylinos.cn>
+ <20260319012845.29570-4-duanchenghao@kylinos.cn>
+ <2vxzqzpebzi2.fsf@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260319173752.1472864-4-longman@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uCoY5GecUUZ9EhhV-FunIGVv62LvcxAn9W9lGmuaajU_1774006491
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <2vxzqzpebzi2.fsf@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: fwhzjyas97grqndzh7ae1x7qt8nj8595
-X-Rspamd-Queue-Id: 4A077180007
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774006494-727464
-X-HE-Meta: U2FsdGVkX1+4V+P1CsP8LQmZMf/IBvG50OPcyzquua4HCo471imMNTTLhXbhgNQcz8NWo+A3fHc4wrNN5G5ICnN95hXEajVznn+GQBTaA1lKq9Xod3ZGOfld4CpL1ph2PZ/bez+vd2x9chhe9hAWC7nDaPCuzgGtFKy0NATVcqDwmnHcnlr+/Uz6iRNoDCoEn6rQuoMOdPubmUBwwZJybICfplSGY0VZDDwR4jC4ouO9dgQMMX5tq+JzbADH9JiLos0tNW8VKJT1ooGki1cqzMe62zh+Nfc8F5Td//auqEmu3tL+zeB50zgY3nouhiU6AXmgWzHnfeJWYeTA+jlwyVyvb8f2Sv4cxySZhsLnUVwGJW0D6zKhpaOudcQDxLf/hN56GJ09dvjAbW6JpUBd+9vA1V3UKN+5zwziPuUbFfstl4v5WxcI4bGUs3wfdaksfuUnskwvz9K4d9RC52Qzdz//7LTOnJJYOdrbWsI8R+tNA8kZOlDYRW0DtEwnRLrMqdDpD829xShSwnW4F0bkAbTp4pGVjZrE44w7c5GU8R5t6v8wyrOfWaKRa5E9KXXKb0B9J2iaNr7ce7IUBL9wDNIScLO6GSoQ/kPUNyp64QcIZCIMV82KnB3gEQICYbJoubpoFAr7sQ91l31/AzvYxgj+zw0gWK2V2lvKTvXVeQdfiBCw8O9IJMtC1/hRbGGSm6HxQfDAA2fQ8mMAzH5P7gbs6zH+I0YV+3XYHG6kJN6TrJZ00Uc3frr+r1KBPC9CUVxGIZQoCmrM4DaikbM/bCw0jFR7ZNRBdToLW664V90SZoY4ysndWi3XXbES4y1LGYhUUnARhHNKuxA3icJC47ZbExECnuUIdgwsQ0HrUqN+dMoUKSxm/GQlbXNYB9VgKzeRMXtzeJwIb6+ATkuHj+CucRWZklZReir8uzh87Z/1zK3zCpLppbZVqPCaUXrogT97R8DXny5dCUpFAZI
- zpqJnr82
- 4NYP4uMnUxBMUMHp60jKyj00YsYzTtla868LKXbYiNPK854+QvsUvQaCTv3nfClkVeUUmyLNgrDp5gLy2XI1E5oQqA9GhlHChQNjqy7BaOduMrMNfCkE6FTa+875PymbrLtJSRbvhKjKkw4CibnKxhJQnTCS3SJQVQSrQzBVR3kVheRvkCn/qxqFoYqgQ6xzQr5EXcrzHAJhu7o8x77WJAgUKuMNotekmsX5AsZ/s/Xyyx0ZKSL6O+3rQdWG086bCUvFzYmFPE+p1Vvdf2AKbnhNzqeG2BVsRzskD+tNrvF/iBmQZORo1TLLrzU3l67JHJps5SGddM3fYz1MRq9ilXJQzNogxbydMXhuW1p3VpoI9RW/OciiUlcwT80T7ixUu3W3VQu4gbFHRc1MyAviljk5F+GIQFh+oIl5e7IVAv+NSRdvOmHHOzIN4z/nx+quxUpzrnjkWCzLoiIk=
+X-Rspamd-Queue-Id: 202DA14000F
+X-Rspamd-Server: rspam08
+X-Stat-Signature: chr5xfhrzmw6xuuprfzytuschs9ietc6
+X-HE-Tag: 1774006528-844027
+X-HE-Meta: U2FsdGVkX18hAFtNI9QhcPWCn/E+MasdGzTm8MtPhrqFlWZLX/pQIRlqqshBDpm+7ect478MyHX+By8SaFpmJa+O6q7A3mQIOaxjF9bn+/OaIK8Kf+6FZ5bSuywrX87o/AsH+as7DA0rbID3Mulgscvu+Ne9zNve2x5Gq5MJltLb/i0sXzChm94vMesbhkHHRH+4kCXKycujKQ5eoy65vcXXiMzt+tlYk9dLSFq+cLBADNTRa+4Wh5gkccjvs5K7t4z3sU/EONqNYewslzoE3CjM5l5EaZ580Ojg6lKlPuvHpdGSjewzCBi2TztZmSnB9dJ2uNGbtg8HehCPNWdlnMjtlDPMdaE5StIXSdJV7Nrb3ehIxPQ3fJxXhLTPZWeizX4/UFynYsSRSDyVqlXnrej/ZIyQEX2eCmJKakgMOrzd9E5BdDK5LWIFBjYqeMgauUVxMb1pMXJQsNOWqD8ZI4VxEtpgVAo7iVEvvqh0HvZO4VuOAovXWXPl5ocvqNMpIWvPp8DXZZLSpaaM+K8lUd6jtPmXNl7krZUhmwxw8KTfYSXbEZ9YVYlTzV46al51aenWcV0c9UpXtj3Twed8iih1tVV5oD6hucGt5Us4cZYhbIg7A86m08rUtpGBmFBqCfcI1LpcM+pwaclsTO5ZdweMl6hSufE+7p1NOvDqmBg/tTZNr0Daf7Zx+qAj5vV6ErbCktISz2SQSKlRdIhnnvFAKGFypbkJMX/IOz+WSFxwLA5EC81wUS5PTUkSqX2V04hTz/JyLu0bbMHc1Khn1d/XJzz7BNT+XjoASocJnLwq0Z5+9K5Tg7fnqLk2H17k9tQBou08YHC5NV5+m1+sipHg40TgZ6/6KekBJhHIextVcSz80MQDpgpUbXW1XnqRUMApkUiOllY/+6FfhLk6sPCSizz1lKiL8nLbvexO1gHLnpWrcL91FG5kM2qhoizTjGJ/RcVX3fFxCcbFfC5
+ vehJ0aFA
+ ZzvOjgjYhVD6vnDcJHUF2yYcZE1fFamRAna3KKUQf9OMuZ9yOuo/V6QcQQERAlBOUeaWZSaYlCfjbYBq2auI8uUwr0/U5BeN3hx0c1iAUfw3YRzI2tPr1DbxsJLOkw7bNBoqEI+v6c/eN6xuKETINo33iBb7USq8RE6FrJSRlGeLyQZ9E5Cj8W+Au3p1cB4jMuy25+2t8WFXA3LO1hj1gBEFgQUgyGbJFbNX2OTCiLJG5wk36WQG648P5ylI1GbAJximpVY0Unz3qokhKqmxUEstz9DzwycucoupMM2pV8wHqJzg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,18 +94,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 01:37:48PM -0400, Waiman Long wrote:
-> The current test_memcontrol test fault in memory by write a value
-> to the start of a page based on the default value of 4k page size.
-> Micro-optimize it by using the actual system page size to do the
-> iteration.
+On Fri, Mar 20, 2026 at 09:51:01AM +0000, Pratyush Yadav wrote:
+> On Thu, Mar 19 2026, Chenghao Duan wrote:
 > 
-> Signed-off-by: Waiman Long <longman@redhat.com>
+> > Use i_size_write() instead of directly assigning to inode->i_size
+> > when restoring the memfd size in memfd_luo_retrieve().
+> 
+> The commit message can be improved. It only explains _what_ the patch
+> does. Readers can see that by looking at the code. So it just repeats
+> information that is already there.
+> 
+> To be fair, for more complex patches explaining the what does make sense
+> since it might not always be obvious. But what is almost always be a lot
+> more useful is to explain _why_ this change is made.
+> 
+> I intentionally assigned i_size directly here. The reason for that being
+> that no one has access to the inode yet so there is no need for the
+> smp_store_release() since there won't be racy accesses. So my first
+> reaction on reading this was to check if I missed some sort of race
+> condition. I don't see any, but this is exactly the kind of thing the
+> commit message should say.
+> 
+> So please, explain why you made this change. The reason can be as simple
+> as "for consistency", but there should be one so reviewers aren't left
+> guessing.
+> 
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
+> > ---
+> >  mm/memfd_luo.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> > index 413df8c75c1d..5e5971f25c68 100644
+> > --- a/mm/memfd_luo.c
+> > +++ b/mm/memfd_luo.c
+> > @@ -500,7 +500,7 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+> >  	}
+> >  
+> >  	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
+> > -	file->f_inode->i_size = ser->size;
+> > +	i_size_write(file_inode(file), ser->size);
+> 
+> For the code change, I am neutral. I don't suppose it makes much of a
+> difference, but if people think this is cleaner fine by me.
 
-Reviewed-by: Li Wang <liwang@redhat.com>
+I'd also add a comment here explaining that i_size_write() is for
+consistency :)
+ 
+> >  
+> >  	if (ser->nr_folios) {
+> >  		folios_ser = kho_restore_vmalloc(&ser->folios);
+> 
+> -- 
+> Regards,
+> Pratyush Yadav
 
 -- 
-Regards,
-Li Wang
-
+Sincerely yours,
+Mike.
 
