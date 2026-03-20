@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38B231099B2D
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:07:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E01AC1099B32
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 18:07:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A24E26B0099; Fri, 20 Mar 2026 14:07:47 -0400 (EDT)
+	id 5698A6B00A0; Fri, 20 Mar 2026 14:07:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FCB66B00A1; Fri, 20 Mar 2026 14:07:47 -0400 (EDT)
+	id 540FD6B00A1; Fri, 20 Mar 2026 14:07:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EB3E6B00A5; Fri, 20 Mar 2026 14:07:47 -0400 (EDT)
+	id 4580F6B00A5; Fri, 20 Mar 2026 14:07:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F75F6B0099
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:07:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 220C9B8431
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:07:47 +0000 (UTC)
-X-FDA: 84567224574.21.FB11C60
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7F8764000F
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:07:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o543Rz+D;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 31BF86B00A0
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 14:07:45 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F239A1B7458
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:07:44 +0000 (UTC)
+X-FDA: 84567224448.26.EA0A937
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 180AE160003
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 18:07:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G9T35OO2;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774030065;
+	s=arc-20220608; t=1774030063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ehQfIjrMKdWAnhiYvJkx3eAZAA0XBOvPoQs5eqk+SiA=;
-	b=TINRS4nYRp5arv2wC9L+XgksZYe7z4UWrnVArgchr8la7xZLFzSEaqE+eJNx6TJHhPrm7n
-	7mUY4fmCG+/irgh95L+nOjVW9qEV2f2o8iqmnxBjkBx9m7eXCY6yyxkxt7+Dq9ceFVjoci
-	kZfiJDqipIFeRvK/jaGv5t04NMecN3w=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o543Rz+D;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030065; a=rsa-sha256;
+	bh=3Q1SKJtbm+b3Pnm2CSjpsptVr4eUf++FErNWM/81VzA=;
+	b=nj9Vn6VShMut+W82HOPqSL4SOAPUtkD7tmlIBQVryOxJp57PzkABhvpBNuXyBwL8MsRBjN
+	Z4bvW92DVMcGEP/dWCtEPgj1RTAHPp6kgBFNOWLQ9davOu9VcmgtwvLPHmjcH1NOEHwuJT
+	DK9P1okaAwWI38eJmEkIwstO4QgxlGE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774030063; a=rsa-sha256;
 	cv=none;
-	b=au1/LgGbgjR2smHBi5it1B84YdHJ0IigTc4skKujT3NIVcHfU5lpm88JDsDlV0s9HE+KA7
-	MnsURZz5m6LlHIxkTcnTyqcEp61fd9cjxcAvnzbjCK8rCV/D6ybV53a6Kd0HS9eks6k5Yx
-	gWpbVRht0qDpcNlOuDY9r0fngucYg7M=
+	b=hKZ+9y6HOVBpHIKFuhoNG4oMnmIbL4sM2qHOB/BU+/q4KMldSMzoftvuspsUNiQvsIuHYT
+	A5NHttussPrnZREITDCIm4ksGIo8huw9NEcZ1GCkStnAl036xabGaVvTV4XHG52j/iyQyU
+	Gh15jypsOITjxTOQUBd+mBermy1PMOU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G9T35OO2;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F0F4360154;
-	Fri, 20 Mar 2026 18:07:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C17C4CEF7;
-	Fri, 20 Mar 2026 18:07:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1EEFC43DC0;
+	Fri, 20 Mar 2026 18:07:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648EBC2BC87;
+	Fri, 20 Mar 2026 18:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774030064;
-	bh=P/GkKotdiAAJ2kX5xJff0/9NvIiAuzmB7tSLtVtZQAA=;
+	s=k20201202; t=1774030062;
+	bh=amPSkQMTzSQojPGe7/NnBN/jpbTA7AJ3qnkGmEg1DZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o543Rz+D7ParciZZN7bePd2+jTsesQ1AAogXkuQEnh94ViHNNdl9C/HFmhtEWlTiC
-	 6is621MtqtrcF4n7LgGlSFi3az1wNbjNAZKYi2tAidldig9W1CMu45cTG1LymocEt9
-	 BUg2ByHHoeocuPZwRwK12NwYbfl3w+7VnzEs8hw+leX9pG2LK2JKwcry+uT+MRd1Z/
-	 hQZWZbonItH2M+1/tMMmyRP8FqWhQFpUdyNgflQLkRTe+M+h6qkBIwq685RrJZ2Vpq
-	 79Jx7LwqDasiej2INE4C0KrL3HVeAis18BBVu59+9RUJB8FGHjBN6y3Oc6DnI66pU4
-	 zHtkYfTlkPgDg==
+	b=G9T35OO2fy9XN0A+O0UjchlBJ4cTGUO0KfKGNpyrYzh8Y4kncNgv0tzdzpIN0BhNc
+	 RvyEFjm5KVMdkfaUv0p5DgB3VFIbND1GGr3hOKcXwMu/X4nEyqbmk/XAJGAH3Fz9RT
+	 l2eDjHpESSpFmx5ps9dDI2INm9Md+bSRWTzaOC0z6wWcLV4C2a70mOM/bbq10sRTjw
+	 nvZl9TKFO/fAJLrMfNrBMOkgIy4wOWZQb1PmfQMF43gsTbkmxawHrihVGv6za557d4
+	 eJWb/c7GZuAuZLg5eYJcOwS0HvLLlbntVNU9o/6lKrBHORDPTtaeKlvaQq8++SoO2g
+	 xLF/SYzXxGKiQ==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -81,22 +81,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Kiryl Shutsemau <kas@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 04/13] mm/huge_memory: handle buggy PMD entry in zap_huge_pmd()
-Date: Fri, 20 Mar 2026 18:07:21 +0000
-Message-ID: <fcf1f6de84a2ace188b6bf103fa15dde695f1ed8.1774029655.git.ljs@kernel.org>
+Subject: [PATCH v3 03/13] mm/huge_memory: have zap_huge_pmd return a boolean, add kdoc
+Date: Fri, 20 Mar 2026 18:07:20 +0000
+Message-ID: <132274566cd49d2960a2294c36dd2450593dfc55.1774029655.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1774029655.git.ljs@kernel.org>
 References: <cover.1774029655.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7F8764000F
-X-Stat-Signature: bgrpt34ked8gd6i45zdcm3pcc74y35af
 X-Rspam-User: 
-X-HE-Tag: 1774030065-860991
-X-HE-Meta: U2FsdGVkX18ipR+jDGY20VUrBtyqHQr9MJJBWZN8SQve8fCu9A2z6EP6Dr+//7qv5bfwOObd85ehNCPsTCaStWaB2VN0qEQzXrJh5PhuOExViUhhqc4BrWFqm6HzSZUdfsr8nYYhpeLB8SgZycz43zInOa/RUlQbRQVWuZoZ8ICQaEtPPEgQvbI+U7xYElKicNsZgS9xgNKtUV5UzTG7P600x1HimEp9zw+9nbbEtFfpECkhyN/L65Yg8J14yW4/sR1M6flHLIogktj2MLFd4IpoCD/3dodup0K1irSvFsYmCd1B7BQAC/0UmjHTH2iOL86z4hX+ipNthdbrTf4jegxiRAzDdh9+vambutzLHo3VH0xVp2hNhEAXSGsziuLIouRZQGhorBH+L4ZvShqm2S068/bkI2bz7DRzlYCkZ7/sNzQz3DPgYbonahJLIFQ+uAWNUOkqAhqOVjwM8Mcr0xWyiaMHlHh4WYBbpTxxy3GNXmUFsH4C76YJC1uZVvNtO5+i1qiAaji9JIy0jp/TeC983djZVLOwaUT1CdwRii1DIgwLzPtjRR6pzdsORWmnvfzNPTpxkKW3rsbImpcMmXlXL36JglRQBdlR5DUwdtwqebSXzUgk28+wBHXIBGl/ftoO2cNC5aIUtHwGEXLvLqnLYVTHb1qqaLE9ECplwtEncJG9Ctr317vRArA3n0ezRIBjAlLnFHjH1eKZmpLuZICsQBCtLvOnX2claqZa2/pnWu+12sD/olrs0nOAWLXRAMbGTMu3gms9C0gOD7udi8oft3TUeZvxKLo9SAOGpSHFZUo1YS0ZnyfOKEwNLlLr1G6H/BOPHDG6ADZiFOYagSKXYr+ZEduJqijL4peYS7g0424k1avwDx2/wfMpYjbPIoKPr2zvLeAeTseE/gLbP/NFVkbqCewRXFB7Irnj/pRs2Ld1Ys07GSXkQw642MASWdqXGEiwq9y4j4NlTeX
- 2w+URVg+
- 6e4L0tABfaia53G22tqsYOLaFpkxy8KUjsnNf8qoinBKP6enmHKxcUutKkPRZpFWNnl0ATz+p3GN+StO+xp1YHTWUrHEMys6mhe+/aUYDvEOvDOvq1WKK2LF8HdpTLitOm4AsuayCYw/XNR5iND0wSf5waelg9J4opbJOmaIj1Z1KX6Vq+9I1iwxY4xPotbC0ZIjBxYXcQzXaxXhlq276yKeHWfVgIZgX7pkYHExZyK1MyH7FY7d52091BFdQ34Q/NRZYla2Hg1aNtWYpaZTNqRZbNWXZ6ZZnTL/v6HDqjIlV+0k=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 180AE160003
+X-Stat-Signature: og9yrgb3fww8xcthbmco4jj9ddcxc3q7
+X-HE-Tag: 1774030062-565799
+X-HE-Meta: U2FsdGVkX1+Y6w5L0U+IVNrL4LeADTcP4aESNeAXwYmCAE3fTVniSiEBzzdzZ2Cu1DlHg+zlBroVzZRmKGaRvkGyC4cqD+fOwLxd5ybB0ykk8JFsWZkEsSGpoAq7r2IdhCNqyRh2vir9pueuO2TnjFysZNMCbBLnUkJTxNdk7RvI8t23iRDnY9eWG3PUSLQcdPynenbbr/zGU1oylN8kpYwVo2JFOkjjSULj6FJGC+hFERZ7E5mDE/jhRnwAQRjQJuzKbtmdebjRdag60es+afHY+T7/Dd/xc++jbOlMiKJol5G4y36hdpxyEfriUbpETiJzkFxNV8FT8QtWSD8G/IITLMo3zepuFElYlTtRRMuu9yzGSmsiT+y+zX1/j+DM1+4k284HgRXTAkWdiUrftZRUNcKuRtbqV/8f8DT+oqUBj+A6+mBUW9m6zEPdzPWQQLWgdEUY5vSiITfP4gWJP7yNmkK3M1RqTjCqCRtxhfUznggRQ7C8KQLQiDfUOW0ILmIVCNwGwE/tEUeHKjII8uSs9IsQMt6iVpW383D3VqkFTQIP+dTuV2O7qgVb4RuoD4pjzKUCZ5jAeM/eyFpogCV2lb7nemstLajUUOlkA5viEe3Ami09jH4heGBBJL/Up9Jeh5LidGbV1UZKZIWnTcT3oLO1SPy4jc5VJCl/xi8WjhlxItVkdPD3A+W5EVuVnHBMUZv+B2g/ghoQGB63zhht6MCmtfLL78pZM7eCXbhnmGMpybQegU77dYaSzRiMA3rIAGSFxEcU/QvufKEkGAMaEoo08bNy5kUg9VNI4oeRjD2DYSfglFm/Bueap0K/FaDBgfwWFSLCUq+aKH8N4yAqOhOLqu3RnVsBh/q/Wfk4KP0FDTCQSUbyFESkq6RvLB5kGAde6hz4tS1x11clI+ajwdtf82vr0qasCgr+hQ6nevHAEPWWiyedrrKeKhVl52+CrnscAEgwCBzwJyN
+ sRe5FwAC
+ 0ITYkaiF1tZJSMdiTJu2MkDnqR2pAvXeOevHZHBXjML8BFPeeQZjqHSwi9QjJMBid1W/KvYLrBudeHJl6VKXncP6yLA9j4oq22dsmRwghM9ZCOMAYWJUS2gUXgepdCE36wjHd27wZvSeCXp30d8rSILxPcaGLveaJbdKtqHV+FRvicNcv5qYSJGXciUHzG/EEggL9rBAilTOqoG4eDfJqHKA8GouKxz3LTGdprLZrxWidepDh0Amds2gL2PwTf7w44Yenm1mOGArYhmwmAaoBmBfo1cgllSLOglVl3R74sJfVqPLeWlnUud3EsveseIN1+5LzylQEAvKzjlslsACsDf8EZ4BOz405fBiat44V45hdRY5BEWYhHEmpnrClJr1Y98oDHllJYssxbGvSvUjZ8xahRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,45 +104,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A recent bug I analysed managed to, through a bug in the userfaultfd
-implementation, reach an invalid point in the zap_huge_pmd() code where
-the PMD was none of:
+There's no need to use the ancient approach of returning an integer here,
+just return a boolean.
 
-- A non-DAX, PFN or mixed map.
-- The huge zero folio
-- A present PMD entry
-- A softleaf entry
+Also update flush_needed to be a boolean, similarly.
 
-The code at this point calls folio_test_anon() on a known-NULL folio.
-Having logic like this explicitly NULL dereference in the code is hard to
-understand, and makes debugging potentially more difficult.
-
-Add an else branch to handle this case and WARN().
+Also add a kdoc comment describing the function.
 
 No functional change intended.
 
-Link: https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
 Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- mm/huge_memory.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/huge_mm.h |  4 ++--
+ mm/huge_memory.c        | 23 ++++++++++++++++-------
+ 2 files changed, 18 insertions(+), 9 deletions(-)
 
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index af726f0aa30d..1258fa37e85b 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -27,8 +27,8 @@ static inline void huge_pud_set_accessed(struct vm_fault *vmf, pud_t orig_pud)
+ vm_fault_t do_huge_pmd_wp_page(struct vm_fault *vmf);
+ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 			   pmd_t *pmd, unsigned long addr, unsigned long next);
+-int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma, pmd_t *pmd,
+-		 unsigned long addr);
++bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma, pmd_t *pmd,
++		  unsigned long addr);
+ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma, pud_t *pud,
+ 		 unsigned long addr);
+ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 3c9e2ebaacfa..0056ac27ec9a 100644
+index 4e8df3a35cab..3c9e2ebaacfa 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2385,6 +2385,10 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+@@ -2325,11 +2325,20 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
+ 	mm_dec_nr_ptes(mm);
+ }
  
- 		if (!thp_migration_supported())
- 			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
-+	} else {
-+		WARN_ON_ONCE(true);
-+		spin_unlock(ptl);
+-int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
++/**
++ * zap_huge_pmd - Zap a huge THP which is of PMD size.
++ * @tlb: The MMU gather TLB state associated with the operation.
++ * @vma: The VMA containing the range to zap.
++ * @pmd: A pointer to the leaf PMD entry.
++ * @addr: The virtual address for the range to zap.
++ *
++ * Returns: %true on success, %false otherwise.
++ */
++bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		 pmd_t *pmd, unsigned long addr)
+ {
+ 	struct folio *folio = NULL;
+-	int flush_needed = 1;
++	bool flush_needed = true;
+ 	spinlock_t *ptl;
+ 	pmd_t orig_pmd;
+ 
+@@ -2337,7 +2346,7 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 
+ 	ptl = __pmd_trans_huge_lock(pmd, vma);
+ 	if (!ptl)
+-		return 0;
++		return false;
+ 	/*
+ 	 * For architectures like ppc64 we look at deposited pgtable
+ 	 * when calling pmdp_huge_get_and_clear. So do the
+@@ -2352,13 +2361,13 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		if (arch_needs_pgtable_deposit())
+ 			zap_deposited_table(tlb->mm, pmd);
+ 		spin_unlock(ptl);
+-		return 1;
++		return true;
+ 	}
+ 	if (is_huge_zero_pmd(orig_pmd)) {
+ 		if (!vma_is_dax(vma) || arch_needs_pgtable_deposit())
+ 			zap_deposited_table(tlb->mm, pmd);
+ 		spin_unlock(ptl);
+-		return 1;
 +		return true;
  	}
  
- 	if (folio_test_anon(folio)) {
+ 	if (pmd_present(orig_pmd)) {
+@@ -2372,7 +2381,7 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		const softleaf_t entry = softleaf_from_pmd(orig_pmd);
+ 
+ 		folio = softleaf_to_folio(entry);
+-		flush_needed = 0;
++		flush_needed = false;
+ 
+ 		if (!thp_migration_supported())
+ 			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+@@ -2406,7 +2415,7 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	if (flush_needed)
+ 		tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
+ 
+-	return 1;
++	return true;
+ }
+ 
+ #ifndef pmd_move_must_withdraw
 -- 
 2.53.0
 
