@@ -4,87 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A1561098796
-	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 15:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACE021098799
+	for <linux-mm@archiver.kernel.org>; Fri, 20 Mar 2026 15:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC7A76B0098; Fri, 20 Mar 2026 11:12:03 -0400 (EDT)
+	id 15CAD6B0099; Fri, 20 Mar 2026 11:15:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C78B16B0099; Fri, 20 Mar 2026 11:12:03 -0400 (EDT)
+	id 133926B0111; Fri, 20 Mar 2026 11:15:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB50A6B00CB; Fri, 20 Mar 2026 11:12:03 -0400 (EDT)
+	id 0708E6B0112; Fri, 20 Mar 2026 11:15:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A4E8B6B0098
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:12:03 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26376C1522
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:12:03 +0000 (UTC)
-X-FDA: 84566781726.02.770BACC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 93B7440016
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:12:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z4P7XvUv;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774019521;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EA9AA6B0099
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 11:15:57 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8C54F1D1CD
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:15:57 +0000 (UTC)
+X-FDA: 84566791554.25.0E3A70B
+Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2B786C0004
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 15:15:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=YlBD0JrE;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	spf=pass (imf22.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774019755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zSL1gr0YXyAsWIFkP0ihhTye1LIBKyjs/Pd7rWpn/lQ=;
-	b=B+Xd2t1N/eXI+04F86gYDrwJoEjtgTJlwXl1gdm6NWvNz+/e+kNc5Y5IY/u9oDeFSVN/P0
-	t03rzojJw8+r959aqDCoNkfY4Sfke9mAfdrryMNHhicMkDh+2gULHdOIBqXpJ8eMJIEHVJ
-	3lPTQFReb36IX7MS6YFrn3GIy5PQ2TY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774019521; a=rsa-sha256;
-	cv=none;
-	b=Pa0afHHz26U2jphaYQzTfIBauZWnAvP9un0C5MF6IS64nCL3bxwXq2aa88NmC5xsMHLTlL
-	xS6lVVe6wa4nDCr0um9i1Fxy3v7wMXFxr7W8x1baNc9MrtFdg2B8RCOpOPzNqeqjTRy6KJ
-	4pkKTh5/LDfN1nxel95nA9eYdgUdXz0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z4P7XvUv;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D5CC26012A;
-	Fri, 20 Mar 2026 15:12:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76155C4CEF7;
-	Fri, 20 Mar 2026 15:12:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774019520;
-	bh=p2F28LNpMDUeRHCnHa5wYw3eMG12pSgtr/9O++IOtu8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4P7XvUv6r0ihfu5+hQzvdKhtfjBHi0cTKN5U+N5iDM9Uy4yI8pi9Bc537HBI/qB2
-	 ykmDv7gZiiTaTtJHb26v4XEagCabdkBmiuo3+ECx9Fwlpw2r8wAEhO2mXp/XBSaobQ
-	 dqZbIGoKocOI1kc0C51CP+E48xJ8ogBpPjvpAfHzdWHW7+MEYooPESdommOwiA1la+
-	 yF4QinKPehif9qf9y8X8DVMOfCTSV6m/o9xwuXTQWPq//1mYmgki7wL/5tY49Fxt9E
-	 TRXqn68NvKO2fgkg9J8FjlpWq3ziUgtufnEuNOIfnt66l5FVR0aAhEhiaMUlK3R4do
-	 q4oVZdZPxueJw==
-From: SeongJae Park <sj@kernel.org>
+	bh=WZoIGVlxoqgpVwZ++hA+mPWqVSD5mS9s8EZM+kwCgTs=;
+	b=BHtVV18SXwfqmabiXzNuHFI9GxvrqAtNYH+nKrL+qp57Jv7RRi2ofZ4CHFTiU45brmdSE+
+	ZKFEfhsDVBfn2tTYpeGkpYqCs8TUTVPpvlIEp//T2zl5uPfinD2TuJu9uT3q9N1cewWFiH
+	C5zg/pZtlmuCTDYIY9s2T9Mv0ZI0Lt8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774019755; a=rsa-sha256;
+	cv=pass;
+	b=u3BsX7wZyUBZiUgWeh7KIlMVFVlNYfhS7NkdMakp7NMYbKTbtKOoGtevkhv7hoGhyM78hb
+	C6C722zKjA7FBPvJIpYGKymhKEKhV0YvFPcz4C8dAnSdw3RBgD95RFf2wwt6eDLSIkjXQ1
+	pVIeuxxXnCv3Q20j2zmjwp8Nwrz34cE=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=YlBD0JrE;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	spf=pass (imf22.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=1; a=rsa-sha256; t=1774019742; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=jI0rj2fx+zrHYx7AJcLDpMawOsI9Ht5Bkv4AgQZfVyIHbjXBKwb/Ow77g5FLiojVmWw7EM3HVa/sI/1Ye2z0poWiPNsV8HbDOPmUelvkRjw3QFIbx0U8SH6CEP2k2G2+K2u6j8nz3wg6BsptzHm3FIOfyQ4GN+H8QZpMQ7l3kao=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774019742; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WZoIGVlxoqgpVwZ++hA+mPWqVSD5mS9s8EZM+kwCgTs=; 
+	b=Rbh6t5u7MzJUSab3rDCaWAzB2ygceu4QcwnaW+O7yzkNFhfISnQY6XqNC0mr/EP2uuj6oQlrRtUgTFXH0J/X0ciLbXr5AWA6XCLlzKgiIvcJkc8v0Atx1w6WgUPjuLvvBwKlNQ2fXa5Z6AqY6XtN/B/OEZnVO/eWNIA0f32h8WM=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774019742;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=WZoIGVlxoqgpVwZ++hA+mPWqVSD5mS9s8EZM+kwCgTs=;
+	b=YlBD0JrEdze4SqlLpmbsPbnVW3QhDIdBcSuVU+He6U2UnmwPt6B5ODJ2yjDVa3pV
+	Ky1/M4bNqzcpb8i12HN+ACiMNzRULLcC4i1NVgkEw7UncwHasw6qvEyIVIbXQIDs/Tp
+	9RjSIpYKOH/VrOTn3pwgQ1zecwW3uo8RXcTlVKJY=
+Received: by mx.zoho.eu with SMTPS id 1774019740177737.6191439933341;
+	Fri, 20 Mar 2026 16:15:40 +0100 (CET)
+Date: Fri, 20 Mar 2026 15:14:54 +0000
+From: Josh Law <objecting@objecting.org>
 To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 01/10] mm/damon/core: introduce damon_ctx->paused
-Date: Fri, 20 Mar 2026 08:11:51 -0700
-Message-ID: <20260320151152.99020-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260319052157.99433-2-sj@kernel.org>
-References: 
+CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_2/4=5D_mm/damon/sysfs=3A_check_cont?=
+ =?US-ASCII?Q?exts-=3Enr_before_clear=5Fschemes=5Ftried=5Fregions?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260320144741.91848-1-sj@kernel.org>
+References:  <20260320144741.91848-1-sj@kernel.org>
+Message-ID: <C65E16CA-8D81-4B88-96EA-59DB554494A0@objecting.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2B786C0004
+X-Stat-Signature: ep9he19mobbokfkiih94xkxbgqbphapr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 93B7440016
-X-Stat-Signature: c8ezffift31riy5y3zfzhx78i4g54kw3
-X-HE-Tag: 1774019521-393692
-X-HE-Meta: U2FsdGVkX19J2R+N3EBfifQ9i2SC85xH8IDLX2iKLqyX0irRKxy8LQDcwRFcsiCVY9N/UdkyX+oa5QixZDsylk1icj6foJ0K+tatmd7ajne+XUWL3Vi2b0vhKSK/pk3ZZVz3ilGxoMl6lNjX0V9XAJNIqgrMgaOB/gqBNIoapspeuLlGlBeoXkFD45AXPqrvJhoTtvSH9EMOF1SKly3ZZBZCl+xiJIBnwJ7QzDWXB12jI+7JDipIEe/ZLXu7ydsNoLECMetWrFja5tfcsawuc1s6l1ieCJYUV1ptZzUTRA6U9vLuaUTJ+R93BzzlrQX8X/W2QORbz8FcTov6Nb+l95zFlQ4yH1LxylQpBm07/Z91WCqba6u2q5LFhSsy8cqYGw9FdEyGIaS4D3q8uugQkfTwgYt3EA42PlHe/2gdKrCcjAEiM/jFNejOiVyMMCMVxT2oz66LBJjE9SID26RTd9wd7kXU7uOaW2vCuuD7nKvzc/RuiqllKCggnkDba/VXoQ31mPQVQpJVTiz9XRmoN8Pj756/kv5I468dTIa0iiU1SdpiAPmv9Gdhx3tAIe/I3/X/ftAyhRtbf+KkI0DZBQ1bu6OZg7d3zgMEcRXf0rWqBUBQdvOnNCMwHgQfinC1UTLmS7au9G/dKll4SdmTsOrW/rIEs8t/w7rqyEJbZo88RAIEdyMeHh++T6v5qewWKjo+8F8qyuCKPA/iOQyITi0IO7sE63xJUrBFciDnr9GT5FA0iYW6mDuQ0AyqkS0SEuLzP53FDgzjOOLH6t2Ig1Gknts7L4N2NTR9X7h6tQhYptmDCkQgP6c6pvy201Xmp59wFqWFg8JA2lS0ufBbJXFNPGpangRRqGGSJwxY03gYTSGdrBUh5dK616A7u/zxePqtWNiGhaiGPFYpWuqd+NWxILpMbTQ2xbgmc8UahGYdCGL6svukmmDPifHSpqaTipng6jxo4KmbTVzabmd
- uf67t/4A
- nwXt0RWbPASSEk9sVztEgUEZsxVn+VZda6x8vsalX2x2+vEAdMppQQdi1k5y90zbp8VUGLb3Tp5QrKCR2L6PqpKTVKm2+IA1KuIYuadkiIb7rmoKMrNF1NkRhomT2wR8ZUX88s1z/W+d9cjgQI+uyTXoFvXsp1OacU28exjNvFYetegBcUVPVcm9BEVuyEWVP3E8w9kQ/ks2TX5HoZtkl7hZhu/Yaud8V3AHydT78crkjwigS4a13ieN10Hz0aNZvh9WGFpllbtcsQITl9SDi+aM926YBdFJge2hwqCoFEIe4R3TCu568fBw3Ak0TlvkIL8rZTWsSi0GzgoE=
+X-HE-Tag: 1774019754-34965
+X-HE-Meta: U2FsdGVkX1/mEWssihGg7i+wpdnD/jhtjdIxT5HaxHb4UDBOUoht3CXuLC4uzYTZsql+TFTKr4D2u3qmhtJJzKBOZOWfRVJnnxXwVTV86fOdd3b/tkl42J4MdUoN40RhQUcQZJgV7t92P7zX0N5XTfr4jHm3c5PYp6U3CEbwC3y7SP+uMrqam7s+9eoPGIrgR8yNeVj2FfJak1SckclLWfbjRpFX9Hz2bQtpim7yCs6rPoebhwlhtnuo4SKWEr4wI8z20USNHwijaEqVNmm6WJlCX65uzcfVLE1fjqNyWQTHK7Gpiso4bdaRR1TsDYB9dwhmJFJt26SU4469o06OTDoz67aFOfnUqqegcQNvxnPIL3mokv9MT9BXyU5RiKXwhRZqjoEovYFO1BXvyDmcdFzCVgf297ijmFcciaBrh+XBhlU+qZNtE3FX5DC9Wi6DaPv6Oq/6XO9o8zWR0at4n4+fYoLd7xiHUmYCaVe5jYrZnruqQddLOOvkR8Al7yLtgZpMQpLnllQcsSn98sI7pcMTNkxp98PiZktvDTEy3kwpe5geF2L1O+k/QcpoZ+rZdsARss6zrWbL9Dy3kB9qMe8/1SR3jYig/MOp5cXoLZ5xH0BJ/IcYvejvS9FuEoXseFoeFA4bpeuK+8ap1gPLaEMHbidQV/SnQo4/wVSjHosUXUfkCl39MNn1LJibdoqxFPU5W5faHMnYv2NnBX+N+aSWlihAXyxgeqVKlpzOoI6X7pJbo0lSGMHIkOAnwPqp0+2pXFshbd0AY8eQLtFh2S6jS5fr0fhLbeT2XQiKS8BQNr5R2GaiwGhaB51uIq0vJbF+K/CmPnojd8Pb3SfhSeYALcGZsl0AU1fAJZTWXpUBAul3m+wAUVir/TiR6gs1n4eRXomNuV2XRejOAq5th5JmEdCT6vbHROcivY71zSF4sQsBmcyfuyPgVyrCSNE6szpC9OgDbQpU8MvNPJn
+ xBrZTrHA
+ diwHnUe6KIO12JyvUkegD3m7ejgPUOHe3K6ctdMwxKl5z3N+bY9y2BFs4L2UmJv2Fp0ifMbFmppF1mdkZhRQyu54n+j37FBgFZ20cV0LUVrj0F9ghi8Zx4IuMETN72BH0mKLkWtgE2wicQJ1RH18olALUxoG0KNAkbjs71zQZvSCE1uR94Ylj/mbj76RmJOiQY2f2XB9xnxXON7Vx3vza1+LBi1ceHqEq295EhftnK4DJNKWG/6Ps+vcYBv9Y0OWcKRbji4pcau0lMi/5JUajHp60cGox2zkSs0X7gujMlZtyaldjQ6FZhGeU6WUq9mDdnDForAFUwMcywZ3IbJyCovvu7DLMMFc6nTCpU3qzj1Uh+DPube8zfPwC6FqyKOOUewRMVAcZzM3AECkRnZ0m2wJ1P6ugoKOMaF7gZkYyAf0Os331JsAdoQSgGbec/wNH0YdOTtantspYf4pc2Yq4FSuj2t4+ZuPGtNsqPOGVKGn9MK6WUVMh0WqMQ+YyJgYMEAa+hrGTAv6Qm6dvg8A45uR07O2cXskQxKcv6q87kg0Xr0/bqPXMBu7rSDjO4Bl7YDdJ/nmdsyZUz+aFqiW50kXD9C7QChji6zpRmQ+TSuHilgQPm5POUaytVU6Cx/INlJegiykOlxwZyjs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,90 +102,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 18 Mar 2026 22:21:44 -0700 SeongJae Park <sj@kernel.org> wrote:
-
-> DAMON supports only start and stop of the execution.  When it is
-> stopped, its internal data that it self-trained goes away.  It will be
-> useful if the execution can be paused and resumed with the previous
-> self-trained data.
-> 
-> Introduce per-context API parameter, 'paused', for the purpose.  The
-> parameter can be set and unset while DAMON is running and paused, using
-> the online parameters commit helper functions (damon_commit_ctx() and
-> damon_call()).  Once 'paused' is set, the kdamond_fn() main loop does
-> only limited works with sampling interval sleep during the works.  The
-> limited works include the handling of the online parameters update, so
-> that users can unset the 'pause' and resume the execution when they
-> want.  It also keep checking DAMON stop conditions and handling of it,
-> so that DAMON can be stopped while paused if needed.
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  include/linux/damon.h | 2 ++
->  mm/damon/core.c       | 9 +++++++++
->  2 files changed, 11 insertions(+)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 3a441fbca170d..421e51eff3bd2 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -811,6 +811,8 @@ struct damon_ctx {
->  	 * intervals tuning
->  	 */
->  	unsigned long next_intervals_tune_sis;
-> +	/* pause kdamond main loop */
-> +	bool pause;
->  	/* for waiting until the execution of the kdamond_fn is started */
->  	struct completion kdamond_started;
->  	/* for scheme quotas prioritization */
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 339325e1096bc..0b6cb63d64d0e 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -1331,6 +1331,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
->  		if (err)
->  			return err;
->  	}
-> +	dst->pause = src->pause;
->  	dst->ops = src->ops;
->  	dst->addr_unit = src->addr_unit;
->  	dst->min_region_sz = src->min_region_sz;
-> @@ -2978,6 +2979,14 @@ static int kdamond_fn(void *data)
->  		 * kdamond_merge_regions() if possible, to reduce overhead
->  		 */
->  		kdamond_call(ctx, false);
-> +		while (ctx->pause) {
-> +			if (kdamond_need_stop(ctx))
-> +				goto done;
-> +			kdamond_usleep(ctx->attrs.sample_interval);
-> +			/* allow caller unset pause via damon_call() */
-> +			kdamond_call(ctx, false);
-> +			damos_walk_cancel(ctx);
-
-Sashiko comment
-(https://sashiko.dev/#/patchset/20260319052157.99433-2-sj@kernel.org) and my
-reply below.
-
-: Can this cause spurious cancellations of DAMOS walk requests if the context
-: is unpaused?
-: 
-: If kdamond_call() processes a commit that sets ctx->pause = false, and a new
-: walk request is queued concurrently or immediately after, this unconditional
-: call to damos_walk_cancel() will cancel the newly submitted request before
-: the loop condition is evaluated again to exit the loop.
-: 
-: Would it be safer to verify if the context is still paused before cancelling,
-: perhaps by checking if (ctx->pause) before calling damos_walk_cancel()?
-
-Yes, it can cause unnecessary cancel of damos_walk() request.  But cancelling a
-few more damos_walk() request is no big deal.  The caller and user can show it
-is cancelled, and just ask it again.
-
-So, not a problem.
 
 
-Thanks,
-SJ
+On 20 March 2026 14:47:40 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
+>On Fri, 20 Mar 2026 07:06:48 +0000 Josh Law <objecting@objecting=2Eorg> w=
+rote:
+>
+>>=20
+>>=20
+>> On 20 March 2026 02:13:17 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
+>> >On Thu, 19 Mar 2026 15:57:40 +0000 Josh Law <objecting@objecting=2Eorg=
+> wrote:
+>> >
+>> >> The CLEAR_SCHEMES_TRIED_REGIONS command accesses contexts_arr[0]
+>> >> without verifying nr_contexts >=3D 1, causing a NULL pointer derefer=
+ence
+>> >> when no context is configured=2E Add the missing check=2E
+>> >
+>> >Nice catch, thank you!
+>> >
+>> >Privileged users can trigger this using DAMON sysfs interface=2E  E=2E=
+g=2E,
+>> >
+>> >    # cd /sys/kernel/mm/damon/admin/kdamonds/
+>> >    # echo 1 > nr_kdamonds
+>> >    # echo clear_schemes_tried_regions > state
+>> >    killed
+>> >    # dmesg
+>> >    [=2E=2E=2E]
+>> >    [63541=2E377604] BUG: kernel NULL pointer dereference, address: 00=
+00000000000000
+>> >    [=2E=2E=2E]
+>> >
+>> >Privileged users can do anything even worse than this, but they might =
+also do
+>> >this by a mistake=2E
+>> >
+>> >So this deserves Fixes: and Cc stable=2E
+>> >
+>> >>
+>> >> Signed-off-by: Josh Law <objecting@objecting=2Eorg>
+>> >> ---
+>> >>  mm/damon/sysfs=2Ec | 2 ++
+>> >>  1 file changed, 2 insertions(+)
+>> >>
+>> >> diff --git a/mm/damon/sysfs=2Ec b/mm/damon/sysfs=2Ec
+>> >> index b573b9d60784=2E=2E36ad2e8956c9 100644
+>> >> --- a/mm/damon/sysfs=2Ec
+>> >> +++ b/mm/damon/sysfs=2Ec
+>> >> @@ -1769,6 +1769,8 @@ static int damon_sysfs_handle_cmd(enum damon_s=
+ysfs_cmd cmd,
+>> >>       case DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS:
+>> >>               return damon_sysfs_update_schemes_tried_regions(kdamon=
+d, false);
+>> >>       case DAMON_SYSFS_CMD_CLEAR_SCHEMES_TRIED_REGIONS:
+>> >> +             if (kdamond->contexts->nr !=3D 1)
+>> >> +                     return -EINVAL;
+>> >>               return damon_sysfs_schemes_clear_regions(
+>> >>                       kdamond->contexts->contexts_arr[0]->schemes);
+>> >>       case DAMON_SYSFS_CMD_UPDATE_SCHEMES_EFFECTIVE_QUOTAS:
+>> >> --
+>> >> 2=2E34=2E1
+>> >
+>> >So this patch looks good as an individual fix for the individual bug, =
+but=2E=2E=2E
+>> >
+>> >Sashiko commented=2E
+>> >
+>> ># review url: https://sashiko=2Edev/#/patchset/20260319155742=2E186627=
+-3-objecting@objecting=2Eorg
+>> >
+>> >: Does this missing check also affect other manual commands?
+>> >:
+>> >: If a user writes UPDATE_SCHEMES_STATS, UPDATE_SCHEMES_EFFECTIVE_QUOT=
+AS,
+>> >: or UPDATE_TUNED_INTERVALS to the state file after setting nr_context=
+s
+>> >: to 0, damon_sysfs_handle_cmd() queues the corresponding callback via
+>> >: damon_sysfs_damon_call()=2E
+>> >:
+>> >: When the kdamond thread executes the callback, it appears functions =
+like
+>> >: damon_sysfs_upd_schemes_stats() access contexts_arr[0] without verif=
+ying
+>> >: contexts->nr:
+>> >:
+>> >: static int damon_sysfs_upd_schemes_stats(void *data)
+>> >: {
+>> >:         struct damon_sysfs_kdamond *kdamond =3D data;
+>> >:         struct damon_ctx *ctx =3D kdamond->damon_ctx;
+>> >:
+>> >:         damon_sysfs_schemes_update_stats(
+>> >:                         kdamond->contexts->contexts_arr[0]->schemes,=
+ ctx);
+>> >:         return 0;
+>> >: }
+>> >:
+>> >: Could this result in a similar NULL pointer dereference if these com=
+mands
+>> >: are triggered while no context is configured?
+>> >
+>> >Sashiko is correct=2E  Privileged users can trigger the issues like be=
+low=2E
+>> >
+>> ># damo start
+>> ># cd /sys/kernel/mm/damon/admin/kdamonds/0
+>> ># echo 0 > contexts/nr_contexts
+>> ># echo update_schemes_stats > state
+>> ># echo update_schemes_effective_quotas > state
+>> ># echo update_tuned_intervals > state
+>> >
+>> >Not necessarily blocker of this patch, but seems all the issues are in=
+ a same
+>> >category=2E  The third patch of this series is also fixing one of the =
+category
+>> >bugs=2E  How about fixing all at once by checking kdamond->contexts->n=
+r at the
+>> >beginning of damon_sysfs_handle_cmd(), like below?
+>> >
+>> >--- a/mm/damon/sysfs=2Ec
+>> >+++ b/mm/damon/sysfs=2Ec
+>> >@@ -2404,6 +2404,9 @@ static int damon_sysfs_update_schemes_tried_regi=
+ons(
+>> > static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
+>> >                struct damon_sysfs_kdamond *kdamond)
+>> > {
+>> >+       if (cmd !=3D DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr !=3D=
+ 1)
+>> >+               return -EINVAL;
+>> >+
+>> >        switch (cmd) {
+>> >        case DAMON_SYSFS_CMD_ON:
+>> >                return damon_sysfs_turn_damon_on(kdamond);
+>> >
+>> >If we pick this, Fixes: would be deserve to the oldest buggy commit th=
+at
+>> >introduced the first bug of this category=2E  It is indeed quite old=
+=2E
+>> >
+>> >Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
+>> >Cc: <stable@vger=2Ekernel=2Eorg> # 5=2E18=2Ex
+>> >
+>> >
+>> >Thanks,
+>> >SJ
+>>=20
+>>=20
+>>=20
+>> Hello, did you give Reviewed by you? Or not=2E=2E
+>
+>Are you meaning Reviewed-by: tag?  If so, no, not yet=2E  I want to get y=
+our
+>answer to above question first=2E  Could you please answer?
+>
+>
+>Thanks,
+>SJ
+>
+>[=2E=2E=2E]
 
-[...]
+
+Well, two is in the same catagory=2E But seperate fixes may be best=2E  Be=
+cause patch 3 dont call that function, so it may be screwy, i mean, if you =
+want me to=2E Ill guard it=2E But its a bit on the hacky side
+
+
+V/R
+
+
+Josh Law
 
