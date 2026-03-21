@@ -4,110 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 518F4109447E
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 14:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E9D1094478
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 14:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BFDE6B00B8; Sat, 21 Mar 2026 10:09:39 -0400 (EDT)
+	id E32146B00BA; Sat, 21 Mar 2026 10:21:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 397516B00B9; Sat, 21 Mar 2026 10:09:39 -0400 (EDT)
+	id DE2746B00BB; Sat, 21 Mar 2026 10:21:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AE6B6B00BA; Sat, 21 Mar 2026 10:09:39 -0400 (EDT)
+	id CD0CE6B00BC; Sat, 21 Mar 2026 10:21:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 194826B00B8
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:09:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6318C2142
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:09:38 +0000 (UTC)
-X-FDA: 84570253236.12.26B48D7
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BB43AA0015
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:09:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HxUvRyjL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BBD796B00BA
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:21:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A36F1B8219
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:21:35 +0000 (UTC)
+X-FDA: 84570283350.14.ABE70E3
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9518C180006
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:21:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=IYXk0gNB;
+	spf=pass (imf24.hostedemail.com: domain of r@hev.cc designates 209.85.214.174 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774102176;
+	s=arc-20220608; t=1774102893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=qYuRLOkVEr0vMq2UyeWKGNVMl1LS0aZ8xRKS/OadUGE=;
-	b=DCpaSpttXJfkwtP7D5GJTf/n27tDQj2J1EXSechdQG1KaI2iNSQh9mVbltof2lQjFfcNW7
-	f/7lTc8N/kDcmLCsC3yJpbABt+ToKV6h3vHQ3HNQJUVch/Mz6iXLIHK373lF1BhJZHavEa
-	fnxJZQFimZCMxDh1lV4WKg5jS0wqSo0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FFdEgLKBQwl/qBMdiHVw8eCe65OPPezRSACDbsiut88=;
+	b=vqMHQSwHsitl0wrF3WY2zMjCdkX7n13eya6k4OAXaNJ/1cplER2460E0eL6ue93bGKa79c
+	TDb7/YgNb2k8vr0tnWeNEDIZyRJpH5TYjmY4sCZbxy5v4zAnt6PxIHOB5EgDHwjIvaGa+d
+	r9+AtCaM1SAxCUTg/Bc+TCsuGlLC1UY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HxUvRyjL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774102176; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=IYXk0gNB;
+	spf=pass (imf24.hostedemail.com: domain of r@hev.cc designates 209.85.214.174 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774102893; a=rsa-sha256;
 	cv=none;
-	b=pdLtHwWqtPSLG25FaXXt9M3haz6iEc7DuMajlcNQyHlhJfAyfQZSxCB+OilArnuBn/Wkvd
-	fEUp7KmIZKUkoZsYq8T7DHMZxD72Yo4nLtnUkyETTGIgzKoe9QFv6yVeS85ROoampKcweD
-	yAeOTahHGjeIdIur3gElOrFJniy6J1s=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ad21f437eeso24283905ad.0
-        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 07:09:36 -0700 (PDT)
+	b=5Ap1SFVHBAW0M27qUQPPxmLhvx3pOtSbeKGaMhZgr99+4cIBXI8iyE9zL9tDfbQSKEzRN9
+	SVIszUREYbO8WXl09Lw5oqYJShUnolD4gVkCIOgLAeMolRJfR9Rl9IXmJDcnbNiYQpNZlU
+	nExn4xXLA9VF2+rmjIVOj8NTsfxPYy8=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b0484a6de4so12181905ad.3
+        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 07:21:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774102175; x=1774706975; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qYuRLOkVEr0vMq2UyeWKGNVMl1LS0aZ8xRKS/OadUGE=;
-        b=HxUvRyjLvM/wq5HMIoS+yGyHyK1VtYcN7S+tl2KUPqVdlwRSXHfnxQhDs/RmhOiS6h
-         qBT87XC+QgP/lQRivD5JqGZ0/Xk0LE349mwFioas4gr5tB0ErwVspysBMZPrzAAv2q7e
-         A6V+ss4nrAocj2a/0a6oksMY+7w0IN8VRH2KNh4Xowf0/9Eu5x9QYWMONIPPnSPEN7Qx
-         0gY5Dgv6GAtKrs7kUN9WIDyuyNIt/lFdIqU+SdSwed4bxFPszYopWVqn1mKTrr/4h2OS
-         ye+zd3P5IdjtZbS1wVy3opPYlaRVBb0Ua4wUEMdy82zBkBLRgPr5KI/LbEnf5a6MaZl8
-         3ytw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774102175; x=1774706975;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1774102892; x=1774707692; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qYuRLOkVEr0vMq2UyeWKGNVMl1LS0aZ8xRKS/OadUGE=;
-        b=R6DQgM5RE469o8PTyHYia8NLHV312PL9vZu5kpIoyt61Dzt7sv21Ag+fAhP1V7qr2F
-         gJMOLLwoTB17wTCNBvKD0WUY3ip/sbgv3ModkLYByLwAIpMXjXRw4NssiBwNCVvDaOl4
-         UVofxN0WSjvGlb7zAzqgz7IDsATAdLd+YdEtChcytsHMOu2iqRv4OkJ+/y8os6BWIhmi
-         AAR0MnS9OjELkzsM8KOTdn5Q9fo3bIBzJ26lzfBKKCPil1Bnk+scF4iRMCDz+/HUS+3t
-         1B38QHgiobTdHYhEcFw0ARbw6aY1lYceA6EFgRegkCuz9eOR65IKiEyvAYXV50rtlDYn
-         RNnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUit4UXwD2+KsfggS4J386M67Wd76PubF8M2A11yVZBFKHSJQhxHkpKPzL0HgV1U0dDGo2+PiO7w==@kvack.org
-X-Gm-Message-State: AOJu0YwU3jqOIRVXMPUbA+TVHVvnPA7v509Dp2iPvuwiIDtPW+hO3/MY
-	MqowFWVB+w3iB2C/ksc9FjfEJih4jx1v7PmXkpfUB8yY6VCdIVM39HWz
-X-Gm-Gg: ATEYQzycTmPOwCl3ySzCvVjsgjTMx1GN0ce/0gMpMkiq/oy2y//5TkbgBWVA3pzDg50
-	YPRgY0xIIWQdC2AaOaLsp4V2Hx4EtxwHePIuleSPa/gdP9D2GBVdQHkYKhZAbSKqOc5sX63AYtI
-	RAWAYnByMJyDK9oa8zsIPBvrJyvVtQjR0i3yq4T2qJBPx5FCciGOgWoFr4CaLfljVr3Cf8hVT5T
-	dFh2GOx9zN18w4TvNx2UFjV06AdwZHhG3GsfreHPwRcFtqFslO/T1FbThVIGlPyC15WiYIcnsf1
-	97eLEMCVgt+anP3fb2YZHbth31cb/QdsZsekRKIByLvLMDM7Vl6hlVD6B2YYprLvJvuZytNzDdg
-	f9beQMtFY/AmKIA12GeTvxbnWfqsi4BAvQtfE5YWqlQDYvPGnEnqswwcSHWRL45DcvG8HwUel97
-	Yc2apyRiyKrHS//1Acz7lIDIUyxRla7ue84+B31EdDLsIxFWYAh5M=
-X-Received: by 2002:a17:903:b84:b0:2b0:4446:5a34 with SMTP id d9443c01a7336-2b07724f804mr84505275ad.27.1774102175434;
-        Sat, 21 Mar 2026 07:09:35 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083683a8fsm49609995ad.66.2026.03.21.07.09.31
+        bh=FFdEgLKBQwl/qBMdiHVw8eCe65OPPezRSACDbsiut88=;
+        b=IYXk0gNB99bSadophVm+Q3BrCUyzJYC/enCR1CnTDXIlXXyGBV4IADcb7/yb5VhVdi
+         Kr/uNLxoZf2nuFLMny33a2lHBhm3qQ9S044urGCiMdnGwRJXiCrS/83E5721iRR/0Tra
+         Zy7WMZ3nFEUi10MEeWIOBvQz2g/Xw9pSc7H9xMjtpWXklvDuDchPvPLxaokM+YKTQV/7
+         sCavxjuVzX5CH3IkbSlGPf7QiMIQk0l7S6oZ9t1IXmNRlOuirgGyE4bOiXNnRej8/D+U
+         TaR6s9x0zWPOPHzfmK8A2nI4VcY5eCTamO1jIwdE6FCDgUj6aPwYxrHd+d4Vz7ZjdGlM
+         8CqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774102892; x=1774707692;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FFdEgLKBQwl/qBMdiHVw8eCe65OPPezRSACDbsiut88=;
+        b=meiLSKiu4duEGdYtpgahtdp/b1f6ps88fDsPF2hViAN1oHBfjgEQSPZkcXkap5Cbb2
+         ccJDy8/DyCZaZNzvkKSxq7Xv1dEhYyeKYkYlHAh5+N6se3Am9H8ZJ4svFcagP53M+xEA
+         WqIaLlPBC1+WQAfluq3WIPmZYJb3zNgEZfiGgI10xhcyI9ONpNBVpsUxoU5GpymwHpnd
+         lcadlQz4PuyY4CC+dNzEk9aEfpOvy+M0yaBCoGRDUhN2mDdm41Q532Mk44P2RHwQZncK
+         sIm9pYE/PQobRgg3g1NEEQnF5SeYbAuahj7wXCJmCFBwTBvq+tJEMq+4bFkerucOvTrR
+         glcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUO7lA6S4lZAmoSV9jKNTVPf44qppoH/xCWdG1nJNJqZw+d904d3cyQeb+TicV77w1Lrva27DiLbA==@kvack.org
+X-Gm-Message-State: AOJu0YyWhKLAKUjk2icQ2ugVtxHP4x3+CnsxK+ZrDV7Vtws9sHYyh9Kq
+	32XcyV2tniW89yfM/gFeu4qQNc3OJiomW09hVaNii58atgDbSMA32/cp2ZQ+lFBABVI=
+X-Gm-Gg: ATEYQzw14Wn14nseieDLH2wgv6ubA5pgvMQVp/EzIaBb4NHQ3dqHtuIltdotbpLrElV
+	/8cOGVNEkFJ6epvFmWpOh1mTpf6BU+Ql/LyxuB++R/oEUljLce3dq8xPJjVLvnpx6cqFolS1Vd3
+	tljZq8JHhGj8Tmbyk28U7qU22rkmhk2r3aCDI/dVYLM+gWpv5s+uF+/NlFefIYBxSkQeYlMDZ6V
+	ofN39sAibmDqGy5fim8+khDjSSjIg0DbvDO34MM2/g8a04uKDwym/6t6dJ4LQpTFTRVJNKP65l6
+	spelVVqFymHEtt+s59cNSXWwJGVXMke2k8xKWfQwwDfG8FJHJFPtEbUggYtFpLeXJ38JGy6nTl0
+	QctjV3b6n+aDeUFCyW3kqByHB1cgvjUYj5bnoKqSeiHU/Fp6iuL1bUUxCn27TmzyOEb8iMqTTig
+	iY
+X-Received: by 2002:a17:902:eccb:b0:2b0:8106:f3ad with SMTP id d9443c01a7336-2b0827c7f52mr60674775ad.29.1774102892319;
+        Sat, 21 Mar 2026 07:21:32 -0700 (PDT)
+Received: from gpc ([2400:8902:e002:ded5:78c1:8178:95c1:6ca3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083656df5sm70621765ad.44.2026.03.21.07.21.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 07:09:34 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
+        Sat, 21 Mar 2026 07:21:31 -0700 (PDT)
+From: WANG Rui <r@hev.cc>
+To: david@kernel.org,
+	usama.arif@linux.dev,
+	willy@infradead.org,
+	baolin.wang@linux.alibaba.com
+Cc: r@hev.cc,
+	Liam.Howlett@oracle.com,
+	ajd@linux.ibm.com,
+	akpm@linux-foundation.org,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	brauner@kernel.org,
+	catalin.marinas@arm.com,
+	dev.jain@arm.com,
+	jack@suse.cz,
+	kees@kernel.org,
+	kevin.brodsky@arm.com,
+	lance.yang@linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [RFC v2] mm/damon: add synchronous validation for commit_inputs
-Date: Sat, 21 Mar 2026 22:09:26 +0800
-Message-ID: <20260321140926.22163-1-aethernet65535@gmail.com>
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	npache@redhat.com,
+	pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	surenb@google.com,
+	vbabka@kernel.org,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH v5] binfmt_elf: Align eligible read-only PT_LOAD segments to PMD_SIZE for THP
+Date: Sat, 21 Mar 2026 22:21:19 +0800
+Message-ID: <20260321142119.102525-1-r@hev.cc>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260320171115.93235-1-r@hev.cc>
+References: <20260320171115.93235-1-r@hev.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BB43AA0015
-X-Stat-Signature: wj8jtfg7rrsspxxygm8dfdb4q5y9r3bk
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9518C180006
+X-Stat-Signature: sr89mm7hoygg99w9u56qtd4xocu9rgus
 X-Rspam-User: 
-X-HE-Tag: 1774102176-96311
-X-HE-Meta: U2FsdGVkX1/hSkccbLRUpEehEn7EO9lIaAnziigCq2/fnj23VaQhOYS5a/wZzMEKwan08m8sYvGO1VOvLFjglLjkgPLRDKPIOvUUskTPvr6GHp6wIAAOwu0cIKgf1+UMnzHGEpxrD3BB7jLb0qoyutxZKxVC8/lPzJtnx0SJT0mDRf3XA/gUhmwkDLyYh12lXfPAC731wU0jonZlHKa7uCFWtb7w85LJ7a/cYCZO9gDC530WJth0YkRjA1XFRPTSPt85Mf3C4OR9ntdp1JiggVpN1tAKVYg1ZoqhO16C33zWBOYJN2BaIAbYT6a5bAVNIqeJBhI3r5E6jiywNrOQWfO6UpMy/cx1wtg1ak5eveEkD2ayuHX9EWIEZcQoBdoDHAexVQ9kX1f5cx+6DSEwdBUGFJMb2DyH7YPpqwEs0ZHgyfTRg20n1/cU3tnsDCuyDVX5SrGifHKGPm5tYvXTXwqmJGTm5qoB4LQqWaDhRAxvJ+p6e68zAU3RJSTNkJppBPrfeciHTCRQIIyPt35RBM3fX246dEhCqzKBMd1QSCdqCWzVl21Pb0J33LexiiP4EdoH0MbsyrIrcn8wZGAu6tjb3B+TEcbM3wlwEKByXmJjFNROryNEQhu90fh075PfMOZlOKBjGfrxiOaTgEuaFqp8dmDUK6SAXS6Q/gYrf9O1exQjy09s3XtS6+p18SdDew1v4P9b1P6xG5E0bt9FuJ67jtr+SDF3iL9qYaz1UcJVK1WzDfvL9I9MCzemiV/YFxrLzEAfP9Y1tMvY8Ht1dm5S1ImDhbMUjWAnZBzEMvSh2X0FnaY0+H3vEmAO14pmQzaa/7WVELPtZExN1YfqLzMZHvdXUY9cBdRGc6fbZIZxZrr7B9x7EDVU6qgYYurBlfeQ2X9oVZ7yh/61lA3yE7yQiK1JLs8diXfnogZGscNqL/SXky2IkWEm5m3IeD8wOuCPV3ykAWdpK63HZcl
- xof1ELVj
- eXtj/5zAgF9zAZWy3enhkftWRAk9BEet2lCPElFvDNPGkOG7crM3ztEdPJEGWXaTHlpIUuStZeG2xlna8YxupEd/uIgmbJtXnHv9aWhTuMALHoFD+g5nbXLl00orS6Vcm/r5xJxqOEdAempgv2X4cslcJDsMjRcLDEw7Y14+7uZEMBLjVNMaaH+qshfcPhNifH0+yyXdmJ/d4Jap0yxlWSIAHm/ictAuRVpwstVqzoU8G0eXO0qmxDIE5+XzujDjGh57uyeZ1ZTuNr/Tw1IVr2s3XQ/iHpzupo21rFsSXub0f5ENkX5I1aLIf/Zc0q/tC1Ctso5oHDlcSqonrLY4xM6KAWHecKBsRL871sNza3u3VwVrtCuHhkQHCHTVGuhGVoMLZ2mk2MIc/DvaHr84c3QYi9C4Nzbs92KF75hZy0YB6t98hQ49sqyA0ZiT7ggEdGfrR9Mf4hJp0v1pps9GBoBGHopjPgymef3wpeb5/AfmLiG0=
+X-HE-Tag: 1774102893-298221
+X-HE-Meta: U2FsdGVkX1+NkJ3hzhS/yNxuNzXuJDF6FYKoN/a/zD33DUg200tWc9njRqIxgjPHbhc5Z4Fq3wGYtTniXG4jnFTiE16yT2vfdWJnb0++++e86iWTYSTa75Z7MCgURB/a38D25+050IdF4EMe3tADyAJOW3sxgdqrpQiqApblQ0VXyIaNo05YqYqc36IGyc9seuQ/OgtmvLAMzkqSHJLxl6tRTaPONcaf8klr3sidEX1MmZlsSoctDtSi6/+sfmfghSfvFAAtS6Kaen1FoOLmUHEpCPnneCLWJpWUHiwfrVQQuymTj9BF0dYm2SVYxXfLhd6Y8oGXDVP80VWZT9R2bRfZf2HtUUJwQqllUeAtybpVo5yoc8a4qXRcdxa1f3ky2hUxdfFNnwUcRPDd60Ixc51psH0794V9MALHoEbvmVXueJ+29bceUhFV7zja/F0/HMALJEqQJxiL5lPQkiYg3c0aUHJCctTZ9wAkx39XtRrWS1b6F3+HOhc504bQXYL2wgnXCxRkh3JP1maHsNzcMhtq9NFI+ZU3Awgzv68nmXeDV3uJ2x0zgDB78sM8Isb2Wwj2Ds8kQyXpd3/I3gjbRIfT1sXT4zLCa9LdcIOYeJgtOy7p3HFpRio+afMdSlMXgW0FiWtWS6fKcpbO+ruN/RahhcqKN4V7AvRvSB2kaeIqe9VAsbez7o2AdDve9j+/skVDhE23wsJurPVpoQa+bFGb7bA+WLcktpEVSaEI+h0FFBh7zA6QoQRXKZB8kdmHMPu+zar9hVF2049IZhvBj0BQfrgfD+d/OtPNPk0L7NiIapB7WX0J9vv79ZQPt/37BUeN99k+4iBKy2S5jmro42w/McOAOVS0olzBQmxVT48mcQhzDv46T2yflkHqcKz8g1sQRupl6+0wNixqcnd9ZIGxRZMwbJK4ibB2twKR80EL35mcXc80Y3dp66BV3FxrOxKx0NodXT2YzSwRO2u
+ Vuc5IqFn
+ 5d9eXMePSoMEWoOMfVuEtuxjjcdruMRARL8g9FEiHJr8Y5bNLAIBlk7tA6Ac1fEJ9dvqeiO4kfAw0XYztyDdBRY2gAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,218 +145,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Problem
-=======
-Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
-silently (no error returned to shell), because the validation happens
-aynchronously in the kdamond.
+One clarification regarding my earlier comment about compatibility with
+cont-pte.
 
-Solution
-========
-To fix this, I proposed adding synchronous validation in
-damon_lru_sort_commit_inputs_store() and
-damon_reclaim_commit_inputs_store() before setting the 'commit_inputs'
-flag. This allow users to receive immediate feedback (e.g., -EINVAL) if
-the parameters are invalid.
+What I meant there is that the alignment logic in my patch does work for
+systems with 4K and 16K base pages, where the PMD size remains within a
+practical range. In those configurations, providing PMD-level alignment
+already creates the conditions needed for both THP collapse and cont-pte
+coalescing.
 
-Changes
-=======
-1. Added damon_lru_sort_commit_inputs_store() and
-   damon_reclaim_commit_inputs_store() to handle parameter validation
-   before setting 'commit_inputs'.
-2. Added damon_validate_attrs() to centralize validation logic.
+This does not fully extend to 64K base page systems. There the PMD size
+can be quite large (e.g. 512M), which exceeds the 32M cap used in my
+patch, so PMD-sized alignment may not be achievable in practice.
 
-This change is motivated from another discussion [1].
+One way to structure this could be to treat alignment in a layered manner.
+My patch focuses on establishing a reliable PMD-level alignment baseline
+so that THP has the opportunity to form large mappings where it is practical.
+On top of that, Usama's work can further improve behavior at smaller
+granularities, for example by enabling cont-pte mappings when PMD alignment
+is not feasible.
 
-[1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+ 			/* skip non-power of two alignments as invalid */
+ 			if (!is_power_of_2(p_align))
+ 				continue;
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
-Changes from RFC-v1:
-- Remove question from commit message area.
-- Added synchronous validation for DAMON_RECLAIM.
-- Rename damon_valid_attrs() -> damon_validate_attrs().
-- Exported a new function damon_validate_attrs() and declared it in
-  damon.h.
-- Link to RFC-v1: https://lore.kernel.org/20260321002642.22712-1-aethernet65535@gmail.com
+			if (p_align < PMD_SIZE && should_align_to_pmd(&cmds[i]))
+				p_align = PMD_SIZE;
++			else if (p_align < CONT_PTE_SIZE && should_align_to_cont_pte(&cmds[i]))
++				p_align = CONT_PTE_SIZE;
+ 
+ 			alignment = max(alignment, p_align);
+ 		}
+ 	}
 
- include/linux/damon.h |  2 ++
- mm/damon/core.c       | 34 +++++++++++++++++++++++++---------
- mm/damon/lru_sort.c   | 34 +++++++++++++++++++++++++++++++++-
- mm/damon/reclaim.c    | 34 +++++++++++++++++++++++++++++++++-
- 4 files changed, 93 insertions(+), 11 deletions(-)
+With that separation of roles, the two approaches complement each other,
+and we can get the benefit of both without changing the core alignment
+policy in binfmt_elf.
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index d9a3babbafc1..00ca58dbe978 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -997,6 +997,8 @@ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 				unsigned long addr_unit,
- 				unsigned long min_region_sz);
- 
-+int damon_validate_attrs(struct damon_attrs *attrs);
-+
- #endif	/* CONFIG_DAMON */
- 
- #endif	/* _DAMON_H */
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 4dae03a37f9a..a459cdcaaed2 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -751,6 +751,27 @@ static bool damon_valid_intervals_goal(struct damon_attrs *attrs)
- 	return true;
- }
- 
-+/**
-+ * damon_validate_attrs() - Check if the given DAMON attributes are valid.
-+ * @attrs:		attributes to be checked
-+ *
-+ * Return: 0 if valid, negative error code otherwise.
-+ */
-+int damon_validate_attrs(struct damon_attrs *attrs)
-+{
-+	if (!damon_valid_intervals_goal(attrs))
-+		return -EINVAL;
-+	if (attrs->min_nr_regions < 3)
-+		return -EINVAL;
-+	if (attrs->min_nr_regions > attrs->max_nr_regions)
-+		return -EINVAL;
-+	if (attrs->sample_interval > attrs->aggr_interval)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(damon_validate_attrs);
-+
- /**
-  * damon_set_attrs() - Set attributes for the monitoring.
-  * @ctx:		monitoring context
-@@ -778,16 +799,11 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
- 	struct damos *s;
- 	bool aggregating = ctx->passed_sample_intervals <
- 		ctx->next_aggregation_sis;
-+	int err;
- 
--	if (!damon_valid_intervals_goal(attrs))
--		return -EINVAL;
--
--	if (attrs->min_nr_regions < 3)
--		return -EINVAL;
--	if (attrs->min_nr_regions > attrs->max_nr_regions)
--		return -EINVAL;
--	if (attrs->sample_interval > attrs->aggr_interval)
--		return -EINVAL;
-+	err = damon_validate_attrs(attrs);
-+	if (err)
-+		return err;
- 
- 	/* calls from core-external doesn't set this. */
- 	if (!attrs->aggr_samples)
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 554559d72976..883860721d3b 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -39,7 +39,6 @@ static bool enabled __read_mostly;
-  * the re-reading, DAMON_LRU_SORT will be disabled.
-  */
- static bool commit_inputs __read_mostly;
--module_param(commit_inputs, bool, 0600);
- 
- /*
-  * Desired active to [in]active memory ratio in bp (1/10,000).
-@@ -361,6 +360,39 @@ static int damon_lru_sort_handle_commit_inputs(void)
- 	return err;
- }
- 
-+static int damon_lru_sort_commit_inputs_store(const char *val,
-+		const struct kernel_param *kp)
-+{
-+	struct damon_attrs attrs;
-+	bool yes;
-+	int err;
-+
-+	err = kstrtobool(val, &yes);
-+	if (err)
-+		return err;
-+
-+	if (commit_inputs == yes)
-+		return 0;
-+
-+	if (!yes)
-+		return 0;
-+
-+	attrs = damon_lru_sort_mon_attrs;
-+	err = damon_validate_attrs(&attrs);
-+	if (err)
-+		return err;
-+
-+	commit_inputs = yes;
-+	return err;
-+}
-+
-+static const struct kernel_param_ops commit_inputs_param_ops = {
-+	.set = damon_lru_sort_commit_inputs_store,
-+	.get = param_get_bool,
-+};
-+
-+module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
-+
- static int damon_lru_sort_damon_call_fn(void *arg)
- {
- 	struct damon_ctx *c = arg;
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 86da14778658..6ea44b02cc76 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -39,7 +39,6 @@ static bool enabled __read_mostly;
-  * re-reading, DAMON_RECLAIM will be disabled.
-  */
- static bool commit_inputs __read_mostly;
--module_param(commit_inputs, bool, 0600);
- 
- /*
-  * Time threshold for cold memory regions identification in microseconds.
-@@ -267,6 +266,39 @@ static int damon_reclaim_handle_commit_inputs(void)
- 	return err;
- }
- 
-+static int damon_reclaim_commit_inputs_store(const char *val,
-+		const struct kernel_param *kp)
-+{
-+	struct damon_attrs attrs;
-+	bool yes;
-+	int err;
-+
-+	err = kstrtobool(val, &yes);
-+	if (err)
-+		return err;
-+
-+	if (commit_inputs == yes)
-+		return 0;
-+
-+	if (!yes)
-+		return 0;
-+
-+	attrs = damon_reclaim_mon_attrs;
-+	err = damon_validate_attrs(&attrs);
-+	if (err)
-+		return err;
-+
-+	commit_inputs = yes;
-+	return err;
-+}
-+
-+static const struct kernel_param_ops commit_inputs_param_ops = {
-+	.set = damon_reclaim_commit_inputs_store,
-+	.get = param_get_bool,
-+};
-+
-+module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
-+
- static int damon_reclaim_damon_call_fn(void *arg)
- {
- 	struct damon_ctx *c = arg;
--- 
-2.53.0
-
+Thanks,
+Rui
 
