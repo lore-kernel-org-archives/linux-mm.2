@@ -4,103 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6469D109448B
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:10:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43A91109448A
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:32:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D36036B00E1; Sat, 21 Mar 2026 13:10:48 -0400 (EDT)
+	id 458246B00E4; Sat, 21 Mar 2026 13:32:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE76F6B00E3; Sat, 21 Mar 2026 13:10:48 -0400 (EDT)
+	id 408D16B00E5; Sat, 21 Mar 2026 13:32:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD5F26B00E4; Sat, 21 Mar 2026 13:10:48 -0400 (EDT)
+	id 31EB26B00E6; Sat, 21 Mar 2026 13:32:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A9B486B00E1
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:10:48 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 52F4A1DEE3
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:10:48 +0000 (UTC)
-X-FDA: 84570709776.02.15B9672
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9F02640007
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:10:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=h91VS1GF;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 216836B00E4
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:32:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B33781B7E8F
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:32:45 +0000 (UTC)
+X-FDA: 84570765090.04.981441B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 10246180004
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:32:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOdvYMJq;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774113046;
+	s=arc-20220608; t=1774114364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tNYxCLn9cwzlSEQSklNxt57RWjXBe9rQ2MgNFN0t0Cw=;
-	b=xprxwOHXK7jf2yWWJF3a06OmIXJ/pTaYCoaUxMBtclJ7eh07UFkEVhBKaNrlvR2xtNCGEn
-	cX1vH8jd068ujpjYw7zU0HWNBsvCHiQlWpIZSJGlBKqJHFWwbf0tnw+Te7ZJ+7vBAoOnXI
-	equo8sjYn21vq1ZYbO5sGqvuVujyCZs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774113046; a=rsa-sha256;
+	bh=pnA3wo2yKejQfhQKP1BfxnSPFb5QMPOOJi4wV5pGe5c=;
+	b=NnFQm0OTEGeGPxR3oGwtwcOhW/BcNf2tqKsA5Qfk8eTKuVdwKleWj8ZOly1nPpXJ4jzrej
+	loYz3VXTT2zhg/mD6MrKoNQPwBNU/702bLCoBQBmiayFp6wUvIZoSZ15xdxUaA2c4A6d2Z
+	kLclCsVG8EEjmQW921sgmOUWhl7yVMg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774114364; a=rsa-sha256;
 	cv=none;
-	b=InYLErDAbGjOpPUQ0Z0CsQKYQeYami138TT3+jI5hMMtBJ/TKrO3Ej6SKJf6lbSd7C2aUc
-	+ixu8tQxA3WyJFwueNw5luqwQY0YLHpz+vMpSvx/Aqj32A8mvvQjRxuMuTvK1L657mefPa
-	fMb12YvDfNXmrepD/oOMBDnw1K8umE0=
+	b=SA/1uHkKqdZmmwwdfZW2I1TnMJrhU7pqX9kwI9ioyga5qjN8hmabypuayDaO9ua/Vpp0qa
+	LnU9wEruZw/7J68QME2Qob0rJUSCtMfbu6A2kPQZAD8H98m9wcfqi7ru45/J4+dBqhh8lZ
+	52b89ord3h5MCoCbjwcAkZLFEJq228U=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=h91VS1GF;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774113046; x=1805649046;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DX5T+L4GVDH6JicyRR4zZ6rjUsRLp6EmYUpASxbOlsY=;
-  b=h91VS1GFt7Vpq5Bj2EmHEvbZ48EbxyiCQBsoxo1B6vdWCWCFkCkuBBGM
-   2TEqUjnGSBlDYmskiMNrmbe+XVCHgoDUwO7TRiyf/kguMyykPe7t7Hsbu
-   fv4UMacAS1P9N+GhSoRJhXH54oE6ALCqgjiwnx2H9RZbaRhoO8RZ5qY97
-   fMOlj5k7f7YfbidBkGKrHL+64P6UiE9vfafbDpKRSx4SYhdxAPqpN6Knb
-   gi1OOk743V6YhqA8B8ZHpfptHa0HSE0bc+L+SyCBaU1aC52ssmVKu61DZ
-   ksK3bhr3EQd3JKGqXEe/4jC2hQ8m6aih+LD+2oleIqD6NCG1pXqiNdx8y
-   Q==;
-X-CSE-ConnectionGUID: OJJnT9nlQja6O3+wD0CuTw==
-X-CSE-MsgGUID: cxUp2EQcT6yUByXWbg7whA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="74884872"
-X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
-   d="scan'208";a="74884872"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:10:44 -0700
-X-CSE-ConnectionGUID: TrDnITc+TiSlkKxgqvh0Ag==
-X-CSE-MsgGUID: WK5M9FYqQ0OGwVjL+TaFdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
-   d="scan'208";a="254074287"
-Received: from lkp-server02.sh.intel.com (HELO d7fefbca0d04) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 21 Mar 2026 10:10:42 -0700
-Received: from kbuild by d7fefbca0d04 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w3zqF-0000000014P-3h13;
-	Sat, 21 Mar 2026 17:10:33 +0000
-Date: Sun, 22 Mar 2026 01:09:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yury Norov <ynorov@nvidia.com>, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Yury Norov <ynorov@nvidia.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH 3/3] bitmap: add test_zero_nbits()
-Message-ID: <202603220114.k5BHBav5-lkp@intel.com>
-References: <20260319004349.849281-4-ynorov@nvidia.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOdvYMJq;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CBB5B4166D;
+	Sat, 21 Mar 2026 17:32:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8882FC19421;
+	Sat, 21 Mar 2026 17:32:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774114362;
+	bh=RNtipWs1kS4cmDdgnR52UVmE1qLq9rRjhULJrIQzKkI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WOdvYMJqLrVMWECCrNBOqMvSded8Kcxo8XcdOsoY1/IxTgooO88jBn9XSq7JK+vLk
+	 3Yi41+VOgV55+fC5Drn1Inq08CmdTu/MI+Wr1P8I4qNkezrk7/HmoQVzZFKODOdzHw
+	 UKO+0Uk7g54QTWwr8JI9AmeboN8MLYbY+E772XERQd65RUf2ujyNMK4VB/Bc9UpreW
+	 2XG4RXsYjfHQaB/83kmXFGFITKJQ1ajpHcWlBynxdOOi4hRXDbXr4P75vGcDs/Ldnk
+	 NTImUGgFLftCl+hRMvMFNje4G3bg1Cj+++uL4GBr78Q1Cu9K5pmb+WllD0SOGyyH5r
+	 4JDBpW2lbjLxA==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC v2] mm/damon: add synchronous validation for commit_inputs
+Date: Sat, 21 Mar 2026 10:32:34 -0700
+Message-ID: <20260321173235.84923-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260321140926.22163-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319004349.849281-4-ynorov@nvidia.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9F02640007
-X-Stat-Signature: equz4tjx1mn6gs4g9k4wtp6z9e7ptnwa
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1774113045-468388
-X-HE-Meta: U2FsdGVkX19//oWbQ4Qq1qASDEss6grAUcjW0BZv42qxnwrZeOejytB6XKbeXEtLLhdUEswFL8wSh8vRlILBwAcFbzUz//axD8a3qXNV+XrkpNHKSAfebVYWplEQDpeXzFuQTYOlupzb0wI/fifKA0Ni/38UWdq3ChjQTiCwO9JqthANa3riHZklmsbObdf66+BqGqBPDWzDIFAkrC9Oc8zSdnAjL1I96oIgq+lt/gIEUmOf597SFcD4e8fd+BoKrWL3TTTSxWKXdQEBn+bsNDZsncxLuYxTBf6Sm39k6xtJsLG1J7C+WfnG02LkyU/n4iYOqACNvxZugDodGY8s6qNtB0ilzFwYSUMj5T5b2rOFCIPalvdUiHqagoNUvpjFFAqTUJgEi4/iYZWpCn2I3uPshLQbAAGygZdhxjZhfHjFri3Zhz+E64mNAPzwznwFN6Dsf+Le737NF45oQPlN+ZMcq7hBizL7hmg6T1iTffDrRIx3aSx/hPpJYz74hNttwL/qx/m7yCRIV4Z7w+CfoSGTF2kXI5Y/icPK24EtYq5tMoStZ64mX6749y9HFajIugbqcKz1Smd6lPo3g9Wa/TMOTwUlG/83TYrCF4uiMCueDl5rESuAxgFi7hHCcaJkuUDgPYDY7Ao/5bLWB1yDx4+kFQM9XbunT7fWfqk3C6bgaKR52JNT48Y9oPKRBV8Smp+76sp4ikOU1+pT4776BnINLAXcSouzmzYfxR7Qk02Au9YaagmCV76bJdTprxNY8hYN8Z5Pmq7Rdu6RX7JWSinTsz3mKFNLoNJVGpU/nDL0ax6LtYCiw96jAQxWq9X652/CrqWsmcuii4XhPPzGNxq5OCLANeQ8dAaUcdxpf4FSIEe5nuYJo6+gHCTbCDhiJmqIi4BrP8CAQocr0KR8fa2dcMEU2OncuVPOaY5IKiCchUJ2dYtecKCjj/oJEJuOzt6ii5C+PqBDeqggq33
- eeAkjcvP
- LK2ILDqG+HQTkTz9FWdrd4FcKEvRsgV9R5P4TCvBtyjmuctWV4zxWg1ocA0fJbQyVqkvaYj8HcEsJk7rp7l1/39e1eNELeVoxADtXG12IEuk+1LG6NqaUsy2leQ35zQ8nrO8lE0KT4URAncNPAWMKmiTo+vLpdyNAsQ+MT4RQkMBRIQxNfkKi3u1Yo5TmSTsqSsukM9N8gxe/jcljczmMCSrJFePn2lXgQ0Yb67b075Jz0ZybJ75DPphcWubmVIZ6Cualj5hOD9HSxNw7XTei9Obd9qLEf2U4/0TvDWDA/5+LzOO19nnyNhLXXSVjGmyG68m8pQRoL7tmmYj2IchW54PJJ2VBo/8jOeY7YABxNQM7SVw47Z1Ds8rTF118sIz1U+ScThqOP/NPgtKYV9kcZsBUOt7znX1zsjvNTCOxrz/ixe8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 10246180004
+X-Stat-Signature: 5kxcxyp588npjqbnaog895y9o8hp5kiq
+X-HE-Tag: 1774114363-589726
+X-HE-Meta: U2FsdGVkX1+tLlH/quqe/Ts6P8OcgZQikjhNu5zpSmDYks24rQNesgh878ibdA1CAFeTwYNs+CO8+xnPqB4gmugW30Le0iDiLX4mz1sPByxNWnZ/dzynnp2C+xaYTxj8o1RZy6JG3ENP+8cCF8K8is68R+4499qr+UKLmJJAb93Lm7FntvefcRTHDYE6To++yzwDAwUCycAq2UDxhmDaOtw6WYfoI6XPvJtr47XExplUu4hM38osqsbyetBwdtVQ0rSgxWJVkHorTi+z5/+PkIl4qda5NqRZ3RzoVSaJtRaJgiu7CV9J1haHG6MlJiY41IWxwypgn3MfmtqOgOZSD3NM3ccqlkweODnwcwGGQuuqIXuIMH9gS7oa9MPOe+NwfZniNQZicD7K+0VRfOiOQCJDjXMP9EQLCf9OCoAUoMw8P7Sw1NWYsZmzFokML7wcr/ErJvtI8gWNijpYeM+P5DhY5F0LKI5tBDhZ6dZWp5JhCpE1DGEZSSuWZw7F3BnCswG0AoobN+3q1Y9MUruT0XGKgE7VRBiJxZPGn3Yn7nSlzldwmUiVn4D/yzAMBNOTRoxewxwthZr8R85xrqkS2LntEs0iJvR8qKNkQkyKQzKS/JhYL0XF3sIw8WzHC0U26y2+xAnglbQEqxvclewsSM/WzkAwUv+tyJthxh23K2qDGBGSzFI/SL14SMMXvnoVs+T93Y9vMcGFmRktKVv974o5HqUenrl8F67zDsLxLdngz0athzxPVh4NgXfpCXupk+9PlZEFfekGH5eQ86HQMGVTOu4fZuHndG8cGY4IHEP54y3cOb9WCxFyH+4xhs4iCRVpZMAHLNLVGMRO7T3auBan+D0WUmsVVtq4jJ4kqqVdPQTSILgfoMRjjI0VYejy2rLDyObc/dlNX6H5/yc9ZRmDi1wVjkJ2mt4OLNYgnDb7H5SaS0UjLEfP7YtiYgFNK/WqbAFvx9pIpRDrM3+
+ 1WD12egZ
+ KPPGuVHdBZLRxrs3kKPtCsmvMKtqJ5I7CjC+hd4HxZ/O9SJX+u10QzW10Qp7BCsCkAwO25CORP8e6P5bCygE3vp4IbNfCsATGTrLTRqDDf3BlDdwDUDqqWj95/VHER2tuUCD5R+nI2C4JTH7sH/fqfMBVaFYrQPrpZQwHKgTK8BBnKs+Djfp9LOKhBh4ODBNVn355+llvwnZSYB4q6nm0tdKy5Fc5N/G9wJy+X34RgbhyVe6lriXvw9eVf0KAmokVPp52YeeoQzLUHQ0kbU17PwVSMUXmiDaFnBiLnnE3CbPZ+Yk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,35 +91,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yury,
+Hello Liew,
 
-kernel test robot noticed the following build errors:
+On Sat, 21 Mar 2026 22:09:26 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-[auto build test ERROR on next-20260318]
-[cannot apply to akpm-mm/mm-nonmm-unstable v7.0-rc4 v7.0-rc3 v7.0-rc2 linus/master v7.0-rc4]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> Problem
+> =======
+> Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
+> silently (no error returned to shell), because the validation happens
+> aynchronously in the kdamond.
+> 
+> Solution
+> ========
+> To fix this, I proposed adding synchronous validation in
+> damon_lru_sort_commit_inputs_store() and
+> damon_reclaim_commit_inputs_store() before setting the 'commit_inputs'
+> flag. This allow users to receive immediate feedback (e.g., -EINVAL) if
+> the parameters are invalid.
+> 
+> Changes
+> =======
+> 1. Added damon_lru_sort_commit_inputs_store() and
+>    damon_reclaim_commit_inputs_store() to handle parameter validation
+>    before setting 'commit_inputs'.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yury-Norov/bitmap-test-bitmap_weight-for-more/20260319-221930
-base:   next-20260318
-patch link:    https://lore.kernel.org/r/20260319004349.849281-4-ynorov%40nvidia.com
-patch subject: [PATCH 3/3] bitmap: add test_zero_nbits()
-config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260322/202603220114.k5BHBav5-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260322/202603220114.k5BHBav5-lkp@intel.com/reproduce)
+Nice idea.  I think we could do even applying parameters in the callback.  It
+could be something similar to what DAMON_SYSFS is doing.  The code path for
+doing that in DAMON_SYSFS is, state_store() -> damon_sysfs_handle_cmd() ->
+damon_sysfs_damon_call() -> damon_call() -> damon_sysfs_commit_input().  In the
+damon_sysfs_commit_input(), you can show how DAMON_SYSFS validates input.  You
+can also refer to commit 4c9ea539ad59 ("mm/damon/sysfs: validate user inputs
+from damon_sysfs_commit_input()") for more details.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603220114.k5BHBav5-lkp@intel.com/
+> 2. Added damon_validate_attrs() to centralize validation logic.
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+I think damon_commit_ctx() is a better way for validation.
 
->> ERROR: modpost: "__bitmap_or_equal" [lib/test_bitmap.ko] undefined!
-ERROR: modpost: "__bitmap_weighted_or" [lib/test_bitmap.ko] undefined!
+> 
+> This change is motivated from another discussion [1].
+> 
+> [1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+> 
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Because this is an RFC and I have a high level comment above, I'm skipping
+detailed review of the code.
+
+
+Thanks,
+SJ
+
+[...]
 
