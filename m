@@ -4,145 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D4E81094472
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 12:16:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 749A01094474
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 13:02:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F9BC6B00AE; Sat, 21 Mar 2026 08:16:46 -0400 (EDT)
+	id 509396B00B2; Sat, 21 Mar 2026 09:02:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AA406B00B0; Sat, 21 Mar 2026 08:16:46 -0400 (EDT)
+	id 4932F6B00B3; Sat, 21 Mar 2026 09:02:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 698656B00B1; Sat, 21 Mar 2026 08:16:46 -0400 (EDT)
+	id 35ABE6B00B4; Sat, 21 Mar 2026 09:02:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 56B8E6B00AE
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:16:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F0F21592E0
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 12:16:45 +0000 (UTC)
-X-FDA: 84569968770.15.1CB996E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 71CA8C000E
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 12:16:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=VpLiTuTk;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf10.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 21C186B00B2
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 09:02:28 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CDECB1B81CC
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:02:27 +0000 (UTC)
+X-FDA: 84570083934.19.AD78067
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 94AC2A0017
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:02:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UmVHNct5;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774095403;
+	s=arc-20220608; t=1774098146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ozJ0HqaLDZv97nkwv+eSi7D5aVwxld4Ey2yfqN6yr/M=;
-	b=cgmMUQOMr7Aj9H3LuvWjXNUO5GZUCvV5jD3J+hjL4D7rW7lIHdZu+GF0lsdA8mL+AZjj66
-	+J45lPrfIrm5LpkmKcyfPLGgXgavsk58elG9eNqxEgHJM/Sff0qyVAktfqYeD6rmIohqqS
-	uhgLK4smpQSskej5vADdRSth5A+YeAc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774095403; a=rsa-sha256;
-	cv=none;
-	b=4FZBgprvtDOkDmcxZ8YHp+b2xUNYcUugN02f+73eajhabY3Nry6waNTZK1vugpxwFQuZ4f
-	1I1jehurQVXf6r5xvEM1afRs28gx/6Wipwm5POibwFG/79CC81EReH83XP6MOPQ5nKNF9v
-	RCVEXvzIms18kozV2ncHG+0tbWcpR34=
+	bh=NJPULCri2DdVUmJbTlU4Rxn6JWleCj28Q+e1h/YTmMM=;
+	b=hjd3qSSmUyd4o+AYYbrcEw+YCcThxi7zCDhq9QWBqc5ptcVrfj4R4mmMDX9jjhoAJmb9Ui
+	SD/U5Sxr66Isd+FsK0rAbz/JDABhR0PWJ/BxCyniPuOZqmSL2taf1rkEhPTO7KVQjwxCe2
+	7wfqcbS8uJfaGW2VlWDdkewDCkpR7zA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=VpLiTuTk;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf10.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62LAtEs7730725;
-	Sat, 21 Mar 2026 12:16:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ozJ0Hq
-	aLDZv97nkwv+eSi7D5aVwxld4Ey2yfqN6yr/M=; b=VpLiTuTkbOsXLiDaHznhJE
-	nDqanW4y+sYlme0kbTd4VMXUhF3uaG9Sl6JZ+Hk4ywwmJIusfbH9wz5D8m0lYlJj
-	A9wGIRYP0ArGz6dN0fd63EbhH1vquYqVRmxOj7co8eNk6e+XdyfLutrWbuX7ewUq
-	HOLOAxPkxCkuVEB2JwH92KjOfs6h4XI02p8UHyg2DTN0tRSJeLg/IQMIOb6jhUVs
-	9lnRQvU/LCZMgh+70D3f2T/aJehMHszyMDI45oEgTabanwm1mUIXcfTMLhVV9x6X
-	pUpAVyyZ0s8FGQVilNaNsVPRc5YjdRaioIfim4nZmuxRo0cJIx2bQyacyAJ7Ylfw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kum8ure-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Mar 2026 12:16:25 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62LA5jcJ026460;
-	Sat, 21 Mar 2026 12:16:25 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cwjcykj5g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Mar 2026 12:16:25 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62LCGOUj46530840
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 21 Mar 2026 12:16:24 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5EE2758058;
-	Sat, 21 Mar 2026 12:16:24 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 43BAA58057;
-	Sat, 21 Mar 2026 12:16:18 +0000 (GMT)
-Received: from [9.39.24.104] (unknown [9.39.24.104])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 21 Mar 2026 12:16:17 +0000 (GMT)
-Message-ID: <4da952b8-9aa3-4bfb-b97e-475140c8f348@linux.ibm.com>
-Date: Sat, 21 Mar 2026 17:46:16 +0530
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UmVHNct5;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774098146; a=rsa-sha256;
+	cv=none;
+	b=d8J0VpFT1BRW7xgmHhBaK/sRquV8yeINkwNPdQDQE9uHuNhytEq46poNVHFdPxgNfdvuFh
+	5ZfbouiLPf40Gf74dfx5YtBaZc89MYnTTtnfW5zyLiJQteSTE4ORKDfr1EJPWcmT7Z4ixK
+	yC/g9FhfJO/By5kXdgQfUmpNTOGsLDc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774098138; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=NJPULCri2DdVUmJbTlU4Rxn6JWleCj28Q+e1h/YTmMM=;
+	b=UmVHNct5cOhiSHITDMIXaJJkmaIHU6daykWM8FmRQAgEim0nj6G4CkltqCdO0Q4L1K+SF7Nv2Rjs3XWeWzvxSwhqIQydbDlerizI5e6oALVDpI0gI53Fzus8f2ON0vJ4VIWEIJWwZ79OF0GGapXIcsK7L3PQZqePvDjyjHFXfqE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X.Ombip_1774098136;
+Received: from 30.42.98.36(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.Ombip_1774098136 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sat, 21 Mar 2026 21:02:17 +0800
+Message-ID: <bf36511a-92de-4668-b83e-08cf6f2a6ace@linux.alibaba.com>
+Date: Sat, 21 Mar 2026 21:02:16 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memory tiering: Do not allow promotion if
- NUMA_BALANCING_MEMORY_TIERING is disabled
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ritesh Harjani
- <ritesh.list@gmail.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Ying Huang <huang.ying.caritas@gmail.com>,
-        Juri Lelli
- <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>
-References: <20260320092251.1290207-1-donettom@linux.ibm.com>
- <20260320092029.7b2e2a9f24bfd5197541223e@linux-foundation.org>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260320092029.7b2e2a9f24bfd5197541223e@linux-foundation.org>
+Subject: Re: [PATCH 0/6] change young flag check functions to return bool
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ akpm@linux-foundation.org, david@kernel.org
+Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
+References: <cover.1773890510.git.baolin.wang@linux.alibaba.com>
+ <bjghychf.ritesh.list@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <bjghychf.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: tzBYyfZIsd4q9bXCoMGKADVa6s5KH0Xl
-X-Proofpoint-ORIG-GUID: Fs8QDHZ5wmL5vg-azeDwEI8FVlTu2a92
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIxMDA5NiBTYWx0ZWRfX7PmriAC4jJdx
- VEGtWQsnQ521jKsNtt5PnjdlDRq6tngeiXV+a38SLf9z0+zRccFdM7l4RLwS0srSlLMZ3fHJTuk
- sHlZcnZfMJi3KQmmSow+WOKfbJmPzie/2oghmneHmv2E7rgKNHocPD5qPhT3JOygIXvul0wS4dp
- jL8rsaxN7o1TQQdZxuIpwt/CEFCX0dZ/i43UjLGevkQHqKl6E2NKcEj2k9pWzhjnEL6Jr5Vz0im
- 5n9fzSDMmIQ5GfE2ieBQMsFAXKrh8MN3/EejTB2kf3TqalkUVyNMPRR4WRWt4IbuF5SplRR41zq
- xTyMRspdQQGEFhLcz0736gsnxa98IS289a+l5pSUYP9LaAvkH8ZVHAmiW5Y2pn1gRQQkOkwSwxx
- ClNWkzEmQ3UCRFn0w1QdAvHN4QLndNZY/RWuwNR6a21FOZrY9rkiAT0QCvyj73J0qsMg/TQqD0l
- 0t/+60riuzkiJLwzkLA==
-X-Authority-Analysis: v=2.4 cv=KbXfcAYD c=1 sm=1 tr=0 ts=69be8c1a cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=c92rfblmAAAA:8
- a=VnNF1IyMAAAA:8 a=wYRj8PCSQ9afYsWexm8A:9 a=QEXdDO2ut3YA:10
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-21_04,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603210096
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 71CA8C000E
-X-Stat-Signature: yce54nbq9ssyckh55fodsaynocdeyw5r
+X-Stat-Signature: 8998qsaegzsq6nyg7utnzweqwkxzj9rn
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774095403-965783
-X-HE-Meta: U2FsdGVkX1+ERJJd53VYOHucxM+Jp2KoNqblgj9c9xu7L3cshCyrovpTpuvQB+RJOVH1kG34SBYpQJ9hXGqHr2e4hKcgXMyvzeS0GeIa3VB14o4rhJYnLcSif0rgrR8tXqdfpzhmKrhPlREv9VzFcc/ZwJbE/hkk/QLylXiVau6lhda1/VWE/95631bLXfi9oeEk6hIC6gOZwlYjTYFB72wOVLwfgK6KtDm5VrtLS/0ZtChGPk7JwIyB2gB6a7EHD3WO229az7zMxunfv01C+HsgVIo33LiQ+1m1jjnQi8vYiAZ7jyM/oFhRqG3vsMEX/cLFPrs/ib+6ZSFWVYBzPqEGxczuGVywJP7pjxK7rGHYPkrOHRxfLZpPvHPWAqRD9NhS2BqFVEKm+oX2io1SzDVlbJ/3NQWD9QiQNzAtS1WcphD3T0Y+hsYG6DTEnyM4wMa1v3MvEn9CAUE3s7eUm1AIQgmnBKq7fENn+NJ4XaIOwJ7z4O1hbKQjV3JaJ1dl1FLVXFRmTQ9WLHtW00lmlWNERkIr/wppJ04TCDTqt1vYVep31zbzYCvVRz5QhoK5D80dt7wwN0F9KgVXfM7oZQL9jKMa9WMjlGjZbNRr6xL4u2rWHlL6DW04cs7SWZwhCcIcr+EcyhCA7aiH1jDoyhtpIjKtmBBJsg4KEE/QE1GT+wJ7K++bi+IZxQ9tERDcWKlo+SjApukvkRIWwmWswiyhR/dYh85MdO+TZ7YZ5C4pZugyS69SDcBA7/nVEi8VqV4vrWyurygXmxqRPCuRCTp2JIr3sDs4SSDTfKbFKMqY3Ung9H07+d5hD7IpJWylV99nwHvtu389OLgAlu9yle3f2bj8ImbrCXb5lCPyVksZjzYvrWrA11yj+zu3wmT1yG1A2UN02IJpt43XSnqecubOCU5VWPz+/iBCcZO72L3/0o1vBWfvhAKskssvh7R4GIgf+qUoXE9thlMXFMl
- 6DQhGAFB
- wYtJi5wzlpnKpi7AqjuCrW7DRgOFDchuu8+okpqalpyk3CjuDK6JpWbtppARPEC6u22OCF615IIJd8/0/GWj8Y32Z5BjY0Vm32ZFjdSQNC1oYMpY50nx0tKvltEIfd7BF6lR6NG+bt1ZCIHWynlYOzPzuzl45GFfSAljYwxo+/YWWLubd793bw2oFKQ/AgxArHc9ifk1hfp69Q0icrcSWZe1vLWCufhoewA0jHileOxra0B7syjayZ/zZzdTWQEGqCa1mcwL9mjw2HbJU1MzCAwkE43NUcpANtLpmzChPXwh2z3W6Ri6UUWIOVD5353MWGLEAGwXXOfyEdgb6YD1atuU6v5kMuOf3iDwvXb14eEDfFG3mxbeTbqyRAOPVmdPH2EDqdijxCKd/OlojGMhrtASV2nPZgnFhIIuwQzuvqj66PTE=
+X-Rspamd-Queue-Id: 94AC2A0017
+X-HE-Tag: 1774098145-913585
+X-HE-Meta: U2FsdGVkX1+oFUvlKo0/c9UIKTQzYZld5zdLm+9JpiOn41hGG9a+OSDtL9cfa07t/bZu5AlkBlv80BtZt/kfMDK400sC60jKvHPP8LSCRZDBwbGqLAkNbR/Vi2zDl9VRAHQa4tretmvgVTxSLD4gtKCsQsXiEX14qO93CKacujFqVHZNgp7Wcygmp/65SN1GCERIS36DlPy+zylPAIPBKz5E7WqmpIo1zhN4CvBEJJm40yQSUg4AAAMH3cgF+NQvsD/yfk6lVNccZXMTSXEPxeLoA4YrS6eNu4RT4S74JNKC7mTJ4QvPRZxwOsmQ49PAT8hrzcdfpakKx5UjBqDxPooaif46oS+2nnqiLBcjDQsZmx7IpxkpTl0tvq3ogHjFiBtZ1U6+5P0etDq2q3k744LfGa7Tk3v7v7KTjw06cirKCi0lfNl2RNDT9FIkznXIOC7FrHca7eAgpPOTL2shcKeS5cOaglWF65E1wfnqoeC9tU4EiIXduti0az9WNPsuTon86NxfdW/qenmjQO0OAVDE+CM1o5X6/1GGkUpsMxl1olteQ46cqg+oh0wGPFPbm69Yoyz4qhjGrR5HyqreRQe2I9K7CukpJtT5WHaiq9AwFEiRBUP9MFbQyG7eFuWXZP6ICVcKWUOOyDeU6nXzT0y3gyi1+5fApzpd6eD2XEORebe7IvtlhgIeg5Gh0Mxju1Y+XohJjvkyEFspyuTplTKIRTz/jKY4DQ6Er1FgWyejhkWDPDpT5MaxLhYWO0QauwR4Hme3zrdes1fT92p8bBTh7+QrQFAjCj6+Oa9fpJQcka2dtw9pEH5xNFraJxty5DOHZRYAEpgu0YukTYjvAbOj1RBepIMPGgJ4vR7bjP/fWP8N7lkU9a2b21NKWBFOQFR2xgEflzfjW87Hl4GkPoloxjI4xdbSZIfohWh/XHqQ9eOsAPY86OjdaYIlNZo3qs8CsCkCqL4lMCqZJHm
+ AYZ96O7d
+ 3yDisXHGFsTqD2oWlzzd2udMKdgeY0KA7uRtNexJJLFGHEpw7/eQ8sCkyhYnmAxbCQVbRgB/NynyXpp7R6eCH+2PWp02eN8GDyzx+QMKz16Qvy4MMKQiNW+MbUYcbVRCYR/IC5wXeyijkc0lHUWMZAgGOIwgF0ZrHJjO++PhoI/t73wvKh67ztPmG1OO+/H8YiCwlZ1JaWZVvrTOT8GwjYo3bIfqVjznVV3I8KnXzo0tqWztRkQz14kWC1YAN+mrXBfJd2Pdbuy83gztNIOlnMBFc82wCTSxEZCzLwb90Xo4tyJLvCTfYEWsMHazdU6zNPscQQFMYiZhamHpeW/gsboYonfcG5fSVTHOU1NVW6fX4eSeRO53IBFiEh/ra8FIdJAg99Q1NCfy5+Ixkme+DYBIK1UgkrrSFS4aERCf4UvbETuxC7GcedNoNLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,113 +93,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 3/20/26 9:50 PM, Andrew Morton wrote:
-> On Fri, 20 Mar 2026 14:52:51 +0530 Donet Tom <donettom@linux.ibm.com> wrote:
->
->> In the current implementation, if NUMA_BALANCING_MEMORY_TIERING is
->> disabled and the pages are on the lower tier, the pages may still be
->> promoted.
+
+On 3/21/26 1:31 PM, Ritesh Harjani (IBM) wrote:
+> Baolin Wang <baolin.wang@linux.alibaba.com> writes:
+> 
+>> This is a cleanup patchset to change all young flag check functions to
+>> return bool, as discussed with David in the previous thread[1]. Since
+>> callers only care about whether the young flag was set, returning bool
+>> makes the intention clearer. No functional changes intended.
 >>
->> This happens because task_numa_work() updates the last_cpupid field to
->> record the last access time only when NUMA_BALANCING_MEMORY_TIERING is
->> enabled and the folio is on the lower tier. If
->> NUMA_BALANCING_MEMORY_TIERING is disabled, the last_cpupid field
->> retains a valid last CPU id.
+>> Ran mm selftests on Arm64 and x86 machines, and no issues were found.
 >>
->> In should_numa_migrate_memory(), the decision checks whether
->> NUMA_BALANCING_MEMORY_TIERING is disabled, the folio is on the lower
->> tier, and last_cpupid is invalid. However, since last_cpupid remains
->> valid when NUMA_BALANCING_MEMORY_TIERING is disabled, the condition
->> evaluates to false and migration is allowed.
+>> Note that I only CC'd the arch mailing lists to avoid disturbing too
+>> many people.
 >>
->> This patch prevents promotion when NUMA_BALANCING_MEMORY_TIERING is
->> disabled and the folio is on the lower tier.
-> Thanks.  The AI reviewbot asked some questions:
-> 	https://sashiko.dev/#/patchset/20260320092251.1290207-1-donettom@linux.ibm.com
->
-AI review questions
+>> [1] https://lore.kernel.org/all/d172d6bf-c60c-4cf5-9da9-f30de38cdfed@kernel.org/
+>>
+>> Baolin Wang (6):
+>>    mm: change to return bool for ptep_test_and_clear_young()
+>>    mm: change to return bool for
+>>      ptep_clear_flush_young()/clear_flush_young_ptes()
+>>    mm: change to return bool for pmdp_test_and_clear_young()
+>>    mm: change to return bool for pmdp_clear_flush_young()
+>>    mm: change to return bool for pudp_test_and_clear_young()
+>>    mm: change to return bool for the MMU notifier's young flag check
+>>
+>>   arch/arm64/include/asm/pgtable.h             | 29 ++++----
+>>   arch/arm64/mm/contpte.c                      |  8 +--
+>>   arch/microblaze/include/asm/pgtable.h        |  2 +-
+>>   arch/parisc/include/asm/pgtable.h            |  8 +--
+>>   arch/parisc/kernel/cache.c                   |  8 +--
+>>   arch/powerpc/include/asm/book3s/32/pgtable.h |  4 +-
+>>   arch/powerpc/include/asm/book3s/64/pgtable.h | 26 +++----
+>>   arch/powerpc/include/asm/nohash/64/pgtable.h |  2 +-
+>>   arch/powerpc/include/asm/nohash/pgtable.h    |  4 +-
+>>   arch/powerpc/mm/book3s64/pgtable.c           |  8 +--
+> 
+> I did compile and boot test on powerpc with various configs and overall
+> it looks good.
 
-> commit b0847daa3e0064d33d2232cba1d7607919cae7db
-> Author: Donet Tom <donettom@linux.ibm.com>
-> memory tiering: Do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled
-> In the current implementation, if NUMA_BALANCING_MEMORY_TIERING is
-> disabled and the pages are on the lower tier, the pages may still be
-> promoted.
-> > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> > --- a/kernel/sched/fair.c
-> > +++ b/kernel/sched/fair.c
-> > @@ -2060,6 +2060,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
-> >  	 */
-> >  	if (!node_state(dst_nid, N_MEMORY))
-> >  		return false;
-> > +	/*
-> > +	 * Do not allow promotion if NUMA_BALANCING_MEMORY_TIERING is disabled
-> > +	 * and the pages are on the lower tier.
-> > +	 */
-> > +	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
-> > +	    !node_is_toptier(src_nid))
-> > +		return false;
-> Does this block all migrations originating from a lower-tier node when tiering
->
-> is disabled, including valid same-tier migration between two 
-> lower-tier nodes?
->
-This blocks migration (promotion) from a lower tier to a higher tier 
-when tiering is disabled. However, migration within the same tier will 
-still be performed if NUMA_BALANCING_NORMAL is enabled.
-
-> Conversely, since this only checks !node_is_toptier(src_nid), does it still
-> allow cross-tier migration from top-tier to lower-tier nodes when tiering is
-> disabled?
-
-Migration (demotion) from a higher tier to a lower tier is not handled 
-by NUMA balancing, so it will work irrespective of this setting.
-
-> Also, because this early return is placed before folio_xchg_last_cpupid() is
-> called, does it prevent lower-tier folios from overwriting their stale
-> _last_cpupid timestamp with a valid CPU ID? This could permanently freeze NUMA
-> access tracking for these folios and inflate private fault statistics.
-
-
-No, the timestamp is only stored when NUMA_BALANCING_MEMORY_TIERING is 
-enabled.
-
-
-> [ ... ]
-> > @@ -2094,10 +2101,6 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
-> >  	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
-> >  	last_cpupid = folio_xchg_last_cpupid(folio, this_cpupid);
-> >  
-> > -	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
-> > -	    !node_is_toptier(src_nid) && !cpupid_valid(last_cpupid))
-> > -		return false;
-> > -
-> This isn't a bug, but since the only usages of cpupid_valid() were removed
-> here and in task_numa_fault(), should the definition of cpupid_valid() and its
-> accompanying comments also be removed to avoid leaving dead code behind?
-
-
-Yes, We can remove that. I will send a V2 with that change.
-
-
-> [ ... ]
-> > @@ -3312,8 +3315,7 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
-> >  	 * node for memory tiering mode.
-> >  	 */
-> >  	if (!node_is_toptier(mem_node) &&
-> > -	    (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ||
-> > -	     !cpupid_valid(last_cpupid)))
-> > +	    (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING))
-> >  		return;
-> If memory tiering is disabled at runtime, existing folios on slow nodes may
-> retain an access time stored in _last_cpupid instead of a valid CPU ID.
-> By removing the !cpupid_valid(last_cpupid) check, could this timestamp be
-> treated as a valid CPU ID and passed into task_numa_group()?
-> Inside task_numa_group(), cpupid_to_cpu(cpupid) could then extract an
-> out-of-bounds CPU index, which might lead to an out-of-bounds read when
-> accessing cpu_rq(cpu)->curr and cause a kernel panic.
-
-Yes. This is also a valid point. Let me fix this and send a v2.
-
-
+Really appreciate your help with testing!
 
