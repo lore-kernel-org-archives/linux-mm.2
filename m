@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38774108B8FF
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 02:57:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEDF91099B3C
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 03:21:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 770946B0095; Fri, 20 Mar 2026 22:57:55 -0400 (EDT)
+	id 71DCD6B00AD; Fri, 20 Mar 2026 23:21:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 747D46B0096; Fri, 20 Mar 2026 22:57:55 -0400 (EDT)
+	id 6F55C6B00AE; Fri, 20 Mar 2026 23:21:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6851A6B0098; Fri, 20 Mar 2026 22:57:55 -0400 (EDT)
+	id 632336B00AF; Fri, 20 Mar 2026 23:21:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 57D9D6B0095
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:57:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F00F913A342
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 02:57:54 +0000 (UTC)
-X-FDA: 84568560468.15.885BDAA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 81148160003
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 02:57:53 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dIFbPnmL;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 54BC56B00AD
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 23:21:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A72FBB91E4
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 03:21:15 +0000 (UTC)
+X-FDA: 84568619310.06.38A76D3
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D9D08A0002
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 03:21:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wnTSmKSk;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774061873;
+	s=arc-20220608; t=1774063274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tGgW8w+NXIF8BvauIsqchMWNaoh8JnrZ2OUR2eCxL7E=;
-	b=7BRHJbS4VbqztAFnXQR5q9h9z9nkYYHpoQZM3BftA7oAB1VKq2yMrtCpCpeNGsp9cbVgQ9
-	q108coB1TZ0kT09HxlT0QvRJPaElojkpKzP3C7C8YbVsZYtgh5C97ezICl9G0H+77ZDj7x
-	7qRpFlb/EBPaLVh82j5jv1k3Tb68Bf4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774061873; a=rsa-sha256;
+	bh=9GGpzAI+tXredIwGhfLL7ax5e2lwF3lCJ5jRuRq0pjM=;
+	b=lWeSEsVRVVtBxZQF0o7rJ+TYHXcTL+bbPmMqW+LyBlWq37ZZcMNC8Bs6fgyeAQKyqVWceg
+	I8eKYehAMhi6ro1miv/AZJc8eEDO/pkiEh3WXssq3aiUnzrvOVKhGorTpGkNI/z/EtjBLy
+	XzEtjoHaOiAxE2siGrWDuBbQmQHIio4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774063274; a=rsa-sha256;
 	cv=none;
-	b=zjEu3RG7SDC3+7IYjHvpgqZ0wWLAHG6uAi5estxjRmAHgqkWK7z//YqcVicjqq7X57qm9a
-	MDNwV1oF2KZXvJa3dfpf7RHkJoy5WdsKmEQ6PKFs362wsuDoeyAt4x0npvYDABwfcJYZzh
-	5jE+sKVmaYoxKWF2HCjYMKnOq+qFxGQ=
+	b=nCn7Z8Gz/yQJAUes1lBIh4qNV7mzNl5W4VRaPpTnf/K0wLvrrdGxqEeinTj20FpLj+fi8Q
+	UO7ORp3+dPIM6mtctAFr+go2wjejZU37g/Par2D9Dj4ccReKXjPBQgsd1eqlKCrLJnpRjG
+	znVCkyMyISP3JD/+J3cK7blzRPmYAqE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dIFbPnmL;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B731560126;
-	Sat, 21 Mar 2026 02:57:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB81BC4CEF7;
-	Sat, 21 Mar 2026 02:57:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774061872;
-	bh=3Ld+Bo+s4N7G21DAwj9B2IqP3mz/F6xhNWlb3jU1350=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dIFbPnmLtC6W/10EY5wh5URryJ5bF4t87dTPXyy84knzzJN/XXRse9csZSst0Wiv2
-	 c265qvRFZ1hXF4zPxBb7YanL3ikCcrnt11Ji08HSmJhwmhMERR6m+N7/dUhZrLZEqD
-	 2MBaYSzpzlkhcrB5SjQ/5IWIsbs77evtcLrZaV2U=
-Date: Fri, 20 Mar 2026 19:57:51 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Chris Down <chris@chrisdown.name>, oe-kbuild-all@lists.linux.dev, David
- Hildenbrand <david@kernel.org>, Linux Memory Management List
- <linux-mm@kvack.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: Re: [akpm-mm:mm-unstable 433/449] vm_util.c:133:14: error: too many
- arguments to function 'pagemap_scan_supported'
-Message-Id: <20260320195751.5b08b3e32ca835c3451d7bcd@linux-foundation.org>
-In-Reply-To: <202603210319.P5MPyTEf-lkp@intel.com>
-References: <202603210319.P5MPyTEf-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 81148160003
-X-Stat-Signature: ohgsfze68x64aohh44namt581im1y8z1
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wnTSmKSk;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774063271;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9GGpzAI+tXredIwGhfLL7ax5e2lwF3lCJ5jRuRq0pjM=;
+	b=wnTSmKSk/2HYSuqvl4+ZbksIr7DumBfiHRJswxh0jH8xbzmLHhxUvH7thAFhFmOmfoHkRD
+	0u2bgUVws3avdrrJSEaamdhXaPu9AbLfNABUuTOm2E9TrIg335jmvGQBvxfsXN69O0yQqj
+	50S2qEtU/45HKCKE+XRBVW0SfvZIFEY=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,  David Hildenbrand
+ <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Baolin Wang
+ <baolin.wang@linux.alibaba.com>,  "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>,  Nico Pache <npache@redhat.com>,  Ryan Roberts
+ <ryan.roberts@arm.com>,  Dev Jain <dev.jain@arm.com>,  Barry Song
+ <baohua@kernel.org>,  Lance Yang <lance.yang@linux.dev>,  Vlastimil Babka
+ <vbabka@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Suren Baghdasaryan
+ <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/9] mm/huge_memory: refactor zap_huge_pmd()
+In-Reply-To: <20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
+	(Andrew Morton's message of "Thu, 19 Mar 2026 20:09:17 -0700")
+References: <cover.1773924928.git.ljs@kernel.org>
+	<20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
+Date: Fri, 20 Mar 2026 20:21:04 -0700
+Message-ID: <87tsu9kgv3.fsf@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: g4bafswjzapa7mii7rakqntb6fmmbcnq
 X-Rspam-User: 
-X-HE-Tag: 1774061873-221206
-X-HE-Meta: U2FsdGVkX18XddLLw801J3YvrgR126olvyunNsb+2/7hLxSKdcNBBiJ1xsNqFi1cGNbWTZeYSNDLfoQ8SeBMcZFOlzb2wOfTpa07rlIiVuR+wEw/v3/LBHLeLqGuqgOXwyyS1oaRYnz4TB1WpfT1FJUyjKXD0Ha3yXwEb1BPq/ZnbL53zTmDm1dOmejMSgTMEEErXL6UWHjpItAFlexOPwSjlKMr9zMA/NJdAtnFYu+vTrw86GgV5V/ki66SDNGkOEe+czTV6mACIyYA7bs74tE+F1eMHS4JK5AUe8w6gRRQbiO/7hhRhxKGFYSl/2hmgNoQJzlUTFuS9cZFq8YTaT4He7RPpcf/lo5cO10OuizVQHFhEjkFwPpUdFz93v3rtn0uPvvmVxL2nnlx5fb4Ou7SDo358TSWlwIU1opaFf4bO0svv6NZvrj6gwio3l2lmry8EUJQiuh+epkHQzBp++cFbFVTaJGyEzxYPWJv7mucgR4PgC6etyA8HH95lPDfCUl3OfMfsY7yrH/9Hi94QI1JKuHKUGvzs2VC+bXtMCEZPMbeVuFIuFjRGH76zz0fu5Shbg7Fyh2ikGXELL0uG8H+G7uGGB2YdXkhcQc2FsP+qaYE80burLGMRl7kRIZCjho8GtyKXAH3ZuJiR7blbxWlD++sisTN7qKUFJ8vto/kKGgnAM3gn9d0bzgiqGHx0RI1z7SCQkQB6e1SHUo1xkbuluMLCAtYwPRfIuO/ewslTtbkOkr+pjk9Sck6mZhzL/dzvoUYHDO8dTTbBr30bIiMDQgARhO+rQhio2QpI7je8TLVSUT6+De3ixYhAgFwdIn8FfhcQa65u0dcu4qVMZeZ/1A5zh695DeFlTrxhlAkNVfwvyQN3piDaKpiusIORzRzrdwi6xQaKvIiS6SG2iW4rk74lOhuCJLZ1ybI1qrWYcprbXmqaWZ+NLBO54AbfOk492SmSzCfwU1rX5H
- AOfRGrw+
- kyQDzSvmZEHmf5mlB2HiYZ+0bNnb8uuGHR5nS
+X-Rspamd-Queue-Id: D9D08A0002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774063273-209633
+X-HE-Meta: U2FsdGVkX19qkdVNLnkgDEJK7jjtEGKb3oW6afEoB6dn5Ko2geVBbip3tL40eZe6Vsdrn5NXmTiBc7xM7pApS0Weq5+1YnmzymWSvNyDrnBih7N/lOO/Gdzw9vn21npOlabjSDbdmHw5AtUTlrTKOlO2SbN1rp82fOvy6y6YEwmYE+goxDRzpJOSQphp7j2mScNXIq8pI2XylyP0+qggQn/IS0Q9OoJ8sy/FYpZ2zkldN3wGifuOIRcffADEB+820y37/3D9M48FtPYUChm9w/6YLQh4f6DGJV+aLkYo54jpZH/m8FJokPCUxwG4+sCnYQfnPeYFmywlkZVxwCrDb64xL9+B2HNZvKMUXp4FckyQeD+/OrTN88EZx/9nVVItCTaSKB2+S4mMBsf0qFdtSh/blSBMSCgeXloI65GHwIOJ4KHgIwnXZHn3pcRGJh8bE3vsoMUV78qdibo5hD8TK4zu54KAqjsvw7dZ4uYTrxu62eSMUoI1ZxNCEGT54JUVjXmd0714IQ/p0IhsFMm71VaVqMkycPxFQLtDwlF/9FwM0TGkSZJuZ3anzrURFxS6PlyXZZX8TykSMZkiBh0H/XImq8+rb52Pfl6plUXMWnNg1Z9uyE1dzFKA+vM24ooQeV88ow1lcPtaQ2xEbG2VAZhdVF13kkCKSf3aVe0Q6KKv18aoQB3KMlYXG6j7Nnlkt7AT0rXNl97IWEhgA/Izo5+AIkoo/VxNsDJWw0GGPZqpy4Un587QXS+MyRf9FG4KYCMNXMzLsCv6cSLzOUp2uuNMl4DEL9wBA8qd8LXxGMYLQ/9YkuzZTwE59mNufCLN9SFyfvI3We5pmTEN5PDjN3+xky/XlFnLTGBNFnIRlX55U5gpeqkKAYBVRKbvesuG051w/mDmr25fYWS6g0m8hu5OPNB5QWoV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,49 +92,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 21 Mar 2026 03:34:21 +0100 kernel test robot <lkp@intel.com> wrote:
+Andrew Morton <akpm@linux-foundation.org> writes:
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> head:   28edd9c5a25ceb76c2d4e55bc5c37acd7eb0fc92
-> commit: 6fa1bf6b010deb50b35d2b2a7c97e7e229f2747e [433/449] selftests/mm: add UFFDIO_MOVE huge zeropage PMD regression test
-> config: i386-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260321/202603210319.P5MPyTEf-lkp@intel.com/config)
-> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260321/202603210319.P5MPyTEf-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202603210319.P5MPyTEf-lkp@intel.com/
-> 
-> Note: the akpm-mm/mm-unstable HEAD 28edd9c5a25ceb76c2d4e55bc5c37acd7eb0fc92 builds fine.
->       It only hurts bisectability.
+> On Thu, 19 Mar 2026 13:00:06 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+>
+>> The zap_huge_pmd() function is overly complicated, clean it up and also add
+>> an assert in the case that we encounter a buggy PMD entry that doesn't
+>> match expectations.
+>> 
+>> This is motivated by a bug discovered [0] where the PMD entry was none of:
+>> 
+>> * A non-DAX, PFN or mixed map.
+>> * The huge zero folio
+>> * A present PMD entry
+>> * A softleaf entry
+>> 
+>> In zap_huge_pmd(), but due to the bug we manged to reach this code.
+>> 
+>> It is useful to explicitly call this out rather than have an arbitrary NULL
+>> pointer dereference happen, which also improves understanding of what's
+>> going on.
+>> 
+>> [0]:https://lore.kernel.org/all/6b3d7ad7-49e1-407a-903d-3103704160d8@lucifer.local/
+>
+> AI review has questions, which I assume you've seen
+> 	https://sashiko.dev/#/patchset/cover.1773924928.git.ljs%40kernel.org
+>
+>
+>
+> This isn't going well from a workflow POV.  I merge stuff (this was v2)
+> then half a day later a bunch of potential issues are identified.
+>
+> If these reviews are useful (they seem to be, enough) then I guess I'll
+> need to further increase the lag between seeing-it and merging-it.  But
+> if there's a 2-day lag before I get onto a series and I'm the first to
+> look at Sashiko then that won't help.
+>
+> So it needs to be something like
+>
+> 	- series is posted
+> 	- 24 hours pass
+> 	- submitter takes a look at the AI review, maybe prepares a new
+> 	  series.
+> 	- 24 hours pass
+> 	- rinse, repeat
+> 	- it gets merged, hopefully with some Reviewed-by"s.
+>
+> Not unreasonable, but it requires that submitter be made aware of
+> Sashiko's comments.  At present that's via me being tiresome.
+>
+>
+> Anyway, early days.  I'm thinking that an emailed reply-to-all from
+> Sashiko will help.  Much hinges on how useful submitters find these
+> questions to be - something which I'm paying close attention to...
 
-No, there is no later patch which fixes this.
+For bpf Alexei suggested to always send the review to the author and
+cc the bpf mailing list, but ignore maintainers and other mailing lists
+like lkml to minimize the traffic. It sounds like a good trade off to me.
 
-> All errors (new ones prefixed by >>):
-> 
->    vm_util.c: In function 'pagemap_is_huge_zero':
-> >> vm_util.c:133:14: error: too many arguments to function 'pagemap_scan_supported'
->      133 |         if (!pagemap_scan_supported(fd, start))
->          |              ^~~~~~~~~~~~~~~~~~~~~~
->    vm_util.c:70:13: note: declared here
->       70 | static bool pagemap_scan_supported(int fd)
->          |             ^~~~~~~~~~~~~~~~~~~~~~
-> 
+If there are concerns about polluting the mm mailing list,  maybe
+something like a new list like "mm-new" / "mm-early" might work?
+Idk what's the best thing here to do, just throwing some ideas.
 
-Thanks, I assume this:
+Likely next week I'll be able to send reviews over the email
+and I can send them to whoever we think it's appropriate.
 
---- a/tools/testing/selftests/mm/vm_util.c~selftests-mm-add-uffdio_move-huge-zeropage-pmd-regression-test-fix
-+++ a/tools/testing/selftests/mm/vm_util.c
-@@ -130,7 +130,7 @@ bool pagemap_is_huge_zero(int fd, char *
- {
- 	uint64_t categories;
- 
--	if (!pagemap_scan_supported(fd, start))
-+	if (!pagemap_scan_supported(fd))
- 		return false;
- 
- 	categories = pagemap_scan_get_categories(fd, start);
-_
-
+Thanks!
 
