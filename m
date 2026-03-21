@@ -4,137 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5F771094474
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 13:34:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 518F4109447E
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 14:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2036F6B00A6; Sat, 21 Mar 2026 09:34:06 -0400 (EDT)
+	id 3BFDE6B00B8; Sat, 21 Mar 2026 10:09:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B5436B00B6; Sat, 21 Mar 2026 09:34:06 -0400 (EDT)
+	id 397516B00B9; Sat, 21 Mar 2026 10:09:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A3C76B00B7; Sat, 21 Mar 2026 09:34:06 -0400 (EDT)
+	id 2AE6B6B00BA; Sat, 21 Mar 2026 10:09:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ECF986B00A6
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 09:34:05 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74B3113B27C
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:34:05 +0000 (UTC)
-X-FDA: 84570163650.02.341FAF4
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 95CB3C0012
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:34:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IsGVMas2;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 194826B00B8
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:09:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6318C2142
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:09:38 +0000 (UTC)
+X-FDA: 84570253236.12.26B48D7
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BB43AA0015
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:09:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HxUvRyjL;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774100043;
+	spf=pass (imf25.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774102176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sxNYvkoMi8SXclAI7J++tVk47zsDBqwMkV8+EwFN1W0=;
-	b=nsgFN4v1deZZxrjZLKN11fmoS54q+784wHPIMASy+uhUt18fWaPBZ4EfMwpflg+6bTJC+q
-	/hlhJ1wQmIeRH3jrRBSHoCLMmAJooQFjx/Rg1KGie1v+qzA0/mBq4Ax4RR/71Y01vJtPnp
-	cq2GJ1aEISe11B+etjT1OXy9FgKZmJ8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774100043; a=rsa-sha256;
-	cv=pass;
-	b=axiT1G5Owx0RUNKbCkRJtqEwAEaXio+t+cXBWx75EpGlEyPCD9GeDvbcgbShF8L1L61IYd
-	nSpgUqno/bh0hKjjtRbXPHz99phN+RgF3sAnZV+x6vuS5BbMlVbtg3kfHyl6DVasDUtgAB
-	nA5ugAgAkGCGM0sxqJ/IwKmPxX+ZYbs=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IsGVMas2;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qYuRLOkVEr0vMq2UyeWKGNVMl1LS0aZ8xRKS/OadUGE=;
+	b=DCpaSpttXJfkwtP7D5GJTf/n27tDQj2J1EXSechdQG1KaI2iNSQh9mVbltof2lQjFfcNW7
+	f/7lTc8N/kDcmLCsC3yJpbABt+ToKV6h3vHQ3HNQJUVch/Mz6iXLIHK373lF1BhJZHavEa
+	fnxJZQFimZCMxDh1lV4WKg5jS0wqSo0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HxUvRyjL;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2c0fd9c62acso237522eec.1
-        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 06:34:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774100042; cv=none;
-        d=google.com; s=arc-20240605;
-        b=c1B699HbJW/UggMjxHieCUWUutU4JCIMUD0IgTtXRJiFEHku0AZfKG+A67A9mL2y6p
-         tLj/UQic86XfzY/Si6+Lp6XZI0AdGwmJqzacgiTri7JF1vzwe0PaSfGgpaqgJUu5zjRO
-         VuqcLN6hopf/9f3xAokTR9Z+Jgs6jryfUficLQXuY1cY8bnaBHsTXs0qZMxZZpR1lWQQ
-         6qGiDp05/CwDXaYCs5rY0TiFCCrlg8FGqJBXHrX6nlgj5j1luPpzJC1k7DCTqrnMfseX
-         fZc8QQQuiPPsKsuOL9axciISNZu6I3Xz5bgip/8NJ7zvU1/lSr4KnI2YAFxaYyxm95ID
-         hyzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sxNYvkoMi8SXclAI7J++tVk47zsDBqwMkV8+EwFN1W0=;
-        fh=wU9fumQiWU479iR6JHsjQ3GOs+e7D0zO4Gtie0JxApA=;
-        b=YPt49GWEdHaihRuny1yWJ3gPdTaJvhiVMuoFqO0H+22ivhILzvGdhgE8EDvCm7C0P5
-         RvALpbT0aKCwKMo7PERM2SK3RfeHwb/w1NUsgFzrh2VnpgCQBkjMFQoqfHpiF9Tx/VcF
-         GsunqdE8paJzPMabpRnuxN+iF300W6F3VVZz3OPsN7iaFudc8leuuMTUwWOItFyb1xCt
-         CWByDw7RaQBvGANDRt+apIu6LY4j6PhAt7rgQaQnkf2JGIw7lBT7PJXFv1t1HYQBeOns
-         7JN/OB+LH0pepwc37Pquk2f+TtgXift/Ko85I+k3LmhzaUpRhjtEIuYUYUFKELxVjUGf
-         gQrA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	spf=pass (imf25.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774102176; a=rsa-sha256;
+	cv=none;
+	b=pdLtHwWqtPSLG25FaXXt9M3haz6iEc7DuMajlcNQyHlhJfAyfQZSxCB+OilArnuBn/Wkvd
+	fEUp7KmIZKUkoZsYq8T7DHMZxD72Yo4nLtnUkyETTGIgzKoe9QFv6yVeS85ROoampKcweD
+	yAeOTahHGjeIdIur3gElOrFJniy6J1s=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ad21f437eeso24283905ad.0
+        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 07:09:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774100042; x=1774704842; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sxNYvkoMi8SXclAI7J++tVk47zsDBqwMkV8+EwFN1W0=;
-        b=IsGVMas2cvG7d6a3XmbWZ99l6SeGL9KZzleESq7QxcEJspvK0oH2ANGr8yy95XxTAF
-         Zptd6Nqoidn8Rxu8OnMo+rhB5IUtbnp6NtEVOcy2X4RRUsA2xdYN5G3XEwuHd94DfDMA
-         vrW7qMRE6fNK6iRL3s31NMpGJR+gXEW8XHB1e0xKW7C7zkiPJwPRIAVzeRh7Q8KcJZUI
-         iVc+cdfLqbEkFWP5N9WChukdQogS+o2Xcds5BrGeEJbbS4ldxbAXuUUv5/9Q8uwMmknN
-         Y5Vet/h7rvwD/jwGTl1UmGnlZX4vllWEjc3vNaO7YtnTODepONLtEw+7fA7Hg9wtCJHV
-         HyUg==
+        d=gmail.com; s=20230601; t=1774102175; x=1774706975; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qYuRLOkVEr0vMq2UyeWKGNVMl1LS0aZ8xRKS/OadUGE=;
+        b=HxUvRyjLvM/wq5HMIoS+yGyHyK1VtYcN7S+tl2KUPqVdlwRSXHfnxQhDs/RmhOiS6h
+         qBT87XC+QgP/lQRivD5JqGZ0/Xk0LE349mwFioas4gr5tB0ErwVspysBMZPrzAAv2q7e
+         A6V+ss4nrAocj2a/0a6oksMY+7w0IN8VRH2KNh4Xowf0/9Eu5x9QYWMONIPPnSPEN7Qx
+         0gY5Dgv6GAtKrs7kUN9WIDyuyNIt/lFdIqU+SdSwed4bxFPszYopWVqn1mKTrr/4h2OS
+         ye+zd3P5IdjtZbS1wVy3opPYlaRVBb0Ua4wUEMdy82zBkBLRgPr5KI/LbEnf5a6MaZl8
+         3ytw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774100042; x=1774704842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sxNYvkoMi8SXclAI7J++tVk47zsDBqwMkV8+EwFN1W0=;
-        b=r1dPH1flnF2c3Y0ZPr8QtSHLr7r+US0dkNm1yk1fYCSWyJyXaECUdygpNyEvoNWUOW
-         Gaa+pk+Jfiaoz/Y+4MH3EPvl5neQQvfwcnENBOLP9nJ8Ym9yCMnFXSIeqaEk6cC2cc68
-         AQIpkD1KE33ehyHsNYXhOjbl/xV0DfKBqZk1AmUkGvsymsQ6Kln20bVDN9Q/W4Enx5pR
-         InIUb5Zs5G8O6Azgr2ARjMQ+UfYwD8Z1FBT/qTsfbcQPH+Fvcc34O+ujvXnwIk2O2G8Y
-         wHZZobZ+vYjKMelnLVcK/ZAFgmEDYQWZxfE3zHD7eKCuS3XNMt4SSlQMwAavPzXBHUsE
-         +tMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWR5gXww27JZOA3MNe02xkaJDtL0GlUx6G3SudS8Xe+4Ukc6TVjiD7slxodxRZQqxxG976cxQruZA==@kvack.org
-X-Gm-Message-State: AOJu0Yw7zyFI8yAiCagx5iV6rnvWQhsxgjbu7JbTFSnTflSlR+wBpIhW
-	EnJFcX6t36v02f+0OVt9P+/ZEjhdlMrrdSdS5a99dWedDhAINGsZoY3MWFPK0rYDdL7KaWvCOjs
-	NXRUc2cK6dLVloPdk/+WsHLeAE7Wc8yI=
-X-Gm-Gg: ATEYQzxowR6oir/+TWggLMT7xBqvaE5Nv5Z5emWzgls8GrI4u4vqPZ6sechhrzAAMGD
-	hTgvnqak/0B4A8Iz++VuYG/pjmKS6fPXWSrG3yaBo5U04pKpoh6TtRiQYhAhUbZnYLpvvZMcWq5
-	4Ip2kNDAmLBer0UlUsletd0VyuvZr4WTB2aSrngS43gGYqLpVAp1UflTzxRHuBqFxEsKOo1oHwk
-	dCNWWpE9PQw1cz88gcUBu7I2JX1aXJbNSHV1em7y/0Q8fm34DzRjOeI13INWW0W0LOWRnf9VRqF
-	RnJR9fGU4E+T6wi+Gu5iDuT0LZ6vneU5T9xO9HMZf3jJAmAe2OnuqP4Bc2xvPgE/xu749w03Eg0
-	LUOTiGZueG9DtyO0q8VZ0unY=
-X-Received: by 2002:a05:7300:4306:b0:2b6:f2d5:2923 with SMTP id
- 5a478bee46e88-2c1098861afmr1462939eec.7.1774100042177; Sat, 21 Mar 2026
- 06:34:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774102175; x=1774706975;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qYuRLOkVEr0vMq2UyeWKGNVMl1LS0aZ8xRKS/OadUGE=;
+        b=R6DQgM5RE469o8PTyHYia8NLHV312PL9vZu5kpIoyt61Dzt7sv21Ag+fAhP1V7qr2F
+         gJMOLLwoTB17wTCNBvKD0WUY3ip/sbgv3ModkLYByLwAIpMXjXRw4NssiBwNCVvDaOl4
+         UVofxN0WSjvGlb7zAzqgz7IDsATAdLd+YdEtChcytsHMOu2iqRv4OkJ+/y8os6BWIhmi
+         AAR0MnS9OjELkzsM8KOTdn5Q9fo3bIBzJ26lzfBKKCPil1Bnk+scF4iRMCDz+/HUS+3t
+         1B38QHgiobTdHYhEcFw0ARbw6aY1lYceA6EFgRegkCuz9eOR65IKiEyvAYXV50rtlDYn
+         RNnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVUit4UXwD2+KsfggS4J386M67Wd76PubF8M2A11yVZBFKHSJQhxHkpKPzL0HgV1U0dDGo2+PiO7w==@kvack.org
+X-Gm-Message-State: AOJu0YwU3jqOIRVXMPUbA+TVHVvnPA7v509Dp2iPvuwiIDtPW+hO3/MY
+	MqowFWVB+w3iB2C/ksc9FjfEJih4jx1v7PmXkpfUB8yY6VCdIVM39HWz
+X-Gm-Gg: ATEYQzycTmPOwCl3ySzCvVjsgjTMx1GN0ce/0gMpMkiq/oy2y//5TkbgBWVA3pzDg50
+	YPRgY0xIIWQdC2AaOaLsp4V2Hx4EtxwHePIuleSPa/gdP9D2GBVdQHkYKhZAbSKqOc5sX63AYtI
+	RAWAYnByMJyDK9oa8zsIPBvrJyvVtQjR0i3yq4T2qJBPx5FCciGOgWoFr4CaLfljVr3Cf8hVT5T
+	dFh2GOx9zN18w4TvNx2UFjV06AdwZHhG3GsfreHPwRcFtqFslO/T1FbThVIGlPyC15WiYIcnsf1
+	97eLEMCVgt+anP3fb2YZHbth31cb/QdsZsekRKIByLvLMDM7Vl6hlVD6B2YYprLvJvuZytNzDdg
+	f9beQMtFY/AmKIA12GeTvxbnWfqsi4BAvQtfE5YWqlQDYvPGnEnqswwcSHWRL45DcvG8HwUel97
+	Yc2apyRiyKrHS//1Acz7lIDIUyxRla7ue84+B31EdDLsIxFWYAh5M=
+X-Received: by 2002:a17:903:b84:b0:2b0:4446:5a34 with SMTP id d9443c01a7336-2b07724f804mr84505275ad.27.1774102175434;
+        Sat, 21 Mar 2026 07:09:35 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083683a8fsm49609995ad.66.2026.03.21.07.09.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Mar 2026 07:09:34 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: [RFC v2] mm/damon: add synchronous validation for commit_inputs
+Date: Sat, 21 Mar 2026 22:09:26 +0800
+Message-ID: <20260321140926.22163-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <1f94cf47-9898-405d-bdf2-29e21cd87528@nvidia.com> <87ldfmtfk7.fsf@linux.dev>
-In-Reply-To: <87ldfmtfk7.fsf@linux.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 21 Mar 2026 14:33:49 +0100
-X-Gm-Features: AaiRm537phjdHidGVAf1007v_8W_3H-qjtaFgpcsDGtT1PP8A_h_Ukclbw-WOxo
-Message-ID: <CANiq72=HYHj4ZhFWqTJk3DhVEoOqFKah6yA9ROfC+Z797SwUZw@mail.gmail.com>
-Subject: Re: Sashiko.dev for Rust for Linux
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: John Hubbard <jhubbard@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 95CB3C0012
-X-Stat-Signature: u6kyy4gug4r8hzswq7g5qmzy8upqpzh8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BB43AA0015
+X-Stat-Signature: wj8jtfg7rrsspxxygm8dfdb4q5y9r3bk
 X-Rspam-User: 
-X-HE-Tag: 1774100043-809120
-X-HE-Meta: U2FsdGVkX1809rZhOLx5XflK03z+4i/bdq82v0mvSye3IsoXucNaOOzkWifKlv6r11/AHeZuDqDu6KS2vpgAd5LeAyr+x2kUcJotx6AyySbxXKYU+A+Fakdh0hd5r+9rL2gUw7cRitX9fbvP8tw558X5CDmS3c1hKTyW9I2Uh2kWy6GNdStuuAjlhfphEKq251QJWezHKpxFc7hSOcD9uOXIFo866Y02qC07HvUBZYyEnFXsX6dZSH4noJ41byANEGmaiIFFT8DkWD/35CPfCE5xNZk76NOGbO+u6fJEVXVIxJKpRqOLK4+bKlxMZwipCoop4eWqDvIE21AiQw1smgsi7QmGliz+zk8KGKO+O+dV+3S4hpM6y0C5MC5v/BfwzrbMs7PGTiVT0RScY27loS5RQQRbKgeE6a1X5FoxqAi60JVHNI1jX5KOHGSWRYPm2qt9GmlGeuhGzHqDAznDe3S80HNVMKQhdTswvTQ/Hsa968m01Ja6Anjx/pyGmSLY+GCEZDGyhw3+8KO5HYhBmgf9x4D1r/nEM2e9InObWY3vug+wED5qnfiAmGSWIvJXPh46l6VZrlWGvRC6X5ex83R/KJOj3FU8qlo37gO/mNASuHq2WkbDvd0KISoSGjJbBmrr4asjcEEOklK9ilA8lN/pcuSHrLU96+M05ntw1VxvK21EN3laXEkyGb4h5t0dDVKCFB5B/fnqoeFdydbPp31thXf2q1LGI79KCWHW731hrs17SmrFS97fZ9pmcIvnxHwU3ivI01an9P+HFXufN4ba+YGM3pyXj6jFMJPl1U9KAD98xXX2fKcDGLgt66iOqgRxEAnZug+bqTki8MPtIcXx3qEPGcrAQ4ske1eZzFD67xfoBBvS/qkF34GJSKf11wbnPQYUJ8EF/cN48afL84fZMpZnP3SHNcl+bxQeGHXytdYrI5elDfa/u5kdaZKFE7/gBHTLPJsi+SV3BsQ
- t4FAKObH
- qtAFzcy6/Xv1iaJ1bMRgZ6k1H12AHQwgnrqANo5rQc61CxaovBB/j73N/EymSUIEjCj2hKy4uy8elXQyVx8UeB4fMzMZd7+HdlK7Ab6NrK3ZzTQ2HZw+V+lVnYvPJIRos1yjv
+X-HE-Tag: 1774102176-96311
+X-HE-Meta: U2FsdGVkX1/hSkccbLRUpEehEn7EO9lIaAnziigCq2/fnj23VaQhOYS5a/wZzMEKwan08m8sYvGO1VOvLFjglLjkgPLRDKPIOvUUskTPvr6GHp6wIAAOwu0cIKgf1+UMnzHGEpxrD3BB7jLb0qoyutxZKxVC8/lPzJtnx0SJT0mDRf3XA/gUhmwkDLyYh12lXfPAC731wU0jonZlHKa7uCFWtb7w85LJ7a/cYCZO9gDC530WJth0YkRjA1XFRPTSPt85Mf3C4OR9ntdp1JiggVpN1tAKVYg1ZoqhO16C33zWBOYJN2BaIAbYT6a5bAVNIqeJBhI3r5E6jiywNrOQWfO6UpMy/cx1wtg1ak5eveEkD2ayuHX9EWIEZcQoBdoDHAexVQ9kX1f5cx+6DSEwdBUGFJMb2DyH7YPpqwEs0ZHgyfTRg20n1/cU3tnsDCuyDVX5SrGifHKGPm5tYvXTXwqmJGTm5qoB4LQqWaDhRAxvJ+p6e68zAU3RJSTNkJppBPrfeciHTCRQIIyPt35RBM3fX246dEhCqzKBMd1QSCdqCWzVl21Pb0J33LexiiP4EdoH0MbsyrIrcn8wZGAu6tjb3B+TEcbM3wlwEKByXmJjFNROryNEQhu90fh075PfMOZlOKBjGfrxiOaTgEuaFqp8dmDUK6SAXS6Q/gYrf9O1exQjy09s3XtS6+p18SdDew1v4P9b1P6xG5E0bt9FuJ67jtr+SDF3iL9qYaz1UcJVK1WzDfvL9I9MCzemiV/YFxrLzEAfP9Y1tMvY8Ht1dm5S1ImDhbMUjWAnZBzEMvSh2X0FnaY0+H3vEmAO14pmQzaa/7WVELPtZExN1YfqLzMZHvdXUY9cBdRGc6fbZIZxZrr7B9x7EDVU6qgYYurBlfeQ2X9oVZ7yh/61lA3yE7yQiK1JLs8diXfnogZGscNqL/SXky2IkWEm5m3IeD8wOuCPV3ykAWdpK63HZcl
+ xof1ELVj
+ eXtj/5zAgF9zAZWy3enhkftWRAk9BEet2lCPElFvDNPGkOG7crM3ztEdPJEGWXaTHlpIUuStZeG2xlna8YxupEd/uIgmbJtXnHv9aWhTuMALHoFD+g5nbXLl00orS6Vcm/r5xJxqOEdAempgv2X4cslcJDsMjRcLDEw7Y14+7uZEMBLjVNMaaH+qshfcPhNifH0+yyXdmJ/d4Jap0yxlWSIAHm/ictAuRVpwstVqzoU8G0eXO0qmxDIE5+XzujDjGh57uyeZ1ZTuNr/Tw1IVr2s3XQ/iHpzupo21rFsSXub0f5ENkX5I1aLIf/Zc0q/tC1Ctso5oHDlcSqonrLY4xM6KAWHecKBsRL871sNza3u3VwVrtCuHhkQHCHTVGuhGVoMLZ2mk2MIc/DvaHr84c3QYi9C4Nzbs92KF75hZy0YB6t98hQ49sqyA0ZiT7ggEdGfrR9Mf4hJp0v1pps9GBoBGHopjPgymef3wpeb5/AfmLiG0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,36 +115,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 9:24=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
-x.dev> wrote:
->
-> Yes, I'm going to add rust-for-linux (will appear ~tomorrow), but a
-> bunch of patchsets which cc'ed lkml have already been reviewed, please,
-> take a look.
+Problem
+=======
+Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
+silently (no error returned to shell), because the validation happens
+aynchronously in the kdamond.
 
-I see the list there:
+Solution
+========
+To fix this, I proposed adding synchronous validation in
+damon_lru_sort_commit_inputs_store() and
+damon_reclaim_commit_inputs_store() before setting the 'commit_inputs'
+flag. This allow users to receive immediate feedback (e.g., -EINVAL) if
+the parameters are invalid.
 
-  https://sashiko.dev/#/?list=3Dorg.kernel.vger.rust-for-linux
+Changes
+=======
+1. Added damon_lru_sort_commit_inputs_store() and
+   damon_reclaim_commit_inputs_store() to handle parameter validation
+   before setting 'commit_inputs'.
+2. Added damon_validate_attrs() to centralize validation logic.
 
-I have just added a link to it from rust-for-linux.com (in the menu
-bar, where I keep many links to resources etc.), and announced it in
-our Zulip and the mailing list (I guess this thread is short enough
-that could have served the purpose too).
+This change is motivated from another discussion [1].
 
-> We don't need any rules/skills to get *some* reviews, but we certainly
-> might need some prompts to get *better* reviews, both in terms of bug
-> discovery and false positives. If you'll master something, I'm more than
-> happy to give it a try.
+[1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
 
-Yeah, we should definitely add some context (and possibly skills like
-Coccinelle for Rust to match the recently merged Coccinelle one
-eventually).
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
+Changes from RFC-v1:
+- Remove question from commit message area.
+- Added synchronous validation for DAMON_RECLAIM.
+- Rename damon_valid_attrs() -> damon_validate_attrs().
+- Exported a new function damon_validate_attrs() and declared it in
+  damon.h.
+- Link to RFC-v1: https://lore.kernel.org/20260321002642.22712-1-aethernet65535@gmail.com
 
-I see Gary already replied -- I was going to mention that he has been
-playing around with it for some days indeed!
+ include/linux/damon.h |  2 ++
+ mm/damon/core.c       | 34 +++++++++++++++++++++++++---------
+ mm/damon/lru_sort.c   | 34 +++++++++++++++++++++++++++++++++-
+ mm/damon/reclaim.c    | 34 +++++++++++++++++++++++++++++++++-
+ 4 files changed, 93 insertions(+), 11 deletions(-)
 
-Thanks a lot!
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index d9a3babbafc1..00ca58dbe978 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -997,6 +997,8 @@ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
+ 				unsigned long addr_unit,
+ 				unsigned long min_region_sz);
+ 
++int damon_validate_attrs(struct damon_attrs *attrs);
++
+ #endif	/* CONFIG_DAMON */
+ 
+ #endif	/* _DAMON_H */
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 4dae03a37f9a..a459cdcaaed2 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -751,6 +751,27 @@ static bool damon_valid_intervals_goal(struct damon_attrs *attrs)
+ 	return true;
+ }
+ 
++/**
++ * damon_validate_attrs() - Check if the given DAMON attributes are valid.
++ * @attrs:		attributes to be checked
++ *
++ * Return: 0 if valid, negative error code otherwise.
++ */
++int damon_validate_attrs(struct damon_attrs *attrs)
++{
++	if (!damon_valid_intervals_goal(attrs))
++		return -EINVAL;
++	if (attrs->min_nr_regions < 3)
++		return -EINVAL;
++	if (attrs->min_nr_regions > attrs->max_nr_regions)
++		return -EINVAL;
++	if (attrs->sample_interval > attrs->aggr_interval)
++		return -EINVAL;
++
++	return 0;
++}
++EXPORT_SYMBOL(damon_validate_attrs);
++
+ /**
+  * damon_set_attrs() - Set attributes for the monitoring.
+  * @ctx:		monitoring context
+@@ -778,16 +799,11 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
+ 	struct damos *s;
+ 	bool aggregating = ctx->passed_sample_intervals <
+ 		ctx->next_aggregation_sis;
++	int err;
+ 
+-	if (!damon_valid_intervals_goal(attrs))
+-		return -EINVAL;
+-
+-	if (attrs->min_nr_regions < 3)
+-		return -EINVAL;
+-	if (attrs->min_nr_regions > attrs->max_nr_regions)
+-		return -EINVAL;
+-	if (attrs->sample_interval > attrs->aggr_interval)
+-		return -EINVAL;
++	err = damon_validate_attrs(attrs);
++	if (err)
++		return err;
+ 
+ 	/* calls from core-external doesn't set this. */
+ 	if (!attrs->aggr_samples)
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 554559d72976..883860721d3b 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -39,7 +39,6 @@ static bool enabled __read_mostly;
+  * the re-reading, DAMON_LRU_SORT will be disabled.
+  */
+ static bool commit_inputs __read_mostly;
+-module_param(commit_inputs, bool, 0600);
+ 
+ /*
+  * Desired active to [in]active memory ratio in bp (1/10,000).
+@@ -361,6 +360,39 @@ static int damon_lru_sort_handle_commit_inputs(void)
+ 	return err;
+ }
+ 
++static int damon_lru_sort_commit_inputs_store(const char *val,
++		const struct kernel_param *kp)
++{
++	struct damon_attrs attrs;
++	bool yes;
++	int err;
++
++	err = kstrtobool(val, &yes);
++	if (err)
++		return err;
++
++	if (commit_inputs == yes)
++		return 0;
++
++	if (!yes)
++		return 0;
++
++	attrs = damon_lru_sort_mon_attrs;
++	err = damon_validate_attrs(&attrs);
++	if (err)
++		return err;
++
++	commit_inputs = yes;
++	return err;
++}
++
++static const struct kernel_param_ops commit_inputs_param_ops = {
++	.set = damon_lru_sort_commit_inputs_store,
++	.get = param_get_bool,
++};
++
++module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
++
+ static int damon_lru_sort_damon_call_fn(void *arg)
+ {
+ 	struct damon_ctx *c = arg;
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 86da14778658..6ea44b02cc76 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -39,7 +39,6 @@ static bool enabled __read_mostly;
+  * re-reading, DAMON_RECLAIM will be disabled.
+  */
+ static bool commit_inputs __read_mostly;
+-module_param(commit_inputs, bool, 0600);
+ 
+ /*
+  * Time threshold for cold memory regions identification in microseconds.
+@@ -267,6 +266,39 @@ static int damon_reclaim_handle_commit_inputs(void)
+ 	return err;
+ }
+ 
++static int damon_reclaim_commit_inputs_store(const char *val,
++		const struct kernel_param *kp)
++{
++	struct damon_attrs attrs;
++	bool yes;
++	int err;
++
++	err = kstrtobool(val, &yes);
++	if (err)
++		return err;
++
++	if (commit_inputs == yes)
++		return 0;
++
++	if (!yes)
++		return 0;
++
++	attrs = damon_reclaim_mon_attrs;
++	err = damon_validate_attrs(&attrs);
++	if (err)
++		return err;
++
++	commit_inputs = yes;
++	return err;
++}
++
++static const struct kernel_param_ops commit_inputs_param_ops = {
++	.set = damon_reclaim_commit_inputs_store,
++	.get = param_get_bool,
++};
++
++module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
++
+ static int damon_reclaim_damon_call_fn(void *arg)
+ {
+ 	struct damon_ctx *c = arg;
+-- 
+2.53.0
 
-Cheers,
-Miguel
 
