@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ECD5109446F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 094D81094489
 	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E68966B00ED; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
+	id 16D186B00EB; Sat, 21 Mar 2026 13:54:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCC5D6B00EB; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
+	id 11BFB6B00F0; Sat, 21 Mar 2026 13:54:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDB406B00EB; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
+	id F25146B00F1; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C0D176B00E8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D67A86B00E8
 	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60C7EBA3B4
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7281E1D800
 	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:54:38 +0000 (UTC)
-X-FDA: 84570820236.03.EB2A11E
+X-FDA: 84570820236.01.45D54E7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C637A1C0003
+	by imf12.hostedemail.com (Postfix) with ESMTP id C45F040006
 	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wn8hxWdj;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Tgu/N2qJ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774115676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=CLeZPhiJ8ygtluFXU42mvqc/iX77PFsduRfgHayTOjE=;
-	b=xeNQEfIQoLkE7WVE82VB3MMYT43mNbMoPWX0f6QJQuneL+Y6FswRfXvcuzhi1lAvSzcina
-	XEVzePmn9um7tHAUutiJjHCUSMIYtjhiFT76/VOP/D8Fvf4lr5Mg2VoxFf4KNBIOaSyMMx
-	NPd93vQHHYm2lqrgq4osEaUcXZyabt8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wn8hxWdj;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8AZuHclUN482UjzxOhblK2W1ztEa214QqMxVy+frVKk=;
+	b=SdymF+HhLwl3KeStt+dy8wxVZioVP9mh6jpJz26hgt0lhA/pnOI8BSaDkqKp8EWec1w2gF
+	u0Bbb3NqI1fEOP5EgWlguZpzkF2spZ/Ye0Yz7ojGxgN3q3DuEEp5tlK01qTRj5mOGn3XXz
+	e571lKfebZRjRe9gy/6ElzOICcj+wiw=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774115676; a=rsa-sha256;
 	cv=none;
-	b=YSBQ0hhabvAuIFCok0tthJ652eZECsAjKfFt2AA5kc+JDplbjEgk+XyQOG9Mk8aS3GHyXn
-	+La3Iixi4zS8ScDZf89ZiXgA2j7AqeH8UrCEHWymneIbd7XcRTIpHKB7jt6VL25LGOxjkP
-	8/8umefJat+kopgjYiVHVjDi8f/Y8j8=
+	b=HJzZbfYm7K/j1isYOgNiTNy0nhK02jHEcEJDqWjoEvYsWWf3YPbI1RGqwn+/xzh29AHx6e
+	Iifd+ATZZZOe2+jo47g3s1tne2UknT3nT3nCjEvZW2FNOfS9MQDRmkRVoYmjuRl2VdgmXa
+	+qSedjbsDC4Ez74BiBovik3IKbRqfT8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Tgu/N2qJ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B924C4051F;
+	by sea.source.kernel.org (Postfix) with ESMTP id F2439441B5;
 	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F0EC2BCAF;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC19C2BCB2;
 	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774115675;
-	bh=YoReG2ITY2y0HZje9C+bQfiynbTvb6Sk5IqZjXN4jgA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Wn8hxWdjY8nwvWguSRylu6QdUeIm950qxeCvN+XJLKNCFiGT1rvu2S3BS5RXw2cxt
-	 Esz/AQ9kDq9aoqZS2gvlm/exy7gvh/sPZQYJmZLwErh98XF2l1RsLHDkI0Am6AeDtV
-	 JF79+nbLaPdKFb+mn1AH21nzU/DA/fPW4L0XALHGz/6vJxNMRkCE7RaNZ6tyS1CxOY
-	 fe4GrcRbccmK+BX5mC2TDQiN1yAcXHtY6AtKZM7AOe6ofrFZl07nsuJrlM4M2fc/Nt
-	 pX3SCOAdu21ChF8POhoezaza/gcja1Matw0PGMPkd0Ez9SaxagAGL0AlFW4Ar+RSOk
-	 cUCw7yXoHy9bw==
+	bh=kqdEPb3iNN0fFsVK6m3M9gMdlpedC9f1qzwxe6K56h4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Tgu/N2qJidFELa4r9BzD1WwU6563wFyYLpFeqzAZwcZHxbUQJikNm03IhG6ga4O0P
+	 4gkR7H8AeiwT7Q79DF5fBsXfw5MoTmKsIriNGT+uKc7s2Sr47yau3UxeyboKCyUNdA
+	 VHVtnCqKX7sB07ZBJrzXivgN8FdeB9gmCP2WUdCom/uNzGv82jAsM3B+kH6UczvgrJ
+	 K8FLKphL9mP90Y0th/QZNJhCYCQoiW1KQhQ32+FNA0GXtd2ARWr47W5nlxXUDUhvow
+	 cEFGjDgpkRYCMhjQLpwv7cpwXYW4UxUZXNvMrDeBZ0tPyNsHa0UdkaUZxRzrajinW0
+	 AWj8UgrMbuYww==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 5 . 18 . x" <stable@vger.kernel.org>,
+Cc: Josh Law <objecting@objecting.org>,
+	"# 6 . 18 . x" <stable@vger.kernel.org>,
+	SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 0/3] mm/damon/sysfs: fix memory leak and NULL dereference issues
-Date: Sat, 21 Mar 2026 10:54:23 -0700
-Message-ID: <20260321175427.86000-1-sj@kernel.org>
+Subject: [PATCH v3 1/3] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
+Date: Sat, 21 Mar 2026 10:54:24 -0700
+Message-ID: <20260321175427.86000-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260321175427.86000-1-sj@kernel.org>
+References: <20260321175427.86000-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C637A1C0003
-X-Stat-Signature: cssurfszzjeebcqirqpy3c5s89s61xu8
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C45F040006
+X-Stat-Signature: ct391j4n58nc54fwbm7z48xecxzkw5w9
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774115676-135309
-X-HE-Meta: U2FsdGVkX19oNHfL3J00uL60PatOtAgGkPypR6Q02jf4pSGortIi1Iszefwkq9RpDj6DWvRaqQaWhRiIIo/bU+scjsim5DDGOPzG9+huIXD2YlPgqqxReqByUIKd8nQl7pLAH1FKucya0et75INeEwm1rcc6j4gtAYGXvbMFK+lrK578Yzru7+5/8gLR4CCM3tgpR43BP7ynPUjGW/3n70//oA1WvhgNRTPzeYMk4PRNhn4YHKPAJsrpJeBnyU6LnUS4uKGvtHBqDz0cvst/sVfAPd6eWZGMHzdp36zRNtRjHCHM94ZHwQpcw+RiYgiJzsqtHzqh8BGjzKrUg+D7f6ThJQkfIdXFG3+nFlqsl/3b1xo13s0WuAwYC8b7leRgbBPDS4YhUOFPuHnlWaR2RyvW0Xp53bEdBYvJvIYtXcJAO5SCh5gZ6EN1nxyQDg5fC1mZP7Hq6GZiE820U9aPoMmZet1ok882OR84WmFgZVaniiyXNnnn8CEV1kq+jU/kROKnSJ4+/22kRQif67dhJCEmhBqsfrzxRyvjuYTGrMel2p71u39uKJ4sEoeJWvNdoI9StAcJPwCbPVump1K0qy54+2XAPveXJ9dQXSmCVFFF26DtJJjNHR7LVTw3BVu6BNyUgVPhOqEvQ6tdx4b6pzRSjufNFxw6gJaEq0oPiUnWg9IRwKb+yBsCpSSR6KQvHaIgn+QRqDrl33wvpTuiP535JhmO838ePaRst9u9N4I6zArZp5ChmOmgeiLFwZfsi+/sv8T5YEtnz4w4ffyXHW4T+qqVc/X3gPQ85Y4rS/sEqwe3QGhZlUXdW8+GEf4k/VLYi7/ie14kpyILhKmIQJxalMcHs3romY3m7XKx0H0lF8RLwv9/tdbcV8LAoSAm2li6jXofuQ4IpLqTRxSoB86UYAfoW42+GVtJk/BAALvZyRkEwOLmhsWRALIPm1i4zJGotKj2jgrt2aIfIbc
- UbU+OziS
- LsF8hx20Yel1X8CbbDiaI17rQgJGAcqaEq43y9ddGJnVEP+hW75D2vL6KFdHgJ4ggYsiW9ZA0zmLlwg2ie26uqm/rA0XanqvKje6R+rLjK+8cmKbzKHtIxAfIlhv9l3fzdratbUL869NmuPi4d5+cpU0Mg0+CyJeaFKfcuOKSSRWwD5I2v6g+zyKyB9P/2dcX6x9TWp7pS7C/zQzgsdw0dYBLWqoXpF7VMqJKuTBexkvT76UN332hqX1op4SmwRyeayOzspMPy3jjSfZPLQzvGwmp8MaEO5+YdeCC
+X-HE-Tag: 1774115676-992464
+X-HE-Meta: U2FsdGVkX19n98rCtLrlWinbu6Ih2SS6zl1rxzAIkElQT9TTlir931HzUBxweewCo/b7iovhoU4JrOTvRaqmrs7roabCy1tOhubHJyJhEsPNDooLSe6cE3r3IVGMRKbG9KChjuv6XCn7/5+cy5nasHKtLemN3rwqPQE6s8MJ1yOCIeLVFBhrWcduGZa+QuzsOM0YSpto8dm1kBcmDS1vMSdLk7eBvKJBpfn4Hu976R6g4a3UFYxL8mvO9/03jsnxcwOVRZt2bjTn96HEHl7UZBf8GBuchb/KJkEY7JQpuk0xfdPUD2h2CrVz5QSikNzmNZOsb6Rl7hqqyY2RVUfqgbSKY/rtXenHxWJ3fzCln3+VyZ3lUB4mdvQmiyJ72laVAnmhx7wwYVzRKIAlta+374XBF7/HBMDLt37PgfSCbYz8O04hAfcyUKTcyf+s51a/jpStX5Xj6k0WYF0nB7sLwIPvGJt+pTRHowfif4iK7zk2RhZi7blpqhyRH58IVZbLcFyspCln065wUowFqY2LWQTOJIztGSsb2SJ6hcQc+5H24hxq9LIfGRiF0LD9Rt91N4IrwGe/KqXYGhlNpO8lAGf3qVv+dc8UbFJ702gj9OCroOXtjHVuDlIAwbOsr/IFPSzLYqJCZhn05ye04jVK9XTflKq3V+JxG4lM0xGO7X6KJjB9lJhWF1QW34CpTRnv9T/fkufDyHnIDoA1lUeTR6GwWYVDm3CzdpLA1O8VAtK1DHtAScQBVI+6B1wB1NYyayL+g+zZbzT5oUCeEQoKDPdSdsmyq2S8IQg901d3jrq3PRM5j441gSkxKeLUhrHea47uH7NC5S4NeWpK5IshrCefwa7eBXcHhqBmnkqUVbDfPAVe+3Rymc66Cjocgwp17fZ5SZPAxFWxoo9aMFGDCDQmhQl3Mnux+4WRqTrIqPOG8NddgoUS48fhlfLOGHNkW3hdO6zNjn9oZD9sXrp
+ aSR42ENv
+ B8gOkh/5wV5SQsLxzIN/vKlBhXvinEYIRQRu2X45+x9BPAZ38Cvmck5ePUsFTbLGR86fmfPnwshEsUZInBnqPqP35WGod6NzOB0iFzNqI+XPUeW/TbWMSe30mvQ/nMYPoG1JL27tgl9vS73D+JBN4UaOlVi6Y0y2ST7AQ/4VWkDp1jt7Dv+FxU9Yn5X45cg07Q82d1vAOBR6tcHDCZCHMKQWjX3x+FANl+kSTfd830+nmHItxiaHHfrG7cpwYvdsl4Z8/WSgk5C7ygjOnggAqnU3zHlzPl0lA3F9i7fXivKZhMNeVgPUn46Be2W17G3yR83X4+KTV6LYmpw1+ZAzx8B3BRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,32 +94,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_SYSFS can leak memory under allocation failure, and do NULL
-pointer dereference when a privileged user make wrong sequences of
-control.  Fix those.
+From: Josh Law <objecting@objecting.org>
 
-Changes from v2
-(https://lore.kernel.org/20260320163559.178101-1-objecting@objecting.org)
-- Wordsmith second patch commit message.
-- Add NULL dereference trigger steps on the commit messages.
-- Collect the valid Reviewed-by: from SJ for the second patch.
-- Rebased to latest mm-new.
-Changes from v1
-(https://lore.kernel.org/20260319155742.186627-1-objecting@objecting.org)
-- Check kdamond->contexts->nr from damon_sysfs_handle_cmd()
-- Collect Reviewed-by: from SJ for the first and the third patch.
+When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
+param_ctx is leaked because the early return skips the cleanup at the
+out label. Destroy param_ctx before returning.
 
-Josh Law (3):
-  mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx()
-    failure
-  mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
-  mm/damon/sysfs: check contexts->nr in repeat_call_fn
+Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
+Cc: <stable@vger.kernel.org> # 6.18.x
+Signed-off-by: Josh Law <objecting@objecting.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/sysfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- mm/damon/sysfs.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-
-base-commit: 42bc5b563370622d688719aa248a4c861839373a
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 576d1ddd736bf..b573b9d607848 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1524,8 +1524,10 @@ static int damon_sysfs_commit_input(void *data)
+ 	if (IS_ERR(param_ctx))
+ 		return PTR_ERR(param_ctx);
+ 	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
+-	if (!test_ctx)
++	if (!test_ctx) {
++		damon_destroy_ctx(param_ctx);
+ 		return -ENOMEM;
++	}
+ 	err = damon_commit_ctx(test_ctx, param_ctx);
+ 	if (err)
+ 		goto out;
 -- 
 2.47.3
 
