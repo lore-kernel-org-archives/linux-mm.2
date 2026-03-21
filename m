@@ -4,85 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3D9A109448B
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:09:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6469D109448B
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:10:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FB626B00E0; Sat, 21 Mar 2026 13:09:44 -0400 (EDT)
+	id D36036B00E1; Sat, 21 Mar 2026 13:10:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AC7F6B00E1; Sat, 21 Mar 2026 13:09:44 -0400 (EDT)
+	id CE76F6B00E3; Sat, 21 Mar 2026 13:10:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C2506B00E2; Sat, 21 Mar 2026 13:09:44 -0400 (EDT)
+	id BD5F26B00E4; Sat, 21 Mar 2026 13:10:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 037856B00E0
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:09:44 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99FB113B406
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:09:43 +0000 (UTC)
-X-FDA: 84570707046.04.4F40ABE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id ECD6B40002
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:09:41 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jh6SAUnq;
-	spf=pass (imf04.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A9B486B00E1
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:10:48 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 52F4A1DEE3
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:10:48 +0000 (UTC)
+X-FDA: 84570709776.02.15B9672
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9F02640007
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:10:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=h91VS1GF;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774112982;
+	s=arc-20220608; t=1774113046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2iJ5nZ2d9dUW7AcP3fDTFNk3xrnJ+MsaqIqJB/tfUDM=;
-	b=LlC6ZsRuGeA6CLIkWz+prcq9W2eoAKCWpboN8p9Zm1b4kzUFZ1t0hmCRx3UaeAvPrFOsHk
-	EPg01tmqoyGZ+rsZAz7kWvOlseA+II5lq3H4oae+sxGyI9brSGWlwRunq7URnEzO61SA6N
-	cOph+PuHTcGm3Ip/I/oxWWD1s79UZDM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774112982; a=rsa-sha256;
+	bh=tNYxCLn9cwzlSEQSklNxt57RWjXBe9rQ2MgNFN0t0Cw=;
+	b=xprxwOHXK7jf2yWWJF3a06OmIXJ/pTaYCoaUxMBtclJ7eh07UFkEVhBKaNrlvR2xtNCGEn
+	cX1vH8jd068ujpjYw7zU0HWNBsvCHiQlWpIZSJGlBKqJHFWwbf0tnw+Te7ZJ+7vBAoOnXI
+	equo8sjYn21vq1ZYbO5sGqvuVujyCZs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774113046; a=rsa-sha256;
 	cv=none;
-	b=okhNAT3SSxXdpvjHCeMd3DdOBm3Ovc1cSgZI+mAZZRYnsJaT7zVjnueUWCDLyRIopDpCx9
-	7IB8cuQH7HRlQNwNtOam0rxlYh0ubVapFZaQ5Z/MYWY+VUmyqfhjRZY/W9tPT8HKNCKmlg
-	YWt2ibjozakz6M3SczaGBSCTqPSiU74=
+	b=InYLErDAbGjOpPUQ0Z0CsQKYQeYami138TT3+jI5hMMtBJ/TKrO3Ej6SKJf6lbSd7C2aUc
+	+ixu8tQxA3WyJFwueNw5luqwQY0YLHpz+vMpSvx/Aqj32A8mvvQjRxuMuTvK1L657mefPa
+	fMb12YvDfNXmrepD/oOMBDnw1K8umE0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jh6SAUnq;
-	spf=pass (imf04.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 454CB60123;
-	Sat, 21 Mar 2026 17:09:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95077C2BCAF;
-	Sat, 21 Mar 2026 17:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774112981;
-	bh=mUNbMQfO4rpeYow/b0+pflkL3jP+HOd0P4GbmoKUSKg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jh6SAUnqnk0iDgHuZy2XaTJ3JIukcp1PuhJStxshRX+eZKhqYz0DA3sKQ0b3LvqF0
-	 xwadeNSh9TqkTttg/6m+P1pPGgD//p4W5JX/6pDdvdCnJP6Np5Q3CctH4iUzWYdxc/
-	 RBgi1p9txKsPgcpRz3+E/6RXcLnPjwZw00wvXQ0Y5aVsQmHvfd0dZZ1qPCoiiImV8N
-	 BDw0nxNV1fe+MJCNd7erbjuyEn4NQTBgm2Tcos0tDzSTXGYSaMbD7vyMz7YUrwxfdy
-	 FMNkOwDONIvVj9fkohZr0uHGStX3h1W9JWMBL9VQnYP/5KSjvEqJ+H7WWngpcq5Bh8
-	 ThMX5Tr7qRgrQ==
-Date: Sat, 21 Mar 2026 10:09:37 -0700
-From: Dennis Zhou <dennis@kernel.org>
-To: Joonwon Kang <joonwonkang@google.com>
-Cc: tj@kernel.org, cl@gentwo.org, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] percpu: Fix hint invariant breakage
-Message-ID: <ab7QClPFaFAWsxBh@palisades.local>
-References: <20260320115214.143933-1-joonwonkang@google.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=h91VS1GF;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774113046; x=1805649046;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DX5T+L4GVDH6JicyRR4zZ6rjUsRLp6EmYUpASxbOlsY=;
+  b=h91VS1GFt7Vpq5Bj2EmHEvbZ48EbxyiCQBsoxo1B6vdWCWCFkCkuBBGM
+   2TEqUjnGSBlDYmskiMNrmbe+XVCHgoDUwO7TRiyf/kguMyykPe7t7Hsbu
+   fv4UMacAS1P9N+GhSoRJhXH54oE6ALCqgjiwnx2H9RZbaRhoO8RZ5qY97
+   fMOlj5k7f7YfbidBkGKrHL+64P6UiE9vfafbDpKRSx4SYhdxAPqpN6Knb
+   gi1OOk743V6YhqA8B8ZHpfptHa0HSE0bc+L+SyCBaU1aC52ssmVKu61DZ
+   ksK3bhr3EQd3JKGqXEe/4jC2hQ8m6aih+LD+2oleIqD6NCG1pXqiNdx8y
+   Q==;
+X-CSE-ConnectionGUID: OJJnT9nlQja6O3+wD0CuTw==
+X-CSE-MsgGUID: cxUp2EQcT6yUByXWbg7whA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="74884872"
+X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
+   d="scan'208";a="74884872"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:10:44 -0700
+X-CSE-ConnectionGUID: TrDnITc+TiSlkKxgqvh0Ag==
+X-CSE-MsgGUID: WK5M9FYqQ0OGwVjL+TaFdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
+   d="scan'208";a="254074287"
+Received: from lkp-server02.sh.intel.com (HELO d7fefbca0d04) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 21 Mar 2026 10:10:42 -0700
+Received: from kbuild by d7fefbca0d04 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w3zqF-0000000014P-3h13;
+	Sat, 21 Mar 2026 17:10:33 +0000
+Date: Sun, 22 Mar 2026 01:09:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yury Norov <ynorov@nvidia.com>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Yury Norov <ynorov@nvidia.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH 3/3] bitmap: add test_zero_nbits()
+Message-ID: <202603220114.k5BHBav5-lkp@intel.com>
+References: <20260319004349.849281-4-ynorov@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260320115214.143933-1-joonwonkang@google.com>
+In-Reply-To: <20260319004349.849281-4-ynorov@nvidia.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9F02640007
+X-Stat-Signature: equz4tjx1mn6gs4g9k4wtp6z9e7ptnwa
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ECD6B40002
-X-Stat-Signature: fxio8km7yuey9jig6aurcpy9woc6cwhe
-X-HE-Tag: 1774112981-224845
-X-HE-Meta: U2FsdGVkX1/j6u8+Ph8jB7LLjTjSv6TscR9vXm4f/Arp9HoGKBjjKVyexyU+Xhq5TmwNwOwdj0EoRyXOVkk3g5lc3OOPsHq9LOEpkd69OZdzHtEhgb2YiRuHhNOM/QEtCHCZ9prOMe6VFPkX1V6QAqGcXv/VrM4rKcV9Hq4+az9NA0IhR1hHB+njhWkMglhe1Ya6Ex4DwxdoYPALquvBqSvTHz9gXisX5xf55/JFPTIMxVRho9VqJH3PVDsNgzfH79CTnnMG3LBSiL4a8+5zMPLomAxkrUAeGqw8IxhU3j7+xU83CpjWSO6aK/5YnejyqHINlgGNKzchDQkGki9Qd/SrV/urpwsWPI/rJoAM0ft+nGb6gGa9SHAcvJvcWLiQ3qrwMN3B2M4AHEs2tVRM/4SXKbSBDUzMCoxbzT8ItEeYLxB8oI1j5XSsWDuRx5MNIFyTOaho3mCzAdRJgg009x2xkcbSBP/lIT9s6ase3jWkh02RUjt7n17KFy0My+OUIqgYy7uye80WmcCnn7B1S+lrPbRlYrZBBsgDL7KGxam5ZhhC9979PjOY6smejORwcR+8lHLQfcz1hSOsHAVkECNFzYYkKJ6CCsrSiVrJcUhmKoTMTecGHQf8PSSvtydoNky2M4iulddkuIfCbKhAbDnbIEfJn5ChJfXnbT2sJgksJQuhpZqUe21neyWde1OGI4jnTPEs5uxnDHW28QVmUcJlBvONqYPxxCwX4TOm7ZyQSI+EnST+vlLILCSqtQT2eT8KyyRXu+3yZr9JRwmSbwL6NWaZSvL0rpBBJhc1CDErsnnBj4HxYcti8TKQ/R/jbaQA++/DM7Riud+wWjOZ5zfY2P77edkg1McVLG9i6X/b4lzSUiH8aQH6tOFQNx1y64UryfRDok7UMHW+ke71yk2TNCLvkvl9JRKanBoxUuIFxwe+iI07Du4Am2GO634DuJl1J97TbyzbYB51Stx
- ecntTK5G
- b+Talej7umksQJiesqn4Ezt1xtexLDLGwB7zqMraCoiZjq5GUgpbvbk3+Tazyu1I+sq9P6OIXsI9nlrBSuxtXTlN2ygOifAMMVCVc+OGs/3mWo0kQWk2ueIKRHqc1pHcvjS7xuto5rAe8EcdPssuc3GOkHHub21wfAUmF/r0nyqmULCqqz7aPDOdgTPJaZhoUcADHhLTTuJCdNT8vF8btfuqShTJTrnc5VxIHu/YGcAJZmR4=
+X-HE-Tag: 1774113045-468388
+X-HE-Meta: U2FsdGVkX19//oWbQ4Qq1qASDEss6grAUcjW0BZv42qxnwrZeOejytB6XKbeXEtLLhdUEswFL8wSh8vRlILBwAcFbzUz//axD8a3qXNV+XrkpNHKSAfebVYWplEQDpeXzFuQTYOlupzb0wI/fifKA0Ni/38UWdq3ChjQTiCwO9JqthANa3riHZklmsbObdf66+BqGqBPDWzDIFAkrC9Oc8zSdnAjL1I96oIgq+lt/gIEUmOf597SFcD4e8fd+BoKrWL3TTTSxWKXdQEBn+bsNDZsncxLuYxTBf6Sm39k6xtJsLG1J7C+WfnG02LkyU/n4iYOqACNvxZugDodGY8s6qNtB0ilzFwYSUMj5T5b2rOFCIPalvdUiHqagoNUvpjFFAqTUJgEi4/iYZWpCn2I3uPshLQbAAGygZdhxjZhfHjFri3Zhz+E64mNAPzwznwFN6Dsf+Le737NF45oQPlN+ZMcq7hBizL7hmg6T1iTffDrRIx3aSx/hPpJYz74hNttwL/qx/m7yCRIV4Z7w+CfoSGTF2kXI5Y/icPK24EtYq5tMoStZ64mX6749y9HFajIugbqcKz1Smd6lPo3g9Wa/TMOTwUlG/83TYrCF4uiMCueDl5rESuAxgFi7hHCcaJkuUDgPYDY7Ao/5bLWB1yDx4+kFQM9XbunT7fWfqk3C6bgaKR52JNT48Y9oPKRBV8Smp+76sp4ikOU1+pT4776BnINLAXcSouzmzYfxR7Qk02Au9YaagmCV76bJdTprxNY8hYN8Z5Pmq7Rdu6RX7JWSinTsz3mKFNLoNJVGpU/nDL0ax6LtYCiw96jAQxWq9X652/CrqWsmcuii4XhPPzGNxq5OCLANeQ8dAaUcdxpf4FSIEe5nuYJo6+gHCTbCDhiJmqIi4BrP8CAQocr0KR8fa2dcMEU2OncuVPOaY5IKiCchUJ2dYtecKCjj/oJEJuOzt6ii5C+PqBDeqggq33
+ eeAkjcvP
+ LK2ILDqG+HQTkTz9FWdrd4FcKEvRsgV9R5P4TCvBtyjmuctWV4zxWg1ocA0fJbQyVqkvaYj8HcEsJk7rp7l1/39e1eNELeVoxADtXG12IEuk+1LG6NqaUsy2leQ35zQ8nrO8lE0KT4URAncNPAWMKmiTo+vLpdyNAsQ+MT4RQkMBRIQxNfkKi3u1Yo5TmSTsqSsukM9N8gxe/jcljczmMCSrJFePn2lXgQ0Yb67b075Jz0ZybJ75DPphcWubmVIZ6Cualj5hOD9HSxNw7XTei9Obd9qLEf2U4/0TvDWDA/5+LzOO19nnyNhLXXSVjGmyG68m8pQRoL7tmmYj2IchW54PJJ2VBo/8jOeY7YABxNQM7SVw47Z1Ds8rTF118sIz1U+ScThqOP/NPgtKYV9kcZsBUOt7znX1zsjvNTCOxrz/ixe8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,172 +108,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi Yury,
 
-On Fri, Mar 20, 2026 at 11:52:14AM +0000, Joonwon Kang wrote:
-> The invariant "scan_hint_start > contig_hint_start if and only if
-> scan_hint == contig_hint" should be kept for hint management. However,
-> it could be broken in some cases:
-> 
+kernel test robot noticed the following build errors:
 
-First I'd just like to apologize. I spent an hour yesterday trying to
-remember why the invariant exists and the reality is this code is more
-clever than it needs to be.
+[auto build test ERROR on next-20260318]
+[cannot apply to akpm-mm/mm-nonmm-unstable v7.0-rc4 v7.0-rc3 v7.0-rc2 linus/master v7.0-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-As Andrew asked, how did you come across this? It's pretty obscure so
-thank you for taking the time to look at it.
+url:    https://github.com/intel-lab-lkp/linux/commits/Yury-Norov/bitmap-test-bitmap_weight-for-more/20260319-221930
+base:   next-20260318
+patch link:    https://lore.kernel.org/r/20260319004349.849281-4-ynorov%40nvidia.com
+patch subject: [PATCH 3/3] bitmap: add test_zero_nbits()
+config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260322/202603220114.k5BHBav5-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260322/202603220114.k5BHBav5-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603220114.k5BHBav5-lkp@intel.com/
 
->   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
->     scan_hint_start < new contig start) && the new contig is to become a
->     new contig_hint due to its better alignment, then scan_hint should
->     be invalidated instead of keeping it.
-> 
->   - if (new contig == contig_hint > scan_hint) && (start <
->     contig_hint_start) && the new contig is not to become a new
->     contig_hint, then scan_hint should be invalidated instead of being
->     updated to the new contig.
-> 
-> This commit fixes this invariant breakage and also optimizes scan_hint
-> by keeping it or updating it when acceptable:
-> 
->   - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
->     contig start < contig_hint_start), then keep scan_hint instead of
->     invalidating it.
-> 
->   - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
->     new contig start < scan_hint_start), then update scan_hint to the
->     old contig_hint instead of invalidating it.
-> 
->   - if (new contig == contig_hint > scan_hint) && (new contig start <
->     contig_hint_start) && the new contig is to become a new contig_hint
->     due to its better alignment, then update scan_hint to the old
->     contig_hint instead of invalidating or keeping it.
-> 
-> Signed-off-by: Joonwon Kang <joonwonkang@google.com>
-> ---
->  mm/percpu.c | 60 ++++++++++++++++++++++++++++++++++-------------------
->  1 file changed, 39 insertions(+), 21 deletions(-)
-> 
-> diff --git a/mm/percpu.c b/mm/percpu.c
-> index 81462ce5866e..a0e4f8acb7c2 100644
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -641,19 +641,13 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  	if (contig > block->contig_hint) {
->  		/* promote the old contig_hint to be the new scan_hint */
->  		if (start > block->contig_hint_start) {
-> -			if (block->contig_hint > block->scan_hint) {
-> +			if (block->contig_hint > block->scan_hint ||
-> +			    start < block->scan_hint_start) {
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-I think this should be <=.
-Given hints as [hint_start, size].
+>> ERROR: modpost: "__bitmap_or_equal" [lib/test_bitmap.ko] undefined!
+ERROR: modpost: "__bitmap_weighted_or" [lib/test_bitmap.ko] undefined!
 
-contig_hint = [64, 64]
-scan_hint = [160, 64]
-
-Free [224, 32].
-
-Without <=, we don't promote the contig_hint and leave the stale
-scan_hint.
-
->  				block->scan_hint_start =
->  					block->contig_hint_start;
->  				block->scan_hint = block->contig_hint;
-> -			} else if (start < block->scan_hint_start) {
-> -				/*
-> -				 * The old contig_hint == scan_hint.  But, the
-> -				 * new contig is larger so hold the invariant
-> -				 * scan_hint_start < contig_hint_start.
-> -				 */
-> -				block->scan_hint = 0;
->  			}
-> -		} else {
-> +		} else if (start < block->scan_hint_start) {
-
-I think this too should be <=.
-
-scan_hint = [16, 8]
-contig_hint = [32, 96]
-
-free [24, 8]
-
-scan_hint stays [16, 8] instead of being cleared.
-
-
->  			block->scan_hint = 0;
->  		}
->  		block->contig_hint_start = start;
-> @@ -662,20 +656,44 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  		if (block->contig_hint_start &&
->  		    (!start ||
->  		     __ffs(start) > __ffs(block->contig_hint_start))) {
-> +			if (block->contig_hint > block->scan_hint) {
-> +				if (start < block->contig_hint_start) {
-> +					block->scan_hint = block->contig_hint;
-> +					block->scan_hint_start = block->contig_hint_start;
-> +				}
-> +			} else if (start > block->scan_hint_start) {
-> +				/*
-> +				 * old contig_hint == old scan_hint == contig.
-> +				 * But, the new contig is farther than the old
-> +				 * scan_hint so hold the invariant
-> +				 * scan_hint_start > contig_hint_start iff
-> +				 * scan_hint == contig_hint.
-> +				 */
-> +				block->scan_hint = 0;
-> +			}
-> +
->  			/* start has a better alignment so use it */
->  			block->contig_hint_start = start;
-> -			if (start < block->scan_hint_start &&
-> -			    block->contig_hint > block->scan_hint)
-> -				block->scan_hint = 0;
-> -		} else if (start > block->scan_hint_start ||
-> -			   block->contig_hint > block->scan_hint) {
-> -			/*
-> -			 * Knowing contig == contig_hint, update the scan_hint
-> -			 * if it is farther than or larger than the current
-> -			 * scan_hint.
-> -			 */
-> -			block->scan_hint_start = start;
-> -			block->scan_hint = contig;
-> +		} else {
-> +			if (block->contig_hint > block->scan_hint) {
-> +				if (start < block->contig_hint_start) {
-> +					/*
-> +					 * old scan_hint < contig == old
-> +					 * contig_hint. But, the new contig is
-> +					 * before the old contig_hint so hold
-> +					 * the invariant
-> +					 * scan_hint_start > contig_hint_start
-> +					 * iff scan_hint == contig_hint.
-> +					 */
-> +					block->scan_hint = 0;
-> +				} else {
-> +					block->scan_hint_start = start;
-> +					block->scan_hint = contig;
-> +				}
-> +			} else if (start > block->scan_hint_start) {
-> +				block->scan_hint_start = start;
-> +				block->scan_hint = contig;
-> +			}
->  		}
->  	} else {
->  		/*
-> -- 
-> 2.53.0.1018.g2bb0e51243-goog
-> 
-
-Ultimately as I re-read this code, it might be nice to rewrite it so
-that scan_hint can be kept separately. The code is a little too clever
-with trying to avoid stating new_region overlaps scan_hint or
-contig_hint.
-
-I recently started shimming out the bitmap code in userspace so
-hopefully I can test it for performance / correctness more rigorously.
-
-Thanks,
-Dennis
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
