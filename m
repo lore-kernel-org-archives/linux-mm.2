@@ -4,89 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAD5E1094497
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 20:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77594109448F
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 20:26:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FD246B0130; Sat, 21 Mar 2026 16:13:00 -0400 (EDT)
+	id A18266B0134; Sat, 21 Mar 2026 16:26:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AD2A6B0131; Sat, 21 Mar 2026 16:13:00 -0400 (EDT)
+	id 9C8AF6B0135; Sat, 21 Mar 2026 16:26:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EB176B0132; Sat, 21 Mar 2026 16:13:00 -0400 (EDT)
+	id 8B71B6B0136; Sat, 21 Mar 2026 16:26:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F2906B0130
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 16:13:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9CC071DEF5
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:12:59 +0000 (UTC)
-X-FDA: 84571168878.09.EC9C289
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 04F1218000D
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:12:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=knZjaQ3z;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 76FD16B0134
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 16:26:49 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2A15BB970C
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:26:49 +0000 (UTC)
+X-FDA: 84571203738.18.AD70D60
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5E406120002
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:26:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Vf5alblV;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774123978;
+	s=arc-20220608; t=1774124807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2DEOO+RaL97frzuFdW5SeURXmSnZ6aYvVQg4g0VzQ0A=;
-	b=a3U4+GDCC5wD0EFXxeUFAcokH5ZcXkSipzfmr7j6bUncxmeMhKcbaykG1484kDdOaSZ0fB
-	Hht5zEV5eJDgHHO6oZGgOsj4K57Zbad85BoJDH2vhkiN4Zpj0SbIsPgryXI6602qoA77Fm
-	ap/IHnFUWhb5lSkKkJXKtWBEddo2f+w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774123978; a=rsa-sha256;
-	cv=none;
-	b=a3eN6oRMQ7z0KYCcBivuwQOAZXvU/aALI2eixD7lFxVhxtsudkv1tWidEnnjnD7GdBOsUL
-	Db+Sl8bKftxPh3vA+2MwZstNHYMu6f2bUCsqBlKj0ffX2rDHlAUpuJvkxT/N4aE+2o90Rs
-	nh57Yh4DSKrzHdNddVdrgL8bvAZT7FQ=
+	bh=0tEq3kR663AZN+wJIQdRtj/jb9LMYPMsRdvJZPaBgUg=;
+	b=dNYRt0QsygpfcqpGlPivrP61Ce7JEhh8XiM5A078rooDQ6DjA/aisSZBnFgulOphPvhaNj
+	WDHppXhq8KUDQVSp5aUOm9fqwgRuyzSb5OgjBGM+mVSbmjZvxWYbyCUKn4B3g3hF88oxDl
+	gns2m2JlU3ugcNG2XCqBe+vnEs3e6eA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=knZjaQ3z;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6854360097;
-	Sat, 21 Mar 2026 20:12:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBEDC2BC87;
-	Sat, 21 Mar 2026 20:12:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774123977;
-	bh=NVQdlnexlbZWj9Y/C0skFJH7Ccw+Ra+VVoACTnCMddQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knZjaQ3zOODa5K1OITF/rxTrNYzbiCsy8bdjTRLa6mdR/l6IFvAVqmFEmMAWq0vGL
-	 bHhambtDAnhviLc69ZuvBvfkN2uAVxG1r1q+4/lo0u1TfVXdfGdoYOIK/eDrnVmbnD
-	 ig8jZe/mc9MU7fBthDQcvS+Ap1sl55IMADcONTLs81T9dKO1pR+/xB+Gvqt5++woYx
-	 lYOxhdEwGVkClJBUdMB9OQuBwMMoN9BMq+ANv5rBVZ3+KtyFAqYZNivPi8lWkq84oB
-	 U2TtpE4rNyMZp4h0lCZBG78chgevEuy7m4Q8QhTI8zQAaq/Ct5SBWWOJNIQmWvTSKr
-	 RAD3uQ09EIMmw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko) [PATCH 10/10] selftets/damon/sysfs.py: pause DAMON before dumping status
-Date: Sat, 21 Mar 2026 13:12:49 -0700
-Message-ID: <20260321201250.95873-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260321181343.93971-11-sj@kernel.org>
-References: 
+	imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Vf5alblV;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774124807; a=rsa-sha256;
+	cv=none;
+	b=Pktg9vX5OIqTwgEE917CVAcwIWfWCTOYsNH45MZcIjK7+Q91drimRBGHzrYkLEsFScGo9J
+	X2tLD9m7CU/g7ycHC5wxJ0/u+/qVeE+BgM3OWAKt7cbBGz8lGfDzeONVbyoqX6NThZ+tCK
+	8rbGBRQAi3j0CNm8A/f1KLlJIKpZLt4=
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8cb4136d865so212732885a.1
+        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:26:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1774124806; x=1774729606; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0tEq3kR663AZN+wJIQdRtj/jb9LMYPMsRdvJZPaBgUg=;
+        b=Vf5alblV7RZVoFavpvArCd6Mxylnvy6rv7eh9Cl93wzF3UR7nZLnq6/hZet3/hQCID
+         2I6JDimyeP1iCZqHpeHyga6us8EeczdvkbPTj6nDZxr93zjuYNpTnkGEgExvj8R1QiDI
+         st2FSen5R/i9AxM/zPts0HnZkHT4WYJDMaVbBCHmcxzMuMQyiSZZHT054jhNVJN/0R5T
+         NC34hrgA2p4jvXewzpYAySqObW+PJQ/huB++CdrVe+EPX+I8fhnbrOM6xS/nEZMGNtpi
+         d/+ImeQHF/w8TB4i+JEwb63TX3lKKe40/22namWwlj9sRsOklDBgyo5yC+cUr34VZSmy
+         9yHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774124806; x=1774729606;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0tEq3kR663AZN+wJIQdRtj/jb9LMYPMsRdvJZPaBgUg=;
+        b=QRE+VEwxtqzeFCmBpV8UCGijGZlAx+SExMiiQ8EMScF1DxtbrqZTeU/1cItd5ODJnJ
+         ZVW+mxDl4YhKfp5VTnsv9ILZyg8QFkuQzifJ77ngRHc74Gdh13+XSkPumYvbqY7Tn0ux
+         KVwLKVqYSDcrb3KBhdtkbe/GEZO0NzGW0MFf215pEsmXB1O17JuJNG24xYDKDiCHP+dy
+         7UkCaCeVLuWvYDMyUqkNwvEXfEJgY5PLj9GAcHgwkK+LcxH133pExZREaFEZ+l+SVg+j
+         h+JHbX6BMevVOXulBLD9qbTCmTlNU/DG3ewyXyIjA4arJ7e1h8dgWCjFgpLtQpQbM7jM
+         LBBA==
+X-Gm-Message-State: AOJu0YwvGGn69w6eHHeLBcNJGQddzdbGRrd25bvEObXvQyIyYa6Gt+aC
+	NCaYSDwmPDCCbTBJsEyPbTJeeNLg+QLr+mvSDZ4Q72qy6cRY5zHS0dv+WpV/5KVPgn0=
+X-Gm-Gg: ATEYQzzjpvptRODrApubGCn57aOr+uERWtZRlFl/EVluvNFpWjwZT0WWUPImVTMYclE
+	3//n/DBYaaEUqKg0dpsZCp7/PzQnVkuPHQCWC4ouEmi4UFA2nU2AqHuPOTW46Zk7zmpXVP+LFiD
+	wLoYbzumzJqO8Xi7XzQPdcVTn4ZFu925Eh69l47kEvg0RcStNuIOOl1UQ2Xu+R51YvBUoAb8ufk
+	heFlLHph7rAUupYGdpqiquR6RarmCiDpXtgwrOk4w8Bd/q1atPKuulwzLWyAaPSN+de7VP3FFm+
+	yW8eNL3kIc7+8bdzf0Mh+Gp9WOPhYZBma18j66jZsoDu23gmdPrRQiYfAOCm35h+TOM2TZ2jHKo
+	UtBB+JaWUEwlKNNaLxuH24qn48kW7M+29cfTqJ+bQf1qVBqq/9GiLJ698vfVoDiCGg1DQCGddEh
+	WA4K8aUFSlw9ofSDnJa8ICHPvU21UgOMJDzLWNjlfoxjFLApSa1XlaGC0l9lu9Grwd64bMakKFv
+	BcxFlfwJQ==
+X-Received: by 2002:a05:620a:4010:b0:8cf:e19e:b4ce with SMTP id af79cd13be357-8cfe19eb50emr74563885a.71.1774124806341;
+        Sat, 21 Mar 2026 13:26:46 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cfc9089bebsm467118485a.27.2026.03.21.13.26.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Mar 2026 13:26:44 -0700 (PDT)
+Date: Sat, 21 Mar 2026 16:26:41 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
+	david@kernel.org, osalvador@suse.de, dan.j.williams@intel.com,
+	ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 0/8] dax/kmem: atomic whole-device hotplug via sysfs
+Message-ID: <ab7_AVLgzLaDRcv5@gourry-fedora-PF4VCD3F>
+References: <20260321150404.3288786-1-gourry@gourry.net>
+ <20260321104021.4a6074330131a2058e8706bd@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260321104021.4a6074330131a2058e8706bd@linux-foundation.org>
+X-Rspamd-Queue-Id: 5E406120002
+X-Stat-Signature: 3df4t3i9x19ta4wqcw6rxg3egt1bwbbz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 04F1218000D
-X-Stat-Signature: ssxqdb6so4f5yjck316tpa5rbgc8x413
-X-HE-Tag: 1774123977-967241
-X-HE-Meta: U2FsdGVkX192x2yBwwGm/2SMQ7PTog5oVQIp7k9wuHida/1p0/Obe696ECWb68mL0SPO17BvvXaZkdBu7Qm1X3Bu+F8EDeYiATQzSqk6K83zYk0go0cJd6LTR3RhmNp8+8HlTGJbTKtOiAo2/Tr7ZqkQX3CTq3mRYCYk0EsijABM/chd6QLvHi3GpbsvSb4Zj1G22ECAZ7VgaEdgLe2JQ0p3eTN9TCX0xGGNrZd4gWPpHq++w2fzxul2idCN9inffsdWVlfhI+83imgSkfBIALlOU7eXCmbBN1Iha3DPZqXHXv7onaTaj2NkSsE95xaJB6wZ2g2KI67KBLCjjAejHTekiqFJilLrzx0IfB39dKq2a+oyTk2wi35fchgWuGkC4SfaNvCv348MI2exyBdwhFm3sa/JHPdl7OYkuHQ74INq3t9w6wHwoQZqDooya485wS8OeDd+Cg4KijL85KTz+SyEMSJJTflccA7Lwgcwsf7uQFWWhIpUilf/5vQVA94f7Cfn47hJEVMrOsglM1bJtr43yME453F+MbNEXosArj3FWQcQyM12l8LyDPUgfdXd8qeghYfCrvaCpy0ShLY90WEGUEaHe4moDoUb3pkhdAwxPVSeLrUyMDBzZK7YgW694ybhGqEgS5uIfuq+E08+gJ9q8gC+Zn/u4Mjjfd7eDS80DqNpMX97Y0cQrNSljQjr+kYSPqtF2JQTI9xbIqukzV9hoYYJO3mMQQpiH3CFSz2mQiRDZAjdfObZNnPvdqY5ZZ/s7JRwKq5fLB45D0CHE/QwoN387MZKkZpMburf8wBan5x868UU/JsH8Ina49uPWmhKaCyIWp5V0bUU3YJov0t7EG1cwXB58PNY+t6ApZ64FSBgtJdO500xRGqOTIxbCZQcNREgoLNEbr9pF7omb871nrbFp6IBD3dsyGt5Drd63bHjCOKU20z2a3u+IFPytIwkaUWCQb+uePqmuq6
- NDhuWeV3
- m9dOoYjZfc0dRkOc2rLxHR++u7WZfDJ1QW+1oUtg/QzpCmkr5VDVR5eqQU5yp0t90pKWATBnrv3Ja4CQDqvbXP1VataBOQuUG8AZsau45xjpyc/6Ak5xDifhpZ6GXwVwaT5xn95EUAEIE9qYRt7TvNNDaAjkzNQPobE+5NXwNYLcpKwW6G9kpBhLF9FcTB4s7Hk/uBd9eUTD3tcVOcIseatvqY/764gFg2vPLUEt/XatjxqMIQFk6ojAdtgEq+RUq2atqC9AG0/yXOqAZBKJjv/JKrgU8gXAuH2woh88qTMFTK+IQfJnu7dfXyw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774124807-576901
+X-HE-Meta: U2FsdGVkX19IE6BeBOpGd+wmp6IvQXqP0XPmvcYXCT9ht7wvx7ijHZhhZB7hlGmqzlPmETKDxKz/VX2CFfP1ROzBg+thTie0pVg4IXTTjFIUbWS0ba0c0SBzeYtExg1nEvgx09FqacXZ95j3a/4p0j3H08GsZN5oTjD/IYt98lTKGK3cgk6h5Dt5MTVddbO4jE7GJwmqgOYJtTAnENEe70h3k+8JtktOwsuaqUITmIp9/oArDH8rMFraWmrvCZHSAwOrnHIPb0Xq1ox/c1ly/1gf77YnxsdFjo8qBNH7OPKkEIjFLAvHJknalB2OxLpCEblosdFd0MfEGH+n+Icn9HLMpVNReEIw2vivgT860NbmLnmZPsioyIMHjdf1+v/xj4uxfVvipvVlTav7jFy2qYxgMulHInhEcB/Kl5sYrtnNGxYW+S7AW6IbRfqCjYNSs8mdtoEixB4sDLpm3U5DYtA2AGQiFdv7wzpgyLgNDpDrGd1rUUlJqy+GW+maRMhl6Epb9BzPlrB4xSSPF0bxa4g1WdU7Zv1UGhOo9zWoj4wc6JX5REr/rMGnhgjnjN4GlWLHqNghwvCPpJqAuN0/iSIqy0cnhHT8tqhcxu0TQLNP+pMaCcnqNGVDu4bmzARdSZbzKDCDjYpIkSW0UIJk96xzhRq4Dd9n0QSVYYsnkMCzUlLpHDcjS2RIv4jt7HG3C8RFfk4V+0tFhHuLVwyqcolIaSso1rMJnvzpjl2NgcmqE7AG86sqknmsD5GLmLbf++TMbbky/UpoQZBiJdCKChLFopMbvErB9xkWyd6VvnweyuFCpudII5/2vPMqTD/l+/9eEHWzICf/13hxtnfy/Jmx49+Q9MleGEgKVq2pW0/lYn8C0KK05pEnpwND7l7UflqkjkvuCQeoHBIU0FHsu6jo+FdVRIWmJEj5Yb4hiaFphwETbuFZsIdvVt5Irp2m/QzkLPitpW3mcC5J+2+
+ Lb3zlhO8
+ M+pOKJnRAdgR6h+/uFr4FA0nKf0mH7uJGRE/3yJLguVfEl7RK96eON/bsvvZ7n9kRDOKBqsfwKl9y5YGfmLQIbnQ53ycUEEMtsHw2jDIoEA/xFRyKGyXIcRqi82OUpiQjqTqAc7VqWBKyTRsu+NIVSd2R6bj2z+vm3WRA5sOLEN42ui86hR7hN8NyB6nOBpE5UQK6uWDxOq9BctVrcg5QQwlWKp95Wyp5EaiaN9AyYW+5Gk224mQ8Eqh8yM2bZ137okmmB34ZBh3HlPX+oMvjBTZkxuHGYzkHxGEG4fZxwGDILs3lMP8D457sOfFGuboKCWq4HncD4Xj7yWztSn75hEj51kGbZRvm0IEB/GXOWO+KwNLYeY72sNP2ggXZzE2nJLQRjXgfBUdOYnzwbd09NnrreYlxoN1xWsngDouKZBjbSXSsyCyhHZGZpeIQ/pRwrksOytxnTEKGXOoZNMa4lZN/p9Ocp/9YAi+QMOQj61Tdj7Ej0UcngcGCRfbX65h688RKWpAyTel4bEj4KXu8CZdb2SlzbBDzE2ByI0H9rn1NZVY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,91 +121,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding Sashiko review for doing discussions via mails.
+On Sat, Mar 21, 2026 at 10:40:21AM -0700, Andrew Morton wrote:
+> On Sat, 21 Mar 2026 11:03:56 -0400 Gregory Price <gourry@gourry.net> wrote:
+> 
+> > The dax kmem driver currently onlines memory during probe using the
+> > system default policy, with no way to control or query the region state
+> > at runtime - other than by inspecting the state of individual blocks.
+> > 
+> > Offlining and removing an entire region requires operating on individual
+> > memory blocks, creating race conditions where external entities can
+> > interfere between the offline and remove steps.
+> > 
+> > The problem was discussed specifically in the LPC2025 device memory
+> > sessions - https://lpc.events/event/19/contributions/2016/ - where
+> > it was discussed how the non-atomic interface for dax hotplug is causing
+> > issues in some distributions which have competing userland controllers
+> > that interfere with each other.
+> > 
+> > This series adds a sysfs "hotplug" attribute for atomic whole-device
+> > hotplug control, along with the mm and dax plumbing to support it.
+> 
+> AI review (which hasn't completed at this time) has a lot to say:
+> 	https://sashiko.dev/#/patchset/20260321150404.3288786-1-gourry@gourry.net
 
-# review url: https://sashiko.dev/#/patchset/20260321181343.93971-11-sj@kernel.org
-# start of sashiko.dev inline review
-commit 019bf04e4448bbce4f6d092792a1b959f718f39a
-Author: SeongJae Park <sj@kernel.org>
+Looking at the results - i mucked up a UAF during the rebase that i
+didn't catch during testing.  Will clean that up.
 
-selftets/damon/sysfs.py: pause DAMON before dumping status
+I also just realized I left an extern in one of the patches that I
+thought I had removed.
 
-This isn't a bug, but there is a typo (selftets) in the subject line.
+So I owe a respin on this in more ways than one.
 
-This commit updates the DAMON sysfs selftest to pause DAMON execution
-during state dumping. This prevents potential races caused by internal
-DAMON changes, such as the addition or removal of regions, while the
-dump is ongoing.
+But on the AI review comment for non-trivial stuff
+---
 
-> diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-> --- a/tools/testing/selftests/damon/sysfs.py
-> +++ b/tools/testing/selftests/damon/sysfs.py
-> @@ -193,18 +193,53 @@ def assert_ctx_committed(ctx, dump):
->      assert_true(dump['pause'] == ctx.pause, 'pause', dump)
->  
->  def assert_ctxs_committed(kdamonds):
-> +    ctxs_paused_for_dump = []
-> +    # pause for safe state dumping
-> +    for kd in kdamonds.kdamonds:
-> +        for ctx in kd.contexts:
-> +            if ctx.pause is False:
-> +                ctx.pause = True
-> +                ctxs_paused_for_dump.append(ctx)
-> +        if len(ctxs_paused_for_dump) > 0:
-> +            err = kd.commit()
+Much of the remaining commentary is about either the pre-existing code
+race conditions, or design questions in the space of that race
+condition.
 
-Since ctxs_paused_for_dump is initialized outside the outer loop, if the
-first kdamond appends a context to this list, won't len(ctxs_paused_for_dump)
-> 0 evaluate to true for all subsequent kdamonds?
+Specifically: userland can still try to twiddle the memoryN/state bits
+while the dax device loops over non-contiguous regions.
 
-This seems like it would trigger kd.commit() on every subsequent kdamond
-even if none of its contexts were actually modified.
+I dropped this commit:
+https://lore.kernel.org/all/20260114235022.3437787-6-gourry@gourry.net/
 
-[ ... ]
+From the series, because the feedback here:
+https://lore.kernel.org/linux-mm/d1938a63-839b-44a5-a68f-34ad290fef21@kernel.org/
 
-> +    # resume contexts paused for safe state dumping
-> +    for kd in kdamonds.kdamonds:
-> +        for ctx in ctxs_paused_for_dump:
-> +            ctx.pause = False
-> +        if len(ctxs_paused_for_dump) > 0:
-> +            err = kd.commit()
+suggested that offline_and_remove_memory() would resolve the race
+condition problem - but the patch proposed actually solved two issues:
 
-Does this inner loop repeatedly modify contexts across all kdamonds on
-every outer iteration?
+1) Inconsistent hotplug state issue (user is still using the old
+   per-block offlining pattern)
 
-Because ctxs_paused_for_dump is shared across all kdamonds, this appears
-to redundantly modify and commit contexts for every kdamond instance.
-Could ctxs_paused_for_dump be scoped per-kdamond instead to avoid this?
+2) The old offline pattern calling BUG() instead of WARN() when trying
+   to unbind while things are still online.
 
-[ ... ]
+But this goes to the issue of:  If the race condition in userland has
+been around for many years, is it to be considered a feature we should
+not break - or on what time scale should we consider breaking it?
 
-> +    # restore for comparison
-> +    for ctx in ctxs_paused_for_dump:
-> +        ctx.pause = True
+I don't know the answer, David will have to weigh in on that.
 
-Since the context was forced to pause before the status dump, and the
-python object is forced to pause right here before the comparison,
-doesn't this mean the test only ever asserts that True == True?
-
-It appears this entirely skips verifying whether the originally requested
-unpaused state was successfully committed to the kernel before the dump
-procedure began. Any kernel bug where the pause parameter is stuck as
-True might silently pass this test now.
-
-Should the original state be verified by reading the specific sysfs file
-before overriding it?
-
-[ ... ]
-
-
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260321181343.93971-11-sj@kernel.org
-#
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260321181343.93971-11-sj@kernel.org
-#
-# [1] https://github.com/sjp38/hackermail
+~Gregory
 
