@@ -4,84 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD207109446F
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:48:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ECD5109446F
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D7086B00EC; Sat, 21 Mar 2026 13:48:49 -0400 (EDT)
+	id E68966B00ED; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 187FE6B00ED; Sat, 21 Mar 2026 13:48:49 -0400 (EDT)
+	id DCC5D6B00EB; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09E146B00EE; Sat, 21 Mar 2026 13:48:49 -0400 (EDT)
+	id CDB406B00EB; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ED20A6B00EC
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:48:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 630FF8BF5F
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:48:48 +0000 (UTC)
-X-FDA: 84570805536.13.F2A423F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E8577100002
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:48:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Sx6HnV4i;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C0D176B00E8
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60C7EBA3B4
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:54:38 +0000 (UTC)
+X-FDA: 84570820236.03.EB2A11E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C637A1C0003
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wn8hxWdj;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774115326;
+	s=arc-20220608; t=1774115676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/X6/ebGf8UYIFVhst4O7aixITM5ZuPLWY7tc1neX8u4=;
-	b=LGVXdobNFjtlzyz/UTOCZzMEt9McSovguOCJrRE/jUdczaDMC8IcD3YduFEO6tv+Ff+o//
-	SEj9kSH157rtRJ8yqnedE+vGE0fBL0dcHKQsfNSC6gri1h26zCt5EFaAD84jjV6ayPdt/l
-	c9HLuT24sYXnxw4l6EB+yovsSda7wSw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CLeZPhiJ8ygtluFXU42mvqc/iX77PFsduRfgHayTOjE=;
+	b=xeNQEfIQoLkE7WVE82VB3MMYT43mNbMoPWX0f6QJQuneL+Y6FswRfXvcuzhi1lAvSzcina
+	XEVzePmn9um7tHAUutiJjHCUSMIYtjhiFT76/VOP/D8Fvf4lr5Mg2VoxFf4KNBIOaSyMMx
+	NPd93vQHHYm2lqrgq4osEaUcXZyabt8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Sx6HnV4i;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774115326; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wn8hxWdj;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774115676; a=rsa-sha256;
 	cv=none;
-	b=sQRlD/PctIJvIEeykE2ctLbTQrWLIE9I1/vPM5k9EiaT0XazXRdpfc/on/Aub/VQYKRMK2
-	9/yeBqXwjBlg9GNciYGsEvafi+IYdaEJY9uP//fHhNw+ohNKUce2oAEuLTpqEf3mYSi0Ts
-	5pmVQmkFe1EUlLovk1i55Dat4Akx26I=
+	b=YSBQ0hhabvAuIFCok0tthJ652eZECsAjKfFt2AA5kc+JDplbjEgk+XyQOG9Mk8aS3GHyXn
+	+La3Iixi4zS8ScDZf89ZiXgA2j7AqeH8UrCEHWymneIbd7XcRTIpHKB7jt6VL25LGOxjkP
+	8/8umefJat+kopgjYiVHVjDi8f/Y8j8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D42760097;
-	Sat, 21 Mar 2026 17:48:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D067BC19421;
-	Sat, 21 Mar 2026 17:48:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774115326;
-	bh=Qn4P7Wc4x9kE+8cjSdoyrRePaM836rZYOOkl0UskwA8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Sx6HnV4ikhL/5tAaZfzi6fJisvDZEYEM5Rrzj6ruCxcBze/Pc+Wi4CFBK+cBCy3Dk
-	 /Vamp1P92kLM0RtY0+xRv4W7fZpWQ7bpQwG433W1oIykfKFVeBjAxnoQx3guPYIzI8
-	 0OC910ouGJjPsbhuSVs39aStHV3ESa1nNtykqlaA=
-Date: Sat, 21 Mar 2026 10:48:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Shigeru Yoshida <syoshida@redhat.com>
-Cc: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky
- <senozhatsky@chromium.org>, Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
-Message-Id: <20260321104845.452d0f903a52d45d3b76894e@linux-foundation.org>
-In-Reply-To: <20260321132912.93434-1-syoshida@redhat.com>
-References: <20260321132912.93434-1-syoshida@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id B924C4051F;
+	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F0EC2BCAF;
+	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774115675;
+	bh=YoReG2ITY2y0HZje9C+bQfiynbTvb6Sk5IqZjXN4jgA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Wn8hxWdjY8nwvWguSRylu6QdUeIm950qxeCvN+XJLKNCFiGT1rvu2S3BS5RXw2cxt
+	 Esz/AQ9kDq9aoqZS2gvlm/exy7gvh/sPZQYJmZLwErh98XF2l1RsLHDkI0Am6AeDtV
+	 JF79+nbLaPdKFb+mn1AH21nzU/DA/fPW4L0XALHGz/6vJxNMRkCE7RaNZ6tyS1CxOY
+	 fe4GrcRbccmK+BX5mC2TDQiN1yAcXHtY6AtKZM7AOe6ofrFZl07nsuJrlM4M2fc/Nt
+	 pX3SCOAdu21ChF8POhoezaza/gcja1Matw0PGMPkd0Ez9SaxagAGL0AlFW4Ar+RSOk
+	 cUCw7yXoHy9bw==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 18 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/3] mm/damon/sysfs: fix memory leak and NULL dereference issues
+Date: Sat, 21 Mar 2026 10:54:23 -0700
+Message-ID: <20260321175427.86000-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C637A1C0003
+X-Stat-Signature: cssurfszzjeebcqirqpy3c5s89s61xu8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E8577100002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 1pidj4bgaz578jip3159xnc1uqixbfww
-X-HE-Tag: 1774115326-93938
-X-HE-Meta: U2FsdGVkX197OJaX/tWwWNNScWtjwMyCpfuJW+srfzpykd4Ude1nO/SRfIbSSn7XA0b8Pu1bwWyBOGiSnXSikmWK8HXTdV6EdSPbCdJ7Iee6CXmYOqHGCnhqNNlkiTbwq7H0g/4oX9Ouvpr3JesFQW7X9uR8hM+kFP1lzUgfgDN3OIV3i48Yt0bN+NfxKVAZE9O7bolNuXN0YeBHJZjnn1vpEPDtVCQa6waW4CtAUG1HKa4O8bz2/0h7bch8NI2S7joaKoVys1a1H0g/GV38o0nVPf5RFoVxe+PieaKNhb8XJhKPuHkmy02OpGk4y+DX3Z+DbWVaa/+LM/xMCbW+pKKG2pvrju45Uu+ZqsjaJMZMS8xwlk7lfxTM+rDJKXNAgFfrhdkq0jvKi9Ym1QhbwyLr07MJecq/mHg3kRlqysbAiq/sAC56yEkQwckHl/u3fsZ0wXlY1mY0J2QlOCfUK7a00a2CrUbbtMOry4cJPkBPGeQpWLGrq31l00LU+uFJqbS7h8w7E86qKmVcKqoX9EpcfVjIPlmopvkPnOJmxW4VX2d0jHuJ/uGhVbqdRxSS1boYJ8sANTZ+UhvdR0yJDFP8FYUHVMtHIlVEvq/vRTG0skNnQXX7T/E9yqhCTEl7TQ0UkeJVYZ87mObn7Iuq5VDR8NBUQ5iFNcA5LtyWIbjMz3UOI0wAmASVoChrsyCF/bva9cXfpiEOsz2bkaH/iX5f+rHAHqslhxzGCxT8FOl/+nSy9rOI0GeAEHdM2ue/PeCUC5+F3ea92d/xvTJh1CmLURMvViMZsWnsdVkp1lKaG142JoXdfmnAZmQPG5N6Y94gWfGOwX35ucPAWpnaXCASNoR4mwWxRrk5vwdIw/DRfHK1O7+mUU/8FofxkLh7W/8bOOiu5CnROFEvlb2aUvV6s7CW4QDqbzhOHZ39TqPhrW9Rx4NDHgm6Nfj2tuSCvwn2W8dNBtlUwmKWNtG
- xqg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774115676-135309
+X-HE-Meta: U2FsdGVkX19oNHfL3J00uL60PatOtAgGkPypR6Q02jf4pSGortIi1Iszefwkq9RpDj6DWvRaqQaWhRiIIo/bU+scjsim5DDGOPzG9+huIXD2YlPgqqxReqByUIKd8nQl7pLAH1FKucya0et75INeEwm1rcc6j4gtAYGXvbMFK+lrK578Yzru7+5/8gLR4CCM3tgpR43BP7ynPUjGW/3n70//oA1WvhgNRTPzeYMk4PRNhn4YHKPAJsrpJeBnyU6LnUS4uKGvtHBqDz0cvst/sVfAPd6eWZGMHzdp36zRNtRjHCHM94ZHwQpcw+RiYgiJzsqtHzqh8BGjzKrUg+D7f6ThJQkfIdXFG3+nFlqsl/3b1xo13s0WuAwYC8b7leRgbBPDS4YhUOFPuHnlWaR2RyvW0Xp53bEdBYvJvIYtXcJAO5SCh5gZ6EN1nxyQDg5fC1mZP7Hq6GZiE820U9aPoMmZet1ok882OR84WmFgZVaniiyXNnnn8CEV1kq+jU/kROKnSJ4+/22kRQif67dhJCEmhBqsfrzxRyvjuYTGrMel2p71u39uKJ4sEoeJWvNdoI9StAcJPwCbPVump1K0qy54+2XAPveXJ9dQXSmCVFFF26DtJJjNHR7LVTw3BVu6BNyUgVPhOqEvQ6tdx4b6pzRSjufNFxw6gJaEq0oPiUnWg9IRwKb+yBsCpSSR6KQvHaIgn+QRqDrl33wvpTuiP535JhmO838ePaRst9u9N4I6zArZp5ChmOmgeiLFwZfsi+/sv8T5YEtnz4w4ffyXHW4T+qqVc/X3gPQ85Y4rS/sEqwe3QGhZlUXdW8+GEf4k/VLYi7/ie14kpyILhKmIQJxalMcHs3romY3m7XKx0H0lF8RLwv9/tdbcV8LAoSAm2li6jXofuQ4IpLqTRxSoB86UYAfoW42+GVtJk/BAALvZyRkEwOLmhsWRALIPm1i4zJGotKj2jgrt2aIfIbc
+ UbU+OziS
+ LsF8hx20Yel1X8CbbDiaI17rQgJGAcqaEq43y9ddGJnVEP+hW75D2vL6KFdHgJ4ggYsiW9ZA0zmLlwg2ie26uqm/rA0XanqvKje6R+rLjK+8cmKbzKHtIxAfIlhv9l3fzdratbUL869NmuPi4d5+cpU0Mg0+CyJeaFKfcuOKSSRWwD5I2v6g+zyKyB9P/2dcX6x9TWp7pS7C/zQzgsdw0dYBLWqoXpF7VMqJKuTBexkvT76UN332hqX1op4SmwRyeayOzspMPy3jjSfZPLQzvGwmp8MaEO5+YdeCC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,38 +91,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 21 Mar 2026 22:29:11 +0900 Shigeru Yoshida <syoshida@redhat.com> wrote:
+DAMON_SYSFS can leak memory under allocation failure, and do NULL
+pointer dereference when a privileged user make wrong sequences of
+control.  Fix those.
 
-> zs_page_migrate() uses copy_page() to copy the contents of a zspage
-> page during migration. However, copy_page() is not instrumented by
-> KMSAN, so the shadow and origin metadata of the destination page are
-> not updated.
-> 
-> As a result, subsequent accesses to the migrated page are reported
-> as use-after-free by KMSAN, despite the data being correctly copied.
-> 
-> Add a kmsan_copy_page_meta() call after copy_page() to propagate the
-> KMSAN metadata to the new page, matching what copy_highpage() does
-> internally.
-> 
-> Fixes: afb2d666d025 ("zsmalloc: use copy_page for full page copy")
+Changes from v2
+(https://lore.kernel.org/20260320163559.178101-1-objecting@objecting.org)
+- Wordsmith second patch commit message.
+- Add NULL dereference trigger steps on the commit messages.
+- Collect the valid Reviewed-by: from SJ for the second patch.
+- Rebased to latest mm-new.
+Changes from v1
+(https://lore.kernel.org/20260319155742.186627-1-objecting@objecting.org)
+- Check kdamond->contexts->nr from damon_sysfs_handle_cmd()
+- Collect Reviewed-by: from SJ for the first and the third patch.
 
-That's three years old.  Can anyone suggest why this has only now been
-discovered?
+Josh Law (3):
+  mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx()
+    failure
+  mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
+  mm/damon/sysfs: check contexts->nr in repeat_call_fn
 
->
-> ...
->
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -1741,6 +1741,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
->  	 */
->  	d_addr = kmap_local_zpdesc(newzpdesc);
->  	copy_page(d_addr, s_addr);
-> +	kmsan_copy_page_meta(zpdesc_page(newzpdesc), zpdesc_page(zpdesc));
->  	kunmap_local(d_addr);
->  
->  	for (addr = s_addr + offset; addr < s_addr + PAGE_SIZE;
+ mm/damon/sysfs.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-I assume we'll want a cc:stable on this.
+
+base-commit: 42bc5b563370622d688719aa248a4c861839373a
+-- 
+2.47.3
 
