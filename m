@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0CB5109446F
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 18:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 190F91094489
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 20:04:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38FF96B00A1; Sat, 21 Mar 2026 14:22:33 -0400 (EDT)
+	id D9ED36B0099; Sat, 21 Mar 2026 16:04:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 340B86B00AA; Sat, 21 Mar 2026 14:22:33 -0400 (EDT)
+	id D4F806B00DB; Sat, 21 Mar 2026 16:04:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 256AB6B00DC; Sat, 21 Mar 2026 14:22:33 -0400 (EDT)
+	id C3E876B00DD; Sat, 21 Mar 2026 16:04:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 142B56B00A1
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:22:33 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6959160583
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 18:22:32 +0000 (UTC)
-X-FDA: 84570890544.09.E3CE25A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ADDB26B0099
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 16:04:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12066C2034
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:04:34 +0000 (UTC)
+X-FDA: 84571147668.03.87E9DEA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 128B4120004
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 18:22:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZHnQ6lEE;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8B5222000A
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:04:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ql64Gy3n;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774117351;
+	s=arc-20220608; t=1774123472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=23OhZHGj6Deu2MGI1EFNHumx0nfYyAwlH/b8AJbbPp0=;
-	b=3FCbbvcAlGePL+CVDK5sE5AXrbuhkNq+KMBIpX/LIWb31QIhdK2ex6a9iKtuVGnIwWJGDD
-	hwoGZgh/zQ/1x69D5B30Wsx511I0r4GXAEjglwtnYkVDMvRXd1KVvZOUDgQeCZE+X7Y/Eb
-	tCRC4Rm1moM9Y4lD3GJzbEfsrIVu33Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774117351; a=rsa-sha256;
-	cv=none;
-	b=8CrBcAsbeHyiF4EhNblKpohSrZezNWR5i2O50kSBjjOXmxjWAAjFcqEKed+qM+7TSJ+jj5
-	FQDdXV/ZMj1aQpK+HIth2tIe9GB8NPD3Y5owRkgtNxOIlTUXv6XaYbpWbdLK7+ns6iyv4g
-	3JtB/UkC0ftKMWnV4jvaOZFBuHxvgPY=
+	bh=m1v4eb3/sKiatYCTeGIfEDK8lDZ5jAxx44X2YZ/Gcl0=;
+	b=yb99bEJruT1S+36y60KGnJwVhBvfWyzic/NpQCnEYtsoEQZh45IJtt/FwAhfDv70TIt9mh
+	CDhuyXx2yE2j7t6YnmPfxofkTVEjjMhUdDKXDynRDqaveOXSCImZ1aWyxYLVsgZkw+3rwl
+	6GqJpaYwXLsjSh6cSmGI01zvTIOsauQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZHnQ6lEE;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ql64Gy3n;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774123472; a=rsa-sha256;
+	cv=none;
+	b=FRZHTMee4XsayWosaxahjGWmKLnFNnfFd8SCVwEJ4PbHrKxXDAccL/XlHcsMpKljrEzbpe
+	2CKpXNNA/1ty09LvhSpjw2Nj2ZKIofDCxJka5SQsYJP8ESA4EA2MbjzqXrIFx36g7WAcF2
+	HNZcqqyJ5X4D5nANriecwSpOoEugJ0c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C002342A4B;
-	Sat, 21 Mar 2026 18:22:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F66DC19421;
-	Sat, 21 Mar 2026 18:22:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774117349;
-	bh=Z5ShjZezr9g7HSBWIB7EdDeQzkiOkItYLDWdO/0hqwg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZHnQ6lEE88xOYc1iWlfVdzE5iZN8nimxIF52Ss4eTF1z+Nyp+L28Ma1fB9cqmr3uJ
-	 yzQG5uqOcJBToMwnI6OwsOuyqtwCjFvOO0UEqyuFC7carzJi376cVWa4tdboRarVLo
-	 ITCBnvYm+w+9Qx3q3fVDKpfDkqYqP/1uCASrkDmY=
-Date: Sat, 21 Mar 2026 11:22:27 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: kasong@tencent.com, Liam.Howlett@oracle.com, apopple@nvidia.com,
- axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org,
- chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net,
- david@kernel.org, dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org,
- hughd@google.com, jannh@google.com, joshua.hahnjy@gmail.com,
- lance.yang@linux.dev, lenb@kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org,
- lorenzo.stoakes@oracle.com, matthew.brost@intel.com, mhocko@suse.com,
- muchun.song@linux.dev, npache@redhat.com, pavel@kernel.org,
- peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de,
- rafael@kernel.org, rakie.kim@sk.com, roman.gushchin@linux.dev,
- rppt@kernel.org, ryan.roberts@arm.com, shakeel.butt@linux.dev,
- shikemeng@huaweicloud.com, surenb@google.com, tglx@kernel.org,
- vbabka@suse.cz, weixugc@google.com, ying.huang@linux.alibaba.com,
- yosry.ahmed@linux.dev, yuanchu@google.com, zhengqi.arch@bytedance.com,
- ziy@nvidia.com, kernel-team@meta.com, riel@surriel.com
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-Message-Id: <20260321112227.bbcf113a6eae634d12695fd9@linux-foundation.org>
-In-Reply-To: <20260320192735.748051-1-nphamcs@gmail.com>
-References: <20260320192735.748051-1-nphamcs@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 128B4120004
-X-Stat-Signature: 3twit6qcxf68xxkgjmsopju6die7w6yk
+	by sea.source.kernel.org (Postfix) with ESMTP id 596FE41A6C;
+	Sat, 21 Mar 2026 20:04:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084AFC19421;
+	Sat, 21 Mar 2026 20:04:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774123471;
+	bh=fr4AW+FIvrg9qZ2BWoFT8YfqJnfX24S5Bi94dTj4oAU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ql64Gy3nJI5rno891UT38jj+j5m6B1xazDxJIHtl1KbyKMYmU0J8Lds4xFCuCLfPb
+	 yEUCFvE8Zv6pei+l0xdJcWWf/9xaxkiHA5zda5YRi8kbj+VjzPVeF2zD+AI1Og93K1
+	 /1z30ioGxDRhqfqPEFDo4rPMJFSzybt8VdO80I7AKcOpE6twadRjmlnQBjXfamcgjg
+	 Zahp08RiaxlkY6jywrwILGvh+if/lnYNkvivkkxtdTZE+/ZwURzhX2h/eIUa+fRKkG
+	 oFNAFqRaIGOEz3AujWDXLV4yMwiUlbLeSNNemWXQ2S7ohefAWPHXkpoq05cnf5ZTkW
+	 HwCJ1B5k3jfnQ==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 5 . 18 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review status) [PATCH v3 0/3] mm/damon/sysfs: fix memory leak and NULL dereference issues
+Date: Sat, 21 Mar 2026 13:04:21 -0700
+Message-ID: <20260321200422.95288-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260321175427.86000-1-sj@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: k51n3ih4q1i7oumi3hiigicwburcwpt4
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774117350-293577
-X-HE-Meta: U2FsdGVkX19LTpVD5zkO/5E7lvwAKUaVFk9IbuIpnKBj3zhg+dKDXNygs7Dm9slV2DfKUdvhzJDNP06bMG2inmPThWyWkRn4WD1jAt+w9O09CBAo+ATfKooDUXDo4IjBPNNZpOYESR7hT0ALoaIbpZvpBR4r4iyyRdGP8FknZYUv0UE7/be0mSO40dVLwlKIGhbcPzhaoIl9V1pSUq8n1inbwEocv3N1t1ZqpnLByBg90nLHPyJT0LWGwf8mV905FYEInTJTtJUs2IBXuCaLvjOE1YrMgjL+lPfjg1ij8uQ6qlMXTtXMblRQI6WvEy+LovV31Xq4XAwadzzWjMLm1mEmtTlQmbBwLEsFVpfp6jzFoptPbhRghoqpC8cTDmT3feVfs7QmRFthuhK591Tvmw/Y+D6CvsN+TpqcdpJlazVH4t61sJI7Txk4mUu+r9kl4SXEeeeeBPWRZl5yCZ8wi7zvaByWCc1XYILdefcdkE1Yein8mcryXXgtwPPK5nm+TVc+Z+NUHvdGDpy9hoZiku6/zE1OnFJgEz1HrOFO6KOBV69uMdVPCfz0KDg3btDziHuUJYwgxThX7rlp7IVSYBF0P5XHTKpg9asGyT4ZI+PjUrpqqRJgsTLIurZSSTP+BW+35UqlY0yvOHMz6ldkMuvSh6jT3w8TYtwlQ30sNIDrGmg1sYRPPBhCPUQWwhxW7lbwetQ9uKEhwD+owH0z1tEm2DXAw5mDcQIhNv5CYOUPGdYYaLD6s1hHobahKyJNN7hkSnvOikkhaD7Dz+sW9E5Xxb0SKuKd/piJCUPVgTHeVCPa/sER9lmtKHiPyHUcsYcbK6L4Z+JJbjLDcZnC6l5jacMXcJp+xx0PrJQddXlvG7xbBoOuOtGGQx+HWc0z6XLmZYf3TfUxfzlOXEsdw6yansu6TyAZ6npOL6uN+vkYK1JTp0yhzD5RAFOsL51/4fDcYyZ59NyPAMp6WvD
- sNk3Q9mY
- kllZ9boo71ZV3S/oxfKmAkR4qE4GBbq1hzoKmh/B1xEQ0MCxKg0i+3u1QWjn6IND54ovV1n5M/ysX+4Uf+3/0eAF/BKUgzbRsMedwMz1ML6n40N5D9NXi43JUcdDLNBOl1QK1aLsbQczzbEwrdgfKfvyHl4MY368fjkJcycZ4AlzGX6xPPmtMChvpcxO6sm7Sw+H+X7iJherjobXTk1W+tqkCeZB0s2ZHrmSsqxrY6KfrUzJzJ8dSMk9u23b9abOdxEgEhM/aAMF4UrXNTnxfTpoAcyRft1aXqjDFeSybEcT/43pzJ0j0atrPk9etnBh/ffmoeJ7hB5EzfBko9/dkAQUEe7A07+DCdXdt+TeEYh3MBMfFsgP24Gluzx2ozMV+N4JtxQ96hzZJ2Us53LqMgFxg+Q==
+X-Rspamd-Queue-Id: 8B5222000A
+X-HE-Tag: 1774123472-597720
+X-HE-Meta: U2FsdGVkX19Twp3q4HEGIegUCLWrylMzF2DE1xqYUBKTMwvfxk8ilraJM0FlE98g/eh6CBj8tES835h3avyhOYtN3/sdpMAuTNCxk1QL2c1mXNVJ5nLe8TEXPoeXNz2ZWf5Uwsy0B2rfpoHF+XTkO1TDKd4YLDPbOqC60hOnUOIPPrXPXzGCF0oQs1KpIdslNix+JY84s4kpDL6+Ejg4uBypdzw7hnR/PvBDjZMRaz/h5yOUs49csX0iHUxhFmLdS1bYqLFca2xS5wsrARPNPwwX4tSWiivg/kFfSqGVmFuimzNAHuPm/r6y0+iQRZKH06qtyIdPfCZR0PRzs/M20/vfBfKiIZ5zFCllMQ/e7zoF0ABP+h10Vwos3Th/ty6vbpyFJHtyyCz2KEVUkgE48SZ5//JFmHcGRaPvWr9aipuiwSDv8UMVd48TNIQA1g9MAdznqZSKx/OUztVB1CY8nKcOkI9ZXR6x1kokGu8binhiUA6zjNZ2XXcZtzjck+7VUK+nVr41U9MFZItcvYYV2rz/DM83PIlkoiKrSlbYXsyCeiYRhy+HS+qJtMszqhL1d4ZxEt05GCMXnQXq5YWvIlVwkiZEM4s82znh8MSpHwkx/7IupqeqVHBqcGhH2czo5+CdspCHWF1KO8ze7vnxY/CA/BZGzQlgDueSDfHKtxP9kPjISPkoztcl1mU2zIPOWSFj1dQ46yIuRQa/MukHIJrN0NRSqoVKMr0TKJF9uYoFjfcaAqbmmWrvsCKdsmahlvLA/jg9JjAI5CSgMmRZM5FVh9O8C2Ctayzu11QKfggdG3lpExnKSNKdUXkDxEBGI8/kJJoyUnNegQHQQX0UEz5xcuTK/rYJkeV2CeHR2ZCWXlrKi/jU7pYBgYcc11nEe4aIRZ+17p/J7y4d9VYYgd0H6jHKDZe/WYcXopdVMntDdvcbKr+Xvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,14 +91,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 12:27:14 -0700 Nhat Pham <nphamcs@gmail.com> wrote:
+Forwarding sashiko.dev review status for this thread.
 
-> This patch series implements the virtual swap space idea, based on Yosry's
-> proposals at LSFMMBPF 2023 (see [1], [2], [3]), as well as valuable
-> inputs from Johannes Weiner. The same idea (with different
-> implementation details) has been floated by Rik van Riel since at least
-> 2011 (see [8]).
+# review url: https://sashiko.dev/#/patchset/20260321175427.86000-1-sj@kernel.org
 
-AI review got partway through then decided it couldn't apply patches.  So
-a partial result: https://sashiko.dev/#/patchset/20260320192735.748051-1-nphamcs@gmail.com
+- [PATCH v3 1/3] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
+  - status: Reviewed
+  - review: No issues found.
+- [PATCH v3 2/3] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
+  - status: Reviewed
+  - review: No issues found.
+- [PATCH v3 3/3] mm/damon/sysfs: check contexts->nr in repeat_call_fn
+  - status: Reviewed
+
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --thread_status --for_forwarding \
+#             20260321175427.86000-1-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
+
+
+Thanks,
+SJ
 
