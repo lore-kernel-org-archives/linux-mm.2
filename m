@@ -4,101 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4F671094469
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 10:27:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 767271094468
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 10:33:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 499766B0089; Sat, 21 Mar 2026 06:27:30 -0400 (EDT)
+	id 84A6A6B0096; Sat, 21 Mar 2026 06:33:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4711B6B008C; Sat, 21 Mar 2026 06:27:30 -0400 (EDT)
+	id 7FB386B0098; Sat, 21 Mar 2026 06:33:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35F9C6B0092; Sat, 21 Mar 2026 06:27:30 -0400 (EDT)
+	id 711AA6B0099; Sat, 21 Mar 2026 06:33:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 272DA6B0089
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 06:27:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4D4DB9ABC
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:27:29 +0000 (UTC)
-X-FDA: 84569693418.27.8A4791A
-Received: from hillsboro-edge.smtp.mymangomail.com (hillsboro-edge.smtp.mymangomail.com [5.78.130.219])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6A0504000A
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:27:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=p9UBjw60;
-	spf=pass (imf12.hostedemail.com: domain of oskar@gerlicz.space designates 5.78.130.219 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
-	dmarc=pass (policy=quarantine) header.from=gerlicz.space
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DB6C6B0096
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 06:33:18 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04DBB5912A
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:33:17 +0000 (UTC)
+X-FDA: 84569708076.30.4A5C96F
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1A2734000F
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:33:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774088847;
+	s=arc-20220608; t=1774089196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TCqNFyyPUUdW9ZMPxDkboCXhDE0SUM9SHSiNMtFzQiE=;
-	b=2KZJuk9ZMiqAupSYMvtKCSDq2R6H18qt3P4FUCR2qzEghK5WpPjrb8l5bow5KZRgvE3l/6
-	St6rtnEyqsEobGfok5pYSDEkQw6+LXOifkmHuMqYcgEaVj3Tf0Bh2imcgZ2TnulPDqReWu
-	sOA6lP5KL+F+MfHTW8aLihkuRoDmzyg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774088847; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=DQOy6zWzyr3bzQoKAP5jWi72/p1RLK5PJk3yi931Wf4=;
+	b=xzLd7ggaJmEhWoXblw2iuB32HWXvl6ikmL96anYY/CvuDSE/35Tj6ZjbN9fdK0xTkVVXtB
+	EKt4gBPYgPOkIIApAgS/hc90kCb8cO6jRG6XlqlUlOZq2wnhuYqun0rcEtqe+EP9tIvWjN
+	6VhadGxYzizsFXZk3xOrYHU1R1Esjkw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774089196; a=rsa-sha256;
 	cv=none;
-	b=oO5FzJtsL2oHrQqk0RnbCvVmThG18SAZ3f9vTwltr8M4f9//rH++TlxdAKNZalfoSYjUeK
-	CkcugZqDiLGWwnDFrGc1DIf0mlTZPi6EN2tDT7srDQehH2SadKzQRv2ASbER0MMvx+qpSe
-	WD+KOV1CkhZbEzZcSLWWnlf+iBDSAas=
+	b=aZruEXKt8R9r6bq38+QqZ2azcLOg6zAcQg6UYPnARQXj9VK5nRXv9QV069Oqva1PvdFiRH
+	zpE6LUR46spbfCfwIIw0Xpz0wDwkgAFaLonGXk4rPF5wqF6yaGBp8SbOVTaegu2k5IoCJC
+	U8Sdkw6KuPP8dfiLQSLDFEMtDfbd7gk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=p9UBjw60;
-	spf=pass (imf12.hostedemail.com: domain of oskar@gerlicz.space designates 5.78.130.219 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
-	dmarc=pass (policy=quarantine) header.from=gerlicz.space
-Received: from smtp.mymangomail.com (localhost [127.0.0.1])
-	by smtp.mymangomail.com (Mango Mail) with ESMTP id 893AE41963;
-	Sat, 21 Mar 2026 06:27:11 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
-	s=mango-1; t=1774088831;
-	bh=WGQD1ZsKdugY1KTxZSSSEplvqr53gUI6cKQKc+OHL1Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p9UBjw60JFvX5QGlAhtaEm3GKgshG9pnkCkbfl5muB8nOVBJKhjPnNc7wDB+U4KK2
-	 ap5sfw24DYfiealUvfeYrtG8tzZKmb1adON1zrWqNKtKus5UAPFLBm6Xqn+wFBcsXS
-	 JAFzVyE/vVXqTxFaz+p7slnZI6R6TMAxcvF+Sl1I=
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest
- SHA256)
-	(No client certificate requested)
-	by smtp.mymangomail.com (Mango Mail) with ESMTPSA id 29FB9418D0;
-	Sat, 21 Mar 2026 06:26:00 -0400 (EDT)
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 21 Mar 2026 19:33:11 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+From: Youngjun Park <youngjun.park@lge.com>
+To: rafael@kernel.org,
+	akpm@linux-foundation.org
+Cc: chrisl@kernel.org,
+	kasong@tencent.com,
+	pavel@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	usama.arif@linux.dev,
+	linux-pm@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v7 0/2] mm/swap, PM: hibernate: fix swapoff race and optimize swap
+Date: Sat, 21 Mar 2026 19:33:07 +0900
+Message-Id: <20260321103309.439265-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Date: Sat, 21 Mar 2026 11:25:59 +0100
-From: oskar@gerlicz.space
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport
- <rppt@kernel.org>, Baoquan He <bhe@redhat.com>, Pratyush Yadav
- <pratyush@kernel.org>, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/5] liveupdate: block outgoing session updates during
- reboot
-In-Reply-To: <20260320182352.ca6c88e409ff12d0368b03ae@linux-foundation.org>
-References: <20260320163720.100456-1-oskar@gerlicz.space>
- <20260320182352.ca6c88e409ff12d0368b03ae@linux-foundation.org>
-Message-ID: <af15eae6ea9007aa6fd7924512657168@gerlicz.space>
-X-Sender: oskar@gerlicz.space
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1A2734000F
+X-Stat-Signature: xtxqozhr38uaczp6s319aen7sw1uenfy
 X-Rspam-User: 
-X-Stat-Signature: 88dnf8d4693ot5tdq5okxfx4od8pb4yo
-X-Rspamd-Queue-Id: 6A0504000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774088847-554498
-X-HE-Meta: U2FsdGVkX19ZcCpuk0i4MUu+wyqfOw3j5h66WYkNdDNs3jUj3p+TMa1c8IUzoLRru2d6xVo1HVG6eALSlvlP1XqRrdKc4dthyk+4OAkoaFLE8zdDavbRZP8GBovJu1yNrSyQdYhj5QI4bOhJd1QcF7dMW4wAGP0a7grsw4/95oA6FApUkbnJzhpNvFqFzWtXeukhNzcdWY8vm8ftTg/V5Sm1uTgx/e3lfqdgYpsqL2kI20bSW+h2MbLS+4QmqZmK5xqSnWTSVVI6SxOOJCQtzil24vrLXtPAtP1QI4kRoino3i44CrK0E30ZipN/ZeGiNp5j5pdDt1g/aKWRq/KpHSBHCmEv/I+XbDk3blUlNXSEkoLyb+smX2cmXy/88c/MJU1vbyeREmMzCxxFTgWUs8TH3S4MPUyLTYGragSdVLXcQpXmMFFU6rN+KqUDQ5AuwiVKlIbEzf5ViGUYpI/myNO129/gO9hEoe0j+yRR0ut7U4jkO+z8fb7k5d7JQdxcsXhFF/At6KN6NWRlhmou1qug0fPJghSyp8i9GbkVKYScCIu2iHUDmwd6H2mTDMSddKB1v2JBBhpJHfQHVOWyE3HUBOZpL1UzaMru8hzhZBnMhSsoq6fK3CCOenCTOAUFu1t/qn4vwN+Emj9n2PNGPxEr3O7tv8DYdMad5wYQ36tY7nrNpB20JL4HtWBmf/AJhGEEHxigBDuYSQ9B9ZkOx6+e8Ib6XaUxc6wi0sN7LzGBoGtHKS6yQwHxYzyNVO2BEpXmgIVV8SQ5nTOHsj9pU3x2esNa83e6ao1MYMWEk5zA01TtMYiDKs3XUskL2I5f3HrgDkBs7LlkcM+9pWJ4Uzg/kJQ23vgXYwco2qdM/zkcH94WDWjrL+Vt+pgkLZacigRybqrg93QwVuUhLJWNSbQum9rtvnr3x8L/pR0P8y+RFTaTIRjhviwx5BaH7JUC5MGkf3GpKm5xHkGEMZk
- lW7qhSNG
- mB0gVKub5qrsQ2OH5QiAiZ4P7p6lcszY0Nf/BjiUNaOcJK869t5swRXNRMC9Cr75tdEzvYsTwGViODhg3tGxMJY8YNdMcCXRqYhm2/37+kiSU04waAU/RadpTZI8TW4VAG4c2aMSu3Oe8ND2aH/Pe+vqx6MiuOh8P1ICqgqzS2MvcwvPrBTdeSGoAJfi1fe4Q1ZIkXm2d+f+Yt2J7h8+LpVmVJ+cBE9E/sz2IrnboN2fKPFb/XN2dZnBOIAOvYceDLbF6ERMMISO/Wti4Zqomn1qyGmsGiPf3AnAHiItryjl/AOhOxOMxq+2VWA6nY4k6MiEymSXOv9JO1a98WRDSZsC53wxM1kUFXy1EXUqtJjQay7E/gVyZd0mCm68RfUXLnQP0Tq2rt9I7tFVGeo0IFREhuXsnfWBnTBppJk/Q7HX0UtzkS51FaxDgqeOWxFVuAZ0WH202KPy5qmYFYGcPvJyy9w==
+X-HE-Tag: 1774089194-157710
+X-HE-Meta: U2FsdGVkX18st/uPvLEUyoc2EINJ9d1eBRKkS9T7010wbn4TgkYi5ud8kxBIZS7/AVDoG++cdshBKZlSsVtj0cDEKeFpXMVZc0sm8UAYnwBBQ35ruUvw9HQonCD1d6OxHuSdF7uhSrGxK7zBnklhX7Ho/EjZOFbR46mXr5t+U55vwjVcHRk+TTgk+rsN/aMSib4jeUXN2KcZSYECb6aWmVK0eE1RS4wHzBsZBOIMM62vDxq6fk1qdZDVr+H5fh3DgTL9CDgXFippGLKPyaOPwTWIPa8UvXaRP8GkZCiRMXWYej8TegRKBURxJ7uF1V69sc37JalGgbpJPwKtQfJPlOhQ5HTUjyodp494MyVOMHS8zEcwlwXcEPBhAai/JrraSLUZevX3TWMUlR40Q8edeIDZFtbJZoMinIAIZP1i7/0D2r0X1VrznptfrrpPeZtszNoG/xBJnOkIPm756v6JSqVAEqWSCVIfrhIHEn71zFc+N5nld85S24JddTJPCs0Y4ocLK4Z9QZzY6HzssxFZDNicocLbBuZQaPxShvq4TwsBcOWdDX49kSPPOyx5q4vpj9HEvXwIyvy7TrZ/I/mMdQ9RkR65dPiTD35Ka/imsmFi8aitrofV0mMoomJ+DLSySixUKosdZqopEcXpMuKv5V7lEgHdm+2w8GfMxbl1dqI1Kp22S2uau1U/AIuc+Znt2DC1J6tadalUhf5MKYQvEUQZkfHCqPC2x5ysGe16wISdxW11D01EREB7dRaHn4M2mtzg0TZ6v43e9DiHhS+nmyLR6nqKUPhcxtrZaXlasEwNm+Q7+H2fFqHJOwRYtBfwxHOuvyoGZsRq0Mf4G4Kycg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,118 +84,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-03-21 02:23, Andrew Morton wrote:
-> On Fri, 20 Mar 2026 17:37:16 +0100 Oskar Gerlicz Kowalczuk <oskar@gerlicz.space> wrote:
-> 
->> When kernel_kexec() starts a live update handover, LUO serializes
->> outgoing sessions before the reboot path freezes tasks or shuts
->> devices down. That leaves a window where close() and
->> LIVEUPDATE_SESSION_PRESERVE_FD can still mutate an existing outgoing
->> session after luo_session_serialize() has already captured it.
->> 
->> The race is dangerous because the next kernel may inherit stale file
->> metadata or references to memory that userspace has already
->> unpreserved. That breaks handover consistency and can later trigger
->> restore failures on already torn down state.
->> 
->> Mark the outgoing session set as rebooting while serialization is in
->> progress, reject new mutations with -EBUSY, and make release wait
->> until rebooting finishes before unpreserving files. Reset the flag and
->> wake waiters when serialization rolls back, and use READ_ONCE() and
->> WRITE_ONCE() so the state is visible across CPUs.
-> 
-> Sashiko AI review has quite a few questions:
-> 	https://sashiko.dev/#/patchset/20260320163720.100456-1-oskar@gerlicz.space
+Apologies for the frequent revisions. Hopefully this version is close to final.
 
+Currently, in the uswsusp path, only the swap type value is retrieved at
+lookup time without holding a reference. If swapoff races after the type
+is acquired, subsequent slot allocations operate on a stale swap device.
 
-Thanks for the careful review.
+Additionally, grabbing and releasing the swap device reference on every
+slot allocation is inefficient across the entire hibernation swap path.
 
-Patch 1
+This patch series addresses these issues:
+- Patch 1: Fixes the swapoff race in uswsusp by pinning the swap device
+  from the point it is looked up until the session completes.
+- Patch 2: Removes the overhead of per-slot reference counting in alloc/free
+  paths and cleans up the redundant SWP_WRITEOK check.
 
-You are right. The incoming .release path can return before
-luo_session_remove() / luo_session_free() and leave the session
-stranded. This is pre-existing rather than introduced by this patch,
-but it is a real bug. I will fix it in v2 by ensuring the release path
-always removes and frees the session, while keeping the warning if
-finish fails.
+This series is based on v7.0-rc4(Refael's request for PM's modification)
+. Happy to rebase onto mm-new if needed.
 
-You are right. This wait can be hit from userspace while the
-preserve_context path is entering the freezer. I will switch this to
-wait_event_freezable(), as this path can be reached from userspace
-during the freeze phase.
+Links:
+RFC v1: https://lore.kernel.org/linux-mm/20260305202413.1888499-1-usama.arif@linux.dev/T/#m3693d45180f14f441b6951984f4b4bfd90ec0c9d
+RFC v2: https://lore.kernel.org/linux-mm/20260306024608.1720991-1-youngjun.park@lge.com/
+RFC v3: https://lore.kernel.org/linux-mm/20260312112511.3596781-1-youngjun.park@lge.com/
+v4: https://lore.kernel.org/linux-mm/abv+rjgyArqZ2uym@yjaykim-PowerEdge-T330/T/#m924fa3e58d0f0da488300653163ee8db7e870e4a
+v5: https://lore.kernel.org/linux-mm/ab0YEn+Fd41q6LM7@yjaykim-PowerEdge-T330/T/#m8409d470c68cb152b0849940759bff7d7806f397
+v6: https://lore.kernel.org/linux-mm/20260320182227.896f9ab62d62961b2caab5f7@linux-foundation.org/T/#m10ee3346cd8dcd052749105d9a8e2052dbf3bc80
 
-You are right. Dropping the rwsem before luo_session_remove() leaves
-a serialize-vs-close window, so v1 still allows an outgoing session to
-be serialized after close has started. In v2 I will keep the outgoing
-session exclusion across the entire unpreserve/remove path (i.e. prevent
-serialization until the session is fully removed), and I will gate both
-PRESERVE_FD and FINISH under the same reboot check.
+Testing:
+- Hibernate/resume via sysfs
+  (echo reboot > /sys/power/disk && echo disk > /sys/power/state)
+- Hibernate with suspend via sysfs
+  (echo suspend > /sys/power/disk && echo disk > /sys/power/state)
+- Hibernate/resume via uswsusp (suspend-utils s2disk/resume on QEMU)
+  - Verified swap I/O works correctly after resume.
+  - Verified swapoff succeeds after snapshot resume completes.
+- swapoff during active uswsusp session:
+  - Verified swapoff returns -EBUSY while swap device is pinned (Patch 1).
+  - Verified swapoff succeeds after uswsusp process terminates.
 
-These issues indicate the outgoing session lifecycle still has race
-windows, so I will rework this part more substantially in v2.
+Changelog:
+v6 -> v7:
+ - Dropped Patch 3 (pm_restore_gfp_mask fix) from series as it has
+   no dependency on Patches 1-2. Will be sent separately.
+   (Rafael J. Wysocki feedback)
+ - Andrew Morton's AI review findings applied only to Patch 3;
+   Patches 1-2 are unchanged. (no problem on AI's review)
 
-Patch 2
+v5 -> v6:
+ - Replaced get/put reference approach with SWP_HIBERNATION
+   pinning to prevent swapoff, per Kairui's feedback.  Renamed helpers
+   from get/find/put_hibernation_swap_type() to
+   pin/find/unpin_hibernation_swap_type().
+ - Renamed swap_type_of() to __find_hibernation_swap_type() since
+   it is now an internal helper with no external callers.
+   (Kairui's feedback)
+ - Removed swapoff waiting on hibernation reference.
+   swapoff now returns -EBUSY immediately when the swap device is
+   pinned.
+ - Updated function comments per Kairui's review.
+ - Updated commit message.
 
-You are right. On the preserve_context flow, machine_kexec() can
-return to the original kernel with error == 0, so the current
-abort-on-error logic is insufficient. I will fix this by explicitly
-aborting liveupdate state on the preserve_context return path in
-kernel_kexec() after machine_kexec() returns.
+v4 -> v5:
+ - Rebased onto v7.0-rc4 (Rafael J. Wysocki comment)
+ - No functional changes. rebase conflict fix.
 
-Agreed. The abort loop only stays synchronized as long as the outgoing
-list cannot change after serialization. The remaining release/remove
-race in patch 1 breaks that assumption. I will fix that in v2 by
-ensuring outgoing removal is excluded once serialization starts, so
-abort can unfreeze the same session set that was serialized.
+rfc v3 -> v4:
+ - Introduced get/find/put_hibernation_swap_type() helpers per Kairui's
+   feedback. find_ for lookup-only, get/put for reference management.
+ - Switched to swap_type_to_info() and added type < 0 check per
+   Kairui's suggestion.
+ - Fixed get_hibernation_swap_type() return when ref == false (Reviewed by Kairui)
+ - Made swapoff wait interruptible to prevent hang when uswsusp
+   holds a swap reference.
+ - Rebased onto latest mm-new tree.
 
-Patch 3
+rfc v2 -> rfc v3:
+ - Split into 2 patches per Chris Li's feedback.
+ - Simplified by not holding reference in normal hibernation path
+   per Chris Li's suggestion.
+ - Removed redundant SWP_WRITEOK check.
+ - Rebased onto f543926f9d0c3f6dfb354adfe7fbaeedd1277c6b.
 
-You are right. luo_file_discard_deserialized() currently drops
-file_set->files without freeing the preserved KHO block. I will fix
-this by routing the discard path through a common cleanup path which
-calls kho_restore_free(file_set->files) before clearing the pointer.
+rfc v1 -> rfc v2:
+ - Squashed into single patch per Usama Arif's feedback.
 
-You are right. The direct returns in luo_session_deserialize()
-bypass cleanup of sh->header_ser, can leave previously restored
-sessions behind, and do not cache the final error value. I will fix
-this by routing all deserialize failures through a common cleanup path
-which removes any sessions restored so far, frees sh->header_ser,
-clears sh->ser, and stores the cached error before returning.
+Youngjun Park (2):
+  mm/swap, PM: hibernate: fix swapoff race in uswsusp by pinning swap
+    device
+  mm/swap: remove redundant swap device reference in alloc/free
 
-I do not think this specific UAF is reachable, because deserialization
-happens before the device becomes visible to userspace and the device
-enforces single-open semantics. The cleanup and leak issues are real,
-though, and the common unwind path above will address them.
+ include/linux/swap.h |   5 +-
+ kernel/power/swap.c  |   2 +-
+ kernel/power/user.c  |  15 +++-
+ mm/swapfile.c        | 178 +++++++++++++++++++++++++++++++++----------
+ 4 files changed, 156 insertions(+), 44 deletions(-)
 
-Patch 4
-
-Agreed. The file-set validation failures currently share the same
-cleanup hole as patch 3. The common deserialize cleanup in v2 will
-free the preserved file_set block via kho_restore_free() before
-dropping the pointer.
-
-You are right about the direct returns in luo_session_deserialize().
-I will convert those to the same common error path so sh->header_ser
-is freed and the cached error is set consistently.
-
-You are right about memfd cleanup. I will route early validation
-failures through free_ser:, and I will fix the folio unwind so it also
-releases the current folio entry rather than only the tail entries
-after it.
-
-Agreed. I will also validate nr_folios against the vmalloc backing
-metadata (ser->folios.total_pages), not only against ser->size,
-before iterating.
-
-Patch 5
-
-I agree this is a bug. It is pre-existing and not introduced by this
-patch, so I will fix it in a follow-up by rechecking the incoming state
-under the mutex before returning success from
-liveupdate_flb_get_incoming().
-
-Overall, I will rework the outgoing session lifecycle, unify the
-serialization exclusion rules, and fix the cleanup paths in v2.
-
-Oskar Gerlicz Kowalczuk
+base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+-- 
+2.34.1
 
