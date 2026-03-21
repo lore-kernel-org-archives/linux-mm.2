@@ -4,94 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F2991099B54
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 06:43:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 052D41094461
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 08:03:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE5616B0093; Sat, 21 Mar 2026 02:43:26 -0400 (EDT)
+	id D10856B0088; Sat, 21 Mar 2026 04:03:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C96186B0095; Sat, 21 Mar 2026 02:43:26 -0400 (EDT)
+	id C99FB6B0089; Sat, 21 Mar 2026 04:03:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9B7C6B0096; Sat, 21 Mar 2026 02:43:26 -0400 (EDT)
+	id B616D6B008A; Sat, 21 Mar 2026 04:03:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 908DB6B0093
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 02:43:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1825E13AFCD
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 06:43:26 +0000 (UTC)
-X-FDA: 84569128812.02.A02FD8E
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 334C780008
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 06:43:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=u+lJBboI;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774075404;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A16A66B0088
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:03:20 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 288FC13B0C3
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:03:20 +0000 (UTC)
+X-FDA: 84569330160.18.2EC4053
+Received: from sender-pp-o93.zoho.in (sender-pp-o93.zoho.in [103.117.158.93])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8D68CA0002
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:03:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=orhgD6jj;
+	spf=pass (imf15.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774080198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TmudzNicNUiCl0daaMXprBQaBaWvZIMFkUgBsUIOa+M=;
-	b=TQZhET09uvqvqsK4dOah1C+ddosdOcuMS7tfIFP5rQh5qRAT9DtnBNEKMN9KJdxHXUDhAJ
-	W+gU20nRemqRQyqwt12xmMYumO6oUgwDUa/H7Asp+5jQm4DiRhHOJqIeJoUbyQDJeR7wv5
-	Jf7XLXyjE5SllvcGtf75ANbkzCx6gUo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774075404; a=rsa-sha256;
-	cv=none;
-	b=ZJAIXfkDiEZKUrC1+TGL9K86vSPixVCQ9GFUSNY8e4Bk0pRYt59GOOF6yPgWC2nPDBUElD
-	il2DqK8H84Y81hre80J/I9aCAbfFtSYntyY3Wk88M2osLcIm6q0l/WctPxlj4LcNphGih1
-	vYYp5FpnTaDxh9xBMbrix5nzVts54NA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=u+lJBboI;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774075397; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=TmudzNicNUiCl0daaMXprBQaBaWvZIMFkUgBsUIOa+M=;
-	b=u+lJBboITHxBZ0tkduExEewbnTaDUMk/qmkqIPyRWzcVsrD1lje6RDb449t2GWlJzOZ4rW3vi6VGie9Uy0YN/M1we5N7dJB1prrhcGr5dpSqa2jcF/2gliCCamXQFig9NFp+zQLweIMfaLwYxX9KUyMPVFPQFRVmuCXSjKkrBAw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X.ODaLu_1774075394;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.ODaLu_1774075394 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 21 Mar 2026 14:43:15 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	baolin.wang@linux.alibaba.com,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-mm@kvack.org (open),
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/6] mm: change to return bool for the MMU notifier's young flag check
-Date: Sat, 21 Mar 2026 14:42:54 +0800
-Message-ID: <a9ad3fe938002d87358e7bfca264f753ab602561.1774075004.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
-References: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
+	bh=7HppVxiNzSUaNaCzAFZZIV4GLppBx1jzldRjeOTX2Aw=;
+	b=iFMt9s7HAdBVuSl3i/T/I9uObR+SzpIpv4OYQBUhGs9XfoQoPRACXY62xwoHbGj55bNrdS
+	7hPnK6nWzL7ohroiXTap2gDP6YumQvsmyQRONRBCTFkDK4DMw62WoYsrPEmrJcRWvpGEOx
+	S0cwG3u4UXS1Z6X9qLU3EzlZXtDbmjg=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=orhgD6jj;
+	spf=pass (imf15.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774080198; a=rsa-sha256;
+	cv=pass;
+	b=Vk3f9HZgCe1fIMUSJ5s1+8/SevwNLXHiKYuKyPllfZ0p96B5h8bgui7SG9IFKSjruXbFnN
+	U2Qzst/4l9uOvCXMx535nm4etWH0ApLMilJeP2MfOXrJR8zZipMkc8rkBNJy3oGniP38cY
+	RLhpUpp+nuPCJtyBmPwuIbP8lMjqNqU=
+ARC-Seal: i=1; a=rsa-sha256; t=1774080180; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=Lw1WIqFK2v+7A3cgw0XmvE0F88G1PGxVPFdNhfTHVvnVIkWbu38yzXNoTF25KorKHnBBUTQH0yPQ9XvInDVvT/xn92TBR14QN59U0uwvqPiNFP78vletlDCw2HRcom6a2xjqRbWkGbhKvxqh9SrPC9dGL09f0BA+Seg8Jem60Y8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1774080180; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=7HppVxiNzSUaNaCzAFZZIV4GLppBx1jzldRjeOTX2Aw=; 
+	b=Ki6Ufb84aI0NKdvObFbH9J9GJk3OTxHMcVzTxIHe2GSx1PhRyjDx1MrBp9rV3wex8Itj0ZrVupzBc/bqEAKW+XdROmOx7EYgOIJ8SmF4/s0Uqj2pbZHHla0LoKiamK/jLw9eUIRb7w1phG9ZQe6Lrh5a+twXTXzHZ1K/a0OU1os=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774080180;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=7HppVxiNzSUaNaCzAFZZIV4GLppBx1jzldRjeOTX2Aw=;
+	b=orhgD6jjVxKApYs+tOoUmVJhww/M2GaEA45Ppp0Phm0KzdfY4z2XARMFlOSCe/90
+	9Cl5+xL65cSXXuOUNHK5lDegG/tuwQBq2tqBzQ0ZfegWO1RRq5Zp4kFUQbNeZPUlxgm
+	KK+3J39PTWZ8u/C+enLk/MFKleDtDCEg9DjzdSYo=
+Received: by mx.zoho.in with SMTPS id 17740801786561013.1548982206217;
+	Sat, 21 Mar 2026 13:32:58 +0530 (IST)
+Message-ID: <39ac33c4-e107-46de-b6a6-fc8bb6c44df6@zohomail.in>
+Date: Sat, 21 Mar 2026 13:32:55 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/3] mm/vmalloc: extract vm_area_free_pages() helper
+ from vfree()
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
+ <20260317-vmalloc-shrink-v5-1-bbfbf54c5265@zohomail.in>
+ <abrmgwxireNnqra6@milan>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <abrmgwxireNnqra6@milan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 334C780008
-X-Stat-Signature: 46tzstwdnb9yo7jjpcu5zhkop6tn4awi
-X-HE-Tag: 1774075402-215585
-X-HE-Meta: U2FsdGVkX1+W8v2DZm7PzwrxtvK1EnFTxKs+btm7iv2CkKqiBfl8QsyaqCeDuoaQVaRiZnJU3X3HojKZLuuX0l60HXz7ezeWQKJ4iUAbhsVwQ4xeG578vfmX7PWPdtLi7BMe3NdMJARrq+80tXCgoIZRtzTCR1UUS0M6AIchDRdFUOUo02xzmSBmn4rY4n4SiZMrFAck5fWwza6Ymerj/zEFvMEjTugSxFGFdVLbAgTlz5L3G+9BKibY1D/qflJEb8iqW/AXzR+AyKOFOgtONG3Vz7cdM1L2S61b3VQob0SmMaim4fvQdRJPzh18nPWk11aFoJdBbnN/49rFcSGbbrglM8Afrt1I8Vbv09UolTK5PCCOLjyRDSR7hoPP+SkbTbCHtCYafdCHKJDigNQ4rtJxWkjnKv2sTnpBAr7gqDcoFSSteDgCObjHKjdBpQzR0UlCxr8ozeBgTSHS8rkaKpazIgakwfQ87/7idFtjAJu91dtzNn3SJY+6B7gniR78uC3bk3OEmVmVdQA65rLGUuc/88qPWEwGwPhsZyqUQK2QrRFtZ/dLHNfoqKZeXD+HFF10Rrz0DWLVlZnqCBywbuUc3YsVPil5AB6CBWjzWnTNd/bTiigbTonvpV/WZw1Ov2BObDbsda0ItysGwVT3bxV2g7+uq3I7MflvE+U/PQ/n83Kgyr+2w9x+VnFQSo0kPYrEXkfI+yRXKRRgi2G2sZIBzgvBNLIThp9UagKzSOpLv5lpjQn4tGqlSV1HVK/9Fzny8l7T+PbWCcoDF61cAFWYJw1DWMKk9BxelT5dS3dlEg9zCAFszzt0eyvCYHBh//oBhvS3sFMkEqXilgdceNhDJskUxDX6m3qv9EoPTQy2cidvJlj2+N87fJW1tlqi9VS7fJ/kNEGbJcTDIpy8oWhcBqkyHaPszARH361NlVeQhwDTZw7RHF32wbDiM7k06NrkfhHCZvjIQrrjfkQ
- 7IlJGDe5
- 8SEVdDtz+4PRN6dyY740oO9bfJ/cEKku+lopMKVr54hLg/vrUDeJC1ziU7L7DMadklTCpNw69tv7l8zZUvxJ3N7vtvvy1YBawvvNhLiXMsP22nRPTGKSdOC8yZUGkSudRUQldu0R7DEX8Yb/2KiKbpbjnHSqZ07JsV4xprfDpRpzanTQISAYzM/j5n9NSU5EogNh5GFYoDVy+oeqbHlvWaLU8Jum7LagAE8FoXN8U5u4Q835xYqBnc3dW2KjLwpfjqPfTahVyFYUWg8CaWDJKOVVATcVNRf+E4nDs8UrAWZEgcixMrVlwI8gpwiCGU40vpOkZSaFMGfgI6dfnm2nzMf41JTxpsv77EzPm
+X-Rspamd-Queue-Id: 8D68CA0002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 1sddcwfexstw6bdkw4e36yqa8kdu1dtk
+X-HE-Tag: 1774080197-233554
+X-HE-Meta: U2FsdGVkX1+TYK6J7HK6/8NvmszhHmwmBmGpmiTwQE1qH0XJ3Q04z+FYTifLe8INFt32vWZkQOqk34KVN5Ycngt9wXgFUjmTNZmRS0Jdl06vZoYioAMZpWwaA8nw7YI+h/QAj9MBSLeC9rFEOfMiniFO09pU4AKxwjuWnZ9lsgnjXMwpZbrlOSTIz4V0FBuUErhnk5eRMtU3CabNcsh8z3K6DRD40O6JrQ3wQnJn09/QEgQuaNWNDHhHzxoxLK7s7ERjKeqouvFWwZVT/c/uwhPKeA1pm2qTNsesHeIo4I0RgKF+yjwM7vihEQs3912djLPL3uhPxGpAvSLh6IhYfrIEgb2uB4F0lWam2es9k2zw7kWgbXVAIOtDhIkar3BvuwIAVNY/R/0yo/cnxk77GoE8ghqRQo/+7vXSFKNdXOyD6APPDUfr+31G8wTYJkwALyA/OhcCBcliXjhnllViOY0udR9ohTAGfhQpvjptF/2kaeqlBmnD+SByzwRPdxl/1Q6LKN186VeRq8O961j9rtjkHzX3TgbYEX2DjTJICCEar1tv1qwQ7DRdv00nnZEUtDJklPU0Nsgdaq/fmNoBiv+p7MhjmeQaSdEGj6ig/U2xiNMabaegjn9qHuyATDOeTRrhLhEARRmiHEzX7hCJ3nKkHBwSaNmtKI9/zkOIJ8sd6+eXauBcDnEvbOayXUj02B81Woa2UvB4eHXXkZFTamFF+z15mfLfNHfyOLGXgh0J0Qo6fa9NjOiLxgcRRJdrsbLgGJ2QQUh8pHmg2mpMBTrN9HnV39s5sQAUBu3UdvJ/16S8Tw3/UNDJiA4UvJyotgaxaHEDKVNThxZ5IZyzLIHE/0OjWi4GBS6lAeAch7QCofkHC2yHEJSM7rmH5+VVHV22tdRCFmHuClrX3tTinjhyPTzjt7aBNQdC64en0TiOAaIRFfnneqBmN37i1d4Z4hVRXAoB1tv2bvHICYH
+ vHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,339 +104,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The MMU notifier young flag check related functions only return whether
-the young flag was set. Change the return type to bool to make the
-intention clearer.
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- include/linux/mmu_notifier.h | 76 +++++++++++++++++-------------------
- mm/internal.h                | 16 ++++----
- mm/mmu_notifier.c            | 23 +++++------
- virt/kvm/kvm_main.c          | 31 ++++++---------
- 4 files changed, 66 insertions(+), 80 deletions(-)
-
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index 3705d350c863..17f2cdc77dd5 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -97,20 +97,20 @@ struct mmu_notifier_ops {
- 	 * Start-end is necessary in case the secondary MMU is mapping the page
- 	 * at a smaller granularity than the primary MMU.
- 	 */
--	int (*clear_flush_young)(struct mmu_notifier *subscription,
--				 struct mm_struct *mm,
--				 unsigned long start,
--				 unsigned long end);
-+	bool (*clear_flush_young)(struct mmu_notifier *subscription,
-+				  struct mm_struct *mm,
-+				  unsigned long start,
-+				  unsigned long end);
- 
- 	/*
- 	 * clear_young is a lightweight version of clear_flush_young. Like the
- 	 * latter, it is supposed to test-and-clear the young/accessed bitflag
- 	 * in the secondary pte, but it may omit flushing the secondary tlb.
- 	 */
--	int (*clear_young)(struct mmu_notifier *subscription,
--			   struct mm_struct *mm,
--			   unsigned long start,
--			   unsigned long end);
-+	bool (*clear_young)(struct mmu_notifier *subscription,
-+			    struct mm_struct *mm,
-+			    unsigned long start,
-+			    unsigned long end);
- 
- 	/*
- 	 * test_young is called to check the young/accessed bitflag in
-@@ -118,9 +118,9 @@ struct mmu_notifier_ops {
- 	 * frequently used without actually clearing the flag or tearing
- 	 * down the secondary mapping on the page.
- 	 */
--	int (*test_young)(struct mmu_notifier *subscription,
--			  struct mm_struct *mm,
--			  unsigned long address);
-+	bool (*test_young)(struct mmu_notifier *subscription,
-+			   struct mm_struct *mm,
-+			   unsigned long address);
- 
- 	/*
- 	 * invalidate_range_start() and invalidate_range_end() must be
-@@ -376,14 +376,12 @@ mmu_interval_check_retry(struct mmu_interval_notifier *interval_sub,
- 
- extern void __mmu_notifier_subscriptions_destroy(struct mm_struct *mm);
- extern void __mmu_notifier_release(struct mm_struct *mm);
--extern int __mmu_notifier_clear_flush_young(struct mm_struct *mm,
--					  unsigned long start,
--					  unsigned long end);
--extern int __mmu_notifier_clear_young(struct mm_struct *mm,
--				      unsigned long start,
--				      unsigned long end);
--extern int __mmu_notifier_test_young(struct mm_struct *mm,
--				     unsigned long address);
-+bool __mmu_notifier_clear_flush_young(struct mm_struct *mm,
-+		unsigned long start, unsigned long end);
-+bool __mmu_notifier_clear_young(struct mm_struct *mm,
-+		unsigned long start, unsigned long end);
-+bool __mmu_notifier_test_young(struct mm_struct *mm,
-+		unsigned long address);
- extern int __mmu_notifier_invalidate_range_start(struct mmu_notifier_range *r);
- extern void __mmu_notifier_invalidate_range_end(struct mmu_notifier_range *r);
- extern void __mmu_notifier_arch_invalidate_secondary_tlbs(struct mm_struct *mm,
-@@ -403,30 +401,28 @@ static inline void mmu_notifier_release(struct mm_struct *mm)
- 		__mmu_notifier_release(mm);
- }
- 
--static inline int mmu_notifier_clear_flush_young(struct mm_struct *mm,
--					  unsigned long start,
--					  unsigned long end)
-+static inline bool mmu_notifier_clear_flush_young(struct mm_struct *mm,
-+		unsigned long start, unsigned long end)
- {
- 	if (mm_has_notifiers(mm))
- 		return __mmu_notifier_clear_flush_young(mm, start, end);
--	return 0;
-+	return false;
- }
- 
--static inline int mmu_notifier_clear_young(struct mm_struct *mm,
--					   unsigned long start,
--					   unsigned long end)
-+static inline bool mmu_notifier_clear_young(struct mm_struct *mm,
-+		unsigned long start, unsigned long end)
- {
- 	if (mm_has_notifiers(mm))
- 		return __mmu_notifier_clear_young(mm, start, end);
--	return 0;
-+	return false;
- }
- 
--static inline int mmu_notifier_test_young(struct mm_struct *mm,
--					  unsigned long address)
-+static inline bool mmu_notifier_test_young(struct mm_struct *mm,
-+		unsigned long address)
- {
- 	if (mm_has_notifiers(mm))
- 		return __mmu_notifier_test_young(mm, address);
--	return 0;
-+	return false;
- }
- 
- static inline void
-@@ -552,24 +548,22 @@ static inline void mmu_notifier_release(struct mm_struct *mm)
- {
- }
- 
--static inline int mmu_notifier_clear_flush_young(struct mm_struct *mm,
--					  unsigned long start,
--					  unsigned long end)
-+static inline bool mmu_notifier_clear_flush_young(struct mm_struct *mm,
-+		unsigned long start, unsigned long end)
- {
--	return 0;
-+	return false;
- }
- 
--static inline int mmu_notifier_clear_young(struct mm_struct *mm,
--					   unsigned long start,
--					   unsigned long end)
-+static inline bool mmu_notifier_clear_young(struct mm_struct *mm,
-+		unsigned long start, unsigned long end)
- {
--	return 0;
-+	return false;
- }
- 
--static inline int mmu_notifier_test_young(struct mm_struct *mm,
--					  unsigned long address)
-+static inline bool mmu_notifier_test_young(struct mm_struct *mm,
-+		unsigned long address)
- {
--	return 0;
-+	return false;
- }
- 
- static inline void
-diff --git a/mm/internal.h b/mm/internal.h
-index 0eaca2f0eb6a..3d6eba216364 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1831,10 +1831,10 @@ static inline int io_remap_pfn_range_complete(struct vm_area_struct *vma,
- }
- 
- #ifdef CONFIG_MMU_NOTIFIER
--static inline int clear_flush_young_ptes_notify(struct vm_area_struct *vma,
-+static inline bool clear_flush_young_ptes_notify(struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep, unsigned int nr)
- {
--	int young;
-+	bool young;
- 
- 	young = clear_flush_young_ptes(vma, addr, ptep, nr);
- 	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr,
-@@ -1842,30 +1842,30 @@ static inline int clear_flush_young_ptes_notify(struct vm_area_struct *vma,
- 	return young;
- }
- 
--static inline int pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
-+static inline bool pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
- 		unsigned long addr, pmd_t *pmdp)
- {
--	int young;
-+	bool young;
- 
- 	young = pmdp_clear_flush_young(vma, addr, pmdp);
- 	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr, addr + PMD_SIZE);
- 	return young;
- }
- 
--static inline int test_and_clear_young_ptes_notify(struct vm_area_struct *vma,
-+static inline bool test_and_clear_young_ptes_notify(struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep, unsigned int nr)
- {
--	int young;
-+	bool young;
- 
- 	young = test_and_clear_young_ptes(vma, addr, ptep, nr);
- 	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + nr * PAGE_SIZE);
- 	return young;
- }
- 
--static inline int pmdp_test_and_clear_young_notify(struct vm_area_struct *vma,
-+static inline bool pmdp_test_and_clear_young_notify(struct vm_area_struct *vma,
- 		unsigned long addr, pmd_t *pmdp)
- {
--	int young;
-+	bool young;
- 
- 	young = pmdp_test_and_clear_young(vma, addr, pmdp);
- 	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PMD_SIZE);
-diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-index 2502474b83b6..dc6f78d559f7 100644
---- a/mm/mmu_notifier.c
-+++ b/mm/mmu_notifier.c
-@@ -364,12 +364,12 @@ void __mmu_notifier_release(struct mm_struct *mm)
-  * unmap the address and return 1 or 0 depending if the mapping previously
-  * existed or not.
-  */
--int __mmu_notifier_clear_flush_young(struct mm_struct *mm,
--					unsigned long start,
--					unsigned long end)
-+bool __mmu_notifier_clear_flush_young(struct mm_struct *mm,
-+		unsigned long start, unsigned long end)
- {
- 	struct mmu_notifier *subscription;
--	int young = 0, id;
-+	bool young = false;
-+	int id;
- 
- 	id = srcu_read_lock(&srcu);
- 	hlist_for_each_entry_srcu(subscription,
-@@ -384,12 +384,12 @@ int __mmu_notifier_clear_flush_young(struct mm_struct *mm,
- 	return young;
- }
- 
--int __mmu_notifier_clear_young(struct mm_struct *mm,
--			       unsigned long start,
--			       unsigned long end)
-+bool __mmu_notifier_clear_young(struct mm_struct *mm,
-+		unsigned long start, unsigned long end)
- {
- 	struct mmu_notifier *subscription;
--	int young = 0, id;
-+	bool young = false;
-+	int id;
- 
- 	id = srcu_read_lock(&srcu);
- 	hlist_for_each_entry_srcu(subscription,
-@@ -404,11 +404,12 @@ int __mmu_notifier_clear_young(struct mm_struct *mm,
- 	return young;
- }
- 
--int __mmu_notifier_test_young(struct mm_struct *mm,
--			      unsigned long address)
-+bool __mmu_notifier_test_young(struct mm_struct *mm,
-+		unsigned long address)
- {
- 	struct mmu_notifier *subscription;
--	int young = 0, id;
-+	bool young = false;
-+	int id;
- 
- 	id = srcu_read_lock(&srcu);
- 	hlist_for_each_entry_srcu(subscription,
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index d0ab29672c71..82433f46c438 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -646,11 +646,9 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
- 	return r;
- }
- 
--static __always_inline int kvm_age_hva_range(struct mmu_notifier *mn,
--						unsigned long start,
--						unsigned long end,
--						gfn_handler_t handler,
--						bool flush_on_ret)
-+static __always_inline bool kvm_age_hva_range(struct mmu_notifier *mn,
-+		unsigned long start, unsigned long end, gfn_handler_t handler,
-+		bool flush_on_ret)
- {
- 	struct kvm *kvm = mmu_notifier_to_kvm(mn);
- 	const struct kvm_mmu_notifier_range range = {
-@@ -666,10 +664,8 @@ static __always_inline int kvm_age_hva_range(struct mmu_notifier *mn,
- 	return kvm_handle_hva_range(kvm, &range).ret;
- }
- 
--static __always_inline int kvm_age_hva_range_no_flush(struct mmu_notifier *mn,
--						      unsigned long start,
--						      unsigned long end,
--						      gfn_handler_t handler)
-+static __always_inline bool kvm_age_hva_range_no_flush(struct mmu_notifier *mn,
-+		unsigned long start, unsigned long end, gfn_handler_t handler)
- {
- 	return kvm_age_hva_range(mn, start, end, handler, false);
- }
-@@ -829,10 +825,8 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
- 		rcuwait_wake_up(&kvm->mn_memslots_update_rcuwait);
- }
- 
--static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
--					      struct mm_struct *mm,
--					      unsigned long start,
--					      unsigned long end)
-+static bool kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
-+		struct mm_struct *mm, unsigned long start, unsigned long end)
- {
- 	trace_kvm_age_hva(start, end);
- 
-@@ -840,10 +834,8 @@ static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
- 				 !IS_ENABLED(CONFIG_KVM_ELIDE_TLB_FLUSH_IF_YOUNG));
- }
- 
--static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
--					struct mm_struct *mm,
--					unsigned long start,
--					unsigned long end)
-+static bool kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
-+		struct mm_struct *mm, unsigned long start, unsigned long end)
- {
- 	trace_kvm_age_hva(start, end);
- 
-@@ -863,9 +855,8 @@ static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
- 	return kvm_age_hva_range_no_flush(mn, start, end, kvm_age_gfn);
- }
- 
--static int kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
--				       struct mm_struct *mm,
--				       unsigned long address)
-+static bool kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
-+		struct mm_struct *mm, unsigned long address)
- {
- 	trace_kvm_test_age_hva(address);
- 
--- 
-2.47.3
-
+On 18/03/26 23:23, Uladzislau Rezki wrote:
+> On Tue, Mar 17, 2026 at 01:47:33PM +0530, Shivam Kalra via B4 Relay wrote:
+>> From: Shivam Kalra <shivamkalra98@zohomail.in>
+>>
+>> Extract the page-freeing loop and NR_VMALLOC stat accounting from
+>> vfree() into a reusable vm_area_free_pages() helper. The helper operates
+>> on a range [start, end) of pages from a vm_struct, making it suitable
+>> for both full free (vfree) and partial free (upcoming vrealloc shrink).
+>>
+>> Freed page pointers in vm->pages[] are set to NULL to prevent stale
+>> references when the vm_struct outlives the free (as in vrealloc shrink).
+>>
+>> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+>> ---
+>>  mm/vmalloc.c | 47 +++++++++++++++++++++++++++++++++--------------
+>>  1 file changed, 33 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index c607307c657a..b29bf58c0e3f 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -3416,6 +3416,38 @@ void vfree_atomic(const void *addr)
+>>  		schedule_work(&p->wq);
+>>  }
+>>  
+>> +/*
+>> + * vm_area_free_pages - free a range of pages from a vmalloc allocation
+>> + * @vm: the vm_struct containing the pages
+>> + * @start: first page index to free (inclusive)
+>> + * @end: last page index to free (exclusive)
+>> + *
+>> + * Free pages [start, end) updating NR_VMALLOC stat accounting.
+>> + * Freed vm->pages[] entries are set to NULL.
+>> + * Caller is responsible for unmapping (vunmap_range) and KASAN
+>> + * poisoning before calling this.
+>> + */
+>> +static void vm_area_free_pages(struct vm_struct *vm, unsigned int start,
+>> +			       unsigned int end)
+>> +{
+>> +	unsigned int i;
+>> +
+>> +	for (i = start; i < end; i++) {
+>> +		struct page *page = vm->pages[i];
+>> +
+>> +		BUG_ON(!page);
+>> +		/*
+>> +		 * High-order allocs for huge vmallocs are split, so
+>> +		 * can be freed as an array of order-0 allocations
+>> +		 */
+>> +		if (!(vm->flags & VM_MAP_PUT_PAGES))
+>> +			mod_lruvec_page_state(page, NR_VMALLOC, -1);
+>> +		__free_page(page);
+>> +		vm->pages[i] = NULL;
+>> +		cond_resched();
+>> +	}
+>> +}
+>> +
+>>
+> Since you will update second patch, probably you can also improve this
+> one. To me start/end variables sound like a VA range whereas it is
+> indices in the array.
+> 
+> Any thoughts?
+> 
+> --
+> Uladzislau Rezki
+Oops, replied to the wrong thread! But regarding start/end, yes you're
+absolutely right. I will rename them to start_idx and end_idx to make it
+clear they are array indices in the next version
 
