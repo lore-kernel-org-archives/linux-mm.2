@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751091099B58
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 01:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC6111099B58
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 01:22:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85E136B00CC; Fri, 20 Mar 2026 21:16:09 -0400 (EDT)
+	id EF6A26B00CE; Fri, 20 Mar 2026 21:22:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 834F76B00CD; Fri, 20 Mar 2026 21:16:09 -0400 (EDT)
+	id ECE496B00D3; Fri, 20 Mar 2026 21:22:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 772826B00D3; Fri, 20 Mar 2026 21:16:09 -0400 (EDT)
+	id E0B4B6B00D7; Fri, 20 Mar 2026 21:22:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 685D16B00CC
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:16:09 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1D6BB9B1F
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:16:08 +0000 (UTC)
-X-FDA: 84568304016.09.32D1255
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CB77C6B00CE
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:22:32 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1720E1B8012
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:22:31 +0000 (UTC)
+X-FDA: 84568320102.07.BA68B90
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2F9D31A0002
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:16:07 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zP5Pl6mI;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 39605180007
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:22:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=easAh+v6;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774055767;
+	s=arc-20220608; t=1774056149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MJZKnVkaccFV12UVDk/YFRRNm2HtvR9A12GJBWTZLv8=;
-	b=fL2+Tgn1VhqUcPDigmfbhpgLusybqWz8sQlV5vjZktv6505f69TTh2LYbnhAgqrac2xN1D
-	4A3NZQx7cGwaJXsRDtVtsoRf630YZx12empMGOPdzTqHu0el40p0j7s5nAqS1ev7hmR2MW
-	Vv2vUv2BYJ09X8CCiQ0P8lrG32rtG14=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774055767; a=rsa-sha256;
-	cv=none;
-	b=nwEzaa90GYMo6wppFjNJ5IaZv2qviDCGJDYi+5zcqumEVV+PHLr1uMf/x37Tg6LBWOP3QJ
-	uXEf/XVOHXj4fTYE8d0Fmnx4DAhViNgYTT2jo9CD97eO7ROnVdMcXMNCmTD6KPJmSdEPkk
-	3j9P6salHxV4WaRx+lnpI1oY4PLq2t4=
+	bh=J3Fln50KPb/i+9ECR/br1AXjtqVc8affVPNuKf5dWOw=;
+	b=Pt9wW17LT64DhOQhpU7KVewrQTTxwgiJBGdLmyeTbwUblDFVaXBAR0ScaY3tVtA9Pxw1+s
+	M4CZSJ/AgVteyOHGaGkDJHau7+nebwLK329fgRO4VY3zB7q0Osw/2koVgIMYu/2I6TdL1r
+	B8t2OIcw5xlDWiUpmivGrUPp+YDY8Mw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zP5Pl6mI;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=easAh+v6;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774056149; a=rsa-sha256;
+	cv=none;
+	b=Em+EXCHZeC/oa3wukC0pQHmW3UC9jXb5+KO2YeYt7At4WXTr2xLUSrEgWSwSZu3e7H1qJ6
+	iNZGKxlUcmhRp2FnY9qoeI2Z51SsgwqUcCnIxl4xOPr0rwol14gJqPUXFmbUxNyXDTLBrd
+	LYIlO5rtC36Rkz2bqWClGXZMoTaGrGQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A1A060126;
-	Sat, 21 Mar 2026 01:16:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A722CC4CEF7;
-	Sat, 21 Mar 2026 01:16:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C3EF60128;
+	Sat, 21 Mar 2026 01:22:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68BBC2BC9E;
+	Sat, 21 Mar 2026 01:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774055766;
-	bh=CjNrAlHfSI/kjoViNVqQpDkjW1bNshpQDZf8Glk2/PQ=;
+	s=korg; t=1774056148;
+	bh=HlmLa0kJjSeCy+9OOKWr1Fj+zLQ3H84FVLAmSQm/oJQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=zP5Pl6mIQtnUFVdxCSnS62RGX/oVqA081EVfgKz33z6aMaUO3qa7SHUZ9Uw++glBL
-	 IvuVsVl55hD486VsU/shY7mEFWYXXGmUJ3dVBCZpwouLr1CDX5HvAsO2cg28Vw9uvG
-	 PhGvz77Gobd/bpfu3lkArjYxXuWmB4pkswP1eRDA=
-Date: Fri, 20 Mar 2026 18:16:05 -0700
+	b=easAh+v6nKEqi/K5Rfgeb+BYrIYk1k7fMvJxHgH7HUBuLhygBVECCC12LJM7dP7Gs
+	 fbRON4QcPeWd/gQjabYo3jMc22htOLARdKjjZa9uRtHOLx+HGCt+bQhkaOoDnimkzK
+	 um3RhFVH8zZl/vTxnUQ9Kedx2n9BvasF6gwd6Q5E=
+Date: Fri, 20 Mar 2026 18:22:27 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Waiman Long <longman@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Tejun Heo
- <tj@kernel.org>, Michal =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, Shuah
- Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
- James Houghton <jthoughton@google.com>, Sebastian Chlad
- <sebastianchlad@gmail.com>, Guopeng Zhang <zhangguopeng@kylinos.cn>, Li
- Wang <liwan@redhat.com>
-Subject: Re: [PATCH v2 0/7] selftests: memcg: Fix test_memcontrol test
- failures with large page sizes
-Message-Id: <20260320181605.206f5453d2bdac49ff6b4742@linux-foundation.org>
-In-Reply-To: <20260320204241.1613861-1-longman@redhat.com>
-References: <20260320204241.1613861-1-longman@redhat.com>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: rafael@kernel.org, chrisl@kernel.org, kasong@tencent.com,
+ pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev,
+ linux-pm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 0/3] mm/swap, PM: hibernate: fix swapoff race and
+ optimize swap
+Message-Id: <20260320182227.896f9ab62d62961b2caab5f7@linux-foundation.org>
+In-Reply-To: <20260320170313.163386-1-youngjun.park@lge.com>
+References: <20260320170313.163386-1-youngjun.park@lge.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 39605180007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 81m7rmttgqf5ijes3hiotftr7yk985an
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2F9D31A0002
-X-Stat-Signature: rh745s3gguonxozd51gzaob4tonwjh7q
-X-HE-Tag: 1774055767-66592
-X-HE-Meta: U2FsdGVkX180wSfdrhPkZrPx+SRoFjuyJs4BXatSZoXih3YsaUBkmcBAXKsByOyQl07jEt46qdADC/fN1UZH7mXOObzzifKqSIe2KOchlEq1YQfaEbGISUvmf8aWwBmZMSgrTu6TC8eQthwaJjrzFxH+HrbHMTwYIusy+pY57q/21HCaoQnEXS6OCXD+MEk7dvHUxuehbjX0SbGyzN72t8ll9Q1xrXr6W2CPAv9/tXQkzaD/U6TmNAz5tEIaczqt0XKS60zyTHx0PuTRDJW4ti9FbEuqTsZfSgEo1WFHM6Sa3MjLc2K6C+fo/7C3eCl4Hb+CkQdE9LH4iZxD2aAGGJvfGRMyKpYB7iI567Lp638p30a4QMS7pocEpxsNLUgASOCtvCaZTB+TbMF0Zp0aEe+/Oj5rHNmVFJ9Qtp1KnCw37n40gdCMQGe2MJTKRsvyf7zM/rw7mcymmexRMZ//gDsSzJRmuk/+ONv5Tb2jluWpNqRXVRXHqhI6ihULAmcGp5sw2MdK+6HuQeFLrrAGmUH+szO3nXKscpMSuvK4U6I1h4ysxtZZRMjIEqew4zrl84e8rc81U+wEMyK4xCYu5I7nTTD8cEuFN5ZvcAQqwStPu3Lclg5EOcLRbdKFYoLkn5knr6hRnJffGUr7YhKHjLhRdPAhz9vd1XNHdlOGj5yR3XJxgI6w15zeEqviDEftyIXW62Vcaicsnq2Xzj4qSKrSBwFbbCQ1KCmCk+g4dcbW/kK54a2iJlYxBiZLqq27dWXjRogYEgHAhXnCdVHzqKngmHoHi3Xh8VZsl29BFtNGsChqcbkQ41Yj3m+hl0OzAClqToOCevHM9Rn/I0CsIVhRUDzin2g7gpcfRWHB8s6q7iHT5N+YpolwmskyEKGYvMLVHoaP/cGnsdQyltInRmPxjXW3JANhUgdzbM6evjqqsYsRhC2F8CguL3cE+SAuJjBrzHrGFJ5NetgrZdy
- l0qk/W3I
- qJi2Z8u6th0lfVqwCtSKEPTx7LLM9lt+Cszw6btQS7I5pXEQVjK2nz4ylvfvCxGuPsF+G8vUgQa0bIJWUlsg7oLDP0UzlzIEz1Md7hGk3lFrR4nOcW0jLY3bRd4dQUVRKxwDojRY8beWB2yRc+N/yA9Ks0PJ475VoZE9ajq0/S5aCmlqw/sUi4P/cCGn9bj13/PbzqIIhlOQCITI5ItZ6fQC9JLB1DRoKmQe9YPyFb8vAQwhfdtxzl9juukgSe2D0+tHEi3sOYzgOmPo+dQ3Y7KG+DnTlzS3wP16YGgPXwQXBbkERPFAo37AXKxqY9gAY5IiqJIait32e53eZ+y1c1nIJOxtD3H1bL0r0+lXH7ocSc1OKILf52WgBgKHQM+zeMm+0
+X-HE-Tag: 1774056149-617296
+X-HE-Meta: U2FsdGVkX18vS1NWbhq8aov6BAuDwafjJniphEIaQ+LQeHiVm/9JFLhYuTcoAVDnC9iDQHJQsk4542+WKHF34XzzDv2qpwi7oTcOUeJCRsIlolCwBfV/Gfze9i8QlWrENV4504tJOO2ICaCZcVVlPWswsC33VVUTiGvk18vNgVc+c40iQ5OpgcwqNHxfs4I5oOwsWFJjQIpb2bzhDbcKvNVrR3suiWmrwEO0gEUyT2Q3Sig0MIV6D7+SB7yIyrFZcj64zedK5zthjoVyqvUDCwmbA12X3VrJI8PVfX7XGNxXmuRPgxVTvkS8mBzXRJGO/cbNmN3NnYtF2pMpHCfhut5uIzPJQo3mNI55geXj7SA6yHopq6gcw/BUb+hDMjgQ1uqTNf316yd5+p7m5XmlFEJkYLeTjjqkmeKAtg5oQuQvD3U6iiV8UxTdvK3PNPFR0hVPDu6ou4Fc5fPXS8hQPc7/OH01aKM4ryHZBjm0nFPOMFUhMabQnIls85/zm1fIYGQKr93CBBp5ikMuOKYtzfjS39/QwOECL+SMlTYPAUx8W14kp6QS2qBpuLrA41t0roWgDddGbNB+v12Cj08KWgKJOeAo7/yfFkkzqY5nCn7UcTDHg+urTbuBFdgOcQp+oX5wOjZlvsgayDUijAQR0Fqqfo1ZROfqKRZ/TvT/SWxFx59sIYLEk0WX+kedOGIAks6NxGmW25QIcjK3dLzMvJlXD2SB1fMCyOyShrua2RbN8UpJLJM0txWvJ/jHzcZDFcUkeSPppDPmXHZEs9W1QWlERwU4jYite/VJQsq7ZQeMp5VCb5XLnY3Bpj800BbwDUWnqBb+6E3c9lDXfF0B1CUgQ+QZ1cZlzSq4wIV69ursRgiK8lXeFiEy5j8wdxjWSDV4BserwmERHUQS1TIQ8HpolGwwf4uUpnZ+dBXH17TYPRg1OPv5nVmdpmIa8bFll4kOS03WExtXuJxupkI
+ rsVOxEhQ
+ pEk3Gl5WxNBPmCJUabkI/xxMnnEidG/2aIWGNeAUkyAxW/lVH6+R8ySWTZ30e4AfdGsAqLQA8rExaOPZ/AirqNpav9BlYnnlA5G3cTsXhx+ePJ5xheYA3prEtGQGTwmgk5DU46Pddl1E9jeMt4IljVKA6lkOQbXApdq37SOZ7TY5ZRDfuN+JWJzZXvljLCfFoSSi0j8K0wNXPOxn8WFJgeGwgovyWEm56rU91gP45ZHi8if9qCY+gG6ywQRHd2AcGVH1yAR6OWqQNeAh2rXi3z/KBan+kK/yKtmXAJuOraL617fgXDW4VGzDnRDqgKrp0OUCsR4VicJWLMKk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,22 +92,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 16:42:34 -0400 Waiman Long <longman@redhat.com> wrote:
+On Sat, 21 Mar 2026 02:03:10 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
 
-> There are a number of test failures with the running of the
-> test_memcontrol selftest on a 128-core arm64 system on kernels with
-> 4k/16k/64k page sizes. This patch series makes some minor changes to
-> the kernel and the test_memcontrol selftest to address these failures.
+> Currently, in the uswsusp path, only the swap type value is retrieved at
+> lookup time without holding a reference. If swapoff races after the type
+> is acquired, subsequent slot allocations operate on a stale swap device.
 > 
-> The first kernel patch scales the memcg vmstats flush threshold
-> with int_sqrt() instead of linearly with the total number of CPUs. The
-> second kernel patch scale down MEMCG_CHARGE_BATCH with increases in page
-> size. These 2 patches help to reduce the discrepancies between the
-> reported usage data with the real ones.
-> 
-> The next 5 test_memcontrol selftest patches adjust the testing code to
-> greatly reduce the chance that it will report failure, though some
-> occasional failures is still possible.
+> Additionally, grabbing and releasing the swap device reference on every
+> slot allocation is inefficient across the entire hibernation swap path.
 
-The AI review is up: https://sashiko.dev/#/patchset/20260320204241.1613861-1-longman@redhat.com
+AI review has a couple of questions:
+	https://sashiko.dev/#/patchset/20260320170313.163386-1-youngjun.park@lge.com
 
