@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A501099B52
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 00:26:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78BD41099B56
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 00:52:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 045106B008A; Fri, 20 Mar 2026 20:26:53 -0400 (EDT)
+	id 7C3AE6B00C2; Fri, 20 Mar 2026 20:52:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01D386B0093; Fri, 20 Mar 2026 20:26:52 -0400 (EDT)
+	id 7743C6B00D1; Fri, 20 Mar 2026 20:52:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4DC76B00CB; Fri, 20 Mar 2026 20:26:52 -0400 (EDT)
+	id 663036B00D3; Fri, 20 Mar 2026 20:52:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D40946B008A
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 20:26:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6332A1DE49
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:26:52 +0000 (UTC)
-X-FDA: 84568179864.02.71227E3
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8FDBC18000D
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:26:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ht9U14k3;
-	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5357A6B00C2
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 20:52:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D7DB458C4C
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:52:56 +0000 (UTC)
+X-FDA: 84568245552.22.5FFE156
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 48844180003
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:52:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="XC8sam4/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774052810;
+	s=arc-20220608; t=1774054375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=JKlHM69nSPICw8Bck17U5ux4/b96tqy8A5ZALWfO5aI=;
-	b=TuWB2h2rdtO4L1rRRnrEQ1HwamYq1V8TJAsFq6fm9bN7gi2kr0MzDc9KDhkWwVRkijyIjy
-	XIHZmwZGc7B8W8jRGixujcyQ1isyOMk/Pu2jmP+eOiDpePUbVyCnQffEUdpG+a03doxb/4
-	Hlf9UyRuOCPiBPW+je6s5D5zSQH+R+E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774052810; a=rsa-sha256;
+	bh=G+5RzbziaymrrS+M4u37AJD7hgEjc3lgDwyej9fgC8U=;
+	b=FfMyVT47wYwS58Urvxs/qCFGFl7Z1Oe5nZSDWZ/qntW3YpL9b7Hc/jvo7MA51I7hFChynu
+	fwzH9sKAnGkUBdPi82zlUbDDW5akHz1FOeXt3KZCPODrPDTXe+izvVQ++VUCa7Lna8Rg9w
+	2MsgfECC3nxDlNMGEi0GsY6AUE21XXY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774054375; a=rsa-sha256;
 	cv=none;
-	b=Gwm5vXuRxQ1Umcd5gb/tx6xYD9MsXNX5a1kPRcX9r4cmds8G+fV/y2EtDZsf3oUHVBFGJp
-	ReZB5RVfRPXpYg2t3AGKdZSi0KMWQkPnI4o1JnbongMVWoRbl0zVlcE9DdoENUv4ps3TN+
-	/BjfYJC/kNrailoIIRtizevGrD6hwJE=
+	b=wvx0Z4EOOq77fqOvfZRATV9+kIMcNTHBNaM3mQZeiYg/o15j/r8v91SHRvBqcXctCk9MdW
+	hdwm8W1PF+iylpzktlly+JXu05lfF52dUr6lamrZ/8AaHIc9EGon7PkziIgsWi3fnHmlju
+	SldvupX62J2R+9wXlpn2BbfzOzKyPag=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ht9U14k3;
-	spf=pass (imf06.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-354bc7c2c46so1185887a91.0
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:26:50 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="XC8sam4/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b062069f80so8443295ad.0
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 17:52:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774052809; x=1774657609; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1774054374; x=1774659174; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JKlHM69nSPICw8Bck17U5ux4/b96tqy8A5ZALWfO5aI=;
-        b=ht9U14k36U1729Y97FcN5N0Q0VdVINCmC+F11I0jx3Kb+rP2tiTJvIJ2xDGlsEYyEX
-         ++jiGg1pQ5nrfji6rAVrzukOoNmcFczld7+iJhIfJUH1iwZyVmxGzlOtjpg20bpspOaY
-         /e4P6mDVtotlscHMehL1TSZfIthhSp/+4whtObgxBvcESWgHIHoPwwDCHW03IU/pdVof
-         FRlHIsOVAdXeT4UHW+5YVfUayzsgcqTy5mVqDjfYto869uz4Kpdh3K1YXfUaB3UcDxLu
-         us42yLakz0b3tZHbUWIP0EuB2axHUN+/tchLiBq5b3MAlRkE+lg7Ytsjev1ivy2Z9lbx
-         N8cw==
+        bh=G+5RzbziaymrrS+M4u37AJD7hgEjc3lgDwyej9fgC8U=;
+        b=XC8sam4/6GRdgh/X/2RDQDMiJeST979EHs4mjNyrJnl99XTHMEgFxStW/CQyoYcQy3
+         3n64u528GMrXs9OtgXpqscQArEQGmyppOv1IRV8yXnnIjTB8mP7hWm4ARAwZfT+cFhNJ
+         PcNn1zTTITF91y0Us/mgS2x04NP/leev54wNbWisVv15AUxpvTjr3Zfy7V6h97fphpPf
+         6J0b7mf9U9VGERu/c/WWUUuSXo56MGLxLD9Smd0dGmy9DcZCEw99gXNgFrK9FLYhSM3r
+         XmjR7VFG0AuYvJxGiMchu4Gn29Q70QzDixJoxPAmL+SBCfd13eB0FMxDsLIM8XDBd9C7
+         OOfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774052809; x=1774657609;
+        d=1e100.net; s=20251104; t=1774054374; x=1774659174;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JKlHM69nSPICw8Bck17U5ux4/b96tqy8A5ZALWfO5aI=;
-        b=a440Roa5P5pnbA/HYT2eLie8DR2UQ+0LD56jHvKT8/2gx1GvD/Br+pWdafVbMGXEBF
-         peR2yeLSdbCmTAVy3Q5apMqnU7W0PA0xIQ6+JNoQbveH7Pl4DAmeo1FLIruHeI4Q+eyc
-         BB+xvisTN4qE9lqPkxL6wI+SCsNL9BlxW16S32qEvdvtpMhje5ocPSvVBzLtmrMnI+V3
-         SDETHzRSsqqJ2hyMBgMPvFICFvV7SmY9BrPvMDwdpa25jl0Ev40Zgt/eH6DqEB3xGVZp
-         riwv4nddr7d4rZD8sl5Cq12M3NptYiC35iovb/GRHWWWoAVYUJ2X9stvY6Zxv6ihldR8
-         MfZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXYolLJhgRv2jLRwK/C0jwV5OiFcdR4RasczpCJN2SOTc5xR71QEYuyau46NJJBu9QnE95ZEJK1Gg==@kvack.org
-X-Gm-Message-State: AOJu0YxOwd+WxwP6TBbJO8R6eiZvf243mfPwGmkc1hty7YENNYvgMqsq
-	vdLy8BYNgSwTbQPcMyrGzrUZ/LkDGQY0zIyQ4jSNZ320Nb9tOGpPdG3P
-X-Gm-Gg: ATEYQzwj3oTX2gzBmKlQnfgmTPO4EzyNovplyYJQ4jw6ehNM0QJ1cOiUZYHhNKRBN13
-	4EpS3dmY4XHrb0FRHiH1EZIior4agtic6RYedv0n8QyVNcfkSZIFcQOmYCWNKT5Q0CiuiY+Besh
-	iZyR40an+YAfyTpIjKcRcuj28lj5ACJwlh6+b6GZcSxZD8B6ULxsHJkH557PhnEHUvEdYNxySML
-	FFW7RFujyZVBFzfLDpQzc/sCjlPWMNKpRb2qeTmoKJEl9cDH3c7DI1seuOn9B5DKKBq+2cCLX2P
-	HTvjx1znkg4FuA6p9AJ0KleYiOVE7POaHwafPed3W6v873yTkB1JkM3K6ILrn8crHHjVCscjfL9
-	1FdmU4uw5qtiWmk05rz7T9dUH/4yOXMECO1EvRJdHQee/MvQjl+LthfZcBa21GpawWL4kkVOm1D
-	x7CLK/ER5aSrvLFWijkg2Di5+6+YANNigUznUlev8qk0Z21RHPpds=
-X-Received: by 2002:a17:90b:4cc9:b0:35a:329:73c6 with SMTP id 98e67ed59e1d1-35bd2b97774mr3776534a91.3.1774052809268;
-        Fri, 20 Mar 2026 17:26:49 -0700 (PDT)
+        bh=G+5RzbziaymrrS+M4u37AJD7hgEjc3lgDwyej9fgC8U=;
+        b=S4HU1S/21pcFpoDDJ/M/xwYLNMV00x3JiPU2WKFL8kMz13qymyT8jzqHkF9DpMiP89
+         IHsT+rFgmwt576pZdFQwiVcpKlcBOOFD3JVZNchKidAToLGUxolemAvd64vDglplIEP2
+         BaIAzxtckoi4+c0dqoeAfy2MUhjRxdY5BOTKu544OLYa/u7HVBMHElCvIvB5gS4/5kSM
+         gbxpJY8dkf74Ls+WZ9MF7taFPnwgiO/9mRb7uoVl5HBvv59FZB9SsHlmlt3We/nuTizA
+         x5lSkPBvXXS35oBbYWfr8eKjiMWXPXj8u7v0wp/W713h7knG7lde7QKQ2o8mJ6Ti7BjP
+         3qNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9GdMY1tSSSWV6cb3IjT+M1dw6NYH+OAyRgzc8dnKtT+9/wQrZcU4QwmVSoFmeKHDeA9Z3MwGCkw==@kvack.org
+X-Gm-Message-State: AOJu0YxEyeX/Nz5hJ4AP/asqxR3EnZ4rgrVn7n22er9hzfqMxAIPolkC
+	vmm8xPLfMembrm0yXzR2t/tro7Q90knvgsEzOXfH4WCiv00eOH0mo6f+mx+VnQ==
+X-Gm-Gg: ATEYQzyPXTB3bu2Om4hCVgrMLIVFhNiQ+CansE8RqZWdfRWSGhlW0I9O4qtVOMNO4eV
+	xFEUGFexD9B/lKxmgp/1+ijZobaf0YXE7fLJ5VlPY3PSIRDXJNcs9SAgjs2Rgixj4qQWWwFtOqO
+	yYRKuj90Hjb4UGHKqNden4aKqdRSO0R59+CXgWqWapD4j9bEJ9bz8OP8QkBZPH6VHvWj7aY7ddc
+	8VdmsnyIl4Y4XsYGUvr9sa+qRmeefFe5xx4MWTYXXo65zohH5oBnxIO9mD4FKaCdIbo9TwqHfBO
+	vuSL/zxBYSsq7QRRLdapHvaEwgnNTGvr3CxweIDfkEs/TX6S4iI9xDzE5REcNK4GYEsLWzJpkD2
+	dneK6hgjy6ZPxE1J7XCfU4hbCOpN2qQTPfAIGi4OxDgZS+2ZFYYxoPEcv6Xz/Bu5jTkZcjeD7WW
+	ElhmX39yjyak0X7U90h7xXlzAzSx/BvyeYyi9/DgGFxbdSJSVwXrQ=
+X-Received: by 2002:a17:903:acb:b0:2ae:6012:3168 with SMTP id d9443c01a7336-2b0827a7710mr40513555ad.32.1774054374011;
+        Fri, 20 Mar 2026 17:52:54 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd358b299sm1463708a91.5.2026.03.20.17.26.47
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08353e94asm34872915ad.25.2026.03.20.17.52.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 17:26:48 -0700 (PDT)
+        Fri, 20 Mar 2026 17:52:53 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: sj@kernel.org
 Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [RFC PATCH] mm/damon/lru_sort: add synchronous validation for commit_inputs
-Date: Sat, 21 Mar 2026 08:26:42 +0800
-Message-ID: <20260321002642.22712-1-aethernet65535@gmail.com>
+Subject: [PATCH v3] mm/damon/ops-common: optimize damon_hot_score() using ilog2()
+Date: Sat, 21 Mar 2026 08:52:48 +0800
+Message-ID: <20260321005248.6114-1-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 15c3hge5jsqtu9ctyu3u9xtiingfojii
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 48844180003
+X-Stat-Signature: 1xb6i5qee5aeswjxfofmr5kntc1chjur
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8FDBC18000D
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774052810-207736
-X-HE-Meta: U2FsdGVkX1/EtEyPRhcTD0csPWflxRhmuN0+v4nBHrqnBJ8tfhNkaoH7oYIcKoCxvbT3uPK4G5+oR8zzM3Up5QsyBX8GxrJCDF0aJ+mt8VA+jNIOH1gyMLIcAOJERFTknODOOVEYJv1yVPxFkZNEgbC3dFzznNc2C48URoEny6/pqjZc9W8zHNp2NGbW5CRp0egJtyl1konIPWQ7WkwaWL42CL8beEClFb5oiEpBlbZHH/TlGwLWLrvih42Sdh1IxCtRTiNGjpFIsn4G9hATmm2DvHZ2zaGqeunKKCafL0xqiWTKZpKZvdrRo0YbWOmY8zbOXyP2uekQwOmkLhBAduSNDeABWRBuF9IJuOy2lA9HYGYCqfAqpnr6HlAsFMkGXs3z9wi3yLe/ZvXdyp6D4ou+gQasUSNmCGKz1/Tx9KV2SNuZk4lSVEjpTa2+SPz8mAivj0KehVSU+IEoDRwpd9In7UTImTauvZitxGmz6v7Kg7hoAFA5KArNVWgKyZl5BG395b/uVe1G6Rv1hZRS4Bxb05JDTgvQVNX18Zh9KJ4iSfARS0UPP3bqpUf3wK4FeQSfAPWGl+umR1rCrsgOfn1H83gFmnYL1kpSGoehZ4y4KY5qU9OxW/zl2N4HdQygKPZD52AeaeCmnj44JaLREdCYbqFwMsIhFPhBNpqIjdXhVjzpysc4ytxVe6LHUauUHBTfspvC6PWZMvHZEJH4LB4L8RGhdRWbnZq/0TiXPK4cqpNmYa1Dpfb2d+wlusFn5dz35sK6vsuUQY2WR4pIC2L+fdEZJTI06fE2NS8vaMrldDck9fFKwwQH1AkVVbGhV++Oiwg9ck0DO2XMDNvF+oYBK61oBuMwb89QUB3PLkXkGSffiCH5fe62mrjiGQrjI2t78pdHkvToosx2EG+JqwtzF/oLlNyTX0GV2HVly33yXMC+DzS+r/u4KDmfdGNEAPwJ2t+VzJjokoIjCyv
- Fno5fpq6
- nSfjRDh/tgP6ITHvPmFJyPWIp/1EnJIPkimP86suXnOpjRoHT8rmOBwqBE56W/vYp//QyO2TLXudxgtQhbb2S7xeTKFrHLUn4prsTvN4WD/r+ANRnthTSqtbEkNeRNVCx1VX5zcI+ICbhRyjN9/0vZ3d//e83E0yLO7HF5eIbgjhJ1bzoG0OGej+p65DGsB3acgxPzfGR6Sq48ZFjdpLq2Q2FxANe7r87rHByYGKt8HL4gPpw+FCnEgi9WbG1qZpVS6SePR1ta3LTOf+F+K4MhXiyqhzeT0nlE8Es2p1vITm7QMthCaaNK0ALZ/zZo1V8cc76iDhY88ttMmbBdWPWfMqRQPjpK56VCjtiUJOkdff3RVTA7eS7CbCC6zUCF5ZWxU/CkXOmGSx7w8af1jEaj1mx1JLtRFAkZb1aKT1WQcen1y2wnd4ev5Sn+qLBoMVyKS78aKHPJlbQ8/1D1IkvqLhHYeqrSD6sqTdGfuZt2ZD5A2w=
+X-HE-Tag: 1774054375-831628
+X-HE-Meta: U2FsdGVkX18OinX53j7EvMoY3aOQ1YQr1vZGjl8JrAVmI2MVmitLyIr7q5KVhbJaZ01Y99srAj56W1hHIiTcyBnbQ0gAA5ov7V4aE60IDsirTIfAB/TbTIBI1t7rPz93l9a8/3JER/2lnLpCLyepRLO2aYtcf8tKatRIm9ovg3q0k3ZFlzjkxD/DUhg6685sRLFx51ey0beDnixEeZVNHMBm4078ozFR4tgRa98wu02P76yicdf5LC+KOE46V1pJCeUb+T/3UUh21i5GDvsBglJT1f+qeS1buL34Ge2Sq0qB2I+z2xP8x9o3WV60apvtXvdN7xiQQ2exaZuCILXHjW4MXAFiVYbQNzWthdZy2/zXLkVfv9Dj0BdYIvc45zmScvUZXp89gPQfG+wR98T8i5pqa22gwL6nu7Y5N/Vo7/03m3zsiHKr4fLjeyQ7UUpBFbGnpIkd97aLz3aoMqdcm+PCxQ+lLE2aZ6u5uN3EZ2UjYc6bUjH0TwhNyWSlyT588cCOg1WDX/Tjf/vxjPJymiqK53PNnsq2EeNeyTLMf0ORZ9HqZFau4m2vETGCTfoxleReyLYwU/6rbiwjucUtJl1Vb/xFHmrQrnQehjK409q/j2saBZwMcFNmiXGi5bFBlwbwB8sqh1bRqOzs9G7B3Y8/3rt8XUthwVRmPo5Y8taAQiM8ssg7MjOjSGX0/kfVxquc5pjLFGnT3yD8F5gCLBpjA2HO8VBnqqW8MlXgJn4RsEynYGYUvkBUiJbBbtQDNOgwbweYMiYxdepq1xFW1LaILzBEzogAyCVPAn/1IVwl3LbZBaRzd7gFUDS9jz47HOjj/15uOxB5Mk4Fazq2sM1rOdJAN6O2A4aWAJ/+JRXhd6p7Fic3emIUaER3DWgnOrd56eY0E7dNqhTX23U66h8d9KI3SQnRoSmYWokuD4o+5d2uVcJFYmJxvFv/JkGrs+DJP9I/ANaE1ysyaNb
+ 3E8hQMmV
+ asN8Ayv/lbrlnNuoxky3WgSLsY49aYzSntuSdFjij6Pdob1fynDtgmJMq/Vqaw6S8n4AMkG4XI7eKXYjqwL7At9KufxbSqU+8UhIh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,145 +115,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae,
+The current implementation of damon_hot_score() uses a manual for-loop
+to calculate the value of 'age_in_log'. This can be efficiently replaced
+by ilog2(), which is semantically more appropriate for calculating the
+logarithmic value of age.
 
-I would like to ask some question about the fourth task in discussion [1].
+In a simulated-kernel-module performance test with 10,000,000 iterations,
+this optimization showed a significant reduction in latency (average
+latency reduced from ~12ns to ~1ns).
 
-Please let me state first that the following changes will also apply to
-the DAMON_RECLAIM module.
+Test results from the simulated-kernel-module:
+- ilog2:
+    DAMON Perf Test: Starting 10000000 iterations
+    =============================================
+     Total Iterations : 10000000
+     Average Latency  : 1 ns
+     P95 Latency      : 41 ns
+     P99 Latency      : 41 ns
+    ---------------------------------------------
+     Range (ns)      | Count        | Percent
+    ---------------------------------------------
+     0-19            | 0            |      0%
+     20-39           | 2625000      |     26%
+     40-59           | 7374000      |     73%
+     60-79           | 0            |      0%
+     80-99           | 0            |      0%
+     100+            | 1000         |      0%
+    =============================================
 
-Problem
-=======
-Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
-silently (no error returned to shell), because the validation happens
-aynchronously in the kdamond.
+- for-loop:
+    DAMON Perf Test: Starting 10000000 iterations
+    =============================================
+     Total Iterations : 10000000
+     Average Latency  : 12 ns
+     P95 Latency      : 51 ns
+     P99 Latency      : 60 ns
+    ---------------------------------------------
+     Range (ns)      | Count        | Percent
+    ---------------------------------------------
+     0-19            | 0            |      0%
+     20-39           | 0            |      0%
+     40-59           | 9862000      |     98%
+     60-79           | 135000       |      1%
+     80-99           | 1000         |      0%
+     100+            | 2000         |      0%
+    =============================================
 
-Solution
-========
-To fix this, I proposed adding synchronous validation in
-damon_lru_sort_commit_inputs_store() before setting the 'commit_inputs'
-flag. This allow users to receive immediate feedback (e.g., -EINVAL) if
-the parameters are invalid.
+Full raw benchmark results can be found at [1].
 
-Changes
-=======
-1. Added damon_lru_sort_commit_inputs_store() to handle parameter
-   validation before setting 'commit_inputs'.
-2. Added damon_valid_attrs() to centralize validation logic.
-3. Extracted validation checks from damon_lru_sort_apply_parameters()
-   (currently copied from core.c).
-
-Questions
-=========
-- Design:
-  Is this synchronous validation approach acceptable? Or do you prefer
-  keeping it purely asynchronous?
-
-- Code Structure:
-  I noticed damon_valid_intervals_goal() and similar validation logic
-  exist in core.c but are static. To avoid duplication, should I:
-  a) Export a generic validation function in damon.h or internal.h?
-  b) Keep the copy in lru_sort.c?
-
-- Concurrency:
-  Are there any race conditions I should be aware of when reading
-  'damon_lru_sort_mon_attrs' in the store function? Should I use
-  READ_ONCE() or add explicit locking?
-
-Thanks for your time reviewing this! :>
-
-Best regards,
-Rui Yan
-
-[1] https://lore.kernel.org/20260319151528.86490-1-sj@kernel.org
+[1] https://github.com/aethernet65535/damon-hot-score-fls-optimize/tree/master/result-raw
 
 Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/lru_sort.c | 64 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 63 insertions(+), 1 deletion(-)
+Changes from v2:
+- Send as a new thread instead of a reply to previous version.
+- Add SeongJae Park's Reviewed-by tag.
+- Link to v2: https://lore.kernel.org/20260320192020.33004-1-aethernet65535@gmail.com
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 554559d72976..0e5f9d29e294 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -39,7 +39,6 @@ static bool enabled __read_mostly;
-  * the re-reading, DAMON_LRU_SORT will be disabled.
-  */
- static bool commit_inputs __read_mostly;
--module_param(commit_inputs, bool, 0600);
+Changes from v1:
+- Replace fls() with ilog2() per SeongJae Park's suggestion for better
+  semantic clarity.
+- Move performance benchmark results into the commit message and add 
+  comparison between for-loop and ilog2.
+- Link to v1: https://lore.kernel.org/20260320072431.248235-1-aethernet65535@gmail.com/
+
+ mm/damon/ops-common.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index a218d9922234..ac604fb7b409 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -117,9 +117,12 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 		damon_max_nr_accesses(&c->attrs);
  
- /*
-  * Desired active to [in]active memory ratio in bp (1/10,000).
-@@ -361,6 +360,69 @@ static int damon_lru_sort_handle_commit_inputs(void)
- 	return err;
- }
+ 	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
+-	for (age_in_log = 0; age_in_log < DAMON_MAX_AGE_IN_LOG && age_in_sec;
+-			age_in_log++, age_in_sec >>= 1)
+-		;
++	if (age_in_sec)
++		age_in_log = min_t(int, ilog2(age_in_sec) + 1,
++				DAMON_MAX_AGE_IN_LOG);
++	else
++		age_in_log = 0;
++
  
-+/* Source: mm/damon/core.c */
-+static bool damon_valid_intervals_goal(struct damon_attrs *attrs)
-+{
-+	struct damon_intervals_goal *goal = &attrs->intervals_goal;
-+
-+	/* tuning is disabled */
-+	if (!goal->aggrs)
-+		return true;
-+	if (goal->min_sample_us > goal->max_sample_us)
-+		return false;
-+	if (attrs->sample_interval < goal->min_sample_us ||
-+			goal->max_sample_us < attrs->sample_interval)
-+		return false;
-+	return true;
-+}
-+
-+static int damon_valid_attrs(struct damon_attrs *attrs)
-+{
-+	if (!damon_valid_intervals_goal(attrs))
-+		return -EINVAL;
-+	if (attrs->min_nr_regions < 3)
-+		return -EINVAL;
-+	if (attrs->min_nr_regions > attrs->max_nr_regions)
-+		return -EINVAL;
-+	if (attrs->sample_interval > attrs->aggr_interval)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static int damon_lru_sort_commit_inputs_store(const char *val,
-+		const struct kernel_param *kp)
-+{
-+	struct damon_attrs attrs;
-+	bool yes;
-+	int err;
-+
-+	err = kstrtobool(val, &yes);
-+	if (err)
-+		return err;
-+
-+	if (commit_inputs == yes)
-+		return 0;
-+
-+	if (!yes)
-+		return 0;
-+
-+	attrs = damon_lru_sort_mon_attrs;
-+	err = damon_valid_attrs(&attrs);
-+	if (err)
-+		return err;
-+
-+	commit_inputs = yes;
-+	return err;
-+}
-+
-+static const struct kernel_param_ops commit_inputs_param_ops = {
-+	.set = damon_lru_sort_commit_inputs_store,
-+	.get = param_get_bool,
-+};
-+
-+module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
-+
- static int damon_lru_sort_damon_call_fn(void *arg)
- {
- 	struct damon_ctx *c = arg;
+ 	/* If frequency is 0, higher age means it's colder */
+ 	if (freq_subscore == 0)
 -- 
 2.53.0
 
