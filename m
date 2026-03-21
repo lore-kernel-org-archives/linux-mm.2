@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A156E1099B4C
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 00:08:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 939C61099B52
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 00:23:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB17A6B00C2; Fri, 20 Mar 2026 20:08:46 -0400 (EDT)
+	id CEA1B6B0092; Fri, 20 Mar 2026 20:23:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ED4E6B00BD; Fri, 20 Mar 2026 20:08:46 -0400 (EDT)
+	id C9A726B0093; Fri, 20 Mar 2026 20:23:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B5256B00D4; Fri, 20 Mar 2026 20:08:46 -0400 (EDT)
+	id BB0296B0095; Fri, 20 Mar 2026 20:23:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B02A6B00B6
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 20:08:46 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 158F2C1BAA
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:08:46 +0000 (UTC)
-X-FDA: 84568134252.01.E388F6C
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf10.hostedemail.com (Postfix) with ESMTP id EFD9DC000E
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:08:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b="UFF0HC/H";
-	spf=pass (imf10.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774051724;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AC96B6B0092
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 20:23:17 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79E40C02F0
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:23:16 +0000 (UTC)
+X-FDA: 84568170792.26.7D3A9D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AF44740007
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:23:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E8YKLdyY;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774052594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pBghYJ/F/Pt0HxiS5MRMUDhDiTzAi0jLjVNvoL6gXyA=;
-	b=zIiRNxNNh+bEVg/BSCJsIAtxyGbGBBYmFk7mNccIo26BZhTeuTbplIhWjL9onVNILf9l2g
-	nje+L5vWWG1WsKeQNIx9isi9SkxgJNkcYxfqp8vR8GYQ1R7jcwATZvrLQ2yv5SlDAU5sGG
-	knbLNAcKjWx3j8bI/ApWgMaFBJLUhXo=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b="UFF0HC/H";
-	spf=pass (imf10.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774051724; a=rsa-sha256;
-	cv=pass;
-	b=t3oZzbWLvhfUUce0unzuM6wvDQN8sx+spo5X+kdQ+4SKDUXySCIASpCrnuDMIa2RTOb3hX
-	rPsZ288M8elbTcWuEvlj2evbMOD5gX7wxnCV0NY5arRtK4cB+2JrIA2nMMhCkXqyYF5ORA
-	xGrAyRUQ2PhDrUcbqF/i7gYx6FqoBto=
-ARC-Seal: i=1; a=rsa-sha256; t=1774051712; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=Ot3VSSaZu3w0EJk2kNRqcxvTnv53LkYqqERkISePoWgewkbjZbAwV3h0F+F+2zyIHcUe8XdLO9DK7O+im/Ktl2D8d51WLN1ROhFKwy3lLynJ5tQ3ywwRNMpqTV42JLsWSYbg+FEomTozA2NUoNR++OWHaA7fI8CEZtWMJ1kwJVc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774051712; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=pBghYJ/F/Pt0HxiS5MRMUDhDiTzAi0jLjVNvoL6gXyA=; 
-	b=dlUw2tbsGohlZLAfHNQr8yE62OnPQB7Q+BDktR6gZaNFmD/TgTERvxcf6/9AngvudjSElPDlC1BltmoXAqvEs8EtdJLD9VHSmAv/oVIK5xY+ra94dA73UUWF8MR6yglL8VyzxQSD1TSBsCWSkVXFyQClHHXafhukEfbj+nAufuY=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774051712;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=pBghYJ/F/Pt0HxiS5MRMUDhDiTzAi0jLjVNvoL6gXyA=;
-	b=UFF0HC/Hr4z/DfDIlT35DNLMP6jx54vRe9xKtJZYe049HIW4Ht9JEjtUrwUyGx0b
-	uS9q/yTnXxipvs+OOCfijUZrsVAAowtga3hS6R0ykOSMp51R14d2ifptodqEyWOaket
-	6rhjvNL1gHASnDAcY0NE7ga7zSDaugVPDaUCs5Xw=
-Received: by mx.zoho.eu with SMTPS id 1774051710629882.7436884050414;
-	Sat, 21 Mar 2026 01:08:30 +0100 (CET)
-Date: Sat, 21 Mar 2026 00:08:29 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_mm/damon/sysfs=3A_fix_param=5Fct?=
- =?US-ASCII?Q?x_leak_on_damon=5Fsysfs=5Fnew=5Ftest=5Fctx=28=29_failure?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260321000255.102944-1-sj@kernel.org>
-References:  <20260321000255.102944-1-sj@kernel.org>
-Message-ID: <6902CC73-84EE-4C1D-9FC6-F54C7C378387@objecting.org>
+	bh=4Xv7Ih3hHaJwhAS3SL62+qYccrjz1JnG/Jq5JIt0p2c=;
+	b=lxYOv8jRnnHYyiPT7cnnczvi9+TO3bNG0YDVZWWkfMXuK+tIHkZfsBrQrZlF+CH+UyXnax
+	iH/dm0tNdrksGxts6dhq6xik1GghV8BcqSelnj6PFyEpkQjBsC6k2BHHnAy0yZGwK3h2sC
+	shPEDFjyXi0X6y+9GeprudeHCFPuPqw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774052594; a=rsa-sha256;
+	cv=none;
+	b=WZYmnMtsJVjzBHvmeEVf6GbCc+MLyV4BxO2remqF82pcd9FI/MOfQRXTm/NqpcX7fNq5pZ
+	+YgfObC58s28vQpy/6yAtnKMCo5sJWhZ4HFXDOGfRiGa0Mu8TrlI69fQ3gsgMnXNplz1UV
+	eeZYPoGVnHc1K+zj38H7McotmR+9aLs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E8YKLdyY;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5CB1D40A72;
+	Sat, 21 Mar 2026 00:23:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB21C4CEF7;
+	Sat, 21 Mar 2026 00:23:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774052593;
+	bh=GOJeUyjjWVogE75PISrYKLd8uFw9FCzsAE2nXsMF4/o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=E8YKLdyYGvJQV4eZNVaBQEK1dDC9jER7ugOH8Bh121qdvztgW1GYCjPUp6nYn/l+J
+	 TsGH5gHnvqJ8+8BsLKPZ1Y4hKQtYexECZth4XtS9F5c2UfpZq1tYpVrUUfEAcaphQU
+	 Q9oEBdj2aP3X1NV0ceoSqAjfxmYc/zwhQ5ioNcKPTXOYxXKAb3+WMm00P1Oh7QaOyY
+	 sd62j/JdsEnhmYP7yv+Tc0Qqnzt+Mm6nwCiK+mVLRQRcxZ3U7P92umQO4xEp+WbVu8
+	 EpcO7mBB3pPQwSAaVVmahkF46nW7uZnSx2v27DS6q1JLqv7mTI0jaBwHLxy0t0VZUz
+	 JCiIR02Cia6fw==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2] mm/damon/ops-common: optimize damon_hot_score() using ilog2()
+Date: Fri, 20 Mar 2026 17:23:10 -0700
+Message-ID: <20260321002311.69009-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260320192020.33004-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: EFD9DC000E
-X-Stat-Signature: 884in7kjteb4574u4khd5yn5bg474dwr
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AF44740007
+X-Stat-Signature: rsqhruwdod9fbzxhyuqxuiw3af3sehdq
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1774051723-989458
-X-HE-Meta: U2FsdGVkX1+ztwQzXBVkmzevIVw1raMsjOJsXU8UdxTgkE0uaanTVr56N6vb+wnM2K2R2JOygdah/Ey3Vs3FEuzpxQrCEbUCslTv0cMiXPp015+13QZyj+XvRxkVGrQr/hweSitTgalU4UlBrroZr8xZ6YufgftKhIsIHybvE78dkC8m+jJvuGiKjVZIf1KeJCH9STn5keE44h+9F0FsOU8+vm2dy5Nl/tXiEwXqewNc+xlHi8YQwN9+IowvBXKW+bbUEd2iHh/v/KCJNNjgDUAy8+kzix8KGe1znZBYEebezy50zU7ejBtif+2nBAjU4k4fi370/0PKmoc6Zw1ErI7xTLJlF9ymfwQpc7EufwssX4sgNVeBDKf7mQxHusYk/9lD/D6L12RpdIFRh0/Ocrfb9x/23UDZGCt0Ag1L7vNt4O7/MxuEFeiZxRYSvF+1lf2tpjOIeBwVYnvcs0jH6WsgUZzP+RF11jvWZG7aYYHEPEr7OcgjjCQPj0rJv5xtk7MdJPudnrZOPtNIpOXg/enZ17qxObcZ19o/BPNKxDhwToz/44AFLQrz/CzJigt4BbytobByIWn6/tnQ+uTi63Nl3KHMI84OdGGy6kGmHyewFnRqe+gwgJEkBnQ53WmXW/9CjlGt/O0aVPpY7qeJdJBp5ePYyKalRAjSrqJJW7I2fCUlVpVpZIgcKrs+Xn+UeBzjyVd+1dtKY+0T7Ry15A5OqsXAsE+ff0ixNsgQqZoZoffqyAh4g+CPURXjYSxS0ip8wCpT48DtoOIlh3o9jmRbXamex3UUcwuqmVblzH4XRVoBH/lV1UYtb8otaAzwTtO9PqTc48gLpTCkrT7g6UTPqIN4B9Uk1RAgCTG5649t/fRAp4EFGKWycX6m2RrjPnogvyABbDBUo+9DyM1uUm2MESj6vzdFxn41sFBe+u/QFVmeP96ai6wzugliu8N+O+OzTF7XHdSyG52FAod
- JTHWR/wA
- +aREsgvAzwW/OWTrn0kQDZ9Sne3B8jyvfXLibfXrbQosBp62de4vyBC+7oF5tJNv7ZuANYOrVpr8BEMNmds7i3TjpvYGjXuT7uU8cv+jmCA8rccy5Ep2U3t91+HcjUM0IXKMPq0Q1nM8CeH1UP5zbbPHgGHsOrzmugVilBYyloh2KJ4xisAMSym85ZbqxoonevRsV5TGt9I7hhxiWn0KWmC3lajBxxt+KvGRJr9YBE11xD93N+W1clJviaamuu46MfGAQmS+50kr7glw954XbcU7LqmtOsrlYUzRq/3Enn2S+6I9SbGqSFF8H5Jtz8BbD/cXJGOoMNqT3MC/KuSJTmmTiTc8BpSMIU4kUcftwwRUZDsWLQe6yX/s3Dizo1OYpOaRl9GcvZVbcC5cuJvzff5s20MlvTF8przQ7TIDwqTva3oxY2sO2ZdQpyrJPorVDBZingzA4Pb51e4SyOr37/VcHA5SL+xg+lvuLmFIA4oElV9nFvmirboMkNEyKa6+9L0bcmWcWyjWZ58gLt+Hc4T4qDKVn189VbycZ70wAGCEdW/c0JIChDq2BHOS9N1+wCoOXGmgW1s8xsr3pd7NUP582XQ==
+X-HE-Tag: 1774052594-865517
+X-HE-Meta: U2FsdGVkX19NkDuwl0BQtcIgfoIJyQ/nGMPepAF89j2n9tDs0hXzxx8MnLWHUF7U34CrqpzsTkBYsGeijXUpwAwqmohY1FM0wlvc1ilVrm95BYRm/oc6aON0Q6ZhTfVzGvSj1sQFJ+zV7v6CZjmAsUeLSYDuDhpUTg1mltY5ZxhcoSg7+k+AOobtzz+nrSkW7+bGGdoTfgRysBCAKwBJBVc7YyNMcNWcw1noEfARLQuxxJntqyj+fkORVSyPf/6iJhlxXdm++gnVm1zE7dmwqcPO+IikoKULRjY+OgNzu2fBthbtN04ms8aIlgtrrVxG2sVj3t7Kkc7M4TmmMnYE0E5xe8AwHJKxRfRFnXAlh2yQxyiHH3BUTQFhLHR1cdB29G1rSY/IrChYJpKvW3pAROu6LKdUlQ/p8eLICkJg/l1q0Dk1vlR5FH6DXvJ80EaE0MG1pbDGc7FGP/uH/izw6kHG8SCO/5k1ZO7eZUIOru5HGWpVv33TnHYCrBWttWb+bDQQEdY6cKIsbGn38y6IjZ3SDqBuH99f1X+NpppbHEtUg19aFyqIzOOCKR5vvvxMuaMuwyC7m+8PMyLt8ETPYQfkhKP0buFT1hMp7pARgSFD4tY1Vc4aIuL9OjBUTMrnhmxVFRDZvX+pzXhwmuqeiz3PtsciBBQZ2T1BUy0jKa7r9Gq+MpbxTTckpc0aicBZn7/i382nPztBbb0sPjvN/CT/yu+E4Gu/WO3HNTX73GwEcVUb5Mwy+ecKPRryquuqeaedexlmeGG0aYEzv/2fSdLk1iML6GQRUKjkZuPPEZI3h8x1iYw/OxSo2qgYCrzY5K2RPobefACfxn4j5K7g2GFGXcHrcTdCbvRfWqOCvetN3a+zdEspvPaBzWHXqktcVHwbfoFmC4HokbgljMfd2n3yXScCQWDCcPUPCr2lSqeZFU9s/6yeUas/k0Xj5n5zQWowDBjeeuRxgNqKlil
+ RSlJt4RW
+ IQoNfbcb10ZlnLIoQTUV2KlAtXUtj86KnOcBOs2nFOzfn+7pAmF8JPbAAckF2+wyLbo2dVk1yl7M6YeMizlg9BGtSSg2qLB0dtrh1D0sjrCxUgZyQcDiCSriHofjP0T8QBtVl9S1snHpIW3HhZ4EvkAutIiDkl/7p+VSmKuHVh5ZwzFN6Hsiq6dpVyLnSJElyjOYspMmfnFCGCQUrAif00xPCraf4a3y1/YtFJaswWeWVoFHdubmerlhkdJI/TEmXkoBuu1zVaJAe8Hxf2PqyYA9w1sxqu60WneHs/tuQdU//bCsw41nTQEAaBtrN4pZ5MJCp2xj7j2Qb9oxclN45EgOtpJLCCAMZLRnR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,29 +92,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello Liew,
 
 
-On 21 March 2026 00:02:54 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->Apparently this series is only by a mistake, and therefore a new version =
-[1] is
->posted=2E  So I will skip this series and review the new version=2E  Let =
-me know if
->anything is wrong=2E
->
->[1] https://lore=2Ekernel=2Eorg/20260320163559=2E178101-1-objecting@objec=
-ting=2Eorg
->
->
->Thanks,
->SJ
->
->[=2E=2E=2E]
+When you send a new version of patches, please send those as new thread, rather
+than as a reply to the previous version.
+
+On Sat, 21 Mar 2026 03:20:20 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+
+> The current implementation of damon_hot_score() uses a manual for-loop
+> to calculate the value of 'age_in_log'. This can be efficiently replaced
+> by ilog2(), which is semantically more appropriate for calculating the
+> logarithmic value of age.
+> 
+> In a simulated-kernel-module performance test with 10,000,000 iterations,
+> this optimization showed a significant reduction in latency (average
+> latency reduced from ~12ns to ~1ns).
+> 
+> Test results from the simulated-kernel-module:
+> - ilog2:
+>     DAMON Perf Test: Starting 10000000 iterations
+>     =============================================
+>      Total Iterations : 10000000
+>      Average Latency  : 1 ns
+>      P95 Latency      : 41 ns
+>      P99 Latency      : 41 ns
+>     ---------------------------------------------
+>      Range (ns)      | Count        | Percent
+>     ---------------------------------------------
+>      0-19            | 0            |      0%
+>      20-39           | 2625000      |     26%
+>      40-59           | 7374000      |     73%
+>      60-79           | 0            |      0%
+>      80-99           | 0            |      0%
+>      100+            | 1000         |      0%
+>     =============================================
+> 
+> - for-loop:
+>     DAMON Perf Test: Starting 10000000 iterations
+>     =============================================
+>      Total Iterations : 10000000
+>      Average Latency  : 12 ns
+>      P95 Latency      : 51 ns
+>      P99 Latency      : 60 ns
+>     ---------------------------------------------
+>      Range (ns)      | Count        | Percent
+>     ---------------------------------------------
+>      0-19            | 0            |      0%
+>      20-39           | 0            |      0%
+>      40-59           | 9862000      |     98%
+>      60-79           | 135000       |      1%
+>      80-99           | 1000         |      0%
+>      100+            | 2000         |      0%
+>     =============================================
+
+Nice!
+
+> 
+> Full raw benchmark results can be found at [1].
+> 
+> [1] https://github.com/aethernet65535/damon-hot-score-fls-optimize/tree/master/result-raw
+> 
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+> Changes from v1:
+> - Replace fls() with ilog2() per SeongJae Park's suggestion for better
+>   semantic clarity.
+> - Move performance benchmark results into the commit message and add 
+>   comparison between for-loop and ilog2.
+
+As I mentioned at the beginning, please send new versions as new thread from
+the next time.  And, in the case, consider adding a link to the previous
+versions.
+
+[1] https://docs.kernel.org/process/submitting-patches.html#commentary
 
 
-Only the numbering was wrong, like no 1/3 2/3 etc=2E Im a bit of a perferc=
-tionist so i nitpicked it
+Thanks,
+SJ
 
-V/R
-
-Josh Law
+[...]
 
