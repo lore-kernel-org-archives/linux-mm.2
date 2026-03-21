@@ -4,131 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13C82108B8FF
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 04:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1411093170
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 04:31:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 230AB6B0005; Sat, 21 Mar 2026 00:04:57 -0400 (EDT)
+	id 937016B0088; Sat, 21 Mar 2026 00:31:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E0FA6B0088; Sat, 21 Mar 2026 00:04:57 -0400 (EDT)
+	id 8E7E26B0089; Sat, 21 Mar 2026 00:31:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CFCD6B0089; Sat, 21 Mar 2026 00:04:57 -0400 (EDT)
+	id 7FE2F6B008A; Sat, 21 Mar 2026 00:31:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EE9AF6B0005
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:04:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 71A0313A7FC
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:04:56 +0000 (UTC)
-X-FDA: 84568729392.19.1E95E6C
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A63914000B
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:04:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vrHObXMu;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=bingjiao@google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CC7F6B0088
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:31:50 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5AFA58E1F
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:31:49 +0000 (UTC)
+X-FDA: 84568797138.09.CE914E9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 87B8A180004
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:31:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZiAsdN6f;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774065894;
+	s=arc-20220608; t=1774067508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vb0hgyyRQxiEoRD57QPoNnifO28j8YAw05wFPmEsgvQ=;
-	b=NWNG4sGeud0p7xCsdx6GZnVkbuccXvKraKU7Vqj4N1lOscNnSPc79gn+jJ6hqNmdA7Pfrs
-	Qe1TiKdsIVS3H2TBsNmvmNTc+u2CbopWE0JDL93lzBjILgfyl/K5sgX+dalu70DEF6E3Ok
-	kFP12bM8aq95hM5N9ZBkVEt7RvGIa+U=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=AbyIAFdB2gRFiTn8Ewo/Rk9juZk86cWe6HbHa8XFDcE=;
+	b=Gf8coyRn3t3XQVOEIL2E17u1Tw/k5ps1Cfs+KXSNNEOEEB3hxH2EAhxETKukzCfzdeejdi
+	nFfB1JLsWOPjaQTZBHh4xwHxsj1oKZBH68WLitqNSFKylp6U7otXPgoyYu8biq7laEOUfP
+	wYe4RGzOWh/qFlZpQGVknHpFnIAfOPM=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vrHObXMu;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=bingjiao@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774065894; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZiAsdN6f;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774067508; a=rsa-sha256;
 	cv=none;
-	b=BqOk5LjA6MRCYl7wlxryHWfWSm60od6Jqrw+px0WlR6V13X3y6LMPL4oNFC7nIgRxrai0v
-	NtuhAPngtqD/0VhYEtt/p6Mtld0P1aTEc5t0cXChDTZASR9XWuVKYYq3D6++QOuqqLWrDr
-	QnF8E6Jt1T5u6UFAkKdGgX+lgyDSj8c=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b052562254so55695ad.0
-        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:04:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774065893; x=1774670693; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vb0hgyyRQxiEoRD57QPoNnifO28j8YAw05wFPmEsgvQ=;
-        b=vrHObXMu+HvaAIvCI3GLaMTqS6g9VBnQ+WJ+QSAH7CMfx1Rjdf9UIR6MyAUn72NxsB
-         SuKMbe2Hnq+V/o1UC7C6T5ZsauHMV80ss0HaVQTKHyBoPtT6LKZCXTi6AsbBhgRyLdD/
-         +nKSjEURqPs83WxPGD9gBxKwpso3WLrqaTEdvwWaRqI3f1EDj7OYrJqRXfmxk4wU1Qyy
-         46MEewMJefQ6Pr68tVTt91M2henmD1GWqYlSX0pKLZvO9V+TRHdJ6kYbaE7ZydvzRGvS
-         zM6XhX1y4JPxT4W+8sSomGqdNIU1pRHczZqyC4e+0evWB1ShW1s+VlY+r/9bFht66Bl3
-         6hVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774065893; x=1774670693;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vb0hgyyRQxiEoRD57QPoNnifO28j8YAw05wFPmEsgvQ=;
-        b=jbQmc4o3QyhgU2dVtXIS+zA++OHplHtgh1Pn66rM2nCRzKoegZwhJFSG7ktlEeF5MW
-         eTzl5PO2qEmGf1XYOWliWFEfDJDdAgRRP60rfGHP8dGCDmkpDGuiIwp3edVA23j6xL+M
-         Qn3bkTd3e3v5Ihiyf/jNK2GUu/gju3gsqEzEHxegJibuBljx5/KgSf/5QXjtiPj+CJZX
-         80YGiL+ONPs+w/wRkdl6Cb0Dc+rBrEXMr0WfkoSLQaTJiaJ+edA11FTKqfhA5wOHOJWO
-         vmklcOgk8N6LqegOnlYs6L8OoE7scPN4DDwtiRnrTz5jG7CY+ts1KMLpVn2QX5Y29zzA
-         cIfQ==
-X-Gm-Message-State: AOJu0Ywudg9zcCq0c5S2rhbKQIMPPQsMYvWTbdRdNna4n0g4U1W3gdvp
-	0pqVR59nhJ6HAKmfzs05Mtd8apUWpIa8FvmmRqKhwCOYIu2sZhnZbEVWpt0k9UOE5A==
-X-Gm-Gg: ATEYQzycy42uw5TLKAMULf+GtkV8SoyA7HDbkYas+9IH8ZYpHvVRr2o4d1HKAXLawJa
-	6WcetQ+WW5Tuj9AaFtMtZDgj1Rw8sGxhMLLDSMWjhli+TZRZTE+u6DsQ1BpFi1Rm6NFB6ecZIkI
-	sfsABueKWkdWgQXBoO+GzLM48K3gPNMviTCttXqTM1vWxglevf8HLTWeH0HksqKeU/V9qy2dbV1
-	TzyrQC9pXsbv20rNq5H/REDLpQrhwGssvda6OlB+zc4Hk625xlfrm1K5weHf9I8W7Hi6r/1+Ea1
-	+gXpNvSz4gWnVF6Atn6n7HgoOx7A1tJXx1Z0lxYaZQe98CMRFE6FHJ8twTX7VWaPYj2ckg+dyJa
-	1yhLCqHnGe1Tsa9d7zu6ys1qUzqqqGzIBeluDHAZa8g+g/JV6G8OZozjWE8tY6udRQoxpJWheFE
-	0w6TRF2SfBsKOyV/vZL1mGG3Ph4i9zmcgKA7vofQSaM3hdwkWw0NnGq3eDI1Z5OdkN
-X-Received: by 2002:a17:902:ebc5:b0:2ae:7fa2:6bda with SMTP id d9443c01a7336-2b08c38a9b3mr1002905ad.1.1774065892911;
-        Fri, 20 Mar 2026 21:04:52 -0700 (PDT)
-Received: from google.com (206.238.125.34.bc.googleusercontent.com. [34.125.238.206])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b0409f582sm3411460b3a.33.2026.03.20.21.04.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 21:04:52 -0700 (PDT)
-Date: Sat, 21 Mar 2026 04:04:47 +0000
-From: Bing Jiao <bingjiao@google.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Rientjes <rientjes@google.com>,
-	Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: [PATCH 2/3] mm/memcontrol: disable demotion in memcg direct
- reclaim
-Message-ID: <ab4Y33lBuYiOTGx7@google.com>
-References: <20260317230720.990329-1-bingjiao@google.com>
- <20260317230720.990329-3-bingjiao@google.com>
- <380c52cb-fc8d-4fbe-8d2a-f153bd179816@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <380c52cb-fc8d-4fbe-8d2a-f153bd179816@linux.ibm.com>
+	b=4ecwFsJMBVmfkNWfBnOXlUx42GJlJ+lUR9aNEoKor0jPbrB39hJjfeJu/bHm+3mBMQuDT3
+	Yq4uBR2tjMxWzyHwxqAc0zxNAFlh824jNWw4Wp654Xl520vEMErMqHaMIWVZecGtiBE4or
+	TpQ03H2FeiaL8vSKLwVoRC/lnD7eoOA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774067507; x=1805603507;
+  h=date:from:to:cc:subject:message-id;
+  bh=4GR6hVt8gyZ2v0ahx16gfOxVY7IGMNezL6tMIE8DfB0=;
+  b=ZiAsdN6fMM3MHAZXIfEwt+h7d/XlbfQb3H7yCOII94aWkl+TKtc/n5V8
+   +aBdMgB7mh54F002DI9tz3FEm297ZOZOhQoD6xLIppZ4Yzsbjq5rX93aT
+   ctKg3+aymodaDuuknKL3dNrg3qKYAFDdLceV2R0OgaTivRCTBoB/zg9XV
+   RiuVRAYJZYNyEipgp4b3DBsjUh/ZTiH+biu+Og0WZUc+tgNjIl1DcVoGd
+   gJ/CRi2C4LsIp66fAfeNps/dyJJuX1TnQ2x9nEYZIhY2K1fwRjlYy6G9u
+   Qo2nDhn8k72UOuGg/Wf/eCoG0l9+oNZNbqwWWFhn2vTTVJ0oII6pJrK/3
+   w==;
+X-CSE-ConnectionGUID: h3tO42TZTHehng7O8yPQvQ==
+X-CSE-MsgGUID: kOCNoLJ2T7yro+bJAgSa5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="75224421"
+X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
+   d="scan'208";a="75224421"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 21:31:45 -0700
+X-CSE-ConnectionGUID: AUU2SPYiTv+SZkUXoJKdFw==
+X-CSE-MsgGUID: bqSlTESQSbSk7C+KzbdXLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
+   d="scan'208";a="222720969"
+Received: from lkp-server02.sh.intel.com (HELO d7fefbca0d04) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 20 Mar 2026 21:31:44 -0700
+Received: from kbuild by d7fefbca0d04 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w3nzR-000000000If-0wcQ;
+	Sat, 21 Mar 2026 04:31:19 +0000
+Date: Sat, 21 Mar 2026 12:29:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
+Message-ID: <202603211247.Y5JRJjpR-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A63914000B
-X-Stat-Signature: pyenboew55yc9adbaqarjzxayhbubwkm
+X-Rspamd-Queue-Id: 87B8A180004
+X-Stat-Signature: fnm8pnbmwqyfkf7tw6y8a3xc9p3p6xrc
 X-Rspam-User: 
-X-HE-Tag: 1774065894-560516
-X-HE-Meta: U2FsdGVkX19Yc0CXukHpAY0Fs67gFSh90UejPANXR0GBlSIzWrc4i3IzQIifQnVqjQ4u6o3juEkTUPuyzUYvo8h1bap8iBoqa1kMzwjRg7Cmd+I0YtHZjp9j14n23I8cnFXDminE3aCWHVH+ja1/oHvqQLhkjjdNO9FNHbnaHjB6pmVFP9qDyQkAtPFAF7lsp2g+LcBb4wORmRW03gWWjdfCBf+E4r/1TRwhUup4w8US3QS9XEQDTSMKiPqWRgvd2f+JkmLdJS1bKUorXd5N7wVRj6OmXCL9uOlHO0AbFI9Yg86/+7f2GfXJgjJFX7epNr1ACqftUTDN9DyvLaO0hbHba3ij/T4/wg6cwYFNWG7kY8elEA8UEAUFD1OJsXv6JplWMv45BB/Dw5cLG1SnynBXxoFbfnf0Dm+MYvLwD4ng/MBD8qZFGYyTvkJCBN+xL6ugA6zLq2JpPMPBo2I1oNxROEHyaF1Eq9e0T+sLuriF1JMpErTotIZD5qJ0A9iv3zGnIA6W8ywZ6KLkFkj5KiGi0QO246n/4CilOPgN0XF+RbO4OWWr/ZUkpNDnqmnJNuB+9iDVwy6sB6c5XfruSldZY6HmG0pNhDPHefVKKq820ia+dHDfBgpH3jaLgCE6iW5ZDRTZO6COTHaDd0Gp/o90BLtf9CbjWOmxruC7fm/UgXPcm2boGyuQMC1Z5CDdF9wJ9QZnVqPjJkYanIdwYeoPQTQiMz4VGDr8E/CnCihuOa6fiSquXtUyVPuKMkAfp2TCS7BDzj13GJNhFKkTc82AwrXDzawlUWnt/KPTMPEkX56uPoZKIrPnoF3y9wnL66LXuEpu/RrfDqdQbf28c6Jo1xkZ5HO07KGRzncHWNQndVEdJzuDfY9Nqa74DiFJj8rZQXLfjNVteRkEuSw7tmW9TzbZZzNAuZnZp4zpCnm3BdEYNzjERaKVSMoXvLN37tPCBkWBBweXL01JyhP
- /0AYhuK4
- phw85A2J/WoT4slWGoh1YcBmj3qTozLaiuHf7lXV8DoTmZ5aS6UIVvp8YhLBhRRJKxufkHBtLM9NC7Zs7wXH6Q3DcRrM8AH7t9Y0Ic7Hv251nAaCjA9tSwjFmkEoR9ZdtpT9DZBgCxuonAVju6+dwKhTVOy3ooUFVdez7KcKWM3JCMMZ77fpnO+/DZmUgTXc/e5CuPiCtkMp6KhkPCzAWlY3YhJ4q+YZOaTqSYC+pOh57nWknu+aog8AKzEI1RdjWADRo+ovJurj/De2MUi75v7uRvkHDFtjJUHebVfexM0eY3edtBm5ZmdyLyFXhV0OpJJ6dvs3m8yqtIDYE8cEBX+rNlaux9EuN7jMXb/WSNGqqKkvb1Ea+m0I2uWmfMaujv9VS+ShGU7mhBwzbatrDIcOhDY+KpV099P/xgV+3dYv4jh+rFWhB4oTyooH/iTggVY2YsEJsl/0AduT3J0eXx45addggRExj8TgQIBjZzwtMD8paMZ8uJqMzXg==
+X-HE-Tag: 1774067507-844162
+X-HE-Meta: U2FsdGVkX1/3B58pvttqE8CS4GqDOqXnRG5kkzz/tglRVQkO+G7BObL+joPSdntp2bx2B4061k/wCY5nwqdxSiicZ02s0M8zZXVXtEjWWV8n78cDyndiBV//PGodvaYd0LKAruqt9W95q74/udnljkPtyWvXTFk1Ot+4Lbxgah8qnXuRxHSyKnXmHGRVbvE3V3k9NjitJsqOr830pFAFmifMwZY70VPHzmS5S300nqhcIlh2ZmYLp9JUiRc+iUGX/qyaITT6V9ZPHpfSWy/fcnIa0pYl01H6aYQGMM5xunW1PB0lXps4/zFo1QJoTPKF8VJxq7Yb1GSfRnNc2v9XPl//L2gc2OPdC7fodxffGG4jfbXioyZn8JVsnv18lc10St06bLG7WCUdQDnvRFFeT6sCw5zfRcrSzsSNM9g/LJr7ILScNpoXYZl0eGXnMfNdRIffxljild/DM5dFaU+Brxe/MN4SDRZPrVkB9+8W0qk8dFUmpyEnAnLKK56wb7kQM9Si3NI9Z0fJBFM9r6M3n5Cb0p3ibc9B1ZudQutPcMP/gR2KPxXRTB/bWb89Q48+kST9+jV7ohD2VUXPcGHQTXZFcwzkaI17cG8/1Dl2n6eN/kNDL3lvw3XUJ85xl64uQQ4W76XVnZPTBTD85WBKd+4aPH/KhRudGtjHlgQ811ASjOa4jPdxBhL5eeCJ8+jC7992dz1OAyHRLC/mLpucrfeEir7e7RtlzAYn1df0k/l7fEI0SLl6VjiyOb//fqEsr/RmOJR5jLJnKiQUIsKYXQq87en3wrHRJq7GBK9UgGZf71ziTPRQ/fD7qtjiFkxFHuPRjYaNgzsfMlzyDM5SqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,59 +99,406 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 06:47:14PM +0530, Donet Tom wrote:
-> Hi Bing
->
-> On 3/18/26 4:37 AM, Bing Jiao wrote:
-> > NUMA demotion counts towards reclaim targets in shrink_folio_list(), but
-> > it does not reduce the total memory usage of a memcg. In memcg direct
-> > reclaim paths (e.g., charge-triggered or manual limit writes), where
-> > demotion is allowed, this leads to "fake progress" where the reclaim
-> > loop concludes it has satisfied the memory request without actually
-> > reducing the cgroup's charge.
-> >
-> > This could result in inefficient reclaim loops, CPU waste, moving all
-> > pages to far-tier nodes, and potentially premature OOM kills when the
-> > cgroup is under memory pressure but demotion is still possible.
-> >
-> > Introduce the MEMCG_RECLAIM_NO_DEMOTION flag to disable demotion in
-> > these memcg-specific reclaim paths. This ensures that reclaim
-> > progress is only counted when memory is actually freed or swapped out.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e  Add linux-next specific files for 20260320
 
-Hi, Donet,
+Error/Warning (recently discovered and may have been fixed):
 
-Thank you for the feedback and reviewing the patch.
+    https://lore.kernel.org/oe-kbuild-all/202603202333.o9PN1JUT-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202603210208.5TW7E8WX-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202603210903.IrKhPd6k-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202603211040.LUJzjyRs-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202603211220.dWi6MHR5-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202603210529.IutAxKNP-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202603211016.C56jHFl9-lkp@intel.com
 
-> Thanks for the patch. With this change, are we completely disabling memory
-> tiering in memcg?
+    .tmp_gl_lontium-lt8713sx.o:(.text+0x268): undefined reference to `__udivdi3'
+    cs47l24.c:(.text+0x1dc): undefined reference to `wm_adsp2_component_remove'
+    cs47l24.c:(.text+0x2e0): undefined reference to `wm_adsp2_component_probe'
+    cs47l24.c:(.text+0x38c): undefined reference to `wm_adsp2_set_dspclk'
+    cs47l24.c:(.text+0x470): undefined reference to `wm_adsp_compr_handle_irq'
+    cs47l24.c:(.text+0x694): undefined reference to `wm_adsp2_init'
+    cs47l24.c:(.text+0x70): undefined reference to `wm_adsp2_remove'
+    cs47l24.c:(.text+0x7e8): undefined reference to `wm_adsp_compr_open'
+    cs47l85.c:(.text+0x180): undefined reference to `wm_adsp2_component_remove'
+    cs47l85.c:(.text+0x2c4): undefined reference to `wm_adsp2_component_probe'
+    cs47l85.c:(.text+0x3b4): undefined reference to `wm_adsp_early_event'
+    cs47l85.c:(.text+0x5d0): undefined reference to `wm_adsp_compr_handle_irq'
+    cs47l85.c:(.text+0x6a4): undefined reference to `wm_adsp_compr_open'
+    cs47l85.c:(.text+0x768): undefined reference to `wm_adsp2_remove'
+    cs47l85.c:(.text+0xa24): undefined reference to `wm_adsp2_init'
+    cs47l92.c:(.text+0x1e8): undefined reference to `wm_adsp2_component_probe'
+    cs47l92.c:(.text+0x2ac): undefined reference to `wm_adsp_early_event'
+    cs47l92.c:(.text+0x40c): undefined reference to `wm_adsp_compr_handle_irq'
+    cs47l92.c:(.text+0x6fc): undefined reference to `wm_adsp_compr_open'
+    cs47l92.c:(.text+0x7dc): undefined reference to `wm_adsp2_remove'
+    cs47l92.c:(.text+0x9b8): undefined reference to `wm_adsp2_init'
+    cs47l92.c:(.text+0xf0): undefined reference to `wm_adsp2_component_remove'
+    drivers/hsi/controllers/omap_ssi_port.c:1121:12: warning: address of array 'ssi->port' will always evaluate to 'true' [-Wpointer-bool-conversion]
+    error[E0277]: `*const kernel::bindings::vm_uffd_ops` cannot be shared between threads safely
+    include/linux/compiler_types.h:706:38: error: call to '__compiletime_assert_398' declared with attribute error: min(outarg.size, ((loff_t)(~0UL) << 12) - pos) signedness error
+    include/linux/instrumented.h:67:(.text+0x105c): undefined reference to `wm_adsp2_remove'
+    kernel/sched/ext.c:6517:2: error: call to undeclared function 'cgroup_put'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    kernel/sched/ext.c:6606:2: error: call to undeclared function 'cgroup_get'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    sh4-linux-ld: cs47l24.c:(.text+0x2e4): undefined reference to `wm_adsp2_component_remove'
+    sh4-linux-ld: cs47l24.c:(.text+0x390): undefined reference to `wm_adsp_early_event'
+    sh4-linux-ld: cs47l85.c:(.text+0xa58): undefined reference to `wm_adsp2_remove'
+    sh4-linux-ld: cs47l92.c:(.text+0x9c8): undefined reference to `wm_adsp2_bus_error'
+    sh4-linux-ld: cs47l92.c:(.text+0x9cc): undefined reference to `wm_adsp2_remove'
+    sh4-linux-ld: sound/soc/codecs/cs35l41.c:1105:(.text+0x738): undefined reference to `wm_adsp2_remove'
+    sh4-linux-ld: sound/soc/codecs/cs35l41.c:211:(.text+0x560): undefined reference to `wm_adsp_early_event'
+    sh4-linux-ld: sound/soc/codecs/cs35l41.o:(.rodata+0x3214): undefined reference to `wm_adsp2_preloader_get'
+    sh4-linux-ld: sound/soc/codecs/cs35l41.o:(.rodata+0x3218): undefined reference to `wm_adsp2_preloader_put'
+    sh4-linux-ld: sound/soc/codecs/cs35l41.o:(.rodata+0x3244): undefined reference to `wm_adsp_fw_get'
+    sh4-linux-ld: sound/soc/codecs/cs35l41.o:(.rodata+0x3248): undefined reference to `wm_adsp_fw_put'
+    sh4-linux-ld: sound/soc/codecs/cs35l41.o:(.rodata+0x3250): undefined reference to `wm_adsp_fw_enum'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0x1ac): undefined reference to `wm_adsp_compr_free'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0x1b0): undefined reference to `wm_adsp_compr_set_params'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0x1c0): undefined reference to `wm_adsp_compr_trigger'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0x1c4): undefined reference to `wm_adsp_compr_pointer'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0x1c8): undefined reference to `wm_adsp_compr_copy'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0x1d4): undefined reference to `wm_adsp_compr_get_caps'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0xb1708): undefined reference to `wm_adsp_event'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0xc3c84): undefined reference to `wm_adsp2_preloader_get'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0xc3c88): undefined reference to `wm_adsp2_preloader_put'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0xc51e4): undefined reference to `wm_adsp_fw_get'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0xc51e8): undefined reference to `wm_adsp_fw_put'
+    sh4-linux-ld: sound/soc/codecs/cs47l24.o:(.rodata+0xc51f0): undefined reference to `wm_adsp_fw_enum'
+    sh4-linux-ld: sound/soc/codecs/cs47l85.o:(.rodata+0x1ac): undefined reference to `wm_adsp_compr_free'
+    sh4-linux-ld: sound/soc/codecs/cs47l85.o:(.rodata+0x1c8): undefined reference to `wm_adsp_compr_copy'
+    sh4-linux-ld: sound/soc/codecs/cs47l85.o:(.rodata+0x27cd4c): undefined reference to `wm_adsp2_preloader_get'
+    sh4-linux-ld: sound/soc/codecs/cs47l85.o:(.rodata+0x27cd50): undefined reference to `wm_adsp2_preloader_put'
 
-Yes, this change will completely disable demotion from memcg
-directly reclaim, as demotion does not help to reduce memory usage.
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
->
-> Did you run any performance benchmarks with this patch?
->
->
-> This patch looks good to me. Feel free to add
->
-> Reviewed by: Donet Tom <donettom@linux.ibm.com>
+    drivers/block/drbd/drbd_debugfs.c:336 drbd_get_peer_request_state() warn: bitwise AND condition is false here
+    drivers/iommu/generic_pt/fmt/../iommu_pt.h:908 riscv_64_map_range() warn: impossible condition '(paddr > 18446744073709551615) => (0-u32max > u64max)'
 
-Thanks again for the review!
+Error/Warning ids grouped by kconfigs:
 
-Following a discussion with Yosry regarding demotion as an aging process,
-I have decided to drop patches 2 and 3 from this series for now.
+recent_errors
+|-- arm-randconfig-002-20260320
+|   `-- drivers-hsi-controllers-omap_ssi_port.c:warning:address-of-array-ssi-port-will-always-evaluate-to-true
+|-- arm64-randconfig-r112-20260321
+|   |-- kernel-sched-ext.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-scx_sched-sch-got-struct-scx_sched-noderef-__rcu-scx_sched
+|   `-- kernel-sched-ext.c:sparse:sparse:incorrect-type-in-initializer-(different-address-spaces)-expected-struct-scx_sched-parent-got-struct-scx_sched-noderef-__rcu-scx_sched
+|-- i386-randconfig-141-20260321
+|   `-- drivers-iommu-generic_pt-fmt-..-iommu_pt.h-riscv_64_map_range()-warn:impossible-condition-(paddr-)-(-u32max-u64max)
+|-- microblaze-allyesconfig
+|   `-- tmp_gl_lontium-lt8713sx.o:(.text):undefined-reference-to-__udivdi3
+|-- nios2-randconfig-r073-20260321
+|   `-- drivers-block-drbd-drbd_debugfs.c-drbd_get_peer_request_state()-warn:bitwise-AND-condition-is-false-here
+|-- sh-randconfig-r123-20260321
+|   |-- cs47l24.c:(.text):undefined-reference-to-wm_adsp2_component_probe
+|   |-- cs47l24.c:(.text):undefined-reference-to-wm_adsp2_component_remove
+|   |-- cs47l24.c:(.text):undefined-reference-to-wm_adsp2_init
+|   |-- cs47l24.c:(.text):undefined-reference-to-wm_adsp2_remove
+|   |-- cs47l24.c:(.text):undefined-reference-to-wm_adsp2_set_dspclk
+|   |-- cs47l24.c:(.text):undefined-reference-to-wm_adsp_compr_handle_irq
+|   |-- cs47l24.c:(.text):undefined-reference-to-wm_adsp_compr_open
+|   |-- cs47l85.c:(.text):undefined-reference-to-wm_adsp2_component_probe
+|   |-- cs47l85.c:(.text):undefined-reference-to-wm_adsp2_component_remove
+|   |-- cs47l85.c:(.text):undefined-reference-to-wm_adsp2_init
+|   |-- cs47l85.c:(.text):undefined-reference-to-wm_adsp2_remove
+|   |-- cs47l85.c:(.text):undefined-reference-to-wm_adsp_compr_handle_irq
+|   |-- cs47l85.c:(.text):undefined-reference-to-wm_adsp_compr_open
+|   |-- cs47l85.c:(.text):undefined-reference-to-wm_adsp_early_event
+|   |-- cs47l92.c:(.text):undefined-reference-to-wm_adsp2_component_probe
+|   |-- cs47l92.c:(.text):undefined-reference-to-wm_adsp2_component_remove
+|   |-- cs47l92.c:(.text):undefined-reference-to-wm_adsp2_init
+|   |-- cs47l92.c:(.text):undefined-reference-to-wm_adsp2_remove
+|   |-- cs47l92.c:(.text):undefined-reference-to-wm_adsp_compr_handle_irq
+|   |-- cs47l92.c:(.text):undefined-reference-to-wm_adsp_compr_open
+|   |-- cs47l92.c:(.text):undefined-reference-to-wm_adsp_early_event
+|   |-- include-linux-instrumented.h:(.text):undefined-reference-to-wm_adsp2_remove
+|   |-- sh4-linux-ld:cs47l24.c:(.text):undefined-reference-to-wm_adsp2_component_remove
+|   |-- sh4-linux-ld:cs47l24.c:(.text):undefined-reference-to-wm_adsp_early_event
+|   |-- sh4-linux-ld:cs47l85.c:(.text):undefined-reference-to-wm_adsp2_remove
+|   |-- sh4-linux-ld:cs47l92.c:(.text):undefined-reference-to-wm_adsp2_bus_error
+|   |-- sh4-linux-ld:cs47l92.c:(.text):undefined-reference-to-wm_adsp2_remove
+|   |-- sh4-linux-ld:sound-soc-codecs-cs35l41.c:(.text):undefined-reference-to-wm_adsp2_remove
+|   |-- sh4-linux-ld:sound-soc-codecs-cs35l41.c:(.text):undefined-reference-to-wm_adsp_early_event
+|   |-- sh4-linux-ld:sound-soc-codecs-cs35l41.o:(.rodata):undefined-reference-to-wm_adsp2_preloader_get
+|   |-- sh4-linux-ld:sound-soc-codecs-cs35l41.o:(.rodata):undefined-reference-to-wm_adsp2_preloader_put
+|   |-- sh4-linux-ld:sound-soc-codecs-cs35l41.o:(.rodata):undefined-reference-to-wm_adsp_fw_enum
+|   |-- sh4-linux-ld:sound-soc-codecs-cs35l41.o:(.rodata):undefined-reference-to-wm_adsp_fw_get
+|   |-- sh4-linux-ld:sound-soc-codecs-cs35l41.o:(.rodata):undefined-reference-to-wm_adsp_fw_put
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp2_preloader_get
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp2_preloader_put
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_compr_copy
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_compr_free
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_compr_get_caps
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_compr_pointer
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_compr_set_params
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_compr_trigger
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_event
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_fw_enum
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_fw_get
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l24.o:(.rodata):undefined-reference-to-wm_adsp_fw_put
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp2_preloader_get
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp2_preloader_put
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_compr_copy
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_compr_free
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_compr_get_caps
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_compr_pointer
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_compr_set_params
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_compr_trigger
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_event
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_fw_enum
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_fw_get
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l85.o:(.rodata):undefined-reference-to-wm_adsp_fw_put
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp2_preloader_get
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp2_preloader_put
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_compr_copy
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_compr_free
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_compr_get_caps
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_compr_pointer
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_compr_set_params
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_compr_trigger
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_event
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_fw_enum
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_fw_get
+|   |-- sh4-linux-ld:sound-soc-codecs-cs47l92.o:(.rodata):undefined-reference-to-wm_adsp_fw_put
+|   |-- sh4-linux-ld:sound-soc-codecs-wm2200.o:(.rodata):undefined-reference-to-wm_adsp1_event
+|   |-- sh4-linux-ld:sound-soc-codecs-wm2200.o:(.rodata):undefined-reference-to-wm_adsp_fw_enum
+|   |-- sh4-linux-ld:sound-soc-codecs-wm2200.o:(.rodata):undefined-reference-to-wm_adsp_fw_get
+|   |-- sh4-linux-ld:sound-soc-codecs-wm2200.o:(.rodata):undefined-reference-to-wm_adsp_fw_put
+|   |-- sound-soc-codecs-cs35l41.c:(.text):undefined-reference-to-wm_adsp2_component_probe
+|   |-- sound-soc-codecs-cs35l41.c:(.text):undefined-reference-to-wm_adsp2_component_remove
+|   |-- sound-soc-codecs-cs35l41.c:(.text):undefined-reference-to-wm_adsp_event
+|   |-- sound-soc-codecs-cs35l41.c:(.text):undefined-reference-to-wm_halo_init
+|   `-- wm2200.c:(.text):undefined-reference-to-wm_adsp1_init
+|-- sparc64-randconfig-r072-20260320
+|   `-- clang:error:optimization-flag-fno-inline-functions-called-once-is-not-supported-Werror-Wignored-optimization-argument
+|-- x86_64-buildonly-randconfig-003-20260321
+|   `-- error-E0277:const-kernel::bindings::vm_uffd_ops-cannot-be-shared-between-threads-safely
+|-- x86_64-buildonly-randconfig-004-20260321
+|   |-- kernel-sched-ext.c:error:call-to-undeclared-function-cgroup_get-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|   `-- kernel-sched-ext.c:error:call-to-undeclared-function-cgroup_put-ISO-C99-and-later-do-not-support-implicit-function-declarations
+`-- xtensa-randconfig-r053-20260321
+    `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:min(outarg.size-((loff_t)(-0UL)-)-pos)-signedness-error
 
-Additionally, Joshua Hahn's RFC ('Make memcg limits tier-aware') [1]
-introduces a mechanism to scale memcg limits based on the ratio of
-top-tier to total memory. This approach or similar approaches might
-provide a more comprehensive way to resolve 'fake progress' in memcg
-direct reclaim or establish a better framework for addressing such
-issues in the future.
+elapsed time: 769m
 
-Hope you have great weekend!
+configs tested: 213
+configs skipped: 6
 
-Best regards,
-Bing
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260320    gcc-13.4.0
+arc                   randconfig-002-20260320    gcc-13.4.0
+arm                               allnoconfig    clang-23
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-23
+arm                                 defconfig    gcc-15.2.0
+arm                           h3600_defconfig    gcc-15.2.0
+arm                   randconfig-001-20260320    gcc-10.5.0
+arm                   randconfig-002-20260320    clang-18
+arm                   randconfig-003-20260320    gcc-13.4.0
+arm                   randconfig-004-20260320    clang-23
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260320    clang-17
+arm64                 randconfig-002-20260320    gcc-8.5.0
+arm64                 randconfig-003-20260320    clang-23
+arm64                 randconfig-004-20260320    gcc-14.3.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260320    gcc-15.2.0
+csky                  randconfig-002-20260320    gcc-15.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-23
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    clang-23
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260320    clang-23
+hexagon               randconfig-002-20260320    clang-19
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260320    gcc-14
+i386        buildonly-randconfig-001-20260321    clang-20
+i386        buildonly-randconfig-002-20260320    gcc-14
+i386        buildonly-randconfig-002-20260321    clang-20
+i386        buildonly-randconfig-002-20260321    gcc-14
+i386        buildonly-randconfig-003-20260320    clang-20
+i386        buildonly-randconfig-003-20260321    clang-20
+i386        buildonly-randconfig-003-20260321    gcc-14
+i386        buildonly-randconfig-004-20260320    gcc-14
+i386        buildonly-randconfig-004-20260321    clang-20
+i386        buildonly-randconfig-005-20260320    clang-20
+i386        buildonly-randconfig-005-20260321    clang-20
+i386        buildonly-randconfig-006-20260320    clang-20
+i386        buildonly-randconfig-006-20260321    clang-20
+i386                                defconfig    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260321    gcc-14
+i386                  randconfig-002-20260321    gcc-14
+i386                  randconfig-003-20260321    clang-20
+i386                  randconfig-004-20260321    gcc-13
+i386                  randconfig-005-20260321    clang-20
+i386                  randconfig-006-20260321    gcc-14
+i386                  randconfig-007-20260321    gcc-14
+i386                  randconfig-011-20260320    clang-20
+i386                  randconfig-012-20260320    gcc-14
+i386                  randconfig-013-20260320    clang-20
+i386                  randconfig-014-20260320    clang-20
+i386                  randconfig-015-20260320    clang-20
+i386                  randconfig-016-20260320    clang-20
+i386                  randconfig-017-20260320    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260320    clang-23
+loongarch             randconfig-002-20260320    clang-18
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-23
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260320    gcc-11.5.0
+nios2                 randconfig-002-20260320    gcc-8.5.0
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-23
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-23
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260320    gcc-14.3.0
+parisc                randconfig-002-20260320    gcc-9.5.0
+parisc64                            defconfig    clang-19
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-23
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                 mpc832x_rdb_defconfig    gcc-15.2.0
+powerpc               randconfig-001-20260320    clang-23
+powerpc               randconfig-002-20260320    gcc-10.5.0
+powerpc64             randconfig-001-20260320    gcc-10.5.0
+powerpc64             randconfig-002-20260320    clang-23
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260321    gcc-15.2.0
+riscv                 randconfig-002-20260321    clang-18
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-23
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260321    gcc-15.2.0
+s390                  randconfig-002-20260321    clang-23
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-23
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.2.0
+sh                    randconfig-001-20260321    gcc-15.2.0
+sh                    randconfig-002-20260321    gcc-15.2.0
+sparc                             allnoconfig    clang-23
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260320    gcc-8.5.0
+sparc                 randconfig-002-20260320    gcc-12.5.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260320    gcc-14.3.0
+sparc64               randconfig-002-20260320    gcc-12.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-23
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260320    gcc-14
+um                    randconfig-002-20260320    gcc-14
+um                           x86_64_defconfig    clang-23
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-23
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260320    gcc-14
+x86_64      buildonly-randconfig-001-20260321    clang-20
+x86_64      buildonly-randconfig-002-20260320    gcc-14
+x86_64      buildonly-randconfig-002-20260321    clang-20
+x86_64      buildonly-randconfig-002-20260321    gcc-13
+x86_64      buildonly-randconfig-003-20260320    clang-20
+x86_64      buildonly-randconfig-003-20260321    clang-20
+x86_64      buildonly-randconfig-004-20260320    clang-20
+x86_64      buildonly-randconfig-004-20260321    clang-20
+x86_64      buildonly-randconfig-005-20260320    clang-20
+x86_64      buildonly-randconfig-005-20260321    clang-20
+x86_64      buildonly-randconfig-006-20260320    gcc-14
+x86_64      buildonly-randconfig-006-20260321    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260321    clang-20
+x86_64                randconfig-002-20260321    gcc-14
+x86_64                randconfig-003-20260321    clang-20
+x86_64                randconfig-004-20260321    gcc-14
+x86_64                randconfig-005-20260321    gcc-14
+x86_64                randconfig-006-20260321    clang-20
+x86_64                randconfig-011-20260320    gcc-14
+x86_64                randconfig-012-20260320    gcc-14
+x86_64                randconfig-013-20260320    gcc-14
+x86_64                randconfig-014-20260320    gcc-14
+x86_64                randconfig-015-20260320    gcc-14
+x86_64                randconfig-016-20260320    gcc-12
+x86_64                randconfig-071-20260321    gcc-14
+x86_64                randconfig-072-20260321    clang-20
+x86_64                randconfig-073-20260321    gcc-13
+x86_64                randconfig-074-20260321    gcc-14
+x86_64                randconfig-075-20260321    clang-20
+x86_64                randconfig-076-20260321    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-23
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260320    gcc-8.5.0
+xtensa                randconfig-002-20260320    gcc-8.5.0
 
-[1] https://lore.kernel.org/linux-mm/20260223223830.586018-1-joshua.hahnjy@gmail.com/
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
