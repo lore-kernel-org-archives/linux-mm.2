@@ -4,116 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C3D0109446B
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 10:57:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB4DD109446C
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 10:58:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC7F76B009D; Sat, 21 Mar 2026 06:57:44 -0400 (EDT)
+	id 4293E6B00A2; Sat, 21 Mar 2026 06:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B78D26B00A1; Sat, 21 Mar 2026 06:57:44 -0400 (EDT)
+	id 3D8D26B00A3; Sat, 21 Mar 2026 06:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8E756B00A2; Sat, 21 Mar 2026 06:57:44 -0400 (EDT)
+	id 2C8356B00A4; Sat, 21 Mar 2026 06:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B8736B009D
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 06:57:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E209C1ABD
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:57:44 +0000 (UTC)
-X-FDA: 84569769648.26.81FE6B3
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6DABD40008
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:57:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=smail.nju.edu.cn header.s=iohv2404 header.b=omkRl74L;
-	spf=pass (imf11.hostedemail.com: domain of kexinsun@smail.nju.edu.cn designates 54.92.39.34 as permitted sender) smtp.mailfrom=kexinsun@smail.nju.edu.cn;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 170A66B00A2
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 06:58:43 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2148C1F25
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:58:42 +0000 (UTC)
+X-FDA: 84569772084.24.E3A2FAE
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 56D1FA0007
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:58:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=smail.nju.edu.cn header.s=iohv2404 header.b=h1L0ZIm2;
+	spf=pass (imf25.hostedemail.com: domain of kexinsun@smail.nju.edu.cn designates 54.207.19.206 as permitted sender) smtp.mailfrom=kexinsun@smail.nju.edu.cn;
 	dmarc=pass (policy=reject) header.from=smail.nju.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774090662;
+	s=arc-20220608; t=1774090720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=TJKZtWiprgUspY4RNaw1d9jTovs7Pv0dIVGo3CDvBTg=;
-	b=UALj0zC/UIzR8pHBf4vm2GLnL3OqoB6aKbTxC7QkFT9QX75MnDOsA5743NTgBSajDPw5DS
-	mS6gge8VKwYlcWYccMq9x0PCVIsoVfppTHiBpstwJdpHzIR9dJg5QNZ4xJ3N1oxg0x3qmo
-	stek/twpWFaj5TK8Kegy0c5TaEwvGOE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774090662; a=rsa-sha256;
-	cv=none;
-	b=4d5H2J+CEBPmwbIqwZlDb6B6BK5UCYO/TDRqVcCuA5Gkw+V1ErRi/YdWTf616SfWxqflRw
-	2XUvwKLsKll7owWvzK5CrM9bsMmt7OA3jqbRaiO5EikLmHrmI5JNU1NVTW66C1BlxlS1/n
-	OCr7yIQX4Ap/Sek058CWYj1sfgoIQbw=
+	bh=oR7/taKa02ak4M7U1k8zDcir8rfHGE1O5n8xEZ7jI5c=;
+	b=WL2jL2UOYRNMksjmSbYesMsH/sc/+J/w0IV6Fq0OFuEdLnSFpKG6VhLLEIL59zz2OaFe5O
+	RFMC3q+xR9SdddGzWOZFV58155OF40NYIK1gBbJ2oNOXq8HgwIOSy7R8DUHkrY9yEydACB
+	yLWgIk45H4FGA5ZuuqDnKHnSRSIKNmc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=smail.nju.edu.cn header.s=iohv2404 header.b=omkRl74L;
-	spf=pass (imf11.hostedemail.com: domain of kexinsun@smail.nju.edu.cn designates 54.92.39.34 as permitted sender) smtp.mailfrom=kexinsun@smail.nju.edu.cn;
+	imf25.hostedemail.com;
+	dkim=pass header.d=smail.nju.edu.cn header.s=iohv2404 header.b=h1L0ZIm2;
+	spf=pass (imf25.hostedemail.com: domain of kexinsun@smail.nju.edu.cn designates 54.207.19.206 as permitted sender) smtp.mailfrom=kexinsun@smail.nju.edu.cn;
 	dmarc=pass (policy=reject) header.from=smail.nju.edu.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774090720; a=rsa-sha256;
+	cv=none;
+	b=e8SDht9Zf53Ve3fA55kmefWCueFJAhzZRLe6J+YLigpXtDlKj8XHOZcxWLpVuyKmjqPt1C
+	m4qc1nlNlqlfFuu5QbZ1+XwYT5sHJlSwl+xEH8yPhyYHPi8J3Mz059MUBVXDZ4rCWTjxmn
+	GuBqe6UYo8ktbjwdXN2a50bw0B5qzxg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smail.nju.edu.cn;
-	s=iohv2404; t=1774090629;
-	bh=TJKZtWiprgUspY4RNaw1d9jTovs7Pv0dIVGo3CDvBTg=;
+	s=iohv2404; t=1774090701;
+	bh=oR7/taKa02ak4M7U1k8zDcir8rfHGE1O5n8xEZ7jI5c=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=omkRl74L9BnJ+syWg1rrYKy7TuMZlDspPBFpAszf+Zk8obRbGAlX6chTIfe8cifA2
-	 4ipUxhZQ2Vj4jDg6S8KJb0ToAH9pM6Ng9yAx/Cu7afp7+VKhxPjxnywTqe9zX6+6SC
-	 SU4WH+iSfkHs8XZUVngdMwXZHy1/bcmkMZ4hIC1E=
-X-QQ-mid: esmtpsz21t1774090627t30d284b7
-X-QQ-Originating-IP: AQ19W+u9FUPANAVegDK9vd8HUPQnUE5SAnb8ksdr+Z8=
+	b=h1L0ZIm2COGs4G799Lh/DEL6iEBLrdLayJU4rj76agwz5V31+ZbLDUepYnLKV39bx
+	 s2efQBccKkT6Vj1y8JPxXL7/owKIN6AcKXQb7QKfJsVctpSuihF6RVzQKdB84vWShj
+	 9EHPZirEd5q2beXkAVmCE4+mRfztzV5D6RUFav8Y=
+X-QQ-mid: esmtpsz11t1774090698t874c55b9
+X-QQ-Originating-IP: UCCHATCo+fkZj52uVTSv7poe6w02/BFI6ujd/On2YH4=
 Received: from localhost.localdomain ( [116.172.93.199])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 21 Mar 2026 18:57:04 +0800 (CST)
+	id ; Sat, 21 Mar 2026 18:58:14 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 2755794152099023227
-EX-QQ-RecipientCnt: 14
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2501166162289827961
+EX-QQ-RecipientCnt: 23
 From: Kexin Sun <kexinsun@smail.nju.edu.cn>
-To: david@kernel.org,
-	osalvador@suse.de,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
+To: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	david@kernel.org,
+	mhocko@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com,
 	linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev,
 	linux-kernel@vger.kernel.org
 Cc: julia.lawall@inria.fr,
 	xutong.ma@inria.fr,
 	kexinsun@smail.nju.edu.cn,
 	yunbolyu@smu.edu.sg,
 	ratnadiraw@smu.edu.sg
-Subject: [PATCH] drivers/base/memory: fix stale reference to memory_block_add_nid()
-Date: Sat, 21 Mar 2026 18:57:04 +0800
-Message-Id: <20260321105704.6093-1-kexinsun@smail.nju.edu.cn>
+Subject: [PATCH] mm: update outdated comments for removed scan_swap_map_slots()
+Date: Sat, 21 Mar 2026 18:58:14 +0800
+Message-Id: <20260321105814.7053-1-kexinsun@smail.nju.edu.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz5b-0
-X-QQ-XMAILINFO: M+Q6fuWNcK3qxaTfR/EjiLvlNn+SojSLtfYIRYWpvmnVf46LZVbR7cd6
-	2h6EuqnnXrMJu9B5AjSCL94RGDYajEF+90vMPPHcF5tyRtNmfWVBedCC/G3PoAn3G9CmKmL
-	uSsuOIGo7KFSEF75vcfokM+Rm/Nu0DcnCyZM9MFhTN8LqD/7brIVypvk1BOSOD/XPNViybA
-	jGCkDNNVKXN4bWPLTVegdgHnZVIKscDEjUOvJ/RJKbVJQsDumdxK15yjgG9ajcoJHo+NU/D
-	/NKhDPJAXTcEDV5bUUcuBj5ZzRDZ6w5tI7KVZUBezhlny8sTHzukPDKCwY9BhZXKXUOw+LH
-	2HDbobROoRmQtvnee3/0F906GDG1FMwNrYPREvFel29SLcZD0DdNKObdvMF9+/XDMyAjuRW
-	Un/+yWh6zW/lZIeHx1iCzxMEWJ70Y8yS1YvY4SrUaivW0XwL/AIGJBguUrzpiWUX/kY56lf
-	YM3Qc1155Fw2qlpCbXw1ed7y1lYx1PX6ZMTWJ9jq/8zgMkWJEGF+j5Q7SI5KyprhWU5rB99
-	kOq6IetHFI7Myecjfc46HGMe1PLCy+Ci5j8R5tS9dyGlhaA6b4JIemG2CYUpdl7bAg15cMN
-	10A8/j8SLNzACz3jJdsw/mYz7hbMX2CMMY19JZsl2FAdVwynwmNMg91SzA/My1CNv/OHY4N
-	JedFqzDUMAs1V45kjHV/enQTheXcN+ZpJKzcL1Vgv7CbKiq+4wF5uS5euv5henVELH9sNsa
-	ELEjzZfAwdH8jwyhlAAmGzKRL7wUiCr0hgnm6tSaye1alD1dedx4aIo7jpw7qY/P7M4o7tE
-	zQ1CT2icxAEE61b0IddO7vnlPmmO9AMZqbNkAMd9QK/8C6QifREiVx+ier7hOyvZvGei4Cv
-	iCRk0WjHr9rscB7aC4fvGWedY0RG8WYVbSe1uMHrfH5FUU1tLxEBG9fI7cZ3hJwdY4v8X/E
-	URR0Z271wAT5atE8bdYV6yumQSnTXi7B+CTCtOLpwKYvfkwocPtLxyPxmdEVKsvPs8YMIbl
-	csjiNup8AtZXr9Upld8eMslSpOVoR5P9muefSo1JnTE2vZNBL+CpVVH6ZMTaWkqpMGpjniO
-	w==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-XMAILINFO: Ml8T/6JCI2CtGlMAIE+4Uv5REzt8blTCXlgvMWBH3EjCEVTRahwIpgBe
+	3Zli02NPq7EnqO9jKWuLNtH1aMIt8Z6Thcs977Ta9dRJiZDhE8/I6ifbxHWIFfYFezXIrMN
+	97ZeA9w81TnvbK23lZrxLahdGSKA61Sbe/t91u6nIeohlvAjbDaIa8K1bPnpYvb+P0eBhq9
+	stj9mmua0cXAM53pL8ulP1GJpPDJvpJqOMPQk1mNQR//i8OeCh/fmnmPlMUh1M95X+/+PP/
+	kcfcW8D4spoCUownF2tO7ZsvDgWlTQbnCCk36lbgaWANVD3rwl5ykkIwqxlkGyUO9im1QKN
+	xqeZ5Jhv06VmNDIAT/QYcmLpIj5xKazuQ6J2SYsa5fXdLsJ2jlPwhwORGUpAEy0wHM4UOq/
+	StkdsYNI+z1CUlCePCbbu/RCCcXFsNrpalb2c60nH583pTPW6TvT/mjTLgl242hxLBLOd8W
+	cNzU6PewqmdBp7t1v/QFyvaCcwepNLzUM2w+2BBl50Sq0DZvHuw5i5BSyS5o8v6WrDh5REL
+	nB2FeaSzgd10pTF3x2uAfnfsCEffG4T/xPEdA/Y+vKl2E2SQudMtqexFqiP3GEGSIs1Yrps
+	U5N2XrLPujY3VLGOVh5QVzJrGqRluwINbqyWlDFqjpB5puuKdKKQE2ur3XtzehBiAyRJfxb
+	3WJviNJzrY9f+taQl4hCbInhhv5yRfNXacMOkaalYqx/IphSl4bUkUGQcsGkjx2pZBlK2ML
+	VaFWRdnN0fp3/qMKEWMx9+6f17buQNcwkJd00LiunqTh1wHSziR2pniMf5fZbzkrlaFGfm0
+	+7B5Cqe3YiE9ydsFbiwfN91OzfaHJ6lk1wMSdycqoItGYC14g2grvKdzGku5XXJugyudnGV
+	MmDvDfVxjwyYe2cjyQol5RKAs1hauynSDoeVlF0pY5lWDgB5/C2eDlTfUl+R1OoBgGGvfb2
+	7fLBgrBDXTPRxolr6qXm+v2TK6gw0CyTw97tcX0buhTwhfVuuvh/f+tlvOFA/Llctzb9dUS
+	Tq7VxbxAS7xBZexPXCIURzgrTYXmFtDU1pwNuS7J+OUYnaQKj+pHoGLjHFoggm4dIdmLM5a
+	uJ4N5CCsQBgt+t9kSsLVCOTaG0p6e+bWtY02CN+H9bR
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 X-QQ-RECHKSPAM: 0
-X-Stat-Signature: ge11ba7hdkx3k3dfhgwszziwbsb1z9tj
+X-Stat-Signature: qaztm8f936poyw6q11prtsq15dszzcc3
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6DABD40008
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774090658-16893
-X-HE-Meta: U2FsdGVkX1/Umf7Bh/bME1LQfAmRmZVe/NZ2Wcm44/dAEB2NelqzbYK2/Za9RqDedGMGW7F1x0SUY9O4uPufO87wsUigOV84+PbGvrkoU8uZylr+lJkozjNuKz/GXcXzJbcrsoDy9yJbmCcrr4VGWpvFKRMDnk+Ma0+b69eE3N79flU1p6EQ1aPZoRfRfjOgqlrcWidBAbYdm5jxPP0aEDh9pS6O1mYdLPLTPQgs/cn73/9gGjLys9joeT1qqYXAxhVwDv77lhd/1tS8s/TAYjzUJKIE13Qid/fAYQ5cGGrQpMYr/LA5/Uw6iFU/qve5sLbKTKbEszt3DFRl8wdTc2vPoMq5NsYi6IJ/FzmzmF7DH1d+CbxgU3ugfPfhOKmX1OIKBBRJmq1lQlQzKSTXf1T/X/5db1kJN4BHugPF8rgxPfkYJFvXwD29ta++fS1CILV3OpF7Ir8morJzijUSVPdfif6IN0tAd0N6tlGLP37rrFK1vJ0qWy6WFj/VSyXAskc0JccEXGmvcJP9GjlJC6bIUB4VArQp98lp8xtqsQ1WqykExaP+K7WpKJkGrfpNdp1CtY8bXxrLh5m470Kh6LPvc3RAqnXXy9geWPYzZEIYYjALPCkfj9iSKSnaol0eBKVITEdTdzTiYHud2I2e7brVF+88CHsvijcKtILxU1p1JbxQHAnWtKlvS0SA126ttj67MPEsyo7tbueKL6IDOI50ADDkKkvm+F+rBYNHHZ0bGOeibOXRRk0BNqHjc8Ys4zh1l8RE+o/VJ+HcWbkx7q1hQ2l1c5drgHGFjhsGP2k5dErsZF7//lZhQW4g8Z0KxI3mvg/0DA64T09i5wxRc44MZyEVQjTSfzd0XmmyRh2DRrf0EFjlud4eJR4ssgvKwq1LZ6+mSow7O0pnN4WNYmqKKk2hgOaLvkh6HGNP1udtwneraoYkZVCUDFFFEO+UoQAWYMRPHDfKDgQOIrZ
- +SN8MaL6
- xtwoTj5JKKuqubZeqwYxNYOMw7cDXFQImMVNgMvfi3jmM5ejHp7ZXX5eW+XMFbMoVuUz+7sX7ksXTni/QIT/31ePG3BVPVl3qANXlMUjAPtHo5IPYdkI+psX+8H/R6KsSdFp6RGKoexW16feWpwOoiri4NhSTFSq6HlGGwXrmLltoLOkwk57AjU7o5OOXtIfYLJffW1AiLEVq1RLA5MNGlYMIOrcwxGIy7b31uaUjr1YtM8zERhQanwHeEHrtC4/Cx/ksARxDtHkihlhmjqR5WvsgXsr9PMpsogxZ8tEP5uwUJKwDh+6TljFlMoP0RbpEGlam0bPfnHy7M5OPluZgB22sT3WJNUZ91+ih
+X-Rspamd-Queue-Id: 56D1FA0007
+X-HE-Tag: 1774090718-720119
+X-HE-Meta: U2FsdGVkX18IBEo1cq5vzcSaoHMA6HnaTtavWaNC2BozbuLV8efWebphZn+UOooCvw9C5AAFrSddimHvefuPF/cEK8+bHSzO+qil/xscpJA8B1XI/RO4XPebMtzLEsJR17zkoQeweXb1/k+CVZKswDODGB704v6mSZNdE6PhRSYhkOmTZFWc4Al2BVGX1QCnfjvgzQqyyzN6NPses2gQqZXSl/x5lYmAJMUrI733gFr5Yus+qVaCq4xpxfb67LVvTZo1uLwbTKYT4R1IiuB6zRrWfYXtVUmmQd4b4pj4bKF53OytvQuO1mePsFM7Auu4kGi/PR7sT5tQOk0f7X9vo60xasyp2T6Fpeifv6eH/j3eLhG6VqknrcV2O9dRaPxaqzr30v0GVM6YpdCh76C1jJgt3cfbt/AMd4gPKudF5wCVgMUxrOfLRBtael1xysOd25lBXFT0QxNd+iNIwGn8T0ApwwZ/N5J12p8f+k/uEucgDmX0hP95FCBEAm1VKbr2wsZb1eOsfDmZd4LBDtej5NQugMpwNiIMm8t/HjGwfpHL5RwE9jijKgU1bMq03Dc12D1zf8h6facgEhHn1QV9KB7zORhpo4jnkQoFI82O1YaXEy+lmv2NNylMLgDHQL9WNQyhqu4DRoyWLdXvkMePd1OYKcXYxsTo8tuYcS/XoLz22QWcTZpNYRsbUbPYy/Iwml5Mj8P6ltHEdUOSDHxBUXd5an8sfonOPIRYN4SwEMAFjcsrmM5WjPzh5V2QPLWTL16OEnTBJxp1D4rdyYRL0VRCw+dsGryrWLboPHeYccG+Fj9aEzXoEshQPtjLQjBpnhkBoumJ4+7ki6fJ5VEJDlQQj8pHAxUdBPpgZj1ZX2Vud6zqy5BZjghccq5/fi4HUl6dC8IvZt78XXfAIARRotbE590k66fDCFKAzU8378ovYoA0bQGqdvJmuzzS4Mznuw8sVvY/pU0rLovMF3b
+ zQ4jW7J2
+ J8029eoWDcMWL8VZGJYACPPvW4fpzGp5rjqA4NWImwmezYfGIKpJk0EMYGazGfeVylTSN+hbkSRB8oA8j1mzb8hsaraUJbEYqsbPh0r6bt4ixNN/wv5nDgnESwcTJXiyWulMZ5BqcmKUiSK0il6CwDBP4lRHg5z3XGlty8ZwlS0HB+Mu5dpxg6GgL4o0Sha5fLyiaktmr8hBjUEB4HhLz8PYdp7oFuIJfMrqtksqQfRWHEL5M+mrUfEwoCJOltjJDsnoZVBojU/rjZqhJGtvhhHC21W+HfCzHOVK4S97uHQhAOk/mo5JGIdmgawAYHlKqOHOnGVKrpgDoVHjEZX8S6DNCllwRohQY8rfQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,30 +130,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The function memory_block_add_nid() was renamed to
-memory_block_add_nid_early() by commit 0a947c14e48c
-("drivers/base: move memory_block_add_nid() into the
-caller").  Update the stale reference in add_memory_block().
+The function scan_swap_map_slots() was removed in commit
+0ff67f990bd4 ("mm, swap: remove swap slot cache").
+
+The three comments referencing it simply noted that ->flags can be
+updated non-atomically by scan_swap_map_slots() to justify a
+data_race() annotation.  Since the function no longer exists, drop
+the parenthetical reference while keeping the data_race()
+justification intact: ->flags can still be updated non-atomically
+by other paths (e.g., swapoff clearing SWP_WRITEOK).
 
 Assisted-by: unnamed:deepseek-v3.2 coccinelle
 Signed-off-by: Kexin Sun <kexinsun@smail.nju.edu.cn>
 ---
- drivers/base/memory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/page_io.c | 4 ++--
+ mm/vmscan.c  | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index a3091924918b..0d6ccc7cdf05 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -815,7 +815,7 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
- 		/*
- 		 * MEM_ONLINE at this point implies early memory. With NUMA,
- 		 * we'll determine the zone when setting the node id via
--		 * memory_block_add_nid(). Memory hotplug updated the zone
-+		 * memory_block_add_nid_early(). Memory hotplug updated the zone
- 		 * manually when memory onlining/offlining succeeds.
- 		 */
- 		mem->zone = early_node_zone_for_memory_block(mem, NUMA_NO_NODE);
+diff --git a/mm/page_io.c b/mm/page_io.c
+index a2c034660c80..330abc5ab7b4 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -450,14 +450,14 @@ void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
+ 	/*
+-	 * ->flags can be updated non-atomically (scan_swap_map_slots),
++	 * ->flags can be updated non-atomically,
+ 	 * but that will never affect SWP_FS_OPS, so the data_race
+ 	 * is safe.
+ 	 */
+ 	if (data_race(sis->flags & SWP_FS_OPS))
+ 		swap_writepage_fs(folio, swap_plug);
+ 	/*
+-	 * ->flags can be updated non-atomically (scan_swap_map_slots),
++	 * ->flags can be updated non-atomically,
+ 	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
+ 	 * is safe.
+ 	 */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 0fc9373e8251..0758ef3b100b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1070,7 +1070,7 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
+ 	/*
+ 	 * We can "enter_fs" for swap-cache with only __GFP_IO
+ 	 * providing this isn't SWP_FS_OPS.
+-	 * ->flags can be updated non-atomically (scan_swap_map_slots),
++	 * ->flags can be updated non-atomically,
+ 	 * but that will never affect SWP_FS_OPS, so the data_race
+ 	 * is safe.
+ 	 */
 -- 
 2.25.1
 
