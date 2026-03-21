@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE3EB1099B56
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 01:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751091099B58
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 01:16:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D78EF6B0093; Fri, 20 Mar 2026 21:02:08 -0400 (EDT)
+	id 85E136B00CC; Fri, 20 Mar 2026 21:16:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D29A16B0095; Fri, 20 Mar 2026 21:02:08 -0400 (EDT)
+	id 834F76B00CD; Fri, 20 Mar 2026 21:16:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C18176B0096; Fri, 20 Mar 2026 21:02:08 -0400 (EDT)
+	id 772826B00D3; Fri, 20 Mar 2026 21:16:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ACC1F6B0093
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:02:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 40E1C1DEC7
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:02:08 +0000 (UTC)
-X-FDA: 84568268736.12.70751CE
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 685D16B00CC
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:16:09 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1D6BB9B1F
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:16:08 +0000 (UTC)
+X-FDA: 84568304016.09.32D1255
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9F9561C000C
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:02:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DMpMpIhY;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2F9D31A0002
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:16:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zP5Pl6mI;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774054926;
+	s=arc-20220608; t=1774055767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ATyC7T95PUSNV8PobGQUzEgzjaB/UJ7vtwLTE9u36oY=;
-	b=lG5QN1pXHnNff7A/9FnbZIOV73oLj47VBMkpD20qAQFCVxk8eR0qr+SgINm51Wz4rQpPpz
-	ldXG1kdVFCHB++hfGfglcGFqh3V3Oc2DVy/jY5RcYPtyQdkRdEA70b9suXJGeSBwGEeXM1
-	QdziR3nUu2E7biaqcNX3FYMyYEeknq8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774054926; a=rsa-sha256;
+	bh=MJZKnVkaccFV12UVDk/YFRRNm2HtvR9A12GJBWTZLv8=;
+	b=fL2+Tgn1VhqUcPDigmfbhpgLusybqWz8sQlV5vjZktv6505f69TTh2LYbnhAgqrac2xN1D
+	4A3NZQx7cGwaJXsRDtVtsoRf630YZx12empMGOPdzTqHu0el40p0j7s5nAqS1ev7hmR2MW
+	Vv2vUv2BYJ09X8CCiQ0P8lrG32rtG14=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774055767; a=rsa-sha256;
 	cv=none;
-	b=XDaAtiOIi50nxoh/roNNZpAlRTlA+3/DUw3Xp9mIrBc0ZXTaVQ3dVzFCI+XSIVcW+lWQRr
-	/R83QNKAEhocijJK1Se5qt+YNbFOj6ef4GU1pNsVQTaG2hJMKOwusQYzUHHb1PCc9O4Xj5
-	+X5X24FWmBakIrBrKM1CQy8kGR5Mw54=
+	b=nwEzaa90GYMo6wppFjNJ5IaZv2qviDCGJDYi+5zcqumEVV+PHLr1uMf/x37Tg6LBWOP3QJ
+	uXEf/XVOHXj4fTYE8d0Fmnx4DAhViNgYTT2jo9CD97eO7ROnVdMcXMNCmTD6KPJmSdEPkk
+	3j9P6salHxV4WaRx+lnpI1oY4PLq2t4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DMpMpIhY;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zP5Pl6mI;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 049A160126
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC03C4CEF7;
-	Sat, 21 Mar 2026 01:02:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774054925;
-	bh=0yYB8TFfBq7hSyyiDU6/wS7/MxpcVDUgHb7ZxIWACZA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMpMpIhY+oJin9kFaNMgEx8u1rCcFnwjvNXXicnucVhUrhHq92rJfctXXDBpMFS6N
-	 wiiKMbngcuEeCcNZIkz76p5WAgzgjnlKFdoG6Jw1qxKegJDCq431XVWWrkml2BJP8t
-	 YAuf+cCK/e1U2bd1CLuyIiB8dmtjHSHIcl8Xiw4F/Izdv3v+63VoRFvgR918XTieVu
-	 /elS6A9JwPTFaHxiQYSq/azAydQg1+N3Of8aLJSibOISuGAYKPtvi29QJe3MYev0S1
-	 czivg0DIhShYu/K9QgeDXNQDUiFAYVCA49XubWxPrZhRUyvBTX8hk1N2jDg3rnuA9l
-	 jkwiy35UJdR2A==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 10/10] selftets/damon/sysfs.py: pause DAMON before dumping status
-Date: Fri, 20 Mar 2026 18:02:00 -0700
-Message-ID: <20260321010201.82092-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260320154134.99740-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 8A1A060126;
+	Sat, 21 Mar 2026 01:16:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A722CC4CEF7;
+	Sat, 21 Mar 2026 01:16:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774055766;
+	bh=CjNrAlHfSI/kjoViNVqQpDkjW1bNshpQDZf8Glk2/PQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=zP5Pl6mIQtnUFVdxCSnS62RGX/oVqA081EVfgKz33z6aMaUO3qa7SHUZ9Uw++glBL
+	 IvuVsVl55hD486VsU/shY7mEFWYXXGmUJ3dVBCZpwouLr1CDX5HvAsO2cg28Vw9uvG
+	 PhGvz77Gobd/bpfu3lkArjYxXuWmB4pkswP1eRDA=
+Date: Fri, 20 Mar 2026 18:16:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Waiman Long <longman@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Tejun Heo
+ <tj@kernel.org>, Michal =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, Shuah
+ Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+ James Houghton <jthoughton@google.com>, Sebastian Chlad
+ <sebastianchlad@gmail.com>, Guopeng Zhang <zhangguopeng@kylinos.cn>, Li
+ Wang <liwan@redhat.com>
+Subject: Re: [PATCH v2 0/7] selftests: memcg: Fix test_memcontrol test
+ failures with large page sizes
+Message-Id: <20260320181605.206f5453d2bdac49ff6b4742@linux-foundation.org>
+In-Reply-To: <20260320204241.1613861-1-longman@redhat.com>
+References: <20260320204241.1613861-1-longman@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: m9pjr7dsp5eqarf7hdckuyf3gnoikx5i
-X-Rspamd-Queue-Id: 9F9561C000C
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774054926-143158
-X-HE-Meta: U2FsdGVkX19mc0xn5h062J1EEvaBMV/+Bt75ccdDGxUxLbOCb+Xz1yDPHyOdI3cTgdDBOGhMRYx0gUwXSQCP0E7MDXQHEMFFNGGD/7onxN7nHzOqrHvJDEIhCowku2lGfmtbBuxhJ3RWXAR19PcUOxlhNU5MM/n+eS+h6X3YM0PDVtPCut1ZgDhql2WF4h6GjFj8l8v12xXvj7LDW0avvZ4jAjkcJn22a+5o+J21NRnH3a9yNjiXyCQbEekRTEPjYPkGHa+cqf2nKtxcYUQmdrn9GsE6E39+2Jg1ettUD6/cG/udD7XnhyjPHp82q25zx0Lbhwz3pwbzCXeXHxZBic+h31NJ1hTg8H/wSa1eXRRa5jOrus1OXI+p+2IcRxuvR6+90OxJzprpX46j2162nvUqzvZP6jacMT9nyITQ1SjsDYlBFZB0QsjdoBeLTfLPqmTOuup2hRKzsPhMlW2Bwqx4haZ8N3qiRJcdLTpg6R3NpM3NVhOfgMrX6Ot1BB9QKuKnYwXqjG3sMP0iwLvYyftUmKjuRyLSjM6IpyhgclI63k+WDvKKGzuSJLqtRszOPiueAEZgsuotjHiAlN3/eKmkej9LloQmqa+W83S8NoN7bO81fJc9QS9g0K73sDigmaSsadBbTyj3rOKSefIH7AMXIHOmwVj0X8C+XcK9QqsgLh3b0sNmZIjjjLdJynhCYdftwZnoPoDEiamRxlhfJGdSbI+kIaafwLGBmFMiLx5W4LfDEkJmBBoe7y0YOaIPGpd1G+FoyzfER3OwUbBF1xeQrBxfXfXPANtLSXxseOR55vxNnhLiWI4dz87SwvkzrL8z7WalSuErz2HjBkcKZfc2OFenSndj+9oZ6i/ncV2AT9eZLs1va6LrXoQpKB1eoT/qSaqFWVgi+hbRR15nNDgNo5ZEkbMb6mcPRkX9k+hwnOzT3Do9LsNnKn61PMKsVtFclfVrXLBiruXj986
- 6CO/3ehO
- CeSD4RtX5kDWJB/2RrbjGsMqchxYjO35PA886IQ6vrWesHcmuwIvIVOZxAl2fmVHtoz9DtMiVEop/p3t5I4/3jYHi9xGC2usnYJe+HUUpcdcF7rAOzFypI7f1e1s8TcF4BdygDBNJahYlYGZUViBfRyuNBCp5ulz3sUv8uzxO+5oIOyvYxBz8fCcXUq3z54RM3uGLOF8AnNI719HAYJBCQyin+jXvdskyxxRuh7lqQy23RBYE+DakqtuaN4wZqjE+a8tCF1eL69y9ZGNaCGjS0UL9NTd3SscaSx/unIO6HDpLHap1yfcin0G1cAigd6Nhb7IIJHKf5AoJd636fAZfVavPYIK8y4W8kgX9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2F9D31A0002
+X-Stat-Signature: rh745s3gguonxozd51gzaob4tonwjh7q
+X-HE-Tag: 1774055767-66592
+X-HE-Meta: U2FsdGVkX180wSfdrhPkZrPx+SRoFjuyJs4BXatSZoXih3YsaUBkmcBAXKsByOyQl07jEt46qdADC/fN1UZH7mXOObzzifKqSIe2KOchlEq1YQfaEbGISUvmf8aWwBmZMSgrTu6TC8eQthwaJjrzFxH+HrbHMTwYIusy+pY57q/21HCaoQnEXS6OCXD+MEk7dvHUxuehbjX0SbGyzN72t8ll9Q1xrXr6W2CPAv9/tXQkzaD/U6TmNAz5tEIaczqt0XKS60zyTHx0PuTRDJW4ti9FbEuqTsZfSgEo1WFHM6Sa3MjLc2K6C+fo/7C3eCl4Hb+CkQdE9LH4iZxD2aAGGJvfGRMyKpYB7iI567Lp638p30a4QMS7pocEpxsNLUgASOCtvCaZTB+TbMF0Zp0aEe+/Oj5rHNmVFJ9Qtp1KnCw37n40gdCMQGe2MJTKRsvyf7zM/rw7mcymmexRMZ//gDsSzJRmuk/+ONv5Tb2jluWpNqRXVRXHqhI6ihULAmcGp5sw2MdK+6HuQeFLrrAGmUH+szO3nXKscpMSuvK4U6I1h4ysxtZZRMjIEqew4zrl84e8rc81U+wEMyK4xCYu5I7nTTD8cEuFN5ZvcAQqwStPu3Lclg5EOcLRbdKFYoLkn5knr6hRnJffGUr7YhKHjLhRdPAhz9vd1XNHdlOGj5yR3XJxgI6w15zeEqviDEftyIXW62Vcaicsnq2Xzj4qSKrSBwFbbCQ1KCmCk+g4dcbW/kK54a2iJlYxBiZLqq27dWXjRogYEgHAhXnCdVHzqKngmHoHi3Xh8VZsl29BFtNGsChqcbkQ41Yj3m+hl0OzAClqToOCevHM9Rn/I0CsIVhRUDzin2g7gpcfRWHB8s6q7iHT5N+YpolwmskyEKGYvMLVHoaP/cGnsdQyltInRmPxjXW3JANhUgdzbM6evjqqsYsRhC2F8CguL3cE+SAuJjBrzHrGFJ5NetgrZdy
+ l0qk/W3I
+ qJi2Z8u6th0lfVqwCtSKEPTx7LLM9lt+Cszw6btQS7I5pXEQVjK2nz4ylvfvCxGuPsF+G8vUgQa0bIJWUlsg7oLDP0UzlzIEz1Md7hGk3lFrR4nOcW0jLY3bRd4dQUVRKxwDojRY8beWB2yRc+N/yA9Ks0PJ475VoZE9ajq0/S5aCmlqw/sUi4P/cCGn9bj13/PbzqIIhlOQCITI5ItZ6fQC9JLB1DRoKmQe9YPyFb8vAQwhfdtxzl9juukgSe2D0+tHEi3sOYzgOmPo+dQ3Y7KG+DnTlzS3wP16YGgPXwQXBbkERPFAo37AXKxqY9gAY5IiqJIait32e53eZ+y1c1nIJOxtD3H1bL0r0+lXH7ocSc1OKILf52WgBgKHQM+zeMm+0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,189 +98,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 08:41:33 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Fri, 20 Mar 2026 16:42:34 -0400 Waiman Long <longman@redhat.com> wrote:
 
-> On Fri, 20 Mar 2026 08:29:39 -0700 SeongJae Park <sj@kernel.org> wrote:
+> There are a number of test failures with the running of the
+> test_memcontrol selftest on a 128-core arm64 system on kernels with
+> 4k/16k/64k page sizes. This patch series makes some minor changes to
+> the kernel and the test_memcontrol selftest to address these failures.
 > 
-> > Adding Sashiko comment
-> > (https://lore.kernel.org/https://sashiko.dev/#/patchset/20260319052157.99433-11-sj@kernel.org)
-> > with ': ' line prefix, and my replies in line.
-> > 
-> > On Wed, 18 Mar 2026 22:21:53 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > 
-> > > The sysfs.py test commits DAMON parameters, dump the internal DAMON
-> > > state, and show if the parameters are committed as expected using the
-> > > dumped state.  While the dumping is ongoing, DAMON is alive.  It can
-> > > make internal changes including addition and removal of regions.  It can
-> > > therefore make a race that can result in false test results.  Pause
-> > > DAMON execution during the state dumping to avoid such races.
-> > > 
-> > > Signed-off-by: SeongJae Park <sj@kernel.org>
-> > > ---
-> > >  tools/testing/selftests/damon/sysfs.py | 31 ++++++++++++++++++++++++++
-> > >  1 file changed, 31 insertions(+)
-> > > 
-> > > diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-> > > index e6d34ba05893f..704729c7a318e 100755
-> > > --- a/tools/testing/selftests/damon/sysfs.py
-> > > +++ b/tools/testing/selftests/damon/sysfs.py
-> > > @@ -193,18 +193,48 @@ def assert_ctx_committed(ctx, dump):
-> > >      assert_true(dump['pause'] == ctx.pause, 'pause', dump)
-> > >  
-> > >  def assert_ctxs_committed(kdamonds):
-> > > +    ctxs_paused_for_dump = []
-> > > +    for kd in kdamonds.kdamonds:
-> > > +        for ctx in kd.contexts:
-> > > +            if ctx.pause is False:
-> > > +                ctx.pause = True
-> > > +                err = kd.commit()
-> > > +                if err is not None:
-> > > +                    print('pause fail (%s)' % err)
-> > > +                    kdamonds.stop()
-> > > +                    exit(1)
-> > > +                ctxs_paused_for_dump.append(ctx)
-> > > +
-> > >      status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
-> > >      if err is not None:
-> > >          print(err)
-> > >          kdamonds.stop()
-> > >          exit(1)
-> > >  
-> > > +    for kd in kdamonds.kdamonds:
-> > > +        for ctx in kd.contexts:
-> > > +            if ctx in ctxs_paused_for_dump:
-> > > +                ctx.pause = False
-> > > +                err = kd.commit()
-> > > +                if err is not None:
-> > > +                    print('resume fail (%s)' % err)
-> > > +                    kdamonds.stop()
-> > > +                    exit(1)
-> > > +                # restore for comparison
-> > > +                ctx.pause = True
-> > 
-> > : If a kdamond contains multiple contexts, does this loop leave earlier contexts
-> > : paused in the kernel?
-> > : 
-> > : Since kd.commit() stages and commits the state of all contexts associated with
-> > : the kdamond, when kd.commit() is called for the second context, the first
-> > : context's local pause attribute is already back to True.
-> > : 
-> > : This would cause kd.commit() to write to sysfs and instruct the kernel to
-> > : pause the first context again. By the end of this loop, only the last context
-> > : in the kdamond would remain unpaused in the kernel.
-> > 
-> > No.  The pause field of the earlier context is set to False, so later
-> > kd.commit() will commit the False 'pause' again.  But this finds a good point.
-> > There is no reason to call kd.commit() for each context.  It is more efficient
-> > to be called for each kdamond., thouth currently we support only one context
-> > per kdamond.  I will update the code so, in the next spin.
+> The first kernel patch scales the memcg vmstats flush threshold
+> with int_sqrt() instead of linearly with the total number of CPUs. The
+> second kernel patch scale down MEMCG_CHARGE_BATCH with increases in page
+> size. These 2 patches help to reduce the discrepancies between the
+> reported usage data with the real ones.
 > 
-> I'm wrong, Sashiko is correct.  I missed the last 'ctx.pause = True' in the
-> loop.  I will fix this together, like below:
-> 
-> '''
-> --- a/tools/testing/selftests/damon/sysfs.py
-> +++ b/tools/testing/selftests/damon/sysfs.py
-> @@ -201,16 +201,17 @@ def assert_ctx_committed(ctx, dump):
-> 
->  def assert_ctxs_committed(kdamonds):
->      ctxs_paused_for_dump = []
-> +    # pause for safe state dumping
->      for kd in kdamonds.kdamonds:
->          for ctx in kd.contexts:
->              if ctx.pause is False:
->                  ctx.pause = True
-> -                err = kd.commit()
-> -                if err is not None:
-> -                    print('pause fail (%s)' % err)
-> -                    kdamonds.stop()
-> -                    exit(1)
->                  ctxs_paused_for_dump.append(ctx)
-> +        err = kd.commit()
-> +        if err is not None:
-> +            print('pause fail (%s)' % err)
-> +            kdamonds.stop()
-> +            exit(1)
-> 
->      status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
->      if err is not None:
-> @@ -218,17 +219,19 @@ def assert_ctxs_committed(kdamonds):
->          kdamonds.stop()
->          exit(1)
-> 
-> +    # resume contexts paused for safe state dumping
->      for kd in kdamonds.kdamonds:
-> -        for ctx in kd.contexts:
-> -            if ctx in ctxs_paused_for_dump:
-> -                ctx.pause = False
-> -                err = kd.commit()
-> -                if err is not None:
-> -                    print('resume fail (%s)' % err)
-> -                    kdamonds.stop()
-> -                    exit(1)
-> -                # restore for comparison
-> -                ctx.pause = True
-> +        for ctx in ctxs_paused_for_dump:
-> +            ctx.pause = False
-> +        err = kd.commit()
-> +        if err is not None:
-> +            print('resume fail (%s)' % err)
-> +            kdamonds.stop()
-> +            exit(1)
-> +
-> +    # restore for comparison
-> +    for ctx in ctxs_paused_for_dump:
-> +        ctx.pause = True
-> 
->      ctxs = kdamonds.kdamonds[0].contexts
->      dump = status['contexts']
-> '''
+> The next 5 test_memcontrol selftest patches adjust the testing code to
+> greatly reduce the chance that it will report failure, though some
+> occasional failures is still possible.
 
-The above fixup makes the test fails, for the obsolete targets.  The fixup
-needs another fixup, like below.  I will add that to the next spin.
-
-'''
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -200,11 +200,12 @@ def assert_ctxs_committed(kdamonds):
-             if ctx.pause is False:
-                 ctx.pause = True
-                 ctxs_paused_for_dump.append(ctx)
--        err = kd.commit()
--        if err is not None:
--            print('pause fail (%s)' % err)
--            kdamonds.stop()
--            exit(1)
-+        if len(ctxs_paused_for_dump) > 0:
-+            err = kd.commit()
-+            if err is not None:
-+                print('pause fail (%s)' % err)
-+                kdamonds.stop()
-+                exit(1)
-
-     status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
-     if err is not None:
-@@ -216,11 +217,12 @@ def assert_ctxs_committed(kdamonds):
-     for kd in kdamonds.kdamonds:
-         for ctx in ctxs_paused_for_dump:
-             ctx.pause = False
--        err = kd.commit()
--        if err is not None:
--            print('resume fail (%s)' % err)
--            kdamonds.stop()
--            exit(1)
-+        if len(ctxs_paused_for_dump) > 0:
-+            err = kd.commit()
-+            if err is not None:
-+                print('resume fail (%s)' % err)
-+                kdamonds.stop()
-+                exit(1)
-
-     # restore for comparison
-     for ctx in ctxs_paused_for_dump:
-'''
-
-
-Thanks,
-SJ
+The AI review is up: https://sashiko.dev/#/patchset/20260320204241.1613861-1-longman@redhat.com
 
