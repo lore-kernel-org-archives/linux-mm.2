@@ -4,97 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 002381075269
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 02:40:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5309A1075269
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 02:43:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BF266B00A3; Fri, 20 Mar 2026 22:40:49 -0400 (EDT)
+	id 7D0AC6B0092; Fri, 20 Mar 2026 22:43:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 496F16B00A7; Fri, 20 Mar 2026 22:40:49 -0400 (EDT)
+	id 7A8026B0095; Fri, 20 Mar 2026 22:43:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D4A16B00A9; Fri, 20 Mar 2026 22:40:49 -0400 (EDT)
+	id 6BE146B0096; Fri, 20 Mar 2026 22:43:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B7046B00A3
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:40:49 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC67A1403D6
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 02:40:48 +0000 (UTC)
-X-FDA: 84568517376.20.25DCD4B
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 34278140002
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 02:40:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=N3rDZpI8;
-	spf=pass (imf09.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 59BA16B0092
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:43:04 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 04C531402E4
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 02:43:03 +0000 (UTC)
+X-FDA: 84568523088.30.43B40BA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2FBF0120004
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 02:43:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=m7rFYZJy;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774060845;
+	s=arc-20220608; t=1774060982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qf8fdm8I0b6fFs6ZCYF1HtcrxynncpLF2d8YXEp+DwY=;
-	b=Gw2azTYtDlmS1U+E3CiiytqRv5l8CdaCWhekg9rOd9i2weDLAZouib/whvy3H7RVuJxWlR
-	xGpOu6zgxb1c3jXAeonK6oY6tyKUGHYkfs5FOcc973mEyDf9bpFJ9U5k5x+jJ6py+SewO/
-	k9D+ifm306yt/08gk8BrdHPzSREP8W0=
+	bh=Stl56k/4+sz+5EQhS/vZiFOwCmzQoJyuEBtBNDzukrE=;
+	b=XecTo6B+/LBNlt6sbuVUavtplnSMwa/JN9bJ8v2CPdOY/cdOLL6AV4L5FVkRuL8TlhvIYO
+	U5EqxDD3CqW9A+KvHm/BeBP4NfHy2DCwwtsxOOBBppTxRxXm/KXcQxVrbB7IQH/GzZy4O5
+	iGg/PzNV1Jo8nU9vexqFKbwG/ybg1ws=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=N3rDZpI8;
-	spf=pass (imf09.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774060845; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=m7rFYZJy;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774060982; a=rsa-sha256;
 	cv=none;
-	b=H77A53l8MqejnYxluKr5FXg/jnQl/BQpDqLASJDEgLyvsNFQTQVVrfe+SdsmYtyhFiJNKZ
-	I7qf0cza614fLQPDLfAC6Pfyw/yPCC6//KJYjf4axpASb4iRNIiSOOqCmwv7Q5W6aW5sIa
-	r7f1cGoE/8dT+QX3FqUsP4WapohIXck=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Qf8fdm8I0b6fFs6ZCYF1HtcrxynncpLF2d8YXEp+DwY=;
-	b=N3rDZpI82aCbf4CntuJa+74wdrz97NJCjtmKzJbR6r38tXCiTK1+p8jg1jxbd+bht9pzWgizP
-	JfcpSroZcbYLyVzEN1k2oPq7zlyqwGaNaahVuA+zg85lmOzIiB2WweY2UlRVQxEzn4zFvveLn8g
-	jHWgQx6OVnkfWXnwvMng+Hw=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fd3Rg1gLjz1d03G;
-	Sat, 21 Mar 2026 10:34:39 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5E7C740565;
-	Sat, 21 Mar 2026 10:40:41 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 21 Mar
- 2026 10:40:40 +0800
-Message-ID: <86a944b5-34bb-4f08-861b-b8d6da3db8e7@huawei.com>
-Date: Sat, 21 Mar 2026 10:40:39 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/huge_memory: fix folio isn't locked in
- softleaf_to_folio()
+	b=PWcP+65lgHLUotp6SB1VhK6wcXvnZxgmGJJXxe3WBIkAhS46/XayOeiLLmaPr76XMq3t2N
+	DcQ7oUEKsIoXq7oD8m6D02acCKwZTZe+9CXFnlf7TVdQr4n6e9tOsM7CdMvpRzHTl30LRY
+	QQ7L5hcBbFfuhYcq+NfhOAGs95y+DOI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E611143789;
+	Sat, 21 Mar 2026 02:43:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713BDC4CEF7;
+	Sat, 21 Mar 2026 02:42:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774060980;
+	bh=BgN7DRMw/b+g+o3kfdBnAM90Udq9D+FeM/bxcwNC3t4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=m7rFYZJyPUJygsgH+qiD39v5OLPAO4qM/j5uGyhL+yQw8aAoTQB9Y1SEP53/9Kin1
+	 3WqGLjL4VUQjZS0N4OUlpTGI2wHXbNDD1qIiuETlW6pZu5Fa+LHFmJAqri/1nO1Grr
+	 uitz00N5SqQNSahN3+dkJfjmUakWldSwDxOFAblo=
+Date: Fri, 20 Mar 2026 19:42:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-CC: <akpm@linux-foundation.org>, <david@kernel.org>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<baohua@kernel.org>, <ryan.roberts@arm.com>, <linux-mm@kvack.org>,
-	<wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260319012541.4158561-1-tujinjiang@huawei.com>
- <63266e52-2644-4f4e-aca5-6db64052455f@lucifer.local>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <63266e52-2644-4f4e-aca5-6db64052455f@lucifer.local>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
+ Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, Alexander
+ Shishkin <alexander.shishkin@linux.intel.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Bodo Stroesser <bostroesser@gmail.com>, "Martin K . Petersen"
+ <martin.petersen@oracle.com>, David Howells <dhowells@redhat.com>, Marc
+ Dionne <marc.dionne@auristor.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
+ linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Ryan Roberts
+ <ryan.roberts@arm.com>
+Subject: Re: [PATCH v4 00/21] mm: expand mmap_prepare functionality and
+ usage
+Message-Id: <20260320194258.9c00594e67c675a239ea44a6@linux-foundation.org>
+In-Reply-To: <cover.1774045440.git.ljs@kernel.org>
+References: <cover.1774045440.git.ljs@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2FBF0120004
+X-Stat-Signature: b1u9zr8qcexrzpqa9csrmx44qwkxzzwb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 34278140002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: qp9x577gyfzptut4wqq15okt373t6zqz
-X-HE-Tag: 1774060844-295076
-X-HE-Meta: U2FsdGVkX19T/s6gh57fKKeC7dzauiE+trJU1U9SJCk3WAqLo35uzDnnIusYajZ9V8xvx01LpP/NqFn0pkcyDThcPfPreXao620mPNzGGqM5awbmeZosSCkB4qEkl7XR66BxYMuUVSGRz5BWh+B9PZ8O9mJ1kNixteHXqOnVC5//GOix2saUhqR2GaF9QxhtN3mAe62U9Sh4FKaIvmRmcGt/bBWh4KdkVPCYHyBGZnz4uRO+LSKyKgHk4CdBoNn4ACzPl7rGMtAEJtV7I1K0wNu3FzPQGI7UYecf+RxjM6e2J+9XZBXYBUPihlYomgI0TtSbWSTYCfoacYk7KAp8tdhXG7o5FtdfbZVCas6bO3l/7lpE9xA6pA2I8X2uY8f1fxsYj8aes5HAjqwBzEIv9H+dbM4SFzqd68hlybsJuEYbrEhQiv2vxCr3d8wyk87ucDqs4XjTgzrp59wnuOGnPJQWMmFJRzQ9LaMGqonPhtP0vtHqiPqMtltX9TxmqZgwgmPHMQtJ8i41B2Rn+hFZTjVKduyMiAL0ZYkOqvpLEhMTd3Av63l8VnwZ8SZLFx47pg5+x87dPuPcTMVBqH1723GdInMav8nFGQi5CK7XqCkXynxy+z8r9FN7He+Aw1TjrsmIt+Vw0jHCkV/wZbjM5aobZmqk856mBuHgcKcbBzfVlq47IKgG+A/it5dpnVyBrFwstWlmIXe6gf0W+NuNckKwwhH0aKr5piB+5jXwtkCTsMZwTB762gaw5x18F1AY0NPF7oC6LTOuHDY2d3Bwf+tx4himDjZ9TDPxWcmpcN7AQKK1+Y21K8C9/LwgRDVsuMwr/3PhF4pLJ4HBQS2bZtVIW8X4B30/5nIZ9f66Qgd5NFdjq1XlN8FBM+UJumsKMUcgFAo9iTErc+gtzhbt1dfeYcBbomvNOr7nerEbGr0eKd3aul6bIRVUZtUCUux2Sopp7sVqrRfOQkHtGBa
- v8bLF8+m
- YJ1xVvL5OSe4sArIApPx47sLL3TdpkehjgqpWBLPmsMbkAwDuACCcU6W7J7ORyOFCbi+NfTzjw9zTZqAcygbh6vTYLZYrlvdzCg5f6HEGtQC9oafhQlRVaTkDwyoPldM0SKZz2RJusZbx1igrWMet9r6ppC1sPAOvfqai981MGMGBUFMCI2CCZxUgUA2E9c/voz5pG/tQ6+awabvFoXiMoYowq3zAXkzD3EJVXTcfFiMJFhXpFiiaGhVBjXubMQhjAIQLOGDXDG4EEr+gfRaT/54AO10q4yz7UPHlGnu7hT36QN7QjnZOkuB2212ARnpC6ZA7aRsaYUS/V6g3w4WYQwL+RFfxUpamMM/CFHOfWqUF9aZMa6uZjJBfqMzgbf4k4HyRDQuTXtUXn6lgSxy+VXuu0mZhsAr+KID1uOZkAZ3nBjVIw+OS4NiVKA==
+X-HE-Tag: 1774060982-877549
+X-HE-Meta: U2FsdGVkX1/YpQQDXEM8Gb5ZjrzzSezJkWuW5kwuu2T3MquG98icc6MgUCeaOURvAbDDmhwS9y5lzZUNp3DbAhwgs2NHJJo11anK7n2XIOEP+Yl7pfY00/uQuFcxqQgHrb5rrdiilnVX5QM5eZG9u2JId6jZg2rur6wtvduFSD5pnSCvIxnibL6ifcxt/P13J2TPYAY2JgyTNdAqo2yDeMF3j4EptbdghoLL1JbkJiBKr+1q52qNUVmbtwNscHTMc3w+WBw4It4ANcn8og0AQ/M4X3oZthIG7qsmN5eYo8z9zgtUCK82DpEctK2diAxyggbxRcllO55+r9b2z2WWF9RulR05cpE33xvTb8A3A6SOssbxVoS5fn+3fvXu9VvIZZHoyUXg5t45JmR3LJ1rbDKWFiTT62M1ohJKuqRXUK+H6vafUwWbJsOT/PrahO1MWgYc6EoUXUhWOxa/B/IBAe2zrcOuv9fJ8dWAXPKy+6RCU6jFM6/m9o/jE47R5bcV6iDaDd3K/tJ2CYBrdxzvnB7sR7SNdQDcFWWErEJ4Aw6Ov88qA9V6DNvsRpG1K8mc3hyP/TaE3yDGv/xOYPNqyQUZMj9XYMry1LWrl1sCymgjdwVTpoq79dBiq71YfwkgazbPw+vBK3XtSybThIzGab1QBnXeVHnrmWn/8ZjVLJWp7/UyN+78AaE6WFkYVrO4pVl+A370f4DukeVO9uV54/iDO6hS5CmfTMkiuoPgkQ0OqZe0ok3dBkeFqblJgzZLb7sXP0+ZUYg6NGw6ICTEqkAkLwV+aJmYNDBQDHWCTG9GqiYr+8xfHvc7maUwW8LGKJgYH//DaTzG4VkEpCrB+pUMVoUmgrecMKjlb3F9hrYKmtPI0yus/hV3zcQg3d5BaM9pykuikZsJ5Ox70nu+24E3aAeOtyuNz4y0jq1fCtlOG8m4iIdQAiPjLcF4AeXozBX8pZZi0GKHfXSnZ/m
+ FaUjoDDw
+ 0BM/sgVWGTlOk4D+Ixlo4wAqQ1rOb4noAHqVRfH96ZxBsABjWBA4H9vechBWF4dhgReBcrr6SBmKS1TmE2n1jAL7BPCR4pvOoY79cVPZL5HEKPn7WBGlO5MfpTb/huP1b7h6v38REEwKsBhZCUiuiuUxkyZCdiH4osTwyHNHktVxP8Dwcyqw45iB1TaAdotTySbmJ11KZlcv6ciqvMxVvAiEClyeksU7/RMPaK5koWu5HpzDbNBx++7KpKt/KYm5EMnTWhKyo7ZwVAOP3P2FyaOJa76UzgfpjTBIjrjpkZUoeZnwwOXoo913QTsgTCKwWAbcyAtV0xtZ9DVhZSmMLkedjHxSFSCqaOPPndXdavq5L41GamlskSQdv62H3Q7EC7afRAoXytqZ5InGgSA3SExgjTUs7xJLVOOe9YaOEBS2JSBI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,140 +113,448 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 20 Mar 2026 22:39:26 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-在 2026/3/20 18:13, Lorenzo Stoakes (Oracle) 写道:
-> On Thu, Mar 19, 2026 at 09:25:41AM +0800, Jinjiang Tu wrote:
->> On arm64 server, we found folio that get from migration entry isn't locked
->> in softleaf_to_folio(). This issue triggers when mTHP splitting and
->> zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
->> in softleaf_to_folio(). The race is as follows:
->>
->> 	CPU0                                             CPU1
->>
->> deferred_split_scan()                              zap_nonpresent_ptes()
->>    lock folio
->>    split_folio()
->>      unmap_folio()
->>        change ptes to migration entries
->>      __split_folio_to_order()                         softleaf_to_folio()
->>        set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
->>        smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
->>        prep_compound_page() for tail pages
->>
->> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
->> are visible before the tail page becomes non-compound. smp_wmb() should
->> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
->> result, if zap_nonpresent_ptes() accesses migration entry that stores
->> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
->> page before page->flags.
->>
->> To fix it, add missing smp_rmb() if the softleaf entry is migration entry
->> in softleaf_to_folio() and softleaf_to_page().
->>
->> Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
->> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-> I absolutely could have sworn I replied to this before, but I looked and it
-> seems like I didn't :) am I getting old or something? :P
->
-> Anyway the logic looks good, thanks for this, but some nits on the
-> naming/comments below.
+> This series expands the mmap_prepare functionality, which is intended to
+> replace the deprecated f_op->mmap hook which has been the source of bugs
+> and security issues for some time.
 
-Thanks, I will update it.
+Thanks, I updated mm-unstable to this version.  Here's how that altered
+mm.git:
 
->
-> With those addressed:
->
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->
->> ---
->>
->> Change in v3:
->>   * move softleaf_is_migration() check out of softleaf_migration_entry_check()
->>
->>   include/linux/leafops.h | 28 +++++++++++++++++-----------
->>   1 file changed, 17 insertions(+), 11 deletions(-)
->>
->> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
->> index a9ff94b744f2..dd4130b7cb7f 100644
->> --- a/include/linux/leafops.h
->> +++ b/include/linux/leafops.h
->> @@ -363,6 +363,19 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
->>   	return swp_offset(entry) & SWP_PFN_MASK;
->>   }
->>
->> +static inline void softleaf_migration_entry_check(softleaf_t entry,
->> +			struct folio *folio)
-> I'm not sure this is correctly named, you're doing a debug-only check here
-> but the barrier is a LOT more important.
->
-> Maybe softleaf_migration_sync()?
->
-> The fact there's a check there is implied by the VM_WARN_ON_ONCE().
->
->> +{
->> +	/* See __split_folio_to_order() comment */
-> NIT: reads better as '/* See comment in __split_folio_to_order() */'.
->
-> But you're referencing a 1 line comment from __split_folio_to_order();
->
-> 		/* Page flags must be visible before we make the page non-compound. */
-> 		smp_wmb();
->
-> Which also doesn't give sufficient context in my view.
->
-> So I think overall better as:
->
-> /*
->   * Ensure we do not race with split, which might alter tail pages into new
->   * folios and thus result in observing an unlocked folio.
->   * This matches the write barrier in __split_folio_to_order().
->   */
->
->> +	smp_rmb();
->> +
->> +	/*
->> +	 * Any use of migration entries may only occur while the
->> +	 * corresponding page is locked
->> +	 */
->> +	VM_WARN_ON_ONCE(!folio_test_locked(folio));
->> +}
->> +
->>   /**
->>    * softleaf_to_page() - Obtains struct page for PFN encoded within leaf entry.
->>    * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
->> @@ -374,11 +387,8 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
->>   	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
->>
->>   	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
->> -	/*
->> -	 * Any use of migration entries may only occur while the
->> -	 * corresponding page is locked
->> -	 */
->> -	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
->> +	if (softleaf_is_migration(entry))
->> +		softleaf_migration_entry_check(entry, page_folio(page));
->>
->>   	return page;
->>   }
->> @@ -394,12 +404,8 @@ static inline struct folio *softleaf_to_folio(softleaf_t entry)
->>   	struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
->>
->>   	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
->> -	/*
->> -	 * Any use of migration entries may only occur while the
->> -	 * corresponding folio is locked.
->> -	 */
->> -	VM_WARN_ON_ONCE(softleaf_is_migration(entry) &&
->> -			!folio_test_locked(folio));
->> +	if (softleaf_is_migration(entry))
->> +		softleaf_migration_entry_check(entry, folio);
->>
->>   	return folio;
->>   }
->> --
->> 2.43.0
->>
->>
-> Cheers, Lorenzo
->
+
+ Documentation/filesystems/mmap_prepare.rst |    4 
+ include/linux/mm.h                         |    3 
+ mm/internal.h                              |   27 ++++-
+ mm/util.c                                  |   87 +++++++++----------
+ mm/vma.c                                   |   41 +-------
+ tools/testing/vma/include/dup.h            |   44 +--------
+ tools/testing/vma/include/stubs.h          |    3 
+ 7 files changed, 80 insertions(+), 129 deletions(-)
+
+--- a/Documentation/filesystems/mmap_prepare.rst~b
++++ a/Documentation/filesystems/mmap_prepare.rst
+@@ -123,8 +123,8 @@ When implementing mmap_prepare(), refere
+ as a ``VMA_xxx_BIT`` macro, e.g. ``VMA_READ_BIT``, ``VMA_WRITE_BIT`` etc.,
+ and use one of (where ``desc`` is a pointer to struct vm_area_desc):
+ 
+-* ``vma_desc_test_flags(desc, ...)`` - Specify a comma-separated list of flags
+-  you wish to test for (whether _any_ are set), e.g. - ``vma_desc_test_flags(
++* ``vma_desc_test_any(desc, ...)`` - Specify a comma-separated list of flags
++  you wish to test for (whether _any_ are set), e.g. - ``vma_desc_test_any(
+   desc, VMA_WRITE_BIT, VMA_MAYWRITE_BIT)`` - returns ``true`` if either are set,
+   otherwise ``false``.
+ * ``vma_desc_set_flags(desc, ...)`` - Update the VMA descriptor flags to set
+--- a/include/linux/mm.h~b
++++ a/include/linux/mm.h
+@@ -4394,8 +4394,7 @@ static inline void mmap_action_map_kerne
+ 
+ int mmap_action_prepare(struct vm_area_desc *desc);
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action,
+-			 bool rmap_lock_held);
++			 struct mmap_action *action);
+ 
+ /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
+ static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
+--- a/mm/internal.h~b
++++ a/mm/internal.h
+@@ -202,14 +202,6 @@ static inline void vma_close(struct vm_a
+ /* unmap_vmas is in mm/memory.c */
+ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap);
+ 
+-static inline void unmap_vma_locked(struct vm_area_struct *vma)
+-{
+-	const size_t len = vma_pages(vma) << PAGE_SHIFT;
+-
+-	mmap_assert_write_locked(vma->vm_mm);
+-	do_munmap(vma->vm_mm, vma->vm_start, len, NULL);
+-}
+-
+ #ifdef CONFIG_MMU
+ 
+ static inline void get_anon_vma(struct anon_vma *anon_vma)
+@@ -1826,6 +1818,25 @@ static inline int io_remap_pfn_range_pre
+ 	return 0;
+ }
+ 
++/*
++ * When we succeed an mmap action or just before we unmap a VMA on error, we
++ * need to ensure any rmap lock held is released. On unmap it's required to
++ * avoid a deadlock.
++ */
++static inline void maybe_rmap_unlock_action(struct vm_area_struct *vma,
++		struct mmap_action *action)
++{
++	struct file *file;
++
++	if (!action->hide_from_rmap_until_complete)
++		return;
++
++	VM_WARN_ON_ONCE(vma_is_anonymous(vma));
++	file = vma->vm_file;
++	i_mmap_unlock_write(file->f_mapping);
++	action->hide_from_rmap_until_complete = false;
++}
++
+ #ifdef CONFIG_MMU_NOTIFIER
+ static inline int clear_flush_young_ptes_notify(struct vm_area_struct *vma,
+ 		unsigned long addr, pte_t *ptep, unsigned int nr)
+--- a/mm/util.c~b
++++ a/mm/util.c
+@@ -1198,25 +1198,6 @@ void compat_set_desc_from_vma(struct vm_
+ }
+ EXPORT_SYMBOL(compat_set_desc_from_vma);
+ 
+-static int __compat_vma_mapped(struct file *file, struct vm_area_struct *vma)
+-{
+-	const struct vm_operations_struct *vm_ops = vma->vm_ops;
+-	void *vm_private_data = vma->vm_private_data;
+-	int err;
+-
+-	if (!vm_ops || !vm_ops->mapped)
+-		return 0;
+-
+-	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma->vm_pgoff, file,
+-			     &vm_private_data);
+-	if (err)
+-		unmap_vma_locked(vma);
+-	else if (vm_private_data != vma->vm_private_data)
+-		vma->vm_private_data = vm_private_data;
+-
+-	return err;
+-}
+-
+ /**
+  * __compat_vma_mmap() - Similar to compat_vma_mmap(), only it allows
+  * flexibility as to how the mmap_prepare callback is invoked, which is useful
+@@ -1251,13 +1232,7 @@ int __compat_vma_mmap(struct vm_area_des
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+-	err = mmap_action_complete(vma, &desc->action,
+-				   /*rmap_lock_held=*/false);
+-	if (err)
+-		return err;
+-
+-	/* Invoke vm_ops->mapped callback. */
+-	return __compat_vma_mapped(desc->file, vma);
++	return mmap_action_complete(vma, &desc->action);
+ }
+ EXPORT_SYMBOL(__compat_vma_mmap);
+ 
+@@ -1290,12 +1265,17 @@ EXPORT_SYMBOL(__compat_vma_mmap);
+ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct vm_area_desc desc;
++	struct mmap_action *action;
+ 	int err;
+ 
+ 	compat_set_desc_from_vma(&desc, file, vma);
+ 	err = vfs_mmap_prepare(file, &desc);
+ 	if (err)
+ 		return err;
++	action = &desc.action;
++
++	/* being invoked from .mmmap means we don't have to enforce this. */
++	action->hide_from_rmap_until_complete = false;
+ 
+ 	return __compat_vma_mmap(&desc, vma);
+ }
+@@ -1399,25 +1379,47 @@ again:
+ 	}
+ }
+ 
++static int call_vma_mapped(struct vm_area_struct *vma)
++{
++	const struct vm_operations_struct *vm_ops = vma->vm_ops;
++	void *vm_private_data = vma->vm_private_data;
++	int err;
++
++	if (!vm_ops || !vm_ops->mapped)
++		return 0;
++
++	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma->vm_pgoff,
++			     vma->vm_file, &vm_private_data);
++	if (err)
++		return err;
++
++	if (vm_private_data != vma->vm_private_data)
++		vma->vm_private_data = vm_private_data;
++	return 0;
++}
++
+ static int mmap_action_finish(struct vm_area_struct *vma,
+-			      struct mmap_action *action, int err,
+-			      bool rmap_lock_held)
++			      struct mmap_action *action, int err)
+ {
+-	if (rmap_lock_held)
+-		i_mmap_unlock_write(vma->vm_file->f_mapping);
++	size_t len;
+ 
+-	if (!err) {
+-		if (action->success_hook)
+-			return action->success_hook(vma);
++	if (!err)
++		err = call_vma_mapped(vma);
++	if (!err && action->success_hook)
++		err = action->success_hook(vma);
++
++	/* do_munmap() might take rmap lock, so release if held. */
++	maybe_rmap_unlock_action(vma, action);
++	if (!err)
+ 		return 0;
+-	}
+ 
+ 	/*
+ 	 * If an error occurs, unmap the VMA altogether and return an error. We
+ 	 * only clear the newly allocated VMA, since this function is only
+ 	 * invoked if we do NOT merge, so we only clean up the VMA we created.
+ 	 */
+-	unmap_vma_locked(vma);
++	len = vma_pages(vma) << PAGE_SHIFT;
++	do_munmap(current->mm, vma->vm_start, len, NULL);
+ 	if (action->error_hook) {
+ 		/* We may want to filter the error. */
+ 		err = action->error_hook(err);
+@@ -1459,16 +1461,13 @@ EXPORT_SYMBOL(mmap_action_prepare);
+  * mmap_action_complete - Execute VMA descriptor action.
+  * @vma: The VMA to perform the action upon.
+  * @action: The action to perform.
+- * @rmap_lock_held: Is the file rmap lock held?
+  *
+  * Similar to mmap_action_prepare().
+  *
+  * Return: 0 on success, or error, at which point the VMA will be unmapped.
+  */
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action,
+-			 bool rmap_lock_held)
+-
++			 struct mmap_action *action)
+ {
+ 	int err = 0;
+ 
+@@ -1489,8 +1488,7 @@ int mmap_action_complete(struct vm_area_
+ 		break;
+ 	}
+ 
+-	return mmap_action_finish(vma, action, err,
+-				  rmap_lock_held);
++	return mmap_action_finish(vma, action, err);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #else
+@@ -1512,8 +1510,7 @@ int mmap_action_prepare(struct vm_area_d
+ EXPORT_SYMBOL(mmap_action_prepare);
+ 
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action,
+-			 bool rmap_lock_held)
++			 struct mmap_action *action)
+ {
+ 	int err = 0;
+ 
+@@ -1523,14 +1520,14 @@ int mmap_action_complete(struct vm_area_
+ 	case MMAP_REMAP_PFN:
+ 	case MMAP_IO_REMAP_PFN:
+ 	case MMAP_SIMPLE_IO_REMAP:
+-	casr MMAP_MAP_KERNEL_PAGES:
++	case MMAP_MAP_KERNEL_PAGES:
+ 		WARN_ON_ONCE(1); /* nommu cannot handle this. */
+ 
+ 		err = -EINVAL;
+ 		break;
+ 	}
+ 
+-	return mmap_action_finish(vma, action, err, rmap_lock_held);
++	return mmap_action_finish(vma, action, err);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #endif
+--- a/mm/vma.c~b
++++ a/mm/vma.c
+@@ -38,8 +38,6 @@ struct mmap_state {
+ 
+ 	/* Determine if we can check KSM flags early in mmap() logic. */
+ 	bool check_ksm_early :1;
+-	/* If we map new, hold the file rmap lock on mapping. */
+-	bool hold_file_rmap_lock :1;
+ 	/* If .mmap_prepare changed the file, we don't need to pin. */
+ 	bool file_doesnt_need_get :1;
+ };
+@@ -2530,10 +2528,12 @@ static int __mmap_new_file_vma(struct mm
+  *
+  * @map:  Mapping state.
+  * @vmap: Output pointer for the new VMA.
++ * @action: Any mmap_prepare action that is still to complete.
+  *
+  * Returns: Zero on success, or an error.
+  */
+-static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
++static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
++	struct mmap_action *action)
+ {
+ 	struct vma_iterator *vmi = map->vmi;
+ 	int error = 0;
+@@ -2582,7 +2582,7 @@ static int __mmap_new_vma(struct mmap_st
+ 	vma_start_write(vma);
+ 	vma_iter_store_new(vmi, vma);
+ 	map->mm->map_count++;
+-	vma_link_file(vma, map->hold_file_rmap_lock);
++	vma_link_file(vma, action->hide_from_rmap_until_complete);
+ 
+ 	/*
+ 	 * vma_merge_new_range() calls khugepaged_enter_vma() too, the below
+@@ -2649,8 +2649,6 @@ static int call_action_prepare(struct mm
+ 	if (err)
+ 		return err;
+ 
+-	if (desc->action.hide_from_rmap_until_complete)
+-		map->hold_file_rmap_lock = true;
+ 	return 0;
+ }
+ 
+@@ -2731,30 +2729,6 @@ static bool can_set_ksm_flags_early(stru
+ 	return false;
+ }
+ 
+-static int call_mapped_hook(struct mmap_state *map,
+-			    struct vm_area_struct *vma)
+-{
+-	const struct vm_operations_struct *vm_ops = vma->vm_ops;
+-	void *vm_private_data = vma->vm_private_data;
+-	int err;
+-
+-	if (!vm_ops || !vm_ops->mapped)
+-		return 0;
+-	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma->vm_pgoff,
+-			     vma->vm_file, &vm_private_data);
+-	if (err) {
+-		if (map->hold_file_rmap_lock)
+-			i_mmap_unlock_write(vma->vm_file->f_mapping);
+-
+-		unmap_vma_locked(vma);
+-		return err;
+-	}
+-	/* Update private data if changed. */
+-	if (vm_private_data != vma->vm_private_data)
+-		vma->vm_private_data = vm_private_data;
+-	return 0;
+-}
+-
+ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 		unsigned long len, vma_flags_t vma_flags,
+ 		unsigned long pgoff, struct list_head *uf)
+@@ -2794,7 +2768,7 @@ static unsigned long __mmap_region(struc
+ 
+ 	/* ...but if we can't, allocate a new VMA. */
+ 	if (!vma) {
+-		error = __mmap_new_vma(&map, &vma);
++		error = __mmap_new_vma(&map, &vma, &desc.action);
+ 		if (error)
+ 			goto unacct_error;
+ 		allocated_new = true;
+@@ -2806,10 +2780,7 @@ static unsigned long __mmap_region(struc
+ 	__mmap_complete(&map, vma);
+ 
+ 	if (have_mmap_prepare && allocated_new) {
+-		error = mmap_action_complete(vma, &desc.action,
+-					     map.hold_file_rmap_lock);
+-		if (!error)
+-			error = call_mapped_hook(&map, vma);
++		error = mmap_action_complete(vma, &desc.action);
+ 		if (error)
+ 			return error;
+ 	}
+--- a/tools/testing/vma/include/dup.h~b
++++ a/tools/testing/vma/include/dup.h
+@@ -1313,27 +1313,9 @@ static inline unsigned long vma_pages(co
+ 	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+ }
+ 
+-static inline void unmap_vma_locked(struct vm_area_struct *vma)
+-{
+-	const size_t len = vma_pages(vma) << PAGE_SHIFT;
+-
+-	mmap_assert_write_locked(vma->vm_mm);
+-	do_munmap(vma->vm_mm, vma->vm_start, len, NULL);
+-}
+-
+-static inline int __compat_vma_mapped(struct file *file, struct vm_area_struct *vma)
++static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
+ {
+-	const struct vm_operations_struct *vm_ops = vma->vm_ops;
+-	int err;
+-
+-	if (!vm_ops->mapped)
+-		return 0;
+-
+-	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma->vm_pgoff, file,
+-			     &vma->vm_private_data);
+-	if (err)
+-		unmap_vma_locked(vma);
+-	return err;
++	return file->f_op->mmap_prepare(desc);
+ }
+ 
+ static inline int __compat_vma_mmap(struct vm_area_desc *desc,
+@@ -1348,35 +1330,27 @@ static inline int __compat_vma_mmap(stru
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+-	err = mmap_action_complete(vma, &desc->action,
+-				   /*rmap_lock_held=*/false);
+-	if (err)
+-		return err;
+-
+-	/* Invoke vm_ops->mapped callback. */
+-	return __compat_vma_mapped(desc->file, vma);
+-}
+-
+-static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
+-{
+-	return file->f_op->mmap_prepare(desc);
++	return mmap_action_complete(vma, &desc->action);
+ }
+ 
+-static inline int compat_vma_mmap(struct file *file,
+-		struct vm_area_struct *vma)
++static inline int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct vm_area_desc desc;
++	struct mmap_action *action;
+ 	int err;
+ 
+ 	compat_set_desc_from_vma(&desc, file, vma);
+ 	err = vfs_mmap_prepare(file, &desc);
+ 	if (err)
+ 		return err;
++	action = &desc.action;
++
++	/* being invoked from .mmmap means we don't have to enforce this. */
++	action->hide_from_rmap_until_complete = false;
+ 
+ 	return __compat_vma_mmap(&desc, vma);
+ }
+ 
+-
+ static inline void vma_iter_init(struct vma_iterator *vmi,
+ 		struct mm_struct *mm, unsigned long addr)
+ {
+--- a/tools/testing/vma/include/stubs.h~b
++++ a/tools/testing/vma/include/stubs.h
+@@ -87,8 +87,7 @@ static inline int mmap_action_prepare(st
+ }
+ 
+ static inline int mmap_action_complete(struct vm_area_struct *vma,
+-				       struct mmap_action *action,
+-				       bool rmap_lock_held)
++				       struct mmap_action *action)
+ {
+ 	return 0;
+ }
+_
+
 
