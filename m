@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07A3D1094489
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 16:54:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88630109448A
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 16:57:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8D5C6B00D8; Sat, 21 Mar 2026 12:54:38 -0400 (EDT)
+	id E56156B00D9; Sat, 21 Mar 2026 12:57:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D65996B00D9; Sat, 21 Mar 2026 12:54:38 -0400 (EDT)
+	id E07496B00DB; Sat, 21 Mar 2026 12:57:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7AEF6B00DA; Sat, 21 Mar 2026 12:54:38 -0400 (EDT)
+	id D1D156B00DC; Sat, 21 Mar 2026 12:57:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4F7F6B00D8
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 12:54:38 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EBD291B80A7
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 16:54:37 +0000 (UTC)
-X-FDA: 84570668994.19.3D11CA0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C005D6B00D9
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 12:57:51 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 532081405EA
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 16:57:51 +0000 (UTC)
+X-FDA: 84570677142.05.7F8AFF2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5857214000A
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 16:54:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kGjjhQLW;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id DD58D80008
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 16:57:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OeSB1fvr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774112076;
+	s=arc-20220608; t=1774112269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s1jsCEEXRest0jpeDYUJXGAmqDk+2uNCSLvPm7yb6XM=;
-	b=hJL6EM3emEbhTg0U7+gNfKOcKEiyOE0OhhAkrlfnTI7CGvuHofVX/E3dpqIYNydChubOnR
-	M2zYBCDoehYSsV/7hdgmgowdloOxUly4gKL7e4kUDJSmsaMirJZnaqgCdTLXRFp90f+os3
-	UedIMc7cswM2j7luIx6U1wArRe2hIag=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kGjjhQLW;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774112076; a=rsa-sha256;
+	bh=WZntwsB1kspslG5ErE48b0yQcpnW+xiVqA8yodgtzz0=;
+	b=PwFi018+yulz5vOzCuhilSoAAEX3Tjb8ZyzO6R5OQrxphp+cywoE9plrEb3BnJYJx8L9Iu
+	xleBx2XC9dqgcma8ushkQcplb+L9C/mXNoYGKpBYkoEIfpUipMRYdUnwDLqJhVHI3b9Ev2
+	P9obl88I6YXkrjvfS2BxSeO4tvDz3gQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774112269; a=rsa-sha256;
 	cv=none;
-	b=r0U308QuErWip7x1Nps5YZWJo75vcJf9U+i9k5gPgghzvkOBftM1CxcIpZMSgj07W/OM4K
-	mmQzd2zUtpNFBObr+8D3exkzNivIYi9WF3+2UmI3BPc9SKx8V1sKM4h/wlrJY0WGGCssRf
-	znwDcM+TlvxfDZGo7y5m993rJ7Aey6w=
+	b=I5FLnAbliNtW2fbMupjyQStS+6KCk4omK16kNF9RMgQAGtoUavpm3UhDt5yQIYVbYn6CJj
+	NxF+BYSP8rJFdpMQDo4GqiK5ZP4EVloqHierhiOVF4zPiiMp49uWVMeo5x0iLoNtxf5E+o
+	s2c/yQbeRoWAxaBG68EhTTvebrE96p8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OeSB1fvr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A3A8560097;
-	Sat, 21 Mar 2026 16:54:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207CAC19421;
-	Sat, 21 Mar 2026 16:54:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 41A06600AE;
+	Sat, 21 Mar 2026 16:57:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF18C19421;
+	Sat, 21 Mar 2026 16:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774112075;
-	bh=/hnN+ozliJ6Px8FWlVuRJLimEx5AIwMdAryf0AjKiDo=;
+	s=k20201202; t=1774112268;
+	bh=4so0ChGaWqOM6KdH3LDG9GhHIY2dSUYkn8Ys1l42Dds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGjjhQLWv2jKyxOybLUqwjFrv00W1DecnyBesVTCvLkNokyXcUxyVVKxtKZC1p5fF
-	 1wVSSBOPq1fX9VOjAdncIH4151+mqt3hUbEdpgP1xGRxvNuvALcnSjhL2BKQ4mLTRs
-	 2YGhrvQnqUenHb2g+IjRqQJBvNJMec/L9ia9jvcuuJz6ZEWucBVYgvLUVblQGOEC2q
-	 p6UrKrumJvs+I2tcfOC3QDQOEMwWSB2Zw0IVqpFqNPecAv4iVu0KXeNpIAOHoI1RE9
-	 qtXc2uB2IZ7bLzpe0knYZJLx9sBlNeG7P3Fh2K4GYvTmDnH+yvoKHuZ542QfD0YaJY
-	 TS6HRbt3hjsSw==
+	b=OeSB1fvrhp6SsMGhqRMJAOMTLzXJNLGYF+bx1OoCEcnLdzJeC66W3PkeVARDsWD/M
+	 2aqK3Ky8L7PEyHM8VSKUs6ACAta6xjkC3eg0pQk4r7EY6TTEoNAwAdV3Gi8HDxOrA7
+	 P9vjq3wtbf1Yr5og79mfjFtLylGXe/J+G4s3lebNimpid9CEtjq2toF1nNLkNyIBlK
+	 OwqtCg8Tq+/onv+8vEzwfRqirA8wAqvkGeLFZJ2bYksBtRay1Bk8JVqROuzLmfTBg3
+	 xvsPCwO3SpR24yMQxhLR2GUtPAXbsFJsirm1xMI0lnw+svYVG/uKS2ZuVDyqfEJYJ6
+	 MNIL99OPYGVSw==
 From: SeongJae Park <sj@kernel.org>
 To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -76,22 +76,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	ajayjoshi@micron.com,
 	honggyu.kim@sk.com,
 	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH v4 1/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
-Date: Sat, 21 Mar 2026 09:54:24 -0700
-Message-ID: <20260321165425.84273-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v4 0/1] mm/damon: add node_eligible_mem_bp and node_ineligible_mem_bp goal metrics
+Date: Sat, 21 Mar 2026 09:57:45 -0700
+Message-ID: <20260321165746.84394-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260320190453.1430-2-ravis.opensrc@gmail.com>
+In-Reply-To: <20260320190453.1430-1-ravis.opensrc@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DD58D80008
+X-Stat-Signature: zmcw1tddaubdmch1swcekhd53wpgkepw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5857214000A
-X-Rspamd-Server: rspam08
-X-Stat-Signature: de7g7mrh9s68gk8x8atprsz3f5n3pwph
-X-HE-Tag: 1774112076-908638
-X-HE-Meta: U2FsdGVkX1/wCSfUWZ5t6ZCBeafz6mn/4+wo3HlZfyPAWdEw7rHUOXMUkttcxfsq9Qi4qJy/ak0yo/CgEuHoDGfVFPzksteJI4nfwzl+GhubHlzKt5oYDImwbt0zP+88j7eUsGqn92qgk6Ib4idRHKMKZdTU+c5jJDnEJntwZC1MeM8vLLjkI/YlYG1DBcCKQpv6CzAL2nuLaikE9MJ8KOK92dvRjic0h/0bt9BS6g4LP1KRrQrxPK3UwqGwEwb6JwpxM1HYLApDLkp9xf5f6PDGhmdIetW8zM+VhVXwvn5eepQ+PgiTZ8A6ONYb0HDxs4GZY8y3uMyGwiLrC8vvv3k+Rk6xKMnZosv41YaCmkX4KLAu0mTuE0vZzfKrduLToVV76flEmxZCKBf+G6u64ih7Y2GrNw0kG16LSRUqgSDjbgJE6jEJTOOeTPh5UM0zusnvPGUIbFFjfaMd9VqtU3EailShqb9gBXlLNfiMtxeGCVATD+IZqYumPS8ueyzW5OQXTQv+mCa8embKpLfBiKI7mBvp75jsshOa4CrTG72r1gNggpT8q+Q3beAV20L73pUWyxpG4yIMzdJWln08xaN6TrlMymz7DGC+kMSIdM4stIZVvPFMOig1RbcrIV9tAZNdkTu84xF6Y6ohd/7VJc9K/GXaV2y+DNh3CDgkGAOyg51QTpcaXcakRcJ5Uein7u9tXzrjVRiyBp22Rpx/4zQBmEy70/PPRGKhQyOpvmHHobHe1mmV3ZTPxqcDnki62IfvrNR0i8wLHro4Gvj+RncUR4db2Fv5FCyhF9beKQUIum2bwiPuQu3HsmqbFhCktapE9Ma/CLkYwqwcq0QccJzrKT4xUvJP7FWrIz4Yp+2XonAccW9t9t0vQ7vhSORksx2srjAdCHX5vgGDsb82kfTKYBJGoSpKzMCnPZ+37T2pwTwGJfe3P0DQJWEH3Cda19peTu7QamQgnEG1jc3
- Ye105U1/
- d9b4fcv6bjXwgdZFge62K/iPY5bZLk4Y2D5wN6wvLuJLBwptT+nWntm6mf+9nqVVprIB8SYqdARJuxJLFoRt4n/5ZcozXInHrgPcHDD6BOqT5DIfj906/iieMNlHJchpAy+Lqd/xVQ4S78MoiXyn0JgSr3zxtFzK6/tZapnGxmI6J1sKb77AZwpcGvU/DaV3QJvVCMTPRFiAloUUGP/IImvAnif3Yuov9brU4M96CCcKmngdoAGLq1W3fz57qaDvsNeoyJ9KrKsFF0F9JkCHcTu6PUoLCB3jgNJxQC/FmFD6F5YS/1pH8vO5f57+8iXRA7EG6FZXcXrccuxD2kxmj4a3EIjpfiP7oJn1lTidv6cxPRfUo44N0RWbXhA==
+X-HE-Tag: 1774112269-676385
+X-HE-Meta: U2FsdGVkX18HWoj7YGRNAOMr2dFTn0iBOHiA4cSjZ0NGumAgfoia7Ry5pFblAY6UcH2dgpkjJ5V2vj+6AUP2TziF6o8er7umUIpr4mm1LuzDkojLSGYdvGItVFEC6mU4osMzXiNN4QDp3xKf0SFI2foDTgK8jytHHscEu3oYo6fp1GEkF586YwaoE7Lz+Tnq7+DH87IyPiqBIC0dIeKONd8oRdI6UaOf4dLEIyuRhjZzvh6Rg1aTSOudWUDE3opW1OQNOoUctXteuZ6gYaQnC1hVwQwkqEIleMCt3OWmA9LDgQ9Mq4X1v/tmvLpfq8rAptHNBbzG0VT3DcqRq7y+6S9UsmMpfOw8i4rurFsc7vacRn2FWH3KyAqTlVHR+BcMtVpsu3xJyq5fbK712SPrP5ZJvile8/7bHS6E843gYXEMgmCJZzuXDLFmwad8iUbbSe4SUNgtVXUyoE3cQMCOmMGj8k8nnFGO0AbHcOd+cjU4y6LSClysh97T203kM5zkGMf4ntwuPm4wI8JTsrB9lBOVPoRIGzhdQHQahP8bPU22Wd9oJ3gxT2zytGFSM6n9N+zQNsr9R5a/BFKqbcm3UY+hfEXPA+oPQEfuoH65NN3VXzf5Jp1R3pXZJuigWt/OslxC+Fxy6b0FbCqiHj/WuuFNV/5/CKn3W4wJArjD6IGDMYy7cqxLHtH6EJwQf9SsPtllYPZaIky8msOb/RCG1yqGw7U3dASk7kB5E72+WOHAGvrcL4mrV8bhdMNO3FWITOUhWhtbCnVdbooy2POIZfK4vQjmtlBOgX8149tale+JGQGnmy4PMkA+NRkCt4R8TNrKdCkciRFwtKbdYJ0G8PEgAQy/s6FEMJqv7hNrTQvttoAnxWPhZJLJiT7s1uqCyghST5MEm+5DDoAImkiWJFKDHaduJ9acl28CJqTkDnBOaXONcmpSee3KnBh/Eh0UuKBgLRK8/e665EKoa/K
+ QE/5bOwt
+ +o+osbh7WDz4lzYiLZkqp8a4nb3onDEIW4BPk72UNnGGbGRzxHZMQ0wgm+pfkwjXe53K0wVx0Uy8Abp0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,76 +99,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 12:04:53 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+Hello Ravi,
 
-> Add new quota goal metrics for memory tiering that track scheme-eligible
-> memory distribution across NUMA nodes:
-> 
-> - DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP: ratio of eligible memory on a node
-> - DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP: ratio of eligible memory NOT on
->   a node
 
-The description for the second metric should be "ratio of ineligible memory on
-a node".
+Thank you for this patch!  TL; DR: Other than trivial things I commented below
+and to the patch, I believe it is time to drop the RFC tag, and work on merging
+this.
+
+On Fri, 20 Mar 2026 12:04:52 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+
+> This patch introduces two new DAMON quota goal metrics for controlling
+
+s/DAMON/DAMOS/ ?
+
+> memory distribution in heterogeneous memory systems (e.g., DRAM and CXL
+> memory tiering) using physical address (PA) mode monitoring.
+> 
+> v3: https://lore.kernel.org/linux-mm/20260223123232.12851-1-ravis.opensrc@gmail.com/
+
+The above link would better to be put on 'Chage since v3' section below.
 
 > 
-> These complementary metrics enable push-pull migration schemes that
-> maintain a target memory distribution across different NUMA nodes
-> representing different memory tiers, based on access patterns defined
-> by each scheme.
+> Changes since v3:
+> =================
 > 
-> The metrics iterate scheme-eligible regions and use damon_get_folio()
-> to determine NUMA node placement of each folio, calculating the ratio
-> of eligible memory on the specified node versus total eligible memory.
-> 
-> Suggested-by: SeongJae Park <sj@kernel.org>
-> Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-> ---
->  include/linux/damon.h    |   6 ++
->  mm/damon/core.c          | 158 ++++++++++++++++++++++++++++++++++++---
->  mm/damon/sysfs-schemes.c |  12 +++
->  3 files changed, 164 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index b1d8fd88a0fc..490918804f85 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -193,6 +193,10 @@ enum damos_action {
->   * @DAMOS_QUOTA_NODE_MEMCG_FREE_BP:	MemFree ratio of a node for a cgroup.
->   * @DAMOS_QUOTA_ACTIVE_MEM_BP:		Active to total LRU memory ratio.
->   * @DAMOS_QUOTA_INACTIVE_MEM_BP:	Inactive to total LRU memory ratio.
-> + * @DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:	Scheme-eligible memory ratio of a
-> + *					node.
-> + * @DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP:	Scheme-ineligible memory ratio of a
-> + *					node.
->   * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
->   *
->   * Metrics equal to larger than @NR_DAMOS_QUOTA_GOAL_METRICS are unsupported.
-> @@ -206,6 +210,8 @@ enum damos_quota_goal_metric {
->  	DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
->  	DAMOS_QUOTA_ACTIVE_MEM_BP,
->  	DAMOS_QUOTA_INACTIVE_MEM_BP,
-> +	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
-> +	DAMOS_QUOTA_NODE_INELIGIBLE_MEM_BP,
->  	NR_DAMOS_QUOTA_GOAL_METRICS,
->  };
->  
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index b9e12865622c..3e0ac65e34a0 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -17,6 +17,8 @@
->  #include <linux/string.h>
->  #include <linux/string_choices.h>
->  
-> +#include "ops-common.h"
-> +
+> - The first two patches from v3 (goal_tuner initialization fix and
+>   esz=0 quota bypass fix) are now in damon/next. This submission
 
-I don't find a reason to include this, and I'd like to avoid including that in
-core.c unless it is really necessary.  Could you please remove this?
+It is not also in mm-unstable :)
 
-Below looks all good for RFC level code to move on to the next stage (dropping
-RFC tag). :)
+>   contains only the core metrics patch, rebased on top of those fixes.
+> 
+> - Simplified implementation: removed per-node eligible_bytes array, now
+>   iterates scheme-eligible regions directly for each goal evaluation.
+> 
+> - Handle regions crossing node boundaries: uses damon_get_folio() to
+>   determine actual NUMA node placement of each folio rather than
+>   assuming uniform node placement within a region.
+> 
+> - Pass scheme pointer directly to metric calculation functions, avoiding
+>   container_of() derivation from quota pointer.
+> 
+> - Fixed 80-column wrapping issues.
+
+Thank you for addressing all my comments!
+
+> 
+> Background and Motivation
+> =========================
+> 
+> In heterogeneous memory systems, controlling memory distribution across
+> NUMA nodes is essential for performance optimization. This patch enables
+> system-wide page distribution with target-state goals like "maintain 30%
+> of scheme-eligible memory on CXL" using PA-mode DAMON schemes.
+> 
+> What These Metrics Measure
+> ==========================
+> 
+> node_eligible_mem_bp:
+>     scheme_eligible_bytes_on_node / total_scheme_eligible_bytes * 10000
+> 
+> node_ineligible_mem_bp:
+>     (total - scheme_eligible_bytes_on_node) / total * 10000
+> 
+> The metrics are complementary: eligible_bp + ineligible_bp = 10000 bp.
+> 
+> Two-Scheme Setup for Hot Page Distribution
+> ==========================================
+> 
+> For maintaining 30% of hot memory on CXL (node 1):
+
+I think it could help easy reading if the above sentence also explains
+node 0 is DRAM.  For example,
+
+For maintaining hot memory on DRAM (node 0) and CXL (node 1) in 7:3 ratio:
+
+> 
+>     PUSH scheme: migrate_hot from node 0 -> node 1
+>       goal: node_ineligible_mem_bp, nid=0, target=3000
+>       "Push hot pages out until 30% of hot memory is NOT on DRAM"
+
+Seems the sentence assumes the actor is in DRAM.  It was not very clear to me.
+How about making it clear?  E.g.,
+
+"Move hot pages from DRAM to CXL, if more than 70% of hot data is in DRAM"
+
+> 
+>     PULL scheme: migrate_hot from node 1 -> node 0
+>       goal: node_eligible_mem_bp, nid=0, target=7000
+>       "Pull hot pages back until 70% of hot memory IS on DRAM"
+
+If the above example is good for you, to be consistent with it, how about
+rewording like below?
+
+"Move hot pages from CXL to DRAM, if less than 70% of hot data is in DRAM"
+
+> 
+> The complementary goals create a feedback loop that converges to the
+> target distribution.
+> 
+> Dependencies
+> ============
+> 
+> This patch is based on SJ's damon/next branch which includes the
+> TEMPORAL goal tuner required for these metrics.
+
+Your test might be depend on the feature.  But this patch series itself is not,
+as users could also use it with CONSIST tuner?
+
+Also, as I mentioned above, the feature is now also in mm-unstable tree.
+
+> 
+> Testing Results
+> ===============
+> 
+> Functionally tested on a two-node heterogeneous memory system with DRAM
+> (node 0) and CXL memory (node 1). Used PUSH+PULL scheme configuration
+> with migrate_hot action to maintain a target hot memory ratio between
+> the two tiers.
+> 
+> With the TEMPORAL goal tuner, the system converges quickly to the target
+> distribution. The tuner drives esz to maximum when under goal and to
+> zero once the goal is met, forming a simple on/off feedback loop that
+> stabilizes at the desired ratio.
+> 
+> With the CONSIST tuner, the scheme still converges but more slowly, as
+> it migrates and then throttles itself based on quota feedback. The time
+> to reach the goal varies depending on workload intensity.
+
+Sounds reasonable!
+
+Do you plan to further evaluate some performance metrics?  I'd not strongly
+request that, but it would be very nice if we can have that.
+
+Regardless of your answer to the above question, I think the current code and
+the test is good enough to consider merging this.  I suggest dropping the RFC
+tag from the next spin.
+
+Thank you for doing this, Ravi!
 
 
 Thanks,
