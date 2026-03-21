@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 094D81094489
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C19C71094489
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 17:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16D186B00EB; Sat, 21 Mar 2026 13:54:39 -0400 (EDT)
+	id 340216B00E9; Sat, 21 Mar 2026 13:54:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11BFB6B00F0; Sat, 21 Mar 2026 13:54:39 -0400 (EDT)
+	id 319EF6B00EF; Sat, 21 Mar 2026 13:54:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F25146B00F1; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
+	id 206966B00F2; Sat, 21 Mar 2026 13:54:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D67A86B00E8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D72A96B00E9
 	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 13:54:38 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7281E1D800
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BEE8160456
 	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:54:38 +0000 (UTC)
-X-FDA: 84570820236.01.45D54E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C45F040006
+X-FDA: 84570820236.27.8BE9646
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0DD80C0008
 	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Tgu/N2qJ";
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QPBqAj1U;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774115676;
+	s=arc-20220608; t=1774115677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8AZuHclUN482UjzxOhblK2W1ztEa214QqMxVy+frVKk=;
-	b=SdymF+HhLwl3KeStt+dy8wxVZioVP9mh6jpJz26hgt0lhA/pnOI8BSaDkqKp8EWec1w2gF
-	u0Bbb3NqI1fEOP5EgWlguZpzkF2spZ/Ye0Yz7ojGxgN3q3DuEEp5tlK01qTRj5mOGn3XXz
-	e571lKfebZRjRe9gy/6ElzOICcj+wiw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774115676; a=rsa-sha256;
-	cv=none;
-	b=HJzZbfYm7K/j1isYOgNiTNy0nhK02jHEcEJDqWjoEvYsWWf3YPbI1RGqwn+/xzh29AHx6e
-	Iifd+ATZZZOe2+jo47g3s1tne2UknT3nT3nCjEvZW2FNOfS9MQDRmkRVoYmjuRl2VdgmXa
-	+qSedjbsDC4Ez74BiBovik3IKbRqfT8=
+	bh=iDNCLuRvpHJF3j0WD5/7wrOb9uLvEoDqqVsxha8lYJk=;
+	b=jHx45bCFXfHZ8+mRSw+iQyp5KNkzuwAW2tWfDEYXbqm2wmB4arpQSKP+njUIbn4KZpVajk
+	0e99v2klPjtniYvSCPsGinSZwC5GGBUZzVGyhmrKj9+AI8AwnbCHPO7Wak0Hju2V9DgqfD
+	1kBP9cxjq1sWcFkqRRFm8FELwvLP/Cs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Tgu/N2qJ";
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QPBqAj1U;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774115677; a=rsa-sha256;
+	cv=none;
+	b=M3+UnJBQhiU/9WvcgQaYyPB1jm2iQ4o79/79p1/hm6hjzRiEYPmSrZU4fwnmOxVLSO/30r
+	L4IBkZLxE4YFzJWxIXBFuguR+txYj7HyuHVWqko07FDQhvgj8u9ENbFlMLMWt0GJEONpLH
+	RKScp7WkpJ+YAcWDux5aTWLeogAKn4E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F2439441B5;
-	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC19C2BCB2;
-	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 85A9F600AE;
+	Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E350C2BCB4;
+	Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774115675;
-	bh=kqdEPb3iNN0fFsVK6m3M9gMdlpedC9f1qzwxe6K56h4=;
+	s=k20201202; t=1774115676;
+	bh=ypF4xKp6F1pbIquY3/unFTj0ZaJ4QsmqDevrapmiqYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tgu/N2qJidFELa4r9BzD1WwU6563wFyYLpFeqzAZwcZHxbUQJikNm03IhG6ga4O0P
-	 4gkR7H8AeiwT7Q79DF5fBsXfw5MoTmKsIriNGT+uKc7s2Sr47yau3UxeyboKCyUNdA
-	 VHVtnCqKX7sB07ZBJrzXivgN8FdeB9gmCP2WUdCom/uNzGv82jAsM3B+kH6UczvgrJ
-	 K8FLKphL9mP90Y0th/QZNJhCYCQoiW1KQhQ32+FNA0GXtd2ARWr47W5nlxXUDUhvow
-	 cEFGjDgpkRYCMhjQLpwv7cpwXYW4UxUZXNvMrDeBZ0tPyNsHa0UdkaUZxRzrajinW0
-	 AWj8UgrMbuYww==
+	b=QPBqAj1UYUg3nMWYne8Sya+MKgu4V7EeGKLthl0o51iCB0NAPgs7sQgaXh4Xw8fds
+	 2SU98NaNJ6MzubLEcUwGsVNIrEl9fomH6UIR1GjgcAr0qzkjoKQCVU3SbfxYkY2vZ/
+	 uf2IwjhSs2FLSovNyLMfQUDal9VQijGA5yBmyICBzrzdUi/jhDx/WSjrYUnfLhsc3c
+	 D0pPtbGN+xU9+tIGrC28zdpiWLbAFzGViZZ1ZbQB7/Z96r9ZVuZAw9JzvYt0FBTEXj
+	 82ykqjvPVIW7xc+YYHt+LiyuD28YP5oqnjg/0115RkfzVYi01+0926YFH+/QpJMhFr
+	 WpIlklGViaYsA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Josh Law <objecting@objecting.org>,
-	"# 6 . 18 . x" <stable@vger.kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
 	SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 1/3] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
-Date: Sat, 21 Mar 2026 10:54:24 -0700
-Message-ID: <20260321175427.86000-2-sj@kernel.org>
+Subject: [PATCH v3 3/3] mm/damon/sysfs: check contexts->nr in repeat_call_fn
+Date: Sat, 21 Mar 2026 10:54:26 -0700
+Message-ID: <20260321175427.86000-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260321175427.86000-1-sj@kernel.org>
 References: <20260321175427.86000-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C45F040006
-X-Stat-Signature: ct391j4n58nc54fwbm7z48xecxzkw5w9
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0DD80C0008
+X-Stat-Signature: ehr4nwbretjo9fu7id1sxkzn43ju8647
 X-Rspam-User: 
-X-HE-Tag: 1774115676-992464
-X-HE-Meta: U2FsdGVkX19n98rCtLrlWinbu6Ih2SS6zl1rxzAIkElQT9TTlir931HzUBxweewCo/b7iovhoU4JrOTvRaqmrs7roabCy1tOhubHJyJhEsPNDooLSe6cE3r3IVGMRKbG9KChjuv6XCn7/5+cy5nasHKtLemN3rwqPQE6s8MJ1yOCIeLVFBhrWcduGZa+QuzsOM0YSpto8dm1kBcmDS1vMSdLk7eBvKJBpfn4Hu976R6g4a3UFYxL8mvO9/03jsnxcwOVRZt2bjTn96HEHl7UZBf8GBuchb/KJkEY7JQpuk0xfdPUD2h2CrVz5QSikNzmNZOsb6Rl7hqqyY2RVUfqgbSKY/rtXenHxWJ3fzCln3+VyZ3lUB4mdvQmiyJ72laVAnmhx7wwYVzRKIAlta+374XBF7/HBMDLt37PgfSCbYz8O04hAfcyUKTcyf+s51a/jpStX5Xj6k0WYF0nB7sLwIPvGJt+pTRHowfif4iK7zk2RhZi7blpqhyRH58IVZbLcFyspCln065wUowFqY2LWQTOJIztGSsb2SJ6hcQc+5H24hxq9LIfGRiF0LD9Rt91N4IrwGe/KqXYGhlNpO8lAGf3qVv+dc8UbFJ702gj9OCroOXtjHVuDlIAwbOsr/IFPSzLYqJCZhn05ye04jVK9XTflKq3V+JxG4lM0xGO7X6KJjB9lJhWF1QW34CpTRnv9T/fkufDyHnIDoA1lUeTR6GwWYVDm3CzdpLA1O8VAtK1DHtAScQBVI+6B1wB1NYyayL+g+zZbzT5oUCeEQoKDPdSdsmyq2S8IQg901d3jrq3PRM5j441gSkxKeLUhrHea47uH7NC5S4NeWpK5IshrCefwa7eBXcHhqBmnkqUVbDfPAVe+3Rymc66Cjocgwp17fZ5SZPAxFWxoo9aMFGDCDQmhQl3Mnux+4WRqTrIqPOG8NddgoUS48fhlfLOGHNkW3hdO6zNjn9oZD9sXrp
- aSR42ENv
- B8gOkh/5wV5SQsLxzIN/vKlBhXvinEYIRQRu2X45+x9BPAZ38Cvmck5ePUsFTbLGR86fmfPnwshEsUZInBnqPqP35WGod6NzOB0iFzNqI+XPUeW/TbWMSe30mvQ/nMYPoG1JL27tgl9vS73D+JBN4UaOlVi6Y0y2ST7AQ/4VWkDp1jt7Dv+FxU9Yn5X45cg07Q82d1vAOBR6tcHDCZCHMKQWjX3x+FANl+kSTfd830+nmHItxiaHHfrG7cpwYvdsl4Z8/WSgk5C7ygjOnggAqnU3zHlzPl0lA3F9i7fXivKZhMNeVgPUn46Be2W17G3yR83X4+KTV6LYmpw1+ZAzx8B3BRw==
+X-HE-Tag: 1774115676-449535
+X-HE-Meta: U2FsdGVkX18F9WTgrx0nsGgc+U4o7e9dwpieYAI7sFDvJQJHFYludSxZ20iyBrkczJRjhQH0LzXv2nAVhy5EFOTtijPovWSN480yNZpU6dcrZamFK+hEXfisdqZ63QIccYjxonH0KX1I7GuMhflJYW+Bq+E1NQLvbchLTw/TM/ec9WdUO1S1FCFMpumYwdaT5eQ4+LYvThtwh+XFOdQBBhempqSrV180/7qUhoHGUsJXMr7ob1KVE5PzYcbowPoUi49RJ7fMjV562PaI9YHS5uPI5o3DPJrJkIRidoUH98ike0USTLpGwYokQdLBBIOBrmDxSv7gaHThHuBI/U1NkAi2B7XNSI0fipEbyUeDEcBpDlTKNlDEUJD+eGk8dq/+IYyYLLIReqooRNtlcUxvoA04Yd5wiSip8EVsZUZ+PqeLPuBaSyX89flliuPx03enKGjvdyDAKAyuoVkJlsDJYZs5fEIXzIPmH4L8wpZFvRNqzi0ePPsTgC8xNs/bxIMv/JKqx3dAXp2XRxPHa+kN/8nYfOcy5DOHheQlFBgNdvKlgoBTMld7W7CJNFT+s+I/xlUQVTCjN6716zksZD0Xomc5avNvTF3UoOCP3VtrfgmxtAjmHw7Sc8SgXNG9WRLhf+BX2jIqw1nVYp6gYX9mieTJIKawvTL7IqRRaXxSHW8RK8ANxjSa/v8WW2MZr+XYHbAcR06qy4sjf1ZHwqJsuhJF7ofY4ljxxLbtCM2d3pOt/b5KZW4jyoq1VTj2RVoCdvEy8K97P1FKU8v8Y3ZidH8gBjFiTV4bLgxkRCFKOeXnzJRFGakolU4PmEZKP92Z5NO9jlz1gNbij7enJePm9ejJTJBcknn6R/3hleI9EljmO3FQB/gl4K/FX8NASB2O1UfKFBjUDZmbT9fRhhY+HTUHLq14aSfPKIUIFemzJDeZqU3m7Pr4owqDvFD+HNnt9EbLQkCoMuJ+CybEuM+
+ hGzfDWn0
+ +Av+/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,35 +96,49 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josh Law <objecting@objecting.org>
 
-When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
-param_ctx is leaked because the early return skips the cleanup at the
-out label. Destroy param_ctx before returning.
+damon_sysfs_repeat_call_fn() calls damon_sysfs_upd_tuned_intervals(),
+damon_sysfs_upd_schemes_stats(), and
+damon_sysfs_upd_schemes_effective_quotas() without checking
+contexts->nr.  If nr_contexts is set to 0 via sysfs while DAMON is
+running, these functions dereference contexts_arr[0] and cause a NULL
+pointer dereference.  Add the missing check.
 
-Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
-Cc: <stable@vger.kernel.org> # 6.18.x
+For example, the issue can be reproduced using DAMON sysfs interface and
+DAMON user-space tool (damo) [1] like below.
+
+    $ sudo damo start --refresh_interval 1s
+    $ echo 0 | sudo tee \
+            /sys/kernel/mm/damon/admin/kdamonds/0/contexts/nr_contexts
+
+[1] https://github.com/damonitor/damo
+
+Link: https://patch.msgid.link/20260320163559.178101-3-objecting@objecting.org
+Fixes: d809a7c64ba8 ("mm/damon/sysfs: implement refresh_ms file internal work")
+Cc: <stable@vger.kernel.org> # 6.17.x
 Signed-off-by: Josh Law <objecting@objecting.org>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/damon/sysfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 576d1ddd736bf..b573b9d607848 100644
+index ddc30586c0e61..6a44a2f3d8fc9 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -1524,8 +1524,10 @@ static int damon_sysfs_commit_input(void *data)
- 	if (IS_ERR(param_ctx))
- 		return PTR_ERR(param_ctx);
- 	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
--	if (!test_ctx)
-+	if (!test_ctx) {
-+		damon_destroy_ctx(param_ctx);
- 		return -ENOMEM;
-+	}
- 	err = damon_commit_ctx(test_ctx, param_ctx);
- 	if (err)
- 		goto out;
+@@ -1620,9 +1620,12 @@ static int damon_sysfs_repeat_call_fn(void *data)
+ 
+ 	if (!mutex_trylock(&damon_sysfs_lock))
+ 		return 0;
++	if (sysfs_kdamond->contexts->nr != 1)
++		goto out;
+ 	damon_sysfs_upd_tuned_intervals(sysfs_kdamond);
+ 	damon_sysfs_upd_schemes_stats(sysfs_kdamond);
+ 	damon_sysfs_upd_schemes_effective_quotas(sysfs_kdamond);
++out:
+ 	mutex_unlock(&damon_sysfs_lock);
+ 	return 0;
+ }
 -- 
 2.47.3
 
