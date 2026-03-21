@@ -4,87 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64929109446F
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 18:04:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C607109446F
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 18:05:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A79C16B00F8; Sat, 21 Mar 2026 14:04:19 -0400 (EDT)
+	id 9765F6B00FD; Sat, 21 Mar 2026 14:05:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2A4D6B00FA; Sat, 21 Mar 2026 14:04:19 -0400 (EDT)
+	id 96FF56B00FA; Sat, 21 Mar 2026 14:05:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 967096B00FB; Sat, 21 Mar 2026 14:04:19 -0400 (EDT)
+	id 80A8E6B00FF; Sat, 21 Mar 2026 14:05:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 826136B00F8
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:04:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3DE391A05B3
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 18:04:19 +0000 (UTC)
-X-FDA: 84570844638.18.AD7548B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D35F6B00FA
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:05:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 35CD61A03E1
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 18:05:56 +0000 (UTC)
+X-FDA: 84570848712.21.20E7927
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A0239A0015
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 18:04:17 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gFKe+KLy;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4F962140006
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 18:05:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ifXqZ9gr;
+	spf=pass (imf09.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774116257;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1774116354;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EGJkWIuD7KxbBrepJ9pHT3Nqi1tKyin/fHD8VBXUy7A=;
-	b=RBubrIdd4vQltI0J88nY/IGvhU5nV8+uBeF18dmC+XKtosOtQasy3T7kUeDapI5OhuoyIF
-	FBCSRC8fsh3Tu5Fjlpi9Diqt5fqstiZLHPTfxmZhbxAAQ+k6Wuvtr1kzZcpCTXaf67MxrH
-	/DxayTFOsdHF9y6XKSTwJPboLZ4ypY4=
+	bh=9Th8jt6FHVr1TrqFJW2URV52XC2KdVPsfJ4Ts5FNltU=;
+	b=PZeolcJ4WKIjXpwcNXGjJXOAZ9JuUC2jB/2yUD+nf8/Uf5oSOfsx5lMghQYz9lSKRgqjJT
+	+sZ5XtP56Am1HmrdyFuMhX+9nmE66OaM2E/McsR9mnqyDZbAFoVxYBYXlnDiNXnwOn1eQQ
+	MIKHh5mQD4Jn42feJZ2GvnDMhFp1SNI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gFKe+KLy;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774116257; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ifXqZ9gr;
+	spf=pass (imf09.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774116354; a=rsa-sha256;
 	cv=none;
-	b=OrTEL5WAO6J2oHX2WQPvMgqZvl/tUqYJlPfrK6jzkmY7n9innMItxPlsi9jIt19Lxo8711
-	MwfgeGBsfaIm8PBsuN0atUliA6p8JiXMIet8FxD2XLq0J9/XRYISM7ODMv/MIEYbXDB+Hl
-	QHoPfdj0Z8pKNv/6PPWuw2b+vs4DH5A=
+	b=lPtXuk5r7fMYH5SqCKtYeXADQrYpnKUiKGVXIHVX7KgMsfngiBtvOpbflLjpwW81DiAQ8I
+	2+8C/tASUJbC5oqjWrN1N63VvZ0JIV7mC2Cys/fTUE2r8CWW7L1gQzhPlFsDrDQ5TrJjPW
+	YW3bAAU9FzfKJUYZWchg/00NtaVlXeo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 01153600AE;
-	Sat, 21 Mar 2026 18:04:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C03BC19421;
-	Sat, 21 Mar 2026 18:04:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774116256;
-	bh=7Ziz3FEBxwDfrBKEkvwU5ZBuK95WeSzFK10QqzMJyXY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gFKe+KLyaA/XnO3WRfr6lUp6fzd5+vRpvLqQ88zZfPnolHZerNDFM5c4sy6qRffV/
-	 qzlGT+PxB6RB0uv7wzTs/9gFgGbo94IKjO9DbQOPepYeGtXDOLx4k9bXnI24Wgwmsz
-	 pw9p69pxRInlmQ02RMEubHuWjKPNbV2IGeD886L4=
-Date: Sat, 21 Mar 2026 11:04:15 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Shivam Kalra <shivamkalra98@zohomail.in>
-Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, Danilo
- Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v5 0/3] mm/vmalloc: free unused pages on vrealloc()
- shrink
-Message-Id: <20260321110415.00c6a8bfb324cf5adcd2cb01@linux-foundation.org>
-In-Reply-To: <03262674-2df0-40d8-b411-4735c6f43770@zohomail.in>
-References: <20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in>
-	<03262674-2df0-40d8-b411-4735c6f43770@zohomail.in>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	by tor.source.kernel.org (Postfix) with ESMTP id B18A4600AE;
+	Sat, 21 Mar 2026 18:05:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5D6CDC2BCB0;
+	Sat, 21 Mar 2026 18:05:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774116353;
+	bh=1q9ZbSRou3kZy0bVZall4fchWN5XHmjqwgrNK0kmHD4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ifXqZ9gr79xAqOtFHJ4E7O9+UUMY0J/I3p+9nrsAG3x/hBN4w8qnSbHgch4uT1uBK
+	 ozj7t0A2GRZctnTRusqFMZ/kcw91HS/7faSwlvfx0EUWoftCoY05GhpHjyWbmI8SPr
+	 lQ4aeIXam8/af8fc3S8v67nUO3VJyk51Rz914cgGoV2M9QD9eHS7UUL2vpkJpbcAgH
+	 wGJd0HgIO9EHMh4x0c3jR5SRYUxA8rxxY3yRtSGgBwh7gDnuoqTIoEGPM1E3+fNLbw
+	 uasEGEa4LXl/V+cW3isZIfCK5vxUVZD8QLT5W0LVPyNmN1RYF+8L30bs1uyzzk9tNE
+	 72T5MnnSnF3Sg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DF2E109448B;
+	Sat, 21 Mar 2026 18:05:53 +0000 (UTC)
+From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
+Date: Sat, 21 Mar 2026 23:35:46 +0530
+Subject: [PATCH v6 1/6] mm/vmalloc: extract vm_area_free_pages() helper
+ from vfree()
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A0239A0015
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3iu6xgaeb6gzktagzqakittxmywbdhti
+Message-Id: <20260321-vmalloc-shrink-v6-1-062ca7b7ceb2@zohomail.in>
+References: <20260321-vmalloc-shrink-v6-0-062ca7b7ceb2@zohomail.in>
+In-Reply-To: <20260321-vmalloc-shrink-v6-0-062ca7b7ceb2@zohomail.in>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Shivam Kalra <shivamkalra98@zohomail.in>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774116351; l=2771;
+ i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
+ bh=H130FITdP+gd6htRVApNT365j03KxXWr+CTNaNFiPA4=;
+ b=uGx5cc0zWuNS8y3W1NbEacOLTPyrdZLL7S5/yLfUTJOFkmM/1kItTiCIB2t76BpqeE1eGdUNi
+ 7JwPlwnRLO9AA63cg4NH9GKVOC/IZDQd9zmjyQFsgPTc5ygKm5h5cf3
+X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
+ pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
+X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
+ with auth_id=633
+X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
+Reply-To: shivamkalra98@zohomail.in
+X-Rspamd-Queue-Id: 4F962140006
+X-Stat-Signature: zf3jjrz9xa4ofirxfwiasss4s8pnmt4y
 X-Rspam-User: 
-X-HE-Tag: 1774116257-718174
-X-HE-Meta: U2FsdGVkX18FNdjB9q0Ztfu8AlFq56lzRFnyR9ruqmVJsxF3jXu5YL4X3f9+3JcpsQgnnSh7eyvdD6i7gHI0nUTbqYMpARSdT5GIzRqUCksvFHzRVDRIbt59+We8CeVgTYApc9TVlsAINhvbYMfZUJXJATxMuB7vdntgn4df7cvQpyIJFaUC94HTkEcBI6/EvivDS5QWk4gjLkXxRGcHSa4dEzV0M5q21zKlDABm7kHkGRX644ZxG9vBKxk+PQD/o94zDneKqb/A+kPwCyfrFqeiDnP6Fbjs+QPMftc4CuAkdf2qCQc5eA/iIg8nX7iP5MsVenqdi3ozht7gq1Oir+PjOv0DySoa2i0wzJ+hZczoqNCzP434MYUduRLRlQBW8lQlZS+sgGIlO885PS2YON29Z4HeONi2VtJDP99Cvd7YHLcdmOdQqMPUSYH/LXHHHNJBs0ONW52DJkr1kH1FS6sGCf5HtuwUzA4PyyXTeAJPf45+05cKTC0Q7Bql40KAeFLeGfVY70XJ+w5hzmiFrDXbFEvx3ZK0JXGB4JU/FtBLmdCKNVmp16lI/oJKJeERaLTnlV6+12VGwHkIZQ+nRtgxVjl5Fd7iXMScHBoH1GEO1nA1qgVH1RsVtW0Y+CTK/fmI9HFcFr0iWRqI/ekNWS2/uHZj+HgdAL7fX+Dz7FK9hdNqWP9T3IAsiVspVDbevgUD/umCSw5ANSPfpxTOpUhs/JOSuQNctAg+HlcuYxwNiWYZtFQiC8LQEyy2EJzbYI516CD7Eu9ak0Mvm7dDJkfcb6trujZy7ghwspftHyFsVt1xDnmDe5B+4T/TcaIjAi1T5/qRjAEfGrjmG1sAo24IMNYHxtCgjsoUQunH3X0JQmHqNv36OPv5YyJYfP26etvciW0YkUFxTRST3RD6IZwhpzJOBcpORS8z2Dl2/EttoZ7ZUd20dED5wJETzuyUTNq1RqCDyT46WpoVaFx
- m2JymFfR
- nsH76dil+61PQtPY58n39JP/kmbbslRnApBPU57pAih61acZ0LeHpZTrhYPlUSfLZdZYxTwM0PNVfJcu3kYd1GC5T9xuADcgjQpKtvAztEl+KaubP0O9wBqCiyqPh/MYE9DBZx0Yj47eHvYKjLwFUC6IFmCTqRGAzAdOzXnbyjGJkdmgvisp4SpYNaIodY7S745CisgfwYpvzcYBGx9aMq2bQAfgV79jt6e20iO0chXLOIdI+l+i67W9ewj5SgargpZIOiWiI8VnNdWU=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774116354-741922
+X-HE-Meta: U2FsdGVkX19d/XLmX9ZCcG7NAoEshvZwocxCa9UdgKjWe1h3tHxceKcmVFqxyjhwFAFfFIEoDmz7SKmdEqtyPuD4ccvqoWIAQ78znTrMS2taNzQaZ+QjvfVm7GllpczBU+b2pdtygAJfgboQ9xMTaa6nvovQfUiUN6T/VJO7zZM7HL031x6yz7LR4yhhBcpo6wYR8ffm+MjbU2XTFPJAsKL8kFY5AFQWDkZ48bxs0PThfoQ101MiSQzxDetp3lcKSLfkfPvRBHeNE/EWwLKjKGySYSOQYDcs+R5Rhfzy35AwXlLSUafUec6fiDrFDRpc5+qYqj4MRcjyhAA0IKkpqctrOiHn5NPOJGceS3NFZ5fNT0BD2B/i7qz4U+i3yrtxdBI3YxP0HQzPwOtc3Z58BNGMgUQ5hA2cSvovAJwZsdSa86KrVwCZ8XLxhR2R5F14iN3unDMF6y9dW47NxFFiC7+Z4FM//2AbCf0gQ8A6uR6bJWGTvTI0M63KvMF7Zv9aUeFFfPpFKLDlQSRbCS+r2IK++AnzQAvRm3hyeVa6jJwoFyXZVhZYa2z9geV17/OFSoknYWn3XZPTmbKKDfq9048wUWiTijDESsMChbKFMbuGSeX2FwnK88B1Or0+lSN6ILHF2SmQXrpSjrkTRmayBVZP/7+BTgG1gy2M62dgK9/1ic9ml1k6DBOTDj0CVQEqsIxKc2bAb2M/Z4MDnCmCfW9do3ce+u+4DwL6lcEXkJ5wc28vkE5KLjcLTbanL0xNeyiYdDXeaUp0iM/tIu2n38BPvlTWulISvDVBq86uAqg2RoeCqwrmpMtgRHV4GbLbUGbkGoLvpeGPvtPaBPr0Tw/8/mRP7JnuXIM5LJ3JUMcknZM4H2zj9sdjvS9ub3Jo+Mi7t0PnDSr38msQxntoN44VuS5QPImedgoQ+7TkMiyykCW0/ZJ4LTmrrs7Tn3RYIlVamOlosCnx7KNqIWI
+ zvysBBVC
+ /1gd1qobSx82zRgzhDdOA7JVqZGLmUyoZ/YvEoAlf0Y/nefDXBnGGjNeE8SrzzycQvIcGkg3JN/Xz0lR6wUKqZPZBbG5gqEvlCf7I3azrJj3lB4zh5jMJv93/eTE/qbpk0rzyPhwFRqkm/kz8TjH0VBUKaJOxWWjGMQKIy6MRIi2N0wvfUzso4PRJM0GX9CWq6uPZZbgA5zp4y8nH0V1Ds4pbGAto6O7+GGJcLCUlVMpBlaEskS/iSTpXo9UjCDMo7lOQmOy1Iym7sWjZvnBVGibRrURFwvEoCHKJpyxBbZ9mVRO4jYHbitY2TrXPU0DwSOsID4aR82PzKaKtHHQhknyDvOsdt83QzjGSt6rWrRlbqr7nRYCpUnQXXzp+4ySmo30LTlzu/Aqe47FyvhvploJZfMjXnm37RCONgCQyNhSx1db1hGVcY7v/TLRALqnqHGiB2z3htWffEETTwOpeA7uzMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,18 +109,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 21 Mar 2026 13:45:35 +0530 Shivam Kalra <shivamkalra98@zohomail.in> wrote:
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-> Thanks again to Alice and Danilo for prompting the closer look, and to
-> Andrew for providing the review. 
+Extract the page-freeing loop and NR_VMALLOC stat accounting from
+vfree() into a reusable vm_area_free_pages() helper. The helper operates
+on a range [start_idx, end_idx) of pages from a vm_struct, making it
+suitable for both full free (vfree) and partial free (upcoming vrealloc
+shrink).
 
-Well, thanks to those who developed and provided the reviewbot!
+Freed page pointers in vm->pages[] are set to NULL to prevent stale
+references when the vm_struct outlives the free (as in vrealloc shrink).
 
-Reviews seem to take 12+ hours at present.  Go to https://sashiko.dev/,
-select linux-mm list, paste in the subject.  Or go directly to 
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+---
+ mm/vmalloc.c | 47 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 14 deletions(-)
 
-	id=<Message-ID>
-	https://sashiko.dev/#/patchset/$id
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index c607307c657a..3977398e56e4 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3416,6 +3416,38 @@ void vfree_atomic(const void *addr)
+ 		schedule_work(&p->wq);
+ }
+ 
++/*
++ * vm_area_free_pages - free a range of pages from a vmalloc allocation
++ * @vm: the vm_struct containing the pages
++ * @start_idx: first page index to free (inclusive)
++ * @end_idx: last page index to free (exclusive)
++ *
++ * Free pages [start_idx, end_idx) updating NR_VMALLOC stat accounting.
++ * Freed vm->pages[] entries are set to NULL.
++ * Caller is responsible for unmapping (vunmap_range) and KASAN
++ * poisoning before calling this.
++ */
++static void vm_area_free_pages(struct vm_struct *vm, unsigned int start_idx,
++			       unsigned int end_idx)
++{
++	unsigned int i;
++
++	for (i = start_idx; i < end_idx; i++) {
++		struct page *page = vm->pages[i];
++
++		BUG_ON(!page);
++		/*
++		 * High-order allocs for huge vmallocs are split, so
++		 * can be freed as an array of order-0 allocations
++		 */
++		if (!(vm->flags & VM_MAP_PUT_PAGES))
++			mod_lruvec_page_state(page, NR_VMALLOC, -1);
++		__free_page(page);
++		vm->pages[i] = NULL;
++		cond_resched();
++	}
++}
++
+ /**
+  * vfree - Release memory allocated by vmalloc()
+  * @addr:  Memory base address
+@@ -3436,7 +3468,6 @@ void vfree_atomic(const void *addr)
+ void vfree(const void *addr)
+ {
+ 	struct vm_struct *vm;
+-	int i;
+ 
+ 	if (unlikely(in_interrupt())) {
+ 		vfree_atomic(addr);
+@@ -3459,19 +3490,7 @@ void vfree(const void *addr)
+ 
+ 	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
+ 		vm_reset_perms(vm);
+-	for (i = 0; i < vm->nr_pages; i++) {
+-		struct page *page = vm->pages[i];
+-
+-		BUG_ON(!page);
+-		/*
+-		 * High-order allocs for huge vmallocs are split, so
+-		 * can be freed as an array of order-0 allocations
+-		 */
+-		if (!(vm->flags & VM_MAP_PUT_PAGES))
+-			mod_lruvec_page_state(page, NR_VMALLOC, -1);
+-		__free_page(page);
+-		cond_resched();
+-	}
++	vm_area_free_pages(vm, 0, vm->nr_pages);
+ 	kvfree(vm->pages);
+ 	kfree(vm);
+ }
+
+-- 
+2.43.0
 
 
 
