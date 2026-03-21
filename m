@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C4821099B56
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 00:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391521099B56
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 00:56:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 136D96B00A3; Fri, 20 Mar 2026 20:54:27 -0400 (EDT)
+	id 4E2DC6B00D4; Fri, 20 Mar 2026 20:56:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E6E6B00A4; Fri, 20 Mar 2026 20:54:27 -0400 (EDT)
+	id 493A36B00D5; Fri, 20 Mar 2026 20:56:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04B286B00A5; Fri, 20 Mar 2026 20:54:27 -0400 (EDT)
+	id 3D0636B00D6; Fri, 20 Mar 2026 20:56:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D216B00A3
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 20:54:26 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B4C658CEC
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:54:26 +0000 (UTC)
-X-FDA: 84568249332.16.939E101
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FB026B00D4
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 20:56:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDBD61B80B5
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:56:07 +0000 (UTC)
+X-FDA: 84568253574.03.E85FEED
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CEA73C0006
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:54:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mnrnE65Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3A1C220005
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 00:56:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RkIh9jNM;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774054464;
+	s=arc-20220608; t=1774054566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DkkhBu411aNcP52HBifRBU3AmM4vjRkNu8p4QLrHErg=;
-	b=fZIYwRNpE03aeioNV+pTYHhDoOg24Mhe1ok32LZk+labUUmkcWWfMf7I/hRGAJ5bY5QkMl
-	Q4C0uv0vC3RpNDr/mcQKzgxNSK5x2/x9ukpSOG1tJxVLXSc/aM+V3H8mqd7JkK5dT4Kzh5
-	g/hiXb8vX7/XfF0Q7pEjBF/G0A/Y5wE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774054464; a=rsa-sha256;
-	cv=none;
-	b=SM1QcxazXFExHJdVHoYTB2IhKXUF4L+m531td3+seSE7xy5yz7LVH69EROk+Ry0PJ4RRW8
-	TL560zvGI4bSwqzpu1u+u2NsHqoZfHCxPjcilvYj2JBdHc/IP23zqDJUWHFh7I8pL6bPc2
-	3VJaaZgOEseZ/zB6Jj60glGTy/78MoM=
+	bh=VyB9fSppTh0v620Eo5UGjpFkrJtqzUbdNaYvIZHRIIE=;
+	b=FKIAuWzDLFc/MiyJCRMEOM1SaVEn7H8Li4x69w4EPgJtUKAPWNV/bySml/V51/SGebHQsD
+	UpPi/gznRXrN99KZIDk78dl4BNWKCAwg/dghJkkn+7fZKd8e0kZraXEeMGRPU8r0KC7QDf
+	lBvYz+r7i+2Y9mw/RXUo9CQT3U0IKvE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mnrnE65Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RkIh9jNM;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774054566; a=rsa-sha256;
+	cv=none;
+	b=ZswzSa3p460tn+Cn/jKnLQVV7GuJHeWEHnThXdn9pI+mLGsRdSCR1Od2ex8x0LRWvNl6x5
+	NikqYe31KLiBBYlwjycO2RwXU8qUM2PDGcP5TjQwQvVfL5I0Ka0ZZhLBUx0oS08BXW+FuV
+	CXoLEvlgQDhGj15c4a2sj5JMfPbaPJU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D596F4436D;
-	Sat, 21 Mar 2026 00:54:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E51C4CEF7;
-	Sat, 21 Mar 2026 00:54:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 53F9641A7F;
+	Sat, 21 Mar 2026 00:56:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08735C4CEF7;
+	Sat, 21 Mar 2026 00:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774054463;
-	bh=PEeArNKfdFtHas/K96y4Ll77SY637LRRo0yTKUiZYcQ=;
+	s=k20201202; t=1774054565;
+	bh=0D3OTJrPWzODN5QWUFPsyWLRAxDzzOn8mYGwKppQME4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mnrnE65YuUXx6wnZe89Pe8iU5GLqPwOxRUTc/lGakGTHrXAe056KH8+F0/0eC9+hd
-	 OuSgVk6eCFkMm1LUPnYjqoGChMnSnkildU6yWNvDyW7PFu/vSK+4HKx2pBaD+xUcgQ
-	 EUrgbXRoPKLRgDaLDX/I2kverlCh6icZ2CuahrzwSOCYjG6Fr8xic5NqUrOz3CbYGo
-	 txpfW1U/R+sbbMGNi+IY/AD5mar9Wm2MNK23PGQvJ93YrALvHjotp2RmWZB7jRkqts
-	 grePXrbvJB0zhp+wP3oMY34PmU3Vt8Gt+F8MNCh9RPK7K6VdCtDT6ODEEHEXjS6Rc8
-	 szJr8/dx/SiNg==
+	b=RkIh9jNMiAvcbN33NpKoDi56RcVYsRXjQG/Ly1q8S3pHiaXEGQxOFSqoh0+d1GdKD
+	 UHrA1YDqUJABPT8hof8l0MC4jWV5HDykfaVhcZT0KfaRGtEVYhLuviyOJOEqsWkq1h
+	 0TuLyXFjrEVc/1XbB5nqDVtT1KV4Ulxdw1irqGLnThOLiCIIq5tqprTAW0fzzjGA6+
+	 YlTiig/kGz4rxORLizt5DXihS+mLXcmZzEDZZUozFOGla7UZWZH/gIHZ//Gsf6bmKo
+	 HBH7OxOLmLcYbwTwfpgjOw/9Y6rS3A/1X+DCL8Su2uWzQDqdAkkx8bZmDhbJkKw6p+
+	 LkgQcfNpl4/vQ==
 From: SeongJae Park <sj@kernel.org>
 To: Josh Law <objecting@objecting.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] mm/damon/sysfs: check contexts->nr in repeat_call_fn
-Date: Fri, 20 Mar 2026 17:54:19 -0700
-Message-ID: <20260321005420.80596-1-sj@kernel.org>
+Subject: Re: [PATCH v2 1/3] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
+Date: Fri, 20 Mar 2026 17:56:02 -0700
+Message-ID: <20260321005603.81086-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260320163559.178101-3-objecting@objecting.org>
+In-Reply-To: <20260320163559.178101-1-objecting@objecting.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CEA73C0006
-X-Stat-Signature: rxixqe8zjwd75x5noa86x3ygjq6m5ieq
+X-Rspamd-Queue-Id: 3A1C220005
+X-Stat-Signature: mcqxi9tanzq5ukiwhwrhed3bhambark3
 X-Rspam-User: 
-X-HE-Tag: 1774054464-393765
-X-HE-Meta: U2FsdGVkX18N0F41H2CyYHH4jHUiaH+C66JLhi8rtRE/jrIETUdDHu+o2Bugixzj+GHJKA1945JGFAROXrcnn+dbanIBhKWKpRWVvtHGBUakgyWbnAfohzospOL7OQxgLK/i3NZug7Ito6Y1Ppmle3j+VMpJHbQx9kwB2e+4Jb2R8Uavl/zfXSw5hnzXDHOKzwfE2GJKJT0iaqNtJpo5Hvf9imqNj681I2Hm+iCXKzdtb5b+PMYn3xXQ/zsQ9JEbWoYXp8BfdghKfmPU0mxnxjtE8XIlVOyKQngT0ARX/z0FN0I76B613WXCf7j51z47v1j3NLlZgkcPiM4zxLe3I7jtT1SXyzQqtWvfazye/l5bItHkqxAU1kXVtwhc8TjSijthcWpK+Lqz5dI3477or6W4JCfHUJZkgrXki+IgGGgmsJejtlK2jV1jwsh78vKE4Lwad/PbaB2l5PvBqsA0PYrM09cdlKCNJTEJ2AycWnYYUPEBQtgxSZU4k3bZsvmQIO1qQoh7gffNow6DAY63GVo57s9lgh55QlDUvjy7ndAKuc4EzhFgPNIEMPKSo1XJp4teLLcNa89U3hDHCuK/x3rV/5dpSI6g5d8h4UTd2rDvc5igT+Q+Xbu21sS3O26I3LiUAu9Z0L6Bk6JW+PW4eA9E39mqy+899R3SUKE9YOjErz6+loH1UZWHEpgwTRDx2myt0IFb28whO81eY5x6qFyXSIvvZdMbVK92SSRJ8Y2rK7pvCxY2Wmhz4ZiuWa79rIlZGV1uYMCgIOmWSszudi7XN/r7Fmk2m09tvCtDZNSjEjbw95jOvTpa+IkbakY7kiTH6owtXcF0OK+A7fZix9FhQGLYUNysutVYLCiqGkrfUUtjKV7PW+3Yod8d3YE9m8P+EfYxm/80qHZiIwu5Q3z8/yllBGompvMzs5dcSnOCHmj8nRjLe4GrXJ48AzsR79lnrWYSWtqmNjtroB/
- dweBI1gY
- N9AoMxfqK4xOrGJ9JHztSaVDlk9NzqOU8U4RCx5udmLGZP0t0/baJPzy1HYqJMkJRSUIz49wJrSxAA78pD0z1VIvJ2oalC9F5HI4ho39myGWQZ/MXop/CVRlXWPE0hJf8E5d2S5bdqVT1gUB9J9jS5jSZCowEoquQaXeIs6pp3FsDQKptVdPtj1SuDL6e+MRr5AKQp5RFE/jwpka8xz0qQCzKhGBUySl+E5oV03KHAGelWyWZ7SH+437SB18BajDdElhZjUeJrUdxiJPqluzZFis+hyQJSU+P/8n4GfJmzivc+woFXmop3LlPDjPeEbPRYQfU3IwDH4qN4ALYrG0Z+8LkJXWHSiPp882pI8ax+aeMaix4vmp5KnCB9Y/dCT9kbOQVBIeg3M67Ogg=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774054566-195777
+X-HE-Meta: U2FsdGVkX190N9i1SRwyCVt9qWyi4Bp0aoRDinyKifti/m29Rv4djdOjm21QS6lm76xHU+32xkgx5nBzQw17cs1vxVDUjNsKY85IHTd2jH+Nyc8Ez8FO6V2Gdv7pRMJQsF0C3d3N9SozVqE1dD5yG5CYDoXjI8uY6OF4NEZWlE3VqobzeZKeZDB2JGlHeN3mkTmeLoEIeYat6CxhwE9apLC/FajlFyyyoIVeY7Mo72OfmbaiRAw5cGt5BKcVUoQBZaewB9b5Rkj4uNsxLCdyRXjijFwtD6T+V/lwK2M53seGHYcDPkgBYOIjEn08U1gTEZbKTX6LXuGqXHopXDKUo+a0UgENfdJNtOv2uMG2E8xjb//lsgwPv/lLxxf0AuVFZ5Jk7VH/1CHZ2j1KAUXrItQBagxJdR0cX2RFdS+sDF7zb+S2mqPU1myb/DePhpCODNurxxMsl8aHrsdsZyXkJYN3bBlEyrlmXsUe5mBNYU7kcftSrtn2paMgfTWt7JshPIUXdx50cR9uIMj2wJv4/7S1D5RTw1NW3rJjI3HTAVOFZh88KOI7bKFHvU6DOh5a7koaY59Qc+RE0wRMffyGbOeTlbOlaCm6JPaaX5K5qQ4kYGjw25hTHdJR4Gul4gMoo2KETfcypKxVU8sPqwLfPy7s04upsLxRFHQxqg9gpepXVZ5nRKvFIAgKpqR5wsBflOkjIXeUkmZWMxcno0jwnFgNECcNUasP+O8ngEVEFXZZtRdtnoeczFH8fPkf2jIcmM/uq5W+Cd8nfC0a0x9R9hunD/BE1BrYAtYm9zGO0mmlM3m7ZxKOnHFyJcWpkF3TEpMD6n4LzlKcvf9lnbKzNU6kdf+LJQyQcncbURzptucIaFwpwrfTiHEqSzvpGgAa7HHSzdX5RhYFs4lvnAn6osIhWv5tmds2yVWrF2NLvkYEnkaVSbgvEIontGf+dph/TI2+0x6zdrRG8zmlx8K
+ Nh8FSCdx
+ FVG+LrffBkmRpY8obdKMvi6XjCUupn4qJ9CH6CEO187BxOJMcMwDx2jk1EzRyPbOKFbbnWZzICwViSXd7N84+6zsQGAj7/+9kEazbqGuAp4zWhaSQ5DOj4TnLhwb1QhUmUt6igUrUXfQNW6mVnZB7Yic9spZX2Vj/fAX97D8wUdQuzmvexCRDTUtboWzqNhQAmlDhFLUahU4lRQRBb6a6UklmMmiJ1MwwYwQStM1sA5Az2OvRcadfa+LrqqHJuSha1P/kkc9fXV3rGMoZLvqIERC6reFC+DD1x56KgZx1qTompHi0D/NROF0j62CasjObYUbjFsfR+ODcmeB7nGMpHjY5BM2QcWaW/cXe4e3YCxoZr1ApW3ZQjuulZimOqYD2Wc0baDn0VUYzlDw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +94,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 16:35:59 +0000 Josh Law <objecting@objecting.org> wrote:
+On Fri, 20 Mar 2026 16:35:57 +0000 Josh Law <objecting@objecting.org> wrote:
 
-> damon_sysfs_repeat_call_fn() calls damon_sysfs_upd_tuned_intervals(),
-> damon_sysfs_upd_schemes_stats(), and
-> damon_sysfs_upd_schemes_effective_quotas() without checking
-> contexts->nr.  If nr_contexts is set to 0 via sysfs while DAMON is
-> running, these functions dereference contexts_arr[0] and cause a NULL
-> pointer dereference.  Add the missing check.
+> When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
+> param_ctx is leaked because the early return skips the cleanup at the
+> out label. Destroy param_ctx before returning.
 > 
-> Fixes: d809a7c64ba8 ("mm/damon/sysfs: implement refresh_ms file internal work")
-> Cc: <stable@vger.kernel.org> # 6.17.x
+> Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
+> Cc: <stable@vger.kernel.org> # 6.18.x
 > Signed-off-by: Josh Law <objecting@objecting.org>
 > Reviewed-by: SeongJae Park <sj@kernel.org>
 > ---
 
-From the next time, please add patch changelog here.
+From next time, please add patch changelog here.
 
 [...]
-Sashiko also added comments [1] that are very same as those for the previous
-version of this patch.  I replied [2] to those on the thread.  In short, nice
-findings but orthogonal to this patch, and I will work on those separately.
+Sashiko is adding comments [1] similar to those for the previous version of
+this patch.  I replied [2] on the thread.  In short, it is good finding but
+orthogonal to this patch, and I will work on it.
 
-[1] https://sashiko.dev/#/patchset/20260320163559.178101-3-objecting@objecting.org
-[2] https://lore.kernel.org/20260320020630.962-1-sj@kernel.org
+[1] https://sashiko.dev/#/patchset/20260320163559.178101-1-objecting@objecting.org
+[2] https://lore.kernel.org/20260320020056.835-1-sj@kernel.org
 
 
 Thanks,
 SJ
-
-[...]
 
