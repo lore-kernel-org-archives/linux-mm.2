@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC6111099B58
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 01:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C040B1099B58
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 01:23:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF6A26B00CE; Fri, 20 Mar 2026 21:22:32 -0400 (EDT)
+	id D729F6B00A7; Fri, 20 Mar 2026 21:23:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECE496B00D3; Fri, 20 Mar 2026 21:22:32 -0400 (EDT)
+	id D4A866B00BC; Fri, 20 Mar 2026 21:23:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0B4B6B00D7; Fri, 20 Mar 2026 21:22:32 -0400 (EDT)
+	id C87826B00BD; Fri, 20 Mar 2026 21:23:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CB77C6B00CE
-	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:22:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1720E1B8012
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:22:31 +0000 (UTC)
-X-FDA: 84568320102.07.BA68B90
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 39605180007
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:22:29 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=easAh+v6;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B5EE26B00A7
+	for <linux-mm@kvack.org>; Fri, 20 Mar 2026 21:23:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDE528BA2B
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:23:55 +0000 (UTC)
+X-FDA: 84568323630.11.E00F37A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 345C440009
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:23:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KYI1iLRk;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774056149;
+	s=arc-20220608; t=1774056234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J3Fln50KPb/i+9ECR/br1AXjtqVc8affVPNuKf5dWOw=;
-	b=Pt9wW17LT64DhOQhpU7KVewrQTTxwgiJBGdLmyeTbwUblDFVaXBAR0ScaY3tVtA9Pxw1+s
-	M4CZSJ/AgVteyOHGaGkDJHau7+nebwLK329fgRO4VY3zB7q0Osw/2koVgIMYu/2I6TdL1r
-	B8t2OIcw5xlDWiUpmivGrUPp+YDY8Mw=
+	bh=+jB3wVb8b41+AhY+FGn1IfBV7nGIdJUQVJNEPUCsiQs=;
+	b=DsBr9EQR/uS9zBeOGFe7D41Ta7jkgkJmg1pKWMWksAi4bHHv73CBthyKsLDR0KHUDHjC+N
+	CRTfY0deKnJuq2zO8w6vF9HjsOoGN9WACxYYJppL0z61Ly05cvdYN0vv/QlPO3P/IxiSHK
+	pHoaEOSDSM05a6+w0DYQsHqiSUXm2WQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=easAh+v6;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KYI1iLRk;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774056149; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774056234; a=rsa-sha256;
 	cv=none;
-	b=Em+EXCHZeC/oa3wukC0pQHmW3UC9jXb5+KO2YeYt7At4WXTr2xLUSrEgWSwSZu3e7H1qJ6
-	iNZGKxlUcmhRp2FnY9qoeI2Z51SsgwqUcCnIxl4xOPr0rwol14gJqPUXFmbUxNyXDTLBrd
-	LYIlO5rtC36Rkz2bqWClGXZMoTaGrGQ=
+	b=O7b8qawxCNHuQrnJO8yv+pnUlMENTrkdOwe93rdWkXlER13KcjYEan8ONCbd+eSVIrvZnA
+	t/2hPJP1Dj7MjFvLkHp9U/GRQN+3tDUcfDRjyNuk1knkz/GIduLBR0dZPoBgAe2J6KoTon
+	ugykvHG9yLzyTJ3WyOsdnJhGSVqYAdM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C3EF60128;
-	Sat, 21 Mar 2026 01:22:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68BBC2BC9E;
-	Sat, 21 Mar 2026 01:22:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F2A4F445A0;
+	Sat, 21 Mar 2026 01:23:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF70C4CEF7;
+	Sat, 21 Mar 2026 01:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774056148;
-	bh=HlmLa0kJjSeCy+9OOKWr1Fj+zLQ3H84FVLAmSQm/oJQ=;
+	s=korg; t=1774056232;
+	bh=rnrB+r9upjuRc+mL3xjhUHiIFwtv9f3pu+ODqRoiEwk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=easAh+v6nKEqi/K5Rfgeb+BYrIYk1k7fMvJxHgH7HUBuLhygBVECCC12LJM7dP7Gs
-	 fbRON4QcPeWd/gQjabYo3jMc22htOLARdKjjZa9uRtHOLx+HGCt+bQhkaOoDnimkzK
-	 um3RhFVH8zZl/vTxnUQ9Kedx2n9BvasF6gwd6Q5E=
-Date: Fri, 20 Mar 2026 18:22:27 -0700
+	b=KYI1iLRkjpOcMtcGWhWI/CIiVv3M0XEkmgOw+PNHtt+ULqlxzMo4WftpXVrrKPtYj
+	 FqeLjp7rFmN+uPb6hqwOrQL5pzJpVL9JO9Qf48H1JHtkM31dPeMvjRqReZmBRp50jx
+	 CgIIj80gZKOAnJnSwrCytPR64i6NrAp4ucIDozrE=
+Date: Fri, 20 Mar 2026 18:23:52 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: rafael@kernel.org, chrisl@kernel.org, kasong@tencent.com,
- pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev,
- linux-pm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 0/3] mm/swap, PM: hibernate: fix swapoff race and
- optimize swap
-Message-Id: <20260320182227.896f9ab62d62961b2caab5f7@linux-foundation.org>
-In-Reply-To: <20260320170313.163386-1-youngjun.park@lge.com>
-References: <20260320170313.163386-1-youngjun.park@lge.com>
+To: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport
+ <rppt@kernel.org>, Baoquan He <bhe@redhat.com>, Pratyush Yadav
+ <pratyush@kernel.org>, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/5] liveupdate: block outgoing session updates during
+ reboot
+Message-Id: <20260320182352.ca6c88e409ff12d0368b03ae@linux-foundation.org>
+In-Reply-To: <20260320163720.100456-1-oskar@gerlicz.space>
+References: <20260320163720.100456-1-oskar@gerlicz.space>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 39605180007
+X-Rspamd-Queue-Id: 345C440009
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 81m7rmttgqf5ijes3hiotftr7yk985an
+X-Stat-Signature: a5tefxy4j4xp8xuycfwzjp61ptdt4die
 X-Rspam-User: 
-X-HE-Tag: 1774056149-617296
-X-HE-Meta: U2FsdGVkX18vS1NWbhq8aov6BAuDwafjJniphEIaQ+LQeHiVm/9JFLhYuTcoAVDnC9iDQHJQsk4542+WKHF34XzzDv2qpwi7oTcOUeJCRsIlolCwBfV/Gfze9i8QlWrENV4504tJOO2ICaCZcVVlPWswsC33VVUTiGvk18vNgVc+c40iQ5OpgcwqNHxfs4I5oOwsWFJjQIpb2bzhDbcKvNVrR3suiWmrwEO0gEUyT2Q3Sig0MIV6D7+SB7yIyrFZcj64zedK5zthjoVyqvUDCwmbA12X3VrJI8PVfX7XGNxXmuRPgxVTvkS8mBzXRJGO/cbNmN3NnYtF2pMpHCfhut5uIzPJQo3mNI55geXj7SA6yHopq6gcw/BUb+hDMjgQ1uqTNf316yd5+p7m5XmlFEJkYLeTjjqkmeKAtg5oQuQvD3U6iiV8UxTdvK3PNPFR0hVPDu6ou4Fc5fPXS8hQPc7/OH01aKM4ryHZBjm0nFPOMFUhMabQnIls85/zm1fIYGQKr93CBBp5ikMuOKYtzfjS39/QwOECL+SMlTYPAUx8W14kp6QS2qBpuLrA41t0roWgDddGbNB+v12Cj08KWgKJOeAo7/yfFkkzqY5nCn7UcTDHg+urTbuBFdgOcQp+oX5wOjZlvsgayDUijAQR0Fqqfo1ZROfqKRZ/TvT/SWxFx59sIYLEk0WX+kedOGIAks6NxGmW25QIcjK3dLzMvJlXD2SB1fMCyOyShrua2RbN8UpJLJM0txWvJ/jHzcZDFcUkeSPppDPmXHZEs9W1QWlERwU4jYite/VJQsq7ZQeMp5VCb5XLnY3Bpj800BbwDUWnqBb+6E3c9lDXfF0B1CUgQ+QZ1cZlzSq4wIV69ursRgiK8lXeFiEy5j8wdxjWSDV4BserwmERHUQS1TIQ8HpolGwwf4uUpnZ+dBXH17TYPRg1OPv5nVmdpmIa8bFll4kOS03WExtXuJxupkI
- rsVOxEhQ
- pEk3Gl5WxNBPmCJUabkI/xxMnnEidG/2aIWGNeAUkyAxW/lVH6+R8ySWTZ30e4AfdGsAqLQA8rExaOPZ/AirqNpav9BlYnnlA5G3cTsXhx+ePJ5xheYA3prEtGQGTwmgk5DU46Pddl1E9jeMt4IljVKA6lkOQbXApdq37SOZ7TY5ZRDfuN+JWJzZXvljLCfFoSSi0j8K0wNXPOxn8WFJgeGwgovyWEm56rU91gP45ZHi8if9qCY+gG6ywQRHd2AcGVH1yAR6OWqQNeAh2rXi3z/KBan+kK/yKtmXAJuOraL617fgXDW4VGzDnRDqgKrp0OUCsR4VicJWLMKk=
+X-HE-Tag: 1774056233-740413
+X-HE-Meta: U2FsdGVkX1+a/+bTwWWqx78ZMPfrxn0uJ2I8eQwM6hmts+lRZ+ERQzrgjB1FvJ0M6y+ZywQPQh1EzjT+Djty7wQ7wPlso/Xi0n2YGKh7kdKXxqM+Y+HIQWf6tCb1Lo1LeXLLZNLVlfK8w5SuWBD/jwDbJVn7DpKixJ5+LKVxCQ+/yW5dq5kQinwlgkbHLeZJbLXE6P2xxcv8IV3vMPnXPTfMpRv8oykFkcgsV1z/Vus6ojK5cP1YAMoKGb+t3gWOkSu50s4VTHV0+jwTDgJS0GK8zfa4iuUTeN2x9q5q7LPk4/IG08lTBTn9USohnQI66qPeLVJrVsAbR7bt1VWs60I1YrnWOZk6Df008RCbfuLpQuTVOCB4JZbXFQWO2yp4uU1HIE7M7QqAQ1J0pdQrzHyLdkW32KY/bcK4TI3XNBj7FS0rtEefE6mPbL3MHHlBnpbflBYnhiZ9Gqk74Y44joBnlHWlzqjZoabAJU143hktQ0Kjl0rCVxAyoirQKiHaU9OhEjQhZRG2uW5GgW3YVoZgaJB9dL5LYf4qKI8uD6rNKhTGTUAtEnmRKr5RJfSjqz/LhMIr1lVunFD9+FN0Zs4AedusZRJBZkcaRSBqMbcoyq0nGPV71hZeL78xdtM9KHoEWAA4ZuOH4xaLv8Ze1h+wLOG7lXIp8SpiT4aZJKnbgoCJ6dYDJwGkeQyqsXXSrIQ5VEcMsllcMpw/TPaFNJOUGel+v2vyI9Dk0ZVhMm3LhszklxYefkkLNQZBZnK84A4RDas+jhaO6+62jl4MpAeXS8c+RwBLJyB0gSEZwyvXk6b3BwV09f06kZhWCSaQ4QuYE8DK29fy8yFeqXES/CSEaOrWMiXnooohVTSpshdhGTW1xp/X83n9A4JNqgN878dztQhGfzpNT6ylxLrRoWD5lL+uAIEjo1ANjKRX43JBORC6lVox4SGHlQ1udAmeRdZbidgbQ+qFtrNN6wu
+ OI2kpXbr
+ G51kazNVqBNS0LB5U7twVYuUfEGqHU+BKHcpobcf8hw6RUlj+z2GBIEs0T35QR00jqwOcx18AFHBkFAr35vy0/3klmQRdbkjCAn87u0gUIBI27omy6EXwT0eGD0B0tTC4BM1UKfui9s5XFmxUPa6+2fbAzRIz/eIWtnb21bn6P/JvwJdVCz7Q+ZzxMDTYHUXBAlF0vwU5NO4wPrdM2UsPB6dF/fKncyKJKMaDeVGVClM2rSWVYzbinKsN07Sz8TmmEaGgNbZVBCBtXAmy5NMeG9A4gEHh6LuqNFUU8PIfA5UmWVVFujgjHv2SY29JBUUsRkahzOwFptkG+ws=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,15 +92,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 21 Mar 2026 02:03:10 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
+On Fri, 20 Mar 2026 17:37:16 +0100 Oskar Gerlicz Kowalczuk <oskar@gerlicz.space> wrote:
 
-> Currently, in the uswsusp path, only the swap type value is retrieved at
-> lookup time without holding a reference. If swapoff races after the type
-> is acquired, subsequent slot allocations operate on a stale swap device.
+> When kernel_kexec() starts a live update handover, LUO serializes
+> outgoing sessions before the reboot path freezes tasks or shuts
+> devices down. That leaves a window where close() and
+> LIVEUPDATE_SESSION_PRESERVE_FD can still mutate an existing outgoing
+> session after luo_session_serialize() has already captured it.
 > 
-> Additionally, grabbing and releasing the swap device reference on every
-> slot allocation is inefficient across the entire hibernation swap path.
+> The race is dangerous because the next kernel may inherit stale file
+> metadata or references to memory that userspace has already
+> unpreserved. That breaks handover consistency and can later trigger
+> restore failures on already torn down state.
+> 
+> Mark the outgoing session set as rebooting while serialization is in
+> progress, reject new mutations with -EBUSY, and make release wait
+> until rebooting finishes before unpreserving files. Reset the flag and
+> wake waiters when serialization rolls back, and use READ_ONCE() and
+> WRITE_ONCE() so the state is visible across CPUs.
 
-AI review has a couple of questions:
-	https://sashiko.dev/#/patchset/20260320170313.163386-1-youngjun.park@lge.com
+Sashiko AI review has quite a few questions:
+	https://sashiko.dev/#/patchset/20260320163720.100456-1-oskar@gerlicz.space
 
