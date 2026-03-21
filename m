@@ -4,92 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D99D1093170
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 05:16:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F8841093170
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 05:19:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 731056B0088; Sat, 21 Mar 2026 01:16:01 -0400 (EDT)
+	id CDCBD6B008A; Sat, 21 Mar 2026 01:19:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E1936B0089; Sat, 21 Mar 2026 01:16:01 -0400 (EDT)
+	id C8DAB6B008C; Sat, 21 Mar 2026 01:19:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F7616B008A; Sat, 21 Mar 2026 01:16:01 -0400 (EDT)
+	id BA3B06B0092; Sat, 21 Mar 2026 01:19:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DE4E6B0088
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:16:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 747028B960
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 05:16:00 +0000 (UTC)
-X-FDA: 84568908480.12.18C7C32
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C3953120010
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 05:15:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vrjHU6Mf;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AB08A6B008A
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:19:58 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 239E91A04F0
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 05:19:58 +0000 (UTC)
+X-FDA: 84568918476.09.53736B3
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5C6A8C0006
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 05:19:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nq5oArlW;
+	spf=pass (imf10.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774070158;
+	s=arc-20220608; t=1774070396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FvE5u6hIUEMa2cVmHPs2YrFYnl8iGvj61myQt4xkm9o=;
-	b=kt7sBP1kKVi/hvyQGOji20/8pE8ozHUZD8i/cfghlykzqBZJenzkhPob+uvWdk7tenIEJZ
-	kFW9zZiGkghyV2bL9x74H37U2SZw1QtJM1IRrkGv4ikdMIfkaAIU1GPlby72RfCEHXCIlb
-	ZhdoP1j867XgqIDX0PP8+bFmRrOrxMI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774070158; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=N5slH90cGMNQaJ/nUAO66vR2HM7xhu3omBUy3YIB1Mo=;
+	b=H1cNZBVoIaSN1zIHGWIyZ+wWe0uik69t3jTDbgVxDa1H5toB29MGB85W7d+BxmjmejH0Y6
+	d04mjSISlI9aat0Pe9anRBHWsoadXkiur45LWqsn7yI81vhXn3XVEv+elYiSEJL0wxEJpl
+	4AT5I4JJjIyK+S2zVxjLwfF61bx5qcc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774070396; a=rsa-sha256;
 	cv=none;
-	b=DVWSHG5nM3aO6UOzuZUzS0LooBhf4xmJWFSaQBoKwYcqLEA04GRp6bqVODtQpu+UbuOpQG
-	c84pfcr1NEJTf6faI9drksQ/fM1onjspoL/3nuakoAyGs59rXrYv0+GJ8gwANM5xQNRkeJ
-	ZjY4S900a79fsweRHbOmmj8kzudcjhE=
+	b=449bUQXfrufGZ+GCE9DXx+lzZSS1jQnlbgRspedz62wW/+4s/PeJ4ssoBI64soh644NYOO
+	MzaKHpuw3i3VLdeiqyIi5+rr1QIdgySc+4ZBVcjAtmnJ1QClFfk1tZ21Eo1E/Ai0ro04lF
+	uPNkwv8UTqTLOxoAJspbB7x9Al9PFOI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vrjHU6Mf;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774070154; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=FvE5u6hIUEMa2cVmHPs2YrFYnl8iGvj61myQt4xkm9o=;
-	b=vrjHU6Mfzz9yKrBjZVAfq/mdqo3lO61CMuGym7S/d8tpzPKsg1KmycPSOV9F/WNKWnS6pCemODqYP8M7T3ciKvmmozXbuhdRJTxioGSB2hSdcyDKzb8rvkrqiWrKkGjcbPTaoOsHIKMmmaoNN4Wr7z2eBuBMOcm1BMEUzxp9olo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R731e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X.O3cfU_1774070150;
-Received: from 30.42.98.36(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.O3cfU_1774070150 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 21 Mar 2026 13:15:52 +0800
-Message-ID: <a39eed3f-2d94-4e40-b011-94172e03ff25@linux.alibaba.com>
-Date: Sat, 21 Mar 2026 13:15:50 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/9] mm/huge_memory: deduplicate zap_huge_pmd() further
- by tracking state
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <cover.1773924928.git.ljs@kernel.org>
- <440f68edcb597c28918d89b0be279d498561c89a.1773924928.git.ljs@kernel.org>
- <d67ff262-a627-4cd3-b126-dd82eb8d3412@linux.alibaba.com>
- <a1962a7c-1638-444d-ba9c-6d60fca752c6@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <a1962a7c-1638-444d-ba9c-6d60fca752c6@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C3953120010
-X-Stat-Signature: a5zknz16xjwwmnny8ohuo78t9itctb5j
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nq5oArlW;
+	spf=pass (imf10.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aae146b604so15715235ad.3
+        for <linux-mm@kvack.org>; Fri, 20 Mar 2026 22:19:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774070395; x=1774675195; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=N5slH90cGMNQaJ/nUAO66vR2HM7xhu3omBUy3YIB1Mo=;
+        b=nq5oArlWTnI2eW5QdkGfZxTD0OfcMk4V/mIdWJl5sYB0+JcnZoSa5pjpOZXd+fQTZo
+         1Bl1t+OqsP8YZvOxbMFMwPIT9QhdTvTJLXZkQ8Ko8dTJ87hDVZc68vr28AjrVKL0dQzU
+         /vQSBR5d3AXB+eUW9xRIWKFwfDMLyP8OjV3NyJuB00G3bgJwoxl/7rAYjtumQyOPfA5P
+         v2j1EYj9cvdJqpLzFBqmFIKXwqg+Rwmc8iwMAApGcPdyZNinwGawj7tWaMJHtkmiw4yW
+         WiGywifkJzvKwEzNHf46ox/I5f4fhCZFC4ONXp3OXCswvTQFG9L14vVuKCIxNQYnDOy3
+         MzyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774070395; x=1774675195;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N5slH90cGMNQaJ/nUAO66vR2HM7xhu3omBUy3YIB1Mo=;
+        b=DoanDpvmaNAE0pYeTMPv0AWfreK90JYfmqCzAa4Zps+1PQH15KhomX5rR8heBlYr4w
+         TrUuG+iBUSY1Up0WGwqFfFAu4cDht7mDrCkzWsU0MmDzrt4n83dGz3+1FhwP+3c4FxKU
+         oFRaLTmbYqQl3hdnZOYM8Y3ylZdwkZNR9bP5C+g+naIBmp8W2LDNFukOIst4diFBXTDC
+         GDwI7Vdou72tgahChYjPjuSHXs+XbcKunR6Ls3teimwuUHr6Bz4p9OW8upgBbmX5f/L/
+         U3RCSTG3sbbROb+k7EcNHi3YjUq3WJ7mltJVtmM6SdVsT19dd81LxnLRjbbZqr24/rI8
+         2opg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4W9+r+F0l1XvqN6MKKhB2hcMXZ8jSqe9o9UspTVwhGJubvS9ogssIkbcbp/l5SDmdul52Xq0QeA==@kvack.org
+X-Gm-Message-State: AOJu0YxC/owFmk1DJU1ZS/MI8DmfOk1bYuDeS8C+xaxGCAfzKjZYK4Si
+	/YQu9WSbOHZZBaxU4KRt5bxDPDGUtvzs8j4oFHPhs3rocSwIJEsM6PVS
+X-Gm-Gg: ATEYQzwX8HJYqhySesQMEtwZNp8yyWfjJ3on5lCXEJQ3VlWx3hUFQpezwlhUqmjZa6P
+	XqLtRsFjXAGx59Kx+mwInLSxGk0HvrQbkPjrEycae+OtzS7+el7q+XwUqWm+eNr+AT09KPH8/EL
+	KUaChLG4FMxOOwGrPjBDm8N+LPT+AhKA+eeA994cGA7TjfMxhI0FiYQokzWCT+RB8uYvaTI+HxK
+	IJmQvi/NpCs4MM1KsBMdHUqQOVHG+zFzjmLiGhbp60i9Z3nIv59kdgGXtPeOEv2ugiAPOcgaXkY
+	XaVYEkevTtZ9U8Q7DjlAEKlX5jR0v7ZvQFC5e40vEHyg4DFyqnhoCJom4h1RIYq6qpzA5tkH+2I
+	8DtqP6wJGIlLY+aE9WNpiBws3du4x3i+akhQiS79PqY8VXjBgRmD7wrUmYlkBu73/A2phd558fv
+	gVaOhh6By7rASaLByG8bPtIw==
+X-Received: by 2002:a17:903:191:b0:2ae:c984:6d72 with SMTP id d9443c01a7336-2b08271e23fmr57382855ad.22.1774070395090;
+        Fri, 20 Mar 2026 22:19:55 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836955dbsm52944385ad.72.2026.03.20.22.19.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 22:19:54 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, david@kernel.org
+Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, baolin.wang@linux.alibaba.com, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/6] mm: change to return bool for ptep_clear_flush_young()/clear_flush_young_ptes()
+In-Reply-To: <5d24b34d8b7860dc2188408b3fa530193bcc5caa.1773890510.git.baolin.wang@linux.alibaba.com>
+Date: Sat, 21 Mar 2026 10:48:41 +0530
+Message-ID: <fr5tyd3i.ritesh.list@gmail.com>
+References: <cover.1773890510.git.baolin.wang@linux.alibaba.com> <5d24b34d8b7860dc2188408b3fa530193bcc5caa.1773890510.git.baolin.wang@linux.alibaba.com>
 X-Rspam-User: 
-X-HE-Tag: 1774070157-740506
-X-HE-Meta: U2FsdGVkX1+GkD7GPup7ZvHAREZ5ptONT1sykd6NAkBf3rB5esofLM+q3p3NawFescZW3Ljb2H2Ovsx5cFwoWiwfsXLBPMYGy3pzBm3ub+LIbqnfqkS01YdokmhdrFv1ZaN7awKuRw8VSKlMVDMpcA30SQ/Jdb9k9kPGgIfKJabKeLwysJh2wda2JQEqp9oBLa8xOyPVelCjy1/SAu0acl46wzc08H926tYvPjQ8BurIKluxqbC4ZTQfhvTZ23jv0QwSJto9tojPpJOIuYO94VwwpUgsmI37VZr75ocp3pIK0ubXYCfQvTTkFL8NPgvWdSSo6O8GgqaxmuMYyTVn0FfmDLGwcOl2XUlIFrcLtCjeJIXVeVpog9pgcyV3t09Jpli7nLBQRXUe04EPfNS2r/5yMuJN5vHlEouFJ49DipJSoAsWS+BJz+7dzafRxMgmIf3cJPt/XhNMKaf+BEXpYWuIrcTQqk5vfTLJgt/kpo8WTPTPQz2XxnCx2cV/UheGtl0Xvi3vkL+Wtwes6fdhl/tYDamU0dwX5rYtj6yNmVMBSrPYGCT8yk1BhdLcRP0lHxcWpPxXwA2bT1SpgxKAARi1zY/WlK/EqqfAuoNODFd802E9p2YKThXTGHn1RCSLhljBAqYcnNct/MAHqQUE0omrYKRTRXI7ztH+Vxupjvsda9Zjd5VqJy40WrZwj8RCzfUFKaCdkuABIC7HvOseD66J0mhf1O7XbTdDvcSi5yM2d7fW1uJsgzQPG5imVVj4237mqFnlrHQuG7eLb5BpxMcIMeCuojpcHeqo86hmfSiakgdmv6EBX2dcCkBjMo96ZdXY8CoDk3/1PZW715LUQsCgoTs74ziWG5MW/gq8WmvpEs3XS3agVLD2vbZjmNXkvtu+a/ed9fIlkIlKJw8ONLiPdilgTCy/vQEN0jYY8RyrfP8J9wTEY+Rlqmx+aHrXv4QAobEb69LVeIns35o
- L1T4bAgC
- Odj2YzImuFV7xNG0/ehqvAO/dTnIao48HCtfsRfGb0X2UYp91S0ji8EHuG86mlIlVQXnHOKLbOTYGqHCvzBsXipLyjjse7X0vWxUwjsx2aMqTDLuTEeqc9aFcHH8kxQcwYjDDt9LQxLWFeitnNd9YYFNJf5mRSN05k9sHoUrrm6Muu3E1PgtnqJKbAgXB99Rm+qIXEk390wjWbfaW6Np9ss8+Fz/EGMS9UqIaqkG6vFr23ClCQGvDTnh0Tw76QVRU/Q3ob29wrLt3Cv5U8x6D0qxfb9KxIrfryPPT/S4QlqFazIIVhb7ZOVB63Xvg/p55AzKRtiim7jusNZWYAv4bCIydvLNqLdjT7YuWpElE86FmnZRxiO36FdPVVIGUFHHX2ets
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5C6A8C0006
+X-Stat-Signature: i4oo71t8o1yz17uie4hfi4q1howp1woh
+X-HE-Tag: 1774070396-322641
+X-HE-Meta: U2FsdGVkX1+aTKwftzeWgY3Xik+wMRlJsSGh2K0mQQea4hYK5RW4OeHvuhpzlfehPWwCvOMyQgSXBoSgSDRfB0Vnu/FnXKftgk47o7Iwb/DHN9Gdsto6Ylh1DSPfK3Ng1trGffc0JrsVW1Y0hyaiNff9J2Fk4WdvI/OGRi4Z8d0jYxWBMR+cbYQbFIfc9dHOf3dXyD+S9uUNDHMknmDD/N0VdUlZycHzGT4l3gKn3YU7vM8/iJczJvvOMLNYWKGGh3s5RuyO06vD4rdEvASZXG3/9bmrilEWznj2Z1Oc+xNZfcOIkiIYQwqMQ3uojMakhMAZWK8bt6UP/RAfpchKmsReqwaaw0XtAjxajpUGe0b/JA0+VvZH6IT3n++SruupvBzRWu8iMEZT1yQbigLKTy0+Qgll28ITZG/RdqVI+t2H7La6E0kNMWCW39O4VEfLgNxL31aFtQLc9tTQTo6QkqBoBYHvZg8luqiU3nyF/OABPo4avzA7swKL6UYmAjXtyCnMGWsmSNv9IjSaOytynVX8umhEDLK6RUyFB38YFM/DExAKHKTpOyHpOqsGD2C2EMDYN1JZhiFT3l2Ttj9SwyzpG0ol2gLKN7SmVkbm03Ses0bdsp1oTFBFFQKmQkGcbc3UvHwPXroCu+bfG3cExBsFvftG3ph69fFEyP1jKUcDjhBotvf1QE/dk7fXNtydRXMWX7mD//WPy2Y+OlWwqaUNlizou4HtulnWPT256j+NBSaPuYX2W6VjrUKCRDKPbNXJ1dWKmhxhgMC/pSgoEs1BCMQe1GeRVt9TQSKsWkeauBvtVNfXLjgpgErAgd/tsuIqfdZGXG0dx7Oey7eVKfkBOCfYPcSAOB1Ar3ldBfQ3fcCFTB1zrAs4mH+AcYFD+UTUnJ+lEgNQUZNGf/xsz4FCswVLM64I1FBWA9j8G2SQdIL2+lCIdO+IlD0PJ6uVGW4sqna++ZkumY55tjg
+ T06rsGnb
+ 4IDwx+oSh0Xm/p1ELfyL31Ui64dG7EGpZkUIxyRwbdsXsJyEce5EzIevzWwOWqf+YdM1r7/mPM5nlUrFazhOlq4gtWY3t34eEKNUiJ63HSXdTKXCa+5u3fXXGgujst4N0wFo6Lb7L3G1QQrEbWGQ7o4FhnBepPrT8meBNz23JNrPZLJ72V4BN3uZQVN6rLBrclsnFMHOukTFmNZ3uJCs6t5fTRPeUdzwfqZve16G/pyI1qK+zimTNotlLO+88fngA0au+QnQmstCud+wxdB3Pw7y+5fFh1CJf83hZPcdJ0tXcf0V3uuSbm2/5iNp3V4KR978tT20Y4upQveRHLmNYUIf8Y4hHk1RYyfvA5ZvaqDhHsAviFhjVsQEhzvHuHjipLELyXX58ADAtJXIsl2vJ9uRW15gtupwzjv4KGl/Nud5n1+eYBscLjWtk8XtHj/awRtaRf/58fDTIEyMhw2T8u7SIbySxAkm/l9F2K7/pYoxcMxaY3QOEghYD1Dvm9tN0whX0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,123 +111,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Baolin Wang <baolin.wang@linux.alibaba.com> writes:
 
+> The ptep_clear_flush_young() and clear_flush_young_ptes() are used to clear
+> the young flag and flush the TLB, returning whether the young flag was set.
+> Change the return type to bool to make the intention clearer.
+>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h             | 15 +++++++--------
+>  arch/arm64/mm/contpte.c                      |  4 ++--
+>  arch/parisc/include/asm/pgtable.h            |  2 +-
+>  arch/parisc/kernel/cache.c                   |  8 ++++----
+>  arch/powerpc/include/asm/nohash/64/pgtable.h |  2 +-
+>  arch/riscv/include/asm/pgtable.h             |  4 ++--
+>  arch/s390/include/asm/pgtable.h              |  4 ++--
+>  arch/x86/include/asm/pgtable.h               |  4 ++--
+>  arch/x86/mm/pgtable.c                        |  4 ++--
+>  include/linux/pgtable.h                      |  8 ++++----
+>  mm/pgtable-generic.c                         |  7 ++++---
+>  11 files changed, 31 insertions(+), 31 deletions(-)
 
-On 3/20/26 9:51 PM, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 20, 2026 at 11:49:18AM +0800, Baolin Wang wrote:
->>
->>
->> On 3/19/26 9:00 PM, Lorenzo Stoakes (Oracle) wrote:
->>> The flush_needed boolean is really tracking whether a PMD entry is present,
->>> so use it that way directly and rename it to is_present.
->>>
->>> Deduplicate the folio_remove_rmap_pmd() and folio map count warning between
->>> present and device private by tracking where we need to remove the rmap.
->>>
->>> We can also remove the comment about using flush_needed to track whether a
->>> PMD entry is present as it's now irrelevant.
->>>
->>> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->>> ---
->>>    mm/huge_memory.c | 28 +++++++++++++---------------
->>>    1 file changed, 13 insertions(+), 15 deletions(-)
->>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index c4e00c645e58..22715027e56c 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -2430,9 +2430,10 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
->>>    bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>>    		 pmd_t *pmd, unsigned long addr)
->>>    {
->>> +	bool needs_remove_rmap = false;
->>>    	struct folio *folio = NULL;
->>>    	bool needs_deposit = false;
->>> -	bool flush_needed = false;
->>> +	bool is_present = false;
->>>    	spinlock_t *ptl;
->>>    	pmd_t orig_pmd;
->>> @@ -2449,6 +2450,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>>    	 */
->>>    	orig_pmd = pmdp_huge_get_and_clear_full(vma, addr, pmd,
->>>    						tlb->fullmm);
->>> +
->>>    	arch_check_zapped_pmd(vma, orig_pmd);
->>>    	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
->>>    	if (vma_is_special_huge(vma))
->>> @@ -2458,17 +2460,15 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>>    		goto out;
->>>    	}
->>> -	if (pmd_present(orig_pmd)) {
->>> +	is_present = pmd_present(orig_pmd);
->>> +	if (is_present) {
->>>    		folio = pmd_folio(orig_pmd);
->>> -
->>> -		flush_needed = true;
->>> -		folio_remove_rmap_pmd(folio, &folio->page, vma);
->>> -		WARN_ON_ONCE(folio_mapcount(folio) < 0);
->>> +		needs_remove_rmap = true;
->>>    	} else if (pmd_is_valid_softleaf(orig_pmd)) {
->>>    		const softleaf_t entry = softleaf_from_pmd(orig_pmd);
->>>    		folio = softleaf_to_folio(entry);
->>> -
->>> +		needs_remove_rmap = folio_is_device_private(folio);
->>>    		if (!thp_migration_supported())
->>>    			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
->>>    	} else {
->>> @@ -2483,27 +2483,25 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>>    		add_mm_counter(tlb->mm, mm_counter_file(folio),
->>>    			       -HPAGE_PMD_NR);
->>> -		/*
->>> -		 * Use flush_needed to indicate whether the PMD entry
->>> -		 * is present, instead of checking pmd_present() again.
->>> -		 */
->>> -		if (flush_needed && pmd_young(orig_pmd) &&
->>> +		if (is_present && pmd_young(orig_pmd) &&
->>>    		    likely(vma_has_recency(vma)))
->>>    			folio_mark_accessed(folio);
->>>    	}
->>> -	if (folio_is_device_private(folio)) {
->>> +	if (needs_remove_rmap) {
->>>    		folio_remove_rmap_pmd(folio, &folio->page, vma);
->>>    		WARN_ON_ONCE(folio_mapcount(folio) < 0);
->>> -		folio_put(folio);
->>>    	}
->>>    out:
->>>    	if (arch_needs_pgtable_deposit() || needs_deposit)
->>>    		zap_deposited_table(tlb->mm, pmd);
->>> +	if (needs_remove_rmap && !is_present)
->>> +		folio_put(folio);
->>> +
->>
->> This kind of deduplication splits the device folio handling into three
->> places, which is not easy to understand (at least for me), since the device
->> folio has some special handling.
-> 
-> I think open-coded the exact same thing over and over again is FAR worse.
-> 
-> It's also actually 2 places for softleaf, because we were duplicating #2 below:
-> 
-> 1. how do I get a folio?
-> 
-> 2. do I need to remove this folio from the rmap? (yes for device private)
-> 
-> 3. Do I need to put the folio (yes for device private)
-> 
-> You're maybe now just seeing exactly what happens here because the code is
-> clearer? Because before it was an unfathomable open coded mess with no
-> explanation.
-> 
-> Now you explicitly see what's happening :)
+LGTM. Please feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-Yes, I understand your point:) I saw that you changed the code to use 
-the 'is_device_private' variable in the new version, which is more 
-readable for me. Thanks.
-
->> Especially here, without looking closely at the if condition, it is unclear
->> why we need to call folio_put(). Maybe some comments?
-> 
-> I can add one, the original didn't. This is an existing issue :)
-
-Thanks.
 
