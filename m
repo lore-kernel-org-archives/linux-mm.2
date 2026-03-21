@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B8B91094478
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 14:41:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48D7A1094464
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 14:42:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2CAE6B00BF; Sat, 21 Mar 2026 10:41:27 -0400 (EDT)
+	id A34D56B0093; Sat, 21 Mar 2026 10:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDE676B00C1; Sat, 21 Mar 2026 10:41:27 -0400 (EDT)
+	id A0AA36B0095; Sat, 21 Mar 2026 10:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1B166B00C2; Sat, 21 Mar 2026 10:41:27 -0400 (EDT)
+	id 9480C6B0099; Sat, 21 Mar 2026 10:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A243B6B00BF
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:41:27 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41C76B9B73
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:41:27 +0000 (UTC)
-X-FDA: 84570333414.20.D81A49B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 841AC6B0093
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 10:42:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23CC714038C
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:42:41 +0000 (UTC)
+X-FDA: 84570336522.13.32AC3CA
 Received: from hillsboro-edge.smtp.mymangomail.com (hillsboro-edge.smtp.mymangomail.com [5.78.130.219])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 18CE7C000C
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:41:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=jSGI9QEH;
-	spf=pass (imf28.hostedemail.com: domain of oskar@gerlicz.space designates 5.78.130.219 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
-	dmarc=pass (policy=quarantine) header.from=gerlicz.space
+	by imf22.hostedemail.com (Postfix) with ESMTP id 240EBC0009
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 14:42:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=WDFSH3r7;
+	dmarc=pass (policy=quarantine) header.from=gerlicz.space;
+	spf=pass (imf22.hostedemail.com: domain of oskar@gerlicz.space designates 5.78.130.219 as permitted sender) smtp.mailfrom=oskar@gerlicz.space
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774104085;
+	s=arc-20220608; t=1774104159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WnfwNOCz2xGiyg8OXyoF1gapwg8Az9cm20wVsA2MxxQ=;
-	b=bNmUfUEwqXO9WOIn+D0NM6I8oB3mq5X8S8qxhnSv834AerKQ1hrdtVzHhtSqWsFA36nmZ3
-	OfKizkydkhiVkqfb93/hjUy4upnd+RF2RFerrW+ixvkY3Rpim66txIa9O1GFgSBIZNRtPY
-	0aBjJcEF9tMO2b1aDIfflvSN+MLWArc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=jSGI9QEH;
-	spf=pass (imf28.hostedemail.com: domain of oskar@gerlicz.space designates 5.78.130.219 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
-	dmarc=pass (policy=quarantine) header.from=gerlicz.space
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774104085; a=rsa-sha256;
+	bh=szBi7BFtRR1MgN8hkMm2WcIeDIhwZTQNOTIlX5ONwr4=;
+	b=ILc8sqLcvTRubbmkuxxFDPBFccHZ2nctPQzvHDN56obhAqZCW3xTsUXon6O2W7omB/KMqu
+	JDxGVOJ1iJSuJ5nzkOz79PEvsJcv+j30gFdU0h1taWkRFy+Qsb/e+00S8obNXbSK+mHzg4
+	rQP55rzc5aFD5lwKeW28dmbEJsgkaKs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774104159; a=rsa-sha256;
 	cv=none;
-	b=p3hmhwCYoPu13Fc+pa2XLrkOtBKSKBQsNoYEtkjVZQjFmEDPoOp55AsuOIJoYMXpQbHAc7
-	RDxfsi283di0TsoS9npC4YkpR/wA5oIEqHkhaTT5AYUxLTPuHnWqV2AfLOgcI7tk5LS3As
-	Sh+J7yuCxjuecyb2pTa9CJ6ObxqMX0Q=
+	b=8GItbGjeXiru/b2hbFOjmJ2p5/5XyhBWmQJuxIP/395Ffb+xyS/vnYs+HCOrPQpQAFhxFG
+	NxxjZ5Gxy3U//KiwMPWSSSULrY2aMz3vGKDigatW2t9lXUJNeb7Yi4eil6MRRsjHdzQkJ5
+	WWrwnCMTnUsWC9xwXWXJJ5xPf+SwEkE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=WDFSH3r7;
+	dmarc=pass (policy=quarantine) header.from=gerlicz.space;
+	spf=pass (imf22.hostedemail.com: domain of oskar@gerlicz.space designates 5.78.130.219 as permitted sender) smtp.mailfrom=oskar@gerlicz.space
 Received: from smtp.mymangomail.com (localhost [127.0.0.1])
-	by smtp.mymangomail.com (Mango Mail) with ESMTP id 163664162F;
-	Sat, 21 Mar 2026 10:40:53 -0400 (EDT)
+	by smtp.mymangomail.com (Mango Mail) with ESMTP id 0E1984162F;
+	Sat, 21 Mar 2026 10:42:24 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
-	s=mango-1; t=1774104053;
-	bh=hQW88e3e2eG32gSgZk8S8tu/3o5jt6LYekAYe9l4YJw=;
+	s=mango-1; t=1774104144;
+	bh=M16vWRuu6EJkpwXaqhKmqlJhWbpvl6ngwctG70jXS/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSGI9QEHFG39qTc6r35LIgv31M/sfbMoYXB719FkKiHNjHEifwcRqGe0J/Fa9S8gZ
-	 ENgB24HxlouDQOitRh89jJ7tB7s1gwA1BZY4iRbSj3ji3U8lU0DnoPSRnF/kkzyqNk
-	 OAj1YLBUyziHtkHM2Vu22T46YlqaeWJBwOCpIdqk=
+	b=WDFSH3r7vCzPpVucnTR94PZi863BPmtaFpe0ISW2ggCWJqC8NFfqCbdYsv6HUcTmy
+	 mkX7wUb9/+ghf7hrs93FxFRmmjsk9EZb2i7U0iQReplJRGQipVhfs9CLCIGkntyMSF
+	 67QrCnU6StQgl5O5hcQrmdCTl3eCoJrXAF6eGK8Q=
 X-Mango-Origin: 1
 X-Mango-Origin: 1
 X-Mango-Origin: 1
@@ -72,8 +72,8 @@ Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits)
  server-digest SHA256)
 	(No client certificate requested)
-	by smtp.mymangomail.com (Mango Mail) with ESMTPSA id CC86641627;
-	Sat, 21 Mar 2026 10:39:39 -0400 (EDT)
+	by smtp.mymangomail.com (Mango Mail) with ESMTPSA id B0C1D41627;
+	Sat, 21 Mar 2026 10:40:55 -0400 (EDT)
 From: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -84,23 +84,23 @@ Cc: Pratyush Yadav <pratyush@kernel.org>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
-Subject: [PATCH v3 3/5] liveupdate: fail session restore on file
- deserialization errors
-Date: Sat, 21 Mar 2026 15:36:40 +0100
-Message-ID: <20260321143642.166313-3-oskar@gerlicz.space>
-In-Reply-To: <20260321143642.166313-2-oskar@gerlicz.space>
+Subject: [PATCH v3 4/5] liveupdate: validate handover metadata before using it
+Date: Sat, 21 Mar 2026 15:36:41 +0100
+Message-ID: <20260321143642.166313-4-oskar@gerlicz.space>
+In-Reply-To: <20260321143642.166313-3-oskar@gerlicz.space>
 References: <20260321143642.166313-1-oskar@gerlicz.space>
  <20260321143642.166313-2-oskar@gerlicz.space>
+ <20260321143642.166313-3-oskar@gerlicz.space>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 18CE7C000C
-X-Stat-Signature: d5ta8wqfaq5g4nbdj79worhu6wcqx8k8
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 240EBC0009
+X-Stat-Signature: 1sg768ibeihmtubg53ktke6zie7bqb3a
 X-Rspam-User: 
-X-HE-Tag: 1774104084-106144
-X-HE-Meta: U2FsdGVkX19ZH70OtYlSqS+D28hvWAOf3MPR+QMAxvsXnDEcl+15sqV7P5tcD4llxA2QTv5tjaWqZAE7USDrwNtOFyUOoaYE6WCVqREeeqAh8LFmL0r1JHPOqSqjI35FBDlkMI8nVEiuFYSHy+7knSYT1fJdd0SdtufCxMKcnB1Z7MU7q5uOSu7FJshukCUm8tIWvo1xFMZ+epHpdvjV9Hy1d4UvVu0FaWbE7NC/lnM0Byx360F5OQjMYzCjbJFlLQJkepNqGR5azkeF/e4wteYlfkuhfQieCTGu4yqbZHNRG7gNFcaGqEpPd2ftgghGoS4Y6IhgZwRte9udaEGWS49Yg0SwGVYsTs3PTYP0e5xogXm9ciLaX6xQGbNd9nPCcSP21blFPgs3ZBka0Q8rpRbuImcTfb/2eP08b8za2hPruWAT0PluaoWceXEQDpVrbMBOyjfdlAU6WOOZYPhkFbSfnYTzbDuxoxfAbjHeVQpMFCT8w++VDSWT2YWaZZn2w9zwirBH6IqnTCFmJ3SpksZPbhXdnZ00icGwArHsr7ZnnVy2UYUbg1LddahQYtb164kw7neHeMiHu4IL8Vs0hfL5EFcEHbbTq0jeJh83XtiX8KO/AqI/GcMjZang5WE+z5V8RQQzliKUGunon3J42KkPeZs41eJRs7WVu2fNhXCmfv0qKGehlnvgO8VFlt67dLeZUt7ty7VcFiO7vntybe1rIyLAWwNJifaWge41v49Ce0NyxKAQ3Rti07djiDFmqHpJHyhi/xJWKjMSmyx/X8SfvVbEtaySSfIiovqf3Ahw9xx0rx7vQavfs8DOGFSmDTVLymPxS8tQYhPEWNOp4FwupkWcgOPojLXI6fHMhmQVPEMOdDDHUWkQy9jAxni3JNajVvbQmDCu1yc6Xk5unaBwfbXF0sqyDHnWiiZboxrjwlCfOKX4Se3DVPyyV9Q0KhRXxnUJSaG7aH/Wn/g
- 9aI/jJyn
- u7aBD1NcWdfcG7NAt1Ilp4qVDQQXEwzAIxjRtjhMpWG8q3bzymGaPfuZjOLLuUfFWnF0c+yCsJzBtd23asv6OJIGTRXMnwL88IwdD+uIPonBNMTbciLNluN8KvO33l4V0Oz2B98jqNpaoORdW7yFiRPWgtRdKDS8vfgKIGHHSqXgdS3T4Vfyfu/YxtsFTePOstg41lyzdO5nYGBBtgmUnECZ/FmkVLVaqeMY385dvYJxSwdUhnhfDtxSYxPjD9XzaYtzJewAWPOQdI5H0Lzq7qhBr8VbUJvpnDMEhnsMCaelr2OkORbqOapn5YKet0FoQx/Rlqz9cU3ZhDkxho7ijljHtbIVB6YwQPUekWPUm/VjKuH9LEwobfXPRxg==
+X-HE-Tag: 1774104158-251395
+X-HE-Meta: U2FsdGVkX184jx6thwL9qiI9wrQIej3wVrBn2I9FpMFhiYyf5T0/0cavX4pHOLB9dKnlgEX071Zzy6kq4H3/BmjmVeYfJlOq7n6yJCosJnNKwxqla8run7QMnvFcMqvyxnfiECSyGKhBAvnmgX82hrhhqKzXsIQeKd36zH7n/bP8hFv84b0hfd8uvth5qlJ9HnDCu2be14KkmODHKZhmTMVE9ulNnHSGMz/L4pZKXH2eY7oLF1SZPOdbhi0B6qp2lFdaw+ZQ+YqQ1CIfmkbMg1+4P4/MDeBuMF9JO00sJGtczfi379xVePhNujYr2yZmNSCvWs185TcO7a5fsR25WkRwNpBnIHEusXhe862KzShRU20TvPeGjLEywj2KKJ/xMkrSwNZ07Sg8La3aJaFVh2P53ti9wG8iG4+Tq96YKi1s60cAqAi0L6RoHG6G/QtPKWJq//PxSay54gkdOE/q3TwNrkk4FHEqnfsgQvuNZ+CO8W52dVqznacG/ElHf5BbnyiteRLlvQjR+xSfER9YYcuj5EHOUiCEqv8nrg63czvHiJnNnI8z/ft3H0m9TGURlorcHn8znYDsSbT78QHNjn4z/Z6pal8Y2qyU0jC8Y/gRHi+1b57+BplKsFkOE6BJ2yWzm7zpBOu1pyYUa3tRsQ7OldNWkbBi4Mmu1IuIx54xdxa12WgV0FDxt0xpRa/+dENkh6F/l5kLiAWbccd0jC6vh0zW0flMqpReSNXDYhJwahCjFr6lONRBktyhCMH+b2iRYW1lnH43jG4SwobFo7XjLHg4kn6W9LFewk7sNdmqW8CKUhQQOrUj19iI+HNqGNk6UMHdBFr7NZYeL+nxz4AxVEZoIz5OCJOpGRWCh2PAa3lfoD9B7RKhEuknR4KfHZbqIe1iP/tCf0dWa1R+jy/amponFsVpGrGjHVNdjoW2k4m7d7eFrpNAcdmPhZ6dAkRuTBqAY0o/Yqt+yiM
+ cuENYsrV
+ hQ4TJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,317 +108,347 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Session restore can fail after inserting a partially constructed session
-into the incoming list. The v2 cleanup also reused finish-style teardown
-for that rollback path even though finish is the normal completion path
-for a fully restored session.
+The incoming handover path was still trusting counts and preserved
+addresses more than it should. Corrupted metadata could drive
+phys_to_virt() or kho_restore_free() with invalid addresses, and memfd
+restore could walk beyond the serialized folio array.
 
-That can leave stale incoming sessions behind after a deserialize error
-and can run completion callbacks against state that was never fully
-rebuilt.
+That turns malformed handover state into out-of-bounds iteration,
+invalid restore frees, or partially restored incoming state.
 
-Require an explicit abort callback for file handlers, use it to unwind
-partially restored files, and route every deserialize failure through a
-single cleanup path that drops restored sessions, frees serialized file
-metadata and records the cached error code.
+Validate session, file and FLB metadata before consuming it, reject
+non-restorable preserved addresses, and bound memfd folio restore by
+both the serialized size and the restored vmalloc backing.
 
-Fixes: 077fc48b59fc ("liveupdate: fail session restore on file deserialization errors")
+Fixes: 1c18e3e1efcd ("liveupdate: validate handover metadata before using it")
 Signed-off-by: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
 ---
- include/linux/liveupdate.h       |  3 ++
- kernel/liveupdate/luo_file.c     | 67 +++++++++++++++++++++++---------
- kernel/liveupdate/luo_internal.h |  1 +
- kernel/liveupdate/luo_session.c  | 42 +++++++++-----------
- mm/memfd_luo.c                   | 24 +++++++-----
- 5 files changed, 86 insertions(+), 51 deletions(-)
+ include/linux/kexec_handover.h     |  5 +++
+ kernel/liveupdate/kexec_handover.c | 13 +++++++
+ kernel/liveupdate/luo_file.c       | 22 +++++++++---
+ kernel/liveupdate/luo_flb.c        | 33 ++++++++++++++++--
+ kernel/liveupdate/luo_session.c    | 29 ++++++++++++++--
+ mm/memfd_luo.c                     | 56 ++++++++++++++++++++++++++++--
+ 6 files changed, 147 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index d93b043a0421..611907f57127 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -63,6 +63,8 @@ struct liveupdate_file_op_args {
-  *                finish, in order to do successful finish calls for all
-  *                resources in the session.
-  * @finish:       Required. Final cleanup in the new kernel.
-+ * @abort:        Required. Discard preserved state in the new kernel without
-+ *                completing finish().
-  * @owner:        Module reference
-  *
-  * All operations (except can_preserve) receive a pointer to a
-@@ -78,6 +80,7 @@ struct liveupdate_file_ops {
- 	int (*retrieve)(struct liveupdate_file_op_args *args);
- 	bool (*can_finish)(struct liveupdate_file_op_args *args);
- 	void (*finish)(struct liveupdate_file_op_args *args);
-+	void (*abort)(struct liveupdate_file_op_args *args);
- 	struct module *owner;
- };
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index ac4129d1d741..af8284a440bf 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -29,6 +29,7 @@ void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation);
+ void *kho_alloc_preserve(size_t size);
+ void kho_unpreserve_free(void *mem);
+ void kho_restore_free(void *mem);
++bool kho_is_restorable_phys(phys_addr_t phys);
+ struct folio *kho_restore_folio(phys_addr_t phys);
+ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages);
+ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
+@@ -80,6 +81,10 @@ static inline void *kho_alloc_preserve(size_t size)
  
+ static inline void kho_unpreserve_free(void *mem) { }
+ static inline void kho_restore_free(void *mem) { }
++static inline bool kho_is_restorable_phys(phys_addr_t phys)
++{
++	return false;
++}
+ 
+ static inline struct folio *kho_restore_folio(phys_addr_t phys)
+ {
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index cc68a3692905..215b27f5f85f 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -291,6 +291,19 @@ struct folio *kho_restore_folio(phys_addr_t phys)
+ }
+ EXPORT_SYMBOL_GPL(kho_restore_folio);
+ 
++bool kho_is_restorable_phys(phys_addr_t phys)
++{
++	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
++	union kho_page_info info;
++
++	if (!page || !PAGE_ALIGNED(phys))
++		return false;
++
++	info.page_private = READ_ONCE(page->private);
++	return info.magic == KHO_PAGE_MAGIC && info.order <= MAX_PAGE_ORDER;
++}
++EXPORT_SYMBOL_GPL(kho_is_restorable_phys);
++
+ /**
+  * kho_restore_pages - restore list of contiguous order 0 pages.
+  * @phys: physical address of the first page.
 diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index 5acee4174bf0..939ef8d762ce 100644
+index 939ef8d762ce..3eb9aeee6524 100644
 --- a/kernel/liveupdate/luo_file.c
 +++ b/kernel/liveupdate/luo_file.c
-@@ -648,6 +648,20 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
- 	luo_flb_file_finish(luo_file->fh);
- }
- 
-+static void luo_file_abort_one(struct luo_file *luo_file)
-+{
-+	struct liveupdate_file_op_args args = {0};
-+
-+	guard(mutex)(&luo_file->mutex);
-+
-+	args.handler = luo_file->fh;
-+	args.file = luo_file->file;
-+	args.serialized_data = luo_file->serialized_data;
-+	args.retrieve_status = luo_file->retrieve_status;
-+
-+	luo_file->fh->ops->abort(&args);
-+}
-+
- /**
-  * luo_file_finish - Completes the lifecycle for all files in a file_set.
-  * @file_set: The file_set to be finalized.
-@@ -717,6 +731,28 @@ int luo_file_finish(struct luo_file_set *file_set)
- 	return 0;
- }
- 
-+void luo_file_abort_deserialized(struct luo_file_set *file_set)
-+{
-+	struct luo_file *luo_file;
-+
-+	while (!list_empty(&file_set->files_list)) {
-+		luo_file = list_last_entry(&file_set->files_list,
-+					   struct luo_file, list);
-+		luo_file_abort_one(luo_file);
-+		if (luo_file->file)
-+			fput(luo_file->file);
-+		list_del(&luo_file->list);
-+		file_set->count--;
-+		mutex_destroy(&luo_file->mutex);
-+		kfree(luo_file);
-+	}
-+
-+	file_set->count = 0;
-+	if (file_set->files)
-+		kho_restore_free(file_set->files);
-+	file_set->files = NULL;
-+}
-+
- /**
-  * luo_file_deserialize - Reconstructs the list of preserved files in the new kernel.
-  * @file_set:     The incoming file_set to fill with deserialized data.
-@@ -747,6 +783,7 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- {
- 	struct luo_file_ser *file_ser;
+@@ -785,10 +785,17 @@ int luo_file_deserialize(struct luo_file_set *file_set,
  	u64 i;
-+	int err;
+ 	int err;
  
- 	if (!file_set_ser->files) {
- 		WARN_ON(file_set_ser->count);
-@@ -756,21 +793,6 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+-	if (!file_set_ser->files) {
+-		WARN_ON(file_set_ser->count);
+-		return 0;
+-	}
++	if (!file_set_ser->count)
++		return file_set_ser->files ? -EINVAL : 0;
++
++	if (!file_set_ser->files)
++		return -EINVAL;
++
++	if (file_set_ser->count > LUO_FILE_MAX)
++		return -EINVAL;
++
++	if (!kho_is_restorable_phys(file_set_ser->files))
++		return -EINVAL;
+ 
  	file_set->count = file_set_ser->count;
  	file_set->files = phys_to_virt(file_set_ser->files);
+@@ -799,6 +806,13 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+ 		bool handler_found = false;
+ 		struct luo_file *luo_file;
  
--	/*
--	 * Note on error handling:
--	 *
--	 * If deserialization fails (e.g., allocation failure or corrupt data),
--	 * we intentionally skip cleanup of files that were already restored.
--	 *
--	 * A partial failure leaves the preserved state inconsistent.
--	 * Implementing a safe "undo" to unwind complex dependencies (sessions,
--	 * files, hardware state) is error-prone and provides little value, as
--	 * the system is effectively in a broken state.
--	 *
--	 * We treat these resources as leaked. The expected recovery path is for
--	 * userspace to detect the failure and trigger a reboot, which will
--	 * reliably reset devices and reclaim memory.
--	 */
- 	file_ser = file_set->files;
- 	for (i = 0; i < file_set->count; i++) {
- 		struct liveupdate_file_handler *fh;
-@@ -787,12 +809,15 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- 		if (!handler_found) {
- 			pr_warn("No registered handler for compatible '%s'\n",
- 				file_ser[i].compatible);
--			return -ENOENT;
-+			err = -ENOENT;
-+			goto err_discard;
- 		}
- 
- 		luo_file = kzalloc_obj(*luo_file);
--		if (!luo_file)
--			return -ENOMEM;
-+		if (!luo_file) {
-+			err = -ENOMEM;
++		if (strnlen(file_ser[i].compatible,
++			    sizeof(file_ser[i].compatible)) ==
++		    sizeof(file_ser[i].compatible)) {
++			err = -EINVAL;
 +			goto err_discard;
 +		}
++
+ 		list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+ 			if (!strcmp(fh->compatible, file_ser[i].compatible)) {
+ 				handler_found = true;
+diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+index f52e8114837e..cdd293408138 100644
+--- a/kernel/liveupdate/luo_flb.c
++++ b/kernel/liveupdate/luo_flb.c
+@@ -165,7 +165,14 @@ static int luo_flb_retrieve_one(struct liveupdate_flb *flb)
+ 		return -ENODATA;
  
- 		luo_file->fh = fh;
- 		luo_file->file = NULL;
-@@ -803,6 +828,10 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+ 	for (int i = 0; i < fh->header_ser->count; i++) {
++		if (strnlen(fh->ser[i].name, sizeof(fh->ser[i].name)) ==
++		    sizeof(fh->ser[i].name))
++			return -EINVAL;
++
+ 		if (!strcmp(fh->ser[i].name, flb->compatible)) {
++			if (!fh->ser[i].count)
++				return -EINVAL;
++
+ 			private->incoming.data = fh->ser[i].data;
+ 			private->incoming.count = fh->ser[i].count;
+ 			found = true;
+@@ -578,6 +585,7 @@ int __init luo_flb_setup_outgoing(void *fdt_out)
+ 
+ int __init luo_flb_setup_incoming(void *fdt_in)
+ {
++	struct luo_flb_header_ser *header_copy;
+ 	struct luo_flb_header_ser *header_ser;
+ 	int err, header_size, offset;
+ 	const void *ptr;
+@@ -609,10 +617,31 @@ int __init luo_flb_setup_incoming(void *fdt_in)
  	}
+ 
+ 	header_ser_pa = get_unaligned((u64 *)ptr);
++	if (!header_ser_pa) {
++		pr_err("FLB header address is missing\n");
++		return -EINVAL;
++	}
++
++	if (!kho_is_restorable_phys(header_ser_pa))
++		return -EINVAL;
++
+ 	header_ser = phys_to_virt(header_ser_pa);
++	if (header_ser->pgcnt != LUO_FLB_PGCNT || header_ser->count > LUO_FLB_MAX) {
++		kho_restore_free(header_ser);
++		return -EINVAL;
++	}
++
++	header_copy = kmemdup(header_ser,
++			      sizeof(*header_copy) +
++			      header_ser->count *
++			      sizeof(*luo_flb_global.incoming.ser),
++			      GFP_KERNEL);
++	kho_restore_free(header_ser);
++	if (!header_copy)
++		return -ENOMEM;
+ 
+-	luo_flb_global.incoming.header_ser = header_ser;
+-	luo_flb_global.incoming.ser = (void *)(header_ser + 1);
++	luo_flb_global.incoming.header_ser = header_copy;
++	luo_flb_global.incoming.ser = (void *)(header_copy + 1);
+ 	luo_flb_global.incoming.active = true;
  
  	return 0;
-+
-+err_discard:
-+	luo_file_abort_deserialized(file_set);
-+	return err;
- }
- 
- void luo_file_set_init(struct luo_file_set *file_set)
-@@ -838,7 +867,7 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
- 
- 	/* Sanity check that all required callbacks are set */
- 	if (!fh->ops->preserve || !fh->ops->unpreserve || !fh->ops->retrieve ||
--	    !fh->ops->finish || !fh->ops->can_preserve) {
-+	    !fh->ops->finish || !fh->ops->abort || !fh->ops->can_preserve) {
- 		return -EINVAL;
- 	}
- 
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index 8a6b1f6c9b4f..4842c7dbeb63 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -102,6 +102,7 @@ void luo_file_unfreeze(struct luo_file_set *file_set,
- int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
- 		      struct file **filep);
- int luo_file_finish(struct luo_file_set *file_set);
-+void luo_file_abort_deserialized(struct luo_file_set *file_set);
- int luo_file_deserialize(struct luo_file_set *file_set,
- 			 struct luo_file_set_ser *file_set_ser);
- void luo_file_set_init(struct luo_file_set *file_set);
 diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-index 200dd3b8229c..602001327f58 100644
+index 602001327f58..f7f62f11d17c 100644
 --- a/kernel/liveupdate/luo_session.c
 +++ b/kernel/liveupdate/luo_session.c
-@@ -693,24 +693,10 @@ int luo_session_deserialize(void)
+@@ -673,6 +673,14 @@ int __init luo_session_setup_incoming(void *fdt_in)
+ 	}
+ 
+ 	header_ser_pa = get_unaligned((u64 *)ptr);
++	if (!header_ser_pa) {
++		pr_err("Session header address is missing\n");
++		return -EINVAL;
++	}
++
++	if (!kho_is_restorable_phys(header_ser_pa))
++		return -EINVAL;
++
+ 	header_ser = phys_to_virt(header_ser_pa);
+ 
+ 	luo_session_global.incoming.header_ser = header_ser;
+@@ -697,9 +705,22 @@ int luo_session_deserialize(void)
+ 	if (!sh->active)
  		return err;
  
- 	is_deserialized = true;
-+	err = 0;
- 	if (!sh->active)
--		return 0;
-+		return err;
- 
--	/*
--	 * Note on error handling:
--	 *
--	 * If deserialization fails (e.g., allocation failure or corrupt data),
--	 * we intentionally skip cleanup of sessions that were already restored.
--	 *
--	 * A partial failure leaves the preserved state inconsistent.
--	 * Implementing a safe "undo" to unwind complex dependencies (sessions,
--	 * files, hardware state) is error-prone and provides little value, as
--	 * the system is effectively in a broken state.
--	 *
--	 * We treat these resources as leaked. The expected recovery path is for
--	 * userspace to detect the failure and trigger a reboot, which will
--	 * reliably reset devices and reclaim memory.
--	 */
++	if (sh->header_ser->count > LUO_SESSION_MAX) {
++		pr_warn("Invalid session count %llu\n", sh->header_ser->count);
++		err = -EINVAL;
++		goto out_free_header;
++	}
++
  	for (int i = 0; i < sh->header_ser->count; i++) {
  		struct luo_session *session;
  
-@@ -718,7 +704,8 @@ int luo_session_deserialize(void)
++		if (strnlen(sh->ser[i].name, sizeof(sh->ser[i].name)) ==
++		    sizeof(sh->ser[i].name)) {
++			pr_warn("Session name is not NUL-terminated\n");
++			err = -EINVAL;
++			goto out_discard;
++		}
++
+ 		session = luo_session_alloc(sh->ser[i].name);
  		if (IS_ERR(session)) {
  			pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
- 				sh->ser[i].name, session);
--			return PTR_ERR(session);
-+			err = PTR_ERR(session);
-+			goto out_discard;
- 		}
- 		session->state = LUO_SESSION_INCOMING;
- 
-@@ -726,21 +713,30 @@ int luo_session_deserialize(void)
- 		if (err) {
- 			pr_warn("Failed to insert session [%s] %pe\n",
- 				session->name, ERR_PTR(err));
--			luo_session_free(session);
--			return err;
-+			luo_session_put(session);
-+			goto out_discard;
- 		}
- 
--		scoped_guard(mutex, &session->mutex) {
--			luo_file_deserialize(&session->file_set,
--					     &sh->ser[i].file_set_ser);
-+		scoped_guard(mutex, &session->mutex)
-+			err = luo_file_deserialize(&session->file_set,
-+						   &sh->ser[i].file_set_ser);
-+		if (err) {
-+			pr_warn("Failed to deserialize session [%s] files %pe\n",
-+				session->name, ERR_PTR(err));
-+			goto out_discard;
- 		}
+@@ -728,9 +749,11 @@ int luo_session_deserialize(void)
  	}
  
-+out_free_header:
- 	kho_restore_free(sh->header_ser);
- 	sh->header_ser = NULL;
- 	sh->ser = NULL;
+ out_free_header:
+-	kho_restore_free(sh->header_ser);
+-	sh->header_ser = NULL;
+-	sh->ser = NULL;
++	if (sh->header_ser) {
++		kho_restore_free(sh->header_ser);
++		sh->header_ser = NULL;
++		sh->ser = NULL;
++	}
  
--	return 0;
-+	return err;
-+
-+out_discard:
-+	luo_session_discard_deserialized(sh);
-+	goto out_free_header;
- }
+ 	return err;
  
- int luo_session_serialize(void)
 diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index b8edb9f981d7..8a453c8bfdf5 100644
+index 8a453c8bfdf5..b7f996176ad8 100644
 --- a/mm/memfd_luo.c
 +++ b/mm/memfd_luo.c
-@@ -358,19 +358,11 @@ static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *folios_se
- 	}
- }
- 
--static void memfd_luo_finish(struct liveupdate_file_op_args *args)
-+static void memfd_luo_abort(struct liveupdate_file_op_args *args)
- {
+@@ -363,6 +363,10 @@ static void memfd_luo_abort(struct liveupdate_file_op_args *args)
  	struct memfd_luo_folio_ser *folios_ser;
  	struct memfd_luo_ser *ser;
  
--	/*
--	 * If retrieve was successful, nothing to do. If it failed, retrieve()
--	 * already cleaned up everything it could. So nothing to do there
--	 * either. Only need to clean up when retrieve was not called.
--	 */
--	if (args->retrieve_status)
--		return;
--
++	if (!args->serialized_data ||
++	    !kho_is_restorable_phys(args->serialized_data))
++		return;
++
  	ser = phys_to_virt(args->serialized_data);
  	if (!ser)
  		return;
-@@ -388,6 +380,19 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	kho_restore_free(ser);
- }
+@@ -399,10 +403,16 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ {
+ 	struct inode *inode = file_inode(file);
+ 	struct address_space *mapping = inode->i_mapping;
++	u64 max_index = i_size_read(inode);
++	u64 prev_index = 0;
+ 	struct folio *folio;
++	long put_from = 0;
+ 	int err = -EIO;
+ 	long i;
  
-+static void memfd_luo_finish(struct liveupdate_file_op_args *args)
-+{
-+	/*
-+	 * If retrieve was successful, nothing to do. If it failed, retrieve()
-+	 * already cleaned up everything it could. So nothing to do there
-+	 * either. Only need to clean up when retrieve was not called.
-+	 */
-+	if (args->retrieve_status)
-+		return;
++	if (max_index)
++		max_index = (max_index - 1) >> PAGE_SHIFT;
 +
-+	memfd_luo_abort(args);
-+}
+ 	for (i = 0; i < nr_folios; i++) {
+ 		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+ 		phys_addr_t phys;
+@@ -412,6 +422,19 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 		if (!pfolio->pfn)
+ 			continue;
+ 
++		put_from = i;
++		if (pfolio->flags &
++		    ~(MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE)) {
++			err = -EINVAL;
++			goto put_folios;
++		}
 +
- static int memfd_luo_retrieve_folios(struct file *file,
- 				     struct memfd_luo_folio_ser *folios_ser,
- 				     u64 nr_folios)
-@@ -532,6 +537,7 @@ static bool memfd_luo_can_preserve(struct liveupdate_file_handler *handler,
- static const struct liveupdate_file_ops memfd_luo_file_ops = {
- 	.freeze = memfd_luo_freeze,
- 	.finish = memfd_luo_finish,
-+	.abort = memfd_luo_abort,
- 	.retrieve = memfd_luo_retrieve,
- 	.preserve = memfd_luo_preserve,
- 	.unpreserve = memfd_luo_unpreserve,
++		if (pfolio->index > max_index ||
++		    (i && pfolio->index <= prev_index)) {
++			err = -EINVAL;
++			goto put_folios;
++		}
++
+ 		phys = PFN_PHYS(pfolio->pfn);
+ 		folio = kho_restore_folio(phys);
+ 		if (!folio) {
+@@ -419,7 +442,9 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 			       phys);
+ 			goto put_folios;
+ 		}
++		put_from = i + 1;
+ 		index = pfolio->index;
++		prev_index = index;
+ 		flags = pfolio->flags;
+ 
+ 		/* Set up the folio for insertion. */
+@@ -469,10 +494,15 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 	 * Note: don't free the folios already added to the file. They will be
+ 	 * freed when the file is freed. Free the ones not added yet here.
+ 	 */
+-	for (long j = i + 1; j < nr_folios; j++) {
++	for (long j = put_from; j < nr_folios; j++) {
+ 		const struct memfd_luo_folio_ser *pfolio = &folios_ser[j];
++		phys_addr_t phys;
++
++		if (!pfolio->pfn)
++			continue;
+ 
+-		folio = kho_restore_folio(pfolio->pfn);
++		phys = PFN_PHYS(pfolio->pfn);
++		folio = kho_restore_folio(phys);
+ 		if (folio)
+ 			folio_put(folio);
+ 	}
+@@ -487,10 +517,32 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+ 	struct file *file;
+ 	int err;
+ 
++	if (!kho_is_restorable_phys(args->serialized_data))
++		return -EINVAL;
++
+ 	ser = phys_to_virt(args->serialized_data);
+ 	if (!ser)
+ 		return -EINVAL;
+ 
++	if (!!ser->nr_folios != !!ser->folios.first.phys) {
++		err = -EINVAL;
++		goto free_ser;
++	}
++
++	if (ser->nr_folios >
++	    (((u64)ser->folios.total_pages << PAGE_SHIFT) /
++	     sizeof(*folios_ser))) {
++		err = -EINVAL;
++		goto free_ser;
++	}
++
++	if (ser->nr_folios &&
++	    (!ser->size ||
++	     ser->nr_folios > ((ser->size - 1) >> PAGE_SHIFT) + 1)) {
++		err = -EINVAL;
++		goto free_ser;
++	}
++
+ 	file = memfd_alloc_file("", 0);
+ 	if (IS_ERR(file)) {
+ 		pr_err("failed to setup file: %pe\n", file);
 -- 
 2.53.0
 
