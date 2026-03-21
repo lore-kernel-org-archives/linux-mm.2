@@ -4,99 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B70FF1094461
-	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 08:08:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F0AD1094461
+	for <linux-mm@archiver.kernel.org>; Sat, 21 Mar 2026 08:12:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA2EE6B0089; Sat, 21 Mar 2026 04:08:53 -0400 (EDT)
+	id 6B5B36B0005; Sat, 21 Mar 2026 04:12:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C53D86B008A; Sat, 21 Mar 2026 04:08:53 -0400 (EDT)
+	id 68CC26B008A; Sat, 21 Mar 2026 04:12:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B69D16B008C; Sat, 21 Mar 2026 04:08:53 -0400 (EDT)
+	id 5CA186B008C; Sat, 21 Mar 2026 04:12:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A188E6B0089
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:08:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 479121404D8
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:08:53 +0000 (UTC)
-X-FDA: 84569344146.10.2028A53
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 72BA9120004
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:08:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sjm3zqKZ;
-	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E15D6B0005
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 04:12:35 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6F2C1404D2
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:12:34 +0000 (UTC)
+X-FDA: 84569353428.23.DEEC63A
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A54FD40005
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:12:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CZk02E+o;
+	spf=pass (imf12.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774080531;
+	s=arc-20220608; t=1774080753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IoFAn7UbZciL7kg8onf98qtXoqQnJOW/hKz3YHLFT0Q=;
-	b=744tIy1AfESQk6cYCTOxuiIqBVJ84x3xxuUVeX7Rl6zP2ue36E+5oUt/l/rwwL7su/m8/K
-	c6+8S4lwUFiSZLV3RS7U8FmdUvDy0FVb3DsVbvmwXpG/1yGc/61glZQBXfjxsMoTLX3F0J
-	T1JluPzAS6k7a0o8/yfGhPHJkPRw8pU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=DAt9LzhhsgsjYtr773f+9eH1uFjEz14PpVB4IOX1NDs=;
+	b=CDC1qawv2eR7lC97GGHxW9u+AXw9K9/ENwbndtUX3DZHxMNnfr/lO0tQlEv9DyCfXPwGKD
+	lreK34wROOfh9TBsMHi39ScAx2niUTTxvrak381eAEUpgzz2+jdUjq5e7rWfysZ/66wu+2
+	TUCEPB8yyBA0DCX3mWDdJ3jx7+/hdV4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sjm3zqKZ;
-	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774080531; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CZk02E+o;
+	spf=pass (imf12.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774080753; a=rsa-sha256;
 	cv=none;
-	b=GRQFj6tCkilevm19Xhokb27C5YL0OyCnjD2ZQDWyBhv+KOwP32aftg4ZCP5y2SJLaZmexd
-	gnSYMEb/ilVVPqmdZVwUGgzh4k6Q7FrNOg0bTFY+94SvBmbEuo6O2ZKYVTwt88A6tER3l1
-	hwH+JB1uY4yReKChJOBzuIF6n/ndPk8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF4A960054
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:08:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AEAC19421
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 08:08:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774080530;
-	bh=iAWAw7i+H5iM0LuB+tfDvoWnL6tz4FGANoL67rsstpQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Sjm3zqKZPvUzzxxNdfYb/xamhfOCt+MEmO83/mml2ozsOuePE4wzxa567tgLuhdVP
-	 EQhjh1InBGWkGhOJMHiFzv5opJ1BI619SOKe35fdYFrTnW3IQCPhgTX0SICj5BxHBZ
-	 MZRFTVrMe1JujejP4zMKjYBauD6IkZ2F30is1D7ROc6/Soqy0w2imZMGnZCefOUqoO
-	 Zg1sYJmUvkELbwgbPzldhbahE/yUPbyFgK8l4gIsV83ZW5D0jxyFMRUa4aOwFjIcUS
-	 ROsXAvmBjCK4/RLG9c1lfm9jkzPSyT29MDIeXbBtGsvn0Xjmr8Nk7ENuUAFwA7qZjf
-	 W3jc5sA7i2Ijg==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64c9a6d6b70so1017154d50.3
-        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 01:08:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXO6IHe5+HZcsLONltqCvsn+3V2QykuGUszVWWZlSxwP7lBDwQDtV2FkjCigOdR4LWAPxwDcKr72Q==@kvack.org
-X-Gm-Message-State: AOJu0YylZJaUlVp2e72I1bsSqQT2yyaqSGL8VPeS+OdVxxTFJBno/i9d
-	rdg36EEfxrsZg/iMv/5aZFHeh/irFltGCGYTJQB5ra1uc/IYyspPBQylCbQuhsNyg6MJof3L6uV
-	Ushjwg8ZH4KhYZ1ENt/9LCIJ259SMCCmDODqtJZla+g==
-X-Received: by 2002:a05:690e:44a2:b0:649:c7dd:d2e7 with SMTP id
- 956f58d0204a3-64eaa707e01mr4948216d50.33.1774080529698; Sat, 21 Mar 2026
- 01:08:49 -0700 (PDT)
+	b=BeCwZl91MemaYupviW8oh4dmXHwAkIp5ZVB6MC8OtcNdYayfl1UDn8e2GM3L6rBGTmSWi4
+	6dkaTLXEJ+dpaDFZk2T0PNIbEKyGLk1qFCvxP+yI7PDHJf+vBwQhq22XR7lAwRTESY4kaB
+	2l4mQ9jur0T9j//nd1UTV8uWbmq5U04=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=DAt9LzhhsgsjYtr773f+9eH1uFjEz14PpVB4IOX1NDs=;
+	b=CZk02E+oXvlBWQEVNPrdXwcxTOovIGvYotDDF01EeCiy1bi6q1R6pO+GXOegrb5xVh/ccJUxB
+	p2RBhxFIEvQLDLmGt9wGXa5XSsjGFJays7/B1y2CL2ntMCtLKas8zJX/an4FDY0clIAjnVbbMOt
+	vFr+3HP86g8X6JjFGpkvwI0=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4fdBpT5QpKz1K96T;
+	Sat, 21 Mar 2026 16:06:25 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8AE094055B;
+	Sat, 21 Mar 2026 16:12:26 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 21 Mar
+ 2026 16:12:25 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@kernel.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<baohua@kernel.org>, <ryan.roberts@arm.com>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH v4] mm/huge_memory: fix folio isn't locked in softleaf_to_folio()
+Date: Sat, 21 Mar 2026 15:52:14 +0800
+Message-ID: <20260321075214.3305564-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260320050601.1833108-1-alex@ghiti.fr>
-In-Reply-To: <20260320050601.1833108-1-alex@ghiti.fr>
-From: Chris Li <chrisl@kernel.org>
-Date: Sat, 21 Mar 2026 01:08:38 -0700
-X-Gmail-Original-Message-ID: <CACePvbVcDJOGKG_C-_=s5c=hqrVGe1Qq8EuvX-MWfd36nmNizQ@mail.gmail.com>
-X-Gm-Features: AaiRm52M3hEIAZbalOdPJMeeqpHJzPlQnlH9CQGbWigMKUSDKeDtDtiOwUI_0rU
-Message-ID: <CACePvbVcDJOGKG_C-_=s5c=hqrVGe1Qq8EuvX-MWfd36nmNizQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/swap: fix swap cache memcg accounting
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, hannes@cmpxchg.org, 
-	kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 72BA9120004
-X-Stat-Signature: k9mxbn9efme9d3jujrtfwoq3zeirag8s
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Queue-Id: A54FD40005
+X-Stat-Signature: ep77in3txyfdrfzoppabxc3jfdstre7p
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1774080531-698567
-X-HE-Meta: U2FsdGVkX18Dt0SIlQzVVjZe0ObIfIg1DGDJyyj8nQVGIMLWX8sMeBlln571kuHnRMDchGfU2lbo+M8F24Nu2YChaCBs1duE7xQfsBoKaryU8Fm7548MMu2DC7bm4910F47R1jROBNNf+02qXZ1ngvTUzb/NOjOl2kzvhAfIRplz5Vvqc+m+pkL5lQxxDxMPi7HymVuJ/udZB4JMhHpk/swMcKgkZprLg4rks/Blvc8amb1/F1msk0C77+IJgsM1M6DeL0oSiFE+xmG2rOwn+Mfa2uZl7zAzBlvfDGF+DW3VUtnsKxbYnJ5Sz4ewCIuYOThqDg1tKgHdaHWkEnorNOAdh+TFx/FQIgNyqYsmPqqpLC5UiKmVXSi4/DTnQ1MeDjIEBDTkILlzfdFG/U72xnx5rOTTdK92gL+1fJFvdnWVGHw3iv2RnCDpMpBd8MZfchFQdH+iX5rY2mDpO33o1aMoKqVddxuyZsJ/tlp3Y5kZUEhiTP5EdsJ61Gf4IH/18bsPqA4cVdL8+EHQmRl0dveI2ACYZ5RuKVTYIrr+v4EG8CYQmOcNgtP2Wd6bYg1gdRarsebT2FylxFSfDZkPXM/VN+66wcm25za+2FS0kyM30kZbmjbc4jFbiZ9LC+t8DBSxDCU0fUQQw+E6TmqCLf5vKkvBOxryMBK3ipS6NgzdL6CZUGizBmCwKbF7NzhO+o0MinOLF4IcAPXntz8sH+BzIb4M92ZuNLBeMOQjN62lLNitRebeB8n3pCzGYjwMySskjzKU3vPibtembzMKqOcTatrUg+nuhc4V3OmE1oXvhkB9gsDZg3oyMDFpcpizyvJcwatA5XNicj1GNQ8GwVfLYnwE9WdF4KbYEfVx7/dU67zJIwNQ2m9Do9u44pdTlNfvO1GXA3A7ZuwNqC/H2kD544b3mlRv91WSZU65lGPPozZQC6woWjpexzWD/nazGcocR14vry1+zFVrtxg
- Huz2xnJS
- W0G+1U3flHn7m+38kPKFH/ymZXnmrtACrLYc1vNFmhs+oDqaU1W8YymVfV56Ak1sAJh4F2pYbcpUKz8phFDo/Pqtzb/8vFJ8wesCnuJgvuoT6G8te70y0jsbNvHkjS0cfqqFmgRMwA6/eXIdkPwtBQL3OTOB1Jd8eY67SoyhTY6VDy96o0qsQehkEwDCVWLpt7DCt2DmY3TkU2/FNF/jHc2CQUpXlxvyj2z4ycO7uh/eqSL9p1o+a1rwDr/urCQeGmTeOyi5fowzF1ejyZD3DUc48iwa4S9T2RVDZe2H9RPl/GtRXVs+0ZhPPGw==
+X-HE-Tag: 1774080751-378106
+X-HE-Meta: U2FsdGVkX1+vsvPjFMuGsHPxuau4k8MKPtKj/Z3a2YF5bmcbXBq58ywPhoCmRLBSRuvx5bDxyeN6rOH06NfV0KNleKRuzjpBrjIIQNpyIRVRCoc/NSPW6QtTOUtEqklD7dkbuMbFV/YttCFNXlpXHk5RCRpdqmvjE0TtvMzbeGiRb/vr5JYObf7Pvo4M5NNaAdC1rlfGlAHTjtQA7HxesuMSADgtjMzRne+uFysFp5prmcH3JMBw/6V5QqfhgQGmr6+y7x24UjYw/H5ZVU4ZaMufSHlB3mzfNrcV/EsKuwAFqgM3bY8BkqwhtVzyn+nXUenq5y0kJJc4acUzriAE0OFgJCeBWeWb/FGPEUyqGPXYiEQ9pBMOH8WPUCxoq93wy3pbktlUU+8xeE4yOYZbjOCkUw0yvmCmQaAsRgTCrUaSuiWlFB29AB/xo763vzXV+VtafTS9Ogb+gXoXi7DO5Rkcaw9z2dZVsXrR803IegTQ0qX86agR8oq8Ei/8OPQKzfSrusovi8mlTRw1jpUS9NKCEMs8YC2Asjdt2ytjVu13QmxfrDIsBqxSfJLudcIhqNkz+2dTTvbUqHY7nyErdoLNGqunv8u25QjZmvVcia342aUxGPtbD3FTtBRod00Frf7iPJ458lSShtzhdDSapRmH934vUdsbd0aLGKBB+GuOBynIuWMjvSsc6G5HlwOe8M9N4zW6te96/kdZaBReRPOlbUriox3Mpc5qUZhVx8oONMRdgqLPVbJJ67N4McTEYxl8YM/IQnJ6FNcRcaIHwGn3DgHnyPMNyDf/d0tAKnziVmNt9adkiZk9cVF93Sb2OWlfdHqzt7cpsKNcVfNnDaM+5NP9gSLba1p6UXYGLWGdZlhEBkABTzHSDNRLVYJrF0pcRfpD5HtABKnNgEph/WVfcMNMqboOV4anGogOeXGud0+ewLbx1Q+svx98KuNr+O9tCMgBGGt6Oyy6631
+ Sd9Ru5gr
+ 6k4ypH+Rll0YSxBsZNcuD7tTYMi57PMRrqWx+IdM1JUcuhsc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,65 +97,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 10:06=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wr=
-ote:
->
-> The swap readahead path was recently refactored and while doing this,
-> the order between the charging of the folio in the memcg and the addition
-> of the folio in the swap cache was inverted.
->
-> Since the accounting of the folio is done while adding the folio to the
-> swap cache and the folio is not charged in the memcg yet, the accounting
-> is then done at the node level, which is wrong.
->
-> Fix this by charging the folio in the memcg before adding it to the swap =
-cache.
->
-> Fixes: 2732acda82c9 ("mm, swap: use swap cache as the swap in synchronize=
- layer")
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+On arm64 server, we found folio that get from migration entry isn't locked
+in softleaf_to_folio(). This issue triggers when mTHP splitting and
+zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
+in softleaf_to_folio(). The race is as follows:
 
-Acked-by: Chris Li <chrisl@kernel.org>
+	CPU0                                             CPU1
 
-Chris
+deferred_split_scan()                              zap_nonpresent_ptes()
+  lock folio
+  split_folio()
+    unmap_folio()
+      change ptes to migration entries
+    __split_folio_to_order()                         softleaf_to_folio()
+      set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
+      smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
+      prep_compound_page() for tail pages
 
-> ---
->  mm/swap_state.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 6d0eef7470be..48aff2c917c0 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -494,6 +494,10 @@ static struct folio *__swap_cache_prepare_and_add(sw=
-p_entry_t entry,
->
->         __folio_set_locked(folio);
->         __folio_set_swapbacked(folio);
-> +
-> +       if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, =
-entry))
-> +               goto failed;
-> +
->         for (;;) {
->                 ret =3D swap_cache_add_folio(folio, entry, &shadow);
->                 if (!ret)
-> @@ -514,11 +518,6 @@ static struct folio *__swap_cache_prepare_and_add(sw=
-p_entry_t entry,
->                         goto failed;
->         }
->
-> -       if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, =
-entry)) {
-> -               swap_cache_del_folio(folio);
-> -               goto failed;
-> -       }
-> -
->         memcg1_swapin(entry, folio_nr_pages(folio));
->         if (shadow)
->                 workingset_refault(folio, shadow);
-> --
-> 2.53.0
->
->
+In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
+are visible before the tail page becomes non-compound. smp_wmb() should
+be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
+result, if zap_nonpresent_ptes() accesses migration entry that stores
+tail pfn, softleaf_to_folio() may see the updated compound_head of tail
+page before page->flags.
+
+To fix it, add missing smp_rmb() if the softleaf entry is migration entry
+in softleaf_to_folio() and softleaf_to_page().
+
+Fixes: e9b61f19858a ("thp: reintroduce split_huge_page()")
+Cc: stable@kernel.org
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
+Changes in v4:
+ * update function name and comments.
+ * collect Acked-by and Reviewed-by.
+
+ include/linux/leafops.h | 32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+index a9ff94b744f2..05673d3529e7 100644
+--- a/include/linux/leafops.h
++++ b/include/linux/leafops.h
+@@ -363,6 +363,23 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
+ 	return swp_offset(entry) & SWP_PFN_MASK;
+ }
+ 
++static inline void softleaf_migration_sync(softleaf_t entry,
++		struct folio *folio)
++{
++	/*
++	 * Ensure we do not race with split, which might alter tail pages into new
++	 * folios and thus result in observing an unlocked folio.
++	 * This matches the write barrier in __split_folio_to_order().
++	 */
++	smp_rmb();
++
++	/*
++	 * Any use of migration entries may only occur while the
++	 * corresponding page is locked
++	 */
++	VM_WARN_ON_ONCE(!folio_test_locked(folio));
++}
++
+ /**
+  * softleaf_to_page() - Obtains struct page for PFN encoded within leaf entry.
+  * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
+@@ -374,11 +391,8 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
+ 	struct page *page = pfn_to_page(softleaf_to_pfn(entry));
+ 
+ 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+-	/*
+-	 * Any use of migration entries may only occur while the
+-	 * corresponding page is locked
+-	 */
+-	VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
++	if (softleaf_is_migration(entry))
++		softleaf_migration_sync(entry, page_folio(page));
+ 
+ 	return page;
+ }
+@@ -394,12 +408,8 @@ static inline struct folio *softleaf_to_folio(softleaf_t entry)
+ 	struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
+ 
+ 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+-	/*
+-	 * Any use of migration entries may only occur while the
+-	 * corresponding folio is locked.
+-	 */
+-	VM_WARN_ON_ONCE(softleaf_is_migration(entry) &&
+-			!folio_test_locked(folio));
++	if (softleaf_is_migration(entry))
++		softleaf_migration_sync(entry, folio);
+ 
+ 	return folio;
+ }
+-- 
+2.43.0
+
 
