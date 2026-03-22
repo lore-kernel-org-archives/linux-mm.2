@@ -4,115 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85A36FC72AA
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 05:21:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9300FFC72AB
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 05:43:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5242D6B0005; Sun, 22 Mar 2026 01:21:29 -0400 (EDT)
+	id B857D6B0088; Sun, 22 Mar 2026 01:43:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3C16B0088; Sun, 22 Mar 2026 01:21:29 -0400 (EDT)
+	id B355C6B0089; Sun, 22 Mar 2026 01:43:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9AF6B0089; Sun, 22 Mar 2026 01:21:29 -0400 (EDT)
+	id A24576B008A; Sun, 22 Mar 2026 01:43:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CDB86B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 01:21:29 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6597AC1F43
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 05:21:28 +0000 (UTC)
-X-FDA: 84572551056.09.4B1D064
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8BC074000A
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 05:21:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=F7y1Q72q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=devnexen@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D13F6B0088
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 01:43:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 146688C3B4
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 05:43:16 +0000 (UTC)
+X-FDA: 84572605992.18.4D778C9
+Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6947D180002
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 05:43:14 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SPPD9sba;
+	spf=pass (imf24.hostedemail.com: domain of 3cIG_aQYKCMU352pymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3cIG_aQYKCMU352pymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774156886;
+	s=arc-20220608; t=1774158194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lc7WXv5QbRK7FJAPa9CcSx+GAiaj9ytLHKKih0IedjA=;
-	b=xRxFkW9OpeiTnn/09efGYchJlIDPEyoBm5oBADokDBM64xUQ1qwSnFe8SrzGmkhX8pgLas
-	sMmG/OaslrDBCBH8ZwPKCpk/T/8Yjyh8zYToFYsFCm6JRS+c0eNXbXchOTDgIRna5OC4Hb
-	Gt/67lHzPZSqlFjijQvFSTrZ7PD3wao=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vcHDXdXeHcBh7JcXxd/NIeUk+f66988A9WXmJh1lMtA=;
+	b=Gur9jmQYI+Xi49VtgaHqVmlxOm6eRCl0766P+ehNlWU/igJ4enWiL/n3dJx3l2q3k8rsvl
+	vJfDufcwqlvQhMdDWvVOA9o40jU/shec2EVhOhQ/jcxIyP3MxDCAaFb/V/kCPSjrw8ubF6
+	sBnSyDvoSZ0TKSV2Czg3NJmYJ6XNnGI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=F7y1Q72q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=devnexen@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774156886; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SPPD9sba;
+	spf=pass (imf24.hostedemail.com: domain of 3cIG_aQYKCMU352pymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3cIG_aQYKCMU352pymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774158194; a=rsa-sha256;
 	cv=none;
-	b=H9/TSLRBO0+hy5Tl7H93NcuKg60GA8AJAHj7P+3X5zYutoD6bEfhbWBRLIrAvrQHcAkKv/
-	npK7w6lexAP8zSV40994wG1l+4tu0yV6LQPK/yUzH9VLwIphmb3eLFZIpO7xhAiNwfHuS3
-	R/0Ip26JXFx9dxqcGYQmZmyqD2DjqvE=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439af7d77f0so2268950f8f.0
-        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 22:21:26 -0700 (PDT)
+	b=j9yVyu682oWkH9rTX9w1BUq/iPofoB5VDxHFzXucVhu9aABUkAYrG32A3bHwJbpEUiU/bT
+	gIlSJy8g2zpBrXe6HkZgaTvofMmfJ/tK1K3CPWmgqGFLEnypxnGcDsWz/QcCaVCxxHo+h2
+	wbE+JYk4+hMLrU9KnWF8U/6Q8hSzoKo=
+Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-1275c6fc58aso1267110c88.0
+        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 22:43:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774156885; x=1774761685; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lc7WXv5QbRK7FJAPa9CcSx+GAiaj9ytLHKKih0IedjA=;
-        b=F7y1Q72qGZ6GryKzW5BwasbtKBXkya7MmGsf029/GV7RsxPHCcRb3s04Me1dc1KFBL
-         obwHvTMb51SJr87nthXHDNLbzMTzOddnE4SQR1BlOKKZLIMKy2jn9WCAky+Vrj+qIplc
-         RyBOBaF8te/ERH81+B2dAPQVxEyfw36N5FbSgXltOIrRIEbhihhUbTIK46de7TYqlT8u
-         0XNJYU8EpwuAn7a5g6ffVyTMVUtPITbsJZPYgQ8Fz/DDmNFPGFfXkge/h4aeUSuesMCa
-         XMTz1xEoqEdCba2HroXIaMCuGtmmuvG6iTzSkFQRXkGf3venpTTSEJJAf1fbfZBYVnlG
-         s5UQ==
+        d=google.com; s=20251104; t=1774158193; x=1774762993; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vcHDXdXeHcBh7JcXxd/NIeUk+f66988A9WXmJh1lMtA=;
+        b=SPPD9sbaINmvaIYwAd73jxaAzU+9njtJ3aIW40kd3TfjQrlPNYxrHFuqfu4kGJPUsY
+         abVqDEd+MKmEv8C16D+TdT9bkIJAqKWIBcKK9+lPB3T7TX3pOdFv4N7I+EfNBnlT3kmG
+         2NLWylA03+XRkxAYBfhstekKJz3hUu5yNOdaCh/SbHsr9ggpHTt1+oIeWWfiDDR/n+nA
+         UucElYcFL1eb3Gu5wZtii3zd1OpupaU613EaDkI/gMgpZFNbPEt4ZIx/kxOZj3NTx4sY
+         HodkCdDW7TmMvDc1XjEZ7+HEI0+5LG+3hIhv220sMEDAORzTBs0oHUxjINA7cQRVtofS
+         NkBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774156885; x=1774761685;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lc7WXv5QbRK7FJAPa9CcSx+GAiaj9ytLHKKih0IedjA=;
-        b=aHa///zlQGmMQgUR0IRN8LJ4Ff23G526RPGyEBbqQsapwlzTPTHKrJhLqH1XpvP0oW
-         rkujr8MJk9CpATUgKuW0m87fy4F5w+qiElC57PZfncvGp4FF65t1+pRQo3Ad9yKmJAW0
-         uhMEPdfzfDmffRDa9rRQ0o1ETLLZ+Y7W7/ZJbBgSZncYC2WD7nWmmX/xzZ7q+s0NMAC1
-         l+NG9XVpvMePUo8D81jX/Urm/ehPacRAvvtERoL/oIpls0vyMFBUZnDntoT0P0Ol2xeH
-         pYb1q/DCB56twLTXfgMMVqwRgFFiHSqOyJ2BtT41PeD6J4F+JUQGKmzeoaNMFkKSf0QG
-         928g==
-X-Gm-Message-State: AOJu0YyNIRsK4e4BVsDDVX07ZBCzY4FGJQKMNaAZSsO+N40hue3ZSPNE
-	g0KxeinV23V0Z53FtjF9hyj2eHJ8sc/CF8J6osfYSudj9j4xAhnkX9Us
-X-Gm-Gg: ATEYQzz81pDqJXLS996c9XIwCFFfx037VXrUoDrBlaxxdySyKG82FI9BbYj0NfgxdLx
-	kkVgldEMFcDJawmHqLr8R4K6V4tXfK2BTCIiPIqHLv4lf0FZTDFTjaZrjNzprGW2NP8pp703g3v
-	LYufDYPYKe/e1Ua4xSH9JLpcIjG3KTD60DYQAdPbzAnrzaXNMzTIScgSyMOFyDBE0Y+ctuZSQtX
-	ZfgNA+yxAIyNnYYgvPoeN97szzfwpa5ho347BgUpbxibfr+P8jSJIN5ZQWCLkCfDMB6nHAEQThu
-	WHBAHnVMhDXMeKQnsis3jWjQzETnXl3Qev17CNSkYYqVcpEXQ8rHRq+6JcHngLgzLVpTTGTvKzb
-	CSewMplEPSg5XDCgCA/VRkYHPcV+qpDWjySEmei/SPU3FaMdcl2D+KVLvMScXCfr8SO7N7r3f2G
-	kL2ZJZ8cepGnhgo0cTiNq+T9I/bJkqfPonsrgInm+JzqWkuSrSyUHHU08JWzonIixXHhiEYVEst
-	KxzHTEdwt/H
-X-Received: by 2002:a05:6000:26c2:b0:43b:3d44:6624 with SMTP id ffacd0b85a97d-43b64232862mr12944534f8f.2.1774156884544;
-        Sat, 21 Mar 2026 22:21:24 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b646b0d3dsm19494208f8f.16.2026.03.21.22.21.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 22:21:23 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	YueHaibing <yuehaibing@huawei.com>,
-	Mina Almasry <almasrymina@google.com>
-Cc: linux-mm@kvack.org,
-	David Carlier <devnexen@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path
-Date: Sun, 22 Mar 2026 05:21:20 +0000
-Message-ID: <20260322052120.14021-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8BC074000A
-X-Stat-Signature: kmfho8wze6a6stqsx638kmx87bzo31ep
+        d=1e100.net; s=20251104; t=1774158193; x=1774762993;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vcHDXdXeHcBh7JcXxd/NIeUk+f66988A9WXmJh1lMtA=;
+        b=lipNY6rY/l+XgqymQt16CS/PXkdEjOWKZKY0HT1fi9Xeesi5VIaQ5vC0l/7q8qnM2j
+         eQVCNYhAWlFYIbshXfyVC2MO7uE/H6MQ/57Ugy3yuBg75kf8JHggYeAT+Z+I8m4abGXi
+         YAPHMqgK0VOW8QTgd573J1HV5qqfe8rLkYDbzUtrLxOwBCKoAO6Up7HlcFEhqtI6rR7S
+         ebcRjSSISoDCjQQ5ywTR2Dz9oRv84tqZGnz/QAzcN+s3IMzKpO/w1sGatxxabhntTjC1
+         WJck4DJJaSoSUI0KextucU4pVux7laZHqnnkS9x0TclAXVlgyxjq5uf4yUvlohLK980E
+         zDcg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZrnLDwqdWVzSAGHLGS42rKVal8edjjkIYToQlftFnx3O3QjDUHe26v7SRFin5TYcyYoVKDkqgAg==@kvack.org
+X-Gm-Message-State: AOJu0Ywpnxdsv+nb0Zyi3EX0Uyt4SvAowIWONWtG/VVraF6UxuyW2LEL
+	E1dZYjU0VP2Rliy4QEz6xVtbtNta31pznPCP8fblWPf+7xVK5OTPcbDrUrlZuo2ZPF7jxYZgDr/
+	/xmqTGA==
+X-Received: from dly25-n1.prod.google.com ([2002:a05:701b:2059:10b0:12a:7703:c328])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:490:b0:12a:6a64:81ef
+ with SMTP id a92af1059eb24-12a7267d891mr3739492c88.9.1774158192658; Sat, 21
+ Mar 2026 22:43:12 -0700 (PDT)
+Date: Sat, 21 Mar 2026 22:43:04 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
+Message-ID: <20260322054309.898214-1-surenb@google.com>
+Subject: [PATCH v4 0/4] Use killable vma write locking in most places
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
+	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
+	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 6947D180002
+X-Stat-Signature: 3wnmurpfz3wk9gfd64oygh1qzii4wfek
 X-Rspam-User: 
-X-HE-Tag: 1774156886-469011
-X-HE-Meta: U2FsdGVkX18MSDLk78k3oLw0i+755L4Z+jwhHAYwRXqaooxRN+RtNNhf6iLn8e0vZYt0fwl2EgdP4UeVmv7SsVX/7I4RU5qyLwIFbyRmKZ/NYVUtlXfLi3vearXh6fQ18J7q4Nwkh/KgQl6Ud37Z2ygHz0dJAijGWqzNdEnuprMe9vbkm0Kp1BsR9OqE3q7+OnrInkxa6sO3hyLgdlHyiqOi4xsjMAcRzDQoxABHHJe/s9DLr79digE0108LleIIS7EKW5yUQIpRynzOCEKTi4M5TYKRm9d31dkWZ2pVW2WUimTZyWgJ/DVKoE//s4HLY+u8/nqWbW1zasgRiyIX8hsCbJ1DS8Zw/X8bvQP3bRUMcaGw4vqOeEpx/+EgwkoD/V4917o6IopptBC1ejoM09YTTwsoWNGQ9X4vLGEinZfnQWj5fCWb7vVY9i9NtQmlZugj5MAlAl69aDLWxFtHstPnmyf2KzwA74cuWN1BpFod+EmNIL5PJPMLnmOMNNJEECNGAGNYJK3XGDehzLwCY/8i8+B/bpktlm+UPxnmiHyc16neDguYqiDhlhUCAx8DuNVrUIYd/8SNhkLBB26JjG0JeMM7Ct/3k1s6vXCYhAvKk8nR9LfwhRVbvqjJwFuFZ7YSS21jsBKdcGl8L8QllJvhAI7/JTq1Ia2nWBh/woBMX5DrgOkZtuWJco3Z751C4YVlTVNP2cfRdnpAGja5m4OYKk0wze2+n6SXQRdV1MGPuM+BhpTadmtez9FwY+kVwMJqzPhQZ+P2YM8bylMDX9dcgqvyzeuCK9I1dbFr2NkK1QBGHgRyXGA9YvMQT6p84u6zvTjMyTXxyf/JZrYFApYhd2kPwhF9avWFShi2IZYPr+ElvqY66V/OUVR9YstfUMnwTzaDpxBOnmnzXyY0iOezvRICXlhaqC9W9AhDHP8xMObTt1/uPRQ7Ue61ldLTD4uCTOxKtDuQLGhtfYv
- qU2+86qa
- QERFPLzF836CehecJXVZu/7MF+FI6Z+Z3Y1fjkTcZVNrg2JQrXmYwS/M564OXBZCI93RaxlNOSD2ZK1jdmJvODPVlhvGiHY76UUUy/ZoNpKQXKDb3OsQOueoAXtTnrHksQSN8cocFMRHl7e67EWnf1lRkoFAISTrujoB7P0u+SQITf23tK6IaTO0RhR5vh/Tlu5Md6tEYafwLBfF90uJ8vKovNtzlyfyVhrs7Ux7QMv7oxCKUNpk2cXhJ6LSb6yFuB6bHHfvbf7iDt2Bahnaf0g8Xz0bhOXO7Ld89/8V2m8JNjp2X2HDBkFLgsIOQ+Qs3+UqRbdmv1fKffsBV34KtdXbothd/yW+xTJL0Rc27t9hs7mxIjCEW8wPPyT834ts8kRvXvROvypyLy+gF6jSE9P8od+LEyO7zeIhBP4REZfF/3wNrQLhAryMLPNquVAHhkM1k3jAv4XlQdMRMZweVrFCNY21/o9OWEWk7vlWt7JDqoUs=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774158194-14146
+X-HE-Meta: U2FsdGVkX1+yDagsqVcC//K1toVqiB5yCUOm9ACt4MVGDhNx1ycAqL3OiG5EwqaxWL08UlWk4ERAXfdR2g4liNJUymNBk54QdsV78XuKAGSQd5EhNOs1rtlnBXTzZq5qza7pNop1q9SI7Vg1azXOmC8npXSP/bVieLpY3DFAGtzGECDYG840Cq8XOtFQ+V/arIonJ54hFizikGeVvZsOfo/wzWGtVLJ92xZCXlhmC/N8mBmLsZxkGJOlsR7W6YPUX937ETpQIkaO1d+GLDTHDOwwa6c6ew3jbhN0FUIukpNBBhvjAJf5dwCf/8cL0JK9NJySQkdBJ7vt8ajUggRs3zIL3pN6yh+Fjz4mtNSoi1lOVR0g5tilCSGYbbHP3OZZaz/xWInfShINmU3Ravt4ORGakuAfoxFIScG28BxHYH2oE6+JJc+rd90LTqnuccScaoC8RjfJsJtcF7od5+tMCpa6P0TN2URnFSviO0UeOMGi/3MXZB31JJqxM2pxJ0blUGXYAsMVCyU6bApEROPSK/iDti8YvILMFEE+jlIbXBdDm0ayinEdjgDk4Ou/fEp8U7cegFbYkmUpRMkec0eVWFdc50GjLNwjplA5aKWhJzRHpCwYWrqAS+r9fLuawSDNMgy5W3tysUawV1igIn3CYKq5q+6UQJ1DOnK2kLWhMy/uVymj3lbXlKdqMJIMSyWA7eZi1aCHZBzyWV+6kYyl7oaRJBQYIxI3ncXPB1MFuCQYvbdmf9Zz81IUFA2CO/ILmcyi3iGcIvTwvBuyJh87btTr6J1sALqCRh5UW0VMHC1bTh4Vqh3dSBa165k5qE1WMcMSy2EBb3bSNNTVG9KPH7yApiOD72AZqS6TFaDpLRux4wem7KPz+5CVOI52nSx0gfgYSbSNTGv06rrNx1oNkdc0x9SpKBFLFrItzGidHYibWbNZKYemEsH0PIeONiTarPGszt/yhmPBdh2blGf
+ FkkqplBa
+ +sEURf+cfdhQCMVpXnyAy2lrWAQqwGPKxqmdI5gKURIPCpFAPuVi1wCsA2usm8UG1DVLZymJqNZwln6ZVgary6/+UdlcqJYWArjnldZzQYzU+akTsH5Vbn/dflu/047Pg3+9WDi/ZpAowliNA/7wiuOEFbwCY+VZlZzxK6H369jSeqWIEVNHW1mBr9W8dX1NniIeMG9Gd/Ak+b6Y+oOoeeVW5Phw7+vHAwOhri6+xU1STKKGB11zS+JXnNee5GGMWAd1P9lNQuT/Zqh+RpiQ75I6HeMIl9XeOCHkrfLJiBpy/F5+mLTswp9SYa7/4kCNJ9sa6BwhoGoXvs6btCeCORukCa0Srnjn6xbZ7XVpmnZ+Br1S7OCLcdit+G4yL8w/GNlqIFgSBml6IwRKBitriYvbuGa+Lq50g4azqi566F8f9jAskIAzO2Uz9EZTExSO4oT4RJgEJw3DVqJUzac+P9exbiuHo57bM6uSb63vz/CoKyU82aeieKn2wRUjTGmWQZdfz7v1JyFBijlSNR7cQNnUW4j2pROrhSDv55FTAXp6aFCtOQJVL54KB4mpOHrA/MNLuC6iHZwKyQfWyPXJeAO0jN4VIeBoALFN+1tx+UZyA2fQliop0Vsev7IVPUgZtxUxfk7d49shpcJiDt494ZbFXsvZ7i9N0+bwUNTABP1ClS2vZqpJch2cvgVqLa4s/eW54YHjYuq1J1i+wTL7t4KAjmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,35 +115,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
-hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. If
-copy_user_large_folio() subsequently fails, folio_put() restores the global
-hugetlb pool count through free_huge_folio(), but the per-VMA reservation
-map entry is left in an inconsistent state.
+Now that we have vma_start_write_killable() we can replace most of the
+vma_start_write() calls with it, improving reaction time to the kill
+signal.
 
-Add the missing restore_reserve_on_error() call before folio_put(), matching
-the first-attempt error path which already handles this correctly.
+There are several places which are left untouched by this patchset:
 
-Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/hugetlb.c | 1 +
- 1 file changed, 1 insertion(+)
+1. free_pgtables() because function should free page tables even if a
+fatal signal is pending.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 88009cd2a846..d6ea11113f1d 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6295,6 +6295,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 		folio_put(*foliop);
- 		*foliop = NULL;
- 		if (ret) {
-+			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
- 			folio_put(folio);
- 			goto out;
- 		}
+2. userfaultd code, where some paths calling vma_start_write() can
+handle EINTR and some can't without a deeper code refactoring.
+
+3. mpol_rebind_mm() which is used by cpusset controller for migrations
+and operates on a remote mm. Incomplete operations here would result
+in an inconsistent cgroup state.
+
+4. vm_flags_{set|mod|clear} require refactoring that involves moving
+vma_start_write() out of these functions and replacing it with
+vma_assert_write_locked(), then callers of these functions should
+lock the vma themselves using vma_start_write_killable() whenever
+possible.
+
+A cleanup patch is added in the beginning to make later changes more
+readable. The second patch contains most of the changes. The third patch
+is a small error handling fixup. The last patch contains the changes
+associated with process_vma_walk_lock() error handling.
+
+Changes since v3 [1]:
+- rebased over mm-unstable
+- added Reviewed-by, per Liam R. Howlett and Lorenzo Stoakes
+- moved locking before vma_iter_prealloc in vma_shrink and in vma_link,
+per Liam R. Howlett
+- added a separate jump label for vma lock failure case in do_brk_flags(),
+per Liam R. Howlett
+- fixed cpusset -> cpuset, per Lorenzo Stoakes
+- added comments explaining vma_start_write moves, per Lorenzo Stoakes
+- amended patch description with explanation why vma_start_write moves
+are safe, per Lorenzo Stoakes
+- added comments listing EINTR as a new possible error code,
+per Lorenzo Stoakes
+- moved comments in mlock_fixup() and apply_mlockall_flags() to more
+appropriate places, per Lorenzo Stoakes
+- replaced check for EINTR with fatal_signal_pending() with a comment why
+it is safe, per Lorenzo Stoakes
+- fixed error check in mprotect_fixup(), per Lorenzo Stoakes
+- moved vma_start_write_killable() before allocations inside __split_vma()
+with a clarifying comment
+- changed mmap_region() to set err for each failing case,
+per Lorenzo Stoakes
+- changed label names in expand_upwards() and expand_downwards(),
+per Lorenzo Stoakes
+- changed "if (err < 0)" to "if (err)" for consistency,
+per Lorenzo Stoakes
+- separated error checking fix for s390 into its own patch,
+per Lorenzo Stoakes
+- removed special handling for EINTR, per Lorenzo Stoakes
+- dropped changes trying to propagate EINTR during vma merge,
+per Lorenzo Stoakes
+
+[1] https://lore.kernel.org/all/20260226070609.3072570-1-surenb@google.com/
+
+Suren Baghdasaryan (4):
+  mm/vma: cleanup error handling path in vma_expand()
+  mm: replace vma_start_write() with vma_start_write_killable()
+  KVM: s390: avoid kvm_s390_handle_pv() error overwrite
+  mm: use vma_start_write_killable() in process_vma_walk_lock()
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
+ arch/s390/kvm/kvm-s390.c           |   2 +
+ fs/proc/task_mmu.c                 |   5 +-
+ mm/khugepaged.c                    |   5 +-
+ mm/madvise.c                       |   4 +-
+ mm/memory.c                        |   2 +
+ mm/mempolicy.c                     |  13 ++-
+ mm/mlock.c                         |  28 ++++--
+ mm/mprotect.c                      |   5 +-
+ mm/mremap.c                        |   4 +-
+ mm/pagewalk.c                      |  20 +++--
+ mm/vma.c                           | 133 +++++++++++++++++++++--------
+ mm/vma_exec.c                      |   6 +-
+ 13 files changed, 173 insertions(+), 59 deletions(-)
+
+
+base-commit: 8c65073d94c8b7cc3170de31af38edc9f5d96f0e
 -- 
-2.53.0
+2.53.0.1018.g2bb0e51243-goog
 
 
