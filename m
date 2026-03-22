@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA5C9FC72AA
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 05:43:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6ABDFC72AD
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 05:43:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 088726B008A; Sun, 22 Mar 2026 01:43:21 -0400 (EDT)
+	id 5409B6B0093; Sun, 22 Mar 2026 01:43:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0118D6B008C; Sun, 22 Mar 2026 01:43:20 -0400 (EDT)
+	id 4A5EE6B0095; Sun, 22 Mar 2026 01:43:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCD8C6B0092; Sun, 22 Mar 2026 01:43:20 -0400 (EDT)
+	id 25C7D6B0096; Sun, 22 Mar 2026 01:43:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C42C76B008A
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 01:43:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CB3A1B8891
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 05:43:20 +0000 (UTC)
-X-FDA: 84572606160.23.7B34C51
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 14E366B0093
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 01:43:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ABB468C32F
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 05:43:24 +0000 (UTC)
+X-FDA: 84572606328.12.8919D5F
 Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 86BA81C000F
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 05:43:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=CwFuJY5J;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 3dYG_aQYKCMo8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3dYG_aQYKCMo8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com
+	by imf15.hostedemail.com (Postfix) with ESMTP id DEEB0A0006
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 05:43:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=roRxo4BK;
+	spf=pass (imf15.hostedemail.com: domain of 3eYG_aQYKCM4CEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3eYG_aQYKCM4CEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774158198;
+	s=arc-20220608; t=1774158203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d5b6oMhN2dhkfmGBpy5mRDDv5v06S/XLpgPev0I+15w=;
-	b=kPAb4227l/JQvx2eP84Wuxn6SccnbSmRzbz4Q7Galv8uKzOJucb+nn/TO4F/R/KpysZbej
-	WPrwR0xY1K9gy7Q1Ja1kEX4cNGZ/s51IEEEYlzrtFugNR7Eeedn1wKqHOVwvt1YaN2Nqu/
-	S7fTBORuO3DP1/4krdZxwFcdJg+6sXQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=CwFuJY5J;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 3dYG_aQYKCMo8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3dYG_aQYKCMo8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774158198; a=rsa-sha256;
+	bh=pyZbVSMoPQsW5Fww5l9TjItBhtVQ4rSW6pB2FXRdwC8=;
+	b=vrhkEsJfC0qz/1AcJjPLTMFAMyY5RMgp9kXT/ng79huSLy3h4+U6ez61VhkNv8tKJYHmYG
+	pspIlihH3Az1NfJqeGDx8Dabue96IOjTM87I3u80cTlE+XTKgkVMxJU4cdYzkZdWq1sg/3
+	YXg97jYblo/qXtHnaIfnpuqqFy5JNak=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774158203; a=rsa-sha256;
 	cv=none;
-	b=iJKFlIEENEKvI6kamKb5xLZRuONQ7zPd2BAqYcIMolMdlMgb/OS2GcL3beivm9FaswgvvR
-	oxOXa9dg5Rf4LfeAvFbO9tYXvtHde+0Q6etezEGCJKBvKR7XEN6Oi7Djsqi73ZbjVd1rH2
-	IAMrNWuGz8W8QJeIUKGZCuEVn7aEcAI=
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-128ba70cc99so2277555c88.0
-        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 22:43:18 -0700 (PDT)
+	b=Q3awTT8d9Wstmm33jJR+ga5BA1Tf4XAdZfdfgbpJ5Vf6Oq8JkMGEXWS1MCWw1IUjfZlXUr
+	ylKC/BKPSuoytaE3GwJWQNR1XfrvcjFAZf9CrOtM7WdEc+aXiPapv0iHLoZuLRBj4swzqL
+	8+bU+aLBOdBG8MUAg6zCVRPq/i6u74Y=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=roRxo4BK;
+	spf=pass (imf15.hostedemail.com: domain of 3eYG_aQYKCM4CEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3eYG_aQYKCM4CEBy7v08805y.w86527EH-664Fuw4.8B0@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-1270dcd11c1so2891467c88.0
+        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 22:43:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774158197; x=1774762997; darn=kvack.org;
+        d=google.com; s=20251104; t=1774158202; x=1774763002; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d5b6oMhN2dhkfmGBpy5mRDDv5v06S/XLpgPev0I+15w=;
-        b=CwFuJY5JtNAKAeAIm+M+M6uyZk7k3dNLRp1xUKu3x98dbz4PHeWHFTWrlAJgHentNM
-         B2ZQZpua/w41l4NFiZy6sSM/SJgKommXzXip+qzjizbRtlzV+KicrX63osDt8btoylF/
-         Y+t+mA9hIiNMJF5hHDiVfGFYNK97H3nbgcqnDmIOasL/ptJsUghKScL5Dw7Ce/JkydYB
-         NT2J/ylCeUK5m93jO2zrPDUTVMt1GWpIquYbIpwSQtv7u3pSnjnL2ea4Sq4c0HUIuoXo
-         hf2CnPdZh2BTGwO8mUPKLew7ZZplBusbsiLQm6tIa47mlWpqaYCAmAtaAsvs/TI/zNtt
-         c9cg==
+        bh=pyZbVSMoPQsW5Fww5l9TjItBhtVQ4rSW6pB2FXRdwC8=;
+        b=roRxo4BKnCpNx//9IAMQln3Y9lV3w+ijDfdoudhBlMhZ6UqdF83KZug524NrS2vCqL
+         TnqHagwQZ5sCtj3cuQAeLLkrfvbJ3PbulMGj03nrnOmSS9KN3ulO2zDZEdTRl600f//f
+         KY7dxSjam9YBpdTJEO4BcXN/W3DR9MCNlZgSUBE2+YcMfMu4j8K+4AeDDEm+y41RHyMh
+         Hf8B3PV+i3xcwAUnA2Wtei8AGAU5YPTQ5TO7sjEoee1QmVFMhp8Hnqilj30Ip7U5Nywl
+         dx/UL4fmTNvYYmAelmI32zCMsHCSZRQ+kxFCAAUBLRR2UoQJs35Nm/8eTq3nHmW0d6tq
+         j3jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774158197; x=1774762997;
+        d=1e100.net; s=20251104; t=1774158202; x=1774763002;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d5b6oMhN2dhkfmGBpy5mRDDv5v06S/XLpgPev0I+15w=;
-        b=P7g5p7Nz33BsL+n7XoogsLMtnn5/ht0uN6WyRZojqmWgPN7xjXznmpGxbLb4G5heb/
-         YWe6qsHuQAY28tFJt+jEsu0kH+CMox0+FiZHbMgNRF1STnDNI+tGpknIBHfAiwQ5b5zT
-         6Hi5WKaYgpdDNDeor7MUN9uQoiik8qxPWoLb39ImUc+bRmkzj/ld1tSxpY7ZlJFkYDx3
-         7SY/efQhnK//f0WpCqM3ACZc+7zCh2xMthjBoU6CFTsriLGE/J+i6qp1eXFxZdov3DIY
-         rsbPG+D/VRSvIgR49O+kQbCnJ0+RqY/GCVX3TW8q/kRkf7R1GivbbIA5jYa5UZswSpwQ
-         eUuA==
-X-Forwarded-Encrypted: i=1; AJvYcCXEIXx4ubz4wIbNZLJKIxPonMEbT0nZptil9cTU7dUbJCgDtLJzXIFDAhEfejoi59GJ0OeyKROxAA==@kvack.org
-X-Gm-Message-State: AOJu0YyQsY2m1EMM36vF/u6xJGT8pu2jqTPcR0UcqwJ7umXUT+RWxUSi
-	w5VQMQaVfx2p9edr9DL9kl/ETG3FqzkkAES6/m28yITPitpvQP3g76ckyAtmEJI/1VyUE7swnh5
-	HTQPMZQ==
-X-Received: from dlbts5-n2.prod.google.com ([2002:a05:7022:b045:20b0:12a:7c27:8e88])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:2591:b0:127:5c54:a124
- with SMTP id a92af1059eb24-12a726db50fmr3890614c88.31.1774158197165; Sat, 21
- Mar 2026 22:43:17 -0700 (PDT)
-Date: Sat, 21 Mar 2026 22:43:06 -0700
+        bh=pyZbVSMoPQsW5Fww5l9TjItBhtVQ4rSW6pB2FXRdwC8=;
+        b=ET6xF/2O3pGuhVGqgc11+YOwXDuFT1EVOJpyxXV02wZmRngmwlu4kqG4ldvNhHntNn
+         hzv/GkJmjcbH3tcHM8MKwW4DtwH4Ft0Mgsq/P3MGaHhKno/xdBqsAdZBk1ddGyisHNvc
+         k5ngijuWdmmsOYo7bCannGyyCfsijGnZMHYsY+8gIcL+uFp/0GOZHSNwqijsKSgLBdL5
+         Dp9SdBP6dMEPFKLmNOxHlmPtZjfTKpm2wH2laRtSX/RkoGGiJOdODSb/RxD60PeIeb/9
+         UCPzhwpSUJM95WEjGZQC0KP8Lbr69dOVv6U7m1JHJt0yDHqCf+8mvBrAPF5Wn48YjAyX
+         YfZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWcpYD1G4kvXdIBtMUnitk02XExnLL1z37/zMYq72NLdLe0WNobCiVgOGDV6X4f6tYd5FZIEkkLhA==@kvack.org
+X-Gm-Message-State: AOJu0YzueWkqCYTrhmiY6BVhLpgFxpIqlUSERMUJWrmwhIUfA84WzF8V
+	IG4I9RH9wZbsrjWp6WG6hhsjOfX4ki6Jr+/Tqn/mX7jAYP4SeHS+TW2ZPUiOlFpa6XIhwmZ+f7c
+	hlbGS+w==
+X-Received: from dyx25.prod.google.com ([2002:a05:693c:8219:b0:2c0:c743:7f67])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:220f:b0:119:e56b:98b9
+ with SMTP id a92af1059eb24-12a726bb993mr3455319c88.32.1774158201439; Sat, 21
+ Mar 2026 22:43:21 -0700 (PDT)
+Date: Sat, 21 Mar 2026 22:43:08 -0700
 In-Reply-To: <20260322054309.898214-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20260322054309.898214-1-surenb@google.com>
 X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <20260322054309.898214-3-surenb@google.com>
-Subject: [PATCH v4 2/4] mm: replace vma_start_write() with vma_start_write_killable()
+Message-ID: <20260322054309.898214-5-surenb@google.com>
+Subject: [PATCH v4 4/4] mm: use vma_start_write_killable() in process_vma_walk_lock()
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
@@ -101,17 +101,16 @@ Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com,
 	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
 	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
 	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 86BA81C000F
-X-Stat-Signature: awpws4f16dnu7psg9guepc3a4q9yxzrw
 X-Rspam-User: 
-X-HE-Tag: 1774158198-830805
-X-HE-Meta: U2FsdGVkX18VYZ0Rg9Vq6gzTV9vg63gnH4kQAsEOM+gouMwnMCbTEbm+TC9KojbdjxOC3ARbT8QFVn5eUH1qzeuPBCb6Ig892g/V3CObAsfEbi4Zft9JSoE39ZDBBSL82I31oxA4WTn44K1/t4XZBAo75LOY551zj7Vnrak/O3gvqGPV5haoUy6SdyjwStzWVKkVuN57XRTUDsOjOJPfcV7PRB27Y8qsSbFKIqdrYP2rKxUmJ/jcLlwzP01SADvIqncgYmPKLA+GI7pIxqeqQ+Mk2tCYOTwfcRrwMRQHAmL79GtAmEDbwHs60PGyYpfjRFLuh1LVxctt30RgqxPxI8yAZOKTomA6LvDr8931G5aLq9HOB0jQMmQIT3OcvAcUou2YTxGN8SOrtPpZNMr8v8IOOWv2OgFPhNni8sYmszWezs4Ph8d97pLa5FOEjC1efHS4XHZeEqQbkaZluzXMHLddKzocSVtb4FuJeY5eWkEJt7b8O4Oj0vir19ok5ZHic/JRAlhv9nqxLvbErr0mEur1eWWbtzzwbhOCN01m6OeBPEfMn8YK49plZbbOQgHZbtav1NMA0Tbo33pMccOqTEeQa106O/DITXPXYVaUcyc+/MiCoEOZFiln2txKtsqji5KoMzWQYOfZdur1VDj+7XSTNBEa/KbZi/2ZplkOgOOMipTwDj6QxKAKH/MqHV3tbNsUyBh4N3WHkVCVzbM0hviIrQBugDBquXvuiAZ2wJq/T9oAO4JbNZkQl/PXhyKreYw3KsbHWOJj1/E2kMGJ3TNjK63RDBDmKSb1FEe/7NY+4lcNCOIu6zdcIVFBXKwP/dSheO9wu7akvFvUgdnodJbVfJ6idt9gzaREFL5m4Bf5Uhsk1vta3wD23iVm7UCJmqfkASvAEPavZOOmAcUudNkSJnvH+bCjORIT2d+C1c57849nsvHK2A6StL7b3wfWDW+I9lTWBPpdTuwa4lM
- 3LiYl3uB
- p9fSFre2nDZZmH16E9Sret+kSmbqOXLdlRqk9oOkF/JvWEmpHcFvNYcQSS0ylnQTTn7TNzsid5/j0fYzz4B2PPP7jTVWXwknsMRw6ji5oXxXOREMMwzbzlwiZusKQGjTHVegBG8sk/cbnvJzOH2UeB2o+gRoi3+UXz8Zeu9vZLLa8QgK5VBIlP76Ehdhy7PcEjcPlNh8hRQVspwUlnAgYdQt3wjKQz7ZbD6gX6hon1wwTYUiU5bZLbXULsvvZoVios3xw1UhS8BsdIfUFxbaq1LBCDZ5BtUvL8Xb1LbpyPe8aPiRdczneKqFFO5mslB8aO4fSk+gxwIQCll5a7vAFSrls0/CepMmfxj7nD1KQIbLclVQSSoTeB1Qqk7SeL+BP9Mn7ioA88Q97I11PvztEjNwfFl4UF6kxt+s40Xk7znW+87gF2TJCTfYNhSVxOjfdLu41b4iTtBcyFIKuDpxenG3Ss65HIYCzEPIMN5zD4r99SegwWeonFUmskx0+g+2ck7wPWtzGv1aErrGV9YgaZ5yX0VFqZhIcPIrjweuC/9F9S1OvxwgnMDtVu2B0qZXAF5Bf6TZQxt2zb6EdzHbtvdAd8VsQkzppQwewkiJeh7wl4EQB8CxPD2RU2fQR47NlnluOpvNxiO7uHSWoseqlQi/kSaHxCJCLMPr7/ncC2BGA+6BFoFkBdR2ZFawQOpqGZl/zn9j3kOLi0GClQ+P4WWKqm6jl4O7nDVWCv3robVuPI5+Pom9egPMUjK0BccSdcqBYHfmgjrtrvnJR/jcmJUvB2wIdPABwh7oNxCoyR3t7QU2BXB8ljNJl1nGqUwUFJvAp
+X-Stat-Signature: w6gpiy5dh6f1i7ropnuwzm5z5qsozrag
+X-Rspamd-Queue-Id: DEEB0A0006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774158202-305315
+X-HE-Meta: U2FsdGVkX1/f7yYS4r/pa75LwwcGEpAh6HzXoqJqdeVDcN+9cQtrOz+PCyxp6wO8iuhq0QHIbpr3awpN/HaYCrsxwXZ3rQIo5bk7cLax+kCwI5GzzHY7hcwVckDTFcSt2KRc2Hy8Z9a5b4ZTiVAelNOItIb+XULPjWafanOBeAWPX1OSvi086KqPsuwt9RBrnDSN0wNT/nlCoS1Zh4Xczh1jO2ut+/j/U2yXyoDIB+l1HtpK4Zad7dNasq+jtPzOpi2dzV/9yLuChA+cT1xTI8CrJNqnges96zNovqoxLHoBSxhEgQrbH/SQKlbK0OsgYFhjovzyQt3Dv+JMrCopYFUVJE7Vl55B+Pb4KMJNv+aE4CZXsaxvXvF6gC5kNni1VeVKL9Ne0VeE/7N/MIIINVvnk65sG1VR5/L2iNs/5V53JHFxnS2FZ4kmJaUej2iB00f2N3TlzPS4p01ZKvrxtsPTxwdtQ2S4u9vSczUz5dfe/jhXg74rhPXnnu6QhOGvNHFb6qaL811X/jEIl/Zy71YS3Hd+UZXzb3Uqv8BIBMCEvy82tBIe/ckH66dhC0zyaSB7Ndz+Af6OvRouUK1/ZeKNjeFcAqVTyJAlAs4M8g9txNkT50/LE6YZUY1K0g9hqYY1DIecVaoxXVSid6WCtBIyUX/AEniWEb9laiTzRxVSimErFLVOGCIJI61pSgji1H5lviXdC7o8vhGvbOqr62v++fxwTuOS0il0y0+QD8lY2O4wLeZkV2PhUufML6b/547OSgQ/+6VVVNTixZ6YBwJTT6pbNXBoWppbN5VasP5hiKHKNgANBGM55SEVK+faNrmAzePxGLI+o0ADJGZ0oZDRKg4Kv1qsykicKTXOHJAueocIthmQW3OVKpDGUm5ApRNvwM7ODs6GIbhR0gt6+lcyEOJJ+JTdBqjgsWuzbngJNAdz54RuNsYZ+0yWXz9/HUujefDYYfUiNdF7i/d
+ bzC1WQC4
+ yO+4t+/RcYTMYUIij8S10PGrEVR/WFSc2AViqsf2lElYi55FkiIFJ9fS58f6laWE1ioWjKGRw/Dsif/7RdOgZew3Aad1HKH38ZlqwU66cSwwTqtJN6gwiU/46ob4vyS9eRik9VC9FxbTorNT7x+3trR0j2AfUAXlyMyvtobMvuj0BwMGzqY6xZ+wHEdwc8WN8bJbDBnuUdH1TrjzHw/cGS1btu2XPmt4Oaj96ugbwuffXUQ466FapPCxGqOZrNetNjgYdDlICFkEllJGfjP114h7reGxAOi1gzMd1VxRcWI2vUBatzf4dcpPadaSMMvx9QpS+vrOMdZ6y9Jkp6aZjcdfieR0CKoqlwW0oTuHuTmfWO5WpelvL+XrlTtn8ZJT4RdUkDfZ+WQrB0+s2L0jPNweBpC6CEfnRMcvGiwnH05dh4siXan39aod2bsdmZ+a28DyxTKhJSYAKFTHSeRDCZDQrAEhhwRXVRaE1t384US6UtEoQz1iSO8j4h/slBNvx+SDeTE84F/mhJ2dR9sA1cIbdZTYAbZn1BAZicZ4RcQzy4XzNSkLKOmhpI86YZzfjXCAifjpS1A9XuXfEVlX835aUcnyXJFUAW10D9OZERX42GJIzmj2pG4grUTjt64Ts1W/7r4U2k45/LmPHJsb5jUUXCp2XosoxZ3rkpp2SnW5paIaXbefWiVH33R1FOCLuPdckCoxTe+FKGPzKpruQHw9XFb7v8Q64zFPcPqj2mpy9ARIPPcbx5RI+NQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,606 +118,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that we have vma_start_write_killable() we can replace most of the
-vma_start_write() calls with it, improving reaction time to the kill
-signal.
+Replace vma_start_write() with vma_start_write_killable() when
+process_vma_walk_lock() is used with PGWALK_WRLOCK option.
+Adjust its direct and indirect users to check for a possible error
+and handle it. Ensure users handle EINTR correctly and do not ignore
+it.
 
-There are several places which are left untouched by this patch:
-
-1. free_pgtables() because function should free page tables even if a
-fatal signal is pending.
-
-2. process_vma_walk_lock(), which requires changes in its callers and
-will be handled in the next patch.
-
-3. userfaultd code, where some paths calling vma_start_write() can
-handle EINTR and some can't without a deeper code refactoring.
-
-4. mpol_rebind_mm() which is used by cpuset controller for migrations
-and operates on a remote mm. Incomplete operations here would result
-in an inconsistent cgroup state.
-
-5. vm_flags_{set|mod|clear} require refactoring that involves moving
-vma_start_write() out of these functions and replacing it with
-vma_assert_write_locked(), then callers of these functions should
-lock the vma themselves using vma_start_write_killable() whenever
-possible.
-
-In a number of places we now lock VMA earlier than before to avoid
-doing work and undoing it later if a fatal signal is pending. This
-is safe because the moves are happening within sections where we
-already hold the mmap_write_lock, so the moves do not change the
-locking order relative to other kernel locks.
-
-Suggested-by: Matthew Wilcox <willy@infradead.org>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
- mm/khugepaged.c                    |   5 +-
- mm/madvise.c                       |   4 +-
- mm/memory.c                        |   2 +
- mm/mempolicy.c                     |  12 ++-
- mm/mlock.c                         |  28 +++++--
- mm/mprotect.c                      |   5 +-
- mm/mremap.c                        |   4 +-
- mm/vma.c                           | 117 +++++++++++++++++++++--------
- mm/vma_exec.c                      |   6 +-
- 10 files changed, 142 insertions(+), 46 deletions(-)
+ fs/proc/task_mmu.c |  5 ++++-
+ mm/mempolicy.c     |  1 +
+ mm/pagewalk.c      | 20 ++++++++++++++------
+ 3 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 5fbb95d90e99..0a28b48a46b8 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
- 			ret = H_STATE;
- 			break;
- 		}
--		vma_start_write(vma);
-+		if (vma_start_write_killable(vma)) {
-+			ret = H_STATE;
-+			break;
-+		}
- 		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
- 		vm_flags = vma->vm_flags;
- 		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 4b0e59c7c0e6..e2f263076084 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1159,7 +1159,10 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
- 	if (result != SCAN_SUCCEED)
- 		goto out_up_write;
- 	/* check if the pmd is still valid */
--	vma_start_write(vma);
-+	if (vma_start_write_killable(vma)) {
-+		result = SCAN_FAIL;
-+		goto out_up_write;
-+	}
- 	result = check_pmd_still_valid(mm, address, pmd);
- 	if (result != SCAN_SUCCEED)
- 		goto out_up_write;
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 69708e953cf5..feaa16b0e1dc 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -175,7 +175,9 @@ static int madvise_update_vma(vm_flags_t new_flags,
- 	madv_behavior->vma = vma;
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index e091931d7ca1..2fe3d11aad03 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1797,6 +1797,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+ 		struct clear_refs_private cp = {
+ 			.type = type,
+ 		};
++		int err;
  
- 	/* vm_flags is protected by the mmap_lock held in write mode. */
--	vma_start_write(vma);
-+	if (vma_start_write_killable(vma))
-+		return -EINTR;
-+
- 	vma->flags = new_vma_flags;
- 	if (set_new_anon_name)
- 		return replace_anon_vma_name(vma, anon_name);
-diff --git a/mm/memory.c b/mm/memory.c
-index 68cc592ff0ba..b930459e32ec 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -366,6 +366,8 @@ void free_pgd_range(struct mmu_gather *tlb,
-  * page tables that should be removed.  This can differ from the vma mappings on
-  * some archs that may have mappings that need to be removed outside the vmas.
-  * Note that the prev->vm_end and next->vm_start are often used.
-+ * We don't use vma_start_write_killable() because page tables should be freed
-+ * even if the task is being killed.
-  *
-  * The vma_end differs from the pg_end when a dup_mmap() failed and the tree has
-  * unrelated data to the mm_struct being torn down.
+ 		if (mmap_write_lock_killable(mm)) {
+ 			count = -EINTR;
+@@ -1824,7 +1825,9 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+ 						0, mm, 0, -1UL);
+ 			mmu_notifier_invalidate_range_start(&range);
+ 		}
+-		walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
++		err = walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
++		if (err)
++			count = err;
+ 		if (type == CLEAR_REFS_SOFT_DIRTY) {
+ 			mmu_notifier_invalidate_range_end(&range);
+ 			flush_tlb_mm(mm);
 diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index e5528c35bbb8..929e843543cf 100644
+index 929e843543cf..bb5b0e83ce0f 100644
 --- a/mm/mempolicy.c
 +++ b/mm/mempolicy.c
-@@ -1784,7 +1784,8 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
- 		return -EINVAL;
- 	if (end == start)
- 		return 0;
--	mmap_write_lock(mm);
-+	if (mmap_write_lock_killable(mm))
-+		return -EINTR;
- 	prev = vma_prev(&vmi);
- 	for_each_vma_range(vmi, vma, end) {
- 		/*
-@@ -1801,13 +1802,20 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
- 			err = -EOPNOTSUPP;
- 			break;
- 		}
-+		/*
-+		 * Lock the VMA early to avoid extra work if fatal signal
-+		 * is pending.
-+		 */
-+		if (vma_start_write_killable(vma)) {
-+			err = -EINTR;
-+			break;
-+		}
- 		new = mpol_dup(old);
- 		if (IS_ERR(new)) {
- 			err = PTR_ERR(new);
- 			break;
- 		}
- 
--		vma_start_write(vma);
- 		new->home_node = home_node;
- 		err = mbind_range(&vmi, vma, &prev, start, end, new);
- 		mpol_put(new);
-diff --git a/mm/mlock.c b/mm/mlock.c
-index 8c227fefa2df..efbb9c783f25 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -419,8 +419,10 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
-  *
-  * Called for mlock(), mlock2() and mlockall(), to set @vma VM_LOCKED;
-  * called for munlock() and munlockall(), to clear VM_LOCKED from @vma.
-+ *
-+ * Return: 0 on success, -EINTR if fatal signal is pending.
+@@ -969,6 +969,7 @@ static const struct mm_walk_ops queue_pages_lock_vma_walk_ops = {
+  *      (a hugetlbfs page or a transparent huge page being counted as 1).
+  * -EIO - a misplaced page found, when MPOL_MF_STRICT specified without MOVEs.
+  * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK unspecified.
++ * -EINTR - walk got terminated due to pending fatal signal.
   */
--static void mlock_vma_pages_range(struct vm_area_struct *vma,
-+static int mlock_vma_pages_range(struct vm_area_struct *vma,
- 	unsigned long start, unsigned long end,
- 	vma_flags_t *new_vma_flags)
- {
-@@ -442,7 +444,9 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
- 	 */
- 	if (vma_flags_test(new_vma_flags, VMA_LOCKED_BIT))
- 		vma_flags_set(new_vma_flags, VMA_IO_BIT);
--	vma_start_write(vma);
-+	if (vma_start_write_killable(vma))
-+		return -EINTR;
-+
- 	vma_flags_reset_once(vma, new_vma_flags);
+ static long
+ queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index eda74273c8ec..a42cd6a6d812 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -438,14 +438,13 @@ static inline void process_mm_walk_lock(struct mm_struct *mm,
+ 		mmap_assert_write_locked(mm);
+ }
  
- 	lru_add_drain();
-@@ -453,6 +457,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
- 		vma_flags_clear(new_vma_flags, VMA_IO_BIT);
- 		vma_flags_reset_once(vma, new_vma_flags);
+-static inline void process_vma_walk_lock(struct vm_area_struct *vma,
++static inline int process_vma_walk_lock(struct vm_area_struct *vma,
+ 					 enum page_walk_lock walk_lock)
+ {
+ #ifdef CONFIG_PER_VMA_LOCK
+ 	switch (walk_lock) {
+ 	case PGWALK_WRLOCK:
+-		vma_start_write(vma);
+-		break;
++		return vma_start_write_killable(vma);
+ 	case PGWALK_WRLOCK_VERIFY:
+ 		vma_assert_write_locked(vma);
+ 		break;
+@@ -457,6 +456,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
+ 		break;
  	}
+ #endif
 +	return 0;
  }
  
  /*
-@@ -506,11 +511,13 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	 */
- 	if (vma_flags_test(&new_vma_flags, VMA_LOCKED_BIT) &&
- 	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT)) {
-+		ret = vma_start_write_killable(vma);
-+		if (ret)
-+			goto out;
- 		/* No work to do, and mlocking twice would be wrong */
--		vma_start_write(vma);
- 		vma->flags = new_vma_flags;
- 	} else {
--		mlock_vma_pages_range(vma, start, end, &new_vma_flags);
-+		ret = mlock_vma_pages_range(vma, start, end, &new_vma_flags);
- 	}
- out:
- 	*prev = vma;
-@@ -739,9 +746,18 @@ static int apply_mlockall_flags(int flags)
- 
- 		error = mlock_fixup(&vmi, vma, &prev, vma->vm_start, vma->vm_end,
- 				    newflags);
--		/* Ignore errors, but prev needs fixing up. */
--		if (error)
-+		if (error) {
-+			/*
-+			 * If we failed due to a pending fatal signal, return
-+			 * now. If we locked the vma before signal arrived, it
-+			 * will be unlocked when we drop mmap_write_lock.
-+			 */
-+			if (fatal_signal_pending(current))
-+				return -EINTR;
-+
-+			/* Ignore errors, but prev needs fixing up. */
- 			prev = vma;
-+		}
- 		cond_resched();
- 	}
- out:
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 110d47a36d4b..ae6ed882b600 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -768,7 +768,10 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
- 	 * vm_flags and vm_page_prot are protected by the mmap_lock
- 	 * held in write mode.
- 	 */
--	vma_start_write(vma);
-+	error = vma_start_write_killable(vma);
-+	if (error)
-+		goto fail;
-+
- 	vma_flags_reset_once(vma, &new_vma_flags);
- 	if (vma_wants_manual_pte_write_upgrade(vma))
- 		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e9c8b1d05832..dec39ec314f9 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1356,7 +1356,9 @@ static unsigned long move_vma(struct vma_remap_struct *vrm)
- 		return -ENOMEM;
- 
- 	/* We don't want racing faults. */
--	vma_start_write(vrm->vma);
-+	err = vma_start_write_killable(vrm->vma);
-+	if (err)
-+		return err;
- 
- 	/* Perform copy step. */
- 	err = copy_vma_and_data(vrm, &new_vma);
-diff --git a/mm/vma.c b/mm/vma.c
-index ba78ab1f397a..7930a4270eb9 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -524,6 +524,17 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		new->vm_pgoff += ((addr - vma->vm_start) >> PAGE_SHIFT);
- 	}
- 
-+	/*
-+	 * Lock VMAs before cloning to avoid extra work if fatal signal
-+	 * is pending.
-+	 */
-+	err = vma_start_write_killable(vma);
-+	if (err)
-+		goto out_free_vma;
-+	err = vma_start_write_killable(new);
-+	if (err)
-+		goto out_free_vma;
-+
- 	err = -ENOMEM;
- 	vma_iter_config(vmi, new->vm_start, new->vm_end);
- 	if (vma_iter_prealloc(vmi, new))
-@@ -543,9 +554,6 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	if (new->vm_ops && new->vm_ops->open)
- 		new->vm_ops->open(new);
- 
--	vma_start_write(vma);
--	vma_start_write(new);
--
- 	init_vma_prep(&vp, vma);
- 	vp.insert = new;
- 	vma_prepare(&vp);
-@@ -900,12 +908,16 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 	}
- 
- 	/* No matter what happens, we will be adjusting middle. */
--	vma_start_write(middle);
-+	err = vma_start_write_killable(middle);
-+	if (err)
-+		goto abort;
- 
- 	if (merge_right) {
- 		vma_flags_t next_sticky;
- 
--		vma_start_write(next);
-+		err = vma_start_write_killable(next);
-+		if (err)
-+			goto abort;
- 		vmg->target = next;
- 		next_sticky = vma_flags_and_mask(&next->flags, VMA_STICKY_FLAGS);
- 		vma_flags_set_mask(&sticky_flags, next_sticky);
-@@ -914,7 +926,9 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 	if (merge_left) {
- 		vma_flags_t prev_sticky;
- 
--		vma_start_write(prev);
-+		err = vma_start_write_killable(prev);
-+		if (err)
-+			goto abort;
- 		vmg->target = prev;
- 
- 		prev_sticky = vma_flags_and_mask(&prev->flags, VMA_STICKY_FLAGS);
-@@ -1170,10 +1184,12 @@ int vma_expand(struct vma_merge_struct *vmg)
- 	vma_flags_t sticky_flags =
- 		vma_flags_and_mask(&vmg->vma_flags, VMA_STICKY_FLAGS);
- 	vma_flags_t target_sticky;
--	int err = 0;
+@@ -500,7 +500,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
+ 			if (ops->pte_hole)
+ 				err = ops->pte_hole(start, next, -1, &walk);
+ 		} else { /* inside vma */
+-			process_vma_walk_lock(vma, ops->walk_lock);
++			err = process_vma_walk_lock(vma, ops->walk_lock);
++			if (err)
++				break;
+ 			walk.vma = vma;
+ 			next = min(end, vma->vm_end);
+ 			vma = find_vma(mm, vma->vm_end);
+@@ -717,6 +719,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
+ 		.vma		= vma,
+ 		.private	= private,
+ 	};
 +	int err;
  
- 	mmap_assert_write_locked(vmg->mm);
--	vma_start_write(target);
-+	err = vma_start_write_killable(target);
+ 	if (start >= end || !walk.mm)
+ 		return -EINVAL;
+@@ -724,7 +727,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
+ 		return -EINVAL;
+ 
+ 	process_mm_walk_lock(walk.mm, ops->walk_lock);
+-	process_vma_walk_lock(vma, ops->walk_lock);
++	err = process_vma_walk_lock(vma, ops->walk_lock);
 +	if (err)
 +		return err;
- 
- 	target_sticky = vma_flags_and_mask(&target->flags, VMA_STICKY_FLAGS);
- 
-@@ -1201,6 +1217,13 @@ int vma_expand(struct vma_merge_struct *vmg)
- 	 * we don't need to account for vmg->give_up_on_mm here.
- 	 */
- 	if (remove_next) {
-+		/*
-+		 * Lock the VMA early to avoid extra work if fatal signal
-+		 * is pending.
-+		 */
-+		err = vma_start_write_killable(next);
-+		if (err)
-+			return err;
- 		err = dup_anon_vma(target, next, &anon_dup);
- 		if (err)
- 			return err;
-@@ -1214,7 +1237,6 @@ int vma_expand(struct vma_merge_struct *vmg)
- 	if (remove_next) {
- 		vma_flags_t next_sticky;
- 
--		vma_start_write(next);
- 		vmg->__remove_next = true;
- 
- 		next_sticky = vma_flags_and_mask(&next->flags, VMA_STICKY_FLAGS);
-@@ -1252,9 +1274,14 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	       unsigned long start, unsigned long end, pgoff_t pgoff)
- {
- 	struct vma_prepare vp;
-+	int err;
- 
- 	WARN_ON((vma->vm_start != start) && (vma->vm_end != end));
- 
-+	err = vma_start_write_killable(vma);
-+	if (err)
-+		return err;
-+
- 	if (vma->vm_start < start)
- 		vma_iter_config(vmi, vma->vm_start, start);
- 	else
-@@ -1263,8 +1290,6 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	if (vma_iter_prealloc(vmi, NULL))
- 		return -ENOMEM;
- 
--	vma_start_write(vma);
--
- 	init_vma_prep(&vp, vma);
- 	vma_prepare(&vp);
- 	vma_adjust_trans_huge(vma, start, end, NULL);
-@@ -1453,7 +1478,9 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
- 			if (error)
- 				goto end_split_failed;
- 		}
--		vma_start_write(next);
-+		error = vma_start_write_killable(next);
-+		if (error)
-+			goto munmap_gather_failed;
- 		mas_set(mas_detach, vms->vma_count++);
- 		error = mas_store_gfp(mas_detach, next, GFP_KERNEL);
- 		if (error)
-@@ -1848,12 +1875,16 @@ static void vma_link_file(struct vm_area_struct *vma, bool hold_rmap_lock)
- static int vma_link(struct mm_struct *mm, struct vm_area_struct *vma)
- {
- 	VMA_ITERATOR(vmi, mm, 0);
-+	int err;
-+
-+	err = vma_start_write_killable(vma);
-+	if (err)
-+		return err;
- 
- 	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
- 	if (vma_iter_prealloc(&vmi, vma))
- 		return -ENOMEM;
- 
--	vma_start_write(vma);
- 	vma_iter_store_new(&vmi, vma);
- 	vma_link_file(vma, /* hold_rmap_lock= */false);
- 	mm->map_count++;
-@@ -2239,9 +2270,8 @@ int mm_take_all_locks(struct mm_struct *mm)
- 	 * is reached.
- 	 */
- 	for_each_vma(vmi, vma) {
--		if (signal_pending(current))
-+		if (signal_pending(current) || vma_start_write_killable(vma))
- 			goto out_unlock;
--		vma_start_write(vma);
- 	}
- 
- 	vma_iter_init(&vmi, mm, 0);
-@@ -2540,8 +2570,8 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
- 	struct mmap_action *action)
- {
- 	struct vma_iterator *vmi = map->vmi;
--	int error = 0;
- 	struct vm_area_struct *vma;
-+	int error;
- 
- 	/*
- 	 * Determine the object being mapped and call the appropriate
-@@ -2552,6 +2582,14 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
- 	if (!vma)
- 		return -ENOMEM;
- 
-+	/*
-+	 * Lock the VMA early to avoid extra work if fatal signal
-+	 * is pending.
-+	 */
-+	error = vma_start_write_killable(vma);
-+	if (error)
-+		goto free_vma;
-+
- 	vma_iter_config(vmi, map->addr, map->end);
- 	vma_set_range(vma, map->addr, map->end, map->pgoff);
- 	vma->flags = map->vma_flags;
-@@ -2582,8 +2620,6 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
- 	WARN_ON_ONCE(!arch_validate_flags(map->vm_flags));
- #endif
- 
--	/* Lock the VMA since it is modified after insertion into VMA tree */
--	vma_start_write(vma);
- 	vma_iter_store_new(vmi, vma);
- 	map->mm->map_count++;
- 	vma_link_file(vma, action->hide_from_rmap_until_complete);
-@@ -2878,6 +2914,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		 unsigned long addr, unsigned long len, vma_flags_t vma_flags)
- {
- 	struct mm_struct *mm = current->mm;
-+	int err;
- 
- 	/*
- 	 * Check against address space limits by the changed size
-@@ -2910,24 +2947,33 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 
- 		if (vma_merge_new_range(&vmg))
- 			goto out;
--		else if (vmg_nomem(&vmg))
-+		if (vmg_nomem(&vmg)) {
-+			err = -ENOMEM;
- 			goto unacct_fail;
-+		}
- 	}
- 
- 	if (vma)
- 		vma_iter_next_range(vmi);
- 	/* create a vma struct for an anonymous mapping */
- 	vma = vm_area_alloc(mm);
--	if (!vma)
-+	if (!vma) {
-+		err = -ENOMEM;
- 		goto unacct_fail;
-+	}
- 
- 	vma_set_anonymous(vma);
- 	vma_set_range(vma, addr, addr + len, addr >> PAGE_SHIFT);
- 	vma->flags = vma_flags;
- 	vma->vm_page_prot = vm_get_page_prot(vma_flags_to_legacy(vma_flags));
--	vma_start_write(vma);
--	if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
-+	if (vma_start_write_killable(vma)) {
-+		err = -EINTR;
-+		goto vma_lock_fail;
-+	}
-+	if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL)) {
-+		err = -ENOMEM;
- 		goto mas_store_fail;
-+	}
- 
- 	mm->map_count++;
- 	validate_mm(mm);
-@@ -2942,10 +2988,11 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	return 0;
- 
- mas_store_fail:
-+vma_lock_fail:
- 	vm_area_free(vma);
- unacct_fail:
- 	vm_unacct_memory(len >> PAGE_SHIFT);
--	return -ENOMEM;
-+	return err;
+ 	return __walk_page_range(start, end, &walk);
  }
  
- /**
-@@ -3112,8 +3159,8 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
- 	struct mm_struct *mm = vma->vm_mm;
- 	struct vm_area_struct *next;
- 	unsigned long gap_addr;
--	int error = 0;
- 	VMA_ITERATOR(vmi, mm, vma->vm_start);
-+	int error;
- 
- 	if (!vma_test(vma, VMA_GROWSUP_BIT))
- 		return -EFAULT;
-@@ -3149,12 +3196,14 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
- 
- 	/* We must make sure the anon_vma is allocated. */
- 	if (unlikely(anon_vma_prepare(vma))) {
--		vma_iter_free(&vmi);
--		return -ENOMEM;
-+		error = -ENOMEM;
-+		goto vma_prep_fail;
- 	}
- 
- 	/* Lock the VMA before expanding to prevent concurrent page faults */
--	vma_start_write(vma);
-+	error = vma_start_write_killable(vma);
-+	if (error)
-+		goto vma_lock_fail;
- 	/* We update the anon VMA tree. */
- 	anon_vma_lock_write(vma->anon_vma);
- 
-@@ -3183,6 +3232,8 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
- 		}
- 	}
- 	anon_vma_unlock_write(vma->anon_vma);
-+vma_lock_fail:
-+vma_prep_fail:
- 	vma_iter_free(&vmi);
- 	validate_mm(mm);
- 	return error;
-@@ -3197,8 +3248,8 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 	struct vm_area_struct *prev;
--	int error = 0;
- 	VMA_ITERATOR(vmi, mm, vma->vm_start);
-+	int error;
- 
- 	if (!vma_test(vma, VMA_GROWSDOWN_BIT))
- 		return -EFAULT;
-@@ -3228,12 +3279,14 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
- 
- 	/* We must make sure the anon_vma is allocated. */
- 	if (unlikely(anon_vma_prepare(vma))) {
--		vma_iter_free(&vmi);
--		return -ENOMEM;
-+		error = -ENOMEM;
-+		goto vma_prep_fail;
- 	}
- 
- 	/* Lock the VMA before expanding to prevent concurrent page faults */
--	vma_start_write(vma);
-+	error = vma_start_write_killable(vma);
-+	if (error)
-+		goto vma_lock_fail;
- 	/* We update the anon VMA tree. */
- 	anon_vma_lock_write(vma->anon_vma);
- 
-@@ -3263,6 +3316,8 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
- 		}
- 	}
- 	anon_vma_unlock_write(vma->anon_vma);
-+vma_lock_fail:
-+vma_prep_fail:
- 	vma_iter_free(&vmi);
- 	validate_mm(mm);
- 	return error;
-diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-index 5cee8b7efa0f..8ddcc791d828 100644
---- a/mm/vma_exec.c
-+++ b/mm/vma_exec.c
-@@ -41,6 +41,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
- 	struct vm_area_struct *next;
- 	struct mmu_gather tlb;
- 	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
+@@ -747,6 +752,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
+ 		.vma		= vma,
+ 		.private	= private,
+ 	};
 +	int err;
  
- 	BUG_ON(new_start > new_end);
+ 	if (!walk.mm)
+ 		return -EINVAL;
+@@ -754,7 +760,9 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
+ 		return -EINVAL;
  
-@@ -56,8 +57,9 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
- 	 * cover the whole range: [new_start, old_end)
- 	 */
- 	vmg.target = vma;
--	if (vma_expand(&vmg))
--		return -ENOMEM;
-+	err = vma_expand(&vmg);
+ 	process_mm_walk_lock(walk.mm, ops->walk_lock);
+-	process_vma_walk_lock(vma, ops->walk_lock);
++	err = process_vma_walk_lock(vma, ops->walk_lock);
 +	if (err)
 +		return err;
+ 	return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
+ }
  
- 	/*
- 	 * move the page tables downwards, on failure we rely on
 -- 
 2.53.0.1018.g2bb0e51243-goog
 
