@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBC01094481
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 00:15:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 278FC109449D
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 00:35:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E4316B00B3; Sat, 21 Mar 2026 20:15:35 -0400 (EDT)
+	id 5224E6B00A3; Sat, 21 Mar 2026 20:35:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 294C36B00EE; Sat, 21 Mar 2026 20:15:35 -0400 (EDT)
+	id 4D3666B00B5; Sat, 21 Mar 2026 20:35:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AA716B0123; Sat, 21 Mar 2026 20:15:35 -0400 (EDT)
+	id 3E8DB6B00F4; Sat, 21 Mar 2026 20:35:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A61C6B00B3
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:15:35 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DE411A06A0
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 00:15:34 +0000 (UTC)
-X-FDA: 84571780188.27.4BB74E4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DE526B00A3
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:35:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B4BBE8C1FD
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 00:35:04 +0000 (UTC)
+X-FDA: 84571829328.03.547AB55
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EB5894000B
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 00:15:32 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yZnv0qhA;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0784A16000A
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 00:35:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dzSLKcIf;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774138533;
+	s=arc-20220608; t=1774139703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n1zhpMex85vNx68Js3KpERa8lbiz7mb36fC/JiCuUzo=;
-	b=mNadappxIOxLthVQ7QPGoFm7zDbGkoMxI54A3cHaEtuKxWlgmrNMqSjebMiIvSuBIEs98U
-	gR+abPVWR0QLMcv0Z5WN6c5hFFosiQbtkXiyWeDJFVqS5I1sGdVzMNj6A+Wy3yeo0l0YQn
-	7lwSdlxl1568bB5Hq93n418O8waaE70=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774138533; a=rsa-sha256;
+	bh=OLVd8aBKLHeRty0+f4yLvGtzGEh7Q0AeN1Se4cetUPE=;
+	b=PYLKyH2FurdxHP1MzQ264ZuSjbx2jfmd1mqWiKZ6zO6ihmV+0XhL9c3o7Jlt6YSREmEfdW
+	Y99zfHndgrNIqv823kdNcEnLshDAYe6uWuvc8wQsA4KlQUgJSZABBdsDb/KOPaHAAb1cjc
+	2lhWjfMPvbvfl/BYidni2nrwJ4+330s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774139703; a=rsa-sha256;
 	cv=none;
-	b=Ehsld3kZtKAKxxBxY38GTRjkioyhkjjvHF2ug+XsBg5dz6pUvqSTlU6L1yPZ3Tq+PRRV4N
-	UsIKFdt4hmrmJhiLBcv/rigy2K3BF29ABq6UBFq/Qnh0Y25jTpRqHHA5WBCEhfmaEv4mOW
-	ESpGvIjPRQTTkKNyAnmH+aBKSTvP29s=
+	b=0WZ2yrKuIukeEaEBU5HdP/axGLXzytqq3Kd5VgBIwMEEbW3PZd0XVlAaA4RbsqlVGoUoI2
+	abxRkwfuT0frqekUocEpNh7evxkdozX9YmtXCxEPM2t6CB+lp/3nDh5j7hYHTLF8u/+i2A
+	c7l3xU+fKAC+EKeVPPEhwpCPXIqNKQU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yZnv0qhA;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dzSLKcIf;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DF5D843F15;
-	Sun, 22 Mar 2026 00:15:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C62C19421;
-	Sun, 22 Mar 2026 00:15:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774138531;
-	bh=pEdS0IQl4Uked047J598Az3GWtgB2RBLZrA7ODfWTZ0=;
-	h=Date:From:To:Subject:In-Reply-To:References:From;
-	b=yZnv0qhA9JWNiLycYDxxiwKLtMJtFB5oY8QQisVNFBwu5kDEB4/h81ZRyvhdndBP2
-	 XQrDhVVgZO1UaQd0DigauQy4CXoCKOjRsEg8C3RgQ6aH9Gl6oZ/rEMfVuGmX3nGKU4
-	 om9fQDD1HrQnAUTtb4L7eC3TzvZBpIijgmSRWzFU=
-Date: Sat, 21 Mar 2026 17:15:30 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Roman Gushchin <roman.gushchin@linux.dev>, "Lorenzo Stoakes (Oracle)"
- <ljs@kernel.org>, David Hildenbrand <david@kernel.org>, Zi Yan
- <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
- <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/9] mm/huge_memory: refactor zap_huge_pmd()
-Message-Id: <20260321171530.8b3e8207f89d5a7384b9f01f@linux-foundation.org>
-In-Reply-To: <20260320203311.715ed75bcd84c18d24894324@linux-foundation.org>
-References: <cover.1773924928.git.ljs@kernel.org>
-	<20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
-	<87tsu9kgv3.fsf@linux.dev>
-	<20260320203311.715ed75bcd84c18d24894324@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D014441BF;
+	Sun, 22 Mar 2026 00:35:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD47CC19421;
+	Sun, 22 Mar 2026 00:35:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774139701;
+	bh=Wt/h4AN1e0QgCx7j7jEnWZz6uKMuHWliIpQ3bGwhTuM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dzSLKcIfyc/SrR+kVqO4Lun+8kTCE0KKvE3gmizGnjA0xvJb2HSNoygbYUeljY0vk
+	 ASWiT3mbHNpJtJznhjJAfDUe37meu3KnXynUv6N5vXRtO3XbXP1V6YGF34/er6aK1s
+	 uMV7dmcC0zYn47Y3bZ8wjmBF8EioBKQJFfoVtCtZrkz1b9bfQLMZtln2pCIACyTpPB
+	 WUmW9n6mBNbRWxPaN1PXSNROr62McwR/uAEevlOmws9Xt17Gwn5H39ZLc85CAsu+sg
+	 GC0cnjWplQKx+1MFFO0tjVA+QPJl3zODOjBcYYBVGawL3htOzPR8IYrlIkby7SzrP5
+	 AaSPEC7JhJbGg==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko) [PATCH 01/10] mm/damon/core: introduce damon_ctx->paused
+Date: Sat, 21 Mar 2026 17:34:58 -0700
+Message-ID: <20260322003459.86313-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260321202858.98091-1-sj@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0784A16000A
+X-Stat-Signature: a759i4in7pzzqkhm9e9rzahgn9oxtuxi
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EB5894000B
-X-Stat-Signature: cgpmo9y4ro1zbew85pz7z83q848uipz5
-X-HE-Tag: 1774138532-642847
-X-HE-Meta: U2FsdGVkX1+19er6MHwOyCdAeCNEQatn0KYqs6t80SzHJ+Xz8yqBid8DTYbhtWKLGc4VPCmyLljZikEzMYFqWtiluOFf1egxF8EiQbuf6cQX192+fCMW/MDUdXTHVcyaMDGJ0vNM22tA9RvdBRJLhrluycpoGM1gOFSr1rAGo2x9tVNIaWX0ABj1Y7E4MKhajo4tHCEJ2RZJFOYi2OpLmgsfbq/TRbS4n41EFeVwsQ+JhH8ptk2nSljcpin2yO2WET+KEjEj8xYJKxYt+jHLWNGaI6QMCWLklH5n5TAqqo/dojpKQ4MSPmeCqS6pKu6dptUWPCBu2tLkgh8c0yyIyxCCPU76+hiIOWLayqSXiWkmPlyjpEll3oKbLpk3tK7fJPlU6iM7FtAXw6KpTyJWGlympMHGwyGidhe6bFz2ovLi/Jb+bp4pMfI/BWmxR6GKoLypDNEuK2YfQxUZw+8beBVNJNxZyxmXfOrJWxzkzENC1m48ZR1tFkORgszzxOvDKvyWJrpNOn3CY3l/LYtD/iwDVbg2oleS2ideAxKlWtytxgpcWfhTJYyYGXF1FG6ztA8tbBiOOXBSOCp8mrWDlSXyTgssLWS+oe++rtWvzF+51Qi2+aTNq9q0B4rgOSUjvPGmmMOwFXm089gNfZimny/A+Fs7A4o3SSanStNGKRoQQpMuqyjEbHmDOHKBEs65YbjHXEg8qG1XGiip3Tqvbz+KAadOk0GUSM/erPZkY1GcKdR07ce86XcSi8daiGEQ1dAlMy+OsvppeJLasxd5zo38z9QZyEDs/Q7F9RzEr2Rn+T4uxLkWnaYZxg3H3vdT/1iIbAiWtGQFx2/8nrBqEGKPVXVKFRgFXwGKLfzV4zR+tZDVTsmAbJFVabHR12OoqeLGL638GdsC2d5yXyxs2oL3LOQizy7NL3DpaurYFyLszJsOn6tH18egsXwpy9jauffob4eqYUtVNv5WRK3
- uEKScmpp
- N4dYLegzl1OVy5xJEvpFgfa6RRr4+pOU2YUnVokQhZg3gQP0QmBTrLk+bKlc5mKywSY0iJGgBX0yfzcC6Z/UdW2knlzYLCyzrW7O4UIq/RJPKPlvnKAU6hT69tKQ5/S7bGv4iTwlvKP5EHKnnFInHI7C63OXpTiG2xb70vs4MxntpmtDxCeG6XxsW/Q4SARkBbLqMqzwKZUWNC++it/i3OqVdiN1v2JZWf1nKd535/JIV4tWuK5a8rsQgKyDHQNjG8FoX2jdHAEpJj+FXkdAPof4aptTGkrnFgSG3+RCuzANb6ZNtVpDhtptgpXfz+BpCxpRnYlWweEzHz1BbMd4WjMjbhMqRVLMZvHCP
+X-HE-Tag: 1774139702-44545
+X-HE-Meta: U2FsdGVkX197NG1EtnnTP4UtqWi/PmbBSp4Qa0OBbge7X8LUSPtYjeK1+FgrOpjPw1qV30qPJ3A7xGd5gDklsQzLiGJQZVgtOldLuIwDxJ5Eyg0y758mGYTx3Ww6uEiYsIUbIrk1Y/DggyYVVieC3aqW5fKyhRyDGx0mR+cqDXYD0/P+BHmZSF/06roEHgcTywdZQNQ2Ynz/y0GYrqMzD/Cm7bjQ9+4WcdVvBypjSUhJaBotV74JmNUs4bFOMAv9LTr6Gt8f2ccafY2/++v/p8JUOiyCE6Mv14JdTVXRqf20vLN8qGYblCchlCVQTro4SDyi5HW85DegXO6CYhbD42AsXDPvmTbjDX+zf5+yJn7+JdyUHBuS8MypcGc1jZ/8SCbFjTcnvihcT/usXxKefWEXGWUOwjLGgLMVseJoOnJf5QwaVSEKbiVnQneKaZWm5f9RxuP+X5G18WcCJRI22pOjhAR9c8TBX9n0tiMhFZMHj/z1z4rmJ4VOK+U/ua1lVMw2x4MJOfBndEXe0q5n+STX9eNHhIXmQTPnbaI4ZIdOAA00wUeT72QanRHqpmxo6AujgB/9MKhjVt4szaYs7R3COJ/WQIajL2NgyNTt9sLHLuMouC6JDzUCYXjQ370RTmziy39N7exeqMsmP7TzPx8OhqaGn/GldZzcNSflwE48HyQ7VdZ3iqS5EDJgwvjUj9zZQUwRCA0rOWb3QYCUu6Q1+BCpnPI5q+9nC3ZgYTCzB2VxDk7Olqg1mvOiZBXOrgWV2WOYzdZzueuZrIylfLTvesfctNJeYzstUdpttQjo2I4VRktbzTrAyQjTGS5glzTErnJM4cOG7KNR2EjGz9CyY6lIZ/COx6t/mYwfql8l0mESuobF8VrwGVha3tAFdL44E7O1UhW7VtGIs5g1BQxijvwZdk+wHHJsOP5vfXbo4PrQK7wbS3pqzevCU9eQM+KtH0Npq4XxQcWvJxY
+ C1blUUng
+ W5PjxXigIMwKuoSYzSvhXKk+FyYNXYp5TarcRnA2WmmcA2cXpLKTInpm9Dyb9ydCV6qJNDFUFMxTqjfdSc1YkyiFaDd8spKYVL3wYMYhNWrpc5nSkDxRdWViBs39jJvJ+Ha7kjjQOYEjJTC3QDkZWPV+Atnnx+oiPemglx512p4aaBXTG8j4oxPBFB1x3axfuNumXTaLdB+BfA77xSknrsP7MywkaDQJkZJGRoxSeM0B2qHXLvv1c0MMgLeP4BChpK16Pc3Qy85OFq7c2FWbpWQXS62PekuuVrUiHqyeniQ0/P56ZMffxBbVDeQichoeIXpO4qJxTrTINCtl5u92j6K5rs1/bK18d7QAIKcTabjYVwMBQnKdfeCb1tWT8DZ3hmlFYJaWn7FGdpNI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,21 +92,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 20:33:11 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Sat, 21 Mar 2026 13:28:57 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> A lot of patchsets are "failed to apply".  What is Sashiko trying to
-> apply MM patches to?  It would take some smarts to apply the v2
-> patchset when v1 is presently in mm.git?
+> TL; DR: I think this needs a few changes.  That can be a fixup (picked by
+> Andrew) or respin for v2.
 
-?
+We already have 436 patches in mm-unstable and 40 patches in mm-new [1].
+That's 476 patches in mm-new.  The total number was 392 five days ago, which
+already made Andrew concerned [2] a little bit.  I also agree the concern, so I
+will stop sedning non-RFC non-hotfix DAMON patches until v7.1-rc1 merge window.
 
-The way things are going at present, I'm just not going to apply a
-series which Sashiko "failed to apply".  And that's cool, I'll just
-wait for a version which Sashiko was able to apply.  And then not
-apply unless all Sashiko questions are resolved or convincingly refuted.
+That applies to this series, too.  That is, I will post the next spin of this
+series with RFC tag again, tomorrow.
 
-Question please: if Sashiko finds an "issue" in v3 and then v4 comes
-out with changelog words which justifies the questionable alteration, can
-Sashiko parse that changelog justification and think "OK, never mind"?
+[1] https://github.com/sjp38/mm_git_dashboard/blob/master/summary/summary.md
+[2] https://lore.kernel.org/20260316142636.0c29d431b1c8bf03e01c3630@linux-foundation.org/
 
+
+Thanks,
+SJ
+
+[...]
 
