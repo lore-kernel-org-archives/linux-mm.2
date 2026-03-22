@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4096FC72D0
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 17:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 639E2FC72CB
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 18:47:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2B86B0005; Sun, 22 Mar 2026 13:48:04 -0400 (EDT)
+	id 7E2AD6B0005; Sun, 22 Mar 2026 14:47:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D53546B0088; Sun, 22 Mar 2026 13:48:04 -0400 (EDT)
+	id 793966B0088; Sun, 22 Mar 2026 14:47:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6F076B0089; Sun, 22 Mar 2026 13:48:04 -0400 (EDT)
+	id 6A9886B0089; Sun, 22 Mar 2026 14:47:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B3F836B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:48:04 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 625151404A0
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:48:04 +0000 (UTC)
-X-FDA: 84574432488.08.74FBE6E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AD1DF180007
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:48:02 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CCFC6B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:47:11 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F3D6F13BCBD
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:47:10 +0000 (UTC)
+X-FDA: 84574581420.20.2B8E2D7
+Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F0EC6180007
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:47:08 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="u+Gc/NZd";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774201682;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=Fm9olenF;
+	spf=pass (imf06.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774205229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kNEjBuZzvS0W4oSHpuL8RVAynxJbgguo9xRwlJKFTps=;
-	b=10rQkzUVsZkk+YD8ztt5KbN+NaK/c1t67gdzgCseNBdDVDnwxQSkRkjuECxDLu0EV2MLm4
-	5/UHavRKwwPq/Wkcm0Fx54MoKKnKfQs9s83RsgQSmSU3Dfwghe9pLD7C05lWJzeZKSq0vr
-	RBGnMjkzQSW1+kADPIYdj3f3XdK45hY=
-ARC-Authentication-Results: i=1;
+	 in-reply-to:references:dkim-signature;
+	bh=YQm1d556B3o+NaQlArCokCh5J8Tddej2YfKHsXWYfh0=;
+	b=s7uUL3uIbOt6P7XmFzirjJHKHzOuwKHH3DbEzt8yLW8QGadDuo3dCFx37oMHm3Kq0rSW+r
+	SunNj+Jd1jncL+D8zfXc2u7sI91FOJStfdlGpHNNKBUCBpVdqhCd2MQm+C4y062noqcztR
+	DWstQUQ3JtJBT4uCAymAs0775/B1xow=
+ARC-Authentication-Results: i=2;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="u+Gc/NZd";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774201682; a=rsa-sha256;
-	cv=none;
-	b=zh4mTKDU3DbBohN0NAlkF2DrGwbi5Dxq5ifVqtcQR24y+EPvu6TB8VpaaxfDQVzidC+aId
-	ehkOQPpKhfA03tMv/AlbOp2ozjSlwE8Kr44LgZAQf3MsX9aQE8tUxArfOYMtK9gXIWPORv
-	npiltEMhX2Pjr9ahJWKvlXfhyuzYiWw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF2B6443C4
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7906DC19424;
-	Sun, 22 Mar 2026 17:48:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774201681;
-	bh=zi3o3A260ASJFdf+1Gp2lU6cqFj7MS9SWJuu1snHJdM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+Gc/NZdkBJCF0cxaFYphh8WKAL1S9TP1n6tKc/WY0IXEU2ApipB8DRMs36wMSTux
-	 u2WDazdplVo1gqG865TFto3CjqY7YDphPYq6D9zCop+VMaoKSD+7e5miZi98vI1+jJ
-	 bU3hkpmEarDbts0j6t5NFaCPD/8c5MwCNIThZOCYM70ltK+JwPv868JzeUZKA+Wgy8
-	 xfSvV2Y2iSn1+7cSUVP5N2xFfeJbaU2nUx3klPhIGHddrCvNth2piIyrG6lwaG9u5s
-	 u8z91nif8wtU1urGowZM7c7QDOZSlS/67x/Bi8lfillLJBwIPrvUYXmAiVjIs1AgUd
-	 CqMICrC1hCOuQ==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH v4 10/10] selftets/damon/sysfs.py: pause DAMON before dumping status
-Date: Sun, 22 Mar 2026 10:47:57 -0700
-Message-ID: <20260322174757.84332-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260322171534.83470-1-sj@kernel.org>
-References: 
+	dkim=pass header.d=objecting.org header.s=zmail header.b=Fm9olenF;
+	spf=pass (imf06.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774205229; a=rsa-sha256;
+	cv=pass;
+	b=H/+J1mSAFtyAMIqqLXIXqkEwcc4oVhRJZgf3JqzwYm5OIzD2UCxBeD9/40C4B+OR0rdEa5
+	ZTtylZ30jkU1A+beALJuoWxwN/8peftoGaWQDgX4smF88Zdb/ujzfFCLcPSJKibUhxPhQb
+	FyJktxkntw3ykdNiMwlH9VbCIUyTu60=
+ARC-Seal: i=1; a=rsa-sha256; t=1774205204; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=G6qSSUmeIVPvaac9VT8iADN1XJY/eFQyZwhUO5zGkaVe9XzRVMxXjFwY0OE89tJutsUB2th32WiT5mc0zpqXf1Jm0dSmWYW39CqXLDA/Qs/8FCnMepEoYVRJmor+gnghGtreIVgNxpWEPNGv+TnDCKA2RpoDXrC2Z/mkmJRzX50=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774205204; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=YQm1d556B3o+NaQlArCokCh5J8Tddej2YfKHsXWYfh0=; 
+	b=JwTiG/l88lM/FDXmHT8xDtTzxsBCUPCMOYX0Ibn1cWBDQL8foSjmEx48H3Nga/fbRRFc/MEaKOlE9vV5WC7ovjPzRtH1ZDsi27xi0s41UnzU9dBzTYaZqNoR4DdNOjw7H71ginb+1RtH88do25Lv8ib9PxKn6OZje2bm73jtiMM=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774205204;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=YQm1d556B3o+NaQlArCokCh5J8Tddej2YfKHsXWYfh0=;
+	b=Fm9olenFTvPJn4JqOUXMkYAuFW74wBtmXrBLDbQ6iunfj/83UacmwfDlxVc8RZgT
+	aANrejF0QQe3921T8CinmK5DtAAPsT4tlQqUz0dR9z2HCzfh9f9x8urjx5PnBUpZhfJ
+	jMPx/Am5+pR9AFKhItniIr171o9yE1XiULyxDB9E=
+Received: by mx.zoho.eu with SMTPS id 1774205202996255.6842497561811;
+	Sun, 22 Mar 2026 19:46:42 +0100 (CET)
+From: Josh Law <objecting@objecting.org>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] mm/damon/core: performance optimizations for kdamond hot path
+Date: Sun, 22 Mar 2026 18:46:39 +0000
+Message-Id: <20260322184641.251966-1-objecting@objecting.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AD1DF180007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: rqiuxrfwysyum8awopicep6rk37xt9wb
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-HE-Tag: 1774201682-621859
-X-HE-Meta: U2FsdGVkX18bxGNYwxe94BFE4VbRgq0K8tj0n4sN+gOGe3qEtOR4zQ1pqq4ZMeB3mgsCLVzu5guV5y7umLfzG/7A/xgD4mhaRu+oSIXJ8jZ3ZFOfjMNUoeAnauyWFlqnQP3axM54gaOxl3LNHnxPjfE6j+0Slb3DlPLzAV0yKvGuai9bmShHFgfCPmjH+pDsgZdEVHsbNrtoy6dsfQXhgX4Zl4rzgWniRZmCKfpBiAOx4ypruziB602mtrUKl9VmXoedJyuYBITyleQMJF8Npko3+uUom6xxeJO3DNLgiryZo36UBz0NSC8Bh40ydLK73nnC5MPTeS4WZwxuNQwID/gQx3QnS8NusPOrLKLdF/Tlk7sQQ5eUOljqKsGpPl7yxGCLpxA9OLeuUcJT/22fJ8U80qAudknB0ZW1NwHvcZz7izLslxqt7zntEsa9HdjenFGzTJTMMomwGuH+DCtrHrQXPzFxLWozANnE/nkXBsv+kfLtEt4eOaaLpcInyiHA82fgElBhb1uarDJBU+pKkyiPy6kXA9eb6IJINlLJp5yIedEeSrpzjJfKu1oG9+3LTpK2C9j/1AsJ/qLLfPzm7Qt0sg+bW93FMDCP57j6E+s5TQIVWVGNGOLnw/GKqHYdrGJROaVdlORj1f13MfZhTwant8xdxnYqwh1SIH4ZxcC/aMsiyDO6hfGU4T9429DLId6mKgSIY+oz+LE2aelx/ByGxoY4y8pOmTyC0PhAOdLnG6VS2pJPnfxw5d28lYYLs7T2821YjtbKKTYwmFmueJ6EL1+Tq4JDlISiMRfw9tuAG5/35mZ8/91AIR7FXxFLSvoupshDzt88wCHyh425fM/VBdj5Wx2NG31I6xqb8NV7Dq+FbiRS001B8z+KD1nPuxmIqRHNSotcERk5qo9tyKDikJLkaO8U0ShqdN9/qrZRE8irrfajPSWL2HDCEFfbGC8RzDLWwcmBA8wuxtZ
- 0bInyGyd
- zQ7AqSAkGZZFFtbijpuME25MrV2QqF6r0U//S/KW9mj+J86aBwH2YdHAdakVw1i7vqji9uUr5GXwT9PK732zWVOX+IX4V7/dnuajKUjDqeidUHVg2KAYDr/EioLgforFDvIoTVwfzBeq5a0rImeA0JmqZVOsOvVOOvD1UzbadRFFUsVjofPBrZTdgstroIRt6yMfoX7HK8P+8J2Rz/waKkFQ1jkfy9674BTF6Mmy8et3Vl1Erz83SN0bqu4QmrFrYHDj25iEoaYvMkBmxNH22buDznnNuGUr0adN5woZSTku6u2cI8GSg1HzC/tJ7Ygn10QGMONiUJMNYa4mzqY6MJumOlZ8IL170aHOc
+X-Rspamd-Queue-Id: F0EC6180007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: rcanagnsx9yktcybw8fmd9ypwipk91a3
+X-HE-Tag: 1774205228-398398
+X-HE-Meta: U2FsdGVkX1/e1ZL+uzyZu5buF0CZYSfsIo63YQUPKLQzsCr1JJa+0RnwEjpHgelQpw3wyXhIj+JY2or0blMBJXpZLmwGs6yXhHdU7qMGQOioCPgFF+8jttxQMPXIpCAgM4o4rZ0Ki+6JBOq4W5eA03Ufks1LqfZaSzqpF03YDIRr5bLfIgOmodNEr6MvPWaEhDNE/gGnTFmn+3mjnzWUXaJTOB1oTfxKLfWgcdWiGNOy/bl4PB/3YiJBLFHVfe805aRpV6QDUr74vHta9+1WzmJQbm+vg5gOshxJ1VyVkSutKFhii0cVlWVVxD3OcIdsJ7GN7Az9IG46yHxycGp6eWF87M/8HJh1i9Sxl9ZxXWABJrqqT99tXWqWi6Z/XYA6wfM3tc5bNYvQTR9oxnbKCQjUj2igmMwAipInr+AZ66IjGiQKBrXRbn+jBRB3jVNZZm4nVcBcxsLibLUMTY59Yv+SFkXNIhQ2z/lY8riA3Ii8gh3WMqEvl9EazG9/WEU8G4lXK4jJs7D3Rp2QoPXdfvnkYQiWiX3yy+cSBwz++SGw39QBQ/tepOCk8jt23Myr0L0oPgo65gidyfSNOnmh+ouCBlEZr37hwWC7SUYaM9RJ5obSRwYzE8gGY7yagEiPyshJqwz6XS9MswNM+8IKw81kE2GBDTcNzlDxNMul9HmQu6OCDAZC6yUyJM6sErtK6Y7zjq+gumNzqDtC5hj98zb3qkvGcKldgGzWpevQVkVpw+bhxkw2lUCwkpxucpSgzxG+5EMzuwF4rLsUi78lbetHRVi3eUFuosS88E4bbqVvKkszrARPgcPhnVjgtdV5izLQi8KvBLJMEYws8uCzOoXYj2B1k8eExrRzjO3q42fTabuFiH8qUQ4WDTbw+gqYjaytR0YWqmyoE6nTT/UeJr7WKvDFuNGMCJsr3XNsmIfcdO5w1ZbS5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,75 +96,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 22 Mar 2026 10:15:33 -0700 SeongJae Park <sj@kernel.org> wrote:
+This patch series provides two performance optimizations for the DAMON
+core, focusing on reducing unnecessary iterations and eliminating
+expensive hardware integer divisions in the hot paths.
 
-> Forwarding Sashiko review for doing discussions via mails.
-> 
-> # review url: https://sashiko.dev/#/patchset/20260322155728.81434-11-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit 67adf8e7b8416252faf583e176f0e8424fd4fb95
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> selftets/damon/sysfs.py: pause DAMON before dumping status
-> 
-> The sysfs.py test commits DAMON parameters, dumps the internal DAMON
-> state, and verifies the parameters. This commit pauses DAMON execution
-> during the state dumping to avoid races that can result in false test
-> results.
-> 
-> > selftets/damon/sysfs.py: pause DAMON before dumping status
-> 
-> This isn't a bug, but there's a typo (selftets) in the subject line.
+The first patch inverts the nested loops in kdamond_apply_schemes().
+Previously, it iterated over all regions and then all schemes for each
+region. By iterating over schemes on the outside, we can evaluate
+scheme-level invariants (like activation status and quotas) once per
+scheme and bypass the O(Regions) walk entirely when a scheme is inactive
+or has fulfilled its quota.
 
-Oops, Sashiko mentioned this in the previous one, but I forgot fixing this.
-I will fix this in the next spin.
+The second patch eliminates a hardware integer division in
+damon_max_nr_accesses(), which is called for every region during every
+sample interval. It replaces the division with a read from a cached
+field.
 
-> 
-> > diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-> > --- a/tools/testing/selftests/damon/sysfs.py
-> > +++ b/tools/testing/selftests/damon/sysfs.py
-> [ ... ]
-> > @@ -193,18 +193,55 @@ def assert_ctx_committed(ctx, dump):
-> >  def assert_ctxs_committed(kdamonds):
-> > +    ctxs_paused_for_dump = []
-> > +    kdamonds_paused_for_dump = []
-> > +    # pause for safe state dumping
-> > +    for kd in kdamonds.kdamonds:
-> [ ... ]
-> > +    # resume contexts paused for safe state dumping
-> > +    for ctx in ctxs_paused_for_dump:
-> > +        ctx.pause = False
-> > +    if kd in kdamonds_paused_for_dump:
-> > +        err = kd.commit()
-> 
-> Is this if statement intended to be a for loop?
-> 
-> Since kd is just retaining the value from the last iteration of the earlier
-> loop, using an if statement here means that if there are multiple kdamonds,
-> only the last one might have its state committed. 
-> 
-> Could this leave other kdamonds un-resumed in the kernel?
+Together, these changes significantly reduce the CPU overhead of DAMON,
+especially when monitoring large numbers of regions or using many
+DAMOS schemes.
 
-Ah, correct...  There is no multiple kdamonds use case, but let's make it
-complete.  I will fix this in the next spin, like below.
+Josh Law (2):
+  mm/damon/core: optimize kdamond_apply_schemes() by inverting scheme
+    and region loops
+  mm/damon/core: eliminate hot-path integer division in
+    damon_max_nr_accesses()
 
-'''
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -226,7 +226,7 @@ def assert_ctxs_committed(kdamonds):
-     # resume contexts paused for safe state dumping
-     for ctx in ctxs_paused_for_dump:
-         ctx.pause = False
--    if kd in kdamonds_paused_for_dump:
-+    for kd in kdamonds_paused_for_dump:
-         err = kd.commit()
-         if err is not None:
-             print('resume fail (%s)' % err)
-'''
+ include/linux/damon.h |  3 +-
+ mm/damon/core.c       | 72 ++++++++++++++++++-------------------------
+ 2 files changed, 31 insertions(+), 44 deletions(-)
 
-
-Thanks,
-SJ
-
-[...]
+-- 
+2.34.1
 
