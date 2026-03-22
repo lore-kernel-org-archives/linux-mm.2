@@ -4,87 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15906FC72C3
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 11:01:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19708FC72C2
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 11:30:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CD936B00A2; Sun, 22 Mar 2026 07:01:45 -0400 (EDT)
+	id D93566B0098; Sun, 22 Mar 2026 07:30:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A5266B00A7; Sun, 22 Mar 2026 07:01:45 -0400 (EDT)
+	id D44C06B00A7; Sun, 22 Mar 2026 07:30:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E2A96B00A8; Sun, 22 Mar 2026 07:01:45 -0400 (EDT)
+	id C5A996B00A8; Sun, 22 Mar 2026 07:30:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E94D6B00A2
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:01:45 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7132CBB3D9
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 11:01:44 +0000 (UTC)
-X-FDA: 84573408528.16.CA49C97
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DF20E1C0018
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 11:01:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EiOv9hi4;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B77006B0098
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:30:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5308D1E496
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 11:30:01 +0000 (UTC)
+X-FDA: 84573479802.03.4902462
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1F02980003
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 11:29:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="OgB/mRjo";
+	spf=pass (imf02.hostedemail.com: domain of syoshida@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=syoshida@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774177303;
+	s=arc-20220608; t=1774178999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+5QXZ3gOGpmPRS9XbfZssC1pswcUOC13rjRsKuFeHYs=;
-	b=NE8wniZIFW/FrOh+YzR05stEX40L+Rs2xm6ee040crA0n56PGy5HlDCa/AfHhSnA1swdfb
-	kNnt9mvaaUv+g/M1dM8/WJy4BOnkn/MejXRz+eXNCVfCc79Q9gK7/YHGjODB7rbEgkC7h9
-	0jx3SFDIHRC9qc9HWwHYhAU7lc3zC1o=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EiOv9hi4;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774177303; a=rsa-sha256;
+	bh=XisQ2l6ogLbGiZljuMaE/00Dj4me1YI5fSnPkoLFZQ4=;
+	b=V+Ddf7batnsiq4CfqnHXr9XhAJa9IVWDzaeRiE7FZhMvBTLeBQJWJ8k+kWxAoGv145quqE
+	Lg1bbywHvHn8ZHRIFxu2i+6wX/9vU5+6aBfVvjxbJP0wZwoXoBQpwT1BTKhw2MQmE+A+0E
+	e/ivmWuMT2wM4BWY2wjTS3XNTRjWQwQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774178999; a=rsa-sha256;
 	cv=none;
-	b=r9I+bjZ51vGF9u7Bn3rCwFrQQ6O7TzB+kSiPVI8nrBJD1o5DS7jkRQCuC56dWBdG8Xt2NA
-	W5tt3Cl+SMTU/RJyLBnPI8zcp/mgaWB4/Ay8oIL6lZP7immgFYodKVfS1zJv7wJj5nFkvM
-	ecTEdwlZ/wBUtQZT9E7mddtfm5+R7Sw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4F898600AE;
-	Sun, 22 Mar 2026 11:01:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D3AC19424;
-	Sun, 22 Mar 2026 11:01:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774177302;
-	bh=tC01ybyDA573d5o3Uy5N5ehRgFq9mu0hsXd3ZX+WARM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EiOv9hi4CjxJHl05f87A+5TVs7u/sO2FITeu5sj53f+LQoZl+i5IpF4Or7APrW4NS
-	 BDbebIaH4c6oQ0dDR6iurDyKo6MwLpPPbsmaPaI+czl0OL8JmYbZjtn2qbWH+p+GBA
-	 7ywYP0UPRILvaqhVLWKWFtm68ZsdV0NKRdDDTHKKXx9tWl09AKcX8lLd+hiemrVR6G
-	 0mY4faQ4ShH37ezOapTDk8NaCN1hIk9wODkRH4FOtDq0dq/XPt2UYl4yP1p0Zx15so
-	 H7RTyBsccQioWHEcs1sQ3n+lQzJ1y8SWBPjuibORjlMGDmeixuHoGZ4oROZdYpLUj9
-	 ZVlp80xtcNVFA==
-Date: Sun, 22 Mar 2026 13:01:35 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Hubert Mazur <hmazur@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Stanislaw Kardach <skardach@google.com>,
-	Michal Krawczyk <mikrawczyk@google.com>,
-	Slawomir Rosek <srosek@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm/execmem: Make the populate and alloc atomic
-Message-ID: <ab_MD2rJYCG2EGZh@kernel.org>
-References: <20260320075723.779985-1-hmazur@google.com>
+	b=Iqqk3N3z9hCGa/SB4E8/zCZIVKI2MzCCDGkgIVi9w0Qc4zcqQsxh9saoXGtsJSpFkeN3F1
+	aVQioUbY0WjLFg9drTUKr5zvKWu9Wgeo3QByUjQ6nnhB3jW97bsdDGuYdmCnBi5IXyjSdV
+	P4DEMnvt6lvrte4zyS5FuYw1SkxH+Sg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="OgB/mRjo";
+	spf=pass (imf02.hostedemail.com: domain of syoshida@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=syoshida@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774178998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XisQ2l6ogLbGiZljuMaE/00Dj4me1YI5fSnPkoLFZQ4=;
+	b=OgB/mRjo5d33mq1fEl9SOi4Kpb+UCveeSUYzU5TL+HjCU5B0nZwaxdHEvcq+kFYdptt5e/
+	PekdsL7fJZJIGEB/oG0jPdH34VkF5GcOdJTggs6VKMLzLP4wyGPy7UwVAF5vSGrwSX3OWH
+	/wuFzpOjkxl3vOr3zEEmoslM4Q6w49g=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-27-2DksCQP8OACDLUpEY6xdmw-1; Sun, 22 Mar 2026 07:29:57 -0400
+X-MC-Unique: 2DksCQP8OACDLUpEY6xdmw-1
+X-Mimecast-MFC-AGG-ID: 2DksCQP8OACDLUpEY6xdmw_1774178996
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-35a1e725a8fso14318330a91.3
+        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 04:29:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774178996; x=1774783796;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XisQ2l6ogLbGiZljuMaE/00Dj4me1YI5fSnPkoLFZQ4=;
+        b=TSWPZg1KYew//YtTJHIjcY/AfmRHYV2Cnha61YO/G9rui51HEhv6b3TlFc9g5Qeo2H
+         F/UrV6zl4n7nfkbX422Eto11zLQiS62HQ/DrgRjpE5vuE2HuSI0cjYqbwBYygX2uz0vy
+         N4Jx1Ob5F5uVHB2Asvk0tu76VdIwjJHJXg33Rr9l73Yj5Zdd5B9f9F+NGO3zSClYgEea
+         ahzPPGLXZUzvelqL8lyQnTzjDzz7dudNZpvfCpOem02X6Hah+QgRhNsKx44VoJSKj+3j
+         YQ6OaP3odsFgiZcK5+n44We+R5F0TwqOYQQA/DFWbHCRWL2CxI8Ko0CazzXisv53vmk5
+         IaFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9YkTO5c2DvNDhVlW5BIp4Tf5pjagJpCPjT8jO9dr903xpMhWHJnDZA4CWVSuJw0z7+05/oYpJ4Q==@kvack.org
+X-Gm-Message-State: AOJu0Yza7qN6B6XxemuCf6VwrF+H6y064FdafmytyNuil6o+kTccgJlV
+	p8LSsLDL+4xKJW1LIC/3Hmtomryif14XCJkuA+fRZl4E9tb7tO9r/S8yxyxTqm4ARJHcx1Age3Q
+	GbkT8LeOdS7DznfHXRWTMGPrqhdf9Ds6VQj515ZxEnO4T5iDTJjZj
+X-Gm-Gg: ATEYQzyDHlOKcrjvVzq9ZmCc4bOC9Te++N7MB9rKah1QvsLg5JrbHV+SJDitIyC7tPP
+	zkE2JLxO+1H04Ud+bjUgeu9Zw4gRDtoAymjM3iUxP/LXkHRQF5LFe1LwrcYYam7qgHRgbIgXuw8
+	n5/0rYyZQB8lxUPhuA6TPMpF6bKMbmFiwURCnRnc5ZwmvCUT9ESuEHpXdIekUFPs+5eV+DgdbLh
+	vTM7TAbi03Do5gbrmIhZ95UY22dUTfZ2wJynaPFgerStolleB4gEjjEKg11Hyd3+5Hx9UspCWGt
+	xuWfZetVQ84LatPzsFsDO5ut1KvYREKZ6bSN7wUz3Bj+2dlpGUsmwe+erdXbCq67hMT9xzCwrtA
+	WsMQNfs/iQYLuLv35OBg=
+X-Received: by 2002:a05:6a20:244f:b0:398:78cb:d85 with SMTP id adf61e73a8af0-39bce9ddf3emr8634365637.13.1774178995826;
+        Sun, 22 Mar 2026 04:29:55 -0700 (PDT)
+X-Received: by 2002:a05:6a20:244f:b0:398:78cb:d85 with SMTP id adf61e73a8af0-39bce9ddf3emr8634347637.13.1774178995435;
+        Sun, 22 Mar 2026 04:29:55 -0700 (PDT)
+Received: from localhost ([240d:1a:c0d:9f00:be24:11ff:fe35:71b3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03bbebb2sm7205704b3a.14.2026.03.22.04.29.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Mar 2026 04:29:55 -0700 (PDT)
+From: Shigeru Yoshida <syoshida@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,  Sergey Senozhatsky
+ <senozhatsky@chromium.org>,  Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
+In-Reply-To: <20260321104845.452d0f903a52d45d3b76894e@linux-foundation.org>
+	(Andrew Morton's message of "Sat, 21 Mar 2026 10:48:45 -0700")
+References: <20260321132912.93434-1-syoshida@redhat.com>
+	<20260321104845.452d0f903a52d45d3b76894e@linux-foundation.org>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Sun, 22 Mar 2026 20:29:54 +0900
+Message-ID: <87h5q8qez1.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260320075723.779985-1-hmazur@google.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DF20E1C0018
-X-Stat-Signature: 1dcgus7nh44gaqaoz8ussbjbrm5qsgwp
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 7YS9NaHvT9jzveqN59faA59hMSrfLld_-pralrROsWc_1774178996
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1F02980003
+X-Stat-Signature: txbibykcoiydwnhwmif1xg4w4gm4iwpn
 X-Rspam-User: 
-X-HE-Tag: 1774177302-54960
-X-HE-Meta: U2FsdGVkX1/ZSf/ZRaTYTYTe/UEhXk2PNiNxtvpHYFXiPepG0kKg7iz722zHYLaSdCmdM5pO0V4vvaKCMmU0Yo8/v4J0ULlnrtK7rdiczmbTPBglYunnphs0cEJWb2vBhHjhnhfWcXYysYNC0biM+ErphQ5fpKFLWlJ9ifWrVDjTzMtf6SJzp5M9Y6aQz1ZI7dNJ64ALBA41LALD2dam1Ujbm/BuwROd7BLlMmhraDzUsRCB8zsanI5iGVAD26ZuFDLHnqlsHMe5kqm+wnnskqvWgOt0pgekVa4m+TNvS0owjMswa6yodAA62j2Xi/ulQDypxp7OIcmBiokv0R6XMnoru8InYMMEeTyiOI78o7h8OET8gZ3ek0pMuJ6mqsLE954edRSss1dA7Ozqt8VQazYYhZVEKm5a/cNaRvdFkfR/SulVmCYWPCqgtfwgGaUZRSvbXHRtNb5pcce6T97la2JkvjL1doVKxu8pzcJ6W/vkd1IbPYrfL3aGdE0NqNhJ3VyWsA5W95XHFdhZgBdQODfqIJ1kG6w4bKcGDMpyB4sZsBmytfUQL+SvmDZp4sd3KYm/NEddpl1JOHGQ5+UG8BzJ0WZzbu31cC1fpJ2QbWIA39Jekey7TgVl5QltgVu6umHKt27Qn+kpAdreKr5Q8lpyNsD+LjCDZsCYgWYQivP6T3kdxHgs45fMhDAW94G1IYj8NMIP00F/rQGMipOK7bvzL/bflcqIhcaUVUlnBGHMhkwQRPj6jo3prcLpKnAR9jmPc2kzDZapxAGnHW7mrDqwtcYVMzFYTn4tIeUTBxYvFH0TIGiIHL5aABQrBDDPiK2sNp3Xd01J/OeRHB7sfA0Mc8Twv2wNR2j2oMMIfnEVbSkOIHJSIVlUqecXRjIs24S+U2lXhobJFe+ncHEeShA9dBLrsQTh5IootOpE/qY=
+X-HE-Tag: 1774178998-265626
+X-HE-Meta: U2FsdGVkX18h57pnc3EHpO4D3FHzMzH66KCytTg4I8g+vxpoTr7r5sC1klt3TXveVo2dU8vP+AK48JXa5rj8Xz28HTI32RuzwJiKRBpQgVlDY/2t8ijxxR4JT3gNj0C4tigknBUWfgLiJOVfef2wevLlYHSCuZD8aJbsH8kF61SedNJPxPYP9Ecu8Em/RX87pgybQOOL99nJ1MSEirwktYVgwautbzeI43ZnY0wVG5xJpmdllbXwcIgx1IGOhywgCXVhubylTRfDEYC2C61EHSwuf2keOcvSC+N9NsBX8qpj3L0qQRp4KEi6L11Z+PwgcLrpiqOXQIHAijM/oW1PM7nMti7ltWBn2a4ti+omEjVn7uT9cQHyb/ND4vSDRJTN0PzTene4HVBtoKQerD4PzXCg7WOc7MX3IGy2oqSuAoL7sJKFPNPO48LLrSWpx9kYodvw2J6zuR2QypVkmWLzEhDKee+WUrJzGQKY9DZVp5MrCVbhK/F5QZPbpwA4/7gWk+GPZFwsrtprX8GyBLI5r2HHqUg0fIx+M7YlxWmi17K3VZPwvcUab2KrLkSBMIhyV5ZfR+MRGwUZUuxQCxHpkpXMtWT8PMvhVb32jtrtnWK9YYS5z7T1qFopNDQto7l66hImQocK3H2luS4hhC3VOKibZmGRk37bHT8LTa9N5vZcA/J/uaM2tvj/kMFXB2sPSkC33/r67TAc+YFahcU0LmSGFTv5Z3MT1fyZjUnrslZCTy7bf+4pnGAz3H5uIFSw+5BJf1uAexE0Rxf/ALJumz0TPSJOmhM388KMd0VZ1wZuBc8n679N/M/RP5iduwmW9HvxUuMzSL4ofaXbktikBliQt8I4ldCX/COcF/0z6kRoehTCFAqWpYuFN6Ih5VV710sl3H+bFa0bw86b7no9PEHB/NbwZ6wGgDzCDJkUa+QcKvkdXNxh0e48hzjp8Zn/NGDtZlclbPGt+kOJhU5
+ AXjssD2O
+ BlXTnzS9MpOqKUN/z2Oi8Ou420iKan+FuE8jUwdgRRuSREzih6bPpCPJ5wVEe9UteHJvFXf0P1Aj44sp3N6K3nrpzUyekvMzhCiHtNdzU7MetpHFJ+D37h4hIylisxNcNf2/gxCIJtF7L0YV2zUk2ZEdt5moCSGceiiY7pFkIAUmCI1KT9zuzzXcS+LPrlz8A79SaF8SAW093fI41tBKp2l3j3jUgAtbpPG8ySV+gdQXHFBHXFeQBHUWDNwRYk/1hMQn3IbaKBhUj4CuH/uKCHRmpfPuO4VzsSZSAcSyX47v7UB/+qZMkuF+6ymubbHBXd4oXTqrHmyaOFtECIakxnTd6AsHQverdnrLJDNrNYOa/pu0e5bLzrG4g/ysklt3a0o9UIWgmVgZ0bWYsu+giFGE3n74sdyFHmyRSlO9zl+W+TbbtHye1MtttFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,28 +128,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 07:57:23AM +0000, Hubert Mazur wrote:
-> When a block of memory is requested from the execmem manager it tries
-> to find a suitable fragment by traversing the free_areas. In case
-> there is no such block, a new memory area is added to the free_areas
-> and then allocated to the caller by traversing the free_area tree again.
-> 
-> The above operations of allocation and tree traversal are not atomic
-> hence another request may consume this newly allocated memory block
-> which results in the allocation failure for the original request.
-> Such occurrence can be spotted on devices running the 6.18 kernel
-> during the parallel modules loading.
-> 
-> To mitigate such resource races execute the cache population and
-> allocation operations under one mutex lock.
-> 
-> Signed-off-by: Hubert Mazur <hmazur@google.com>
+Andrew Morton <akpm@linux-foundation.org> writes:
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> On Sat, 21 Mar 2026 22:29:11 +0900 Shigeru Yoshida <syoshida@redhat.com> wrote:
+>
+>> zs_page_migrate() uses copy_page() to copy the contents of a zspage
+>> page during migration. However, copy_page() is not instrumented by
+>> KMSAN, so the shadow and origin metadata of the destination page are
+>> not updated.
+>> 
+>> As a result, subsequent accesses to the migrated page are reported
+>> as use-after-free by KMSAN, despite the data being correctly copied.
+>> 
+>> Add a kmsan_copy_page_meta() call after copy_page() to propagate the
+>> KMSAN metadata to the new page, matching what copy_highpage() does
+>> internally.
+>> 
+>> Fixes: afb2d666d025 ("zsmalloc: use copy_page for full page copy")
+>
+> That's three years old.  Can anyone suggest why this has only now been
+> discovered?
 
-> ---
+I think it's because KMSAN is clang and x86-64-only, so very few people
+run it. Also, this only triggers when compaction actually migrates a
+zspage page, which needs significant memory pressure.
 
--- 
-Sincerely yours,
-Mike.
+Shigeru
+
 
