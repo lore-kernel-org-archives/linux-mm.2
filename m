@@ -4,113 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC9EFFC72AC
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 06:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 504DDFC72AC
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 06:11:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035106B0098; Sun, 22 Mar 2026 02:06:38 -0400 (EDT)
+	id B357A6B0096; Sun, 22 Mar 2026 02:10:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F26366B009D; Sun, 22 Mar 2026 02:06:37 -0400 (EDT)
+	id AE6846B009B; Sun, 22 Mar 2026 02:10:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D1B6B009E; Sun, 22 Mar 2026 02:06:37 -0400 (EDT)
+	id 9FC616B009E; Sun, 22 Mar 2026 02:10:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D08326B0098
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 02:06:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7CDD8BA5B0
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 06:06:37 +0000 (UTC)
-X-FDA: 84572664834.18.BEBD817
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9954B2000E
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 06:06:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jljgHgV8;
-	spf=pass (imf03.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F5E86B0096
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 02:10:59 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 432351A07A2
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 06:10:59 +0000 (UTC)
+X-FDA: 84572675838.06.1D94CDF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 91D341C0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 06:10:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bcB9Frvv;
+	spf=pass (imf18.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774159595;
+	s=arc-20220608; t=1774159857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oGTrddMpoqNlMDtLVg/NZ7xDSHSql5ga38DOEBpNYTM=;
-	b=qV3DufSG8wR1Ak1RTsVmY6qrP3YlDTTYBMolIpeo4wn+bMsWCzLG2BMvpgqQeZEskeRzeq
-	8aqC8Tw4fVj38SiqonGonXlJi+Lc3B6lAMs5x5a+rRxTJGwub6zAi/ff+rvkYv2KajoIeC
-	P/wmiTX5MXrRfLVkfA3olAeDRP3tU6I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774159595; a=rsa-sha256;
-	cv=none;
-	b=ujif26A+ehYpMh57XJn+5O3MXkKdQ0jcQTYwx5E0QEI5lq8tOr4gHo7I+4ZVcxzEMhITJR
-	VGDt3nWyXna4rP9DluoXE9ZdmR8QhO0O8xDOosPY018ITEsWoZsUhZTCNzT3fAZUOInYsn
-	aGB0VwxxKZ38XnKAhq4kq5zJPRwkeTw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mmx1uB1Uw/n7cvvAu9S/82zt328oIJIEVRjtJB16IPI=;
+	b=v4PMtwCHgL3clycNR/e2k9RP8FfgEsdShqgcn10ZwnUx3cYhfLp4RWjFzjmxjEKKFX+MlO
+	I6GiTBE0/eNQlHOK5WdsAJWL8reYYjgyKM9s/SKycky2ftflrD0iFjEHoJeotYI8TJgFYR
+	U/7igEGlIPI3K/zvTZuYoBxGY5oNoyI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jljgHgV8;
-	spf=pass (imf03.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35a094cc3e9so2172882a91.3
-        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 23:06:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774159594; x=1774764394; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oGTrddMpoqNlMDtLVg/NZ7xDSHSql5ga38DOEBpNYTM=;
-        b=jljgHgV8RqfrZzosgI5QMkeJM7K+bBjfc9oy+c5XBaBz2baV3wDgPRwfTBeV8p0yrt
-         jg2r3IvxIRR0U5ITSTIE9TJzRf893TPYbliSszqQ1b3EAgHpJIVS6lH7W5r9NLiq0Svn
-         dy9kxsBWOlNThEhlXKjc/4sE+SvoC+oOjMj9Xa0ZAfifzW5hczhMmVDnbHo8l7GKaux4
-         0Np74d2JawsLwTWbLhOdiMBTbp4wD0EsdlQR1XhtW5Grw+yrzhFv3xZhC723uyPOcKMV
-         QjJzrU2U87zf8o0Z+wo1OgPwidkRy1y6AmFZOf3AChbXaeJ3lKeHJAQe1Buf6UcofrkT
-         2pJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774159594; x=1774764394;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oGTrddMpoqNlMDtLVg/NZ7xDSHSql5ga38DOEBpNYTM=;
-        b=VfDGuWmsJxxpYVsl8jmTzqqaLckJNWQQHJI7cZnikchj+eGyXm43MVB6v0XnwgNZnm
-         kJGBWUjn4bMtMLOxz5pNby+zHQkXU/Ejb0tN07FSkUVmJ1EtEecJWdwEkPo0kdF4Kjns
-         wVIczz1NIHzQxk2I5bDUDsUHHuF9gBGp3vkkyxGOHlSqX1RrBKf/vRseI/ySxLJVXF/x
-         p5fXkB6AIv18rmT8zVoGoHgG/VNPalC0SbWZzGmDsstOFcEtNnwleDxRyCEm6Q9gGElv
-         md5GHDukXhDcUgNGb9MHspg+Ji7ef40fE3T/Gn3rtqwsoCoNjnzFTjIk9JTTJ1uQuRCy
-         DK3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVhU732WCGnJpG5UVxTwXW3DVt5rMTS8aDEYUiTWTHq3pjJMyvIG1TwSusrzIu97M6a4OHQMWy4Sw==@kvack.org
-X-Gm-Message-State: AOJu0YxeB2W2brNXsppEyW/l/q7XcIWP07D3ZllCbKn8O+iIr+EiEsWH
-	2UArOdrFdmBYFJZZjs63GEDECTF/I2a6D3LiBXf09rl+QJXr6PiDHLwAvvkUCME4
-X-Gm-Gg: ATEYQzwbOmL6RyYMhXJkKeT/ZR16JFwdl4vJVOJVx3eREcfXLYryMLPIlDkATJjZiSs
-	TBeCq+Wg1PuIAKLbQa35IDjU/n61kQ7Qgvtbac8knjhwA86y6ApH+SnR9xeyevUqIbBlRKuCjho
-	PVGxF3cV6nnxuVXLaCWsRcf+i/8UtyQwByyM5p9r37T7fj6B1Hs6ppGpQI5aFOBsIsR26m5IfGi
-	6Zd5aKchK+UteFJ/zeup96Izyx031T8jrVSofhEl3LcRB0JO5H0u6L7B1fXioGXHEyARZWjtmpO
-	NkLvWPKWEbRtdCqq81WL0aYjo8QbRj3yAyL+iS75Lh4VptLun9B2s73xnwYUagWtBOYBiQ/GKor
-	MfLUns6juYm8YxUoNI9Q/B43wM6p+I14wuaKm3QP0P2GV2HbYDTOcE8C851P/mAXkKelc8AXTlA
-	bWUdESpmzdmw2xA0O4P+uD3ERSTnqBF9EzJxhLIVG8dEqawW21p7JVWGYT2OA4
-X-Received: by 2002:a17:903:32c5:b0:2b0:52b7:e82 with SMTP id d9443c01a7336-2b08270ec51mr78290875ad.16.1774159594423;
-        Sat, 21 Mar 2026 23:06:34 -0700 (PDT)
-Received: from fedora.taila51cc2.ts.net ([2001:e68:5472:9397:f52c:8e34:31f3:462c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083655b81sm93042045ad.41.2026.03.21.23.06.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 23:06:34 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bcB9Frvv;
+	spf=pass (imf18.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774159857; a=rsa-sha256;
+	cv=none;
+	b=JuXtbmyLfkm3IDtldjvED1GOVRUnEXoxDFCk3SlS2qyO43wdkrPVGXsWdv0i3d1+Q7SJXl
+	BHxINxdw7xXfCcwnHZ4G12LM8q8KUIVomvG4UaBtKgmH4uThBJZdf8XnVLg3c3nSvgSeWz
+	yZT8prp5m4hUogscwytc4BT5YK5KWPw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774159856;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mmx1uB1Uw/n7cvvAu9S/82zt328oIJIEVRjtJB16IPI=;
+	b=bcB9FrvvErT1N1cmI5dfKSucIp/cwPS3cups0HZ6vNqf4U+8wBMx2sbZkMoONk89aB4Ho7
+	GK+ycSOWmjLvWUUDbQY8OGM7/CK1jdU8X2GhFAgwvlgtrBxQBw5c9yjJRq7S+u1Kkm+BAX
+	PK5/femP4wwS+wz7DWQVq4q1wUEQ9bw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-ZOPxiDD-MBaUoeesfdrK9Q-1; Sun,
+ 22 Mar 2026 02:10:53 -0400
+X-MC-Unique: ZOPxiDD-MBaUoeesfdrK9Q-1
+X-Mimecast-MFC-AGG-ID: ZOPxiDD-MBaUoeesfdrK9Q_1774159851
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6AFEA180044D;
+	Sun, 22 Mar 2026 06:10:50 +0000 (UTC)
+Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.34])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 01C161955F21;
+	Sun, 22 Mar 2026 06:10:42 +0000 (UTC)
+From: Li Wang <liwang@redhat.com>
+To: akpm@linux-foundation.org,
+	yosry@kernel.org,
+	yosryahmed@google.com,
+	nphamcs@gmail.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	mkoutny@suse.com,
+	muchun.song@linux.dev,
+	tj@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev
+Cc: longman@redhat.com,
+	liwang@redhat.com,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC v2] mm/damon: add synchronous validation for commit_inputs
-Date: Sun, 22 Mar 2026 14:06:30 +0800
-Message-ID: <20260322060630.82964-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260321173235.84923-1-sj@kernel.org>
-References: <20260321173235.84923-1-sj@kernel.org>
+Subject: [PATCH v4 0/7] selftests/cgroup: improve zswap tests robustness and support large page sizes
+Date: Sun, 22 Mar 2026 14:10:31 +0800
+Message-ID: <20260322061038.156146-1-liwang@redhat.com>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: aIoyvnfOMvwqRRL3R8L_4I8hDbgdCQtvm8yHEYEwyjs_1774159851
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: x8bqhnjjanchwmyh4x15spfkdwncnt6u
-X-Rspamd-Queue-Id: 9954B2000E
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774159595-376572
-X-HE-Meta: U2FsdGVkX19BVsz3wj6v+kvSNYzXnNnyD4Flqn6O7lqlsMC2L7wbgLB4/SvDA1kDtmwNiRKXSrw3tdmKWQzS/0v3FaQL5GRqfjQVzWcUpNv7tKQ7o1pLM4WRk4h6lD9R6iv4M5SshQ2gYSbJvacCEtFhdypB7Yw8GL6BeynKiP7jTzfNVn6qQInVXbILsTK4Wv3rfM/NSGEKkkS3n0UM/4MosCRetloA0UCvwey2iGRDrGYgCRZU7dFLW42GGMfQlyyVrYvDnwAaz7GZoRY84xytpdL/sVDoG1ab2eqCbWlC5TCPH5ZIKIe20k7wURvcOYxtUooHyhkxRekW0mvvri2KrFHYu3ZMBz3N5lVYWok5+ihfXyENq607zwkt6qOP3LZH/Ym4/cZf77LELpy74b00ait5E6JQBaO+xtTXqBnyBbuuqD/k/k2CxpEYYCpA1oieo7jViGM+ecTddl3IhQx5nEjoZNGM43TUNPsD9MklxslaaxCwOJqvKNiuBg250WDshCgyvO482jqU/9Uz+8E+yz5cxOS8wRT2lUAETndKyp9qiqnYpR/jChNKJ9Xai/BAQ8e2qaYjviEoPSzmSFXsCKaWb6k3wy0nNAzvjPgfcJ5Sqpc8ogbe5q/Dkv8ClnbfKkZ4NQrJAiTPX6pp7feFGdcRd+dTQxhIubYFxJ/fxSb9mHco25VufkKf5kndvXGlO2P3rtrSGRUimKoWx/0Y3+BWdQQCJ/rsXKvnV2O6wPQtJKKHaua3UmQ2ldDo3vx6rfnvBInX4ReebcsGUyw7N20SLYFGxzTropMdwg+npqfAI77z4ZuoR87ZQTeoZ6fXAsabLwnOgf3z5hFlbUe4A5j7/5gYRnTCKkmzGVJNmG9hkoROS/o5amvRjjQHMfsa6eLDSJy/zOB8MT9kYGJYiWhdKlslQl1MHqTc+uF7n8/hX6GGR2BDYVCodY/WIQP8AN5U2KvQJvnV9IS
- SlWKCjpb
- AtGnjsDXZLwp1CEBIYT69tGz2o39BnNktQrBsdUYTx7zoKTwiikviT/7ecF+Xnpj1LHCatL1EpM+4FzFa0Uz0iPuk3f48y36GkfPI7fajfT3Tw+8pY8xHF3J7EwWrTdXKj5YqyiBF5l3D5tMuYy5Iqzm8n+1LC9+ApDnZlJ8bw69DWsVBsYUUM7OW+/9m12CSYysA1LW8L4Dxyz0CGnpRfnPijziPxz1WAOz80KnBtZMnadzdRKxwLpCwIro9Ex0yxvhYXeR7m7/IV5i+ZI4pc2Ly8GbUnWWr0ktOjoichhWZz4u/I/9z4RKoNkRFFHpERPSOXyLTptFYm41h3oaJCKOomp/ORDS4TRW8yf6Ms4IUsQsMi+TGVKvdhOWxrM81C9qa7zyoUrb479juAaEqxwGe7z3r7qbRg8tq4aYS9tpN39rxFtzNKficF0kavDmSlL8yrGEk2XUuCMo8XdA3BCb1Z78jRnik7Ouq
+X-Rspamd-Queue-Id: 91D341C0005
+X-Rspamd-Server: rspam08
+X-Stat-Signature: txkwufr5xxcm4qz31qpogsswuuw4y39f
+X-HE-Tag: 1774159857-429071
+X-HE-Meta: U2FsdGVkX1/Dru4zi7xvoCKQZzXQhbu6nIx4B5uPq+NM4nICZK9fBQYJSVbhQSgd7Eu/myhxGm+kp0Zl2H1rm6GSdDfo62/bMoPxaDabYqzEmh4Sz9veWLKsprhFuTTcAQKTiAkdd+mTSEhySaDE5HJ8+/LlZuSlifA5J8B/C2QZqXVka5S7C7ZsaSt14TbDVGnkgf1ECD2psSQ1P0JSvVTs1u5KNLR723FAnx0kzG73g66nMwRD1DccO4V7BdvkIXAcwEPkuOdRUDIg8EVuvwf900TjQgRjEWlo8g9EIKztAdHH471mLP08KmZkGDoBx3yhPqd87kkvw2ijpdE/qdJj/2ng/v1X0ErZQEf05EHGhITMLZlQTxaNcgjajz4AJ//lg43H/gfPL+GdDidkL0EtsCpU6sh4MmUySvRZLUQaj8gQmbHM9rG7aolqvds9UMIoJN3d1RginQymsfzJZwuPGT98Bxtzo4onFy2aCOxBASqJE/YoJTLqeP9GthfGMHtL4i4TDnIcHZHPkN5Insu7dy3d92nmZzfNFt7aczfTaLW2HL9XD3M0NV4ASfwP/R1icCZZS+pOlR1Wnwpz02yCzSuDTaSiS3QzFZ81Y9Msiitefuvur92P55wG0m5v9X9RQC/owBxr5unZPJP/LwjHUll/BEF6Ux6rFUlf6BKCNhYOFHjYA46RcNsTKmaz9chOVmv2bYFvEk8D4heNXKwPmi4rGux1WUoKZ2Wf9fpDbmRK/8m1F6kUyNzWTgZZy9tQAYg3jcRqWuxAw3A7x4esySIWspu3RDD+vrIL89Yz1AuKPfxX+xs2M3hOTIVM1vFqllnCJwjJLn3uTV9brp82rmleji8bZRnM638/dlrcgstrpw25SANHS6UYO21rvTWv8/Xu+vRh3L7ss2+eeBDS+ZH/oDLwAfObN9IQFymu2GgS6Uf5Wp7OQEd4bd0PrxPgA6qAhRsHJvpkvfb
+ dcYY7eoj
+ 96vzyxA2Tx7UCKSRV293/s9v6SA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,36 +114,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae,
+This patchset aims to fix various spurious failures and improve the overall
+robustness of the cgroup zswap selftests.
 
-I tried implementing the synchronous commit using damon_call() as
-suggested, similar to how damon_sysfs_commit_input() works. This
-successfully returns errors to userspace immediately instead of failing
-silently.
+The primary motivation is to make the tests compatible with architectures
+that use non-4K page sizes (such as 64K on ppc64le and arm64). Currently,
+the tests rely heavily on hardcoded 4K page sizes and fixed memory limits.
+On 64K page size systems, these hardcoded values lead to sub-page granularity
+accesses, incorrect page count calculations, and insufficient memory pressure
+to trigger zswap writeback, ultimately causing the tests to fail.
 
-However, I observed a side effect during testing:
-Since damon_call() waits for the kdamond thread to process the request,
-the latency of writing to 'commit_inputs' depends on the kdamond's
-wake-up interval (controlled by damos_watermarks.interval).
+Additionally, this series addresses OOM kills occurring in test_swapin_nozswap
+by dynamically scaling memory limits, and prevents spurious test failures
+when zswap is built into the kernel but globally disabled.
 
-In my test with DAMON_LRU_SORT:
-- With '.interval=5s', the write latency can be up to ~5 seconds.
-- When I temporarily increase '.interval=50s' for testing, the latency
-  increased proportionally.
+Changes in v4:
+  Patch 2: Use %zu format specifier when printing pagesize.
+  Patch 4: Use page_size instead of BUF_SIZE in test_memcontrol.c.
+  Patch 6: Print the expected swap amount in KB instead of MB.
 
-I understand this is expected behavior for synchronous communication
-with a sleeping kernel thread. However, since 'commit_inputs' is a
-control interface rather than a hot path, I wanted to comfirm:
+Tested on v6.12:
+  across x86_64, aarch64, ppc64le archs.
 
-Is this level of latency acceptable for the 'commit_inputs' parameter?
-Or should we consider waking up the kdamond thread immediately upon
-receiving a damon_call() request to reduce the worst-case latency?
+Li Wang (7):
+  selftests/cgroup: skip test_zswap if zswap is globally disabled
+  selftests/cgroup: avoid OOM in test_swapin_nozswap
+  selftests/cgroup: use runtime page size for zswpin check
+  selftests/cgroup: rename PAGE_SIZE to BUF_SIZE in cgroup_util
+  selftests/cgroup: replace hardcoded page size values in test_zswap
+  selftest/cgroup: fix zswap test_no_invasive_cgroup_shrink on large
+    pagesize system
+  selftest/cgroup: fix zswap attempt_writeback() on 64K pagesize system
 
-For reference, DAMON_SYSFS seems to have similar latency
-charactheristics when using damon_call().
+ .../selftests/cgroup/lib/cgroup_util.c        | 18 ++---
+ .../cgroup/lib/include/cgroup_util.h          |  4 +-
+ tools/testing/selftests/cgroup/test_core.c    |  2 +-
+ tools/testing/selftests/cgroup/test_freezer.c |  2 +-
+ .../selftests/cgroup/test_memcontrol.c        | 15 ++--
+ tools/testing/selftests/cgroup/test_zswap.c   | 79 +++++++++++++------
+ 6 files changed, 74 insertions(+), 46 deletions(-)
 
-Thank you for you high-level comments and the suggestion! :>
+-- 
+2.53.0
 
-Best regards,
-Rui Yan
 
