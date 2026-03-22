@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CEFBD58CA1
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 21:47:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91FE6D58CAA
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 21:53:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F2BF6B0089; Sun, 22 Mar 2026 17:47:19 -0400 (EDT)
+	id CA1F36B0005; Sun, 22 Mar 2026 17:53:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67C966B008A; Sun, 22 Mar 2026 17:47:19 -0400 (EDT)
+	id C53C76B0088; Sun, 22 Mar 2026 17:53:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 543A86B008C; Sun, 22 Mar 2026 17:47:19 -0400 (EDT)
+	id B69036B0089; Sun, 22 Mar 2026 17:53:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DD226B0089
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:47:19 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF65C8C719
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 21:47:18 +0000 (UTC)
-X-FDA: 84575035356.28.DF6F277
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A7C076B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:53:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53BE01E3AD
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 21:53:46 +0000 (UTC)
+X-FDA: 84575051652.04.8FB5D7B
 Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CD652A000D
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 21:47:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=EYmLpwQv;
-	spf=pass (imf15.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 279FD40009
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 21:53:43 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=lURDETyr;
+	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
 	arc=pass ("zohomail.eu:s=zohoarc:i=1");
 	dmarc=pass (policy=quarantine) header.from=objecting.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774216037;
+	s=arc-20220608; t=1774216424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HXLmepxkAT3ih7z9DVRd6OmLc/Oq1zcUKdvohFufYtQ=;
-	b=cMMvF9GPRDMsm2+RVD3phnLAJCCCNlkl8f9rRLMCiwfplitqXQ/acIpfmYsllfLFGwRWD0
-	X4eQPzfkGLEcth04MLecSCybs0UDmOgAtuBc2Q0tDcm0NUcDWMQ1xzNDzIs6ZaokMt+7YJ
-	86NedJGBkmXzfKsb+gKc6pYLwk4ZV60=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774216037; a=rsa-sha256;
+	bh=WF2Jc8jd49SvUSReADfs88mf3NQmxL0j42Z4CgklKLE=;
+	b=HY4hXuMZ0ledYINtTzwYiwMaX6kLmE9iWMN7BTN5mvUSABF5f+Nnj4MwKU5U7ehAR6dYAh
+	WZR10oCbKjW6SfsUkiz8QzjgBrNufQ4TawhyEJqYQVdXRw1KGoqxOSmGfCb7akHzl5M0Av
+	vLqXZ7XPq5Lm0+09pr45y6+i2Db7PtM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774216424; a=rsa-sha256;
 	cv=pass;
-	b=Bl+kzWqELg5l4IIoUyKA4bFx4kI7XjJnXr37HKpfTyf9WYMgTxTC9KIGZzzXwdUsE6dWD+
-	3GLsZZXEbHRVles9Az3lGU0/5vDzE1VR/nXqSc0/gGcwo28Rg4pu3MNCwIG6pgFeFAhM0I
-	r8sgye3ZisQfD/5a6qGOP5ugQ+NpG0Y=
+	b=126v/E8W+lKnxL5IMvD+CpeUC2hymzRfcA7Wfgyv+leGprcsJuks5gy164H5p2sCZi7R+A
+	N0e339RxYuFLfIwywx+NJEYfinzO5BOhfk1wnrz4pCcUrASVWcbQELf+CIjR/gNte+FHeP
+	t0TCpa8RbIg/WvUVyAYrANFW7xCCc8g=
 ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=EYmLpwQv;
-	spf=pass (imf15.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=lURDETyr;
+	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
 	arc=pass ("zohomail.eu:s=zohoarc:i=1");
 	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1774216026; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1774216413; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=aORaaBr1yeo41PxBuHQdK6K8udCh54dJoBCqmvPyoprvo0MR1jCr0dZKuhvTPn/GJyksBq8vw0+e3I67CiPn3bhugqM91cSuQ9ULtjpndotlcJ5a9g8hFopUkWBPZO0gq8qiGHl49fCLuJe15zFlFO2LnSndS+QvBTrMP240rQE=
+	b=VidU/wf5Kvvx/sTsGhtWEGH3ltaSypCbWXvnDUaFc9c2Rlr3hC0nSHazcAlX/EVrLjULlihQxgGTHzr8xavN4dGBKGDpE7UPzA8VJ39SX/vfPo2+DfG97TkhkHKsmLJ2DvS1lbVQgZfCp3J1lOVmE0IKg7aLAaOvboV/By6GrMw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774216026; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HXLmepxkAT3ih7z9DVRd6OmLc/Oq1zcUKdvohFufYtQ=; 
-	b=AvUoD6Y8VVDmn15C909wcXbCUJJFbo4P/fpThfIbdny/4+xlVSERS3qUyHrbvKolVaRcJ1rGLhQihS8TkoStXsggsfjcPQQMNHGHnB9J5GY6yexVevA5GO202QBJBeMTLs7pbNEwIURfiH5LCDQZ4egfSm2IAGWrHknlJodpfKc=
+	t=1774216413; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WF2Jc8jd49SvUSReADfs88mf3NQmxL0j42Z4CgklKLE=; 
+	b=Q63SMqXzOTh0Rb1p4XJReNpIPZuBtshCuJMDq7pWJ8LR64zFlAPCVSXps7wYrWQfy7oWFwQ9r78LnYQKIyoextx9a9jT6139eqCcz+wCqh3j6WjVaYl40DZ4qyS6t5vOZLJAU+HWge+42Fq9oXFUbVtHiLCYUepiKYPgMQQrC5c=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=objecting.org;
 	spf=pass  smtp.mailfrom=objecting@objecting.org;
 	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774216026;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774216413;
 	s=zmail; d=objecting.org; i=objecting@objecting.org;
 	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=HXLmepxkAT3ih7z9DVRd6OmLc/Oq1zcUKdvohFufYtQ=;
-	b=EYmLpwQvilR/nwMiiZx9YWXrFbyb7NkauJ33x63jnNKLc87W8RmjMIviXB4iNia3
-	7kCbxbSJV0SYJk5cssJk2fMLRevJ1SaqEYiEGU6kMlAKxC0dicJo2Ml0sD9/aPCHDNx
-	q7mHF0FE11LbkHwbLxuRcVSe3k28bBnNElY3KZ+c=
-Received: by mx.zoho.eu with SMTPS id 1774216024676308.1049291411887;
-	Sun, 22 Mar 2026 22:47:04 +0100 (CET)
-Date: Sun, 22 Mar 2026 21:47:03 +0000
+	bh=WF2Jc8jd49SvUSReADfs88mf3NQmxL0j42Z4CgklKLE=;
+	b=lURDETyrJVICtD8UJRuvXuKJ2KZXOS1pQk1AKY5vbZ7DAob+k+fxHbINdCs5+Me4
+	SEab9bznZcPkM2vwJpSV+do/um7Dmcj0k8pZxuTs7NDH2hww7wqiKSoFLCUzlz3o1mw
+	2jNHXkHYv/llp/iba8ohv3CbKpWPQvOgFN9M2oV0=
+Received: by mx.zoho.eu with SMTPS id 1774216412426730.3504676121884;
+	Sun, 22 Mar 2026 22:53:32 +0100 (CET)
+Date: Sun, 22 Mar 2026 21:53:31 +0000
 From: Josh Law <objecting@objecting.org>
 To: SeongJae Park <sj@kernel.org>
 CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
@@ -81,7 +81,7 @@ Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/2=5D_mm/damon/core=3A_optimize_kdamond=5F
 User-Agent: Thunderbird for Android
 In-Reply-To: <20260322214419.89419-1-sj@kernel.org>
 References:  <20260322214419.89419-1-sj@kernel.org>
-Message-ID: <668B87EC-A893-433F-AC0F-412854A6F95D@objecting.org>
+Message-ID: <19250970-62DB-4151-9170-BD2930C6D59D@objecting.org>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
@@ -89,12 +89,12 @@ Content-Transfer-Encoding: quoted-printable
 X-ZohoMailClient: External
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CD652A000D
-X-Stat-Signature: ypj3ge4wr1c9eno6kg61enx7kw9h5cue
-X-HE-Tag: 1774216036-199451
-X-HE-Meta: U2FsdGVkX1+bdSkmwItoajaRJrCpoXp8Bn7p8icU2Xc11nLA/V/PBCtVGzTnk5Ez3xZprM8j2ASV47sdW+AGQnWR1mjwWYaLa2lXPhfrhuardE6EBxhFH7fxW3XD0YPT4+KIG13iGoHpHuCQZkIHpmTHVzN03nbMIMjiL+Gl5gPVquuksvnJtqe3SG3oHYXSv8SUcOlyZ8ChCSlWJJSFOw6X4uWaeqg+mGieyj0RT9hhYea251vwOEwP23TimLiX5nh6YvFRfTgvEZm3XagiiZNWfEPwTRYEfT1QPnZXzkhkcfmdB1L5WFil06rvNzLgW/BeCRQP1pKEc0jlGdkdYbwhJsQOI5hpbqaQdUBR4NpyLNi+pwmk56/tWATv7lblUpxs48Pr7GmeZjZEdUzjSqY+5sQuNTg91Ig06tdsvEwzn/q2FOliyfQaGHGk+DN+c56IM7LSiMOLzP9hgWsZ+ucCMMEgp7yrjhiDobBadqnDJQMBsDt+D0jeAXf3EczHMQ1pF0eLNOFHF8HWN/N4cenIIspT4P3MAIhttUO76LeH1+S2whxGk7yu/2lT+SrJeMrz/S32F107+72bSgpIxBzccS9kVK0XyJgoSy3Zr/wNGv/s9/0b/9dI3mjrXJlkaWgasjMOkkKrBWN8pRr63LZGGUicS/+WdLrAixC2q+gpCBSmG0wb8+TBC2WB6l0SsC8o5fIlFwGi2Ib9CnmdsAbyvwvDJt3uPkcO7DO49LaPk5keR9wJJV0WHNM+HNSLQ4fjzRwsTZ1W9v9nczSoN26z0Oqu9AVmqNKDJfL+6d4WIpmIQ+yjlQsxINziyrEO1X42cXYJIFG0WuP05Gd+it6EJ1fDGZTpz9hmu0/oqpVpZEzfRRHAzCDiV1BwR/x/+07mljWDTLVeSH/exKHOcS6OXQsgRRiwlYXeDvrJp1cDo/jr8bTxxTVJhMAPShfBZ05cFyCJKN5LW+RRlmp
- qlW/XXvb
- DyepemUv7KpHPuwXjv6Wuv7rGqK8X0ZiUzeKyhUzN3qSjiNtqhTeveaL3yrfnxmvN1144XZERATLRhGrjVjFhOf9l6Td8DCHXxMYkuLztMgXmtcctdjspRXOrfgj9+od3TaD+uOZNJ6R3h6fx/wdNh5ljGbjVqaIlxS+lZUor2Wb7T/2g5Xs+AszqDepK64dC5GwyJ8EVCUKzqux7up/SroNbJzE5K7bdOJtWpkjqldYMqyLMQqOg9DOd9TDDjgYTvrbmJ2FmWjTJR+fhd48hD3jV2g6VbRgKsmL+u4ulAf+bAz8gCUwDhs5CF19+eTGcQuzosCEBOwyEqCpSTr2U8rD8lOj7k+bQDNbZJSuW5UVr3bTkOU29yF05wNRRtw02ktbwG9crN/VOwHRN0WUIGu9HFo7xKj2p7QzyGpRsoU2solLGaXTeR0yZdFfBlRxWNiwmClUCx3QKN42/Jni26S9HXpQ9Cq48TD91rsFbT0cH8wfcFaZgr04iB3O0fPW0ZG+bsxiHdOOAm6izyVIIgnqDvKQqouIIimEE/61UsUJl6Ht7RvpTcDiM/43TRi66sjepGTZZwIuTV2JrNsaFsdsMiA==
+X-Rspamd-Queue-Id: 279FD40009
+X-Stat-Signature: paaoyzbkr1ae414h636zrrxojgdof63q
+X-HE-Tag: 1774216423-546608
+X-HE-Meta: U2FsdGVkX19PXZFd0TJNfJxTq7pRz2l3yh2+RZx8gELfHI3ARw2+p6M6FaNRPuAH03ZhXaS5VxzRr868+G1oRioFrw+6Rd1lfWtHPj3wiAQYqxkSFUgvLv9Ogo5VUuVw1JRZQRzE90KHZubFu/pYRusrkUwqgY2xBiLCkuqk6It/Gn9tIiRMV60YOZRg9a4ZL4FklbOQiDE0oOkeG4urThtvnvhZhKP2+wtk7pCZXFH382NzXrNm8Wii80tuIUISct/DLdD3anC0mQgnOlEH5bv7uCN+2UVkUhwvpyGODSaszpnuaIYgBOHfA79pPa8zELGXWvqMFTZP1vopTgbvnIMSOqUW5vd+hQ7ifv8kE8YlyJUbTHhqr220I9DkcNALiLnkfavwPCVcTmSQFRdEhDSIfCPfXFa/Z2O4D57omP8FlPLC2cyMkJTayReBlZUWEWmlOyTZnp/U7fjGDJ/qYwmDIFoGvahPmCzpTi877oN18jjLYc5HcGfyUHhck/e5XA1nK21OUhRut16YHwSWNJxljNRO3bvrtprc2KRcHlt64mcEddoLUNaimDyC3huhohYLOwIr3Gkdh+XK6Ki72ilJWcuFuNTorcazJy1Y1zuZwoxAaxqRicWtCdghop5h8PzzTd7uJin+Al3Jd9ohTv+XCF23K+v9JhuvTrcPH9dUi5LfCqkg60hAMbep7t/HpqYhqpgpyTiKQqhZ2hn1xdbDw/ayvT493Unsjh13N0m29VjSwns6Lfn/bvGQQuDMhfbYblj0/+6k/KJtwFTtHuc9jXfVk0QkZ2+nIw801VOeR4pIWa/MKD7oie4Ko9A7tkLSLr9OEW+rebywuXHw3JNJfvZZ9wNXqWcCb1K+a0cyHQO56CSnjhFp2U/Zp6WIXI6WeGlYIy5VGoHzH1KL1AMtZtQhjLDLnY2k42hcBKdCELWmK/ZrdJnRLW2aiouZWJEEoQOLwHENkR/bCYs
+ zhSSeARN
+ VL1oH2ZAiscnFwGLEyHMpaqDGF7NM0xHoCR/kFgxtVesRW7N75qIrMqbMw4D4lK71BFSoY9NjVn/l/Bxs/78s0zJq+/Bkyc79C2A5abHA4K8xBdjKIAjJRu3X9dOD3mfpIstREzyu0odhIFIGNibYl6QtstG/Ft3JDzNVsIGiq1D3G/zcPUjwxZeKgj/mhm2NEGERFr7SyyMf6zq14HciyWX/PxWS+O37aG8oQAKg7fcA85taLshkipRQa9OWVAV2moKUi5WQNyw4ioftJpmNTirA7hiixC0bKXP39+yXlxWYOboGoHTHcsbuTAHBOHf+P2Q6D2JokFDsmX8rnvqG5VLr84x/uktt28QHSzLh/Nt8vGhgoVpBTmYpsetuAAOnrRPiBEtn5XzwLog653thVsJ/464+UHoHvndh9Tg3wbnYIRrhgaScZj7ohXVqXOENUhkdmuaTRNtusRINsuamOOUSyPf4l3orcr/BQnmBBWZHZUkxIn3m1CXNZPTHwD53ng0QRWHuuYiY5kq+8VyoA1+8htFW0f/v0t0zP1/7UYgdOXgwtwGJNlrKZvSbcY/dBq3A/KhxKbFa1RDPJM6cR8cT9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,25 +160,38 @@ ch
 >[=2E=2E=2E]
 
 
-Hello,
+Hello,=20
 
 
-Here are some benchmark results for both patches indicating the need
+ Performance Scaling Scenarios (Speedup of New vs Old)                    =
+                                                  =20
+ | Scenario Description      | Speedup |                                  =
+                                                  =20
+ |---------------------------|---------|                                  =
+                                                  =20
+ | Typical (5s, 1k regions)  |  1=2E9x |                                  =
+                                                    =20
+ | Large Scale (5s, 10k reg) |  6=2E9x |                                  =
+                                                    =20
+ | Multi-Scheme (20s, 1k reg) |  4=2E0x |                                 =
+                                                    =20
+ | Idle Schemes (10s, 1k reg) |  6=2E9x |                                 =
+                                                    =20
+ | No Quotas (All Active)    |  1=2E1x |
 
 
-Benchmarking Patch 2 (Division elimination) with 1024 different attrs=2E=
-=2E=2E
-Old (with division): 0=2E376372 s
-New (cached value): 0=2E265899 s
-Speedup: 1=2E42x
+This here is a benchmark full of multiple real world scenarios (made in C)=
+ and the speedup
 
 
-Benchmarking Patch 1 (Loop inversion) with 10 schemes, 5 targets, 2000 reg=
-ions=2E=2E=2E
-Old (nested regions): 0=2E055627 s
-New (inverted schemes): 0=2E016167 s
-Speedup: 3=2E44x
+About real world usage, this improves performance massively with most cons=
+umer based systems=2E
 
+
+V/R
+
+
+Josh Law
 
 
 
