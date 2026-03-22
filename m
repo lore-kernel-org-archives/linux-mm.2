@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94681FC72CB
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 16:30:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F49BFC72CB
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 16:38:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAA026B00A7; Sun, 22 Mar 2026 12:30:42 -0400 (EDT)
+	id 4608C6B0089; Sun, 22 Mar 2026 12:38:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5AA46B00A8; Sun, 22 Mar 2026 12:30:42 -0400 (EDT)
+	id 438956B0096; Sun, 22 Mar 2026 12:38:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A70A56B00AB; Sun, 22 Mar 2026 12:30:42 -0400 (EDT)
+	id 3759E6B00A1; Sun, 22 Mar 2026 12:38:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 921496B00A7
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 12:30:42 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2A6F38C66F
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:30:42 +0000 (UTC)
-X-FDA: 84574237524.15.8007174
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4A6B140011
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:30:40 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LeTkX1Br;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 24C2D6B0089
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 12:38:04 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8F7C16031B
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:38:03 +0000 (UTC)
+X-FDA: 84574256046.21.89AAACC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 27E7C40006
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:38:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dOhov4a1;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774197040;
+	s=arc-20220608; t=1774197482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D+ZF+otkFviPY98XYLdHdK9Xx3/CvrB4tIX1lMKECaA=;
-	b=nFWOPzt65kY2N7PL68S3ifptI7T/zOqg6ilkJySERa5uXkJXUO1/dQnYsw+ozm4nY4Vwan
-	wYJXuFIUgvWb4TrEtXKwx7tM+7EPG2ERxlrVT+ZemvZyW97rJJbER2WGiiv7sj9v7mtjgu
-	7Pl9cqD3VLCvp4eQbUtdFxaDdMNqsy4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774197040; a=rsa-sha256;
+	bh=St9DqCkoA+edwrBdnQxOerTL/vW/X5LFsUvFOc6gHvM=;
+	b=Sr/2ebiqVEiCxMO2eg0Nk67zSOi4qGuqcJV/SM1oj9+QwdhcUdK+XIF5k7tXxcydPunvuX
+	XKI7fAY2rT0hjTvNjUrwcll3C5yukMz9uv17r/Eq7R41z2BhsWqM5KvecmZURLRJFcM/20
+	kfI9Xph+/WAwtcqkHrl1o8mOU8CtvDE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774197482; a=rsa-sha256;
 	cv=none;
-	b=ci06CLueDjqFg1GgtFv3YnoeZ/nbked01zZNmaX6mx2ap//dLgopK/E6kcgA9sYINlnYPE
-	bKOOHC5QYenx8RQh25o1UltpEVFssYH49AwPSXLcxWA5YElZ9ORrR9mnegv3AgYYXonBEd
-	Nx7fAUqrOtJlxKRkBFH7yGdZY2BUAfQ=
+	b=ESHUTU2FKdRwTMgE4p9Q4cMHAboaloKkHBB+TvPghlzfPKJpPuilsJnmopg2dIL0EDxdeG
+	fQhSbzww6h0/SeFQQnv9+165sY9e28Y8VEbW3HIhL0EY7c5GE2i9oi4wHlYQnv8jfA7xDh
+	eKfWOCwubPag3TCXZFrthDE2Vs5zA8M=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LeTkX1Br;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dOhov4a1;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3507A418D2;
-	Sun, 22 Mar 2026 16:30:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A872DC19424;
-	Sun, 22 Mar 2026 16:30:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 84A9D600CB;
+	Sun, 22 Mar 2026 16:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59FCC19424;
+	Sun, 22 Mar 2026 16:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774197039;
-	bh=x1lYQ+SKQla8gR4ZqJZh/SOIDQqj99rU27YfBxGWgUI=;
+	s=korg; t=1774197481;
+	bh=Sdszyg23QUequRorJfJ8eCM3MpMl3LmBaD9hHrjRhUM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LeTkX1BrqPg1yDyhaeOy+mhb4CF/doeGewbsiYhfQTm8829HchiWbyuw2uwJXrgP+
-	 KrjM+yUz/3IU2zJfB2Fx4gWXiLyvHXKgYPsAlyTO+dBJfgdglst32y9XYR1k1zXjSL
-	 EF5RXyoan0yKQWHKlt307EFH7u47lkJ4R63HjziA=
-Date: Sun, 22 Mar 2026 09:30:38 -0700
+	b=dOhov4a1sDuQj5+1MN212N1TAo/J3qkxJjmYWZEUVkZdlG3PDOPmns7doRb+wDXyt
+	 aaqomisAHnfyYTgwx2obNU7EXOTh2fY7t613Nb5wV7KirPf4XsrPtZUJaR0OZwV8Q/
+	 Zk10b5lxAWO1geVx8TzUzfX3qIG6zOHDE/ENZzZA=
+Date: Sun, 22 Mar 2026 09:38:00 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: rafael@kernel.org, chrisl@kernel.org, kasong@tencent.com,
- pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev,
- linux-pm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v7 0/2] mm/swap, PM: hibernate: fix swapoff race and
- optimize swap
-Message-Id: <20260322093038.25a7fd51f5d564b85815db7a@linux-foundation.org>
-In-Reply-To: <ab/E5SaSAlAKLCwD@yjaykim-PowerEdge-T330>
-References: <20260321103309.439265-1-youngjun.park@lge.com>
-	<20260321105921.19388b7acbc0f8d6036e29a7@linux-foundation.org>
-	<ab/E5SaSAlAKLCwD@yjaykim-PowerEdge-T330>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan
+ <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] memblock: move reserve_bootmem_range() to memblock.c
+ and make it static
+Message-Id: <20260322093800.27f8b2d249817270bcc6a437@linux-foundation.org>
+In-Reply-To: <20260322143144.3540679-1-rppt@kernel.org>
+References: <20260322143144.3540679-1-rppt@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 27E7C40006
+X-Stat-Signature: 1xrijrcustskb9amg6gxrtg9xrsqisue
 X-Rspam-User: 
-X-Stat-Signature: 381sry9ogxsj1qp1g7gtc1rky17cfxju
-X-Rspamd-Queue-Id: 4A6B140011
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774197040-189986
-X-HE-Meta: U2FsdGVkX189vGiDEatpQ7unRIidnEYgrusP3mxTa3OO8IXLuKtySDLiKTjU1eUcPbRBPMsLyfAN7zE40ZaqKUYd8/w70Nl0RMOPddgMMz68mXrL64xHareXWXtlUX+s1TxG7LOaKNwoBk5K73cIdhldH8/gAcGfq0m2a9Hi/VaUlIsxE1rAQLaCMB1mAl07bEs4vlwkS4wHzGzh/po6LWVuXujZG8cfZE6FkEuslVV5z3z/Zj2pMBXnLvmnvudcmL22nd45h/yE6GMvaXtoB+IH58YgEvXdG/Jktug2zq3xV4UoswrsUeyWFmXQOjY12labHEgsxFN/fvA7pImqImukS4zgO0gnupkVan6mZAOOVvaswbwal8jUnbWgJM+R0So61iV1UTPuANB53K0hAt9y6cR3Q/nvWbwqqPDMkM8+huT0ULfFsAFimZAh1wWMk2j6sSRkKP6gs6PfVGEGgyzKq3Lpofp6pW9dpmKgdgIlbhaKgoJCnBeIbJKlVOXSuQuHwkmonRJoUECaKRV+w2XeX1CIZWRofiwb2xzP4G9bXVINymbxApfhcNXRjWCJpJsY5ud7IA03d44p2BmzrqA1J8l2FkCVjpJdXybTMNb48/coqUPyeSU+Td/5rKabPq4EW5TJDpMQb+HhyJOxhrpnizjP5XCMizqWj+L1WbU9azUW/H/DO97POxYCRABe8JSHyqqjqyZbvEvy9zQrIkkkc3Wy09W6UpytE24+p3/Cqdxt2XSFQ/e3cwt94hr0UWHCj5c/Vl6cxgmnblQzlmK9v0vBiDpDnAACaAWDt2tv8q0xu50qgyRBPqN/RPxbgoxpm84pqTNtIn4NwfEOFuBMxDJStSqMDlLhPgmZV6zYwiQ4QLQ5FtB7Gs+ZT/XqLivleaR88f1SIlGz2NsG2WmQQtd/gOoGL2bWi2lK+yHpYScGYDKPO2lG3YuftT+nAosna5doqAsYF+BqF2a
- xOtbDCBy
- vyi/c4Vm+NK9+oWEt4+pgCbd+iv522ECACOnbZK1NHaqaDuzuQV6nR+QLCef4SalvhEJrshw/xpqWt/c2zfiSCRivaeki6TGUwLmCgN2WHsCPwQKTTAw/vrwp8nz2+KXKlZfGM03DN+7hdakNBvSBLrgowj3WzEXPCCIbfncza6KqwvojuaoCuN9JZnIZXB6Cv0Dp9MLZpvkMNAv2E5i/fkiQ6KdT0YNB7CBWyMVt+D7ZahR88fpc8tNZ3MwoBJgN4M4XyFI6cIGyhDQqH0lbKsFEcrwniv/BW18IlYW5uOJ/S6eQLCZTudHIVu2wh1IFXCio
+X-HE-Tag: 1774197482-602918
+X-HE-Meta: U2FsdGVkX1+P/u3fcLDNhrPWZbEufF75vuu7gQdOOenmQKv1jWl9tsnN/J5CLMaiBc6pC2ybLQcptKin9uzAizkKPk4d3Vl4ZubAAQt4rVLuDLKQUKMi1gUy6L3i3t0X5A4mLjYUw2h/5lk2aSg++KnEVJnMp4QbGZxaioq1De1KKNlYF95il9nZZbjH3eB4RdzILRxBGVu9KBLktsEyZeD4Pc32cKDUwfYNo6MxvZZwCIysSsdACZPUMnM8Zm5r4vkIowlqgYpcAfC138txD0M7Z3bmdgnkrSp0DAn5MHiO0Xg3aWhlORBXhI2qWeOZNnFHbAqq1LSVmn08GX3XleiSzinQQMPQNaMVy/XXIL5PvenkRg1mfbVRbMln0VAaeUZ1pPPPVGiPffQS1fro64kl/rdMpj69SpGwgOKL56nIxp2NX23UNqgcrNjOkl1oftsCDMflqpLE4EOs8521QTA654u3NnNJJsgsZUb7QBcJEtnE6ar96TmQyP8K8okczq0z3qSIcjwYIlmS00TPE19Sa7kog/gvjFcKBXnSwKU+fwVdC/0dNAdLzoQYirfaHMtfY1fOV284pzRbfBuS7uZBs4HeHMcLQ2eJSWYW14W6fTmwJ0DQ5SVetJf3WRcz4xSDZ/7gSMtxJme7Lei1el4r62ZL3efYVSZsTJYc2xR3zN6pNEPbW+ymH1SsccR54RyRarwFptLw5JRz8IUxajMk1iwIjk4IAG+UB+3EAwLT9S4gMRi8mE5bOzN6cKDp/Feyw484glkwIQUdFIfUhr6NqBBUmisf9z245N86Xu1pVj7Gvu2NHTJTcD/Xie53gKOXEXCMgu9u7ANE3qM3HkPwhGmMhSqzy+IqNmlRzpdjtcGfb/OHE1pzcZoWma5S8594kzMeNyBqaPOnQ7PlFu+7sg1OqtFFoHJKUpVxkyLQPPgcw824Slfrg2HED9L08UVJoUx3camBmoTAkqG
+ aAe1nV7+
+ R6WWAj4yJy140Gn23G+NArh6NfKcKRrinVq0UUhKehM+l/Aa4BS8I5L7+aR8q/B4B2FkC3tlK5jTdhXYupjlFwSIrIlWas1W4L1CSY00ISTr7gr+P5IfPDrZl58Cw9BAPcnPJq/yEoKGZicgS1pDt1qQ0X4vnkFyoI4aWR0DHhcofoqpeYG8WNxMjax0YnMg/oprhhy+Ijkw8dHM0G9O1SN2AM27FhzJkLXr6aEpAIbWaFBfV767i/iXtCFVgK2LUZcVIELU3idJn+9YBBCi9IHUQ/78xS9flI4BC57tWzt2gm6AisIXXniW/BobAsK/1ho0rSNU4m1zvi16RoCUaGmG92cftpgUVEmWotH3z722ctzj+OaOGqM6cWyGARNZ86jso
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,45 +93,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 22 Mar 2026 19:31:01 +0900 YoungJun Park <youngjun.park@lge.com> wrote:
+On Sun, 22 Mar 2026 16:31:44 +0200 Mike Rapoport <rppt@kernel.org> wrote:
 
-> 1. Grab cont_lock on the SWP_HIBERNATION set path, or grab
->    swap_lock in add_swap_count_continuation(). This would
->    serialize the race, but adds lock contention on a path
->    that doesn't really need it.
+> reserve_bootmem_range() is only called from memmap_init_reserved_pages()
+> and it was in mm/mm_init.c because of its dependecies on static
+> init_deferred_pages().
 > 
-> 2. Convert si->flags to atomic ops. This would be the correct
->    fix, but is quite extensive and better suited as a separate
->    effort.
+> Since init_deferred_pages() is not static anymore, move
+> reserve_bootmem_range(), rename it to memmap_init_reserved_range() and
+> make it static.
 > 
-> However, on mm-new, Kairui's series [1] has removed
-> add_swap_count_continuation() and SWP_CONTINUED entirely, so
-> this race path no longer exists (verified by code inspection
-> and AI review on mm-new).
+> Update the comment describing it to better reflect what the function
+> does and drop bogus comment about reserved pages in free_bootmem_page().
 > 
-> [1] https://lore.kernel.org/linux-mm/20260128-swap-table-p3-v2-9-fe0b67ef0215@tencent.com/
-> 
-> I based this series on v7.0-rc4 per Rafael's request since it
-> depends on PM-side changes. I'm not very familiar with how
-> cross-subsystem dependencies are typically coordinated -- if
-> rebasing onto mm-new is an option, the race goes away and the
-> PM-side changes could be picked up separately. Would that be
-> a reasonable approach? I'd appreciate any guidance on this.
+> Update memblock test stubs to reflect the core changes.
 
-The kernel/power/ changes are small.  How about we prepare all this
-against mm-new and ask Rafael for an ack?
-
-> On a side note -- the AI review is becoming genuinely useful.
-> It might be worth having it gate-check patches before they hit
-> the mailing list, rather than reviewing after the fact.
-
-Totally agree.  Problem is, these review are expensive and permitting
-people to check their work before publishing could be terribly abused -
-anyone in the world gets free patch review.  I don't think Google wants
-to pay for that!
-
-Hopefully over time, as engineers see the value in this tool they will
-persuade their employers to purchase the tokens they need for such
-screening work.
-
+Some minor observations from Sashiko:
+	https://sashiko.dev/#/patchset/20260322143144.3540679-1-rppt@kernel.org
 
