@@ -4,103 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7668FC72AA
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 07:08:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C4FBFC72AF
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 07:41:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC7406B009D; Sun, 22 Mar 2026 03:08:50 -0400 (EDT)
+	id 504ED6B0099; Sun, 22 Mar 2026 03:41:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A78A96B00A6; Sun, 22 Mar 2026 03:08:50 -0400 (EDT)
+	id 4B61D6B00A8; Sun, 22 Mar 2026 03:41:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98EE56B00AF; Sun, 22 Mar 2026 03:08:50 -0400 (EDT)
+	id 3CB6F6B00AA; Sun, 22 Mar 2026 03:41:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 899BC6B009D
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 03:08:50 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 06A4F1A07E9
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:08:50 +0000 (UTC)
-X-FDA: 84572821620.11.CF11CB8
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 536E540009
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:08:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YnUZhPM5;
-	spf=pass (imf07.hostedemail.com: domain of 3fpW_aQYKCPsvxuhqejrrjoh.frpolqx0-ppnydfn.ruj@flex--surenb.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3fpW_aQYKCPsvxuhqejrrjoh.frpolqx0-ppnydfn.ruj@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A5A76B0099
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 03:41:07 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6D287C283D
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:41:06 +0000 (UTC)
+X-FDA: 84572902932.25.4E9D060
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9B378C0004
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:41:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d12oIyJf;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774163328;
+	s=arc-20220608; t=1774165264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=bUUcI+G547AnXOqEoU0HumPgtMUcHYFJWOSvPIWQmuo=;
-	b=6ZwHRHpaPisewC9aY8wRtHLG73he2bFXD7FwRZJsbvn6W9X1jw3YqUKynttXSVnd43ArE3
-	X/BqkKPEEswvRoE2FKvQ2wkBtzmW39BrU13cPwjT+cwL30Dh9tJ8wRoheaxiDiFBp31Ebz
-	FCMuJd1Ct7/6tdBCskkOmq0/6+pIvTw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774163328; a=rsa-sha256;
-	cv=none;
-	b=06aw/FA1E0W1aZi2lMslMMLFzODFenIeufkfXbi1jOaj+Gv20UbkXsRkiE9QMHJNWpzziT
-	XCfjsHSRixlkA5n/bVsEf4jCMFodltv9lr5WQyKB4i4MluxOPRMQSKYxXJT5urWnCkrv2a
-	KYrO7iFHqVJNQdxulNSzVqMGBKRi/Ds=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fl6Vo0CZ6glcVLyy4yu619dgSiIfKOAp/m+BURB5CJU=;
+	b=yAP56X044qY4oYMtgkSl+U8a8DJo4MJz1XpSEaIznmR+uVp9In+Vw44kAvRDHbFRRaMEq+
+	v5jqg4c1Q8lxRScE7UXUgw3HWPlrsReQZY9jcZ+otH3oIkMe22r8/Q+GHNgcLmnD2/+2Xz
+	UsMTTYqQa33hOBFgrRS3hcP7ouYXdUw=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YnUZhPM5;
-	spf=pass (imf07.hostedemail.com: domain of 3fpW_aQYKCPsvxuhqejrrjoh.frpolqx0-ppnydfn.ruj@flex--surenb.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3fpW_aQYKCPsvxuhqejrrjoh.frpolqx0-ppnydfn.ruj@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2ba8013a9e3so2566097eec.0
-        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 00:08:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774163327; x=1774768127; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bUUcI+G547AnXOqEoU0HumPgtMUcHYFJWOSvPIWQmuo=;
-        b=YnUZhPM5B4TLK+dElM2gNTNGQ3FQ5vsDC8a4VTiI+d6RMxoxhHEa35eb2V3t0o8z0l
-         JquGv9149D0D67SuCU3/JqJeoSrl2RMtN8rzd3Bnk2ae31jeb2tcdVCMSix6TEsHnp42
-         gsSM0zOwcbmd7K9WT0EURL4CxOuFZpKBbmWATCO84K5Qk4f4HBaaLFltziIOaynSHAy+
-         Ik/YK4lRvimJtbLCZvORze3QpIsL+F9CZmXDxRYqhRPM1d6kZGPw9YNXLzfe3I9IZb8r
-         zid8N0HBuaJ8oaMmPMmiyXNHWFMiyD//mddF2s187A4c2zRaM3ei8PzABJwRybxiodWr
-         kCwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774163327; x=1774768127;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bUUcI+G547AnXOqEoU0HumPgtMUcHYFJWOSvPIWQmuo=;
-        b=YGydKT0NwzkVLXH+RLx0BhseuvcLpnCHGMuz5OEnXMugKAsVYF1qiMQWjXnX+Bnb/B
-         nSnzBOgDujvBc5oKnReRhHyBUMk76BR9JWoQT5jONQY8xeO8dV/81o/TEXQVctNJvy4X
-         YfwXUyFcG8CCC2PdhN1zgshtPrKmsAXPJ+Osjhx1Eb6LWm4NTMDa8Gv8UMu8w8mroMpM
-         4S2w2hKA0Utk9FsR/GXlrcAdF6i2hG7/g2N8Y56QYFJ0HerzJ+PX4WVWupXMzbBHIjUv
-         anoQe+I0qpHSno8gbIIOV9tu7bo18ehYG7WICeyvzJhysk3OD+Vjx8gY3pKzR7sgJuh8
-         gdNw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhaMgtsj6u27NPE+dmQjb0HnaZ9vvvlo+c0JgrGfF/WR0mlYC2s6wPeS+4noYuuFM+ba++VP1ThQ==@kvack.org
-X-Gm-Message-State: AOJu0YzBlwMMD1PlT6/YUhyqteeFKt6T/mC42VY5hEe5cao/uFUyLHpB
-	GtYd3b+MH7YiYwlys69jxR7brJxhQQP0YRegoK3U4EhAcTiH6KI+k8jSRguAbQgDUro+wiGDocM
-	1BfdrGw==
-X-Received: from dybme4.prod.google.com ([2002:a05:7301:1884:b0:2c1:264d:62f])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:6dac:b0:2ba:6854:8d4d
- with SMTP id 5a478bee46e88-2c109752e05mr4064629eec.20.1774163326701; Sun, 22
- Mar 2026 00:08:46 -0700 (PDT)
-Date: Sun, 22 Mar 2026 00:08:43 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <20260322070843.941997-1-surenb@google.com>
-Subject: [PATCH 1/1] mm/vmscan: prevent MGLRU reclaim from pinning address space
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org, 
-	zhengqi.arch@bytedance.com, yuzhao@google.com, shakeel.butt@linux.dev, 
-	willy@infradead.org, Liam.Howlett@oracle.com, ljs@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: pc3dyqaeggoj5etqo3w5d5b6ke8ds77o
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d12oIyJf;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774165264; a=rsa-sha256;
+	cv=none;
+	b=OQzj7YKkq2bpF9nOuw9kSpdLxaaKB9hrFlUoYyJv4dOdHEibveqsMTbxW8QYF/qxARmz6I
+	iG4XB4HmEmgA2af1MRNzXuojDdqKmSIaNis55I4p6Q2e9YDpDFWJFxt0qm4fjcreSwA3lA
+	Dxr5vB7q8Lofe2y+KrzMLzBdM2cGtdU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774165263; x=1805701263;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Bb4QyRenZ7daQTIah7HNDKj8CLKXNag8jCu6QnIEdBg=;
+  b=d12oIyJfImpwvGDel1dtKfa5MXe127CkBH4Iq7OAkS1PVJgmzQLdY3pm
+   85/rqs4sbyEh4UVZLSyS7jiLUQr4dxZerEXtsiRrfsVnOo8RhxmEyE7qJ
+   NEz3UTVgCcoBBGYoSYbOCgb14dc5ULExEFm7K8o6RZHFUfjIOsXKpsh3r
+   UMB4Dl2nWxfntHotVz3o/maVose5MT6Zyee9P+2J/mPoBlpmCe7rlkfaO
+   gVcQ3tMPUh7srhqoKjiTEktPvXP6eZWfBvQdcKc+QTovr4U4BMervE+V2
+   isBWVvT9dc3adQE2dCg34qFPWiZtscBxqD0rTXeQcu6eJLTkvvIFNC25f
+   w==;
+X-CSE-ConnectionGUID: DgcZ+Iq4SiCaRcXGNfTaeQ==
+X-CSE-MsgGUID: 2DYpMjHOSyGh+sXjXtsfTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="74218073"
+X-IronPort-AV: E=Sophos;i="6.23,134,1770624000"; 
+   d="scan'208";a="74218073"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 00:41:02 -0700
+X-CSE-ConnectionGUID: aubtGZfvTP64cXi8tj3R7Q==
+X-CSE-MsgGUID: iuwTwHhqRGKMtknP2CxQOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,134,1770624000"; 
+   d="scan'208";a="223749971"
+Received: from lkp-server02.sh.intel.com (HELO d7fefbca0d04) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 22 Mar 2026 00:40:59 -0700
+Received: from kbuild by d7fefbca0d04 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w4DQb-000000001pJ-1PUq;
+	Sun, 22 Mar 2026 07:40:55 +0000
+Date: Sun, 22 Mar 2026 15:40:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>, Baoquan He <bhe@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev, Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
+Subject: Re: [PATCH 1/5] liveupdate: block outgoing session updates during
+ reboot
+Message-ID: <202603221537.TfoAS2LD-lkp@intel.com>
+References: <20260320163720.100456-1-oskar@gerlicz.space>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260320163720.100456-1-oskar@gerlicz.space>
+X-Rspamd-Queue-Id: 9B378C0004
+X-Stat-Signature: q4twmy5obry1o5mw8m9a8hi5y1zzk8mt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 536E540009
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774163328-381803
-X-HE-Meta: U2FsdGVkX1/4ExUgz0QoHZPUlhqFRD28f4l+Q00nNVTqM9vy6dPfi+4Usxjvh0UO2DVpYknWMKMjTRJYgbkYRLU1xh8SDlJX+wAPg11lhnCun6Ahj0ctihfcG5d5WWnAQnoV3CFdQ+tw9+Tzubo4DOc7arqeRfkklqvnGBLU/JYIVc5PNVeiQnI3DjT1E5148nl2U0Tv1rCYR8yfwb4JSzqx3JOpRGI3OtjUTa7vq3PH30QZYfQ2XXnN3CMPDYu+Dysc71q6dn6KRcIMcmZblBK4DLSH1nBKHCcyoe4VI4iX9zxaCIcoI/QGtlC0E5vTiMoZgQkEOecB9uuYNTmfRuKWHlabqSAoRyV2JDMYqmF42hPF9MioOTpNmpilOM0HKuW+p+2Zfhwei5aHRSHJpcJnResAUu/6SoS2JZMnfC4Lgz+lOzI9g4kh3nm+6FzMd0FFPlyuDG1Ve1HqXiGFCigtPHoG6i5MktMiFWSPDIYyIJaG/ec+fvjQ0GrmF7WRw1RtyOBIOctm76Xj1bbodyW5luApayM75AsbKT9BtRTbdIhewnNaylr8OlcFA7Xyfkqh0+KZR16+vOjmnpdoCRh2d/xVE8CwHUQfLrhOm/WUb0fDNp3MUST41dQAXNPmw+kfNeBMymYUgd+DlSTda88oYOOPhEis+k9NDZ+uJFTNzFiUDlFBa43b72ntqhEigDTYq9BaefcLy5gbmZHy+XWsNm/h2l37Nn6Xsd0dWliWnHPL1tWRd1fETtUyywactLerFrxpezWr9yGjT/1FOdfSTFkXjg3EMNFThMiOPbqYSS8GOVVb680hcv6mcuKZqVyUyYZ03y10ceEmBQ9sA7dqG/xHEU+lJVNiY1JnzDg1VIhEMF7sSU1HtT4S5ydq5E68qTX8Nwhn9Cp4UgT0Gsk05TjRAg+MUKHMSSc2TGKtquDSHvGpy3Yl8sPbqAAAVT0Ie3xHIYbSNAKFHEv
- ylE+Tqvv
- 5gPNT/mBMB2ASRVwPlqpYAJEQpIM3cwwrvw5jI72z00vzT9qOCFsMTZZPYnIlmC8iJKzSNIvOeV3RowhaTnfaU26XlLzga5J1qRLBwzCEuDcxukVIII7Wvtv1cslBSVLF2AO3v7yRKjrK5KHFR1RzTYUfzGgx2dUnKeNXwZl7FjNLN978zzLq2S/jrrh3NGqpqoLeLowmzSJN+rvFCxwyHi3G+GVqbc9vxaG7H4A8AuBEFRlEodgFTun/2P3jrlgsWwN54h1CFO7UNt5Ekuskn0hTy5k2GKUx9bXwZL2LAtTXaBjiwlI7vnRqVeoBRJYdq9g9a8zvV3GVEt3Vd7ZdE0Wr1nQLijEZxUKMcyBkhSMqCjZxivHMyMj3adbq7vTZjUKJhdX5/+D61t42MIQ9f+/x0JYNLBrAk2Qs2FR81MAg1QDuUMhm+VgzVh466gTerJJKSVX2faobRSe4OIvIi4lA0lRXjdxLTgOc7hl4PAUsxwlT6Jh4BwOxVeaXerjl8uQawEybPUujBFM9qrAA1GKQWSf0e7aoVQYAYwjDaYHfXj/ET57Wn3zRTDs3oYmlj1GHPuV9hD0T2+KXZZN5Gfs7hoMlUVJPonMF0V99E/AbNOTnFNezlJScaw==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774165263-809819
+X-HE-Meta: U2FsdGVkX1+l9vlubvKZ5yx7w+wizAGkwk5ea8Fzqw0RGSrVyJCTnqnoRtCa72fegjBGKEe1qIh5GZIDDN737oZFq28M0fCH6WqIb1Sl6lL1Y+q/Px9SHsvUG2to05DlGKoUcLHui+Nb5j25G+t9vcAW6Nq+vmHXVW9uCWmD/F0gIUZcScjk89vF68aHErJmn+L33BDGYl0v2+B+Rtk06qf6AJl1SfK0m4w8kSGUWke92ZKU1LJVHdRoF6RRDLcU1/Pueg6mKLxnih9nxI6lvyoI9UUz6D8nPI0PC2uxeksWmMBIhu8zTWDjQcwTNaMp/f1N3orQQ9/CEWMnovT2LHTv5PZEYCbXWn800RbmP02JMoPu/Bt4SnrmTLXDN5/vGjt2XYG28/NQUv36zJZbC3zUQi4G3DpwexetRBVyx3UTtqaplETMVBMfRqCWyfnQOc4vCWoKAjTvH/FvvWJ5LEWyNdZJX/t+ls5Y1Sbwzo3Xah4OoK87sLNUL7nGT2YBM2WTpac+9FS1JGSEgh1dsI264CbyQp1Erw4H/hH2EnVaQnilduWh2A+AGXRypxGNS7TYODfMSRybyQ1MSLvbnZ40c6hdlYuZunvMyxBbMZXzeAcCE2y4bunxmjfy1vnafNRjT3uFsw1D5F1i1H+X4YSLwOWknACHEjerMjSs7DorY1mxT3wETlrudCABywLTp5gjlDS8y90V/Bf/mK2X1OSxBZylj+JV+hKvmKheYnec+vDi4vEXXChxtOpxSO8da8qkw+vwryPZGtasEMm1+lcoqZNHFuNUFTTprRjr8vmgfLlfb+t/LoNl5ewQuGhb5rsNrAf5PNfzV2gSCeffOciUes69gV2BZbYYnajJCZ8t0wTdXHJPo0QVZ4sYXAJk4P0lQd7neN6GMmySp8iW9Yt1mC+YA8ig07e//WVmfw6CcPG98C/vOycUoy+TQGbJWRhajpCcenrp9/wXuZM
+ RVKGQIHK
+ rU97x+JBTFeVySOSc4txDvQP3IjiyK966fTxPb71+w3hp4OBORF95AP0E8/CdlGhefovt5gG0jRtVq1TmLT3SaUTmHjCHg+rdv2UwOgagfp+Q72md6vqp1KpTcej0SAXwBKuNTEiltGyWac4r4XawigEglAPUHCjnATQl4In9gbZO6DfRBRq3wkszPTIoGU1gFXmzD+/YYMEicCIE1IOvC1ABhEP6pI4t+XGMOFFg2mXYQJCyrcDGIzfLCNVHxr6su0NI89INHEmFVFV3zMbl1J7n6WzzU6DfrHYr84QH5xdf/qsLJmbJanYKsh6aMt1Ux1Lh8d9YlBEyUWGTVSs1I6cP6sSyvRom9pgH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,55 +112,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When shrinking lruvec, MGLRU pins address space before walking it.
-This is excessive since all it needs for walking the page range is
-a stable mm_struct to be able to take and release mmap_read_lock and
-a stable mm->mm_mt tree to walk. This address space pinning results
-in delays when releasing the memory of a dying process. This also
-prevents mm reapers (both in-kernel oom-reaper and userspace
-process_mrelease()) from doing their job during MGLRU scan because
-they check task_will_free_mem() which will yield negative result due
-to the elevated mm->mm_users.
+Hi Oskar,
 
-Replace unnecessary address space pinning with mm_struct pinning by
-replacing mmget/mmput with mmgrab/mmdrop calls. mm_mt is contained
-within mm_struct itself, therefore it won't be freed as long as
-mm_struct is stable and it won't change during the walk because
-mmap_read_lock is being held.
+kernel test robot noticed the following build warnings:
 
-Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
----
- mm/vmscan.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+[auto build test WARNING on linus/master]
+[also build test WARNING on v7.0-rc4 next-20260320]
+[cannot apply to akpm-mm/mm-everything]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 33287ba4a500..68e8e90e38f5 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2863,8 +2863,9 @@ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
- 		return NULL;
- 
- 	clear_bit(key, &mm->lru_gen.bitmap);
-+	mmgrab(mm);
- 
--	return mmget_not_zero(mm) ? mm : NULL;
-+	return mm;
- }
- 
- void lru_gen_add_mm(struct mm_struct *mm)
-@@ -3064,7 +3065,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
- 		reset_bloom_filter(mm_state, walk->seq + 1);
- 
- 	if (*iter)
--		mmput_async(*iter);
-+		mmdrop(*iter);
- 
- 	*iter = mm;
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Oskar-Gerlicz-Kowalczuk/kexec-abort-liveupdate-handover-on-kernel_kexec-unwind/20260322-071016
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20260320163720.100456-1-oskar%40gerlicz.space
+patch subject: [PATCH 1/5] liveupdate: block outgoing session updates during reboot
+config: x86_64-randconfig-161-20260322 (https://download.01.org/0day-ci/archive/20260322/202603221537.TfoAS2LD-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
+smatch: v0.5.0-9004-gb810ac53
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260322/202603221537.TfoAS2LD-lkp@intel.com/reproduce)
 
-base-commit: 8c65073d94c8b7cc3170de31af38edc9f5d96f0e
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603221537.TfoAS2LD-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Warning: kernel/liveupdate/luo_session.c:99 struct member 'reboot_waitq' not described in 'luo_session_header'
+>> Warning: kernel/liveupdate/luo_session.c:99 struct member 'rebooting' not described in 'luo_session_header'
+>> Warning: kernel/liveupdate/luo_session.c:99 struct member 'reboot_waitq' not described in 'luo_session_header'
+>> Warning: kernel/liveupdate/luo_session.c:99 struct member 'rebooting' not described in 'luo_session_header'
+
 -- 
-2.53.0.1018.g2bb0e51243-goog
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
