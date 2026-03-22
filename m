@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDDD7FC72A9
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 16:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A276FC72C4
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 16:20:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 334F26B00A9; Sun, 22 Mar 2026 12:18:56 -0400 (EDT)
+	id 0034C6B00AA; Sun, 22 Mar 2026 12:20:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E5726B00AA; Sun, 22 Mar 2026 12:18:56 -0400 (EDT)
+	id EF6126B00B1; Sun, 22 Mar 2026 12:20:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 222736B00B1; Sun, 22 Mar 2026 12:18:56 -0400 (EDT)
+	id E339D6B00B3; Sun, 22 Mar 2026 12:20:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F4276B00A9
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 12:18:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99CE2C26D6
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:18:55 +0000 (UTC)
-X-FDA: 84574207830.23.27F0611
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E08ADC000C
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:18:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="fLv/fglc";
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by kanga.kvack.org (Postfix) with ESMTP id D16816B00AA
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 12:20:46 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9D4DE5B205
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:20:46 +0000 (UTC)
+X-FDA: 84574212492.06.6F78EC5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 06B23A0012
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:20:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=x4Beti0b;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774196334;
+	s=arc-20220608; t=1774196445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XbGgdAUD36VbkTI/d8NS+jT1HFTeOWKO8Rd1frjT90s=;
-	b=Q/e8WrGd9FI22YpWKxcoF1TD1VEhvBm0afEpDizBTaOaBzAjX6Byr0YjU4ZbfvLw9VcjAs
-	s3LcRSyySlhrue1Gc4vK9urG4sIs95fO1H8VY7WnoMaiqP5ffJAfDOCtgpUZ7Jgr7l9tRH
-	r7qLukfmd0/cR8EfEes/7qIjqjTr5Zs=
+	bh=X7fgBcY62y2+z0ntENHSQX8cKlryLPgzGLc2SlGZrro=;
+	b=00Xyj5TTChwjkFnmHJwQ0jQMmnYIR/bNxJyXphUltFHNoDh/vDFrgMv6R+Frc1h6TUQAFx
+	4RtaADOnKGCdvNKGbgkrY8JvtLtBvUOWiO8XTn7HhxLI7F1d2p55PJ3QDdwByZLkP/XuJ8
+	oJkaiwH0XU14zaCUnuEux7+u0XTp1Mc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="fLv/fglc";
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=x4Beti0b;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774196334; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774196445; a=rsa-sha256;
 	cv=none;
-	b=V+2WsR54zbPhI9j5iuOcjdj+/t/Sl2lJL+aqTiovfB6sPyTbO4bI73QBatD64Nm0DuRY5f
-	G0D6se1p1qFQTGEQlr3Yhrn+eXeCJdgrDds2kL2efAweHhSZnR9zJXbGBRMfmohSZVCROv
-	t6MOIo3tpNjL/MXEZBi8ofwyXMwFmOA=
+	b=Trpz3l5cxAmyZScdlxFK+//fotIawhhub/jTFw6P+5/rx9NCkjl3POfQ7urVzEsLhp8xdA
+	wUyZ/GR6LEK+8siiru55WnVJDjBpVYEmf6mawB5iWA+eM6+ERXh7gRo2EsqtxnVJVqkR2h
+	Rb8gV2WlUkCSrksiNt48FB03iwR2kNA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E45DF40537;
-	Sun, 22 Mar 2026 16:18:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A1AC19424;
-	Sun, 22 Mar 2026 16:18:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 703DD600C4;
+	Sun, 22 Mar 2026 16:20:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42C1C19424;
+	Sun, 22 Mar 2026 16:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774196332;
-	bh=pP5uNcSCgG45MH4/HYNrgZLlyFOBkKviWCQd4I+JIkE=;
+	s=korg; t=1774196444;
+	bh=dU2o8wRx1HOs7mgfEPnSerwmS4CS6CKsYEE58CKSmrM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fLv/fglctIByfcRHnORg/XrxwdIv0B/kVJnimOKezsybG+/3MrwU937EbpZ3tijLv
-	 AyMmCWWqOc7/dvDj0XN/Vg4lom/rQRMQ4xBMhtNDWNcW5MFQOHmBLPk8yClDDSL1K+
-	 X/2WfOlQJvR5TRZuCJizMs3MfxHsnT5HlmX87yaQ=
-Date: Sun, 22 Mar 2026 09:18:51 -0700
+	b=x4Beti0bAIFXJZCsIQLIajgVFAzEa0qdtKEWq9THzOedt0ZqKENKQ5iMKA3gbvAEm
+	 RJZA3LZIGvQz2IJTEJIH0cWxdzCRELUFVSKoW0dQbQO0FeEODCuGQ5yWRN6RruagQi
+	 RshVPIalu5SMQMFk/KlrdoeSCAEzf7Olx3lWiqEk=
+Date: Sun, 22 Mar 2026 09:20:43 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Li Wang <liwang@redhat.com>
-Cc: yosry@kernel.org, yosryahmed@google.com, nphamcs@gmail.com,
- hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com,
- muchun.song@linux.dev, tj@kernel.org, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, longman@redhat.com,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v4 0/7] selftests/cgroup: improve zswap tests robustness
- and support large page sizes
-Message-Id: <20260322091851.e965d3a2f0d6af5bd985407f@linux-foundation.org>
-In-Reply-To: <20260322061038.156146-1-liwang@redhat.com>
-References: <20260322061038.156146-1-liwang@redhat.com>
+To: David Carlier <devnexen@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
+ mem_cgroup_css_online() error path
+Message-Id: <20260322092043.2c411821c2b883ba86c7cbd9@linux-foundation.org>
+In-Reply-To: <20260322080142.5834-1-devnexen@gmail.com>
+References: <20260322080142.5834-1-devnexen@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E08ADC000C
+X-Rspamd-Queue-Id: 06B23A0012
 X-Rspamd-Server: rspam08
-X-Stat-Signature: ac5mx8qaeomd6mhmiutd74ww5pjyqa8a
-X-HE-Tag: 1774196333-166394
-X-HE-Meta: U2FsdGVkX18O6n2d9MnaMh7Ga6go+ocdD8jpHTgqfbCJ+5dWXVh3OBXrMlIm+5Yd7rPptMyD/HwxJMYAN+gmfd97X5KAlUmIL504IziqAez/fZQZih9SQ8bsVsJ9afkOaIt19+Sz7z2CBU/S6N94NiIAo+osYyuKQTEfBPuGm1QP4lO57Wb/9oTSSrTvZjKVZUxoj1G2YZxB4++1BIMHEkJ7CUJj77pb6rAVEdjhwN5gnWFV7XDwMHxuYydNdhKZWIBI3nq3YbWlAPKHDfaARMg7KtfDv2xCFVL/9HBwyf68j32HtseYUpBhf0QBDIagf8CJldbR5BXR+5i/tUclT5HEszdw9dGMwPeLQvY7kBea8b0+qIFFFXIxYZdiBUGTfcRL+n4ul27MxN7hlsMzJyu1F8gShayPjqDocJVMquQ3qjPnRmslrpR8r95L2Xha9JudLGydKX5+gM8zAr+mdYKzv4giQ1UXy6AsW1k5q61+v5usy9z0J0ScJylBE0pizKHizLytDGYWzf+eWTNNxQ/R4n/aYxOOBC26agz/aNoXPDiFvkS8QX+8m8LPxgHAd1omT2MYND6mZqjkFh9sTJTmXci1SfJzQZeJ2I7R2MsItTNp22gGGW05IUEfd4VYCqpFPn/8mcVsDJBycT8oPCO8SFwDWCyB7AmVvm/Wl4FjqY3rNiUvWbd7ezUP5AUjqt3putNNLrE4hjpjR2z1nzVUIZiq7a/L59xQ9UGa4iHdYQohmcm0Pd6PAyQmAZ59WdTJ1r5tzT+iTig/rlDNVrwNOPgyRKazMvC0yBUSiN7aVGux6md9jnyTcZHt25UDOH54anyq/VSmM6h02j+dDa1m+OrH+09l9xha0jhJgfsWzNcwCIjBiWeLXZ3uBeepXFYSxYMMfOZSiYt/Vvn0hQJeOBVT7NEH7LPtKML9daP8cJ3Wej+VklMw1XEekcVnlo0pRRhO4ezh8o6/2Sk
- gJf66TjT
- 3spyWToIHoqYXIZdDvo8w+xRsuJuMUjeV8hR8Dgpb1QOgeuqpsVkvn49cVdVoUXWi819AzipMPQBng4iu2yy1AOhhSaQgpLEl5httQgmg9rtHCjvZJPDjp1JQ0OQgfyKSoDNqjRmUkxYd2RmGpUQb/BL1o3Kzj73mQ9onxt1QUT7saNiwmHMRo+5V4jIWd8xsUUYZjhX1yMT/fYWIMRD95p5y7tPMtGLz/93aaisA74+4cb73wCwn5UFUNZJyK6MI4utoXU57rdCNpeDDWTh+Jutihc2yaKQIKelwe1cyNQxLm9hf82v8jwmiCt1BlhUUQQp7NBe7hMknmKpu1YQIrYsBt6rc6q7oAXUSAnxP+/3C7pFtWKqkOkv0KDnzWcslNO0E
+X-Stat-Signature: kihztd7er9ryxijy5ydjktinciey79gt
+X-HE-Tag: 1774196444-389293
+X-HE-Meta: U2FsdGVkX1/6EhoZsdIOTrmZjXffAeNBSotCNtmyaLloQXu+57lKbUgBvMnruvzuaVJZmUp26k01bJcH8Yn0JGUCsXh0285+nfvYaVY6EJMbp+JPdwHBp5dRrypROagTuXScBvdYqpcgbWxIjR9rbDUpUAS2laC3cLVn++0yjQKo8Y/INoqyxTA70zVwn5iZN2E7GghgBeMG/HDCbFiL/ZeDsU2kUgijXhETbawW2Z4JuIDfBzb2qXmDPco4a604B1VPvHhCXRm9PmNJX/0cZzLz0GkFnNmje4zgKjNVU6VrIfPq16dhXi4C19YpSuUMho3hHm8dlRSs4KRmtGj7x8haEhICRn0ksndAk2fIHKxNoJd8gLuo2VYW/lrNyIwRrrmY6cRGS9jEOPL2VK/+NQwI4ESDDg/ucXwEMEcGpz2wp7K36CuIioJ3kAan+GIpOAU1eqLIHVgRICm9CC/5iwefc/M/R94xxz1v66xuFITalj3dWZb8KCYtsr0Z24YXu3V1v2Hu9aO8eycBEO1zLST/Z1RCaK/Cy0n9YerYdS2g2AjtNF0sJvEOSVl6IZnOlu7GhSb1JcoF22SPGDhw+hqbGJb8bNeeBzNpBL7Bm0rMdB6Np/NozIqtZqzoqY1I5/ZqAMiQroQZBpkyDHcYZYvh/vs5PjWg1FuNGHtUCWGOVt08CId4eVVhL6kDEcDHgrux7tLZQAm9H5BvW7ZzR/MhThdHboWr5826+73WxgF+BY4m8dJP9NXDX7iwXFvRgJBUyDc3oytw1cZ9rFBnp+qrBYPZaZgO9ka/0oHmjhUMgfulDQkZltIsnRMnz7TTNR5j5n4f085F38UVBdqW6OqrgOohDJHvF25by38trVnR1zadam3SxDyJFbQBZdpgjiKQ13b5IkAcfAUYgEHrVsELwo2hiqnvM5Y14aqOhDFDd5vrkBot8QdTvCQZSC5pb8OozGNJk3T5yJM6pr0
+ pw6MWpVv
+ SKUK7gc3bImhtfH3gie5/3ajwP3OymOty+Zs15OyE+MLp9or5y3gEZnUcVg/TaJ2MTxhvFFlUapZg6uzmY5bfNyCetn+NkKlFccFpMJvBQg/jp9gIPvZtI7VHgvHgGm2g71wmeC1PMetAGNAgClSyz3DEtj2QO2ym3cWpwjsa4OftCdMqkVzh0wKBbtNnETTLHGulwDxSh2r9WoSWWlCvrcJdJNpjSr7PyAQgrQbce5IoRmxvDbzLbzb+MlLXKfkJW94HSIeB1BlfxbLaBykNG7jfKQ8lFigkc2EyHW/vscM4Qq97E+Qv1v/z7YPhlNzJHTSuZj73ucJARKHonANc51PCH6rorEEojv6FuBnUMhyjz9HDyvC/ZLHSWe33wzcrvTn1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,11 +92,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 22 Mar 2026 14:10:31 +0800 Li Wang <liwang@redhat.com> wrote:
+On Sun, 22 Mar 2026 08:01:42 +0000 David Carlier <devnexen@gmail.com> wrote:
 
-> This patchset aims to fix various spurious failures and improve the overall
-> robustness of the cgroup zswap selftests.
+> When obj_cgroup_alloc() fails partway through the NUMA node loop in
+> mem_cgroup_css_online(), the free_objcg error path drops the extra
+> reference held by pn->orig_objcg but never kills the initial percpu_ref
+> from obj_cgroup_alloc() stored in pn->objcg.
+> 
+> Since css_offline is never called when css_online fails,
+> memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
+> normally drops this initial reference never executes. The obj_cgroup and
+> its per-cpu ref allocations are leaked.
+> 
+> Add the missing percpu_ref_kill() in the error path, matching the normal
+> teardown sequence in memcg_reparent_objcgs().
+> 
 
-AI review has questions:
-	https://sashiko.dev/#/patchset/20260322061038.156146-1-liwang@redhat.com
+Thanks.  Some questions from the AI reviewbot:
+	https://sashiko.dev/#/patchset/20260322080142.5834-1-devnexen@gmail.com
 
