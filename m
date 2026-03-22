@@ -4,94 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E1D2D58CA1
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 22:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25C15D58CA3
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 23:15:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5397A6B0005; Sun, 22 Mar 2026 18:56:44 -0400 (EDT)
+	id 68D846B0005; Sun, 22 Mar 2026 19:15:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C4186B0088; Sun, 22 Mar 2026 18:56:44 -0400 (EDT)
+	id 617416B0088; Sun, 22 Mar 2026 19:15:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38B266B0089; Sun, 22 Mar 2026 18:56:44 -0400 (EDT)
+	id 507176B0089; Sun, 22 Mar 2026 19:15:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 22DED6B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:56:44 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 983395B41A
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 22:56:43 +0000 (UTC)
-X-FDA: 84575210286.20.20ECF2F
-Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9F2494000A
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 22:56:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=dCS6leci;
-	spf=pass (imf11.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774220202;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FEDE6B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 19:15:31 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6E101B8C36
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 23:15:30 +0000 (UTC)
+X-FDA: 84575257620.02.6BA4D84
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 26E0A80010
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 23:15:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bFYkdh59;
+	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774221329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=838iRbAcXH2NCU1A1DaV1kt5NP6LjTFkRnUqJYBZUx4=;
-	b=rV26q0umvd4CSY4VqZT2iHYeryaekA2KlgOQEX9vfwXdpI3AdX+yc/BXOH6+VhjDFtXYFh
-	bIAU9ENT08DToX4sCzJxX3U8RI5gTxIZElmYSigOAS289cD2EsMkphXFzugAbyoGgLHjjL
-	PUK/2hhWRFfWQjF/cgg1UFDZu4tZj+4=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=dCS6leci;
-	spf=pass (imf11.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774220202; a=rsa-sha256;
-	cv=pass;
-	b=eFVmDq/Xxwkqoe00IJJPL6DhI6RSnItnJC8oOJbdG8qZRX4PL8g4nFtT6g+H7p+tvDENkM
-	16Rggubsh6mRaemcoK9M88k+Gq9d5qHhO26MQIrc7c+CUwVkeXLVQ22as+xuFzmQ8acMG+
-	9VCZi0ynCFihT8rz6PRgS5614h3kRE4=
-ARC-Seal: i=1; a=rsa-sha256; t=1774220190; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=UigafiQgHsVCVl6vlg+lSi5Wv7Zc4Q43A/4OmBfX4Jo7SDCX+174XDaHuxeLQ8WBWjRFC8iD0TRvM5wNPVNnD1c6U1bMaHlNaV+hiSJWWHlnbKdEKG09WVyid0igDeYyJyJuIl78dIM4bXJR8I0G2ik6RgzxI1F5oN+hHnVEbN8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774220190; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=838iRbAcXH2NCU1A1DaV1kt5NP6LjTFkRnUqJYBZUx4=; 
-	b=gh6Egw/LrWqRw58TqEKBHxEis0qD+qrL2vTYdZGGZRcy856DwVsCxZMABF8BP/mPXIWBQePCIuMehWmmP+j5oyni7mPI4aw8LmEk4NaD+V/LO4ov4RrlLN3VyHSDd2wriHCgP0hJcPZvlAjq/l0rXHKhsAYOSvwfRUAbfhLulNw=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774220190;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=838iRbAcXH2NCU1A1DaV1kt5NP6LjTFkRnUqJYBZUx4=;
-	b=dCS6leciad1MsQSVZkgf5sGCoTHkodLVIC4JTCMNFMpTzdimqGWYAIsU/xlEhOBj
-	QL6lg8sJkXGbYX3dofOqUy5opI10hSkILoqNGva2MSQlowfAiKul4t4d5WQwkTE/MRo
-	BwtE64P9v141egHO8Z366nPkD0fmYscyLzomfI/o=
-Received: by mx.zoho.eu with SMTPS id 1774220188445159.7066913354488;
-	Sun, 22 Mar 2026 23:56:28 +0100 (CET)
-From: Josh Law <objecting@objecting.org>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
+	bh=As5XgDr7xQm/xLgUgi0Yg0ks7rPFLaYaanrZmVlDo8c=;
+	b=Kv6406IIrtcX5LiV8ov/EMAuX4t9DvGKaZpgYqdw0yG0FTTiPl8rh23AawUvUomcxvPrSy
+	bPyhXiTy47taNWLm4xqBG18ZUJ0+VjhFXVCaC6pa1wofkZfsOHEDrVpVAs9r8tRIlEUMpg
+	aXmYL5hoKiMrY7jhb8aHSfwL97LK4Qw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bFYkdh59;
+	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774221329; a=rsa-sha256;
+	cv=none;
+	b=xo7WnT9DSAWpKx3iu1zhn6UWZhGasx0il4oBstkLpScTGrtQ2RVVKzduxWZ0ihNE5AyZki
+	gEW47+mgLWHZLJv2BzzY02HXCHoxIn9mkpBzJ+RNB/Xd6WSWSXUOVxbdMMdTocyoS14ZtL
+	NsDrGHbOS7NJa23VZnAdyva9sr5D5DE=
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35b905a05a8so1987251a91.1
+        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:15:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774221328; x=1774826128; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=As5XgDr7xQm/xLgUgi0Yg0ks7rPFLaYaanrZmVlDo8c=;
+        b=bFYkdh59w3hBkGyoFmE3IbMOh9hoOm6G9Tz/bVjNSDwxD6QAkg1wIaiWe++iZWPlsk
+         eKZXe0U+yWAVcn7ZlFtfjwayYKPi7L6GX6MGHp0SjlPe4L+w3ZYsCofyTGYw9nMbNTsS
+         owjyoduQWVXTdXKjyo2f8Rbxef7U131SlCM8e+lr8GR+vD9lZS1gNBWJeAJ4a4xcqlkP
+         kUpZzfgrB1IPksJKGpalC42i/pVHC062bEWIXZJ1FQp4Ts+0YVhjC4C9im2RGr5s+Du6
+         ZkYrzhCOJVTsS79vu6qhgqxtFg9p7A1bVNECopwMNWvo/llvOem5D1hulc++Wx1+n7Dd
+         OAtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774221328; x=1774826128;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=As5XgDr7xQm/xLgUgi0Yg0ks7rPFLaYaanrZmVlDo8c=;
+        b=Oo8X3M07AA4JFLz3hbSJ5X8pynjWfisXsYA5yNzIvOLVypEkSjfnG4lxzNPUL/sxEp
+         vstLQKm/f63pbFrwHyiyiLzfnBa61ZqZrH1Z2qnRWDhds7z1uYYGIwoEPjckXcrFgW6d
+         XhPCGhez5+xwua7TN/FrWe1ieFJPQly3/0eY5CVoJqiNTbDX8nZ0yXCKuEc+Gy15QfLE
+         F+flNHTrPzDtD264RycZzP/WfCcAAR1CV9MOpasyAENNPsGaxvLVtJ4ahXUQgHNezw+n
+         Xr8hS1H2VyVqtvN+JKcN5XLWx5ETpDlY/RslIviI74ZRlVAkH2i1V3tlzZFqVcLSQKiN
+         tq/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXJtXRrf0+IwaaUTF4bGMEEaIHZDf39xUFwTQbn7eA5LUUDkJpv+H79LX5orjI7/b466tL0tqXEkQ==@kvack.org
+X-Gm-Message-State: AOJu0YygHZnYD2NhUWiuOznMYyQ3qAXJBQnsgzn0TJsPT0rwJSqFA/gv
+	wwWuB6dLeebiYclGA00gSxPzCx7TpVwqhFFMv34BSZRtOZhq09sZOP0P9uXQig==
+X-Gm-Gg: ATEYQzz+A/7fP4/i3RDsAgRRtdPzk/+qZWRajjF8TgyfbDilpp1z7UbKWnfeqtI+ydi
+	1i2nIARNBcfMvXyKrs4QFC/YvlYRVe/tnSZUpU0pNW2tiuZnmpVKywNPvAVIXBcFdO0nFSSe7Ae
+	EMkqFgGSWsL/jMd6CUSBQXgDS7t2RK+pt+pCFM3f4/mcnW4VKNCYxfQeUxV3mommEJjWQqeaRWE
+	l7ZppxFOkRPHzkGpdlOTWadCUMEH/WsJnRGl7k/X8z+8WwbGYNpWzFbOy9FhskYbosDjFfNjra3
+	VY7MQJtJdyIjUzegXctSMiaPc8DRY2YE6x1DXZ5o/ScbkzQH9ovnVwWAcZhosl3LocKG0JVSvOR
+	27Mbw8eLbN+HsoAnL6iqvtng4XwrL4wDlXiiuF4fo2R9sw6M+3WTuj3wsAJkT+kTKJD+EYtFYnv
+	XsB6B90ADKPHPIthTmBdnkV3GlebM=
+X-Received: by 2002:a17:90b:5108:b0:35b:9cd5:232e with SMTP id 98e67ed59e1d1-35bd2ce4493mr9099147a91.29.1774221327912;
+        Sun, 22 Mar 2026 16:15:27 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd3eb467fsm7529611a91.3.2026.03.22.16.15.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Mar 2026 16:15:27 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
 Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Josh Law <objecting@objecting.org>
-Subject: [PATCH] mm/damon/core: optimize kdamond_apply_schemes() with pre-filtered scheme list
-Date: Sun, 22 Mar 2026 22:56:27 +0000
-Message-Id: <20260322225627.263202-1-objecting@objecting.org>
-X-Mailer: git-send-email 2.34.1
+	Liew Rui Yan <aethernet65535@gmail.com>
+Subject: [RFC v3] mm/damon: add synchronous commit for commit_inputs
+Date: Mon, 23 Mar 2026 07:15:22 +0800
+Message-ID: <20260322231522.32700-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Stat-Signature: krs4w9rnr4zk9weaicdx5dxfnggu7ipe
+X-Stat-Signature: wzmfqd48w347jemhukxuxhp1r74mgujh
 X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9F2494000A
-X-HE-Tag: 1774220201-336080
-X-HE-Meta: U2FsdGVkX1+eQQ/GnP4cBau7HBfThl8dpxEbkk9gC3dosCk/7jypr7sUuMOoro686K12rR5TJmDrDxP/nGPFoTTivTWLttzBeujkuLjv8/TUpI9UBXwaVgxEyZ5XgQXr4ZA8GOEnLzlVmvlF4Di859LSYAvgiGqBT9s9ituNQLbYcHLPxKZ8xa9pJURPtIizEnYKei7muu+b3TKFcdnbtwXrV392OfavT74ayspwhOQJRnZ4rbEkjtOcWfUT7oD1HGJ88MyPay3bF8jAkomdHUxSV8thyPRMM1U+jXjgmu0/WyuOWBgCcRyTnfkQerSmaBZbpMnQ35ydjEBLg99KzimtP3BVkQWLf1rjBJW/DniTs4TdowcYHs6F+/XM+Sy2nSY93suTdvWCO9cgsGU1PdzF5d6bVKUA0IBkKbY+kk1eFnuyjlQz6FCACyCJ703HSXQzgAwSfV2mpKptIn7jz2UJm9WbbWzz8xJKm0UVG/X5HCSIqe1G/QruQB/pdkHZdGlGMFOq99NiV2bbqBFADpZ3LWEqUA+5QKH1waQh3WSLI+7YWH0hPfqOe2x8BrQ5VoKe1JhhzH4tA/JzSK0lFJWbPMye/mFnX+nvC7gEgMRtFOmKkMinnJph59dEs7uZsxZ3lEm2LgdxRjWFlnUb8XyeyRbYQcpcevg/R5ZECtpmGtH2zlw6d7LvMx8BM9o31Sh3htu8T7yT/YQ6+rEFGkoksXOrkq3mMX3QM42vuSwKsYnsXBQAtrskgZ51N0gOsysH37uuQP6e/Vik2PLJejYKQRtnrT7zPXi0MjInq67XR0ETRAKpwYPGTBsnf9U5zQ+2KCDSOVYpXqTvmg8aM3JIXJy9KkDehuel11om+oaqDDMbGB6rmxVEy9osCQhwgqKBoqJddB9/Gv6uQRQPTHoXZd9vvNsw77sY9pAyBfoWwZVzLapmbDrQRgTTRmkSCSKVV29yImWygtMKMUL
- FcinVBYK
- uq424H50qL9tg5K6sCUT87Pp58pFeDYnvU2J87MgQuGSkP1nI4Q8XbFl2jGofw3178cJTH5TnxPFMBdGEZSJrou2ML8SBqp5YMdtlfFsXPfEwjerekkRZ7tqpWQJvoToaSL04k7cAM8oKvjhTWzhqTcDDrE3MlFVtZv5L37iBYh59J3En5AupOrogE7xrM1SxzQHnIcBYYN81+jm+ThIHSXmtflRcxPPLcN2C506/V90NHUIF5SPoEZv9EK3eWUb0ffGY040b1pw5gLXNNLhwBHYspjT8+g6V+pbz6U8VthQlZGGmhk7WVUCmm/y9EXZUr2OsdQXkOabFR+ZZUP0pgEwLYiQLnGlYxra7AfHQ13yybNFdjM68TbMZ9HZ8+roFXOk5YSRfVtRV9fg=
+X-Rspamd-Queue-Id: 26E0A80010
+X-HE-Tag: 1774221328-939044
+X-HE-Meta: U2FsdGVkX1/UAhLmmIeqQ36TQi8W/57HcVcdL3zSFNXxUAbpdCUI21MokBrPu61Z1plNIPIiHglCoNiT6yyQM0G3mhqqPEsOF70o37sOHMFyockIxFRgrSdWBLDeN9hMBmvJPUxm+lahknwIHYi8ImjChvoPgoRzZGdZ0gdw+OB4/PEqLp080L6+FkYffUpJcHZKDdrY7wkE2DeOaiGHlwE9LO0+4SshvAfXXEtu9uwygbKKE7WRPai9HwazVeWFBY2VT2hVwF6B0er3nRsvdLHZb0q1w5hgvP+MHA3a6aqeHUVjCS0GSltfbSfDMpgfzPDW0DmANXTldEXhaxP5UNpQX+FzsC5TpOmrki/NjQByuXYfRVgYDraQgbm36liGvRxk2iwij0hx6E1JVQ9PVDgWxQ9Ryk0sISH93L0BaDqZ5uchsnItjvxk8HyOhCtE1Ms9GlpgEtyrlqO1oDAdN7Vn308X3mvqM+MZiJdZ/o5htd2BMojybBuvWAm9Xe7VAN8TNJcdI7V8jd+3NQtpnHzVnVRFrvS8wl+VQX2PGBJ9kzZBHA9DTqqc4Ix2GOhe9QdTkvM9BJ0EvuAwhXL8n0kZb4CwOPy9sTLMFZGtq/3xbtx2UN/+JGlizYSC9XiXCnskXvM0mI2EdBHf4VffQmczc3bmvDcbByi1eQ7GpkEDkxZAuiCTb4dEYoLcjAM7734OvIxhwi40jgqB39rr/8qoW8pSWqHjRy9BCWy7r7VFURKpzfAt/IGbBDgjxiAPbqU1liRgpAf3kfaj3gjJF1yS1yRhmroW23Zp5LhuVyL7DQZHwASrgAotja8D/2bE22HuAHwtL8hYNCT/J8BQDWnESwZVNG9R7knANMzohNZ2YBu2OGvrdix1PszTeFE22LZzvbR26CXHELF1/BXYTcVplak3G3U7fxymKIHGdlbPtSmSETWnF/861e7IjAw4xnkTOkw32HJBeDkzXsH
+ H9qp63Hz
+ p+K0kCHDoVt3ROiw5aACmNtc8oxRonx51uGEvtSEqDECUMKXaFa/EnQsJ9/U/TRtDepA4fRKUdwJa7OadPlMfJ2ld4QOGf8Ok+CT4/PrYu+e1QsrtmWpAsCoNNyfK7LKqo0MIGAiy1k9f39xa1gaQIA3/ajb+RNyAIQF7CCmZM4zYm7vLP4J+ymCo3rg/gwWlTjqVyDeih4WmspJk+XAL5ouYJ9Hi3SlxGUEJ2OwElX3Yk91AAEd6zWClpidXjYUHAno6tPFoYi8ktMPJkht4qUeeqAWFRyGZtOlvjlFyJmf6hgnCK+Yn9GHgFMvgP3P4+o4VCl2xRI7WIZoVujdzq7HIavEIqF7WZBRAreDAU2wkrvDsfO2gFGy5NmTE8fvfkAfuTe4YzT4c2LCTXZNuKGu97Q8CRkrDZfJtr58zeqMopiWwEjtFl3310n+c0bbS8a7ufO4TvYsEi33Gix9z9fqGmW1ZCZNN94sVM156fiwGcKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,100 +115,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, kdamond_apply_schemes() iterates over all targets and regions
-for every scheme in the context, even if the scheme is inactive due to
-watermarks or hasn't reached its next apply interval.
+Problem
+=======
+Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
+silently (no error returned to shell), because the validation happens
+asynchronously in the kdamond.
 
-This patch introduces a pre-filtered list of active schemes at the start
-of kdamond_apply_schemes(). By only iterating over schemes that actually
-need to be applied in the current interval, we significantly reduce the
-overhead of the nested target/region loops.
+Solution
+========
+To fix this, the commit_inputs_store() callback now uses damon_call() to
+synchronously commit parameters in the kdamond thread's safe context.
+This ensures that validation errors are returned immediately to
+userspace, following the pattern used by DAMON_SYSFS.
 
-This optimization maintains the original Target -> Region -> Scheme
-behavior while providing substantial performance gains, especially when
-many schemes are inactive.
+Changes
+=======
+1. Added commit_inputs_store() and commit_inputs_fn() to commit
+   synchronously.
 
-Performance Benchmarks (Filtered Array vs Original):
-| Scenario Description      | Speedup |
-|---------------------------|---------|
-| Mostly Inactive (2/10)    |  7.5x   |
-| Half Active (5/10)        |  2.9x   |
-| All Active (10/10)        |  1.3x   |
+This change is motivated from another discussion [1].
 
-Signed-off-by: Josh Law <objecting@objecting.org>
+[1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 ---
- mm/damon/core.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+Changes from RFC-v2:
+- Removed damon_validate_attrs(), now using damon_commit_ctx() for
+  synchronous validation in the kdamond context.
+- Following DAMON_SYSFS pattern for synchronous commit via damon_call().
+- Link to RFC-v2: https://lore.kernel.org/20260321140926.22163-1-aethernet65535@gmail.com
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index c884bb31c9b8..3b59e72defd4 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2114,19 +2114,16 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+Changes from RFC-v1:
+- Remove question from commit message area.
+- Added synchronous validation for DAMON_RECLAIM.
+- Rename damon_valid_attrs() -> damon_validate_attrs().
+- Exported a new function damon_validate_attrs() and declared it in
+  damon.h.
+- Link to RFC-v1: https://lore.kernel.org/20260321002642.22712-1-aethernet65535@gmail.com
+
+ mm/damon/lru_sort.c | 42 +++++++++++++++++++++++++++++++++++++++++-
+ mm/damon/reclaim.c  | 42 +++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 82 insertions(+), 2 deletions(-)
+
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 554559d72976..445e7aa19366 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -39,7 +39,6 @@ static bool enabled __read_mostly;
+  * the re-reading, DAMON_LRU_SORT will be disabled.
+  */
+ static bool commit_inputs __read_mostly;
+-module_param(commit_inputs, bool, 0600);
  
- static void damon_do_apply_schemes(struct damon_ctx *c,
- 				   struct damon_target *t,
--				   struct damon_region *r)
-+				   struct damon_region *r,
-+				   struct damos **active_schemes,
-+				   int nr_active_schemes)
+ /*
+  * Desired active to [in]active memory ratio in bp (1/10,000).
+@@ -361,6 +360,47 @@ static int damon_lru_sort_handle_commit_inputs(void)
+ 	return err;
+ }
+ 
++static int damon_lru_sort_commit_inputs_fn(void *arg)
++{
++	return damon_lru_sort_apply_parameters();
++}
++
++static int damon_lru_sort_commit_inputs_store(const char *val,
++		const struct kernel_param *kp)
++{
++	bool yes;
++	int err;
++	struct damon_call_control control = {
++		.fn = damon_lru_sort_commit_inputs_fn,
++		.data = ctx,
++		.repeat = false,
++	};
++
++	err = kstrtobool(val, &yes);
++	if (err)
++		return err;
++
++	if (commit_inputs == yes)
++		return 0;
++
++	if (!yes) {
++		commit_inputs = false;
++		return 0;
++	}
++
++	err = damon_call(ctx, &control);
++	if (err)
++		return err;
++	return control.return_code;
++}
++
++static const struct kernel_param_ops commit_inputs_param_ops = {
++	.set = damon_lru_sort_commit_inputs_store,
++	.get = param_get_bool,
++};
++
++module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
++
+ static int damon_lru_sort_damon_call_fn(void *arg)
  {
--	struct damos *s;
-+	int i;
+ 	struct damon_ctx *c = arg;
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 86da14778658..5d0c02d4ff74 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -39,7 +39,6 @@ static bool enabled __read_mostly;
+  * re-reading, DAMON_RECLAIM will be disabled.
+  */
+ static bool commit_inputs __read_mostly;
+-module_param(commit_inputs, bool, 0600);
  
--	damon_for_each_scheme(s, c) {
-+	for (i = 0; i < nr_active_schemes; i++) {
-+		struct damos *s = active_schemes[i];
- 		struct damos_quota *quota = &s->quota;
+ /*
+  * Time threshold for cold memory regions identification in microseconds.
+@@ -267,6 +266,47 @@ static int damon_reclaim_handle_commit_inputs(void)
+ 	return err;
+ }
  
--		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
--			continue;
--
--		if (!s->wmarks.activated)
--			continue;
--
- 		/* Check the quota */
- 		if (quota->esz && quota->charged_sz >= quota->esz)
- 			continue;
-@@ -2476,7 +2473,8 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
- 	struct damon_target *t;
- 	struct damon_region *r;
- 	struct damos *s;
--	bool has_schemes_to_apply = false;
-+	struct damos *active_schemes[32];
-+	int nr_active_schemes = 0;
- 
- 	damon_for_each_scheme(s, c) {
- 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
-@@ -2485,12 +2483,15 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
- 		if (!s->wmarks.activated)
- 			continue;
- 
--		has_schemes_to_apply = true;
-+		if (nr_active_schemes < ARRAY_SIZE(active_schemes))
-+			active_schemes[nr_active_schemes++] = s;
-+		else
-+			WARN_ONCE(1, "too many schemes to apply");
- 
- 		damos_adjust_quota(c, s);
- 	}
- 
--	if (!has_schemes_to_apply)
-+	if (!nr_active_schemes)
- 		return;
- 
- 	mutex_lock(&c->walk_control_lock);
-@@ -2499,7 +2500,8 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
- 			continue;
- 
- 		damon_for_each_region(r, t)
--			damon_do_apply_schemes(c, t, r);
-+			damon_do_apply_schemes(c, t, r, active_schemes,
-+					       nr_active_schemes);
- 	}
- 
- 	damon_for_each_scheme(s, c) {
++static int damon_reclaim_commit_inputs_fn(void *arg)
++{
++	return damon_reclaim_apply_parameters();
++}
++
++static int damon_reclaim_commit_inputs_store(const char *val,
++		const struct kernel_param *kp)
++{
++	bool yes;
++	int err;
++	struct damon_call_control control = {
++		.fn = damon_reclaim_commit_inputs_fn,
++		.data = ctx,
++		.repeat = false,
++	};
++
++	err = kstrtobool(val, &yes);
++	if (err)
++		return err;
++
++	if (commit_inputs == yes)
++		return 0;
++
++	if (!yes) {
++		commit_inputs = false;
++		return 0;
++	}
++
++	err = damon_call(ctx, &control);
++	if (err)
++		return err;
++	return control.return_code;
++}
++
++static const struct kernel_param_ops commit_inputs_param_ops = {
++	.set = damon_reclaim_commit_inputs_store,
++	.get = param_get_bool,
++};
++
++module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
++
+ static int damon_reclaim_damon_call_fn(void *arg)
+ {
+ 	struct damon_ctx *c = arg;
 -- 
-2.34.1
+2.53.0
 
 
