@@ -4,101 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A55FC72C4
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 14:46:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBFE4FC72C4
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 14:49:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E90506B0096; Sun, 22 Mar 2026 10:46:12 -0400 (EDT)
+	id 4AAC26B00AD; Sun, 22 Mar 2026 10:49:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1A416B00AB; Sun, 22 Mar 2026 10:46:12 -0400 (EDT)
+	id 45BD86B00B0; Sun, 22 Mar 2026 10:49:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE17C6B00AC; Sun, 22 Mar 2026 10:46:12 -0400 (EDT)
+	id 34A2F6B00B1; Sun, 22 Mar 2026 10:49:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B81EA6B0096
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 10:46:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FCC388E48
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:46:12 +0000 (UTC)
-X-FDA: 84573974184.18.D68060A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8433A12000D
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:46:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e1AoBaSy;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F3616B00AD
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 10:49:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEA91C2A75
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:49:56 +0000 (UTC)
+X-FDA: 84573983592.16.00D9B45
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B18EAC000C
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:49:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DV8kUO3h;
+	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774190770;
+	s=arc-20220608; t=1774190994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFbpHj9Ylh4VB7+cHCNcaRXL1Mg+u1DAcbDf1G8cnp0=;
-	b=hxLvMG/pG+w3bv6KS1gd50IkhDKMUQYGn/nj2vYuf6lLs5emAyr4mIFZ8HphGyz9PfLl21
-	rR6X6bGo1iDNuov+q4qlvkrv+obVPGzwYw5qymFaR8GWMaoQZWHuDI8zdOHXwM/c4E/E9k
-	hB1izdnB78+t0jwwzT5hNb+8+Qw2MUc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774190770; a=rsa-sha256;
-	cv=none;
-	b=6d/YpfDxluMJ+39Ia1x7O5o+sP6LcFGtsmwEsuBDP0XaZzoG2DM9IblR0KdhVRfJiijFPY
-	tSd35E/0UjmPpM1hyk+C9kDPZmoqw2mTnlwfzMIpfmAieERL9N9qNH8fOfGOMFSucLiLQU
-	NtnnzdY/FMVZLRXTMJZfa0zQqNKAJrA=
+	bh=rlTFfUPhBocGaxMerdSh1BiMW+L3wVNprEAxKNc1b7Y=;
+	b=a8DpPYDJ1smtIvNjFFXJlGDJT3aR/7ZQidkzZsLnjOHOg2FwA605F1QMXuMJL7VD06N9ki
+	SS02RNUKr+2rDTC7REKBcDLKlGALgwoCuxrP2Z8FOPtNxC61GLYfcmxOQV2IiGe9WHXH8Z
+	6SaNfr57XpPZV/nDVVuGoZKayWDrH/A=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e1AoBaSy;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2346441A04;
-	Sun, 22 Mar 2026 14:46:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226CEC19424;
-	Sun, 22 Mar 2026 14:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774190769;
-	bh=UmZC99nocgg1YVGjI8yiz5biS1mqjo8v4w880aAeNYc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e1AoBaSy8g/+cbm34AGIBMhWz7WAR5eQ+m4Iq+AgK3neWwLadWWsYIR1yZXi+O16a
-	 CXx1GqQmGCbHGvbkco6C6OTB9D1CBJN7SIFwC2zQ5T645v9UMtNJ8/ujLD9SpuiMOa
-	 Zz3PiHRNz1YwsUAJ89I8JWVSj8I1MbUVwHm30aWbJS4/1AKmC7c1Yr2hkqUUIDQd6p
-	 YrrpVF0fF4s7TRlqfihlS07WItCjqcRSLVG0eNx3Y/hsJ0NPMg6xjx/kqejD3EQQ6u
-	 QkjqBMcgeDbjg9DGS6SWNmVc/7TMA06uNZr7l2UYjad5wwdRaaj5S3p21Qiqq9LvWv
-	 x0FLVPAslkgRg==
-Date: Sun, 22 Mar 2026 16:45:59 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: =?utf-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Cc: Zi Yan <ziy@nvidia.com>, Evangelos Petrongonas <epetron@amazon.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v7 2/3] kho: fix deferred init of kho scratch
-Message-ID: <acAAp4JaTGn_STBH@kernel.org>
-References: <20260317141534.815634-3-mclapinski@google.com>
- <AD9E1B18-C813-480E-894C-FEEB51EE8A93@nvidia.com>
- <CAAi7L5dSOxXETv-bYs4hJ1SfixMBQXS4fmfKs3SzVvQ=yY7oSg@mail.gmail.com>
- <76559EF5-8740-4691-8776-0ADD1CCBF2A4@nvidia.com>
- <CAAi7L5ex+66qgFzRkLDbuOmC=cVrMyBctPZv6wd15n1rc2U9KQ@mail.gmail.com>
- <0D1F59C7-CA35-49C8-B341-32D8C7F4A345@nvidia.com>
- <CAAi7L5fvUPUqd3A4m6wubeYh90NH+S2KBRE1R8WKerBYhkU8kg@mail.gmail.com>
- <58A8B1B4-A73B-48D2-8492-A58A03634644@nvidia.com>
- <aburnbP64n9axmu_@kernel.org>
- <CAAi7L5evx8ta8BifNiGNfUoTiaBUsv4cgQRbm_15RoAfdKPcMw@mail.gmail.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DV8kUO3h;
+	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774190994; a=rsa-sha256;
+	cv=none;
+	b=2R97gQ2HmczkZnxObXFexQXw/9Eb8YsUkKPSlKQDoK2GHiNxcXqVWVKU5IEmtQkaF/+1YS
+	ZRAMEZzSYcOngdzAIcfBOVcYEsZJ5SASUsuMinCmIqvhBPyxnIWII+mIC1hAYBbmtU9i4J
+	p0mibc3Qhm16qOGUtETjeTyVAlRtYl8=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59de8155501so3326764e87.3
+        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:49:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774190993; x=1774795793; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rlTFfUPhBocGaxMerdSh1BiMW+L3wVNprEAxKNc1b7Y=;
+        b=DV8kUO3hUntsiE72wt3NQnNavsxuLIRxavyZZgSNLF+iNan7ij1HiAxwl6xVn1j4mE
+         HgNwLu6+DPmmqq5gdd+MTbWuSOlafPqxm66YH30gWymLMP/6IX0ajc2L77nm6geAk6cU
+         EaqmFsSaR36xE2BQquWMF/jo98fbkUbxWLQ23lGF/VNeCGsnud3ZcDqPmL0F7rI28Kch
+         K+S2JAFY4nYglOVzOZjWqu/boPt7AHl6rrrGZbl8Ow+mx9VFodyWBoZTnoUX63j8uPJ9
+         hTlHkhG0TRIY5FvyEWOLMt7S1EECTWKKg22YVbnOp0ncjWaLTqz85amFrIxrM4kAHqew
+         WtIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774190993; x=1774795793;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rlTFfUPhBocGaxMerdSh1BiMW+L3wVNprEAxKNc1b7Y=;
+        b=h2ZqxJ9cBJze5rOIgDE0YlGdlbTabFuGjh8yVcsOEjPovbbtVVae1vYSn2nuvTsu25
+         sKSlmol/qXaDn5MWDWTOtwYAhmuBCcRSmh+A9gT4aLssD9XJ+d7m6M8LarMQfyx13/w/
+         gWEO5UhtgQtYqrPK7Qaw2G9WYN7p3ar1EYmc6tN4SoZCus2M3jPkq5OEvRwqjOcOQzhh
+         qjYOlxpheEGH9TRIblQc64ptefUgE0rrEDTO2ak2MC9FRAz3YuXfjfsOhxDxBZW/Zfju
+         sOZPdBW0D787Nn2jz1njRPLRU9tJlHH0kN/5nyyzRUy2dCUwWddiVI1gy+fE86Xxfomd
+         94vg==
+X-Forwarded-Encrypted: i=1; AJvYcCUFdkW0bb4iy4O9vSDo8/QkTCqbFwE6kXR6wuY889PcrVrlBeKnDRdVGfVuJGOA3OvJ9HeCD2g3fg==@kvack.org
+X-Gm-Message-State: AOJu0YwhTBPFkPxs7ri7GGShL5Vlhoe6qAcanYoWM2M9+13NGkfqjVsn
+	m5b17KOVUsxhzCPb3QplVFrVC7g/Aw762YE9iQ+aKKVkVV62Uvdb5yPL
+X-Gm-Gg: ATEYQzyNU+pfF9Towj5BFG14w8z1kVSvKcgvoMi5QmfAByLkwstRtCJiwYYC8LX4+R8
+	VR7aRbJQB3CtKrF6ML+t4QhvuMd2j6uRgsiX2pM+0+FvoiByo06k0KPiMdZ4yHwh0HFn/VQbUoW
+	2K+2d/wDvYI5QrfjrEGhOYZTWFXp9qRuqHjaxioqMcAIo1ad0lUr4z0pCIwZKhfpsng3SZ4f7BL
+	01lZ5tkP5TcQRl/dqAOcmknDHl3/wFwJFQPger+IR2r0gY9aZ7CGJtnx/SPicuR9L4e158GilmW
+	PEDN1MYcsQ5jaXzS3ZV8fUl31pUDzez2ph5ROKVmt+jy2MTYZM4GaPtVdQrZO5HeL/Jc5qnt88I
+	ysQ2AX68A2Ws/ImIFGC/POsCTC2cVtyOa8DZGWORdlummlzPYljOg/gRwuw3oVrY=
+X-Received: by 2002:a05:6512:3c82:b0:5a2:7c1c:749 with SMTP id 2adb3069b0e04-5a285b641eemr2701104e87.39.1774190992739;
+        Sun, 22 Mar 2026 07:49:52 -0700 (PDT)
+Received: from pc636 ([2001:9b1:d5a0:a500::800])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2852071edsm1784683e87.49.2026.03.22.07.49.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Mar 2026 07:49:52 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Sun, 22 Mar 2026 15:49:50 +0100
+To: shivamkalra98@zohomail.in
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v6 4/6] mm/vmalloc: protect /proc/vmallocinfo readers
+ with READ_ONCE()
+Message-ID: <acABjmeJT0eS9Hdu@pc636>
+References: <20260321-vmalloc-shrink-v6-0-062ca7b7ceb2@zohomail.in>
+ <20260321-vmalloc-shrink-v6-4-062ca7b7ceb2@zohomail.in>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAi7L5evx8ta8BifNiGNfUoTiaBUsv4cgQRbm_15RoAfdKPcMw@mail.gmail.com>
+In-Reply-To: <20260321-vmalloc-shrink-v6-4-062ca7b7ceb2@zohomail.in>
+X-Rspamd-Queue-Id: B18EAC000C
+X-Stat-Signature: eqby7bentyti7fjc5bhexibrqmfw5ajq
 X-Rspam-User: 
-X-Stat-Signature: 6ijbts3xw1igadwiri1ycmcekjz6hiwq
-X-Rspamd-Queue-Id: 8433A12000D
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774190770-455002
-X-HE-Meta: U2FsdGVkX1/39FN5IO6gJ3DjOtSeGjvx1rFIYJvykyb0DexpbEGOCt2xISE7nkvC0foHKmgoPQdL+iA5sumnqKfj9N05oDpj2TNM4PaMQOPPdZlAYCa/ENlKG5mY+XkE+fCRCTqxfGHRT3otSu1Eb3Dnr7EuZPj0U9Oy2cmabZNVpMhzWqXco+OW+u6i6tUQm8LXqb9MCpydJzZn60l5DN4C2Z9URtYU4nxWx4DS2zS/gbC0mIjUH4afrg/abDjMT7BH08TN7RSKk0UlnHxgBlVIXKRAxRusaOtlNAJwIwguVIlV/2Xv+g+5UKoNLQaMKy1C/mc6AbpWzX6UvwpYhtrh31uKFHCg6b1DsM1RAolwzTvq6Re8wxnGcgzpeS92bJ1haisoKzSQM/KDpI+S3FfknsLPUEmwOzGWl440am6RWA4VM9kgEsQj/qoKJa6/A/A2PMdHIOx1D/zWqToIs4+2FxmfJ/55P5c5iRrSxYA1Avf/L0msHGEyiJ9Cm+lFuI9pj3hOsJzr1zudkq6A557Y8FA1fKPtC9VmLTfGd5nlEypguEmOpgBHG1hPkFIbj0TKZzOGSiuTnW27JmDOc4ELXbHQzuFdhyZDqip6LASr/k9/gjIXqJKluRq+3tNzSYVeFCDevWF5SMWPJdtbaLwT8yrtbVW1CX3UCEFYoUdxi+Xm0VD+laemNJ0fYw6Fk7etVOVVyfbibtreGli/VM/4qvYAuPPFf2gtFHSX3sqdhvfqPIOgAHq+BKFazZfhq/ALm/yp0hxlio/SrK01KKtHaHejX5GSKbAaqZcCa4bsBKggNkH3XH2rNOac2i5sgsw/lI2F30JqPNcqPJDMFhGU3ME+1HCI5LBE7czmzf1Ebp2NdwPCW8vtjgsRvnAcSAWVlXAIYK6Jz+l9G0la08BaFcE3B8dZWa0S7IW4e56FFwTi0bFFgPllknWgvPjp6NGCOn4Oy+YTL2Mw8wZ
- sl/hCbv7
- V2HfOPBKm0adpiOnCsZmo1UF5NurHoPWkThhG+IT26w0ngSaZi1XG93T1nwcw63y88Yn19keilgT0jhWntO+ueT2pMV/t5ARtRAz5cbNx2XmGu0+1DsUJZ3OJ8o6t7vFTN0Pwh4uv18UCAxFwkgDUNNi6TZ7AJ9SP/ITcWHi/5ba2Got/qZ0zEz+ChvLvPtQTcuwo97xucYuI2NSxRCRuFxQ5pQxJRzfhpBe+rTZHbfRAAGvn0gfTqyEOv0/81a5mi0mIfTWlsF7ZBF+ilkM8hUkJEY2J9Ug01FKiyowVrsEhdtNsRqO/FsazPpkdjWJjeiFPVehP6ORb+g2IeZMjfhDS0oRzoVyfgTqX
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774190994-680671
+X-HE-Meta: U2FsdGVkX1+PXaQ61snE2O6TLRBplCl0jCxixP75q1TaCmgWArTJ7/2bgqetBLqgFwDMq6VK9ExnEgyUw24T50dX6EuH4up0LhrMtNNjcvIhe/ZGnT3Utgrz0u8T2M99mX8Uyl6EfW06cC2XOP0xH1CRTXROy1p1FpArhym8PSvYf/o2+xt2bYJWDAc4m+uQNg+SSZB3cXGVUbA3/YxqlY9MtN6PH+wjBNqYGb3YtfA3RRD9298SteesOyd/gq69J8rOctwobutXpC5QPIt5dzWyWvcHnqyvpku0ONnzvyxVBDkNvGX4oSmLZJBV6HgLOcGtpJ/kzqGqFbBtD5c0d/CN5k0Zogkw79DsmTaNjpAcIVHjMIMJNCw0M4/xhZrGzdMWTm4B1k+8OZMXPPwlRd2ohXHpFl9ajOJazXL8TAAaBQGdei2+XdehcPh0SkPdX1ii75/ffSqsOq17EuXSv/i8tJC6OXMHzq8ZA7IU0n9q8CEfRqiHg5ieMl/RxdZMbx7uXIcqyoWMHI4oukFcwkKRrRHLbpmsGHx0aOLj11ZZZpJilEukjZW2NYu4xC6GrX4vT94B4VdAT4qBzOgRCEuIl2VFRT1ZcLewsGdcITqTM5p2YXNeYeu8oWALS8MrNhaX9njA7Ugxb8RntJheUcpMG8PeYuSpSSllTIL/4jytOkI3kViG/bZuvJAgYDFLiUthWqBrd98BYp374jDmV2tMwM6uD/k9G7w51pDD2Ao2hf+MoFElltlfWJ2dclVka3pGv/2LxeWTva3baruAQZ9gbbxSCY6ibaZTDZKjc/acvq2VdsXKPcibAzD7z0/G/CmgxPu8KvwLYj0lj2rFlKp3zP78ev4QWFfmejea0KZHozJku1BwvwCV156vpuN9XZuscDJ9UlLvp3JrHaKyRe1L2ubG4TrJ6elzQVibt9Tu5GWWLLAMB4EDXXW1d6EDHf8qwayUWz5V4FrwYuz
+ D56DNDNe
+ /RSHceD2bQz5Vh+c8RDDfQNhudy43ul2ORwhmmMs86YrjNDb66bNydfCWYNjRFttnhlqjdvRYeyrQhiIvyyZjM2bdVBQ8SP+K6z9uwiH54sBQCq1OuLxztV5J4xfWkKOdYL9PhoBfRC6xpeEolgPWWbe7wNubNp+bOQksabRdal2QKJ0M2JzWeB5KZ1rSai8YRifJL5NNEENYuYwYWpwAweMFqQ+Aiu4T+OvDSB1wtiREKxkLkaT1DLYL2uZ8S4djnLtkkJgNVhHCbZ/GhKSGLH4YRzkdv0q45FSsVdEVX9U3K2DNWKtTQrg2rK/lYVTZ/9EYhwTfFymK9EIjzoCasTQKOSMuDKIbLEdFjmNPz8GN+niiFwgwa6lXphXvDAstu+kpuTbB/f/Xs2FaoJBeDtHT35dZ+448oYL7YDiI9ant6Kh2eePMQLfiEW7FW1Uea18XwHiwQf3dc2bw1VSfC4nzkjNILTblFtqHnJQ2nlaffLwxIVTO0wouhEedQdia5rlPPDuHZ3UiNWM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,311 +120,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 19, 2026 at 07:17:48PM +0100, Michał Cłapiński wrote:
-> On Thu, Mar 19, 2026 at 8:54 AM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > Hi,
-> >
-> > On Wed, Mar 18, 2026 at 01:36:07PM -0400, Zi Yan wrote:
-> > > On 18 Mar 2026, at 13:19, Michał Cłapiński wrote:
-> > > > On Wed, Mar 18, 2026 at 6:08 PM Zi Yan <ziy@nvidia.com> wrote:
-> > > >>
-> > > >> ## Call site analysis
-> > > >>
-> > > >> init_pageblock_migratetype() has nine call sites. The init call ordering
-> > > >> relevant to scratch is:
-> > > >>
-> > > >> ```
-> > > >> setup_arch()
-> > > >>   zone_sizes_init() -> free_area_init() -> memmap_init_range()   [1]
-> >
-> > Hmm, this is slightly outdated, but largely correct :)
-> >
-> > > >>
-> > > >> mm_init_free_all() / start_kernel():
-> > > >>   kho_memory_init() -> kho_release_scratch()                     [2]
-> > > >>   memblock_free_all()
-> > > >>     free_low_memory_core_early()
-> > > >>       memmap_init_reserved_pages()
-> > > >>         reserve_bootmem_region() -> __init_deferred_page()
-> > > >>           -> __init_page_from_nid()                              [3]
-> > > >>   deferred init kthreads -> __init_page_from_nid()               [4]
-> >
-> > And this is wrong, deferred init does not call __init_page_from_nid, only
-> > reserve_bootmem_region() does.
-> >
-> > And there's a case claude missed:
-> >
-> > hugetlb_bootmem_free_invalid_page() -> __init_page_from_nid() that
-> > shouldn't check for KHO. Well, at least until we have support for hugetlb
-> > persistence and most probably even afterwards.
-> >
-> > I don't think we should modify reserve_bootmem_region(). If there are
-> > reserved pages in a pageblock, it does not matter if it's initialized to
-> > MIGRATE_CMA. It only becomes important if the reserved pages freed, so we
-> > can update pageblock migrate type in free_reserved_area().
-> > When we boot with KHO, all memblock allocations come from scratch, so
-> > anything freed in free_reserved_area() should become CMA again.
+On Sat, Mar 21, 2026 at 11:35:49PM +0530, Shivam Kalra via B4 Relay wrote:
+> From: Shivam Kalra <shivamkalra98@zohomail.in>
 > 
-> What happens if the reserved area covers one page and that page is
-> pageblock aligned? Then it won't be marked as CMA until it is freed
-> and unmovable allocation might appear in that pageblock, right?
->
-> > +__init_memblock struct memblock_region *memblock_region_from_iter(u64 iterator)
-> > +{
-> > +       int index = iterator & 0xffffffff;
+> The /proc/vmallocinfo readers, specifically show_numa_info() and
+> vmalloc_info_show(), currently read v->nr_pages and the v->pages
+> array without any concurrent protection.
 > 
-> I'm not sure about this. __next_mem_range() has this code:
-> /*
-> * The region which ends first is
-> * advanced for the next iteration.
-> */
-> if (m_end <= r_end)
->         idx_a++;
-> else
->         idx_b++;
+> In preparation for vrealloc() shrink support, where v->nr_pages can
+> be decreased and entries in the v->pages array can be nulled out
+> concurrently, these readers must be protected to prevent use-after-free
+> or NULL pointer dereferences.
 > 
-> Therefore, the index you get from this might be correct or it might
-> already be incremented.
+> Update show_numa_info() to use READ_ONCE(v->nr_pages) and
+> READ_ONCE(v->pages[nr]), explicitly checking for NULL before
+> dereferencing the page. Similarly, update vmalloc_info_show() to
+> read nr_pages safely to avoid parsing a torn or inconsistent value.
+> 
+> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> ---
+>  mm/vmalloc.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 64f5d1088281..7658fdc087d2 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -5204,7 +5204,7 @@ bool vmalloc_dump_obj(void *object)
+>  static void show_numa_info(struct seq_file *m, struct vm_struct *v,
+>  				 unsigned int *counters)
+>  {
+> -	unsigned int nr;
+> +	unsigned int nr, nr_pages;
+>  	unsigned int step = 1U << vm_area_page_order(v);
+>  
+>  	if (!counters)
+> @@ -5212,8 +5212,13 @@ static void show_numa_info(struct seq_file *m, struct vm_struct *v,
+>  
+>  	memset(counters, 0, nr_node_ids * sizeof(unsigned int));
+>  
+> -	for (nr = 0; nr < v->nr_pages; nr += step)
+> -		counters[page_to_nid(v->pages[nr])] += step;
+> +	nr_pages = READ_ONCE(v->nr_pages);
+> +	for (nr = 0; nr < nr_pages; nr += step) {
+> +		struct page *page = READ_ONCE(v->pages[nr]);
+> +
+> +		if (page)
+> +			counters[page_to_nid(page)] += step;
+> +	}
+>  	for_each_node_state(nr, N_HIGH_MEMORY)
+>  		if (counters[nr])
+>  			seq_printf(m, " N%u=%u", nr, counters[nr]);
+> @@ -5241,6 +5246,7 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
+>  	struct vmap_area *va;
+>  	struct vm_struct *v;
+>  	unsigned int *counters;
+> +	unsigned int nr_pages;
+>  
+>  	if (IS_ENABLED(CONFIG_NUMA))
+>  		counters = kmalloc_array(nr_node_ids, sizeof(unsigned int), GFP_KERNEL);
+> @@ -5270,8 +5276,9 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
+>  			if (v->caller)
+>  				seq_printf(m, " %pS", v->caller);
+>  
+> -			if (v->nr_pages)
+> -				seq_printf(m, " pages=%d", v->nr_pages);
+> +			nr_pages = READ_ONCE(v->nr_pages);
+> +			if (nr_pages)
+> +				seq_printf(m, " pages=%d", nr_pages);
+>  
+>  			if (v->phys_addr)
+>  				seq_printf(m, " phys=%pa", &v->phys_addr);
+> 
+It is protected by the vn->busy.lock. When you update the page counter
+in the vrealloc, we should do it under the lock if i do not miss anything.
 
-Hmm, right, missed that :/
-
-Still, we can check if an address is inside scratch in
-reserve_bootmem_regions() and in deferred_init_pages() and set migrate type
-to CMA in that case.
-
-I think something like the patch below should work. It might not be the
-most optimized, but it localizes the changes to mm_init and memblock and
-does not complicated the code (well, almost).
-
-The patch is on top of
-https://lore.kernel.org/linux-mm/20260322143144.3540679-1-rppt@kernel.org/T/#u
-
-and I pushed the entire set here:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=kho-deferred-init
-
-It compiles and passes kho self test with both deferred pages enabled and
-disabled, but I didn't do further testing yet.
-
-From 97aa1ea8e085a128dd5add73f81a5a1e4e0aad5e Mon Sep 17 00:00:00 2001
-From: Michal Clapinski <mclapinski@google.com>
-Date: Tue, 17 Mar 2026 15:15:33 +0100
-Subject: [PATCH] kho: fix deferred initialization of scratch areas
-
-Currently, if CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled,
-kho_release_scratch() will initialize the struct pages and set migratetype
-of KHO scratch. Unless the whole scratch fits below first_deferred_pfn, some
-of that will be overwritten either by deferred_init_pages() or
-memmap_init_reserved_range().
-
-To fix it, modify kho_release_scratch() to only set the migratetype on
-already initialized pages and make deferred_init_pages() and
-memmap_init_reserved_range() recognize KHO scratch regions and set
-migratetype of pageblocks in that regions to MIGRATE_CMA.
-
-Signed-off-by: Michal Clapinski <mclapinski@google.com>
-Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- include/linux/memblock.h           |  7 ++++--
- kernel/liveupdate/kexec_handover.c | 10 +++++---
- mm/memblock.c                      | 39 +++++++++++++-----------------
- mm/mm_init.c                       | 14 ++++++-----
- 4 files changed, 36 insertions(+), 34 deletions(-)
-
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 6ec5e9ac0699..410f2a399691 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -614,11 +614,14 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
- #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
- void memblock_set_kho_scratch_only(void);
- void memblock_clear_kho_scratch_only(void);
--void memmap_init_kho_scratch_pages(void);
-+bool memblock_is_kho_scratch_memory(phys_addr_t addr);
- #else
- static inline void memblock_set_kho_scratch_only(void) { }
- static inline void memblock_clear_kho_scratch_only(void) { }
--static inline void memmap_init_kho_scratch_pages(void) {}
-+static inline bool memblock_is_kho_scratch_memory(phys_addr_t addr)
-+{
-+	return false;
-+}
- #endif
- 
- #endif /* _LINUX_MEMBLOCK_H */
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 532f455c5d4f..12292b83bf49 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1457,8 +1457,7 @@ static void __init kho_release_scratch(void)
- {
- 	phys_addr_t start, end;
- 	u64 i;
--
--	memmap_init_kho_scratch_pages();
-+	int nid;
- 
- 	/*
- 	 * Mark scratch mem as CMA before we return it. That way we
-@@ -1466,10 +1465,13 @@ static void __init kho_release_scratch(void)
- 	 * we can reuse it as scratch memory again later.
- 	 */
- 	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
--			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
-+			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
- 		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
- 		ulong end_pfn = pageblock_align(PFN_UP(end));
- 		ulong pfn;
-+#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-+		end_pfn = min(end_pfn, NODE_DATA(nid)->first_deferred_pfn);
-+#endif
- 
- 		for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages)
- 			init_pageblock_migratetype(pfn_to_page(pfn),
-@@ -1480,8 +1482,8 @@ static void __init kho_release_scratch(void)
- void __init kho_memory_init(void)
- {
- 	if (kho_in.scratch_phys) {
--		kho_scratch = phys_to_virt(kho_in.scratch_phys);
- 		kho_release_scratch();
-+		kho_scratch = phys_to_virt(kho_in.scratch_phys);
- 
- 		if (kho_mem_retrieve(kho_get_fdt()))
- 			kho_in.fdt_phys = 0;
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 17aa8661b84d..fe50d60db9c6 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -17,6 +17,7 @@
- #include <linux/seq_file.h>
- #include <linux/memblock.h>
- #include <linux/mutex.h>
-+#include <linux/page-isolation.h>
- 
- #ifdef CONFIG_KEXEC_HANDOVER
- #include <linux/libfdt.h>
-@@ -959,28 +960,6 @@ __init void memblock_clear_kho_scratch_only(void)
- {
- 	kho_scratch_only = false;
- }
--
--__init void memmap_init_kho_scratch_pages(void)
--{
--	phys_addr_t start, end;
--	unsigned long pfn;
--	int nid;
--	u64 i;
--
--	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
--		return;
--
--	/*
--	 * Initialize struct pages for free scratch memory.
--	 * The struct pages for reserved scratch memory will be set up in
--	 * reserve_bootmem_region()
--	 */
--	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
--			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
--		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
--			init_deferred_page(pfn, nid);
--	}
--}
- #endif
- 
- /**
-@@ -1971,6 +1950,18 @@ bool __init_memblock memblock_is_map_memory(phys_addr_t addr)
- 	return !memblock_is_nomap(&memblock.memory.regions[i]);
- }
- 
-+#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-+bool __init_memblock memblock_is_kho_scratch_memory(phys_addr_t addr)
-+{
-+	int i = memblock_search(&memblock.memory, addr);
-+
-+	if (i == -1)
-+		return false;
-+
-+	return memblock_is_kho_scratch(&memblock.memory.regions[i]);
-+}
-+#endif
-+
- int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
- 			 unsigned long *start_pfn, unsigned long *end_pfn)
- {
-@@ -2262,6 +2253,10 @@ static void __init memmap_init_reserved_range(phys_addr_t start,
- 		 * access it yet.
- 		 */
- 		__SetPageReserved(page);
-+
-+		if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)) &&
-+		    pageblock_aligned(pfn))
-+			init_pageblock_migratetype(page, MIGRATE_CMA, false);
- 	}
- }
- 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 96ae6024a75f..5ead2b0f07c6 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1971,7 +1971,7 @@ unsigned long __init node_map_pfn_alignment(void)
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- static void __init deferred_free_pages(unsigned long pfn,
--		unsigned long nr_pages)
-+		unsigned long nr_pages, enum migratetype mt)
- {
- 	struct page *page;
- 	unsigned long i;
-@@ -1984,8 +1984,7 @@ static void __init deferred_free_pages(unsigned long pfn,
- 	/* Free a large naturally-aligned chunk if possible */
- 	if (nr_pages == MAX_ORDER_NR_PAGES && IS_MAX_ORDER_ALIGNED(pfn)) {
- 		for (i = 0; i < nr_pages; i += pageblock_nr_pages)
--			init_pageblock_migratetype(page + i, MIGRATE_MOVABLE,
--					false);
-+			init_pageblock_migratetype(page + i, mt, false);
- 		__free_pages_core(page, MAX_PAGE_ORDER, MEMINIT_EARLY);
- 		return;
- 	}
-@@ -1995,8 +1994,7 @@ static void __init deferred_free_pages(unsigned long pfn,
- 
- 	for (i = 0; i < nr_pages; i++, page++, pfn++) {
- 		if (pageblock_aligned(pfn))
--			init_pageblock_migratetype(page, MIGRATE_MOVABLE,
--					false);
-+			init_pageblock_migratetype(page, mt, false);
- 		__free_pages_core(page, 0, MEMINIT_EARLY);
- 	}
- }
-@@ -2052,6 +2050,7 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
- 	u64 i = 0;
- 
- 	for_each_free_mem_range(i, nid, 0, &start, &end, NULL) {
-+		enum migratetype mt = MIGRATE_MOVABLE;
- 		unsigned long spfn = PFN_UP(start);
- 		unsigned long epfn = PFN_DOWN(end);
- 
-@@ -2061,12 +2060,15 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
- 		spfn = max(spfn, start_pfn);
- 		epfn = min(epfn, end_pfn);
- 
-+		if (memblock_is_kho_scratch_memory(PFN_PHYS(spfn)))
-+			mt = MIGRATE_CMA;
-+
- 		while (spfn < epfn) {
- 			unsigned long mo_pfn = ALIGN(spfn + 1, MAX_ORDER_NR_PAGES);
- 			unsigned long chunk_end = min(mo_pfn, epfn);
- 
- 			nr_pages += deferred_init_pages(zone, spfn, chunk_end);
--			deferred_free_pages(spfn, chunk_end - spfn);
-+			deferred_free_pages(spfn, chunk_end - spfn, mt);
- 
- 			spfn = chunk_end;
- 
--- 
-2.53.0
-
--- 
-Sincerely yours,
-Mike.
+--
+Uladzislau Rezki
 
