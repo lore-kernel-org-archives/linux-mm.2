@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E0CD58CA1
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 22:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0448FD58CAC
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 22:35:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E7CF6B0005; Sun, 22 Mar 2026 18:28:57 -0400 (EDT)
+	id B599F6B0005; Sun, 22 Mar 2026 18:35:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 498DD6B0088; Sun, 22 Mar 2026 18:28:57 -0400 (EDT)
+	id B0A426B0088; Sun, 22 Mar 2026 18:35:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D5756B0089; Sun, 22 Mar 2026 18:28:57 -0400 (EDT)
+	id A1FFA6B0089; Sun, 22 Mar 2026 18:35:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ADD46B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:28:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C9EBA16090E
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 22:28:56 +0000 (UTC)
-X-FDA: 84575140272.16.B2A9D70
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4341120003
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 22:28:55 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6n5jTaf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 943AC6B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:35:03 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB9E013BD97
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 22:35:02 +0000 (UTC)
+X-FDA: 84575155644.07.1F0B32B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1680618000E
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 22:35:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BZKlad+F;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774218535;
+	s=arc-20220608; t=1774218901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WswD/WIsXZfQsrZ2iW4BbSGqYO3Sa1sCQ0cSkbEeNBA=;
-	b=IM2DkGHZrmoVktwlAAo/C7lTzkQGKihHqMnOeX/s63INPZ1DZX+7Sy7peuAHu0tmOFJQa/
-	kaOgmE05FhUzY2L1/1mmqfBZlnM/UEbxx9pnAgX1qSWdDSrhqakqtjfNTpj7g0+DvGb/Vr
-	MN66O42acPNjSfZeURpBfF6jizNl6BI=
+	bh=0OAu+QDQuFU4a+fK8GFb5GMqKgS0xBWS+YkYTun6CnQ=;
+	b=7RVeGMewTip6O2XoN4/gdUFdPiv2i1hcySa3WJqQ37APzdx0sEOnIhdh3stV9tMx1BOtgE
+	oJ2GClxKkur5Q+6xWKwJ78kNPVwSBT+rmX/eYZbybzKwQiImpLJBDApoLnjvWNQh+zRaI4
+	QziAnGUVVoNI+sWUrbnICB90HpHHu4I=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6n5jTaf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774218535; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BZKlad+F;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774218901; a=rsa-sha256;
 	cv=none;
-	b=TLoiTZNZZcOkCVDUess7etrSIHem3IJVt7ukyuT7RixlN/gv/ZJc1McfWreX/IB+pKryNl
-	579Mp2peGoGUVWkg7UT8n1mYHvofy/6pDU7ir0TuYITgjktC6lc7T+NAPgUIXNrTD0xgaN
-	1xcvAev/VKUXHFWrIt5Z1AqY7jekoKk=
+	b=6dnqJryz/txt5IPDJXenifT3T+sBCizhkfyPdsAzCkCDXR/G2M031Fk/4nRSTVMhYDHi88
+	/RQM4PVAt7mIxI8Cg/EfRLHns6rnuMg4RxHiSG+91rvGWGRZwj6O6AMnr82ixmrJPJkONv
+	+d+HVtmlR5XQoy2Zg+lZwl2r/cNzZUo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 97CA560008;
-	Sun, 22 Mar 2026 22:28:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F152C19424;
-	Sun, 22 Mar 2026 22:28:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774218534;
-	bh=kzW9ex6Pn6zhGRYRBf0VzvojUC0+Ma6yBVZIRqEFZgM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6n5jTafHSgCE/WZyy9MLx2HnUUkhFROw6fw3aG4gXqsajLr9q14Oz1zvL+bwDdWX
-	 cTFzWywbkrHGXuwKGCq9rlxskr5ZZ0Uw4r4Nm/TBmvfpPqNFCTTuC7pFVk5uSAzp3A
-	 Opcdadiyw271v1LSD8WETHlUd8wZZuc8ZuAlQT7pUs4qhpjaTmT5FMqxMdr0QYemDt
-	 AZ7ZtLeRp3NuC9RvCHFlgK00WQPvKV4yyr3M1V9QjYpMpOd5sRGsSaTebAj7K1TgOu
-	 l0Q8v8aw6Dzh5zLvRPAjjXm74eaZ/93jlv6GQoCP/SGTB5XPtgdeElQS2ZUkLvA1TN
-	 aWZuaEp8pLpgw==
-From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/core: optimize kdamond_ap =?US-ASCII?Q?ply=5Fschemes=28=29_by_inverting_scheme_and_region_loops?=
-Date: Sun, 22 Mar 2026 15:28:44 -0700
-Message-ID: <20260322222845.89757-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <C9B59023-161D-405F-8941-1B0E0B8E1D6B@objecting.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4341120003
-X-Stat-Signature: 94zmbmoumj4cexgn4dezdidxxf5xnfk5
+	by sea.source.kernel.org (Postfix) with ESMTP id B22A4441C4;
+	Sun, 22 Mar 2026 22:34:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA97C19424;
+	Sun, 22 Mar 2026 22:34:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774218899;
+	bh=Savqoq+1da5mlltJawsJ0m3iwpbknkmSXsByhCsojJw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BZKlad+FQFaJnrsAKYEbygGXQNLKDbYqZXaYDEQKe+02JfQPkL81VfHswVMEapP2D
+	 6yZ2LeH/m4bbfY3AYe7X/h+lYVLxNeViVA/JEXK8jr8q7aKkwui2g0rG+IzS844m5m
+	 T4BoTh0d40xZcq0g88AaK6G/nez3laDJOtRJ0iRk=
+Date: Sun, 22 Mar 2026 15:34:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
+ mem_cgroup_css_online() error path
+Message-Id: <20260322153458.245cf0eae46bf8f57d6fe4ce@linux-foundation.org>
+In-Reply-To: <20260322193631.45457-1-devnexen@gmail.com>
+References: <20260322080142.5834-1-devnexen@gmail.com>
+	<20260322193631.45457-1-devnexen@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1680618000E
+X-Stat-Signature: mx58q59wwch74dyqkw5hezrh3oqghpsz
 X-Rspam-User: 
-X-HE-Tag: 1774218535-188647
-X-HE-Meta: U2FsdGVkX1+SUB04UvDTpnluYiRuNBbUHkgp78GQAejOEVx129+E6zp3aik4jw5S/d7y9Y7Zr0LHl1vQqxdlNvr7eS3kJ/cIqBHifz2xUjYFescB5vGHxWPjGjHlmZfHcg2N0s7098Jm8mfXAy/dpn652NHC2VoCJr8b14AQOGfIDt39xvmzxUUC1pEv79QWIgBgF20S+nYazyp7JjEuh7oMDIZ70Nt4P53ZRxDobKMmQY8F6wm++M7FK12cLMko0rTYbGikSwq6REE8C53C6U72ZaDGoQwHqAt6dwzaii+gjKyFajOwfLsStgpIcCH42FgbKiVLbSLk1V9HJPxPtCLKWEl2nF7IxTYa66zJXdf+I8Upwa9cwyQ0axCCZQGoYUbSzxGOWqMUyQdT47w6T9gqrAMyb2icMxdS5VOmbaxENDbFN35zVGfopcgFcsAM0t1mCaR3h9s9Jvdz9anQG+8Fv/xLihz1GeWQWjuO3RQTuzFE8+04NSGyPKVmQEONOCtFbHXXx6q8kSUQzwBrG/UcEuGlpcJCK3rJxnokFPhub3OIV2jlshLGfBEOpX97RDnkqPtthrcE3nmE/U+4JQe863KcW0W+IqjCJ9PIxRPH5pAeZLB28d5AJz2pOTmlR9Il4GhU8Io6kIjzss+ghzR+sDjtra03ltJ2yB7iZTkHEFx2lkQE9NVcm2cawoDjTD1Ddb+CQ0eLoCP+OeoDt42b6DmngW2W/NMplp977Tp0RUlSyWmsMzzBDk3w9h8tiLHRfHp0aWzcJ5D59C2QsFT5HNuBykfeOIJmy4ay8hFsyNz5rRZhwg7fvOuYUuDkIX7mu0NoUIVhSd5dJZ3//34PrWq6jY21s3W3/hfMT+uk9PJv2raL9wAjpdOQzbtDaUjv6jUhnoBkpnjYfAWwoBOrEwhjJ5HdQJnEMEh7+OrGIZywPvuUXL4EUWzCjzwPUiJChdo3zX+rwhQ+lJZ
- pJyg8LeG
- z5EVI3T/2otMzZPZPxOT80pIwuUtnpBQGfqQt68qqlxVv+zVXhBVRTuPoHZZj+h+XAD0P1Eh4/ALrABhKhAm275pBytqgD+nrppXkkoXWpBDJP5GTqJhyuPl0GfosiIuw538UyfhfwwhoOy5ZKGxIKLNRGVPg/an7TvP0KxzgrS1j72jZ0K+dZmas3gfo9Walt3nJYsk4ObQDy6QVSHXkbaTaDB+ewUJlvLBSC0nqRj1iBjw5TFEGWJHL4YPT06VI0VCPvkcliI/vEXwtUY44m8nlPnO8rvVsXQfAXr5d9DcIw9L4of9LWCthaGvXSg3g90x17zESLSNVnO5DzW9moVtV9FTC1upv+tqxANR2xGwgDuPkkuGsRU0AaQEiKjagJoAkF8Mzk/j6qAQ=
+X-HE-Tag: 1774218900-355937
+X-HE-Meta: U2FsdGVkX19ez+eHy+/Q4mIMX3Mxlho8McyqWFBk9WKfNHznvG5x4dk2EALcC9DYVOZ4qC7gS3EqQivihvevt3ZYeFvw6B3b45k228rEwPuCaW9zJccEQRLt/t1dnoog9e9bbRqoiC78RykVX0KSS/C+wYAx4p38lUnK2CnYbBWC7GpqxfMNUW5UXZZ58GvK1Pj00YIiW3hg1+OgqshR7O9L9a5JZK1zgytjZ+k4esBD/hhdLJdLORq4Rm+ijDPmVbOcZV5jHnEjICMtOLOD0jQmqG6hHmfEDJYfOpXIYRSgcipDDbYOCIewafQTwGfQS7f/IMK52lNdPmhGDrqWZcypBYxcTX01UUK9THxX7fO9sd+XMKbHhoJKmZK57gNNTCpJm6MtpXaKyveKc6yOe0D2wDsKBrvnhplf0atbQPrMUHPmPhfXCSmBvWMyCKGbT7ai0C0N6Xo8hP1CDE9CpewJoJgMr5AI3un7jNrk+XtGwLJuyrLwlRvpTbZMgeT2cJKO0ZmyVksRj2ouV2tqs5pKLaGUO+svnkinZOUHjcHygqzzh2KHmgIDFfxt9EdAvoLh5eqmlZmK0/WLg7Sk/tNLek6ZPa12njJAAz7ol5kffK/ZUkl3/emJdce3Th83Ctmvcdh1Yb/ms7tHAJhwqrKq3FcGAm9Z7piv5s8+W1YqHS3ju2Or9qB9A+ttwewqBIMVLZ7MB/sm4L89IoHBTV/NzbIO4CSO7RlyZkvKWBzp7RnOCFc9m2VNoVdmhgeMQl8GNJJ7cn3E8nYwGS53RijGYbGkZemIBShQFL886hkPD67CkwUb3zlbnn8i1LvBFRzeFp6FqWKimgFTlESz2IgkdBwmNsVHULQnGiqjMKqaXdSBt+dd70v/WvnEvnEEglHuX9Q2ojWZ4b1MZFUJklQViOFd7Sx/kFtjhl4wT97iIG9Yq0y+HJCMMaEGFJebm5kf6SeJaZOlMZ9tUl6
+ H15r7cGu
+ s0ObyynZljsPCVHeneBb2cy2l7zDYQYqXgXQZg3t6xoJ82jrU2GlOCJhpoVuFNVXGs1FAiTjPs0jhbuZmYDsfC4G0S084Dm2wYzGBQHXPVgeWJzbxQvvOpVqIkeygfMg71qGj212hpOoOhugYHwFdHHKbVWOn/+/bNB9PUWX11/OPfrvY0C4CsgQMgpkUJSlnzZAkg904EJ8e634dNr6Rqy7Ly5cVc1NpzVEH3ouo3JWxlY1HyDpsqfAF2b1bihmZTOr+1WJPtYVx9d9xk1gIFY6jWDn6BAkiyMIxlHhVqFE/w/Dac5s53wNF897OoaayJghBp92P7py3QJkvBIffJcevyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,112 +93,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 22 Mar 2026 21:59:45 +0000 Josh Law <objecting@objecting.org> wrote:
+On Sun, 22 Mar 2026 19:36:31 +0000 David Carlier <devnexen@gmail.com> wrote:
 
+> When obj_cgroup_alloc() fails partway through the NUMA node loop in
+> mem_cgroup_css_online(), the free_objcg error path drops the extra
+> reference held by pn->orig_objcg but never kills the initial percpu_ref
+> from obj_cgroup_alloc() stored in pn->objcg.
 > 
+> Since css_offline is never called when css_online fails,
+> memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
+> normally drops this initial reference never executes. The obj_cgroup and
+> its per-cpu ref allocations are leaked.
 > 
-> On 22 March 2026 21:44:18 GMT, SeongJae Park <sj@kernel.org> wrote:
-> >Hello Josh,
-> >
-> >On Sun, 22 Mar 2026 18:46:40 +0000 Josh Law <objecting@objecting.org> wrote:
-> >
-> >> Currently, kdamond_apply_schemes() iterates over all targets, then over all
-> >> regions, and finally calls damon_do_apply_schemes() which iterates over
-> >> all schemes. This nested structure causes scheme-level invariants (such as
-> >> time intervals, activation status, and quota limits) to be evaluated inside
-> >> the innermost loop for every single region.
-> >> 
-> >> If a scheme is inactive, has not reached its apply interval, or has already
-> >> fulfilled its quota (quota->charged_sz >= quota->esz), the kernel still
-> >> needlessly iterates through thousands of regions only to repeatedly
-> >> evaluate these same scheme-level conditions and continue.
-> >> 
-> >> This patch inlines damon_do_apply_schemes() into kdamond_apply_schemes()
-> >> and inverts the loop ordering. It now iterates over schemes on the outside,
-> >> and targets/regions on the inside.
-> >> 
-> >> This allows the code to evaluate scheme-level limits once per scheme.
-> >> If a scheme's quota is met or it is inactive, we completely bypass the
-> >> O(Targets * Regions) inner loop for that scheme. This drastically reduces
-> >> unnecessary branching, cache thrashing, and CPU overhead in the kdamond
-> >> hot path.
-> >
-> >That makes sense in high level.  But, this will make a kind of behavioral
-> >difference that could be user-visible.  I am failing at finding a clear use
-> >case that really depends on the old behavior.  But, still it feels like not a
-> >small change to me.
-> >
-> >So, I'd like to be conservative to this change, unless there are good evidences
-> >showing very clear and impactful real world benefits.  Can you share such
-> >evidences if you have?
-> >
-> >
-> >Thanks,
-> >SJ
-> >
-> >[...]
+> Clear pn->objcg via rcu_replace_pointer() and add the missing
+> percpu_ref_kill() in the error path, matching the normal teardown
+> sequence in memcg_reparent_objcgs().
 > 
-> 
-> My last email:
-> 
-> Hi SeongJae,
-> 
-> I've looked into this further and ran some extra benchmarks on the kdamond hot path to see if the gains were actually meaningful.
-> 
-> The main issue right now is that kdamond spends a lot of time "spinning" through regions even when there's no work to do. For example, if a user has 10,000 regions and a few schemes that have already hit their quotas or are disabled by watermarks, the current code still iterates through every single region just to check those same flags 10,000 times.
-> 
-> In my tests:
-> 
-> Typical setup (10 schemes, 2k regions): ~3.4x faster.
-> 
-> Large scale (10k regions, hitting quotas): ~7x faster.
-> 
-> Idle schemes (watermarks off): ~7x faster.
+> Also add a NULL check for pn in __mem_cgroup_free() to prevent a NULL
+> pointer dereference when alloc_mem_cgroup_per_node_info() fails partway
+> through the node loop in mem_cgroup_alloc().
 
-Thank you for sharing these.  This seems like not a real world workload test
-but some micro-benchmarks for only the code path, though.
+Cool.
 
-In real world DAMOS usages, I think most of time will be spent on applying
-DAMOS action.  Compared to that, I think the time spent for the unnecessary
-iteration will be quite small.
+> Fixes: 098fad3e1621 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
 
-> 
-> 
-> It's also a cache locality win. Right now the CPU has to bounce between different scheme metadata inside the innermost loop for every region. Inverting the loops lets us process one scheme completely, which keeps the hot data in L1/L2 and gives about a 10% gain even when everything is active.
-> 
-> The goal isn't just to shave cycles, but to make DAMON scale better on high-memory systems (512GB+) where the region count is high. This keeps the background "CPU floor" much lower when DAMON is supposed to be idle or throttled.
+This is presently in mm.git's mm-unstable branch, not in mainline.
 
-DAMON does adaptive regions adjustment for such large memory system
-scalability.  I understand some users might dislike the adaptive mechanism and
-stick to a fixed granular monitoring, though.
+> Cc: stable@vger.kernel.org
 
-So I'm not yet convinced to this change as is.
+So the cc:stable is inappropriate.
 
-Meanwhile, I'm thinking about a way to make similar optimization without
-changing the behavior.
-
-We already have the first loop of kdamond_apply_schemes() to minimize some of
-the inefficiency that this patch is aiming to optimize out.  Maybe we can
-further optimize the first loop.  For example, modifying the first loop to
-build a list or array that contains schemes that passed the next_apply_sis and
-wmarks.activated test, and make damon_do_apply_schemes() to use the test-passed
-schemes instead of the all schemes in the context.
-
-This will keep the behavior but have a performance gain that similar to what
-this patch is aiming to.  If this can be done with a fairly simple way that can
-justify the maintenance burden, I think that's a way path forward.  But, from
-this point, I realize I want it to be *very* simple, and I have no idea about
-the simple way.
-
-So I wanted to help making this be merged.  But I fail at finding a good path
-forward on my own.
-
-In my humble and frank opinion, finding other place to work on insted of this
-specific code path optimization might be a better use of the time.
-
-
-Thanks,
-SJ
-
-[...]
 
