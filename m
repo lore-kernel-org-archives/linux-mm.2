@@ -4,104 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F38A2FC72B5
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 10:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20DE3FC72BA
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 10:31:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00E476B00BC; Sun, 22 Mar 2026 06:22:33 -0400 (EDT)
+	id 4131E6B00A6; Sun, 22 Mar 2026 06:31:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDA2D6B00BD; Sun, 22 Mar 2026 06:22:32 -0400 (EDT)
+	id 3EB076B00A7; Sun, 22 Mar 2026 06:31:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1DB6B00BE; Sun, 22 Mar 2026 06:22:32 -0400 (EDT)
+	id 301F16B00A8; Sun, 22 Mar 2026 06:31:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C60A36B00BC
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 06:22:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 551955A900
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 10:22:32 +0000 (UTC)
-X-FDA: 84573309744.24.13790ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A88B6160008
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 10:22:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LBUBeWMG;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 220616B00A6
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 06:31:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB6DEBB387
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 10:31:08 +0000 (UTC)
+X-FDA: 84573331416.03.E84C297
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 862264000C
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 10:31:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774174950;
+	s=arc-20220608; t=1774175467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V6N0kvRYnZJDaYc0bb2dAstYX6HXCWNABBbpGHfaYFI=;
-	b=I79rgf0hpOtPDz2cCfmpxVOczcOBDOD79awllttzzvRSXyW5BqOCtj025kBCgrX88jsZia
-	Tos0dvwUFY1udbNXpAAn7phhVj1m85joiSsCPa/g6Jsc06WMnDQc5JtNFZrwmygmvyUSRZ
-	qsE8d52WKcgRdI6IXbAboOdaRk9M3wY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774174950; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=WOLC2yeyDAVBzDsXmvwbojGnkOwApANQrMXtV5D4S+E=;
+	b=RylGjVBrDTKBvTfZDw5SPInRxWmTHyZe4ZZ0RO1Tv6V+KeUiZrba530ocI3rTFt5PaRG7V
+	SJykvIdeZsjkqyQbM7lLu/nHV2BWNb63xbFjp/oc1594duqb3ho5EGY05Oht463Bq80h/r
+	AzdrkwcVFx1O8WwSRuCWw9RZnG1ETng=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774175467; a=rsa-sha256;
 	cv=none;
-	b=wwdHUTvtIU6aNiff55obaLbWwjRhxWSXASwgJ071CCuAL4qb9UwiThmYxf2SmXDCHCIfbN
-	qjUFNF8KZI3jk0pSdlGnvhAerrKDJs6zGK4boaikEm5M6sK5kWZFm4bUaiMHElVe0sLVYV
-	gLiooReuTwDSC7sKBzeigp0+vMljFds=
+	b=HeEKeMf0MKT1M1F0/Bm0QXF9dnwouVnfMY/I+JCa3WYz/nMJqbPKzC62I42wZomp6dLUBA
+	1+CxvatxWbyAxNLceNs5XBOP3Ne/suNidt/VcoCFtK7o3sDJgslDcUzW25KKXXZrsh7YFc
+	HKBY2QfdXMjIyOfrlMfSxSD1pk/8Dys=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LBUBeWMG;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F2276600AE;
-	Sun, 22 Mar 2026 10:22:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2CBC19424;
-	Sun, 22 Mar 2026 10:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774174949;
-	bh=ja8xYsnuPES+yA0rNROYguH6Aiw+cEWcqhgX6fvgPdk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LBUBeWMGDb+8siC07t1h2NvFCZ9g+o0BUqaeaOADmskfTDWZlRbxSMC+IV4f1YRm8
-	 7xNJWwypic+vW4gFPxCCxB9YUNfWNaZLHHLQT62spAQ6sQn0pLbITciakpYMnFzlHY
-	 7QV4Dthc4IrKZS/wmEJ9Avw+QhcHFpHBCQD8/snwbHF3npHHvLCLdE5+fBLHwOmLEe
-	 FlzeqpsvnJIB20mxp/4p+bUvzVzHdPu6RCoL2CoJEPxfp/ZtIxNR1AD47QusOm/Ah/
-	 7Elnp421pTGBrVqC/rBBgk0YRP/cFrtzTDJejpVNplpIxI1qzCtLuxd4MPY0XcGiVK
-	 S48LVT8HX5yVA==
-Date: Sun, 22 Mar 2026 12:22:17 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 03/15] userfaultfd: introduce mfill_get_pmd() helper.
-Message-ID: <ab_C2enJ5DTIH5aH@kernel.org>
-References: <20260306171815.3160826-1-rppt@kernel.org>
- <20260306171815.3160826-4-rppt@kernel.org>
- <ac39f02d-ed00-4b8d-8156-1e999f5b0af3@kernel.org>
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 22 Mar 2026 19:31:01 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sun, 22 Mar 2026 19:31:01 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: rafael@kernel.org, chrisl@kernel.org, kasong@tencent.com,
+	pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev,
+	linux-pm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 0/2] mm/swap, PM: hibernate: fix swapoff race and
+ optimize swap
+Message-ID: <ab/E5SaSAlAKLCwD@yjaykim-PowerEdge-T330>
+References: <20260321103309.439265-1-youngjun.park@lge.com>
+ <20260321105921.19388b7acbc0f8d6036e29a7@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ac39f02d-ed00-4b8d-8156-1e999f5b0af3@kernel.org>
+In-Reply-To: <20260321105921.19388b7acbc0f8d6036e29a7@linux-foundation.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 862264000C
+X-Stat-Signature: 9p6hpo78x48nxbyzi9urxbmx7fp6e3hx
 X-Rspam-User: 
-X-Stat-Signature: od1h74ebx3z9b7aydoehzpdxq5tfcpqn
-X-Rspamd-Queue-Id: A88B6160008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774174950-481379
-X-HE-Meta: U2FsdGVkX19Pbp3LRRteMZ2ZHtIxk7ZmrOmBNwRof9DDU+mKq9V1fWWYwu1WhTKF14UGPmiHIC8iMY+yLzK5iFF/2suPREuc9iR/2bnJ5+7uTD5ZO0k1/OI4GpkB9moTAP0HwUDbUxZ0GCRumLCeEuAzk1uaDOhB0MBGMx/G8hb5dae9Brlft9MUYBEth4jPpjPI7XG+a43VYLTeUut84/8X8itg9SM5LDhXNKkuYOBu8ZxgdjvGckXnX/S8GhcL0+Sc5KjPKcy/gDf2gHp+Om8Nf0Uy/u/weBNbzGESFYy6PtDkDA9+nnSb94N9L+SLxeagbe0Q2s+0yaaTGaFNWByX5l8XwYsPGMczdfdpKHzTAqUfL/WTejeuDTjyq6cfdu3hR8AovMPvUSxOL+KVf/9ezTkjR35p4KP25jpmuZ3ZFrDWNuN6t+rjOe9AiughiJ/Lk57mE1UmUQw4r4v6fo2+w9s/BZCN9MTs23b+LM+d0f3XxPD4FGUG0rogkbD0sDgJzz+ZozoSA0kNjcXRrbOrDLaFptSLlpdKU2O/zSZ9CX5wwfWiiL+jURGvcu8d18/DIbOQ7IoMuHxxjAD8wuSDUv47HIDRKN+XWkTkUX6/98BDYgiVCuvVHWraNl/WRncfYIRMp33+pQPqwcQ1tFQAwUi1+l4j4RbAQWThDipZKBsJ91XR/0Y7yX0tdUdrOyNnWQJzh3d//6H1ycfUCkuJYdV1mLVNSXnCExtRJrTAb4iA76tuXopHIoscTWZeZGdGLYuUB8ypmmKM1wOtu5ELvDaRN5iJ2DjH12oyzOw1gZQHIuLgVbbz9m1h4xRKHmFuCSrb0eRTECf1uzvDyVm+JHg/FWe5YHGTArK5xdj5+vlqNd5WqV4ZNDDBXPQh+5WM0DumQVf0XKdWoS/NvtpkS2OFvigkXZLmTQ+03M8aqGIqbNFGo7C6ZurTufpGheFMchyeNHPnA8MU5ZA
- JurJ+0oW
- t+TJdikEKED+2wl5pzoGkfsNKE3CLmX/daUQs5iUYeLJAK6oP8FbuAVm1yJ8h5Dn3fq4U1bHjWVXYKjsiC8hveZjg+Lmw/28bmjzMUwSi84aX/REIvHK6G1hpxgCcifovqzTINDz75PjHdaj5xDMjG/tlJ7TDZcAq7I7Fmn1oYhYtdbEifP7xFD2LO+oTzFL16bMA7YCZEwaZHRqDWABxFBszHuFD2ZMxbAE1xWKN5mtZL98O712uPU9JMw71r4otmqRstbN345GMMjB6VtR6ekJHKcb9Lbt4XVF9bNFe9O67B+QawdZ8nLSoKkJtaophL+kKRXoYAumiE4o=
+X-HE-Tag: 1774175465-551462
+X-HE-Meta: U2FsdGVkX19nRSPiROTzlev59Sb4TZH44v1fbMRhm9GP4e01RQCio/0ZMz3TM+GUpPmCCMV3+9GR+/mO1xCJQ9yADfnuV5j0TLVbZry/Y8YJESsKGV5mUdegB6AN1NgZjgD6v5luO1+VKdF+gcTSUl/FDlLnOo7rhjrQHcK5yXmiYogh9Fi6Ws/YO6NR7g5lFA7cYH3xJRexiLHamXoYHSgusl21KVEv94t+2W79KzDyASY1LD0uRoHm75JTP2ysqqiBmU5WpKYkAjn18h18oTOo0gk08H7sKhp960j1ihEdvUkOcmBC7xIxke4k8gBVcM5ImDHGSW8zNDLm6PpKuSRhbgoU6KmFlIX0vj/ZUs4gZ5BIVXuTVcsR7+K8NLT+b7lR97wdYL5XE/B608oCEWOwflhpT3zAyTcwoilLnyQYwASjlDBeSeKkpmg5UhvBZO8oMNXlU5CoCowH7sD6ya/WHtBi8lXLmRBYaLHqFSLMriEQbTwuioZpJckDdN1C9CwF9lagnRcA2+soVB+hfFr2WDT7ceIatlDQhHLWYRC9INhiOjtnxVhbONaewF2vO9NeRKwh1o1dCTh05Goub9Ixe2nxZwfQH0AObqrrh64e8MKexQwY5dQV0Ykrihdfr/5qCkRct4CHv0IIbeP2eZL9y1r8HtvpvXY5yItBEqgwFNh3QqbmnXPHVG+DGyk1UESGxP1SCs3kp6vV4eOjRfxzUoy6gRz/qRb1NpMFSYdjDQbBjpTWAaOhejwhQS2VIBq54phHWX/Ah7NuQBWN/DZm2sGVph31/ds0kzYJfyz6S9zC52LEmMrgJNzd/+1+k4pGE3EVUVzFeZTZ14iCDfhM12GjE3pmqNU0LTaGOTDNcHnEM1KW0vPEY5wV3IiDaDb6vZz7cgEwxKYpHgjqP0QbHUi2qOiig0K96Qi6ETrY36uoJ6STYQ1DVlUDyy/BnD3K1Jg3SdcC/LBpbUQ
+ H+4XDGuf
+ A0rm8AAEuChqI7wWGC1N5IWQQIOrdcQHBSw3/OTXruFj09P64pN26aqKWgGTxN7teXbwtMekHnRtVpCqmQjHa3WFzRFkflrVLTuVTVtlPuHvA9paYXaw9MXI1ZAyE2Ak2zSjrfDt6f11s/KLr3CkP2dAxU6DSCqMZQCFcpfBQnhP53lFxiP3w8MaWR09JX+OiA6JBarGoHRgWrGnmt0TZg1OR3KgJORzZasFtFJVIsEqhydnS5EJB1uLK+v3FNR+/oWcIxcF0inDFVjHkr5EzbUgzK1Q32W52Znl6NWldQCyOqf6Qas5xdWz+08YkD6AdBSoInoANatyLyVQdqpHSl9avos5EzfSl/rb3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,66 +83,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 01:55:29PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/6/26 18:18, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Sat, Mar 21, 2026 at 10:59:21AM -0700, Andrew Morton wrote:
+> On Sat, 21 Mar 2026 19:33:07 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
 > 
-> Nit: "." at the end of the patch subject
- 
-Oops :/
- 
-> > +static int mfill_get_pmd(struct mfill_state *state)
-> > +{
-> > +	struct mm_struct *dst_mm = state->ctx->mm;
-> > +	pmd_t *dst_pmd;
-> > +	pmd_t dst_pmdval;
+> > Apologies for the frequent revisions. Hopefully this version is close to final.
+> > 
+> > Currently, in the uswsusp path, only the swap type value is retrieved at
+> > lookup time without holding a reference. If swapoff races after the type
+> > is acquired, subsequent slot allocations operate on a stale swap device.
+> > 
+> > Additionally, grabbing and releasing the swap device reference on every
+> > slot allocation is inefficient across the entire hibernation swap path.
+> > 
+> > This patch series addresses these issues:
+> > - Patch 1: Fixes the swapoff race in uswsusp by pinning the swap device
+> >   from the point it is looked up until the session completes.
+> > - Patch 2: Removes the overhead of per-slot reference counting in alloc/free
+> >   paths and cleans up the redundant SWP_WRITEOK check.
+> > 
+> > ...
+> >
+> > v6 -> v7:
+> >  - Dropped Patch 3 (pm_restore_gfp_mask fix) from series as it has
+> >    no dependency on Patches 1-2. Will be sent separately.
+> >    (Rafael J. Wysocki feedback)
+> >  - Andrew Morton's AI review 
 > 
-> I'd just have both on a single line.
+> Well.  Roman, Chris, Google and others.  I'm just a messenger ;)
 
-Can do :) 
-
-> > +	/*
-> > +	 * If the dst_pmd is THP don't override it and just be strict.
-> > +	 * (This includes the case where the PMD used to be THP and
-> > +	 * changed back to none after __pte_alloc().)
-> > +	 */
-> > +	if (unlikely(!pmd_present(dst_pmdval) || pmd_trans_huge(dst_pmdval)))
+> > findings applied only to Patch 3;
+> >    Patches 1-2 are unchanged. (no problem on AI's review)
 > 
-> Can we directly switch to pmd_leaf() while touching that?
-
-You mean instead of pmd_trans_huge()?
-Yeah, sure.
-
-> > @@ -809,41 +838,15 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
-> >  	while (state.src_addr < src_start + len) {
-> >  		VM_WARN_ON_ONCE(state.dst_addr >= dst_start + len);
-> >  
-> > -		pmd_t dst_pmdval;
-> > -
-> > -		dst_pmd = mm_alloc_pmd(dst_mm, state.dst_addr);
-> > -		if (unlikely(!dst_pmd)) {
-> > -			err = -ENOMEM;
-> > +		err = mfill_get_pmd(&state);
-> > +		if (err)
+> Seems that it changed its mind!
 > 
-> 
-> It's a bit odd that a "get" function doesn't return a PMD pointer but
-> instead stores it in the state.
-> 
-> Maybe more like "mfill_prepare_pmd" ? But actually you want to have a
-> pte table.
-> 
-> mfill_prepare_pte_table() or alternatively mfill_alloc_pte_table() /
-> mfill_alloc_dst_pte_table()
+> 	https://sashiko.dev/#/patchset/20260321103309.439265-1-youngjun.park@lge.com
 
-As it actually allocates the pte table once in 512 times, I'd prefer
-mfill_establish_pmd().
- 
-> -- 
-> Cheers,
-> David
+Thank you Andrew. It seems sashiko has learned not to go easy
+on me twice. :) Will address it.
 
--- 
-Sincerely yours,
-Mike.
+On the v7.0-rc4 base, add_swap_count_continuation() modifies
+si->flags (SWP_CONTINUED) under si->cont_lock without holding
+swap_lock, so the non-atomic RMW race is a real concern.
+
+Possible fixes (based on v7.0-rc4):
+
+1. Grab cont_lock on the SWP_HIBERNATION set path, or grab
+   swap_lock in add_swap_count_continuation(). This would
+   serialize the race, but adds lock contention on a path
+   that doesn't really need it.
+
+2. Convert si->flags to atomic ops. This would be the correct
+   fix, but is quite extensive and better suited as a separate
+   effort.
+
+However, on mm-new, Kairui's series [1] has removed
+add_swap_count_continuation() and SWP_CONTINUED entirely, so
+this race path no longer exists (verified by code inspection
+and AI review on mm-new).
+
+[1] https://lore.kernel.org/linux-mm/20260128-swap-table-p3-v2-9-fe0b67ef0215@tencent.com/
+
+I based this series on v7.0-rc4 per Rafael's request since it
+depends on PM-side changes. I'm not very familiar with how
+cross-subsystem dependencies are typically coordinated -- if
+rebasing onto mm-new is an option, the race goes away and the
+PM-side changes could be picked up separately. Would that be
+a reasonable approach? I'd appreciate any guidance on this.
+
+On a side note -- the AI review is becoming genuinely useful.
+It might be worth having it gate-check patches before they hit
+the mailing list, rather than reviewing after the fact.
+
+Best regards,
+Youngjun Park
 
