@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DACCDFC72C4
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 15:57:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9142FFC72C4
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 15:57:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B045F6B0092; Sun, 22 Mar 2026 11:57:41 -0400 (EDT)
+	id D4E726B0096; Sun, 22 Mar 2026 11:57:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB0676B008C; Sun, 22 Mar 2026 11:57:41 -0400 (EDT)
+	id BED7A6B0093; Sun, 22 Mar 2026 11:57:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8488B6B0095; Sun, 22 Mar 2026 11:57:41 -0400 (EDT)
+	id 979CC6B0096; Sun, 22 Mar 2026 11:57:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 62F336B008A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 781416B0093
 	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 11:57:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D4771A051E
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 34FBE136246
 	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:57:41 +0000 (UTC)
-X-FDA: 84574154322.15.533D1B6
+X-FDA: 84574154322.10.3FA41A3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 78F421A0005
+	by imf16.hostedemail.com (Postfix) with ESMTP id BB365180006
 	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:57:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wz1XKTrp;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rx5CvT34;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774195059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qrwBOaagiB21sc+4Tujrh9HlKIXyQFwIJW5FlrlxHt0=;
-	b=dy+YwP67nq+ZWypfA5MFw8tIR5Zqx6heIDJAFoVotAh0kus1UbcYyxA7eVNyvwrPCb5Ir3
-	WEvzcPwfblDa9oOygGCf/EUBCfLCtUqxpD5e19iWoA+FmIamsrt2Mo8HEVP0fCLdTBxXTh
-	IInFe3m+iIrnpS+EOpF3ahrNwVNIdZU=
+	bh=gIFJcc/U/FGZ+jTSwAe0YId8k5d0mbeypzHr/bajX3E=;
+	b=LswC8DgNDgbHjoKI6ynTN6HDPFo/4lpOwqqoJnSkyv40xQJod7QRDChv+mIFfi/iQO3X2c
+	HpZgFQltEriiUB/lTUxwbzUnYK5klVM4gmQB/ZyWHOydOqkRslaU6NcqxV7NutFqhZk+AG
+	lGJuUFw69hd5eBo33LL5uaQCRS5/eyU=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774195059; a=rsa-sha256;
 	cv=none;
-	b=Vs9mqwm7m1XTQMPci/PNtZLFdH87FUhZDJXL8zYEpC+0JSpjGox2qTZE7FltWg4OfIdLE2
-	xwr+1TMnxJ60jhI3TiLJojtO5v2AnQfI8zUcIRnoboZGZiWAVoTF0T2Yj4BjB071hm6GVe
-	KLIDpQa72Jue9oDAC7eTRqwLrLeFLIY=
+	b=raO2WzyXbSvIXr/bT0XA5+Swyjns039ZlBTe/i5fimIVNX7j9WVCBeilQXhOnkVFVTl8et
+	HP95owM93IG1v/Tjy6dAFxKHJMYH/L+S2UMABiH654lXJ4VSIMyK2HFnZqjbDVNzZ+HQo7
+	RQmzkB6txIjOJ9Hac3hpfgsnFPcoSaI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wz1XKTrp;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rx5CvT34;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 425E6437E2;
+	by sea.source.kernel.org (Postfix) with ESMTP id D94BE445B1;
 	Sun, 22 Mar 2026 15:57:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F67FC2BCB4;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB1DC2BCB2;
 	Sun, 22 Mar 2026 15:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774195058;
-	bh=3QrXyfjqZ9NePuFwbE4wZWagxs5zgqv9GB3oTqtAgRM=;
+	bh=qt20gza/ZGfZPnGlsbY2CkGg3eBlVlFouLw/z7b3qI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wz1XKTrpjc5jVSunEF2PXKKjeBoJl/FMlWfuA2LfY83AyKI4xzeFCepvGvaGckP13
-	 tynRtQNuLdSLPzMPfUUWxJDKMjLjb8s/U8iF9Kx668wMB+6WupglbFdor7ydtqy/K3
-	 5KIYrQUWiMhjVAVNprW3oGyfH90y5SC4rlnatLZPeRjmlr7dE1CoLq9YtFlpcoKiNs
-	 +OgurlwTEhtUOHTzoHeRMIOWFHNKvzMuKc8arNWRbwaUEpB9B0aIir7h0dXD5Z9uR9
-	 ijBq5MIaW8c+bDUqDyTlT47THllXIzKvDQfpdz56bhk0ORHv5VJ2fAjqk4wJvD1dEO
-	 ihWN9cwd8KYNw==
+	b=Rx5CvT34RmOppQtu6QxfqLWQzRWwbcWgOty3/B822ykfngK25Ar5ud10emwDWJIzS
+	 xrEbTwTN4Mx+Ijeq6WJ6Cfopp16atDTZN0nQ/OHcImSj1OlTi2Zs31rLD9SSMvBOUP
+	 erd9CvY3+Rt/aaYAN9stVROOuOWyOuRAVQRbrDGv/ac7nryJP42qaCjaRszDv9iYF7
+	 a+VXzrHsDhX3ny7VVnAM5c/lM4uZqcHI8g5ll/L2LUGj4cD5ei4CiRjVPasL4mABVv
+	 7o8+fEfU1WfOa0hEGojJo8HqcsfbDBMjUKChQJfl/1aCCoUVAD3/Ji8qlovGLWLuH2
+	 DhGyAe/DjdiQw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v4 01/10] mm/damon/core: introduce damon_ctx->paused
-Date: Sun, 22 Mar 2026 08:57:15 -0700
-Message-ID: <20260322155728.81434-2-sj@kernel.org>
+Subject: [RFC PATCH v4 03/10] Docs/mm/damon/design: update for context pause/resume feature
+Date: Sun, 22 Mar 2026 08:57:17 -0700
+Message-ID: <20260322155728.81434-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260322155728.81434-1-sj@kernel.org>
 References: <20260322155728.81434-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BB365180006
+X-Stat-Signature: msu7z8kw84zy9r5kwpphpfd1bg6zqu16
 X-Rspam-User: 
-X-Stat-Signature: pms8c1hk61t53nyqsr1nxdafscweu79k
-X-Rspamd-Queue-Id: 78F421A0005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774195059-696459
-X-HE-Meta: U2FsdGVkX19xRKme1HrwGyKrmpjeIkmKjlHsAEtdsfOw44ezEWSKCzhd4momiB4ppb0RdEDI1Ukp9oO9GP7HTvB8qaVmuIaKNdTktavbxh+9o10Uhj5kK9isayVrAz4Lliku1XT7IeYqJSwTSM/5Rm3QpCyXYtjkx/LMotyRDzr7tQEXc+LmHvY9mPbxYg+3yMJiWNVZ+zVq3iflYNh+drcVmFLwEbw+RzVguCy8wNoTpwluYslvAsTk0QgPKvQx5uk93yH812QnkKNKCS7o7jEFfsc1VkQScjUFQqStA3MMUDSsMKIjO93sy6/tW7zpmw05NbX3t2eFOjlIZyRczyXbRbPJVppoPiBsAKnxplqD57c20+4foguebIwtPZQEFwJdhIQzSOeaBoKXPuh+TkCaPg3xm1ysSZUexA9TNXOO1RNdwP6fCdqr6s1W8R3NO/KOGhRhspzCV91mSQipvYQpMXh1YxX5rWk7C1/369N5JNAaZkdggKD14dDpac/OVu/AwjAY0EN1eard9zFPIr1TXW0YyXETj0Gfyl5mNs8u/Vj33120b/4ckE2DCQ3rSpgb1/PBwiZPpWA7GUX3DzQEo/NykSHyRirD54Kmr6hG5akrxiKWk0uA5Oaxx1ZF2ez5Gr3cwe0jwUxbBkzwoBBUYecotCnaYLamA8R5nq2dTSRAImg6i3bVX1UxwnQSSGhqf1l+9WYZwHKPOT+XrC3PIXqb+7f+3iMDiL318kf1MCJaT9TPN0gFnGKJTzZWLSrzGPYdCWEiV1fTlWu/5kcLh1hOlf3fqM+6QyXtSB/OyOJ51AWcN9sPGkmDWIrfEbewZcq0UuZ4lwPKxV2E+wKirqDztuiVS9j5Ou0rBatDcQ3GlyaJbG7LfdYM6z65qRGRXTn+pIa1NUGHpTE4cCzRkBn2gMFz6B66iDI4Q8oYTVhO9KGH5mbaeWhH+99kdJCEdMdRBvS8zxfHcQ+
- Rd7bwEqH
- S2us9MtuY2XPAgVebErMaHRydA+XpvWXr2rrXtDGL/dzHdK+gfD64y1kWO4lhj/J4vdZbDLtKXahJwnA80HT3m0cJ39K+6gG9M/7p7pE6zLfZTx9mGvaHOp5khgnleB62pUJDtTiLaCAhqFdbNHkk32WWOz0L0WyVTos1JuQ1jIKfa+z1lqEoXDwXZEXtCWZ5aU6Zc957uxNZD0P1Ls7bdXjGpyGWw/RJ+rC9o/ATyc4hNfbW5g2OYXchUcceuXBK5rUp4PwRHxbPM70Q7PsqPjYIeg==
+X-HE-Tag: 1774195059-706777
+X-HE-Meta: U2FsdGVkX19T00koQSTGudJFh3u2GyWlFqkCfwNDp0vBnh5ANaat2/agynVsGTU1yMKM5JfihWhiK6LbbbIsCjDvOK5XpPgXu8OQRU0oyp4SNUcptJcvRFDOrM46fs37dy8mBt1DeXTGrkGM/uM0XSwbui+Q5ENh2PgXh0nmmG5n8hvKn4VAR6T261pG35kcNixliXBGtKH5qXgpAztrJuvVVlymFnwHpfEJ57nBlhnyNQeOTJG3d70M4AYaT9d6m3gD11jI7tzdRJejzNuM1l5V8BdklIArLtmew5N3hxGsyPEbfYgmwPgWuDWT/QYbhGPYNMlyZ1RGG4cq1cAfPKiY2ec0HbawtxP1asGVQ6pt1Thf7Qxl1LZiW3SKQaoIqce/LdXbd5ia+punNkjF2dhQFnCMBWwJF04byNUtPdjVqJqO5AUq15xIzIrePfdRaFCrr5hqtLGOzcuXhl4wkSfCpIHeKpsMf8PQpVXuBuC8y0CRjQM7V6zvx5C8qkFKywhIQ+IHOd50eyQzam+o0APa/9r3aaQXG6L6rMcVF7D51Mex5NDgruJjY70rjGD1Af0t08VUk/j1oJNYpFOkwbRBaGqHkSm4b7fpqJ1bjMgWKLvd0qLshD4VoNyq9g2TYu/TakNEjFnb6ZCpU6AW/+QFHohWpHwj0qSQ/5Hs54+0agqMmGQWNlGjVOk3JHUbYg8lpvRGVAU4Yl7Wudvgq9FdjsKzmema4i5Mujd8CrhnPou/opISByFQUsWFGZwKgRnZdtfEDji3eJUv22Lvw5LC3YRBl4asU7RQrqRTsl2dm1CxGzMxHd6JPXkHdOBKxwADyFtJUzWJMm8Al+i5wpjHwr0LMRWI/UfNg9Xvxjsavkpy7O95Cs+bcyeUtR6MlIXKi+La7u4BIGqCPf2yjgvxHQo8m4YgoE/17yF2ZXsEOOhOnyhysw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,74 +101,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON supports only start and stop of the execution.  When it is
-stopped, its internal data that it self-trained goes away.  It will be
-useful if the execution can be paused and resumed with the previous
-self-trained data.
-
-Introduce per-context API parameter, 'paused', for the purpose.  The
-parameter can be set and unset while DAMON is running and paused, using
-the online parameters commit helper functions (damon_commit_ctx() and
-damon_call()).  Once 'paused' is set, the kdamond_fn() main loop does
-only limited works with sampling interval sleep during the works.  The
-limited works include the handling of the online parameters update, so
-that users can unset the 'pause' and resume the execution when they
-want.  It also keep checking DAMON stop conditions and handling of it,
-so that DAMON can be stopped while paused if needed.
+Update DAMON design document for the context execution pause/resume
+feature.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 2 ++
- mm/damon/core.c       | 9 +++++++++
- 2 files changed, 11 insertions(+)
+ Documentation/mm/damon/design.rst | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index d9a3babbafc16..ea1649a09395d 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -787,6 +787,7 @@ struct damon_attrs {
-  * @ops:	Set of monitoring operations for given use cases.
-  * @addr_unit:	Scale factor for core to ops address conversion.
-  * @min_region_sz:	Minimum region size.
-+ * @pause:	Pause kdamond main loop.
-  * @adaptive_targets:	Head of monitoring targets (&damon_target) list.
-  * @schemes:		Head of schemes (&damos) list.
-  */
-@@ -838,6 +839,7 @@ struct damon_ctx {
- 	struct damon_operations ops;
- 	unsigned long addr_unit;
- 	unsigned long min_region_sz;
-+	bool pause;
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index afc7d52bda2f7..510ec6375178d 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -19,6 +19,13 @@ types of monitoring.
+ To know how user-space can do the configurations and start/stop DAMON, refer to
+ :ref:`DAMON sysfs interface <sysfs_interface>` documentation.
  
- 	struct list_head adaptive_targets;
- 	struct list_head schemes;
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index db6c67e52d2b8..0ab2cfa848e69 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1349,6 +1349,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 		if (err)
- 			return err;
- 	}
-+	dst->pause = src->pause;
- 	dst->ops = src->ops;
- 	dst->addr_unit = src->addr_unit;
- 	dst->min_region_sz = src->min_region_sz;
-@@ -3003,6 +3004,14 @@ static int kdamond_fn(void *data)
- 		kdamond_call(ctx, false);
- 		if (ctx->maybe_corrupted)
- 			break;
-+		while (ctx->pause) {
-+			damos_walk_cancel(ctx);
-+			kdamond_usleep(ctx->attrs.sample_interval);
-+			/* allow caller unset pause via damon_call() */
-+			kdamond_call(ctx, false);
-+			if (kdamond_need_stop(ctx) || ctx->maybe_corrupted)
-+				goto done;
-+		}
- 		if (!list_empty(&ctx->schemes))
- 			kdamond_apply_schemes(ctx);
- 		else
++Users can also request each context execution to be paused and resumed.  When
++it is paused, the kdamond does nothing other than applying online parameter
++update.
++
++To know how user-space can pause/resume each context, refer to :ref:`DAMON
++sysfs context <sysfs_context>` usage documentation.
++
+ 
+ Overall Architecture
+ ====================
 -- 
 2.47.3
 
