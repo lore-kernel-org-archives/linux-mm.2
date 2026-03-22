@@ -4,113 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D70ABFC72C4
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 13:25:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC55FC72AD
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 14:24:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E68E66B00A8; Sun, 22 Mar 2026 09:25:56 -0400 (EDT)
+	id 6A9056B0095; Sun, 22 Mar 2026 10:24:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E199F6B00C5; Sun, 22 Mar 2026 09:25:56 -0400 (EDT)
+	id 6599C6B00AA; Sun, 22 Mar 2026 10:24:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08786B00C6; Sun, 22 Mar 2026 09:25:56 -0400 (EDT)
+	id 5485E6B00AB; Sun, 22 Mar 2026 10:24:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF96A6B00A8
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 09:25:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5295E16080C
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:25:56 +0000 (UTC)
-X-FDA: 84573771912.22.C3F6FD0
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1D6B3100003
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:25:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kjYHtUxK;
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774185954;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 429AC6B0095
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 10:24:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8F94313BBBF
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:24:07 +0000 (UTC)
+X-FDA: 84573918534.03.2ACED58
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6ED3D1C0007
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:24:05 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WZ6pV45w;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774189445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gI0SKm1TPYXBLTTMcCel/kqZyB3DJyHz/MMlXWO5WB4=;
-	b=LEBPV1m1qi6F/pyaVaiv2dKR8f1JCboF4CFvkZ0s7g5+M8j0Vdu0VxIE53Ps5mjHcBXFMm
-	bsPwvPC0atfxTmqtiQvNJDYel/2NixCT+PKh1mQhz7/QytWbwv53ErofKsSCaW1dFPdcjz
-	1hC8EDFyKrgb7T4q/cptoOioyTc/1a8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774185954; a=rsa-sha256;
-	cv=none;
-	b=3tRtkQLaWbcicjXVxXlB+Nys0VO5l3y3wQQYdJjKIPoU5Zl9mTBqlANuvDAmIWiPQrxbiE
-	/flVrJfn38J0QFxaJZop4lTW7AA3uUcWotZiHsn4aaJ6+fC5uvnXKZ85/9eHdN4gSeDWO5
-	1mUZ+katTm+RMFrLjre3L+I89VzUfi4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kjYHtUxK;
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774185955; x=1805721955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tXmbjanna8jwNI1OUqxIulxJ1F9340+85/yv+vfrl2w=;
-  b=kjYHtUxKxMPF8XNiW2zjozSxWgfGj0X6kkrMMWCvmguAnn1AdDiqiOqG
-   Wb8TSzBui6kCy0wL9lox8JJYS4svbhYe4iHIahABKJNfDRuubekEtyaAq
-   vCDzq0v09iw2PfAebMG/i72bzC75g0FjdEmHVcoeWxmtA11XmN6T8uGBY
-   tC83s2cmfuXi1usFdS2RtYfA9g0FdxG709vIiPHkAQ0P6+C7nMzBGXZp/
-   e+y9VSe2jPUbMqOVjXlYisFKGwsxEhLj5ob3LsinUH/4cQBBaKYZO7zIY
-   otP6XRyvdrh3CN9Vj5We4xVzQWVNAhERzSY0/8xrmyV3xDe04BgSMBsV3
-   g==;
-X-CSE-ConnectionGUID: fY8z7RTqRfKfheyy1ozQiA==
-X-CSE-MsgGUID: XqJ1gvKxTJar1pP3sZyUvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="75088381"
-X-IronPort-AV: E=Sophos;i="6.23,135,1770624000"; 
-   d="scan'208";a="75088381"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 06:25:53 -0700
-X-CSE-ConnectionGUID: f30IYCVEQfuVxUMCuiJpfg==
-X-CSE-MsgGUID: 3N59DuJCQ+eUTTnvUhPUsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,135,1770624000"; 
-   d="scan'208";a="246798722"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by fmviesa002.fm.intel.com with ESMTP; 22 Mar 2026 06:25:48 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w4IoM-000000006Mr-2Eas;
-	Sun, 22 Mar 2026 13:25:46 +0000
-Date: Sun, 22 Mar 2026 14:25:40 +0100
-From: kernel test robot <lkp@intel.com>
-To: Brendan Jackman <jackmanb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Uladzislau Rezki <urezki@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] mm: Change gfp_t to unsigned long
-Message-ID: <202603221419.9kAfrwc5-lkp@intel.com>
-References: <20260319-gfp64-v1-5-2c73b8d42b7f@google.com>
+	bh=1WIm13W/e8I2NA09hKHU/48NVk5PZByL/Ku7MiuA4QI=;
+	b=knJquZ7SBfmc287jJuS1thqeFiLA8JZRwvHUj+oFM2SsTYfyAmuVbKt6C8k5Yfr7qEBhBe
+	30a+f8FA3C70d+pZt5ZIxNzawVJN2dAqusEpDbUQU+tOtbyDUwJGG8KCVjfg45OeYSqDWL
+	rx4obdqt6O5VwUhWVTMyJ/fucGSIC5U=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WZ6pV45w;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774189445; a=rsa-sha256;
+	cv=pass;
+	b=W5HH6hOO5zWmBkUU8+QfH6S5fpXcowKg25bsl7ccBj+HrPJ5nY1NiNFcdk1gNmNZR6zsL5
+	7RCZDxX1Wi03bgDNALdnOw37tb2wKdcz037Yb05zMCOLp2Z+7BmJswP5iMx0C5tg/Cvwlh
+	gvPb2uewCtV2Lzf8u9EohzxoISDYxjs=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6694c9c02c5so1564013a12.1
+        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:24:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774189444; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PmQ0vIuqsaIWfFnVR9FuIMc1RjiuOfSJxpX6nnGUM+bm6S6O1hiHLaba0C1iUV8VNd
+         Fy5TU5ghP0hZnCFChTI6KXxR9UG9Aq1+cTfOpjAoQwc2sDx4EmUVTdVL274JuzBXrg7j
+         cGxiw6w/49RvONOyDcQOZOpkWbCps7k7wD6V21NEEW3109uUwpWOe5cIiGfss9TpzfwU
+         87ULDNTiWP0JJ6kLyS9cpDFqrxJnOxACpaqmU8Qzz5/fWS/d027LLXXVTxdYPupLQsw1
+         WlMSCI7HV72YJLRiGQobZdBcbC/iNKWYYe1KZlq/QuFxXQ9znJFTbzQWEnIjZVMN/shg
+         Rtbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1WIm13W/e8I2NA09hKHU/48NVk5PZByL/Ku7MiuA4QI=;
+        fh=Hp5n3BiRgu29wclnleWXbf9+cPxjmFeWD8HZ/z5U8VA=;
+        b=Hw93QSDILODwmMRvfmsqV3DKDvIhyi3O9465zQrIMgDDcQ/8bApTxVGnjxYAkk15HK
+         UBH9IvsfKy65lTJ4NqJB8IYYdv5kZNkwOR7M5JJODA9QqDozqYBKz04JGj9VGtO25LPI
+         /IYn2XpFaxOJw5mcQAZd+trgj7eFcPIM8XTbEucVPLfATfaMzLzSCuDyHZoiai6pZqCi
+         NmQVfYK8eCoIwVycOOHA62KJMPDOSE7OxhAxRUZVA2v87Q+9jcGTyGTA4mj5dod7Zgk3
+         5f6S6G9w0ermIXMgfWKNfI8AMl5lTk4vlA3vk4aYJ8crlII8K2gxMQwbqZYz5NeX5HGQ
+         qOUw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1774189444; x=1774794244; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1WIm13W/e8I2NA09hKHU/48NVk5PZByL/Ku7MiuA4QI=;
+        b=WZ6pV45wbJYjMOU6yHaKhrShcS41D4nwGH/cfOSpNBwYSTsWfW5v3sMac/JScTmJbu
+         GE3ja05Q3NUlPozK72FneCdTGiSvGZrhzMo1qWjot9qHe0H8Ey8hu7qnQXE/DonSDCCb
+         HfYNYYynu+Q6HKcJXj7gDEicooeqt3QOtJ0mNvRJJmrXMoGnesL6fDBpeCZVxsFdb09w
+         3sXL0aY5mvpjN6CqgDdVNl67vXO3TIuhYeJsEsi17qtw413iBxK7nT4tPssyCErGD4Yg
+         GNy+XT3SBcQlkb2I0vUVVatjaBCSMSfNCdhKppdpI6ndGEtO09pVJEyj5tpV3zkgoLmL
+         I4Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774189444; x=1774794244;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1WIm13W/e8I2NA09hKHU/48NVk5PZByL/Ku7MiuA4QI=;
+        b=E+mEgYHSMC77ax5Q62VHzao77bSKEvZyfNkfaD96rWHUaytnYYDiblZllQ9Ds4xNy7
+         PP72FiK6g9hN1/BnewEr9sHwY3xEdmU3NimjQrioUyY04FtH0Ua/HgZvyHh2SlrJKKCm
+         O4n6p90wJgpU6Xnqrco8RmQlrusA6eJZSbUq/IhY2etpCsvD27hrG/Mjy6Dh1WUSG6U/
+         l1LA2zqn42HIPJDCORS842+53QOuDu4qY9KEwcWeEkfdxnk0/FtgO8LqyTzs7712o7rq
+         3tngk7sScn7DN0gC0mz0yo6NznAkQoR4k1lUKxzzbq7WJSIbPbcn3zcehdwniaafMYRq
+         PXVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXW/zDDKKiwTYHLAD5rg5gLFiUI1zT+DSWPmHrXjc5evzniZksp4tRe8V5d0TurbkgHlnw5Jhp8WA==@kvack.org
+X-Gm-Message-State: AOJu0YzTIE1OyN0je4+C6lXWU/OxCGLfJ7zUlgfAqX5bd9eoBy/PnFaV
+	PfmEVpXjSaqPmopfingnrgzmvjTAvxwxtSDcT8w2MRyruhe6XIU8T6XQkEUMxf0amvir2L21r74
+	EZv5cfAFN/Xnuww0JPIYAyG8CMK1l82/nGTG6w8X2gw==
+X-Gm-Gg: ATEYQzxgVxCedTApI2NrTf0w4sExljciA0UiNwXxUVKtvgpxZu0FofcIIloLemiS4vM
+	ySDtpjUMdDKIzg1IU5ceQ7y91laL6gfJS3343KmJ72h2hC60HPq+meUsdlVKQCObe+f+MA2v2eQ
+	yG2knNjrOtZ6c3QKvlxQ8l8nr96PN3r3mKH6oO1J7Q88Fi39DBN92eIfX1BG6yNJ1a2W7/im3V9
+	k3Z2BAVEB/e4kMU+z1oVPcFPYYQiICzUXldLRE7mrlYOCTinnCIscaivC5Utg03RVCpbufIV7yg
+	uaD0TFsnBUJbmkg3aj/25ElGFEgIwczu7OI1ew==
+X-Received: by 2002:a05:6402:40c9:b0:668:6e22:3df8 with SMTP id
+ 4fb4d7f45d1cf-668c9100c57mr6732911a12.2.1774189443511; Sun, 22 Mar 2026
+ 07:24:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319-gfp64-v1-5-2c73b8d42b7f@google.com>
-X-Stat-Signature: k8zqtucgiuifnmc4jwxhk4csr6anm16o
+References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
+ <20260318141637.1870220-11-pasha.tatashin@soleen.com> <ab_rAg80Fjp8N5A5@kernel.org>
+In-Reply-To: <ab_rAg80Fjp8N5A5@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sun, 22 Mar 2026 10:23:27 -0400
+X-Gm-Features: AQROBzDqxFHyPyFoA0pvf3xnSsBngMFhdgX8PnnGK6N4Ll82QB4tOI5WqGlcosU
+Message-ID: <CA+CK2bBJwpzHk_JAuyed9Kchdqga=2FNpiDVppJEGudS6PX1_w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/8] liveupdate: Protect file handler list with rwsem
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, dmatlack@google.com, pratyush@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6ED3D1C0007
+X-Stat-Signature: pgtrbi94fpsabhx8rmrpzi6mfoq7mr44
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D6B3100003
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774185953-444904
-X-HE-Meta: U2FsdGVkX1+4TxJ9yuVFnQk+0wQFp+OvArQ+J3bdYf4PR1vv/ojRmq/wfEOe/vXKihnOlPujpXyPwHU8cwdGQ/KUX1MjUW8KKQANcfyK/cIZd1KVj5VfK/uB7bHk5hT7Orf9b9OjxviPsJ4/2gsN52pcKLFvm95q27yE0xBcFk/SstrGTDGGFOwr9QIBnU8NTji/9r0POMw42ppdFHKU4maOGaquknMS99WE6cjsI8UqlcjX6tZv3uX+ADA40bLrBdbmovQJyVG98lzhbQwnkRKn+u0oc6x2vZC2WE1xvIV+8IaXu/ohU+masbMDopSolxT4id93mLNSSusS50uZfTR0Wu4XavCExNo23fjLyxaYOAkbgYObHB2IIdNxR4QzcdVl0s9OXSaDcg04wH/rWQOwAxR1FgsvyKOqPRcnS3+phb9QJvUl6pBqiIToFG0DEJ1rNyfBLaGxobR1zr3lbGVxUXj13Hi6bWCB2MJhdvZJTFcG1R7w8lwxiQHIdwF1C+GeL+hVao5EUnTiPJbj/yfv8k8Q1WiBJADhlW54MMb15Jw1Jr9N+aRJ2su8RX0gGVyoNwylA8cSycWf2P2X3D6Fm7MmxHCIOEOw1S9nzLGDPsxbAgr2eHr6G7qfuoe6h90HhRS8HMGUQ8aYSF5rhXSp7fzeTIrdtXLm6EmJIfYx+gEMKt/RsIDMllnk9Rzj4qhOijdj1DemYGYQLhM73j7PHfVu2yVSf1oGmbDRhGI9uJ+759KNPvxGV9yKKcZzvXDJ9fGknBGd1U7aeSMsWHfbVM9Bl92w9j7qtfa6uSntYQF2iDJxz3R/+p0O/Y7WmsL0MyCWwF+6bRXfKWSssHDnqZXAt8xPTNufniNcBxxCqjxsrL8Hav+Lh6dtwQS0cp7r1FuwqZb4sX3/9ttgzUDDxEt9sAWbK+CG+nDQNxklTzg8Ldguth6SucxKTwqmsXQEg7U+YmFN69ZNw7z
- OWX8+o0I
- u7X8zCP3vCnBSFHaR70EDoTcyVhGgluFNKeIyEYlvf2lDtsyySqMKH8O3EEnMZ+BzxKq8S/anm6lufV9eE+CqDpEgvxO8mezjkSIWk/3ns08mAcPK2lhMQFxw5JemlpYG3KruHJePOH5BAbnr56kR6W4LnI3pB2gXbAzKQ1DiccjUZmAm4m02s0d3RFrioZ12x08LtSBIRgolSkapqrVIoQJ5Mm/t/HGpX0mA1Q4ytaEZFhfJIZ/cOL6MHGkQjR+bxEu9lr5HG53Ol57u303wCZwMPNzhLuYt8Ky+Ft6fm7Z0+ryNpZ6rDGPQmTDPyureaBPRPJigfKdwbzXECPhGVTWZO/tVCjMDyavyIGcK6Ffy9XY=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774189445-247834
+X-HE-Meta: U2FsdGVkX19LeY0jBS4sdagIntVsU8VgyPiwxYm/IPslrQsE0F2Ff8mhicjEDB0M0dOvonDM1/6uHfETEP+WaBjw876vONQ9gHUFqHDihrqCpyIGOdXsZyQAL8BT16DTOKA508nLJevnngybR4did29vjRFNCeuGeqkCuWSUt0dznxVddm4IYvmMHI1UJGR4H++lgiUQxpXb8eJqGVoRAh1Dn6SwYQ1asqV3LB2vzXYgahHDN57eP8sVhWRZ+PTGgs9NFjxWr7o88BUUsxvDOrw23aXGhmbfdZZvWMbzzfZrpkWQaZEfdFBS74dc7bTZAs8P5qAseA8M5f2vusER/fH3pDpz+dEcYtEKHgtXzmoDzqOgUYJV+bsbx98qALAEX560p3CEhhJNAwchJ9LTZOuoT2QAf91juaud9dJMvnnJlnZPljByvJzvpJ+qVc+plULtW7oE+B760zZ2EUcZsptJm64vtELrH/4mFHWqyxgBZcgfRBIzZHtWuhQofzJqp3VmDMQGdibl05fpcn/8jlFYkFG4KUMKTU6Z0bRN0efPAl/tTfja3K1YN2vA/noDmUyXirL0564uB0UI84GHand1Hul8m6DDw5l9VMmvnFTeTLLT8KVzg5/wbzSibm2Kl2Ze+ngEBzTJxiHKf75CHtRDeBx7e5VVLjo0WOTT/KMTAsk/I/cHyvYmcxRWlq/fZZl1p1RGh8YLLACmc+y4Lx72KS2Fq08fDJqMMleamfa05nz7kIOa6q7cQ1OZ8Tk3xqNF4S/QUdjJ6Ufh5rdunNBbJDFy+upuzpd0j1vy8WQ73svodPQJGXg/2HhDxLdhnEIJ93HyeHAI/h31XcIsBy/kZpf3KCiZ2Wr//VbpHUN4UtsNnLzPl+U9QXMlcio63tObvamfRex5TnhMpFmoeNV7tqdhHVuYqnQ1zjXn0zS4Qdg1oALIap3zSEKtkA0ddQ8wkrXbVovsxCdvU61
+ VvBl2qI+
+ M+Eqkm2GA2Of+yyfpOKcu0x1nGgPxfq93lne6CZvbvUvPc7kOKutWfaQqD0iu1RHYm5AitYLmUznF5Fv3+YVuP06XvAHx24Ab1N1FBpBRCXuEC6GYypRbuiaisgGtWACKZGhvS28BThFs3+YE76bL2pnDMN0zQe3qFmnVGQpVcvhRUfgk5kYQlwmdNCAHDK45RDJrHpDr8aWBPI0ranlrACpmXOl6S+vtFD1xZICbB7jW7IIt63gOmqzzk7AwW7EuI9nXqiyM4ShzbLo1tBIUpTrYCmrHssnu5FKhPViNO68rn8cfrUYdfozceWLjSSm0qnTXZBQmjh920bCQiIT1BfgfbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,169 +139,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Brendan,
+On Sun, Mar 22, 2026 at 9:13=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> Hi Pasha,
+>
+> On Wed, Mar 18, 2026 at 10:16:39AM -0400, Pasha Tatashin wrote:
+> > Because liveupdate file handlers will no longer hold a
+> > module reference when registered, we must ensure that the access to
+> > the handler list is protected against concurrent module unloading.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  kernel/liveupdate/luo_file.c | 61 +++++++++++++++++++++---------------
+> >  1 file changed, 35 insertions(+), 26 deletions(-)
+> >
+> > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.=
+c
+> > index 5acee4174bf0..6a0ae29c6a24 100644
+> > --- a/kernel/liveupdate/luo_file.c
+> > +++ b/kernel/liveupdate/luo_file.c
+> > @@ -112,6 +112,7 @@
+> >  #include <linux/string.h>
+> >  #include "luo_internal.h"
+> >
+> > +static DECLARE_RWSEM(luo_file_handler_lock);
+> >  static LIST_HEAD(luo_file_handler_list);
+> >
+> >  /* 2 4K pages, give space for 128 files per file_set */
+> > @@ -277,10 +278,12 @@ int luo_preserve_file(struct luo_file_set *file_s=
+et, u64 token, int fd)
+> >               goto  err_fput;
+> >
+> >       err =3D -ENOENT;
+> > -     list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+> > -             if (fh->ops->can_preserve(fh, file)) {
+> > -                     err =3D 0;
+> > -                     break;
+> > +     scoped_guard(rwsem_read, &luo_file_handler_lock) {
+>
+> I'm not sure scoped_guard() here is better that lock before the loop and
+> unlock after. scoped_guard() would be useful if we were returning from th=
+e
+> guarded scope.
+>
+> > +             list_private_for_each_entry(fh, &luo_file_handler_list, l=
+ist) {
+> > +                     if (fh->ops->can_preserve(fh, file)) {
+> > +                             err =3D 0;
+> > +                             break;
+> > +                     }
+> >               }
+> >       }
+> >
+> > @@ -777,10 +780,12 @@ int luo_file_deserialize(struct luo_file_set *fil=
+e_set,
+> >               bool handler_found =3D false;
+> >               struct luo_file *luo_file;
+> >
+> > -             list_private_for_each_entry(fh, &luo_file_handler_list, l=
+ist) {
+> > -                     if (!strcmp(fh->compatible, file_ser[i].compatibl=
+e)) {
+> > -                             handler_found =3D true;
+> > -                             break;
+> > +             scoped_guard(rwsem_read, &luo_file_handler_lock) {
+> > +                     list_private_for_each_entry(fh, &luo_file_handler=
+_list, list) {
+> > +                             if (!strcmp(fh->compatible, file_ser[i].c=
+ompatible)) {
+> > +                                     handler_found =3D true;
+> > +                                     break;
+> > +                             }
+>
+> Ditto.
+>
+> >                       }
+> >               }
+> >
+> > @@ -850,25 +855,27 @@ int liveupdate_register_file_handler(struct liveu=
+pdate_file_handler *fh)
+> >       if (!luo_session_quiesce())
+> >               return -EBUSY;
+> >
+> > -     /* Check for duplicate compatible strings */
+> > -     list_private_for_each_entry(fh_iter, &luo_file_handler_list, list=
+) {
+> > -             if (!strcmp(fh_iter->compatible, fh->compatible)) {
+> > -                     pr_err("File handler registration failed: Compati=
+ble string '%s' already registered.\n",
+> > -                            fh->compatible);
+> > -                     err =3D -EEXIST;
+> > +     scoped_guard(rwsem_write, &luo_file_handler_lock) {
+> > +             /* Check for duplicate compatible strings */
+> > +             list_private_for_each_entry(fh_iter, &luo_file_handler_li=
+st, list) {
+> > +                     if (!strcmp(fh_iter->compatible, fh->compatible))=
+ {
+> > +                             pr_err("File handler registration failed:=
+ Compatible string '%s' already registered.\n",
+> > +                                    fh->compatible);
+> > +                             err =3D -EEXIST;
+> > +                             goto err_resume;
+>
+> PeterZ advised against mixing guards() with goto, but unfortunately I can=
+'t
+> find lore link right now.
 
-kernel test robot noticed the following build errors:
+Yeah, I was looking into this yesterday:
+https://lore.kernel.org/all/CA+CK2bD2aNu-NByET4KkBP0n2j8WQE2zjxb4g-1cv2hYfj=
+aRZQ@mail.gmail.com
 
-[auto build test ERROR on 8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb]
+Also, please wait for the next version before reviewing it. I am going
+to use what Sami suggested:
+https://lore.kernel.org/all/CA+CK2bDONAnry0n9qOsR7GSDTw4Xw3g4ZugRPwXD+NdMx7=
+rpsQ@mail.gmail.com
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/drm-managed-Use-special-gfp_t-format-specifier/20260322-145930
-base:   8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb
-patch link:    https://lore.kernel.org/r/20260319-gfp64-v1-5-2c73b8d42b7f%40google.com
-patch subject: [PATCH 5/5] mm: Change gfp_t to unsigned long
-config: x86_64-rhel-9.4-kunit (https://download.01.org/0day-ci/archive/20260322/202603221419.9kAfrwc5-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260322/202603221419.9kAfrwc5-lkp@intel.com/reproduce)
+Pasha
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603221419.9kAfrwc5-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/linux/module.h:23,
-                    from lib/test_lockup.c:8:
->> lib/test_lockup.c:133:47: error: expected ';' before 'long'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         |                                               ^~~~
-   include/linux/moduleparam.h:175:23: note: in definition of macro 'module_param_named_unsafe'
-     175 |         param_check_##type(name, &(value));                             \
-         |                       ^~~~
-   lib/test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
->> include/linux/moduleparam.h:175:32: error: expected ')' before ',' token
-     175 |         param_check_##type(name, &(value));                             \
-         |                                ^
-   include/linux/moduleparam.h:149:9: note: in expansion of macro 'module_param_named_unsafe'
-     149 |         module_param_named_unsafe(name, name, type, perm)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   lib/test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
->> include/linux/moduleparam.h:176:39: error: 'param_ops_unsigned' undeclared here (not in a function); did you mean 'param_ops_uint'?
-     176 |         module_param_cb_unsafe(name, &param_ops_##type, &value, perm);  \
-         |                                       ^~~~~~~~~~
-   include/linux/moduleparam.h:305:46: note: in definition of macro '__module_param_call'
-     305 |         = { __param_str_##name, THIS_MODULE, ops,                       \
-         |                                              ^~~
-   include/linux/moduleparam.h:176:9: note: in expansion of macro 'module_param_cb_unsafe'
-     176 |         module_param_cb_unsafe(name, &param_ops_##type, &value, perm);  \
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:149:9: note: in expansion of macro 'module_param_named_unsafe'
-     149 |         module_param_named_unsafe(name, name, type, perm)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   lib/test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
-   lib/test_lockup.c:133:47: error: expected '}' before 'long'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         |                                               ^~~~
-   include/linux/moduleparam.h:305:46: note: in definition of macro '__module_param_call'
-     305 |         = { __param_str_##name, THIS_MODULE, ops,                       \
-         |                                              ^~~
-   include/linux/moduleparam.h:176:9: note: in expansion of macro 'module_param_cb_unsafe'
-     176 |         module_param_cb_unsafe(name, &param_ops_##type, &value, perm);  \
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:149:9: note: in expansion of macro 'module_param_named_unsafe'
-     149 |         module_param_named_unsafe(name, name, type, perm)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   lib/test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:305:11: note: to match this '{'
-     305 |         = { __param_str_##name, THIS_MODULE, ops,                       \
-         |           ^
-   include/linux/moduleparam.h:192:9: note: in expansion of macro '__module_param_call'
-     192 |         __module_param_call(MODULE_PARAM_PREFIX, name, ops, arg, perm, -1,    \
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:176:9: note: in expansion of macro 'module_param_cb_unsafe'
-     176 |         module_param_cb_unsafe(name, &param_ops_##type, &value, perm);  \
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:149:9: note: in expansion of macro 'module_param_named_unsafe'
-     149 |         module_param_named_unsafe(name, name, type, perm)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   lib/test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
---
-   In file included from include/linux/module.h:23,
-                    from test_lockup.c:8:
-   test_lockup.c:133:47: error: expected ';' before 'long'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         |                                               ^~~~
-   include/linux/moduleparam.h:175:23: note: in definition of macro 'module_param_named_unsafe'
-     175 |         param_check_##type(name, &(value));                             \
-         |                       ^~~~
-   test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
->> include/linux/moduleparam.h:175:32: error: expected ')' before ',' token
-     175 |         param_check_##type(name, &(value));                             \
-         |                                ^
-   include/linux/moduleparam.h:149:9: note: in expansion of macro 'module_param_named_unsafe'
-     149 |         module_param_named_unsafe(name, name, type, perm)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
->> include/linux/moduleparam.h:176:39: error: 'param_ops_unsigned' undeclared here (not in a function); did you mean 'param_ops_uint'?
-     176 |         module_param_cb_unsafe(name, &param_ops_##type, &value, perm);  \
-         |                                       ^~~~~~~~~~
-   include/linux/moduleparam.h:305:46: note: in definition of macro '__module_param_call'
-     305 |         = { __param_str_##name, THIS_MODULE, ops,                       \
-         |                                              ^~~
-   include/linux/moduleparam.h:176:9: note: in expansion of macro 'module_param_cb_unsafe'
-     176 |         module_param_cb_unsafe(name, &param_ops_##type, &value, perm);  \
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:149:9: note: in expansion of macro 'module_param_named_unsafe'
-     149 |         module_param_named_unsafe(name, name, type, perm)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
-   test_lockup.c:133:47: error: expected '}' before 'long'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         |                                               ^~~~
-   include/linux/moduleparam.h:305:46: note: in definition of macro '__module_param_call'
-     305 |         = { __param_str_##name, THIS_MODULE, ops,                       \
-         |                                              ^~~
-   include/linux/moduleparam.h:176:9: note: in expansion of macro 'module_param_cb_unsafe'
-     176 |         module_param_cb_unsafe(name, &param_ops_##type, &value, perm);  \
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:149:9: note: in expansion of macro 'module_param_named_unsafe'
-     149 |         module_param_named_unsafe(name, name, type, perm)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:305:11: note: to match this '{'
-     305 |         = { __param_str_##name, THIS_MODULE, ops,                       \
-         |           ^
-   include/linux/moduleparam.h:192:9: note: in expansion of macro '__module_param_call'
-     192 |         __module_param_call(MODULE_PARAM_PREFIX, name, ops, arg, perm, -1,    \
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:176:9: note: in expansion of macro 'module_param_cb_unsafe'
-     176 |         module_param_cb_unsafe(name, &param_ops_##type, &value, perm);  \
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/moduleparam.h:149:9: note: in expansion of macro 'module_param_named_unsafe'
-     149 |         module_param_named_unsafe(name, name, type, perm)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   test_lockup.c:133:1: note: in expansion of macro 'module_param_unsafe'
-     133 | module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-         | ^~~~~~~~~~~~~~~~~~~
-
-
-vim +133 lib/test_lockup.c
-
-   131	
-   132	static gfp_t alloc_pages_gfp = GFP_KERNEL;
- > 133	module_param_unsafe(alloc_pages_gfp, unsigned long, 0400);
-   134	MODULE_PARM_DESC(alloc_pages_gfp, "allocate pages with this gfp_mask, default GFP_KERNEL");
-   135	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> > +                     }
+> > +             }
+> > +
+>
+> --
+> Sincerely yours,
+> Mike.
 
