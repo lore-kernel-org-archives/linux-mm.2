@@ -4,110 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CA871094481
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 03:03:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6C2F1094481
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 03:08:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 873CF6B00BE; Sat, 21 Mar 2026 23:03:22 -0400 (EDT)
+	id 08A776B00B6; Sat, 21 Mar 2026 23:08:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 849BD6B00C0; Sat, 21 Mar 2026 23:03:22 -0400 (EDT)
+	id 03B8E6B00BA; Sat, 21 Mar 2026 23:08:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 786666B00C1; Sat, 21 Mar 2026 23:03:22 -0400 (EDT)
+	id E6CE46B00C0; Sat, 21 Mar 2026 23:08:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 67F9D6B00BE
-	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 23:03:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E86E71B7060
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 03:03:21 +0000 (UTC)
-X-FDA: 84572203002.05.8F91ADA
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3D3BC40005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 03:03:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Pi+LITmw;
-	spf=pass (imf01.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D38486B00B6
+	for <linux-mm@kvack.org>; Sat, 21 Mar 2026 23:08:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 75E4C1E4F4
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 03:08:30 +0000 (UTC)
+X-FDA: 84572215980.24.9AE2917
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 35CAF40009
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 03:08:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iq4aSW1B;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774148600;
+	s=arc-20220608; t=1774148908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=fVSYBz8Z8p4RnssOWosJ/Ow1yuYWBSen1k8jPwBg8ro=;
-	b=MsTRpz3APmVVcgcjX5nIG/K9EP60AwkA0hNaddbm+hqBlqPI3814ljKkdEtEXYT/bukUij
-	JXZtdhnDJw2VYScc3mnxs34BEsH2bPjYVSirFecusNSHrpW+FP8d9CK9dhePXN08IPpYmq
-	xVQgmDwuDrcVQ2gjbDYwhTMc54H/Tic=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774148600; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=to1VE5KCZRkEhvhMb90xNxfk6LIxqdvQwXLJtGlmLy0=;
+	b=mfDakZ1PM8GgXVAuE4KIpsZFkPjKiZQFcQ9EGmPwE1IUj7HvwlLTrC5sva1gw3sIHNDtCo
+	yGy25Z9fNJCu21KAVkvsWEYKKlgdnrQmAtatFm2lX+U7f5Y3dXgIwJGqjls2usc3R6FPWI
+	2QWdi+YxwkZKFDT8Ye9RkJ+Pu3hKI2o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774148908; a=rsa-sha256;
 	cv=none;
-	b=Tx2Tx1beTyiXzjyBbPhrdJ6KJk0+2dNP23EXgKK/tjAfWeh3QOrM90NGfXCW4IhJ+EXyWQ
-	VFoQhWl3ptw0UxzxdQhvOI9KycWELT0lTz9+O6AXpi+WhCHTCBOO64JskmrmwykzKjooCA
-	i2beB7slkn8pjM7NsxvADHYBmdqNkZ0=
+	b=hYMFs7wfcdAL/HZBsAQJidbEo/vRq8+vb+UsEJfTg0QxcyAuyOVVnOMSs24wT/i5e3Gad1
+	8R/P+/pxGGzWc4wWOafhsvz/W6dsDQoacc5iyVoKvOQueg2Oty3Xrfq7iGlChQGQD4yj73
+	OBYU65Bxu2+vKANrS+KCOBGvw1JPSwU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Pi+LITmw;
-	spf=pass (imf01.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b052562254so106385ad.0
-        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:03:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774148599; x=1774753399; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fVSYBz8Z8p4RnssOWosJ/Ow1yuYWBSen1k8jPwBg8ro=;
-        b=Pi+LITmwHX7EyMa9Jf6cY6gLaizAI9EVoyt3f5V+ZvdjKayLeuS8zubMugBKdN7HiK
-         Gq6R0wcHIONSdnZhfxl2a36Isvq0+ifvgX6HmAr+XcYTIGUDSTqitsORJ+q3/6+zH+yi
-         xfMVOD1En4vAOg4I+pBn+DkqIZn9bTZDppW/5LP4M2+4UzUJYpb0KDABi+KCShT8QAnn
-         e7V3s3xMsiDevwakpmj8FrZid1ZsNACXNbOWyd2jRs1cSPYOgIQTTr/NAc2U0UB8JfJf
-         pzStTZfYbjQGSEa6z0iwol5z1ErUz6lcluOYbe2kHIHqH+obaSIo8TZfEAkele+xR2pZ
-         CcPw==
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iq4aSW1B;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774148907;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=to1VE5KCZRkEhvhMb90xNxfk6LIxqdvQwXLJtGlmLy0=;
+	b=iq4aSW1Bcq5kKLi/n4Ttyv0cwSS133Ewc7yTfbCylq+4/Br8wppZvS8GTcJBvr1jql4uZ8
+	faF1BbxZEDZEvDy8ls777aQ3NO2YNJd4RWm+vH7o9pWLxKKf/GGPIVjO667pjYOlRXgddV
+	iETWdJUDTZ7EUK2DI71U4NO8tp4Iq84=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-2ZQj_haQNliRONde-2TOuA-1; Sat, 21 Mar 2026 23:08:24 -0400
+X-MC-Unique: 2ZQj_haQNliRONde-2TOuA-1
+X-Mimecast-MFC-AGG-ID: 2ZQj_haQNliRONde-2TOuA_1774148903
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-35b9894f9ceso3711060a91.2
+        for <linux-mm@kvack.org>; Sat, 21 Mar 2026 20:08:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774148599; x=1774753399;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fVSYBz8Z8p4RnssOWosJ/Ow1yuYWBSen1k8jPwBg8ro=;
-        b=GZykrGY2qxKXYyQ/2n8+nTmgP8xXM/vm93XezW4oyHgl7QXJ+B+rHzcgBjXECM44K2
-         UZ3V+GLdNAD2yAuQp0ZCTHEAnDpycf8WcUrM4/YYoio+fpUqF8MH22iItW1t8I+fE3Qw
-         OLB+QMRXu3brBa9tZfrmY5DFOMhAFWs6eTqig25sJd/GENfzQM7xnSQVB51XLwGY7qIs
-         jJ2xzWa3GD4BdxIpSV3iDQPugH/ztnDYOuaxZm7Jdf+G6UtRoR0dblu2G0uTaCsBLrMk
-         t61w9b3+vsUc8CZMUIihqxcNkxA8MQE1mrgmJrh7gRbhuB817SUql2XqJpUDh9UoXe1r
-         tnrg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+qNxwsHVy0Igek8iZT7FBQI7HSl5/7Y8YJtwGDSVq5R/8QT5pLQ6hKuKExn3l2YzufZ62V9cv/Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx6TeCBJMhQ+OLPtatscjcPBy+vSqQJiTYQjP8WbV5Se3bHvSr6
-	Qn/ep57nUtk1anVwwyKQv/6Us+uFxlgN2o6/SlOtMuA7xuasWMvMrfeU3vA51CWByA==
-X-Gm-Gg: ATEYQzxdnpXMPMTOEgCZTX+Mc8VPG3i/x+g+zA/JQUAgKt79gzfE0NttVqb8mrY3iFB
-	2xBcXsHzXWNW9kozkCwPWbKtcngyuZDpF2/vUokjwI64Dc8wEMEb8zRnSNTWnmemGdsjHkPoeDr
-	h/vJ9gFTvQC9xoPPeobx+dZbCr4ft2G4CP8ydvkpBiog0rquRom6BoVkZhZKZ8e7Yqh2h5yO6wE
-	B7g8ojjpmSWr+Ya1CzE9Yi15RLQi46voIzh+rCuDvqHSwQ9LgfjSSINTkFaUGihu110fblu9xT4
-	hKh/ajctl/pmcI28dKDhg00EQCACYEVRCj9l4yoyeN41ctBTZb5wrp+tFFt8Gjf2wTBHLffBHcM
-	hePj/fJJdXffwqI4riDDXNpz2S2xSJcO1ylTxU4IqOWZ5effZKBk2aQR8J94fUl6LNeTPQOJJss
-	XOI0m4AULEK3ikR5POTl0Hq3NZXDYSjraJ/HOcNA9pBiuFfyy914thprKfLPRWUE0jitwPadlSb
-	6R7u9OafnF7pjsdRO2Tooq1Bp49yDURqLy8dWjmkAOKAqzhhGiJety33+kOxw==
-X-Received: by 2002:a17:903:234b:b0:2ae:c566:bd99 with SMTP id d9443c01a7336-2b08b4fd93dmr2418915ad.22.1774148598281;
-        Sat, 21 Mar 2026 20:03:18 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:95a:51de:9167:5c82] ([2a00:79e0:2eb0:8:95a:51de:9167:5c82])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03be3396sm6104262b3a.27.2026.03.21.20.03.17
+        d=1e100.net; s=20251104; t=1774148903; x=1774753703;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=to1VE5KCZRkEhvhMb90xNxfk6LIxqdvQwXLJtGlmLy0=;
+        b=nEIzLa1xMYgks63tHpb5L2YsDde/LbVzY6Be+khd/sfBpxUS7OknPiEaOH6GYgQPO4
+         dExRe2rPkRRtRTyXCdlt1Qh+Od8/JU1d/fgKxuK7mOU7ESAHJRA5f8kNE/cSkmDLXeqm
+         X7jJU5yUsE7KHF8/i47GDJCJLJsFZx5yrOiCrr3jZkOOSyzRz7MslaFRaqRbwbnjADlP
+         GzVwn4EDGnYweMxYtYQZ4ETYKqq7uOw5b9LQ8uqTzlzHBtaMpnawtEq3SxbZtk5FA7Yc
+         n1o/PN7yF8jNx5VWEZK7YX8VMLiYa1zfR9DVf/TlUflc3SuYxy9IQmIqzUbiXg+mUSFh
+         hpcw==
+X-Forwarded-Encrypted: i=1; AJvYcCWdNADOomPS17GTYBoYbiCMJX6z/Lc5Xlefk4t7+oA0KDA61v9Gs6elI3XWAyYccxrhCcRRk8W59w==@kvack.org
+X-Gm-Message-State: AOJu0YyUB7VCNa/y3xxf5EnooFf/ROOlRZgp+oRXF1Cq7K8Q6UtISyYj
+	/FxE3SuL0ekQuO+MkGZpQNH5VL2kJYgMF69ZHBwnyZShO44AElCFDrQMkZOJ/SFzgArS4NKDykX
+	eci3JEB+APGm3fdFyI1qdfCEWE1aMYxAtYJyyKfADr677S1x3azKV
+X-Gm-Gg: ATEYQzxdRhA3SuWg7usve9MAQRf+F8NcGQ2j0vBeT9MgHdhGF6ixTwIZcxhWLyZbVBm
+	aZFc0p4oXzdHTYIQIcpYEq+1IEbebTMWO2m/xPD0Aq3t4J84USWoR3ApaNdWJbO9jq7tNAgxdbK
+	dUE+bO6B3w/Qn0UgDses/KbU82ydimnIjVqNn98GQnjjGFAhRrXzmlQFIDk4xvALJgE5UVuN2qr
+	wFuvuaUgtvXgdsk5AbEdsjxFi/WfMi7P0W7vO7KwKe7MT62sIz7MZLCfSpaBpVnQiq8EhrVs5VF
+	iZhUT2VUT76Z2dZ6oaxN5JFfJn8K6CtBXHTs4x7ZtQPzCb23EhZ2QdjKmsAAAB8CtymGLwOEYVG
+	zScTsvjCVJScOJeDgxw==
+X-Received: by 2002:a17:90b:4cc9:b0:35a:329:73c6 with SMTP id 98e67ed59e1d1-35bd2b97774mr6439630a91.3.1774148903271;
+        Sat, 21 Mar 2026 20:08:23 -0700 (PDT)
+X-Received: by 2002:a17:90b:4cc9:b0:35a:329:73c6 with SMTP id 98e67ed59e1d1-35bd2b97774mr6439609a91.3.1774148902855;
+        Sat, 21 Mar 2026 20:08:22 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bc610c232sm8435153a91.13.2026.03.21.20.08.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 20:03:17 -0700 (PDT)
-Date: Sat, 21 Mar 2026 20:03:16 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-    Vlastimil Babka <vbabka@kernel.org>
-cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-    Brendan Jackman <jackmanb@google.com>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [RFC] mm, page_alloc: reintroduce page allocation stall warning
-Message-ID: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
+        Sat, 21 Mar 2026 20:08:22 -0700 (PDT)
+Date: Sun, 22 Mar 2026 11:08:19 +0800
+From: Li Wang <liwang@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yosry Ahmed <yosry@kernel.org>, yosryahmed@google.com,
+	nphamcs@gmail.com, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH v3 1/7] selftests/cgroup: skip test_zswap if zswap is
+ globally disabled
+Message-ID: <ab9dIzALKPQLb-SX@redhat.com>
+References: <20260313043532.103987-1-liwang@redhat.com>
+ <CAO9r8zMsbVHKnCzfQcdtomRMWTNFgTGY4XALxwm+i9m1SUPPvg@mail.gmail.com>
+ <abPEALhYmtBnEULi@redhat.com>
+ <CAO9r8zMciNGa1ei-pSvx+ndrCJtZguGj12R3sa8PkDHYwsvGzw@mail.gmail.com>
+ <CAEemH2cQSoTEVb+8NxZpc=qQVrd5DBhj7HmJA5o9GZFke3zj0Q@mail.gmail.com>
+ <20260320123520.616900ef63996ba448bcd91f@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3D3BC40005
-X-Stat-Signature: 3jktrh4dh5gfw4d5hh8hx593swjw8xyb
+In-Reply-To: <20260320123520.616900ef63996ba448bcd91f@linux-foundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ATo5GtF34kfVUtWsVVLLOOxLnV0ZGW34dB5vtO3aYJ4_1774148903
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 35CAF40009
+X-Stat-Signature: 71fhod837uwbuufocjeih5h5peeeu5w7
 X-Rspam-User: 
-X-HE-Tag: 1774148600-438169
-X-HE-Meta: U2FsdGVkX19x7LD/NuWdzokreU9F5W8FuiUsO+Anz+nHEUOnZKTrr1Fvt5aX0l1hCcmDI5WFESb65xcP6i9j/llLl28w35yuIu6qGntrIbDMMi6lWp3abdIe3yxaxb5xPTC8psp7a8hm9uQtR93s6c69Ai2Cbmv3dAaszIbCXl46kCcLfifTaKVkMt/LUPdKzBawsLVNQfv43TOV773fiTopuw2dSY3mXU6+fk9+EyZs2xYS2LKb/FDz/8ZyM8qydb6Q6XoYbG69d6LJ6BJUCPxW9uu82NVFdy+DTXMm9WsqGdGvb2LFUf8DXGQztR4DWZ1OJp2ZJMnnB0eV9T6QRCa4ZSHCspKzsbQGO93K7J/srtsk3794+yLqftfDkYhNUdUqnqf9n0ZkgZALJaGv56zQ3SaBq+OHSqgIwItv0lPWrDPPkjMp/6RxeXPgIGNZ+c+W68VExkYoGohlm+EWgqSMML6z9W2qKztjtwA98A/iuxzF7wjP60Dy2ODc08x35UrRvP1B/LAeKRyMwG2ZMK1OpySB2kMWp1bukGBG3mj+/HY7E2qzEJEd1tmm6fwYXIb11Kilc/cp1MswgmXsHV35Q0TCEWQ0KZtqArnqfHXmOwA57x0DoYi63DvQLG6EJu9Umpvjv8L8GFulcW+tpChHKuVUUV/+8wOnjL4CzTxBdDXQHmekHDJhXvCwwoRebdbwMZdVjecrJA/P2r9boPDiH233Yybg5KV/3P8fubBZraaXEco0yyllBAl8sLt7uvQXc/86Ky49Jbn/lB7AKJhdfYMx40HSFdoifmIPpANn9tH3sPRqiYocieJnTQA2FggvrOk1c2sl3fZgSy35m8tRgX78qHnBmHfDh8XGIB93oxUKo6asap0587cbBrFJMFlAvJ/LuyW2kxV9LY+9fZgZGHzjZNMJBN5OrOCNHg2nHsTxGNlY/MuQqsff+vP2PzqHPRa3/mWQnQbFX/D
- BPDmZjUq
- rEmsdkMMaGibK54dCiSkTwcQjbhvjubk0MMmZX0OMjiUBW8w1lWy9x6/MDJReOUlHPUgpOe61odJityAb2mvPtLetxVa7Y1kqKTG1D7xmWkJI/4LxFhGZZNP5I20T5gzyN7GrK7bd2DGJ28KYPq7dXnlOzrqRY1ftOUY75H5s0iqTi5z3oSXyZkaKU+ASfm9XZddSxox/5siSeYuIeWHS/Q4S8c0ThKX0CnAFGqKucwzPij4y4Gkz6C6cqll6tXxzlNF1KgHASTSEVXnHNVCvJCNrXkFhIKkhCo2oGECc/VQ5R2WrCTykhumRycXayhdEzb/WthC25DXCQn0FLcTS0NBCuHc+94CTA2I20HJ4/tQumtWM/F7oL/dLsJlniuoT1qCsXvi+PgyfqEN1wP5BrEGFoYgSxz6IVz0vucszKuBHGx4Jk7s/ItGR2g==
+X-HE-Tag: 1774148908-650888
+X-HE-Meta: U2FsdGVkX1+HObo7e0tzdGz56GBiNfjWER3SSI2s0GlBf1LSBjxLy3fGNzzcNWDVAAYLQpAWM3Ekhor5f3JDlyJPa21cSIZgqCuxZKjYi6jaXHCw/wpbryskRCyvNRLw8SyjPBp4jdYgg+P1VghSl1+bMV9wSKFUU2uYSZJ7deR2ew3bzmuOs9KcA3VSdj4fVteQSMGKgBEpv+H3Zg6j7FE0dTtlyR84mlinE5WtEDni4VLVYoYr+Q0dqibyvIxgUdy8FmbipDf7lmFnT9XQgJVjwS2r4htiI7STqudLNFqkADjZVytfObIsl0aMuCGF18z2lqV5aBw+GzK0LOkW/OZTak9QhSJnYeNmNwx0uxw32kqRJ7JrkmyX3YlLp/h0UPLpY3RyHRjUV8GwOPRhykLw+KC1LIhIDiBkaI8epo/odDgzSyfMWqpR3Gal6ABv8uaAupvPajVz5fvTJX5xZ9/fvgIqKsIc850tU45QUbxBRappQ7jmu2oOu/dVdPOq9tMMYiUPZfqPy+gIs5Rp+qNWo/yqiYpt7UvWCftt/tjPGb1LEaBW8M2ded0490YaPsFJsiRwXLUr6xGrYNNt5KgNJGoEZI5KEbwMOzJMLD0LYv51OJ0R8A3YiPriQvCMnFEld9KePtyBpB5CVqV4FghcaxrVijXEt5H87QRuBI2EioW91XneWzv0+7BehtXwEWcNJePjDD0WS49xkKxr4bKmiuBVh1JAL9bXNQ6XvW6E0HPZQjVOpIqYnhrC6rZXaY1/MsdBKhfg1yHN92FskCezpiv/yqgCBgfyRdSCIGUHAw5RNCH9y4NDUIC7QiYdOQkz1i2KHjAa8253BILkBMk8zE5VMTxBnSy2R5od2mWhCXaM2hiQpcCny+hBAqxzWNPrxCcX6Q7t/bEGGi9MSeDBwUGaRUW7/2DUE/JtCWU/oSLsXD20hzqp5oXgTYvPoZf/p62UNgy8n8sv4e1
+ MSZEF8XF
+ 2exyfiUaCTGkIJ+M375q1PrhEOnBPtvSs95zuw9TtKyhTxc8ibqZaRvImzfLzXRC+1Na9K3+ZTQd+NuMAkXCaJv9aDMmEeIFj9/mpl5zdore+ECksmhSgdcqNxWw5g6fs9IAE639u8eRCaxc7CkG3LPv3HQQDNLl8TBQUlWFVcNUZNd3PJHzgBZnhtaBsMLciqknctHjVmmIRRzt9byqAUPFiDwB4p1joOPpAE7eNeAp7XzSS4QBY+ZQc1WxxeGn4xD7VMsMWvZEDVq9Ld1DEgjgBo5K7hjjBJRgqBVDyhvw1eOpWrhOYV/EEN8Dv4qTxWgWwu73kyLEaAWBvE/WHU/hA7DTTqblBAYyqkR6HmsnrIoDh3SN2P8nczEYH4jqW2zFHhW+sAkinNGKGZW3BpHDZRUIsMwkYwFWQuRWwUGLNQyeu4OeECBxprjkOpQl3++cWJc/FQISIgQaZ4qUPGLThkw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,88 +138,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Previously, we had warnings when a single page allocation took longer
-than reasonably expected.  This was introduced in commit 63f53dea0c98
-("mm: warn about allocations which stall for too long").
+Andrew Morton wrote:
 
-The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
-warn about allocations which stall for too long") but for reasons
-unrelated to the warning itself.
+> Meanwhile, AI review has a lot of things to say:
+> 	https://sashiko.dev/#/patchset/20260313043532.103987-1-liwang@redhat.com
 
-Page allocation stalls in excess of 10 seconds are always useful to debug
-because they can result in severe userspace unresponsiveness.  Adding
-this artifact can be used to correlate with userspace going out to lunch
-and to understand the state of memory at the time.
+> [Sashiko comment in patch 2/7]
+> ...
+> Could this diagnostic message be updated to print the expected swap amount
+> in KB or bytes to avoid confusion?
 
-There should be a reasonable expectation that this warning will never
-trigger given it is very passive, it starts with a 10 second floor to
-begin with.  If it does trigger, this reveals an issue that should be
-fixed: a single page allocation should never loop for more than 10
-seconds without oom killing to make memory available.
+Yes, good point, will modify it in v4.
 
-Unlike the original implementation, this implementation only reports
-stalls that are at least a second longer than the longest stall reported
-thus far.
+> [Sashiko comments in patch 4/7]
+> ...
+> Is this description accurate?
+> Looking at tools/testing/selftests/cgroup/test_memcontrol.c, the macro is
+> also used as a memory stride to trigger page faults:
+>     for (ptr = buf; ptr < buf + size; ptr += BUF_SIZE)
+>         *ptr = 0;
+> Could renaming this to BUF_SIZE obscure the original intent of touching
+> each memory page once to force it to be resident?
 
-Signed-off-by: David Rientjes <rientjes@google.com>
----
- mm/page_alloc.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+Well, maybe yes, we can use page_size for this one.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4706,6 +4706,36 @@ check_retry_cpuset(int cpuset_mems_cookie, struct alloc_context *ac)
- 	return false;
- }
- 
-+static unsigned long max_alloc_stall_warn_msecs = 10 * 1000L;
-+
-+static void check_alloc_stall_warn(gfp_t gfp_mask, nodemask_t *nodemask,
-+				   unsigned int order, unsigned long alloc_start_time)
-+{
-+	static DEFINE_SPINLOCK(max_alloc_stall_lock);
-+	unsigned long stall_msecs = jiffies_to_msecs(jiffies - alloc_start_time);
-+	unsigned long flags;
-+
-+	if (likely(stall_msecs <= READ_ONCE(max_alloc_stall_warn_msecs)))
-+		return;
-+	if (gfp_mask & __GFP_NOWARN)
-+		return;
-+
-+	spin_lock_irqsave(&max_alloc_stall_lock, flags);
-+	if (stall_msecs > max_alloc_stall_warn_msecs) {
-+		pr_warn("%s: page allocation stall for %lu secs: order:%d, mode:%#x(%pGg) nodemask=%*pbl",
-+			current->comm, stall_msecs / MSEC_PER_SEC, order, gfp_mask, &gfp_mask,
-+			nodemask_pr_args(nodemask));
-+		cpuset_print_current_mems_allowed();
-+		pr_cont("\n");
-+		dump_stack();
-+		warn_alloc_show_mem(gfp_mask, nodemask);
-+
-+		/* Only print future stalls that are more than a second longer */
-+		WRITE_ONCE(max_alloc_stall_warn_msecs, stall_msecs + MSEC_PER_SEC);
-+	}
-+	spin_unlock_irqrestore(&max_alloc_stall_lock, flags);
-+}
-+
- static inline struct page *
- __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 						struct alloc_context *ac)
-@@ -4726,6 +4756,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	int reserve_flags;
- 	bool compact_first = false;
- 	bool can_retry_reserves = true;
-+	unsigned long alloc_start_time = jiffies;
- 
- 	if (unlikely(nofail)) {
- 		/*
-@@ -4990,6 +5021,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	warn_alloc(gfp_mask, ac->nodemask,
- 			"page allocation failure: order:%u", order);
- got_pg:
-+	check_alloc_stall_warn(gfp_mask, ac->nodemask, order, alloc_start_time);
- 	return page;
- }
- 
+> Could this lead to truncation of /proc/self/mounts on architectures like
+> arm64?
+> Since BUF_SIZE is strictly 4096, this reduces the buffer size from 640KB
+> (when PAGE_SIZE was 64K from system headers) to 40KB. If the mounts file
+> exceeds this limit, the buffer is cleanly null-terminated but the last line
+> is truncated.
+> Later in this function, strtok() extracts tokens without checking for NULL:
+>     type = strtok(NULL, delim);
+>     options = strtok(NULL, delim);
+>     ...
+>     if (strcmp(type, "cgroup") == 0) {
+>         if (!controller || !strstr(options, controller))
+> Will passing a NULL type or options pointer directly to string comparison
+> functions cause a segmentation fault?
+
+Theoretically, you're right. But in real situation we haven't observe such
+failure so we can just add NULL checks on the strtok() return values.
+
+    options = strtok(NULL, delim);
+    if (!type || !options)
+        continue;
+
+> Does this code evaluate its exit condition correctly when waiting for a
+> cgroup to become empty?
+> When test code wants to wait for a cgroup to become empty by passing count
+> = 0 (e.g., in test_cgfreezer_forkbomb()), the loop exit condition is:
+>     if (nr >= count)
+>         return 0;
+> Doesn't nr >= 0 evaluate to true on the very first iteration, returning
+> immediately and bypassing the intended wait intervals? Could this cause
+> subsequent cg_destroy() calls to fail with EBUSY because the processes have
+> not yet fully terminated?
+
+Okay, this smeems a problem, but not blong to this patchset.
+I would sugguest fixing it in another series.
+
+> Is it safe to ignore the return value of read() here?
+> If the read() fails, the loop will continue incrementing the offset without
+> instantiating the data into the page cache:
+>     for (i = 0; i < size; i += sizeof(buf))
+>         read(fd, buf, sizeof(buf));
+> Can this silently fail to establish the required memory conditions for the
+> tests?
+
+This also can be improved in another series. Shouldn't resolve in
+this one.
+
+> Can this dereference a NULL pointer under memory pressure?
+
+Theoretically, you're right. But I think NULL pointer checks can
+be added in another series.
+
+> [Sashiko comments in patch 5/7]
+> ...
+> If malloc() fails and returns NULL, does this loop dereference a NULL pointer
+> when writing to control_allocation[i]? Other allocations in this file seem to
+> check for NULL before proceeding.
+
+Theoretically, you're right. But I think NULL pointer checks can
+be added in another series.
+
+> [Sashiko comment in patch 6/7]
+> ...
+> Does this larger allocation size require a NULL check on the malloc return
+> value later in this function?
+
+Theoretically, you're right. But I think NULL pointer checks can
+be added in another series.
+
+>> +	snprintf(zswap_max_buf, sizeof(zswap_max_buf), "%ld", pagesize);
+> This isn't a bug, but since pagesize is a size_t, should this use the %zu
+> format specifier instead of %ld to avoid compiler warnings on 32-bit
+> platforms where size_t is an unsigned int?
+
+Good point, let's use %zu in patch v4.
+
+> Will this new limit consistently trigger zswap writeback on systems with
+> efficient memory compression?
+
+At least based on my testing, (whether on 4k or 64k systems), everything
+runs smoothly; this change has indeed reduced instances of false failures
+in real-world.
+
+-- 
+Regards,
+Li Wang
+
 
