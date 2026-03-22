@@ -4,112 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96457FC72D4
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 19:03:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B677FC72D8
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 19:22:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7A786B0005; Sun, 22 Mar 2026 15:03:30 -0400 (EDT)
+	id B239B6B0005; Sun, 22 Mar 2026 15:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2B1E6B0088; Sun, 22 Mar 2026 15:03:30 -0400 (EDT)
+	id AFADE6B0088; Sun, 22 Mar 2026 15:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C410D6B0089; Sun, 22 Mar 2026 15:03:30 -0400 (EDT)
+	id A116B6B0089; Sun, 22 Mar 2026 15:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B25BF6B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:03:30 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E4328C661
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 19:03:30 +0000 (UTC)
-X-FDA: 84574622580.20.62C730F
-Received: from sonic303-22.consmr.mail.ne1.yahoo.com (sonic303-22.consmr.mail.ne1.yahoo.com [66.163.188.148])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 83D41C0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 19:03:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=yahoo.com header.s=s2048 header.b=kDiCZnDi;
-	spf=pass (imf28.hostedemail.com: domain of abhishek_sts8@yahoo.com designates 66.163.188.148 as permitted sender) smtp.mailfrom=abhishek_sts8@yahoo.com;
-	dmarc=pass (policy=reject) header.from=yahoo.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 933876B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:22:20 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 469001B8BDC
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 19:22:20 +0000 (UTC)
+X-FDA: 84574670040.27.92E93EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8C7E6A0002
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 19:22:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jFJL0HTl;
+	spf=pass (imf25.hostedemail.com: domain of ojeda@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ojeda@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774206208;
+	s=arc-20220608; t=1774207338;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:references:dkim-signature;
-	bh=quVbbkHKpp5ZGnxnru2x/5vYGBdSIgBPbh1s2Lh97YQ=;
-	b=KPiTUN/yEKa1bsvkQWh3r+NCZSmsf0bmMOqG+gStfLtusL4xUbwjnjOZg+6y0WeghnFy7d
-	Gq7jgrAHqSWXPP3lhbr7jfhkmDywVGpnos50dsChmvE+S1wc6mp/PGO8XoYR0ifhNlNN9H
-	74NWvy8f1OTHvbE0N0W6t6QAKxn21nQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SiYymjyqLJQefau8a4gy6w/Vver9WdiGFOPB8YRefA8=;
+	b=0LZJ31MUy8BJmnFvbJcw50bnj6v8BFTbJ7/ObnDXhboOkzrPVP97ZAAa7sL2bfQo81+CHZ
+	iR3zSnHit+xg26FlnxsMAy4stb32ChjkbfMnqvSppofE5/6pjYNepNVG26oIh+rIgDIG6N
+	IoJN+dToOJ9OeD6XGSL/VraX8A3mGJ8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=yahoo.com header.s=s2048 header.b=kDiCZnDi;
-	spf=pass (imf28.hostedemail.com: domain of abhishek_sts8@yahoo.com designates 66.163.188.148 as permitted sender) smtp.mailfrom=abhishek_sts8@yahoo.com;
-	dmarc=pass (policy=reject) header.from=yahoo.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774206208; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jFJL0HTl;
+	spf=pass (imf25.hostedemail.com: domain of ojeda@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ojeda@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774207338; a=rsa-sha256;
 	cv=none;
-	b=WKBN2Ne+aLAQ+CfQrvMEaRJamvvZoB+gusT9OWW3niMKrwFJ5vLmmbLmDFEfzAWL01rX1h
-	BpNK2O1GyIqVluU2BR6cqSZAbqP5s15XbHU9CjeJ2gdX9gStKY5hsCM9opUCdgW+d+0dS5
-	YLZi4TCqaIKft3KVIvB7f2Ggjf4vu8A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1774206207; bh=quVbbkHKpp5ZGnxnru2x/5vYGBdSIgBPbh1s2Lh97YQ=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=kDiCZnDis0JKHWS6BlbWXoNxMbkSE6hviVM50nZ7NZYjMb334RVrcLBSggF98VFCGbvk5TlnIweWmHOoENIXIBjoNZNfXoucG+vxjJVjbMsJ7pnLib+kwYh/ChZ9Hy9pQgOklSQcTZLBaO+7+G62TicY93MtUUOvAxtClXJHVC4ZJtkdsrQZ7ExabWwgoDLHbbpzEdGSJrF3qZcA6jkLqNFYQIHEg1Lnpe+xPOhs3ikkcgONXiPbKbHtfsJruomnfi40Pwkko5sbvrpDC10OL4rZPSTJMeQBz3arNnWqgT63NPI23prAVUNQvWQO9PvdxmuT9KE1GhVOsbjsx1BCiw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1774206207; bh=Q1Wl/VAHwHa74L8+7wK4Nf+dzH1jmWWgGcqp4T/MAVy=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=PpkbLf5zFOnc1AGk/Wipaaml76xrDNVL6zAlP+3Q1UDUVLuU25vm/jrC1X44DRi7Trs2pAftlQrB9Dylv2Y8w+URIrhcFADrj+Dn0RtSIZde4IswD8AldO2t4Lfq4kon+PVOrmeHhuANv4qywnkjTKo2yqJgPL/hjchyQbQlZdbJIOFBqNvp3dOU3L2bVpadmVsmpMhV68OytvcGh4Ni1Eip1EKVyN4RCWPcxonRzznFPb6ABYcq3Np0LEPFuU69ko74GhuwdeohgS9K3R3u3ODjJg4yYTgcX/6vUetX+1kd3Ug4NpFsry5wGEMADLP4taWzcUBlrkKAF6bY3j5i0A==
-X-YMail-OSG: TYhOdaIVM1mzMs2NfJDujBCerfxoWUPwJ4wyk0iwCcX91zu.5OxqtTiJHb6j5Qb
- c5jELhdwpxZduOHFAp33EecgydlVyVXHhvk6RhKEu19XNauNwN0KK55MHVPbgzSIczqetnX_0Mi3
- 2E0Z3VbuKQ8NhHdm0kCmPoVCEnKRemn1zN5ksN5mik3QTJuXroqiIUrXVUGXCw.uzz4lSKSQX6_a
- Ord5eBjZKKv9fI.QROL8o4hxtIcg7Y7.Q2mUtGV0Qm.it1AlAeAhaJR4wAouexhEUndSq3dGTAUx
- Nq1tilAb6zkYRKvypX7lCcT18fByB8J5NGrrhzykNgueHfbUTkPKYrBB7K15m.ivQn2s_8PwMkPG
- X8gzCT9GdnXCV9ckKRefKibNvTpwu5vc4CB58zSseMznJc_ktkyFUdS.7E5z5E2AAnVZN3377GPm
- eEnmGRYwbwrbdsEhtmH_bo0zCUqKSgsq1iRo5bL7bOS1ZL6RPUtWSk8RHbc7NXui8ViX6wQNEEcZ
- cLpz9Uh4ser2ru8IUv17HbO8lc4j3ZK7h15jg36sjGnivMStvRoqFhiA9kiDxdDRiRoOM.DtRNQb
- 9wu0FPliHbbJwQhkoG05S7BRyVUC6oOHtXwH6JziXvH7Sntj0M8TNbGDUPEeUMtCrZT_2yxgMmWk
- 2RlIgUtxWx.obzUeR_WShr9tfmWbd217HcR4HZz09.8zNUzk0q5xW1CmKKt7odJHqDrjpqyY0DE8
- EzsXgMElTke8VMcflhR_1yXWgMILm.0pxeMN3zxZSDgcvajfUfKdwQ6tbzZ8ZbJiDfypxf6smtY_
- 4IqUJsa2eOEM1B4v4Fbyig6RBNaqgas2_KTik0Hmy2tVzjn2ATSqNL.e971IswxOqCOLcrvL0h9W
- W2PmyPm365JQkPqapHfCu_BKtmvP9Xavx3BcYLUphQ.qbEw0R0vd4XkNWnzXQ8SBRtKxE7tauRfO
- 54BUzgh3cXDe9ziXzfaHBJ5HH9a6KHlax6RZ6PmpFrkBrb.EWCY7cuDqIqsuhoXBd72IFMS53acC
- onZJx_bgUJ9c87.cp0ae_Ni7zxAt_6_c5ScmfVbD9f866SJTxdeElxf4m28xRG9_uzoyi9sIWvWU
- hsmglMmNcetDFQhdjd7jG.jA8fYIIagCDOV9dOMPG5xHF79oFs1ya4w.0sDdsjNf1cVx.WTMPC8U
- r1s0R_XwrlG7SlwUhovWe.MLLf1AIBWDi_h.ZWsNMICkem.M1rrYSNsKW8nckOPuMskUOvRYVvqI
- xNmF1geHrkuxB7CO.xAjgprSHnz42hgDFSGxmv0OMxkhyIXPCoV2gp435.eEq9E2SyqHIoVRH7Z7
- k51xNKVDzR9tOYvP7kA_laYl9QeaXzgU12njR6FOBgZS0yFzNIDfCfCZWxGbygQcIn85rZTeWp41
- PpJxW_r6KgXgX.aUSd8EvQQAQyL4Y.umlSVv9wbERq5QmYaoGT5WnkUBEacFSN808rQaRHOryR7E
- V0Dt1p1OBMHjuwz3h7_jAs2ZO7wwwMQCgoVGCMUjfKWizbTlR4XWlZZiHunnk8NR9eVFQ32DEGNy
- GxKMJFLzOiUh_ceOBeUm0n_NI0f_1OruKCrOkgD_ckkZezjTWazBDEr_z5BDlV5HzvHMgzrrV_Uu
- X1S_2vlLSTz720oBkcslDIrryE4y8uzZQeMaPn8O0UXHrGfoByg4Js5vYuBnRSalHegtHhvim.kL
- _dvDX94UWnYhegKcA8dZQauM.oWFf66.LWMgEXn4TLFENSR17z6kz8x0JdV96GgTm4_wmjBEI8zv
- 1p2df_OgoKfm0mA_eAUtFCHbWrhV3yXJcspnEniQs.NKub3_I.1.RwhVbnuyaa_tpcF2Zxeb9C_6
- IEhXKqixA5ncXAO28likFPLM712AcltAm1c4.iC.FRpLTkx26VanahxQlHqnzy8jBLwvr1jH0EFP
- RjeMu.Wcff.LT.U1Bkeb8rWi1t_NZCqytuknSMK5hoLZSsuF0Wg9Q0b1kUvoa8A5luvJyiaTbbMs
- BYaV5ZTnk2lEEzRaIZJdoAcRoHwdY_g1LIYY4g8NRRovGaoMffVhT2S9ZS_X5.9d1KsKk1rmPaVZ
- ZZ_38MvUUfzbVyxZI.LOS8X8qGeM.daq4f8t.Drk4bSccNPwk.hXnIucd4NqezLAIB1pvcCoSYgo
- 8Ec_0s6A9PbGMC1WkWEmOu7.NRtvS66jbZrxNai9XdM1qJqw4AAJIHZNsyhfhF719ljFUVPcfM_y
- o.xILmJHvNAZT65egRW61Ae6rF2nYjlqcTPHSbMYzsWyAoGDgWpuhkxQXwMgBLt1kGy6eMaNtkvS
- Z9tuDTNCBNxLbv.efZtkuxzLhNWKF23ARSw--
-X-Sonic-MF: <abhishek_sts8@yahoo.com>
-X-Sonic-ID: 6cf498d8-3ca1-4e87-acd3-718318dc6144
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Sun, 22 Mar 2026 19:03:27 +0000
-Received: by hermes--production-sg3-6959968fbd-n4v77 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 78a103301ef87a298a8f046ee42232f7;
-          Sun, 22 Mar 2026 19:03:25 +0000 (UTC)
-From: Abhishek Kumar <abhishek_sts8@yahoo.com>
-To: Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
+	b=4ex4qn/yyRL905/iuae0Ajik2Yq5pqp6mVdaj2sXTxZ2ccwxJL0pwGYGyYfkCj3TwrV6Rn
+	y+a8asfTNqCUmRX+UQYyD1JzVus9ZoRbHEBq0bSTDaVXNk5PVP5DJryHlk5UL01A8ZPy5+
+	ZwGR8+IphSQ4yY6ve5gPT4ZjsH0EKFI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1AD89416B0;
+	Sun, 22 Mar 2026 19:22:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192DCC19424;
+	Sun, 22 Mar 2026 19:22:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774207336;
+	bh=KE0Ehn2v53KTMI2yWR0Gn7GG8ek8iWJ5qKwd+6T9w6w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jFJL0HTlpz2kyveKolahrRLNphDakm+Q0lH8RMUli8M7xc1fwB7R2zBva4trgzUpd
+	 lk8r9iTZ7RK9+n11jpBQXj1Y4rhWoaJvX51FBQNmMEQ4I19oTrOeT5zbF/kKWhqeho
+	 6b4Aq0d6LPYr0Yw97mZL2MZRfOYyM+WWsosZrbssdYmQvnxj51nQJGuT66y6OcCvRw
+	 hNpkBjyo9j85cWcwnilz/5/JIyry8guW3hTlC48UGLFpxvnc67sza+0l5xyMRo4/u6
+	 2FI0aKfs+8mqtv6TmnabtUH0CdEYOwNh97gqsacWIR5/7UbfPNWxkFDoq3gmq13g2s
+	 WMG4aJ4fhX7tQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	David Gow <david@davidgow.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	aliceryhl@google.com
+Cc: linux-um@lists.infradead.org,
+	llvm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kbuild@vger.kernel.org,
+	a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	akpm@linux-foundation.org,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
 	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	syzbot+606f94dfeaaa45124c90@syzkaller.appspotmail.com,
-	Abhishek Kumar <abhishek_sts8@yahoo.com>
-Subject: [PATCH] mm: fix data race in __filemap_remove_folio / folio_mapping
-Date: Mon, 23 Mar 2026 00:33:19 +0530
-Message-ID: <20260322190319.85301-1-abhishek_sts8@yahoo.com>
-X-Mailer: git-send-email 2.43.0
+	linux-mm@kvack.org,
+	lossin@kernel.org,
+	mark.rutland@arm.com,
+	mmaurer@google.com,
+	nicolas.schier@linux.dev,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	urezki@gmail.com,
+	will@kernel.org
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+Date: Sun, 22 Mar 2026 20:21:59 +0100
+Message-ID: <20260322192159.88138-1-ojeda@kernel.org>
+In-Reply-To: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-References: <20260322190319.85301-1-abhishek_sts8.ref@yahoo.com>
-X-Rspamd-Queue-Id: 83D41C0005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bhhuz1rkhwm6umwsy88mcbhxcjruairx
+X-Rspamd-Queue-Id: 8C7E6A0002
+X-Stat-Signature: 7omzbeamot5syrz9fjjiy7xu3yfktcwj
 X-Rspam-User: 
-X-HE-Tag: 1774206208-346262
-X-HE-Meta: U2FsdGVkX196D2mBF8Scb2a9LLAcNdUhWshw+AZOY3sU5cV6Zo0UO2xQiZ5fH5GVtDAhgROcpk4Ih5ybNPUtY/oQGG6rfeSC1IbeY5Hbs6SfyO8xo4SgHpMoxRwOF9G38pZVL9d/HNzs4zqldWGaNJrSFpDVylcfd9Teuk8auNpoGd75+sFzIFv+XlTruhUQsovlsC3h6JICVWsJDxXJkPLlpUcBuKsgOQy3kAao4ykfIn3mOfM78FtAw+wXh11EECDoJi+BgLjUv8k7RR+8eIY3LX9QqpQcAKtUwaCOwSXQpoDI4va+lmILgdVbmMaKlJImpGLd4MzZTI1HM5/mC4Y3cGjkXVvQ2KqCk4E8vk3Ud7tBEQcSRddNwUnJz/jWXivdFyPf1kmy+XBbdyceyY9xbitMc2o9dO+j71remO8aUnl4HrGzbd358MbkX3TbY13UDtv+aKOe2RxzE09h6rU/cawi8c9g5DY75jSK5oxL3LnAnKCD+w5NXVrwJxJRzS5pqCnMOF9n/2PKkUJj6zOcRrWhyxJlOOhKkDm03CqdIp9mgInW2xLBV0RHTS0jmOXWzNB0lVMY90V8QLjQEw0/vkl2wqjL2yzPCgkIJ19P0kHXwsAq/3Qpx0aPCLci5gt1Kt6rmygAWHEzz9K9p9rY+JSyzq867ZdNfpDCsYByYYG1oWvvIeKBs6bKyrZK0Jplx/jVrshQ6wnHOQ/OAUZoDM48Skcf6AwOeSkh9p17qGiA//WG+sklJDAmL8BwrL7NyaCgq0MdY4G+idhNIXd6S/zSNJkG2yZSHr0K8A8kxKX210ziYuD46YL1Ei6PpH9JZl4GUfoOTL0EZ2VYclRDdvZYiLA5Y+disw3ATmksdG8W1zACqMSZQd6TGOePZMiL+/VxFA/721GWqEggT+8j41W1oyGDmYvNsQkk0K1Pk2iD2oWkSPhjsXay3pqICQLaMJdRqAO0+T+UEE9
- 98D69xn8
- 6WKa95tX6rWkpSLWUvBYYn47sy1S1jCOKXDaLnKab8F6cgeuGc1kuv6obqKDDyUnH1EzxRfVBqEDwJh24gqSNfGI72LY6OdpzY04iAmZ3TXYzbPhoTXX30MFt9JojcdBINJBURsFSKi+PmOmArg5WXfbcIhaNodu+hpYZiLtixbKil7MjB5KlxXUqFPI2Kfwwlzl06RamSpKX3Y9mcqCnw0WS0l6yNccNPQWNJaPgh17o7u4VcymdtUw/oSUy061wSHwkckyUoD4jPrrt9gDfioFPaq6xo5fAek2htwSVJpuS8lJKEfyMJk/zZ8S6RHNKqETo+DWq1w3jX2yfYGNaOtzX6l/13/9nQwEqBf7suxRokMbR/Cziao4ElavN9Y7a4duXONdBuQeAg5Bec6pr7y1kVNiYSt7nJRMfYJWAgvUOeHOdK41K8X1TnP1WkxScQXSBjoyuxqxfRSV+G/cWZiFACGGohT9hPkBCdkQ8blKWaosUpmNbpgmHMylBs1BJgbEIABgi0YK5KuE=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774207338-507617
+X-HE-Meta: U2FsdGVkX1+KJecCnr9MwDozDje9mWgjChKmSEoGeJRBSqfWkTEeHg8b3JO0DUT8fB3nMS0Payt1BsxHG633++Vr0D1gBnwr9272rzgfK3HEfwDZD7OPZqwOlwd49XSG0nuRFdMOO/syzauzLffCO4Ir7OvqEV6nHja+QNuV94bVFAzProMnOJxoxj32ZVGIz81mFg8VbWiw8CW2sHtFTFzZCD4lxj21Fcqj/whtWCIQAdFYuYz2M3Je3eEDaqr/epj4csHHEtETJBBhvDPK1OHSD/HgVbPYVRcoOaUvwZmwC4oO4n4XfZXDAfVpfTgDRC/07mV0BwC4vcXydu+PVuhI5u1z2j8h7PFqrvW7PBTSfX5B6k8JYLjt5DxtB8V0duxRgMSEnSkzifUeKR3DcUwwav+8iczSysf7WifjdvKcN9jYsuErNVjvvylp+h6PnsBXRHbCgFqD3qOpaKli4ZdC8lQu1gsMap1aOZXc+usdHRP5bjuQHxMFmpdt7p9tKuV1ImCIdRkzCsdOIZglZQ37svR+cmLmiPZkZgViMme6jhhUS8OhXQgtXGy7mXYiuMhEc4BxPzNJYP+8sC90WXBok08baJaInaWCcZfhLMOCdSS4r3iIsNeSfyTQtFP56+VZFk411YxnPl9iHSN7qXaUAPEC995oU3ISLkogbP0z8ev6ob01JDpp+JMvf/4Hf+S2F/Ub8qWKN+S3kRCIHS/P7FdzdjfZR7j17hd1B/9bNK/aI/7qt8lMzers3KEiq58oc0tXYdqkXwtEqE8qBtuKu6oHa11VywvUfI7isOd5fbv1PCLe4BNWspeIbsl3PbZ8VmIBcu/HIMrTyLfHNXglt3VFCX80SGadCmbYe6goyNLpVsZZcpG/kud9UUdBt3mVjZmQD41b94kTF/BarBCJ1KOc6z7QjSd8kB44W9pX2RAniLlc7CdXbz+MaKQJmeGBKdvrBmVyq8qiQT/
+ YmSig6lx
+ HJcYogpbhLDK8eURnJrsFzP3f7o+XJMAdE/7E9WJGGvEpwSTR9DHW2iSyA6GcFkWyTgpKMV7l0NMw3+wmC6aTdcZ8/nCopVqV/nXNLONRURzKA43BE7QKI/WxheC2lShY8Z7BSkLeySSRsVCuNDU216baGetALJM0uzxrB0atZceIrzGzS5eHZ+Nnb84Gbsl/8cS+2pytIaYLbszTBMUIvH252kNcVGWudpzJL2Lm+YOz3OfUVrT06P98HzdrKBvDJwYOnedTZCIZsMand3kHu27s0Y4MbhyLgzQ9s2DbZHyCT0KF7eFzVGPIfbdLoReQBhGRbFAq4YPpl7IpjVo9ZS2BFBqO64dKd1Mb8y2pJw/5x1PO0srwCwvwZplUuF0ZfZ/p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,66 +120,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KCSAN reports a data race between page_cache_delete() and
-folio_mapping():
+On Tue, 03 Feb 2026 11:34:07 +0000 Alice Ryhl <aliceryhl@google.com> wrote:
+>
+> To get rid of these helper symbols, provide functionality to inline
+> helpers into Rust using llvm-link. This option complements full LTO, by
+> being much cheaper and avoiding incompatibility with BTF.
 
-  page_cache_delete() performs a plain store to folio->mapping:
-    folio->mapping = NULL;
+I have been testing this. I think we can go ahead with it, with a few
+notes.
 
-  folio_mapping() performs a plain load from folio->mapping:
-    mapping = folio->mapping;
+I will reply to a couple other bindings in separate emails to avoid
+spamming people too much.
 
-page_cache_delete() is called from the truncation path under the i_pages
-xarray lock, while folio_mapping() is called from the reclaim path
-(evict_folios -> folio_evictable -> folio_mapping) under only
-rcu_read_lock() without the xarray lock.
+  - I will mark the Kconfig option as "(EXPERIMENTAL)", since that is
+    what the commit message says and it allows us to be a bit
+    conservative.
 
-The race is benign since the reclaim path tolerates stale values --
-reading a stale non-NULL mapping simply results in a suboptimal eviction
-decision.  However, the plain accesses risk store/load tearing and allow
-the compiler to perform harmful optimizations (merging, elision, or
-fission of the accesses).
 
-Fix this by using WRITE_ONCE() in page_cache_delete() and READ_ONCE()
-in folio_mapping() to prevent compiler misbehavior and silence the KCSAN
-report.
+  - Clang passes `-Werror=unused-command-line-argument`, which means
+    under arm (i.e. 32-bit) we get:
 
-Fixes: 2f52578f9c64 ("mm/util: Add folio_mapping() and folio_file_mapping()")
-Reported-by: syzbot+606f94dfeaaa45124c90@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=606f94dfeaaa45124c90
-Signed-off-by: Abhishek Kumar <abhishek_sts8@yahoo.com>
----
- mm/filemap.c | 2 +-
- mm/util.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+      clang: error: argument unused during compilation: '-U arm' [-Werror,-Wunused-command-line-argument]
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 406cef06b684..bba669bd114f 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -142,7 +142,7 @@ static void page_cache_delete(struct address_space *mapping,
- 	xas_store(&xas, shadow);
- 	xas_init_marks(&xas);
- 
--	folio->mapping = NULL;
-+	WRITE_ONCE(folio->mapping, NULL);
- 	/* Leave folio->index set: truncation lookup relies upon it */
- 	mapping->nrpages -= nr;
- }
-diff --git a/mm/util.c b/mm/util.c
-index b05ab6f97e11..5ecb19ddf026 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -700,7 +700,7 @@ struct address_space *folio_mapping(const struct folio *folio)
- 	if (unlikely(folio_test_swapcache(folio)))
- 		return swap_address_space(folio->swap);
- 
--	mapping = folio->mapping;
-+	mapping = READ_ONCE(folio->mapping);
- 	if ((unsigned long)mapping & FOLIO_MAPPING_FLAGS)
- 		return NULL;
- 
--- 
-2.43.0
+    And under UML I see:
 
+      clang: error: argument unused during compilation: '-I ./arch/um/include/shared' [-Werror,-Wunused-command-line-argument]
+      clang: error: argument unused during compilation: '-I ./arch/x86/um/shared' [-Werror,-Wunused-command-line-argument]
+      clang: error: argument unused during compilation: '-I ./arch/um/include/shared/skas' [-Werror,-Wunused-command-line-argument]
+
+    So we would need e.g. `-Wno-unused-command-line-argument` there
+    close to the `-Wno-override-module` one, unless Kbuild or
+    ClangBuiltLinux thinks it is important to keep it for this case.
+
+    On the other hand, regardless of whether we fix this (and another
+    issue in a separate email found thanks to the UML build), we could
+    instead add `depends on` listing explicitly the architectures where
+    this is going to be actually tested. That way maintainers can decide
+    whether they want to support it when they are ready. Thoughts?
+
+    Cc'ing Nathan, Nicolas, Nick, Bill, Justin, David, UML, ARM.
+
+
+  - If we use the `.bc` extension, we need to add a `.gitignore` for
+    `.bc` files, and an exception for `kernel/time/timeconst.bc`.
+
+    I guess we will not have too many `bc` scripts in the future for
+    that to be a problem. On the other hand, we have the chance to use
+    another extension (either for LLVM bitcode or for `bc` scripts).
+
+    But please let me know on e.g. the Kbuild side if someone has
+    concerns...
+
+
+  - Do we want to have the `cmd_ld_single` step even if the new mode is
+    not enabled? i.e. we are gating the other steps, so we could gate
+    that one too easily, no?
+
+        -       $(cmd_ld_single) \
+        +       $(if $(link_helper),$(cmd_ld_single)) \
+
+        -       $(cmd_ld_single) \
+        +       $(if $(CONFIG_RUST_INLINE_HELPERS),$(cmd_ld_single)) \
+
+    I mean, it only affects `CONFIG_LTO_CLANG` configs, which are on
+    their own experimental as far as I can see, so it is probably fine
+    as it is, but still, while making things unconditional on the caller
+    is good, it is also a behaviour change for configs outside the thing
+    introduced here, so I am asking.
+
+    (We could use something like a `is-rust-object` to do it on the
+    definition side, but I would leave that for later.)
+
+Thanks!
+
+Cheers,
+Miguel
 
