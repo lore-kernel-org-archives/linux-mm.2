@@ -4,115 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBFE4FC72C4
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 14:49:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9202EFC72C4
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 15:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AAC26B00AD; Sun, 22 Mar 2026 10:49:57 -0400 (EDT)
+	id 5B5486B0005; Sun, 22 Mar 2026 11:38:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45BD86B00B0; Sun, 22 Mar 2026 10:49:57 -0400 (EDT)
+	id 53EF76B0088; Sun, 22 Mar 2026 11:38:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34A2F6B00B1; Sun, 22 Mar 2026 10:49:57 -0400 (EDT)
+	id 406996B0089; Sun, 22 Mar 2026 11:38:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F3616B00AD
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 10:49:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEA91C2A75
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:49:56 +0000 (UTC)
-X-FDA: 84573983592.16.00D9B45
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B18EAC000C
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:49:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DV8kUO3h;
-	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 286F76B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 11:38:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D415EBB6F3
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:38:05 +0000 (UTC)
+X-FDA: 84574104930.13.80DC5EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 311DA40008
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:38:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Af1Q4QHA;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774190994;
+	s=arc-20220608; t=1774193884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rlTFfUPhBocGaxMerdSh1BiMW+L3wVNprEAxKNc1b7Y=;
-	b=a8DpPYDJ1smtIvNjFFXJlGDJT3aR/7ZQidkzZsLnjOHOg2FwA605F1QMXuMJL7VD06N9ki
-	SS02RNUKr+2rDTC7REKBcDLKlGALgwoCuxrP2Z8FOPtNxC61GLYfcmxOQV2IiGe9WHXH8Z
-	6SaNfr57XpPZV/nDVVuGoZKayWDrH/A=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DV8kUO3h;
-	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774190994; a=rsa-sha256;
+	bh=Qah9pJ7yuDr102dx8ir6VKbn5gY7OTWI9Ei3cnM1xLQ=;
+	b=cbpaQis7Q7pw0QgWHjlurZHvkIKFxMCXmJLJ83doV/i4RPqwlutKh0bG0IrfVZBWZj7JCS
+	R6BtQLW6hrNKZpkksEf1MhXANnmCPjewQo/u6ShmMUo4NcTHzX1OFjCn6Rycym1V4gcUVU
+	35b/5dXY9GhZTfbWFbPNMGuBlFpX+PI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774193884; a=rsa-sha256;
 	cv=none;
-	b=2R97gQ2HmczkZnxObXFexQXw/9Eb8YsUkKPSlKQDoK2GHiNxcXqVWVKU5IEmtQkaF/+1YS
-	ZRAMEZzSYcOngdzAIcfBOVcYEsZJ5SASUsuMinCmIqvhBPyxnIWII+mIC1hAYBbmtU9i4J
-	p0mibc3Qhm16qOGUtETjeTyVAlRtYl8=
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59de8155501so3326764e87.3
-        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 07:49:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774190993; x=1774795793; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rlTFfUPhBocGaxMerdSh1BiMW+L3wVNprEAxKNc1b7Y=;
-        b=DV8kUO3hUntsiE72wt3NQnNavsxuLIRxavyZZgSNLF+iNan7ij1HiAxwl6xVn1j4mE
-         HgNwLu6+DPmmqq5gdd+MTbWuSOlafPqxm66YH30gWymLMP/6IX0ajc2L77nm6geAk6cU
-         EaqmFsSaR36xE2BQquWMF/jo98fbkUbxWLQ23lGF/VNeCGsnud3ZcDqPmL0F7rI28Kch
-         K+S2JAFY4nYglOVzOZjWqu/boPt7AHl6rrrGZbl8Ow+mx9VFodyWBoZTnoUX63j8uPJ9
-         hTlHkhG0TRIY5FvyEWOLMt7S1EECTWKKg22YVbnOp0ncjWaLTqz85amFrIxrM4kAHqew
-         WtIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774190993; x=1774795793;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rlTFfUPhBocGaxMerdSh1BiMW+L3wVNprEAxKNc1b7Y=;
-        b=h2ZqxJ9cBJze5rOIgDE0YlGdlbTabFuGjh8yVcsOEjPovbbtVVae1vYSn2nuvTsu25
-         sKSlmol/qXaDn5MWDWTOtwYAhmuBCcRSmh+A9gT4aLssD9XJ+d7m6M8LarMQfyx13/w/
-         gWEO5UhtgQtYqrPK7Qaw2G9WYN7p3ar1EYmc6tN4SoZCus2M3jPkq5OEvRwqjOcOQzhh
-         qjYOlxpheEGH9TRIblQc64ptefUgE0rrEDTO2ak2MC9FRAz3YuXfjfsOhxDxBZW/Zfju
-         sOZPdBW0D787Nn2jz1njRPLRU9tJlHH0kN/5nyyzRUy2dCUwWddiVI1gy+fE86Xxfomd
-         94vg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFdkW0bb4iy4O9vSDo8/QkTCqbFwE6kXR6wuY889PcrVrlBeKnDRdVGfVuJGOA3OvJ9HeCD2g3fg==@kvack.org
-X-Gm-Message-State: AOJu0YwhTBPFkPxs7ri7GGShL5Vlhoe6qAcanYoWM2M9+13NGkfqjVsn
-	m5b17KOVUsxhzCPb3QplVFrVC7g/Aw762YE9iQ+aKKVkVV62Uvdb5yPL
-X-Gm-Gg: ATEYQzyNU+pfF9Towj5BFG14w8z1kVSvKcgvoMi5QmfAByLkwstRtCJiwYYC8LX4+R8
-	VR7aRbJQB3CtKrF6ML+t4QhvuMd2j6uRgsiX2pM+0+FvoiByo06k0KPiMdZ4yHwh0HFn/VQbUoW
-	2K+2d/wDvYI5QrfjrEGhOYZTWFXp9qRuqHjaxioqMcAIo1ad0lUr4z0pCIwZKhfpsng3SZ4f7BL
-	01lZ5tkP5TcQRl/dqAOcmknDHl3/wFwJFQPger+IR2r0gY9aZ7CGJtnx/SPicuR9L4e158GilmW
-	PEDN1MYcsQ5jaXzS3ZV8fUl31pUDzez2ph5ROKVmt+jy2MTYZM4GaPtVdQrZO5HeL/Jc5qnt88I
-	ysQ2AX68A2Ws/ImIFGC/POsCTC2cVtyOa8DZGWORdlummlzPYljOg/gRwuw3oVrY=
-X-Received: by 2002:a05:6512:3c82:b0:5a2:7c1c:749 with SMTP id 2adb3069b0e04-5a285b641eemr2701104e87.39.1774190992739;
-        Sun, 22 Mar 2026 07:49:52 -0700 (PDT)
-Received: from pc636 ([2001:9b1:d5a0:a500::800])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2852071edsm1784683e87.49.2026.03.22.07.49.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 07:49:52 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Sun, 22 Mar 2026 15:49:50 +0100
-To: shivamkalra98@zohomail.in
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v6 4/6] mm/vmalloc: protect /proc/vmallocinfo readers
- with READ_ONCE()
-Message-ID: <acABjmeJT0eS9Hdu@pc636>
-References: <20260321-vmalloc-shrink-v6-0-062ca7b7ceb2@zohomail.in>
- <20260321-vmalloc-shrink-v6-4-062ca7b7ceb2@zohomail.in>
+	b=srrMUqqaoZSmKpEp88fCoRBOfRmoL4wwiX7PN9aZ4Kq6k1siLxgw+cgQ93g+ReZCmTonwj
+	aoKjUaN73oUrnGPFhEVhhisPQaynvG0swyInU/FU5bwbyVRlV/TKapQrNUE/DCkIVorGJy
+	d8CxJj36z2cUFuK5dXi4OsxBvXJQHBg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Af1Q4QHA;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2A54A4346C;
+	Sun, 22 Mar 2026 15:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE6DC19424;
+	Sun, 22 Mar 2026 15:38:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774193883;
+	bh=y0hPXErnp0jJB1YGd3VZBlcKEKQOUYHh4D+PsxChcZA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Af1Q4QHASgml94Q0H8OhreMtj3xwkmCcgbERL32oSJvQ3kRglseHUs1I4hp/fE6Gl
+	 szwmpxDh4y8vdSQhLWXrZ9R6jJoq+u3Hz6Tc+Z8Tda5jTZ0Q19Fc+VgH+7keguD4As
+	 upagkf+rPILehHqSG1p57jr2gPXpVJPWONI8+A5Kryqe/dW9ZDzIsDw35+568dWh36
+	 sgdy6O6/1iMRaQS2LYUQdyFMiUpyMVMH35LqeGw8UeZzENriVDV0C1rcG63HmFWzlt
+	 YYre51qPEIshFDf6ePVEiFxBkv/bDemG3fe55shOQK/z+iwQxU5ppJu4DIed4OKXI9
+	 EYPwxjTCDK4gA==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC v2] mm/damon: add synchronous validation for commit_inputs
+Date: Sun, 22 Mar 2026 08:37:57 -0700
+Message-ID: <20260322153758.80748-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260322060630.82964-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260321-vmalloc-shrink-v6-4-062ca7b7ceb2@zohomail.in>
-X-Rspamd-Queue-Id: B18EAC000C
-X-Stat-Signature: eqby7bentyti7fjc5bhexibrqmfw5ajq
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: w1ouqbxpb9qmr8zpduw8zri8ztfchtte
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774190994-680671
-X-HE-Meta: U2FsdGVkX1+PXaQ61snE2O6TLRBplCl0jCxixP75q1TaCmgWArTJ7/2bgqetBLqgFwDMq6VK9ExnEgyUw24T50dX6EuH4up0LhrMtNNjcvIhe/ZGnT3Utgrz0u8T2M99mX8Uyl6EfW06cC2XOP0xH1CRTXROy1p1FpArhym8PSvYf/o2+xt2bYJWDAc4m+uQNg+SSZB3cXGVUbA3/YxqlY9MtN6PH+wjBNqYGb3YtfA3RRD9298SteesOyd/gq69J8rOctwobutXpC5QPIt5dzWyWvcHnqyvpku0ONnzvyxVBDkNvGX4oSmLZJBV6HgLOcGtpJ/kzqGqFbBtD5c0d/CN5k0Zogkw79DsmTaNjpAcIVHjMIMJNCw0M4/xhZrGzdMWTm4B1k+8OZMXPPwlRd2ohXHpFl9ajOJazXL8TAAaBQGdei2+XdehcPh0SkPdX1ii75/ffSqsOq17EuXSv/i8tJC6OXMHzq8ZA7IU0n9q8CEfRqiHg5ieMl/RxdZMbx7uXIcqyoWMHI4oukFcwkKRrRHLbpmsGHx0aOLj11ZZZpJilEukjZW2NYu4xC6GrX4vT94B4VdAT4qBzOgRCEuIl2VFRT1ZcLewsGdcITqTM5p2YXNeYeu8oWALS8MrNhaX9njA7Ugxb8RntJheUcpMG8PeYuSpSSllTIL/4jytOkI3kViG/bZuvJAgYDFLiUthWqBrd98BYp374jDmV2tMwM6uD/k9G7w51pDD2Ao2hf+MoFElltlfWJ2dclVka3pGv/2LxeWTva3baruAQZ9gbbxSCY6ibaZTDZKjc/acvq2VdsXKPcibAzD7z0/G/CmgxPu8KvwLYj0lj2rFlKp3zP78ev4QWFfmejea0KZHozJku1BwvwCV156vpuN9XZuscDJ9UlLvp3JrHaKyRe1L2ubG4TrJ6elzQVibt9Tu5GWWLLAMB4EDXXW1d6EDHf8qwayUWz5V4FrwYuz
- D56DNDNe
- /RSHceD2bQz5Vh+c8RDDfQNhudy43ul2ORwhmmMs86YrjNDb66bNydfCWYNjRFttnhlqjdvRYeyrQhiIvyyZjM2bdVBQ8SP+K6z9uwiH54sBQCq1OuLxztV5J4xfWkKOdYL9PhoBfRC6xpeEolgPWWbe7wNubNp+bOQksabRdal2QKJ0M2JzWeB5KZ1rSai8YRifJL5NNEENYuYwYWpwAweMFqQ+Aiu4T+OvDSB1wtiREKxkLkaT1DLYL2uZ8S4djnLtkkJgNVhHCbZ/GhKSGLH4YRzkdv0q45FSsVdEVX9U3K2DNWKtTQrg2rK/lYVTZ/9EYhwTfFymK9EIjzoCasTQKOSMuDKIbLEdFjmNPz8GN+niiFwgwa6lXphXvDAstu+kpuTbB/f/Xs2FaoJBeDtHT35dZ+448oYL7YDiI9ant6Kh2eePMQLfiEW7FW1Uea18XwHiwQf3dc2bw1VSfC4nzkjNILTblFtqHnJQ2nlaffLwxIVTO0wouhEedQdia5rlPPDuHZ3UiNWM=
+X-Rspamd-Queue-Id: 311DA40008
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774193883-413448
+X-HE-Meta: U2FsdGVkX1+D8hQwFsQp0i41QtsYGxMCRp4sgpOXPe/jLb3KHeiVIYCXkh1NPkwYURNk/GzBdwIs5eNh/x+NsCr7PqX67sfJs84w6qNvchfX52WrSQWx9H8b07fP2Qqa0FnT3d8nbuXA+sm2IW3h7Mt78Cc6rM7j434ScOzEcqAI9LM2iPiTAgnDp1iNYv2CITd/716jk7+KuJ4oEp7A+M8zjh34BpSZQUkjodcvnBEY9KF1XRxcAQPCp7ZxeSx8WrnHEA7zR/Jdrus4G/zFJ4IzxVMhJlRjVpLUN/frefJNoocpEFRI6LEmuseNsE+FZkxwihbxDepShf/GLpx2QG3Oc8CH3btI1AqFJ8QIc+tC+wX7d56KRQd0E54apS1gdcvFY26N6zZPWz6iwJDvWqUAZRCbwZfspviDxdkkODgFyCjUWZBsb1D7nikNDEBF800R08Qwwtb2NJpJ1pIDmqOyYYvlF6dXb+bu1bXzGai+7XJz0VxDUkdpSwxd0PFalYvupoPlB6CJ9xeA553mTlx3zOlkaE2G2odvGtOp6lZjpUVR0LBbNmhY8ntq50erLwJOEfv0xmOwpoyIETKp+HA6vW6FqRjTrmIm01/7sVAyssXzCItc6hDmiA92pEV7aICCR3gvR4+83PwIs/ZrkYRAjKLAh1dibHbLQo9fQvpcT8wpwfcvTR8AthjPXgge/nrMTom9bH/D6HIOBZk5b4wVAsu0G+Pid5FUx4BTa7LH8KcNH4xbB57FGN1f/owvhRFCDrt+dBTgfYoZMMeF0Iu7If2onXczVPOEodEH4NkqQScNKIjj2WDrAB+UbBr0WbqAeYgxEjCGT9xMhGtmknmrFGvmhFG1+7jzzmAks6gG0XvpmEdgBN4V0VCteNy8e0vXzlfdyLqHj9sXYxhtlh5ZM3b4oQYAgzk//vvg+38QFgnZBHwLGZSJBP++oOQFSqjk2WGhyS6Oj7LxHbY
+ wyMAuPHC
+ cRKmLzx89oCJIT6WNPfWt1xjyQE5DXhPoEzC/bi7Ko9xAEBJu0a/4++Lt0ZXPyu4AFq9llSfqKcRsy9TENPVZO3dFG0iJ+r9IdLC+XBWO+14qcDSZxSyKEpwBZB7n+B77gX9LlUjSM52aPQ48FaBHGH74gPVvX0Kc8CPZdmsMwQvDHIwIfdHn4QZb0sI+iFWfFZc/HO8jttfI2GBSgHNbgW0WAG8oQ0w8bNy22DbX9XEGZvxEQhjuXr3DpLpBixIMbHHNEApuY2TFpWnjpcr0Ci8mMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,81 +91,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 21, 2026 at 11:35:49PM +0530, Shivam Kalra via B4 Relay wrote:
-> From: Shivam Kalra <shivamkalra98@zohomail.in>
-> 
-> The /proc/vmallocinfo readers, specifically show_numa_info() and
-> vmalloc_info_show(), currently read v->nr_pages and the v->pages
-> array without any concurrent protection.
-> 
-> In preparation for vrealloc() shrink support, where v->nr_pages can
-> be decreased and entries in the v->pages array can be nulled out
-> concurrently, these readers must be protected to prevent use-after-free
-> or NULL pointer dereferences.
-> 
-> Update show_numa_info() to use READ_ONCE(v->nr_pages) and
-> READ_ONCE(v->pages[nr]), explicitly checking for NULL before
-> dereferencing the page. Similarly, update vmalloc_info_show() to
-> read nr_pages safely to avoid parsing a torn or inconsistent value.
-> 
-> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
-> ---
->  mm/vmalloc.c | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 64f5d1088281..7658fdc087d2 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -5204,7 +5204,7 @@ bool vmalloc_dump_obj(void *object)
->  static void show_numa_info(struct seq_file *m, struct vm_struct *v,
->  				 unsigned int *counters)
->  {
-> -	unsigned int nr;
-> +	unsigned int nr, nr_pages;
->  	unsigned int step = 1U << vm_area_page_order(v);
->  
->  	if (!counters)
-> @@ -5212,8 +5212,13 @@ static void show_numa_info(struct seq_file *m, struct vm_struct *v,
->  
->  	memset(counters, 0, nr_node_ids * sizeof(unsigned int));
->  
-> -	for (nr = 0; nr < v->nr_pages; nr += step)
-> -		counters[page_to_nid(v->pages[nr])] += step;
-> +	nr_pages = READ_ONCE(v->nr_pages);
-> +	for (nr = 0; nr < nr_pages; nr += step) {
-> +		struct page *page = READ_ONCE(v->pages[nr]);
-> +
-> +		if (page)
-> +			counters[page_to_nid(page)] += step;
-> +	}
->  	for_each_node_state(nr, N_HIGH_MEMORY)
->  		if (counters[nr])
->  			seq_printf(m, " N%u=%u", nr, counters[nr]);
-> @@ -5241,6 +5246,7 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
->  	struct vmap_area *va;
->  	struct vm_struct *v;
->  	unsigned int *counters;
-> +	unsigned int nr_pages;
->  
->  	if (IS_ENABLED(CONFIG_NUMA))
->  		counters = kmalloc_array(nr_node_ids, sizeof(unsigned int), GFP_KERNEL);
-> @@ -5270,8 +5276,9 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
->  			if (v->caller)
->  				seq_printf(m, " %pS", v->caller);
->  
-> -			if (v->nr_pages)
-> -				seq_printf(m, " pages=%d", v->nr_pages);
-> +			nr_pages = READ_ONCE(v->nr_pages);
-> +			if (nr_pages)
-> +				seq_printf(m, " pages=%d", nr_pages);
->  
->  			if (v->phys_addr)
->  				seq_printf(m, " phys=%pa", &v->phys_addr);
-> 
-It is protected by the vn->busy.lock. When you update the page counter
-in the vrealloc, we should do it under the lock if i do not miss anything.
+On Sun, 22 Mar 2026 14:06:30 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
---
-Uladzislau Rezki
+> Hi SeongJae,
+> 
+> I tried implementing the synchronous commit using damon_call() as
+> suggested, similar to how damon_sysfs_commit_input() works. This
+> successfully returns errors to userspace immediately instead of failing
+> silently.
+
+Nice.
+
+> 
+> However, I observed a side effect during testing:
+> Since damon_call() waits for the kdamond thread to process the request,
+> the latency of writing to 'commit_inputs' depends on the kdamond's
+> wake-up interval (controlled by damos_watermarks.interval).
+> 
+> In my test with DAMON_LRU_SORT:
+> - With '.interval=5s', the write latency can be up to ~5 seconds.
+> - When I temporarily increase '.interval=50s' for testing, the latency
+>   increased proportionally.
+> 
+> I understand this is expected behavior for synchronous communication
+> with a sleeping kernel thread. However, since 'commit_inputs' is a
+> control interface rather than a hot path, I wanted to comfirm:
+> 
+> Is this level of latency acceptable for the 'commit_inputs' parameter?
+> Or should we consider waking up the kdamond thread immediately upon
+> receiving a damon_call() request to reduce the worst-case latency?
+
+I believe this level of latency is acceptable.  The special-purpose DAMON
+modules are designed for long term use with minimum control.  So I expect
+commit_inputs to be used only occasionally in real use case.
+
+Of course, making it faster would be nice, as long as the required change is
+very simple.  I have no good ideea about making it really simple, though.
+Nonetheless, I think it is not too late to do that after someone starts
+complaining, or we find a really good idea.
+
+> 
+> For reference, DAMON_SYSFS seems to have similar latency
+> charactheristics when using damon_call().
+
+You are right.  And we got no complain about it so far, so I believe that
+latency for DAMON_RECLAIM and DAMON_LRU_SORT should be fine.
+
+> 
+> Thank you for you high-level comments and the suggestion! :>
+
+My pleasure :)
+
+
+Thanks,
+SJ
+
+[...]
 
