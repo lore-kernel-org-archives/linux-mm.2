@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88FB6FC72CE
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 15:57:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91810FC72C4
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 15:57:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE8D26B008A; Sun, 22 Mar 2026 11:57:42 -0400 (EDT)
+	id 02E796B0095; Sun, 22 Mar 2026 11:57:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9F116B0098; Sun, 22 Mar 2026 11:57:42 -0400 (EDT)
+	id EF90C6B009E; Sun, 22 Mar 2026 11:57:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEC5E6B0095; Sun, 22 Mar 2026 11:57:42 -0400 (EDT)
+	id CAECF6B009D; Sun, 22 Mar 2026 11:57:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 886186B008A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 95E756B009B
 	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 11:57:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 587C913BB66
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4541E5B1D5
 	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:57:42 +0000 (UTC)
-X-FDA: 84574154364.17.00EE112
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C9BB0C0004
+X-FDA: 84574154364.22.5E85FE4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 96D232000C
 	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:57:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="j/v77JDa";
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PlVO6kot;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774195060;
@@ -34,59 +34,62 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n7zkmJLFhrZtgZb5xv0tfELwAXDyT6rXUNKl5w+JrAw=;
-	b=sushIPpZ2lT8ZJm5UwXf7alDwm2H76ZW1A8UMFSLK61WGcJY7JHa7BZIFXbCdLMrunDlB+
-	J7bEKVsZduF/TRdRSPb/opduNOI3i4CD2CR6wObY+eJnlrMy9bLEBfGZw6k8jyCMfV+a5o
-	q9uU0wVFFHifl2c5Ug15OJ0OafKEkRo=
+	bh=vJistnFWnDMgPen+vzENlGukE6NrPtXcqWX8OD67mjA=;
+	b=eEYDITe46U9ClDCBHFIQDR6adT4CP5hz+eUTwOvNyV9z1FVA2kaAwT8PB8Vcw4Cmm/mXMf
+	JpLUTQjM/FyjKAuHoDagUOXX4nWYYIFzNyF9LaDZfqkrOgDXKE9U72IF6IyAAQDd3yM779
+	IP/aeSMdZwnMwU6/xGulGZS8c5nNgVE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PlVO6kot;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774195060; a=rsa-sha256;
 	cv=none;
-	b=h2bPsuY2p377dSJEie5/5MpjUQjD8Mg+DDJRMQVnf8Aqr/uBbgn5lzEFnTCnpInBvcrI9K
-	G0NVEyq5aQpw5J45qL/IycI+6L/cXH0sp85WQJGRXaHV8PzpownvjzklOv3q0+Lg9kIX7r
-	HO2aeD0jW45Te3xHW+gDnc5SvTm8hTE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="j/v77JDa";
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=f9b8PjdFI3Pbz6mLyl13KBbfIbB7zP1DyR5vfrjXbY+f7PKAZPTn7Z9k9L22mtJOYaj1Hl
+	kkwtuXZ0IvMk4RMm97q5WoUl37tSGhiDih5hULjC55GU5sTkPD4UQX7BysQGZ/g0n/vUlI
+	+3nPuggS6X0QyEW0QeGbYMzU4ePcR9k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 570996013A
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 15:57:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D302C19424;
-	Sun, 22 Mar 2026 15:57:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C023D429CD;
+	Sun, 22 Mar 2026 15:57:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7B3C2BCC6;
+	Sun, 22 Mar 2026 15:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774195060;
-	bh=9O26QoN+V9tNeSexEgjKx5Rwm+ySmwIIy3Pdsz7ovf4=;
+	s=k20201202; t=1774195059;
+	bh=K+t0IBDIG7HXVVaXmRTS++wFYmoNTkKzAJmGYrkNPTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/v77JDa6gOV0lKhY/HqDDAGc1NKfWFTNAZfuguz6CCxPJmvyDQVRt9oFIHTZZr/P
-	 vj3HzRacvDG+drDY7jd6OZz7cb52PzTKso4PlOROx9wBAyrX9oforAuK3jXCL1+Cdq
-	 G0x1Bjm0b5I8rTP3lSSVGraBs6jZQy7uFKgwldR+B/6UFwKcZKrUFlH3lAO3jpH24d
-	 AE8iGXzMnZGgY3lxI3GD7GYDKAkaQ5rIQG/2E8JRWsVgRoa64+6uoi6TeEdvHUjoi8
-	 Oolrva4ykbCNVDA+9HmgbaSaeFl96aqjokbB7nnK0mXs9vtwcKmTEIOf6FSUjDqG7V
-	 J28pqhmX6kJpA==
+	b=PlVO6kotRB2q3CldQyLv7KHE+7VPRz/p+DA8T7h7XuvebgwkB/YfZ4rc9uFFn+5oS
+	 PKLtSA2r/hREk96rf+oI/aa1mAk+AX1KWX/omEpu9IUgVgcnCETMEy4GmC8fMD6veX
+	 9JBirr7VSHWsinjEQOayzsxfzh5VpjhLhKVI2KDFWufdbPjr9RDjBaNqBZXwWdVDzh
+	 AMRW7j26eB0SlesuJJ2L645Tx5uTtie1QrDCFOTSiM/xsab05ey902c5XtWT/PrMqf
+	 Y5UqV94+HSqU7Pqz+NErvWwNHlNShJeJpdBcGKQGHjf/KILapzuWKlNvBuA3LOi9Cp
+	 WquMcsL5okGXQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v4 08/10] selftests/damon/drgn_dump_damon_status: dump pause
-Date: Sun, 22 Mar 2026 08:57:22 -0700
-Message-ID: <20260322155728.81434-9-sj@kernel.org>
+Subject: [RFC PATCH v4 06/10] mm/damon/tests/core-kunit: test pause commitment
+Date: Sun, 22 Mar 2026 08:57:20 -0700
+Message-ID: <20260322155728.81434-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260322155728.81434-1-sj@kernel.org>
 References: <20260322155728.81434-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 96D232000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bfszge1bpwsj4441ym9txqq1efjx6unt
 X-Rspam-User: 
-X-Stat-Signature: h8ne6hs33mj4p8min8is4gnumhxs76g4
-X-Rspamd-Queue-Id: C9BB0C0004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774195060-857143
-X-HE-Meta: U2FsdGVkX1+LjPek7YPk6BKQXz9/ArZhDvvonvAcC1Y8WM1Fe1TsgIOQsk92suNbqLAwjSJ5ZZ1Vjd1hRIqTsWfQ3G6eoIwwYgsDxLzKPqexZ0eXxgTHWPe/aoGty79UA5+yx2+phWSB8ZuDM1uD/TPoezEhJ7/5Y2E9x8NlJ/9L9SWD6qoozIPDnKApMcqGC0nhly4xAfOxXsQXJXJj4BNg1Tr9qxqV40xBKMB8VJ9SXkxta/3p+DHC17+i/RuXo+zW7HvI2IOojutc82DDnVBCYd2pQhNnZmB31+SUR3he16u0bJodCx2S/ziBKvI/mHY9Mkgo5V4RPQEQh48miqUnbg3QAZ62O2Mczfa5uYdhm0zghWLjKsC/JJkvwsHz/v7P+z+QFEBboJsJ3QTSAZMS9mnOZbeDDy1HqH/RkU8ntl3q9ZqyjDsLRsQBTjSdvv3wGRrXcihr8rSLsWqKc/S0SdbUpBtAzUpTi8QUtlsJTheqrOHm5fDeGVY8gWdnBgCH6Kj5Y7lmT8Jwvxqdn/TfwdwRai3N3cSamtZm0GfPfmRC9lQIEQLUR3UpyCSV27S3X6rV5KRNCb5gt6oNPLpUQW+p82tugql8cdrWePd9lB8ucuhxfpyiWS7+qMtSYInXcZZtZDRce9arjvtmcpJ1kGSDu7HQo8N/9m6qFtx6IuteHvfBoISw53WUx+vC5NdQZO8kIuwGQmSIbsX36nIpoLEsSCsd+2S6bHJm+nTQ6Z6Hhk8YXz1oS2n3+66s7Q+Vz5zuDru6nfancy6QHT9VqAVc5VTQJsr9TjVlUNEswwLSnzlSik8iLUAzxmDKEu668FHXEiygyjq//9eZTTjW+6xwYiiOyEM4VcaVmasJf8n/Tt9Iwut99LbUWbKgdleF3YuZxLwykmqOY2ZJilEolXc/9NpiDqE4pU0cdU+DrnlJIaUuuKKhwBqpmNuiXe/B3nDYOytunQcYNET
- LszlI2Rp
- Ky65MYRh9SdaKMizFn2+ieW+K2u3vJpyB/5TnIHlZOe9MpoFTrVE7hyX+B2qWBxZ8z6Z8Mapn+U8wbTGXXCQxbsKbvnfCDjpd63O6Gnc6bgu5d2zajJnfB6fbOYTljz27PjkAxSsRJHmtI9mWyq0cOVeL/GvA6yExQ+fb0CM5f5sj5e8YFbgn4197CdL1fwV1cxgZUtiEXcT2lUO/QmlNS1HJyG9/1900w4JrZHyfkkcZLNpBUV/Bjbbwc3trUf0oQWyJ/sJzYjtl5X+mCOf6vIsu5FCQYJ5sebEPYt/BvZ8mXYgPo6pdxtf7bq9/kji5VZ5S+rp3+Vmq9BgIglaGM0APAqCGkzvRbgG5
+X-HE-Tag: 1774195060-234451
+X-HE-Meta: U2FsdGVkX19cIXf9CDPPU/zHuUPQvCQS/48uS/+8Yq03A5HpdXx+HQUYeJSuO+5K9Q6MIvCRS+0YiYZHdDxoABeqV5oyovV9BjZjgFcpjfOROSC1r+dB5uqPZhCMPvaJD+nn2ocG+903GvCmXTT2hI+lvW5pMrGvDlxUpSlM0acILmfwFianF/7TMEjtjfv84X2jxtr5oXdmqojX6WZrqTwMFLm8nL4y5NfuhMqilY1lypaavrcVfLV+HQYTP77cwdQL2Pnl7kN23uZCcXz0r1eby2HAopU+ZluIsadXPn2Xq0j3Y3aBS2qBmXbfpEP4VBl/i68bo06O9Q3l6Wimc7H/9hn22tfwTNlgTvgIFOSN6lD5mY48tdg9SGzM1x7gG1dsmdEo4GW/JWax+6WmZ2jAQsMZRUGMtZqjimtlep5SkMTW5s3R9ct4iPLqSLl7PDt5W/u2szi8H6KTEpZJ2tUgqGofZzXB/5P4S1l1meDOym3Syus5CdjyNQSqgh2LeOLyHvzosTRIvseNKW93UKiJyVN4lssdJFOjf3LPJ03Z16GgENf/VxM9647qvC3CA7saOJim/y9BLbNGG9fffjqjRh0fuHGCfNArSsmwfLbLciVBoB9OixWd36IUmhiF/uXZFSbDJzIJjJpamPTW7lmbIm02uOfjLruJjoaYdLGQa0YLDYJEqmfYR23KNuQw1ci3f7akYaeTEHKT8oc6RwaxUaqC7wKKEUuNoTQVcdHZU8s79IAE6isR8VcuQuMJSm0QmIWzHAk4c+4KGemBhIXW3gCdJVrvz1STu0SGmMUfw69lGiu7EUzx3+YkmMf3cWTFkilti+IK5+xPChOSgtz+5oLwSV0E8EYtBSMNhgADucZwBwkvbkKNXiplbSO7ZlyFCbkUVWrvYVYcdqZtb73P9fdWovwZduvi93CWRucQwv2Ib/LcSXmSrOOE+dLzTyWH4kvDwcne+CZmc3P
+ /0B/B7Zw
+ i6XDUvPfKY7PnmMn0BIedaLgFHygy5nJro2Q2XzgHJP9JhAjgxpd3AgyWAN8bgnC0xuBCz0oLRp+e0cyYCKi5RP6/j3KI1uTOVZoHX0ZDS/SV4Ib20VVo12c3t1Iyy+s4P5b8+Cny0x7JWG9zlcTRlA7UtXr1n5cVp0D6uehj4puyUWrHHNYVl2BREtPeRIDrSeFefMt0lLy5OfVSLI7NAELGH934tuvF5KsVNY/2TX5R8p4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,26 +97,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-drgn_dump_damon_status is not dumping the damon_ctx->pause parameter
-value, so it cannot be tested.  Dump it for future tests.
+Add a kunit test for commitment of damon_ctx->pause parameter that can
+be done using damon_commit_ctx().
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/drgn_dump_damon_status.py | 1 +
- 1 file changed, 1 insertion(+)
+ mm/damon/tests/core-kunit.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/drgn_dump_damon_status.py b/tools/testing/selftests/damon/drgn_dump_damon_status.py
-index af99b07a4f565..5b90eb8e7ef88 100755
---- a/tools/testing/selftests/damon/drgn_dump_damon_status.py
-+++ b/tools/testing/selftests/damon/drgn_dump_damon_status.py
-@@ -200,6 +200,7 @@ def damon_ctx_to_dict(ctx):
-         ['attrs', attrs_to_dict],
-         ['adaptive_targets', targets_to_list],
-         ['schemes', schemes_to_list],
-+        ['pause', bool],
-         ])
- 
- def main():
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 9e5904c2beeb2..0030f682b23b7 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -1077,6 +1077,10 @@ static void damon_test_commit_ctx(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, damon_commit_ctx(dst, src), 0);
+ 	src->min_region_sz = 4095;
+ 	KUNIT_EXPECT_EQ(test, damon_commit_ctx(dst, src), -EINVAL);
++	src->min_region_sz = 4096;
++	src->pause = true;
++	KUNIT_EXPECT_EQ(test, damon_commit_ctx(dst, src), 0);
++	KUNIT_EXPECT_TRUE(test, dst->pause);
+ 	damon_destroy_ctx(src);
+ 	damon_destroy_ctx(dst);
+ }
 -- 
 2.47.3
 
