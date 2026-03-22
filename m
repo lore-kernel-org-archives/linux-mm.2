@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21969FC72A9
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 16:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDDD7FC72A9
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 16:18:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CAB96B00A1; Sun, 22 Mar 2026 12:17:29 -0400 (EDT)
+	id 334F26B00A9; Sun, 22 Mar 2026 12:18:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57AFC6B00A9; Sun, 22 Mar 2026 12:17:29 -0400 (EDT)
+	id 2E5726B00AA; Sun, 22 Mar 2026 12:18:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 490E16B00AA; Sun, 22 Mar 2026 12:17:29 -0400 (EDT)
+	id 222736B00B1; Sun, 22 Mar 2026 12:18:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 353606B00A1
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 12:17:29 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA889BB50F
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:17:28 +0000 (UTC)
-X-FDA: 84574204176.15.099873A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F4276B00A9
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 12:18:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99CE2C26D6
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:18:55 +0000 (UTC)
+X-FDA: 84574207830.23.27F0611
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0DD68100004
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:17:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rqMEGL82;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id E08ADC000C
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:18:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="fLv/fglc";
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774196247;
+	s=arc-20220608; t=1774196334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HNRDwT63C9SqT75nbbTtKGBy0nj1zHy752JbqHnkVB4=;
-	b=CZQgB+gmqW4MQlHbzp57l31uv/XFLsVXCusN8iiCY5ha/cCY3Lj8c3HaKkjfyPh0HdQS0I
-	DTRdfOWs9xzGlDwdzkp/qahxNrIv6+4inIOs5XQb/Hvur11BP/DG/5V5ZyHcvMPU6iM6cW
-	T2AkH72HMlz4JVDpT0nTi0bVH9WlOos=
+	bh=XbGgdAUD36VbkTI/d8NS+jT1HFTeOWKO8Rd1frjT90s=;
+	b=Q/e8WrGd9FI22YpWKxcoF1TD1VEhvBm0afEpDizBTaOaBzAjX6Byr0YjU4ZbfvLw9VcjAs
+	s3LcRSyySlhrue1Gc4vK9urG4sIs95fO1H8VY7WnoMaiqP5ffJAfDOCtgpUZ7Jgr7l9tRH
+	r7qLukfmd0/cR8EfEes/7qIjqjTr5Zs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rqMEGL82;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="fLv/fglc";
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774196247; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774196334; a=rsa-sha256;
 	cv=none;
-	b=mZRBcLaXXgOvnAOr9t2xMNE7MYuvD2TXfYMSRmCkHbQgWfYrzxkfRajKFCw/SqWm3EaT5X
-	c+EyyzDvFfsu0yQ2PfoN/S4z6kqX5mPUAmfPBFfKcTmpzofODSODF7vLCuOnn6IquONWKN
-	Z0vjruWMfoRpqXVFtKTt4BYi3+sdJ90=
+	b=V+2WsR54zbPhI9j5iuOcjdj+/t/Sl2lJL+aqTiovfB6sPyTbO4bI73QBatD64Nm0DuRY5f
+	G0D6se1p1qFQTGEQlr3Yhrn+eXeCJdgrDds2kL2efAweHhSZnR9zJXbGBRMfmohSZVCROv
+	t6MOIo3tpNjL/MXEZBi8ofwyXMwFmOA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E2BB343D53;
-	Sun, 22 Mar 2026 16:17:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC38C19424;
-	Sun, 22 Mar 2026 16:17:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E45DF40537;
+	Sun, 22 Mar 2026 16:18:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A1AC19424;
+	Sun, 22 Mar 2026 16:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774196245;
-	bh=xn7acWrcNfOM9ZzwScwVBSuLjXy+6p1AilKCtVPfDiw=;
+	s=korg; t=1774196332;
+	bh=pP5uNcSCgG45MH4/HYNrgZLlyFOBkKviWCQd4I+JIkE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rqMEGL82CatXzSZUGssMlnUBlu7gibQcWJDmvlWNKM8wR3LI3RfabxRShgetGdnKM
-	 qLVqViq53DE0oJ/EZ62HKok/IvlxVVVO2j8c2jdxjK1jRsQYexN6L6lz/p6Ea6GpOg
-	 Z40l5OIIF154Wpf+2VLWVtL80h1i7JP6sGNOXwGg=
-Date: Sun, 22 Mar 2026 09:17:23 -0700
+	b=fLv/fglctIByfcRHnORg/XrxwdIv0B/kVJnimOKezsybG+/3MrwU937EbpZ3tijLv
+	 AyMmCWWqOc7/dvDj0XN/Vg4lom/rQRMQ4xBMhtNDWNcW5MFQOHmBLPk8yClDDSL1K+
+	 X/2WfOlQJvR5TRZuCJizMs3MfxHsnT5HlmX87yaQ=
+Date: Sun, 22 Mar 2026 09:18:51 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, lorenzo.stoakes@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org,
- mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
- npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
- borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v4 0/4] Use killable vma write locking in most places
-Message-Id: <20260322091723.dbc1a8e45f4412fca43ba510@linux-foundation.org>
-In-Reply-To: <20260322054309.898214-1-surenb@google.com>
-References: <20260322054309.898214-1-surenb@google.com>
+To: Li Wang <liwang@redhat.com>
+Cc: yosry@kernel.org, yosryahmed@google.com, nphamcs@gmail.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com,
+ muchun.song@linux.dev, tj@kernel.org, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, longman@redhat.com,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/7] selftests/cgroup: improve zswap tests robustness
+ and support large page sizes
+Message-Id: <20260322091851.e965d3a2f0d6af5bd985407f@linux-foundation.org>
+In-Reply-To: <20260322061038.156146-1-liwang@redhat.com>
+References: <20260322061038.156146-1-liwang@redhat.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0DD68100004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: f6z5rynh497wjrsiqmyno88tdueefgne
 X-Rspam-User: 
-X-HE-Tag: 1774196246-123658
-X-HE-Meta: U2FsdGVkX19ArH02nDwAZs8JRnvJRId9q+4dCY6ajm4DRsPlGiq+DybXx5Gc/kr/dBJZ6GMk0qx06NDtcWnKjDPhlSj51ST6bTY9IQNXpW3gxS3uW+Qs+t8DRJDViul4GlCVMiYa5tYC/Jy+MAMs6JxQhg7+hmhYo7PNtj7SIxa30HEdxxIv5O1N55fPSXt+T9bZkP/fqZG/rxdr4MuuFVRVgdzB4L5d3GLO63VPHZcDL93Ly55LewNjGSHcYKbH8kvz3eFP/V1NR7tTxZdxbDvFN6ovR2LRZh7NKWRuVGoRRnzNloZMJQE4zDHjlF2Xn2j6s7dq+hPs6PWDONr79eZLnR2lVRYcqZUvR0dCbnWOWVdrKeCn+mEfzn7ZUmD74bxwz77JF0BF8C7HkoSM9rjCk3+vcliYSWg+ZA1NMgwmBJ5evEoSjco9KmUK4eXjrH4GuE137yQWE9K+Vlb0aphchYYyW44jVZzZUoanTaHJv5h38ZGyYgC0f5Gqxxf5uQx3v79i8h2+VcFHhT3m6ad53t8LoTcepFnXODzo6J90y5gdilOidfBioEptClQo+5V3FbibKq3W6Jv/WtGtsb7rCzXIbbvFriBltvz8dq5rlsHecIExCoRn9UbvND12/7CGfpuuMIG6Gb8xDWMQwJUvBQIbrlt3YD7n1ZDqZEmVFQVUo0+RLh+5U1fATOwcpxQHImjiAP2aLPsxstiH4vBxC6tyzTsLNTIvN3+21BmErp4EcgzSMFRfIrHElR4KybLf4BkiK/Kzpm0FX9vwlCAATGTIKd2g+C59pVzWDEAWYzRvgU6HaTuHKS+QP23QtMH335VGoqh0PqmCncaTHzwAJf+iWh/EE+KgaLfYZtvUJ1IvDs8Ngfy2XrwkOKm3POMWbH07o4e2Du/to3z6TWq0uoE1qANwZVvC5NWAD9cP+nLQdKLj31/+6nWt0Sa11jWflFeaGLK2iitSMTD
- 2SXNRImP
- e69qOH2bCbuF/6nmIUWLbZucqsEvEcjWV/XgzOWZ8s4aONKpDQrBvStZlTWt48qU5eBQBfJPZNuqhdF7Slzvv/0Sse3rWVTl4qCIcgtXuFYS1CTqqchxDn7bi19ZbLJWAedJNNvT4uY2LWf0uJ7xK5ZhvFEzESB+oP6CSSI1Vqg+bgmfoNMAEVD5QQCXpIE+qwQdMc4DXI/WgzMcyuTKGuvd96bvHZ4XzgQ+EtZoipHk5B3DkAfGCAeCjLSN1E/4iNxlOBWCWQ80POLfjsSEB3Fw6uo37NpVMbOVG+gjMTpQ95Xhl6JEKG8VD4x33AZAINyrwrXSy9LmzbkU6pZlTPXyIGiAk86tBOFQ/1q3E//CN6IBqmnZGEXLqKjPQZqIrctVFPk6VFKwomRamHYndWzjjfw==
+X-Rspamd-Queue-Id: E08ADC000C
+X-Rspamd-Server: rspam08
+X-Stat-Signature: ac5mx8qaeomd6mhmiutd74ww5pjyqa8a
+X-HE-Tag: 1774196333-166394
+X-HE-Meta: U2FsdGVkX18O6n2d9MnaMh7Ga6go+ocdD8jpHTgqfbCJ+5dWXVh3OBXrMlIm+5Yd7rPptMyD/HwxJMYAN+gmfd97X5KAlUmIL504IziqAez/fZQZih9SQ8bsVsJ9afkOaIt19+Sz7z2CBU/S6N94NiIAo+osYyuKQTEfBPuGm1QP4lO57Wb/9oTSSrTvZjKVZUxoj1G2YZxB4++1BIMHEkJ7CUJj77pb6rAVEdjhwN5gnWFV7XDwMHxuYydNdhKZWIBI3nq3YbWlAPKHDfaARMg7KtfDv2xCFVL/9HBwyf68j32HtseYUpBhf0QBDIagf8CJldbR5BXR+5i/tUclT5HEszdw9dGMwPeLQvY7kBea8b0+qIFFFXIxYZdiBUGTfcRL+n4ul27MxN7hlsMzJyu1F8gShayPjqDocJVMquQ3qjPnRmslrpR8r95L2Xha9JudLGydKX5+gM8zAr+mdYKzv4giQ1UXy6AsW1k5q61+v5usy9z0J0ScJylBE0pizKHizLytDGYWzf+eWTNNxQ/R4n/aYxOOBC26agz/aNoXPDiFvkS8QX+8m8LPxgHAd1omT2MYND6mZqjkFh9sTJTmXci1SfJzQZeJ2I7R2MsItTNp22gGGW05IUEfd4VYCqpFPn/8mcVsDJBycT8oPCO8SFwDWCyB7AmVvm/Wl4FjqY3rNiUvWbd7ezUP5AUjqt3putNNLrE4hjpjR2z1nzVUIZiq7a/L59xQ9UGa4iHdYQohmcm0Pd6PAyQmAZ59WdTJ1r5tzT+iTig/rlDNVrwNOPgyRKazMvC0yBUSiN7aVGux6md9jnyTcZHt25UDOH54anyq/VSmM6h02j+dDa1m+OrH+09l9xha0jhJgfsWzNcwCIjBiWeLXZ3uBeepXFYSxYMMfOZSiYt/Vvn0hQJeOBVT7NEH7LPtKML9daP8cJ3Wej+VklMw1XEekcVnlo0pRRhO4ezh8o6/2Sk
+ gJf66TjT
+ 3spyWToIHoqYXIZdDvo8w+xRsuJuMUjeV8hR8Dgpb1QOgeuqpsVkvn49cVdVoUXWi819AzipMPQBng4iu2yy1AOhhSaQgpLEl5httQgmg9rtHCjvZJPDjp1JQ0OQgfyKSoDNqjRmUkxYd2RmGpUQb/BL1o3Kzj73mQ9onxt1QUT7saNiwmHMRo+5V4jIWd8xsUUYZjhX1yMT/fYWIMRD95p5y7tPMtGLz/93aaisA74+4cb73wCwn5UFUNZJyK6MI4utoXU57rdCNpeDDWTh+Jutihc2yaKQIKelwe1cyNQxLm9hf82v8jwmiCt1BlhUUQQp7NBe7hMknmKpu1YQIrYsBt6rc6q7oAXUSAnxP+/3C7pFtWKqkOkv0KDnzWcslNO0E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,12 +94,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 21 Mar 2026 22:43:04 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+On Sun, 22 Mar 2026 14:10:31 +0800 Li Wang <liwang@redhat.com> wrote:
 
-> Now that we have vma_start_write_killable() we can replace most of the
-> vma_start_write() calls with it, improving reaction time to the kill
-> signal.
+> This patchset aims to fix various spurious failures and improve the overall
+> robustness of the cgroup zswap selftests.
 
-Thanks.  Sashiko review raised a few possible issues:
-	https://sashiko.dev/#/patchset/20260322054309.898214-1-surenb@google.com
+AI review has questions:
+	https://sashiko.dev/#/patchset/20260322061038.156146-1-liwang@redhat.com
 
