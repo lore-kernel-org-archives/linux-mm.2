@@ -4,113 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D811DFC72CB
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 18:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2371FC72D8
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 18:54:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 093696B0005; Sun, 22 Mar 2026 14:49:31 -0400 (EDT)
+	id E09476B0005; Sun, 22 Mar 2026 14:54:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 044D56B0092; Sun, 22 Mar 2026 14:49:31 -0400 (EDT)
+	id DBA6A6B0088; Sun, 22 Mar 2026 14:54:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9BFD6B0093; Sun, 22 Mar 2026 14:49:30 -0400 (EDT)
+	id CD0766B0089; Sun, 22 Mar 2026 14:54:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D88E26B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:49:30 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 791C81608DC
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:49:30 +0000 (UTC)
-X-FDA: 84574587300.21.C829E39
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 99C9014000A
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:49:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NJmE6W4h;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B988B6B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:54:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E8FCBB964
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:54:56 +0000 (UTC)
+X-FDA: 84574600992.29.A67858D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A221340008
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:54:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KbmB1Xtx;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774205368;
+	s=arc-20220608; t=1774205694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c6lT8FFeC1t0Upw3IHv1LNx0I7k2laQ1uerAbtDp4zc=;
-	b=kWVrkHU47tP1Qflo9krBX+1cDUp9etbtGjt20cO4Eyebk0BH+zPadPHynVfEhc6cHT+PFr
-	Oe9/zhPcSTSXpmnA9+/nqTEjBZ/24xUWuFJJh6TMH+dVq8PWwvfrxiL4TicOFyWcVY1LiR
-	y4Vk05482tCZNu5f4uMeBGC/+cu4rNA=
+	bh=OBkuFngdQEyMnpNjm5LdI5EcON1BgKgNSOoplTx67Pw=;
+	b=7eVFsusPuJ8VVFYtiZdMnCYxHaaXVqdLJ0CXjZJ9vsn6f4ZW9xbY8MNaexet66aT6b0O9I
+	BOvLA9n6BSLKR+O0CjUg/sUCYunpvHCiS6mnnro0sFx+jmDxKxT18O+vLF7Z+KFmGQibFB
+	SEDMRBss1rfTbwaj+ddK1RtMeUqNz0I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NJmE6W4h;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774205368; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KbmB1Xtx;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774205694; a=rsa-sha256;
 	cv=none;
-	b=lbiHAC30/IM6wc/5+2HP0R+COyJ6j6tLu0A4iioLB0NCmnBfzN2Z0KJ0X+nR8Kl5IlZ9BW
-	+bGI5U0P4Bx4vLi7LlUp1J066InRQwasKKserncQi4YISFumid8OE4Jn8vxtv5VZDco3G6
-	7X7Hj1z2h87P+bjZXS3oPTPL9BImWis=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774205368; x=1805741368;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1vckE067rrooH+dwUsH8wTlpDCxIWT6EjQbX/qQgntI=;
-  b=NJmE6W4hQEDG7voyDlbsIQTCJzAox4WdOUbbCUrlgJiT7H1ykayO7wkZ
-   ZHAC9eoJXIlIGsAKnELl8YgBO1gXXC3bG4NRrq9e2pbY/g+cVfUehlxhW
-   tJuVpwYxEQp/HYz503ocMkvltGjVw3BiWf49PcaB10j2bEgSEd+wsIuQ1
-   K+M/SgGW952yBScTYC6eXclc4zlLctQcFnlDn1BhNiYvwDAKmZkHQo7pj
-   LKRDTC0ANWIGfbxpvrkFY2FFKx/h6apHnFub0mOGSg3DBeMsQwO613Cis
-   MCsDFlPypMOmMPqZIrLmnI1RaJI928LZegvZs3ZpCMlrmSVoShwB2b5eo
-   g==;
-X-CSE-ConnectionGUID: BwN9mQppSlq0wcLr+rbELQ==
-X-CSE-MsgGUID: PJlmzcJxQzWi/wukMYzDgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="85842624"
-X-IronPort-AV: E=Sophos;i="6.23,135,1770624000"; 
-   d="scan'208";a="85842624"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 11:49:26 -0700
-X-CSE-ConnectionGUID: 1KjNonLkR2OwZ4XYNc3Ybw==
-X-CSE-MsgGUID: JTTbNXwhSmuxe0ix00J94Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,135,1770624000"; 
-   d="scan'208";a="219504237"
-Received: from lkp-server02.sh.intel.com (HELO d7fefbca0d04) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 22 Mar 2026 11:49:21 -0700
-Received: from kbuild by d7fefbca0d04 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w4NqT-000000002Wn-00v9;
-	Sun, 22 Mar 2026 18:48:27 +0000
-Date: Mon, 23 Mar 2026 02:47:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Brendan Jackman <jackmanb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Uladzislau Rezki <urezki@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] mm: Change gfp_t to unsigned long
-Message-ID: <202603230210.EgOkfYR4-lkp@intel.com>
-References: <20260319-gfp64-v1-5-2c73b8d42b7f@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260319-gfp64-v1-5-2c73b8d42b7f@google.com>
-X-Rspamd-Queue-Id: 99C9014000A
-X-Stat-Signature: xkgxuh1s4dbeuw1mo14ocsoh91pfmkw1
+	b=cpJBk047nCG6Sy5Cp33wkrY0nMQJNMFushphzMyyqDEbjSUcgbKP4GhHCZAFYcaDWSVDOp
+	iSI+tYSxW3Vz5EUx3AWxWKtOvPGAW8WurC9tZpEn9QCNygX30/+MoVUZVUA4Oe4xBSICxm
+	zmtY7VnJ1HSiHh938c7sgjWjgvA6Q0Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D423560008;
+	Sun, 22 Mar 2026 18:54:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76C4C19424;
+	Sun, 22 Mar 2026 18:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774205693;
+	bh=qDXlRfkTodGjLro0lMquyx5e4JEwIwAwz0SCRLtlrF8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KbmB1XtxdXnVUQFu2CgL1CdVTVnsASwmT1kRt0MviAOlKnBlsR7NwVwhoKLCJVFgH
+	 myDCAswoa1nc6i/QleE+LWmtVibq+L/5VtrmNzZT6GZIgPMpmDDQ35FXlSNZsEQsb2
+	 vds9bqxUVciQ9kheMo0oOE1RJEWJhUupQ/Rqz/R4=
+Date: Sun, 22 Mar 2026 11:54:52 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
+ mem_cgroup_css_online() error path
+Message-Id: <20260322115452.29f2ce981610faf2d7b8df32@linux-foundation.org>
+In-Reply-To: <20260322164943.37460-1-devnexen@gmail.com>
+References: <20260322080142.5834-1-devnexen@gmail.com>
+	<20260322164943.37460-1-devnexen@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A221340008
+X-Stat-Signature: t695fyqij7chkf8bhd5x4jbrbwhe8d79
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1774205367-544271
-X-HE-Meta: U2FsdGVkX1+aYx8FviGLZ5H0oKYy8RPQnuUoqMrCg3vDxK/tl8osvgGfmNAUwR4t4JDGw83SK40U1krctOEDj9nASdZ/YN7xLuHHKFzwh5G64VMhdB/0i/hhPTICcBNPyoOIMpLuFPD1ZiQX2g+FvmMCDuicPLDYgDbioFrkkvJ8NdXIyBVzSjcAHZPXjD4yzMb+QIGLC/JdPve2lkRzPoCQKNe3ARXCNiAkUkmGNmP3mA+Q0mZC0Jf9L0V3OSJsfeVh22u/5S2eXrtYcHQNTFfBMFh9PxlFUEnaJKP/Vnq9naiDpZHSxOQ1QAQyjDPoiXe6UQq6H8bb7xEslpgT2GYf3FBX6G3Sr2jJgnXjMWnKDa+VnxhUyt3Us/Ou0IqgkniIrWBsf8phFnSw/dXToE+Rcz9BXWB03z4n8AlsIoSKnKTRiVuUYDWZhQS9r+oV+jLMPcGrjRd/agmPfCRl/65veU20dH2pm3UUCvrzHdCnTJWpEZ1xIqlAxMr9V1ZQnM2/p72tOfL7ED0mecwC3yW/q7wg7dPLWA8MxqTGLbg+RVlilXcjsGOz07/RFnEO9F+t9XoyCW10plZMAqU22wfxr9YQ65AjT3tGHKH3kdq7RH8hfLOaMsnZAa5uS/972wuo5lsaa8Tk0wvUi8MpJRfekCSkmJGSxjH72XzUq9oMp/TgV7bUGqMmyXdeQpm/NwUNeOwN7qFYDWZ80OBXN2I5viM2IUlV5A4clBV6pnnFLSHBP1i5ueApXEA8zc8RHcuqO0GrH21+Yn8SgRCSRIlAe7AVrtpNwKzUT2NTgkBbKL2k+x5vbkoRAqKPuvEYr5zAm224NFPA0e8WqH4BNFpM+FPkhrgtCxc/xyImmviLVam95OD2GVCvDz0GkIuu6vBryPMgYEFfT7iq0I8kuCifs7WfLRabzopSZW1yXdOTRp5x50yhbHxkdU1NQTGDZ9CvDnUayX8qxkTggWs
- AUCKB1QJ
- Zs9OXR4W4PF+X1QfJyQXeE6rUCUbaQDVR8+MrC0sGklgYiTPOT/XYiC6f9Ovu65Fx/539LXdiBcdhzLGhfHz263Y9md97Hn13iTpnqcsek1h86j4m9Fq9R8D0YmIezG0cFGW9Jd4psZCbBACntw6AbIWIghgOhliOz3Fmup5IDwfxT07VLky4gMY2fE4K1CpUZoDPnR1lsXU+jYURiYLb90HgyXn/xxaAWUwDgP/Hc1WU5irN1j0yxl3OtB2pZuN9pHBugpAopZYw9YqT0E0LtNR2QtVgZsAbacocLmBPT4Y0UhAAhc6axlbuXVwitdh/95JNxkNNpA8ie9zWXcuxlpJQ1wWVHItSYfehnPsAspkCJ1kOY1eLwlg/qMh9oG+PyRC76hrqWwimqCqJ3TuYLBzfiQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774205694-857888
+X-HE-Meta: U2FsdGVkX1/LBNpzLbNzYzgPefhXKnfzfMryXJFHMBxImgR4ZdRBG80LW9RN+6NMqt3Y+0dFKcbFTc2lYXOpra5qToI8qsGGgo4yoMNJs7ashpvvdzyzvJBg+gxBQ5nrdVexsaBWLfXMHBiC1jcSMA1KMm4tFfWyMzW4Yqwf3Esa+acq5pIypr3/7dhKpxs6nQ7Eob6XdEGRyxErWridPXnQ/cth/EDO9JaNA1BmRG9h/5vQcivutl5kgvlWJbew8fH7UHZElijh8xWrDP+3HK/GmVt5g8MDr55yUtLll4uTn81dsKJQYnO4dfSFZfUrzGozc7x5DnHTiEQFZ1yIniNWMqdkT8S7X5/ElkVUa3CUQ3n4CZDXPtZfqo+8mTBAbvtFnCNxcGdvknm0pnUvJ8GEUXyfP7RUz1OhwXytQk/fYfnS6f07YorNF/rTJiPmp1O2ILR+OTBLvDh4VVzIGG5D7574Kh+aFyxodSeV3tIXwzts+JtoH3EgR108qQjc9htjJP5t21DuP41ITTKDhHnJlSdqSEC6tw2JCnOepdRcft8KG+Tq64652CK54erRpppFgh0c3IPiaUnWDFkTKuvTqXKSsMI+JgWWVero0FkS4N14wbNBEYTv1q7zf1X0DTKdJZL61zYehRctVT8LUmyHEhrhwi/F087u2baaGIHKyT+q6q7DDPT3GHBWMuo9EU+17BAKqCn6b6J1h2hSdKpdhLyzzBATyRKbcP+zo48igmw769z9NudcHIRhS0rXHaAFYio16Nrxsm1chqzYvW73KgNwMSP6p3slbc2zA3FvwTS7DAfFvnHNSg7uFs1c7mlcfaFyCFBhtVXocWabP7iUAMKLuU1Wd0CmZkyJ9aahymQUBAobDVvoXrzfEENP2KszOfuh/3GhdM7y2HxTebjSuUSrUq5jJOxLGGZx1WDWX17AYiHjTnrTw7YjgYZYTTGC+1PHx8kfPyLS2I3
+ rz+GmX2y
+ dN23ve+dTrEBgp0beppgr7502Hos11LlnP5gzYC4omcwJnrVQKJwy7z7qrFxgnpq604Tc9QifCATetjKELXsT6pQ+hfIThrzORbciQDT81ZWzL2yOwBo7uiPwCLrOkcRYYZlvQfy2Shh/bBXtu5ZtZzt5wvq2jyVCwyIt4de2eQbyQ0W6cyzlovzO9m3+Q8MGZeJqQ4oTvUMU3cERolx7RUUEePdymVzUuC4DJREbd/So3pkU2akTqOB20hTiU5yaMMAZ4lp+vNKSFMiwUpQAhBvfIGQfDb20g+FRkR/8bbergkd12RXmeUa/XHR5mvb3THrJHKFo13Xb/EMLHgA+8dxj/z001halmdGpJOYBbFRmo2A8CNhIXYQ32YWE9rZrIawXHjxEfWFRV11wpXB9s134Ng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,101 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Brendan,
+On Sun, 22 Mar 2026 16:49:43 +0000 David Carlier <devnexen@gmail.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> When obj_cgroup_alloc() fails partway through the NUMA node loop in
+> mem_cgroup_css_online(), the free_objcg error path drops the extra
+> reference held by pn->orig_objcg but never kills the initial percpu_ref
+> from obj_cgroup_alloc() stored in pn->objcg.
+> 
+> Since css_offline is never called when css_online fails,
+> memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
+> normally drops this initial reference never executes. The obj_cgroup and
+> its per-cpu ref allocations are leaked.
+> 
+> Clear pn->objcg via rcu_replace_pointer() and add the missing
+> percpu_ref_kill() in the error path, matching the normal teardown
+> sequence in memcg_reparent_objcgs().
+> 
+> Fixes: 098fad3e1621 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
 
-[auto build test WARNING on 8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb]
+Thanks.  Sashiko review of this patch claims to have found another bug
+in 098fad3e1621:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/drm-managed-Use-special-gfp_t-format-specifier/20260322-145930
-base:   8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb
-patch link:    https://lore.kernel.org/r/20260319-gfp64-v1-5-2c73b8d42b7f%40google.com
-patch subject: [PATCH 5/5] mm: Change gfp_t to unsigned long
-config: arm-randconfig-r131-20260322 (https://download.01.org/0day-ci/archive/20260323/202603230210.EgOkfYR4-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 15.2.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260323/202603230210.EgOkfYR4-lkp@intel.com/reproduce)
+	https://sashiko.dev/#/patchset/20260322164943.37460-1-devnexen@gmail.com
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603230210.EgOkfYR4-lkp@intel.com/
+> Cc: stable@vger.kernel.org
 
-All warnings (new ones prefixed by >>):
-
-   In file included from include/asm-generic/bug.h:31,
-                    from arch/arm/include/asm/bug.h:60,
-                    from include/linux/bug.h:5,
-                    from include/linux/instrumented.h:10,
-                    from include/linux/atomic/atomic-instrumented.h:17,
-                    from include/linux/atomic.h:82,
-                    from include/asm-generic/bitops/lock.h:5,
-                    from arch/arm/include/asm/bitops.h:245,
-                    from include/linux/bitops.h:67,
-                    from include/linux/kernel.h:23,
-                    from include/linux/clk.h:13,
-                    from drivers/usb/gadget/udc/atmel_usba_udc.c:7:
-   drivers/usb/gadget/udc/atmel_usba_udc.c: In function 'usba_ep_alloc_request':
->> include/linux/kern_levels.h:5:25: warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'gfp_t' {aka 'long unsigned int'} [-Wformat=]
-       5 | #define KERN_SOH        "\001"          /* ASCII Start Of Header */
-         |                         ^~~~~~
-   include/linux/printk.h:134:25: note: in definition of macro 'no_printk'
-     134 |                 _printk(fmt, ##__VA_ARGS__);            \
-         |                         ^~~
-   include/linux/kern_levels.h:15:25: note: in expansion of macro 'KERN_SOH'
-      15 | #define KERN_DEBUG      KERN_SOH "7"    /* debug-level messages */
-         |                         ^~~~~~~~
-   include/linux/printk.h:641:19: note: in expansion of macro 'KERN_DEBUG'
-     641 |         no_printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
-         |                   ^~~~~~~~~~
-   drivers/usb/gadget/udc/atmel_usba_udc.h:233:25: note: in expansion of macro 'pr_debug'
-     233 |                         pr_debug("udc: " fmt, ## __VA_ARGS__);  \
-         |                         ^~~~~~~~
-   drivers/usb/gadget/udc/atmel_usba_udc.c:703:9: note: in expansion of macro 'DBG'
-     703 |         DBG(DBG_GADGET, "ep_alloc_request: %p, 0x%x\n", _ep, gfp_flags);
-         |         ^~~
---
-   In file included from include/asm-generic/bug.h:31,
-                    from arch/arm/include/asm/bug.h:60,
-                    from include/linux/bug.h:5,
-                    from include/linux/instrumented.h:10,
-                    from include/linux/atomic/atomic-instrumented.h:17,
-                    from include/linux/atomic.h:82,
-                    from include/asm-generic/bitops/lock.h:5,
-                    from arch/arm/include/asm/bitops.h:245,
-                    from include/linux/bitops.h:67,
-                    from include/linux/kernel.h:23,
-                    from include/linux/clk.h:13,
-                    from atmel_usba_udc.c:7:
-   atmel_usba_udc.c: In function 'usba_ep_alloc_request':
->> include/linux/kern_levels.h:5:25: warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'gfp_t' {aka 'long unsigned int'} [-Wformat=]
-       5 | #define KERN_SOH        "\001"          /* ASCII Start Of Header */
-         |                         ^~~~~~
-   include/linux/printk.h:134:25: note: in definition of macro 'no_printk'
-     134 |                 _printk(fmt, ##__VA_ARGS__);            \
-         |                         ^~~
-   include/linux/kern_levels.h:15:25: note: in expansion of macro 'KERN_SOH'
-      15 | #define KERN_DEBUG      KERN_SOH "7"    /* debug-level messages */
-         |                         ^~~~~~~~
-   include/linux/printk.h:641:19: note: in expansion of macro 'KERN_DEBUG'
-     641 |         no_printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
-         |                   ^~~~~~~~~~
-   atmel_usba_udc.h:233:25: note: in expansion of macro 'pr_debug'
-     233 |                         pr_debug("udc: " fmt, ## __VA_ARGS__);  \
-         |                         ^~~~~~~~
-   atmel_usba_udc.c:703:9: note: in expansion of macro 'DBG'
-     703 |         DBG(DBG_GADGET, "ep_alloc_request: %p, 0x%x\n", _ep, gfp_flags);
-         |         ^~~
-
-
-vim +5 include/linux/kern_levels.h
-
-314ba3520e513a Joe Perches 2012-07-30  4  
-04d2c8c83d0e3a Joe Perches 2012-07-30 @5  #define KERN_SOH	"\001"		/* ASCII Start Of Header */
-04d2c8c83d0e3a Joe Perches 2012-07-30  6  #define KERN_SOH_ASCII	'\001'
-04d2c8c83d0e3a Joe Perches 2012-07-30  7  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
