@@ -4,119 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B7B9FC72C4
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 16:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21A2FC72C4
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 17:05:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3EEE6B0005; Sun, 22 Mar 2026 12:49:53 -0400 (EDT)
+	id 2B60B6B009E; Sun, 22 Mar 2026 13:05:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C9126B0088; Sun, 22 Mar 2026 12:49:53 -0400 (EDT)
+	id 266B56B00A0; Sun, 22 Mar 2026 13:05:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 890886B0095; Sun, 22 Mar 2026 12:49:53 -0400 (EDT)
+	id 17C246B00A2; Sun, 22 Mar 2026 13:05:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 74AB86B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 12:49:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1595AC0284
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:49:53 +0000 (UTC)
-X-FDA: 84574285866.21.CEA84F9
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 666F31C000E
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 16:49:51 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SVGtxos2;
-	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 095A26B009E
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:05:17 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90F611606E8
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:05:16 +0000 (UTC)
+X-FDA: 84574324632.10.8CB4BBB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CF7CF1A0007
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:05:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MCbu3oFs;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774198191;
+	s=arc-20220608; t=1774199115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JWjZGVQFq+8rxchM7WYzJZsANmNue13rkhqmq5WeFqc=;
-	b=6SuG59FDlswfkPv/z13yoCGaOC8DQuSqqv/R1ZsKuX/dKYqLyms8AH4+j59iWEGq/p/8K9
-	gku2Nhg24DX9EAHG6PbQ+BdF2yUTqVE0w6LzVUBMUHfJw1EcZA/sLCip7aZzbW5+gCRLU2
-	HHpbG6xTpL5XL+75oDZ1lqwEbiwxRlU=
+	bh=htyhCj5MdZC28AEPD/tqfxQ4iWf/yWfUWKgy32VjOTE=;
+	b=yn179mhOEDERdw2FP62qMlQPdYIQTBcdB3Pddayn9G13tGUMnGpA2wAUyplvKjAMF/4SfL
+	FZuYY33xQyFD0f8w0xT78bnz7iGRi9q13LeEng0rmoeFASa7YgtQTE0P/eFJRBfytyegkC
+	4blZUlDLsPBmEKdJLo2xaW0am0hVKPY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SVGtxos2;
-	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774198191; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MCbu3oFs;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774199115; a=rsa-sha256;
 	cv=none;
-	b=ulzkW+BKDib8uPv/Zd9x2BNtdBhvyqo4etsS2zqyhmpTg+5HzLTWYqoLFawryhQgY/qSge
-	ZPVVt9t04V6MEp0e89r4VnLe6n2JZBWCuMWuQ/k2zyucVVprXZ6qd81fZZ4nLE1OIEKvSr
-	sfozbopBPjdOIV9YqcPdUs3nhuThb74=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4870206f73bso10897065e9.3
-        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 09:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774198190; x=1774802990; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JWjZGVQFq+8rxchM7WYzJZsANmNue13rkhqmq5WeFqc=;
-        b=SVGtxos2glo40S+RHqUOIfJa1IBr3JrQ9xkPQUp5nxwLlCab8e531ZKE7+aZ4NlUI6
-         DQwpb4dtFfQHvy7a8TjPX1irCOPgxfRzrOqIyo6csYSQvqLRxPOwGpLeTxgDd1d7IAub
-         YQWb35An1ieeTiH1Vbxr1ya39XUGb8wPE8JOZ+2iWmUBhTEyDLAyyAf6PGH1hXsrehrh
-         /F/912Rfn1jGakDECkPSInTN051cQ7/yZoaH9pOhT/M5q6fmrwvf6jRhMkTkadxMUP+G
-         LZdDS3aYa7K9CmVfUWhhnDQ/wC36xiX03q3nU1ITOo/yEhseGuQwxL2PnCUZ6S5EZrlD
-         gx9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774198190; x=1774802990;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JWjZGVQFq+8rxchM7WYzJZsANmNue13rkhqmq5WeFqc=;
-        b=IJOWAhKUpn5UKnx+U5nrb43uyrHxlFZVAxtwb5Nj+RMR5yfPAGgxd0aZb6kD0bzl5U
-         2dUyeTIMGIKJ3wwUREbItFmaECU2fj7OLT39cdzJyf6kgVRly1pB34dx3B/Noorten05
-         sMbe2BEwCwV+KG0e5Hk/EIcYXPIlJoInMLVVW9lrp8jr8uPCkAw7FTj3hcT2Zgrt7MTQ
-         A+Ijq5SQru0if7wGvBWbmuWffhiczCNi4HSPv8GSxT61bVOfHwO/VXeddBwZlk+fsh4c
-         AIq9A9+iANHETqSipIZsiYPmbDuK99ZQmuJvaDJk9nVTWk0SK69FA0GsqtA64rSq7E5X
-         AyEw==
-X-Gm-Message-State: AOJu0YyfQwcV5IcbJNkFNBcuNFAucjpvW1Bc5pYaUmipfxGlaslyxyX0
-	ViaWBQ5DibTxCXwDfho4F3tyBVc6eXU39+QafRPzIbPJ/zjHEpSUdF6Z
-X-Gm-Gg: ATEYQzyDQHn+9CzPw8tB83JTQLepZgrMA66SvWVqw1Bb4e8jR2AYSTH7IV78Em83/Zy
-	MOO1mf9NaGaz1Od8aCbVQfDr5SEUP+I06qo50a6EKTK6V1OmHXRaKrZ3gd8YN5XD1Kc6tvyzvnd
-	whTV0/d4fFbhF08lg7hHoHoyEowhnDiXR3mSKscT3heHNm0SNfCywpEex5nu5+vEJJeFkZwFSzb
-	fF4wDwX7q2jj/bBiPbx/5uFPXScoYYAoxZeti/NJtBgJxzCVSgLzHRJs1GyveUD4/Nnn+17ik+f
-	U02wenc9XOIWcsZzX5iKOQIlrMc1j3B0sbADazQOd88qUEBbHgweITJOGSO6SFkBbMAaCjM6sXh
-	iY+TyrbTvnvUASSAcEx9STgpk6dh+m9fcQA0DM34u0H2b+7U5DGyvAZf9vtmqzH35jnz2HvwTOA
-	OnXnHu3KXRpmhEs4YY4utE/+C7LgqfTmEHHFT/+bqu28ydbLvBEj7k9/m56PdAxpnMKTa/85u1M
-	4DYIxdzY/bF
-X-Received: by 2002:a05:600c:12d6:b0:487:1c2:6a4f with SMTP id 5b1f17b1804b1-48701c26bdamr67227245e9.31.1774198189586;
-        Sun, 22 Mar 2026 09:49:49 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486ff109b95sm146464215e9.1.2026.03.22.09.49.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 09:49:48 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+	b=LI0Ox93jPPPwtmJjXRGzRJQArgha9kYk4z/m0bDvVAIUTiB3rT9Z9eEhW8mEOzEDl7e062
+	WjEWsz2G0AuO1cbWmJc2a01aXOv74qbEVpwGeepKKN6GmHOCZijYGSsgmp2rVVAU6n9jWg
+	g6hJ5dqAJ9PL7IAZ0fPnyyT7zDIopCs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8E68943F41;
+	Sun, 22 Mar 2026 17:05:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13093C19424;
+	Sun, 22 Mar 2026 17:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774199113;
+	bh=HJoiHpMG28GmRpq531IW9sBKidvKsblBjEBS3EEdba0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MCbu3oFs00BZy4U6YYmrZ95gZnQkmg/QYu21GQI5AKJ3TWQvP16KJvFCDa7ILJzjK
+	 qGIkvLizMUBjCg9x7UIS4zHWIaQHU2dpPb8t3p08w8yJqq6lzFzvWi95pcGpQr2ruZ
+	 Gut3d8vRgNpKOMGTn5tL5zb8UDTLxjBowGL31FsjB6Ykhd5cQDyPixXqh9C5xuMLwX
+	 KDx2WI/GGfBf69gbYXsGNNdMywRkqjkVhDzMG/x70lNvtNNmVA002mn9TRavRBPMiQ
+	 aDvoL+KUXuVyLWJK+j91Z22Qt6iJeuqe5rn8Q8/vn9F3niwaZlEtIubn4R+ma3NwgT
+	 pL/sAbPW5la5w==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: linux-mm@kvack.org,
-	David Carlier <devnexen@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online() error path
-Date: Sun, 22 Mar 2026 16:49:43 +0000
-Message-ID: <20260322164943.37460-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260322080142.5834-1-devnexen@gmail.com>
-References: <20260322080142.5834-1-devnexen@gmail.com>
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko status) [RFC PATCH v4 00/10] mm/damon: let DAMON be paused and resumed
+Date: Sun, 22 Mar 2026 10:05:05 -0700
+Message-ID: <20260322170506.82977-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260322155728.81434-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CF7CF1A0007
+X-Stat-Signature: ebhooy37856su8aq5hoag4dncweykmny
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 666F31C000E
-X-Rspamd-Server: rspam08
-X-Stat-Signature: w7hxkyucewtfhru6ezukoxjy413338hm
-X-HE-Tag: 1774198191-115953
-X-HE-Meta: U2FsdGVkX18iOqZcqq4eEEhNo6xzegZz3uYIIKcLzq0UT5wb82/UJbVcklt80H7WjJg9pnVlGPQVTV+YMY8jK/Frc0vKcHiWflEcKfotP2V5e/w3sGwWxG0x5zElZpTxhgVtz6rJl8uLFG2ULV+UKam2QVNDSSVwORNA+SBXVSTfhHk4GqU0aby9pChcF25suvQtG9bDDmBTrxFKhsxEb4bc71oqyxZtzlHGI/9fxe6o9qpZRKn4iEK9lwpfKyxqKW+nN1RLeM2JII7UnHNDKfQUxrMraYKoeIFjnw1332OMN5p/J2f9Nv8bhffNcRTYhnoxPaONuftMxoPorHUpp9GYtnKsZ8dqe2y9e65D40XrLLm6XQe5TAQAvW6VKoJVq5HP4LfWwjzS0kxVdEaFhCzff6gzcO3PrvfWi9sq/zrMzusdUk1vn7SBGM4RQ2muhqqBfPWuWw0kRXggtj3w8ETHKv2vk4ErSTJWMWZDN/8vREsziS9QTwKycMcU1Nv143Tk07Js7fmoJZTV4mjbPEUqwH1zkb6+dcdX+rpPrQ6sQwCnwjMEnvonQCyRLm1Zm+4Sjaxf0h4c4xO2hworAySDY5aingf4WiclPEI40/+ltLbuxlYPKo9S/ngogWjpFN/MwGRj8VOWvxcz6B+9mjnrtbtYxjITXjhq9ZzqqAlqQ171NaPkIJaN07cNkzJ8113gLjoOwWGhq0Ob7CdODgR7dHAGWo3uPpIqwWetcm6iXbzKX9ZNnBxA5CwdWB1VV0rgmYEojIqWE0G9L90INGi4+OLUqe6/Em9SXjbCgMgPubPnD0OL/Ji3eZVyIBr/YvT0RqxffDu9MZt3U81+cThg+Fe1ev/oskp1AW3pykohoNdbDLB0GRrY8LCeHlDOSCcOeapCntumgO3YGHDy6ne2f3qWdFGiHzdOiumyhRH/UfPqskoWtZtDj6oJYNIorK5Eq6yNvyiLNBzvUTF
- pv5ugizl
- oqqvYrRLg4KT6/z9xc9qaoNyXOn4x7Bkxe9eQkXXbipO85s7VnV0gYw+1rK++ogDMY4aIlWUbGXkGVUNZUQhZoC2FoIUJUkTGc/dUJlwIxwS496o=
+X-HE-Tag: 1774199114-534494
+X-HE-Meta: U2FsdGVkX1/dGXimlcTCUpme3X9NknjvXVMcTaNVY2fujfwrngZIXbAcexDciEGboRWoiljaN2J7ENfVMiz+6q4aIDUpLHCCuLn46eHAvLISaEnjMSkteP+ycBwlkrIK3gfOTwwUhalRklR+CVJpzXUPiDB2aDiGRGjoTor67I/PQwoJz1EM4XojrYTIxkz1M9baE5vvDzZv92+12Q5rb3XYfm1YjUQ0mEEN/qwacH+9ikaIJAL5N2YN6JkaY2f71B/PGg+SRdBACtiHT+mqFbvnyVt5A9i1CyTfvLSfB62X0lWAWkXPU2eaZ35sf6Z3MKK/t8Oiwknr2Wm03lIvMrlS2HHIvJnsYRhM643XSV9z174kiYY5Fk8x8y1rsGUYxuPuCZMYvzV48vZxarpYkQSZJVBzozTQ6nt88tvPJLJh7lrxZwHRPS78Gn9PhkQiGYUd0x6rfW3RbcygItT8c02Oh9iwTUAWWTLO1ZApMM+g5ZUIX5rN+D0YVhs1r2++IwxeK8ZSWjCfXwupq8yA3C2qVnbRY5f5YB9VNH1c+LJxoC7bsOPZXjlnL1AD+E3WVOwFkSJCz61r4EfRJ8WNNmRf+EoocSleemiclllD42in9XIjd6DQLgvHWgdLgqhzs3oRtzUTkdA7zlwsA0Cyb/3qFI/dgctpGr8nVMLnGU7qtFx14HzkQZqIWxrfDIlfT58rig8VCwk5KMUmWQnEpDbkXTdICL9adV7a2SdkZYRbymXnMPgFKmgGutaFew6PVJiBEyGEb6Pc9SAo8KsIu7X0qYK2Ggo86mfdeJknuGbdiDDbvr2HYK/+XjNM/rnk3WE5lZfH6pkvGi9YbDm9s8lIwukpnqYQIc4eQUUwOmas63XABpIpaUlfIgK0wQR4bZXZOGX2xFdOElolz2F/dpQrgcmjmlckMVMtgvEEYNwIY0RA86SmBB+utxwJWszzdkSZ0/V7R+FiqZoU9Nl
+ tWZiJrLG
+ I9pjPO5FreOOP4XQVwR2fzHHXqFAWvv0t57188EAIMNJpSy3EgF+4tsZ3Mhl1DV9/TU1/g5UBTrY9GAsgv+c3XnUCMYjk4Bo+e0CPvvHANAOSPLIwCquTGZEDW6SgMtPjEXYZAhErI3D2oRz3irecn8YyHsx4jVtTHpZq6AyOFJQRJFEEGZDe/dTP6HC7mskN1191JMzN/ygpOPsHrsK5YNYRZs6WVdE/53h5qiX4MplLXAl8c4mzeawxsZ1MkTIcvWrkxT8jIpM6eJOpPhbwmv06f8uiilfIH1krude9Az64E6KGgitvfsz2R7V059JBvZkA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,53 +107,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When obj_cgroup_alloc() fails partway through the NUMA node loop in
-mem_cgroup_css_online(), the free_objcg error path drops the extra
-reference held by pn->orig_objcg but never kills the initial percpu_ref
-from obj_cgroup_alloc() stored in pn->objcg.
+Forwarding sashiko.dev review status for this thread.
 
-Since css_offline is never called when css_online fails,
-memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
-normally drops this initial reference never executes. The obj_cgroup and
-its per-cpu ref allocations are leaked.
+# review url: https://sashiko.dev/#/patchset/20260322155728.81434-1-sj@kernel.org
 
-Clear pn->objcg via rcu_replace_pointer() and add the missing
-percpu_ref_kill() in the error path, matching the normal teardown
-sequence in memcg_reparent_objcgs().
+- [RFC PATCH v4 01/10] mm/damon/core: introduce damon_ctx->paused
+  - status: Reviewed
+  - review: ISSUES MAY FOUND
+- [RFC PATCH v4 02/10] mm/damon/sysfs: add pause file under context dir
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v4 03/10] Docs/mm/damon/design: update for context pause/resume feature
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v4 04/10] Docs/admin-guide/mm/damon/usage: update for pause file
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v4 05/10] Docs/ABI/damon: update for pause sysfs file
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v4 06/10] mm/damon/tests/core-kunit: test pause commitment
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v4 07/10] selftests/damon/_damon_sysfs: support pause file staging
+  - status: Pending
+  - review: ISSUES MAY FOUND
+- [RFC PATCH v4 08/10] selftests/damon/drgn_dump_damon_status: dump pause
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v4 09/10] selftests/damon/sysfs.py: check pause on assert_ctx_committed()
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v4 10/10] selftets/damon/sysfs.py: pause DAMON before dumping status
+  - status: Reviewed
+  - review: ISSUES MAY FOUND
 
-Fixes: 098fad3e1621 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/memcontrol.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --thread_status --for_forwarding \
+#             20260322155728.81434-1-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a47fb68dd65f..dc83e9d43eea 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4100,8 +4100,9 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 
- 	for_each_node(nid) {
- 		objcg = obj_cgroup_alloc();
--		if (!objcg)
-+		if (!objcg) {
- 			goto free_objcg;
-+		}
- 
- 		if (unlikely(mem_cgroup_is_root(memcg)))
- 			objcg->is_root = true;
-@@ -4137,6 +4138,9 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- free_objcg:
- 	for_each_node(nid) {
- 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
-+		objcg = rcu_replace_pointer(pn->objcg, NULL, true);
-+		if (objcg)
-+			percpu_ref_kill(&objcg->refcnt);
- 
- 		if (pn && pn->orig_objcg) {
- 			obj_cgroup_put(pn->orig_objcg);
--- 
-2.53.0
-
+Sent using hkml (https://github.com/sjp38/hackermail)
 
