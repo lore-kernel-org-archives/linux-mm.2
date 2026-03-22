@@ -4,87 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32CBFC72AD
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 13:13:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40212FC72C2
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 13:20:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48536B00A9; Sun, 22 Mar 2026 09:13:48 -0400 (EDT)
+	id 7D0516B00A4; Sun, 22 Mar 2026 09:20:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF93E6B00AA; Sun, 22 Mar 2026 09:13:48 -0400 (EDT)
+	id 7A82A6B00A8; Sun, 22 Mar 2026 09:20:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0F5A6B00AB; Sun, 22 Mar 2026 09:13:48 -0400 (EDT)
+	id 6BDFB6B00C5; Sun, 22 Mar 2026 09:20:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 944C16B00A9
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 09:13:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA2761E718
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:13:47 +0000 (UTC)
-X-FDA: 84573741294.19.1DFEC1C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 26F821C0008
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:13:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RCoipx0U;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 562696B00A4
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 09:20:34 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 105011602A9
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:20:34 +0000 (UTC)
+X-FDA: 84573758388.11.93CC318
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 41FE1100005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:20:32 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SwgI43B6;
+	spf=pass (imf05.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774185226;
+	s=arc-20220608; t=1774185632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gWzq+qFOgauKlZNJsjDtQalZOAPyKmDFm6B0Okj57yM=;
-	b=UX/LPg7obAEuiZOr6U55NbCVfVkivG2oOtRjm0CT7D5qXSNbo//XjJUzBpyI9up9qAsGtf
-	ivXxErFQKWnRxTCCTB5DJzLc59KBsoaL3w0byoizhDlklq0jMBHregf+vwj6bx4pc8c825
-	aJ0otDXa8N5liwsGKBX18fpVLIIt8Yw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RCoipx0U;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774185226; a=rsa-sha256;
+	bh=JO8s6CvPJ60AKkie9O7leqHw9KEgz3znAI24wdcudkI=;
+	b=iYnvuddG3BKdpnFiK8nJGFn+9qAnfP1kcZFd8easy3cgsodHgwuyK6EAzpbWoqT0Vdl0tJ
+	jsHvWzwWNGjRhOxPJK35g8Nyw8jICxvlXhXaDjeVKrn84M3qDue2NtOHehdb0M3DM3mRmi
+	4TMvjGT1+RS5TOn1KCQ++uIiMc/UvB0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774185632; a=rsa-sha256;
 	cv=none;
-	b=BhPXiUWNKBBw25Rmuw26aWynk8QfDMk/l/OIC4Ry9hnZ4Rq2whPImk0f/XTjHOGPvnspYp
-	5bmjbtDDSEi5YAwvbvzuMAcOL63awHPQU646Kmr4MplMfYffnmNAxS9SuiY75iVpcPExtj
-	2Xy4QpZRNrTmfK3zIa5FLqvl3rao9Iw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFC0D4017B;
-	Sun, 22 Mar 2026 13:13:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78903C19424;
-	Sun, 22 Mar 2026 13:13:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774185224;
-	bh=5taCrRbCiZRabK14Jhz8fQtqNTWry3OlVCQeaw+8hs4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RCoipx0UMevyhY4HjT8WikkfX13R/rbDAklImxeVQt9zLguwFXcjdg+lp87L4nh3+
-	 W8Abb74RvPmAd5rU1xO+1PByqlxxI3LMl0L+AmaDfzRxQF37zZuIardfHqWRPY60HX
-	 hfpFupf6MZ5TELHsjPGT8ah1LgOeSylEVcrqgMOohADc7Zso8Y6sjjrK9u/59NwTVh
-	 IEv4pP6Q4t+ub3663Ohu0CcwGnQzjWR+IN3zHULUj8LupvT31xw55JuLs4XMY3bFiT
-	 gC61TzuGoEH5bdJXPty98AbX1KbkOlIu6Vckf68nE8FgdmPwcAzpnknY9PQ2vgOBLf
-	 Vf4G74ucogEEQ==
-Date: Sun, 22 Mar 2026 15:13:38 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, dmatlack@google.com,
-	pratyush@kernel.org
-Subject: Re: [PATCH v2 1/8] liveupdate: Protect file handler list with rwsem
-Message-ID: <ab_rAg80Fjp8N5A5@kernel.org>
-References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
- <20260318141637.1870220-11-pasha.tatashin@soleen.com>
+	b=WyQ4cZ0zw6OaK3phKCE/p1wtrt17IPqwjsTEyfvAbTQaiuXZ6E1jCmkj5pV3bkrIOoGMiI
+	CL1crDBboivYMtpwDvjEqYZoefPh5I8w31kbDaTUWtUu6XWVFj0VTc/GjiPUxbbnXPOMsx
+	DgjRqSeGKVCf9+PJYZ78RwWv70gLnDE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SwgI43B6;
+	spf=pass (imf05.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35a1230c60eso909519a91.3
+        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 06:20:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774185631; x=1774790431; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JO8s6CvPJ60AKkie9O7leqHw9KEgz3znAI24wdcudkI=;
+        b=SwgI43B6iIao+Zl05a0h7n/377l1ujPhyrNL9Kt1OWUslBzuKorbKPzFbIf0wSUG9c
+         kME4mLl7GklYT3Zh/TkSrynSUClB/jvsWBb7bpe61FEhOyYvBBjBwuHwwqWVq6R9i2bI
+         UQgFez07ebr4cl6UmpLnPauwroKb99s8NbItaGMk8TRSgEU/2yyQgdtINdBOu5LaCgwn
+         iiOOgIyvzOJT4C2OUjzxSJwvSbYRO74pbLEJgxRQLHbgi1E0qfuZco3CXVKhCZdbf6kZ
+         7xaN8I/maY4wSER9S9e2HyfTXYLADzvdH0Xa/GBVvdApmNUy0pUOyqCEFb3r886FDwfP
+         6zmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774185631; x=1774790431;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JO8s6CvPJ60AKkie9O7leqHw9KEgz3znAI24wdcudkI=;
+        b=kVSb1qvo9t5hckp1m8d/zEOwHqEsFFWIgKA8M5BJV1zcNI7Ks4qBO83GggdLqJfnk4
+         w2nThtTYNbtz9UTSSuFGnrOZBbnUV2ebO4wgC8QL/5XFEDI/VhJMg78kwUZ08nxwpRtA
+         B6HO9mB3AWBo22recn6wMbbutqpecjEYnPVUZkwdbZbPe9i/sLhuA99AHWIn5mk1OleS
+         V9NP4c8hn98sUUuhLrlaX2X+8GKBTGnjutivNxRk5nnazw3C+MODtV7kN44LilLxMqwp
+         szydY3KbZYx0LOxlY9ejlqwJo69cipDwWbbjwTJnAsM87PXmNmydS9ezgAdExO+fY9nR
+         yUxw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9GkS18ImTzP8o9s7AvrH7pbAEkqzUiImiVfslhCyx8yfxgDKGxYyRC/NNYyFcGF94vpJQ1jdXsw==@kvack.org
+X-Gm-Message-State: AOJu0YwdRIs64akDNtoaPO0ItHHFyagUJxndjRsORL3d2AD/JXgV9AC6
+	ozQF845DARwKnC9ggY1FTERWjyFKISC7Lr+ZYN0WYC8fC/4VMokBD9eG
+X-Gm-Gg: ATEYQzwj16zobhLJhmkH+8cESsWwX1/oPAD7kYGxLf14npq4yNAv7bGBK6/IeU8Gifs
+	CZZlMUPbsQdHkdQC2P5fwH7J2wkY/Dsz6HSD2M97xBr8u+a8YDAX+SvmPCINqYClyTfjvkY6mEb
+	4f2mpqY8D3vAFYZlzoCfobTnjimBmKifxiJ4tE9JdUOA/xLeEMv5vE9sv257aQeDoB+0u12QSQ5
+	lvNRMCew6aWmpzNfF8yGggUAWWOmbUt7DDw6B2bq2O5c/hoLfwdxF4oSAftxYgQsZrCGER9cfT5
+	GqgqT/NGMNIQGotrhYDdqKDtU2qQpWVcOBapL09EomdNpGboVkKAspjqkY+f2uKYP5uTF/Tsjr9
+	gouDvowWNa99T3T4PI2UZkL/+hUBMuSqBuq/0aro7PIENkvqhenNvFtTeL0gXVVdp4gwCtRC8DI
+	06Tbx297M17KmnMgy8eKycPBHb04Vky23W4EVc0LhUlKLLb7boQqH8km0xxqGBY8yPG9OjyqTWm
+	kTjOk7+YUkoOA==
+X-Received: by 2002:a17:902:ef45:b0:2b0:9aa7:9494 with SMTP id d9443c01a7336-2b09aa795c0mr4010775ad.28.1774185631131;
+        Sun, 22 Mar 2026 06:20:31 -0700 (PDT)
+Received: from localhost.localdomain (123-194-188-82.dynamic.kbronet.com.tw. [123.194.188.82])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083527f84sm76607375ad.18.2026.03.22.06.20.28
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 22 Mar 2026 06:20:30 -0700 (PDT)
+From: Min-Hsun Chang <chmh0624@gmail.com>
+To: arnd@arndb.de
+Cc: msalter@redhat.com,
+	akpm@linux-foundation.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	chmh0624@gmail.com
+Subject: Re: [PATCH] asm-generic: replace ________addr with __UNIQUE_ID(addr)
+Date: Sun, 22 Mar 2026 21:20:26 +0800
+Message-ID: <20260322132026.13485-1-chmh0624@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260307092119.20733-1-chmh0624@gmail.com>
+References: <20260307092119.20733-1-chmh0624@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318141637.1870220-11-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 26F821C0008
-X-Stat-Signature: cfx35p4ika6ydeanmny9jmhzc4rhrceh
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1774185225-968949
-X-HE-Meta: U2FsdGVkX19mSR+IR4+nh/G20+ftUjv303egUMsbFbOpjB6x1a5tp3Q60NnVBU3CpgON+9B5y2tXUqgZ/ICrzUPjCOfF6J/0PVpJdMZ9BpArcivk4y0694Fg569mOsH2VkOVGH79+zG0KOquTANJq/owgyW2HO3MsXiT2rSX0CNHkjMkSYzMlj8APkQtKH915ExviP6u74snNTDpnQuR4URhUT4lg6nQiBtehUg4j4dnNEf+5G/DJ9WdL43oABGqxWRlaKnhXpOLYzu4DlEITJn6bSzFDsmIIzfaF1v+a88LR9+aVn7GtjqbC0z11Hq3skbdF5vnGcfmCQbaVv24GNdsMQ8m7NN7o/vXkLKN7tt3uR3whrO+Qs2zqXT3F+lV2O8yed5EmEDDkD62de2M2kARhcSNEhPYZjiMGdrrLL8aEvBOuNioUOHchENrOi6P2tKS1A/w3XqpZw9MGqoh7CFS+4T+i8RMzd032HBtCsaMoFRgbUxrFwibSLpZqQR9Yy8v0VW+4s64KQIdA9AmG0oEiFYJku66kcuG4Wel/LfuHImxd9ohjZn5yn4Bfb/KLcxP93R8SARVmBPpe7y2fYOkcXLG1IO/U3+GJwDSa7LWT43YaXs807syBrD+r4ifhPyC1PBGoLneFL+kkL58TnCigE81SokCEo7neHQv7lRr1FcRaROz/ReBQBmA4lPM8snXaGeYK6MjFRgMpif0+sgCTxL78kOf8IFbf7JRhlfZPalDW41AzGsDDzVJ+xDDWY6NsjnOwn0D7QknPU9w2L6VoyqxYsV21vYC+FFilHus9MeidI+Kp7ADpJjDxa96SuO2iE1bSsLp+tXWO+9Cb44gifLBMgbIOHuk+Iy5Uk119pCp+rtN2eCO6AOO0LLpB3EX8mJduVXAIgLLRO6OX21OV70XCNNcnDimpUduo6g6LC994nRjYL9mFThvuun237Zv5v7wUSTci4fBdRj
- A5ecZ9K8
- CmAzaxt+mAB7qYzrWGUjwf0+M585UvBBZdTTms4Oh6mzNz4Ar1Zk+/QfFLSlfRrx6FXS6JjzDUsXLcRFtfbiMiCEKjKzxjBk3zlq8QvWvd/aFbCTKYSbnj+95LbuSJyhuuKwv7q89KsdKc/FD7tKZPn7DaYjfkl272x8raNBZrCu+GvNewCrYf4dkUdT0Wbs4kPcmwbHsmULCNHgQtieQhUJMQbYbQquArAMAmDSCGZ1Oe6Zxbd2iRLcGV0eREhhwPvL/hzaHRc8kATOycn2XodamEGyP4dJcbAhMhvx5CUQkI3sn1Df9gqX3Qw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 41FE1100005
+X-Stat-Signature: wcjtzgni8bsw5t68rabxfc6mhno8xnpb
+X-HE-Tag: 1774185632-155546
+X-HE-Meta: U2FsdGVkX198dNmGyqPbnL4Xxp3pum6byQPBZ8TWWAsQPQWOHPs/GT/dZ3pV9Py7jxavBf+/OJQIS0fm2mWLQl8YyS3jby9/IYu70kITbKHq9jl6F/jJu77OLf6P6PhNeJ0ctHCeIVO9QK045Y+sxBUidA4QJJZAzNtafwBxilFaFpqiIFij6ytmnCvUOAXcms1R4H6fEnULf6+PkC5NNrhWqDN6dw7CPdNUQU+ATJBDCBa7FfOjMluWDUk0B7FtPytTkY3xbH9Rz60vAearIEuvdclgCWQQ8bZ89YJ+b86AA9VkGhfUSz3MvaPnlo/yPnW7RjWhoSwRrCEY1ODBa5cOx/0gjOtC9pJcHyjUoc5PHa15BMWyqNRx4pC4iCTlflriDBVPBjl0ATuoHf1SdB+W1LBJJKKtCfz5x8l2AQ0bsMgosXE7D2I7jqP8DkNcEVAATYREGrlotlC6iJoLqVC/iUdQ5s4zXZjRP3KJr2ablM53hBP+sqlUhsudhd99lzfmTca3XfmvtacYgRS98p07R7gKpGnjICZlET+imAaP7iSnAQEorryQifbRWAFyqlGE7NPQmk5u3Lo+PXPIQvNpq9RRPNMFZLP7qTlCaqQswyQ4ltFhpiz7rSKcz0ls4vheXdUVSbHD+SvqFTgiPtmpn27j645VsY81Ch/MqYZonSGmq9Sk2nE/QrjYz+Qj5mvnIwxUiPpwbKqIBDilz3EgOI821JzfufCEdsmF+GpIa7ZC0sTHVxn2d0J7IXSIumkDj7bP1T5qPbX7tl7PwFtPM4N5mF7rM1SOEAcrBYl42qatccmlSemMNyvJ1vjKIYSaUtygwgjZEg0IVZNAYZLLlnG10RJ/h/9JwGZ5bWUIIZCNXBEKH81pouC8Suxt7x9lZrZ/igKRoo0O5xL0DU4nGuwckc7+6zYc9ckQSa48Goh5iatbl+HzvnUQnHSIjCY9qoKQFZURR4UvMJz
+ LyGVmgPn
+ whLkjun0i38eIupCY400Eyr86b4RIc/1PItEDdSI2GrYmUd5dciZKuTSaU2P1fy01SbW1uonkuqOsjOQJecCY44qo67ImZcqvE6IW/QkNRScbPFc+W47c2KnUoWX0qGAJonlpymlBv4JbIgwoUEGGUvrTOtIMN3YyI8rFh5yQqC0/ld9vdOD4U8oDP1mWzUiapz1UZMaoeHn9lLhCK735vh0I178VJpYh+oPD12fLrAV8yQxjzkWYvokiHGBhngD4UCsOgT1F8ixKEukzpx5m3gHDcoR55gPetNAHCEVE5JM7KHktIIAMukkt2lUTgQM+N5wnPwyUxm81aexIBzl4W4m6tNXwyf+IpNY0h8F0OHjz41UxzbiwLasEbGSkoJI1MGzthPHdhv+2Kr7DcPAFJzY++lX0jjI3r+4z1aAuXfdTqiHBJQNgtcc1Vw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,99 +122,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
+Hi Arnd,
 
-On Wed, Mar 18, 2026 at 10:16:39AM -0400, Pasha Tatashin wrote:
-> Because liveupdate file handlers will no longer hold a
-> module reference when registered, we must ensure that the access to
-> the handler list is protected against concurrent module unloading.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  kernel/liveupdate/luo_file.c | 61 +++++++++++++++++++++---------------
->  1 file changed, 35 insertions(+), 26 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index 5acee4174bf0..6a0ae29c6a24 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -112,6 +112,7 @@
->  #include <linux/string.h>
->  #include "luo_internal.h"
->  
-> +static DECLARE_RWSEM(luo_file_handler_lock);
->  static LIST_HEAD(luo_file_handler_list);
->  
->  /* 2 4K pages, give space for 128 files per file_set */
-> @@ -277,10 +278,12 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
->  		goto  err_fput;
->  
->  	err = -ENOENT;
-> -	list_private_for_each_entry(fh, &luo_file_handler_list, list) {
-> -		if (fh->ops->can_preserve(fh, file)) {
-> -			err = 0;
-> -			break;
-> +	scoped_guard(rwsem_read, &luo_file_handler_lock) {
+I'm sending a gentle ping regarding this patch to replace the hardcoded
+identifier in __set_fixmap_offset with __UNIQUE_ID(addr).
 
-I'm not sure scoped_guard() here is better that lock before the loop and
-unlock after. scoped_guard() would be useful if we were returning from the
-guarded scope.
+Please let me know if any changes are needed.
 
-> +		list_private_for_each_entry(fh, &luo_file_handler_list, list) {
-> +			if (fh->ops->can_preserve(fh, file)) {
-> +				err = 0;
-> +				break;
-> +			}
->  		}
->  	}
->  
-> @@ -777,10 +780,12 @@ int luo_file_deserialize(struct luo_file_set *file_set,
->  		bool handler_found = false;
->  		struct luo_file *luo_file;
->  
-> -		list_private_for_each_entry(fh, &luo_file_handler_list, list) {
-> -			if (!strcmp(fh->compatible, file_ser[i].compatible)) {
-> -				handler_found = true;
-> -				break;
-> +		scoped_guard(rwsem_read, &luo_file_handler_lock) {
-> +			list_private_for_each_entry(fh, &luo_file_handler_list, list) {
-> +				if (!strcmp(fh->compatible, file_ser[i].compatible)) {
-> +					handler_found = true;
-> +					break;
-> +				}
+Thanks.
 
-Ditto.
-
->  			}
->  		}
->  
-> @@ -850,25 +855,27 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
->  	if (!luo_session_quiesce())
->  		return -EBUSY;
->  
-> -	/* Check for duplicate compatible strings */
-> -	list_private_for_each_entry(fh_iter, &luo_file_handler_list, list) {
-> -		if (!strcmp(fh_iter->compatible, fh->compatible)) {
-> -			pr_err("File handler registration failed: Compatible string '%s' already registered.\n",
-> -			       fh->compatible);
-> -			err = -EEXIST;
-> +	scoped_guard(rwsem_write, &luo_file_handler_lock) {
-> +		/* Check for duplicate compatible strings */
-> +		list_private_for_each_entry(fh_iter, &luo_file_handler_list, list) {
-> +			if (!strcmp(fh_iter->compatible, fh->compatible)) {
-> +				pr_err("File handler registration failed: Compatible string '%s' already registered.\n",
-> +				       fh->compatible);
-> +				err = -EEXIST;
-> +				goto err_resume;
-
-PeterZ advised against mixing guards() with goto, but unfortunately I can't
-find lore link right now.
-
-> +			}
-> +		}
-> +
-
--- 
-Sincerely yours,
-Mike.
+Min-Hsun Chang
 
