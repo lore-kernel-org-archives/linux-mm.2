@@ -4,102 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21A2FC72C4
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 17:05:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CEDAFC72C4
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 17:07:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B60B6B009E; Sun, 22 Mar 2026 13:05:17 -0400 (EDT)
+	id AA8546B0092; Sun, 22 Mar 2026 13:07:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 266B56B00A0; Sun, 22 Mar 2026 13:05:17 -0400 (EDT)
+	id A323A6B00A0; Sun, 22 Mar 2026 13:07:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17C246B00A2; Sun, 22 Mar 2026 13:05:17 -0400 (EDT)
+	id 920566B00A3; Sun, 22 Mar 2026 13:07:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 095A26B009E
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:05:17 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90F611606E8
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:05:16 +0000 (UTC)
-X-FDA: 84574324632.10.8CB4BBB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CF7CF1A0007
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:05:14 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MCbu3oFs;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D75E6B0092
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 13:07:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 09E9F8C61C
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:07:11 +0000 (UTC)
+X-FDA: 84574329462.17.BF9424F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7AFBD1C0002
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 17:07:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qjBOEJQs;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774199115;
+	s=arc-20220608; t=1774199229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=htyhCj5MdZC28AEPD/tqfxQ4iWf/yWfUWKgy32VjOTE=;
-	b=yn179mhOEDERdw2FP62qMlQPdYIQTBcdB3Pddayn9G13tGUMnGpA2wAUyplvKjAMF/4SfL
-	FZuYY33xQyFD0f8w0xT78bnz7iGRi9q13LeEng0rmoeFASa7YgtQTE0P/eFJRBfytyegkC
-	4blZUlDLsPBmEKdJLo2xaW0am0hVKPY=
+	bh=eZVR0fsD//XKLy2blc64ZpK4uTlshC+lbLyZAocZReA=;
+	b=sDf2s+Bcpb32RfpW58pL6LcphAR7TCm4hbNdqT9SUnrtlGTESL2eJQ37Ob2nJkCj2MMtMf
+	PWpJ93xwMrKvRguQGvwTwjpQX1IpB6ENjaScdN/CWycB81Tq+hhb7Vz4uWzFGoGZwUMQ2L
+	YyI0MBUNWYwyc0WyTUWDQhuvb0k0wtA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MCbu3oFs;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qjBOEJQs;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774199115; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774199229; a=rsa-sha256;
 	cv=none;
-	b=LI0Ox93jPPPwtmJjXRGzRJQArgha9kYk4z/m0bDvVAIUTiB3rT9Z9eEhW8mEOzEDl7e062
-	WjEWsz2G0AuO1cbWmJc2a01aXOv74qbEVpwGeepKKN6GmHOCZijYGSsgmp2rVVAU6n9jWg
-	g6hJ5dqAJ9PL7IAZ0fPnyyT7zDIopCs=
+	b=BakrijSbALeS9IPOx953nUOj8AbfdshVVUgMCYbJb4IkWm7eJ45qdWk3rZ7K9/Q+WQBG5P
+	KYgk6Fw9+SWZdvtNo5pQfVA7DPRb+uxmvEh1D0CLiIe0oHspoRaThETu+btXMik8d1xmGy
+	pM8F4qF5S50lw6+a1mBh111E2w4aD4E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E68943F41;
-	Sun, 22 Mar 2026 17:05:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13093C19424;
-	Sun, 22 Mar 2026 17:05:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DF8D460103;
+	Sun, 22 Mar 2026 17:07:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BAAC19424;
+	Sun, 22 Mar 2026 17:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774199113;
-	bh=HJoiHpMG28GmRpq531IW9sBKidvKsblBjEBS3EEdba0=;
+	s=k20201202; t=1774199228;
+	bh=Ss5BI9ZraEpcbTh44hxtWEqyuu3rnCobU89l18kEuAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCbu3oFs00BZy4U6YYmrZ95gZnQkmg/QYu21GQI5AKJ3TWQvP16KJvFCDa7ILJzjK
-	 qGIkvLizMUBjCg9x7UIS4zHWIaQHU2dpPb8t3p08w8yJqq6lzFzvWi95pcGpQr2ruZ
-	 Gut3d8vRgNpKOMGTn5tL5zb8UDTLxjBowGL31FsjB6Ykhd5cQDyPixXqh9C5xuMLwX
-	 KDx2WI/GGfBf69gbYXsGNNdMywRkqjkVhDzMG/x70lNvtNNmVA002mn9TRavRBPMiQ
-	 aDvoL+KUXuVyLWJK+j91Z22Qt6iJeuqe5rn8Q8/vn9F3niwaZlEtIubn4R+ma3NwgT
-	 pL/sAbPW5la5w==
+	b=qjBOEJQsea7kiJPdwi4VppT0vsqbwLIf8zzl0dh2dZPd+7AoKsvWIjyP3+dak/tTQ
+	 X1gS+SWAp7toHMWxQ9X5hKUGKsRdrYJDZiz3hTaDSbX5dv6Wwzsv/oOqgSwv3/50tN
+	 FQE14urHdHLjjDdTyJ1xUF7w19eIJyXLAAvrQECxoONZRowUMf5QopYSQA7asnCHLM
+	 iBTuiTQ3tMLcqf1FliMCSK1yQA5mI6q9o25SbH0ef5Om7wV2W+5G/Sk8ukUwNKgXDy
+	 nML0MwN/tDJICImBdDc9RGe8i60y++2r0HC9e2NFilTwW8zxhzqTcmR8mLmOI1c0Ve
+	 /1r9pYrfU55TA==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko status) [RFC PATCH v4 00/10] mm/damon: let DAMON be paused and resumed
-Date: Sun, 22 Mar 2026 10:05:05 -0700
-Message-ID: <20260322170506.82977-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH v4 01/10] mm/damon/core: introduce damon_ctx->paused
+Date: Sun, 22 Mar 2026 10:06:59 -0700
+Message-ID: <20260322170700.83123-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260322155728.81434-1-sj@kernel.org>
+In-Reply-To: <20260322155728.81434-2-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CF7CF1A0007
-X-Stat-Signature: ebhooy37856su8aq5hoag4dncweykmny
+X-Rspamd-Queue-Id: 7AFBD1C0002
+X-Stat-Signature: fmdp9f9h3jhejtutgjq96m5eii45d6qx
 X-Rspam-User: 
-X-HE-Tag: 1774199114-534494
-X-HE-Meta: U2FsdGVkX1/dGXimlcTCUpme3X9NknjvXVMcTaNVY2fujfwrngZIXbAcexDciEGboRWoiljaN2J7ENfVMiz+6q4aIDUpLHCCuLn46eHAvLISaEnjMSkteP+ycBwlkrIK3gfOTwwUhalRklR+CVJpzXUPiDB2aDiGRGjoTor67I/PQwoJz1EM4XojrYTIxkz1M9baE5vvDzZv92+12Q5rb3XYfm1YjUQ0mEEN/qwacH+9ikaIJAL5N2YN6JkaY2f71B/PGg+SRdBACtiHT+mqFbvnyVt5A9i1CyTfvLSfB62X0lWAWkXPU2eaZ35sf6Z3MKK/t8Oiwknr2Wm03lIvMrlS2HHIvJnsYRhM643XSV9z174kiYY5Fk8x8y1rsGUYxuPuCZMYvzV48vZxarpYkQSZJVBzozTQ6nt88tvPJLJh7lrxZwHRPS78Gn9PhkQiGYUd0x6rfW3RbcygItT8c02Oh9iwTUAWWTLO1ZApMM+g5ZUIX5rN+D0YVhs1r2++IwxeK8ZSWjCfXwupq8yA3C2qVnbRY5f5YB9VNH1c+LJxoC7bsOPZXjlnL1AD+E3WVOwFkSJCz61r4EfRJ8WNNmRf+EoocSleemiclllD42in9XIjd6DQLgvHWgdLgqhzs3oRtzUTkdA7zlwsA0Cyb/3qFI/dgctpGr8nVMLnGU7qtFx14HzkQZqIWxrfDIlfT58rig8VCwk5KMUmWQnEpDbkXTdICL9adV7a2SdkZYRbymXnMPgFKmgGutaFew6PVJiBEyGEb6Pc9SAo8KsIu7X0qYK2Ggo86mfdeJknuGbdiDDbvr2HYK/+XjNM/rnk3WE5lZfH6pkvGi9YbDm9s8lIwukpnqYQIc4eQUUwOmas63XABpIpaUlfIgK0wQR4bZXZOGX2xFdOElolz2F/dpQrgcmjmlckMVMtgvEEYNwIY0RA86SmBB+utxwJWszzdkSZ0/V7R+FiqZoU9Nl
- tWZiJrLG
- I9pjPO5FreOOP4XQVwR2fzHHXqFAWvv0t57188EAIMNJpSy3EgF+4tsZ3Mhl1DV9/TU1/g5UBTrY9GAsgv+c3XnUCMYjk4Bo+e0CPvvHANAOSPLIwCquTGZEDW6SgMtPjEXYZAhErI3D2oRz3irecn8YyHsx4jVtTHpZq6AyOFJQRJFEEGZDe/dTP6HC7mskN1191JMzN/ygpOPsHrsK5YNYRZs6WVdE/53h5qiX4MplLXAl8c4mzeawxsZ1MkTIcvWrkxT8jIpM6eJOpPhbwmv06f8uiilfIH1krude9Az64E6KGgitvfsz2R7V059JBvZkA
+X-HE-Tag: 1774199229-228810
+X-HE-Meta: U2FsdGVkX1+Iadwe8cbHkBfXe9Ys3swK4oBjiV4WfZ2J3DhprNg5S6OxhIzsiPVMmoy9T6u5tJUzx5uX0JNl1gxdV9HfGohezx0t6Icrr3bSOFkaE1gf7SfvjPvHf5bbJSSC58GI60lr06ep/7EEGgo0EXC3gaeI7+hIRoRT4yyYpQkZP2hVwP6D5stbfYRIro9k6Yl5Pg1tQSMkPlk8bdhtxN12k8IGDfNY3dIjGfQXJm85YXpZL+WLZXDX1xl04FQlvlWGM5BqqEgcrIjNm3oMMKsoI4xJd3R7u6Z/HwwqVNuNZ3nStEpaC/MZBLzQuuwTZq0sxNOxqlmXCmq8aRt5WfLIDKC8+okB6qVL5b3YYF2j6WckpNxRMP0e/6hyTsXj92PmNd4ahBdy6n7Wo1xDIDCPFGZLnzKSIad/nEh8EiskLmJD/8U7OHH/PigxaA1+Bw7caZZXL7TrWw3Pc9jdpDxBjHscuQkn08+MGaqTfc6WMsP5k6i8OVIGEH4ffnSt4cIB0WudUUiKTm6xRq1Rw0oG455ygycrNAEt9veXQPpUqy5w+1xs2h8thJUxvLPZQD41HwlUr9RauM7ImWWtsVYecuWZ3BxyZ45jgfnmzp0Mvdfx7skGGZSUJarTR22zMV8cu+1aHotFi/OpgWj3Ck9IsDomlqsQtlm61/gcFJnOifYJTYf2TIz1NoDuujfp0EW2a0NFXoophR4eC8Ro3Q3O7hj//EBaoeDEOvT6OBBgp2/2fhXOO0tRQs3UsJZbeB4eg9MlBOjae/P0aLZuWZ2GNbmSe0B3Zs8lc2g2cf+/vqrLoRE7vXIZS6jDLIjHzs8k2JHQxHQd2wuEZgsL4johqJqAKYWhY7REfX2tSoPFXIH+nkEbL5Y1TI44NNJfM0FDGixrjFkqc4+cDmCykwbjqihiVmBSHgN2om9MTQ8Qb+Iqng8aO2qQocrjB3GVVjIz1nxBV3S714M
+ 2BIkr+JS
+ UyE1Qc94ORpZTRjv1i5y6f2b6bpqmVhr+NOS4KxFWxPwgZxc1qLxN4ZVtqf7LiEIQdPplx6bDypUaYPiq0kVATPbUSZEmtD47GBPUasc45QKIZYOiCzMiMTuw7NfWs+R2ajNPKUINKzaPQ1w2FfwRSBrVnwPdWjsnNzhBg/Vo02kU/aM+y6sD9n9rVBa9Jmu3HeAikU7UdLK5Tu4W9y4VbI1sUDsaFYrF6Q4v4v3qJg/wpkMLhJhMFWOABFfEDYorvVGyIbxYs10cyVx3DhbHqauZoU4mm9Lm7eJ0hmvcfdcbPtuoUAhQhVnJroHgTQnpySW5vFpOn4WHllWv1JLArK7cDzo0DBkfSdW5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,46 +92,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding sashiko.dev review status for this thread.
+Forwarding Sashiko review for doing discussions via mails.
 
-# review url: https://sashiko.dev/#/patchset/20260322155728.81434-1-sj@kernel.org
+# review url: https://sashiko.dev/#/patchset/20260322155728.81434-2-sj@kernel.org
+# start of sashiko.dev inline review
+commit 2a3be2c8b6c327ef72163cd54e6121ef72b9c932
+Author: SeongJae Park <sj@kernel.org>
 
-- [RFC PATCH v4 01/10] mm/damon/core: introduce damon_ctx->paused
-  - status: Reviewed
-  - review: ISSUES MAY FOUND
-- [RFC PATCH v4 02/10] mm/damon/sysfs: add pause file under context dir
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v4 03/10] Docs/mm/damon/design: update for context pause/resume feature
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v4 04/10] Docs/admin-guide/mm/damon/usage: update for pause file
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v4 05/10] Docs/ABI/damon: update for pause sysfs file
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v4 06/10] mm/damon/tests/core-kunit: test pause commitment
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v4 07/10] selftests/damon/_damon_sysfs: support pause file staging
-  - status: Pending
-  - review: ISSUES MAY FOUND
-- [RFC PATCH v4 08/10] selftests/damon/drgn_dump_damon_status: dump pause
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v4 09/10] selftests/damon/sysfs.py: check pause on assert_ctx_committed()
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v4 10/10] selftets/damon/sysfs.py: pause DAMON before dumping status
-  - status: Reviewed
-  - review: ISSUES MAY FOUND
+mm/damon/core: introduce damon_ctx->paused
 
+DAMON supports only start and stop of the execution. When it is
+stopped, its internal data that it self-trained goes away. It will be
+useful if the execution can be paused and resumed with the previous
+self-trained data.
+
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index db6c67e52d2b..0ab2cfa848e6 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+
+[ ... ]
+
+> @@ -3003,6 +3004,14 @@ static int kdamond_fn(void *data)
+>  		kdamond_call(ctx, false);
+>  		if (ctx->maybe_corrupted)
+>  			break;
+> +		while (ctx->pause) {
+> +			damos_walk_cancel(ctx);
+
+Is it safe to repeatedly call damos_walk_cancel() here?
+
+In damos_walk(), the walk_control_lock is dropped after setting
+ctx->walk_control to check damon_is_running(), which opens a race window.
+
+Concurrently, kdamond_fn() calls damos_walk_cancel(), which reads
+ctx->walk_control, drops the lock, and completes the old request.
+
+If a new caller invokes damos_walk() and successfully registers a new
+walk_control, could damos_walk_cancel() resume, reacquire the lock,
+and unconditionally set ctx->walk_control = NULL, dropping the new
+request?
+
+This might leave the new caller permanently deadlocked in
+wait_for_completion().
+
+> +			kdamond_usleep(ctx->attrs.sample_interval);
+
+Could this result in a busy loop if sample_interval is 0?
+
+The DAMON API allows attrs.sample_interval to be 0 (for example, when
+tuning is disabled via goal.aggrs == 0).
+
+If sample_interval is 0, this invokes usleep_range_idle(0, 1), which
+sleeps for at most 1 microsecond using an hrtimer.
+
+Since the normally expensive monitoring operations are bypassed while
+paused, would this cause the thread to loop almost instantly and create
+an interrupt storm?
+
+> +			/* allow caller unset pause via damon_call() */
+> +			kdamond_call(ctx, false);
+> +			if (kdamond_need_stop(ctx) || ctx->maybe_corrupted)
+> +				goto done;
+> +		}
+>  		if (!list_empty(&ctx->schemes))
+>  			kdamond_apply_schemes(ctx);
+>  		else
+
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260322155728.81434-2-sj@kernel.org
+#
 # hkml [1] generated a draft of this mail.  It can be regenerated
 # using below command:
 #
-#     hkml patch sashiko_dev --thread_status --for_forwarding \
-#             20260322155728.81434-1-sj@kernel.org
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260322155728.81434-2-sj@kernel.org
 #
 # [1] https://github.com/sjp38/hackermail
 
