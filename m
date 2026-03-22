@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2DD4FC72D4
-	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 18:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC33FC72D4
+	for <linux-mm@archiver.kernel.org>; Sun, 22 Mar 2026 18:47:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB35D6B0088; Sun, 22 Mar 2026 14:47:11 -0400 (EDT)
+	id C76976B0089; Sun, 22 Mar 2026 14:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B63E76B0089; Sun, 22 Mar 2026 14:47:11 -0400 (EDT)
+	id C4EEA6B008A; Sun, 22 Mar 2026 14:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA0886B008A; Sun, 22 Mar 2026 14:47:11 -0400 (EDT)
+	id B8BD06B008C; Sun, 22 Mar 2026 14:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D0296B0088
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:47:11 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57ACEC2BD0
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:47:11 +0000 (UTC)
-X-FDA: 84574581462.29.1D07729
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A25D06B0089
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 14:47:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F0D1BB8E3
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:47:12 +0000 (UTC)
+X-FDA: 84574581504.18.E743809
 Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0079B4000A
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:47:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=l8pYAPpZ;
-	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+	by imf08.hostedemail.com (Postfix) with ESMTP id 32304160004
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:47:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=iVrJsWuT;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1");
+	spf=pass (imf08.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774205229;
+	s=arc-20220608; t=1774205230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=05a6CfwNgkeRFd6GC3+9/VEwzrQUx3NsZy711o2AxTU=;
-	b=RnCbjlz7th2nr2Iulnl+iG1QY1xV6Wa/Ec/Iu/tvuSyS79R9LuoY74tcqa0NLx0qk1hJRS
-	3eNH4A658ftTLxhzW/jlo+j+Yu7yU/FA/Aq4pl3BTHlU/8aVGpzuVURnPFxoIGbjePAP+I
-	HsWSOQjS2TdVD8QJqk17KmqNaYWQRdk=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=l8pYAPpZ;
-	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774205229; a=rsa-sha256;
+	bh=HvXkdekkoCKye7mj9eb/H1RyQQk11r+xEZYMc+3T7us=;
+	b=qF0vlGNW8vp+NUFvig7JIsNuf8C4KkfVdmv/niGdvMUauf9rO0Pm4Kam8EtPwOsGeWp+oy
+	X6ahdG46NQJDNCMTF0ow6Rqiey1+NJhA24chde+Eu1fZdXstIYXmTg9TkaFwkBV0orkpDE
+	5pZsCRny66AE6jNjQLlIsR3y/LFcaFU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774205230; a=rsa-sha256;
 	cv=pass;
-	b=reeSlM2BKGY9iiYQzdAMXY0YQndC8uNy9kDyyCYdJUqM0CHDadq0l6Tmhed6FMNUpk0c6E
-	m+5ChxsOvx0oB/vkmf6Zcz6VFDz97MlsyKunRLwldEnLIPpsxxwo6xO9nS2d4ZkBFrSVUN
-	KOeDN2/hgFA9ph0uDG6FYWA9kve6fwc=
-ARC-Seal: i=1; a=rsa-sha256; t=1774205206; cv=none; 
+	b=xAIlycyoZ6J8ia8ch4Xjp/WaK7/gON8vm4FglDcqdVHZnU8dcPhfv/ZS6TtIxqr1S4AlVj
+	Ats3L3Z/bcLM/c+9zR4MvZDVWFAsTDSAwax93ObAk6twTYPkUxtihD8uwGA4EPs1+83yJ0
+	zIWWJrYUMvrYp/aCVR6GSJ8DIlGFgyA=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=iVrJsWuT;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1");
+	spf=pass (imf08.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org
+ARC-Seal: i=1; a=rsa-sha256; t=1774205205; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=Zzg2qELQVF3tfbkI0jcLJC3JWMCMtcernSKxBrdjto4K7Yg4WRfokio6Ac69aoKIlRxZOBeEGHVTs8CUZz/XOlLCHBGKk71+G4LOqgWgSi86LS8VGEg+puyCjO2kAIVledLxM97n4kUiIw9ByYpB3XJKdPGPjOt6QLQI5Edl3nw=
+	b=Q7Gzmh/ifcY/OF8N/GJ5KKRWThZQmfsD9UqNRGNfrOd4GwthxfjJ6I0p5rWsL+0dHvrbgIm6Wfxu9hNxdfeZUJvg6ZLT9lLy0GS0Bbj1cHULXGSA0nJ4SwVcl/BFx3+GlI5V7iQIH4H1H3mRbnTCVErC0IV17HUkbXaz9c7tsaQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774205206; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=05a6CfwNgkeRFd6GC3+9/VEwzrQUx3NsZy711o2AxTU=; 
-	b=FmwsXgy/tGA1atYBBow9L+u7K+btTqA6f6EOL0MovVJTnoXuTAy1727/useKcsWtDbSFQArKfmt6IaBS1Zu8pypOTnMjAssJeMho8vSJ+w7YDvJmnqmEzvQZe1K67yT0Y+iMtS3FZweCZLCJlxKr1kfKQAIdvB7jDPywNamm6u8=
+	t=1774205205; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=HvXkdekkoCKye7mj9eb/H1RyQQk11r+xEZYMc+3T7us=; 
+	b=Z1bFu9JMKcytFKPllcHmQvZueX6RwzFSMs4eazwBV0wCQmkDv+SQXlTyQPglLGdO7hjd4lgLDUTgpBQMFtwy4pQ4L/eknAbip8mfTfTt2ZDrTFVBPETN7Iak+5iFkOw717fQ3aGglz/PYdk6LFFYj/e/M6+IixQgiESD7B8JGX4=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=objecting.org;
 	spf=pass  smtp.mailfrom=objecting@objecting.org;
 	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774205206;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774205205;
 	s=zmail; d=objecting.org; i=objecting@objecting.org;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=05a6CfwNgkeRFd6GC3+9/VEwzrQUx3NsZy711o2AxTU=;
-	b=l8pYAPpZo2Kcy+acCpggJdzpcEbMTQCfAJKyF+uCcZ7XdONfJUSGyNon2hJpk7zi
-	bpw+ckxFeu4fIHtH1mXn/7ip6ZeJKjHODk/n/LN9FRP9p4xL6TVDWrdgJnr1kkEW0j5
-	PzPQBQUUAP7e25C0MvLAU74AV9552/N9XCzjGUu4=
-Received: by mx.zoho.eu with SMTPS id 1774205204010549.1240841832505;
-	Sun, 22 Mar 2026 19:46:44 +0100 (CET)
+	bh=HvXkdekkoCKye7mj9eb/H1RyQQk11r+xEZYMc+3T7us=;
+	b=iVrJsWuTDkuvPjkKL/QTPYLcerO8uYe9Bgd+qDsLUYXVbSsfJ7WpDropvTaWhJ4s
+	bc/yWS5lfAO7mTh9lRwQokFqr5sQbc4v5FJcnpz67L4cgcZRbPa9PEuQkOka5A6K+zV
+	sX8MzPmYvg8rX7WcF+AjySmiKq0qHxgQcfoAnqWw=
+Received: by mx.zoho.eu with SMTPS id 1774205203626774.6951372831195;
+	Sun, 22 Mar 2026 19:46:43 +0100 (CET)
 From: Josh Law <objecting@objecting.org>
 To: sj@kernel.org,
 	akpm@linux-foundation.org
 Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
-Date: Sun, 22 Mar 2026 18:46:41 +0000
-Message-Id: <20260322184641.251966-3-objecting@objecting.org>
+Subject: [PATCH 1/2] mm/damon/core: optimize kdamond_apply_schemes() by inverting scheme and region loops
+Date: Sun, 22 Mar 2026 18:46:40 +0000
+Message-Id: <20260322184641.251966-2-objecting@objecting.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260322184641.251966-1-objecting@objecting.org>
 References: <20260322184641.251966-1-objecting@objecting.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
-X-Stat-Signature: 86pk7qtozggdma9a79m1gouf6rpkx1nx
-X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0079B4000A
-X-HE-Tag: 1774205228-638288
-X-HE-Meta: U2FsdGVkX1+2pbkfH3qiFjg6Zvr8/RceQeJIlw3iNyVRGeBJCHK4DnbsBmhaLLYjcGVYBDH/USK2JqGuNnzIeFyxW86sIRySMmnyQuv5DrDd2nv7EwYeJHWjU0YntqN9B8FXXsSCAG2MA6CS+4x4k7LV1rRZagbmrCptUhR1e9Slq5ew9kuePImWhqTJbE2IS6/Cc+rmZ2m+DMJenVKu7mBa+/arlWuMoNjxLbP0YrcTClJpErK/HUfReKz7aXuUFDt7h1Z0RE88bE8XooxteV9HQKI/vfZg309FYwnEn21mCzDmRZzJyqr7IZ7sgyZWYmV0jh197VZWaMZXgVuzeLSlcGfYUDBQ61v8Hmms0LsVC+zP6i1LQeRbUJxNCQsU4hGZiV4hXKei8irfE/J96VaY2Ri0M+bSvd5PJXUMEW+J1PrfD1nsa14tSj5nciPtEzO1x8IEqvV7rZzBjjUWO45xT622fAFibEhIKFvE5m2tm+jAwnFePbzxQ/czYtwkQJZEIQM94sbt97p6OE4zog9gWhIxc3cNmDzDBkfPs7iWkyBlfLMGPQs8roL38VtAns1g4ai4j1qRYouib0oep36Q69rTnWB0xeuEv+0V5jpI+/rISU7SlwojHEAToMCUC+XFCA/ayOa3nDfn7aHA0b5fyRWEb5hK6cTiRXw1xllVo7w9Km6s+Vy4t/bYBpvp3c3yJfv+vBSGB3Xa9J5igoYAeQgaQs7fk1EJ0r3HqSqDgCrMHYPdfHjWIwcRQ7XA1KmuLbxmp34CWzVKPrNWPZW4WwLE7HVHVM8lW8nNRtIC70y3eC/auk5bgIfIkAXapsn7FJ0GLeb6eCrCB4Yyvw5DoGpFB6IjbDrL95tB6QQt2E0SRLponQjdxijdjDrFCNZ1MO9miXOhDMjJyqE3iU3MFt+hd/wHVdMMazhRolYLno27WyThwQHOVEwvrqJRu5e8/IVeLmCo0cbtaPR
- tGS/X+YA
- VaEojPCWjgNf5DFujMkmr0EtGP+w4nIXBvRX6BOJ+0OAS0H1Tfd7F03a6j3uyhbJKc44FONZEHFSzSvQkkCNCDIjSl9GwxfMJXSZIwzbrNothDGvS1hEegM7enzLl1zSlABKct+7twhCZRYnle9WAgdNvjdfkQ2ZCi8wfGNGvcJYG1gET4mXui7aBdpNgmGeZ8LPTPiBXlpc8Z+51LJHpsJ6Dh6+PcubvBLGU13UgmkBRVS2lPl7pnF+V2WgVsFJjA9Uua2LcyQDKCyRs8BmqGtmx7/S7Gm1lBfZ2teyl/ebb0m/WKFOGQKUdaRoY3abgIP8JiVdIK3QrMkCkEdZYJLOAfWfmshHNiIlkKe+/oKavGAE=
+X-Stat-Signature: zo3oa9apex3zpp76km8jr4h31fgu99we
+X-Rspamd-Queue-Id: 32304160004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774205229-903435
+X-HE-Meta: U2FsdGVkX19P2g+G47okvzjKqltM+W044KDHOwv6LS5chAr+9PF6ngYfgCdx781plSvt6Au37Rppsi4+eW8qAgJeegk/XY+943w5CXdikej+nzlP3Ri5Q+jLu2koUDkqfF5haItJm96UC2bStUfc8FnxKep0Au++P1p+YHwQb6H40hIAWmTf4tlTZd+nN9MX+DGSW2dU1KxubGjwT3/trrtAMJbiiHiOl2Z9L2Xf6Q+VdwAQlfYFydF7+6W0f8v5y/izLxaUwlMq3c0SlMIKTXlZhnt87ReM6BXTZraepHhvYU2ponpigpTb8JYU39+5JtOQYkYKRy6F12eQC/m2KIzfdwkSxRzD/JfjU1Tr5GpbMnlMg/gOtqun7i2YgNMijT98ptmyrnCN0ydz5LJ9/iSyte4FXkw3O1GWc1xbV41KnQKAIDnGd+Zh5N+12UJ77CejW7eboxaoXD1pU4meFI5CqiO6/vTECehQunO9L76jpV3NmbctxjqYG0roJIp67APR7TQBaLB56H9Fif8V944ZjlT8TYO7waT+V9x+mh0CksAb9azq5evNKryppOyw0RFw3iTY8Y+UQg5SXToilXk9AYvee+k0XuXD9dIllDwKSCgBHjRJLYRzKa//dj552ZJ/lFGlLnjAV67PT0G5qzdPygLg5ORS348/wskVr0S3HVXOXr+QAKO/rByk60OgdgNqlWOdIHtIz8j1BdF0r7n7UNjtMHdpI9mCYbZbr/OBVJ/mXKTSIPFm5Wgc5CScbSxaylYkDwFqU/DCaCC1h2It5GTFRuivu9U5sUS0MPFv/hRhjDZ1QWdN9gcLBxOEYqErMNq4k04SSMTA0Tktmqq6dP8nxYwoFI8/OHTSoph/MsMkgYsZjBxtBzJ308V9wxpQrMLGQDWb8mb/vnrNq7gq7jxwEdpRRCOiH1bvZq7spQZwIml9hb9FHQoT3TY+exRU6zmtwQK4yThAveS
+ quw5SboL
+ vCxUM3QKtlF/KUlZm9QHRNEuFqt9LH0QsLXhqRP1V8/SxJIjwWUxO6zAtBUpQOZT4PE+TcKd7nPfAI7EY1ZlHhXJN07xecPWlCKyh2hxgcAhdaXvkFu520P1O3sEL3Jx7O9yefABkILq+3WBCo4yhg6Kumu5ZgRMuvoTqug8pCnapX+LICuoJCLqIPbtAT9JNBHeUYPuzd/sKWTRp4mHgfIAb8j20ZQ/3VGAhv1+KF/0y0ZLs+U5H9U/5OZD8Qxw0iT122U2J4ai6TrA/Npz0Mm5ua6hLTpD283f+7rfuoZ0GcvDEfIBBYN2rc/19WPQ1+TK9oKwG0ylLBdX9hNE5/66IHeyrkOnj1LumsUWCQXc5L+65MDGj1OjLnovGIpJd2uF8dcKePXvPkwk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,37 +100,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hardware integer division is slow. The function damon_max_nr_accesses(),
-which is called very frequently (e.g., once per region per sample
-interval inside damon_update_region_access_rate), performs an integer
-division: attrs->aggr_interval / attrs->sample_interval.
+Currently, kdamond_apply_schemes() iterates over all targets, then over all
+regions, and finally calls damon_do_apply_schemes() which iterates over
+all schemes. This nested structure causes scheme-level invariants (such as
+time intervals, activation status, and quota limits) to be evaluated inside
+the innermost loop for every single region.
 
-However, the struct damon_attrs already caches this exact ratio in the
-internal field aggr_samples (since earlier commits). We can eliminate
-the hardware division in the hot path by simply returning aggr_samples.
+If a scheme is inactive, has not reached its apply interval, or has already
+fulfilled its quota (quota->charged_sz >= quota->esz), the kernel still
+needlessly iterates through thousands of regions only to repeatedly
+evaluate these same scheme-level conditions and continue.
 
-This significantly reduces the CPU cycle overhead of updating the access
-rates for thousands of regions.
+This patch inlines damon_do_apply_schemes() into kdamond_apply_schemes()
+and inverts the loop ordering. It now iterates over schemes on the outside,
+and targets/regions on the inside.
+
+This allows the code to evaluate scheme-level limits once per scheme.
+If a scheme's quota is met or it is inactive, we completely bypass the
+O(Targets * Regions) inner loop for that scheme. This drastically reduces
+unnecessary branching, cache thrashing, and CPU overhead in the kdamond
+hot path.
 
 Signed-off-by: Josh Law <objecting@objecting.org>
 ---
- include/linux/damon.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/damon/core.c | 72 +++++++++++++++++++++----------------------------
+ 1 file changed, 30 insertions(+), 42 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 6bd71546f7b2..fffdb08326a2 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -960,8 +960,7 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
- static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
- {
- 	/* {aggr,sample}_interval are unsigned long, hence could overflow */
--	return min(attrs->aggr_interval / attrs->sample_interval,
--			(unsigned long)UINT_MAX);
-+	return min(attrs->aggr_samples, (unsigned long)UINT_MAX);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index c884bb31c9b8..dece0da079c8 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2112,40 +2112,6 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 	damos_update_stat(s, sz, sz_applied, sz_ops_filter_passed);
  }
  
+-static void damon_do_apply_schemes(struct damon_ctx *c,
+-				   struct damon_target *t,
+-				   struct damon_region *r)
+-{
+-	struct damos *s;
+-
+-	damon_for_each_scheme(s, c) {
+-		struct damos_quota *quota = &s->quota;
+-
+-		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+-			continue;
+-
+-		if (!s->wmarks.activated)
+-			continue;
+-
+-		/* Check the quota */
+-		if (quota->esz && quota->charged_sz >= quota->esz)
+-			continue;
+-
+-		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
+-			continue;
+-
+-		if (s->max_nr_snapshots &&
+-				s->max_nr_snapshots <= s->stat.nr_snapshots)
+-			continue;
+-
+-		if (damos_valid_target(c, r, s))
+-			damos_apply_scheme(c, t, r, s);
+-
+-		if (damon_is_last_region(r, t))
+-			s->stat.nr_snapshots++;
+-	}
+-}
+-
+ /*
+  * damon_feed_loop_next_input() - get next input to achieve a target score.
+  * @last_input	The last input.
+@@ -2494,17 +2460,39 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+ 		return;
  
+ 	mutex_lock(&c->walk_control_lock);
+-	damon_for_each_target(t, c) {
+-		if (c->ops.target_valid && c->ops.target_valid(t) == false)
+-			continue;
+-
+-		damon_for_each_region(r, t)
+-			damon_do_apply_schemes(c, t, r);
+-	}
+-
+ 	damon_for_each_scheme(s, c) {
++		struct damos_quota *quota = &s->quota;
++
+ 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+ 			continue;
++
++		if (!s->wmarks.activated)
++			continue;
++
++		damon_for_each_target(t, c) {
++			if (c->ops.target_valid && c->ops.target_valid(t) == false)
++				continue;
++
++			damon_for_each_region(r, t) {
++				/* Check the quota */
++				if (quota->esz && quota->charged_sz >= quota->esz)
++					goto next_scheme;
++
++				if (s->max_nr_snapshots &&
++						s->max_nr_snapshots <= s->stat.nr_snapshots)
++					goto next_scheme;
++
++				if (damos_skip_charged_region(t, r, s, c->min_region_sz))
++					continue;
++
++				if (damos_valid_target(c, r, s))
++					damos_apply_scheme(c, t, r, s);
++
++				if (damon_is_last_region(r, t))
++					s->stat.nr_snapshots++;
++			}
++		}
++next_scheme:
+ 		damos_walk_complete(c, s);
+ 		damos_set_next_apply_sis(s, c);
+ 		s->last_applied = NULL;
 -- 
 2.34.1
 
