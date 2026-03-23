@@ -4,97 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B0CF46139
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C22F4613C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B93B86B008C; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
+	id C7E2F6B0092; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B43EB6B0092; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
+	id BE0DF6B0096; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A80E36B0095; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
+	id ACF126B0093; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B2FD6B008C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C4306B0092
 	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 462101B9218
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 533791A0C17
 	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:35 +0000 (UTC)
-X-FDA: 84577684590.20.CE845EB
-Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 63F90120002
+X-FDA: 84577684590.14.D7ECE4E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5FA1720003
 	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=ETXMoEEM;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	spf=pass (imf29.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V4V4tExQ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774279113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y9ESIQooWXRGmMBVhYDoop22vq6zrlFH2hRBQeNf9v4=;
-	b=UrXvzG9ZJ57uaNBLFpJfuLbDc1TkXEIR+84EQb+BBWCNRXZzqudHVhvhTTH6A4hExfga8j
-	UsYuPHSf0G66t81u+4/fFk0FrgImwXXrQqPIXnxBBZkYnClV6UUmhK2coRgkeW+BO6Lgbs
-	Dmlu4U9qLh52vJzJckf0H/Dk/fhu3k0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774279113; a=rsa-sha256;
-	cv=pass;
-	b=cZHNufJWT/PuTFGqcp/HEfR87m58ZoQmR3Fn7HkaUfu1PGEXJ4oEFtDMtZ2N70UsTjLUXX
-	xM8ebKr+CAjH3CqYB7l2TshU0qrrmO758f9fOCrAbgep6GtCyPxWrJCpRsNjMVspwAvPUG
-	NnBal1fAGsSBo3DZSgA+6bJZ1D9CVI4=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=ETXMoEEM;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	spf=pass (imf29.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1774279101; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=iMzGlbLMUL3oZM2j1/p+AOJS0TxxiMCpm4NvviM7OXIaJWcJYA2Uj+OzZq5xVltmzp0l7h2kCxEnleofSlKdeGqE+NcqE/cJU+Bcqd/fR4MAeuL6+LrXjMOeEncpjrCLfW/8vR/OzpzP6kKAyROgTy9MzYIGihjxqAdQYQJdl0E=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774279101; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=y9ESIQooWXRGmMBVhYDoop22vq6zrlFH2hRBQeNf9v4=; 
-	b=PlZQ/ha+CvQ7WpcjhTMkpV2kbIRaHl5L1PA4oK/9dJY5bL0a8SV5+sbcBVSo27WyE9+xa9ZQuwCGf4FtG3wi7reb3rrVccJcQLQmGNxIAP33ktVUPt/w36SN586BM/ca5rgCWmFwmOC6Ivfba9V8a3vcpG99Zou8qoZapU9aTHg=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774279101;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=y9ESIQooWXRGmMBVhYDoop22vq6zrlFH2hRBQeNf9v4=;
-	b=ETXMoEEMn6pq1bQ3fhTsQIuYNIanASqLInTEnEZu/y2h2CvehszEbJN9QYnSlzMM
-	Q/84EZpqVpXAQ+oyoX4whcgjjUXrSrAml7oUiyVYSgP7M7E1VrXecv3on5vywW0WseY
-	TQdLwSsDYgJyAbehv/uMcD/pRKryoIodtpz9jvJQ=
-Received: by mx.zoho.eu with SMTPS id 1774279098669283.4803668678818;
-	Mon, 23 Mar 2026 16:18:18 +0100 (CET)
-Date: Mon, 23 Mar 2026 15:18:16 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/damon/core=3A_optimize_kdamond=5F?=
- =?US-ASCII?Q?apply=5Fschemes=28=29_with_pre-filtered_scheme_list?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260323142051.80436-1-sj@kernel.org>
-References:  <20260323142051.80436-1-sj@kernel.org>
-Message-ID: <43C21A6B-B27F-428B-B65C-1BBC9D66AF38@objecting.org>
+	bh=n94zkV/pmZZJ7k7RKaGT+ic/vcFa4MFeGtug2QtIPI4=;
+	b=vCxm/dT9AGPfWlCLmtOkMFJMSxbkL5hPropBE1SPQwPuVY56/rucH9h9t/53OeNV+15cp9
+	ix+bJOjtMVuYsNNBYg4GwAx38mpswAZkAHtBlrv5OMzRuudmFMO5OfnT9k1Nhzf4cOoYMf
+	qW+eqIp0lEWF1I04aKoWKLQMdi2N0iI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774279113; a=rsa-sha256;
+	cv=none;
+	b=sO30GNJ5wdoAQi/D8f+2OMfAwnSgThSXbdXJ60Nt0y7Q0h3m/Vznh0K5pOdpo9AUpMw/V4
+	ybtE4HZELpr0vHqLvJaSA7URPZ+Fok7ybh+HboTMqxoe0Y9vbEgDrdlIAZpElu4vj4R/Xn
+	I/vQu276/xJ17wdEwdI0nqj8Z7Ihvxc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V4V4tExQ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf13.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774279112;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n94zkV/pmZZJ7k7RKaGT+ic/vcFa4MFeGtug2QtIPI4=;
+	b=V4V4tExQ7sEgnhrMf2bir1E2c2vMLStzo3ejdI87C+i0tSUPSgnry3GL6h7lQ4FnELC5e8
+	/nns/a68wQ3NBTJwH2Z8RwYf18cCtdiPteKjhrtU1T8RDv/zjH9+pd4HKRe9SnlZVNCXsT
+	+ZoEo0a1u2kJI8q3YTkb9nmpJ27ArGI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-317-xdDpdmCUP5GMepEPIkiQsQ-1; Mon,
+ 23 Mar 2026 11:18:28 -0400
+X-MC-Unique: xdDpdmCUP5GMepEPIkiQsQ-1
+X-Mimecast-MFC-AGG-ID: xdDpdmCUP5GMepEPIkiQsQ_1774279105
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 60388180034E;
+	Mon, 23 Mar 2026 15:18:25 +0000 (UTC)
+Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 36D171955D71;
+	Mon, 23 Mar 2026 15:18:16 +0000 (UTC)
+From: Chunyu Hu <chuhu@redhat.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	chuhu@redhat.com,
+	Li Wang <liwang@redhat.com>
+Subject: [PATCH v5 2/6] selftests/mm: soft-dirty: skip two tests when thp is not available
+Date: Mon, 23 Mar 2026 23:17:49 +0800
+Message-ID: <20260323151753.2576137-3-chuhu@redhat.com>
+In-Reply-To: <20260323151753.2576137-1-chuhu@redhat.com>
+References: <20260323151753.2576137-1-chuhu@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 63F90120002
-X-Stat-Signature: rqakuzhzzppzrsihqpazqqtnztfqrbx1
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: YiQVt-OoPvz_uGlvR2G-ZSFtBBaYoWbSv80Pf9gFvFQ_1774279105
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Queue-Id: 5FA1720003
+X-Stat-Signature: h7k89ezmb1rmhw5oum3fye6aatok64x3
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774279113-50263
-X-HE-Meta: U2FsdGVkX1/pPQ6ebMn6e8C+JCz7ITbm6iT+4IUUeXIHQ1JFmBSyi6YYuMDyv2DISI+cgIgwJaBV1Q2mv+S7XszBajA+R2Jna4gqhmAP5OIbUdog+nlbuIZ7NXQwM7PV3Es5lZsp8M4rUlYvMEqhuXkWDZTRvZnYb5OHhx4W+ooC85f7heqzAN+L4RaLw8Lk4UGhSPExeOIPzgLmgS29tO1YwuIz6mnQEuoR2LLWcD/PS4tklARyL0uGHOuaSE7RrJG4a/orxG/S/pc01yram/F0OT5gD5Bi6VVi12O2QTQfNBQlm0HCS/oIEsdhnESAg8HXxPM2roF8MUze3GNfMO8SdGdZPvhS7cuPrbt3NLfdM7VUkWE5y8JWS6EAX8v3RQ+PviZccwRzz3GdGBuJMaF2tFniiZKq8eimInHq4ziwE1ZUYo7DpeTNmEVURw9jhigLn9tnjFNHZMgAMQGCzD/s7XOAclMlY1/S6DtME2/sj+7wpT0OWCH1zUDa7DImsg9/ooW/VWrIGEMvDAs2X6/uUskQIspV1DsV1JSw1pCOBA7X8x+qBWQqotNBA7tbHel3kzNGta9nETf9HCjLDARWt5RAbtZ5d13xNf4S4i25Ac9OxjdF/HLrchGo5viK87ew9wFSw7M9MCIS5uusxAob25syfwUMNtoRanKUt2E60i/KdtKrRfYN71kWuvfAvhRor1mLZQI2csGMYi7C+Vymv4gUvSg/pu99F3LpTNVhB5JcCv7DRmPKbNZ6kt/blYHnSurdtLZX425Ixy/yEnnDI/1hlFYHe0A91JEEFpiko+C49xElR9h/9rMr1wX7E762NDVwWUzJkCMjDw7ZYecofOa+xMgsaLiz8duBWAQbC3bziuqdxIfHS4OP+hCJxyUGic7s91ykEl7Px+shNL9krKfaMwvveSaeVGFHeoTXlA+3woVuCmmuPRmo2NVwTD/2edUie8sce974xdK
- mKsu3TeR
- HhALLwF7aCffyerR5Jy+yOwrgIzJ+XUblYTo9osR+Gu77aWZxmfF2hTh3CLyLY0F77YVHbEFo43jv6JFWn4vjgllr3FBMRbU49BiMctHCSpuqXOSafsjuDTJN5iruURuC9Ql2o0nJoMZ+ikl3CvhYK5ikow==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774279113-927494
+X-HE-Meta: U2FsdGVkX1+46x6qYcypFRKZW0gSXtHjbmwR//61f4fxHa892NRkDO5L87dnqmaLsSgaRmS+6V/driY5SSFDeuuZvHAZGgrsHDuOO1GqedvsLQ1kqZIsfY0VQl/7nH+ft/otC0ekqnBE8ajEcAS9C5aJg9QLHkMM1/8gXXL1IDNaAPcioR2Tr4mFMB4lptvsI94ugCyIlJP+VlFC5NAhxx4MrO4KvAinnZ4QNkJPP1/t35bDvpUoBrd7NW7j+CLTdt8Ev2/lMk/hrhV3ZK2vyCvCOVLBErQl1u+AdIc6MWAZEy5CCfVGLETXvrYHQi+qYXdH6yYPqhg/FMRK33AvyWUbCBwEWbI4QcLa6weTvGePTZ8+iWPcGp/ZZsxTnhCQzdFacgQ410pBsoy4B7bllxP8Kz2jPNmFFdVsdVtCyRqnlR+y47unEpRR+OF53Q3H+GH7fC71EEXSHYXvdNAdea5edJ2EkKfoBAUy58elv+s9yPbBM4+BfG/RxGH6SZqfvCPkILQLGpv+74oU+jZ1ChRK3X7XwBjApjwIp/uN7T9gCdrpBePI1TVZ3dPN2QcLiZkjv7HdMw+Z8QayFfb09ofh+Y/sOG8o8x2MHghmJMhjfGwjmP6wapYSXSzUFF704XmTZ5ZmfMo0DgWKxITJdikAaapYEOdsoI0jB0UD2eTyzRAfd21RUIe4y49WMRJC4ogYUDQIROYCdNnFWDD5xS3kF3iPpGZ6MjgGNCJm8I6cAWtxhqa47TEw+7fUwD+TMsN+3SNtbrMDsWiVoTwA1v8HKbmbNda+GTqGLsyOS7j3WEzPyiiTXtvWafXGj9qqnMAA+qkTpIwlkHGlPs4/kwhKl2lrjeWnBRFnCRiKnBmIKCq6yLdKElByIzZEFmIF1BBb9ZatBKmsTeya43HebEqPbRvcnLFwKf6F7S5XGP7cYeubDtU+MwVihs2xqqczocONhj5Uxh0Cc6iKRnz
+ 9BhQZ2v5
+ td5kMUk00Da0DDI9vTxeZB2Nigrt8huUnp1q2hsXqEjAGO8R09seKIYlcglsrIjtAfUFsbdvYMRDA6/NSECUByhapb0Y0Uh3eilNoAFlYmuAX8KkQe2lNAg9wHXuP8Hjcddk3VLPXj/k5gwPvaOipKGofxxvdwCg5DsYMPVdsXAcTDIBl6EpGfPUbC9oK4Kcj1cSJqQYsSiCrVNpgDLcop0fmE2GPImNJ8bQg3qMjm0EcB52hNu/+s0dG8n4o4lM4CHJyl3O7UHwG9mOq+9XouqshpNN/AQL+S8bpF/y/fxxvJ434alVfZU7T5C7XS3/acWR2mFRitJIREI8HBR4mYaFfb7fT5fsgfQq2rZn6JJBKMpLOXXGh4RPh3BKWRBA5WKHTywRCjDfdz0E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,123 +124,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The test_hugepage test contain two sub tests. If just reporting one skip
+when thp not available, there will be error in the log because the test
+count don't match the test plan. Change to skip two tests by running the
+ksft_test_result_skip twice in this case.
 
+Without the fix (run test on thp disabled kernel):
+  ./run_vmtests.sh -t soft_dirty
+  # --------------------
+  # running ./soft-dirty
+  # --------------------
+  # TAP version 13
+  # 1..19
+  # ok 1 Test test_simple
+  # ok 2 Test test_vma_reuse dirty bit of allocated page
+  # ok 3 Test test_vma_reuse dirty bit of reused address page
+  # ok 4 # SKIP Transparent Hugepages not available
+  # ok 5 Test test_mprotect-anon dirty bit of new written page
+  # ok 6 Test test_mprotect-anon soft-dirty clear after clear_refs
+  # ok 7 Test test_mprotect-anon soft-dirty clear after marking RO
+  # ok 8 Test test_mprotect-anon soft-dirty clear after marking RW
+  # ok 9 Test test_mprotect-anon soft-dirty after rewritten
+  # ok 10 Test test_mprotect-file dirty bit of new written page
+  # ok 11 Test test_mprotect-file soft-dirty clear after clear_refs
+  # ok 12 Test test_mprotect-file soft-dirty clear after marking RO
+  # ok 13 Test test_mprotect-file soft-dirty clear after marking RW
+  # ok 14 Test test_mprotect-file soft-dirty after rewritten
+  # ok 15 Test test_merge-anon soft-dirty after remap merge 1st pg
+  # ok 16 Test test_merge-anon soft-dirty after remap merge 2nd pg
+  # ok 17 Test test_merge-anon soft-dirty after mprotect merge 1st pg
+  # ok 18 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
+  # # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+  # # Planned tests != run tests (19 != 18)
+  # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:1 error:0
+  # [FAIL]
+  not ok 52 soft-dirty # exit=1
 
-On 23 March 2026 14:20:51 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->On Sun, 22 Mar 2026 22:56:27 +0000 Josh Law <objecting@objecting=2Eorg> w=
-rote:
->
->> Currently, kdamond_apply_schemes() iterates over all targets and region=
-s
->> for every scheme in the context, even if the scheme is inactive due to
->> watermarks or hasn't reached its next apply interval=2E
->>=20
->> This patch introduces a pre-filtered list of active schemes at the star=
-t
->> of kdamond_apply_schemes()=2E By only iterating over schemes that actua=
-lly
->> need to be applied in the current interval, we significantly reduce the
->> overhead of the nested target/region loops=2E
->>=20
->> This optimization maintains the original Target -> Region -> Scheme
->> behavior while providing substantial performance gains, especially when
->> many schemes are inactive=2E
->>=20
->> Performance Benchmarks (Filtered Array vs Original):
->> | Scenario Description      | Speedup |
->> |---------------------------|---------|
->> | Mostly Inactive (2/10)    |  7=2E5x   |
->> | Half Active (5/10)        |  2=2E9x   |
->> | All Active (10/10)        |  1=2E3x   |
->>=20
->> Signed-off-by: Josh Law <objecting@objecting=2Eorg>
->> ---
->>  mm/damon/core=2Ec | 28 +++++++++++++++-------------
->>  1 file changed, 15 insertions(+), 13 deletions(-)
->>=20
->> diff --git a/mm/damon/core=2Ec b/mm/damon/core=2Ec
->> index c884bb31c9b8=2E=2E3b59e72defd4 100644
->> --- a/mm/damon/core=2Ec
->> +++ b/mm/damon/core=2Ec
->> @@ -2114,19 +2114,16 @@ static void damos_apply_scheme(struct damon_ctx=
- *c, struct damon_target *t,
->> =20
->>  static void damon_do_apply_schemes(struct damon_ctx *c,
->>  				   struct damon_target *t,
->> -				   struct damon_region *r)
->> +				   struct damon_region *r,
->> +				   struct damos **active_schemes,
->> +				   int nr_active_schemes)
->>  {
->> -	struct damos *s;
->> +	int i;
->> =20
->> -	damon_for_each_scheme(s, c) {
->> +	for (i =3D 0; i < nr_active_schemes; i++) {
->> +		struct damos *s =3D active_schemes[i];
->>  		struct damos_quota *quota =3D &s->quota;
->> =20
->> -		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
->> -			continue;
->> -
->> -		if (!s->wmarks=2Eactivated)
->> -			continue;
->> -
->>  		/* Check the quota */
->>  		if (quota->esz && quota->charged_sz >=3D quota->esz)
->>  			continue;
->> @@ -2476,7 +2473,8 @@ static void kdamond_apply_schemes(struct damon_ct=
-x *c)
->>  	struct damon_target *t;
->>  	struct damon_region *r;
->>  	struct damos *s;
->> -	bool has_schemes_to_apply =3D false;
->> +	struct damos *active_schemes[32];
->> +	int nr_active_schemes =3D 0;
->> =20
->>  	damon_for_each_scheme(s, c) {
->>  		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
->> @@ -2485,12 +2483,15 @@ static void kdamond_apply_schemes(struct damon_=
-ctx *c)
->>  		if (!s->wmarks=2Eactivated)
->>  			continue;
->> =20
->> -		has_schemes_to_apply =3D true;
->> +		if (nr_active_schemes < ARRAY_SIZE(active_schemes))
->> +			active_schemes[nr_active_schemes++] =3D s;
->> +		else
->> +			WARN_ONCE(1, "too many schemes to apply");
->
->We may need to increase the size of the array insted of just warning=2E  =
-That
->will make this code little bit more complicated=2E  I'm worried at mainte=
-nance
->burden from such a complicated code more than the benefit of the optimize=
-d
->performance here=2E
->
->If this is real bottleneck that bothers real users, we should optimize th=
-is
->even if it makes code dirty and more difficult to maintain=2E  But, at th=
-e moment
->it is unclear if this is a real bottleneck=2E
->
->I'd suggest to hold this for now, and revisit if this becomes clearly a
->bottleneck of a real use case, e=2Eg=2E, a user claims so=2E
->
->
->Thanks,
->SJ
->
->[=2E=2E=2E]
+With the fix (run test on thp disabled kernel):
+  ./run_vmtests.sh -t soft_dirty
+  # --------------------
+  # running ./soft-dirty
+  # TAP version 13
+  # --------------------
+  # running ./soft-dirty
+  # --------------------
+  # TAP version 13
+  # 1..19
+  # ok 1 Test test_simple
+  # ok 2 Test test_vma_reuse dirty bit of allocated page
+  # ok 3 Test test_vma_reuse dirty bit of reused address page
+  # # Transparent Hugepages not available
+  # ok 4 # SKIP Test test_hugepage huge page allocation
+  # ok 5 # SKIP Test test_hugepage huge page dirty bit
+  # ok 6 Test test_mprotect-anon dirty bit of new written page
+  # ok 7 Test test_mprotect-anon soft-dirty clear after clear_refs
+  # ok 8 Test test_mprotect-anon soft-dirty clear after marking RO
+  # ok 9 Test test_mprotect-anon soft-dirty clear after marking RW
+  # ok 10 Test test_mprotect-anon soft-dirty after rewritten
+  # ok 11 Test test_mprotect-file dirty bit of new written page
+  # ok 12 Test test_mprotect-file soft-dirty clear after clear_refs
+  # ok 13 Test test_mprotect-file soft-dirty clear after marking RO
+  # ok 14 Test test_mprotect-file soft-dirty clear after marking RW
+  # ok 15 Test test_mprotect-file soft-dirty after rewritten
+  # ok 16 Test test_merge-anon soft-dirty after remap merge 1st pg
+  # ok 17 Test test_merge-anon soft-dirty after remap merge 2nd pg
+  # ok 18 Test test_merge-anon soft-dirty after mprotect merge 1st pg
+  # ok 19 Test test_merge-anon soft-dirty after mprotect merge 2nd pg
+  # # 2 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+  # # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:2 error:0
+  # [PASS]
+  ok 1 soft-dirty
+  hwpoison_inject
+  # SUMMARY: PASS=1 SKIP=0 FAIL=0
+  1..1
 
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+CC: Li Wang <liwang@redhat.com>
+Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+---
+Changes in v3:
+  - Add reviewed by from Mike
+Changes in v2:
+  - add reviewed by from Lorenzo and Zi
+  - add acked-by from David
+---
+ tools/testing/selftests/mm/soft-dirty.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Yep, ill shelve this at the moment=2E Thanks for the clarification
+diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+index 59c0dbe99a9b..bcfcac99b436 100644
+--- a/tools/testing/selftests/mm/soft-dirty.c
++++ b/tools/testing/selftests/mm/soft-dirty.c
+@@ -82,7 +82,9 @@ static void test_hugepage(int pagemap_fd, int pagesize)
+ 	int i, ret;
+ 
+ 	if (!thp_is_enabled()) {
+-		ksft_test_result_skip("Transparent Hugepages not available\n");
++		ksft_print_msg("Transparent Hugepages not available\n");
++		ksft_test_result_skip("Test %s huge page allocation\n", __func__);
++		ksft_test_result_skip("Test %s huge page dirty bit\n", __func__);
+ 		return;
+ 	}
+ 
+-- 
+2.53.0
 
-
-
-V/R
-
-
-Josh Law
 
