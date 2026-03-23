@@ -4,102 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C65B7EC01D4
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8866EC01DD
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:08:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 280C86B0089; Mon, 23 Mar 2026 08:02:17 -0400 (EDT)
+	id 0406D6B0005; Mon, 23 Mar 2026 08:08:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 258A66B008A; Mon, 23 Mar 2026 08:02:17 -0400 (EDT)
+	id F0BCB6B0088; Mon, 23 Mar 2026 08:08:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 195D36B008C; Mon, 23 Mar 2026 08:02:17 -0400 (EDT)
+	id DD3C86B0089; Mon, 23 Mar 2026 08:08:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 09CBA6B0089
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:02:17 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8223713C065
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:02:16 +0000 (UTC)
-X-FDA: 84577189872.14.0419F91
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 904A740014
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:02:14 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QuhRDuSc;
-	spf=pass (imf04.hostedemail.com: domain of 3xSvBaQsKCHYdiihqiheUhaaiiafY.Wigfchor-ggepUWe.ila@flex--joonwonkang.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3xSvBaQsKCHYdiihqiheUhaaiiafY.Wigfchor-ggepUWe.ila@flex--joonwonkang.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id C55876B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:08:17 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68E88C358E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:08:17 +0000 (UTC)
+X-FDA: 84577205034.02.07F850D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CCC4218000C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:08:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ow8F15N3;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774267334;
+	s=arc-20220608; t=1774267695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=11OQ308MFdLAcgnywhabzk972DmGk7CFqQqmesqWA8U=;
-	b=yUT2lnvgbQbPUuweMknqFUPAXupKYBqNm/31ymm+m/I4eRTfz5+cAUx0AAKo5t3IX2ZnL4
-	ax3ode9oW0xcGv4CvSnnkyprXqcPuxxgcCCQOkhoNiihl5VrCo+IEJ3GKEY9eQ/z8S0H0p
-	v0ZWfUVn4H9vdvKsgu3MzIsC6S7yK+Q=
+	bh=UZkq9tvzx54BPQAmuVaJL1qTUOQ7K6UzWhURF3KhLC8=;
+	b=S6E1D9sNps/PuramM6eVHf5bgyToGlw2e+SiBdReOUbI4wiltOVvq46Y3SIOpKSs1aseR+
+	RmySIJ098SkCd9/UVea397/yjqz8i3TTNvjzR61SoudYKoO1lUpzZ34+YL3dzdaUNryiyh
+	h5715sEn7WskIQIS09cFL9ghHFe9O40=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QuhRDuSc;
-	spf=pass (imf04.hostedemail.com: domain of 3xSvBaQsKCHYdiihqiheUhaaiiafY.Wigfchor-ggepUWe.ila@flex--joonwonkang.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3xSvBaQsKCHYdiihqiheUhaaiiafY.Wigfchor-ggepUWe.ila@flex--joonwonkang.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774267334; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ow8F15N3;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774267695; a=rsa-sha256;
 	cv=none;
-	b=FMgwEAc9gHAm+yOmG+Ylpb8w3NtdYAZtT4f3s2r9cqXYy6BWQymN1FIg7rjuQxRWZPngUP
-	yoEypuP5vOL2kCWQlVUujS8fZFssR9bZYcHdSdDK2H2WLAIfDpYi65LL3qF083r6nvEg8g
-	02fQmWxcGy/vZ1o87ic3kbbC4CNRSb0=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b06c242a34so288460445ad.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774267333; x=1774872133; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=11OQ308MFdLAcgnywhabzk972DmGk7CFqQqmesqWA8U=;
-        b=QuhRDuScVuewk7mtGdiaehkGxK4fxyGHdnUanA+EkssA0Oe/Qn65w0d1zZl8l9xLqs
-         Hn7C2w2A9j/i+bl0FoZAARTXg9q0L355OXL2HKGRAynusq5l7M/lwv9kmUSwrVSlZGOg
-         Zr5CIP/x87lIGBPsSn4sb1P/0T6ZE6eQvD/Vw2iXQmTQfM27EmaY6lPMBuK4eXrxtDIC
-         Y0+R6bBhzuoMkDfNUlrvGF6FtoXfRu98PT1B1/IhdwZlEy+pbigv1TNOtaTB5gcpjerd
-         hL1W54hhS5cVRsMD729pZB7diZflwVNrWEzz+uF9JtDPL5he5/Qtqznk38WQwgY0DRmm
-         s82A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774267333; x=1774872133;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=11OQ308MFdLAcgnywhabzk972DmGk7CFqQqmesqWA8U=;
-        b=pRCFMDfaJ6//mTBZbKF2iXznIInp7HkrIwI2PYaxDbh8jEOTjxtNR8n+6AHjWuqsQK
-         SSXzRoi5Xhv0GAoMQtS2oKw0AAG1riEEshLoqD+TzdE/C/q9TWsVmuLM/kpbykKjSzgC
-         ZsmEV1IqxUFWegL/vdS9WcEDMlpjAOCzEVz7xspkBGem4G9ngadPJz6VTpbMwnD8msFZ
-         b+DVHpSJaTatLJNsWWICUdIcwTR+MwvmJSAset8leTOzZUBzUGVfDvsYv7j6sIXJ2He6
-         GnrvF1e2Uy4fPEYhPYG3BWcinbccCnezhD+gZXM6rCIdqmbxR5sCaSCLAoNYKu5PxZ7y
-         xozQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMScGHgxI08VBfF00CzB3jGsy/hE3OELfp9ftKLAg18zVweiT1ol6DC12m+B+cE0cuWyYT3u8CZg==@kvack.org
-X-Gm-Message-State: AOJu0Yz5Poq0rspNedJ6886yMKhHuEFKo5RJHP606Q4Z9lS+FG/mJh/n
-	wD0LnX6J7RV7CKcjwMHlaXebQQCz44ZGk/ITXWfoCQjaChkWbhTnD8n31z0rMb3cCHcdhOWIlK6
-	jAOS/enUM6XCr3GWAI87yUSpz3w==
-X-Received: from plba21.prod.google.com ([2002:a17:903:1015:b0:2ae:4efe:f1e9])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e74b:b0:2b0:5b4e:370c with SMTP id d9443c01a7336-2b082793bb0mr118653695ad.32.1774267333193;
- Mon, 23 Mar 2026 05:02:13 -0700 (PDT)
-Date: Mon, 23 Mar 2026 12:02:11 +0000
-In-Reply-To: <20260320120848.ba7ddc21aaa4edab8c2b5b58@linux-foundation.org>
-Mime-Version: 1.0
-References: <20260320120848.ba7ddc21aaa4edab8c2b5b58@linux-foundation.org>
-X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
-Message-ID: <20260323120211.3433694-1-joonwonkang@google.com>
-Subject: Re: [PATCH] percpu: Fix hint invariant breakage
-From: Joonwon Kang <joonwonkang@google.com>
-To: akpm@linux-foundation.org
-Cc: cl@gentwo.org, dennis@kernel.org, joonwonkang@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 904A740014
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bzw4maizrw5oqr577gsfgwrhq5s47f1y
+	b=1PwqT4zYuL9Tsz53VzKkYGRUKAvCnWZmWYKUa88lxxlYf0Ee705lYjQKsYbehxUfVVMp7o
+	rbd/Ec4owlHCBQkJqKUhCp2961aPIS6YcYgkQnO1jkm43jQRY343GpkqrwExt4DVUCplwv
+	vtO8+FbR3Mx9DIPNxo2WYZ5w0yr1xEo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 42B1D600C4;
+	Mon, 23 Mar 2026 12:08:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D84C4CEF7;
+	Mon, 23 Mar 2026 12:08:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774267694;
+	bh=HVL2c2XxLWRYOhyFGyoq+JVMfTkgim8bRc2ZQUAxWQc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ow8F15N3NDc02Bx+b1VQ/uGVJLjcb4WW0RLsXBuB22HVDvW8uXWLB0VxESX/3IqCb
+	 y/yk3wBlURyp3kbDJiwzuf/52dth+L82t58YEGptlUcDjLkxEVLN2h1jinbTOPLJZ7
+	 XHdKJ0XmKKhyg1nI8RWSNmnSbG7F0H3Sqh6jOdbgVU47lrZyK9vLEpslBMHRz2s1nl
+	 X7S4hmObgDPHVYlDACueMmPQembLuMjb/g6HOp2pu/DDFCxS7nAQlOhZEdB0v8RiWx
+	 r+4DD2rtcHyRiTTseoj+Y+fsvOmwBWD2dSEk12HTWiAMmKx1yxUM8C3x6pNJdJexN0
+	 D6sMZex969qJA==
+Date: Mon, 23 Mar 2026 12:08:13 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 00/13] mm/huge_memory: refactor zap_huge_pmd()
+Message-ID: <1d95d6b1-f9f6-4728-b393-15236dc8c208@lucifer.local>
+References: <cover.1774029655.git.ljs@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1774029655.git.ljs@kernel.org>
+X-Rspamd-Queue-Id: CCC4218000C
+X-Stat-Signature: wtpq547ska98mo3wzjono4f5jenrx7n9
 X-Rspam-User: 
-X-HE-Tag: 1774267334-56094
-X-HE-Meta: U2FsdGVkX1/i9bsw7BjZdWO6IVjjVm4Vg9N+br8dyzcRqWDV8gSmrvPRF+yw5MN3kKYWZVyggfnoXHY+snSk+8GU9flLjNt7bISzt6S54r5l8XhFhYANGVPtGgpMSQg5CVJDUBmRMker/JXEPn6NZDK48dMLoiFohru+Gx2hRnpPM2/vGL2xcgN42O0xx+KWkLtpmERQhECzB8s4DQGZH0LDuz1qrykqo8mfLK213W9x1AlKpNxzNa7LZlceP4Bj46YV9qrHH/fDCYi56KI+f5J2lFSbYKcS6eKX6OyVHnlz7y6ru9RjIyO7fOkxpUb19G+BOltNp2ahHMksdLyoqHqrvRuxt6cCodkLUhw3XOnAxCPArVyUQs9OpV382OK1x5d+7+jZ4/EOE3Z3ZSHxRiOiSGuR1rQ1UCfEwrhfb2kL0OnXAZytsw3sbXhVC3ycpSEjtotiXJtn5ClQS/lVTDmkoSXx96W2wdOXTgRQom1bt6R+6nRc7mZ6KHDzvp9Pai+2b9Wb6NXycH47oaCNy/i+++/oHVLWnMhxmy2ORYgqKxNevgpetilZ7flSIxB7eq4TnMR1OoN9KkK1+JbpGBeS1AruzGZTqao2nRzruPbhUtXD6mL+GmctspYO6yFrHy47q87BTJTi5HiOcGR6RIzn4N/ACX5bw/hPM4gkcRuF8hAjaWCTb6DPu3rmBj3HnGl13elqMSQDmT/dRNSeMqA4HB4vZg82k9G82+gl+BCZJAIyeDC/UnmY4Ol5WGENZEfDEuEzoVnMnCe86aqsH0Tu4yB442+ezY8JU1gFwWeIku8rlMFg7eGAAS37IdeW0x8jn3i7cEAHFDGjS6rWR94Kxqkgqhb64VrbB1seMqvRUCIfELxumOZe7OivpkttFsyVe8t+KP/mxkVbHHthfJLEjpueY4QPODEgAB/Gc6qfGp3JmkDdykKqHqWEJj76Derup05Rhi3w0ZiZoSl
- V7DrJdt4
- rLGMyYR0QiCxnKkWtOQf4g8xbtKal8ViBnFxwhqMzIKLTHmYnkw+TkEZiLyMVm0neKYnh0XTSKH400+whcDJWS7t17/4XIGRjqHTT2h0FrxNhFeSK0qQJXvMpuEulZbNyHxysjsHwTPZXVGEptf1Mk7A7IC2pOyVasreey2Kmh5YhMllRGXDmw7V5vzwKbI/ZF7P1Dudu+zuJgGLm9Ao6AqZ8oikE1cdv64MacuV7LCgD9/uX/z62UnqcVHpyJ6PaZTLnG4wfVfYjI94JI9Mo0lIMdghfJNgw/2GI8CO0JvBeyqPrGn7Z/clMpUFDo/xkopcGeWANlrxg41Lvk1Wv4C+ZZTdKTmZIpP8KthxPskmxnL+u71IvyPi9a3ouJEA2Ef2aausTDHckTPHjGOnAqjIFWBlW/iFhFxjLl1Xv1GXEQdgehtBQkU+EJ1WOLTk6p6B7SYY3tjtwo010jYME6772Ck7CGZDYxD/Pe7tYiMZr42GpeK4pIonXrLfEi9ovZGSjMfZpNcMtDZfPJ2Ury9dU7C7Nc+qDfTJ+xDDDPuDDU/6Q1eDpy4E8ZbZb5yF1ItZilDjhPxJV3JoyDOqR5LJfjYkReAaqK5TkTRA/y/Dy//Y=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774267695-625979
+X-HE-Meta: U2FsdGVkX1+xB0naXHKsRAbvdAx9oS6wy6UOs95VTTlwA3mwIR/WcBu+qr3clM+22WdG5iMibWU4hANot4PSsFrW4QkCBvOkYZE+Xa4ux28tmSGlLF6hjN8cfGpNMuW9LPewF2TU8Dwp3oYOKGHH8U9qbU91spSKJGOq51pRhtl3ViDg7Nr4aIvzmM1mlP6ruKN8tbcNraW1WYx93votdbtIc/8kBp85tutHgqVMTn4aFcvva0J8BqSRS6yoXp8RjCoTLSG/nxjeW3OiglfJzMK7K8ulZMsZBCghAVPsmwTV5CUCyCj7+I7pt9eb4HHmiWCIPqjcY8/hzOXT7hAhLTpnzdnuyf6fUnwU5lb9MHpBaGNdEdHKq77kW8CGCEiLaaBAwKGcYzdF6Wp5VMU4PQN1d1/ehU0RxpdSMAR0XbEsDj0kOaiNPLlSEA4OoL6J3MJ8iAyC2G2B8OLXoTnlb7w6wic8XdhEzxLVaiujjadzHPat4HZW7ECWqkkm3WFQ7qdITfrZyr0e7+iv70mbP95kNjLQadaFtePAE5f85uNZDz65+DKTIVu6M/mwUbgGZp3E6WFt1bICc8YU4clSXyCDIm71X10EEXACa0H6GAm5ycllBCGuSphc/nkoDpXSe+QGoZxT5pOSim3ybSNYZzkl3Bf386LK99V4xLv3S2lfid4Qwax+GfYi2dobRWJ8Y3tpiJBG/qTaxpB2U+AvmG/hFA4fyj7KvehJa4QZl8dYaMrJfs1AbQAeLpOeO97rUiojWLuL40UBShMarbSBMnJMpujcu/tJ0Ey9C3hWrUpP+LLzFHdE0fsyL4l8otiZ0XhA828XY2IzGJ5NqnJn0IoEfB1owIVFkFeITY2fd7qYG+mBS0xz+o2KYwuAV+VxVeI0o60PvRZg+/Q68xWgZP+eFAKQDb9mV3h4D/5tH/e2UtlIn4NfpPZ0Ut0AO9tcy9+8S7wzmCll4scNzwH
+ dwjF8qHv
+ rT0E8g9euwaAiTvPZfC7RchOce3HAC2pRQKkp+EUVGRlXn9AgYVamJMZpqYrAgUL3FtMDG965dP+7hQK3SS8nT0S+LLAzixIK20HFME80mWK1HNhcFR+DrZy9eyJ+ftUArTCww/0qwSUC2hU1VGSb85iCpzPh/CuluvnwuNnS4+hKZZBBQD94Ruk4wRt7ka/N7uyZCE462lR2JwHn5Mu1aLDsYb7GGMDLz8gSVOy5Y4HLA2d5nip4RysqeEZhDZzpS9vN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,48 +95,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Fri, 20 Mar 2026 11:52:14 +0000 Joonwon Kang <joonwonkang@google.com> wrote:
-> 
-> > The invariant "scan_hint_start > contig_hint_start if and only if
-> > scan_hint == contig_hint" should be kept for hint management. However,
-> > it could be broken in some cases:
-> > 
-> >   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
-> >     scan_hint_start < new contig start) && the new contig is to become a
-> >     new contig_hint due to its better alignment, then scan_hint should
-> >     be invalidated instead of keeping it.
-> > 
-> >   - if (new contig == contig_hint > scan_hint) && (start <
-> >     contig_hint_start) && the new contig is not to become a new
-> >     contig_hint, then scan_hint should be invalidated instead of being
-> >     updated to the new contig.
-> > 
-> > This commit fixes this invariant breakage and also optimizes scan_hint
-> > by keeping it or updating it when acceptable:
-> > 
-> >   - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
-> >     contig start < contig_hint_start), then keep scan_hint instead of
-> >     invalidating it.
-> > 
-> >   - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
-> >     new contig start < scan_hint_start), then update scan_hint to the
-> >     old contig_hint instead of invalidating it.
-> > 
-> >   - if (new contig == contig_hint > scan_hint) && (new contig start <
-> >     contig_hint_start) && the new contig is to become a new contig_hint
-> >     due to its better alignment, then update scan_hint to the old
-> >     contig_hint instead of invalidating or keeping it.
-> > 
-> 
-> Thanks.  Does the change have any observable runtime effects?
-> 
-> Was this patch inspired by code inspection?
+I really don't want to have to reply to every bit of noise generated by
+Sashiko, but for the sake of it, the stuff I'm not changing:
 
-Yes, this change basically comes from manual code review. While there is
-no benchmark result or others backing up the effects of this change,
-Dennis may help on that later as he suggested in another review. The main
-point of this patch should rather be fixing the "theoretical" invariant
-breakage cases.
+4/13
 
-Thanks.
+>Are other PMD handlers vulnerable to this same userfaultfd bug?
+
+That's completely out of scope for the series. It's not a regression, it's
+a suggestion for future work and so shouldn't be labelled as such by it,
+instead of listing a 'high' priority regression.
+
+7/13
+
+>Is it possible for the error path immediately preceding this block to trigger
+>a NULL pointer dereference?
+
+You're already at the point where something has gone horribly wrong and a
+bug in the kernel renders it unstable. It's not really worth trying to
+avoid every possible bad outcome here in case of kernel bugs, that's not
+practical and not worth the maintenance load to put such things in.
+
+Also if I add this, it breaks further refactorings for the sake of
+defending against a specific class of kernel bug - that's not worthwhile.
+
+10/13
+
+>Could evaluating folio_is_device_private(folio) cause issues if the PMD
+>contains a migration entry rather than a device private entry?
+
+If this is even possible (I don't think so), that was an existing
+issue. This is a refactoring, it'd not be appropriate for me to
+fundamentally change behaviour at the same time.
+
+>This isn't a bug, but the comment still refers to flush_needed, which was
+> renamed to is_present in this patch.
+
+Baolin already raised, and I don't think it really matters to leave that
+comment in there as it's removed in a later commit, and a comment isn't a
+bisection hazard :)
+
+11/13
+
+>This isn't a bug, but the kernel-doc for pmd_is_valid_softleaf() states
+>that it asserts the validity of the entry, while the function strictly
+
+This is a turn of phrase...! Anybody wondering can go read the function.
+
+>returns a boolean without triggering any warnings or bugs.
+>Would it be better to update this comment to reflect the actual behavior,
+>especially now that an actual assertion has been added to the neighboring
+>pmd_to_softleaf_folio() function?
+
+I think the CONFIG_DEBUG_VM assert itself is pretty good documentation of
+there being a CONFIG_DEBUG_VM assert honestly. Should the kdoc comments
+list the code too?
+
+>Could this warning be written to evaluate the condition directly?
+>if (VM_WARN_ON_ONCE(!softleaf_is_valid_pmd_entry(entry))) {
+>        return NULL;
+>}
+>When VM_WARN_ON_ONCE(true) is placed inside an if block, the kernel's
+>warning machinery stringifies and prints "true" as the failing condition
+>in the backtrace, which makes debugging more difficult. Wrapping the actual
+>condition inside the warning macro ensures the specific violated constraint
+>is visible in the console output.
+
+This is a silly comment anyway, you can figure out why the thing failed
+very easily and this is a common pattern in the kernel.
+
+But this is also a hallucination, VM_WARN_ON_ONCE() is defined as:
+
+#define VM_WARN_ON_ONCE(cond) (void)WARN_ON_ONCE(cond)
+
+So you know, that won't work, and even if I did it's a silly and pedantic
+comment. Plus you don't use {} for single line branches...
+
+12/13:
+
+While the comment about deposit was valid, the comment:
+
+>For non-DAX special VMAs, this also forces has_deposit to true even if
+>the architecture does not need a deposit, potentially attempting to free a
+>non-existent deposit.
+
+Is another hallucination.:
+
+	else if (is_huge_zero_pmd(orig_pmd))
+		has_deposit = !vma_is_dax(vma);
+
+This is the line it's discussing. So we're explicitly gating on
+is_huge_zero_pmd(). It's not any 'special' VMA.
+
+And in the original code:
+
+	} else if (is_huge_zero_pmd(orig_pmd)) {
+		if (!vma_is_dax(vma) || arch_needs_pgtable_deposit())
+			zap_deposited_table(tlb->mm, pmd);
+		...
+	}
+
+With the fix-patch applied this is 'has_deposit = has_deposit ||
+!vma_is_dax()' where has_deposit is initialised with
+arch_needs_pgtable_deposit(), so the logic matches.
+
+--
+
+Dealing with the above has taken a lot of time that I would rather spend
+doing other things.
+
+AI can asymmetrically drown us with this kind of stuff, radically
+increasing workload.
+
+This continues to be my primary concern with the application of AI, and the
+only acceptable use of it will be in cases where we are able to filter
+things well enough to avoid wasting people's time like this.
+
+As I've said before, burnout continues to be a major hazard that is simply
+being ignored in mm, and I don't think that's a healthy or good thing.
+
+Let's please be considerate as to the opinions of those actually doing the
+work.
+
+Thanks, Lorenzo
 
