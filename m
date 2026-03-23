@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D191F483F5
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:10:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 748B7F483F2
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:14:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C877D6B0005; Mon, 23 Mar 2026 16:10:52 -0400 (EDT)
+	id CDA966B0005; Mon, 23 Mar 2026 16:14:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C38346B0088; Mon, 23 Mar 2026 16:10:52 -0400 (EDT)
+	id CB2336B0088; Mon, 23 Mar 2026 16:14:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B274C6B008A; Mon, 23 Mar 2026 16:10:52 -0400 (EDT)
+	id BC89C6B008A; Mon, 23 Mar 2026 16:14:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A10096B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:10:52 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49FBA140D1E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:10:52 +0000 (UTC)
-X-FDA: 84578421144.23.57B9826
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3D1C640006
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:10:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kpJke4pi;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AFAC46B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:14:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3EFC81B935E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:14:05 +0000 (UTC)
+X-FDA: 84578429250.08.3D39EB1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 797614000C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:14:03 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FZ/588ny";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774296650; a=rsa-sha256;
-	cv=none;
-	b=QLJmYuAEfTGUJ383DeZnQxaxEnV4J+VhW849RvFQVFVt6svHqoaYIPWsr+/80KIPvSIztZ
-	UwQ3kh8C4IopXc+F4pL9FycubmsgFtKep8IHznPwTyKU6mBxqT/T6swehz/6EPm7/5qnm/
-	ZC0AVAreiV6pSulP3vHrWNpB1oZYUTk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kpJke4pi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774296650;
+	s=arc-20220608; t=1774296843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rDA3LEviAH2qBQ40EY4LQwYEptH2Jk1Bm298uBLWdOM=;
-	b=HgIMDhiZYKh2SuHq/0m8K4fEbOVuuCviiSvG/+OKWGCoIIJ/jM6qR+qd0zy6/T5FQZhNyc
-	c1VxjzAWYdNktook5qd602nQLzL0GlVDv0JJRijMPyM3xJ1UXzczXNjwOSnWnG1j0Yd4kT
-	adW/7zXiwrjZ6A1oCLeokSTEGvI9VD8=
+	bh=Siaf/OGZ/crySVQUDMbor3K01igBRKTGDp5SPc1Xh5Y=;
+	b=I3PUyBEB6ozK52nbQkoigxszlg28Gz9pq4CEqsfK6HzoELRB2tgpZNJq1UHo2jF0ezKxFP
+	YWxWCxfMcamiNCKJRFwTm2vx4tfdYKk39dwf6eTJju2hZQFbYcnj8B/0A+fs/KnEaQeCYP
+	kNSZHyRWC+r9xkHrAI3sH8MYO7lEI04=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774296843; a=rsa-sha256;
+	cv=none;
+	b=1kyZKbqzNcLGnKsb/hCiE51v5iQk3JwUqzCyCipF/+EGYPjwik3MClJCeeaj6QOhy+PUJg
+	dEftZDmKYR/RftxvmyVZQ3zGk9Ym0LE+5GPDzaurC0CTrJdxCEOR/Z1G4rBYQombaUuh5w
+	oF2EY+oGpuKe3GHfzSS24PWjfk9Xh5Y=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FZ/588ny";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 15389441BE;
-	Mon, 23 Mar 2026 20:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC58C4CEF7;
-	Mon, 23 Mar 2026 20:10:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C3432600AC;
+	Mon, 23 Mar 2026 20:14:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3399C2BC87;
+	Mon, 23 Mar 2026 20:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774296648;
-	bh=Nu64mlY3XWdB/UpmDs5KmjCgHvRnp4f74MyqaEjMcSo=;
+	s=k20201202; t=1774296842;
+	bh=JUBvAK46mTqd1zKJmPRXyBeGQ+jrNGl+ox/wJedLocE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kpJke4piH13sLowqeW1ymsR3YHAJzBvrh2tafIlfnppwQZ+DuP5tQtQBLqocDVXBG
-	 0KKgbqTXQjs4Yu8/FoXm/n3lX4/QsBnZO7/6MFvhbsRLrIODfHDYKZLUAxIREaMJ1T
-	 HYlZ4GEQrJWCe757vyluxTdXn8cmAyTIM1CQJ8WS7gEdLr3wdYgpL1JxXXpyWZHuip
-	 gt/3DT2fds1uGtMkWBiztX/XjBKEeZVB1uwUx3OBL4nAPtw+Mwho2PstqljJYLgejA
-	 mWmi10c2UhZKV0+Dv3OEQdPAtWnF8UDxyRSmArDgyd5lFE44u+i+77UKFlt7fh861/
-	 8razqpxdwgRHQ==
-Message-ID: <9dc0b270-f7e3-4bcc-9838-df49cb1e609c@kernel.org>
-Date: Mon, 23 Mar 2026 21:10:42 +0100
+	b=FZ/588nyVXdf+iwohY14/wPw69oa0j5gSw7/sS0Yv62b/kOLMQqf/7FoXOz3Dw0tO
+	 vVQdYC9Xp9Ts/I6BtozJJS/J1QQl16lRqSxwEUh8Cm6cxn8RTCquir5YHYD7Pmpf9N
+	 zT5RcSXaNg6a7Vyne/WozYrnm+AjypA6EYRxsTK/tpKZB4I4oSWsFqjSltMNO7PvtB
+	 +ePJYKJKdAlsc5qB0HcCuRI4eKCoIwfn4yxMg7v5/low81f+TAsc9MobIfk/HRH5Ii
+	 d+CzJ6oTqXQIwcjnPacAVcV8FrNrhYz6B0LOgtnvPkOvDAnzY9xG8QPjy3S+9ee4MI
+	 QpeyCuGjOsTiA==
+Message-ID: <71148f2e-cceb-418e-b762-c8dbd7a7eb1f@kernel.org>
+Date: Mon, 23 Mar 2026 21:13:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/13] Remove device private pages from physical
- address space
-To: Alistair Popple <apopple@nvidia.com>
-Cc: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org,
- balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- ziy@nvidia.com, lorenzo.stoakes@oracle.com, lyude@redhat.com,
- dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
- mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
- linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, jgg@ziepe.ca,
- Felix.Kuehling@amd.com, jhubbard@nvidia.com, maddy@linux.ibm.com,
- mpe@ellerman.id.au, ying.huang@linux.alibaba.com
-References: <20260202113642.59295-1-jniethe@nvidia.com>
- <4b5b222a-18e8-4d48-9acb-39e5bfe4e5f7@kernel.org>
- <abiloqDpIs046DJJ@nvdebian.thelocal>
- <b1ae55b3-8058-40ef-96f5-5caf97b1ace5@kernel.org>
- <abzUKN62gOA5b6FN@nvdebian.thelocal>
+Subject: Re: [RFC PATCH 02/11] mm/khugepaged: remove READ_ONLY_THP_FOR_FS code
+ in collapse_file()
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260323190644.1714379-1-ziy@nvidia.com>
+ <20260323190644.1714379-3-ziy@nvidia.com>
+ <7382046f-7c58-4a3e-ab34-b2704355b7d5@kernel.org>
+ <E8D52134-B63E-44E9-BBBC-258DF74B8597@nvidia.com>
+ <c20b7dbe-473d-4dca-a10b-b9f5267ad6da@kernel.org>
+ <AF9011D6-8EA4-4134-B175-BD2DAB748419@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <abzUKN62gOA5b6FN@nvdebian.thelocal>
+In-Reply-To: <AF9011D6-8EA4-4134-B175-BD2DAB748419@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3D1C640006
-X-Stat-Signature: 7a4kitauqcpfyyibx6phkww5syznit8n
+X-Rspamd-Queue-Id: 797614000C
+X-Stat-Signature: fc9nbsx4z11znfc1moti543bwwuad3et
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774296650-139287
-X-HE-Meta: U2FsdGVkX1/YuGu1pcGZ9dzW3K9QDi+H8ClnWdeyiLZxRyIc8pUB69AV5Q/i/pyeQBhZU9Tak8k/g1wiKZMsBCZKzGg/dx6XFq3L7Y2MbBAvKsfFqDK4v2mloo49gen2xKX8r9yMYSSbrJoqWd0wmK1AMb6ydzDL6Dj9lnMeyBBUTSe6ykAgv6T+w+izepg1C25sKgoG8475tPW6OrKcTNq4hG8XrAmCF37N7NWoAaSQrBm6NpT5gfbON3uPrmEWsepoj4LENh1nmNriHtdqaeSvQYmxSSsU31RRn4BRIVzTLzklQfERa//vUAIEKxles0Np8Pt3lqBqoYd1OkbkejYLGJy+DhHLHWfIVBFDYm937uVw+HFMcxf3YjZgDt7j/3T2CIEeTuHJ4z3X9I/zr/sm+FKiCstSfsLYw2KbTrLqetk92o+4EgY/xZmw7ElF3xgNTBEIZvYwb/Oz73kFh07LWjdpBPNHLZId8YryECw509o2eqJRUoeVVH0U7eTqfP8sMn5+PrxyeuPp9Lz/qgo8N16mwjw290VmmFWoy7rws9wV5fXoiYWjcY72X3cEZjiZiZJbfuBIJmXMJxDAu8Pj2naQFXXUhAslJPkPJF1tpsAMhXT7jrq1W5jkgEu9Q52+miUvp2mPJBOb+tXz4rYef4seW5n0OGqym1ZhYEAbbC5/zYwm4sfH+P9bFEB7xAYHq7gvZfwNrlm4cRH9YzcgsxJTbHJU0k2elpCoAnamXDWdeC/nG2vcHXRAtsCv2BORNPa8zoTN8WgCNhAvOdo4ErrT/IDxBth6ao97HsfsT2ATydRxzbiq0YdtJuKok/4OGE+CKbyBwhEtQnqSKiJAMGNSBEOKqyU3oR+BtMU1Jq1nOct7BmeKC+dxejqdg2XBRBRdXgg/k7yOM9R+t1pY3M8Db+agQtep7tq/WlTn3g6P4hrJ+7ys1hi2mRoTIaR1Ph45dSGUmTSyMyJ
- Qu9whoGs
- g47r2V+jNMGx8hiGm3a78cDXdOFX0NiGEg2b36A+fMAHLE7SW1+gXshV6ITcF5Wpk0UdL1YUCGju5XKtKdDr9DJHuKYLmCEPusofhY87kPgJFUdDP4WFNaKbCOyw3ouFlM2+ZDaEA/9WzbiP8nuKNR/J/0gC2rCiIktnShduWxNM4Q8opQ2slezZVgGGwLRX/cr3CIaUy9L+VBkmykSLLlbMgpMUSeOBVyUs4gh547A2dRc3Fy+DtoBIrt7v5zMczza7ohLGlpknfqLhuKXH6YZiNzDFy/ZYEHL5A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774296843-877039
+X-HE-Meta: U2FsdGVkX187q39aua35/hSrfjkfiuKl/Jmf6nEo/LlSsu15k31ipBZyrdC1YipdpzkAHYmGYLvO6q4q/qi5/FByeJxW2mIc66gFD+vikBGQz2AuUHdrPFvDLQjWROdSsKi1wlkzUudRdb2JUWUdxbxvs/5hP5x8WaH1mlwu4Y4/MJqjUU7wxRzGQMK99g8K93SCwq3qWgOWbEZPM0w6lqJisZj7NBZZvoO0fzcEG9fcbIYZn7E5vLSklj8nB4Pf/gqGTag81neccq0rIrrA+nvQnm9q05VrQE8P3O+actKQjjYMt2RGuR+d5zhpO5Jq7FQFzXRCSw2KCf5FMF3C9nlkqEqW6TtckhPdW3HSrsz0eClyqgTX6K2ckhTjbC2GZ71UQrmz9EQZHAyA/NduV5WTKV2VN+qaJYsHb2MznV1wOMJK4Du91yFUYsFM2pl+qL23+2kqISJ8V2Wzt6qAOXBDmHOpMHXoATczVkLXESm7jSM2FEXdB7DtqowUXsXJBeDtSEIUmKSxkZv1PWThXypafC017gGZDCqcyb+zSH5RXOhbV61I6HM3ryHra6l0WKe5LAYwweZKdgPO+lS+N4vYezHHLDSX0t3LwOUlkFTht7lHjLNr+qx9MBvfnaqhhlY/rJiJKKmdlsrSOWwhZnKouaIMsQCoIpAsy40X7UxjcsjvoF+MFcmmMV84rR0TWiFc3pV43BrCgNKklwnoZ5vNlL8APW8lgSzWII5L/C80CwUTtE+qTlA4PKkVhCbYdysNF271k8pscjsbIrluPiphXiX/uCEhH9GwOm2Byi7RQztiqZoWlVwXnd8ggYuGxCUVt4lVYhwWCAWvmtwY8Dq2m0C2wlNa9UlgUEPbP4bA7uofzwYhoXRZFnR6s8gdH7ppQsZ3XAehWuWojfsvgsHTJnVI5Z+ofLW09KYPm12n81uRRGEWj6pcvIMlJFIeemByizgJOHUvCU11bDa
+ PWVhyVO4
+ uWzs9Vgc1Ed7/beO8M1xLIEfSHr7cbDyVJPIZRzgPjuwJaGoZn6sZsiOX5S0tYfRW8zjkQDupeNjNzJ5k5ZHW9hRpa5FQcy05c5mJusc2cbMKCl187J8TURNMCycJPVXay6tqjpkj4rHXn+uKcyLfLZN64BWR9Y8CFGhrmKjEc4h15HfPJqBUgwi7LenOUD36671xu0Hn3nJ3xk4OaaLuA515bClTMpyjQMF6ZPotmsW9DK+jApbApGI00zWXL/X/BkL17/C/jFPHOIaMkMNTKV1rchONWjXWeAibLJtHvDCzvHd2RbNlt3w7sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,115 +155,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 06:52, Alistair Popple wrote:
-> On 2026-03-18 at 19:44 +1100, "David Hildenbrand (Arm)" <david@kernel.org> wrote...
->> On 3/17/26 02:47, Alistair Popple wrote:
->>> On 2026-03-07 at 03:16 +1100, "David Hildenbrand (Arm)" <david@kernel.org> wrote...
->>>
->>> Thanks David for taking the time to do a thorough review. I will let Jordan
->>> respond to most of the comments but wanted to add some of my own as I helped
->>> with the initial idea.
+On 3/23/26 20:59, Zi Yan wrote:
+> On 23 Mar 2026, at 15:53, David Hildenbrand (Arm) wrote:
+> 
+>> On 3/23/26 20:47, Zi Yan wrote:
 >>>
 >>>
->>> I disagree - this isn't hacking in another/new zone-device thing it is cleaning
->>> up/reworking a pre-existing zone-device thing (DEVICE_PRIVATE pages). My initial
->>> hope was it wouldn't actually involve too much churn on the core-mm side.
+>>> My understanding is that collapse_file() is only used for
+>>> READ_ONLY_THP_FOR_FS. If FSes with large folio support also use it,
+>>> I can replace IS_ENABLE with mapping_large_folio_support().
 >>
->> ... and there is quite some.
+>> Otherwise we'd be losing support for THP collapse in files? We'd have to
+>> cross fingers that readahead gives us some.
 >>
->> stuff like make_readable_exclusive_migration_entry_from_page() must be
->> reworked.
+>> So we have to be a bit careful here. We want khugepaged to collapse THPs
+>> in filesystems that support large folios even without READ_ONLY_THP_FOR_FS.
 > 
-> Yeah, I was displeased to (re)discover the migration entry business when we
-> fleshed this series out. The idea was basically that raw device-private pfns
-> can't be used sensibly by anything in the core-mm anyway so presumably nothing
-> was.
-> 
-> That turned out to be only somewhat true. The exceptions are:
-> 
-> 1. page_vma_mapped which I think we have a solution for based on the comments to
->    patch 5.
+> Based on[1], collapse_file() only works on read-only fd. So it is not
+> as general as all files. If we do what you suggested, the function
+> will be collapse read-only folios from FSes with large folio support.
 
-Yes, if we just have the page/folio we are in a better position. I
-*suspect* that we want to pass a page range, as the other two weird
-cases might pass a page, that, in the future might not be a folio anymore.
+Right, I think that's the first step to keep the existing use case
+working. Long term, I suspect we might want to extend that to writable
+files etc.
 
 > 
-> 2. migration entries which obviously we will have to see if we can rework.
+> BTW, has anyone used/relied on collapse_file() on any FS with large folio
+> support?
 
-Please look into encoding this internally, using one of the highest PFN
-bits or sth like that. We don't have to support this on all weird
-architectures.
-
-> 
-> 3. hmm_range_fault()
-
-Yes.
-
-> 
-> 4. page snapshots, although that's actually only used to test zero_pfn so we
->    could probably drop that if we just guarantee device private offsets are
->    always invalid pfns.
-
-Right, I think that can be more reasonably cleaned up.
-
-[...]
-
->>
->> It will likely still be error prone, but I have no idea how on earth we
->> could possible catch reliably for an "unsigned long" pfn whether it is a
->> PFN (it's right there in the name ...) or something completely different.
-> 
-> The idea was (at least for device-private) that you never needed the PFN,
-> only the page. Ie: that calling page_to_pfn() on a device-private page could,
-> conceptually at least, just crash the kernel because it should never happen.
-> 
-> Obviously we identified some exceptions to that rule, the biggest being
-> migration entries, hence the helpers for those.
-> 
->> We don't want another pfn_t, it would be too much churn to convert most
->> of MM.
-> 
-> Given I removed pfn_t I don't need convincing of that :-)
-
-:)
-
->>>
->>> So any core-mm churn is really just making this more explicit, but this series
->>> doesn't add any new requirements.
->>
->> Again, maybe it can be done in a better way. I did not enjoy some of the
->> code changes I was reading.
-> 
-> Ok. Was there anything outside the exceptions above that you did not enjoy?
-
-The last patch was hard to review and I am not sure what else is hiding
-in there. As said, breaking the patch into logical pieces will make this
-a lot easier to review.
-
-> 
-> One idea we did have was to make the PFNs "obviously" invalid PFNs, for example
-> by setting the MSB which exceeds the physical addressing capabilities of
-> every arch/platform. That would allow dropping the hmm and page-snapshot flags
-> although is still a bit of a hack.
-
-I mean, that might be cleaner, because *maybe* one could just teach
-pfn_valid() about that? Or have another, more lightweight helper that
-really just checks for "ordinary" vs. "special" pfns. Needs some thought.
-
-Using the highest bit as "this is not an ordinary pfn" might just do.
-Maybe some highmem considerations (making sure we don't run into weird
-stuff).
-
-> 
-> Ultimately one of the issues we are trying to resolve is that to get a PFN range
-> we use get_free_mem_region(), which essentially just returns a random unused PFN
-> range from the platform/arch perspective so an architecture may not recognise
-> them as valid pfns and hence may not have allocated enough vmemmap space for
-> them. That results in pfn_to_page() overflowing into something else (usually
-> user space VAs, at least in the case of RISC-V).
-
-Yes, I think it's a noble goal :)
+I assume so, because for executables you would have to be lucky to get a
+PMD THP? So I don't see the non-khugepaged large folio support on par
+with khugepaged support.
 
 -- 
 Cheers,
