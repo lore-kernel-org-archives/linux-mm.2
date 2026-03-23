@@ -4,191 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 907B4F483E1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 18:46:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67758F483E4
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 18:48:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7B0E6B0005; Mon, 23 Mar 2026 14:46:07 -0400 (EDT)
+	id CA6F06B0005; Mon, 23 Mar 2026 14:48:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2C276B0088; Mon, 23 Mar 2026 14:46:07 -0400 (EDT)
+	id C56836B0088; Mon, 23 Mar 2026 14:48:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF4396B008C; Mon, 23 Mar 2026 14:46:07 -0400 (EDT)
+	id B45D66B008C; Mon, 23 Mar 2026 14:48:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A169A6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:46:07 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30EE25C7FB
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:46:07 +0000 (UTC)
-X-FDA: 84578207574.06.CCAF14D
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 208DC40011
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:46:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aEq4DTjL;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A63356B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:48:21 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4CE8E140CAD
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:48:21 +0000 (UTC)
+X-FDA: 84578213202.16.C7537AF
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4C6D940015
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:48:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bxpMiN27;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.48 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774291565;
+	s=arc-20220608; t=1774291699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xr0QXHWwKEApSlK6QljqZmiVGPlsHc0lfppFGa1RJnk=;
-	b=JD9QoPvSGlsgfYb4Mer6T806hZzpBdLy0lXw2+e4L+grukFOpFkaZo35KMwb0XtyFb3qFv
-	/lwg5sCDTtNgY7NGjqmsbeOPz2MopNRLUn6BTXJX3BiEjpHDG/RxUQ7s6qbhZve6rgTdVf
-	k0l6nq5mNhaYN3lnsz6vOTIsZuNtrtU=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774291565; a=rsa-sha256;
+	bh=vcYV5qmYcsnRNOVKxHhuAn3tOig0z+BjjlFLGSFtEKI=;
+	b=P/uZB8t1uLM6NS5Ut/FnKV4Kv8EOtg0Gm12ubxe++mEMmYP+5jMF2jGbN5cm3UkHv1flKy
+	7iZ8xcR7OQDgwbOgx0+I4hoIpVF3eAzv/daJdEeXKQAcMeH2k9aJxSeaw5Ao5QMQsy4EOr
+	R4sOWjzTM8UqQXu/p3MPImlHQ8OWmwo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774291699; a=rsa-sha256;
 	cv=pass;
-	b=6AQhdGB0mMBkWZXzkUnAx8F4eRUAnN/15rVnE6E67Ly2IiGUIvvDRT7hIR/Mcahe8P6Mdk
-	8zJZHJg7ZyQ/TK7UwdR/bdPHiUCk+unnllLF8SSn4AUXMDTaQMhd0lUVn/C36gARfMov8P
-	lZuTmRl+lm5gIZmMlqt/xiqhK5KtHWI=
+	b=7J6W+JDNFx13Q4Q8vjUve8uPSQif2LS4zt4QBVjWEkzcAOR1VK1qGQ77K3ZaMWp8a6HcBc
+	3P57S5O7Rh0aIdERczeNei2/kbA7uk7PyN/jq8ZGFd3ZA+bIZlhlQ5A5S4Jm41js6cH9x+
+	T5qMIs854vmUmQXixjzeKRELrb5ePwk=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aEq4DTjL;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bxpMiN27;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.48 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-5fff77ff719so327275137.2
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:46:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774291564; cv=none;
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5091ed02c54so56021cf.1
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:48:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774291698; cv=none;
         d=google.com; s=arc-20240605;
-        b=c6b0r+qvQ3/WD1/GV8v/20JtgDIAPzT7TOOktTHZnUO6MMIkaSzPPNbJ6jIVCEAVuJ
-         Nhf5vx/rpJpGyNdhybq74O1m/Mkl5ZIiJBAH24EJMoqa0G0DGFoIPgbgVtgWlHSHsmK8
-         AgTdQoiClaHu/OJuBazvjXPXcUyNT7GpRebPxwB0LcEDr6/eEHvrQELTnmQmutP1ZuFK
-         03wWTuxTNohuGkHaaBOXbpFSZW3hxHDFWoCQX4cylJs5m5H/PEXznutPTwl/9FExtUg0
-         gGS3ha41kcH7HXQOE7TjM0bFUeG4D6iZJ1mbW3jiqDqC+nsd5xyv5tikWyW1l3hPN86l
-         J77Q==
+        b=EJGEQYTdishHEUWLi2Gv1R7FE8hIWRQHY5BbUQkmF08jaWS3k/MMO8xWlnHbuyTcIa
+         xQn8grxjqMtQa2KhKLvNYVxNoONs3hGFX1Tf7iN4fbJtszXkI5JzKULp1PhnNdUT0/jk
+         OsrwMZfo5LSyT+aw1Fj8XJlE8F2hB9ANGHRjSG1g7/zNBT4FnsLS1vtUmG54bKBFjuGT
+         Q09Qm7EPXvRc6HD8aQ2r+CtQKx2av/kEjFCC+aIc0XTzDn+5+kjEefC6SWrtvwaWrm6L
+         V5+FxJBAQ4Cy+2m9HHZG06LKvF1pUThFxOauAG7BvI7+VOGQcQII3s7jLolCsMV65H4M
+         f0+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=xr0QXHWwKEApSlK6QljqZmiVGPlsHc0lfppFGa1RJnk=;
-        fh=kQAY6v1VdsfBqMXxxFmA70a6rSIiC3KV/WRVH9cOF3E=;
-        b=H3uzZQ9E+wyJdcqUkTmGlrAi+FJKgaLoXW1BuxLpJN1J7PDbyjnVsmnq+JWGuXZbz5
-         xRxTvjHpxeSeTKpMd0n5l6iNdwXVp4Mtgf6moATiDmWGswU88zuhQ2tEoQXBpohHXFbd
-         4f+eFw/J0etjaU1dSgR+r+VZlrLAnncqYlTu/mFH6Az1jtKB/HJhoeA95oJub+Dg+rFg
-         yaH3lgcbcTslwNtuVOIk/LWn0rrw+eql84e8B2kP3Xt6A7zR4mdritHEJFg8TUtL/20a
-         M3tjTWO7o4FrnaVZamgBVggBUpuDpMEKtcTlV+Bb/ie/fguq9Y6g1OuMN6Z+KTmXyZbn
-         PiCg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vcYV5qmYcsnRNOVKxHhuAn3tOig0z+BjjlFLGSFtEKI=;
+        fh=Xu8g70JVMfJ7PGYvkgPwr1zdD7BMU8eTzZwClnIm4Lg=;
+        b=ZkeHRq8mtDPFExhMNE7A7/5wd9DCb7zQAzlT/+PZ6VtoUTXDpWqu9wZSSRxyWSxU2G
+         /yAS4Xlt2fC4ZufD4QGoBkqqyUd3YHUVg/Vvdp1d5sm5aqmBV6mO6QDjwzO+V7ODnDBN
+         77v8plupxlRxKDVr8hcwgWxioX7mlOLstWR2h6AC972CRghJ3iWZE9LIZAQQWLlKcPSe
+         X2HxkOw90lAifDfTqWvRRUAJh1hOq/Wqwtw28kXIzhk4dtZn2ZWW4E4osL0cQO30gaJG
+         uuf+RyQHMIqBVijaaLoO3Is4agguAlJLZEInvjxc6RYJ160lCwgi0up+uC/ugZz3n/WR
+         fJrA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774291564; x=1774896364; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xr0QXHWwKEApSlK6QljqZmiVGPlsHc0lfppFGa1RJnk=;
-        b=aEq4DTjLAZc2dmbyrSfW/sh0+Wg2MiONIPt+G6AJBj4Ggl78ygYdL2jNieIUaVqnXN
-         AMSDkWpbRmaAIdw9BQsDbRre3iKqg/hZwB8vTCCB4D9qk2YNvIV0XYpqBE6VPJke9+I5
-         YqxwW3D29xTenE140D09kdBOWYYP/tPq0M/LDQjUtmY6lDJJll3YjP8BSk/PBWcAQhlg
-         jhRnkgF+s/SLaOrNX1/U9iSW1hsBBIAxTrTh/ZXygNLfsE7uv/F5gw5600Jt/YdQ6oe6
-         QBACP9aEmzhglapj9hxnI5bjmUWPYVxLgHdU9Khq+Yn0xke2/f4frnkgxkWKPUT8j/a7
-         iRAw==
+        d=google.com; s=20251104; t=1774291698; x=1774896498; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vcYV5qmYcsnRNOVKxHhuAn3tOig0z+BjjlFLGSFtEKI=;
+        b=bxpMiN27Ow+/Jbto/tQJvZYTzIbLfy1mQXpk/6NTDRGECElR0TBtatezShrdjz1hdc
+         PGZbbSOYJElVCulZJTrLEV+k9yFiIzBfrD5AXSgrTMzf5NS0Av8PWsu4lLNJo1OT1+pW
+         xPxLfX0dvMAcvyxFG/w2lB1zUY5GdGsb0+eS8iG+op2SQQhwypKZmkC4To201fBFxk5y
+         M0kBQ5r5lATb4ixrdOQrVQYOSftnjpYmukWsTC4G2MMDOTmxJvHGJFj/WOruHI94G7Mz
+         WOdd+rph60vtXi5st/DLCjJaGLVRDNMYizpkFt+s3zAoG1Ky4CMbrLa5aQW8aeFXAgFS
+         6emg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774291564; x=1774896364;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xr0QXHWwKEApSlK6QljqZmiVGPlsHc0lfppFGa1RJnk=;
-        b=V9vrCQ36jycUqAg1scFvOEsj24wvU1RX2pw+X1uYtA+eucV/b3Mgpejm13q0fL90hj
-         NgZxurWVpqvTsNY/K+jHFv+qRaROmAMxN76ux2C38fRvZz4pim0jEsAKnuvXi8SjAUbu
-         JRLJenz6m7NxkWSO+EvAm3nF1ItTJwU6GbIT/rb21PCg0QIHIu9ltrMTvKcejEUI7pWv
-         TjtV5immY2XmBH5+SmumomkcWC76KPJm4tzX1KhG47I6NGhPXOZYv77vU/7gi6BPDeFg
-         6heqtptTTXpB5c6RZTb3JQ+YSxk4I1hZ2rMQ+lJ/u4gpxuKg2p0UMoZw0lgH6bNw4qp8
-         73dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlxu1KdY7TrDIR/CgCGVxqZUfn01p0kaVZnzPsQ9yj+drQDoY26I7qGv0y3iWzgC1rixoruy13Pg==@kvack.org
-X-Gm-Message-State: AOJu0Ywo+6n69jlzaw/FBDfN94hqSDnDET5XZbsDA0h9lQiwIEulOTY4
-	0tlqeoPJeuaDHvhb7iNc3YxCrZvgjn/FF3XxtyD3DBgNMK7mzujtz9oOWFLN6ybv7gSx6352Nj3
-	gMU+889eq23yJUSQOlajkj96FpFzr1QxWGlc3EQtDcZ8iH46DlPWMkG9JNqE=
-X-Gm-Gg: ATEYQzzZ59BWAoMcByUsVz+7H3k8qXwDtZwAKs6/SODA7TqEoKiZxg8Cvem5jYFuEnV
-	yLX+pygh1D4Y7GrhLNAX2yDhwGjx21h6k/eDEb6H2BXbzwSxLHPpe85W7o026dEjrXr7oB6xgwQ
-	77yqRx4H1ObOr7vuLlhFwJreIWL7s3KCxrSZpiy/k7S9w0J/mpwJopRCIK9e6Mm1iX9vHeZppjb
-	ZO/57WCmJoR5C6a/YwZLcar3wMRZjNRJ3QhfEwtyEmrG9tVrbtaLvo9+nkuz0ETViIJigGUqXTB
-	x4rTLlVXIdKwnZqybRcfuvuyFB+4BQOAAhp/zAf+mVrHjexz4ummEYoue/KA+INUfegDOA==
-X-Received: by 2002:a05:6102:1610:b0:5ef:8ae:85a5 with SMTP id
- ada2fe7eead31-602aeb231f5mr7205779137.16.1774291563158; Mon, 23 Mar 2026
- 11:46:03 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 23 Mar 2026 11:46:02 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 23 Mar 2026 11:46:02 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260317141031.514-4-kalyazin@amazon.com>
-References: <20260317141031.514-1-kalyazin@amazon.com> <20260317141031.514-4-kalyazin@amazon.com>
+        d=1e100.net; s=20251104; t=1774291698; x=1774896498;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vcYV5qmYcsnRNOVKxHhuAn3tOig0z+BjjlFLGSFtEKI=;
+        b=qbq/vLsNHG1TNkz1X82e0Vyjugq11R2Z3zxOu2WLYl0ZQW7cSTegXXv1IbG/45L364
+         YR6Ukha5Kwx1tTjnmzJJxWSqrmibH5b3eMw7mhdAu9EMdQMmBYy0UTBPxTHBq91Uwr5s
+         i6ji8IslePsxoNEWUkFc6XsZsSgU/6kFXTUgcsVAALzrhEBRCzeFkPgD4Rqp3pBaowxh
+         eWhRC1s80FXQwAW2zjOmzoK0WjSS2BRHPA+/ilW+SpSMSIyP1cDureUC1coDXywKoW66
+         vR78Yef4YugqPG2mwVR5knbJwagHOKebqj86YV/eNXx0BL3h4WYc/VNJZ3SG2AfGdT4I
+         vC0A==
+X-Forwarded-Encrypted: i=1; AJvYcCWAigtBIOZ184fN783HGzr+k52yyjBSpVs6dLzypdVg1COD5/RNoM1ZIjYzj2gVwuTeTEWXSfrLUA==@kvack.org
+X-Gm-Message-State: AOJu0Yw+vzecNir5KfDSh4LgeOo44CmX4bfLr1tpBFDNTo8bsiqnt6FE
+	Mj5/dzz05NuEL6aK8wY64TtmwLJpgCvD/kJJOrnCRX79kFwifIpReecse4hxIpv//G4WLx/gsQb
+	sF0VYDHFvV0GiEW+hBdxVty5u4VQtK/TBuHk9lY9g
+X-Gm-Gg: ATEYQzytqD2OaCagWblXWULpZpPCvZeU4OCCVWNZGQHfxpqKaML64mmYBwgkTq9kfn4
+	fIM9Qm9ccvNZNUH78bQ9Bw5N6pFO9fbRUwuuxRizzGkTSJX/sDSRQqBfhg7bBI7cTnZKGZsNHhi
+	n/6VPdwGn8Y7mS3Cm/SpECUOtlGmCA22lcF+eotfmRa0io6CsTxI5BJqP/IJBL9nuW/O329iH3G
+	JUiNbHUUl6aNTfKAMSOh7WSjjm32kn9IuXWanMaP+AEg9QtceBZ5VAdJ3+1dfJj2nk6/38Q0IJk
+	rBkdZbUZfbDCfn4+
+X-Received: by 2002:a05:622a:1f85:b0:506:a3c8:d44d with SMTP id
+ d75a77b69052e-50b6fd357cbmr1787911cf.9.1774291697776; Mon, 23 Mar 2026
+ 11:48:17 -0700 (PDT)
 MIME-Version: 1.0
-Date: Mon, 23 Mar 2026 11:46:02 -0700
-X-Gm-Features: AQROBzCRQmL2CFh0hL8G9T_h4E5mqLNycY6Q5fv3k8u-7tLVQqZDWt6l_fOQ864
-Message-ID: <CAEvNRgEBdi49ZkfGo0xmM+J1yzKOzfT2ThAXEN=S0j7vC7Fu3w@mail.gmail.com>
-Subject: Re: [PATCH v11 03/16] mm/secretmem: make use of folio_{zap,restore}_direct_map
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
-	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
-	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
-	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
-	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
-	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
-	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
-	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
-	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, 
-	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
-	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
-	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>, 
-	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"coxu@redhat.com" <coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, 
-	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>, 
-	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com" <tabba@google.com>, 
-	"prsampat@amd.com" <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, 
-	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>, 
-	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, 
-	"alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
-	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
-	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, 
-	"hca@linux.ibm.com" <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, 
-	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
-	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>, 
-	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, 
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, 
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com" <urezki@gmail.com>, 
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
-	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>, 
-	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>, 
-	"osalvador@suse.de" <osalvador@suse.de>, "pavel@kernel.org" <pavel@kernel.org>, 
-	"rafael@kernel.org" <rafael@kernel.org>, "vannapurve@google.com" <vannapurve@google.com>, 
-	"jackmanb@google.com" <jackmanb@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, 
-	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>
+References: <20260322054309.898214-1-surenb@google.com> <20260322054309.898214-4-surenb@google.com>
+ <fb38ecc9-36f8-49a1-bf20-a2c03244e574@lucifer.local>
+In-Reply-To: <fb38ecc9-36f8-49a1-bf20-a2c03244e574@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 23 Mar 2026 11:48:05 -0700
+X-Gm-Features: AQROBzAcISvCKuZDTq5gxGva_UwU6WnzRjvi5ru0PTUHh42qSaWhag7QAbSow20
+Message-ID: <CAJuCfpFDv1JC-wXR2d_KyrisnJTXxZbPSCY6Bpo4vLxj+FNw5Q@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] KVM: s390: avoid kvm_s390_handle_pv() error overwrite
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
+	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 208DC40011
-X-Stat-Signature: qd4nxsj79p4ou4cj7mo7mjxc5h5hb718
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4C6D940015
+X-Stat-Signature: 3ikp9dunjhcdrtrgbg9y4dppwpt1r4rw
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774291565-482104
-X-HE-Meta: U2FsdGVkX18GiyHhRMHJwkWRUjNuLTCd4mjctuX3e9NRWDl9txBvWdBRj3+z1FcxvbcGkrmwYv08QLw7zGsiljrgMB4yjU4LfTiZi2DsIDF1NGP4kE5JmZVeYDPuV7aPaNpd9OA4hAefRQwfJrB54PtO3OCA/wN10Z5Y8jrQXGON9GIq9AGkVO6mGo/vvIIjzbg3zyZhGzHZv1UUI/Fva4uL1P2dQuY0WJp13QdxjBGaZf+h8VT02YAivNodrTbTrjLaejp85UjsIlptG21MYZjgfuwQIKALHX2h8mbR7O5N4D1YWt9OgnJCBeBo8tJ4CxcdX72pMck5dMqca8qyy+sc8LuvRoxgkzRWMx/SldXIO5QTt5LpC8xpkxkFToNrkhYipm/l02smiRMuygw4xD61E1fy4c4nDAXTqBn21wSDIPryCiSwMbxXlBWkpmEDA9BPG2l5BlaqRbDkR2kua0kxNkGtXd9bAAI0HSHRMTT00u2oDGvKS14DgK1VaB4x4mCQFej8nKaxyVKT1cAp9y5kpwA0VDm5Ud14a0OD2MdoIaYJMwMUXzYBO8vIncIJWB79lsA2ELkNiUQdj21w/AlK3GVDNv9qWgRZx/7bmwJHn68HgabfVvcFcHrfRm74bCz3Xs0eb+Zkm+xcsLfLaKuyQKb7cXt/0a9mEgBV3Ub2Q3632BF/2HY3Uns54UUfWYwJ/0waADk7LwqS/iS9vxSRX71cH9uLfJzzSGBZerd4aNQDKR17fmVpxEfyUOBTLTQww3ZMkrNLSQ3C9ReCmCKPn4VceR4aSbo/0nj7Jt8UlVkDm8iBFLetcfcQjjAvpPz3qW6as+tolIBdzAfMMAh0vlnsQDHBCgNc5APW7WJlJjq0JpxsPQTD7n7YG29aeUGY4uDoHtD+wEiShiffDaajC1wBlea4tWCNKKBdFb9NxulN1xOydacOFzcN9ECSHc2kWJcMderfiK/Q3r9
- siHzCSjm
- J9uslptKDF/21UdDmvdiUALdstNprBhDqtu0s4jCExGXLUOTw5m0Tv18ty5OT6FTx5HreRan0ZpaSnXyy6qj+rHaPfnPWaQH/KdSjnggK/sKX6tKV+eZtPJder718UO81rZEhTjoDpxa3LBkjKFqjmVtSIsuC+iB+P3ns/mUa73RSDzG11h76uxAg+2K8EjBjN574e38EDsoVTuZtWpPLXDI0e6yXr1r1a7xC4JuyVah8UQUFRvtcFjCR8aT1dlBIBW0a60/vq4s2PnrjxMEZiHCIgawivkG2fYgmGkUjLKsYlw+NKgQtgrek4Ijg+4xxIgbr939FFb3dgWHiyqxqAk8q7fx5B67sBO2KsZcfcn5NQoGR1SL8uRTMkZ8UI/nvMT2aBhGycsZQCj66tIaVPfnMXiEjr5xzoNOHfxQl/jUeoAkf9PvP/AMSvCr/t8ALiIFuYfx1e164odfOI+EmvtQ8eQYr+0w3fGmsZQ0pystL/zsWkujog9WtjTcslw32azuOXXIIKAeAOZZ2um/yqf7/KQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774291699-584924
+X-HE-Meta: U2FsdGVkX1/Oc+z8uEB1fmFvRDBsDSS5z60zlRpp76V5ZRDTCtlYMXoropwCnB6n2ZB6G0mT8PukoqdooWbAAj2sXnRRQTrmYucYMG4qfoRX3meO8kTTbpE1P4GEvity9xAH8ZJmP5yRxh9vY8vxkyqLcZfSRdydUnB3j8XH0+TUCViiey0SH43lgm2cxnOEd1dGGn066lMsyhp7/Fd1uYkbki2NL7HRQLvIaEhF5MXiEiOile7cYLYJX8VfEOCzb3Qz3ke2dqzNZcgGXL/uQlptN9lJNFn06CzNqGSF/mPI9EnuITYQThQ48sNLfaJxKstgH3BzP79/cxHAL7tCb6nUFrHy6b8VR7AS8U6OvRlIeKdjY184sL6qOJjiWQ7ed1hAUQgiDFTU83oh8Wi6DaGc+XoxwUy2u5LltuefFZ+qAhuT4yYaf4CNUPm/NeQf7LgePO40zGHmlMSagZ1VhSLpoZwjxK+z/bXsWQh0ZHqIqyxXrRtoomOdTvmGVAr6Vl9eKcAeQMyVgk6XrBouP4LGIYtC45C+9DCK9/Z0DbVy8iy28aTbsGUeGrbdoNOefrPH0S4M1uYqB/FxxT9aoZEXuLzBsPbX0wBx8leRYeXCEdHyzcK7wO/ph4CGxgUSwDAU3J1wh+64/bTcXdTyGUR7Y+Ii66kKArJSt9pvfXhb0nNXXbrePllso/SWSKL/GabtXH42aL5s5zcd1qCLVS7fLl+ThTfC0DGUq8bS0INGPXScsyaL4JviqizD6A72ml8ItgZ1sRpvtyIJw3/iQl35aiDkHNfdHyWk3Iml3lr6BF72KzHAwIeCeG/3ftd1Z/eJ3Sioq/FgxB7fNEpszFkeBIw3LX7i+au5fMTXekR8xwQth9fAFJsIV9zUStG29eUeHFyBIPuKgzS8S56JcYwMrGvKCNTdwXRpcpafYl0YLBqdwAsR8HlBcGbdZ5wwYAVOGOKkAWCLwg6THOW
+ FJcXEyFX
+ jQT8ww5EU0cYSao1dd8wpGZEnRlg8WLjQOXbWyLRck3PCbiV9OlLayP/hxkGFRBcQYjTc6Lz8ztv8qx1Ay37NUlGTygWGmG+cthm0lhWow9Isg6P6FDfSozvLl7kWsEEtwzaajpi/iA2DUoudiCuhh+B9TEbKdCQDLjtvuXdsm3KICE67F/7eSHF/UyNHE9E84+9pyDkPVDQZO5nb4s1yfcp6nEXW+Xz2xp2/LQiriu6TsIDbVsDqPzRBNcjBXQnyLHxhnNDTmRzoGIdlsn+xDbrQPGZhq4bnu8RLzKL2boEK4XXUDpYsbSQTCQR4t/gDXOfdmZjEeO3F8BGHHqlFelvrEIKTfcFraC1AJbNWYT/4MsfYojyfy1iSyQqaTM/1ZTlIPxdxq3fXXhb7fS/ZnHnWsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,57 +151,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
+On Mon, Mar 23, 2026 at 10:53=E2=80=AFAM Lorenzo Stoakes (Oracle)
+<ljs@kernel.org> wrote:
+>
+> On Sat, Mar 21, 2026 at 10:43:07PM -0700, Suren Baghdasaryan wrote:
+> > If kvm_s390_handle_pv() call fails its error code gets recorded but
+> > execution proceeds as if the call was successful. If the next call to
+> > copy_to_user() fails then the original error is overwritten.
+>
+> Is that really a big deal though, as you're returning an error in either =
+case?
+>
+> > The follow-up patch adds fatal signal checks during VMA walk, which
+> > makes it possible for kvm_s390_handle_pv() to return EINTR error.
+> > Without this fix any error including EINTR can be overwritten and
+> > original error will be lost.
+> >
+> > Change error handling for kvm_s390_handle_pv() to alter normal flow
+> > once failure happens. This is consistent with how kvm_arch_vm_ioctl
+> > handles errors for other ioctl commands.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  arch/s390/kvm/kvm-s390.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> > index 3eb60aa932ec..ddad08c0926f 100644
+> > --- a/arch/s390/kvm/kvm-s390.c
+> > +++ b/arch/s390/kvm/kvm-s390.c
+> > @@ -2947,6 +2947,8 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned=
+ int ioctl, unsigned long arg)
+> >               }
+> >               /* must be called without kvm->lock */
+> >               r =3D kvm_s390_handle_pv(kvm, &args);
+> > +             if (r)
+> > +                     break;
+> >               if (copy_to_user(argp, &args, sizeof(args))) {
+>
+> Yeah as per Sashiko we probably need to copy_to_user() still.
+>
+> But in that case, do we even need a change at all? I'm not sure it really
+> matters which error code terminates things does it?
 
-> From: Nikita Kalyazin <kalyazin@amazon.com>
->
-> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-> ---
->  mm/secretmem.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/secretmem.c b/mm/secretmem.c
-> index fd29b33c6764..27b176af8fc4 100644
-> --- a/mm/secretmem.c
-> +++ b/mm/secretmem.c
-> @@ -53,7 +53,6 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->  	struct inode *inode = file_inode(vmf->vma->vm_file);
->  	pgoff_t offset = vmf->pgoff;
->  	gfp_t gfp = vmf->gfp_mask;
-> -	unsigned long addr;
->  	struct folio *folio;
->  	vm_fault_t ret;
->  	int err;
-> @@ -72,7 +71,7 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->  			goto out;
->  		}
->
-> -		err = set_direct_map_invalid_noflush(folio_address(folio));
-> +		err = folio_zap_direct_map(folio);
->  		if (err) {
->  			folio_put(folio);
->  			ret = vmf_error(err);
-> @@ -87,7 +86,7 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->  			 * already happened when we marked the page invalid
->  			 * which guarantees that this call won't fail
->  			 */
-> -			set_direct_map_default_noflush(folio_address(folio));
-> +			folio_restore_direct_map(folio);
->  			folio_put(folio);
->  			if (err == -EEXIST)
->  				goto retry;
-> @@ -95,9 +94,6 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->  			ret = vmf_error(err);
->  			goto out;
->  		}
-> -
-> -		addr = (unsigned long)folio_address(folio);
-> -		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
->  	}
->
->  	vmf->page = folio_file_page(folio, vmf->pgoff);
-> --
-> 2.50.1
+I agree. I plan to drop this patch from the series (see my former
+reply) unless someone tells me otherwise.
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+>
+> >                       r =3D -EFAULT;
+> >                       break;
+> > --
+> > 2.53.0.1018.g2bb0e51243-goog
+> >
+>
+> Thanks, Lorenzo
 
