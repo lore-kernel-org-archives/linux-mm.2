@@ -4,118 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 662FFEC01A9
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01E2AEC01B6
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:44:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 929786B0088; Mon, 23 Mar 2026 05:43:37 -0400 (EDT)
+	id 0A0A56B0005; Mon, 23 Mar 2026 05:44:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DA7E6B0089; Mon, 23 Mar 2026 05:43:37 -0400 (EDT)
+	id 0772C6B0089; Mon, 23 Mar 2026 05:44:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F0716B008A; Mon, 23 Mar 2026 05:43:37 -0400 (EDT)
+	id EF6D26B008A; Mon, 23 Mar 2026 05:44:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 708E76B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:43:37 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 198DE1EB7C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:43:37 +0000 (UTC)
-X-FDA: 84576840474.11.360F5C9
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7CDBC140005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:43:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eMlTzsX4;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of hughd@google.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=hughd@google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E0F7B6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:44:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 865AB1B8FD8
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:44:39 +0000 (UTC)
+X-FDA: 84576843078.21.2F1C63F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 451AC40006
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:44:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DuoL+M4r;
+	spf=pass (imf12.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774259015;
+	s=arc-20220608; t=1774259077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ym4pkkY92K3/0r9PfgVLK1H3UUTu6ye1dXSd2uLPJZc=;
-	b=4kV1UwXWJBLKpCze4pMMtJCTrTTco7s6FCDHcVVqB4HZkFxp4qxTb53cWwF5nsiyTNJY2m
-	FQO+c3VnxmiIveEVe8kuQG+/s3setblKPLj8XUv4Xd3i7/r4fj5wMvcsAoqxnqJhC2Wf2n
-	E0oN+/ZogxLuhyYexJvl25tRy16pyP8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eMlTzsX4;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of hughd@google.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=hughd@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774259015; a=rsa-sha256;
+	bh=2LcMB5gIX03eono8rt37+6BTZoTufylHEu17I/eh9tE=;
+	b=gbgBa4yuku/iWYQTGjn+R6N358AV3NnK/W5ITDRtFKaYAd6IE99IS9lSjpGTjVxAr4QSCC
+	PVKVxQcSGLFcWgMFclLFL8xocVMpmANA6vWG1cY26elrwS9gVpxXNSjrv4EXKsYRLyGxYe
+	F1K9jC7sxjeuG0knltCp57Lum2X1HIE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774259077; a=rsa-sha256;
 	cv=none;
-	b=4jWrlDFm8s1APl1eV36BRricmCiJ3T4Nf9XHq6sdzPR7MIsuNGtZ8A2Vm9xqGeRBxLJAyk
-	W0OYEFehBK4JUebuOMj02py17VQvK/13cW4W3wSIrODeoediaBQFtUv/QDVV3KB4IkZY5S
-	GFEp+OzYUBn67e3DXCk5L3pB/Of8rwg=
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64ad79dfb6eso4975812d50.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:43:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774259014; x=1774863814; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ym4pkkY92K3/0r9PfgVLK1H3UUTu6ye1dXSd2uLPJZc=;
-        b=eMlTzsX4g8aIrf6VvAzZfcjdTtH/5TxzFsJc7T+eQU41vSFT2SzYQE3iZuafqkozCV
-         EpAWvamtOdC2EIk9zAn9bA6iYhDYiKLUYyUnqYU83LIj6dPFQ7xR+zf6EmJZzdGe/NS2
-         Okb6HSSEAfeCFRfb+GG5lgPugQbQaEs4e0tRutVMW7eb00bAUElgJv17LPmlZQnfkspZ
-         rjR5VuhzZQMdGShP0Zgei+rUIz71j9oJBRgMgUlr/lC2PeuHAXLDqOnQgSuYL+NuBR0M
-         GCIxjGS5brsovNLKLx76Fmdl5+FmphDNQQE8OxOGUTVXPdAb+RVGTM8U2r2/rmYYJgbX
-         pmgw==
+	b=e4dKeZMLCo6ae58nLQhJulxoEoDpA9QsSVLcMUVUY8KQZVwl9j+Fn335l31z3jgDgWkG3j
+	AIyHvVojjRu0vzg3ZoJ1wPStuExzEMcy6+rgP0y8EyYzvaog96VC2aducGVUPrdR9Q1jpg
+	dMJG6HRlG2aW9HoGJNKqisJn0Xyv140=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DuoL+M4r;
+	spf=pass (imf12.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774259076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2LcMB5gIX03eono8rt37+6BTZoTufylHEu17I/eh9tE=;
+	b=DuoL+M4rpNnsY485WkmpPP/v4w4M4yYopCGHGIOGHmJ8aoeI0MmM7Dcz//PoltaF1dfELT
+	0HDOHVfuIEaY2n3xzFCzsBlodCXr910MXE4lfK3f9nXwG4Mzo3oi+iPJexdXW8t9b0MVoc
+	Povb/PZeoFxuF1N6SoOAYe0zezgJIis=
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
+ [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-466-wL5LjyVLPxicSGuyHh41hA-1; Mon, 23 Mar 2026 05:44:34 -0400
+X-MC-Unique: wL5LjyVLPxicSGuyHh41hA-1
+X-Mimecast-MFC-AGG-ID: wL5LjyVLPxicSGuyHh41hA_1774259074
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-829ad972df6so2557845b3a.3
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:44:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774259014; x=1774863814;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ym4pkkY92K3/0r9PfgVLK1H3UUTu6ye1dXSd2uLPJZc=;
-        b=OP0oWMWcvb+W9XCYUh3NBtSR6bUgYNp3BNXCkQ1NovyMteTX7VvGryco/sFkbw3r1H
-         76xGi3ls1zOpmTFU2sukUSpuCHbHC9BsGMwFRAj+S3o8mF658XkBv6e6Qi2S7QSEnOT1
-         l+3tMEvvNjsbKW6v6FAHYeijtbniy3fCEnTwS9lovSH8ZFrjMGjm3rYDBJpKO/KWVE9k
-         InA60pOkNSKYJtVxnTYrO0tV0CFF/XHc7vk+fnTUeEeq6eMgZowjfpxvq6m+46t3+qw8
-         mUOKsbNI34s3K0HUwD/rgam1GtO9ndq5hxi8jWk0LBk6jNZysnfm/3IBN8/+9/LfexXK
-         FfWw==
-X-Forwarded-Encrypted: i=1; AJvYcCWq5BnadRmZrtYlYXhEfQUrXBrNzDRblGPLAwn6/1A7TpcylLFdgbx2Wf0vfnG6cbbgnz7OFWLtsw==@kvack.org
-X-Gm-Message-State: AOJu0YxhQTpwkU7W+5a+hyT9xlOxzCdSMLbGAgNx27pPOwLHS+Iw9NpK
-	8rGPp5GxYMmFERw7Sekfh9G6+aUPnXH0THI0cyJhiga8Lwumutt7yHmN2JCozVEKow==
-X-Gm-Gg: ATEYQzzWC7aEuZG8Mmy4UcKPC/vOvhu8Q8ICPm31b4P+QBfztT7SPqujB+Mjh+ZkVz8
-	OUoDZIzanSAN2avDp+5OdQ3iJPvC5hhDISjuC0BbSGh0LJTiPWWb0sNNl5dGjf4SNBVj4NIq1BS
-	FQfD1ivTnfhaZRZmfWmZqkZvb3DUZagwt826kscp51UojjE6SIhDjRFC5N1bnKmwMtMeFRoB3ff
-	eA3M5BKezuPZfRrmGWMVVajajLoEJ9iLU9hkqKha+1luV3EdgEJaMFV+YFEqwOr8Vxa7My+nMzT
-	07EhWXArzd2AO8q0Ja/tmylejwMVsgSXYLS/bj7Jp7RFu2cEIeRA685ogC1N3bMcipBq0H6NLWj
-	UKloA4jpTQg3xH4cuwu6W6jyOB6373V3rKNrkz3vqDPzJXijIrp1FW4MwSo+fsANWXymZa5APcr
-	AodLWh7kJVcpbhXNsy32RF0QDiNpfw9ComohP8m/YIxAN2oCfjixVKy2Mx0bAf4LFBrctIOBHKG
-	YB3Aoc9HKk=
-X-Received: by 2002:a05:690e:e23:b0:64e:a30f:e67e with SMTP id 956f58d0204a3-64eaa833f62mr8891182d50.67.1774259013998;
-        Mon, 23 Mar 2026 02:43:33 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64eabe9fda4sm5926373d50.16.2026.03.23.02.43.32
+        d=1e100.net; s=20251104; t=1774259073; x=1774863873;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2LcMB5gIX03eono8rt37+6BTZoTufylHEu17I/eh9tE=;
+        b=lGyxh8SuS3gnmEnBIOeutBPPJ68bQ1ms0OI5a1LtCZvjcqRc7nqXoAhugXuxC3IyEF
+         ydQRQiAr8vbFEiA/aDwOdYizW399qeU3mch8pswByTZ2N39ewDzxbSpivEJs7qwCKWRa
+         FP6SdM0cySZ+PZjrHB62N9plDILVVFUCvaapZGC1FVq1rAoVADMMNONsbJul/G4MPdBb
+         CvOyn258A4gNcNAhJjkWhJv5IkCDPYeQpaUEarb28ZnxB7k42ofhDpOLKGVIYtIAMo7W
+         8VSOjcNc8HrvdUOnRbPJOJd4smrho0kpMtHKinp+xjzYWNCw1SSqBMtZWkkdyiqeDP4G
+         fXDA==
+X-Forwarded-Encrypted: i=1; AJvYcCU5QSOZJvzehLyIVvblWpPtgv6ghBWfwdITk6wwHZzQSLJSjOa4YNjDjPkzo+m2E5rmDMrFS3kOQQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx0fKQ7Pvk7M9QqWe8xOQ0lwCw4LMACr8UIbqL50LtTgAs9aUgu
+	exBS8ubgpH99hHEfk3PK3G04Y6bz/f4+ZsmGjD2cU3UVf77K2NNEbs3YHXTZhaHZFdXUNbx1eJA
+	cT3AZWRepUMTF8oMD57qRtMa2vvapSNqU5EF7TQpz6Ctag3RY41rd
+X-Gm-Gg: ATEYQzzcPg6+oiyMbdBnocq6RQ+Cz5LuPSg7ZhsKNYWutJkPNXbpsV3gBWwuznsINdz
+	sAyOBHtuPzTJs6vQZW41HPbtXtDZURkvJal5aS0CJpAU8H/2QxFOBTSmH3/JFECILX1zciDSCu3
+	ltu5pSj0wlTPpsPhSy1Kw3OsozbnZzo4uDdWpqWSihTMpDfi6g/hFZ5J+I0LvOsp+95ypFVSnAH
+	sRLKtHaXQDUVyx+o9DUOgqtvjy0KGbOOw0frSzEf+/iso3sGO3TofE3n0k4IaLAgnnqYseFe2gq
+	xsIu0xRlIzXjVSwWzQjxv/byXoGtDaK5BhR4fCF7QUmzl0RVaTz5ZbBdR/8dA8BuVYsbgF6avOZ
+	+P361/4alpNu2HwCRmw==
+X-Received: by 2002:a05:6a00:12e2:b0:82a:7dfd:9757 with SMTP id d2e1a72fcca58-82a8c2525d6mr10198862b3a.4.1774259073577;
+        Mon, 23 Mar 2026 02:44:33 -0700 (PDT)
+X-Received: by 2002:a05:6a00:12e2:b0:82a:7dfd:9757 with SMTP id d2e1a72fcca58-82a8c2525d6mr10198855b3a.4.1774259073192;
+        Mon, 23 Mar 2026 02:44:33 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b0409c681sm10471814b3a.37.2026.03.23.02.44.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 02:43:33 -0700 (PDT)
-Date: Mon, 23 Mar 2026 02:43:31 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <bhe@redhat.com>, 
-    Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-    David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-    Greg Thelen <gthelen@google.com>, Guenter Roeck <groeck@google.com>, 
-    Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-    Lance Yang <lance.yang@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
-    Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, stable@vger.kernel.org
-Subject: [PATCH 6.12.y 4/4] mm/shmem, swap: avoid redundant Xarray lookup
- during swapin
-In-Reply-To: <a07eace6-82f2-32a8-0cbc-85972d4b1eee@google.com>
-Message-ID: <ebffe1a4-f575-8a38-2584-70cbfeda6913@google.com>
-References: <a07eace6-82f2-32a8-0cbc-85972d4b1eee@google.com>
+        Mon, 23 Mar 2026 02:44:32 -0700 (PDT)
+Date: Mon, 23 Mar 2026 17:44:29 +0800
+From: Li Wang <liwang@redhat.com>
+To: Waiman Long <longman@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Sebastian Chlad <sebastianchlad@gmail.com>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
+Subject: Re: [PATCH v2 7/7] selftests: memcg: Treat failure for zeroing sock
+ in test_memcg_sock as XFAIL
+Message-ID: <acELfUqXlKVWFcDT@redhat.com>
+References: <20260320204241.1613861-1-longman@redhat.com>
+ <20260320204241.1613861-8-longman@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7CDBC140005
-X-Stat-Signature: x5h6tie43jz75n3h8ara958y59egt3im
+In-Reply-To: <20260320204241.1613861-8-longman@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: c0SqFEvCzhLFBTDE9oRNRGHYtnSIbMZEkY5ZfOvKzS8_1774259074
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: kex1mx45ir1edabqwxon3kt9omnseid9
 X-Rspam-User: 
-X-HE-Tag: 1774259015-727771
-X-HE-Meta: U2FsdGVkX18EYpSKpWt4Jw3Ha+4h+hphJq32bulKEAj83GaTM5ma+NU0QtrbdVYQ9tj8J/A2/6VWfYFsxq0h9QjstrvdsowlgE2nAntC5ZkdwBYMX0Vo5RjnWuTks6BDmoI8KRh9aEKkzZxj8Er+YPwvjMc9gGM/v5XR8mYfuf/dNmOalpqSDwQqskLbBs7/Ul9QMPU+XOAz3auGvXo8estRoxpHgiSS/BZ1ZhWyyFvwNbiVvWoejYbgPdLICIDjJvgd2+uhVVdbhoh1TsXjYxJA/NKbF19ek5h1jOS27zFRdOlASHdpsdSBuvuMTS9fKZXuDABUiWyStznAx5p5FtdssAwEDDLi32qA7+D0SwwpksNTO/o5WI+HmXFA8G1/Kq0uKTSXxi51b2Z9DhgBXjUZJHiHvj2F0kK0Xf4g0W7nKuofWPsAp6dcCTuTTBEbSWeoE2BfpaDOAQgPOA9NMsr8e3o9U5ECcICYLrWF3zpuobZoEOBT6NeZ6N4VU0IM0SQEyHSBzoj2pai5HLia9Vsf6Pg2ZQJYWusGATn+RAec1zcU1d7hoElNQLeXvZhkt0RQenMbW/hLVbsO8hh1kBE6LBhaR0r5npeRqaUTUEwLUqqyAtkQXPEHpv7sLMYSDx3fPQWDOHhZkYiPIIklqqixteA0tMKC5YtMiKsp2bA1KXVhx9yqwhJwrvA49Nbfc3jLqOv/vwFrOLecAfj9BSw4Mnpf5H3/+tvw85f+uyuhSuLEcPAg1R9wo+JS/kl2QtKmtZ8OUChYouMUg+WBurDzqAou6YnbhlZg9on4DoapWQGp/KTFGjjOF/mRAK4aAv8osj1FeuWciomKXB+Rwl3p46zwUJE8lEjLybYsbWAskgZtzhUtZGP29OUi90+d+n4G+hxD78kJ2d+vrOIG5G+WxHuW0CTbfP1mJdTifMhnNUJNemaxgOcKI/2156e3U+frEEHVcinRhrE27xg
- 67LgU+3u
- vjCFN5FM6e7e2Qiw=
+X-Rspamd-Queue-Id: 451AC40006
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774259077-78794
+X-HE-Meta: U2FsdGVkX18sXEtGzJura6Oy9Xq4aGfm7x+agtLD+nrw1dy9Beir/WCr/5q6G253r3YWXUohG9hjaltb7G1IamMNPMdn24qF6npD+UXg88ZYGKdVAfx8909WDUSNeY/U26K3NASS8tvEWUCogB7HfhDd7J8NxPQ+VNJDxh49BGsC4nDx1Y66D38rwEcI5fyXKFmYiUI7xgGRGlZGhfpL0QhY6aYmQVUdGVzw1UKudzFcK51tJm+mt3m0/pOi7q5mq9JsVeN17DbuBmoU8tMqBb8WXcKi4RG8bXadjTiQzbObufG9ODuK6jmPpVurU9ati/8HsJDgmLAG+lhww8xFBPWacCxiRPxXFbjIpq1p1eZmRERcSjNWtShfqmFoL+Gn1qSOYl38QG8TS6dR3DUSnE9aOZZBqO+IAi4osxGXYAtf6lI97kwfhAOOwBd9LyN1ZcprjGuYXuS7wY9waBuTZDxM6DPShL+rsFl2Fw2NBYjrjECbW2icCsKTfb3HL1yfwY1ShKmO4WghTIDDsZv33sRbsTl7aNpGRAK7regzHSQ2PDkLpDen4H4cTm/mhhi2GTlTUv/8hRmFU+28gJczYropocOZBJJRvD7pCTAA02QowoVLqbtazrWnUGrm9gs6Y1JLnwx9S6LWiKkNVKSne7RaDzfS8Ng9vSsUCH6UkktZYlpgIfjoOAedIS0h/iAwUxvRZQLH/lQUc4uuocGUCr44AysZ+NqfApdqjxNucPYjyvQmeFVjF1ZnowZGtgOPewoSgRsyYzH87rPRY8Z08toSbHUGdYQ4R8MNdfAIhnA4wAemEhOmyOuPhLxx+B/hczPh8n4BJI/6jdftzQJjQUCIlIcTMsPcZ7voGIFZR1i0T9BaNYLMows297YVI7rTcMlFB+qHJN86O6iSCyGVYnongeGVNclSIYn9eED96+uUNu7u5uVsn2QF5GVUUdR7EEMaKXd20mHmrj9Hu2E
+ qLSIYimU
+ 8YeQ2rOykIZ5jOi57SIoX4Jda4BKiE+54W6O47wg5SBh570K4ZvN9GovdMDr8QDDM7RQsYj6CPZ9Frepe21Ocatb/84n1ZjUcrhN6rOmiSGb++OqXSsD5HSU4/AVNsdcenKq3Fpwfh1pYdbbLhfMBr5hKs+GiOkJUWOybTIIsbbbouvSMJWu2eB0B7ACny9dQDAwLob3ks2n2v+bVCs+QsYnKKPwIszie0UsP1SWAYr6OqjwxXUsosODWDPCtiDwHkk7VgqZ8nR7HmLhrnmPRU6pPWn6k1dKXHixo8oN17894dCJpAtS666/MHpS0LlE7bb6XpMNpCmbAXEKOc0sqeuXlx2iF75z8L24V4IP9S/ig8kYdPo1Yv/VrqkEVU48t5rE8LVxOa2//O1kJRuV4SO41fCbxEWCPf/7r3fIwLqndHZ2Q1mGto1N5nNpkR3zpJdxRq/hAAATS/O2vqix4cEk4K56XyeIj8S8rei3bMKXTJWDI6tIeQ/uHkw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,113 +139,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On Fri, Mar 20, 2026 at 04:42:41PM -0400, Waiman Long wrote:
+> Although there is supposed to be a periodic and asynchronous flush of
+> stats every 2 seconds, the actual time lag between succesive runs can
+> actually vary quite a bit. In fact, I have seen time lag of up to 10s
+> of seconds in some cases.
+> 
+> At the end of test_memcg_sock, it waits up to 3 seconds for the
+> "sock" attribute of memory.stat to go back down to 0. Obviously it
+> may occasionally fail especially when the kernel has large page size
+> (e.g. 64k). Treat this failure as an expected failure (XFAIL) to
+> distinguish it from the other failure cases.
+> 
+> Signed-off-by: Waiman Long <longman@redhat.com>
+> ---
+>  tools/testing/selftests/cgroup/test_memcontrol.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+> index 5336be5ed2f5..af3e8fe4e50e 100644
+> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
+> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+> @@ -1486,12 +1486,21 @@ static int test_memcg_sock(const char *root)
+>  	 * Poll memory.stat for up to 3 seconds (~FLUSH_TIME plus some
+>  	 * scheduling slack) and require that the "sock " counter
+>  	 * eventually drops to zero.
+> +	 *
+> +	 * The actual run-to-run elapse time between consecutive run
+> +	 * of asynchronous memcg rstat flush may varies quite a bit.
+> +	 * So the 3 seconds wait time may not be enough for the "sock"
+> +	 * counter to go down to 0. Treat it as a XFAIL instead of
+> +	 * a FAIL.
+>  	 */
+>  	sock_post = cg_read_key_long_poll(memcg, "memory.stat", "sock ", 0,
+>  					 MEMCG_SOCKSTAT_WAIT_RETRIES,
+>  					 DEFAULT_WAIT_INTERVAL_US);
+> -	if (sock_post)
+> +	if (sock_post) {
+> +		if (sock_post > 0)
+> +			ret = KSFT_XFAIL;
 
-commit 0cfc0e7e3d062b93e9eec6828de000981cdfb152 upstream.
+XFAIL means "expected failure" and is intended for known kernel bugs or
+unsupported features. A timing issue where the test simply doesn't wait
+long enough probably not an expected failure, it's a test that needs a
+longer timeout.
 
-Currently shmem calls xa_get_order to get the swap radix entry order,
-requiring a full tree walk.  This can be easily combined with the swap
-entry value checking (shmem_confirm_swap) to avoid the duplicated lookup
-and abort early if the entry is gone already.  Which should improve the
-performance.
+I'm wondering can we just enlarge the MEMCG_SOCKSTAT_WAIT_RETRIES value?
+e.g. from 30 to 150
 
-Link: https://lkml.kernel.org/r/20250728075306.12704-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20250728075306.12704-3-ryncsn@gmail.com
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Stable-dep-of: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
-[ hughd: removed series cover letter and skip_swapcache dependencies ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
- mm/shmem.c | 34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+-- 
+Regards,
+Li Wang
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 1b95e8e7d68d..c92af39eebdd 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -499,15 +499,27 @@ static int shmem_replace_entry(struct address_space *mapping,
- 
- /*
-  * Sometimes, before we decide whether to proceed or to fail, we must check
-- * that an entry was not already brought back from swap by a racing thread.
-+ * that an entry was not already brought back or split by a racing thread.
-  *
-  * Checking folio is not enough: by the time a swapcache folio is locked, it
-  * might be reused, and again be swapcache, using the same swap as before.
-+ * Returns the swap entry's order if it still presents, else returns -1.
-  */
--static bool shmem_confirm_swap(struct address_space *mapping,
--			       pgoff_t index, swp_entry_t swap)
-+static int shmem_confirm_swap(struct address_space *mapping, pgoff_t index,
-+			      swp_entry_t swap)
- {
--	return xa_load(&mapping->i_pages, index) == swp_to_radix_entry(swap);
-+	XA_STATE(xas, &mapping->i_pages, index);
-+	int ret = -1;
-+	void *entry;
-+
-+	rcu_read_lock();
-+	do {
-+		entry = xas_load(&xas);
-+		if (entry == swp_to_radix_entry(swap))
-+			ret = xas_get_order(&xas);
-+	} while (xas_retry(&xas, entry));
-+	rcu_read_unlock();
-+	return ret;
- }
- 
- /*
-@@ -2155,16 +2167,20 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 		return -EIO;
- 
- 	si = get_swap_device(swap);
--	if (!si) {
--		if (!shmem_confirm_swap(mapping, index, swap))
-+	order = shmem_confirm_swap(mapping, index, swap);
-+	if (unlikely(!si)) {
-+		if (order < 0)
- 			return -EEXIST;
- 		else
- 			return -EINVAL;
- 	}
-+	if (unlikely(order < 0)) {
-+		put_swap_device(si);
-+		return -EEXIST;
-+	}
- 
- 	/* Look it up and read it in.. */
- 	folio = swap_cache_get_folio(swap, NULL, 0);
--	order = xa_get_order(&mapping->i_pages, index);
- 	if (!folio) {
- 
- 		/* Or update major stats only when swapin succeeds?? */
-@@ -2241,7 +2257,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	 */
- 	folio_lock(folio);
- 	if (!folio_test_swapcache(folio) ||
--	    !shmem_confirm_swap(mapping, index, swap) ||
-+	    shmem_confirm_swap(mapping, index, swap) < 0 ||
- 	    folio->swap.val != swap.val) {
- 		error = -EEXIST;
- 		goto unlock;
-@@ -2284,7 +2300,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	*foliop = folio;
- 	return 0;
- failed:
--	if (!shmem_confirm_swap(mapping, index, swap))
-+	if (shmem_confirm_swap(mapping, index, swap) < 0)
- 		error = -EEXIST;
- 	if (error == -EIO)
- 		shmem_set_folio_swapin_error(inode, index, folio, swap);
 
