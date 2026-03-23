@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A54B7F483E9
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 19:39:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76905F483E7
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 19:41:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1BEB6B008C; Mon, 23 Mar 2026 15:39:09 -0400 (EDT)
+	id C0E686B0005; Mon, 23 Mar 2026 15:41:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCCA06B0093; Mon, 23 Mar 2026 15:39:09 -0400 (EDT)
+	id BE61B6B0088; Mon, 23 Mar 2026 15:41:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBB636B0095; Mon, 23 Mar 2026 15:39:09 -0400 (EDT)
+	id AFC006B008A; Mon, 23 Mar 2026 15:41:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC8F96B008C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:39:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C18E160D10
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:39:09 +0000 (UTC)
-X-FDA: 84578341218.11.49953CE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4E85CA0002
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:39:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJ+d1IE2;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A0ED16B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:41:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E96F5CBC5
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:41:32 +0000 (UTC)
+X-FDA: 84578347224.17.5C7B732
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8C6C814000A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:41:30 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SZnjMTZ5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774294747;
+	s=arc-20220608; t=1774294890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QDKuD2LWN5KTaG1Y5kbzQmhGa9FcWYd9eBa/sp8sI5Q=;
-	b=qWyGRSuQFQS7mvY4HeLS1nXDM9L2OS8xd+AQs3tlAx+ca9OOkDeF8vrDaB2rl286CUAZdx
-	fnO+c7kh7nKJmnS1JqDlwbTMZnr7ucpO8xeGHwDAHZQvJUlrh9RpCcXjMd3EDgEwjI/53s
-	fWq82QiSHTjoA50iugfMLlo6Brd3b78=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJ+d1IE2;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774294747; a=rsa-sha256;
+	bh=7nNJ3BAekowrS4XPWW+8eLq6NcaLKFfA8E1wRiQVavk=;
+	b=MChidSDgmO6NPboebTrtZXtV0xU8m1bQtMSltqESykUKO0qucumma3erUOQ2k7eNpbu677
+	YCcPY915VjTpWtGwt+xr6JbYnJi0I5MgsrMmpwsCOLpfEg/W9aDeuOd0lbv3BPh2auVYES
+	JxnoK2Chk+nsby7/AM9qNPg0pdOJHNE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774294890; a=rsa-sha256;
 	cv=none;
-	b=S/6fR7KvJDQT1aVwDTZTlU7nzC3ZSHWJN7Ue81bM43gyMjSAxe4BGmzZ+JFHG59T5IVdSy
-	rHnnIoOHjDPjQgFPqvsqqEN8dKf6+R91sVA2aB2nlGABmN5HCxo3Fu1Yuotj6+K+t3I8Vs
-	AOlhbIR5VPBy4drL7+sGJVIEIkbBRH0=
+	b=VS3+YPWozceBiZtzmznEsXGh/GRZIiZEuCCrxiE/WVUA1vWElOvXFPTzwAdYHlFZv68KQR
+	tEZQd/5XXhx0tV9OX3VHu6cTI2whiS0wTgZTdHGqJp5pmujTsK+y5rN80pzrdaD+U+qN9Z
+	k5bYueCXtbnL7Dzi6k7P3eqaqxpx1O0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SZnjMTZ5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43E20434D2;
-	Mon, 23 Mar 2026 19:39:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B858C4CEF7;
-	Mon, 23 Mar 2026 19:39:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DF718600C4;
+	Mon, 23 Mar 2026 19:41:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551B9C2BC9E;
+	Mon, 23 Mar 2026 19:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774294746;
-	bh=Eei5R6PJMtTTG6JSryoc1eT2IJV07EOeVe661ejNU88=;
+	s=k20201202; t=1774294889;
+	bh=qRjQgEBmqWDfrJyVkQE055Gnm2yMES8kQzBysF5eEA8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oJ+d1IE2lXshEQKbMZhoPSOGCUt44s/Q+1tvZ+pwbF28WdPZV12HTdbsCwwK8IkTW
-	 vRS4G7GYytxBH9Ov3Cegw6yJU/cqaWSPjW9vuq/OdoPRWlKp+EIj0RVWPStMhPIJs3
-	 7ZD/5ETf152Nmat+zq10RqhYHNHJa9SeQ+F95HM7H/8j9FMmE9WtVk73l1GAf1NHvq
-	 ytxpSdDxgYp6500C28PceXubnbYbtSiaD+CLNA8N1myE2OPTM66ZxqqtOQtHieonRI
-	 SD3arytyjyI2+q1RMYiEXdxmlDoUdXbgbNI3M2MSOl6QB0R9TQ+/IRnq3Xk7XuvVCs
-	 y4n7C5Zd4ankQ==
-Message-ID: <2cfa402b-319b-4cea-a2fc-1cefab76c701@kernel.org>
-Date: Mon, 23 Mar 2026 20:39:01 +0100
+	b=SZnjMTZ5LxIrjc4nu60V7NpPS8Whjw2SHTzw237CS/kwg9MY1Euitn9FFSjcUxerM
+	 vlF3zKjeFtSSORWCtwL/dEtgW+71lNE58c6RVvbGpgNeD1ME+Omk66giQ7kh58N0em
+	 uofvH6X1dEHUJtuVaVKpMkl37BH3l9D4I978JOw2zSHob4BX6CzxFhmWkG4CP/zIf5
+	 WQd6WlfBQOLlqs1AZPGWQx/Jsd6QpgYV9vN0Qy4WfBkSJawH2HZC/1ms1okG9/Ogl+
+	 sxQqgaDsQ8n/u3TXtlz1xgIRkcAy1UfT2bJSPJ+TUa1PM+878yUFC2fl8K2mafpdM1
+	 khvnlIyFIjIlQ==
+Message-ID: <7382046f-7c58-4a3e-ab34-b2704355b7d5@kernel.org>
+Date: Mon, 23 Mar 2026 20:41:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] mm: switch deferred split shrinker to list_lru
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Dave Chinner <david@fromorbit.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260312205321.638053-1-hannes@cmpxchg.org>
- <20260312205321.638053-8-hannes@cmpxchg.org>
- <61d86249-cd89-4e99-99d8-ab7c72e95f34@kernel.org>
- <absr1vgNP_tM1OEP@cmpxchg.org>
- <e9631520-857f-4f67-8944-6af7a2b47e89@kernel.org>
- <ab1vnhL4XftNdTSu@cmpxchg.org>
+Subject: Re: [RFC PATCH 02/11] mm/khugepaged: remove READ_ONLY_THP_FOR_FS code
+ in collapse_file()
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260323190644.1714379-1-ziy@nvidia.com>
+ <20260323190644.1714379-3-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ab1vnhL4XftNdTSu@cmpxchg.org>
+In-Reply-To: <20260323190644.1714379-3-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8C6C814000A
+X-Stat-Signature: tng643md5go4wqgd9qgxnh79odrojb71
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4E85CA0002
-X-Stat-Signature: twkbca6si7d1p783yk8ehs5impjmbu16
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774294747-222129
-X-HE-Meta: U2FsdGVkX1+Upi62Tik4GR5ycET3VuAvTfp/Y/nxVOGze3jEDDEPGBcr2SNuoK9N5h9CdwYPJCTmA301OxYKSfpTTGyRF9K7d1I6FkLtIZmQ9sd1b/WPF0jpMMxGROyukdi4LLlpBOq6MTrynMRPeagAFQHI1ODrCCjDNFeuLnp0D4bc8N8gj2Ge3n3J3X06l6KvZnbTc4gPDHg4QLEhoQaDE7MmeAne2tinXI8wO3Hlf22DruVT0hVQfg8CgRDd/sIhAuOTSPuI4QrSZl0R8Ps2S45T3t8KcZAxUL1KGcNMf/DPur9u7EP0GjaA+Jz16PMe2eVkpbPa4gqaRPyiCUT5Tj8Ng/+4XN8i4iCUw9QT1qUiMA1q3aEovaQAlcNWrEAQ493D00c87Ka/Gmpp50eF5qhKYlpHLoNCEPwJbwDsf3DXvHhoLqK4ZWtsjoPZYcFdvmsyXTDkSvCYAojUV0EbqB9913FRKJtpCmQAZjVMkFw17PPGm5pVuLqM8u5uVgPwLxkFwYLsIcBSB/TpovEvOQ0a+ZKu4xOy5yUduJDMwdvPgT38MKBto8ONGIbRi1SWWEwhkfROS9fsyLmmhFbAShrUDcbEAHB/DtZhNDMfBs0Jc6oNspbjVz1EasyILOQI2d5lYzlyb0fHeBXXQgjs6krInYhyQ+WtnfW6TfzjASkjGF+ua+IWwTZJGiNKUIVgMZH2OMYkxFl8tUDvfcYg/6ZzjWyVv00n808phkDPMcvoKTs+OmdZcrCNopZbIgCmYejFaYYLkAFuDhmk3DsnCmgDZZB2976/K9iyNbYZDXugQCsLCDbwrPGfNvRNvtokb/ksrLHUMSJSuUOTr4qt83Ihv5mBLSnDSSsfg4BMtXpbHgc51yHUQOtTAAJMssPNxKOvJlXkhTfeY/MKkl97sLqSU0bTYVn8HqEFL8ebApWRaEt/eYyFP7PauuDQ9UiZ4Sepyi4WucFsJ5a
- orUGXb1p
- zOfScHVzOudu0koqFji4jF2ta7g/GyUqMCBRLefsafLgPF6yBLFcd+NTalIb5VEt1rog2bLthM3khCvijbRGwnk1v/BEhgBef1UR1wWg/9Rg3cVTtvyyIfBp00VPmoVIvLtj7g1+TI/z4Fdm+ujlngaxn7QDMOAmQDxAGc34MADNuWUU8bXX8cxKz4AALfzpfZL+qUODzz8+wyE2/3qnVfD4cpR5lrbHigIeMI0Jk6a06p1kWwUxqmEszo0GU8Vj7kNM+OPKQVl0F9u8E2wf4ZXffjjLB6sM2/IA+1SaqL2Wd0t9LOQec2hRsvQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774294890-871925
+X-HE-Meta: U2FsdGVkX18dUHYUdcYCLx4C/6Uc837ufJGDmneJqzAqgpdG7HHAy7TDtUblGIRzv+hds9PxvyFNbNuhEbyoJm+RimNZ9DWp5aqRHSVIL3M85b3GUnyVAI50p1Qxi+L3iMnH2O4S60vYfle5OEPEzY27UdH7nGtIoq7+MgX2ayfe9sERzskpRqUK6Qw4TSLt8XgCFsGQur6wRvkzJYS634HLNE7I8h3v4phKuMdr9v0M0TE0NlBu1UfXFykiGcAT86jyRE9VmxTQqb8NGiF8+UsrZ5ighS/wlo8e9dZm1CeDxxtk4gWV8BoBluc57nN6b+wDijzj6PUCM9FrXy0InGLUIeqssTXpMZ92lh8gxVDI8NjI0zqdmXEyURwKQpd/qjMJnQusJx9iqYReP0O1KJUMj91frjmy/sahsbbfxamKmgMfoV+QglJHyZOWDMC3bIo1AKnMppbXzwqymvuw+6t6DowfpYjrPjHwSZNkfpkZa3KN30fpbmgPACL/MfhUZ/Y654h9HZIZdnH5uLp4bEjyeQmXs374vtb9tFr4heqzM376IUlP/OWc3QiPJnQXapW2ImCktRWTH0PMUXw26PoEePH7zyQ1NzAlnJdtBW2jJByo6UVpG0tMpTJkeASGJJyBtDvMO6jCpmoDLYboStUZWhuGtCBHrJiLrW/5Dh00oRYnb9gHXmwz/XonhQzRcms+tmzCRivENcRsShMtRwYBTssGuVeDrpcG4qSZabQOQTdxZ8oKDWk699y2kN1mNdlXt1I05lRS3nsBF+blAl6jzWMYFn24FstVDm/DYnTJ0yez5Yc4a/1TnU14gu1wsUYDRoK06OZ6RNOzzPJqvJZgy9o0DsZVdAFdKBkSVwfNXgvmFVx3AfSh4jYjkwrNyGwMICPXG0FYQZgxF8B4qW8YtKlM/I5lZLBU4PE61yPxGUYK4bLbxPCyiImhciQb+NMMY9V8JfQ8J8xE9Qw
+ 99vsIw3U
+ UQq54GCP3iBcP9a2j8PiKn1wTTYQ9v61WJogBhNnvhsFRKyc6nnpHDUrbM2RQHGHP4GhRMBZgoG5stxalLM6V0CwBTDPFVWsh+w2dOeVue1A/E7CrlfOY6Uahlm/NWJwP1esinul5mBS2zoNqAHxa8g8uNt8kNb/WPfTKXR/jHemilQ4j6fVvRZCV3deIeQeNdD5tsr6tIr5i24AGFNmm08TZ4cFEaLY/mUZL8YQWXtrbYV6UQ0eN9V3ETQo1/j+yAqM5blRRBRdPS/1XgtO+zBSZrquzRwKcFMscsoDhPQ8mBmRx1wN6fjehAQ3nzGK7lwl50Hr57zhnuMM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,56 +151,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 17:02, Johannes Weiner wrote:
-> On Thu, Mar 19, 2026 at 08:21:21AM +0100, David Hildenbrand (Arm) wrote:
->>>
->>> I remember you raising this in the objcg + reparenting patches. There
->>> are a few more instances of
->>>
->>> 	rcu_read_lock()
->>> 	foo = folio_memcg()
->>> 	...
->>> 	rcu_read_unlock()
->>>
->>> in other parts of the code not touched by these patches here, so the
->>> first pattern is a more universal encapsulation.
->>>
->>> Let me look into this. Would you be okay with a follow-up that covers
->>> the others as well?
->>
->> Of course :) If list_lru lock helpers would be the right thing to do, it
->> might be better placed in this series.
+On 3/23/26 20:06, Zi Yan wrote:
+> READ_ONLY_THP_FOR_FS is no longer present, remove corresponding code.
 > 
-> I'm playing around with the below. But there are a few things that
-> seem suboptimal:
-
-I like that as well (and could even be applied on top of the other
-proposal later).
-
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>  mm/khugepaged.c | 159 +++++++++++-------------------------------------
+>  1 file changed, 34 insertions(+), 125 deletions(-)
 > 
-> - We need a local @memcg, which makes sites that just pass
->   folio_memcg() somewhere else fatter. More site LOC on average.
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index b2ac28ddd480..39f0b8959535 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1899,7 +1899,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  	int nr_none = 0;
+>  	bool is_shmem = shmem_file(file);
+>  
+> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+> +	VM_WARN_ON_ONCE(!is_shmem);
 
-The LOC is really mostly just from the helper functions IIUC.
+Oh, but if that means that khugepaged cannot collapse large folios in
+FSes anymore, then this is the wrong approach I suppose?
 
-> - Despite being more verbose, it communicates less. rcu_read_lock()
->   is universally understood, folio_memcg_foo() is cryptic.
-
-begin/end is pretty clear IMHO. Not sure about the "cryptic" part. Taste
-differs I guess. :)
-
-> - It doesn't cover similar accessors with the same lifetime rules,
->   like folio_lruvec(), folio_memcg_check()
-
-
-I think it gets inetresting once the RCU would implicitly protect other
-stuff as well. And that would be my point: from the code alone it's not
-quite clear what the RCU actually protects and what new code should be
-using.
-
-But I won't push for that if you/others prefer to spell out the RCU
-stuff :) Thanks for playing with the code!
-
+I would have assumed that we would now collapse for any files that
+support large folios (in PMD size), not stopping to collapse entirely.
 
 -- 
 Cheers,
