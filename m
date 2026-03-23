@@ -4,90 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B519EC01CD
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:20:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54304EC01DF
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:25:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B74F86B0088; Mon, 23 Mar 2026 08:20:58 -0400 (EDT)
+	id BA24A6B0089; Mon, 23 Mar 2026 08:25:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4CCF6B0089; Mon, 23 Mar 2026 08:20:58 -0400 (EDT)
+	id B529C6B008A; Mon, 23 Mar 2026 08:25:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A89E86B008A; Mon, 23 Mar 2026 08:20:58 -0400 (EDT)
+	id A69536B008C; Mon, 23 Mar 2026 08:25:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4BA6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:20:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4FF311ECBB
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:20:58 +0000 (UTC)
-X-FDA: 84577236996.04.ED4F2E2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9E3BCC000F
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:20:56 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T8IV90L8;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 961F86B0089
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:25:09 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 626D1BCAFA
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:25:09 +0000 (UTC)
+X-FDA: 84577247538.24.F4D7872
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D11F680003
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:25:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=drHbWPoW;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774268456;
+	s=arc-20220608; t=1774268707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IykMiuIGiUdrVYe11M9T/CmSOM5FZCBrKdBDC5c/FXI=;
-	b=Vm41UpmZ0W4/x96IDbWWjrqz3Ca467qiQK5XdZFCfAhqMNq8l/eZ7wWj2RZIoglDl15u4o
-	WSFGSRb6CKu9ewRFyOgQFBMicF/5oM/4BFUHzitaTV5R4m5fIMVRzaApEct9VRWljSGIwe
-	T2ozPFCL0cNHEtvjkKwNIsI7dul6300=
+	bh=FReTsBEorcKUV1ztUSO8zZCuKrB7TDZZteXHSc8z88M=;
+	b=6xyXKB8b+Pg45N4DW12fkZohUWgOlAIBQP9MW5aL0NA4uimJS05Bp1lAQXpRS8SFF+Hdn5
+	z0F+7cz3u2p06bWnBLl79kR1WJfQkYiF/Tp0XQLUgt9NRp96/Fx+SuRrjDNB6yrHWNP5UO
+	ozdrGTe07PJb3sDG2Ut+eckyyZ7cbog=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T8IV90L8;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=drHbWPoW;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774268456; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774268707; a=rsa-sha256;
 	cv=none;
-	b=VGkQfsmwy77H79eSEztG4vmsf+EBJvRnBM6gYTrExtGlfLvpcXSyiYPj5qbFLShJX2PgCA
-	AwOuquEmLBkfo0WkH5NWjCJxzsZbXP08A4op05PrNdgZJDaW/deKHvxHqTz2TeeFZIjM/e
-	A42oepWQS245Q121PIhy7EgUO/fD+mo=
+	b=5Q+LRZBbus7uS/mjsTAZpIHA4d+fMQpXWIwBE/MNh2bVxjlsAY3Y62S5JmEPtaXKs3Ybop
+	54rrWv05lbf8Jc2cYfNp2gotNJms56giRu/7DZmANkrLLQeUOcL9aqLHL4GIiEXCduYNJ8
+	kJoLWjI5jX0pS5LUPk3K7hGztqai96s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D199841735;
-	Mon, 23 Mar 2026 12:20:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D4DC4CEF7;
-	Mon, 23 Mar 2026 12:20:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3BC9E60051;
+	Mon, 23 Mar 2026 12:25:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF36C4CEF7;
+	Mon, 23 Mar 2026 12:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774268455;
-	bh=6f8GRyqWf1PPAy+kPm5cnF4lf8sdaWj3CMsWHt2BHW8=;
+	s=k20201202; t=1774268706;
+	bh=ZaVyichs/RRfk2MX4rNXjPKozCC5RWlOoxEpm8yp1+Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T8IV90L8rAdSvoLlyZDnZG1jw89kF8h6/O3939tCpBeQhfOFrE2uDSvHkgm1Jmqed
-	 1NmZu8yGYA1nAq1rkbRDT3RdEJB9+RMjVWWWWwOFWWGLouQjZamVAhveZ9wFUevGok
-	 HKjiYhT6TW5HkXmpmgXSupkiQ2LzNm8uDFMUtxAEa6y9ts94e2d/2sNCsjNdiO+1lC
-	 Kq7O6b25obd6l3vV6kR0D2yszWxbG7mYUMDG4W3wfrdmqo4mjACvHA1MKEzBTpUU03
-	 9hEqks3t3aH5oLX6jBcuhTaEtk/QoFjlTldtBJ0c3a/WrxRdNDF7r8ZV7Fz6DuUIiL
-	 8uHVJTnjjZQ5A==
-Date: Mon, 23 Mar 2026 12:20:54 +0000
+	b=drHbWPoWQ/hFqgM7MrihWQFuhhqCFbPKQFrNzl7qxK5i4OL5xfLUWmkPc7ZyOuOzL
+	 iDAVSG+TvprLudKR1MO/Zl3GzZ9j/6j/3bubSysOBaAHTDVeWGMzF5H8V88qwhqVYY
+	 uDb5wrSFTOvG0s2ZgPpui2JVL8eolZFmXvvfglD3ghhJwLwaDpLKDr7aCPV/vn5d8j
+	 0MmBvOQxBxha8J+zMBxhSs0oIlocfdfyWqh82XyH9sxHqiN9oFjNrdPf9rDM5k/7f7
+	 TLAMCAqGq1BF6KdwNl09I925tA3F+4mvAma9DVoNbVXUJCQ/ay1F3dxxcbngIsUDLm
+	 2W2plRqaVx/fw==
+Date: Mon, 23 Mar 2026 12:25:02 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Ye Liu <liuye@kylinos.cn>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Wei Xu <weixugc@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Remove unused page_is_file_lru() function
-Message-ID: <a08c1b34-78ea-40c8-bab0-a7b0d494630a@lucifer.local>
-References: <20260323090305.798057-1-ye.liu@linux.dev>
+Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use
+ has_deposited_pgtable()
+Message-ID: <0a917f80-902f-49b0-a75f-1bbaf23d7f94@lucifer.local>
+References: <cover.1774029655.git.ljs@kernel.org>
+ <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
+ <97a35411-3482-42d5-b0ea-31a5994956b2@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323090305.798057-1-ye.liu@linux.dev>
-X-Stat-Signature: ht6gwbmbmneqkjkrjg9baghjnu9y4pmk
-X-Rspamd-Server: rspam09
+In-Reply-To: <97a35411-3482-42d5-b0ea-31a5994956b2@lucifer.local>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D11F680003
+X-Stat-Signature: n5eompjms1jiuw3dxu8b6aa5kbso49zz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E3BCC000F
-X-HE-Tag: 1774268456-447701
-X-HE-Meta: U2FsdGVkX1+1e413sXZ0bCCRQ/GvOwbcmU2baTBeTX1L77BFnEikztLAvsU1qKBqzk+NCq7MbKHAGuvvhXRmcxcYXMLFIJBvDMX/xR73aTju5QdYXpcNVjx+hqWlTXmal8Uv17ASKKk+iRW6KgvcLZnwn2IaDg+uKZbRG7STgC8IENZoVdkxdUEVJosHWcU9quHD0cuwFdaszHnVzNgh0Pxu6xeMKWhZuZfhHZBh7kJOm9/tW0NWq0i0ZIG5w1KFSwgDaAHqU29vCmEKQioGwsdYYxCSUC/G3mlqw0Ut3GHvDFhiOSuoda6hBYFkf4GkKDi22UoH+Mn3jrdHODU731AAvcxZjzF6v9QPOqomMO4xha8Q6m7jAAybVHBLXg1TNEaXk27D0ZHyxixWYhqakBrZkdyuw/XKBrANR3wUWsRwVZBvpyrKknUGXPzifMJlxdciDHyNPjRwbdy0U0ttveph5C0hXMq3ZMzSGTa3unXl4zFHTGBNX5oSHqZKs5E8+MOPqE5Ro2MiFK9epKbUDVqOE17QBZTSbOfmShtZ8UcPUQJdTGbyqsrR0xknMAkcu+g/VKAbeTjTLx4Xk48qAuOyw7E89nZkXy6gzejcRyqh5Lh6Im2zIiN8WjpclYtoyDeUMBMKnthaTR9WxcLUWQhUpzVfYYPDhohTLTa6sItgLyqDity7owc15JNYRzrz1IrUVkV7KiD8HS106EpxveF20MDxSm2K8LIxgtmzXrGkk46HIhSwvrVn+a9AoKaLfcGo/bogkYAIU4p/7VpFKr+LC67U4c6iw4fxq4Rxo6C/zjirUXAD8r7Fl5T756nS/7kgF3nVn+EVUvTeGSwL7S9CCL0g3mvmyA3xO4xut4Bt98c5x9UmIpnstAeFPPrL+eAV+asBry2bLv2AM+/xkozHkDLORGHM722vfzevnQb91G7boCCBhzVL/Gd4I5Nye/fNSm2aDe3VcYpZufd
- eqfmKkK3
- 7h+Ql0FEH5ramVz0GjBMyL7535q4i3OGmazan3+88hyFXbT1NbeklikFhLhsYjm7a5SG9HO7xvfg+2Fr2gG6s9I3XeNZ/djIaW6AHHdqICUOOuB5IWGN3buBQBU9MbwenvSoDNk00UAXy/QvcTxaFxENELNYhMYRkidMb1OloavREuR0+kGnmyQiK2XHzcR/c5899eOASuDQzGKJiGO68+7jlGvxKwpJBmMCkiIOt4LYtnIFodPxJR6igVgpUfjZ2XA03BP90s1V2ec1vJzZKGHy5/Hlda8WD506q
+X-HE-Tag: 1774268707-10124
+X-HE-Meta: U2FsdGVkX19rBw0h19o9+rJQHfoyPLWT3WGpW47e+iI1O8XEHwlVfX2t2bSmKsAcsdWVIN2QUmoaRU9xMSdx/A7HIiEaDU/3X0VUN8rHbpYdV7oIzN4KSelOClKYRiCwXy1QDFxjjU6aIoYZZym7spMrD/McqkjPG6s5dPwWgwgyWQLcankuOD5/SiS9gfOx8W+Il4l20JlwTJ85eEEqbGXb99U61W/RDTtb7a74znEYJDKt9YdHryhys87vy/mseEQAXDHnb+VVz9pA+7U+XOg1AiqijgRw5zBZfDG/JPvI6Fz8+TGIxuL0ilEjHwheRyOdorNJtSFMvXQCxXs75IVnevs44e6TZ69/byX26iVtD/1tBlJpGffygsgJr3o/HfeDeI4/HDd+s479JF1cRQBhH0UPXNId6IWT6+dchTeo1SORr/dKLWHbZdS8S886H71MVTjCf3I4LIgPZ8j3nWLjN4P6VrIc7us024E/jdL/NMWZTJH8uERJrOp/n+pAjSBmpi29hCo96IV3oHKEXT2Q5+e/0il+XEO31N1HvmTyBXWmImAH9lnqBrtiftD+KhA+MIGWi1A1+aqkyz2KReMC84BUeArUyh6kol8hPRnefByh2opSwvwjx4lG4zZPi4nI1YDU9XuZtoRO7g8Ve1UfNMDM2NEwUD6YOB+VP/gFtxvf3ovisZ7J+2w/NVOk1efxV52veBt9j+Wci/fvprnm/o/UbhVMD1qG8q/RswCFZvsJ0GKwa0nR0tlkbXDEam22trpI9y5si/yqazGMz2xo2XbEE39HWJCxJdVlwXN2WM8Ohdz9I7x6Gr9R3uIzMpbLno2KdNmiAuHWE6SeuCDF6aTtd4Fend4CZcpCKuXlPfK7bw2QTHsrKYsn3+Uc8xQRuEEj9oHd4vpYy9/m8ntRWmDRe1CHi3cgw+mPTNpxCcZom8rqHmTfcr7pzIlkCjHXTOVUvdi+z3nL5Sl
+ 4ZIYFQr9
+ RWXZI3scUjkYAKcTeBssKOEh0QRUGW6CK7brjT8CCpv2zfkb6P1ZaDBDujzPjXYHIBzJoTfuBZSAbluQDLxSyKlbOwgm/CzJoJzbOrEr3VSUCrYusy6gfAPfMsXTpfFhRlDISGvfyihqhPNKNO70HealuYiAPQCEBMSr6KXhomW5UZnr9ToDvtO5dVE+wvAGS3RZ21WGdFdle1iBmxZsxL8IRUw/kuj/yq+h7uECdNUcG+8hriQdVw+l/e6WkNloCr/hWwOojSYbRx5f8dyi0Th2hUx91B4xfoFNv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,44 +98,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 05:03:04PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On Mon, Mar 23, 2026 at 11:45:23AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> Hi Andrew,
 >
-> The page_is_file_lru() wrapper function is no longer used. The kernel
-> has moved to folio-based APIs, and all callers should use
-> folio_is_file_lru() instead.
+> Could you apply the below fix-patch to resolve an issue with us performing
+> folio_put() on a folio before checking it again to see if a table was
+> deposited, as per Sashiko.
 >
-> Remove the obsolete page-based wrapper function.
->
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> This patch resolves the issue by storing whether or not this is the case in
+> a has_deposit local variable (as used previously) before invoking
+> zap_huge_pmd_folio(), then using this boolean to determine whether or not
+> to zap any deposited table.
 
-LGTM, so:
+Oops this is wrong...!
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
->  include/linux/mm_inline.h | 5 -----
->  1 file changed, 5 deletions(-)
->
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index ad50688d89db..4fa480bf1dd2 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -30,11 +30,6 @@ static inline int folio_is_file_lru(const struct folio *folio)
->  	return !folio_test_swapbacked(folio);
->  }
->
-> -static inline int page_is_file_lru(struct page *page)
-> -{
-> -	return folio_is_file_lru(page_folio(page));
-> -}
-> -
->  static __always_inline void __update_lru_size(struct lruvec *lruvec,
->  				enum lru_list lru, enum zone_type zid,
->  				long nr_pages)
-> --
-> 2.43.0
->
+Please apply the below instead :)
 
 Thanks, Lorenzo
+
+----8<----
+From e6d58747d00dd954c605201e97f8b769b2ba8cf8 Mon Sep 17 00:00:00 2001
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Date: Mon, 23 Mar 2026 11:42:01 +0000
+Subject: [PATCH] fix
+
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+---
+ mm/huge_memory.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 610a6184e92c..b2a6060b3c20 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2397,6 +2397,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	struct mm_struct *mm = tlb->mm;
+ 	struct folio *folio = NULL;
+ 	bool is_present = false;
++	bool has_deposit;
+ 	spinlock_t *ptl;
+ 	pmd_t orig_pmd;
+
+@@ -2418,10 +2419,10 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+
+ 	is_present = pmd_present(orig_pmd);
+ 	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
++	has_deposit = has_deposited_pgtable(vma, orig_pmd, folio);
+ 	if (folio)
+ 		zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
+-
+-	if (has_deposited_pgtable(vma, orig_pmd, folio))
++	if (has_deposit)
+ 		zap_deposited_table(mm, pmd);
+
+ 	spin_unlock(ptl);
+--
+2.53.0
 
