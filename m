@@ -4,93 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90581D58CBB
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 03:04:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 686D8D58CC7
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 03:11:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC7846B0005; Sun, 22 Mar 2026 23:04:52 -0400 (EDT)
+	id 9C4846B0089; Sun, 22 Mar 2026 23:11:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C51D76B0088; Sun, 22 Mar 2026 23:04:52 -0400 (EDT)
+	id 99C306B008A; Sun, 22 Mar 2026 23:11:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B19336B0089; Sun, 22 Mar 2026 23:04:52 -0400 (EDT)
+	id 8D88C6B008C; Sun, 22 Mar 2026 23:11:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CE956B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 23:04:52 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 385F8C2F76
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:04:52 +0000 (UTC)
-X-FDA: 84575835624.14.6136474
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 22CAD1C000F
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:04:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=lunn.ch header.s=20171124 header.b=Cgzrqx8G;
-	spf=pass (imf20.hostedemail.com: domain of andrew@lunn.ch designates 156.67.10.101 as permitted sender) smtp.mailfrom=andrew@lunn.ch;
-	dmarc=pass (policy=none) header.from=lunn.ch
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C4346B0089
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 23:11:19 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C732BBF6D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:11:19 +0000 (UTC)
+X-FDA: 84575851878.30.01DC420
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 18E4F40012
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:11:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Nj/gU9Z9";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774235090;
+	s=arc-20220608; t=1774235477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0o3IMkXU9M+ra6jtZIePmaIM7c78nzlX/rqtiYyUMUs=;
-	b=cz8A+qtaIJefaq/632KWEOdnvW+j0dt2amvBtJZ1XlEdUtKxwRjTD6ix0ol32LZXtYQJ9h
-	KZdkhAxWqHtx4Y+sCNggtFvK42+HRvon2KhWPz3MJt/XyV5DsLmS1zpTxi9ivWfOxCxTsA
-	PlvBiZd3/pt1pZOj+DereeN6QkEv+lA=
+	bh=EisQwFemUONm3eFuD9fzaWUikQLN9S4IonXmw2NBtMs=;
+	b=5lVpbFRgyl5Kz6BOZnntiqDvM1CcXI4OK95qvChrtBq4m8Y8hQZMB8ZnI9Ulbn3aEQ144L
+	vJQT7U3l4V42g68HT7/16RQdNsYAr/6Ymyzl9IQF+XEDVrwiePn2PjH4ldAIO2i0fMswyb
+	B0FfK+13pDOKU5OOuFLshlC3sqyDZHs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=lunn.ch header.s=20171124 header.b=Cgzrqx8G;
-	spf=pass (imf20.hostedemail.com: domain of andrew@lunn.ch designates 156.67.10.101 as permitted sender) smtp.mailfrom=andrew@lunn.ch;
-	dmarc=pass (policy=none) header.from=lunn.ch
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774235090; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Nj/gU9Z9";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774235477; a=rsa-sha256;
 	cv=none;
-	b=NvOAtKKxNDYq8yYuzs6JxxtcGEERzeAwolzqZqQomqkF0Vuqd2KHJCeNzzz+mVKTr8hM19
-	vaxL+BarA8MI/++pm1rBDcgGZqBIu7dyVEdHQAgFjupR3xwjM1Fj56pKG+4PcfWIu6gGF+
-	O8QMUwJWtH0nQSbcFygnyMVaVTyyNTU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0o3IMkXU9M+ra6jtZIePmaIM7c78nzlX/rqtiYyUMUs=; b=Cgzrqx8GftS1h7cFSUrWUQgVHX
-	Oh5P3qaAHvzzIytGyVzyTqcRYfVSrxZKFIjJlQR/n2YNmzpRaq+HqDI5Yc9o0F7SqIqnOwI+6P0AC
-	pkYpFBz2YLxvMYi4mly+bn6M59Uog8kGy1QttCO/yD64ayMbRm+bt7PXlzvZ2SezX0M0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1w4Vah-00Cs79-Lr; Mon, 23 Mar 2026 04:04:31 +0100
-Date: Mon, 23 Mar 2026 04:04:31 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: a.hindborg@kernel.org, acourbot@nvidia.com, akpm@linux-foundation.org,
-	aliceryhl@google.com, anton.ivanov@cambridgegreys.com,
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
-	david@davidgow.net, gary@garyguo.net, johannes@sipsolutions.net,
-	justinstitt@google.com, linux-arm-kernel@lists.infradead.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-um@lists.infradead.org,
-	linux@armlinux.org.uk, llvm@lists.linux.dev, lossin@kernel.org,
-	mark.rutland@arm.com, mmaurer@google.com, morbo@google.com,
-	nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
-	nicolas.schier@linux.dev, nsc@kernel.org, peterz@infradead.org,
-	richard@nod.at, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	urezki@gmail.com, will@kernel.org
-Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-Message-ID: <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch>
-References: <20260322192159.88138-1-ojeda@kernel.org>
- <20260323000327.111235-1-ojeda@kernel.org>
+	b=qJDAei8pWorNwTqKsMYLzh5ObMGDsOOwcX2U1GeTUHr+FJw/ugM8sJpnLwEZHJ/W+MEUCd
+	lAKJiGH0ofkna9X9CBkIIRWztLALqJof9WDng/KF0/ghUofJ2mXkJ+kFjlsvbWFkSwT5rK
+	9dJbs6CHKzO19pf227f2cz4f5zsEoLc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774235476;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EisQwFemUONm3eFuD9fzaWUikQLN9S4IonXmw2NBtMs=;
+	b=Nj/gU9Z9L07UD2bDAVnAh+tKEC/Y1Ony9+pUq0QVXmJrxsxoIjdYxsqfOsg71kWeiROhpt
+	pCp6yI51PjFjMcAdwfOv5ATeziaNCefRfF10BKynTekUZUPsBgyQcAba/xqqpEWdd+eEYa
+	kK/WtFPC5+W3k9YfEIA4ScWlYa8MQL8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-IGVfM-gtOxu5FC31Js5uWQ-1; Sun,
+ 22 Mar 2026 23:11:12 -0400
+X-MC-Unique: IGVfM-gtOxu5FC31Js5uWQ-1
+X-Mimecast-MFC-AGG-ID: IGVfM-gtOxu5FC31Js5uWQ_1774235470
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B2423195604F;
+	Mon, 23 Mar 2026 03:11:09 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.175])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54AD71955D71;
+	Mon, 23 Mar 2026 03:10:58 +0000 (UTC)
+Date: Mon, 23 Mar 2026 11:10:54 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, shuah@kernel.org, linux-mm@kvack.org,
+	ljs@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev
+Subject: Re: [PATCH v4 3/5] selftests/mm: move write_file helper to vm_util
+Message-ID: <acCvPrjndaJoSnF-@gmail.com>
+References: <20260319160656.1480279-1-chuhu@redhat.com>
+ <20260319160656.1480279-4-chuhu@redhat.com>
+ <78352e6f-fa40-41ee-b044-62f682f3ca43@kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <78352e6f-fa40-41ee-b044-62f682f3ca43@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: Bj2MWj-bO0FtzGmOR02nO27MzB50wE0vQhipR3mlHxM_1774235470
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323000327.111235-1-ojeda@kernel.org>
-X-Stat-Signature: 4jzss51hkiua69ym6aorongnnsj3b53s
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 18E4F40012
+X-Stat-Signature: 9cp5ux3fiqgubbdxzbpjb4s1go64bniz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22CAD1C000F
-X-HE-Tag: 1774235089-917496
-X-HE-Meta: U2FsdGVkX18UmKg1uPaUqnXuUQI+4v0qGZrVdgMkyuDxoDn7LvlvA9sbkiIpKEnAbfac2lCOe7U/war87hqCYhsJF8QxEbAsIQWAMWFhLMdeGrf6qt1p4TP54r2uMPYBYkeGGKlZeLsqaxP6Vdg7X2fP9zBepRFeFdkm/dMfm9GMDp7EBoeADdZDAFbESimGq7qD1IJ2/VB1hapsRGcSQ8IrMIGEooIe/GVVgnvcIW7ce4+SGtpi6LrN6V09h5j9R+Nj2qjTZprW9tEwUT7cLLpe5pWz8dpra754pnABTy7g8eYjOHAvIXcmz8PTotZNXCrahZ0kfg+rHKiss0qMZ5AuDzdqRlvjoh+EkDv4uwmaxl9WwfNWWzS9XbBXM1KvREbawkbQsESF/3fmpKVYeNrM6VV4LnLnBFGua4jKjxpKt+XrmUkok4eFyK8GAbB9oZjvDRFY05sLO+9Kra5Uir94e/fqBYBKLlwRPjr3TuHb2NIgNIx6jv7YHUrN21nFgfgLMWUrTMk5u8gN9LR6pLe0Pxq6vsFXLoJiOmZSyRbNKo8+7g4CGE0WLaNtpteQAznzyw51fev/ychPP0lQ5UKIReIUICe2dattYqyZldo5v3seAgp6oFcvsaLuMUyCSD5eKr8J5cEXSLMAKKmHsohTqDBS+OWWOyAJoGtrzKMpKcXxmh1/0aHl32ZV/D/H98JbNzMS+i2j1+crXviODJ3Q+DryxoBm9jLGnBt852FGJStZUtANjOfNy/rrdVgZfsgmhf0ZUxb5ZGXK5PswcCPxFPJ77uYSy3Jwzgx/zx1NUdVBzVJyjAxWfrTXbNG459rnYeWjvultld00kmMsprhNLC34XjUEeweyUHuTKSJUwXN0gpDPJ4Gd+3pebdXnP7LXOu2TsZ3VW+s+qXdLvQSKrEIWdi1MN64nabRfAmdhTUjZlHbzTfZKmezc9YRF7SWS2L5Gt/jAjHbyASH
- XRQYveWo
- Ni2uZxQlSxGahoRh6XX0D8nTTniHnBfgQ9GzKQks3AY7cNWydJA6I+F+0ThWQN3uTmhLy4/7ImKbaFRVpZGX68muMOKBk3jANJLGAX6eN4v4MIw62RHRNd2e0W53qMOlHUEBnZCByj7VF78tGWLhpDzzkhJJ828HivbRZfZqEeFxyMPw9WquoGwJlZKfSmhPGhQrkey9emNzBkMecLUKAyKW9bqiFjHvm0Ppu8FMCjHfnanqb9tfaZMlREWATae1G5NOMymxiOqeud0nPuX6Jncb9xu1gMqqbykbzg/ziS6zWs9dVYAVeuGFl0AnL6MCQ9O7umE/dG73LGgqSLyQdKdWMwg==
+X-HE-Tag: 1774235476-755480
+X-HE-Meta: U2FsdGVkX18cCDV9vaFV1YY2OlIP13jfukrW1tVooCPW7afqrmQx7Zp69lhC2v08f1gC5y5TCTJghJlCuik4jA4yqAynJF1LIioyM1qb16sgbZ6tExjw7GKQh7WtAxb/z+Agjc6ddf6XwcuV3KqdF2JfKJXXooXovU2zR6YcGbqV+L3qbK7+x22lMM4oS2xelz6ORPe3PGsMxk6oj1RfH5c+Nuw7s64dW84+6cjezKzek5EGt3z4ttlgsRp13bMwls8TMv4dpbp788M/K37jybkByYhLhly2a7J1pv/sTazAZl8oPxvb3YvP7Eh7Otp6QWpl8QeU2lS3hg1PnUX/lkn1oVrHpqBXdZlBZQgwhMIM6NmEHGqa0zQM9Ss00ZS8u+Px2LgX/Udm+gFVVueH2iNCe5ARzlWNJ8tKPn3h6lVaPlxBEu0VCqVoPmRcQbVyKFQsvqK2/w+v5LwAskERt8ugPpRpg3smo77zI3zsydWiq3DCtxffgrnZzSwqewLS6Pq9TDtKZ6WmucmhfmzSB107E/X6ivGLUVp45KTghCy/SvTJaV9ZdE7eoIQ+QKfM51OPFU4Uzte1js13XVxU8pOW3QgEkzNB4Hqw7J4hqBxQDSUFkVUtwS6Rk6YcHtyiIjoo4t4eQ7kXEL9YQtZn8fsTmGpOIb55afazU3QWTXjldxyuVAfvGyOSfZkTM6GUEuOGtk3i5aEupD8VYDSuaNPUMpGH4xQndhy1Nu/dEjwpVSWWUQqi3Pg/RM+TX606zfYw9gJPsC+hHhi/SKk/OAJoRF9yL2r4CMgzOF8bUjwkgRJsfWMunoCihmJJihVxczFCLsmwK8RpHKUFxzgDrIUOjAncS4OYnmAngBwp6dRG3ZKoWAc1L/yqrc47Mc5MRl+aVyKm23AKdcxDHKsTHlXuto9GfkAWZzYfwFQObl4/kKb1ppbVon8NWXfaMnMrZjQR3iYPLSXXcDY2bBB
+ pEyu6/T+
+ J6Zi0nwQkZu3qZ0O7LI1pJnxekVOe2vRtifcL9hYNPyZz64CsUpgbytl9UtTRvkyXN1Cvh7wN0NAljlpiPIJs5PKG7igazdfIO9ngTmssG0LkrEpU3WfELmMatji0znXCa33q5Uv/F1IQbXAUeO4S/7VaOJUZ3/I8FM2xgOhNhiHcGbslr64nmpQp6PQOMSqBSbNQUEznNjQcOrRvTevmZXT70pqjddYF4iXPNXis7SrgfckqWVzkkFsxcNLuXfC0Y5rnQdaQbmiaFwY+lO5rOTV7qJcGOB87CqIjwQlveZF19Y7+fC/Q3Hu4oVhvvBQSq1lyJKzlD8idzTVsJS7sPyv/1jbUgC/uM2zT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,41 +111,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 01:03:27AM +0100, Miguel Ojeda wrote:
-> On Sun, 22 Mar 2026 20:21:59 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
-> >
-> >     On the other hand, regardless of whether we fix this (and another
-> >     issue in a separate email found thanks to the UML build), we could
-> >     instead add `depends on` listing explicitly the architectures where
-> >     this is going to be actually tested. That way maintainers can decide
-> >     whether they want to support it when they are ready. Thoughts?
+On Thu, Mar 19, 2026 at 10:48:38PM +0100, David Hildenbrand (Arm) wrote:
 > 
-> Another one for arm 32-bit:
+> > +
+> > +void write_file(const char *path, const char *buf, size_t buflen)
+> > +{
+> > +	int fd;
+> > +	ssize_t numwritten;
+> > +
+> > +	fd = open(path, O_WRONLY);
+> > +	if (fd == -1)
+> > +		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
+> > +
+> > +	numwritten = write(fd, buf, buflen - 1);
+> > +	close(fd);
+> > +	if (numwritten < 1)
+> > +		ksft_exit_fail_msg("Write failed\n");
+> I guess we could indeed test here easily for
 > 
->       LD      .tmp_vmlinux1
->     ld.lld: error: undefined symbol: __aeabi_read_tp
->     >>> referenced by uaccess.rs:349 (rust/kernel/uaccess.rs:349)
->     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
->     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
->     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
->     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
->     >>>               drivers/android/binder/rust_binder_main.o:(rust_binder_main::rust_binder_ioctl) in archive vmlinux.a
->     >>> referenced 36 more times
+> 	if (numwritten != buflen - 1)
+
+Looks like you are right. AI provided other questions on this helper,
+maybe I can append a patch in the series to do such robust improvement.
+
 > 
-> I think this reinforces the case that this is something that arch folks
-> should think about case by case, and decide if they want to try -- we
-> may want to start simple with x86_64 and arm64 or similar first.
+> But then, we don't really expect only partial writes to succeed here.
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> -- 
+> Cheers,
+> 
+> David
+> 
 
-But is this an architecture thing?
-
-The netlink binding required this, because many of the netlink API
-calls are implemented in inline function. However, netlink is
-architecture independent.
-
-Rust is already fragmented, because it does not support all
-architectures. Do we really want to make it even more fragmented by
-having some bindings only work on a subset of the subset of
-architectures?
-
-	Andrew
 
