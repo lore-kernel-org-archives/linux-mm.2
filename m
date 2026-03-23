@@ -4,225 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B79CFF483DE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 17:53:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 933A3F483DE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 17:54:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B5786B0088; Mon, 23 Mar 2026 13:53:51 -0400 (EDT)
+	id 0BA356B0092; Mon, 23 Mar 2026 13:54:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28DAF6B008A; Mon, 23 Mar 2026 13:53:51 -0400 (EDT)
+	id 0921F6B0093; Mon, 23 Mar 2026 13:54:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17C0F6B008C; Mon, 23 Mar 2026 13:53:51 -0400 (EDT)
+	id F111B6B0095; Mon, 23 Mar 2026 13:54:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B3AA6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:53:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B5E40C391C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:53:50 +0000 (UTC)
-X-FDA: 84578075820.27.10893F0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 02928100008
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:53:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dtAleL+C;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E0EF16B0092
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:54:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B267C1B7D04
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:54:04 +0000 (UTC)
+X-FDA: 84578076408.09.488A793
+Received: from mail-oi1-f202.google.com (mail-oi1-f202.google.com [209.85.167.202])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0CE931C0003
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:54:02 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rcqK8f+O;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 3OX7BaQYKCJAuFu02708805y.w86527EH-664Fuw4.8B0@flex--avagin.bounces.google.com designates 209.85.167.202 as permitted sender) smtp.mailfrom=3OX7BaQYKCJAuFu02708805y.w86527EH-664Fuw4.8B0@flex--avagin.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774288443; a=rsa-sha256;
+	cv=none;
+	b=TBA0ohFadUhHUfByRS+P24qTnbw4GviGUraAVcdduDh1ZqOUwftci2eJ1HGlNd0uygc6OY
+	k95nE7ROFl8GexHaqvLPSxdSNhJbuTYOmhenOwex6Dv5+3XHnVSY0NU82jmogbGqK9OZcd
+	tKWeq4m5LAGMIkfgyosIuR/pN+ZXfoA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rcqK8f+O;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 3OX7BaQYKCJAuFu02708805y.w86527EH-664Fuw4.8B0@flex--avagin.bounces.google.com designates 209.85.167.202 as permitted sender) smtp.mailfrom=3OX7BaQYKCJAuFu02708805y.w86527EH-664Fuw4.8B0@flex--avagin.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774288429;
+	s=arc-20220608; t=1774288443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tkmGygocAyrA4DwIQDMugn3mzA2E38fElDLLZGIe6Cc=;
-	b=u/Kg8qkKeUrHCuc9aMUAM+hbSxXgM/7L/d+tPuAYFWN65kzQRBnDcILb8PC5XrXmgjbbtm
-	5gtdoW0xjlUr0awKyDTIqIBPwwwC0NcvN04c4EwXVCSk1CaSYTWDnZY4IEKStHbfu+3fX0
-	/8WA8uHDkamF0oXhperVcQbo6AMiVYY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774288429; a=rsa-sha256;
-	cv=none;
-	b=sUQJ4rRF/vpiapzYwRWKyieMWMbaJ/pqm+gbzbh2uHMZSZOEXpnMol794dkckzbItadYLL
-	R8DYTM3+99yiNphVSz9dT4YPVpKb7evT5taoJ8C032gI+Cwud+fFhJHm+wTdIuwuJwTlPg
-	lk5XjKyKkPHwQx9im1ZruA5rPnFE2/Q=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dtAleL+C;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DC66C60123;
-	Mon, 23 Mar 2026 17:53:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0868C4CEF7;
-	Mon, 23 Mar 2026 17:53:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774288427;
-	bh=pvvqGoKPtjeuRDaGRHik7rDxrxHUcSCqlT3NKZ5Bw0c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dtAleL+CGdeMNPe8yd5PVQT9KTYb3tEETMX/HImnFVrroFBEyH2/UTI+eZ++LbWik
-	 zzNWKrk6q/UbAslBj4vJbDhj8byf9W/0I71wcX9EyAOlscPRt//TB8JBY0q/KhwdMO
-	 XEigCcVjhOjvODDhf8zGuno5p6eaNue1isuOAk3sT8Wh1M8x5ZWa/4Naqax9n6EIi1
-	 meH6xqHWafcLF8RC1MsnOTSSgKTa1f19OGJ4Un8NLv8NagVQLmaJ5IQm3+XJl2ygPr
-	 aDFKamP52ArwOR80tXn9DadwZlCTeIFLzjY8NOS2f0O0QN/0bHaWpgrMinwhVu26U6
-	 ByYqqUWVeL57g==
-Message-ID: <187fa189-b6d7-4ba0-98a4-7a525cbaf4f9@kernel.org>
-Date: Mon, 23 Mar 2026 18:53:17 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 03/16] mm/secretmem: make use of
- folio_{zap,restore}_direct_map
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "kernel@xen0n.name" <kernel@xen0n.name>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oupton@kernel.org" <oupton@kernel.org>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
- <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
- "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
- <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "riel@surriel.com" <riel@surriel.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "jgross@suse.com" <jgross@suse.com>,
- "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
- "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "yosry@kernel.org" <yosry@kernel.org>,
- "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
- "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "tabba@google.com" <tabba@google.com>, "prsampat@amd.com"
- <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>,
- "mlevitsk@redhat.com" <mlevitsk@redhat.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "jthoughton@google.com" <jthoughton@google.com>,
- "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
- "alex@ghiti.fr" <alex@ghiti.fr>,
- "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
- "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
- "dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com"
- <gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
- "palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org"
- <pjw@kernel.org>,
- "shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
- "svens@linux.ibm.com" <svens@linux.ibm.com>,
- "thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com"
- <wyihan@google.com>,
- "yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
- "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "urezki@gmail.com" <urezki@gmail.com>,
- "zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
- "gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
- "jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>,
- "lenb@kernel.org" <lenb@kernel.org>, "osalvador@suse.de"
- <osalvador@suse.de>, "pavel@kernel.org" <pavel@kernel.org>,
- "rafael@kernel.org" <rafael@kernel.org>,
- "vannapurve@google.com" <vannapurve@google.com>,
- "jackmanb@google.com" <jackmanb@google.com>,
- "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
- "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- "Manwaring, Derek" <derekmn@amazon.com>
-References: <20260317141031.514-1-kalyazin@amazon.com>
- <20260317141031.514-4-kalyazin@amazon.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260317141031.514-4-kalyazin@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dx16eyt4kmhum794ue8r8e3xgi94gmuh
-X-Rspamd-Queue-Id: 02928100008
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=A9CUPvPqmkALquwn3kP/A/dGd5HZtJJQeBn1Jn3L+v0=;
+	b=r86U3mIKYvoka0RXjGMQ5pnkFmUNB7lJX2h5kco2Z+xh/6MlOYJfV6OfkmOuHrDDrYWTnM
+	A0VD94SA3hvgxPPjobkad9b5DJt8wOl8jgNuSuiEwHQ/794+sn6NWpPeGSfApR/PCBcs+F
+	sdP6en3yR/4rubwX8ANQJscKm5HxDsM=
+Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-463a018f61bso13833718b6e.3
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:54:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774288442; x=1774893242; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=A9CUPvPqmkALquwn3kP/A/dGd5HZtJJQeBn1Jn3L+v0=;
+        b=rcqK8f+OlAZQP9LqjWJXg/23cxla0CeNj8xlUSxX2Im0mkfZVWQezVXcXLzAAU4r5A
+         X960fk+0NOfhTka8q/Ip5AOuG2+RbYu4GpAmMtrWlp/e0qqwr+NMJuQsYU1MHHUxJuMn
+         v3pAMO/CNfM61mbyrnIfUemTfseqL1DNaYkLcoFrnm8ryUk/NGzv9JFlm6LGDOzVCeMW
+         g4yU+I0AUXRjP00C+sbsg2E7RB/DBhqQXn9aNl9AbjfVcjDMT54YO1OoYX8ebq8tHs1Q
+         bhFU5ti4RyQKE+OMMPzp+akG/Sb8u0kB0/nZNAjFX/Cteq6j3lFbsdWUHZya+xcy+Pug
+         EyuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774288442; x=1774893242;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A9CUPvPqmkALquwn3kP/A/dGd5HZtJJQeBn1Jn3L+v0=;
+        b=rEnYDz5us37525UWllhyiu2EeKmIETi1FQmc4VarFyfTf0OQxz6jKYjo6Mtje770xD
+         WE10nLXm1+5GXKYqVe7XPPIRX7m4XTEFp83eJwuTImkjZsq7kXRkUme6ZecOqmgkJeAl
+         PzKipEG5pFn++oMNUTtgeR2mizqAywn9e3cuOII7eOeqbMyx9Sbc+MqOfN4dL2lexsJO
+         ngQSGYo3RRpHvbdGXX3bHGmZL98+1Di5UIREGlWJZyR6ZxW6oGcXcGLpi+Y/DM54EQ5c
+         RSx0ra+1HTuHMbsPl9xhwOVHSxVoTO+GGkcdUSxRbbFmrAOW2OsEa0Gc/V5p1hBQBk4s
+         9i9w==
+X-Forwarded-Encrypted: i=1; AJvYcCVU03zkZUI3G4nmCMHV1zdFQrW/J1l4RP7Dw7hEbNyOsCaE12/8WOWRJkddRiTtCChu2w5yoE+vng==@kvack.org
+X-Gm-Message-State: AOJu0YyYBW/3N8z5kzKXoABEwboODV/jtRzAfklP0RKsotoIINA2MXYN
+	7qL71GSqmYpO8YjotlNewubUXp44vFOTluBM6CO04v0RniVaBIpcPrCS8SxJyWI4U7r6QJrMH32
+	OK81ngw==
+X-Received: from jabjy12.prod.google.com ([2002:a05:6638:a30c:b0:5d4:6f13:358c])
+ (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a4a:e904:0:b0:67b:d1cc:db3b
+ with SMTP id 006d021491bc7-67c22bb5ed4mr10163213eaf.15.1774288441712; Mon, 23
+ Mar 2026 10:54:01 -0700 (PDT)
+Date: Mon, 23 Mar 2026 17:53:36 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.983.g0bb29b3bc5-goog
+Message-ID: <20260323175340.3361311-1-avagin@google.com>
+Subject: [PATCH 0/4 v5] exec: inherit HWCAPs from the parent process
+From: Andrei Vagin <avagin@google.com>
+To: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Cyrill Gorcunov <gorcunov@gmail.com>, 
+	Mike Rapoport <rppt@kernel.org>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, criu@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, Chen Ridong <chenridong@huawei.com>, 
+	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Eric Biederman <ebiederm@xmission.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Michal Koutny <mkoutny@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 0CE931C0003
+X-Stat-Signature: hanm4mf1ytgmhhct3ek857oj4w3ew85s
 X-Rspam-User: 
-X-HE-Tag: 1774288428-595482
-X-HE-Meta: U2FsdGVkX1/lpSzbpDVYZbwMjbB4hZ0AB7YCqlwxsK/W6MMd2MkKpwlG9nTYRxpVqnnlr96tn+Xu+f9iDyCdiUmwFt1uOG5wvWJH1QhXgelfeQXA2LtWmI/Z3ZgkH9fj26HiFmyB+GH9XcX0wp5+f/bt4jaCzXKZXzq9kD8kuQCNAg0IFtsdACoQ51S9+KUGkOywXfdq8+d3waP5DkQMxYkTSl9s6MaixBkMCIoguvHmh9wozigiPwkRiKPaE5WCkLcHDQRwyVnPoOT4+V4X/L9szgOVY/0F6H0EazP/2Zakw1PKSuKAHBRfJiKjgMaa+mZ0nS0HJA1G3GDRX0DZfklYeMVxhEZHilU2nyOD4gDmEip3D3dTbNXoF1GMnJfWzaQ5hdxLzi7aniJ412UAewXvtNRZ/Ynzg5bgX9I5WbbyR19Uo7hN5gHPLOnfOpmpqcMS/hxi0c4qKGYHPCoKQFH6s1r4qek3ZoAW8oKu+aMBo0pMkb5vlNdZ+fMv590Yr2cqFu7qCC84CWTCdR0qOuobbj7QauqeYLL8TWU6TxeEaWv3SMYb2tDMg1SVcg/M9XlWRChiLgGqV/eonD50Hi9o/Ou76eBnd5t0EmbpbGo0GhxC/JGh4OtCc8+D19il3wz1AnY8+qLMUJ5jrnKREGxo36YvLVVO3R85l03II6wZUidLczjQlB1kbcQNG13IByj4eIyXYayGy+cxj+32eBmSv6fMq8skjHpr3jl+Xb+II8A4KGPDiEirZ/RLgb9V6j7mOp6JbVcm0p15MBQDLsdg85l0dXJk54pz1Ii88owQ8B2e8nr5AkpzMGRgebN8zwQrIExAbnaQvtTXUSYQLJUKHvRLysGbs1UIHce1lOz0wytMAmISP9gdTdMoTl1k41r/kFur1DmljeEJHyT9xZ+sltJTGzLcFuKuf8X0eRywp5ds91KZa+xAdHcXRuDgmEprS83hCExNwgf5Z+3
- aaHIEhep
- 7cao5V8ypW/YRENfRqdewrU4i3bBfLx5oM+00jYOUFmRY4kbSLCD0icPH8+NxlkQnKmMRIWTyw5AoW8bSklCOo0t5ub+h55YHbp6EFBLJD3N/omQhwIFaes0HGixOYPVkXwZg9+BlE7ozmRQychie+pJqnjLGG9hk2NOaq1tJFxNX/pcJO3qgY/u+VlOj/S6mNKleKPSqz6ecHGYs+GktJ77U6SdQ+5xKCh7h1qIS4FB8LCxf0s+TBOz0j9gAiDJylWNCyIab+4+ZtcE5Z5JqsOs3EMypmQmN7tlBGoBj21uKKc96Bq0Zn76YZ1iGCfrwmzafKTGpfKGCZUY3dyHkzLjQxFRaFB8EVhGhS4ritfxwitCj5EQ9+ba5SK4/P5tL3+DNYAp7SujjaXWVECI7W4pGZEvp8RsQYHEGlVDt5MyGHb40RMIFvQ67h4LepRw7Hje6rPk3jC6boqOqer6kpePIsg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774288442-438925
+X-HE-Meta: U2FsdGVkX19Da7nOkSa4QRvJkBorxN5f3IpMeoCyq6XJ5S1HoI8p/vIm9BcaHfWk3emL6LbPlnpUP/8p35LCUNDNOooBI0qs3/Q/Km3t4JWt7DRjI2CUaF0xhWqvWjRkpK8ZbRaOzHN/LZITj2qnfWYNHYTX4THongYXfID6X7w4E2zkIuKCZ4XoRRVHVS8DRxsSDCutKcLQ6GHPI7SsP74XI4ii3t0hWLLsEyMz6wv1JwEQzGzJkSXWyrVBKB0ZFHo+EjcIfas63AJRKs/ZPkt4Qah3P9qW3eaVd0MWOK3aKB2Eu+z8Pe1NKcrOxVoCaC6q3M+7mVfU/DWyTkoCLBaUrXJQihslL7rzbn2s9u7qa2MZh+vViEErRL0iJHc9qhGdDWf56GsloQTS0QgdY6b7goY7ptlROe4RL3uVGEzCb5dEIh18N7L5DvLR39wK8+vn25rMM6TZO16ikNy772r9Ye5z2YRAN5kpKJ/+VaDOWqAQSWevg1kZb6TsYlISs60kSa5PJXWCAgEzIlMFh3hR8Zo0fLhBrBbKOfMcF4S1etVCpHw5SYw5zIInMtxOzAwey4yNB9hWNKHUv7zF9Rmsp2BkbbRbN+mMEIcOlhB96/DRlZuWmyjcfd1M/qUeCfwYgUWKqa0Om/KZUCJLCfjWYLctFrJX05hwGfxFIjVbCb+KLjddxeX9wU6i1QP+rCgrseoeEsmgJjxVAodeZieZV8mY4Opkss8HztlMe49jlUzUtRDXzoyLbQ7Uog6jbfNCyMGIMrT3ZT6LGyYXTHADlzpgWBgsH1C9bIs7A21Q64GVg57Tf4NYwklJ0cUn86Z/mE/0o6vQ9aMlDD7jnvB+vAVMB4lX/GdvgrsaxAH49d3I8W44WJ+W02R5JmV46HuLXA+kHpzT5HuDNOlSCV1rz7rUsFefmEQ3Q0cmQVMEXxebq3s5i+HlIOmT0jhrl+crAYtQRfCc2golCnx
+ OfICM26W
+ pN9BZBi18n6UM0Kan19AJ2losQ+ipcDle7B82lF2/8ycZm1kyOBSQNXJfhXaGGClEs4YcAubmFffauGqffBRVizTXHr6nxmv9g/HZxG+sJdjm0te9Ha4CP8WQPB2w75ClYUs4MoBUY9nf1MMme3BNkLmjXAz29ZJJae3aIHpcrDs4s72FX3UaLWLpOu2boLrhlxhbCN5IZLj5k5DhN3RqqM2ep82ljNEKBVDvC9kcj0+FiggwIL0lfQjcO0lZ1pAeGVyvtluBjXge4DIEF3espj6IWTVixBKQ0poH2patbz0jYLTGx53XQkYrhSslPIZg0OVq9YF0qDTBCw23iF2SxCNzgM9LvZXheYHHAc7EBIsV33ixB7ojQZ4XgeTbmywv4PwTIRVa8255snuuGrcmIiqjxUD2QuQR4Jd7sW19KkoYRkUgVHU+HshydmOiumudxWrOuWqp0OYMIgA+EGJJ2vZKTnTwNK9QhowvrzLvtFAEz+C7JXQAw7UxORXuVEHv97J0M/WZXIG7iCEk9bT+TeKHev4uxJeKUq6qcQLzuJr8OnzxNnp/PQFCsO+E32P9ZPv6ogoyO79+HYtUT+7/FxbfGVoK2lci/N+ijyl2EypaeUnnJBkyUewtqdRVCmu33xZebFN6jAEP+yB56/4UdsnIp8S3fyf+fmeU0P0tJ/zuedwY7usfM+FtrePMEjJCii1KSWP7Aa/7/pHozAwuZREYQgwNZ+vLnK+c095NOV2DYXXhyOqPIN6jftMMb5r0w8XodXJWUTi1cwmW86nIG/m/w6JKsgPa9fDJ09Vghi64gLRhjel41SrlMgm7+9uTvR45iySdQwN4uVyfi/S7824XFt8jLRDsywrHaoc/3L7SNpAbcS6FsH2Onp2ZKbJMnV255Oh+nnUgGhnjEi0NgpcKGc19GJkdrUezXMXZRwjVYQZI5L871x1gzu9IFGdHNm8PK/Z8zAyZiOwDP7QgM6lG6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -230,21 +110,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/17/26 15:11, Kalyazin, Nikita wrote:
-> From: Nikita Kalyazin <kalyazin@amazon.com>
-> 
+This patch series introduces a mechanism to inherit hardware capabilities
+(AT_HWCAP, AT_HWCAP2, etc.) from a parent process when they have been
+modified via prctl.
 
-Describe your change :)
+To support C/R operations (snapshots, live migration) in heterogeneous
+clusters, we must ensure that processes utilize CPU features available
+on all potential target nodes. To solve this, we need to advertise a
+common feature set across the cluster.
 
-Ans also worth mentioning that we now flush the TLB even though
-filemap_add_folio() failed -- which shouldn't matter in practice I guess.
+Initially, a cgroup-based approach was considered, but it was decided
+that inheriting HWCAPs from a parent process that has set its own
+auxiliary vector via prctl is a simpler and more flexible solution.
 
-With that
+This implementation adds a new mm flag MMF_USER_HWCAP, which is set when the
+auxiliary vector is modified via prctl(PR_SET_MM_AUXV). When execve() is
+called, if the current process has MMF_USER_HWCAP set, the HWCAP values are
+extracted from the current auxiliary vector and inherited by the new process.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+The first patch fixes AUXV size calculation for ELF_HWCAP3 and ELF_HWCAP4
+in binfmt_elf_fdpic and updates AT_VECTOR_SIZE_BASE.
+
+The second patch implements the core inheritance logic in execve().
+
+The third patch adds a selftest to verify that HWCAPs are correctly
+inherited across execve().
+
+v5:
+ -  Fix reading of HWCAPs from auxiliary vectors of compat processes.
+ -  Defer HWCAP masking until ELF table creation (create_elf_tables)
+    to handle compat process correctly.
+ -  arm64: Disable HWCAP inheritance on architecture switch (e.g.,
+    AArch64 to AArch32) by clearing MMF_USER_HWCAP, as HWCAP bits have
+    completely different meanings across these architectures.
+
+v4: minor fixes based on feedback from the previous version.
+v3: synchronize saved_auxv access with arg_lock
+
+v1: https://lkml.org/lkml/2025/12/5/65
+v2: https://lkml.org/lkml/2026/1/8/219
+v3: https://lkml.org/lkml/2026/2/9/1233
+v4: https://lkml.org/lkml/2026/2/17/963
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chen Ridong <chenridong@huawei.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Koutny <mkoutny@suse.com>
+Cc: Cyrill Gorcunov <gorcunov@gmail.com>
+
+Andrei Vagin (4):
+  exec: inherit HWCAPs from the parent process
+  arm64: elf: clear MMF_USER_HWCAP on architecture switch
+  mm: synchronize saved_auxv access with arg_lock
+  selftests/exec: add test for HWCAP inheritance
+
+ arch/arm64/include/asm/elf.h                 |  12 ++-
+ fs/binfmt_elf.c                              |  13 ++-
+ fs/binfmt_elf_fdpic.c                        |  13 ++-
+ fs/exec.c                                    |  54 ++++++++++
+ fs/proc/base.c                               |  12 ++-
+ include/linux/binfmts.h                      |  11 ++
+ include/linux/mm_types.h                     |   3 +-
+ kernel/fork.c                                |   8 ++
+ kernel/sys.c                                 |  30 +++---
+ tools/testing/selftests/exec/.gitignore      |   1 +
+ tools/testing/selftests/exec/Makefile        |   1 +
+ tools/testing/selftests/exec/hwcap_inherit.c | 105 +++++++++++++++++++
+ 12 files changed, 234 insertions(+), 29 deletions(-)
+ create mode 100644 tools/testing/selftests/exec/hwcap_inherit.c
 
 -- 
-Cheers,
+2.53.0.959.g497ff81fa9-goog
 
-David
 
