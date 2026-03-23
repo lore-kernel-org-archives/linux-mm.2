@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5E66EC01D4
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 11:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64417EC01CD
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 11:51:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4624C6B0088; Mon, 23 Mar 2026 07:45:28 -0400 (EDT)
+	id A85B36B0005; Mon, 23 Mar 2026 07:51:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 412A96B0089; Mon, 23 Mar 2026 07:45:28 -0400 (EDT)
+	id A367D6B0088; Mon, 23 Mar 2026 07:51:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 328756B008A; Mon, 23 Mar 2026 07:45:28 -0400 (EDT)
+	id 94C656B0089; Mon, 23 Mar 2026 07:51:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 225266B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:45:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6B06C3516
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:45:27 +0000 (UTC)
-X-FDA: 84577147494.23.D8CEA1D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E4B66B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:51:23 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 32D4E160B50
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:51:23 +0000 (UTC)
+X-FDA: 84577162446.27.01E77A5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EAB8C80010
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:45:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IaO2ZNaY;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6DBBC40007
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:51:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ShF8suCu;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774266326;
+	s=arc-20220608; t=1774266681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gXqhPFyOIKbs9TNwHbBifRArE30hNwjemGxtoFG89sc=;
-	b=BZ7QBMVB5l8s+y1fcQ8jO8RKNvTQi/r/HuWn42Pe7BV5DH5AaM1ZwRNUiH7fIJnIZ5unme
-	5s/D4qLfL7Qpi79HIaoCjC52twLhmAIy/ecPu9Vd4O1JC0xpnAE7epn00Eu4f1g7anD3Xa
-	Gjq/o/g274vYrsgfrBNQISZIXZpKN88=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774266326; a=rsa-sha256;
-	cv=none;
-	b=r0lIyuX8SswnpOK9w1FxZ44Jl7qDTAg4h8xxrxKn16Wo4HmarhCh8gQpbYxZkEuVqqwmvx
-	htQXJb9DaFQFjj/SXQGMVTLbYH6IMg5XNlpFhVHZVWs4Yac2J5JHpx2T9+advYDCA6OvEN
-	PqKTSEcsfqgXFAPK3JkNWWNXJvrzmiQ=
+	bh=LDxF4awYAm8MdAgDFgjT764jQ86yg9huZk7Uzo+BVHE=;
+	b=8T3I/ddz/YlwselObkLShk43hymSpdWf/mASxlcd9c43Lc+CrKbtnLelvwF5BYWB/q39vN
+	kVlVPeMENKl0C2fgi8XZr9yzemKxDd/sBnr9dZMMDnuHBMSvxFN9CeoaMetO0oqY90K3H4
+	8oPIK3wi61/e1VP+DBwqUbaDZQekLpA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IaO2ZNaY;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ShF8suCu;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774266681; a=rsa-sha256;
+	cv=none;
+	b=Ml7OYFdOp4YpIMNQh9hQGY0mpO1x22eZNLC1S/Xk1WWv1S66RGAup+DLdfZUttYxzKePDC
+	/jR3USB+1QCD4OsezWMIWnT2DRfbw58nitrQd5AA6TXV2LGBtLWTv5hkoE6k39ikzTJlMx
+	QWEhTwFTqISkBhCjJkwetPrWxN8G8Wg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0223643F47;
-	Mon, 23 Mar 2026 11:45:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7A6C4CEF7;
-	Mon, 23 Mar 2026 11:45:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 700BF43C6A;
+	Mon, 23 Mar 2026 11:51:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854F5C4CEF7;
+	Mon, 23 Mar 2026 11:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774266324;
-	bh=EFrQNo4nBOFwBb3nQYf8p6c6hV1JNXav5FiIm59Enoo=;
+	s=k20201202; t=1774266680;
+	bh=Dt+bOuxM+mfvDdyqEPo+p9Blwv4Fd6GpODUcVdZHmsg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IaO2ZNaYIvbccNI9QdODEObUue2cJ8BO9thS2A+s9DDgh1OMeJMwZ4sh/ckR9LA0u
-	 H/HQwuqYVHsN1kQ9p2V70R5rXLN3s6v9tOE1Zy6hjoU0lv3dfCLLdFMK4utH09nxvb
-	 2qx+A5j1xefi4pYc5yJKMBVK+P+KlQQM7/TPlqJfWY8+8sgXkDqvKZx188sD8riEVw
-	 D6J0oJZrd4l6k+fAfwPIbtT7KnJzuiOYF44VeOzxpYcI2gHgyp7dNnqM+/2zucmz5n
-	 kKMit0gdgX3YY3ttwhBmy5/hZfTi3okpsmxAH52Icl1kUMIrnsSbXQJMqFKIguYNuG
-	 jWJ64Bw15VXJA==
-Date: Mon, 23 Mar 2026 11:45:23 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use
- has_deposited_pgtable()
-Message-ID: <97a35411-3482-42d5-b0ea-31a5994956b2@lucifer.local>
-References: <cover.1774029655.git.ljs@kernel.org>
- <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
+	b=ShF8suCu0EIYttE51LjmUkUNKgnfiaXhrGdhtkAuCSVDtz5eowsLmJ41LC75ubyRd
+	 j3SilNylxvIIzRO5Q/lVctIWxftc1xnyE7ZnAT1rW5SIw5Lair09qzcpDMaYIxjkFT
+	 E+mQ2cZTXx60HmOGmHkkhZoQo81EMRrc4qPp4NndJT9s1/VqIb2E6V1hicIOQsnLUK
+	 zJy89psnogeKxkdwkYQrtQBqQJQgzzLBhO9GOjRhSpwW5/j4fFCT+uPcAJDGaOAQsv
+	 5A66hl153VQ/yRjQOlb18s5PrGG46+ENAxN5m47k/HQ4IXVk/XVOV6eISXASY7b+ZO
+	 suKNADU5PNDGQ==
+Date: Mon, 23 Mar 2026 13:51:11 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memory hotplug/unplug: Optimize zone contiguous check
+ when changing pfn range
+Message-ID: <acEpLz9zfAF6gS05@kernel.org>
+References: <20260319095622.1130380-1-yuan1.liu@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
+In-Reply-To: <20260319095622.1130380-1-yuan1.liu@intel.com>
+X-Rspamd-Queue-Id: 6DBBC40007
+X-Stat-Signature: f5qyjg5rhkdd7ayj6ictkmhxacicxdyt
 X-Rspam-User: 
-X-Stat-Signature: ehta3ickbwdgcn3hufd6ddartcq87w5s
-X-Rspamd-Queue-Id: EAB8C80010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774266325-559310
-X-HE-Meta: U2FsdGVkX1/7dhVW4zUxeSO/7N1JZjPifH78U0siT1cp/HmpM5YKYcG3sfifz3OVcZ6z4cAiaLEAwHw8YeVyIvoXX1KjBS+WmZHYNznsXXIEmN3pKTBezSFW6nVK/SwTqUjcCGcDSnnuJ04wcJOuBw7CyUVkwy6MjxipkZGvxbyf5piU/UM5OmL1PJ9WfvIiskqr9PYA9fdtOXkkZnb4BFXLMVWLKLlhfuy4xulEAjktFcGldcB+jcxYBkmm+A+DHmJUzPF+TTSTg8Gqos39eKjYGKvea6P86iXmFB+TQ1kvU7Py4dE2ADvssgJa77rkvNhydrs9QgmlnoIMm8pf/bqM2XdT7EiAbbSt8DSHNDlwR+FA6pDPVExgmDwMcKAzuxTVejoRhfd3Z+S1t3lSg6ivfRrIsYiJlQ60BmG52coCE/f05SrL25ylXPCtaovCJoZDxWlNICvjoiWgYAgHs3KnxeMOx0c+sxtkO7e1vKi3o1GIoxuqbWxwaBq0YlU+hZsQ6zySFoaJoFxKxm32b62bkKhSi81HCz5m9og0SxwwOSbl6EXQTY0+B/fZO7LKrt6qr9MHbGDzgY24wj1SsoTDC9vdWs52UpeZKgzghris+Zl2llxPQTOQlnZuQ896c6L/q9SuEDidOOQafBYmfOYYovRZCmfpp0Tte93F2lvRn2O7Mn2sJXWcOtl7OWJzRNm4zMUwVxje9DGxrJ8kQGO+gslt8ZJiBb3YglbIRlwvKIV3kLmJnMWctGBG3+Vv8+UhpXqYaJUpeXx1dCrc3LEp62mzjhe8jc1Fdcgrx508ehf17RYpswV7RRJrwT7KA5ifelIbf/RKN2X4tllxA874BtPrCAr92TRgmPBMjwXq4xyECnwKnNHULcCFNNW/yqRsBPXu8L+gZFzXrzgcsaxjCQO5AVrDDRQYmUUcft+ifTyl2/P4DbalhJTTseYDfN05yWMxxfobqCvkoKw
- lIDmIV5M
- M0hYADKhoZm0wkYFRCEICtrH7/v5VfO0qRg/zjwqFCSoKtFDPKs3jJyRz0lKytxsCQ9kuron8x+9OdR+6dqYU3n+N5eNyzMxLC8mfn/JlRhKb4yZ2jSsF9UURruoi+vpRfMQlVNSP7BYmsfsIS7rQuV49mkfWy1rJhtL/Q3qj5BxcsTdUWiYklcGVCv1kYcEYVFI+9an0WvEsGUP0NidnpnIN4ULQEXQ8JqfZKhXFVkxyyhuSQ3ezH4DUzLRicmVAVi01XYU4cqNHBXeFvpL4OuQ+N5F4DgsTfv45
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774266681-428553
+X-HE-Meta: U2FsdGVkX18d3dmO6zxXnC/od6vnVAfFGTfWrnq0Xm0Z4fkapll8K4a1ipoXZkcdWgp8GokjQiWTwjdiZEpkn5o2UFmiupROR0pVGMNOLAuLU9VfKW+2InLseWpuMKwOhkVy7FhRJxUC+RAzXoKfkf0tG6MzxCOG9sTQMWyWjSDOljOdQRZccd893nWuVPleltqQFTzzqr0UWFLHnCc+hALRprqzZPtaXZ12M34ttLzwe327WoqtnWvHc+5k89GnB5E5vPpd/oygupRtKk615l9tjsaUE5XtESkMXWSHtio3m9BZTpYwjf+NtPI4ugVkryi5AWSSyUdHdjoH4Y+xViP0Kon3dliN653Y3UcpzK9t9Uq7+F/Hx2uruSxvdw0Y/toRhCqJARzeAb0Bqoz51muhxB15SboEnOdlieW7GrJyWJKHBhWXzqacwiX239amXhBGZFPe/Trt6S0IFWZ8r0CtUW564DxdMK265wNkC/9aJPVrpETFDa6KkGfi03SJqELMQ2B0LknnyxafZbeh71wBPxLLc3NJ/zrxp2I0JykPaLPz8OeT+DRZ4PcQsaldCsTKZihZU4vG7r20XOmRmSkkeR2438QdQyual1n7inSMEdI0JAPfjzQa1evdyFeZ0yAN5c82CKHJBfJSAnWt18zEfPh+D2AZYCaghenHYp25TaQe74hgfmU6cjzArtnsznfvuZtPIurd+yHIwh1bY6RpEKaXvzUBtOS8Kp925qne7Zq/TEkl9747/y3tdB+sEhv+G3wSnF+D+x+vTf4E+iLNToeKXQViTRjRWnjp6xV06Mw8WEVvt4egi1Lp08uA8pBQHvEexnm6oyXK3fke4hWwMV2mm98btNs05ypKdiphVId6VN5kqVYgjfMJuWETpWAZ7wmgSQgn6UmSA8AneJuRuuE6tr+msVUnTHaZaPmbmrH8LFxxuXM1GRJ3AZ73H0j/lW+A6In54Gsgrf9
+ S/86aQ00
+ e50rb08tuLwfacSXGcB+aqsqvKjNYml07PSlHGsmMIJVwh+zoEczwOWz8Sjm6VQzz+t0qPWZulVKZUbwqdlG6w9TYTQ4DbIdVX+K2RvnlcwBzyP8/Flm06vYEd45pgz2/rJZXJxS9id91zU4qJvsB0LUJcP8sQ7pJPCyg/2AGDIOl1QDRj+egQMDvuc41cVh7ZQitlMoPVWkODYZPMFlFae6mbJCNRxmuB5c4CztSm3UsNOe7Y/jirJV5K7JwXcp0ewlQdPVzhVNhjDWiLFlH8WRI4ZDOOaMkjP9v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,53 +97,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+Hi,
 
-Could you apply the below fix-patch to resolve an issue with us performing
-folio_put() on a folio before checking it again to see if a table was
-deposited, as per Sashiko.
+On Thu, Mar 19, 2026 at 05:56:22AM -0400, Yuan Liu wrote:
 
-This patch resolves the issue by storing whether or not this is the case in
-a has_deposit local variable (as used previously) before invoking
-zap_huge_pmd_folio(), then using this boolean to determine whether or not
-to zap any deposited table.
+...
 
-Thanks, Lorenzo
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index df34797691bd..96690e550024 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -946,6 +946,7 @@ static void __init memmap_init_zone_range(struct zone *zone,
+>  	unsigned long zone_start_pfn = zone->zone_start_pfn;
+>  	unsigned long zone_end_pfn = zone_start_pfn + zone->spanned_pages;
+>  	int nid = zone_to_nid(zone), zone_id = zone_idx(zone);
+> +	unsigned long zone_hole_start, zone_hole_end;
+>  
+>  	start_pfn = clamp(start_pfn, zone_start_pfn, zone_end_pfn);
+>  	end_pfn = clamp(end_pfn, zone_start_pfn, zone_end_pfn);
+> @@ -957,8 +958,19 @@ static void __init memmap_init_zone_range(struct zone *zone,
+>  			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
+>  			  false);
+>  
+> -	if (*hole_pfn < start_pfn)
+> +	WRITE_ONCE(zone->pages_with_online_memmap,
+> +		   READ_ONCE(zone->pages_with_online_memmap) +
+> +		   (end_pfn - start_pfn));
+> +
+> +	if (*hole_pfn < start_pfn) {
+>  		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
+> +		zone_hole_start = clamp(*hole_pfn, zone_start_pfn, zone_end_pfn);
+> +		zone_hole_end = clamp(start_pfn, zone_start_pfn, zone_end_pfn);
+> +		if (zone_hole_start < zone_hole_end)
+> +			WRITE_ONCE(zone->pages_with_online_memmap,
+> +				   READ_ONCE(zone->pages_with_online_memmap) +
+> +				   (zone_hole_end - zone_hole_start));
+> +	}
 
-----8<----
-From 009f8abba834b49f8285b03a680dbd04d953a528 Mon Sep 17 00:00:00 2001
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Date: Mon, 23 Mar 2026 11:42:01 +0000
-Subject: [PATCH] fix
+I didn't have time to review it, but it really jumped at me.
+memmap_init_zone_range() runs before SMP, there is no need for
+WRITE_ONCE()/READ_ONCE() here.
 
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
- mm/huge_memory.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 610a6184e92c..4585465eda0c 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2397,6 +2397,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	struct mm_struct *mm = tlb->mm;
- 	struct folio *folio = NULL;
- 	bool is_present = false;
-+	bool has_deposit;
- 	spinlock_t *ptl;
- 	pmd_t orig_pmd;
-
-@@ -2420,8 +2421,8 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
- 	if (folio)
- 		zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
--
--	if (has_deposited_pgtable(vma, orig_pmd, folio))
-+	has_deposit = has_deposited_pgtable(vma, orig_pmd, folio);
-+	if (has_deposit)
- 		zap_deposited_table(mm, pmd);
-
- 	spin_unlock(ptl);
---
-2.53.0
+-- 
+Sincerely yours,
+Mike.
 
