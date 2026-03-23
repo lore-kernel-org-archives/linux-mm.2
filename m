@@ -4,138 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5D0AEC01A9
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 08:56:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FCAFEC01A9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 08:57:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31A856B0005; Mon, 23 Mar 2026 04:56:41 -0400 (EDT)
+	id DA3616B0005; Mon, 23 Mar 2026 04:57:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F1D26B0088; Mon, 23 Mar 2026 04:56:41 -0400 (EDT)
+	id D53A26B0088; Mon, 23 Mar 2026 04:57:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 208BA6B0089; Mon, 23 Mar 2026 04:56:41 -0400 (EDT)
+	id C69826B0089; Mon, 23 Mar 2026 04:57:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 08F8B6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 04:56:41 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90F611B8F96
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:56:40 +0000 (UTC)
-X-FDA: 84576722160.17.4C131AE
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4042C10000B
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:56:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=NZcI0pJK;
-	spf=pass (imf05.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B1A8F6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 04:57:40 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AD61C329B
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:57:40 +0000 (UTC)
+X-FDA: 84576724680.21.F364411
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 779291C0002
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:57:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WmUCiRXB;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774256198;
+	s=arc-20220608; t=1774256258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M5Y/fERwhKhoqxvdE3p5IKv/NOKxkrVNr6hVFfnSRlk=;
-	b=puoRrmkkUL0rymlJGVsMSGQkmhrLKSTfFi7ibZmaR2WckOvnY151kPjMttSVxFRDyOthW+
-	y4dvAsNrQ19xoG4LoX+0HZ6DDMXKlklHUhbfM+6uGsspbmixUnER+t0Dq4Y4tpFCcWo5lU
-	GxQ4opZ+s+k6H4MWxPPz+eeyJFODkVs=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=NZcI0pJK;
-	spf=pass (imf05.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774256198; a=rsa-sha256;
+	bh=LoSnYm8ILHQxjCikTT94jJ3LR37Wr+qWbDDoXl1YpDA=;
+	b=MEGjVrS1LMUIStFKanj2UFmMdhT88s/hjMXbbAUd0/Bdb+jqf5a6qWxIhJA0K76kOxFp88
+	Cut2wAe7aidUow9VPPkD69l3zYJxMQHW2/dyNktTV79bUz8CtMjld1xT7ZyHQ1bhNMxmYl
+	X5Sye8wjsjO948/CzAOyql2O5Z82Htk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774256258; a=rsa-sha256;
 	cv=none;
-	b=6J2JV7YDhUOmDh14uZLWWIihChJlpfmFya/BjzGrrwmiInHQvyWfqkM5a3iXzyxuKX1zeo
-	vABmTBeGcQ9tFPNQRtMboSSqSn0Tho5B/7u7pA4C1veKAvjuRMEekhCfOQFRiSBj34Dohn
-	aN43+Xi7c4PDMOtMHO8Z46U1pScLZNE=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62MHLUqA4165707;
-	Mon, 23 Mar 2026 08:56:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=M5Y/fE
-	RwhKhoqxvdE3p5IKv/NOKxkrVNr6hVFfnSRlk=; b=NZcI0pJKZIUYwuoRFL2Q3t
-	XdI4dlGInWbdNY2bNfERUfnfJKcPpExgmkPPK5JDY2kWghLGXdd8EkVFrq/7oPlb
-	YacuXBuO9Fj0AVeGr1Lu62r7uP4yHFsADQA9YsU/g7Y72Yb7ONkX3TpJCl0TuEiH
-	JuYBAe3dfGvcVM9X47C+RNYbAfqJYuPsybScR1AB9t2acJ2izzPVmQKYs04th2aG
-	3zr5TR5CSzEw3oHr97+pEr0xhNkXIau1w0Pm3lLirlpVAjz4TjORsimCmeeLhGrh
-	kzCEvqoxzhe2ooZUR5f+A68dKjb7knIXmh/PcDJZLnT1c1n25HFGJ+Tqsc6N/IYw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktunts7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 08:56:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62N7El5g009143;
-	Mon, 23 Mar 2026 08:56:32 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d26nncp8q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Mar 2026 08:56:32 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62N8uVoR24576618
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Mar 2026 08:56:31 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 01C745805A;
-	Mon, 23 Mar 2026 08:56:31 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18E665805D;
-	Mon, 23 Mar 2026 08:56:26 +0000 (GMT)
-Received: from [9.123.6.34] (unknown [9.123.6.34])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Mar 2026 08:56:25 +0000 (GMT)
-Message-ID: <a691d42b-f4a2-4f4a-8284-4dc537c04285@linux.ibm.com>
-Date: Mon, 23 Mar 2026 14:26:24 +0530
+	b=3wxzCS5pO+Tw+1fs/2TR2lV3HqXovnptMsngDbEFzfIqzVqVokjGVMOXI+ZJRE57XvXPuE
+	HrxVg4Zhjivfwq+4XWMUMwAYVOmmLvEKjFO+rzMJmFQeRJIeHqXsRLLCJ/pP8SEEFO8y9M
+	4AkYjbIJ8WKAocBYsrAacp54lHqfisg=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WmUCiRXB;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 89B80407A8;
+	Mon, 23 Mar 2026 08:57:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D97C4CEF7;
+	Mon, 23 Mar 2026 08:57:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774256257;
+	bh=WZyf2xiAKYvK2Ec6h3FulbZi0N72LmUw6Sye6WHrtoo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WmUCiRXBkctFQvFSzTPq0MFCg5YIRnMzG3Rsz/f1ycwn16YiIBKU+QEI8oCrjyGA4
+	 7nM4Lb6g819sBGtS+LNVFO7kriE+a/aEErWtdKAVD43NPB1VIwCBCPEjxR3w9+KSxx
+	 rj9g8V6Lv9rzpORfbi+5K6I/2AwqR5zKnPWiRAokdEH1MhCPKe/2ccDVtex93VMUQ5
+	 1wEmqFXdN6XsaeYdAjzON3YLOcP55uNgiSiCB8ZEaIOTWdvfUYSI4pC0+KzDiG87sc
+	 Vx+DUCOuZt219d3mYTT7+GsDEHK7VC9hJ43ogoRrVIZV2IIDTQ7uB3Na7gUA2WHM6j
+	 0SCF+N7JbD0Sw==
+Message-ID: <f5b5758f-d874-474e-9867-9982d3bb44a5@kernel.org>
+Date: Mon, 23 Mar 2026 09:57:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drivers/base/memory: fix stale reference to
- memory_block_add_nid()
-To: Kexin Sun <kexinsun@smail.nju.edu.cn>, david@kernel.org, osalvador@suse.de,
-        gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-        linux-mm@kvack.org, linux-cxl@vger.kernel.org,
-        driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: update outdated comments for removed
+ scan_swap_map_slots()
+To: Kexin Sun <kexinsun@smail.nju.edu.cn>, akpm@linux-foundation.org,
+ chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
+ shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
 Cc: julia.lawall@inria.fr, xutong.ma@inria.fr, yunbolyu@smu.edu.sg,
-        ratnadiraw@smu.edu.sg
-References: <20260321105704.6093-1-kexinsun@smail.nju.edu.cn>
+ ratnadiraw@smu.edu.sg
+References: <20260321105814.7053-1-kexinsun@smail.nju.edu.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260321105704.6093-1-kexinsun@smail.nju.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260321105814.7053-1-kexinsun@smail.nju.edu.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5NZKWs9zDTObDkwDn80J4vezwIYz0Cye
-X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c10040 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=w5w-BL6sGUiLeuYIlr0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDA2NyBTYWx0ZWRfXxBT29/4Br3da
- ikMUdn8q0h2P873ZZ5X7nR0oFz7zBLO0loA31tXiF7Fz7eBYCOFdKkwgJDoz/HiSa9rmv1Y+GQE
- klXC6lotyNNDXDefKpTQsLWUVrlK0KtbG1mICty1R03UADSg+0lFanB32iLlmlXFIs46k/Mptfu
- hkb/YH0LYLcvpuGONx3PTFuEuE5HMGNYUUERfzaQbCGfhRECQIEUEnPSbDkiG3qI+rxrJwJth3O
- Ldr/8QVvhzfmw7f5pi1mAkISSxv8ItCObXxI76e5h21uYoSgwZkzlDuj39ycbqO1XAWHPd8giHB
- PBYKnRSLhZ2utytpK7oVE4PRQUc8mmaas3/1s/mUWFz8ChhUzEXsPf44fB2ql9PKhoTf5yzM5mC
- Iqu574NDQTz7Ow7TNKjEFdY8fCuqnfKfeZ2l4t38+YBj0RtlaLKxb4Ipd2Ct0GGmG9SlUGmKPEh
- lCstrIdyaA46ct1U6Eg==
-X-Proofpoint-GUID: 5NZKWs9zDTObDkwDn80J4vezwIYz0Cye
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-23_02,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230067
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4042C10000B
-X-Stat-Signature: 1544ga697sbck1zkwds69dehmoa6y8in
+X-Stat-Signature: aw9zdoqxe1hppb8shu8ynp9ghebg9iwp
 X-Rspam-User: 
-X-HE-Tag: 1774256198-960510
-X-HE-Meta: U2FsdGVkX1+oBEs+Ih5n2wdikoppgfiZFHumsZdoWKfyBKsz3zl0QeCCuDT4ma9X5og8w3hDmleRyqJXKTHwU+zMyBr/j31ZjROIQOVcq5W9e4Z6C+8GB84oMSeFBe4ew+DBVRItPo0peLJfdAC7KdqoH8zIl7QbiQLbnblE2m13luIj7Y0cpdq5XuWJerGPxkEzA4SzkLrJFBnbV3T7hOATXwKuxxbvuAx/X6Jfi5UGwVJvi5BPo/mO/bMO6S5kNWJXZPkJTifq/K7rogb//eNVATUjuu3in4N5d6TJPpa41541hbJvDPvFYZ14+NWldjNb6So3gbCcQ9dfZv3qPGpq0FWEpckdVndLgs6CSe5otSfuo5r1HNPUHszs7vmx8YWMfz6DwxmRH1cg9i+85VxB7mFsqT02H38hmTdT2GTzuu/vgQCiWRtGM4rtjqwbB1DygYIFwSSwuIjlulrjVMQ1CCNGIHsCxu47ovp45gs0g+3AoejCnUunPBsiqtWDup7ZITOFQEP+grasY+DJpk98MLnfYCkdmggEdEDWfenuWidMgIDyhfrDbOC4wF28gdcyJtz1U5DzpvY7K6kWufp0StA8R1r4ywAk5Tz/+UUQoXhqEFhCCrUCRK5b37ksywFMiJ5vGaJDgcEli9pSn/cUzz1SVcGCThfHkKabAIjxJDeoeHNg5TLHA9gsIwaYA/vf5bNmoiG8QuoasHoRkn016F3Gj7GDEyypUejte3OMov0/4muGAIupWccs/Nu3VbL/iQA8hkPENIb4mUaxH1lWigETrJWYPwsr5tBzRYZ4filwfvxo3ZV49DXj0nylegzP5r/xyoa0n5k4HlsOk6HqJYs3xFtuUEaiB4MujSTXE5yqvN11WBBY35kDtviN962ca2gtchUGp8Qb2DWl6/u8O4dc3Mf87jZqJDRgVxAkLGKPWHkHQbzPGsxqE7aLSKZYQMFW9RnL+FYnegW
- 1FWRYuXL
- BnEKQnBqIFvLOFU3qHICqp+tbo9Ce2xcLXvd2bo88tZQ4oSQmETtrmooZmLjT4pjHYeebaMztb6PYAoMSTUJDf7FXri1jluCsbj3e2m45LEB7J6Lw+JHLogmGCX9Z7aQ7uRjnUhSIlT4nc9DuVvCQT2xziMorl9o1YDZqFzBelGGz/1ojqwYL5wcJETM0RjaavmJdpqIBtj00U+1oP7xDJiKZtM/HBYd4ekZgUZXyHxEE7aR5XlKLmjfCR6XOGeLQbkRiEjkHSilejlhoibS3KOgTdNbDP6ixsJqE/aaHHa9IXufnnZuoELy5WQD+YGDNkXM7r1E1YJV7kas=
+X-Rspamd-Queue-Id: 779291C0002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774256258-881048
+X-HE-Meta: U2FsdGVkX1+3iW/nlO10aJhHeK5Z5T+lxI7fcVapvYPXwcXQ6tv4t2WR1jzQ/pgNfdQWNkrA0L5GSUMxWxJJwdc8QZBKOGPaj9YnsZv2GQX9eZIvZqo0i9Aiu1r/GP6/YBJv17qoIs286rA9FvrF4a8mknKYRYFiMTyaciX+3F9WpnXeL+dHMkzIozf8vhDqzLJoGHpwuaajTHMFdrVUo8010o51j6Ekr8TUx0LrhpARtC7HaFCTN7EBdhFf2/k38w4lWARzwnhjHmkDHE7/1JVf5NmWlOHNbUlv20+Y7WrolOip0JIXxGrRH6a6cMQQaOLwOmqcuEN41XAOgbFvgXE8Bg77MbYn27iH7vkWIXI5BWL6HQS/oRbKQXJVFaF+7Hu1dbRunIFrybvG6upU54cdO+114hS4vjzttNxws2sy0yb22q16bbcVFQ5o/0jfZ/gy/wGwN2fczOSGwG1Pn47FxrPqReFa9IhjSacG4/FlaO1oNErNYXDRmH1yyqjQcxPWbanxADOCKADLTb/avyAeaqjdGxdmw1CWwTuPiIFbuepxthBMeTV/r1e+pu4xvUroR9USp7qA9URH4+TdSuNaXsmvJ5wzk5o5vaUEnJXh1oVKPkaZRj4SD6rvu9vwgM5fwqR2JhT/1XayrLDYw/3AXn2p+OYRtZiWi9P21CDri+PXXANajViJvGVNwntwYHWBdn+2PwZ8KlcsL9gkpWWBGlm4WvSV2MreVIS5VrZa42tOxUOQp3F3mFpygpubmXxj9xQewgJvQ0ieBErgNdUxr9xp5sFi6WNFqZgqh5kZAQC44m7xojgdyXix6zbiGSv0D0b+YAyaQ6JCYNi5/PnLbIrkYhe55P9eack8IJTiCIH6gGyaeKmwKa7vJI62T6qQ1F5nOzm5ggUcq7DppS9RvCe5lae+DKU1mEoVWlJho48eiPO6mnm3jA6yncFwJTkO7DrC5Fxv1zJoqxy
+ UzKtL7Dl
+ 68C0PBZAQDGnvjQCZYqwhDwcZuWMyMf1OX5zWTE45YGqF8JPMupGmZ4CqlBcL6b8gDjpkgQ07E8184gijDTkw7NFWLZ3XfaoGNpCjeLiQV6MIUMc7Ek1d0wKlEw/IxgkXcDVxSFE/2yEFPr0f81sLV1prXq9QE1KZN7UFc4nGsAQSDaVQoZBk1aw6eUh2xgd+Sg+Qv1JwWLtzmnWvrR28bFcA3e3v78Jzc6JihpO2Z/m3QYy7RCNaOBgipzIgcFfEm3OSLMAyX8X+OLHgBoR+Xzo+q3+TWaJVL6nJeKrE8XIsMIFdO9CDwYtNLJn5YHKzM28cq6BYZln/fT8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,37 +144,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 3/21/26 4:27 PM, Kexin Sun wrote:
-> The function memory_block_add_nid() was renamed to
-> memory_block_add_nid_early() by commit 0a947c14e48c
-> ("drivers/base: move memory_block_add_nid() into the
-> caller").  Update the stale reference in add_memory_block().
->
+On 3/21/26 11:58, Kexin Sun wrote:
+> The function scan_swap_map_slots() was removed in commit
+> 0ff67f990bd4 ("mm, swap: remove swap slot cache").
+> 
+> The three comments referencing it simply noted that ->flags can be
+> updated non-atomically by scan_swap_map_slots() to justify a
+> data_race() annotation.  Since the function no longer exists, drop
+> the parenthetical reference while keeping the data_race()
+> justification intact: ->flags can still be updated non-atomically
+> by other paths (e.g., swapoff clearing SWP_WRITEOK).
+> 
 > Assisted-by: unnamed:deepseek-v3.2 coccinelle
 > Signed-off-by: Kexin Sun <kexinsun@smail.nju.edu.cn>
 > ---
->   drivers/base/memory.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index a3091924918b..0d6ccc7cdf05 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -815,7 +815,7 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
->   		/*
->   		 * MEM_ONLINE at this point implies early memory. With NUMA,
->   		 * we'll determine the zone when setting the node id via
-> -		 * memory_block_add_nid(). Memory hotplug updated the zone
-> +		 * memory_block_add_nid_early(). Memory hotplug updated the zone
->   		 * manually when memory onlining/offlining succeeds.
->   		 */
->   		mem->zone = early_node_zone_for_memory_block(mem, NUMA_NO_NODE);
 
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-LGTM
+-- 
+Cheers,
 
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
-
-
+David
 
