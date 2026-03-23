@@ -4,113 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D88F46122
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC5B0F46122
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:20:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFF256B0005; Mon, 23 Mar 2026 10:20:04 -0400 (EDT)
+	id 34EAE6B0088; Mon, 23 Mar 2026 10:20:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB0536B0088; Mon, 23 Mar 2026 10:20:04 -0400 (EDT)
+	id 326226B0089; Mon, 23 Mar 2026 10:20:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC6076B0089; Mon, 23 Mar 2026 10:20:04 -0400 (EDT)
+	id 263476B008C; Mon, 23 Mar 2026 10:20:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BD0B6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:20:04 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 17F8B13C11D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:20:04 +0000 (UTC)
-X-FDA: 84577537128.29.D110BE4
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 39E30C0014
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:20:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R+lTLEr6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774275602; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 148446B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:20:56 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B919C1EDC4
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:20:55 +0000 (UTC)
+X-FDA: 84577539270.20.805177E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2599640010
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:20:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b9vvI0tK;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774275654; a=rsa-sha256;
 	cv=none;
-	b=DufvfA44ob6tWXaJ0yxDbELcf/0c6PF0i4B1O7I+yIO/7u3Y3Ea2rubBUoYtwAf2yxAh6c
-	iqY7+c9LtTw9c2RK7LM1LJ82iS21i7E1KHmRGVPrKFkm1WlIZhkYN+bp+YYv0EHz7xOx6m
-	Bmvc2F2vdWRb3qsWTvqJWvuXaeovj8E=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R+lTLEr6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+	b=0h4c8YrTfPVWmAu4Tuhi05yP9g1flxYgMNeijfbvXCHvMKZx142kraH56aszOLbYV4PRDR
+	DoqLBlKkFrE3Du9i76cK4jd9E4EdHReasqX+BtZ5EenLEdNKKhIsy6LrakE4JO9wVVOQSB
+	GZwyFEFEGDCHep/tqI6o5uHHzdIbCTs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774275602;
+	s=arc-20220608; t=1774275654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K7v0kKo5kx/NTKypqvvw5WZo/TwKAYeoO2unauSZDIU=;
-	b=pQk/XxIeiTdMlWIs7L4njH+qEmuRGixw5GOMGlNge5RB72A4xb+BucA2SDuEgTq+8jP1p1
-	xLNe++fuAuc0dqqghO77Sdf/eHqVIL5ATZtdbowHzheMQq872PZlglP9mghG/5hWBzH48h
-	YjiRT3YGB1pcKpqPx9OhNz/0WoAEFYs=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b042533de1so22072485ad.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:20:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774275601; x=1774880401; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K7v0kKo5kx/NTKypqvvw5WZo/TwKAYeoO2unauSZDIU=;
-        b=R+lTLEr6yWfjBk9NawVuMeiYT1Xb/4/sEdLy7Bs23+F+nwob8Czu0XXHOr3zmgTocs
-         N/+pvN8kHL0dNO95NPqg9kqyuB0uom3aa2l63gNB9esol39B/oUo18CJdknuywce2SNq
-         uNu8GnZBufMtrVTYttVd3226w1UuYeJXmDQj3nyeMfRLr57u2DKata9hg5j2zwmuG13s
-         ml9HMSxjd2eabLBTpWSQ0l0MSTBXD7K8Mzo3kAx3ZC87HFdluKHQDacKbL+XtLjyhYJk
-         w7nXeygq5WPeja+0ZE9TL/I7HHhdAPoe4A1X6CkOemr9Da+WuewAvFraFdOjFxAx9kdd
-         64Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774275601; x=1774880401;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=K7v0kKo5kx/NTKypqvvw5WZo/TwKAYeoO2unauSZDIU=;
-        b=rN2/3AzFzqP/iRy83M6UiXhFlIHVcd9P98baCIySXyEWKguf7IK6bCbGrjP9GmdNzA
-         Q6quUOZfVLMnUrOyp4uKQk4p79uTNGUcAU/O9aICUUIbzygNzJt9Cfs0oY5m9S+r0cYB
-         UlbhurauNs33Veu1DUZBmHczcP3kF7G9K2DDoeIPCJ4jo7qzr8Sz79mOpcrJxoCZr+kU
-         Di2ykWY9oQQ7TjedoOamfUTshPPzfk5oL7d9UcGpX9yHQqP3M7c2DYs4DiQ5to8HxeOd
-         lBXWrrsmwK6hXcK9i1W9fNmRqwKXDkEYRewrZoLab43y7ll3TCtHNJjR7RKf4Owy5qPX
-         t1iw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdWYCHZGSuKucdHpziaZ+pvcDZT0VAidWtKjhqbaF3qw+6crw8BepIFkzX00Y5u5XMNu+tRpTg1g==@kvack.org
-X-Gm-Message-State: AOJu0YwQdYOLpRq47AonJg5Fvf/ZC8a00IaTbUvZaofEeZfP1zR1NMCn
-	x32BNQmqRwnrrRNNoSNqQv4kxA4MAjoPv4FGflHbI/d0BD0Cnx1rq4+h
-X-Gm-Gg: ATEYQzxnXjKgx0G6/T88YgPChI2YzDZI6TWlDC9cDB3ZDZuYhuaQ43F7fNqyeBiojga
-	jqfheLgC2jQs0Bau99NZwHa3aOQrPkiocNoakkQN/fPy//M92ssQy4r/+tkDZsquk7cra1RxWdu
-	oxO0xoVXXU37yqkpLLqk3Z0JupHWeqBcxFOrqFZuR5d1uwxtWwtWyJovaE+xkLWmEXw2P2dhHNI
-	AVLor0oLIqfbGl0CTGjXQJVi9yPE6aYySlrlsWyPUFaeluPZRb+2GJ/H14ZWwzcg+tn6QWLmgYI
-	6i9hu/d4IZ3n3nDZWKjkBJq+Wu2rSXrBFeaN7QiAfhn1QseMmL2BNJAAMjR8GYAoFQfN65ObmZ1
-	hkOo+Bj5eV7rVFEozbbj+p0P5OX65cvwaUF4SCS/a7N0sAZwipvQjju+tajbQUGHWSOC4QCgfxK
-	533m351QonvS7OAQaJzmgHlB3Syng=
-X-Received: by 2002:a17:903:240e:b0:2b0:60b2:4dc with SMTP id d9443c01a7336-2b082750c20mr127256235ad.15.1774275600873;
-        Mon, 23 Mar 2026 07:20:00 -0700 (PDT)
-Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836747dcsm107209275ad.64.2026.03.23.07.19.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 07:20:00 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
+	bh=UCDJSgOTg5OkTQv6WaDAG/zi0Puz0+xoJLiZyEt4gZQ=;
+	b=gi/N0r/17XeDUJ9WyUDzmQMxe6yHiRUo2GnNPBsvdn90eyi9phK67Yr+SRHj6DSRLhiEOc
+	io4m/FVScG2kQaFb96UBZeduE9hBnxz8LHdC2/R3iChZNm1Ue57oA7ETlSPZHcwKFThO9k
+	OkduI9bbS50HIjOwXa3SsTQfY/gYYpA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b9vvI0tK;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 94C4B600C4;
+	Mon, 23 Mar 2026 14:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAC5C2BCB1;
+	Mon, 23 Mar 2026 14:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774275653;
+	bh=np7GJeZ0jLioNC9C95zZxpcbkD3f0U2gmsKmzHDihrM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=b9vvI0tKLWmkNCkn4S4AWjUSeFwUR9rM5pWcBZfnmjvukAEgO3a0g/9uztS9Mie+t
+	 TbeR2eyzy2LFzOl3htMehCtUtp2ZnJ0E1vdv5Bcn6lqM9WJyW+OH4JYVJsy+FSOWjP
+	 Gwxo+3u15Noo6oLOV/htC5qADytjHECCxmceHlpaK/H3/ELs3ni3OmBy7VkEJ58d6n
+	 3dy/jXUSpcHDvCudF6tm+NIpQZ7THgXxLe1OSAsVEOPlNIiKyvcnoadQknsY8mmcyn
+	 pL2yWQdfzJXZ+2fCVYqvi4gwpXM4c7sDHxEMN6zVdn/fi8pL93KtspvrzAF/G2cwq7
+	 elZBP5aCuRqow==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	aethernet65535@gmail.com
-Subject: Re: [RFC v4] mm/damon: add synchronous commit for commit_inputs
-Date: Mon, 23 Mar 2026 22:19:55 +0800
-Message-ID: <20260323141955.20535-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323072724.15942-1-aethernet65535@gmail.com>
-References: <20260323072724.15942-1-aethernet65535@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/core: optimize kdamond_apply_schemes() with pre-filtered scheme list
+Date: Mon, 23 Mar 2026 07:20:51 -0700
+Message-ID: <20260323142051.80436-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260322225627.263202-1-objecting@objecting.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bgjdr3gx4h631tdri53dyzd6r8xpitsq
-X-Rspamd-Queue-Id: 39E30C0014
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774275602-840386
-X-HE-Meta: U2FsdGVkX1+YGJV4WLd1DeyjUxBf/LDsBlPQ05kw//i9qKr1xk5FH5YNzkcREIC+eHZqZ7ugXhzIzhnaIlT8TKwjQKAsMfmiY1sHiZebdIa45O+vTSPmTNbwtYjJln2fa45S+LniiS1b9w654wzMoTWs90D5AnVMPgllSE0KqCwGq2Kdukbovp+T4I35DO6yTlkcl/ksq//KnBjpVWuSsRE8nBYbLO27LNFgNDsm7lrHZN/i8E6woeeexYrg4fMhYJrL1Wj2Dn3aRqEPNBRON9Jpl8wtpCGcys9s6tcM/2U/JyK5LrO9G0tikjrxH4QHUQBsxjBta+JbKSKbfwK3iQ8+/5LAPbnGs0oO88InlG4BqXQwLBhyQGA+DAKl8Qkj/NXV+TgfPTBu54pJZjv3kYQl5CrDDyrTEEnqNf5MulBATQJS82AO9k9lGYyoWtQA4nrc+wE457AdDHr9XU3ARbse+K4fhO2WjaOtXvmzlp7iM36Z6DNN2H/78/AYPaNudtRdVey9f+xD35BGAFR6N1mODL5o0WmP5nnUeLLu8nKMDSc8Zppvalm1Kbld4EBoRviZvywVpB/B0/XdAMHQeF7wkdPTFmzAH8GsiMksiJirGpvktpSk5nHOHQefkiOE7M8aey1dO591A7O7xtWgWwWtzKOsGxP26F/lsoSMhMQUDQPjPTy/IouMLQ1y6FDalsFgmzN38JDkEhc7OeTTpsrXpcJ3/RJ93k+6XbtJOyTtUoLYHV5mUAHFaljuJGTxXRdWmXxK1jvS6VjhX76P4fupGl4IDPZyx5Z8zqftZAISVMNzO3j2MlPlO2dldf+F+MqJSyqFHOe1co2d5Zz8hSvZ5ykqIprUXO/ARAIorPFuVNjNk4o9iCdQv403BrnMymQAEMJ69ccNHGOuq/19Nf9g0fVExmON8drEwU/eQUCZ9ovxgdXRW0uPZn5whuraW/m+Rkr/tUekj+I1soS
- 5lUP/QhC
- 7IYl87Ut9wqu7sDWd2VyH3ne685MDcAeseRlpN+7ipmGEH0hkRsMRll2ntFUS9LnRwrYPl2eV/PbSZHvMJpvDRMNxZSQrAeMMEUOyM2jEIJQNQHrbzAuRabnCqQOSXEHCwkNIqi3qxnxsOXZZB+oJhEF4EKP7fPrS3reizr8Herh/CqP4VL9CViGNxyOhGHuFfUIzMyHY9UwIhZ0uVkWu0gAJDlznGz/Y+npU2r09DJwg1CtI8hFgECMukBzuO4qnIvwdafHNT9YhdcAjCQJeTE/hisaM2CBut0Gf4pnNA+AY9mpPZf1lwrbsRcT7Uo4gs9kJp4ezjHYSAbY97+395d75q8zRQqWK+Gy1yPiuQdpF1+UO0jjfO5PEjoEZi4vpioZF8LYrB3Mebl0nCEYdMDlmZNpyaL8ARzgqqjCjr5/dPgHhtj/1qxTaGAxXGrNBl8gU9IeKKKukgRA6zl70duAHrXPBMvQc2rhW
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2599640010
+X-Stat-Signature: znyxs7acx4qr5ro4hee9mk6ai1bidadf
+X-HE-Tag: 1774275653-574499
+X-HE-Meta: U2FsdGVkX180JIIASnwF+rpPeNrV9/yzk1teHarfQ3eeW6j8FHzEIIhug+YMV6RT9NESh+2N4mYMHmW/Pv+7pB6VKvxID6VrXdOrg/TVhLmw2k2HlrpENvdWOzd2J9yOt2RF7/M/hDHM5VdNjD9McDkbEPcj1u0DegYLk9qcCE/b58mV7pksJ6zhTTE83M/uq7lYIOg7zl9RZ4JZHe/dLF/1NE/UG3ezDd/5d995la5s8swf0LL/biqczfx1ovqXbnpSoL1fZ5sxPnBxw9tcakoq95ePW3h48IFmMV9QFz+VG2f2LgBTs3Y7l28q2naJ0o30IxrX3p61XRnrqF5EE3qts/EdkflsE01WSqjlNpfQiJbPv91PuP0Otao8X8gsuK/7HGfhRzasjKjOu1EalrqH3HIU2C2uugklsqaRLl62qnchXJzSZEzJe7DgRXiBzsYJ17Gjry0vTocXh+g9BiOfRuC9EtaNBToH01CFBaXMdPELd/yE2K3srobCVl7Y0nLPYeUPrjkg4wL1kZahaQBvYnt3lnKgnIhxrnMsB9gXfo3Abc9ek6JrUwTy5pkgjPqz0iHF0Qzk9Aa97XzU1pGIpLRc1r3WVnQBftZO0lEQe798Agju0Ma77rLViuhV5NUk7pi2MB7R5I13wgSZpl1eDhCg/dLuC3AaV4SIYGeHidWqz++e6IQI+Xfk4Vqam+s3N2S78eXg6JJdS+IaUj/k8D3cmjxSxC4ccv6YMSGmiDBwHJUor4WzHVL+VjaZ9hNxlUm1u42RvOnW18p0x6HGUJp+KivKsHQyUcsjkxcU6nrF4YlYlbe4CuP70H95uxJEHl9Y567SxjyDolcugEfxsV4K//O3WLyWFy73VCA3UM5dXT0heO3yP/sTWEFvgay1DGMxbnGog43gE0vVXI3izuB2btGYguFv6A3k/aJg/ggTxpsHH8g7J+KbHcidy8HSZ3pXSHFtdNZRHec
+ C40uNlaW
+ UqaFxAyZ+h+8gllZquK7IutCX4UguOhSK+42Ww+dKgMXEi5RfoHUNlN021XTN91wmh1SXBYE/QatfD+MF9gvfQ7i08o80b5GM5vKh7yCQ7Yn+HHifAq/BR43N6XA6L4pC83fKDfSYaeXq2CqJdM5y84DyZo3vV3uszW/cwJNtIu9gCLLnP/FF/JQnzF06bIXU4T48YzvxZLmc5l1u0imDWJqP4Wdyg29VYESFygREKPdjNI0u4icExjtGXL8qitvnt+Zm6cjLLRDq7DyAUyLo00wBI7IdemfVdOmddPpc9HNUgyF66k5gZYmy0tLZ9bWK+gNijxYLPJ+gXueCGUHE9pYTrFlTXSVCRTGf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,35 +93,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae,
+On Sun, 22 Mar 2026 22:56:27 +0000 Josh Law <objecting@objecting.org> wrote:
 
-Follow-up on my previous email regarding the locking concerns.
-
-> I admit I don't have an elegant solution yet. Here are my current
-> thought:
+> Currently, kdamond_apply_schemes() iterates over all targets and regions
+> for every scheme in the context, even if the scheme is inactive due to
+> watermarks or hasn't reached its next apply interval.
 > 
-> Add a timeout to wait_for_completion() (e.g.,
-> wait_for_completion_timeout()), using 'damos_watermarks.interval' as the
-> upper bound. This prevents indefinite blocking of 'param_lock', though
-> it still holds the global lock for up to several seconds.
+> This patch introduces a pre-filtered list of active schemes at the start
+> of kdamond_apply_schemes(). By only iterating over schemes that actually
+> need to be applied in the current interval, we significantly reduce the
+> overhead of the nested target/region loops.
+> 
+> This optimization maintains the original Target -> Region -> Scheme
+> behavior while providing substantial performance gains, especially when
+> many schemes are inactive.
+> 
+> Performance Benchmarks (Filtered Array vs Original):
+> | Scenario Description      | Speedup |
+> |---------------------------|---------|
+> | Mostly Inactive (2/10)    |  7.5x   |
+> | Half Active (5/10)        |  2.9x   |
+> | All Active (10/10)        |  1.3x   |
+> 
+> Signed-off-by: Josh Law <objecting@objecting.org>
+> ---
+>  mm/damon/core.c | 28 +++++++++++++++-------------
+>  1 file changed, 15 insertions(+), 13 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index c884bb31c9b8..3b59e72defd4 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2114,19 +2114,16 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+>  
+>  static void damon_do_apply_schemes(struct damon_ctx *c,
+>  				   struct damon_target *t,
+> -				   struct damon_region *r)
+> +				   struct damon_region *r,
+> +				   struct damos **active_schemes,
+> +				   int nr_active_schemes)
+>  {
+> -	struct damos *s;
+> +	int i;
+>  
+> -	damon_for_each_scheme(s, c) {
+> +	for (i = 0; i < nr_active_schemes; i++) {
+> +		struct damos *s = active_schemes[i];
+>  		struct damos_quota *quota = &s->quota;
+>  
+> -		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+> -			continue;
+> -
+> -		if (!s->wmarks.activated)
+> -			continue;
+> -
+>  		/* Check the quota */
+>  		if (quota->esz && quota->charged_sz >= quota->esz)
+>  			continue;
+> @@ -2476,7 +2473,8 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+>  	struct damon_target *t;
+>  	struct damon_region *r;
+>  	struct damos *s;
+> -	bool has_schemes_to_apply = false;
+> +	struct damos *active_schemes[32];
+> +	int nr_active_schemes = 0;
+>  
+>  	damon_for_each_scheme(s, c) {
+>  		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+> @@ -2485,12 +2483,15 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+>  		if (!s->wmarks.activated)
+>  			continue;
+>  
+> -		has_schemes_to_apply = true;
+> +		if (nr_active_schemes < ARRAY_SIZE(active_schemes))
+> +			active_schemes[nr_active_schemes++] = s;
+> +		else
+> +			WARN_ONCE(1, "too many schemes to apply");
 
-After further analysis, I realized that since both 'commit_inputs' and
-'enabled' module parameters are protected by the global 'param_lock',
-stopping kdamond gracefully (via enabled=N) is serialized with
-'commit_inputs' writes. Therefore, a classic deadlock scenario should
-not occur in normal operation.
+We may need to increase the size of the array insted of just warning.  That
+will make this code little bit more complicated.  I'm worried at maintenance
+burden from such a complicated code more than the benefit of the optimized
+performance here.
 
-However, I'm considering edge cases where kdamond might terminate
-unexpectedly. In such cases, commit_inputs_store() could hold
-'param_lock' indefinitely, blocking other module parameter updates
-system-wide.
+If this is real bottleneck that bothers real users, we should optimize this
+even if it makes code dirty and more difficult to maintain.  But, at the moment
+it is unclear if this is a real bottleneck.
 
-To mitigate this risk defensively, would you accept adding a timeout to
-wait_for_completion()? This ensures 'param_lock' is eventually released
-even if kdamond fails unexpectedly.
+I'd suggest to hold this for now, and revisit if this becomes clearly a
+bottleneck of a real use case, e.g., a user claims so.
 
-Please let me know your preference. :>
 
-Best regards,
-Rui Yan
+Thanks,
+SJ
+
+[...]
 
