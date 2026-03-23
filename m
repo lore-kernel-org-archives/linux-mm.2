@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3A66F46102
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D093F46100
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFBF76B0005; Mon, 23 Mar 2026 08:46:51 -0400 (EDT)
+	id BEC696B0088; Mon, 23 Mar 2026 08:47:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACD26B0088; Mon, 23 Mar 2026 08:46:51 -0400 (EDT)
+	id BC35C6B008A; Mon, 23 Mar 2026 08:47:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9B016B0089; Mon, 23 Mar 2026 08:46:51 -0400 (EDT)
+	id ADF906B0088; Mon, 23 Mar 2026 08:47:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A76056B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:46:51 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A1E2160B76
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:46:51 +0000 (UTC)
-X-FDA: 84577302222.09.C18D5DA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2141340014
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:46:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GpDFlzck;
-	spf=pass (imf01.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B5356B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:47:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F67A1EC52
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:47:30 +0000 (UTC)
+X-FDA: 84577303860.11.92AEFA7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1FD942000C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:47:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gVAhHJfW;
+	spf=pass (imf13.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774270009;
+	s=arc-20220608; t=1774270048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zj+HJ3NHVe31Ua9iuOX+I5shCryiTmPAEr1rzKm60IA=;
-	b=qYLH7TAAyWBdv/KuU8wDyduTZKM0xOSiWRSe5G6dbY3rhVs4WlXOxpia6++y6/9DjKDW/R
-	nKj3krFVRKLX9dB/qOIYEArDHdLxEW4DaZGDM+8uGJppqTUqqvcEvhozUhqtdtt+vKOgYt
-	ZGwnSssOIV/aPwv3QIbh6Ry3fHoGkYM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774270009; a=rsa-sha256;
+	bh=0u4DoGQ4lmcA23oqYqC/015Lk/NUWNVl1j8NoB4BI6w=;
+	b=DtbjlEDdWwuczOjHFwxUvFMv1w4P+la1K8sTKX1eeMeZQcfIC+CSGOaQh+pkC2z4Yb8CP7
+	In/b1lOOBJqVpuHQctrK7QSF0oyLltvEJlzoP7q2z+1yIPUnNQiwcwVjK9K0rurNX9fMD7
+	wzD3aU9vMP7EBZibF9QqfSW+0BZ2Jw0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774270048; a=rsa-sha256;
 	cv=none;
-	b=f5dYttbWFkC6xRN218tgf+RNfjSe8kBDa/54gdAuJb4Kac5Lg5hRK3dI/26yzMc2/PnrZz
-	P72pJ/7XCguGgOZamRjePL6BU310xmSlTDtwX0ZHbAKa+belYe1PUUoLgOxvmgz9RGLm0+
-	E3HOptvSj9RuTnmUHygSgEMaPxG2eYs=
+	b=NXZKwMFpe06zijaLg04rDpW6e4ZZfeMaVIMgoClqJqacD1EHzs/oFDW4+N3n7QDnYbA4fL
+	d14V58REg3zKSr7Yl3seTAXmw/YJcOrblr3WFiBaOo7Je7K2g8lzvwpfLwQyBPB0wHCVDP
+	DwFV5Lisu4jlhtUDh8VXV4c6DvQQOPo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GpDFlzck;
-	spf=pass (imf01.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gVAhHJfW;
+	spf=pass (imf13.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774270008;
+	s=mimecast20190719; t=1774270047;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zj+HJ3NHVe31Ua9iuOX+I5shCryiTmPAEr1rzKm60IA=;
-	b=GpDFlzckhDJYw0kBL7A5QlcyrB+YaOEYEswf4or1TWT+mxM8Web6z5Ujr0Qd92gyknZ9uy
-	JalQM7zO4Atj76iqh6i63K8qTZAgBrbMYzjuNNbdV92RX6dHOYBGPkJRFKrm7Lf2Rd65jZ
-	QHCUQEFJ8jZ6Q8iraZROCmTJLmqG6VM=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0u4DoGQ4lmcA23oqYqC/015Lk/NUWNVl1j8NoB4BI6w=;
+	b=gVAhHJfWwk5dzTHveNoTTd8ShrpNxZegFV6V8+J9Pbqh4XfLoLBUvxbzAmB4UkSqeRkqyY
+	1zuPkNO6r5V9q20stT5YVCmBWz74TdPe0YtbmWFoQ/0067Q4ct1a0a9wg5pw2SbfY8yCYC
+	qwT6ea3biQtEMkrNoCGUjaVKuUNFql4=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-85KMtD68NA-Tkg013tsy-Q-1; Mon, 23 Mar 2026 08:46:47 -0400
-X-MC-Unique: 85KMtD68NA-Tkg013tsy-Q-1
-X-Mimecast-MFC-AGG-ID: 85KMtD68NA-Tkg013tsy-Q_1774270006
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b62da7602a0so1960268a12.2
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:46:47 -0700 (PDT)
+ us-mta-611-ryCH7UWdO_2ASxzjo9TqoQ-1; Mon, 23 Mar 2026 08:47:24 -0400
+X-MC-Unique: ryCH7UWdO_2ASxzjo9TqoQ-1
+X-Mimecast-MFC-AGG-ID: ryCH7UWdO_2ASxzjo9TqoQ_1774270043
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-35be4ea8292so1693400a91.1
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:47:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774270006; x=1774874806;
+        d=1e100.net; s=20251104; t=1774270043; x=1774874843;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zj+HJ3NHVe31Ua9iuOX+I5shCryiTmPAEr1rzKm60IA=;
-        b=BKQJMfIfvpX3pFVvRDugMXHTpihZotEr5nVHN55lHFxu2RxjvVri2JMOV1x263V1t4
-         UygPiQjEwH8bNSRb8BYsJZomGMMrBDptZIcC9YyxT4du/4E2acyA63syA3EUQ7LZKSzp
-         p5FXB43c5BsoW0wDxiuFYSiET4jrU6TWYIEJvnzlwZctx96GTWqR5L3rLkSh5I531+zc
-         fYBASDBZS+Vsd0+mxdUBep9nS7EzuR2Ms64s2Geg6n5Agsf3p3i+29VvgGl5wRYvC1ld
-         r9bDlGAbM3UutCD8Ex8jHuYRFirTbiXNZLx7QO/8/sMPY+ZhPCKit8Z0QPwREYsOCE0I
-         7OYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtvpAjgmvzL0izLwM3xxJN9KQ6seFSrdamce3Pqk+H5WGpnsxa0g+MFhVtVZiIo+eiPQCf6cnC/A==@kvack.org
-X-Gm-Message-State: AOJu0YzmKVs9237TaglYFGekeUxmgQMTYxe9Pha6LAfd4zrVgWOH0Bsy
-	qu1M5Lyl5XktvUij9qUrOL5S7GkQg0kEM+lLrWPmUpgXoR4p1SmT09mbDwvkU7j5t/HzKNVsgli
-	77GkbsyMiADjYof3Cr3FqfTr31Lmyr9YX7mYqohaXVlhNDPxHy1rx
-X-Gm-Gg: ATEYQzysDay7bPqAFO3mwr0mamFlM2x0F18qjySLvX0Wa/TwpYgFnOjsXklM4jFnj+E
-	9KSt/6Z5ktMxTl+l29Q4FSmylXsJmMkuT+aClGPuWs2gvoCwJOczzzJ2LQZYwH+vTho+V8STLGE
-	UUMSwK07iG+RmwgB83JkS7SBXFfW3w2q4Vzi+UMDRclewlZrIfvGJ/VZOexzyAIx1c4fQVDVwtS
-	c37Fd2N9vKQOxkBnH9oe0LbaAIcgKhX6FwxKXr5ccOj5hBhHll5/ERQUDDQust55n8HHA3O6Slo
-	mC+Nymj6K8NqJtzxBgur7/M+yam7AdGLado8XkRGepUarqL9RjjL8MU0jXnuA3sJc/f8Khzg/V+
-	NehKwT06elpTtsrjzLw==
-X-Received: by 2002:a05:6a00:2d1d:b0:829:7efc:fe20 with SMTP id d2e1a72fcca58-82a8c325f74mr10131676b3a.40.1774270006181;
-        Mon, 23 Mar 2026 05:46:46 -0700 (PDT)
-X-Received: by 2002:a05:6a00:2d1d:b0:829:7efc:fe20 with SMTP id d2e1a72fcca58-82a8c325f74mr10131638b3a.40.1774270005733;
-        Mon, 23 Mar 2026 05:46:45 -0700 (PDT)
+        bh=0u4DoGQ4lmcA23oqYqC/015Lk/NUWNVl1j8NoB4BI6w=;
+        b=EVwnDZEdTkO2DwAyBn+6MaKlfouMdLnSzLCjccyINRZ1+XM0uj6sVFVuO4mmtQWw61
+         rQOGIIviWwxEYVZNlXv0/t7DCfrxyw6SRCl0pe1kxISmL/+QIzLvNQ+2KOO/ppHC46sY
+         S24wEjOBpc0G9F0wSuOfscUnKYydlQ2ecgI5xoWSnhy8js9qISN6mwCb7nFr7Z8FfEq9
+         OF8J/DN+yp/FaErtrx6D8uhSXiPa3MP39A0yZo5ihbCj+8S/hUCG494a2Fw3rg1Ynyw/
+         cimnpahXUh+BbrQ5PmNHUOaowdG5AP23tQqTOqUPNw3W4Frmz3F6YRMwiGlLxJ16X9D2
+         M/rg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQOg2e9d4p7ic4xRXBdj7dis1f3cn+fIDl8NpwXOVus09QTHnpxqnKcwx/GpfI0yqNNe4wpzv4TQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyq/37vjaZ3d4EgMZJTq6grnTOrPkVhld5/Zr+0hN5bSoElsqT1
+	3bhsyJL5ZofA0TIp3UrbWeZFy4PFic0z76jZlTd10hNabpNqDL17wTpcYOw3H5z0iIj3g+iKw5V
+	ITYbI/mHgMBzjzGoqzEK9rJZrNVoQkTed8EKJ5bXmzCQXMlEy9Ycj
+X-Gm-Gg: ATEYQzz4BQapa9B/p9kp14WnhtF2bH5vrSyYHDNR3+Z0WmLxW9xrLA59QfYXANloVdO
+	GGYX3dRXuxEyPN/kBbB6HXUue6a/hkaPhxcSLlRFCGpV0ib+Cu5ASIIwkRU/SsY+T5/JBVwZgnF
+	WT5jmOjApzsRzJRVMlDyEA/lyzA6ATQKS4GzKAAs3Tgv4yuf5UjLor7lYy4pWgUnTJ/p61/pPhv
+	gJ9rkJWGjjwznHqCYnxV2XnTFBLogpb+6BpMy1KYKLt2uCTHvBaz9La1IFru0gNoljYqktGZY+j
+	3vy7DDaqs/WSw2UaT98XYETW30P2SQIqXMJL9Fkf9A90YxwnFocwgvgZgGL+c4/UP4RY6aWjwkN
+	LfPKOOt5LMAt8KmAkgw==
+X-Received: by 2002:a17:90a:1c0f:b0:35b:e4d8:bb10 with SMTP id 98e67ed59e1d1-35be4d8bc7fmr3116815a91.14.1774270043236;
+        Mon, 23 Mar 2026 05:47:23 -0700 (PDT)
+X-Received: by 2002:a17:90a:1c0f:b0:35b:e4d8:bb10 with SMTP id 98e67ed59e1d1-35be4d8bc7fmr3116793a91.14.1774270042836;
+        Mon, 23 Mar 2026 05:47:22 -0700 (PDT)
 Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03aa5a9bsm9609699b3a.8.2026.03.23.05.46.44
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08366b9aesm141494025ad.58.2026.03.23.05.47.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 05:46:44 -0700 (PDT)
-Date: Mon, 23 Mar 2026 20:46:42 +0800
+        Mon, 23 Mar 2026 05:47:22 -0700 (PDT)
+Date: Mon, 23 Mar 2026 20:47:20 +0800
 From: Li Wang <liwang@redhat.com>
 To: Waiman Long <longman@redhat.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
@@ -112,26 +112,26 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
 	James Houghton <jthoughton@google.com>,
 	Sebastian Chlad <sebastianchlad@gmail.com>,
 	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
-Subject: Re: [PATCH v2 1/7] memcg: Scale up vmstats flush threshold with
- int_sqrt(nr_cpus+2)
-Message-ID: <acE2MoIZ0pl7U7PX@redhat.com>
+Subject: Re: [PATCH v2 2/7] memcg: Scale down MEMCG_CHARGE_BATCH with
+ increase in PAGE_SIZE
+Message-ID: <acE2WDuto9cdp5Lx@redhat.com>
 References: <20260320204241.1613861-1-longman@redhat.com>
- <20260320204241.1613861-2-longman@redhat.com>
+ <20260320204241.1613861-3-longman@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20260320204241.1613861-2-longman@redhat.com>
+In-Reply-To: <20260320204241.1613861-3-longman@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: R_N3I10Q3Ek9dLfDS_D6KAa054u7YZV95gwZXc9msXI_1774270006
+X-Mimecast-MFC-PROC-ID: 0NL3nDafKD1_VyYLu81x43TeQl11ehkX3jOrAuaU-jc_1774270043
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: w3tzkkh9jrqfrpbdwwmjxmcyo6zwuemk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2141340014
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774270008-784954
-X-HE-Meta: U2FsdGVkX1/MnCLFg3rz4qpp7gyBgrKS8dR2YlcLCUpUL+TtxOdqmlNb1mke/+joQCl1CEHnLLIUIxnFMZJ4KwMAZV1rrR6qt00Py/8EGsZO1NCrZfWgHcTp1YUIqyshAFI9wwLNF2Wpo+l7a6SQH2QC9IgZJ8kzNsrI8riQ/7gPuPZbgdHdQka/gyzIE6f+7eaEd4wylrDvUQ/Xq7K4rOdkapTeP+4d82hdJ3ZzyV99ocIpiOwzBV/+nWwBxYFA7GUNfIkpzdAhBr1gIscC7lx0DQTX16mIpwebsljPdPOo7vPZh3CkSocpAfXnpi/aXrgZ1hA5UHGGUn7873a2lPmo9Hha2GJGoWUPF7J0VNMfVU3Ls1xuiOankFkLMJxk1HZaENv4nT+Dkyjjq426WBH1DBq/55jqjeX6eoFw99R5irtyK+vICmtxrJJyWJXM8Wq04ejVkl5P9YfaQHa+QIQSK0gZDSDy6QmM7yvEM/f9nOLi5qLbuSUTeWOwC+53LyCYcy/ECRCkoBIJ0OuOH4DEXwVgVoPypjeJzn166B7XRRzUsoR6jteXpQ2HEjI44mPyRm8yotXhkGtMk1BZUh9KwYoy2KZRrbKAgqWNL4xa8NINdzNO8hYX3h6L4qWyOkD1STUY7mkz4OCAsJOvhGUlMuWmmgvuOW2Kjr+wUu17lsBm+bQL95cVA7GmuOQyTcfioqlFffyv9fxYGYPqUAeEhVtXVQr7mF+jASoGp2Yg1PPQ79WR9gd4EoyrHiH38hiYuYwOb8DRfOe4dsYTs3wJnh4jATIJkKAGubRvOImEirE+XwG6iVcxb1G7EnIoO1uzuWZszlxGI6QiybfTJpBO84n+YShF+ACbcxj8jsNgYD9xrxxsQ7KV2HBtWkVsMtNzTYQGqFdtEyS47M+NGvTNHPjdBwH056p3tCXfV4xcleXPKUCT9Fs/MsAY8eSOUL0+QMbi/KEXgUZnoK4
- crn9IcJN
- uWpIoCwP5Rv9AbqLAURR0vHwZOGZC3kZPs57o5v0YBhedHJgE4WmtVce9qQZsIL69w2M1lywh/O7iWcEJwv9+JNm8ogcL8CDtUGux7HafSCTSnfELEJ9N07RpIIfUVEzzbFjBDTBrd88R81V2HjSbIB/F/NhvYhNjBaahzdT1jIo/GR8vDTd12gOIAA==
+X-Stat-Signature: btm7ozb5n8degzw5q7fger1okexr7b3d
+X-Rspamd-Queue-Id: 1FD942000C
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774270047-80650
+X-HE-Meta: U2FsdGVkX181KBCdUp6wYmg9Y31xa7l1pgijQDd57j+Vv0k1H7lnb/60qDXUqsUtz1Zkdo10/uWo+FB4wSnqpAGklG33ihgKxlMHhGz27kXFetQ6zw8pc90jqzv4MNypkhYkUg4/oOYRmPsfQZgDS3Rc197KygiBmb9xk4tv+9avtRwYQSJ+9+ooC555tpXQpEYwjKMieg7D0C8tq0AjqNOPDhTHFkaPNb+pS22BkIIe0pWL9GGm/JTiqYkoIhhpV2JyArclQ+xDEetYXrAtm66/tScjYsmuCd/sdudnvNrAj+bkq8WdXI745OmnQBs9ktAoGHIrckQPwZDz4l3sNZiyEv84VrHn2rOtTVRAinIzzslJnFxVZ+Khn3/AfNH6e7atcvszw57GOxa29NiOrpDN9+Ee/x413+eYDcunvx5LFptNYdXN+GQex3QXyD1pRG3KxIVI27Xgstw9j8389QBMj/FqumZi6dzdfQ/E0FKc/2wMKSIK9hIKss77k7W4w+DD9qERn7lgcTtv1HGFDsn4y2KZsBfjNxmjisCOHWaqDdYYKHY+jWiPA8jcne6iXm7kTtARjFGXsl4pH/KAUYwXLCVQUn8OtwPKdYbtBg/spHc96DiN8XZE7aQ+2s9+qIlonVEp4bFEXO+KWc4Q+s1uzWlogC8BuabCNY7KXwf1ZS2inNwWahduWvBT38XNiFVamlaHqaIY+d2RXSEKvvdxwwzT/mnMdfheULhgiSzYKqV3a9Rt1zm0/c9oa3WH3zuMUSBWsSrU7bmh6CccBhMNeIMrEOVmIouYweWdMT3jNfE+EfvQVdkHeuBt5mstHqVsmz06MesYtQVZrawMwGxbEJEq9zWMuI0PF6vRVOdlMFH8zq60uKH62loiVrbnFAg0l1CTq+UNzE6yxiF1w7FV+v0qo22q0rnabOBSy+L0+uNdM7rMn6hvBzfa4FEhHj2CpqB1O7YlN/XsyI7
+ HKLXkp5h
+ UuzT1NZ6WxWOZa/e+UxmJhoLhd7AaRTa/bUU2rQjcgTne9bWhQ6WkWPMbK1b4YWbLt3TXEbbvpTw/gIl9UyJCLxZrrLuoNYspuw5Vosl9AtxcKzyzryHKTlZhnbPPUXkiFJ5XaQ1lrqc16KL4SN8t4BV+sKMBh97/ixaElPF7YlFnwQRvklHEB5qPy0Au9Y93FdVDU3jRPvAO9G7rIo2YgPPeo+GDljNFCF89Gb7k7mXGORcfRU/y7AjwVTiKArkH9/9BKiNU6W6DvaXdRi/imaU0xzOmfzHBRVJ8ZToOGq9cvpiGmzBrfL+Obl5IvHtTrqn1h4ag+6EiefC7y2Use1XSpCkOQp8rtRi2fdfqZxcexbAJarw7kHf5riPazT4l0ZARE7ikUIJZmeopCzeZO0al5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,88 +139,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 04:42:35PM -0400, Waiman Long wrote:
-> The vmstats flush threshold currently increases linearly with the
-> number of online CPUs. As the number of CPUs increases over time, it
-> will become increasingly difficult to meet the threshold and update the
-> vmstats data in a timely manner. These days, systems with hundreds of
-> CPUs or even thousands of them are becoming more common.
+On Fri, Mar 20, 2026 at 04:42:36PM -0400, Waiman Long wrote:
+> For a system with 4k page size, each percpu memcg_stock can hide up
+> to 256 kbytes of memory with the current MEMCG_CHARGE_BATCH value of
+> 64. For another system with 64k page size, that becomes 4 Mbytes. This
+> hidden charges will affect the accurary of the memory.current value.
 > 
-> For example, the test_memcg_sock test of test_memcontrol always fails
-> when running on an arm64 system with 128 CPUs. It is because the
-> threshold is now 64*128 = 8192. With 4k page size, it needs changes in
-> 32 MB of memory. It will be even worse with larger page size like 64k.
+> This MEMCG_CHARGE_BATCH value also controls how often should the
+> memcg vmstat values need flushing. As a result, the values reported
+> in memory.stat cgroup control files are less indicative of the actual
+> memory consumption of a particular memory cgroup when the page size
+> increases from 4k.
 > 
-> To make the output of memory.stat more correct, it is better to scale
-> up the threshold slower than linearly with the number of CPUs. The
-> int_sqrt() function is a good compromise as suggested by Li Wang [1].
-> An extra 2 is added to make sure that we will double the threshold for
-> a 2-core system. The increase will be slower after that.
+> This problem can be illustrated by running the test_memcontrol
+> selftest. Running a 4k page size kernel on a 128-core arm64 system,
+> the test_memcg_current_peak test which allocates a 50M anonymous memory
+> passed. With a 64k page size kernel on the same system, however, the
+> same test failed because the "anon" attribute of memory.stat file might
+> report a size of 0 depending on the number of CPUs the system has.
 > 
-> With the int_sqrt() scale, we can use the possibly larger
-> num_possible_cpus() instead of num_online_cpus() which may change at
-> run time.
+> To solve this inaccurate memory stats problem, we need to scale down
+> the amount of memory that can be hidden by reducing MEMCG_CHARGE_BATCH
+> when the page size increases. The same user application will likely
+> consume more memory on systems with larger page size and it is also
+> less efficient if we scale down MEMCG_CHARGE_BATCH by too much.  So I
+> believe a good compromise is to scale down MEMCG_CHARGE_BATCH by 2 for
+> 16k page size and by 4 with 64k page size.
 > 
-> Although there is supposed to be a periodic and asynchronous flush of
-> vmstats every 2 seconds, the actual time lag between succesive runs
-> can actually vary quite a bit. In fact, I have seen time lags of up
-> to 10s of seconds in some cases. So we couldn't too rely on the hope
-> that there will be an asynchronous vmstats flush every 2 seconds. This
-> may be something we need to look into.
+> With that change, the test_memcg_current_peak test passed again with
+> the modified 64k page size kernel.
 > 
-> [1] https://lore.kernel.org/lkml/ab0kAE7mJkEL9kWb@redhat.com/
-> 
-> Suggested-by: Li Wang <liwang@redhat.com>
 > Signed-off-by: Waiman Long <longman@redhat.com>
 > ---
->  mm/memcontrol.c | 18 +++++++++++++-----
->  1 file changed, 13 insertions(+), 5 deletions(-)
+>  include/linux/memcontrol.h | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 772bac21d155..cc1fc0f5aeea 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -548,20 +548,20 @@ struct memcg_vmstats {
->   *    rstat update tree grow unbounded.
->   *
->   * 2) Flush the stats synchronously on reader side only when there are more than
-> - *    (MEMCG_CHARGE_BATCH * nr_cpus) update events. Though this optimization
-> - *    will let stats be out of sync by atmost (MEMCG_CHARGE_BATCH * nr_cpus) but
-> - *    only for 2 seconds due to (1).
-> + *    (MEMCG_CHARGE_BATCH * int_sqrt(nr_cpus+2)) update events. Though this
-> + *    optimization will let stats be out of sync by up to that amount. This is
-> + *    supposed to last for up to 2 seconds due to (1).
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 70b685a85bf4..748cfd75d998 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -328,8 +328,14 @@ struct mem_cgroup {
+>   * size of first charge trial.
+>   * TODO: maybe necessary to use big numbers in big irons or dynamic based of the
+>   * workload.
+> + *
+> + * There are 3 common base page sizes - 4k, 16k & 64k. In order to limit the
+> + * amount of memory that can be hidden in each percpu memcg_stock for a given
+> + * memcg, we scale down MEMCG_CHARGE_BATCH by 2 for 16k and 4 for 64k.
 >   */
->  static void flush_memcg_stats_dwork(struct work_struct *w);
->  static DECLARE_DEFERRABLE_WORK(stats_flush_dwork, flush_memcg_stats_dwork);
->  static u64 flush_last_time;
-> +static int vmstats_flush_threshold __ro_after_init;
+> -#define MEMCG_CHARGE_BATCH 64U
+> +#define MEMCG_CHARGE_BATCH_BASE  64U
+> +#define MEMCG_CHARGE_BATCH_SHIFT ((PAGE_SHIFT <= 16) ? (PAGE_SHIFT - 12)/2 : 2)
+> +#define MEMCG_CHARGE_BATCH	 (MEMCG_CHARGE_BATCH_BASE >> MEMCG_CHARGE_BATCH_SHIFT)
 >  
->  #define FLUSH_TIME (2UL*HZ)
->  
->  static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
->  {
-> -	return atomic_read(&vmstats->stats_updates) >
-> -		MEMCG_CHARGE_BATCH * num_online_cpus();
-> +	return atomic_read(&vmstats->stats_updates) > vmstats_flush_threshold;
->  }
->  
->  static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
-> @@ -5191,6 +5191,14 @@ int __init mem_cgroup_init(void)
->  
->  	memcg_pn_cachep = KMEM_CACHE(mem_cgroup_per_node,
->  				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
-> +	/*
-> +	 * Scale up vmstats flush threshold with int_sqrt(nr_cpus+2). The extra
-> +	 * 2 constant is to make sure that the threshold is double for a 2-core
-> +	 * system. After that, it will increase by MEMCG_CHARGE_BATCH when the
-> +	 * number of the CPUs reaches the next (2^n - 2) value.
-> +	 */
-> +	vmstats_flush_threshold = MEMCG_CHARGE_BATCH *
-> +				  (int_sqrt(num_possible_cpus() + 2));
->  
->  	return 0;
->  }
+>  extern struct mem_cgroup *root_mem_cgroup;
 
 Reviewed-by: Li Wang <liwang@redhat.com>
 
