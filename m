@@ -4,91 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E220D58B00
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:37:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3A66F46102
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61F06B0005; Mon, 23 Mar 2026 08:37:57 -0400 (EDT)
+	id CFBF76B0005; Mon, 23 Mar 2026 08:46:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D13A46B0088; Mon, 23 Mar 2026 08:37:57 -0400 (EDT)
+	id CACD26B0088; Mon, 23 Mar 2026 08:46:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C28F36B0089; Mon, 23 Mar 2026 08:37:57 -0400 (EDT)
+	id B9B016B0089; Mon, 23 Mar 2026 08:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B2FFC6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:37:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 53C69140B02
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:37:57 +0000 (UTC)
-X-FDA: 84577279794.16.2F0CF36
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B0840100002
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:37:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qm/vDxPr";
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A76056B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:46:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A1E2160B76
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:46:51 +0000 (UTC)
+X-FDA: 84577302222.09.C18D5DA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2141340014
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:46:48 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GpDFlzck;
+	spf=pass (imf01.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774269475;
+	s=arc-20220608; t=1774270009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wCA+hl7nXD71syHZF/12USZbpLgCENC3QFd+0pYTue4=;
-	b=gUXeuTlodNPvKhMZf9E5SM2g3GrrHb+fLEyjwUk4kgTBVotcTqz148CnF0nlkwszKhdu4P
-	lcUFDYkGf2DV1czdtrg9/kh+3GTKUTyDWZP5CugC3CGWZhwJKE/krQAwEitggLa1DbLLep
-	dT45/2+wCGnrGrjXyaY09y853jyj2t8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qm/vDxPr";
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774269475; a=rsa-sha256;
+	bh=zj+HJ3NHVe31Ua9iuOX+I5shCryiTmPAEr1rzKm60IA=;
+	b=qYLH7TAAyWBdv/KuU8wDyduTZKM0xOSiWRSe5G6dbY3rhVs4WlXOxpia6++y6/9DjKDW/R
+	nKj3krFVRKLX9dB/qOIYEArDHdLxEW4DaZGDM+8uGJppqTUqqvcEvhozUhqtdtt+vKOgYt
+	ZGwnSssOIV/aPwv3QIbh6Ry3fHoGkYM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774270009; a=rsa-sha256;
 	cv=none;
-	b=fUSezIEnhqM4sBZkh5ue8htSg+ySPiLv69t9/2QhbbFNTCId0/21OHuX3lLamNycQPKS8N
-	6sf2Tt15cSWL01+0YuslWEeS5/NnRl8/4pc/bv36f2ltAWseH1nxfzzfpb9/bHzH9m9fRm
-	BhANW9Apbqaa4ovX5Mej3ADSA7lEwu8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 26C66600AC;
-	Mon, 23 Mar 2026 12:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1930CC4CEF7;
-	Mon, 23 Mar 2026 12:37:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774269474;
-	bh=pWOP+TV+f5i3NcLiRMbYoqpmIUSaEtA5/yTUoUGxcSc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qm/vDxPrEbfxJgKA4RY8T4W9WY7KiU2gd+tsuieKY1TaNbT7xBKjOb/khD6y1AUoY
-	 zrH+3DtDE2rvETWUHXpgQtooOZYzAKmL4Z2CEcDZcXmC1/USZ+ZxKYdmyY8o6iiLFp
-	 bNjweA7La3lULqs8ogfeh0KW1EIMBH6Jx8CK99MVSZlP+sWusMxn5EWpn7vVrFsYGD
-	 6S4aOANsN+X7NQz7bInid7zOlKFXuTN/eSxBxSyG+H/dPl58QaURyYvUs4Dz25lxZc
-	 6C6quFi/S4DEhG9kDKUSc2yxVCK0PInTMzfMHKTiBa2UJP4tCxphZW0cyzHEs1vchy
-	 cQGohV4osDI0g==
-Date: Mon, 23 Mar 2026 12:37:51 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Michal Hocko <mhocko@suse.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] memblock: move reserve_bootmem_range() to memblock.c
- and make it static
-Message-ID: <445a1456-68da-45e7-ac0a-c1ed0cd086c4@lucifer.local>
-References: <20260323072042.3651061-1-rppt@kernel.org>
+	b=f5dYttbWFkC6xRN218tgf+RNfjSe8kBDa/54gdAuJb4Kac5Lg5hRK3dI/26yzMc2/PnrZz
+	P72pJ/7XCguGgOZamRjePL6BU310xmSlTDtwX0ZHbAKa+belYe1PUUoLgOxvmgz9RGLm0+
+	E3HOptvSj9RuTnmUHygSgEMaPxG2eYs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GpDFlzck;
+	spf=pass (imf01.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774270008;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zj+HJ3NHVe31Ua9iuOX+I5shCryiTmPAEr1rzKm60IA=;
+	b=GpDFlzckhDJYw0kBL7A5QlcyrB+YaOEYEswf4or1TWT+mxM8Web6z5Ujr0Qd92gyknZ9uy
+	JalQM7zO4Atj76iqh6i63K8qTZAgBrbMYzjuNNbdV92RX6dHOYBGPkJRFKrm7Lf2Rd65jZ
+	QHCUQEFJ8jZ6Q8iraZROCmTJLmqG6VM=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-228-85KMtD68NA-Tkg013tsy-Q-1; Mon, 23 Mar 2026 08:46:47 -0400
+X-MC-Unique: 85KMtD68NA-Tkg013tsy-Q-1
+X-Mimecast-MFC-AGG-ID: 85KMtD68NA-Tkg013tsy-Q_1774270006
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b62da7602a0so1960268a12.2
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:46:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774270006; x=1774874806;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zj+HJ3NHVe31Ua9iuOX+I5shCryiTmPAEr1rzKm60IA=;
+        b=BKQJMfIfvpX3pFVvRDugMXHTpihZotEr5nVHN55lHFxu2RxjvVri2JMOV1x263V1t4
+         UygPiQjEwH8bNSRb8BYsJZomGMMrBDptZIcC9YyxT4du/4E2acyA63syA3EUQ7LZKSzp
+         p5FXB43c5BsoW0wDxiuFYSiET4jrU6TWYIEJvnzlwZctx96GTWqR5L3rLkSh5I531+zc
+         fYBASDBZS+Vsd0+mxdUBep9nS7EzuR2Ms64s2Geg6n5Agsf3p3i+29VvgGl5wRYvC1ld
+         r9bDlGAbM3UutCD8Ex8jHuYRFirTbiXNZLx7QO/8/sMPY+ZhPCKit8Z0QPwREYsOCE0I
+         7OYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWtvpAjgmvzL0izLwM3xxJN9KQ6seFSrdamce3Pqk+H5WGpnsxa0g+MFhVtVZiIo+eiPQCf6cnC/A==@kvack.org
+X-Gm-Message-State: AOJu0YzmKVs9237TaglYFGekeUxmgQMTYxe9Pha6LAfd4zrVgWOH0Bsy
+	qu1M5Lyl5XktvUij9qUrOL5S7GkQg0kEM+lLrWPmUpgXoR4p1SmT09mbDwvkU7j5t/HzKNVsgli
+	77GkbsyMiADjYof3Cr3FqfTr31Lmyr9YX7mYqohaXVlhNDPxHy1rx
+X-Gm-Gg: ATEYQzysDay7bPqAFO3mwr0mamFlM2x0F18qjySLvX0Wa/TwpYgFnOjsXklM4jFnj+E
+	9KSt/6Z5ktMxTl+l29Q4FSmylXsJmMkuT+aClGPuWs2gvoCwJOczzzJ2LQZYwH+vTho+V8STLGE
+	UUMSwK07iG+RmwgB83JkS7SBXFfW3w2q4Vzi+UMDRclewlZrIfvGJ/VZOexzyAIx1c4fQVDVwtS
+	c37Fd2N9vKQOxkBnH9oe0LbaAIcgKhX6FwxKXr5ccOj5hBhHll5/ERQUDDQust55n8HHA3O6Slo
+	mC+Nymj6K8NqJtzxBgur7/M+yam7AdGLado8XkRGepUarqL9RjjL8MU0jXnuA3sJc/f8Khzg/V+
+	NehKwT06elpTtsrjzLw==
+X-Received: by 2002:a05:6a00:2d1d:b0:829:7efc:fe20 with SMTP id d2e1a72fcca58-82a8c325f74mr10131676b3a.40.1774270006181;
+        Mon, 23 Mar 2026 05:46:46 -0700 (PDT)
+X-Received: by 2002:a05:6a00:2d1d:b0:829:7efc:fe20 with SMTP id d2e1a72fcca58-82a8c325f74mr10131638b3a.40.1774270005733;
+        Mon, 23 Mar 2026 05:46:45 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03aa5a9bsm9609699b3a.8.2026.03.23.05.46.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 05:46:44 -0700 (PDT)
+Date: Mon, 23 Mar 2026 20:46:42 +0800
+From: Li Wang <liwang@redhat.com>
+To: Waiman Long <longman@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Sebastian Chlad <sebastianchlad@gmail.com>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
+Subject: Re: [PATCH v2 1/7] memcg: Scale up vmstats flush threshold with
+ int_sqrt(nr_cpus+2)
+Message-ID: <acE2MoIZ0pl7U7PX@redhat.com>
+References: <20260320204241.1613861-1-longman@redhat.com>
+ <20260320204241.1613861-2-longman@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20260320204241.1613861-2-longman@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: R_N3I10Q3Ek9dLfDS_D6KAa054u7YZV95gwZXc9msXI_1774270006
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260323072042.3651061-1-rppt@kernel.org>
-X-Stat-Signature: bt7zoak5c5ks7eitbc1xk3tmoo3cfjgf
-X-Rspamd-Server: rspam09
+X-Stat-Signature: w3tzkkh9jrqfrpbdwwmjxmcyo6zwuemk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B0840100002
-X-HE-Tag: 1774269475-310669
-X-HE-Meta: U2FsdGVkX19+l+rHCyDh4LkAYz5ZRrSADZHtF9xWEodT2GbACMZnOtJaj+aedFaC3vHsaiNGTboJZWljLAR/FrBlY1R+ECRHyODHL9ce928TGqFrvEmktpcJPXP2L9ePguQMtCm4r6bN0Vhm5/MQPxf20k4mUXbg966+GFc/QJQpxicKyvrnlXMYYAKgLjbEoKOuyQs8DYbEA+BLWT11Jq+IePbgQGE+ylE34dvxoLvHadxyP5LegF/icrbe7gIJhfiA06LKbn5QE0qhLyUea/epCknZWix2Edfowy45us16Kb73PAE0V4sL7oHwvmuCTxMaEtaC//KchmfPurJES0B/hmcoKN5x6j1i4cBacjzxWhbHmp6cIxSdC2PIPh5ofELRbuBmaKN3ZFpb6jajKzinv1PbXJDwNlqGI+MvR0Kf+J5Dcp7iaooQXUeNcg6l1sX4h6AbXpNzC0dxOyL93ZPeXwQmOtGZmUtbqZrbDeoLmfGT0nR2V5pGPDQn0omgy3xmmVs3OTh3WSHgD0jtxcBpd/dnvqNrhIWUgfh4uaBSabr9kjb46Q0uvVCVRDty7JTYSEYuQXhEGUrlN6B+yL4NshsaGqsR2oiindL61C9UpURzWtHqJ+JWVDVXzJTjWMSQf1w/o7lQyhMCcXs8qSJELyuLLqhBNgqAxjuL/sun7WoCPUB3iGElBBUeZSGl+n4V3rlfJ4pYptulGG1zVAXtmze5hdxGznjBabIpYu1BOK7yG/0c5zv/FVtoWyscRE5pqToQ5ARJ2rFWptsl50FVwF6fI9Mv/wgxsaVJWFPshBjRRU4apdwxtVGC2FgcX/sTfCU6Qx2IhZSvB8wvp8CrW1c0nUr2kcUA95dvFgoXAwR3KnP1ybY1DqrJf7WnKvOiyGgrLf1IZTKT3TYIPnhWHdK5yrcuwhXt5bK6DZ/wuJJljVgrQt/yfaD1sbhJu7GSAJZnTWbNBcC8a12
- Ol7Z0+wh
- CIwn8nlig7h+jjMJrnk5UAbJbjEagWKUo4+MJXQifQkLnNsSzSOLusnkllJwrzCtH/D8xwQVL8mdcq1r/Zdb7lQTCpovjV9ny4EsyWcw/ZJn4m4M7pdrys6I4U7t/X9X8X644kV+xhIqguwsyZrRsfgfji8Gauiizmv98MTrkl2Wmi19fokyTV92tLjKkhswhl8rf65EzaYrd+YFC9t7Vz7F5a95RaEc+c3SBSmIWUZJqW+Io02DmhLTcV5ha9MLR2ndoC/znW2n2aBQcfnu0rKFSakPCDMYj1O54hx0SWNdT40ei0Y2wlROwe8eGChsQavelpKoemTV6ZWq/ebCogCjgnA==
+X-Rspamd-Queue-Id: 2141340014
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774270008-784954
+X-HE-Meta: U2FsdGVkX1/MnCLFg3rz4qpp7gyBgrKS8dR2YlcLCUpUL+TtxOdqmlNb1mke/+joQCl1CEHnLLIUIxnFMZJ4KwMAZV1rrR6qt00Py/8EGsZO1NCrZfWgHcTp1YUIqyshAFI9wwLNF2Wpo+l7a6SQH2QC9IgZJ8kzNsrI8riQ/7gPuPZbgdHdQka/gyzIE6f+7eaEd4wylrDvUQ/Xq7K4rOdkapTeP+4d82hdJ3ZzyV99ocIpiOwzBV/+nWwBxYFA7GUNfIkpzdAhBr1gIscC7lx0DQTX16mIpwebsljPdPOo7vPZh3CkSocpAfXnpi/aXrgZ1hA5UHGGUn7873a2lPmo9Hha2GJGoWUPF7J0VNMfVU3Ls1xuiOankFkLMJxk1HZaENv4nT+Dkyjjq426WBH1DBq/55jqjeX6eoFw99R5irtyK+vICmtxrJJyWJXM8Wq04ejVkl5P9YfaQHa+QIQSK0gZDSDy6QmM7yvEM/f9nOLi5qLbuSUTeWOwC+53LyCYcy/ECRCkoBIJ0OuOH4DEXwVgVoPypjeJzn166B7XRRzUsoR6jteXpQ2HEjI44mPyRm8yotXhkGtMk1BZUh9KwYoy2KZRrbKAgqWNL4xa8NINdzNO8hYX3h6L4qWyOkD1STUY7mkz4OCAsJOvhGUlMuWmmgvuOW2Kjr+wUu17lsBm+bQL95cVA7GmuOQyTcfioqlFffyv9fxYGYPqUAeEhVtXVQr7mF+jASoGp2Yg1PPQ79WR9gd4EoyrHiH38hiYuYwOb8DRfOe4dsYTs3wJnh4jATIJkKAGubRvOImEirE+XwG6iVcxb1G7EnIoO1uzuWZszlxGI6QiybfTJpBO84n+YShF+ACbcxj8jsNgYD9xrxxsQ7KV2HBtWkVsMtNzTYQGqFdtEyS47M+NGvTNHPjdBwH056p3tCXfV4xcleXPKUCT9Fs/MsAY8eSOUL0+QMbi/KEXgUZnoK4
+ crn9IcJN
+ uWpIoCwP5Rv9AbqLAURR0vHwZOGZC3kZPs57o5v0YBhedHJgE4WmtVce9qQZsIL69w2M1lywh/O7iWcEJwv9+JNm8ogcL8CDtUGux7HafSCTSnfELEJ9N07RpIIfUVEzzbFjBDTBrd88R81V2HjSbIB/F/NhvYhNjBaahzdT1jIo/GR8vDTd12gOIAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,226 +139,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 09:20:42AM +0200, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> reserve_bootmem_region() is only called from
-> memmap_init_reserved_pages() and it was in mm/mm_init.c because of its
-> dependecies on static init_deferred_page().
->
-> Since init_deferred_page() is not static anymore, move
-> reserve_bootmem_region(), rename it to memmap_init_reserved_range() and
-> make it static.
->
-> Update the comment describing it to better reflect what the function
-> does and drop bogus comment about reserved pages in free_bootmem_page().
->
-> Update memblock test stubs to reflect the core changes.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-LGTM and passed local tests so:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
+On Fri, Mar 20, 2026 at 04:42:35PM -0400, Waiman Long wrote:
+> The vmstats flush threshold currently increases linearly with the
+> number of online CPUs. As the number of CPUs increases over time, it
+> will become increasingly difficult to meet the threshold and update the
+> vmstats data in a timely manner. These days, systems with hundreds of
+> CPUs or even thousands of them are becoming more common.
+> 
+> For example, the test_memcg_sock test of test_memcontrol always fails
+> when running on an arm64 system with 128 CPUs. It is because the
+> threshold is now 64*128 = 8192. With 4k page size, it needs changes in
+> 32 MB of memory. It will be even worse with larger page size like 64k.
+> 
+> To make the output of memory.stat more correct, it is better to scale
+> up the threshold slower than linearly with the number of CPUs. The
+> int_sqrt() function is a good compromise as suggested by Li Wang [1].
+> An extra 2 is added to make sure that we will double the threshold for
+> a 2-core system. The increase will be slower after that.
+> 
+> With the int_sqrt() scale, we can use the possibly larger
+> num_possible_cpus() instead of num_online_cpus() which may change at
+> run time.
+> 
+> Although there is supposed to be a periodic and asynchronous flush of
+> vmstats every 2 seconds, the actual time lag between succesive runs
+> can actually vary quite a bit. In fact, I have seen time lags of up
+> to 10s of seconds in some cases. So we couldn't too rely on the hope
+> that there will be an asynchronous vmstats flush every 2 seconds. This
+> may be something we need to look into.
+> 
+> [1] https://lore.kernel.org/lkml/ab0kAE7mJkEL9kWb@redhat.com/
+> 
+> Suggested-by: Li Wang <liwang@redhat.com>
+> Signed-off-by: Waiman Long <longman@redhat.com>
 > ---
->  include/linux/bootmem_info.h      |  4 ----
->  include/linux/mm.h                |  3 ---
->  mm/memblock.c                     | 31 ++++++++++++++++++++++++++++---
->  mm/mm_init.c                      | 25 -------------------------
->  tools/include/linux/mm.h          |  2 --
->  tools/testing/memblock/internal.h |  9 +++++++++
->  tools/testing/memblock/mmzone.c   |  4 ----
->  7 files changed, 37 insertions(+), 41 deletions(-)
->
-> diff --git a/include/linux/bootmem_info.h b/include/linux/bootmem_info.h
-> index 4c506e76a808..492ceeb1cdf8 100644
-> --- a/include/linux/bootmem_info.h
-> +++ b/include/linux/bootmem_info.h
-> @@ -44,10 +44,6 @@ static inline void free_bootmem_page(struct page *page)
+>  mm/memcontrol.c | 18 +++++++++++++-----
+>  1 file changed, 13 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 772bac21d155..cc1fc0f5aeea 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -548,20 +548,20 @@ struct memcg_vmstats {
+>   *    rstat update tree grow unbounded.
+>   *
+>   * 2) Flush the stats synchronously on reader side only when there are more than
+> - *    (MEMCG_CHARGE_BATCH * nr_cpus) update events. Though this optimization
+> - *    will let stats be out of sync by atmost (MEMCG_CHARGE_BATCH * nr_cpus) but
+> - *    only for 2 seconds due to (1).
+> + *    (MEMCG_CHARGE_BATCH * int_sqrt(nr_cpus+2)) update events. Though this
+> + *    optimization will let stats be out of sync by up to that amount. This is
+> + *    supposed to last for up to 2 seconds due to (1).
+>   */
+>  static void flush_memcg_stats_dwork(struct work_struct *w);
+>  static DECLARE_DEFERRABLE_WORK(stats_flush_dwork, flush_memcg_stats_dwork);
+>  static u64 flush_last_time;
+> +static int vmstats_flush_threshold __ro_after_init;
+>  
+>  #define FLUSH_TIME (2UL*HZ)
+>  
+>  static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
 >  {
->  	enum bootmem_type type = bootmem_type(page);
->
-> -	/*
-> -	 * The reserve_bootmem_region sets the reserved flag on bootmem
-> -	 * pages.
-> -	 */
->  	VM_BUG_ON_PAGE(page_ref_count(page) != 2, page);
->
->  	if (type == SECTION_INFO || type == MIX_SECTION_INFO)
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index abb4963c1f06..764d10fdfb5d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3686,9 +3686,6 @@ extern unsigned long free_reserved_area(void *start, void *end,
->
->  extern void adjust_managed_page_count(struct page *page, long count);
->
-> -extern void reserve_bootmem_region(phys_addr_t start,
-> -				   phys_addr_t end, int nid);
-> -
->  /* Free the reserved page into the buddy system, so it gets managed. */
->  void free_reserved_page(struct page *page);
->
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index b3ddfdec7a80..d504205cdbf5 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -973,7 +973,7 @@ __init void memmap_init_kho_scratch_pages(void)
->  	/*
->  	 * Initialize struct pages for free scratch memory.
->  	 * The struct pages for reserved scratch memory will be set up in
-> -	 * reserve_bootmem_region()
-> +	 * memmap_init_reserved_pages()
->  	 */
->  	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
->  			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
-> @@ -2240,6 +2240,31 @@ static unsigned long __init __free_memory_core(phys_addr_t start,
->  	return end_pfn - start_pfn;
+> -	return atomic_read(&vmstats->stats_updates) >
+> -		MEMCG_CHARGE_BATCH * num_online_cpus();
+> +	return atomic_read(&vmstats->stats_updates) > vmstats_flush_threshold;
 >  }
->
-> +/*
-> + * Initialised pages do not have PageReserved set. This function is called
-> + * for each reserved range and marks the pages PageReserved.
-> + * When deferred initialization of struct pages is enabled it also ensures
-> + * that struct pages are properly initialised.
-> + */
-> +static void __init memmap_init_reserved_range(phys_addr_t start,
-> +					      phys_addr_t end, int nid)
-> +{
-> +	unsigned long pfn;
-> +
-> +	for_each_valid_pfn(pfn, PFN_DOWN(start), PFN_UP(end)) {
-> +		struct page *page = pfn_to_page(pfn);
-> +
-> +		init_deferred_page(pfn, nid);
-> +
-> +		/*
-> +		 * no need for atomic set_bit because the struct
-> +		 * page is not visible yet so nobody should
-> +		 * access it yet.
-> +		 */
-> +		__SetPageReserved(page);
-> +	}
-> +}
-> +
->  static void __init memmap_init_reserved_pages(void)
->  {
->  	struct memblock_region *region;
-> @@ -2259,7 +2284,7 @@ static void __init memmap_init_reserved_pages(void)
->  		end = start + region->size;
->
->  		if (memblock_is_nomap(region))
-> -			reserve_bootmem_region(start, end, nid);
-> +			memmap_init_reserved_range(start, end, nid);
->
->  		memblock_set_node(start, region->size, &memblock.reserved, nid);
->  	}
-> @@ -2284,7 +2309,7 @@ static void __init memmap_init_reserved_pages(void)
->  			if (!numa_valid_node(nid))
->  				nid = early_pfn_to_nid(PFN_DOWN(start));
->
-> -			reserve_bootmem_region(start, end, nid);
-> +			memmap_init_reserved_range(start, end, nid);
->  		}
->  	}
->  }
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index df34797691bd..ea8d3de43470 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -772,31 +772,6 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
->  	__init_deferred_page(pfn, nid);
->  }
->
-> -/*
-> - * Initialised pages do not have PageReserved set. This function is
-> - * called for each range allocated by the bootmem allocator and
-> - * marks the pages PageReserved. The remaining valid pages are later
-> - * sent to the buddy page allocator.
-> - */
-> -void __meminit reserve_bootmem_region(phys_addr_t start,
-> -				      phys_addr_t end, int nid)
-> -{
-> -	unsigned long pfn;
-> -
-> -	for_each_valid_pfn(pfn, PFN_DOWN(start), PFN_UP(end)) {
-> -		struct page *page = pfn_to_page(pfn);
-> -
-> -		__init_deferred_page(pfn, nid);
-> -
-> -		/*
-> -		 * no need for atomic set_bit because the struct
-> -		 * page is not visible yet so nobody should
-> -		 * access it yet.
-> -		 */
-> -		__SetPageReserved(page);
-> -	}
-> -}
-> -
->  /* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped init */
->  static bool __meminit
->  overlap_memmap_init(unsigned long zone, unsigned long *pfn)
-> diff --git a/tools/include/linux/mm.h b/tools/include/linux/mm.h
-> index 028f3faf46e7..74cbd51dbea2 100644
-> --- a/tools/include/linux/mm.h
-> +++ b/tools/include/linux/mm.h
-> @@ -32,8 +32,6 @@ static inline phys_addr_t virt_to_phys(volatile void *address)
->  	return (phys_addr_t)address;
->  }
->
-> -void reserve_bootmem_region(phys_addr_t start, phys_addr_t end, int nid);
-> -
->  static inline void totalram_pages_inc(void)
->  {
->  }
-> diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
-> index 009b97bbdd22..eb02d5771f4c 100644
-> --- a/tools/testing/memblock/internal.h
-> +++ b/tools/testing/memblock/internal.h
-> @@ -29,4 +29,13 @@ static inline unsigned long free_reserved_area(void *start, void *end,
+>  
+>  static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
+> @@ -5191,6 +5191,14 @@ int __init mem_cgroup_init(void)
+>  
+>  	memcg_pn_cachep = KMEM_CACHE(mem_cgroup_per_node,
+>  				     SLAB_PANIC | SLAB_HWCACHE_ALIGN);
+> +	/*
+> +	 * Scale up vmstats flush threshold with int_sqrt(nr_cpus+2). The extra
+> +	 * 2 constant is to make sure that the threshold is double for a 2-core
+> +	 * system. After that, it will increase by MEMCG_CHARGE_BATCH when the
+> +	 * number of the CPUs reaches the next (2^n - 2) value.
+> +	 */
+> +	vmstats_flush_threshold = MEMCG_CHARGE_BATCH *
+> +				  (int_sqrt(num_possible_cpus() + 2));
+>  
 >  	return 0;
 >  }
->
-> +#define for_each_valid_pfn(pfn, start_pfn, end_pfn)                     \
-> +       for ((pfn) = (start_pfn); (pfn) < (end_pfn); (pfn)++)
-> +
-> +static inline void init_deferred_page(unsigned long pfn, int nid)
-> +{
-> +}
-> +
-> +#define __SetPageReserved(p)	((void)(p))
-> +
->  #endif
-> diff --git a/tools/testing/memblock/mmzone.c b/tools/testing/memblock/mmzone.c
-> index d3d58851864e..e719450f81cb 100644
-> --- a/tools/testing/memblock/mmzone.c
-> +++ b/tools/testing/memblock/mmzone.c
-> @@ -11,10 +11,6 @@ struct pglist_data *next_online_pgdat(struct pglist_data *pgdat)
->  	return NULL;
->  }
->
-> -void reserve_bootmem_region(phys_addr_t start, phys_addr_t end, int nid)
-> -{
-> -}
-> -
->  void atomic_long_set(atomic_long_t *v, long i)
->  {
->  }
-> --
-> 2.53.0
->
 
-FYI I saw the below when running make in tools/testing/memblock, doesn't look
-related to this change but maybe something to address?
+Reviewed-by: Li Wang <liwang@redhat.com>
 
+-- 
+Regards,
+Li Wang
 
-cc -I. -I../../include -Wall -O2 -fsanitize=address -fsanitize=undefined -D CONFIG_PHYS_ADDR_T_64BIT   -c -o memblock.o memblock.c
-memblock.c: In function ‘memblock_add_range.isra’:
-memblock.c:710:17: warning: ‘end_rgn’ may be used uninitialized [-Wmaybe-uninitialized]
-  710 |                 memblock_merge_regions(type, start_rgn, end_rgn);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-memblock.c:616:42: note: ‘end_rgn’ was declared here
-  616 |         int idx, nr_new, start_rgn = -1, end_rgn;
-      |                                          ^~~~~~~
 
