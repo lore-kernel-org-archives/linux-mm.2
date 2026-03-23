@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F00CEC01B1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:52:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 764CCEC01B6
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C92F86B008C; Mon, 23 Mar 2026 05:52:14 -0400 (EDT)
+	id D082E6B0093; Mon, 23 Mar 2026 05:52:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C69A86B0092; Mon, 23 Mar 2026 05:52:14 -0400 (EDT)
+	id CDF426B0095; Mon, 23 Mar 2026 05:52:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B593B6B0093; Mon, 23 Mar 2026 05:52:14 -0400 (EDT)
+	id BA7746B0096; Mon, 23 Mar 2026 05:52:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A1A1D6B008C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:52:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 407AD8CB7B
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:52:14 +0000 (UTC)
-X-FDA: 84576862188.02.F9B71F4
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013052.outbound.protection.outlook.com [40.93.196.52])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2426D140004
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:52:10 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ht1q8T5b;
-	spf=pass (imf26.hostedemail.com: domain of bharata@amd.com designates 40.93.196.52 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	by kanga.kvack.org (Postfix) with ESMTP id A29506B0093
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:52:21 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63976160AA5
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:52:21 +0000 (UTC)
+X-FDA: 84576862482.10.998A0B8
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012010.outbound.protection.outlook.com [52.101.48.10])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 25C71180009
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:52:17 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Kj+5KOpu;
+	spf=pass (imf06.hostedemail.com: domain of bharata@amd.com designates 52.101.48.10 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774259531;
+	s=arc-20220608; t=1774259538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XjX6f7ME+sRZyfJJIoAT/8vHUdkm8qeEw0Sdf9Rwync=;
-	b=F9D0SlkFUdtZaWM5y5JLx39En1cndwoHhipXGbNkYdEw3vTnkyMYfehD2RYzx2aSXom7kt
-	qUwJE9Dont7a2YR+8JWqsh/JzoRHcu6fcwz8jyPCweGazKMRJqFZr2eH5fmuXuiSIkzkJ1
-	mtZDVPAT1V9ZVMfKvqdyLX+P51A4vdw=
+	bh=+Bh1tNTEDyOoLpzM7ddxEjV+T34L4DxEJITFV/hqmJk=;
+	b=17MhFK+xZfh3xEiHnznKeO1658YoMqxwco7ZAgcNSeiaJ+DS4KZBtzJSQn8EV9ALUtviJ2
+	dGkbqMxjH0sDTTJmCUONOZD+KzvnZuV5UG+BCFrleCi8Wpej/hUwWpJJJRjakwmc2qJw20
+	x3FNo9nsZjedbTwo2Yowk35KmLWkQc0=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ht1q8T5b;
-	spf=pass (imf26.hostedemail.com: domain of bharata@amd.com designates 40.93.196.52 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Kj+5KOpu;
+	spf=pass (imf06.hostedemail.com: domain of bharata@amd.com designates 52.101.48.10 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774259531; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774259538; a=rsa-sha256;
 	cv=pass;
-	b=1Q63X4vbXuyCHjabJKF0s2x4veyf36OL/Rt5tRm4L9w1G67Swtp6QBVM/MaCHbmmVQJdWs
-	GJY+35bJhE18qCOUOJiRPijifVdWfkwJPxVZ+Dl5kHtTXU7gIj8tL89CvzYRmiS1xBspEX
-	zmClZiTaTUj9HF5M70L8e2QgKGkr7I4=
+	b=Ed4gD0T+Gv9kYzWVJ09XueCm2e9iUXfL40O35RKn2HJeBa+grdTIQz5dQ04KZr1haoNHBA
+	cQGfCCok6lEgrJF9NgEA5KSCksVxbFCw74ny+CEMll/F72r5oNA2tW3DA+JzyFSL3c15i8
+	KbWNkHQrOeSI26kHF9O+5UmzjboMXZQ=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EFld6Eb36a8GDnkBRGqAw+gqwTK7Vm1o7pUFTksfjj6flrVMbEIgVkxXPtJjAeczEZmVVRHSMy+KagcOZTSvWS09yT8IjUesrv6XQ4wIHKi9fWTamkz5LLByBIpqsCLLn8pFdivViPdoLsoaG1GjoYhnKOnmTJ8AOBO8HfX1e8Gi3kIQZFi428q+3nwJAZ64diVO3L9HOEwLuYBs18aWkIRzvvOgqov8NrACXMxpcBEexAJ0uxQo6jfsPKEM3kcTtWHWD5+SeUkyCcKxQcUWR2NfsNW3dEGJOpfnzUQNKihIvqTAHKAowWdA2tqkwQCqmFmCFLYbAJAg3tm7IvddJg==
+ b=KM/SMmNVm07F1XIALQDFzRhL1ICLaFUu6qOx9ZvXfCYMRIlfYjAEoa1EMB8j1xLsWKy6rJXcRZOntPDT7l/LsOU4FP1YV3/l2qvJeXYnjBX7X3vWZ2Gt/oD2dCu5CPapm/bLJwrFKVRjLajT3HJgTLU6jBMdNmmR1lT22eObzKjxAS7oM44wx/IC7kJhysJbrWJxSuyAoGohP748v+ksPIDfe9Im32FD7O7sBIFKyVk5QnSYcRKsMBlUyMFMtMuFziYvJqe/QrhkhX2vzdrjC0DI36n+TOe9TQ1w18IporgXDOIRmY9SLlYeeIWGspEnnJJBVof3WeUzy+VymZtQCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XjX6f7ME+sRZyfJJIoAT/8vHUdkm8qeEw0Sdf9Rwync=;
- b=HJQXkvzrQCFIDhuqSpf1I1N+IzcRV//zsaazudqGuYwepFg/y+osnSVxPstZcsqS3NkrZklO8QIPfx+Jmq4XA6qfHllumWFwYwbQPsK+7wVyoICnFZKWuJjzS4tDGQCtaqzYJ/ul9fTArkalTj8yPns+FEKV0rkr3DHvwKZCXxiHz1D91gR4wkQPs4SN3gHBHFzeKIY1pL3Iv++8ZlTWHtjyQrp6Hbc11meqb/KyIdPBl8skvSk1KKwBvpXRJZTziC5DPlTmmMGaJDgf89m9LAexw4L+LaM7g8SG99bGbrbH0dQe2iIZGbjXUebKtk7Ix0A24Mw+xk+AK6ZNj7i2hw==
+ bh=+Bh1tNTEDyOoLpzM7ddxEjV+T34L4DxEJITFV/hqmJk=;
+ b=mOAwpCwJdJ2tWpYjHEWw1ye3TXX95x0hcmLel4Rw/LToLhnfFuWbDJOffH7sMfls7FZ9dIyKqU47rfyRxy+igemv+rxhXR2jUUW4t7pf0rcSBQH9lKf/7tI+DL+P7G8ljDn0pokJVs6pWf+zSyRxxhZqqk6VCUXSSKbM1U5O6/JbFsl/bbkeVZuw5gowPJaD0KjcRm3yqnrEION7Oz9RZRCE6uDDCCBTNOX6m9Un9qJl8yYlCuDVQEDXgBye6t8NiMPAYZFGkPIfp/TRZQ36WRudK16d67q1fFxSfoPutINUmJqfmWBSzbk3X6SH0gDq0goBpUIS2MbyW4hgq0X8tw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XjX6f7ME+sRZyfJJIoAT/8vHUdkm8qeEw0Sdf9Rwync=;
- b=ht1q8T5b39D/FbAZqpEhc/9mGhb9qC+8kyALlqUS+vwoTRZQS/xGBajXIv+ABtejVbPacSD0i4XBFOi+lyG1fvluVEmsehnvKpQqfpVgjO2fifntnq2hsOQCTs8bQ+1YJVbZs1alo3Oz15MHWfKMda6vBkJtjCeqXkmXTQuqqHE=
-Received: from CH0PR03CA0394.namprd03.prod.outlook.com (2603:10b6:610:11b::28)
- by SJ2PR12MB8955.namprd12.prod.outlook.com (2603:10b6:a03:542::10) with
+ bh=+Bh1tNTEDyOoLpzM7ddxEjV+T34L4DxEJITFV/hqmJk=;
+ b=Kj+5KOpuhTBIW32xdvRZUvNEdV43HrjtHXy3SDNkSxWWFrNTAOOOJmrRehjYdj/GsSyRiTnBEfusI836miJWbenQkstgNvO9gPpVs/+TPt8G0CMn44rylLFJzsNHCYBWfxnaDARUrPerAkz1tUF9cLYQOl5uJjO0hP49Q/EtOWQ=
+Received: from CH0PR13CA0042.namprd13.prod.outlook.com (2603:10b6:610:b2::17)
+ by IA0PR12MB8088.namprd12.prod.outlook.com (2603:10b6:208:409::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Mon, 23 Mar
- 2026 09:52:04 +0000
-Received: from CH2PEPF0000009F.namprd02.prod.outlook.com
- (2603:10b6:610:11b:cafe::8d) by CH0PR03CA0394.outlook.office365.com
- (2603:10b6:610:11b::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
+ 2026 09:52:12 +0000
+Received: from CH2PEPF0000009C.namprd02.prod.outlook.com
+ (2603:10b6:610:b2:cafe::46) by CH0PR13CA0042.outlook.office365.com
+ (2603:10b6:610:b2::17) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Mon,
- 23 Mar 2026 09:52:04 +0000
+ 23 Mar 2026 09:52:02 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- CH2PEPF0000009F.mail.protection.outlook.com (10.167.244.21) with Microsoft
+ CH2PEPF0000009C.mail.protection.outlook.com (10.167.244.24) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Mon, 23 Mar 2026 09:52:04 +0000
+ 15.20.9700.17 via Frontend Transport; Mon, 23 Mar 2026 09:52:12 +0000
 Received: from BLR-L-BHARARAO.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 04:51:56 -0500
+ 2026 04:52:04 -0500
 From: Bharata B Rao <bharata@amd.com>
 To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
 CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
@@ -102,52 +102,52 @@ CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
 	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
 	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
 	<shivankg@amd.com>, <bharata@amd.com>
-Subject: [RFC PATCH v6 4/5] mm: pghot: Precision mode for pghot
-Date: Mon, 23 Mar 2026 15:21:03 +0530
-Message-ID: <20260323095104.238982-5-bharata@amd.com>
+Subject: [RFC PATCH v6 5/5] mm: sched: move NUMA balancing tiering promotion to pghot
+Date: Mon, 23 Mar 2026 15:21:04 +0530
+Message-ID: <20260323095104.238982-6-bharata@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260323095104.238982-1-bharata@amd.com>
 References: <20260323095104.238982-1-bharata@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.180.168.240]
 X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009F:EE_|SJ2PR12MB8955:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48b0cb9a-cb46-4b74-0ccf-08de88c1d680
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009C:EE_|IA0PR12MB8088:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b23b909-de75-44e3-b20d-08de88c1db33
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|7416014|376014|82310400026|18002099003|22082099003|56012099003;
+	BCL:0;ARA:13230040|82310400026|36860700016|7416014|376014|1800799024|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	tFZhB1KKUq/J5TpKEs9KWCaC/p4LAnoSoaQgYDpv30QSR36SpxmJQhCNVCIv3bfKS5GPjDILVMwRBu+ZalDmYEUCfb8Qo5SZ+rQROcM2Ht3zZSsaf23bD7WWfoJPlv7Y5RBoSlaoyjM+e593gbOG8ip7XT4XzmsPgkMsk7LUzBb0i5E3tszDmzIEN+4kL3AO9ZW6xaflifSsvI9lo5Z+erSbS41CCdNpXz1uRt69NUHzknQhfx6dPuuaOVxLXKaNY+XlJVp18N8y9Je41UJLvhQeQb/YvaZ3MQaS18tAj1/KKvSFElZ2HDaRhXcRyjdyDQce7yyJfXX5Csw5T/ozs+nkergdhB/gjJKJ3knEyG73YyQFf2spU6h/TSi08cabTPuWiyhQCUjBzDfdXMdl6nrvwQh1i6OWhmAhNzL0Dr9CLdRvu50G9qlefZuV+3QXDsjLqgeRTHPvfeaJmyqpm0/gsm/wrwMgNck/LVsuIJyOG4CBbhVI6M83ViSDe+sQALcMXxXMW1jxZUFJYfJ8lhIxSr+r9/e3JRBTaOua1H+xuzZ6vwqoEycIrQVD3jqWKGcT3QbgZTAxY1lhEQmq3vocLZB9DAv0rmHAqiyQy+hn31M+EgTA8+acJ1+yQsUe6/P5dtzs5QMys8314hAKCGsCNT906wy7bzOAUdVd8QjlpXJ1+uqz0s1mzD7kktFOHq6xxz1ae/YTAiBMf/1gm3u04goKfYxDP8zVM0gs4Phg+kRl0aQMS7xU7I3pmFKn0kxaGq8b4aJ3xnguGsWq7g==
+	8bkE/b3C4ndTtSngGjzqN/f14LIfHaupMl1GUdoMdQbpTzY0BJsMTfmn3LsmiGSIZRQaFg8v7IKVVuve3+YQfMW5IzZdCEK59bnbaYlh0K3uit5Ydnbvd6QeZzftclJeBgAeiz8oLlJQfhh/jFq1YmoIDfYvNwaT8BoMO3IJhEqZKK43baVTplwu8KQrp4LBEc2mS1UnKmOFrWbF4sjRy46oaTO1wq2v4iqmqDF4m+p+mwDFRJy6/oEk6boRi+IzA35dXcLGLb6f9MDpPyX1I+Zqe+KnBWQb/S1vFNagfnjl1mEH67qc0rCAeWoRwonQh6mxy37Kca73G0FKWlKK5YrIwfnmqH/pr2l5K7qz5r7SguRhp/O1KQsZ0YhIWlRlGIwlpO7cGAzrgoImPScSkL6zDWkECeoQBHOxDsw76uxjWJhfC+F9JIIIcoQSd5OeVTt36HGqkfsyvqvQPTcxjeDVrhcJbATXozxPCmntd4qW3jd/LZA4Rs/YuqGc+gpLQT9U8Zxfr9VPR30Z1NGJA7QI/sTZbzysCVud3+q8HxZUPtecLoFQtzyZFWSKrNNxtIqV9clFrjGhivca9i1m7ESvRDE8n1CVdhstDCA4LTIxLkHS9mTln6QWW5TR/UWD/vsgbKhU6+LCUHwCXksWqRcO5TTPQk6qgw9NTW4PIObJLi/IC5z2lllarEERDu5tef/J3rukzrYPzemolMuJztAFLB+b1JNeBRPcNb/2A1wiBdDrrnkyVDCrEbIIWNyfXgTdYovHE2QktnrZufbFiA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(376014)(82310400026)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Z11kkaZMRFydQx/P2cyAL4m7wQjGOOcdpXFSMcqFDSjAsk9CiZifIUbuKR4fNbTltaNtRh18ek7fF7QsdLqSG9HdyFiTNfc/Tst2xcidT7ka21m9Axfv4mEg2mW0g8u81/D3So+9pOnPssgNrwzOpp8WN1opbvPx+mVgEv+CdTJnSj6WCfegFHvEi2V56bbcPbhei1gSfc3so+c9cXPqeEe5kRAvsKR4PFiBlEjuhWfyedivE9JZGiNRyEtxTBnLbLSpRTgLXKDlcokl4lBus/vdKxeLk+B1fBDuPBhupbA7Ka546IJSqou3jxkGYkz20Njc2mqW2/Lp0etEXj6BVzZleHSkFNq6olBjP1HXYaVEd1pYlMMtMPoDMHIedFJpww19zcQg3i6MtD33wbOrQcoRyt9lyTlVHZ6vqgGAforUN8TmlcefEoaPCn6MjBYW
+	7it+ieiw2kTEyHC6AHA/mkXjqTrdeZkpp23+JdayDKU0Q+cBISc9/077ZVLcoKUXQkR1asC1FzC89PSHdL2MEidLAVJpSz/VYdMLhkl/126575s8WPDTGlpKMbhzFWpYbmWgnVKsenCsLkN0RF5xOSMpg8PVCfMVgYZkd3JqXLRVjW69/aZ9wgySrlwaG7im+BsGTzrksVOUuuyyJ0Zhh3y4qhstPXdPO8J0aCb0Q3Hs5oIxDDvbUrcCdWwzWPtmK+kj7b3lDf0AE/VE1qbiVz4RPO0mLN9h1txmUmv7kHmO+fimbFbTtkovRqeAYwuVyHcP0nBUkNbJ2PRHV/VHBDFWTOcxsmGWsvf1xgYnXYUKcSXMtMlqdK0i0+0cHsnHNoGbdYlXlQeq1krWAyDGup5viqM2G465hjv78TNJwo15M6+Tvn2rSTUsH46g7yly
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 09:52:04.1348
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 09:52:12.0309
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48b0cb9a-cb46-4b74-0ccf-08de88c1d680
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b23b909-de75-44e3-b20d-08de88c1db33
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000009F.namprd02.prod.outlook.com
+	CH2PEPF0000009C.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8955
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8088
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2426D140004
+X-Rspamd-Queue-Id: 25C71180009
 X-Rspamd-Server: rspam08
-X-Stat-Signature: 8ujooy4itgba5q5b8y3j8rdiw95jbq97
-X-HE-Tag: 1774259530-686887
-X-HE-Meta: U2FsdGVkX1/EnBrzmc4Pm70vCsV3GPW4i1qaJPgYyEVer2hN2jkV2bOxgV6Zl02kuOr/VPHqlKo8bEoUUhs/zCOu4UbKS5ggSymNgUNDhfsag8HUeo+9B60Uh2Ur2lbDLGYVw8C9cbQOWbKHNBWObd9lQI72hEfrg5A7eKqGiaUwk2UQDJ87RAPYutARL7kLKldjY1ZbuXzaxHuxaYOEE4GItiBDPAjYt5uGkrxot3WYAiL8KAQ9D1lfo9hgfy3VzJcB9+gD4uuJKzzFJLfkVHncyWTRYxKaLUDww5aufnWQXwxElKANogCbZrjms8qhc//rmuQAJEXVTMrHiJPWMUHw4KH4KGoCHBhi4AzLgi68l6YMoIuwK9ql4mHVYdAkmlJx2y49PwYsjwnM3l+Ow2Qpot18CGpx5UtnPCxD85wZFU3Oia/pg00LFTnOsjOY+a3s3m9hh54hF7j8COCOzuf5zPRtv2J5dWsAJPgI/dpZ+DvvDiHYLVfjYq3O0dBxZq0YE+ZWYjZXa/kFRsfga8YdNsO/XIEhuRehw3tcvkVxh+rEOUCsPJjU4iywV27HmpLsLgkPix9asF/hBGckXgDCDRStNNJi1qpx6pddRYBTgms8dUEO/Unc1KoR0RmufktSaH6toABmJQAeB7RLEZy30t1QR/yh+pfbaKZROOMqqc+GmDnEaX293c5xr88DmKAMY2e4D4pniDmXxeL46Vkpqev8fl1QqRgZGdWWR1nGCkz30EqPRxfqvUL2DiWLn8Eq/2G2ChHK6kUOlNiSFo1vE0/D30Sj1KMHqA3yGDa1+h976x/Is8+7ecwDkM0uvfqA0HTsou/wACQX5if4wAriOFcaL1QW3EZIA0CLqD9z2eeb6g8LBOQwWg8B1p7RVpF6W2Ldrr1TViiYdF/tr3GQvrefaciL1+uPft+esPtw+ActSc8HBP1Hlx1WrFnCfrepi8gCNiZyols/0vF
- 0QDFeo2N
- woP+I2MV4hQTnjZhry6ei8+JZAnluE9oG6CYyS6NVi9JuFBGyJSTDF3Lp+xUd6y6mLCmqHVKlJAb0tcq5/zd8H0CjnDGXNnIwwXgbQj3eYZg23qhUilj69+G5WLr4kzT01sdt+0iOQZW9dmBvl4Ttpc8c6dpnXE+QR9QyVwlpfyaCVLDL6psP80jafL2H3/hEw9cmNzZ22nfcJweM/qV0jB5z6ryEOhWPQFer51cOHlaU/1E9YWtIq3biDJMTJ24XhJNvb8WAX8WRqt79lFB5NJvzoXKEViFznAieCTejSWwg1Lj4yiMybRxAb3LeGJToxYlilHM7RE5zGKQDfgrOuSx1LR0/wcLQ1BzMabWFX5QwpH/nsREB1wl+Vb/AYPxjlJyJt8xcc72LBgksb1PUASbiFFdsMXwBLXs5C1QW9Sl3vL/E070JPFmR1yGf7Ex4GkGxbmAJ/q7kqISBtj0RyNEe9CgWI5xhA8s95e4rxXh8C3hkDpFj/bJycLdF8GcReQwaOSuYCMu0iMk3XXsZRqx4/huaDXAjNHHZHsqlc4R8hw6mZ2LvVydzsA==
+X-Stat-Signature: w4mnzm6c1u6f6y4gbg96fstob8jmj346
+X-HE-Tag: 1774259537-904354
+X-HE-Meta: U2FsdGVkX18GW35dtfRCtdmjdaiyYA1UH+biTYa1aufQ4JRovOC4KolhkkRPhi3k8Ok9TRQhLQX2N5ur1/FFIRN4xYaEaDJTQiTARnrn+HFqZeXmqX6cnfDkvhRdV9sV4FSS0AOFEuWES5yNXNa3qwnq1EVT5fk2+fCTEEFoNH/bHIiRPTR59WX9uvGrn/s9Mw4etFWbS9GrmCw/9d5LSHTVdwj07AwLrty32zgDDDSUcf/P4OjKYcFNlYtran/A+31WIbn1x2mUJjn/2cQ9X5OnzRxXHszA/Ln7bpjLSEVqD9NrtZDJONmX5rrXkjBnl3vUhgz0zssecVVA2vMVG6bUhDXMTvKPUTMjgYZ03jWmXpPRvBI36i1d10nJJJJd2oQ39eUvUjANK1vlGp9koS03hmZBHYDTVWUJkzpPWZq8JqFkbjzB8s4LD8pADSjFq7wFCmTp2q0VPpIDDdkY08qDdv3EQbgzNMFEFnWsAsM3gvyCVq/EDroMx3P9/9GEof/SC6Dr+Jly4PBbTK31kBfdYVAG6x1YtsfzWoFbo5XJdhmXEah6ATuhWGpjf8G5BHJITQQO3/JuYAeDiXeY82PqC/l1Z/h/mIQEEMVFGlDXtxggCdnZUnim4hFJUZtnoG14hiecC4kUTscmNs6qXQJ/0EGeEiJnifFY7B/pLAB1tMJy1asMN02n9wNFnIt0+7jdgOYoPUhGMAddVi/9QQm3R/fMkP8MhJL27/Gf35YS+8K+lm0fNZG2w/gJ5vnyyH0056gGTd815TZE3bpZp50nn5dPTqiUIXPmIQJ1AHAthZ+XTHHxS/n0uyfYkiOmyMQgJpu/lMFESOb6Cveb0+hX3UZdI9nYmhFGHzVsht7p7mynzgyacr3+PkN5afDAtOEUTzNjl1vGMq961Oa3klkjg+XEAlNrb0Zq38JnUe14HamfI0fl8MaRqY2+CjEaCTFZpPUL+D0A5KzeFO8
+ 1G1uDVwj
+ 2SMnNKJid65VwxuzIW2fuYzZa3PckBmAVJYTo6uPHYUwFqOFmHIC9JXz39AXfeylMt/fLD2E5U5oBoy2+IJjq6J+2XcAYfMzr8hpNnBqtANVZjHwplk05aeTyH/DD9tBXMt7YaRwxjq3bM+5v6/Ky9s9hoBXEodrGGSY1hsH5oJ7uNyDimgN6RVdtSEcRcPu8+QGP+YmbcOhkxhjpHnQcTepIJXFypGE1KnU9GGxdHJNtGu4daki3YalE60mhOSIZ+S3Ql/7hPnVqS0WoSWcUFTuWqPHOZGhIM/89vms1f9fRhMoH9mOCkLCuquWpnqIGohCIp/SxOoH93k3eQUS4/2btGWkJPrgAF4Gjsbja7pxgl86/mClULpQUqWTmWfI1GXXPd9Q8mrEbl8OkLhTx3rmf3c8tHZjJShI4JlgEtFKY50Wu8spxrOjIr1MzmnKaTxzv1fBx4GoZpvCZVnJPBEjOzLmOk1T+35le7XAl8fXe6euKAxozVL0OHtKY6vCDgXgV+I31qqvVWJw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,279 +155,964 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Default pghot stores hotness in a 1‑byte record per PFN, limiting
-frequency to 2 bits, time to a 5‑bit bucket, and preventing storage
-of per‑PFN toptier NID. This restricts time granularity and forces
-all promotions to use the global pghot_target_nid.
+Currently hot page promotion (NUMA_BALANCING_MEMORY_TIERING
+mode of NUMA Balancing) does hot page detection (via hint faults),
+hot page classification and eventual promotion, all by itself and
+sits within the scheduler.
 
-This patch adds an optional precision mode (CONFIG_PGHOT_PRECISE)
-that expands the hotness record to 4 bytes (u32) and provides:
+With pghot, the new hot page tracking and promotion mechanism
+being available, NUMA Balancing can limit itself to detection
+of hot pages (via hint faults) and off-load rest of the
+functionality to pghot.
 
-- 10‑bit NID field for per‑PFN promotion target,
-- 3‑bit frequency field (freq_threshold range 1–7),
-- 14‑bit time field offering finer recency tracking,
-- MSB migrate‑ready bit.
+To achieve this, pghot_record_access(PGHOT_HINT_FAULT) API
+is used to feed the hot page info to pghot. In addition, the
+migration rate limiting and dynamic threshold logic are moved to
+kmigrated so that the same can be used for hot pages reported by
+other sources too. Hence it becomes necessary to introduce a
+new config option CONFIG_NUMA_BALANCING_TIERING to control
+the hint faults souce for hot page promotion. This option
+controls the NUMA_BALANCING_MEMORY_TIERING mode of
+kernel.numa_balancing
 
-Precision mode improves placement accuracy on systems with multiple
-toptier nodes and provides higher‑resolution hotness tracking, at
-the cost of increasing metadata to 4 bytes per PFN.
+This movement of hot page promotion to pghot results in the following
+changes to the behaviour of hint faults based hot page promotion:
 
-Documentation, tunables, and the record layout are updated accordingly.
+1. Promotion is no longer done in the fault path but instead is
+   deferred to kmigrated and happens in batches.
+2. NUMA_BALANCING_MEMORY_TIERING mode used to promote on first
+   access. Pghot by default, promotes on second access though this
+   can be changed by setting /sys/kernel/debug/pghot/freq_threshold.
+   hot_threshold_ms debugfs tunable now gets replaced by pghot's
+   freq_threshold.
+3. In NUMA_BALANCING_MEMORY_TIERING mode, hint fault latency is the
+   difference between the PTE update time (during scanning) and the
+   access time (hint fault). However with pghot, a single latency
+   threshold is used for two purposes:
+   a) If the time difference between successive accesses are within
+      the threshold, the page is marked as hot.
+   b) Later when kmigrated picks up the page for migration, it will
+      migrate only if the difference between the current time and
+      the time when the page was marked hot is with the threshold.
+4. Batch migration of misplaced folios is done from non-process
+   context where VMA info is not readily available. Without VMA
+   and the exec check on that, it will not be possible to filter
+   out exec pages during migration prep stage. Hence shared
+   executable pages also will be subjected to misplaced migration.
+5. The max scan period which is used in dynamic threshold logic
+   was a debugfs tunable. However this has been converted to a
+   scalar metric in pghot.
+
+Key code changes due to this movement are detailed below to help
+easy understanding of the restructuring.
+
+1. Scanning and access times are no longer tracked in last_cpupid
+   field of folio flags. Hence all code related to this (like
+   folio_xchg_access_time(), cpupid_valid()) are removed.
+2. The misplaced migration routines become conditional to
+   CONFIG_PGHOT in addition to CONFIG_NUMA_BALANCING.
+3. The promotion related stats (like PGPROMOTE_SUCCESS etc) are
+   now moved to under CONFIG_PGHOT as these stats are part of
+   promotion engine which will be used for other hotness sources
+   as well.
+4. Routines that are responsibile for migration rate limiting
+   dynamic thresholding, pgdat balancing during promotion etc
+   are moved to pghot with appropriate renaming.
 
 Signed-off-by: Bharata B Rao <bharata@amd.com>
 ---
- Documentation/admin-guide/mm/pghot.txt |  4 +-
- include/linux/mmzone.h                 |  2 +-
- include/linux/pghot.h                  | 31 ++++++++++
- mm/Kconfig                             | 11 ++++
- mm/Makefile                            |  7 ++-
- mm/pghot-precise.c                     | 81 ++++++++++++++++++++++++++
- mm/pghot.c                             | 13 +++--
- 7 files changed, 141 insertions(+), 8 deletions(-)
- create mode 100644 mm/pghot-precise.c
+ include/linux/mm.h     |  35 ++------
+ include/linux/mmzone.h |   4 +-
+ init/Kconfig           |  13 +++
+ kernel/sched/core.c    |   7 ++
+ kernel/sched/debug.c   |   1 -
+ kernel/sched/fair.c    | 177 ++---------------------------------------
+ kernel/sched/sched.h   |   1 -
+ mm/huge_memory.c       |  27 ++++++-
+ mm/memcontrol.c        |   6 +-
+ mm/memory-tiers.c      |  15 ++--
+ mm/memory.c            |  36 +++++++--
+ mm/mempolicy.c         |   3 -
+ mm/migrate.c           |  16 +++-
+ mm/pghot.c             | 134 +++++++++++++++++++++++++++++++
+ mm/vmstat.c            |   2 +-
+ 15 files changed, 248 insertions(+), 229 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/pghot.txt b/Documentation/admin-guide/mm/pghot.txt
-index 5f51dd1d4d45..7b84e911afe7 100644
---- a/Documentation/admin-guide/mm/pghot.txt
-+++ b/Documentation/admin-guide/mm/pghot.txt
-@@ -37,7 +37,7 @@ Path: /sys/kernel/debug/pghot/
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index abb4963c1f06..81249a06dfeb 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1998,17 +1998,6 @@ static inline int folio_nid(const struct folio *folio)
+ }
  
- 3. **freq_threshold**
-    - Minimum access frequency before a page is marked ready for promotion.
--   - Range: 1 to 3
-+   - Range: 1 to 3 in default mode, 1 to 7 in precision mode.
-    - Default: 2
-    - Example:
-      # echo 3 > /sys/kernel/debug/pghot/freq_threshold
-@@ -59,7 +59,7 @@ Path: /proc/sys/vm/pghot_promote_freq_window_ms
- - Controls the time window (in ms) for counting access frequency. A page is
-   considered hot only when **freq_threshold** number of accesses occur with
-   this time period.
--- Default: 3000 (3 seconds)
-+- Default: 3000 (3 seconds) in default mode and 5000 (5s) in precision mode.
- - Example:
-   # sysctl vm.pghot_promote_freq_window_ms=3000
+ #ifdef CONFIG_NUMA_BALANCING
+-/* page access time bits needs to hold at least 4 seconds */
+-#define PAGE_ACCESS_TIME_MIN_BITS	12
+-#if LAST_CPUPID_SHIFT < PAGE_ACCESS_TIME_MIN_BITS
+-#define PAGE_ACCESS_TIME_BUCKETS				\
+-	(PAGE_ACCESS_TIME_MIN_BITS - LAST_CPUPID_SHIFT)
+-#else
+-#define PAGE_ACCESS_TIME_BUCKETS	0
+-#endif
+-
+-#define PAGE_ACCESS_TIME_MASK				\
+-	(LAST_CPUPID_MASK << PAGE_ACCESS_TIME_BUCKETS)
+ 
+ static inline int cpu_pid_to_cpupid(int cpu, int pid)
+ {
+@@ -2074,15 +2063,6 @@ static inline void page_cpupid_reset_last(struct page *page)
+ }
+ #endif /* LAST_CPUPID_NOT_IN_PAGE_FLAGS */
+ 
+-static inline int folio_xchg_access_time(struct folio *folio, int time)
+-{
+-	int last_time;
+-
+-	last_time = folio_xchg_last_cpupid(folio,
+-					   time >> PAGE_ACCESS_TIME_BUCKETS);
+-	return last_time << PAGE_ACCESS_TIME_BUCKETS;
+-}
+-
+ static inline void vma_set_access_pid_bit(struct vm_area_struct *vma)
+ {
+ 	unsigned int pid_bit;
+@@ -2093,18 +2073,12 @@ static inline void vma_set_access_pid_bit(struct vm_area_struct *vma)
+ 	}
+ }
+ 
+-bool folio_use_access_time(struct folio *folio);
+ #else /* !CONFIG_NUMA_BALANCING */
+ static inline int folio_xchg_last_cpupid(struct folio *folio, int cpupid)
+ {
+ 	return folio_nid(folio); /* XXX */
+ }
+ 
+-static inline int folio_xchg_access_time(struct folio *folio, int time)
+-{
+-	return 0;
+-}
+-
+ static inline int folio_last_cpupid(struct folio *folio)
+ {
+ 	return folio_nid(folio); /* XXX */
+@@ -2147,11 +2121,16 @@ static inline bool cpupid_match_pid(struct task_struct *task, int cpupid)
+ static inline void vma_set_access_pid_bit(struct vm_area_struct *vma)
+ {
+ }
+-static inline bool folio_use_access_time(struct folio *folio)
++#endif /* CONFIG_NUMA_BALANCING */
++
++#ifdef CONFIG_NUMA_BALANCING_TIERING
++bool folio_is_promo_candidate(struct folio *folio);
++#else
++static inline bool folio_is_promo_candidate(struct folio *folio)
+ {
+ 	return false;
+ }
+-#endif /* CONFIG_NUMA_BALANCING */
++#endif /* CONFIG_NUMA_BALANCING_TIERING */
+ 
+ #if defined(CONFIG_KASAN_SW_TAGS) || defined(CONFIG_KASAN_HW_TAGS)
  
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index d7ed60956543..61fd259d9897 100644
+index 61fd259d9897..bfaaa757b19c 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -1938,7 +1938,7 @@ struct mem_section {
- #ifdef CONFIG_PGHOT
- 	/*
- 	 * Per-PFN hotness data for this section.
--	 * Array of phi_t (u8 in default mode).
-+	 * Array of phi_t (u8 in default mode, u32 in precision mode).
- 	 * LSB is used as PGHOT_SECTION_HOT_BIT flag.
- 	 */
- 	void *hot_map;
-diff --git a/include/linux/pghot.h b/include/linux/pghot.h
-index 525d4dd28fc1..2e1742b8caee 100644
---- a/include/linux/pghot.h
-+++ b/include/linux/pghot.h
-@@ -35,6 +35,36 @@ DECLARE_STATIC_KEY_FALSE(pghot_src_hwhints);
+@@ -232,7 +232,7 @@ enum node_stat_item {
+ #ifdef CONFIG_SWAP
+ 	NR_SWAPCACHE,
+ #endif
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_PGHOT
+ 	PGPROMOTE_SUCCESS,	/* promote successfully */
+ 	/**
+ 	 * Candidate pages for promotion based on hint fault latency.  This
+@@ -1475,7 +1475,7 @@ typedef struct pglist_data {
+ 	struct deferred_split deferred_split_queue;
+ #endif
  
- #define PGHOT_DEFAULT_NODE		0
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_PGHOT
+ 	/* start time in ms of current promote rate limit period */
+ 	unsigned int nbp_rl_start;
+ 	/* number of promote candidate pages at start time of current rate limit period */
+diff --git a/init/Kconfig b/init/Kconfig
+index 444ce811ea67..56ef148487fa 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1013,6 +1013,19 @@ config NUMA_BALANCING_DEFAULT_ENABLED
+ 	  If set, automatic NUMA balancing will be enabled if running on a NUMA
+ 	  machine.
  
-+#if defined(CONFIG_PGHOT_PRECISE)
-+#define PGHOT_DEFAULT_FREQ_WINDOW	(5 * MSEC_PER_SEC)
-+
-+/*
-+ * Bits 0-26 are used to store nid, frequency and time.
-+ * Bits 27-30 are unused now.
-+ * Bit 31 is used to indicate the page is ready for migration.
-+ */
-+#define PGHOT_MIGRATE_READY		31
-+
-+#define PGHOT_NID_WIDTH			10
-+#define PGHOT_FREQ_WIDTH		3
-+/* time is stored in 14 bits which can represent up to 16s with HZ=1000 */
-+#define PGHOT_TIME_WIDTH		14
-+
-+#define PGHOT_NID_SHIFT			0
-+#define PGHOT_FREQ_SHIFT		(PGHOT_NID_SHIFT + PGHOT_NID_WIDTH)
-+#define PGHOT_TIME_SHIFT		(PGHOT_FREQ_SHIFT + PGHOT_FREQ_WIDTH)
-+
-+#define PGHOT_NID_MASK			GENMASK(PGHOT_NID_WIDTH - 1, 0)
-+#define PGHOT_FREQ_MASK			GENMASK(PGHOT_FREQ_WIDTH - 1, 0)
-+#define PGHOT_TIME_MASK			GENMASK(PGHOT_TIME_WIDTH - 1, 0)
-+
-+#define PGHOT_NID_MAX			((1 << PGHOT_NID_WIDTH) - 1)
-+#define PGHOT_FREQ_MAX			((1 << PGHOT_FREQ_WIDTH) - 1)
-+#define PGHOT_TIME_MAX			((1 << PGHOT_TIME_WIDTH) - 1)
-+
-+typedef u32 phi_t;
-+
-+#else	/* !CONFIG_PGHOT_PRECISE */
- #define PGHOT_DEFAULT_FREQ_WINDOW	(3 * MSEC_PER_SEC)
- 
- /*
-@@ -61,6 +91,7 @@ DECLARE_STATIC_KEY_FALSE(pghot_src_hwhints);
- #define PGHOT_TIME_MAX			((1 << PGHOT_TIME_WIDTH) - 1)
- 
- typedef u8 phi_t;
-+#endif /* CONFIG_PGHOT_PRECISE */
- 
- #define PGHOT_RECORD_SIZE		sizeof(phi_t)
- 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 4aeab6aee535..14383bb1d890 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1485,6 +1485,17 @@ config PGHOT
- 	  This adds 1 byte of metadata overhead per page in lower-tier
- 	  memory nodes.
- 
-+config PGHOT_PRECISE
-+	bool "Hot page tracking precision mode"
-+	def_bool n
-+	depends on PGHOT
++config NUMA_BALANCING_TIERING
++	bool "NUMA balancing memory tiering promotion"
++	depends on NUMA_BALANCING && PGHOT
 +	help
-+	  Enables precision mode for tracking hot pages with pghot sub-system.
-+	  Adds fine-grained access time tracking and explicit toptier target
-+	  NID tracking. Precise hot page tracking comes at the cost of using
-+	  4 bytes per page against the default one byte per page. Preferable
-+	  to enable this on systems with multiple nodes in toptier.
++	  Enable NUMA balancing mode 2 (memory tiering). This allows
++	  automatic promotion of hot pages from slower memory tiers to
++	  faster tiers using the pghot subsystem.
 +
- source "mm/damon/Kconfig"
++	  This requires CONFIG_PGHOT for the hot page tracking engine.
++	  This option is required for kernel.numa_balancing=2.
++
++	  If unsure, say N.
++
+ config SLAB_OBJ_EXT
+ 	bool
  
- endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index 33014de43acc..dc61f4d955f8 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -150,4 +150,9 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
- obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
--obj-$(CONFIG_PGHOT) += pghot.o pghot-tunables.o pghot-default.o
-+obj-$(CONFIG_PGHOT) += pghot.o pghot-tunables.o
-+ifdef CONFIG_PGHOT_PRECISE
-+obj-$(CONFIG_PGHOT) += pghot-precise.o
-+else
-+obj-$(CONFIG_PGHOT) += pghot-default.o
-+endif
-diff --git a/mm/pghot-precise.c b/mm/pghot-precise.c
-new file mode 100644
-index 000000000000..9e8007adfff9
---- /dev/null
-+++ b/mm/pghot-precise.c
-@@ -0,0 +1,81 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * pghot: Precision mode
-+ *
-+ * 4 byte hotness record per PFN (u32)
-+ * NID, time and frequency tracked as part of the record.
-+ */
-+
-+#include <linux/pghot.h>
-+#include <linux/jiffies.h>
-+
-+bool pghot_nid_valid(int nid)
-+{
-+	/*
-+	 * TODO: Add node_online() and node_is_toptier() checks?
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 496dff740dca..f8ca5dff9cad 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4463,6 +4463,7 @@ void set_numabalancing_state(bool enabled)
+ }
+ 
+ #ifdef CONFIG_PROC_SYSCTL
++#ifdef CONFIG_NUMA_BALANCING_TIERING
+ static void reset_memory_tiering(void)
+ {
+ 	struct pglist_data *pgdat;
+@@ -4473,6 +4474,7 @@ static void reset_memory_tiering(void)
+ 		pgdat->nbp_th_start = jiffies_to_msecs(jiffies);
+ 	}
+ }
++#endif
+ 
+ static int sysctl_numa_balancing(const struct ctl_table *table, int write,
+ 			  void *buffer, size_t *lenp, loff_t *ppos)
+@@ -4490,9 +4492,14 @@ static int sysctl_numa_balancing(const struct ctl_table *table, int write,
+ 	if (err < 0)
+ 		return err;
+ 	if (write) {
++		if ((state & NUMA_BALANCING_MEMORY_TIERING) &&
++		    !IS_ENABLED(CONFIG_NUMA_BALANCING_TIERING))
++			return -EOPNOTSUPP;
++#ifdef CONFIG_NUMA_BALANCING_TIERING
+ 		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+ 		    (state & NUMA_BALANCING_MEMORY_TIERING))
+ 			reset_memory_tiering();
++#endif
+ 		sysctl_numa_balancing_mode = state;
+ 		__set_numabalancing_state(state);
+ 	}
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index b24f40f05019..c6a3325ebbd2 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -622,7 +622,6 @@ static __init int sched_init_debug(void)
+ 	debugfs_create_u32("scan_period_min_ms", 0644, numa, &sysctl_numa_balancing_scan_period_min);
+ 	debugfs_create_u32("scan_period_max_ms", 0644, numa, &sysctl_numa_balancing_scan_period_max);
+ 	debugfs_create_u32("scan_size_mb", 0644, numa, &sysctl_numa_balancing_scan_size);
+-	debugfs_create_u32("hot_threshold_ms", 0644, numa, &sysctl_numa_balancing_hot_threshold);
+ #endif /* CONFIG_NUMA_BALANCING */
+ 
+ 	debugfs_create_file("debug", 0444, debugfs_sched, NULL, &sched_debug_fops);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index bf948db905ed..131fc4bb1fa7 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -125,11 +125,6 @@ int __weak arch_asym_cpu_priority(int cpu)
+ static unsigned int sysctl_sched_cfs_bandwidth_slice		= 5000UL;
+ #endif
+ 
+-#ifdef CONFIG_NUMA_BALANCING
+-/* Restrict the NUMA promotion throughput (MB/s) for each target node. */
+-static unsigned int sysctl_numa_balancing_promote_rate_limit = 65536;
+-#endif
+-
+ #ifdef CONFIG_SYSCTL
+ static const struct ctl_table sched_fair_sysctls[] = {
+ #ifdef CONFIG_CFS_BANDWIDTH
+@@ -142,16 +137,6 @@ static const struct ctl_table sched_fair_sysctls[] = {
+ 		.extra1         = SYSCTL_ONE,
+ 	},
+ #endif
+-#ifdef CONFIG_NUMA_BALANCING
+-	{
+-		.procname	= "numa_balancing_promote_rate_limit_MBps",
+-		.data		= &sysctl_numa_balancing_promote_rate_limit,
+-		.maxlen		= sizeof(unsigned int),
+-		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_minmax,
+-		.extra1		= SYSCTL_ZERO,
+-	},
+-#endif /* CONFIG_NUMA_BALANCING */
+ };
+ 
+ static int __init sched_fair_sysctl_init(void)
+@@ -1519,9 +1504,6 @@ unsigned int sysctl_numa_balancing_scan_size = 256;
+ /* Scan @scan_size MB every @scan_period after an initial @scan_delay in ms */
+ unsigned int sysctl_numa_balancing_scan_delay = 1000;
+ 
+-/* The page with hint page fault latency < threshold in ms is considered hot */
+-unsigned int sysctl_numa_balancing_hot_threshold = MSEC_PER_SEC;
+-
+ struct numa_group {
+ 	refcount_t refcount;
+ 
+@@ -1864,120 +1846,6 @@ static inline unsigned long group_weight(struct task_struct *p, int nid,
+ 	return 1000 * faults / total_faults;
+ }
+ 
+-/*
+- * If memory tiering mode is enabled, cpupid of slow memory page is
+- * used to record scan time instead of CPU and PID.  When tiering mode
+- * is disabled at run time, the scan time (in cpupid) will be
+- * interpreted as CPU and PID.  So CPU needs to be checked to avoid to
+- * access out of array bound.
+- */
+-static inline bool cpupid_valid(int cpupid)
+-{
+-	return cpupid_to_cpu(cpupid) < nr_cpu_ids;
+-}
+-
+-/*
+- * For memory tiering mode, if there are enough free pages (more than
+- * enough watermark defined here) in fast memory node, to take full
+- * advantage of fast memory capacity, all recently accessed slow
+- * memory pages will be migrated to fast memory node without
+- * considering hot threshold.
+- */
+-static bool pgdat_free_space_enough(struct pglist_data *pgdat)
+-{
+-	int z;
+-	unsigned long enough_wmark;
+-
+-	enough_wmark = max(1UL * 1024 * 1024 * 1024 >> PAGE_SHIFT,
+-			   pgdat->node_present_pages >> 4);
+-	for (z = pgdat->nr_zones - 1; z >= 0; z--) {
+-		struct zone *zone = pgdat->node_zones + z;
+-
+-		if (!populated_zone(zone))
+-			continue;
+-
+-		if (zone_watermark_ok(zone, 0,
+-				      promo_wmark_pages(zone) + enough_wmark,
+-				      ZONE_MOVABLE, 0))
+-			return true;
+-	}
+-	return false;
+-}
+-
+-/*
+- * For memory tiering mode, when page tables are scanned, the scan
+- * time will be recorded in struct page in addition to make page
+- * PROT_NONE for slow memory page.  So when the page is accessed, in
+- * hint page fault handler, the hint page fault latency is calculated
+- * via,
+- *
+- *	hint page fault latency = hint page fault time - scan time
+- *
+- * The smaller the hint page fault latency, the higher the possibility
+- * for the page to be hot.
+- */
+-static int numa_hint_fault_latency(struct folio *folio)
+-{
+-	int last_time, time;
+-
+-	time = jiffies_to_msecs(jiffies);
+-	last_time = folio_xchg_access_time(folio, time);
+-
+-	return (time - last_time) & PAGE_ACCESS_TIME_MASK;
+-}
+-
+-/*
+- * For memory tiering mode, too high promotion/demotion throughput may
+- * hurt application latency.  So we provide a mechanism to rate limit
+- * the number of pages that are tried to be promoted.
+- */
+-static bool numa_promotion_rate_limit(struct pglist_data *pgdat,
+-				      unsigned long rate_limit, int nr)
+-{
+-	unsigned long nr_cand;
+-	unsigned int now, start;
+-
+-	now = jiffies_to_msecs(jiffies);
+-	mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE, nr);
+-	nr_cand = node_page_state(pgdat, PGPROMOTE_CANDIDATE);
+-	start = pgdat->nbp_rl_start;
+-	if (now - start > MSEC_PER_SEC &&
+-	    cmpxchg(&pgdat->nbp_rl_start, start, now) == start)
+-		pgdat->nbp_rl_nr_cand = nr_cand;
+-	if (nr_cand - pgdat->nbp_rl_nr_cand >= rate_limit)
+-		return true;
+-	return false;
+-}
+-
+-#define NUMA_MIGRATION_ADJUST_STEPS	16
+-
+-static void numa_promotion_adjust_threshold(struct pglist_data *pgdat,
+-					    unsigned long rate_limit,
+-					    unsigned int ref_th)
+-{
+-	unsigned int now, start, th_period, unit_th, th;
+-	unsigned long nr_cand, ref_cand, diff_cand;
+-
+-	now = jiffies_to_msecs(jiffies);
+-	th_period = sysctl_numa_balancing_scan_period_max;
+-	start = pgdat->nbp_th_start;
+-	if (now - start > th_period &&
+-	    cmpxchg(&pgdat->nbp_th_start, start, now) == start) {
+-		ref_cand = rate_limit *
+-			sysctl_numa_balancing_scan_period_max / MSEC_PER_SEC;
+-		nr_cand = node_page_state(pgdat, PGPROMOTE_CANDIDATE);
+-		diff_cand = nr_cand - pgdat->nbp_th_nr_cand;
+-		unit_th = ref_th * 2 / NUMA_MIGRATION_ADJUST_STEPS;
+-		th = pgdat->nbp_threshold ? : ref_th;
+-		if (diff_cand > ref_cand * 11 / 10)
+-			th = max(th - unit_th, unit_th);
+-		else if (diff_cand < ref_cand * 9 / 10)
+-			th = min(th + unit_th, ref_th * 2);
+-		pgdat->nbp_th_nr_cand = nr_cand;
+-		pgdat->nbp_threshold = th;
+-	}
+-}
+-
+ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+ 				int src_nid, int dst_cpu)
+ {
+@@ -1993,41 +1861,15 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+ 
+ 	/*
+ 	 * The pages in slow memory node should be migrated according
+-	 * to hot/cold instead of private/shared.
+-	 */
+-	if (folio_use_access_time(folio)) {
+-		struct pglist_data *pgdat;
+-		unsigned long rate_limit;
+-		unsigned int latency, th, def_th;
+-		long nr = folio_nr_pages(folio);
+-
+-		pgdat = NODE_DATA(dst_nid);
+-		if (pgdat_free_space_enough(pgdat)) {
+-			/* workload changed, reset hot threshold */
+-			pgdat->nbp_threshold = 0;
+-			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NRL, nr);
+-			return true;
+-		}
+-
+-		def_th = sysctl_numa_balancing_hot_threshold;
+-		rate_limit = MB_TO_PAGES(sysctl_numa_balancing_promote_rate_limit);
+-		numa_promotion_adjust_threshold(pgdat, rate_limit, def_th);
+-
+-		th = pgdat->nbp_threshold ? : def_th;
+-		latency = numa_hint_fault_latency(folio);
+-		if (latency >= th)
+-			return false;
+-
+-		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
+-	}
++	 * to hot/cold instead of private/shared. Also the migration
++	 * of such pages are handled by kmigrated.
 +	 */
-+	if (nid != NUMA_NO_NODE && (nid < 0 || nid >= PGHOT_NID_MAX))
-+		return false;
++	if (folio_is_promo_candidate(folio))
++		return true;
+ 
+ 	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
+ 	last_cpupid = folio_xchg_last_cpupid(folio, this_cpupid);
+ 
+-	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+-	    !node_is_toptier(src_nid) && !cpupid_valid(last_cpupid))
+-		return false;
+-
+ 	/*
+ 	 * Allow first faults or private faults to migrate immediately early in
+ 	 * the lifetime of a task. The magic number 4 is based on waiting for
+@@ -3237,15 +3079,6 @@ void task_numa_fault(int last_cpupid, int mem_node, int pages, int flags)
+ 	if (!p->mm)
+ 		return;
+ 
+-	/*
+-	 * NUMA faults statistics are unnecessary for the slow memory
+-	 * node for memory tiering mode.
+-	 */
+-	if (!node_is_toptier(mem_node) &&
+-	    (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ||
+-	     !cpupid_valid(last_cpupid)))
+-		return;
+-
+ 	/* Allocate buffer to track faults on a per-node basis */
+ 	if (unlikely(!p->numa_faults)) {
+ 		int size = sizeof(*p->numa_faults) *
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 43bbf0693cca..a47f7e3d51a6 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -3021,7 +3021,6 @@ extern unsigned int sysctl_numa_balancing_scan_delay;
+ extern unsigned int sysctl_numa_balancing_scan_period_min;
+ extern unsigned int sysctl_numa_balancing_scan_period_max;
+ extern unsigned int sysctl_numa_balancing_scan_size;
+-extern unsigned int sysctl_numa_balancing_hot_threshold;
+ 
+ #ifdef CONFIG_SCHED_HRTICK
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b298cba853ab..fe957ff91df9 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -40,6 +40,7 @@
+ #include <linux/pgalloc.h>
+ #include <linux/pgalloc_tag.h>
+ #include <linux/pagewalk.h>
++#include <linux/pghot.h>
+ 
+ #include <asm/tlb.h>
+ #include "internal.h"
+@@ -2190,7 +2191,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 	int nid = NUMA_NO_NODE;
+ 	int target_nid, last_cpupid;
+ 	pmd_t pmd, old_pmd;
+-	bool writable = false;
++	bool writable = false, needs_promotion = false;
+ 	int flags = 0;
+ 
+ 	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+@@ -2217,11 +2218,26 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 		goto out_map;
+ 
+ 	nid = folio_nid(folio);
++	needs_promotion = folio_is_promo_candidate(folio);
+ 
+ 	target_nid = numa_migrate_check(folio, vmf, haddr, &flags, writable,
+ 					&last_cpupid);
+ 	if (target_nid == NUMA_NO_NODE)
+ 		goto out_map;
 +
-+	return true;
-+}
++	if (needs_promotion) {
++		/*
++		 * Hot page promotion, mode=NUMA_BALANCING_MEMORY_TIERING.
++		 * Isolation and migration are handled by pghot.
++		 *
++		 * TODO: mode2 check
++		 */
++		writable = false;
++		nid = target_nid;
++		goto out_map;
++	}
 +
-+unsigned long pghot_access_latency(unsigned long old_time, unsigned long time)
-+{
-+	return jiffies_to_msecs((time - old_time) & PGHOT_TIME_MASK);
-+}
-+
-+bool pghot_update_record(phi_t *phi, int nid, unsigned long now)
-+{
-+	phi_t freq, old_freq, hotness, old_hotness, old_time;
-+	phi_t time = now & PGHOT_TIME_MASK;
-+
-+	nid = (nid == NUMA_NO_NODE) ? pghot_target_nid : nid;
-+	old_hotness = READ_ONCE(*phi);
-+
-+	do {
-+		bool new_window = false;
-+
-+		hotness = old_hotness;
-+		old_freq = (hotness >> PGHOT_FREQ_SHIFT) & PGHOT_FREQ_MASK;
-+		old_time = (hotness >> PGHOT_TIME_SHIFT) & PGHOT_TIME_MASK;
-+
-+		if (pghot_access_latency(old_time, time) > sysctl_pghot_freq_window)
-+			new_window = true;
-+
-+		if (new_window)
-+			freq = 1;
-+		else if (old_freq < PGHOT_FREQ_MAX)
-+			freq = old_freq + 1;
++	/* Balancing b/n toptier nodes, mode=NUMA_BALANCING_NORMAL */
+ 	if (migrate_misplaced_folio_prepare(folio, vma, target_nid)) {
+ 		flags |= TNF_MIGRATE_FAIL;
+ 		goto out_map;
+@@ -2253,8 +2269,13 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+ 	spin_unlock(vmf->ptl);
+ 
+-	if (nid != NUMA_NO_NODE)
+-		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
++	if (nid != NUMA_NO_NODE) {
++		if (needs_promotion)
++			pghot_record_access(folio_pfn(folio), nid,
++					    PGHOT_HINTFAULTS, jiffies);
 +		else
-+			freq = old_freq;
++			task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
++	}
+ 	return 0;
+ }
+ 
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 772bac21d155..fcd92f2ffd0c 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -323,7 +323,7 @@ static const unsigned int memcg_node_stat_items[] = {
+ #ifdef CONFIG_SWAP
+ 	NR_SWAPCACHE,
+ #endif
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_PGHOT
+ 	PGPROMOTE_SUCCESS,
+ #endif
+ 	PGDEMOTE_KSWAPD,
+@@ -1400,7 +1400,7 @@ static const struct memory_stat memory_stats[] = {
+ 	{ "pgdemote_direct",		PGDEMOTE_DIRECT		},
+ 	{ "pgdemote_khugepaged",	PGDEMOTE_KHUGEPAGED	},
+ 	{ "pgdemote_proactive",		PGDEMOTE_PROACTIVE	},
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_PGHOT
+ 	{ "pgpromote_success",		PGPROMOTE_SUCCESS	},
+ #endif
+ };
+@@ -1443,7 +1443,7 @@ static int memcg_page_state_output_unit(int item)
+ 	case PGDEMOTE_DIRECT:
+ 	case PGDEMOTE_KHUGEPAGED:
+ 	case PGDEMOTE_PROACTIVE:
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_PGHOT
+ 	case PGPROMOTE_SUCCESS:
+ #endif
+ 		return 1;
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index 986f809376eb..7303dc10035c 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -51,18 +51,19 @@ static const struct bus_type memory_tier_subsys = {
+ 	.dev_name = "memory_tier",
+ };
+ 
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_NUMA_BALANCING_TIERING
+ /**
+- * folio_use_access_time - check if a folio reuses cpupid for page access time
++ * folio_is_promo_candidate - check if the folio qualifies for promotion
++ *
+  * @folio: folio to check
+  *
+- * folio's _last_cpupid field is repurposed by memory tiering. In memory
+- * tiering mode, cpupid of slow memory folio (not toptier memory) is used to
+- * record page access time.
++ * Checks if NUMA Balancing tiering mode is set and the folio belongs
++ * to lower tier. If so, it qualifies for promotion to toptier when
++ * it is categorized as hot.
+  *
+- * Return: the folio _last_cpupid is used to record page access time
++ * Return: True if the above condition is met, else False.
+  */
+-bool folio_use_access_time(struct folio *folio)
++bool folio_is_promo_candidate(struct folio *folio)
+ {
+ 	return (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+ 	       !node_is_toptier(folio_nid(folio));
+diff --git a/mm/memory.c b/mm/memory.c
+index 2f815a34d924..289fa6c07a42 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -75,6 +75,7 @@
+ #include <linux/perf_event.h>
+ #include <linux/ptrace.h>
+ #include <linux/vmalloc.h>
++#include <linux/pghot.h>
+ #include <linux/sched/sysctl.h>
+ #include <linux/pgalloc.h>
+ #include <linux/uaccess.h>
+@@ -5968,10 +5969,9 @@ int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
+ 	if (folio_maybe_mapped_shared(folio) && (vma->vm_flags & VM_SHARED))
+ 		*flags |= TNF_SHARED;
+ 	/*
+-	 * For memory tiering mode, cpupid of slow memory page is used
+-	 * to record page access time.  So use default value.
++	 * For memory tiering mode, last_cpupid is unused. So use default value.
+ 	 */
+-	if (folio_use_access_time(folio))
++	if (folio_is_promo_candidate(folio))
+ 		*last_cpupid = (-1 & LAST_CPUPID_MASK);
+ 	else
+ 		*last_cpupid = folio_last_cpupid(folio);
+@@ -6052,6 +6052,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+ 	int nid = NUMA_NO_NODE;
+ 	bool writable = false, ignore_writable = false;
+ 	bool pte_write_upgrade = vma_wants_manual_pte_write_upgrade(vma);
++	bool needs_promotion = false;
+ 	int last_cpupid;
+ 	int target_nid;
+ 	pte_t pte, old_pte;
+@@ -6086,16 +6087,31 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+ 		goto out_map;
+ 
+ 	nid = folio_nid(folio);
++	needs_promotion = folio_is_promo_candidate(folio);
+ 	nr_pages = folio_nr_pages(folio);
+ 
+ 	target_nid = numa_migrate_check(folio, vmf, vmf->address, &flags,
+ 					writable, &last_cpupid);
+ 	if (target_nid == NUMA_NO_NODE)
+ 		goto out_map;
+-	if (migrate_misplaced_folio_prepare(folio, vma, target_nid)) {
 +
-+		hotness &= ~(PGHOT_NID_MASK << PGHOT_NID_SHIFT);
-+		hotness &= ~(PGHOT_FREQ_MASK << PGHOT_FREQ_SHIFT);
-+		hotness &= ~(PGHOT_TIME_MASK << PGHOT_TIME_SHIFT);
++	if (needs_promotion) {
++		/*
++		 * Hot page promotion, mode=NUMA_BALANCING_MEMORY_TIERING.
++		 * Isolation and migration are handled by pghot.
++		 */
++		writable = false;
++		ignore_writable = true;
++		nid = target_nid;
++		goto out_map;
++	}
 +
-+		hotness |= (nid & PGHOT_NID_MASK) << PGHOT_NID_SHIFT;
-+		hotness |= (freq & PGHOT_FREQ_MASK) << PGHOT_FREQ_SHIFT;
-+		hotness |= (time & PGHOT_TIME_MASK) << PGHOT_TIME_SHIFT;
++	/* Balancing b/n toptier nodes, mode=NUMA_BALANCING_NORMAL */
++	if (migrate_misplaced_folio_prepare(folio, vmf->vma, target_nid)) {
+ 		flags |= TNF_MIGRATE_FAIL;
+ 		goto out_map;
+ 	}
 +
-+		if (freq >= pghot_freq_threshold)
-+			hotness |= BIT(PGHOT_MIGRATE_READY);
-+	} while (unlikely(!try_cmpxchg(phi, &old_hotness, hotness)));
-+	return !!(hotness & BIT(PGHOT_MIGRATE_READY));
-+}
+ 	/* The folio is isolated and isolation code holds a folio reference. */
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 	writable = false;
+@@ -6110,7 +6126,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+ 	}
+ 
+ 	flags |= TNF_MIGRATE_FAIL;
+-	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
++	vmf->pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
+ 				       vmf->address, &vmf->ptl);
+ 	if (unlikely(!vmf->pte))
+ 		return 0;
+@@ -6118,6 +6134,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 		return 0;
+ 	}
 +
-+int pghot_get_record(phi_t *phi, int *nid, int *freq, unsigned long *time)
-+{
-+	phi_t old_hotness, hotness = 0;
+ out_map:
+ 	/*
+ 	 * Make it present again, depending on how arch implements
+@@ -6131,8 +6148,13 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+ 					    writable);
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 
+-	if (nid != NUMA_NO_NODE)
+-		task_numa_fault(last_cpupid, nid, nr_pages, flags);
++	if (nid != NUMA_NO_NODE) {
++		if (needs_promotion)
++			pghot_record_access(folio_pfn(folio), nid,
++					    PGHOT_HINTFAULTS, jiffies);
++		else
++			task_numa_fault(last_cpupid, nid, nr_pages, flags);
++	}
+ 	return 0;
+ }
+ 
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 0e5175f1c767..6eed217a5917 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -866,9 +866,6 @@ bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
+ 	    node_is_toptier(nid))
+ 		return false;
+ 
+-	if (folio_use_access_time(folio))
+-		folio_xchg_access_time(folio, jiffies_to_msecs(jiffies));
+-
+ 	return true;
+ }
+ 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index a5f48984ed3e..db6832b4b95b 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2690,8 +2690,18 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
+ 	if (!migrate_balanced_pgdat(pgdat, nr_pages)) {
+ 		int z;
+ 
+-		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING))
++		/*
++		 * Kswapd wakeup for creating headroom in toptier is done only
++		 * for hot page promotion case and not for misplaced migrations
++		 * between toptier nodes.
++		 *
++		 * In the uncommon case of using NUMA_BALANCING_NORMAL mode
++		 * to balance between lower and higher tier nodes, we end up
++		 * up waking up kswapd.
++		 */
++		if (node_is_toptier(folio_nid(folio)))
+ 			return -EAGAIN;
 +
-+	old_hotness = READ_ONCE(*phi);
-+	do {
-+		if (!(old_hotness & BIT(PGHOT_MIGRATE_READY)))
-+			return -EINVAL;
-+	} while (unlikely(!try_cmpxchg(phi, &old_hotness, hotness)));
-+
-+	*nid = (old_hotness >> PGHOT_NID_SHIFT) & PGHOT_NID_MASK;
-+	*freq = (old_hotness >> PGHOT_FREQ_SHIFT) & PGHOT_FREQ_MASK;
-+	*time = (old_hotness >> PGHOT_TIME_SHIFT) & PGHOT_TIME_MASK;
-+	return 0;
-+}
+ 		for (z = pgdat->nr_zones - 1; z >= 0; z--) {
+ 			if (managed_zone(pgdat->node_zones + z))
+ 				break;
+@@ -2741,6 +2751,8 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+ #ifdef CONFIG_NUMA_BALANCING
+ 		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+ 		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
++#endif
++#ifdef CONFIG_NUMA_BALANCING_TIERING
+ 		if ((sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
+ 		    && !node_is_toptier(folio_nid(folio))
+ 		    && node_is_toptier(node)) {
+@@ -2796,6 +2808,8 @@ int migrate_misplaced_folios_batch(struct list_head *folio_list, int node)
+ #ifdef CONFIG_NUMA_BALANCING
+ 		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+ 		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
++#endif
++#ifdef CONFIG_PGHOT
+ 		mod_node_page_state(NODE_DATA(node), PGPROMOTE_SUCCESS, nr_succeeded);
+ #endif
+ 	}
 diff --git a/mm/pghot.c b/mm/pghot.c
-index dac9e6f3b61e..7d7ef0800ae2 100644
+index 7d7ef0800ae2..3c0ba254ad4c 100644
 --- a/mm/pghot.c
 +++ b/mm/pghot.c
-@@ -10,6 +10,9 @@
-  * the frequency of access and last access time. Promotions are done
-  * to a default toptier NID.
-  *
-+ * In the precision mode, 4 bytes are used to store the frequency
-+ * of access, last access time and the accessing NID.
-+ *
-  * A kernel thread named kmigrated is provided to migrate or promote
+@@ -17,6 +17,9 @@
   * the hot pages. kmigrated runs for each lower tier node. It iterates
   * over the node's PFNs and  migrates pages marked for migration into
-@@ -52,13 +55,15 @@ static bool kmigrated_started __ro_after_init;
-  * for the purpose of tracking page hotness and subsequent promotion.
-  *
-  * @pfn: PFN of the page
-- * @nid: Unused
-+ * @nid: Target NID to where the page needs to be migrated in precision
-+ *       mode but unused in default mode
-  * @src: The identifier of the sub-system that reports the access
-  * @now: Access time in jiffies
-  *
-- * Updates the frequency and time of access and marks the page as
-- * ready for migration if the frequency crosses a threshold. The pages
-- * marked for migration are migrated by kmigrated kernel thread.
-+ * Updates the NID (in precision mode only), frequency and time of access
-+ * and marks the page as ready for migration if the frequency crosses a
-+ * threshold. The pages marked for migration are migrated by kmigrated
-+ * kernel thread.
-  *
-  * Return: 0 on success and -EINVAL on failure to record the access.
+  * their targeted nodes.
++ *
++ * Migration rate-limiting and dynamic threshold logic implementations
++ * were moved from NUMA Balancing mode 2.
   */
+ #include <linux/mm.h>
+ #include <linux/migrate.h>
+@@ -32,6 +35,12 @@ unsigned int kmigrated_batch_nr = KMIGRATED_DEFAULT_BATCH_NR;
+ 
+ unsigned int sysctl_pghot_freq_window = PGHOT_DEFAULT_FREQ_WINDOW;
+ 
++/* Restrict the NUMA promotion throughput (MB/s) for each target node. */
++static unsigned int sysctl_pghot_promote_rate_limit = 65536;
++
++#define KMIGRATED_MIGRATION_ADJUST_STEPS	16
++#define KMIGRATED_PROMOTION_THRESHOLD_WINDOW	60000
++
+ DEFINE_STATIC_KEY_FALSE(pghot_src_hwhints);
+ DEFINE_STATIC_KEY_FALSE(pghot_src_hintfaults);
+ 
+@@ -45,6 +54,22 @@ static const struct ctl_table pghot_sysctls[] = {
+ 		.proc_handler   = proc_dointvec_minmax,
+ 		.extra1         = SYSCTL_ZERO,
+ 	},
++	{
++		.procname	= "pghot_promote_rate_limit_MBps",
++		.data		= &sysctl_pghot_promote_rate_limit,
++		.maxlen		= sizeof(unsigned int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++	},
++	{
++		.procname	= "numa_balancing_promote_rate_limit_MBps",
++		.data		= &sysctl_pghot_promote_rate_limit,
++		.maxlen		= sizeof(unsigned int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++	},
+ };
+ #endif
+ 
+@@ -141,6 +166,110 @@ int pghot_record_access(unsigned long pfn, int nid, int src, unsigned long now)
+ 	return 0;
+ }
+ 
++/*
++ * For memory tiering mode, if there are enough free pages (more than
++ * enough watermark defined here) in fast memory node, to take full
++ * advantage of fast memory capacity, all recently accessed slow
++ * memory pages will be migrated to fast memory node without
++ * considering hot threshold.
++ */
++static bool pgdat_free_space_enough(struct pglist_data *pgdat)
++{
++	int z;
++	unsigned long enough_wmark;
++
++	enough_wmark = max(1UL * 1024 * 1024 * 1024 >> PAGE_SHIFT,
++			   pgdat->node_present_pages >> 4);
++	for (z = pgdat->nr_zones - 1; z >= 0; z--) {
++		struct zone *zone = pgdat->node_zones + z;
++
++		if (!populated_zone(zone))
++			continue;
++
++		if (zone_watermark_ok(zone, 0,
++				      promo_wmark_pages(zone) + enough_wmark,
++				      ZONE_MOVABLE, 0))
++			return true;
++	}
++	return false;
++}
++
++/*
++ * For memory tiering mode, too high promotion/demotion throughput may
++ * hurt application latency.  So we provide a mechanism to rate limit
++ * the number of pages that are tried to be promoted.
++ */
++static bool kmigrated_promotion_rate_limit(struct pglist_data *pgdat, unsigned long rate_limit,
++					   int nr, unsigned long now_ms)
++{
++	unsigned long nr_cand;
++	unsigned int start;
++
++	mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE, nr);
++	nr_cand = node_page_state(pgdat, PGPROMOTE_CANDIDATE);
++	start = pgdat->nbp_rl_start;
++	if (now_ms - start > MSEC_PER_SEC &&
++	    cmpxchg(&pgdat->nbp_rl_start, start, now_ms) == start)
++		pgdat->nbp_rl_nr_cand = nr_cand;
++	if (nr_cand - pgdat->nbp_rl_nr_cand >= rate_limit)
++		return true;
++	return false;
++}
++
++static void kmigrated_promotion_adjust_threshold(struct pglist_data *pgdat,
++						 unsigned long rate_limit, unsigned int ref_th,
++						 unsigned long now_ms)
++{
++	unsigned int start, th_period, unit_th, th;
++	unsigned long nr_cand, ref_cand, diff_cand;
++
++	th_period = KMIGRATED_PROMOTION_THRESHOLD_WINDOW;
++	start = pgdat->nbp_th_start;
++	if (now_ms - start > th_period &&
++	    cmpxchg(&pgdat->nbp_th_start, start, now_ms) == start) {
++		ref_cand = rate_limit *
++			KMIGRATED_PROMOTION_THRESHOLD_WINDOW / MSEC_PER_SEC;
++		nr_cand = node_page_state(pgdat, PGPROMOTE_CANDIDATE);
++		diff_cand = nr_cand - pgdat->nbp_th_nr_cand;
++		unit_th = ref_th * 2 / KMIGRATED_MIGRATION_ADJUST_STEPS;
++		th = pgdat->nbp_threshold ? : ref_th;
++		if (diff_cand > ref_cand * 11 / 10)
++			th = max(th - unit_th, unit_th);
++		else if (diff_cand < ref_cand * 9 / 10)
++			th = min(th + unit_th, ref_th * 2);
++		pgdat->nbp_th_nr_cand = nr_cand;
++		pgdat->nbp_threshold = th;
++	}
++}
++
++static bool kmigrated_should_migrate_memory(unsigned long nr_pages, int nid,
++					    unsigned long time)
++{
++	struct pglist_data *pgdat;
++	unsigned long rate_limit;
++	unsigned int th, def_th;
++	unsigned long now_ms = jiffies_to_msecs(jiffies); /* Based on full-width jiffies */
++	unsigned long now = jiffies;
++
++	pgdat = NODE_DATA(nid);
++	if (pgdat_free_space_enough(pgdat)) {
++		/* workload changed, reset hot threshold */
++		pgdat->nbp_threshold = 0;
++		mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NRL, nr_pages);
++		return true;
++	}
++
++	def_th = sysctl_pghot_freq_window;
++	rate_limit = MB_TO_PAGES(sysctl_pghot_promote_rate_limit);
++	kmigrated_promotion_adjust_threshold(pgdat, rate_limit, def_th, now_ms);
++
++	th = pgdat->nbp_threshold ? : def_th;
++	if (pghot_access_latency(time, now) >= th)
++		return false;
++
++	return !kmigrated_promotion_rate_limit(pgdat, rate_limit, nr_pages, now_ms);
++}
++
+ static int pghot_get_hotness(unsigned long pfn, int *nid, int *freq,
+ 			     unsigned long *time)
+ {
+@@ -218,6 +347,11 @@ static void kmigrated_walk_zone(unsigned long start_pfn, unsigned long end_pfn,
+ 			goto out_next;
+ 		}
+ 
++		if (!kmigrated_should_migrate_memory(nr, nid, time)) {
++			folio_put(folio);
++			goto out_next;
++		}
++
+ 		if (migrate_misplaced_folio_prepare(folio, NULL, nid)) {
+ 			folio_put(folio);
+ 			goto out_next;
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index d3fbe2a5d0e6..f28f786f8931 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1267,7 +1267,7 @@ const char * const vmstat_text[] = {
+ #ifdef CONFIG_SWAP
+ 	[I(NR_SWAPCACHE)]			= "nr_swapcached",
+ #endif
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_PGHOT
+ 	[I(PGPROMOTE_SUCCESS)]			= "pgpromote_success",
+ 	[I(PGPROMOTE_CANDIDATE)]		= "pgpromote_candidate",
+ 	[I(PGPROMOTE_CANDIDATE_NRL)]		= "pgpromote_candidate_nrl",
 -- 
 2.34.1
 
