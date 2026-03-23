@@ -4,136 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E871BF483D7
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 19:24:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65770F483D7
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 19:29:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6004C6B0096; Mon, 23 Mar 2026 15:24:04 -0400 (EDT)
+	id A4E3B6B0095; Mon, 23 Mar 2026 15:29:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B0E56B0099; Mon, 23 Mar 2026 15:24:04 -0400 (EDT)
+	id A26436B0098; Mon, 23 Mar 2026 15:29:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7326B009D; Mon, 23 Mar 2026 15:24:04 -0400 (EDT)
+	id 914F86B0099; Mon, 23 Mar 2026 15:29:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E4A16B0096
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:24:04 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC34513BC23
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:24:03 +0000 (UTC)
-X-FDA: 84578303166.25.80D9C15
-Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CDC584000E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:24:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RUJqHBln;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DF7A6B0095
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:29:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 358EEC3B45
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:29:29 +0000 (UTC)
+X-FDA: 84578316858.13.BC98715
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3FE54C000E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:29:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bmuVNK7m;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf07.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.66 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774293841;
+	s=arc-20220608; t=1774294167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kd/Ap1nB3+5l9lLzCyst0NQXC8reE8pKqs/t9xxDzCM=;
-	b=TjzeR38nRRKRnPl2tpzV1EW1Ivhbq25u1kw5pwI7SHt+FXedRRXxGS8lT7nQlgOb1KZ0Hh
-	DFo8+xOnxkWaao9yORjqSej7Yu+KOeOrnkwKPb7nZqQvmoI3ZRA+gskCei+Gf6sRk2LxhT
-	i1iUzJPHwvQIQ53qDfHOmlMg7+hq3os=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774293841; a=rsa-sha256;
+	bh=rL6rgT4p4eg6pWVBxL1qRwcnXbeBJSn9vYxp2HwXMQ4=;
+	b=gdZcjdETn4UBtTLU+gvnbQ5uyGiNm1lB0XJr6xxftbmehV4GFkSE7L+YIuZlZNlJHzlr32
+	+tWeHM05Boh89gAIQ1GwSY6V8rhASQppBSrXjr74Wc1fAEUzjxcCnyt0edQ0PZCQYwKbnt
+	M1m0HwGTBbrk3P9K07+JpFB/1hS0xh8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774294167; a=rsa-sha256;
 	cv=pass;
-	b=fzv34g2CuBAjU6U4+3GoQxZmwcB+ur3md8mc88bocIFgRYJ4RxXpeVtnGtJfgWr+iP5DiY
-	H2BAzoKFLsuxb+79z9f6HHH6XYL8ARUWfWree9aLNXOSkqwq6kXQSsOc6eFDr3wjmo/wET
-	fs887aW6qqTC4ndahxE77Int86wJWF8=
+	b=eYW0PJG9/ezSnikOlZr9GjIRSA67pQfo5Krxg4/SjEknyJIP95DIDcmlOStFva9rAkXbCR
+	cLFX0hDG+FCWXQq+R10dPJnJc2nFR31E8Acnm/oPO/J4kbd5VtYvEOqx1tQSJnhabS/bVs
+	L12mZ6TnL7QKmCkWD+sqIqJwzzykDa0=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RUJqHBln;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bmuVNK7m;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf07.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.66 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-1271257ae53so596543c88.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:24:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774293840; cv=none;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-509062d829dso11321cf.1
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:29:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774294166; cv=none;
         d=google.com; s=arc-20240605;
-        b=cNHN7JZy3EHGosRDlnB4rQ4GeEULRsIecGTfj5n5SceURbfzu3eqd6Y2rEWWXwOtDo
-         vo8PWRhacxTtk5TsV9IyLwvGpUXHgkwOSAGOL3v8RDB8bv/GOVStabBT3s4CJxQ0X2RD
-         m3wElvepXO1dyVNre2PYKkKYaGeCPk/rEByrsis97b++hzf0gDnQiCHHCLA5nwkGUQAI
-         vLem5hDckOrjuUeUT4Cb1SY7E1blD7DjfOHsVPODn+iYg8TYc96f7ej1nYmTrvTh3DTg
-         pXZsjZb0qnPMw+NRq+IVV6p2olWzSWaMbkJWIp9dz2qGEriHlMwJdElNcoUtyzMcWh4G
-         mgRg==
+        b=a4yYqqtI0rdhyo1MgUK6Wlb3/IhBsdvKylGyyKiH9YwyYGtdylg8Eqftyv/oZTmmpO
+         fCju1QdP9P3JIHLtmoD8fkXcPsxN9RhcW+pPuHUdReJr5sAmESTW9slwnRReIiiXe1GI
+         BMi1C8XdHCJgnrcw4MIc3EZTeOMFr0QllCrqOEidJ7MZ0axfkKAlqVnQw81Xjvj/VhnH
+         GYyhuXvjuGPiYtZZy29JBAH8msN5n4mp3io2YiSNM87VbvFXwzBjzVNs3/Em3GWzYt/3
+         mdEqqqx051j7JU6nvB6VfpUgqW4avXLo3+r1BR/yVxwkAHnhlgf1GaNuqfXMowM2PVWj
+         RoMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=kd/Ap1nB3+5l9lLzCyst0NQXC8reE8pKqs/t9xxDzCM=;
-        fh=4ENSzgU1ItM0+0ymxG08LDbc3vYFyS+2AlMfC7qISBs=;
-        b=ftzW/ymmRWYoLXVzQAgTCq615EK9dKajHFDWCrJAP5Gx11nNNhog3bLkaBS6yRgrx1
-         6aKIlSPuzlbz24egdyR3SKC9Ks3ECzUAVP8+ktfBtNwgyPf5HSeMMIDCY2w7b2/avvUo
-         RMuuQTkkVQX1vHYOvdY/QZHeZU7so+a7HCYJxdL412HvPVGoJ+j0EkGuEsdIHBRPcBpg
-         aiQ6VW/LP0Rc7OIhle0S+TUkge+aYgFvi/0vIqA6oH+KukJVn5LkkaFB8q+YmmAvuRQi
-         ojpfR6oa5aGRBgsTX9/SORjJ6NyBupi7PIkqeu7F+oJW3xri8lEJ0dg/2JhETClLgnI5
-         l7Xg==;
+        bh=rL6rgT4p4eg6pWVBxL1qRwcnXbeBJSn9vYxp2HwXMQ4=;
+        fh=ZoAE/mxsBi1ET22XVGtvJKUND1CWeMqIdPhtUAmyvM8=;
+        b=IQIeLTz98fzPlX13b1Jogw4Nccc51pzaS8BXaxKRlL7BxXkj9Mu9AIKWBV31RVFg20
+         6y42uT8Z79C5TlP0Z8JoSoK0/RzK6LEiW2+UpuK1DjY28D81L7sKwb/Ia6P+hJ52f247
+         3ko5jTTQH83d4LrAvDz46el/dvMdZ264IkV0I3iprFpoEDaBF5usCEhhWszWyMXhAij9
+         G746eQGEXUP0beKDXNTyvgKVRfWZXddo4Y9RNDpxpRP6td3eZ49x4am9x/+eDLaeMK3A
+         bZXRIwrAvXcDotbK7zdlrHPdXDhnCLZAIef0sYjvRGF8dNkB62/NpTbUrHV+mjK+7OGB
+         /qSA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774293840; x=1774898640; darn=kvack.org;
+        d=google.com; s=20251104; t=1774294166; x=1774898966; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kd/Ap1nB3+5l9lLzCyst0NQXC8reE8pKqs/t9xxDzCM=;
-        b=RUJqHBlnwbzdmtQXMeTnlPDYI52RL5Sa/ogi2DqPS91z/ou7NdY9FsVejxBZnKhn4S
-         LkrO/QtdX+ijCwwySe1PfCPgG5RySGy8SCV4c54tlTcb+FZj7cwXhX3BEiPXz80jkgBp
-         SZoyk4lEfqK34PAGZNbeptxVAqX+neaXoDnRpJ5oZxoZc2h3HPl2kAAAODzxhar95zvb
-         RmksioSFpxgCosXHCwwFh2+/zpa79V81wfuye6uRA2Jdfxt5K/Xj9EiEJdGC02LtZvFh
-         tnycggh+kYR8f1ZdG2i6zae9q9HYyDP8PR75PSdkz6fUfPA9zrtztYqVnN/1hM5RWrhD
-         0jMQ==
+        bh=rL6rgT4p4eg6pWVBxL1qRwcnXbeBJSn9vYxp2HwXMQ4=;
+        b=bmuVNK7mEwz6txM4ABvddTNDV5HtAul7tGKH6SSzEWUGmL7OaaYX2ZoxxEAx458DaA
+         tlDKqLc5XkyIuNNaHCJ9Uxx7R+A77XW3dgFKAHa1HWIHbK1e3TdcmwU7lkkV6YbKiPOw
+         yWcIT0RPGyYXkk91U5LhYZlypc22v/kK+ae8lZzPyZ4hTKaS31S5t4bGCzcdUKi7j5mM
+         nMgBJJcwUSbbbqc3aZwJMHUn+EbqdFRLU0yBe4u4bJ0t9Yv1tZ47oDgvFV4eONRkU9zL
+         eDq4F+8dge+6HF2K3v+9VxoaaI3KtGbUEhfhA1u77qEOUzhZADkwMD+2w+IvgFTFfJpk
+         shwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774293840; x=1774898640;
+        d=1e100.net; s=20251104; t=1774294166; x=1774898966;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kd/Ap1nB3+5l9lLzCyst0NQXC8reE8pKqs/t9xxDzCM=;
-        b=Q0iL47l9fltshavVQthdpTNdp7pi41RmKwN/2rtOszFGk460KVNJxQSfmXz6WfwE+K
-         0vQXEBTl49yXF16OG8lIC3k5DC79Ta+RTpFzd3JRF7XuH9YDVTGSAOD9mL68hDnHHbIK
-         /zq2R0Wilt6OouS9+IzT98EnooLUySCXBdGfHcDJaQWcXeDucSC97USwpabxO0fQRnO4
-         ZF0GG3OYXkru0o7a7HmyJotcgHc0Jrjdqk8ak9zLRq3NAqia3XFD9O3wSDGbzCmIjtGt
-         S+dHeah/Us/nZlS8EzqhkGxt4m39gVz+ZCa3aziXnuOe/FpHnfdmzMoM3z3PzjEFrHIZ
-         cnyA==
-X-Forwarded-Encrypted: i=1; AJvYcCU35ZdxSaXd88Gwatq+oHDeciRrvV6fOtAB2tQC8P459RXTkWyBC2hhF/q5GQCEOdyLJVcvO/JaSA==@kvack.org
-X-Gm-Message-State: AOJu0YyAsNV54Exhf+jQx3O+0I0ya2icUb018WvTwCoWMzmu5clVy6t8
-	gDGt0VWUlLbV1RN9WNZ7exi+/8YyoWimiQh2U0ijhdQrYxWXgS9ljmMbKHX54x1B14XNxeU2dIx
-	nqogQIPbbepD22Kz9NSawMjaxX95lig==
-X-Gm-Gg: ATEYQzwrdHHbRp/DVpOuu66lgcuYGFP1LgknluWQNvHk/lyW27lzupG+Fti2qMNsToA
-	hYpbQ67TZyYroqBH6ypbSliSH/TqjLdsXDKgLA4mFiWWM2GtyAG5LZ1XVVUpvfLmgaG3oR0/lWi
-	U9FofREYbM5hW7iz4kJvrOVv9wUbahQ+KN9AdozCNm1EmXChRTDN5XsVbR7quJAAxx+xgd8xrLT
-	gYlG4rspEEfiycuUfKDVgRErweKge0rRhdlWUGZJPCkwem2BKUnkJx11A/iWT5boW59T5z8/2gG
-	XGoGJGY=
-X-Received: by 2002:a05:7022:2507:b0:123:3500:b688 with SMTP id
- a92af1059eb24-12a726dc4a9mr5332008c88.19.1774293840376; Mon, 23 Mar 2026
- 12:24:00 -0700 (PDT)
+        bh=rL6rgT4p4eg6pWVBxL1qRwcnXbeBJSn9vYxp2HwXMQ4=;
+        b=Ef2HZwMC+kTWw6gaqzKiQ7bLZKOeFf98dx1Dop7ipKQmyUuYE4Ndzh4C7aPScxAGqe
+         WcCrIXHC1RAYXfguUD+z7qhXlVbwGFAkpC8cS/XJSjZGkZ2APUflF6MfjMBRY9cBVRdM
+         b6T372ULqYMDw4ccy2DzmNSeDXlwPZv0IVHrAgOwrlG34k0+wXv+0PrxUpZ2mkQqsLC+
+         fB3BGq2S9ch2kDIncdSzUuRzrgMdxPfZRkKKLsxUZnYSgQiPtF8qeGmAGZ3m3P747Tyq
+         boySe8828jQ28kMxnU28x0wMtzcheY2eJ7gy88oaeEZ+hceroXBaH2N1X32KKyBzQoPn
+         xyWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXtjXzAa2po5uoeuJS5iQbAFQCWFci25Zfea16AESnAboie3NMsjCE4PpTuMTZlsKl4QoOL/Eu9Tg==@kvack.org
+X-Gm-Message-State: AOJu0Yw87I4qB2P4wP54Cgw9o73sgxw5bHuEP7hbTwhehJ11oERR1CXK
+	Pr5pWZComN/bXBfnhmAb8x/i72/yhYzieGy+naiO8jc0bsruFP8ZuKqbYrc8Iuo7ls3mydAPEEo
+	CziUtexbqgmOPQkKysr8EH3KGyxZR15S9Q183Q6WW
+X-Gm-Gg: ATEYQzyC4gcfuGczHHTZzJ2Ufj/LewaYWTcSwVrByXJX8Trq9t4edX3iL0vTnAeTHo9
+	kflN964hqHtuYj+lW4+HXfVQnGjXn1gXshfvMh0vUr/1zN9opURUpcpc4aQooL4L2ckbSKOE7Ou
+	jwGF7jODCwhh1rVqHmLAhtLLU7s8iGozLIm+mDfZBIw3qZWbty1x64z75cI40dX9IQuNi/RiWZs
+	2OxoVBL74EQidxcTbOfbNMq3h/eJo2Qzl5Uit7vuajYZOLFCYl94p7Z2ODLAvRZDo+3lZMsss7O
+	Lzpp9Nw6pUmx8nEq
+X-Received: by 2002:a05:622a:a986:20b0:508:fd42:fd05 with SMTP id
+ d75a77b69052e-50b6fe1094amr2337331cf.15.1774294165477; Mon, 23 Mar 2026
+ 12:29:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260320190453.1430-1-ravis.opensrc@gmail.com> <20260321165746.84394-1-sj@kernel.org>
-In-Reply-To: <20260321165746.84394-1-sj@kernel.org>
-From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Date: Mon, 23 Mar 2026 12:23:49 -0700
-X-Gm-Features: AaiRm53G1dtITD6OPSmNFBca8dgCST3mqTjoCxapaAIAN1uqhVUWdPIlUbgjZ-w
-Message-ID: <CALa+Y15sBCyVgGKC5994-WhS31nahyT=8uitDPG_isZ7sp_g_w@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 0/1] mm/damon: add node_eligible_mem_bp and
- node_ineligible_mem_bp goal metrics
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, akpm@linux-foundation.org, corbet@lwn.net, 
-	bijan311@gmail.com, ajayjoshi@micron.com, honggyu.kim@sk.com, 
-	yunjeong.mun@sk.com
+References: <20260322054309.898214-1-surenb@google.com> <20260322054309.898214-5-surenb@google.com>
+ <1c44dd0b-4f5a-4fc1-983f-f728b31c9e4d@lucifer.local>
+In-Reply-To: <1c44dd0b-4f5a-4fc1-983f-f728b31c9e4d@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 23 Mar 2026 12:29:14 -0700
+X-Gm-Features: AQROBzCQaEF_cPLZfBQCzrdp1WYDK-0_JtC25zQIk1w6f-8rEEzfFfTeX5PuZ2c
+Message-ID: <CAJuCfpGk3sTw2_owiRZM=V2e0UGDad5MrDbCsPbY3GUvT4u63A@mail.gmail.com>
+Subject: Re: [PATCH v4 4/4] mm: use vma_start_write_killable() in process_vma_walk_lock()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
+	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: n9qw6q1d1rg6i1bhx813p41yfyua4x8g
-X-Rspamd-Queue-Id: CDC584000E
+X-Rspamd-Queue-Id: 3FE54C000E
+X-Stat-Signature: yphobnncef5jmiubw49smzz6a8k17xjp
 X-Rspam-User: 
-X-HE-Tag: 1774293841-593359
-X-HE-Meta: U2FsdGVkX1/ZKCXXI+uC29dnJOBAPk2etyZpipVjoquzP8GNm3QgNgYGULyOlfRzEY+cjQQHgZ5FCjoJzKRK3gjz2vuUs2NBdxZxqU6WVk8TjbA6stRQbt9M6mGbli+Pu4jRsvhlEYSYmCIbamBfD2rzHpsX+9SfND6hInIDT63N9AeCVKEp+dTRRrPB3SPqoYmFUVpOoiNWzLg14yLM64U6x91b4D3mYlwn56W4Y/W7nFZSYRhlIT+tnnfJliew4m6EZ9Ohpa6TuCOH1Vz7p9ZsHdxGBEGD1cBHPM33RdYxHzUCnxiOEOQb+po5gNNYY4mPaaCs9QXmDf+SQrL1pj7MgHclwJhESRiLEkECzUb+gth56dhWEZqlAd+49MSkL2b/ChgoOwr29e0f83oLUGr1S61I5qFL/8xa8Yr0+z4tl+O9jPOctOUwfqtkYD3Cj4NuM6SY7f2uFPjfcrPGfZXDDXRxqYIq2aRihu6UyTAuYnAwLbFhsOwMcnC8d0x23F1mkcJNvK/cgXGSYbdN3aVzD4cZznjN7jpBWvXMymKBCaKO/YViyT97QHIGpnVJdqqpsw4QCNzxyYKjO1GY+ZYJltbcFBneaSp66kM+A17TESug1m5Id55nbkExwkzJbfBv7Yu+lvusJEk4uOHS5+dcSwL8DZSmMiArh++vRmu880C3vrSI9TP/eqlGUI74M69xsSFHme7Dp8zMAOsaasiXanIoipdlP1hQV2LpymY2C5w085yinAiS/fll7puWHtLkE4kITTDmWkRa07aFKIvrWH5tCazivi8LC6QvypqeAQ8I71spaP0mJmvJ0CMmzq/Fr1D6SWhQR9eubofp9L+XhQBuX4/CSiGNlFbV6sABfxP6eX6r9f66Ge3Ds7ltZGe+Qq8gikNNbE6cYJQGJ8XuL9sgMpKRETbW6aRHMYMnVTXQ98umh/vxzBvDxuIKU7CoobWUXivfpDVHs8o
- UuG5HyUn
- cX56q1c96NtAOPE0ev+fhRAjI85VI3+9+EIc6ehmCJs259lyVBRXXay9SBk6/p7Pfq/4+Alji31FtrEPgGemqDkP/JJWS9OsZX5uu0B7U8PjQZaAadmgE5EiC0GBMeSCuo6SZb3J/XMtKTJBHa3eZLSf9ep3A3LM3SuXqnF1uKDCvRCkGRQPTRxR1OK2mPcaJhC850cZ9Hjgu1dczWtTY5J5/4nYzyzbkwJnLvJMufktUMEX5BAKqKkks6rnzVbK7ur8GavKOHP8qoxZny28Y0VHeCzk6DrHoNAeIUIjUdVOTuJ1+OolMyecyZyvCIlpcHD7iuf2oYW2gpwu3ILuE4dVCcFESn2G4rM/w3P0zOT+1I4fgyJFy8IMJRiqryLn1PEroz4MblOHBOxF33s34lu6byA8Diai6MrQvGv/zjqKtolTID7kPOnDU5o6Mk9by/xqJRA1yvr8uWl+9VGxWY/Z7mmrUYyPFwDpnZvIZNs3Fy80zdTQvxgt6C/QhO5DF9IRMQnlMDgGT++CG6BvfgKbIITsz3okeDsyFKUMmw9ojdz33iLUBB6hITHlC4YKntrqhTvFWmN6w8rJjxe3yXeKCnzb7N9rAM3ApyoEtnCYmyKk=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774294167-64052
+X-HE-Meta: U2FsdGVkX19Hrpf3QGHJrNRI1+FrYHgSLbiArZW0/mYecNMwLCEIR5rCf9w1h81nI/GmYGiiVALAgGZ72cUMt1icfLgtaQWhEVGJlOgpPZWgkL6IWc8tOA4hv/eIcyIWBkKqKpw3Tdmwy8i8cDYAsgnzDplkPBR66NhtOHN2NMSeJ07hkIAMoUFL9bBjf45hXyFVh1rv5fWc0ezcAqS5wuIGiuFt8TT80sxAZVkc0l+/MOEu5g+kvfsQ0L6T3XjlGyDoFMcNRAqBzcLrfJ1vUe7mEm09eXRP/cEjXT1w8cR2Sav5uY3JT6G4WyJ4jBfbYxGGNgxRNDhhbuS0T1eSo6Dj0cfFyA9d51aeafNOeqFMHpBtkcHmEuyJkIQ0RiRdqTg7fyz33lMW+oSNtKMxXdduveM5bsmtbFtRj9ytHaXZRyDxf/0Wml8QqDutohtj5Cyb6e2R0SZ/NpZMRFe6V3AOxJn3a57cN0rc7zz4tqfLUXuCJCFe1dVfboC2Yp/s4kqiNQFIANJ1esrviQW1OSgYsDcug4sk+aPtgUra4oOGJIbuDMEYFU1p//gH+cDO4nsrwLAWpF8SQvjnJNfk9WYe1o/12N6TFS4N98LNpcbIuhMcTTrPz2d4K6jnELhByl3JUMQXGuIg3rkHXG+9t0SIDXab7QVKm66VuF/SVKR5grmgEt1qSJG+BHldDMfSML0oXVkV/RXi5PKCO04uWiJEA2M5ovclJFtCY4LD4fDRT61VZjSwmMuMecLws3PhzTS63rBXLvGxGnsbK63egX59gdFB8WPGVCej36Ko2cM2+oTBCfC1Isa9tpNKmdNSiFZ5ePOpaDSY1rr/hg2oMDVZuKET9fF+DcoCvzY6sIrCBJH0Uwz+X7h3tJ9yeaYYkm1bbdvZqIWnLm19K4kGvFDPQDcmAMwTJ4S33L0vDmfJVE81m2If+PFO4iKVu6t/6ojVuZ1dQLIVztCblf/
+ xyIsOZO6
+ o8vN0oK2deLO5A/lQiMGEHsAGUPSGbUhgN7TRVmvkguD2PmLB7krqzskQwdsLouzPdPW2tRDgsNuIEfTxulkn48Yrv6XexZqTwkA5xuijkaTuwvOIkFYfSsRKsAT7nLgxlkwIU2CEbi6v6BIvNIh+ynt4xsIRCs1j+9uD93hJQ2GpOHwwAsV2F9MBC87KU91FZaaNeGtI5s/7d5W04M2Hr8F8Y073Jm9Bsmyshwhx6bz5DRLLidg3pCx5rJFg/L2Vckt5u35ulj/rBKfgnFkFRCiKtpuvvOqUaTAHhiGPg6dNWaSVxWEokolFhsEffc9tr7jbCqy9ST7F5zzdSQ8a9izJiUpbTxXfQdfga2Sm7ZXk10sh5iiPo2/haetwFXd7CX7npF25uBxmfxwqjBQkw9lrrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,208 +151,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 21, 2026 at 9:57=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
-:
+On Mon, Mar 23, 2026 at 11:04=E2=80=AFAM Lorenzo Stoakes (Oracle)
+<ljs@kernel.org> wrote:
 >
-> Hello Ravi,
+> On Sat, Mar 21, 2026 at 10:43:08PM -0700, Suren Baghdasaryan wrote:
+> > Replace vma_start_write() with vma_start_write_killable() when
+> > process_vma_walk_lock() is used with PGWALK_WRLOCK option.
+> > Adjust its direct and indirect users to check for a possible error
+> > and handle it. Ensure users handle EINTR correctly and do not ignore
+> > it.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  fs/proc/task_mmu.c |  5 ++++-
+> >  mm/mempolicy.c     |  1 +
+> >  mm/pagewalk.c      | 20 ++++++++++++++------
+> >  3 files changed, 19 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> > index e091931d7ca1..2fe3d11aad03 100644
+> > --- a/fs/proc/task_mmu.c
+> > +++ b/fs/proc/task_mmu.c
+> > @@ -1797,6 +1797,7 @@ static ssize_t clear_refs_write(struct file *file=
+, const char __user *buf,
+> >               struct clear_refs_private cp =3D {
+> >                       .type =3D type,
+> >               };
+> > +             int err;
 >
->
-> Thank you for this patch!  TL; DR: Other than trivial things I commented =
-below
-> and to the patch, I believe it is time to drop the RFC tag, and work on m=
-erging
-> this.
->
+> Maybe better to make it a ssize_t given return type of function?
 
-Thanks, SJ, for the prompt and detailed feedback!
-
-> On Fri, 20 Mar 2026 12:04:52 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail=
-.com> wrote:
->
-> > This patch introduces two new DAMON quota goal metrics for controlling
->
-> s/DAMON/DAMOS/ ?
->
-
-Will fix it.
-
-> > memory distribution in heterogeneous memory systems (e.g., DRAM and CXL
-> > memory tiering) using physical address (PA) mode monitoring.
-> >
-> > v3: https://lore.kernel.org/linux-mm/20260223123232.12851-1-ravis.opens=
-rc@gmail.com/
->
-> The above link would better to be put on 'Chage since v3' section below.
->
-
-Got it. Will take care of it next time.
-
-> >
-> > Changes since v3:
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> > - The first two patches from v3 (goal_tuner initialization fix and
-> >   esz=3D0 quota bypass fix) are now in damon/next. This submission
->
-> It is not also in mm-unstable :)
-
-Good to know. Will mention this in the next version.
-
->
-> >   contains only the core metrics patch, rebased on top of those fixes.
-> >
-> > - Simplified implementation: removed per-node eligible_bytes array, now
-> >   iterates scheme-eligible regions directly for each goal evaluation.
-> >
-> > - Handle regions crossing node boundaries: uses damon_get_folio() to
-> >   determine actual NUMA node placement of each folio rather than
-> >   assuming uniform node placement within a region.
-> >
-> > - Pass scheme pointer directly to metric calculation functions, avoidin=
-g
-> >   container_of() derivation from quota pointer.
-> >
-> > - Fixed 80-column wrapping issues.
->
-> Thank you for addressing all my comments!
->
-> >
-> > Background and Motivation
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-> >
-> > In heterogeneous memory systems, controlling memory distribution across
-> > NUMA nodes is essential for performance optimization. This patch enable=
-s
-> > system-wide page distribution with target-state goals like "maintain 30=
-%
-> > of scheme-eligible memory on CXL" using PA-mode DAMON schemes.
-> >
-> > What These Metrics Measure
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> >
-> > node_eligible_mem_bp:
-> >     scheme_eligible_bytes_on_node / total_scheme_eligible_bytes * 10000
-> >
-> > node_ineligible_mem_bp:
-> >     (total - scheme_eligible_bytes_on_node) / total * 10000
-> >
-> > The metrics are complementary: eligible_bp + ineligible_bp =3D 10000 bp=
-.
-> >
-> > Two-Scheme Setup for Hot Page Distribution
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> > For maintaining 30% of hot memory on CXL (node 1):
->
-> I think it could help easy reading if the above sentence also explains
-> node 0 is DRAM.  For example,
->
-> For maintaining hot memory on DRAM (node 0) and CXL (node 1) in 7:3 ratio=
-:
-
-Good suggestion, will clarify the node mapping.
+Ack.
 
 >
 > >
-> >     PUSH scheme: migrate_hot from node 0 -> node 1
-> >       goal: node_ineligible_mem_bp, nid=3D0, target=3D3000
-> >       "Push hot pages out until 30% of hot memory is NOT on DRAM"
+> >               if (mmap_write_lock_killable(mm)) {
+> >                       count =3D -EINTR;
+> > @@ -1824,7 +1825,9 @@ static ssize_t clear_refs_write(struct file *file=
+, const char __user *buf,
+> >                                               0, mm, 0, -1UL);
+> >                       mmu_notifier_invalidate_range_start(&range);
+> >               }
+> > -             walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
+> > +             err =3D walk_page_range(mm, 0, -1, &clear_refs_walk_ops, =
+&cp);
+> > +             if (err)
+> > +                     count =3D err;
 >
-> Seems the sentence assumes the actor is in DRAM.  It was not very clear t=
-o me.
-> How about making it clear?  E.g.,
+> Hmm this is gross, but it's an established pattern here, ugh.
 >
-> "Move hot pages from DRAM to CXL, if more than 70% of hot data is in DRAM=
-"
+> Now we have an err though, could we update:
+>
+>                 if (mmap_write_lock_killable(mm)) {
+> -                       count =3D -EINTR;
+> +                       err =3D -EINTR;
+>                         goto out_mm;
+>                 }
+>
+> Then we can just do:
+>
+> +               err =3D walk_page_range(mm, 0, -1, &clear_refs_walk_ops, =
+&cp);
+>
+> And at the end do:
+>
+>         return err ?: count;
+>
+> Which possibly _necessitates_ err being a ssize_t.
 
-Got it. Will use your suggested wording.
+Sounds doable. Let me try that.
 
 >
+> >               if (type =3D=3D CLEAR_REFS_SOFT_DIRTY) {
+> >                       mmu_notifier_invalidate_range_end(&range);
+> >                       flush_tlb_mm(mm);
+> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> > index 929e843543cf..bb5b0e83ce0f 100644
+> > --- a/mm/mempolicy.c
+> > +++ b/mm/mempolicy.c
+> > @@ -969,6 +969,7 @@ static const struct mm_walk_ops queue_pages_lock_vm=
+a_walk_ops =3D {
+> >   *      (a hugetlbfs page or a transparent huge page being counted as =
+1).
+> >   * -EIO - a misplaced page found, when MPOL_MF_STRICT specified withou=
+t MOVEs.
+> >   * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK uns=
+pecified.
+> > + * -EINTR - walk got terminated due to pending fatal signal.
+>
+> Thanks!
+>
+> >   */
+> >  static long
+> >  queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned =
+long end,
+> > diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> > index eda74273c8ec..a42cd6a6d812 100644
+> > --- a/mm/pagewalk.c
+> > +++ b/mm/pagewalk.c
+> > @@ -438,14 +438,13 @@ static inline void process_mm_walk_lock(struct mm=
+_struct *mm,
+> >               mmap_assert_write_locked(mm);
+> >  }
 > >
-> >     PULL scheme: migrate_hot from node 1 -> node 0
-> >       goal: node_eligible_mem_bp, nid=3D0, target=3D7000
-> >       "Pull hot pages back until 70% of hot memory IS on DRAM"
+> > -static inline void process_vma_walk_lock(struct vm_area_struct *vma,
+> > +static inline int process_vma_walk_lock(struct vm_area_struct *vma,
 >
-> If the above example is good for you, to be consistent with it, how about
-> rewording like below?
->
-> "Move hot pages from CXL to DRAM, if less than 70% of hot data is in DRAM=
-"
+> NIT: Don't need this to be an inline any longer. May as well fix up while=
+ we're
+> here.
 
-Agreed. Will reword this too.
+Ack.
 
 >
+> >                                        enum page_walk_lock walk_lock)
+> >  {
+> >  #ifdef CONFIG_PER_VMA_LOCK
+> >       switch (walk_lock) {
+> >       case PGWALK_WRLOCK:
+> > -             vma_start_write(vma);
+> > -             break;
+> > +             return vma_start_write_killable(vma);
+>
+> LGTM
+>
+> >       case PGWALK_WRLOCK_VERIFY:
+> >               vma_assert_write_locked(vma);
+> >               break;
+> > @@ -457,6 +456,7 @@ static inline void process_vma_walk_lock(struct vm_=
+area_struct *vma,
+> >               break;
+> >       }
+> >  #endif
+> > +     return 0;
+> >  }
 > >
-> > The complementary goals create a feedback loop that converges to the
-> > target distribution.
+> >  /*
+> > @@ -500,7 +500,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm,=
+ unsigned long start,
+> >                       if (ops->pte_hole)
+> >                               err =3D ops->pte_hole(start, next, -1, &w=
+alk);
+> >               } else { /* inside vma */
+> > -                     process_vma_walk_lock(vma, ops->walk_lock);
+> > +                     err =3D process_vma_walk_lock(vma, ops->walk_lock=
+);
+> > +                     if (err)
+> > +                             break;
+>
+> In every other case we set walk.vma =3D vma or NULL. Is it a problem not =
+setting
+> it at all in this code path?
+
+IIUC the other cases set walk.vma because they later call
+ops->pte_hole(..., walk). In our case we immediately break out of the
+loop and exit the function, which pushes "walk" variable out of scope.
+So, walk.vma won't be used and setting it would achieve nothing.
+
+>
+> >                       walk.vma =3D vma;
+> >                       next =3D min(end, vma->vm_end);
+> >                       vma =3D find_vma(mm, vma->vm_end);
+> > @@ -717,6 +719,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struc=
+t *vma, unsigned long start,
+> >               .vma            =3D vma,
+> >               .private        =3D private,
+> >       };
+> > +     int err;
 > >
-> > Dependencies
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >       if (start >=3D end || !walk.mm)
+> >               return -EINVAL;
+> > @@ -724,7 +727,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struc=
+t *vma, unsigned long start,
+> >               return -EINVAL;
 > >
-> > This patch is based on SJ's damon/next branch which includes the
-> > TEMPORAL goal tuner required for these metrics.
+> >       process_mm_walk_lock(walk.mm, ops->walk_lock);
+> > -     process_vma_walk_lock(vma, ops->walk_lock);
+> > +     err =3D process_vma_walk_lock(vma, ops->walk_lock);
+> > +     if (err)
+> > +             return err;
 >
-> Your test might be depend on the feature.  But this patch series itself i=
-s not,
-> as users could also use it with CONSIST tuner?
+> LGTM
 >
-
-Correct, the metrics work with both tuners. Will reword to clarify that
-testing used TEMPORAL but the patch itself does not depend on it.
-
-> Also, as I mentioned above, the feature is now also in mm-unstable tree.
->
+> >       return __walk_page_range(start, end, &walk);
+> >  }
 > >
-> > Testing Results
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > @@ -747,6 +752,7 @@ int walk_page_vma(struct vm_area_struct *vma, const=
+ struct mm_walk_ops *ops,
+> >               .vma            =3D vma,
+> >               .private        =3D private,
+> >       };
+> > +     int err;
 > >
-> > Functionally tested on a two-node heterogeneous memory system with DRAM
-> > (node 0) and CXL memory (node 1). Used PUSH+PULL scheme configuration
-> > with migrate_hot action to maintain a target hot memory ratio between
-> > the two tiers.
+> >       if (!walk.mm)
+> >               return -EINVAL;
+> > @@ -754,7 +760,9 @@ int walk_page_vma(struct vm_area_struct *vma, const=
+ struct mm_walk_ops *ops,
+> >               return -EINVAL;
 > >
-> > With the TEMPORAL goal tuner, the system converges quickly to the targe=
-t
-> > distribution. The tuner drives esz to maximum when under goal and to
-> > zero once the goal is met, forming a simple on/off feedback loop that
-> > stabilizes at the desired ratio.
+> >       process_mm_walk_lock(walk.mm, ops->walk_lock);
+> > -     process_vma_walk_lock(vma, ops->walk_lock);
+> > +     err =3D process_vma_walk_lock(vma, ops->walk_lock);
+> > +     if (err)
+> > +             return err;
+>
+> LGTM
+>
+> >       return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
+> >  }
 > >
-> > With the CONSIST tuner, the scheme still converges but more slowly, as
-> > it migrates and then throttles itself based on quota feedback. The time
-> > to reach the goal varies depending on workload intensity.
+> > --
+> > 2.53.0.1018.g2bb0e51243-goog
+> >
 >
-> Sounds reasonable!
->
-> Do you plan to further evaluate some performance metrics?  I'd not strong=
-ly
-> request that, but it would be very nice if we can have that.
->
-
-Yes, I am planning to run additional tests. I will send v5 addressing
-all the review comments and dropping the RFC tag. Results will follow
-as the testing progresses.
-
-> Regardless of your answer to the above question, I think the current code=
- and
-> the test is good enough to consider merging this.  I suggest dropping the=
- RFC
-> tag from the next spin.
->
-> Thank you for doing this, Ravi!
->
-
-Thank you! Will drop the RFC tag for v5.
-
->
-> Thanks,
-> SJ
->
-
-Best Regards,
-Ravi.
-
-> [...]
+> Thanks, Lorenzo
 
