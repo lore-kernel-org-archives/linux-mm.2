@@ -4,146 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F281CD58CAB
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 03:25:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9586CD58CC5
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 03:57:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1E206B008A; Sun, 22 Mar 2026 23:25:16 -0400 (EDT)
+	id 96EAF6B0005; Sun, 22 Mar 2026 23:57:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCE916B008C; Sun, 22 Mar 2026 23:25:16 -0400 (EDT)
+	id 91F6C6B0088; Sun, 22 Mar 2026 23:57:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE4846B0092; Sun, 22 Mar 2026 23:25:16 -0400 (EDT)
+	id 835EB6B0089; Sun, 22 Mar 2026 23:57:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA1266B008A
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 23:25:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 677B78BC0C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:25:16 +0000 (UTC)
-X-FDA: 84575887032.16.5D51777
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 57E78160004
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:25:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4THIIc5;
-	spf=pass (imf08.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774236314;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E5C76B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 23:57:57 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE7BB1B8D2F
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:57:56 +0000 (UTC)
+X-FDA: 84575969352.21.592A8E0
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4A16F18000B
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:57:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZVJzS6yq;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774238275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
-	b=lzXwPIv9Edw1nwl4VjRZPk8XILL/qF+8mBg8ZS2EM+t7zOlZ0tTCHFGPuX9eKATpFI8+Pq
-	YuZv7xrnVD9Fnk8WlQdmkqKRxLempxUGftf82K1Sz0edivyub1S/zj243BdbU/i49yOE1/
-	K0nONGCscvMa+vFJzXpjGFq/ljLDxlE=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4THIIc5;
-	spf=pass (imf08.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774236314; a=rsa-sha256;
-	cv=pass;
-	b=wobQ7UxpuoSFZASqPjWeDvoS+xcqTHeU7cyDmZJiGAK1y6BpbWXMJG0DpoPoePVwYPgTOk
-	ogL7J1oO88tgxZ/X1GiI3gNy7lRY0ufzUbx2/uIB0UtJ3RtuCpJ2P104eSe3d0blbGVKEE
-	suAaDx8Ms4Q42gEMzWmncqvIantDPkE=
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12a6b260693so195811c88.2
-        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 20:25:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774236313; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Bq07izwf62Gd7aAEHyxXQ/ZYZDMTqKuOVpsagNPJY0XOAtSD7TYOVni+vVKT9Uk0mz
-         S1mqrT+aEtzvuGxCeFX7XMvD0Gbo2CzAUQAAwx/rIKi7MlYWb2P+/pR07JzTcrqKwAzf
-         P9SdOyi+aGXcSE2vIm03RNgpz4MUL71dTUZWUGrqmxC3xif1NfbcRffD1bxoAklCi5TV
-         6d2+ZSUfl1UgVyskpXETBPLcEH42IFMBURGxXty8lvPDDc9AIXEU1ifHllzuR2zlwQJT
-         XmH29FTh0QM9v0dEgkDkIHsiNZe28wHByeOcBN/9ZurCHoRWMmSqBwkteV/avLtOB7EG
-         excQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
-        fh=3pyr7QWreBjeFH6gbtGM5MdPaNs4z3RG3I/Uyx/knYE=;
-        b=J7IgPrZTbGsF9f8e4M8Lz18Aivbp+D4gINalq8sj3cXu9qugp2gMR8fFg8YxS+7lqH
-         wlYugSMUMwQjjkoQg/hqzeyPebt2RVZ8Dgok8s+VdUUCBskI/xOz5WpSBtpmPvLqYSnc
-         higLXpwE/5pe5t4AZalxiSFvMFPY3DuKqq0JICR2aVnDKCs2Db9Ioi11nzT6Y7obxlNl
-         DmJ37tzHwR3rvdVMCGV0botPHK7cxh2shYgczeq9iXl7i6kHMyxuwFZ9IMt2pMMgmXUv
-         JNbRmzQh3TlIJicLAUz57Z44a1k/EXbqu5JXdv6FU1HJnSKLtx7xs2g5X9bOVkKN4Htv
-         a71A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774236313; x=1774841113; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
-        b=H4THIIc5p6OL1RXclL064tQMyJL3MC9jJJ1wnbo7sIfp91Cw9kgqECnK7KNBdCJ9hv
-         hBXDO/sQRBBm0iaE9DdeoOZJI5iHLzBFKWYBgs2QoG9kf0W+VEw1ouVoWOseMoEe7mKg
-         AXij1T5kMxVHkd5tdjxXnZxqKK7kTEo6GYsUPo7kg0/A0c3LiD7t8uVtYDsH1UyYmS/J
-         nGOKVr8SKN2hri5n111u+UJzDCWDM6HXc2Vwd/y87w01NzKCnjigsUcUCtFDBX3VEp5H
-         NmmNjc9T2PYgABiPMf5NJrEBQU/9OUzpn8m8emuqlX0T6yDnBlFN90cS8fuBYil0xFD+
-         zXzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774236313; x=1774841113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
-        b=l3t1/nYzgsKb9tVqwUUjlPEe+xPGxvNOMSys/UCZHk0RtSfqKkYUufEX4BDKEyE5SP
-         4Ti89c1HCYM1KiZqi9nUwmIUwKVtjWQO8Mv2ZMIgLHrVTZUmhNMvOaO8FDgZeVv/lxqi
-         aqq8LaMWj1LDyzTIA/Aq2mMvtl37NBFtyQ1pLoG1Y+1EgwRIeFGSDIvOEv5Um+B9kmHq
-         cJZY3E2ZS8KAsO64xra6tStTIuUhTSEFesQgFmRGnvprsOmfIUQybdK3EsxybbrjZLDV
-         rqqzR/HF1aR+1ahV9j6DrKnnkkM0oaiVtmrg/g7PYfRmJ/L6w8D60GPwcYlwB/wLcacZ
-         IJhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUli6Qv/KPA/V+pWdRR/w3GTbA2o8ce4JGS6MVCqHdrXksMNhblYVCaY7kUhDG1DA9dNzgELJRGzA==@kvack.org
-X-Gm-Message-State: AOJu0YweIhJskLTkxCFX2eCQWoqIrBMVmFrA8VgF9WFNl8qzcydbZXAl
-	Etlc1sfiiGvk5lENhldwXL3/m0Abi8bIqSRy+2Y5aatcMhlEcmZsF6HEYaaLJFWEbzj4+FQ31C7
-	ioOelSJEFaT2mJI/NH3nPwMvJlRP96wI=
-X-Gm-Gg: ATEYQzzv1NBXUU3i/UTYwFwOx6BT+umt12Y99eIcGspszzMfH4zNAXHjq/cJ92dzAxz
-	7Z1d+9c1vQpTLP4thdpX+55Yt5El4QAdiWjzDcffHKR0fXmdQIoN4b7mFaosK4JTh+XfDUt7YH5
-	45uslRodFOAOPWzdeCBMczxUnhreS4s0kFhyxTjgt2/V9deFW2dJPxJd7CiWcby/TDRAR2NKG8C
-	hvK+wWaA4v3IQSu9TA+BeOJ7Y3LXgH7VFmYVruzbOOvLKExlIp+/06P9M+EV283gKTII4KcDHEK
-	35QUf4c+9/2APXkJFzzh+4m+IjGYO1Q74Pb2TWWQ2PZTk/YFQWUf9o+RR4BEDWXflSrpTdN3Fh/
-	WvGT1dkK4QqFVKALLnsNac9k=
-X-Received: by 2002:a05:7301:100d:b0:2be:1946:858b with SMTP id
- 5a478bee46e88-2c10970d302mr2034525eec.3.1774236312928; Sun, 22 Mar 2026
- 20:25:12 -0700 (PDT)
+	bh=MyAW0tfdZa2oCYf8MeOfukS6HaEwPDs9Yzvpc6J1bRE=;
+	b=c9VcB6sx9mvJBejTJVAODhqiQWv//ZsWjSF4g9y6qYyUepS8SYIYsoDtbKnY/IZyv8YKL8
+	TKqIusrJA25am77lxRC1x4dd2QfMYU6MX+uyDfdzjAcC77LtZzOL3AcW812KNEjJi/Hs04
+	wUn8kSE03j4dFNsdyA0wNcavNK5Pwqc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774238275; a=rsa-sha256;
+	cv=none;
+	b=4VzFdHoue5PBVKN/GzIAzCypPJvqm98xTKqRxPgarO8fWvQ3rzQ+uvwCkQzgiUUFJWMoSD
+	OhviTvf4SnX5nUgPHoYSQDXtromgOzHZmxKWYZOYwRj6HUCyK4vMZ4pnHXzKoO83MpTDoE
+	ouij0b2hQDTSzDySv2d96b/4XDi1XZ0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZVJzS6yq;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=MyAW0tfdZa2oCYf8MeOfukS6HaEwPDs9Yzvpc6J1bRE=; b=ZVJzS6yqXttNMT8su3VS9i4N6v
+	O/gH7tDNEDT7sKZjaq+LIG7oEhJtu833YyLrelCqld+G/pLjKC2ExueDmkBQ+jScgdfN5O3mcYV9T
+	qBfrc7IvTvnK5CJZVVjQVTp5+gUGvB9ioMonawZwCPJuAHtdv9IFuPXKKHQaBuIHRDiH5o6IreEVA
+	i6zi32mVoS6Snd26lX6t/gLD4mtjr8P5GvPnamWRd0LifBaImqsMXewwVImgwz1f25CLIlIWeHEEu
+	BsAWRnJCBe+7Rd0WYyJ18ahvze9ZW37D64cEPhbMe8fTX6BvtOnSfMX2j1uObnQcr3xTk2PXXBMn5
+	0A6XNDSg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w4WQJ-0000000BaLK-1rfD;
+	Mon, 23 Mar 2026 03:57:51 +0000
+Date: Mon, 23 Mar 2026 03:57:51 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Abhishek Kumar <abhishek_sts8@yahoo.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	syzbot+606f94dfeaaa45124c90@syzkaller.appspotmail.com,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
+Subject: Re: [PATCH] mm: fix data race in __filemap_remove_folio /
+ folio_mapping
+Message-ID: <acC6P6ULWgxKXFiK@casper.infradead.org>
+References: <20260322190319.85301-1-abhishek_sts8.ref@yahoo.com>
+ <20260322190319.85301-1-abhishek_sts8@yahoo.com>
 MIME-Version: 1.0
-References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
- <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch>
-In-Reply-To: <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 23 Mar 2026 04:24:59 +0100
-X-Gm-Features: AQROBzAuhFHkGwwSKh-Ea07cCRjtb6eZEQluwHGIFmDfJPfdFW0BK0DaJf2FJhk
-Message-ID: <CANiq72nwSWVDRqm0Vap5j5X5k+Q-wq8okQ9d3KUgZt6M4CpW9g@mail.gmail.com>
-Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
-	akpm@linux-foundation.org, aliceryhl@google.com, 
-	anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, gary@garyguo.net, 
-	johannes@sipsolutions.net, justinstitt@google.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-um@lists.infradead.org, linux@armlinux.org.uk, llvm@lists.linux.dev, 
-	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
-	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
-	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com, 
-	will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 57E78160004
-X-Stat-Signature: tz46kpwrric1x4q3dcpeab93yerzuqx5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260322190319.85301-1-abhishek_sts8@yahoo.com>
+X-Stat-Signature: qruq3qgsghdeqwaysufk6cdj5zobfpwt
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1774236314-762317
-X-HE-Meta: U2FsdGVkX1+ahdzcQWcAP27uPt1vE7WXzKBPxDeELaTOegLogRVMg0Z93Y6Dq1+UXFoN+0kDviOTmgpGeO+NDt1FTFUFELEU2NNnDGSfbU291flZK6nNzuX4BrHg5pStNl732pQilibVLdO7yZ/mKXB8wy9hrsnVzyMRZFMqQQAcnmdB0Ufd8jQYo3qreXgm/W46kGqSClCbiIxCamp05IrxVFytRqFr2czCqE3EYdme9zOTg5BqIMrZ8hFUV+QsEY6Bi68QcTQI0zeG3NJAXUJFse0ZMH47aCqb83G6gFGOc9/Uk1C2R+XFSewkZ5Tx8c2DaKOBh9+0xe99KzO46yQGMud21tmUod4I0wycEk5i1TprjsmgDEHxQW6yieH946HSQGusv1g/MLWryru1ekLdjI26bGMhXRr02cdDoOvkVlSVvmXCJsxuBnbPMEL1XnUfSdBNYkymDypxFZD0M/KwZDhWsVkmibC3kUd6JTZC54jaGQU39HjdMm0F2VY+DkZ59DaD6HI6+JgZzuobpVy7TugcLygRu3MigW073PD+jbGbuR3dg9XcLpnvlMFXb/lIdYB3+oZMEynG3Zg6JOo6oNZOZ1/jzncp3YHv8gDWSP72cpveCKN5UitloXQJRWZE5V7eIYWVbY2hN3BHsDhkJ2YufipgtHTxhajE5Z/URWunDcek94Mz9MSA237815yfU9eyQYHi9AS/9LWAgeWVaMixv4KAuEaXhUGucykvV93VxfMoWTHY0JkNWpUhxUb8tzmLmLt14/cCrZM/B9a2sdHXK/U0L2n5em+tcj/sG8ZbeGinIiq1ToorbY3U95DaLZY2DQN30pioW4Xbx4rYK1/HkYrWppPIneyNSuoLHqybYaxAWMrERbV4PCzOfgOodBsJ3q8wTMn25R1XNzqTFlulUx0rVdBs8Uvpi1GEo8NYkHmcVq0NLmj+18gOLtDfo3y8G7XJxLYyW3s
- 0cMHcRqe
- OzRX4zHwIGvfN36fpj2/EasSZEMJIcQO6A7qPNWABmMNmQsKXOc+B7PdWqc5hS7UGaa1yAe1YJ8D01c6eyJu4JTbUSu21wVe9BMl3AWgvj1mTW1TeuJx8C0Q5FFVuOJRRVGzBM+c6aWC0//uthzGR1Tem4D4VQ+n0n2keAw1ZgUdnnmIEusRRxGusaJWa+43GFjdcdCa2yNdkQ3oYrjXgC3LzYG62yKBX77UEFUzT8XD5wE/yIJt3N5HfRo2wyaXUM3BJBAX00emfAXChXYmpkS1ohKDiZsFACHvFJR4RxYVaEzwjzOOkHJMX3+RB4/XEq4jZTH6nIyEkJkfWzy7/hDsvqOgg+wdTk1i3tgNhiUmSnjnLoxy4ITL0TQ82UamqxlUSBhT9V4nZf+Vxdr/CcNVuzsd6QELWRYV5YODJu/Q/m0Jg02U3uMzvWMfEXtZrLXct5jIzVW62TUqOCUUGOclDyg==
+X-Rspamd-Queue-Id: 4A16F18000B
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774238274-54046
+X-HE-Meta: U2FsdGVkX1/JZPDnqvVKPw2kTlhh6TzuE8t2NgtsvbA2IEbOGCDnXdNouoYgyND9ZcIxv/ijFKiujJLaQCsLuGBdQPuA5+gEoetjg2WlPNXvUXrUFP5SrS9zBTIiFpjHPrZE6Q/rA0tiB9ZGIaJ+qAazCPCkpfLz6x6BK5VM1Oq5HiWEDjeCoHA8IfSsE+ROEFqUgeZWyaXluFwESlZKzIwZ2ZJukyzxPoPOqt3uHrfnX6X3Rab2keNkvpgO03egDIw7b9kiNBLID5mzEjEu8T2yHzxzfW+Zdo+KFeb5rO7xvAbBCGVVkfrdM5l4X11bWRYOZT1x6kUhkcaBiQgsRCBIb75Qh7levaa/XO75ETkZJoO1864O66FOQ9FsZ/mBFHBOa64vU5kvtQP7xh4wjNLAyGhvqKSqwvdkKxnKIQBPAtoqPnYiWq5b4ZdQY7vGBit7mFjEDLoAUiiA6fc2d7iTpAJpInyDXLmjTzrzPcjZ6JJbr5g6fCeMiqJ4TunU75pbfirrcu+pSh5sTdoBN4bMae18SlDQxtvBY/zkJ5wvhCUaOkhYHBaHBrxmFiN2QTTzqRBm2I/vrVP6i2rAZFoKEzYoG73D2I6ZJY2p151KN0Qd55RDWiJOZENJgR/Mgi0dqlFu1l1UsbGQVujOfJ0Qzz0isqPu+8aeZpSMz2Kst6BJWU6859H4YBPV0ThByELd3R1Ohug2pJ8bs+WCh0sVbwC5HKmKbdQB5iFHVrE7gBZlc62mL1XxBhWufrsU6nCxb2Cj4YNqzyY4xlXGvF7PPV9dDETds4jlViqGO1Blm6h6WdWyL72B0cgzc40mu4Juqxxx2pxZKVSNAh/zXiHxpqnJ0Otkk4poelsOjaD0UA20GiYq1EQ0+FdC7pQEB3MPgPDPmOY8BblOhKDhPtYsueKr3A/san0BCB00zAepNS0Q3HuJkMEcMubM1QOlmcGGO42ChylZhWhxs5V
+ htKBq6sX
+ +cXF/bpViiq054s2GnpsJL9KxsS9hRZH6hOAjsfzPN6hqjX+sL5cfPx+xIM3gH2WMTDFXJsMuP1BoMYXWnPubMqo33Cfe7KPQ5Phd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,20 +93,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 4:04=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> Rust is already fragmented, because it does not support all
-> architectures. Do we really want to make it even more fragmented by
-> having some bindings only work on a subset of the subset of
-> architectures?
+On Mon, Mar 23, 2026 at 12:33:19AM +0530, Abhishek Kumar wrote:
+> KCSAN reports a data race between page_cache_delete() and
+> folio_mapping():
+> 
+>   page_cache_delete() performs a plain store to folio->mapping:
+>     folio->mapping = NULL;
+> 
+>   folio_mapping() performs a plain load from folio->mapping:
+>     mapping = folio->mapping;
+> 
+> page_cache_delete() is called from the truncation path under the i_pages
+> xarray lock,
 
-That is not the case. The `depends on` is not about putting them on
-abstractions, but on this experimental build feature, which is gated
-on `EXPERT` to begin with, because it uses a fairly exotic approach
-involving LLVM bitcode, which carries potential pitfalls, like the
-mismatches on the target string like one of the commit messages
-mentions, and possibly others.
+That's not relevant.  The important lock for maintaining folio->mapping
+is the folio lock (see the VM_BUG_ON_FOLIO line in page_cache_delete()).
+At a minimum, this changelog needs to be fixed because there's already
+too much confusion around the locking rules.
 
-Cheers,
-Miguel
+> while folio_mapping() is called from the reclaim path
+> (evict_folios -> folio_evictable -> folio_mapping) under only
+> rcu_read_lock() without the xarray lock.
+
+Umm.  First up, this is MGLRU-only code, right?  Adding the so-called
+maintainers.
+
+Second ... I'm really unsure how we want to handle this generally.
+This could be quite the game of whack-a-mole; we have many, many places
+in the kernel which dereference folio->mapping without holding a lock.
+
+Perhaps they are all fine; but 12 of the 455 references to
+folio->mapping currently have READ_ONCE attached.  That's a lot of code
+to audit.
+
+> The race is benign since the reclaim path tolerates stale values --
+> reading a stale non-NULL mapping simply results in a suboptimal eviction
+> decision.  However, the plain accesses risk store/load tearing and allow
+> the compiler to perform harmful optimizations (merging, elision, or
+> fission of the accesses).
+
+I think the bigger problem is reloading.  As I understand it, this code:
+
+	struct address_space *m = folio->mapping;
+
+	if (m && m->flags)
+
+could end up loading 'm' twice, once before the setting to NULL and once
+after.  That's more plausible than deciding to load byte-by-byte, or
+whatever else these "merging, elision, or fission" words mean.
+
+> Fix this by using WRITE_ONCE() in page_cache_delete() and READ_ONCE()
+> in folio_mapping() to prevent compiler misbehavior and silence the KCSAN
+> report.
+
+Just to be clear, I don't object to the patch itself, I'm just scared
+of the consequences.  And the locking comment above needs to be fixed.
+But please wait a few days for discussion to play out.
 
