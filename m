@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3CAEEC01BE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 10:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B3AAEC01C9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 10:46:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27CDD6B0005; Mon, 23 Mar 2026 06:42:55 -0400 (EDT)
+	id 800216B0093; Mon, 23 Mar 2026 06:46:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22DAB6B0088; Mon, 23 Mar 2026 06:42:55 -0400 (EDT)
+	id 7D7656B0095; Mon, 23 Mar 2026 06:46:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 144686B0096; Mon, 23 Mar 2026 06:42:55 -0400 (EDT)
+	id 69F686B0096; Mon, 23 Mar 2026 06:46:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F2B656B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 06:42:54 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A18B11B9045
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:42:54 +0000 (UTC)
-X-FDA: 84576989868.23.E875A99
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E2BBF160003
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:42:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JAN43XMC;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5781F6B0093
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 06:46:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF2681EC1A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:46:23 +0000 (UTC)
+X-FDA: 84576998646.27.9EC54C7
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C6199180006;
+	Mon, 23 Mar 2026 10:46:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Tv6B3eRk;
+	spf=pass (imf24.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774262573;
+	s=arc-20220608; t=1774262782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8aIcoKw1B4lZXDlORkn1YTWocVX79AJVMudqEMsMQXI=;
-	b=SzRGIIKiK3lJIBmwp8CqNZoDwp5PcxwtntajiGwLo1JF6yoHTFrHCdVTymwLlzsTqQ3UDv
-	tDE4ssZHRTJi4V8UhM6/BUiCcDc8ANkpZo9FROc1xfz4bZXV9eJstZNkz/f6RlKAHV8D8d
-	nP92h9PX3w4N43KNsAwTwqmkiWFcfCA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JAN43XMC;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774262573; a=rsa-sha256;
+	bh=iQ6mAQdlt6rOthd/wT56xFxrcrGf+UGd+c4429Y/xYM=;
+	b=hjZEjGqaz3AHCi/5eTyqSEztN2fcRwoOmD526Hknnxednbk0/E2twiagyBzfgzM4jXZdZy
+	AO9qiKf0A7Wp8fMVIG/JaAlq4OMsOPuLJuBnQHXHBwIMGnhE3wlwzXIk3hQyhHIogedz0p
+	Z/MTIoLzNi0rIlDvh2Hj+9xZu0EzMKQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774262782; a=rsa-sha256;
 	cv=none;
-	b=yXPwNqT+XznZ/CnMW7xTrHFF3XOl7TIkaI3QPsjFcpZ4yUSr/VnKO0CE+eZcIu+VWo+hR5
-	s+Dpyi2lxoPo01/ikePPFo9ykhC/Wb2Y+9g2eEVLd1PM1OfIsuq8KA/IxX7mlhpJNJI4bb
-	cWEOVbzbkVZ5hDOX8x6hMfc9MZ2HmIc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA47740215;
-	Mon, 23 Mar 2026 10:42:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B536C2BC87;
-	Mon, 23 Mar 2026 10:42:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774262571;
-	bh=kxiLoYmlf4q3ke2uGxZ7iSgE18S0jNgx4Yf9uf826Gs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JAN43XMCFGd9Ew29jBoMUxset0rjSufmFyTX8A97NfjSPz9m6uH6ufeayplDx2FJl
-	 8SnErMDsP4gx7h2lP7GTzcezJd3SK6vyIrI82J4Bubbf1qXi+ZGSr7WUAENmuWv9OL
-	 Fd5oGcdVoMxSvNh0H03OVve7Me51FK2unI72h4N+Ynvl4SqmxAN6Ob+e4mv82A3hxc
-	 22WYsRXX6fNzsKXJ9CldUwU9KqflMPDnKd1LcZy+2ynCEAFjeJPdshC0IU8q83PivN
-	 L/wgbmi+UWQqxi3DnnxllYN2Dq4ocspCN4jxeJfyH21mMGkMvjrHX6Z3rtbP4l7JGu
-	 4UNpN/S+HRVdg==
-Date: Mon, 23 Mar 2026 10:42:49 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 10/13] mm/huge_memory: separate out the folio part of
- zap_huge_pmd()
-Message-ID: <2f8decdb-4ff7-4482-b50d-6718f25df8f9@lucifer.local>
-References: <cover.1774029655.git.ljs@kernel.org>
- <6c4db67952f5529da4db102a6149b9050b5dda4e.1774029655.git.ljs@kernel.org>
- <ce065f40-38a6-4601-845a-78021af80f04@linux.alibaba.com>
+	b=XUFR8oGOp8J5iye1Bzz8rMICu+uap3Pu2T/A4/rwGt9/6aBp8KI9s31I9kC3xdghRQKqtB
+	1B6vRH7K48ri9bfGDEvwX9a/o6n+SPrRTi2Z/jPfraPo7AdSeww/yPzucdSchK+gi2alvv
+	DMZwc8JfyDABmLEagSvt/RBsQnl/hXQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Tv6B3eRk;
+	spf=pass (imf24.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774262775; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=iQ6mAQdlt6rOthd/wT56xFxrcrGf+UGd+c4429Y/xYM=;
+	b=Tv6B3eRkCpXLOJCtaN79deX5c91AnqJ4uF/YIu2hwwcyAF3SFEmOjdoUF3bm1JwJBgRVkp6EBeqixfO/vJXEBkJt3JvEVWkCMOGZI4Ze5CBjQVgsvGvRWkGiKSeqJvk2GwRQO+pVsmJGAIAV81ZucuUImVQX9T2E0L9diap8ajg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X.WQK-Y_1774262772;
+Received: from 30.221.129.170(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0X.WQK-Y_1774262772 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 23 Mar 2026 18:46:13 +0800
+Message-ID: <abaf00ff-3374-44de-81b9-6f806c370227@linux.alibaba.com>
+Date: Mon, 23 Mar 2026 18:46:12 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ce065f40-38a6-4601-845a-78021af80f04@linux.alibaba.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E2BBF160003
-X-Stat-Signature: j5c7d1x5xfyb443cm5z46d9bou874amy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/41] ocfs2: Drop pointless sync_mapping_buffers() calls
+To: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+Cc: linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+ Al Viro <viro@ZenIV.linux.org.uk>, linux-ext4@vger.kernel.org,
+ Ted Tso <tytso@mit.edu>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ David Sterba <dsterba@suse.com>, OGAWA Hirofumi
+ <hirofumi@mail.parknet.co.jp>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ linux-mm@kvack.org, linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>,
+ Joel Becker <jlbec@evilplan.org>, ocfs2-devel@lists.linux.dev
+References: <20260320131728.6449-1-jack@suse.cz>
+ <20260320134100.20731-45-jack@suse.cz>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20260320134100.20731-45-jack@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C6199180006
+X-Stat-Signature: jqi4z6e3d1du9btueoq8zfdt4czn5dqa
 X-Rspam-User: 
-X-HE-Tag: 1774262572-80839
-X-HE-Meta: U2FsdGVkX195OkpDOyMy10Ss4/tH2albJ21HdSZA2XO9MsgSkka7qwZyZT3leOLMmQnNaW6BTEO85WWnZayAcCee9mXX0ZW1WUDTyuyL2wrGTWZCLdgM5i6tyZrNNR4XhE7kYF3AyghYHGGUwc+NLqeE679yfnq/J9Ygy1okYK9Rv75It9UfB8BJZIBlVoD3hAfpobQdzE/xH1cCN7kZYFJcWydqYu8p+bRbfoSpHi42UhMpABs5i3MU30QhYs2rYmEp0aZziu0bHWtGH/ZuRwoEefMaYygShWGp9VJiz01C27cZ6lpuqdeBQtogwVbFgC8HP+tr7MHvFBHRuonzB+83JM1fN8XkJL2DW7IULFuRIHZ64qK8XK/+ZYQydi98YNbGrNp7NFUOtM/R3Qgr4JNNKau6TkZ+jG4X+7z4tuZFxyqRF1tcd6V8o1jPwChfx+pl1dFXTsqSdQ7AVx5K/eYmPrwndeQWoEa4t/zZhREHgm9hyCNVkQbosQyfmNBU06GzztenkKE2SXjcGU2FtdOq4oo5wdlei/BMaqLKgqgTE1/fVn3HG72rEUXQP86zuZD5zCTrGyQuqg3KpAMikjqvHlh7xw3EHEJqEsnBG1s29nyllLLG6eNQ+dUgxTLgnT+L+bNcBXpVf5ik3mlyl+t3KqO787qExYahyHpWSI65tj993OQK2scft9Q4vVnQI7/qcj3VTnLXc2/KZoykrb0XyIEUd/zNG4tb2Xa+PqePkCMPpsY2JXwJ9rr+n8YOzHP2ka+uNwexest72g6WGRrNfU63ip1WI+hW6eclMGjR8WeoexMSCBF95jcNPF456N8cFflFjd52FOiPhp07uJk6ehFk8wD3ivRmynoC02YXI0t7XVh6uls1lNYUddbiMZd+aELf/qfi7Ci5nd8JUge1yIE9bC2u8C5wC6+h30w7rguww2WU0a2Gx87xEer5doE2MxZBxgztQDeUjal
- FLJ9V1GJ
- IMw4AqRMAtBYWaTwBSH0I058kHcE5qoQOiSzk16nsJXbdoi42eHqjQRK44+U64iLJnVWWCUI2wN91rD3prBdMKyLEDvHypz3iPoW/9lzuCDLWIWT/FF2Zv+wJBgqfAoOddcejtZmJ8kLt6GwsxcxrIzI6k1x8ZIyMDxO3rmCYmt0nmw69fsYSFMkTD8vXYIfD3JBeWoFGRGkQfGOr9FxHWBK6HTP5fgUPswfoBxJEJK9aiDwKTbhYl/eQGs1mq3dwOY0LvEqVM/F8O2Wfg3qXLUDrFEqZazkjbaThNSDNTHOKA/VxySdfYcERRA==
+X-HE-Tag: 1774262779-8513
+X-HE-Meta: U2FsdGVkX1/qflEgiw8lEX5kYTqNLiL3vGjpZ6zen1rRakKARW2mxpXaNVt9lJnV+NGL73HaiOW/uVbdVGG6Li6JP+5uVo+/yVlMKNYsmyJJhM9a9sUr5ejqRUGeI4svoSbZAR9jXtphT7kDvgE5m+9372lWewr09ch5Ualyhl56zewIezTokVafkbBGJKXKBuBmYJmtwY5yjjXfSEutjDY2C8kWF2RDWiaoC1NnWP+oec0NKT/YtAwYIWZqu2N4F2AK1AjRBl7EijNLq9AQFTM3xEaEGDFA6t9ZogvRNPfDme1mwPgraDSNnJVQaVyUADiJCt87N9UDVgEh4e7yGxta9CmPG2CzrIj7I4sPgJJKscYmr968U4TqoQur2VBBhoDnzHntZyKoZP+Qqu2YvVRnGZi94jGsa/gdsOWwlB4XfB+9ELiBUmn8//Po9m3ziSZC+znEqo1m//XWcmglKIi3eayZzvqPb/4gVb5SxWK1LYrb6/FL/4IOvNbTSd3mCoiw/BwoookZ9HTBU68eLNTLgsyRpgt7NZD5TVFqjQukiR6YoL4HLCDosa2UtQ1qvVu5emXPkFLjXOlJC4sERPwsed5B8LzunGxKyiMiG7/kOO87qfPMTHZbylJhZCdTpEpOTuqjCghIP9cdqd8BNK/Uh2YiGONphXK+8y4RPdgFeKHv3IKa/E83EGssXHLTxNIAR+JEtRNza1OLdrmICU27xa/P5Urmxt5Ac+HsWqGQbYEEXn93rGgVkLohT9vn8pjdMO7m3y8AgFtiqhZ0q0zuurqGedW1e4JrgTP2KljM8kWNOQMrP3hiDR7mHPd/I+ITfed2Pu6FQqig/n55DvAVHshEeWTKo3nHw3PldRF9Lv2cSIHbFAuv0ku/kyPoTR4g5he0k8H1V8TRgf4XYb06sXpV5eVzm4mxM2B6otIlt8VTIfIoFbRA2mfyfoXcrlVfABm8zljgsIAGcof
+ V42t2Rly
+ xvw9wKeCTbKyjhAWd+A4UzWtpPQb/m6ktF2U52pdy4+iyvgouc9UN2Kl7g9KpHGFr0V2Ct2lp81A3nyh4xCzWsC4X0/4x/EQ5nhIUTj/jpw6MGwoDwF/8E+axdyT9qstleo10eWQr+tHEP4jPt/buqhW4/QQb2AO5EY918piUMvq+/5OHyJJxyJ/eb04jMjYxkDfpwAeJQRwNT43lq1JsumOG8EmheAOnoM6lKKOw1u83jVJdqlbpqjNCnRPZfvIBmLMHVP97mdjuUfkIITavBeDnx0+p6p9p/3INphwEbpOeZ9lmBEcY7I13zj1tXzrQx88GreKR75C/vefk5MVHHQ04aFM/YqWu7CEHxf2xgtsjmcx2tCvpne7LnqM+pCtu6H84aK4spfGJnJvvN3EzTfL6ulwB0qt+e2Ck9mnAGQTE2xB36CkkiwqvzvhiQElcN5lzmjy/EQFKPfp1rtkfWhOYikL0yzVkyfgZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,71 +93,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 21, 2026 at 01:59:34PM +0800, Baolin Wang wrote:
->
->
-> On 3/21/26 2:07 AM, Lorenzo Stoakes (Oracle) wrote:
-> > Place the part of the logic that manipulates counters and possibly updates
-> > the accessed bit of the folio into its own function to make zap_huge_pmd()
-> > more readable.
-> >
-> > Also rename flush_needed to is_present as we only require a flush for
-> > present entries.
-> >
-> > Additionally add comments as to why we're doing what we're doing with
-> > respect to softleaf entries.
-> >
-> > This also lays the ground for further refactoring.
-> >
-> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> > ---
-> >   mm/huge_memory.c | 61 +++++++++++++++++++++++++++---------------------
-> >   1 file changed, 35 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 673d0c4734ad..9ddf38d68406 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -2325,6 +2325,37 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
-> >   	mm_dec_nr_ptes(mm);
-> >   }
-> > +static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
-> > +		pmd_t pmdval, struct folio *folio, bool is_present,
-> > +		bool *has_deposit)
-> > +{
-> > +	const bool is_device_private = folio_is_device_private(folio);
-> > +
-> > +	/* Present and device private folios are rmappable. */
-> > +	if (is_present || is_device_private)
-> > +		folio_remove_rmap_pmd(folio, &folio->page, vma);
-> > +
-> > +	if (folio_test_anon(folio)) {
-> > +		*has_deposit = true;
-> > +		add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
-> > +	} else {
-> > +		add_mm_counter(mm, mm_counter_file(folio),
-> > +			       -HPAGE_PMD_NR);
-> > +
-> > +		/*
-> > +		 * Use flush_needed to indicate whether the PMD entry
-> > +		 * is present, instead of checking pmd_present() again.
-> > +		 */
-> > +		if (is_present && pmd_young(pmdval) &&
-> > +		    likely(vma_has_recency(vma)))
-> > +			folio_mark_accessed(folio);
->
-> Nit: these comments were added by me to explain why 'flush_needed' was
-> used:). Since it has been renamed to the more readable 'is_present', these
-> comments are now redundant and can be removed.
 
-Ack, I think it's _probably_ ok to leave that as a later commit removes it
-anyway, if that works for you?
 
->
-> With that,
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+On 3/20/26 9:40 PM, Jan Kara wrote:
+> ocfs2 never calls mark_buffer_dirty_inode() and thus its metadata
+> buffers list is always empty. Drop the pointless sync_mapping_buffers()
+> calls.
+> 
+> CC: Joel Becker <jlbec@evilplan.org>
+> CC: Joseph Qi <joseph.qi@linux.alibaba.com>
+> CC: ocfs2-devel@lists.linux.dev
+> Signed-off-by: Jan Kara <jack@suse.cz>
 
-Thanks!
+Looks fine.
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-Cheers, Lorenzo
+> ---
+>  fs/ocfs2/dlmglue.c | 1 -
+>  fs/ocfs2/namei.c   | 3 ---
+>  2 files changed, 4 deletions(-)
+> 
+> diff --git a/fs/ocfs2/dlmglue.c b/fs/ocfs2/dlmglue.c
+> index bd2ddb7d841d..7283bb2c5a31 100644
+> --- a/fs/ocfs2/dlmglue.c
+> +++ b/fs/ocfs2/dlmglue.c
+> @@ -3971,7 +3971,6 @@ static int ocfs2_data_convert_worker(struct ocfs2_lock_res *lockres,
+>  		mlog(ML_ERROR, "Could not sync inode %llu for downconvert!",
+>  		     (unsigned long long)OCFS2_I(inode)->ip_blkno);
+>  	}
+> -	sync_mapping_buffers(mapping);
+>  	if (blocking == DLM_LOCK_EX) {
+>  		truncate_inode_pages(mapping, 0);
+>  	} else {
+> diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
+> index 268b79339a51..1277666c77cd 100644
+> --- a/fs/ocfs2/namei.c
+> +++ b/fs/ocfs2/namei.c
+> @@ -1683,9 +1683,6 @@ static int ocfs2_rename(struct mnt_idmap *idmap,
+>  	if (rename_lock)
+>  		ocfs2_rename_unlock(osb);
+>  
+> -	if (new_inode)
+> -		sync_mapping_buffers(old_inode->i_mapping);
+> -
+>  	iput(new_inode);
+>  
+>  	ocfs2_free_dir_lookup_result(&target_lookup_res);
+
 
