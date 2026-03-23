@@ -4,145 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E25FDEC01A6
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:04:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B4D2EC01A4
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 598156B008A; Mon, 23 Mar 2026 05:04:36 -0400 (EDT)
+	id 704CD6B0005; Mon, 23 Mar 2026 05:13:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56F446B008C; Mon, 23 Mar 2026 05:04:36 -0400 (EDT)
+	id 68E0C6B0088; Mon, 23 Mar 2026 05:13:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 485916B0092; Mon, 23 Mar 2026 05:04:36 -0400 (EDT)
+	id 555AD6B0089; Mon, 23 Mar 2026 05:13:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3828F6B008A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:04:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D95841E895
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:04:35 +0000 (UTC)
-X-FDA: 84576742110.05.6298DD0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 020B640011
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:04:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AdEAGGud;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4027B6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:13:11 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E9CB45BDDF
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:13:10 +0000 (UTC)
+X-FDA: 84576763740.01.F7A7006
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 69E5940008
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:13:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=joSxwlsp;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774256674;
+	s=arc-20220608; t=1774257189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RGQ/KzBChMlDHHVVvKgq4We5cSOohVDIOwX3ScaKvxE=;
-	b=Kg5SEf8FurfH53WCw7Qun+/BvebKv12ZXcJCZB59KX4/4hI2b3DANSkdtC93EanMWshqpk
-	gMVlk7rPly/EiNnhxwEhBP8qlRImy1Q25GCgvJFGFdtgyZdGRvXvuVyah3TB3KDzMkK5x2
-	cAnKVY7amBUaSkccRq8lW0BlExt/9Ac=
+	bh=50lipdLdy0rn0ZzFb+/og0BjrVfYMthBF9lHaKHPaS8=;
+	b=CMGjMki2HO+Zh7KhbKz42pi72bPJ6TnMdFCaUxNE8HrYaYr5IQbQ6Mx++qYYyqUq04fpQE
+	IfjAzVrbgrbivuekYvYH4Qx7dUgGRIqhDv25ltqQi/mleoESu9stjmGGlIZ138iQUxe+cF
+	V3gmFjgmBAPNo+UtirGXo4pdAhBLndU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AdEAGGud;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=joSxwlsp;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774256674; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774257189; a=rsa-sha256;
 	cv=none;
-	b=GUUUkr2uc9L8D493OtNaLNw5+e+97os/M8o5TQ0+IqX9QjU34HXWyLCOVXZQVlw0PL2lZC
-	OV2xZ45KTu6646MJ7YQYo3oTeQNj6N5TVJNYRmbCgRNdS4Rslp+7iEDerzNYdrnleQlZhi
-	4PLkgNx4KqKl6j00tgXoR7d4tJ4n7Kc=
+	b=w4sfW+O4abTEWDMZloUsLjrIvLSMTD/xCUg9P/Zs7wlzDYld3Kls9fdN1aDLmJLtZYFgYv
+	6S4AyPVZk5TmoybO7MEs7gYFNtVhhOzCyQgZYfC/jIoYIdHZtK/5DlUli2Xw8ZNI99hjSQ
+	2VQCrCzsF30z37tRVFx/4UD+LsBAiUc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F38F740241;
-	Mon, 23 Mar 2026 09:04:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A32C4CEF7;
-	Mon, 23 Mar 2026 09:04:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E411D600C4;
+	Mon, 23 Mar 2026 09:13:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06702C4CEF7;
+	Mon, 23 Mar 2026 09:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774256672;
-	bh=lH41UorpiECIfRRgkM9qpmsoiLtI0g2zv3RHdffY8oQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AdEAGGudpedxPDpX+oarCiGN3BqyvgzLQrPUhOmkuQ/u3RyDe7xFvhWNa4t0J7CKJ
-	 WPLF01mHtWWzAe8t6TmEhJ/D/LAxqJgNdVqxTD9+1t0ELVe7zgv4BSlgHDC+luKRXs
-	 sAvPoaePO2Ntyiss2uDubWYm/y5IYVhnHJTrxcMDAuqd9Y6QnmK1GFlbfnmRvhGJSg
-	 RasAy/rLmxFCPEL9Vu+sqR2hvicO3Nb3PaxMC3OOWKJA9P/2bOTl55wA8X3f2sKXqc
-	 OfxCKTHAu+eNRhaUknkB6BKU+nDjVIYOyNjx2zioJ5cHMqu5MfpYJtHLGBQddqRcoM
-	 9wOQQuVE67XWA==
-Message-ID: <817bad82-ece2-4bef-9fee-308bd00ff7cc@kernel.org>
-Date: Mon, 23 Mar 2026 10:04:26 +0100
+	s=k20201202; t=1774257188;
+	bh=wzMrqKx3Jtzn/TAs56FycVP5WjxG7mSofPlph6puuTE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=joSxwlspVhKYcgE4zizMzEupkVxH7zBoRt16ItgpGqtktF8hLPrEEOTxfgh4aRR46
+	 H0U9alpLsA83SdovjY4NjT0S8IVfoGCFHfdV08wBojK7QatPitGsHroy+nurmzIUo5
+	 9LTrYrheRCty7XcM5Hdcd35jJVYk4YzX2FwqnAgbFVPaee1S/zk0OOYbb6dWKe54SV
+	 Qejn61X7CFhOqRsAbeUsXpGiEPrzUHGPx8hpLYNbDN7Ghgx9DVL33kddcsAYc4j5Sz
+	 AmCzqaip3eo7Xnd8PbIQkYXGzXvvJm8fegMwy8XoqhfyH8Ytxfa3hUrWvBicIE9Bu0
+	 C1NjdvWhW+Gjw==
+Date: Mon, 23 Mar 2026 09:13:06 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Long Li <longli@microsoft.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Clemens Ladisch <clemens@ladisch.de>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "K . Y . Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Bodo Stroesser <bostroesser@gmail.com>, "Martin K . Petersen" <martin.petersen@oracle.com>, 
+	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, 
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, 
+	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>, "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>, 
+	"target-devel@vger.kernel.org" <target-devel@vger.kernel.org>, "linux-afs@lists.infradead.org" <linux-afs@lists.infradead.org>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH v4 18/21] drivers: hv: vmbus: replace deprecated mmap
+ hook with mmap_prepare
+Message-ID: <409ff1b0-43ff-4b1d-ad07-7624e0817640@lucifer.local>
+References: <cover.1774045440.git.ljs@kernel.org>
+ <05467cb62267d750e5c770147517d4df0246cda6.1774045440.git.ljs@kernel.org>
+ <SN6PR02MB41573DF211DA2469D7FFE892D44BA@SN6PR02MB4157.namprd02.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/4] mm: huge_memory: refactor enabled_store() with
- set_global_enabled_mode()
-To: Breno Leitao <leitao@debian.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, usamaarif642@gmail.com,
- kas@kernel.org, kernel-team@meta.com,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>
-References: <20260317-thp_logs-v7-0-31eb98fa5a8b@debian.org>
- <20260317-thp_logs-v7-3-31eb98fa5a8b@debian.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260317-thp_logs-v7-3-31eb98fa5a8b@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 020B640011
-X-Rspamd-Server: rspam07
-X-Stat-Signature: esot87ddow4y8nznmie9b4hmbgxepew8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR02MB41573DF211DA2469D7FFE892D44BA@SN6PR02MB4157.namprd02.prod.outlook.com>
+X-Stat-Signature: wxa4b5tw9zmseh3c5sqkgqbmydbz5an3
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1774256673-799647
-X-HE-Meta: U2FsdGVkX1+Lpphl10W0QHiUyUydEGuIRh6vKbMiq2XSYpMXihaHozh72ORjswUM9ZA/W/Ijp8sZXVL3K6OkM7SyDIYCWIZ5Aij9lsS5E6JXkIWAQ8/xIMe1kKEe3IIOH/AnbNPf0tiJDNyEs3dQzxjjniSU6qwwd/h4Cv4TWLuU5kCLsvzB4G4q5ZZ49dAl/gRX6v9CfDd71juHNSgQlsO9SPn1aRk0/IJEXoTcvHasYXCf8/rJWBDG3bwpnjf38btxXBfhI3pcrpH16CITrMAGzCzaq+gFLkob+fYVWKb+jKkiECAgxMA4eK23mei1+qBW3gzs140kTGRcM1k3spuy7SQSTkAQP7UbixtQF6iNXV1UzQGgf3q325QSyj7Nn64UrEXOsp9WfFbPz84EKvgG3nZU/U+SJvR40OYYQqbB5DfYFpGo+G6G/i1Kudbxhl7c35bYTYqxkyvS/ntSYX/g/jPPcxrarwLu51t9znLOfcfCm5S+CfaPo+yRD6ty2njZZJ3z9TiZaFXLfHjGriD6CFxA7DgPbl0MsMnpCRDqrazHGTFFZjXAw8n7On+UNW1q106u+lMKSeqxE5jjTcrhWz+oscYIOk6JmogIEbbE2+niO1mtXd09rZzosj8y7zNJ5px+1Pki8wrUrchz42CW1HOye1ehf4fybMJ7znDsfzcNjlVDNujyVK36YwbQrOOwyu76dRGbBSPQDvfDZw4D0viOH4quTo23mJKjnBMat/yUO+yD+bmnGUr+zc3Vj2ljgK9sllMHIaKg3gmTzmTGg8ZlegTZw8FF0MkFf4spNH6AU0puNJKagj7iJlcLCS+J9p5P8FhCCWNJLzm2IwMrKWZ3Gwu+LRHFE3LjYS35S0E5RTIBylqlNeb83fiN/E/wcUALn9IQz3ITYK7EMrPdD1VJbqkGJVYvsFxh66o3hnhBY6oZ5gQZ4dtH1VCn0TTAtAw2iHmX1noro3j
- eOLe2Kzk
- cqBcBwhvzqUJEOQMfFMac3te9ho/iZWjMJYqQ5uJckZkAUx3feqLJmXlvnqja0Mt8/V3x4EfnzEIDzvYVrrUtviri+aCg3i5McHc0TI4micB47sy5LiQbJwZp/m+uu44vHasE/Z155EfKzM3QF3g9Ty7uzTT/rRrNhRAggje7OrHcKIuh9xLrR45eWIHzLGaBSbRxepM+pWqO+t6Yip5TVbsuHtn00w5XxKcxyf1wz3yDpvMYtQ762shNFg4rCpevdAJC32FRQUz91qtxt8Y1bdjIfeGtKCfPSVfArmmiodKxz4i8+Qw4nKqPnsvMJFeyObl9mSiT5UEAjhxnVOAjY5y3bSqRWgHSryrOsullcnFsKtbEeWrCJ/wTN8Kjbx1VqQPKmQd2CpDIs5q9CK1zLeNozi2buFj2TXHTgnHGb8uQrPOU9CmUY2q/IGy4/hb3nBrGfNebRoyEBKsFZgyuQiklM7JUvXAmBNnSjxpwuZp546sGTn7te7eHHw==
+X-Rspamd-Queue-Id: 69E5940008
+X-HE-Tag: 1774257189-506501
+X-HE-Meta: U2FsdGVkX18bHYLer1wjiZLcKyvGkZsBFHBG1AjEa3CQ4FW8F0tHgzm4dhL7u4xKlQqQll0fzdTmWE9naNSynLbbIMYEx1ru4mSksk/X4RagwA87ARVIqONBuhzZbOiP5I74tyMP6F7i5p8lfSxpwQRgeN1vvk4vNg/MX/2v9l33Ow7RrNFs+tb0DKiN7YcuZuo5YkA6FoM2emBmsYSdK73hTry5pgEXtnoF+OLC3yTB0xCFYfSEWzlVNoX1HQigdKX0Jcj0TU6HtjRYaAutZDxNSWMnWuvTgQFQJnd3TduHXUt+rauzb6uSHVylcifzH4gVAKZ+uH6ztplHWrX8ByEI5xDG7Qc3sIWvMWesU/COVWRR4fgJpyd5fgxQwDHx0GRiYDRnBm5mFlmhTTx4Uta3krrG12Xeif0Bb+lrEowUkao0gF0pq+blIiUZQzWebjw86266SChOTnZE8fsTYcZk7vHARZXCjG00dlFtfOEZyxwrFEoI9Zw/xfkJIMpsj0IDt2C12eiLAKVT67g4hhBd4NXwuZxQb4QmoFQUROIjJx/3GIe3hQ+boKit/7Rn8yzo2vJYfUryJXbijm73h2Fyj2s6rLufvHUoLchFQPZZf89+y7AKjbf2yNIGGycR9Ag5AwD95TXuZTbTEoUdgwX9xWXYhxZmLKdG95aV3Rrx8as3KXzzWhbvAk9Up5S3A+X/uFoSqGfHL5ranVTWj+E+L8o2XBWsdj+al6xQIRSdLV2m0XDje+ud3h3E+nLYUE6KZpLn5eInXyzGenahZ+3dIug13hH96UIcDQuVrbb4kOFpcQ2pZWqvjKOWF3w6TFbMXS7tgiYuKa/Xo0I0NL76FXkAxNgZfRMjx0CEgE1L/cjJy52+wC2/m08rKXs4aaonj+X602pYIo4jn2AlBP9vf9MLi2QTmEFJos3tOa1ogLkRbFaRdJ8SzrK7kW//wsR674Ztk2E+R4j8l/H
+ 51o10em3
+ hPBjgnW7X6uyyz3nN0cUKb91mJTWZSramnsCYQYPBf+ZHj6mypZqWX1FHl6SoiUXtkjpgTjFSU6ABGBpJ7wczh4ZAPb4kA3hFnyNrjfWntQ82Kbj9OmpD5oM42eB7/lpPQNgFSX472UIgskaV1RlEjZ1Y+FYOFbXoNRDGxk++dL7Ivp1UYTGpkNWIvJaXwwvQ3SPmo4qKj7T020DmZe+U3JmX4r8YUjW0fn9fTl981oi2NmBXTfikcE6ihM2OyqNSSxrlB34HBDTUHeNg+DBYYHtYl65t9hjYX4t03SSKD/tczy1uWx9RxZk0WeiKbBocfk5sALxE6UxydWMijkcg6XxyEjkbhXn+dmVNiK2g0NqZDcmLFn+Xn8CsFyw1v7NQL7ltR4grnemAxsDhT1fdB2YHk0TfIg+GCL2F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,34 +113,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/17/26 16:33, Breno Leitao wrote:
-> Refactor enabled_store() to use a new set_global_enabled_mode() helper.
-> Introduce a separate enum global_enabled_mode and
-> global_enabled_mode_strings[], mirroring the anon_enabled_mode
-> pattern from the previous commit.
-> 
-> A separate enum is necessary because the global THP setting does
-> not support "inherit", only "always", "madvise", and "never".
-> Reusing anon_enabled_mode would leave a NULL gap in the string
-> array, causing sysfs_match_string() to stop early and fail to
-> match entries after the gap.
-> 
-> The helper uses the same loop pattern as set_anon_enabled_mode(),
-> iterating over an array of flag bit positions and using
-> test_and_set_bit()/test_and_clear_bit() to track whether the state
-> actually changed.
-> 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
+On Mon, Mar 23, 2026 at 04:16:20AM +0000, Michael Kelley wrote:
+> From: Lorenzo Stoakes (Oracle) <ljs@kernel.org> Sent: Friday, March 20, 2026 3:40 PM
+> >
+> > The f_op->mmap interface is deprecated, so update the vmbus driver to use
+> > its successor, mmap_prepare.
+> >
+> > This updates all callbacks which referenced the function pointer
+> > hv_mmap_ring_buffer to instead reference hv_mmap_prepare_ring_buffer,
+> > utilising the newly introduced compat_set_desc_from_vma() and
+> > __compat_vma_mmap() to be able to implement this change.
+> >
+> > The UIO HV generic driver is the only user of hv_create_ring_sysfs(),
+> > which is the only function which references
+> > vmbus_channel->mmap_prepare_ring_buffer which, in turn, is the only
+> > external interface to hv_mmap_prepare_ring_buffer.
+> >
+> > This patch therefore updates this caller to use mmap_prepare instead,
+> > which also previously used vm_iomap_memory(), so this change replaces it
+> > with its mmap_prepare equivalent, mmap_action_simple_ioremap().
+> >
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> > ---
+> >  drivers/hv/hyperv_vmbus.h    |  4 ++--
+> >  drivers/hv/vmbus_drv.c       | 31 +++++++++++++++++++------------
+> >  drivers/uio/uio_hv_generic.c | 11 ++++++-----
+> >  include/linux/hyperv.h       |  4 ++--
+> >  4 files changed, 29 insertions(+), 21 deletions(-)
+> >
+>
+> There are two mmap() code paths in the Hyper-V UIO code. One path is
+> to mmap() the file descriptor for /dev/uio<n>, and the other is to mmap()
+> the "ring" entry under /sys/devices/vmbus/devices/<uuid>. The former is
+> done by uio_mmap(), and the latter by hv_uio_ring_mmap_prepare().
+>
+> I tested both these paths using a combination of two methods in a
+> x86/x64 VM on Hyper-V:
+>
+> 1) Using the fcopy daemon, which maps the ring buffer for the primary
+> channel and sends/receives messages with the Hyper-V host. This
+> method tests only the 1st path because the fcopy daemon doesn't create
+> any subchannels that would use the "ring" entry.
+>
+> 2) Using a custom-built test program. This program doesn't communicate
+> with the Hyper-V host, but allows mostly verifying both code paths for the
+> primary channel. As a sanity check, it verifies that the two mmaps are
+> mapping the same memory, as expected.
+>
+> As such,
+>
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+> Tested-by: Michael Kelley <mhklinux@outlook.com>
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Perfect, thanks so much for this!
 
--- 
-Cheers,
+It is tricky for me to test these, beyond fairly exhaustive logical
+confirmation of equivalence, so this is _hugely_ helpful.
 
-David
+>
+> The most robust test would be to run DPDK networking against
+> UIO, as it would communicate with the Hyper-V host and use
+> multiple subchannels that resulting in mmap'ing the "ring"
+> entry under /sys.
+>
+> @Long Li -- I'll leave it to your discretion as to whether you want
+> to test DPDK against these mmap() changes.
+
+Thanks in advance for taking a look on this also!
+
+>
+> I've noted one minor issue below.
+>
+> [snip]
+>
+> --- a/include/linux/hyperv.h
+> +++ b/include/linux/hyperv.h
+> @@ -1015,8 +1015,8 @@ struct vmbus_channel {
+>  	/* The max size of a packet on this channel */
+>  	u32 max_pkt_size;
+>
+> -	/* function to mmap ring buffer memory to the channel's sysfs ring attribute */
+> -	int (*mmap_ring_buffer)(struct vmbus_channel *channel, struct vm_area_struct *vma);
+> +	/* function to mmap_prepare ring buffer memory to the channel's sysfs ring attribute */
+>
+> Changing the comment from "mmap ring buffer" to "mmap_prepare ring buffer"
+> produces awkward wording since "mmap" is used here as a verb.  It might be better
+> to just leave the comment unchanged.
+
+Sure am happy with that of course, I think Sashiko moaned about this but
+it's obviously fine either way.
+
+Andrew - do you mind restoring the comment to its original form above? Thanks!
+
+>
+> Michael
+>
+>
+> +	int (*mmap_prepare_ring_buffer)(struct vmbus_channel *channel, struct vm_area_desc *desc);
+>
+>  	/* boolean to control visibility of sysfs for ring buffer */
+>  	bool ring_sysfs_visible;
+
+Cheers, Lorenzo
 
