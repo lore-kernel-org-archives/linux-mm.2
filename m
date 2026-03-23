@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84BDFEC01A0
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F8DEC01A2
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:50:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC4606B009E; Mon, 23 Mar 2026 03:50:22 -0400 (EDT)
+	id BB72B6B00A0; Mon, 23 Mar 2026 03:50:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9BC96B00A0; Mon, 23 Mar 2026 03:50:22 -0400 (EDT)
+	id B8EF66B00A2; Mon, 23 Mar 2026 03:50:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB20E6B00A1; Mon, 23 Mar 2026 03:50:22 -0400 (EDT)
+	id AA4F86B00A3; Mon, 23 Mar 2026 03:50:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CACFA6B009E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:50:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C9B0C325E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:22 +0000 (UTC)
-X-FDA: 84576555084.18.BB86FB4
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 979326B00A0
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:50:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B80013BF8C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:33 +0000 (UTC)
+X-FDA: 84576555546.19.81BA9B9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AAB0D40007
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:20 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qZ1UA+S0;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 91AB5100002
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:31 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l2yPHSZJ;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774252220;
+	s=arc-20220608; t=1774252231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hp2SHzlMg9ZKrrLoSZx9rF14yrd9oG4HA8B/gpsDvBE=;
-	b=EWbDYZlPYlhnWZkGX3QtHgXViHbrSwZ2WFLYmQZADldNziFob/GVQwjEERo1BDrGsdlFh3
-	onvp20hIOyowKZyXKcvbTzTI642wBVheXS+q3UDqV4DBgKAYeGxpvjH8ivK2IXLGNqJrDs
-	Ma107xiS1qOSLvnTKimTQ14O/yY6PbI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qZ1UA+S0;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252220; a=rsa-sha256;
+	bh=HBQ46eALmOXx1bXFmc5/BhXaBncR35rS+7D8fkUk74Y=;
+	b=pHkjB0Tn4L0Nog0PP/z379R2kLo1GLFwcgdwMidovTSaed2N0tmkDJQ6BrDR4wrw4Q7YqA
+	tEbS3aEo2Bi4pFhXmHS7hdBwC1fWwuHg9U2TlXzbSTj6xRM1RIdPBw0H4c5eD3boXeCzp1
+	eWkn7nPWqwHGtsmE7hGTSVWLu3nZHyg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252231; a=rsa-sha256;
 	cv=none;
-	b=KDgfxTvceBl+MO8b3kk124vmtco1rbm6Ttm4jdy+NGeMRz+u/XVVY/JdA2xPvHzFgM3p/c
-	sZv2Cmexkqp5QqJFqMauyfd/BSX/nv2WGDcMw9gVjYgRO/6ieshJ1ipDe+zHx3iurR0dtu
-	cYrlqlTuq7rc2doR6aOpmA2EGmgNN2o=
+	b=eRix/9MJHDI+9ZLJsH4KD6bkhu3aoOLN56dpGghvKC29j5olA8PMdkxjXceexId2bhR78d
+	EhSYDgOzPOUfooMggFptVwke+fR+TgOyP48PsZUPT0hm0KilGt0ZXTzKElFcapDKffsMMk
+	D5faYJlggDE3um1g6Z+B6WUHDlO4A18=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l2yPHSZJ;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A148D43704;
+	by sea.source.kernel.org (Postfix) with ESMTP id C11DB43704;
+	Mon, 23 Mar 2026 07:50:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A012C4CEF7;
 	Mon, 23 Mar 2026 07:50:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE36EC2BC9E;
-	Mon, 23 Mar 2026 07:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774252219;
-	bh=+ig/11q3VRUjF4ArUTH3xGDXOKNW07DxpNhjoaJhyZw=;
+	s=k20201202; t=1774252230;
+	bh=2YaMKdXLS6q2N8eU5YUjQf/EJjPIOHb0bH+1NaX/nR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZ1UA+S0+bqroRdQ7z9eWrVqAwO2iw+4ovgINTlm3abR6YK36AftCJVaJb1iJfkoo
-	 uhqVGJrE9Yb4VkqFX/pnhX1e0V/d6p6AshGhQpkA+JQLZL9YUwzBPJsiWyOz+7akJ8
-	 Ciw7bBi65L+YU8wl1or8U8ac4EODsE3Zz4y1GXaEMLmUCFrrK0UqcauK7WvYYOtpaU
-	 o2+46DVcuJEsMjFu3pRR4gqkDbBoEVV8rZu4ZWhsLpDVfC6wJmpfrR5WYbGvZfzlnz
-	 Vsy42hU8lzIDX/ALRMvYcuUgo/O5Xw9CUlMr0PXgjWQGA9aRWYD5PrDj5dKZthfLfr
-	 ARLZ9RxDe9cag==
+	b=l2yPHSZJSFV/2Xg29g07aWdlpqOxb4al6/yvYuIOUOc2J7tJq3yci9lYgN2Ad0Btc
+	 nh8HF9hH3MVm8s1S/WvMnipPqcfHyqAWEvEIecCcyDRi1zIUz73z0ufinHvS2jUzLd
+	 5aN1Ha8QPGf10iolGEgBJSw3s3hSAP0Nc5WD7PS9QgwP1azCodE+X0whKC6tqHZLc6
+	 x38IZNl+bgo7TYx0jvflmrbVMoc8805c5TR7QMdkpN9XA29LY99N0h9RQbpDy+SrSX
+	 EuBPFYqGifP/Y+eDtcoJ7SoPLUbAZ5a/FJM8kp8xH+wzmAySKlRhhdc4rhpWSVh4yl
+	 yYvsW9iWMARwA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Potapenko <glider@google.com>,
@@ -113,22 +113,22 @@ Cc: Alexander Potapenko <glider@google.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v2 8/9] memblock, treewide: make memblock_free() handle late freeing
-Date: Mon, 23 Mar 2026 09:48:35 +0200
-Message-ID: <20260323074836.3653702-9-rppt@kernel.org>
+Subject: [PATCH v2 9/9] memblock: warn when freeing reserved memory before memory map is initialized
+Date: Mon, 23 Mar 2026 09:48:36 +0200
+Message-ID: <20260323074836.3653702-10-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323074836.3653702-1-rppt@kernel.org>
 References: <20260323074836.3653702-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AAB0D40007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: bze5fidoc7rpfg1n58eobd4rud3yyaek
-X-HE-Tag: 1774252220-216876
-X-HE-Meta: U2FsdGVkX19RIQoSf99rLwd5OzR/aLqkkgzEtcIjToT0dlTN9HyYzIagL+lytI5OhQyW/TsoOQj+lUJg9GB8zcwX37tSvK13bG4B5BVNh3bJI+KfTnX/0oFmeKuPrENE/V+QKD/w0dNLYz+ofGMhur45Tn1vU2y22TlYg1oVvg1knKCxt73+R4jD6Fc0icKODog3NWTW1JKBPqHeYUO8yqEH1RLrHzYuXNrdzVXOmAwTFfKXxfHaRQutTAm5vDmlVnDnzPbNRmDLNIWnhA5EXUbWWz557ITHTnEID3h9+KXj+VmOt9eIUzVhiTorjTeFx/F949CS18VIN39EAiR2cDkhzhJrJLVHBBzJDjrHk6akNHaVugLLCt9ivCn9XnRTjHofzxx2/sSiDjQT6kdwbCJRQ9+or65rvAd2ijWm25h0v4ztyIoh3p8IBiHI0TE78fnb7dEAvViNQHm5v4WfXqCfKOhZ2T4M2BF03WBLSnH4BAJ9Due28rVxvL8F8X8dbzvetuTNEJ3/ZOgfqkLq53Gi+uvaan40Jx4dZyLUGI4DvNS1AcJd1VvWXDRwWgZPr3UaUENV9qNwlgYwyCoyhyLwy6sKhSeExgqKRK9lj4xxDE/8ogzLmJOhq9z01CDAPPcePr8P4EzIDeIDp6UXdT+HLLut2Fx79lg5cpJp8n+4K+k8W1FUzg/pTu1rRsfkgvHNV8sOnChnXtHyyRISuQbXrc8Wmamtz/zGOMHyXoQQNBv3Qisri21v/kTYK0oWyM4CKKuZKU4VUTIYlSlZg8Mh9u5AoTH64boYnkk0huQavGkgQzTMjTZYzpMB16E47sj8DntJAOD0S42fImjxrTZVPOJ7jMOzAbJf2e3gpRrWwdiBbxfAklrixbh+Xr8B0+F1hARYIi66ee4khMnnQUI8SCBajcoHX5u18VXjf7tHHKCdCwjXWFd1jT1EU5iYE7P/k57noTtb3RTS+My
- O/at/grI
- ZzhoD4q4/aSNeVmgYxpgc0TgTk3HT22HRV2RDB+Z5JJ2EEfxbtsNFbRu1PIznHY7pN9arK1hRlSDI3as1ukPN1qKo7UzJBywJxVAuMgRATRb7zenID8pKJ4YUeBkqyOlVxOHB6tMPRCD3epLC9jGjGlgQwRUrhBX2T1iu2CKegfpZvdc7tZTkkN9mucTyvqSuK3F0YFmqMw72YgIKtL/mG3si938sN5mDIaEEb4k3G1We4Iml1E7Ub2Dswd9xRFz9N75AdVqynAvTeGCDe42tkjLfMmQD9CMOt3Lx
+X-Stat-Signature: adbzma1fejcmgcig3c7uiyxan6o5p1p1
+X-Rspamd-Queue-Id: 91AB5100002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774252231-748083
+X-HE-Meta: U2FsdGVkX19ST1GZ343Ju7A8TPgR/B/XzRhn1lyVhhm7tB3Z2/VFoi3aYE2MpGm7+zplGeIbkH8hVi9gysfaXMOAfoVdV6E26dOLs47J1lr5njiBsivmvr1swnitifq2TeKhopvALNIzmxSOnDMKhBtes+KhNsVApTs8vMpeROPMgF2O+2XX7cY1soc7gImMWcBDk+hEG/d4YJ2mhZdPrkNGjiW36UMIFwXAJj9KO9Y9ZdnKMrgNpwk4jSgrjX+udhgJhLSkfs/kC4y6UkRXdaHDrD/9mq4L08xFleqvRTWHUQTZlRxIaYfAWktzCdInDiMuTsmyV0yMgni5MunKAMoUT3I9kmO9NX9J+G+2GvVruycyuQW1Mbq8ek6K14HwRACcTkCpSJZzK0G62MUCLDmsJ2e/Cc8rMs22HM5pHBOAR4m5QAMGUn9/zTGryHId8RXbwXOmTk0YNFS4oBh4Bdq7xRzUl04lfl/ikFlA3kWs5oCYaaUbBT4jQODRwQLTx50X1ZGCCpeN45RaJdY1FUq7ZmAI86uPEcB3jHg6QUbbPp1Z7jHH6kA2j9CWt+V+X9NLC+SQ0Vr8hQO2F7958aTOjhhINiaYxzKhb18ixa4F13bydZQWZESV91FFVueSQFSdU4FENf/Ddwjl9rbwc0r7buv5radq2ENh5RoByl/Om+uj1W38+CQD/FNuAu1CCWDkRugmTnh8dA1+PZpjVafihPPLpi2cHXoWvSUKITtZFfN+4xYWqcTB60JhOYtPxgpX4yNYGQG0SbdP7i5dgG4vIHOPuf9MzBrZDYwqnaCH1R8r8rdLddy6XjBvVITlkH9mRocsTkl9uvLqaA+tLlIKQy2aQoiCR7xFbtICSgpUrXroJVRi/TU6RA8TKmKilb8DQPcuGJfmNiay8svYyEoOpM1ygf2mwXILsepf8lMPDZKsoWk8DB97lePsW8tqN4SWa2HNNC2ydwbtw+a
+ +0kdd0mL
+ VXNllv9D6dMt/SFU6Jf6IfWs1nQeBQoe+j6VtnYel+0TD3nlfMyYck9OUuWn4nX7Ot78NRSuQBuWdCj970qV1r364Q6hy/yg/y6n65oE+UOAn49UnsR/h+3S8R3zFqlAgFkacBCWqsLPRO8T1E6VlBo38C+DA2q0yBJLfa1j+uZkdYzz13K/p88opG8U9NLJlDpLfU0/JVTCuzu5R2qoZUi3wmK3YvDn+Xzu648LXp9/VlGe5rd0/Im5cxI8OD5+kjeBwg4dras3F6t3QToEzpji3Z8pAkBKFrJ28cDIpAFApGNlGAxXDwGVw6HUuFGc2CkJ7SI05Me7khHSHhyH1HdIDIUNCgrktbOxOF8po4ZkQ2pt0v7lRN3fslHXKljM7k+yC4a6Q0Qs2zLiD+yqGsA4QcPbzFdW62aBp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,279 +138,114 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-It shouldn't be responsibility of memblock users to detect if they free
-memory allocated from memblock late and should use memblock_free_late().
+When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, freeing of reserved
+memory before the memory map is fully initialized in deferred_init_memmap()
+would cause access to uninitialized struct pages and may crash when
+accessing spurious list pointers, like was recently discovered during
+discussion about memory leaks in x86 EFI code [1].
 
-Make memblock_free() and memblock_phys_free() take care of late memory
-freeing and drop memblock_free_late().
+The trace below is from an attempt to call free_reserved_page() before
+page_alloc_init_late():
+
+[    0.076840] BUG: unable to handle page fault for address: ffffce1a005a0788
+[    0.078226] #PF: supervisor read access in kernel mode
+[    0.078226] #PF: error_code(0x0000) - not-present page
+[    0.078226] PGD 0 P4D 0
+[    0.078226] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+[    0.078226] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.68-92.123.amzn2023.x86_64 #1
+[    0.078226] Hardware name: Amazon EC2 t3a.nano/, BIOS 1.0 10/16/2017
+[    0.078226] RIP: 0010:__list_del_entry_valid_or_report+0x32/0xb0
+...
+[    0.078226]  __free_one_page+0x170/0x520
+[    0.078226]  free_pcppages_bulk+0x151/0x1e0
+[    0.078226]  free_unref_page_commit+0x263/0x320
+[    0.078226]  free_unref_page+0x2c8/0x5b0
+[    0.078226]  ? srso_return_thunk+0x5/0x5f
+[    0.078226]  free_reserved_page+0x1c/0x30
+[    0.078226]  memblock_free_late+0x6c/0xc0
+
+Currently there are not many callers of free_reserved_area() and they all
+appear to be at the right timings.
+
+Still, in order to protect against problematic code moves or additions of
+new callers add a warning that will inform that reserved pages cannot be
+freed until the memory map is fully initialized.
+
+[1] https://lore.kernel.org/all/e5d5a1105d90ee1e7fe7eafaed2ed03bbad0c46b.camel@kernel.crashing.org/
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/sparc/kernel/mdesc.c               |  4 +-
- arch/x86/kernel/setup.c                 |  2 +-
- arch/x86/platform/efi/memmap.c          |  5 +--
- arch/x86/platform/efi/quirks.c          |  2 +-
- drivers/firmware/efi/apple-properties.c |  2 +-
- drivers/of/kexec.c                      |  2 +-
- include/linux/memblock.h                |  2 -
- kernel/dma/swiotlb.c                    |  6 +--
- lib/bootconfig.c                        |  2 +-
- mm/kfence/core.c                        |  4 +-
- mm/memblock.c                           | 49 ++++++++++---------------
- 11 files changed, 31 insertions(+), 49 deletions(-)
+ mm/internal.h   | 10 ++++++++++
+ mm/memblock.c   |  5 +++++
+ mm/page_alloc.c | 10 ----------
+ 3 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/arch/sparc/kernel/mdesc.c b/arch/sparc/kernel/mdesc.c
-index 30f171b7b00c..ecd6c8ae49c7 100644
---- a/arch/sparc/kernel/mdesc.c
-+++ b/arch/sparc/kernel/mdesc.c
-@@ -183,14 +183,12 @@ static struct mdesc_handle * __init mdesc_memblock_alloc(unsigned int mdesc_size
- static void __init mdesc_memblock_free(struct mdesc_handle *hp)
- {
- 	unsigned int alloc_size;
--	unsigned long start;
+diff --git a/mm/internal.h b/mm/internal.h
+index cb0af847d7d9..f60c1edb2e02 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1233,7 +1233,17 @@ static inline void vunmap_range_noflush(unsigned long start, unsigned long end)
+ #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+ DECLARE_STATIC_KEY_TRUE(deferred_pages);
  
- 	BUG_ON(refcount_read(&hp->refcnt) != 0);
- 	BUG_ON(!list_empty(&hp->list));
++static inline bool deferred_pages_enabled(void)
++{
++	return static_branch_unlikely(&deferred_pages);
++}
++
+ bool __init deferred_grow_zone(struct zone *zone, unsigned int order);
++#else
++static inline bool deferred_pages_enabled(void)
++{
++	return false;
++}
+ #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
  
- 	alloc_size = PAGE_ALIGN(hp->handle_size);
--	start = __pa(hp);
--	memblock_free_late(start, alloc_size);
-+	memblock_free(hp, alloc_size);
- }
- 
- static struct mdesc_mem_ops memblock_mdesc_ops = {
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index eebcc9db1a1b..46882ce79c3a 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -426,7 +426,7 @@ int __init ima_free_kexec_buffer(void)
- 	if (!ima_kexec_buffer_size)
- 		return -ENOENT;
- 
--	memblock_free_late(ima_kexec_buffer_phys,
-+	memblock_phys_free(ima_kexec_buffer_phys,
- 			   ima_kexec_buffer_size);
- 
- 	ima_kexec_buffer_phys = 0;
-diff --git a/arch/x86/platform/efi/memmap.c b/arch/x86/platform/efi/memmap.c
-index 023697c88910..697a9a26a005 100644
---- a/arch/x86/platform/efi/memmap.c
-+++ b/arch/x86/platform/efi/memmap.c
-@@ -34,10 +34,7 @@ static
- void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
- {
- 	if (flags & EFI_MEMMAP_MEMBLOCK) {
--		if (slab_is_available())
--			memblock_free_late(phys, size);
--		else
--			memblock_phys_free(phys, size);
-+		memblock_phys_free(phys, size);
- 	} else if (flags & EFI_MEMMAP_SLAB) {
- 		struct page *p = pfn_to_page(PHYS_PFN(phys));
- 		unsigned int order = get_order(size);
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index 35caa5746115..a560bbcaa006 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -372,7 +372,7 @@ void __init efi_reserve_boot_services(void)
- 		 * doesn't make sense as far as the firmware is
- 		 * concerned, but it does provide us with a way to tag
- 		 * those regions that must not be paired with
--		 * memblock_free_late().
-+		 * memblock_phys_free().
- 		 */
- 		md->attribute |= EFI_MEMORY_RUNTIME;
- 	}
-diff --git a/drivers/firmware/efi/apple-properties.c b/drivers/firmware/efi/apple-properties.c
-index 13ac28754c03..2e525e17fba7 100644
---- a/drivers/firmware/efi/apple-properties.c
-+++ b/drivers/firmware/efi/apple-properties.c
-@@ -226,7 +226,7 @@ static int __init map_properties(void)
- 		 */
- 		data->len = 0;
- 		memunmap(data);
--		memblock_free_late(pa_data + sizeof(*data), data_len);
-+		memblock_phys_free(pa_data + sizeof(*data), data_len);
- 
- 		return ret;
- 	}
-diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
-index c4cf3552c018..512d9be9d513 100644
---- a/drivers/of/kexec.c
-+++ b/drivers/of/kexec.c
-@@ -175,7 +175,7 @@ int __init ima_free_kexec_buffer(void)
- 	if (ret)
- 		return ret;
- 
--	memblock_free_late(addr, size);
-+	memblock_phys_free(addr, size);
- 	return 0;
- }
- #endif
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 6ec5e9ac0699..6f6c5b5c4a4b 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -172,8 +172,6 @@ void __next_mem_range_rev(u64 *idx, int nid, enum memblock_flags flags,
- 			  struct memblock_type *type_b, phys_addr_t *out_start,
- 			  phys_addr_t *out_end, int *out_nid);
- 
--void memblock_free_late(phys_addr_t base, phys_addr_t size);
--
- #ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP
- static inline void __next_physmem_range(u64 *idx, struct memblock_type *type,
- 					phys_addr_t *out_start,
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index d8e6f1d889d5..e44e039e00d3 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -546,10 +546,10 @@ void __init swiotlb_exit(void)
- 		free_pages(tbl_vaddr, get_order(tbl_size));
- 		free_pages((unsigned long)mem->slots, get_order(slots_size));
- 	} else {
--		memblock_free_late(__pa(mem->areas),
-+		memblock_free(mem->areas,
- 			array_size(sizeof(*mem->areas), mem->nareas));
--		memblock_free_late(mem->start, tbl_size);
--		memblock_free_late(__pa(mem->slots), slots_size);
-+		memblock_phys_free(mem->start, tbl_size);
-+		memblock_free(mem->slots, slots_size);
- 	}
- 
- 	memset(mem, 0, sizeof(*mem));
-diff --git a/lib/bootconfig.c b/lib/bootconfig.c
-index 449369a60846..86a75bf636bc 100644
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -64,7 +64,7 @@ static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
- 	if (early)
- 		memblock_free(addr, size);
- 	else if (addr)
--		memblock_free_late(__pa(addr), size);
-+		memblock_free(addr, size);
- }
- 
- #else /* !__KERNEL__ */
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 7393957f9a20..5c8268af533e 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -731,10 +731,10 @@ static bool __init kfence_init_pool_early(void)
- 	 * fails for the first page, and therefore expect addr==__kfence_pool in
- 	 * most failure cases.
- 	 */
--	memblock_free_late(__pa(addr), KFENCE_POOL_SIZE - (addr - (unsigned long)__kfence_pool));
-+	memblock_free((void *)addr, KFENCE_POOL_SIZE - (addr - (unsigned long)__kfence_pool));
- 	__kfence_pool = NULL;
- 
--	memblock_free_late(__pa(kfence_metadata_init), KFENCE_METADATA_SIZE);
-+	memblock_free(kfence_metadata_init, KFENCE_METADATA_SIZE);
- 	kfence_metadata_init = NULL;
- 
- 	return false;
+ void init_deferred_page(unsigned long pfn, int nid);
 diff --git a/mm/memblock.c b/mm/memblock.c
-index 0ad968c2f2e8..dc8811861c11 100644
+index dc8811861c11..ab8f35c3bd41 100644
 --- a/mm/memblock.c
 +++ b/mm/memblock.c
-@@ -384,26 +384,27 @@ static void __init_memblock memblock_remove_region(struct memblock_type *type, u
-  */
- void __init memblock_discard(void)
+@@ -899,6 +899,11 @@ static unsigned long __free_reserved_area(phys_addr_t start, phys_addr_t end,
  {
--	phys_addr_t addr, size;
-+	phys_addr_t size;
-+	void *addr;
+ 	unsigned long pages = 0, pfn;
  
- 	if (memblock.reserved.regions != memblock_reserved_init_regions) {
--		addr = __pa(memblock.reserved.regions);
-+		addr = memblock.reserved.regions;
- 		size = PAGE_ALIGN(sizeof(struct memblock_region) *
- 				  memblock.reserved.max);
- 		if (memblock_reserved_in_slab)
--			kfree(memblock.reserved.regions);
-+			kfree(addr);
- 		else
--			memblock_free_late(addr, size);
-+			memblock_free(addr, size);
- 	}
- 
- 	if (memblock.memory.regions != memblock_memory_init_regions) {
--		addr = __pa(memblock.memory.regions);
-+		addr = memblock.memory.regions;
- 		size = PAGE_ALIGN(sizeof(struct memblock_region) *
- 				  memblock.memory.max);
- 		if (memblock_memory_in_slab)
--			kfree(memblock.memory.regions);
-+			kfree(addr);
- 		else
--			memblock_free_late(addr, size);
-+			memblock_free(addr, size);
- 	}
- 
- 	memblock_memory = NULL;
-@@ -961,7 +962,8 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char
-  * @size: size of the boot memory block in bytes
-  *
-  * Free boot memory block previously allocated by memblock_alloc_xx() API.
-- * The freeing memory will not be released to the buddy allocator.
-+ * If called after the buddy allocator is available, the memory is released to
-+ * the buddy allocator.
-  */
- void __init_memblock memblock_free(void *ptr, size_t size)
- {
-@@ -975,17 +977,24 @@ void __init_memblock memblock_free(void *ptr, size_t size)
-  * @size: size of the boot memory block in bytes
-  *
-  * Free boot memory block previously allocated by memblock_phys_alloc_xx() API.
-- * The freeing memory will not be released to the buddy allocator.
-+ * If called after the buddy allocator is available, the memory is released to
-+ * the buddy allocator.
-  */
- int __init_memblock memblock_phys_free(phys_addr_t base, phys_addr_t size)
- {
- 	phys_addr_t end = base + size - 1;
-+	int ret;
- 
- 	memblock_dbg("%s: [%pa-%pa] %pS\n", __func__,
- 		     &base, &end, (void *)_RET_IP_);
- 
- 	kmemleak_free_part_phys(base, size);
--	return memblock_remove_range(&memblock.reserved, base, size);
-+	ret = memblock_remove_range(&memblock.reserved, base, size);
++	if (deferred_pages_enabled()) {
++		WARN(1, "Cannot free reserved memory because of deferred initialization of the memory map");
++		return 0;
++	}
 +
-+	if (slab_is_available())
-+		__free_reserved_area(base, base + size, -1);
-+
-+	return ret;
- }
+ 	for_each_valid_pfn(pfn, PFN_UP(start), PFN_DOWN(end)) {
+ 		struct page *page = pfn_to_page(pfn);
+ 		void *direct_map_addr;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index df3d61253001..9ac47bab2ea7 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -331,11 +331,6 @@ int page_group_by_mobility_disabled __read_mostly;
+  */
+ DEFINE_STATIC_KEY_TRUE(deferred_pages);
  
- int __init_memblock __memblock_reserve(phys_addr_t base, phys_addr_t size,
-@@ -1813,26 +1822,6 @@ void *__init __memblock_alloc_or_panic(phys_addr_t size, phys_addr_t align,
- 	return addr;
- }
- 
--/**
-- * memblock_free_late - free pages directly to buddy allocator
-- * @base: phys starting address of the  boot memory block
-- * @size: size of the boot memory block in bytes
-- *
-- * This is only useful when the memblock allocator has already been torn
-- * down, but we are still initializing the system.  Pages are released directly
-- * to the buddy allocator.
-- */
--void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
+-static inline bool deferred_pages_enabled(void)
 -{
--	phys_addr_t end = base + size - 1;
--
--	memblock_dbg("%s: [%pa-%pa] %pS\n",
--		     __func__, &base, &end, (void *)_RET_IP_);
--
--	kmemleak_free_part_phys(base, size);
--	__free_reserved_area(base, base + size, -1);
+-	return static_branch_unlikely(&deferred_pages);
 -}
 -
  /*
-  * Remaining API functions
-  */
+  * deferred_grow_zone() is __init, but it is called from
+  * get_page_from_freelist() during early boot until deferred_pages permanently
+@@ -348,11 +343,6 @@ _deferred_grow_zone(struct zone *zone, unsigned int order)
+ 	return deferred_grow_zone(zone, order);
+ }
+ #else
+-static inline bool deferred_pages_enabled(void)
+-{
+-	return false;
+-}
+-
+ static inline bool _deferred_grow_zone(struct zone *zone, unsigned int order)
+ {
+ 	return false;
 -- 
 2.53.0
 
