@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0173DD58CBF
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:53:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7616D58CBF
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 414566B0088; Mon, 23 Mar 2026 16:53:23 -0400 (EDT)
+	id 3C7C96B0088; Mon, 23 Mar 2026 16:54:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39E656B0089; Mon, 23 Mar 2026 16:53:23 -0400 (EDT)
+	id 378716B0089; Mon, 23 Mar 2026 16:54:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2652B6B008A; Mon, 23 Mar 2026 16:53:23 -0400 (EDT)
+	id 267916B008A; Mon, 23 Mar 2026 16:54:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 112006B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:53:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B4264BDEA6
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:53:22 +0000 (UTC)
-X-FDA: 84578528244.21.C9BDD62
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D93FE100004
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:53:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kvPVnbAw;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 109AA6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:54:27 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB3051EA1C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:54:26 +0000 (UTC)
+X-FDA: 84578530932.01.69482B1
+Received: from toronto-edge.smtp.mymangomail.com (toronto-edge.smtp.mymangomail.com [209.38.81.170])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D546D140002
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:54:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=hEtjmfsc;
+	dmarc=pass (policy=quarantine) header.from=gerlicz.space;
+	spf=pass (imf09.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774299264; a=rsa-sha256;
+	cv=none;
+	b=SkoAzh4vDMUqZPy+Cl9f7VGY+edfksc+L6hbx3/jL7t/zr9e4dBXdsVF6BZ6t0k/Dna6yB
+	SMab0KRPn7I2JTSIbSZbZbApXPH5FPtFvM+UpqWBQxzfI7GD3p8Ig52xGm1zBJCmXizMro
+	DpenzKqT2PBD47U6Y4RkRLjjuQzGlDU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=hEtjmfsc;
+	dmarc=pass (policy=quarantine) header.from=gerlicz.space;
+	spf=pass (imf09.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774299201;
+	s=arc-20220608; t=1774299264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LUzPZFjQeVSedg3H/jZSfR9FQMyKwp5Ly8lrhERBFcg=;
-	b=Kw6DnTB+Qk6lg8YvujYyCxv/T5doBt9ZNcNhsB37fi7DW0LHsW3w3BiilIW8c85dmuG5xL
-	FODOq40CMwUGMDRIA+4uVlOng/Muhp1OsexHXsX/R5o+owpF1L5ZEYNLBDzDzpHrYBPmPx
-	PFfcc4U04eFYocRYmIKj8V4Ps3RHSyc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774299201; a=rsa-sha256;
-	cv=none;
-	b=1Wp4BY7sxe5f2JiWdbuxpGpRBXcERsUlg1+jKMcnSPF6bi/Hk/aOg0LzO+kAQTBp+jdwQp
-	JZXLtZXCts9q7f9sPJ7/sJQ2UBqcp79Z1STjP+v1csFWZ8wkiC8tz53R9WLMkhifkiTnhB
-	8TzzkgI/Bb3ugg1ddeyvN9NLMmd98CQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kvPVnbAw;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8C35F434BE;
-	Mon, 23 Mar 2026 20:53:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D3BC4CEF7;
-	Mon, 23 Mar 2026 20:53:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774299199;
-	bh=QmQZj8LJwz8i/n5oMIerdh5lvsfZ3NzT10K6LkDvPj4=;
+	bh=c60hJIyNyv9yh8aBhgVysIO8a8ET5sR/fQVUyc4EJU8=;
+	b=aOTU8gIS1kUex+0AvZP3FVgfZfGYvIpv6kPlD4QhmrDzokydAf27plsHidQBgbb0jMH1vW
+	bjkxizkjWYLq6ugc134ZSqRNiXqG9JNPpkWVBSvT86vWUlYyhcqOgJjfLc2eErZch9tIk6
+	DsVNy+KbOdlSDW6txsEnG4LboKvwkoo=
+Received: from [127.0.1.1] (localhost [127.0.0.1])
+	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTP id D31315D9BD;
+	Mon, 23 Mar 2026 16:53:50 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
+	s=mango-1; t=1774299230;
+	bh=zXUX//KKN2ShokHoNvZQWtxG3NpHa+Qkb5EmvEAmUdc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kvPVnbAwr00o9SQ7ZkT1K2caM9+zgYDp9UtWvkzPgTBmdKYSZX22YUmwe8jqHvw2M
-	 0bz6DGEYuA3D+y3EMhjJQLaeqQ7BODjk/7he5KAZUzmSNlTnSv+AIvIdAUsjAb4RoB
-	 DUisssSc2jyK6FKFTDwQ6amAtnVwj/PaSceQlkFw=
-Date: Mon, 23 Mar 2026 13:53:17 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: peterz@infradead.org, david@kernel.org, dave.hansen@intel.com,
- dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
- seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-Subject: Re: [PATCH v7 0/2] skip redundant sync IPIs when TLB flush sent
- them
-Message-Id: <20260323135317.0b702a575eeef93332ba2519@linux-foundation.org>
-In-Reply-To: <20260309020711.20831-1-lance.yang@linux.dev>
-References: <20260309020711.20831-1-lance.yang@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: uie8ng9o439t9sit37hepemkywdzecyc
-X-Rspamd-Queue-Id: D93FE100004
+	b=hEtjmfsc36898xBxppbvJmaSSXZ9V8cKYQVNd8eWcHb+j1Y+sHmDKKzTM+1c2nC7i
+	 AGVknnRIrDPU9zRpN03H7+dA045k/V9jyF/NdBa38udN9MNeIwDgVBTRqeBH6JXRHE
+	 lyb6t5ECkf8f1TL3VkXGpjeOufXV5N6288xL+9LA=
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest
+ SHA256)
+	(No client certificate requested)
+	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTPSA id E37B15D9B9;
+	Mon, 23 Mar 2026 16:52:31 -0400 (EDT)
+MIME-Version: 1.0
+Date: Mon, 23 Mar 2026 21:52:31 +0100
+From: oskar@gerlicz.space
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Baoquan He <bhe@redhat.com>, Pratyush
+ Yadav <pratyush@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 1/5] liveupdate: block outgoing session updates during
+ reboot
+In-Reply-To: 
+ <CA+CK2bC8o2p_poLb0yfp6mAAwR42Vg_99Yh_HLK1iJZrCrsVig@mail.gmail.com>
+References: <20260321143642.166313-1-oskar@gerlicz.space>
+ <CA+CK2bAfPSKfV=_Sw20oqF56+H3a4k3x+47i6-EUK8mLV-i2+A@mail.gmail.com>
+ <CA+CK2bC8o2p_poLb0yfp6mAAwR42Vg_99Yh_HLK1iJZrCrsVig@mail.gmail.com>
+Message-ID: <f76e6cbcf6752342ee940ed0dfeca7bd@gerlicz.space>
+X-Sender: oskar@gerlicz.space
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gto44rsnhamzww8sswdkmrowd6uso4yp
+X-Rspamd-Queue-Id: D546D140002
 X-Rspam-User: 
-X-HE-Tag: 1774299200-634466
-X-HE-Meta: U2FsdGVkX18LY8qkZMDwyHYfg/i1olMks5LcZKGH13glmMkM9gQTu3hmYiVs9h43vVNQs44pddXRXJQ4DCKZNdXA0v7XCjc9Rd/lymy71xaTyCffMa6gMRxGI5biA8n9gVG00sY6KrczhRLMD6aw9dt3h7+u3LXDC+2iWPpGdiBu4mIba//trpr8OV1q5lDobobTZ10gfWEQc0/ulTKjssxG88mGzSCKjy763d8zGJEzet7mPM5vM5+/9MIAmACaNBSiCwjPdPtxg1PT0PLO5JdwaYNa6rvIwt0m6iQJl1Yu+IYOzyAv5WbA0sXkUFD/cdpAL+GHXQZjhor/KkXjReZTJ/nIFb9eBrkfR5vleUsTafoALSSTNrK6OKMXKobfCDMLNd6LQG7V+9p4o/eaWAdLgQ8pfwSmv1kyWshE9t0QQ36HO2L35aF299OtsGiV/VePmGcn6vHA550Hcn81LhDTPgkfS+X2CD28bcQMyX934psjyF2PSJPo2Y4F64AuFP8jYnzsWGYvwXcP2q+VLhkNY1hmfI8ukb15A7ZGodDqdFvPfvtfMX/GCWOSfzAhF2eTBZ5gepvvmvqI5zLQBiHD1MF7/Bc65eMe/2902GTNcUoTsWBuLc07y8V4VRn/HToAriLBLVhj/774iKfjBvJlWixWKXFOF12rZhgyQGfiHBHZMaGGeqjQ7F3qe5UGQ1nhpmkE6PCeZ6PKkikhZ1Ep8aveE/jbFX7vhSvttCj9oREKqosp8W5IOWB3bC27Ga/3JyXwbMyu4CVRUmW3IO1zo2tMMJ6j/I0MG1kI1fzArsKY/EuiQJAMGfblcOerGJwjqezt0IJx8ZOJbUG63Bz2Tm/0yKkQiFtKhhUUiGWZ1HLqTSKj/b1pDxT4Ffs5cjSg1UKrq/RBcuCjVNf+xLkMSlUKJTp48zngCWtF51Iaqn7UO1cULn5uKfN0dbthb6nnRChfHeZLWdHKR0n
- HNTw4mLG
- KMIIbIOFJ/GILdnIjX+QQVfD/+GXqLW3SaGwbJ8JQxzrbeutjk1hV7p/jHU4Z11nyRUKvFUO/5Pk2hGdxW3iUKthHILEQrrKDYYEXqAS94LOa3OeEhmkIri2jaAmLIqgtr0wew09al0KgsKnHDDoxfzpftHTYFjnMOvMReyFZF3ejiRU1dtNZH7ZSZ/E2BVDnjOxgMwTp7VbkWPNYNebkvkPOiT2/+Eay5N/cT8wwALa6cfLMMyWkuhkAej15/RWSjNNW
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774299263-697096
+X-HE-Meta: U2FsdGVkX19OQK496rxexhlxZ0ej2hmdhqTTgufAkba7oefU2244CyOYSqObD6H2NJPNMlHCaEQnMLDmgiw7GTxpv0tCEfM1K0iRlf3aeZ0ZTZmpNTaDfff3NtJhNCbx11lCJ4Kr5NwP2/etk3h/5keXinQk5tIvoLZnAHiI14jZDh1kAziRe1GoLi2P/CMR2PMaATCY+Xx2UPD/5IXXmXkC/7jQe98XfbLq8aMKEpwlP4LrkSfuR3+DvfcTQ5zzwEC8xkwpKE6m33wdZ3gyWWbiVIBvsj1DqTpwDmqv0s6uEaLeIEWRfN3x929Z4jsFBShGq6WHJk7G6P9+9lqdYg163yO747lthDaSF2P+928P2UwA5jSNd1TsA9ugqZRDU8EHe6k8QAMSTQhLtttcLXvNnn3sCneHiyyeCMzJbvxzUhez7o71tf7aMqNNTluVMZVkEJV81S9wTfXQ686qCnfEgV1qeHUVgpYvFB/X5P3hYGE+GE/qGF/HgrkSOOfICQoj5JZYri1R6YvvQ8/B3VbSyz6HVloq7lDRhSbTPcYKnhtuvsN4HP1/ZrtgYMDX52guDfEJkj6CJuPrQg3bzctjlOiVV4Jet7gfbl8b0u1YgZ8tWvUoPsO20aHFIHhiKpZ+/IRvgLhM5Vk38LXX687b4vj5+hNvIyEAx5M0TT/ocEMJ4OLlB2xgSxfhxK1ijY3JHFh41LY8Kw1ne99gp7fNASFWkFatjn3AGhqWzloGCKcGVGDEMo/VLFTzsVCYuIEF+PRe24/saPeNRLUmRQ+azoq3NBNuW50GI/rKYz5LXt3ggJ+zE1TfGoFhCTUJtL1UhC/ph32DUvK5dm3c8qIihDhSehTgr+oP8+EfVgALMirLkYAJofRzk5RCsjki6nFOt1OmgzpEPrZvqWrsNX9xyhG2ZhMF499F2z+6gblhj2bp2yUfXGDwJ2As4VDjMNyPQ1OB7fhwbbBr/Fr
+ gyplSeKb
+ 9VBmZPyh/2k3BhpOhTD35oWcZmw3V7YzAHsXXjcz+Eav4xtRp3RoTvi5q6113UEk9bOxD+kOJ6CQMO4OhJc/lMTSgoVPzlxqrCmXeeXtfrAmbCRhjy9Czli5/0y85oKnU6MdQh82Q92BlZYrOJIfW7U42NxWlHzKpR4lePB/ucUj4+m9YYAYWO1ngHrtAxxcWl8EPF078BwJTiYLTTmP3Lj/rKKZavHWyjXIwAvf9zRbZXDd9J1d2FZOAeQrPFaWLI29KVJKtJcWg2cQN0JtRk3Kzi8qRLhmE6jrs3xUpmVhM2UdynFdg6FbZojD05w9VLoqmBDiaH2wkhhXevcnoOEZg5IxDrYArzKsGmxiIFGwwdtjC8uvY5oJJ7XU/iWtCMOf79P+aeDliFxDeZy8FpqfORSN6Ofxx3NDztF3VOQfomOuvcZzXjRErA+CzBpMsMK0RA2X5M9jO7xsTbzEsglnm70U2Lw1kUfC918+QvI7BUwGjLWYi9uGddCHl6IXLcpsXEKB+cCghc6c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,68 +108,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  9 Mar 2026 10:07:09 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+On 2026-03-23 20:00, Pasha Tatashin wrote:
+> On Sat, Mar 21, 2026 at 6:28 PM Pasha Tatashin
+> <pasha.tatashin@soleen.com> wrote:
+>> 
+>> On Sat, Mar 21, 2026 at 10:38 AM Oskar Gerlicz Kowalczuk
+>> <oskar@gerlicz.space> wrote:
+>> >
+>> > kernel_kexec() serializes outgoing sessions before the reboot path
+>> > freezes tasks, so close() and session ioctls can still mutate a
+>> > session while handover state is being prepared. The original v2 code
+>> > also let incoming lookups keep a bare session pointer after dropping
+>> > the list lock.
+>> >
+>> > That leaves two correctness problems in the reboot path: outgoing state
+>> > can change after serialization starts, and incoming sessions can be
+>> > freed while another thread still holds a pointer to them.
+>> >
+>> > Add refcounted session lifetime management, track in-flight outgoing
+>> > close() paths with an atomic closing counter, and make serialization
+>> > wait for closing to drain before setting rebooting. Reject phase-invalid
+>> > ioctls, keep incoming release on a common cleanup path, and make the
+>> > release wait freezable without spinning.
+>> >
+>> > Fixes: fc5acd5c89fe ("liveupdate: block outgoing session updates during reboot")
+>> > Signed-off-by: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
+>> > ---
+>> >  kernel/liveupdate/luo_internal.h |  12 +-
+>> >  kernel/liveupdate/luo_session.c  | 236 +++++++++++++++++++++++++++----
+>> >  2 files changed, 221 insertions(+), 27 deletions(-)
+>> 
+>> Hi Oskar,
+>> 
+>> Thank you for sending this series and finding these bugs in LUO. I
+>> agree with Andrew that a cover letter would help to understand the
+>> summary of the overall effort.
+>> 
+>> I have not reviewed the other patches yet, but for this patch, my
+>> understanding is that it solves two specific races during reboot()
+>> syscalls: session closure after serialization, and the addition of new
+>> sessions or preserving new files after serialization.
+>> 
+>> Given that KHO is now stateless, and liveupdate_reboot() is
+>> specifically placed at the last point where we can still return an
+>> error to userspace, we should simply return an error if a userspace is
+>> doing something unexpected.
+>> 
+>> Instead of creating a new state machine, let's just reuse the file
+>> references and simply take them for each session at the beginning of
+>> serialization. This ensures that no session closes will happen later.
+>> For file preservation and session addition, we can block them by
+>> simply adding a new boolean.
+>> 
+>> Please take a look at the two patches below and see if this approach
+>> would work. It is a much smaller change compared to the proposed state
+>> machine in this patch.
+>> 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/tatashin/linux.git/log/?h=luo-reboot-sync/rfc/1
+> 
+> Oskar, I made a few more changes to avoid returning an error if
+> get_file_active() fails. This prevents a race condition where the user
+> might call close(session_fd) right before calling reboot(). I
+> force-updated the above branch. Please let me know if you want to take
+> these changes and use them to in the next version.
+> 
+> Pasha
 
-> Hi all,
-> 
-> When page table operations require synchronization with software/lockless
-> walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
-> TLB (tlb->freed_tables or tlb->unshared_tables).
-> 
-> On architectures where the TLB flush already sends IPIs to all target CPUs,
-> the subsequent sync IPI broadcast is redundant. This is not only costly on
-> large systems where it disrupts all CPUs even for single-process page table
-> operations, but has also been reported to hurt RT workloads[1].
-> 
-> This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
-> the prior TLB flush already provided the necessary synchronization. When
-> true, the sync calls can early-return.
-> 
-> A few cases rely on this synchronization:
-> 
-> 1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
->    of the PMD table for other purposes in the last remaining user after
->    unsharing.
-> 
-> 2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
->    and (possibly) freeing the page table / re-depositing it.
-> 
-> Two-step plan as David suggested[4]:
-> 
-> Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
-> flush sent IPIs. INVLPGB is excluded because when supported, we cannot
-> guarantee IPIs were sent, keeping it clean and simple.
-> 
-> Step 2 (future work): Send targeted IPIs only to CPUs actually doing
-> software/lockless page table walks, benefiting all architectures.
-> 
-> Regarding Step 2, it obviously only applies to setups where Step 1 does not
-> apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
-> attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
-> work and tuning; it will be submitted separately once ready.
-> 
-> ...
-> 
->  arch/x86/include/asm/tlb.h      | 17 ++++++++++++++++-
->  arch/x86/include/asm/tlbflush.h |  2 ++
->  arch/x86/kernel/smpboot.c       |  1 +
->  arch/x86/mm/tlb.c               | 15 +++++++++++++++
->  include/asm-generic/tlb.h       | 17 +++++++++++++++++
->  mm/mmu_gather.c                 | 15 +++++++++++++++
->  6 files changed, 66 insertions(+), 1 deletion(-)
+Hi Pasha,
 
-Kinda straddles both MM and x86.
+thank you for taking the time to prototype this approach and for the 
+detailed explanation, I really appreciate it.
 
-I expect a v8 based on David's comments.
+I agree that reusing file references and introducing a simple blocking 
+mechanism makes the solution much smaller and easier to reason about 
+compared to a dedicated state machine. Your patches definitely move 
+things in a nice direction in terms of simplicity.
 
-One merge path is for the x86 people to take this, noting David's acks.
+While going through it, I was wondering if there might still be a couple 
+of corner cases worth discussing. In particular, do you think a boolean 
+gate is sufficient to cover in-flight operations that may have already 
+passed the check before serialization starts? It seems like those paths 
+could still potentially mutate session state during serialization.
 
-The other merge path is via mm.git, if the x86 people can please
-perform review.
+I was also thinking about the lifetime of incoming sessions (especially 
+lookups holding pointers). Do you think file reference handling alone is 
+enough there, or would we still need some explicit lifetime protection?
 
-And...  mm.git is basically full (overflowing) for this cycle and
-review/test has some catching up to do.  So I'd prefer to only take the
-important things.  This patchset is a performance improvement but
-contains no measurements to demonstrate the benefit, so I'm not able to
-determine its importance!
+I’m currently working on v4 and will take a closer look at your branch 
+to see if we can combine both approaches in a way that keeps the 
+solution simple while still covering these cases.
+
+Thanks,
+Oskar Gerlicz Kowalczuk
 
