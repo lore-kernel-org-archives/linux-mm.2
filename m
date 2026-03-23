@@ -4,115 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6423F483DD
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 18:06:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4825F483D7
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 18:19:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D01FD6B009D; Mon, 23 Mar 2026 14:06:26 -0400 (EDT)
+	id 106B86B0099; Mon, 23 Mar 2026 14:19:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB3ED6B009E; Mon, 23 Mar 2026 14:06:26 -0400 (EDT)
+	id 0DEB66B009B; Mon, 23 Mar 2026 14:19:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA1646B00A0; Mon, 23 Mar 2026 14:06:26 -0400 (EDT)
+	id F36646B009E; Mon, 23 Mar 2026 14:19:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A193A6B009D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:06:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62810C3AEA
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:06:26 +0000 (UTC)
-X-FDA: 84578107572.07.B9AA065
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 782A54000D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:06:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W7fGqCKd;
-	spf=pass (imf01.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774289184;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E09376B0099
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:19:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8FC46C3BF1
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:19:39 +0000 (UTC)
+X-FDA: 84578140878.22.2F06984
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 869FF8000F
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:19:37 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=InJYzyA0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of avagin@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=avagin@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774289977; a=rsa-sha256;
+	cv=pass;
+	b=1/NKZSWp1MisjxyFIVZexS4W2IEK0qa/FaU6KRRUaPeidAaTCDs+82vq69XfNOuUrXsfX/
+	i6IlvguDJ0KBtF4aZ5OPLHgJMKczTyA0NW50OtK08sxaQZMZ7N3zbH1jWueipuljoUKnr/
+	HwW6H20+GbY/b5E3UIoYmDaKrlyyILg=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=InJYzyA0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf30.hostedemail.com: domain of avagin@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=avagin@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774289977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:references:dkim-signature;
-	bh=OUxDwIV1fHQiGjXtBvudrJH6Xl2HAj9m2MEmb/6VBik=;
-	b=DWenujy9uTjs5J2Gy+2qOZkS255cPLZAw5wOzeBSATEF1dI6tT5SuAR1pfVYo/3VQdvOE2
-	7f1XPsanu/yGFl6Df6YtV0lFa+1M0WI3Dn5XLdqmMSwseXXUMPUCsLhWllpZ9u22XNKdQp
-	9QnpQ18V8+o4LLdZAJ+YuMkv9y6yZ0w=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W7fGqCKd;
-	spf=pass (imf01.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774289184; a=rsa-sha256;
-	cv=none;
-	b=gP2XclIkaD78MwK38oMEg6jFoAk4iNNcKk7fS8VSEu132Y99tvxCDxQI6kfmDcVmWA6m01
-	m5Znra/GOYaWiyB8OpGcX+dvh7eTwre1vEtcXbbG6HHN13x2bwhIyGX1V6YeBxaa4MSIGU
-	tRusnGh4AwUC2nHEptTiVDOMKDwMhLk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774289183;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=OUxDwIV1fHQiGjXtBvudrJH6Xl2HAj9m2MEmb/6VBik=;
-	b=W7fGqCKdkcctzBQKQOxEuZdbYttpYmz/pqkBllDl0BPIroqdk+CV4sfjYeOL1sC5H2V1zL
-	vd3Pp6JsFpNQgqDVUC2CAKut9NkfcWyk7LBp4hWIWQxbx31bMTBaN3W4hgI4ut1Ak6F4kO
-	ljPMz/Bzqnhja1Z8gyY21DdCmUcFTCU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-176-za_8YkeiOmKSVoylm3fkEQ-1; Mon,
- 23 Mar 2026 14:06:16 -0400
-X-MC-Unique: za_8YkeiOmKSVoylm3fkEQ-1
-X-Mimecast-MFC-AGG-ID: za_8YkeiOmKSVoylm3fkEQ_1774289174
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8297219560A2;
-	Mon, 23 Mar 2026 18:06:13 +0000 (UTC)
-Received: from tpad.localdomain (unknown [10.96.133.4])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A525F180058C;
-	Mon, 23 Mar 2026 18:06:11 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
-	id B403A401F5953; Mon, 23 Mar 2026 15:05:44 -0300 (-03)
-Message-ID: <20260323180150.304067458@redhat.com>
-User-Agent: quilt/0.69
-Date: Mon, 23 Mar 2026 14:55:47 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@linux.com>,
- Pekka Enberg <penberg@kernel.org>,
- David Rientjes <rientjes@google.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- Leonardo Bras <leobras.c@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Waiman Long <longman@redhat.com>,
- Boqun Feun <boqun.feng@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH v3 3/4] swap: apply new queue_percpu_work_on() interface
-References: <20260323175544.807534301@redhat.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rpME3hoPAsp8yjWyK8G0DnmZShEC8d8jtzVq9X3h7nk=;
+	b=n4TNfP0th3ZpzsWeXDdVRnThvTRBZX67RR51vXRuG1/W0F/PYum55nwpKCYUK+lhysQxJe
+	JzDUhGCExSQXniO3GAD2kWaCvLqzzyx4SqckgQ37adt0+ny8LB3LdDtGKHuraEpW3gsOaq
+	S015fLR8nJENrK4sytYVfYa6uX56zQ8=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50b6c45781aso118421cf.0
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:19:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774289976; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K5QzBzlU99VMuNOS5HK4RCAFSK0/QqimLnBzaYx0YyqUTtRgx3RInbztiSQuuCkjMz
+         JVeEsveAOAneBhNda/TH5La96vmM+LU96QyYUyCgJOhgVj+GGmjSKDkrCJfGXy6JZmRV
+         mC1cvczp+I1WYnMjXQ6DlYr5nvSsk3CHsJX+4kOAVZpoiRIwtQ7S97C68o5r9hUMfqiA
+         AhH1fhx1JZhAewpsTDy4skJEJn3C2L0sgasribksjfQ3eDDqe//XCbsVxeyA4KU9e7qa
+         2oifZ4rJ/73fgmy7Pc92RRnMRoSpjQjiWV4vhHQEpK3Mj0SuEUFuNuJ5nBvm8mYW8D6m
+         GOTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rpME3hoPAsp8yjWyK8G0DnmZShEC8d8jtzVq9X3h7nk=;
+        fh=z5XKuuZR9GyHpB/ihBO29qUFxsoRN7Fm/AE22qQvTK0=;
+        b=M2iR1sOc5Hyj0EHr9HSMIlJhWF5K7cWjNXrB5qK2mp4/SCXfAhqkUNVwTWnUWSxZCQ
+         Q3SIQkgYEUjnuAlw72MXPTN2VFpgklHHAb6NpnUsy+fXFrhILAL7hPS8UFqtWvmQIm56
+         nMdgmkUYdZ3hw+CctEezlS3PAX5rxmDdSE7uPXwPMLLTB2Oi3+WWfAhnZU45iiviNMK2
+         UEuL6h+NdcIosOjNZt5Jp6PbJFTVE9Ikp+dKlHiysN3liTI13EX84TdqXKtgNO6RFURx
+         E2sRGXMx+MkEHMr7LX5wSVRCkXY2tRHrp0C2DTF3fPlp1BMYSBCbc2tjTMSxCmkacFla
+         yB0w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774289976; x=1774894776; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rpME3hoPAsp8yjWyK8G0DnmZShEC8d8jtzVq9X3h7nk=;
+        b=InJYzyA0LIZ1d0fLFm3xGHj9QH1xyQJrmB7heKzWNTknnSS/z026Dp79u5gI0EPATz
+         uR3ecrmdvfToTrfZtK/kH31DwJ5w1QbZsGINEjn6cNl1E5gx/YYoeKe9Yk/9pgNk7wpd
+         j/AEttXeYS2/VGGcnheeXBh/qsZL6Os695Zq5GHNxa5hODcWUtVYwf7MwFW1i0GEa4VK
+         Z3wP4Qcbtmcn6L9NQoSmI4nS1PleCcaKXCLMgDRqQDiJ7S1ykDk1UzMjzym91aagqfdA
+         CeTrc3yD6gBFBOpNShqvkjhoYMzn4cWb5anKtZzGuFxlZG5Rytc+Hb+t3pqI79hiuWsf
+         yldA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774289976; x=1774894776;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rpME3hoPAsp8yjWyK8G0DnmZShEC8d8jtzVq9X3h7nk=;
+        b=qsNL/98WN0QFKqWhAx/du0ETMevT3Ll3xD7teyJM3rETgJAHhUPUZ+IUyi6joHazuJ
+         DckCZOT2KsGl0eZAyAhc4Z4klpcRMdfBznDq6RvrPkeO0jxAySloIwRl96GFWcYb6bI5
+         BuGLJr8/ju87Tnh2SOJnf0Z/e+8JgIjaAuC+s0spPp9wyn7LqtuGXsFxMBH3WHyrmxq+
+         hYA+78Ly7CSVadaOYpZ4oHa5Abwu54DZByBGCxEfnu6Avq0n9cEjXI5tkdiFHbveYBTE
+         baAXiIQ4xcNuNYY5wz/aC31WO3p1lNbP8g8kyKNbZ+DgXk30DpLL6GcMLwjesVG5qqrm
+         Kg6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUu/44a4Cfs+vqHO29cuP/D7/fFMxVfyBaBCILt8XJj2LKRtB6V0f4Mu/jfd8DI7mRzTr5vk3vr/g==@kvack.org
+X-Gm-Message-State: AOJu0YxTN2x1w3jjRNYSqLu/D9pJlDJpx/R+t/QGaREnhYIixGQdagV9
+	z3mc0sHDA3ydfL6I1gBAFkFmZTgO7a4ZeZ5gbZMr3wKI6PtlYbjdWw7CHNfXQx/rkS7AAp9N3Mh
+	uQK7nkYJkzfVy5AaAaF2e33uPWZ4u/fm8uWV3p95B
+X-Gm-Gg: ATEYQzy8ghYIjI+tfE4IHQ/AhxnyZKcd3OkzvIvix91zi1vSF2CYY9vEglC3G6QZh1k
+	NQ4VprqQffURXbHrrRgX0/x6ojmHRvRl9EhrxoEbvsNp6J3d/dQrTtf9adMLndllf9liJUtb55G
+	U2E9oukNW7VO4Xq7kYJhzfxVITIh1OkMpeGTx6jAQxMHFqLQ5aqD7zF5aKIru10jWmgc+TuXvCx
+	Z52hVWFL/Iv4Cf7d3ifE5+C5holmkZ7DVwmnBCB/tZFRZO1KMvUGJg7MHsQP0DTXUINPUwmXgrY
+	M2lS91U=
+X-Received: by 2002:a05:622a:a6c7:b0:509:1d4b:f86f with SMTP id
+ d75a77b69052e-50b6fc209e3mr1241661cf.14.1774289975825; Mon, 23 Mar 2026
+ 11:19:35 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: 5F64ayb9ZZHO5gHOUsGCclPQ4e85_gdiYXSycA5ceN0_1774289174
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
+References: <20260217180108.1420024-1-avagin@google.com> <CGME20260320091528eucas1p14a64767f916b556d30cfa00bfd320ace@eucas1p1.samsung.com>
+ <20260217180108.1420024-3-avagin@google.com> <aec9c36d-d67a-4b61-9950-57b95afedf75@samsung.com>
+In-Reply-To: <aec9c36d-d67a-4b61-9950-57b95afedf75@samsung.com>
+From: Andrei Vagin <avagin@google.com>
+Date: Mon, 23 Mar 2026 11:19:24 -0700
+X-Gm-Features: AQROBzAhvewwaxO75KtHSJHA6EI49ZdtMgsJux-PiYZ7CKyEB4qJVMgkX7DDUX4
+Message-ID: <CAEWA0a7s86fO_gezFRWGjXh5i0-=XAuo+7pqqf3CdWRX3kBwGg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] exec: inherit HWCAPs from the parent process
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Cyrill Gorcunov <gorcunov@gmail.com>, Mike Rapoport <rppt@kernel.org>, 
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, criu@lists.linux.dev, 
+	Chen Ridong <chenridong@huawei.com>, Christian Brauner <brauner@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Eric Biederman <ebiederm@xmission.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Koutny <mkoutny@suse.com>, 
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 9uy1jxisperjswxfe7namkoxzjn8w7g6
+X-Rspamd-Queue-Id: 869FF8000F
 X-Rspam-User: 
-X-Stat-Signature: mrnbppra9n8dzy1uz1msk188keqehet1
-X-Rspamd-Queue-Id: 782A54000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774289184-634978
-X-HE-Meta: U2FsdGVkX1+pA3LBTwju6nvlE+bS3mMkp55P8UonRpZBu8160kwQmxDBBqhx9nlHxsTMnS33HyQeJa7hrJ+NzEU4jtQ1/hmfbvSOvdjTf/y4TpxAfn8EKkqB2TfiAc3BXpsjXi+TM7Vk2uZWZr7Mq8kNE8ZlsbwpBVN+9pGrpb8HESkir1janePxHYjU95MDfFbQMtviryvV5amPlpGvuJABXejJG5jQycQ/BMWlfGXgasbtW6qRk58Mpc0APxQBYmtHvt5f/k07tCR0GlK1bs2OQprbmhetEwNw9TU9aNNEuFWJkWIllebIZ1QAhSkYJg4Ls6Hz+FmtkmTZU+SgjxvXPrTddRoebTeRB2dc17VnYllrD05K50Uagmy3UOKefguSNZMc0xIHV1fTJ+17ywyKImolr4gzvpu4Vm6D+LZxw/r9BSPv5ANaypopLaUPTydjFsbM12H6/ULelZ75AAdueDD69LZ3OBEDL4ENR0WQ3RKJvCiS53MQj2iCCZmgzg/njvLuZrmNVScGqCmd6DO4flTV+YsPKAIk2smp8CGqybPOZZhm/liGNB/mP539NYJ/A4eCkD1e4YbxzWX8MzPgzwz57G/h6Nn0BbrzEal35hZQv+d8RvCNpL5nJBxf1c9t4SUwog59CRUF0YzHFo0GUO+EVHgM2SX8qI5BC7K4hZj1ZVbeT05GM6rW0YIactUlHH1LtTry5WCx5/t3EDNsQihoU6Z5Woe6Soco6Eh2FIJQX5vhZmRoKIinNe06nuXwfZprChG1lvXQAMZuQHw6fHCsTToBLPPunuSnR0xsL/ynL+YvDpp422YSHZvJsnohjfaV9qS2fAaCSD15vTXNHLCe/bOiqa6lxQIwYGl1ohvFFTvrB/R2ZO0YLa9yDmR99gtDUnPV7gOJc4OiKLxsXGVBeL0APs3o7SZcamD1nc7qCIYCCDxyv9x/5gydbXF7eTDGfsMT1Liiyyh
- kXl3KB7n
- etqTPPX9+5shSPcJMkwNLZ4L6aYrkNwtRr7ZBICuP9x3Tw2XKOwYiX1Fqrty369thZRBbNvKzvvG+CB/2AmjFU/hxBNg4Xc0x9oGxKkbRvX6sap1Wg9qFhNNcD3Cu1BShVkZpufKH4FBXo7pn9HaWLLy9qpc8+Vh21UK8kdpPUzp/kKHj671xDdiPvarqp006ZkU94kCPYrThXLVkxFEFKFTBLTWjgtnduHZpYtChOYlk+UxZSxKhskBG2XJtcmPm8hQwmPOj8A+uZhfGd1b8LX5FA9AqrNX9R3eAwTusMwYCNiQsg7Yb8aK0R92bntgligwhVQMDp6bXmZSvvvSQhiJIm65lr3rT0ahJTGG9DzGiVRIcoe4KwbCWLyOAtwz++DY04slZq0gZu1rcPEAkRyFPa4wzMSY51sU6tzept6KnMpMn/WxPykNZYH1hRDWtR/15
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774289977-932752
+X-HE-Meta: U2FsdGVkX18XuHGfKpYI9hpC0UJ5Mc4TNdOW0EJeebsApT5xj/mmXiHdxcsBgdBQ16UoLbF5hjW6d2UCtRiyQI/6W2nUXcOdjBWKF+aAWcJEit1sWutpf2WMDMk/26+mzkZmAMy/BPXjYMhPGSoKhaOFLRTj/AF33nMV2rakB4uNpRezIAoJfGwxKO0BI9KEPrVp+4BoSR7PyGFpQTsXgFG2nI5aGb9jxysPlyIfRSBGe0C4IhTb8lQlVD7o5F/WprLjZtjLcIZKJDrtKxWiZHnavuaJqHUILlHLkJHcv28WPHTcbnzbWr4ylwx42dgBzuWDMsYikhNECFCWfCfd+JuUBkmXYpTWr6xjhscLtVCKSdETdTLNxS93nD9Kd8b8PQE8jIXz33AXR7dPuv/o7qqi+G6jeT9+oYvpbrWQieurZGmv1pJPikjvaZEkzwOZl1UElMmhi7rvIZz0ft+DPDWgOQrLuxPzWAxeyAXsXnFalYGmXHvawbhYCRwd/uRS5WFwGirAop+VCqyc4/O0BVX3s2X2IVFzkTWlJeSR5gJ7jQ4y2Jwrj9FL/bNVV4GFFbqWJw3N5g6bz+g453k5BOjdyRKMjkymWzdJWrzwioLSUSpBL76FB3vOeri4xnPwCrGnH8NtmnyWioK9xTp3u9BMZqBRwC77e4HkB68pYnBdqcf2KMPuExxJ5IvNfrbDCpBBncAf6lk1jGxuFLqLZwAOKaPchRca5F/KO1ONiSQ6ACj1MstGH66ZBc9XLqPuQSndQhC6HhOTVLSkX/b6Hhh7BaBuWWys8hVFoYvoCqSnMsfeJnoucCrrKyp/T4idcHu5indtUiG7imKSSLKRN68fD0fdi2mgHWlTnP94Na7U9bhdpsCfzbzly7QYe/5VTDc7lJJ9cXVEGanoIxYcrFFGeLW0M/47GvvvIlhZoXwSQ1zn7iWkHfbFYL+SQ3Mt7WXLLg+04jkONsCLZEI
+ 2v40HI4E
+ /4QDIJGue4HyadGGiplI3fBEwfy6qdwjg8q2s4w8rB3V3FaOLY7WTZ2Uw453RqvSyNvfweb91C16IsteUM7a388qmrCpkpwCzJMgJ/HLFStffIs9tt/kPjSjFi/5uutQDlyGEP5jjh2I0KmFhUjGI290lpDjCGPYJDE0RYbXEgAjXPE1RlPl9Qi6B5fH5aSw98ZeMW/kbBmO1U3Ph1TSrR0OYdJvk9hBswUG9jPj8wzsxtj40d/DrsljyRJESY+HkVJhB82Tm6nZXbPbcLHpKTmGOkOXMa5xnTGFVGzPlfkCji1HTl+AoAS7U8tpUeu4AhUTyM8gWrwXknDVZeLMCIbdTP2E9WW70c3Vi9g67qxqGUMx63YvMGnIKLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,392 +145,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make use of the new qpw_{un,}lock*() and queue_percpu_work_on()
-interface to improve performance & latency.
-
-For functions that may be scheduled in a different cpu, replace
-local_{un,}lock*() by qpw_{un,}lock*(), and replace schedule_work_on() by
-queue_percpu_work_on(). The same happens for flush_work() and
-flush_percpu_work().
-
-The change requires allocation of qpw_structs instead of a work_structs,
-and changing parameters of a few functions to include the cpu parameter.
-
-This should bring no relevant performance impact on non-QPW kernels:
-For functions that may be scheduled in a different cpu, the local_*lock's
-this_cpu_ptr() becomes a per_cpu_ptr(smp_processor_id()).
-
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
-
----
- mm/internal.h   |    4 ++-
- mm/mlock.c      |   51 ++++++++++++++++++++++++++++++-----------
- mm/page_alloc.c |    2 -
- mm/swap.c       |   69 ++++++++++++++++++++++++++++++--------------------------
- 4 files changed, 79 insertions(+), 47 deletions(-)
-
-Index: linux/mm/mlock.c
-===================================================================
---- linux.orig/mm/mlock.c
-+++ linux/mm/mlock.c
-@@ -25,17 +25,16 @@
- #include <linux/memcontrol.h>
- #include <linux/mm_inline.h>
- #include <linux/secretmem.h>
-+#include <linux/qpw.h>
- 
- #include "internal.h"
- 
- struct mlock_fbatch {
--	local_lock_t lock;
-+	qpw_lock_t lock;
- 	struct folio_batch fbatch;
- };
- 
--static DEFINE_PER_CPU(struct mlock_fbatch, mlock_fbatch) = {
--	.lock = INIT_LOCAL_LOCK(lock),
--};
-+static DEFINE_PER_CPU(struct mlock_fbatch, mlock_fbatch);
- 
- bool can_do_mlock(void)
- {
-@@ -209,18 +208,29 @@ static void mlock_folio_batch(struct fol
- 	folios_put(fbatch);
- }
- 
-+void mlock_drain_cpu(int cpu)
-+{
-+	struct folio_batch *fbatch;
-+
-+	qpw_lock(&mlock_fbatch.lock, cpu);
-+	fbatch = per_cpu_ptr(&mlock_fbatch.fbatch, cpu);
-+	if (folio_batch_count(fbatch))
-+		mlock_folio_batch(fbatch);
-+	qpw_unlock(&mlock_fbatch.lock, cpu);
-+}
-+
- void mlock_drain_local(void)
- {
- 	struct folio_batch *fbatch;
- 
--	local_lock(&mlock_fbatch.lock);
-+	local_qpw_lock(&mlock_fbatch.lock);
- 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
- 	if (folio_batch_count(fbatch))
- 		mlock_folio_batch(fbatch);
--	local_unlock(&mlock_fbatch.lock);
-+	local_qpw_unlock(&mlock_fbatch.lock);
- }
- 
--void mlock_drain_remote(int cpu)
-+void mlock_drain_offline(int cpu)
- {
- 	struct folio_batch *fbatch;
- 
-@@ -243,7 +253,7 @@ void mlock_folio(struct folio *folio)
- {
- 	struct folio_batch *fbatch;
- 
--	local_lock(&mlock_fbatch.lock);
-+	local_qpw_lock(&mlock_fbatch.lock);
- 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
- 
- 	if (!folio_test_set_mlocked(folio)) {
-@@ -257,7 +267,7 @@ void mlock_folio(struct folio *folio)
- 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
- 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
--	local_unlock(&mlock_fbatch.lock);
-+	local_qpw_unlock(&mlock_fbatch.lock);
- }
- 
- /**
-@@ -269,7 +279,7 @@ void mlock_new_folio(struct folio *folio
- 	struct folio_batch *fbatch;
- 	int nr_pages = folio_nr_pages(folio);
- 
--	local_lock(&mlock_fbatch.lock);
-+	local_qpw_lock(&mlock_fbatch.lock);
- 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
- 	folio_set_mlocked(folio);
- 
-@@ -280,7 +290,7 @@ void mlock_new_folio(struct folio *folio
- 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
- 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
--	local_unlock(&mlock_fbatch.lock);
-+	local_qpw_unlock(&mlock_fbatch.lock);
- }
- 
- /**
-@@ -291,7 +301,7 @@ void munlock_folio(struct folio *folio)
- {
- 	struct folio_batch *fbatch;
- 
--	local_lock(&mlock_fbatch.lock);
-+	local_qpw_lock(&mlock_fbatch.lock);
- 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
- 	/*
- 	 * folio_test_clear_mlocked(folio) must be left to __munlock_folio(),
-@@ -301,7 +311,7 @@ void munlock_folio(struct folio *folio)
- 	if (!folio_batch_add(fbatch, folio) ||
- 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
--	local_unlock(&mlock_fbatch.lock);
-+	local_qpw_unlock(&mlock_fbatch.lock);
- }
- 
- static inline unsigned int folio_mlock_step(struct folio *folio,
-@@ -823,3 +833,18 @@ void user_shm_unlock(size_t size, struct
- 	spin_unlock(&shmlock_user_lock);
- 	put_ucounts(ucounts);
- }
-+
-+int __init mlock_init(void)
-+{
-+	unsigned int cpu;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct mlock_fbatch *fbatch = &per_cpu(mlock_fbatch, cpu);
-+
-+		qpw_lock_init(&fbatch->lock);
-+	}
-+
-+	return 0;
-+}
-+
-+module_init(mlock_init);
-Index: linux/mm/swap.c
-===================================================================
---- linux.orig/mm/swap.c
-+++ linux/mm/swap.c
-@@ -35,7 +35,7 @@
- #include <linux/uio.h>
- #include <linux/hugetlb.h>
- #include <linux/page_idle.h>
--#include <linux/local_lock.h>
-+#include <linux/qpw.h>
- #include <linux/buffer_head.h>
- 
- #include "internal.h"
-@@ -52,7 +52,7 @@ struct cpu_fbatches {
- 	 * The following folio batches are grouped together because they are protected
- 	 * by disabling preemption (and interrupts remain enabled).
- 	 */
--	local_lock_t lock;
-+	qpw_lock_t lock;
- 	struct folio_batch lru_add;
- 	struct folio_batch lru_deactivate_file;
- 	struct folio_batch lru_deactivate;
-@@ -61,14 +61,11 @@ struct cpu_fbatches {
- 	struct folio_batch lru_activate;
- #endif
- 	/* Protecting the following batches which require disabling interrupts */
--	local_lock_t lock_irq;
-+	qpw_lock_t lock_irq;
- 	struct folio_batch lru_move_tail;
- };
- 
--static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches) = {
--	.lock = INIT_LOCAL_LOCK(lock),
--	.lock_irq = INIT_LOCAL_LOCK(lock_irq),
--};
-+static DEFINE_PER_CPU(struct cpu_fbatches, cpu_fbatches);
- 
- static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
- 		unsigned long *flagsp)
-@@ -187,18 +184,18 @@ static void __folio_batch_add_and_move(s
- 	folio_get(folio);
- 
- 	if (disable_irq)
--		local_lock_irqsave(&cpu_fbatches.lock_irq, flags);
-+		local_qpw_lock_irqsave(&cpu_fbatches.lock_irq, flags);
- 	else
--		local_lock(&cpu_fbatches.lock);
-+		local_qpw_lock(&cpu_fbatches.lock);
- 
- 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
- 			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
- 
- 	if (disable_irq)
--		local_unlock_irqrestore(&cpu_fbatches.lock_irq, flags);
-+		local_qpw_unlock_irqrestore(&cpu_fbatches.lock_irq, flags);
- 	else
--		local_unlock(&cpu_fbatches.lock);
-+		local_qpw_unlock(&cpu_fbatches.lock);
- }
- 
- #define folio_batch_add_and_move(folio, op)		\
-@@ -359,7 +356,7 @@ static void __lru_cache_activate_folio(s
- 	struct folio_batch *fbatch;
- 	int i;
- 
--	local_lock(&cpu_fbatches.lock);
-+	local_qpw_lock(&cpu_fbatches.lock);
- 	fbatch = this_cpu_ptr(&cpu_fbatches.lru_add);
- 
- 	/*
-@@ -381,7 +378,7 @@ static void __lru_cache_activate_folio(s
- 		}
- 	}
- 
--	local_unlock(&cpu_fbatches.lock);
-+	local_qpw_unlock(&cpu_fbatches.lock);
- }
- 
- #ifdef CONFIG_LRU_GEN
-@@ -653,9 +650,9 @@ void lru_add_drain_cpu(int cpu)
- 		unsigned long flags;
- 
- 		/* No harm done if a racing interrupt already did this */
--		local_lock_irqsave(&cpu_fbatches.lock_irq, flags);
-+		qpw_lock_irqsave(&cpu_fbatches.lock_irq, flags, cpu);
- 		folio_batch_move_lru(fbatch, lru_move_tail);
--		local_unlock_irqrestore(&cpu_fbatches.lock_irq, flags);
-+		qpw_unlock_irqrestore(&cpu_fbatches.lock_irq, flags, cpu);
- 	}
- 
- 	fbatch = &fbatches->lru_deactivate_file;
-@@ -733,9 +730,9 @@ void folio_mark_lazyfree(struct folio *f
- 
- void lru_add_drain(void)
- {
--	local_lock(&cpu_fbatches.lock);
-+	local_qpw_lock(&cpu_fbatches.lock);
- 	lru_add_drain_cpu(smp_processor_id());
--	local_unlock(&cpu_fbatches.lock);
-+	local_qpw_unlock(&cpu_fbatches.lock);
- 	mlock_drain_local();
- }
- 
-@@ -745,30 +742,30 @@ void lru_add_drain(void)
-  * the same cpu. It shouldn't be a problem in !SMP case since
-  * the core is only one and the locks will disable preemption.
-  */
--static void lru_add_mm_drain(void)
-+static void lru_add_mm_drain(int cpu)
- {
--	local_lock(&cpu_fbatches.lock);
--	lru_add_drain_cpu(smp_processor_id());
--	local_unlock(&cpu_fbatches.lock);
--	mlock_drain_local();
-+	qpw_lock(&cpu_fbatches.lock, cpu);
-+	lru_add_drain_cpu(cpu);
-+	qpw_unlock(&cpu_fbatches.lock, cpu);
-+	mlock_drain_cpu(cpu);
- }
- 
- void lru_add_drain_cpu_zone(struct zone *zone)
- {
--	local_lock(&cpu_fbatches.lock);
-+	local_qpw_lock(&cpu_fbatches.lock);
- 	lru_add_drain_cpu(smp_processor_id());
- 	drain_local_pages(zone);
--	local_unlock(&cpu_fbatches.lock);
-+	local_qpw_unlock(&cpu_fbatches.lock);
- 	mlock_drain_local();
- }
- 
- #ifdef CONFIG_SMP
- 
--static DEFINE_PER_CPU(struct work_struct, lru_add_drain_work);
-+static DEFINE_PER_CPU(struct qpw_struct, lru_add_drain_qpw);
- 
--static void lru_add_drain_per_cpu(struct work_struct *dummy)
-+static void lru_add_drain_per_cpu(struct work_struct *w)
- {
--	lru_add_mm_drain();
-+	lru_add_mm_drain(qpw_get_cpu(w));
- }
- 
- static DEFINE_PER_CPU(struct work_struct, bh_add_drain_work);
-@@ -883,12 +880,12 @@ static inline void __lru_add_drain_all(b
- 	cpumask_clear(&has_mm_work);
- 	cpumask_clear(&has_bh_work);
- 	for_each_online_cpu(cpu) {
--		struct work_struct *mm_work = &per_cpu(lru_add_drain_work, cpu);
-+		struct qpw_struct *mm_qpw = &per_cpu(lru_add_drain_qpw, cpu);
- 		struct work_struct *bh_work = &per_cpu(bh_add_drain_work, cpu);
- 
- 		if (cpu_needs_mm_drain(cpu)) {
--			INIT_WORK(mm_work, lru_add_drain_per_cpu);
--			queue_work_on(cpu, mm_percpu_wq, mm_work);
-+			INIT_QPW(mm_qpw, lru_add_drain_per_cpu, cpu);
-+			queue_percpu_work_on(cpu, mm_percpu_wq, mm_qpw);
- 			__cpumask_set_cpu(cpu, &has_mm_work);
- 		}
- 
-@@ -900,7 +897,7 @@ static inline void __lru_add_drain_all(b
- 	}
- 
- 	for_each_cpu(cpu, &has_mm_work)
--		flush_work(&per_cpu(lru_add_drain_work, cpu));
-+		flush_percpu_work(&per_cpu(lru_add_drain_qpw, cpu));
- 
- 	for_each_cpu(cpu, &has_bh_work)
- 		flush_work(&per_cpu(bh_add_drain_work, cpu));
-@@ -950,7 +947,7 @@ void lru_cache_disable(void)
- #ifdef CONFIG_SMP
- 	__lru_add_drain_all(true);
- #else
--	lru_add_mm_drain();
-+	lru_add_mm_drain(smp_processor_id());
- 	invalidate_bh_lrus_cpu();
- #endif
- }
-@@ -1124,6 +1121,7 @@ static const struct ctl_table swap_sysct
- void __init swap_setup(void)
- {
- 	unsigned long megs = PAGES_TO_MB(totalram_pages());
-+	unsigned int cpu;
- 
- 	/* Use a smaller cluster for small-memory machines */
- 	if (megs < 16)
-@@ -1136,4 +1134,11 @@ void __init swap_setup(void)
- 	 */
- 
- 	register_sysctl_init("vm", swap_sysctl_table);
-+
-+	for_each_possible_cpu(cpu) {
-+		struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
-+
-+		qpw_lock_init(&fbatches->lock);
-+		qpw_lock_init(&fbatches->lock_irq);
-+	}
- }
-Index: linux/mm/internal.h
-===================================================================
---- linux.orig/mm/internal.h
-+++ linux/mm/internal.h
-@@ -1140,10 +1140,12 @@ static inline void munlock_vma_folio(str
- 		munlock_folio(folio);
- }
- 
-+int __init mlock_init(void);
- void mlock_new_folio(struct folio *folio);
- bool need_mlock_drain(int cpu);
- void mlock_drain_local(void);
--void mlock_drain_remote(int cpu);
-+void mlock_drain_cpu(int cpu);
-+void mlock_drain_offline(int cpu);
- 
- extern pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma);
- 
-Index: linux/mm/page_alloc.c
-===================================================================
---- linux.orig/mm/page_alloc.c
-+++ linux/mm/page_alloc.c
-@@ -6285,7 +6285,7 @@ static int page_alloc_cpu_dead(unsigned
- 	struct zone *zone;
- 
- 	lru_add_drain_cpu(cpu);
--	mlock_drain_remote(cpu);
-+	mlock_drain_offline(cpu);
- 	drain_pages(cpu);
- 
- 	/*
+On Fri, Mar 20, 2026 at 2:15=E2=80=AFAM Marek Szyprowski
+<m.szyprowski@samsung.com> wrote:
+>
+> Hi,
+>
+> On 17.02.2026 19:01, Andrei Vagin wrote:
+> > Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
+> > AT_HWCAP2, etc.) from a parent process when they have been modified via
+> > prctl.
+> >
+> > To support C/R operations (snapshots, live migration) in heterogeneous
+> > clusters, we must ensure that processes utilize CPU features available
+> > on all potential target nodes. To solve this, we need to advertise a
+> > common feature set across the cluster.
+> >
+> > This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
+> > auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  Whe=
+n
+> > execve() is called, if the current process has MMF_USER_HWCAP set, the
+> > HWCAP values are extracted from the current auxiliary vector and stored
+> > in the linux_binprm structure. These values are then used to populate
+> > the auxiliary vector of the new process, effectively inheriting the
+> > hardware capabilities.
+> >
+> > The inherited HWCAPs are masked with the hardware capabilities supporte=
+d
+> > by the current kernel to ensure that we don't report more features than
+> > actually supported. This is important to avoid unexpected behavior,
+> > especially for processes with additional privileges.
+> >
+> > Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+> > Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.i=
+o>
+> > Signed-off-by: Andrei Vagin <avagin@google.com>
+>
+> This patch landed in yesterday's linux-next as commit ac8c259ce0d5
+> ("exec: inherit HWCAPs from the parent process"). In my tests I found
+> that it causes regression on my Khadas VIM3L board, which is based
+> on Amlogic Meson SM1 (S905D3) SoC
+> (arch/arm64/boot/dts/amlogic/meson-sm1-khadas-vim3l.dts). Running init
+> process fails after this patch:
+>
+> Freeing unused kernel memory: 13696K
+> Run /sbin/init as init process
+> Kernel panic - not syncing: Attempted to kill init! exitcode=3D0x00000004
+> CPU: 1 UID: 0 PID: 1 Comm: init Not tainted 7.0.0-rc4-next-20260319
+> #12369 PREEMPT
+> Hardware name: Khadas VIM3L (DT)
+>
+> What is probably important here, this board (for some internal,
+> historical reasons) uses armv7l rootfs, but other boards used in my
+> tests, based on different SoCs, also use such rootfs and boot fine with
+> yesterday's linux-next. Reverting ac8c259ce0d5 commit (together with
+> 0ea77bbf3b98 due to dependencies) on top of next-20260319 fixes this issu=
+e.
 
 
+Hi Marek.
+
+Thank you for the report. I=E2=80=99ve sent a new version of this series he=
+re:
+https://patchew.org/linux/20260323175340.3361311-1-avagin@google.com/.
+The reported issue should be fixed in this version. Could you please
+give it a try?
+
+Thanks,
+Andrei
 
