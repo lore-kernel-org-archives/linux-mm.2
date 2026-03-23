@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18AE2EC01A1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B859FEC01A0
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:49:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 488686B0005; Mon, 23 Mar 2026 03:48:53 -0400 (EDT)
+	id 0912D6B0088; Mon, 23 Mar 2026 03:49:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 439426B0088; Mon, 23 Mar 2026 03:48:53 -0400 (EDT)
+	id 068F36B0089; Mon, 23 Mar 2026 03:49:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 327D56B0089; Mon, 23 Mar 2026 03:48:53 -0400 (EDT)
+	id EC1226B008A; Mon, 23 Mar 2026 03:49:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 212246B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:48:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C19968CA53
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:48:52 +0000 (UTC)
-X-FDA: 84576551304.13.5AFC481
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4F38314000E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:48:51 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rlv1S8+0;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DBDAD6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:49:04 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 723EE13BF50
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:49:04 +0000 (UTC)
+X-FDA: 84576551808.27.3512BDC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B3B35120002
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:49:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=soMwPHB4;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774252131;
+	s=arc-20220608; t=1774252142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IytCGZb8QoqUKOg+ctT1e1Ezzg+jN0P1FskdLA5DESs=;
-	b=zub+s7hSQ6QjiicH5PbgIBSG76hPvYNwzgcV+cFVzBXRDrL7rxENIDxgtSWC+KmT6tEx+2
-	CzFPYXXyQWk8v2Te5MBkWKHeCfKursXriMogIL22Hy6tv05aQkvaAhGxi+/rUR+L/O4+Mc
-	uSoGAjx4MR1bGTKAli4pFUR6EAYli9M=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rlv1S8+0;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252131; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PRKSTfQ2O+eVNBGid9yhgznzOkdGuXgn3KcDsHXlPeg=;
+	b=wdPN8409qTZY7pzinTLQkgXVU++H6h3bK8CUNyMlf02mRFkohkp23vEc696CyrfvcoXEhf
+	JyTjSt86Q1VwBwATYa1JMNJlPZVKKUW+Xa7+ai01eZNZqe6N0lcbWBbF+0ga7fy/QfksMB
+	z4vM4DVytYMaZlhGPKYSeE6rEtuIWPM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252142; a=rsa-sha256;
 	cv=none;
-	b=3n46PRcMyzMbk+cOwc2tR0+i8guqHhA6iLlrryZXFBX4Gp/Q2F42EOmByROetKjNefvDAF
-	qAYcHgyYhk9sIXQN6EEior267vgAi3i0SZNh47t1vX6q0X05jCgSO5lIKoHIwBVeTqZfv/
-	A0pfv+4AFeGHO+f8/OfL2AQxRrYUOkc=
+	b=lIIfYIZIK4HRHHcul5ht3J4DhuwTby749VkYqY+cDXn7iJsddzuSTw8XcXjY0qK9d9DtT1
+	EYGuljpuiZN0Lxp+Xd3JfAj+D1pow9/mGSsfgYCuVfb6dcAB1aHEYMFWk/v864tIa0aZZ3
+	4dxF3pjlQWklX6ra8AIlZfSlSlaBP8c=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=soMwPHB4;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B58BB600C4;
+	by sea.source.kernel.org (Postfix) with ESMTP id AE2A04358A;
+	Mon, 23 Mar 2026 07:49:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B1FC2BC9E;
 	Mon, 23 Mar 2026 07:48:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC71BC4CEF7;
-	Mon, 23 Mar 2026 07:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774252130;
-	bh=pCbilTTHI/VwIdYALA976lc/t17gtYFZ5ukjoWq9Zt0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Rlv1S8+0zQURdG9YTxr4y3pNRy8/ylu6kZZ6eCiQf+sFd02KfS8+YNnbcyhsi4jov
-	 S5w11oK7YTX3gkuWTcyu3hCCiTiR3veT8ei69ieEMGgMa2ZYMUeINhQjyhnr9FSaE8
-	 Uj98YvIFa19EU/fOo55YccuDjUkb9MArMrSqYZ/sLc3WXjjEkYT/en9m3MbKASypiu
-	 mxy2taD/9hMXzY7nvOCde6k5j3T9Mi98SQf3en8jrYNH2nRMr3fIiwj2mujYUhGjba
-	 bnwQO6qLYjo9aQPPjQMfazIbKXhjL7hgiC8xGbSCEvOmYFBujPtB+XyBem0ZCuxVV4
-	 bFbyai2HlbXwg==
+	s=k20201202; t=1774252141;
+	bh=ZPayAoUZgLwz6EhVKnVbCR0MqW3d3UF4hy1nzr/kEys=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=soMwPHB478isjyOEuq0IFRN9Cief5Jqwxg1OL7jUkDAL9y4hBeM9dbR/1MWaRqGWi
+	 ib0jpyTzOuLzovqiLkfFzH/sitT7zv4W8SFvjQAfIZyXowACHhmqxuqnkiN4Ye2w/b
+	 fqdb/4qzrOD886HOPMUSVszQTzLVwA06GpzpYZb9RUwXxMKzldKhDOEpdPGEiqzvEz
+	 d8ZnoMumXfNyr/H7/zGCKqVZFhNYMDERdxkrZ9jFtVB2x96iGjkhmG/En+iUsCJUVO
+	 API6o3jBTJGcQaw3dzn8rTLMq1L6nSmRBE/0It/iNumPWF5phnJ73bZcJMJHMFZdCH
+	 C3sxaPr5Q/wkA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Potapenko <glider@google.com>,
@@ -113,20 +113,22 @@ Cc: Alexander Potapenko <glider@google.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v2 0/9] memblock: improve late freeing of reserved memory
-Date: Mon, 23 Mar 2026 09:48:27 +0200
-Message-ID: <20260323074836.3653702-1-rppt@kernel.org>
+Subject: [PATCH v2 1/9] memblock: reserve_mem: fix end caclulation in reserve_mem_release_by_name()
+Date: Mon, 23 Mar 2026 09:48:28 +0200
+Message-ID: <20260323074836.3653702-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323074836.3653702-1-rppt@kernel.org>
+References: <20260323074836.3653702-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4F38314000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dpqgun8ye1r3kncnx15fgoeesczdnj3q
+X-Stat-Signature: si5qhk5rk3y3dh8fnpzeoznsqtrdwfdh
 X-Rspam-User: 
-X-HE-Tag: 1774252131-652098
-X-HE-Meta: U2FsdGVkX18psIWEtD3CFsPuJXyU2CriFoCGY2xpwosZv6rAyJ6yhaIM62WxfSugMezkjQmcmlwVEcVuGFb3R76OIJaaI8nfEx5dL2t6VDpNgs3YABHfExdv8EyncHsBbMjROiT5ii6zyL93KDkRSR9HmH1E8cWGuGluowdgmmv7UAi5zJ0j5ZV8lK8Q14+mYX279o4/PHgIMFSh51CpyYuQO7P0pbG6h8jdO11YytOB69YGp9pqTxEUrEfAkD3Sf5dcKIBG58lmImZKlSpb3jGAJTZGsrQ2CNvPx9Zjt4+XjChITDvVyUSFIpjk3exiN8iT83p/bddWCUWC51Uxey8k2uus7wzaQBY3D3MRxT0i19YmritT8zBOFHr54R58fV0v7axdW+CxHo9S/gNcaH4ZkmUDcurZLmXpMbLFCk5VuLOGw35Srxqsoh3ZQWx7TRaLk4RH/GNznuMnSyyfVmCMTzydVeR1M2tWZt27JF954wFth3qB8vlq7kX7EdrTABIQ/hpwtcQ6BWu1WkSn4XIYL4UUqHcCuUAtTdtDnlX4u33agS1xE7w3Sm2YJv3rnVTewnNNfoSr0zOyYJui/1rABQjP8Vn5RfVSG3R2rvMsKsGRHJRkJginIG1kXtlIji8KH3/IQhgug+/38V+/SN5Hy5OP4t6Ngvh0HP9joLhTPQpGbDM1+1+5wPm21AsWJca5uS5o5wsIZp9iVuFsp9jRxkfXU48K0Ggl6LpxK4Y+gRx9VyI6hwTzISRDBoMT2Yfu6ktPUjAfIrnD5qaLpdrYlK/VbPOxrSCatKtArq5YZ7f+A0doMeIlWQEAc2L/A6YjhsQ8W2xRdW1HsPoubGLbElCC5U646lRKrGOtJs7gBg4zk00nlU8WCN+z7qy0Sxtr1xpVPyZ/y8Zt+J8UZmMYOM/M6z7LiK2cyKHkof5mCw2LEuodBLafw9SSEsVgXFg9zupIBibo/whqpXY
- 4gk3J/+U
- iAWUgeMS2nmOxqsB1APQ//VPyBdAzsR7Mxwv6icvi+6+qi2yofpzv+wX5Ytn0aIAHVD4a2pExTGkVH5FSeY7VZyl2p0cA5Nt726mtGAr0WH6uGdz/01sS3KeD0Ni0t3YwlCUK3Ns4vmq+Z3x/zjcg2+kmRXEuLBBLsYSh9beuLd1bTXC3fA8SvSVfzGnblad46ht9vaEDcf93eLuyWQJ3rtBQTJTqXPU6l18nSQ3w5/SIH29/KwkX/wC+d97rMUoooyaD/UVWjaNuxNf+NQkvJAIfgox0I9fjiQm7
+X-Rspamd-Queue-Id: B3B35120002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1774252142-925039
+X-HE-Meta: U2FsdGVkX18W08Dkdo6r+8wy18VnMTjFwS2dKtPvwarNlDX6QMMJwPTD2yIRNfgQo0HyvazEluGynmFm7M/GGNqznGSTS12ICjn75LDckyxy9JmPJjZ6rR6G/t8IsdzBBU2ZHFaaQGwt3Y7xvzs6+REhyikaz+Jy6NFUbKJLfXignzbqutdp6bpV+gXcq3OY4kahP190C571ZAWcVEg96xeADjWjNyI4XCargST6fiCg1cW+DO+kldt3LWTIzGz/eFse4mrE+7rzB2KPjniz055ZD8Kvg8pnTGg3TtZWtS36fH6SSfP6f4YYS63IdPUhk4ol8um3UqtIwZGpycj2J7QtldlSLOC9/rypPblSgvX0yOIdY/TNg3raq4nOV3KDfF5oDXT/XoxyoJFdJ/tYETMEPHF0mATFmKiqhYghy1XXMcjbtKLfcMNKQd6sPAestkrJnFxDaxzORMeecxKVq/yMgXsV8q82CxqQQWhDRTvz0UAaBllVlWHBnObE0hZ5j7ZqgHCuCA/rBIeL+XzIGrkyAQOuAFFYTVfZCoCuODjVV9zTxxoUaK7sEZZIqpSNzKaFUh9tgwNGMH5W1WPDP3IEcbAhzt3EMBH/jFCmTsODjTyxLvmw4vIY7IdnjUe5GEFdYxhSBtCk/FoD6anUQo5haVR6Ckd9WFv8Sp/rMPu46C4vSvvK+tD8EF2KtKdpmmUHA16w9S+jjq2Tdf1yqBoTuAx1JE2gtBemQ1kT80Z/K5/VE31K7AGGhxArv3Ed0wm0hTweZqeApHEVAZX/MZxoTkOZab2Ce5agp1pCbEWIMA8EGDgruyWSha1J6Ok/yd9ybz+LY6EQHYqox0ezazI8PuYnZLGkmp4FKbxUtbSqoQBRHNqNq+eTdOuTPxq9OOzfyELJK0+YhOEaWSdu08IhQ0XyWCO+7WezYcZO4wI1pXSH3mGPJJTTlgRxrB6BRC0sdIvuG1v0JHBE6Co
+ 084JBU81
+ faxB2XJ8qx8GiunH0kCdUW9RrFM1eT3PnPiaoGq3RHSnfnXLMQ+nFoPHVoxfycBucq0kJE+iJeJLDJxgjce0kKBof4z9eN5Zi81MMCkDztT/mX7cVhZ6MlaYLVXWyR4ah/kDhMO519gIjg4AgZ9fEPsRFzwi7otNoCNqv7PnrnR2ZeCTrji6GBDoEO3JbDYf23GnNNBeAK5N0GbncWhY6t38/SrouXSbVIPQC8+PpQkl22LCEdV1RM9aexAXyJ7SjQrwFpXWoSY/fBKyyKDYbj+3aLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,55 +138,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi,
+free_reserved_area() expects end parameter to point to the first address
+after the area, but reserve_mem_release_by_name() passes it the last
+address inside the area.
 
-Following a recent discussion about leaks in x86 EFI [1], I audited usage of
-memblock_free_late() and free_reserved_area() and made some imporovements how
-we handle late freeing of the memory allocated with memblock.
+Remove subtraction of one in calculation of the area end.
 
-[1] https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org/
+Fixes: 74e2498ccf7b ("mm/memblock: Add reserved memory release function")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ mm/memblock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2 changes:
-* fix UAF issue in memblock_discard() reported by 0day and sashiko
-* address relevant sashiko comments
-* squash memblock test stubs changes into the commit with core updates
-
-v1: https://lore.kernel.org/all/20260318105827.1358927-1-rppt@kernel.org
-
-Mike Rapoport (Microsoft) (9):
-  memblock: reserve_mem: fix end caclulation in reserve_mem_release_by_name()
-  powerpc: fadump: pair alloc_pages_exact() with free_pages_exact()
-  powerpc: opal-core: pair alloc_pages_exact() with free_pages_exact()
-  mm: move free_reserved_area() to mm/memblock.c
-  memblock: make free_reserved_area() more robust
-  memblock: extract page freeing from free_reserved_area() into a helper
-  memblock: make free_reserved_area() update memblock if ARCH_KEEP_MEMBLOCK=y
-  memblock, treewide: make memblock_free() handle late freeing
-  memblock: warn when freeing reserved memory before memory map is initialized
-
- arch/arm64/mm/init.c                       |   3 -
- arch/powerpc/kernel/fadump.c               |  16 +--
- arch/powerpc/platforms/powernv/opal-core.c |  11 +-
- arch/sparc/kernel/mdesc.c                  |   4 +-
- arch/x86/kernel/setup.c                    |   2 +-
- arch/x86/platform/efi/memmap.c             |   5 +-
- arch/x86/platform/efi/quirks.c             |   2 +-
- drivers/firmware/efi/apple-properties.c    |   2 +-
- drivers/of/kexec.c                         |   2 +-
- include/linux/memblock.h                   |   2 -
- init/initramfs.c                           |   7 --
- kernel/dma/swiotlb.c                       |   6 +-
- lib/bootconfig.c                           |   2 +-
- mm/internal.h                              |  10 ++
- mm/kfence/core.c                           |   4 +-
- mm/memblock.c                              | 124 +++++++++++++++------
- mm/page_alloc.c                            |  46 --------
- tools/include/linux/mm.h                   |   1 +
- tools/testing/memblock/internal.h          |  34 +++++-
- 19 files changed, 144 insertions(+), 139 deletions(-)
-
-
-base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b3ddfdec7a80..d4a02f1750e9 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2434,7 +2434,7 @@ int reserve_mem_release_by_name(const char *name)
+ 		return 0;
+ 
+ 	start = phys_to_virt(map->start);
+-	end = start + map->size - 1;
++	end = start + map->size;
+ 	snprintf(buf, sizeof(buf), "reserve_mem:%s", name);
+ 	free_reserved_area(start, end, 0, buf);
+ 	map->size = 0;
 -- 
 2.53.0
 
