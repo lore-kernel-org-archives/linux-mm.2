@@ -4,143 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95D0AF483EF
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFC31F483EF
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:05:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E785F6B0005; Mon, 23 Mar 2026 16:03:18 -0400 (EDT)
+	id DDFC26B0005; Mon, 23 Mar 2026 16:05:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E29A06B0088; Mon, 23 Mar 2026 16:03:18 -0400 (EDT)
+	id D90206B0088; Mon, 23 Mar 2026 16:05:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D16F46B008A; Mon, 23 Mar 2026 16:03:18 -0400 (EDT)
+	id C580A6B008A; Mon, 23 Mar 2026 16:05:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB73F6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:03:18 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 754E71EFC4
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:03:18 +0000 (UTC)
-X-FDA: 84578402076.27.73FDFD1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BE4EE40014
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:03:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V3bPvp4W;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V3bPvp4W;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774296196; a=rsa-sha256;
-	cv=none;
-	b=qtW19oVhZz1QCcksYchJyTSB2wyrXWrHYVILFv2xfuMwCYMS0P0f2pmSQ1AVD2s19wi16D
-	YgH5lZ9zdac95muB0qSm9PYdp6Z/9rbJMKDZLvyT3j8iyUa7OXL/0omCJrJKddK6YmEhDA
-	MctByoX+afuaNUM+UF4zE5HkrScyvZM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774296196;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B4BB46B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:05:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B2A1140D31
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:05:50 +0000 (UTC)
+X-FDA: 84578408460.29.12D176D
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4BFCA40006
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:05:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hdinH41R;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf17.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774296348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LMiD7aGBWRNBc8rw8Ru2feX03FfkuHXnCvx9PhfP2jU=;
-	b=rShn9qH0nZgdkENomgW+GIyQFmeF7F3EohAL7q1dcbSvtRXDmToeLhkVNY2atOCxSVgp6t
-	uK04EzR0vwrAtE6teEON8a84pi9EPPrO5URgWnYRIDU54Vlg0wpEG+aIuDZ3SdBV5EiuAC
-	ZVfm0q6/UZQM+D9QqJnOtQ+ftnpjOVs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 223E0600AC;
-	Mon, 23 Mar 2026 20:03:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E24C4CEF7;
-	Mon, 23 Mar 2026 20:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774296195;
-	bh=Ry9/ThWWm3NaJS9J3iVFhUufSXRZider2VTGGVSZX4U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V3bPvp4Wdw1HLhSEqO/pabWccNaY498YACGXN3O+FZpo9FjukTwWbpqvcmE2F/XmD
-	 QZL5OhTizu5WvdlI7OG0seoyzZnigqpECWskMbvqRy/y9M1XvKD8CVpPFfRAXqSgIl
-	 wJpSamxOoYYM2ZKor2b6GB3b1TGRpLT+zL4ApYg01UJVYUzPW2xL6nZSjhiXQAAR8q
-	 zmNnMhkLR9hRfdtYqtFizqt3jKTWaNYjU3zTRL4SU+tfgV3N6lW+hTKnChBljDrKTF
-	 SKtLZpYwbKPUYVGUAD2OFdab3ZuEmW2XCoCjxgABgbTr1TBT6CmU3SD4Br23pu5BNl
-	 fwmW91a7puHAw==
-Message-ID: <ad64f739-4cbd-42df-8dfb-2e5f89a96f2a@kernel.org>
-Date: Mon, 23 Mar 2026 21:03:09 +0100
+	bh=cSm3pi/p5+viVRprqSKsRJS/Gwafhj+x/zgoAdc82J8=;
+	b=JCrOJzTsA/HLoSOQO3CWPd7DGu4630/RsyMMCuvBBjyJ3LWw8XOPXU/oPsH4m6+jsmGL2n
+	VzyYL0KEHNoWHb08E0EnrQ22FCGdiIuQq0WkbiKaWGscjrc+/2dgkI47y0wnKOErD3iCg1
+	qeXENAyptHuVckAS7czpBkspUaCZMGg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774296348; a=rsa-sha256;
+	cv=pass;
+	b=a7yVqLt7RSQHeXUhjAVoCcOiXdpwi+R8/sv6hKOjHKB+XhqMYgNv6Xm4G5sYfboJcmlKsc
+	DEcP/idboiPHDhvAujbuBcZ/8gqthnZFOfmdlJLM3ErnJYuaju3PlxmBas95EHyHA+jLiQ
+	/AXtjhL9PcdBvBfn9pUZ17Tehf2EPjg=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hdinH41R;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf17.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43b3d9d0695so4247323f8f.0
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:05:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774296347; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EW8HSEy7WHyQadIckQTBHuvYGy5zLejYhoHJC581y67L6etmxARM6YE5Sy//J0+xTn
+         85ZdiXRjF5FQXsTqCyUmLUewaq1F396KcnucIDRyfks9QlwAROhI35M8pV7h+C91ldC+
+         0B1AcJSMtOo035g9bUnPd3I9DRk3gBefQ5gNMGG2ft5/ANS9QZRbHdZjD3mGSg2hthH8
+         yV7IUXiuEjqIU2w1GkeGbLSgHiynswmXNxwGLWOYyks2u5QY8BswFq3bQ/+NOyoPmuV4
+         F5Ljl9gJ3H+Xa+Zh+GKohtKO32/69C6DX9Bs1Pk1OJ+odWqOr7/OT7gXWUtGJjC3GpdR
+         2pFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cSm3pi/p5+viVRprqSKsRJS/Gwafhj+x/zgoAdc82J8=;
+        fh=+xCeJiH9RBhbVUGPwhkvJHFOgLmN8fPTWxp+wQdSkkA=;
+        b=TeynjouABzIbb1AFK/9zgIJVhEl3/2/NPOl0JFVgZMU5av4XVN9H1gmsNrlvigM3dU
+         mPSdHWbHzhgrQxP5n1MVKabJRFJBu9qwGfbYW7tR9EM9MHLmQqXIvKQchRBWOtAN2U08
+         s6pOhq2MdZWrkuVHJZb+8cW4N1w/vuLzNiPLWgo6fa2LbnTXrRKxIRrc5RJ509G57JQp
+         V8yJO9gLEYQnLrz3btxSyYj5tDbryGnGNaFRvrXrvAfD4C3hu5QrcGNPdDhVov+xjffq
+         rq81bKkkkSUj4ZjPlVZUMFKe537T/KcGu7tvfrdIW91Q96FvMOB2rxO6hzwM5/LnAYEA
+         MbDQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774296347; x=1774901147; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cSm3pi/p5+viVRprqSKsRJS/Gwafhj+x/zgoAdc82J8=;
+        b=hdinH41RdTGyK0Xyqfc21vM00tW6cOb+Ql8uLiM4KbC7jKIBYLELOi5tQCs245NFue
+         Am9glPYY8WVQZYq4QYSgVATM8jNQ0KTTOxNj2EUGzAX1iRKrwhAbGXMixebBAUU2ukqa
+         I32ShZ9zJh//Q1xtqazOK3qKosftPyGw/i0lo7ODlG3AtUYts7txE4D84MJ5IJqZD7pw
+         skMi8ngTimwaMXa8tuk6Fxq83LOKqL46t6L1Bdv0S3RuscRzFdDevLIGwaS2vnf3Wz92
+         ttKmevaPoIXtb96Cj/+Acq8lyd0Jk2prmA4yslQon1mVHASzaF+zRa+PuGalWIGiIiNY
+         5ymw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774296347; x=1774901147;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cSm3pi/p5+viVRprqSKsRJS/Gwafhj+x/zgoAdc82J8=;
+        b=UAzG2pwbidewOLQt4uQ3yDCKeEuScPkZ/YseqQRK23Uzp4OpzL9L+ZsXcWxL5sarTa
+         b89h7SpIhHXqHoHtPUA5xGaTSZFP8GwMF62vQdSSQ411/tfa3arsbrt5gFmaHT9+wc/D
+         q8KuGUZGXVEvH0VPqEvR5sUDx0S6modSfU1ou2KTjboo5AwAaX+L5Vh6LEf1Q4Q86zI5
+         BWkE65LqnQ0U+mQkpRDNAF8L56U2ieTWCWfK6eOIVeh+IUN2I/QtMrCSQpP1EGJ7S2ej
+         pzSZDC9BIvOouewWnG4sTRKn2lj2LTlntUnf1GuPn/pytrNq/uGMpzbYaWvAXEXDJVGO
+         KO2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVoPUp2QqqctYZJH3NusY2c2jGgHhIA/QbML92en4u5eu3Dixm0JGy+wItVtRn2pfec46Bmrw6MYw==@kvack.org
+X-Gm-Message-State: AOJu0YxU3I2W8vDmIXuVViEeq/h0wtgk6LGeV4LrJk+CZbiuZYiRsc9g
+	N9X6/CSnEbPx29bM/68M1Bf46pu8v6cUJKK0QCmUnWe+Nek7eRffkTlDbo7Qk+qZbwseMs4Eyk/
+	lkJBFKUoT/3hNa+6psL1sb9qvVP/HszY=
+X-Gm-Gg: ATEYQzxgJjug+4Bp4Z4D8TL1G0cNYIIjemWaAbU/bHq3ISR3aN9xvNxXaRMwAbk1T9v
+	g7bn9KBsib4xXxjdu/gRz2puheYbHZCC0964T6ReaG+7YufldIKEhM6cIBB9ZsEH4q6AY1i7RiB
+	N7Iy1dw5a/GAweRLSNHLzUEI2OIPl8CBSyZVrv7s/l/RfWyV2uCVIzBq7/OiknfvAzu+sa5jqFh
+	f4bY7UKecoEB/c8wy1+PlP14fFL1IqL+3Cs6Y1O0/ZsyK/n53UJPVlWg/K81fOA2+JMN8Zc+jm0
+	hrLpin4KX07GP3OWHqiBbkgD4q/NkL4Z+pWneV3w87lN5EnU1lngs7o=
+X-Received: by 2002:a05:6000:290a:b0:439:bee4:8a93 with SMTP id
+ ffacd0b85a97d-43b80543fbfmr1328875f8f.12.1774296346222; Mon, 23 Mar 2026
+ 13:05:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 05/13] mm/page_vma_mapped: Add flag to
- page_vma_mapped_walk::flags to track device private pages
-To: Alistair Popple <apopple@nvidia.com>
-Cc: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org,
- balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- ziy@nvidia.com, lorenzo.stoakes@oracle.com, lyude@redhat.com,
- dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
- mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
- linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, jgg@ziepe.ca,
- Felix.Kuehling@amd.com, jhubbard@nvidia.com, maddy@linux.ibm.com,
- mpe@ellerman.id.au, ying.huang@linux.alibaba.com
-References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-6-jniethe@nvidia.com>
- <81e7bd1c-54d5-4f88-969a-685177447c51@kernel.org>
- <abzSSHQUnDs_AFoz@nvdebian.thelocal>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <abzSSHQUnDs_AFoz@nvdebian.thelocal>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BE4EE40014
-X-Stat-Signature: oy8jqcw88uuf1q5tekm634pqt31aydxo
+References: <20260320192735.748051-1-nphamcs@gmail.com> <CAMgjq7AiUr_Ntj51qoqvV+=XbEATjr7S4MH+rgD32T5pHfF7mg@mail.gmail.com>
+ <CAKEwX=PBjMVfMvKkNfqbgiw7o10NFyZBSB62ODzsqogv-WDYKQ@mail.gmail.com> <CAMgjq7AzySv801qDxfc8mEkEsFDv4P=_qw0rNOTe0n+qy7Fz6A@mail.gmail.com>
+In-Reply-To: <CAMgjq7AzySv801qDxfc8mEkEsFDv4P=_qw0rNOTe0n+qy7Fz6A@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 23 Mar 2026 16:05:34 -0400
+X-Gm-Features: AQROBzAzMaxnOtFYtdtVGHbHrUkaMTL891lXMF0vK2wektlQwRdZr3vTHyQqlKE
+Message-ID: <CAKEwX=P4syV38jAVCWq198r2OHXXc=xA-fx1dk6+qYef6yzxWQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, apopple@nvidia.com, 
+	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
+	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
+	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
+	lenb@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev, 
+	npache@redhat.com, pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, 
+	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com, 
+	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
+	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
+	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
+	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
+	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
+	riel@surriel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4BFCA40006
+X-Stat-Signature: 1dswcmgxoi9hmfxfu1qa1aexiygiiuzk
 X-Rspam-User: 
-X-HE-Tag: 1774296196-636568
-X-HE-Meta: U2FsdGVkX18M1GFLNe86SbtD6HDdcFzGROsENv7qQlMPUETs0jeL377WQKxumkfTBgIM+OIEz2s6nmB8XqG/l2Xir0NzJkJ62Zhs/awd3FNy/TLpj0NeCo1Gi7Mr4NHdlKv2TAdZTkOSgoyWHHXReex3dYJALSFKpqMoej0nug38qOd4aeKUuPr2XYNh8zuIUu5EfGPLS/07M3T/U/HInhoA3LF9Wjfq+MgOUZFShq7cBPWz2AdihQqHZQgUssv0yNwaUyRJPhV/t7dTY8Xu3XrLdF2laobhPWYWPQSFdOSWZ/kyHHUUhQR52Ulv+3zQ5zcFedXOV9Sgs9EqQl+kkE2iW5Q+EvKKdCyX2iNL7bmV0zvIkNL1NYGXCVRG83VkxYDVvgdeG19R9sVrNv/BvBR0KacVKNeDFu7NKdpX9trcA994roWpTp3G4AEWFPrYCfEtRr8p3XdKAJ7gmr+RUJw9g5TE8LZdU3GuRRKOuuVKe6BwMlPaTxb3zkZQaoTjb6LpIs/ZScIhLfBjQERPNtYsIwGuaoEZwRmd2HwiHkza3xdNR9VuGRryZ61I7F2uCizHFEZxYYRdGmGc5gWqVeek0YbaBClTQN8ZVQbvQNxK1U/QEZNiWHQk2JMMLYEWxK1jQAW6rEW7H+w4zmKz43S8156kMssepQ3Q80AQFmVYhzoTEb/yf9thBarnNB1HXTdDw6W46EHy1hR+/cBYVdF0CNv/Z9Ds7A1h9dnropAoEJEhaRnrcWZgRaUW6H07//K6ahyZa0Abf2rGeN7N70pqVjtNGXQ86PPQ1rltzZDfkGj1dzSQ1JF/lILGRF/sIiY9WRLrwRhyp7OurniukByTLMsf2HyONOSdbcYr/hwxIYUp3zx8+obUL6B5r3lEYB+dAIc16O1cRp072vuHOmH4uO0VX8oOqTTeEybpDC0M4X6I0gtsOXIg9Xi8OYBl/Fllmd1+m2/2eL7UjZP
- WJbTLLDb
- 5d8eaHVtOaqG5s0fjOmgRHHz/lACp9XQwJhCId9NrzqwyUDiX37U1EKrVR5ibZM78njdTU+UyrPsHrb/Wnu9GO0mblPkDPWKfZoG9Z806guSXTYLr3yjrHnSYOUtL8nd/SgDK6AehqNYgEgYNcP6fxVbtp6y8VtO/cVfhkvsI+h+kobjHxyotKVwpPVGD3no02aAJj1Tw39Jnt/iRl6OMj6a3SGuMeb1puzXQ4BrIrZ1IS9LZ78oOUkd2OSY8ksB4qaPbnVdPDEafpwF+hLpfIZgQ/zOGlmQr+Dr4BZ/frNjkKQVR8gN6TiPU9g==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774296348-838352
+X-HE-Meta: U2FsdGVkX18EurvTifHhoQv5okgWDVrvypUTqEExtLJPU5U0zjUaHiIkzHu7i27TN2txvTwA91UpSG0C2RKkbj3hZHBXP9qo3vy4pRc0hp1F8itTy8PkZos5nJ6fxd9Ukj8e0edkgB7ZBCUrDo/msVaYhjsuZpXnCTF0x/gdwQs4x00jGeIEZf14QbtEEA2BFCeH885CKoZeQgLQi96GA9adNRuwXPXu3etciTwHqcQL75zlYuUoKd9npIp5XVZnv7jicpUD9Gtpw2JoWSIkJThnACFsttm4RW+GXASuS6XUzPw6h1v9ZiGbYSOaEzk1qVIXUnz7t6ZJFzTc+9KYy75dv4AwqqRjZXX0ehnCcA+EUlCj4pcdnDpE+GfClwgNaZPhDuv6NFIOp2HkqoKDZY3ok1Iizsx8F+6V3pqiA7Gh1tfgS6Mkbsp2BTLYnMqujBN+IoqhcUxllWEKFEJajp5FZHLQ3zfF/6j4juSWvCqZsI7Ny+5zmoEvufESkjsyTvKvSfpLk9Y9sbaB8I70ntCCooihwLuLpNPajB8oEn4VPXzPBPrx8Fa/36lmDGwamfyYyUztxXg2BMEJb8KlDG+EJvPRUINP2MnaQ7fjEMvih0s3sIEENKSL5Bo/56CUW2ZK724JR9rREUWnMUz3ctwThHNRxZtTJ6ElUWIjCa2/6XugjdeFetDxnt4syrnJ+hnd/JjeiCRUbS94812MQzh4DJPEnY1WqjSOCw8HQ3Xi8ViteS1RKQGUUxKOjGh64EmfeuFo5TQ+ZT/c8q95BGdFXqN/Isgc0c+OSK7CFUzfsKCd7Tj5+IXxsW+l2D3Jrwtg4sAj6T/yTgVk0E5NkHPDV2lv58I5YEqJz/nZoGQSVdIw5PsNpq7TosTBL0FwWqJIqs99/EG4G4bAB2oK+f/AglY17WWlhcJFltXD2xdjb+/1K9/dqdBXvfibF0ytvAY/9R3AB+d2NEqXneW
+ 9wkWEUn4
+ Ih0Fmfc3XXvube2suwihXkhDfqub3PPoXN/dbuNyiCtEi8j9pefqVoNLWY1WOinzDN+YbVZE5wLknnpsr3zKUwKhEA4sDiGbjBKNjEXIHK6Pj323XwFil75+mBk1q/CWA1IkoCRmNmnRVaPAkf7j7t3jr27B5jjuxwjxs+qYf/PdI+ASBVqr75BWTnIULLcJneRAOCkgv5VLS7B7r3utdfyLV95cWF9gowEmCiTNvT9PhsXwvpXdu3WBJUor+EM34fPgQmIj3SEkt/wGSBEWXhsqvclB3I99esRjOa7YmO1KdnSbUO9KuIoEFzVB/12gEf35Wy/y05yV3/depaD3oXvsUD+gVFo06Mxgu+LIckfm/PW0rj48aY7cDThCyTIJgOw7SRv1m1Sz7EeASKt+lUsX5FRXMUdpXDB3PYZuNBlEP69gffxDDm1+8fp8tHjQKsEpgE2rtQMNrlXU++NIg5QqifdKstHMEDfQ8ZrdUNIGz2jf6D4B8kXqwWWkkU8x17JSGryWXdS6XO8HSUJd5OeHpKwtueY0JwJm0EnTjHKm4Oyyk7t27PHDQ2b+o8o5Hfk1NOipMaeMnwy6SZNPdOMIJp/z/I0/7LNfGf/6mDNYqNU+yg1Fg29iaTEBaYGB/PA3znrnIFkye+RNVVFqRwoTrC7Nxv+Oy2iEQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,88 +154,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>>  #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
->>>  	struct page_vma_mapped_walk name = {				\
->>> -		.pfn = folio_pfn(_folio),				\
->>> +		.pfn = folio_page_vma_walk_pfn(_folio),			\
->>>  		.nr_pages = folio_nr_pages(_folio),			\
->>>  		.pgoff = folio_pgoff(_folio),				\
->>>  		.vma = _vma,						\
->>>  		.address = _address,					\
->>> -		.flags = _flags,					\
->>> +		.flags = page_vma_walk_flags(_folio, _flags),		\
->>>  	}
->>
->> That's all rather horrible ...
->>
->>
->> I was asking myself recently, why something that is called
->> "page_vma_mapped_walk" consume a pfn. It's just a horrible interface.
-> 
-> I don't disagree, and in fact it used to consume a page until 2aff7a4755be ("mm:
-> Convert page_vma_mapped_walk to work on PFNs"). If this was a page it would
-> basically resolve all the hackiness of this patch because we would no longer
-> have to pass PFN context around. So I wonder if there would be any opposition to
-> changing this back to taking a page?
+On Mon, Mar 23, 2026 at 12:41=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> On Mon, Mar 23, 2026 at 11:33=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wr=
+ote:
+> >
+> > On Mon, Mar 23, 2026 at 6:09=E2=80=AFAM Kairui Song <ryncsn@gmail.com> =
+wrote:
+> > >
+> > > On Sat, Mar 21, 2026 at 3:29=E2=80=AFAM Nhat Pham <nphamcs@gmail.com>=
+ wrote:
+> > > > This patch series is based on 6.19. There are a couple more
+> > > > swap-related changes in mainline that I would need to coordinate
+> > > > with, but I still want to send this out as an update for the
+> > > > regressions reported by Kairui Song in [15]. It's probably easier
+> > > > to just build this thing rather than dig through that series of
+> > > > emails to get the fix patch :)
+> > > >
+> > > > Changelog:
+> > > > * v4 -> v5:
+> > > >     * Fix a deadlock in memcg1_swapout (reported by syzbot [16]).
+> > > >     * Replace VM_WARN_ON(!spin_is_locked()) with lockdep_assert_hel=
+d(),
+> > > >       and use guard(rcu) in vswap_cpu_dead
+> > > >       (reported by Peter Zijlstra [17]).
+> > > > * v3 -> v4:
+> > > >     * Fix poor swap free batching behavior to alleviate a regressio=
+n
+> > > >       (reported by Kairui Song).
+> > >
+> >
+> > Hi Kairui! Thanks a lot for the testing big boss :) I will focus on
+> > the regression in this patch series - we can talk more about
+> > directions in another thread :)
+>
+> Hi Nhat,
+>
+> > Interesting. Normally "lots of zero-filled page" is a very beneficial
+> > case for vswap. You don't need a swapfile, or any zram/zswap metadata
+> > overhead - it's a native swap backend. If production workload has this
+> > many zero-filled pages, I think the numbers of vswap would be much
+> > less alarming - perhaps even matching memory overhead because you
+> > don't need to maintain a zram entry metadata (it's at least 2 words
+> > per zram entry right?), while there's no reverse map overhead induced
+> > (so it's 24 bytes on both side), and no need to do zram-side locking
+> > :)
+> >
+> > So I was surprised to see that it's not working out very well here. I
+> > checked the implementation of memhog - let me know if this is wrong
+> > place to look:
+> >
+> > https://man7.org/linux/man-pages/man8/memhog.8.html
+> > https://github.com/numactl/numactl/blob/master/memhog.c#L52
+> >
+> > I think this is what happened here: memhog was populating the memory
+> > 0xff, which triggers the full overhead of a swapfile-backed swap entry
+> > because even though it's "same-filled" it's not zero-filled! I was
+> > following Usama's observation - "less than 1% of the same-filled pages
+> > were non-zero" - and so I only handled the zero-filled case here:
+> >
+> > https://lore.kernel.org/all/20240530102126.357438-1-usamaarif642@gmail.=
+com/
+> >
+> > This sounds a bit artificial IMHO - as Usama pointed out above, I
+> > think most samefilled pages are zero pages, in real production
+> > workloads. However, if you think there are real use cases with a lot
+>
+> I vaguely remember some workloads like Java or some JS engine
+> initialize their heap with fixed value, same fill might not be that
+> common but not a rare thing, it strongly depends on the workload.
 
-Are there cases where we pass a struct-page-less PFN?
+To a non-zero value? ISTR it was initialized to zero, but if I was
+wrong then yeah it should just be a small simple patch.
 
-The offenders are pfn_mkclean_range() and mapping_wrprotect_range().
+>
+> > of non-zero samefilled pages, please let me know I can fix this real
+> > quick. We can support this in vswap with zero extra metadata overhead
+> > - change the VSWAP_ZERO swap entry type to VSWAP_SAME_FILLED, then use
+> > the backend field to store that value. I can send you a patch if
+> > you're interested.
+>
+> Actually I don't think that's the main problem. For example, I just
+> wrote a few lines C bench program to zerofill ~50G of memory
+> and swapout sequentially:
+>
+> Before:
+> Swapout: 4415467us
+> Swapin: 49573297us
+>
+> After:
+> Swapout: 4955874us
+> Swapin: 56223658us
+>
+> And vmstat:
+> cat /proc/vmstat | grep zero
+> thp_zero_page_alloc 0
+> thp_zero_page_alloc_failed 0
+> swpin_zero 12239329
+> swpout_zero 21516634
+>
+> There are all zero filled pages, but still slower. And what's more, a
+> more critical issue, I just found the cgroup and global swap usage
+> accounting are both somehow broken for zero page swap,
+> maybe because you skipped some allocation? Users can
+> no longer see how many pages are swapped out. I don't think you can
+> break that, that's one major reason why we use a zero entry instead of
+> mapping to a zero readonly page. If that is acceptable, we can have
+> a very nice optimization right away with current swap.
 
-pfn_mkclean_range() is only used by fs/dax.c
+No, that was intentional :) I probably should have documented this
+better - but we're only charging towards swap usage (cgroup and system
+wide) on memory. There was a whole patch that did that in the series
+:)
 
-At least the caller immediately does a
+I can add new counters to differentiate these cases, but it makes no
+sense to me to charge towards swap usage for non-swapfile backend
+(namely, zswap and zero swap pages). You are not actually occupying
+the limited swapfile slots, but instead occupy a dynamic, vast virtual
+swap space only (and memory in the case of zswap - this is actually an
+argument against zram which does not do any cgroup accounting, but
+that's another story for another day). I don't see a point in swap
+charging here. It's the whole point of decoupling the backends - these
+are not the same resource domains.
 
-	dax_flush(dax_dev, page_address(pfn_to_page(pfn)), count * PAGE_SIZE);
+And if you follow Usama's work above, we actually were trying to
+figure out a way to map it to a zero readonly page. That was Usama's
+v2 of the patch series IIRC - but there was a bug. I think it was a
+potential race between the reclaimer's rmap walk to unmap the page
+from PTEs pointing to the page, and concurrent modifiers to the page?
+We couldn't fix the race in a way that does not induce more overhead
+than it's worth. But had that work we would also not do any swap
+charging :)
 
-Afterwards where, apparently, a page for the PFN exists? :)
+BTW, if you can figure that part out, please let us know. We actually
+quite like that idea - we just never managed to make it work (and we
+have a bunch more urgent tasks).
+
+>
+> That's still just an example. bypassing the accounting and still
+> slower is not a good sign. We should focus on the generic
+> performance and design.
+
+I will dig into the remaining regression :) Thanks for the report.
+
+>
+> Yet this is just another new found issue, there are many other parts
+> like the folio swap allocation may still occur even if a lower device
+> can no longer accept more whole folios, which I'm currently
+> unsure how it will affect swap.
 
 
-mapping_wrprotect_range() is only used by drivers/video/fbdev/core/fb_defio.c
 
-fb_deferred_io_work() just calls page_to_pfn(page). Huh?
+>
+> > 1. Regarding pmem backend - I'm not sure if I can get my hands on one
+> > of these, but if you think SSD has the same characteristics maybe I
+> > can give that a try? The problem with SSD is for some reason variance
+> > tends to be pretty high, between iterations yes, but especially across
+> > reboots. Or maybe zram?
+>
+> Yeah, ZRAM has a very similar number for some cases, but storage is
+> getting faster and faster and swap occurs through high speed networks
+> too. We definitely shouldn't ignore that.
 
-Best to explore the history what's going on there.
+I can also simulate it using tmpfs as a swap backend (although it
+might not work for certain benchmarks, like your usemem benchmark in
+which we allocate more memory than the host physical memory).
 
+>
+> > 2. What about the other numbers below? Are they also on pmem? FTR I
+> > was running most of my benchmarks on zswap, except for one kernel
+> > build benchmark on SSD.
+> >
+> > 3. Any other backends and setup you're interested in?
+> >
+> > BTW, sounds like you have a great benchmark suite - is it open source
+> > somewhere? If not, can you share it with us :) Vswap aside, I think
+> > this would be a good suite to run all swap related changes for every
+> > swap contributor.
+>
+> I can try to post that somewhere, really nothing fancy just some
+> wrapper to make use of systemd for reboot and auto test. But all test
+> steps I mentioned before are already posted and publically available.
 
-My best guess is that they don't want to modify page state. But that can
-be expressed by the helper functions and doesn't require us to have such
-a weird implementation.
-
-> 
->>
->>
->> * DEFINE_FOLIO_VMA_WALK() users obviously receive a folio.
->> * mm/migrate_device.c just abuses page_vma_mapped_walk() to make
->>   set_pmd_migration_entry() work. But we have a folio.
->> * page_mapped_in_vma() has a page/folio.
->>
->> mapping_wrprotect_range_one() and pfn_mkclean_range() are the real
->> issues. They all end up calling page_vma_mkclean_one(), which does not
->> operate on pages/folios.
->>
->> Ideally, the odd pfn case would use it's own simplified infrastructure.
->>
->>
->> So, could we simply add a folio+page pointer in case we have one, and
->> use that one if set, leaving leaving the pfn unset?
->>
->> Then, the pfn would only be set for the
->> mapping_wrprotect_range_one/pfn_mkclean_range case. I don't think
->> device-private folios would ever have to mess with that.
->>
->>
->> Then, you just always have a folio+page and don't even have to worry
->> about the pfn?
-> 
-> That sounds reasonable to me. We were hesitant to add a page back to the
-> interface given it had been removed previously but lets try implementing this to
-> see what it looks like.
-
-Thanks!
-
--- 
-Cheers,
-
-David
+Okay, thanks, Kairui!
 
