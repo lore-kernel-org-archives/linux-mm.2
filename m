@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 384B2F532C1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 23:58:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37AD9F532C4
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 23:59:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA3386B00A5; Mon, 23 Mar 2026 19:58:56 -0400 (EDT)
+	id 79AA66B00A7; Mon, 23 Mar 2026 19:58:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD7316B00A7; Mon, 23 Mar 2026 19:58:56 -0400 (EDT)
+	id 74CDF6B00A9; Mon, 23 Mar 2026 19:58:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E3986B00A8; Mon, 23 Mar 2026 19:58:56 -0400 (EDT)
+	id 613FE6B00AA; Mon, 23 Mar 2026 19:58:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A3026B00A5
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:58:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BBBABCFF8
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:58:56 +0000 (UTC)
-X-FDA: 84578995872.12.0164C21
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 500006B00A7
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:58:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E6C2B8A5D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:58:58 +0000 (UTC)
+X-FDA: 84578995956.23.A964EAD
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8BBE24000B
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:58:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=M3voyDC+;
-	spf=pass (imf07.hostedemail.com: domain of 3vdPBaQgKCMAjsgzrgiqmuumrk.iusrot03-ssq1giq.uxm@flex--dmatlack.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3vdPBaQgKCMAjsgzrgiqmuumrk.iusrot03-ssq1giq.uxm@flex--dmatlack.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5E03B8000B
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:58:56 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="c/mT2JgE";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3vtPBaQgKCMEkth0shjrnvvnsl.jvtspu14-ttr2hjr.vyn@flex--dmatlack.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3vtPBaQgKCMEkth0shjrnvvnsl.jvtspu14-ttr2hjr.vyn@flex--dmatlack.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774310334;
+	s=arc-20220608; t=1774310336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FxGJfmbE6y6D4fg7v0R8cmHFXmMbzFJlr4dbGGaFVKE=;
-	b=HNvm1RQ6uoyjqhEAEpYxlYdckqDA7limi/xxJzfipvLvR3O2uz1jSRdIhEIav97FbL+0cy
-	0ChjIMS93MywuFXi5HjjfPC5n/GJ+bNIIx0fC0MuwD6bo9jsHDcxEe7uR6pCwd8GQeLgFJ
-	7+/XTSDN0OwsCQq7lHvuNgBA1ZtfSS8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=M3voyDC+;
-	spf=pass (imf07.hostedemail.com: domain of 3vdPBaQgKCMAjsgzrgiqmuumrk.iusrot03-ssq1giq.uxm@flex--dmatlack.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3vdPBaQgKCMAjsgzrgiqmuumrk.iusrot03-ssq1giq.uxm@flex--dmatlack.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774310334; a=rsa-sha256;
+	bh=UG6U+6kAmFzvMZjga5OgV1LR5RVhGZN2WyiuuoZC9eg=;
+	b=w8upFnR5JDjn+GDt01UZp+xQbotIBjaYdHwN0cko5jxn++nUGUSYBqc3QeTD4Gci/m+BMU
+	ySAy1/93gk8sYyT7okIMGmQ4YnBdhAtVGlwsWS/s9DOEOVgbn0N8JHrTikOz/QmPasx0Yi
+	WYgkpI00XWwFlK3HMJRTQ6PXgIq8p3M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774310336; a=rsa-sha256;
 	cv=none;
-	b=iSH2cn5SBcbjI9Q3uBPZA93u4MUKp83dQMCDSfBrR6Ydv/wlpCaHwlRlMFMueh+1zKreSQ
-	/YFXtTSzedGT1lFdUA2WiSbnH6FRO6A8AlnyshD8scqZeAj5/7HV7j73V7ZCKclzTGT+UP
-	t9aQfOjkVJKzqJ90UjVhVQe2XCCivhw=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3568090851aso10695629a91.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:58:54 -0700 (PDT)
+	b=hE6MvNgvu0TacHJbqCm/BaHTtdL05hjSnTcxA/8YgZ+9GJtC+CUCvRuzwyDzQkPGVeOqeN
+	2Ognkf7PjND/SjobJdBWy4x/MS7DrkCQ0QHHgdWLT8C6CnwVOIz6BL5p2rvoP+RkHl7fji
+	J/jPYaJL0Vnj7mcLMBFw3TpCHSi9jts=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="c/mT2JgE";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3vtPBaQgKCMEkth0shjrnvvnsl.jvtspu14-ttr2hjr.vyn@flex--dmatlack.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3vtPBaQgKCMEkth0shjrnvvnsl.jvtspu14-ttr2hjr.vyn@flex--dmatlack.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35a0b51eb23so703215a91.2
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774310333; x=1774915133; darn=kvack.org;
+        d=google.com; s=20251104; t=1774310335; x=1774915135; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FxGJfmbE6y6D4fg7v0R8cmHFXmMbzFJlr4dbGGaFVKE=;
-        b=M3voyDC+Xoe4YcsMKoVEyDkhuyuhVEXczLyVOuvK4Hd3d+VVx2B630ENKK1ovu3eL5
-         Ftf4rO+8ZflYEKS+n6fEHN6RLg9E/DyV+tHJzLx5UZXmMuqTjomxzK4ImFibvX+5N17i
-         xnTdgdTWyEQru0ZA4HjoKjHQrWIR6+C+fWbO2glSwKF2QLzZVnPJSOAQluRrGfEzYEke
-         j52XPBwVL0D/q+cs6qRVCTIX9vePFbWDRPNHN0VvT8iKhSa4VxSTe5fyNjNBuAKPWXZw
-         EMl0ZbRB5Ii0NUjHb6miy59eLLt95TuaGTq6esgNHFaUrJpMMbNM6CTFnoqk+hUhK67p
-         3NzQ==
+        bh=UG6U+6kAmFzvMZjga5OgV1LR5RVhGZN2WyiuuoZC9eg=;
+        b=c/mT2JgEmWoZuL3HkChHmpcl1keBgt974Mr0yZYBimTZEuiSsjMO3bIJkNLgmliXbd
+         yJCmQ7grvvB7Eg6nCmfsphAW99sTssMcKZF7+rnPckgkOoN+krSfrwZDP9vs2y7hlN9u
+         e8arTOU5GLZL4YU03QwOK84iAemCuxsmF8CYNc/SXoUNwWd3dGbGXYNJuFPxT0qYV1Pt
+         +VhanEeef/VfJ3GeGQt5pWhLKFZzl6d7jdORQxo97cN9Irs2l/gAxiJ2PTEOQwvmvDhr
+         bzj2nuNDa3mmrCbYoJPD021vkh0xgzjzsP8SGti4sCbEorCbNObsAd4wq/hy+gzScApH
+         3Frw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774310333; x=1774915133;
+        d=1e100.net; s=20251104; t=1774310335; x=1774915135;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FxGJfmbE6y6D4fg7v0R8cmHFXmMbzFJlr4dbGGaFVKE=;
-        b=k0SQdpgMGBRqsixbY2ztiWPu9lAyD3MZHqUUJQl95o+D7fbR4tobs8SfUMQhmghbpm
-         sOQA2dEBipaUL3J+tlYwVS5N/HLF2881j2VAFF/YEHtrAGgmrU6EhVDbwjmma673WgkJ
-         mr1RWEhAOJXpIAc2hmWd2CYUG7XRlw7TNG62Cj0tIqO0YzkPVElNI+XqTzSryYbRH6TU
-         eTruBgN4kMYW+cZfdcaW8hSLiALhhf909c0ZfLNAvE8LXITlc1yVHZUyB+YDnBXzCW7c
-         kHdoeRerUshulwkNUjL+OTLq1izv9q3UXi5V5KDW3nNevN7V5IczrBMkg/xG3ile1lLU
-         elWA==
-X-Forwarded-Encrypted: i=1; AJvYcCWSIxBC4ejAu4SsEuXpNcemYCkhL4tFMW3wgbLrFLDPULf7FiFCraF2bGon+fmwdp2nc9Ot/VYncA==@kvack.org
-X-Gm-Message-State: AOJu0YyvBa0LXkeS/t/9LwdR2e+FD6TeDG/iDRUSNwqR2NMeINgfDmTG
-	m5OA7hXIgL4pif7hsC68kKIG2O4ybWueYKtE082UvJkcwSHLbnkoEGJ5+X0RH7A9B6gvYfirWmv
-	8DaT8vWa4SuDv7w==
-X-Received: from pjbca11.prod.google.com ([2002:a17:90a:f30b:b0:359:84f3:a9d])
+        bh=UG6U+6kAmFzvMZjga5OgV1LR5RVhGZN2WyiuuoZC9eg=;
+        b=asYe9GdDZi7vYepsbTWqlN/SIQXQTHi1281SZCrb3ZL12ztZSedfVe6FsTa9o8EPCp
+         QIR6TZMIuhfnmAf3XIJNZktY7qyagJRmO09Jsw0matPceJE4KeiG2PzFP51yvYVHN5D+
+         gx6r1YMVVqu6IDMtTeAmDuitU+Y8cibQvuDchkO9MaovKM9IfIbfu/pJWw14ZD7RuI/2
+         F2dwocezDt54cunr4QNS93wfOMNysf1H/4ZAdePO+yTXTAtbdEXOaeZotg9WT1RIVbKP
+         kRog6YjNIPQiHHAKSpvGD/cpw9VkxJ9awdminKK2pCs8nSzqG1c6Jh0RIuMCzhphKGSn
+         EP7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWE1oG4+kKKMDq/5kx7GSR5uOG0+ZHm1FroMObRESrenNL8y6xJhalJvy0Vu2VFuLSizV4Wmqlicw==@kvack.org
+X-Gm-Message-State: AOJu0YxgUy2DpbTu/ib2F3lwBm/zNZ+XA7e/RfbeAMczfLdb3PFXqZLg
+	vVaUIYBk00Vwc1n63/GRS7Q77/IqBpCHIjhy5eKoKlLTn6i+Qdufk3/4sOAgiuKd5DsZP1cypFq
+	vJDgN3tT5V7SQ/g==
+X-Received: from pgcp23.prod.google.com ([2002:a63:7417:0:b0:c74:1130:c2ea])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:384b:b0:35b:9ae3:9080 with SMTP id 98e67ed59e1d1-35bd2c62dc6mr13468908a91.14.1774310333147;
- Mon, 23 Mar 2026 16:58:53 -0700 (PDT)
-Date: Mon, 23 Mar 2026 23:58:01 +0000
+ 2002:a05:6a20:5493:b0:39b:f026:6f7c with SMTP id adf61e73a8af0-39bf0267ba0mr8201078637.49.1774310334903;
+ Mon, 23 Mar 2026 16:58:54 -0700 (PDT)
+Date: Mon, 23 Mar 2026 23:58:02 +0000
 In-Reply-To: <20260323235817.1960573-1-dmatlack@google.com>
 Mime-Version: 1.0
 References: <20260323235817.1960573-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.53.0.983.g0bb29b3bc5-goog
-Message-ID: <20260323235817.1960573-10-dmatlack@google.com>
-Subject: [PATCH v3 09/24] vfio/pci: Notify PCI subsystem about devices
- preserved across Live Update
+Message-ID: <20260323235817.1960573-11-dmatlack@google.com>
+Subject: [PATCH v3 10/24] vfio: Enforce preserved devices are retrieved via LIVEUPDATE_SESSION_RETRIEVE_FD
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>
 Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
@@ -114,14 +113,14 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
 	Zhu Yanjun <yanjun.zhu@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8BBE24000B
-X-Stat-Signature: d39pk4t6uq839smockjgkshaqq9sdwxz
+X-Rspamd-Queue-Id: 5E03B8000B
+X-Stat-Signature: wdkayzg8hdjphbteuqeb8f64f51nqr6u
 X-Rspam-User: 
-X-HE-Tag: 1774310334-159759
-X-HE-Meta: U2FsdGVkX18kmyL0zL83B+9O4j9DUX6S++kDiYCJs5y1RE4a7YbwvTsxP9fwNoGCxMfQ7poi/iteinafeUIuC3oV3/qKfgEzhC3u54u4Q7MY9L2sur2hqcprv6sgMfxzvt+oJVcO0ZMqC396+P09lQzBU5PlYotjk3Lr/lBK4n9KXEiTrUm+qlRUvf2Wi5IXmJu+Z7gdZyiSgsK8PuaQk+UvcXYrI8EK8Nki6Z4fVJr29L+z754DkQgKKSFyrl7kBIxSrZjTO7sVcI+QmcjnAvJCc9zMZmzNnzkxncIgbDwwM/Q+lOyyyuBDT1ZL3+Sf13qglXDsIdojvLdEAvtGrqNDR5AU054Mr3wjLPgjZy7tocSTtgMYW89pkJtSXJVo4l/jlPxG/R44YQfH0wU3YtcTnafeTFh1XL/ZVZLI3gLEhzsRroCKOiZw/hlQf4M1bC0mYdGvaUB6YRpCqsSKsL4BEr9O3nZe7Pz6FIKQsuduqnpr2OUDOU5DZ5vYGMuTZbeseRUoI7GWyJFRxxGrXJOIszVU+sSUyWybZ98+xyFwrYRPBzbRl+IGg5wFc8N+AIFFF1KH/n8omaN6fZZuWwowiTS5PjlKpclXK5HJbUqo6Hf+5VtTKrTuDsbhAaryF9I0D3LypWyQsJxDITWRYxhbpuJv9m9NDdcJgIh8RHOpbbS0lHIIxzvC6B6BbCOeLjwlwkenim3bSF+4i5twFdlIsrUMT/N6CMCRjj95kTZ9yvtFG5QTMTbQCNkGmf5SL56wjkG4wn4K3Lpl/oxBoyjIVLMt1/0/Zl2ef3EFzOjVFZ4HPLRjQa71PTasoXemFmEYNllOkPEFDpIuQ5UbdPdwcKy2oa7Ddn3+tQPHxp1QCQ5/HnDZm8QcDO4Du/q/8CzCukgheEa+GIYsCOp6tltgnnZe2f/YOA4/8oDeuZ6wv7n5Q3ABCXcXp7F/vamMdMtz+QMTa9nWNAPDzf7
- MwnC2x2O
- 0Ipd2wHH5JdWyJj/nXaii2k99U1tGbOfolQZMOg82Cy2LjVrlwVXrwPwTv/lK8pNlsar/+6fQwIlZg/92FH97rMV1OJdhsrB8qvxSBJL3dfmFSVEvC4zY8/4aUPxH6pbX/yrQliBH4hcgvBuK2GDceZkw/xkWmI4++csH6xY6lK78xdFINt9rqI0Qip9MZftprSc/iabfzP2hFosq6KsNQSUz0mKv2/hkU0DhNCusm/pbrVWrH2EpIVpgop9e+qdB0E6m0n/C0QmP9lFPgieGeuekp50n5YKu2XyjJ+WqPmDeet2Hq+cH0aBz8JBfmLedQCBlZ62lrFd95EqJZxM2do8hOFsN2UBt2f0NKFABFO5uvrUOyjky7KAd3lvZLHznrPtBNZxpAiUZL2OToRaXhBK3aeIdJuv6AoduzHSGhp1F/TOiwLkZHXTkDYv9C+Z9yQFEGYTYwUSkkJDuiZH5Il18Qhxah/xX3gJhIWf+RV2VaTA3OiIeYsilczo5lPOaUTJ7Z3yocUtp/NpKxDH3AB6jh6T5haZ+qa23kfRDCdh90/mukB01NUvLeWcBtHBig1KvoX5SsCm4pVhn1NA/jlQGjHrNBD0vnDztYAiM+ADxzvWd5/oYPohQWpqaCHJVQNcERE2rDI5nrkY=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774310336-272030
+X-HE-Meta: U2FsdGVkX18dyNdOFHvSWcYHOcA9+FgkLGQib07yhGzpGH7irFCwQL27fkwGpf+jgB0CjVrthCH2ro+tnzWN2oLhg2qaH1pBFq9xjQNl2iWztoJ8oVnON9Y62uwIxsrtC/nA38R9qYQDjy0GEieSx0yDXC7Tx4V8Crdk4V6CJPWMOTHcOWV0p/gw+6ZphVebM9M4bHnrW1Jl0u8OSv6J4PlK3BqyVNqHlXosda6FqPYvTQss/j3/S9K7tBQg/1pkootdjxvrbZ+R4VPyhCsJJEescxxZ1FxfLKfJiw2+IvOzV3auV8WW6ub4UE7KwW3mFUybfA8JVlpcNMYqDu9qRJvPqa1h/gvMTOLWhghyCQMHWazx066RXTEtEtb9eVwPx1V/H0bKHyqjUqnoetR1bC+ZqYop+f1k1i4THwX7yHlbTt5pCdVfp7cVdskwl9hRsS7fPk2IFG7YuTBK6jvuZkXtm6iLpvhUw5wUZcLAhW+3BEoZQ+Ew/kGw0Milkm9+LcCkXEsX9Cnq8JwCH7GrdrxN78CsN0/ad4UoT4wfHoTLNnAyqjJJQ1Mzc0I8piT8EvpIOB+h5ThGEzsNue/dpefZhVBaX0nHKEoNmh+xGfFkiYzTlqZtNo7V7Qy5KohqP4W49xs4c7YqXdHU3WetBp9VDtxb1ia0CrZQSmgHujVLYXm+kct00n8Ztsy+AnKlUgDCiXYJP7EFZ3PDep7qsPkh7RNGlcftpmzVLean+yE9HZoCcv720ZHkfTVLoNBcIbIItz8Xc5/kORb/renMRTWJm00p71HhJSYoRZL5oRrqOH3mrizVJVxQD9PeuFh7V1pFJYpmCEgsP+3kWWxyU6t6d44Y3rWq2nCjJyr4hJi+mebRveaYGa4uJTaY8R31uPI+U8H/9U+TEZx60EnakRh6Lg497youiXmh5m+WUDkMeoLbg5y7U5qqbgemiY7i6aWOvwlBUnVYFj0Sq4c
+ A34215h0
+ wB6kDs56AaYS51MtSD+6kQ7QIwaonNNYxHeUn6BE91lDV6jKyw3OF7JXjxX2q1fKmX778iP6zmSpo9CZ3bQW8Tj1ScTrlUf5O1KsfAasOB8itBAvggmpk4RFgl6Ckbha9FkzTFrsdxloDUp5JRl7yuZ6ilD/QfkHNGgHt0G44+ntPWpiJy3gmvwKQd9XOVWIO2dDYlyy5dEeeJ2Itgpe5lI+qt0IZ/kI+/w0l/vJTyfw313fBEOFL956iVf7+cvkyAOy6ezm/zDMO35TuveZQXukZ30vZSFes3bBfo23tL7SEd75ZWnqHMwV1CUmrIp4gP/YfIXJWNL+i5ttfxjSa39XV+pAw9Y0lke9Zz1T9aOIgDg10HydeRJJQOopemcPxFUGNkEqIx+Zm5qT8v2bCzeLlNlaulGmujObYspEvueHVKlXS8uQMlqVgE0wsO3juOhBIj+428i3AL5eS5vIRopkNoaZ9y8NbCxYkffecb5iVb+JqwKuMQE5v8epTukzlGnK+lNONDASEUGMzUGVK1AGQzPn9GnXDZrrMVD4wXI4MlehXsu3QQdsuO2TmAER8KAdslqX9n6zuF0k3N7sKIW5rd/zKRAtbQN34P3zwH1i0RvavDEKiZJ1X9KW8E5D59hsGTexXxQizQZ60XNj70DD7cj0B5Mfs6N4xz+pNy/5nMfhnQfwdykcA5wgjVqRBl43g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,127 +128,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Notify the PCI subsystem about devices vfio-pci is preserving across
-Live Update by registering the vfio-pci liveupdate file handler with the
-PCI subsystem's FLB handler.
+Enforce that files for incoming (preserved by previous kernel) VFIO
+devices are retrieved via LIVEUPDATE_SESSION_RETRIEVE_FD rather than by
+opening the corresponding VFIO character device or via
+VFIO_GROUP_GET_DEVICE_FD.
 
-Notably this will ensure that devices preserved through vfio-pci will
-have their PCI bus numbers preserved across Live Update, allowing VFIO
-to use BDF as a key to identify the device across the Live Update and
-(in the future) allow the device to continue DMA operations across
-the Live Update.
+Both of these methods would result in VFIO initializing the device
+without access to the preserved state of the device passed by the
+previous kernel.
 
-This also enables VFIO to detect that a device was preserved before
-userspace first retrieves the file from it, which will be used in
-subsequent commits.
-
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- drivers/vfio/pci/vfio_pci_liveupdate.c | 44 +++++++++++++++++++++++---
- 1 file changed, 39 insertions(+), 5 deletions(-)
+ drivers/vfio/device_cdev.c             |  4 ++++
+ drivers/vfio/group.c                   |  9 +++++++++
+ drivers/vfio/pci/vfio_pci_liveupdate.c |  6 ++++++
+ drivers/vfio/vfio.h                    | 18 ++++++++++++++++++
+ 4 files changed, 37 insertions(+)
 
+diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
+index edf322315a41..6844684a3d8e 100644
+--- a/drivers/vfio/device_cdev.c
++++ b/drivers/vfio/device_cdev.c
+@@ -91,6 +91,10 @@ int vfio_device_fops_cdev_open(struct inode *inode, struct file *file)
+ 	struct vfio_device *device = container_of(inode->i_cdev,
+ 						  struct vfio_device, cdev);
+ 
++	/* Device file must be retrieved via LIVEUPDATE_SESSION_RETRIEVE_FD */
++	if (vfio_liveupdate_incoming_is_preserved(device))
++		return -EBUSY;
++
+ 	return vfio_device_cdev_open(device, &file);
+ }
+ 
+diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
+index 4f15016d2a5f..0fa9761b13d3 100644
+--- a/drivers/vfio/group.c
++++ b/drivers/vfio/group.c
+@@ -311,6 +311,15 @@ static int vfio_group_ioctl_get_device_fd(struct vfio_group *group,
+ 	if (IS_ERR(device))
+ 		return PTR_ERR(device);
+ 
++	/*
++	 * This device was preserved across a Live Update. Accessing it via
++	 * VFIO_GROUP_GET_DEVICE_FD is not allowed.
++	 */
++	if (vfio_liveupdate_incoming_is_preserved(device)) {
++		vfio_device_put_registration(device);
++		return -EBUSY;
++	}
++
+ 	fd = FD_ADD(O_CLOEXEC, vfio_device_open_file(device));
+ 	if (fd < 0)
+ 		vfio_device_put_registration(device);
 diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-index 4b83a02401aa..b960ec3ffbf2 100644
+index b960ec3ffbf2..6f760ace7065 100644
 --- a/drivers/vfio/pci/vfio_pci_liveupdate.c
 +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-@@ -67,6 +67,9 @@
-  *    interrupts on the device will cause the ``reboot(LINUX_REBOOT_CMD_KEXEC)``
-  *    syscall (to initiate the kexec) to fail.
+@@ -47,6 +47,12 @@
+  *   ...
+  *   ioctl(session_fd, LIVEUPDATE_SESSION_FINISH, ...);
   *
-+ * In addition, the device must meet all of the restrictions imposed by the
-+ * core PCI layer documented at :doc:`/PCI/liveupdate`.
++ * .. note::
++ *    After kexec, if a device was preserved by the previous kernel, attempting
++ *    to open a new file for the device via its character device
++ *    (``/dev/vfio/devices/X``) or via ``VFIO_GROUP_GET_DEVICE_FD`` will fail
++ *    with ``-EBUSY``.
 + *
-  * Preservation Behavior
-  * =====================
+  * Restrictions
+  * ============
   *
-@@ -136,23 +139,37 @@ static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
- 	struct vfio_pci_core_device_ser *ser;
- 	struct vfio_pci_core_device *vdev;
- 	struct pci_dev *pdev;
-+	int ret;
+diff --git a/drivers/vfio/vfio.h b/drivers/vfio/vfio.h
+index 50128da18bca..8fcc98cf9577 100644
+--- a/drivers/vfio/vfio.h
++++ b/drivers/vfio/vfio.h
+@@ -11,6 +11,7 @@
+ #include <linux/cdev.h>
+ #include <linux/module.h>
+ #include <linux/vfio.h>
++#include <linux/pci.h>
  
- 	vdev = container_of(device, struct vfio_pci_core_device, vdev);
- 	pdev = vdev->pdev;
+ struct iommufd_ctx;
+ struct iommu_group;
+@@ -462,4 +463,21 @@ static inline void vfio_device_debugfs_init(struct vfio_device *vdev) { }
+ static inline void vfio_device_debugfs_exit(struct vfio_device *vdev) { }
+ #endif /* CONFIG_VFIO_DEBUGFS */
  
-+	ret = pci_liveupdate_preserve(pdev);
-+	if (ret)
-+		return ret;
++#ifdef CONFIG_PCI_LIVEUPDATE
++static inline bool vfio_liveupdate_incoming_is_preserved(struct vfio_device *device)
++{
++	struct device *d = device->dev;
 +
- 	ser = kho_alloc_preserve(sizeof(*ser));
--	if (IS_ERR(ser))
--		return PTR_ERR(ser);
-+	if (IS_ERR(ser)) {
-+		ret = PTR_ERR(ser);
-+		goto err_unpreserve;
-+	}
- 
- 	ser->bdf = pci_dev_id(pdev);
- 	ser->domain = pci_domain_nr(pdev->bus);
- 
- 	args->serialized_data = virt_to_phys(ser);
- 	return 0;
++	if (dev_is_pci(d))
++		return to_pci_dev(d)->liveupdate_incoming;
 +
-+err_unpreserve:
-+	pci_liveupdate_unpreserve(pdev);
-+	return ret;
- }
- 
- static void vfio_pci_liveupdate_unpreserve(struct liveupdate_file_op_args *args)
- {
-+	struct vfio_device *device = vfio_device_from_file(args->file);
++	return false;
++}
++#else
++static inline bool vfio_liveupdate_incoming_is_preserved(struct vfio_device *device)
++{
++	return false;
++}
++#endif /* CONFIG_PCI_LIVEUPDATE */
 +
-+	pci_liveupdate_unpreserve(to_pci_dev(device->dev));
- 	kho_unpreserve_free(phys_to_virt(args->serialized_data));
- }
- 
-@@ -213,6 +230,10 @@ static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
- 	if (!device)
- 		return -ENODEV;
- 
-+	ret = pci_liveupdate_retrieve(to_pci_dev(device->dev));
-+	if (ret)
-+		goto out;
-+
- 	file = vfio_device_liveupdate_cdev_open(device);
- 	if (IS_ERR(file)) {
- 		ret = PTR_ERR(file);
-@@ -233,6 +254,9 @@ static bool vfio_pci_liveupdate_can_finish(struct liveupdate_file_op_args *args)
- 
- static void vfio_pci_liveupdate_finish(struct liveupdate_file_op_args *args)
- {
-+	struct vfio_device *device = vfio_device_from_file(args->file);
-+
-+	pci_liveupdate_finish(to_pci_dev(device->dev));
- 	kho_restore_free(phys_to_virt(args->serialized_data));
- }
- 
-@@ -257,13 +281,23 @@ int __init vfio_pci_liveupdate_init(void)
- 	int ret;
- 
- 	ret = liveupdate_register_file_handler(&vfio_pci_liveupdate_fh);
--	if (ret && ret != -EOPNOTSUPP)
--		return ret;
-+	if (ret)
-+		goto err_return;
-+
-+	ret = pci_liveupdate_register_flb(&vfio_pci_liveupdate_fh);
-+	if (ret)
-+		goto err_unregister;
- 
- 	return 0;
-+
-+err_unregister:
-+	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
-+err_return:
-+	return (ret == -EOPNOTSUPP) ? 0 : ret;
- }
- 
- void vfio_pci_liveupdate_cleanup(void)
- {
--       liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
-+	pci_liveupdate_unregister_flb(&vfio_pci_liveupdate_fh);
-+	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
- }
+ #endif
 -- 
 2.53.0.983.g0bb29b3bc5-goog
 
