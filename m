@@ -4,98 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D7ECEC01A1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:53:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3040AEC01A2
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 08:01:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF7676B00A2; Mon, 23 Mar 2026 03:53:17 -0400 (EDT)
+	id 55F5A6B0098; Mon, 23 Mar 2026 04:01:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAE0A6B00A4; Mon, 23 Mar 2026 03:53:17 -0400 (EDT)
+	id 50F256B0099; Mon, 23 Mar 2026 04:01:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BDEB6B00A5; Mon, 23 Mar 2026 03:53:17 -0400 (EDT)
+	id 3FEC56B009B; Mon, 23 Mar 2026 04:01:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 87BE06B00A2
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:53:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5087513BF0D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:53:17 +0000 (UTC)
-X-FDA: 84576562434.02.5E85F5E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B11FC4000B
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:53:15 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NoUOiYcw;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FF7C6B0098
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 04:01:56 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD8A6BC33B
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:01:55 +0000 (UTC)
+X-FDA: 84576584190.26.AF9B33A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9901C40008
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:01:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cMagydKI;
+	spf=pass (imf11.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774252395;
+	s=arc-20220608; t=1774252913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lw+23Z2qf2U/xRX85WmKeXeTVc90/3xX0OxyQLkOTuw=;
-	b=O2fSSEySZLdjfSmtyfdbQvEfY58qBdcgLrp1n+4WNvx5w53j2xCJ6j9zATUvy1aMKm8BCB
-	7wSjYMX5TcqDbZ9rdGpQ+/mXKZ05Qq+BHiujCplm8kD+kBqVL2WgNF0WmMV1osqchxtwFh
-	OyUwL/fBnzFdLRVVhDWxNxndqoBUlkQ=
+	bh=ro+dI1rVslz2A4EMJRdKgBDV6ykDd3GWRMG35AhNJtw=;
+	b=KdBQJxAcze9tnKTHsZK0b+Lb7bvpsaFsccFXCtiDdTMUtvN7GRt0CxXn5ayGJR8fMAvVNS
+	y88SMsoY9e7EjbjfggnamP6cyFIPw0LOZEOyAG72Qkv2lgtGc5ij+NobCogUjbLJUiXSDq
+	ZLpFZBaRfIOvQjHK4q/FWfhoVOQ8O4Q=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NoUOiYcw;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252395; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cMagydKI;
+	spf=pass (imf11.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252913; a=rsa-sha256;
 	cv=none;
-	b=FSO36SzArQvMjO9aDiXKq9+5O3CFzs6nfJdWct3V+S20vUGZ+u6ay03rKczusU2lN7fZNL
-	rG0B+RWLPgN5Ll9r7cqGwF+ybC8++NyEsLPo1ytv7T6nQ78QfD9GLpLnivE1FOO+krCbZY
-	3NvWS7rYC9GDu1DT5nwPDvbvwRMKluQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 304EC60051;
-	Mon, 23 Mar 2026 07:53:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1A8C4CEF7;
-	Mon, 23 Mar 2026 07:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774252394;
-	bh=ep0hDSwCBGOnuJvxJme1oMbAirhVZHXupMETu8snQ4A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NoUOiYcwo/H7w+dsYAyFCvOVNzzuboDFucLEAGhVJsh7zhirN/JAuNuWb0IChI9YA
-	 9vacG2nDCrg4TOJCH796WyyHEbOdUj3Aa+3UtJY1Dfadu4cwp7rNVm3Sm7lQiFtaip
-	 jMomh59jceywvp/GIcqbU0lzcwFWAN1r/xkmxSD7p/xu7/U4U3WkKGImyP7YS7t9NH
-	 R4jDo3sditHBH6CeIMfspKwqM2K8ekpeVDT6WOasAdfhcDqeQ0MQmD0j4BDk5p4+1G
-	 4kXhH2gwBcnwv0DFDxUPMmYMGdOUpmSvIENx8GDttcQfl6Z68qPMvt8k4kpdZy5Ntr
-	 C5f2nbGbZY1dw==
-Date: Mon, 23 Mar 2026 16:53:12 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev,
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	chenridong@huaweicloud.com, mkoutny@suse.com,
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
-	apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com,
-	usamaarif642@gmail.com, linux-mm@kvack.org,
+	b=LtyRqyVJ5CHi05kILgTfpxTo5FQjGo+JtwhVeALS/Dz+8jCDV5rJDaFnEjueFZ2uj7V9+5
+	0y9e7TBgxBT/ihE2K1U4I2iJoCmX5v6BabLTv8+rtwDd+erDCz072a41A9oKIxNSPdlf6s
+	GpaRCb7ekyC7qWxYIw6e5SVPpIoTumk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774252912;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ro+dI1rVslz2A4EMJRdKgBDV6ykDd3GWRMG35AhNJtw=;
+	b=cMagydKIYMyBNDsCnFK/MRoiI77jbIRU191MHcoM1KcSYqIfJMClRPCQanUi+Lsdu+2kd5
+	C+T6/4YvY05VJs/DYv27aekzzX8toqSPQHJlkt+dY9c3amz7MUeUM5pbV+Uu/1LkP/YGQ2
+	9X8OcSEolRMo12JSpFbkA29nfulFKnY=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-SdZ4DqldNf67ZFAWvZpztQ-1; Mon, 23 Mar 2026 04:01:51 -0400
+X-MC-Unique: SdZ4DqldNf67ZFAWvZpztQ-1
+X-Mimecast-MFC-AGG-ID: SdZ4DqldNf67ZFAWvZpztQ_1774252910
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-82a61300179so2186553b3a.0
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 01:01:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774252910; x=1774857710;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ro+dI1rVslz2A4EMJRdKgBDV6ykDd3GWRMG35AhNJtw=;
+        b=IQX/rVl5Z1LjmJewMxbXPxPPEMXFi1Urw5DDbz2nPfeQreNU0K7gODwVfS3RF9NocQ
+         C+31pD2yloSX820mcr51EFRJvon+vHuqkmvYB+p5b1DNkKv4nplRgE/dqZxWCWFcS8PL
+         HSZtAK2dpqsDNEEImAMEGpfG03I/v05fSO9YgN4bYk0gddjflE+Z2O2sKh0JLYQa6um8
+         iQ5DHFSIfuJgYav/OCzoD90zBev0B0fbvr2Mg5FoRZBCkW4D5NkGSk2pCCnFR+bL7IGn
+         r87l6IlB26lvfFXr+z6eDrTuSBm4rCx5+bMx/hH3XMiqlRJYS7kzbhUH3EuMJLDcvWrY
+         EJSA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMLL2wNX1V72Si4qTvPloZ02vgD7ZQKXTccXanoPoPvmJM1tpZNiaaHyFHc8KmO/kHOgz3vHWMLg==@kvack.org
+X-Gm-Message-State: AOJu0Yz6ZpmarSB8GxZaajV3vQ/5wqCbCm+JOUnEhTbKkeDV9XulT5IU
+	9ZdAWqhRA+i4nHUL8nQ0FJxdFQg2S5co72sXor6LTJaDte7qHaQ6sY3a18coHHg4P3D5GMrnqRi
+	jto2lOobNe2AfjAdrzbotOuuYNcHjlpZF163ZULKEiMTmVGrPzuZl
+X-Gm-Gg: ATEYQzx+qjD2gGwqh6FStkfYJu0RSKQN6P7dG2jZNB0hNPoCBzqhOOIOYDrh5Hl+Otd
+	DImjCaNuV0ByYGcYm/zYzMhu0k4qAB1YYNiMMG8xvrdm/bEVo7ygHCOL09AUJexMjtT/m7gwasK
+	ZbWfJOnNCdgw3Xv6+SfVGR+JhwsnuoShGHp9XSDxbU4fvu5XBAFuZcOTBWNkvJs8EOnCWOtdFKB
+	L9WRF+WSizShcPzfJ1/vHtbIqQVAR3zsyRy4Cbmx3m3J/x104r386swgYx/kMhNSQI+WYYdca2T
+	6v/YLAjsBTfx5L/q8okS4v8jVevAkGUOULP3eKI+SDVRvTTKYYiaZxLms/c/BKD8Tjtj0rj60XA
+	XKZWcmvEIvvfUJTUp4Q==
+X-Received: by 2002:a05:6a00:228e:b0:827:26b0:58d6 with SMTP id d2e1a72fcca58-82a8c334b58mr9632686b3a.47.1774252910139;
+        Mon, 23 Mar 2026 01:01:50 -0700 (PDT)
+X-Received: by 2002:a05:6a00:228e:b0:827:26b0:58d6 with SMTP id d2e1a72fcca58-82a8c334b58mr9632636b3a.47.1774252909675;
+        Mon, 23 Mar 2026 01:01:49 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b0409bf65sm8649474b3a.34.2026.03.23.01.01.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 01:01:49 -0700 (PDT)
+Date: Mon, 23 Mar 2026 16:01:46 +0800
+From: Li Wang <liwang@redhat.com>
+To: Waiman Long <longman@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
 	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: Re: [PATCH v6 30/33] mm: memcontrol: prepare for reparenting
- non-hierarchical stats
-Message-ID: <acDxaEgnqPI-Z4be@hyeyoo>
-References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
- <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Sebastian Chlad <sebastianchlad@gmail.com>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
+Subject: Re: [PATCH v2 4/7] selftests: memcg: Increase error tolerance in
+ accordance with page size
+Message-ID: <acDzaouBPCIpB7Ij@redhat.com>
+References: <20260320204241.1613861-1-longman@redhat.com>
+ <20260320204241.1613861-5-longman@redhat.com>
 MIME-Version: 1.0
+In-Reply-To: <20260320204241.1613861-5-longman@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: NLHZTF74T2t_FFAqtiLl_3PkfnDA2kNDtDRVcVsGJT4_1774252910
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
-X-Stat-Signature: 19cudwcgycr1u1euu8y3kkiaydafjkin
+X-Stat-Signature: rg3kcfyaxy5dg5jhshfachjcmx5iigmm
 X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B11FC4000B
-X-HE-Tag: 1774252395-254946
-X-HE-Meta: U2FsdGVkX19BwtlTzl9jFOFz/Szj65GKNWUpV6sETG78tUGePa91yTH38fZcEPOtdv/RaVH4m0LN84deLOl274Ya5npv2eJWhnHWHrdMFyBL6ZoJBKQ9eg2Nwe6m7eMrzjOwnuxyACiYi+WgPcjesCHRh9k0Eo1OtuNk3UCj/f5R9S1vRCmKYgHrniiWDJE/EE9c5EmyMW0Uo4Y5BEPSUsRrpFeL6yixNEih5AT43QZ0jLNcNuC5VtiTwVlXLQNOJ4V6Ecfhd/jRgpiWcAtECRBsUBUeNhEKwL2cNrNz0yRyRDSO94uj+Lqfm4dax3qveRQqPdxghvOHkiyYs9s0A5RMokc6/NV5BVPyp3+BdX7KsL2ZqrtCCMJlSQRVrWQFIKaIAZ8h/YgB8gk20ev83b/UcbkGF0UW0PKK4JDekxWndTHUQAuIQKa3eCzq5l5Z2QlSLDG/xOtTbkkevI+NAFeX0OQaYtefuvaxC9wrF+/Oc0/cewOh0IIDLGn35QERPj042D00tYBN+EY8lgdUv37Cxbxy8LA3fd7is7UK6gUhSIw8mZ8a9f7Tax+FgX6Hh3JHMhoHznfe++96+1KfxJVZ2jwf8euU48IYbCXQsB65ZJqPe3GomFs+DwuJ+UVPn1RCIna8DfubsVCeJrwWvDi5k0lFd6mkmJVJwzMVWx/ddBa6n8hxnHklm6OAgNlQphRnj/QPVfj0430lWqqBjeDDyXToHe1RnDd2Z1FgTqDGIxp2xVRR/a/QDFTflJaHlNATHX1vsNtjbGMLNT4WuBFsSdbgUfTD8MehNODtvAe0xjdB/Pchxf1/AxH++n1L/1daVvew8JfsHHOY/n5kMOQydxPnQuBqzq2ZeJTDkYP0SVb5SeizY9VnxP0uM2BIOYLWHxgyJseOyPInnhu94P5wPA+FZuQ9BS+dNtxaznPrJLi7WrNw8B1v7eblQPYsKnhM7RP+nYD5wj3HlkX
- EGVFpfdy
- 3d5g1D4KbeCh0zqF8krLELE/LuJH7nnwt40np+yeK98djvFXQrBLYyCe4QR3k+SrVZv+vetPGI5FjTyyg/SXY8nq9Rnbpj+H3NGfeTc92yXtdpcWRx6p51tWctbxFHZNKWpRxv8ljmagcs325bwXmHC0FEmVSELS0vVwkKEuHow8qx00dpKUtqKkZoRTVlXzjbRcxABB3TrEEHX7nv2EbX4FwoOyx1/0mz0OsAVl+DSrAovrnErb6ax3ZdKf+Cv1r06/GjflGcuaTzx+sqOYvzTPoZDhpYX0I5Iz0dCAoOUOfVaU=
+X-Rspamd-Queue-Id: 9901C40008
+X-HE-Tag: 1774252913-575509
+X-HE-Meta: U2FsdGVkX1+Fw1MwYIUdhuqfBp86S6l+Kuo0GV1+RPDHqGXrz5tm5HEeJt997Y6lzkCwRqBg1aN0wbhPyOIdf+3Fz4VnUjHfVr4P74QCQNMy87uEGFK4PgHEhgixJC/G0+aWQmTLz1OVKgpINkV18PP1QBd9UUVQlTCMG2iHzDyAyU8zQSf7IHcKAy/h9dJBurz8Qjbr/IJCvyRrYTvqbb0oy1w7WhJMOj9UWrBR26tzvSG+CgWknFPxojdSetcet0gQgkyxQ9lqdZ5m2FlNmMdhyCgIOAbDFF7jkbxklxsSuzQcew3gm5ujNaqGpcpYbfGxFgPg9+A4l+J2V8EcKWahlK6NErX9Anh4MXUuUCVB5UW54Ow9Xp/KS8aJpnMJrq1iNlTsWImdKLGPY6d0YhKnWLL0YW/c9/78O5tEhquQ8BtgYhH3A48qHKd2ZbuFI834HEhYIu+MZ37oLddlqCRkWbNfgkEVy24/nmdBN8NBmKoQiXkO4C3DIkrHgGVBHMp0HZHc0lbBS3B85foZI7e8guakCwpvNMhqCXN2sxqEkF5DNmZoDFZWPC0rep85/iFMLP4o+lnd7EU6TLTJjShthlRF45Ny1iWPMoMYXyxPDx1/XuBJyTcMR1FJjoxZAv+b/p0ytilOFOlgt2JIle/Xf+4p4LzKWQlEW3KHFYvp30BG9lcIlqprXK/7br6BceR9Eig+yxf1Wfl0Ppw9ErYqu7NLqJMZ8xjhiqQw0r+9CIMOWTSIbieEFYPWRubQosBia/E+YEL6ivkCqsYUgzjORVnGUeVgRbqLPw/RYC33kzXylw4hdGMq+XEMmSjQMM8UWFFr6M3OW/EX9UuMujsgpuXrOwh1AP7xgFSN73tEnVcNbJ+AVv+5uZxlgLvsW/8CRdgeiBTumofvMuQ1WC0CmQJHLrRYarRDKfkomw4MUzcDZotZDIYT4DRJ7YdRSu56NVMcwjDsHUMUwDT
+ wZPaLQI8
+ Xe/uDG7GUisyBICUlYeJf3Pc7JykPPpy+P4iRhM4t1KAeKyf5UG9qwJSUN40gO5DTGmCHnbU0EmITu2V25nSZkmMTc8O/rr97WLIbGQWzcGuhm29YlTOvE4mbV+Wf1tkxyHHTcGZbgUd0cgzhnHAhwM8Mlwv2v9RJHb2oGtkJ7VDC0hjTj56VBvyZF74z0AmeVP0MG8RbR4gLQxAIN+XHkLxpUyEypvr9p94Qg5yJ/sYLcdyo2ofJzslaHDwS6rywFsKDFvQt+UYmHlaPz54MJX5NRxtjsKH4/62H14rxd1Yl6E9k6YB0EJdEkyYwVtutMxjt/sO2lsfyKII5vEvJr1nP8nXOBZ3R8at1957doeAdk9wml68au3GpixW4P9nf/tyLpzYU7EvuGksYC9gPiHKCgQrHgSB5b/qiWsEMWe0hJ/JNsQBw+r5qr4GSFy6hy4g7muNls5tIRB2i5LnGwmdJBjGmPTKlyfBOBqtK70XgWKWIOPvKIEB5FJ1WchQlh/jFYF/MYxIlZZw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,110 +139,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 07:52:48PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
+On Fri, Mar 20, 2026 at 04:42:38PM -0400, Waiman Long wrote:
+> It was found that some of the tests in test_memcontrol can fail more
+> readily if system page size is larger than 4k. It is because the
+> actual memory.current value deviates more from the expected value with
+> larger page size. This is likely due to the fact there may be up to
+> MEMCG_CHARGE_BATCH pages of charge hidden in each one of the percpu
+> memcg_stock.
 > 
-> To resolve the dying memcg issue, we need to reparent LRU folios of child
-> memcg to its parent memcg. This could cause problems for non-hierarchical
-> stats.
+> To avoid this failure, the error tolerance is now increased in accordance
+> to the current system page size value. The page size scale factor is
+> set to 2 for 64k page and 1 for 16k page.
 > 
-> As Yosry Ahmed pointed out:
+> Changes are made in alloc_pagecache_max_30M(), test_memcg_protection()
+> and alloc_anon_50M_check_swap() to increase the error tolerance for
+> memory.current for larger page size. The current set of values are
+> chosen to ensure that the relevant test_memcontrol tests no longer
+> have any test failure in a 100 repeated run of test_memcontrol with a
+> 4k/16k/64k page size kernels on an arm64 system.
 > 
-> ```
-> In short, if memory is charged to a dying cgroup at the time of
-> reparenting, when the memory gets uncharged the stats updates will occur
-> at the parent. This will update both hierarchical and non-hierarchical
-> stats of the parent, which would corrupt the parent's non-hierarchical
-> stats (because those counters were never incremented when the memory was
-> charged).
-> ```
-> 
-> Now we have the following two types of non-hierarchical stats, and they
-> are only used in CONFIG_MEMCG_V1:
-> 
-> a. memcg->vmstats->state_local[i]
-> b. pn->lruvec_stats->state_local[i]
-> 
-> To ensure that these non-hierarchical stats work properly, we need to
-> reparent these non-hierarchical stats after reparenting LRU folios. To
-> this end, this commit makes the following preparations:
-> 
-> 1. implement reparent_state_local() to reparent non-hierarchical stats
-> 2. make css_killed_work_fn() to be called in rcu work, and implement
->    get_non_dying_memcg_start() and get_non_dying_memcg_end() to avoid race
->    between mod_memcg_state()/mod_memcg_lruvec_state()
->    and reparent_state_local()
-> 
-> Co-developed-by: Yosry Ahmed <yosry@kernel.org>
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Signed-off-by: Waiman Long <longman@redhat.com>
 > ---
->  kernel/cgroup/cgroup.c |  9 ++--
->  mm/memcontrol-v1.c     | 16 +++++++
->  mm/memcontrol-v1.h     |  7 +++
->  mm/memcontrol.c        | 97 ++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 125 insertions(+), 4 deletions(-)
+>  .../cgroup/lib/include/cgroup_util.h          |  3 ++-
+>  .../selftests/cgroup/test_memcontrol.c        | 23 ++++++++++++++-----
+>  2 files changed, 19 insertions(+), 7 deletions(-)
 > 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 23b70bd80ddc9..b0519a16f5684 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -473,6 +501,30 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
->  	return x;
->  }
->  
-> +#ifdef CONFIG_MEMCG_V1
-> +static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
-> +				     enum node_stat_item idx, int val);
-> +
-> +void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-> +				       struct mem_cgroup *parent, int idx)
-> +{
-> +	int nid;
-> +
-> +	for_each_node(nid) {
-> +		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
-> +		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
-> +		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
-> +		struct mem_cgroup_per_node *child_pn, *parent_pn;
-> +
-> +		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
-> +		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
-> +
-> +		__mod_memcg_lruvec_state(child_pn, idx, -value);
-> +		__mod_memcg_lruvec_state(parent_pn, idx, value);
-
-We should probably change the type of `@val` from int to val to avoid
-losing non hierarchical stats during reparenting?
-
->  #ifdef CONFIG_MEMCG_V1
->  static void __mod_memcg_state(struct mem_cgroup *memcg,
->  			      enum memcg_stat_item idx, int val)
->
-> @@ -769,6 +857,15 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
->  #endif
->  	return x;
->  }
-> +
-> +void reparent_memcg_state_local(struct mem_cgroup *memcg,
-> +				struct mem_cgroup *parent, int idx)
-> +{
-> +	unsigned long value = memcg_page_state_local(memcg, idx);
-> +
-> +	__mod_memcg_state(memcg, idx, -value);
-> +	__mod_memcg_state(parent, idx, value);
-> +}
-
-Same here.
-
-Otherwise LGTM.
-
+> diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+> index 77f386dab5e8..2293e770e9b4 100644
+> --- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+> +++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+> @@ -6,7 +6,8 @@
+>  #define PAGE_SIZE 4096
 >  #endif
 >  
->  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> -#define MB(x) (x << 20)
+> +#define KB(x) ((x) << 10)
+> +#define MB(x) ((x) << 20)
+>  
+>  #define USEC_PER_SEC	1000000L
+>  #define NSEC_PER_SEC	1000000000L
+> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+> index babbfad10aaf..c078fc458def 100644
+> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
+> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+> @@ -26,6 +26,7 @@
+>  static bool has_localevents;
+>  static bool has_recursiveprot;
+>  static int page_size;
+> +static int pscale_factor;	/* Page size scale factor */
+>  
+>  int get_temp_fd(void)
+>  {
+> @@ -571,16 +572,17 @@ static int test_memcg_protection(const char *root, bool min)
+>  	if (cg_run(parent[2], alloc_anon, (void *)MB(148)))
+>  		goto cleanup;
+>  
+> -	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50), 3))
+> +	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50),
+> +				       3 + (min ? 0 : 4) * pscale_factor))
+>  		goto cleanup;
+>  
+>  	for (i = 0; i < ARRAY_SIZE(children); i++)
+>  		c[i] = cg_read_long(children[i], "memory.current");
+>  
+> -	if (!values_close(c[0], MB(29), 15))
+> +	if (!values_close(c[0], MB(29), 15 + 3 * pscale_factor))
+>  		goto cleanup;
+>  
+> -	if (!values_close(c[1], MB(21), 20))
+> +	if (!values_close(c[1], MB(21), 20 + pscale_factor))
+>  		goto cleanup;
+>  
+>  	if (c[3] != 0)
+> @@ -596,7 +598,8 @@ static int test_memcg_protection(const char *root, bool min)
+>  	}
+>  
+>  	current = min ? MB(50) : MB(30);
+> -	if (!values_close(cg_read_long(parent[1], "memory.current"), current, 3))
+> +	if (!values_close(cg_read_long(parent[1], "memory.current"), current,
+> +				       9 + (min ? 0 : 6) * pscale_factor))
+>  		goto cleanup;
+>  
+>  	if (!reclaim_until(children[0], MB(10)))
+> @@ -684,7 +687,7 @@ static int alloc_pagecache_max_30M(const char *cgroup, void *arg)
+>  		goto cleanup;
+>  
+>  	current = cg_read_long(cgroup, "memory.current");
+> -	if (!values_close(current, MB(30), 5))
+> +	if (!values_close(current, MB(30), 5 + (pscale_factor ? 2 : 0)))
+>  		goto cleanup;
+>  
+>  	ret = 0;
+> @@ -1004,7 +1007,7 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
+>  		*ptr = 0;
+>  
+>  	mem_current = cg_read_long(cgroup, "memory.current");
+> -	if (!mem_current || !values_close(mem_current, mem_max, 3))
+> +	if (!mem_current || !values_close(mem_current, mem_max, 6 + pscale_factor))
+>  		goto cleanup;
+>  
+>  	swap_current = cg_read_long(cgroup, "memory.swap.current");
+> @@ -1684,6 +1687,14 @@ int main(int argc, char **argv)
+>  	if (page_size <= 0)
+>  		page_size = PAGE_SIZE;
+>  
+> +	/*
+> +	 * It is found that the actual memory.current value can deviate more
+> +	 * from the expected value with larger page size. So error tolerance
+> +	 * will have to be increased a bit more for larger page size.
+> +	 */
+> +	if (page_size > KB(4))
+> +		pscale_factor = (page_size >= KB(64)) ? 2 : 1;
+
+This is a good improment but I still think the pscale_factor adjustments
+are a bit fragile, each call site needs its own hand-tuned formula, and only
+three page sizes (4K/16K/64K) are handled. If a new page size shows up,
+every call site needs revisiting.
+
+How about centralizing the page size adjustment inside values_close()
+itself? Something like:
+
+    static inline int values_close(long a, long b, int err)
+    {
+          ssize_t page_adjusted_err = ffs(page_size >> 13) + err;
+    
+          return 100 * labs(a - b) <= (a + b) * page_adjusted_err;
+    }
+
+This adds one extra percent of tolerance per doubling above 4K, scales
+continuously for any power-of-two page size, and also fixes an integer
+truncation issue in the original: (a + b) / 100 * err loses precision
+when (a + b) < 100.
+
+With this, the callers wouldn't need any changes at all.
+
+This method is inspired from LTP:
+  https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/controllers/memcg/memcontrol_common.h#L27
 
 -- 
-Cheers,
-Harry / Hyeonggon
+Regards,
+Li Wang
+
 
