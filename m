@@ -4,137 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 541A8EC01D4
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 11:56:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 276EBEC01DC
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:01:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81DA36B0005; Mon, 23 Mar 2026 07:56:41 -0400 (EDT)
+	id 2805F6B0088; Mon, 23 Mar 2026 08:01:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CE086B0088; Mon, 23 Mar 2026 07:56:41 -0400 (EDT)
+	id 257D96B0089; Mon, 23 Mar 2026 08:01:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E4686B0089; Mon, 23 Mar 2026 07:56:41 -0400 (EDT)
+	id 16DE36B008A; Mon, 23 Mar 2026 08:01:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C7E96B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:56:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2740C1B90AF
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:56:41 +0000 (UTC)
-X-FDA: 84577175802.02.D8B3021
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 41EB51C0007
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:56:39 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 02E6D6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:01:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C49C13C065
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:01:45 +0000 (UTC)
+X-FDA: 84577188570.18.1B3A8FD
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8A5FC1C0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:01:43 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="u/OMXgWu";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=google.com header.s=20251104 header.b=Hwd+PZ6l;
+	spf=pass (imf21.hostedemail.com: domain of 3pSvBaQgKCFY7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pSvBaQgKCFY7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774266999;
+	s=arc-20220608; t=1774267303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pGHi1+LsBRFV7bIXuKKFFzQ7MZaEPPL/W74MGeHCUBI=;
-	b=xYy+EnFly4+xub7CT8UTJi1M9StCkf0wScM16t6u/QbkS8p0x/dAnq2+VECu37aRdT4+Kr
-	jRBiMCwu4i3l2FHLM1+PQZYPLFhsyVyImYwimFPI+vJBOR48kVkBcoJCQ79x6Nu7GBAfrC
-	ouhPT9WMWaSpGhRouQV3mQ8a06vVzAM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774266999; a=rsa-sha256;
-	cv=none;
-	b=V7q+W7xUHA/0+s48zzHTnvZB9IlFis+DuxRcvsTX1yEz64noclwYSLNDux4Rz+MaF9GNhS
-	qZdEClJVW90L6s2DaX9e0Lb2MeC2wSbocYxiYXiHc6aQrTP+pxX2hE+PqSHPUrIbASZVqu
-	ETQskG6M9bNo6Gxfkc9EJ+6JNNWSIFM=
+	bh=9PU7c6Ak+cD1xqE0Ag3FZYs88dCaVaPlNoPrIQ+v6QI=;
+	b=BkF1CkQP64wNjJc7M3Gl9FQhEc5CicGIZbUalbJ+B/Uvmd7JWkYz9bvcCkubWg8E+AgPgf
+	zOOgj1PQ7oDXrNbPXrHy3AV81RiCGwbL4c8rMrcdLFZG9tw4fEs1MueyuSJ5I62VNB09yZ
+	HRKCIgWDq/VdtH6aHi9UXzFthIVBFO8=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="u/OMXgWu";
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 41E834441B;
-	Mon, 23 Mar 2026 11:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D640C2BCB1;
-	Mon, 23 Mar 2026 11:56:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774266998;
-	bh=0DqT45wHIWJCNhvxa30ejAPQrE5LelMtMNTQg4f6hjw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=u/OMXgWu+chO3gvSI12/PPBLGLAG6Xmt6zeic+C0lrMmuuBOFfaJ6NcDr3wEsVEVc
-	 EBqviFGr9mMYUGB9SRrwlDRUmyhf06XUyR8nhG95dPymq1tt/woI00vES7KjJgA4zd
-	 JhAPgv0JIj7NDVGlazIOCO5TSvA8lTlL1X8XNjI44EYzACpCeCk1d2DwUqW8VStSyI
-	 nvu1TAWAspCQtHJo7kjF5KHQBnkrAp41psY4G3AflGpg+hnQUCwvE7aFg0NlOyTUjJ
-	 mi/rXt8Z3sz0FkVowK9jcQX2aE7+euJiZyT170qfAwD1tXz/RQVkpf7HT+xUkYBXWE
-	 B7ca6w+Ds4q+A==
-Message-ID: <a4fb1d56-8c10-46de-acf5-9a00ce0db4ad@kernel.org>
-Date: Mon, 23 Mar 2026 12:56:33 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
-To: Audra Mitchell <audra@redhat.com>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
- usama.anjum@collabora.com, colin.i.king@gmail.com, avagin@google.com,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <f7fef55d-4334-4d1d-b6c6-b409fea7e2a1@kernel.org>
- <20260320184010.759461-1-audra@redhat.com>
- <20260320184010.759461-2-audra@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260320184010.759461-2-audra@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 41EB51C0007
-X-Stat-Signature: cqai84kyb31oqgggf43r69bkex6so3z3
+	dkim=pass header.d=google.com header.s=20251104 header.b=Hwd+PZ6l;
+	spf=pass (imf21.hostedemail.com: domain of 3pSvBaQgKCFY7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pSvBaQgKCFY7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774267303; a=rsa-sha256;
+	cv=none;
+	b=feVU7kOXY5VMYCydAKEID9QW6oFM1f+8sijjYQzYMNR+zaNxbi18cAYJrWFWPNnBsHl0pl
+	g3pMAjwu9bmIoAROqcYlsAONdkuiCecpcPgIEmfGbU7Xk680un7EwKxmVbhAZ2A2zks15e
+	MTa2p60GsQ7ea0jVBpfck9MYUaAbIBM=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-485c45885e6so49075545e9.0
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:01:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774267302; x=1774872102; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9PU7c6Ak+cD1xqE0Ag3FZYs88dCaVaPlNoPrIQ+v6QI=;
+        b=Hwd+PZ6lrcPoo59VGYcca85eqkcvPi9eTVhXTvpaGS9xKtYhQ7YmJAZj5Skg2X3Bq3
+         osnNP+klGuM41rVPEZodb6M/xsBWfd6JVHg4ccAiiYSlQ6m/bHXrzIZYIJwvglKKH1kT
+         M+l95lVPQHV/jzcfyVD82m5yP3VNj0d0MUqRi9UWXzFR4Vyx4VADEMn8LDVmxCwsx/Ru
+         sOINNck2z/NOMpTTpIXKj3qE87C3Dn92Av6+P0Jn5Fsh16DnsjP/IvMlDWt5bTROhSrC
+         AKYIOVTerLJisaO2Tk4wVxjKTJNXdVm+qBtncdSAzrqvkLBfT6Dmnn/KyntZCMVo6WVO
+         QKMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774267302; x=1774872102;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9PU7c6Ak+cD1xqE0Ag3FZYs88dCaVaPlNoPrIQ+v6QI=;
+        b=oTo8z8EN5M1OVjaGBRdqarKsxgcVmZkFiHfFJ5iYSK89siewntPrqYBIbYUNsIbX+h
+         t4BHbrhkQ5tsI9xgU/Iho92eHsgHlh1fNfGgGwuOiESWYWwznuIz1AFVYumQaCdi32hh
+         Di7noNjMgNDR4kdI501GQp4H8FPnUISeqpusXLVC30G81spv+XhsIqi06MPwdmhQsUxr
+         ybFZyiIFrEYixrvRXyWfQ35VrsblARl8ixJAcrFm+mgjK0LGrNrS3145zi3FrKHdsxIu
+         djLvbm/TJJRCiQNz/0xWLkp4AxqTrmMzTRoyPepFGYFXDya8xY730aLSw4iw8jJtEXcr
+         mc4Q==
+X-Gm-Message-State: AOJu0YwlxADCHiMsfZwsnaGrkCYLA6UhKcWlbc1IHctEKSjtU727c6AE
+	XfpJfccFnnFUB0aobtoDxo8QXgC8Ujc3LBaToUh81h7I8IMaCJvbm9g4Pm/hHXgFEpE06jUycV2
+	RwspPrqc1bT5Lgw==
+X-Received: from wmbha26.prod.google.com ([2002:a05:600c:861a:b0:486:fbd8:2af6])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:468b:b0:485:5812:bb9e with SMTP id 5b1f17b1804b1-486feb5a4d0mr174722475e9.0.1774267301692;
+ Mon, 23 Mar 2026 05:01:41 -0700 (PDT)
+Date: Mon, 23 Mar 2026 12:01:40 +0000
+In-Reply-To: <17e58542-1221-48dd-88b9-236128515ed2@intel.com>
+Mime-Version: 1.0
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-2-28bf1bd54f41@google.com> <17e58542-1221-48dd-88b9-236128515ed2@intel.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DHA59LJ1UQ1H.10RZVJ9V4X5TW@google.com>
+Subject: Re: [PATCH v2 02/22] x86/mm: Generalize LDT remap into "mm-local region"
+From: Brendan Jackman <jackmanb@google.com>
+To: Dave Hansen <dave.hansen@intel.com>, Brendan Jackman <jackmanb@google.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
+	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
+	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
+	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
+	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8A5FC1C0005
+X-Stat-Signature: cscsj3rscf1bjzpz1rf6th1aegtp4u55
 X-Rspam-User: 
-X-HE-Tag: 1774266999-554354
-X-HE-Meta: U2FsdGVkX1/XtFvqHVH1L7stkUxpIzvkdMHnfmMvvUSAnnxP7PygOVtDf/xN43OOmQp1GEMcT/g6OFj1jiM5LFgIufR4bjrXjHvWDDeZ2FUw/wNUJgPmwqJ0d7RpxJ99W9Ly2TM+8fYGhLA/E+2RXO2cpXHqJsqKVZywFkv8aBucadrq5I9PKfoQBVZRrajmikid62A5QqLUvAAeRQCC7cNJNkPJRLRA9dAEvX6AC7tN5JxpAafoxyTeVy3KAQexRA72kA+uLdDtFWxOy7ZoHkrMUuYGHHAEfNbfAfWBlZVMfRGm1VWMXqbhuJL7J7a7LsGXtA3Sg/IgzvnyBt0wMLjYTz9p16GQw9QVAGJx8TGwL+J9oJlokSCj/pX2OEuC/Kw34VOmUcnD3weA0+kYPIavTbD3e9YE8wbcrTaOSep3ry17PN7hYCQI/c0H9/zMdQoe4XLjZB2UxmKCeB+D76C/nbU7GYljFYQVAyUHzKW8mW9VKF3mDgiMFWpr/xh6VaF/OTzsfqxBx9eIDpu6bSjcO0xWSf30fuKZxm7ZB2bDBy+lbYOEUd1rHGBf3pZbGCuAVwVtGUIFMc0HkxFVTHVFoyAtGGEe3iHG7DJ/Cw+48rpehar1cbMNa6tqkgFBZ+/M8ClAEeF953g7fRK67HfvHTNt6ekTFnrTlFLgO7EnZk3viZ489zMXkSLIdlivmTefNMLGnnENv1TgkQGqDV+ZHR4bJEzsY0/paYLHXe56S+0n26F6R9FPgR8XokmshAHjARsnqFRfndLhm1+/OzLzA5wukXngrpNqjwXXkhZKM9CmH6Ii+iA1JxG5efqZi4tpROUitBTG1fCx9LLFF25L+B04sr3O/tbwU3U7U2hZgUI4Y1Gx+C0n6FN3O65JJbnkoOidSXIPTAKznvwvrtSXbbS+iMgVtKFVagO8PPlmN5WPM3rcxUms7O+EW62CcaI3WLZtg3i0kzmTToF
- KkJZ3YTk
- HTxuJp6IzqSOPH2TrFeN9+4+oWsTElup+pWJxUtYgBrBZbd/9uj4Xv+dK0LmXnAWmehQ+eD6WbQUI14QXhy1TqeBz/BODTJTli8G2kC5JQRQo+bkncix7CbtWmRBrp6TXv/a6u1WqXxM8njOoQBoPk3tRvlWL+DfyQG3lKttqRf8aGYjcK5kz1XGes1YjhmPZNKdPNiDHXOIXb9oWAd3AcEsQCRdRaBmt4b5+CRS/x4McJxV0c5u3beWW6P5yhxMtYM4j4Cl8VQPSQv9gd0tLFvkCGmAdDiPVJavO8OWS6qZ39ZK6g7e/i40hjbe04JmUQBtPAhhh3UMikOPYaCiS0F5BbgjdxtuMcEJX
+X-HE-Tag: 1774267303-31482
+X-HE-Meta: U2FsdGVkX1/PW4w2+dLcVRdg5T0GS54iJEj1iNmvb1dCemvxTf2NFyxxvyftjIX0+oS4k6dcF6Gl1UswbGUepSve7a1b8ioLlrtEHdvluBOgr+QKKtNzafM9Ps8SUh00kykUsHgNPOxX4atEmqfGnOIFINL6O/rWXs+jl6IP1eHgi4ALBZMfpd3+rOLMEAg2zGNskWr7iNW1hEvye6oSkWuMlOw1bfIQdarf0iEv5sKIJayyTQi5jfE6KvJ2C3w94UDjtGDKCEj2h/+Jq2HjVOmHFgfwuI1AGRSI/ymnBRYBHty+ukJKrR4yI5EZvU58zlHtaQIw1/y+N21cvybmL9nnzxnVTVW+rBnjPBGy9GisfkdNtWnszUpmwW+4pVQh2fiAtishzXdSUj1Ht0r+7sxE2wuhSRUO/SFu7iLMVxm//s1DMr7FPyxQ2vMF4vbjWE/wFqJQhZ8J6/KBWT2jWlahiegGpHbRlzNXe6vfte0Cr+9hpO3Jdzi+Maosa7r+dGuWmqmigUBGw/YaaI1F0feWVdsk627pegXdwMBIm1A557mX0TlBLPamfmS80rA+fA1cxGcduQXA4nVyMjbKbOlsov+9UPIHiVHDrJ9vnH1PzDYQjwIUy4ua6jgOyyi7hS5ZqgFk1+pzIOgV+Kk+cPPzKl0Cf+7s4j9AEttkILNBGxI1dZd8V8ML0SX49nnLn07AG+7rn66OuDo5FFqPEKQxVXGYrK3/q45x86LDSLBduKD/Trrq/Cne9e4T2X2kAyUd/aVIomxarHduOvZB+qBwrkhpZcMe0UZXxEo/pMwtNSecfiKHLl+zRG0+lGZhylx6BGHx+nrWcb/5CY6rIvCBwHrwCI3uhnzNjuDVlN9MZAY3p6LBWEA4iN12G0A93vn9mz8fcgru9fqlE6vkZqsoSdrnc78gMLzHPPPEMRRbxf/r0AFXCXeFjsInAds9OFnEYYZ7o8RaKok5Scs
+ g8wT6Vuv
+ Rq2gWBEzejVI7YTbPPjZjAGkY337AW4OgZ9G2aHVkkpqVfzMLzR5C20Mhi9GBGZ/pTWHZRR6XsruZcEkK5aQ/bcBIxAk90Sp4XpbQ0O7erjaokBwHh0GKutp3lAWVwoo8vSvKFYY7V225RyZjYrkLLdjoLM8ZgdAcOtmfW2q8HOufxDDKevDYBK9+J2EzUQC8an8KJjtN2o+rcjsqdNbZWhrKDzxvJNj6A9ohQgbAZvLM+QcH/64KcQM6Hj6oo+HMUxs3CaE+E1iIVWCF++/msysmVN6JXpggZ1raYVgtI4QLhDvrSDB2D5dZsb64ot65ho8Gxe+7fZHhexYIoMxi0dVhc+r3+LuAMbAFCfYU4Ftn6THsBDr3uzc4pMCFHxYom7l3TliS88Qb5vlj6F7uhlqlZURghsF66SUnmKhsUx38Y/ThFwmAOLNz7vCgdS4/ZpYV2ID8ucoWUhtsWmIQFCCpxzBIL8Bpb/Izi5LrDOPLZ5JYrXOZsihZOlowW6eP2Tnq0zKXmxXuebTRxzvMDdX3rDJ5Efp+LUYOynpl9Ayv8hbZ/FG2AokfwTeA4J4Ivtli
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,99 +115,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 19:39, Audra Mitchell wrote:
-> On architectures with separate user address space, such as s390 or
-> those without an MMU, the soft-dirty kselftest may fail when checking
-> to see if the feature is supported.
-> 
->   # --------------------
->   # running ./soft-dirty
->   # --------------------
->   # TAP version 13
->   # 1..15
->   # Bail out! PAGEMAP_SCAN succeeded unexpectedly
->   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
->   # [FAIL]
->   not ok 1 soft-dirty # exit=1
->   # SUMMARY: PASS=0 SKIP=0 FAIL=1
-> 
-> The soft-dirty test will initate an ioctl with the PAGEMAP_SCAN flag with
-> an invalid address for the page_region. This is done intentionally to
-> have the ioctl return with an expected EFAULT and with the correct
-> categories returned.
-> 
-> However, on architectures with separate user address space, such as s390 or
-> those without an MMU, the call to __access_ok (used to validate the
-> variables provided with the ioctl) will always return true and we will not
-> fail as expected.
-> 
->         if (IS_ENABLED(CONFIG_ALTERNATE_USER_ADDRESS_SPACE) ||
->             !IS_ENABLED(CONFIG_MMU))
->                 return true;
-> 
-> Let's simplify the check for PAGEMAP_SCAN and provide a valid page_region
-> address so that we get a non-errno return if it is supported.
-> 
-> Fixes: 600bca580579 ("selftests/mm: check that PAGEMAP_SCAN returns correct categories")
-> 
-> Signed-off-by: Audra Mitchell <audra@redhat.com>
-> ---
->  tools/testing/selftests/mm/vm_util.c | 24 +++++++++++++++---------
->  1 file changed, 15 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index a6d4ff7dfdc0..82998406b335 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -67,20 +67,26 @@ static uint64_t pagemap_scan_get_categories(int fd, char *start)
->  }
->  
->  /* `start` is any valid address. */
-> -static bool pagemap_scan_supported(int fd, char *start)
-> +static bool pagemap_scan_supported(int fd)
->  {
-> +	const size_t pagesize = getpagesize();
->  	static int supported = -1;
-> -	int ret;
-> +	struct page_region r;
-> +	void *test_area;
->  
->  	if (supported != -1)
->  		return supported;
->  
-> -	/* Provide an invalid address in order to trigger EFAULT. */
-> -	ret = __pagemap_scan_get_categories(fd, start, (struct page_region *) ~0UL);
-> -	if (ret == 0)
-> -		ksft_exit_fail_msg("PAGEMAP_SCAN succeeded unexpectedly\n");
-> -
-> -	supported = errno == EFAULT;
-> +	test_area = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-> +			MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-> +	if (test_area == MAP_FAILED) {
-> +		ksft_print_msg("WARN: mmap() failed: %s\n", strerror(errno));
-> +		supported = 0;
-> +	} else {
-> +		supported = __pagemap_scan_get_categories(fd, test_area, &r) >= 0;
+On Fri Mar 20, 2026 at 7:47 PM UTC, Dave Hansen wrote:
+> On 3/20/26 11:23, Brendan Jackman wrote:
+>>  
+>> +#ifdef CONFIG_MM_LOCAL_REGION
+>> +static inline void mm_local_region_free(struct mm_struct *mm)
+>> +{
+>> +	if (mm_local_region_used(mm)) {
+>> +		struct mmu_gather tlb;
+>> +		unsigned long start = MM_LOCAL_BASE_ADDR;
+>> +		unsigned long end = MM_LOCAL_END_ADDR;
+>> +
+>> +		/*
+>> +		 * Although free_pgd_range() is intended for freeing user
+>> +		 * page-tables, it also works out for kernel mappings on x86.
+>> +		 * We use tlb_gather_mmu_fullmm() to avoid confusing the
+>> +		 * range-tracking logic in __tlb_adjust_range().
+>> +		 */
+>> +		tlb_gather_mmu_fullmm(&tlb, mm);
+>
+> These are superficial nits and I need to go through this series in
+> actual detail, 
 
-You have to cast it to a (long) first before comparing, like we do in
-pagemap_scan_get_categories().
+Thanks, this series is pretty brutal so I'm very happy to receive
+incremental reviews!
 
+> but here are the nits:
+>
+> Indentation is bad. What you have here double-indents the whole function.
+>
+> Do this:
+>
+> 	struct mmu_gather tlb;
+> 	unsigned long start = MM_LOCAL_BASE_ADDR;
+> 	unsigned long end = MM_LOCAL_END_ADDR;
+>
+> 	if (!mm_local_region_used(mm))
+> 		return;
+>
+> 	... rest of code here
 
-Maybe best written as
+Ack
 
-	long ret = __pagemap_scan_get_categories(fd, test_area, &r);
+>
+>> +		 * We use tlb_gather_mmu_fullmm() to avoid confusing the
+>> +		 * range-tracking logic in __tlb_adjust_range().
+>> +		 */
+>
+> Imperative voice, please.
 
-	if (ret >= 0)
-		supported = 1;
+Yeah I don't think I'm ever gonna stop making this mistake. Any LLM
+should be able to catch this for me, I think it's time to find a way to
+get that into my pre-mail workflow.
 
-> +		ksft_print_msg("errno: %d\n", errno);
+> And a meta-comment:
+>
+>>  Documentation/arch/x86/x86_64/mm.rst    |   4 +-
+>>  arch/x86/Kconfig                        |   2 +
+>>  arch/x86/include/asm/mmu_context.h      | 119 ++++++++++++++++++++++++++++-
+>>  arch/x86/include/asm/page.h             |  32 ++++++++
+>>  arch/x86/include/asm/pgtable_32_areas.h |   9 ++-
+>>  arch/x86/include/asm/pgtable_64_types.h |  12 ++-
+>>  arch/x86/kernel/ldt.c                   | 130 +++++---------------------------
+>
+> This is too big and there's too much going on here. This is doing a few
+> logical things like both introducing mm-local regions *and* making the
+> LDT remap one of them.
 
-I guess we should drop that, was mostly for testing.
+IIRC I tried this but having both an mm-local region and a separate LDT
+remap at the same time is annoying, it would mean reviewing temporary
+code to deal with both existing at the same time. 
 
-Thanks!
-
--- 
-Cheers,
-
-David
+However I just had an idea: I will try creating the mm-local region but
+with size 0. Then in a separate patch I'll expand it and simultaneously
+move the LDT remap into it.
 
