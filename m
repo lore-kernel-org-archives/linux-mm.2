@@ -4,110 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 276EBEC01DC
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:01:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C65B7EC01D4
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:02:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2805F6B0088; Mon, 23 Mar 2026 08:01:46 -0400 (EDT)
+	id 280C86B0089; Mon, 23 Mar 2026 08:02:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 257D96B0089; Mon, 23 Mar 2026 08:01:46 -0400 (EDT)
+	id 258A66B008A; Mon, 23 Mar 2026 08:02:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16DE36B008A; Mon, 23 Mar 2026 08:01:46 -0400 (EDT)
+	id 195D36B008C; Mon, 23 Mar 2026 08:02:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 02E6D6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:01:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C49C13C065
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:01:45 +0000 (UTC)
-X-FDA: 84577188570.18.1B3A8FD
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8A5FC1C0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:01:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Hwd+PZ6l;
-	spf=pass (imf21.hostedemail.com: domain of 3pSvBaQgKCFY7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pSvBaQgKCFY7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 09CBA6B0089
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:02:17 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8223713C065
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:02:16 +0000 (UTC)
+X-FDA: 84577189872.14.0419F91
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 904A740014
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:02:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QuhRDuSc;
+	spf=pass (imf04.hostedemail.com: domain of 3xSvBaQsKCHYdiihqiheUhaaiiafY.Wigfchor-ggepUWe.ila@flex--joonwonkang.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3xSvBaQsKCHYdiihqiheUhaaiiafY.Wigfchor-ggepUWe.ila@flex--joonwonkang.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774267303;
+	s=arc-20220608; t=1774267334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9PU7c6Ak+cD1xqE0Ag3FZYs88dCaVaPlNoPrIQ+v6QI=;
-	b=BkF1CkQP64wNjJc7M3Gl9FQhEc5CicGIZbUalbJ+B/Uvmd7JWkYz9bvcCkubWg8E+AgPgf
-	zOOgj1PQ7oDXrNbPXrHy3AV81RiCGwbL4c8rMrcdLFZG9tw4fEs1MueyuSJ5I62VNB09yZ
-	HRKCIgWDq/VdtH6aHi9UXzFthIVBFO8=
+	bh=11OQ308MFdLAcgnywhabzk972DmGk7CFqQqmesqWA8U=;
+	b=yUT2lnvgbQbPUuweMknqFUPAXupKYBqNm/31ymm+m/I4eRTfz5+cAUx0AAKo5t3IX2ZnL4
+	ax3ode9oW0xcGv4CvSnnkyprXqcPuxxgcCCQOkhoNiihl5VrCo+IEJ3GKEY9eQ/z8S0H0p
+	v0ZWfUVn4H9vdvKsgu3MzIsC6S7yK+Q=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Hwd+PZ6l;
-	spf=pass (imf21.hostedemail.com: domain of 3pSvBaQgKCFY7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pSvBaQgKCFY7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QuhRDuSc;
+	spf=pass (imf04.hostedemail.com: domain of 3xSvBaQsKCHYdiihqiheUhaaiiafY.Wigfchor-ggepUWe.ila@flex--joonwonkang.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3xSvBaQsKCHYdiihqiheUhaaiiafY.Wigfchor-ggepUWe.ila@flex--joonwonkang.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774267303; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774267334; a=rsa-sha256;
 	cv=none;
-	b=feVU7kOXY5VMYCydAKEID9QW6oFM1f+8sijjYQzYMNR+zaNxbi18cAYJrWFWPNnBsHl0pl
-	g3pMAjwu9bmIoAROqcYlsAONdkuiCecpcPgIEmfGbU7Xk680un7EwKxmVbhAZ2A2zks15e
-	MTa2p60GsQ7ea0jVBpfck9MYUaAbIBM=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-485c45885e6so49075545e9.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:01:43 -0700 (PDT)
+	b=FMgwEAc9gHAm+yOmG+Ylpb8w3NtdYAZtT4f3s2r9cqXYy6BWQymN1FIg7rjuQxRWZPngUP
+	yoEypuP5vOL2kCWQlVUujS8fZFssR9bZYcHdSdDK2H2WLAIfDpYi65LL3qF083r6nvEg8g
+	02fQmWxcGy/vZ1o87ic3kbbC4CNRSb0=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b06c242a34so288460445ad.0
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:02:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774267302; x=1774872102; darn=kvack.org;
+        d=google.com; s=20251104; t=1774267333; x=1774872133; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9PU7c6Ak+cD1xqE0Ag3FZYs88dCaVaPlNoPrIQ+v6QI=;
-        b=Hwd+PZ6lrcPoo59VGYcca85eqkcvPi9eTVhXTvpaGS9xKtYhQ7YmJAZj5Skg2X3Bq3
-         osnNP+klGuM41rVPEZodb6M/xsBWfd6JVHg4ccAiiYSlQ6m/bHXrzIZYIJwvglKKH1kT
-         M+l95lVPQHV/jzcfyVD82m5yP3VNj0d0MUqRi9UWXzFR4Vyx4VADEMn8LDVmxCwsx/Ru
-         sOINNck2z/NOMpTTpIXKj3qE87C3Dn92Av6+P0Jn5Fsh16DnsjP/IvMlDWt5bTROhSrC
-         AKYIOVTerLJisaO2Tk4wVxjKTJNXdVm+qBtncdSAzrqvkLBfT6Dmnn/KyntZCMVo6WVO
-         QKMg==
+        bh=11OQ308MFdLAcgnywhabzk972DmGk7CFqQqmesqWA8U=;
+        b=QuhRDuScVuewk7mtGdiaehkGxK4fxyGHdnUanA+EkssA0Oe/Qn65w0d1zZl8l9xLqs
+         Hn7C2w2A9j/i+bl0FoZAARTXg9q0L355OXL2HKGRAynusq5l7M/lwv9kmUSwrVSlZGOg
+         Zr5CIP/x87lIGBPsSn4sb1P/0T6ZE6eQvD/Vw2iXQmTQfM27EmaY6lPMBuK4eXrxtDIC
+         Y0+R6bBhzuoMkDfNUlrvGF6FtoXfRu98PT1B1/IhdwZlEy+pbigv1TNOtaTB5gcpjerd
+         hL1W54hhS5cVRsMD729pZB7diZflwVNrWEzz+uF9JtDPL5he5/Qtqznk38WQwgY0DRmm
+         s82A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774267302; x=1774872102;
+        d=1e100.net; s=20251104; t=1774267333; x=1774872133;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9PU7c6Ak+cD1xqE0Ag3FZYs88dCaVaPlNoPrIQ+v6QI=;
-        b=oTo8z8EN5M1OVjaGBRdqarKsxgcVmZkFiHfFJ5iYSK89siewntPrqYBIbYUNsIbX+h
-         t4BHbrhkQ5tsI9xgU/Iho92eHsgHlh1fNfGgGwuOiESWYWwznuIz1AFVYumQaCdi32hh
-         Di7noNjMgNDR4kdI501GQp4H8FPnUISeqpusXLVC30G81spv+XhsIqi06MPwdmhQsUxr
-         ybFZyiIFrEYixrvRXyWfQ35VrsblARl8ixJAcrFm+mgjK0LGrNrS3145zi3FrKHdsxIu
-         djLvbm/TJJRCiQNz/0xWLkp4AxqTrmMzTRoyPepFGYFXDya8xY730aLSw4iw8jJtEXcr
-         mc4Q==
-X-Gm-Message-State: AOJu0YwlxADCHiMsfZwsnaGrkCYLA6UhKcWlbc1IHctEKSjtU727c6AE
-	XfpJfccFnnFUB0aobtoDxo8QXgC8Ujc3LBaToUh81h7I8IMaCJvbm9g4Pm/hHXgFEpE06jUycV2
-	RwspPrqc1bT5Lgw==
-X-Received: from wmbha26.prod.google.com ([2002:a05:600c:861a:b0:486:fbd8:2af6])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:468b:b0:485:5812:bb9e with SMTP id 5b1f17b1804b1-486feb5a4d0mr174722475e9.0.1774267301692;
- Mon, 23 Mar 2026 05:01:41 -0700 (PDT)
-Date: Mon, 23 Mar 2026 12:01:40 +0000
-In-Reply-To: <17e58542-1221-48dd-88b9-236128515ed2@intel.com>
+        bh=11OQ308MFdLAcgnywhabzk972DmGk7CFqQqmesqWA8U=;
+        b=pRCFMDfaJ6//mTBZbKF2iXznIInp7HkrIwI2PYaxDbh8jEOTjxtNR8n+6AHjWuqsQK
+         SSXzRoi5Xhv0GAoMQtS2oKw0AAG1riEEshLoqD+TzdE/C/q9TWsVmuLM/kpbykKjSzgC
+         ZsmEV1IqxUFWegL/vdS9WcEDMlpjAOCzEVz7xspkBGem4G9ngadPJz6VTpbMwnD8msFZ
+         b+DVHpSJaTatLJNsWWICUdIcwTR+MwvmJSAset8leTOzZUBzUGVfDvsYv7j6sIXJ2He6
+         GnrvF1e2Uy4fPEYhPYG3BWcinbccCnezhD+gZXM6rCIdqmbxR5sCaSCLAoNYKu5PxZ7y
+         xozQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMScGHgxI08VBfF00CzB3jGsy/hE3OELfp9ftKLAg18zVweiT1ol6DC12m+B+cE0cuWyYT3u8CZg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5Poq0rspNedJ6886yMKhHuEFKo5RJHP606Q4Z9lS+FG/mJh/n
+	wD0LnX6J7RV7CKcjwMHlaXebQQCz44ZGk/ITXWfoCQjaChkWbhTnD8n31z0rMb3cCHcdhOWIlK6
+	jAOS/enUM6XCr3GWAI87yUSpz3w==
+X-Received: from plba21.prod.google.com ([2002:a17:903:1015:b0:2ae:4efe:f1e9])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:e74b:b0:2b0:5b4e:370c with SMTP id d9443c01a7336-2b082793bb0mr118653695ad.32.1774267333193;
+ Mon, 23 Mar 2026 05:02:13 -0700 (PDT)
+Date: Mon, 23 Mar 2026 12:02:11 +0000
+In-Reply-To: <20260320120848.ba7ddc21aaa4edab8c2b5b58@linux-foundation.org>
 Mime-Version: 1.0
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-2-28bf1bd54f41@google.com> <17e58542-1221-48dd-88b9-236128515ed2@intel.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DHA59LJ1UQ1H.10RZVJ9V4X5TW@google.com>
-Subject: Re: [PATCH v2 02/22] x86/mm: Generalize LDT remap into "mm-local region"
-From: Brendan Jackman <jackmanb@google.com>
-To: Dave Hansen <dave.hansen@intel.com>, Brendan Jackman <jackmanb@google.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
-	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
-	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
-	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+References: <20260320120848.ba7ddc21aaa4edab8c2b5b58@linux-foundation.org>
+X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
+Message-ID: <20260323120211.3433694-1-joonwonkang@google.com>
+Subject: Re: [PATCH] percpu: Fix hint invariant breakage
+From: Joonwon Kang <joonwonkang@google.com>
+To: akpm@linux-foundation.org
+Cc: cl@gentwo.org, dennis@kernel.org, joonwonkang@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8A5FC1C0005
-X-Stat-Signature: cscsj3rscf1bjzpz1rf6th1aegtp4u55
+X-Rspamd-Queue-Id: 904A740014
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bzw4maizrw5oqr577gsfgwrhq5s47f1y
 X-Rspam-User: 
-X-HE-Tag: 1774267303-31482
-X-HE-Meta: U2FsdGVkX1/PW4w2+dLcVRdg5T0GS54iJEj1iNmvb1dCemvxTf2NFyxxvyftjIX0+oS4k6dcF6Gl1UswbGUepSve7a1b8ioLlrtEHdvluBOgr+QKKtNzafM9Ps8SUh00kykUsHgNPOxX4atEmqfGnOIFINL6O/rWXs+jl6IP1eHgi4ALBZMfpd3+rOLMEAg2zGNskWr7iNW1hEvye6oSkWuMlOw1bfIQdarf0iEv5sKIJayyTQi5jfE6KvJ2C3w94UDjtGDKCEj2h/+Jq2HjVOmHFgfwuI1AGRSI/ymnBRYBHty+ukJKrR4yI5EZvU58zlHtaQIw1/y+N21cvybmL9nnzxnVTVW+rBnjPBGy9GisfkdNtWnszUpmwW+4pVQh2fiAtishzXdSUj1Ht0r+7sxE2wuhSRUO/SFu7iLMVxm//s1DMr7FPyxQ2vMF4vbjWE/wFqJQhZ8J6/KBWT2jWlahiegGpHbRlzNXe6vfte0Cr+9hpO3Jdzi+Maosa7r+dGuWmqmigUBGw/YaaI1F0feWVdsk627pegXdwMBIm1A557mX0TlBLPamfmS80rA+fA1cxGcduQXA4nVyMjbKbOlsov+9UPIHiVHDrJ9vnH1PzDYQjwIUy4ua6jgOyyi7hS5ZqgFk1+pzIOgV+Kk+cPPzKl0Cf+7s4j9AEttkILNBGxI1dZd8V8ML0SX49nnLn07AG+7rn66OuDo5FFqPEKQxVXGYrK3/q45x86LDSLBduKD/Trrq/Cne9e4T2X2kAyUd/aVIomxarHduOvZB+qBwrkhpZcMe0UZXxEo/pMwtNSecfiKHLl+zRG0+lGZhylx6BGHx+nrWcb/5CY6rIvCBwHrwCI3uhnzNjuDVlN9MZAY3p6LBWEA4iN12G0A93vn9mz8fcgru9fqlE6vkZqsoSdrnc78gMLzHPPPEMRRbxf/r0AFXCXeFjsInAds9OFnEYYZ7o8RaKok5Scs
- g8wT6Vuv
- Rq2gWBEzejVI7YTbPPjZjAGkY337AW4OgZ9G2aHVkkpqVfzMLzR5C20Mhi9GBGZ/pTWHZRR6XsruZcEkK5aQ/bcBIxAk90Sp4XpbQ0O7erjaokBwHh0GKutp3lAWVwoo8vSvKFYY7V225RyZjYrkLLdjoLM8ZgdAcOtmfW2q8HOufxDDKevDYBK9+J2EzUQC8an8KJjtN2o+rcjsqdNbZWhrKDzxvJNj6A9ohQgbAZvLM+QcH/64KcQM6Hj6oo+HMUxs3CaE+E1iIVWCF++/msysmVN6JXpggZ1raYVgtI4QLhDvrSDB2D5dZsb64ot65ho8Gxe+7fZHhexYIoMxi0dVhc+r3+LuAMbAFCfYU4Ftn6THsBDr3uzc4pMCFHxYom7l3TliS88Qb5vlj6F7uhlqlZURghsF66SUnmKhsUx38Y/ThFwmAOLNz7vCgdS4/ZpYV2ID8ucoWUhtsWmIQFCCpxzBIL8Bpb/Izi5LrDOPLZ5JYrXOZsihZOlowW6eP2Tnq0zKXmxXuebTRxzvMDdX3rDJ5Efp+LUYOynpl9Ayv8hbZ/FG2AokfwTeA4J4Ivtli
+X-HE-Tag: 1774267334-56094
+X-HE-Meta: U2FsdGVkX1/i9bsw7BjZdWO6IVjjVm4Vg9N+br8dyzcRqWDV8gSmrvPRF+yw5MN3kKYWZVyggfnoXHY+snSk+8GU9flLjNt7bISzt6S54r5l8XhFhYANGVPtGgpMSQg5CVJDUBmRMker/JXEPn6NZDK48dMLoiFohru+Gx2hRnpPM2/vGL2xcgN42O0xx+KWkLtpmERQhECzB8s4DQGZH0LDuz1qrykqo8mfLK213W9x1AlKpNxzNa7LZlceP4Bj46YV9qrHH/fDCYi56KI+f5J2lFSbYKcS6eKX6OyVHnlz7y6ru9RjIyO7fOkxpUb19G+BOltNp2ahHMksdLyoqHqrvRuxt6cCodkLUhw3XOnAxCPArVyUQs9OpV382OK1x5d+7+jZ4/EOE3Z3ZSHxRiOiSGuR1rQ1UCfEwrhfb2kL0OnXAZytsw3sbXhVC3ycpSEjtotiXJtn5ClQS/lVTDmkoSXx96W2wdOXTgRQom1bt6R+6nRc7mZ6KHDzvp9Pai+2b9Wb6NXycH47oaCNy/i+++/oHVLWnMhxmy2ORYgqKxNevgpetilZ7flSIxB7eq4TnMR1OoN9KkK1+JbpGBeS1AruzGZTqao2nRzruPbhUtXD6mL+GmctspYO6yFrHy47q87BTJTi5HiOcGR6RIzn4N/ACX5bw/hPM4gkcRuF8hAjaWCTb6DPu3rmBj3HnGl13elqMSQDmT/dRNSeMqA4HB4vZg82k9G82+gl+BCZJAIyeDC/UnmY4Ol5WGENZEfDEuEzoVnMnCe86aqsH0Tu4yB442+ezY8JU1gFwWeIku8rlMFg7eGAAS37IdeW0x8jn3i7cEAHFDGjS6rWR94Kxqkgqhb64VrbB1seMqvRUCIfELxumOZe7OivpkttFsyVe8t+KP/mxkVbHHthfJLEjpueY4QPODEgAB/Gc6qfGp3JmkDdykKqHqWEJj76Derup05Rhi3w0ZiZoSl
+ V7DrJdt4
+ rLGMyYR0QiCxnKkWtOQf4g8xbtKal8ViBnFxwhqMzIKLTHmYnkw+TkEZiLyMVm0neKYnh0XTSKH400+whcDJWS7t17/4XIGRjqHTT2h0FrxNhFeSK0qQJXvMpuEulZbNyHxysjsHwTPZXVGEptf1Mk7A7IC2pOyVasreey2Kmh5YhMllRGXDmw7V5vzwKbI/ZF7P1Dudu+zuJgGLm9Ao6AqZ8oikE1cdv64MacuV7LCgD9/uX/z62UnqcVHpyJ6PaZTLnG4wfVfYjI94JI9Mo0lIMdghfJNgw/2GI8CO0JvBeyqPrGn7Z/clMpUFDo/xkopcGeWANlrxg41Lvk1Wv4C+ZZTdKTmZIpP8KthxPskmxnL+u71IvyPi9a3ouJEA2Ef2aausTDHckTPHjGOnAqjIFWBlW/iFhFxjLl1Xv1GXEQdgehtBQkU+EJ1WOLTk6p6B7SYY3tjtwo010jYME6772Ck7CGZDYxD/Pe7tYiMZr42GpeK4pIonXrLfEi9ovZGSjMfZpNcMtDZfPJ2Ury9dU7C7Nc+qDfTJ+xDDDPuDDU/6Q1eDpy4E8ZbZb5yF1ItZilDjhPxJV3JoyDOqR5LJfjYkReAaqK5TkTRA/y/Dy//Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,78 +107,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Mar 20, 2026 at 7:47 PM UTC, Dave Hansen wrote:
-> On 3/20/26 11:23, Brendan Jackman wrote:
->>  
->> +#ifdef CONFIG_MM_LOCAL_REGION
->> +static inline void mm_local_region_free(struct mm_struct *mm)
->> +{
->> +	if (mm_local_region_used(mm)) {
->> +		struct mmu_gather tlb;
->> +		unsigned long start = MM_LOCAL_BASE_ADDR;
->> +		unsigned long end = MM_LOCAL_END_ADDR;
->> +
->> +		/*
->> +		 * Although free_pgd_range() is intended for freeing user
->> +		 * page-tables, it also works out for kernel mappings on x86.
->> +		 * We use tlb_gather_mmu_fullmm() to avoid confusing the
->> +		 * range-tracking logic in __tlb_adjust_range().
->> +		 */
->> +		tlb_gather_mmu_fullmm(&tlb, mm);
->
-> These are superficial nits and I need to go through this series in
-> actual detail, 
+> On Fri, 20 Mar 2026 11:52:14 +0000 Joonwon Kang <joonwonkang@google.com> wrote:
+> 
+> > The invariant "scan_hint_start > contig_hint_start if and only if
+> > scan_hint == contig_hint" should be kept for hint management. However,
+> > it could be broken in some cases:
+> > 
+> >   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
+> >     scan_hint_start < new contig start) && the new contig is to become a
+> >     new contig_hint due to its better alignment, then scan_hint should
+> >     be invalidated instead of keeping it.
+> > 
+> >   - if (new contig == contig_hint > scan_hint) && (start <
+> >     contig_hint_start) && the new contig is not to become a new
+> >     contig_hint, then scan_hint should be invalidated instead of being
+> >     updated to the new contig.
+> > 
+> > This commit fixes this invariant breakage and also optimizes scan_hint
+> > by keeping it or updating it when acceptable:
+> > 
+> >   - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
+> >     contig start < contig_hint_start), then keep scan_hint instead of
+> >     invalidating it.
+> > 
+> >   - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
+> >     new contig start < scan_hint_start), then update scan_hint to the
+> >     old contig_hint instead of invalidating it.
+> > 
+> >   - if (new contig == contig_hint > scan_hint) && (new contig start <
+> >     contig_hint_start) && the new contig is to become a new contig_hint
+> >     due to its better alignment, then update scan_hint to the old
+> >     contig_hint instead of invalidating or keeping it.
+> > 
+> 
+> Thanks.  Does the change have any observable runtime effects?
+> 
+> Was this patch inspired by code inspection?
 
-Thanks, this series is pretty brutal so I'm very happy to receive
-incremental reviews!
+Yes, this change basically comes from manual code review. While there is
+no benchmark result or others backing up the effects of this change,
+Dennis may help on that later as he suggested in another review. The main
+point of this patch should rather be fixing the "theoretical" invariant
+breakage cases.
 
-> but here are the nits:
->
-> Indentation is bad. What you have here double-indents the whole function.
->
-> Do this:
->
-> 	struct mmu_gather tlb;
-> 	unsigned long start = MM_LOCAL_BASE_ADDR;
-> 	unsigned long end = MM_LOCAL_END_ADDR;
->
-> 	if (!mm_local_region_used(mm))
-> 		return;
->
-> 	... rest of code here
-
-Ack
-
->
->> +		 * We use tlb_gather_mmu_fullmm() to avoid confusing the
->> +		 * range-tracking logic in __tlb_adjust_range().
->> +		 */
->
-> Imperative voice, please.
-
-Yeah I don't think I'm ever gonna stop making this mistake. Any LLM
-should be able to catch this for me, I think it's time to find a way to
-get that into my pre-mail workflow.
-
-> And a meta-comment:
->
->>  Documentation/arch/x86/x86_64/mm.rst    |   4 +-
->>  arch/x86/Kconfig                        |   2 +
->>  arch/x86/include/asm/mmu_context.h      | 119 ++++++++++++++++++++++++++++-
->>  arch/x86/include/asm/page.h             |  32 ++++++++
->>  arch/x86/include/asm/pgtable_32_areas.h |   9 ++-
->>  arch/x86/include/asm/pgtable_64_types.h |  12 ++-
->>  arch/x86/kernel/ldt.c                   | 130 +++++---------------------------
->
-> This is too big and there's too much going on here. This is doing a few
-> logical things like both introducing mm-local regions *and* making the
-> LDT remap one of them.
-
-IIRC I tried this but having both an mm-local region and a separate LDT
-remap at the same time is annoying, it would mean reviewing temporary
-code to deal with both existing at the same time. 
-
-However I just had an idea: I will try creating the mm-local region but
-with size 0. Then in a separate patch I'll expand it and simultaneously
-move the LDT remap into it.
+Thanks.
 
