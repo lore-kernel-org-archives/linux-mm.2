@@ -4,148 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1146DF4613B
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:33:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B30CF46139
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:36:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 716A26B008A; Mon, 23 Mar 2026 11:33:13 -0400 (EDT)
+	id 609CC6B0005; Mon, 23 Mar 2026 11:36:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ED796B008C; Mon, 23 Mar 2026 11:33:13 -0400 (EDT)
+	id 5BAF06B0088; Mon, 23 Mar 2026 11:36:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6038B6B0092; Mon, 23 Mar 2026 11:33:13 -0400 (EDT)
+	id 4A9DC6B0092; Mon, 23 Mar 2026 11:36:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C9156B008A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:33:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F22BB160C1C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:33:12 +0000 (UTC)
-X-FDA: 84577721424.25.DB99987
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D93E61A0008
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:33:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DrK6Qlka;
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774279991;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 35B2A6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:36:46 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C871B8CEAA
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:36:45 +0000 (UTC)
+X-FDA: 84577730370.14.82E24F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4953340008
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:36:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LPveT9Ur;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774280204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/8/EpSUMiobTzSVmJaDTjFNXTjCi0aA95G2967Wvfq8=;
-	b=hpjS4k/QquGu0DwO/bDAIOKvwa5wvo/dDAxFwGAMVTMZeICrrbC1f+1eVpRNpGdkLjhBA1
-	S+zoPwPiTpGmE6/MeTTDFmxX6zj3zuAvGUQ4ugoxElLEwOuiaVEV/bbbVuSwuGoC8RksYG
-	rymhZiy86G7azQzJX4rujodAe6lJJZg=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DrK6Qlka;
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774279991; a=rsa-sha256;
-	cv=pass;
-	b=C8WFb6A8aQifbnM/0DVZ9ATt3pEHKObrA0zyPfPqwY/oQeegq+tISlLTZMbFq4pKPPbfQ/
-	O0rL+OjLbyyMx2YeKZxRSWCo9FXJLVAvCzNHQUVsyOhQiL8xgV2IxasvRpe9ifI8uoD2ev
-	p13jjyiLDZHKmCqZPrmfl4LtPGkdi7I=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-439b7c2788dso1899515f8f.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:33:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774279989; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RVjHSz38hsRkqQV5xqykPCYvSmNPPuYjYI2jcKvwRF7Zj9kGPsMhGt2MOZ3kobCeKa
-         W+AE/Q1AM9u7z2DqDgPWuTiqorW9GmUzW5vFeHSabea4AdBoyQmu13gzTbJGynsSWmL7
-         gI4Or0D6zOBWD6lqCykWwSLKy3OReUDUe03s72T/vNZpQPbeL28+F7RUpQLIUuedftin
-         JeYRPh9RgrjZheSvQJf2Bw4YEeyP78YKcGNn2U73M6QmnCcdCqIlEnkvG65I9DuKfaSa
-         QdkDN+WJPMnUCSzLlTjwnAdzAi6L+AQcnbqV8XZjNgJrfphnY5ks6zNOoVUJnQYl5Vks
-         a+oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/8/EpSUMiobTzSVmJaDTjFNXTjCi0aA95G2967Wvfq8=;
-        fh=WMx2nM0oLLZHvG3SPtIuBrTX4deXZG62/mTivQl+La4=;
-        b=Myv6fFbWp8SZewiR+Y+FDHrF2Rz7JmLdjh7afPNZEZagUpt1ovZAODWiVGpnw4UYTm
-         GZZhjECdYZ8hlHqfuBZI83P+DoDS6g6CIonxqJUdPphWYlXxLDFVJsQGvr0aAwpdPt+H
-         m2sr8bxAS+4q/ipkvnhq75XrBdNhxQkao7MJl/xBhpHQ6uSt2Lh+AoG603djN4YThfNr
-         qfC+nTuKFO4f5BPhVcuM0+F6heA2/NinUQku+XtL4I34EPNOn0yCsJJNNoNGFI4TSSL0
-         LIQ48YpRvXPqC4tBeWMpQ4KeKtpu2OR9bIj6R1iR2jZLECsIIbCJtV1gLBnjOq9VZQB9
-         mDGQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774279989; x=1774884789; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/8/EpSUMiobTzSVmJaDTjFNXTjCi0aA95G2967Wvfq8=;
-        b=DrK6Qlka0KrKnVZ4IKe2pRnjvsnQ9wEUzMP01xPDkxFsN0QjucJs4JrLiv+7chH7vN
-         rISzF1NkZV7HuAdvgBM3RVR0hgARIuVYvJ2A7Tqo/MoHAJs0B6rFqVC0eh2xUGNZyWtA
-         1JggJl7Irv27mEdNvOr3diMYubt3eRxxd6xkJXWSw7G/Q+Ipm1EfclKcEoCx9BDEVeAO
-         Oy2AIuGJZTpAet4c5YU3AZ8YE6fw2GXLeZKkh1kTXSf5pAZR4oc9iL13Z0KeOcDGrp6G
-         KODb5kfRl4f0f8IglfUPap83ZjC893q/SfoE2sO99gJe3OPW3v5InQFt3VTNMZ9vGDEO
-         z8UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774279989; x=1774884789;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/8/EpSUMiobTzSVmJaDTjFNXTjCi0aA95G2967Wvfq8=;
-        b=bAMRY8/2j0hJtpIFbWqBgXL9hHHcnyIymzKtsGXggJtMATETGY0L9IPK4V7C+/L41T
-         OgdfB0zWLZ+YeAjeYJJqfmWRi5w4y8ZhcYthm0+nv+ALhDL8bTHFBXJqgH9bLdWkrEaU
-         IWtCDfLEkEoJ7Em/+SLjyd5bgl9hsWXOZDCcjhjKaiJfnVy08mLpnH0qfveBGSRy94N1
-         fb2qVufybbPyrLRFFB8qAYKF75Lf8UfbjhbFviAWLBmALCSAmeBUcawocBa3l+zWyfbm
-         dYgG+sll/k0GoSAQ77Ocjllwy9L1QPQ1xJX/a0IlPL04V1YH6Rj+FsQG+uUKIWY3HsgB
-         ps8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWkd2vCCBCH+FNSWXpTNmJccN5F8RaWB+/pVU7HXSpX9hhKcILLSFJr6CasQfrMTHPjKTV1LXaciA==@kvack.org
-X-Gm-Message-State: AOJu0YzV089Vgn1HYNzO4GvTlpLTNjaA8o4XaZIEB7Y8LXoeG7oFGlPC
-	Y6jJxJtTQdd0OlXUNPE/tpA7+u9km3MLnKrUceLxuBqb70coZG9Q5ZbIeY/CiCl81h3ju8gsspH
-	WGj0dtY5bCmw7+s4bTioms6siAnipSko=
-X-Gm-Gg: ATEYQzxTpNFXoA/tjlgxkpBYXgB9lUgHaF7fZJbRljflGNeQi47z/Nope9Higt9cRKu
-	uRBrluCnn79QqIfPztUOd2yRSy/k5I8MKIU/UMqY3augakECKwGVuc00SIA7SUZlNLArFdKTHb+
-	xmggZ9kwXa3sQ+ejfgn46DJRCsNy/nPwJ4hrGcJDsvOvKsI1vdgG/CIScoU12pb3lsaolzPC0oS
-	/T4EURP3c0LrN1CkhHzqoMn1OLZAZYj3nZs6Xxih++GiJy1boPfkp76Tg8T8o6IAvcT9OdBJOdZ
-	Ie2BVW+EXN9DlvYgIwc6o75Riql0+DghjksZiTjKR7Kp3h8tGhn5
-X-Received: by 2002:a5d:5f84:0:b0:43b:4703:9de5 with SMTP id
- ffacd0b85a97d-43b642870f9mr18306704f8f.44.1774279988876; Mon, 23 Mar 2026
- 08:33:08 -0700 (PDT)
+	bh=KF/3WXwKkyZDcM6v2/IqidgBEDdB/FQUwBEeFYEQC1Y=;
+	b=cmtSFkT4sFLTlHt3ovIldBjSakMhp7js84EagJ14t4MmrUrpoCyLyC/Lln4uRfwkC92bCy
+	eu8Xe+6Y8XDYoSo9LRbiR68ZQeRwH7C2WcQpBpZf87bsOFLTrpprThoGBJz7SJgNZpD5SM
+	+kU9EAwGeMb+3roPpcfVZBXIgvdDgDA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LPveT9Ur;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774280204; a=rsa-sha256;
+	cv=none;
+	b=cSGnNN3wAevB9U7XEPt91dgX2VgUKJ1uNQLHfcPzwf+Aw5jQL5GQD2Ug8kNwY/thaxSoH+
+	IdEn5mIBwjyX6t9hEmZMHRpykIO0FC+CgOJpGE2DEBAAVPTM6VBGb2mZ5g8gcuUCBbqcw6
+	gbJMT4Kj1PB4zfCR+h5H6a8SlM9W1Fs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E4B860120;
+	Mon, 23 Mar 2026 15:36:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38000C2BCB0;
+	Mon, 23 Mar 2026 15:36:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774280203;
+	bh=U+7vQ++CbmfinVjKRCq0Y3zDBCJ/+CEzbIObg4EPX94=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LPveT9Urjc+4UqwcaRKXpV17zr+i0qK81azdCcjVVBiIx68P16OWM9paBN442M+/2
+	 uyT8wUCsI5IEcHRy7cKXB6Y1CCFt6f7X5rqD4BQ6cN+Ij7Ivek0qAgUL+r5OnBAvVC
+	 etTdz8A8A+IEL2GzlS4aCzbl3XK9bosQWEaBkYgtdWvA2SZcPtmIqZdciCmtylxEPr
+	 0OMALem7aPonf7ix1cfmgvs4lNifKCqiLfWOnozn9XybHhYwBCbAui6geisnTnJapR
+	 EEsk8kbbjCN17eYnpyouUjgGLpzcYO70CF/D1+Z5/T6RnRElVPrjYowPxfGzq/GM37
+	 rRybXyPTTuZPw==
+Message-ID: <a6f19c86-4c6a-48c8-9dc6-26f66bb6dd88@kernel.org>
+Date: Mon, 23 Mar 2026 16:36:38 +0100
 MIME-Version: 1.0
-References: <20260320192735.748051-1-nphamcs@gmail.com> <CAMgjq7AiUr_Ntj51qoqvV+=XbEATjr7S4MH+rgD32T5pHfF7mg@mail.gmail.com>
-In-Reply-To: <CAMgjq7AiUr_Ntj51qoqvV+=XbEATjr7S4MH+rgD32T5pHfF7mg@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 23 Mar 2026 11:32:57 -0400
-X-Gm-Features: AQROBzBAs5nRbrIlBu1cKcNEaCz87nNyEV8cMyR6rMkBGG9vg_P1d2ioQYJMLuk
-Message-ID: <CAKEwX=PBjMVfMvKkNfqbgiw7o10NFyZBSB62ODzsqogv-WDYKQ@mail.gmail.com>
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, apopple@nvidia.com, 
-	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
-	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
-	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
-	lenb@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev, 
-	npache@redhat.com, pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, 
-	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com, 
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
-	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
-	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
-	riel@surriel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/migrate: rename PAGE_ migration flags to FOLIO_MF_
+To: Matthew Wilcox <willy@infradead.org>, Shivank Garg <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260323141935.389232-3-shivankg@amd.com>
+ <acFSTlF0epHIrA5v@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <acFSTlF0epHIrA5v@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D93E61A0008
-X-Stat-Signature: 9xij4qs6udub4dpdo3b1ysixeo8ust5e
+X-Rspamd-Queue-Id: 4953340008
+X-Stat-Signature: gj6o5sbaqufohq9rab5dbtecrrstazk6
 X-Rspam-User: 
-X-HE-Tag: 1774279990-398777
-X-HE-Meta: U2FsdGVkX19hXZPdQSmRUdn3jjlR2WOfGF/rN4TWxdXqMqC9WlLi4UFLJSDkkQtVvZ+WjUj32DgmktAmaZX7kPyxBSMRuVApINfV2+elLgCqMqWUdu8YmzzrgEJWIP2kapaeMiENTLxjo/VdjuGPeuHNW3AiiFpJ9j5qfalCcoXtWtjfHOLMJ3SJSzyycdV11w1idecfi9a5dLQP7JGOViRfqR2ZoDHERfVEfpcP5Uw1TucCbZgheu5D/3/BHn3XUWTrream3ARSvY1Wi/ZQqchE9A8VTgp29oGruZ65eRdrNPP8E3CajkZa0gc9NV3K8UI9ETrRexkgAl/CS6Plg2xuPTpWK6aKcPnRNSMZY40/XtW1F3Td5AqlVCTrNNEDLiWpv14HJ3ObktMS0gSORaZwgvEDdvXN3BP7UmplSNag9TvXXTIPX3P0Crh48CaZVLguJO28pwaC93zBgJZPfLtpmcJ0+bUp6yzCf999xi9egFDVp/9kP/WK1rfh+p4BmuroZN5zujqI9TIrKzbsri50/ouqEcXg+LSn+hS4J2PS2pMkjxYBpGAqgYXHBK4J6SgrZucNEBQFMQO8qUbM/zrLkUfXQaZNA6mRRpmioaTZgTHPpEUVtWg6ti1yfPuFlsgpK19LrXyZslph+jF0XpuYw6htKQuTEtigPFECZG/8qnY8s2cdJ7YrxI9Xq+v0sf28nZiDYo8edlFY/vnqnY5s2hUlraz22Ms0YXj3pVQMIsReYT1+tYRIJ2Csnopv/XD+76o3/oZzUWuOe94Nzth/CvLrduup4R9JvVBI6YaO8XUIanE2mWXWKyKPL5uYrBaKPdvnfr4IhpbYt0T8/FUKb9m2gnDXINQPMm45/n2MyCLlH1D4YkF4KS/6RLhV6Kh3ITyUEvG4q0s16KqDZMXcHD/hHnxWa9IvTennj9rsjSrJYw7diOE7qhWwWhHU9TfkMOIU+3x/E+9vAUN
- PMEN094B
- KJfBUrUA4RnnWa8DGQBQomiuGvF87GMqv1YrDtR4rCDV0Cy/QAxgNEqBW6haBfyUlV2uBl0viI+nhHGqPP2CnXNn/CMo3B4sZiLYCypRfp5AyOHyfd7bFNbD4dsQDbxoKHGZDxIpa+tOrPxyLOLVsuzpoZYQ3JplhOyn+y10VMWJfUjCI65De3yLTbx+Kpa2kLgbx9GqEn1+OmcCgmgWOzPFwkcXmGuikkvTnrgfYNQjGVGpgj0FqbchdUsLY5f5tEc3CblQrl9ADNrhxcwqzZFhC7E6Z7zPnsicruSOCt29oCs0gmuW3vSzRy5eR/m3KZRLuQmrSDHfs4HddGZs25brVeaQerakWMLl0OPUhHYh+9YPUPvSSKbRfXdo2qoWhPkm/5ZbFlZDNuOSJZ2vrvDRBAAs1eoRcIYYNi+fNfWhBrabquDXlZtwTHZNCHBlq3CgncFQ72nEzrXjOrZHVNdZ8WliIc5tU7FVU0kFT/vp3tuoLMOC9s9PIuOVhqZd8j7VA5KP+RtmrzrTO11bbXj9KCNbyG3r9P9I9L2XtY51U4deJT/q7iNfwcCWi70wXEaDu270bO2t7rCqTq0EdoJ2Pr/l3tiI2vDOJssafp27Bf9Aq8RoSaLHnjw==
+X-HE-Tag: 1774280204-975262
+X-HE-Meta: U2FsdGVkX1/PCCFJagliC1otwRt88MQj7icWl8mU2gl5J6Zu0880JEeJqzl0TdliBiY7vQ4IcgSRNHsjd6nD2cX0S57OgG4gF1bURFIZwxmUWqdd3Y63Gg6Bf5ARnZssTY3m2h/WjZ86FQiH9MLxHqyBERBsU4PXuoVobb7h6bkEa7AGDisp97uR0BaU1HOsa8ljh+YC/PUYJfOByLzmmj/XgV8kvNpMlup5z1I3bMQ6FiaQlpnXxrtuy3jKEOTpE37UcJLfblrCbnsQEnYVb4WgUms8Ak/Q769RapHMcS+FO3YIKcMDsJR73Z9ftpEJC1/PveYD5RXZVGV9JG53zrlkzmRPIefzg8lhDrGUkOC1hgVJP+9K9LOQjr1ZlivQy7DW8o1f14M/oHg/+R2qHd13MlrYM15F73r/jnNZfatVy7Ll4buraFr/1+jwUH0SRwjbrkIvMXGmLn074kiOxbtBBi3XGug8XXV9vP/vAqIH3N8D9F/dPq/Vz9R+oBiWllIR/mqLLXhZR/2CJbWgoPsYeAajUnYrAkjTkAQiG6cv1m/OYLhrbZkdlGCIhGvhZgiuNJglwjM2MstaZXSqE2ydnFpbuX5mxx8vFvBJudDsOy7Rur2PWa5gRZktWxMT4ZgC+Ajq9FJcdz77BfEbnMXtJMf/32OV4r52QZU1FnsMwnaTIQCZFxGTm89Nv00Vrk8dnNh+Ryr2AL32EOjDdmD2fCulJi7YnSB7yY9y9o5M2QyIYpcNStHdGvsJA89DZml5bTTxnwYstKpZYjC80uQr3uyztZIrEgR3mMjbjkBjT1HdLeIpgjdG71yGQP4gsfqkwvY4xttdY1mbVkMxCw1Xe1Rt4O75fF/zCGiVpgB6tcYSSqWRBxGxepg5Z2wg9RQC3RLzhAop+ET2tqHms3kiMaqcOwfdQKU98fHxH+0bf/vx3j9mPdR/qoCDZsqAaWH7iO67+Oroek8CcW4
+ ySH7ZmB0
+ uuET9y8Kdqkk6w7f+bJJJ7mdcDAmuxmJkhxLrj4LkLtuyyeVEHqgVhX0vmxsMO8rTWkn+S8Jx6L8jURc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,172 +143,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 6:09=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Sat, Mar 21, 2026 at 3:29=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wro=
-te:
-> > This patch series is based on 6.19. There are a couple more
-> > swap-related changes in mainline that I would need to coordinate
-> > with, but I still want to send this out as an update for the
-> > regressions reported by Kairui Song in [15]. It's probably easier
-> > to just build this thing rather than dig through that series of
-> > emails to get the fix patch :)
-> >
-> > Changelog:
-> > * v4 -> v5:
-> >     * Fix a deadlock in memcg1_swapout (reported by syzbot [16]).
-> >     * Replace VM_WARN_ON(!spin_is_locked()) with lockdep_assert_held(),
-> >       and use guard(rcu) in vswap_cpu_dead
-> >       (reported by Peter Zijlstra [17]).
-> > * v3 -> v4:
-> >     * Fix poor swap free batching behavior to alleviate a regression
-> >       (reported by Kairui Song).
->
+On 3/23/26 15:46, Matthew Wilcox wrote:
+> On Mon, Mar 23, 2026 at 02:19:37PM +0000, Shivank Garg wrote:
+>> +++ b/mm/migrate.c
+>> @@ -1135,26 +1135,26 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+>>   * This is safe because nobody is using it except us.
+>>   */
+>>  enum {
+>> -	PAGE_WAS_MAPPED = BIT(0),
+>> -	PAGE_WAS_MLOCKED = BIT(1),
+>> -	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED,
+>> +	FOLIO_MF_WAS_MAPPED = BIT(0),
+>> +	FOLIO_MF_WAS_MLOCKED = BIT(1),
+>> +	FOLIO_MF_OLD_STATES = FOLIO_MF_WAS_MAPPED | FOLIO_MF_WAS_MLOCKED,
+> 
+> what does 'MF' stand for?  i mean, presumably not the pop culture
+> meaning of MF ...
 
-Hi Kairui! Thanks a lot for the testing big boss :) I will focus on
-the regression in this patch series - we can talk more about
-directions in another thread :)
+Migration FLag
 
-> I tested the v5 (including the batched-free hotfix) and am still
-> seeing significant regressions in both sequential and concurrent swap
-> workloads
->
-> Thanks for the update as I can see It's a lot of thoughtful work.
-> Actually I did run some tests already with your previously posted
-> hotfix based on v3. I didn't update the result because very
-> unfortunately, I still see a major performance regression even with a
-> very simple setup.
->
-> BTW there seems a simpler way to reproduce that, just use memhog:
-> sudo mkswap /dev/pmem0; sudo swapon /dev/pmem0; time memhog 48G; sudo swa=
-poff -a
->
-> Before:
-> (I'm using fish shell on that test machine so this is fish time format):
-> ________________________________________________________
-> Executed in   20.80 secs    fish           external
->    usr time    5.14 secs    0.00 millis    5.14 secs
->    sys time   15.65 secs    1.17 millis   15.65 secs
-> ________________________________________________________
-> Executed in   21.69 secs    fish           external
->    usr time    5.31 secs  725.00 micros    5.31 secs
->    sys time   16.36 secs  579.00 micros   16.36 secs
-> ________________________________________________________
-> Executed in   21.86 secs    fish           external
->    usr time    5.39 secs    1.02 millis    5.39 secs
->    sys time   16.46 secs    0.27 millis   16.46 secs
->
-> After:
-> ________________________________________________________
-> Executed in   30.77 secs    fish           external
->    usr time    5.16 secs  767.00 micros    5.16 secs
->    sys time   25.59 secs  580.00 micros   25.59 secs
-> ________________________________________________________
-> Executed in   37.47 secs    fish           external
->    usr time    5.48 secs    0.00 micros    5.48 secs
->    sys time   31.98 secs  674.00 micros   31.98 secs
-> ________________________________________________________
-> Executed in   31.34 secs    fish           external
->    usr time    5.22 secs    0.00 millis    5.22 secs
->    sys time   26.09 secs    1.30 millis   26.09 secs
->
-> It's obviously a lot slower.
->
-> pmem may seem rare but SSDs are good at sequential, and memhog uses
-> the same filled page and backend like ZRAM has extremely low overhead
-> for same filled pages. Results with ZRAM are very similar, and many
-> production workloads have massive amounts of samefill memory.
->
-> For example on the Android phone I'm using right now at this moment:
-> # cat /sys/block/zram0/mm_stat
-> 4283899904 1317373036 1370259456        0 1475977216   116457  1991851
->    87273  1793760
-> ~450M of samefill page in ZRAM, we may see more on some server
-> workload. And I'm seeing similar memhog results with ZRAM, pmem is
-> just easier to setup and less noisy. also simulates high speed
-> storage.
+> 
+>>  	locked = true;
+>>  	if (folio_test_mlocked(src))
+>> -		old_page_state |= PAGE_WAS_MLOCKED;
+>> +		old_folio_state |= FOLIO_MF_WAS_MLOCKED;
+> 
+> I mean, this doesn't make sense any more.  PAGE_WAS_MLOCKED is a
+> sentence that means something.  FOLIO_MF_WAS_MLOCKED doesn't ... unless
+> you imagine Samuel L Jackson saying it ...
 
-Interesting. Normally "lots of zero-filled page" is a very beneficial
-case for vswap. You don't need a swapfile, or any zram/zswap metadata
-overhead - it's a native swap backend. If production workload has this
-many zero-filled pages, I think the numbers of vswap would be much
-less alarming - perhaps even matching memory overhead because you
-don't need to maintain a zram entry metadata (it's at least 2 words
-per zram entry right?), while there's no reverse map overhead induced
-(so it's 24 bytes on both side), and no need to do zram-side locking
 :)
 
-So I was surprised to see that it's not working out very well here. I
-checked the implementation of memhog - let me know if this is wrong
-place to look:
+PAGE_WAS_MLOCKED was suboptimal given that the names overlap with things
+like PAGE_SHARED or even PAGE_IS_PRESENT.
 
-https://man7.org/linux/man-pages/man8/memhog.8.html
-https://github.com/numactl/numactl/blob/master/memhog.c#L52
+So using some prefix to indicate that these flag belong logically
+together makes sense. Even if it's not a beautiful sentence.
 
-I think this is what happened here: memhog was populating the memory
-0xff, which triggers the full overhead of a swapfile-backed swap entry
-because even though it's "same-filled" it's not zero-filled! I was
-following Usama's observation - "less than 1% of the same-filled pages
-were non-zero" - and so I only handled the zero-filled case here:
+FOLIO_MIGRATION_* could be done, but "FOLIO_MIGRATION_WAS_MLOCKED" is
+also does not make sense. FOLIO_MIGRATION_FLAG_* is mouthful.
 
-https://lore.kernel.org/all/20240530102126.357438-1-usamaarif642@gmail.com/
+-- 
+Cheers,
 
-This sounds a bit artificial IMHO - as Usama pointed out above, I
-think most samefilled pages are zero pages, in real production
-workloads. However, if you think there are real use cases with a lot
-of non-zero samefilled pages, please let me know I can fix this real
-quick. We can support this in vswap with zero extra metadata overhead
-- change the VSWAP_ZERO swap entry type to VSWAP_SAME_FILLED, then use
-the backend field to store that value. I can send you a patch if
-you're interested.
-
->
-> I also ran the previous usemem matrix, which seems better than V3 but
-> still pretty bad:
-> Test: usemem --init-time -O -n 1 56G, 16G mem, 48G swap, avgs of 8 run.
-> Before:
-> Throughput (Sum): 528.98 MB/s Throughput (Mean): 526.113333 MB/s Free
-> Latency: 3037932.888889
-> After:
-> Throughput (Sum): 453.74 MB/s Throughput (Mean): 454.875000 MB/s Free
-> Latency: 5001144.500000 (~10%, 64% slower)
->
-> I'm not sure why our results differ so much =E2=80=94 perhaps different L=
-RU
-> settings, memory pressure ratios, or THP/mTHP configs? Here's my exact
-> config in the attachment. Also includes the full log and info, with
-> all debug options disabled for close to production. I ran it 8 times
-> and just attached the first result log, it's all similar anyway, my
-> test framework reboot the machine after each test run to reduce any
-> potential noise.
-
-Ohh interesting - I see that you're testing with MGLRU. I can give that a t=
-ry.
-
-I'm not enabling THP/mTHP, but I don't see that you're enabling it
-either - there's some 2MB swpout but that seems incidental.
-
-Another difference is the swap backend:
-
-1. Regarding pmem backend - I'm not sure if I can get my hands on one
-of these, but if you think SSD has the same characteristics maybe I
-can give that a try? The problem with SSD is for some reason variance
-tends to be pretty high, between iterations yes, but especially across
-reboots. Or maybe zram?
-
-2. What about the other numbers below? Are they also on pmem? FTR I
-was running most of my benchmarks on zswap, except for one kernel
-build benchmark on SSD.
-
-3. Any other backends and setup you're interested in?
-
-BTW, sounds like you have a great benchmark suite - is it open source
-somewhere? If not, can you share it with us :) Vswap aside, I think
-this would be a good suite to run all swap related changes for every
-swap contributor.
-
-Once again, thank you so much for your engagement, Kairui. Very much
-appreciated - I owe you a beverage of your choice whenever we meet.
-And have a great rest of your day :)
+David
 
