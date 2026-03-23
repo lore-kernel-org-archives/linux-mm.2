@@ -4,119 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98BAFF46139
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B0CF46139
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BE076B008A; Mon, 23 Mar 2026 11:18:29 -0400 (EDT)
+	id B93B86B008C; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0956E6B008C; Mon, 23 Mar 2026 11:18:29 -0400 (EDT)
+	id B43EB6B0092; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F14F06B0092; Mon, 23 Mar 2026 11:18:28 -0400 (EDT)
+	id A80E36B0095; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E563A6B008A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:18:28 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B6581A0BCA
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:28 +0000 (UTC)
-X-FDA: 84577684296.09.9AB8057
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7AC9DA0007
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hmfz+7Er;
-	spf=pass (imf25.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774279106;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B2FD6B008C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:18:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 462101B9218
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:35 +0000 (UTC)
+X-FDA: 84577684590.20.CE845EB
+Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 63F90120002
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:33 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=ETXMoEEM;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1");
+	spf=pass (imf29.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774279113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vQi3qtwRaACcQNZ9FduWctTgYVwSEXXVdc0PJ95pLn0=;
-	b=b34wwGwYZM1xIG7DVgEfAVx9ffcy4aKT+VjN2kf884Y+pmebwc3lskaPkYkPT4LmfUQSHf
-	IYe1+xZpDKZfvaX9g7H+JZmbBKIKxLx7CSSVrw5CYGSvvz4rHiYZVg+GUHq1wb6KUJsmpt
-	PuDyg7+rFYfQY4vMna3s+G6uG5hqALc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774279106; a=rsa-sha256;
-	cv=none;
-	b=J/hUDY/fbw6QCphImWQlLBoZXgVuNfNtfhc/jTbmVJuxzSktilD/0e7IjD++FXHG9Wkurp
-	mhTONsqsp7xsfUyqbta9B9gXpc1wLSoN+wzPWluKnNlPF9MLMe9FcazLkc/buOvLls8HAH
-	AemUzHEoB3GSHHy+9+bp4313CGYXZyY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hmfz+7Er;
-	spf=pass (imf25.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774279105;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vQi3qtwRaACcQNZ9FduWctTgYVwSEXXVdc0PJ95pLn0=;
-	b=hmfz+7ErOpFyRAY8aAMAGs8YMImdqvv7wJe3olvmcO+v9UdKSQTeXLwk7UR22ZnatT8Me2
-	n4t679xSFcmbKZeP7Yh8Q//kFBos+nPdQ2fZwywiu5sVxawyB8NH7Az9u1Z647HpAQQNhs
-	UtE+l2TePT3HylbyJIIhvJq9kuL6Q3I=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-89qMUu8HPeSoFDs_Z7h03A-1; Mon,
- 23 Mar 2026 11:18:20 -0400
-X-MC-Unique: 89qMUu8HPeSoFDs_Z7h03A-1
-X-Mimecast-MFC-AGG-ID: 89qMUu8HPeSoFDs_Z7h03A_1774279097
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 828451944EB6;
-	Mon, 23 Mar 2026 15:18:16 +0000 (UTC)
-Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 77E2A1955D71;
-	Mon, 23 Mar 2026 15:18:07 +0000 (UTC)
-From: Chunyu Hu <chuhu@redhat.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org
-Cc: linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	chuhu@redhat.com,
-	Li Wang <liwang@redhat.com>
-Subject: [PATCH v5 1/6] selftests/mm/guard-regions: skip collapse test when thp not enabled
-Date: Mon, 23 Mar 2026 23:17:48 +0800
-Message-ID: <20260323151753.2576137-2-chuhu@redhat.com>
-In-Reply-To: <20260323151753.2576137-1-chuhu@redhat.com>
-References: <20260323151753.2576137-1-chuhu@redhat.com>
+	bh=y9ESIQooWXRGmMBVhYDoop22vq6zrlFH2hRBQeNf9v4=;
+	b=UrXvzG9ZJ57uaNBLFpJfuLbDc1TkXEIR+84EQb+BBWCNRXZzqudHVhvhTTH6A4hExfga8j
+	UsYuPHSf0G66t81u+4/fFk0FrgImwXXrQqPIXnxBBZkYnClV6UUmhK2coRgkeW+BO6Lgbs
+	Dmlu4U9qLh52vJzJckf0H/Dk/fhu3k0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774279113; a=rsa-sha256;
+	cv=pass;
+	b=cZHNufJWT/PuTFGqcp/HEfR87m58ZoQmR3Fn7HkaUfu1PGEXJ4oEFtDMtZ2N70UsTjLUXX
+	xM8ebKr+CAjH3CqYB7l2TshU0qrrmO758f9fOCrAbgep6GtCyPxWrJCpRsNjMVspwAvPUG
+	NnBal1fAGsSBo3DZSgA+6bJZ1D9CVI4=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=ETXMoEEM;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1");
+	spf=pass (imf29.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org
+ARC-Seal: i=1; a=rsa-sha256; t=1774279101; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=iMzGlbLMUL3oZM2j1/p+AOJS0TxxiMCpm4NvviM7OXIaJWcJYA2Uj+OzZq5xVltmzp0l7h2kCxEnleofSlKdeGqE+NcqE/cJU+Bcqd/fR4MAeuL6+LrXjMOeEncpjrCLfW/8vR/OzpzP6kKAyROgTy9MzYIGihjxqAdQYQJdl0E=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774279101; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=y9ESIQooWXRGmMBVhYDoop22vq6zrlFH2hRBQeNf9v4=; 
+	b=PlZQ/ha+CvQ7WpcjhTMkpV2kbIRaHl5L1PA4oK/9dJY5bL0a8SV5+sbcBVSo27WyE9+xa9ZQuwCGf4FtG3wi7reb3rrVccJcQLQmGNxIAP33ktVUPt/w36SN586BM/ca5rgCWmFwmOC6Ivfba9V8a3vcpG99Zou8qoZapU9aTHg=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774279101;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=y9ESIQooWXRGmMBVhYDoop22vq6zrlFH2hRBQeNf9v4=;
+	b=ETXMoEEMn6pq1bQ3fhTsQIuYNIanASqLInTEnEZu/y2h2CvehszEbJN9QYnSlzMM
+	Q/84EZpqVpXAQ+oyoX4whcgjjUXrSrAml7oUiyVYSgP7M7E1VrXecv3on5vywW0WseY
+	TQdLwSsDYgJyAbehv/uMcD/pRKryoIodtpz9jvJQ=
+Received: by mx.zoho.eu with SMTPS id 1774279098669283.4803668678818;
+	Mon, 23 Mar 2026 16:18:18 +0100 (CET)
+Date: Mon, 23 Mar 2026 15:18:16 +0000
+From: Josh Law <objecting@objecting.org>
+To: SeongJae Park <sj@kernel.org>
+CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/damon/core=3A_optimize_kdamond=5F?=
+ =?US-ASCII?Q?apply=5Fschemes=28=29_with_pre-filtered_scheme_list?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260323142051.80436-1-sj@kernel.org>
+References:  <20260323142051.80436-1-sj@kernel.org>
+Message-ID: <43C21A6B-B27F-428B-B65C-1BBC9D66AF38@objecting.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: 9Mzs5NIIfF2lZMONCyU5SCK8KVEkKUOQ-c9Zi_GNNxA_1774279097
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 7AC9DA0007
-X-Stat-Signature: 514znrc7ccnmsybndtzcgmnpthuay1wk
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 63F90120002
+X-Stat-Signature: rqakuzhzzppzrsihqpazqqtnztfqrbx1
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1774279106-683012
-X-HE-Meta: U2FsdGVkX1+XEE89c6tSzvV4Fo8vP3S3bc23rWzkf0B01HlE7UakVv2jVooI8qWh6N6keaXdCCBYzz0mo4NEeYL9F1p+qtuzcRtS/LZN6f8NWfyBcF3SI0Tr1h/3VgY18xbuiPiT80KbAaCH6tgW+6qJsvAe3ezu9gkI8eOEBsJBOvQwfAp1ri3iWy5L2HmvBKrXMAWByf6++tpNjgeJVmnTvAGKJQemxpDW1gl2fj2g5Ro417uMV2ca8nVhqpo1coe4XY5PWe2GUbcX5SibETMogcm3OrCP1nqmcx1GEznTvpRixQHTTkuDSS1ktf9q+rfIi8uFf44Q3Zo6v0Ghhbx+MqahIdSuS2xPCstCZA1ogBmg9ggg+Wb6ExO6QNaKpvDYyBma2xXairBEytvXjxFpRbbFcuV1k5YSmQqb35UygKOhTxzIHy2lFE2KDDVR4nV/xhvB16rSMtuRR8qlX4xJmq1pGs7t/eAUSX/Q11exXDY5Xhi7JzwJRbaSg5XwvqlNbEKGSWluioZG3Gzw+Wg8d6rIh50THMVChZr2aS1MknWyLWkyv8zLX2xrkp4WBgOjsJrSnItNYEpvMvlMTSkX2WVmhBrvBqR6hByBgwDUrqWRl8UKt4ocaQZIUgNcoApTfJ9HCrCUEqpE41K63xeHMXo0GT0RDA3bW9rKunsyYa/q6OX2DczKwxYld2WVZdoHz+yZUTeLkDLSFdtkCgJjjw4Nn+ja1zJI/VwifcTImoBQ5aRsVBa+XXrMmU8nZFb9kCp1Ng3jW2KWhb3yZjuu8gTj+f/MRzUFytU0KhmJrhnfx5og5QLCYo/aPtXi3NlnD6K3vl8qDTeyBhi33n/+lIzfRyGDN/fDfYRCwqKuP34BaMdKFEu4dlSXGPKEpnbgDZRSph2sXP9SCYAJ2TgwD/Ivy9b3H5nwqHlXLbjH8+QH1L1T0fbKUZ6EaCxZmuta67+raEZ3WAiscoD
- 2/F2sLT8
- ZI6T4JgLfkZo/AX6aF1wVF7fagqMBvKRpf1Fs3S5OmlllVV74gzUAbxgy19X095gK6DPssyCauuVBAQk+Na4k+qcy0NYmezKat2exow9QnfZCRlSX6GztEnQhxX76lPM2lb7GbpGFSFhcvQ1yf/gg+tv50R0mCCtHZXR1113tm/Tmcg6I4f6OqQsMubwDt1NXLPD9nXnXsXzD5tWQ7i6FjRog/fR5joBVfXfnD5sCgo3zw9BdJmhD1JWKjgiFy1AmQyS+EZ3tKXIkBHeFoSjS0yGV5qscKYbG5Yljb5C4WkGScYGiavZ4owz7/uh0MKHdXgt7KFqvXZdf1EUXBv7UX9ktJ7ZPHXwZTCLFJGXchS0IwEiZMSmR5uvACJDd2YfdV1vLIFOidzg/Xxw=
+X-HE-Tag: 1774279113-50263
+X-HE-Meta: U2FsdGVkX1/pPQ6ebMn6e8C+JCz7ITbm6iT+4IUUeXIHQ1JFmBSyi6YYuMDyv2DISI+cgIgwJaBV1Q2mv+S7XszBajA+R2Jna4gqhmAP5OIbUdog+nlbuIZ7NXQwM7PV3Es5lZsp8M4rUlYvMEqhuXkWDZTRvZnYb5OHhx4W+ooC85f7heqzAN+L4RaLw8Lk4UGhSPExeOIPzgLmgS29tO1YwuIz6mnQEuoR2LLWcD/PS4tklARyL0uGHOuaSE7RrJG4a/orxG/S/pc01yram/F0OT5gD5Bi6VVi12O2QTQfNBQlm0HCS/oIEsdhnESAg8HXxPM2roF8MUze3GNfMO8SdGdZPvhS7cuPrbt3NLfdM7VUkWE5y8JWS6EAX8v3RQ+PviZccwRzz3GdGBuJMaF2tFniiZKq8eimInHq4ziwE1ZUYo7DpeTNmEVURw9jhigLn9tnjFNHZMgAMQGCzD/s7XOAclMlY1/S6DtME2/sj+7wpT0OWCH1zUDa7DImsg9/ooW/VWrIGEMvDAs2X6/uUskQIspV1DsV1JSw1pCOBA7X8x+qBWQqotNBA7tbHel3kzNGta9nETf9HCjLDARWt5RAbtZ5d13xNf4S4i25Ac9OxjdF/HLrchGo5viK87ew9wFSw7M9MCIS5uusxAob25syfwUMNtoRanKUt2E60i/KdtKrRfYN71kWuvfAvhRor1mLZQI2csGMYi7C+Vymv4gUvSg/pu99F3LpTNVhB5JcCv7DRmPKbNZ6kt/blYHnSurdtLZX425Ixy/yEnnDI/1hlFYHe0A91JEEFpiko+C49xElR9h/9rMr1wX7E762NDVwWUzJkCMjDw7ZYecofOa+xMgsaLiz8duBWAQbC3bziuqdxIfHS4OP+hCJxyUGic7s91ykEl7Px+shNL9krKfaMwvveSaeVGFHeoTXlA+3woVuCmmuPRmo2NVwTD/2edUie8sce974xdK
+ mKsu3TeR
+ HhALLwF7aCffyerR5Jy+yOwrgIzJ+XUblYTo9osR+Gu77aWZxmfF2hTh3CLyLY0F77YVHbEFo43jv6JFWn4vjgllr3FBMRbU49BiMctHCSpuqXOSafsjuDTJN5iruURuC9Ql2o0nJoMZ+ikl3CvhYK5ikow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,108 +102,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When thp is not available, just skip the collape tests to avoid the false
-negative.
 
-Without the change, run with a thp disabled kernel:
-  ./run_vmtests.sh -t madv_guard -n 1
-  <snip/>
-  #  RUN           guard_regions.anon.collapse ...
-  # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
-  # collapse: Test terminated by assertion
-  #          FAIL  guard_regions.anon.collapse
-  not ok 2 guard_regions.anon.collapse
-  <snip/>
-  #  RUN           guard_regions.shmem.collapse ...
-  # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
-  # collapse: Test terminated by assertion
-  #          FAIL  guard_regions.shmem.collapse
-  not ok 32 guard_regions.shmem.collapse
-  <snip/>
-  #  RUN           guard_regions.file.collapse ...
-  # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
-  # collapse: Test terminated by assertion
-  #          FAIL  guard_regions.file.collapse
-  not ok 62 guard_regions.file.collapse
-  <snip/>
-  # FAILED: 87 / 90 tests passed.
-  # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
-  # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
 
-With this change, run with thp disabled kernel:
-  ./run_vmtests.sh -t madv_guard -n 1
-  <snip/>
-  #  RUN           guard_regions.anon.collapse ...
-  #      SKIP      Transparent Hugepages not available
-  #            OK  guard_regions.anon.collapse
-  ok 2 guard_regions.anon.collapse # SKIP Transparent Hugepages not available
-  <snip/>
-  #  RUN           guard_regions.file.collapse ...
-  #      SKIP      Transparent Hugepages not available
-  #            OK  guard_regions.file.collapse
-  ok 62 guard_regions.file.collapse # SKIP Transparent Hugepages not available
-  <snip/>
-  #  RUN           guard_regions.shmem.collapse ...
-  #      SKIP      Transparent Hugepages not available
-  #            OK  guard_regions.shmem.collapse
-  ok 32 guard_regions.shmem.collapse # SKIP Transparent Hugepages not available
-  <snip/>
-  # PASSED: 90 / 90 tests passed.
-  # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
-  # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
+On 23 March 2026 14:20:51 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
+>On Sun, 22 Mar 2026 22:56:27 +0000 Josh Law <objecting@objecting=2Eorg> w=
+rote:
+>
+>> Currently, kdamond_apply_schemes() iterates over all targets and region=
+s
+>> for every scheme in the context, even if the scheme is inactive due to
+>> watermarks or hasn't reached its next apply interval=2E
+>>=20
+>> This patch introduces a pre-filtered list of active schemes at the star=
+t
+>> of kdamond_apply_schemes()=2E By only iterating over schemes that actua=
+lly
+>> need to be applied in the current interval, we significantly reduce the
+>> overhead of the nested target/region loops=2E
+>>=20
+>> This optimization maintains the original Target -> Region -> Scheme
+>> behavior while providing substantial performance gains, especially when
+>> many schemes are inactive=2E
+>>=20
+>> Performance Benchmarks (Filtered Array vs Original):
+>> | Scenario Description      | Speedup |
+>> |---------------------------|---------|
+>> | Mostly Inactive (2/10)    |  7=2E5x   |
+>> | Half Active (5/10)        |  2=2E9x   |
+>> | All Active (10/10)        |  1=2E3x   |
+>>=20
+>> Signed-off-by: Josh Law <objecting@objecting=2Eorg>
+>> ---
+>>  mm/damon/core=2Ec | 28 +++++++++++++++-------------
+>>  1 file changed, 15 insertions(+), 13 deletions(-)
+>>=20
+>> diff --git a/mm/damon/core=2Ec b/mm/damon/core=2Ec
+>> index c884bb31c9b8=2E=2E3b59e72defd4 100644
+>> --- a/mm/damon/core=2Ec
+>> +++ b/mm/damon/core=2Ec
+>> @@ -2114,19 +2114,16 @@ static void damos_apply_scheme(struct damon_ctx=
+ *c, struct damon_target *t,
+>> =20
+>>  static void damon_do_apply_schemes(struct damon_ctx *c,
+>>  				   struct damon_target *t,
+>> -				   struct damon_region *r)
+>> +				   struct damon_region *r,
+>> +				   struct damos **active_schemes,
+>> +				   int nr_active_schemes)
+>>  {
+>> -	struct damos *s;
+>> +	int i;
+>> =20
+>> -	damon_for_each_scheme(s, c) {
+>> +	for (i =3D 0; i < nr_active_schemes; i++) {
+>> +		struct damos *s =3D active_schemes[i];
+>>  		struct damos_quota *quota =3D &s->quota;
+>> =20
+>> -		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+>> -			continue;
+>> -
+>> -		if (!s->wmarks=2Eactivated)
+>> -			continue;
+>> -
+>>  		/* Check the quota */
+>>  		if (quota->esz && quota->charged_sz >=3D quota->esz)
+>>  			continue;
+>> @@ -2476,7 +2473,8 @@ static void kdamond_apply_schemes(struct damon_ct=
+x *c)
+>>  	struct damon_target *t;
+>>  	struct damon_region *r;
+>>  	struct damos *s;
+>> -	bool has_schemes_to_apply =3D false;
+>> +	struct damos *active_schemes[32];
+>> +	int nr_active_schemes =3D 0;
+>> =20
+>>  	damon_for_each_scheme(s, c) {
+>>  		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+>> @@ -2485,12 +2483,15 @@ static void kdamond_apply_schemes(struct damon_=
+ctx *c)
+>>  		if (!s->wmarks=2Eactivated)
+>>  			continue;
+>> =20
+>> -		has_schemes_to_apply =3D true;
+>> +		if (nr_active_schemes < ARRAY_SIZE(active_schemes))
+>> +			active_schemes[nr_active_schemes++] =3D s;
+>> +		else
+>> +			WARN_ONCE(1, "too many schemes to apply");
+>
+>We may need to increase the size of the array insted of just warning=2E  =
+That
+>will make this code little bit more complicated=2E  I'm worried at mainte=
+nance
+>burden from such a complicated code more than the benefit of the optimize=
+d
+>performance here=2E
+>
+>If this is real bottleneck that bothers real users, we should optimize th=
+is
+>even if it makes code dirty and more difficult to maintain=2E  But, at th=
+e moment
+>it is unclear if this is a real bottleneck=2E
+>
+>I'd suggest to hold this for now, and revisit if this becomes clearly a
+>bottleneck of a real use case, e=2Eg=2E, a user claims so=2E
+>
+>
+>Thanks,
+>SJ
+>
+>[=2E=2E=2E]
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-CC: Li Wang <liwang@redhat.com>
-Signed-off-by: Chunyu Hu <chuhu@redhat.com>
----
-Changes in v5:
-  - updated reviewed-by and acked-by
-Changes in v4:
-  - use thp_available instead of thp_is_enabled() as when thp is set to
-    never, madvise(MADV_COLLAPSE) will still succeed by design. So a
-    failure in madvise(MADV_COLLAPSE) on guard region will verify guard
-    region denies it. This is suggested from AI.
-  - removed the 'Reviewed-by' and 'Acked-by' as the code changes. Sorry for
-    that but it seems the changes is a little huge? (1 out of 2 lines)..
-Changes in v3:
-  - commit message: update the log snippet with where the fail happens and
-    add the '-n1' to the command.
-  - fix the 'false positive' to 'false negative'
-  - add reviwed by from Mike
-Changes in v2:
-  - add reviewed by from Zi and Lorenzo
-  - add acked-by from David
----
- tools/testing/selftests/mm/guard-regions.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-index dbd21d66d383..48e8b1539be3 100644
---- a/tools/testing/selftests/mm/guard-regions.c
-+++ b/tools/testing/selftests/mm/guard-regions.c
-@@ -21,6 +21,7 @@
- #include <sys/uio.h>
- #include <unistd.h>
- #include "vm_util.h"
-+#include "thp_settings.h"
- 
- #include "../pidfd/pidfd.h"
- 
-@@ -2195,6 +2196,9 @@ TEST_F(guard_regions, collapse)
- 	char *ptr;
- 	int i;
- 
-+	if (!thp_available())
-+		SKIP(return, "Transparent Hugepages not available\n");
-+
- 	/* Need file to be correct size for tests for non-anon. */
- 	if (variant->backing != ANON_BACKED)
- 		ASSERT_EQ(ftruncate(self->fd, size), 0);
+Yep, ill shelve this at the moment=2E Thanks for the clarification
 
-base-commit: c369299895a591d96745d6492d4888259b004a9e
--- 
-2.53.0
 
+
+V/R
+
+
+Josh Law
 
