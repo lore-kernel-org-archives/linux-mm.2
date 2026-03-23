@@ -4,141 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA214F46113
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 13:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3879FF46114
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 13:43:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FD4B6B0005; Mon, 23 Mar 2026 09:40:25 -0400 (EDT)
+	id 8E37F6B0005; Mon, 23 Mar 2026 09:43:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D4BA6B0088; Mon, 23 Mar 2026 09:40:25 -0400 (EDT)
+	id 8BB836B0088; Mon, 23 Mar 2026 09:43:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EA996B0089; Mon, 23 Mar 2026 09:40:25 -0400 (EDT)
+	id 7F8BF6B0089; Mon, 23 Mar 2026 09:43:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F5C36B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:40:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2B921ED62
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:40:24 +0000 (UTC)
-X-FDA: 84577437168.05.18A5D66
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DDE86B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:43:24 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1BA38BCD66
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:43:24 +0000 (UTC)
+X-FDA: 84577444728.13.D066141
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0D699100003
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:40:22 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ezodwAAY;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 68E93C000A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:43:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PT8JafTd;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774273223;
+	s=arc-20220608; t=1774273402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWyyESyH59EW5awXlYTiFlcAOR7WM0zfDF5m7dxaQlA=;
-	b=jpZvYXFM9W4UeRxYL9ecbl2aG4s5yU2HA2rtKiHN5aoc6HZQdJMFIxHU0JK7N4Pb8fXACr
-	oGOw8hyY0uWZsufuB+Z19g/f8TNXor4QhcFKqDy85gIplpd0sTHScWoEQMuGgg1EO26BYO
-	kqfGLnFwc03TPRWJEB2AbHn/iWzbmxc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774273223; a=rsa-sha256;
-	cv=none;
-	b=Vmhx3vF0WfRXNX/xopYhr9J0NO+AXidWTgL3vlRUQHHOQw5qrJiRm6AI9NqV1239FT9v4m
-	VbmX+1o0Wd8SV8dwpBWW5t6R+2VmyF9DUcqq0OIyBN9/v4Beanzg68nn+3wvBAszSHi4pI
-	LHtIXzhFM5l56VkzS5skQ/eZQ5OjoXE=
+	bh=Le5fwrAkDsOSFfKM1eekaep78MxMBo1DBzZrEmqeOVM=;
+	b=zpCWhbFy7jEp5EOc/pLmAaDIHx2EuNaA0DopZYd+OSaLanYcqZnjyP+Pej9xwaY8BptVhl
+	kfRst/yZfIDfKuPqZ5EwVLW9pDnPg/iqkUC3xByvPN3IKNMj4UAHNPcbNO3kqXSk89rqV3
+	BA9HX5jt0a3uCY8Fx3y+AlywBev7mZ4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ezodwAAY;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PT8JafTd;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774273402; a=rsa-sha256;
+	cv=none;
+	b=kMT0eKd1/CE9t8Ou503v/R6xMiT3YOECteZWfMVgfnTDpYZv4d4EmLWqScRvx49gZWG9Vo
+	iA20GgALdIviQqaUDUILJjV3ghArNyd6sPum6OTKttkgUOp5hMUirPcZ9f/s+H/H5UPiL6
+	WIUIWBryxQ+qJJBMSwT0BT4MGKjxyN8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C21954333A;
-	Mon, 23 Mar 2026 13:40:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE1DC2BC9E;
-	Mon, 23 Mar 2026 13:40:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B61A43C2F;
+	Mon, 23 Mar 2026 13:43:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBE3C2BCB4;
+	Mon, 23 Mar 2026 13:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774273221;
-	bh=+vl328zCZ3IIWDg4kXdCU0JqpKru3mTI0xRcjoscBVM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ezodwAAYaGvaJuUgQ96ue3bXKBLH00W4fabxcJbDe23Ewjtn0k0Eg7+pc9MgnAQkx
-	 b8o1laBdA+mpl8l/nBYulFIsOA2qDeQYWjuqlvKv7N4oPYdLc7T0QOtjSPzdL/yt3C
-	 444zlf3hSnWneG7NX3X1bvmFgBuVh1GslF0GhWAo2MHllphy1APi6H5j1Ydhu4ETXw
-	 3+0+7VO/M0dKJx4YPEQ6MgDYXnvaoDSX2efODknd5T4qpzgE5jwe+4csr6ba6QBW1g
-	 HrlbHYre4V3N42RmIusaCwaB3cnQ4HyUBr3THAEbkihqON6pgNSwMACFqdIKSO7vf7
-	 uhqCaRakmgQ7A==
-Message-ID: <4caebf3b-8924-406f-9b92-909cf86ef669@kernel.org>
-Date: Mon, 23 Mar 2026 14:40:16 +0100
+	s=k20201202; t=1774273401;
+	bh=sos2rOgDnEu5phU7h7C1DwMHpSPALkFyrx3pKpO6fWg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PT8JafTd+3DvjSJLYIe4144ilUiYgAAZloVXZmmXPp02ktGDG/1RwGdDCLFndI/FY
+	 7atB9JVqY9peb/4WozzZmT1UkycmQT68wuvbSulZGeXg7c5U3crWHUBLfM4R+Mp9df
+	 iOIC6Xy4nyXZarH4qQPA6vOHLJQoJihGZJEqwnIzntirtqv3aKkBCwQ4E6XAyOvlfs
+	 T3Bg5V6aiOEkCzs6Wmfz7jqlhRdzDpkbLEUWbPFlMROnnb/nFeiuxCYnbGLOmySD5s
+	 g+HHXBKRGR7pZW7VdHz8MhzC6pH9FdjPlgzAjOUHOwiEKSP4GmgWJ00fvsVYT8FrZ4
+	 6GZEifXOn1bHw==
+Date: Mon, 23 Mar 2026 13:43:16 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
+	mhocko@kernel.org, zhengqi.arch@bytedance.com, yuzhao@google.com, 
+	shakeel.butt@linux.dev, willy@infradead.org, Liam.Howlett@oracle.com, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/vmscan: prevent MGLRU reclaim from pinning
+ address space
+Message-ID: <f22cb9d9-7fc8-4a79-ada8-02d66a1155b2@lucifer.local>
+References: <20260322070843.941997-1-surenb@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/15] mm/memory_hotplug: fix possible race in
- scan_movable_pages()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
- <20260320-sparsemem_cleanups-v2-1-096addc8800d@kernel.org>
- <5b489c40-bd89-4dff-9669-560b1b28ec69@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <5b489c40-bd89-4dff-9669-560b1b28ec69@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jxtgbuqrr8hfweuyntwtrmzx3aeb4p1m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260322070843.941997-1-surenb@google.com>
+X-Rspamd-Queue-Id: 68E93C000A
+X-Stat-Signature: pbiqwt9z8x66g8n69sqnwc87jeqbifxf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D699100003
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774273222-658785
-X-HE-Meta: U2FsdGVkX194YEpWac2bHvcF7ciazXchswhXqG3oNNO8mlAOavUTa9IpAMCAA5eW0RBvNsTO/RqcJEmAtBfndV7t4pKmnQMRDxzgmtMLVedjY/3rAocY3EJntX8XB0mbBFVv/3gcOjAOUyw67ZvntG5wxQCGg7FBCettHjP+aUCp+9biRfVAAArbkSs9IPssr8m4kxlHgqfnTyfZ3WqXg3w6SEWfkGTgGtP9cM/ER+r5DxtMXvJ092ztQmtq9n/e7/alvDWszi9RYqc6NLrQQPqqKo/zOUcCvZG8Oq7FcKuHVkD6sTk1nOT7QaZFof73tpsYCgVb4BjyP0yJxJc3KiSxdq+GObqKvRI0yJG2uIh2gP26Le0WlP1q6f8Mg8Dk3F8uJ62KbEtLgtNUS+jRF2A46Kf1cqPrnrKBnUv+Awp3tQkj4Chi9n7fGSM9mAPWLQbHXsEi1RbTT+d9eEUq71iknmXXg2d2T55r3dZak9tj9UieecX9Xq6R+PH410ye888bEPM9B+J92MyPPf63h7aRnIEZpF+dhc2QWTDS9c60dI7bUzeUEeKuecl6K0dFHKHB5qfO4lpHOPEqhGZM3hz8b2wnWzHBARclVzT+Q4ZfSkNcr+KSln3k7aMb+7sChad+hM8zk/jHPZJGNFwFK3nW0tBM9XpXLv3gPsMI4Liez6Re2JX9+B2KS8j6EbPNEbY1aywdrw3y9ILSjc6YSxgX7ps4zDAbn5E8RPn1lyB8GNN0XLvNLnTo+6OlEvNkMmQQTCmuNVFFv4AJG//Is30y6/yChhoc9chI2oNFynpImvdkZsbeR4FTy1i2MvBBwaOaEu7CVMRYEs9QNt8FnORDcdML10lkBMr7MyFh9G3LGN6s0LbgDXi1YUzdAN+WMTI87Es6l5Jnh0pFeMKGanPiAa7onRuJKFkiIV2kMYjU2fSMsDBmy4eTsVr13Dia/EtJlRmxH4tld3l1aap
- S8nXogbe
- +4CSPBF5CNceIAjI=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774273402-93110
+X-HE-Meta: U2FsdGVkX19+bDTKEW+IUe57KmLAxQyUq0H1+amQk30WQyLzUDkBjmuDnqxswq9xlRpmCIF5dBGZwW3pyLJTOcshms6GvU/M08hjNuuTs512z87qahOrsja2ZdGGQVK4Z1cekJhv5KJc9lu+N2AIAnqMwkB0k5qtDHAyIK+jA5f7ozYdShs8kAC7Oisvm+ZYC1mu8NaCfP6hQ4HBqLmb+nh0+bYbnHQBaUMUVrVDWdjgGUTTszgkKjFg3rxkQaSeo2W3kvPmNvYkkgdG2sCq26wRPoplBpuk2F8cKw03jhlNr3sDe6Q2cR2WLW2dB+ErFaKGR/6UgbdFc4PEDVNWy1yOpeKdqbbGssqFXJ0Cs2sRDHzfAVrqPAhD8cskxL0pCgs9RvavJ9KmJH9wxEkjwM3up7w2lL9JzXAPermLbCPhsPWPA+Hd01Rc6vFtQgv5pfAxqPQczaXn6mSKwf9P4FDdfLPWnLSHy6QA8awZF1idC3b1NpoT/GUmm2WT3OaCzAgd29Aa0lyaNOrwwcKg44CaEPKEQyyRzSdnqjfHCxntChBKUfJZFBNyZ1NIAXxwDIyaLID5Mgld7ynIgjQUysgMRQbT6A5mKlhUD2ez0vLA5bRNgyu8liSznMxE0sdyNq076naZ1d/TdXACy049Sde+mQdZ/1HP6q6rmqVlZTKJPM1X4VTbO9LmdiZIXrnUaJp7x2uA2vj7If9pcQW6IMF3/MkDjJnO13qyCh1oSS6v6BDO3z4qTGZr5Cv+gz58NkrOcELrLz4bkgAtDs65tbQaPNFscRwqjDffB45MwlmU91STnfTj5saBrRRtINCwN4UxCpOKlhWyTqv4vx/zTPgKAggqSQ+38qs9oikaJtjIwiZ8fIMTgGS96qXQUdKGkjrKy6WmGtW3lNzX4XfEpFHSJUzKtgkTt1RQ+fPNd/m07kMYBzgwREwKOKrLxakgKlYR2XIlue7yW6Bu5z2
+ BQSc7MMq
+ ePrlxGYcScmQ/WZNl3u8ixn9Ny/DVASlWQOzerZP6nfMPLfjU2sz+eq+jiZ8vzE+mQOmMUwjeTiCEkfUMhGQp40lm7OsOyllG2e+iZP0mZ6b/LnqCmfZn1RiwIJeY1norMgl9yFL+5TLP34wq/z6QB4IpLZ9MFue6zA2GZ7Px+rcFyBv0XE+ZVoCsoaqSWdkr13d5bxkiqi+Kib7eQreOEJFUBbvsmSqwv/HD+Eru+uYW3SU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,105 +94,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/23/26 14:26, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 20, 2026 at 11:13:33PM +0100, David Hildenbrand (Arm) wrote:
->> If a hugetlb folio gets freed while we are in scan_movable_pages(),
->> folio_nr_pages() could return 0, resulting in or'ing "0 - 1 = -1"
->> to the PFN, resulting in PFN = -1. We're not holding any locks or
->> references that would prevent that.
->>
->> for_each_valid_pfn() would then search for the next valid PFN, and could
->> return a PFN that is outside of the range of the original requested
->> range. do_migrate_page() would then try to migrate quite a big range,
->> which is certainly undesirable.
->>
->> To fix it, simply test for valid folio_nr_pages() values. While at it,
->> as PageHuge() really just does a page_folio() internally, we can just
->> use folio_test_hugetlb() on the folio directly.
->>
->> scan_movable_pages() is expected to be fast, and we try to avoid taking
->> locks or grabbing references. We cannot use folio_try_get() as that does
->> not work for free hugetlb folios. We could grab the hugetlb_lock, but
->> that just adds complexity.
->>
->> The race is unlikely to trigger in practice, so we won't be CCing
->> stable.
->>
->> Fixes: 16540dae959d ("mm/hugetlb: mm/memory_hotplug: use a folio in scan_movable_pages()")
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> Logic looks right to me, though some nits below. With those accounted for:
-> 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> 
->> ---
->>  mm/memory_hotplug.c | 11 ++++++++---
->>  1 file changed, 8 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->> index 86d3faf50453..969cd7ddf68f 100644
->> --- a/mm/memory_hotplug.c
->> +++ b/mm/memory_hotplug.c
->> @@ -1747,6 +1747,7 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
->>  	unsigned long pfn;
->>
->>  	for_each_valid_pfn(pfn, start, end) {
->> +		unsigned long nr_pages;
->>  		struct page *page;
->>  		struct folio *folio;
->>
->> @@ -1763,9 +1764,9 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
->>  		if (PageOffline(page) && page_count(page))
->>  			return -EBUSY;
->>
->> -		if (!PageHuge(page))
-> 
-> Yeah interesting to see this is folio_test_hugetlb(page_folio(page)) :))
-> 
-> So this is a nice change for sure.
-> 
->> -			continue;
->>  		folio = page_folio(page);
->> +		if (!folio_test_hugetlb(folio))
->> +			continue;
->>  		/*
->>  		 * This test is racy as we hold no reference or lock.  The
->>  		 * hugetlb page could have been free'ed and head is no longer
->> @@ -1775,7 +1776,11 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
->>  		 */
->>  		if (folio_test_hugetlb_migratable(folio))
->>  			goto found;
->> -		pfn |= folio_nr_pages(folio) - 1;
->> +		nr_pages = folio_nr_pages(folio);
->> +		if (unlikely(nr_pages < 1 || nr_pages > MAX_FOLIO_NR_PAGES ||
-> 
-> NIT: since nr_pages is an unsigned long, would this be better as !nr_pages || ...?
+On Sun, Mar 22, 2026 at 12:08:43AM -0700, Suren Baghdasaryan wrote:
+> When shrinking lruvec, MGLRU pins address space before walking it.
+> This is excessive since all it needs for walking the page range is
+> a stable mm_struct to be able to take and release mmap_read_lock and
+> a stable mm->mm_mt tree to walk. This address space pinning results
 
-It's easier on the brain when spotting that only a given range is
-allowed, without having to remember the exact type of the variable :)
+Hmm, I guess exit_mmap() calls __mt_destroy(), but that'll just destroy
+allocated state and leave the tree empty right, so traversal of that tree
+at that point would just do nothing?
 
-So I guess it doesn't really make a difference in the end.
+> in delays when releasing the memory of a dying process. This also
+> prevents mm reapers (both in-kernel oom-reaper and userspace
+> process_mrelease()) from doing their job during MGLRU scan because
+> they check task_will_free_mem() which will yield negative result due
+> to the elevated mm->mm_users.
+>
+> Replace unnecessary address space pinning with mm_struct pinning by
+> replacing mmget/mmput with mmgrab/mmdrop calls. mm_mt is contained
+> within mm_struct itself, therefore it won't be freed as long as
+> mm_struct is stable and it won't change during the walk because
+> mmap_read_lock is being held.
+>
+> Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  mm/vmscan.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 33287ba4a500..68e8e90e38f5 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -2863,8 +2863,9 @@ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
+>  		return NULL;
 
-> 
->> +			     !is_power_of_2(nr_pages)))
-> 
-> Could the latter two conditions ever really happen? I guess some weird tearing
-> or something maybe?
+Not related to this series, but I really don't like how coupled MGLRU is to
+the rest of the 'classic' reclaim code.
 
-Yes, or when the fields gets reused for something else.
+Just in the middle of vmscan you walk into generic mm walker logic and the
+only hint it's MGLRU is you see lru_gen_xxx stuff (I'm also annoyed that we
+call it MGLRU but it's called lru_gen_xxx in the kernel :)
 
-> 
-> It would also be nice to maybe separate this out as is_valid_nr_pages() or
-> something, but then again, I suppose given this is a rare case of us
-> checking this under circumstances where the value might not be valid, maybe
-> not worth it.
+>
+>  	clear_bit(key, &mm->lru_gen.bitmap);
+> +	mmgrab(mm);
 
-I had the same thought. But this code is way too special regarding
-raciness that I hope nobody else will really require this ... and if
-they do, they might be doing something wrong :)
+Is the mm somehow pinned here or, on destruction, would move it from the mm
+list meaning that we can safely assume we have something sane in mm-> to
+grab? I guess this must have already been the case for mmget_not_zero() to
+have been used before though.
 
--- 
-Cheers,
+>
+> -	return mmget_not_zero(mm) ? mm : NULL;
+> +	return mm;
+>  }
+>
+>  void lru_gen_add_mm(struct mm_struct *mm)
+> @@ -3064,7 +3065,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+>  		reset_bloom_filter(mm_state, walk->seq + 1);
+>
+>  	if (*iter)
+> -		mmput_async(*iter);
+> +		mmdrop(*iter);
 
-David
+This will now be a blocking call that could free the mm (via __mmdrop()),
+so could take a while, is that ok?
+
+If before the code was intentionally deferring work here, doesn't that
+imply that being slow here might be an issue, somehow? Or was it just
+because they could? :)
+
+>
+>  	*iter = mm;
+>
+>
+> base-commit: 8c65073d94c8b7cc3170de31af38edc9f5d96f0e
+> --
+> 2.53.0.1018.g2bb0e51243-goog
+>
+
+Thanks, Lorenzo
 
