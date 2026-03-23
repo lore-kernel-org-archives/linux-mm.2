@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07FD0EC01A4
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D95E7EC01A4
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:02:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F1756B008A; Mon, 23 Mar 2026 05:00:48 -0400 (EDT)
+	id 287476B0088; Mon, 23 Mar 2026 05:02:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A1B86B008C; Mon, 23 Mar 2026 05:00:48 -0400 (EDT)
+	id 25ED76B0089; Mon, 23 Mar 2026 05:02:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5906A6B0092; Mon, 23 Mar 2026 05:00:48 -0400 (EDT)
+	id 14D9F6B008A; Mon, 23 Mar 2026 05:02:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 47F036B008A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:00:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA3595BDD0
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:00:47 +0000 (UTC)
-X-FDA: 84576732534.01.AEDE112
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 03ABC6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:02:43 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B4AAA8CB3F
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:02:42 +0000 (UTC)
+X-FDA: 84576737364.12.1C39C5B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E6F6A120016
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:00:45 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JvFDw6oG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id C670C4000E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:02:40 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uyLdWPEI;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774256446;
+	s=arc-20220608; t=1774256560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y7DDDRb/BVWuufu3jEy9sPjkdCSkvFmi8NPMUDyNP78=;
-	b=15M8g926ae8bxr3T2gtUbPpu/R/3p+e6i+BIUDa0SzqT9vEZ8g3Q85QDLGTTUpfVs/H2Jp
-	HRThkSHuqLBx0Tl8iBwbhbbxST0ZQiShhoDUNDbOL45TG/cTm23IbjaJrhzfYpK12GheRl
-	hIcTqGjnxvwtZOVeS/xtHbC1FTBAJl0=
+	bh=rn0KdutTecDYHCp0Ikb/15BtcMWDAU4HIfMus10ttl4=;
+	b=K/BKEzDDxWNRtIfTmEDuTGEomjKPqMWzkyYjprZ0ENZSX/hae0fPMKAfAs3bPzMZCNlWwB
+	SCa3oudACryeC4R7QQVezeQEX0jIEMTl5N/DCzptI1dDbm98V47ICsSn14ac+UdJFuqZdH
+	anMrNojH2GQlX2sirA56rHcjg5OApwo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JvFDw6oG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774256446; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uyLdWPEI;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774256560; a=rsa-sha256;
 	cv=none;
-	b=1GModaJPlJz0pko2ADDZfW9gozEPUI6fd5uhn+BlZ2QGB8RQ8oHMdBRxvgNs1mCIb8VR3k
-	Uc+r4rKxOccNknhqIAYycHnFC9rAWBqwqPmR08vhjKKZypBUSG4kgLynaQG7o/RuXnB7tP
-	O1zmktiHhcanLncKRoIefvbx0zc5jS4=
+	b=bo0/yPpsoxNsQCnZYVWw+H5RMxUKlAiU6Ox3dxAGvSZeCRfjTL4oxtuOT0cdHdcKlrezO9
+	Cmr4tkzSiVXJe5MGA2eZGVCVtmrqeiQbmMF1PnRSfb8CB73hmtKJhjMTytlqnL+jUh2Jc5
+	U07JX7bSxRaieVhq+albJrLEIsOAulc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E16F442D8E;
-	Mon, 23 Mar 2026 09:00:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6B7C2BC9E;
-	Mon, 23 Mar 2026 09:00:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C515E432BD;
+	Mon, 23 Mar 2026 09:02:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6ABC2BC9E;
+	Mon, 23 Mar 2026 09:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774256444;
-	bh=MRMti5DI6Sp3ui/HK9pksJ+EstcUlnUv0hNW3NmKJ0Q=;
+	s=k20201202; t=1774256559;
+	bh=tFl0s2GdS+bqKxT2MhoL/lmIPS7orihy5/P5XndxhE4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JvFDw6oGVlXe5qLbf9DXIMFlzI+yrWsvt4Kf9leIejV+EllhW5ASfBhyWcaGFs/yg
-	 /rS+2rYvRWR7Dl0zTbsCXjGRGAmFz06UEbubXVKh5RJM/w/CCCy7yZpQEt+W7LY89+
-	 Y0RdyjgsUvytEqXBBdsshthR0vvlEsA7q4N4c9sED5AvXBGHs5v2KZej72h5ITi8+c
-	 Py/aDKg2/mQO13j1rp/aUSqaHAC0FjftSku5j1fPVVodvu4M68s/VhAeoCmxFPQMbf
-	 6p+B+sMWZtt5b6DqGgYU62vTD1Zz+1FGZat+UsXcbrHaqYlKNmfB0mNas6P/XUH3Hc
-	 SvG8VsTFnd3Qw==
-Message-ID: <533976f1-b295-4d66-889f-bd10142a1f89@kernel.org>
-Date: Mon, 23 Mar 2026 10:00:36 +0100
+	b=uyLdWPEIraYJdwjOgOshV6RH+yM4c72ucKjDT2i6/zGxUSQfxxTi9M4ju/JACgjUd
+	 HaRYx8S7TrP/ixn7SqL76ao/zKTuwQcUvzMdqwcOrn9ff1A8fARbkHtQKGVwEqecAk
+	 S67T+dMswNQM719RnTjQUCnNwoXKUJ4WG2VLQcJBwOVqwZRvOmrk3haogUjHiODW+B
+	 1cWcxIiLmhMTEPgY1tPxBQcBeVZuyWHbbPO+shF7wOM1L4F5RqrSkKuvMJQbDcJzrk
+	 ptrEnMi1O1Acpm0UmNQoH4j3ymSILfGYk8kqzIQal2XYD6EHSmGV0MvSJjq3bomglJ
+	 ls6W2PF3N67PQ==
+Message-ID: <dac624ea-dcaf-42ff-b0d7-a5b6c2c9d05a@kernel.org>
+Date: Mon, 23 Mar 2026 10:02:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/4] mm: huge_memory: refactor anon_enabled_store()
- with change_anon_orders()
+Subject: Re: [PATCH v7 2/4] mm: huge_memory: refactor anon_enabled_store()
+ with set_anon_enabled_mode()
 To: Breno Leitao <leitao@debian.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
@@ -83,8 +83,8 @@ To: Breno Leitao <leitao@debian.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, usamaarif642@gmail.com,
  kas@kernel.org, kernel-team@meta.com,
  "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-References: <20260311-thp_logs-v6-0-421e30d881e0@debian.org>
- <20260311-thp_logs-v6-2-421e30d881e0@debian.org>
+References: <20260317-thp_logs-v7-0-31eb98fa5a8b@debian.org>
+ <20260317-thp_logs-v7-2-31eb98fa5a8b@debian.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260311-thp_logs-v6-2-421e30d881e0@debian.org>
+In-Reply-To: <20260317-thp_logs-v7-2-31eb98fa5a8b@debian.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E6F6A120016
-X-Stat-Signature: fi6t33uudabys1kmxftpy3pi9zc3uzfi
+X-Rspamd-Queue-Id: C670C4000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: k9pn7w81gcxop8jknc7qi9xiufzzwika
 X-Rspam-User: 
-X-HE-Tag: 1774256445-260440
-X-HE-Meta: U2FsdGVkX18PBW9Ozp1B3KYPGac2nzRr/+IHKLKSyTpxhZWIvEb4YxrdgPpHgip7Vc5JRLQliPV61wxP9ffURq18Oa0bTrQzNYawiPgNiyWFntInsNAaIjT3HrvXlETEv4j/zmm2Hnvdan6fXR753dDGgK4PhXGsUgSSNDCEtK/ARUrda+CDahdqnBG/MsTeHVLUDINZ887lnVWW5uccxQe8FAXJqQVd7zafZrzFkPPOwTuc60QIhWguph0OYd6n+2owyFxmCd56oBe+sA5mqf9pl8/YwBkchVcXusSXg2uv7cQWY8TbVU3jXPiw1rM80SiiuTPESXKHkS0O2ILb3q6yeMyxnn04clc7AEGnDcOuVITpmUW5s4NUlElKqC1VIOdRmYpjX+0kEcTO4kVEf+LkrxeKfqk6IheGIi4dN1j3t8VwZyWsdqJ924xC7ctDiI0g8OM6CSG9xWIdN9Q3w/HCkq9DQa60e8ETeSMQo0ylOwbjBhFHR5wDI/YRAUVnmmkljIR1TvIcVa7e5zWft3Fev44D073piIxehBcBO/Add4rXEi0TSN2yzpBPFHUwWYDSxz81z5jmmyRjsxb9/SdvFAOcdchTfU+VUg4U8MCekbosD0QlNIipcnON3DcJHiFoRhCqXQPRQwMyoVTrsqabStXCvqsc9lpA05WR4d/RIKjr5HWxF/46iSErIpMYQcn5MWvdpG0ur/nh1rV5Kl1k5RIkr6d5bW1K8G4PvUB1dD0L2CN/yxLSVZCO4Lfz85D5hi8LHTjAOgNWyPZ+IOynml+FiTcwVnUTxR9ShAplyHcIlY8+ieJjd0WdgZw9a1It4/bw3bSWGzbLhQhPDjppP6iL5lofdgn0msNOU/Cay5RDID/5Oi7lG/CscDEW/kE51QBs7Zv8kJAv9kGxiC0dlriq6m0mpl18Acd4JeiqMRZdeK4q/OdYbghRtUQq7NfmeCUa8PbVKLwmHRl
- uvARrzGH
- c3kj1iZYcNFDsiYlQpJiBed7R64n3SldMyTJf/0m3ovYpJMH7BkQopaEP8XWRLk1afIkgM/+v7c+Nw/JSdNITyefua6Tcj+gvgp37eKR6QuMVqTkWQvHeUaMOIWVbmn/SKTPk9Pd6ixLFHM4xKwvzQpcTlNHOwT29VThHQ2jKK3W0BkUyP+qsWpSgepbGR88lfdHSg7Xw73RvXBQabBwAN6+b5MbbEyrl064gmOMuE6RbyJAyezgO7EAvcURdJTQcOEjAFUe6CYxkCPdypYoCq+JfK54j9uTiTJ7c2isHbIFRtHtmZJxVY+Wh5WpA3r1YRA6AEAfsnojGP56QL2aEn/fW8SGpCVqsl3eY
+X-HE-Tag: 1774256560-898936
+X-HE-Meta: U2FsdGVkX1+GDJH7fGmEGfNnAex6X21E+ccwrAVLsdmtSQ7VywrgUGMIkeolrFtftAHJqnQm3WJTdoaSQld4vVn9/Nxky1upGBLjGHAnu18ZbqYKE8thDBYaFqt2mqdMpVp+7AxjGbQKFGKjmDGycoEgCmLnpw4KRyI6pdT078mi9I2SZaRQEV4GJwC9N0iMFmSc/pMbsKCzhLndGAHrQszd7yICJsjUMRjwnMXGt8j0tfLdsX48BCGiGdOO2h1xjSM8eYoABCstXYq8SnySiQ8OkhoSkl+H6wD3aKMJcWsoWnQB0WF7k/j60zySQ0nVT/1c60rA1kH+S6LpArW/aUgnQobjF0SnyLWi++S1QGMJvVz3a1f1ENPvSG0X464OiWaF0wK31HR5rLlhNdhF/PeJHxtyuxPTCg889IVOixB2dLrMihNUoeF9PQUV9tDnd0WEXXE41QQGSgguddiG+gK0t3A1TE1Lz4XyUnTLFYmNYUTthhWS+RJzhur20vbhznRHkK8b7pYF9COf9TUDJd5zdMuvz5emqgScCIpl+HChfi9CardseNvS5V/F9gbrG4DI09q7yiQh4P8q4VtN2jOzZubsHMbC1NBIIp7Q2TQZ8cvUx1M1sqgsS5MxAr8g//BnUh1Yj/KOIlTcVZhfBtvHZQStDg2Ktcnx6Gk2gW4vplTuMtJVISRM04iAEFX6ImM7UIG/RZH2U7ZNujC2rdNoTcz1qwdo203KKSW4dXyJZJ1CmIuvVI2SD5ZS1ZKtLA6MlZZUFw8YIgIekG8qqDrRgGyk/KdbXmXyMXuYi8lIJ4d24dNUauSeSHYGiDA61BPTd/Q+xbiCBrTgi1ikXbHl9hlW/qKYPRIFDr+o7Gi5qN3eho1ZBqF/A20LhQq1f4MidNjnt1Rz4u9EozYrpRUHpAQUwYKU/L8/0RdNPXBPBZeavJ6WC355OX+0fnHSVFn6XsWt5x85jLkPuGf
+ DHPrLpUZ
+ KfSP/1CMERMHFpEuASD5s2C3nAsml1OlL/v3fUn5IwWaB7lNnt4oDwjfdgXKt1Yk6LaEo4Imyk67/J9FjDlQvPS5urgEBDvUoZvKLWuWytmKaqcMhm6kFOd6Wxttg29sqA1+Ecxe+i47fIpDHGl8YlpsxQXKgQYBJkzFgpOw89q/P3nh8QfBFPN35gymNc3LKpADGPc3JPQBybSeNnTFZBCYtKwOsGjB5J2n89RGx0TxXn5FLA/QSgQcTUbdoDQBuX2ZptHULsFgFthHDFQ4iz55mICb0lx6HntFG9rphV43+C/qi3sHnU+76VneCXpjwmJtJ0FpJcucr8rQgV3dX2AMqqx3qIlssYV+g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,9 +149,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/11/26 11:17, Breno Leitao wrote:
+On 3/17/26 16:33, Breno Leitao wrote:
 > Consolidate the repeated spin_lock/set_bit/clear_bit pattern in
-> anon_enabled_store() into a new change_anon_orders() helper that
+> anon_enabled_store() into a new set_anon_enabled_mode() helper that
 > loops over an orders[] array, setting the bit for the selected mode
 > and clearing the others.
 > 
@@ -161,11 +161,11 @@ On 3/11/26 11:17, Breno Leitao wrote:
 > Use sysfs_match_string() with the anon_enabled_mode_strings[] table
 > to replace the if/else chain of sysfs_streq() calls.
 > 
-> The helper uses test_and_set_bit()/test_and_clear_bit() to track
-> whether the state actually changed, so start_stop_khugepaged() is
-> only called when needed. When the mode is unchanged,
-> set_recommended_min_free_kbytes() is called directly to preserve
-> the watermark recalculation behavior of the original code.
+> The helper uses __test_and_set_bit()/__test_and_clear_bit() to track
+> whether the state actually changed, so start_stop_khugepaged() is only
+> called when needed. When the mode is unchanged,
+> set_recommended_min_free_kbytes() is called directly to preserve the
+> watermark recalculation behavior of the original code.
 > 
 > Signed-off-by: Breno Leitao <leitao@debian.org>
 > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
