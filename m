@@ -4,164 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADD52D58CBD
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 01:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E36C5D58CBE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 01:39:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B7516B0005; Sun, 22 Mar 2026 21:12:46 -0400 (EDT)
+	id C95636B0005; Sun, 22 Mar 2026 21:39:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 568556B0088; Sun, 22 Mar 2026 21:12:46 -0400 (EDT)
+	id C461F6B0088; Sun, 22 Mar 2026 21:39:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456F46B0089; Sun, 22 Mar 2026 21:12:46 -0400 (EDT)
+	id B34A06B0089; Sun, 22 Mar 2026 21:39:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 347226B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 21:12:46 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 438BFBB5C0
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 01:12:45 +0000 (UTC)
-X-FDA: 84575553090.25.9D445EA
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012025.outbound.protection.outlook.com [52.101.43.25])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5F95B1C000F
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 01:12:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="YJC6/mca";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.25 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774228362;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E6A66B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 21:39:08 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2E019140998
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 01:39:08 +0000 (UTC)
+X-FDA: 84575619576.23.1381A5A
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 269B44000D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 01:39:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jvoSpXgz;
+	spf=pass (imf12.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774229946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rMIOFYr3Foy57LJ/PeV+s0eg739CgrOUq0+F8GOkBEw=;
-	b=X/mKxrThNFac/X65JKNnzk4Jf/Q+lffDeld5bmn+gD0WBENvjvtKuIB8zaBcOpk4BmE7CB
-	1mfjpnMgZYgFBFLHVOzuB4ogS/zNY6XpL8vcw5mvSvqZA6vDVagttyamBhNCu/J2MlkhZ9
-	Zg7PmzWOzfyhiP9rIY50rixiKOfKnig=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774228362; a=rsa-sha256;
-	cv=pass;
-	b=UPdJlfhdP+gtondoy5FbNoezo/iLfXn+phoWKtkXxs004eczKO/b0fHWSDmnYyvxyU7ayZ
-	HKYhxfOqSUMQK87NNRy2X3dAzDCZQ6J28LDVAN5lLqWHXtWZArzfRoiPLPxAwU6gDGCxTl
-	TNyrUG22xqN87qEy36RoeHyNanL7HRA=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="YJC6/mca";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.25 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yAdlCj4KOzzkge5Dvlnt6Sp2kGBb22LdLFOBbgIYzioWix53OMDzId3w1lHMoVIeG+8zDvrlxzUtKrmMtN5rUrHoae+VoWUw65XDnHk84QYrIXKgcDEVsXHtrdnhVxTDkTW28XxdoNkzu8bUAJO1iWFC1E/zB5R+5K2tYLClMMHZPUKO1NAIcO2Q/Gth/su1iur49z+2s6583wYQks2g4ISzNeIuUHblTBMfKd+HIaUpLdGqxhgzaVJ3C6KmAwRWvu3NxaryVLzJCvS6lHtZ9jRDZDR/exfFYqO/saNbvvNquFVdM4a9y1owpeRmZ9+4VaDHbtFCgpVYkb81sm/q0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rMIOFYr3Foy57LJ/PeV+s0eg739CgrOUq0+F8GOkBEw=;
- b=RSbnGli0GhfN3xUsNCni29DgeCfTRMhQrWJczHRFD8b4G0+kYCUc+6/nVaewDs7/idCUoHg9HI7sZ/cD1+++czyClkI+3sHEGckNTWZcRnsDbT5kaeKUtocIyf5LEU6/wZnmGBkW866rqEdXYVGe1s6d0r5ip+jAYj2FRM0jB6EX7xg1fAYocbnohWswGSMMrZONrksfYnBeIRa+u3SygWWBArvhe2Hug2cILXMko6IjDk/Bcw2GXep9V4tBNwATjsgNecou1iOEJtUPsHcMynv8bsAVYkY96iKrT359ZKTQrgRUDz/64cZxFabHrZu5eIwvqxMQYNatc5BOWw4Q7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rMIOFYr3Foy57LJ/PeV+s0eg739CgrOUq0+F8GOkBEw=;
- b=YJC6/mcaxgkwTRotDmgv25cRM7isx4zKgumpcCt+gWkyOowk3jdAWl39dfAome8x8QSmIA0/pwbv8nViAbI10gPsVtdgV/mhT5b7FLgmxpgZhMwslosT0a099wNeAyutKEl4C2ukq0xxxY0UDznaKgYohfhWB5DOwgFSyk58nAp+W4psCYtTZTOPexE8HlrX7ofPJTBbl2wiWOP1xuzZjBoS6MMkYH+PIHs1YCHLooQeAhput91tIZ/yQbgCfWd+sIwuQg3MeRDcCZ9/HjrLhb+qkUK9qV6u3k9TxnE32RxOFpWDq929UywuQPeVfQeqras+FB+6PF+D/QcOPU9TmA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SA0PR12MB7075.namprd12.prod.outlook.com (2603:10b6:806:2d5::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
- 2026 01:12:38 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9745.007; Mon, 23 Mar 2026
- 01:12:38 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
- Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>
-Subject: Re: [PATCH v4] selftests/mm: add folio_split() and
- filemap_get_entry() race test
-Date: Sun, 22 Mar 2026 21:12:36 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <B0985749-939D-4256-B9B9-C54C0734CF72@nvidia.com>
-In-Reply-To: <20260320142219.375118-1-ziy@nvidia.com>
-References: <20260320142219.375118-1-ziy@nvidia.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR05CA0018.namprd05.prod.outlook.com
- (2603:10b6:208:c0::31) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=Fx2cmrzWqJT91Br9jsPMyIKQu88+WNBdQ+o5h791kHo=;
+	b=OEYSAH4bvsQgiWTxnPpovD1n/giM5vgAF5/lzd8s4LA3kitPaT576i8OwXKwJTa6n2JDa5
+	7RR9tHO+XLiM+fsjy14cB/ziOjMlyVxAEXkaqEu+MiWnPFhDjlSgeGlQDpCc+rxHHm41/p
+	6RapOep/88dTWlhPHVTrqI9RFYyKv5g=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jvoSpXgz;
+	spf=pass (imf12.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774229946; a=rsa-sha256;
+	cv=none;
+	b=ZYHboTXybKH0eU9esae5JE7HanYysPe+Du5cWhTPP7h5wpGSGBXLx25XK+0k7UAqAo4ab8
+	f6+XXPE03MWUEdZwN4EN/dwTVVYjbyEjO/T7XnwV9fzXESCux1S8YkRAF/EvjxEVkpAwFS
+	JD5G9Nl4uf8gfKNZ+e/zsPwHtkKH+Qg=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4852e9ca034so20769505e9.2
+        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 18:39:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774229945; x=1774834745; darn=kvack.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Fx2cmrzWqJT91Br9jsPMyIKQu88+WNBdQ+o5h791kHo=;
+        b=jvoSpXgzR9vRNbuLmblquU5WJFk/QXcZ9+Kkto0JPUweYjwWMODfF5En7hm+wZrWH4
+         JRQ5LyXKo7uXH2/533Z2QwgOqW4PU2sx7HZCbvryB1dYUVIkGvuRp/7lgcMkYKaDK1RK
+         T0W+BoABNKDyaZweh34xRGH9ltDhy5Lat2/NaE4mV9v3ilrR7eezJp5clKxM8CBOhSbh
+         6IO7iZcf+nMFfqxEtCPzyLZAbcLQKiJXY68lZlVWu2LrNHS87ydhjy7zKe6PIk0RI4Ad
+         31D6OOKldd3jRwV/2zq/ttKHeeqRhPxMKWWOm1xk36r9+OYQ+drzcxijRCtM/37jcind
+         rMnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774229945; x=1774834745;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fx2cmrzWqJT91Br9jsPMyIKQu88+WNBdQ+o5h791kHo=;
+        b=sfQswxH9szPsf212xADp5e5BFEiVJmJHa6iQrIP4dbyPw0OAfDV2bvfO/6EG7f7nMn
+         nU5vm3reaVHdTS4rMmse5KZmMjvy3XoHmvSYEy9HmXBdudKMCvaCqQZas0MJgHbfkVLZ
+         dLUBFf0VY+f9ykN5XjXDBjWg97w5aJZ7fmtB3Lljl9kywGfgwDBv197HqgtDoq7/5G1s
+         CEVmq6w+T3OzHLC/ycFp3WzPBN1OxBD4FJMjZK2Sp28TjrNEtVTaquVv75hiyoruLqK4
+         c1MPFQQ3xtHMtvfw7z5W0DOirTvLAcL1j+ECrpEt+wgduxQxw6RB3qm0gbZ4BQrmX27k
+         9Xmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXXZ8guZYUl9WCPa39LQT7ae4v4rHSZrg2tavYV70ytm/toqNM2WatcgQ98oPk1AL+hM+tIjKKw9w==@kvack.org
+X-Gm-Message-State: AOJu0Yz76drO25SaNp977gUK635jHKOyrix283Z7Nhlxx5Y/vi7iM0lh
+	ElEap4zpV8Jr8yTdXthdMmwlnHPa5aK2F1gECQ54cqp9blb9LchtWLn4
+X-Gm-Gg: ATEYQzxVpN9XjLuk1nnukUsManNdS8Ee1utqOnJI6Ho6GNXHNq8X77TvkwKVBtw12zv
+	Febk3fJJCQ1ePUzETBi6gABAQBYLAK8Cqo5JpHd8gLWXV1pO9InG5JSIcEdmdw2zencvr7AACnw
+	dvdbpprhWnMbzVxQRk1hBglEMnsbt2bzQuVnHaTFw/R/F0lZyUkOaLwPB2P0rEI4J36I4bcPQad
+	n9Ay5JNuMjrgAGQ/9PiN0OlHiWDkGcnjFX+bKiUtB5YH8lSUKuKhlu6E4TDdUf2dfIwp600R+HD
+	G5wdKGZi5TQUf56k1TF+w7EVrWZlHkd9U0DojuXOAUwKOY0TgVzlEIjVNbFIEtZ3GSM4rU+Ox9P
+	Q4BgdVhDWFGtpiXsKSqqXm+AvQaFK6CIlDDyUaEn/0j7ChjGG/2hl5+fklCxebwbUIQLbp/QxyA
+	0mM5StTyLdpnzGRHPZ+H2+ee4zasOsAZ+6lLc=
+X-Received: by 2002:a05:600c:8b24:b0:485:3dfc:57c with SMTP id 5b1f17b1804b1-486fee0fcf6mr148878665e9.21.1774229944373;
+        Sun, 22 Mar 2026 18:39:04 -0700 (PDT)
+Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644bdaf8sm29704360f8f.13.2026.03.22.18.39.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Mar 2026 18:39:03 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: Leonardo Bras <leobras.c@gmail.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feun <boqun.feng@gmail.com>
+Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush work
+Date: Sun, 22 Mar 2026 22:38:56 -0300
+Message-ID: <acCZsEOsrv5Ku-mu@WindFlash>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <ablYPt92Y63GcIu2@localhost.localdomain>
+References: <20260302154945.143996316@redhat.com> <20260302155105.214878062@redhat.com> <abSH40oW9qiVDXZS@pavilion.home> <abb2E3QW7t5Rhxrt@WindFlash> <ablYPt92Y63GcIu2@localhost.localdomain>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA0PR12MB7075:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf59a138-7d7a-4357-1d7a-08de887945fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	G4LtzbmQ98EId68EtALcr94ju19e954XWx7PaVKTFiICtQsHjazCP5TX+bU+xGsK1QYQKYMaKBWOURzG/VF5fBEbtgpfFc13fVSL5zeByyU4b9ysRVEUr/tQLlTaR+tH81Rm1PlfRuk/ebb7lHPZzxI4ckPi0+++CjMRdk9VZPEBo5DWH1+kMZb+Kfh/yJKyYEN0iMW4iafj39AGQtokEtTwL/uCRy+u+LujUO+kvKcXWmVNFbIJFQdqjJ2hCa2sNHaKWBfmV/9Aa4O0uPTM6DfIvHiRMKJW3QvgyCER9dxeeTQSFc+Zy1g+j6UehocCOj4tWIQrfXVRFmoq1M7iA9ybtfdyV4Lt+KE6kbSUpcxpFmCB3+47X/9puLoPR8RNywtMB7ooY8Wy3T/KhWb5Pe/xbO0tPmmY2iGSQ89ZZR82HSrZKY7gKoY6ZOJ8wTgACg4hV53LqjiOTf4EMcz46EhhMZzhV5O50gWovShEjA2J3sX9h5ij26DJCPWm81Qf/gFdC87vNRG1fFIk42DAVNUutdzAs2n9HBPHmeaVvs/XOvaKM2E44QMFmELzW7FW4GC2UrN3e9wer7xLi6tZ65fcfPnO1DeAkPL+xIy1O6q/VwRY013r533ac6MScAyPCiRJkiueMsAXhwWzYjifkHDkCNwrH3Rc/Ay1L3UzAEDtrxVCq4dbjHU+nJHgumDukXUKYuDyT5n3DPRa62qi6TjdBQZ6F4Ax2FZzHSOk92I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2zh9TCI/2R+zhJBXS7g2P1ZcIZSTC4c3O0XWIr2bYb4cu+R9stH9SJF59qLb?=
- =?us-ascii?Q?A2jGpRWnbJyE/qXM8R/5Edc0Ntv0CoAqtBxkhdl0vPqy7xrBanVjjviyYdOp?=
- =?us-ascii?Q?DQgpwk2d0HBNQKs2IomeXTXvJJ32VnVNdjI26KLfCzE1nZeR5/DwZUa3O9n4?=
- =?us-ascii?Q?5oC6xYsO315RlhH2qb0OUSReoP3dldaZgpdRsxx1W46+oo3l1omwMZtLmijJ?=
- =?us-ascii?Q?tDQyw7aw2a4U1Wk9hTOXJNfzbRAS5y5Fba714YC4DoJFJPT/tRBSxDonjud3?=
- =?us-ascii?Q?37sekYugDTW7aFiDeBsgml9Vvzun/srVPI9TaN7OoUkZCNdlrHnJUQVr0mot?=
- =?us-ascii?Q?TYvQu+fv8ZX9OcOlH3ijBRfEp2a71qZIHgbnVtoRXLzKVZ3PxI9no2NXCc1J?=
- =?us-ascii?Q?1qkTiZmIhCd/ma2e9TFfqp9PWYG3/OK2/0D0497e9NL8TkJ/h3LGlm9gTEKY?=
- =?us-ascii?Q?bYxqWFEE+zdc4qbXXu3TrqD6YPvNxwouwQlrCu7Ob7vNv/G6MATPKdAaCCCL?=
- =?us-ascii?Q?C/TeoFejWDr1ZAzWZevvsTpWUSR5ETKZz3J03gsWhGPNxmM8hDJ0eJxbSI3V?=
- =?us-ascii?Q?svd/9yPJqzu65IWblaLClBi1iyXdhsVfKZXrfmuQ45YVUNXZUcrczPA9P4D3?=
- =?us-ascii?Q?b3zuzsGhA93iS//los2m8egBqiOpYhqvNCJNIpi+PxLXjISAaWPYFCQTplxp?=
- =?us-ascii?Q?gMyOhG68oMWJv8yc2ZM6IAIJc0dN5ampIfFsbrkDWybeMhWmyGu5uxv8nlZ/?=
- =?us-ascii?Q?xocEugW3UbR5OZ0iYvAbsGj+JLkgEMhbq+QtiZEKWdfnj6MGP5CMhBXVzp/j?=
- =?us-ascii?Q?KvTloYBxKeZLuytBeBTniV/HmJ13D4+0xwDqbVpUgzKDBdWYuKL5TAu1fFE4?=
- =?us-ascii?Q?/rsLz6IM2QR4GP8lApdfZlu00kRtlIDJzHvoNE52Ut5ETni2luiuxdKuxLPB?=
- =?us-ascii?Q?EgtjNGJutXEe8iW9B4oKjvG3kvvdG8vJKnHKv3U6jU1/foBQEZZe7MHoUhnE?=
- =?us-ascii?Q?j2AWJGaifSUhV6qAkuJlhr5bQpKbPNE+VlquaOyoVzzo94ND+l2PXro1XrZV?=
- =?us-ascii?Q?saI1/VGckntElmmDjzZBoZbYxKeWrnT/h0GytsPW7EUstBxyCJ8/hqgIzQK7?=
- =?us-ascii?Q?R0Fm07TuJdb9pVN6Td/zonkVbus/4HvfG2DGpRA4+6/zNkYNs3800xauoR5+?=
- =?us-ascii?Q?cK1qqWJW57n/ORIRd/gcRdARA7m//s8tAUYrSxG4aFCitrk8dHGSAeNdCYMk?=
- =?us-ascii?Q?iv8ybNF0YVA/9nMmVh5DMg9DTLm2hnRXAbMJmvhl3au/togq83MtC6bsfia5?=
- =?us-ascii?Q?QWQTzAuJxFfFdp2BkArIpv2AlXGAA3yHOcAyGlEkReXLcgAAeQxolHz7vtk0?=
- =?us-ascii?Q?zs3UMfqF+0QS4loqsMMXHIyffquZEvor2aOYKqmtPeqn0S2lsGceNLPSqSqX?=
- =?us-ascii?Q?kQb5orKMjBtU89OaLdHfZoHVhYGVWJLK3LI8UQIbrIPR7q7rQoSmzMzy7phP?=
- =?us-ascii?Q?MXUKh26uUGnEWvoch0tlySnuAw6WhqhlS1QTBwipRD48Ol6HldtjsQD4LEFc?=
- =?us-ascii?Q?dbX5F3yQPBuSZjC4/Lha2CNlYCPv+kW53yAyM6sMGHH6WTcFODhGCNBSNJUH?=
- =?us-ascii?Q?W+FIVw2e/SBeLwr74PIqaU72fQ1ZH2UU7tkEWv1qgv7hjAeyBixZwoggCb4z?=
- =?us-ascii?Q?7Vv3x7sDq5A37TvG2mLDop3uDdZb4DHkjy3RjCn5f8n/cbjN?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf59a138-7d7a-4357-1d7a-08de887945fb
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 01:12:38.1069
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bdJmmO0l06W35JMp8lqKFy8tZhv2rtFfWwYaJUhCkt9ITTw/SHMA88lkfInkpjLw
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7075
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 269B44000D
+X-Stat-Signature: w53eazyroa46gigua3f5ik4p1dufgmem
 X-Rspam-User: 
-X-Stat-Signature: ygj7duigb7eqyjn1gys44a19zw39mkmg
-X-Rspamd-Queue-Id: 5F95B1C000F
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774228362-883898
-X-HE-Meta: U2FsdGVkX192n5ydHs3ebP19bruAh5JHVJkeltgNnTyy+jRoOUQBDMHI0ZVx+0LA68LVYSamNP+MexTtErshjyXfHFkvjHrq+Pc/2VrYuHxopJoe6y4BW7lek1Ei2heQzN0ILg64p6fNUoEB1AnGpIqrFeHhh0WnreAPTfN1Ruw7YlvDBqm/vfENdPYRleJs901jYwpnfIe8wSSz7E5UUaGgC26ZijumfmVeT+Mq/KL7//WiWtVoS5+FP6FYM2w1IkpL4OyxhEYub5cW+TRsMFgF1Amj3giZ5vorRCppiPafLC0R2TtbKjxRG9Rz1fGthyVR65TlYaBibMUiW6mWow3/UKz1Fjlp1MVyaq79lvBawDIgfLSvPDFZVaXaql11PzZNJIMaP7OdqWAXdmPgYW9DsrKdSH4JhiFizqrhdEk//tIULsL4HQeD+e02VtyqyPYHnfJ9mzqPO3R4PvKXSMZ7dj4JvzmmJgQQI/L723H/hZ2IJEli6P7zn7NfGctDsORkUy+AM4Kyial7UPIoToVGCIHeNHBWyJH022QA4r6kVZdGv20WbzeQsaSnVS6uodpnkmBsgM7Ns3AvPVLnHtocCqRqX8fEshlqTZ1lfEtGyIJNJZFY6+lZeYoQ/Unx5/BqLtHP/KmwNx3n8RfJ3AomI7Ku/+J+ayuQfxEhLq8Plxf3cX5O0Dt9UKz4t5Kduv8bATKqD02ep0OWuWt6B45jBk+XD3TC2iqGQPSclN6GlFu3M8Jqi1RRXNIGvX/ZXJTztYzQdzzkXL1Yw7Jhv/NeUIXCN/EnhjEXRyEgH4P0oCIrWkO71ZB8pVR2QMfH/LhaDjn2KMDROpKWZ+PLcsQEQZOg+xEi/rBN0m3x+6QWzHgcjsFGVFC58HR6LSJ4F661ZmTRsqhiwgeDbmZtYDr5rfMaR2ZhHfRd0nkoXZVQqkC7c38mCFfNfut5RRT7JsRhxEqjiDP7/HelCPD
- lucvnepw
- Hp+ha5/GWzJN0iUVVxd1UQhO1Zymrt6Q2a1vmnYJ9e0qeMCAcfJKLRxlLm6cE+tIRbq9vB/GaxKpNPrHpIo0+qBw3oYSXauq874S2ooDU3aOuVAUxRitb1nwSA4YiiVyRTzVTy/ddl1hb4iJa6X1HdWgIp2HcsR/vKzN7fETxegrZZAUnUg0TPFq68qlM5/5wriKffJfvj2majt0D4WXuYAUpp1nmH6VAI7fpONUauYV5H5pK0nS8qfpoUe3wd2bNDpi3QjPrnG/SP9/mnFrsOefgnbp/3AxjTOPXdtx0HpGQCH2Almj/AL2QmWgaztk0nsnsZiJIh8zPeR/i0pPJevsBf/GF+pHTvYg450eDUVzYWSPdHy9dW+ojOXljGa2qmYj+r+bg/YukgTSUwFO+PdjKvp1lA3zLfrXDZlnljj0aF7CakRPA7uowLWv7xc1r+M04lZr/m+cA3prpEHJ7kezAsNrETWT3dg+pyN1L7IPPlWPWvbLaQ0OBvFmUrUwf7WEXDDvYZZhp4im93kREyIacOsN7OcnyA2x93Trsd6peyPhrHEqrZyAk7o0s8dDFy4OtsXO7A0BdsiIi5eCTgcuA/4NiPHt9v6l/fXlxd90WgWi40G2TUTW07g==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774229945-835579
+X-HE-Meta: U2FsdGVkX1+qQEVsWjf/Y6aEtaPQuFMqz+E6SEn2YmQwQgJe5ovOIC+I+Gt6ZiYLEcHcHEOkpmoHjFGjShMp5Ebwak9B5VRHQ6mcNIIQqHhhSnlHwv8oZxS6qxtnc62XDXCzkFJu/7jU5ezbMQan3Zvs8nCov8bx9WnW7dkRbvZvj1O8LRAHy60xn4ihzmNTCMmHQcI+IWKxQe72z3yJ9UoWQOBGYIduKigtudOv8CXAzP4vIRxwrAXe1Nhds4sGgIbuhbK/ah/sHKZ8vibn2xuQtLMaNYhLcxRgtia1vIhCPCbWh5gJN7JuXa4Uwwht8DtE++882p+Jd+FCmzKKdTcOFRLYvLLmqfXtFd3oV9CGzihM48kKHOZcNa81ei5CdiQlX6QaLVKfY8+WWjK/3OMC2lcGHO1xa5kaobwl5+sxVGk28+HBDqFeKUVRQRnLQT7MO9IH+Q7EL0ZAusp7Xec3iPUdGHJCuH82g6WRRb5Xr1qcWpQLnxhTUtCLEu1gMwm+jVCaF+wUSYuocPh0cxrXpkW7wCCqWXfIymE44J2pQw4d+U7cIE/lx+kay+yXz2XqsoCK960InIaXoKFS21W/YUeYLKjENUwk01sHlBj9qs2OskWcxYnQ3+f/EqjREhjgB+LGcqURxNNwXmXgpJ9M9cPHj2UG4ceMPQRlC5bS5sijSn+ZKPYGPsbPigfNHF5ncWrQ9UmDF/uYNUTrydek6WhAXItAu6RLxaw9WEomOVZl/AvcCfm0Rok35Cj0WAWwMQ+57fvS/oXiRFTslgXb+tguZNzb4S9FQ8/bex8jBOwGWT+tgGytEU4t53JKcsd7Ors9B2jUmdBKrsIXOOC4urqxzwmCD91Ka+6O2i0rKloEh072gUEIj7ToHVVqbRq0qbhdwMVOcGQMpjsjvprWKOismi7jImp+MDCsKaiRnWZifJJqhS+oTV+3vnEofZao7812crOtz4PGn2G
+ UPiR0h4f
+ 6I2iDieKC81XgACnisImS7e3c/g7eaLKmhRiLgH58iKN2vmB0QHfBcNSbrxb+/TNZhNtwoShUY0mcUeRpCPph6IZwv+rsKKKEb90U9Y/R+a0wK09oClkkGkfGo3garl1u/Ogg3mY3ObQsi7gkBE9M0VzGGlZE78oOC281nK2I79mslQvA4EasxyXiFHKaa6/fVn0dI5zjtNWBl08pmwLUvdtt2bEx/DO4zGcnb726GmsVq90JXypDp+AknZsGZRQlyBT4lmLgxxMYY4oSvRreIHamuAPxhmlC0EzzE+ZLceO+IkY37XLqknD5WVsEpg3cubUDmyuCiuVp9HfRYxQgh9Zsy5TRYKgCMakIxfS+hr8+HQoJtqV2+1Bh6sB8Q2ygPn1W8Ml8v/0PNWt20mmTEhvSo6TvXI6fYtgd/Wb454K1BJUokdKz99nQA1HFRzkfx6H6nUZMJ9FIzHYvWIXic6Cp6wQRZLdf2BvJk4Tf+5zOLBJdB3S3YalVsOKUeK/HzBMDzhxxK2qjdu0EPKlXzm9q7SrQz8jB04Yefo91XNKGJkS24Bue7Dau9gKDn4a4BZiCnn0WbyQOHkYCPrHQ2im4+TjnHlg8YcFXj5yG0v0bXSlIbs3Bgxh8FjCvDMfhn0a55kUTdyme3B5o3D6gtq+vrRiYlKJbCFSDTaoRWrRY/NFsrVqAA540kA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,168 +137,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20 Mar 2026, at 10:22, Zi Yan wrote:
+On Tue, Mar 17, 2026 at 02:33:50PM +0100, Frederic Weisbecker wrote:
+> Le Sun, Mar 15, 2026 at 03:10:27PM -0300, Leonardo Bras a écrit :
+> > On Fri, Mar 13, 2026 at 10:55:47PM +0100, Frederic Weisbecker wrote:
+> > > I find this part of the semantic a bit weird. If we eventually queue
+> > > the work, why do we care about doing a local_lock() locally ?
+> > 
+> > (Sorry, not sure if I was able to understand the question.)
+> > 
+> > Local locks make sure a per-cpu procedure happens on the same CPU from 
+> > start to end. Using migrate_disable & using per-cpu spinlocks on RT and 
+> > doing preempt_disable in non_RT.
+> > 
+> > Most of the cases happen to have the work done in the local cpu, and just 
+> > a few procedures happen to be queued remotely, such as remote cache 
+> > draining. 
+> > 
+> > Even with the new 'local_qpw_lock()' which is faster for cases we are sure 
+> > to have local usages, on qpw=0 we have to make qpw_lock() a local_lock as 
+> > well, as the cpu receiving the scheduled work needs to make sure to run it 
+> > all without moving to a different cpu.
+> 
+> But queue_work_on() already makes sure the work doesn't move to a different CPU
+> (provided hotplug is correctly handled for the work).
+> 
+> Looks like we are both confused, so let's take a practical example. Suppose
+> CPU 0 queues a work to CPU 1 which sets a per-cpu variable named A to the value
+> "1". We want to guarantee that further reads of that per-cpu value by CPU 1
+> see the new value. With qpw=1, it looks like this:
+> 
+> CPU 0                                               CPU 1
+> -----                                               -----
+> 
+> qpw_lock(CPU 1)
+>    spin_lock(&QPW_CPU1)
+> qpw_queue_for(write_A, 1)
+>     write_A()
+>        A1 = per_cpu_ptr(&A, 1)
+>        *A1 = 1
+> qpw_unlock(CPU 1)
+>     spin_unlock(&QPW_CPU1)
+>                                                    read_A()
+>                                                        qpw_lock(CPU 1)
+>                                                            spin_lock(&QPW_CPU1)
+>                                                        r0 = __this_cpu_read(&A)
+>                                                        qpw_unlock(CPU 1)
+>                                                            spin_unlock(&QPW_CPU1)
+>                                                    
+> 
+> CPU 0 took the spinlock while writing to A, so CPU 1 is guaranteed to further
+> observe the new value because it takes the same spinlock (r0 == 1)
+> 
 
-> The added folio_split_race_test is a modified C port of the race condit=
-ion
-> test from [1]. The test creates shmem huge pages, where the main thread=
+Here, if we are in CPU0 we should never take the qpw_lock(CPU1) unless we 
+are inside queue_percpu_work_on().
 
-> punches holes in the shmem to cause folio_split() in the kernel and
-> a set of 16 threads reads the shmem to cause filemap_get_entry() in the=
+Maybe I am not getting your use case :/
 
-> kernel. filemap_get_entry() reads the folio and xarray split by
-> folio_split() locklessly. The original test[2] is written in rust and u=
-ses
-> memfd (shmem backed). This C port uses shmem directly and use a single
-> process.
->
-> Note: the initial rust to C conversion is done by Cursor.
->
-> Link: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumW=
-JdiWXv+C9Yct0w@mail.gmail.com/ [1]
-> Link: https://github.com/dfinity/thp-madv-remove-test [2]
-> Signed-off-by: Bas van Dijk <bas@dfinity.org>
-> Signed-off-by: Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
-> From V3:
-> 1. fixed for loop stepping issue
-> 2. used PRIu64 instead of %zu for uint64_t.
->
-> From V2:
-> 1. simplied the program by removing fork.
->
-> From V1:
-> 1. added prctl(PR_SET_PDEATHSIG, SIGTERM) to avoid child looping
->    forever.
-> 2. removed page_idx % PUNCH_INTERVAL >=3D 0, since it is a nop. Added a=
+Also, I don't see a case where we would need to call 
+queue_percpu_work_on() inside a qpw_lock(). This could be dangerous as it 
+could be the case in another cpu and cause a deadlock:
 
->    comment.
-> 3. added a child process status check to prevent parent looping forever=
-
->    and record that as a failure.
-> 4. used ksft_exit_skip() instead of ksft_finished() when the program is=
-
->    not running as root.
-> 5. restored THP settings properly when the program exits abnormally.
->  tools/testing/selftests/mm/Makefile           |   1 +
->  .../selftests/mm/folio_split_race_test.c      | 293 ++++++++++++++++++=
-
->  tools/testing/selftests/mm/run_vmtests.sh     |   2 +
->  3 files changed, 296 insertions(+)
->  create mode 100644 tools/testing/selftests/mm/folio_split_race_test.c
->
-
-Hi Andrew,
-
-The fixup below addressed the new issues (first and third) raised by sash=
-iko[1].
-
-The second issue is that the test only verifies first 8 bytes. Because
-the test is intended to verify the race condition causing a wrong page in=
-dex
-is used.
-
-The fourth issue is addressed in Q3 from V3[2]
-
-
-[1] https://sashiko.dev/#/patchset/20260320142219.375118-1-ziy%40nvidia.c=
-om
-[2] https://lore.kernel.org/all/8B720FB8-DE4D-487A-9AEF-AC204E9F5755@nvid=
-ia.com/
+CPU 0 				CPU 1
+qpw_lock(0)			qpw_lock(1)
+...				...
+queue_percpu_work_on()		queue_percpu_work_on()
+	qpw_lock(1)			qpw_lock(0)
 
 
-=46rom a66945de00f33c163cf814ac7c2d9620a725bfed Mon Sep 17 00:00:00 2001
-From: Zi Yan <ziy@nvidia.com>
-Date: Sun, 22 Mar 2026 19:53:54 -0400
-Subject: [PATCH] selftests/mm: fix sashiko complains on folio_split_race_=
-test
+> Now look at the qpw=0 case:
+>                                   
+> CPU 0                                               CPU 1
+> -----                                               -----
+> 
+> qpw_lock(CPU 1)
+>    local_lock(&QPW_CPU0)
+> qpw_queue_for(write_A, 1)
+>     queue_work_on(write_A, CPU 1)
+> qpw_unlock(CPU 1)
+>     local_unlock(&QPW_CPU0)
+>                                                    // workqueue
+>                                                    write_A()
+>                                                        qpw_lock(CPU 1)
+>                                                            local_lock(&QPW_CPU1)
+>                                                        A1 = per_cpu_ptr(&A, 1)
+>                                                        *A1 = 1
+>                                                        qpw_unlock(CPU 1)
+>                                                            local_unlock(&QPW_CPU1)
+> 
+>                                                    read_A()
+>                                                        qpw_lock(CPU 1)
+>                                                            local_lock(&QPW_CPU1)
+>                                                        r0 = __this_cpu_read(&A)
+>                                                        qpw_unlock(CPU 1)
+>                                                            local_unlock(&QPW_CPU1)
+> 
+> Here CPU 0 queues the work on CPU 1 which writes and reads the new value
+> (r0 == 1). local_lock() / preempt_disable() makes sure the CPU doesn't change.
+> 
+> But what is the point in doing local_lock(&QPW_CPU0) on CPU 0 ?
 
-1. used PRIu64 for uint64_t
-2. added pthread_barrier_t to ensure main thread starts to punch holes wh=
-en
-   all reader threads are spawned.
-
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- .../selftests/mm/folio_split_race_test.c        | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/t=
-esting/selftests/mm/folio_split_race_test.c
-index c264cc625a7cb..ab6868e7e2efe 100644
---- a/tools/testing/selftests/mm/folio_split_race_test.c
-+++ b/tools/testing/selftests/mm/folio_split_race_test.c
-@@ -46,6 +46,7 @@ struct shared_ctl {
- 	atomic_uint_fast32_t stop;
- 	atomic_size_t reader_failures;
- 	atomic_size_t reader_verified;
-+	pthread_barrier_t barrier;
- };
-
- static void fill_page(unsigned char *base, size_t page_idx)
-@@ -78,14 +79,14 @@ static bool check_page(unsigned char *base, size_t pa=
-ge_idx)
- 		}
- 		if (all_zero) {
- 			ksft_print_msg(
--				"CORRUPTED: page %zu (huge page %zu) is ALL ZEROS\n",
-+				"CORRUPTED: page %zu (huge page %" PRIu64 ") is ALL ZEROS\n",
- 				page_idx,
- 				(page_idx * page_size) / pmd_pagesize);
- 		} else {
- 			ksft_print_msg(
--				"CORRUPTED: page %zu (huge page %zu): expected idx %zu, got %lu\n",
-+				"CORRUPTED: page %zu (huge page %" PRIu64 "): expected idx %zu, got =
-%" PRIu64 "\n",
- 				page_idx, (page_idx * page_size) / pmd_pagesize,
--				page_idx, (unsigned long)got_idx);
-+				page_idx, got_idx);
- 		}
- 		return false;
- 	}
-@@ -110,6 +111,8 @@ static void *reader_thread(void *arg)
- 	atomic_size_t *verified =3D ra->verified;
- 	size_t page_idx;
-
-+	pthread_barrier_wait(&ctl->barrier);
-+
- 	while (atomic_load_explicit(&ctl->stop, memory_order_acquire) =3D=3D 0)=
- {
- 		for (page_idx =3D (size_t)tid; page_idx < TOTAL_PAGES;
- 		     page_idx +=3D NUM_READER_THREADS) {
-@@ -178,8 +181,14 @@ static size_t run_iteration(void)
- 	if (!check_huge_shmem(mmap_base, NR_PMD_PAGE, pmd_pagesize))
- 		ksft_exit_fail_msg("No shmem THP is allocated\n");
-
-+	if (pthread_barrier_init(&ctl.barrier, NULL, NUM_READER_THREADS + 1) !=3D=
- 0)
-+		ksft_exit_fail_msg("pthread_barrier_init failed\n");
-+
- 	create_readers(threads, args, mmap_base, &ctl);
-
-+	/* Wait for all reader threads to be ready before punching holes. */
-+	pthread_barrier_wait(&ctl.barrier);
-+
- 	for (i =3D 0; i < TOTAL_PAGES; i++) {
- 		if (i % PUNCH_INTERVAL !=3D 0)
- 			continue;
-@@ -198,6 +207,8 @@ static size_t run_iteration(void)
- 	for (i =3D 0; i < NUM_READER_THREADS; i++)
- 		pthread_join(threads[i], NULL);
-
-+	pthread_barrier_destroy(&ctl.barrier);
-+
- 	reader_failures =3D atomic_load_explicit(&ctl.reader_failures,
- 					       memory_order_acquire);
- 	reader_verified =3D atomic_load_explicit(&ctl.reader_verified,
--- =
-
-2.53.0
+I can't see the case where one would need to hold the qpw_lock while 
+calling queue_percpu_work_on(). Holding the qpw_lock() (as is the case of
+local_lock()) should be done only when one is working on data particular to 
+that cpu structures. Queuing work on other CPU while touching this cpu data 
+is unexpected to me. 
 
 
 
---
-Best Regards,
-Yan, Zi
+> 
+> 
+> > > > 
+> > > > @@ -2840,6 +2840,16 @@ Kernel parameters
+> > > >  
+> > > >  			The format of <cpu-list> is described above.
+> > > >  
+> > > > +	qpw=		[KNL,SMP] Select a behavior on per-CPU resource sharing
+> > > > +			and remote interference mechanism on a kernel built with
+> > > > +			CONFIG_QPW.
+> > > > +			Format: { "0" | "1" }
+> > > > +			0 - local_lock() + queue_work_on(remote_cpu)
+> > > > +			1 - spin_lock() for both local and remote operations
+> > > > +
+> > > > +			Selecting 1 may be interesting for systems that want
+> > > > +			to avoid interruption & context switches from IPIs.
+> > > 
+> > > Like Vlastimil suggested, it would be better to just have it off by default
+> > > and turn it on only if nohz_full= is passed. Then we can consider introducing
+> > > the parameter later if the need arise.
+> > 
+> > I agree with having it enabled with isolcpus/nohz_full, but I would 
+> > recommend having this option anyway, as the user could disable qpw if 
+> > wanted, or enable outside isolcpu scenarios for any reason.
+> 
+> Do you know any such users? Or suspect a potential usecase? If not we can still
+> add that option later. It's probably better than sticking with a useless
+> parameter that we'll have to maintain forever.
+
+Out of my head, I can think only on HPC scenario where user wants to make 
+use of the regular/RT scheduler for many small workloads, but doesn't like 
+the impact of IPI on those cases. Such systems that explore memory at it's 
+limit will also benefit from those, for example, if cache gets drained 
+remotely very often.
+
+None of those necessarily will need to or benefit from isolcpus, and may 
+want to just use the kernel scheduler policies. 
+
+> 
+> > > > +#define qpw_lockdep_assert_held(lock)			\
+> > > > +	lockdep_assert_held(lock)
+> > > > +
+> > > > +#define queue_percpu_work_on(c, wq, qpw)		\
+> > > > +	queue_work_on(c, wq, &(qpw)->work)
+> > > 
+> > > qpw_queue_work_on() ?
+> > > 
+> > > Perhaps even better would be qpw_queue_work_for(), leaving some room for
+> > > mystery about where/how the work will be executed :-)
+> > > 
+> > 
+> > QPW comes from Queue PerCPU Work
+> > Having it called qpw_queue_work_{on,for}() would be repetitve
+> 
+> Well, qpw_ just becomes the name of the subsystem and its prefix for APIs.
+> For example qpw_lock() doesn't mean that we queue and lock, it only means we lock.
+> 
+
+Locks for queue'ing per-cpu work. :D
+
+> > But having qpw_on() or qpw_for() would be misleading :) 
+> > 
+> > That's why I went with queue_percpu_work_on() based on how we have the 
+> > original function (queue_work_on) being called.
+> 
+> That's much more misleading at it doesn't refer to qpw at all and it only
+> suggest that it's a queueing a per-cpu workqueue.
+> 
+
+Humm, maybe qpw_queue_for/on()?
+
+Or maybe change the name of the API for pw:
+pw_lock()/unlock
+pw_queue();
+pw_flush()
+
+and so on?
+
+That way it stays true to what means :)
+
+
+> > > Perhaps that too should just be selected automatically by CONFIG_NO_HZ_FULL and if
+> > > the need arise in the future, make it visible to the user?
+> > > 
+> > 
+> > I think it would be good to have this, and let whoever is building have the 
+> > chance to disable QPW if it doesn't work well for their machines or 
+> > workload, without having to add a new boot parameter to continue have 
+> > their stuff working as always after a kernel update.
+> > 
+> > But that is open to discussion :)
+> 
+> Ok I guess we can stick with the Kconfig at least in the beginning.
+> 
+> Thanks.
+> 
+> -- 
+> Frederic Weisbecker
+> SUSE Labs
+
+
+Thanks!
+Leo
 
