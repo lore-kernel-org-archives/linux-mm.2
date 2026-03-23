@@ -4,119 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77B4AF483C8
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 16:53:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F8CF483C8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 17:02:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAA116B0088; Mon, 23 Mar 2026 12:53:57 -0400 (EDT)
+	id 1F3816B0005; Mon, 23 Mar 2026 13:02:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5B056B008A; Mon, 23 Mar 2026 12:53:57 -0400 (EDT)
+	id 1A4856B0088; Mon, 23 Mar 2026 13:02:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A49FB6B008C; Mon, 23 Mar 2026 12:53:57 -0400 (EDT)
+	id 0BA746B008A; Mon, 23 Mar 2026 13:02:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FD6F6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:53:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A4D8160CA7
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:53:57 +0000 (UTC)
-X-FDA: 84577924914.15.A83FAE3
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2B57018000D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:53:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NuPWES+O;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F0A106B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:02:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9EBE6140CA0
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:02:52 +0000 (UTC)
+X-FDA: 84577947384.13.429E3DC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B2611C000E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:02:50 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o73d2bA0;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774284835;
+	s=arc-20220608; t=1774285370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y1YolZNvxEG/QAR3/d/TQV4ZFhFCEVz5YVBjSz+Js6E=;
-	b=rzHdtX7ofo1clGBeusTFCXJIeaebNs0o6jX5gx7rdhyU2rMaoxrp3uadAZ5qBk9btOuesi
-	j6zjG5V049PYx4dQgvqYy0OkqHkuEbtqIQdTj/4U0vGgEvUo0+s6whfLZ0JJYAVXi+myN4
-	6gh+ATvuWiFBcbZOQMoErMfPbynfIUA=
+	bh=tZhnVjZ97khcZS0Gp/GbjbsEfzokXb/2ZQ2GVaQV1hU=;
+	b=aNq33N4jZxi1V5PnvJDSF6lXGcY7z04rVZZnmytZfxiIj+Fe0Gk9sujkS1wmP0MpuEBoWa
+	QaL2qb693BM3+cAL+MyBltW7onF7rpyAkbg0VRUMsEOg0Bu1TSh7C7Pg5Of/mgxeQuv4A3
+	SXUJ7obECfoyOIOWrNxokhIzS33rfpk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NuPWES+O;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774284835; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o73d2bA0;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774285370; a=rsa-sha256;
 	cv=none;
-	b=hL6vQ19EETECuSQLil9rw4RRGU7Vxv/pEXdlE3vuk5zPnb2OoTvEK7yvbWvPE8KBwNUW0R
-	B3UPwTTragLCyHsKuxcwbNEUXIT9mbhxWA8bDpJ4yaJyT1Ak3n3gNhb54C7CruKDVL0gnH
-	vVcqhQHXVDBxA77tmgpOM611pNqcohc=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-486fb112c09so27546965e9.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:53:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774284833; x=1774889633; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y1YolZNvxEG/QAR3/d/TQV4ZFhFCEVz5YVBjSz+Js6E=;
-        b=NuPWES+OA8ya3p/tn2sJsfZ+dNEG4vYUA+m0C5x0k1P+Ykd3IxBp3hFHZQLf7CH3dd
-         j24W4opr5jTIDN8Q4eK7TBkbl+FVdce/sOzsW5re+thb4JrV1vQI9GWpQJIGfIUJkS6z
-         fkXUl6jz6iwv++KWkXPzeLfuKfDDErYgKK5p8vlJx9G3SCHU2tnJ/amJRcKV/5K3htza
-         cPRNrKAgOGFt/aRAtKh+V2KqHnCrt4Z+Zm5NEY0xdW1qsmKT4cv/EktfxK/NgSzVMzGa
-         1wHj944TXbSHMJyMw1VUDazYrA2bP3ZKEIb8O//Prt2/GjDseaqistZ6FF6k57nAFkBw
-         Bjhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774284833; x=1774889633;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y1YolZNvxEG/QAR3/d/TQV4ZFhFCEVz5YVBjSz+Js6E=;
-        b=XV5dxRFrFp85FCZE4s5elFYwZLtmYGQnYLybz0xkE0u3Xc7q+oqtNKMYT9BbxCRyOs
-         W33K1a1e28ReZ/QG+X7Mv9v5riJ1fg8MfOFjY2t1VQ0DRkTcwfoC0VaVEvOYe/LUy1rF
-         bFFcU5k/gKJKmAwrUd9pH3VivMwjCtwn+Zd0GAJgrhaNa69klhk04p+ZE/H5Dkqoa1p6
-         IOLp7d2BZFFuASFnuBmumZyNkdvCwgoZpZ1g9tzVOJdP9sCEM8j/z3V0WMTgWA+eYgHf
-         oa88k21HX28+HMWDn4ARBe9vnVMQ7TfdTcRo1avobH6az+2dnQiTAN9zGeTeP6oXYBZX
-         950g==
-X-Forwarded-Encrypted: i=1; AJvYcCXoSvNGhKhc4MY37LeAfie51h3SYdqvYKANil+Hnil0dRr6f3PREPRdpZyd6GFskeu6sB+TFVKLmg==@kvack.org
-X-Gm-Message-State: AOJu0YwXv6/OuIFSpvG/KJfnn11uBjEV7L7SvSY9OOHPHUSTreU/gJ2u
-	2zculEK+1/YHBwXS5s//kBdJLz0VHGWba6Od91UGYCbgXh59/LMvxj1FF/M8dl7dxZ4=
-X-Gm-Gg: ATEYQzyPdntrIC6dwWxu7HkII8Z+3lTu6rx7t0aW+bx6+Rf0Keo0COGcBz+QYc7obMh
-	uUejpF+6CclZAgpECto60gCS+2GoBRCm9WTjxN/p33RCSJoPr1aA6YZoZRBkxnPAucmEJUdVzQg
-	AWjvqRBhgsD9jbm0zf3+N54dQDIYnWHrLbluUXEJMY1iXr2BgszSaDJ8FMWQDHP/MxjrS/DAIWX
-	c4PPfnX2V+NRfrv00P81+PQWrcURX3+i8oS9nQJVW9U+/NTFOh0wiOWMRtOD6vKur+03xSv10df
-	TqxtXbcDaxZ0ZMU1Oxms2E3oB2lBzrMDQoS1FkoEQdNG08bmZm2/8Q3bSx6H1mVyjfe54qI4TD3
-	Z+r/3Swzr0hYddXjduz6laqB+ECME51IO5FeKjN08RHv5OqiuwiyZ1WtP99RIC+CJNqOauGI78D
-	hpqnQQwdEGYud9Zyq7oJaB4ZZeRQZs+hW8WhtN
-X-Received: by 2002:a05:600c:524e:b0:485:3ae8:2231 with SMTP id 5b1f17b1804b1-486ff01efd8mr171484705e9.30.1774284833402;
-        Mon, 23 Mar 2026 09:53:53 -0700 (PDT)
-Received: from localhost (109-81-82-100.rct.o2.cz. [109.81.82.100])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8b949e1sm601004325e9.9.2026.03.23.09.53.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 09:53:53 -0700 (PDT)
-Date: Mon, 23 Mar 2026 17:53:52 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: David Rientjes <rientjes@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [RFC] mm, page_alloc: reintroduce page allocation stall warning
-Message-ID: <acFwIJTk0L6CWuW2@tiehlicka>
-References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
+	b=7qHSGeop0P0DSHmFFAFaYXQJZv5nsazE0cFO7SLlPOGVtThwoxKz9kbC/Lj640PPqL6h0v
+	ocWeVLrwU1pKoiQQvD0/lL24a6c7u39fuzjDMf2lEVXpYFkLyMe5Tb8euGWzH/f+5nJdTj
+	SEDYFhAPnJOTYaNcIxdQB4BwdjMRjks=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6BEC043EF4;
+	Mon, 23 Mar 2026 17:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5289C4CEF7;
+	Mon, 23 Mar 2026 17:02:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774285369;
+	bh=tZhnVjZ97khcZS0Gp/GbjbsEfzokXb/2ZQ2GVaQV1hU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o73d2bA0Q1qyv2dHc8YTTVnFiWUKJP6wo3soKs2CMs51g1mw6mT9KWp3CubbmXqKV
+	 7jDJnkWgW2eHCIecUVldJLpSpOitXyyIfVzVLaylvo8gfuhgJQn9mRNig6hNX/QyG+
+	 /QZwbTuYFYIrv7KTbuBzYlYELHqpuq2TL9ggRByBMyd7lUC0hHXCt+hLSitYEO7U+3
+	 t2wQtTbNsYB4HF7njtrzdZ4H7NVR+2ycXxVIhA4lpztLi/09CnEV0JGSQjyEWcnF1r
+	 hbyljf7qNB4lCkSM0Md5qcGm3GA3yI5bNLTjAF8PHDxJeVa+obGmk5Awlekh8lvKTN
+	 iCvk4DfUpQ8Xg==
+Date: Mon, 23 Mar 2026 17:02:44 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
+	mhocko@kernel.org, zhengqi.arch@bytedance.com, yuzhao@google.com, 
+	shakeel.butt@linux.dev, willy@infradead.org, Liam.Howlett@oracle.com, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/vmscan: prevent MGLRU reclaim from pinning
+ address space
+Message-ID: <dd9f09dc-d1c6-4f5d-9e58-d5ca95ff434f@lucifer.local>
+References: <20260322070843.941997-1-surenb@google.com>
+ <65cb38ee-2815-4b11-929d-3fc1528cc620@lucifer.local>
+ <CAJuCfpEm4u3viNt3hG__RbgCJBxFQpFvjx2cAE-fg3DGPfja0g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpEm4u3viNt3hG__RbgCJBxFQpFvjx2cAE-fg3DGPfja0g@mail.gmail.com>
+X-Rspamd-Queue-Id: B2611C000E
+X-Stat-Signature: xn15cdai8awo8hm7ro4mba41ytqohfut
 X-Rspam-User: 
-X-Stat-Signature: nk4qm1byf9mzghyqs3y34b11ibpcxb7p
-X-Rspamd-Queue-Id: 2B57018000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774284834-563895
-X-HE-Meta: U2FsdGVkX1/lvSVMyuvWsqHXqiHOacjugJEKJPEDqXo5atg89KkdEodzpKRgqI2+DuEXBKRVZ9k2/RAW+RkkyFe+xvJc92VRU9kIgQ+0yH5kW9mqLHmr7iO+R8LJuWf7969RwvWVpm1rF3Elm7UqHQsNNIekznbOMSRUJj3m120hYG64IH6UW2H7bL1srSGRQO8x3SfcpabDQ/cdurw+qYFcdIzINYTMQ6KWHhW1LqjI4elD6iARdGPRcQOaJynkJtGlcq/UH2WQ+XXiCxAA6/CVkWJjBMYM853caVCBAG18QXqhhu7Sksbxx6yvVUx0YHHxsxoW6l5kpiNwU1m3scpeUw6lP5pvI3sZ0htkyQeLRQD73ZdDWrga1C48qWBhGt8bOXnRu7vPqD/q/+HA+Ejr0X9zBfl8Fuo9cSfhPYl+nEXhDZoFXWy3Zq83tn18v4WXGwp0giPQD3JDdvkOeBfNa7E+rmbmSrPdbXpKcSKoCS5SH9eM76qMYekodstxcjH76JhKZ7EVTCixD0JMumxE4PAQQPR7a+UZMvubGRKLYuPTX1XdOv4RPqhndte0RuqBgvgVzA3UCXb4hoAcFExlFydjG5kIjDeKNaRWncVkNDO/GL1YIw5o93i8waCxVsovB+dPs6V6zVuC2ZV/gvgkExGJWU+rRRgyQ1fcOExLV1D3l9Hot+bJaNtL+BPb/lAEbSZaFkOYztA5LO6PpoBal1Ig4DAD1PmG1KprQ3BzmiXO4fNoR5RHIMRDV0bFHER9nFsE9zfhAHya7J9ZEg6rxOJ9y6KPR8psYH4Ed41lB8Ao7QjGmvqltR1Xg86rvSA1zhHisfNTXH5tNtXO9+cGKgqfzREoIq8YzzLlI7EWR1VXyGuAjx5uYyDC8o/pWnX15DxKFPluK/nyRhwlQL8hkcC2z1HhrJ8/91s22ASyfcopW/BYlhiwkyMXC9eX5DwD6USJcdEByceAMNz
- Lm1goIcS
- CwPdJeiE1GPW1D9CyjVuBdSpH8uq5efX0chtNigHrf+26wguJ7b4ABol64QKhlPeZ87cBEMxciaMx6Oq+zd+QATi2D3GchYTackchXadPIdplAmIc7fY0KZExeQD5p6yH+9aSEBrzLXsx8CtR6ptW8N9RekH26plGnJgPEDO865FDSSWlVnDuJovgjDOMZq6eRwV/eUcmeToVnkmok+bkLM7aTJGTUT845kqzQ+pbT/2fmwmzW+OirmGTT0mdWY1o/kvYrlp7iE2aklzOo2QOpzggRQgOAw8d0EMWGL31OzwcB3cJz8tsi22ID9BCFEVgMqrhHKtjkxXBeiQ2sFVkyv5i4Yo0MRMqwnyesLb5MxMJ06mBv2Fmo0ucHZLUputiuNch9gmwvQs/qRqgPRXE0j/krQ6vUC/PPHTI0NFlN8YzjIQ=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774285370-746071
+X-HE-Meta: U2FsdGVkX1/1t6hBGbG+jhWFqHdqtrVPULtBoza2d9xyIuiikK+v4AVnhX5gylCWh/Uo3NyP500sVtFhH3rFDRCvJAdukDC0NbYc7VXgZ9zR3zdG9aBC9tonLPYTJr8V1I+fztaSazRbcOJPoE09cMPgMr+Vf8wlhhOlysBEDYWvaSWuWCmwrvnlSDB2P96aFp0ffs2ox6ciAeJuN9NPQdk45asYvQ+eSIajqmwAN7m6qwba+ABdE4UpYMJBw1Mk2/DMLzaoNa/vnHxGYgObmuinKVBbijvP1UymcHV1nw+5meDUmU8wv20EhaOL2ibfZymUNg9UwKacBWx0cgT4dag6pgW2/MBd8nETmwwq3BTi2qdZcK8KtblqpmuFLJwW3vRfNXvWMCD5397Qa20omqAR2Yt6GzWNZ3LjIghE81Ct0IKfD11TYgp/+nUvcIMUqlxulzrfj2fbeFI/MnEtLgclynqym54I1Zvf8kbkXokeV541xvD/+yle/blsBpjFtLqJvhaMb0g3Vh1+mELE50fRP/JrGco3gTZJInKkSOjZcJsbitbVupBdOF/iAolRV7XViIH2xzrp7L7B6rX2HKOOe+RrT8glL2xmX49VYqwGdodLu0ECHVR8BdTThrsDLZtdwgjEWb8vxZLNr1Xwci+/x3QhDI38m7IF6iKoZ9NZPmv86k4sHXPVtwuVFH8cDypHR5stB262tJAaiWBtXEqFr4PoIfZ6H+/x8+8VAL/xegRrJzJgWb1sZlSlWVHYcfbBGLDzencC2TRys7kIhEEdNG5cyCLa+eRf95XFhriUizY+r4znC48yKJTb1iihAeJobhlVZBC0MdJ4MoEtix/x+USd/vlavV+SD56cnWFvBoehN3MXcu8gbmL4nh46mOhjTOJtn9KeHBHwckQu2PM6OSbUhFaZ3ql+qvSUltZNuPEzPxvwL5LcCAgvoo2Bl3w0UZRzJ4S87arg5wz
+ yqkzdzWf
+ QBHYS0mgoe7Gvm2FUCJmdIsOsZwezEWlBfRSfe8nSjRNrheEt4eFB+s5Mk/6whvxcl2vM9PCiAEg3Q6GwULfxdJhzMPpRW1QwgGXj9UiZtvZspY7mosekwrArl3A0TzyJHici/4XT/Vult3E6Q+irQ9KGwohPdrGiumml1LyoROFS5S4nZYd9lZV67XkIYoCDSSzM7STDmTNPxl9+LsMMQxJ4lvkfz7UQya7e/zn09atHNRDEOkuPO6wddnQ3U18brIYlO+M6W4Dqw0pMGJpy1YsVlcoX2TLMdPpb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,103 +98,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 21-03-26 20:03:16, David Rientjes wrote:
-> Previously, we had warnings when a single page allocation took longer
-> than reasonably expected.  This was introduced in commit 63f53dea0c98
-> ("mm: warn about allocations which stall for too long").
-> 
-> The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
-> warn about allocations which stall for too long") but for reasons
-> unrelated to the warning itself.
-> 
-> Page allocation stalls in excess of 10 seconds are always useful to debug
-> because they can result in severe userspace unresponsiveness.  Adding
-> this artifact can be used to correlate with userspace going out to lunch
-> and to understand the state of memory at the time.
-> 
-> There should be a reasonable expectation that this warning will never
-> trigger given it is very passive, it starts with a 10 second floor to
-> begin with.  If it does trigger, this reveals an issue that should be
-> fixed: a single page allocation should never loop for more than 10
-> seconds without oom killing to make memory available.
-> 
-> Unlike the original implementation, this implementation only reports
-> stalls that are at least a second longer than the longest stall reported
-> thus far.
+On Mon, Mar 23, 2026 at 09:26:02AM -0700, Suren Baghdasaryan wrote:
+> On Mon, Mar 23, 2026 at 6:43 AM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
+> >
+> > On Sun, Mar 22, 2026 at 12:08:43AM -0700, Suren Baghdasaryan wrote:
+> > > When shrinking lruvec, MGLRU pins address space before walking it.
+> > > This is excessive since all it needs for walking the page range is
+> > > a stable mm_struct to be able to take and release mmap_read_lock and
+> > > a stable mm->mm_mt tree to walk. This address space pinning results
+> > > in delays when releasing the memory of a dying process. This also
+> > > prevents mm reapers (both in-kernel oom-reaper and userspace
+> > > process_mrelease()) from doing their job during MGLRU scan because
+> > > they check task_will_free_mem() which will yield negative result due
+> > > to the elevated mm->mm_users.
+> > >
+> > > Replace unnecessary address space pinning with mm_struct pinning by
+> > > replacing mmget/mmput with mmgrab/mmdrop calls. mm_mt is contained
+> > > within mm_struct itself, therefore it won't be freed as long as
+> > > mm_struct is stable and it won't change during the walk because
+> > > mmap_read_lock is being held.
+> > >
+> > > Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >
+> > Oh and sorry, missed this - do we need a 'Fixed' for something that's just a
+> > perf improvement?
+> >
+> > This doesn't seem buggy?
+>
+> Well, if we are pinning something we should not is that a bug? I
+> didn't CC stable, so I don't expect it to be backported (though if
+> it's accepted, we will backport it in Android as it causes real
+> problems with reclaim), however if someone is looking for MGLRU fixes
+> I would like this patch to be discoverable. If you feel strongly about
+> it, I'll remove the tag.
 
-Am all for reintroducing the warning in some shape. The biggest problem
-back then was printk being too eager to stomp all the work at a single
-executing context. Not sure this is still the case. Let's add printk
-maintainers.
-Also it makes some sense to differentiate stalled callers and show_mem
-which is more verbose. The former tells us who is affected and the
-second will give us more context and we want to get some information
-about all of them. The latter can be printed much less often as it will
-describe situation for a batch of concurrent ones.
+I don't feel that strongly about it :>)
 
-> Signed-off-by: David Rientjes <rientjes@google.com>
-> ---
->  mm/page_alloc.c | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4706,6 +4706,36 @@ check_retry_cpuset(int cpuset_mems_cookie, struct alloc_context *ac)
->  	return false;
->  }
->  
-> +static unsigned long max_alloc_stall_warn_msecs = 10 * 1000L;
-> +
-> +static void check_alloc_stall_warn(gfp_t gfp_mask, nodemask_t *nodemask,
-> +				   unsigned int order, unsigned long alloc_start_time)
-> +{
-> +	static DEFINE_SPINLOCK(max_alloc_stall_lock);
-> +	unsigned long stall_msecs = jiffies_to_msecs(jiffies - alloc_start_time);
-> +	unsigned long flags;
-> +
-> +	if (likely(stall_msecs <= READ_ONCE(max_alloc_stall_warn_msecs)))
-> +		return;
-> +	if (gfp_mask & __GFP_NOWARN)
-> +		return;
-> +
-> +	spin_lock_irqsave(&max_alloc_stall_lock, flags);
-> +	if (stall_msecs > max_alloc_stall_warn_msecs) {
-> +		pr_warn("%s: page allocation stall for %lu secs: order:%d, mode:%#x(%pGg) nodemask=%*pbl",
-> +			current->comm, stall_msecs / MSEC_PER_SEC, order, gfp_mask, &gfp_mask,
-> +			nodemask_pr_args(nodemask));
-> +		cpuset_print_current_mems_allowed();
-> +		pr_cont("\n");
-> +		dump_stack();
-> +		warn_alloc_show_mem(gfp_mask, nodemask);
-> +
-> +		/* Only print future stalls that are more than a second longer */
-> +		WRITE_ONCE(max_alloc_stall_warn_msecs, stall_msecs + MSEC_PER_SEC);
-> +	}
-> +	spin_unlock_irqrestore(&max_alloc_stall_lock, flags);
-> +}
-> +
->  static inline struct page *
->  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  						struct alloc_context *ac)
-> @@ -4726,6 +4756,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	int reserve_flags;
->  	bool compact_first = false;
->  	bool can_retry_reserves = true;
-> +	unsigned long alloc_start_time = jiffies;
->  
->  	if (unlikely(nofail)) {
->  		/*
-> @@ -4990,6 +5021,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	warn_alloc(gfp_mask, ac->nodemask,
->  			"page allocation failure: order:%u", order);
->  got_pg:
-> +	check_alloc_stall_warn(gfp_mask, ac->nodemask, order, alloc_start_time);
->  	return page;
->  }
->  
+>
+> Thanks for the review!
 
--- 
-Michal Hocko
-SUSE Labs
+No problem! Working through your vma killable series atm also :)
+
+>
+> >
+> > Thanks, Lorenzo
+
+Cheers, Lorenzo
 
