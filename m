@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DFA1EC01A1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:50:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84BDFEC01A0
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91EF26B009D; Mon, 23 Mar 2026 03:50:11 -0400 (EDT)
+	id EC4606B009E; Mon, 23 Mar 2026 03:50:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F6156B009E; Mon, 23 Mar 2026 03:50:11 -0400 (EDT)
+	id E9BC96B00A0; Mon, 23 Mar 2026 03:50:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80BC66B009F; Mon, 23 Mar 2026 03:50:11 -0400 (EDT)
+	id DB20E6B00A1; Mon, 23 Mar 2026 03:50:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F6026B009D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:50:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 341021E33A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:11 +0000 (UTC)
-X-FDA: 84576554622.14.69111F2
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CACFA6B009E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:50:22 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C9B0C325E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:22 +0000 (UTC)
+X-FDA: 84576555084.18.BB86FB4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7942880003
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aWVLvFut;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id AAB0D40007
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qZ1UA+S0;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774252209;
+	s=arc-20220608; t=1774252220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FSrRbHdXi/ESSIllWcfDoe6S0Vd63YGulx1PIV/SCp0=;
-	b=soLhpzjJvPict7ryWPQ7I2S1kyapYhZGoLGFcOfd6HQK7mBFi3z1NA9arvoh55+DdrakdB
-	oWd7NFDracBjqWgnQ14b82OVeWV11f9MQ1QQlhghEfRlSCVEgTWfejWreQy0a/ED4acOpF
-	DtsSksKS32twP4WCiLOI3Ul4On3dYK0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252209; a=rsa-sha256;
-	cv=none;
-	b=W53vt32aJGGlK/np4SGt6C3ql/LFgyfQJ5evWmHBaV10FOQUJkY1Ee1IzhwhSX2o+t7jPS
-	pijtlLD9chuGm+KaeHcj4776P28yGGqFKsVO8u80kj+3Huv3aR5moWrsGNpZrCXsvKwU2F
-	C/1/unoM8n+Kuh5qcVYo2ockMMRQFFw=
+	bh=hp2SHzlMg9ZKrrLoSZx9rF14yrd9oG4HA8B/gpsDvBE=;
+	b=EWbDYZlPYlhnWZkGX3QtHgXViHbrSwZ2WFLYmQZADldNziFob/GVQwjEERo1BDrGsdlFh3
+	onvp20hIOyowKZyXKcvbTzTI642wBVheXS+q3UDqV4DBgKAYeGxpvjH8ivK2IXLGNqJrDs
+	Ma107xiS1qOSLvnTKimTQ14O/yY6PbI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aWVLvFut;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qZ1UA+S0;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252220; a=rsa-sha256;
+	cv=none;
+	b=KDgfxTvceBl+MO8b3kk124vmtco1rbm6Ttm4jdy+NGeMRz+u/XVVY/JdA2xPvHzFgM3p/c
+	sZv2Cmexkqp5QqJFqMauyfd/BSX/nv2WGDcMw9gVjYgRO/6ieshJ1ipDe+zHx3iurR0dtu
+	cYrlqlTuq7rc2doR6aOpmA2EGmgNN2o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 857DB4061E;
+	by sea.source.kernel.org (Postfix) with ESMTP id A148D43704;
+	Mon, 23 Mar 2026 07:50:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE36EC2BC9E;
 	Mon, 23 Mar 2026 07:50:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBAEC4CEF7;
-	Mon, 23 Mar 2026 07:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774252208;
-	bh=JX9RHWZi5vuFIJLodu0lHA5nrZZIkASHjFmUizN2RBs=;
+	s=k20201202; t=1774252219;
+	bh=+ig/11q3VRUjF4ArUTH3xGDXOKNW07DxpNhjoaJhyZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWVLvFut4f6MYN3wwvVgBsvFdFfwPxFVLIxEnZF2GAp0JQd7HON8/QxygCU2ypG3q
-	 85RF6aLIrLIQls+Z9PC1N5+z9V63pBv8iSd7N325b75nqcJrfzheijh13oNYSPPUHF
-	 7H4UTJH2FCWdxQJdQJ0moQ/robJ3B0VZTNpPoyjWFkZEoeQUN2laq6KQhmOmXfYL+r
-	 ATjY+R2jtWYZYg2H6wmqiRgYcaDRVxYkBHUXg6eZ2dnlzyU+afaaq90pMJbntP0NXj
-	 8kFILSXJOVGHQNzneF/T6HYv7O2tYy9lrUVFuGHfpzFLaD+zWwYbsaZr6rNdr5t1Nb
-	 oKdXVBglapLiQ==
+	b=qZ1UA+S0+bqroRdQ7z9eWrVqAwO2iw+4ovgINTlm3abR6YK36AftCJVaJb1iJfkoo
+	 uhqVGJrE9Yb4VkqFX/pnhX1e0V/d6p6AshGhQpkA+JQLZL9YUwzBPJsiWyOz+7akJ8
+	 Ciw7bBi65L+YU8wl1or8U8ac4EODsE3Zz4y1GXaEMLmUCFrrK0UqcauK7WvYYOtpaU
+	 o2+46DVcuJEsMjFu3pRR4gqkDbBoEVV8rZu4ZWhsLpDVfC6wJmpfrR5WYbGvZfzlnz
+	 Vsy42hU8lzIDX/ALRMvYcuUgo/O5Xw9CUlMr0PXgjWQGA9aRWYD5PrDj5dKZthfLfr
+	 ARLZ9RxDe9cag==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Potapenko <glider@google.com>,
@@ -113,22 +113,22 @@ Cc: Alexander Potapenko <glider@google.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v2 7/9] memblock: make free_reserved_area() update memblock if ARCH_KEEP_MEMBLOCK=y
-Date: Mon, 23 Mar 2026 09:48:34 +0200
-Message-ID: <20260323074836.3653702-8-rppt@kernel.org>
+Subject: [PATCH v2 8/9] memblock, treewide: make memblock_free() handle late freeing
+Date: Mon, 23 Mar 2026 09:48:35 +0200
+Message-ID: <20260323074836.3653702-9-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323074836.3653702-1-rppt@kernel.org>
 References: <20260323074836.3653702-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7942880003
-X-Stat-Signature: ytbkgxg9hzpj4d3jn5b4hyir75t1pn7e
-X-HE-Tag: 1774252209-105160
-X-HE-Meta: U2FsdGVkX19HUhjT2xhfiSnDn0oixgokYUzHsPor5hHl28LBxKY/pWK47nxMwEUMbp60YGZWDa1QWT6jD6fz1goHqXN5MArWPWRT8fKhjjQH2Haew/AP/0uTdtqR0WjDA9pWXjKP/VsTegC3OVPxONWhO0/ewQthtDMFQJO7ECu2OGaM6ZIwrsc2O1/XRyB6Qi0Cm+XJl70bZzyOBbXKz58WsIqhMad8ku4UqUKHFwkcreyckM5I6x0scDcQtDAEiQrZZQ8c9fMZycZJClXKivZSspdqngJgQ3yqh6aC+ucmwqtm7LCV6BAXBrrGqAGSn1XwrvG3gxwDC48DftLXy3YxyOtKAby4LikVbMIgSVZ8xX4Q5u3K2RU+05/iHVMX4MgGri6SyNVDLXO+JhHWI2Dowg/bPja8Wp5EZJew7RcYGeYM173q51c9owEjoajjyvp66FlZ7MrYTJj7mYq7jLEYtvCdn8FiK+KClEVDLQRQoeA4T9BzXjugn0XUMnrcwr9zJiJ36Jt2V3N2ReJ7sqYoOVEA0wdIhHwx2cyFT6a0wJVrShBsgqmZ13IvYOtfWlx/vVCZk05N0o9q5FYb7nKS7hfZdp5v/DMXA5jx8LCF2UtTUPvk0WhRZRx/LKRp4/BHo80erqamGMzk5b38uasKcg7eQq8SIz7jyA7A1el/Vrczm0aFDuXmcQiYrYAyx87dsetYwiGtBZC+soaOa/lAaZnmlXdQBCTEsu+HFXW3GYYxoIUnUpjJDAESFJS325EL+2cyPz8URDKCg2aSpaTbs0gEEgM3dipuk2WoBOQJGh+v1TI2oftpPptvhhoar550izZr6vXzwwc+afagmdQ4soRXpRTRRzdEHKnJXYi/X0xob5X4wKc4q1+xAtlAbalXCV10f+5rUoS065D6twywmaeu/iuShRUrXIUQSfhRNqhlEA77nYLxKe8udRUQyrAAk6eEKKkMTPU8Id2
- ASJA8SYg
- VdYh8+atpnunlDxjcEORnl6vK2aOy0ituEcOwVD9DtL/zaJy9wXxd0V3lWfiZZFwMGIwIhQrzBaiS/kO19EnRn1DXEOSL8Az19/QXZ8CsTh338gW3axYNeX9Ymx1eyJHyvosrzYFE4UYIyUjPQ0bLNT04WzRssSMo1WHvJnPP6xv+3eW+fA/WMf9AyNR3mruRwL5qD/9HcSDrHKWque5fpirlVpEgoHhnrOYNuED24kYNW65VMDtevtoW1Fet+7hWiOKUnkDpZM+eQyPbDW9hPqrVyEW8nH+yL9UZI3DhPZQp2XULqd93C3JRIFdjkD2bszfjBsWMmWBYxPVyFhhiIBWwP4YA0AWNUjt210xg8HRbjwF0qFEOEaX3WUJ66a/XRfGXG/ARsm2tcp06vR5CvoH4IA==
+X-Rspamd-Queue-Id: AAB0D40007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: bze5fidoc7rpfg1n58eobd4rud3yyaek
+X-HE-Tag: 1774252220-216876
+X-HE-Meta: U2FsdGVkX19RIQoSf99rLwd5OzR/aLqkkgzEtcIjToT0dlTN9HyYzIagL+lytI5OhQyW/TsoOQj+lUJg9GB8zcwX37tSvK13bG4B5BVNh3bJI+KfTnX/0oFmeKuPrENE/V+QKD/w0dNLYz+ofGMhur45Tn1vU2y22TlYg1oVvg1knKCxt73+R4jD6Fc0icKODog3NWTW1JKBPqHeYUO8yqEH1RLrHzYuXNrdzVXOmAwTFfKXxfHaRQutTAm5vDmlVnDnzPbNRmDLNIWnhA5EXUbWWz557ITHTnEID3h9+KXj+VmOt9eIUzVhiTorjTeFx/F949CS18VIN39EAiR2cDkhzhJrJLVHBBzJDjrHk6akNHaVugLLCt9ivCn9XnRTjHofzxx2/sSiDjQT6kdwbCJRQ9+or65rvAd2ijWm25h0v4ztyIoh3p8IBiHI0TE78fnb7dEAvViNQHm5v4WfXqCfKOhZ2T4M2BF03WBLSnH4BAJ9Due28rVxvL8F8X8dbzvetuTNEJ3/ZOgfqkLq53Gi+uvaan40Jx4dZyLUGI4DvNS1AcJd1VvWXDRwWgZPr3UaUENV9qNwlgYwyCoyhyLwy6sKhSeExgqKRK9lj4xxDE/8ogzLmJOhq9z01CDAPPcePr8P4EzIDeIDp6UXdT+HLLut2Fx79lg5cpJp8n+4K+k8W1FUzg/pTu1rRsfkgvHNV8sOnChnXtHyyRISuQbXrc8Wmamtz/zGOMHyXoQQNBv3Qisri21v/kTYK0oWyM4CKKuZKU4VUTIYlSlZg8Mh9u5AoTH64boYnkk0huQavGkgQzTMjTZYzpMB16E47sj8DntJAOD0S42fImjxrTZVPOJ7jMOzAbJf2e3gpRrWwdiBbxfAklrixbh+Xr8B0+F1hARYIi66ee4khMnnQUI8SCBajcoHX5u18VXjf7tHHKCdCwjXWFd1jT1EU5iYE7P/k57noTtb3RTS+My
+ O/at/grI
+ ZzhoD4q4/aSNeVmgYxpgc0TgTk3HT22HRV2RDB+Z5JJ2EEfxbtsNFbRu1PIznHY7pN9arK1hRlSDI3as1ukPN1qKo7UzJBywJxVAuMgRATRb7zenID8pKJ4YUeBkqyOlVxOHB6tMPRCD3epLC9jGjGlgQwRUrhBX2T1iu2CKegfpZvdc7tZTkkN9mucTyvqSuK3F0YFmqMw72YgIKtL/mG3si938sN5mDIaEEb4k3G1We4Iml1E7Ub2Dswd9xRFz9N75AdVqynAvTeGCDe42tkjLfMmQD9CMOt3Lx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,73 +138,279 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-On architectures that keep memblock after boot, freeing of reserved memory
-with free_reserved_area() is paired with an update of memblock arrays,
-usually by a call to memblock_free().
+It shouldn't be responsibility of memblock users to detect if they free
+memory allocated from memblock late and should use memblock_free_late().
 
-Make free_reserved_area() directly update memblock.reserved when
-ARCH_KEEP_MEMBLOCK is enabled.
-
-Remove the now-redundant explicit memblock_free() call from
-arm64::free_initmem() and the #ifdef CONFIG_ARCH_KEEP_MEMBLOCK block
-from the generic free_initrd_mem().
+Make memblock_free() and memblock_phys_free() take care of late memory
+freeing and drop memblock_free_late().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/arm64/mm/init.c | 3 ---
- init/initramfs.c     | 7 -------
- mm/memblock.c        | 6 ++++++
- 3 files changed, 6 insertions(+), 10 deletions(-)
+ arch/sparc/kernel/mdesc.c               |  4 +-
+ arch/x86/kernel/setup.c                 |  2 +-
+ arch/x86/platform/efi/memmap.c          |  5 +--
+ arch/x86/platform/efi/quirks.c          |  2 +-
+ drivers/firmware/efi/apple-properties.c |  2 +-
+ drivers/of/kexec.c                      |  2 +-
+ include/linux/memblock.h                |  2 -
+ kernel/dma/swiotlb.c                    |  6 +--
+ lib/bootconfig.c                        |  2 +-
+ mm/kfence/core.c                        |  4 +-
+ mm/memblock.c                           | 49 ++++++++++---------------
+ 11 files changed, 31 insertions(+), 49 deletions(-)
 
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 96711b8578fd..07b17c708702 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -385,9 +385,6 @@ void free_initmem(void)
- 	WARN_ON(!IS_ALIGNED((unsigned long)lm_init_begin, PAGE_SIZE));
- 	WARN_ON(!IS_ALIGNED((unsigned long)lm_init_end, PAGE_SIZE));
- 
--	/* Delete __init region from memblock.reserved. */
--	memblock_free(lm_init_begin, lm_init_end - lm_init_begin);
--
- 	free_reserved_area(lm_init_begin, lm_init_end,
- 			   POISON_FREE_INITMEM, "unused kernel");
- 	/*
-diff --git a/init/initramfs.c b/init/initramfs.c
-index 139baed06589..bca0922b2850 100644
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -652,13 +652,6 @@ void __init reserve_initrd_mem(void)
- 
- void __weak __init free_initrd_mem(unsigned long start, unsigned long end)
+diff --git a/arch/sparc/kernel/mdesc.c b/arch/sparc/kernel/mdesc.c
+index 30f171b7b00c..ecd6c8ae49c7 100644
+--- a/arch/sparc/kernel/mdesc.c
++++ b/arch/sparc/kernel/mdesc.c
+@@ -183,14 +183,12 @@ static struct mdesc_handle * __init mdesc_memblock_alloc(unsigned int mdesc_size
+ static void __init mdesc_memblock_free(struct mdesc_handle *hp)
  {
--#ifdef CONFIG_ARCH_KEEP_MEMBLOCK
--	unsigned long aligned_start = ALIGN_DOWN(start, PAGE_SIZE);
--	unsigned long aligned_end = ALIGN(end, PAGE_SIZE);
--
--	memblock_free((void *)aligned_start, aligned_end - aligned_start);
--#endif
--
- 	free_reserved_area((void *)start, (void *)end, POISON_FREE_INITMEM,
- 			"initrd");
+ 	unsigned int alloc_size;
+-	unsigned long start;
+ 
+ 	BUG_ON(refcount_read(&hp->refcnt) != 0);
+ 	BUG_ON(!list_empty(&hp->list));
+ 
+ 	alloc_size = PAGE_ALIGN(hp->handle_size);
+-	start = __pa(hp);
+-	memblock_free_late(start, alloc_size);
++	memblock_free(hp, alloc_size);
  }
-diff --git a/mm/memblock.c b/mm/memblock.c
-index ccdf3d225626..0ad968c2f2e8 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -942,6 +942,12 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char
- 		end_pa = __pa(end - 1) + 1;
+ 
+ static struct mdesc_mem_ops memblock_mdesc_ops = {
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index eebcc9db1a1b..46882ce79c3a 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -426,7 +426,7 @@ int __init ima_free_kexec_buffer(void)
+ 	if (!ima_kexec_buffer_size)
+ 		return -ENOENT;
+ 
+-	memblock_free_late(ima_kexec_buffer_phys,
++	memblock_phys_free(ima_kexec_buffer_phys,
+ 			   ima_kexec_buffer_size);
+ 
+ 	ima_kexec_buffer_phys = 0;
+diff --git a/arch/x86/platform/efi/memmap.c b/arch/x86/platform/efi/memmap.c
+index 023697c88910..697a9a26a005 100644
+--- a/arch/x86/platform/efi/memmap.c
++++ b/arch/x86/platform/efi/memmap.c
+@@ -34,10 +34,7 @@ static
+ void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
+ {
+ 	if (flags & EFI_MEMMAP_MEMBLOCK) {
+-		if (slab_is_available())
+-			memblock_free_late(phys, size);
+-		else
+-			memblock_phys_free(phys, size);
++		memblock_phys_free(phys, size);
+ 	} else if (flags & EFI_MEMMAP_SLAB) {
+ 		struct page *p = pfn_to_page(PHYS_PFN(phys));
+ 		unsigned int order = get_order(size);
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index 35caa5746115..a560bbcaa006 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -372,7 +372,7 @@ void __init efi_reserve_boot_services(void)
+ 		 * doesn't make sense as far as the firmware is
+ 		 * concerned, but it does provide us with a way to tag
+ 		 * those regions that must not be paired with
+-		 * memblock_free_late().
++		 * memblock_phys_free().
+ 		 */
+ 		md->attribute |= EFI_MEMORY_RUNTIME;
+ 	}
+diff --git a/drivers/firmware/efi/apple-properties.c b/drivers/firmware/efi/apple-properties.c
+index 13ac28754c03..2e525e17fba7 100644
+--- a/drivers/firmware/efi/apple-properties.c
++++ b/drivers/firmware/efi/apple-properties.c
+@@ -226,7 +226,7 @@ static int __init map_properties(void)
+ 		 */
+ 		data->len = 0;
+ 		memunmap(data);
+-		memblock_free_late(pa_data + sizeof(*data), data_len);
++		memblock_phys_free(pa_data + sizeof(*data), data_len);
+ 
+ 		return ret;
+ 	}
+diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
+index c4cf3552c018..512d9be9d513 100644
+--- a/drivers/of/kexec.c
++++ b/drivers/of/kexec.c
+@@ -175,7 +175,7 @@ int __init ima_free_kexec_buffer(void)
+ 	if (ret)
+ 		return ret;
+ 
+-	memblock_free_late(addr, size);
++	memblock_phys_free(addr, size);
+ 	return 0;
+ }
+ #endif
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 6ec5e9ac0699..6f6c5b5c4a4b 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -172,8 +172,6 @@ void __next_mem_range_rev(u64 *idx, int nid, enum memblock_flags flags,
+ 			  struct memblock_type *type_b, phys_addr_t *out_start,
+ 			  phys_addr_t *out_end, int *out_nid);
+ 
+-void memblock_free_late(phys_addr_t base, phys_addr_t size);
+-
+ #ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP
+ static inline void __next_physmem_range(u64 *idx, struct memblock_type *type,
+ 					phys_addr_t *out_start,
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index d8e6f1d889d5..e44e039e00d3 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -546,10 +546,10 @@ void __init swiotlb_exit(void)
+ 		free_pages(tbl_vaddr, get_order(tbl_size));
+ 		free_pages((unsigned long)mem->slots, get_order(slots_size));
+ 	} else {
+-		memblock_free_late(__pa(mem->areas),
++		memblock_free(mem->areas,
+ 			array_size(sizeof(*mem->areas), mem->nareas));
+-		memblock_free_late(mem->start, tbl_size);
+-		memblock_free_late(__pa(mem->slots), slots_size);
++		memblock_phys_free(mem->start, tbl_size);
++		memblock_free(mem->slots, slots_size);
  	}
  
-+	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK)) {
-+		if (start_pa < end_pa)
-+			memblock_remove_range(&memblock.reserved,
-+					      start_pa, end_pa - start_pa);
-+	}
+ 	memset(mem, 0, sizeof(*mem));
+diff --git a/lib/bootconfig.c b/lib/bootconfig.c
+index 449369a60846..86a75bf636bc 100644
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -64,7 +64,7 @@ static inline void __init xbc_free_mem(void *addr, size_t size, bool early)
+ 	if (early)
+ 		memblock_free(addr, size);
+ 	else if (addr)
+-		memblock_free_late(__pa(addr), size);
++		memblock_free(addr, size);
+ }
+ 
+ #else /* !__KERNEL__ */
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 7393957f9a20..5c8268af533e 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -731,10 +731,10 @@ static bool __init kfence_init_pool_early(void)
+ 	 * fails for the first page, and therefore expect addr==__kfence_pool in
+ 	 * most failure cases.
+ 	 */
+-	memblock_free_late(__pa(addr), KFENCE_POOL_SIZE - (addr - (unsigned long)__kfence_pool));
++	memblock_free((void *)addr, KFENCE_POOL_SIZE - (addr - (unsigned long)__kfence_pool));
+ 	__kfence_pool = NULL;
+ 
+-	memblock_free_late(__pa(kfence_metadata_init), KFENCE_METADATA_SIZE);
++	memblock_free(kfence_metadata_init, KFENCE_METADATA_SIZE);
+ 	kfence_metadata_init = NULL;
+ 
+ 	return false;
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 0ad968c2f2e8..dc8811861c11 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -384,26 +384,27 @@ static void __init_memblock memblock_remove_region(struct memblock_type *type, u
+  */
+ void __init memblock_discard(void)
+ {
+-	phys_addr_t addr, size;
++	phys_addr_t size;
++	void *addr;
+ 
+ 	if (memblock.reserved.regions != memblock_reserved_init_regions) {
+-		addr = __pa(memblock.reserved.regions);
++		addr = memblock.reserved.regions;
+ 		size = PAGE_ALIGN(sizeof(struct memblock_region) *
+ 				  memblock.reserved.max);
+ 		if (memblock_reserved_in_slab)
+-			kfree(memblock.reserved.regions);
++			kfree(addr);
+ 		else
+-			memblock_free_late(addr, size);
++			memblock_free(addr, size);
+ 	}
+ 
+ 	if (memblock.memory.regions != memblock_memory_init_regions) {
+-		addr = __pa(memblock.memory.regions);
++		addr = memblock.memory.regions;
+ 		size = PAGE_ALIGN(sizeof(struct memblock_region) *
+ 				  memblock.memory.max);
+ 		if (memblock_memory_in_slab)
+-			kfree(memblock.memory.regions);
++			kfree(addr);
+ 		else
+-			memblock_free_late(addr, size);
++			memblock_free(addr, size);
+ 	}
+ 
+ 	memblock_memory = NULL;
+@@ -961,7 +962,8 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char
+  * @size: size of the boot memory block in bytes
+  *
+  * Free boot memory block previously allocated by memblock_alloc_xx() API.
+- * The freeing memory will not be released to the buddy allocator.
++ * If called after the buddy allocator is available, the memory is released to
++ * the buddy allocator.
+  */
+ void __init_memblock memblock_free(void *ptr, size_t size)
+ {
+@@ -975,17 +977,24 @@ void __init_memblock memblock_free(void *ptr, size_t size)
+  * @size: size of the boot memory block in bytes
+  *
+  * Free boot memory block previously allocated by memblock_phys_alloc_xx() API.
+- * The freeing memory will not be released to the buddy allocator.
++ * If called after the buddy allocator is available, the memory is released to
++ * the buddy allocator.
+  */
+ int __init_memblock memblock_phys_free(phys_addr_t base, phys_addr_t size)
+ {
+ 	phys_addr_t end = base + size - 1;
++	int ret;
+ 
+ 	memblock_dbg("%s: [%pa-%pa] %pS\n", __func__,
+ 		     &base, &end, (void *)_RET_IP_);
+ 
+ 	kmemleak_free_part_phys(base, size);
+-	return memblock_remove_range(&memblock.reserved, base, size);
++	ret = memblock_remove_range(&memblock.reserved, base, size);
 +
- 	pages = __free_reserved_area(start_pa, end_pa, poison);
- 	if (pages && s)
- 		pr_info("Freeing %s memory: %ldK\n", s, K(pages));
++	if (slab_is_available())
++		__free_reserved_area(base, base + size, -1);
++
++	return ret;
+ }
+ 
+ int __init_memblock __memblock_reserve(phys_addr_t base, phys_addr_t size,
+@@ -1813,26 +1822,6 @@ void *__init __memblock_alloc_or_panic(phys_addr_t size, phys_addr_t align,
+ 	return addr;
+ }
+ 
+-/**
+- * memblock_free_late - free pages directly to buddy allocator
+- * @base: phys starting address of the  boot memory block
+- * @size: size of the boot memory block in bytes
+- *
+- * This is only useful when the memblock allocator has already been torn
+- * down, but we are still initializing the system.  Pages are released directly
+- * to the buddy allocator.
+- */
+-void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
+-{
+-	phys_addr_t end = base + size - 1;
+-
+-	memblock_dbg("%s: [%pa-%pa] %pS\n",
+-		     __func__, &base, &end, (void *)_RET_IP_);
+-
+-	kmemleak_free_part_phys(base, size);
+-	__free_reserved_area(base, base + size, -1);
+-}
+-
+ /*
+  * Remaining API functions
+  */
 -- 
 2.53.0
 
