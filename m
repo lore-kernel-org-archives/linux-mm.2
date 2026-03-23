@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 798A3F4613C
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 543F6F4613C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E53106B0093; Mon, 23 Mar 2026 11:18:43 -0400 (EDT)
+	id BBAF06B0095; Mon, 23 Mar 2026 11:18:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2A456B0095; Mon, 23 Mar 2026 11:18:43 -0400 (EDT)
+	id B92836B0096; Mon, 23 Mar 2026 11:18:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D67B76B0096; Mon, 23 Mar 2026 11:18:43 -0400 (EDT)
+	id A818D6B0098; Mon, 23 Mar 2026 11:18:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C74F06B0093
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:18:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C739140949
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:43 +0000 (UTC)
-X-FDA: 84577684926.06.96A8A4A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9A452140002
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YOTuWdey;
-	spf=pass (imf09.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9529D6B0095
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:18:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44A1DC3828
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:53 +0000 (UTC)
+X-FDA: 84577685346.30.33A33F9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6C12D140016
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A2FZW3FR;
+	spf=pass (imf23.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YOTuWdey;
-	spf=pass (imf09.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774279121; a=rsa-sha256;
-	cv=none;
-	b=KTZ7K81962/YMi1chXu7X639s+jUETimX5gtqTVBeYHkMDx6wtzR6crQhV8tuEBspbjK0b
-	eZDtozIOtdqWzUSPGdILgJwg/8WQQb+/HZSopRXM2mhBzU2W80qlaeOrjMV1Sot6+Q9sKt
-	ShUdG8e0xavwuT34KDu2kisuu5CZwik=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774279121;
+	s=arc-20220608; t=1774279131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9yceaFKZVBDF6JEZ2vLeDlRB6dW1GshHGmSjH6pnVzE=;
-	b=sw49J2gtlL8MOP3x1rsLeyjufNM+fCfzUJStARO4kCZQKzNiWl1n8lAQGfhfcPwLNDNTvE
-	ovP0sZydi5nVKQiwZNUVf215QLFru+fTsq31Yet71QngFxrwgiu+uzjwGLF2H8V0e3au18
-	0YBU8jijZWhYymb7bUojwb3sezC1vlQ=
+	bh=K89HWSWpfVYqvEFD4x4gGS5mGEm/+AIxXEbbLx4GIvo=;
+	b=TYPBuPM8CViYAtKUMYVe0wN+OqQxm5R7k+epma2l2UIXBbF2lc2YpD253VgdXGAgNvIbaE
+	d/0Hu+CC2DCB5KhT3r+vzUD2XEpiSk77pXUTj+Xp6okQjYzohWSOJIhfstKuy67FmmC1MG
+	X7ri3a5+6h3Hua4n46LGVSeazmkwqmU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774279131; a=rsa-sha256;
+	cv=none;
+	b=c5D3OPYByb0FV2xH6iY4XHTMnoPyZnQTvBDTUy1jzPnnNQHm/lz0gkMCuOiMqhPWChORhT
+	r4JVpo7gLtw1dO4w23OXJLK1sBEl2IDFADg3c39L8V+mekz53gFEUHpgy3jPCVe9bsBQve
+	+z7WRb4FeSekVEFzbH3fL5eI8Tvpt+M=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A2FZW3FR;
+	spf=pass (imf23.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774279120;
+	s=mimecast20190719; t=1774279130;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9yceaFKZVBDF6JEZ2vLeDlRB6dW1GshHGmSjH6pnVzE=;
-	b=YOTuWdeyMZ8avnDvAWzpJLwIvQs4JuE8AciwRJohTZuK0F+P0t0kg7DlY22Eln7lh41WCw
-	t5ChKFpoaSVVd9EZ+4AnVulkuQUxOC6b9xXX9E9a24YgzKxhfS+z74ZH6umk+YfyKvAuHV
-	T54Vk3Emi+CNSuZmrjhLfUqCRXrpMqw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=K89HWSWpfVYqvEFD4x4gGS5mGEm/+AIxXEbbLx4GIvo=;
+	b=A2FZW3FRZxyE5JACP397M7cHTCe0+mu/JC6uAWvqkwV1EJ7iVmPIi2L7oIdposg5B4YisE
+	V0tj4wdo5jFm7xc5fYqoq7gh2ETsZe3x9z+pN5frye7hjMKo01lGAMG1bK1/1hnjsq9BPr
+	OtkWy0Cnc5WZMgrGYkj9p1kjdSciT8Y=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-466-xBrg_OwWNa2nq4sZM98mmw-1; Mon,
- 23 Mar 2026 11:18:36 -0400
-X-MC-Unique: xBrg_OwWNa2nq4sZM98mmw-1
-X-Mimecast-MFC-AGG-ID: xBrg_OwWNa2nq4sZM98mmw_1774279114
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-6G7Fq-g4MEyxsY17lVplLg-1; Mon,
+ 23 Mar 2026 11:18:46 -0400
+X-MC-Unique: 6G7Fq-g4MEyxsY17lVplLg-1
+X-Mimecast-MFC-AGG-ID: 6G7Fq-g4MEyxsY17lVplLg_1774279122
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E084919560A1;
-	Mon, 23 Mar 2026 15:18:33 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 749F518002D1;
+	Mon, 23 Mar 2026 15:18:42 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 13DD71955D71;
-	Mon, 23 Mar 2026 15:18:25 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 885031955D71;
+	Mon, 23 Mar 2026 15:18:34 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -97,25 +97,25 @@ Cc: linux-kselftest@vger.kernel.org,
 	baohua@kernel.org,
 	lance.yang@linux.dev,
 	chuhu@redhat.com
-Subject: [PATCH v5 3/6] selftests/mm: move write_file helper to vm_util
-Date: Mon, 23 Mar 2026 23:17:50 +0800
-Message-ID: <20260323151753.2576137-4-chuhu@redhat.com>
+Subject: [PATCH v5 4/6] selftests/mm/vm_util: robust write_file()
+Date: Mon, 23 Mar 2026 23:17:51 +0800
+Message-ID: <20260323151753.2576137-5-chuhu@redhat.com>
 In-Reply-To: <20260323151753.2576137-1-chuhu@redhat.com>
 References: <20260323151753.2576137-1-chuhu@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: S6EBVTgxFoqLZ6wfITblh5RpOCacBcmjgn-GcC_Fnco_1774279114
+X-Mimecast-MFC-PROC-ID: lgSApnc8sRaWouDDkDypyCuoEFG-sCVE9cu9XNzgbhg_1774279122
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9A452140002
-X-Stat-Signature: hgmdd9ing734eikgrrrugnmhngzumy4x
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ykdkgm6e49r9rqf51njbwtcs7i4ghg84
+X-Rspamd-Queue-Id: 6C12D140016
 X-Rspam-User: 
-X-HE-Tag: 1774279121-517171
-X-HE-Meta: U2FsdGVkX18PzW82RsYd9O8ceeLKT9c2TtndGbJmNi3rNE2gDSoLHm01DcFdw22sAFIprurLQjQzwqePHS2Utc3w2Xrz8v58RsUbbjwiB42R6cMFfBzGgmhMR8LuCdnmzAC4j+81XpnKsbMQtiOrynnwDVo9Bf4z0EuWveVUopYmHP5Hkrqzt46im8QFX4v9dC7XEGMkr5ptVbONFGrIYP5uz2sAH/KuIw1wvEVUGZU3Z9j0OdOw/nUw2b7N6jucMReR/3LW599tSS5sFPJnYCxJCLqnwj+IEP3wQLtn2w2B0x3cPwhMPTOu5Yqqt21kFjjlwHDJhgabmzL25FDm4kkArFe3ynJa1NX6KFUpsAWvui7vpvea3D+EauZnQi4/V/qeqNGSIoNOyDLN+AMvsgu5B2riyHqHfQ4/3vTu+IU7055iIQlr5nG5/SpBaOEsJUsPCo/XIjAFyi2hBKfMYXu/24M0nMUXqmy0aP9/RZDVHpY51rAzG0evF7aal0luyh0oobownoP9z2VI4EXu6OCHefNLrftSA94g6XhQH9iW+OZl5zcqx0SWIf5A2sE0KWPBar7Y3ywbe6GQWwtKkQS/9qgy9ZQAI+yKqresjVBGGSf7TUXhtIKOr7SUCxBlxTZpU8j5NqquiX/ZGlqRa9X1vtlHKJytbvMVAYeYGRsCmae8b29Eai+GMMAT1RYsFfywIqdK9Gyh2voAsZyghVNpEQnEVzHXpQSswsltPgbt+HdSzIRNja/V/+1P51dfIHh6oWRbeL0YTMvAWUB23yhSAnKWgm3Nm+AcC6AT6LzF6RRKPNtw5FVp//lGkkMONmVfsxXqXOS8BrGo3HYeMzhB+Qu7CieLnF3olqf5SLti588iHW4mTgUWp8TQgY2U9tAoGvCEZic5QhomZ9C9Xsiib/DpkqkNL5k/87oHBw6R/Jj4wmT41LOU0AjDZlqjYKLVweBUytN/kjgMQ7i
- Z1nLSNqw
- f8ItEHbfTHzak8N3+gltbbbMl2OBcocc9gJp4NgX9hI6trZ7fwRUvciZclyx1WHce2NkqRn369/sgUixxUXgECDh8jc0X0rL98L/rAXgmfSd8YxNXdCOOqYH57j22edSk9j5usDG2MaUVDvwHGouGhmFt5FJfrpmO3hslIJ4EtLUviaVlp+IWCGPZ+7Uqe+9cQo8OrU+9rKwRUDPfCHKbuPaiN2hLO2jqULfKaNVv7wy3bBP66NF6iQjUxBnX5almCdFbnbk8y8Fuh4RpmRLqzlRGAYucNAs6QfY1OVwP/c3gr5mcmUPY6r0/yhf1m7CXnATr778duf08FZrBNOOh0fiWXD+QGV5bK07NpZxXa9biRI2DvoQoszbfwwR2a9+rDW8bmDqd+m2aurvRqmRaVkcZunXxM5jkzqz8jqkdrA3q7VYWBTYloECrww==
+X-HE-Tag: 1774279131-851561
+X-HE-Meta: U2FsdGVkX188TdhMYwZafEz7mBheB/DRkjoXo9xsYaxrovuJ45h3QGlDZl8QnHUwyTk6aLpc7jY0wFls5DN9HmA6x04TNxOjlhuNE5FZkCHcBAw7ACJpEqFx1h06rC7+3ghnpFrMPyqPgdIA3ttg0MW8IAb43cTsdjblQeUtwuTCUiG+VA88Zorxj2eisiespqzzrwcZN+wjZ08F3xWyDHMZakldBejhJ3zWGcOp5s0QZbsH184iHZPXoXgYQ6CuEmVAW94ZOV+2yrxVb8muVwlmmG+R+m8h4Aon952ntciySfhLUdWVuLOOhXKXbA4i+WUspc86NshFQKJj52xsfhu+yVrGXYac1A+rCBntXQmhQiLWzv0LFVdXSuB9VnXzRbGvLMC82yMl3uZiTpSijz9No1+9lVnDQKB+4YFQp1UhKlqJeUHoBvQBRH6JzCkWDw/TyRFuFG2olsoQmXep4VkxznlPGpGTP6q5bhp0/WW1NFxosbaKgHUzq9jmRmLkClIjbFNv0jSC7hW4Ov9hmAIEK7DTSdiOCEaH0mQ5/EAiK+gL60u44USLbZ5PvmhJg3U/yHbc0rq4no0bnoGqjHRh97pppS7GBJB1Q57oX93Nf8FEcRRgkwMoBtDvbH+Vei4YhFV3TrMiprLOOowZpsXPH6ZH2pg6ySM2f9zf0MOf6472pHiWgR3PSgfMrAH5jU72SCmPVUdxXRpFZtM7ucVe72dA4Mi8s6t5XIPpn4BLdG3Qxq/bmgEhpAQWUvI6ZOvbSnnrXqK1RTHIcif4/o7xNVdeX/c6jU2FZ/b3ao4euaYG+Haha8P//9JMrlvo9XSw1AZCVKc/yPNx+6h93M2Zbz0Va+3nTOc9NI62EOhAUtXFsGDySl8beaY7r7lL9dsjEadL03mqkQmoTVc18+MmWjUUl8rFFpBt0l6PHwUWdoRL/1rtdXR/WvJFNnXb6f0ze2IGb3j1EOfJ/fz
+ k9EzMtks
+ IwB760bmz9WvhtAtTQFfuvwvmKqv8+P9YKUTwvjSLeJp3f+iU+R//Q1cFMcLCJ84RNZKHO8s+34MrF9umU9ObzYrxe+ZXQ/tzZ6/OYdRBVGAZkz1SVfq4cXNlMHB24w6heKaMtXX97dbiUSeuT6w9/om8zpe4GgssSPIplx5JM8XT6Ws716qRyrAYC2yAjhuUz6PpIIL7D0hLjQUiUnC6eatiDVvUNU++cpTyYmDUKl6v+cqBrTgj1vdrndXg46zzCTLkRE+Ag4BgFdWpTN+kVbo2xiQnBIqyYTk9KCVXCGz2++jDQMbCzzN7KgJRFvDUtqUkyoCvRGkgTQ4vV/QznqhSvG97ktVvNqgp4dgMGHi3D4cQ/piAVO3W0Tzl9+TS0lN90jVg6DMv164=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,189 +123,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-thp_settings provides write_file() helper for safely writing to a file and
-exit when write failure happens. It's a very low level helper and many sub
-tests need such a helper, not only thp tests.
+Add two more checks for buflen and numwritten. The buflen should be at
+least one, otherwise the 'buflen - 1' could underflow and cause trouble.
+The numwritten should be equal to 'buflen - 1'. The test will exit if
+any of these conditions aren't met.
 
-split_huge_page_test also defines a write_file locally. The two have minior
-differences in return type and used exit api. And there would be conflicts
-if split_huge_page_test wanted to include thp_settings.h because of
-different prototype, making it less convenient.
+Additionally, add more print information when a write failure occurs or
+a truncated write happens, providing clearer diagnostics.
 
-It's possisble to merge the two, although some tests don't use the
-kselftest infrastrucutre for testing. It would also work when using the
-ksft_exit_msg() to exit in my test, as the counters are all zero. Output
-will be like:
-
-  TAP version 13
-  1..62
-  Bail out! /proc/sys/vm/drop_caches1 open failed: No such file or directory
-  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-So here we just keep the version in split_huge_page_test, and move it into
-the vm_util. This makes it easy to maitain and user could just include one
-vm_util.h when they don't need thp setting helpers. Keep the prototype of
-void return as the function will exit on any error, return value is not
-necessary, and will simply the callers like write_num() and write_string().
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Suggested-by: Mike Rapoport <rppt@kernel.org>
 Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 ---
-Changes in v5:
-  - updated acked-by and reviewed-by
-Changes in v3:
-  - make the write_file void return
-Changes in v2:
-  new patch from v2
+Chagnes in v5:
+  - new patch for making improve on write_file. Add more safety checks and
+    diagnostics info in log
 ---
- .../selftests/mm/split_huge_page_test.c       | 15 --------
- tools/testing/selftests/mm/thp_settings.c     | 35 ++-----------------
- tools/testing/selftests/mm/thp_settings.h     |  1 -
- tools/testing/selftests/mm/vm_util.c          | 15 ++++++++
- tools/testing/selftests/mm/vm_util.h          |  2 ++
- 5 files changed, 20 insertions(+), 48 deletions(-)
+ tools/testing/selftests/mm/vm_util.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index e0167111bdd1..93f205327b84 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -255,21 +255,6 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
- 	return status;
- }
- 
--static void write_file(const char *path, const char *buf, size_t buflen)
--{
--	int fd;
--	ssize_t numwritten;
--
--	fd = open(path, O_WRONLY);
--	if (fd == -1)
--		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
--
--	numwritten = write(fd, buf, buflen - 1);
--	close(fd);
--	if (numwritten < 1)
--		ksft_exit_fail_msg("Write failed\n");
--}
--
- static void write_debugfs(const char *fmt, ...)
- {
- 	char input[INPUT_MAX];
-diff --git a/tools/testing/selftests/mm/thp_settings.c b/tools/testing/selftests/mm/thp_settings.c
-index 574bd0f8ae48..e748ebfb3d4e 100644
---- a/tools/testing/selftests/mm/thp_settings.c
-+++ b/tools/testing/selftests/mm/thp_settings.c
-@@ -6,6 +6,7 @@
- #include <string.h>
- #include <unistd.h>
- 
-+#include "vm_util.h"
- #include "thp_settings.h"
- 
- #define THP_SYSFS "/sys/kernel/mm/transparent_hugepage/"
-@@ -64,29 +65,6 @@ int read_file(const char *path, char *buf, size_t buflen)
- 	return (unsigned int) numread;
- }
- 
--int write_file(const char *path, const char *buf, size_t buflen)
--{
--	int fd;
--	ssize_t numwritten;
--
--	fd = open(path, O_WRONLY);
--	if (fd == -1) {
--		printf("open(%s)\n", path);
--		exit(EXIT_FAILURE);
--		return 0;
--	}
--
--	numwritten = write(fd, buf, buflen - 1);
--	close(fd);
--	if (numwritten < 1) {
--		printf("write(%s)\n", buf);
--		exit(EXIT_FAILURE);
--		return 0;
--	}
--
--	return (unsigned int) numwritten;
--}
--
- unsigned long read_num(const char *path)
- {
- 	char buf[21];
-@@ -104,10 +82,7 @@ void write_num(const char *path, unsigned long num)
- 	char buf[21];
- 
- 	sprintf(buf, "%ld", num);
--	if (!write_file(path, buf, strlen(buf) + 1)) {
--		perror(path);
--		exit(EXIT_FAILURE);
--	}
-+	write_file(path, buf, strlen(buf) + 1);
- }
- 
- int thp_read_string(const char *name, const char * const strings[])
-@@ -165,11 +140,7 @@ void thp_write_string(const char *name, const char *val)
- 		printf("%s: Pathname is too long\n", __func__);
- 		exit(EXIT_FAILURE);
- 	}
--
--	if (!write_file(path, val, strlen(val) + 1)) {
--		perror(path);
--		exit(EXIT_FAILURE);
--	}
-+	write_file(path, val, strlen(val) + 1);
- }
- 
- unsigned long thp_read_num(const char *name)
-diff --git a/tools/testing/selftests/mm/thp_settings.h b/tools/testing/selftests/mm/thp_settings.h
-index 76eeb712e5f1..7748a9009191 100644
---- a/tools/testing/selftests/mm/thp_settings.h
-+++ b/tools/testing/selftests/mm/thp_settings.h
-@@ -63,7 +63,6 @@ struct thp_settings {
- };
- 
- int read_file(const char *path, char *buf, size_t buflen);
--int write_file(const char *path, const char *buf, size_t buflen);
- unsigned long read_num(const char *path);
- void write_num(const char *path, unsigned long num);
- 
 diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index a6d4ff7dfdc0..ad96d19d1b85 100644
+index ad96d19d1b85..02db3caad646 100644
 --- a/tools/testing/selftests/mm/vm_util.c
 +++ b/tools/testing/selftests/mm/vm_util.c
-@@ -764,3 +764,18 @@ int unpoison_memory(unsigned long pfn)
+@@ -769,6 +769,8 @@ void write_file(const char *path, const char *buf, size_t buflen)
+ {
+ 	int fd;
+ 	ssize_t numwritten;
++	if (buflen < 1)
++		ksft_exit_fail_msg("Incorrect buffer len: %zu\n", buflen);
  
- 	return ret > 0 ? 0 : -errno;
+ 	fd = open(path, O_WRONLY);
+ 	if (fd == -1)
+@@ -777,5 +779,9 @@ void write_file(const char *path, const char *buf, size_t buflen)
+ 	numwritten = write(fd, buf, buflen - 1);
+ 	close(fd);
+ 	if (numwritten < 1)
+-		ksft_exit_fail_msg("Write failed\n");
++		ksft_exit_fail_msg("%s write(%s) failed: %s\n", path, buf,
++				strerror(errno));
++	if (numwritten != buflen - 1)
++		ksft_exit_fail_msg("%s write(%s) is truncated, expected %zu bytes, got %zd bytes\n",
++				path, buf, buflen - 1, numwritten);
  }
-+
-+void write_file(const char *path, const char *buf, size_t buflen)
-+{
-+	int fd;
-+	ssize_t numwritten;
-+
-+	fd = open(path, O_WRONLY);
-+	if (fd == -1)
-+		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
-+
-+	numwritten = write(fd, buf, buflen - 1);
-+	close(fd);
-+	if (numwritten < 1)
-+		ksft_exit_fail_msg("Write failed\n");
-+}
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index e9c4e24769c1..1a07305ceff4 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -166,3 +166,5 @@ int unpoison_memory(unsigned long pfn);
- 
- #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
- #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
-+
-+void write_file(const char *path, const char *buf, size_t buflen);
 -- 
 2.53.0
 
