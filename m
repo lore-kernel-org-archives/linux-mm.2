@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E9FEC01B1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:56:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69D06EC01B1
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:58:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4C626B008A; Mon, 23 Mar 2026 05:56:58 -0400 (EDT)
+	id CEB0A6B0005; Mon, 23 Mar 2026 05:58:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFCDC6B0095; Mon, 23 Mar 2026 05:56:58 -0400 (EDT)
+	id CA0ED6B0089; Mon, 23 Mar 2026 05:58:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEB3E6B0099; Mon, 23 Mar 2026 05:56:58 -0400 (EDT)
+	id B8A846B008A; Mon, 23 Mar 2026 05:58:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B4A66B008A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:56:58 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C068160AE9
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:56:58 +0000 (UTC)
-X-FDA: 84576874116.14.BE85823
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010005.outbound.protection.outlook.com [52.101.85.5])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EF3B81C0010
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:56:54 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A77EB6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:58:48 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50065C329B
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:58:48 +0000 (UTC)
+X-FDA: 84576878736.29.9C36803
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012051.outbound.protection.outlook.com [40.107.209.51])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 20C411C0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:58:44 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=uqIhd3kS;
-	spf=pass (imf21.hostedemail.com: domain of bharata@amd.com designates 52.101.85.5 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	dkim=pass header.d=amd.com header.s=selector1 header.b=BnDjZrnR;
+	spf=pass (imf21.hostedemail.com: domain of bharata@amd.com designates 40.107.209.51 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774259815;
+	s=arc-20220608; t=1774259925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZDC+MpESOb9QgPOLko7Ss04XLSPywRUEAe9xOdzxjH8=;
-	b=nIbyyE3xOy2QDbRnFXhiCuvgD9KClG7n+8+qGRkvAFBGrekoTwSl0hl4PyPut5qfurEYt/
-	HZmnne9leZ4GJqmRiAoRHRsFobQtsb5aUv1BjmiZWH3DphVv+M4t3MSmu/ab4B8Z7QgbfL
-	I+BuES8Vq+p9foAqciWJpl5wWsUcgFc=
+	bh=Re5AXvLNTBOZS3wIcaAEiYDf48U2wIogHIOuFp2Jlzg=;
+	b=hJzn/NDrFdu3XhNtAgJBxXBAv/t0GjOIdErpU5iX5IHfBHauR+MmSgYtrAkn/cZCwfDV+f
+	/sS2npAfJKx87Vpv+ddWohI5T4Z9KxOb2rRrVvoNsYjl8j3bQcEqy4UWdQHzplCCp4rEbu
+	el179Tzb8ec572YT5HP4FxTRyA3Sz+s=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774259925; a=rsa-sha256;
+	cv=pass;
+	b=SmM2XA6oQ6sb6jPuEHDQe2KSpjCLPyGLWqrTo5f8yYUudYU/dgGEpcVXWrDr5BBHuOGyK2
+	JK0Z0jgyccKqk3NpSAysVYgU/RFx5AMJI7npay3v4asiyzV/tQIoy7PUFaSwcEHvk4BdAY
+	nYngkZdBYoDo/PJF1n0u/dXKwfgB1HY=
 ARC-Authentication-Results: i=2;
 	imf21.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=uqIhd3kS;
-	spf=pass (imf21.hostedemail.com: domain of bharata@amd.com designates 52.101.85.5 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774259815; a=rsa-sha256;
-	cv=pass;
-	b=T4Ib9SlJLZWUl76Cf4VRtbDOiJPO+27XsLjWi1NeYJ1f01HEkHBYDi7b+FBDYv4r5oACeK
-	HJMHHLIg14Oe5qNZHGaUW7R+D5HoPQMaye2D7hkvp1ZzaBIU9peHjuoNeYrBXNyEHgQ4eB
-	RO+i5smjyx87HhvCQKkvYU+DV+dQCFM=
+	dkim=pass header.d=amd.com header.s=selector1 header.b=BnDjZrnR;
+	spf=pass (imf21.hostedemail.com: domain of bharata@amd.com designates 40.107.209.51 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gfnmk02Y60UAHrqnW8ucsQFL1/0XQSpl+o3MuybP5FO1vRXdGZNRCNDicltsQuCTlCTEbPV1InIig0Nk+MWeTXR9sHwSQZqRqUGKrm7ipyyCuO7XIa7++C5hIdDJqao3umc6YKITbukhwb0zCafD/0IuumIH8eIWAo10WAGwfKgoPycFU2cT5aAuHRGbnloP326OSGsBEhmHSGKjDhjVYUwK21XF1LmI5Cwx8++1N5q0hcMEtq3i7KEnf5O3HKB992cGK/fKxE7n3OaP+OSORF/ZMbb7MahznAgKDsNWxF5SLv+jN0UhYfxWPsixNZpOW3zdcE4cBpPvqv2VCPSxiA==
+ b=ZGSRWTeT3zVEVo1WsZIKI1qCebeMPQGq1z3Ze2sIkk4tfHDCLUP8TSc0KHt//OZOuk+JcMxzCUgvjT8KoZU+O/sOyc+zj+9IcnASwKHdzuzXvgBqXyvJo1R4vL1K1KiAvNkKxfqLLp0PvLFSczY60JH/VwDe2Tl0ZcvJhLZw7Zub07BWCLn75KHsvXm0eVTa3CjxWQDwhDIfVaphajnjSmvIdPR/PKYLiTwgCA4li1SSTc9pljSPH0yslYXZjcAIe+ZelJ/yc7v1FUi+9N5Ez0dQT8/alVKman0elzYop9ZExXMjtJaRaxevg2hGnY3PCT/fMHBAdtbwqx09mBkZhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZDC+MpESOb9QgPOLko7Ss04XLSPywRUEAe9xOdzxjH8=;
- b=Av2Bdd2BrnxIm4ayRdyDt6Rf+Qu8anx5xl4gvo3WqYCHClnxdTJ27DX7JRcZp/4kOAhJDqVYDUfwEkNFN0DJkremuhEQ06CmPZ2z0JZter4R/jcI00giLDhVGVh7q1F+DEyvVoYQ8sITV8odaH9bbl2K7HInxBejopkHIWSxV/JZOK2SvAZgEoTFtS5/eAzxDMDwaozdDTS0mH0Ll0KV384NSmxtF73KC0gCOMkrc7PUpLpGUru57/uU4j4t4zPH6QdUjye6Ag0nSw2JOx3XtNICdoQboVWHYdc7qMLzoGzFDMN11z5Z0/zxDSV1T9owPHuW0Y+o+sDbXikSHrjA/Q==
+ bh=Re5AXvLNTBOZS3wIcaAEiYDf48U2wIogHIOuFp2Jlzg=;
+ b=tk5LDV16t7jyhNS6m1LrxVUOvAfiWXAcU42WyezLVe1Bci+TpOFflrVKvJoi//Bjx4VUnT95zOd8+WFJmr4rQdzBg3I+lWS98GRbwWYHjK5AfedUhIdQU6HHjJU5K/P/v9RyyQPSeypYaIwIUW+PnuCsuPow207Wud1ceoNq/aEPJrJDSPGekhYuzXbMXYlcSp/8T27AtnoG2839aCB6oh8BJeLItEK2i0IC6oqtRz7JtjWJgVR4Kv1+O1//YuJVC47Uyjo5dWRf/xDVOWMcESoApkplB2PPeF/flQQsL/EwgRTQz3PWCA3XAivikMKxyWNZuq8YlhA1XsEAANi1Cg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZDC+MpESOb9QgPOLko7Ss04XLSPywRUEAe9xOdzxjH8=;
- b=uqIhd3kSWF6K8InldXA270YstV19OADuytCr4YqzZ0jmq2tLPSmiby6Q4iovopSEfyywtOaEY3xsMzk0qy3mcVDqBwDM4XARjMxifu9f55kPQ/Bw5EbDJiCfblqPExmh6hDvNjlMUqZ1MGAMwoe78G6ZbuyFR6ylBnzAOS31dnw=
-Received: from IA4P221CA0010.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:559::13)
- by CH1PR12MB9645.namprd12.prod.outlook.com (2603:10b6:610:2af::5) with
+ bh=Re5AXvLNTBOZS3wIcaAEiYDf48U2wIogHIOuFp2Jlzg=;
+ b=BnDjZrnRW0/g9UYBiRgDXu1Cn7z75rmIUVJ/xASAS2D5JPVRR3IXOEssFTbw4fc3qWnzet6w9D4i5ubuj9nnaogL24FMguNzfp50AwnIjS20GSvSkt91ZreBbkaaaNDc4xnSjNWi6t5jfqFDK4dSAJtIER/FWtX5sCyITx1TnNI=
+Received: from SA9PR13CA0018.namprd13.prod.outlook.com (2603:10b6:806:21::23)
+ by DM4PR12MB7693.namprd12.prod.outlook.com (2603:10b6:8:103::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Mon, 23 Mar
- 2026 09:56:49 +0000
-Received: from BL02EPF0002992B.namprd02.prod.outlook.com
- (2603:10b6:208:559:cafe::a5) by IA4P221CA0010.outlook.office365.com
- (2603:10b6:208:559::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Mon, 23 Mar
+ 2026 09:58:37 +0000
+Received: from SA2PEPF00003F62.namprd04.prod.outlook.com
+ (2603:10b6:806:21:cafe::49) by SA9PR13CA0018.outlook.office365.com
+ (2603:10b6:806:21::23) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Mon,
- 23 Mar 2026 09:57:09 +0000
+ 23 Mar 2026 09:58:35 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0002992B.mail.protection.outlook.com (10.167.249.56) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SA2PEPF00003F62.mail.protection.outlook.com (10.167.248.37) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Mon, 23 Mar 2026 09:56:49 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9723.19 via Frontend Transport; Mon, 23 Mar 2026 09:58:37 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 04:56:48 -0500
+ 2026 04:58:36 -0500
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
  (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 23 Mar
- 2026 04:56:48 -0500
+ 2026 04:58:36 -0500
 Received: from [10.252.223.214] (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Mon, 23 Mar 2026 04:56:41 -0500
-Message-ID: <868004d8-bb8e-4800-9fdd-ade48e95fe3b@amd.com>
-Date: Mon, 23 Mar 2026 15:26:36 +0530
+ Transport; Mon, 23 Mar 2026 04:58:29 -0500
+Message-ID: <957f2242-56d4-4bf0-8aeb-9d60fbea8c8c@amd.com>
+Date: Mon, 23 Mar 2026 15:28:29 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH v6 0/5] mm: Hot page tracking and promotion
@@ -122,38 +122,38 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992B:EE_|CH1PR12MB9645:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4257c35-842a-4584-9175-08de88c2805c
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003F62:EE_|DM4PR12MB7693:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31cf1357-44b9-4b02-fd77-08de88c2c0aa
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|36860700016|22082099003|56012099003|18002099003;
+	BCL:0;ARA:13230040|376014|82310400026|7416014|36860700016|1800799024|18002099003|22082099003|56012099003;
 X-Microsoft-Antispam-Message-Info:
-	GCjASRwWYc1GiZkMYdSsNrh60nLIJ3iVax9teklUKSiBF5TUzddT1NMbFQ7cfE1wy46AwJAojo/fAxdigNwjiYuQ0v77t35IPgwzBmmQ2DDh9SIF+swpej3PmLrdaDOgCJUcRZeIpGyMabAomMt9Yp8lb+8GvYFNabzHWqfDM1MxLXaFDbV8BkRvac+NvlNICNfCofhRjtIp6HD6OMzHXUBJdnm2Bd84WxWHxsC/87tNnvYNplqGd7DQ1GKHWOVnL1Ifj99tbqSvavopYjRZz9px+ihGDgLtxVxWodXv60tv9j4+a0t7CD9SJ+nuCqEggHSY+/iTl+VwcskVJngsvmIWS+hqIBpyvV6TdAIEFDaOO4dqODTjur347kT4Jt2SrBm2wCD4qJ7/kddkWyN3C+5DJak2CK26p3/qo0vFPv7GDy4YLwnPvIGwTsQm9YDjTsUE4MFqR+A8lnLClUlHxVhOxA6loD2Awls5C+zW+Dty1nGZbrryUuyborD/gemQlXsYOCgRkVTXjtCd4EAolHaqmDlRjcTkKVy2HFsJqHhBn1CKSzfAWRlpFELqTj4xowyqcXW5B7VfrPvyp3sQhgImTOehD6m+6Yh9AL2zJfZGnqYkGNwCaKBCSOF2j376pcfIIk5KFBEvIbEQ21XrD9rYXKZoFBPgsYnegop5KU13ypH+hEhc2+E7kQXbSYlPQjdcKTyJjLMvIKFs/PCT+Trdujxnlc/urLRwLtk7aebifK8JB7mwKWAbEhcLeNncOKuMP0/U28ManqEgPniRXw==
+	v+97q4af3mVzzlbHnghTJnbuygd2YjzWApIidwEWBiYKtyDE9uoSN0q4S0punIkOAod10mcfWOn+nqui8u8xmtGgZKr/tMOA2/TRu+GbeFttNsuu0mAA8U5W4nxMeKdiiVpb3gDYcVpNrD1ZV/wJ+ySLtPK31DNuCU7tX67rTEBu+5xfuHgARrvSR6btB6BYIzeGxzi2gcEc63pY88Jyj6XcfPVZy2T21tGJb7I5IvLexsyYzMrUZdHWYp8zTqu3COR7i8JVWtSwsZKNQ57Gke3QTZ3jMtbG2yKhcxOCE+zakbNRAcXjoUjT0ECbGcRp3qnVaKLtRRTA3J8pDxjX6mPtlXQrU4vnUZ3RXRtMQVpw/AiiuEvg+TS7jJhaWIf/LmbRJjU1aNYjZkONeAcNNghQGpf4YriMwcm3TMYkyUG8MaBmzg48Jbn0NsUYImKMpQrIOs6clVQi2iezE/hMA3U3PSAMr2KpKhe7QY/JEg/5i+LzVpRiRL1A5Tb37cXwNEx5NwDeEs+st+6CO9tkrJQwOYvcvkRLABKEWPdyAdL2wAcTLpUo7VKgkuHjY6vSJRK5v0KHqOtlGrRYhkW/zwsu67hM43E3rVesUUafCyV8lrbUBQVdymyWPLKsym0VW80huv+rs8cnTxmgcJi87rC7C5l42ljPIvmRxVZSY/nNZCBEtbLiNWWVk/Am1QSHSoqhgJ1+zwjiYzburq45jW8Aiw2Gv+wFyxpFT8JyE4XqaE13wwzjTK2V9hFOMZ2LszZ/wtn8M90yHUMyYaok1Q==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(36860700016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(7416014)(36860700016)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Z4/81kIjSsyrhVmqbi0H3E9otrEwXQ7+nx165EqfyhGTDD/7GU/PT02f/zVs3PiflEcqKTcflGq7u9n26bHOd8AxYG76hikgq36gjvk/xGofdbpEjJOleB3F9gRnAa54vs1VOoRpcRx+2+IujDqFqp6CJZRlnD64YwyKLvHgLjLDaV1JfG2ga7Bsvc+gxdwWNRbbSrBA8BjM01OoJS/DC2rVrzOBHQX63oqt6nzH1SzT+MiDycVp17DX1qq24g1Bz1awT+RSEucY2rDB0cMt3BYds2SxHBrH0C2mF74gVAIGOSHjET3LNJ3ov8G/2ICVl45OB6WGdnTQv/nU36i5J1IgN0x4ypKSk2YiYcQpd+Bd0NfbaJofEHRfLz1kDWOR7wYfsAetdPIfTT+lbA8NlU1kJDInUohsERgPBS4qbBJzWjH4MGmvdVy6Wdz72FLE
+	WT7CFPkFmEyjGYwt8O25+HbTw85M1x7NDp+GIuDNb+UKE++g2G/KhhsAJM1AJvCEDSOaexegYraZcI/cb9cSFZzOyGELKyplLOgccVSs0ueg42yrS5NZNcbi/tkCf9r8raCDHkp1CytUVnccwYVLkv5GmMXjthMTWTAlV0qn/MT3Lmgs6krJSQ9Eb/r+GdkUAJsbWL1efRRaKBrPlgfAvT50uGyzwLwYexIGnn+Jk5Pg4n0+2tSrUl9yooGkE6Qe9qqdN9o8YbcwBoSRDWJTV7fe6LsiFr9c+RaIrpJHWiTFfLMchunxeh5hILN9h+spA2vBo8nqNjxIXSyutDtUaT22V97RT3QrwssWDI6jkU4w0+UntMhEwkozzz6vj4bfZ/xNrjv2yEWe2canJ3Xa2VZbH8xt6dyaVhpexFaDYHbi86cC0GFQoRjbIejNg2s6
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 09:56:49.1342
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 09:58:37.0019
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4257c35-842a-4584-9175-08de88c2805c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31cf1357-44b9-4b02-fd77-08de88c2c0aa
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0002992B.namprd02.prod.outlook.com
+	SA2PEPF00003F62.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9645
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EF3B81C0010
-X-Stat-Signature: seps3p55piung77hd9bsozf9i68cwmjf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7693
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 20C411C0005
+X-Stat-Signature: m7tmdbk6p6s7om4cd19dgiux4xr69kxn
 X-Rspam-User: 
-X-HE-Tag: 1774259814-288372
-X-HE-Meta: U2FsdGVkX18KykCeZltAQR1Kp9OWHkuW4f/OzPcwEptjSNFDPeDrIHpaJJtkPgf5plB4YwL840r3DpywPRKRrEy+fR7zIfzNgk6q1R6B3bdbB6LoN3KRvd9RRbQHkBv3CqTltZstsoph7IC+irG9rYeD3VzRnd9NEKvKEQGj8ug5XeZZbElGr4BYKORvZb/N3aI3Wm4Ubb5zn6MXvJqrJth+LaeaL497NObncNBrco8INMduA2Xu7eNWu1KGG+WpjRgb/gwArK+Slu/IFjPU+yWJTCfSzppuMoVPZh7B8LoWa1uGsT2Ma4AmYmuiKF/p8PWDdR4RZq6H+FzFx91g6SPCmSBpizNdM2Noyjup0jPzJ/sLIzNpep14ViYMLiD/+VkXtMezbaq+HnF2GJYVSrtrnjAWZcBfqWoRNnf//WiJTVpbtGgLhhTK6yXr68KYbN2dvX3Ih0rhUi8vOfi92PDK9ehjbCY6NvvtRVZuEzv5lyUQUoHBS9y9I96ue7wfuuxkxiTb/kOimmpwVTw3eKWTX8Jh3KHVvFgUpfFd5TsmjH5P1uU0AooFY4jB6+Y1I50huDG8BVdJN3P1vrOjeAHRY62JLYToCSLCTq4IB99EPn76q+Y4ejMjVhhFDtxB6hZ8mVR1kHkpnpBvMh6iggbIrs9ZGAXLxNVRbeVAEhAHYC5wIUyM/Q0Bmp/6Lc8Ctua2wo+0760Hp0Bi62b9tHzvsM6xpUx3+AYSZHBYvlQYv3msHdyA1fG8Hi/nhmOOTTQvtlqdHk8u1ZxpU1wGblF1x4X1KEErhzE74LeWfgblNtjrj+tKB1GaEu4KO5XK5ettU5dTbnDuytljcUA0pcd/npVMAlM01M2KLHTSE4TEQHiSXm8tYpdLmqOGQus+OrtgreipdwNGUSfGnnmk5w5fC8CUNVXA8RfgCu2FXxcSxtwbnSnCRq0xFZM03yByD8aecXVtGcF11s22p9C
- Pb/WR1kY
- XkV566Kl80PSaC7dQmlDB4Rc7ufso3D2L1oQt/pj9CwiLLKI4X4pGCdCzxYAhoOCOTYCMcr/FzkvMMcTv6Bl58SQilxBAz/CvKf/M4lo2Z563HZBHtJh7AooqR8ZK87P4aZ8mqNFnbP8xcKiVzZOp4DQYI5Y4EHj18a9Z5m0p3REcqFqhkz7ZffHeOTnOvmRJLT/rbbUhZzj2M4f+unkorAla2pT2P1lm3zXAztAo6AbJL6g5Vb27FkFuttCUfYFKKN0oU92JI9laS3PlOtDPMws67arYdB4u47emAjwrv8njO+RX08f8Cy3YIZMONOmLfVjDLqdV2pK+VBvFUB8xRVsrB0P9KpnnExWDTxut6ETETvfGd3gQ6QPaLHLv0spnCf9zG+rWhcRmoI+CFYN7TrlZo4zyjTf7gW1+CZhUI+F/j/Mn70fGNgiTpl+X2ca/zQXeEYX80YrWHWs0IWEAO4liB74CUyxDiX81syQgi2Ni5YQ=
+X-HE-Tag: 1774259924-277867
+X-HE-Meta: U2FsdGVkX1+ITvv992AJVpuyDdZkJJuvdu7cSTTGo+ORCU2wovFLY7/hBRqy25DLs+8C4TQVkVp4UpYahwjR8l3PD7ukmGzcivhfRLLTJtxkSfx9m8tmgrPmTKMzamLG4S5cpMv7YySM2c/iz3L3+G0KZVvD22oJUtsOFhbEFNMOsgzj3zZI50iDp7m3WE1e7GdSVTV7wsufrMVTezsbKzrrG7gSPuj+knNSspglU+qVV5QGJnpCwFtFkYZpblmzImogYw2FXG/dPB4ArUOG7jYh5DcRja8wLxwb4sVaYhc2LyRHYCwy7kQXipItY+263NlWOWNM+WPpsRbtiIESAegxj7M1IcTTCd4jJcyCrH/bklVnFkUp/Wzy+uu93Dwf3JHtxFa34VmTy8wiCWYqTOfcn7eJWgsJBWP9I1YGFSLoz17eVitB1QP31WxnMUCyh0qdeyK2h3hzcDlbT52M3KWchdAcf+vFKh78b3MBfMdA3KLLeo0MWddRqx8ONdg+i6L6FAMUfsC/gSu7S7cdMehqMl5Asxz3wuAJ7ZjNU3K5PAVDNvXDgfxPdLbD7HyXBN+Z9ms0fBsrCT8vJ0/vfbYKD6KHVh8//tdATI0Lga7mNpzlf6k9bxrAhokYKpwIQGZd/F07nyOF2Ngin/4CbSlGMOepyLmjN5S3LGFnBdCladbFkgJbM3BBQfBe/cT2CzNv2kGGs7JkDGOHrRYQP+pn+iXtiSBMwtXBb+NNbVgBT93CiBl8sLg+RGxKX4CM3U3mA3uR0aNVMta0ldY1D3EGz8OXscNSvjQKittFKbBmfPRiCF439W27Cbo2jbBdzWOb8JWMNzB6FmOZOy7NR1fItRBjn9+lBb9VvgO24Q0kboJlitm4CA0yNaIqrCWZC1c/N1FfK457v0xjTmiDeIlSPtP65rYBRYH9/o+QZEzffkoFGoSmgFuvuYTFEuXYj3uttunzMTJIl25p7K+
+ 0Or1c+n7
+ 7bJ/9tQHOrTqnsKRIXtwVMqbqKFl27RXjCCW2oHHNIgYbiVHHeO/6Yq5hjrpTroI2S4sCErV952Gxd4P+VYUM4ZRMF61p43kyUvYgo+9DdekxH4xVGdtr7eTkW+fcPa+Tf5vqOAPBKVG4zvNiEKmR7OZoT1DOb8rvpjDoFD2Ix6q2uVOnu3FGuGRLZ769HQMlKsWt5x+DZIX0/tvKbQirUQ9dNnuFWWXCVkdXF0R4CGBHRoGcC0pgeDLNOftQfgJEr1OkEHm2BbubxzUs4SIdh4EHsXF04jcvtcZo2L8wERrD8WX0IzGJOGCgGNp5dgfSaS6pO7FhlY91XFOljjceclu3Z31C3n6PW+cDFBfnEram+rlK7kMsI0NAa6mCITFUgRrzHkH0lIrusVVaIN7zXXlqA2bjanbset6vZnJ7bdTiBhXB/3IvKXMYdaM130+VxP9wn88HDLaR1Q9wk7jocSe4t2t8Ne2tIRObYxfjdvMlkRc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,7 +161,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Microbenchmark results
+Redis-memtier results
 
 Test system details
 -------------------
@@ -195,145 +195,93 @@ promotion is done after one access to match the base behaviour.
 ==============================================================
 Scenario 1 - Enough memory in toptier and hence only promotion
 ==============================================================
-Multi-threaded application with 64 threads that access memory at 4K granularity
-repetitively and randomly. The number of accesses per thread and the randomness
-pattern for each thread are fixed beforehand. The accesses are divided into
-stores and loads in the ratio of 50:50.
+In the setup phase, 64GB database is provisioned and explicitly moved
+to Node 2 by migrating redis-server's memory to Node 2.
+Memtier is run on Node 1.
 
-Benchmark threads run on Node 0, while memory is initially provisioned on
-CXL node 2 before the accesses start.
+Parallel distribution, 50% of the keys accessed, each 4 times.
+16        Threads
+100       Connections per thread
+77808     Requests per client
 
-Repetitive accesses results in lowertier pages becoming hot and kmigrated
-detecting and migrating them. The benchmark score is the time taken to finish
-the accesses in microseconds. The sooner it finishes the better it is. All the
-numbers shown below are average of 3 runs.
+==================================================================================================
+Type         Ops/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9
+Latency       KB/sec
+--------------------------------------------------------------------------------------------------
+Base, NUMAB0
+Totals     226611.42       225.92873       224.25500       423.93500
+454.65500    514886.68
+--------------------------------------------------------------------------------------------------
+Base, NUMAB2
+Totals     257211.48       204.99755       216.06300       370.68700
+454.65500    584413.47
+--------------------------------------------------------------------------------------------------
+pghot-default, NUMAB2
+Totals     255631.78       209.20335       216.06300       378.87900
+450.55900    580824.22
+--------------------------------------------------------------------------------------------------
+pghot-precise, NUMAB2
+Totals     249494.46       209.31820       212.99100       380.92700
+448.51100    566879.53
+==================================================================================================
 
-Default mode - Time taken (microseconds, lower is better)
----------------------------------------------------------
-Source          Base            Pghot
----------------------------------------------------------
-NUMAB0          119,658,562     118,037,791
-NUMAB2          104,205,571     102,705,330
----------------------------------------------------------
+pgpromote_success
+==================================
+Base, NUMAB0            0
+Base, NUMAB2            10,435,176
+pghot-default, NUMAB2   10,435,235
+pghot-precise, NUMAB2   10,435,294
+==================================
 
-Default mode - Pages migrated (pgpromote_success)
----------------------------------------------------------
-Source          Base            Pghot
----------------------------------------------------------
-NUMAB0          0               0
-NUMAB2          2097152         2097152
----------------------------------------------------------
-
-Precision mode - Time taken (microseconds, lower is better)
------------------------------------------------------------
-Source          Base            Pghot
------------------------------------------------------------
-NUMAB0          119,658,562     115,173,151
-NUMAB2          104,205,571     102,194,435
------------------------------------------------------------
-
-Precision mode - Pages migrated (pgpromote_success)
----------------------------------------------------
-Source          Base            Pghot
----------------------------------------------------
-NUMAB0          0               0
-NUMAB2          2097152         2097152
----------------------------------------------------
-
-Rate of migration (pgpromote_success)
------------------------------------------
-Time(s)         Base            Pghot
------------------------------------------
-0               0               0
-28              0               0
-32              262144          262144
-36              524288          469012
-40              786432          720896
-44              1048576         983040
-48              1310720         1245184
-52              1572864         1507328
-56              1835008         1769472
-60              2097152         2031616
-64              2097152         2097152
------------------------------------------
+- There is a clear benefit of hot page promotion seen. Both
+  base and pghot show similar benefits.
+- The number of pages promoted in both cases are more or less
+  same.
 
 ==============================================================
 Scenario 2 - Toptier memory overcommited, promotion + demotion
 ==============================================================
-Single threaded application that allocates memory on both DRAM and CXL nodes
-using mmap(MAP_POPULATE). Every 1G region of allocated memory on CXL node is
-accessed at 4K granularity randomly and repetitively to build up the notion
-of hotness in the 1GB region that is under access. This should drive promotion.
-For promotion to work successfully, the DRAM memory that has been provisioned
-(and not being accessed) should be demoted first. There is enough free memory
-in the CXL node to for demotions.
+In the setup phase, 192GB database is provisioned. The database occupies
+Node 1 entirely(~128GB) and spills over to Node 2 (~64GB).
+Memtier is run on Node 1.
 
-In summary, this benchmark creates a memory pressure on DRAM node and does
-CXL memory accesses to drive both demotion and promotion.
+Parallel distribution, 50% of the keys accessed, each 4 times.
+16        Threads
+100       Connections per thread
+233424    Requests per client
 
-The number of accesses are fixed and hence, the quicker the accessed pages
-get promoted to DRAM, the sooner the benchmark is expected to finish.
-All the numbers shown below are average of 3 runs.
+==================================================================================================
+Type         Ops/sec    Avg. Latency     p50 Latency     p99 Latency   p99.9
+Latency       KB/sec
+--------------------------------------------------------------------------------------------------
+Base, NUMAB0
+Totals     237743.40       217.72842       201.72700       395.26300
+440.31900    540389.78
+--------------------------------------------------------------------------------------------------
+Base, NUMAB2
+Totals     235935.72       219.36544       210.94300       411.64700
+477.18300    536280.93
+--------------------------------------------------------------------------------------------------
+pghot-default, NUMAB2
+Totals     248283.99       219.74875       211.96700       413.69500
+509.95100    564348.49
+--------------------------------------------------------------------------------------------------
+pghot-precise, NUMAB2
+Totals     240529.35       222.11878       215.03900       411.64700
+464.89500    546722.22
+==================================================================================================
+                        pgpromote_success       pgdemote_kswapd
+===============================================================
+Base, NUMAB0            0                       672,591
+Base, NUMAB2            350,632                 689,751
+pghot-default, NUMAB2   17,118,987              17,421,474
+pghot-precise, NUMAB2   24,030,292              24,342,569
+===============================================================
 
-DRAM-node                       = 1
-CXL-node                        = 2
-Initial DRAM alloc ratio        = 75%
-Allocation-size                 = 171798691840
-Initial DRAM Alloc-size         = 128849018880
-Initial CXL Alloc-size          = 42949672960
-Hot-region-size                 = 1073741824
-Nr-regions                      = 160
-Nr-regions DRAM                 = 120 (provisioned but not accessed)
-Nr-hot-regions CXL              = 40
-Access pattern                  = random
-Access granularity              = 4096
-Delay b/n accesses              = 0
-Load/store ratio                = 50l50s
-THP used                        = no
-Nr accesses                     = 42949672960
-Nr repetitions                  = 1024
-
-Default mode - Time taken (microseconds, lower is better)
-------------------------------------------------------
-Source          Base            Pghot
-------------------------------------------------------
-NUMAB0          61,028,534      59,432,137
-NUMAB2          63,070,998      61,375,763
-------------------------------------------------------
-
-Default mode - Pages migrated (pgpromote_success)
--------------------------------------------------
-Source          Base            Pghot
--------------------------------------------------
-NUMAB0          0               0
-NUMAB2          26546           1070842 (High R2R variation in Base)
----------------------------------------
-
-Precision mode - Time taken (microseconds, lower is better)
-------------------------------------------------------
-Source          Base            Pghot
-------------------------------------------------------
-NUMAB0          61,028,534      60,354,547
-NUMAB2          63,070,998      60,199,147
-------------------------------------------------------
-
-Precision mode - Pages migrated (pgpromote_success)
----------------------------------------------------
-Source          Base            Pghot
----------------------------------------------------
-NUMAB0          0               0
-NUMAB2          26546           1088621 (High R2R variation in Base)
----------------------------------------------------
-
-- The base case itself doesn't show any improvement in benchmark numbers due
-  to hot page promotion. The same pattern is seen in pghot case with all
-  the sources except hwhints. The benchmark itself may need tuning so that
-  promotion helps.
-- There is a high run to run variation in the number of pages promoted in
-  base case.
-- Most promotion attempts in base case fail because the NUMA hint fault
-  latency is found to exceed the threshold value (default threshold
-  is 1000ms) in majority of the promotion attempts.
+- No clear benefit is seen with hot page promotion both in base and pghot case.
+- Most promotion attempts in base case fail because the NUMA hint fault latency
+  is found to exceed the threshold value (default threshold of 1000ms) in
+  majority of the promotion attempts.
 - Unlike base NUMAB2 where the hint fault latency is the difference between the
   PTE update time (during scanning) and the access time (hint fault), pghot uses
   a single latency threshold (3000ms in pghot-default and 5000ms in
@@ -343,5 +291,7 @@ NUMAB2          26546           1088621 (High R2R variation in Base)
         2. Later when kmigrated picks up the page for migration, it will migrate
            only if the difference between the current time and the time when the
           page was marked hot is with the threshold.
+  Because of the above difference in behaviour, more number of pages get
+  qualified for promotion compared to base NUMAB2.
 
 
