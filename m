@@ -4,98 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8F99D58CDC
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:34:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18AE2EC01A1
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:48:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC30E6B0088; Mon, 23 Mar 2026 03:34:29 -0400 (EDT)
+	id 488686B0005; Mon, 23 Mar 2026 03:48:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D73B56B0089; Mon, 23 Mar 2026 03:34:29 -0400 (EDT)
+	id 439426B0088; Mon, 23 Mar 2026 03:48:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C89606B008A; Mon, 23 Mar 2026 03:34:29 -0400 (EDT)
+	id 327D56B0089; Mon, 23 Mar 2026 03:48:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B79886B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:34:29 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 24F511A0A64
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:34:29 +0000 (UTC)
-X-FDA: 84576515058.24.206442F
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 09FED100007
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:34:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=aueLpHc3;
-	spf=pass (imf14.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774251267;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 212246B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:48:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C19968CA53
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:48:52 +0000 (UTC)
+X-FDA: 84576551304.13.5AFC481
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4F38314000E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:48:51 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rlv1S8+0;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774252131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N03MwYZKfJyz/jISI55XQbpuxlLeDNyC93LJJN41uQE=;
-	b=WaiHfV658Isbee1eh3XUmclSCtR8UrtANvT8xjAkm1xR9x1CLaPATUy35W7mzCdInzI3Jb
-	RxdHu4W0s1YAKv3hAaYOlRxSiBPtCnAYs7ZQRPgO9/aLRqAaedG0E/luTYyXqrCySAgGLw
-	dvawL3upGQnj6bGhvIDERSk78QVDd5g=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774251267; a=rsa-sha256;
-	cv=pass;
-	b=JdR/FeOOomn0IdG651WMZ7W2uj2xEglgg/R8lGRQUGTNFWGZDmsUqiou0NScPhP7IBzzOA
-	CAUh6RYKA9AKebLHGor6FQ76WiNwwo3RtN9JBYo/Bw+LInIEx7oeRgJWCi8SZMT6Waf/Ze
-	1bliyZgX2/oKmDupRlULz+Z7zYPiDyg=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=aueLpHc3;
-	spf=pass (imf14.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1774251241; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=aLUnjvWbgEl7I0JC+aTZBN+fnPPMFfI8i2jdvaFHgh5TwmGuoWcUJl9PraU6SDZucBuH+quJLOxU4R220FB67UjVk5EKVdZ//jJ7oWwI25ucQdZBlKPBGjKsNzqympd2iJWQg5kT1xu6HFVCLSlvhmfy+6xt/lGt9p4ECl6ANdM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774251241; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=N03MwYZKfJyz/jISI55XQbpuxlLeDNyC93LJJN41uQE=; 
-	b=UsIXLyFsu3TmM6YipQqXh4PLYMyOlC3w2LFD/AAP12265oYV9Z+/RVYn97TJcSx7wXjaBDwcP2kau/952bfAwxqCebMzM/AVtS/h2R5VuVYvieJYk3HEwvv8rG1mWVXgn11A4AHaBtsB379jY+rOv/AMjy2FWfPPOE0R7x9l/fg=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774251241;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=N03MwYZKfJyz/jISI55XQbpuxlLeDNyC93LJJN41uQE=;
-	b=aueLpHc313GbcC2+GHpnpX7AB8MaxMKRGWEyBqVAqnnPpOPl3doxlTyG9LAMYlAl
-	J48cJ90xKKPp0YBNUkAxvhIw5825eueORi81Hxh0sBxkVCxZYt1elHLjhnyW1NaKPgA
-	/veyPTzho3WrAo4OferEZ8feGHBtzHo/vdrTJSnc=
-Received: by mx.zoho.eu with SMTPS id 1774251240068390.417387203978;
-	Mon, 23 Mar 2026 08:34:00 +0100 (CET)
-Date: Mon, 23 Mar 2026 07:33:59 +0000
-From: Josh Law <objecting@objecting.org>
-To: Markus Elfring <Markus.Elfring@web.de>, SeongJae Park <sj@kernel.org>,
- damon@lists.linux.dev, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>
-CC: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_1/3=5D_mm/damon/sysfs=3A_fix_param=5F?=
- =?US-ASCII?Q?ctx_leak_on_damon=5Fsysfs=5Fnew=5Ftest=5Fctx=28=29_failure?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <89ab7e7b-ad61-4881-bceb-781481857d3d@web.de>
-References: <20260321175427.86000-2-sj@kernel.org> <89ab7e7b-ad61-4881-bceb-781481857d3d@web.de>
-Message-ID: <BDDAE837-48DD-4FF8-B7E3-AC0030AF5C9F@objecting.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IytCGZb8QoqUKOg+ctT1e1Ezzg+jN0P1FskdLA5DESs=;
+	b=zub+s7hSQ6QjiicH5PbgIBSG76hPvYNwzgcV+cFVzBXRDrL7rxENIDxgtSWC+KmT6tEx+2
+	CzFPYXXyQWk8v2Te5MBkWKHeCfKursXriMogIL22Hy6tv05aQkvaAhGxi+/rUR+L/O4+Mc
+	uSoGAjx4MR1bGTKAli4pFUR6EAYli9M=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rlv1S8+0;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252131; a=rsa-sha256;
+	cv=none;
+	b=3n46PRcMyzMbk+cOwc2tR0+i8guqHhA6iLlrryZXFBX4Gp/Q2F42EOmByROetKjNefvDAF
+	qAYcHgyYhk9sIXQN6EEior267vgAi3i0SZNh47t1vX6q0X05jCgSO5lIKoHIwBVeTqZfv/
+	A0pfv+4AFeGHO+f8/OfL2AQxRrYUOkc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B58BB600C4;
+	Mon, 23 Mar 2026 07:48:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC71BC4CEF7;
+	Mon, 23 Mar 2026 07:48:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774252130;
+	bh=pCbilTTHI/VwIdYALA976lc/t17gtYFZ5ukjoWq9Zt0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Rlv1S8+0zQURdG9YTxr4y3pNRy8/ylu6kZZ6eCiQf+sFd02KfS8+YNnbcyhsi4jov
+	 S5w11oK7YTX3gkuWTcyu3hCCiTiR3veT8ei69ieEMGgMa2ZYMUeINhQjyhnr9FSaE8
+	 Uj98YvIFa19EU/fOo55YccuDjUkb9MArMrSqYZ/sLc3WXjjEkYT/en9m3MbKASypiu
+	 mxy2taD/9hMXzY7nvOCde6k5j3T9Mi98SQf3en8jrYNH2nRMr3fIiwj2mujYUhGjba
+	 bnwQO6qLYjo9aQPPjQMfazIbKXhjL7hgiC8xGbSCEvOmYFBujPtB+XyBem0ZCuxVV4
+	 bFbyai2HlbXwg==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jan Kara <jack@suse.cz>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Rob Herring <robh@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	devicetree@vger.kernel.org,
+	iommu@lists.linux.dev,
+	kasan-dev@googlegroups.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-efi@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH v2 0/9] memblock: improve late freeing of reserved memory
+Date: Mon, 23 Mar 2026 09:48:27 +0200
+Message-ID: <20260323074836.3653702-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 09FED100007
-X-Stat-Signature: rni6fi7bpsxpauqfpcecc5pjg5oqo477
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4F38314000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: dpqgun8ye1r3kncnx15fgoeesczdnj3q
 X-Rspam-User: 
-X-HE-Tag: 1774251266-700887
-X-HE-Meta: U2FsdGVkX1/2/ZrWXpvO3b+kxkWNXc4exOqWaGVafakeTE1Y9zOeain6CjBOW+MiEWsE0SDtEGt7pqEgiaMydbpqNCTYlAqCQKajyK31eYgz7u2fwutaXTA6PALaMZaPIpG/+3GX8UDtnJ9lfW1wP860utMcYHT0nsKkymOtgkWswURPbwbGoQpXaOcHHRyeYduS+GlfFNskbu5SqytdZ7tUYDH2i6Qo4RlMxgxYVy4ROptQa8OQqjN+eOM9K+EevVjoCMmjSxw+Eoc/b/UJB86MaONZ6REpsC8SqkLfylHo+uYWggkpkYmyYXtI0xWw3AaIg9gGc9KNmF90OPN5s5ZbvRx6PE+icYD7FryAMN3WnwHc0bOgqN3XAZW6t6Qj+fMnR9DBBGAXWN1R6emxf4A37Qiwx7NFnWm26vgWq7oMMF9x2r5HOxJkUzHLDin2L2IKRZQO9B0kZfakbuUSLMdSsLw8h2eJczT4TezU+XKwfZZw/w+9RfpAiD/uaTL3z2lB108FdNBVAa4u0aOjtpGRxh098Pgr8jWxIWgvDdbOBB/Jjmm68ZmEbOu0ybctgjfWvAu1HTR+a8dCBK/MbRUIeNXQzgh771jDIt2xFhy+AQbB/RS2m8vz8IMPLCf5NbT4nbSxMtcXEi1CGgK3yZqWmbP8G7XQPZSxn1nxCPwfRc3Hfglz1FMGs2CIRiFXAwB5sgZk3eNBE4Xad7g2oxmSN7aXWS0bpvVW8Vhm3crrRvw3CHyzDwpPlBSZERqL9ZML+sxLBm1FBk2/yy18oszMWzwW5+4bSzz3U92P/LWs6BbgngjeJflGepzaowxtOVJeDvxd2WyrMbmuZv1pPSpz9S7ptERiUGy2EMm0cpK7wen3L85vYPayZjifivZIGas15hHV/TMf3Ro16o+/5vay3JP6OWQitlrWOvBCFOw9NMkJzoGWZMLp3jshC+8yTwSOGOvIey3LyYAMQkt
- 4SnM5VsN
- tTQgsKZp4oG7T24CyWQDG4IaNH0Q5V1lN3ZgAgG4tPKmZIp9+eHYLPVV7LH0bGK9fKy/d1KfA3nTYM+bbMjV05iCXQ53QiT+l4Io6KUixrT/N85sKlZfGJFAdrEKGao+NQeN37y1Xyx/mXowqmDvhXon6EpM49pRP91ZP64FJlY0dsDaxomyqTTqg/6VjPHMFIaR5KMSGGCTDa5YnTBFs/TmcgBAn5MT+dNsx0emWNpQtCOJGSVfNgxgccRuCpWxgy73F63MAk5zrSm/kxLVUvx+HKJqRtf+LXc+rf5tSR9OWT96CBbAWu95YrLLEwDv5NtF/D132VSlovgfpc3np6aOZMf8FOYXMpdQAc8z/G0L9uQSRj+XRRppk+8g0qkh/UoKJMi5BTlbaPqEUmgg6Rmtz02MDZVEYc0G55ee1zYWPtlfAttaZ7XJMLdIyUSaCDMZ4a7EqY+gQf15jfYMvx6pnU5wM+pQ60CR3b+P1HPdnRPhfQkqMDcfP1KPQdn+zpQwjBXEdCP1wpg5dU0klqX3eN1EP5hi1P4WvDqy6r/wFEN6ApMFde8NXrqOEtna8Xx2MY5FXZcjzERMyPs1CqHVtuwO5KXuFpT0VTZ/gu4uGhQ0YQIlKLJsoEQ==
+X-HE-Tag: 1774252131-652098
+X-HE-Meta: U2FsdGVkX18psIWEtD3CFsPuJXyU2CriFoCGY2xpwosZv6rAyJ6yhaIM62WxfSugMezkjQmcmlwVEcVuGFb3R76OIJaaI8nfEx5dL2t6VDpNgs3YABHfExdv8EyncHsBbMjROiT5ii6zyL93KDkRSR9HmH1E8cWGuGluowdgmmv7UAi5zJ0j5ZV8lK8Q14+mYX279o4/PHgIMFSh51CpyYuQO7P0pbG6h8jdO11YytOB69YGp9pqTxEUrEfAkD3Sf5dcKIBG58lmImZKlSpb3jGAJTZGsrQ2CNvPx9Zjt4+XjChITDvVyUSFIpjk3exiN8iT83p/bddWCUWC51Uxey8k2uus7wzaQBY3D3MRxT0i19YmritT8zBOFHr54R58fV0v7axdW+CxHo9S/gNcaH4ZkmUDcurZLmXpMbLFCk5VuLOGw35Srxqsoh3ZQWx7TRaLk4RH/GNznuMnSyyfVmCMTzydVeR1M2tWZt27JF954wFth3qB8vlq7kX7EdrTABIQ/hpwtcQ6BWu1WkSn4XIYL4UUqHcCuUAtTdtDnlX4u33agS1xE7w3Sm2YJv3rnVTewnNNfoSr0zOyYJui/1rABQjP8Vn5RfVSG3R2rvMsKsGRHJRkJginIG1kXtlIji8KH3/IQhgug+/38V+/SN5Hy5OP4t6Ngvh0HP9joLhTPQpGbDM1+1+5wPm21AsWJca5uS5o5wsIZp9iVuFsp9jRxkfXU48K0Ggl6LpxK4Y+gRx9VyI6hwTzISRDBoMT2Yfu6ktPUjAfIrnD5qaLpdrYlK/VbPOxrSCatKtArq5YZ7f+A0doMeIlWQEAc2L/A6YjhsQ8W2xRdW1HsPoubGLbElCC5U646lRKrGOtJs7gBg4zk00nlU8WCN+z7qy0Sxtr1xpVPyZ/y8Zt+J8UZmMYOM/M6z7LiK2cyKHkof5mCw2LEuodBLafw9SSEsVgXFg9zupIBibo/whqpXY
+ 4gk3J/+U
+ iAWUgeMS2nmOxqsB1APQ//VPyBdAzsR7Mxwv6icvi+6+qi2yofpzv+wX5Ytn0aIAHVD4a2pExTGkVH5FSeY7VZyl2p0cA5Nt726mtGAr0WH6uGdz/01sS3KeD0Ni0t3YwlCUK3Ns4vmq+Z3x/zjcg2+kmRXEuLBBLsYSh9beuLd1bTXC3fA8SvSVfzGnblad46ht9vaEDcf93eLuyWQJ3rtBQTJTqXPU6l18nSQ3w5/SIH29/KwkX/wC+d97rMUoooyaD/UVWjaNuxNf+NQkvJAIfgox0I9fjiQm7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,30 +134,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+
+Hi,
+
+Following a recent discussion about leaks in x86 EFI [1], I audited usage of
+memblock_free_late() and free_reserved_area() and made some imporovements how
+we handle late freeing of the memory allocated with memblock.
+
+[1] https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org/
+
+v2 changes:
+* fix UAF issue in memblock_discard() reported by 0day and sashiko
+* address relevant sashiko comments
+* squash memblock test stubs changes into the commit with core updates
+
+v1: https://lore.kernel.org/all/20260318105827.1358927-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (9):
+  memblock: reserve_mem: fix end caclulation in reserve_mem_release_by_name()
+  powerpc: fadump: pair alloc_pages_exact() with free_pages_exact()
+  powerpc: opal-core: pair alloc_pages_exact() with free_pages_exact()
+  mm: move free_reserved_area() to mm/memblock.c
+  memblock: make free_reserved_area() more robust
+  memblock: extract page freeing from free_reserved_area() into a helper
+  memblock: make free_reserved_area() update memblock if ARCH_KEEP_MEMBLOCK=y
+  memblock, treewide: make memblock_free() handle late freeing
+  memblock: warn when freeing reserved memory before memory map is initialized
+
+ arch/arm64/mm/init.c                       |   3 -
+ arch/powerpc/kernel/fadump.c               |  16 +--
+ arch/powerpc/platforms/powernv/opal-core.c |  11 +-
+ arch/sparc/kernel/mdesc.c                  |   4 +-
+ arch/x86/kernel/setup.c                    |   2 +-
+ arch/x86/platform/efi/memmap.c             |   5 +-
+ arch/x86/platform/efi/quirks.c             |   2 +-
+ drivers/firmware/efi/apple-properties.c    |   2 +-
+ drivers/of/kexec.c                         |   2 +-
+ include/linux/memblock.h                   |   2 -
+ init/initramfs.c                           |   7 --
+ kernel/dma/swiotlb.c                       |   6 +-
+ lib/bootconfig.c                           |   2 +-
+ mm/internal.h                              |  10 ++
+ mm/kfence/core.c                           |   4 +-
+ mm/memblock.c                              | 124 +++++++++++++++------
+ mm/page_alloc.c                            |  46 --------
+ tools/include/linux/mm.h                   |   1 +
+ tools/testing/memblock/internal.h          |  34 +++++-
+ 19 files changed, 144 insertions(+), 139 deletions(-)
 
 
-On 23 March 2026 07:28:59 GMT, Markus Elfring <Markus=2EElfring@web=2Ede> =
-wrote:
->> When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
->> param_ctx is leaked because the early return skips the cleanup at the
->> out label=2E Destroy param_ctx before returning=2E
->
->Will it become helpful to use another label accordingly?
->https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/torvalds/linux=2Egit/=
-tree/Documentation/process/coding-style=2Erst?h=3Dv7=2E0-rc5#n526
->https://elixir=2Ebootlin=2Ecom/linux/v7=2E0-rc4/source/mm/damon/sysfs=2Ec=
-#L1506-L1537
->
->Regards,
->Markus
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+-- 
+2.53.0
 
-
-
-Markus these patches are already merged=20
-
-
-V/R
-
-
-Josh Law
 
