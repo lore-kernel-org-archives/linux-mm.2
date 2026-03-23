@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3660F483E7
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 19:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A54B7F483E9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 19:39:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34DD86B0095; Mon, 23 Mar 2026 15:32:12 -0400 (EDT)
+	id D1BEB6B008C; Mon, 23 Mar 2026 15:39:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FDFB6B0098; Mon, 23 Mar 2026 15:32:12 -0400 (EDT)
+	id CCCA06B0093; Mon, 23 Mar 2026 15:39:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ECFC6B0099; Mon, 23 Mar 2026 15:32:12 -0400 (EDT)
+	id BBB636B0095; Mon, 23 Mar 2026 15:39:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E11A6B0095
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:32:12 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF23713C19E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:32:11 +0000 (UTC)
-X-FDA: 84578323662.30.2E93261
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C6DBF40010
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:32:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lqq8zjWn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774294329; a=rsa-sha256;
-	cv=none;
-	b=RgjXzcge615aXqov/XLu5jIfDGMoseQoLryX+UIl+P04Yn1/8etHI4LHRTyhITGIr6XK19
-	uKYUhNZmmcVShV38W94PPCPgmn4Ir7sHDP7VJoM5EnrXzuyECDuMnLBcf+I4AXwj3xsdRR
-	XrvaaLzWs0mYcV9Iz+mDAsU+FZ12U4o=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lqq8zjWn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AC8F96B008C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:39:09 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C18E160D10
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:39:09 +0000 (UTC)
+X-FDA: 84578341218.11.49953CE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4E85CA0002
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:39:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJ+d1IE2;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774294329;
+	s=arc-20220608; t=1774294747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6noeMhmN1RTeEof+ypetO7wKothDXttGBMpfLs2ADuo=;
-	b=51u2WGX1ERuE2vZFZZmgwCp5yXSvzBjPQjVTQA3JOW4bxjcaZaetn6aOvgtDHYrrXEEpsP
-	1E5irTFwKoxpKPua336CCXkk6l2bFyjnqtQ6g8MbT5bJykSaQn+JPI1dNQxCTJqf0dn01y
-	vxSmRqYWZAqK0usGTOP+f0JTwLmRde0=
+	bh=QDKuD2LWN5KTaG1Y5kbzQmhGa9FcWYd9eBa/sp8sI5Q=;
+	b=qWyGRSuQFQS7mvY4HeLS1nXDM9L2OS8xd+AQs3tlAx+ca9OOkDeF8vrDaB2rl286CUAZdx
+	fnO+c7kh7nKJmnS1JqDlwbTMZnr7ucpO8xeGHwDAHZQvJUlrh9RpCcXjMd3EDgEwjI/53s
+	fWq82QiSHTjoA50iugfMLlo6Brd3b78=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJ+d1IE2;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774294747; a=rsa-sha256;
+	cv=none;
+	b=S/6fR7KvJDQT1aVwDTZTlU7nzC3ZSHWJN7Ue81bM43gyMjSAxe4BGmzZ+JFHG59T5IVdSy
+	rHnnIoOHjDPjQgFPqvsqqEN8dKf6+R91sVA2aB2nlGABmN5HCxo3Fu1Yuotj6+K+t3I8Vs
+	AOlhbIR5VPBy4drL7+sGJVIEIkbBRH0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 28087600CB;
-	Mon, 23 Mar 2026 19:32:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF016C4CEF7;
-	Mon, 23 Mar 2026 19:32:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 43E20434D2;
+	Mon, 23 Mar 2026 19:39:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B858C4CEF7;
+	Mon, 23 Mar 2026 19:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774294328;
-	bh=DcSNcB2vuoTknQEOUpXBENgPkQtkP4p/n7AoSZPFNDY=;
+	s=k20201202; t=1774294746;
+	bh=Eei5R6PJMtTTG6JSryoc1eT2IJV07EOeVe661ejNU88=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lqq8zjWnhd+1rhQsZ4u5Qqi7r5aqHfjizsnQ/p/wpc85SHL84waMlt3aGYJNZijeZ
-	 A5s+79N5WA1i7XT7NwfOJegVOC1F95hSCJwL/0vpcsyqs4QQQgp/JSfBj09/PU2W3a
-	 piseMpqaiph1/bV0QmqPrT1ylSbztf7Q4hG7y+YWH+oT3pHWeoPvoz7o5BNV2y6h7P
-	 piuHTQbvounqqcc91YQCNWYwSIuNODWREGYGzdJHbL6ntprBNVvccG9sFyk71UfJL9
-	 bvDIZRyMf3quZ+9VNLvB0q6J7+kI0RZkz7GYhtECpzzBf19MhQgSiurPqfDv2O2u/v
-	 gtf7xKGZ/A+DQ==
-Message-ID: <33879ae4-5788-42ed-952d-9792d50b4a4b@kernel.org>
-Date: Mon, 23 Mar 2026 20:32:03 +0100
+	b=oJ+d1IE2lXshEQKbMZhoPSOGCUt44s/Q+1tvZ+pwbF28WdPZV12HTdbsCwwK8IkTW
+	 vRS4G7GYytxBH9Ov3Cegw6yJU/cqaWSPjW9vuq/OdoPRWlKp+EIj0RVWPStMhPIJs3
+	 7ZD/5ETf152Nmat+zq10RqhYHNHJa9SeQ+F95HM7H/8j9FMmE9WtVk73l1GAf1NHvq
+	 ytxpSdDxgYp6500C28PceXubnbYbtSiaD+CLNA8N1myE2OPTM66ZxqqtOQtHieonRI
+	 SD3arytyjyI2+q1RMYiEXdxmlDoUdXbgbNI3M2MSOl6QB0R9TQ+/IRnq3Xk7XuvVCs
+	 y4n7C5Zd4ankQ==
+Message-ID: <2cfa402b-319b-4cea-a2fc-1cefab76c701@kernel.org>
+Date: Mon, 23 Mar 2026 20:39:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 7/7] mm: switch deferred split shrinker to list_lru
@@ -81,7 +81,7 @@ References: <20260312205321.638053-1-hannes@cmpxchg.org>
  <61d86249-cd89-4e99-99d8-ab7c72e95f34@kernel.org>
  <absr1vgNP_tM1OEP@cmpxchg.org>
  <e9631520-857f-4f67-8944-6af7a2b47e89@kernel.org>
- <ab1wrRdT-4GfWbcH@cmpxchg.org>
+ <ab1vnhL4XftNdTSu@cmpxchg.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ab1wrRdT-4GfWbcH@cmpxchg.org>
+In-Reply-To: <ab1vnhL4XftNdTSu@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3mxg444pkztdmr69es3of9g9nm9mh8i8
-X-Rspamd-Queue-Id: C6DBF40010
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774294329-891211
-X-HE-Meta: U2FsdGVkX1/ORt9k8Hfl07bY2b2LIY6qVpEM6cynolI9bzqtMUZ3ZIPdyyFHLtd+lpwyDvzNbDr+ajeNfAEAQLI3aTWnx/8jAKOyDf1zp2synAtCfGyAjGGRUmfJ8FQUr67aqpO2QLVupHkWYaNk1/YAQAKSwmvyY2qrDTNHOdDjYqcQ6LKlm6dwy395LfVt5lvGfSAXI45X7sDE3G7QMOJXxwMAcrXNFiAftVCptYzLFC83emCuiYFlJnSiu680dF9UPoLQ15YW0EDFrwIf40wZDzAiR0Y1ZM2WVJ2GJIKkHEzzN6bjGqHBDVystsT3fSOJdjgNQVtEqfIb61/9gRstibF6iQuVBDwNFpxAumfTHbblxooOPeCCebtMS8dYrsZB3F5YI2J1rxwH/1qi5g0NjjDclYPiBWAesaJkZ1wH4c9Ujua517nv/wZc9qx5oFsE+/B+Wabls7IAOwXvNyYUDGM8kQFewj9w0ZGh6cbDXrcziDSa2BOfTj+69qgZ4IpodmWbPg/Cx+oegWUCqUzzvMI7pckWZ1aaQNjy1uqD5ZwA/ofg5n0Kdmw61E59KYzM2s1xT7lf7vqrHP1r9RjlNACca4tGrUxd7k1mzZXW4FfzlDTSTwwrLzUxIDzFqyFUbmbTYd+xabYvGjL/2TLjvgwyPzji5Yt8f2M6ZN3xpae9nmjEIopQxx/VgIkfMEhPDQieZ54QpL9pzobZUX0XJUXyl3iQeeEY7KEHeiXDQlwNSYC33iIaUavCNy6tSryt5lDIIW6i0eWByUb1t0v/uXSAkWF5LwQdrwEBV8zFQBS2eQr+fUOBw/dEBNX8L/WOtLtfiAO5/qBWqwTRchDeVbpUlWrApjvi+vua2i1zL49HvGSYHb2UuCeBYCRuskP5tw09v/PPCtZ2PlzneYsstvH5Qdx1nkGbjIw6H+KY4oS7bpZ8Pd1P5oHDqOimvxVu+pykNWCQz7TRUZQ
- eU/Wd6h+
- 0ca+fOgZgpv0RbY9A/uShOtcOmvwHS6VLHWgE+3f3rvXFEXaHUruCXXH78ZqLO4uNpUSQ08Dr4unpp0kOhLG1dpH0QSESuSI1ny0brvQ4qjINXTNLksKUH0bSzD2QBJsNDZpUpGa8dvMVdoZEJOO+hCN+BB42kEn5Ge7Y5tNE4S0dSP2+6zGn+KaRLjANm9PnFeEDrc2cY10q51Nyt1U7rSCOs7R8wYctbXmkrLodrL6UdZcmd7aNgGlY4V2HlHS68sOdSs6wCMnW8tlg0pEkS1CwDBrA8liYiKJigbLId4KaWsDkFo3eRGXZkA==
+X-Rspamd-Queue-Id: 4E85CA0002
+X-Stat-Signature: twkbca6si7d1p783yk8ehs5impjmbu16
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774294747-222129
+X-HE-Meta: U2FsdGVkX1+Upi62Tik4GR5ycET3VuAvTfp/Y/nxVOGze3jEDDEPGBcr2SNuoK9N5h9CdwYPJCTmA301OxYKSfpTTGyRF9K7d1I6FkLtIZmQ9sd1b/WPF0jpMMxGROyukdi4LLlpBOq6MTrynMRPeagAFQHI1ODrCCjDNFeuLnp0D4bc8N8gj2Ge3n3J3X06l6KvZnbTc4gPDHg4QLEhoQaDE7MmeAne2tinXI8wO3Hlf22DruVT0hVQfg8CgRDd/sIhAuOTSPuI4QrSZl0R8Ps2S45T3t8KcZAxUL1KGcNMf/DPur9u7EP0GjaA+Jz16PMe2eVkpbPa4gqaRPyiCUT5Tj8Ng/+4XN8i4iCUw9QT1qUiMA1q3aEovaQAlcNWrEAQ493D00c87Ka/Gmpp50eF5qhKYlpHLoNCEPwJbwDsf3DXvHhoLqK4ZWtsjoPZYcFdvmsyXTDkSvCYAojUV0EbqB9913FRKJtpCmQAZjVMkFw17PPGm5pVuLqM8u5uVgPwLxkFwYLsIcBSB/TpovEvOQ0a+ZKu4xOy5yUduJDMwdvPgT38MKBto8ONGIbRi1SWWEwhkfROS9fsyLmmhFbAShrUDcbEAHB/DtZhNDMfBs0Jc6oNspbjVz1EasyILOQI2d5lYzlyb0fHeBXXQgjs6krInYhyQ+WtnfW6TfzjASkjGF+ua+IWwTZJGiNKUIVgMZH2OMYkxFl8tUDvfcYg/6ZzjWyVv00n808phkDPMcvoKTs+OmdZcrCNopZbIgCmYejFaYYLkAFuDhmk3DsnCmgDZZB2976/K9iyNbYZDXugQCsLCDbwrPGfNvRNvtokb/ksrLHUMSJSuUOTr4qt83Ihv5mBLSnDSSsfg4BMtXpbHgc51yHUQOtTAAJMssPNxKOvJlXkhTfeY/MKkl97sLqSU0bTYVn8HqEFL8ebApWRaEt/eYyFP7PauuDQ9UiZ4Sepyi4WucFsJ5a
+ orUGXb1p
+ zOfScHVzOudu0koqFji4jF2ta7g/GyUqMCBRLefsafLgPF6yBLFcd+NTalIb5VEt1rog2bLthM3khCvijbRGwnk1v/BEhgBef1UR1wWg/9Rg3cVTtvyyIfBp00VPmoVIvLtj7g1+TI/z4Fdm+ujlngaxn7QDMOAmQDxAGc34MADNuWUU8bXX8cxKz4AALfzpfZL+qUODzz8+wyE2/3qnVfD4cpR5lrbHigIeMI0Jk6a06p1kWwUxqmEszo0GU8Vj7kNM+OPKQVl0F9u8E2wf4ZXffjjLB6sM2/IA+1SaqL2Wd0t9LOQec2hRsvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,32 +146,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 17:07, Johannes Weiner wrote:
+On 3/20/26 17:02, Johannes Weiner wrote:
 > On Thu, Mar 19, 2026 at 08:21:21AM +0100, David Hildenbrand (Arm) wrote:
+>>>
+>>> I remember you raising this in the objcg + reparenting patches. There
+>>> are a few more instances of
+>>>
+>>> 	rcu_read_lock()
+>>> 	foo = folio_memcg()
+>>> 	...
+>>> 	rcu_read_unlock()
+>>>
+>>> in other parts of the code not touched by these patches here, so the
+>>> first pattern is a more universal encapsulation.
+>>>
+>>> Let me look into this. Would you be okay with a follow-up that covers
+>>> the others as well?
+>>
 >> Of course :) If list_lru lock helpers would be the right thing to do, it
 >> might be better placed in this series.
 > 
-> I think this is slightly more promising. See below. The callsites in
-> huge_memory.c look nicer. But the double folio_nid() and folio_memcg()
-> lookups (when the caller needs them too) are kind of unfortunate; and
-> it feels like a lot of API for 4 callsites. Thoughts?
+> I'm playing around with the below. But there are a few things that
+> seem suboptimal:
 
-I like that. Could we just put the implementation inline into
-list_lru.h, such that the compiler could try reusing nid+memcg?
+I like that as well (and could even be applied on top of the other
+proposal later).
 
-[...]
+> 
+> - We need a local @memcg, which makes sites that just pass
+>   folio_memcg() somewhere else fatter. More site LOC on average.
 
->  			__list_lru_add(&deferred_split_lru, l,
->  				       &folio->_deferred_list,
->  				       folio_nid(folio), folio_memcg(folio));
-> -			list_lru_unlock_irqrestore(l, &flags);
-> -			rcu_read_unlock();
-> +			folio_list_lru_unlock_irqrestore(folio, l, &flags);
+The LOC is really mostly just from the helper functions IIUC.
 
-I guess it would look even cleaner if we would wrap the __list_lru_add()
-that needs the memcg + nid in an own helper.
+> - Despite being more verbose, it communicates less. rcu_read_lock()
+>   is universally understood, folio_memcg_foo() is cryptic.
 
-These are the only remaining users of memcg+nid, right?
+begin/end is pretty clear IMHO. Not sure about the "cryptic" part. Taste
+differs I guess. :)
+
+> - It doesn't cover similar accessors with the same lifetime rules,
+>   like folio_lruvec(), folio_memcg_check()
+
+
+I think it gets inetresting once the RCU would implicitly protect other
+stuff as well. And that would be my point: from the code alone it's not
+quite clear what the RCU actually protects and what new code should be
+using.
+
+But I won't push for that if you/others prefer to spell out the RCU
+stuff :) Thanks for playing with the code!
+
 
 -- 
 Cheers,
