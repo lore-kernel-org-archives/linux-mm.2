@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E2A0F46139
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACA82F46137
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B28F26B0088; Mon, 23 Mar 2026 10:58:18 -0400 (EDT)
+	id EABD96B008C; Mon, 23 Mar 2026 10:58:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD9DC6B008C; Mon, 23 Mar 2026 10:58:18 -0400 (EDT)
+	id E34D26B0092; Mon, 23 Mar 2026 10:58:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EF2D6B0092; Mon, 23 Mar 2026 10:58:18 -0400 (EDT)
+	id D71DB6B0093; Mon, 23 Mar 2026 10:58:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D68D6B0088
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CA07F6B008C
 	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:58:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 574C11EE27
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 738031A0BAC
 	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:58:18 +0000 (UTC)
-X-FDA: 84577633476.17.B26C4AD
+X-FDA: 84577633476.05.5B85155
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1DE8AC0004
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:58:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9584E80010
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:58:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
 	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf02.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774277896; a=rsa-sha256;
+	cv=none;
+	b=LvikgtJbbL9uN0WaIHYFjFvE3VE+QhzEzEWhplGCc94bOSqBxQypIbTtGf6M95Qzw2QcWE
+	u8K98Bo7t4SYHsdjmfUpdsKgq2i4k74e+E8ceMlFfOId3eVGH+CGlBTjQu/kr1evPRsG6P
+	Q5FJX4EUbP9OW0RPQj2tplm5QtyKa6g=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf02.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774277896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sNsIVatcWFMLFxooESbbmvJL/fQ7XNaFIEB34HY07NQ=;
-	b=FWRKlYxkxhz9VtU/hoA7HBQCjJEa9byspzaz0igC3xTdUd9FnV7rpJA2IJqfDA/6D1BwyU
-	Qidvl8pGG/jLmVquuLk/7Ofo3lmrbhxSS3VdlUtFkYhG3c3z9eQU759qhlNWpPcLjCPYG9
-	3EqHUMmLrA/LZwSnc49axg82XBFSj80=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774277896; a=rsa-sha256;
-	cv=none;
-	b=XEOpo/RXeap1aW5d1iO3JEyBVOg4Q9v4hFWEFMrM2JlD1pJ4in0J8v50oLswFEaCevjvQZ
-	GKfuLkWHaCLaGpTIYhsOa6Pz98VS9QhiONnssTjwNVDWM7udrAZtL4oyHkgbgp6rLGK1er
-	PEd7wRsqlmpN5PqZbvwrfitJXuqOetQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=Fr9WbRB+R4X0dkxGs62oUznlSfvV7dDKBzgS8W6pN1w=;
+	b=GMuZAhWJYzMjJZXXjILdC6wNomYIvEqaHMrAkPmmBBCc7IkQa3pMXfndiFNSfQkV80TbBJ
+	+X0081CxYljTExaFxk5vqDujdNnf2gdkZjQzxJjuR2Qm6JqSZUQYW+giXRn4MSwZfJnWhY
+	i1xIqHf/bGmNlvf/xwvYYC6fIh0XN9I=
 Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4ffbr45g9RzHnGdd;
-	Mon, 23 Mar 2026 22:57:40 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4ffbrZ6H1QzJ46Dc;
+	Mon, 23 Mar 2026 22:58:06 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5A78A40573;
+	by mail.maildlp.com (Postfix) with ESMTPS id 4479340572;
 	Mon, 23 Mar 2026 22:58:12 +0800 (CST)
 Received: from mscphis01197.huawei.com (10.123.65.218) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
@@ -68,26 +67,24 @@ To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
 	<surenb@google.com>, <mhocko@suse.com>, <corbet@lwn.net>,
 	<skhan@linuxfoundation.org>, <linux-doc@vger.kernel.org>,
 	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v2 1/1] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
-Date: Mon, 23 Mar 2026 14:56:46 +0000
-Message-ID: <20260323145646.4165053-2-gutierrez.asier@huawei-partners.com>
+Subject: [RFC PATCH v1 1/1] This patch set introces a new action: DAMOS_COLLAPSE.
+Date: Mon, 23 Mar 2026 14:56:45 +0000
+Message-ID: <20260323145646.4165053-1-gutierrez.asier@huawei-partners.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260323145646.4165053-1-gutierrez.asier@huawei-partners.com>
-References: <20260323145646.4165053-1-gutierrez.asier@huawei-partners.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.123.65.218]
 X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
  mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Queue-Id: 1DE8AC0004
-X-Stat-Signature: difum7pj6u4iybbhdnsf48nje3m9hq5i
+X-Stat-Signature: c1dd8texoae77ptg5n4n71b3ju3ntdi9
+X-Rspamd-Queue-Id: 9584E80010
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774277895-395036
-X-HE-Meta: U2FsdGVkX18T/oFjHB1ylPBmfxia1muEKdZQtEa9/VMjNOgemkRlMiSyLo8KUrB+e3AbOlD56KSBK6xrqkABT+od/zIc3EgzthyJsLxlHuYo1mGDKjKvAq1iSt7FEdXuVWkOu0m0DgeR8pR7amR0nRMujnZYxXc6JTm+lEWg/rI90ydzhmAhodL3TMVGQDeZPcNqBPxdrx5nDboLUCF9o4ODBRmekRb0eVh6Xr84ULCO0SMMUNGhRgL/oqD2gnHgxeozRaGXZ/11c90H5j8ViKK7xrQl90HFZUTuIjzoKM/KI2lwuwR0fWhtneujjPrvnjwe9/Zl4707CK7RIDnPRcHWaQl39DO13pAd5i40IpaiPSxE3LS38gthDgtB/Q8S0vv5LPEXKJ7Q8WIfzk+9mtjoCE1X/Z7gmq8an5dCdrIDRJGShFfbJiG700hoinLylYfa5JzLn8YrVQ7JNyxULtHRNjGBXn591IXBa5/PKfv4cjmdeHoJUKdL+R69BrmFe/b+bT5+Gp/z1MPPIUPSe+WXmXT9iwaTQvkCIKM0Jp52jj9d7nwM5t0lAWcvAsOdgaeXLI01CaJRPqjCYRiHeuvXEspnVmRQYDSMVgZi0ip5YQBQPLKL0ild8rb1gzfDzc1VNL5ih2SjJnqh2wfwKpOepiOsem87ZaEzPI47z4PPbfzahYxkud/egAOqdOhf74kjDO3dTowjYnJcsV6ZXecsk4l/VPk1pPtb8Yaea1+LFjLLED1L0ji8vH38gIVu+2jVP4U0t/GP2vVnrdiU3Z5D9y6zGFx4mxX2FYuZIPeq7Le8I5XMTpUv2fy/hRPZBAjLx4CYagcWMQWH8EIX6soS5Ddh+UwNmLpylgg0wNSfL6bqon1La/zNzie75bGkeJMl4Pt6TXx6PpARco7U73dLJw8TmYd4gkR2ckZVsA7k3icQeV3+WZFVvtt8wWQdhmKowMarGuFbUy/2ErQ
- 8v/VRhX3
- C3+HhQhddtWhc8ZWRF50107WMgCqd5ghrDgjJ4gbGX1+4Gws+3BGMOzNFNQ4sT7KB44Mbsm8axgNA5t7KLfv36Q2pyYAXVwHhflpE8qHr+V3QFtW1Vo+EvsgYvgx8xNx9o84eg/qxN6ASUTev7KE614k+/sLJxLpRi0ImZKn5WkRo2gvbF0zwQMFYcE67V136HyVnGhjR0wJN6fbucNpRcFasYLT6cRZhAuClAJZgmZZRkwKEgLgN4LYVOMXFT5Ub8R85vH7oVWzqkVVnjf5xz/zudIXvihUYhWccHFYCI/e6Wfs=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774277896-210492
+X-HE-Meta: U2FsdGVkX19cicIJj8rnshM8Dc7vm3YP7CDcUsp7vOLBNfriNQwJs46PnOmFUwboyelZNDgmRv1K9GQUwDO9Ubw9umz2FCrsVOoza63nPs+6Q4liFGO4VCRrGrTwThs0T/3rsb+B7GjETlgAAH7SoSPeyapwu+BfYsor6228wsmPA3sm4bJ192KpkDN62ggeN7gzYm/Z2zWlsINL6pc549VEHt31tYPgLM5B683E3I3XWyVTva2q1+D4qYbBFbGK54VwMF0LpRhTcDOQQsepX+WasHwoFaTVLpnvoGEBSLnAJmxBikX7gl6iWCPWrN9VE6sG2SI/GNidWlA9eU75GuzQsDqI+gXeXtmQXLZu6CsKBMW+dZ076CLThlg8lx/VdKTrFvJvvCTOqUesLmf79IAhr14HbikmH9Xfs4Z/zSnjJpcXi3SnRherSB93cdKmxqVpuc30JimJq7SWUjgxYrb1Hlq9OicHHKzOOmcnt9xQ2THXYfTu0H91ZxdNFR5WANFEaUeFr57dGx80CJc0a3Coge+zh6GtVquopWspnt4ggp8oyC5mkysVap7ODa5CKtlRbEFFGZ8JNGv3CCEWOPHl0DYFJ0v8/LuE6BtlY3pIwEjytmK8Xi1t2FHRAF/GmF2mRutjOSiBBqoj+T8Uq3lN36qngMkAmjk2veilTOuhtFC2FqeDcMFzg76/JSoECvTw9lrR8/gkCNPxkVcVw9nArzeDERPxFTTcd7UBmo//G2IA938VmtGAJomVTF32+2btgOL8/R5DuxOKt5jE4FG0bA0qx7hPenrVUrNln9Ljp8GwJdFvvsYEJ6IMo9fxXvJSqYb3FibtvJiGAXkhLbG0gsHpYF2Tq5MXT+EkoJRaZnXrVFtU2N197PLn61on60A4Cbyp7cIiJjq1mkS01t0seZOUPRR/izcTfljaJsIJVY4l8R/T6TnEK2OeEEYUG7NOuUgPQqydtZnF7P8
+ RpdWRxZt
+ vMrMV/hIrAJhVkXU43Y3zxixZpeTvXZLcWO3XlbzT/qKipqNAg8zB3jJE89qBWxgf4/pw/SKJFXrPqv6kR9gc5Enp0MLTLbi8endnLVrX6uA7nr+Wj809b7A6Yt+VRTejtP36WD1CbRzJpyXGXWk8JiMqTYtrkVFertS/Kigi7LCD4c3GSsQ5ZehfeDQZ0VwCcmhsIA33YhADS9Yl2B9yJxAcWOkFH/f4HomOErRaAC6EX058aGEsCNi92NRQpPnVnTh2Q0Fp+bEYAqgyu3TEbA1oBbDjkCt+iNulN+C7ZShmo0E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,8 +93,6 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-
-This patch set introces a new action:  DAMOS_COLLAPSE.
 
 For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
 working, since it relies on hugepage_madvise to add a new slot. This
@@ -131,7 +126,7 @@ D c: DAMON action collapse
 
 Changes
 ---------
-v1 -> v2:
+v1-v2:
 Added benchmarks
 Added damos_filter_type documentation for new action to fix kernel-doc
 
