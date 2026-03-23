@@ -4,98 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 990F9F4613D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9A3EF4613D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:50:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C5266B008C; Mon, 23 Mar 2026 11:49:10 -0400 (EDT)
+	id 1B0886B0093; Mon, 23 Mar 2026 11:50:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0762A6B0092; Mon, 23 Mar 2026 11:49:10 -0400 (EDT)
+	id 1886D6B0095; Mon, 23 Mar 2026 11:50:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECE3D6B0093; Mon, 23 Mar 2026 11:49:09 -0400 (EDT)
+	id 0C5A06B0096; Mon, 23 Mar 2026 11:50:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CF7436B008C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:49:09 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 978121DB59
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:49:09 +0000 (UTC)
-X-FDA: 84577761618.21.CA799A1
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 67974180006
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:49:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=h1ep4pQX;
-	spf=pass (imf24.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=h1ep4pQX;
-	spf=pass (imf24.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774280947; a=rsa-sha256;
-	cv=pass;
-	b=oNwXQO0eGexrFECGitAJpac66a3+oheaSeE/+XdkcCkIYt+tg9XJ5pskPV42TQLz5hLbuw
-	mPnCIu3sxoFTQBIqohgLKzPthhK4LZmFaVqXQT94ZkfqaWd/cxUARvTv3HRftNm6QKpMWH
-	akzCuTmyO4xGhbY0lDmw9fH1nFKKY5c=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774280947;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F255A6B0093
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:50:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B3CC6140C4C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:50:00 +0000 (UTC)
+X-FDA: 84577763760.18.E049B6A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 132D414001D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:49:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XdKC0tlg;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774280999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wqFlklrlq8f8GMqCaRA6JQDMLtlxicYYgk8CIa7235M=;
-	b=1n6MOnE9igE1jjzsagBqj9k4E9oALRpUdRM0zr883YWEjCnNcP6fR1R7mDDTN6JgfesM8N
-	vdZoqUq074O1439pE5VUgqstqasBFMCNVq+SFi4G4scuAxstzjVSZnFav3JpmjCTca1yR8
-	6/aUFY05yuCTYN3H52/iN16zVy5Z+9s=
-ARC-Seal: i=1; a=rsa-sha256; t=1774280935; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=CbbjtYdP4E/xtQsdx3+okOUtXQbDc1SOiN2xE5WVEx3gtwbaHTWnmiUI+O+Bu0YGcE62s7SdpU31AwicDgN48WX2m/VJL4HNVJCzEzyS+mxo50jZFFf4CTWqpVivGNjggjiessfXPh8E8z9Frl3k50miXdngG5kC+3evfp+yn/Q=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774280935; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=wqFlklrlq8f8GMqCaRA6JQDMLtlxicYYgk8CIa7235M=; 
-	b=Lr8dxg6nZ+YV+G76OS6FVPIFay0DIb7cR4jWx7rnCHdWTRsVnLRACWjziBMldZS9hLmDcsHzVBfZGUXlOEHaArtg0ZsZ/OHdN1dfc964cvIOTKXeW6UtcqBU3I827jgKmbiIllpIPQ3UTQLcuwecNlNEKNiLis01eyyiovJltOk=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774280935;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=wqFlklrlq8f8GMqCaRA6JQDMLtlxicYYgk8CIa7235M=;
-	b=h1ep4pQXMZO6jnepVRwIj5Sq2N/4vnOJYX3HjjR0lvSgWDXwhiY+ZFeK+S4tLFFD
-	HKf32O7YMlbpCS+Flqlrzraez6QkbbpSJdbL+MbFy8dzhR93yHbHgQIm56slZABrghd
-	kOVHal1wxL0CJscvM9ZNVZMDVXGBl6qO1BCgibEQ=
-Received: by mx.zoho.eu with SMTPS id 1774280932246117.62916547273733;
-	Mon, 23 Mar 2026 16:48:52 +0100 (CET)
-Date: Mon, 23 Mar 2026 15:48:52 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>, Markus Elfring <Markus.Elfring@web.de>
-CC: damon@lists.linux.dev, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Bv3_1/3=5D_mm/damon/sysfs=3A_fix_param=5Fctx?=
- =?US-ASCII?Q?_leak_on_damon=5Fsysfs=5Fnew=5Ftest=5Fctx=28=29_failure?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260323152453.81603-1-sj@kernel.org>
-References:  <20260323152453.81603-1-sj@kernel.org>
-Message-ID: <96C00873-532D-4108-8FAC-80BAEB5D503F@objecting.org>
+	bh=pBxuE79q0h/5XA82Gqv80sB/5+DcRUE+NdGM983xYdA=;
+	b=OH49hA1Ud0xnsDG9JBvBiHSEqcKbKCYGO3P8q7KZrHBOZ+aIOWo4pVa8tAom68DQlTkTcU
+	/qALJAhZc02skN8odpcwX0RDU0J/nX/+cO9UiUvoC+2jCN1+XNgM8Pn1TmdaelY61mj1nT
+	8wKRNmIjCibc4LpaCtwo3el9g+S2qUM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XdKC0tlg;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774280999; a=rsa-sha256;
+	cv=none;
+	b=O76M2w+KjVQHfYworWG0wKoSB2maKYFNZDdfiaS8e6S04OsYTYiu2yv5Yxr0mHBLZjW6fp
+	kAcz8rekc8IkUO+KO7MIXYaVYQdgXBVH7UqtYItyXAgNzwz1O9DyvM+2cBDLm3NhYEeAXE
+	pkQNUzVH2xOzRAWPtJ78TVS+0+nS7KM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 30C9443D7C;
+	Mon, 23 Mar 2026 15:49:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79346C4CEF7;
+	Mon, 23 Mar 2026 15:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774280998;
+	bh=PE+T0jq3B8ZtYRDz678LEyuTz6jmDPCQy5RpPTYrDcc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XdKC0tlgf1MZ9+nFlKePnzFurNne6QPx1E6YWyTEqc5Cy4/MJ7viljpcXJeeYfD84
+	 LwWQhNPsI2I9K0v1c33u+VAYFjbd8O5XNRv7oB6hk9aWRLevlIqBhXTN/OJlKMwQKf
+	 P5Vz/q+wIiOUnPmbE+gPP+1XyMVrMVU51S9pyTagqqIblZpcRImI+DCS0rQGs9Ppmv
+	 uI4cbcMRaN1v0kgvKPt9I+2sGELYGp/hsRsweEovyazf3HWaMCdkqf89a80XhZaKnl
+	 owytQQeI/86OfShIGnWbjgDPLE70BmD03V3uE7cRvQ8417IfFC5O/o3RDSK2/SzDZz
+	 cVIvEtMGRKwxg==
+Message-ID: <3945a9c5-565f-4126-8d46-1db584b09e79@kernel.org>
+Date: Mon, 23 Mar 2026 16:49:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 67974180006
-X-Stat-Signature: ijap38jqnkoe156gn6ipainakhp6a8jo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 24/25] mm/vma: convert __mmap_region() to use
+ vma_flags_t
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
+References: <cover.1774034900.git.ljs@kernel.org>
+ <1fc33a404c962f02da778da100387cc19bd62153.1774034900.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <1fc33a404c962f02da778da100387cc19bd62153.1774034900.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 132D414001D
+X-Stat-Signature: 73ucfa7fmpu4ynpjhnws7371gpxq6tyo
 X-Rspam-User: 
-X-HE-Tag: 1774280947-579613
-X-HE-Meta: U2FsdGVkX19ToLq5JmP89ssCMV/0stSUsJPiIQrQO6VTJd/s+dAs1ATuCFqRtDVnA0JAT//E6/ju6uoqtBLMi39NusPWbmIvF7bnsmXJr3yCZgw6qImMCy+ycok7HJcvWTfD0QznLBswv/eDSMbe3ONkoRv1Wb84q1dwwwZRcpzejNSbolUXyDQrtcjOkjdM+nQscVCd8jP7x8DPDJS1OdKA+PKGuEiA+miAO+dyTL1Aa4WAjP9y+OsK4f4OXr8WTxNXqS5iPVDssD1EFVdFTxfVoz6GSfPgavlw+ixlErbrLMF20dzZLdL5+PaWRiJMlr5CC94fsYZkN30zBCx8+RCQvPl3R+uRm10SbrX7YTLW2BW1bEnfaLDxx+ya58aHrRi+gqVnX5t0mFyc58v2myshsBGqJgzB8+FhMPHca6ehyQPOg6cFStgmZCrJTKbXVU/9ODaZ8c5jUF6QGq2ZPMcyEtiqK/y0Q92FMjPUNkngApKOAIDgXO0gFGTW7IU3RBdAlNlliSHZS9dvfr9u0B4SjZXU7Mzr1NpqJNUpCV83+JVf0UW4PdGM3Hv0wL7LXcriDEzq2Qu4dW+0NE6Og52uIuhLcFSTfPibsVHBksSIJf3vgCxJK120CfCQRPJvuEyZs0NfGRhaxZEG+Kz/XJj4Qi7jW8KcL1KAKqpPBVcWSg85sklqLKQ0KsiljbJn+QIuXzE6ghdAp9qp4U7yCQC/Vl0EH6iiBQrggPZTzcu/ypsCsk0/ufqhtpCZ0Qd8dq939o7Cy4yIFtEkV6n/B60J7KhLo7Qp73DuRINOpiUwLbbyIvfu8rAEqtLZIXtIfF9ywXeiUOESuKfqsxAyoO8QNeP4K0tAqx7dpK96JFpKDUbCrZsqEOugQTHvwQczVYX4qei4n5vZHkK7wnF9bHMw9uvEpvu404Q21wiZmqopJx+Ebcr42Y2bNNE1nVXEmDtITW3oe5b+eFoIEBL
- mV/M8Wqv
- HDB50DNaRHDXPuJAlaG0gNNd4zxC4VLp5m+2dzcY25EhyumSgh3RJnLtfHo0731NHYY/Itngar7iOpEWwzblCSR6MtVPyfruSZMQWMu6Dd2hZEHzFk0jnCD4h2pCMW9YPyeUATMnSvgEri6boNOG7+uymDoPxX1EZgTL0sBqCtru5c/zafT8G/9uf3DqfmnVe4I5oLOPjeyikA9KYe30fRJWbmX4TqCGsHR07yvo6KPfseRwfIuZ5/My56JTKWcTUTfjnDy7eC/G1qYgwT4x/D5GaNcdn3E18g2aU7wFvRg8Y+f6V6FryqDybBGqUzMZOQI6sGLUqW3dtBvwkzi/scDmV8yY105Bj6AvCTcP46bc3g+ia5UtBo0kWj6/wTHQGExmj1xiq6yUGF7N9ZUVALHXVv/oVxsvo8AsGJGocZnjlEx3nNdkNHQx0QElqmpDFXtcPI8cx1aq+7vdH3zgdmHdbWFTlRWTjFEguDhQyoGkuFuwdui5+JqGJut7miN7Ts1SaZyrPrO6TAxZ5xFvyfo3mxKypAmryeYMolzF0y6ne7oKmCwDjon4XsSIGhV3rkdLl
+X-HE-Tag: 1774280998-709486
+X-HE-Meta: U2FsdGVkX18bUvnEqb6gap/JrWLqwKVpa30AvfA+HTJzB22MAYfA2FtLaSrDJZIIX/yplhTFVbZBX8y/X/kvsaWBHAPMkKN+yxkUPTEKgggcxzioZ2lh64C+tfZW7SIBb3Ij2oE7i1YEhL/IsPv+mBKYRMVVkQSzTMnc0tmWODcCP+6m0BVgMft0VEdp9oLEwe4zvVLWTOS7L4pqprT+KuDr7thZK4nbeYfn+Oezq5jIdKH69fHBKZ/DL/9DjT+6YGtKZlR9LIExUHAeHNAi7LojfGHC2pDmN6K0sdux7GMDRNWhnvembj/NWhiMJY4geEDXlFP6TXdv3VSwacNKgdg41/1QeJIgVEsM1N5tnxHd4Ybd318N6eh0ws5QDjb3i6+wHbOO/uBa0vBZwaojortDG2bBmTD//xTvV1ZTPa26kG8NA6AFsZVduOPpmvQyPoV+oF6nFVS4CeFR17KS8jtoqXz1vyfHjrFenYX0cDA46fl9jxQHsPZE2JC9uGQzoEZyanUYUVKFcDt50f/cFdsUGS80nWhFyfwuBfYYfwDJ+DJQq2DX39Xaa3i3raapI9d9Hdy7uKNx8Z/7jlWPgdePxVLBoBYD7qMtFVHUvsf5H8Q77+wGSavced+1YCtMOsAs2F9pkE0/PnWNZKdXTJImeKKB/A4ckVtJxp/f9RiqSNwAreolZW+li7ZFhs/hQVvgjulZaYVE24FWhZmKUZjExAvjDCz1ZEThrTlSWqm9F82vwlHNV6DsTwni18NDbVeKFWTfCCaB+FMHiR8kAnJA5yeKdjOM+Lpf/Xvf9j325lEp7mSLaa4tjLSFgL2LfYaeAz3mg3MKSALHpMLloiCY+NTD8YEOmlprutjM6YXkpwZ3yhns0ZLMpcBvegy3Zuceiik7RzuuDgxE6IFMzZ+VwIn4gAatVqu+nX2gzTpp3LLeTrX802ln4nTPenmXUgU4Hsmps60Hi6g1lzg
+ nmRL1duD
+ /pO3t705P3SKc5DzS0Tx9LF7yLcSY3vfOwzf4T9cEo2q/TUY33fdUcNWuhpNYr7/e0pPOeM0jJd1Nibw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,51 +129,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 3/20/26 8:38 PM, Lorenzo Stoakes (Oracle) wrote:
+> Update the mmap() implementation logic implemented in __mmap_region() and
+> functions invoked by it.  The mmap_region() function converts its input
+> vm_flags_t parameter to a vma_flags_t value which it then passes to
+> __mmap_region() which uses the vma_flags_t value consistently from then
+> on.
+> 
+> As part of the change, we convert map_deny_write_exec() to using
+> vma_flags_t (it was incorrectly using unsigned long before), and place it
+> in vma.h, as it is only used internal to mm.
+> 
+> With this change, we eliminate the legacy is_shared_maywrite_vm_flags()
+> helper function which is now no longer required.
+> 
+> We are also able to update the MMAP_STATE() and VMG_MMAP_STATE() macros to
+> use the vma_flags_t value.
+> 
+> Finally, we update the VMA tests to reflect the change.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-On 23 March 2026 15:24:52 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->On Mon, 23 Mar 2026 09:25:52 +0100 Markus Elfring <Markus=2EElfring@web=
-=2Ede> wrote:
->
->> > Markus these patches are already merged
->
->It's still in mm-hotfixes-unstable=2E  We can still make changes if neede=
-d=2E
->
->I understand what Markus is suggesting is adding another goto label to ma=
-ke
->the flow cleaner=2E  Because this is a hotfix that aims to be also applie=
-d to
->stable kernels, I think the change is better to be as simple as possible=
-=2E
->Adding another goto label could make it better, but I'm concerned if it w=
-ill
->make porting difficult=2E
->
->IMHO, it is better to do that as a followup cleanup, rather than make cha=
-nge
->into the hotfix=2E  Let me know if this change is somewhat critical and I=
-'m
->missing that=2E
->
->>=20
->> Are there still development interests for the application of a better g=
-oto chain?
->
->Sure, if it makes it better, why not? :)
->
->
->Thanks,
->SJ
->
->[=2E=2E=2E]
-
-
-Yeah, I understand where he's going with this, but I'll possibly make clea=
-nup patches soon
-
-V/R
-
-
-Josh Law
 
