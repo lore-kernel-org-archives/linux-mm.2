@@ -4,131 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F8DEC01A2
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:50:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D7ECEC01A1
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:53:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB72B6B00A0; Mon, 23 Mar 2026 03:50:33 -0400 (EDT)
+	id AF7676B00A2; Mon, 23 Mar 2026 03:53:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8EF66B00A2; Mon, 23 Mar 2026 03:50:33 -0400 (EDT)
+	id AAE0A6B00A4; Mon, 23 Mar 2026 03:53:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA4F86B00A3; Mon, 23 Mar 2026 03:50:33 -0400 (EDT)
+	id 9BDEB6B00A5; Mon, 23 Mar 2026 03:53:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 979326B00A0
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:50:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B80013BF8C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:33 +0000 (UTC)
-X-FDA: 84576555546.19.81BA9B9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 91AB5100002
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:50:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l2yPHSZJ;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 87BE06B00A2
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:53:17 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5087513BF0D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:53:17 +0000 (UTC)
+X-FDA: 84576562434.02.5E85F5E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B11FC4000B
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:53:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NoUOiYcw;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774252231;
+	s=arc-20220608; t=1774252395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HBQ46eALmOXx1bXFmc5/BhXaBncR35rS+7D8fkUk74Y=;
-	b=pHkjB0Tn4L0Nog0PP/z379R2kLo1GLFwcgdwMidovTSaed2N0tmkDJQ6BrDR4wrw4Q7YqA
-	tEbS3aEo2Bi4pFhXmHS7hdBwC1fWwuHg9U2TlXzbSTj6xRM1RIdPBw0H4c5eD3boXeCzp1
-	eWkn7nPWqwHGtsmE7hGTSVWLu3nZHyg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252231; a=rsa-sha256;
-	cv=none;
-	b=eRix/9MJHDI+9ZLJsH4KD6bkhu3aoOLN56dpGghvKC29j5olA8PMdkxjXceexId2bhR78d
-	EhSYDgOzPOUfooMggFptVwke+fR+TgOyP48PsZUPT0hm0KilGt0ZXTzKElFcapDKffsMMk
-	D5faYJlggDE3um1g6Z+B6WUHDlO4A18=
+	bh=lw+23Z2qf2U/xRX85WmKeXeTVc90/3xX0OxyQLkOTuw=;
+	b=O2fSSEySZLdjfSmtyfdbQvEfY58qBdcgLrp1n+4WNvx5w53j2xCJ6j9zATUvy1aMKm8BCB
+	7wSjYMX5TcqDbZ9rdGpQ+/mXKZ05Qq+BHiujCplm8kD+kBqVL2WgNF0WmMV1osqchxtwFh
+	OyUwL/fBnzFdLRVVhDWxNxndqoBUlkQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l2yPHSZJ;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NoUOiYcw;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774252395; a=rsa-sha256;
+	cv=none;
+	b=FSO36SzArQvMjO9aDiXKq9+5O3CFzs6nfJdWct3V+S20vUGZ+u6ay03rKczusU2lN7fZNL
+	rG0B+RWLPgN5Ll9r7cqGwF+ybC8++NyEsLPo1ytv7T6nQ78QfD9GLpLnivE1FOO+krCbZY
+	3NvWS7rYC9GDu1DT5nwPDvbvwRMKluQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C11DB43704;
-	Mon, 23 Mar 2026 07:50:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A012C4CEF7;
-	Mon, 23 Mar 2026 07:50:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 304EC60051;
+	Mon, 23 Mar 2026 07:53:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1A8C4CEF7;
+	Mon, 23 Mar 2026 07:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774252230;
-	bh=2YaMKdXLS6q2N8eU5YUjQf/EJjPIOHb0bH+1NaX/nR8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2yPHSZJSFV/2Xg29g07aWdlpqOxb4al6/yvYuIOUOc2J7tJq3yci9lYgN2Ad0Btc
-	 nh8HF9hH3MVm8s1S/WvMnipPqcfHyqAWEvEIecCcyDRi1zIUz73z0ufinHvS2jUzLd
-	 5aN1Ha8QPGf10iolGEgBJSw3s3hSAP0Nc5WD7PS9QgwP1azCodE+X0whKC6tqHZLc6
-	 x38IZNl+bgo7TYx0jvflmrbVMoc8805c5TR7QMdkpN9XA29LY99N0h9RQbpDy+SrSX
-	 EuBPFYqGifP/Y+eDtcoJ7SoPLUbAZ5a/FJM8kp8xH+wzmAySKlRhhdc4rhpWSVh4yl
-	 yYvsW9iWMARwA==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Potapenko <glider@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Rob Herring <robh@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	devicetree@vger.kernel.org,
-	iommu@lists.linux.dev,
-	kasan-dev@googlegroups.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-efi@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org
-Subject: [PATCH v2 9/9] memblock: warn when freeing reserved memory before memory map is initialized
-Date: Mon, 23 Mar 2026 09:48:36 +0200
-Message-ID: <20260323074836.3653702-10-rppt@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323074836.3653702-1-rppt@kernel.org>
-References: <20260323074836.3653702-1-rppt@kernel.org>
+	s=k20201202; t=1774252394;
+	bh=ep0hDSwCBGOnuJvxJme1oMbAirhVZHXupMETu8snQ4A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NoUOiYcwo/H7w+dsYAyFCvOVNzzuboDFucLEAGhVJsh7zhirN/JAuNuWb0IChI9YA
+	 9vacG2nDCrg4TOJCH796WyyHEbOdUj3Aa+3UtJY1Dfadu4cwp7rNVm3Sm7lQiFtaip
+	 jMomh59jceywvp/GIcqbU0lzcwFWAN1r/xkmxSD7p/xu7/U4U3WkKGImyP7YS7t9NH
+	 R4jDo3sditHBH6CeIMfspKwqM2K8ekpeVDT6WOasAdfhcDqeQ0MQmD0j4BDk5p4+1G
+	 4kXhH2gwBcnwv0DFDxUPMmYMGdOUpmSvIENx8GDttcQfl6Z68qPMvt8k4kpdZy5Ntr
+	 C5f2nbGbZY1dw==
+Date: Mon, 23 Mar 2026 16:53:12 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	chenridong@huaweicloud.com, mkoutny@suse.com,
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com,
+	usamaarif642@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: Re: [PATCH v6 30/33] mm: memcontrol: prepare for reparenting
+ non-hierarchical stats
+Message-ID: <acDxaEgnqPI-Z4be@hyeyoo>
+References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
+ <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e862995c45a7101a541284b6ebee5e5c32c89066.1772711148.git.zhengqi.arch@bytedance.com>
+X-Stat-Signature: 19cudwcgycr1u1euu8y3kkiaydafjkin
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Stat-Signature: adbzma1fejcmgcig3c7uiyxan6o5p1p1
-X-Rspamd-Queue-Id: 91AB5100002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774252231-748083
-X-HE-Meta: U2FsdGVkX19ST1GZ343Ju7A8TPgR/B/XzRhn1lyVhhm7tB3Z2/VFoi3aYE2MpGm7+zplGeIbkH8hVi9gysfaXMOAfoVdV6E26dOLs47J1lr5njiBsivmvr1swnitifq2TeKhopvALNIzmxSOnDMKhBtes+KhNsVApTs8vMpeROPMgF2O+2XX7cY1soc7gImMWcBDk+hEG/d4YJ2mhZdPrkNGjiW36UMIFwXAJj9KO9Y9ZdnKMrgNpwk4jSgrjX+udhgJhLSkfs/kC4y6UkRXdaHDrD/9mq4L08xFleqvRTWHUQTZlRxIaYfAWktzCdInDiMuTsmyV0yMgni5MunKAMoUT3I9kmO9NX9J+G+2GvVruycyuQW1Mbq8ek6K14HwRACcTkCpSJZzK0G62MUCLDmsJ2e/Cc8rMs22HM5pHBOAR4m5QAMGUn9/zTGryHId8RXbwXOmTk0YNFS4oBh4Bdq7xRzUl04lfl/ikFlA3kWs5oCYaaUbBT4jQODRwQLTx50X1ZGCCpeN45RaJdY1FUq7ZmAI86uPEcB3jHg6QUbbPp1Z7jHH6kA2j9CWt+V+X9NLC+SQ0Vr8hQO2F7958aTOjhhINiaYxzKhb18ixa4F13bydZQWZESV91FFVueSQFSdU4FENf/Ddwjl9rbwc0r7buv5radq2ENh5RoByl/Om+uj1W38+CQD/FNuAu1CCWDkRugmTnh8dA1+PZpjVafihPPLpi2cHXoWvSUKITtZFfN+4xYWqcTB60JhOYtPxgpX4yNYGQG0SbdP7i5dgG4vIHOPuf9MzBrZDYwqnaCH1R8r8rdLddy6XjBvVITlkH9mRocsTkl9uvLqaA+tLlIKQy2aQoiCR7xFbtICSgpUrXroJVRi/TU6RA8TKmKilb8DQPcuGJfmNiay8svYyEoOpM1ygf2mwXILsepf8lMPDZKsoWk8DB97lePsW8tqN4SWa2HNNC2ydwbtw+a
- +0kdd0mL
- VXNllv9D6dMt/SFU6Jf6IfWs1nQeBQoe+j6VtnYel+0TD3nlfMyYck9OUuWn4nX7Ot78NRSuQBuWdCj970qV1r364Q6hy/yg/y6n65oE+UOAn49UnsR/h+3S8R3zFqlAgFkacBCWqsLPRO8T1E6VlBo38C+DA2q0yBJLfa1j+uZkdYzz13K/p88opG8U9NLJlDpLfU0/JVTCuzu5R2qoZUi3wmK3YvDn+Xzu648LXp9/VlGe5rd0/Im5cxI8OD5+kjeBwg4dras3F6t3QToEzpji3Z8pAkBKFrJ28cDIpAFApGNlGAxXDwGVw6HUuFGc2CkJ7SI05Me7khHSHhyH1HdIDIUNCgrktbOxOF8po4ZkQ2pt0v7lRN3fslHXKljM7k+yC4a6Q0Qs2zLiD+yqGsA4QcPbzFdW62aBp
+X-Rspamd-Queue-Id: B11FC4000B
+X-HE-Tag: 1774252395-254946
+X-HE-Meta: U2FsdGVkX19BwtlTzl9jFOFz/Szj65GKNWUpV6sETG78tUGePa91yTH38fZcEPOtdv/RaVH4m0LN84deLOl274Ya5npv2eJWhnHWHrdMFyBL6ZoJBKQ9eg2Nwe6m7eMrzjOwnuxyACiYi+WgPcjesCHRh9k0Eo1OtuNk3UCj/f5R9S1vRCmKYgHrniiWDJE/EE9c5EmyMW0Uo4Y5BEPSUsRrpFeL6yixNEih5AT43QZ0jLNcNuC5VtiTwVlXLQNOJ4V6Ecfhd/jRgpiWcAtECRBsUBUeNhEKwL2cNrNz0yRyRDSO94uj+Lqfm4dax3qveRQqPdxghvOHkiyYs9s0A5RMokc6/NV5BVPyp3+BdX7KsL2ZqrtCCMJlSQRVrWQFIKaIAZ8h/YgB8gk20ev83b/UcbkGF0UW0PKK4JDekxWndTHUQAuIQKa3eCzq5l5Z2QlSLDG/xOtTbkkevI+NAFeX0OQaYtefuvaxC9wrF+/Oc0/cewOh0IIDLGn35QERPj042D00tYBN+EY8lgdUv37Cxbxy8LA3fd7is7UK6gUhSIw8mZ8a9f7Tax+FgX6Hh3JHMhoHznfe++96+1KfxJVZ2jwf8euU48IYbCXQsB65ZJqPe3GomFs+DwuJ+UVPn1RCIna8DfubsVCeJrwWvDi5k0lFd6mkmJVJwzMVWx/ddBa6n8hxnHklm6OAgNlQphRnj/QPVfj0430lWqqBjeDDyXToHe1RnDd2Z1FgTqDGIxp2xVRR/a/QDFTflJaHlNATHX1vsNtjbGMLNT4WuBFsSdbgUfTD8MehNODtvAe0xjdB/Pchxf1/AxH++n1L/1daVvew8JfsHHOY/n5kMOQydxPnQuBqzq2ZeJTDkYP0SVb5SeizY9VnxP0uM2BIOYLWHxgyJseOyPInnhu94P5wPA+FZuQ9BS+dNtxaznPrJLi7WrNw8B1v7eblQPYsKnhM7RP+nYD5wj3HlkX
+ EGVFpfdy
+ 3d5g1D4KbeCh0zqF8krLELE/LuJH7nnwt40np+yeK98djvFXQrBLYyCe4QR3k+SrVZv+vetPGI5FjTyyg/SXY8nq9Rnbpj+H3NGfeTc92yXtdpcWRx6p51tWctbxFHZNKWpRxv8ljmagcs325bwXmHC0FEmVSELS0vVwkKEuHow8qx00dpKUtqKkZoRTVlXzjbRcxABB3TrEEHX7nv2EbX4FwoOyx1/0mz0OsAVl+DSrAovrnErb6ax3ZdKf+Cv1r06/GjflGcuaTzx+sqOYvzTPoZDhpYX0I5Iz0dCAoOUOfVaU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,117 +103,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Thu, Mar 05, 2026 at 07:52:48PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> To resolve the dying memcg issue, we need to reparent LRU folios of child
+> memcg to its parent memcg. This could cause problems for non-hierarchical
+> stats.
+> 
+> As Yosry Ahmed pointed out:
+> 
+> ```
+> In short, if memory is charged to a dying cgroup at the time of
+> reparenting, when the memory gets uncharged the stats updates will occur
+> at the parent. This will update both hierarchical and non-hierarchical
+> stats of the parent, which would corrupt the parent's non-hierarchical
+> stats (because those counters were never incremented when the memory was
+> charged).
+> ```
+> 
+> Now we have the following two types of non-hierarchical stats, and they
+> are only used in CONFIG_MEMCG_V1:
+> 
+> a. memcg->vmstats->state_local[i]
+> b. pn->lruvec_stats->state_local[i]
+> 
+> To ensure that these non-hierarchical stats work properly, we need to
+> reparent these non-hierarchical stats after reparenting LRU folios. To
+> this end, this commit makes the following preparations:
+> 
+> 1. implement reparent_state_local() to reparent non-hierarchical stats
+> 2. make css_killed_work_fn() to be called in rcu work, and implement
+>    get_non_dying_memcg_start() and get_non_dying_memcg_end() to avoid race
+>    between mod_memcg_state()/mod_memcg_lruvec_state()
+>    and reparent_state_local()
+> 
+> Co-developed-by: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
+>  kernel/cgroup/cgroup.c |  9 ++--
+>  mm/memcontrol-v1.c     | 16 +++++++
+>  mm/memcontrol-v1.h     |  7 +++
+>  mm/memcontrol.c        | 97 ++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 125 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 23b70bd80ddc9..b0519a16f5684 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -473,6 +501,30 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+>  	return x;
+>  }
+>  
+> +#ifdef CONFIG_MEMCG_V1
+> +static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> +				     enum node_stat_item idx, int val);
+> +
+> +void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+> +				       struct mem_cgroup *parent, int idx)
+> +{
+> +	int nid;
+> +
+> +	for_each_node(nid) {
+> +		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+> +		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
+> +		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
+> +		struct mem_cgroup_per_node *child_pn, *parent_pn;
+> +
+> +		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
+> +		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
+> +
+> +		__mod_memcg_lruvec_state(child_pn, idx, -value);
+> +		__mod_memcg_lruvec_state(parent_pn, idx, value);
 
-When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, freeing of reserved
-memory before the memory map is fully initialized in deferred_init_memmap()
-would cause access to uninitialized struct pages and may crash when
-accessing spurious list pointers, like was recently discovered during
-discussion about memory leaks in x86 EFI code [1].
+We should probably change the type of `@val` from int to val to avoid
+losing non hierarchical stats during reparenting?
 
-The trace below is from an attempt to call free_reserved_page() before
-page_alloc_init_late():
+>  #ifdef CONFIG_MEMCG_V1
+>  static void __mod_memcg_state(struct mem_cgroup *memcg,
+>  			      enum memcg_stat_item idx, int val)
+>
+> @@ -769,6 +857,15 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
+>  #endif
+>  	return x;
+>  }
+> +
+> +void reparent_memcg_state_local(struct mem_cgroup *memcg,
+> +				struct mem_cgroup *parent, int idx)
+> +{
+> +	unsigned long value = memcg_page_state_local(memcg, idx);
+> +
+> +	__mod_memcg_state(memcg, idx, -value);
+> +	__mod_memcg_state(parent, idx, value);
+> +}
 
-[    0.076840] BUG: unable to handle page fault for address: ffffce1a005a0788
-[    0.078226] #PF: supervisor read access in kernel mode
-[    0.078226] #PF: error_code(0x0000) - not-present page
-[    0.078226] PGD 0 P4D 0
-[    0.078226] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-[    0.078226] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.68-92.123.amzn2023.x86_64 #1
-[    0.078226] Hardware name: Amazon EC2 t3a.nano/, BIOS 1.0 10/16/2017
-[    0.078226] RIP: 0010:__list_del_entry_valid_or_report+0x32/0xb0
-...
-[    0.078226]  __free_one_page+0x170/0x520
-[    0.078226]  free_pcppages_bulk+0x151/0x1e0
-[    0.078226]  free_unref_page_commit+0x263/0x320
-[    0.078226]  free_unref_page+0x2c8/0x5b0
-[    0.078226]  ? srso_return_thunk+0x5/0x5f
-[    0.078226]  free_reserved_page+0x1c/0x30
-[    0.078226]  memblock_free_late+0x6c/0xc0
+Same here.
 
-Currently there are not many callers of free_reserved_area() and they all
-appear to be at the right timings.
+Otherwise LGTM.
 
-Still, in order to protect against problematic code moves or additions of
-new callers add a warning that will inform that reserved pages cannot be
-freed until the memory map is fully initialized.
+>  #endif
+>  
+>  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
 
-[1] https://lore.kernel.org/all/e5d5a1105d90ee1e7fe7eafaed2ed03bbad0c46b.camel@kernel.crashing.org/
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- mm/internal.h   | 10 ++++++++++
- mm/memblock.c   |  5 +++++
- mm/page_alloc.c | 10 ----------
- 3 files changed, 15 insertions(+), 10 deletions(-)
-
-diff --git a/mm/internal.h b/mm/internal.h
-index cb0af847d7d9..f60c1edb2e02 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1233,7 +1233,17 @@ static inline void vunmap_range_noflush(unsigned long start, unsigned long end)
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- DECLARE_STATIC_KEY_TRUE(deferred_pages);
- 
-+static inline bool deferred_pages_enabled(void)
-+{
-+	return static_branch_unlikely(&deferred_pages);
-+}
-+
- bool __init deferred_grow_zone(struct zone *zone, unsigned int order);
-+#else
-+static inline bool deferred_pages_enabled(void)
-+{
-+	return false;
-+}
- #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
- 
- void init_deferred_page(unsigned long pfn, int nid);
-diff --git a/mm/memblock.c b/mm/memblock.c
-index dc8811861c11..ab8f35c3bd41 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -899,6 +899,11 @@ static unsigned long __free_reserved_area(phys_addr_t start, phys_addr_t end,
- {
- 	unsigned long pages = 0, pfn;
- 
-+	if (deferred_pages_enabled()) {
-+		WARN(1, "Cannot free reserved memory because of deferred initialization of the memory map");
-+		return 0;
-+	}
-+
- 	for_each_valid_pfn(pfn, PFN_UP(start), PFN_DOWN(end)) {
- 		struct page *page = pfn_to_page(pfn);
- 		void *direct_map_addr;
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index df3d61253001..9ac47bab2ea7 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -331,11 +331,6 @@ int page_group_by_mobility_disabled __read_mostly;
-  */
- DEFINE_STATIC_KEY_TRUE(deferred_pages);
- 
--static inline bool deferred_pages_enabled(void)
--{
--	return static_branch_unlikely(&deferred_pages);
--}
--
- /*
-  * deferred_grow_zone() is __init, but it is called from
-  * get_page_from_freelist() during early boot until deferred_pages permanently
-@@ -348,11 +343,6 @@ _deferred_grow_zone(struct zone *zone, unsigned int order)
- 	return deferred_grow_zone(zone, order);
- }
- #else
--static inline bool deferred_pages_enabled(void)
--{
--	return false;
--}
--
- static inline bool _deferred_grow_zone(struct zone *zone, unsigned int order)
- {
- 	return false;
 -- 
-2.53.0
-
+Cheers,
+Harry / Hyeonggon
 
