@@ -4,226 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D2CDF483E3
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 18:32:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FEBF483E1
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 18:37:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3DEA6B0092; Mon, 23 Mar 2026 14:32:14 -0400 (EDT)
+	id B35256B0005; Mon, 23 Mar 2026 14:37:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC81E6B0095; Mon, 23 Mar 2026 14:32:14 -0400 (EDT)
+	id AE6126B0088; Mon, 23 Mar 2026 14:37:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A41216B0096; Mon, 23 Mar 2026 14:32:14 -0400 (EDT)
+	id 9FBC26B008A; Mon, 23 Mar 2026 14:37:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F6DA6B0092
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:32:14 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E075160876
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:32:14 +0000 (UTC)
-X-FDA: 84578172588.06.79208C9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 67BE914001A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:32:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vRRWBHBL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774290732; a=rsa-sha256;
-	cv=none;
-	b=YzdN2egLKRiowVAl3KJJsZbaRC4E4XdUBadcjb0I7FWJZHPeoiY4ASNFuBSktF23NDcEdl
-	r2z1hG0gJBdWGSSxAF1OYwxs9APWO148m1uC6eqgK1FDoz4GTPF37TjiNHDF/WmOjlCc4x
-	33SwO2cbWePLHLCUS9UxYIXzwLB2xws=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vRRWBHBL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E4336B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:37:30 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2EEE18CDE6
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:37:30 +0000 (UTC)
+X-FDA: 84578185860.14.014D124
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 46EB24000A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:37:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TZgXntOn;
+	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774290732;
+	s=arc-20220608; t=1774291048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r3FEdx4cl7hZyyKk+NpULiS9hUxyw3Glf8bv5rv0lIU=;
-	b=3JIF46W2hc68BRVBLZOKvBjiHQSHTg6Jwy220zCn9AGJ78KAxb2K2++PFJUJn0esS8XBNE
-	26yOLdqC/9pczd0ppQ9pb7R/TqyNyS3WH+/pxTnurYaHKg0WUfFzHb+/Xu/gSHVyg36/BW
-	bcoN+cnQ/BbQZ1o4Ccb0/AaYORKR9oc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C1CF86012B;
-	Mon, 23 Mar 2026 18:32:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103D0C4CEF7;
-	Mon, 23 Mar 2026 18:31:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774290730;
-	bh=sotfvo0nesaSqmF8KoCTyd8MGYvSoQDCsni9TVbHztU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vRRWBHBLoOcTBUkF+rhoE7Rq4ConSk0Rgcrmkzw4YpeHsu7GHVxSU+9xzFXPbOY5i
-	 u0bAdR1IYL2lSje2Hro7d5AOekw2HXFGZ5LaJSQpGRh2R/vbkvzdqgL+J47uDWMz/+
-	 KFn7D0EB1cQxfFTDPfXur1Gjb858d3o0L8cWM3fNwCDKgzKWrqC0rplNwEmksAbSPu
-	 ZS/lz7HhEE979x/coOh2lXPJitq0izgvM2ECa5Pxhd4/XspzBs6aGxUsjVWxPxxi5n
-	 PNI8xSolmqCXpQMOQFSD2aRJO2mcLziuJFRjSC8Ugh6XmqXhU8DPyrveb+XFeCxWhL
-	 VUfOOfL58/8fg==
-Message-ID: <76f14d3e-c8fb-4380-9d12-2375f199b53f@kernel.org>
-Date: Mon, 23 Mar 2026 19:31:36 +0100
+	bh=bRg2GcmKeOdJcz1z27ZxeccUDfslqg/RH/olku101LI=;
+	b=PwtcP9rU5hfYfhz8DmFDCaxrZqpIWU1r9DYzDiXIbkniN3Mxz8a5+FKi+vuNtk0UKej/BY
+	kJ9gso3v1pdTUNT1MoBYcEz36ZGIxxY9PTBgj+JGe3SGJuY623S88Dr2q9P1CIQZcMzcws
+	8hmNivENJRvjKsFZOna9r3LT0YQfNkM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TZgXntOn;
+	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774291048; a=rsa-sha256;
+	cv=none;
+	b=PmG3Nyu4KL3ZWMoY5p7GKLx1NfZAPY/VPbfVCiwpzUH3e1/VTeS8McYyR4JEE5v2oMMU++
+	+BP4PCNXfkYmdw7pHactTpfrDSR/BLAFamVSRk3vrranUvLO94FJDrCVPiTyU48N+yr8nc
+	RK9L8wmbN8c1B3Rm1wFpS9ikDWs4jWQ=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82ae378fff8so2327830b3a.2
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:37:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774291047; x=1774895847; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bRg2GcmKeOdJcz1z27ZxeccUDfslqg/RH/olku101LI=;
+        b=TZgXntOnZERc1kmCNuV7bT8lFWey7AsgUmiWk/AuF4l3BkxM/NLZLgywcdor9Jd2UO
+         SPqDSPK1zAEvv2l/K5O7lwo8Qk2TcHSf3IvPDsKktasWzI908obSqkeK+romIvchjxfO
+         tE/UriGKdTEYwZairHAVB4+KkXWOAoD0iE/6YFysudaD3sVrEe+1+97hI025Ag25HFhl
+         YJAVkJduBxmX+UVmdP1tUt72B2Sft1KDyWzuVl++UmAOAz+5Y76IlYCK9Ec05JpdPnEf
+         mYbBNYrToXg+GaJUiixOGysn5P7YXYV6ILY3S4PiWPj82DP63fpzivNUbWyQz8IZNBz7
+         BkHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774291047; x=1774895847;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bRg2GcmKeOdJcz1z27ZxeccUDfslqg/RH/olku101LI=;
+        b=Cxvvxi1NUylp1iym5+mgalxYtsdG+B8BuwrDBTTXv2Lhf6TiWx2G1+mRJKJIJfEs+T
+         xes8M5d6s+2Yy5F8k6dwmdXUv75rzr0Fukg1N9IRMN5Pjny0Hhj5/3C3RLpTJpj4Aoc7
+         lmuBVS65w/wcGmD3OFbOdT8NbVMuZtQOHauBvMfqr5qUJmKcG9hw56I4l8AS5Pq+kGms
+         3BFijXoib/STgMSQIEdDl99Hyf0gxfGu+zjxzA6sSRe4sLGGT15U/vMAJHbUunDADhYz
+         RCPiODfcgQSnDWhTP37e+T2AYBZYXUQ+GWhzxizp3bwaVMOe7P/0QFR8dUOwe797vlnD
+         UU/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCURKyc8sbDDsQkgS3MNCA15LardlzzhH9ToKflWLZpbNe4H0fgJMpr5uewAqOpug83TwQLcrAeY1g==@kvack.org
+X-Gm-Message-State: AOJu0Yw3sboLmUuYwr0gUYzS+QKM5JFuYIL+W9Li7mEc3ImLWhKcoHpJ
+	CVt7v55J1z2+WnuQPeMn1vk75KuIeJ3AbjyIATvqqsAppEST6di/cfZM
+X-Gm-Gg: ATEYQzzKeFhLd358jlcMn0ZJm7uVF3kjsg6uSH2lLwPxjUEejrZg3zkNayhLmkVHo9F
+	v7QQzl/jSn+hLtcMti8dFQrntfrofXOHIeNLhfmy3bMyVnROktKZVR27YWiwlk7WrMlS1X4ACRn
+	NMp/L4PZGTBItnWmbtItwMUVkLePL0dW/lB5oCDBZ8iVlXr26FZ1aMsnmGPYHLhqG2f8qgm+Z1i
+	mQ5H5KM/ya+1itPwGsC9l9Y+R9rd5fT2s30pwA9WyCmEFzPHTL/WVOGCBxqdq4sniNCYn0JMEmW
+	mIjEeMbhEKXgQl8FbFxoaSPK/8D2F5vfAdm75ANlTka4hx2cUWhsQL5DVOd1RvkGepDNOeFvpSy
+	NizlRWpqyrdSYAn4SHDKt9Vmj6mSWfD/4Jyl2MZVuo9xv/fooHIRw46qQ5Lb6YRm5+TCChG2kec
+	9e6B6MJQOd0JQXk7HGTCm0Ejm+5E8=
+X-Received: by 2002:a05:6a21:6da6:b0:39b:a48e:6a77 with SMTP id adf61e73a8af0-39bceb68288mr10367425637.37.1774291046971;
+        Mon, 23 Mar 2026 11:37:26 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c74456fbfb0sm8198280a12.29.2026.03.23.11.37.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 11:37:26 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC v4] mm/damon: add synchronous commit for commit_inputs
+Date: Tue, 24 Mar 2026 02:37:22 +0800
+Message-ID: <20260323183722.42045-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323150544.81042-1-sj@kernel.org>
+References: <20260323150544.81042-1-sj@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 04/16] mm/gup: drop secretmem optimization from
- gup_fast_folio_allowed
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "kernel@xen0n.name" <kernel@xen0n.name>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oupton@kernel.org" <oupton@kernel.org>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
- <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
- "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
- <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "riel@surriel.com" <riel@surriel.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "jgross@suse.com" <jgross@suse.com>,
- "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
- "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "yosry@kernel.org" <yosry@kernel.org>,
- "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
- "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "tabba@google.com" <tabba@google.com>, "prsampat@amd.com"
- <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>,
- "mlevitsk@redhat.com" <mlevitsk@redhat.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "jthoughton@google.com" <jthoughton@google.com>,
- "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
- "alex@ghiti.fr" <alex@ghiti.fr>,
- "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
- "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
- "dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com"
- <gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
- "palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org"
- <pjw@kernel.org>,
- "shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
- "svens@linux.ibm.com" <svens@linux.ibm.com>,
- "thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com"
- <wyihan@google.com>,
- "yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
- "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "urezki@gmail.com" <urezki@gmail.com>,
- "zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
- "gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
- "jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>,
- "lenb@kernel.org" <lenb@kernel.org>, "osalvador@suse.de"
- <osalvador@suse.de>, "pavel@kernel.org" <pavel@kernel.org>,
- "rafael@kernel.org" <rafael@kernel.org>,
- "vannapurve@google.com" <vannapurve@google.com>,
- "jackmanb@google.com" <jackmanb@google.com>,
- "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
- "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- "Manwaring, Derek" <derekmn@amazon.com>, Vlastimil Babka <vbabka@suse.cz>,
- Dan Williams <dan.j.williams@intel.com>, Alistair Popple <apopple@nvidia.com>
-References: <20260317141031.514-1-kalyazin@amazon.com>
- <20260317141031.514-5-kalyazin@amazon.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260317141031.514-5-kalyazin@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 159fxdu4syfas8m3h3dktyw6cjxsdk16
-X-Rspamd-Queue-Id: 67BE914001A
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774290732-948985
-X-HE-Meta: U2FsdGVkX1+gOxA9Q/LPjT/WU+tOY8YMglWvbNqaYqHKo5UyxPnkpBPc/23n5NDb3+bgAx1ICLf1yIQN4MtBaWONaIBC+U0fsFTudJPhDxIpzvIn5jiD7KPi1Ga8SdeEuampNxvzkLtTwdU9Fy/8tmphzVxxMK31WVt6s2aePwuODGjTeXPAyXlhJTjbNJWn/Ds0e3MqHbz90R9UHt0GjMoZbScikbaJz1JNfvn00OBguBSdaIYEmKB9wCdBuvMMfKjlmxUq6ZLhGdWXyI32Oljlxn4lWnjLYXUGBMLPykq+sx7Lpqb1l2FFhbEZPpF6w9e6u7066ICAyWP/+ZzCVH/Yl8SgUc1PEiDv/4bE0EHThdrT994gTroHMYA0o0yapb0z72Pa4P+OyzqNXOQp0FaQOL9p68zjMA4Sq/bPUOAnVyKnqkquxQLurkFMaHPWzcpzyqPHt/yMYnVVgm4Ujmycmf4MhXwl1w0+wyKofnnqj/ac3RHhp7fsTwBNXiddrg4CYlEFk4N6/wDGJGYDWSlrQbhrp4zubZwLlYO3rJssd+XJTiZa8Vb4CioxufP+xmRdKbMp8pxvFPtA5icQXvaBLr4hQHAnesICRHBnMMhxajY1duZ4AZuz5zdgrlwPO3nSIh4VPY8vE5N3wurxucDlH1bNJ4gMf5DppkinJ+DvYoU5i1toTuZfTmLqMPwGWnn4NguvHzsc8nXdGCXN0TwKKdGaLFApoENZL28o4X70hTK6ZthAZMPgWSBl7ApoFcpZSoywWa9r9D0KXY/XfPpX44TB5H69IFbLbmtz5Xpu53SVLtR6/ayM0qdGmejX70mfjx+lX4GVJIdrVuoOzObLglY41fi3hOfNRUuzsztVsN1whEYN8qt1u+0ZJRlZ+wJVunhFz6Zzjw2aIH6j4n16NxT8RHWO5w8Cv1yN1TGk1zjcOXYMXs+6mTsAiXJpHfHnD9cv8Mvi5Ub7S/w
- XUvWobRX
- dRls32Tv2nX5OO6mUE6QysUdXbnXRRJXp0JQN6mqrccndHquUDj3iDS8UDDxYI5kjJEnJ+Vi5PSdtP+a4IVWMBi3OpjWbKCvTIJN8nMuXLEtMsWEtc+Jsv0Hmpx271uwIeNu9fKvb5UPH0ryIS/l5xA3es8eMWKn6pCPxuVvAHb6AXSDfENqOcfdg+1mTHsBZDxP9fWpAoWKsc7cT441IpeQIzH1cTWwwUIjojPv+1gUTlYZUv6qEwhEszomtAcg+DkCcjxg5mqjcB9MXsD9qzbAqaiWRdYO3DLg7S0F0l8IEI8DeQBBd3wYYs0k0cR3iNrssh7+aEqS1uecq0pl6g5XnRatvnUz8kHzvk3tD8tRL35yzpXt4kBRp5xDH0uXDKQogou6IR3XW8I0KpOzreeMcVtk8AA0NEnbo0Io4b4to4JueSv/jqenuhLkaIdJXOelKD7UNGIyBbszZv9HIrhMgew==
+X-Stat-Signature: gfnx8ry3foshygmsdhkpwanopon5hgds
+X-Rspamd-Queue-Id: 46EB24000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774291048-221889
+X-HE-Meta: U2FsdGVkX19c25Pzf71HLeg3uv9+wJilYs4pF5rJWRzPz0iwFXrl5S6GEH/r+q55hX9MDQBC9gCQjltXg9nxL2uFdKLfN64ZaBIg/JAXt4/GP2gdHA4e2XfpCOwDNjRQ4A9UjGSKrCi/P6JSCCQhlPTmw3G5x1lcYrxQtY4Zf+D1enyxVp2jaT+JplDg6P8zUWLbMZDFxVBI1yBBqfl7JEbfDnwPUn9RHYGMEGQbXb707wrndZzpRc4mqEbob4sc1B6PpgnXl5cuRVJ2aPqKxbE6WTKnXD6Os/yLkvN4jXOdWOMZtPggHzx+QB8detxghStsLBTvFdXVaklNFYLyth1VjTBMTd5hRHvS/EFkILJEsRuYM1hnOkphu09jiLUE94gesc/fGYvYcQDDd4XG0TLvBi2RRRjqimmjxNVozM7zBdpyxiDLVGVgDbUsN8fQz+5rxlxKxbm2iZfwP/T11ZBnhXF+lPxmxMlFm9k/gGbA9CLPNNunUksEy1bzvAhN1+r2gOFPWkK+WT3Chiqk0HLCEwhWDOVNjRTAwLbbMNb01ZkWplX3IK+9yQciqZSnll+iofednHD6g+K+8wDsxrJDlMFSe4bxYkDsF5uQnsbQedEy/fZ3ljt9WpA5xbcAUNdo63wz6wkT4+9x9HYu2J8mVxVkB0AnWdh0sG0cUUp5wk6rgdst4Yr7jf9egL7ZP70kHcbEhpBi/3TPp+pq049HxD6PaiTWxmIs3xgXV3E399zTs3Kytqq9obtQOIP/bTrxU1WXAF4n9Qx/gW/cS9atBwPy1PbrYyKtp2xbdauWdXjM0x+gBlJVJozo7CzwsOtON4bz6PmW0q6SyD7duGiWa+7dWycryNdOXFJ2Y20ExVXiK54vFd9C5TUp/afGYKF9PKVieQv+2fvqZYxWJN3Y5l8rJSodmAMeGzsy1e9z8v0zJA+1Pk/BgbqHN4LlClG60VtcpK5Y/t+QMy7
+ zmk0jvFZ
+ 82fpBKo9PjC8xK1diB88F3tlQI/ujBmPaQm3KhUF2ZJKhQlIx4GrHOnTCgVUDviXw+4EGhBYUJDUojvycFybkl/5VNesSVx+VAtt38YNm2B77PeZYAhvITQEjbtTlAmQaefCpBttP4ziM6V/bC81rwpyvvItmAZstZMdv/rshdB6lY1OcGYopZo4bHdkgxNGZECQD60+CRkiYdq673S9pcRH0iq9Q0uijsWe9BugEFRS+4NeV4g+DRJqPNSFRCkOYa0jaayzNPNLZpTlFhd5u8xcVOrDDa8B2KsMTuj+tdLcHnMEFaogBzqbM/gcsaNZBO7zCUUP1qMpEylEc0Mmwk5uTaSLp5rRmIAiYrtpQLJEPAC40oZdqPvMx/E93GTk9ujUhmi3zdrhK2xQ8DdOEprcgsMluIV+pwuz0i4F1HxcHicmEfTfKvOlVjWZfKEcOV4UumT217cd7PNqE6nidAUjSQetMTdxt+K+ybBzkE16VUd5YiTBMci6YODpn99JkqaMWYCPauVKR+th0/NtcVmKryXizkkJbiz1mhrWqMWPIWHM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -231,79 +118,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/17/26 15:11, Kalyazin, Nikita wrote:
-> From: Patrick Roy <patrick.roy@linux.dev>
+> > Problem
+> > =======
+> > Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
+> > silently (no error returned to shell), because the validation happens
+> > asynchronously in the kdamond.
+> > 
+> > Solution
+> > ========
+> > To fix this, the commit_inputs_store() callback now uses damon_call() to
+> > synchronously commit parameters in the kdamond thread's safe context.
+> > This ensures that validation errors are returned immediately to
+> > userspace, following the pattern used by DAMON_SYSFS.
+> > 
+> > Changes
+> > =======
+> > 1. Added commit_inputs_store() and commit_inputs_fn() to commit
+> >    synchronously.
+> > 2. Removed handle_commit_inputs().
+> > 
+> > This change is motivated from another discussion [1].
+> > 
+> > [1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+> > 
+> > Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> > ---
+> > Changes from RFC-v3:
+> > - Added checks for 'ctx' and 'damon_is_running()' to prevent NULL
+> >   pointer dereference during early boot. (Found by Sashiko.dev)
 > 
-> This drops an optimization in gup_fast_folio_allowed() where
-> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
-> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
-> by default"), so the secretmem check did not actually end up elided in
-> most cases anymore anyway.
+> I'd prefer archiving sashiko question on the mailing list so that others can
+> also read it without have to visit the web site.  Please consider doing so.
+
+Sure, that was indeed my oversight. I didn't consider that others might
+not want to open other websites (or that the link might become invalid
+someday). Next time I will try to archive shashiko question on the
+maling list. Thanks for reminding me.
+
+> FYI, because such sharing is not very comfortable for now, I developed new hkml
+> features [1] for helping such sashiko review sharing, and I'm using the
+> feature.  Please fee free to use it if you think it can help you, too.
 > 
-> This is in preparation of the generalization of handling mappings where
-> direct map entries of folios are set to not present.  Currently,
-> mappings that match this description are secretmem mappings
-> (memfd_secret()).  Later, some guest_memfd configurations will also fall
-> into this category.
+> [1] https://github.com/sjp38/hackermail/blob/master/USAGE.md#sashikodev
+
+I will try this tool.
+
+> > - Removed handle_commit_inputs() and its associated polling logic as
+> >   they have become dead code after moving to the synchronous damon_call()
+> >   approach.
+> > - Ensure the 'commit_inputs' is properly updated.
+> > Link to RFC-v3: https://lore.kernel.org/20260322231522.32700-1-aethernet65535@gmail.com
+> > 
+> > Changes from RFC-v2:
+> > - Removed damon_validate_attrs(), now using damon_commit_ctx() for
+> >   synchronous validation in the kdamond context.
+> > - Following DAMON_SYSFS pattern for synchronous commit via damon_call().
+> > - Link to RFC-v2: https://lore.kernel.org/20260321140926.22163-1-aethernet65535@gmail.com
 > 
-> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-> ---
->  mm/gup.c | 11 +----------
->  1 file changed, 1 insertion(+), 10 deletions(-)
+> Thank you for adding the detailed revision changes.
 > 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 8e7dc2c6ee73..5856d35be385 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2739,7 +2739,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
->  {
->  	bool reject_file_backed = false;
->  	struct address_space *mapping;
-> -	bool check_secretmem = false;
->  	unsigned long mapping_flags;
->  
->  	/*
-> @@ -2751,14 +2750,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
->  		reject_file_backed = true;
->  
->  	/* We hold a folio reference, so we can safely access folio fields. */
-> -
-> -	/* secretmem folios are always order-0 folios. */
-> -	if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))
-> -		check_secretmem = true;
-> -
-> -	if (!reject_file_backed && !check_secretmem)
-> -		return true;
-> -
+> But, please consider waiting about one day before posting a new version, so
+> that we have enough time to discuss on the previous version.  If you find
+> something you want to change on the next version, you can comment that to the
+> current version of the patch and give time for others to comment about the next
+> revision plan if they have any opinion.
 
-The AI review says that this will force all small folios through the
-mapping check (which we obviously need later :) ).
+Understood. I will post the new version only after careful
+consideration. And when I have a new ideas (of next version), I will
+clearly comment on them.
 
-It brings up two cases where page->mapping is not set up:
+> > 
+> > Changes from RFC-v1:
+> > - Remove question from commit message area.
+> > - Added synchronous validation for DAMON_RECLAIM.
+> > - Rename damon_valid_attrs() -> damon_validate_attrs().
+> > - Exported a new function damon_validate_attrs() and declared it in
+> >   damon.h.
+> > - Link to RFC-v1: https://lore.kernel.org/20260321002642.22712-1-aethernet65535@gmail.com
+> > 
+> >  mm/damon/lru_sort.c | 49 +++++++++++++++++++++++++++++++++++++++------
+> >  mm/damon/reclaim.c  | 49 +++++++++++++++++++++++++++++++++++++++------
+> >  2 files changed, 86 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> > index 554559d72976..37b3c897e822 100644
+> > --- a/mm/damon/lru_sort.c
+> > +++ b/mm/damon/lru_sort.c
+> > @@ -39,7 +39,6 @@ static bool enabled __read_mostly;
+> >   * the re-reading, DAMON_LRU_SORT will be disabled.
+> >   */
+> >  static bool commit_inputs __read_mostly;
+> > -module_param(commit_inputs, bool, 0600);
+> >  
+> >  /*
+> >   * Desired active to [in]active memory ratio in bp (1/10,000).
+> > @@ -349,18 +348,56 @@ static int damon_lru_sort_apply_parameters(void)
+> >  	return err;
+> >  }
+> >  
+> > -static int damon_lru_sort_handle_commit_inputs(void)
+> > +static int damon_lru_sort_commit_inputs_fn(void *arg)
+> >  {
+> > +	return damon_lru_sort_apply_parameters();
+> > +}
+> > +
+> > +static int damon_lru_sort_commit_inputs_store(const char *val,
+> > +		const struct kernel_param *kp)
+> > +{
+> > +	bool yes;
+> >  	int err;
+> > +	struct damon_call_control control = {
+> > +		.fn = damon_lru_sort_commit_inputs_fn,
+> > +		.data = ctx,
+> > +		.repeat = false,
+> > +	};
+> >  
+> > -	if (!commit_inputs)
+> > +	err = kstrtobool(val, &yes);
+> > +	if (err)
+> > +		return err;
+> 
+> I was not very sure what 'yes' means.  How about renaming it, say,
+> 'commit_inputs_request' ?
 
-1) ZONE_DEVICE pages (like Device DAX and PCI P2PDMA)
+Indeed, that makes sense, I've now changed the variable name to
+'commit_inputs_request'.
 
-2) large shmem folios in the swap cache
+> > +
+> > +	if (commit_inputs == yes)
+> >  		return 0;
+> >  
+> > -	err = damon_lru_sort_apply_parameters();
+> > +	if (!yes) {
+> > +		commit_inputs = false;
+> > +		return 0;
+> > +	}
+> 
+> I'd prefer doing !yes check before 'commit_inputs == yes' check.  That
+> eliminates false request case earlier, make my brain cleaner.
 
+Since 'commit_inputs' always is N, I will remove 'commit_inputs == yes'
+and keep only '!yes'.
 
-2) doesn't make sense, because the folio cannot be mapped in user space
-when that happens.
+> > +
+> > +	commit_inputs = yes;
+> 
+> We will anyway set this 'false' after damon_call().  Before returning this
+> function, users cannot read commit_inputs parameter since this callback is
+> protected by param_lock.  I think we don't need to change commit_inputs value
+> at all?
 
-I am also skeptical about 1), especially as large folios are also
-supported for device dax and would be problematic here.
-__dev_dax_pte_fault() clearly sets folio->mapping through dax_set_mapping().
+I think so too!
 
+> > +
+> > +	/*
+> > +	 * Skip damon_call() during early boot or when kdamond is idle
+> > +	 * to avoid NULL pointer dereference or unexpected -EINVAL.
+> > +	 */
+> > +	if (!ctx || !damon_is_running(ctx))
+> > +		return 0;
+> 
+> damon_call() handles !damon_is_running() case.  So I think you should check
+> only !ctx.
+> 
+> Also, this exposes commit_inputs true.  Next 'Y' write to commit_inputs will
+> make no effect?  Again, it seems we shouldn't change commit_inputs at all.
 
-If 1) is ever a case we could allow them by checking for
-folio_is_zone_device(). But I am not sure if that is really required.
-Sounds weird.
+You're absolutely right; I realized this during my code review as well.
+Changing the value of 'commit_inputs' is indeed unnecessary.
 
-
--- 
-Cheers,
-
-David
+Best regards,
+Rui Yan
 
