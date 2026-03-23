@@ -4,134 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B63EEC01A3
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 08:24:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8337BEC01A4
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 08:26:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3E576B0005; Mon, 23 Mar 2026 04:24:37 -0400 (EDT)
+	id D76206B0088; Mon, 23 Mar 2026 04:26:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EF466B0088; Mon, 23 Mar 2026 04:24:37 -0400 (EDT)
+	id D4D246B0089; Mon, 23 Mar 2026 04:26:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DE266B0089; Mon, 23 Mar 2026 04:24:37 -0400 (EDT)
+	id C163F6B008A; Mon, 23 Mar 2026 04:26:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CC886B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 04:24:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 97DA9140A63
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:24:36 +0000 (UTC)
-X-FDA: 84576641352.30.60EA6CB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 46CD3140012
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:24:34 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PK0Z+1AC;
-	spf=pass (imf23.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AF47B6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 04:26:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 414DD1A0A70
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:26:06 +0000 (UTC)
+X-FDA: 84576645132.28.BB8DAC2
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 24F95140002
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:26:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=cl9rXJGm;
+	dmarc=pass (policy=quarantine) header.from=web.de;
+	spf=pass (imf26.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.3 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774254274;
+	s=arc-20220608; t=1774254364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l4FYRZcJce0iqsefU7RH85JSFRG+Uej7mvnkE77jdLA=;
-	b=c11Vl8/WneIAQTs5bohJpTZBlul5J54CyeQ6ypGroizGo1j3R8UGr6fRZ2XioYojD82dPD
-	20bhn/tzn7ZF7UW7EQla+eUa1RWpc+NYAfjB4Th4vuHt8qw9D+wYUBkOrLxIREDmgVwaDS
-	Ild0U0PQBchXcQjXv/15dqi9LFxTWLs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PK0Z+1AC;
-	spf=pass (imf23.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774254274; a=rsa-sha256;
+	bh=Klg5LH2nJ1/ced6EaoWVD3V9cJhwXViVfxPzhTgojk0=;
+	b=7zivoVgJFyJRFFt24qMRSLBDVeWaFSElgeDItvmMvImpqmggHbsbxTYT+Oxsip9q3hyQBb
+	IaDNwVgHBkpSrUq28YSQjgGdbUq62Ye7PDtKaq6DRKaHX2jpzThS0YEc9jRbSa7K1gKsOO
+	euRM759/AIUf/vjrSVbK6kGR2lziWXo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774254364; a=rsa-sha256;
 	cv=none;
-	b=Wg2DKPKctg+WPYPyPDf7hBGuRgTmt0e19LoFkMhxIQwk6CPHzQb1rDF/R3kXjpKjPDVCBV
-	1PZPgFIO3RLarcwBXubmCPoYO7evr2Pqgywzw8lxpUOJ4XCVSZxgqxDk6uff/uYL42djbF
-	A2WjPOhfKj8ajrFE13teVvFy8DXP9Tg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774254273;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l4FYRZcJce0iqsefU7RH85JSFRG+Uej7mvnkE77jdLA=;
-	b=PK0Z+1ACDmH9j7VFdO7z4ZSvKB+27PG4nToCwjcTC2cACQj7OLhgiTzrHZBYTAgwHx2Bif
-	belFffgdOLXm82jZV91JoFt0T6SWbDF5hvhosFPQ0iAuGjJmjMLrp8lu9glgkFJ6g7/Ojy
-	EpR3Uln6MkR/3KaPV91zQflBrYXwDIQ=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-FvlQTu5QPqeQUw3ENTb84w-1; Mon, 23 Mar 2026 04:24:32 -0400
-X-MC-Unique: FvlQTu5QPqeQUw3ENTb84w-1
-X-Mimecast-MFC-AGG-ID: FvlQTu5QPqeQUw3ENTb84w_1774254271
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2b068299665so32589165ad.3
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 01:24:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774254271; x=1774859071;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l4FYRZcJce0iqsefU7RH85JSFRG+Uej7mvnkE77jdLA=;
-        b=s+VUWW12rlutMeLgIal1qpxu0eMz2ankr0J3IS44TrqXn5cVCUbjXWa7SLGjkivfxt
-         pIsldyDhm1Eo7D/741meouYG8PCokFrUc2umX64haaETa47MNPpIpBxLJDWtsBDrn+dR
-         CKMCpnmhcUHUWXbvY04VfcJCuQqquI+zeiOpVGq3euQobVjgBz2dIsHUxJB8VnY30y4R
-         GspCCFPdRMjKCiVPXGdk0D1qx9obvJrgz6OlnS5ru2oFsKaRari1wgUOficB8iCjcVAt
-         eINob1Kurs6eTEH8aWRkth5wLDlp4ONgUyCno09s31m0scA1tiD8RU1ADz8mMXBr14y9
-         SPnA==
-X-Forwarded-Encrypted: i=1; AJvYcCXu/w+dEdMPullAgNk4L9kF/4Olow+NJt1zb2VJmnYsXt7xvs22nxLOIsgZAQ0Gw43V/o44kc8Jug==@kvack.org
-X-Gm-Message-State: AOJu0YzGHJkosyQUq/GBZdzjBsPPJ+YKJroNKTK+CF3MdftVHS/1n2Sr
-	odSR1Bx0zyuBcWCSw4uPpjhcBpd2C+9kmZhgPxAMLocWz6o2nkRVL37T3Du3mHpd7kpHkxqxkdB
-	bkEW3GnItl8f1PK//uWWkL8s8q4Ki0+aOZ7VDwjIQFn2MADTkYl36
-X-Gm-Gg: ATEYQzzCe1pi2qZNmetbk2pQ/zSqsU6y/tg62lGdFvPbkD4O2r5hsZKpSqcsHBvmvzL
-	+yMURzEtwRKDmiHCbHZov21W9cFklAK3QUgd1DdyCQyaN8yMbQc/ltB0YIpFyf2G+5+esPiehhx
-	46hwnT9p9jZnY3aCxh4PIGM8bxdxfQ+mLBx1XwLaFnDknvXqGjAn5RXjJdTAX3eYwPy/jx3FNDY
-	X+dnrp+tCSnIHa+/SskdEcvSdPl783cvoUg6i2EAUsJx1adkmtttriTuyAQtValQhmL71U1czxX
-	sp6eUnFRm/TiOsBId2e/Fs7FOnKjxmh0diwauw6OUrllTtf/+p23hQLZu/Gd/iL6WtvAmOUc0Lq
-	wAM/kKki6SDzINKHW8Q==
-X-Received: by 2002:a17:902:ccd2:b0:2b0:5682:6973 with SMTP id d9443c01a7336-2b08273d0d4mr101278545ad.19.1774254271399;
-        Mon, 23 Mar 2026 01:24:31 -0700 (PDT)
-X-Received: by 2002:a17:902:ccd2:b0:2b0:5682:6973 with SMTP id d9443c01a7336-2b08273d0d4mr101278345ad.19.1774254270964;
-        Mon, 23 Mar 2026 01:24:30 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08365a62bsm136181655ad.46.2026.03.23.01.24.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 01:24:30 -0700 (PDT)
-Date: Mon, 23 Mar 2026 16:24:28 +0800
-From: Li Wang <liwang@redhat.com>
-To: Waiman Long <longman@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Sebastian Chlad <sebastianchlad@gmail.com>,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
-Subject: Re: [PATCH v2 5/7] selftests: memcg: Reduce the expected swap.peak
- with larger page size
-Message-ID: <acD4vGZKveXJ4GuW@redhat.com>
-References: <20260320204241.1613861-1-longman@redhat.com>
- <20260320204241.1613861-6-longman@redhat.com>
+	b=lN0YptUWIpYjMXOwiyEaKiZZ4GRVss13ottGyFMfDBCliVUo/UyNdtmDII9EddsVDYIbXx
+	Y2FfFPRm/KO8xpJiARtBfw5sFk4JxZ+qf8b9pSzJf9jNLlh+IbrdXbjew51F4nhccwDFGU
+	CVFSVqwykCGdW1UArWh8knFJ+WX9aVs=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=cl9rXJGm;
+	dmarc=pass (policy=quarantine) header.from=web.de;
+	spf=pass (imf26.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.3 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1774254354; x=1774859154; i=markus.elfring@web.de;
+	bh=Klg5LH2nJ1/ced6EaoWVD3V9cJhwXViVfxPzhTgojk0=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=cl9rXJGmvMPvV6tUoRD9Lk2iT3KJvMNCxHLwlmNEku/sfVKis9aBgB80kgHSxHFT
+	 fS97VCDMF2C1BfRq40/jnuGJXbwYySIjW70Wj8cTzHV96K/PUPZLxvlhzX4XEw8Fx
+	 EMrbnDrUKdEsOPEKV2HVDY9tJsHJiOjl4QktrXxyx2WKydF1hsyums3ACxAHSwcK1
+	 RVATZwR0KX1pOnj8tm8Pwh7yDIN61MCynnE/xaZnOyKIjFjJ0vmeD0oHs5br0ZuqC
+	 IOIGKhbWF9+LaWQkedibazajWkJ6gKw2D6bzKWfCOac8jw/Mg9hjWp6QHujTTCF29
+	 TpaI/nwX16YSWPo4xw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MZB01-1w0LMx141h-00NjfD; Mon, 23
+ Mar 2026 09:25:54 +0100
+Message-ID: <0bf54287-b6c1-4359-823c-e47db6f7830b@web.de>
+Date: Mon, 23 Mar 2026 09:25:52 +0100
 MIME-Version: 1.0
-In-Reply-To: <20260320204241.1613861-6-longman@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pYPeNTWEF90pDiA9Na7X0rXwQjiON6-wUmmLygm9jQ4_1774254271
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 46CD3140012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: b88n3fxiymo6pnihuzh9twa656i91hdw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v3 1/3] mm/damon/sysfs: fix param_ctx leak on
+ damon_sysfs_new_test_ctx() failure
+To: Josh Law <objecting@objecting.org>, SeongJae Park <sj@kernel.org>,
+ damon@lists.linux.dev, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260321175427.86000-2-sj@kernel.org>
+ <89ab7e7b-ad61-4881-bceb-781481857d3d@web.de>
+ <BDDAE837-48DD-4FF8-B7E3-AC0030AF5C9F@objecting.org>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <BDDAE837-48DD-4FF8-B7E3-AC0030AF5C9F@objecting.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:t4Ee2dVS2SNhjOieyUpz0lMD/wuHp5qfs23dSNvdI49lfR0sVlr
+ CPhBbW8Uki/NY4XZlZTSvT8Dlz+7TtPRiNUPvbXfEp7pJg8UNANUIT1nThKBjL6WEXgPkcp
+ 2z5devxkO+IejIQX9uIYzpsw/oqI0Q+h7RubBcwiCJmgJeGGwUWmqdj7bWfy0FK6C/iwp1E
+ lTHym49jIaNJYCQ0ZHi9Q==
+UI-OutboundReport: notjunk:1;M01:P0:0PbsgO+VBxI=;HJZ8r3GzLg2Jcn2/kNZfIFgIJCj
+ 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
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 24F95140002
+X-Stat-Signature: y5gap1r3c4ycf85hwtff5o8n69o955wf
 X-Rspam-User: 
-X-HE-Tag: 1774254274-702037
-X-HE-Meta: U2FsdGVkX19Z6uURMtyJzoBMlrYV6vI4gAVcWsAywnw67qEGHWbfnllow+9QG3XR87u1nAZu5ElL2j5h4rmJ9PUvW89bYvIWVZTWHAjysNgp0NsYpVl5mrx/OS61aNHNkejkyN+7ZXf6X1qmLgvuzOW6yhtYPkKPLy+RSFfKvjkHg+KhB1416Z4gezUcTJbsJokAJZAJ4mMDIB78vhtVh7snOM59X5YI2ijctaZ2Uu1EeVVoBWf1I1jreguA2frdYAn7SrHYAlky/E2sPxqMb0QA8SZNDhYD6MNDY+dxKU2Lbgs479N0XERPTJz4AHVFzdfkX1Pn4AqqqXlY7cT8C2NiB4dDLfv78o4vuUMU/b5k9DVRxldq65Lysm9qzepTc9qMurgKn//js9kn5jp1x/A2odOUrtT1iLeE1EyAK0rmZg4EEupJi1ajXvfbi5IUMOaNaneV7dCuKmjwKkdPyKxaxK7JTLFLJMYXeNqdKFW975f0rP6MMeBu1xkgnDxWs/tW8La9cF0Ikxq+TMCN1uFajFsldyXZzTgQVCG5sV2nePBxsuE8aTwD3uAxFtDRnrKJB4d/h+XLyDgMxQarzla6Mqt1PHABivupCX8LyVKj6yERxsaMQE2fywOQ4b1KSq4fwTd0wdp2AXZvR5z3UCtxXu3vvCPU9fSArwJ9BNNs3hGRxVs2KXyDzeaGoGkaIjZBZdUZiirkREOo6OkYp3uFmbHI0gyr749VAqBLAUc2jY4280XDK/2XMExWDiW36COqRI8YwlnipACzri1B7diPKcrK9Ps2lG59bYmh/fti3uuLZfg+o5FMGtAeXE45QJ4BkuwciPaIzg2wWf3b9flHte2VHyXtRg8chXeL+BIpVE3AQhKrzD+Oj7H5kO4xqNHyNVItfpIH00DNsLBVf87brC4tOWyG7pFUPxsudi5PKqX3CkyGC3vG087Ai/gANUqs6M5rMKfWYg03oeX
- juD4B7lz
- QAgZW+zTDOedh4NkYiHP9bYyZ85hn1ih9mKN9LWCHlUsE2g9boAZgf95OIb3eG3MmRyPVVI4Hx4kSnxEmgsBRpurfSgfrTImDxG/AetvQ9czbyKz81IvcnrMRNhmKkNtvlVNo6PiVJBGBemPfpQ0HRxWMdEVV7xpV2Zq9rQxgf6NS0Ax0YOvqhj/giMjYzhJ/nzpac36HqhOVJ871zt3xvahhbhKbfLFaxKtlCu8LMBUNkIZ5dIM/SxUs2sr74tuOg5XkzJdOPDN/BKLYXCDMNCIC9rWyZLlYTvdpfM5CJhgCZ+RhPs5ECLD6xzWlXFu7oNhV3R4CWX9LVTxXwpOITzT6t0VyG1fYV9tJyrHQUD6Yc5iNdm7Bw90heSid4F27z0nvjH+CtjgMQjcvoD6bzcMG5/Kwuj+uqwhxGAPAsmEyLhTNO89bCYwp+IO3KLRQdjNEmTXpPV/AaL0=
+X-HE-Tag: 1774254363-490933
+X-HE-Meta: U2FsdGVkX1/kVwctOySWk9bYpjTvdjW/V+lV35lIrz8X+SSuZjqtP1LfcoXe5l2fL31FKHA2Cg+k2JUC7MVy0HYxIc9fX3XrPVQtdTkV2kzYPdJWUiTY9g8rldYLx3McpY2CRZQ7yiX+oVTcTMXLW5wmFmj0MxrGSAPPxTNDnr1Xb7IMhOH+4u5vrfDW0bJi6K7aKi0AgGjwBCHLpNAsBXb31GxaEZ0wd87qOTZz+T+9LjCKr9qdxyQ3xvfiyB/eh6gW3H8373Gta5AJl/ox5gx35VMaSKd4dtbnaWyO8DyzjZqN6Os3s8a45JpywpEVioCVSBGcY9UxwPvnbWjRlzCyqkCohvzBJEi/xB32BzhSFEYjtWz1+gWhRpNN0tA8T5b0MZatGqqQYMyRLC1gpfq0ImHEeBizwr8WWw9S469uIj9QxkOYEtkqgxhBbFAFel4Ki48FoZP86sRfR/ZUbXXNAf9glMa4lgQckMyAaD3BkgseU2N9jrWVa877gksrAVDAl01Gntr9FsxcroMbOKuR1EjCr49ehsYLPxrecBL5LSqpy/bmIcNeid77lX3DG+AhzMquhi460M+hh8bkahgEQsaAmZB2hgI3fKmy6C6OTQc14TZeVaxBif7GtG5GjbjHfvAvLRroOajJkoUUA+blIQ+wX8SP4H/bl+xxQ/lgbtBaxqTtutCoKft6MjJzStxf8c6H144CzWQP7bzeyzl1KtjPL+MJuADJcIneruGxqQPbq0Tsinyzm9aauTvNPLQZ+Ux4m4dlSQ6V26jj8rIreRbINQhCtqX7tnPYJin42/ye5u9YJQPCSg3+ga9EAvO63wzRFrVaz7p/9dYFudGyCSywfeQ4RWhAx/iZiqIX9MqHG/fHKNNpfUr0Zs8A3/qpOt2NQcjG4k621mKbXoKrGYhDekCEGDO0WC+S+jO3Wp6Is1iVU2CCEDR4gxb3DUoELclUjGq0uZ5zmH5
+ ZdnteToJ
+ P2Ee264tmf8RpE8ShumNIbg4U91TaASp1Gbf3gAUaJjCoD3r48/Ch2Kk6eh5zzibXSnBb4pRnESh4vIpAjrEvgJ9Q9SnfXUmAqo60kCaByFDhXk9gKR6NEJGaA7GKIVNzkWAJc7ZGWzKChyti5JbNDCTc5Yh/DRzbWTbet0JbtRM7tXC4Z58Cyvz5izxn2Q+XXeHBPYNGsMzmexSmIfHNZ2J+5iKXEwC253MO1b6RoGUUzWrQJUw/jIp6AsfAxTOTMRjEqvM38FzOT0UK274b4PPb8LJN0zVxDy847+lN9W0iCtqHxiKW6IMZ3wQXTJX4BKdjGAO3M2u7zfVW0OBthYhfyS3cuF5tzWgzoKsjK+74pzc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,62 +179,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 04:42:39PM -0400, Waiman Long wrote:
-> When running the test_memcg_swap_max_peak test which sets swap.max
-> to 30M on an arm64 system with 64k page size, the test failed as the
-> swap.peak could only reach up only to 27,328,512 bytes (about 25.45
-> MB which is lower than the expected 29M) before the allocating task
-> got oom-killed.
-> 
-> It is likely due to the fact that it takes longer to write out a larger
-> page to swap and hence a lower swap.peak is being reached. Setting
-> memory.high to 29M to throttle memory allocation when nearing memory.max
-> helps, but it still could only reach up to 29,032,448 bytes (about
-> 27.04M). As a result, we have to reduce the expected swap.peak with
-> larger page size. Now swap.peak is expected to reach only 27M with 64k
-> page, 29M with 4k page and 28M with 16k page.
-> 
-> Signed-off-by: Waiman Long <longman@redhat.com>
-> ---
->  .../selftests/cgroup/test_memcontrol.c        | 26 ++++++++++++++++---
->  1 file changed, 22 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-> index c078fc458def..3832ded1e47b 100644
-> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
-> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-> @@ -1032,6 +1032,7 @@ static int test_memcg_swap_max_peak(const char *root)
->  	char *memcg;
->  	long max, peak;
->  	struct stat ss;
-> +	long swap_peak;
->  	int swap_peak_fd = -1, mem_peak_fd = -1;
->  
->  	/* any non-empty string resets */
-> @@ -1119,6 +1120,23 @@ static int test_memcg_swap_max_peak(const char *root)
->  	if (cg_write(memcg, "memory.max", "30M"))
->  		goto cleanup;
->  
-> +	/*
-> +	 * The swap.peak that can be reached will depend on the system page
-> +	 * size. With larger page size (e.g. 64k), it takes more time to write
-> +	 * the anonymous memory page to swap and so the peak reached will be
-> +	 * lower before the memory allocation process get oom-killed. One way
-> +	 * to allow the swap.peak to go higher is to throttle memory allocation
-> +	 * by setting memory.high to, say, 29M to give more time to swap out the
-> +	 * memory before oom-kill. This is still not enough for it to reach
-> +	 * 29M reachable with 4k page. So we still need to reduce the expected
-> +	 * swap.peak accordingly.
-> +	 */
-> +	swap_peak = (page_size == KB(4)) ? MB(29) :
-> +		   ((page_size <= KB(16)) ? MB(28) : MB(27));
+> Markus these patches are already merged
 
-Or, go with a dynamic adjustment based on page size?
+Are there still development interests for the application of a better goto chain?
 
-    swap_peak = MB(29) - ilog2(page_size / KB(4)) * MB(1);
-
--- 
 Regards,
-Li Wang
-
+Markus
 
