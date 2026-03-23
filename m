@@ -4,124 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACA72F4613D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCE71F4613C
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:49:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 249F86B0088; Mon, 23 Mar 2026 11:47:50 -0400 (EDT)
+	id 531D56B008A; Mon, 23 Mar 2026 11:49:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 221956B008A; Mon, 23 Mar 2026 11:47:50 -0400 (EDT)
+	id 4E2D56B008C; Mon, 23 Mar 2026 11:49:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 137406B008C; Mon, 23 Mar 2026 11:47:50 -0400 (EDT)
+	id 41FF86B0092; Mon, 23 Mar 2026 11:49:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 05FE86B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:47:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CCFB71B9218
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:47:49 +0000 (UTC)
-X-FDA: 84577758258.25.3859E5E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 30E1D6B008A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:49:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CAF801A0C07
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:49:07 +0000 (UTC)
+X-FDA: 84577761534.10.AAFCEC9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DDD5D1C0019
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:47:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPjnpfdE;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1D9CF20007
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:49:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gyb9cPTF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774280868;
+	s=arc-20220608; t=1774280946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aJG7rviSzrQ4mxNP46Y9gYTa/9q/Y+t8JYvzFfU3sy0=;
-	b=kZP2VGbLOH/lAteX14fjfL+Ui4fvCcX0PPPbVbXZq49w/8OxFJoKeMCoO7u+r0zIFOm8CD
-	sS6CjcWWmRGunYljf385qk6RbzijB36joa/fKYW5pduj336zQw4QZ0i9Qj4pbKPxtkbfw6
-	Y7tdxNPxGr6teuyUeNgm52HBWZfB+dk=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPjnpfdE;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774280868; a=rsa-sha256;
+	bh=VU67ppKIlHNY+vC2jhTt+1jz5LuPx2WFBBRyAfaFWcQ=;
+	b=SMPm1+fVct86HpxmMDwUVWyDZ5i8O4OrULOOIN3Tl5rU8QpNHtmKBuoCGjt1FQqvIAX3rP
+	lOL/MqTsl1KMYpjSMIX7o9gRuDxMaxwI/yleCNfp6P5u3JKz4xuhNRnrj9Pii2f/EBtsqj
+	0x5qrpd9TmGPFEDUYg36+pu74hkSvcE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774280946; a=rsa-sha256;
 	cv=none;
-	b=K9Pmv16LNZLC4Z+P4GQyqxGy1q/p/Dg0uiqcWtnLJKCciEHVRnZVUOvtgutXPMHssYE/j3
-	h4alXfy8mMr2cu4Cofam+8xN/M2C3uKYfrEJ0FDokekZBt5yC+Z1NVg8Zwc0U5i6aZIkq1
-	QpJsIUIdB+XKmGR+rA/CiH2OLcctotI=
+	b=yOE/3hChJBVnK1ZdCT21+vMZkCH+WOXwhjlQgK5oOnI+XOfvlaXiH5dzTMXACRG0bQ045a
+	FLKeog1L/ybdTBECcdC4jy7jpwqTn6aPMYpBfce1IEcVXguZuLErEEyXPw4HTyLDO9JeZF
+	npHI1oKXR7UtNtwM6sXaY/JQTEV88KU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gyb9cPTF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9DE7743B0D;
-	Mon, 23 Mar 2026 15:47:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1465C2BC9E;
-	Mon, 23 Mar 2026 15:47:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F167442D1;
+	Mon, 23 Mar 2026 15:49:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CC2C4CEF7;
+	Mon, 23 Mar 2026 15:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774280866;
-	bh=ykDj0Ppke/lrsvnXc74bDdUkqngFPXP4WoK/RTIL1I0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KPjnpfdELqJbpC4ncfqddvGU9IIIkup26qddC2aNixhFBIb9mHkF5A7epXJQ3KmSH
-	 MuLQQp032z1JuZmOTzDCg5uhT0pMXLmk69mazn1wBoES5rRXYs+2i01B39tCb0fgwm
-	 eMVmp2zxvVNKgA6OUptqx23bwS7Xpo/9N86ZlA8ang/MlqIECTmX5MKUewXXQzMnmh
-	 QUNRieF4AKOOU9JlQtW5hTno4YlkFFGvDEgeAtLrbiTNsDF5KI83hQ66Af3sBzXk2x
-	 2EQzT+rnWcdOU/touJNZDWaVify96eKObV19ON47GNNYH2ceCv+xCHG57JoxHjqvXU
-	 vAON7QUwQBDNQ==
-Message-ID: <cd30724b-15e3-4642-b19e-c464d0978282@kernel.org>
-Date: Mon, 23 Mar 2026 16:47:32 +0100
+	s=k20201202; t=1774280945;
+	bh=MMLWnE4+owXgbpiWUI1UdF31XC9AUzjDGtFrfk10ct4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gyb9cPTF4uDc6h/CEIQTbhZL2XfjiK64YwEU9X2eh9SgOoDYTBlUZJNv+QfpGHd5w
+	 3GipXY2MMeqNMnRrX6uI/uOic1dokXzAvVQuUkNZ4mgiMiujxNBo+OZlUjNbFUbfRv
+	 G+eUzltAzGsYCa/hpZ4PW4nrQf1QBH93s0BEK3Jt/pENYR8WC/3O3AEx2iScta1mAD
+	 jtbf2laiX5ZQOsn31A/97djG05ERFZo1X4bNGBq4cULXYvyBVzakO6UBh7LjF0MkY7
+	 MwTWbOaRQB7DoJcH4wqOL3K/m32AaeHOA8xWIIEhS92OE162vFEPv2ydpe9WfdU+Ws
+	 TUA+TJH+KSoiA==
+Date: Mon, 23 Mar 2026 15:48:58 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev
+Subject: Re: [PATCH v5 3/6] selftests/mm: move write_file helper to vm_util
+Message-ID: <b992bd2d-f811-407e-835f-30d9c9d707ad@lucifer.local>
+References: <20260323151753.2576137-1-chuhu@redhat.com>
+ <20260323151753.2576137-4-chuhu@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 23/25] mm/vma: convert vma_modify_flags[_uffd]() to use
- vma_flags_t
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
-References: <cover.1774034900.git.ljs@kernel.org>
- <51afbb2b8c3681003cc7926647e37335d793836e.1774034900.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <51afbb2b8c3681003cc7926647e37335d793836e.1774034900.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DDD5D1C0019
-X-Stat-Signature: pinknyt5gjysknh5nhsn7n9mmc5zodue
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323151753.2576137-4-chuhu@redhat.com>
+X-Rspamd-Queue-Id: 1D9CF20007
+X-Stat-Signature: tdgk3rnq7jrmpnb8yzsufk1qugfge8gu
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774280867-867315
-X-HE-Meta: U2FsdGVkX1/uRunRw2CbJ5nlTKcx0UV8P+I6YGsAeEe9zqUW1xEQHkE0mk4UNCN69owWE6OXx0ISwSpXhaWj1HJLqQQ1Km586b0lEvnfLkCOniJEKGlaSPh5DuVYIMKTVjllydfZxWSPZktlPrriPjqBpDbSOQbwShb655sAAvvqFwd2ou1hYrWjrfDT0JRteMnl3KEZTSl+kQLqrYEI19r6h+bcs3sEafcSuDRdTGDKrJVF0wbrkR20htfQUlWbd5wVAKyTOlQHuY0PqyQXVub5ytj7RcI8bY7wGb8s/QR9zveBUSanm6N+dcxa0+ggpd8EfPAXLynZ0c6ec1HFUzDl3o9SDpKc67RK7qR/NHqNYT4W0yvzukzGk5nFAUcNsHe/hcy75S2tWWTjcOKWk2sMzqyQO4DH/MJi0BLU15eNQXD0ip/yJcK9CNDckdhpfwWi99UpdeXRR0IrhH0pKAfBaVFoDcoWP58oAvqePTBOEFaOk//VG3liW2kmidzh+2KSm/dq9iq+ark1vzir1DQbUbCdwGFgtouI1z3QNE4sD6EQYkwGPl7Efm1+MEEZu1VdwxUgLdzvOuf8V0O5dkOILdg5JYyunPoZeXDCGvywJFBMEknpt90pQColiMAJyYSV5DNmP+cQwyhBbZmzjhhqUnkQv2iVXKx3dbngC1rdSPlwBpKFtl71INx+JDmU8+sPJdmUZI33N8QMrVc1Sat3vTWWhSgUl73pBMBLf0my1dIkUdHWChcpebj9/Am5IhThan/1if+Y8d/1o2B6On36Mb9b5hvYqdqx1vwZy9KlWBndLm9uxuLDmA2r7X1xk+BsBsh5HSdRb506kCyWyUOr/mpUfbtx/1rPdhF5cHIGWeCujcxPod+QBPpW2jD9RlTPmRQAQykVB1HYDaZObfj9IVCB7JzKAWRWH0Fu9np562fHnS1vgHcAH20xDsu7kW49ySLx7IFppId5Jla
- k0Kk9IaE
- w3bE79l6lsBtWtovT+tY/MJ7waQ7xpIPmqwQZ8RaK817bSkVcsomsBZNqgsHa18ugfVGwmp47wxE9kY14bp8W2X/P1bmmsVXTO9SimqEuHS5UEERXvZ4ITkcRG6OMYV1BeQ7fPiewg03Z7IlcCrt2KXMSiRV2oHdEKmOvp32+D3SXrRu+tyPebJLM5P3/2PJJasb/y/hlKh1CLXlQNYHvNCEGVWNkZQJq+w1syhzX/BBEfQvi5TlgNF2mg4FhiwSniJTSapGRcvxOdzPlWsWjv6dp0ElFghlXT7FgTMXcqmGDcAgBXJGmt/s1cb2g90lHzHOzKC7OSM/2/zPGsauHZQodgi89Kf/B8y10nntBMSrMKPLGTkiOYAsvWOWShuo+jbBTgAtoxQRcFAQnzte9C7pYgw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774280945-454284
+X-HE-Meta: U2FsdGVkX19WGsYXp14eRVh7CCU/0caPIDmszMPNVvplACU2RLNqaXiOHYfqLJOoigOLuO3RUjnLUEWO9mqHsL/1oLrySMxPLw91+fM0pj2Ka/NOG5ZMvx+0fe0Lf8iQOp7s1nwIQu9fMHpkKK0ZnnLS4dWf659PE1NF1y2iMCYe95RMEVHXpcoNZDbyuQke0Fg1USfwJRTZyWBmAP/v03u0aQlBbYFvBlfrxFm99hp74f15yJlqdLnI63TsF1oE+nUbFG/T8s26vLJSGhwPTdbJzy3kOTEQNtAiix4DqzR6EiwNT2c3BMGBg1jHefa/JTEi0cbP5xEPXVGPbV858TrVCy0cBAyhGgFCU8F4hLSpXpIdH3XUk56iGWGjxStqBtZl8ZDKMKhtBrCZgu4mo3biCDlA+uLjHUklpTtG1ajAln8XpvbIuGLsDRJ+TJvKnCXd4s8BViaXfVZgNXCrmoYPDpvh9npNbfhVz6NxtMOpbFhSi6bSLaF4EZ+j8WGNYWum+thwQymOmTXO/qFWuPqTuYpJj79swrXQ7vqvfxM07LE8uzAl8Ow5s57ecb5BShJzBe2HQc5KE8J4W/8N++ladqzZaKUDtbyG4tmWj7ctmgahR0jiOISUlm6OHEMZ9j6WkDbmIBy4OCyoMvU258SECKK9016uDZl29uW8j+yP/hhdyT+DTgm/egSONLJ59nPrLYGuMtI52HTzi+qCzyx4J/rkDvrDu4VO+h6VVnZu6olwEJH4mfogvD3n/zI4EDsDJZzBjJa0zFNDj70NeDLTGZHWDSqxJETQoK+WNna+sRkyu4cw+/uMu6gpXCcYWVlsdZq1sNxXysxUfb6PUJBoLsgFbD9Us3Y8rR0tb78x19sG4Sul6UGesPvjU4Q5qxl5xr3Vs1ASv+aB1BtUsJxerF+PhRDPif+IHyegSzumKDKtCvquUJymnWrCofr+8x09EPtp3wBSTv6iewG
+ ZftWCt3/
+ kMFFJyxma4Ef22kqxWLbUiHLsuJ2Zio33w7iExG0r5w8m55TsA2iBZq75vQChSi5CaTTjM200CrlJ6Ekn4JdBJuLHqt6m5JAjdgoAZHLDOsKvqvBlGstljButDnKBFJ6r2WohchCfp4aYYVucmbViE8AfnHlu+fh4XJjfdHp0ooGxqUZLKfBQvo9mU4Ttw73AoDmO/UzzIoxuGbP6e/r0s2rhWGlnbngoIlRj3+Ai8fFro3Sp0YNKuOBwfiRBkSOo0+VY+CV8lnctOUlB6UWXYkFz9tpBVXdFpppQnuEUf/dh79nhtIEsLpMQWI04da+xzyXcjz22DiiyKtvt0QkZ7Exo5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,45 +95,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 8:38 PM, Lorenzo Stoakes (Oracle) wrote:
-> Update the vma_modify_flags() and vma_modify_flags_uffd() functions to
-> accept a vma_flags_t parameter rather than a vm_flags_t one, and propagate
-> the changes as needed to implement this change.
-> 
-> Also add vma_flags_reset_once() in replacement of vm_flags_reset_once(). We
-> still need to be careful here because we need to avoid tearing, so maintain
-> the assumption that the first system word set of flags are the only ones
-> that require protection from tearing, and retain this functionality.
-> 
-> We can copy the remainder of VMA flags above 64 bits normally. But
-> hopefully by the time that happens, we will have replaced the logic that
-> requires these WRITE_ONCE()'s with something else.
-> 
-> We also replace instances of vm_flags_reset() with a simple write of VMA
-> flags. We are no longer perform a number of checks, most notable of all the
-> VMA flags asserts becase:
-> 
-> 1. We might be operating on a VMA that is not yet added to the tree.
-> 
-> 2. We might be operating on a VMA that is now detached.
-> 
-> 3. Really in all but core code, you should be using vma_desc_xxx().
-> 
-> 4. Other VMA fields are manipulated with no such checks.
-> 
-> 5. It'd be egregious to have to add variants of flag functions just to
->    account for cases such as the above, especially when we don't do so for
->    other VMA fields. Drivers are the problematic cases and why it was
->    especially important (and also for debug as VMA locks were introduced),
->    the mmap_prepare work is solving this generally.
-> 
-> Additionally, we can fairly safely assume by this point the soft dirty
-> flags are being set correctly, so it's reasonable to drop this also.
-> 
-> Finally, update the VMA tests to reflect this.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Mon, Mar 23, 2026 at 11:17:50PM +0800, Chunyu Hu wrote:
+> thp_settings provides write_file() helper for safely writing to a file and
+> exit when write failure happens. It's a very low level helper and many sub
+> tests need such a helper, not only thp tests.
+>
+> split_huge_page_test also defines a write_file locally. The two have minior
+> differences in return type and used exit api. And there would be conflicts
+> if split_huge_page_test wanted to include thp_settings.h because of
+> different prototype, making it less convenient.
+>
+> It's possisble to merge the two, although some tests don't use the
+> kselftest infrastrucutre for testing. It would also work when using the
+> ksft_exit_msg() to exit in my test, as the counters are all zero. Output
+> will be like:
+>
+>   TAP version 13
+>   1..62
+>   Bail out! /proc/sys/vm/drop_caches1 open failed: No such file or directory
+>   # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+>
+> So here we just keep the version in split_huge_page_test, and move it into
+> the vm_util. This makes it easy to maitain and user could just include one
+> vm_util.h when they don't need thp setting helpers. Keep the prototype of
+> void return as the function will exit on any error, return value is not
+> necessary, and will simply the callers like write_num() and write_string().
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+I already reviewed this :) but easy to accidentally forget to propagate
+tags. Anyway, as before:
 
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+Cheers, Lorenzo
+
+> ---
+> Changes in v5:
+>   - updated acked-by and reviewed-by
+> Changes in v3:
+>   - make the write_file void return
+> Changes in v2:
+>   new patch from v2
+> ---
+>  .../selftests/mm/split_huge_page_test.c       | 15 --------
+>  tools/testing/selftests/mm/thp_settings.c     | 35 ++-----------------
+>  tools/testing/selftests/mm/thp_settings.h     |  1 -
+>  tools/testing/selftests/mm/vm_util.c          | 15 ++++++++
+>  tools/testing/selftests/mm/vm_util.h          |  2 ++
+>  5 files changed, 20 insertions(+), 48 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> index e0167111bdd1..93f205327b84 100644
+> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> @@ -255,21 +255,6 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+>  	return status;
+>  }
+>
+> -static void write_file(const char *path, const char *buf, size_t buflen)
+> -{
+> -	int fd;
+> -	ssize_t numwritten;
+> -
+> -	fd = open(path, O_WRONLY);
+> -	if (fd == -1)
+> -		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
+> -
+> -	numwritten = write(fd, buf, buflen - 1);
+> -	close(fd);
+> -	if (numwritten < 1)
+> -		ksft_exit_fail_msg("Write failed\n");
+> -}
+> -
+>  static void write_debugfs(const char *fmt, ...)
+>  {
+>  	char input[INPUT_MAX];
+> diff --git a/tools/testing/selftests/mm/thp_settings.c b/tools/testing/selftests/mm/thp_settings.c
+> index 574bd0f8ae48..e748ebfb3d4e 100644
+> --- a/tools/testing/selftests/mm/thp_settings.c
+> +++ b/tools/testing/selftests/mm/thp_settings.c
+> @@ -6,6 +6,7 @@
+>  #include <string.h>
+>  #include <unistd.h>
+>
+> +#include "vm_util.h"
+>  #include "thp_settings.h"
+>
+>  #define THP_SYSFS "/sys/kernel/mm/transparent_hugepage/"
+> @@ -64,29 +65,6 @@ int read_file(const char *path, char *buf, size_t buflen)
+>  	return (unsigned int) numread;
+>  }
+>
+> -int write_file(const char *path, const char *buf, size_t buflen)
+> -{
+> -	int fd;
+> -	ssize_t numwritten;
+> -
+> -	fd = open(path, O_WRONLY);
+> -	if (fd == -1) {
+> -		printf("open(%s)\n", path);
+> -		exit(EXIT_FAILURE);
+> -		return 0;
+> -	}
+> -
+> -	numwritten = write(fd, buf, buflen - 1);
+> -	close(fd);
+> -	if (numwritten < 1) {
+> -		printf("write(%s)\n", buf);
+> -		exit(EXIT_FAILURE);
+> -		return 0;
+> -	}
+> -
+> -	return (unsigned int) numwritten;
+> -}
+> -
+>  unsigned long read_num(const char *path)
+>  {
+>  	char buf[21];
+> @@ -104,10 +82,7 @@ void write_num(const char *path, unsigned long num)
+>  	char buf[21];
+>
+>  	sprintf(buf, "%ld", num);
+> -	if (!write_file(path, buf, strlen(buf) + 1)) {
+> -		perror(path);
+> -		exit(EXIT_FAILURE);
+> -	}
+> +	write_file(path, buf, strlen(buf) + 1);
+>  }
+>
+>  int thp_read_string(const char *name, const char * const strings[])
+> @@ -165,11 +140,7 @@ void thp_write_string(const char *name, const char *val)
+>  		printf("%s: Pathname is too long\n", __func__);
+>  		exit(EXIT_FAILURE);
+>  	}
+> -
+> -	if (!write_file(path, val, strlen(val) + 1)) {
+> -		perror(path);
+> -		exit(EXIT_FAILURE);
+> -	}
+> +	write_file(path, val, strlen(val) + 1);
+>  }
+>
+>  unsigned long thp_read_num(const char *name)
+> diff --git a/tools/testing/selftests/mm/thp_settings.h b/tools/testing/selftests/mm/thp_settings.h
+> index 76eeb712e5f1..7748a9009191 100644
+> --- a/tools/testing/selftests/mm/thp_settings.h
+> +++ b/tools/testing/selftests/mm/thp_settings.h
+> @@ -63,7 +63,6 @@ struct thp_settings {
+>  };
+>
+>  int read_file(const char *path, char *buf, size_t buflen);
+> -int write_file(const char *path, const char *buf, size_t buflen);
+>  unsigned long read_num(const char *path);
+>  void write_num(const char *path, unsigned long num);
+>
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index a6d4ff7dfdc0..ad96d19d1b85 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -764,3 +764,18 @@ int unpoison_memory(unsigned long pfn)
+>
+>  	return ret > 0 ? 0 : -errno;
+>  }
+> +
+> +void write_file(const char *path, const char *buf, size_t buflen)
+> +{
+> +	int fd;
+> +	ssize_t numwritten;
+> +
+> +	fd = open(path, O_WRONLY);
+> +	if (fd == -1)
+> +		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
+> +
+> +	numwritten = write(fd, buf, buflen - 1);
+> +	close(fd);
+> +	if (numwritten < 1)
+> +		ksft_exit_fail_msg("Write failed\n");
+> +}
+> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+> index e9c4e24769c1..1a07305ceff4 100644
+> --- a/tools/testing/selftests/mm/vm_util.h
+> +++ b/tools/testing/selftests/mm/vm_util.h
+> @@ -166,3 +166,5 @@ int unpoison_memory(unsigned long pfn);
+>
+>  #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
+>  #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
+> +
+> +void write_file(const char *path, const char *buf, size_t buflen);
+> --
+> 2.53.0
+>
 
