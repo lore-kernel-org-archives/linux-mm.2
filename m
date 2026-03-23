@@ -4,136 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09D65F483CC
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 16:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86999F483C8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 16:30:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 010396B0005; Mon, 23 Mar 2026 12:26:21 -0400 (EDT)
+	id E96006B0088; Mon, 23 Mar 2026 12:30:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2A826B008C; Mon, 23 Mar 2026 12:26:20 -0400 (EDT)
+	id E45F36B008A; Mon, 23 Mar 2026 12:30:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3FD36B0092; Mon, 23 Mar 2026 12:26:20 -0400 (EDT)
+	id CE6BF6B0092; Mon, 23 Mar 2026 12:30:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D298B6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:26:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7CE1EC39F1
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:26:20 +0000 (UTC)
-X-FDA: 84577855320.24.79DFAED
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6AEAD40007
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:26:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Gyy+YVAc;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774283178; a=rsa-sha256;
-	cv=pass;
-	b=EXjrweH3tqmrvVvDfcHbHmjfNfGeSfRCCGRhfLn5IfWqCEHKpM4XV3d1XQWymKvUF/+zz3
-	Nkrf5v4EEadMxojg5XF8SLCeD5vhwKI5Nd8Zx4K1wsm4TRYeOv66Oy2fg8kA9tq+eqNTgL
-	lpebNtwfrvKzvZirBmPJMjLykKwYPp0=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Gyy+YVAc;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774283178;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BEB066B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:30:37 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E9151A0C5A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:30:37 +0000 (UTC)
+X-FDA: 84577866114.29.39334E0
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E79761C0004
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:30:34 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Vnph5DgT;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oQ7YF+BW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O0+9DRAy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+RteFXbC;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774283435; a=rsa-sha256;
+	cv=none;
+	b=vdVmO4PbP0RnGiUX7TeCREs7JBWa2XExuHrV0elRhCF38t11r8WttZ80sJe2Q1Djr5KS+D
+	iQOvMPJ6gdbdhvCOqrEUiCeLQS2dpWE+KhReiXTtjow2tcBcy9nHL8km2rZDgJUMnsBYGK
+	QvdAm2IOalOhB1LxPEb/TvShrYYpOno=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774283435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sa02RWDZ55PD6em/0hw+fQdWq+DqfOIo8vL6O16AHXU=;
-	b=E36BZEbyuQULLQU8i+LTbb0HqyYPUV4riuCcgM/bdj9wRYdIw87X1UMpSeUAReQRANHgvc
-	vXRDWzF6mcpypApz4PqoPxr1Ad58MjGwRV+b+UTLZgATULVWb1ZOlopH2JeQIpBXNri6c0
-	e5hKK8vr/SuBX3VHplnexuIWFGFEZkc=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-667cde0fc88so16550a12.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:26:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774283177; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KpsL81014nIm7zReDM/FiMGOlabBLjkGUCJ+I1zVuwr4jVaJ9HyHsaZNTbgBCeMlqQ
-         bTpSGtmNTtZQf1diys9mku6PulH0vaQBm2vPkAYu7auC3mXV2zpMtSyW/eGumv9fJ1u4
-         3zkQZ9ZEt8Pru2VEL9fF86/ubcf1vb0/zO5CXPQ3r479ZGXs3IUbtOwmU8lsFLleehIj
-         AgglB3DRiU+IT0pW8xYYQDHM17D3+qP1trKJvjOy/wG2rLJRPJ9fAexSPPFrNYNMrMuO
-         lQ7TJT3Lo5nigdjYNSCXj7B9xh3HtOz3ckpIzYZ3kFsty4jKzYbeySwEkBq+lXpO7Uwe
-         5Hbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Sa02RWDZ55PD6em/0hw+fQdWq+DqfOIo8vL6O16AHXU=;
-        fh=fRGgiKubCejk743o8NHpcXKovqm1qQe8fBnBNRrur7Y=;
-        b=cODsBpgPc2kkUY7s15Wh5ScxD5P1ODimWackfFEiP/lafzdpitvlPgnfjma6sUqK8B
-         /EeJ8YHpyYYvyBFnMytAugxn6NgC0MFRc3es5EuiCjWgqjym0jMYC9bD5ggGFKoi05CE
-         ihJY3xfeaYfKK0BcOytYRVCbotmIC8IhT2wdBy8YD4o+vMvBdcZkhc0x2RBV+aEgyP20
-         L2n1HCZ+3DVEegLh2OuHTbidu98fPD2sSLITn/WCVFWA6fw3LVS4F7RyCtS8ZuEyAgyu
-         ckKRazncMd6V6LkHbXx7OK70D5ZsLRqg0eGQygCsQdinMsaPkrw1R7ReL34J2X5wHF1a
-         vDSg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774283177; x=1774887977; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sa02RWDZ55PD6em/0hw+fQdWq+DqfOIo8vL6O16AHXU=;
-        b=Gyy+YVAc5X3iwjf1hsQZW5MSfLbFokm2Gdu//adzfiDb+H9uz0KcoweOy36sT6aVus
-         lFwgrel22HnN9BDlqV6Ub09LJoHImLkhViFstIcR78vnbe+Ue1pJK3VavYvdWFTlV1Jc
-         iGO9yiMzM9C+1kodVZ5vol/IZLBsUQkLyh6H4lRg8ev5CULxq7Vz3pvAp3jPUfQzvYCW
-         QH+Z5AxvwqGAazNrKbam4fHtW/RbH9/Icxm6UJ2gJEsQUfrlfPgaZzdZiIuFUU66Efhv
-         peiTiiK1vBOXU5VpL8ZllIgSNptGAeXYCdhF7+mgtlLKls5OqSLMk9rB2BoeBmNaF/lc
-         rw8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774283177; x=1774887977;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Sa02RWDZ55PD6em/0hw+fQdWq+DqfOIo8vL6O16AHXU=;
-        b=FiPt3MZmEfS6CHQYXruosS5XCdOEDS+RzTfNTHb7LYklD7fUsNUpj9558X9j3iWbsr
-         +l+1i8sBcbyKHuIgBNpmuohhjvcm332cPBqyPIiCAVpfyAA6meLMiWJBHRcPZxzRfMOm
-         pRQVPmCjCmZrxR0r2htsOXcT5FvHV2HpWZZa6ciLu+jOwzNrW+jdfXKsuOj/TSKJzt4e
-         2125HMl2x4+n0d458Xu5w+WdHV3iBl669MywQqn/dg5dQEdE+EpMaDxq/U4TXFyVWYos
-         cTuXuaxjGTmoXY5DbrvlFj4usidA3AbunJi6YScUiqSRnA3qLkBb2YEMU3Xj/XIMtRaG
-         GbkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXusJtaizjPdMXW6FMvxkV32Jlf+AVdzdqrnJwxBz78UNlM+70GaCJ65V9MFQWbdaWxUgWSgmojlg==@kvack.org
-X-Gm-Message-State: AOJu0YzYr0n3gHJ7oGQIwj4ObNoofSx9KocSzBwSF8azH2G72FfYu8gR
-	43UsSQNIv1TDqIsW3JKzDHT229+K7VTigekK3lYg8nh5pCja4zszaCf4THbztfuCvI5NM5znR0e
-	HsEpVQUBmRh2vDC2VE5sC0698pAcaG74TJMLjug5I
-X-Gm-Gg: ATEYQzymc8J98k+1HFuIK+LQmIubcSaHq8R5S+HYRHbv/SKU6aa8i0hNnIoxvPEAomq
-	D5wckYxkuqnR5LLs1U9e8K/p9YE2VdxoNKjm+9zJ3DSrVYIlksbOPJf0pvWQBm6k2g/GuNq/ngC
-	Vg2/WW+hFNCM4F+jMLnrSiNtmf0WKSJCrA2rt3euCHnK0mDOmAgf7eUj161xr3lJFZqHfVC98ET
-	ieaGvtchA2GOGU+IOOs5PP4R5N2h8rbxZUtJyTOZmXNMmdZ0ReEhMpjyiwAd2G5QbyXk5+OQ3VM
-	lc5PtA==
-X-Received: by 2002:aa7:d1cc:0:b0:65a:1240:b8c4 with SMTP id
- 4fb4d7f45d1cf-6694d002a64mr43286a12.3.1774283176120; Mon, 23 Mar 2026
- 09:26:16 -0700 (PDT)
+	bh=kNdEBZhmsc6hucLIl4T7bCxD9jPms0lHLZLnsrtP3RY=;
+	b=M++WM1u6m7t8egBJHhI/VhM7m32FBsD7qo7UsJ/GERZeBlg37OWACcYaWeP2+VaeDtKt1v
+	Ps4q1QmQM1C7vFl6FbWse0ZJb/kl2qBQGZVIQGqW2KSxfVHtTlGoSp7hWmaLHe/AUo2LcA
+	SuxxEzL5u0jvuO0ZGT9HOFandNsCXBA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Vnph5DgT;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oQ7YF+BW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O0+9DRAy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+RteFXbC;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1FC765BE47;
+	Mon, 23 Mar 2026 16:30:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774283433; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kNdEBZhmsc6hucLIl4T7bCxD9jPms0lHLZLnsrtP3RY=;
+	b=Vnph5DgT2nV2ZAC7XCxFcN9qE7YevKBUUUJA8e+4iHRj6e8Uew4OUKOp9jx2W8P8S6L4eR
+	ehK4fgOx/lt4z+wk9K8EdCDS3k95ZgcYVWb3lpujHbBuSx+3vqBxPTtVoCVYT6NsJjXxeK
+	DpoD9cquCS5CgcyiWd7Cg6QLlXlNK5Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774283433;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kNdEBZhmsc6hucLIl4T7bCxD9jPms0lHLZLnsrtP3RY=;
+	b=oQ7YF+BW++dZ8jioZswvtnLoCNATMWv9FJGnDRUzEQk9BytpkuNxcpU+Mke0t9K+WIvdHj
+	tPohrXITm3MQxRAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774283432; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kNdEBZhmsc6hucLIl4T7bCxD9jPms0lHLZLnsrtP3RY=;
+	b=O0+9DRAyTBzvTVPowH+3MjZJbMIw7U1FuyfkyrbU/mWEbIltcYAV4XKloymrJ1QXjhZOjo
+	umulhWLmIYmTK3K8K88+NwZWstSU2Sa6+cTAtgDMShzqPS4SI9NIhOU7YA9+z0yWrSfZEE
+	WwRpvXNahhZZazOl+pF8VMV6CEi1MtQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774283432;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kNdEBZhmsc6hucLIl4T7bCxD9jPms0lHLZLnsrtP3RY=;
+	b=+RteFXbC1XKKxrmjqs5+JIHqy8fOOZLUrauz5SD8u872TBzgJ77mPVANYvwc6YBs48zF2V
+	w09D/7vWGCtDEGDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0F6BC43984;
+	Mon, 23 Mar 2026 16:30:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id U7a/A6hqwWm7IAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 23 Mar 2026 16:30:32 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id B9CD0A0B3C; Mon, 23 Mar 2026 17:30:27 +0100 (CET)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: <linux-mm@kvack.org>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 1/2] writeback: Export folio_prepare_writeback()
+Date: Mon, 23 Mar 2026 17:30:11 +0100
+Message-ID: <20260323163015.3734-3-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260323162617.2421-1-jack@suse.cz>
+References: <20260323162617.2421-1-jack@suse.cz>
 MIME-Version: 1.0
-References: <20260322070843.941997-1-surenb@google.com> <65cb38ee-2815-4b11-929d-3fc1528cc620@lucifer.local>
-In-Reply-To: <65cb38ee-2815-4b11-929d-3fc1528cc620@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 23 Mar 2026 09:26:02 -0700
-X-Gm-Features: AQROBzAnXd6fOd5-0DtwGKGuyxDjiwJX4YSM6ZsiwuTxV14NkOPK2l2DDkj64jw
-Message-ID: <CAJuCfpEm4u3viNt3hG__RbgCJBxFQpFvjx2cAE-fg3DGPfja0g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm/vmscan: prevent MGLRU reclaim from pinning address space
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
-	mhocko@kernel.org, zhengqi.arch@bytedance.com, yuzhao@google.com, 
-	shakeel.butt@linux.dev, willy@infradead.org, Liam.Howlett@oracle.com, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9j71j8bkeex76h7s4gtox3e6amp1zqqa
-X-Rspamd-Queue-Id: 6AEAD40007
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1899; i=jack@suse.cz; h=from:subject; bh=drBU03f7QI88s4x6d0Lpqfmv3CW37W7rs74N1PvScuE=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpwWqY2uE6LQXataL8c4wj77Q2GsrSlP23o/0g4 StFXPgh75WJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacFqmAAKCRCcnaoHP2RA 2W1ZB/96GkEQrkRMbG6QYX9NArHU5xZQowAPFMSC1QChSiy653phew8l5zGucUjP54BozwKlWdq zgBVOXXbCHe090Uz0T5M3JMlrz+tW9eqqlb77iWvlq23CESq6FBYd1mGhcssziKj2yqWcBcoOK7 2dgeJbAcHGVOSZAOKixPVIIa9tRS/ijArlhKy9PTEW+EHWNjgjWiAroxdyJzK13ohRYSkTp5viO 6ejKSQJB+2I9LTpcZt37Ph66fJOrAYH8GREUQ8uybiYvJBzWMollG2J5IXfjUnYaUs4unGxc0qr VIfOMgKVEHq3kjRt2U9DDp+tw0aObHuWvjJVI4WKjazioMzw
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774283178-710835
-X-HE-Meta: U2FsdGVkX19/M4cG+yggQch2EaE0kaa+KOahK2ElrX87xhblYjbo971mREcZ37pKO+qDHbJ749qjcQyZ6tUDXmhljDiyOmF4eatVz3MgbRDc1Xog523wCvt7Ed3vnWL+Sab4rHNJ+4DcXD+cdNNNZ8xBJ/iZU2mDXvhesQ8OkaYV04KIfrD9146ill+YwS6E6OCyrnc1ssk1Eo6lTK6aJhf3TN559duw3b7u3wI5QPUAskytFZvaMFJG9HCFZchToe3kaqsPHFbV46yoYMR6xJPQ+8ME8aAREwRKMzSwkaRsuprXRapC6vwqQ9zIMoaSPmY5AYOdAPWKtf+l4H8VSRgvivVfUyz9Rkw2MbroZB7UjGXEhJnHqmhuKee9G/V3xNb6RnJcjtLQ7C0Y/DTEaRWjv37SgARO3yA1TcVbyFD8hhOaogpbJdT9xD0MBuiGmYAl3Jv2eAbWXOPtBjBvm8kHU9xc4IWe7HDBMuFXUjl2/BTMqs2YccrIkt0z53fMtgca/PbdzN4uzw3Os2iN2pXx64VS6etIIuy2ZOhShvTrrPSY4ikkA+m/M/dbMyXEVnImlkgx76wAVwuy4k+GvS1w0q3iZVLlcsUB7wrcYfDWllI8wqVWu1cEnr7U7jRbb6RKwNqOmhI9zcNI+WMPLMA4s8qsFeMkK65i7cDaUI1A1sFB1B7fWywRoVWM0fn+I6Fw/ywez6mvefh8kkjHnGD3ANL10jgnzzOKoXwgp4OcqYpS+ElldphdMmRPklISKSYdsARZ8uF0VvxOQpZBS4K0i2UhpcYT+QPrkOjq+GM1X3AfMW9bMdeRqUgdb/VxFVEC2qbS3Xp2D0+kq1SgmtWrb43Ao7Tfl8+21uFjOEOEIWl2FEqZXHmsqUHP9xP4oJLFBhI+YIq6ncVvB5hubj6Cb0yq0uInev7eD1bD3vXWUdAe8c74bZwoDl/TEvol8tYagM5mTsV0u8Igj7l
- 4O0aqre2
- yi4dYeiX89td5AQbNV0sITfqphyoon7I4zLJAUoTNUBP32UUZh4e0jktjaz6fJ7uM+AW0TT9iM1thJfQ1S5L4o8ToY/mLN+x+VLC0IMLLbxpnvSQmxWWTPnq9jJjBsoN63Lw6ve7TJj+TkWPjO2pD77G2VaKhIHJ/s5p8Y3gix7CkZSNL0NZX3hSAuEVdyzKsKl0E9IriEwjlA6eauGZYJn7b47fEYNHr0zwulf9FNiEsLzQljKhcwhJUXaCzE3IvV1RwF5UumeafEl0RLS0CAfBht2+fj9ET9Opv
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E79761C0004
+X-Stat-Signature: dyje6baa5tqgwie8dgbhopqtnpzjyuuw
+X-HE-Tag: 1774283434-418548
+X-HE-Meta: U2FsdGVkX19Hr9vyDEQpAY12ui6DB63wQX3j6AmCcFU3ng326kiOG+38EDlQx6Ouoev2TYyuCT8Yz5t06zMcceUHnszC2qMbO/8Nbd30tTdQ9h7V30wostFnlhwiZI0cA/uTFAfF8SLzbNkLN7MiOLTZry83Xqknmp5gCmssRJ+hOCR3qGFiY2vzrYm5no0IrPNmbH505SiumprE2UAHN7sTYq+FJ0PZ+9pKIT0snStTOu8EOzMlgnw3Y6Wb4aja6CE5kfGgnCaw2Cv1z9fLMcrtxJTdkhfMI67Vba92X3w+Yat2jrzB5DEK62hykS7CEVfzkgSzVkc3y/EKKG/RA8kPKNDfVRVd84MWJ6zxhNHOw6RWYcRwZKPPH0s/+ai0AYu72i4iuWOikct/dxl6Lv8/ark1pgwIELFCocwyNjExMfhIIRCAwjiCZJiK/nXVHI4QCJsbGY+eIILgz6tXQqHYRgqYwh3CgvSdFMPWYrklb1H4wD2g4bHivi7Q1CeBwtNK+GEntEDPIo2qOOYLodZcDZvObDDoZnE1p0drwwQUdGbggmNGYtpBLfNA2eynFDQiAqfJBO4TAo1JH0FxITAiFL3lMBM1XHHa/PHsgyBx0pojUw1b0Xh1Z7Yd2Sf3H8nQbvTpHXZjgAPx/Zg6QS7+QKyh4Qe2moDeH/SBHGy7u4lHY8PjLOkWso7of0AQ5NHS9FPUBjA3NAxM05TveJfyu+tuIYnaV9cMETZ7TSBpqYaEqGKYzJCmsS6Kf13hm1I/IK40wJvdbzFI+xc7GMLHnnAN6/ElvVW4nig5inJlpyngQvx06KD+OA6tRStzTm3uSZzDYnxLsBeyAp6mL4rNHfHZ4rWmnXlCw0gw58rYI3ocnGQZw9x7Vsm5dcVykZ1ZAplm785f8sLRpGHHAZRjYCtRZIJBKgc/J42sPx5LCe8LVJUqHBMmnicEtpkSzslH31XOl2jiGL+dPVi
+ 43fd+6vn
+ nWMoosX/PvigJxsx6xv82n0QI52BPPrKtQFhsyQ72C9tV4Hdz5wf0GTEfS5rv8AgxMXZyvHRwfDihOhaGtBk3sgy65ik1X2nX7T0ebBSFTR+TE3YFBIZ+gHgFBcl4GGqfPo3GA5k++cCMDexhsvE28sEcSGAogffv021Sw0bqNvfDkMaOm49leg9dskT6DucYxhgSd7xRw0l5pJ/qKRxYm0XApzFCyHQ7H78Bf7Q6kJsxFQrsaRuy6tXHinR9iNoLenS41+kUAwHW5ShoqZZD+w5IVE3dZeHJ9bv0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,44 +137,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 6:43=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
-l.org> wrote:
->
-> On Sun, Mar 22, 2026 at 12:08:43AM -0700, Suren Baghdasaryan wrote:
-> > When shrinking lruvec, MGLRU pins address space before walking it.
-> > This is excessive since all it needs for walking the page range is
-> > a stable mm_struct to be able to take and release mmap_read_lock and
-> > a stable mm->mm_mt tree to walk. This address space pinning results
-> > in delays when releasing the memory of a dying process. This also
-> > prevents mm reapers (both in-kernel oom-reaper and userspace
-> > process_mrelease()) from doing their job during MGLRU scan because
-> > they check task_will_free_mem() which will yield negative result due
-> > to the elevated mm->mm_users.
-> >
-> > Replace unnecessary address space pinning with mm_struct pinning by
-> > replacing mmget/mmput with mmgrab/mmdrop calls. mm_mt is contained
-> > within mm_struct itself, therefore it won't be freed as long as
-> > mm_struct is stable and it won't change during the walk because
-> > mmap_read_lock is being held.
-> >
-> > Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->
-> Oh and sorry, missed this - do we need a 'Fixed' for something that's jus=
-t a
-> perf improvement?
->
-> This doesn't seem buggy?
+The sequence of operations done in folio_prepare_writeback() is needed
+practically by every writeback method. UDF is unable to easily use
+writeback_iter() for inodes with inline format (due to complexities with
+racing conversion and fallback) so export folio_prepare_writeback() for
+it instead of opencoding it in UDF. Later we can use this helper from
+other filesystems as well.
 
-Well, if we are pinning something we should not is that a bug? I
-didn't CC stable, so I don't expect it to be backported (though if
-it's accepted, we will backport it in Android as it causes real
-problems with reclaim), however if someone is looking for MGLRU fixes
-I would like this patch to be discoverable. If you feel strongly about
-it, I'll remove the tag.
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ include/linux/writeback.h | 2 ++
+ mm/page-writeback.c       | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-Thanks for the review!
+diff --git a/include/linux/writeback.h b/include/linux/writeback.h
+index e530112c4b3a..3e5d215c8d27 100644
+--- a/include/linux/writeback.h
++++ b/include/linux/writeback.h
+@@ -357,6 +357,8 @@ bool wb_over_bg_thresh(struct bdi_writeback *wb);
+ 
+ struct folio *writeback_iter(struct address_space *mapping,
+ 		struct writeback_control *wbc, struct folio *folio, int *error);
++bool folio_prepare_writeback(struct address_space *mapping,
++		struct writeback_control *wbc, struct folio *folio);
+ 
+ int do_writepages(struct address_space *mapping, struct writeback_control *wbc);
+ void writeback_set_ratelimit(void);
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 601a5e048d12..ceb78798fc00 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -2358,7 +2358,7 @@ void tag_pages_for_writeback(struct address_space *mapping,
+ }
+ EXPORT_SYMBOL(tag_pages_for_writeback);
+ 
+-static bool folio_prepare_writeback(struct address_space *mapping,
++bool folio_prepare_writeback(struct address_space *mapping,
+ 		struct writeback_control *wbc, struct folio *folio)
+ {
+ 	/*
+@@ -2389,7 +2389,7 @@ static bool folio_prepare_writeback(struct address_space *mapping,
+ 
+ 	return true;
+ }
+-
++EXPORT_SYMBOL_GPL(folio_prepare_writeback);
+ 
+ static pgoff_t wbc_end(struct writeback_control *wbc)
+ {
+-- 
+2.51.0
 
->
-> Thanks, Lorenzo
 
