@@ -4,91 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEFDAEC01A9
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11806EC01A9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:17:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3871D6B0092; Mon, 23 Mar 2026 05:16:44 -0400 (EDT)
+	id 7CF3E6B0089; Mon, 23 Mar 2026 05:17:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 338176B0093; Mon, 23 Mar 2026 05:16:44 -0400 (EDT)
+	id 7A5F96B008A; Mon, 23 Mar 2026 05:17:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24E916B0095; Mon, 23 Mar 2026 05:16:44 -0400 (EDT)
+	id 6BC946B0092; Mon, 23 Mar 2026 05:17:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1330C6B0092
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:16:44 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5BA58CB47
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:16:43 +0000 (UTC)
-X-FDA: 84576772686.11.00D9BE6
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9E1291A000A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:16:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UYDOwHRz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774257402;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B8476B0089
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:17:33 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05748C31FD
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:17:32 +0000 (UTC)
+X-FDA: 84576774786.08.332ABF9
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E13308000F
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:17:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kTatZW1J;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774257451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=REM58bo0VD/AcwqlNlr8RJcJ4IWBzemIVbI7XkgsT08=;
-	b=V+rwsXa1/1uXF4ocd3BmPDaoRqGhwKa97YNLUC/CvRRs3MWJf8uMYWc7Pt5dPrBzrsvhhe
-	jBHYLOj2+y/vl/XmaqIKgPNwOg1w0WGc28VI6CbVWmDTnUyjmZJ0sD11B/+EIIfUGpXC7i
-	5aES07DJXqdxg0IVQNHQdcXfjJg09ho=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774257402; a=rsa-sha256;
-	cv=none;
-	b=7c85RMtZ1S260Js3rKkzh+LbkemUzWG1fd6fmRC5reTybySoJaXYYWV3H8S1+VajhTTaR7
-	IrUoNyDVTUftliUqsAbuNSPuqIU3ST5FKVL62Elx1r9uWJ/9JfrasMMWmnmdmlsRkzzUu6
-	iI5KpLPL5v8VoFFtaM7b1l77Foa5GzY=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UYDOwHRz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-Message-ID: <575e727e-cd47-41df-966a-142425aa8a8b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774257398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=REM58bo0VD/AcwqlNlr8RJcJ4IWBzemIVbI7XkgsT08=;
-	b=UYDOwHRzKCnHPRsIw/JfPPKVSyHx3gCX77EfPQd5Ipkvv4gp1qAnNR/XU3Xh4eWrF886cQ
-	n5f0TZWREM5X1wRtLgV6YwWyELe88BPSEVTi/Aga8zSxYIh9cdFsOBFvxOufTqzYJjAO8l
-	pTJHl2E1cYlsruGqETrFa6+XJYzJeuk=
-Date: Mon, 23 Mar 2026 17:15:45 +0800
+	bh=ATgLsjCSGnGevYK8QWN2NsmPqAQpgw61X7qv/GD2mcI=;
+	b=hHsooXm3mn1tAIJxNd719zorweNUIUtN92pbk8J3NkNpUPsHnreyuZVNBNtue/H6aVqq/P
+	JYqTyZwZdDFPKIA7QbL87c1QRDbAxV5TpYX2cuWAgC6PqN9TOmpymh1r4ll93U+qD1YA5M
+	AZFLLyKdoQ0RHRHZ1jtPMte37O7JLOE=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kTatZW1J;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774257451; a=rsa-sha256;
+	cv=pass;
+	b=lyLBAXxtgETF0CEyOEdCRksuTXQueQMwQrBc3ZGAZ3nqRQS6f7TWU4FJIRVbszKCEW6OoY
+	JOpnO8wekCi0l1VLzdjM1fFlkhvj7vn414WS5n7dCUboWjhHJooy3twxuwFzVyREBzwpYz
+	pjdFJoatG3DEDp4JlkSQKiGTmO8AbqY=
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a277f77876so196834e87.3
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:17:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774257449; cv=none;
+        d=google.com; s=arc-20240605;
+        b=j7wFABeTrSB43hbQeberB5CkjcTSil/MSkBVpwJdf+ePZ8P4miMvnZFewB79tAqHFa
+         i478k6yYa5Ms0HHQrijCiwZZMHTx8lKOS+hLohqUXjYJqcyd3R9fj3eChLU60t6voF0r
+         tBHoXmiq1FbTa2FwjyBJqFFsskST9xeNbnPK+otn/+RxZEUGbSTZdYLLYk6vLjJRoRDf
+         JYDzAQtjZaAF6Kva5wczeyEJTqYuuFx4vF8/+k/89ybALfu2Jw605P9vl3NfW6qEB6MC
+         wrfOt4TmwtViGTNLmycf+lblaWrHKuiTUUzMDcXNhg0g4tawCQ/TAmbKNoCbrq4roYkM
+         x5TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ATgLsjCSGnGevYK8QWN2NsmPqAQpgw61X7qv/GD2mcI=;
+        fh=5QF95t8qGvsuBU0a8UxnojzFI/u8AdjTblpTaJhHMhY=;
+        b=PB0Ucha/Ri8eNUn29mocmITeV9wKObV3cGM1sWziBo31Smhvmn+AJ4H4MSWH/uYZLP
+         I2vDrrMC5H2EAPeBQkyAVhhlyFBcneGm/EGxLnIWubU5ly5SL/NlEX/YNbFhpkxP9BoJ
+         3hQTccAAKnpGY6DmGczysXxrQBvBm1iEZtolo/lLjz1Kxp1Dp/b5G9uMkewo9xsKonTa
+         tk4C5ZJz4hbRFLwyHHxVpnmslcvAcfOIL3BHYLqoKl3QUz/9UszSCRafj0d5+Tg62N1/
+         18wVxxmAn8ymUOjc5f90s2PSqn7KU7s6zl7dpQovLp8N3CqdIFZ7grARMAPnD0aCd6Tx
+         ARMQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774257449; x=1774862249; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ATgLsjCSGnGevYK8QWN2NsmPqAQpgw61X7qv/GD2mcI=;
+        b=kTatZW1Ju4T2XYyNXqsCS07obuVcVlKjHuMdVZNwh41STS9DES+b1x1cbOBqY4r558
+         8o4lGBZevHx8Hd6KkmlCrFs1PLnpqDEoQl7EQAEyGFZmxLvwLo7MjwczPJMtXh97r2va
+         xUtN85Zmvm8cqqwBk2wQxj2xmz31caz7XXeY+ekot0y0CkMiVKc6rNF1laGlYy0mwAjL
+         QPs2sof3y1qDNWMQ0056JJOqv1u5tSaj/3lTXhJJGJ2DcV6oSAVLQWkKG6NivJYlxgMB
+         osYMJeE7ZV5CUb2b6U38uZIMCzxSdZHkccoFQTaFmRut6f4bnvV8fwBmrb88zZHNCH6u
+         8iZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774257449; x=1774862249;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ATgLsjCSGnGevYK8QWN2NsmPqAQpgw61X7qv/GD2mcI=;
+        b=iBF8rF8E0WNdyBPFgqjSU2lct5GSTD35JwASgX9xTtSFZVQQvI7AuVtGnQ9fxDpKhr
+         hYdeXPa9EZDgfx5H6Vi1V9WEE8ICvZoYJt9eMTVc9i9iaYpTRv6qFH9asy781pd+llHp
+         BVYFiyi5om06mFtp6UsXZjtcswdAwTKf1fU1eVxe4Z8sLQKbmN7oFRh2nMbM8naEWCyP
+         kyPvhpVlxU1FcKSKUuSz27kM8fMZ5qiSOoJc78I5xEzhLH/L6flYxWgzwI2ctTTeuYFI
+         J+GqQr0CSjdDGdTfJXsqZRGh42LmfIh9StKxkov2hK16wfz6B6LCFcESY2UPquhci47s
+         LlzA==
+X-Forwarded-Encrypted: i=1; AJvYcCUmolRtKFi9SZ8NzgFoyYhtG/f0jOh+rXFlw93FqKKavNr39bRkhm3BjvvjI1EtGsFbyLEKkM3Sdg==@kvack.org
+X-Gm-Message-State: AOJu0YyUj/qmtD2WdqwfoQX/vSRfqVjs0WZe30AhrQNkNa1+Qkclnl9p
+	mT9jCfYElL7c4E6LFqqaV0Zzcj+/xHxQHOG05x+hQ4c8+tHd0WgbPMprsOhX986uhdlyBVFRnfq
+	yYDkAWS13Iy7PrZ+dEXKQ8lik5m2LbmE=
+X-Gm-Gg: ATEYQzzbe0UafFi5g1N1YM/+yJlAHwFu0ARBizC/iD9jn2Bx/gDoAgJt/I6cKAcRxzk
+	XseO8LL3iPbupKbN26Jl0UPhUHy/beTb69Ejsa5N5d/d/4Ognbksniz5ddo8i8d2cJtBPMcnPgM
+	Ef4AZJOiuUtFjFL0o9uFaSY09O2Y56bwAsV6Hvd5BDyBmbCDMUo4iou7XRciyMkSetJ0okikTuJ
+	mO5HoPerAzR3iP/UnyVXmeJHXyOMcP8feObxSZYjZjwBbXmJV+CnlsZLQQqTTtci13rtO6/+IpQ
+	Z0CrGEOuUEO0lIelw74=
+X-Received: by 2002:a05:6512:31d2:b0:5a2:7c8e:14b with SMTP id
+ 2adb3069b0e04-5a285b50113mr1789174e87.3.1774257448620; Mon, 23 Mar 2026
+ 02:17:28 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/alloc_tag: clear codetag for pages allocated before
- page_ext initialization
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260319083153.2488005-1-hao.ge@linux.dev>
- <20260319152808.fce61386fdf2934d7a3b0edb@linux-foundation.org>
- <CAJuCfpG5OG66mgfn3ez5ZXTjj7VC8yuK3L2u83uOZhyBbRH2Lw@mail.gmail.com>
- <CAJuCfpHD4SB30oP7Bdm=ey+2W7CAsFPruedEbqgR5OumrQErxQ@mail.gmail.com>
- <9ef1c798-a30f-4458-9684-900136ae8b7d@linux.dev>
- <CAJuCfpEt1EwS4_kiTbger7sBGFKKhi+6PBjrYrTK1HEJzxOTGg@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpEt1EwS4_kiTbger7sBGFKKhi+6PBjrYrTK1HEJzxOTGg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9E1291A000A
-X-Stat-Signature: zcb1ep1unkymy1yzxs3z8qtormic1hga
+References: <20260320083339.1813195-1-zhaoyang.huang@unisoc.com> <CAMgjq7Bhi_2cgWUWpW+nh4dK2B9N_AbtUf+EJCwBF-d5rvFySw@mail.gmail.com>
+In-Reply-To: <CAMgjq7Bhi_2cgWUWpW+nh4dK2B9N_AbtUf+EJCwBF-d5rvFySw@mail.gmail.com>
+From: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Date: Mon, 23 Mar 2026 17:17:16 +0800
+X-Gm-Features: AQROBzBsX00N4KIpYY4Nnge6iyH3EdbETLuMYXwhdSS-_GxDwLUMUs7Yp4j9-L8
+Message-ID: <CAGWkznEoX2c79E7HiWMSv5Vk+Afg0P4rUgEO=gs1p65kBY-BfQ@mail.gmail.com>
+Subject: Re: [PATCH] mm: skip dirty file folios during isolation of legacy LRU
+To: Kairui Song <ryncsn@gmail.com>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Matthew Wilcox <willy@infradead.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, steve.kang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E13308000F
+X-Stat-Signature: fqkjro1r7ckft4cbfe7t4ttibz7gsahs
 X-Rspam-User: 
-X-HE-Tag: 1774257401-461221
-X-HE-Meta: U2FsdGVkX1/A0n1U7IwZndWInO6IKzjVFBOBCpdSt7l5D4vTDFHnBWk7dAqhjTyXQ7RYOp1J8TTi9CfpBsIJaNll7Gjy1YfcNvhwQNE5x70hMA0z/LMpeRUV6NrHURXX6l5UKhWOZUVbEaz0OGuHhNelV03L54j5aqOS1Rwyw6sAM9DM3efMi3RDwuFstD81/RHaeRs4XwLCUrJgOqBs9aF/KzFQT5N0QT1nkGtki80E5JbTrluVddxcoHW+m4lAJEZXixBOyFp8qVCoe5ah0+ChKWgj1lmH2sJpvzIv5DP943DE7qp4q+TttiI8JdGAitGyCwnEtTRj/K9LH4NKiTErevF2Ue8iPYODeok3/Rr1EHuBC5fnLy0LvFtdu/nwpwncMQf2NRyj6WR63ASdZOROAcIP+aYWmIGFNXWHoH0y2e4DxIlfOEOqgV2g9oT3eFUxFCXfgweg6Ymz9gZGLiUsBQa+5HeopdTg5naABp9EZ72mPm9FxGc+ZwD5d3Li/aOOXmUUf1zXc2G42r7Ghmx744pTlGVzn7fQjzULo4ofKj7IeMJdoTpPrCG5tHH7KxTUbk1UffnWKSJIXUKB7v6wzdiBjRz0jnHxOBf1IQo817O41k8G/LoFSz82bGUpAnl41AvubbeMouSX14G44qLsJz+MKx8mvjFgwgW/uT9fHujyIfsRGvHfQxavhEGRd5sEX74WDIQZjznY/3Mf9N5UMkcr0lhtJjcCPsKWuUPCbCfmn1HTzk/7TW/a9GpOgxL1W5MNtzADYa+39Zh+HHGcDoyGp0ilwFlPEO4L8Wf7d0tK+6qcVdiFIrSA2l5fgHnWlY6IIYYP2jeocIMoDfW0zmmb74H2QDE/Sj17AeKatIfdPJlc58trx1vDLZ3cTh28ilO5WZcdy3MPh6HMWsa0z0N38hBVmvH2GANpXHCSKD8CcjGYbyGqfFr4BAz4/1Tq66mr21VV1jnNZb4
- bZnfc8b8
- rNOl5Bhdts9spVN2M99n90GYirHL+8Qgpkk40wuVpRFm0CBljwwVEAgRhhE7Y8wTOVEdpx6zD4VsDZbrNwkFJ2vh1NxrcKE8SDyi7CCReVYcuZb+l6xzWX1KPpt5ZDhSMVKIrGrQzxmOWs0n5b/k9XP9ezp+PfvL1FPbhtSA2HCaEGOOtjqDYqPFAwGDmypZ1G/3LFf23AUZoZaJhGq8J/Iai+l5YVvH/YVY79H5wuq/B9h5v4uefSVnV9TaNog0WVXTgRky8kXNLAtjSVugmxWwplztvQibNXqDktrXWfcX4z7zXcS3RtgMDIlnAfIfoOLAgSs3u0xzwZ4OTW1ZhviPWaJiP5EfaVlrUlN+ovk1lnvdBb3ba0UTLUWu8bhaaZ6AFm0K3lKY0o5u9wkM9kJvlodIlqLM/IBOHyef1swQIn3A=
+X-HE-Tag: 1774257450-478377
+X-HE-Meta: U2FsdGVkX1/rPa3WBPhPLsvfvXNHNpTWomgD3Yi2yoIANd6/LRBY9rfdPEsWFZzAdUFjiiFYlfu85llQPWD4qzj9OkXhhcm9BJ2tPNRJYr8QmPqQFDGRZ9DlQo8wHFiCaS03YYcAoAdiLTgX9FqYOFKgs9L26lAFrKEW3bw5v2+1XtJhjLOyzYt9JzNtrBQizIMBaAXh7/1Rs1hg5h+BbcmnzocxepBtzqK8bkWNtPVqRU+tdfcQf4CHrRQhSfk9ThOK3/4V3e6QYfK4VLE5W2MAxaTWY0cYusybyBFujMBOdtzlMduzDTjwOxMSozdZuMVZt6UEeXH5XhNwRPSALXbizxmZ4yidgoy8B4V4BnALHq6RXkWqHWNRurdSJyCo0yJVWoLFEDQnF04QjwSuxmpq+4Ip019NLth3I9FjEuN0jfviEKUTPjO9rY90kPuWppmen8AfKz34jy+5XzpeV6BdQUBGvSnUdFCaUrQnVpgsR7lubcS0Pu6ZJQa2PspDFeUi+vUepqt+putwbsLf4vq44y3BkT44V+BOx8jQvCyHSLGj8fCgZ8W3p///PpbtByhNGONwxCCmGN8JM5ktTNqW/HbV3O4NdqiWkrgOETrbkNXNYYo2NgxFXhof/l2knA/NFxw7C2UZXJ7UriCFTZyQm03a6o4TN77e2q43b6mVVlPoU9tdKgIgdf94I54Akeuuz90m7ly3jLBDIZxf/AcFuiWxyUQb7Pk9bj5yu5iAu7MYJB1uy8rBXI1IYJ71DVkdYh51mPtKK6Vl3eRzeefzyCazMlo2mYr3QB1UcWjdlzJad0eiBcjhspOtRE3E6gPgi95ga+NccTC2g+UYXAcaNU/GZ9Iz+ZLWe8Vsm3iF/GgT245gq9TPjU4K8nceVuLYdJUqoLBJTFlTIMtine8PRDzfcTmp+9ML17J4YrCfu+6Hh8xdAai9U4n0fRek+5S5MggtKmMmNEy3YMN
+ 5ioVQMnV
+ zBLeP0P/zGQbusx2hztKov3OGa5Fq7E4i7dpOouYnVtG53lOU4TVMuUd9A6HRzwofDXiN6vliCJ/kOdxxqLtT0yVX331CihMHrFhFFNELDo8JPszszbsMDuEWoNTURylPA2o+qB7Sz9B3DIO+LPm7h2EzYBE4aslY/+27EkPQgP3p2+bFf2mniNvqTF7BhZRAFFcke6rIZQxyAArC3Y7anrB0SkLJyqHmtIeshbU5NZxcp3sujfOmkYIJE0R2O32nopr3IERQawFbIbocnCF1oNRBWxbiiSafCrpW6Q+iVPI3hYcjkpBMZ6n0NHal+3UQEZH0ByTHzLdacZN5t+uAc5ixmJlkI51KQ80kEtoecwvA4dyhQbhDTecKHk1SKixnKPyh9Gw1IDF0ocVWKNj5vvKAdCRrv0NqtIakwxqF2DKv+RhdMwBTb9bCOhxqPh3zS2YrQyac+DWJ4tEXlJNjcYxK/nu0uIihTvR69CiLCDF2C/E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,363 +143,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 2026/3/20 10:14, Suren Baghdasaryan wrote:
-> On Thu, Mar 19, 2026 at 6:58 PM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> On 2026/3/20 07:48, Suren Baghdasaryan wrote:
->>> On Thu, Mar 19, 2026 at 4:44 PM Suren Baghdasaryan <surenb@google.com> wrote:
->>>> On Thu, Mar 19, 2026 at 3:28 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->>>>> On Thu, 19 Mar 2026 16:31:53 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>>>>
->>>>>> Due to initialization ordering, page_ext is allocated and initialized
->>>>>> relatively late during boot. Some pages have already been allocated
->>>>>> and freed before page_ext becomes available, leaving their codetag
->>>>>> uninitialized.
->>>> Hi Hao,
->>>> Thanks for the report.
->>>> Hmm. So, we are allocating pages before page_ext is initialized...
->>>>
->>>>>> A clear example is in init_section_page_ext(): alloc_page_ext() calls
->>>>>> kmemleak_alloc().
->>> Forgot to ask. The example you are using here is for page_ext
->>> allocation itself. Do you have any other examples where page
->>> allocation happens before page_ext initialization? If that's the only
->>> place, then we might be able to fix this in a simpler way by doing
->>> something special for alloc_page_ext().
->> Hi Suren
->>
->> To help illustrate the point, here's the debug log I added:
->>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 2d4b6f1a554e..ebfe636f5b07 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -1293,6 +1293,9 @@ void __pgalloc_tag_add(struct page *page, struct
->> task_struct *task,
->>                   alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
->>                   update_page_tag_ref(handle, &ref);
->>                   put_page_tag_ref(handle);
->> +       } else {
->> +               pr_warn("__pgalloc_tag_add: get_page_tag_ref failed!
->> page=%p pfn=%lu nr=%u\n", page, page_to_pfn(page), nr);
->> +               dump_stack();
->>           }
->>    }
->>
->>
->> And I caught the following logs:
->>
->> [    0.296399] __pgalloc_tag_add: get_page_tag_ref failed!
->> page=ffffea000400c700 pfn=1049372 nr=1
->> [    0.296400] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
->> 7.0.0-rc4-dirty #12 PREEMPT(lazy)
->> [    0.296402] Hardware name: Red Hat KVM, BIOS
->> rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
->> [    0.296402] Call Trace:
->> [    0.296403]  <TASK>
->> [    0.296403]  dump_stack_lvl+0x53/0x70
->> [    0.296405]  __pgalloc_tag_add+0x3a3/0x6e0
->> [    0.296406]  ? __pfx___pgalloc_tag_add+0x10/0x10
->> [    0.296407]  ? kasan_unpoison+0x27/0x60
->> [    0.296409]  ? __kasan_unpoison_pages+0x2c/0x40
->> [    0.296411]  get_page_from_freelist+0xa54/0x1310
->> [    0.296413]  __alloc_frozen_pages_noprof+0x206/0x4c0
->> [    0.296415]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
->> [    0.296417]  ? stack_depot_save_flags+0x3f/0x680
->> [    0.296418]  ? ___slab_alloc+0x518/0x530
->> [    0.296420]  alloc_pages_mpol+0x13a/0x3f0
->> [    0.296421]  ? __pfx_alloc_pages_mpol+0x10/0x10
->> [    0.296423]  ? _raw_spin_lock_irqsave+0x8a/0xf0
->> [    0.296424]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
->> [    0.296426]  alloc_slab_page+0xc2/0x130
->> [    0.296427]  allocate_slab+0x77/0x2c0
->> [    0.296429]  ? syscall_enter_define_fields+0x3bb/0x5f0
->> [    0.296430]  ___slab_alloc+0x125/0x530
->> [    0.296432]  ? __trace_define_field+0x252/0x3d0
->> [    0.296433]  __kmalloc_noprof+0x329/0x630
->> [    0.296435]  ? syscall_enter_define_fields+0x3bb/0x5f0
->> [    0.296436]  syscall_enter_define_fields+0x3bb/0x5f0
->> [    0.296438]  ? __pfx_syscall_enter_define_fields+0x10/0x10
->> [    0.296440]  event_define_fields+0x326/0x540
->> [    0.296441]  __trace_early_add_events+0xac/0x3c0
->> [    0.296443]  trace_event_init+0x24c/0x460
->> [    0.296445]  trace_init+0x9/0x20
->> [    0.296446]  start_kernel+0x199/0x3c0
->> [    0.296448]  x86_64_start_reservations+0x18/0x30
->> [    0.296449]  x86_64_start_kernel+0xe2/0xf0
->> [    0.296451]  common_startup_64+0x13e/0x141
->> [    0.296453]  </TASK>
->>
->>
->> [    0.312234] __pgalloc_tag_add: get_page_tag_ref failed!
->> page=ffffea000400f900 pfn=1049572 nr=1
->> [    0.312234] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
->> 7.0.0-rc4-dirty #12 PREEMPT(lazy)
->> [    0.312236] Hardware name: Red Hat KVM, BIOS
->> rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
->> [    0.312236] Call Trace:
->> [    0.312237]  <TASK>
->> [    0.312237]  dump_stack_lvl+0x53/0x70
->> [    0.312239]  __pgalloc_tag_add+0x3a3/0x6e0
->> [    0.312240]  ? __pfx___pgalloc_tag_add+0x10/0x10
->> [    0.312241]  ? rmqueue.constprop.0+0x4fc/0x1ce0
->> [    0.312243]  ? kasan_unpoison+0x27/0x60
->> [    0.312244]  ? __kasan_unpoison_pages+0x2c/0x40
->> [    0.312246]  get_page_from_freelist+0xa54/0x1310
->> [    0.312248]  __alloc_frozen_pages_noprof+0x206/0x4c0
->> [    0.312250]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
->> [    0.312253]  alloc_slab_page+0x39/0x130
->> [    0.312254]  allocate_slab+0x77/0x2c0
->> [    0.312255]  ? alloc_cpumask_var_node+0xc7/0x230
->> [    0.312257]  ___slab_alloc+0x46d/0x530
->> [    0.312259]  __kmalloc_node_noprof+0x2fa/0x680
->> [    0.312261]  ? alloc_cpumask_var_node+0xc7/0x230
->> [    0.312263]  alloc_cpumask_var_node+0xc7/0x230
->> [    0.312264]  init_desc+0x141/0x6b0
->> [    0.312266]  alloc_desc+0x108/0x1b0
->> [    0.312267]  early_irq_init+0xee/0x1c0
->> [    0.312268]  ? __pfx_early_irq_init+0x10/0x10
->> [    0.312271]  start_kernel+0x1ab/0x3c0
->> [    0.312272]  x86_64_start_reservations+0x18/0x30
->> [    0.312274]  x86_64_start_kernel+0xe2/0xf0
->> [    0.312275]  common_startup_64+0x13e/0x141
->> [    0.312277]  </TASK>
->>
->> [    0.312834] __pgalloc_tag_add: get_page_tag_ref failed!
->> page=ffffea000400fc00 pfn=1049584 nr=1
->> [    0.312835] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
->> 7.0.0-rc4-dirty #12 PREEMPT(lazy)
->> [    0.312836] Hardware name: Red Hat KVM, BIOS
->> rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
->> [    0.312837] Call Trace:
->> [    0.312837]  <TASK>
->> [    0.312838]  dump_stack_lvl+0x53/0x70
->> [    0.312840]  __pgalloc_tag_add+0x3a3/0x6e0
->> [    0.312841]  ? __pfx___pgalloc_tag_add+0x10/0x10
->> [    0.312842]  ? rmqueue.constprop.0+0x4fc/0x1ce0
->> [    0.312844]  ? kasan_unpoison+0x27/0x60
->> [    0.312845]  ? __kasan_unpoison_pages+0x2c/0x40
->> [    0.312847]  get_page_from_freelist+0xa54/0x1310
->> [    0.312849]  __alloc_frozen_pages_noprof+0x206/0x4c0
->> [    0.312851]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
->> [    0.312853]  alloc_pages_mpol+0x13a/0x3f0
->> [    0.312855]  ? __pfx_alloc_pages_mpol+0x10/0x10
->> [    0.312856]  ? xas_find+0x2d8/0x450
->> [    0.312858]  ? _raw_spin_lock+0x84/0xe0
->> [    0.312859]  ? __pfx__raw_spin_lock+0x10/0x10
->> [    0.312861]  alloc_pages_noprof+0xf6/0x2b0
->> [    0.312862]  __change_page_attr+0x293/0x850
->> [    0.312864]  ? __pfx___change_page_attr+0x10/0x10
->> [    0.312865]  ? _vm_unmap_aliases+0x2d0/0x650
->> [    0.312868]  ? __pfx__vm_unmap_aliases+0x10/0x10
->> [    0.312869]  __change_page_attr_set_clr+0x16c/0x360
->> [    0.312871]  ? spp_getpage+0xbb/0x1e0
->> [    0.312872]  change_page_attr_set_clr+0x220/0x3c0
->> [    0.312873]  ? flush_tlb_one_kernel+0xf/0x30
->> [    0.312875]  ? set_pte_vaddr_p4d+0x110/0x180
->> [    0.312877]  ? __pfx_change_page_attr_set_clr+0x10/0x10
->> [    0.312878]  ? __pfx_set_pte_vaddr_p4d+0x10/0x10
->> [    0.312881]  ? __pfx_mtree_load+0x10/0x10
->> [    0.312883]  ? __pfx_mtree_load+0x10/0x10
->> [    0.312884]  ? __asan_memcpy+0x3c/0x60
->> [    0.312886]  ? set_intr_gate+0x10c/0x150
->> [    0.312888]  set_memory_ro+0x76/0xa0
->> [    0.312889]  ? __pfx_set_memory_ro+0x10/0x10
->> [    0.312891]  idt_setup_apic_and_irq_gates+0x2c1/0x390
->>
->> and more.
-> Ok, it's not the only place. Got your point.
+On Fri, Mar 20, 2026 at 5:20=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
->> off topic -  if we were to handle only alloc_page_ext() specifically,
->> what would be the most straightforward
->>
->> solution in your mind? I'd really appreciate your insight.
-> I was thinking if it's the only special case maybe we can handle it
-> somehow differently, like we do when we allocate obj_ext vectors for
-> slabs using __GFP_NO_OBJ_EXT. I haven't found a good solution yet but
-> since it's not a special case we would not be able to use it even if I
-> came up with something...
-> I think your way is the most straight-forward but please try my
-> suggestion to see if we can avoid extra overhead.
-> Thanks,
-> Suren.
-
-Hi Suren
-
-Thank you for your feedback. After re-examining this issue,
-
-I realize my previous focus was misplaced.
-
-Upon deeper consideration, I understand that this is not merely a bug,
-
-but rather a warning that indicates a gap in our memory profiling mechanism.
-
-Specifically, the current implementation appears to be missing memory 
-allocation
-
-tracking during the period between the buddy system allocation and page_ext
-
-initialization.
-
-This profiling gap means we may not be capturing all relevant memory 
-allocation
-
-events during this critical transition phase.
-
-My approach is to dynamically allocate codetag_ref when get_page_tag_ref 
-fails,
-
-and maintain a linked list to track all buddy system allocations that 
-occur prior to page_ext initialization.
-
-  However, this introduces performance concerns:
-
-1. Free Path Overhead: When freeing these pages, we would need to 
-traverse the entire linked list to locate
-
-      the corresponding codetag_ref, resulting in O(n) lookup complexity 
-per free operation.
-
-2. Initialization Overhead: During init_page_alloc_tagging, iterating 
-through the linked list to assign codetag_ref to
-
-      page_ext would introduce additional traversal cost.
-
-If the number of pages is substantial, this could incur significant 
-overhead. What are your thoughts on this? I look forward to your 
-suggestions.
-
-
-Thanks
-
-Hao
+> On Fri, Mar 20, 2026 at 4:34=E2=80=AFPM zhaoyang.huang
+> <zhaoyang.huang@unisoc.com> wrote:
+> >
+> > From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+>
+> Hi Zhaoyang,
+>
+> > Since dirty file folios are no longer writeout in reclaiming after
+> > 'commit 84798514db50 ("mm: Remove swap_writepage() and
+> > shmem_writepage()")', there is no need to isolate them which could help
+> > to improve the scan efficiency and decrease the unnecessary TLB flush.
+>
+> But you are still isolating them with this patch, you just adjusted
+> where the statistical update happens.
+sorry, I missed the above information in previous feedback. No. The
+dirty file folios are moved back to lruvec instead of being isolated
+under this patch. How about apply this only when isolate_lru_folios is
+called from shrink_active_list which has no worries about stuck the
+inactive list.
+>
+> And this is kind of opposite thing to what I'm trying to do here:
+> https://lore.kernel.org/linux-mm/20260318-mglru-reclaim-v1-0-2c46f9eb0508=
+@tencent.com/
+>
+> > This commit would like to bring the dirty file folios detection forward
+> > to isolation phase as well as the statistics which could affect wakeup
+> > the flusher thread under legacy LRU. In terms of MGLRU, the dirty file
+> > folios have been brought to younger gen when sort_folios.
+>
+> If you really just skip isolating them, it could cause a regression:
+> skipping the isolate and put it back will cause some ping pong effect
+> on writeback / dirty folios as they will be stuck at inactive list. It
+> will instead decrease scan efficiency.
 
 >
->> Thanks.
->>
->>
->>>>>> If the slab cache has no free objects, it falls back
->>>>>> to the buddy allocator to allocate memory. However, at this point page_ext
->>>>>> is not yet fully initialized, so these newly allocated pages have no
->>>>>> codetag set. These pages may later be reclaimed by KASAN,which causes
->>>>>> the warning to trigger when they are freed because their codetag ref is
->>>>>> still empty.
->>>>>>
->>>>>> Use a global array to track pages allocated before page_ext is fully
->>>>>> initialized, similar to how kmemleak tracks early allocations.
->>>>>> When page_ext initialization completes, set their codetag
->>>>>> to empty to avoid warnings when they are freed later.
->>>>>>
->>>>>> ...
->>>>>>
->>>>>> --- a/include/linux/alloc_tag.h
->>>>>> +++ b/include/linux/alloc_tag.h
->>>>>> @@ -74,6 +74,9 @@ static inline void set_codetag_empty(union codetag_ref *ref)
->>>>>>
->>>>>>    #ifdef CONFIG_MEM_ALLOC_PROFILING
->>>>>>
->>>>>> +bool mem_profiling_is_available(void);
->>>>>> +void alloc_tag_add_early_pfn(unsigned long pfn);
->>>>>> +
->>>>>>    #define ALLOC_TAG_SECTION_NAME       "alloc_tags"
->>>>>>
->>>>>>    struct codetag_bytes {
->>>>>> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
->>>>>> index 58991ab09d84..a5bf4e72c154 100644
->>>>>> --- a/lib/alloc_tag.c
->>>>>> +++ b/lib/alloc_tag.c
->>>>>> @@ -6,6 +6,7 @@
->>>>>>    #include <linux/kallsyms.h>
->>>>>>    #include <linux/module.h>
->>>>>>    #include <linux/page_ext.h>
->>>>>> +#include <linux/pgalloc_tag.h>
->>>>>>    #include <linux/proc_fs.h>
->>>>>>    #include <linux/seq_buf.h>
->>>>>>    #include <linux/seq_file.h>
->>>>>> @@ -26,6 +27,82 @@ static bool mem_profiling_support;
->>>>>>
->>>>>>    static struct codetag_type *alloc_tag_cttype;
->>>>>>
->>>>>> +/*
->>>>>> + * State of the alloc_tag
->>>>>> + *
->>>>>> + * This is used to describe the states of the alloc_tag during bootup.
->>>>>> + *
->>>>>> + * When we need to allocate page_ext to store codetag, we face an
->>>>>> + * initialization timing problem:
->>>>>> + *
->>>>>> + * Due to initialization order, pages may be allocated via buddy system
->>>>>> + * before page_ext is fully allocated and initialized. Although these
->>>>>> + * pages call the allocation hooks, the codetag will not be set because
->>>>>> + * page_ext is not yet available.
->>>>>> + *
->>>>>> + * When these pages are later free to the buddy system, it triggers
->>>>>> + * warnings because their codetag is actually empty if
->>>>>> + * CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled.
->>>>>> + *
->>>>>> + * Additionally, in this situation, we cannot record detailed allocation
->>>>>> + * information for these pages.
->>>>>> + */
->>>>>> +enum mem_profiling_state {
->>>>>> +     DOWN,                   /* No mem_profiling functionality yet */
->>>>>> +     UP                      /* Everything is working */
->>>>>> +};
->>>>>> +
->>>>>> +static enum mem_profiling_state mem_profiling_state = DOWN;
->>>>>> +
->>>>>> +bool mem_profiling_is_available(void)
->>>>>> +{
->>>>>> +     return mem_profiling_state == UP;
->>>>>> +}
->>>>>> +
->>>>>> +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
->>>>>> +
->>>>>> +#define EARLY_ALLOC_PFN_MAX          256
->>>>>> +
->>>>>> +static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX];
->>>>> It's unfortunate that this isn't __initdata.
->>>>>
->>>>>> +static unsigned int early_pfn_count;
->>>>>> +static DEFINE_SPINLOCK(early_pfn_lock);
->>>>>> +
->>>>>>
->>>>>> ...
->>>>>>
->>>>>> --- a/mm/page_alloc.c
->>>>>> +++ b/mm/page_alloc.c
->>>>>> @@ -1293,6 +1293,13 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
->>>>>>                 alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
->>>>>>                 update_page_tag_ref(handle, &ref);
->>>>>>                 put_page_tag_ref(handle);
->>>>>> +     } else {
->>>> This branch can be marked as "unlikely".
->>>>
->>>>>> +             /*
->>>>>> +              * page_ext is not available yet, record the pfn so we can
->>>>>> +              * clear the tag ref later when page_ext is initialized.
->>>>>> +              */
->>>>>> +             if (!mem_profiling_is_available())
->>>>>> +                     alloc_tag_add_early_pfn(page_to_pfn(page));
->>>>>>         }
->>>>>>    }
->>>>> All because of this, I believe.  Is this fixable?
->>>>>
->>>>> If we take that `else', we know we're running in __init code, yes?  I
->>>>> don't see how `__init pgalloc_tag_add_early()' could be made to work.
->>>>> hrm.  Something clever, please.
->>>> We can have a pointer to a function that is initialized to point to
->>>> alloc_tag_add_early_pfn, which is defined as __init and uses
->>>> early_pfns which now can be defined as __initdata. After
->>>> clear_early_alloc_pfn_tag_refs() is done we reset that pointer to
->>>> NULL. __pgalloc_tag_add() instead of calling alloc_tag_add_early_pfn()
->>>> directly checks that pointer and if it's not NULL then calls the
->>>> function that it points to. This way __pgalloc_tag_add() which is not
->>>> an __init function will be invoking alloc_tag_add_early_pfn() __init
->>>> function only until we are done with initialization. I haven't tried
->>>> this but I think that should work. This also eliminates the need for
->>>> mem_profiling_state variable since we can use this function pointer
->>>> instead.
->>>>
->>>>
+> Currently shrink_folio_list will reactivate them and set the
+> PG_reclaim flag. They will be deactivated by writeback callback.
+> Simply changing that and the flusher wakeup logic could be a bad idea.
+> You can check the link above and see the benchmark result.
+>
+> And for under writeback folios, there is no IPI flush or unmap as it
+> was returned early. For dirty file folios they are unmapped indeed,
+> but following flush should reclaim them anyway.
+>
+> It might be a good idea to skip the unmmap part for dirty file folio?
+> Maybe, some benchmark is needed.
+>
+> >         while (scan < nr_to_scan && !list_empty(src)) {
+> >                 struct list_head *move_to =3D src;
+> > +               bool dirty, writeback;
+> >                 struct folio *folio;
+> >
+> >                 folio =3D lru_to_folio(src);
+> > @@ -1749,6 +1731,30 @@ static unsigned long isolate_lru_folios(unsigned=
+ long nr_to_scan,
+> >                  */
+> >                 scan +=3D nr_pages;
+> >
+> > +               if (!folio_trylock(folio))
+> > +                       goto move;
+> > +               /*
+> > +                * The number of dirty pages determines if a node is ma=
+rked
+> > +                * reclaim_congested. kswapd will stall and start writi=
+ng
+> > +                * folios if the tail of the LRU is all dirty unqueued =
+folios.
+> > +                */
+> > +               folio_check_dirty_writeback(folio, &dirty, &writeback);
+> > +               folio_unlock(folio);
+>
+> For LRU contention, to force active you always have to take it off the
+> LRU first, folio_activate will take them off and touch LRU lock
+> anyway. And now here, there is more work under lruvec lock and it is
+> also trying to lock the folio under the lruvec lock. The LRU
+> contention might get worse.
+>
+> And the wakeup below seems very wrong, you just can't throttle or wait
+> or sleep under LRU lock.
 
