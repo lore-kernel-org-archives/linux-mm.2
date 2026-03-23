@@ -4,113 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29717F483FB
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:43:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C97FFF483FF
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:44:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 650346B0005; Mon, 23 Mar 2026 16:43:51 -0400 (EDT)
+	id 3B8D16B008A; Mon, 23 Mar 2026 16:44:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627F16B0088; Mon, 23 Mar 2026 16:43:51 -0400 (EDT)
+	id 3901C6B008C; Mon, 23 Mar 2026 16:44:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53D596B008A; Mon, 23 Mar 2026 16:43:51 -0400 (EDT)
+	id 2CD236B0092; Mon, 23 Mar 2026 16:44:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 41AF76B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:43:51 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CFB6413C23E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:43:50 +0000 (UTC)
-X-FDA: 84578504220.14.1528D3D
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F2EF340012
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:43:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eWpqYdH4;
-	spf=pass (imf01.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A1DF6B008A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:44:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C36A31A0D06
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:44:18 +0000 (UTC)
+X-FDA: 84578505396.25.BBC058A
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E432D100005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:44:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IOTkNDNG;
+	spf=pass (imf14.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skhawaja@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774298629;
+	s=arc-20220608; t=1774298657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jv+paj/zuCW/4wO6DwQaFbEbko5bvaSd+BgnRg2Mnpk=;
-	b=UygYgbIIiOWgRFwcA8RgrDf3JNotzXUYztIc5+sY4N3hsXbVqBwQsTX7JZG2U0zGX1F3VX
-	r7v4IK9nw4Q9UJ4HmrmUrXopaE2c18FyS+xceB9SLvZjyBvLXJ1g3k5QnWbxoJnN0kXYXj
-	+0BzSvdwOQJfpzKmJTtk3DVqM2RdvqU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eWpqYdH4;
-	spf=pass (imf01.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774298629; a=rsa-sha256;
+	bh=+4noW3+Hqv98gL/95V6fTB2a+kJKQFh5AF7H7JodbRI=;
+	b=MB0yxEbk+z4PzARTOO58gyVqux9PwqdbaUyKaPHJiZXwp9T3ws6HLgpxzzdv3fA51NxrGe
+	CGBiIW2RRY8Jm/RIW0GgfjfkOw1jriKn7y18itLFfHMbXoEylENq6cBVDEo5EIcQR7/zDf
+	fdsG7OAilQ65WoltvU37JMA2g4igdEY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774298657; a=rsa-sha256;
 	cv=none;
-	b=Vq2c1nyURKIp4hMkZYi8izsLIKkUyJN/COE6JjKo4hvRUGgawRI0S1yEKeluHdBrbnJ15Q
-	Dq2h0yOrggqC5TnSGtBGgORe/0klGmeVa3Rsw99FdvsBCc6Lq/8XYg1cmmLDEFUi3QPUjz
-	fxyZIAW3GZy14kYTpd0t7eAVsqR+VA4=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b052ec7176so6985ad.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:43:48 -0700 (PDT)
+	b=I+gVFH5mvd5G5fqfR9xEh9jQpJoJUS+z6OtCAltzOYWyHNhKMOw21MKOxEP7J3a0GmJnHo
+	kx4rWqWdlwUrNdt0Q7RCcbqLUoWpKZbYZWjpbH1TblG1QKP3EMKcuByM4QokyB8knKPRfp
+	BxqPaxy3ZL9furcZ1B4+sjhQTnQPqSY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IOTkNDNG;
+	spf=pass (imf14.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2aeab6ff148so7615ad.1
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:44:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774298628; x=1774903428; darn=kvack.org;
+        d=google.com; s=20251104; t=1774298656; x=1774903456; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jv+paj/zuCW/4wO6DwQaFbEbko5bvaSd+BgnRg2Mnpk=;
-        b=eWpqYdH4ZkRnMytLm5BSakUDxXFCQK7cBdKUg73PXMNe6+VtDrHFkjfoUaQrT+Fgwo
-         P2SLxYUKIIR5Ujz8AF89DiHBcpDD6y35JMSWRKbivcQBVR+p4S+GMpKkNAWixoqaWD1m
-         BKJZYuUx3Qq1+TJveWED++98+foY8X2MpSIwSAvXzgKeI5ofvBbDVJjKHi2sZzNs55th
-         45RGLCB1AQo0xHsFzA5C8MioS9YXHxUSWgqpyAGxH7lQFHUa9PAXkKBH0pzLF0gxaSd/
-         UYGDtHacW4cxEnQKVOi+HEcg2lAYbV0xiTbVnkUfgNCwppzf6MKGVz+7ME7fIbgv5/DA
-         +daA==
+        bh=+4noW3+Hqv98gL/95V6fTB2a+kJKQFh5AF7H7JodbRI=;
+        b=IOTkNDNGuWZV4+tyv4PjyPdhPfBYppZY0X7lMjuJXxfsdEcYNrgzt2ViE1rVySXIh5
+         V6It61RfMFnf6bPtqy6r2nOa7VJOtd/hGNVQL077XrqyizlFiDoGll+CdKXQr53YgRQx
+         dNajg/THAj21yT8inHWcSac6ckIlYLnLc8dKxKuFvG1GLr2BqreB0VL3cDlFjG3VRlUd
+         uRsCLXY8B/5xJalUS513pA06IgW7ZvCxcYM+DRzHkXOlxSjT9uCFtR48m3AD1eVsEggE
+         +nIl0OI+yMTXXq6MqZB0MAGCcs/HB0nfM/FPlBfpyK/PS9xJQVp1to6xRIYZ+BDH/Akg
+         4QHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774298628; x=1774903428;
+        d=1e100.net; s=20251104; t=1774298656; x=1774903456;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jv+paj/zuCW/4wO6DwQaFbEbko5bvaSd+BgnRg2Mnpk=;
-        b=RNleHYdGeI9P0zTm122YJ4u2lnp+KWktmfCMG0/Y9cGU1usvgOH7OSbFK1fiQtTR59
-         LEFkWW+LVQhxfjm+7GHXfxfBg67Hat52FHZ9XGLg+omlvLhm/sMu0YiTBZLP6rG1brGq
-         elwH/9E9LVKEO2OihZ6D1yJAa4diHBRi/o+QiH2FSnrjlnnUIZVu2PdBSwQeyRhQ3vTA
-         zrEufgBSmEGH3M5RL2jrIYShUTV9Ezfh4Y35MOJil7/mrkGL70LpPwAlw1a8K2sPbvzR
-         +sK81BoS9/LxfLhEsBZZfqH5Y51NeyOsK5hEMnUXokNk97TthWBHF0/qwha0Ug8FpS9u
-         rxkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHvWr1qPIC606I/8N2hhB6QJDILrC8TcKIlo4J6HDJo3sndWZVPeEz0p47mjoUvwX8d1e/X9rxgw==@kvack.org
-X-Gm-Message-State: AOJu0Yz8kWE6u7TfDMbA8xT2y2668CUgxCEzL+f1W2qu4FuBBNyBfacm
-	X2+KAtg88XQSM2p7mt17bf8/zeFTBSZ1m+tOe/DksVIGWsLrs98kCl6rNMdBcIEfxw==
-X-Gm-Gg: ATEYQzwLfyhM78/U0q88je4b9Rh0lo/PjJVRo0jNgib26VbvzZOJGYPLHLZ0hBg6Btn
-	HYY4raFE1VsTqvzU2mlnySVnpchT8kfsxF0RovZ8Fqi4Gz+L0UTMCpkOnMFyniKpFxARskTjVgp
-	jc5ZELtAlEIn6PkwKy2mYFErPqH2vNulI7LLAMZW1U32v428RuDZ2JjHGjnK98iOnoAWTBJOfs+
-	1Jb2/EQUqsKa8u5qNjg/10aJsPbO8vWuRWh7Kh+9v6Fk/t1eKTnlXH62XXB8TFzSoo7RAHBuA6N
-	iQzODdNFPTMAHFUUiVZj6usMlabJJWjn+LROubajgQfBF+5TDo34ltHZ59gAmBJPfvTeseW5n3S
-	NHgqMW96NYflKTp7Pu0e9rYpgup8TgPGRgutUSvt+mB+/U8vpB2dYmeyk2qPnc5s2upNn2asrGR
-	CKndX2FNwSAw/jIXuVbSppOzsd4QARRoM8QGi4vlK0zBz5I/3Kt8Nuy6uVIFaznQ==
-X-Received: by 2002:a17:903:22d1:b0:2ae:c566:bd99 with SMTP id d9443c01a7336-2b0a54f45e4mr765685ad.22.1774298627093;
-        Mon, 23 Mar 2026 13:43:47 -0700 (PDT)
+        bh=+4noW3+Hqv98gL/95V6fTB2a+kJKQFh5AF7H7JodbRI=;
+        b=tOoZqvA7PifydboYRFlLA1aS2rHkQRzZV3+tdzWjNP9q3woVX27+GeAUeVVdQ5hy8T
+         9XAqw78OEcLCXqpg3tpkww+SonoKFrotGKGee2xk1da4kK29FCJ7af3yBw8RUnmRWdu5
+         H/AsHdU1dPz08Ve8aUE4RsbjBGBbtYus2kAFfTrGFTVl8LKFiWFIwPTV0G2ALoenzRWR
+         dNafkhls6xVh0lJsIh7DcUegRiPMZhbRCj+DuGtpCnvaNALIQjAc1OEx4fFmXBfuEUp9
+         /ktop89XFhayAs0G06uMO0RDKVbXX1jzRBUZUo1QTo1k/53zn2E40AGtUhctkuszJk+1
+         Ycog==
+X-Forwarded-Encrypted: i=1; AJvYcCVO90ENsq+B/PWRgHHopI61guk6N4qiUe9M+RYx+YSNdohRD8k0r3n1hOkdvJMPP5ywydH55ax7eA==@kvack.org
+X-Gm-Message-State: AOJu0Yx562PqHktW4ibq6IOQ7v6hhfYfgEibcHpXA2yax1UeeS5XiPZh
+	RtrQQXQY9qonZHDDyxf6Kr3IjYOPho1YtFX9OVHo4xg+2akKbU+Iq0f/nCmXaXFCHw==
+X-Gm-Gg: ATEYQzyU4S3idE9SaTlupsOj170SIR/leasp9n7T0LWnFY26+/Y+pEk0oBEaLUrJfHv
+	ZwDfk+ukYnIzohHMP2EdegS2yQ0UN9Z1jL13UR7kDUlv0hYOBfAk6J76RXT4iOm4CNeCucG2mXS
+	PzkwPWQgIXdxEtnze3zPgxkf1vhmIp7I82pvmw+DfdWgYqjHuRurKa9bVS2BDyt9xF/qaZC4H/C
+	yKOXrBAMqkJU0EyWGwms4R/Qqbz/1U7/arwgimzKmY5fJZu8I318ey831tFxFgyPEWZBfNt3BNf
+	Kib7ScrLMayVpJT8yCfXUYnGYme+ldwb4TK4N1wm02qSbdXtBhT9yw24/fAvuQkXXoImRJagsAs
+	nq6eq9wZwlMQQlG4/GpNmN2ab7iQN16t4vL7KupoLGsFvhhlCL0TEX81+pkyYhd7gJhqHgWgmUT
+	blRjusga5JGOVsw3q6SNq/KaTW4lqGl4jEsMQ4/vyfPlOulA0gKbMXjgH49jOwrg==
+X-Received: by 2002:a17:903:2290:b0:2a9:5ef5:399b with SMTP id d9443c01a7336-2b0a67336damr205655ad.19.1774298655161;
+        Mon, 23 Mar 2026 13:44:15 -0700 (PDT)
 Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b04108a1dsm10366461b3a.54.2026.03.23.13.43.46
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03aa79a8sm12398938b3a.2.2026.03.23.13.44.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 13:43:46 -0700 (PDT)
-Date: Mon, 23 Mar 2026 20:43:42 +0000
+        Mon, 23 Mar 2026 13:44:14 -0700 (PDT)
+Date: Mon, 23 Mar 2026 20:44:10 +0000
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
 	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	dmatlack@google.com, pratyush@kernel.org
-Subject: Re: [PATCH v2 1/2] liveupdate: prevent double management of files
-Message-ID: <acGl9KqueRpnbpQY@google.com>
+Subject: Re: [PATCH v2 2/2] selftests: liveupdate: add test for double
+ preservation
+Message-ID: <acGmFN56v0LS12VO@google.com>
 References: <20260323203145.148057-1-pasha.tatashin@soleen.com>
- <20260323203145.148057-2-pasha.tatashin@soleen.com>
+ <20260323203145.148057-3-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260323203145.148057-2-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F2EF340012
-X-Stat-Signature: qnziyyzz5pyy6f8r61qjqf6o5kez3aia
+In-Reply-To: <20260323203145.148057-3-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ga1ycunhmrx8kza9hadqinwwsds3181m
+X-Rspamd-Queue-Id: E432D100005
 X-Rspam-User: 
-X-HE-Tag: 1774298628-655356
-X-HE-Meta: U2FsdGVkX18WdBVTrIadSTSSDpRXLI9C4kSTysw77HHasqKdWxcS+zAV+6rl52qL8PtkZuwI3boadRrT5wQb5pnB8BHSkaX4acWpjcCBwY+KHMZh50VNgXRfsbxwWCcTV8rsXB8+Qqh1A91uxr67xCNK1ihbiUTgyF3cUbLQg4wgS2C5TxfitKp/AeF18lvoPt2rx2tY6AEdgGY6sG4nGlIyEtBTnDVK3RdsVM2uYIE+H62Bxq9MDFJUoqoRVj46y9oDiYC9HRxlUL4vr5jIbhbRYVgltM0rY+c5PRIjQ5iNokjYu/LqJb0izoN7qoKU28q7A+oTui/7OGILJxWkjJe0pXMAfuDPUTiQy/9LUIHmYWsel68oNuJ3cLpZQrU6NKxsW6R0tdbyfwY8Xwy+eTqdWrPqjrsOeKzgCKSTsQolwf4t043GkAgRtKtIxXQshCqnJ4vvZpilLzEfpS0RxuJ+ByB9F0w53Vkx9dOZE6D2CvfGpm2fN76b7opKm1kUP0Xn6lUcC24QEN0Ju+bc8gHXMGedBqgvtOK6WPj0DNKHzzl+ryIOYJ62Sc1ck/VC1NggKb21CSew4ngZHJQemSrfkAEispcV5PxGjuOL3MOgDxyJKre3tV1aZsMDGBH102pjkrB0INz9y8bVJaegUDnxqK0wMt9m0Ibasmi8ids2t0VBYFhFrUbBQKAQ8ipw/Bna1vDqiA7FblKeHxg2o+3f8dljXHmkfGd8tVH/ce60wwCNIB/qix532oLFcoIRfvImrDB8tfERh4Fh6V2gO3I8jdExzdj8ry/kklj6t1P/G7t0A0CY2TUoKKGU6ws1Nr/6tl1VEX2mF0v7ePbl8yreiRcr4SfQGv/ynpaVcfYqOVTvAUimC7r3sAeJQU5bRSnKJezgnNB6xBcAD/upoUFm0oEQ6nA3ZgrAfiAopppniuVLgb68mWA3jj5+9NWpPA7+XFkOFiJZSO1zAdj
- L0nKI6vo
- k9J00dJly61x/dk6ErILPFKXdkphCMoAfr78ziBh+0DCE89QM6MwgKpLylNYZGBWBhoLFTEzdoGhtv8S/zubwu41rIJPdkeaqAp/2I5aeBQkViz7HdzKQVpnmrsT3WfisE+/NAYjOWyiEXS1K/P4bP8IAvlYwv8P9DQnpF70E6xHC6fnUp9feTP4os1FUs5vgdORyQgftLnDGDjltWryFmGCgRz4ek2aIXEu1bRkGAcxV0mZaKUvEIwh0AvQWgNXMMx4H/8ZVHZgEFdhdN/bICi+WjQL4SspNmdYuc6asFNXBFNfvjbd/5agWFbCGsH2jK30PsmZfeMAdV7Ex+DtTlGc+DAVsb8hgj9q93de+tnGvNJ4Bpow22SSzCtC2Ncg3c4EazCJKUR4sMRbGoe/RcmmFsFnTusKMxei3xDuLiO7hQwaMjut2ZD7GSfB0C7zV7+DW
+X-HE-Tag: 1774298656-938646
+X-HE-Meta: U2FsdGVkX1+H6V1w5COuNBlssUlDeW8WJJ5sKtKPMwBG3wLFwGFm/1PVWwhiXXiil1ZenYWN88nr8risIJC9eRGo7roEqAwnlm2UX+OY8SGhtIs7N4E80yiaP1tktNHBguC9g9SVofm69M7HDmRFkJMefRx+ZhXOIoOvF4KDoYFMupLIwk4K8dSXOnO1CT1+BEWBx7AgUt+b+3vU+ybRQbqoXM32neT1pNM4HQcafiA/k0bnXQ/8wLKKmdovQW1baeD/gEFATbHNEDbQP6nmDLCZVltwQLoOxLG1K/gbpnQNlFhdcHIVMwsMC8+d7ZKJPS5VSAqrYh/SyMrevaZWBkO6XODOy00Aj9QRSCYEAL/x5ouRT6qTBXpqvRK+vzdkHQUjKcQpLwwKBDNLuuedWz6KjLokDsEMqIM0Tub43nqaURXZ+G5yen+wmDKusFDRS3zyt58l8n49SEmKosajszNPcGhaLHwPJeB+qyPE7TypAjp0HDKH3cPWGBXYRZqDc9wZOeuO/IpwFkS4PiYPg8DmaKT63/5vTpkydfC/sDPU9rPGioaMoa5WkzKNY0b655fNO1v1V2xQpfJyuBMA5FGekDTOkiJzxmkO1WtXCc4rwjf+iipSmWPllaZpL6ty01Hn6wcIthV73wcUWosyhRYor0x9wIKdkTS5ywcKsW6tgrf3GPipOUhQVd7aagHcWz9I/yk29ThQjoZydXs3VMZZRjrgYaCMoC+M5d++spRKsPZ6ZDld3yWgJKGNxeEB7jJ+kwVrmyY6hVyq2NB1FGY9ajUFQJLZGNilXQRfUL99kVDgdGN0XG+Vc7wiu+SyKJtlW6tZSwl0mrAK6DHZRy8fnncMDwOb40DxgSkQppzzZVeODp0Hc5Q2DB7GpTDXtHgYuM9AasZEGHc8bkGkKq23LFUj74cfnVQocYvlFiOEAh/D9n+JrWdnb6EtYhX7DmcXTpCmu0YD6G87QfB
+ 9vWqz5za
+ gHKb9rpy8dBQvj16rg253cbPHPckY92jJNJV89pAE7SfoiucrAnvF5z//kDMBXX9Aob7knEy2BUtzyJR4XgLz09Y/7ycUoY/qckKh0v8ix5ldhKF8fX6/LbyY83bRyNB/fTv9Uk01Pt4FlNaeePQMiuXa31nAy7D8n17GH48QAifd4ZRWwIWPOiezFOjP2lKHBeKJPGy5iCuu6OBFONNmaGAPOUFYBplsc0Qa4lH9Zgc2suFWDgUOUvGY5/AbcH15Xh4DIIzguiILbzGLKa3CCX4iGemcjndtEmcGHjKmubDz03BO8dSzEpN4rCUiQxXhCdAhzgbOnSYN/MkD+KQtLYmkLBJBAIPfJjFA9BOPm7HwYNb12ToGsntTxfimX4+WDwyNYcjJt6JJxi70Bg9Lue+OWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,95 +119,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 08:31:44PM +0000, Pasha Tatashin wrote:
->Currently, LUO does not prevent the same file from being managed twice
->across different active sessions.
->
->Use a global xarray `luo_preserved_files_xa` to keep track of file
->pointers being preserved by LUO. Update luo_preserve_file() to check and
->insert the file pointer into this xarray when it is preserved, and
->erase it in luo_file_unpreserve_files() when it is released.
->
->This ensures that the same file (struct file) cannot be managed by
->multiple sessions. If another session attempts to preserve an already
->managed file, it will now fail with -EBUSY.
+On Mon, Mar 23, 2026 at 08:31:45PM +0000, Pasha Tatashin wrote:
+>Verify that a file can only be preserved once across all active
+>sessions. Attempting to preserve it a second time, whether in the same
+>or a different session, should fail with EBUSY.
 >
 >Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 >---
-> kernel/liveupdate/luo_file.c | 17 +++++++++++++++--
-> 1 file changed, 15 insertions(+), 2 deletions(-)
+> .../testing/selftests/liveupdate/liveupdate.c | 41 +++++++++++++++++++
+> 1 file changed, 41 insertions(+)
 >
->diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
->index a38ea4975824..5f48c3c8c561 100644
->--- a/kernel/liveupdate/luo_file.c
->+++ b/kernel/liveupdate/luo_file.c
->@@ -110,11 +110,15 @@
-> #include <linux/sizes.h>
-> #include <linux/slab.h>
-> #include <linux/string.h>
->+#include <linux/xarray.h>
-> #include "luo_internal.h"
+>diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
+>index c2878e3d5ef9..37c808fbe1e9 100644
+>--- a/tools/testing/selftests/liveupdate/liveupdate.c
+>+++ b/tools/testing/selftests/liveupdate/liveupdate.c
+>@@ -345,4 +345,45 @@ TEST_F(liveupdate_device, preserve_unsupported_fd)
+> 	ASSERT_EQ(close(session_fd), 0);
+> }
 >
-> static DECLARE_RWSEM(luo_file_handler_lock);
-> static LIST_HEAD(luo_file_handler_list);
->
->+/* Keep track of files being preserved by LUO */
->+static DEFINE_XARRAY(luo_preserved_files_xa);
+>+/*
+>+ * Test Case: Prevent Double Preservation
+>+ *
+>+ * Verifies that a file (memfd) can only be preserved once across all active
+>+ * sessions. Attempting to preserve it a second time, whether in the same or
+>+ * a different session, should fail with EBUSY.
+>+ */
+>+TEST_F(liveupdate_device, prevent_double_preservation)
+>+{
+>+	int session_fd1, session_fd2, mem_fd;
+>+	int ret;
 >+
-> /* 2 4K pages, give space for 128 files per file_set */
-> #define LUO_FILE_PGCNT		2ul
-> #define LUO_FILE_MAX							\
->@@ -249,6 +253,7 @@ static bool luo_token_is_used(struct luo_file_set *file_set, u64 token)
->  * Context: Can be called from an ioctl handler during normal system operation.
->  * Return: 0 on success. Returns a negative errno on failure:
->  *         -EEXIST if the token is already used.
->+ *         -EBUSY if the file descriptor is already preserved by another session.
->  *         -EBADF if the file descriptor is invalid.
->  *         -ENOSPC if the file_set is full.
->  *         -ENOENT if no compatible handler is found.
->@@ -277,6 +282,11 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
-> 	if (err)
-> 		goto  err_fput;
->
->+	err = xa_insert(&luo_preserved_files_xa, (unsigned long)file,
->+			file, GFP_KERNEL);
->+	if (err)
->+		goto err_free_files_mem;
+>+	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
+>+	if (self->fd1 < 0 && errno == ENOENT)
+>+		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+>+	ASSERT_GE(self->fd1, 0);
 >+
-> 	err = -ENOENT;
-> 	scoped_guard(rwsem_read, &luo_file_handler_lock) {
-> 		list_private_for_each_entry(fh, &luo_file_handler_list, list) {
->@@ -289,11 +299,11 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
->
-> 	/* err is still -ENOENT if no handler was found */
-> 	if (err)
->-		goto err_free_files_mem;
->+		goto err_erase_xa;
->
-> 	err = luo_flb_file_preserve(fh);
-> 	if (err)
->-		goto err_free_files_mem;
->+		goto err_erase_xa;
->
-> 	luo_file = kzalloc_obj(*luo_file);
-> 	if (!luo_file) {
->@@ -323,6 +333,8 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
-> 	kfree(luo_file);
-> err_flb_unpreserve:
-> 	luo_flb_file_unpreserve(fh);
->+err_erase_xa:
->+	xa_erase(&luo_preserved_files_xa, (unsigned long)file);
-> err_free_files_mem:
-> 	luo_free_files_mem(file_set);
-> err_fput:
->@@ -366,6 +378,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
-> 		luo_file->fh->ops->unpreserve(&args);
-> 		luo_flb_file_unpreserve(luo_file->fh);
->
->+		xa_erase(&luo_preserved_files_xa, (unsigned long)luo_file->file);
-> 		list_del(&luo_file->list);
-> 		file_set->count--;
->
+>+	session_fd1 = create_session(self->fd1, "double-preserve-session-1");
+>+	ASSERT_GE(session_fd1, 0);
+>+	session_fd2 = create_session(self->fd1, "double-preserve-session-2");
+>+	ASSERT_GE(session_fd2, 0);
+>+
+>+	mem_fd = memfd_create("test-memfd", 0);
+>+	ASSERT_GE(mem_fd, 0);
+>+
+>+	/* First preservation should succeed */
+>+	ASSERT_EQ(preserve_fd(session_fd1, mem_fd, 0x1111), 0);
+>+
+>+	/* Second preservation in a different session should fail with EBUSY */
+>+	ret = preserve_fd(session_fd2, mem_fd, 0x2222);
+>+	EXPECT_EQ(ret, -EBUSY);
+>+
+>+	/* Second preservation in the same session (different token) should fail with EBUSY */
+>+	ret = preserve_fd(session_fd1, mem_fd, 0x3333);
+>+	EXPECT_EQ(ret, -EBUSY);
+>+
+>+	ASSERT_EQ(close(mem_fd), 0);
+>+	ASSERT_EQ(close(session_fd1), 0);
+>+	ASSERT_EQ(close(session_fd2), 0);
+>+}
+>+
+> TEST_HARNESS_MAIN
 >-- 
 >2.43.0
 >
