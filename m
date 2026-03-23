@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3CE8FC72CA
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 23:15:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B14D58CBF
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 23:15:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0AB76B008C; Mon, 23 Mar 2026 19:15:46 -0400 (EDT)
+	id DCC626B0092; Mon, 23 Mar 2026 19:15:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8F306B0092; Mon, 23 Mar 2026 19:15:46 -0400 (EDT)
+	id D9A4B6B008A; Mon, 23 Mar 2026 19:15:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B9A76B0096; Mon, 23 Mar 2026 19:15:46 -0400 (EDT)
+	id 9C9FD6B008A; Mon, 23 Mar 2026 19:15:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 542276B0092
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BDF36B008A
 	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:15:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5C9DBE023
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:15:45 +0000 (UTC)
-X-FDA: 84578887050.12.97B3D6E
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31087140771
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:15:46 +0000 (UTC)
+X-FDA: 84578887092.22.55EDDD5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E0880180010
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:15:43 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n2jOlGxK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774307743; a=rsa-sha256;
-	cv=none;
-	b=v/zQme773KlXTfPIUvqYyVAvw2pHisBGYbpk5zHz3VTh0oP3vaLqGekNvT/O1XfEuVYsWa
-	F/HM3B4T1Wb2RHD3GJ4Z+PHyooGrI6X0+FM+5wypCNEAbTziy/eX2DxXFrvNW1Jf643VnJ
-	/ZrdCR8zeWt4jbZbC9FqfQlOF8Q3p/o=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n2jOlGxK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id A77D8100011
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:15:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VnSjFPvf;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774307743;
+	s=arc-20220608; t=1774307744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jamaEM6c685pSq/jY5dcQbyQ+dKO0m4HiqvsG5FiBWA=;
-	b=OmtmA1c5HU3iLCA+ureSy2bNLjg4kGw3MHaVqJxffLrwBGLv7dH4fnjnOhjc5cDVUsmGCb
-	3jXDcsA7Z8jBICbZDq0Kk+pTANFSU7lEsHB9TnKaTKXrkd1Ml1AZWir1kafJaIo9Tc/+Xk
-	BblY20MmzmB5STzOB61Fp9cK4hOOJQA=
+	bh=vbxQY3lvzqhT/iqaqHhhtJ4GZyPdebweaPj+BWQtC58=;
+	b=iCLlnx9M/vmN9j5bnpxvj+Ic8cbugQ6nsFKUc+DtLsMsK2z3wTfIbvr77UigclctVm7GOT
+	u7WT1iJL3NIz6C/xGw/dADUxlEBb6BUHfR+MkWSyGIwgBHY/SKnwPCBdrWCNkJnFCcWO40
+	5OlptAs3twl3pDwFwM6/LCy3yrL2tFw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VnSjFPvf;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774307744; a=rsa-sha256;
+	cv=none;
+	b=HZSHGGb23GkYgztTHnx6CP2afmLKVo2xF7A/zoEIT3lv+tyCFy2Eg/axm/2Juj+eOxbpA8
+	gkdkswHWeufJYgcQFJKTt5rITj0uzuhp8ZMKp+gM7Xoa64cGDDQWI7LO9m0i0RXjvtBjuH
+	RQXgZ9Yqr3zQK9YctZa4C9nxJyBLIZs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4A98D60128;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D27F60132
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:15:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E003CC2BCB5;
 	Mon, 23 Mar 2026 23:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FB6C2BCB6;
-	Mon, 23 Mar 2026 23:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774307743;
-	bh=4uaA+eem3fKB2uPWGLGeH18mf1wXB30aEUf0eMGJT00=;
+	s=k20201202; t=1774307744;
+	bh=acrZio7SwTIWWe0wc5YY1SpE9hMTqgCgT01pPcG9A6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2jOlGxKZnItSh90/CHwHf/3n40YsKYeI9L/w7x5ASEzPnbBBSCpFKdwahiYgoVeO
-	 xvqprGtmJD4jplV0wQSYLyL7jEFiGAvX8V832u8sVPSvnARMhUY023Nu/ls/MHlPZf
-	 dt4o6t9+fTL4hXy1fm0pSNWIimu6iRrL79/YtqdWxViOExCq40k5Yt/kUwc9hLVdeC
-	 WiuxaHWn5HQ3iING4xC5x89Wn7jnK53PZPg6OmGpq9BXywTInLRjTFCo7g0jNApELO
-	 YA2mGnLf6Z1SuTzWoFU3/3If7etKf/7aHS4Kz1mTUfC8QtH0lGuEe3Uce4AmcvT3f6
-	 joe+9vz2UYS4Q==
+	b=VnSjFPvfAcvUf0/tfHq8Sc/28cxKBdedQrh8rBtsF+MA5bsuetvpBvO0qwRRvuycd
+	 DdMT43ydffE7qwBl9caifEwjpI1i+5eKrjccPXHPG5H4N8RIbCLK0SbinAkSyov+Fb
+	 851T063Zdho2vvyMHk52YbLCSfdJY026nE38oGZXYNRc66WWUp/PlwxIVH+AZfdiV/
+	 mCrLfmUImz9LAGecK4HeuM+u8ce3fkoEV4g6VE4YKoSwrRu6AAbIEHjOFzI05BpyWl
+	 ewFCo0N0HlqE6/nS9MF6uSXGeUl59sf4OqkiXfaGsBK04VydE6WHq7i18dKnXTj4Tx
+	 xGVPwnUDrkZ4Q==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v5 02/10] mm/damon/sysfs: add pause file under context dir
-Date: Mon, 23 Mar 2026 16:15:27 -0700
-Message-ID: <20260323231538.84452-3-sj@kernel.org>
+Subject: [RFC PATCH v5 05/10] Docs/ABI/damon: update for pause sysfs file
+Date: Mon, 23 Mar 2026 16:15:30 -0700
+Message-ID: <20260323231538.84452-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260323231538.84452-1-sj@kernel.org>
 References: <20260323231538.84452-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: o9mfdmgo3njpgwufqbp1wgobuamhfkmh
-X-Rspamd-Queue-Id: E0880180010
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A77D8100011
+X-Stat-Signature: 588bex18aoojcjaxtxw5e1trhithbhun
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774307743-1008
-X-HE-Meta: U2FsdGVkX19fEjguUpTUhScVcwenRdyeHPbv6xNw78n42i8R7OII9BVTDahCq4GCFjkF2zwO4VR3yIvVkO9lbvu/59zY0lIVkCDLJO+n3s4a9vw+3+nSR7EuMJZ5tmclmYlLZ22QxGi4QYBMgpv2E6xBZakWVdrdPvSU865Jn1qaoMrNd0W/OYTiC81Wrkp/8QjLx30NkQSY0/LrKGIGx2XMHarjwk/YbAANRsKHrVRK6eaQ1m6XC/YAyR4sui9aDKl3ztoigPMjkUAOVP9Ztpw23gHbaOCoIIMT8VxOwA/sqrdVC1DscYlmxblKHdhPLjb6EOyyOxoj7mIh+IwWjvp+F6MaGc5PAw8N+lLyZX/hMQpCvTWkKYYRL13T2XqsfuDBadpHUyYqvYWkItqyCk3iX+oysep0HwR6mqpOupnOnPNJx4QNGa0lYUUpo6NdI9EPvMY39lSslzsRkGJKnfc87cPvnCGCRByWAkd0dVk0bOk+46GWiOd4Nbeiio9jdaXDjdQ+I9w5PPRMU6n1n4cl3v1CEimOgNtNSpfKWEP71nHhV6+U7uxpXYphjzTl195/GcioayETHXWfXUOtNMS1rT4xFrjRQqUSwjnQI6mISIxdx7DJUczXoyf7jfGEHNRS/pmici3ROw4Z+X+piFAXue+CwU3e9riBrO78Rqrt7a+LpC1I1Wa9V+bQ2zTDQ9SyCqkhZE0EMghOUyDpTD5E+UyXFhtwLuTSKhjrOZLLTl12rSUQ0uDTXMQ2N11gxwkPh92NJAYzJ8KWceIH09hNAlXFXPe/GX0pmK3HpRfmtXDzrtHK4le7rjfiA1KgTIgCqdqUVRovEBraYG3T6KEway3ytEscHavVAtPontMQhrl/FMFP0JPZ8pZ7NG92M9se8b+IBQrFrpfWafXgEUS97u6dI/kZUBHyX+MY8KTqwcjGIE4yihEmOtq07Vo1C39BEI93E4mXTbEVJtz
- HZKkHc6g
- cI2+02ZOdWGuBFvMvuX/U6cOTc315Gik7mo9jd0vwxzyncGtOhvhUv729yBpnvZ2XySwEKwPA+KBa92VcQRWze1GgNljHJ1qvCLGmQ/pZj+57QU+3qNG0PKLR3ounJP7BJzmwvfpSBnb5FCzTbAPA4AaO2k5HQT7TUVW+3vrtD2Y/m1UH0avClDJ92jArYX6WohtDpEFwmkEslJtXfhsk4uHPp4af/0/TnJOP
+X-HE-Tag: 1774307744-814010
+X-HE-Meta: U2FsdGVkX19k+itiDSq1klZrhd56njjDPJbn7rAeL6Qg8y6Ja/2KoJop1v3e95d62hIE3yrYzMheqG7r1JU+JoFQh7Twe0vl3rsiOfqiL5SgcpcYIiodUSLE/MF7fvBSnW5AM3gANHcGBU7nsyDsBwZOKBXWl02uawDa1JDfRclwB1KkgH0IXMEA6Rqj0iubCN2tVLelHKic2MPOW8MF5YqW3zD5rePRcXKsoqdRQZU55G4nW/1N6EgE4lFDZ3kW5yF+OKZRB6i3of+HTNS7rCUMBvqAr+xBAlzHWkg8GtTHwiSCxgJBWl4XmRarUU0UO2iHybeEPIZr5WdhmxuxvBI4qG/Nr1Bv2Q/e+niBrH4+h4FmQgiy2NEHbAbHk/o2SYMo9Og8vHDnin/QahVJMqD/TN7N/N8+UmotmW2bWUogm5402fBZErIJn/cDay1iks6J7FoKtNXkz9lmZ4EkbuF+8sJEcRKwZrXccJM4GlRHmGBvHlMtYBv8v3ytR8LuBIoqLrLSSD7ffqYIEHDHwGpfVWnradYv5UnVi9chJZMCdEIPx5Ux04QzdkGd4gxTlMv6QaLXsKrl7zxRfpBRFz0iQowqcZ1O1t4P7t4NgP8BMpxv/k5MTgZS5L5eVO+MWHbQd4epHSiaYwkKMvnw9hi330BuKCKPCgpC6Z/kL3stjFjqrqvWmzSQWYOMgY+xH9kv8PUVj3x703+mdxfRKlBMN3Takij64Hpkjmwe3E1kWVTVQXG+w32lv9QTetd1bje1rjC8xZaiNMxPqFlKVo6HmPu6uUj4JkAvkInC7z4Sg7p/MieYbqMREnXUAqqaceL9yOulyCTOZXPIWPqWDzqNSwmzv1on613mhwfQSvi7xyHORi4jS5DMfxt9Eak9UtpEUkv5aBus6QlVWVku69REzg5j8J81K02nrF7nP//q6LKI8QM0ExJE1rlMEIREgseDsF8u9Oqm8FBS64X
+ WaotCM6X
+ twNv1c3HiVA3/+fZYCWh0ucn9MRxWpZpi1t2nJi9Vzsv/mmUxlwwAp+B3pgnv8rE1WrQCt1AMJ3lU8J7smYqW8OI418+kG4MBGDmSYL/U+BQGkzwW5Jl/fZsvk3F1c9OA1XgaZMu6FUDGX1Lb+gl3fJIMPXltVkyI6aIRm/axtNJ8+aH0YxDPeoJioTqJmKj53JeLRSydRgvCC62C106MsWBIOqhlScvLjX5/47SmkTYkXBcR99aDEoqpuChVVqjIcFIaIYYGFC9BoLeQavQvIbE8Jlecz12TNo1o2MzPbCLNh48=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,89 +92,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add pause DAMON sysfs file under the context directory.  It exposes the
-damon_ctx->pause API parameter to the users so that they can use the
-pause/resume feature.
+Update DAMON ABI document for the DAMON context execution pause/resume
+feature.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ Documentation/ABI/testing/sysfs-kernel-mm-damon | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 6a44a2f3d8fc9..51893abd09472 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -866,6 +866,7 @@ struct damon_sysfs_context {
- 	struct damon_sysfs_attrs *attrs;
- 	struct damon_sysfs_targets *targets;
- 	struct damon_sysfs_schemes *schemes;
-+	bool pause;
- };
+diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+index 2424237ebb105..7059f540940f0 100644
+--- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
++++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+@@ -84,6 +84,13 @@ Description:	Writing an integer to this file sets the 'address unit'
+ 		parameter of the given operations set of the context.  Reading
+ 		the file returns the last-written 'address unit' value.
  
- static struct damon_sysfs_context *damon_sysfs_context_alloc(
-@@ -878,6 +879,7 @@ static struct damon_sysfs_context *damon_sysfs_context_alloc(
- 	context->kobj = (struct kobject){};
- 	context->ops_id = ops_id;
- 	context->addr_unit = 1;
-+	context->pause = false;
- 	return context;
- }
- 
-@@ -1053,6 +1055,30 @@ static ssize_t addr_unit_store(struct kobject *kobj,
- 	return count;
- }
- 
-+static ssize_t pause_show(struct kobject *kobj, struct kobj_attribute *attr,
-+		char *buf)
-+{
-+	struct damon_sysfs_context *context = container_of(kobj,
-+			struct damon_sysfs_context, kobj);
++What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/pause
++Date:		Mar 2026
++Contact:	SeongJae Park <sj@kernel.org>
++Description:	Writing a boolean keyword to this file sets the 'pause' request
++		parameter for the context.  Reading the file returns the
++		last-written 'pause' value.
 +
-+	return sysfs_emit(buf, "%c\n", context->pause ? 'Y' : 'N');
-+}
-+
-+static ssize_t pause_store(struct kobject *kobj, struct kobj_attribute *attr,
-+		const char *buf, size_t count)
-+{
-+	struct damon_sysfs_context *context = container_of(kobj,
-+			struct damon_sysfs_context, kobj);
-+	bool pause;
-+	int err = kstrtobool(buf, &pause);
-+
-+	if (err)
-+		return err;
-+	context->pause = pause;
-+	return count;
-+}
-+
-+
- static void damon_sysfs_context_release(struct kobject *kobj)
- {
- 	kfree(container_of(kobj, struct damon_sysfs_context, kobj));
-@@ -1067,10 +1093,14 @@ static struct kobj_attribute damon_sysfs_context_operations_attr =
- static struct kobj_attribute damon_sysfs_context_addr_unit_attr =
- 		__ATTR_RW_MODE(addr_unit, 0600);
- 
-+static struct kobj_attribute damon_sysfs_context_pause_attr =
-+		__ATTR_RW_MODE(pause, 0600);
-+
- static struct attribute *damon_sysfs_context_attrs[] = {
- 	&damon_sysfs_context_avail_operations_attr.attr,
- 	&damon_sysfs_context_operations_attr.attr,
- 	&damon_sysfs_context_addr_unit_attr.attr,
-+	&damon_sysfs_context_pause_attr.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(damon_sysfs_context);
-@@ -1470,6 +1500,7 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
- 		ctx->min_region_sz = max(
- 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
-+	ctx->pause = sys_ctx->pause;
- 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
- 	if (err)
- 		return err;
+ What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/sample_us
+ Date:		Mar 2022
+ Contact:	SeongJae Park <sj@kernel.org>
 -- 
 2.47.3
 
