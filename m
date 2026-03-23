@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45B14F46122
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:22:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2070CF4612A
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:24:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF1376B008C; Mon, 23 Mar 2026 10:22:16 -0400 (EDT)
+	id 63A366B0092; Mon, 23 Mar 2026 10:24:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC9956B0092; Mon, 23 Mar 2026 10:22:16 -0400 (EDT)
+	id 5EB426B0093; Mon, 23 Mar 2026 10:24:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E01F6B0093; Mon, 23 Mar 2026 10:22:16 -0400 (EDT)
+	id 5008B6B0095; Mon, 23 Mar 2026 10:24:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DC9A6B008C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:22:16 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BC0ABCD4F
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:22:16 +0000 (UTC)
-X-FDA: 84577542672.03.AB066A3
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 415A36B0092
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:24:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E0A67160B3E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:24:52 +0000 (UTC)
+X-FDA: 84577549224.16.B4DD14D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C85CC1C000B
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:22:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Je6IqAG6;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4B78114000E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:24:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nc2xbqHk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774275891; a=rsa-sha256;
+	cv=none;
+	b=x9/YDvOFwjQQNygQFBNf0tDN8d2hJnPkhfWKW8uXlNRTlUs7J0LCaClYHnflVjM3HIzvTH
+	11VvpnLnwKUL8nKc5cFYrGmfCEphL3vfJjTjgzX1nJZHwJqO/J9TEQ8SfObfau/BMzIOtM
+	9j9pqUY1FZJ/wdC72psmjSCaUhUyTz0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nc2xbqHk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774275734;
+	s=arc-20220608; t=1774275891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vAIpo1+pXFghf8xHFXZd4hZcT4usnAjWRVQg2Bl12e0=;
-	b=WdPtJCNsAtKLOb4DQmDzjsffzNJwci8Hei2V6DEOs8uXT85NkIbEekwZFBdpgltEIlY4y6
-	qnZt6YLZvutv4g1g/k3L2P3Uc5VzmJFzf4XfDjMHnlZFnKDqmbV0ddcWTYLseudkalsDeG
-	LytKFZMK1NKvB9//TiLhASqfiLfbUpg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774275734; a=rsa-sha256;
-	cv=none;
-	b=5nHKxoh2s2/4o0Pag2LMAf0DYA0iZQXIxqNP8EPRSaEVOm20nQOH4pn+wwpUqws+U2zy88
-	fsJi1ZzegzZnsLOV6GDbLCdpOQAU6gYGQt096fNpRBNd0CssDTQs+GTZ2PYjp7NpYjhTSF
-	kcp0ds6ib3e2XBkdOHOVPr08JzDnuWE=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Je6IqAG6;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=0T0sgKP5o8IPZNV/l+zSJvLFCO8tfRrBsb859TcLf0A=;
+	b=tuhTri8logBlpsAX3/4jBP/2Licx3Tpexj9T9zChYFpGs35GYx7qhNfYQADDrgSLPemkxv
+	3YDmwDG2UhKAVf59PfkiCPq7qLWDg1X+xAhLKLjTf9PRJbu4DyRf1kS87Okrsow6xmaGKm
+	+nMw0FHbOtXrzY+MEVJ05qNrU8QenA8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48D2860103;
-	Mon, 23 Mar 2026 14:22:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FC5C2BC9E;
-	Mon, 23 Mar 2026 14:22:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B8E346013A;
+	Mon, 23 Mar 2026 14:24:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A165FC2BCB3;
+	Mon, 23 Mar 2026 14:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774275734;
-	bh=RjpDxLk9rU7OOSjXqNDUmgbPPvZ7Jn5hdcpGMM/hqqw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Je6IqAG6WUMLRcNbhLvOyLKM4chp726sWaD4U0fTkFDYZ/X+ynopBGwRCK3i/hBMs
-	 3Y1R5W2fJgAGoqOKwG/1WR3imUmUWZbaTV6UzTGF8JqJpmiAKISmtfJfEJ9wHXfUVS
-	 D6Nj4nU7IuRpJkN16U34fOieKan2nvK0bWfcIyHEBj4rlm431zmbmvtLBHo60wzJNU
-	 xHSSIGqgvWvLoVvRlnbAZryefGWhZy66UMRXNyABAe99meCauh2/DqEvlHvRGKXG+2
-	 MzWoUJMo2qQVIoce2NaBuF9ekk2+NYz4/6J4zLPtqRftUG0H8Y7aDNJnqkGNErok4M
-	 DnErARPseJXoQ==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC v3] mm/damon: add synchronous commit for commit_inputs
-Date: Mon, 23 Mar 2026 07:22:06 -0700
-Message-ID: <20260323142207.80553-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260322231522.32700-1-aethernet65535@gmail.com>
-References: 
+	s=k20201202; t=1774275890;
+	bh=rTqgpDnt0qQkQ9guIM0ry/510C08X23SWvqG4dhtjcY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nc2xbqHki8lYHqbiGG1zpRlQULbvR/jTCM+o7ZbtdqOWE3Y+KX0lHC+TuDg0BiRRL
+	 S22zdohVSX7SmKljYangFO8cK8KodjbKEdFBA5k8ZWHmLdcWwCOntxoOCYaJwWYcH2
+	 QtZLa3GdEIfc6wn6UyJJBmfxgMHlj9gST5SJIm5mTaGR+gSoXvulWbl7M9QH7qZVtR
+	 p96ka1U64DYCnbOwbq9tZ8eox5tKNPc3HGHZxuRDn0MroITCUGpBjlvsMWfr8lUviQ
+	 pldwGUMEScD+3Ywxtsmcj+blom93pOzGY9xaI6X5lQw+2VeK3MO+MEEMDIEYDHPDeN
+	 eH0a3WCsx36SQ==
+Message-ID: <c635acc2-d41b-4f7d-8244-75a117721da3@kernel.org>
+Date: Mon, 23 Mar 2026 15:24:46 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C85CC1C000B
-X-Stat-Signature: 4kys1n6w7fjko8g9rj6mr7fte487fxpe
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] mm, page_alloc: reintroduce page allocation stall warning
+To: David Rientjes <rientjes@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4B78114000E
+X-Stat-Signature: wceo1webi7i9thgn1md9ixgjntwddr9m
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774275734-476351
-X-HE-Meta: U2FsdGVkX19II4qVQV5y5ciYheCf7Nli6UZWlrCpXvvZnLd+VIZNGC3LSY+x3m47J5v3eT3EVeSrRvlJPVYEdNp/PuwPv8dC4zpJg/4YYQy5v65Td0bqwfe522O+pO85Wh5LimuInRXzBlQ6KrvYJ1IVcXO2D1gxzCmTYZPdLtcWOOwE0VszFFVXN2Aglt5gHTvRIfS0OVY4srsfVaOyd44U0LNSvELKmBkx3G2iwqaUMBheBf4qKACGAZ6x7RGfUL3NMUJ2Tna2sAtAIs3Bb7t+n1MUugJWAcg8HWHbXMfoKM1H+tqAsprHDSKuCFBu12lYY3+R1L2amxezynmY6MypK53HWcPwt8IrNCSLHu+DJG1aYU5wsNDWZZMChBvVL2ng+YV/LKnx/0Mvnogtarw7HGB6eMRe4DeqXfY9E6ORvn58b/sK6HF8mcECKL78Zss9zQree85kUcDFt+wNLhYYrV8zHnI0yUc5qmlmusJf4iIcsW9XjP/U7G4brd1QTuAKUJxV8P+M5vK/QJrsNOeOF3hKEILo5WbQ4PXvl+fhr4Dfb/3a185InJq7zS+MFq03+Wm3lArBlzrdcvqiybkcNHYbsBEB5gVfmwGYzJfmYvBx5z/yixxJiwjT3mTQLPpFYsLrkbqORMCNmSfgwil5RG7fpGcSKk0HtPaFBjEslU2lseuAWPdSnFH2XzP+1XocvvLMH+1XUl1Z58lZaHYPnk89/P/JY5X1Zy7Q0fueELfpixwwp2+aI8eDOS9COTK75K7SEjvAoJxs4ciwUcKKqF7zNc+OM98vHLRARkHxwHzMgXMf3iNou0INt1oxjVCrzV/fO0M9aXRJSAKg5QugIpj8CTwE4Nr3RlVrI5e5r4bO+RG0AnPfPAKQ1O0CBNFnLqNPgHcrQ9WrO0bcCsgugJSJO38iduU13s8PovlJv+oTF3bNJQcloyWjEEF6CGGx6H3xiv7NKiASqQV
- 4eQIvzgG
- 0EdmR6UdCFCy9Wn0m1cljaToKjV1DSz27mOdUGVi+kvg/aTC2HgcxQPCHHORO809oySnLOIR8sHOtp90h/SQcypCzWVxBlsx1jZ/PDlrmf0hhb7ZgWqPzcn0wJaq4IceIvfGwzFr05l/Z5HBh3QROXJ09kAjt04o2VWiMMJ780pMVIcraqQTr30FARUrcAc2ld+bCXusfkH/OXsGfrvaJYDChFjw5Yit91F7LXnUMQSDbTuknKZiF8fXDZfWijlRBty87GnsQZ8VQLuBn1h3ZH4UrVBAf8aYFTKxSvLsuXw0cdfYzRQIP4oBSGJOmZb0hLiIy
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774275891-897833
+X-HE-Meta: U2FsdGVkX191d48mp9rAQgegzuMLgkfyDtwsv3EYK6S0LdFl5I3xtsWawTFvmgWUjcHI8QT1r7Y1VXc1V0UvPcO+e9dH7BmCIezIwOaLCT+4XFObvjbjDrVF1JHoSrcDOBvKT1IuGEmUWiDvWFLJESchL4RdMaO2kclw0QHPAPkYH+kig7V4MH9BjwtwvbuCVYJRKUs0a949BukoHi4x2Vn3qlPPp2steDdmr6tAW/XfXQXGCo5m/GBMTwbPaC6u6d5iwQ01TtnkSTwinDplRz2MqaMsioj6XJ/REcgpXKIlTSnk4sVYQ8K3IbsgaPYZhz5OkVy5wbu6rUT0X8m/KSs06ySv4Uz/XvM0XlFrJFp9gwEiIZhyb2xWDW/nHJG4p5x2cEdbviDJ5ZeNGZ57KDPjvK0AeZcZV7t+VUR0jNeVf9LJEM+HK39jgbyoVlyGzQAjCeKO8UoV9gymDDXRk7Uas3+RlkrJvygYvmpJ5m9tFuCsysKsiRki7580pVJHzW3L21lrSWyiX35l/5LgOR3oMa3MjiS937tKr+NsQdvpTqMVmnCDvg2WqyPgduUzNn91pkcrnrVYSjSRV6u38MloH/A2WRgTtPLztK94iOriCU3GaM4F37IrTiC76750WmPLDJtcW0YRwP4irqxV06QqhH2U8Zwnp42paKBlS/MYUfcVqwewDjt8AKyrQxQvEPj9euHfY4Msj/Ye7bJCMVnGxeWMV9DDMujLT639ZNh6Jo53k0H+fywrJmt+xcGShC2UuuFjc4YTPG9feVuI1qT798buaf0sjVH6HDx1g0F0aaxb0acRvLz2Q0mf+AjW4yB9gnUpkXJ6SauuMb086HEVJfsAoSiS4kzhu59ws+5jZT7KPGAxvDqJncsa9EO7g2KtVYXVMMC6n3KWG5uYade327RhOZXHXLRHNTBZJNJQSKUdKSc84r91HK+N/NZa9kKL9cljwkiY/Mf+e/m
+ qEuoKh25
+ tVVfp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,16 +95,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Liew,
+On 3/22/26 4:03 AM, David Rientjes wrote:
+> Previously, we had warnings when a single page allocation took longer
+> than reasonably expected.  This was introduced in commit 63f53dea0c98
+> ("mm: warn about allocations which stall for too long").
+> 
+> The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
+> warn about allocations which stall for too long") but for reasons
+> unrelated to the warning itself.
+> 
+> Page allocation stalls in excess of 10 seconds are always useful to debug
+> because they can result in severe userspace unresponsiveness.  Adding
+> this artifact can be used to correlate with userspace going out to lunch
+> and to understand the state of memory at the time.
+> 
+> There should be a reasonable expectation that this warning will never
+> trigger given it is very passive, it starts with a 10 second floor to
+> begin with.  If it does trigger, this reveals an issue that should be
+> fixed: a single page allocation should never loop for more than 10
+> seconds without oom killing to make memory available.
+> 
+> Unlike the original implementation, this implementation only reports
+> stalls that are at least a second longer than the longest stall reported
+> thus far.
+> 
+> Signed-off-by: David Rientjes <rientjes@google.com>
 
+I think, why not, if it's useful and we can reintroduce it without the
+issues it had.
+Maybe instead of requiring the stall time to increase by a second, we
+could just limit the stall reports to once per 10 second. If there are
+multiple ones in progress, one of them will win that report slot
+randomly. This would also cover a stall that's so long it reports itself
+multiple times (as in the original commit).
 
-I show you posted rfc v4 of this patch [1].  So I'm skipping this.
+> ---
+>  mm/page_alloc.c | 32 ++++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4706,6 +4706,36 @@ check_retry_cpuset(int cpuset_mems_cookie, struct alloc_context *ac)
+>  	return false;
+>  }
+>  
+> +static unsigned long max_alloc_stall_warn_msecs = 10 * 1000L;
+> +
+> +static void check_alloc_stall_warn(gfp_t gfp_mask, nodemask_t *nodemask,
+> +				   unsigned int order, unsigned long alloc_start_time)
+> +{
+> +	static DEFINE_SPINLOCK(max_alloc_stall_lock);
+> +	unsigned long stall_msecs = jiffies_to_msecs(jiffies - alloc_start_time);
+> +	unsigned long flags;
+> +
+> +	if (likely(stall_msecs <= READ_ONCE(max_alloc_stall_warn_msecs)))
+> +		return;
 
-[1] https://lore.kernel.org/20260323021648.6590-1-aethernet65535@gmail.com
+This check without lock is while I'm not worried about calling this
+liberally (as you discuss in your self-reply).
 
+> +	if (gfp_mask & __GFP_NOWARN)
+> +		return;
+> +
+> +	spin_lock_irqsave(&max_alloc_stall_lock, flags);
 
-Thanks,
-SJ
+This could make parallel stallers spin for no good reason while one that
+has the lock is printing. I think we could use trylock here, and if it
+fails, do nothing. Then it also shouldn't be necessary to disable irqs.
 
-[...]
+> +	if (stall_msecs > max_alloc_stall_warn_msecs) {
+> +		pr_warn("%s: page allocation stall for %lu secs: order:%d, mode:%#x(%pGg) nodemask=%*pbl",
+> +			current->comm, stall_msecs / MSEC_PER_SEC, order, gfp_mask, &gfp_mask,
+> +			nodemask_pr_args(nodemask));
+> +		cpuset_print_current_mems_allowed();
+> +		pr_cont("\n");
+> +		dump_stack();
+> +		warn_alloc_show_mem(gfp_mask, nodemask);
+> +
+> +		/* Only print future stalls that are more than a second longer */
+> +		WRITE_ONCE(max_alloc_stall_warn_msecs, stall_msecs + MSEC_PER_SEC);
+> +	}
+> +	spin_unlock_irqrestore(&max_alloc_stall_lock, flags);
+> +}
+> +
+>  static inline struct page *
+>  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  						struct alloc_context *ac)
+> @@ -4726,6 +4756,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	int reserve_flags;
+>  	bool compact_first = false;
+>  	bool can_retry_reserves = true;
+> +	unsigned long alloc_start_time = jiffies;
+>  
+>  	if (unlikely(nofail)) {
+>  		/*
+> @@ -4990,6 +5021,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	warn_alloc(gfp_mask, ac->nodemask,
+>  			"page allocation failure: order:%u", order);
+>  got_pg:
+> +	check_alloc_stall_warn(gfp_mask, ac->nodemask, order, alloc_start_time);
+
+But placed here it defeats the purpose to some extent, no? We'll only
+learn about a stall that ended. With the shared 10s rate-limit, we
+should be able to do it in the repeat loop for stalls in progress, as
+the original commit did.
+
+>  	return page;
+>  }
+>  
+
 
