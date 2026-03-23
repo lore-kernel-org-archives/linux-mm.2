@@ -4,110 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D040EC01CC
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 11:12:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A61AEC01CB
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 11:19:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25F366B009B; Mon, 23 Mar 2026 07:12:44 -0400 (EDT)
+	id 6D3AC6B0088; Mon, 23 Mar 2026 07:19:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 236556B009D; Mon, 23 Mar 2026 07:12:44 -0400 (EDT)
+	id 684C96B0089; Mon, 23 Mar 2026 07:19:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1738B6B009E; Mon, 23 Mar 2026 07:12:44 -0400 (EDT)
+	id 59A7E6B008A; Mon, 23 Mar 2026 07:19:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 056286B009B
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:12:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 92962C34D8
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:12:43 +0000 (UTC)
-X-FDA: 84577065006.18.C6F0B7C
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A5BC540016
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:12:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="YOljAU/Z"
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 48C546B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:19:11 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EE9F2BCC01
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:19:10 +0000 (UTC)
+X-FDA: 84577081260.27.77D06F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7CF4E40013
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:19:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QVvJUll0;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774264361;
+	s=arc-20220608; t=1774264749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ZFeIWrGHjRim8Xv7+YHIDchaEbhGi1ADAz48lTo4krk=;
-	b=EGQP9olXHLCSbse9A7Q63tZeekRFolTJGNjcL4qOojqPo19afNQQLjoMKQtthDeC6jve3o
-	oXpZoZjcH5kQv4VdKElLWPRVPgwWMl9RhoEc9eVw3h+9S4p0Qb85USzfnMCg99fsyn9ei0
-	SGaeEgPFvW/bq7CuEzuCZ0XpDoMf+tw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774264361; a=rsa-sha256;
-	cv=none;
-	b=XGRhDVy/5Ucj3+PtsTFx0k6owC3tLFbQ2jhHxQXF6EaayUoS/pnTKW3Crt2rAE7zlQU7Af
-	jlAL6MHgdQzFdpwWX88/w2KnwdiIs2hlZVdN/q95MxsNlumoI4JbjiFQKX6w/BbyiQZ5Z/
-	eQM5n/1qvFfmWTdUDbBTbSX4dzYKBkY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=be8Omfxyhootct8q6opIBjC5lnqNUVnQ0ahLDS5e7I8=;
+	b=w78DInmmM+uG6SVkgTndbRJFfhMYI9wdid1gEUXY6lDFdgC1kKvN7DBbXbKmCkfLhrIx73
+	YAHKJATenDHEGPniJ4Lh93crjgikSwGtcKontSxUO+hy0pEeWXHrEtA9b+WMp5LJRHHrQ1
+	2ejSTj4h4yuJnsHDE13fasi+KgG6l2I=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="YOljAU/Z";
-	spf=none (imf07.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=ZFeIWrGHjRim8Xv7+YHIDchaEbhGi1ADAz48lTo4krk=; b=YOljAU/ZElMmKiNRgIrKyAPmmw
-	R5twgqXYjYtfkQPRJyiAwlOynY1scOFP0tFCRAhIIB2erGUffmOitwbW3m/9Wr2VcDvFDYq8+SkS0
-	f2zwCl6Kf/R1bUnznWchb9AE5Vppx7lVsfrXY2ABJRZmsFXabgddgZeTyOYYzIsILmRGbWby1noHb
-	fqEUYMDSxto8EZydP2ty1FJyuDYYNPmCWSknVoCr/E8SNKZm8gBA/WsGstZrz372Umy0PzJ5UTnQH
-	XsDf1BlU0xRFl23Qrm2WCso7gBNiJq71HOd705G7jnE/GI5kRjzr6CiiqwgjC+0vVkiNVXGQMm/Kb
-	wTyLJqNA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1w4dCv-007UQb-An; Mon, 23 Mar 2026 11:12:28 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 23 Mar 2026 04:12:13 -0700
-Subject: [PATCH] mm: kmemleak: add CONFIG_DEBUG_KMEMLEAK_VERBOSE build
- option
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QVvJUll0;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774264749; a=rsa-sha256;
+	cv=none;
+	b=OxEBhl04+tm2bKBkud5hx1sf2GSRDsLCyHR66XoJCgmrYQeGx6eAsD1f35gqUbmuggSTga
+	dtvqUpDXZmihlU4BErOdgv6TahPuCkhaGi9h3qBbFmQuLj7PlvsFa5AUNLX8yR+ieFFbZx
+	LFvwVJpqrf46ip4FXBFqitEsvRtJKe8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B9354600AC;
+	Mon, 23 Mar 2026 11:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CFAC4CEF7;
+	Mon, 23 Mar 2026 11:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774264748;
+	bh=BUqjb6fmX3WdXilimCcafolqV7S3bcE2u0WTIz11DcA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QVvJUll0uWdgpoCICr7sQ+hes8Dj7dvNlp+oSyAkvurpEuMYy7tni48HEidifWyrx
+	 2tS1bibdfoVjJXvA4gWHkvlL2WqmMtaIu9EPmjPZgEr3P6Tgw+3EN0gOpX5kcny/KE
+	 fBHBu3py2JWpmfh25uZFh7giDQSFBTv/33nEs9y51EyE6jP01nmiSBtzEv7+hcYwh5
+	 xbY0wYrCEoYvKHHIOnZM+a/d9Fn+/r6U8h2WCtSTADaZ880m6H0DQRRHz2mPsG9r9u
+	 ptYHxjE6jfPVCQLJ2Pbh08IN8OO4zFIlbpoS6JlM7YUQ5kBngQInEwju9EDzVBlgfg
+	 IW0YpKltmjcUg==
+Date: Mon, 23 Mar 2026 11:19:06 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/9] mm/huge_memory: refactor zap_huge_pmd()
+Message-ID: <3d6cca25-75ff-434a-b210-114451f8dbaf@lucifer.local>
+References: <cover.1773924928.git.ljs@kernel.org>
+ <20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
+ <87tsu9kgv3.fsf@linux.dev>
+ <20260320203311.715ed75bcd84c18d24894324@linux-foundation.org>
+ <20260321171530.8b3e8207f89d5a7384b9f01f@linux-foundation.org>
+ <877br4k3ya.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-kmemleak_report-v1-1-ba2cdd9c11b9@debian.org>
-X-B4-Tracking: v=1; b=H4sIAA0gwWkC/yXMywrCMBAF0F8Z7rqBNAHR/IqIxHjVsfbBpIpQ+
- u+iLs/mLKg0ZUWSBcaXVh0HJGkbQbnl4UqnZyRB8GHjY4iu69k/mLujcRptdnmXWx9JX7YFjWA
- yXvT9G/eHv+vzdGeZvw3W9QOanUyUcwAAAA==
-X-Change-ID: 20260323-kmemleak_report-a9a103ee0c8c
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2614; i=leitao@debian.org;
- h=from:subject:message-id; bh=YVhCrOyKP8U5J2m4qj3vibyEe1/805eqdpLycoz/rnY=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpwSAXjawQejJ6O0nK22xYUeX44mgycAeLBIErH
- iNh53nhH6CJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCacEgFwAKCRA1o5Of/Hh3
- bVoKEACXFteiy0LDw6XQIHJIVKZv62Rw8SWbJRcuIgms0vpyfrdd8unXMxJg95zu/dVeYuqHeSU
- 1kzsiDBubWZP5FVjY78icJYKljIFvYAN8iTSxtm0p7Bo3bJNZFzNT3LuuFxn0Mz2VZZuyd2rRwK
- 3REu3XCpJ9nwBJJbGOcJJULbSOBWLCoGwU30jwLdkAhUMB9yjWzM2HeOLMBYX/QAPfImDqUlhnD
- TBeYDe3v0tfIwD90cVsFK5XMX5a3fpmEs+XtUlTnei/wq5C6YFniupgVSIPaK1qXkveAWJydqhC
- aONRXZQDirkpVTiGgJINCd4wGGJZowPFGYfrFa2Tz8DIT6FNgMK2xcKkPQcDSsoXczffddQysQj
- GQ/iZTKH5sWJvz/hDLsqRaIUPKCdGoYzu89wWIDNrNXw7tVDU7vVcvOPt4XYbWjScUY8KwcfPYP
- ocAGxIIQg3MO5ZAU8CyOVANa1wEgqRDtUuoLns2o8W/8qBjmkKgWhWouZ7KRBQ4fFBEOT+bJM/Q
- dZiMrH/zyp53Aqqogq1lFlt8fpeBs2N877EBU4xk1ox9AsuQG8cI8m3B3f7Eg2X1Hmrhz9dfIka
- l3TZqMxbm7JtZxHOFufSN9U8ZVs4uagZ4OpA4Jr6wwvHCg3kTFtOjbJgOnYaT4KTPsJT8h7lSj3
- czqqTsVr9ZRyKvQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Stat-Signature: cs1setst8arjbqq9aqbieomxbofofgd5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877br4k3ya.fsf@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A5BC540016
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774264361-509806
-X-HE-Meta: U2FsdGVkX1+sb36ZodMRSHYa23baePWub8un4Kl0ykMAob3LEH3BmDV9+RUk59NekYP+HTbkuOoj4RTh8vi0m7mxbeA9JUZSWEovjG17QIzSAC3nYG2TzM7VZYg4Lxlf9TqSz5byT1pUfqLkO8j8Fd+xHwLqOJycgfEuCVDGUM+/OB4un4jrsZdKGNSMDuC0h1d/hHn5fGmuh2Sih/9qyQZ7xVVFf9HUXxbIJbVmsVyn60UuttPPwO1aZunfZkEBwVn3yjMkHkDVTMp3OMoI6nz9mKHYdJOAEh/akgKqkpLGlr9Rg7+mAfnJT5AKWAl8D5iQdLTleHYlmxoXgGFCWD/PxOddp8wmQYlf30DgmFzNp5zPdvXGieaj+sd5rX5cwhOh1mSGWJY4GklGz+KTwEh3AQvocereWGAe3fJ3ofWLoEb11flYn64lqs3ODEBCeznZjskVv2lZLZuS2wQuMxTzUTejLZu8hhSdV9j6RgaT8qVhW3ZynGNMbKhbgTBHqEpyDtAG/bxNpZfMBhqxLjl0LXcwwaana8ofz5Bw03TJBw64+7W/t9YcVc1ZkPiboXheADtPwOhwKu8cRG1n2d/FFoXyqZGUdeQdgp7FNVCeXjJTOjwroScFnUdB/Gj8O4SIq+QJZ/T1VjEu0s7ezz/FluKtQOHTgfJqiIEYNofCwqoiymH7ANhxBjauIAdReLaZNUSTOwCgdYrGUAT5f7uL9h37b5q8TSSB76zwGzda6OEaPUkoo4Av4MwfWwSPQcIfxsn6b6Wc+El4OcRh6/j8dytFYHCTdEJz5xJHGi5hSHPEwtMQ6+LxVBbr9JEUqv4poocE/Zog2wjpcMLogdv09FOMQaBjI5E7GnUTIppYf9PdoYUcue/5mk7qE0RJ4kOQBrkaQrBpjZYU8Nc5aKL4VlJCLHctwF2NrUKGvWJh3eUTq4BlksfuDXO8b2jWgdRgY/uWXXKTC4IU2SY
- JFOn4CkS
- G7W2q+VlrnLVPrRfn0kDHZE9GIe4wJ9soz3LYc2ItSjB6vquLwylTr5SKYfQTg+hVINbg6tfgX0l6P71ULybx7U6YE7LrRUQoI3j9Tu9FT+tAi7REB5VIAJ2GmCli9pedJmy/qaI9hJNoRAsDqOGOIy6tNAsDVnsPcJNC55CvCceVwc8=
+X-Rspamd-Queue-Id: 7CF4E40013
+X-Rspamd-Server: rspam08
+X-Stat-Signature: eo6m5tzsjupds74ar583se1kz1iy86f8
+X-HE-Tag: 1774264749-523496
+X-HE-Meta: U2FsdGVkX1+5X7QGItWSA+I2QlGblfxYKPgjASp9dJaDFlcKRB2dv+mZCZimK4nwM/wgENFlipbBRAJhCKfI/ZpAZDewRZZzCrjmhxUeaiNdGQHO63/eyQFSlntpA1hm6ooJzv9p5fw26dSDFk/d1MN7fQySaeH5Y6tVDb6pKZGsSO2dNpHTJMn3quQJ4S4mdHEAuZ20lJGua1iMqU+4Q/lDwrwonWvACAzCqNMXeAJrqYXIWOkxHLTGk2UyY5aKeIT8tgSDi9MImFPpVmvGWObx1ps45fB+HzgLLooD3Myby5SVehCDM2zM+Z5rT8VyCMW/hJeP9ttEYCYU/IrJgokAIyfAzxIkhYSutdPrmQ/mGqtlfH5eLRKvCQ1tJaxV7nZizo8LUw35A5UR3JiX1lzF+CLc2NlyI4CI6cDB5CmFGxGLk2sFasXA6/oOSOybartPrFjcTrUnTgl1/idVmQstpru49Add8gBjwiDiXIae+mhiWSpOoHfIVHzw1bV5RUTcrW4x5Lmi9WIeoVdRXuYPet+K6di4kuYmwZzzP8E+ElwztUnjWuXwlKhvORIbEGg3848yUZJUdtyacWmAU0nZx3UG9whpsWMGKDxEkmcwC5D21Thjw7g95aAkFpVWUur//g5mJdgmybe1oFyot2LOXK2OrujqLpy4YSTwWdssGj/u/I8gc0UlCA2RhIvtW2pH0cpUdpYyRuBdAQlETStFW0iBgSU4DHsDuiC85v1bNMIveC57Lwm1fF977Ywhh7EwJDg8Gu6Ac8GpmVwVo0h03cG7hgdzuBSYeHHDbJNu4/R1PfmUC+xCbVkaD0LRAAkCFTSlAjTytqEn21Z/47RE+EO/TMXjVGlIw05VeZG4rnVmv4cKFOumlkPLb2OA0uxy4Sg0wbYxTjxR6jetPJQJontr5teGIMaiO8o8/ASfp21HLX1glA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,75 +99,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a Kconfig option to default kmemleak verbose mode on at build time.
-This option depends on DEBUG_KMEMLEAK_AUTO_SCAN since verbose reporting
-is only meaningful when the automatic scanning thread is running.
+On Sat, Mar 21, 2026 at 07:12:13PM -0700, Roman Gushchin wrote:
+> Andrew Morton <akpm@linux-foundation.org> writes:
+>
+> > On Fri, 20 Mar 2026 20:33:11 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+> >
+> >> A lot of patchsets are "failed to apply".  What is Sashiko trying to
+> >> apply MM patches to?  It would take some smarts to apply the v2
+> >> patchset when v1 is presently in mm.git?
+> >
+> > ?
+>
+> It's displayed in the Baseline section for every patchset.
+>
+> For mm patchsets if the base commit is not specified it's mm-new then
+> mm-unstable then mm-stable then linux-next/HEAD and then linus/HEAD
+> (and now I think that it should not only show HEAD, but the actual sha).
+>
+> I don't have yet support for "previous version is applied, let's revert
+> it and try the new one" case. Something to add later.
+>
+> > The way things are going at present, I'm just not going to apply a
+> > series which Sashiko "failed to apply".  And that's cool, I'll just
+> > wait for a version which Sashiko was able to apply.  And then not
+> > apply unless all Sashiko questions are resolved or convincingly refuted.
+> >
+> > Question please: if Sashiko finds an "issue" in v3 and then v4 comes
+> > out with changelog words which justifies the questionable alteration, can
+> > Sashiko parse that changelog justification and think "OK, never mind"?
+>
+> Yes, I'm planning to add it. Sashiko will have an access to previous
+> versions of the patchset and the whole discussion thread and take it
+> into the account.
 
-When enabled, kmemleak prints full details (backtrace, hex dump, address)
-of unreferenced objects to dmesg as they are detected during scanning,
-removing the need to manually read /sys/kernel/debug/kmemleak.
+Hmm this question presupposes that we should have to respond somehow to
+Sashiko feedback, but with ~50% signal vs. noise (my experience so far)
+that's just not sensible, and a painful addition to already overstrained
+workload.
 
-Making this a compile-time option rather than a boot parameter allows
-debug kernel flavors to enable verbose kmemleak reporting by default
-without requiring changes to boot arguments. A machine can simply swap
-to a debug kernel and benefit from kmemleak reporting automatically.
+For instance
+https://sashiko.dev/#/patchset/cover.1774029655.git.ljs%40kernel.org is
+full of pretty useless stuff, including a silly hallucination
+(VM_WARN_ON_ONCE() cannot be used as a conditional, it's defined as
+(void)WARN_ON_ONCE() when CONFIG_DEBUG_VM is enabled).
 
-By surfacing leak reports directly in dmesg, they are automatically
-forwarded through any kernel logging infrastructure and can be easily
-captured by log aggregation tooling, making it practical to monitor
-memory leaks across large fleets.
+I don't want to have to explain why exactly I'm ignoring certain things
+each time.
 
-The verbose setting can still be toggled at runtime via
-/sys/module/kmemleak/parameters/verbose.
+Until the noise vs. signal is better, I really don't want Sashiko to block
+anything or necessitate responses, which is why I'm very reticent to see it
+send emails other than privately directly to the author perhaps.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- mm/Kconfig.debug | 11 +++++++++++
- mm/kmemleak.c    |  2 +-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+>
+> Thanks!
 
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index 7638d75b27db8..91b3e027b7535 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -297,6 +297,17 @@ config DEBUG_KMEMLEAK_AUTO_SCAN
- 
- 	  If unsure, say Y.
- 
-+config DEBUG_KMEMLEAK_VERBOSE
-+	bool "Default kmemleak to verbose mode"
-+	depends on DEBUG_KMEMLEAK_AUTO_SCAN
-+	help
-+	  Say Y here to have kmemleak print unreferenced object details
-+	  (backtrace, hex dump, address) to dmesg when new memory leaks are
-+	  detected during automatic scanning. This can also be toggled at
-+	  runtime via /sys/module/kmemleak/parameters/verbose.
-+
-+	  If unsure, say N.
-+
- config PER_VMA_LOCK_STATS
- 	bool "Statistics for per-vma locks"
- 	depends on PER_VMA_LOCK
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index fa8201e232221..2eff0d6b622b6 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -241,7 +241,7 @@ static int kmemleak_skip_disable;
- /* If there are leaks that can be reported */
- static bool kmemleak_found_leaks;
- 
--static bool kmemleak_verbose;
-+static bool kmemleak_verbose = IS_ENABLED(CONFIG_DEBUG_KMEMLEAK_VERBOSE);
- module_param_named(verbose, kmemleak_verbose, bool, 0600);
- 
- static void kmemleak_disable(void);
-
----
-base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e
-change-id: 20260323-kmemleak_report-a9a103ee0c8c
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+Thanks, Lorenzo
 
