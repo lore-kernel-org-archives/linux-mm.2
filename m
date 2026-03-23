@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D230EC01A9
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:34:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EAF2EC01A9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 09:37:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F105A6B0005; Mon, 23 Mar 2026 05:34:25 -0400 (EDT)
+	id 614D36B0005; Mon, 23 Mar 2026 05:37:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC1A06B0088; Mon, 23 Mar 2026 05:34:25 -0400 (EDT)
+	id 5C5BC6B0088; Mon, 23 Mar 2026 05:37:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB02B6B0089; Mon, 23 Mar 2026 05:34:25 -0400 (EDT)
+	id 4DC036B0089; Mon, 23 Mar 2026 05:37:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CA3576B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:34:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 84C8E13BF1D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:34:25 +0000 (UTC)
-X-FDA: 84576817290.15.BE4D90F
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BBC7F12000F
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:34:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r32RT0px;
-	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CFA96B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:37:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DAD8BC334C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:37:41 +0000 (UTC)
+X-FDA: 84576825522.08.F14E7AA
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 28CE940009
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:37:40 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="B/i8Yb2d";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of hughd@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774258463;
+	s=arc-20220608; t=1774258660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0xrbBa9k+6NQgbzxqVXDiC8SMy7s/AaHJ4RIJGGI5is=;
-	b=F94Dph+Fx3oseALmXLXR3Rx5k8XT+i3XNgA32M/1lwWSVX0spj75AiFR3rzsyeH495DmEk
-	uKgMBEIPOCDsZHfOCMqxcGV9g3q+K30t56eGD/E6gQ2gvQrFyB7mQI+WG1Fzwkf2a4g8cm
-	gxedXF5k8JEjaaDfZZ9AE9o2dDMOW0I=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r32RT0px;
-	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774258463; a=rsa-sha256;
+	bh=11UIp8IxrCOZ4CscQC39RgQ7SkxaeS4ajtLQc+uqo3w=;
+	b=36ty4O9LMNjTRmiECZYGV6IJehe9a7MhThGxDM+9+O7orTKIBKo6cnMRFroIlpHFcA6nQh
+	EVymbMz9O+OFxZwSdFc3qc69UkbFMmuSMhjiwkU94XRJet6grIUTFNLcaf9vVbTJFEP6he
+	CyEP/qCpSsi50ghQ/TtBJGzoq7z1n/s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774258660; a=rsa-sha256;
 	cv=none;
-	b=cLcOr6mSRmXXcwmi2FcfZcsjteARE8n9z5M5WS3sn44I1tpi5Yozdm+SbPIHXly0x8ITaw
-	g+59sHOTkkzTrgXl3i7Yh/n+gp5lHqO9U9Ljpk43LIztJI+eKHTnMll1nYfOdLiL1rSqe2
-	x6qWgl7Ix9tXqL7kuHx96QWzd1rZH+Q=
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-79a60975dc5so38459737b3.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:34:23 -0700 (PDT)
+	b=fdD0akD75uH92LQThOoj9k49LdP+gwAq0mq5EhzpF/bhhYZkIRAq4dw+X/R8HdCHiBxmRa
+	1X1s7M0eYIN6raZMX4OPYHTtYMStG1bOBd925bKOUiwSUb3L3dLI6P+6r05Ky2lB/+Bc5q
+	U57c4XlQIzSvs7QANkHrzDSPzCaL2EY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="B/i8Yb2d";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of hughd@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=hughd@google.com
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-79a74765703so22367267b3.3
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:37:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774258463; x=1774863263; darn=kvack.org;
+        d=google.com; s=20251104; t=1774258659; x=1774863459; darn=kvack.org;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0xrbBa9k+6NQgbzxqVXDiC8SMy7s/AaHJ4RIJGGI5is=;
-        b=r32RT0pxCvcgzgrNq3XDCzgmWDd1ZXWBQyJOClbm7ksKnf00Z6EeLQe8OIT+nC2STA
-         mQyEopl82qmJu0rkhOIwnKysBKBBptcwbcVr2pYi4auQ+suOSAyb1txTvTEjnzS+sWos
-         0A1SyLC5xe18W3/CO+tojJwqKWQAEkc/Utlvbotlai12Dtgz//C1F+fmMKh6m7vdT5rw
-         Yge4MgNc2X4sIzVUxXHfKaMuKHn391jI6y8Wf4J3wqbyXMRHM1VTonEPqxsEdLl8Zy8p
-         +o1ZnOBINQqISnK46E64uAp6GRXVcbXNByvTE3ONyJ5fYVfZFa8CDvCdhg2xZ/pPL3gh
-         vqaQ==
+        bh=11UIp8IxrCOZ4CscQC39RgQ7SkxaeS4ajtLQc+uqo3w=;
+        b=B/i8Yb2dfzGp2vJkL+AuzxSEXlRtWO/2QysdawzvPtQH4dSJZ2I3RrBW7AcfJFcmCr
+         fDERg2ZGwVrGb1pbq0QPgBsx8IydM2ewhIAy3vEOBtaQ7Zt0dMi2pPZ2oGFk8GTfNEB7
+         /aq8hj1z8KYOgAVCWNoqWuxPGYbSf1N904gTxffGow1qUkYFOMRo8yga4RfOYaem+rdf
+         f2sjbOn2DBQnAxaNrb1dtXkaaPmf8FuxqnrrPQ7zjly6S8c3DNVj4Ott5QExjyZaZA1u
+         Jvrv1rZzI9skEjKMQxiDWYvWOckB+2NdDf6Ke629PKoqnYOpOcxeYCbhysJ2WfkmwNiG
+         c9dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774258463; x=1774863263;
+        d=1e100.net; s=20251104; t=1774258659; x=1774863459;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0xrbBa9k+6NQgbzxqVXDiC8SMy7s/AaHJ4RIJGGI5is=;
-        b=VRYWiLkDeGc4EzglylOvoDr3bVx3PT7le5O+WSjivWyRxdwiihTg4QmCrSmF4zgyID
-         fbbQgFEIXD4bGtGTAgVLQhu6QrVYLERqUUyStML4dPMqzeR2itEl4qUNVa4ZeaaxA9RT
-         mUBMuFd00Vovgx6enOAMAPCaYLsWQlWl2ZzV5sulr8tNMTT3aYDfWfztaKrfb0jl6ek9
-         b1epHeyVeQeW2S9jy+akhgt1QPMHhHKzV9Kguo54ryqyQ4AipCNW3yG+QuaE0rs47vl3
-         iVky1+yYchP6gy4L/qgtzLCC/oaPlUWcb90YjCJvgMQMuVcXJLsa1NRBZwPWr45q03ze
-         By6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWKeY1kzpQf/iZObSV1XNGKmW4PY93W5tQj+8nVb7Gw8jsgI6Qq0FVXs2wsdL3t9N4/sLZ3u14Wtg==@kvack.org
-X-Gm-Message-State: AOJu0YzwBDMkL83twy53Endimtu5amNONGdflOXRR6FwDn7Ge4ca3t6J
-	zwnNAIQFKMXTD50x4jMyblSRNdRzWEXWWVNMBvCjWPFyTiXidjcA8y+xrgBMTxqjBA==
-X-Gm-Gg: ATEYQzwctSfjSvZGkeR++7NrY9kn+P2v0Ucw3PbXE4mxDSTc+BzaQjnUQ6qxOQA5/F1
-	+UIAsyvQNSk1YTzz6Z5+Zu5BUB5hVi0nJmFy2/66gxu/gGZfwLJO5JLcj50ejys8CsrnKWwYZ2T
-	j2VT+yHbJUkhHxl8U4y2T3xvxEqpNqWVZxPAsML9Gw4XJjzEZNJNMz3TKcIBZqE/i+uri39K7gx
-	NUCoGgnZKCYpLLNWJZ8ahYN1/GOYeEu0MLmx2tLnnyJAL/A8EWJ0QWU+CugWN5HB+qi9L6w7yQH
-	h4NjKt/ac0B7/BAXhtyVB7y3yLjVnde4Um9EkDTCJGKV664l2LJAaZz+GAm071EdRL6utXS+VrP
-	fksfs+1pd6BM7rRyvcnCQgR0e2ftjw6pbGHwo/qxn6qrUPVeRf0vO9jkDPYDPjLvB6wl5Ljsokn
-	y5YFwjHLUw4+QpvuEWUe2BPdO7YRXWs88Z3bgNv0sKnro0vLeFkZI1zZbUrJj6urAGktNIDxDX8
-	rVjYJVXggs=
-X-Received: by 2002:a05:690c:1e:b0:79a:b5fd:793f with SMTP id 00721157ae682-79ab5fd9654mr27807827b3.3.1774258462367;
-        Mon, 23 Mar 2026 02:34:22 -0700 (PDT)
+        bh=11UIp8IxrCOZ4CscQC39RgQ7SkxaeS4ajtLQc+uqo3w=;
+        b=C971aFIEzukLgOOW9PsIPfp7AH2ynon+HmOAhyTUrzaLo/2S7d527aUQ65yuj5nf+C
+         tmBmmDYM0rGSgGk9nEPupIFwpgV85eTIgs6Vwy2bnYZDNfu5U/Dd5oB5gBbdAGOGke37
+         0x01YtoYhNuDOkriQBMRXsqRPQnI33/dlCjpnnR4rKshvzSvFuesBA9sFA0SteCS5fS8
+         8FjaxVv6iDa+6wY1PNlT/hcWpyBIq3x+Vbk2plrFM9wwhoOBQl4vExYVajKEGqqUsVEH
+         B5uvBpOC/jQlfAJU98jpmPGBMdgtUiHpq+SPMUVC4e9RrfKz0Cc8bMKreUVxIIYjGgip
+         fYmw==
+X-Forwarded-Encrypted: i=1; AJvYcCVauaL/rpas3eKSHmP/nZB+q6O42FurfO+fxgbGxOdEdWsmnxOk4KNojO2dx7Myp/8LUrX1wJLGGg==@kvack.org
+X-Gm-Message-State: AOJu0YxvRWi/Bf0FfvXLl/K8r3h7dZThlm0TPYYqZF583hD1KaTKQPIn
+	mNhCuCZ6LVvU06iUvK+fujrPJGJoRdpzNLehU5xtnonLg8nY2mbCbq6hmtot5V62SQ==
+X-Gm-Gg: ATEYQzxFn3H9Y+9062FXl8OMFZdS/3yyKl9pKNOla5qcA2NnjywnRsx5S1b5CEDWJIy
+	D2Ph8bZwXQhmoXPrxjXvo1MHzwFHmt+MomaulM4buKy8RzcJHaiofi2x3StQ7ITVQUnBRQUFgYY
+	PNTycN2FNrDYObXzzVsma3IOtaLyJ0hDuQnlzKXch5befyMK5TN2O/HOGItpZ+u8cjIeyebRHKz
+	aTrCc437UVoXvs70eOm8Nwei+xXXqAJ2Wb19nWIHPVjKOziUspUwtlFIk0GPGRFlzo/0dB9iOjJ
+	/NN02u892dRrLOGECI15r8DzVtbTOub5ZCzVCCxnetvuDi1rl4SxSpo6yZ7JX+3/G5PF86DS3VC
+	N6Qi3E1vi1SL3CMLGRTBJoS0/SOXrWyWn0EtypA9MWOwSuaZVeCVEGLWU90h5+ukn5O36m5Q39w
+	o1nS9LJ5LoiYCKGOyPT9svHs54BZkj680fQAaw0hW3c+eb36ecuf0vRsjR4zrwqQQqM9RCQi6OJ
+	H6YPuMIh08=
+X-Received: by 2002:a05:690c:6989:b0:798:3a6:3f4 with SMTP id 00721157ae682-79a90c0ea58mr109652647b3.43.1774258658763;
+        Mon, 23 Mar 2026 02:37:38 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79a903e0b8csm54549467b3.12.2026.03.23.02.34.20
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79a905a2eb5sm54396627b3.42.2026.03.23.02.37.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 02:34:21 -0700 (PDT)
-Date: Mon, 23 Mar 2026 02:34:19 -0700 (PDT)
+        Mon, 23 Mar 2026 02:37:37 -0700 (PDT)
+Date: Mon, 23 Mar 2026 02:37:35 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -101,21 +101,21 @@ cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>,
     Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
     Lance Yang <lance.yang@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
     Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, stable@vger.kernel.org
-Subject: [PATCH 6.12.y 1/4] mm: shmem: fix potential data corruption during
- shmem swapin
+Subject: [PATCH 6.12.y 2/4] mm: shmem: avoid unpaired folio_unlock() in
+ shmem_swapin_folio()
 In-Reply-To: <a07eace6-82f2-32a8-0cbc-85972d4b1eee@google.com>
-Message-ID: <0e918493-29b1-de47-9fca-b1fa93156d63@google.com>
+Message-ID: <49bbe4fa-b678-1023-db47-99a730e2827f@google.com>
 References: <a07eace6-82f2-32a8-0cbc-85972d4b1eee@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 86embfj8ia4j7ec9z8geb8hynye3wfmx
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 28CE940009
+X-Stat-Signature: r5axpt81i4kr7zk5mtaxmtdys8qztrao
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BBC7F12000F
-X-HE-Tag: 1774258463-344681
-X-HE-Meta: U2FsdGVkX19gzsqaTZ9GOW795LywiIHseA5xqroUHwIN9LUd/NoBgro9JVYY53PLZn1CRX7lAHSH4uEiG9tgUvXrDUtAzGRc+bgrn2Uk2ehvPlJVdXLzG/5cvweSg/lxm9wHyL2Y0oJNqndqlGeN9qZmsZZHtD+08U0Q2JWY1dJpk1andWOoZ2pMj7/pt4d+9wzl3qFV9b0EMtPNXkmk0Wr90TLY5hxi4kPX4HpFQYKDPG5Xn+VcJLZZjfEcgw5XMb4l297SMaih0/KmLMIbbIWFxbV7vOOMSuQ1GsB1kt5qZR++ofCY8w988u3d0EZk4I8yB2cIrEwUPnq4sfO/37Dbv83+Dz1ICWuX9V81zhrVRbSXBrwe6tP/vcvpULoSW6m72l0v2DEXQh74qLVrIrHmG3/efdztFZDqz3TelRQyG9UqdWFPspoKN4TVfvUcbKF9XMXUtg8ldR2lDPscX1G19Bou+iHimb4jzpwR9DAjk6jO+AkYQDji7OwU4BvqXmxe/HpToZzjU1CnVPyJ+H9Ajpsos17ZoRxAdFxEkAm5+thCcb9OskhFnK0G+1gDDEvwLODFix3z2Md0gsNqeZg6XIybGJZ7O5B1hooizDNznKsLAEvfdHDocCyqCPi6Hin+6ZmfHcX7aVD8/kOtcilqY4sdMGnKlpJ/w2/kGxb2QWRYsOiZlZ2QXYUkogHO2f/qhEkTLZyNhWbdrGuni+JS72kRmtLOvlNr8JIpqjTzRsvMVEMx4VJNLqCie3uZJR+ZIhb+Ja6jYYgDbWzBTYfhIhUzNYOpNn37rtFAUr1SDvqmL7VRMmX/iANhHN8ZkuadaCW6FL9w0hNe3+FE/NyTEU2ke3rWKtO8YbSNmAoL2KNsaCYwMsIerplJCXclii5SeJlqbAc0WkAfNjMaQfRrXoSvjBlxRYjfGGS1/dr3gs/CbANONDYx2Hq2D1E3eiG7wtPfN6UMYb+ER9o
- DDhVX0Bm
- Oooej07OfG2Fp5W3L1qoE7DyKuh82Nrj1K8lI1/9Y+OLKqj5wWCEk47K3Sg5JK1SpqeEg6of8/qR7QesC2ZvXPBJN9cBObTIs87gs/o0o4sYsMb/ykRGu1S6SXLAlxw/P8mFXKI5hpBKXPm5RaJlFdaYJnYu08t0Y0nYGUMjGBDnPbkAPX6Bj/7V8BsU6HEshiWPsHAu5KE6AW2/786J8sXMrxUEiASaK/g2Pr8/i0/hsdo/CloD62R+z+QMI1a9XINIhpodCYEsZhReQgk9E/MQRe8CyFGk+9IagN9p1BD3uxU4aCmktr8JqAbSb51wMBC62g7lALspr4fRWkL1U1EeYtmhQJ6FVPTD3Ke4liD9C99JyqEilBD4yOMrK9Psr7hfp/WbEjS/zY4pv8E0kAY3vya+xfFCyo8e5JVOmYvnpK2dEgP4iVCcbrkNvfmeUh866wpyCzGNmKnAcRZMvIG/6ga8qY/fhxhBIaWh1coA/hMhj2HPNNQZKmi/EccAFCTEvd0r35c/sFytVyfn3C8R+8BeVZk5zkHdVg5vqz8vJ5K+UETNpmz+qgL39P5P7xcNnIKfTASOAY6bD2G41V/lrnOpL6D5jWfxyvQN3U2k8lz6C2WywFaSajfkQ5ZSEvSdVpQstWKE1wH8=
+X-HE-Tag: 1774258659-727974
+X-HE-Meta: U2FsdGVkX19b8p17wg70s6w7Wyk4sqw4FbX9ZXaReR/NA7RHM85p9gceBddrwNwrseO5AyuKPShlMUAH4C87n+pmKBlNTVXQK6X7uegwWV2gQJ8hsS7A+XG0g791AYPI7dhyEoT5EmEW8fgUuUaClT1xbjsMNFmekjTw1yD+KWJIUJKBD2S+8HkHx9BTcxhPsmTdauhR6hRLQCd9S8BAoBYyCJAEHzPh4yNKJ8TG4/sAQHXnIuaRxrD+zhg2kq/GQLKykVfHiUWQhgpmJKS2rIUwB9XNEyDVrDStSIno1fAjPpYSsNHy2lT8UX2wMiciaukEEO60PK8leEMPpvJ1yYUn0z2AhAMZosonYBvG4whGfTe6ZFcB0oK0CGGamCvMoC5iP+KsSALShTiQc0FI/yFp+zHWFz3KMjxUol+bKCD4vExv1pP7E/dFIj2xLsHjdMzY/Pyu+MNgfExVjt39DB+YoQGHGPKAsShmusSvGdCfm/AYsn0Qy/KShC1/NyWfj6Dwmag3thx4leHAJ2kS06ciNWwci7BcQTLAo93eD96O5h1y/IPnfuXvSNPRhZ+HxT4pBNVKDztani+GYOOh24lQK7gbD6YuRM+bPhDZAbrn+DVmLWOmJ6IXnU4TZClMc6rE08RILlONF9OJe5bnDqjjTwb/Hd4Mr4tEuNxH/AgfY9Y5GDynVs/ZKyfCQRdfKsVQnHXxhZKUDvsgmQ9UkjxIm8cuEcNJ1vW+bTpgMBTWJKJCC0LFqz7ALz8KZCfgymj0sU+l4mDpygGjRKZKrA8bAa0lCxNG4W8WFewTWWkLSkPYfClwOCq2fafBu9UkUdXV8lMQqRPoU116iBvHGo+MHOrNGjqAGlSYFTlRglv4x1HnqE+t7rSQ5FdOiWj+/bM2afLQ2Up3Irs1s6rsPxb6Fg4FxHoyINXzIP78mnYxBJMRvAf4/+XgX8f6FdmQjdM47HfscrpMRfgRjWw
+ u0opA8yV
+ h7zCy+UnhEEnjuUHwEdTtYUotrwKIwe/TbkE5nMwJTkQgbKwQPGNUwKYAzmylaZaY/ulQze671jYVYbNTz1fju3Nb0NSWitTT5M0d+Xq9RHMEFK7m5zqURWovA4pvILiqHXtaXeh3iWARMjMLYUcoecwvhvQxWEs75hH3A7ThUf+xq2bDFOkault650ig0AM02flFHeZ03Cy1umCHJ0O32MuVlTyPbDrwuw2t/jcFN5s3ISfUnC7DpNZ4N98tpLUQcIu59OZ5OoGHT+9QGEqN4xBetyKW97DXiYAHtkURbX+SaQYqv0ydzv1x/jjD4LIGkgmajgFxaB7X88L6mZ30ocvx6ugixqP5w8bLMjeCsj4tAO0LSuBVRAV8EeqcY82KJlxGxqUrkNF4QcjzeD61fHnAroidSfrUbHvW3dxFzIUoJy6aqCCjhTCIz617PkKP/y1SyufZzEvmEDaIsl5felcmKWYzMNpZjLuz9htODd675z7NhSSCLJxsHwZkYBMtOBTDbZB5JPhx1vpG4/wCmUi5wZQ5ikcFXoLK34mWcbbZV4RemG5uMbKuHl1grUr4yG8J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,106 +123,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-commit 058313515d5aab10d0a01dd634f92ed4a4e71d4c upstream.
+commit e08d5f515613a9860bfee7312461a19f422adb5e upstream.
 
-Alex and Kairui reported some issues (system hang or data corruption) when
-swapping out or swapping in large shmem folios.  This is especially easy
-to reproduce when the tmpfs is mount with the 'huge=within_size'
-parameter.  Thanks to Kairui's reproducer, the issue can be easily
-replicated.
+If we get a folio from swap_cache_get_folio() successfully but encounter a
+failure before the folio is locked, we will unlock the folio which was not
+previously locked.
 
-The root cause of the problem is that swap readahead may asynchronously
-swap in order 0 folios into the swap cache, while the shmem mapping can
-still store large swap entries.  Then an order 0 folio is inserted into
-the shmem mapping without splitting the large swap entry, which overwrites
-the original large swap entry, leading to data corruption.
+Put the folio and set it to NULL when a failure occurs before the folio is
+locked to fix the issue.
 
-When getting a folio from the swap cache, we should split the large swap
-entry stored in the shmem mapping if the orders do not match, to fix this
-issue.
-
-Link: https://lkml.kernel.org/r/2fe47c557e74e9df5fe2437ccdc6c9115fa1bf70.1740476943.git.baolin.wang@linux.alibaba.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Alex Xu (Hello71) <alex_y_xu@yahoo.ca>
-Reported-by: Kairui Song <ryncsn@gmail.com>
-Closes: https://lore.kernel.org/all/1738717785.im3r5g2vxc.none@localhost/
-Tested-by: Kairui Song <kasong@tencent.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <ioworker0@gmail.com>
-Cc: Matthew Wilcow <willy@infradead.org>
+Link: https://lkml.kernel.org/r/20250516170939.965736-1-shikemeng@huaweicloud.com
+Link: https://lkml.kernel.org/r/20250516170939.965736-2-shikemeng@huaweicloud.com
+Fixes: 058313515d5a ("mm: shmem: fix potential data corruption during shmem swapin")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Kairui Song <kasong@tencent.com>
 Cc: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
+Cc: kernel test robot <oliver.sang@intel.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-[ hughd: removed skip_swapcache dependencies ]
+[ hughd: removed series cover letter comments ]
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- mm/shmem.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ mm/shmem.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/mm/shmem.c b/mm/shmem.c
-index 5e8184821fac..9105c732f341 100644
+index 9105c732f341..9b7df8397efc 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -2132,7 +2132,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	struct swap_info_struct *si;
- 	struct folio *folio = NULL;
- 	swp_entry_t swap;
--	int error, nr_pages;
-+	int error, nr_pages, order, split_order;
- 
- 	VM_BUG_ON(!*foliop || !xa_is_value(*foliop));
- 	swap = radix_to_swp_entry(*foliop);
-@@ -2151,8 +2151,8 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 
- 	/* Look it up and read it in.. */
- 	folio = swap_cache_get_folio(swap, NULL, 0);
-+	order = xa_get_order(&mapping->i_pages, index);
- 	if (!folio) {
--		int split_order;
- 
- 		/* Or update major stats only when swapin succeeds?? */
- 		if (fault_type) {
-@@ -2189,13 +2189,37 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 			error = -ENOMEM;
+@@ -2198,6 +2198,8 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+ 		 */
+ 		split_order = shmem_split_large_entry(inode, index, swap, gfp);
+ 		if (split_order < 0) {
++			folio_put(folio);
++			folio = NULL;
+ 			error = split_order;
  			goto failed;
  		}
-+	} else if (order != folio_order(folio)) {
-+		/*
-+		 * Swap readahead may swap in order 0 folios into swapcache
-+		 * asynchronously, while the shmem mapping can still stores
-+		 * large swap entries. In such cases, we should split the
-+		 * large swap entry to prevent possible data corruption.
-+		 */
-+		split_order = shmem_split_large_entry(inode, index, swap, gfp);
-+		if (split_order < 0) {
-+			error = split_order;
-+			goto failed;
-+		}
-+
-+		/*
-+		 * If the large swap entry has already been split, it is
-+		 * necessary to recalculate the new swap entry based on
-+		 * the old order alignment.
-+		 */
-+		if (split_order > 0) {
-+			pgoff_t offset = index - round_down(index, 1 << split_order);
-+
-+			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
-+		}
- 	}
- 
- 	/* We have to do this with folio locked to prevent races */
- 	folio_lock(folio);
- 	if (!folio_test_swapcache(folio) ||
- 	    folio->swap.val != swap.val ||
--	    !shmem_confirm_swap(mapping, index, swap)) {
-+	    !shmem_confirm_swap(mapping, index, swap) ||
-+	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
 
