@@ -4,142 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47F91F46102
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:56:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04FB5F46100
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 12:57:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A26426B0005; Mon, 23 Mar 2026 08:56:34 -0400 (EDT)
+	id 5E1116B0088; Mon, 23 Mar 2026 08:57:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FD5E6B0088; Mon, 23 Mar 2026 08:56:34 -0400 (EDT)
+	id 5B8B66B0089; Mon, 23 Mar 2026 08:57:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9138E6B0089; Mon, 23 Mar 2026 08:56:34 -0400 (EDT)
+	id 4F5EF6B008C; Mon, 23 Mar 2026 08:57:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 831A36B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:56:34 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57AE7160B76
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:56:34 +0000 (UTC)
-X-FDA: 84577326708.08.B2F60E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9CB75A0006
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:56:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tDXj1FN6;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F7246B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:57:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD8A4BCD78
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:57:10 +0000 (UTC)
+X-FDA: 84577328220.03.20C9747
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 227D4160003
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 12:57:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qT4QR1tZ;
+	spf=pass (imf08.hostedemail.com: domain of 3ozjBaQgKCG4VMOWYMZNSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3ozjBaQgKCG4VMOWYMZNSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774270592;
+	s=arc-20220608; t=1774270629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2VqmexSmje78Ogjk21F1jytPI4L67wsdDZ8HkKVhygU=;
-	b=X4MYRjI245DFwVLo1KMl9jHoBySiiCB2G6xa+DQjf90H8VvW7DdFV5cYL3/a5ctzIpY5nU
-	lsP3ZBJTj7Hbz1XisJICd/qNOVYLpwo+Cd9uMrATwwDmfQSNec4Qkw3OdsiP3c3BE4yPRP
-	JGGE1PMsLQFbGctLP2TtT939AitUPNM=
+	bh=PLdNQKNpJfNXYzn4cpAS0Z9lYnfTUb7+HBLinvV2mSw=;
+	b=QheXcv0JGE/y8S1PhN5Fnt/bkuyDRyd7PGDFdF71CVS9H8e7QsBqQdxHupOtFJ/MpYTlAp
+	4NpXTZxpfckaypXFCiLEwVJ20odU6BjdRIcytIR8G1LnJzjlNq7i5YKOqHzPO0HMw612Eg
+	mW0oLYwU30Jo+O/OVbMlLGAmGfd4/UY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tDXj1FN6;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774270592; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qT4QR1tZ;
+	spf=pass (imf08.hostedemail.com: domain of 3ozjBaQgKCG4VMOWYMZNSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3ozjBaQgKCG4VMOWYMZNSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774270629; a=rsa-sha256;
 	cv=none;
-	b=vqxkRJ5XD7s+0IiYsUMTr2yH79Ysft23l4vYHq1JmeD62pSrpvnAKcbbP9B0bKZCfBjrXQ
-	4PDTJ2HcDE6zoc24U9X3MJfJ88OPGOLG4cNIUAyXwsEw54J9q0yhxZdvcRFVH6ZBVF9aH9
-	1t+DFocQ9Md2KzpOG+95705Mevt+yp8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F38C2600AC;
-	Mon, 23 Mar 2026 12:56:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61EDC4CEF7;
-	Mon, 23 Mar 2026 12:56:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774270591;
-	bh=56CvIhSJvJpbCTYN4/Ac/8swe6dujoF1iEBmLn1Suho=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tDXj1FN63tJSJrZckQn4KKWIfOSfqhJV5nlLOeyGyLaZyXXFMK9KcXhm8Ym2aYBE7
-	 7JaqE0hzaqCqs30f52+MZiiBiwxSSejiUGMGLd59rDDbEIKFTn9xqMNx74L4iP5ksj
-	 4+ZUcK4esFgzVBXGiI0ZarGayJpdIbHCAUTG4aYhu1edbEt190EUsX1JXpVx17Tyke
-	 i1X7Mg9U3pRsl/ftGkzPCB8CeCPJ9DqkZUMXse5HrTKjeXUfaQRlk0oeP4Z5qF3VIp
-	 dhUkRarIfTC8FBfUQ+BQtJbP/u0hLaWCP1gRzGLMh4POih+m8f2YVETHZuvyUC6rC5
-	 DPE6D1Zmrhv+Q==
-Message-ID: <d67764ea-e0d5-4b24-8356-0b20fa0b2075@kernel.org>
-Date: Mon, 23 Mar 2026 13:56:27 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm/mprotect: un-inline folio_pte_batch_flags()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
- jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260319183108.1105090-1-pfalcato@suse.de>
- <20260319183108.1105090-4-pfalcato@suse.de>
- <2da1181c-165d-49cd-94cb-5ccbd3bb93b3@lucifer.local>
- <69382383-5f08-408f-8c13-d674e82c4dfd@kernel.org>
- <fcc2665f-014b-490f-8451-ca907730e60c@lucifer.local>
- <9b0aaa19-b839-4ebb-a312-097b869154c1@kernel.org>
- <11929205-d0dd-4e8f-8a99-2d0b02cfd5bd@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <11929205-d0dd-4e8f-8a99-2d0b02cfd5bd@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9CB75A0006
-X-Stat-Signature: 4qccxji1ktzn9em6cj6kur5go78jdryo
+	b=8XCRWd8jd7/rxQ+24FhFxJSxnBLqjXoSpVwiKc/2t3g7pVfnqm64n4xcoehPLugY4fvwYY
+	HaSSQ6m+OqN+DLz333pZ1WfXUAN2ImCPWFKe20LjdFteg720FATkYX6ovMI1DXSVvWa2fA
+	ub0WoqZkVLV2P4Bya58tYofaEDrSKts=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-669010da954so85052a12.2
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 05:57:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774270627; x=1774875427; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PLdNQKNpJfNXYzn4cpAS0Z9lYnfTUb7+HBLinvV2mSw=;
+        b=qT4QR1tZ25zKcos+zt4yhSdCOi+INg8BbFUAxUG2cFwjur1KbRwCD/sV0GYDZ9h8lH
+         grvT7rXIC4jMTqCB2KisXoRt1wJSStD7Nk27YFNXT3AqO31tnLrgIuo1kRSJ1B2umA8U
+         rDVuaCWH6VG2OYYz8rcmsLsWzQn2WNzRbR8K9ouiwRnIP94M5Te8bUcJRBiTxQlmlJi8
+         cAAoK7acbC1/84OxMoUYC8gkX9MCcPQAebUaBxaqvuSQcOW1Syw2/BflPCCYPpJ/HsOl
+         AWH7B19z8jgIjma6CHehi0KfAy3qoZAr1mp9kphuchnr11JPyd8zxzgPE+PhGZVut0SB
+         7vug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774270627; x=1774875427;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PLdNQKNpJfNXYzn4cpAS0Z9lYnfTUb7+HBLinvV2mSw=;
+        b=rMO6qzPLdEDCzGKN5djNdKakcqwkuMmTBD7IYKJ7Kl1RbMC763nVnTJqvcyGfd+GkT
+         wiqwnS2rA5ScGORmB9ayK8qAAM1EY4UxNEk0Pp2E0GhMkBrvNKp1F802PmYgt04oNwVy
+         aufbwDz0/wrDM61zTYZrM4th4RZuICh6jMID9mpsTegxfltxJhn6Bd5m5a5agkg5ZfSp
+         Ef9eY+TiS7y+CcvIxEQi5fqiyLMUc/XUWBu7RK14hRbN8m1euIwAsW38cSbEfZHft+UV
+         CR8ICExndtDPk3YnpQEO7rR5CqVdHDzXkxy+GXc2xSPtsdW8Zy/7fCeoIgyNC2plshIx
+         2aDg==
+X-Gm-Message-State: AOJu0YwnpUl33shOqf/nrt89kojxpylp0xp9oqFtI01DeNsjDBOBhRTS
+	HrWwjzP2R/itRRtL8F/FIA8euv2bYFtBtn7yDmYVgw9BUAuYg0OGDCy3Ys56YLKX7RezPqeQRXJ
+	WVF/QAlNPconxZQ==
+X-Received: from eddt7.prod.google.com ([2002:a05:6402:5247:b0:668:7e92:2c09])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:a58c:20b0:66a:31:17f9 with SMTP id 4fb4d7f45d1cf-66a003119demr990706a12.14.1774270627244;
+ Mon, 23 Mar 2026 05:57:07 -0700 (PDT)
+Date: Mon, 23 Mar 2026 12:57:06 +0000
+In-Reply-To: <DHA59LJ1UQ1H.10RZVJ9V4X5TW@google.com>
+Mime-Version: 1.0
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-2-28bf1bd54f41@google.com>
+ <17e58542-1221-48dd-88b9-236128515ed2@intel.com> <DHA59LJ1UQ1H.10RZVJ9V4X5TW@google.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DHA6G1E2H5P4.2D7JKTRKIBE3U@google.com>
+Subject: Re: [PATCH v2 02/22] x86/mm: Generalize LDT remap into "mm-local region"
+From: Brendan Jackman <jackmanb@google.com>
+To: Brendan Jackman <jackmanb@google.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
+	<kfree@google.com>, <clm@meta.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1774270592-820691
-X-HE-Meta: U2FsdGVkX180XgzPWypYpAELB+wHdJPGSK9EjJBbprylMMncWNuxMsLLeoNsBD16eZfzTmW9gQyNgYVwJrZUzDbas3UccECmzJJmqLFj5NDx+lIitXnKhjfFS8GQvsKgBsjeZOXhUcKKEGS79Yz0ZuH0L0r/e0A7vhw7bH+w6BT6ALFf0QZB0cNRDgeddv4Bdg300JlOdiFf6eEjN8EGVmuPX9dXtllcZWLhEcPZe5XNzlQS4ONBVtdDkaUPRMVDJLmm8ljGqv65ppW5FNzts7rV4ZNcs9HLRSj1+FILKVMmwCI1D00xiEmGH0pztXdmq2TreLenWtN7EH+V7y0Nw7gQFZ/amsRnnttDbzSisPxRwZ8RAJCmt7WdY4F0vd5SxxbmicuKrcoHGM6cLA5H3KW4R1xJLrMrVfu4U67FkDYk5iJPx/GI8tmLAO2Pkn9uFw7ogW82QYthvhyZKR2kz/DVJdymN/UlF0FseO5pdb/SsMHSuOtTJj7xTMinsGzi3ujuaRugl9rP87u/DFPe+5LT/HiYQWiEi/xT1bbHisyq6x8BkEH8vs+qzsTYgtLfFAdXl9rPcDB0IN5M3Wa7JPJBkeSmgfXhZdUFe1vgjTb1VdZB4DcMqxHNpdl3Eb/BjwLQYScwwwCDLhoDcGAIhD+YXgzCdnbyd0vr8u1iQMzn7vtSwq7w3dM7cz+WOYyX4SKVLLd9/0xkuHQqVjFYiqWYpAYi1S3MntXjAc5loO5AtoZq9BpqhZ3VdPA+vQbkVlFcygTXqSz56XD33ss9xpHz6lhP9kqNTzRHwqJnyDs4UcbttQ+DKpE7HP40D5ICsYsfjytHRpckZj+kNhf5+o8lgw4Eist1xWnkW1PNrzV7kUC54CRmPKrvacHzUusQsKwCSLKqX9a2uvr2EOUpmq1S8Pxppzv/8sx13ok3iW+08awmpyvfwRN5EPft3VWIIwOn8bCHmZER2a1EQoQ
- yxIscYB/
- 4dbPY5x+ifj4aNNSHsynVlk13tZXYWR3OKkWn8bWakowyMAaC1ISCZPbPycQxgVcC5t5cjKPBeH0Z6k19dQ4wKeV5z90wlwetaWR1J7Stf0X6+CGJF9wjCgcrXZMyzUOCspHWHT+qTZ/VFKneWz9FEJAH9RnhUBCiPxwsAmjutNbawZ2ZnZZ7Y1hS7PhN469iiKPjGZoICr7kJXIKvUs5P4CrqnVdfrUvSjchVtCwod7aJjLjVTleAisozpT77avVL2Y0PYqlkJGzohq/ljyk8bKTjP9sLJv2VrxsKhM1natBTN3V82KZGB3FXw==
+X-Rspamd-Queue-Id: 227D4160003
+X-Rspamd-Server: rspam08
+X-Stat-Signature: z6bs5zgspg7c5caw71qd7fq59wanx9ba
+X-HE-Tag: 1774270628-751935
+X-HE-Meta: U2FsdGVkX19N3Ku1MCJsHCOFFe7fwwb6rQEpLC1Nnb6nyw1X3P4OcVPf3yt5VGgObExzBBrxiiVFkUeQS550C7Y7b+KO4oX6b3hn9f+r3uQFo3BX3bvMv8VetA9KBndwdvG+TTM83QZFExZi/hKfJBczLU7/FHdaVeTzJREmRZHMfEG+oZJxXHfIuimBZ2DP54M+79QPCrhKysbX4A1jyY6FNbYzrWJ/+zTAl2zm/4QTfbuZf9ryRLvRVeQxpqOrGphASwldkU+UUnDOKqrK8VtDyCMSo5SYdV0Z+5ubYmUMDol81GJdbcDO9sufTobhC1TnTlGVSsmWnlTr2yTH4roRSqCUPXjgWwMbhtyKO6tEANSECoxAHlmBfL/PXHT07tpowx28jSsjH6aiTra12y+Jf/AEW1wRB1YOVggcy6hRmBovEpOoxEtBQL3Gz8/XhF4JBR7Sr0scNpn/YSj4yX16tXy/NVcPkN19TKtDT6yjrQg1nn4fAQYiN/A+uOqqyGuAmlRpSJVbhp+QOghQy7ZbvyHTX+DTzoHKHGT9qTuRhkMo+Xb7BKWX0UhN5doDZqGSx1sde9ufCDanrAxk1HczbAnFhuqj4eDDcEsZQDTWdKO+Ncl0Smfnwv96trWG7GgMtm2+vLk1zDmnRBXLJv6J5GDV5A/zlKC3HlugMdahNd4qnyOjN50MUBWWqx8I2CK3eUa78c2h0p2abnxC/yVIlAg+XMn8OVkqR+VVXssR2pwp/xna+lQUDSKcmNLb6vxHjL4C1TBrHOqfZXfHC/a/JB6KJ/is/Lv6nEkMZBe+5q1UiP0UgnvpdKW9KBiErMW5O9jZ4fbedqw3erf8QhWWVgxz0eon8UhxOEJCtMODEoSyyMZeOTtuHuDRJ6ZWMjI1N/SkhRW5Y07jr52oIZ6CRRwG1juQJg9sgaH9h6nJEMd8ET+u8Gkg+8zMcPAqaLxzLEkVJtRjSTQG5FA
+ 3jbEIsLr
+ h8yXwY5Fsvta50Iz/4UiBJkuhuq7lUsHHEdKPMWNV/JKnh14WLfcOJKGdfjmdvE2QWFETedpISX6UoEkswdJofv9+TRZW1PkNJg7bbLcuip1L7CPnOnuGOTiZ4LXHr4Gy2rBL/JySCilpswhth3/LbqA4JdAGprVptq9Jqh7U6NMGH8gOGW9+i+HBiAqIR/dTinSrHMWcOCKoA0hOiCzkzhZmph3vCbL3LNEblJHD+/wkMzwBVF50W3xhPUcg9PriP9MN2TKF6lp5og9shqJNwml0B8tr/g3aFARxhX1zxl6l5vqt7+bRg1jzAfEffOuH+bNSjAcdSily/a5IFXE/NLN7nYsrTtgu4L6WAV9Za51ZPRrKuYz0b3m39nmENgh3VEFyT20Z5i9QXcEEFLsyxyvN7ki1k1z/Rqk6+NstSUg/ortypPxBjbPSvW5Gq+01TbCn5WCKoyLRPWJ3hdIwozZnawxapWpa0Fzgqfl8HWoiBwaIurUU9X9raliJDFT2669dnKU2GxzroiTqpsPmfCuud+J1iwJduTotlzNjw47BpiHMFZ6gv1kSVo+x29V3UYpNJMGtHpqWgYAvg8ZQNb/kE96YW7iOOv5qlz4y5xStYFm8l/gCbuUv3PHzqIhlVs6b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,99 +109,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>> I mean yeah that's a terrible name so obviously it'd have to be something
->>> better.
->>>
->>> But again, this seems pretty stupid, now we're writing a bunch of duplicate
->>> per-case code to force noinline because we made the central function inline
->>> no?
->>>
->>> That's also super fragile, because an engineer might later decide that
->>> pattern is horrible and fix it, and we regress this.
->>>
->>> But I mean overall, is the perf here really all that important? Are people
->>> really that dependent on mprotect() et al. performing brilliantly fast?
+
+TANGENT - off topic, removing most people from CC.
+
+On Mon Mar 23, 2026 at 12:01 PM UTC, Brendan Jackman wrote:
+> On Fri Mar 20, 2026 at 7:47 PM UTC, Dave Hansen wrote:
+
+>>> +		 * We use tlb_gather_mmu_fullmm() to avoid confusing the
+>>> +		 * range-tracking logic in __tlb_adjust_range().
+>>> +		 */
 >>
->> For basic primitives like mprotect/zap/fork I think yes. For other stuff
->> like rmap.c, maybe not.
-> 
-> Well on big ranges of mprotect() it could be, and I know often databases
-> like to do this kind of thing potentially, so yeah sure.
-> 
-> But more so the microbenchmark stuff of *a million protect() invocations*
-> is not something to optimise for so much.
-> 
-> Rather I'd say mprotect() over larger ranges is what we should look to.
+>> Imperative voice, please.
+>
+> Yeah I don't think I'm ever gonna stop making this mistake. Any LLM
+> should be able to catch this for me, I think it's time to find a way to
+> get that into my pre-mail workflow.
 
-I tend to agree (and I think I made a similar point in previous
-discussions around mprotect() performance).
+Just dumping what I learned from briefly looking into this:
 
-There is the use case for userspace jits etc to call mprotect() on
-individual pages. I suspected that TLB flushing and syscall overhead
-would overshadow most micro-optimizations. :)
+It looks like Sashiko [0] and Chris Mason's review-prompts are not really
+well geared-up to deal with trivialities like this right now, they are
+still evolving fast and focussing on much more advanced topics, and
+AFAICS they don't have a standardised way for the agent to "shell out"
+to a cheap model to do simple checks like this. So for now until that
+stuff crystallises a bit more I'll just use a dumb standalone script.
 
-[...]
+I wrote a quick prompt to check for these particular rules and found
+that the "pro" model worked perfectly but took ages (and probably an
+obscene amount of energy) while gemini-2.5-flash-lite was instant but
+very unreliable. Then I asked the pro model to rework the prompt for the
+benefit of the small model. Its version made the small model works
+reliably. 
 
-> 
-> As I've said to Pedro elsewhere here, I guess my concern is nuanced:
-> 
-> So if we introduce stuff like carefully chosen __always_inline or noinline
-> or other things that have characteristics like:
-> 
-> - They're beneficial for the code AS-IS.
-> - They're based on compiler codegen that can easily be altered by other
->   changes.
-> - It is not obvious how other changes to the code might break them.
-> 
-> We are asking for trouble - because people WILL change that code and WILL
-> break that, OR a possibly worse outcome - something like a noinline sticks
-> around when it makes sense, but everybody's scared to remove it + _doesn't
-> know why it's there_ - so it becomes a part of 'oh yeah we don't touch
-> that' lore that exists for a lot of 'weird' stuff in the kernel.
-> 
-> Then it might end up actually _worsening_ the performance in future
-> accidentally because nobody dare touch it.
-> 
-> Or another hellish future is one in which such things cause bot perf
-> regression reports for otherwise fine series, on microoptimisations we're
-> not even clear matter, and cause developers to have to spend hours figuring
-> out how to avoid them, meanwhile potentially making it even more difficult
-> to understand why the code is the way it is.
-> 
-> So what is the solution?
-> 
-> 1. Focus on the changes that are NOT brittle like this, e.g. special casing
->    order-0 is fine, adding profile/benchmark-proven likely()/unlikely(),
->    etc. - these are not things that have the above characteristics and are
->    just wins.
+I'll paste the prompt below. The command to run it using Google's stuff
+is:
 
-Agreed.
+gemini --prompt "$(cat check_patch.md) $(git show)" --model "gemini-3.1-flash-lite-preview"
 
-> 
-> 2. For cases where things MIGHT have the characteristics listed above,
->    avoid the issue by abstracting it as much as possible, adding lengthily
->    comments and making it as hard as possible to screw it up/misunderstand
->    it.
+I assume open models that fit on a laptop can handle this task too but I
+haven't tried it as Google's tooling seems to be hardcoded to funnel
+you to the cloud service. Yuck, something to figure out on the weekend I
+suppose.
 
-Agreed.
+(Alternatively I bet a plain old NLTK script can handle these particular
+rules. But that will run into limiations quickly while dumb LLMs are
+generic).
 
-> 
-> 3. Often times perf issues coming up might be an indication that the
->    underlying mechanism is itself not well abstracted/already adding
->    unnecessary complexity that manifests in perf issues, so in that case -
->    rework first.
-Agreed.
+[0] https://lwn.net/ml/all/87jyv7a1q5.fsf@linux.dev/
 
+---
 
-I think the usage of noinline for micro-performance optimization is
-really questionable and should be avoided at all costs.
+You are a strict code reviewer. You will be given a patch file, formatted email, or Git diff.
+Your only task is to review the English style of newly added code comments (lines starting with '+' that are comments, e.g., '+ //', '+ /*', '+ *', or '+ #'). Ignore all actual code, variable names, and removed lines.
 
-The folio_pte_patch() stuff likely really should just be a set of
-mm/util.c helpers that specialize on the flags only to make the inner
-loop as efficient as possible.
+Flag a comment if it violates either of these two rules:
 
--- 
-Cheers,
+1. Avoid personal pronouns. For example: Do not use: I, we, you, our, us, my, your. Other pronouns such as "it" are fine.
 
-David
+2. Use the imperative mood to describe what the code does. (e.g., Use "Return the value" instead of "Returns the value" or "This returns the value").
+
+Output format:
+If there are no violations, output exactly: "LGTM".
+If there are violations, output the snippet from the input where the violation occurs. Prefix each line with a '>' character, followed by a brief description of the violated rule.
+
+### Example 1 (Pronoun Violation) ###
+Input Patch:
++                /*
++                 * Although free_pgd_range() is intended for freeing user
++                 * page-tables, it also works out for kernel mappings on x86.
++                 * We use tlb_gather_mmu_fullmm() to avoid confusing the
++                 * range-tracking logic in __tlb_adjust_range().
++                 */
++                tlb_gather_mmu_fullmm(&tlb, mm);
+
+Output:
+>+                 * We use tlb_gather_mmu_fullmm() to avoid confusing the
+>+                 * range-tracking logic in __tlb_adjust_range().
+Avoid personal pronouns ("We").
+
+### Example 2 (Imperative Mood Violation) ###
+Input Patch:
++ // Initializes the counter and prepares the struct.
++ counter = 0;
+
+Output:
+>+ // Initializes the counter and prepares the struct.
+Use the imperative mood (e.g., "Initialize the counter...").
+
+<END INSTRUCTIONS>
+<BEGIN PATCH FOR REVIEW>
 
