@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2022FF46126
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8162CF46126
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:07:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50F266B0005; Mon, 23 Mar 2026 10:06:36 -0400 (EDT)
+	id ED50C6B0089; Mon, 23 Mar 2026 10:07:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E6BB6B0089; Mon, 23 Mar 2026 10:06:36 -0400 (EDT)
+	id EACB36B008C; Mon, 23 Mar 2026 10:07:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4242B6B0093; Mon, 23 Mar 2026 10:06:36 -0400 (EDT)
+	id E11066B0093; Mon, 23 Mar 2026 10:07:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35BAC6B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:06:36 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4B6E1A0B54
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:06:35 +0000 (UTC)
-X-FDA: 84577503150.10.6C1A9A1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 510BF40002
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:06:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tXhhZoDh;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D26676B0089
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:07:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7BA03C38EA
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:07:58 +0000 (UTC)
+X-FDA: 84577506636.23.DC1E768
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D4EB540007
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:07:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n1iSyCwv;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774274794;
+	s=arc-20220608; t=1774274876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p1fynzVfrwLMYPX1ASbJDPB2n+rf7StFOgEyLAUbNTU=;
-	b=AvAB03+6WnNbQvkPE7s/kWpgj/KK7jjte94seVVWeyrmh9WzZmN7xl8RZPwKMV/li2CbGG
-	VZAZj7BYOn/AclxnSYuz34TVeLVGgT1yJoYIDdO89cbjxMPW7gmAK/4JbDyjJVk3zAE4IO
-	TEqIuovIo0qo0Z4JRk/Hbxhq8h//zkU=
+	bh=1PaO+4+rWONsxrlOsGWVrD/qF2EGfVXjIo64l+ZCULY=;
+	b=NjkSztgWC+bJnvDkWhaiWyMmFjRJoQynKlvru91qQWVHo89Y6ihaCJLRGpG8YKtByfvU4V
+	mkLwQpVWQAzdWWaFX3sIT7M8zqD0EmTIBZ/JUDy4lyfooHLMsd0PKCDVVNKAIzMC4ndBpz
+	5nh2LKmxUEZPFgIyv9nnhDvZxv6hG+0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tXhhZoDh;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n1iSyCwv;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774274794; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774274876; a=rsa-sha256;
 	cv=none;
-	b=U+31LT5qoy+SDPYAP+ocSPAFtV2kdGVU4Va9TLG6+jh7c7vVskkFFlBa6/FbSwwvfeKThQ
-	00IRgm2FBLCi+Ss4A5oletKGJerxZrY9t64AkXxIlzIpXsGsONP2nZi5c6TQ1RB1JRqr81
-	dDVwqyRXiDhOGcSH/1pvexc5rD+uJWw=
+	b=SDNll8tbLz7YtTyn/i5oySHFXN/LrzqvGCp9ozPajpHrx62zQBd6OKSUKu2pLXHzkw2WO5
+	85EaoCIr8Qfz0XnSJAXlHPwaZew+EB2zwStHI3z5270kGlcRuviYAWMqsBajgMGTMTiiJO
+	/VRgEWNPmtI3wh4NVzi4v6w9imly0ow=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 58BD2407F0;
-	Mon, 23 Mar 2026 14:06:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B53DC4CEF7;
-	Mon, 23 Mar 2026 14:06:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4E82C600C4;
+	Mon, 23 Mar 2026 14:07:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58E9C4CEF7;
+	Mon, 23 Mar 2026 14:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774274793;
-	bh=kWkRZysw2zl4SGpODfVg1gRksORKKSk2p5v/lAci/gw=;
+	s=k20201202; t=1774274876;
+	bh=1PaO+4+rWONsxrlOsGWVrD/qF2EGfVXjIo64l+ZCULY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXhhZoDh1xlzRdtNioCo5fcVnBOKPPHc+KSgUrYbO3t0sBRMiC4MB2a8Ri3/h4IPJ
-	 ke6jfsPtz+uLa0gJqTpRFHXy7aij0dZlbfeRf/fYknU30A919f385bz9Y+ZPVX162z
-	 AQXFlIK7lpJb8BVAthQN7HKrA00jK3/wvGLps3dboqg1v/BiVVrE0wCqYjVXlIXc9J
-	 GctHQ8JQu9LqET0oUeFuLFwjlVz7eKQz3DnecDARvsFU6XmQi2LYq9ZYVSR4EWmnIW
-	 6qhOkLDpoqE7Nyzfh2qeUcO+exHZdP24vNi2CGFUCRpS33eXU/s/FEzyov5wHwrFQ3
-	 ch3zAp7q5MrLw==
+	b=n1iSyCwv4RPHMa9bKPi7CKWFOdHrI4g48+418mqXCrBCwAUFlzO/OgqIgoybsxZEn
+	 z6A6sAbxjs4kP8KVTZpQ79j5neOnJgBWeM0bF5WxVTWBl3wQCd9D0nJx3Vpa7CEKXc
+	 jjoGlAHHMSlOaySIU54LPJbLXDDCJHkeNYTLNTkP/vFq3lh1VPxHUV1BXc6wmoCYaZ
+	 Ms9UOqI9aLlr3GGyX1MZN3pF8TMW28406AXQG2OfP+z96rwVvZr8yHvOiJGCog26wl
+	 WB1YH745EVFt65ULXLaWPnADtcoVImT4j0ZeyD2gueXsC+ZMEIKToCDJVNt2CwLlKR
+	 D2K4en1d1ahHQ==
 From: SeongJae Park <sj@kernel.org>
 To: Josh Law <objecting@objecting.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,20 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] mm/damon/core: Performance optimizations for the kdamond hot path
-Date: Mon, 23 Mar 2026 07:06:24 -0700
-Message-ID: <20260323140625.79976-1-sj@kernel.org>
+Subject: Re: [PATCH v3 1/2] mm/damon/core: optimize kdamond_apply_schemes() by inverting scheme and region loops
+Date: Mon, 23 Mar 2026 07:07:48 -0700
+Message-ID: <20260323140748.80083-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260322214325.260007-1-objecting@objecting.org>
+In-Reply-To: <20260322214325.260007-2-objecting@objecting.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nqu7q7w76xhw7hgfg17q19ouc5wdfu17
-X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 510BF40002
-X-HE-Tag: 1774274794-419204
-X-HE-Meta: U2FsdGVkX19kJPTeLJzvOwX4z1LtDVqzaBOsFmv4bd7QSfpxhptySte87+99YzhPKbrV/NbxHGZyRKNYZvIKFnR7Ru8Ge/TI1swov89xE+ZuECc+s3ptceHqflRDpPIFn2pz2zjtzBo94LlezWERuPCIkAzjQc0p+MleUJg6otdovbSDeGhvUBNSNj8Bm6+iiqS+SAJABBvo84NYpx2rHqbCblzwGRUkgBzto+W9iGTd2rUFDYMY9R/FU+0oWQ5Y1e3Ysz/Nf0taOp6403IACdarAmVU+TC5hFb0E0R8fR/PRmMnmC5eowX1EmVWzhxcfqwnqEr86jieuNjgT54/dRZhx8m5VI+c4GTKgdYnaiTDVV2oEpzMPqJ3oD4sgYDej67SFEiOgPpVoWjbNIhuChCQcuBUjmawRqFsYrugV/D0CfwS5oSzVptiRf5mEkTYYhAd5oj6FoUAMAM7fk3FOyGSpe5hlKevscFQHQ7heOlu5YgL0xVDRcjquGrN85Q/gb4pmX61ze5NlGoariMOoMy72qgRTE+L5pNAxluF4bg+/vHYFMMOixrVeNjuTq+uVzoT1YrL7+4U9aDEjtUSYqA+Np5yT9S6G0PsS27OlAci0noT+zuQ/dQBMf6mVmJwLUl3YzqU2bi5ykQww3aBnI9LejicadWjLzKoW8yyLCrfk+zTqBFNiJ0k0JEU0fUqAFKX4rcdnrrgf4TR9lDnv4w+DtXXV4eAXt3BZcPo80iiNP2+/rvO9ydrj3DrnVYaFjGJ+LgFvY46TwFRfUemEw2wxp2u0mDXtFqdBqWRlZGGX4tHmlZO4v1MOkXWOGCsgPNZRG0irb7h55mu8YsaJ1bBmVVYVHGWQUxTMi0RF0ImmWPAGVomSsurvasHYDKJc9K+yqn+Dp2e5FBXzRguD6jSyqp0ALOq5z3Og1C0zod90YvzKhMFLA==
+X-Rspamd-Queue-Id: D4EB540007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: jesji75ygi8qxtn1axebykrbmrqauywq
+X-HE-Tag: 1774274876-771731
+X-HE-Meta: U2FsdGVkX1/UIN0kjes4I7fuS6MGuKvpccbaIQJqmCY3TtjjfbMa9Mq4z/mWu0D+9cW4PvgXOKMzshGSwkZ5rh5FXasJDofKfaf65HSKgePD3GLDqoXZlRHbdQTDuwK1T083m65UAS9OJwgzx411ZiEWaMeBuaTGLu06pSmr0Fyq0EicKO7GC+E9iNB7A8Tr7aNgy3D2j/g2nLxRag8KkzFdLaUlhOGZlnSZZaiSEKSR5DdY80/HulfEaSG/E6Yq96x3a4Ns9vEiN+tWBbWeXGy9RVsCSLcdxqiyoFIHFPfJshK4Z5/GelD+d5SsEDFUuDTxzo3Pwq5WJ1g+qxHBdqb0j2np5kV6+5cd7eLMEvCTq1WF1/NL24wHTXCpIzazjJhVMN6AAySpInzrBTLrkGaW9WORxMRVZcw8sG08Cp1RQJtS6DX6xwWaOWXiyK42pZW1ClNzMbE4yHlmFPhma0Pkq4tMFsrjs9/mbSd6/eS7URX1SuYws9EBaofwLRbPlA6VcGzw0XUkBLXQouwgq+TIvBRfxZnN5wkMmxy6QiMysCQaKjRNXy/Jc6dJ6nTMF3+51wvTeOLXjg/hBVf4si5RCnkPMEey0UBVpbwVn45Ilz+e3rfSLd5ccRraTHOTfB3urdX1bive7sB1Iqy0cjPgNdXCL4ki0+8DAZrGsOHZQK2Y898TTVzbOdghVIKIFUxBOZzgsQo4QlLuTA3vgdmbMnmgexyBoRRjaR2xPpriLqTAG2PVH0lduay4XoAhLbGN1RjLbC73STCro8wtQP5go9Dhiv5ah4tsGGRC/KtlDSFYf9nVvHf7cAP8maqsQp1hjdHqh5Ual9E9CuMQ6n9NQcFfXBopDmxQn8W3loBzu5KIsskEkmIsyFz/E2bEtRhuI7yww21waSgHhF/2LJhZLpanPK9cCfJPhXYrSH2LanaKp6PAIM7IHORpzpWBi/nNDBwg6kiZuzTfqRB
+ KwLUxecW
+ uwRB6WC+I7uFKTb6kENJKoAqpfJMSm0IhF606/99OxsdP9E8GymOAzWtAzcW0u1pgQ9HB0yj0+QUw+4+xVgmlFlO/W9rSyeATeR8KUbp0pv1uxxARxOz0cruM/vKljRY3nKr8NBOFTMS47P33f/5Koisg9m+qots/Nt+h19K9B63nU4xXNao59luJtWCDPegGCsJEQ1qkhYd3TKb2JJa2C9f1RJwtj7QZe/3/qdY+neMKhT6YXnzXmZsVux6XRDh1FGzbqY9UskyIPPWY7HhfE7UpijIqys4d8YwDeVA1G0Knoq1R60jNQVyX5Zt2eOFkIjMLu2tnljQaAKZ/LdofeL98dmT3vP0kUUZzzGFBIQrxFBY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,43 +93,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 22 Mar 2026 21:43:23 +0000 Josh Law <objecting@objecting.org> wrote:
+I show you posted a new version [1] of this patch, so I'm skipping this.
 
-> Hello,
-> 
-> This patch series provides two performance optimizations for the DAMON
-> core, specifically targeting the hot paths in kdamond.
-> 
-> The first patch optimizes kdamond_apply_schemes() by inverting the loop
-> order. By iterating over schemes first and regions second, we can
-> evaluate scheme-level invariants (like activation status and quotas)
-> once per scheme rather than for every single region. This significantly
-> reduces CPU overhead when multiple schemes are present or when quotas
-> are reached.
-> 
-> The second patch eliminates a hardware integer division in
-> damon_max_nr_accesses() by using the pre-cached aggr_samples value.
-> Since this function is called once per region per sampling interval,
-> removing the division provides a measurable reduction in CPU cycles
-> spent in the access rate update path.
-> 
-> Changes from v2:
-> - Fix multi-line if statement alignment in the first patch to satisfy
->   checkpatch --strict.
-> 
-> Changes from v1:
-> - Use min_t(unsigned long, ...) in damon_max_nr_accesses() to satisfy
->   checkpatch warnings and improve readability.
-
-Thank you for adding the change log.  Please also consider adding links [1] to
-previous versions.
-
-Also, please consider giving at least about one day before sending new revision
-of a series, so that people can get a chance to review.  If you find something
-that you need to change on new version, you can comment first about your
-planned change, and wait for others' comments.
-
-[1] https://docs.kernel.org/process/submitting-patches.html#commentary
+[1] https://lore.kernel.org/20260322225627.263202-1-objecting@objecting.org
 
 
 Thanks,
