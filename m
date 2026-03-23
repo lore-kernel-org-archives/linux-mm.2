@@ -4,91 +4,226 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ECD0F483D7
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 18:21:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D2CDF483E3
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 18:32:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FD1C6B009B; Mon, 23 Mar 2026 14:21:34 -0400 (EDT)
+	id C3DEA6B0092; Mon, 23 Mar 2026 14:32:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AD476B009F; Mon, 23 Mar 2026 14:21:34 -0400 (EDT)
+	id BC81E6B0095; Mon, 23 Mar 2026 14:32:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C3B46B00A0; Mon, 23 Mar 2026 14:21:34 -0400 (EDT)
+	id A41216B0096; Mon, 23 Mar 2026 14:32:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 475CF6B009B
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:21:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C1441EED7
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:21:34 +0000 (UTC)
-X-FDA: 84578145708.28.34D03DC
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 03C2A4000A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:21:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F6DA6B0092
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:32:14 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E075160876
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:32:14 +0000 (UTC)
+X-FDA: 84578172588.06.79208C9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 67BE914001A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:32:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vRRWBHBL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774290732; a=rsa-sha256;
+	cv=none;
+	b=YzdN2egLKRiowVAl3KJJsZbaRC4E4XdUBadcjb0I7FWJZHPeoiY4ASNFuBSktF23NDcEdl
+	r2z1hG0gJBdWGSSxAF1OYwxs9APWO148m1uC6eqgK1FDoz4GTPF37TjiNHDF/WmOjlCc4x
+	33SwO2cbWePLHLCUS9UxYIXzwLB2xws=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vRRWBHBL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774290092;
+	s=arc-20220608; t=1774290732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/nCHX+tDcrCGiwi0oGeFHT7dM1ri9COBAZZl3YVv8VM=;
-	b=4c40uk0OqDe5JYy4+KXQAhhcPdkfpUtA/aA+2g8mP9k494cjUsJO0BxEqQ+S3uWbcI5pEs
-	6ztbeMpgR1H1dLw9zKTvvd/N4SYPks6wy5m3HCeu/HHMPDPzzKw4smCnskt+LIqGWGxz12
-	RkJ2jLQF3m2M4ipXkl8gbL2/XfsihV8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774290092; a=rsa-sha256;
-	cv=none;
-	b=3UT0Vd4rmg+3yEXrp2VQJVZnGmzZQ/fS5VGQ3/3Z0xs2JVfWQeqR52EVgb5oCtNy9T9+h2
-	8o66ahKCg41vt7+cTlNSPRoapt0SXEU0hSVzXButHB9ADI7tXAO58xugARbcvk650pn7Kd
-	CkxGpyeQ95QfSoXLXzVQ+oHopscZtyM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CFC2A1477;
-	Mon, 23 Mar 2026 11:21:24 -0700 (PDT)
-Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3EEAE3F73B;
-	Mon, 23 Mar 2026 11:21:27 -0700 (PDT)
-Date: Mon, 23 Mar 2026 18:21:22 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Andrei Vagin <avagin@google.com>
-Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, criu@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	Chen Ridong <chenridong@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Koutny <mkoutny@suse.com>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-Subject: Re: [PATCH 1/4] exec: inherit HWCAPs from the parent process
-Message-ID: <acGEonF9I6sPA42B@J2N7QTR9R3.cambridge.arm.com>
-References: <20260323175340.3361311-1-avagin@google.com>
- <20260323175340.3361311-2-avagin@google.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=r3FEdx4cl7hZyyKk+NpULiS9hUxyw3Glf8bv5rv0lIU=;
+	b=3JIF46W2hc68BRVBLZOKvBjiHQSHTg6Jwy220zCn9AGJ78KAxb2K2++PFJUJn0esS8XBNE
+	26yOLdqC/9pczd0ppQ9pb7R/TqyNyS3WH+/pxTnurYaHKg0WUfFzHb+/Xu/gSHVyg36/BW
+	bcoN+cnQ/BbQZ1o4Ccb0/AaYORKR9oc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C1CF86012B;
+	Mon, 23 Mar 2026 18:32:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103D0C4CEF7;
+	Mon, 23 Mar 2026 18:31:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774290730;
+	bh=sotfvo0nesaSqmF8KoCTyd8MGYvSoQDCsni9TVbHztU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vRRWBHBLoOcTBUkF+rhoE7Rq4ConSk0Rgcrmkzw4YpeHsu7GHVxSU+9xzFXPbOY5i
+	 u0bAdR1IYL2lSje2Hro7d5AOekw2HXFGZ5LaJSQpGRh2R/vbkvzdqgL+J47uDWMz/+
+	 KFn7D0EB1cQxfFTDPfXur1Gjb858d3o0L8cWM3fNwCDKgzKWrqC0rplNwEmksAbSPu
+	 ZS/lz7HhEE979x/coOh2lXPJitq0izgvM2ECa5Pxhd4/XspzBs6aGxUsjVWxPxxi5n
+	 PNI8xSolmqCXpQMOQFSD2aRJO2mcLziuJFRjSC8Ugh6XmqXhU8DPyrveb+XFeCxWhL
+	 VUfOOfL58/8fg==
+Message-ID: <76f14d3e-c8fb-4380-9d12-2375f199b53f@kernel.org>
+Date: Mon, 23 Mar 2026 19:31:36 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323175340.3361311-2-avagin@google.com>
-X-Rspamd-Queue-Id: 03C2A4000A
-X-Stat-Signature: bxpr4swaawenpsypcp9ga18jpzugz5e9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 04/16] mm/gup: drop secretmem optimization from
+ gup_fast_folio_allowed
+To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "kernel@xen0n.name" <kernel@xen0n.name>,
+ "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
+ "oupton@kernel.org" <oupton@kernel.org>,
+ "joey.gouly@arm.com" <joey.gouly@arm.com>,
+ "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+ "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "will@kernel.org" <will@kernel.org>, "seanjc@google.com"
+ <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "luto@kernel.org" <luto@kernel.org>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "willy@infradead.org" <willy@infradead.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
+ <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+ "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
+ "daniel@iogearbox.net" <daniel@iogearbox.net>,
+ "andrii@kernel.org" <andrii@kernel.org>,
+ "martin.lau@linux.dev" <martin.lau@linux.dev>,
+ "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
+ <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+ "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+ "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
+ <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
+ "jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+ "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
+ <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
+ "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+ "riel@surriel.com" <riel@surriel.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "jgross@suse.com" <jgross@suse.com>,
+ "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
+ "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
+ "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>,
+ "yosry@kernel.org" <yosry@kernel.org>,
+ "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
+ "maobibo@loongson.cn" <maobibo@loongson.cn>,
+ "tabba@google.com" <tabba@google.com>, "prsampat@amd.com"
+ <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>,
+ "mlevitsk@redhat.com" <mlevitsk@redhat.com>,
+ "jmattson@google.com" <jmattson@google.com>,
+ "jthoughton@google.com" <jthoughton@google.com>,
+ "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
+ "alex@ghiti.fr" <alex@ghiti.fr>,
+ "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+ "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
+ "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
+ "dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com"
+ <gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
+ "palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org"
+ <pjw@kernel.org>,
+ "shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
+ "svens@linux.ibm.com" <svens@linux.ibm.com>,
+ "thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com"
+ <wyihan@google.com>,
+ "yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
+ "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "urezki@gmail.com" <urezki@gmail.com>,
+ "zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
+ "gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
+ "jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>,
+ "lenb@kernel.org" <lenb@kernel.org>, "osalvador@suse.de"
+ <osalvador@suse.de>, "pavel@kernel.org" <pavel@kernel.org>,
+ "rafael@kernel.org" <rafael@kernel.org>,
+ "vannapurve@google.com" <vannapurve@google.com>,
+ "jackmanb@google.com" <jackmanb@google.com>,
+ "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
+ "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
+ "Thomson, Jack" <jackabt@amazon.co.uk>,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+ "Manwaring, Derek" <derekmn@amazon.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Dan Williams <dan.j.williams@intel.com>, Alistair Popple <apopple@nvidia.com>
+References: <20260317141031.514-1-kalyazin@amazon.com>
+ <20260317141031.514-5-kalyazin@amazon.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260317141031.514-5-kalyazin@amazon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 159fxdu4syfas8m3h3dktyw6cjxsdk16
+X-Rspamd-Queue-Id: 67BE914001A
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774290091-200823
-X-HE-Meta: U2FsdGVkX188HgG4/1kPYcmBvlCPOz1uCMjYjq0Fc2v1mX9i97OvSXuzY+KT+ZtOj2qmofO128SSwwcexgfIpcYuLY6QRLOwAkJ422zsLmxFEJnNxB0SG0PvayabpvG9jIt2+aG76cLctxiYlu62oPz5ewEAwfCy2ifa8yIedtlptLCCq9Wnt1Bo3JT1YstgBapT8N2cj7EGe9fqIM/cMgC9hf1K2NGSrC6eRWcLaeUP+BJNMeClcNJWBoWRqP4beLrB/5T4zIn2pkiU03QgPSFzoZTRRw5t0VDhtvGE12G+E83wK18zIA9TQBAxnpKom3wKdgsXeitfg5CqTNn+aOLXDdn0d+DXH41Km9VKeH0hOhGP73MGpsp+8tQPlc7TrmWK81MHZyG7D7sO0lChKuuUg5HxHls7A1z8McAGxCtWlJ/MpZ1gN4hebFyQOmDtooBKzzJs7E+MW4bipkLkut9NNPE8Pni12PQuaLVuhu1kVfJLir5iF4ccBe+COoxhkcIjPmYMdN7UNCIUsIim3q4wRbU+WGE2PUCLpC2JltLHU2EwLp4/gBsu29DUrmjfkxmnUse6ekvk7Rx0djD/Tsmp8XAFmJuDtHKjk3UEiJ+2U8Idzon8BU6iCg/IjhZ0C7U2jbYHEnE3TvlaGZWlU0+bONbJeLDstK3mKMSFNysz1vi8LlmLUPKpR33jlqSH5iKfbxJDBXfhsNiEXdR7ROQvfy0llvoJspWMFsJ7bfuRNAVDKBD56JrNb0ZMQbfsfLwuPAO4AknGu6/t80Sgxg2FUpVbEYhxvjCGfuI+cIzyFacG1jxS0XyV6c6elIeUhp7TcpQvbkyH82DprZwN9YRQ6tMFL4/AdEYtJXmMMVHSh6gMCDCIhA63v88p7sYWlotNTA3Eb7oak5WtZ+DthQqf/1hSf+q5JVFDxQS0ghxOTjZiUJpNI9nlj0KuXmJqrx17XkCqjxFgnDje/es
- F95zS1vv
- jHNLAaeSvC4bu5yEEijbE3yKXmfmZLPEeZ21QtR6jDlH5JUZdT+C6pQu2R49l8GGhn5WtCnhosAiUI9X2+JiL8dATkp5PiVL68Jru8oZn51COPL3HopzKQLhVLr6KLTshUT3duiYwMOXPiwcPnCSraGCIwZFGlOuUDEAgoNM0zkg40xa7Qfag2HTHdhYuBIfIIn8ouZ+wqH+0uvN+L+Y7hWREFxe3mTwUcpfAQ63eJeIwbw9ZamSpDuvVhUopKmMSx0pQegox+mMAuFRC1hIq7xaAuQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774290732-948985
+X-HE-Meta: U2FsdGVkX1+gOxA9Q/LPjT/WU+tOY8YMglWvbNqaYqHKo5UyxPnkpBPc/23n5NDb3+bgAx1ICLf1yIQN4MtBaWONaIBC+U0fsFTudJPhDxIpzvIn5jiD7KPi1Ga8SdeEuampNxvzkLtTwdU9Fy/8tmphzVxxMK31WVt6s2aePwuODGjTeXPAyXlhJTjbNJWn/Ds0e3MqHbz90R9UHt0GjMoZbScikbaJz1JNfvn00OBguBSdaIYEmKB9wCdBuvMMfKjlmxUq6ZLhGdWXyI32Oljlxn4lWnjLYXUGBMLPykq+sx7Lpqb1l2FFhbEZPpF6w9e6u7066ICAyWP/+ZzCVH/Yl8SgUc1PEiDv/4bE0EHThdrT994gTroHMYA0o0yapb0z72Pa4P+OyzqNXOQp0FaQOL9p68zjMA4Sq/bPUOAnVyKnqkquxQLurkFMaHPWzcpzyqPHt/yMYnVVgm4Ujmycmf4MhXwl1w0+wyKofnnqj/ac3RHhp7fsTwBNXiddrg4CYlEFk4N6/wDGJGYDWSlrQbhrp4zubZwLlYO3rJssd+XJTiZa8Vb4CioxufP+xmRdKbMp8pxvFPtA5icQXvaBLr4hQHAnesICRHBnMMhxajY1duZ4AZuz5zdgrlwPO3nSIh4VPY8vE5N3wurxucDlH1bNJ4gMf5DppkinJ+DvYoU5i1toTuZfTmLqMPwGWnn4NguvHzsc8nXdGCXN0TwKKdGaLFApoENZL28o4X70hTK6ZthAZMPgWSBl7ApoFcpZSoywWa9r9D0KXY/XfPpX44TB5H69IFbLbmtz5Xpu53SVLtR6/ayM0qdGmejX70mfjx+lX4GVJIdrVuoOzObLglY41fi3hOfNRUuzsztVsN1whEYN8qt1u+0ZJRlZ+wJVunhFz6Zzjw2aIH6j4n16NxT8RHWO5w8Cv1yN1TGk1zjcOXYMXs+6mTsAiXJpHfHnD9cv8Mvi5Ub7S/w
+ XUvWobRX
+ dRls32Tv2nX5OO6mUE6QysUdXbnXRRJXp0JQN6mqrccndHquUDj3iDS8UDDxYI5kjJEnJ+Vi5PSdtP+a4IVWMBi3OpjWbKCvTIJN8nMuXLEtMsWEtc+Jsv0Hmpx271uwIeNu9fKvb5UPH0ryIS/l5xA3es8eMWKn6pCPxuVvAHb6AXSDfENqOcfdg+1mTHsBZDxP9fWpAoWKsc7cT441IpeQIzH1cTWwwUIjojPv+1gUTlYZUv6qEwhEszomtAcg+DkCcjxg5mqjcB9MXsD9qzbAqaiWRdYO3DLg7S0F0l8IEI8DeQBBd3wYYs0k0cR3iNrssh7+aEqS1uecq0pl6g5XnRatvnUz8kHzvk3tD8tRL35yzpXt4kBRp5xDH0uXDKQogou6IR3XW8I0KpOzreeMcVtk8AA0NEnbo0Io4b4to4JueSv/jqenuhLkaIdJXOelKD7UNGIyBbszZv9HIrhMgew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,300 +231,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 05:53:37PM +0000, Andrei Vagin wrote:
-> Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
-> AT_HWCAP2, etc.) from a parent process when they have been modified via
-> prctl.
+On 3/17/26 15:11, Kalyazin, Nikita wrote:
+> From: Patrick Roy <patrick.roy@linux.dev>
 > 
-> To support C/R operations (snapshots, live migration) in heterogeneous
-> clusters, we must ensure that processes utilize CPU features available
-> on all potential target nodes. To solve this, we need to advertise a
-> common feature set across the cluster.
+> This drops an optimization in gup_fast_folio_allowed() where
+> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
+> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
+> by default"), so the secretmem check did not actually end up elided in
+> most cases anymore anyway.
 > 
-> This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
-> auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  When
-> execve() is called, if the current process has MMF_USER_HWCAP set, the
-> HWCAP values are extracted from the current auxiliary vector and stored
-> in the linux_binprm structure. These values are then used to populate
-> the auxiliary vector of the new process, effectively inheriting the
-> hardware capabilities.
+> This is in preparation of the generalization of handling mappings where
+> direct map entries of folios are set to not present.  Currently,
+> mappings that match this description are secretmem mappings
+> (memfd_secret()).  Later, some guest_memfd configurations will also fall
+> into this category.
 > 
-> The inherited HWCAPs are masked with the hardware capabilities supported
-> by the current kernel to ensure that we don't report more features than
-> actually supported. This is important to avoid unexpected behavior,
-> especially for processes with additional privileges.
-
-At a high level, I don't think that's going to be sufficient:
-
-* On an architecture with other userspace accessible feature
-  identification mechanism registers (e.g. ID registers), userspace
-  might read those. So you might need to hide stuff there too, and
-  that's going to require architecture-specific interfaces to manage.
-
-  It's possible that some code checks HWCAPs and others check ID
-  registers, and mismatch between the two could be problematic.
-
-* If the HWCAPs can be inherited by a more privileged task, then a
-  malicious user could use this to hide security features (e.g. shadow
-  stack or pointer authentication on arm64), and make it easier to
-  attack that task. While not a direct attack, it would undermine those
-  features.
-
-Mark.
-
-> Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-> Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-> Signed-off-by: Andrei Vagin <avagin@google.com>
+> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
 > ---
->  fs/binfmt_elf.c          | 13 ++++++---
->  fs/binfmt_elf_fdpic.c    | 13 ++++++---
->  fs/exec.c                | 62 ++++++++++++++++++++++++++++++++++++++++
->  include/linux/binfmts.h  | 11 +++++++
->  include/linux/mm_types.h |  2 ++
->  kernel/fork.c            |  3 ++
->  kernel/sys.c             |  5 +++-
->  7 files changed, 100 insertions(+), 9 deletions(-)
+>  mm/gup.c | 11 +----------
+>  1 file changed, 1 insertion(+), 10 deletions(-)
 > 
-> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-> index fb857faaf0d6..d99db73c76f0 100644
-> --- a/fs/binfmt_elf.c
-> +++ b/fs/binfmt_elf.c
-> @@ -183,6 +183,7 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
->  	int ei_index;
->  	const struct cred *cred = current_cred();
->  	struct vm_area_struct *vma;
-> +	bool user_hwcap = mm_flags_test(MMF_USER_HWCAP, mm);
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 8e7dc2c6ee73..5856d35be385 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2739,7 +2739,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>  {
+>  	bool reject_file_backed = false;
+>  	struct address_space *mapping;
+> -	bool check_secretmem = false;
+>  	unsigned long mapping_flags;
 >  
 >  	/*
->  	 * In some cases (e.g. Hyper-Threading), we want to avoid L1
-> @@ -247,7 +248,8 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
->  	 */
->  	ARCH_DLINFO;
->  #endif
-> -	NEW_AUX_ENT(AT_HWCAP, ELF_HWCAP);
-> +	NEW_AUX_ENT(AT_HWCAP, user_hwcap ?
-> +			      (bprm->hwcap & ELF_HWCAP) : ELF_HWCAP);
->  	NEW_AUX_ENT(AT_PAGESZ, ELF_EXEC_PAGESIZE);
->  	NEW_AUX_ENT(AT_CLKTCK, CLOCKS_PER_SEC);
->  	NEW_AUX_ENT(AT_PHDR, phdr_addr);
-> @@ -265,13 +267,16 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
->  	NEW_AUX_ENT(AT_SECURE, bprm->secureexec);
->  	NEW_AUX_ENT(AT_RANDOM, (elf_addr_t)(unsigned long)u_rand_bytes);
->  #ifdef ELF_HWCAP2
-> -	NEW_AUX_ENT(AT_HWCAP2, ELF_HWCAP2);
-> +	NEW_AUX_ENT(AT_HWCAP2, user_hwcap ?
-> +			       (bprm->hwcap2 & ELF_HWCAP2) : ELF_HWCAP2);
->  #endif
->  #ifdef ELF_HWCAP3
-> -	NEW_AUX_ENT(AT_HWCAP3, ELF_HWCAP3);
-> +	NEW_AUX_ENT(AT_HWCAP3, user_hwcap ?
-> +			       (bprm->hwcap3 & ELF_HWCAP3) : ELF_HWCAP3);
->  #endif
->  #ifdef ELF_HWCAP4
-> -	NEW_AUX_ENT(AT_HWCAP4, ELF_HWCAP4);
-> +	NEW_AUX_ENT(AT_HWCAP4, user_hwcap ?
-> +			       (bprm->hwcap4 & ELF_HWCAP4) : ELF_HWCAP4);
->  #endif
->  	NEW_AUX_ENT(AT_EXECFN, bprm->exec);
->  	if (k_platform) {
-> diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-> index 95b65aab7daa..92c88471455a 100644
-> --- a/fs/binfmt_elf_fdpic.c
-> +++ b/fs/binfmt_elf_fdpic.c
-> @@ -508,6 +508,7 @@ static int create_elf_fdpic_tables(struct linux_binprm *bprm,
->  	unsigned long flags = 0;
->  	int ei_index;
->  	elf_addr_t *elf_info;
-> +	bool user_hwcap = mm_flags_test(MMF_USER_HWCAP, mm);
+> @@ -2751,14 +2750,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>  		reject_file_backed = true;
 >  
->  #ifdef CONFIG_MMU
->  	/* In some cases (e.g. Hyper-Threading), we want to avoid L1 evictions
-> @@ -629,15 +630,19 @@ static int create_elf_fdpic_tables(struct linux_binprm *bprm,
->  	 */
->  	ARCH_DLINFO;
->  #endif
-> -	NEW_AUX_ENT(AT_HWCAP,	ELF_HWCAP);
-> +	NEW_AUX_ENT(AT_HWCAP,	user_hwcap ?
-> +				(bprm->hwcap & ELF_HWCAP) : ELF_HWCAP);
->  #ifdef ELF_HWCAP2
-> -	NEW_AUX_ENT(AT_HWCAP2,	ELF_HWCAP2);
-> +	NEW_AUX_ENT(AT_HWCAP2,	user_hwcap ?
-> +				(bprm->hwcap2 & ELF_HWCAP2) : ELF_HWCAP2);
->  #endif
->  #ifdef ELF_HWCAP3
-> -	NEW_AUX_ENT(AT_HWCAP3,	ELF_HWCAP3);
-> +	NEW_AUX_ENT(AT_HWCAP3,	user_hwcap ?
-> +				(bprm->hwcap3 & ELF_HWCAP3) : ELF_HWCAP3);
->  #endif
->  #ifdef ELF_HWCAP4
-> -	NEW_AUX_ENT(AT_HWCAP4,	ELF_HWCAP4);
-> +	NEW_AUX_ENT(AT_HWCAP4,	user_hwcap ?
-> +				(bprm->hwcap4 & ELF_HWCAP4) : ELF_HWCAP4);
->  #endif
->  	NEW_AUX_ENT(AT_PAGESZ,	PAGE_SIZE);
->  	NEW_AUX_ENT(AT_CLKTCK,	CLOCKS_PER_SEC);
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 9ea3a775d51e..1cd7d87a0e79 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1775,6 +1775,65 @@ static int bprm_execve(struct linux_binprm *bprm)
->  	return retval;
->  }
->  
-> +static void inherit_hwcap(struct linux_binprm *bprm)
-> +{
-> +	struct mm_struct *mm = current->mm;
-> +	bool compat = in_compat_syscall();
-> +	int i, n;
-> +
-> +#ifdef ELF_HWCAP4
-> +	n = 4;
-> +#elif defined(ELF_HWCAP3)
-> +	n = 3;
-> +#elif defined(ELF_HWCAP2)
-> +	n = 2;
-> +#else
-> +	n = 1;
-> +#endif
-> +
-> +	for (i = 0; n && i < AT_VECTOR_SIZE; i += 2) {
-> +		unsigned long type, val;
-> +
-> +		if (!compat) {
-> +			type = mm->saved_auxv[i];
-> +			val = mm->saved_auxv[i + 1];
-> +		} else {
-> +			compat_uptr_t *auxv = (compat_uptr_t *)mm->saved_auxv;
-> +
-> +			type = auxv[i];
-> +			val = auxv[i + 1];
-> +		}
-> +
-> +		switch (type) {
-> +		case AT_NULL:
-> +			goto done;
-> +		case AT_HWCAP:
-> +			bprm->hwcap = val;
-> +			break;
-> +#ifdef ELF_HWCAP2
-> +		case AT_HWCAP2:
-> +			bprm->hwcap2 = val;
-> +			break;
-> +#endif
-> +#ifdef ELF_HWCAP3
-> +		case AT_HWCAP3:
-> +			bprm->hwcap3 = val;
-> +			break;
-> +#endif
-> +#ifdef ELF_HWCAP4
-> +		case AT_HWCAP4:
-> +			bprm->hwcap4 = val;
-> +			break;
-> +#endif
-> +		default:
-> +			continue;
-> +		}
-> +		n--;
-> +	}
-> +done:
-> +	mm_flags_set(MMF_USER_HWCAP, bprm->mm);
-> +}
-> +
->  static int do_execveat_common(int fd, struct filename *filename,
->  			      struct user_arg_ptr argv,
->  			      struct user_arg_ptr envp,
-> @@ -1843,6 +1902,9 @@ static int do_execveat_common(int fd, struct filename *filename,
->  			     current->comm, bprm->filename);
->  	}
->  
-> +	if (mm_flags_test(MMF_USER_HWCAP, current->mm))
-> +		inherit_hwcap(bprm);
-> +
->  	return bprm_execve(bprm);
->  }
->  
-> diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
-> index 65abd5ab8836..94a3dcf9b1d2 100644
-> --- a/include/linux/binfmts.h
-> +++ b/include/linux/binfmts.h
-> @@ -2,6 +2,7 @@
->  #ifndef _LINUX_BINFMTS_H
->  #define _LINUX_BINFMTS_H
->  
-> +#include <linux/elf.h>
->  #include <linux/sched.h>
->  #include <linux/unistd.h>
->  #include <asm/exec.h>
-> @@ -67,6 +68,16 @@ struct linux_binprm {
->  	unsigned long exec;
->  
->  	struct rlimit rlim_stack; /* Saved RLIMIT_STACK used during exec. */
-> +	unsigned long hwcap;
-> +#ifdef ELF_HWCAP2
-> +	unsigned long hwcap2;
-> +#endif
-> +#ifdef ELF_HWCAP3
-> +	unsigned long hwcap3;
-> +#endif
-> +#ifdef ELF_HWCAP4
-> +	unsigned long hwcap4;
-> +#endif
->  
->  	char buf[BINPRM_BUF_SIZE];
->  } __randomize_layout;
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 3cc8ae722886..62dde645f469 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1919,6 +1919,8 @@ enum {
->  #define MMF_TOPDOWN		31	/* mm searches top down by default */
->  #define MMF_TOPDOWN_MASK	BIT(MMF_TOPDOWN)
->  
-> +#define MMF_USER_HWCAP		32	/* user-defined HWCAPs */
-> +
->  #define MMF_INIT_LEGACY_MASK	(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
->  				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
->  				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index bc2bf58b93b6..2ac277aa078c 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1105,6 +1105,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
->  
->  		__mm_flags_overwrite_word(mm, mmf_init_legacy_flags(flags));
->  		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
-> +
-> +		if (mm_flags_test(MMF_USER_HWCAP, current->mm))
-> +			mm_flags_set(MMF_USER_HWCAP, mm);
->  	} else {
->  		__mm_flags_overwrite_word(mm, default_dump_filter);
->  		mm->def_flags = 0;
-> diff --git a/kernel/sys.c b/kernel/sys.c
-> index cdbf8513caf6..e4b0fa2f6845 100644
-> --- a/kernel/sys.c
-> +++ b/kernel/sys.c
-> @@ -2157,8 +2157,10 @@ static int prctl_set_mm_map(int opt, const void __user *addr, unsigned long data
->  	 * not introduce additional locks here making the kernel
->  	 * more complex.
->  	 */
-> -	if (prctl_map.auxv_size)
-> +	if (prctl_map.auxv_size) {
->  		memcpy(mm->saved_auxv, user_auxv, sizeof(user_auxv));
-> +		mm_flags_set(MMF_USER_HWCAP, mm);
-> +	}
->  
->  	mmap_read_unlock(mm);
->  	return 0;
-> @@ -2190,6 +2192,7 @@ static int prctl_set_auxv(struct mm_struct *mm, unsigned long addr,
->  
->  	task_lock(current);
->  	memcpy(mm->saved_auxv, user_auxv, len);
-> +	mm_flags_set(MMF_USER_HWCAP, mm);
->  	task_unlock(current);
->  
->  	return 0;
-> -- 
-> 2.53.0.983.g0bb29b3bc5-goog
-> 
-> 
+>  	/* We hold a folio reference, so we can safely access folio fields. */
+> -
+> -	/* secretmem folios are always order-0 folios. */
+> -	if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))
+> -		check_secretmem = true;
+> -
+> -	if (!reject_file_backed && !check_secretmem)
+> -		return true;
+> -
+
+The AI review says that this will force all small folios through the
+mapping check (which we obviously need later :) ).
+
+It brings up two cases where page->mapping is not set up:
+
+1) ZONE_DEVICE pages (like Device DAX and PCI P2PDMA)
+
+2) large shmem folios in the swap cache
+
+
+2) doesn't make sense, because the folio cannot be mapped in user space
+when that happens.
+
+I am also skeptical about 1), especially as large folios are also
+supported for device dax and would be problematic here.
+__dev_dax_pte_fault() clearly sets folio->mapping through dax_set_mapping().
+
+
+If 1) is ever a case we could allow them by checking for
+folio_is_zone_device(). But I am not sure if that is really required.
+Sounds weird.
+
+
+-- 
+Cheers,
+
+David
 
