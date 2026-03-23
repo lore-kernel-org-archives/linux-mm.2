@@ -4,134 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D363EC01A6
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 08:54:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5D0AEC01A9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 08:56:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8C676B008A; Mon, 23 Mar 2026 04:54:03 -0400 (EDT)
+	id 31A856B0005; Mon, 23 Mar 2026 04:56:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C16446B008C; Mon, 23 Mar 2026 04:54:03 -0400 (EDT)
+	id 2F1D26B0088; Mon, 23 Mar 2026 04:56:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B04D36B0092; Mon, 23 Mar 2026 04:54:03 -0400 (EDT)
+	id 208BA6B0089; Mon, 23 Mar 2026 04:56:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BB3B6B008A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 04:54:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3DEB113BF62
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:54:03 +0000 (UTC)
-X-FDA: 84576715566.11.DBB3A41
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 055F518000E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:54:00 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ah06bRTP;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 08F8B6B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 04:56:41 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90F611B8F96
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:56:40 +0000 (UTC)
+X-FDA: 84576722160.17.4C131AE
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4042C10000B
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 08:56:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=NZcI0pJK;
+	spf=pass (imf05.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774256041;
+	s=arc-20220608; t=1774256198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ogcl2ZAquuYNoAzauwvXFFTaynrHJWtFRV3iycnT4gM=;
-	b=V3DnqCUcwy4m9G/nFsURdNMJQxFx4GM+rEswB6sS6G5FZlFTeWIJr7yN/AXLG8xgMF8nHi
-	RC8bNBMd3V45OcsI4PzXgnL4fN9+vBC7Yz0cTNg1vk7Uue1v5dooWaopZvGvReAoU3dMA8
-	YjR/JmDoV33pdH3JlA+3A/ci6OGB0JE=
+	bh=M5Y/fERwhKhoqxvdE3p5IKv/NOKxkrVNr6hVFfnSRlk=;
+	b=puoRrmkkUL0rymlJGVsMSGQkmhrLKSTfFi7ibZmaR2WckOvnY151kPjMttSVxFRDyOthW+
+	y4dvAsNrQ19xoG4LoX+0HZ6DDMXKlklHUhbfM+6uGsspbmixUnER+t0Dq4Y4tpFCcWo5lU
+	GxQ4opZ+s+k6H4MWxPPz+eeyJFODkVs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ah06bRTP;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774256041; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=NZcI0pJK;
+	spf=pass (imf05.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774256198; a=rsa-sha256;
 	cv=none;
-	b=HB0oVLwrlHNW+yFc6P2i7kqkalpiuhKM3DbQJiVhSN3uVHNPgnJmfNVSzXeZOVUqc9qQZf
-	pTnKOwfoO/QJjttPIQMQoO+UzGrlTZ/K98eLaHbaqYUkx46JW45ZtWDJhUEwMN2x5BZvj+
-	2JH97nnY6q1nF2hoZtnvb6H9xFZAiCc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774256040;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ogcl2ZAquuYNoAzauwvXFFTaynrHJWtFRV3iycnT4gM=;
-	b=Ah06bRTPeq9tYMrEWY7cW9aXKxEN2qN1RkXo1cdEUDHZ1YqvEzvDA6MKdccqLiBNw8q5fv
-	wAF+LPD50cXbSGgJPtY2lWrgWViHwF08NPvDj8N58fK+A9Hypnc3/798q6tgRQQ+ZdQ/n7
-	LbjYPQOklIDhLbV34617J8r2RLTnhBc=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-194-YwifE4NGNsmQNO-wmlo8yQ-1; Mon, 23 Mar 2026 04:53:58 -0400
-X-MC-Unique: YwifE4NGNsmQNO-wmlo8yQ-1
-X-Mimecast-MFC-AGG-ID: YwifE4NGNsmQNO-wmlo8yQ_1774256037
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-358f058973fso5707970a91.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 01:53:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774256037; x=1774860837;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ogcl2ZAquuYNoAzauwvXFFTaynrHJWtFRV3iycnT4gM=;
-        b=qNSekmj5yueq7L99QvAJmNYVZpWE2gZHpmoDs36sTL/cYQ/zDqmtH7Fy0rKFN9DqB7
-         UGrcWP8lXC/7LEWZNF7dyX/s8CLYoz0vrSwofyYMmPdFxKENio2SWyLVy5XjydDncJBM
-         +MwRQv2SpUHm59EiE7DvgWam2tAdVaGS86pF3hWSQWRnVlNyLWRm/L9L+18ZMhRGvmZ9
-         IhyBf7SgAOW3IDDUPV9GAQUjW9yMhof9EYwnAMLP3dvAIjIkSu36CLOnpWASkjAdsf6X
-         KPwTBlim8+8+lsYoZKA5AUWOVAgxYNCptQ8XO4QZyFH94dTeu3gMrBHriQCxx2rXd0x6
-         hfQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX9Kl73XFQ+Ubes7U/1EGhkSEMVzGUUZ/hGwuVRaKesjyje4pR2kYAgwQKyosbc2RFxci8ABmgFUQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx+mCQs8FOTg7kugWEf2idTP/xRzpBmRueWuFm9ASDocigBtfO3
-	/I4NG8C7WcbKCx65Sb2REkTzHMzldMuND83m//SQNkvPvtHOdDOiTis8eVxNEM96QPgp7Eyh7Ia
-	5n+Fqhv8xG79yOePijewnSLPdTv1056JInFwekALTG68NoryVATpe
-X-Gm-Gg: ATEYQzzHFW/j6mGVrmUpD/0CmLNvm5aJVGdUI17BJ2NgbOMzHg1Ur+PW6nnoL6ADe7W
-	MoEgmxwDkqtpdNNCgwOesRmoUUncvdZb3MhUCkG0Qla5/pdE34yuYlF1JG9s22Rjb5Y7OI6OHAM
-	e5KxNWkUX5UiOCLsuCbhGxntgZL5WGBpEtFku9gHs2G94pyfXLfN4ccWuoNHxITWRLNXLunReUO
-	3TGIfT7mQvjjnwv8AJmbKC2h+4T5xlBtwrzZDXqq/LP15W6XCMd5GofYsDjrkdsvQQLiit6uNDY
-	8HLGo8g/TvE1QH2SW1iRc8RlcOykG2DGDk8QuxwYlaQGVT3SZUrCMnLvns90DLStE6aOrS5HqxI
-	Xb0ubMca2sDHFlETQZw==
-X-Received: by 2002:a17:90b:28c8:b0:340:4abf:391d with SMTP id 98e67ed59e1d1-35bd2cb1ea5mr8848383a91.16.1774256037060;
-        Mon, 23 Mar 2026 01:53:57 -0700 (PDT)
-X-Received: by 2002:a17:90b:28c8:b0:340:4abf:391d with SMTP id 98e67ed59e1d1-35bd2cb1ea5mr8848368a91.16.1774256036672;
-        Mon, 23 Mar 2026 01:53:56 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c743a7ff529sm7219812a12.2.2026.03.23.01.53.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 01:53:56 -0700 (PDT)
-Date: Mon, 23 Mar 2026 16:53:53 +0800
-From: Li Wang <liwang@redhat.com>
-To: Waiman Long <longman@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Sebastian Chlad <sebastianchlad@gmail.com>,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
-Subject: Re: [PATCH v2 6/7] selftests: memcg: Don't call reclaim_until() if
- already in target
-Message-ID: <acD_oR9CmOkQFBZL@redhat.com>
-References: <20260320204241.1613861-1-longman@redhat.com>
- <20260320204241.1613861-7-longman@redhat.com>
+	b=6J2JV7YDhUOmDh14uZLWWIihChJlpfmFya/BjzGrrwmiInHQvyWfqkM5a3iXzyxuKX1zeo
+	vABmTBeGcQ9tFPNQRtMboSSqSn0Tho5B/7u7pA4C1veKAvjuRMEekhCfOQFRiSBj34Dohn
+	aN43+Xi7c4PDMOtMHO8Z46U1pScLZNE=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62MHLUqA4165707;
+	Mon, 23 Mar 2026 08:56:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=M5Y/fE
+	RwhKhoqxvdE3p5IKv/NOKxkrVNr6hVFfnSRlk=; b=NZcI0pJKZIUYwuoRFL2Q3t
+	XdI4dlGInWbdNY2bNfERUfnfJKcPpExgmkPPK5JDY2kWghLGXdd8EkVFrq/7oPlb
+	YacuXBuO9Fj0AVeGr1Lu62r7uP4yHFsADQA9YsU/g7Y72Yb7ONkX3TpJCl0TuEiH
+	JuYBAe3dfGvcVM9X47C+RNYbAfqJYuPsybScR1AB9t2acJ2izzPVmQKYs04th2aG
+	3zr5TR5CSzEw3oHr97+pEr0xhNkXIau1w0Pm3lLirlpVAjz4TjORsimCmeeLhGrh
+	kzCEvqoxzhe2ooZUR5f+A68dKjb7knIXmh/PcDJZLnT1c1n25HFGJ+Tqsc6N/IYw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktunts7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Mar 2026 08:56:32 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62N7El5g009143;
+	Mon, 23 Mar 2026 08:56:32 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d26nncp8q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Mar 2026 08:56:32 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62N8uVoR24576618
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Mar 2026 08:56:31 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 01C745805A;
+	Mon, 23 Mar 2026 08:56:31 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 18E665805D;
+	Mon, 23 Mar 2026 08:56:26 +0000 (GMT)
+Received: from [9.123.6.34] (unknown [9.123.6.34])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Mar 2026 08:56:25 +0000 (GMT)
+Message-ID: <a691d42b-f4a2-4f4a-8284-4dc537c04285@linux.ibm.com>
+Date: Mon, 23 Mar 2026 14:26:24 +0530
 MIME-Version: 1.0
-In-Reply-To: <20260320204241.1613861-7-longman@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: F7wGSrSmN3qkRoHY6CWcCLftM3SRU-DJLcv0mYkJcVk_1774256037
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 055F518000E
-X-Stat-Signature: cj11heenabj9o5ceh7mxmad9kmy5xx77
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drivers/base/memory: fix stale reference to
+ memory_block_add_nid()
+To: Kexin Sun <kexinsun@smail.nju.edu.cn>, david@kernel.org, osalvador@suse.de,
+        gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+        linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+        driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: julia.lawall@inria.fr, xutong.ma@inria.fr, yunbolyu@smu.edu.sg,
+        ratnadiraw@smu.edu.sg
+References: <20260321105704.6093-1-kexinsun@smail.nju.edu.cn>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260321105704.6093-1-kexinsun@smail.nju.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 5NZKWs9zDTObDkwDn80J4vezwIYz0Cye
+X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c10040 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=w5w-BL6sGUiLeuYIlr0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIzMDA2NyBTYWx0ZWRfXxBT29/4Br3da
+ ikMUdn8q0h2P873ZZ5X7nR0oFz7zBLO0loA31tXiF7Fz7eBYCOFdKkwgJDoz/HiSa9rmv1Y+GQE
+ klXC6lotyNNDXDefKpTQsLWUVrlK0KtbG1mICty1R03UADSg+0lFanB32iLlmlXFIs46k/Mptfu
+ hkb/YH0LYLcvpuGONx3PTFuEuE5HMGNYUUERfzaQbCGfhRECQIEUEnPSbDkiG3qI+rxrJwJth3O
+ Ldr/8QVvhzfmw7f5pi1mAkISSxv8ItCObXxI76e5h21uYoSgwZkzlDuj39ycbqO1XAWHPd8giHB
+ PBYKnRSLhZ2utytpK7oVE4PRQUc8mmaas3/1s/mUWFz8ChhUzEXsPf44fB2ql9PKhoTf5yzM5mC
+ Iqu574NDQTz7Ow7TNKjEFdY8fCuqnfKfeZ2l4t38+YBj0RtlaLKxb4Ipd2Ct0GGmG9SlUGmKPEh
+ lCstrIdyaA46ct1U6Eg==
+X-Proofpoint-GUID: 5NZKWs9zDTObDkwDn80J4vezwIYz0Cye
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-23_02,2026-03-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603230067
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4042C10000B
+X-Stat-Signature: 1544ga697sbck1zkwds69dehmoa6y8in
 X-Rspam-User: 
-X-HE-Tag: 1774256040-961629
-X-HE-Meta: U2FsdGVkX185TjeC5pLNGt9KEvF7iUgvDdIoiW+YP5eztLVbecFxKPqxGOhLm0bRp+zii7/e6JhDvdTxsKA8fZStp/W11lXmw8CSYDAPCPlMeFQSjRitskO5nQA/EcAC8nwylO38jczTC1NR8hUrx9t2PUFRnX8PZnmH6+LQUleVpzSWcfgb3ia2e7mjssxPCpEtXJu+GGp+YOzxFobZJtZPGmi13EX6cQMFFDQyXDtMtXQML4uLvQuZnEhG7znu28Dlo9qyd2tvcBvYMEhEIjOoBjxEHo3kTAK2UMbbqBUbKnmwwDeGnQKVzRvMTXhE1HtscdK63/Dnw51SzZu8sBSMRaeYxH3VIB0wSYxo4cScG84mxq+RVhI2tGow5HVVVIRVn4vsW6j6VyZUJbsgQjoyuUN41PtJ19TkTYGe1BEHmdsH51U0EHv0ZNX36tGvKD+WVmt4Boz0ozeTvGUYarB14sTU27fc/xA7g8hsP8gIpZZR9Vc29QUEZ/F0cCdMbYEiJcgBxIbYFSemAYiukar/sfFFMu+e/F8myHjdqngDwLa421NNXN+X0Gti6PUZ/yHPvL91fVxWY70hezUSl55knYD59SSHTY2a7UDqsUczCXTAKDFh+ql6lgJFhXn2hxpq8DwXZQAVq+qBAW1x/hBs0FKGqAQwwP+9RSSgenwOICkcqh+U8J5FNqthkzMf3on3YDYJH/z6PG8GqSvp8KHfHat5kpTLokf+/psdpDkN05tIS0XVo+TlQD9sznyNkt6Aja1bgqEayBAAwkF9/12PKIdS5H0WK27NnWm/FNiy/hlSPhxkgaaQyI/W5v7M0yG9Vp2OSOJkT+DxT9hXwfkDG/dgsz4ig2Li+Fo0w4jP7MiNwu+0/DS81bxTUafy1CinpW3F1OVp21HOLeSzuXOM0D1IaMdF9WiIqxEzaRhQPoWHxFS1l+OLRDSGH9JM7+wCFsyJ5pYbRmE059L
- EKLiJS7p
- 4S/WpIPDCjMgPjM2BGVfWvuSxfYi1eB1/S7d3qKg2fn3kzuQsdp27DNKgkDhBYg57Ok+sYohaKAroa9zkOhg0LmNlNLnNv+TvrPWvCSXVm2yeKi6xfln146IRNQMKE3rMp2GwugpyutQeodVLafPywUYc0zMpK8eCGWD3N4ceYAjvewmMic8pnXssLH49zJV28g/IpjhXJug8ED7oc57sNJnQZRImclaE2i6ZO/+4J4EUGm8Dd/J/PuvnRUrnbKnS+jMNrSvSBtIpBL38y5cMneTpetv5eVFzGl13Swix8DisgKGEmRl+URc2Mou76YbPNxrHbvDw5W1FqVnEx8ta73iqtyjIiggengSa5YpdZsE/6sCKZbxRRZoNEUGp3rlSwfvo9A+REtm/Owj2OqHVMRBNHIlva6hLP04FOtzZX5yFk7/E2fYlFe4KBw==
+X-HE-Tag: 1774256198-960510
+X-HE-Meta: U2FsdGVkX1+oBEs+Ih5n2wdikoppgfiZFHumsZdoWKfyBKsz3zl0QeCCuDT4ma9X5og8w3hDmleRyqJXKTHwU+zMyBr/j31ZjROIQOVcq5W9e4Z6C+8GB84oMSeFBe4ew+DBVRItPo0peLJfdAC7KdqoH8zIl7QbiQLbnblE2m13luIj7Y0cpdq5XuWJerGPxkEzA4SzkLrJFBnbV3T7hOATXwKuxxbvuAx/X6Jfi5UGwVJvi5BPo/mO/bMO6S5kNWJXZPkJTifq/K7rogb//eNVATUjuu3in4N5d6TJPpa41541hbJvDPvFYZ14+NWldjNb6So3gbCcQ9dfZv3qPGpq0FWEpckdVndLgs6CSe5otSfuo5r1HNPUHszs7vmx8YWMfz6DwxmRH1cg9i+85VxB7mFsqT02H38hmTdT2GTzuu/vgQCiWRtGM4rtjqwbB1DygYIFwSSwuIjlulrjVMQ1CCNGIHsCxu47ovp45gs0g+3AoejCnUunPBsiqtWDup7ZITOFQEP+grasY+DJpk98MLnfYCkdmggEdEDWfenuWidMgIDyhfrDbOC4wF28gdcyJtz1U5DzpvY7K6kWufp0StA8R1r4ywAk5Tz/+UUQoXhqEFhCCrUCRK5b37ksywFMiJ5vGaJDgcEli9pSn/cUzz1SVcGCThfHkKabAIjxJDeoeHNg5TLHA9gsIwaYA/vf5bNmoiG8QuoasHoRkn016F3Gj7GDEyypUejte3OMov0/4muGAIupWccs/Nu3VbL/iQA8hkPENIb4mUaxH1lWigETrJWYPwsr5tBzRYZ4filwfvxo3ZV49DXj0nylegzP5r/xyoa0n5k4HlsOk6HqJYs3xFtuUEaiB4MujSTXE5yqvN11WBBY35kDtviN962ca2gtchUGp8Qb2DWl6/u8O4dc3Mf87jZqJDRgVxAkLGKPWHkHQbzPGsxqE7aLSKZYQMFW9RnL+FYnegW
+ 1FWRYuXL
+ BnEKQnBqIFvLOFU3qHICqp+tbo9Ce2xcLXvd2bo88tZQ4oSQmETtrmooZmLjT4pjHYeebaMztb6PYAoMSTUJDf7FXri1jluCsbj3e2m45LEB7J6Lw+JHLogmGCX9Z7aQ7uRjnUhSIlT4nc9DuVvCQT2xziMorl9o1YDZqFzBelGGz/1ojqwYL5wcJETM0RjaavmJdpqIBtj00U+1oP7xDJiKZtM/HBYd4ekZgUZXyHxEE7aR5XlKLmjfCR6XOGeLQbkRiEjkHSilejlhoibS3KOgTdNbDP6ixsJqE/aaHHa9IXufnnZuoELy5WQD+YGDNkXM7r1E1YJV7kas=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,25 +143,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 04:42:40PM -0400, Waiman Long wrote:
-> Near the end of test_memcg_protection(), reclaim_until() is called
-> to reduce memory.current of children[0] to 10M. It was found that
-> with larger page size (e.g. 64k) the various memory cgroups in
-> test_memcg_protection() would deviate further from the expected values
-> especially for the test_memcg_low test. As a result, children[0] might
-> have reached the target already without reclamation. The will cause the
-> reclaim_until() function to report failure as no reclamation is needed.
-> 
-> Avoid this unexpected failure by skipping the reclaim_until() call if
-> memory.current of children[0] has already reached the target size for
-> kernel with non-4k page size.
-> 
-> Signed-off-by: Waiman Long <longman@redhat.com>
 
-Reviewed-by: Li Wang <liwang@redhat.com>
+On 3/21/26 4:27 PM, Kexin Sun wrote:
+> The function memory_block_add_nid() was renamed to
+> memory_block_add_nid_early() by commit 0a947c14e48c
+> ("drivers/base: move memory_block_add_nid() into the
+> caller").  Update the stale reference in add_memory_block().
+>
+> Assisted-by: unnamed:deepseek-v3.2 coccinelle
+> Signed-off-by: Kexin Sun <kexinsun@smail.nju.edu.cn>
+> ---
+>   drivers/base/memory.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index a3091924918b..0d6ccc7cdf05 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -815,7 +815,7 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
+>   		/*
+>   		 * MEM_ONLINE at this point implies early memory. With NUMA,
+>   		 * we'll determine the zone when setting the node id via
+> -		 * memory_block_add_nid(). Memory hotplug updated the zone
+> +		 * memory_block_add_nid_early(). Memory hotplug updated the zone
+>   		 * manually when memory onlining/offlining succeeds.
+>   		 */
+>   		mem->zone = early_node_zone_for_memory_block(mem, NUMA_NO_NODE);
 
--- 
-Regards,
-Li Wang
+
+LGTM
+
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
+
 
 
