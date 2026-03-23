@@ -4,145 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7E26F4610E
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 13:26:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D349F4610D
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 13:26:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF9AE6B0089; Mon, 23 Mar 2026 09:26:19 -0400 (EDT)
+	id C73A06B008C; Mon, 23 Mar 2026 09:26:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAA956B008C; Mon, 23 Mar 2026 09:26:19 -0400 (EDT)
+	id C24B86B0092; Mon, 23 Mar 2026 09:26:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C999D6B0092; Mon, 23 Mar 2026 09:26:19 -0400 (EDT)
+	id B61EA6B0093; Mon, 23 Mar 2026 09:26:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B54DC6B0089
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:26:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6993CC36F2
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:26:19 +0000 (UTC)
-X-FDA: 84577401678.08.820CBA1
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 680D7A0012
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:26:17 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=U6jNl6z3;
-	spf=pass (imf25.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774272377;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A64F26B008C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:26:30 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A3188CD25
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:26:30 +0000 (UTC)
+X-FDA: 84577402140.16.500AC52
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A88B718000A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:26:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iuU6VXYT;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774272388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b8yk/BaeTksLn5Ogx8FpbgVk4TSQec7gWJcIZVnJOpI=;
-	b=029Bgf7NRCxukhKn8uykDgdKh+kFvTg5fYvMYoU5XsQtgv2Y59eDystmJN/y3jx7KUgl1+
-	ZfMyPtrhu9PrjopLuX5VuhD3G4Yw98grELZOrOyrI2zQqDjBe2XAoelhJI+hf265tcA2wi
-	5ptQa204vhIF5oobnfnTPokoRo2uXpA=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=U6jNl6z3;
-	spf=pass (imf25.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774272377; a=rsa-sha256;
-	cv=pass;
-	b=4XpBVvslLSmlpa82gyY+0ubSWi/LpB5h1fJqNLat6QKWPnMojXNvyTsnEp4ghklkKQImFf
-	5HNvNYpTdNwJXE6peEY103myWGXj6+DEYmaARTOcU4Zpi9wIdQmE6olaxIQMqqmp9WDk/x
-	QTPS4fQi6Iut7OME82jcNJ+xV2d5Isg=
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12734af2cdcso242440c88.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 06:26:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774272376; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FfomqevDo8X5Pt8eQuzUJHMqoizVK3W7zgYu5OQLKACwsXLLhMjwfx53ftUHYId3eO
-         GEdwZvC8Ix4D8s9Avrzq2/DdKHBHFIR+rUDikPFZKYKf4wj7/bs2DucUSFO7p2ucNGt6
-         CdYO+29iyoJlofHzCTagTCZbyx5ybs06QMCiCFRKdB8QbfulCbwWnImMFqM769UvzOtf
-         yy8pcD5JIbmQaE6gsBdxnAgbJVJl9QXMRawR3JuWbsQBYzElQ0++nxc7MCX+l62cQxwG
-         ndMZomyBv5B169Eg9RdnwSl9HKr/PJHTlmoz5Gqu3LpHKCpDo0pggH92cFEZXIoDAn1I
-         nlpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=b8yk/BaeTksLn5Ogx8FpbgVk4TSQec7gWJcIZVnJOpI=;
-        fh=e35j3KwpP1c5kdmzLNHcHqW/CsXinemcT5+rdrBH/1I=;
-        b=GTgN5YFNvqqv+lMjaeiqVNuXL0T5fZwBoT2kqLvVyiQuFMtEXfTJWatm6FDxrOPCLo
-         WY1deYArekUCDKGotq/HMkHR+9YKRextEXmiIxNglyDegFUuYXx6eDB/OZYjzcl/o6bE
-         nwFpV46NnXOpjugR2ImRQLE2rHCZ0ITz072clTlfI2rVoBr75JYJH0/QIp/HuBvzVVzx
-         WvkpovRUxsU/uKlumE6XQINklJ+HD2W87cBGmPazMX3h5lGDmYzGokjW94LLmXELyqOC
-         2oC3bWy9GMiX4ElXQc2+Jk3wZOhcRbVheMVK5MDAAMczmrfsM/MMV5zXulDnfJFobZ2u
-         ATIA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774272376; x=1774877176; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b8yk/BaeTksLn5Ogx8FpbgVk4TSQec7gWJcIZVnJOpI=;
-        b=U6jNl6z3Z59lGeJ/6COmY6CP9fvVeB4nlmh5g1fME08UPzv0IHe2DSmNGc8j+8BPJg
-         I05HymDhcWUEZerL+W4u8wIT4GT0sZB5ru3YMzdDlHg4AuLhE10yPaHYIZkjfmCwV++F
-         MM1lq6lItJRB7mwOvB9cv3RLahvhKy1cpqvSZDLT2Znd6JknCJ6NsQybBmBPaaCMu8Ij
-         CElKEctYMYxlIMgg2QsPKa3ysb0kpRLspze+5Ojv1uNA8nl/ibW5ajj12gs3gpDRgm/C
-         NnhoxqnQ4kgGQieIUiQm+tDk5yuHrkNzFm7TpFwfy2vPLXP6JtdipltdzJBH8gHzs20U
-         X/+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774272376; x=1774877176;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=b8yk/BaeTksLn5Ogx8FpbgVk4TSQec7gWJcIZVnJOpI=;
-        b=g0x8HroIcdH6AiEyv/+aaaOdhsc2vb2iqxY71DvfssbJBdK4iySk0KoI6QAKMKHVam
-         V+CHeoD7JXEg1A9ypx4AfylB0VdReimCqlg0U8LlVHmgyYjCcnGZVZg+k/3k69RlKuo4
-         CjEpAOWHwsHnOadTsZj98nl/gntErZpSaHRLyp5uA37xK/OItzyVGCpUWpj6G5wEikUF
-         X4gRKT/o60fUf9tmT4nJZHTlx0SOiIZsndA83HCkKiyK9Qhd/kbxD7vyu7U3oWj0nX9Z
-         ZEUNRugWK9COCxDB0234YTgiUaoi65XV0zSJFV4fUBnjnxDzhGgIWuUaOVIADf3AOd76
-         b2kg==
-X-Forwarded-Encrypted: i=1; AJvYcCUcCAKHrkyZqKJ9sH1Lg+s0OaUuJtumDDSiuvYkr4sE3MyHi0Ch9e1EtlmOGwNRpQ0TzpGug4nl1A==@kvack.org
-X-Gm-Message-State: AOJu0YzZb9WmKGqaX0BfrlnHwJUjOj/m1LA7cN28AkC2Hsa4Vagg/BUM
-	2ayYvj9aSy0gncuya9XgftDwHjDPU8FT1uLQF/VyBqEO1vysvaNIHPiPhD44V1BzVrZ7oHjx2tV
-	6u+QiTJ5d4VvcqHQYRZ3fb1kvy8BLid8=
-X-Gm-Gg: ATEYQzxHAOyU5abdxUdtvDHPrCCG8vs7WPIrgwfNk8vxX0PbUKJmBNIhaLydysSYJTu
-	iHYIpDZjfli4ElgH1KZTmZPeTVqnia6+Qw1eCP81ym+FF6xqr3sxofUOAHW8p60+HaftGd6TJZP
-	M33pOPBqepUklwYsw1Noc+jMXg1TBBkpjhQ3ztH/EZAePEoTHEBu4Rzd3CfdNR+M1pHTaUdl7gU
-	c1dQULo2b5znaH/E+AP5TWd8VQlwDItqoSs9w4lvKgfmm5B8Ad8GLuyff2+nmUcjdU84UYj8+Vf
-	RXUIF9/poB7c9w9kb2M/wfp17gIR/XkhfURDpzn+Ne5WyO0E1S40wPokdD78ZgEo7nH1mn8Q4Mx
-	VcrFAWd8rHx8dWY1Gpx419iOAQgnfvunxJA==
-X-Received: by 2002:a05:7300:3215:b0:2c1:27c:758c with SMTP id
- 5a478bee46e88-2c109938d44mr2298180eec.8.1774272376046; Mon, 23 Mar 2026
- 06:26:16 -0700 (PDT)
+	bh=Z2ZwlcV0snKw7sTklAUSuJzWJ3BlnWp3hwMs3i9tdmE=;
+	b=YrCE2XDyeBl9J0MECt6/Pt5gDA9bIuOOGNbPuI4NJcL8uV3fWiJkcs0HodmfRL0l+EiHSQ
+	6uRBma52zOcAWwwD6/LjGSZrVERAJdXqM9bveLZYpjxRBEeMwxAz4o414rKZZBAk+HeTlU
+	Ho558beO1a/lga898oL+ab3qRrJsAoE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iuU6VXYT;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774272388; a=rsa-sha256;
+	cv=none;
+	b=3qZVcHP6q3pUoNnGCk8ouQJoPOHS2JjtUaCbIj1ZoXjb6ZYP6XAinpCQlvGa35bCMrxQq+
+	l9YvNZwVNgCZJj0v/fZk3mFs1QTfkNJjhJKBTxccDG0lqEfKawrZ8+nxOQgT3DhNRF/dIe
+	pE6lUswTZc2ZXc9KCHwu6qlmq32gBe4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B5ED60103;
+	Mon, 23 Mar 2026 13:26:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2270DC4CEF7;
+	Mon, 23 Mar 2026 13:26:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774272387;
+	bh=BIUBdhUukoru7ramtIU4Bi2jFIe+TzDF5KP4QRFFFhY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iuU6VXYTYtmma+CgDR7k5Tv+Cn15gIN0ICNpizFhE18lKLFdVvLoZugVhJTiHZmyA
+	 KhKnmK8PYVYEjCxwvplOkDboewkhJivcJFxDMP83UyccjTUGCs/m3zjt6BBbP2+BaN
+	 fNbx8MVpDr+fZBcn2eMPoQxvBm3EjKB1nFrEd/DXDmZKRz91bLM8VlWBouW3nTt5GT
+	 jTZrnV7Uz2jK7gHvPId0QnxohqW3q3rN7DSG6/V7dDVGA2/Dt8RDWsL5TAf6CuDTYy
+	 zk9ncNSwqx7HwWdynIDdToue02HRUCL5ONeEQkDdd+8LBTSNsjANGKjpeUcNEGeoUv
+	 sUCDKHvLD4Bkw==
+Date: Mon, 23 Mar 2026 13:26:23 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
+	linux-cxl@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v2 01/15] mm/memory_hotplug: fix possible race in
+ scan_movable_pages()
+Message-ID: <5b489c40-bd89-4dff-9669-560b1b28ec69@lucifer.local>
+References: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
+ <20260320-sparsemem_cleanups-v2-1-096addc8800d@kernel.org>
 MIME-Version: 1.0
-References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
-In-Reply-To: <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 23 Mar 2026 14:26:02 +0100
-X-Gm-Features: AQROBzD3BkPQaIE4qxn0GaZ9qpo8tZ7H6ULFyxikznbiRv24VDJjkNXoA95umyo
-Message-ID: <CANiq72=dh=jTORtmHfv3Z56qJoK4K-0Bpzew7CTYn1qO+sR9_w@mail.gmail.com>
-Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
-	akpm@linux-foundation.org, aliceryhl@google.com, 
-	anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, gary@garyguo.net, 
-	johannes@sipsolutions.net, justinstitt@google.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-um@lists.infradead.org, llvm@lists.linux.dev, lossin@kernel.org, 
-	mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, nsc@kernel.org, 
-	peterz@infradead.org, richard@nod.at, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu, urezki@gmail.com, will@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 680D7A0012
-X-Stat-Signature: qj4w8btiyodprzbqseup6u9t3pn1yty6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260320-sparsemem_cleanups-v2-1-096addc8800d@kernel.org>
+X-Stat-Signature: tabf7bgpnmgkybsu4t37p7yrw7ibqbxz
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1774272377-185751
-X-HE-Meta: U2FsdGVkX19beHFfwd2ZGt6V8iQ8LdQxkNFJpy7da6kZuTs5K2YDPi/uOiI4CwBBbdxW6hDGEkjZ/M7ZbRlphsbNme2ZCxsAaN/KJMv9IlZ4g+nUaDqbzjuKUvbFjKQ8wdETDaBbAxGjcp6iE/DuqocyWOCcOxL1fR7F2E05UKuy+Vd3OUGSBDpPOr2BLZPMRiweg/KLYtza3Y9Y+3ZXHKD1QDvHDivay87I1iK9EmjOsfm2vACee3VCsxIag8/MJ+qNvZhltOsReLZqcssccEjNvUqQBJtJOQYVnVdIk8QAmxgg3Iuk/VoS/ZYJLC98siuGfTE1AD5XeKMoslkLEa1vo9PYp0wJHoQpewPFN4eYzErDhAtDZq+Bwweh7xdNOqoMJFCUvrjYgXVDZUN/In6foFX32DCgkhNPIivQc0nQv+us0E8QqWYrZq23RpO/IZXwTzno9iuXFQECe+9xFg5691dmGPBHL4g72CdN+/WxiWW7OScPPnHl+GJoNSQRnnqnpulTa3GTUQJh8RN3dl99XyD8HjcposxTbyXoImwHgMbNO3+Qg/UPAiziWHo3YFrndxnWjZV/btKz7q4xWLVQb7+E1QGSonFC0Krw7f8/KqUI0DdJet7qpTzXuqkiYLf1CpdDj0vT+TwlcWTE9pSvwPC7bs9FVxkwOoP19SShvVj3fNHsCU5FQFugGtF7AcUjMZT5iKB1Av+MW6EDB5qQD8AR5a8lCWL4dhHw8l5+rEs5+l5nAZzePPeHA+WZo0j0JUhq+Pt2+YTwoJ/QtbvIP/eHEhFC4Ab6n/VTpf8SJpKXL0WHep8PHRq+J8CaxttXWm0NnDAVZ0svmubQXkV0dT/33PVrt90kXYovKuOXPNgD2MrW+k1Dum3IcU4lenD+3KuWyVjCGfCGh2XqEAVssNSyObzcHsT7WspZiPrCccWP8RKy58De/KSLTMmHEtGaqtZneyYZG8Xo0J6
- y4bHFHwG
- 8Y5fzwImJwntsDoBLhkuID6NIvW/gztpbQMKL2cWj8yyDXlkI9jBcoGtULM9ddGIEIr+hb4OLixyV9QXtbUNxKc5v9KrWoaiUydwt0CSzpSOL/CKQTEpS+4KnLR45kyzEJjzbYx7dQHXqPLXcOvtWZV+dZWpvB2Rvgb/fcAn/cabnzCFpSIlNvTu98W8q2CXdJbWla8AMyOb1qTc7sa2EyoQ67mdDbPTHRmMJWiKxDXENjjs137DrOK+WERYIP0J/Ty6/iw+MoyN3T7y0Ld1tS+ODyXw0vTTVZCCRAH+ihhp50JfWBInz9bsAMRXFYgqPGteX8Dc0ZIoX//O8+AvGs9mpLnyl2x1A9bHhCtCTcEMG4SRv6HtWrBblPKjvggdzFFUxzNV4jB9/mSXByuX8PwQAwJON9EEAxijGUCObOdYaAQse0J0DKpVffqRfnf9deO/0YXH5R5UUxyyIVLrAEgiyOs0l+Kcr4sY2/QHj3zofM8qIflx3HfaFv/Yxy0jqTpKYceKliveZjHL/AyKp/DdU1Acl4+e9nmmomo18ADqLjm4cvVm28BCWMw==
+X-Rspamd-Queue-Id: A88B718000A
+X-HE-Tag: 1774272388-124569
+X-HE-Meta: U2FsdGVkX1+d98Ua5LM1GNtbgq1EwgZiGhhbKmakOd7agJLk+GF+Zr2yfr/BOOCngSVJNp3boJVZsultTkTsusKad4KTsi6xQ6dn4/zCODYiOYWNhcvBKe8jfunARSZXLFYSzOciKLSix9b5eH9R2c19Io3YB0dM6SjzPx38CSJWIAgOPwYLrTFvuKlmfN86Jj8EnOGTsepHYyvXuxIGAIr/kNZzxX+WeUSMtif7Vg2jkx2jy/9sdQfULbHv52QhN3Hg1S+LNoMk+lsPY8bIhjXJS5Lm2FCqLZq4YfiqCIhpsuH/uJQBSPWxH4yPq1I6H3e8LzNlpMNdBfK9uql98Rzt/9nbwRLgiaHBQvkYFlrix3LHrShyW/P2yuuNI/3BFWmY+M+0oLW6BOpJc57UC3ZT5XBT3yVMrY0jwSDePM3CDv7c9XRnD/Uy7Cd+q/r72MxFtcDFLM1B377+Cp+QZsMAD+0sfiUDeEyjNcijub4RnlrhEhOZdJ1wZdzVRJyNPHfx1beIsZjtpXV3Nn3FKlMLG6+CPi3AVcm/z8Tzg0ByqkwwtTgzMOekuzGgRKBHSO5ZFRfCxWAzg8J1V5f7S6PdfkpsU71wlmnnhcnboMll3a6AhpgBVWhumcOpwAg6XfuNULHiuPQjKB1nkhUlTk72NapIkyCr3sr96pdyZ5hn9rrsAaBWmYVTTHJWZWc0OwZ/AB6FSAyY6QUeyizOptzdU1GMGPb54K9rFSFs4KF+K6xPayM/opJVzH71jar6doq85z7VJDjKwUpYSpa2zXVSczQP+1pHRhmj0UZBVPf2xMMoym4QQSiQSX+Q+czoVlQ6/L83Yilf6pjtyfcD9b/ggwqxz9beAEe7Wr31gBUDr8ABseddXAMFb1zxARlLwpNrTXGrqb+T3WaEaxXT9KsauVz6VVdJrGBPaCwpXjReKxNxXii39vYaWy29rnjdhLLYrGW7Rr5EnBDsdD1
+ tgATw8Kx
+ 3cvtUE0WFnz/kawm9s9OV6jjqPz8skHBy5ZXwEUgPIAl6Jmhw2sMu9fzIS0ooyTDxjaZLfzVWOb57ratSlNCmggtwVgZHbvyE1zLPjXQjZ/U/P8mmAe7L/9eCvjf6gM7r2FA5ROuP/onyQOGFdfzgpriNsbG/1ruOrLhrbrZFi1PS7B0pa707y2WgYx4iawpitqaiWrdspIdtf7Tk0TDqGH6vXo6JvTnnDnMUv7ljb6zvWxzRRzG4y8OWkbwCtsHF4WGoa11bNuslrHkKom8iMNLE+iM5AULhXsTG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,23 +97,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 11:03=E2=80=AFAM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
+On Fri, Mar 20, 2026 at 11:13:33PM +0100, David Hildenbrand (Arm) wrote:
+> If a hugetlb folio gets freed while we are in scan_movable_pages(),
+> folio_nr_pages() could return 0, resulting in or'ing "0 - 1 = -1"
+> to the PFN, resulting in PFN = -1. We're not holding any locks or
+> references that would prevent that.
 >
-> Why is Rust generating code for userspace thread accessors for kernel
-> space, where userspace threads are meaningless. This is totally wrong.
-> The kernel must not reference __aeabi_read_tp().
+> for_each_valid_pfn() would then search for the next valid PFN, and could
+> return a PFN that is outside of the range of the original requested
+> range. do_migrate_page() would then try to migrate quite a big range,
+> which is certainly undesirable.
 >
-> Note: I know nothing about Rust, but I know enough to say the above is
-> pointing to a fundamental issue in Rust for 32-bit ARM.
+> To fix it, simply test for valid folio_nr_pages() values. While at it,
+> as PageHuge() really just does a page_folio() internally, we can just
+> use folio_test_hugetlb() on the folio directly.
+>
+> scan_movable_pages() is expected to be fast, and we try to avoid taking
+> locks or grabbing references. We cannot use folio_try_get() as that does
+> not work for free hugetlb folios. We could grab the hugetlb_lock, but
+> that just adds complexity.
+>
+> The race is unlikely to trigger in practice, so we won't be CCing
+> stable.
+>
+> Fixes: 16540dae959d ("mm/hugetlb: mm/memory_hotplug: use a folio in scan_movable_pages()")
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-If it happens outside this patch series (i.e. the new opt-in mode),
-then yeah, something is broken.
+Logic looks right to me, though some nits below. With those accounted for:
 
-That is why I proposed to gate this new mode to the
-architectures/configs where it is known to be OK (and where
-maintainers may be OK with it etc.).
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Cheers,
-Miguel
+> ---
+>  mm/memory_hotplug.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 86d3faf50453..969cd7ddf68f 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1747,6 +1747,7 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
+>  	unsigned long pfn;
+>
+>  	for_each_valid_pfn(pfn, start, end) {
+> +		unsigned long nr_pages;
+>  		struct page *page;
+>  		struct folio *folio;
+>
+> @@ -1763,9 +1764,9 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
+>  		if (PageOffline(page) && page_count(page))
+>  			return -EBUSY;
+>
+> -		if (!PageHuge(page))
+
+Yeah interesting to see this is folio_test_hugetlb(page_folio(page)) :))
+
+So this is a nice change for sure.
+
+> -			continue;
+>  		folio = page_folio(page);
+> +		if (!folio_test_hugetlb(folio))
+> +			continue;
+>  		/*
+>  		 * This test is racy as we hold no reference or lock.  The
+>  		 * hugetlb page could have been free'ed and head is no longer
+> @@ -1775,7 +1776,11 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
+>  		 */
+>  		if (folio_test_hugetlb_migratable(folio))
+>  			goto found;
+> -		pfn |= folio_nr_pages(folio) - 1;
+> +		nr_pages = folio_nr_pages(folio);
+> +		if (unlikely(nr_pages < 1 || nr_pages > MAX_FOLIO_NR_PAGES ||
+
+NIT: since nr_pages is an unsigned long, would this be better as !nr_pages || ...?
+
+> +			     !is_power_of_2(nr_pages)))
+
+Could the latter two conditions ever really happen? I guess some weird tearing
+or something maybe?
+
+It would also be nice to maybe separate this out as is_valid_nr_pages() or
+something, but then again, I suppose given this is a rare case of us
+checking this under circumstances where the value might not be valid, maybe
+not worth it.
+
+> +			continue;
+> +		pfn |= nr_pages - 1;
+>  	}
+>  	return -ENOENT;
+>  found:
+>
+> --
+> 2.43.0
+>
+
+Cheers, Lorenzo
 
