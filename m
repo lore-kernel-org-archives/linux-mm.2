@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 477D0EC01C5
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 10:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3CAEEC01BE
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 10:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFCBA6B008C; Mon, 23 Mar 2026 06:34:43 -0400 (EDT)
+	id 27CDD6B0005; Mon, 23 Mar 2026 06:42:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A86A06B0092; Mon, 23 Mar 2026 06:34:43 -0400 (EDT)
+	id 22DAB6B0088; Mon, 23 Mar 2026 06:42:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C3386B0093; Mon, 23 Mar 2026 06:34:43 -0400 (EDT)
+	id 144686B0096; Mon, 23 Mar 2026 06:42:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DA246B008C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 06:34:43 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34A9BC3450
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:34:43 +0000 (UTC)
-X-FDA: 84576969246.25.3604F6D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F2B656B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 06:42:54 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A18B11B9045
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:42:54 +0000 (UTC)
+X-FDA: 84576989868.23.E875A99
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2EB5840007
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:34:40 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Hr2rWXBF;
-	spf=pass (imf27.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id E2BBF160003
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:42:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JAN43XMC;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774262081;
+	s=arc-20220608; t=1774262573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=MKoH2PQ5LrIpcGGcQNvv1kVkb7GywcLjC1NtWghbIBg=;
-	b=pSDDJkTNlBRswQnLKnNvRwufhFMtBViHuzRjPVT4IFPEEl0uRUkwnU3LkM9hqOOiYxnc9d
-	JOKfEk/lDb2cuk2b2A0hpNR6wEQK6du4i+vT6Cttb3lKojQEeQ9y5MuckpjDgvt+KHqijB
-	ipkjHd7oMB64zYgwSaB8nf+95Fw5150=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8aIcoKw1B4lZXDlORkn1YTWocVX79AJVMudqEMsMQXI=;
+	b=SzRGIIKiK3lJIBmwp8CqNZoDwp5PcxwtntajiGwLo1JF6yoHTFrHCdVTymwLlzsTqQ3UDv
+	tDE4ssZHRTJi4V8UhM6/BUiCcDc8ANkpZo9FROc1xfz4bZXV9eJstZNkz/f6RlKAHV8D8d
+	nP92h9PX3w4N43KNsAwTwqmkiWFcfCA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Hr2rWXBF;
-	spf=pass (imf27.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774262081; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JAN43XMC;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774262573; a=rsa-sha256;
 	cv=none;
-	b=QI6vG43H11+uC/1df3H7auK3lh6m6S9zjFwN9tV9NUXfK3RGBsD5VGzWXSqixqKxuQubP4
-	cBcsR/esR7Up8P7hWOC3Ivm3DNFtc/viM6BLm4ytW7WTO6GVL3Vvr2MQO4DVz4iZAgoxLA
-	jjUEG10fcArrms1TyAMJLCXVxWi7k5Q=
+	b=yXPwNqT+XznZ/CnMW7xTrHFF3XOl7TIkaI3QPsjFcpZ4yUSr/VnKO0CE+eZcIu+VWo+hR5
+	s+Dpyi2lxoPo01/ikePPFo9ykhC/Wb2Y+9g2eEVLd1PM1OfIsuq8KA/IxX7mlhpJNJI4bb
+	cWEOVbzbkVZ5hDOX8x6hMfc9MZ2HmIc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4A5D743F2A;
-	Mon, 23 Mar 2026 10:34:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB449C4CEF7;
-	Mon, 23 Mar 2026 10:34:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774262080;
-	bh=fxjn1JJaPgpH4EhTFPXGtHVcQ4WOSI4YYYxfY72hfLs=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=Hr2rWXBF0yjMSfAcNJA3+pcHAynMppsRA/qPy0JW60Jx1D1vWfvBUYY9VKV0YR8xK
-	 t1tSf7S629BuWQOco1wpqgwD/Ed+nu2zDt+wQpQ+NdVQKmaLOm7k0rso1rd+5hPh2H
-	 tAc9eOCZ1kMEEk1HMaszFLBADroTwXItCbiVfTKk=
-Subject: Patch "mm/shmem, swap: improve cached mTHP handling and fix potential hang" has been added to the 6.12-stable tree
-To: akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,bhe@redhat.com,chrisl@kernel.org,david@kernel.org,dev.jain@arm.com,gregkh@linuxfoundation.org,groeck@google.com,gthelen@google.com,hughd@google.com,kasong@tencent.com,lance.yang@linux.dev,linux-mm@kvack.org,nphamcs@gmail.com,shikemeng@huaweicloud.com,willy@infradead.org
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 23 Mar 2026 11:34:05 +0100
-In-Reply-To: <318493ca-2bc3-acad-43bf-b9f694e643b0@google.com>
-Message-ID: <2026032305-gap-drainer-3bcb@gregkh>
+	by sea.source.kernel.org (Postfix) with ESMTP id EA47740215;
+	Mon, 23 Mar 2026 10:42:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B536C2BC87;
+	Mon, 23 Mar 2026 10:42:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774262571;
+	bh=kxiLoYmlf4q3ke2uGxZ7iSgE18S0jNgx4Yf9uf826Gs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JAN43XMCFGd9Ew29jBoMUxset0rjSufmFyTX8A97NfjSPz9m6uH6ufeayplDx2FJl
+	 8SnErMDsP4gx7h2lP7GTzcezJd3SK6vyIrI82J4Bubbf1qXi+ZGSr7WUAENmuWv9OL
+	 Fd5oGcdVoMxSvNh0H03OVve7Me51FK2unI72h4N+Ynvl4SqmxAN6Ob+e4mv82A3hxc
+	 22WYsRXX6fNzsKXJ9CldUwU9KqflMPDnKd1LcZy+2ynCEAFjeJPdshC0IU8q83PivN
+	 L/wgbmi+UWQqxi3DnnxllYN2Dq4ocspCN4jxeJfyH21mMGkMvjrHX6Z3rtbP4l7JGu
+	 4UNpN/S+HRVdg==
+Date: Mon, 23 Mar 2026 10:42:49 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 10/13] mm/huge_memory: separate out the folio part of
+ zap_huge_pmd()
+Message-ID: <2f8decdb-4ff7-4482-b50d-6718f25df8f9@lucifer.local>
+References: <cover.1774029655.git.ljs@kernel.org>
+ <6c4db67952f5529da4db102a6149b9050b5dda4e.1774029655.git.ljs@kernel.org>
+ <ce065f40-38a6-4601-845a-78021af80f04@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ce065f40-38a6-4601-845a-78021af80f04@linux.alibaba.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E2BBF160003
+X-Stat-Signature: j5c7d1x5xfyb443cm5z46d9bou874amy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2EB5840007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: uuekjsgs9e8omp4ykf9uyo18w3csa6ht
-X-HE-Tag: 1774262080-137117
-X-HE-Meta: U2FsdGVkX1/uFYiTz3CRPObBg1TuucsJmrL0Y5gzH+y6V3GRZ2/Il34xzY1ytya1cgklZMl2UuoxyFTFehM1d/U1SzhH4EK+5O61TLOs5M7+azGkBq/KHhXLaLNcRYWbxMHCNlfDEaKTzHO8sKNteYsLIsfXG92xSt8I9uHzy1NRxLxB0qp/du+wjFItkFzQBZFnoIhRq/BdD4BqKTil6IbbzsXtXWNHS/yRyT32U/Sr57CdBnIbHD6RoddczBkqBqfiiDsFGhw66lgROjq1ySRxymEekTGnd3sE9nkxUFtxsm4NdugDXN6l7enGWFqllhSsekwriReISfHBsKGahW5VTpFmCCNxPumLmUJ927XibygjXAKmnNoXrGJ6AC2GhgaPmUWliSRtuDNzhzYgyHWdhXqqYSePY/dSVScwLag924IRfZZslNo+rjM9vOHyGa3JZX/D3UpXxTmIjobuS19VwQ4G/KRlFJ5pZ/t/LmSG+/8QCje2WX5Bs2wZvRhfxonjFpKLt01/sQvSsFUjWJsMv5SFblpiAIodz5l2meuT3qqUcVSOrNw9yOC+vSlL/CO37WTkFLrLQKYKX93z3fe/KPLLFXDNaugr4kKI6ScTcX4W6w5aBaIe+IwdGe4Xo3VHw+bP/2gn3vJpZPK/BcLPqPGvIo0MtL/GX0WXNtSBbY6GpIAs2FERkvYhAer1e0YPpDvcjgv0RSL1U0dLDh+euYR8J6ezOWVH2ccETxeLOJ0gNup/Wm3EQJhNJ8QKrDTmn3xQH/RlidVb3+VbAHJy2DQwfdrA0UdeQBNuhyEyVLsr2IRt0GprPKqgDyC9sCkhVYgKjKWuuJCm/mboELGUxPJ+4xehMY10wTy1qYYKG793ElF41xYq+Egg0Ji3Ggldjrao7MfWec2gTTds8ENgDEdGKJvNI5TeHS5FrViGaM9VGHwtYg+zBH4QcExvNL5MLC1ehOHVjAiZd61
- t4LGHIvY
- 3LCG7yS4iPoH6HmB/JKN8cW2ZG2Na3Cmqi/RtkQ0keEId0JPZgtA3ptphXhr9EIRWpcugxcz60MEipaMTCDc3Pjx4r+MATzXTDfGfIgt63UAG7twSSEDmDqzzu/0waC1mETysAIvQ4V1r9Dg75VLqCkydkYAmoh6KGzolakojHiRuJmQJkVYn4GbSoOGHJzfohZyFwBAm4bdXDWUyWFgmqKrenYBMaRTnZNhUMe7mO1+i3uAEQanGZGaqpACAXOgswqf3cxMca5NyG1k7GrYL2DF5gi+mpFm0thYSGS5TSbzc1djC+wEhi5uiLGJhy5NUuvEM32OqkZF0e7q7mmv7aCRvr/hVyKKe1W96UIzstrZVWytAhU0zmAzoiWNcbHMrmOQCX0XUpWhMUipLp8FYPH1rem/J5fi2mkE1rneaOSpwF7cpka4Lo+CJeZ3w1EaLH84Otaq5pMAAhN1qtCHcobKJa3+DQmg3C83OH6xKeASXXOpyaZew/jL7Y1BqzwC1Klp5JhFWXXa+yC3rAiGo1ZODCNtHK6krdMHQs+OGn/Dgr4iQXy/3GLJ2QZU5NqIqPP2LtDNMRnNH4P5Jv42/EDlM9eGMDIMt69lsi0FC0TYssyoqAVwHzdwiEXQkMYNTYBMycXBugtUhNkEC/Jd8E8dFVJ96wL1RKS0Jb3Vtwi4StdKRRG2M11J0ru5btkdRg75hXcMCMX+VNCvwKIVkpQeiYijnMuqdbl39lXI+i8Vr/8vrQBu3ua8f5T9VRVwCH0K0u+3R9jY2c3vdVwHEc7cqVg==
+X-HE-Tag: 1774262572-80839
+X-HE-Meta: U2FsdGVkX195OkpDOyMy10Ss4/tH2albJ21HdSZA2XO9MsgSkka7qwZyZT3leOLMmQnNaW6BTEO85WWnZayAcCee9mXX0ZW1WUDTyuyL2wrGTWZCLdgM5i6tyZrNNR4XhE7kYF3AyghYHGGUwc+NLqeE679yfnq/J9Ygy1okYK9Rv75It9UfB8BJZIBlVoD3hAfpobQdzE/xH1cCN7kZYFJcWydqYu8p+bRbfoSpHi42UhMpABs5i3MU30QhYs2rYmEp0aZziu0bHWtGH/ZuRwoEefMaYygShWGp9VJiz01C27cZ6lpuqdeBQtogwVbFgC8HP+tr7MHvFBHRuonzB+83JM1fN8XkJL2DW7IULFuRIHZ64qK8XK/+ZYQydi98YNbGrNp7NFUOtM/R3Qgr4JNNKau6TkZ+jG4X+7z4tuZFxyqRF1tcd6V8o1jPwChfx+pl1dFXTsqSdQ7AVx5K/eYmPrwndeQWoEa4t/zZhREHgm9hyCNVkQbosQyfmNBU06GzztenkKE2SXjcGU2FtdOq4oo5wdlei/BMaqLKgqgTE1/fVn3HG72rEUXQP86zuZD5zCTrGyQuqg3KpAMikjqvHlh7xw3EHEJqEsnBG1s29nyllLLG6eNQ+dUgxTLgnT+L+bNcBXpVf5ik3mlyl+t3KqO787qExYahyHpWSI65tj993OQK2scft9Q4vVnQI7/qcj3VTnLXc2/KZoykrb0XyIEUd/zNG4tb2Xa+PqePkCMPpsY2JXwJ9rr+n8YOzHP2ka+uNwexest72g6WGRrNfU63ip1WI+hW6eclMGjR8WeoexMSCBF95jcNPF456N8cFflFjd52FOiPhp07uJk6ehFk8wD3ivRmynoC02YXI0t7XVh6uls1lNYUddbiMZd+aELf/qfi7Ci5nd8JUge1yIE9bC2u8C5wC6+h30w7rguww2WU0a2Gx87xEer5doE2MxZBxgztQDeUjal
+ FLJ9V1GJ
+ IMw4AqRMAtBYWaTwBSH0I058kHcE5qoQOiSzk16nsJXbdoi42eHqjQRK44+U64iLJnVWWCUI2wN91rD3prBdMKyLEDvHypz3iPoW/9lzuCDLWIWT/FF2Zv+wJBgqfAoOddcejtZmJ8kLt6GwsxcxrIzI6k1x8ZIyMDxO3rmCYmt0nmw69fsYSFMkTD8vXYIfD3JBeWoFGRGkQfGOr9FxHWBK6HTP5fgUPswfoBxJEJK9aiDwKTbhYl/eQGs1mq3dwOY0LvEqVM/F8O2Wfg3qXLUDrFEqZazkjbaThNSDNTHOKA/VxySdfYcERRA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,190 +99,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Mar 21, 2026 at 01:59:34PM +0800, Baolin Wang wrote:
+>
+>
+> On 3/21/26 2:07 AM, Lorenzo Stoakes (Oracle) wrote:
+> > Place the part of the logic that manipulates counters and possibly updates
+> > the accessed bit of the folio into its own function to make zap_huge_pmd()
+> > more readable.
+> >
+> > Also rename flush_needed to is_present as we only require a flush for
+> > present entries.
+> >
+> > Additionally add comments as to why we're doing what we're doing with
+> > respect to softleaf entries.
+> >
+> > This also lays the ground for further refactoring.
+> >
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> > ---
+> >   mm/huge_memory.c | 61 +++++++++++++++++++++++++++---------------------
+> >   1 file changed, 35 insertions(+), 26 deletions(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 673d0c4734ad..9ddf38d68406 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -2325,6 +2325,37 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
+> >   	mm_dec_nr_ptes(mm);
+> >   }
+> > +static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
+> > +		pmd_t pmdval, struct folio *folio, bool is_present,
+> > +		bool *has_deposit)
+> > +{
+> > +	const bool is_device_private = folio_is_device_private(folio);
+> > +
+> > +	/* Present and device private folios are rmappable. */
+> > +	if (is_present || is_device_private)
+> > +		folio_remove_rmap_pmd(folio, &folio->page, vma);
+> > +
+> > +	if (folio_test_anon(folio)) {
+> > +		*has_deposit = true;
+> > +		add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
+> > +	} else {
+> > +		add_mm_counter(mm, mm_counter_file(folio),
+> > +			       -HPAGE_PMD_NR);
+> > +
+> > +		/*
+> > +		 * Use flush_needed to indicate whether the PMD entry
+> > +		 * is present, instead of checking pmd_present() again.
+> > +		 */
+> > +		if (is_present && pmd_young(pmdval) &&
+> > +		    likely(vma_has_recency(vma)))
+> > +			folio_mark_accessed(folio);
+>
+> Nit: these comments were added by me to explain why 'flush_needed' was
+> used:). Since it has been renamed to the more readable 'is_present', these
+> comments are now redundant and can be removed.
 
-This is a note to let you know that I've just added the patch titled
+Ack, I think it's _probably_ ok to leave that as a later commit removes it
+anyway, if that works for you?
 
-    mm/shmem, swap: improve cached mTHP handling and fix potential hang
+>
+> With that,
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-to the 6.12-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+Thanks!
 
-The filename of the patch is:
-     mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang.patch
-and it can be found in the queue-6.12 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From hughd@google.com Mon Mar 23 10:40:20 2026
-From: Hugh Dickins <hughd@google.com>
-Date: Mon, 23 Mar 2026 02:40:16 -0700 (PDT)
-Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hang
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <bhe@redhat.com>,  Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,  David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>,  Greg Thelen <gthelen@google.com>, Guenter Roeck <groeck@google.com>,  Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,  Lance Yang <lance.yang@linux.dev>, Matthew Wilcox <willy@infradead.org>,  Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, stable@vger.kernel.org
-Message-ID: <318493ca-2bc3-acad-43bf-b9f694e643b0@google.com>
-
-From: Kairui Song <kasong@tencent.com>
-
-commit 5c241ed8d031693dadf33dd98ed2e7cc363e9b66 upstream.
-
-The current swap-in code assumes that, when a swap entry in shmem mapping
-is order 0, its cached folios (if present) must be order 0 too, which
-turns out not always correct.
-
-The problem is shmem_split_large_entry is called before verifying the
-folio will eventually be swapped in, one possible race is:
-
-    CPU1                          CPU2
-shmem_swapin_folio
-/* swap in of order > 0 swap entry S1 */
-  folio = swap_cache_get_folio
-  /* folio = NULL */
-  order = xa_get_order
-  /* order > 0 */
-  folio = shmem_swap_alloc_folio
-  /* mTHP alloc failure, folio = NULL */
-  <... Interrupted ...>
-                                 shmem_swapin_folio
-                                 /* S1 is swapped in */
-                                 shmem_writeout
-                                 /* S1 is swapped out, folio cached */
-  shmem_split_large_entry(..., S1)
-  /* S1 is split, but the folio covering it has order > 0 now */
-
-Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
-folio lookup will return a folio with order > 0.  The
-`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
-return false causing swap-in to return -EEXIST.
-
-And this looks fragile.  So fix this up by allowing seeing a larger folio
-in swap cache, and check the whole shmem mapping range covered by the
-swapin have the right swap value upon inserting the folio.  And drop the
-redundant tree walks before the insertion.
-
-This will actually improve performance, as it avoids two redundant Xarray
-tree walks in the hot path, and the only side effect is that in the
-failure path, shmem may redundantly reallocate a few folios causing
-temporary slight memory pressure.
-
-And worth noting, it may seems the order and value check before inserting
-might help reducing the lock contention, which is not true.  The swap
-cache layer ensures raced swapin will either see a swap cache folio or
-failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
-bypassed), so holding the folio lock and checking the folio flag is
-already good enough for avoiding the lock contention.  The chance that a
-folio passes the swap entry value check but the shmem mapping slot has
-changed should be very low.
-
-Link: https://lkml.kernel.org/r/20250728075306.12704-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20250728075306.12704-2-ryncsn@gmail.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-[ hughd: removed skip_swapcache dependencies ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- mm/shmem.c |   39 ++++++++++++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 9 deletions(-)
-
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -794,7 +794,9 @@ static int shmem_add_to_page_cache(struc
- 				   pgoff_t index, void *expected, gfp_t gfp)
- {
- 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
--	long nr = folio_nr_pages(folio);
-+	unsigned long nr = folio_nr_pages(folio);
-+	swp_entry_t iter, swap;
-+	void *entry;
- 
- 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -806,14 +808,25 @@ static int shmem_add_to_page_cache(struc
- 
- 	gfp &= GFP_RECLAIM_MASK;
- 	folio_throttle_swaprate(folio, gfp);
-+	swap = radix_to_swp_entry(expected);
- 
- 	do {
-+		iter = swap;
- 		xas_lock_irq(&xas);
--		if (expected != xas_find_conflict(&xas)) {
--			xas_set_err(&xas, -EEXIST);
--			goto unlock;
-+		xas_for_each_conflict(&xas, entry) {
-+			/*
-+			 * The range must either be empty, or filled with
-+			 * expected swap entries. Shmem swap entries are never
-+			 * partially freed without split of both entry and
-+			 * folio, so there shouldn't be any holes.
-+			 */
-+			if (!expected || entry != swp_to_radix_entry(iter)) {
-+				xas_set_err(&xas, -EEXIST);
-+				goto unlock;
-+			}
-+			iter.val += 1 << xas_get_order(&xas);
- 		}
--		if (expected && xas_find_conflict(&xas)) {
-+		if (expected && iter.val - nr != swap.val) {
- 			xas_set_err(&xas, -EEXIST);
- 			goto unlock;
- 		}
-@@ -2189,7 +2202,7 @@ static int shmem_swapin_folio(struct ino
- 			error = -ENOMEM;
- 			goto failed;
- 		}
--	} else if (order != folio_order(folio)) {
-+	} else if (order > folio_order(folio)) {
- 		/*
- 		 * Swap readahead may swap in order 0 folios into swapcache
- 		 * asynchronously, while the shmem mapping can still stores
-@@ -2214,14 +2227,22 @@ static int shmem_swapin_folio(struct ino
- 
- 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
- 		}
-+	} else if (order < folio_order(folio)) {
-+		swap.val = round_down(swap.val, 1 << folio_order(folio));
-+		index = round_down(index, 1 << folio_order(folio));
- 	}
- 
--	/* We have to do this with folio locked to prevent races */
-+	/*
-+	 * We have to do this with the folio locked to prevent races.
-+	 * The shmem_confirm_swap below only checks if the first swap
-+	 * entry matches the folio, that's enough to ensure the folio
-+	 * is not used outside of shmem, as shmem swap entries
-+	 * and swap cache folios are never partially freed.
-+	 */
- 	folio_lock(folio);
- 	if (!folio_test_swapcache(folio) ||
--	    folio->swap.val != swap.val ||
- 	    !shmem_confirm_swap(mapping, index, swap) ||
--	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
-+	    folio->swap.val != swap.val) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
-
-
-Patches currently in stable-queue which might be from hughd@google.com are
-
-queue-6.12/mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hang.patch
-queue-6.12/mm-shmem-avoid-unpaired-folio_unlock-in-shmem_swapin_folio.patch
-queue-6.12/mm-shmem-swap-avoid-redundant-xarray-lookup-during-swapin.patch
-queue-6.12/mm-shmem-fix-potential-data-corruption-during-shmem-swapin.patch
+Cheers, Lorenzo
 
