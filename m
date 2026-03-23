@@ -4,125 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DDF3D58CBE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 03:23:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F281CD58CAB
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 03:25:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E42606B0088; Sun, 22 Mar 2026 23:23:49 -0400 (EDT)
+	id E1E206B008A; Sun, 22 Mar 2026 23:25:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF39F6B0089; Sun, 22 Mar 2026 23:23:49 -0400 (EDT)
+	id DCE916B008C; Sun, 22 Mar 2026 23:25:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE2696B008A; Sun, 22 Mar 2026 23:23:49 -0400 (EDT)
+	id CE4846B0092; Sun, 22 Mar 2026 23:25:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B787D6B0088
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 23:23:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F1291B8C30
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:23:49 +0000 (UTC)
-X-FDA: 84575883378.09.5A24349
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3115718000E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:23:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hMXAhlkb;
-	spf=pass (imf06.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774236227;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BA1266B008A
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 23:25:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 677B78BC0C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:25:16 +0000 (UTC)
+X-FDA: 84575887032.16.5D51777
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 57E78160004
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:25:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4THIIc5;
+	spf=pass (imf08.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774236314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WuN4IVRpe2UV4/L8jmgWKZsUdAcN2rX2txKuBjApf3Y=;
-	b=QLsPQ9NNz1dpB70OwhheCfOLk/AhjBClncEBmY15MEF69r83Lbfd+dlenxs6GHUIUkPMRW
-	DdLty5QBqSAytc42WKmE8hbi554vm1uY5L3WiL0duJtVLj7e0jC8U1sX+bg4zJVPkh64VV
-	5+lnuKbAgawv8GwLZ4RIF0GCPd8l1jY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774236227; a=rsa-sha256;
-	cv=none;
-	b=4zvCpd1tFUXbEQ7T9exgY0S4EN+fymzPGk2K0jCWUP/3k+hSNW7tDqBD+Ojh0ekijXsVEq
-	CtfGq6YfUZE5lMjwwXhJ07TyI076SIJ3rG98eaWYDl8S/S446G2hAVe0eEWAYKGRTp3tKr
-	FD2aqLOr4u/1b/d2rWqEvaPeyYsG/Ms=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hMXAhlkb;
-	spf=pass (imf06.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774236226;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WuN4IVRpe2UV4/L8jmgWKZsUdAcN2rX2txKuBjApf3Y=;
-	b=hMXAhlkbSiwZYJUSMgnQfit9umI0POO0KUh3teYJ6qgY+oF8q1pU5jCFbM8XKEP4+wmjAh
-	k6o02s2kYaXSESON2uB93pY5N/wMOdwhw9Ri1uhfUY9xqy8+eGpITpztczkj78ba8pLZGs
-	L7A0Gy+fz7WRk5WNVl7Vz16XHvXffPU=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661--iqGfR4dPRqxe6JicJ1Vsw-1; Sun, 22 Mar 2026 23:23:45 -0400
-X-MC-Unique: -iqGfR4dPRqxe6JicJ1Vsw-1
-X-Mimecast-MFC-AGG-ID: -iqGfR4dPRqxe6JicJ1Vsw_1774236224
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c73c065dd15so2546916a12.0
-        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 20:23:45 -0700 (PDT)
+	bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
+	b=lzXwPIv9Edw1nwl4VjRZPk8XILL/qF+8mBg8ZS2EM+t7zOlZ0tTCHFGPuX9eKATpFI8+Pq
+	YuZv7xrnVD9Fnk8WlQdmkqKRxLempxUGftf82K1Sz0edivyub1S/zj243BdbU/i49yOE1/
+	K0nONGCscvMa+vFJzXpjGFq/ljLDxlE=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H4THIIc5;
+	spf=pass (imf08.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774236314; a=rsa-sha256;
+	cv=pass;
+	b=wobQ7UxpuoSFZASqPjWeDvoS+xcqTHeU7cyDmZJiGAK1y6BpbWXMJG0DpoPoePVwYPgTOk
+	ogL7J1oO88tgxZ/X1GiI3gNy7lRY0ufzUbx2/uIB0UtJ3RtuCpJ2P104eSe3d0blbGVKEE
+	suAaDx8Ms4Q42gEMzWmncqvIantDPkE=
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12a6b260693so195811c88.2
+        for <linux-mm@kvack.org>; Sun, 22 Mar 2026 20:25:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774236313; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Bq07izwf62Gd7aAEHyxXQ/ZYZDMTqKuOVpsagNPJY0XOAtSD7TYOVni+vVKT9Uk0mz
+         S1mqrT+aEtzvuGxCeFX7XMvD0Gbo2CzAUQAAwx/rIKi7MlYWb2P+/pR07JzTcrqKwAzf
+         P9SdOyi+aGXcSE2vIm03RNgpz4MUL71dTUZWUGrqmxC3xif1NfbcRffD1bxoAklCi5TV
+         6d2+ZSUfl1UgVyskpXETBPLcEH42IFMBURGxXty8lvPDDc9AIXEU1ifHllzuR2zlwQJT
+         XmH29FTh0QM9v0dEgkDkIHsiNZe28wHByeOcBN/9ZurCHoRWMmSqBwkteV/avLtOB7EG
+         excQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
+        fh=3pyr7QWreBjeFH6gbtGM5MdPaNs4z3RG3I/Uyx/knYE=;
+        b=J7IgPrZTbGsF9f8e4M8Lz18Aivbp+D4gINalq8sj3cXu9qugp2gMR8fFg8YxS+7lqH
+         wlYugSMUMwQjjkoQg/hqzeyPebt2RVZ8Dgok8s+VdUUCBskI/xOz5WpSBtpmPvLqYSnc
+         higLXpwE/5pe5t4AZalxiSFvMFPY3DuKqq0JICR2aVnDKCs2Db9Ioi11nzT6Y7obxlNl
+         DmJ37tzHwR3rvdVMCGV0botPHK7cxh2shYgczeq9iXl7i6kHMyxuwFZ9IMt2pMMgmXUv
+         JNbRmzQh3TlIJicLAUz57Z44a1k/EXbqu5JXdv6FU1HJnSKLtx7xs2g5X9bOVkKN4Htv
+         a71A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774236313; x=1774841113; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
+        b=H4THIIc5p6OL1RXclL064tQMyJL3MC9jJJ1wnbo7sIfp91Cw9kgqECnK7KNBdCJ9hv
+         hBXDO/sQRBBm0iaE9DdeoOZJI5iHLzBFKWYBgs2QoG9kf0W+VEw1ouVoWOseMoEe7mKg
+         AXij1T5kMxVHkd5tdjxXnZxqKK7kTEo6GYsUPo7kg0/A0c3LiD7t8uVtYDsH1UyYmS/J
+         nGOKVr8SKN2hri5n111u+UJzDCWDM6HXc2Vwd/y87w01NzKCnjigsUcUCtFDBX3VEp5H
+         NmmNjc9T2PYgABiPMf5NJrEBQU/9OUzpn8m8emuqlX0T6yDnBlFN90cS8fuBYil0xFD+
+         zXzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774236224; x=1774841024;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WuN4IVRpe2UV4/L8jmgWKZsUdAcN2rX2txKuBjApf3Y=;
-        b=Z8EFolSJjdyiSnaLHjGbVlNAMpqvQO8kwO0IuCzqaRPIKEJbuB1Wki5yUQXrvUCfFo
-         fcDgoLBVKRz52YRim2ZNX3jgW+Q8Hx9/DEwLRCqbAaX+1Qed1dEBkX3SmNBhC/suh5qY
-         /fPn+PleT/HnbhhYqQqrdRUixZjRfc/R3+Robw8schL1I8PFElKHItL2O9ccyfDM1OwY
-         aM5P17gP6Hp3ZLavRXBdpxGrZaOQ46oVge86L9CDzTffAybwpxIE68WsvgCuNgnurU6f
-         U8SjG0fGkNuUPWDIqiK0v39rT85sTMT9Tc61kwm7oI+fU9hsjl+uGilt6SAJaaom1zih
-         OYhg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7b6amuFqd6WXekztPXYBpx05ojP/Dl0tISKerwY3/TFtucMTWz84WJRiBOG/Ugi/Tkn4v35mCVg==@kvack.org
-X-Gm-Message-State: AOJu0Yw3Ms5A5CjRzsWv71PyDxB5EVfvp1I0F+5+LPDNxoY0wJJzrUas
-	YxZwjR6Dnc3meT0EKibQXpimMtvwjdKdVVNzhZyEnjBIuhug9r8K/NjJYKT4KTbjgTs1X2ix6kJ
-	0G/s4IPPc/PLMzIqOGzFMqH1/Dzo89igeH1JHpsDz4LchJ1A1UT9B
-X-Gm-Gg: ATEYQzwHWooVOeYEfzfv7FS0siAYudfwKoGLu0VwldZVh7F4Ie7By/lU52Tmac5/o++
-	gVkyisM+cn5KZKi+tyg95JVBAmVRqMtuOdSFfgtWRKI6uG3hPrTCU10cMlfcKAjj5NBF9bZVyC1
-	fkL3WcIYARNcAf0LBp8cHmfppRc17cQH1rakMhZ2SwQxDum9XzBl3dTXu++z1AaZHKjMska71Vn
-	t0nNfOsFfZ7uKBBCMsvX8/rob2YWSEIwkZ1eHDCaj30t5vG6kOB1uBKELoU8CPmeprSsRdOO7L9
-	QK27nfRN6RZeP7IYi3V1lg1GoHydFonltzI5WH9T6t+v0r7pwMo4nMeY56Zprhgjq6rJs+dDEjq
-	Xj9HmsnkjXhx0hvqdrA==
-X-Received: by 2002:a05:6a20:94cb:b0:398:d82c:ae6 with SMTP id adf61e73a8af0-39bceb427a6mr9147199637.31.1774236224294;
-        Sun, 22 Mar 2026 20:23:44 -0700 (PDT)
-X-Received: by 2002:a05:6a20:94cb:b0:398:d82c:ae6 with SMTP id adf61e73a8af0-39bceb427a6mr9147173637.31.1774236223867;
-        Sun, 22 Mar 2026 20:23:43 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c74443ccbe4sm6215654a12.22.2026.03.22.20.23.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 20:23:43 -0700 (PDT)
-Date: Mon, 23 Mar 2026 11:23:40 +0800
-From: Li Wang <liwang@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>, longman@redhat.com
-Cc: yosry@kernel.org, yosryahmed@google.com, nphamcs@gmail.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com,
-	muchun.song@linux.dev, tj@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 0/7] selftests/cgroup: improve zswap tests robustness
- and support large page sizes
-Message-ID: <acCyPNCBoTGAJjfs@redhat.com>
-References: <20260322061038.156146-1-liwang@redhat.com>
- <20260322091851.e965d3a2f0d6af5bd985407f@linux-foundation.org>
+        d=1e100.net; s=20251104; t=1774236313; x=1774841113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6L7OuggG1xx/psBeZawamh6lKLmj+yBN2DAvG0qZTM4=;
+        b=l3t1/nYzgsKb9tVqwUUjlPEe+xPGxvNOMSys/UCZHk0RtSfqKkYUufEX4BDKEyE5SP
+         4Ti89c1HCYM1KiZqi9nUwmIUwKVtjWQO8Mv2ZMIgLHrVTZUmhNMvOaO8FDgZeVv/lxqi
+         aqq8LaMWj1LDyzTIA/Aq2mMvtl37NBFtyQ1pLoG1Y+1EgwRIeFGSDIvOEv5Um+B9kmHq
+         cJZY3E2ZS8KAsO64xra6tStTIuUhTSEFesQgFmRGnvprsOmfIUQybdK3EsxybbrjZLDV
+         rqqzR/HF1aR+1ahV9j6DrKnnkkM0oaiVtmrg/g7PYfRmJ/L6w8D60GPwcYlwB/wLcacZ
+         IJhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUli6Qv/KPA/V+pWdRR/w3GTbA2o8ce4JGS6MVCqHdrXksMNhblYVCaY7kUhDG1DA9dNzgELJRGzA==@kvack.org
+X-Gm-Message-State: AOJu0YweIhJskLTkxCFX2eCQWoqIrBMVmFrA8VgF9WFNl8qzcydbZXAl
+	Etlc1sfiiGvk5lENhldwXL3/m0Abi8bIqSRy+2Y5aatcMhlEcmZsF6HEYaaLJFWEbzj4+FQ31C7
+	ioOelSJEFaT2mJI/NH3nPwMvJlRP96wI=
+X-Gm-Gg: ATEYQzzv1NBXUU3i/UTYwFwOx6BT+umt12Y99eIcGspszzMfH4zNAXHjq/cJ92dzAxz
+	7Z1d+9c1vQpTLP4thdpX+55Yt5El4QAdiWjzDcffHKR0fXmdQIoN4b7mFaosK4JTh+XfDUt7YH5
+	45uslRodFOAOPWzdeCBMczxUnhreS4s0kFhyxTjgt2/V9deFW2dJPxJd7CiWcby/TDRAR2NKG8C
+	hvK+wWaA4v3IQSu9TA+BeOJ7Y3LXgH7VFmYVruzbOOvLKExlIp+/06P9M+EV283gKTII4KcDHEK
+	35QUf4c+9/2APXkJFzzh+4m+IjGYO1Q74Pb2TWWQ2PZTk/YFQWUf9o+RR4BEDWXflSrpTdN3Fh/
+	WvGT1dkK4QqFVKALLnsNac9k=
+X-Received: by 2002:a05:7301:100d:b0:2be:1946:858b with SMTP id
+ 5a478bee46e88-2c10970d302mr2034525eec.3.1774236312928; Sun, 22 Mar 2026
+ 20:25:12 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20260322091851.e965d3a2f0d6af5bd985407f@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: jyT4P_80uC49EplGZ9mBQBp6PP__psrq2XhywoWfAuU_1774236224
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3115718000E
-X-Stat-Signature: 94ch67weabndf6fhc38rsgoyficghnhi
+References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
+ <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch>
+In-Reply-To: <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 23 Mar 2026 04:24:59 +0100
+X-Gm-Features: AQROBzAuhFHkGwwSKh-Ea07cCRjtb6eZEQluwHGIFmDfJPfdFW0BK0DaJf2FJhk
+Message-ID: <CANiq72nwSWVDRqm0Vap5j5X5k+Q-wq8okQ9d3KUgZt6M4CpW9g@mail.gmail.com>
+Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	akpm@linux-foundation.org, aliceryhl@google.com, 
+	anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, gary@garyguo.net, 
+	johannes@sipsolutions.net, justinstitt@google.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, linux@armlinux.org.uk, llvm@lists.linux.dev, 
+	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
+	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
+	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com, 
+	will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 57E78160004
+X-Stat-Signature: tz46kpwrric1x4q3dcpeab93yerzuqx5
 X-Rspam-User: 
-X-HE-Tag: 1774236227-99757
-X-HE-Meta: U2FsdGVkX18qRxXT7LhlFarLqwAFZE3v/pZVF32ziqn5H/2ufP2dJjs5SW7Uf4XPhv11nw111MSkdJJtjzYbJIZWaHMSNQulQ7e7iKql07iXUUtbdKROLDqTSfwveIsJyDZcKOD5bzOp63ERq1Ug22PukgQsT4hIakAFevkGkUsMS2D0OHNiuneq4FUA0F84JkmX3x4TpUnTtvVuH0AnZvjpXzvfMVWYA2CFkehMR1WcJta1ZtVm2DGszOv8htUnV8/0r/hEcmDe3nRW0WMT7aVAwIQwiAftnSaq6PPsy4yKH5kz8cdB9XiRDm4fwyn86k7MmqsXBUqocVP7U2nU2NxFjJrB0jgRYF9uvMI+MqNocVTGr62Ax+WKAalTMe5ieqmYXsbB9ZVnmAdm4jg+XnecQsrgAphyTOAMyl9igwgwCldnOxAyGfN03rLxBNUAXJO3sQ3MqEBUGNvtBK+CAf2RNg6HLc3EfPhYDRYXlzyvy5AKlIOXVhGwXCSZ/cOxa0Aj4Pm6rQ6l3ccH0eMO+2+ZhYEngt0ovSVOTCIz8sxUMi7n6DFCbtaDIHta+JQk8t0tHQcqH/+SGYVdEu/MnzgNzuC0nIYEmQ3Hl0wmDIT9jWXgzZtql+ss2as9ztRCVe1xMTETKSEVwSfMHZtG+qgvRErgDR3oCX8JLi+/0CvzakzErmXYF9jgJNCFJsg2xVcpdtkqvqPW4iOv1H65EJMn/ajOWwF89vaD/uGpDCp7U79EoWCYTLniZ48NdUwSNTLvmQtLPga6aiJEBSqzmXf/9GbN8hxZxfJNHocojoahcEzJnzgP4FPcIrkFzrrwbPPyuMZbGmFOCwr7LfMpRYrwvKf7vi30uQYrLG3d6pjvxkxOtZ7LVNqXEfx7rJ/CQ2kZXMER67Wzv3HfTk47RKCPwtMCKR7nppckgI63Vwsji0rGQWMND+f3yqvIUfKiMHCmQFKay2HquIgJ88S
- 6BCa431b
- QNy5lWuBxBJtvEH4GHsRIZmchTObwIqbT7SRjSJq1pqqHgCilEv1VrAhvgICBRbZ72PAvWCWOrYKzJcyCsH+JMvqcy3Fmi6d5gAsRBUKgo86FHOBsY9yQQ3tL66NTRmvwWoSbeksHCzuLKg0aiIA10npL07p6biGTqnppwON7sz9pEAuGvHc4qwTCnPwA1m6LYnobVIKkUYisCsq4wfF9341Gs09vDT8Wc7sNMtmC/R+xoTrYbyP+9eADkZSYpXMvQhRUXnvfn9iwyqNvWSKDCpi9ZeZdA4w/gAPGY03Qh7is7utDOx0egd0VNNXRO+17KPYmHKN24qV7psYM9afUaM3bT+MltKiOhOqm9QUqzfhp6ZNeMuFAG6Oenivh5FBsmEqI8li0e2TDDcS5QztwzQ0+AcNk5LBG41SHLtRHq6u4P4JUvbuXg0ANW/Fg45gEWuZENUn+IMFZ5+w4vlTOitcXXgVN6TTim70GuPH/DdTKNU+HNLXlQT7Y8UKU1ucIYgzr
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774236314-762317
+X-HE-Meta: U2FsdGVkX1+ahdzcQWcAP27uPt1vE7WXzKBPxDeELaTOegLogRVMg0Z93Y6Dq1+UXFoN+0kDviOTmgpGeO+NDt1FTFUFELEU2NNnDGSfbU291flZK6nNzuX4BrHg5pStNl732pQilibVLdO7yZ/mKXB8wy9hrsnVzyMRZFMqQQAcnmdB0Ufd8jQYo3qreXgm/W46kGqSClCbiIxCamp05IrxVFytRqFr2czCqE3EYdme9zOTg5BqIMrZ8hFUV+QsEY6Bi68QcTQI0zeG3NJAXUJFse0ZMH47aCqb83G6gFGOc9/Uk1C2R+XFSewkZ5Tx8c2DaKOBh9+0xe99KzO46yQGMud21tmUod4I0wycEk5i1TprjsmgDEHxQW6yieH946HSQGusv1g/MLWryru1ekLdjI26bGMhXRr02cdDoOvkVlSVvmXCJsxuBnbPMEL1XnUfSdBNYkymDypxFZD0M/KwZDhWsVkmibC3kUd6JTZC54jaGQU39HjdMm0F2VY+DkZ59DaD6HI6+JgZzuobpVy7TugcLygRu3MigW073PD+jbGbuR3dg9XcLpnvlMFXb/lIdYB3+oZMEynG3Zg6JOo6oNZOZ1/jzncp3YHv8gDWSP72cpveCKN5UitloXQJRWZE5V7eIYWVbY2hN3BHsDhkJ2YufipgtHTxhajE5Z/URWunDcek94Mz9MSA237815yfU9eyQYHi9AS/9LWAgeWVaMixv4KAuEaXhUGucykvV93VxfMoWTHY0JkNWpUhxUb8tzmLmLt14/cCrZM/B9a2sdHXK/U0L2n5em+tcj/sG8ZbeGinIiq1ToorbY3U95DaLZY2DQN30pioW4Xbx4rYK1/HkYrWppPIneyNSuoLHqybYaxAWMrERbV4PCzOfgOodBsJ3q8wTMn25R1XNzqTFlulUx0rVdBs8Uvpi1GEo8NYkHmcVq0NLmj+18gOLtDfo3y8G7XJxLYyW3s
+ 0cMHcRqe
+ OzRX4zHwIGvfN36fpj2/EasSZEMJIcQO6A7qPNWABmMNmQsKXOc+B7PdWqc5hS7UGaa1yAe1YJ8D01c6eyJu4JTbUSu21wVe9BMl3AWgvj1mTW1TeuJx8C0Q5FFVuOJRRVGzBM+c6aWC0//uthzGR1Tem4D4VQ+n0n2keAw1ZgUdnnmIEusRRxGusaJWa+43GFjdcdCa2yNdkQ3oYrjXgC3LzYG62yKBX77UEFUzT8XD5wE/yIJt3N5HfRo2wyaXUM3BJBAX00emfAXChXYmpkS1ohKDiZsFACHvFJR4RxYVaEzwjzOOkHJMX3+RB4/XEq4jZTH6nIyEkJkfWzy7/hDsvqOgg+wdTk1i3tgNhiUmSnjnLoxy4ITL0TQ82UamqxlUSBhT9V4nZf+Vxdr/CcNVuzsd6QELWRYV5YODJu/Q/m0Jg02U3uMzvWMfEXtZrLXct5jIzVW62TUqOCUUGOclDyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,91 +151,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 22, 2026 at 09:18:51AM -0700, Andrew Morton wrote:
-> On Sun, 22 Mar 2026 14:10:31 +0800 Li Wang <liwang@redhat.com> wrote:
-> 
-> > This patchset aims to fix various spurious failures and improve the overall
-> > robustness of the cgroup zswap selftests.
-> 
-> AI review has questions:
-> 	https://sashiko.dev/#/patchset/20260322061038.156146-1-liwang@redhat.com
+On Mon, Mar 23, 2026 at 4:04=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> Rust is already fragmented, because it does not support all
+> architectures. Do we really want to make it even more fragmented by
+> having some bindings only work on a subset of the subset of
+> architectures?
 
-> [Sashiko comments in patch 4/7]
-> ...
-> Could we update this loop, along with the identical loops in
-> alloc_anon_noexit() and alloc_anon_50M_check_swap() shown below, to use
-> sysconf(_SC_PAGESIZE) instead?
+That is not the case. The `depends on` is not about putting them on
+abstractions, but on this experimental build feature, which is gated
+on `EXPERT` to begin with, because it uses a fairly exotic approach
+involving LLVM bitcode, which carries potential pitfalls, like the
+mismatches on the target string like one of the commit messages
+mentions, and possibly others.
 
-I found that Waiman submit another patch that do same thing like this
-suggestion. I'd consider to merge that one into my patch 4/7.
-
-So, let me talk to Waiman first.
-
-
-> [Sashiko comments in patch 5/7]
-> ..
-> if (zswpin < MB(24) / sysconf(_SC_PAGESIZE)) {
-> Should these also be updated to use the new global pagesize variable for
-> consistency? Subsequent patches in the series do not seem to correct this
-> omission.
-
-Good catch, that remainds should be corrected too.
-
-> If control_allocation is NULL, wouldn't the loop immediately dereference it
-> and cause an unhandled segmentation fault rather than a graceful test
-> failure?
-
-That's right, but better to be resolved in another series, not this one.
-
-> However, there does not appear to be a corresponding munmap() call in the
-> test's cleanup path. Although the OS reclaims this memory when the test
-> process exits, should this explicit unmap be added for a balanced resource
-> lifecycle within the test?
-
-That's right, but better to be resolved in another series, not this one.
-
-
-> [Sashiko comments in patch 6/7]
-> ...
-> If malloc returns a null pointer in a memory-constrained environment, the
-> loop will unconditionally dereference it. Should there be a null check
-> before the loop?
-
-That's right, but better to be resolved in another series, not this one.
-
-> The test data is generated by writing a single 'a' character per page, leaving
-> the rest zero-filled:
-
-> 	for (int i = 0; i < control_allocation_size; i += pagesize)
-> 		control_allocation[i] = 'a';
-
-> This makes the data highly compressible. Because memory.max is set to half of
-> control_allocation_size, 512 pages are pushed into zswap.
-
-> 512 pages of mostly zeros can compress down to roughly 11 to 15 kilobytes
-> using compressors like zstd, which is well below the 65536 byte (64k)
-> zswap.max limit on a 64k page system.
-
-> Since the limit might not be reached, writeback might never trigger,
-> causing the test to falsely fail. Should the test use incompressible data
-> or a lower fixed limit?
-
-If Sashiko suggests reducing compressibility, we'd need to fill a significant
-fraction of each page with varied data, but that would work against the test:
-
-zswap would reject poorly compressing pages and send them straight to swap,
-and memory.stat:zswapped might never reach the threshold the test checks
-with cg_read_key_long(..., "zswapped") < 1.
-
-So, at most I'd keep the data highly compressible and just ensure non-zero,
-unique-per-page markers.
-
-i.e.
-
-  control_allocation[i] = (char)((i / pagesize) + 1);
-
--- 
-Regards,
-Li Wang
-
+Cheers,
+Miguel
 
