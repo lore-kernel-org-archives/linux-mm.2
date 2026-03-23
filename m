@@ -4,93 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F8CF483C8
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 17:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8392F483CC
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 17:04:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F3816B0005; Mon, 23 Mar 2026 13:02:53 -0400 (EDT)
+	id 356246B008A; Mon, 23 Mar 2026 13:04:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A4856B0088; Mon, 23 Mar 2026 13:02:53 -0400 (EDT)
+	id 2DFD86B008C; Mon, 23 Mar 2026 13:04:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BA746B008A; Mon, 23 Mar 2026 13:02:53 -0400 (EDT)
+	id 1A7D76B0092; Mon, 23 Mar 2026 13:04:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F0A106B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:02:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9EBE6140CA0
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:02:52 +0000 (UTC)
-X-FDA: 84577947384.13.429E3DC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B2611C000E
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:02:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o73d2bA0;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0683E6B008A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:04:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 997F1C3A73
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:04:55 +0000 (UTC)
+X-FDA: 84577952550.18.8136C88
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CB4B912000D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:04:53 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=haLtNdYN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=devnexen@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774285370;
+	s=arc-20220608; t=1774285493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tZhnVjZ97khcZS0Gp/GbjbsEfzokXb/2ZQ2GVaQV1hU=;
-	b=aNq33N4jZxi1V5PnvJDSF6lXGcY7z04rVZZnmytZfxiIj+Fe0Gk9sujkS1wmP0MpuEBoWa
-	QaL2qb693BM3+cAL+MyBltW7onF7rpyAkbg0VRUMsEOg0Bu1TSh7C7Pg5Of/mgxeQuv4A3
-	SXUJ7obECfoyOIOWrNxokhIzS33rfpk=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o73d2bA0;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774285370; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=K5DLXNkfiO9SlRW0vo64Nxeq8oeQwRuyHXAwNoCLJqw=;
+	b=DdukpWghOPWuGEK5ySHN1mU4FoIG4/AZmAE8Gvv6Kp1GDm4biYGSs48A/WoACQ95lLIW1+
+	fpE8IzoeAceIDp5eg6M8Pifg8zwqVujiiE09+6vwMPFEI7n0wb6LegWZIu7GbJm2s0uuDY
+	lRTOJ9bcYqdbQIk5xu3gw/yWbb71n74=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774285493; a=rsa-sha256;
 	cv=none;
-	b=7qHSGeop0P0DSHmFFAFaYXQJZv5nsazE0cFO7SLlPOGVtThwoxKz9kbC/Lj640PPqL6h0v
-	ocWeVLrwU1pKoiQQvD0/lL24a6c7u39fuzjDMf2lEVXpYFkLyMe5Tb8euGWzH/f+5nJdTj
-	SEDYFhAPnJOTYaNcIxdQB4BwdjMRjks=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BEC043EF4;
-	Mon, 23 Mar 2026 17:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5289C4CEF7;
-	Mon, 23 Mar 2026 17:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774285369;
-	bh=tZhnVjZ97khcZS0Gp/GbjbsEfzokXb/2ZQ2GVaQV1hU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o73d2bA0Q1qyv2dHc8YTTVnFiWUKJP6wo3soKs2CMs51g1mw6mT9KWp3CubbmXqKV
-	 7jDJnkWgW2eHCIecUVldJLpSpOitXyyIfVzVLaylvo8gfuhgJQn9mRNig6hNX/QyG+
-	 /QZwbTuYFYIrv7KTbuBzYlYELHqpuq2TL9ggRByBMyd7lUC0hHXCt+hLSitYEO7U+3
-	 t2wQtTbNsYB4HF7njtrzdZ4H7NVR+2ycXxVIhA4lpztLi/09CnEV0JGSQjyEWcnF1r
-	 hbyljf7qNB4lCkSM0Md5qcGm3GA3yI5bNLTjAF8PHDxJeVa+obGmk5Awlekh8lvKTN
-	 iCvk4DfUpQ8Xg==
-Date: Mon, 23 Mar 2026 17:02:44 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
-	mhocko@kernel.org, zhengqi.arch@bytedance.com, yuzhao@google.com, 
-	shakeel.butt@linux.dev, willy@infradead.org, Liam.Howlett@oracle.com, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/vmscan: prevent MGLRU reclaim from pinning
- address space
-Message-ID: <dd9f09dc-d1c6-4f5d-9e58-d5ca95ff434f@lucifer.local>
-References: <20260322070843.941997-1-surenb@google.com>
- <65cb38ee-2815-4b11-929d-3fc1528cc620@lucifer.local>
- <CAJuCfpEm4u3viNt3hG__RbgCJBxFQpFvjx2cAE-fg3DGPfja0g@mail.gmail.com>
+	b=edUPXbUrMPVMf/Z+thx2yY5ePPGF782UJpXwKbrZ8a+WUN/Gcna3aUo+/epbIPCf4mpyUv
+	0Vrlj2+Gkb/izMPFn23HViYEHp506Snmf6+NI7P982K3ATLEmXbGG+O47uQ5//VwBCrQzG
+	oQ0wu/V80w2PacsQ7RW5OSCbFzdu3aA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=haLtNdYN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=devnexen@gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48700b1ba53so28267055e9.1
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:04:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774285492; x=1774890292; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=K5DLXNkfiO9SlRW0vo64Nxeq8oeQwRuyHXAwNoCLJqw=;
+        b=haLtNdYNFYqEH4k5xJAe3vP2Fr9SQE4DkL5AI6Y3g/usd13DYjxl+BwKtyTlNszB+a
+         jAPsKv+brVVLsq9XSlg7oQ8mrUizkNqmDuHZE0jzqOdx7X6w8ApiOB0VIRWRue2un5kv
+         D9CVG4WFtoauPNuS2Pf7oyJHReU6rSi3KwPqAgaxykv+dbvrGtxyGmMeEWIjsbLvPN7f
+         fCHIb6Wp0qfjppWzXJLBZgmXI9HvgR/ea+UEDELZnDDCrklzkrE69C0wm7XRe3Gf49bL
+         /qG0EJgEUs6VVXRQ9TuLYBNVwdQwHLwe3PUlfk5sK77+cpD2hpahW5srDybV3gxeoF3A
+         eElQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774285492; x=1774890292;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K5DLXNkfiO9SlRW0vo64Nxeq8oeQwRuyHXAwNoCLJqw=;
+        b=C7MZEi5W0YxJ7ae8dUsdh/Y7Q630xqxnK5is5ePiFb2i92IXO0fBG5h4MAWtumxk5a
+         3gi7uBlAebvHGsvxNkVD87tvcNrrrv9J/ujfRxkzLXxM7Tq3cN1emQriyBxQaWULni9w
+         Siqcw72HDI50SOl0fDjAX8ywEcirvvhTuvBKa3AyVzb6b0jsDUKMPRVNFdPdO7Xz8cAD
+         r7z8iUysiqZ+NAU6WcCuuGcT5M5S3iQ/XwaeUYBB/Exp5LVzNqSSkH/exctUd21+79Uz
+         Cw1abbLYm3x97X0mO/XVb9IV4riRcrINaBsIAsFDBKaaXKH2S0PS/oBOBRVPs3ImUSYp
+         Mc+g==
+X-Gm-Message-State: AOJu0YzFYbRNcFJX8s9OW0Ze9HX2+TCbXHauLiQmox5GekuFh0jtUUN3
+	22wgBulWaeHbklJ/nitH4sYWtPsquUt0VlJgv8ZvSStxhiXMAzcUPsvvaKMkAnDR
+X-Gm-Gg: ATEYQzzQ1rWhqAKbA5NNTrL4I4CypBBcL4S5znuierGIR+I04eM3UudDTw61ig0Hntb
+	iB0f05LFp4bj2XkNOVpscx1beC1f309vOmhERYrnHh3OK1UjlFnAFE1VcQuesjqeCA1M5AZXEh6
+	o4eGn550VD1f3O4Cu34VSrmFYkz/TFLgr6NLBo4eGgNKE6ekq2zEEyE/00w+4yezrXnhQDjpRxJ
+	X8lqlW0WzEjOVfaPO7y9jhnAE+ITBmdGosVBrxCa/IU3gsS5vREbzrCBEWFqUVXdlaGdhCMk0Hp
+	2xliB1DIqlZR/Ov0lpINsZSDWxSQ6aFDNZ4JUUZoyvKb52bMsEokzqGvVn80fUNUBv6bpE/R9E3
+	FkknVNMHCfpPhsYTS1HhTw/znsJRYZ+nnGV7GHCPU7H4bQxDR0/FBHeHlbHwAnsUCkQs9PO8gvW
+	s6a19dgbkLKV2Ja+YaFkGVMNAGLuusaGkJtUVB2Yl4Ch8aLKE8mouvTUsI8snKQvye3L22XjkTh
+	ZCQYabIvXxF
+X-Received: by 2002:a05:600c:3549:b0:485:3fe6:21f5 with SMTP id 5b1f17b1804b1-486fedb5928mr175892525e9.10.1774285492018;
+        Mon, 23 Mar 2026 10:04:52 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe879d37sm111516965e9.1.2026.03.23.10.04.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 10:04:51 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Kairui Song <kasong@tencent.com>,
+	Chris Li <chrisl@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: linux-mm@kvack.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH] mm/page_io: use folios in sio_write_complete()
+Date: Mon, 23 Mar 2026 17:04:49 +0000
+Message-ID: <20260323170449.26333-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpEm4u3viNt3hG__RbgCJBxFQpFvjx2cAE-fg3DGPfja0g@mail.gmail.com>
-X-Rspamd-Queue-Id: B2611C000E
-X-Stat-Signature: xn15cdai8awo8hm7ro4mba41ytqohfut
+X-Rspamd-Queue-Id: CB4B912000D
+X-Stat-Signature: 419f1m3mri75b6ubeeahyutt6q5sqh8k
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774285370-746071
-X-HE-Meta: U2FsdGVkX1/1t6hBGbG+jhWFqHdqtrVPULtBoza2d9xyIuiikK+v4AVnhX5gylCWh/Uo3NyP500sVtFhH3rFDRCvJAdukDC0NbYc7VXgZ9zR3zdG9aBC9tonLPYTJr8V1I+fztaSazRbcOJPoE09cMPgMr+Vf8wlhhOlysBEDYWvaSWuWCmwrvnlSDB2P96aFp0ffs2ox6ciAeJuN9NPQdk45asYvQ+eSIajqmwAN7m6qwba+ABdE4UpYMJBw1Mk2/DMLzaoNa/vnHxGYgObmuinKVBbijvP1UymcHV1nw+5meDUmU8wv20EhaOL2ibfZymUNg9UwKacBWx0cgT4dag6pgW2/MBd8nETmwwq3BTi2qdZcK8KtblqpmuFLJwW3vRfNXvWMCD5397Qa20omqAR2Yt6GzWNZ3LjIghE81Ct0IKfD11TYgp/+nUvcIMUqlxulzrfj2fbeFI/MnEtLgclynqym54I1Zvf8kbkXokeV541xvD/+yle/blsBpjFtLqJvhaMb0g3Vh1+mELE50fRP/JrGco3gTZJInKkSOjZcJsbitbVupBdOF/iAolRV7XViIH2xzrp7L7B6rX2HKOOe+RrT8glL2xmX49VYqwGdodLu0ECHVR8BdTThrsDLZtdwgjEWb8vxZLNr1Xwci+/x3QhDI38m7IF6iKoZ9NZPmv86k4sHXPVtwuVFH8cDypHR5stB262tJAaiWBtXEqFr4PoIfZ6H+/x8+8VAL/xegRrJzJgWb1sZlSlWVHYcfbBGLDzencC2TRys7kIhEEdNG5cyCLa+eRf95XFhriUizY+r4znC48yKJTb1iihAeJobhlVZBC0MdJ4MoEtix/x+USd/vlavV+SD56cnWFvBoehN3MXcu8gbmL4nh46mOhjTOJtn9KeHBHwckQu2PM6OSbUhFaZ3ql+qvSUltZNuPEzPxvwL5LcCAgvoo2Bl3w0UZRzJ4S87arg5wz
- yqkzdzWf
- QBHYS0mgoe7Gvm2FUCJmdIsOsZwezEWlBfRSfe8nSjRNrheEt4eFB+s5Mk/6whvxcl2vM9PCiAEg3Q6GwULfxdJhzMPpRW1QwgGXj9UiZtvZspY7mosekwrArl3A0TzyJHici/4XT/Vult3E6Q+irQ9KGwohPdrGiumml1LyoROFS5S4nZYd9lZV67XkIYoCDSSzM7STDmTNPxl9+LsMMQxJ4lvkfz7UQya7e/zn09atHNRDEOkuPO6wddnQ3U18brIYlO+M6W4Dqw0pMGJpy1YsVlcoX2TLMdPpb
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774285493-362425
+X-HE-Meta: U2FsdGVkX1/fBbJFFpteNBp8wm4IrNZ0yEDg2XfWS9KfV4d/nntjPveyZfWdUcdRDtp06L+LQ2MdBSt5gM/BIeLiZsMBEJEc60zkv5xEPhN/+BSeIs0P49pnYC9fXKNq034j2lx2FLDhZZnsiB5Rn2iq3lMZnPGX0Psm9GZAo/+JOkdowSiXin0zu9JAhmQeUtps1jBtYYcWch19Lt8+2amQqLmSy7wy5azziiAS36cL2WMBEJW6r4AIaaM23/LzaD9lxvEEN/3ChP2x1gOmTojNki03l/OCZMDBKvWPT7DxMwZysutLIHGrUJDWRu2frOob6ns8YdUU2768I/PzYXlIiKXJ5ji+L1H61pMyWroDQVuHbIKvIX8a7M0wBSN1BnLRtlcG/4OdRcBfUwaCx28MSl4baH9KNUfbIY6sRbeaxRRnYy2VBmkOcsaqcgSh9zGRL2FC1BitWVgth7NWBJj5JzLw2tg1m3P66mGU7qwpcHLnsSwiFFV23Zf2Ypy1Rj9niP2WWXNIwCNUdGO3mPOoTx+0xspTtyvAKZLTzgAYuLq5kc7D5Nq+OUiXUxsgsv8QbmhdXSeabdr2eAbXAZnrBVOBWfejUiZc7T8vNfmty5G0B6ZKIPIfnBF7t3pqO41ewRjmR33wH2Q78gzMvQBebwFUHJxLRd+iFQsCXBeJPYziWC3Q91k4Zwo0n2NejdLkyeqCgH1v8nKucmQjG8gd68NTzMzvjYa+fxJrbLjeN5/BWy3DnHNwTO7y7UX7ReCZVTHEv15jahOEPMhsmyosu1WsnIhX/yhKr7BoJcqfQX6InBuH/EMUiUesrQKMACNkZ0pSsUgfJqOIL8tYXG6ww2eqUhF5gCmuTO0x5bTuUGdje8gF2uciCj14A8AhGy1bEsb4wOnAKLJiNpokvh6X3EVP7gDiPeH21hTk891oAlrSK4Bsd8dbWmCDywC36Mt3IpXnYTFQQkS15f2
+ f91PUxsO
+ qfBpzM2WkJyYvNoAiCbdSR4a6a9RsFkoqBS1f4yuoWHHiOOxR1ymQsQIalCgVuxgszcuw1+HoSDszaZY+NbJcnD9uipbFprCfEw4YUaqPt+GtDhoK1MdFjp1BEEiDhWQ2tzYIH7c86IZAtvVokYT71sdyleXLNUsTanvr5u27LMXxcYFJ9W+/WUk/3HsP5fVLyQ3AL46ZOK5b4aTSnSdmAZKd13rGYiGFk1FpNt0fLoYhxEG8HbXmfrWnIO4Bn4JmN7pjK1O8kMdhThDJEn7XnEEVnoXOvYBKy/5rY7rnyWeB1AA1hhMxnOjoc8lGChVgmaA8oOgG4d+8oUnBj/F4RNfQ8N3NyKARbcYXcI4mrS+/p73DS52OBDhxVmctQWr/7u+HkKiuBPYbSeWq1mNBv94Xkll62RHjiM1XZ0eBfCKlPiKUlAnHENLtuUwY9C4+++2qqSa5gaop2Bo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,51 +117,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 09:26:02AM -0700, Suren Baghdasaryan wrote:
-> On Mon, Mar 23, 2026 at 6:43 AM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
-> >
-> > On Sun, Mar 22, 2026 at 12:08:43AM -0700, Suren Baghdasaryan wrote:
-> > > When shrinking lruvec, MGLRU pins address space before walking it.
-> > > This is excessive since all it needs for walking the page range is
-> > > a stable mm_struct to be able to take and release mmap_read_lock and
-> > > a stable mm->mm_mt tree to walk. This address space pinning results
-> > > in delays when releasing the memory of a dying process. This also
-> > > prevents mm reapers (both in-kernel oom-reaper and userspace
-> > > process_mrelease()) from doing their job during MGLRU scan because
-> > > they check task_will_free_mem() which will yield negative result due
-> > > to the elevated mm->mm_users.
-> > >
-> > > Replace unnecessary address space pinning with mm_struct pinning by
-> > > replacing mmget/mmput with mmgrab/mmdrop calls. mm_mt is contained
-> > > within mm_struct itself, therefore it won't be freed as long as
-> > > mm_struct is stable and it won't change during the walk because
-> > > mmap_read_lock is being held.
-> > >
-> > > Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> >
-> > Oh and sorry, missed this - do we need a 'Fixed' for something that's just a
-> > perf improvement?
-> >
-> > This doesn't seem buggy?
->
-> Well, if we are pinning something we should not is that a bug? I
-> didn't CC stable, so I don't expect it to be backported (though if
-> it's accepted, we will backport it in Android as it causes real
-> problems with reclaim), however if someone is looking for MGLRU fixes
-> I would like this patch to be discoverable. If you feel strongly about
-> it, I'll remove the tag.
+Convert sio_write_complete() from legacy page APIs to folio equivalents,
+matching the conversion already done for sio_read_complete() in commit
+6a8c068774ad ("mm/page_io: use a folio in sio_read_complete()").
 
-I don't feel that strongly about it :>)
+Replace set_page_dirty(), ClearPageReclaim() and end_page_writeback()
+with folio_mark_dirty(), folio_clear_reclaim() and folio_end_writeback()
+respectively, saving implicit calls to compound_head().
 
->
-> Thanks for the review!
+Also replace page_swap_entry() with a direct folio->swap access since
+bvec entries are always set via bvec_set_folio(), meaning bv_page is
+always the head page.
 
-No problem! Working through your vma killable series atm also :)
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ mm/page_io.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
->
-> >
-> > Thanks, Lorenzo
+diff --git a/mm/page_io.c b/mm/page_io.c
+index 63b262f4c5a9..6c7ab3c394ad 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -348,7 +348,6 @@ int sio_pool_init(void)
+ static void sio_write_complete(struct kiocb *iocb, long ret)
+ {
+ 	struct swap_iocb *sio = container_of(iocb, struct swap_iocb, iocb);
+-	struct page *page = sio->bvec[0].bv_page;
+ 	int p;
+ 
+ 	if (ret != sio->len) {
+@@ -356,21 +355,24 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
+ 		 * In the case of swap-over-nfs, this can be a
+ 		 * temporary failure if the system has limited
+ 		 * memory for allocating transmit buffers.
+-		 * Mark the page dirty and avoid
++		 * Mark the folio dirty and avoid
+ 		 * folio_rotate_reclaimable but rate-limit the
+ 		 * messages.
+ 		 */
++		struct folio *folio = page_folio(sio->bvec[0].bv_page);
+ 		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
+-				   ret, swap_dev_pos(page_swap_entry(page)));
++				   ret, swap_dev_pos(folio->swap));
+ 		for (p = 0; p < sio->pages; p++) {
+-			page = sio->bvec[p].bv_page;
+-			set_page_dirty(page);
+-			ClearPageReclaim(page);
++			folio = page_folio(sio->bvec[p].bv_page);
++			folio_mark_dirty(folio);
++			folio_clear_reclaim(folio);
+ 		}
+ 	}
+ 
+-	for (p = 0; p < sio->pages; p++)
+-		end_page_writeback(sio->bvec[p].bv_page);
++	for (p = 0; p < sio->pages; p++) {
++		struct folio *folio = page_folio(sio->bvec[p].bv_page);
++		folio_end_writeback(folio);
++	}
+ 
+ 	mempool_free(sio, sio_pool);
+ }
+-- 
+2.53.0
 
-Cheers, Lorenzo
 
