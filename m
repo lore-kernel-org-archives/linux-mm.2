@@ -4,135 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2B87D58CBF
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 22:24:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC59D58CBF
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 22:37:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFFC46B0088; Mon, 23 Mar 2026 18:24:10 -0400 (EDT)
+	id 301D26B0088; Mon, 23 Mar 2026 18:37:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB04A6B0089; Mon, 23 Mar 2026 18:24:10 -0400 (EDT)
+	id 2B23D6B0089; Mon, 23 Mar 2026 18:37:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F656B008A; Mon, 23 Mar 2026 18:24:10 -0400 (EDT)
+	id 1C7F96B008A; Mon, 23 Mar 2026 18:37:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A4CBE6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:24:10 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3394D8D199
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 22:24:10 +0000 (UTC)
-X-FDA: 84578757060.26.9DB2131
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0C34D4000A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 22:24:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=OTjQ4wWm;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774304648;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BE7A6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:37:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B026F140D71
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 22:37:18 +0000 (UTC)
+X-FDA: 84578790156.03.61DB987
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com [209.85.160.69])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EEBCBA0002
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 22:37:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of 3m8DBaQkbAHgouvgWhhanWlleZ.ckkchaqoanYkjpajp.Yki@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.69 as permitted sender) smtp.mailfrom=3m8DBaQkbAHgouvgWhhanWlleZ.ckkchaqoanYkjpajp.Yki@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of 3m8DBaQkbAHgouvgWhhanWlleZ.ckkchaqoanYkjpajp.Yki@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.69 as permitted sender) smtp.mailfrom=3m8DBaQkbAHgouvgWhhanWlleZ.ckkchaqoanYkjpajp.Yki@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774305437; a=rsa-sha256;
+	cv=none;
+	b=lbNpZDlThH7rqE6n/hKW6xNcdB2HgK5/ZHyPQp9i6pl0BOU3Wh8Dvpv1TCjlGFoMgnhPrx
+	ck6nujfRM8uXjs9FMtttD7Em3z2WZns+jgF8w42Ipx0PLWiy9J1oOabiVUNEn3pQx3T6Ts
+	ub5d0JsO2p91BfzTq9K5VgTOjK5lfb0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774305437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rMH01xhswRxeY7akcHE4uW++/WwOEsKp15HODGw/Qzc=;
-	b=K3bKKBrEiVcmLXa2e0vBm4axZ4Bcfn7iadCJASyevOOVrLUNiTXRSp+4wGQVO6t2Mkpa7Q
-	dcDTUspAEkM0j9vnxZNBnApwW3p+m2LSmTo1ig3886UCSHNJmeYhGhizzFdGtmmnqBjySA
-	tKq8wkF8TqtjL4JlIvpkSKcuLEUeFhw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774304648; a=rsa-sha256;
-	cv=pass;
-	b=oWvzt6jB+4qTtpo+NZuOgdbuN1eYS7g9FMdeXXy0R5gHgpZebP+DtWX2DeXyYYyzhKAsvW
-	V0cHGVgWP78qLueGcxSYja8FLEdESO//v25VmoymHPMS7xvySgpZjlPAi212oBV4EdwdIw
-	5gIpBbQk08LfrdmMjy++iERfcmMHokM=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=OTjQ4wWm;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6634bb959a2so912574a12.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:24:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774304646; cv=none;
-        d=google.com; s=arc-20240605;
-        b=U9aCAIaukjznoQaNrNJ+QysqKwq5nKmxXShDjK0sJJ7Z13ITl7n54qUJQbL9Xq1yh8
-         ioBNZTr0DUJNbUY/2wBG9Q6KONw51igVCO4GoaIM9BIMtMLOax4xBtqtrL2kqwHJSsbA
-         Zn7XJFF976UEVXY93c35LaiiMmY72zmQufb5G+3vPtHqhK1ruqFJUTE2yOgyZvJkx8au
-         au/WQ0gCM8rnY+wZnpWGpIHE7X6LQpLJ5PNEACTr3o9CEY5315/pcd56+d+iPKumZWzo
-         4GftHXmAN9Zx8SH6wLrky2HCXu+I6n4bA5yS74MjAuQJDU12m/bv/9xsKOOAfKKfZzQW
-         es/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rMH01xhswRxeY7akcHE4uW++/WwOEsKp15HODGw/Qzc=;
-        fh=oMpc+tBR4PzNSKOY8G8khUWNiFyu3YAHzQ2BVGs7WfQ=;
-        b=EIFdA/DkZFCgOn/fOA/1rvFUDy+yrQYMc3DX874Mz0URnzu72HYCG76Ryk5v/C0q11
-         FW2sTVlLpOi1Ctx6sFmi4RoeqLHj0dJTzXo4uMF+CtdxinS9uFI23wkiybWwkR1fbBv/
-         EcLBYvXh87j4x6phOIQ1OHl0gOUEHQI1jloiJ9UXtym0+x7gVq9J4mrcJ4FeB+SkhRtg
-         PQpj7ZxmNAe6kvcs9PdwC/KlX2NzhFXuZxC9d7uo/J7sGpZ0Hr+xxO4ZA/68Ndd2ACz8
-         SMCNSK0phiTpjuIZenlY64mPI7UdPlA+f66bKruwkX9YCU3C0u5ecOwlF78AGnWSLLOG
-         FI5w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774304646; x=1774909446; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rMH01xhswRxeY7akcHE4uW++/WwOEsKp15HODGw/Qzc=;
-        b=OTjQ4wWm35X0chnh2rooXXDmxZAYKMDWJD3o8sd47tKHvhYaBy0oWAKl/iq/a0VfLl
-         2/iA4eTDKlbXF11AsQS37oqzjTV4C61QIBd6TkNAdHd+Icm49cfRGdEw/CeRZFtFza9k
-         7HsHMvjkW39JPMjjY2FX1Jwl+GMws5hhRyT2AZpu1Cr/6g+Bp8A3z5UfN21NaRW6/hv+
-         Fch+G+Ap53Ff/CJ9EznKHKIA29ysHl4ijnwmhGcmY/X18SrAFQ4sS3w0bO91D4r0RNEs
-         Ffm+FlfyDTKHFqJ/BPIcXS0WSAyg6pc6dnd8eSUhf/os+AQg69u/xknRDJRmFqgRsbiY
-         5zdw==
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=Oqjmh2SrD9FfDowoOONetke0bC+WpW+XYQbNawQm8vc=;
+	b=q+3ICZozjjj3pI38zvE1HJivRJSEpNNRGzOqsYf+yBiblReJydwPtYPD5hIGJTQbvUm9Wb
+	W3GHl0JpRiYaEZIu5esMaK8ALEpSWmdBaADYLcNM8eMwxH08X7efTQ55SX2bUgzrEyE7A2
+	UDRy1QQLHchQRJAx7ZUlMVccz7XlVlA=
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-41c5c1675c9so9179977fac.2
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:37:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774304646; x=1774909446;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rMH01xhswRxeY7akcHE4uW++/WwOEsKp15HODGw/Qzc=;
-        b=pxOnwysAuWqhwMUUizjg/Wi4yzvw+cYYGHC1Zn7ZFEvCoM3eGtkLZCJtObzK5qKF+P
-         /8US7ldCwi9WL1N5SSHTDehY3f3uLymyrXHouCt1mOIUcWSuXnWtfU3GZSEQ/9dRvXZ1
-         bRaSe9/jN08JsQ7PYmbCdUIzD7Mns2vWWgmZf2z7TwNnTxUWoaP8hpF5EqFP21uSDfrw
-         JT3riOSi72uP81cRuVgSryNZfWBXl2Yt5qo4HbRX7buzcIutCwc76ny5MP0n5sqmKklu
-         nuos5WY0IIOc+wB6ws2z53qUIE550pWnDWyjobXs1oO9QHAysWcafcjy5T+xWsD6tIMI
-         SSYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+Yq+71De75ziqz/Uj5U9ZowJ3R7FjK2ww/tfWyDqZerF6bbHdAMBFDAUmj1vKMpBK/Pj4erHPzA==@kvack.org
-X-Gm-Message-State: AOJu0YxaGJd5971RHarWMG7AXmUNyQc8fxhnGTmC77Ca4D9kIs1HvQTy
-	bDZoscGTXuPYDFBhSn2oxRQ7vi+Tdk6+jsNOp3ExdqY92qHY+gCdP+UA8NJAY4dZiJla6N1Qtr3
-	7AkOZhZM4+YtTk8qpt2nPvIXjN54aWyqH+p0lgnJM5A==
-X-Gm-Gg: ATEYQzyZfz/luEJwQlfJ3RzMdO2xpk/3Hb8hMJetvfv/R4HedDDQ3HqP5XBRNHuis6I
-	koxLa+VWTra+xIShBzKGRNhEJxr236iKwkICoJKTZ6/k1xNMVW7ZHkaOZt6eAjpnpBYOJ5UUyvD
-	T0XHdL4Q9bcCqOSc6cuQi1U0Qfx7wlmpBn9mXvOrBtiHVNFisVOmIvKxGkbgCNdOhOaDi9+mwVr
-	//ywH8ouFGx5FvzpdSCbk4ov7tBqN55tei4d08hUDHFPLqhL9ePWvJhmsV/rjAwbiz+6MqlxaVy
-	YIlqUiGIDJlUpScPudQdxf+YQ7XIXpvA4TnwYA==
-X-Received: by 2002:a05:6402:5d0:b0:65b:f342:d1a2 with SMTP id
- 4fb4d7f45d1cf-668c8f08c14mr10693463a12.6.1774304646108; Mon, 23 Mar 2026
- 15:24:06 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774305436; x=1774910236;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oqjmh2SrD9FfDowoOONetke0bC+WpW+XYQbNawQm8vc=;
+        b=ifRQPJMlKp9ydL/Uy9Gj1IgbSWbjB/XWk5D7w0wRpQVQ/JdaSatd0GkKhAh079EYCG
+         SFbh6SF+QwYvp6XzyHYmMpHW/S3QZfNeyq6RAqtefuEAzJNgFedlo6ioUC66SsXzu57M
+         /wRhPY9bRMTyeA5xIhBldtYf1IWwx1lbfyPhIm5Y11xax6wKD490jp62RE6kKOzjUm6g
+         yqf8wz3Rxs546Tqvd4w6+Idix0SxtCE075BSLDcyHriLtJEPfcyeEQcIpy4Zu1DjHjhB
+         WwNs1kTLrXOT/sFuRuNXHDTDiYT/TCuClHQ7TSu5v7msJTGwv1Fc5siPokS0Qv6QtDt6
+         gF2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUQb0PlBTPJDqRvmKvbdAxygG9GaKwm4w9VYO8XEcXDXJE9IMQVHW7tVYrpeWxQHcbpHBnSUmWZuw==@kvack.org
+X-Gm-Message-State: AOJu0Yw5/DwrI1wr7BbOchnQG/2AD2Me1EaxbHnXP0czlgEuATMe5HsV
+	3WE+quKKLenHOSUE3m5teKT66jW+5wNMI2GeweUYDa2XhxL+n99IbtV40bsLlvBh0fQJjmxQC38
+	VCV7ufbTOpH37xN75/jFyfWowW6oOtNZF/ag48e47zGY9Ayt4qShRx7ptxUY=
 MIME-Version: 1.0
-References: <20260321143642.166313-1-oskar@gerlicz.space> <CA+CK2bAfPSKfV=_Sw20oqF56+H3a4k3x+47i6-EUK8mLV-i2+A@mail.gmail.com>
- <CA+CK2bC8o2p_poLb0yfp6mAAwR42Vg_99Yh_HLK1iJZrCrsVig@mail.gmail.com> <f76e6cbcf6752342ee940ed0dfeca7bd@gerlicz.space>
-In-Reply-To: <f76e6cbcf6752342ee940ed0dfeca7bd@gerlicz.space>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 23 Mar 2026 18:23:29 -0400
-X-Gm-Features: AQROBzBYmbrN8P_EZJ8f9HXtmmp65c7B8Ck9f-JHx34u3fy-gh4kUtkFo_LM52g
-Message-ID: <CA+CK2bDN3bk5Y-LP9OD+6vPrr50Eyy4ALJvhK36ZFGEgj7yjLQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] liveupdate: block outgoing session updates during reboot
-To: oskar@gerlicz.space
-Cc: Mike Rapoport <rppt@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
+X-Received: by 2002:a05:6820:152a:b0:67b:a8f8:f68c with SMTP id
+ 006d021491bc7-67c22ff3dc5mr9608160eaf.70.1774305435967; Mon, 23 Mar 2026
+ 15:37:15 -0700 (PDT)
+Date: Mon, 23 Mar 2026 15:37:15 -0700
+In-Reply-To: <20260323162617.2421-1-jack@suse.cz>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69c1c09b.a70a0220.59f55.0001.GAE@google.com>
+Subject: [syzbot ci] Re: udf: Fix race between file type conversion and writeback
+From: syzbot ci <syzbot+cie6df483244df2ff5@syzkaller.appspotmail.com>
+To: jack@suse.cz, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	luckd0g@163.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0C34D4000A
-X-Stat-Signature: tdgs8rws9nnddhzu4uzbzum7x8gjkdpa
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EEBCBA0002
+X-Stat-Signature: wnr47x45rmgfca8xem3r1atzogzujz77
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774304647-597398
-X-HE-Meta: U2FsdGVkX18GXCjUiSCLf6mskuPrdrMW52csVvfMO59OiaYIxApbZXrHskTugYQXRqsYsauTfW5z88Y/RhhabwkDnQCSalEpM5CSw4/ASbNQZZs+Zxp/7cvG5LHCIElAhasZnfVEHkcFity7bT0k1ZmFWsEN4t7ssbMsmTY/awC2tCP40y8AgrsfoCTRqkEGgZyXdED/zTEV8FDU8QoF6C4NSaorGulJCbMpmgWMrDmmjucQnxB3UJXJ6N1lG9d+lSWQyRpkg0cRXRKqQ7DeWyfDgbjOq1CX/ZioI7euiisVu1nxThODB3Ph6Cl76sNPXDZ3uKATY7H1lk/1jfKvW9q+S2ej0gLYJYSgGfZ0GiGfc3UwA7GEX/Wz4C2IOqq/mIhn2f5vkxkeToZHviCUlVCwS8NfEmqfCOvG2frKxX/V4Tcd3BBoxgda+mne01Ibvyf0XAIgzI1ZvxAP8KMRhoPqH4PYDlwwVhPJbnniY6nLKVI/MJOTosVaJb206rvc7uQ9BNbIFYHDPl6tMhohBisonI79zfb51iQO5ju42kOlYo7O1heoHZPvoO4dc/YJ5UJaRCgwbz9wFEOoPdC3n8TH4iTjl/3Rt1zFrupe5CCPeo1m73BacBVV/COPG6YwhDpo64RGxJdldiKyc2+qHORMjEE4HqVdXHu9aDTmnPM3LiMRArmmMvyW/BwkFZuT6hOoLM46y3EVdvj1bPt98dTXrpC0EbEYBYd2FIaI8l/vhtuMjVDYBaegeX5YI8HmKVwXnEY/sk1XbJSYR/k0Bug6ZwqlcgWd+nfbdCeomQuAcB8qmnGpztULxzY+13uryF/h/isYVPh//nwmn454Xg4VMr2+UX4+SjWxoNAHcX70SZ6XSsMmajUeXggFMq6IvNPhVgud7VVZtnvkmykCJQ/5bEIv5CJJgQ7eMad2rEIVxHEBJeFTeSG94MLMNLM8+2iYJFum+O65WdoH65g
- pNccfkBw
- C6flLg/bMXz6fvueov09fhppYyYhptNgZF9MORjEOz2QCsGE5fYVyT5b/LtHf0cySPEOuYMLxdkFC69kSCNMhjpiAPRv9gn3NKIFuMzbSBE6vi5r3l+iZCt4V3ESryLd3yNZ8/CQ1hH00+681G7u5UFLrKyDhlLfj/fdxVzT53otRtWPlFlVfJYsB4zJoq/7ibJyecfq15pPGR497AIbrIPuPW02lL/FMbn/nAnq8zeHJmI4CmQJ4EYaf/dvsDFA6TkQEV7AFNEa62TwObImrNj6qn4ccPXgeG036tFD/bXqdrMytOoxPBFGe+Htn2sx6rtLd2C3bjKQ6a5N6OnDXNlZQ/Q==
+X-HE-Tag: 1774305436-234313
+X-HE-Meta: U2FsdGVkX18/Mhc47yNOumoNGBhTLZC6D7cUKgmSjxsN90yGY6A452wCX8J5PpgQGfrveeUHB2GCk8aRGIoUDuq93h3k9Z6D+Ns/xdC/RWv5lFaXaGnTOEdAsS9Q7hm9ginxQYmSWkS1jBG9Lq6I0qRHqjb6B885qI7y3FSSK4lIQFwqNJxUZsoK1DEB7ZKryda44YrXhdlmahTLpu/QGlBetn8EtIoIb1mlibMPRqKIQxn4VWtdrTOJzf+8mx4jHELXaLsc3OnS8eQ49VxmbLr/ZqGW6KNvJuU7p5+wAqN6OFAOBwXqG2LuBtH90dzH52nY2HUc+ezH0arrEY0ofwlzZfwjkDGPyIGxFeTdIV2ILpdsLXtiDhpcl30U8Jv7NOuUffuYznZEx0z6Rzp7mNZiy2W4j3lR/3J+LwKQFV8TxkMUC6KWTUuk2gc7DzFOtPIhRFhRwrISlvHzK7ikJ7UWrD5aREFOc4GOo+VRpS34W7mYqNmpv1Ay0gM2GWwkMxftPUqJQAbjcUBvnN9JjH4bZYEUJ5zDec4vtNoLr8ZS3o9AzsNDf9tnU4UGeJdmwNLH5XCohvYyiF8CtiYV/ye4AsGn98GKDWXVP1qHr3xiUsr06q+JUk7DdJWRd6ERulYEdRx9BNncG9cMEXpzpaXTffbkYATKZwHwhX2eKFmGNylkZe3uZRPlJJAXOuFPSNz9FD5cF7moyd5zb08oFOgZU7AKPgSCyjqct4MrpqUv7KtTNdBPY6kybOCrbddElAWCI89y21tHrOAiLxhrRA3suUMCPwLZd4R+31brBNa1z5i1ZCLVJtt1xUoqVVDLrUz8OAdUDJLozOqFIR2uy1QZUzNHyb93KnnIQC/KJ+DT7hzqCZhlfN4dIQlPmBIIPsHt5zB+8XdEMUE8CfZjI6x7AfJF1/qwwLXQhCT3ZZxaRk1SwfuwSxUNNoRSLXjBtKSBunQXtkNyvzs3I9j
+ FgJxfgvw
+ DVcQrQcgXsG2ra0nJdnVnpP+RSo2h2ZeUg9EDPIGGZJpQ7zcKxf5onSXUuUevyIwyOLQxA2lpyBLdsiVbkKgvc4UOKAIf/Bnx3tRL3L4mX0NfWakflaiqLq3uyhArU3MNPvfzwGeAnYCM5jW59LzwG2bkkmxlUPyln/+xisKSoAqjx+K9BWtDoCZq2FJXNVifvDT/W60fXvLng/6LKJQ5XBSyjoFUuvONvp5Jj90IUZ0qLz/wmcXNG8zXZm5pXZxCuN4g4C/uSPI+iw/qifp20+cV8Cw0MuAf76ZY7TMqBIoRAFMtKH4UmTU4OOZwbAAfJluSGko9LxLV9eVxCTpEQpBKDWGitBFhCceg4V0/5Wfd/LR0y2C4nifW9py9w/N/oeSWLsIvUrv9idWIFI7GAIC3b80ReUfxxoCuWpvrDqcr3K01IUqrerGwdu2AB6gZm/fogV2PsgSqL/H/3wMajfVIBm7c0acaMozJlxuzSyE8LrCmjfoJmlvmUlfRymfFyh2OgxlwXHiPtgEhLunub42yEM/iFstF9etnpU5d4M+OFtuRx9LIjcZnMHuG/HM1Ds6zDKeG9tEC+DzOMAagnKAmBgNPSVeuEsQca5N+PPevqORmCbahPuE8Yn2MHy4OabmRskTP/wLE9OmGfRtmajCzrV364v2dacVVBAc7htLQb06TGFgWYF8iDCHkMNwBwAq1zZFK1dmdfFGkD2Y7aMLVX58uASVJmwGe3s90Jq1uYzi5BLUEj+BZkVVKhyKAuo0fwyfyQQPlAycBqrKu+uM4oQlbzpGcyRBN/eamW3Gx6WDWjm7CUnZmcPiOEpwlvE3DBUcBNUGoFC8fvTxigh2enqq1PkWN8mp7pMCi0Wt4O0nmn/teln3diqrqjnRTwEuS9LzRsH9VGoABTUhE1xGO7I3k/WuIQ0EJDvk/2hQJT0YpTMvyPyNjPoIOqPRofTxwn+0Ix7vrTuQnb82tICQ2f5Ve
+ IPU86t/I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,116 +96,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 4:54=E2=80=AFPM <oskar@gerlicz.space> wrote:
->
-> On 2026-03-23 20:00, Pasha Tatashin wrote:
-> > On Sat, Mar 21, 2026 at 6:28=E2=80=AFPM Pasha Tatashin
-> > <pasha.tatashin@soleen.com> wrote:
-> >>
-> >> On Sat, Mar 21, 2026 at 10:38=E2=80=AFAM Oskar Gerlicz Kowalczuk
-> >> <oskar@gerlicz.space> wrote:
-> >> >
-> >> > kernel_kexec() serializes outgoing sessions before the reboot path
-> >> > freezes tasks, so close() and session ioctls can still mutate a
-> >> > session while handover state is being prepared. The original v2 code
-> >> > also let incoming lookups keep a bare session pointer after dropping
-> >> > the list lock.
-> >> >
-> >> > That leaves two correctness problems in the reboot path: outgoing st=
-ate
-> >> > can change after serialization starts, and incoming sessions can be
-> >> > freed while another thread still holds a pointer to them.
-> >> >
-> >> > Add refcounted session lifetime management, track in-flight outgoing
-> >> > close() paths with an atomic closing counter, and make serialization
-> >> > wait for closing to drain before setting rebooting. Reject phase-inv=
-alid
-> >> > ioctls, keep incoming release on a common cleanup path, and make the
-> >> > release wait freezable without spinning.
-> >> >
-> >> > Fixes: fc5acd5c89fe ("liveupdate: block outgoing session updates dur=
-ing reboot")
-> >> > Signed-off-by: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
-> >> > ---
-> >> >  kernel/liveupdate/luo_internal.h |  12 +-
-> >> >  kernel/liveupdate/luo_session.c  | 236 +++++++++++++++++++++++++++-=
+syzbot ci has tested the following series
+
+[v1] udf: Fix race between file type conversion and writeback
+https://lore.kernel.org/all/20260323162617.2421-1-jack@suse.cz
+* [PATCH 1/2] writeback: Export folio_prepare_writeback()
+* [PATCH 2/2] udf: Fix race between file type conversion and writeback
+
+and found the following issue:
+general protection fault in folio_prepare_writeback
+
+Full report is available here:
+https://ci.syzbot.org/series/03e405d8-f247-471a-8469-f544c8393300
+
+***
+
+general protection fault in folio_prepare_writeback
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      af5802cff33fe3c557dff87cd3897d14241a7c6d
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/d1944db2-4f63-4e26-b642-d71f55382c9d/config
+C repro:   https://ci.syzbot.org/findings/87b82667-f800-480e-b52a-38decce9e6c4/c_repro
+syz repro: https://ci.syzbot.org/findings/87b82667-f800-480e-b52a-38decce9e6c4/syz_repro
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000002: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+CPU: 0 UID: 0 PID: 1860 Comm: kworker/u9:3 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: writeback wb_workfn (flush-7:0)
+RIP: 0010:folio_prepare_writeback+0x32/0x280 mm/page-writeback.c:2371
+Code: 56 41 55 41 54 53 50 48 89 d3 48 89 f5 49 89 fe 49 bd 00 00 00 00 00 fc ff df e8 f9 22 c2 ff 4c 8d 63 18 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 ef 6a 2c 00 4d 39 34 24 0f 85 bf
+RSP: 0018:ffffc9000901f1e8 EFLAGS: 00010203
+RAX: 0000000000000002 RBX: fffffffffffffffe RCX: ffff88810981ba80
+RDX: 0000000000000000 RSI: ffffc9000901f4e0 RDI: ffff8881a659bc48
+RBP: ffffc9000901f4e0 R08: ffff88810981ba80 R09: 0000000000000003
+R10: 0000000000000406 R11: 0000000000000000 R12: 0000000000000016
+R13: dffffc0000000000 R14: ffff8881a659bc48 R15: ffffc9000901f4e0
+FS:  0000000000000000(0000) GS:ffff88818de5e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00001b4fda9cd4b8 CR3: 0000000110906000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ udf_writepages+0xce/0x3b0 fs/udf/inode.c:205
+ do_writepages+0x32e/0x550 mm/page-writeback.c:2554
+ __writeback_single_inode+0x133/0x11a0 fs/fs-writeback.c:1750
+ writeback_sb_inodes+0x992/0x1a20 fs/fs-writeback.c:2042
+ wb_writeback+0x456/0xb70 fs/fs-writeback.c:2227
+ wb_do_writeback fs/fs-writeback.c:2374 [inline]
+ wb_workfn+0x414/0xf50 fs/fs-writeback.c:2414
+ process_one_work kernel/workqueue.c:3276 [inline]
+ process_scheduled_works+0xb6e/0x18c0 kernel/workqueue.c:3359
+ worker_thread+0xa53/0xfc0 kernel/workqueue.c:3440
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x51e/0xb90 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:folio_prepare_writeback+0x32/0x280 mm/page-writeback.c:2371
+Code: 56 41 55 41 54 53 50 48 89 d3 48 89 f5 49 89 fe 49 bd 00 00 00 00 00 fc ff df e8 f9 22 c2 ff 4c 8d 63 18 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 ef 6a 2c 00 4d 39 34 24 0f 85 bf
+RSP: 0018:ffffc9000901f1e8 EFLAGS: 00010203
+RAX: 0000000000000002 RBX: fffffffffffffffe RCX: ffff88810981ba80
+RDX: 0000000000000000 RSI: ffffc9000901f4e0 RDI: ffff8881a659bc48
+RBP: ffffc9000901f4e0 R08: ffff88810981ba80 R09: 0000000000000003
+R10: 0000000000000406 R11: 0000000000000000 R12: 0000000000000016
+R13: dffffc0000000000 R14: ffff8881a659bc48 R15: ffffc9000901f4e0
+FS:  0000000000000000(0000) GS:ffff8882a945e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00001b4fda9c7570 CR3: 0000000173314000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	56                   	push   %rsi
+   1:	41 55                	push   %r13
+   3:	41 54                	push   %r12
+   5:	53                   	push   %rbx
+   6:	50                   	push   %rax
+   7:	48 89 d3             	mov    %rdx,%rbx
+   a:	48 89 f5             	mov    %rsi,%rbp
+   d:	49 89 fe             	mov    %rdi,%r14
+  10:	49 bd 00 00 00 00 00 	movabs $0xdffffc0000000000,%r13
+  17:	fc ff df
+  1a:	e8 f9 22 c2 ff       	call   0xffc22318
+  1f:	4c 8d 63 18          	lea    0x18(%rbx),%r12
+  23:	4c 89 e0             	mov    %r12,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
+  2f:	74 08                	je     0x39
+  31:	4c 89 e7             	mov    %r12,%rdi
+  34:	e8 ef 6a 2c 00       	call   0x2c6b28
+  39:	4d 39 34 24          	cmp    %r14,(%r12)
+  3d:	0f                   	.byte 0xf
+  3e:	85                   	.byte 0x85
+  3f:	bf                   	.byte 0xbf
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
-> >> >  2 files changed, 221 insertions(+), 27 deletions(-)
-> >>
-> >> Hi Oskar,
-> >>
-> >> Thank you for sending this series and finding these bugs in LUO. I
-> >> agree with Andrew that a cover letter would help to understand the
-> >> summary of the overall effort.
-> >>
-> >> I have not reviewed the other patches yet, but for this patch, my
-> >> understanding is that it solves two specific races during reboot()
-> >> syscalls: session closure after serialization, and the addition of new
-> >> sessions or preserving new files after serialization.
-> >>
-> >> Given that KHO is now stateless, and liveupdate_reboot() is
-> >> specifically placed at the last point where we can still return an
-> >> error to userspace, we should simply return an error if a userspace is
-> >> doing something unexpected.
-> >>
-> >> Instead of creating a new state machine, let's just reuse the file
-> >> references and simply take them for each session at the beginning of
-> >> serialization. This ensures that no session closes will happen later.
-> >> For file preservation and session addition, we can block them by
-> >> simply adding a new boolean.
-> >>
-> >> Please take a look at the two patches below and see if this approach
-> >> would work. It is a much smaller change compared to the proposed state
-> >> machine in this patch.
-> >>
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/tatashin/linux.git/log=
-/?h=3Dluo-reboot-sync/rfc/1
-> >
-> > Oskar, I made a few more changes to avoid returning an error if
-> > get_file_active() fails. This prevents a race condition where the user
-> > might call close(session_fd) right before calling reboot(). I
-> > force-updated the above branch. Please let me know if you want to take
-> > these changes and use them to in the next version.
-> >
-> > Pasha
->
-> Hi Pasha,
->
-> thank you for taking the time to prototype this approach and for the
-> detailed explanation, I really appreciate it.
->
-> I agree that reusing file references and introducing a simple blocking
-> mechanism makes the solution much smaller and easier to reason about
-> compared to a dedicated state machine. Your patches definitely move
-> things in a nice direction in terms of simplicity.
->
-> While going through it, I was wondering if there might still be a couple
-> of corner cases worth discussing. In particular, do you think a boolean
-> gate is sufficient to cover in-flight operations that may have already
-> passed the check before serialization starts? It seems like those paths
-> could still potentially mutate session state during serialization.
-
-I think it is robust, it works in conjucition with session mutex. If
-an operation already passed the check, it already holds the session
-mutex, and since serialization also takes this mutex, it will see
-consistent data after pinning sessions via
-luo_session_get_all_outgoing().
-
->
-> I was also thinking about the lifetime of incoming sessions (especially
-> lookups holding pointers). Do you think file reference handling alone is
-> enough there, or would we still need some explicit lifetime protection?
-
-I'm not sure about that; I have not looked into those patches in your
-series yet.
-
->
-> I=E2=80=99m currently working on v4 and will take a closer look at your b=
-ranch
-> to see if we can combine both approaches in a way that keeps the
-> solution simple while still covering these cases.
-
-Thanks!
-
-Pasha
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
