@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E4C4F532C4
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 23:58:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE5E4F532C2
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 23:58:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 020D56B0099; Mon, 23 Mar 2026 19:58:48 -0400 (EDT)
+	id 727156B00A0; Mon, 23 Mar 2026 19:58:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3BBD6B009D; Mon, 23 Mar 2026 19:58:47 -0400 (EDT)
+	id 6D7AE6B009F; Mon, 23 Mar 2026 19:58:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E51056B009E; Mon, 23 Mar 2026 19:58:47 -0400 (EDT)
+	id 59E6D6B00A0; Mon, 23 Mar 2026 19:58:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D33326B0099
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:58:47 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 644E213C275
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 463176B009D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:58:49 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 003B0C3E23
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:58:48 +0000 (UTC)
+X-FDA: 84578995578.04.6DBF2F1
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 31CEC140002
 	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:58:47 +0000 (UTC)
-X-FDA: 84578995494.29.7B600D6
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 952B3C0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:58:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SLRLb7kl;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RVSDAG4H;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3tNPBaQgKCLcajXqiXZhdlldib.Zljifkru-jjhsXZh.lod@flex--dmatlack.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3tNPBaQgKCLcajXqiXZhdlldib.Zljifkru-jjhsXZh.lod@flex--dmatlack.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774310325; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of 3tdPBaQgKCLgbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3tdPBaQgKCLgbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774310327; a=rsa-sha256;
 	cv=none;
-	b=yDX86Za6rAku4oOQqwg/cJuQ5Y1IK3CZChr8WKsCrNQwNgjL8kOATcJ7XjDty2aL7aRxSX
-	ksS269SUeZ4luvOZOw2UcYpwzXUNJZMSflddwHFEyw+EvUgfaTVvhdIwPkFw5rQHq6pP2H
-	PgK/wQcwUI/iTA5ssGyq6ONduP6c+yg=
+	b=lIOWYa5gWaehXWKbexqPwCjwsCNmdsDp5QO6y/QLf9Lf5qQrJc6Huxh6MHtNBNnbb5gbEn
+	HCO51mgNSATOOFzbBrieJusDt6u2lyihzJajv4Y6j9YVZhMJGGrHf0UNmN0yZxLC1J3p78
+	97TLPauh3MwfzFc9INMbLONlbnC6rrI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SLRLb7kl;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RVSDAG4H;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of 3tNPBaQgKCLcajXqiXZhdlldib.Zljifkru-jjhsXZh.lod@flex--dmatlack.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3tNPBaQgKCLcajXqiXZhdlldib.Zljifkru-jjhsXZh.lod@flex--dmatlack.bounces.google.com
+	spf=pass (imf09.hostedemail.com: domain of 3tdPBaQgKCLgbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3tdPBaQgKCLgbkYrjYaiemmejc.amkjglsv-kkitYai.mpe@flex--dmatlack.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774310325;
+	s=arc-20220608; t=1774310327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g7UW0RmcLc1SB8VXNrTH33hzd4ZkDSbd/G4mL4V5lhA=;
-	b=kz59GSLXNQhxU8Ls+vAsaZGcLHVPl749JcxjYfjKANjej7bsEpdGN2eTrn9r7eHhQMc7Cf
-	IdL/h6H2SJ2eceqVb7pbW4cKla11taM7ACYcSExYZI2u2DLnNDGu+FY3vX96eJrkCg+6qK
-	Hs5+mPVXyTVp4BhjO3XKaVxmy4togHc=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b079b4a8c3so3137025ad.3
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:58:45 -0700 (PDT)
+	bh=Z81MLxHKunKSpfd9G8Gazc1UStxzf4ZSRozQrfTx8r0=;
+	b=2fd6bb4FMsKHuy1jG9mifcKxkhvLwIlokLLJHIjxa86ckAs/0tDPowROHtGfxA4p+Fdvn+
+	0piR3vZIvaZufVwWXAlk8oP6trMjVvpG+NKr7lyeggFOqpKwGTBMp7dNlY7aWbX+iLjID3
+	/qYf6Nzv9vQEmGotJ3VY7xXm8K+I92c=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358f058973fso1103323a91.1
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:58:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774310324; x=1774915124; darn=kvack.org;
+        d=google.com; s=20251104; t=1774310326; x=1774915126; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g7UW0RmcLc1SB8VXNrTH33hzd4ZkDSbd/G4mL4V5lhA=;
-        b=SLRLb7kl5l+G/tOeFd+KN/v8rwDNRTOEC0uIC06QkijqmaQsoew6eVRYmySjc/C0N/
-         5WREVSeUUdnv1G6mZ7kU7furX3JJdJF6xkcjrqIX01+yR8lT/BsoQrUP2JsIpvrwH2mK
-         w5jZETLmBAmre+VDw1rjYRibezSCdylASn7g7Ql7EZtOEGUbexpmg1/Z1j/8bgHRW/lv
-         rh6sunRry3BrkeFlpmBt5AMGK32m5W6tOzG7aHa1s1VE6l2IjrBPbtXtN9m5KPKI+Mkl
-         +jTeRHl5Rbmx7ntEXCpnd0n4rd4cvbVt7vf0rt//cPQANu5bhfUDAcMT7ZnpixP6E8j0
-         X3xQ==
+        bh=Z81MLxHKunKSpfd9G8Gazc1UStxzf4ZSRozQrfTx8r0=;
+        b=RVSDAG4H3LTQdZmfTQs58UVgSsDBxy+dcLb9psty+g5sHguVzuyiZgIQXtS7AVQhZq
+         9C6v1yAlUXjrr/GTQug2aIDEFnrbgCSf/rL4aGjNVQPg3yQ0Pd7M2xDOzniAttP/AFIs
+         EDVKtO3/7uCXg+bDkKtpZq1jdL1AIdjjrDHkNqDssr9CBcHflptleOMXfHy2vkmfBnoZ
+         UIsNbzi2gPhOj6Vw2MXeQ23GbgWvtbtsaR/tZfwkz9CF8V/e3qPoLktZGckgvOUWMMwC
+         T+MmwfV9nkAlnz2FzdgoqfGoMIVb17VZm8dWYSGgs/M+JLpxEMXDXuoIi0/bEivISAsR
+         +KZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774310324; x=1774915124;
+        d=1e100.net; s=20251104; t=1774310326; x=1774915126;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g7UW0RmcLc1SB8VXNrTH33hzd4ZkDSbd/G4mL4V5lhA=;
-        b=W8f+u0EQjihM1tUuoFyOwOuKLnVytfPT8RAw2QSpiNza9B1B4+QYPYZIGrUb/M612S
-         btb92NNsBiiFEXIgHdfSrWQHxFXy8VBHB58wlJF8i6U1ea8mwn3Xj7alx2U2RCIVd/wY
-         5Ng4LRNqPNbfW0HWl+Mdt05ZJX1NB13gPVpDb1xR85dwiKTjmfUrqkku+3TymHUzU/ig
-         fI9NGP+YcMfqTaXBM4Yr4xCpHPMyDaRgHcil5MLfvH7NcaVTP3JMNRFuRxM4/0spWlea
-         vPHwD2/K7MhQ+LmC2ttmz9BvdrniwrxIz9BoxaNTW6rRlNB+GbXtz/VkXn+xT+3AInj6
-         B5Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCVIKoZqAxN01VZI+ToBHnQ1nNNsCz8/0Mh+CqdVdmKe2qgOFFa0GmQ08kwb1351noUfHzj7LrTo+w==@kvack.org
-X-Gm-Message-State: AOJu0YwIIWWe4Tfr6dfLem5z8jwXJ0CpiVVDwinc+XdOKFJWTqejRoR7
-	pgF+aSf6YqRnUcGlyK9Tj6Zyydw/WwlknwIvcDRgN/ZQkgV6+tJYe7YVuY7y1r6BdJQMyH2s/6D
-	dIuAiEW98eW1Kxw==
-X-Received: from plbjx15.prod.google.com ([2002:a17:903:138f:b0:2b0:5b78:8e47])
+        bh=Z81MLxHKunKSpfd9G8Gazc1UStxzf4ZSRozQrfTx8r0=;
+        b=pnspcSLTf4c9gG1nt7UjxDXeqoywUMo4O3l3YaflOu4uQ8M92UuX74KZdDJrbDK0Dq
+         DxnqKp+VkljJtofXD4+DtKFTwyeRVq0M0MTg4B+STdkKlesWcnpG0X3l0exeGu0AhqFD
+         nBJ6sHwLqsJrij8F0mvU/kGW/52NT1bgVlaStfweZ7H8Smorh7yIKD53XtBP2sHFB5Nl
+         LEiVFcOMZ/EeJwR44adTKLwFsjWgE7/tQ+pwQkyPGuQ9/u5ZqFhY7E2OhU0O1DsSU63V
+         I/bJGJ4wxQxo3Bv7adPJ9+MTJyEgKVGTRmJ/I+0Bkx0JRElmvsk3jJ4QNJLEn9USou0P
+         VDJg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqbEqH9qKWBGbDwnZy7wGEOxzDThqIhJNznw2zn+co5oh9g1qw7fJIIrosMz4wNAHHSzUWXmGH2Q==@kvack.org
+X-Gm-Message-State: AOJu0YzZdAo5lIfd6Gkml0ncYBPr5IFlMhX1ZY7UMJSYkUXW/hQWQNoy
+	FXCx72Z+441fVfMvmTvddfhQkV0OudcNzdTIoMr4yFvjo3Od84SnfQernTtDs0sUvdoNtaaMrpJ
+	iRnuvpbmEathjzw==
+X-Received: from pjbfs13.prod.google.com ([2002:a17:90a:f28d:b0:359:979d:cee5])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e54a:b0:2b0:9183:ce1e with SMTP id d9443c01a7336-2b09183d6ddmr75835585ad.30.1774310324185;
- Mon, 23 Mar 2026 16:58:44 -0700 (PDT)
-Date: Mon, 23 Mar 2026 23:57:56 +0000
+ 2002:a17:90b:5390:b0:35a:275c:4c27 with SMTP id 98e67ed59e1d1-35bd2bba27cmr10391028a91.2.1774310325767;
+ Mon, 23 Mar 2026 16:58:45 -0700 (PDT)
+Date: Mon, 23 Mar 2026 23:57:57 +0000
 In-Reply-To: <20260323235817.1960573-1-dmatlack@google.com>
 Mime-Version: 1.0
 References: <20260323235817.1960573-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.53.0.983.g0bb29b3bc5-goog
-Message-ID: <20260323235817.1960573-5-dmatlack@google.com>
-Subject: [PATCH v3 04/24] PCI: Inherit bus numbers from previous kernel during
- Live Update
+Message-ID: <20260323235817.1960573-6-dmatlack@google.com>
+Subject: [PATCH v3 05/24] docs: liveupdate: Add documentation for PCI
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>
 Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
@@ -114,14 +113,14 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
 	Zhu Yanjun <yanjun.zhu@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 952B3C0005
-X-Stat-Signature: b76n4iapsctrhqupbccbfm8b54d61fca
+X-Rspamd-Queue-Id: 31CEC140002
+X-Stat-Signature: zmpjjdcf39ooax84rrsntxq35mf4pwqa
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1774310325-755466
-X-HE-Meta: U2FsdGVkX1/NB5gXCyi06DwLeo2kRju2ndKH3ETL/w0xdLDdoFbXOEFrcsmkTQB/6Ir/LhxUbgxng0ILKYExTpnRcQx0hODGBRJfeFc1gPGog/oaqHC8sxyYKJojrpPbmXQdvDIaMq8XqCfoK77i/GE72qpLqit5EBZ2SM7Bqs2XcEYgARrkcryhC4v64l77ke6pEIoH1TH1eSgOalJS3clYbHW2quBIztgO870c9R7MgzYQe9E5mW9LbA6EUk0JF9k4bt4OVjtnk4DbxTMBC/bBMjUmlSGgURPpfsCc9ZpHDT4ziv2dJhSAg3U/pqXBXbhHHsTbi6FgsuiRZodNVDKTd2fIIKK6KnqgElS2EeSALW8SiodMrj+GWi8qHHzvFIf75XA5vlUyIZ11LXGG0sINz/zkNI1gJwkfgfvdxWHYivSFfGhN7ATlRNcsfIemTPvVYl6hlk5GYztPaAJUoniVeM6tOSGsFsdURUCrLQBCoyxS9/NnYBPwSzCV0N8yutBjzswj1IvMWRsaezlN+52gOv0zptXi0oUYpFJJyRpxTPXPywkGqgHY0I16U6dmOEY72Zl1zHCUDS8bkVnZWio9XxNQKIMlqnV2B2td7XaW4wwnJYyImiv3VK2GQvLNFTjSH8SZwGHvVc4Wc4LCdTGSv35TuIl/676Dc214CTtL9dYYGR+QE2jwTYi9OUz9LMsZ1OPLqX8iH2Xy6De3c8aBgCJqPzb9l8PbuN+gfL77weZtVjx48FfNDnLVxepAQ6Rq6w8Y4UNJoZBLTZYdfgyqbtHEDTKp5ZCdpN98P6xeaDO+9JIJl/CtHejWKN9+2cqPmoZg5fXFTkoJay6tJPbTRnncl3yOvlq/mEZDY+j7PREo6ldgjGT1JhtFi5Kik68KF+bJICOd2detP+c+Dp+CIp3irhpJVwJ6sR6T4QU53csPXCbq7N1YeCHP+9F6FfKmdp4gGu2YbOSpSbQ
- /ENYLFoH
- ls3OEsZq+XbZ1aOpRfKAnWFGzsSZyjEP9drz63s7yoJcUx0hLzQJKKmuxOdYA7xxS9lq5MN8lnGCFr0DQtMJAF+90Fk42VssfwkGebSQw2reWuXBaWK1plHXGsgPMCR5FJa07YoY9+QXPyl+cQ1/S+QnKvoBRc7jbaT1irKeVzcN24F5KdSo3QGnrGPoiP7apfx6bInI8KrJpP0TW87+PkAvWrMYoR+ThwE0zUjG8BKakYg/CedWvfDRM/NykdIiqMzwJyQreyLoCScRu5n9YfPehvfoZ27iCvxFvuGkXRstyDhQx/l7b/6tE7ubFE2JmNmZ1kkl2JMK83hx67vMRIuu/hAO0h9B+P2DjrUw+dmE+RLaQAVJwp5Aebw3bNn0hAu5UvSozuXT+J7dZT+/vPK1TFIuFWPeuMc7QCpLyvNz2UaW7+rKH0vq7TZTW+pVMk+yjTqW9AIiwau6d9G0tqbetmiqtselUXVUz7cBTfJohaO0jz8RfJ9DfhB4sfoyHInh6FhnJB+B4dT76ZL0nA+kr3E2bth+8EXHkU41awX0aEkB4N/8yChOWkw==
+X-HE-Tag: 1774310327-628630
+X-HE-Meta: U2FsdGVkX1/ziOqI3Gnv6z00a7/vR2YQjRQoBueGsz7cUFPAepM/lnf2w3bVKrp1gXJjcBGfFeWjYokqYLslNezeUfE84H3k18WUI/2dgIjs3cQH0n2tN/WvGdHVyBBGeuGHKDlYciaFb1e3XkUTS04DAM7brlX8o8o0LHe9z4I3fxCW3PC9KSgz0nor32rLprYU/5qsD8LtEVmV17kPW5hGStR0DCZIn/usXGErNCVp7QpFIuB1KYaep/Bt7/gBn+Pk8MuI4YqCHfgGgAizJeb9W3O2ZjMmh5EyxXEvEQhviJdMWl5vO9esgXwFvLvQL1SKe540IXiEgFSB+oOp5pV3OKzDxSvs92q3u97weE0fkC5UnPKzFIk1rIt+B396VSUszFoCR7Nguuk+xO/p3+iNiALHTaXHP1IoAOrktxlqhXYroPhNQxhrmfAixvS6dwCVvKZ5243su7DTWcW272Uu25HO376QhFwwQFZ29mexCT95bRcQ/ClqA+iuSOciHMn+OOqwrYG/oIDWYDOnsjW6jcNSAavEQ5QlhsJWAaDoFUTO44uG0RDoXJsCv2fM7eLt3B2uSGvesvI2S9H271ZLVhC38YUsmPZgQWeIyXSpBSIXaBBKyNGv826wOsWEROmvepic5Gx/EvhqE75ATZj64ZqdtGekz8mO+JxoE5oBkn14DZzgyB9Uzt8vwS+zvh8/4tQBCYpwcCSd3Bo8f6KTr7nqD2YhFTXiomrB/maW7rQwEKiuTN+olHZsVh4ML0nqP48NuULEoFt3zeG+0iBG8HIkixKQ+Ki7PfeOa0ha2SgPjh7x1FTvKqzkHQ78MsXGVLlT6zDysPmpPb6qxxln8ji/Bl9YpOosDoARh59c0cI/roP9TFRAtcdWlV8Oh1IPQBNKaYysd7umzmNhfW+2setqFmkQHEsyBnu8tkaRdxv82N/7ajP9v23pscdTr8c9Vq3nYpQo1a6adFn
+ J0K5Iz9+
+ UeevKXPJKVszOJBg/hbnJsxGdasiA/OE42FO8j66/1xpx8DAmZ03dHv6lLvY/6yYjKhw0KUY0GKm5648lceoPQYe85oVaY8vcA/s9gZsV3W+L0FPzLYy7iUlj4It74EviVnEf2Mofy06Oj+NwxypNBx807s84hMVa/1bCitS4WL7kiPjLAywDO2zVEOjFi9C31HxlhLdLEfoEcNvsgq49g+7cgdFCdHY4BMqbZ+JqSyV9oGfGcwiizRxFdZ3J+1ZbVELm+rntoVMk/YGREUnhE67MqwtShYGnfKTkR+nbIAAcEk7SQ+29LY9iBkuPq4skIt6rSCb9O0F4MEtaFoJF2Kw7eqYdHpr96ahJy61i02CuenhVgJgio5Ug3+PV0hzQPIZLnyf+gY1zHTbPjWFH9AIzEBPPQHia0ZVpgr+crWECioAHvLNDGh4BgD3bdqVuYAI2wZdVrlL4Nq9qUP6ij/LvBZVddWtnMqPF6ZjKuRuIPNjlfueh0iTZglFbw8Ki8y6fc+4FjAS18csdZWiq10PUZm3NqX7SdPKRMqRQ7neE+EPzZ9LGXOdFAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,131 +128,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Inherit bus numbers from the previous kernel during a Live Update when
-one or more PCI devices are being preserved, even if pci=assign-busses
-is enabled.
-
-During a Live Update, preserved devices will be allowed to continue
-performing memory transactions. Thus the kernel cannot change the fabric
-topology, including changing bus numbers, since that would requiring
-disabling and flushing any memory transactions first.
-
-So if pci=assign-busses is enabled, ignore it during the Live Update and
-inherit all bus numbers assigned by the previous kernel. This will not
-break users that rely on pci=assign-busses for their system to function
-correctly since the system can be assumed to be in a functional state
-already if a Live Update is underway. In other words, pci=assign-busses
-would establish a functional topology during the initial cold boot, and
-then that topology would remain fixed across any subsequent Live
-Updates.
+Add documentation files for the PCI subsystem's participation in Live
+Update, generated from the kernel-doc comments the code.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- .../admin-guide/kernel-parameters.txt         |  6 +++-
- drivers/pci/liveupdate.c                      |  5 ++-
- drivers/pci/probe.c                           | 35 ++++++++++++++++---
- 3 files changed, 40 insertions(+), 6 deletions(-)
+ Documentation/PCI/liveupdate.rst      | 23 +++++++++++++++++++++++
+ Documentation/core-api/liveupdate.rst |  1 +
+ 2 files changed, 24 insertions(+)
+ create mode 100644 Documentation/PCI/liveupdate.rst
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 03a550630644..beff9f3f8e3b 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5156,7 +5156,11 @@ Kernel parameters
- 				explicitly which ones they are.
- 		assign-busses	[X86] Always assign all PCI bus
- 				numbers ourselves, overriding
--				whatever the firmware may have done.
-+				whatever the firmware may have done. Ignored
-+				during a Live Update, where the kernel must
-+				inherit the PCI topology (including bus numbers)
-+				to avoid interrupting ongoing memory
-+				transactions of preserved devices.
- 		usepirqmask	[X86] Honor the possible IRQ mask stored
- 				in the BIOS $PIR table. This is needed on
- 				some systems with broken BIOSes, notably
-diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index a3dbe06650ff..c1251f4f8438 100644
---- a/drivers/pci/liveupdate.c
-+++ b/drivers/pci/liveupdate.c
-@@ -84,7 +84,10 @@
-  * Update:
-  *
-  *  * The PCI Segment, Bus, Device, and Function numbers assigned to the device
-- *    are guaranteed to remain the same across Live Update.
-+ *    are guaranteed to remain the same across Live Update. Note that this is
-+ *    true even if pci=assign-busses is set on the command line. The kernel will
-+ *    always inherit bus numbers assigned by the previous kernel during a Live
-+ *    Update.
-  *
-  * This list will be extended in the future as new support is added.
-  *
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index c60222d45659..165056d71e66 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1369,6 +1369,34 @@ bool pci_ea_fixed_busnrs(struct pci_dev *dev, u8 *sec, u8 *sub)
- 	return true;
- }
- 
-+static bool pci_assign_all_busses(void)
-+{
-+	if (!pcibios_assign_all_busses())
-+		return false;
+diff --git a/Documentation/PCI/liveupdate.rst b/Documentation/PCI/liveupdate.rst
+new file mode 100644
+index 000000000000..04c9b675e8df
+--- /dev/null
++++ b/Documentation/PCI/liveupdate.rst
+@@ -0,0 +1,23 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
 +
-+	/*
-+	 * During a Live Update, preserved devices are are allowed to continue
-+	 * performing memory transactions. Thus the kernel cannot change the
-+	 * fabric topology, including changing bus numbers, since that would
-+	 * requiring disabling and flushing any memory transactions first.
-+	 *
-+	 * So if pci=assign-busses is enabled, ignore it during the Live Update
-+	 * and inherit all bus numbers assigned by the previous kernel. This
-+	 * will not break users that rely on pci=assign-busses for their system
-+	 * to function correctly since the system can be assumed to be in a
-+	 * functional state already if a Live Update is underway. In other
-+	 * words, pci=assign-busses should be used to establish working bus
-+	 * numbers during the initial cold boot, and then that topology would
-+	 * then remain fixed across any subsequent Live Updates.
-+	 */
-+	if (pci_liveupdate_incoming_nr_devices()) {
-+		pr_info_once("Ignoring pci=assign-busses and inheriting bus numbers during Live Update\n");
-+		return false;
-+	}
++===========================
++PCI Support for Live Update
++===========================
 +
-+	return true;
-+}
++.. kernel-doc:: drivers/pci/liveupdate.c
++   :doc: PCI Live Update
 +
- /*
-  * pci_scan_bridge_extend() - Scan buses behind a bridge
-  * @bus: Parent bus the bridge is on
-@@ -1396,6 +1424,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
- 				  int max, unsigned int available_buses,
- 				  int pass)
- {
-+	const bool assign_all_busses = pci_assign_all_busses();
- 	struct pci_bus *child;
- 	u32 buses;
- 	u16 bctl;
-@@ -1448,8 +1477,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
- 		goto out;
- 	}
++PCI Preservation ABI
++====================
++
++.. kernel-doc:: include/linux/kho/abi/pci.h
++   :doc: PCI File-Lifecycle Bound (FLB) Live Update ABI
++
++.. kernel-doc:: include/linux/kho/abi/pci.h
++   :internal:
++
++See Also
++========
++
++ * :doc:`/core-api/liveupdate`
++ * :doc:`/core-api/kho/index`
+diff --git a/Documentation/core-api/liveupdate.rst b/Documentation/core-api/liveupdate.rst
+index 5a292d0f3706..d56a7760978a 100644
+--- a/Documentation/core-api/liveupdate.rst
++++ b/Documentation/core-api/liveupdate.rst
+@@ -70,3 +70,4 @@ See Also
  
--	if ((secondary || subordinate) &&
--	    !pcibios_assign_all_busses() && !broken) {
-+	if ((secondary || subordinate) && !assign_all_busses && !broken) {
- 		unsigned int cmax, buses;
- 
- 		/*
-@@ -1491,8 +1519,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
- 		 * do in the second pass.
- 		 */
- 		if (!pass) {
--			if (pcibios_assign_all_busses() || broken)
--
-+			if (assign_all_busses || broken)
- 				/*
- 				 * Temporarily disable forwarding of the
- 				 * configuration cycles on all bridges in
+ - :doc:`Live Update uAPI </userspace-api/liveupdate>`
+ - :doc:`/core-api/kho/index`
++- :doc:`PCI </PCI/liveupdate>`
 -- 
 2.53.0.983.g0bb29b3bc5-goog
 
