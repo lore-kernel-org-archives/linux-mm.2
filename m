@@ -4,90 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A174F46122
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24C4BF46122
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 14:02:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EE4C6B0088; Mon, 23 Mar 2026 10:01:16 -0400 (EDT)
+	id 5A5A86B008C; Mon, 23 Mar 2026 10:02:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C5766B0089; Mon, 23 Mar 2026 10:01:16 -0400 (EDT)
+	id 57CA36B0092; Mon, 23 Mar 2026 10:02:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7026E6B008C; Mon, 23 Mar 2026 10:01:16 -0400 (EDT)
+	id 4B9A76B0093; Mon, 23 Mar 2026 10:02:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 60F566B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:01:16 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14380140BEC
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:01:16 +0000 (UTC)
-X-FDA: 84577489752.17.1476A62
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2B0144000D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:01:14 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ArxEKSWf;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A2776B008C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:02:00 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2C7F160C0A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:01:59 +0000 (UTC)
+X-FDA: 84577491558.06.DB57C2B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0976C1C000F
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:01:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eIv7r9gm;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774274474;
+	s=arc-20220608; t=1774274518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UCfeqMkO5gV9yhDx2TO4AxxaEWN8IVul+lQeRtLwbjY=;
-	b=r+GfMgk36UuNaKNZpldbj6FYz2bAkfgtNgp++PSWKEQEoEC1/oM0+UQnbwQE89WyP6HHfY
-	TyIxOfHc+WAQhcryQYm+ntv6k/sqGsw7buBnYEz+T7mBkS54Og55/hqhZSswJFI8iD0XpJ
-	y9jpJEsVClJwXWp9tjXluJZNTfCsqXw=
+	bh=wTFQgd6UAfntX2EOBvUp4JNXjOc1vvt+dLwlVyJXSdI=;
+	b=xREkELMzb4xL+FmPAAETwMznyVVL0zVrQA9lU4O4auByHJmOrEq7AAjgmjZ7BNJJf1pT0V
+	5NwimeO6StJ966y3ql+IaLLiJRLoGd90bYpA63FhuoZ5/nI72hv8u8A6mpOxRtA4RErbdF
+	SDRSQ3fzCpCIDiN9x5BTJLu0VFMYan4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ArxEKSWf;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eIv7r9gm;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774274474; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774274518; a=rsa-sha256;
 	cv=none;
-	b=gSoGOdvCAzf+7AVmiOwjqfoRL/bUHlWsmIT/XG6XzkoJFFmA8nwYR7+N4o/zFTLJgfUheB
-	OtpSqhQxKuW/QYEBUQQ+jsPZNwXrTbCsxplvY0CLoONjniG3is6GQ0ubCPRSCWiA8Y3qPN
-	6m5UbqBgM+iTBMh+ytkyDl0/OKTb+Zs=
+	b=3kZE4J0HwJz4vURNZc71Wg8e7UYKYWIN7hPQBg/eXVHOYkPNKosQKJPI+uV/bh4L6aKSUY
+	TWdm/yIHT7MGBk9m6Wd9Tpsrm99CX7mbzs9fSPxV/chhuYAp5f6/9UwtzFoHGi2Dc1GqAF
+	1LheDen6+Ljcdtd/wCDVisiVvK4hLO8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8943660103;
-	Mon, 23 Mar 2026 14:01:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2427CC4CEF7;
-	Mon, 23 Mar 2026 14:01:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D1EC437B4;
+	Mon, 23 Mar 2026 14:01:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B164C4CEF7;
+	Mon, 23 Mar 2026 14:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774274473;
-	bh=9BwAZorS39eyV/Clw1DXueMD4DVME5MT6dI5zrJaohE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ArxEKSWfW0WLc+VbkYVX01vNzz8v12FbchqeuYr1vnlsn1zOJnD/ZJMSAaWEMz05v
-	 +WlJqoJKeiyKbDdoX/ZCXR5dg34bqj2Chbp81L+e3jp2czB8mU/S09dvvujzNTKlru
-	 PTASkdq4ZtVJezJPPKjredm/MavWfkXFUQswvqvX7RmwptzffWMqkl7VRfra0xrem8
-	 udqYEWYMKYFj6sDVSalofeDKgpGXxaoG1t+bAkDIqHbi00vLMRtt9OK2o0qzhLiZaM
-	 5JV/T1FJZI2st1gB0rMDQSY4SEkcA0xq9pkx9wLjk3f8p5P7lLcwgDlcz2v9rKb5Ir
-	 6svipfbqGUx9g==
-From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/core: optimize kdamond_ap ply_schemes() by inverting scheme and region loops
-Date: Mon, 23 Mar 2026 07:01:04 -0700
-Message-ID: <20260323140106.79746-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <FEBF344D-3A99-4360-A286-705260B68704@objecting.org>
-References: 
+	s=k20201202; t=1774274517;
+	bh=qRBoRCAG1AghwUkxPxW1t9X5uhJ/X4+sJp2KekgxAqQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eIv7r9gmkdp2hQEPT+RQwzw0HAh83mEHzwReJJ/Q9UBeyVaChRDaUEzOSoeiJKeK4
+	 n9qKuj1CmKD0NsohFdfzulvf0uXu0NWBBmdnKs3ycY7oOXjXmujJx8wmqneSixxXuk
+	 vyfd30GO09g1zf/RFeQ9m6yeAguxw+nbT5kcz8Mgd2G/8ZD1/3KXULj2Pyck95PmJw
+	 pg78MTNkrW9Ss8g6U+EAcCHJjx5rxWzOxubohZEPyH9wD71BGLBzA4eumRnKjvevyE
+	 U2zXyKD4TgOdp1AlhnLI6rVb69SYqF0PxBYw+kAn8IrPnOI+vc+xiUrJi9KQjvbac4
+	 mQzv3WX2XKB5g==
+Date: Mon, 23 Mar 2026 16:01:49 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2] memblock: move reserve_bootmem_range() to memblock.c
+ and make it static
+Message-ID: <acFHzfJp0CxR43fG@kernel.org>
+References: <20260323072042.3651061-1-rppt@kernel.org>
+ <445a1456-68da-45e7-ac0a-c1ed0cd086c4@lucifer.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: aza9osd41rghcdt5barigjma7qkdratj
-X-Rspamd-Server: rspam09
+In-Reply-To: <445a1456-68da-45e7-ac0a-c1ed0cd086c4@lucifer.local>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B0144000D
-X-HE-Tag: 1774274474-145610
-X-HE-Meta: U2FsdGVkX1/tJfxaChQjapybecbqwM2xdW+CvS29hRPZgEtIRzA/mHcfdraxkpFDp27PTNdaalxUppCINBh5kNaM9E0QTrugp11ZZnfNjZKyuz0yM46eGFDpHvuJ+ncy6SwFtUBWjafmHA12emgi9qRKYLYrJp5JuODqt9jSzDxV4PnpugQHjin8hNgOkHKELdMArI9+AiX5qSCAvb3T3wXeyplxiUW074BAWeZPk+4zsfC+5xeO0HjiYs+kq68Ro0znKwfQyk4nHPo+Jk3KqnVyAIKT0A8rcZy9kdw7rbxT9IznAt7fak9iwe6mMeaRBCjzzmiCIOA1aXkye19B2uLkNzXH6Q7ZyyFUnX2vYva9Eit64ZB+S5IagNxiyycE0UDjiy21gyrJ3i4og84kfVFLex95ViJujoSmrfOl2Dd+9LvsIQ92pLJe5D20Av67/5j/btilRoZOEos09vXSAW0bANmilEfXuBpdq8D4n7ND28GEpj2Gedp3cgFJik/PeSoFDs7mNBAESmPEuMqhMRsVHTgqWiu1MrlgFhSDgHoCRpBWPq3JF8S8k9IDH+B/XB6MDkR4jBzm9ZDNiTKO+O2CiCjBJZK18KfHyEOsomaTHyN21P469Bbl4B0HjEzopUR89Qh12GdtXgpu90mDoD9zoxWTsRQBiGrO2H42GJxO7rXFZwJA5/CKq8jtZjf4F0YScZIMBaP5Xy2sxD+PJNW+BRLGefPTUvI4blLGGpkfk4C2aLp9KC6T1bQEXGC06Il+ICxUo9q65v47JAGytF/AI85iWmIjID2lUa8MqUI1FkuDZ51+bIvWcH3WWsGF9r2AV2q1jq+/nx2FEGJvG1v+xVReeC9w8Yy2IjN1brRYVobXk+XKV7UumR8F4AHoLw2FUqQlVFopGX2/sp7+5f3i7IWg9SiFwuk2lo57eMoswA2h4+GSdqil79eQ/eeKf1ziW2AWRT25J+orpQ6
- wKhG7xLa
- QXhttqnti/Rq1sMTQ4/YUFr2Vjc8MLG7qiY9qqIsYWWXxfXOpNU/dp7Z3+7I3dVayF6pEXfQ1iX4WQ9p073igCfTkTytZXdWwuKPZZur3Rvz8A37xKBIvDXy05Qx9uGQ+mP32sjomMANtx3AtaYm7zYPzkOws5CqyvHF/ZY0aVTsmYh2HYKwvPLC2pNz7hb8zTPh4/tTaBTmJyQKb+qfCGQ1eRRklH8o0kRV4a08kMj5GrLMHprDUl8tvQJOBvSKFq7/avxBaMlHyPlfRT/ddwBa/BaVF6xzKe5HqyrvUfWy02j1d3Ee+Q9sHEqy377wcSg/P8a4O9ewc7tTDz54Z9VsfFEhlc+e0l+Wp
+X-Rspamd-Queue-Id: 0976C1C000F
+X-Rspamd-Server: rspam08
+X-Stat-Signature: m59yb7iytfkercmyxj4qy5ykw98upqcq
+X-HE-Tag: 1774274517-319383
+X-HE-Meta: U2FsdGVkX18I/afcCd3hwdCSbOU0Js7yz8Un/7Ar73DqZsW8r4vEsSlLET2q1ICyhBanpoydaLG9oC7EnUL1Ioj4vmAQiql+E+7NDhQJlxQLrjOnIdjDNKBoc44wP7kpqJLWYcitdjP9Fsz3y9jHZ4dGWd4Z37dJN0qaTV3zkaEJ40aptfUwNqlCEzOJVvM2nOQuUGjQJoWcNAuMUo1sHIkJO71QhV97OBlpLy5r4JoJ7x0Y4jNCunW1pM9cMYYYiAGk9IYvV/8hMbOoyzqJC021dnlq8f/TpNMk/rUwkYYQvYzPqLyCtvKing4jwD+KS/XdTryxvQNbbm4+z9ow6esx/7tFyAMuKDCgec7VvU8x5oELGaNJDM9+qmUkWWRqn+j4HBFl59wBrK+LYRZliE3VyNSXapUVFsh9+saF2n1b+PVSw1OoIm7FsK1BF886iwbhR0eMEUuRo7FmjgcZoYKJ1BwxBpwTFp7A62/vHc81blLMkfVwfYI7ODhLZNTWFdxdVsWW+j2anMhPsaZC1k1JKM8b7q/jCblmXBLfbYGKsvwMO45MkGDka6XHHbqP22qDp0eEBxISmpx1A6rYRP8Cm/jS24y6cvnilbYneW1TouU9wcMurJF+sn2g9H6zWqMwB83vSA5LBPZ3gCPoZtwIpxCZC0VYk9vkTgTiD49uDrYA7BhSZ7DBDOcJJ15b8Sd0ieLW9dBB7xdUoMKcZyicZwmVOuVOJjbSgZ3WYa8bY/SCd7R3K7A12QcT+Kc/dehde8HHELHg2WJyPkCS7RNRzKNGizIWt6XHV6/qZp9IWhdEByWS8sbYmdqL+kE2M0K/SFf1NSYmWRqHg9Sq2Us4bJU1zQwpu2Qov2Hlk+2n0LKmc8QZRnG0Gwvq60yZvJ588F6vxxVccv473pK6X0pG0QQbthkLRfPJtQnr+6shWdboRItA16EXpeXKnNilP4O/iGMtgie0do/a3T4
+ oP76P8mr
+ HO87r2QgeXj2SdtcDT8sVPpdiRKPjb2uB9OQBylFWSVVxkWLo5yAvDw5xpZSvVyJseeJzlJ2dAXLEWZnSHVRGc6jdBzzcC9fxOkKCfSt8IbTzKx8QI6+sJMgc9PLeEnIpuiZcJxAu5MJuudNdixTAFeHXlN5UtFxxP/cal4QC0pZ0J0Aypc0i6zofo5SEzzV4zrIMmVDgySwGvWBIclbIMc1BOdfoDOphPlpjTEP3KO8DVAEckQG1lGlFIZMioqrk3sajw3DYKLMC9JlcjlvcKnsSWJ/9AhyCijaP8HyKq2n1rFOzpiZcEOGb3pP0iVdz9LC0mCUFYUMB/wAfh9l/wyfGLpSSoAsFdy2B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,24 +99,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 22 Mar 2026 22:39:11 +0000 Josh Law <objecting@objecting.org> wrote:
-[...]
-> Hi SeongJae,
-> ​I understand your concerns regarding the behavioral changes and the adaptive regions mechanism. If the loop inversion is too intrusive for the current DAMOS semantics, I agree it's better not to force it.
+On Mon, Mar 23, 2026 at 12:37:51PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On Mon, Mar 23, 2026 at 09:20:42AM +0200, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> > reserve_bootmem_region() is only called from
+> > memmap_init_reserved_pages() and it was in mm/mm_init.c because of its
+> > dependecies on static init_deferred_page().
+> >
+> > Since init_deferred_page() is not static anymore, move
+> > reserve_bootmem_region(), rename it to memmap_init_reserved_range() and
+> > make it static.
+> >
+> > Update the comment describing it to better reflect what the function
+> > does and drop bogus comment about reserved pages in free_bootmem_page().
+> >
+> > Update memblock test stubs to reflect the core changes.
+> >
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> ​Your suggestion to optimize the first loop by pre-filtering active schemes into a temporary list/array is interesting. It would achieve the O(Targets * Regions) skip for inactive schemes without changing the application order for active ones.
+> LGTM and passed local tests so:
 > 
-> ​I'll take a look at whether that can be implemented simply enough to justify the overhead of managing the temporary list. If it looks too complex, I'll move on to other areas as you suggested.
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Sounds good!
+Thanks!
+ 
+> > ---
+> 
+> FYI I saw the below when running make in tools/testing/memblock, doesn't look
+> related to this change but maybe something to address?
+> 
+> 
+> cc -I. -I../../include -Wall -O2 -fsanitize=address -fsanitize=undefined -D CONFIG_PHYS_ADDR_T_64BIT   -c -o memblock.o memblock.c
+> memblock.c: In function ‘memblock_add_range.isra’:
+> memblock.c:710:17: warning: ‘end_rgn’ may be used uninitialized [-Wmaybe-uninitialized]
+>   710 |                 memblock_merge_regions(type, start_rgn, end_rgn);
+>       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> memblock.c:616:42: note: ‘end_rgn’ was declared here
+>   616 |         int idx, nr_new, start_rgn = -1, end_rgn;
+>       |                                          ^~~~~~~
 
-> ​Thanks for the detailed feedback and the guidance on DAMON's scaling philosophy.
+Oddly enough it does not warn in the kernel build, so I kept ignoring this :)
+Should be fixed indeed.
 
-No worries, I'm glad to help.
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Sincerely yours,
+Mike.
 
