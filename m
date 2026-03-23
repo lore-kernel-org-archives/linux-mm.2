@@ -4,103 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7616D58CBF
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 20:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B63E7F483F8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 21:02:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C7C96B0088; Mon, 23 Mar 2026 16:54:27 -0400 (EDT)
+	id B9C156B0088; Mon, 23 Mar 2026 17:02:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 378716B0089; Mon, 23 Mar 2026 16:54:27 -0400 (EDT)
+	id B4D506B0089; Mon, 23 Mar 2026 17:02:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 267916B008A; Mon, 23 Mar 2026 16:54:27 -0400 (EDT)
+	id A62A56B008A; Mon, 23 Mar 2026 17:02:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 109AA6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:54:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB3051EA1C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:54:26 +0000 (UTC)
-X-FDA: 84578530932.01.69482B1
-Received: from toronto-edge.smtp.mymangomail.com (toronto-edge.smtp.mymangomail.com [209.38.81.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D546D140002
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:54:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=hEtjmfsc;
-	dmarc=pass (policy=quarantine) header.from=gerlicz.space;
-	spf=pass (imf09.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774299264; a=rsa-sha256;
-	cv=none;
-	b=SkoAzh4vDMUqZPy+Cl9f7VGY+edfksc+L6hbx3/jL7t/zr9e4dBXdsVF6BZ6t0k/Dna6yB
-	SMab0KRPn7I2JTSIbSZbZbApXPH5FPtFvM+UpqWBQxzfI7GD3p8Ig52xGm1zBJCmXizMro
-	DpenzKqT2PBD47U6Y4RkRLjjuQzGlDU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=hEtjmfsc;
-	dmarc=pass (policy=quarantine) header.from=gerlicz.space;
-	spf=pass (imf09.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 95FAA6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:02:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 53E02BDF27
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:02:53 +0000 (UTC)
+X-FDA: 84578552226.10.505C230
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 19BBF180011
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:02:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hMFNFZka;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774299264;
+	s=arc-20220608; t=1774299771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c60hJIyNyv9yh8aBhgVysIO8a8ET5sR/fQVUyc4EJU8=;
-	b=aOTU8gIS1kUex+0AvZP3FVgfZfGYvIpv6kPlD4QhmrDzokydAf27plsHidQBgbb0jMH1vW
-	bjkxizkjWYLq6ugc134ZSqRNiXqG9JNPpkWVBSvT86vWUlYyhcqOgJjfLc2eErZch9tIk6
-	DsVNy+KbOdlSDW6txsEnG4LboKvwkoo=
-Received: from [127.0.1.1] (localhost [127.0.0.1])
-	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTP id D31315D9BD;
-	Mon, 23 Mar 2026 16:53:50 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
-	s=mango-1; t=1774299230;
-	bh=zXUX//KKN2ShokHoNvZQWtxG3NpHa+Qkb5EmvEAmUdc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hEtjmfsc36898xBxppbvJmaSSXZ9V8cKYQVNd8eWcHb+j1Y+sHmDKKzTM+1c2nC7i
-	 AGVknnRIrDPU9zRpN03H7+dA045k/V9jyF/NdBa38udN9MNeIwDgVBTRqeBH6JXRHE
-	 lyb6t5ECkf8f1TL3VkXGpjeOufXV5N6288xL+9LA=
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest
- SHA256)
-	(No client certificate requested)
-	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTPSA id E37B15D9B9;
-	Mon, 23 Mar 2026 16:52:31 -0400 (EDT)
+	bh=3AOsenzNPAeVFjUaTF+EAsvLlXdttCRQbifAIz71hTA=;
+	b=Guk8wXJnOl9hzDhfwWUXD3wxcUidxi2Pne59Euf7iOJWGgD9w0IMFx0DV68WZgCQ2s6FDC
+	Bwv+K0pwBf0CY0Md8Yvu2RcNRe7VbNKrFPyXVsFHb71vHIQ/T5u+UB4ZJhf7ExSrDnvJnP
+	n01C0xiMhzmYoPUz7Nycyuw0/bZQHcU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774299771; a=rsa-sha256;
+	cv=none;
+	b=t/8DKf5XMuK+9hI5Y7WOBwE5y5UkwGUyEbmNc1P4Alc0C4DpQ5F5E290f4RWOy/ZllWvci
+	fV/KXynodgSzKCpkxvoC5Lc7feoX8KccKdgrSN7+HSWGTPYKkYGGF4n3DVqsWdZFwBFfow
+	vWci3tBABRI+NSlWfSd+57M+fBjZ5aM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hMFNFZka;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3AOsenzNPAeVFjUaTF+EAsvLlXdttCRQbifAIz71hTA=; b=hMFNFZka51FeDea+aaAXkA2sMF
+	Xw1RTmW14PACkldpXstX1oEG7V17NRMgrH1Qhur8aqWusYInZoN03g2Z6340NcVy2mw4TpwjSBezp
+	WaNtfFjPeEzZsvs7EvK7QeT5a9JJUOI92MC9ntRqcpID+pqBqOGJIdR10b0nYjZyqHAQiusU/oenP
+	J2Jp2DwPzXYy1NYC5ZruGx2qP6kHRhpGbcb3oMRJ+g6uzyWnMs79pAWiFeLP1v7l4/1O4wtoq0CZs
+	h6eg3GZYjQsVZBVlAvJfHnW1SitoXoTr3Ri9pJLyzCIhAOKJOBWXY/5xfXaOMqSG3p0ynbuZzSNbF
+	YTSxQfbQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w4mQ1-0000000CsDl-3RRd;
+	Mon, 23 Mar 2026 21:02:37 +0000
+Date: Mon, 23 Mar 2026 21:02:37 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [RFC PATCH 02/11] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
+ code in collapse_file()
+Message-ID: <acGqbeSjktT4biku@casper.infradead.org>
+References: <20260323190644.1714379-1-ziy@nvidia.com>
+ <20260323190644.1714379-3-ziy@nvidia.com>
+ <7382046f-7c58-4a3e-ab34-b2704355b7d5@kernel.org>
+ <E8D52134-B63E-44E9-BBBC-258DF74B8597@nvidia.com>
+ <c20b7dbe-473d-4dca-a10b-b9f5267ad6da@kernel.org>
+ <AF9011D6-8EA4-4134-B175-BD2DAB748419@nvidia.com>
+ <71148f2e-cceb-418e-b762-c8dbd7a7eb1f@kernel.org>
+ <FDC4C393-FB38-4422-9217-DAE95131C696@nvidia.com>
 MIME-Version: 1.0
-Date: Mon, 23 Mar 2026 21:52:31 +0100
-From: oskar@gerlicz.space
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Baoquan He <bhe@redhat.com>, Pratyush
- Yadav <pratyush@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/5] liveupdate: block outgoing session updates during
- reboot
-In-Reply-To: 
- <CA+CK2bC8o2p_poLb0yfp6mAAwR42Vg_99Yh_HLK1iJZrCrsVig@mail.gmail.com>
-References: <20260321143642.166313-1-oskar@gerlicz.space>
- <CA+CK2bAfPSKfV=_Sw20oqF56+H3a4k3x+47i6-EUK8mLV-i2+A@mail.gmail.com>
- <CA+CK2bC8o2p_poLb0yfp6mAAwR42Vg_99Yh_HLK1iJZrCrsVig@mail.gmail.com>
-Message-ID: <f76e6cbcf6752342ee940ed0dfeca7bd@gerlicz.space>
-X-Sender: oskar@gerlicz.space
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gto44rsnhamzww8sswdkmrowd6uso4yp
-X-Rspamd-Queue-Id: D546D140002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <FDC4C393-FB38-4422-9217-DAE95131C696@nvidia.com>
+X-Rspamd-Queue-Id: 19BBF180011
+X-Stat-Signature: jdu1m5w41tiypqwj5gre71sr58cyp6aw
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774299263-697096
-X-HE-Meta: U2FsdGVkX19OQK496rxexhlxZ0ej2hmdhqTTgufAkba7oefU2244CyOYSqObD6H2NJPNMlHCaEQnMLDmgiw7GTxpv0tCEfM1K0iRlf3aeZ0ZTZmpNTaDfff3NtJhNCbx11lCJ4Kr5NwP2/etk3h/5keXinQk5tIvoLZnAHiI14jZDh1kAziRe1GoLi2P/CMR2PMaATCY+Xx2UPD/5IXXmXkC/7jQe98XfbLq8aMKEpwlP4LrkSfuR3+DvfcTQ5zzwEC8xkwpKE6m33wdZ3gyWWbiVIBvsj1DqTpwDmqv0s6uEaLeIEWRfN3x929Z4jsFBShGq6WHJk7G6P9+9lqdYg163yO747lthDaSF2P+928P2UwA5jSNd1TsA9ugqZRDU8EHe6k8QAMSTQhLtttcLXvNnn3sCneHiyyeCMzJbvxzUhez7o71tf7aMqNNTluVMZVkEJV81S9wTfXQ686qCnfEgV1qeHUVgpYvFB/X5P3hYGE+GE/qGF/HgrkSOOfICQoj5JZYri1R6YvvQ8/B3VbSyz6HVloq7lDRhSbTPcYKnhtuvsN4HP1/ZrtgYMDX52guDfEJkj6CJuPrQg3bzctjlOiVV4Jet7gfbl8b0u1YgZ8tWvUoPsO20aHFIHhiKpZ+/IRvgLhM5Vk38LXX687b4vj5+hNvIyEAx5M0TT/ocEMJ4OLlB2xgSxfhxK1ijY3JHFh41LY8Kw1ne99gp7fNASFWkFatjn3AGhqWzloGCKcGVGDEMo/VLFTzsVCYuIEF+PRe24/saPeNRLUmRQ+azoq3NBNuW50GI/rKYz5LXt3ggJ+zE1TfGoFhCTUJtL1UhC/ph32DUvK5dm3c8qIihDhSehTgr+oP8+EfVgALMirLkYAJofRzk5RCsjki6nFOt1OmgzpEPrZvqWrsNX9xyhG2ZhMF499F2z+6gblhj2bp2yUfXGDwJ2As4VDjMNyPQ1OB7fhwbbBr/Fr
- gyplSeKb
- 9VBmZPyh/2k3BhpOhTD35oWcZmw3V7YzAHsXXjcz+Eav4xtRp3RoTvi5q6113UEk9bOxD+kOJ6CQMO4OhJc/lMTSgoVPzlxqrCmXeeXtfrAmbCRhjy9Czli5/0y85oKnU6MdQh82Q92BlZYrOJIfW7U42NxWlHzKpR4lePB/ucUj4+m9YYAYWO1ngHrtAxxcWl8EPF078BwJTiYLTTmP3Lj/rKKZavHWyjXIwAvf9zRbZXDd9J1d2FZOAeQrPFaWLI29KVJKtJcWg2cQN0JtRk3Kzi8qRLhmE6jrs3xUpmVhM2UdynFdg6FbZojD05w9VLoqmBDiaH2wkhhXevcnoOEZg5IxDrYArzKsGmxiIFGwwdtjC8uvY5oJJ7XU/iWtCMOf79P+aeDliFxDeZy8FpqfORSN6Ofxx3NDztF3VOQfomOuvcZzXjRErA+CzBpMsMK0RA2X5M9jO7xsTbzEsglnm70U2Lw1kUfC918+QvI7BUwGjLWYi9uGddCHl6IXLcpsXEKB+cCghc6c=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774299770-277859
+X-HE-Meta: U2FsdGVkX1+OlB0FvFzecJI2EBPIxxV0W0TOaVCoU/m9x8ZOKj6rrNxeI5ZjpDd7GjlN5EANCfbrD+SfJaVlzH+6RXQWpG6KuFmW29WEv2Pjwm7p+wZNlP0P8uM5MsSPVlq5zUrdeCLC9kyfez2+tznRRXPYiuijNuzuz9ovy8unHO8UMEbjvAMQ3VJG48F2KftgOU2nnULMM0jZ5ftUu+Eod+i21YcDhUZCjCt13bmI1lFhPDnenVR4pu2Ix7U4UWkaZzmXPjnwBNWivlmsR6yUT3D4ZHMLEaksiaKB3cNgvdzfeHpgy4T+n8ccejt6RnaOlekEMvt/1rv64pT2DxKDlhv5x69RcVgcMG3NizENMwI+ESlgDJhJI9YlzqjDql1awJr8WZpkyy0tb0v5gQ/90SrQvZR6yNDN5JUVYGkd1SOa0Eodxhhw3LS6bgVGffZ5UGQjQXs3z3xN8cGzMF+1d78opB5j224pl0TRUsYvIs8ZfflG3wHLCl7J7sZLuEzuQxtQsZLCU074qN/BVwFovXKQxXfxPlq9GX8nhajiUwIWY9S2pVhqEbP1q3njK/D6oZV3eZb2tmXPmFpGPhdVCrFC720JMkxcJd//OhRWTFy1hNg+eLydubr4HacJyrlMSYkUx2Yld5cQCh3J66nXEhYAy/cSoID2sDba5cDcDE9vVrTb1ecgZON2PJQ5QhF3rDOtHXRh5kQBoROgtoiGCMX2LifnbNt7SwRjrtQRowmtnwwfXlablf5pXCM7tnMx0WGzGls8EgEZIJS7qRVjsG3tMhvXsGuKHPxmg7nR2bbcY9Ru3BU3UZd9rAmvL7hqybdBNlfH16afXUl+L0aJuxQoec2DYgIKfrSiiWf3Hv0ueCWz3gklMDl6dsQvQjd3sPgo1pAZIkfx/mWo61qMhYcyb5DMdZBVaZbG0BywCQ6E+y3jKCRl0WFJakXyFu3cLdq2Vnip8TLPv45
+ CbqqcVDA
+ pzqMovUwp8rp+dbSCzf+QakCSfEHi9DkHjinY4NPWBwOg1uD5zyDs/4WdQbEH9dbMGtgI2xJ3kSI19Ms8WFA+yd8R3NZ8jqvlCCb0moTvjEPWBvoQIhZk0s1JU3ulwzVsCfBgmzg+i55SpWqu/MKxH9rralsmV6zpNC7dRstrcZ2rzmLJrpmZ4zT5dggACbCYvL7rUDtsR+X7yxXBPnsWndMzk1ri9GMGZtFfMPS+QMfhrOljFl86AxbzpCx0j5WjpfzZtCgcQSCwqM7wrXXYcsxWV+Ni43+lvF1TLfGsZ4pd3dg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,96 +113,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-03-23 20:00, Pasha Tatashin wrote:
-> On Sat, Mar 21, 2026 at 6:28 PM Pasha Tatashin
-> <pasha.tatashin@soleen.com> wrote:
->> 
->> On Sat, Mar 21, 2026 at 10:38 AM Oskar Gerlicz Kowalczuk
->> <oskar@gerlicz.space> wrote:
->> >
->> > kernel_kexec() serializes outgoing sessions before the reboot path
->> > freezes tasks, so close() and session ioctls can still mutate a
->> > session while handover state is being prepared. The original v2 code
->> > also let incoming lookups keep a bare session pointer after dropping
->> > the list lock.
->> >
->> > That leaves two correctness problems in the reboot path: outgoing state
->> > can change after serialization starts, and incoming sessions can be
->> > freed while another thread still holds a pointer to them.
->> >
->> > Add refcounted session lifetime management, track in-flight outgoing
->> > close() paths with an atomic closing counter, and make serialization
->> > wait for closing to drain before setting rebooting. Reject phase-invalid
->> > ioctls, keep incoming release on a common cleanup path, and make the
->> > release wait freezable without spinning.
->> >
->> > Fixes: fc5acd5c89fe ("liveupdate: block outgoing session updates during reboot")
->> > Signed-off-by: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
->> > ---
->> >  kernel/liveupdate/luo_internal.h |  12 +-
->> >  kernel/liveupdate/luo_session.c  | 236 +++++++++++++++++++++++++++----
->> >  2 files changed, 221 insertions(+), 27 deletions(-)
->> 
->> Hi Oskar,
->> 
->> Thank you for sending this series and finding these bugs in LUO. I
->> agree with Andrew that a cover letter would help to understand the
->> summary of the overall effort.
->> 
->> I have not reviewed the other patches yet, but for this patch, my
->> understanding is that it solves two specific races during reboot()
->> syscalls: session closure after serialization, and the addition of new
->> sessions or preserving new files after serialization.
->> 
->> Given that KHO is now stateless, and liveupdate_reboot() is
->> specifically placed at the last point where we can still return an
->> error to userspace, we should simply return an error if a userspace is
->> doing something unexpected.
->> 
->> Instead of creating a new state machine, let's just reuse the file
->> references and simply take them for each session at the beginning of
->> serialization. This ensures that no session closes will happen later.
->> For file preservation and session addition, we can block them by
->> simply adding a new boolean.
->> 
->> Please take a look at the two patches below and see if this approach
->> would work. It is a much smaller change compared to the proposed state
->> machine in this patch.
->> 
->> https://git.kernel.org/pub/scm/linux/kernel/git/tatashin/linux.git/log/?h=luo-reboot-sync/rfc/1
+On Mon, Mar 23, 2026 at 04:24:26PM -0400, Zi Yan wrote:
+> On 23 Mar 2026, at 16:13, David Hildenbrand (Arm) wrote:
+> > I assume so, because for executables you would have to be lucky to get a
+> > PMD THP? So I don't see the non-khugepaged large folio support on par
+> > with khugepaged support.
+
+Not necessarily that lucky; if you set VM_HUGEPAGE,
+do_sync_mmap_readahead() will allocate PMD-sized folios automatically.
+On busy database servers (and is there any other kind?), khugepaged
+takes too long to run and find opportunities to collapse text pages.
+Like, days.
+
+> It is more like turning on READ_ONLY_THP_FOR_FS by default for
+> FS with large folio support instead of removing it.
 > 
-> Oskar, I made a few more changes to avoid returning an error if
-> get_file_active() fails. This prevents a race condition where the user
-> might call close(session_fd) right before calling reboot(). I
-> force-updated the above branch. Please let me know if you want to take
-> these changes and use them to in the next version.
-> 
-> Pasha
+> OK, I will give it another try.
 
-Hi Pasha,
+I think the test needs to be:
 
-thank you for taking the time to prototype this approach and for the 
-detailed explanation, I really appreciate it.
+	if (mapping_max_folio_order(mapping) >= PMD_ORDER)
 
-I agree that reusing file references and introducing a simple blocking 
-mechanism makes the solution much smaller and easier to reason about 
-compared to a dedicated state machine. Your patches definitely move 
-things in a nice direction in terms of simplicity.
-
-While going through it, I was wondering if there might still be a couple 
-of corner cases worth discussing. In particular, do you think a boolean 
-gate is sufficient to cover in-flight operations that may have already 
-passed the check before serialization starts? It seems like those paths 
-could still potentially mutate session state during serialization.
-
-I was also thinking about the lifetime of incoming sessions (especially 
-lookups holding pointers). Do you think file reference handling alone is 
-enough there, or would we still need some explicit lifetime protection?
-
-I’m currently working on v4 and will take a closer look at your branch 
-to see if we can combine both approaches in a way that keeps the 
-solution simple while still covering these cases.
-
-Thanks,
-Oskar Gerlicz Kowalczuk
+as there can be cases of filesystems which support up to, say, 64KiB,
+but not all the way up to 2MiB.  I disapprove of this situation, but
+this is where we are right now.
 
