@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F132FEC01CD
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 11:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 532A4EC01C9
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 11:08:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ED7D6B008C; Mon, 23 Mar 2026 07:08:06 -0400 (EDT)
+	id 2A5ED6B0092; Mon, 23 Mar 2026 07:08:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5176F6B0092; Mon, 23 Mar 2026 07:08:06 -0400 (EDT)
+	id 27D466B0093; Mon, 23 Mar 2026 07:08:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 451B76B0093; Mon, 23 Mar 2026 07:08:06 -0400 (EDT)
+	id 192C66B0095; Mon, 23 Mar 2026 07:08:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3917E6B008C
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:08:06 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EECDC1EC76
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:08:05 +0000 (UTC)
-X-FDA: 84577053330.21.66C4803
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 086026B0092
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:08:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 99A228CC5D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:08:06 +0000 (UTC)
+X-FDA: 84577053372.16.89DCB25
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3B6F210001A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:08:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+	by imf06.hostedemail.com (Postfix) with ESMTP id CF9D218000E
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:08:03 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774264083;
+	s=arc-20220608; t=1774264084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aNvaoDn7/bfLErU406QGGVp2m4GCteBL58V1RtULhsg=;
-	b=d70GCSEBxOFdTJqK9dRsDoc6wwVm/aED3eAT7lQHUygnF0BovHLNnxgk/AoKp1X9OcSxuW
-	1DQuHjqVAJ03DBE92boorFQbxm7wCcuru/SOHBAB3F/we/+75Azn+Ovy0LTzS1aJs6gwfd
-	oPAmr9K2kP1ps8pK6UzntNS8sdULk8U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774264083; a=rsa-sha256;
-	cv=none;
-	b=mx/VtCbh4yFoXucWSRX0eP5zg+q1FirY8Pu8N5JCppodcxyx1t4iBO7b/JrqMcen9NnpkW
-	szwdHrVRpWHRJXruBJCdg8g5Xwvj1n9SUNIimUIrEUXDOzgFN9/tY/Jc3pfRuqQDINUfil
-	Dckh3T7fFyIJvqFy5m7CIXCnvZfMKWE=
+	bh=9n0F7QjTMCW9jVkTXOq71/m0RIbtYl2H6KxOO9UqMNk=;
+	b=RCBdbL7bbEbKkGH31BbIKo8eHSHFrj7y0NuFtbJLfH5mc4PTfNqoY21VPQEVHPhQIp+dQj
+	XzsNZlkyk57i9VZSTI3/rC+Iv41ogEiwnmqI5Ak6Y8fsQj+8okThfOOV2hn6XbPTL3CVkZ
+	syeK+0Bnv/BySsETQ7mElkwgx1nXMfE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf06.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn;
+	spf=pass (imf06.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn;
 	dmarc=none
-X-UUID: 8a5868e826a811f1a21c59e7364eecb8-20260323
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774264084; a=rsa-sha256;
+	cv=none;
+	b=O/et1IlJC6VvBHXR1V53z8pAcQFFPq2g8AxXnf1VfyyKmdlMVpzKvXPE1LpqmxXqJy4dy/
+	XAlXCH9s7arBCFjbYJ8W3t47y7zo9NlrkV2khskjgdaB6BiUJVa7PzEIsn9/9DBLdHozmC
+	WxwspXIekrah66/yKPQLXjGDLhRMCNw=
+X-UUID: 8bcffcd626a811f1a21c59e7364eecb8-20260323
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -57,27 +57,27 @@ X-CTIC-Tags:
 	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
 	AMN_GOOD, ABX_BLACK, ABX_EXPLOIT, ABX_HEURISTIC, ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:b68932ab-a3ba-4ce3-a071-2aeac6e876f9,IP:20,
+X-CID-O-INFO: VERSION:1.3.11,REQID:9374473c-5e3a-41fb-b030-7bade1dc767d,IP:20,
 	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
 	N:release,TS:15
-X-CID-INFO: VERSION:1.3.11,REQID:b68932ab-a3ba-4ce3-a071-2aeac6e876f9,IP:20,UR
+X-CID-INFO: VERSION:1.3.11,REQID:9374473c-5e3a-41fb-b030-7bade1dc767d,IP:20,UR
 	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:15
-X-CID-META: VersionHash:89c9d04,CLOUDID:93544d1a49f7971dbc6d07885681169c,BulkI
-	D:2603231907563I1Z8ACW,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
+X-CID-META: VersionHash:89c9d04,CLOUDID:35d7d280d89c5fa9f44492b59306af82,BulkI
+	D:260323190759QJ8F4FG9,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
 	2|127|850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bu
 	lk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:
 	0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 8a5868e826a811f1a21c59e7364eecb8-20260323
+X-UUID: 8bcffcd626a811f1a21c59e7364eecb8-20260323
 X-User: duanchenghao@kylinos.cn
 Received: from localhost.localdomain [(183.242.174.23)] by mailgw.kylinos.cn
 	(envelope-from <duanchenghao@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1141883640; Mon, 23 Mar 2026 19:07:54 +0800
+	with ESMTP id 1845427003; Mon, 23 Mar 2026 19:07:56 +0800
 From: Chenghao Duan <duanchenghao@kylinos.cn>
 To: pasha.tatashin@soleen.com,
 	rppt@kernel.org,
@@ -87,22 +87,22 @@ To: pasha.tatashin@soleen.com,
 	linux-mm@kvack.org
 Cc: jianghaoran@kylinos.cn,
 	Chenghao Duan <duanchenghao@kylinos.cn>
-Subject: [PATCH v2 2/4] mm/memfd_luo: optimize shmem_recalc_inode calls in retrieve path
-Date: Mon, 23 Mar 2026 19:07:45 +0800
-Message-Id: <20260323110747.193569-3-duanchenghao@kylinos.cn>
+Subject: [PATCH v2 4/4] mm/memfd_luo: use i_size_write() to set inode size during retrieve
+Date: Mon, 23 Mar 2026 19:07:47 +0800
+Message-Id: <20260323110747.193569-5-duanchenghao@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260323110747.193569-1-duanchenghao@kylinos.cn>
 References: <20260323110747.193569-1-duanchenghao@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CF9D218000E
+X-Stat-Signature: 997o6t1hrpdq8xg8yhfm3d91oyhica1o
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3B6F210001A
-X-Stat-Signature: 7xbw6r64waabshyt4r1ccjmptnkwidhn
-X-HE-Tag: 1774264082-603173
-X-HE-Meta: U2FsdGVkX1/izUxrnkiS82MGPl3lmFr2PdDV4N32leOindY4btv8SWFwIXvs5qYO5V0npEJNw6dj6sHjtZieFspsvAObrsaj4oBQfCZs7cwbMR7zh6PO0Zj8sLdfPZeo3oU+Zs1JPMcjy9zwDOhLUXidCOJ58IvwaR0SYJ7zA9VXljEjw1JcA4LjmEYcTieEWaxGlEyV4OCWTH+jTHPtq293EaPcI+dih56bS8qAPPTwUoyYlDZ4TO6HS/X/RtzsvqHkhdJexcwktumT5BlUXjcBBIKEeHK+v+BGjyJ1ivDWkCoQE3PefZhGro3XEwhtnMyuM1UW5kZbGpMpG65OB8KaMw6Z5YGoM0yMI5zM/rW/ZZs+cIl5lAjGsRAuXxJZ0w4AH29UC0wKZNgaT7+02nUFj+niZc2vNXBkrh9szCwozes6BkD5fl8KbQkMnN7x10d8SNskxF1tB997T0jZr0werqKqT2rf1NnDki+cv+AFLi3MnqD3PQEACLPBiEPHDeHK5kOViNauzHtu2dY7N151w3QOBi2wC+rRrMNGzsovpkGn7+ErfzuZOmaOufhyVXzgg0wmvMVmQMsw6iERPwRhqDQt62WgFWWzzwa/YpbaN5f9RFdYcsR/dxTc0qjxnfAqBluCauC4UEjOK7b8KXZTm/cQRZUwRxIfiEYO3w/Hlt+gsbbT4FrKbp2YYHLsvDhlUgP2cksQDMvDVW3NLBogafp+ffxz3Ng2mBgZL9H3tp9E7+hfrSbKTp1gemHBAL+6Eo0zqzwSeLBYKSeyD/laLUwE4K8xO5yfMXAxRPpRGPk0Xef9VcP2TWLsEH+H6upQ3u4VnZTL3n6aQduZO0w7FhjSern8S3TEQJJJ6uZKH5jIYkks56F5TkjJ3ylPB/2QYzeIgf2AEXUqS3+EoGUq4Q4yPm4gedDhBTdoQdIrvFWjAu2WdAvtk3OiDr9Da+tdpQD7WRTYcK8Kx7Y
- aM+dqwOP
- jdV6BoKchslS68Iw452XckU1Ev1BXFewa0DVqgmBTlsOQJ0cyW5yyNU8Ve7IxnAuoF4vHTJOMRs+1YatRDMA5d6sjhq3sJ7AN9BOg4M1onWXD/g4=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1774264083-886892
+X-HE-Meta: U2FsdGVkX18/xWUbWzdBsljSdBCo266jTd2OuA9+kgbm6CwQHY/AE+0UYOojFFPmHjjbgGrDPP4d0t9TusuHy8U/0qzD5+hWvMLIdqAygv7ihH5quI4K1pvc3nzN7iDhkB3ly3xuYnHMTkrlzaTPc5D7PLhKgV0a+md/6K8TH/Raoey6jEmjYBEy9wCdoqVc7GZR5yqlTeK7IKwNaJUZ3/pgeRY2e1wbVZUgGJfDHMeDeNWg+hAcpATmXpbNDILbAXzIrKW05bySt5O4ajjfphp27WMUMHGTiMeXrB8SSZSoTfZkHYk9uuCFFtmaVwjGsjDfudDyQVzxIDWs72q06jj8yJjlualcsNxb8JvrKHHAy/V15/GmRKEENdpI2+/8y5JjzAZzEgJCzAW22w0kQkjHHjztPPsa3bDEIZPAdvLq/RXDJrrtz9NkXmyTgt6c3VS5fbUFgAT7MSygMyYYnHfNnIpVMq7Vdt9/VHMRg0WVzcLxG8hS7DeQQD5g94nZyoL8DQvvaJ3C91LPQ8d7gUkmxmTw9+GFTHOy3g55AefcD0ZXHKoAEsfA8CtjHydw4qYVIL4Hh16pUi+X3cVJs9rFeGVD1OY3OwhUSmEyjYKxJ/Lzn3N+paPttlPHn2fw0SxoeX89xghQFPvsLUSwJFIm2MHpixBNBSToVOcoSBwA8L6tfkMsTC5OphB6U1nulKoibcW67UwEBnrlwM10ScwnFDUpLspdoH+2eGYP1LLbM8umPgsjCezHnqLn/6CBeZgYYSgFwpayqH2JGSdBmudH1Z7KL0a+Ihps5IzLN52NPU6ICo1dFr1EXNkrt76sSeI2han3ernaur4ksrFcAv+SmTM5CP/PvkB6BK1+hd5JVdwedhLOYehrBOcSa5F71QC4FEhFM7vx28+oUajnYYR8zPeBxP5N1tcleBMDGlyC+Mc+oFdQLX3HjpBgj6SscPDKMQq7S60ujqx9xLT
+ yYWdrHsx
+ zBwBSgNAj38WWyoJUNDarhnOhbBz3LzJFDy9U99w0cFrmq/KhHT9wfrlqZjKAT2bKHswEdO/Pj/FGbWGXUkrmMj22KtX/CrArxQJJX1Z2Q/NQGxc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,61 +110,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move shmem_recalc_inode() out of the loop in memfd_luo_retrieve_folios()
-to improve performance when restoring large memfds.
+Use i_size_write() instead of directly assigning to inode->i_size
+when restoring the memfd size in memfd_luo_retrieve(), to keep code
+consistency.
 
-Currently, shmem_recalc_inode() is called for each folio during restore,
-which is O(n) expensive operations. This patch collects the number of
-successfully added folios and calls shmem_recalc_inode() once after the
-loop completes, reducing complexity to O(1).
-
-Additionally, fix the error path to also call shmem_recalc_inode() for
-the folios that were successfully added before the error occurred.
+No functional change intended.
 
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
 ---
- mm/memfd_luo.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/memfd_luo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 953440994ad2..2a01eaff03c2 100644
+index bf827e574bec..76edf9a3f5b5 100644
 --- a/mm/memfd_luo.c
 +++ b/mm/memfd_luo.c
-@@ -395,7 +395,7 @@ static int memfd_luo_retrieve_folios(struct file *file,
- 	struct inode *inode = file_inode(file);
- 	struct address_space *mapping = inode->i_mapping;
- 	struct folio *folio;
--	long npages;
-+	long npages, nr_added_pages = 0;
- 	int err = -EIO;
- 	long i;
- 
-@@ -450,12 +450,14 @@ static int memfd_luo_retrieve_folios(struct file *file,
- 			goto unlock_folio;
- 		}
- 
--		shmem_recalc_inode(inode, npages, 0);
-+		nr_added_pages += npages;
- 		folio_add_lru(folio);
- 		folio_unlock(folio);
- 		folio_put(folio);
+@@ -499,7 +499,7 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
  	}
  
-+	shmem_recalc_inode(inode, nr_added_pages, 0);
-+
- 	return 0;
+ 	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
+-	file->f_inode->i_size = ser->size;
++	i_size_write(file_inode(file), ser->size);
  
- unlock_folio:
-@@ -474,6 +476,8 @@ static int memfd_luo_retrieve_folios(struct file *file,
- 			folio_put(folio);
- 	}
- 
-+	shmem_recalc_inode(inode, nr_added_pages, 0);
-+
- 	return err;
- }
- 
+ 	if (ser->nr_folios) {
+ 		folios_ser = kho_restore_vmalloc(&ser->folios);
 -- 
 2.25.1
 
