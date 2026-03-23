@@ -4,97 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F92DD58CBE
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 02:07:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66B0DD58CC1
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 02:12:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A4EB6B0005; Sun, 22 Mar 2026 22:07:00 -0400 (EDT)
+	id A2F356B0005; Sun, 22 Mar 2026 22:12:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67C526B0088; Sun, 22 Mar 2026 22:07:00 -0400 (EDT)
+	id 9E0506B0088; Sun, 22 Mar 2026 22:12:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B8F96B0089; Sun, 22 Mar 2026 22:07:00 -0400 (EDT)
+	id 8F5CC6B0089; Sun, 22 Mar 2026 22:12:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2A66B0005
-	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 22:07:00 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E0D2C1A0999
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:06:59 +0000 (UTC)
-X-FDA: 84575689758.19.A5360C2
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 608E580004
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:06:57 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5726B0005
+	for <linux-mm@kvack.org>; Sun, 22 Mar 2026 22:12:19 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 23D261E9B1
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:12:19 +0000 (UTC)
+X-FDA: 84575703198.13.2207581
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9082380005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 02:12:17 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=APFX8z0y;
-	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jX4e9TlB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774231618;
+	s=arc-20220608; t=1774231937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kNiA7OVXpLLl4t81t0ptBo8UsknaoPeMCCc80Vt33to=;
-	b=T9+6vBxAuZ7nXrmMs84uvTQQ55kibxhgC7GLRjeJtF+AGDHDhFaa6NDXkT3Njk2KCyaTb1
-	3Xt6Pjm3XoAhqCBOn8shDt6rskBrOF3w4KKO1j0pwypVyGmh9JmfbsqNhZe0KFuAQHLqhm
-	vkg2ge8byjblGaH4nvfCH1EKINaMJRg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774231618; a=rsa-sha256;
+	bh=7fP+Lbq2mzGcFGL6RZjQPbF6+oL36HH3daBGTHIiwlI=;
+	b=SiBdUNrpzFTyXGH50lDfGI9RqjaL0RwY+6Xlo2NLKQSkU5mCnlImHZGqUi+uqdkAVz3p67
+	rewoY/G57RQEFdsZ8rhgTrXjcb2QZmcIyX6adaIDPTBThoa84xmQz/r/TymHYZTTK8BTOc
+	K73CdMmHPTFGgODjb+cTsQvLtdAaFSw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774231937; a=rsa-sha256;
 	cv=none;
-	b=m7/By2siO3Dfigrmvwprg1FBdL+DEbSVHy+FiyGalBkAGZApWP3wyJZaaYvKcuxrg41wOv
-	Ngh9s2IoM2293tcAqcxCEAOxuDOiwu6M3dPAn+ZZ8R+nefnfVpQ+FIh7P1J8R2GQTOwT6I
-	ffICqNBCaWN+Y9s0j8U5qYkrDa+XuQc=
+	b=yj7eBJYgDGQVuKMFtoNRcgg0+d7pGcVy+byJz42qFm/5/rXv1s4ZVyxUieg3MP7qhNhjtn
+	sBs/fK8WhimVabJ93LJ1+YJZPaDHFzUD7zil530YuKfOuzWPf1o6j/aYJjc47wJg3VmDBE
+	pJgoI5oi9alx/aDMKyCuQYx4FOq/hHU=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=APFX8z0y;
-	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=kNiA7OVXpLLl4t81t0ptBo8UsknaoPeMCCc80Vt33to=;
-	b=APFX8z0ytDJNBAQAsmSr7COgmPJoWZMoJ4Fy99jQIqYC3doKO3fo/FeIfX15qIbP+5upaEUoK
-	VCRrCT+rYEwcZC1shsiidqsuX3mUCZMSGyI6fCwahdhuc5DeFg9KEQgiNlTMC8M0beYWjg25j9U
-	cJLuoQRdsubJ7SUYoDepBos=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ffGbf4C3FzKm4Q;
-	Mon, 23 Mar 2026 10:00:46 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 908C240562;
-	Mon, 23 Mar 2026 10:06:52 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 23 Mar
- 2026 10:06:51 +0800
-Message-ID: <92337d7e-90e7-4dc7-a3a8-2a9df2a3fe5b@huawei.com>
-Date: Mon, 23 Mar 2026 10:06:28 +0800
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jX4e9TlB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Message-ID: <db5ac1d4-9d07-4fdf-8127-b4e5d1a5df1c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774231935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7fP+Lbq2mzGcFGL6RZjQPbF6+oL36HH3daBGTHIiwlI=;
+	b=jX4e9TlBHFivYzXhtQeiqJ6WURnOVA+1u2ohki/UxH3ZMJZExRqRLN7BhPgdnOj+C6BT/k
+	rbOjjISEO7C59LHl6ktsv8kcVUnD7UIFppBch1S9/3lMJLOy2IYQxtwm69ofZwBWb3YhXo
+	69b5Z0tKw4I/ydVGFd5TRGn9JMhv4iM=
+Date: Mon, 23 Mar 2026 10:12:04 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/huge_memory: fix folio isn't locked in
- softleaf_to_folio()
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: <david@kernel.org>, <lorenzo.stoakes@oracle.com>,
-	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <baohua@kernel.org>,
-	<ryan.roberts@arm.com>, <linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>,
-	<sunnanyong@huawei.com>
-References: <20260321075214.3305564-1-tujinjiang@huawei.com>
- <20260321110704.82472cb5b8238ce8a5f40bbd@linux-foundation.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <20260321110704.82472cb5b8238ce8a5f40bbd@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 608E580004
-X-Stat-Signature: fgc7qxim3tyq9brx35wse1kobqqwsq5w
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
+ mem_cgroup_css_online() error path
+To: David Carlier <devnexen@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260322080142.5834-1-devnexen@gmail.com>
+ <20260322193631.45457-1-devnexen@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260322193631.45457-1-devnexen@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9082380005
+X-Stat-Signature: 5ypjfj9szcyoik5urwkbu7mhy1dx6tec
 X-Rspam-User: 
-X-HE-Tag: 1774231616-332135
-X-HE-Meta: U2FsdGVkX18MkyEZ/ro5ghyMNs1B255SkPZ0j8eHrn2tw1Jvs4kn2WKxr2PdgIKAXulHl4NDK2Gum/4QmgBk/FijnIPkJ+8rZXl3GWnCcQwNjrCIt2RgmsJfA+oUueeKM8PToLBnKmgr/UwFaPLPw3jf+YA+YLRxdQ1587laO5dX1fNKinyxz1rEkootGGYY3REmgNWKjsNaKjtVS2a6Fq+zq91TyJLQWhdV2sn5mLMUOL4E6FQBT4jOeRU6BwCRAsukTEW8E6WyV8YqlM+qxAzFIm8RXgZrFlCPsSYN3f+zPiw5cpMDExMuuWQ65NTlcHKaa4/RDxo5STZeMI1/ssMsNjdPLdVxXseXH4Pfgn19yt9bJ2sDIRW9Bp9J7Sj5CRellbHJ+c/NWqZAdLP5hJMwPaVoR3cD0y92+58V3MZP6wDt95tk7j+slgvrDtUR9L/Yr03RkaZdpvFGxr5Ne2bxMvJAmrfY0RLVTGpuDFEOd/MGdI7TfGRl/cbpj5feI0pwn4JnnQgQVhMB3CtUD0uaxgyJ5HgSXhh8WB6tZT3/1AV2iPaV3GZaiUBbNExjDWHqMdSctqmX2LUFaURDIKSMyGxFcSR+kJZgRRYMJJdHyMJnH7PdFWn91OzcL5GIqFzDpbr5nmH6vkQl4vXFViX9sdR599NcSzV0YRvEHI1tvLfKg2lvAnbk+EsGibQ2legLteaqt7+mQKY3ABnMqGET8EMmYUNV+j3UYP13SOq5WfjUpjrzcx/3GIlrdU9BBdHDQiIB77X3VNm5XsD4ElRNnwgLwdWYiyc2EeB7lgq4gUx/SPpMoEPgSw/BBqv8YT5+RiVtReed2/my0ZNqdRVe5LSBhy+sMJyq0COBzD7fcxYOI08q0x8DdpeWEu8c/B33IbNmAgc6pmSY4WTVAlcRcfM5hJ/dfVqV83qmeIyGXtMOxhk7OnaGFv1sbC51Kr3xJeZ9KsfJQmJRQ21
- VAjd2jdb
- DGMRbkV3BMG6QIXFbh7OXZG4S57LaVz4cCcB5E1sboxqRZhT8hlgP2glj3ltZCQkXoTEGK3Q93GjuoMHTLiIb0Q2SayMhk7mdqIzWkNR3o/4MEN0PANiQs1FZbsV9Q/Sx0Hb1wS1faDV71VKZcFcu2J1MsNxW8rC2kbd4bvjaDGNIybNdQmmHCVkBREwN+a9YBM9A02k5uuLQi/AiD6bzJ8f8LrPmBQ5BYzSDD06LpYtILUhZ3ub7slVbOkUM+HoWGRL3B+TRimXmZn07D4T7uO8XTcqrS2EsPuqgyeDADsO3YCsdL1bOwgtpoLAJ//3iAI88e8wPf/Zzki7wWXhAzzs7r28BpeGwQBb8IHUZRSVOWfFvsBk+o9+lceGL0l7lwdJaa0v+UiPiGfSlh/TjQIIxMEJcwvA+AL7JUkqmjsf9NAqbS9cjppeyqMTEcugrEUCtgddfvPjzYqCDr8duLjRu+g==
+X-HE-Tag: 1774231937-511531
+X-HE-Meta: U2FsdGVkX1/Z71fOoqeXGig4ssJocqGsImJgjA1cL3RB2Pn87c/VON5xg1OzYFQCipaDZA9HZcH74lZG/Gf4w58v/4dC+oePJmYw516sk3LKrKi7Sj9cRWufN5LO5MphHW7WQ6c00InZ/Koj/gDv0XG3hwTlHipE2l6usFBIcfRgFQ9dlkVYdEOv3zdn6ZoF3/24g9uq9xBds6dr3C4/1IKsblWxbNk9aPDvBV8jiowts2ZOJgyBYbeR5AtpUcmrtn3peymtbmqlZJ97oqpVDMIzlQl45tVwLnINO0wlPj4KbGnRfIMlwQSBAaSN4idKH2R5VNxKeseoxeSfQih/ZtZ1b3YKEUohfZhWWo5a8gE1eUjafIAI09HKZ6eON2zpzMe9dvgzTbRDg+8ib1Z2jxq6925XFFCNycaECVfBTp0vrhh//dYuHmf8q/l+EYbHuvjtJdSjSWPfqcqMGGJPPrpNYAk6oJ03c2tFQLx+JmgCGnILMNgprZFx+3vyra7Ca+SDnTcb1M67TyDvkpizesrnMuBZwRLWUG8NeE548vvaZVwCiUM43l4ugSMbOjhToEfebDuf/ddSkdODux+TOHy15ECXghWdL9erXEwyp2E5abM3k/HvTQbAjNq/3rYkeZfezjs6PxipfRc8aHnxIX6dNQ4Fi33kP8F5EWybf0rJ/48oFV9pzkOqAiENP9mUV97o3DEng6e8poOjCRs3uNRyYiN7cmtq6ycaaTc0TZlI53HvoCdqnHNHQykJ96i06DZAMuj3aYIut8swD8Vxx31hn85iTS4u1a+2fu8hZT5ibSzRI/MeoYGjOI5uR+eZ8rA9UFGXBxipyedHoryutmLXbII6cVajXlCM1Tbx/IMPYi87GkagF39jkdQlTPeGvC0fVD/pq/NkBoZx5CE7ecYtf1uNI9/5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,116 +91,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-在 2026/3/22 2:07, Andrew Morton 写道:
-> On Sat, 21 Mar 2026 15:52:14 +0800 Jinjiang Tu <tujinjiang@huawei.com> wrote:
->
->> On arm64 server, we found folio that get from migration entry isn't locked
->> in softleaf_to_folio(). This issue triggers when mTHP splitting and
->> zap_nonpresent_ptes() races, and the root cause is lack of memory barrier
->> in softleaf_to_folio(). The race is as follows:
->>
->> 	CPU0                                             CPU1
->>
->> deferred_split_scan()                              zap_nonpresent_ptes()
->>    lock folio
->>    split_folio()
->>      unmap_folio()
->>        change ptes to migration entries
->>      __split_folio_to_order()                         softleaf_to_folio()
->>        set flags(including PG_locked) for tail pages    folio = pfn_folio(softleaf_to_pfn(entry))
->>        smp_wmb()                                        VM_WARN_ON_ONCE(!folio_test_locked(folio))
->>        prep_compound_page() for tail pages
->>
->> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail pages
->> are visible before the tail page becomes non-compound. smp_wmb() should
->> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
->> result, if zap_nonpresent_ptes() accesses migration entry that stores
->> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
->> page before page->flags.
->>
->> To fix it, add missing smp_rmb() if the softleaf entry is migration entry
->> in softleaf_to_folio() and softleaf_to_page().
-> AI review isn't entirely happy:
-> 	https://sashiko.dev/#/patchset/20260321075214.3305564-1-tujinjiang@huawei.com
 
-commit 54150f26b76fbe8cbf90c19d0052add5199851f0
-Author: Jinjiang Tu <tujinjiang@huawei.com>
-mm/huge_memory: fix folio isn't locked in softleaf_to_folio()
-This commit adds a memory barrier to softleaf_to_folio() and
-softleaf_to_page() to prevent a race condition during mTHP splitting
-where the updated compound_head of a tail page might be observed before
-its page flags.
-> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-> --- a/include/linux/leafops.h
-> +++ b/include/linux/leafops.h
-> @@ -363,6 +363,23 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
->      return swp_offset(entry) & SWP_PFN_MASK;
->  }
->  
-> +static inline void softleaf_migration_sync(softleaf_t entry,
-> +        struct folio *folio)
-"This isn't a bug, but is the entry parameter needed here? It doesn't appear
-to be used in the function body."
+On 3/23/26 3:36 AM, David Carlier wrote:
+> When obj_cgroup_alloc() fails partway through the NUMA node loop in
+> mem_cgroup_css_online(), the free_objcg error path drops the extra
+> reference held by pn->orig_objcg but never kills the initial percpu_ref
+> from obj_cgroup_alloc() stored in pn->objcg.
+> 
+> Since css_offline is never called when css_online fails,
+> memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
+> normally drops this initial reference never executes. The obj_cgroup and
+> its per-cpu ref allocations are leaked.
+> 
+> Clear pn->objcg via rcu_replace_pointer() and add the missing
+> percpu_ref_kill() in the error path, matching the normal teardown
+> sequence in memcg_reparent_objcgs().
+> 
+> Also add a NULL check for pn in __mem_cgroup_free() to prevent a NULL
+> pointer dereference when alloc_mem_cgroup_per_node_info() fails partway
+> through the node loop in mem_cgroup_alloc().
+> 
+> Fixes: 098fad3e1621 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> ---
+>   mm/memcontrol.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index a47fb68dd65f..00b3bb81aee4 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3936,6 +3936,8 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
+>   
+>   	for_each_node(node) {
+>   		struct mem_cgroup_per_node *pn = memcg->nodeinfo[node];
+> +		if (!pn)
+> +			continue;
+>   
+>   		obj_cgroup_put(pn->orig_objcg);
+>   		free_mem_cgroup_per_node_info(pn);
+> @@ -4137,8 +4139,11 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+>   free_objcg:
+>   	for_each_node(nid) {
+>   		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
 
-Indeed, the previous version move softleaf_is_migration() check out of
-softleaf_migration_sync(), the parameter could be removed.
+Nit: A newline character is needed here, otherwise the checkpatch might
+complain.
 
-> +{
-> +    /*
-> +     * Ensure we do not race with split, which might alter tail pages into new
-> +     * folios and thus result in observing an unlocked folio.
-> +     * This matches the write barrier in __split_folio_to_order().
-> +     */
-> +    smp_rmb();
-> +
-> +    /*
-> +     * Any use of migration entries may only occur while the
-> +     * corresponding page is locked
-> +     */
-> +    VM_WARN_ON_ONCE(!folio_test_locked(folio));
-> +}
-> +
->  /**
->   * softleaf_to_page() - Obtains struct page for PFN encoded within leaf entry.
->   * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
-> @@ -374,11 +391,8 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
->      struct page *page = pfn_to_page(softleaf_to_pfn(entry));
->  
->      VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
-> -    /*
-> -     * Any use of migration entries may only occur while the
-> -     * corresponding page is locked
-> -     */
-> -    VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
-> +    if (softleaf_is_migration(entry))
-> +        softleaf_migration_sync(entry, page_folio(page));
->  
->      return page;
->  }
-"Can this still race if callers use softleaf_to_page() followed by
-page_folio()?
-If a caller does something similar to:
-page = softleaf_to_page(entry);
-folio = page_folio(page);
-if (folio_test_locked(folio)) { ... }
-The call to page_folio() performs a new read of compound_head. Because
-this new read and the subsequent reads of folio->flags both execute after
-the smp_rmb() inside softleaf_to_page(), there is no memory barrier
-between them.
-If a weakly-ordered CPU speculatively reads folio->flags before the new
-read of compound_head evaluates as order-0, could the caller still see
-stale flags and reproduce the crash this patch intends to fix?
-Would it be safer to require vulnerable callers to use softleaf_to_folio()
-directly?
-[ ... ]
-"
+> +		objcg = rcu_replace_pointer(pn->objcg, NULL, true);
+> +		if (objcg)
+> +			percpu_ref_kill(&objcg->refcnt);
+>   
+> -		if (pn && pn->orig_objcg) {
+> +		if (pn->orig_objcg) {
+>   			obj_cgroup_put(pn->orig_objcg);
+>   			/*
+>   			 * Reset pn->orig_objcg to NULL to prevent
 
-This issue only exist when the softleaf_entry is migration entry and is
-pte-level. Check all callsites of softleaf_to_page(), the softleaf entries
-are almost SOFTLEAF_DEVICE_* or pmd-level. The exceptions are smaps_pte_entry()
-and pte_to_pagemap_entry(), they only collect information for userspace, and
-I think such race doesn't matter. So, I think this AI review comment is false positive.
+Make sense, thanks!
 
-Thanks.
+Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+
+
+
 
 
