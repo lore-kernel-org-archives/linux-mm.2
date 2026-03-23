@@ -4,75 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41390F4613D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98BAFF46139
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 15:18:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7743C6B0088; Mon, 23 Mar 2026 11:18:17 -0400 (EDT)
+	id 0BE076B008A; Mon, 23 Mar 2026 11:18:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74BE36B008A; Mon, 23 Mar 2026 11:18:17 -0400 (EDT)
+	id 0956E6B008C; Mon, 23 Mar 2026 11:18:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6895B6B008C; Mon, 23 Mar 2026 11:18:17 -0400 (EDT)
+	id F14F06B0092; Mon, 23 Mar 2026 11:18:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 576CE6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:18:17 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0F1195C635
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:17 +0000 (UTC)
-X-FDA: 84577683834.20.23A5A5D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2D56C80012
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="B/EErfKT";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774279095; a=rsa-sha256;
-	cv=none;
-	b=IPpnHr7PEqcLpAIb8HDN3lMihdNXoczGz8OSH1CmWWYSQqe+pFc8G1uIDyADYWOmaj0MkA
-	UdyWKpnWdzOAw/MZAkB3S56nrkQXebSUm7YSbyZ1hu+SfoWxlQRc6fPqq4evWyWeKWUQs/
-	q9GBhphTz23Ex5FH5ZU5SQ5jxiNfbA4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="B/EErfKT";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E563A6B008A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 11:18:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B6581A0BCA
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:28 +0000 (UTC)
+X-FDA: 84577684296.09.9AB8057
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7AC9DA0007
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 15:18:26 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hmfz+7Er;
+	spf=pass (imf25.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774279095;
+	s=arc-20220608; t=1774279106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=T9KzDyLK2LRxExt+5uizkYCxde+QVD6hfmZBmFidYm4=;
-	b=OWh836L7fgE7NFMp+lesOW4tnrRKkqsGXvmy/2rLsyGvuPnfZh4LnXoXA7qD25PtbO16Qb
-	8OazGyAEyOHyz9/iPLQHOBX9Z9sULuFJiOJfmz8ZaM4fHvytLUm5HaAjD0r775wZNCtmwP
-	1TSmyLDH5mpxIyuEDkcY9DmH/9s4CcI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vQi3qtwRaACcQNZ9FduWctTgYVwSEXXVdc0PJ95pLn0=;
+	b=b34wwGwYZM1xIG7DVgEfAVx9ffcy4aKT+VjN2kf884Y+pmebwc3lskaPkYkPT4LmfUQSHf
+	IYe1+xZpDKZfvaX9g7H+JZmbBKIKxLx7CSSVrw5CYGSvvz4rHiYZVg+GUHq1wb6KUJsmpt
+	PuDyg7+rFYfQY4vMna3s+G6uG5hqALc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774279106; a=rsa-sha256;
+	cv=none;
+	b=J/hUDY/fbw6QCphImWQlLBoZXgVuNfNtfhc/jTbmVJuxzSktilD/0e7IjD++FXHG9Wkurp
+	mhTONsqsp7xsfUyqbta9B9gXpc1wLSoN+wzPWluKnNlPF9MLMe9FcazLkc/buOvLls8HAH
+	AemUzHEoB3GSHHy+9+bp4313CGYXZyY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hmfz+7Er;
+	spf=pass (imf25.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774279094;
+	s=mimecast20190719; t=1774279105;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=T9KzDyLK2LRxExt+5uizkYCxde+QVD6hfmZBmFidYm4=;
-	b=B/EErfKTl/NC2qfSWLiC2Cv7MTruuHW2yZQV8zhqsM8XRWm6+FplRX3TXLS49nSWCr6Hea
-	wAqIfpvq+Ht5HiyupD7Ycp5P3H4AlGUEO/mt+dnP1eB1zvFUX95+qlh71jq30Em4L29WuZ
-	+j10PVgx5mtXcRwg5OIRB10mphpOtzs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vQi3qtwRaACcQNZ9FduWctTgYVwSEXXVdc0PJ95pLn0=;
+	b=hmfz+7ErOpFyRAY8aAMAGs8YMImdqvv7wJe3olvmcO+v9UdKSQTeXLwk7UR22ZnatT8Me2
+	n4t679xSFcmbKZeP7Yh8Q//kFBos+nPdQ2fZwywiu5sVxawyB8NH7Az9u1Z647HpAQQNhs
+	UtE+l2TePT3HylbyJIIhvJq9kuL6Q3I=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-6rlNJSsIN-m_ZjbbsoPUFg-1; Mon,
- 23 Mar 2026 11:18:10 -0400
-X-MC-Unique: 6rlNJSsIN-m_ZjbbsoPUFg-1
-X-Mimecast-MFC-AGG-ID: 6rlNJSsIN-m_ZjbbsoPUFg_1774279087
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-89qMUu8HPeSoFDs_Z7h03A-1; Mon,
+ 23 Mar 2026 11:18:20 -0400
+X-MC-Unique: 89qMUu8HPeSoFDs_Z7h03A-1
+X-Mimecast-MFC-AGG-ID: 89qMUu8HPeSoFDs_Z7h03A_1774279097
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D0E8E1800365;
-	Mon, 23 Mar 2026 15:18:06 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 828451944EB6;
+	Mon, 23 Mar 2026 15:18:16 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3808B1954102;
-	Mon, 23 Mar 2026 15:17:57 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 77E2A1955D71;
+	Mon, 23 Mar 2026 15:18:07 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -94,24 +96,27 @@ Cc: linux-kselftest@vger.kernel.org,
 	dev.jain@arm.com,
 	baohua@kernel.org,
 	lance.yang@linux.dev,
-	chuhu@redhat.com
-Subject: [PATCH v5 0/6] selftests/mm: skip several tests when thp is not available
-Date: Mon, 23 Mar 2026 23:17:47 +0800
-Message-ID: <20260323151753.2576137-1-chuhu@redhat.com>
+	chuhu@redhat.com,
+	Li Wang <liwang@redhat.com>
+Subject: [PATCH v5 1/6] selftests/mm/guard-regions: skip collapse test when thp not enabled
+Date: Mon, 23 Mar 2026 23:17:48 +0800
+Message-ID: <20260323151753.2576137-2-chuhu@redhat.com>
+In-Reply-To: <20260323151753.2576137-1-chuhu@redhat.com>
+References: <20260323151753.2576137-1-chuhu@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: It4rEQ-Te8y3ptrfK9e9D8PAdtKcRy55NWCpLrz-r_s_1774279087
+X-Mimecast-MFC-PROC-ID: 9Mzs5NIIfF2lZMONCyU5SCK8KVEkKUOQ-c9Zi_GNNxA_1774279097
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 2D56C80012
-X-Stat-Signature: qx7p9qr8qk8nweut6uixqizzmoep5tyd
+X-Rspamd-Queue-Id: 7AC9DA0007
+X-Stat-Signature: 514znrc7ccnmsybndtzcgmnpthuay1wk
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774279094-651090
-X-HE-Meta: U2FsdGVkX1+wiYlqnjdbt9Vkc+tqOExgXlChU82LclVbGnoRFnGnvWjcRofJQIyHEBlQOYvepOEotJ1jRurcYMk+pAuZp6j1e8ZIpaI2XiJfvxbyGddZrogAoxyjJZegfJho6jJDaluxt2ECB5jlQzRwdFpiJUNVA/mnjfLDz/B6WLehB3C/6X18D+ZibgcZb3rljQh5YmQcTlKQsM7wj4U7GQ8NUmTs7Gr2796V21Snze4w9Svl0eIc2SL8murIXscSI6q9KnPxAOA/notLpYqs0cPgq4x2YwV3fj5gjgsF0xeviOP7gKNZnIG+PuFZhbH9jxX+UF8KjO9qVKsQvEGxEj8jngVozxeJu6beXOuvq9Iqns5vgl0yo701V1a/CgKrxVYtaCHYn1EZlrxn1jP27JdfpqduSGNgcLUDvb346KptoXZY+GEXuI4kjxHH/pSezEYaSkfOVTeh/OwofHM4D+HMAkRBrq4TNenDslLsqdBfMedJREAPOAWpFj/dhl0r9y3W+bav9RbY2Fngq466iI1g1xaK1ehgrOCcJ+LoePmLyk0NlTqwa/JVNT/MIUpIcWBuI8Tk/v1WrE4b+j657bFibnw83475Gd8+TsoHVS15kbrpqbLGDM8RG4BmRcFDCHoI7iYKrO/NIaZGjWYDePn9cxP37nmAOMr83aWJrVDbCgUTNSbYu2pat4s34zWyEqwBfWKHTlTOPbPTHgMgXAOZlSxqtQZzc9gyxqZWPl2lHonVitdozHnRETGDvOjhx/zw1r3mduU68/njKQns2uyhjCaNiiax16PyEM0CaW65AgxMu+q1G8rYx8KdOx2POKbXf+7J2Mq2TcBfowUF8ojNuwRuPGL8PduSafsrk23eJNvbJTefIAmt/m/wHH8Bgwtt40yr6pXtxxRoCqpHS5EAi747WRxmugC9TSNPTjXgKcPe+vznOOfCznyot7oghmMrdcxZrZJAwUQ
- TH3I4jXb
- 78Z0+g+z/mRPRvyMzNnpHXjJyGzivIEqj5i6bZaAmiwIdYJMmJ/ZS9U81hsTopxGAzbhaiQ9QbXC4XpI4QGUyHuzbXNL/+TJp0jgSr1OhH8QRWKSFykXvyX0imwIwiUIiWT51o4oMBtu46r3DJfrk0enF59rVH8MrJRO9c3QkQcGlDKiG9bV2vqylv7uVJoa2WS1mL6EMPoplmTMocI8NBFm3nRNusigS8NZcU6FPnBXganIVjtd6fhUfG4brqQFcKcyZfWcmvYKqiXSXuzUraExbGpYWJHoXtooMp1a4GLcQExu1jXhYvSuUcCBkyFjKEjUg
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774279106-683012
+X-HE-Meta: U2FsdGVkX1+XEE89c6tSzvV4Fo8vP3S3bc23rWzkf0B01HlE7UakVv2jVooI8qWh6N6keaXdCCBYzz0mo4NEeYL9F1p+qtuzcRtS/LZN6f8NWfyBcF3SI0Tr1h/3VgY18xbuiPiT80KbAaCH6tgW+6qJsvAe3ezu9gkI8eOEBsJBOvQwfAp1ri3iWy5L2HmvBKrXMAWByf6++tpNjgeJVmnTvAGKJQemxpDW1gl2fj2g5Ro417uMV2ca8nVhqpo1coe4XY5PWe2GUbcX5SibETMogcm3OrCP1nqmcx1GEznTvpRixQHTTkuDSS1ktf9q+rfIi8uFf44Q3Zo6v0Ghhbx+MqahIdSuS2xPCstCZA1ogBmg9ggg+Wb6ExO6QNaKpvDYyBma2xXairBEytvXjxFpRbbFcuV1k5YSmQqb35UygKOhTxzIHy2lFE2KDDVR4nV/xhvB16rSMtuRR8qlX4xJmq1pGs7t/eAUSX/Q11exXDY5Xhi7JzwJRbaSg5XwvqlNbEKGSWluioZG3Gzw+Wg8d6rIh50THMVChZr2aS1MknWyLWkyv8zLX2xrkp4WBgOjsJrSnItNYEpvMvlMTSkX2WVmhBrvBqR6hByBgwDUrqWRl8UKt4ocaQZIUgNcoApTfJ9HCrCUEqpE41K63xeHMXo0GT0RDA3bW9rKunsyYa/q6OX2DczKwxYld2WVZdoHz+yZUTeLkDLSFdtkCgJjjw4Nn+ja1zJI/VwifcTImoBQ5aRsVBa+XXrMmU8nZFb9kCp1Ng3jW2KWhb3yZjuu8gTj+f/MRzUFytU0KhmJrhnfx5og5QLCYo/aPtXi3NlnD6K3vl8qDTeyBhi33n/+lIzfRyGDN/fDfYRCwqKuP34BaMdKFEu4dlSXGPKEpnbgDZRSph2sXP9SCYAJ2TgwD/Ivy9b3H5nwqHlXLbjH8+QH1L1T0fbKUZ6EaCxZmuta67+raEZ3WAiscoD
+ 2/F2sLT8
+ ZI6T4JgLfkZo/AX6aF1wVF7fagqMBvKRpf1Fs3S5OmlllVV74gzUAbxgy19X095gK6DPssyCauuVBAQk+Na4k+qcy0NYmezKat2exow9QnfZCRlSX6GztEnQhxX76lPM2lb7GbpGFSFhcvQ1yf/gg+tv50R0mCCtHZXR1113tm/Tmcg6I4f6OqQsMubwDt1NXLPD9nXnXsXzD5tWQ7i6FjRog/fR5joBVfXfnD5sCgo3zw9BdJmhD1JWKjgiFy1AmQyS+EZ3tKXIkBHeFoSjS0yGV5qscKYbG5Yljb5C4WkGScYGiavZ4owz7/uh0MKHdXgt7KFqvXZdf1EUXBv7UX9ktJ7ZPHXwZTCLFJGXchS0IwEiZMSmR5uvACJDd2YfdV1vLIFOidzg/Xxw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,55 +124,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are several tests requires transprarent hugepages, when run on thp
-disabled kernel such as realtime kernel, there will be false negative.
-Mark those tests as skip when thp is not available.
+When thp is not available, just skip the collape tests to avoid the false
+negative.
 
+Without the change, run with a thp disabled kernel:
+  ./run_vmtests.sh -t madv_guard -n 1
+  <snip/>
+  #  RUN           guard_regions.anon.collapse ...
+  # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
+  # collapse: Test terminated by assertion
+  #          FAIL  guard_regions.anon.collapse
+  not ok 2 guard_regions.anon.collapse
+  <snip/>
+  #  RUN           guard_regions.shmem.collapse ...
+  # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
+  # collapse: Test terminated by assertion
+  #          FAIL  guard_regions.shmem.collapse
+  not ok 32 guard_regions.shmem.collapse
+  <snip/>
+  #  RUN           guard_regions.file.collapse ...
+  # guard-regions.c:2217:collapse:Expected madvise(ptr, size, MADV_NOHUGEPAGE) (-1) == 0 (0)
+  # collapse: Test terminated by assertion
+  #          FAIL  guard_regions.file.collapse
+  not ok 62 guard_regions.file.collapse
+  <snip/>
+  # FAILED: 87 / 90 tests passed.
+  # 17 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+  # Totals: pass:70 fail:3 xfail:0 xpass:0 skip:17 error:0
+
+With this change, run with thp disabled kernel:
+  ./run_vmtests.sh -t madv_guard -n 1
+  <snip/>
+  #  RUN           guard_regions.anon.collapse ...
+  #      SKIP      Transparent Hugepages not available
+  #            OK  guard_regions.anon.collapse
+  ok 2 guard_regions.anon.collapse # SKIP Transparent Hugepages not available
+  <snip/>
+  #  RUN           guard_regions.file.collapse ...
+  #      SKIP      Transparent Hugepages not available
+  #            OK  guard_regions.file.collapse
+  ok 62 guard_regions.file.collapse # SKIP Transparent Hugepages not available
+  <snip/>
+  #  RUN           guard_regions.shmem.collapse ...
+  #      SKIP      Transparent Hugepages not available
+  #            OK  guard_regions.shmem.collapse
+  ok 32 guard_regions.shmem.collapse # SKIP Transparent Hugepages not available
+  <snip/>
+  # PASSED: 90 / 90 tests passed.
+  # 20 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
+  # Totals: pass:70 fail:0 xfail:0 xpass:0 skip:20 error:0
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+CC: Li Wang <liwang@redhat.com>
+Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+---
 Changes in v5:
-  - patch 1, patch 3 updated reviwed-by and acked-by
-  - patch 4 adds new patch for robust write_file()
-
+  - updated reviewed-by and acked-by
 Changes in v4:
-  - patch 1 update to use thp_available instead of thp_is_enabled,
-    suggested by ai review
-  - removed reviewed-by and acked-by
-
+  - use thp_available instead of thp_is_enabled() as when thp is set to
+    never, madvise(MADV_COLLAPSE) will still succeed by design. So a
+    failure in madvise(MADV_COLLAPSE) on guard region will verify guard
+    region denies it. This is suggested from AI.
+  - removed the 'Reviewed-by' and 'Acked-by' as the code changes. Sorry for
+    that but it seems the changes is a little huge? (1 out of 2 lines)..
 Changes in v3:
-  - patch 1 update commit message to show the log snippet with where the
-    fail happens, change the 'false positive' to 'false negative'.
-    Update reviwed by
-  - patch 2 update reviewed-by
-  - patch 3 make write_file to void return
-  - patch 4 and patch 5 updated reviewed-by/acked-by
-
+  - commit message: update the log snippet with where the fail happens and
+    add the '-n1' to the command.
+  - fix the 'false positive' to 'false negative'
+  - add reviwed by from Mike
 Changes in v2:
-  - replace 'false postive' with 'false negative' in cover letter
-  - patch 1 and patch 2 add reviewed-by/acked-by
-  - new patch 3 to add write_file() in vm_util as a common helper
-  - patch 4 removed the {} in if block, removed the write_file helper
-    rename chunk in v1. Add reviewed-by
-  - patch 5 move the exit chunk to the front of ksft_print_headers() as
-    suggested by David.  Add review by.
+  - add reviewed by from Zi and Lorenzo
+  - add acked-by from David
+---
+ tools/testing/selftests/mm/guard-regions.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Chunyu Hu (6):
-  selftests/mm/guard-regions: skip collapse test when thp not enabled
-  selftests/mm: soft-dirty: skip two tests when thp is not available
-  selftests/mm: move write_file helper to vm_util
-  selftests/mm/vm_util: robust write_file()
-  selftests/mm: split_huge_page_test: skip the test when thp is not
-    available
-  selftests/mm: transhuge_stress: skip the test when thp not available
-
- tools/testing/selftests/mm/guard-regions.c    |  4 +++
- tools/testing/selftests/mm/soft-dirty.c       |  4 ++-
- .../selftests/mm/split_huge_page_test.c       | 19 +++-------
- tools/testing/selftests/mm/thp_settings.c     | 35 ++-----------------
- tools/testing/selftests/mm/thp_settings.h     |  1 -
- tools/testing/selftests/mm/transhuge-stress.c |  4 +++
- tools/testing/selftests/mm/vm_util.c          | 21 +++++++++++
- tools/testing/selftests/mm/vm_util.h          |  2 ++
- 8 files changed, 41 insertions(+), 49 deletions(-)
-
+diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+index dbd21d66d383..48e8b1539be3 100644
+--- a/tools/testing/selftests/mm/guard-regions.c
++++ b/tools/testing/selftests/mm/guard-regions.c
+@@ -21,6 +21,7 @@
+ #include <sys/uio.h>
+ #include <unistd.h>
+ #include "vm_util.h"
++#include "thp_settings.h"
+ 
+ #include "../pidfd/pidfd.h"
+ 
+@@ -2195,6 +2196,9 @@ TEST_F(guard_regions, collapse)
+ 	char *ptr;
+ 	int i;
+ 
++	if (!thp_available())
++		SKIP(return, "Transparent Hugepages not available\n");
++
+ 	/* Need file to be correct size for tests for non-anon. */
+ 	if (variant->backing != ANON_BACKED)
+ 		ASSERT_EQ(ftruncate(self->fd, size), 0);
 
 base-commit: c369299895a591d96745d6492d4888259b004a9e
 -- 
