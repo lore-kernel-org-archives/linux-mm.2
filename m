@@ -4,112 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8392F483CC
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 17:04:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CA8F483CC
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 17:06:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 356246B008A; Mon, 23 Mar 2026 13:04:56 -0400 (EDT)
+	id 26F0A6B0092; Mon, 23 Mar 2026 13:06:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DFD86B008C; Mon, 23 Mar 2026 13:04:56 -0400 (EDT)
+	id 21EC96B0093; Mon, 23 Mar 2026 13:06:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A7D76B0092; Mon, 23 Mar 2026 13:04:56 -0400 (EDT)
+	id 0E6F96B0095; Mon, 23 Mar 2026 13:06:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0683E6B008A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:04:56 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 997F1C3A73
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:04:55 +0000 (UTC)
-X-FDA: 84577952550.18.8136C88
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CB4B912000D
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:04:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=haLtNdYN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=devnexen@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EDE446B0092
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:06:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5C6D160C71
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:06:29 +0000 (UTC)
+X-FDA: 84577956498.29.5FFC29F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E1BB0100005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:06:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gBrtZotL;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774285588; a=rsa-sha256;
+	cv=none;
+	b=B67GwSepbrUdM6pFToC2U2Kprgk63UWDrID01Q2vi5w6hdOSUn52/cRWPczXOnAxmOJzn3
+	qnI02Wzz7RWrsJvzSh57T+U1kCxatRhGOpqyfBVv3uectgEXjZ9I8+rPU6E0jn18zAiUJm
+	CxpPQ0+vyAEegUM9/10UYiMXPdotjEc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774285493;
+	s=arc-20220608; t=1774285588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=K5DLXNkfiO9SlRW0vo64Nxeq8oeQwRuyHXAwNoCLJqw=;
-	b=DdukpWghOPWuGEK5ySHN1mU4FoIG4/AZmAE8Gvv6Kp1GDm4biYGSs48A/WoACQ95lLIW1+
-	fpE8IzoeAceIDp5eg6M8Pifg8zwqVujiiE09+6vwMPFEI7n0wb6LegWZIu7GbJm2s0uuDY
-	lRTOJ9bcYqdbQIk5xu3gw/yWbb71n74=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774285493; a=rsa-sha256;
-	cv=none;
-	b=edUPXbUrMPVMf/Z+thx2yY5ePPGF782UJpXwKbrZ8a+WUN/Gcna3aUo+/epbIPCf4mpyUv
-	0Vrlj2+Gkb/izMPFn23HViYEHp506Snmf6+NI7P982K3ATLEmXbGG+O47uQ5//VwBCrQzG
-	oQ0wu/V80w2PacsQ7RW5OSCbFzdu3aA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7AbYXZVAo64yMv/t0GMlnyFCOuoGDEnAo2Edo1QAJ+A=;
+	b=Bey3uo7zpLuTasEnS0+gvjgwaqNLTbIt0atHU9h7d+kBjS7O8rDO1GeP/45kyTJ21tCFPK
+	RWh1Lk9+1apbZurB9SI0jTuy+b/gbvMKW7h3ztWCB6/wgMQ81DQj7Xo+b9filB1SSR6GDF
+	HMZd1cjZROFl78WUwSVOLmudGMSkbxI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=haLtNdYN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=devnexen@gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48700b1ba53so28267055e9.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 10:04:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774285492; x=1774890292; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=K5DLXNkfiO9SlRW0vo64Nxeq8oeQwRuyHXAwNoCLJqw=;
-        b=haLtNdYNFYqEH4k5xJAe3vP2Fr9SQE4DkL5AI6Y3g/usd13DYjxl+BwKtyTlNszB+a
-         jAPsKv+brVVLsq9XSlg7oQ8mrUizkNqmDuHZE0jzqOdx7X6w8ApiOB0VIRWRue2un5kv
-         D9CVG4WFtoauPNuS2Pf7oyJHReU6rSi3KwPqAgaxykv+dbvrGtxyGmMeEWIjsbLvPN7f
-         fCHIb6Wp0qfjppWzXJLBZgmXI9HvgR/ea+UEDELZnDDCrklzkrE69C0wm7XRe3Gf49bL
-         /qG0EJgEUs6VVXRQ9TuLYBNVwdQwHLwe3PUlfk5sK77+cpD2hpahW5srDybV3gxeoF3A
-         eElQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774285492; x=1774890292;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K5DLXNkfiO9SlRW0vo64Nxeq8oeQwRuyHXAwNoCLJqw=;
-        b=C7MZEi5W0YxJ7ae8dUsdh/Y7Q630xqxnK5is5ePiFb2i92IXO0fBG5h4MAWtumxk5a
-         3gi7uBlAebvHGsvxNkVD87tvcNrrrv9J/ujfRxkzLXxM7Tq3cN1emQriyBxQaWULni9w
-         Siqcw72HDI50SOl0fDjAX8ywEcirvvhTuvBKa3AyVzb6b0jsDUKMPRVNFdPdO7Xz8cAD
-         r7z8iUysiqZ+NAU6WcCuuGcT5M5S3iQ/XwaeUYBB/Exp5LVzNqSSkH/exctUd21+79Uz
-         Cw1abbLYm3x97X0mO/XVb9IV4riRcrINaBsIAsFDBKaaXKH2S0PS/oBOBRVPs3ImUSYp
-         Mc+g==
-X-Gm-Message-State: AOJu0YzFYbRNcFJX8s9OW0Ze9HX2+TCbXHauLiQmox5GekuFh0jtUUN3
-	22wgBulWaeHbklJ/nitH4sYWtPsquUt0VlJgv8ZvSStxhiXMAzcUPsvvaKMkAnDR
-X-Gm-Gg: ATEYQzzQ1rWhqAKbA5NNTrL4I4CypBBcL4S5znuierGIR+I04eM3UudDTw61ig0Hntb
-	iB0f05LFp4bj2XkNOVpscx1beC1f309vOmhERYrnHh3OK1UjlFnAFE1VcQuesjqeCA1M5AZXEh6
-	o4eGn550VD1f3O4Cu34VSrmFYkz/TFLgr6NLBo4eGgNKE6ekq2zEEyE/00w+4yezrXnhQDjpRxJ
-	X8lqlW0WzEjOVfaPO7y9jhnAE+ITBmdGosVBrxCa/IU3gsS5vREbzrCBEWFqUVXdlaGdhCMk0Hp
-	2xliB1DIqlZR/Ov0lpINsZSDWxSQ6aFDNZ4JUUZoyvKb52bMsEokzqGvVn80fUNUBv6bpE/R9E3
-	FkknVNMHCfpPhsYTS1HhTw/znsJRYZ+nnGV7GHCPU7H4bQxDR0/FBHeHlbHwAnsUCkQs9PO8gvW
-	s6a19dgbkLKV2Ja+YaFkGVMNAGLuusaGkJtUVB2Yl4Ch8aLKE8mouvTUsI8snKQvye3L22XjkTh
-	ZCQYabIvXxF
-X-Received: by 2002:a05:600c:3549:b0:485:3fe6:21f5 with SMTP id 5b1f17b1804b1-486fedb5928mr175892525e9.10.1774285492018;
-        Mon, 23 Mar 2026 10:04:52 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe879d37sm111516965e9.1.2026.03.23.10.04.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 10:04:51 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Kairui Song <kasong@tencent.com>,
-	Chris Li <chrisl@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: linux-mm@kvack.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH] mm/page_io: use folios in sio_write_complete()
-Date: Mon, 23 Mar 2026 17:04:49 +0000
-Message-ID: <20260323170449.26333-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gBrtZotL;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B440F4355A;
+	Mon, 23 Mar 2026 17:06:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2F4C4CEF7;
+	Mon, 23 Mar 2026 17:06:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774285586;
+	bh=yf/N67gBIH9jH5tj/eBx49WDNNHqQ6d8Xw/4r6JAHCM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gBrtZotLvmRDKY8PUXJxAp1tBrQUR32dB9tYBqsNEny19g53OQ97CArY/anhs9zIS
+	 UZUfJEtN2iycEjxPmfE7T/4Qtx1BO5nDj5Uv4T6d5ECUvlLPIbJGcfKRjQ2brAtqOh
+	 CBY8PBJiJEtvER62PyFGdjhsUaCI6jmLV0kuqmXaOTYLg3Zj7bxrVCERdYBwjNRXSf
+	 G39opJMpfsEvC+DuINZiZ00MGyKg4yZk5OrpuKNQ29og8dXI13v2rdZovSgB9ID329
+	 jGcJNl+HmB8DvfkJn2mSiLHYKCgwgTg7G9iZ7f2dSu4NFPLUQeNK/vuOgkHISiVfo1
+	 KZaBDM/vav43A==
+Date: Mon, 23 Mar 2026 17:06:21 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org, 
+	mhocko@kernel.org, zhengqi.arch@bytedance.com, yuzhao@google.com, 
+	shakeel.butt@linux.dev, willy@infradead.org, Liam.Howlett@oracle.com, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/vmscan: prevent MGLRU reclaim from pinning
+ address space
+Message-ID: <0f599835-9b99-4457-9ba7-a3eaeb0768d1@lucifer.local>
+References: <20260322070843.941997-1-surenb@google.com>
+ <f22cb9d9-7fc8-4a79-ada8-02d66a1155b2@lucifer.local>
+ <CAJuCfpFqz3OvOrJOnYG8NF0gjzkzmSaiM0LZKD_aLoW9Br2srA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CB4B912000D
-X-Stat-Signature: 419f1m3mri75b6ubeeahyutt6q5sqh8k
+In-Reply-To: <CAJuCfpFqz3OvOrJOnYG8NF0gjzkzmSaiM0LZKD_aLoW9Br2srA@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774285493-362425
-X-HE-Meta: U2FsdGVkX1/fBbJFFpteNBp8wm4IrNZ0yEDg2XfWS9KfV4d/nntjPveyZfWdUcdRDtp06L+LQ2MdBSt5gM/BIeLiZsMBEJEc60zkv5xEPhN/+BSeIs0P49pnYC9fXKNq034j2lx2FLDhZZnsiB5Rn2iq3lMZnPGX0Psm9GZAo/+JOkdowSiXin0zu9JAhmQeUtps1jBtYYcWch19Lt8+2amQqLmSy7wy5azziiAS36cL2WMBEJW6r4AIaaM23/LzaD9lxvEEN/3ChP2x1gOmTojNki03l/OCZMDBKvWPT7DxMwZysutLIHGrUJDWRu2frOob6ns8YdUU2768I/PzYXlIiKXJ5ji+L1H61pMyWroDQVuHbIKvIX8a7M0wBSN1BnLRtlcG/4OdRcBfUwaCx28MSl4baH9KNUfbIY6sRbeaxRRnYy2VBmkOcsaqcgSh9zGRL2FC1BitWVgth7NWBJj5JzLw2tg1m3P66mGU7qwpcHLnsSwiFFV23Zf2Ypy1Rj9niP2WWXNIwCNUdGO3mPOoTx+0xspTtyvAKZLTzgAYuLq5kc7D5Nq+OUiXUxsgsv8QbmhdXSeabdr2eAbXAZnrBVOBWfejUiZc7T8vNfmty5G0B6ZKIPIfnBF7t3pqO41ewRjmR33wH2Q78gzMvQBebwFUHJxLRd+iFQsCXBeJPYziWC3Q91k4Zwo0n2NejdLkyeqCgH1v8nKucmQjG8gd68NTzMzvjYa+fxJrbLjeN5/BWy3DnHNwTO7y7UX7ReCZVTHEv15jahOEPMhsmyosu1WsnIhX/yhKr7BoJcqfQX6InBuH/EMUiUesrQKMACNkZ0pSsUgfJqOIL8tYXG6ww2eqUhF5gCmuTO0x5bTuUGdje8gF2uciCj14A8AhGy1bEsb4wOnAKLJiNpokvh6X3EVP7gDiPeH21hTk891oAlrSK4Bsd8dbWmCDywC36Mt3IpXnYTFQQkS15f2
- f91PUxsO
- qfBpzM2WkJyYvNoAiCbdSR4a6a9RsFkoqBS1f4yuoWHHiOOxR1ymQsQIalCgVuxgszcuw1+HoSDszaZY+NbJcnD9uipbFprCfEw4YUaqPt+GtDhoK1MdFjp1BEEiDhWQ2tzYIH7c86IZAtvVokYT71sdyleXLNUsTanvr5u27LMXxcYFJ9W+/WUk/3HsP5fVLyQ3AL46ZOK5b4aTSnSdmAZKd13rGYiGFk1FpNt0fLoYhxEG8HbXmfrWnIO4Bn4JmN7pjK1O8kMdhThDJEn7XnEEVnoXOvYBKy/5rY7rnyWeB1AA1hhMxnOjoc8lGChVgmaA8oOgG4d+8oUnBj/F4RNfQ8N3NyKARbcYXcI4mrS+/p73DS52OBDhxVmctQWr/7u+HkKiuBPYbSeWq1mNBv94Xkll62RHjiM1XZ0eBfCKlPiKUlAnHENLtuUwY9C4+++2qqSa5gaop2Bo=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E1BB0100005
+X-Stat-Signature: odix7743g33jjbmydd4shmnowhhegim3
+X-HE-Tag: 1774285587-168860
+X-HE-Meta: U2FsdGVkX18quNVdA7Gl/JXXMW6BORQo+NzyPZE4DuS4e1RdNGTka5C2mB3IusecDmk63o31Edc4AKKf57iJAib5NFTwl4T8N1sENlnVxRYsUrrKvDu18tVLrHCzWctl8s5lNXBxf+M2UD2E05grqiz++XkmB+ncQTqNbSH7MxAlYP1n5QYgQjTx3Rb/UZFE5qsYDdGSo5+NcxnaLMs+60Rcx1F+a37LdW0BG7q4QYm6ZTWvNOcy+KCUu9gxj59d25befVEgA8uEcbk5EdN9/P4l17dIYTctQBlKG5b7E5MitZzxzlsbFMnJg01Y45KJxJnEnKOj0QpMYM1YElT4/OxWUrxC3uzJooWHF4NU08g3NjK2n4Za6mkJtmyYzbIPBjzlMLEtGEsPS74oOe2FMC3sTW3wEZiM5DBp7VVT11HCn0Ed7gqlfu9983qaVlTUwf6Tpdiig7ar9FG2b/hltL32Ibs3wWsD/yh0+Ys+OpjcspQXym/5Vh2/vT7hsnMxImd+kzv0Y70pVSHtYYGJWCMFODy+AEn+X1OeoqNmjy6YT88kCXKQmGzjWo4BGXrAUrLDA2owqMVU1lpEGZnG+2/rbi7DpHhd2ErcXKG6WVFZ0NcDvznp7K9yec8BRJYnoVVFx/4oHff//eAlUk1aKOnp3+v0Q8aEQcYHGmIL3IjF2Tu0fBY9jlc/9fEVQeHT6OSuqYZkMwJyuIJXrB2mXiyo69pO99xb1g84Wo2qGCH/hC2n56/GmiEDJ3qFSa4RJKigyXRubEvytb/qmYOAvymXO+T8OjVHFkkn+T/2cRK7wi+N203sBRv7WW8f6cWGrx55Lt3JNiL/H+I86bizXFJRot7vTx0kyjXEwCDRDDyZOh4l4oypslqf7JEDXJbrLMASodN40uqxRJwsHvHny6CjwStaY4ydeE+tGEUMotS0wgkIMhTN2WgSPEULsWrWgHJUjkY5YmI3hPhG4Yn
+ NwOmzS8A
+ f5xoz6xojIxLg72OK20PjaxMRNJ8A/eja/fD23xnnlmTsctL+IxTTKlKPNVuuWj8gMHGSV/T2w4N91GyAfSbhNO6BonVvLDYHvtp7H0okGD9wiC/Rmi+KrrGKHwoejLux3xS/BMBV/tDXpP9LszbTkl3ISpcyEODgwsvzSUOJx08LH+QHg2IOW5MImB+ray8BIbrhzxZWwePBbAyJXGygmB9lRto6yNLgy2dZfacBW6Rdw+ySSc5lB3pU1qtTHqgRxahKi6hbsX560yoGCyB8KR14yNn4/f2XQlyNfR+mUqBFyKSnYvVyQd3mw4waqc85HIA91M00tOAsMEu1DS/YHHKjmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,68 +98,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert sio_write_complete() from legacy page APIs to folio equivalents,
-matching the conversion already done for sio_read_complete() in commit
-6a8c068774ad ("mm/page_io: use a folio in sio_read_complete()").
+On Mon, Mar 23, 2026 at 09:19:04AM -0700, Suren Baghdasaryan wrote:
+> On Mon, Mar 23, 2026 at 6:43 AM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
+> >
+> > On Sun, Mar 22, 2026 at 12:08:43AM -0700, Suren Baghdasaryan wrote:
+> > > When shrinking lruvec, MGLRU pins address space before walking it.
+> > > This is excessive since all it needs for walking the page range is
+> > > a stable mm_struct to be able to take and release mmap_read_lock and
+> > > a stable mm->mm_mt tree to walk. This address space pinning results
+> >
+> > Hmm, I guess exit_mmap() calls __mt_destroy(), but that'll just destroy
+> > allocated state and leave the tree empty right, so traversal of that tree
+> > at that point would just do nothing?
+>
+> Correct. And __mt_destroy() happens under mmap_write_lock while
+> traversal under mmap_read_lock, so they should not race.
 
-Replace set_page_dirty(), ClearPageReclaim() and end_page_writeback()
-with folio_mark_dirty(), folio_clear_reclaim() and folio_end_writeback()
-respectively, saving implicit calls to compound_head().
+Yeah that's fair.
 
-Also replace page_swap_entry() with a direct folio->swap access since
-bvec entries are always set via bvec_set_folio(), meaning bv_page is
-always the head page.
+>
+> >
+> > > in delays when releasing the memory of a dying process. This also
+> > > prevents mm reapers (both in-kernel oom-reaper and userspace
+> > > process_mrelease()) from doing their job during MGLRU scan because
+> > > they check task_will_free_mem() which will yield negative result due
+> > > to the elevated mm->mm_users.
+> > >
+> > > Replace unnecessary address space pinning with mm_struct pinning by
+> > > replacing mmget/mmput with mmgrab/mmdrop calls. mm_mt is contained
+> > > within mm_struct itself, therefore it won't be freed as long as
+> > > mm_struct is stable and it won't change during the walk because
+> > > mmap_read_lock is being held.
+> > >
+> > > Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/page_io.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+Given you have cleared up my concerns, this LGTM, so:
 
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 63b262f4c5a9..6c7ab3c394ad 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -348,7 +348,6 @@ int sio_pool_init(void)
- static void sio_write_complete(struct kiocb *iocb, long ret)
- {
- 	struct swap_iocb *sio = container_of(iocb, struct swap_iocb, iocb);
--	struct page *page = sio->bvec[0].bv_page;
- 	int p;
- 
- 	if (ret != sio->len) {
-@@ -356,21 +355,24 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
- 		 * In the case of swap-over-nfs, this can be a
- 		 * temporary failure if the system has limited
- 		 * memory for allocating transmit buffers.
--		 * Mark the page dirty and avoid
-+		 * Mark the folio dirty and avoid
- 		 * folio_rotate_reclaimable but rate-limit the
- 		 * messages.
- 		 */
-+		struct folio *folio = page_folio(sio->bvec[0].bv_page);
- 		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
--				   ret, swap_dev_pos(page_swap_entry(page)));
-+				   ret, swap_dev_pos(folio->swap));
- 		for (p = 0; p < sio->pages; p++) {
--			page = sio->bvec[p].bv_page;
--			set_page_dirty(page);
--			ClearPageReclaim(page);
-+			folio = page_folio(sio->bvec[p].bv_page);
-+			folio_mark_dirty(folio);
-+			folio_clear_reclaim(folio);
- 		}
- 	}
- 
--	for (p = 0; p < sio->pages; p++)
--		end_page_writeback(sio->bvec[p].bv_page);
-+	for (p = 0; p < sio->pages; p++) {
-+		struct folio *folio = page_folio(sio->bvec[p].bv_page);
-+		folio_end_writeback(folio);
-+	}
- 
- 	mempool_free(sio, sio_pool);
- }
--- 
-2.53.0
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
+> > > ---
+> > >  mm/vmscan.c | 5 +++--
+> > >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > > index 33287ba4a500..68e8e90e38f5 100644
+> > > --- a/mm/vmscan.c
+> > > +++ b/mm/vmscan.c
+> > > @@ -2863,8 +2863,9 @@ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
+> > >               return NULL;
+> >
+> > Not related to this series, but I really don't like how coupled MGLRU is to
+> > the rest of the 'classic' reclaim code.
+> >
+> > Just in the middle of vmscan you walk into generic mm walker logic and the
+> > only hint it's MGLRU is you see lru_gen_xxx stuff (I'm also annoyed that we
+> > call it MGLRU but it's called lru_gen_xxx in the kernel :)
+>
+> I don't have a strong opinion on this. Perhaps the naming can be
+> changed outside of this series.
+
+I was thinking more of a new file for mglru :>)
+
+I believe we also need some more active maintainership also... but that's
+another issue ;)
+
+>
+> >
+> > >
+> > >       clear_bit(key, &mm->lru_gen.bitmap);
+> > > +     mmgrab(mm);
+> >
+> > Is the mm somehow pinned here or, on destruction, would move it from the mm
+> > list meaning that we can safely assume we have something sane in mm-> to
+> > grab? I guess this must have already been the case for mmget_not_zero() to
+> > have been used before though.
+>
+> Yes, mm is stable because it's fetched from mm_list. When mm is added
+> to this list via lru_gen_add_mm(mm) it is referenced and that
+> reference is dropped only after lru_gen_del_mm(mm) removes the mm from
+> this list (see https://elixir.bootlin.com/linux/v7.0-rc4/source/kernel/fork.c#L1185
+> and https://elixir.bootlin.com/linux/v7.0-rc4/source/kernel/fork.c#L1187).
+> Addition, removal and retrieval from that list happen under
+> mm_list->lock which prevents races.
+
+Ack, thanks!
+
+>
+> >
+> > >
+> > > -     return mmget_not_zero(mm) ? mm : NULL;
+> > > +     return mm;
+> > >  }
+> > >
+> > >  void lru_gen_add_mm(struct mm_struct *mm)
+> > > @@ -3064,7 +3065,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+> > >               reset_bloom_filter(mm_state, walk->seq + 1);
+> > >
+> > >       if (*iter)
+> > > -             mmput_async(*iter);
+> > > +             mmdrop(*iter);
+> >
+> > This will now be a blocking call that could free the mm (via __mmdrop()),
+> > so could take a while, is that ok?
+>
+> mmdrop() should not be a heavy-weight operation. It simply destroys
+> the metadata associated with mm_struct. mmput() OTOH will call
+> exit_mmap() if it drops the last reference and that can take a while
+> because that's when we free the memory of the process. I believe
+> that's why mmput_async() was used here.
+
+Yeah that's fair enough! Thanks.
+
+>
+> >
+> > If before the code was intentionally deferring work here, doesn't that
+> > imply that being slow here might be an issue, somehow? Or was it just
+> > because they could? :)
+>
+> I think the reason was the possibility of calling mmput() -> __mmput()
+> -> exit_mmap(mm) which could indeed block us for a while.
+
+Yeah fair :)
+
+>
+> >
+> > >
+> > >       *iter = mm;
+> > >
+> > >
+> > > base-commit: 8c65073d94c8b7cc3170de31af38edc9f5d96f0e
+> > > --
+> > > 2.53.0.1018.g2bb0e51243-goog
+> > >
+> >
+> > Thanks, Lorenzo
+
+Cheers, Lorenzo
 
