@@ -4,120 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B84D0FC72A8
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C2AFC72C5
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 07:20:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E84326B0005; Mon, 23 Mar 2026 03:08:13 -0400 (EDT)
+	id 7BA626B0005; Mon, 23 Mar 2026 03:20:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0E1B6B0088; Mon, 23 Mar 2026 03:08:13 -0400 (EDT)
+	id 76AFF6B0088; Mon, 23 Mar 2026 03:20:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5C86B0089; Mon, 23 Mar 2026 03:08:13 -0400 (EDT)
+	id 681406B0089; Mon, 23 Mar 2026 03:20:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B39166B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:08:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1680513BF70
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:08:13 +0000 (UTC)
-X-FDA: 84576448866.04.0562517
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F310BC0006
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:08:09 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Dta6vbMy;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A4296B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 03:20:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0627D1B8F2D
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:20:52 +0000 (UTC)
+X-FDA: 84576480744.24.11422A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 63FF64000A
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 07:20:50 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Nxaecao/";
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774249691;
+	s=arc-20220608; t=1774250450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LVQsD2O0qghSgK+rqUALDAR7d8NzlSIi53UHyplYAF8=;
-	b=eKG50vYxHO7ILfDn9+RDv9lhYmXwovRIcSh3Me7RelhNt2SG1MFI4Z8dp6nfl+N58WbNLA
-	RySxEEmubRAGmWrK2KFJHFwcUzvzsj4e57Ncad+HUjzoMUdPxDHS8DPwYdaHc3nln9O4Jx
-	F7Oha7DvjdbQ79tgtNdX66q0rCvX/50=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UWtLjpr3XWUTy6VpKvNkAgaR7CgXzIkCMoHliiKcXRE=;
+	b=18TDGHz7v2txXc3xeelaQVnNT9QFgVmcQTpegkMvf3IfzOzfh74tTEy6BuWVvxLeKYPF+M
+	DmTTEwFgMkF6g6SAxeyP6bC5FnfG+9kM9j2AWVm1T0Yh3+2HWInHcoV4kY2Kqcgsd3KpAf
+	x9AX5LrUcvM/P4An7RaTdWqdC/RxhRk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Dta6vbMy;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774249691; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Nxaecao/";
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774250450; a=rsa-sha256;
 	cv=none;
-	b=S6+OT4qWDLB5XcCZwoBFE6AcHWYBv1XPK3b84552c7QyLXRh1bFcUzcdroZnII5dhfxXEg
-	EGRnliT9uDH9VraXFl/fpCi2vykZCfW6NUzhuOX3XLT46QQnh9ODDU5kMahCqTuukTH8dW
-	ivheDLZr8Y8+WrrCSfRUCgu20yacNDI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774249690; x=1805785690;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RCpk62n3AYbYiVU8MLmHxHTP0ibiZw4A4+CXyOIQstk=;
-  b=Dta6vbMyC0pCanBTtdHy3xZ75E20sQ3lQlBOD5PZu4tB1cHgHKc0d4WC
-   vEckc8BcVg5Fp7orQRIxvu+fJXs2mpbOXmjyNP7AI4f+qLBmYkhMe9MDT
-   ag3OcD7lrMF8IEhvgAZgovt5RdFu4nikQHU5tjguZz74xSTDBj8JukkgO
-   MywTvbX7vB6jmmz2c+re/oQvgQMxdR05ATXepHM/jEUrcggcef701bbAE
-   PYtBo1StBLDUkbiT3btMfMUt+Ax3kh7rwHpTAnWUVCWQ8GLvvQkYxMFle
-   egNhy3L3HIGsuL3lBmMYc8S1MiXGmvcZ3BW1JnsMd3B3h1ze0c0CCPG2j
-   A==;
-X-CSE-ConnectionGUID: dcB9gCW9SlKUYhJMJQfhvg==
-X-CSE-MsgGUID: PLqyozWeQsuBBJaARtJF+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="77851860"
-X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; 
-   d="scan'208";a="77851860"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 00:08:08 -0700
-X-CSE-ConnectionGUID: kRJ1g0y0QDaExnkxhsB7Kg==
-X-CSE-MsgGUID: badPk84/Tv+lneKFJzNajg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; 
-   d="scan'208";a="219142609"
-Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
-  by fmviesa006.fm.intel.com with ESMTP; 23 Mar 2026 00:08:03 -0700
-Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w4ZOK-000000006Zt-2URK;
-	Mon, 23 Mar 2026 07:08:00 +0000
-Date: Mon, 23 Mar 2026 08:07:28 +0100
-From: kernel test robot <lkp@intel.com>
-To: Pingfan Liu <piliu@redhat.com>, kexec@lists.infradead.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Pingfan Liu <piliu@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Simon Horman <horms@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Philipp Rudo <prudo@redhat.com>, Viktor Malik <vmalik@redhat.com>,
-	Jan Hendrik Farr <kernel@jfarr.cc>, Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	bpf@vger.kernel.org, systemd-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 08/13] kexec_file: Factor out routine to find a symbol
- in ELF
-Message-ID: <202603230851.qOD27RaS-lkp@intel.com>
-References: <20260322014402.8815-9-piliu@redhat.com>
+	b=SEQqbsbmjX3ANtCNrHyYnLQGv1m6eLK+b4D/a3NbQr7359hxbHt6yfqe7UfVy+AOcY5kI1
+	cpWoPsQktXXBzPFxY1zniIW/U+VbW0FqL6879DmnLnnyZ7zpBrZ8EC6qDYKVLR+kiGotwz
+	NnaVEhGzIaw8uXiyq1vfqOJqlYHp290=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D0E84092A;
+	Mon, 23 Mar 2026 07:20:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FBDC4CEF7;
+	Mon, 23 Mar 2026 07:20:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774250448;
+	bh=0vD2X20R0Foy1Av9+GcrMxGr/n9x3ZS0o9sWsZdkNr4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Nxaecao/+6Lkm6NnDQaCtAZzvPQXM3lyF/W7HPnRyKyZg5phrti13SUAL3wOkQit0
+	 xP1VSIEltIXDXYDw8Cheo/YImvWVhBu/V41XJOjpw9qpkcrqCS7kiIvlOBr2Ax+TB1
+	 100w4Kb0opYtV7gDVDdGIMFHYtx9xLzccQchh0R674k5PmEm+2NrgPM9SrYAl2JrgZ
+	 mk8+31i30LHxDtM5vlwRsNzcw4U2rqYaGsJDf0XrRmRQuc5l+8RnCNlTLRAkWfN+KA
+	 c9/c59OisIBarS5gO0CgzQAL9fNueNV0sj43U9vSrROZKziRnmslRvVqUCd3bGSDF/
+	 5ZsrG2IxBR0SA==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2] memblock: move reserve_bootmem_range() to memblock.c and make it static
+Date: Mon, 23 Mar 2026 09:20:42 +0200
+Message-ID: <20260323072042.3651061-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260322014402.8815-9-piliu@redhat.com>
-X-Rspamd-Queue-Id: F310BC0006
-X-Stat-Signature: p4aqxrnqmuoj59o861118cej3auihf8j
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 63FF64000A
+X-Stat-Signature: e4uwgwazo3dbqm1qqzuweitm1d9wn565
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1774249689-857383
-X-HE-Meta: U2FsdGVkX1+ikT0otXgzYxYVs1ixghTt+cXYp+WcCOQfPLu597C9+uno1J8oCej4QTL66IU06M66TeOvXZBMJeOA9+jLtQkm875Ayoe0gu30rSl7C7g4FDQm+mv/+xLJK62HJC7tYb6z/QaPxpBj0mT4Ac1LLGSYcqtn8Humz0isji3vTj0GasNwXVA9LYnqTpURnf8nOhrvp+osonRtVImSj+zAlcbERVCmYJR3F6rvbpZQ/FnkOgc2gswmoIN3W9pAha1JT0zHpTrwKlW1mXc9SSEwVGLEJCCoUGc6HXBkeT7JjPh01LIgWSR/FXYw9RKvlez8JvUdg7l8iH9ifHiRoFrKzcd7iX4g4TfzRbOZltcTnPSsiwfbnkMgMhmfYQcO3Tx/4iOh/ZWeHjtV7GjKmMiYdkf6ujktSy2S87ocAYR7/tWEjvlwEcb6dVNuFZVUIfv5yFd3X0vP4jPuvAfc1yz3idE6ees848vZT/JWDR+ebvyJwuyeoR9TVfpHHPAT+g/hr2qHFBMTFERwhTDlWLsej/pWUwg3Nv0E8wB0dNQDEBSUpMDL8IT+VfbQvb5wl7jzuHMHq+1a5JA3ZZzsr4+1LMwC+hNxQyVCvombrv67dFwfEQ3DNvFGBNR3ILr2hVRx2MCbCRtt9Yo6EjN5uzo69Gs/CU6c/ck8uyiBVo6dgMtjKWQAjge3Ydfq0YB17botHpAUcgP0v+rGz8hUc17W8q6z0tohHu0Zu7MaFQ3hjsBnD+xUWeLGotfvWm6u5xmDLrbKU7HE2RDx0MLN2NCfVcJ/czzWNFp4m99qZ06u6LnPPRD51QIv2eZjss9lAPhO3tuOkOAPHMl12/yD/swyFNxxnGCzCa/HfcmI20FmKSaeWMZnEeONlXwCUzlOvFuWPnNTCNh5V+ggC/bvR4xWNVBnbjkIHqTP+5fLaH33cFQ8RBZNZW7wS/21R/SWR/ny4XYbLRoiJZY
- jIphy5U8
- 58LiiQPJRpHN1JxqHkqFOj3s2dQ==
+X-HE-Tag: 1774250450-876810
+X-HE-Meta: U2FsdGVkX1/h9il3fDz4TZXhGkNWphBFPCRZs7vHfIf8vcf2+I3UL4pYykBEdX6KvOoQldLe/peNZiDXNRCEOJ3xTjI5WWL6Y0OLmkuKVpvVFiJx3EWmtwrT3v/0K2+7wdk00O4RZf8EYyQIer2KLhS2hU2IJmpbD+qUwL3+GAgc8nhY61pxCz77oSe5XsU9HACZCfLi+KHGoxY2gks0yXb0yGHvp7NxOoRSsSrCuT6Dm3pt7QTeQHUh4eIyUkU92VnbfnW3Xd8f81nlW8K2Ct8AVnPhiqeRoio5I7v8vu0/3u/VQMFUVMhDpoKyHT5BWSxjwLvkqZ0HESvT0oT7ngYv8Cb0yAOfINc6LQOEP3UAnkSNFqbVMN6RDuW9OvvlfWv68YcURo6phZ3mN4wGRmZf+Ia/yh5N2oKyVZl7F7+3qRYWMRzy32DM4hGFmWxhU+1ymTf/jlSq6agILcXq8o6p7gTPsOoaKFZ0iedG5ohIFlgnq9aujShjIsDQGpOi8pSw61QiyT0FeX1sRWhZc7eDkSwV4UgjtVvmJmClAKaqn/5/PKA7s/3pP+xDtZQxYY7Zi8V1LKHisgvFIlTP5UySSqSyr2Se8Ys/K+EuIHqSp1mHkuYhTX00tURYbWrFDdtcIATgZIJvlKnoLJXmR7mWFYs+2cL/snGIAaFGYNEIBFFGg/cQJy3At3qcsr9kvLOGTxowy4dP72yuyX5RZHF7qhE3QQuIyzDtesYfoFRD4vYITfn5Glvz1g8cdAbXvdma00KZ1LmnWeEpQqOtTGgGZRsNPJLXek4yPiwbU/Hm79IRRZT7ugO73p1MtxZEM59rv0lTY+bwvV8Q3+vy0H7hcDIhOqvQ7m4YSBYwKE4KWYsqcLT9lTpps7Cjc2PLNuA8tCPA7BJeRYLkGSvuPVwsp9rHCoKNxJavRSBH0TMSwlKhl8fThf4qaY52c+3FsUsAELW25u230rmTfI5
+ qBiFcF/Y
+ YyeXtmat7nOG71zZSgOzyM/VOsCIBgheU2A9RjWPeeR+hYsQijrC4aacO7RkmJfy4/tJJzyTW9Otg9L/i2hf2ZkjOALbiYa/Sug3hSGA9SIJJLIp5IVGg/RWc1VuFqj3FrHOMef+PUFNP+lPW2f0z8SMzARpEtR9P/8XUzoBGRRF6vAtSEBNVCaAHEImvutlYefhW2RQvjkDJix8DOpQn/VUPVx2y9mvutd4f4P+sKngwKJm8s3EMiPmNJjaGUHMaG5lughsV4zBGx6QdvOGW9CD4c8G8hJSvB/PvXaQkC3qELxuQLeidebptaEmvaVPIZDh9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,61 +96,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pingfan,
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-kernel test robot noticed the following build errors:
+reserve_bootmem_region() is only called from
+memmap_init_reserved_pages() and it was in mm/mm_init.c because of its
+dependecies on static init_deferred_page().
 
-[auto build test ERROR on bpf-next/net]
-[also build test ERROR on bpf-next/master bpf/master akpm-mm/mm-nonmm-unstable linus/master v7.0-rc5 next-20260320]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Since init_deferred_page() is not static anymore, move
+reserve_bootmem_region(), rename it to memmap_init_reserved_range() and
+make it static.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Pingfan-Liu/bpf-Introduce-kfuncs-to-parser-buffer-content/20260323-084500
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git net
-patch link:    https://lore.kernel.org/r/20260322014402.8815-9-piliu%40redhat.com
-patch subject: [PATCHv7 08/13] kexec_file: Factor out routine to find a symbol in ELF
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260323/202603230851.qOD27RaS-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260323/202603230851.qOD27RaS-lkp@intel.com/reproduce)
+Update the comment describing it to better reflect what the function
+does and drop bogus comment about reserved pages in free_bootmem_page().
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603230851.qOD27RaS-lkp@intel.com/
+Update memblock test stubs to reflect the core changes.
 
-All errors (new ones prefixed by >>):
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ include/linux/bootmem_info.h      |  4 ----
+ include/linux/mm.h                |  3 ---
+ mm/memblock.c                     | 31 ++++++++++++++++++++++++++++---
+ mm/mm_init.c                      | 25 -------------------------
+ tools/include/linux/mm.h          |  2 --
+ tools/testing/memblock/internal.h |  9 +++++++++
+ tools/testing/memblock/mmzone.c   |  4 ----
+ 7 files changed, 37 insertions(+), 41 deletions(-)
 
->> kernel/kexec_file.c:1276:23: error: redefinition of 'kexec_purgatory_find_symbol'
-    1276 | static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
-         |                       ^
-   kernel/kexec_file.c:958:23: note: previous definition is here
-     958 | static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
-         |                       ^
-   1 error generated.
-
-
-vim +/kexec_purgatory_find_symbol +1276 kernel/kexec_file.c
-
-  1268	
-  1269	/*
-  1270	 * kexec_purgatory_find_symbol - find a symbol in the purgatory
-  1271	 * @pi:		Purgatory to search in.
-  1272	 * @name:	Name of the symbol.
-  1273	 *
-  1274	 * Return: pointer to symbol in read-only symtab on success, NULL on error.
-  1275	 */
-> 1276	static const Elf_Sym *kexec_purgatory_find_symbol(struct purgatory_info *pi,
-  1277							  const char *name)
-  1278	{
-  1279		if (!pi->ehdr)
-  1280			return NULL;
-  1281	
-  1282		return elf_find_symbol(pi->ehdr, name);
-  1283	}
-  1284	
-
+diff --git a/include/linux/bootmem_info.h b/include/linux/bootmem_info.h
+index 4c506e76a808..492ceeb1cdf8 100644
+--- a/include/linux/bootmem_info.h
++++ b/include/linux/bootmem_info.h
+@@ -44,10 +44,6 @@ static inline void free_bootmem_page(struct page *page)
+ {
+ 	enum bootmem_type type = bootmem_type(page);
+ 
+-	/*
+-	 * The reserve_bootmem_region sets the reserved flag on bootmem
+-	 * pages.
+-	 */
+ 	VM_BUG_ON_PAGE(page_ref_count(page) != 2, page);
+ 
+ 	if (type == SECTION_INFO || type == MIX_SECTION_INFO)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index abb4963c1f06..764d10fdfb5d 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3686,9 +3686,6 @@ extern unsigned long free_reserved_area(void *start, void *end,
+ 
+ extern void adjust_managed_page_count(struct page *page, long count);
+ 
+-extern void reserve_bootmem_region(phys_addr_t start,
+-				   phys_addr_t end, int nid);
+-
+ /* Free the reserved page into the buddy system, so it gets managed. */
+ void free_reserved_page(struct page *page);
+ 
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b3ddfdec7a80..d504205cdbf5 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -973,7 +973,7 @@ __init void memmap_init_kho_scratch_pages(void)
+ 	/*
+ 	 * Initialize struct pages for free scratch memory.
+ 	 * The struct pages for reserved scratch memory will be set up in
+-	 * reserve_bootmem_region()
++	 * memmap_init_reserved_pages()
+ 	 */
+ 	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+ 			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
+@@ -2240,6 +2240,31 @@ static unsigned long __init __free_memory_core(phys_addr_t start,
+ 	return end_pfn - start_pfn;
+ }
+ 
++/*
++ * Initialised pages do not have PageReserved set. This function is called
++ * for each reserved range and marks the pages PageReserved.
++ * When deferred initialization of struct pages is enabled it also ensures
++ * that struct pages are properly initialised.
++ */
++static void __init memmap_init_reserved_range(phys_addr_t start,
++					      phys_addr_t end, int nid)
++{
++	unsigned long pfn;
++
++	for_each_valid_pfn(pfn, PFN_DOWN(start), PFN_UP(end)) {
++		struct page *page = pfn_to_page(pfn);
++
++		init_deferred_page(pfn, nid);
++
++		/*
++		 * no need for atomic set_bit because the struct
++		 * page is not visible yet so nobody should
++		 * access it yet.
++		 */
++		__SetPageReserved(page);
++	}
++}
++
+ static void __init memmap_init_reserved_pages(void)
+ {
+ 	struct memblock_region *region;
+@@ -2259,7 +2284,7 @@ static void __init memmap_init_reserved_pages(void)
+ 		end = start + region->size;
+ 
+ 		if (memblock_is_nomap(region))
+-			reserve_bootmem_region(start, end, nid);
++			memmap_init_reserved_range(start, end, nid);
+ 
+ 		memblock_set_node(start, region->size, &memblock.reserved, nid);
+ 	}
+@@ -2284,7 +2309,7 @@ static void __init memmap_init_reserved_pages(void)
+ 			if (!numa_valid_node(nid))
+ 				nid = early_pfn_to_nid(PFN_DOWN(start));
+ 
+-			reserve_bootmem_region(start, end, nid);
++			memmap_init_reserved_range(start, end, nid);
+ 		}
+ 	}
+ }
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index df34797691bd..ea8d3de43470 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -772,31 +772,6 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
+ 	__init_deferred_page(pfn, nid);
+ }
+ 
+-/*
+- * Initialised pages do not have PageReserved set. This function is
+- * called for each range allocated by the bootmem allocator and
+- * marks the pages PageReserved. The remaining valid pages are later
+- * sent to the buddy page allocator.
+- */
+-void __meminit reserve_bootmem_region(phys_addr_t start,
+-				      phys_addr_t end, int nid)
+-{
+-	unsigned long pfn;
+-
+-	for_each_valid_pfn(pfn, PFN_DOWN(start), PFN_UP(end)) {
+-		struct page *page = pfn_to_page(pfn);
+-
+-		__init_deferred_page(pfn, nid);
+-
+-		/*
+-		 * no need for atomic set_bit because the struct
+-		 * page is not visible yet so nobody should
+-		 * access it yet.
+-		 */
+-		__SetPageReserved(page);
+-	}
+-}
+-
+ /* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped init */
+ static bool __meminit
+ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
+diff --git a/tools/include/linux/mm.h b/tools/include/linux/mm.h
+index 028f3faf46e7..74cbd51dbea2 100644
+--- a/tools/include/linux/mm.h
++++ b/tools/include/linux/mm.h
+@@ -32,8 +32,6 @@ static inline phys_addr_t virt_to_phys(volatile void *address)
+ 	return (phys_addr_t)address;
+ }
+ 
+-void reserve_bootmem_region(phys_addr_t start, phys_addr_t end, int nid);
+-
+ static inline void totalram_pages_inc(void)
+ {
+ }
+diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
+index 009b97bbdd22..eb02d5771f4c 100644
+--- a/tools/testing/memblock/internal.h
++++ b/tools/testing/memblock/internal.h
+@@ -29,4 +29,13 @@ static inline unsigned long free_reserved_area(void *start, void *end,
+ 	return 0;
+ }
+ 
++#define for_each_valid_pfn(pfn, start_pfn, end_pfn)                     \
++       for ((pfn) = (start_pfn); (pfn) < (end_pfn); (pfn)++)
++
++static inline void init_deferred_page(unsigned long pfn, int nid)
++{
++}
++
++#define __SetPageReserved(p)	((void)(p))
++
+ #endif
+diff --git a/tools/testing/memblock/mmzone.c b/tools/testing/memblock/mmzone.c
+index d3d58851864e..e719450f81cb 100644
+--- a/tools/testing/memblock/mmzone.c
++++ b/tools/testing/memblock/mmzone.c
+@@ -11,10 +11,6 @@ struct pglist_data *next_online_pgdat(struct pglist_data *pgdat)
+ 	return NULL;
+ }
+ 
+-void reserve_bootmem_region(phys_addr_t start, phys_addr_t end, int nid)
+-{
+-}
+-
+ void atomic_long_set(atomic_long_t *v, long i)
+ {
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.53.0
+
 
