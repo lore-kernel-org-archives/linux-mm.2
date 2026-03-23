@@ -4,129 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12E0F483F8
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 21:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D329F483F8
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 21:21:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43A696B0088; Mon, 23 Mar 2026 17:19:06 -0400 (EDT)
+	id CF1166B0089; Mon, 23 Mar 2026 17:21:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EB436B0089; Mon, 23 Mar 2026 17:19:06 -0400 (EDT)
+	id CC8946B008A; Mon, 23 Mar 2026 17:21:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DA1B6B008A; Mon, 23 Mar 2026 17:19:06 -0400 (EDT)
+	id BDF5B6B008C; Mon, 23 Mar 2026 17:21:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AEDA6B0088
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:19:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AD05513C203
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:19:05 +0000 (UTC)
-X-FDA: 84578593050.29.5764554
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D7625100003
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:19:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q8T2dapU;
-	spf=pass (imf14.hostedemail.com: domain of wyihan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=wyihan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q8T2dapU;
-	spf=pass (imf14.hostedemail.com: domain of wyihan@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=wyihan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774300743; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AB6646B0089
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:21:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5BAD413C200
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:21:41 +0000 (UTC)
+X-FDA: 84578599602.06.6BE8910
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7B0E1C0008
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:21:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="A/FYPNYh";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774300899; a=rsa-sha256;
 	cv=none;
-	b=nJptalDne8cFqoLgNC/vTRlT5n/0V1W1TEB1gqF7+EAZqFh5sALv1PMRKS62InoSy3rxf8
-	lXhsFj8bkK9EVnEw+wcQgDGGRvHS72GOLF4QPq3PNnh6AyNx8ED2DOU2gYL3pXjjAqiuJt
-	WCzQs2ZDeVGuBDBeV6uzL/whWkE6q3M=
+	b=lswrIA3khvtmPwfEDtqofre3pb+IfTLU2KXB1IhBwxYL9tXhURy8hsjrFAVKLYBf4tBYf0
+	97vFZMuIaEw2U91kFP2wC2rBCumv2dFi4Xo4TJhDEr/EDkcXcffwHo5oaPz52dOVdaBcyS
+	NzhNjRQrI11JaATkLdoQp7Lq6qzua5k=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="A/FYPNYh";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774300743;
+	s=arc-20220608; t=1774300899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FUGqI0aW7JYeGUdYKG2R2+j1GF5S/yFvaIQs/WVfzFI=;
-	b=H+OLlujkgelCtL500+GDGzoJjIC90QxcMgqF637c8EWExtyET2Lvu5X3RVOt+93mpbvVO6
-	SouXofabTS4o3WdC6bsWQyPF/WHXdCj0nLBvfHfmBMvgodpV81yBJKFMbcqcH8OsCKJ6Fn
-	+QRmj+0Abh7fwTlVy5uKLu5rHmjr26I=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so28315ad.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 14:19:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774300743; x=1774905543; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FUGqI0aW7JYeGUdYKG2R2+j1GF5S/yFvaIQs/WVfzFI=;
-        b=Q8T2dapUgoNVshPAbgNdO9ASijeQ5pxqZbPVXW/ZZoTE+hA12G8fmIirK8CsXNkC0g
-         C3/9QZiHeDgpK13oHO1Z7IjxfhkHyxXHBNGBaZ2vkUhahaVm4LHvS2Y5TDyZYt/IS3Te
-         nvLNkCyLHeIgU8IOLhk9TPnRr//Cuf1ArtKaDwdTRD3v8JxNOaflT61gwMwG+PgaKrz7
-         c+ksJ9f2YLRWJb2FzD73EGmQt9e+VrKABHTJRdbuZ1uguAdZppss/xPQaoX3Ty9CMD/q
-         tcrmQKLaihwx8/6p2InoG9KjjoQD7s7PCl9BKb/4JfuF0f5m6+22/uc1Jd9e5wIb56Ed
-         ANQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774300743; x=1774905543;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FUGqI0aW7JYeGUdYKG2R2+j1GF5S/yFvaIQs/WVfzFI=;
-        b=A4BQhMFDp/UZtE+aD7Szga32ZlROX8DE2kdLJjytLub0qOSigut02rXOE7AkATl1OP
-         q8w7pysCWORdAXDSTNE/e7kRJz0MFftzVVnduJatMPerVwZvfSnx/gxZDpGLhrVyYETZ
-         OspznK4IrUz0Hy+P+/WL7BEjVQJ7xHCAKAQp2bPBlc2hLILWur7xDE6monjSH2eJMh1D
-         YEhELwEok3MB46mcz+VqNPDJiuHjXtahNyyCyRtsbZGQmIzAMnoDPtiOfbB+XncqZleJ
-         GOWy/M4IFeobWzhp5xQ+ahWROeRsf2sKtu/6X+k3Ce5VABmBmtcYrHFamSofQ1YF9d/I
-         0EKA==
-X-Forwarded-Encrypted: i=1; AJvYcCV51FbRI/+zLAu+0wROKg8WQSFkcPXyb7nX/CRutsukMZyql9XiZrwSIY+ZjmnfmsDMlMsfGPwi2A==@kvack.org
-X-Gm-Message-State: AOJu0YzbgxXnnN9V9ZTvQZk5nkj0OCcSEWHYyNzIj3cRQv1IAP4wZ6ID
-	8viFV6bCl8HpwElIZJSb48eGuzG2Y3L7u8hFGdQlT8PNr9Gvjh27Ktpvmz0hLCwomw==
-X-Gm-Gg: ATEYQzxIyemVbzrljjCUWqzviTGUiDpslT8r47yuEc6bfviGjSYkkrg1K5v0tEwANUB
-	Zvuu99RCbR7fiC0vm4lNGS8M/aPPjniOSRYU2ZUTLvcUI8nfjUVOfHMjAhUb7BraLb72kYKC9XO
-	owcU/+iWgXVsn3VDcYtquiB0+f/KqdPNXbKEQKko+ybl8VkLe71aEs4D4Yb80DBw7GR+bXV2Fe1
-	jHrq6nXR1994AuBR8sBRswE7CQ6PXFzdHFi3wEQd7Mx0CcPq80rzspPyss1HoU6VL1x7UTHYHEX
-	VfrfzQTE+Zf3HxfP6I0Z6N6fyyON3haT4DsqK2ccQnkW3MYcTEaZrpOuzlDL3EvOh2KpueKN+lO
-	A39eOWvY0/bxl7f0efx57jfJlUv6gOlXbdtG+do8ePueoU1iAZMNsjny8qV9bVWx3h+y/o3M2fM
-	Fup9Imj1oCixZUtB848SfBqavD1l2B/y7ubWy4yO9DhtMDgdXnBbdj2+dASuM=
-X-Received: by 2002:a17:902:e5c8:b0:2a7:d266:d84a with SMTP id d9443c01a7336-2b0a6735efemr308765ad.17.1774300742225;
-        Mon, 23 Mar 2026 14:19:02 -0700 (PDT)
-Received: from google.com (249.53.168.34.bc.googleusercontent.com. [34.168.53.249])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c74443cc2ddsm7910891a12.24.2026.03.23.14.19.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 14:19:01 -0700 (PDT)
-Date: Mon, 23 Mar 2026 21:18:57 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, rientjes@google.com,
-	seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
-	michael.roth@amd.com, tabba@google.com, dave.hansen@linux.intel.com
-Subject: Re: [PATCH RFC v2 1/7] mm: memory_failure: Clarify the MF_DELAYED
- definition
-Message-ID: <acGuQcWRuJMO0EJY@google.com>
-References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
- <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-1-92c596402a7a@google.com>
- <CACw3F50mVpnS7TQy_pD-KV=_Ekepjq00zZzdGxwLnF_vYT_M0g@mail.gmail.com>
+	bh=E0HEUk1oPQMtCkKsk6maK97UsbKzlpyP+CD/kjWayS8=;
+	b=eP5688gQ4vT1vuELEavpfY6p6F1LfJvMPrhpTO53qM1QJWj+7lJzFEco3obj722Qeyr/MO
+	HhdQjk2eEWn3sR+02fbK2VBQ2+sZyOnJVvHPsSp55PXGXYz/8pQaaL9qpIbXGC2lLb0fKY
+	Nj+HQM0g+y51z2sE9NKbMPRKCfyrteA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 87445443F1;
+	Mon, 23 Mar 2026 21:21:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD2CC4CEF7;
+	Mon, 23 Mar 2026 21:21:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774300898;
+	bh=04FQMew05zNRTl9YF6JQB/WHdSB2fffkG+BUPcscUw4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=A/FYPNYhals6ENz1Ox2wRKyW9TL57KAfLjRpKUc/1hHqneXx0woVnhJQ7WEh19lx6
+	 qxlatf7Ms1tUHtE9lNj3isEMDDKvfQZ8LjCyU47szC0BcPLqeIT5hkITD4ULoD+bo5
+	 71zRtTumPiy1HOGFmwRdgH1rb+yai+RQKG/ef28/E5BFqFGiT4M/bysdG1JQRZcpN3
+	 PxEs5sVkCbpgYNaH5hDVE33A4R7Xr1wMfVNDPDUis3mQUYxZV5Tf/LakCXxm/uwIhL
+	 3J4ZrtKZiychGsj05yrepRmZdamPxG9AnKtI/lvIOPxIjXdnaqFSP0daKzJAYW0U8n
+	 NiBciLy4xmCWQ==
+Message-ID: <16117b49-d83d-4ceb-b85d-d117d6993ce1@kernel.org>
+Date: Mon, 23 Mar 2026 22:21:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACw3F50mVpnS7TQy_pD-KV=_Ekepjq00zZzdGxwLnF_vYT_M0g@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D7625100003
-X-Stat-Signature: e3iy4x38p61dakytmdrht37owo4zy9ix
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 02/11] mm/khugepaged: remove READ_ONLY_THP_FOR_FS code
+ in collapse_file()
+To: Zi Yan <ziy@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Song Liu <songliubraving@fb.com>,
+ Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260323190644.1714379-1-ziy@nvidia.com>
+ <20260323190644.1714379-3-ziy@nvidia.com>
+ <7382046f-7c58-4a3e-ab34-b2704355b7d5@kernel.org>
+ <E8D52134-B63E-44E9-BBBC-258DF74B8597@nvidia.com>
+ <c20b7dbe-473d-4dca-a10b-b9f5267ad6da@kernel.org>
+ <AF9011D6-8EA4-4134-B175-BD2DAB748419@nvidia.com>
+ <71148f2e-cceb-418e-b762-c8dbd7a7eb1f@kernel.org>
+ <FDC4C393-FB38-4422-9217-DAE95131C696@nvidia.com>
+ <acGqbeSjktT4biku@casper.infradead.org>
+ <9648838a-ada7-4983-99e3-d694e803e06b@kernel.org>
+ <EA39EF46-4331-43AB-8602-D0A73E9C9C9B@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <EA39EF46-4331-43AB-8602-D0A73E9C9C9B@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7B0E1C0008
+X-Stat-Signature: moo86b37cn4b9mkz3atf6yi7s4qqsgis
 X-Rspam-User: 
-X-HE-Tag: 1774300743-687731
-X-HE-Meta: U2FsdGVkX18t7Dw2FU5CBVcwUTI8tua3FbuD6WxuQ017nU2EsYaWKpXMpOG5QRWoIUTF9STcsnUTyaTjokoOhYGBuvl23QhQIw9N66K3NSe3WxVT9bxwCjJ8W8SbZz4EKWT8SOEpbAH38KF5kfRb44qr+kvWAs4yUws2xf1/lI+8KgdUvfmbr2k2J8ep1+yyUMAJ52oRCJj4PfwFUTHgEK7KK5774gfrR7azfFq64QhSYhjUbIxip1YD+EGfczifmRhbSddLWTdC8hxMxyggiaIWcCo2+wE9ayQLgG6YKbljpAgRQkBmcprfbmtXOHH7Qvvc9HND6bF7Rt85MYTAJR3LgVcbYarSuC/WqGj6xL8SXyIfLglpGBy5QStva5LeJUGj4Kihs5p2bkNd+j/LRZx8r05OrAENlZ7CDH5vZgA++8THn7DHlwKg6ByfP87V/CVLQq5f7r3vacvU7Pl4cCW+yY61eu/GDfEP7hBEXUd4X71W8eO2xOZM83n+R21hz8WZjfwy7iw4ZtiO5KbK4GpXyDy92eSjDremV/jJptzCqgIVfuhvbTEijLQG+LlbseL5kD3Izi/yOxP09m5A5LQ8frBZnsEYmj0O2Xw9cP0H/TMggttdZY3bYnzaj5cOpGO15srPUFWaaMd6Tj45SuSHLuutzgyf/m93c3CMqITOASARUg9x3L/+1d5U01FhO3iYYr4lKRksQMx7hLTagM2qFlLGsyRLpXBCgxr7Wkepu4XThiYIBm/i2/BJ5jxOkltZhA/6mWh/f0MNXxqC1hOX+3bc/7x0A/+tfxyCyKIkSsCKyOs/gNfaXgNE/xO5SuZrrhYBNzI3LHPrBKBhsOH3XuFiSr8Sitd6Vq5hJ6smN0JWvqUiSmdDkNJujRQ0KG2XD2VtvOapI+GfoZJ+Vjr0IhM1ixCo1rm5dbloTteuIdKVI+B4/m8w4yEMhAL5XWBa1qpuEHkwgWiVvkA
- j68VeKpt
- 2GQt2CL1mzg7iPi7hJx6pp6dpI04qXUDy08RjORwlYUZgP1HWkV7k/MmTg7dEEpIa7L8FyV72xpzfxhK4v00FwAW3cucklLckLGLa/mnxWRIzyLriWggPzAnxxNouToexByNHJLj18niyukNunO+E75SK9ijou90UxZKmFcJLtnuY873tXLgsBjeOv8igJZgvn6Kx9zbPWwjGFVHC8R/VkyoMRsqdxzNrULRhWWkxrrX+CFPfmy7jCO9w0d18caIP8BhFSRABi+zxZaM9K5335T0qCPGzEgyFPswkbXAhFVZTx5vJQmaQeyey8Kj6yguiJqhHxExKECN3PpBgbuW96FCaBOJPNvebojBLNGOswzwoJaY9WRobD3HsaPj+oqIHBQCy6PZhGGP9JNG2+wRu2MWMLTJOkf0Cy1tGVGgNqbE/5n9SsUixchxwTOLacjrVJJnBoHBmtpCvoXHsR7/kLE7t3w==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774300899-735543
+X-HE-Meta: U2FsdGVkX1/btmoQyo9J0qz/iGdOvsUn+n27rDoIcp1WsG+5WWFxl3gSYkBNzt22cu/JV/ZLomZZ6zW1ir7447/5QVSCkzdH4OzlIOQ0gM7gANRH+MqtaL4te0L3OfbEt44CV7dMRglyYkVC9cCbW50xmV+uZEwXLVbyFSIXAeYLasleo2G7uK1pL4lQF9R9z7hgp0aaw7T9k1nOxgJLI2SSt+GlT+Pvp5NCr+ThrCsm8gJh6mI/u9fvK4ciqL6uRQxgMRslQE5FOP6mckmjiGL7e59CWOcFNMeP79eROCSSsNv2AiK8iJfWiLdtu/9I5c/ySoVAZ12aLADz9d58sXVhQlc83iSy0xu6+xL9JvbBdFoKT9x3gcCNn0n4evom8R3N9aKmISXz/YQxet8xX2Lckgtm4+FmZs1+9gjH8poZuh9L07nMNLBlp469ni+YQIQMeg5UhCOFlnUfPpJbxH0LVaM8Kq1CA3UB8xaUZw7PVJQmBb6zeLuggpYD63oC54VmY6Xx97bCSOjptMy0TSw+odx7Ey5bKC3XP8m0npUgkk/8Oi9iGK9VTZci03SWl6gmRw2cD8AX7VedADRFZfNBPeMyeUYwECEqI++hyCrrQMnGeU/U3kKdZ3nN7k5dpd0KyVN9+ZipccIwINIfQd3ZD5jIeEfmEd9O4vAx+AaGuT3lFFjXK1/WUbenIJwg4EwNv9pbui+DZZhxQbKYquVe3AH1jOqtsHa4cpM4qdp78z2WCYnePUjWleiavnkSE/UmRQS0ETqFUOgkkZYxzzeugWGX9Dd/ITk7V4XDlJTk2aK+H5TVu9FQsQjMDWpt0p/6UYymvcxLOSKABbp/IfdmuyAt/FVj+9kr/1bEAh02N+d/XhepvuYQW5eK7Y+WScWYo+xG2jEjdxtl9Ui6SgpZPNHK6i0UG8FHlrCaKICByoFgFemBp9eLJEww1lPT9XlG/7hL+tgxNMS1asb
+ H0xhBrfi
+ w1apzcKfoa7LR1ScAFP+oW+CdpsecOhkZrNXZFsneZ3Wki9HX4pO6kkHT9J59EISYEOI7A18lXbix6+jVtTlob4GDte4mHxGxP1nnVoXvpJJRZvhfQ66wXXaSm2+z/gUyks8GjJZ+Xu4TIEmYhy82LqrK34PReAxkr4GgCr4AVUPNzwJzx1rhWTKMux554qT3bm0K/EDV7QQrNT6bnsllTAVNltPz7cX5TXEj7wv5j50PRgn7pzHcJBw9QvzNsRqjD+yLtcriLb9aV0410i2gBm0Z5j20gio43fRv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,36 +160,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 22, 2026 at 02:34:59PM -0700, Jiaqi Yan wrote:
-> >   [...snip...]
-> >   * MF_DELAYED - The m-f() handler marks the page as PG_hwpoisoned'ed.
+On 3/23/26 22:11, Zi Yan wrote:
+> On 23 Mar 2026, at 17:05, David Hildenbrand (Arm) wrote:
 > 
-> nit: would it be worth correcting PG_hwpoisoned to PG_hwpoison'ed? as
-> there is really no "PG_hwpoisoned" page flag.
-
-I will change PG_hwpoisoned'ed to PG_hwpoison'ed in the next version.
-
-> > - * The page is unmapped, and is removed from the LRU or file mapping.
-> > - * An attempt to access the page again will trigger page fault and the
-> > - * PF handler will kill the process.
-> > + * It means the page was partially isolated (e.g. removed from file mapping
+>> On 3/23/26 22:02, Matthew Wilcox wrote:
+>>>
+>>> Not necessarily that lucky; if you set VM_HUGEPAGE,
+>>> do_sync_mmap_readahead() will allocate PMD-sized folios automatically.
+>>> On busy database servers (and is there any other kind?), khugepaged
+>>> takes too long to run and find opportunities to collapse text pages.
+>>> Like, days.
+>>
+>> Yes, in particular given that the default khugepaged settings are awful.
+>>
+>>>
+>>>
+>>> I think the test needs to be:
+>>>
+>>> 	if (mapping_max_folio_order(mapping) >= PMD_ORDER)
 > 
-> nit: what about "unmapped"?
-
-Thanks to point this out.
-I will change to "It means the page was unmapped and partially isolated
-(e.g. ..." in the next version.
-
-> > + * or the LRU) but full cleanup is deferred (e.g. the metadata for the
-> > + * memory, as in struct page/folio, is still referenced). Any further
-> > + * access to the page will result in the process being killed.
-> >   *
-> >   * MF_RECOVERED - The m-f() handler marks the page as PG_hwpoisoned'ed.
-> >   * The page has been completely isolated, that is, unmapped, taken out of
-> >
-> > --
-> > 2.53.0.959.g497ff81fa9-goog
-> >
+> This is very helpful, since I was thinking about using
+> mapping_large_folio_support().
 > 
-> Reviewed-by: Jiaqi Yan <jiaqiyan@google.com>
+>>>
+>>> as there can be cases of filesystems which support up to, say, 64KiB,
+>>> but not all the way up to 2MiB.  I disapprove of this situation, but
+>>> this is where we are right now.
+>>
+>> Right, that's what I had in mind.
+> 
+> Does Nico’s mTHP support for khugepaged include changes to collapse_file()?
+> That might change the above test.
+
+At least not regarding adding support for other folio sizes. Baolin
+(IIRC) had a version for shmem support, but that will come after Nico's
+series was merged.
+
+-- 
+Cheers,
+
+David
 
