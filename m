@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD11F532C1
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 23:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37A1DF532C3
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 23:59:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC7F86B00BD; Mon, 23 Mar 2026 19:59:17 -0400 (EDT)
+	id EC7786B00BF; Mon, 23 Mar 2026 19:59:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA0036B00BF; Mon, 23 Mar 2026 19:59:17 -0400 (EDT)
+	id EA0596B00C1; Mon, 23 Mar 2026 19:59:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D18BB6B00C0; Mon, 23 Mar 2026 19:59:17 -0400 (EDT)
+	id D6A306B00C2; Mon, 23 Mar 2026 19:59:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B06D96B00BD
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:59:17 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 854A95C2B4
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:59:17 +0000 (UTC)
-X-FDA: 84578996754.26.EE390B0
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B1DD66B00BF
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 19:59:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C82D140DA0
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:59:19 +0000 (UTC)
+X-FDA: 84578996838.03.34EE21C
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf05.hostedemail.com (Postfix) with ESMTP id F0893100004
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:59:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ez9iIpM9;
-	spf=pass (imf05.hostedemail.com: domain of 30tPBaQgKCNU4D1KC13B7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--dmatlack.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=30tPBaQgKCNU4D1KC13B7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--dmatlack.bounces.google.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id B1F59140003
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:59:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gxKka1RS;
+	spf=pass (imf26.hostedemail.com: domain of 31NPBaQgKCNc6F3ME35D9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--dmatlack.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=31NPBaQgKCNc6F3ME35D9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--dmatlack.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774310356;
+	s=arc-20220608; t=1774310357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CreqaGlwQEQK+YRyK6iGxzdx6WSNNVSy3f0PqjRZciY=;
-	b=sk9vJhBLzXzhU7O4a0+rYhggsC1zi5zQwdWItnYYJ411dFNBcDruPW/BDun2bZhhfkjo5q
-	OLiAeT2InnJQWZGhcKx32w187YSN37nBkFyXAcNL/XaH97Xh6xB/7gIFziAhkhVsUSwWmh
-	DAZvKbs9TpYHsGdmyO2+naqba9ITdh4=
+	bh=a6ai3Q1Y7nW49bYKBphuq9xPRlXveX2MorY71NenjMU=;
+	b=rNwgjRWf5h+IWthXntHty26jFkV4WC0CgHuyGK0M8anXq5IPbGqHp3L7g2ARB2G61Y9b0u
+	+MyfQHSr9414j+LHVRWt7Jnjsm3J9oug8Pf+FbedWOlPA7T7mKvUWs39cHrJZjwrQOdf1A
+	nKSr7rlVxFlQQZELQB/cujMFA1pzjmc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ez9iIpM9;
-	spf=pass (imf05.hostedemail.com: domain of 30tPBaQgKCNU4D1KC13B7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--dmatlack.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=30tPBaQgKCNU4D1KC13B7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--dmatlack.bounces.google.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gxKka1RS;
+	spf=pass (imf26.hostedemail.com: domain of 31NPBaQgKCNc6F3ME35D9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--dmatlack.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=31NPBaQgKCNc6F3ME35D9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--dmatlack.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774310356; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774310357; a=rsa-sha256;
 	cv=none;
-	b=ApO/Yj/sJ+XC+HhymOafIRmrxLrt6CLi9OZMErU+kAF0iwxYs3/2wxz9Rx/D+B0Z7AaHZA
-	0AeYn5FfIkDZL+NYk4oxixl/FHCiGg252KpW4qxVwKNCFx+JyoSPJJHkfpXvIZV202BXnF
-	7VDjRlGGr/AFSsaJbrnfN7JETqXGrvY=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35449510446so773115a91.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:59:15 -0700 (PDT)
+	b=V+ZFK9fqa1flT8aaJm5elFjk+2YfD9ZZMzktq0P3lYeQIZVQzswkwYMGmRi1QfGb9UvQXk
+	PY8QUyvYOxtTt/F0s3fWTTi0zch64axS66Srge13+5wkLm3pdG7g0cX3FqwzTAOEGICV+6
+	95jhTW9JtSERPK7TjfCj0WDjOGeiZ98=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35ba4bf54beso4265981a91.1
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 16:59:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774310355; x=1774915155; darn=kvack.org;
+        d=google.com; s=20251104; t=1774310356; x=1774915156; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CreqaGlwQEQK+YRyK6iGxzdx6WSNNVSy3f0PqjRZciY=;
-        b=ez9iIpM9msijQjIYZt3Gb+UQvxzsmUpyKSBvRjo4u+vTibkgMh67CXCMxDcj1JNVrv
-         mI9a7BJCgfL4wD9uX2jWnj7RAy6AxCsEz7hiYIgcVumf2ahm7mInbGfQgHHF1Z/9tqO0
-         nHd4T19fRd8HR6YWJsEc2UCZ0Jix6VgmAvGz5coyBKo1DXP+tDh6lLZ3hiI5UpPj2iW7
-         TXoExyi3feXWuke4iykIOx8l4xTn+hcHcWiXvSSrgu+me1B9RGhLJ7E9K3Nx+kGuLz7/
-         h7xSrPytOU3vYt33BQRtuHULUOsjjaWG0YWhJGpVIid/Fz5xuLZqgCisZWLiUv9OAhH0
-         p8xw==
+        bh=a6ai3Q1Y7nW49bYKBphuq9xPRlXveX2MorY71NenjMU=;
+        b=gxKka1RS7w3QfvHh/75Pl/DNIU5J995rs12q79OyYqVf98WV0RSBEDM9lZ2U1KtrX1
+         s6myKCQ2dA5M0b7dskCP/etIYScbJfafj1WLUodaBVVhIoOgl3WnA2P2SYivF3mDYJyY
+         blBFaLMWdhqLzNIiDdSaSYAcuaGp/66zdRv7l25Mn3XYN1hcjILEdDsMZ354ekZtpyh+
+         yNrqA4TKvReBbOI6scP9HcjlPhEkpuI+UV39i05YULDibS61yKHByLaMe/aYm8vy7Qph
+         XIoFkxhnga2FKyLbZF0mevZmH/WvivdSxZyLkN0Sx890n5WtjtNs6QZ/llV9Ku5/ITv4
+         7hhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774310355; x=1774915155;
+        d=1e100.net; s=20251104; t=1774310356; x=1774915156;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CreqaGlwQEQK+YRyK6iGxzdx6WSNNVSy3f0PqjRZciY=;
-        b=Hdko416LFH0kYuhm/OA4HtnPzKdE0co64TIPZMnj1Jio5dhuxC7kuEyAFs+5Svpj+p
-         HtOj0CjQbvfbHRhbca5urlJzuek6ymXk4/WKFBbWZyB5V1qWe7DFKmM5nMpJ8oVZI8ca
-         jjB3n06BwfpBsSIHUqIMzHpsSJ9KfZsXUkHqQArDSushoh/TIdg4dNDzBqUqxNQ0K08F
-         y/Tx6eyGh0lFpo5DQ5HpST9n/dDhkYoOzlNC7xGoWirJ9VyARCgt0+DFujxdxrKtouot
-         Ghw9svlav9pF7j3Jq3Ab8HRaKFYcL2cqXtAprbA6dfKTxC+kkQ9KaligoExGqi4ZkS/C
-         KoNg==
-X-Forwarded-Encrypted: i=1; AJvYcCUiXQdeSvIS5spHHJHwjzcbGeL6wsxRr/1EcXVE+upcraBBqAQcrc4rNkOlN6jei3kfb6dF9An7XQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyr/UXxacyxTZQO6L+//eOy+GlqAd78SSQ4PKBmOR+i2Ah5Mb6i
-	AyPuPr4FPz9meq0AmRi5VjChCsmLN5/T1Sj3FfX/Drplrc4iuVhtdpLHkaR9eXO2k7LDFEgFv5R
-	99m2MQ3zNBq+l8g==
-X-Received: from pjat16.prod.google.com ([2002:a17:90a:d10:b0:35b:a2ad:add2])
+        bh=a6ai3Q1Y7nW49bYKBphuq9xPRlXveX2MorY71NenjMU=;
+        b=fXIFTQO/4fmd/lUd8DJazIzuS7GbwKm2xb5ACiMzw/KnEoL4GJJipUCbyFftRrmkms
+         tTzwcnMpoZJHnHIr6Lxq/doIlVeSlShV1EQ1hB7sPKdsw7nV/Pu11v+bazh9U+XYeS8w
+         RyOw+hgu+NKx0p6pyO896JgjSbCMzFCoABf9fKRX/w/wBwErlNpgaOL8ZiJxV1sFYB1j
+         522AqQ1t6vARCSq/sH+R3ajBE9usmyiOx9C7o10hA1jSIjaOIrGjQIIIdKqMze3ByNYH
+         y2FgPAC+wRA4gpGYV3bUCBapyPFszr9rGiQ/te/C/3z9xFTXhdhzvPzYLfFLkkRSD1Dz
+         roLA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3BNDc1PFICv3IFhvMwZzV6ucU+lBkk8phcgvmqPEZBPxSRQCuriFKKmOlhXjgO1J9z4PY9obKuA==@kvack.org
+X-Gm-Message-State: AOJu0YwC6PaBDKviOjCW7glWgZToSk/NbHM8BrW6aJI9GyDtk8aZmNE6
+	BjPHqjvKrlHYSYo9ydPTP8qw9GLQ77NnoFnRsm9rPsgSPGq5qk1UQvzsJQlNynkW29S4pS8y1Wl
+	2k1exMSQyUl1xUQ==
+X-Received: from pjxu14.prod.google.com ([2002:a17:90a:db4e:b0:35b:a2a4:de5a])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3d85:b0:359:1063:6aed with SMTP id 98e67ed59e1d1-35bd2cb3e52mr11055132a91.22.1774310354638;
- Mon, 23 Mar 2026 16:59:14 -0700 (PDT)
-Date: Mon, 23 Mar 2026 23:58:13 +0000
+ 2002:a17:90b:3891:b0:35b:e85a:865e with SMTP id 98e67ed59e1d1-35be85a8693mr5878913a91.33.1774310356298;
+ Mon, 23 Mar 2026 16:59:16 -0700 (PDT)
+Date: Mon, 23 Mar 2026 23:58:14 +0000
 In-Reply-To: <20260323235817.1960573-1-dmatlack@google.com>
 Mime-Version: 1.0
 References: <20260323235817.1960573-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.53.0.983.g0bb29b3bc5-goog
-Message-ID: <20260323235817.1960573-22-dmatlack@google.com>
-Subject: [PATCH v3 21/24] vfio: selftests: Expose iommu_modes to tests
+Message-ID: <20260323235817.1960573-23-dmatlack@google.com>
+Subject: [PATCH v3 22/24] vfio: selftests: Expose low-level helper routines
+ for setting up struct vfio_pci_device
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>
 Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
@@ -114,13 +115,13 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Zhu Yanjun <yanjun.zhu@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F0893100004
-X-Stat-Signature: nciopfeszbrdpked94tspmjy98ztgd5c
+X-Rspamd-Queue-Id: B1F59140003
+X-Stat-Signature: 5xz4yiytt6qr7ztrxkg4fm7bun6kfoxb
 X-Rspam-User: 
-X-HE-Tag: 1774310355-273599
-X-HE-Meta: U2FsdGVkX19CRPfbsrMD7K7yJd83gIsbfUifCbq0fpzhN0FtP3Zq2bMWKBMDwBpgktMdRPoLWySiPYCgbi6viCZXJu8qHH5XKHiP2F0bO8KxYTTNWja3VxNA6ry0tSapJB+qwn6TWTr3iFjtKvYW/jmYf5m+SLu/xgRNsCXiEkxWhaMDg6J7xZC8Yj0QP8oGJ+sylbdHRChws+v+8RKdmvDcPdyG+S4emteC9XoFcWaplUFD5hDgE/2b7PRXs1LOWIqTengetpDFb2rdUqkb1B++t+efZE02ospRXHrTv//XA9kCgdw6hFoDiM2+k/g/7cr/vyqj1tf0b1gLlSrxhlPozPpf6EVFLJQhTJAlnKA9VC0ulqJ7V8fWAo2nsCAnVFNH+9Izr+ajmD3VB57aK3hrBH8UcPXYnBQAXkROPS1GbBuh/WbEM1e3iBMvUf1omuhRtpQQjmhw1IUQeQlQaEdPjSCn4ldw5ez5IcolHp/STGoGie55/jngc2akv1dBZOJ4fh6xK/JLknCq/CffM6waXdFNk0rGlVXGUVaaODzqUFzaFJokxozP983OFdPmiuESDqPV6P3ktgpZaG+NTcW6FSK90esLdMHAvDiQb1BQ2wSeeM//FnLfD0GleMRRTHXrbrTo7z8irB1Qt0JIjzzj++9DlsIprVlyfLGtc/COxNi3dP2zn0URdR4fH/Zmup1ucZ2OkWa4W85dOumfoAfqko6kAnTgFpM6SMGRa/M1TyKI4in7ex6FE7wZPn/67okPLw/khmfzw3ztWnknQpk9BMGp+zPS9V67WfBZ9KNLtgXXSFVpwum/vny4lhLL5wW9QMns6o1sfnwk64uceUB1oQ7xKAbgs+9YKYJudXsWO1L6mJJ8AZj9khUSbxuQIWGRc4HpFytpU+FrTe9a9WlxZ5h2Y0gKtwMeKq3gkZmz8PAwqiSN6XT2aaIBg6P9rvjotiDT8mWwftqDzMt
- rrHoPIAs
- BbTc1QY1fSF+DAOK3RDueLyflrb8mVgblaWdFIHsbigPaAIcUCumLf91Yx6CShGKYo2Cwc6qJdD/v2YlBCIqYfBEURVAnwsvKb9UCKzgiRBzdVq+fcfceNQQNwouvg81BqW3qZY5Nhpq3t483bxEK8/TC4MSrAOXne3NuJf6cDTmxc9nEcM60+Gr8emaY04HpF8DvgCK9yThBIm3ZsrWkJt0hb3YYBCNT2HBuTmCBEvCKDYgdbwQMBq7bRnyI7m4CUbT0/CMM+f3dO3NhWRauaILh4yhaqi/bC+EMGSRjtH0y/3ZmSHQMq7498Q2IFRvUzaDl
+X-HE-Tag: 1774310357-81623
+X-HE-Meta: U2FsdGVkX18wTlqSzyUBwcxmBVYvweLq18aMu8Td4jqQRTeBlsw3fAcNc0F9xU2yGtovQ/QEUEjhgAofpd811aeD5I92yB4kUOyE+A8+fd8D1aMvDpBpWUT6Po8USJIzyb8oZzjcZ3YGlbCc2JSDBpgihgQI6DFYrGQ8PYRPLFH8BGa+NDNIV6tvkdAqtnYj2ROMdPQ2JroAINqoKVnDCCThktXX09b1Kb0R4mGPy6gqkeCRdaQfxoYOfwWUgZGHArbJUPuk6tXMHmHZFkhvZNVNbDxAslbxdh8DHzXBgGpd7DXnPAebOGYlxOZWuHBLnxHCrRbrr0liqME8mDSeLxYHqBykil36OA9v5jgPCwIKYyT8nTmlfVNsrz+gry3hS/nrYf3UTYX3NOIaD4UlIamBdWXuz7TJ+R3trhfsOEaph4yeJx87GX10FAnL/pOmnDx0/f70YK0A3IDKF+v3S952B/xoRvANnMoTXDl3kexSSmDsatE1513f3gaArpPXTUL3h2LG7KVE65uhG7M/o5zbu/t42rV6gWAjeQ5oySojb32I1tSW06tT4iikxYmdUFd8gfxQeOpYZnCUL14pWPvqdZ0K1tzy0VklpU2FVB+Dj6ffNaU5YJUTR/VjZyO7A5Cqt2vWpocZ4BHZBaRqtPYYpzG+ITYocTKZEVwDPCx/C261xwZp9R/xAOoOcOVJ1zeSwfypuEVdSrlTAn1yTpk2G9baD5/GLyLSvq3Hfcbx7R8lmmDWfjrPLXx2S8TjM1mjI/LwGiNKdKfon3MSLAnBmlKaMFXum97LsKzVNtAwuqr+aCCXPPHj+dTKF318hsVGlGhzcIyj2fH3n7PeAvvbOpy+Wq1RWZbKWFO3yj1C5wyRD3i5g9O9RmisO/XwnwbGa4I+OHhhNrIyO+2G4EbhnNYcnl9t0WbZ38hrtJNLILqAz4NN28/oxdtl1i7X65ffNuC13wsJNamjqRp
+ tBQhV2Z0
+ 4bqhxfSLo8iFDz7GutHjCJOQusvC4CdBxETmO+wgu0M0+cviewDUdk9iOuK36Ix4VT1Y9khw6M/w323iGyygQmPhqkI+DbiNBahEeGpB+a6iMaHWttG2wzm0WhIsqFq3GFQAtYHJXkXvem7O1wbragOtgxmkD56Fao7LKKOGhj4Fe2Tw+OabgT8+LKhSg1Vw5Io5PQlEHKtKgKXh55QcPaZdZLF3dSnQ2IGbE+CdaAtIllUuQXq0FkQeArbIKAak93euPuDsNPBwIlvvzJE/jbvrBLlhKpJTP5FCP0T3hk40Cl+/ucsNTuyURFu5kJX2q3/QXC0ZDI0JooA523HjIT1L5AGrmI1oyj3YKStEinv2kADJJotP7DCrao/4oq/hiq/Cx3RXiDgvr7P5eE//IxgttJUBvQIkWRTWwpyK8W0gzYYgnIGrPajouyF4RJSySJF39wuyscBFpc+fgqFv4WV7UVwSUNtXhGpr+oUH0kxYCsh07jhRQsvYA3heiWfBefs1lLQu293BJThfVkOvNBDZnNc747eXCsoqBB+io1z7fR9hbxHXcoCPGX7nFOwSaB/Z6gTKmkJGoP/wF22aYyT1x1C/m8J3Dit4DyR6hZic4UCo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,50 +129,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Expose the list of iommu_modes to enable tests that want to iterate
-through all possible iommu modes.
+Expose a few low-level helper routings for setting up vfio_pci_device
+structs. These routines will be used in a subsequent commit to assert
+that VFIO_GROUP_GET_DEVICE_FD fails under certain conditions.
 
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- tools/testing/selftests/vfio/lib/include/libvfio/iommu.h | 2 ++
- tools/testing/selftests/vfio/lib/iommu.c                 | 4 +++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ .../lib/include/libvfio/vfio_pci_device.h     |  5 +++
+ .../selftests/vfio/lib/vfio_pci_device.c      | 33 +++++++++++++------
+ 2 files changed, 28 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-index e9a3386a4719..4b9cbe262159 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-@@ -15,6 +15,8 @@ struct iommu_mode {
- 	unsigned long iommu_type;
- };
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+index 896dfde88118..2389c7698335 100644
+--- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
++++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
+@@ -125,4 +125,9 @@ static inline bool vfio_pci_device_match(struct vfio_pci_device *device,
  
-+extern const struct iommu_mode iommu_modes[];
-+extern const int nr_iommu_modes;
- extern const char *default_iommu_mode;
+ const char *vfio_pci_get_cdev_path(const char *bdf);
  
- struct dma_region {
-diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/selftests/vfio/lib/iommu.c
-index 035dac069d60..95a494f829d2 100644
---- a/tools/testing/selftests/vfio/lib/iommu.c
-+++ b/tools/testing/selftests/vfio/lib/iommu.c
-@@ -23,7 +23,7 @@
- const char *default_iommu_mode = MODE_IOMMUFD;
- 
- /* Reminder: Keep in sync with FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(). */
--static const struct iommu_mode iommu_modes[] = {
-+const struct iommu_mode iommu_modes[] = {
- 	{
- 		.name = MODE_VFIO_TYPE1_IOMMU,
- 		.container_path = "/dev/vfio/vfio",
-@@ -49,6 +49,8 @@ static const struct iommu_mode iommu_modes[] = {
- 	},
- };
- 
-+const int nr_iommu_modes = ARRAY_SIZE(iommu_modes);
++/* Low-level routines for setting up a struct vfio_pci_device */
++struct vfio_pci_device *vfio_pci_device_alloc(const char *bdf, struct iommu *iommu);
++void vfio_pci_group_setup(struct vfio_pci_device *device);
++void vfio_pci_iommu_setup(struct vfio_pci_device *device);
 +
- static const struct iommu_mode *lookup_iommu_mode(const char *iommu_mode)
+ #endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_VFIO_PCI_DEVICE_H */
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index e9215c712cda..66ee268110e2 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -220,7 +220,7 @@ static unsigned int vfio_pci_get_group_from_dev(const char *bdf)
+ 	return group;
+ }
+ 
+-static void vfio_pci_group_setup(struct vfio_pci_device *device, const char *bdf)
++void vfio_pci_group_setup(struct vfio_pci_device *device)
  {
- 	int i;
+ 	struct vfio_group_status group_status = {
+ 		.argsz = sizeof(group_status),
+@@ -228,7 +228,7 @@ static void vfio_pci_group_setup(struct vfio_pci_device *device, const char *bdf
+ 	char group_path[32];
+ 	int group;
+ 
+-	group = vfio_pci_get_group_from_dev(bdf);
++	group = vfio_pci_get_group_from_dev(device->bdf);
+ 	snprintf(group_path, sizeof(group_path), "/dev/vfio/%d", group);
+ 
+ 	device->group_fd = open(group_path, O_RDWR);
+@@ -240,14 +240,12 @@ static void vfio_pci_group_setup(struct vfio_pci_device *device, const char *bdf
+ 	ioctl_assert(device->group_fd, VFIO_GROUP_SET_CONTAINER, &device->iommu->container_fd);
+ }
+ 
+-static void vfio_pci_container_setup(struct vfio_pci_device *device, const char *bdf)
++void vfio_pci_iommu_setup(struct vfio_pci_device *device)
+ {
+ 	struct iommu *iommu = device->iommu;
+ 	unsigned long iommu_type = iommu->mode->iommu_type;
+ 	int ret;
+ 
+-	vfio_pci_group_setup(device, bdf);
+-
+ 	ret = ioctl(iommu->container_fd, VFIO_CHECK_EXTENSION, iommu_type);
+ 	VFIO_ASSERT_GT(ret, 0, "VFIO IOMMU type %lu not supported\n", iommu_type);
+ 
+@@ -257,8 +255,14 @@ static void vfio_pci_container_setup(struct vfio_pci_device *device, const char
+ 	 * because the IOMMU type is already set.
+ 	 */
+ 	(void)ioctl(iommu->container_fd, VFIO_SET_IOMMU, (void *)iommu_type);
++}
+ 
+-	device->fd = ioctl(device->group_fd, VFIO_GROUP_GET_DEVICE_FD, bdf);
++static void vfio_pci_container_setup(struct vfio_pci_device *device)
++{
++	vfio_pci_group_setup(device);
++	vfio_pci_iommu_setup(device);
++
++	device->fd = ioctl(device->group_fd, VFIO_GROUP_GET_DEVICE_FD, device->bdf);
+ 	VFIO_ASSERT_GE(device->fd, 0);
+ }
+ 
+@@ -358,9 +362,7 @@ static void vfio_pci_iommufd_setup(struct vfio_pci_device *device,
+ 	vfio_device_attach_iommufd_pt(device->fd, device->iommu->ioas_id);
+ }
+ 
+-struct vfio_pci_device *__vfio_pci_device_init(const char *bdf,
+-					       struct iommu *iommu,
+-					       int device_fd)
++struct vfio_pci_device *vfio_pci_device_alloc(const char *bdf, struct iommu *iommu)
+ {
+ 	struct vfio_pci_device *device;
+ 
+@@ -371,9 +373,20 @@ struct vfio_pci_device *__vfio_pci_device_init(const char *bdf,
+ 	device->iommu = iommu;
+ 	device->bdf = bdf;
+ 
++	return device;
++}
++
++struct vfio_pci_device *__vfio_pci_device_init(const char *bdf,
++					       struct iommu *iommu,
++					       int device_fd)
++{
++	struct vfio_pci_device *device;
++
++	device = vfio_pci_device_alloc(bdf, iommu);
++
+ 	if (iommu->mode->container_path) {
+ 		VFIO_ASSERT_EQ(device_fd, -1);
+-		vfio_pci_container_setup(device, bdf);
++		vfio_pci_container_setup(device);
+ 	} else {
+ 		vfio_pci_iommufd_setup(device, bdf, device_fd);
+ 	}
 -- 
 2.53.0.983.g0bb29b3bc5-goog
 
