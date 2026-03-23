@@ -4,96 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273CEF4610D
-	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 13:29:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4116AF4610F
+	for <linux-mm@archiver.kernel.org>; Mon, 23 Mar 2026 13:35:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F67F6B0005; Mon, 23 Mar 2026 09:29:21 -0400 (EDT)
+	id 7296D6B0088; Mon, 23 Mar 2026 09:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CDDC6B0089; Mon, 23 Mar 2026 09:29:21 -0400 (EDT)
+	id 6B3306B008C; Mon, 23 Mar 2026 09:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A996B008C; Mon, 23 Mar 2026 09:29:21 -0400 (EDT)
+	id 553F06B0092; Mon, 23 Mar 2026 09:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 709D96B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:29:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B59EC344A
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:29:21 +0000 (UTC)
-X-FDA: 84577409322.20.859FA73
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 99114C0004
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:29:19 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HVVTbnDx;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774272559;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 415726B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 09:35:15 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C9BF31A0B7C
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:35:14 +0000 (UTC)
+X-FDA: 84577424148.07.A0AAEDF
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C60EB20012
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 13:35:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Owg2PYGP;
+	spf=pass (imf03.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774272912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hsB5c3/eIpiOOdQy5BgF0DGA1zHDDDWgvsA99LIaezo=;
-	b=WJyhg/Ium2a3h+mWDina/9kxdrDBUedIrJOq34O2y2fNlnWzVhSUggXzSyYWR/L990QNXx
-	Re8G7XMm0DHw6vOCsq+U/uvSLiRjpV9gDGynQrQgdmtZTMK0t3JzK0H36XIXi2nBiyRiAB
-	/nAor7EwG/JQYjlRfq8ERWNYicRzeho=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774272559; a=rsa-sha256;
-	cv=none;
-	b=nk57ZYQxUZFrGO/ErIsdGMLxhmRwBfrH22ny/Kwn3x5KFZsF5WOXUzUAXnzEG2DjdKJ1cS
-	fMiKYDUyOEM0zf5rL263W2XdIqBIAR2mq6C/LeKyKLutHGF5P6DJrNW5h+QmbZOvsBhiGU
-	E23RZ7a92N5dW4maUARwarUQ9lgtMSI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HVVTbnDx;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 12C96600AC;
-	Mon, 23 Mar 2026 13:29:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5084AC4CEF7;
-	Mon, 23 Mar 2026 13:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774272558;
-	bh=P9eVkuvtmt2z3nk/0veMt1ApqzvU1NdVXo2AoE58exA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HVVTbnDx7x8iyGtpS6nvyNdpZ2lFZdxuqkD8BwKCh0ozt/dsmdQiuBg9smBtq7zGh
-	 mKxVwOuhJlVoSmoyI8kN4wwkGrDq4kQ8/fSZFJBl3EZsNH4MpehQDJmQ2Keb885a1n
-	 8GHzS++UgJcsmuTJtz1+UrCyMraXNuUmCbLTsxqulV4eVy75moPlodS9ln6X5VlaxT
-	 deCYDw21LzWx2HW0TrjFyWngv2dP9Rc1F5K5HrjfsEr9dtrWrzn/SqPjPCqkPiQDE9
-	 ctssjasWQbvfsj5syAygeQ1crEEVFkIfjCgOJUW7kaskyn+KXPE5ab3uP0otEUa/IK
-	 sgwf48SEimMtw==
-Date: Mon, 23 Mar 2026 22:29:16 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev,
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	chenridong@huaweicloud.com, mkoutny@suse.com,
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
-	apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com,
-	usamaarif642@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v6 26/33] mm: vmscan: prepare for reparenting MGLRU folios
-Message-ID: <acFALMLIvjP4i76U@hyeyoo>
-References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
- <e75050354cdbc42221a04f7cf133292b61105548.1772711148.git.zhengqi.arch@bytedance.com>
+	bh=P5oJqHAVX7zT2HPF6s22H5/MvQLO5sXIIazXAuipXIs=;
+	b=XIlWlRaOR5wXA7PlJF4TFhsETwDmzT7b0Mkq7QCHTBxVX/Z+U/0aotXWKF+NJ8i5KELMN3
+	epbt2CqyU6vTmj908S2r5/SCD/InYmqUBo0n7AqVCHBoox+s4l37SkMHAhpUTErjpy+mo3
+	cIjX4MFF2FlnnNKdgrv6bt7V+yEWbao=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Owg2PYGP;
+	spf=pass (imf03.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774272912; a=rsa-sha256;
+	cv=pass;
+	b=GnWA+aQTqX0UcfLUOSMtqpJkY5KXUqMUIbSrm3TiIcEz9cnReEozoUAOg/YLJ4x3FlDdJc
+	XLN2PsYAwcWuK1oLc+QgyFxu7+brDQou/Pingli/I/zUO5i4931PQwa/5v3VgSqwBKV8nS
+	sQJUvws4N9I/5jrRcTVUZp8K2Jg8jDw=
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2bd5658b901so155628eec.3
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 06:35:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774272911; cv=none;
+        d=google.com; s=arc-20240605;
+        b=b5oaiamsaw0AEZhQAIfYHkeSB4NWVqmQ1Wo0tpvWfQj9UwBrUAJKkr4Q8l0TUPxGHs
+         l3kxEmgqA20R/3SRyRBKjZj0UkoHrSU3Ojuku37xwttXlBSJsEfw0YJFa0eC2JgS/hv4
+         BJYm+/3ce0zOFS8MghctsdBGY4DXrBQbSH04WeiZI/e4fjQjebWOBj5uvSfkJ2A2kvq5
+         MJSNkh20J5S40/rRZ2oj920diAoUc8q1z+MYNh9068ViHciHsnFU1mUHzUDtot458cb8
+         Gllh9IdDGC/qPDkAYJUTkx4jYy0utUlYZxaJ1qF0+wgWEfCbMdD3wz91NpfkWlTAr8UM
+         gYDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=P5oJqHAVX7zT2HPF6s22H5/MvQLO5sXIIazXAuipXIs=;
+        fh=7JZwoBZYxazQT/K2+eFNbbV5WGffUja9lZmqH5HjOcA=;
+        b=ftHao9CFzjwTVEfc0OJ+x35LKdT/DDG5X0DvwxPrvojmY6KWYdbXGUBsh/lorrXeSC
+         mDmqLNTWg2aLnCduNz3/djWmN7fSKFQYlJ0YRMDLt8jVzdgvbkWfq1MBDrwpAsia2IIf
+         Ps+fOJDFLMG2LxMPzM3+aqGjpKNEYgXI1DJYVfjEdHcpTiR91jZk6sSvg0tESpqQSE6W
+         s1AylZJLZjF1/DCa07w3cRtwtpPAdCduzOoDK7n9KoKK7XT4pIdo331k/koUXsCGCe0C
+         iAeMywlYgIMPh51DCSgNRV6HavoXQARWm0YLz6M181YN8L8zKL6qX2KJ9/8c00Mks2PM
+         iR/Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774272911; x=1774877711; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P5oJqHAVX7zT2HPF6s22H5/MvQLO5sXIIazXAuipXIs=;
+        b=Owg2PYGP++NwSB5KlBGvcEB8RUMWjIKya3c61/41SkO9lS/7NjEmDxMY96gFdyGD+n
+         8rsFE/YeCZf0X1q76I9FXKaiY9FO4ADqcglyA3CIb+nmi8QMoKd9JKpjOu+4hbhPgDyP
+         A2pmni4QppSTgrGtSnUtu0EitAWqt5D+7ssbXHidYkSvDZoEgKP8qdA9lURxOULVJQNV
+         guedn+z4X4ybSKQX1LD3YpDwE7Md+48GxNy1nUlt4lPtbMs2eaCEAjeEt0BDeh2tIJTA
+         17wif1ytCoMuv34si7tF6pKQHz1dLZ1/W0nalQVPQSXZyu70cahEUtA0KusgqSGt109R
+         5LCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774272911; x=1774877711;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=P5oJqHAVX7zT2HPF6s22H5/MvQLO5sXIIazXAuipXIs=;
+        b=To2kuLfP4tlO+BDU7P6o4n7Ez4i/Ccph92YnnLI0cApHSx0rPqAxM3SBh9ZlRBZGb/
+         K6hrRBdDOh3HZhtd30ppG0eOmGeUCWk0j9VtgAIxXhjureuPQd0kJwGt+ahjRW7qXeA3
+         prBMKD3ox0uiZKJlNnMSHPm6MiHivTlfCsuCD4i0MIOoE5HYWBvBoNGzLb+WhjswhPGy
+         01XcTbsIJ9pxuYe+lyj64jWiZ25l2Po4EyMFIbXUeZ4EZeUx43Vp8ielg1ELmYjEnveI
+         967fKtBbhE4IqqCzMffEUNYYEKnzVPAkRkztVVfr22U3o+bhaZAIrCylvvD/3vssC7eo
+         74oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU27eZ1hotxj+HcmOHJPTUt8yCqUnmknRFZqYFmYKvid9exbBTdpkePiGTawEO7tR5SFrYaqj/Gkg==@kvack.org
+X-Gm-Message-State: AOJu0YzYMiHW01ku2/0VQknQSHYosQtMhl7KOl/Ls6sYb+sr+aoj8KBr
+	X3PRg8SedSk9PQ1BngVbRPt/kaR2BnkqGuxG+p+uCQPX6MAXFlatrHLAnyHiEPy55sbYYUMWiAY
+	bvzwvcJTE80Mjg8d+qKaC4+vwfRwVne4=
+X-Gm-Gg: ATEYQzyUE0BpoGMTus2O6GwWty+LsSRJwd3z7zRvMCD5pUVdegUHC0wjMRXzFAdqYbT
+	Q9iA49Df2l27TmzzHdEtfJaWGkiao2d7CAFAHVndtESEdOFV24QQRTBT0Cs8jZekl2QgwGzoSPs
+	4hhy65WnMbWKZVbk5rAWOwlO47UdSrVTdKDTP9GSBlXM6OTO4FzUHjE6PZE97ktUdoveumtEJ9M
+	elpHJFINNpG+qQoKeJdxL40Mht8GUXO7F8902q48EjPNy/I5kAm4lOqLqIjmrbaxgpMJVLNe5zK
+	HLNeN6zvKhNWSIhUwW/q8/mxIm6Oy9sd0nF3iiYbRZ9VlUASkuscAzxxEr8JBDG5l9M58cPS2k4
+	nzm8cQzcySnDLYbD76MN15So+HKTcDVzY8Q==
+X-Received: by 2002:a05:7300:5711:b0:2c1:27c:75d3 with SMTP id
+ 5a478bee46e88-2c10956c2a3mr2435566eec.1.1774272911337; Mon, 23 Mar 2026
+ 06:35:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e75050354cdbc42221a04f7cf133292b61105548.1772711148.git.zhengqi.arch@bytedance.com>
-X-Stat-Signature: nqwhs8nck3kqi95zzyxwnqy9fa6m889q
+References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
+ <96287f3a-d245-47cf-b7cb-f821451493d3@lunn.ch> <CANiq72nwSWVDRqm0Vap5j5X5k+Q-wq8okQ9d3KUgZt6M4CpW9g@mail.gmail.com>
+ <65336ad0-ac37-416f-b6ae-e691e3e375ae@lunn.ch> <DHA6SE9EMEQF.1PKVHEG18I5FS@garyguo.net>
+ <b5063e7e-9245-434e-9877-5ac7b45f4bc7@lunn.ch>
+In-Reply-To: <b5063e7e-9245-434e-9877-5ac7b45f4bc7@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 23 Mar 2026 14:34:58 +0100
+X-Gm-Features: AQROBzD7g_rNmuMWaBSXTkod6GcGExC_6-5XqRdaJnhqw3z7WBAm_JnLMPlOCtE
+Message-ID: <CANiq72kD6HVrDTjQrTXDujyjA4Z5ELM6Nh8kFfVfNXrvpfU1wA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, 
+	acourbot@nvidia.com, akpm@linux-foundation.org, aliceryhl@google.com, 
+	anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, 
+	johannes@sipsolutions.net, justinstitt@google.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, linux@armlinux.org.uk, llvm@lists.linux.dev, 
+	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
+	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
+	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com, 
+	will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: r7nsf3qchs1hqw7rjxpw3hhqgjcctqby
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99114C0004
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1774272559-818470
-X-HE-Meta: U2FsdGVkX18b+yYDTXZ4J0dSc8dq48LBTjtpAy9wAqgiy0XFZy5o3locgn2Ob5ycStaOzH5zYsQWGSppA9nipySiRgW5/Fo9S3hXw9DfluPiMA69goIrD2ybUsl36eVyjYXAvNG7KHZwnXhmRdcuZtftX4C5zlApcWyvfmSSHNCii6rnxfJVKs584zGn1c9ZazhnD0kb+MmwalseAxBNZbrZqoYjWh22FeFegGO/F8iXZVNCG9lftrtdlHr7IEnhyawIfw4KxGwJXzuTxi63TeCPfSrpy05uAKZkgzSfMZUmqny+3V/KT39wKjjhG+2gjH65Pm0BhHaAiopgfK5m1BhDOe+ME5hVROrw9YsJbZ8tO7h12gJs21YUjQxK4u/UosRRD0os/UusLO2qy2Y1j6jUVD2H52ZZYyTT3yTy3EP8jOwZX5AC7+oqy94Bs0xAxe7tYl8mUmvRaEo0AVuBpO5VnJqJXpyMT5+0lzKgaHmqNbWCZ/pW0skmVKozit29t8+rizQX7rTBGEyOO7arlmmWwd79CzXpELHsmaqa3lRGlufkWAkfVnJRckahgSRElfPfd9DMFr7UpqUTY9V5QGwXinxp7T12JJclw9HH4g/nvbZG3LbOa96mYv2iD+io1fkxOsPaQRUNjX6HWdyO2tcg4lp5kZgjY0tcktwbgr1P9akzY2eCL+utx0ZQm0In11G5FzR6IWV7m2tzhLmOeVRZhvlHU7Yo9H2itLk7rdDFmIVzGzR/NDAB8cM3+Sr+XSAt0x/+159WMjOlLbMDjDmw2hDn5HNcnikXT10lyPWIOlY+BG2lz+UV+g7apx/gaLYenjPC8Ysi36V68ptThMNs++IsSuIyCVAwBGqeEBgy9Ol2Z0IbNfUY53DXsFe8Av2TkRblMPx4RixRi1TNwdMa2wktQNO79K833X54ygLvkzHoFEkKTHTZvJn34iJSqWGufmTAN0JFDjIPCAl
- AzA5pMv2
- Z5XadKwx5w9t5+4+fq6+JeMR1nIEg6mpNT3Mc+4mZ9DNGSgUF+K7eDkZ4V1TXl7IsxjW7hXZeZbBCrmYbvU6CT1dGT9Hqc8sJWQuw2+rmH0v26tRehv94sd/ur9lHF00z1M9ce9XMD8DXpl8cOCW8l9J34thW0Bf7PZw3mutleH5Y40bMiUkl5KDPxB4HMjKbLs0N7HQYnxVlAfLHxb/mhtAGxWwWGOyOT3nGzCAJhKCS8/eChwnPm1vDWVmiMr7lzKWmX/8HhLkoiB3eQ85M0eqqb030MYiYMdgTzdcYszfl3m4=
+X-Rspamd-Queue-Id: C60EB20012
+X-HE-Tag: 1774272912-343723
+X-HE-Meta: U2FsdGVkX18I20/L7tDQqcrGyczMrojjET6HDBDPqwrErtthE5QxEIcUALM3UALEKyrxl6umQRpEMBAKp03xq3hTe3Pf6wUugrLVMf8ShekI5UzEtB4t1xIyOkSIqQ6RzLJIcIJy47D46p9vdB4nbfjIAryGbgnR8xv6l3Lcdyflfmjn3k2UO111H3rniq8XcE+H75PmEW8ulFuRaQmragvpJXipd3ledmQdaBR+LuFXv/FZBIWMx5JBG3+dv9Zq2y8rKbIwT3CE/R7RlCA62BT3dTzbNTeNsupvtTlxAA5Ue4f63YlhURVXmyXVngDU8OZGz2ZOsXfQowuGZv8YN/Y7esqxs/jEv20pBd2XFIjfRUg55BI907E/HR+A31TZbNAXoY1VjhUkSdwpKKzmkw/coLKW8G3/SwsVoSBZdsG2PZ/ff0UcMhyd3ozIiZr//IhIA8tV6Ly2wP/69G/PQGZ/aAnZVcZyl4Lh4pEt+jy7l1lgrj5sx7r+FqKxLMeCehD2ePivDvzgbGVbVhc1NwEu1ySPhM3Q1L5ZA3HrP4s/nXV+opW+cUrd/+Vlmacras9wzMGzLnmUchvYNGFWCQiWDErv9gsYS70tnudnukPTil4GPOMthl2wF9GwJGrJU7Y5OhDVfZvG/dgsTlBAdKWY/q+/l8TIB2SBL4D9dI+E2x7MmeJ4bngZDsF+GHEWgM54kK5eMatkNCv/+TwRim7etRIu1vZB8f+MNZSU/1XsgZhvM6VPHieFAdwz6QRlFXhJ+n1gYFc/1fEC8TsDxcg0+7J4rbrDiSu/nzXZQaCj2jmwLca5O1yNS10DPLS48hDq/heiDmrF0wDtqNsQF0z/Ap1hotB/5a1xS4P9BGhhWQWib7/pncDpFLJGqWlNM3w0h8HG6cguqNgfDHceoyUDlV2NNhPED2rv1d+KDnDICmIYM8LcA2T0pET/CQ4tnFkEBXA5VqvWqq+eNzW
+ L4he+dfk
+ +fIUWNGbCa/l3Gdn5PP79c9X079w5glabVFssRQ5QVaPZrsSqqOT0Qepp4hVAFS9awDzpuU2EeiELkMUozQ81bAYgb2IMjnFIx9StN/eol/xrHGaElJYwKcgaXRuuUdVbVM7/AtH8Za4UBIlLoNjQyRc4vLYKpSHVYMTsHkl0ySyZkr+0KiUUuD14fmO+FBjx6P/bGgJ0WKjWnInilpT/NCPqDwyvpNGkfBZ2SLiwPj10Dq5pUftLOjRWhnmyvaZQkf+ln+cn6s8yFf1qpsRexX0PPLIZR+2ZnkGd842IzbD+jFej7Gyte4oEFN3Xo6y3tGf7mSXJk1VZ0rLX8uL4zJ2zKwGmh9I857TKdl7tFZ/SlHBW6B2L/V2bzzXX+bGi44QryiH/R7faN7V5NBftcSNYx1DoSOAlJcj/4SggpakWOC591cXamWoOjYhx1pAsiUTMdbZQHaX7tZ0T+1n9hWEIFp88i2RAv4DFmInyirS8Wrc9iVtnFYc8ZlbADgocQqFOw2PQJbvEmubpsCnVbEZ3Fg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,117 +153,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 07:52:44PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> Similar to traditional LRU folios, in order to solve the dying memcg
-> problem, we also need to reparenting MGLRU folios to the parent memcg when
-> memcg offline.
-> 
-> However, there are the following challenges:
-> 
-> 1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
->    number of generations of the parent and child memcg may be different,
->    so we cannot simply transfer MGLRU folios in the child memcg to the
->    parent memcg as we did for traditional LRU folios.
-> 2. The generation information is stored in folio->flags, but we cannot
->    traverse these folios while holding the lru lock, otherwise it may
->    cause softlockup.
-> 3. In walk_update_folio(), the gen of folio and corresponding lru size
->    may be updated, but the folio is not immediately moved to the
->    corresponding lru list. Therefore, there may be folios of different
->    generations on an LRU list.
-> 4. In lru_gen_del_folio(), the generation to which the folio belongs is
->    found based on the generation information in folio->flags, and the
->    corresponding LRU size will be updated. Therefore, we need to update
->    the lru size correctly during reparenting, otherwise the lru size may
->    be updated incorrectly in lru_gen_del_folio().
-> 
-> Finally, this patch chose a compromise method, which is to splice the lru
-> list in the child memcg to the lru list of the same generation in the
-> parent memcg during reparenting. And in order to ensure that the parent
-> memcg has the same generation, we need to increase the generations in the
-> parent memcg to the MAX_NR_GENS before reparenting.
-> 
-> Of course, the same generation has different meanings in the parent and
-> child memcg, this will cause confusion in the hot and cold information of
-> folios. But other than that, this method is simple enough, the lru size
-> is correct, and there is no need to consider some concurrency issues (such
-> as lru_gen_del_folio()).
-> 
-> To prepare for the above work, this commit implements the specific
-> functions, which will be used during reparenting.
-> 
-> Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-> Suggested-by: Imran Khan <imran.f.khan@oracle.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Acked-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
-> +/*
-> + * Compared to traditional LRU, MGLRU faces the following challenges:
-> + *
-> + * 1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
-> + *    number of generations of the parent and child memcg may be different,
-> + *    so we cannot simply transfer MGLRU folios in the child memcg to the
-> + *    parent memcg as we did for traditional LRU folios.
-> + * 2. The generation information is stored in folio->flags, but we cannot
-> + *    traverse these folios while holding the lru lock, otherwise it may
-> + *    cause softlockup.
-> + * 3. In walk_update_folio(), the gen of folio and corresponding lru size
-> + *    may be updated, but the folio is not immediately moved to the
-> + *    corresponding lru list. Therefore, there may be folios of different
-> + *    generations on an LRU list.
-> + * 4. In lru_gen_del_folio(), the generation to which the folio belongs is
-> + *    found based on the generation information in folio->flags, and the
-> + *    corresponding LRU size will be updated. Therefore, we need to update
-> + *    the lru size correctly during reparenting, otherwise the lru size may
-> + *    be updated incorrectly in lru_gen_del_folio().
-> + *
-> + * Finally, we choose a compromise method, which is to splice the lru list in
-> + * the child memcg to the lru list of the same generation in the parent memcg
-> + * during reparenting.
-> + *
-> + * The same generation has different meanings in the parent and child memcg,
-> + * so this compromise method will cause the LRU inversion problem. But as the
-> + * system runs, this problem will be fixed automatically.
-> + */
-> +static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec *parent_lruvec,
-> +				     int zone, int type)
-> +{
-> +	struct lru_gen_folio *child_lrugen, *parent_lrugen;
-> +	enum lru_list lru = type * LRU_INACTIVE_FILE;
-> +	int i;
-> +
-> +	child_lrugen = &child_lruvec->lrugen;
-> +	parent_lrugen = &parent_lruvec->lrugen;
-> +
-> +	for (i = 0; i < get_nr_gens(child_lruvec, type); i++) {
-> +		int gen = lru_gen_from_seq(child_lrugen->max_seq - i);
-> +		long nr_pages = child_lrugen->nr_pages[gen][type][zone];
-> +		int child_lru_active = lru_gen_is_active(child_lruvec, gen) ? LRU_ACTIVE : 0;
-> +		int parent_lru_active = lru_gen_is_active(parent_lruvec, gen) ? LRU_ACTIVE : 0;
+On Mon, Mar 23, 2026 at 2:28=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> So it sounds like my understanding is out of date. When the first
+> Ethernet PHY driver was being merged, Rust could not access inline C
+> functions. The binding had to replicate the functionality. But you are
+> saying that Rust can now make use of inline C code, but not actually
+> inline it? It results in a function call?
+>
+> What this feature does it actually allows inline C functions to be
+> inline? So it is just an optimisation?
 
-Not a correctness thing, but...
+We have always been using the helpers to access the inline functions,
+please see the top comment in `rust/helpers/helpers.c`:
 
-> +		/* Assuming that child pages are colder than parent pages */
-> +		list_splice_init(&child_lrugen->folios[gen][type][zone],
-> +				 &parent_lrugen->folios[gen][type][zone]);
+   Non-trivial C macros cannot be used in Rust. Similarly, inlined C functi=
+ons
+   cannot be called either. This file explicitly creates functions ("helper=
+s")
+   that wrap those so that they can be called from Rust.
 
-I think the other end (tail) is where cold pages go in MGLRU just like
-in the traditional LRU, since  lru_to_folio(head) returns the tail folio?
+It doesn't duplicate the functionality, it simply forwards the call,
+i.e. it is not as bad as a full copy-paste of the implementation.
 
-> +		WRITE_ONCE(child_lrugen->nr_pages[gen][type][zone], 0);
-> +		WRITE_ONCE(parent_lrugen->nr_pages[gen][type][zone],
-> +			   parent_lrugen->nr_pages[gen][type][zone] + nr_pages);
-> +
-> +		if (lru_gen_is_active(child_lruvec, gen) != lru_gen_is_active(parent_lruvec, gen)) {
-> +			__update_lru_size(child_lruvec, lru + child_lru_active, zone, -nr_pages);
-> +			__update_lru_size(parent_lruvec, lru + parent_lru_active, zone, nr_pages);
-> +		}
-> +	}
-> +}
+This patch series aims to improve performance (cheaply in terms of
+built time) because for Rust calling those helpers are not inline
+anymore otherwise.
 
--- 
+You may be referring, instead, to avoiding to have to write manually
+the helper (the forwarder) -- for that, please see "Support static
+inline functions in headers (by generating a wrapper)" at:
+
+  https://github.com/Rust-for-Linux/linux/issues/353
+
+(In fact, I had your previous mention of `skbuff.h` from Lore there :)
+
+Assuming `--wrap-static-fns` works well etc., then it would be nice to
+use it, yeah. But that is different from this patch series (and this
+patch series would apply as well even if we use the automated wrappers
+etc.).
+
+I hope that clarifies.
+
 Cheers,
-Harry / Hyeonggon
+Miguel
 
