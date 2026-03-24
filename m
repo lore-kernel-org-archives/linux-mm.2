@@ -4,144 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F90BE9A777
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93656E9A777
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:49:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8A586B0092; Tue, 24 Mar 2026 07:48:18 -0400 (EDT)
+	id E87F66B0005; Tue, 24 Mar 2026 07:49:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C13D66B0095; Tue, 24 Mar 2026 07:48:18 -0400 (EDT)
+	id E37E76B0088; Tue, 24 Mar 2026 07:49:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB41F6B0096; Tue, 24 Mar 2026 07:48:18 -0400 (EDT)
+	id D26C46B0095; Tue, 24 Mar 2026 07:49:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 95C8C6B0092
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:48:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5147EE1007
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:48:18 +0000 (UTC)
-X-FDA: 84580783476.19.BA2CB08
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012059.outbound.protection.outlook.com [40.107.200.59])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 405E3180006
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:48:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ZcScZP1V;
-	spf=pass (imf24.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.59 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774352895;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BDC286B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:49:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B15F5FC59
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:49:02 +0000 (UTC)
+X-FDA: 84580785324.15.221A135
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9DC4F80008
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:49:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PGnL8Y89;
+	spf=pass (imf02.hostedemail.com: domain of akiyks@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=akiyks@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774352940; a=rsa-sha256;
+	cv=none;
+	b=wlxs//SG7fBZ+bAxUYie6x2CBR4HSA6+Gsjfim3PjvBj9rUEhxpAzWx/KlUyfJzeAqgbLd
+	LcwEWge7phPlI4xZYjFtgABAEGdPLi9jXPJnjO4pZpaH5TermQJGhQMhYTb8PwCQ8KlxH0
+	CsrVgGTjTsfgPR5xsewaqRd7jiJVYxs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774352940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xjIso0qIEN0C7CvEOKCVkSqgc9+WXM81F/XInWl6YYw=;
-	b=Ck201nv2Fjc/sD6HPhi7BP0MRylK310FPihIpQUc32QehtF89hsU6kQEMfTVVrLUDyMM1S
-	7U6QSMHJn3R0PXb55QVb3WYx7n4cLrXd5VhXRCezn0CPA7fsaUwunhqZ/b2aNGSxnceV7A
-	im5p4qnx9lAOXPFAJfctgcl5JqDOGVs=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ZcScZP1V;
-	spf=pass (imf24.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.59 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774352895; a=rsa-sha256;
-	cv=pass;
-	b=MfZdHJFpmDC5pzwgMKxji+oFoKtw8jMbtUJtDNPhq43tit0mSjJnMMCEthRk5FkqmcxAUt
-	AvOrGGqDzFWnslXHPMmotq1vESmJi3qrp/M1IdZlboF/XkEbU6u0izyU2rm2+NAvHzVwgb
-	ceVXWDSADQRMfpoYvL8wNmMBcANSMS4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xYyOX3pJoTZFqaRVI3ApRF4QYXBTOQn0pjO9u1eQvqMXO+XoqLq6NRpIe/hASaYHdKby8JCYNDU3UgKUft8P8PcBjbgV+SSYTLauPiLBPB3nf9jsgDiwVYZPpHgjNepwPRMeviC2cOkaAUWp7lWqLYERxX3rd/IIIgvvP37Al04u8lKZPD/jci+fb3EtcPglP1OU0ImCymQZqikBUMTv2rPE3Ph3GwOwSXOZX5VexDMmaufz72CLhbl7cjO3GMqc9UdKXH+rIfcwCswYBl/x3g/LHDwsE6fU3AnM55QutUKe1oexmKHicQCmn1E6oXSZI2mrf4yMbXIub0rT2RXJKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xjIso0qIEN0C7CvEOKCVkSqgc9+WXM81F/XInWl6YYw=;
- b=Foj54azHHwovspVWX+TqqXmkdNKWHW1nKROIwcS7u7EeD7rjyyVRnkfXYomLuaVhLqlvtCU9tvk7kWtVIPC2lrhtZfl0EMyU1umQsvztjMYz3V956OlFHlARvLPujJWFUdJ80VpAqT9qh8fm9v+ipBcC0gHd3NioAYprzOIOJs4rzmRIxTlLVzVVr53iearvQ1ylVOcnxdFDYrPhVuxfRt8Ea+C/WHn6rv2kvD/o/k+hD+vb4oZuu25NuYwpc9AQV4hTRpgvy9RyY66WGiw6ZsJfaD97JD2ktxf26Lbpaqjjmo4Kt/dVr98M0C6dTGrL1V7nksc6Z6PzXapak5LS2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xjIso0qIEN0C7CvEOKCVkSqgc9+WXM81F/XInWl6YYw=;
- b=ZcScZP1V7wBNukM3BKxWQ5rqAAsIEqj9z42vNK/fHUL9nX6kTJiBFVSJge8su3frVStft4aFqJWzK5hj9nuGM+fsw9X6ZXEkQNJ/1f5P+fRJYvi8fkuKrrJn7fNS5Ix7Eh4iEcZyRxjJZclyxS9OloMaXkCkYCObekce3yqVaZY=
-Received: from SJ0PR13CA0147.namprd13.prod.outlook.com (2603:10b6:a03:2c6::32)
- by DS0PR12MB8456.namprd12.prod.outlook.com (2603:10b6:8:161::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Tue, 24 Mar
- 2026 11:48:07 +0000
-Received: from SJ1PEPF00001CDF.namprd05.prod.outlook.com
- (2603:10b6:a03:2c6:cafe::d8) by SJ0PR13CA0147.outlook.office365.com
- (2603:10b6:a03:2c6::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Tue,
- 24 Mar 2026 11:48:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00001CDF.mail.protection.outlook.com (10.167.242.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9723.19 via Frontend Transport; Tue, 24 Mar 2026 11:48:07 +0000
-Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 24 Mar
- 2026 06:48:02 -0500
-From: Shivank Garg <shivankg@amd.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>
-CC: <willy@infradead.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
-	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
-	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
-	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
-Subject: [PATCH v2] mm/migrate: rename PAGE_ migration flags to FOLIO_
-Date: Tue, 24 Mar 2026 11:47:20 +0000
-Message-ID: <20260324114720.864478-2-shivankg@amd.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EOmnOvJidcot6jxLrH1u76JLYVqpj1sXzmwoS6+GMMY=;
+	b=afTWARsfO6GSEf9ghHvHAewUUXCcSvnC4x0rzT+GD7hOZ532jiMPRXaiS5LJKZky38z0uA
+	kkHLGg6Glwmcmlsn6Js41GlRCyjMAFeIRpIJUMHPGgf31reafm/6tMh4CLquEWlM76s330
+	W9g84220BADvO20kzye8kdBW4Rw1/GA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PGnL8Y89;
+	spf=pass (imf02.hostedemail.com: domain of akiyks@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=akiyks@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35a1230c60eso1857896a91.3
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:49:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774352939; x=1774957739; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EOmnOvJidcot6jxLrH1u76JLYVqpj1sXzmwoS6+GMMY=;
+        b=PGnL8Y89aLP1xv6jD5dpwe6hDKyiJJ1GxIoFUKxlxoB+6ACwdjM+Fnp3V1ZU/X/yvt
+         yzvIZi2K/+iCCnY4zhXZMDMLZwTIMd5M1eL/BM8roP6o5RFDmat/vQ4j+pMibXaskT82
+         xLENZbPLL64yFyhlhiZBE7YCT5k1QeOuma6T83/uBlv3oc4SV/uVXfOMKytjbmeLOsTQ
+         lETHHsTBehXzoYGD+AEy7rnumvpGiX03NgGBCUjkKNIXlfYPBYWIGbSUURFprKtj7a00
+         gx4d/IUf/b8Wt5Ch7k5D2wYHGUfZ/vYrS9cHlvD16OSY5LKdk05oHIwlDnFKDCvSDiJR
+         LLdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774352939; x=1774957739;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EOmnOvJidcot6jxLrH1u76JLYVqpj1sXzmwoS6+GMMY=;
+        b=Y63vfA41qb5w4fJ7X4h7G9L5Y7RjAQf1aZiXg/oMJUG+11w/oCr+XaZJgRQJEHBQIh
+         x58wlpf+cER49QCObtUTHQhP0/544wRnz1Li5I/Hx4yFVYnofBlo0IzP6GPMNtSwlDjq
+         YODgyqjKaTKjml9wpP3FzNqUnGOSOHs3FWdugbxlQ3fI59GVTyccqZAYkvnOqrj9P7Qr
+         ChCQ23Cqo8zPLaeXstLqNWy756rGOBy0+SqGnjx9X39mRPt/0Tt5msiSsIlIj7CXQdbx
+         fKhrqVdUq9x4rno5bJkye/DiFkt0gdi6TBCN/aQEL9LzL83f7XKfl+jXHoMXHA5308Zh
+         xLpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXr/9iCn3yAH1dJLoaUyGfdQjcUYFKut64/SXlgUy5vNa21EW+1c1wRlZWOgNN84pVge21Qg1gN4w==@kvack.org
+X-Gm-Message-State: AOJu0YzSwJHj9Yrpmg0u77uw14MLgoDLst/uEbz2c8tSQX+YtlfwzsZl
+	g42l+pr7eR3thIJnC5YtXt+HOsKFPF0rOhIHa7zrDen5llI022rOaS4O
+X-Gm-Gg: ATEYQzyl/j90xFwkih0CRCOsi2xy+LCg6Kcl+KSTbOzutaQZ3HQXZLxtjTWw7G2Vx89
+	n/9/cweCExjMZDevmibxYYKUkUbg/wbea+MuEk8cRqBMP3gITyfymwpgH/Jrshtr0LVaTC/ffoP
+	ndhNUpL6GDu7Ljatk5kBg3YshkQnAtXyzGl4d/hnhLcv3P5l9+Q3PyNLJGm380RtnKwOGhNdCjU
+	HSQEgyau/EqmsyRSNg3tYrLrJPzEOx6mInN5zj27v3GE+Gpq8T1ye/si+KRmebDLm+DFkED5tAG
+	a4J6HwfKJ2qT1T4ZqB0ZySzEciJmWov/1L+7vQ1DemuFoxH5owsL6Uet52v7815x0xV9KRFLOoa
+	lfL6Kpfvk3lCKjjQxNWWWOjeq3QJB9Szu9NceZNLy9tn9eAO79iwBoDqdoMURDkmvCN75bEb5me
+	RcSIY89k3iMFHqwL93DQduSdirejhIQ95esog2PSNOqHQAiw3GY+5EDYhb6AU5gRHE+g92
+X-Received: by 2002:a17:902:e54a:b0:2ae:825b:49a5 with SMTP id d9443c01a7336-2b0825bf592mr154385155ad.0.1774352939359;
+        Tue, 24 Mar 2026 04:48:59 -0700 (PDT)
+Received: from [10.0.2.15] (KD106167137155.ppp-bb.dion.ne.jp. [106.167.137.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836a31ecsm143127965ad.77.2026.03.24.04.48.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2026 04:48:59 -0700 (PDT)
+Message-ID: <2ceb291b-3b18-43a7-9d51-5c752f1eebf4@gmail.com>
+Date: Tue, 24 Mar 2026 20:48:55 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDF:EE_|DS0PR12MB8456:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b642ed4-090a-4a7a-8b4e-08de899b3774
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|36860700016|82310400026|13003099007|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	VJhFoZ6BXK4709nCFRPMB8iSErXVwHr6gl9dAPtQb3o9vqdnAIWoKPoU+rEZri2dNFeUQAt0X+n0kQL/Fb1zqRZCC+KiQsgeVNOptHuvJJRBQdcPRG5jx3VUAoSoWmW36pA92rig9MfYnqHsRzgAb5nIRKcNg+qDJZzhR3kWpuxSyEp24ndsSR3VJ9i4FVL1WIFMYXWRlzIJQEtnRQU6z0xAL9fgx6gmig6dV5BDOy9nsqAdSjZot0zWLx7fsmuFt8/zZSp2MiJYady2+5bTmg02uZqUBmtJWZwPXkW6Y17FMHAxLmx/KmrIc+7Kwki7qyDgmHlkdfTrRTVuxBwHM0V5djvhct3SV3+J3uJVB63wapfMQCYfRDBqE29sM/84tfKvVNc2XBiS7emppMWGsjHtfbL8qTB/9tZxA0nXTAF7KOQPHxwlXsZ6JW9PpYsvIxjDGH66xO2jdtr/RoFfPPTAWBEJ5KioXgirx50HlmB6IyGIaiEm+XfGr8uYU67WLkUX6HwAcYzLoZ3xQs4537VJDit4kvutl8ZCR2uUHKYIXD4ooT9ny7ZckSDMNDy6H/m9rAEn3kSaRU/MfZc3ZmCdsqh/bS3f1CcXVqmwkYfiPuKQq4zt2SrY9G088yKKSEYKJ6ov/MywtE0weRnshI2UnDFIp9wtBkfC1hwYt0x7K7ckaau254vZAfG/niiiNZOcphqs23wuAdOqFU+UGZmUmYERFSa69sDage38vvhpMJ6kwDahkIT86d/MY8PeslBv8nuyml4uCttu6fxM8Q==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(36860700016)(82310400026)(13003099007)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	bzUCGLgoVBpfjHAeD/hTSq1gbv6QsQmVXv22i0GE1wS09U0yGzIGAX6vCw3OEOFunRY50WagFCMZuWzaDKekUBqt7hy0vG7Ao4VpUcDHK0apl/9HaDJk7PcMP7dRrpdEYwUI3XOfZxrSlRN0MnrS6Mus/4OJmLp/UAq74L74yVlu5ke8q/3soE/+R7hPhKiVOK6uthpOB8VF1anXpoTGOwR7jhKHicWvxFFFh6oMgFGGtduV0Kwy+xQrhUB/XjAutWEvgWb+Z0cXKQOiSEc9tIZdLolIS4Ou85+wG/VWhe6Ae4QUFJlCuKN/rHmDE7lbrvHNGFnslFFmVYDxeyio8mtXy7UDsTyGYQMyWeIJf0Pey/tYe+2XiobeR763k8SHExeiqa3raA5YYIm4y75vXzgh9iBXBY0haRqMq59Gt8Um284EZN2LRPGNR19dWQb3
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 11:48:07.5505
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b642ed4-090a-4a7a-8b4e-08de899b3774
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CDF.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8456
+User-Agent: Mozilla Thunderbird
+To: leitao@debian.org
+Cc: akpm@linux-foundation.org, corbet@lwn.net, kernel-team@meta.com,
+ linmiaohe@huawei.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, nao.horiguchi@gmail.com,
+ rdunlap@infradead.org, skhan@linuxfoundation.org
+References: <acJh0Sk4UdjaTFLh@gmail.com>
+Subject: Re: [PATCH 2/2] Documentation: document
+ panic_on_unrecoverable_memory_failure sysctl
+Content-Language: en-US
+From: Akira Yokosawa <akiyks@gmail.com>
+In-Reply-To: <acJh0Sk4UdjaTFLh@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: erhcxdui31jxttq333o3dry51y53pfca
-X-Rspamd-Queue-Id: 405E3180006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774352895-162072
-X-HE-Meta: U2FsdGVkX1949ElkcuGcYjXzdsUkhMxHqpgDzPO4cGn0D6MusH0H4Ctv9Uh/fXTRVZbpp9GZn9wjRtPttoD9NNGHvZpkpdh4MZkFYV4vZTlb/602WZW2wYP4EXqKOO0uma5Xfl6afcrXP7mjlGzvI3O9rcNduc0uRMppwd4ezKTKT0G+xXicVIW7o35HCFRBciV/oypy/2GPH4+byS2jIA6hE6Mj3RiNOvlvIrc2bf1pi88Lj46XF1ryJdeZc2pw6Fl1j+mbYqPOezQx5qJJD//XFvzj/oFXuI7/RsWPlX3JZzsSi3gnBMkNBxoN0FCc4jkXBRSDdAu1j4p6co+CpTj9e2V2MmH0G28D3FXlABMi0NuYvPUKwqnXIaUf+LIoXk1GDsFi+jXwCQ8GHE/bQ9cwv9bXmxpD/wH9NtCir7Vlr2PoW0IN5zvnrxktYHvu/h9Uk2utnQaoOi2pxMOojBIW+G3m/hVK6/MwBL2K4h8u1aQP2ClCf9U6l+N1mRjOelDosWOPyryZl03yj90C94QA/Ot90FwTZoXepBelxfExj0mOINg2kYDZYslN9roTkwNHMTOVKg49yY6oefzDDSGB6DwkhevNP6lwHs8voJx9ClnOaEFc8NRSb6KB46MPCK2okXHyQmMQ9jAXpmCJAtH8WEouO/P+SgWSevoU5ZfnUoEQmRPArwD8W9tH27zQQ/wz4k5/UNqT2+tfW0mTkUrxS11hsbe4Dd0//vR8A5jr0TqQds2y7cIcHIpp/c/sEBvjPOEOgqsRGb5lNulyG8sOSl9vdL6RfyGPoBLop+eG+JanlYE7ZB3tnrop1belGm9y2SxhZUKzXea05GuXwImkrh6F7NoomVPkz3Hy/8Ej644ySD75S/OKpcXTX1OQRREW6nBLoP5WNU+1xKOACXgG75lgPSPAs/W9Wfsv9xsMeEQ3FKEKDEJl4BknGs4Hn49A+x7bnBp1s6IZMQu
- IpktocGS
- 7Oig9wpZIPgT+bWR8O14/JdLITEWlrz7W5j9m9YoYsW0fbt3iRdhkwuEAYQ7WIcVwcxWbrMJsdxSfeUfbeBHaiHcFU4pFYx3b+QzV7gfwK0ArecZN3sO1jLw6TBwUqmd15Zn06+oOQ0yQde7oC450sOZf0CCcyyvJspAYa0letexSfzk4PXyD7VNS2uTX3RO7HGxOgKCw6zVVHD0zj5bmS5azAUIlx/DCBquofOKPYFLQmtc8re1Av5T4JO+JcH8l592iEz7TXz3s1RvtVCM2ICLGWX6xt5TZJZZ3ov0UWNsngChNiqN6xIiezuWFNtIKdRju49LidD5jlwzTNKBx/c8jF3BuFxOZ5PtvMaHsDHZP2CQy7j0eAzILhLllX2uQ7R8P40xOo+qh4pwkhfDZCiZsKflcEWGAHXkHacAkkaKrCa5kvQPn02bPpG1mW5X/w9knq7JieEgrWYP/kB0c1poh8GxFFjCvaQ/5cfDTOjb1povrfT+MghYQDhS5u9yxCvnSeZ/JgVevtweTx0TShfyr3OxyDGNnDmdPuHSRbQRilQOB0drLJEsdgavPo0z+wdXb/xU8GNLBzs552jihSNDgHA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9DC4F80008
+X-Stat-Signature: 4b9df67zr3iqt34o7yk3m5rfg84mpo36
+X-HE-Tag: 1774352940-966354
+X-HE-Meta: U2FsdGVkX1/tvnCRGO6msPaT3/V2LTmSEyZ1eO+VI6+UZe9Ly3m7TK6XQTZ1YXh17QuIXHCM4joPenpsmvH1p4JrOqkwsSs8KSSnrY4ihEoaUY8jqz4JLjcPNdj6mUMktxqAxL/2lkEzUqoeeTFCFywniMk+Mf1uVo2lKxPxbAa9hgVrYl7JS7Ccv7c0HgxayN0zXe9XvRZUONZPNxFBf+KyjEhrGsIx/W5dO+PLGp04lZzKHog8+cvrxmZjUcDe5TtkelWxa3n68V+qcQsTYvxYU6AGNaktru399QQ4MruyeYb6sE8i5xu/KbLdsJgc7C9Ul4Og3Wu1wcWgdtFAL/99aeZgvlrKYs3C8PIHRYZtsujFyIdWiq/C2gRW4cJkZ2c+pOON9d+6C6q0OSCERU2BPd4LJNqNXDr2B0yy6LnDxLgL5f50/6u4MVZktAqDMgeRchyJrCWdp2VDbSpSJjcmU5wrZiIw/tOWjSjAcMQHXpmXKewict3VVSFZpQ1anmAnYvGK6kwRcEugvsy2rXeeiu+RArMDlpzJoLIBjQs57pQ/0qDs4sAg+ZBG+/DYNw+GEE6Gw1HJr35+I+aoXZJnn0wk3Ak1K0dHYWcB6JijWUMWq0O3+dowEiUm9G9afXSAjMozQzw78L8/3j3dgsdHllFfjp7lrNhHoI3FjGwRZKJcJQjrBpADZhmNMFZpqpoPX5OisTdxCx0iy6eDWbeYo6DXM9Kr0ZS5a2hZB46fjTLf31KbsSC8Kq7stqvUnYPjEltol9p1yWrpj+Bijzx3K+Lg/Tc++vA6ckqU0hcgkQH+wxYvRMfiJciOvwdshicNFgWPoT52NEfK02HKiP+4Fp6spR2FKzyDJUqqJX92RtXe+MdhDtWbkHyG4N/pC53CFOg8TgMcS38uthkOru6Bq7WxVtr4v7Un/GhtN00UPa/Njkp/A2TBe/cnEJQTcb+d36IWjHt0y5zma5N
+ pP4WA8Lq
+ vujo3Xlw+ngZHIXqv5TNMZexQf6A2SPxy9Zd8lY5feAq8YXsMygm2LcwW2WIeu8XqlP2apCdrU5U3H1rXiLLjZORlPjrme8Deg0lacxUaY3iWXr9S6fNrQPSorFpm1dcNH1+S3Pux4ScwlZcRG+44cKscrlZkYoFD1MfIMb5c+UtC9Ko=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,176 +123,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-These flags only track folio-specific state during migration and are
-not used for movable_ops pages. Rename the enum values and the
-old_page_state variable to match.
+Hi,
 
-No functional change.
+On Tue, 24 Mar 2026 03:09:25 -0700, Breno Leitao wrote:
+> Hello Randy,
+> 
+> On Mon, Mar 23, 2026 at 09:51:55AM -0700, Randy Dunlap wrote:
+>> On 3/23/26 8:29 AM, Breno Leitao wrote:
+>> > Document the new vm.panic_on_unrecoverable_memory_failure sysctl in the
+>> > admin guide, following the same format as panic_on_unrecovered_nmi.
+>> >
+>> > Signed-off-by: Breno Leitao <leitao@debian.org>
+>> > ---
+>> >  Documentation/admin-guide/sysctl/vm.rst | 27 +++++++++++++++++++++++++++
+>> >  1 file changed, 27 insertions(+)
+>> >
+>> > diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+>> > index 97e12359775c9..3310fb8272fb9 100644
+>> > --- a/Documentation/admin-guide/sysctl/vm.rst
+>> > +++ b/Documentation/admin-guide/sysctl/vm.rst
+>>
+>>
+>> > +
+>> > += ===================================================================
+>> > +0 Try to continue operation (default).
+>> > +1 Panic immediately.  If the ``panic`` sysctl is also non-zero then the
+>> > +  machine will be rebooted.
+>> > += ===================================================================
+>>
+>> The table begin and end lines must be at least as long as the text (may be
+>> longer). Please extend the =========== lines by a few characters.
+> 
+> The HTML renders correctly in Sphinx (likely due to automatic column
+> expansion), but I agree the raw table format should be properly
+> structured.
 
-Suggested-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
+Just to be clear, Sphinx is behaving as expected here.
 
-Applies cleanly on mm-new (02b045682c74).
+The table is in the form of so-called "simple tables" in the reST
+(or docutils) parlance.  The rightmost column can exceed the width
+indicated by "==========".
 
-v1: https://lore.kernel.org/all/20260323141935.389232-3-shivankg@amd.com
+Quote from [1]:
 
-v2:
-- Rename FOLIO_MF_* to FOLIO_*, per feedback from Willy.
+   The rightmost column is unbounded; text may continue past the
+   edge of the table (as indicated by the table borders). However,
+   it is recommended that borders be made long enough to contain
+   the entire text.
 
- mm/migrate.c | 46 +++++++++++++++++++++++-----------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+[1]: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#simple-tables
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 05cb408846f2..7dd6c2f2e1ef 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1135,26 +1135,26 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
-  * This is safe because nobody is using it except us.
-  */
- enum {
--	PAGE_WAS_MAPPED = BIT(0),
--	PAGE_WAS_MLOCKED = BIT(1),
--	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED,
-+	FOLIO_WAS_MAPPED = BIT(0),
-+	FOLIO_WAS_MLOCKED = BIT(1),
-+	FOLIO_OLD_STATES = FOLIO_WAS_MAPPED | FOLIO_WAS_MLOCKED,
- };
- 
- static void __migrate_folio_record(struct folio *dst,
--				   int old_page_state,
-+				   int old_folio_state,
- 				   struct anon_vma *anon_vma)
- {
--	dst->private = (void *)anon_vma + old_page_state;
-+	dst->private = (void *)anon_vma + old_folio_state;
- }
- 
- static void __migrate_folio_extract(struct folio *dst,
--				   int *old_page_state,
-+				   int *old_folio_state,
- 				   struct anon_vma **anon_vmap)
- {
- 	unsigned long private = (unsigned long)dst->private;
- 
--	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
--	*old_page_state = private & PAGE_OLD_STATES;
-+	*anon_vmap = (struct anon_vma *)(private & ~FOLIO_OLD_STATES);
-+	*old_folio_state = private & FOLIO_OLD_STATES;
- 	dst->private = NULL;
- }
- 
-@@ -1209,7 +1209,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- {
- 	struct folio *dst;
- 	int rc = -EAGAIN;
--	int old_page_state = 0;
-+	int old_folio_state = 0;
- 	struct anon_vma *anon_vma = NULL;
- 	bool locked = false;
- 	bool dst_locked = false;
-@@ -1253,7 +1253,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 	}
- 	locked = true;
- 	if (folio_test_mlocked(src))
--		old_page_state |= PAGE_WAS_MLOCKED;
-+		old_folio_state |= FOLIO_WAS_MLOCKED;
- 
- 	if (folio_test_writeback(src)) {
- 		/*
-@@ -1302,7 +1302,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 	dst_locked = true;
- 
- 	if (unlikely(page_has_movable_ops(&src->page))) {
--		__migrate_folio_record(dst, old_page_state, anon_vma);
-+		__migrate_folio_record(dst, old_folio_state, anon_vma);
- 		return 0;
- 	}
- 
-@@ -1328,11 +1328,11 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 		VM_BUG_ON_FOLIO(folio_test_anon(src) &&
- 			       !folio_test_ksm(src) && !anon_vma, src);
- 		try_to_migrate(src, mode == MIGRATE_ASYNC ? TTU_BATCH_FLUSH : 0);
--		old_page_state |= PAGE_WAS_MAPPED;
-+		old_folio_state |= FOLIO_WAS_MAPPED;
- 	}
- 
- 	if (!folio_mapped(src)) {
--		__migrate_folio_record(dst, old_page_state, anon_vma);
-+		__migrate_folio_record(dst, old_folio_state, anon_vma);
- 		return 0;
- 	}
- 
-@@ -1344,7 +1344,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 	if (rc == -EAGAIN)
- 		ret = NULL;
- 
--	migrate_folio_undo_src(src, old_page_state & PAGE_WAS_MAPPED,
-+	migrate_folio_undo_src(src, old_folio_state & FOLIO_WAS_MAPPED,
- 			       anon_vma, locked, ret);
- 	migrate_folio_undo_dst(dst, dst_locked, put_new_folio, private);
- 
-@@ -1358,13 +1358,13 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
- 			      struct list_head *ret)
- {
- 	int rc;
--	int old_page_state = 0;
-+	int old_folio_state = 0;
- 	struct anon_vma *anon_vma = NULL;
- 	bool src_deferred_split = false;
- 	bool src_partially_mapped = false;
- 	struct list_head *prev;
- 
--	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
-+	__migrate_folio_extract(dst, &old_folio_state, &anon_vma);
- 	prev = dst->lru.prev;
- 	list_del(&dst->lru);
- 
-@@ -1395,10 +1395,10 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
- 	 * isolated from the unevictable LRU: but this case is the easiest.
- 	 */
- 	folio_add_lru(dst);
--	if (old_page_state & PAGE_WAS_MLOCKED)
-+	if (old_folio_state & FOLIO_WAS_MLOCKED)
- 		lru_add_drain();
- 
--	if (old_page_state & PAGE_WAS_MAPPED)
-+	if (old_folio_state & FOLIO_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
- 
- 	/*
-@@ -1439,11 +1439,11 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
- 	 */
- 	if (rc == -EAGAIN) {
- 		list_add(&dst->lru, prev);
--		__migrate_folio_record(dst, old_page_state, anon_vma);
-+		__migrate_folio_record(dst, old_folio_state, anon_vma);
- 		return rc;
- 	}
- 
--	migrate_folio_undo_src(src, old_page_state & PAGE_WAS_MAPPED,
-+	migrate_folio_undo_src(src, old_folio_state & FOLIO_WAS_MAPPED,
- 			       anon_vma, true, ret);
- 	migrate_folio_undo_dst(dst, true, put_new_folio, private);
- 
-@@ -1777,11 +1777,11 @@ static void migrate_folios_undo(struct list_head *src_folios,
- 	dst = list_first_entry(dst_folios, struct folio, lru);
- 	dst2 = list_next_entry(dst, lru);
- 	list_for_each_entry_safe(folio, folio2, src_folios, lru) {
--		int old_page_state = 0;
-+		int old_folio_state = 0;
- 		struct anon_vma *anon_vma = NULL;
- 
--		__migrate_folio_extract(dst, &old_page_state, &anon_vma);
--		migrate_folio_undo_src(folio, old_page_state & PAGE_WAS_MAPPED,
-+		__migrate_folio_extract(dst, &old_folio_state, &anon_vma);
-+		migrate_folio_undo_src(folio, old_folio_state & FOLIO_WAS_MAPPED,
- 				anon_vma, true, ret_folios);
- 		list_del(&dst->lru);
- 		migrate_folio_undo_dst(dst, true, put_new_folio, private);
+So, it's just a recommendation, rather than a requirement.
 
-base-commit: 02b045682c74be16c7d1501563f02b0e92d42cdb
--- 
-2.43.0
+"Grid tables" have a stricter rule.
 
+Hope this helps.
+
+Regards,
+Akira
+
+> 
+> I'll send v2 with this corrected.
+> 
+> Thanks for the review,
+> --breno
 
