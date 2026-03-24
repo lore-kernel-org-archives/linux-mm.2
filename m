@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A463E9A77A
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 12:20:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 322BCE9A77B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 12:21:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 086276B0089; Tue, 24 Mar 2026 08:20:08 -0400 (EDT)
+	id 73E966B008A; Tue, 24 Mar 2026 08:21:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0369D6B008A; Tue, 24 Mar 2026 08:20:07 -0400 (EDT)
+	id 7162E6B008C; Tue, 24 Mar 2026 08:21:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8EB66B008C; Tue, 24 Mar 2026 08:20:07 -0400 (EDT)
+	id 652AC6B0092; Tue, 24 Mar 2026 08:21:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7F656B0089
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:20:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8950FBF6E0
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:20:07 +0000 (UTC)
-X-FDA: 84580863654.08.1233515
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 572A46B008A
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:21:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 187C1E08E2
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:21:12 +0000 (UTC)
+X-FDA: 84580866384.18.5BAD031
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B649D40010
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:20:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="E176/AhE";
+	by imf16.hostedemail.com (Postfix) with ESMTP id 515B0180005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:21:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ko5lF8zR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774354805; a=rsa-sha256;
-	cv=none;
-	b=jc07ll/TzbPBI0A2DJmKlRATurEVfoWmydUfs7KMN/npIuqTgfDq+CG6b/qyn+DP83o1B/
-	vJIzEXhTMOM0bGSpocwDcHqhBOvcxxqrWQPxzHb0bfKharnwZ0MaamZYmOCdDc08+QQkpo
-	YwGsFAmMPmllVQJV9cTnFx8tpx+9+1g=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="E176/AhE";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774354805;
+	s=arc-20220608; t=1774354870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SEYdWnUD2ZPVDXYs0LwGK118K8x9BhLsK6qjIHtqfdw=;
-	b=pfFXI5GPd5LGEkT/lFU/GKgOPcD1D6mhaW44Z7/tGKIlsCg8dKlFB2JVkaxfY5kanWlYYI
-	zkrs4Kn0D3OApHqTiEW8njpXWPW0aPjzaKj2I06brCiEgOjEmDCRTPFDwR0UZBWop9jwym
-	YImP0G8ap4SLtOoSMU0bK8p8MMWr/54=
+	bh=HuCbcrSjNoGHs2XG9KW5ENZzv9cQHV3YJBu8UaWkK9U=;
+	b=BoBPjMXgdEIfN2IUWe70vQ/gqVt9KdYnYMb2hozilObaRShJfQ45MEmWj1w7OZkw1fsC0k
+	N41KSBL8HJV+6tCFMVQDyFoYV5jVkaXgVACHbFsjXtVEG2VzHhPySge5jivXNhxjU95qqL
+	Tf6hDJ2jnPmcCS21PLLEMjo2s1kDn/I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774354870; a=rsa-sha256;
+	cv=none;
+	b=r/SMBF5JDInFYWzC9LWA57ABWeYy9INW7ZRBWO5df1Qz4e9YgP9OgLzf1HBgiOfbXSITNf
+	pEEg8/kYpBCcBuPstg3TFVZBLvNGQ3vky/Ml1qnd4+3a8V9lCnhatOFs41zGY79HKB82uI
+	zaFO/QLi9FkICBTwKTzFnD/BM+VodgM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ko5lF8zR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 833F2407BC;
-	Tue, 24 Mar 2026 12:20:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4B3C2BCB1;
-	Tue, 24 Mar 2026 12:20:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D39B44009;
+	Tue, 24 Mar 2026 12:21:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97659C2BCB1;
+	Tue, 24 Mar 2026 12:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774354804;
-	bh=nBpcshDUXGsdJq19WufZSbR45lWJYXUT8cWL/8Uyqxg=;
+	s=k20201202; t=1774354869;
+	bh=pJ8vfZfZauNIn9ur29vM/5yyhq2kiyXAg0V0L1+9CFw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E176/AhErzCouvY3ETmgNShe8DY3jmhd2QAAePt1i+d8smXGBpjT73b+WJ3HX8mTx
-	 W+7sIromtOyZ6uD6pJX+avK8yrfPe/G+8jjRTQ6pkYoVho9fXlNnmKUykIbnTLkO1O
-	 O+UeQGhB49v0Ibm+X+oogwRU5Dh9ehpZui5UjS+jP/8pe3zjbvP2K+l1iG+h38j1E4
-	 b1ExbsQO2EyJ39LjR9jyzBvQjifLZYFQRqZs3rRyIplBFd7Z0sfVFUGw5o3GjOGCmR
-	 C9Cu1ccXhRPQ95nqNOOgvXks0UkOEqIdHWk6UdR1CxV/pzOEsG2A0X6nsLmjQwc0hQ
-	 D1aY8EKqE6OoQ==
-Date: Tue, 24 Mar 2026 12:20:01 +0000
+	b=Ko5lF8zREkiHx0O7qQ35J9tQZcr0lcOfVd6IehqNdTJxS98xQd2NGPf+oH1kGxzmn
+	 PrKnF5ogM4InlxViGqROIyl9cTFEgcsZKmroz/hJDJgUwvhB+mW47yrtZXIi7Kd7M6
+	 iRrAyxFTfQ++7rs+MHk6TuHt8VtpTqjHLMCkMkjAUqAItPJlc99N5kat2aVp1+UnRS
+	 23/YYbUo8nxiTz9vY8rTJo+AGYKyd2laTmXcHkxIPLkHIJdw9RiuWocDb+oQN/DEp4
+	 S5wpsKKO4/eFlrYakAfGL3H7UvOp4Kga6rCZPmt0ppQrwzfXDQEFTfRRMu24n3KGxS
+	 R/kcqakRDS/IQ==
+Date: Tue, 24 Mar 2026 12:21:06 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Qi Zheng <qi.zheng@linux.dev>
 Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
 	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
 	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
 	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
 	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
 	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH 1/3] mm: memcontrol: correct the type of stats_updates to
- unsigned long
-Message-ID: <095a503f-6967-45f1-99c0-03d4fc3baf0b@lucifer.local>
+Subject: Re: [PATCH 2/3] mm: memcontrol: correct the parameter type of
+ __mod_memcg{_lruvec}_state()
+Message-ID: <98dfab09-f3c5-4503-94e4-c3f097539afd@lucifer.local>
 References: <cover.1774342371.git.zhengqi.arch@bytedance.com>
- <74022705dc8d5209ff7e603a178044fe4cfbae09.1774342371.git.zhengqi.arch@bytedance.com>
+ <90524ca3806e24105ab5f2d69435f57c2ae034cb.1774342371.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <74022705dc8d5209ff7e603a178044fe4cfbae09.1774342371.git.zhengqi.arch@bytedance.com>
-X-Stat-Signature: 9otgs5oq8z3srb5cbxnwf5auaxoie4uh
-X-Rspamd-Queue-Id: B649D40010
+In-Reply-To: <90524ca3806e24105ab5f2d69435f57c2ae034cb.1774342371.git.zhengqi.arch@bytedance.com>
+X-Rspamd-Queue-Id: 515B0180005
+X-Stat-Signature: e8n7ru96bnbeay55guz8qymjpca3k1qt
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774354805-140882
-X-HE-Meta: U2FsdGVkX18H9rhrzcjjC9GBTqEdsQvcrkMYxWxyjdbFYl8pGNkYnnTkfWLFsvayd1M+yB4OpSkIWUFoygTO8Hdj1Bi3/3NDOh/TcyBV8uOZOynhrkeTrAq73ZMdH1oz4GAyL++7xG7pgXV+akkYIPqZk6b4hzb75dpnA1klY5If4BigdhXtiXFW8omwApsWvn5F8Cn6J4G4qjvdYf/AbDDX1vhW55guK4gyUudsDdbxtiVMjXmYTlxXK7ZH90GuHixqvBn45oonrTPiBPwCrUkR5hw5/rGBpTPqRdfuuNqi1+uSykU653amEfYQNzDnVL9uLxLtOItAbtNQ1ahcd7v+L8XvdgWtCNtGOdQxyxKAq7q4q1tBwITyFsZJNDr9ADrUZEwV3QrnBVypkYD/r/BfnfzcBGiASDNTOY+FBs88LOi4fziN9+tmU3TCrX6AG0Er7EL7IXUSDXjNgXtCQGDsdotv0FNZW+6yrvMJQJU6UYc65bohCOzKAc8jtDmRAXreKJdgNCbKFjNMX/32SWs31iheuEjtUYBUex9uCtL8GwGcJzrBodKbtdxcJFzauNFyNd6RfPkQ5x3fONwkXAe1+6k+lVesTYA9BaIg+FbmDIWQvwBg6G8DT43xyrjKmTERivgGXI9cN3cba/ChrU1CiKvtVtU78KSqjCYnFpiicZjToTkv6bOxN5zP5aplEu1pd6BQUAbz+/u1HoShmm//PIUs3a4T7FLy3yXHGmLd8D4Z3YQEYqmyAc8bI35rMP7w/h7v/rkM09eA1ATpHhsE7qNudIGKuEha96dobWqKfa0w/X4IZKB/EcDkP5nuNqnwwkK1ehM7tuGEVQCs0HNh8wwMMge+qxvkCGOp3sI8+IMAc2yTtVHtIaST9atvdez494BYgC+2V1KPnkZgmhOQtU/by3PXhySJJwrdMopEHjwlHBIVo8MfMLzVkiqxf95SPgcnZ1ZzodHOklI
- AsyjWQJX
- UKo6JqlQK5YZ//hBmGweAIxfDkX35gw5BXfQ5IlFiI53DIvRTG3Rc20kJ4RKRM7yWz8D86nPD9xSglAeKdnixgU074fnKpm+so970X5SbNGdxLTRKqIclBa4qO5bmaGEH9orJmGIB/cZ/6LY4fymk0JZpnU8cWkQsPc/CuG09J5PKPas9c82A0ekAkRWH1+BXnXY/Nj5sUbKVqE4nN5zm4vZEAXoAVnlmdccvsLvqLDaF0XU17rwlCSNn5P4YyRKIQEyi1b7LlfmsxXpxQsFU1KUB8M4RVZfW247GkP+QvpJssNhTk4IJtm2IW03eN8CbT1D8
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774354870-958463
+X-HE-Meta: U2FsdGVkX19oEd447Sd1JhoSGc9vCiQFCGxSH9Gje6VT2q8JGS9lhspvag3/PExP+lYWnTUK8W9X1/amfBAEfYiu11G5V2ADhDkajvPPT4tIechE10jmdttf5c9dVw/vGqp+rZYt9uHxOw5r1iCB0R+fuvw3tNIaz6kTdTzpwIDLTEfWPQwNhgIYmfsX1uIHnFYUEjdyjFUDqsTUZYvTDXlq5FKyKx2Z15xqD+nk7q3otgOFkov6ISX5CA0rkqE5ZvksmhycVJPzKmpdjDoKYdwDdPRSEmTo9edw28IUxY4TUVC/eHGybFru7OFKgJBANj75qeSCHVY0KvMH2ETNCtixHNnRcuVlM/+2DpblLggl0/Dd1zzX0UZQQ7Y8dezBR1easJJPO9IH9imTMlqx6rz4OQ8Q7YymdNaJTme24zNkxmjm7VTcPPolJHq17slNxMKpuC5XLRUQAm1QKOfJolcphwRewz1mvZVv7Q9hp6019cM+q8cB1+G+fg48v1rUzCKYsI6PSYYk7lQYtBI18JEZ5PHeY5hijE1s5RygnQ4OjAsLPqkxWggrV1oB5OCRnD99TyOpA7IdjgzlBQ5wK6R6r0WfK9W5WIQKLppepWhr69psY6ZzofWojYH54WvKp6Re1Zr4zj/EJgbw1ljPRQ5xfftZXqhMh7T8ThHxV2pOKGodcT+vHTSvOQndKzQiAC+fdvowz6ju+ujpch+pusTcAy+yNO6qGOH2whOwiwm7/m/n56y32tmNDWCcAMAfWyov/lNuYBp5N/I6Dq8fd6Ev2a9ueS4QEheL0wJizSBsf7RhE2TpjG6rC6FGCcL2UZ8GgwBPO+6YIrEI+L1cuipVNWtG41cBtLI46cYErNxKW8n+YuIqvSXDhsMWXnm7ufkepO+zfcqrtW21Cztnw53HV+yd583Bqv3PXHGVplaUjuJFQaseG/SupXG0XMex7Y5/u8lfdccrzCnNGBb
+ Fhbuwva8
+ SLo/hZYLXRJnKaKuPlPwEXEBc/GVp38PtnCN5gTKqoGJo2sDlRyCpAJLhZ1VJF5vTbhp0EJinQvUZBWtZiVh+7jyx3PbujTf7F66ySemDMXKQNOXkPC6n/AzZ0D/9u2UN88UsUGxvCRalXHqATXQ6tqc4XSsPHMOnOJfo901ldVyNOLNVqD/WSkCG9dRF6ZEPOFLBJ8a5/IC2yzAoJGdJDB2L4S3dTdXQ6yLZWZxs+GwS9LM4ibvdDwvO4931rE8GMivRtGeIekrMz9ipbrC3G2oH4IOVGnrExwwI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,104 +98,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(-cc old mail)
-
-On Tue, Mar 24, 2026 at 07:31:27PM +0800, Qi Zheng wrote:
+On Tue, Mar 24, 2026 at 07:31:28PM +0800, Qi Zheng wrote:
 > From: Qi Zheng <zhengqi.arch@bytedance.com>
 >
-> Now, the memcg_rstat_updated() is for vmstats_percpu->state and
+> The __mod_memcg_state() and __mod_memcg_lruvec_state() were used to
+> reparent non-hierarchical stats, the values passed to them might exceed
+> the upper limit of the type int, so correct the val parameter type of them
 
-Now? Did this change? If so, please put commit here in commit xxx ("blah")
-format, I don't want to have to try and look it up :P
+Why might they? What precipitated this change?
 
-> lruvec_stats_percpu->state, which are both of type long, so let's change
-> the type of stats_updates to unsigned long as well.
+> to long.
 
-Is this a bug whereby before this could be overflowed?
-
-Or are you deciding to make these long now? Because it seems that are
-proactively making this change _yourself_.
-
-This comment message needs a lot more explanation.
+Why is it a signed value?
 
 >
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > ---
->  mm/memcontrol.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+>  include/trace/events/memcg.h | 10 +++++-----
+>  mm/memcontrol.c              |  8 ++++----
+>  2 files changed, 9 insertions(+), 9 deletions(-)
 >
+> diff --git a/include/trace/events/memcg.h b/include/trace/events/memcg.h
+> index dfe2f51019b4c..51b62c5931fc2 100644
+> --- a/include/trace/events/memcg.h
+> +++ b/include/trace/events/memcg.h
+> @@ -11,14 +11,14 @@
+>
+>  DECLARE_EVENT_CLASS(memcg_rstat_stats,
+>
+> -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
+> +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
+>
+>  	TP_ARGS(memcg, item, val),
+>
+>  	TP_STRUCT__entry(
+>  		__field(u64, id)
+>  		__field(int, item)
+> -		__field(int, val)
+> +		__field(long, val)
+>  	),
+>
+>  	TP_fast_assign(
+> @@ -27,20 +27,20 @@ DECLARE_EVENT_CLASS(memcg_rstat_stats,
+>  		__entry->val = val;
+>  	),
+>
+> -	TP_printk("memcg_id=%llu item=%d val=%d",
+> +	TP_printk("memcg_id=%llu item=%d val=%ld",
+>  		  __entry->id, __entry->item, __entry->val)
+>  );
+>
+>  DEFINE_EVENT(memcg_rstat_stats, mod_memcg_state,
+>
+> -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
+> +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
+>
+>  	TP_ARGS(memcg, item, val)
+>  );
+>
+>  DEFINE_EVENT(memcg_rstat_stats, mod_memcg_lruvec_state,
+>
+> -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
+> +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
+>
+>  	TP_ARGS(memcg, item, val)
+>  );
 > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index a47fb68dd65f1..7fb9cbc10dfbb 100644
+> index 7fb9cbc10dfbb..4a78550f6174e 100644
 > --- a/mm/memcontrol.c
 > +++ b/mm/memcontrol.c
-> @@ -608,7 +608,7 @@ static inline int memcg_events_index(enum vm_event_item idx)
+> @@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
 >
->  struct memcg_vmstats_percpu {
->  	/* Stats updates since the last flush */
-> -	unsigned int			stats_updates;
-> +	unsigned long			stats_updates;
+>  #ifdef CONFIG_MEMCG_V1
+>  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> -				     enum node_stat_item idx, int val);
+> +				     enum node_stat_item idx, long val);
 >
->  	/* Cached pointers for fast iteration in memcg_rstat_updated() */
->  	struct memcg_vmstats_percpu __percpu	*parent_pcpu;
-> @@ -639,7 +639,7 @@ struct memcg_vmstats {
->  	unsigned long		events_pending[NR_MEMCG_EVENTS];
->
->  	/* Stats updates since the last flush */
-> -	atomic_t		stats_updates;
-> +	atomic_long_t		stats_updates;
->  };
->
->  /*
-> @@ -665,16 +665,16 @@ static u64 flush_last_time;
->
->  static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
+>  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+>  				       struct mem_cgroup *parent, int idx)
+> @@ -784,7 +784,7 @@ static int memcg_page_state_unit(int item);
+>   * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
+>   * up non-zero sub-page updates to 1 page as zero page updates are ignored.
+>   */
+> -static int memcg_state_val_in_pages(int idx, int val)
+> +static long memcg_state_val_in_pages(int idx, long val)
 >  {
-> -	return atomic_read(&vmstats->stats_updates) >
-> +	return atomic_long_read(&vmstats->stats_updates) >
->  		MEMCG_CHARGE_BATCH * num_online_cpus();
->  }
+>  	int unit = memcg_page_state_unit(idx);
 >
-> -static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
-> +static inline void memcg_rstat_updated(struct mem_cgroup *memcg, long val,
->  				       int cpu)
+> @@ -831,7 +831,7 @@ static inline void get_non_dying_memcg_end(void)
+>  #endif
+>
+>  static void __mod_memcg_state(struct mem_cgroup *memcg,
+> -			      enum memcg_stat_item idx, int val)
+> +			      enum memcg_stat_item idx, long val)
 >  {
->  	struct memcg_vmstats_percpu __percpu *statc_pcpu;
->  	struct memcg_vmstats_percpu *statc;
-> -	unsigned int stats_updates;
-> +	unsigned long stats_updates;
+>  	int i = memcg_stats_index(idx);
+>  	int cpu;
+> @@ -896,7 +896,7 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
+>  #endif
 >
->  	if (!val)
->  		return;
-> @@ -697,7 +697,7 @@ static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
->  			continue;
->
->  		stats_updates = this_cpu_xchg(statc_pcpu->stats_updates, 0);
-> -		atomic_add(stats_updates, &statc->vmstats->stats_updates);
-> +		atomic_long_add(stats_updates, &statc->vmstats->stats_updates);
->  	}
->  }
->
-> @@ -705,7 +705,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
+>  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> -				     enum node_stat_item idx, int val)
+> +				     enum node_stat_item idx, long val)
 >  {
->  	bool needs_flush = memcg_vmstats_needs_flush(memcg->vmstats);
->
-> -	trace_memcg_flush_stats(memcg, atomic_read(&memcg->vmstats->stats_updates),
-> +	trace_memcg_flush_stats(memcg, atomic_long_read(&memcg->vmstats->stats_updates),
->  		force, needs_flush);
->
->  	if (!force && !needs_flush)
-> @@ -4406,8 +4406,8 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
->  	}
->  	WRITE_ONCE(statc->stats_updates, 0);
->  	/* We are in a per-cpu loop here, only do the atomic write once */
-> -	if (atomic_read(&memcg->vmstats->stats_updates))
-> -		atomic_set(&memcg->vmstats->stats_updates, 0);
-> +	if (atomic_long_read(&memcg->vmstats->stats_updates))
-> +		atomic_long_set(&memcg->vmstats->stats_updates, 0);
->  }
->
->  static void mem_cgroup_fork(struct task_struct *task)
+>  	struct mem_cgroup *memcg = pn->memcg;
+>  	int i = memcg_stats_index(idx);
 > --
 > 2.20.1
 >
+
+Cheers, Lorenzo
 
