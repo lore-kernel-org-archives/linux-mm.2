@@ -4,96 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF3F4E9A768
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 10:54:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BC05E9A767
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 10:54:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AE9D6B0096; Tue, 24 Mar 2026 06:54:26 -0400 (EDT)
+	id EF97C6B0098; Tue, 24 Mar 2026 06:54:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35E8C6B0098; Tue, 24 Mar 2026 06:54:26 -0400 (EDT)
+	id E831C6B009B; Tue, 24 Mar 2026 06:54:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 274C96B0099; Tue, 24 Mar 2026 06:54:26 -0400 (EDT)
+	id D71C46B009D; Tue, 24 Mar 2026 06:54:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EECE6B0096
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:54:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 96BA2BCBC9
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 10:54:25 +0000 (UTC)
-X-FDA: 84580647690.11.07B55A4
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8A7F6100005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 10:54:21 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ya7VqwXY;
-	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774349663;
+	by kanga.kvack.org (Postfix) with ESMTP id C32D46B0098
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:54:38 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9B3B01BA06F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 10:54:38 +0000 (UTC)
+X-FDA: 84580648236.28.99B8FA6
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9D01F180016
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 10:54:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y8ULhDgO;
+	spf=pass (imf06.hostedemail.com: domain of devnexen@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774349676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIZl92YtKfb0yqPOgIE+PAZEkENCazVOzf56tfESq80=;
-	b=cNauDJU48wI+Es8juH1+fCPcMxlwJjQ975CQKBm+NxUcchvJ6uhgd4joRDeLQna3S1sN5i
-	T6uSmHzjjN5kGWqg7lGyaUIV1M25ZtZ6JtnXpq85eAx+eEnFm7jhISUkOnxmVJjt//+z7R
-	wUSUS2JFGMzVxAkeVDEGjWMx4jWbvDM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ya7VqwXY;
-	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774349663; a=rsa-sha256;
-	cv=none;
-	b=PvtFLFMTBX8myrCBilvfuR5BFiUmeLAq8sY7r1zJ+9b4Mu5sOQ861O1Hrc7r8gNuZC8wTY
-	9LSLSrTyaUwRH/j5aT583aSBFspIXZkl2JvL017pBSsdJfPTw5CHmD1brR/Yks53EfNdaH
-	3as2qJ4yY4EazLykTKV9b86tEI/RUwY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774349657; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=uIZl92YtKfb0yqPOgIE+PAZEkENCazVOzf56tfESq80=;
-	b=Ya7VqwXY8Q0gmT8KUP1AuGjYqtOegWft4ssvZi/zAT1ySphRh2Lgd4NM4zTbyh944JWRYAFgaXL1M6mp3TPXX0IOtFdO+pBHGLlixYPKEIul+Kd72ERFtrfGoZ2mDBsb4n0ljISp+ZDKEhw7Sm1W0Ngx20/+vqCOcmctmlgAp8k=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R641e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=40;SR=0;TI=SMTPD_---0X.eIYMT_1774349653;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X.eIYMT_1774349653 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 24 Mar 2026 18:54:15 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,
-  <lorenzo.stoakes@oracle.com>,  <Liam.Howlett@oracle.com>,
-  <vbabka@kernel.org>,  <willy@infradead.org>,  <rppt@kernel.org>,
-  <surenb@google.com>,  <mhocko@suse.com>,  <ziy@nvidia.com>,
-  <matthew.brost@intel.com>,  <joshua.hahnjy@gmail.com>,
-  <rakie.kim@sk.com>,  <byungchul@sk.com>,  <gourry@gourry.net>,
-  <apopple@nvidia.com>,  <dave@stgolabs.net>,
-  <Jonathan.Cameron@huawei.com>,  <rkodsara@amd.com>,  <vkoul@kernel.org>,
-  <bharata@amd.com>,  <sj@kernel.org>,  <weixugc@google.com>,
-  <dan.j.williams@intel.com>,  <rientjes@google.com>,
-  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
-  <dave.hansen@intel.com>,  <hannes@cmpxchg.org>,  <jhubbard@nvidia.com>,
-  <peterx@redhat.com>,  <riel@surriel.com>,  <shakeel.butt@linux.dev>,
-  <stalexan@redhat.com>,  <tj@kernel.org>,  <nifan.cxl@gmail.com>,
-  <linux-kernel@vger.kernel.org>,  <linux-mm@kvack.org>,  Mike Day
- <michael.day@amd.com>
-Subject: Re: [RFC PATCH v4 4/6] mm/migrate: add copy offload registration
- infrastructure
-In-Reply-To: <20260309120725.308854-12-shivankg@amd.com> (Shivank Garg's
-	message of "Mon, 9 Mar 2026 12:07:29 +0000")
-References: <20260309120725.308854-3-shivankg@amd.com>
-	<20260309120725.308854-12-shivankg@amd.com>
-Date: Tue, 24 Mar 2026 18:54:13 +0800
-Message-ID: <87o6kdzeei.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=4xZa/0j22+oqg1nMErzFxx2lp9k+a1i473iPRNI2fUs=;
+	b=d8IkMdUX0RQK4sxq89pY3b+5WARyJd5EX2b7cJkLZRy1vJJ0CcBUjUdaFDuTegjDE555Ic
+	a6wxcgljqYpeD+hsZRHZtCzxquRaGoAAcJZY+SrXQhlLWc+tWXt55TCYx3ydgi3bOTUr7c
+	FvywEDX+f9T5g+c1jomXEEHPBge4zp8=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Y8ULhDgO;
+	spf=pass (imf06.hostedemail.com: domain of devnexen@gmail.com designates 209.85.161.54 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774349676; a=rsa-sha256;
+	cv=pass;
+	b=WACi9jZlKiISZzC/gGLr/0UdYEqfMCn6C2GWGLO9bGMUG8ElFO4tie+RS66wbw8Q9cTzbT
+	mzs5CVzU5kcndIaiXhf0rM2T4zVksVX5ST6xqJfa8+wmWBdh7/w12rAmqFtCJb0zEUU7dY
+	wK4aHxOpiR49Vlot/A5VhZ9VNrQeTl0=
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-67baebf716bso638139eaf.3
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 03:54:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774349675; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hNqJj8IRv7yUOVyGO1H8u8RHKbEqs1OWGPO+AlvyN5PG0uLnyGBiJ33veWC0qi9awk
+         Qak+SmdmFvHZOsAEdJ6ySkebTdMACyfC1wloGInCyG+7o8XWJYPJeE1j+jwRF0/zzCrc
+         WWcznO011e3GD5Z7YQMq7oK8B+dC62WzFyUkarT64c6iMajeLQ+KXb8AAKBhVhkFWw0O
+         /8gaDB5dEEADK/NewKEvSMS/GESJRnoa6URVjRf6Iyu2bMwuzskStIgXk7TP2lUqmEmY
+         Pb+dcE+2lcJThJjB/xb/jL6kk1w1lP1B7cDMu9Fgkx0WdAVUxHcW47s392pclIiOXWl5
+         Ahng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=4xZa/0j22+oqg1nMErzFxx2lp9k+a1i473iPRNI2fUs=;
+        fh=lCzyW3P4uxBDaZNEGAq4Lqa+KzuVan1YwZoD8sLlt0g=;
+        b=SpmkzJqqpvwtUwFAtZrkhvKz+nUtjdM9ul2D6rH05ElQn7Rg2cUheRHVTr9OZVaCyV
+         HyF1WHrPokll0C5RmfdczA5OM793Kbj4j/20sE6SL3QX8DT0yona6U9ybbqcTTNfRYkx
+         xMrVLJVqJk7sZ1Sln87MuoDQDlu0EYNVUM9GTQUS2LNGaS0LKFOSFQQGXeQcP3WRlfWX
+         LUBBTwjfXc9Ktmpx+1o9s70rch6L87HSW4ZSaOAPn+cpaHCKfIPkTMGfkrO1sBjy2fvZ
+         aTmfS+NjFzrc08GaGJ2B2SBo1dGHbmVhcFDDDhN6sqCoCZs4i3vZjZEa3nQgmgEalw5O
+         6gKw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774349675; x=1774954475; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4xZa/0j22+oqg1nMErzFxx2lp9k+a1i473iPRNI2fUs=;
+        b=Y8ULhDgOzSXplAw7WrfUJmdnFs3cxnFJOUFwPiYWOSFZyQ414dl0/N0DvZfkFVpJDY
+         betfNDZqQk8HFWXOgXqSOnmoa36YB1abIbR27RALl9QP9NcZ+zyN4dM13l+k7l+O6FPu
+         qdK4iOetnhGHeBn7aWvAle3Nu+8/f5feSPTB2nshGNnxQ0SOCsMZ4H/Uye1GGhYuczZD
+         B40Ka8pu9WSqtDHPyti+wyOi8oCy4PwD3zPT6vI7gkanHs261l7T93EDfjqIzcY9eqnK
+         MVbzL/DUTuvT4C15B3FRtvJuU+P+xhkMc31fEt5vMD0Vxwq9xmEsceSuCX4qSi4uRutp
+         myNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774349675; x=1774954475;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4xZa/0j22+oqg1nMErzFxx2lp9k+a1i473iPRNI2fUs=;
+        b=GftNoInQcRmWVqEbuczo49h9j9pZL7C7Q98BPdsQz7/1wTlvCKPhlOJB9HZbFnynyP
+         qTZu1YXkGuraxBQuU2T7OS6Jmk+yDWINM984QczViG5+rbRQZcSebyPEONrp9qzE3JGP
+         nxAX/dwUYvc6neiFMGWwW6PwGYAE7k3Svh/fhzkMU2Hqoxbh4zoDiIxf0ju4dzHWFzzq
+         3LufaKGVkSCwfXNEKvjbpa8pndd8M0eEZMv7Ao7VZ4UtXpAT7tfvmBXYeAZc1h7Y50rX
+         IEQK4GPTs75xcJ6EFTBtozaoWUKXBKNrhqj2+ae5oK7jwGjnqbqBjxCPVZk1o/CxGX0W
+         jSIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWD62zf1laPDpxRkEGEa2LB4DAoUKDw5cdHqT4xbnAos9ExhtdBzG/wWdiscJrsHhfjES45GKcjbQ==@kvack.org
+X-Gm-Message-State: AOJu0YxZx97G3MKC945iq3fovCXqxVumtZBCI1k5QEqC3tZ4IWNJt1rD
+	qqCcmZgQLEHCJxd6sJUCbQzJvNplWtczZY8XWc0wmIKbNRjCEfP/kwhA06g3K/cJ9gO8KwEpI+S
+	3KFFMXnGgIVCdoHbsu1tE0qltKrCYUjzqom8z
+X-Gm-Gg: ATEYQzyiWR30iiNtBe4O5e03i3QEjUHeMlrO0j1LLKkK8ywqE3fJffg0sMZec12uI/7
+	aRBiTmxAx7pqI2sCnx1LNgj+Aoqo/haw9jVPczF84QHX34Jo8wz7oWimPdYDLU4wHj45EvXVGH2
+	H1PrCJ/A72JQgVWkcJWp66vbSMcfpkTlzvLMzjbKjhIrcTQeeeBHXUNIcH/GJC8Fv0rsop46JGa
+	GgCDSyph2cfYHuZxcq1Wx7M13Ly9bMH/LGaxQBrarxgFoX8RIWY7nrHkZ3H+Om4lK+A2v5+k09/
+	uCBJVwDcLt1HqsHxStGldsUleY8OXf4SMlC9wkRuO9EjtPTm
+X-Received: by 2002:a05:6820:2d4a:b0:677:98b4:79ab with SMTP id
+ 006d021491bc7-67c22f74118mr13202109eaf.33.1774349675421; Tue, 24 Mar 2026
+ 03:54:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+References: <20260322164943.37460-1-devnexen@gmail.com> <202603241635.qNXDPwjs-lkp@intel.com>
+In-Reply-To: <202603241635.qNXDPwjs-lkp@intel.com>
+From: David CARLIER <devnexen@gmail.com>
+Date: Tue, 24 Mar 2026 10:54:23 +0000
+X-Gm-Features: AaiRm50vrYNk_mlAnRdMfp0nxFOpfo962oTnSfj2Jot4SGUmcie4lybU4o5qGTY
+Message-ID: <CA+XhMqzK39zZu7_KG37RJSeiR56fUON2CQsDN_L1W3+BuZzHmA@mail.gmail.com>
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online()
+ error path
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: oe-kbuild@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Qi Zheng <zhengqi.arch@bytedance.com>, lkp@intel.com, 
+	oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 9D01F180016
+X-Stat-Signature: xoquaa51ork1bfkqmrh1oaabduxmihj7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A7F6100005
-X-Stat-Signature: 4rendcrhw819esf547nnasbchpmr5xje
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774349661-203646
-X-HE-Meta: U2FsdGVkX19WuomPGUnFxH0f2PiP+9i3AWSDCUWXFxQROepO51ZKnLzshAABq7R5rSA7zGiABTj9XjEivXwkLvhqb+FXCqoShvKaS0SR3qzKe0gzJMjCAHgLyNcAWXOnZGHtXB4pbehHNDyFeyNbUzaekSSFWjqZOrZ35IGRJjCCDcydyzKp4cbul/brN09j3kcIlBvdkhrHiSk/gNko7gJjCJZcqwB2Qidv6R3B+bfNGfBCTfub6XUe5BCnlOkSLE45VmUCJ06anWS/Jd1XCuOXYa2P7LXf5NLLfksMQrDNiojq6u4gwHknmmqYVR473W8MK2Pbt3PjalC2vneRcB3T/qsHLbg1T6ugjOq28u6dUgS4942fTQxc2ErHHeDSvROyiixEzSGgE5iikxu44SGF+LKkYwdh/STtwoauvEQ5GvoDO2QocgfG2JH3lN1a5IF9mZ0249iZknypnc9k78blTlfr8mAuLXiH6T422DMFYDS5ejpXhoVrxgSfWjDrtpevhQm+BiyP/SKQQSsPoy57+p3znh6Jvy1NDittjyzuzfEoBqO6q5bNblDloCQwpG+kTDw8ZSdjZbERER2iTONjIs9lRp/2ZrtiAN5La+dz1wrMd6Cn+lqIM2al/SYMMrpd7ODRHeywrbYNiYh2om92L2DyVtAJd12W/toFYcUmuHLCvpL1gvx5jLibV/2OdA5LIO3hpDLjJQArwoH/9lfjWI1rOVUCeDVCf558WbFysDS0paZ4DZD+8qiYJR0rspVYn3Oo3BAj0bIifkbHM3TuGIHY7V7a533svn8YjoN/EUQpF2VBNWZeEe/hZ6g0lzlESlgB8i36SMaeu0FPSZBC2M4lDhLGDFNfW10l7Z3kKXCCgEmFGQSwA/HbafpqSgnMm7XVm+zbEp70ebIDQtqRsXCxunIep9m268ClhFwPeJ5uFjYrwL9BnDIGEWAlsRsQVgYbDla+EKZPHSw
- YOCwnF9U
- /Q8DsgtJRh92E5Iqw3nqiIfkDFNvRhOtZ1Ids4XciPZFZBttBQ+pMehk/+zDzOrs979CLRcYFbf5Glc61usiV90RT1AOvzKSNvQvIGtU7NLrefQmUeTyPA5BdRm6gvV1uzftAq+qg2QKZF9MP1BRYMBKa8tJybt4iwMsnVKUSbKcpoeQnrRNedxbS8kjHoFz+v4zQHomVvkL2bkMGkrtdiytQEz6/eukKYWSl5RVWWPlPkRahyTFh/RwaV2PhNg0sMJ3w7FmnIKq7aeYZCWrzPvtvixiFbKMpwC0gIbUW9vvp+84YnmHnvu6dw98QpAq5BwLg2SVw8b37hkAChVnFDbPWWVPhHTbwZriyBEQuhYyaV3Y8AbZG/1kK1w==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774349676-631626
+X-HE-Meta: U2FsdGVkX18rmPe+LbFQv5sqpNuPB01B5kZEIXtnP0uU3uySCKZ94qLRpcFvI7rKBZ9GC+bpgbVwVRItsJSD1bf+yddwpS52ooAgFptOYjaWtebhmtNDm9q7phxT6t4GCpT3l+HdRPjZ44KZ/tnIb8/FicANBFybjiuFO0hzq8mQ8LD+M5bwZ3Osz5OBD56EnJTXEAvJuGowfCDsKzWf4gC1hmAzEOqSKDbdkeR1sTh876FBlm1JSdU8eikdR/mZJcFcmqvf/CFbS04tUTezKYlfqAFPJ0LuNVM0J7a3o7yDTN5h/S45GW3GV+QjfXLLoN5K4tPCdf8/z2pJexkjVU7jn22JTzv5jUP5BFPI5FEBWRi4vGp3fRenlh/gbFvIkyRhQaYCzlOQcSTEkebiouutZST1WYCxoTgibB6zRkgQ/EYgbfovS556leZEU4UcGyNm99xYbSrPWyUHh9029QiRVasyqSKiZMxftVoU4Hc782RmkJJeHsKp3kdxdFYMLTN5PFsWo6ZeUGZF+Yghn8MBiVc3OAhhNE515lojUugaxNHQIiqN3TtVJZ9aF0RSjoT8q6otwbWrlT38JQLcNfzuHRfE9pDU+rWZUWtrUY+wbqQTUNTqT0WcMSp30R3s2M/svkhl7/60/rQD7wrFr9KSJHmZ69U2CiWLw69Ekb9P3tnGdRAjKnMZ4KVNKiinZqarl6VraxHQhFpSJ5c/BYV/WBBptZkxy9HjXaM4V7ebum6l0XMslLho2UaS17cR+h3wnPzkX1YcSXd97VP4BpJ6EHe7RnVYhdVPoG6S4VxgixxhxoDSoUsxnjirPJSgr+ufigqMSW+xLPg11anQOo6q756wLRv4nqPOFkfpTJrmP/OL1DR6ae/VcAz6A0ozYcuIA08glM0nBtfqlof3UWhkE0bAeTX4SEHrOkEGq+cMgmbKpG93j3t1Re9W3S/yjj3iJJQu7KN/SNuapv7
+ M1L8Jsqz
+ T48F77RN6CuBNe33DYOcHffUqtBJrNw3SNZbaKaU25TGROlysy3y0pKFojaQpPLI0oVm/ziuD/3k3C0OcGID7whc1GihVdYUTm6ZUVCYHmkAEzx4/7gAYTNXkljpj+oc+5HGbjY2gn1HieMEyzUxkVpAumJOyrStpA1HMPo7+ohbs4NZ6A+87rC+hBIhxlvFvChx2ox85T5yNogIWo+bvVs+3nRNYD5F5goJAqtFs4Pbv/+el9P4AqMUU6VDKa9V5cyUSYpxrrWElnqq0p2x1Nh+ZoO4w2ok8SrcML5JXkIBFiEZjLqsFspAsyR95bDEUtOv4P07Y6y2jovtedDoxL4erlVS+H3Xvz/kF6RsnBKQvkCe9dQ5SeDivZv5F+xLE2r7Yrn1F1ueimKKHXH+edDfNQZsAeHBbJziZZOTMRgqNZWBdsFOOUnMaJVmL1D+ZPDhYd7b26vBkKTmBcVzZgfMy55M6FjRBOWsskzKddauhtN4tVuy/xgoeYixwwKqm+SnWSYwBYmDWxJoomVxbsZ0Z0bjGbUQCdQhW/56Ff50nArxD55ISmz/+Lu7S8LaKRq8KUuMcySBzRuPZzzBFVmrWWMNxybsJJc7v11u7pWjJFzHpZrUcwswcK64ygXB2D9z+z9cni4aNxPiiciE9R1OvTVcqALRiKPEP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,313 +140,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shivank Garg <shivankg@amd.com> writes:
+Hi Dan,
 
-> Introduce CONFIG_MIGRATION_COPY_OFFLOAD, which lets offload driver
-
-Do we really need a new kconfig option?  IMHO, we have too many now.
-Because we have a jump label already, the performance difference should
-be trivial.  Can you measure the size difference?
-
-> (DMA, multi-threaded CPU copy, etc) take over the batch folio copy in
-> migrate_pages_batch().
+On Tue, 24 Mar 2026 at 09:10, Dan Carpenter <dan.carpenter@linaro.org> wrote:
 >
-> Offload driver fill in a struct migrator with their offload_copy() and
-> should_batch() implementation and call migrate_offload_start(), which
-> patches the migrate_offload_copy() static_call and flips the
-> migrate_offload_enabled static branch. The migrate_offload_stop() call
-> reverts both.
+> Hi David,
 >
-> Only one migrator can be active a time. A second registration returns
-> -EBUSY, and only the active migrator can stop itself. The static_call
-> dispatch is under SRCU so synchronize_srcu() in stop path guarantees
-> no in-flight copy before the module reference is dropped.
+> kernel test robot noticed the following build warnings:
 >
-> Co-developed-by: Mike Day <michael.day@amd.com>
-> Signed-off-by: Mike Day <michael.day@amd.com>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  include/linux/migrate_copy_offload.h | 34 ++++++++++
->  mm/Kconfig                           |  9 +++
->  mm/Makefile                          |  1 +
->  mm/migrate.c                         | 30 ++++++++-
->  mm/migrate_copy_offload.c            | 99 ++++++++++++++++++++++++++++
->  5 files changed, 171 insertions(+), 2 deletions(-)
->  create mode 100644 include/linux/migrate_copy_offload.h
->  create mode 100644 mm/migrate_copy_offload.c
+> url:    https://github.com/intel-lab-lkp/linux/commits/David-Carlier/mm-memcontrol-fix-obj_cgroup-leak-in-mem_cgroup_css_online-error-path/20260324-010357
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/20260322164943.37460-1-devnexen%40gmail.com
+> patch subject: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online() error path
+> config: arm64-randconfig-r072-20260324 (https://download.01.org/0day-ci/archive/20260324/202603241635.qNXDPwjs-lkp@intel.com/config)
+> compiler: aarch64-linux-gcc (GCC) 14.3.0
+> smatch: v0.5.0-9004-gb810ac53
 >
-> diff --git a/include/linux/migrate_copy_offload.h b/include/linux/migrate_copy_offload.h
-> new file mode 100644
-> index 000000000000..ee112826ebdf
-> --- /dev/null
-> +++ b/include/linux/migrate_copy_offload.h
-> @@ -0,0 +1,34 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_MIGRATE_COPY_OFFLOAD_H
-> +#define _LINUX_MIGRATE_COPY_OFFLOAD_H
-> +
-> +#include <linux/jump_label.h>
-> +#include <linux/srcu.h>
-> +#include <linux/types.h>
-> +
-> +struct list_head;
-> +struct module;
-> +
-> +#define MIGRATOR_NAME_LEN 32
-> +
-> +struct migrator {
-> +	char name[MIGRATOR_NAME_LEN];
-> +	int (*offload_copy)(struct list_head *dst_list,
-> +			    struct list_head *src_list,
-> +			    unsigned int folio_cnt);
-> +	bool (*should_batch)(int reason);
-> +	struct module *owner;
-> +};
-> +
-> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
-> +extern struct static_key_false migrate_offload_enabled;
-> +extern struct srcu_struct migrate_offload_srcu;
-> +bool migrate_should_batch_default(int reason);
-> +int migrate_offload_start(struct migrator *m);
-> +int migrate_offload_stop(struct migrator *m);
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202603241635.qNXDPwjs-lkp@intel.com/
+>
+> smatch warnings:
+> mm/memcontrol.c:4180 mem_cgroup_css_online() warn: variable dereferenced before check 'pn' (see line 4176)
+>
+> vim +/pn +4180 mm/memcontrol.c
+>
+> 6f0df8e16eb543 Johannes Weiner  2023-08-23  4168         * regular ID destruction during offlining.
+> 6f0df8e16eb543 Johannes Weiner  2023-08-23  4169         */
+> e77786b4682e69 Shakeel Butt     2025-12-25  4170        xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+> 6f0df8e16eb543 Johannes Weiner  2023-08-23  4171
+> 2f7dd7a4100ad4 Johannes Weiner  2014-10-02  4172        return 0;
+> 098fad3e1621cb Qi Zheng         2026-03-05  4173  free_objcg:
+> 098fad3e1621cb Qi Zheng         2026-03-05  4174        for_each_node(nid) {
+> 098fad3e1621cb Qi Zheng         2026-03-05  4175                struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+> 59f75a1877fbf7 David Carlier    2026-03-22 @4176                objcg = rcu_replace_pointer(pn->objcg, NULL, true);
+>                                                                                             ^^^^^^^^^
+> Dereference
+>
+> 59f75a1877fbf7 David Carlier    2026-03-22  4177                if (objcg)
+> 59f75a1877fbf7 David Carlier    2026-03-22  4178                        percpu_ref_kill(&objcg->refcnt);
+> 098fad3e1621cb Qi Zheng         2026-03-05  4179
+> 4a2f95f5c79e02 Qi Zheng         2026-03-09 @4180                if (pn && pn->orig_objcg) {
+>                                                                     ^^
+> Checked too late.
+>
+> 098fad3e1621cb Qi Zheng         2026-03-05  4181                        obj_cgroup_put(pn->orig_objcg);
+> 4a2f95f5c79e02 Qi Zheng         2026-03-09  4182                        /*
+> 02b5fc7885d9f8 Andrew Morton    2026-03-09  4183                         * Reset pn->orig_objcg to NULL to prevent
+> 02b5fc7885d9f8 Andrew Morton    2026-03-09  4184                         * obj_cgroup_put() from being called again in
+> 02b5fc7885d9f8 Andrew Morton    2026-03-09  4185                         * __mem_cgroup_free().
+> 4a2f95f5c79e02 Qi Zheng         2026-03-09  4186                         */
+> 4a2f95f5c79e02 Qi Zheng         2026-03-09  4187                        pn->orig_objcg = NULL;
+> 4a2f95f5c79e02 Qi Zheng         2026-03-09  4188                }
+> 098fad3e1621cb Qi Zheng         2026-03-05  4189        }
+> a0dd8b1942f5bf Muchun Song      2026-03-05  4190        free_shrinker_info(memcg);
+> da0efe30944476 Muchun Song      2022-03-22  4191  offline_kmem:
+> da0efe30944476 Muchun Song      2022-03-22  4192        memcg_offline_kmem(memcg);
+> e77786b4682e69 Shakeel Butt     2025-12-25  4193        mem_cgroup_private_id_remove(memcg);
+> da0efe30944476 Muchun Song      2022-03-22  4194        return -ENOMEM;
+> 8cdea7c0545426 Balbir Singh     2008-02-07  4195  }
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+>
 
-Why not naming the function migrate_offload_register/unregister()?
-IMHO, that sounds more natural.
-
-> +#else
-> +static inline int migrate_offload_start(struct migrator *m) { return 0; }
-> +static inline int migrate_offload_stop(struct migrator *m) { return 0; }
-> +#endif /* CONFIG_MIGRATION_COPY_OFFLOAD */
-> +
-> +#endif /* _LINUX_MIGRATE_COPY_OFFLOAD_H */
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index ebd8ea353687..faf0cae9991b 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -648,6 +648,15 @@ config MIGRATION
->  config DEVICE_MIGRATION
->  	def_bool MIGRATION && ZONE_DEVICE
->  
-> +config MIGRATION_COPY_OFFLOAD
-> +	bool "Page migration copy offload"
-> +	depends on MIGRATION
-> +	help
-> +	  Adds migration copy offload infrastructure which allow
-> +	  offload engines (DMA, multi-threaded CPU copy, etc.) to
-> +	  register as the batch-copy provider for page migration
-> +	  via migrate_offload_start()/migrate_offload_stop().
-> +
->  config ARCH_ENABLE_HUGEPAGE_MIGRATION
->  	bool
->  
-> diff --git a/mm/Makefile b/mm/Makefile
-> index 8ad2ab08244e..db1ac8097089 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -96,6 +96,7 @@ obj-$(CONFIG_FAILSLAB) += failslab.o
->  obj-$(CONFIG_FAIL_PAGE_ALLOC) += fail_page_alloc.o
->  obj-$(CONFIG_MEMTEST)		+= memtest.o
->  obj-$(CONFIG_MIGRATION) += migrate.o
-> +obj-$(CONFIG_MIGRATION_COPY_OFFLOAD) += migrate_copy_offload.o
->  obj-$(CONFIG_NUMA) += memory-tiers.o
->  obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
->  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 69daa16f9cf3..acaaa9cc0d4f 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -44,6 +44,8 @@
->  #include <linux/memory-tiers.h>
->  #include <linux/pagewalk.h>
->  #include <linux/jump_label.h>
-> +#include <linux/static_call.h>
-> +#include <linux/migrate_copy_offload.h>
->  
->  #include <asm/tlbflush.h>
->  
-> @@ -54,6 +56,17 @@
->  
->  DEFINE_STATIC_KEY_FALSE(migrate_offload_enabled);
->  
-> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
-> +DEFINE_SRCU(migrate_offload_srcu);
-> +DEFINE_STATIC_CALL(migrate_offload_copy, folios_mc_copy);
-> +
-> +bool migrate_should_batch_default(int reason)
-> +{
-> +	return false;
-> +}
-> +DEFINE_STATIC_CALL(migrate_should_batch, migrate_should_batch_default);
-> +#endif
-> +
->  static const struct movable_operations *offline_movable_ops;
->  static const struct movable_operations *zsmalloc_movable_ops;
->  
-> @@ -1820,11 +1833,18 @@ static int migrate_pages_batch(struct list_head *from,
->  	LIST_HEAD(dst_batch);
->  	LIST_HEAD(src_std);
->  	LIST_HEAD(dst_std);
-> +	bool do_batch = false;
->  	bool nosplit = (reason == MR_NUMA_MISPLACED);
->  
->  	VM_WARN_ON_ONCE(mode != MIGRATE_ASYNC &&
->  			!list_empty(from) && !list_is_singular(from));
->  
-> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
-> +	/* Check if the offload driver wants to batch for this reason */
-> +	if (static_branch_unlikely(&migrate_offload_enabled))
-> +		do_batch = static_call(migrate_should_batch)(reason);
-
-Should batching based on "reason" be determined by the general migrate
-code instead of the migrator implementation?  For example, if we only
-batch copying for ASYNC migration, we should determine that in
-migrate_pages_batch() instead of the migreation implementation.  Or am I
-missed something?  If so, can you provide an example?
-
-> +#endif
-> +
->  	for (pass = 0; pass < nr_pass && retry; pass++) {
->  		retry = 0;
->  		thp_retry = 0;
-> @@ -1967,7 +1987,7 @@ static int migrate_pages_batch(struct list_head *from,
->  				break;
->  			case 0:
->  				if (static_branch_unlikely(&migrate_offload_enabled) &&
-> -				    folio_supports_batch_copy(folio)) {
-> +				    do_batch && folio_supports_batch_copy(folio)) {
->  					list_move_tail(&folio->lru, &src_batch);
->  					list_add_tail(&dst->lru, &dst_batch);
->  					nr_batch++;
-> @@ -1997,11 +2017,17 @@ static int migrate_pages_batch(struct list_head *from,
->  	/* Flush TLBs for all unmapped folios */
->  	try_to_unmap_flush();
->  
-> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
->  	/* Batch-copy eligible folios before the move phase */
->  	if (!list_empty(&src_batch)) {
-
-Guard with "static_branch_unlikely(&migrate_offload_enabled)" first?
-Better to define a inline function to shorten the expression.
-
-> -		rc = folios_mc_copy(&dst_batch, &src_batch, nr_batch);
-> +		int idx = srcu_read_lock(&migrate_offload_srcu);
-> +
-> +		rc = static_call(migrate_offload_copy)(&dst_batch,
-> +				&src_batch, nr_batch);
-> +		srcu_read_unlock(&migrate_offload_srcu, idx);
->  		batch_copied = (rc == 0);
->  	}
-> +#endif
->  
->  	retry = 1;
->  	for (pass = 0; pass < nr_pass && retry; pass++) {
-> diff --git a/mm/migrate_copy_offload.c b/mm/migrate_copy_offload.c
-> new file mode 100644
-> index 000000000000..c22068fe09a0
-> --- /dev/null
-> +++ b/mm/migrate_copy_offload.c
-> @@ -0,0 +1,99 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#include <linux/jump_label.h>
-> +#include <linux/module.h>
-> +#include <linux/srcu.h>
-> +#include <linux/migrate.h>
-> +#include <linux/migrate_copy_offload.h>
-> +#include <linux/static_call.h>
-> +
-> +static DEFINE_MUTEX(migrator_mutex);
-> +static struct migrator *active_migrator;
-> +
-> +DECLARE_STATIC_CALL(migrate_offload_copy, folios_mc_copy);
-> +DECLARE_STATIC_CALL(migrate_should_batch, migrate_should_batch_default);
-> +
-> +/**
-> + * migrate_offload_start - register a batch-copy provider for page migration.
-> + * @m: migrator to install.
-> + *
-> + * Only one provider can be active at a time, returns -EBUSY if another migrator
-> + * is already registered.
-> + *
-> + * Return: 0 on success, negative errno on failure.
-> + */
-> +int migrate_offload_start(struct migrator *m)
-> +{
-> +	int ret = 0;
-> +
-> +	if (!m || !m->offload_copy)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&migrator_mutex);
-> +	if (active_migrator) {
-> +		ret = -EBUSY;
-> +		goto unlock;
-> +	}
-> +
-> +	if (m->owner && !try_module_get(m->owner)) {
-> +		ret = -ENODEV;
-> +		goto unlock;
-> +	}
-> +
-> +	static_call_update(migrate_offload_copy, m->offload_copy);
-> +	static_call_update(migrate_should_batch,
-> +		m->should_batch ? m->should_batch : migrate_should_batch_default);
-> +	active_migrator = m;
-> +	static_branch_enable(&migrate_offload_enabled);
-> +
-> +unlock:
-> +	mutex_unlock(&migrator_mutex);
-> +
-> +	if (ret)
-> +		pr_err("migrate_offload: %s: failed to register (%d)\n",
-> +		       m->name, ret);
-> +	else
-> +		pr_info("migrate_offload: enabled by %s\n", m->name);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(migrate_offload_start);
-> +
-> +/**
-> + * migrate_offload_stop - unregister the active batch-copy provider.
-> + * @m: migrator to remove (must be the currently active one).
-> + *
-> + * Reverts static_call targets and waits for SRCU grace period so that
-> + * no in-flight migration is still calling the driver functions before
-> + * releasing the module.
-> + *
-> + * Return: 0 on success, negative errno on failure.
-> + */
-> +int migrate_offload_stop(struct migrator *m)
-> +{
-> +	struct module *owner;
-> +
-> +	mutex_lock(&migrator_mutex);
-> +	if (active_migrator != m) {
-> +		mutex_unlock(&migrator_mutex);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/*
-> +	 * Disable the static branch first so new migrate_pages_batch calls
-> +	 * won't enter the batch copy path.
-> +	 */
-> +	static_branch_disable(&migrate_offload_enabled);
-> +	static_call_update(migrate_offload_copy, folios_mc_copy);
-> +	static_call_update(migrate_should_batch, migrate_should_batch_default);
-> +	owner = active_migrator->owner;
-> +	active_migrator = NULL;
-> +	mutex_unlock(&migrator_mutex);
-> +
-> +	/* Wait for all in-flight callers to finish before module_put(). */
-> +	synchronize_srcu(&migrate_offload_srcu);
-> +	if (owner)
-> +		module_put(owner);
-> +
-> +	pr_info("migrate_offload: disabled by %s\n", m->name);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(migrate_offload_stop);
-
----
-Best Regards,
-Huang, Ying
+Seems Smatch is flagging the inconsistency, but pn cannot be NULL at
+the free_objcg label because all nodeinfo[] entries were fully
+allocated in
+  mem_cgroup_alloc() before css_online() runs. The old pn && check was
+unnecessary defensive code.
+Kind regards.
 
