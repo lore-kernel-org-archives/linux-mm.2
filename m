@@ -4,81 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92723F532C0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 01:00:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AD80F532C0
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 01:06:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D27F76B009B; Mon, 23 Mar 2026 21:00:11 -0400 (EDT)
+	id 47EC06B0005; Mon, 23 Mar 2026 21:06:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7D76B009D; Mon, 23 Mar 2026 21:00:11 -0400 (EDT)
+	id 430096B0099; Mon, 23 Mar 2026 21:06:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEDC66B009E; Mon, 23 Mar 2026 21:00:11 -0400 (EDT)
+	id 31F166B009B; Mon, 23 Mar 2026 21:06:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AAA226B009B
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:00:11 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04E29BE5FE
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:00:10 +0000 (UTC)
-X-FDA: 84579150222.16.0955668
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5DC4B100017
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:00:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LcMfJHMG;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 213576B0005
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:06:58 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C063BBE67D
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:06:57 +0000 (UTC)
+X-FDA: 84579167274.18.E173FE7
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf09.hostedemail.com (Postfix) with ESMTP id F20FA140002
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:06:55 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GEZGOR0+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774314416; a=rsa-sha256;
+	cv=none;
+	b=7o5nl17usAAr67HMB9+g0/TwWnSUXGFc+xs+UcrqJpcYyHL5IdtTF2V+8ptaDX03WYfoA4
+	W0KaNuTWOM7/3k6RwB/DUaJw5H0cQ24Uf+WbrnGoFrGNtcVM4OSL5JjziwfdjjsyAQGZav
+	qtTNO9+W2jA3JawzKMHvxh4wVSRokLc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GEZGOR0+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774314009;
+	s=arc-20220608; t=1774314416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=J2gq76yk+y1oJjYkfgWnwR0L/rkEfO3Gu3qzypXSlEk=;
-	b=eY01fPYOY9Yy0MlRMj8hX+G/ufROL+xMNFS/+gZg5o8re0tqjJpO5NlSBFkqV4Ew9U8O6a
-	+QFu61Uxy94vJ14yl1CnVFLWs5ZkeRwq/lhIHlDPFBw3Zh3MqYcy4xzz1uB+ilx772Ao4P
-	rcPVWh3GiUr9l0LlrwdYdZ07365EUaw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LcMfJHMG;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774314009; a=rsa-sha256;
-	cv=none;
-	b=YKa4ZzMTjrGBvRJcsxE5MC0a9AVjlOJ8TQiTCxMdkwcc46N34iXwxZ7ZgiLl/dSiO+CNpN
-	KHKAXsBvQK1WnaqjSdtnCf405ymkvA+Q80yp7Yh7FBp0IurmihnIJqFmTPDQIir75jKJXD
-	t5R7+sQvhJMIy7amMdbk38pflTagXG8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C5026600C4;
-	Tue, 24 Mar 2026 01:00:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCA7C2BCB0;
-	Tue, 24 Mar 2026 01:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774314008;
-	bh=1M/+ZL3YVbiZ1VmIZKgVEENFjtm//36Vc792xqujAVM=;
-	h=Date:From:To:Cc:Subject:From;
-	b=LcMfJHMG7UV0nKYomJpJIw5mjaC+sj3HzgQCJUrnWRBy4Hrjp2TJ/UlRy1gWEir6p
-	 sggXOsQI7H2owR6Gz3Z0BhemlKrNaBhjeQb6qIVKNHnDcpBHHy4X0w9ZQajn3F0RZv
-	 te4xfLiIQ1B1r6spQqdnXhwKRnIu5FRv8mydft5o=
-Date: Mon, 23 Mar 2026 18:00:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hotfixes for 7.0-rc6
-Message-Id: <20260323180007.d3f7db6a8b5dc59e72cb5f62@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ek0OOmYJXz2DUEhUOUCfjBLElBgWO+47553Bp8YdGh0=;
+	b=uA0ChYes/jZPVZjZlmDH5jv8zKYx6H2Sln3fZCrGv/YggkmOP2sVegYGmgAzU2Kg/Qt2Dh
+	hQem1eVnhrznNcDb/JCmegMDgAPlFoFzJqRHlCZfJA2MK36Bh4BlAkGiwyR/L4jLTyX28n
+	TM0wSvGRbv4fegDSFhLlCTrfZoT7WiU=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2aeab6ff148so27005ad.1
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774314415; x=1774919215; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ek0OOmYJXz2DUEhUOUCfjBLElBgWO+47553Bp8YdGh0=;
+        b=GEZGOR0+PpKR+5rI8rpNIK/nQcOKJ/D04T554GCxF9pmzXR4sTktDgsddth+AW1DtW
+         iSrCIQOjFmbKkOvTosY/PVntd344yPgEQNIDZQzSrVaeBXuw+vnyXypmBtJ01XkVPix5
+         tsIvcf79rwd7nP2hbD4pnfeCr9IwF+xBFZn8PyXjiD9aJIwXjBvSW4Yf91pG7tgpgTXR
+         /lmlWfJsWLzF4CMGR/GntgOAT/O8nMdEL4S20DLFdWm788pY7jiK+DNKCGHcost5pQ1G
+         tSYcbh9A4WQUkRppzwcpCWmuCoiYbtaJ98B17f5JXgRVwhpbXg8XPpaJI7bOcveCsQwO
+         6AMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774314415; x=1774919215;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ek0OOmYJXz2DUEhUOUCfjBLElBgWO+47553Bp8YdGh0=;
+        b=C0MISatzon00kTy6kG+WhyADL08ygbEg6vvlNqdSsBKTJFYY2e8nEprPc88X+IavtS
+         fZ2DUHdZA6RllwJNL3Z2RZB9LJl2WVtR9dGfxcb3e1cJso8XYhNvF0z9WTFkDLzM0ybA
+         WoPdsBy31KlxpCDCYo8FgJ8/ZJO4IZis9yhDa5XsKubUOT0t8n0dv7codjt2y+bBQyK9
+         IPiganiACUOa84ZyR8FKLkNSxn5rIY3DGJpL9oZG0L+qe0RAU6OcASE6RoFk1/gYfOBT
+         /8Y7vExrJmm5KGBWZtaX/Qo2JTizB0tFSRy0OknF3rGb71FI3r2h4ALT9i7BcI6qXynD
+         pA5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVAudIBJ5reLZ4dHg+nCYfC3UGNi5MAvtwJ6K3mc+ITu0wkcvaOpSw/1cARAouczDt8XuMtbvrm7w==@kvack.org
+X-Gm-Message-State: AOJu0YxKXX8PhXVjxzIccF0l4XI20BWGGD/WvzzteTT6HsMWW2OFtMxD
+	LRiBbALzmJ43mbQgwiFQQiApDkrC3ewODMp4GPrFy0+uTJflIXUE3vCEnT96j4l0yQ==
+X-Gm-Gg: ATEYQzzf+RC+jIpsj0vWqi+LzN6rIPgAL5ON29eUnadkOaPHpdKn9Gs65EmzpwkCEry
+	QfDxg5AEUYensvkdBEaHBP9HcpzU1E0XWTyVCloLLmt4xJY38FQz1tWIz3A8z6otlMjhEZtKJFW
+	43qKv2yyxk2liwK0l9KW2C2qj8Du6txfglWy4chNIBVuXSzYJaMdG+qNOfm8h/9ldm0GDEnxjbF
+	hs0QTqW3QH9Sct/Waqu9zRVqIXl8jhz12BOntlA942UgiwjlvTJL+46FogqohleEIpxVEkKaGam
+	Ykd2MP55irY66DVn4I0iHRlUK7GTh8rVvIyYsUmS5mR04yjwepOjU8GZAY3aRH/qXVmpT/nvfXV
+	HlWItTlRUNSZEQwTn8soGCKB/IIeaOPJTLIjEWOtzTjkx0kfXVe+fqybdbJk/qfquo+9WeF/z6N
+	6H7x8CrQmsuO8pThQMADOcg1rpfIrTXgmf+8/chYRhwtofIYkP/nWFf4HxyZ8JwopEnz712M7UF
+	G4UFVb3LUhNt7ezy2/6RaceuyO8gHsQHFANcWXuoK9DdUdbG8Cq+A==
+X-Received: by 2002:a17:902:cf42:b0:2b0:7a9b:82f3 with SMTP id d9443c01a7336-2b0a53e6fc7mr1544185ad.8.1774314414282;
+        Mon, 23 Mar 2026 18:06:54 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:36e5:9ffd:34bc:bb90] ([2a00:79e0:2eb0:8:36e5:9ffd:34bc:bb90])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083655474sm158353015ad.48.2026.03.23.18.06.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 18:06:53 -0700 (PDT)
+Date: Mon, 23 Mar 2026 18:06:52 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+    Brendan Jackman <jackmanb@google.com>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC] mm, page_alloc: reintroduce page allocation stall
+ warning
+In-Reply-To: <c635acc2-d41b-4f7d-8244-75a117721da3@kernel.org>
+Message-ID: <cc53ff01-50b5-dcee-ec2d-29ca0e9baa05@google.com>
+References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com> <c635acc2-d41b-4f7d-8244-75a117721da3@kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5DC4B100017
-X-Stat-Signature: g5ap6adohhj5usdmh6p7a1awj46w3yhh
+X-Stat-Signature: 755557pxe8kcfc89c31tpz4tck19y6in
+X-Rspamd-Queue-Id: F20FA140002
 X-Rspam-User: 
-X-HE-Tag: 1774314009-213239
-X-HE-Meta: U2FsdGVkX19zFPchAf2KiThI5l90EgJ47XHpxlKs8vU4OqWMpoLOh+gxcqppjv2S84ACgVKyt192MvH/GPQovFMGJr0N+enwflkuMq6W5r3KDioGZu1dy/tHxwTsfrLGy7Vkb9F+t1m9LMMDBm1krwms1LhTsfLUMSm5QsFYxUwO7cOrdz/ajUJp6owxhFV88VB69XllAl0NDtr0dJocSUyf40L7mYvEiPNbkCw+eJ79fJ4qgZV3CWkge6ImH4RNDQeeEXAtiUNlqvNK+NdkRmKJQHj8mGSNuu2pHyHAk7ocR1TaATsBbblSH+S8DEjzdzd0zuWsLQTtPtwUZFGrpseAP98fKwHg+9/nc9uor79foE5Z4iQCc3LjycIUOPpE/uK7l8J9DN1DaNPXBWCVu/kCL/464FdHP+gAfMdriuSKKl7vjh/Li9KhkZQKcrRrmTuDoRcUi8itOZsj50pS0J6p0lDxeU7YNpH+/w1xkV4RkDXCIK6mTLELH9potT71pxw622FHOgCU7sQAU3BkCamQXRdY/E33P6zuUd0p5DP9RF0m/1xz+ha02vutTKqdRQ78LkyI139N8Incv/nZ4/F1g870MacvomRGwOp4NWrVXB8V7zf2Ty01dB+3bZAzIA60Ru0IRnFm1W019g0ktA2syabiEUCAQ3NCM1LY9Bqm7VEBhe+qyJZ0dXTXIF0Q5mPmUgQBBC6ubCSuMu+E6d04T6oBQ23E0MFxA9Gumb7+FvkRfBH1TT8TR3VeviYp/4B2pNcwBDrNL+iBhA0dheo007wg3qkO204zUOyE8ZdIHMrECGVAxDyRsAhifeZ6Hywqft91s5G5HtDQQhgfgyFBvHWpX2s3FCOgo2sRjPe7Dhl9T91RmeJ6n2T6hE8kfAynzNMby0fJB+Q8Jn1ZSN1RNi2z8EUW4wWS0f8BIiGQ45aThOgLW1FeE5rxalvTth3V/NXpdczvvrFKl3A
- 8FdMR4Wz
- yx+8a/apwp1vEkXaFghhWstZWsw4ye9jddvjsAEAYtKDZ2oDM05MZSTl+teThSyp/AgrOj2tjvJC2Xqp868Jik+5BWmNMSN15LXOJJQIKto2zcVd7TyQszHtaDqCpZ1Ljb6Z7nx5aE74Yy3ieVQxBP1u/2BJoOVI7PF87TUJ6teASL+7qY62+2K6ftHnPdr5W4WiSUteLdgJMpuJukgNYCLtPTJExji/9y4ap5R4W4240S4P68JqH+m8Bq89KRrEuUQtSse6PxL5eQn0=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774314415-928333
+X-HE-Meta: U2FsdGVkX1+pqgSifAYrZj/UL/1McccV1b3PGc+QGhFQqpWriIp6TqL5OCTtKKTZRDyKop7j+QyI44nKvbirQUfKn90rDKljkqaeXKP5kPcsvwSvYVvf5oxxfTPmjDwTzl3wXSFp1cqkgcJAH4E2ttGghs8Kz8r7OsFgIftd5izjMVQl/+8Su0ebbtONLlo5GL5SG4TpXqUmWb4WuqNYfi+ZrGwe6EkS+RFVakZV3E4oM0VeqnFAeqSDc6CO2YLKlpXF2NrT0+yWkuzbktpR2/2dYJDYLpwKsbJ6jxsRbTzgb3cHzD2XvgPDO+56nPeRBWhXIOfSD+Fzf7aYTVu3Ft3bO+lAQ82vDy19j2d8oBCApEpDx9t/ai5wK979kGx0nCMN7vgJipz9H1zQZ4JPgx0OnPx5aMx5C9YlInb2wtqH+wzgqbPKTaPzLXeDdZ4v+pxT1FD7d+7ZitpxaQZOsCucKQhLsbKglpTDFBUcDL4Gq3EVK9SckLX//xBxAZxjK0/41Zwq/qBnWxFXazcvubeHqw91wP09pb8+ILNn3lfYqT+hco+PeOpnLo7ccCF/x7LAahvvfln1Yym+LVIwDwF9ZM3pDcJOEhZxhXU8YRNpKS/tbCMyL/ez2iKmQ7ONoyntPCXY3kh4obFQjUi1DQWFWfRCaQ5+ghw2lus++U/8A9eGcDt1aCzWdrFAWPJM/hp/gmma1X8CsvhomM2YiVYCadbegGePJxDuacjAvb3Ku+w9sS1YRoLqRr5NQcUtDfA6gCpgJ3YHHtUpWT4g7QcrN5kEdfBsNHc65bZX1B/2MamoPOjlezszwog2pbEpxKYJJhsoFX+7XjRtwD/rlqB+5cHFNJylvX0syq26SExMWkHd0FqJwR8sCLH0UBpdm4Wl3hShycUJeqEU7J04IaHdNnei07YCkEU09h9OdbvSOknH0oyhl0t5ZFqTi4pS4IGr0BYu1ZebqaUT/kz
+ LJmH0onX
+ dOIGYr6CyyGr/ej+hAcsYh42NHhjgneFTFjJmdyuodgn6keqefxhDtLHs1qi+tZMbL5rN6IWAK2KuPY8Jr9BMmI8LN/4XTE/svksOFsjvZAI5fkkS9woSETP0GqF0kP5reQc+TqG1uzGVoWNccFXEWV3bAANfcZtGASft8iTGDRY6NEX5mYcSeE3cVKExeDtYMacmbZLTO7SFmW9nA2DlMAJn67BoOjeiWF1pK6EQY9lGAT/zTI4cAFpA7bMjhkei2QWI2zK6B/Bw+Gf3MwCJ3/y7aPkygrk4uTdBWn6SjeJJ2PiJECEsuYws2V+oeTdyj5oLLKHG8K7eRKbvN8SSZf6Y/7pxVRgCSuMTdAjYkt3L/vVdxM6lTIxDkl5yHkNRcMx2JQMtE6DW4gKh72FKrqbn6Vh/vURvhjJBizXjQ+/PX5i9jrALSQWwtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,49 +120,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 23 Mar 2026, Vlastimil Babka (SUSE) wrote:
 
-Linus, please merge this batch of hotfixes, thanks.
+> On 3/22/26 4:03 AM, David Rientjes wrote:
+> > Previously, we had warnings when a single page allocation took longer
+> > than reasonably expected.  This was introduced in commit 63f53dea0c98
+> > ("mm: warn about allocations which stall for too long").
+> > 
+> > The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
+> > warn about allocations which stall for too long") but for reasons
+> > unrelated to the warning itself.
+> > 
+> > Page allocation stalls in excess of 10 seconds are always useful to debug
+> > because they can result in severe userspace unresponsiveness.  Adding
+> > this artifact can be used to correlate with userspace going out to lunch
+> > and to understand the state of memory at the time.
+> > 
+> > There should be a reasonable expectation that this warning will never
+> > trigger given it is very passive, it starts with a 10 second floor to
+> > begin with.  If it does trigger, this reveals an issue that should be
+> > fixed: a single page allocation should never loop for more than 10
+> > seconds without oom killing to make memory available.
+> > 
+> > Unlike the original implementation, this implementation only reports
+> > stalls that are at least a second longer than the longest stall reported
+> > thus far.
+> > 
+> > Signed-off-by: David Rientjes <rientjes@google.com>
+> 
+> I think, why not, if it's useful and we can reintroduce it without the
+> issues it had.
+> Maybe instead of requiring the stall time to increase by a second, we
+> could just limit the stall reports to once per 10 second. If there are
+> multiple ones in progress, one of them will win that report slot
+> randomly. This would also cover a stall that's so long it reports itself
+> multiple times (as in the original commit).
+> 
 
+I like that a lot, thanks.  Since part of the motivation is to correlate 
+userspace unresponsiveness with page allocation stalls in the kernel, we 
+increasingly lack that visiblity if a single long page allocation took 60 
+seconds a month ago, for example, and we have to reach that threshold to 
+report again.
 
-The following changes since commit f0caa1d49cc07b30a7e2f104d3853ec6dc1c3cad:
+The original patch ended up at line 4839 here:
 
-  Merge tag 'hid-for-linus-2026031701' of git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid (2026-03-17 13:55:51 -0700)
+4833)            }
+4834)    }
+4835) 
+4836)    /* Caller is not willing to reclaim, we can't balance anything */
+4837)    if (!can_direct_reclaim)
+4838)            goto nopage;
+4839) 							<===== HERE
+4840)    /* Avoid recursion of direct reclaim */
+4841)    if (current->flags & PF_MEMALLOC)
+4842)            goto nopage;
+4843) 
+4844)    /* Try direct reclaim and then allocating */
 
-are available in the Git repository at:
+Which looks like the right place to put it, but probably after the 
+PF_MEMALLOC check.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-03-23-17-56
+If we set a minimum reporting threshold of 10 seconds and only report 
+system wide every 10 seconds, I think this will work very well.  And, as 
+you mention, this also reports stalls for allocations that never actually 
+return.
 
-for you to fetch changes up to 84481e705ab07ed46e56587fe846af194acacafe:
-
-  mm/damon/stat: monitor all System RAM resources (2026-03-23 09:35:05 -0700)
-
-----------------------------------------------------------------
-6 hotfixes.  2 are cc:stable.  All are for MM.
-
-All are singletons - please see the changelogs for details.
-
-----------------------------------------------------------------
-Lorenzo Stoakes (Oracle) (2):
-      mm/rmap: clear vma->anon_vma on error
-      mm/zswap: add missing kunmap_local()
-
-Muhammad Usama Anjum (1):
-      mailmap: update email address for Muhammad Usama Anjum
-
-SeongJae Park (2):
-      mm/damon/core: avoid use of half-online-committed context
-      mm/damon/stat: monitor all System RAM resources
-
-Sergey Senozhatsky (1):
-      zram: do not slot_free() written-back slots
-
- .mailmap                      |  1 +
- drivers/block/zram/zram_drv.c | 39 ++++++++++++-------------------
- include/linux/damon.h         |  6 +++++
- mm/damon/core.c               |  8 +++++++
- mm/damon/stat.c               | 53 ++++++++++++++++++++++++++++++++++++++++---
- mm/rmap.c                     |  7 ++++++
- mm/zswap.c                    |  8 ++++++-
- 7 files changed, 93 insertions(+), 29 deletions(-)
-
+I'll implement this and send out a formal patch for it.
 
