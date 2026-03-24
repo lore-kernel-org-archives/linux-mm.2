@@ -4,116 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BF69F532DD
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 05:53:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47973F532D4
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 05:56:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60C9D6B00B8; Tue, 24 Mar 2026 01:53:42 -0400 (EDT)
+	id AF3C76B0092; Tue, 24 Mar 2026 01:56:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E4156B00B9; Tue, 24 Mar 2026 01:53:42 -0400 (EDT)
+	id A55E46B0099; Tue, 24 Mar 2026 01:56:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5213A6B00BA; Tue, 24 Mar 2026 01:53:42 -0400 (EDT)
+	id 8CF696B0092; Tue, 24 Mar 2026 01:56:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44DBF6B00B8
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:53:42 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 180F0BEF2F
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:53:42 +0000 (UTC)
-X-FDA: 84579889884.27.F79A38F
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 452D0180003
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:53:40 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Yze1Njm5;
-	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C4396B0092
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:56:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 11A8114156B
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:56:38 +0000 (UTC)
+X-FDA: 84579897276.23.FF63FDB
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CBA80140004;
+	Tue, 24 Mar 2026 05:56:35 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=VnGsK9o0;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf09.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774331620;
+	s=arc-20220608; t=1774331796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CzbNzyvofSkHDrmxsguNNuZmsCaCuOfcET+64uHO95w=;
-	b=MIx2PsK8E4SQJTCa0ahrKJY4TzoAFIXxcB0EWiK3IioLAheKhpkq9vDnU3ZIFDK5DsMKlO
-	L1sEhABHb6H+gIocZpTPbKh/3h+eH2oKNrvrXuJM7TV7yQs9QrHsF+PaoEyMXyuCgX9dW/
-	9ixuQzRMD+/EMjgyomjGM/Bx1fl95GU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Yze1Njm5;
-	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774331620; a=rsa-sha256;
+	bh=MtO3UkezvPYDI1WseWZT+CQteeNIipdQ8FHfP2vxTes=;
+	b=yntJMFYd65EVjOAdI4omJ3FxucSMDDTP43Pq6t1e+ADOPD7XMH4ooO8QpSzMXqxz93/ROC
+	sYTMydjlFooCjcyz7qin7q/FjgoRAMdb6HrCM0qfJEtb1TG8/WC5rhyhZnpA7cV+OYL9mu
+	X5tLRWwsIjBX/uLmnWLH41wydPkrBc8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774331796; a=rsa-sha256;
 	cv=none;
-	b=aMRQcoiLDXJMntJHhobGgbCkk+VaqxQclHJRsp2qnTZb/QsPS1wLZEuN+Rl/SQsw/M1gCV
-	7hOllU8JHFTeo7ojj31IGk4jiBTziuV9Q9lOpowXFO4zaYsabCWIcUD50/4AvlyMRENFw5
-	Ib/dAqQgxew8AjQT/eCyAjBW9cJ00tM=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2b04e6a989eso5637795ad.3
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 22:53:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774331619; x=1774936419; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CzbNzyvofSkHDrmxsguNNuZmsCaCuOfcET+64uHO95w=;
-        b=Yze1Njm5G54w9xcDqmCJol99NeKK7klyYITlGR3WdTUc5XErsGxB86RKdi8oUvOJF4
-         BrzE5by80W73wCgwHfCfFaOcbxjZb8BmnhueaNNn3TGi/EYCebR03EPtnz5KJ9j1a5h+
-         Ah5+0aFh1H9NFB0CxJg9+HAmwUKaei5+dSRRe1JX0jvlvBGqg1WJjvDAVaKHI9vVboWZ
-         6ttjDFQo0rPvZ+rPXVF4+KhoFzvsgg6kgKuaLqlgND++8IsivARe6AEEgoAhdu9wBR6J
-         GWLFLZyveOVxcK1lX8HuCaAmySBqFCrUyZUml5isSIEFsG9DRcXqs+lzcuG43tkqz2TE
-         e8tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774331619; x=1774936419;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CzbNzyvofSkHDrmxsguNNuZmsCaCuOfcET+64uHO95w=;
-        b=JSCXEceY/gGa+bSr0w/1BMq+TR4ag+4txSRcJ1wnWVsz0vuxVZz7LEPvPebQAA3AlU
-         ZSr6VR2RJNAJ6sTUcHI/DlYT3RR1rMO5ne1DxM9zGRC7QC+QohzaY5wKhWVWYVQhhyV6
-         1FHu/U8uweyZcciepz+3h+NnbhYAe/KwSBd7WbUzAekndIAUmoAMj9nhovKtQT7J3HYl
-         qMyy++dpV3+I/0Ehf0gH0i1t60KLY8gk8SAW9iLywYXpuFkIbybaJVxfkdn7AyjlLVq7
-         o3Yf+rMpGvjxV7QFVOSt/IzadoL3/ZkFsBMhnKhCdArz7FKgo7ukhUr2cGgDOUBAaVmT
-         kotw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgTeE9rixsGtaxfg7We74AYFylh0G5os3gfAB549mc9SSCkUclYI2UYthTgnYeDmUwEMhOBWHiFQ==@kvack.org
-X-Gm-Message-State: AOJu0YwoctAoA9m3ziHBHomekuUQmYPri/SuUgPBVnD4N4iXQ33bD5Jw
-	ylJsq3L7lnjRhPvMJoe8Mx5FpcYsGA3S6vN860/OEphjI/CNljBGDoHI
-X-Gm-Gg: ATEYQzzVzQHrMylxQBk/nBKQVydPm1IYP/irFm8014A5IeAozpz2x0cfFguW60EoYOP
-	LjhkSq+CbGZgZCpEfJZH3GdYUBlnRceIgtAtthfkhHLG6QDV44Xz0oBDq7UYtqHdY1/cg1pajwm
-	ujLqy0TsXvXHXfQ2W6CBoIGVMccslFIfDgt+gxvdN6PlYwfQxqbFJmiAdgByStcJLTqZW23MJs4
-	CsQ75VwCCINd3TFFDBF1zFv1j2xNEc35R7V1rLcOny0YBgfX8lIsSSyP3GC/qBCbzKpUvKbZaK3
-	dSwbpPl68Fk50dlpnyyHsjyKv7yd+fn/4xzUl2LblD3LDxxQORJ23JTWYVjWpnyKRRqUvEpiv/p
-	OIs9tRZ3Bb5m5ZzRxPSYF5W5EpH2YQ1wzVrLAADqzgnYbHvOl5XHU8N7Y78cCw19m+IHImOYsy+
-	mw+1ypfuAimOV/2XwvtFPENOHOQWvM49h3Fv95hu3L/APfncYgSISsYcAS43+MfoWrau01
-X-Received: by 2002:a17:902:d582:b0:2b0:708f:4dc7 with SMTP id d9443c01a7336-2b08278afb0mr138908715ad.29.1774331618826;
-        Mon, 23 Mar 2026 22:53:38 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083516194sm128476465ad.4.2026.03.23.22.53.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 22:53:38 -0700 (PDT)
-Date: Tue, 24 Mar 2026 13:53:33 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Pavel Machek <pavel@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, linux-pm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 1/2] mm/swap, PM: hibernate: fix swapoff race in
- uswsusp by pinning swap device
-Message-ID: <acH_svpUwaNtFeJN@KASONG-MC4>
-References: <20260323160822.1409904-1-youngjun.park@lge.com>
- <20260323160822.1409904-2-youngjun.park@lge.com>
+	b=sBJj7KJgJGXeQ0zpsbY3jBGcqnWEpfjzPCTHP5vr9v5Hjy8QXRU+ssKGFpy8uCzg2WIxcj
+	R02U8rXtjj33mpcs03bCOp5sRrK6bEIXooXeILu8MvOxXb4N4Q7j6oUzSp2lu8sU6zU3cn
+	9FYiU5zBEPD4MWsjEYG6T0kQdXPaImI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=VnGsK9o0;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf09.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=MtO3UkezvPYDI1WseWZT+CQteeNIipdQ8FHfP2vxTes=; b=VnGsK9o0awm0/1LzaVAbykaRkw
+	qZDn4CDccSHCQiyLLsYSKCs1xHas4u9P1CpUmZMFnOO6qAS5xYwUi2Eisf2wzMuDKZ8sc5olGjvMf
+	40fdgQnRay2l7/FL8S1+WyeQf3fSMj5CZxMslBWSABpvxhmL+7cg4uYS9y7uqHvoAwXoHcX+WgHf7
+	iuguqbxqwODOSesNkJkHbtM02yFjpAcnJI3ZgPr5ZFVSTzal78Sw0YTko04XwYvDi5x2DWIle26Rd
+	dttrRYD7Jj5ZAzA0oUVF+Dy8pl1LEb0eGQlgNz3L6sRF2gYJesDj1NSosj6cRRm5BHvGMXzrhXFfc
+	jKbz3UMQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w4ukg-00000000coL-40EL;
+	Tue, 24 Mar 2026 05:56:30 +0000
+Date: Mon, 23 Mar 2026 22:56:30 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
+	Ted Tso <tytso@mit.edu>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 41/41] fs: Unify generic_file_fsync() with mmb methods
+Message-ID: <acInjoDTJAz62eUp@infradead.org>
+References: <20260320131728.6449-1-jack@suse.cz>
+ <20260320134100.20731-82-jack@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323160822.1409904-2-youngjun.park@lge.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 452D0180003
-X-Stat-Signature: jca6dcrm5efbr96kgn1pfpm6aetc551y
+In-Reply-To: <20260320134100.20731-82-jack@suse.cz>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: CBA80140004
+X-Stat-Signature: jsjhky56rodm36ekpig9gitgcbpod39m
 X-Rspam-User: 
-X-HE-Tag: 1774331620-838621
-X-HE-Meta: U2FsdGVkX18O4+V895YRBuW9Dt51r2LKk3a3Qj4bkHoEpJ/xcy1IAaJi1IUllTkFS2FnCTkreDa6stH1e79XUS274p5V7Z294jtQumecdINEAlJKa78X7COXH1i3TJbxGixxrTb3wquQLaSuxgM+lJUfr2IPn3555/Jc3616921aqN+Sl2x6qixzKB5Nw/W6iqhrXzn2IVNVg7p203PnCJutQ3mJnrh2nshjscBjJhduT/hc8K6fdppKHRY8KHxCxr3jOalDIE7moL7dJiWQgaF/qkFVyh5tHHybF52N97DT3U687gmdTTzJBOTt/AfQVAKAVUW3Y5fMeD0kQfuaQFruf1SghmWWK3q0+EqAM8cmBWGidCZauz8zqBrmb3LoeU20sDxQo4N84Yab90yC+JzMuhyXhqzEjMT73QfNvvpnM7619EwRoynEumgjGVzPUUDqAHUSi9MJOjbpfT6YK3YTaNxVa2K5tHtDuvKcHqvUP7h4UdL28gNrp9ZbM3ncYSphhJtLQ07cLa+5jr+uaxC5lnHYuBXC03TpmtLCrXYnkgs8EL3+N1vOZ6fHOmetj38gWuJIwm1L203pcl8fylQcxhibf3orKQzB8h5WnE0si0vBYUYiHkq5k5a2cN/r3NTXTn+f4MZ6H3oNSZ+P++jEfIrLDdpeHtbSI92jh3ctUSw7AAdC8oFtPQozTkhxk0e+20L3O0HKjtsaA61uRnebnOzMVcKb84cJNIgJ/yGSRfiE9rwNwFSrP7kecPGLj4oP+mkLuqFi8eKoCbtXg/O0QjxQNl05ivSInp0oZiyiofVRtWhcGHzxaeYg4W6lHk7wUXc59u6seSCXUNpo2hersZ3Da6K1AlTcG7xw/lvFU2prEr0dqj3K34zsCnG1UO3B2F2yp1teiHTx77HVYdhsqOHlYis4afUelaZqrUBX6PMGm7LAfr6mgkuhP6hHD+4suG4rsD1GDj/ObC4
- w2yPIcQC
- MpFvjRvwPuwI3PnLvmv0ysZx2TdbOWs8HCm9J0qGPYuRkcE5y7VZTclo9sDLuJO7wcWGMcUruueDQSlsWH+9Cwr2y3J5olGIP+pKXr7oUfDeYBgySh9q+TBvPG8Wg24yyZqMgzQWcrlhl7S9Q0i1SkipnF3z7TX8DUC1/ixvVptZPx4/2a0lmX6B4ZZZw/jJHOICo55yhgXj/SruvelR4X4FHmdu3bszq9Rp/Z+cX+KbA9NvLFEGLeO2EyFNErC7xLhcoHAmteb2/TKwAqdRq3b2Yu/LwZBL63AVs0VbPdFlNTKkM7SMuhYLb2W7o71xZ4ovGMU6q5E1suVMQGZjjioITHS/pplmuXJr81WiHxITQgZlojiKBmv/CX/7PH/T2tVu21uUiNqvz4vjCXJlP3s9H3yx7F5bcikcwPd7iU9MZy36UFQgBa6FDB3FzYDKFeJdLNd5JyTlWPJc=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774331795-294398
+X-HE-Meta: U2FsdGVkX1/UPnEfCH/vjzINZ2IOP7yg2VRlQ1xf6xahTpCz1oZxeCBkjN95Eccap/ed9r7iKKDp+P7GYohOhH1ZyjHGXIwto6h0xw71ZkTFP0k2jKR4UshLZFL1hO2TUt3qH4m9cJIpK6ynQVjDz3xlVWBLENvG5XyGO8caoog5EchiwIKFTMQy9Alnh6nYcAh2GUvjM2FsZhKoJuvRqRZZ2PRe12G6iioT7V316eNuJmavwO8M3uuFZp6oy8nsYGuSmnyzRiko6iDp1JQWBYpzWIFLM0U4SXXjL3ffZDoOGJSB59l/98oE5ZuV8yJE1d6Eo5LL/Mpm6HHJvwTXmzaN1VzXYtmi5P1tsyRXHAeAeUhOszIB3XLcBfAk+VAJdA7YWbKFwR+Fk85LIPOn2080s7WF6b3YiwaX+kiYjV0Qz4MNkdJ3FR5k5HmriCHbBgt+8pcpgfkEYNEN8kACDQnj6lwVBBCMnAXGNPFI4aTx6pGVq2mj7AZ7/0y7gSIk0yUnYcZU9i0/Bok39UWKVl8yvd2PIrpJ4WD7DwsT+C55lPwA3SSNFTe62F+2sPAK7ALeL5PcKXy3Ke9zXkR7UFQ8XNp9Bc2Fd2m9sawzvXDoCeom4jyRQbt4mhYvmNDTEHTm0vGSEeRJ+ZnMDiWjKIr2DRqJ/UDwMi6ndPxI9D6PGH474efNCim2wbZef7j2Si2s7Ahny7PMdZqJeeEHOW0Uo1DmfSgQTJweq83AaxLq2bDxons/GanU8MVzFzRen+EWjCkzTfqzplstTZyog1r26Dixclg1MILXqNuvkwFua6a0CLI9aF/pjRnFHoOjlgWU3oN+MI1Lj0wJJ5m7qs4E+C2Ge9PaK0lOlG4lh0XX3l97EM6gj234Ky3+3h+sVgUvHfO1/mJibyduHfcCEVWyZO8h5Cm5yDk44SfNHAMngTvPQUnYvzX8GrgOcOrv4lzPzuSyoWYhfB687De
+ Zc3oSFN1
+ yMey88IUhky4fpq5O2wU0r1HffoJqHsHmyFlVeC+0BrVipMqLzkMOTGd7bmFq5OIFqK++99iZ3MEnFDjEgAZMmJ2TxQjVYU2U/ygd1DAOKpwyvK+di/sugXkQRr36hqIfGYcXe9BM0gQEGaanqrcpCYxWI4SMM5xXK6xSUI9EkxFfFuAzeKy0CL4/J6RKWskMwk7H7UKRe4SUuliX4Zp3V7V0Ub9Vq4TmwAwTNFvITsCUAa477Wqg3XwHg8nqjpaekD1k2U6WTheYO11F9l+xDucEp8n1VGlbCZnNqz5Su2/VE2dwIKIpM2+gME/Gboi+fznvPowrXI6SHeZbVp8PauxeQsIvVQOblT418wthXDRiqbpSXbxjVnWSOWr8ioV1FxmKjHhMc5+OPD5IoJxUI/KEZa0N82gUEAVxskgh7+DKf3Jgmrek4bpan6nFh+Og31ay0XSaXblK/FtvcAAJOtcEw13Ft095wpt1TvJCuiloLY+VplOidNkx9mJ/lqHPtZr7DtpiI3vKHDHbycBqL7+6+5dJHEbI/UeUQf7jXwdapSiEivcnd6+eyHDmyCKUYuFhBGNUlwMqg1w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,64 +99,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 01:08:21AM +0800, Youngjun Park wrote:
-> Hibernation via uswsusp (/dev/snapshot ioctls) has a race window:
-> after selecting the resume swap area but before user space is frozen,
-> swapoff may run and invalidate the selected swap device.
-> 
-> Fix this by pinning the swap device with SWP_HIBERNATION while it is
-> in use.  The pin is exclusive, which is sufficient since
-> hibernate_acquire() already prevents concurrent hibernation sessions.
-> 
-> The kernel swsusp path (sysfs-based hibernate/resume) uses
-> find_hibernation_swap_type() which is not affected by the pin.  It
-> freezes user space before touching swap, so swapoff cannot race.
-> 
-> Introduce dedicated helpers:
-> - pin_hibernation_swap_type(): Look up and pin the swap device.
->   Used by the uswsusp path.
-> - find_hibernation_swap_type(): Lookup without pinning.
->   Used by the kernel swsusp path.
-> - unpin_hibernation_swap_type(): Clear the hibernation pin.
+On Fri, Mar 20, 2026 at 02:41:36PM +0100, Jan Kara wrote:
+> Taking inode lock when writing out the inode seems pointless in
+> particular because there are lots of places (most notably sync(2) path)
+> that don't do that so hardly anything can depend on it.
 
-Looks good to me, thanks!
+This is really something that needs to stand out clearly for bisecting
+and documentation.  I.e. make this a patch on its own and preferably
+before all the other refactoring that already is affected by moving
+between the implementations at the beginning of the series.
 
-Reviewed-by: Kairui Song <kasong@tencent.com>
+> So let's remove __generic_file_fsync() and use
+> generic_mmb_fsync_noflush() instead to reduce code duplication. Arguably
+> this leaks a bit of buffer_head knowledge into fs/libfs.c which is not
+> great but avoiding the duplication seems worth it.
 
-Just one trivial nit picks below.
+You could just pass a callback to the generic version.  The cost of an
+indirect call should not matter compared to the rest of the fsync code.
+That would also be a nice thing before all the renaming, as that means
+we could add the version with the callback first to unify the
+implementations and then the file systems are switched away from
+the buffers fsync variant to explicitly pass a callback, or to not
+pass a callback when they currently get the default one.
 
-> +/**
-> + * unpin_hibernation_swap_type - Unpin the swap device for hibernation
-> + * @type: Swap type previously returned by pin_hibernation_swap_type()
-> + *
-> + * Clear the hibernation pin on the given swap device, allowing
-> + * swapoff() to proceed normally.
-> + *
-> + * If @type does not refer to a valid swap device, this function
-> + * does nothing.
-> + */
-> +void unpin_hibernation_swap_type(int type)
-> +{
-> +	struct swap_info_struct *si;
-> +
-> +	spin_lock(&swap_lock);
-> +	si = swap_type_to_info(type);
-> +	if (!si) {
-> +		spin_unlock(&swap_lock);
-> +		return;
-> +	}
-> +	si->flags &= ~SWP_HIBERNATION;
-
-Will the code will be simpler if you just:
-
-if (si)
-	si->flags &= ~SWP_HIBERNATION;
-
-Just personal taste, free feel to ignore.
-
-And as you mentioned this is on top of swap table p3 so you based
-it on mm-new - but isn't p3 already in mm-unstable? Maybe we can
-have it there? Not sure how much conflict are there with PM.
-
-The code and design looks OK.
 
