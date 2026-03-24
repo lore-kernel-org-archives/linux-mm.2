@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED16CF532C0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 01:28:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A711FF532C0
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 01:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6275A6B0005; Mon, 23 Mar 2026 21:28:36 -0400 (EDT)
+	id 1E1F36B0092; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FE896B008C; Mon, 23 Mar 2026 21:28:36 -0400 (EDT)
+	id 1B91D6B0093; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53C006B0092; Mon, 23 Mar 2026 21:28:36 -0400 (EDT)
+	id 0F6186B0095; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 468546B0005
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:28:36 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 01FC36B0092
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:28:56 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07F7013C51E
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:28:36 +0000 (UTC)
-X-FDA: 84579221832.04.2FD7115
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 641E880004
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:28:34 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mc96LTuH;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774315714; a=rsa-sha256;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7EDB1F61C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:28:56 +0000 (UTC)
+X-FDA: 84579222672.04.B7F2237
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D783814000E
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:28:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=YnWJ9ElD;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf23.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774315735; a=rsa-sha256;
 	cv=none;
-	b=DFZ7f3F8J9eaoy6S6Cjbb/JZrprAHCtCOX4cBMIW1vTGvsgsJ9pJpohliwE0GWRQv6MgTH
-	wqd/b8S6KVBGekiWt6+T0JT+Hu3AmVFTExH2fKNihSdDQfxPAbm2zIuv8GUFVweJDhE2IS
-	F99tDNfqp+++7cdgnQphkBm4/gFOqhk=
+	b=YD6Cub6er2R0GSmah7CibfegF8EnP0HQoE4nLk/tDddKB2CdBZgmhuBgBJJOUOvDRIrfXp
+	KwuLha6x6r7kU4r8CxzdfvnnjPhPNV9KUAlwB64Ok7IHwvBDo9jb6jdipikH7/9BIrm6qf
+	1FBPIQw6azdy3AGdofqfYybWZsuVO2E=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=YnWJ9ElD;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf23.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774315714;
+	s=arc-20220608; t=1774315735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g7Mqu+nsO5MMPVsVYRyYXaVBJoND2XEj4Ohf+4MuoCY=;
-	b=lgyoKoEE9bGjzF/3D8e0UYaM2ZmvYVF/evAnj0z16aI0RjC29ImTVIIZALlvhM7h+2ytxZ
-	k5ytrMq6RzKjwehta6Kqy87YTQfvRLP35Hz9qprtkXEldLySnisi11QSM+u4g7Gwk9LXnZ
-	r0Qtt6/ceYALeWXWIbq/Ksc8l4Zvbhk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mc96LTuH;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8142B437D3
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:28:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BFEC4CEF7;
-	Tue, 24 Mar 2026 01:28:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774315713;
-	bh=rmjcFzeTy23pBs/opFIoZZhcY+XCN0OAd5iut4rJ2ZI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mc96LTuHlsNKdGSIeYbll12sBTSwkK16fnoWSUETZKIphfSwLztwKzwDJ+u8YVf5C
-	 CsW357BBv0ftsypLLLD7Pz80UqXSHdhMPeDuVSlbUuYUCrKBTQhUfkalCdMlZLmYpT
-	 A8dj7LJ2+9OLtI9TUIH5kcU1MX/Q/TfhHMtj+YSGeLtFnGnEAJgA6hma7zQ/0bjrSF
-	 WOoOIAqpXjnEuFhCImriGM3r4I+t5HhRFPvjKkizeBE07AVgreAAGwUDfe4Vmyq5kk
-	 5CGVrQ9cDTlOHPijwz3jyqh3C0v2CBttUQT/9/TEoSxzEiFIydgMXBjdZzKvuPphdZ
-	 C6SIbJSY3q8Gw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH v5 07/10] selftests/damon/_damon_sysfs: support pause file staging
-Date: Mon, 23 Mar 2026 18:28:24 -0700
-Message-ID: <20260324012825.46899-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260323231538.84452-8-sj@kernel.org>
-References: 
+	bh=W6JRFOUadqjciaiNHE1QDofRIxwv1kmNDZZ2Wj8Ios4=;
+	b=umx3l9DRVnL/91dHqCvzlWvQqaW3UbRVHfPp4/1SoLfkQUg6YWT+gxq3a+k0050MRQk2OL
+	v8vQh8SsH4eMSmyjoEwqs1DGY/J5lNyWfVWVHJpqyfBLRqBtIO3zoIjfm7pZZD9SxyzcRe
+	vI/zg6hjpTOyil52T3I53Cn6LAEZCT0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=W6JRFOUadqjciaiNHE1QDofRIxwv1kmNDZZ2Wj8Ios4=; b=YnWJ9ElDJrJ3NE6m8liGiTosd8
+	ybIFtdCxq4+uGxr0YUoML5Ie4NFc3ZRtUgXVtjfyMvDgiQ1HEimnkEtYs/fEMjzzVDl7dBm6fGdnh
+	U/AkPcYscEjH4ztWCgUuD6DIwGjquju7iyDuC0y8fzslplZdJnAgz8Fgf5JPldCzjD+/tpOin4wDq
+	G4sXk3gFYN0vpgWv8mHtxKGDWba9xJQ9n/y0PZDpCOP4dvaKu3tKsKjhRB09mXmobwkoX+H0Ti3zN
+	y2UHdHmrSGtbZ4G59/TatYnuWdSenszH3SSKQFnfUqRqXGj4Qp356UKE0F6DKPjFIDhxRwruuCFJp
+	eb6buPJQ==;
+Received: from [179.93.15.111] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1w4qZc-0058EB-PU; Tue, 24 Mar 2026 02:28:49 +0100
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com,
+	kernel@gpiccoli.net,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	SeongJae Park <sj@kernel.org>
+Subject: [PATCH v4 1/2] mm/memblock: Print out errors on reserve_mem parser
+Date: Mon, 23 Mar 2026 22:22:17 -0300
+Message-ID: <20260324012839.1991765-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260318190816.1811325-1-gpiccoli@igalia.com>
+References: <20260318190816.1811325-1-gpiccoli@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D783814000E
+X-Stat-Signature: sbb1a4zbm8hhmk7ytbpa777jon7rymq3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 641E880004
-X-Stat-Signature: s7zxxpg1gmjpphd1ic41xy9s7ktycd3q
-X-HE-Tag: 1774315714-837346
-X-HE-Meta: U2FsdGVkX19t6V7SurunGsxvD2YQ9YY0nfIMJFV04mEAhpXNr8CfhVDkLyzAyoWluHj1tEX+ugEVJoUvh9l/OAV/52h5rHBxskK+VBlH4qOJ2mLAN6rJq+cHYQD+yEAnh15NTyHk6sdvCBiHKhbsbZfdV70agrAqMYIU0HYSGvgr8VLCee6fYOqeluIyNeqjKNrIueQrygY1yRy3WXw37/TY8c3O3D6h38UHCEe/xG+AtzWnaw454EwEu80UqAJtmxJOO46fnAYPjkjzt30zmpqy/F2c0CEtrl/nkZGbwmFTOljB3myulwnLf9Ac/GEaEhBXKBtJioTyxWhH4ooms4Yk1Vle/FwnuwARZBzjc7n2JRcrTjECiVpIqS43WIUU/rY4cT3kKTsJzGufGW/wkSP1lAGKrWVL96+fmi1UFRFguca9/DpTrIxNo8GHJ+1H39yVmK1CyVfSYgwQCCYTxmy8EzHfClVSDng1YnwMwAYdExfiLskJ1r85qW121NMWFQaxh7BSuhQpXJd1Dk7+46nPsJPURCbqvPFatY37l48TXKfvjllu25F3lxoFmoD3zcVmt7oarVjWg8Awur9egN3Z6VZT4Y5/Pf6Ocb8s4Xlt+aU/DfcuTbCC3rfB09fxHTIBLrLNVsiKY/0IUXLuiX3TR4gjqj/kwApajDZPNrCYjeKeyyDmTHdEEEuKkmSlfG28tp6FOOqX6gGKDxHUAHpHOfcDYjCQ0mF+w+UP6gHHxNTlFJfEqv05zGvvbYaaOhFBBwuthzYG/+fRjwS/B3XBsqDhJVot7c8+cLNmM3/m8aZQkPFVVmT/hvjVyM1QGjzG9eTTw6xigqcjgz0VQ3Hz2lWpnEPJBGxT2vqh2TRzBcX6bT8Ftvz7z8KIsrrP1SqeCRwrK5NNeAIJI6QXXjfdeO8TwCb8euRhBicdvOC8iFfHKBhfv/XjNCfkBtMJrTNOXg3/OQLT5Z261Ak
- s9hg2iR0
- pIfIF1OALMatTsol50ldRDIEVyh6Uwi/fw0+sUCcqVLBqCOHMcAUfh3n+fBNOHkWnMMSfamf34IkEVpRoVnWxS7YreX1gYi+e1w8rzsXDf73AARuUQ/TqmiHlVr4Q0APUP8IMj077iANXp63KwqW6eQuO9R/6ekYhTXniEBiOLWkDkJOCRfvgVru27KfA2H1XM29VhAslBM1OEpB5wiJYfDGWz5Z+1szd6nChJhInq5blzyi3Wx8GYvQZvsQr93xld29V+PsuaCKJmKDvf+hRHPcCPvPmtRVvozKivA9Fze0iPALhX3dXRGdnWGRLG7v19XKxg/Ny3GGBWY1Phol94C/L8Hk+RsRd8hnoAlOuNcPiZ+Lpyy8IFEb8dafE+PkVm7yIfYX3zbti22Za1m3QVhll5SRmaNlD0jOTVq5ekm8067Y=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774315734-861705
+X-HE-Meta: U2FsdGVkX1/YfxzCNgENtcm8comnhljJgwtCfYMSP8LH3oI5DLIGK5MozSPE1ZtRFkgFq1lZfHdi803r5M8xtCbNdEV/0bK2uFzWLVDS+fZ2tFV/iKDeQN/ZIf9h+SKMMRfnI1N+3i5S0IFLb2IKrPD1wJ7ECjVnw0CxuP+6uwYtp8PwGj+hLQrWdyMGpGJP+NO26dLHdIWhl3+W6Wubu14KUi41Kx85xFZ4Nmw/s2U04C357bY7Th3TO3gAm1ZnzWNPAL4I1YSyjilDCmeQe5JpUWvQleFddMm0qbNkOI9HmxmOJ7pcHv8pEz0vnED8rhCHxzqEQnif4boGgxLe/8Mj39tiNNdjqU7G9n9zeoVMGBpMMDOntCWsoPh/7WnKIFAUDY08KUfPzBgS3kxhdXhsXB06CRyGThz01KGHgomsY/tfSy0fCFdwJ0YxmJYcmOSvny3FXlKKboNUTXldVWFMmCczORO+tVkx6EN5LqNTLj/O6RWP4LvtgXAA9cUewbinMEWauiXOoxYZa3lMMtGkQw/JmRK63qMTqM+BCFlCKoeaeee2KUFelHBwq4njGz7rWiImZe44xGE6kuyAADdeY0DOSx1oXk8+mL0+C3nr3NYdQZe5vVvp4hk+YusvyULbtW2+Y1kbze0mg9MZCBHXV9cI9ImquI6eaQQFgaB6FF6ZRVA7+72MqVg2B6DXFtpa958VZJjLEzRlvGW6zKvfWFklrQhQOvMlgFVj/u0ycpXbtmD6Qt/56j3pXE71hISzweLbgbJauLx9zbyzUvnCumZNF9rmNCPXb+dYv/paXLok5PEQlRiCzIPjo8CJYmYbjVxQGn4IKFRLY6ctifYh7ZOuKGjZe2V1MdQ86q4HANz2Nm0aryrVVDTVCjLYW6Oo3X0DLJAOtbA3DyVoS2YCcgHRCIcMAheUTB5zsySuIStgBdinv6Afe1zs+jYGnR5EimYVneCWeUivh68
+ ax4h1owD
+ Lc+ELYW9DykRKcPsL741SL/nL5Seyb+TAklfN2OMOtIgOrdSNpHRJ0jB+9G2Smodnp3bJk5ho4j1mUdHA3A9qNmmP1NrICvCm+mOdb1y0EiAKiOZh7a9iLb6dMc7gl3beMTDYUVb84Q1RY82qxKUKR8x1je/GDnyDF7ezypx19Wv+Bq4efYFEsU4Pm7MnnUrQZT2jx1bolQCKCnxyrosHBvCMgyQN28LJN+hFkNnRfe0vQmE//9LwmyUporwPaAj/onk0sqo/DEKsuH5f3l5jEm4j3649o/kt6+itnYsf1Ur/ZNkzb9c5K/rslu6gHyBXmrv0hKNJikLTftKtltVwvuWhp6uFFUZZV5Bx82FC4n1KQCZQyKKTf9UqgPt5Blykju6VQgOb3+lqo4fzVS+L6a1SKK0+lYcAPMkVKLmxjY5/T5aNwxjZK3iCxBW6v33yF34Ik4LF5rDoBlU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,61 +97,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding Sashiko review for doing discussions via mails.
+The parsing of kernel parameter "reserve_mem=" is subject to
+multiple failures, like duplicate naming, malformed expression
+or even lack of available memory. Right now, all of these fail
+silently. Let's add some messages so the kernel log can provide
+useful information in case of failures.
 
-# review url: https://sashiko.dev/#/patchset/20260323231538.84452-8-sj@kernel.org
-# start of sashiko.dev inline review
-commit d9ca6c4a33fc4d613982730edda6f4b67ae30a67
-Author: SeongJae Park <sj@kernel.org>
-selftests/damon/_damon_sysfs: support pause file staging
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
 
-This commit adds support for the newly added pause file to the DAMON
-test-purpose sysfs interface control Python module.
+V4: no changes.
 
-> diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-> --- a/tools/testing/selftests/damon/_damon_sysfs.py
-> +++ b/tools/testing/selftests/damon/_damon_sysfs.py
-[ ... ]
->  class DamonCtx:
->      targets = None
->      schemes = None
->      kdamond = None
-> +    pause = None
->      idx = None
->  
->      def __init__(self, ops='paddr', monitoring_attrs=DamonAttrs(), targets=[],
-> -            schemes=[]):
-> +            schemes=[], pause=False):
+V3 thread: https://lore.kernel.org/r/20260318190816.1811325-1-gpiccoli@igalia.com/
 
-This isn't a bug introduced by this patch, but since the function signature
-is being modified here, is it a good time to address the mutable default
-arguments?
 
-In Python, default arguments are evaluated exactly once at function
-definition time. This means any instances of DamonCtx created without
-explicitly providing targets, schemes, or monitoring_attrs will share
-the same list structures and DamonAttrs instance in memory.
+ mm/memblock.c | 27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-For example, self.monitoring_attrs.context = self overwrites the context
-attribute of the shared DamonAttrs object for all default contexts.
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b3ddfdec7a80..ac08d7f8c15e 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2642,23 +2642,25 @@ static int __init reserve_mem(char *p)
+ 	int len;
+ 
+ 	if (!p)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Check if there's room for more reserved memory */
+-	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES)
++	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES) {
++		pr_err("reserve_mem: no more room for reserved memory\n");
+ 		return -EBUSY;
++	}
+ 
+ 	oldp = p;
+ 	size = memparse(p, &p);
+ 	if (!size || p == oldp)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	if (*p != ':')
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	align = memparse(p+1, &p);
+ 	if (*p != ':')
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/*
+ 	 * memblock_phys_alloc() doesn't like a zero size align,
+@@ -2672,7 +2674,7 @@ static int __init reserve_mem(char *p)
+ 
+ 	/* name needs to have length but not too big */
+ 	if (!len || len >= RESERVE_MEM_NAME_SIZE)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Make sure that name has text */
+ 	for (p = name; *p; p++) {
+@@ -2680,11 +2682,13 @@ static int __init reserve_mem(char *p)
+ 			break;
+ 	}
+ 	if (!*p)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Make sure the name is not already used */
+-	if (reserve_mem_find_by_name(name, &start, &tmp))
++	if (reserve_mem_find_by_name(name, &start, &tmp)) {
++		pr_err("reserve_mem: name \"%s\" was already used\n", name);
+ 		return -EBUSY;
++	}
+ 
+ 	/* Pick previous allocations up from KHO if available */
+ 	if (reserve_mem_kho_revive(name, size, align))
+@@ -2692,12 +2696,17 @@ static int __init reserve_mem(char *p)
+ 
+ 	/* TODO: Allocation must be outside of scratch region */
+ 	start = memblock_phys_alloc(size, align);
+-	if (!start)
++	if (!start) {
++		pr_err("reserve_mem: memblock allocation failed\n");
+ 		return -ENOMEM;
++	}
+ 
+ 	reserved_mem_add(start, size, name);
+ 
+ 	return 1;
++err_param:
++	pr_err("reserve_mem: empty or malformed parameter\n");
++	return -EINVAL;
+ }
+ __setup("reserve_mem=", reserve_mem);
+ 
+-- 
+2.50.1
 
-Would it be better to change these defaults to None and instantiate them
-within the method body to avoid unexpected state sharing across instances?
-
->          self.ops = ops
->          self.monitoring_attrs = monitoring_attrs
->          self.monitoring_attrs.context = self
-
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260323231538.84452-8-sj@kernel.org
-#
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260323231538.84452-8-sj@kernel.org
-#
-# [1] https://github.com/sjp38/hackermail
-
-Sent using hkml (https://github.com/sjp38/hackermail)
 
