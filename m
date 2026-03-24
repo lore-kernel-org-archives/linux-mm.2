@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD171E9A74B
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 09:50:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69411E9A754
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 09:51:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 524EC6B009F; Tue, 24 Mar 2026 05:50:46 -0400 (EDT)
+	id D14276B00A1; Tue, 24 Mar 2026 05:51:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FBEB6B00A1; Tue, 24 Mar 2026 05:50:46 -0400 (EDT)
+	id CC44B6B00A3; Tue, 24 Mar 2026 05:51:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4121A6B00A2; Tue, 24 Mar 2026 05:50:46 -0400 (EDT)
+	id BB41D6B00A4; Tue, 24 Mar 2026 05:51:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CDD96B009F
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:50:46 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0756DE0D8C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:50:46 +0000 (UTC)
-X-FDA: 84580487292.09.B8FCB5C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A539D6B00A1
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:51:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 75D9C1619BF
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:51:02 +0000 (UTC)
+X-FDA: 84580487964.11.AF125BF
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2870212000D
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:50:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CMgpuJKn;
-	spf=temperror (imf29.hostedemail.com: error in processing during lookup of vschneid@redhat.com: DNS error) smtp.mailfrom=vschneid@redhat.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 833D51C0011
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:51:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=amtmckzY;
+	spf=pass (imf18.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774345844; a=rsa-sha256;
-	cv=none;
-	b=TAiYCMa48kBBHoBfGBT50TxOzxqXq4y03De4m5VNGIhy8KfMnPczHLTzjdJwfHhi32wfiL
-	kpWSiyZ2iP7JVjCdtUR9pDddR4Kl5bo/r2y1/waD+QEzAoFrdabDSBtEDnIJkeBIVzmKyZ
-	KO5LClgXKO4C8IsHIpfi4GotAsiN6mo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774345844;
+	s=arc-20220608; t=1774345860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tg6n/oqixejy7VhwIIBWEvPzLaP7Ximx0xbVbwmAmuE=;
-	b=pf7kAE3pjU4Rx+9Irmxaz345+9puRDekfWg6DeIXmlSf40mjYdZweTYhUgakm6lbgN2Mnm
-	TuDJKoZ+YO5BunIAN6SqFHv3LyTLapXNAH1mLyVDTC3G8JTGowA0dH6NURV+KTwJH3yo7T
-	vlGAXP5liD0Xra2qd7i6I38SYhXb+jE=
+	bh=Gat9n9rqQs56/qB2UIuZaMkqQi+a1E0dBrxpCkg7CqE=;
+	b=DIcA5qtmDj0gF7Kk/l5i3Qa/tzbvoijyXJm1DCIhZTiMy2nAYZa0btFaRWEhzjOdriKoI7
+	MGyZJpN/kU7gIcvQihKUMYvXLa9j+fqPF+5uV9BZMxtZdP96OzDY2AjV6UqcFtwK1MDyu/
+	sL6xNdovw+TGbR7AWNzpvvC2hkUBdFQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CMgpuJKn;
-	spf=temperror (imf29.hostedemail.com: error in processing during lookup of vschneid@redhat.com: DNS error) smtp.mailfrom=vschneid@redhat.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=amtmckzY;
+	spf=pass (imf18.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774345860; a=rsa-sha256;
+	cv=none;
+	b=SD1yF0rseh0E6ZiePwYkiUDbTOst7b1wxte60v52ms/ttVQCeCv6C00F8emZAICvkqvWOY
+	HNkJ+mSIVavpjDeicqXxuinK9XRbzQvZI7P14+EyESiN1T0WAuTNUu1fnE3/zzsFdMUzAY
+	2OZiZDY1a0H/WYWbUEjvet5Mh9eTqPE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774345843;
+	s=mimecast20190719; t=1774345859;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tg6n/oqixejy7VhwIIBWEvPzLaP7Ximx0xbVbwmAmuE=;
-	b=CMgpuJKnBWH154YBc95H8DWiNXqLA6nLtfTh34g4MZOSTO8LaQY4Wy32knIg9bZQ/lgvVI
-	CVCrQAMjud6u/tbcdeq4vAdXLjWZdd2g9D05eXF8c9nXFLx9O1X1kn79OHRuEgW7+UKjhX
-	O4ojz97uT3j6LQP0BNGiPDlobO9wMPs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=Gat9n9rqQs56/qB2UIuZaMkqQi+a1E0dBrxpCkg7CqE=;
+	b=amtmckzYZXEHzejzb0uoi137Vv9OhuvMUgaE3upiR1/cq9KpHoN2U1sY87uEguF0MONuR3
+	/9FapJnUYoUQHVe5EDFLLClff5JgFaDFk0t8/lmyK5t18THEvCVeIGhKLXgrYwsN93zCG2
+	RYFqoctNJLM1jU8c9IoiKr0J6hksu1E=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-Svp_4I3WOleNg3hwdwqHoA-1; Tue,
- 24 Mar 2026 05:50:39 -0400
-X-MC-Unique: Svp_4I3WOleNg3hwdwqHoA-1
-X-Mimecast-MFC-AGG-ID: Svp_4I3WOleNg3hwdwqHoA_1774345835
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-131-B5zXNt9rNpyEt3OiBpBtfg-1; Tue,
+ 24 Mar 2026 05:50:55 -0400
+X-MC-Unique: B5zXNt9rNpyEt3OiBpBtfg-1
+X-Mimecast-MFC-AGG-ID: B5zXNt9rNpyEt3OiBpBtfg_1774345850
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 63F90180044D;
-	Tue, 24 Mar 2026 09:50:35 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A6F7F1800281;
+	Tue, 24 Mar 2026 09:50:50 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.44.34.246])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E7E0B300019F;
-	Tue, 24 Mar 2026 09:50:21 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D57C830001BB;
+	Tue, 24 Mar 2026 09:50:35 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@kernel.org>,
 	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -119,25 +120,25 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: [RFC PATCH v8 08/10] x86/mm/pti: Introduce a kernel/user CR3 software signal
-Date: Tue, 24 Mar 2026 10:47:59 +0100
-Message-ID: <20260324094801.3092968-9-vschneid@redhat.com>
+Subject: [RFC PATCH v8 09/10] context_tracking,x86: Defer kernel text patching IPIs when tracking CR3 switches
+Date: Tue, 24 Mar 2026 10:48:00 +0100
+Message-ID: <20260324094801.3092968-10-vschneid@redhat.com>
 In-Reply-To: <20260324094801.3092968-1-vschneid@redhat.com>
 References: <20260324094801.3092968-1-vschneid@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: r01Wq8PpFO3fdvmJkUdWOmpehAYeFyxfi1nnkNNFqi4_1774345835
+X-Mimecast-MFC-PROC-ID: rau2glKmVIrghuAd_rXrhrKeW5jMAxu3BGY4QgMWlac_1774345850
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 833D51C0011
+X-Stat-Signature: i4hcho8pnnz5fdk6crmzudm7kqc3gkms
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2870212000D
-X-Stat-Signature: ssx3ptjs5zc6z9gbpr93s3dahnza41bm
-X-HE-Tag: 1774345843-78276
-X-HE-Meta: U2FsdGVkX19IjIiXL3ZWyYgQsScRV651iroPC3KC7P1F14j9up//MDIGCDPyncwCgpeWEytn2izdzmYyuUBeoOiHvYsxbZG+7MAV52EGEiU/VZVzLfPqagXUyugUDQjHXUYySn29zQOPWuT9YGAaTC+iNkxfa38tGWKvF0142ORiLSaC+konrH/BCPYY+VOUyLUgiUJriKjbOSz9w/4JN09+TmXzuZPJoPKkiIZbFzsYrHD275aD24fdgR4khCdApgOw3SAMe+G2MdIXZzrbnSTarQVACJfXML1nhaRfYSslgp5PYNwf/k1YD2TtvJ1njj2czVsU9witL/iovJkgxz4kXWfcj5nk7G9am6HE9YFKOfWo2j8yKemp2/T6TWRgL/D89RVLV0Ymh/Ei6Sjh+eVT9cn3Zo+6uDKpQnLvZ+I49GnT3HTIXjGtKz05m8EDSOTA/UCf8Ieea4W/sCFJ1vmDAdOicJvYOg3IHkZSIEAq6soyTwC7NHfbf+z5mojWAou03C4cisOugLBneRoOsWCajprN5y51/J6z/UW8QQ1oXE1cqj0sa+JxvqWstv6K9EUO98tjrpMMG88UPKOrGtWFf+okQUvuDrxaxFvhIGwFwEUPxlI3nRuvKFkrTXCIdT96Z0yKmFQ19KUuBFCYNCyfqYROkprzW8FWFE/mVeV7+GDSy6G9vE78Z+1g0lcwWZiIUfdtjA6DBk0KAZDBXnGp47140eCAlz1efqEHwxwWAixRuUoHRDyn58CuJBsmue8JVTc3jzrncVJBhM/8d9cUemrTy5x325g421MaTpZEEfNJcLWyXIQarn3ArHb0YI0xYjEGbm0naHKNpT6gOQawQvpVcP7wfu6HwKPkin9kT28gTJHhKJvrqKFS5CSAo3AaSGLjTPHtMtRogVEFRtDdGm9HyUsrP30bt61LJkXfzGW1APsf7JkWy8+fzsqcPuVxUI+b9GAkSrcbmXJ
- YXhg3bRa
- sUKEJxnQprkkPq8lu2A5i6TKLyE6nFED5sGa12zdGBtlUArEpmXIs5VtKGjB5+F6efNvvVXfbTcbgvfwYl+0l20Obc6lTHHeFEakhRRDodRwzaH1w9sH8qp/BhguaNaEOtJGaZDQ5hYizWIl/2lX2OtGSvbSW99g0MHygm7Qqhm7LCU3MWzvXlIS3BWC2pX0i9r1WMVyOJklvxVm640OmF8ICEspmQ3tBR/Yz50YObcJ7G5lXxGOWkKnk8jI8e410b/33Y5q+DehFYfX0Mh82IiYkjQt59SMzY/jjzXgXDfuabt6oe/Fr8Uc9mgSN1q0Zm27xS9FSS9fo9URCU1E0LsMTLLrdh7yIXnR9iE23x0RuhflWVz9K5qhtxPdlROlk3A+/Vly6J/kIgml6jWrK2DjMhX542gx0zsJQWZalk700TNsrlyYwIZZPc4LO/UCGWQCBlpT5fL/BmbGwbBiMP73KGGZf0j1lz8Xk
+X-HE-Tag: 1774345860-961006
+X-HE-Meta: U2FsdGVkX194nEqafck8RzdCWozJorJhOe8KLWR/Ev4wP5qON2TLp/ltleCB4lpjBvdgYdqWPdeAMdjozfF5lEjfRBJu80fcotRo7uWQ+6Co5NUVEeXVs6Z7nan0qJYz2Bikgr+gZ4jVxooGcFGOMbPXW0vHsX0eD4THgvXATZJyquM7rUTtLIUb+XcGDZTaK0hLEbX1qoCfsOqgrcP9NvLuOT3Qd2xjjWRCLdItN2/BsXa6tCR9l2l9J8j6cLLQucMbqVvYu3P66SY9RXWC1QLM+7ypJ1USvR4UbXtuzN3hPat9qhKoLyxdMbZoXF3BKenr0H39Ve3zKztDkIB2MVls2kga+5JIqQxvOpdjxSMrLKf7RRlorrE5BdN9usKqu8ws1Zb+ioKewyZoh0gkCcOKY5LpKPpP84iYETJ+4uSQn5yqqBEDIQWjzECYGkEsRSW957n3m2xUcsx/t+C1OexCjdz9zp1mSzDBTaE/RR9RQOISA+u66GrEA/cSxmzuTL5Gh+sVeXOCJOReul3yCtegYEVONRiTlIk0fMMEpjI0MmQsKwgYTs26ELCeDrFfODtAINCzchxRDbuBUwvChs4d3fVD2RMRw2LGwcK6doGyp+T7mbpPL2JDjwGH42CqZCHz1EOP3wcmNghpdzkxKQc1NnGLTRiu7k84ZOSA1kQ80pIodOyTtfMIrkEnA5ndl4pp+XkJrl5c1hnX10AFGqnlhWiPZTtxdaRg3gYoXyUsqgvIo+bPcuafurgPpqX6WwdHsCHpncSukAxMf0L1Dl3wKTSx1RchxPQ6T2w6PcrqsqdIYotUK/i0ajqbPblIA0f0oRkgQ7cnf0BIufazD2GMZpbMOhrIvGLPMmLRBtregMXPJljwu0Axypt0SNU2fs0CLDZ5zR8WTzG/ngnLnV9aI3QemSa8meoj/CLCP2wiLB+pFRMpRf2vEn41guiSRFsIq/J/VO3zDYuhy2o
+ sm/G43cl
+ NO8fg/0beY73ijlgah7mr5G3XyZLbBd4oWAae0mzZ8pg0WK1ijowI0j79H+O0UvoxfOv2QYRW0tgwZqhiNCUVukblHxqYobyxge5mpfGAbtDsDMNTnt1MgZ2EtpMRoQnDHdOa1OkqaZxp28YFMnQ6XnLPiGbTGLn3t9HYT7cdaYBVanZqDDqTAGcES0K7HnMdHMQlw3B3ALFxlsVPaxX9tL0lVEPuoKOtJpKhqLZhLBktNvf2gBYLppZ/Pt3j6rNMLUE4rsY8/qf8xo1WrlF1qwTuf3VJCjEkMJDpVyFUpGw5R0UE2u1ctQmBbJ2TTkIU4DUGqpK5aUNgH69czKCykOAo6NO7o6dYCn/Y6fBrwlgcAckwja2mXsMuKp7EpMMMUgVBHAGJF/0X+HtK5/sn9unokp2A47HgLMIZ2WzAs6gi3cSszTrIMeZ5ZwpQy2lQgIT1q5jSavInW+gB8A4eQleZeYKiDAIAkV7i/4fw8oPSJU7PA1vbRtrjy2/wJLFvyvTkgxzqjkssVjvWHoiS7eVTR9IGt2Ut4q4a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,216 +146,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Later commits will rely on being able to check whether a remote CPU is
-using the kernel or the user CR3.
+text_poke_bp_batch() sends IPIs to all online CPUs to synchronize
+them vs the newly patched instruction. CPUs that are executing in userspace
+do not need this synchronization to happen immediately, and this is
+actually harmful interference for NOHZ_FULL CPUs.
 
-This software signal needs to be updated before the actual CR3 write, IOW
-it always immediately precedes it:
+As the synchronization IPIs are sent using a blocking call, returning from
+text_poke_bp_batch() implies all CPUs will observe the patched
+instruction(s), and this should be preserved even if the IPI is deferred.
+In other words, to safely defer this synchronization, any kernel
+instruction leading to the execution of the deferred instruction
+sync must *not* be mutable (patchable) at runtime.
 
-  KERNEL_CR3_LOADED := 1
-  SWITCH_TO_KERNEL_CR3
-  [...]
-  KERNEL_CR3_LOADED := 0
-  SWITCH_TO_USER_CR3
+This means we must pay attention to mutable instructions in the early entry
+code:
+- alternatives
+- static keys
+- static calls
+- all sorts of probes (kprobes/ftrace/bpf/???)
 
-The variable also gets mapped into the user space visible pages.
-I tried really hard not to do that, and at some point had something mostly
-working with having an alias to it through the cpu_entry_area accessed like
-so before the switch to the kernel CR3:
+The early entry code is noinstr, which gets rid of the probes.
 
-	subq $10, %rsp
-	sgdt (%rsp)
-	movq 2(%rsp), \scratch_reg /* GDT address */
-	addq $10, %rsp
+Alternatives are safe, because it's boot-time patching (before SMP is
+even brought up) which is before any IPI deferral can happen.
 
-	movl $1, CPU_ENTRY_AREA_kernel_cr3(\scratch_reg)
+This leaves us with static keys and static calls. Any static key used in
+early entry code should be only forever-enabled at boot time, IOW
+__ro_after_init (pretty much like alternatives). Exceptions to that will
+now be caught by objtool.
 
-however this explodes when running 64-bit user code that invokes SYSCALL,
-since the scratch reg is %rsp itself, and I figured this was enough headaches.
+The deferred instruction sync is the CR3 RMW done as part of
+kPTI when switching to the kernel page table:
 
-This will only be really useful for NOHZ_FULL CPUs, but it should be
-cheaper to unconditionally update a never-used per-CPU variable living in
-its own cacheline than to check a shared cpumask such as
-  housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
-at every entry.
+  SDM vol2 chapter 4.3 - Move to/from control registers:
+  ```
+  MOV CR* instructions, except for MOV CR8, are serializing instructions.
+  ```
 
+Leverage the new kernel_cr3_loaded signal and the kPTI CR3 RMW to defer
+sync_core() IPIs targeting NOHZ_FULL CPUs.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- arch/x86/Kconfig                | 14 +++++++++++++
- arch/x86/entry/calling.h        | 13 ++++++++++++
- arch/x86/entry/syscall_64.c     |  4 ++++
- arch/x86/include/asm/tlbflush.h |  3 +++
- arch/x86/mm/pti.c               | 36 ++++++++++++++++++++++-----------
- 5 files changed, 58 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/text-patching.h |  5 ++++
+ arch/x86/kernel/alternative.c        | 34 +++++++++++++++++++++++-----
+ arch/x86/kernel/kprobes/core.c       |  4 ++--
+ arch/x86/kernel/kprobes/opt.c        |  4 ++--
+ arch/x86/kernel/module.c             |  2 +-
+ 5 files changed, 38 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 80527299f859a..f680e83cd5962 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2192,6 +2192,20 @@ config ADDRESS_MASKING
- 	  The capability can be used for efficient address sanitizers (ASAN)
- 	  implementation and for optimizations in JITs.
- 
-+config TRACK_CR3
-+       def_bool n
-+       prompt "Track which CR3 is in use"
-+       depends on X86_64 && MITIGATION_PAGE_TABLE_ISOLATION && NO_HZ_FULL
-+       help
-+	 This option adds a software signal that allows checking remotely
-+	 whether a CPU is using the user or the kernel page table.
-+
-+	 This allows further optimizations for NOHZ_FULL CPUs.
-+
-+	 This obviously makes the user<->kernel transition overhead even worse.
-+
-+	 If unsure, say N.
-+
- config HOTPLUG_CPU
- 	def_bool y
- 	depends on SMP
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index 77e2d920a6407..4099b7d86efd9 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -9,6 +9,7 @@
- #include <asm/ptrace-abi.h>
- #include <asm/msr.h>
- #include <asm/nospec-branch.h>
-+#include <asm/jump_label.h>
- 
- /*
- 
-@@ -170,8 +171,17 @@ For 32-bit we have the following conventions - kernel is built with
- 	andq    $(~PTI_USER_PGTABLE_AND_PCID_MASK), \reg
- .endm
- 
-+.macro NOTE_CR3_SWITCH scratch_reg:req in_kernel:req
+diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
+index f2d142a0a862e..628e80f8318cd 100644
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -33,6 +33,11 @@ extern void text_poke_apply_relocation(u8 *buf, const u8 * const instr, size_t i
+  */
+ extern void *text_poke(void *addr, const void *opcode, size_t len);
+ extern void smp_text_poke_sync_each_cpu(void);
 +#ifdef CONFIG_TRACK_CR3
-+	STATIC_BRANCH_FALSE_LIKELY housekeeping_overridden, .Lend_\@
-+	movl \in_kernel, PER_CPU_VAR(kernel_cr3_loaded)
-+.Lend_\@:
-+#endif // CONFIG_TRACK_CR3
-+.endm
-+
- .macro SWITCH_TO_KERNEL_CR3 scratch_reg:req
- 	ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
-+	NOTE_CR3_SWITCH \scratch_reg $1
- 	mov	%cr3, \scratch_reg
- 	ADJUST_KERNEL_CR3 \scratch_reg
- 	mov	\scratch_reg, %cr3
-@@ -182,6 +192,7 @@ For 32-bit we have the following conventions - kernel is built with
- 	PER_CPU_VAR(cpu_tlbstate + TLB_STATE_user_pcid_flush_mask)
++extern void smp_text_poke_sync_each_cpu_deferrable(void);
++#else
++#define smp_text_poke_sync_each_cpu_deferrable smp_text_poke_sync_each_cpu
++#endif
+ extern void *text_poke_kgdb(void *addr, const void *opcode, size_t len);
+ extern void *text_poke_copy(void *addr, const void *opcode, size_t len);
+ #define text_poke_copy text_poke_copy
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 28518371d8bf3..f3af77d7c533c 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -6,6 +6,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/memory.h>
+ #include <linux/execmem.h>
++#include <linux/sched/isolation.h>
  
- .macro SWITCH_TO_USER_CR3 scratch_reg:req scratch_reg2:req
-+	NOTE_CR3_SWITCH \scratch_reg $0
- 	mov	%cr3, \scratch_reg
+ #include <asm/text-patching.h>
+ #include <asm/insn.h>
+@@ -13,6 +14,7 @@
+ #include <asm/ibt.h>
+ #include <asm/set_memory.h>
+ #include <asm/nmi.h>
++#include <asm/tlbflush.h>
  
- 	ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
-@@ -229,6 +240,7 @@ For 32-bit we have the following conventions - kernel is built with
+ int __read_mostly alternatives_patched;
  
- .macro SAVE_AND_SWITCH_TO_KERNEL_CR3 scratch_reg:req save_reg:req
- 	ALTERNATIVE "jmp .Ldone_\@", "", X86_FEATURE_PTI
-+	NOTE_CR3_SWITCH \scratch_reg $1
- 	movq	%cr3, \scratch_reg
- 	movq	\scratch_reg, \save_reg
- 	/*
-@@ -257,6 +269,7 @@ For 32-bit we have the following conventions - kernel is built with
- 	bt	$PTI_USER_PGTABLE_BIT, \save_reg
- 	jnc	.Lend_\@
- 
-+	NOTE_CR3_SWITCH \scratch_reg $0
- 	ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
- 
- 	/*
-diff --git a/arch/x86/entry/syscall_64.c b/arch/x86/entry/syscall_64.c
-index b6e68ea98b839..7583f71978856 100644
---- a/arch/x86/entry/syscall_64.c
-+++ b/arch/x86/entry/syscall_64.c
-@@ -83,6 +83,10 @@ static __always_inline bool do_syscall_x32(struct pt_regs *regs, int nr)
- 	return false;
+@@ -2706,11 +2708,29 @@ static void do_sync_core(void *info)
+ 	sync_core();
  }
  
-+#ifdef CONFIG_TRACK_CR3
-+DEFINE_PER_CPU_PAGE_ALIGNED(bool, kernel_cr3_loaded) = true;
-+#endif
-+
- /* Returns true to return using SYSRET, or false to use IRET */
- __visible noinstr bool do_syscall_64(struct pt_regs *regs, int nr)
- {
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index 00daedfefc1b0..3b3aceee701e6 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -17,6 +17,9 @@
- #include <asm/pgtable.h>
- 
- DECLARE_PER_CPU(u64, tlbstate_untag_mask);
-+#ifdef CONFIG_TRACK_CR3
-+DECLARE_PER_CPU_PAGE_ALIGNED(bool, kernel_cr3_loaded);
-+#endif
- 
- void __flush_tlb_all(void);
- 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index f7546e9e8e896..e75450cabd3a6 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -440,6 +440,18 @@ static void __init pti_clone_p4d(unsigned long addr)
- 	*user_p4d = *kernel_p4d;
- }
- 
-+static void __init pti_clone_percpu(unsigned long va)
++static void __smp_text_poke_sync_each_cpu(smp_cond_func_t cond_func)
 +{
-+		phys_addr_t pa = per_cpu_ptr_to_phys((void *)va);
-+		pte_t *target_pte;
-+
-+		target_pte = pti_user_pagetable_walk_pte(va, false);
-+		if (WARN_ON(!target_pte))
-+			return;
-+
-+		*target_pte = pfn_pte(pa >> PAGE_SHIFT, PAGE_KERNEL);
++	on_each_cpu_cond(cond_func, do_sync_core, NULL, 1);
 +}
 +
- /*
-  * Clone the CPU_ENTRY_AREA and associated data into the user space visible
-  * page table.
-@@ -450,25 +462,25 @@ static void __init pti_clone_user_shared(void)
- 
- 	pti_clone_p4d(CPU_ENTRY_AREA_BASE);
- 
-+	/*
-+	 * This is done for all possible CPUs during boot to ensure that it's
-+	 * propagated to all mms.
-+	 */
- 	for_each_possible_cpu(cpu) {
- 		/*
- 		 * The SYSCALL64 entry code needs one word of scratch space
- 		 * in which to spill a register.  It lives in the sp2 slot
- 		 * of the CPU's TSS.
--		 *
--		 * This is done for all possible CPUs during boot to ensure
--		 * that it's propagated to all mms.
- 		 */
-+		pti_clone_percpu((unsigned long)&per_cpu(cpu_tss_rw, cpu));
- 
--		unsigned long va = (unsigned long)&per_cpu(cpu_tss_rw, cpu);
--		phys_addr_t pa = per_cpu_ptr_to_phys((void *)va);
--		pte_t *target_pte;
--
--		target_pte = pti_user_pagetable_walk_pte(va, false);
--		if (WARN_ON(!target_pte))
--			return;
--
--		*target_pte = pfn_pte(pa >> PAGE_SHIFT, PAGE_KERNEL);
+ void smp_text_poke_sync_each_cpu(void)
+ {
+-	on_each_cpu(do_sync_core, NULL, 1);
++	__smp_text_poke_sync_each_cpu(NULL);
++}
++
 +#ifdef CONFIG_TRACK_CR3
-+		/*
-+		 * The entry code needs access to the @kernel_cr3_loaded percpu
-+		 * variable before the kernel CR3 is loaded.
-+		 */
-+		pti_clone_percpu((unsigned long)&per_cpu(kernel_cr3_loaded, cpu));
-+#endif
- 	}
++static bool do_sync_core_defer_cond(int cpu, void *info)
++{
++	return housekeeping_cpu(cpu, HK_TYPE_KERNEL_NOISE) ||
++	       per_cpu(kernel_cr3_loaded, cpu);
  }
+ 
++void smp_text_poke_sync_each_cpu_deferrable(void)
++{
++	__smp_text_poke_sync_each_cpu(do_sync_core_defer_cond);
++}
++#endif
++
+ /*
+  * NOTE: crazy scheme to allow patching Jcc.d32 but not increase the size of
+  * this thing. When len == 6 everything is prefixed with 0x0f and we map
+@@ -2914,11 +2934,13 @@ void smp_text_poke_batch_finish(void)
+ 	 * First step: add a INT3 trap to the address that will be patched.
+ 	 */
+ 	for (i = 0; i < text_poke_array.nr_entries; i++) {
+-		text_poke_array.vec[i].old = *(u8 *)text_poke_addr(&text_poke_array.vec[i]);
+-		text_poke(text_poke_addr(&text_poke_array.vec[i]), &int3, INT3_INSN_SIZE);
++		void *addr = text_poke_addr(&text_poke_array.vec[i]);
++
++		text_poke_array.vec[i].old = *((u8 *)addr);
++		text_poke(addr, &int3, INT3_INSN_SIZE);
+ 	}
+ 
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ 
+ 	/*
+ 	 * Second step: update all but the first byte of the patched range.
+@@ -2980,7 +3002,7 @@ void smp_text_poke_batch_finish(void)
+ 		 * not necessary and we'd be safe even without it. But
+ 		 * better safe than sorry (plus there's not only Intel).
+ 		 */
+-		smp_text_poke_sync_each_cpu();
++		smp_text_poke_sync_each_cpu_deferrable();
+ 	}
+ 
+ 	/*
+@@ -3001,7 +3023,7 @@ void smp_text_poke_batch_finish(void)
+ 	}
+ 
+ 	if (do_sync)
+-		smp_text_poke_sync_each_cpu();
++		smp_text_poke_sync_each_cpu_deferrable();
+ 
+ 	/*
+ 	 * Remove and wait for refs to be zero.
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index c1fac3a9fecc2..61a93ba30f255 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -789,7 +789,7 @@ void arch_arm_kprobe(struct kprobe *p)
+ 	u8 int3 = INT3_INSN_OPCODE;
+ 
+ 	text_poke(p->addr, &int3, 1);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ 	perf_event_text_poke(p->addr, &p->opcode, 1, &int3, 1);
+ }
+ 
+@@ -799,7 +799,7 @@ void arch_disarm_kprobe(struct kprobe *p)
+ 
+ 	perf_event_text_poke(p->addr, &int3, 1, &p->opcode, 1);
+ 	text_poke(p->addr, &p->opcode, 1);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ }
+ 
+ void arch_remove_kprobe(struct kprobe *p)
+diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
+index 6f826a00eca29..3b3be66da320c 100644
+--- a/arch/x86/kernel/kprobes/opt.c
++++ b/arch/x86/kernel/kprobes/opt.c
+@@ -509,11 +509,11 @@ void arch_unoptimize_kprobe(struct optimized_kprobe *op)
+ 	       JMP32_INSN_SIZE - INT3_INSN_SIZE);
+ 
+ 	text_poke(addr, new, INT3_INSN_SIZE);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ 	text_poke(addr + INT3_INSN_SIZE,
+ 		  new + INT3_INSN_SIZE,
+ 		  JMP32_INSN_SIZE - INT3_INSN_SIZE);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ 
+ 	perf_event_text_poke(op->kp.addr, old, JMP32_INSN_SIZE, new, JMP32_INSN_SIZE);
+ }
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index 11c45ce42694c..0894b1f38de77 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -209,7 +209,7 @@ static int write_relocate_add(Elf64_Shdr *sechdrs,
+ 				   write, apply);
+ 
+ 	if (!early) {
+-		smp_text_poke_sync_each_cpu();
++		smp_text_poke_sync_each_cpu_deferrable();
+ 		mutex_unlock(&text_mutex);
+ 	}
  
 -- 
 2.52.0
