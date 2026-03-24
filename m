@@ -4,141 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A1FFEC11C
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 22:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8208DF532E7
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 23:12:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB52E6B0088; Tue, 24 Mar 2026 18:20:04 -0400 (EDT)
+	id 8E9D26B0088; Tue, 24 Mar 2026 19:12:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3FA86B0089; Tue, 24 Mar 2026 18:20:04 -0400 (EDT)
+	id 8995B6B0089; Tue, 24 Mar 2026 19:12:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDEFD6B008A; Tue, 24 Mar 2026 18:20:04 -0400 (EDT)
+	id 788216B008A; Tue, 24 Mar 2026 19:12:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B845F6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 18:20:04 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DD121A0501
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:20:04 +0000 (UTC)
-X-FDA: 84582375528.27.B958C74
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5A1D2C000C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:20:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uW5xvVvg;
-	spf=pass (imf10.hostedemail.com: domain of avagin@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=avagin@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774390802;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6201C6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:12:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7638914048A
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 23:12:17 +0000 (UTC)
+X-FDA: 84582507114.25.CFAAF84
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AA6D0160003
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 23:12:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QLTwz3SH;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774393935; a=rsa-sha256;
+	cv=none;
+	b=VmvwCm5zR2eSJ8XQPo837KBZS/JV5lQnv56/Ota9+gVLJGfCmPefzpldC2qkYdeGC4hbpk
+	QgLOxYZZ0mDlBMksNlyPCS5unQSROEkPjzxCTqMJ1LvPXeJsq778ii7mWwlgkXi52AXIpo
+	isoaZ6zwiwhDafQKYH3/LgOMaysf/HE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QLTwz3SH;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774393935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iA0qEOtZ8sY0A4PQMCyKkXrxyPKJc9xjSndOAsg0m2c=;
-	b=3ANsq35iMndzyfcFBEQvHP5XjbhPcPHYw8ntqwbJfA89xPsaOt4OkbYMVJTO2i3CRS8VkC
-	G1QyAvE8hDR4+fQktiIAwDlMkzQ/69B3OKpX7Qdk7N6HqJ3MlXX1RHCC+1adbLA+Ag9csi
-	F7HaV21z+E27lFauSgI3Wa5GCl10mrs=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uW5xvVvg;
-	spf=pass (imf10.hostedemail.com: domain of avagin@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=avagin@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774390802; a=rsa-sha256;
-	cv=pass;
-	b=3xbp3R6/vWFEUxnQllA61mDL1Em4bGh9Wd6Agk54dRhLuCkBsJaL/43j2C35uLYVDDTe3X
-	QwACxzs3RvxKuKWecTDbc320bSzm8JqNRCTsgQ1659t9/AF+D2TtkEvodwo7kv2b0KcwQb
-	pKv7IBCKkubONDx0irdnx4+lPXts/gg=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-509069a7a7fso195211cf.0
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:20:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774390801; cv=none;
-        d=google.com; s=arc-20240605;
-        b=a/ehehhgGCgfizB+EnG5sufBOjNqEcB9EkM0WPNVUHoFQLnbbIDppdFoth3YMu9pm8
-         Yh/0+GvtHVdks5+W7BRCUkfCDhBUCnBfXS8eXwGIIOD8ijBasnCr9gArnXln0rgGEMvi
-         BqGzdjTzFg6ZI6l6NAiulOVlpzzQfe8gqu1lgnYzNuzBqKjnJvX7rpv1bX6W7MaUILeT
-         rhBfH1tpSTcpCAWgV44CcD/0UZQvC3FvqlkitCoSrVrzseX2wLlgywiJw/3HyIn6tuWS
-         iqPWUG7pVFKpYwbqXzrIcXeDqQVgZka5YiOdK6QghMyiiYOlRVcNtftcUXYHiA8Vf6my
-         Xw1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iA0qEOtZ8sY0A4PQMCyKkXrxyPKJc9xjSndOAsg0m2c=;
-        fh=TAk0/BGjdMrxT4z6P8EZX47tmYM3X9ZrJ5O56JnK3z4=;
-        b=jM/qeGMOGgAnLALG7l+UMQLXoK33MBe+n2Um/5EC7QmPKGbbYHdLN2ZWgbIZ/G80wv
-         q6mRLJgTrbeYG8DM035+T+4CrwfrJiZA9OWR1PwQtwXNPIZ8jLkpZxBd7QtXVDeFcsZL
-         rpZrmsA83JR0Bmrf/VNtfn/Pot6TMCqKUlOCS95tTe1rzXBfeigR2RcHnaEyA4X6syln
-         CPWG9iGchAGOprQPdrXPna0K5Elqb5TfRIzbUF+SiFMBonnBaiJg+Zg6SxglwN4uap32
-         scVV/3rm1HIVg0J/guXwqxadrdcgfQKUQi2zUlqRPp7mFgPk0rtlUpBcqkXRzv+/uoV4
-         z3PQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774390801; x=1774995601; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iA0qEOtZ8sY0A4PQMCyKkXrxyPKJc9xjSndOAsg0m2c=;
-        b=uW5xvVvgBoBwqUsGYykOm7hvWBUul7DMmdnu8+eUmklq4fgm6HAAQKXx6RSclaZ6QF
-         1CjQ6unu/sd7d0bauUnJlCexPFZ2w48M/Q+IIxcbFfknRLUAjLfK5vL/bnUSk/UpZA6r
-         4SAs55L0KXSia38/0TI9nrMdyNdmGwWxA7N9PffdPkwWCVESqiEjCYAv5/Lemr6pYf8j
-         /AxB0UmKMD6tz1fPtIzYQ40onuZTq4IXOqQ6SabWqmeiM2lsN+rwdWsMi6hDq4C5IN9l
-         HTcTsqUpDq1nR9zRizXwcos84Yi4m4X+wMuDU3ViKjdHup/coG5dVtqiC69u7jP6cKzT
-         oQmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774390801; x=1774995601;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iA0qEOtZ8sY0A4PQMCyKkXrxyPKJc9xjSndOAsg0m2c=;
-        b=rIgkZLfMsX+cSHdUBgfa0RcxSIZ6A3yvY4X0g7+X4MJJ07tQgKY+DZsd2YIZJJfW+O
-         WDAnFmQiOaEgJaNmLgpk+Ml5X2kXyBU2g9tOKkmrXN9zCadxMAS1dzcQTqLDeo1RkZwY
-         28RA/qk3Xm7ThfsXX5M649meG3DOf+W+pzDOm1GqnXioUWma7lGSlfBbXylM4R7fjX+t
-         0fZs4ryEyR9SrWx8dX2Eedn9ZvtWvO+Tx5AnyDXiBaEmdlScCOqeJwW+18KLwTfpW5gq
-         h1T7pfjdIhjzQRQm1QxPBfxigH2Z593u4ddSRwL33E9CO1PfQYPTYza/RVm0QCEoIigu
-         mk3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXIP1FexevVT76stTjRUL9/T5ifr+Bi24esIray6WiZ/cVO9J7DKJLTqTdfgA+ZOkmJwE+NtL8l6A==@kvack.org
-X-Gm-Message-State: AOJu0YzpTZm0QxK3Em263rWqN8SAHkTCXzsjATV7F0axzm0Y0T9utCpa
-	yMwO7Lxi8ODeewt1pg6F5KS3fePFmCsYw9ZkR6D1kabpdNbnFAQUOFn2euwYBxlh7A/Yb47HyP3
-	eSGR5G0CF9zJ5y5CD1V2SHj3fqqjZN57cB4+SAU6w
-X-Gm-Gg: ATEYQzzsHsUDDhKoiuTzQCp+j6X2nT+3RR2jFN7ZqEvj3bgRWd3Mfuf6x4fBJqU1gwB
-	nvJTvJ1xD+S5KSKhrS9x00L1aRgWMqK5jDFiKGpyMW2S8pM+LtAIK+V1gYmU6S+dNxNdzKqS11C
-	mWiFXQ2V1Z5Qf9vk72HbXXqd/LLWvI0liyVS7K9VT02nwatNZ6nEv29SQQx95p2/IT4/u+KcG4a
-	oRJSYSWdx+FuF6zEdmTxousNKSMbAUEMJFvt9QWZ4Gh1eO0yelUogTTcjk7ZxGT9QYHiOuMiN5x
-	SkW9z1Y=
-X-Received: by 2002:a05:622a:a0b:b0:50b:4e90:44ae with SMTP id
- d75a77b69052e-50b83d9432fmr2305211cf.17.1774390800883; Tue, 24 Mar 2026
- 15:20:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260323175340.3361311-1-avagin@google.com> <20260323175340.3361311-2-avagin@google.com>
- <acGEonF9I6sPA42B@J2N7QTR9R3.cambridge.arm.com> <acJnOB-rlyt-3jU4@willie-the-truck>
-In-Reply-To: <acJnOB-rlyt-3jU4@willie-the-truck>
-From: Andrei Vagin <avagin@google.com>
-Date: Tue, 24 Mar 2026 15:19:49 -0700
-X-Gm-Features: AaiRm52g4xzDr5_5nSdTi4eazdyhs8piBH0WKAbvFvJLqkZfV7WhTKZGEWCKiO0
-Message-ID: <CAEWA0a7iR8YHooqXJfhersV6YhAXGMZDUhib3QQH5XGn=KNowA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] exec: inherit HWCAPs from the parent process
-To: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>
-Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Cyrill Gorcunov <gorcunov@gmail.com>, 
-	Mike Rapoport <rppt@kernel.org>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, criu@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	Chen Ridong <chenridong@huawei.com>, Christian Brauner <brauner@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Eric Biederman <ebiederm@xmission.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Koutny <mkoutny@suse.com>, 
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5A1D2C000C
-X-Stat-Signature: xnyubg91q8s3n64ectzfqc6ppekt6d1u
+	bh=eD92WmlD057XTMfLH1Z3GAggqz7pk4b/GXmngytedTo=;
+	b=FGO0GgqE/8ellvqIOjrAl3yXxcwopKaUpRtkaevvn8VANrWOokCnLNtwpt0FhQsLusKwoR
+	4IDziGGg7bPceruL7xnd4Vy3T1M0VfB51rY7n/Qo5UynuuPx8ewCDq79hHjbhxNN0Ss4Zs
+	02EbkePkMBRWdpE85kkdL6bd0CMtk1o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D603660103;
+	Tue, 24 Mar 2026 23:12:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B43C2BCB1;
+	Tue, 24 Mar 2026 23:12:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774393934;
+	bh=ptwwHbLCf3qQFNvLf2dqckDDyShAhKmxD+qHZ2Ems8w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QLTwz3SHw1yDMUT8EK0RImQOiTezzgyIr6GaoUCK96d78VHIYEHGoiZrsBICY0RY4
+	 prdPg7dDS7EU+/v8oFdgaCjXtOnqW1Knnhb837S/tRUqZeShz4gGiX5ErTjUgItBsG
+	 VAlZfcP28RfcIDXSiBthAZwtM/tBDNz0XMg79lmI=
+Date: Tue, 24 Mar 2026 16:12:12 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu
+ <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep
+ Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, Chunhai
+ Guo <guochunhai@vivo.com>, Muchun Song <muchun.song@linux.dev>, Oscar
+ Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Tony Luck
+ <tony.luck@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, Dave
+ Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>, Babu Moger
+ <babu.moger@amd.com>, Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota
+ <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Pedro
+ Falcato <pfalcato@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-mm@kvack.org, ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 2/6] mm: add vma_desc_test_all() and use it
+Message-Id: <20260324161212.4b0a6f4fd5eb57ff2ffa7ea5@linux-foundation.org>
+In-Reply-To: <568c8f8d6a84ff64014f997517cba7a629f7eed6.1772704455.git.ljs@kernel.org>
+References: <cover.1772704455.git.ljs@kernel.org>
+	<568c8f8d6a84ff64014f997517cba7a629f7eed6.1772704455.git.ljs@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: tcec7u9jerf7k5jgeusaw86bj63wihq7
+X-Rspamd-Queue-Id: AA6D0160003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774390802-783251
-X-HE-Meta: U2FsdGVkX18+JdMDqnXPVLT8wlVjljn6u5iEyYBikSV0R/PgOxuG59AEVHkCHi2LvBSkaRem9vv6bgTAFgDtcHICIn8mQC+jqB+DF832SJDhSD/OJUngL/Cu/IYOBRwGWfYyaoyvu3qw+qchyaB45r2S+rrn8Ikdg8lmnSIQbWIQpU/h9BYS83uZdhLiyAVQavFCJ5ofEwMzQVmOE6/2KIIvWKN0Hdxtq0LKqsmv/+NTdXM9upbHjWG1PKb+hCITZB/Pxf2MJ2jUJilvQOUvHdgs2snp5mmTOTAdO7k26f4kCtTU7N3EAz5RGrvVWvkzk7OOM2Ho/PVYlZg77py51r+/qW8pqo+lJyKK3cK85G+Ap1e4GPcBf3JjXx+LyekBYiIKqWUjdsPANa/4cx64C239IdQIdSnmmL+h24Px2EoLaVi7dWWvT7zezYlVL7DqyqLCmcgNwQelMsnKZbs+bXBmoNTS3AaUIzgrAbe6EE0jI0C+jxEmSCjE4BbJieRhcFxxTp8mlYQ+9A5qOWHHi74PNt5LBPavINikm+xd5tx/pka8RNKjv+y0bBrGabueF/XOw9ZD124gKiWExhIpAH0zk+h+ZHWij7VMrtBcG2h4TIrvXeJhixQxdcC66Rh+g2S8uquZm5z3/4NPVv33BWJaRXrh2bQCN340DvZFYsGWEtWsU7bRrqEK+U14Nd5yB/XH187L+KZ1L5uv1hARjiYXUzVRP74Ndw1wQt7FdMj1JeAlB65qriM48Gs4MLSyDdkdqgcxzIbAmUqFdqt6a1kGPzMZ1UQBZ6ETfvVYjITpYmFxtPU1w8VKWKh8/o0Iu63Ul+/tHINTN5Z4OZ1ZIR9Tr179ef5vP0vfKBpV+0k/Rngp2Xfxfw72twMP6NsmvaKVaqlLGtsYYCjK386kcsWHMadlhK218+WQyrmD6VhoC1W2wZ1i7vwDOObMP1rzrEmBOphXyVtfSBn8NJK
- /Ji4DekT
- LRmiumfD+Pt4CofguRqnK2idnn05gfs0ID+yM4srqXrvSp+EjxuI2raYw9ZCuLGOvo2eHRKkwLSWZvn326nV+Qkg2vf5mnsscjbsDRgqg2bsIsvQ1V0zJ2W7i58VzZcgojSbnnAxUsMqRRaRyIdiU2gNGH2leDkwQ/wJTCEpj/f3TWKhbyVHKyV+dTh2yR67/yvd/CC6p3Ezcvd3bKKDm2y8uMl0IjTUbiN1WS2+GMn0DUT0p4bi9+6/7tvEY/cAgtNgmEybjyuOkUVA=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774393935-7655
+X-HE-Meta: U2FsdGVkX186+qwFrMcc/QyqP32Y0zJI/k7d2tNHoi38iPhRBJ15LbTWB8h3PDxj78RrUa3yilmMdu3ASX5RUSDKwGE8q/X6+aaOD1rL24UqsXr2ED15ptx3Ew3p1dOpyACea6OT4xCVztrmGJIJX1sjLVuqBs3pzisFxz7jEoDKkW51ORg2OKVuUzHvH2zEtygvYp/A7D3fYA2KK8kaygyOh1hjv3tpmu94AdiHnY9YO5r8DncO95QOpFT30OVo2XLRs8guI8csbedb827CvkXM5uB4OnGOSmztMWa3AR7ZoUq3ZIPq28tzIh85ARCdY90Tj3e21VN11UaNCNPsF6BvIFqO+Ky67LSS4AoF0cVgdHGVn+6Xfb7VPIC4rYXz9I662AZjI3jfP1+f6MEh/8O40jr2Ul811mWUt9kjJd0b4/3+bDijnS+t7OSQfDMeiHi+cWuxAmru2c7oOsLu/gwCDeX+Ms2fbZlaB2GRRQuHjcFyGJUObV5J0XlFzMwgveyR2QgCA7ZTdJnAR+ZGiT0ypIdk/DRYGaOsIMbuOZg79hHkMyo67nseJtGs61sEElZv9NynsRyB/bw3b23vn0/8rRtrAKZ1ouqUQXGWqmUwdhCShuy5WIh6lmvh53+66M8yKp0moB51V+ZfeyregGXnLyNi6D8MYcNT7PMFFnLZInWy53gsz85BFs+8zyRx/1oeHyJEVQCqtqiXw2VnOfrk6A2smuxxx2S7SmhemgTWLLrS4qnaT6UvYEK1bC8ljp2OtjFC24uPyA52uJ7AHSYTGIpvagxdd7BRYkvDOcikR16cJcX48Latqg4sFVjCjeWdZpVv9jWuQ+YT603Pub2Xnh1IxFmQljPsU/h3XzKFmixKAqgYC8+PkjZiOZLEkzLSUAZy1vwbumaspMb7pi7xS18nbg82QZXxZ3AQC6D2Z/1VovDbH0mpYBM4aKj0Lv2Ha1a3/Xn3j3YRR3b
+ zOUX0VLM
+ r65Zxroj7AUzUuBLkg7r/+1ku25tWlk9hg5x80aVXWXfPH2vENKfLLWq9lBPXpcKYfJiHA4sJ/fxZovgCoDXpLo2gfBLgGNjsv6QAItI1eGJcQB45xRDL721lIGdaGYlrLdvCUC+rAZvj4Oqyub3K/8AaW25/EBj1rMcwSYNHVbQNjPjBIxAb6HtFB9+/um0VUItkhi4OoRv6CaYL4GxnD7EzrawbOHEOtSNe03HYlhu6mRogaPz4hebmyc1vAbFasyNdRiMehcaZvCA+NPi1N7jatbc5qHt5lG/gtydurg2idYre0rPceQA+ulxO9C4/xwgZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,124 +110,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mark and Will,
+On Thu,  5 Mar 2026 10:50:15 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-Thanks for the feedback. Please read the inline comments.
+> erofs and zonefs are using vma_desc_test_any() twice to check whether all
+> of VMA_SHARED_BIT and VMA_MAYWRITE_BIT are set, this is silly, so add
+> vma_desc_test_all() to test all flags and update erofs and zonefs to use
+> it.
+> 
+> While we're here, update the helper function comments to be more
+> consistent.
+> 
+> Also add the same to the VMA test headers.
 
-On Tue, Mar 24, 2026 at 3:28=E2=80=AFAM Will Deacon <will@kernel.org> wrote=
-:
->
-> On Mon, Mar 23, 2026 at 06:21:22PM +0000, Mark Rutland wrote:
-> > On Mon, Mar 23, 2026 at 05:53:37PM +0000, Andrei Vagin wrote:
-> > > Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
-> > > AT_HWCAP2, etc.) from a parent process when they have been modified v=
-ia
-> > > prctl.
-> > >
-> > > To support C/R operations (snapshots, live migration) in heterogeneou=
-s
-> > > clusters, we must ensure that processes utilize CPU features availabl=
-e
-> > > on all potential target nodes. To solve this, we need to advertise a
-> > > common feature set across the cluster.
-> > >
-> > > This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
-> > > auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  W=
-hen
-> > > execve() is called, if the current process has MMF_USER_HWCAP set, th=
-e
-> > > HWCAP values are extracted from the current auxiliary vector and stor=
-ed
-> > > in the linux_binprm structure. These values are then used to populate
-> > > the auxiliary vector of the new process, effectively inheriting the
-> > > hardware capabilities.
-> > >
-> > > The inherited HWCAPs are masked with the hardware capabilities suppor=
-ted
-> > > by the current kernel to ensure that we don't report more features th=
-an
-> > > actually supported. This is important to avoid unexpected behavior,
-> > > especially for processes with additional privileges.
-> >
-> > At a high level, I don't think that's going to be sufficient:
-> >
-> > * On an architecture with other userspace accessible feature
-> >   identification mechanism registers (e.g. ID registers), userspace
-> >   might read those. So you might need to hide stuff there too, and
-> >   that's going to require architecture-specific interfaces to manage.
-> >
-> >   It's possible that some code checks HWCAPs and others check ID
-> >   registers, and mismatch between the two could be problematic.
-> >
-> > * If the HWCAPs can be inherited by a more privileged task, then a
-> >   malicious user could use this to hide security features (e.g. shadow
-> >   stack or pointer authentication on arm64), and make it easier to
-> >   attack that task. While not a direct attack, it would undermine those
-> >   features.
-
-I agree with Mark that only a privileged process have to be able to mask
-certain hardware features. Currently, PR_SET_MM_AUXV is guarded by
-CAP_SYS_RESOURCE, but PR_SET_MM_MAP allows changing the auxiliary vector
-without specific capabilities. This is definitely the issue. To address
-this, I think we can consider to introduce a new prctl command to enable
-HWCAP inheritance explicitly.
-
->
-> Yeah, this looks like a non-starter to me on arm64. Even if it was
-> extended to apply the same treatment to the idregs, many of the hwcap
-> features can't actually be disabled by the kernel and so you still run
-> the risk of a task that probes for the presence of a feature using
-> something like a SIGILL handler or, perhaps more likely, assumes that
-> the presence of one hwcap implies the presence of another. And then
-> there are the applications that just base everything off the MIDR...
-
-The goal of this mechanism is not to provide strict architectural
-enforcement or to trap the use of hardware features; rather, it is to
-provide a consistent discovery interface for applications. I chose the
-HWCAP vector because it mirrors the existing behavior of running an
-older kernel on newer hardware: while ID registers might report a
-feature as physically present, the HWCAPs will omit it if the kernel
-lacks support. Applications are generally expected to treat HWCAPs as
-the source of truth for which features are safe to use, even if the
-underlying hardware is technically capable of more.
-
-Another significant advantage of using HWCAPs is that many
-applications already rely on them for feature detection. This interface
-allows these applications to work correctly "out-of-the-box" in a
-migrated environment without requiring any userspace modifications.  I
-understand that some apps may use other detection methods; however, there
-it no gurantee that these applications will work correctly after
-migration to another machine.
-
->
-> There's also kvm, which provides a roundabout way to query some features
-> of the underlying hardware.
->
-> You're probably better off using/extending the idreg overrides we have
-> in arch/arm64/kernel/pi/idreg-override.c so that you can make your
-> cluster of heterogeneous machines look alike.
-
-IIRC, idreg-override/cpuid-masking usually works for an entire machine.
-We actually need to have a mechanism that will work on a per-container
-basis. Workloads inside one cluster can have different
-migration/snapshot requirements. Some are pinned to a specific node,
-others are never migrated, while others need to be migratable across a
-cluster or even between clusters. We need a mechanism that can be
-tunable on a per-container/per-process basis.
-
->
-> On the other hand, if munging the hwcaps happens to be sufficient for
-> this particular use-case, can't it be handled entirely in userspace (e.g.
-> by hacking libc?)
-
-CRIU often handles workloads with a mix of runtimes: some linked against
-glibc, some against musl, and others like Go that bypass libc entirely.
-CRIU is mostly used to handle containers that can run multiple processes
-possible based on different runtimes. It means available cpu features
-should not be only specified for one runtime, they have to be passed
-across different runtimes. I think the pure userspace solution is near
-infeasible in this case.
-
-Thanks,
-Andrei
+fwiw, we have no review tags on this one.
 
