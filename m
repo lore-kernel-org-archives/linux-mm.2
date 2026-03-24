@@ -4,97 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DD05F54AA0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 13:17:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 728F6F54AA0
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 13:19:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7AB76B0089; Tue, 24 Mar 2026 09:17:28 -0400 (EDT)
+	id D8A8D6B0088; Tue, 24 Mar 2026 09:19:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A03936B008A; Tue, 24 Mar 2026 09:17:28 -0400 (EDT)
+	id D62136B0089; Tue, 24 Mar 2026 09:19:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CA676B0092; Tue, 24 Mar 2026 09:17:28 -0400 (EDT)
+	id C03536B008A; Tue, 24 Mar 2026 09:19:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 712596B008A
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:17:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1BCB3141581
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:17:28 +0000 (UTC)
-X-FDA: 84581008176.16.051A2BA
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 86F00180011;
-	Tue, 24 Mar 2026 13:17:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=c4MIb9Qk;
-	spf=none (imf06.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=c4MIb9Qk;
-	spf=none (imf06.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774358246; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B0B686B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:19:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 70E2D55D98
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:19:45 +0000 (UTC)
+X-FDA: 84581013930.30.F3FE807
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 917F8100014
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:19:43 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ABD+g7yD;
+	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774358383; a=rsa-sha256;
 	cv=none;
-	b=Rtx/8YvJVDBmko8XI1veAB9GWpe5O9rMNoz1luP7XcR1UhCXR55vNsObKpoazXwE9qjhvp
-	ny7Nudqy0092yDhXqGmzuVuVY9EMbnb7lPVzmsgyJjHDD+CZg6ARL+Drd1PJElDAuaS+YW
-	nkOzp/0gwtoo9ycwUHOu1jOjKzaxM/k=
+	b=XaiVHuxqh74CWwzcnNdEELxDpbGreQeAG9Tdv9buwjOSpfvyvAJiBENfGIaBk3/1LqGfpr
+	218o9e09I4FM0H4weP8AqcSs9GWu1z2qM/mxURyWRezkIfjki4heDWouBWLCyTiV7qOf/Z
+	Hi72TgYGPyrB98+tpm9Jf1h/lv+jKkQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774358246;
+	s=arc-20220608; t=1774358383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2r2P0EuXUIpFebfcqs+V2aJI6SFcZOJexfLphbr7J9s=;
-	b=yKumHDqr4M8jliJuyVtmV2JMmKpbTRq9nnyZV5jQk2UqlAaB96H343e1btmCm5DstJbfMI
-	KC9Ll9bmyYu2/D8EQfRj4OtpPd14n63ayhPl4jCYzd9kqaxizazgxyz2QeyZliu5owj4RQ
-	QXxBV18l7RaIp/TnH62HBS40TP3GH3Y=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=2r2P0EuXUIpFebfcqs+V2aJI6SFcZOJexfLphbr7J9s=; b=c4MIb9Qk/bHbiz4wX6m2X6msJr
-	oxY4CmAVyhXkZn2ex8skBdsVMy6D9fHjgZGKyDoZhixt+T6XNn4ZuCPCY4RodYRopRi6Up8Cx35gV
-	ksmFcaJu7gz5f0Zgd6McYixFQc6T++IH/jHp7rATGG9fJIvVL2R0Ml80Ry/Y9cVKqRRPn+WPAajUZ
-	tMFv8tbnZ1kC0DTmK9CGA9Nv4WNohsUA/HrMyF5rNQ353MYz7h1fSM0R0/niBS53UuVp3u5Y5um0p
-	XYJpneQzDASBCOWBAFFFIOjxNfzgzXTm9A5xbpwlXZxSZ2biNZcmoO1+TLZNvnb6KcU/M2lMHEjqU
-	U7uzKpsg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w51dE-00000001WkF-24HP;
-	Tue, 24 Mar 2026 13:17:16 +0000
-Date: Tue, 24 Mar 2026 06:17:16 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Christoph Hellwig <hch@infradead.org>, linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 12/41] fs: Drop sync_mapping_buffers() from
- __generic_file_fsync()
-Message-ID: <acKO3NRw852FdGUO@infradead.org>
-References: <20260320131728.6449-1-jack@suse.cz>
- <20260320134100.20731-53-jack@suse.cz>
- <acIjxUzWFstarlwv@infradead.org>
- <ezdm6d34jqdrcohk7o6wycxvvlgtf6aqenwx5ffr3plfagdbzi@gibz7xwr6yhr>
+	bh=hDW9QxylvtudolC4OrULLL0I8iMCwV1m1od/FFAOgBU=;
+	b=fBeqR/6smG0LO4La0zEfz2SsleFBu909tlyUu+gEIsZpFrYSCsg4EMCelYQ2D3QghuEZ2F
+	rm8hd+O6Vab+1PCmlMtJ/Yzlo+MvciPwcjZd0EK9zxOXWu+M/2xh3AJVtp6XGtuKQVHP4a
+	iPzpf4/X8VvcG2bYScDxDrlnzn5AH4U=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ABD+g7yD;
+	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-486fda2a389so31814245e9.1
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:19:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774358382; x=1774963182; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hDW9QxylvtudolC4OrULLL0I8iMCwV1m1od/FFAOgBU=;
+        b=ABD+g7yD65o83SROgK9X6aQ4Oddy/ZND45GVhK4l/3548OImmuv+jWIBfCZUu1lbkL
+         jqE4rAZzFkKWNFn5eV85Wsv8Huri96BsfLLNTcLATQEQPwkFOdH1iZOxcfF4kaIEvGCH
+         tGr1QDL7+iaCmgNTRpm8UNgg47tUHG3eHgWWDHFFbB8tYGBO/iCF3z3Rga45i25joyVL
+         adRjMbetJRRwmMcgH2nrOARsiGKyS12RcgEnfIB3tZ8qzLUar8PmZlWaIBmkHvItr9on
+         kcUFxjNnmnovXEzQ4f/jGUh1WT7HK6mS567WWRIqcKBQbHnfWnIuLBcgf5HCynQu91vO
+         CvcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774358382; x=1774963182;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hDW9QxylvtudolC4OrULLL0I8iMCwV1m1od/FFAOgBU=;
+        b=DYv45MWxMKwH0c47Sl4jwKDRRscpSEGSBQ0R1bWTouvHRamj9tcJ4g1got7+ODzSix
+         EKWszCPwdPnJ0oU28hgKixAZgZnXAG6gBIAgFCfccti2NQDKEm3QoZPJcVHa0bfJq9Yv
+         bK5uhabPK51/F/9h2pj0Ev3MnYEIDUdM/8NkEI7ej+1Calx12jm963VG2v3A3dmjtXv5
+         kVsT32oZbC6KV3K07HhQUjQjcy7viffhRqPle60PJ31ZPVMeQOlDYvzMLKSrwVLgVCls
+         SPCeKWM+S83gI92DBP9DV1/K6glrS8HwdOEffOQT6wOCIpKFmVUKm+RQzJKFVO797rpN
+         t7wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUdKMrUg+cbzvFi39rrckaS/4T+JnimkMjYLZn2YZ/0n+2eXzkVuL5h1Fm90aAoyFhRzotkdItehg==@kvack.org
+X-Gm-Message-State: AOJu0YwhK8hZBmtvYoKn/mJYIVx8RcZqA8d+kufj5R4fpxxu+3GRcgIi
+	MvTTru7Bk54zzMnVN7gqIqqMmIwRXvry2apnwxFXjZ1PkQS/evpPP/VI
+X-Gm-Gg: ATEYQzz3uVcXx46tLsXIGPslD/7/QyFjQgfSfe0QnEb4ZIQ2NMN1dy8NQff1mZdzw4Q
+	KmVha9ndVp8ED01e2CDph8phk3rWwzO80l8JGKjkYITMoZLNC10uC3LvQJxFuZ1cnGbHOLf46zY
+	oRTtU1J0G1+Bwj/rENMbiEGadBo1jVaHw8FN4s4fjODPA3nnZ9mjiLUEoP1NI4UTzI5LKnGWAFU
+	sLbF7tcWQAlolXOllLpPYPPv3MjQWqVsFNvh0pwy0+L+DNroRcXj5hQoq/UhNum5fEDUC5DBvmq
+	mgNaAERmqYveAUlgadCllfzjkGKjlqoankVVss++wE2h7oL1slHohvcwvCYSmVC1q1nNBPRndFx
+	HxuOhGArYYtccUknpCOoKTRus8NAAKRaMfbeWnVoCht2e+6yPaMAu/gOIsd1dHh1ShjkpTlSO3C
+	iMfEaRA5DMlG3FEMYXylw=
+X-Received: by 2002:a05:600c:1c16:b0:485:39d4:2dd9 with SMTP id 5b1f17b1804b1-486ff04fb4cmr260524475e9.33.1774358381485;
+        Tue, 24 Mar 2026 06:19:41 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-487116939b8sm77926095e9.3.2026.03.24.06.19.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2026 06:19:40 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: nphamcs@gmail.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	apopple@nvidia.com,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	bhe@redhat.com,
+	byungchul@sk.com,
+	cgroups@vger.kernel.org,
+	chengming.zhou@linux.dev,
+	chrisl@kernel.org,
+	corbet@lwn.net,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	jannh@google.com,
+	joshua.hahnjy@gmail.com,
+	kasong@tencent.com,
+	kernel-team@meta.com,
+	lance.yang@linux.dev,
+	lenb@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pm@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	matthew.brost@intel.com,
+	mhocko@suse.com,
+	muchun.song@linux.dev,
+	npache@redhat.com,
+	pavel@kernel.org,
+	peterx@redhat.com,
+	peterz@infradead.org,
+	pfalcato@suse.de,
+	rafael@kernel.org,
+	rakie.kim@sk.com,
+	riel@surriel.com,
+	roman.gushchin@linux.dev,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	shikemeng@huaweicloud.com,
+	surenb@google.com,
+	tglx@kernel.org,
+	vbabka@suse.cz,
+	weixugc@google.com,
+	ying.huang@linux.alibaba.com,
+	yosry.ahmed@linux.dev,
+	yuanchu@google.com,
+	zhengqi.arch@bytedance.com,
+	ziy@nvidia.com,
+	Kairui Song <ryncsn@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+Date: Tue, 24 Mar 2026 16:19:31 +0300
+Message-ID: <20260324131931.4004123-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260320192735.748051-1-nphamcs@gmail.com>
+References: <20260320192735.748051-1-nphamcs@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ezdm6d34jqdrcohk7o6wycxvvlgtf6aqenwx5ffr3plfagdbzi@gibz7xwr6yhr>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 86F00180011
-X-Stat-Signature: dhsijdxowtq8xodrwjyp5qwcx9u6gsyz
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1774358244-323832
-X-HE-Meta: U2FsdGVkX18CoK1NlC8XTo0qseaAx2Sb+U2Q2IUNJO3TskGsqhLUVkW314OJXSbkxZCEB0Fxotor7u556OHz0y5P3QpxLJp1/8ZRVZkwDM5uAAbZdseBoMN3lRzoX3MMfLyJs8JSFEGNQTz5G2ZyVDjo6rS+wwtKmSnvyipi2sv015WgFkRXNtP+XkDY9352MMEzCT9TBLd0xy6ECpRNZbJg60Fcwd1B/H0esjfphFI/0MJfkxcU7qFQ2UoKLhRMSlKS9J+fg+Yuaih20OAPDggcuMBdsgs7JaEkXBW+sX1f62kyjGBRAbrE3oU15yhJlfnf2dSEYsPy/UftBu/PayWq+EVsSHKYEWwdowTFXInP7L1ah2RZy48SdZlcuDRfph02HSQDHxUSfPDiBAWX+RISIl1ntINogSdFo6SLy1lWCuvzcd2RknyFhsd66GqYvLqhFAZkWuq0Ks4po+961ABPDUtjdYujyyAsuumOt6au2fjdLFJOO7oVzLWYBYRT/E2AZjvuseURZ64bQVLV6QEhg82dS0stdqY3K6GTgPw0sCNk1bwlISxoqJj7+PW2ChQUclRwxLNAfz1WtNtKXJEbkA+ZYBK2egUrmjxAt9VLSQYqkrHm1kXkYT2wNQTaSKpE2k1uK/xciA60JEGMk6wS3hTIMohpU4XVP8gAs7bQz7Mczj0Mw389prxTHb7QgGzTvYa23bqZQZbMZ/yvziUQXULPdcedVM4tu5Puzer90gk0CioirUv6/Cu29nZcXSw/ewL/tQKrZeavcGTyuVPCWGb5b6LR32h2NeezNBJ5GZ0U3kk7Oupk23Zo+i1WqfuJeE5HNh1io/1ieECqcg/Br6pPHj3xElSHf5ZlqtUT2LAr89p9YQIE+CLJtEe/8CItqqi2F4nUyYPhn0wlnJWasLoEP4d1BY5WYhIrNyGjC2P1//riidYpPKcU/oGPoOD2c4/IKMjjMDXr3uR
- q54YPxaL
- C1Gfu77FExDIA2mPyivkr9Q8bwQPzKaX/d4Z4BPysetWNTQwpEO/Fv/cqsXh+RIaF9kJbJwjltLoeOhINiycFTDC03tor+Z1ZGY/yfuR0z2Dv4sEmeTZwH5NhgMYRychc51CIdO+fkXPv3PjW9RbETLKATZa73t9vJ1I9Xq6vEBYReQC9GcfS1V+AcWkwknJGCGy8ky+FMTeBRRPqfn6CKjYMN0JRgaVNTqVT4TeE3P/PHZDa4udjNF4P8t/b7C9dk+EaHV3ARvGpa+tnGriAlFoFrHnQWtsko6BjYc7vjz2yLbC1pbZYQKRRyjMdqBZVLGo7kCffAyud6GJsJUgQxjWTLZYgI3vCoRVQLr3pmp1/2UestGEtRa07IkjRHSXDtB2pjbTazVKcWo7aOZaMMQLrh/YtpitCMfXAfijAgRxGkESRg2VGB3syjfSccmCKyVLKGpMnM4YAtpSj8wdUwLZQIHanXmbGhCm2pNDNiOZfy31yU/0IUsJhT8wMzxFInQ0ekcZq79+I6h8fIBnC95Ggim/ZHhZlx1j6rnH+EkRsRb/jst6Qk6A89eknDHZNDuMcXn6qI5ZmziN+BWS5JnyHHeA7BiunyhbsGAjp6nvddsM1w0eXdrgS0w==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 917F8100014
+X-Stat-Signature: q15qunekpt17p3mxcauw76jbwmjkoju3
+X-HE-Tag: 1774358383-541534
+X-HE-Meta: U2FsdGVkX1/o8IeYauBiw1hg2I0VmYNRidQ/vEyHZRnLKrwJ/NWpb0/c2E4XFEDDEsYP/+XOZ6rbYduENC9MvE4fU1Op4toxfiC7o9fj5CkgqR/J8zX5KBm4ZY7uc3WmUS/nRnAlWq/21d9YzMnV/tLZjax1VZYsOBO14y9qyKtnTeoVMLwE+/zpkREahS61aoCNo72LAJ5skJgZL4PhmBDuBM+urN1Kyv0EtzpSuu27L2e5l1kG09d2GgaH8F969XA142v9uh5/U+mH0mFe3LOf02ajsL3X4eGdqzb/DYtNQYcuFC6aGkZbVipZyfswoZOg1HgIwjBSpK9JPMdx9zHP0icKD1xP522XbPdO7WZyqeczpUuWOAl9Nrt1CSwmMMx40+jsAeIodQ2UaabfUGmi3/c82PimEzMgVdGi3U7SvVSvOHlAUIGIMdmDR3W34jr24zJvyLZf8PUi75p3HLZEiIz1bTis9MwcaIh5yTtqKLzIzYCyep0xiXQquel89Yc3z6wBz1WvPOOffBmY8CtvQplu5i6g9fLejAncyRYA6KuqobUIfbEjVxAvuSKICV2w+QWGJ16aTVxJTRLJpGhBZRyCWh7XFa3/IEL5MppAalAfegLp3ny55/+NrLdC1xYfYNM62OZxpW63mYg/d0duYe/9EC0aWdfP2FcD/9q/QpFFR2a/Zaj78UiGIu0UJtctFF35zBedt8OgK0d3cEi2O2/YqWuQHmDIlP2LNz3d4LfXjLms+7iMHJg6DNq/EhsMiLRABmV0Ersuk2aM7ovqS6/GxB68Ed1gbu7YCa36Fb9XyjpLJii1RMiPVkhEqV7yOaPxAtj8n8rNcYs/g/Y5ZnzZ9E3Tg9vy3soIXV8BAjEP7IHBqs5THexmEQXO4Um6YpRd18Jf+HiAqyoJCmfl5z44WtxQV0NBOrHfulAFVXE2IRlHaCvabJj1Z1OiY4GguKsZ1ugtt8vu3p4
+ Bx9oB9Om
+ rroqQ7gQLs/wKQa/xkSPJimgp3yXlBVFjx+dkMql5W3On4AFEPEI6jcDV8lpbG6lzCAX1rFPezWBFmNPn4wbu9vvmAr67OXM0bm5VYRoOt+TT4Dx2AvAoOQTaee9jznuMs+AceclZsyswTOKghLq+nGCa0e3ZegjdpxcqM12NQ1bhMrZfBmyGIYXGzeYZZIqzKS2D0AY4IbF/t9XBq22aUMAteSiFvkPr2lW07nRIIbNhPBVdybIngbEvHB13oSXR2LzLvMb23Ky99MYILrxrgPLNnBRMsQflnZo4lDrGKHKkuaHISonx0HgwlmD26zF60B4OpXmamPC7vQZa7ewDCZcVeGEyMJgKmhl0+1TOvFkZzbVNYRjNBXuJz8tC7j41Pj7jxP9uLbLJH3N5+Ku67QyNxwRm1p/CWLcGmKG8R+7vNTxMaZWEzcFNBnC/ZiQ+bCOtkYssYe37duPQiC2UpDxcqd6MYQyjNvuTOGIh4NND1e9d6ptXcbkOeyKtKCorfc6V2TfZwA+Ip4FBnnnLrLfazNYAf0A1qwHBj0piLxHNm6tlfHS0VksDtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,32 +170,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 01:34:57PM +0100, Jan Kara wrote:
-> I'm fine with simple_fsync() name for the helper with the trivial behavior
-> of writing out the mapping and the inode. Code wise this will look somewhat
-> different given what you've suggested for the last patch.
+Nhat Pham <nphamcs@gmail.com>:
+> We can even perform compressed writeback
+> (i.e writing these pages without decompressing them) (see [12]).
 
-Yeah, the pitfalls of going sequentially through the series :)
+> [12]: https://lore.kernel.org/linux-mm/ZeZSDLWwDed0CgT3@casper.infradead.org/
 
-But sketching this out I'm not even sure all this makes sense any more.
-Maybe instad of the allback we should just have a helper for checking the
-inode state like:
+This is supported in zram. The support was added here:
+https://lore.kernel.org/all/20251201094754.4149975-1-senozhatsky@chromium.org/ .
+It is already in mainline.
 
-static inline bool inode_need_fsync(struct inode *inode, bool datasync)
-{
-	enum inode_state_flags_enum state = inode_state_read_once(inode);
-
-	if (!(state & I_DIRTY_ALL))
-                return false;
-        if (datasync && !(state & I_DIRTY_DATASYNC))
-                retun false;
-	return true;
-}
-
-and otherwise just open code the calls int the two implementations
-without any callbacks, as it feels cleaner to avoid the entanglement.
-
-This helper might also be useful for other fs-specific implementations
-later on.
-
+-- 
+Askar Safin
 
