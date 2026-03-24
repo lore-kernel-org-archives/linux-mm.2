@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85B42E9A76B
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:32:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EDF8E9A772
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0B6C6B008C; Tue, 24 Mar 2026 07:32:22 -0400 (EDT)
+	id BB0536B0092; Tue, 24 Mar 2026 07:32:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBB566B0092; Tue, 24 Mar 2026 07:32:22 -0400 (EDT)
+	id B604C6B0095; Tue, 24 Mar 2026 07:32:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAA6B6B0095; Tue, 24 Mar 2026 07:32:22 -0400 (EDT)
+	id A4F3C6B0096; Tue, 24 Mar 2026 07:32:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C71706B008C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:32:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 627365FC6A
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:22 +0000 (UTC)
-X-FDA: 84580743324.13.E53BC29
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B9A8080003
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NaNSuwSY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774351941; a=rsa-sha256;
-	cv=none;
-	b=vGbn7SZ9hZnpm7LAl7MxE5HC+810T6KLHgkNxg6U+g8YYyKE+JXM7T3gUITz9kT4SNQ2Mx
-	q0ThMj3cjm2uA8SI43vKw22njkmXfuafuvl7CAFZ+meBRrS8JY5wrldQi46alwSweYfoQq
-	Cw4cAcHCt2M6SuYQ7RVNUNJ9f48xpQ0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NaNSuwSY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9474D6B0092
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:32:32 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66B0D1BA139
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:32 +0000 (UTC)
+X-FDA: 84580743744.11.3B91D0D
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B1CA4C0010
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ieg4jbYX;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774351941;
+	s=arc-20220608; t=1774351950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BCaKEuNZgtMKShDR3GzW8YFYwaQK2TRr8wn9CI/U184=;
-	b=HEIMx0n/qQod1AL0eOkawCaMt+H0BpVfu/O+/iJOeZnYXlirEWDUCLrU7F0VOuCopRoD4P
-	rLlBAPEk4Wg1y093f5WC753u81wCbITSXDntE31v/F3mLTNvUXrFshhl6aYm7WQVPJx/fl
-	wdhHkpj8ZSuh8dzrgR+swuB1WRz4xVM=
+	bh=yNYpUOaMZIeZUWxbOHw8FLcvpCl6K8p2fZA9SJluFcw=;
+	b=KVnHPOZmfIFUWbe34DRSBOrJb1QgcINzVG1MOxlmeMN8JSXsIffMjc9EGz39tzxnFBA0rY
+	JY4xCCLuD6V2wb4tGV9J40dj+F88XPNiWVKqgMLp4nUXjzTHQgMiZcPNRZ7CpdMWfKSNgH
+	CMUTm7fm4B+oG08EWaP9anvukSQxieA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ieg4jbYX;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774351950; a=rsa-sha256;
+	cv=none;
+	b=dUKUquzQ5hwPZSkWLZCbGmWQYv8NgzcMJ3cejsAg7X3xKkLiOqgdRVQ/0Hbnw+q+DRvsAw
+	LZ3Mb2f2vKdU9KU7yelTeGaqt8g8mB32XeBQwleJH/yIVD8fvM5pD1kBNFYHaKbqVYm2Vv
+	C4WVOntlN+oj5t/UitrBMyeZMAIvXH4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774351938;
+	t=1774351948;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BCaKEuNZgtMKShDR3GzW8YFYwaQK2TRr8wn9CI/U184=;
-	b=NaNSuwSYI6PnCqbD9J36YVjsVWmD6Ny8LaZejVUy68EH3pyfRieEISYijBF4m5yDJeyGRP
-	+dj6NIgziOLWGBmGEBSubDSqCvxnQdtELXU2nx8lAbayEDtzZLhTJuRMv+sksKvuRa+Jk5
-	QsUBnXjkLaFWa//A4bOe5dINv1WYedY=
+	bh=yNYpUOaMZIeZUWxbOHw8FLcvpCl6K8p2fZA9SJluFcw=;
+	b=ieg4jbYXQyfGbDByIxQL9Y6ghz7w9XESh4i7xYz6KL8RXyVjW6kO6tWU27EiTzzHjzwLZJ
+	khFvHaxvCXrzVN5ss/OceXPXFAoV3kqiiMHZpHVSPjL9nAZk2AzX2q9C4wMUUeGBnt5Thl
+	/Q4ckhoHwiyoKQewfEMysZU4TvgXFDk=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -86,22 +86,23 @@ To: hannes@cmpxchg.org,
 	usamaarif642@gmail.com
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH] fix: mm: memcontrol: convert objcg to be per-memcg per-node type
-Date: Tue, 24 Mar 2026 19:31:26 +0800
-Message-ID: <20260324113206.26539-1-qi.zheng@linux.dev>
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH 1/3] mm: memcontrol: correct the type of stats_updates to unsigned long
+Date: Tue, 24 Mar 2026 19:31:27 +0800
+Message-ID: <74022705dc8d5209ff7e603a178044fe4cfbae09.1774342371.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1774342371.git.zhengqi.arch@bytedance.com>
 References: <cover.1774342371.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: pc1jkuny1k1ia4mrm41pum8ortrfgeac
-X-Rspamd-Queue-Id: B9A8080003
+X-Rspamd-Queue-Id: B1CA4C0010
+X-Stat-Signature: fks775yd8k1dey3kmreg1zzgtqnc3bmr
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774351940-113609
-X-HE-Meta: U2FsdGVkX19nFDGpIDo25iPjVJsKf3ElDFMr3gfiC6AG4TPV9GowYvnDUkVbH4xi8KSe6ra0JuVpdiLPSFAHJey/X20OsESWHiBGX8y34s1gBnh5OF1GCP7Gy59MDm1dCgM4dPsBNVv8YZNenFRk37ECtCFNMDQOmdeXtMRZJp5vDKZt3Svu6lWdzhl79N9gs2NoJ0drdfPE/+B1dlTa3w/I8ax1fL648T9xzOJoofbAkm2FC4HJaIq/op7ARovZ++EHHAwZi4LZlG6rOQtVkaKnEu4DSefeCcSSRcb9F9HCDGfv0VtlyAsebBGYtRq8ihzVLIhF5H0VvkB4v6d6jrIMXdUDrNPFZY4rgLbpBGjUjAYEu94su87E/LOvHsjG8AZICzvxJP4Xt45vbm4nRvwL5apL5IIFTYK1pUHitWk4ierU2H9+w+FPWo1G0gX4UYLrz6aUm03MebFIOTNmrwosxXwzqAUuIjWnjbkFvwXY4o63MeFBrozrGnoP8oO0/x2TNX3Pojckxng45+COuD5f9FZdcC6MzsRE1ArXLGQk6TMTXsCnVTVPapwF2figmtMvMeT3ovQpW9CDYWSZ/coStdbuTIfdxcEUTmHyimEXNqAgv0qjs5K3U7xve9hFpp5xX2OUcMgdtXF7MBvf6AmX2bjtPpcP2PSeTBo3fXVxgPio2dY2ob3lAHVXSWRcknhMsQz+35RFcJL7RQtQHbmJ9VhWfvoOSUnFHoK7sRqucGaX81eME+VhlRTAcompK0vvi/gEx3/M3J6cP8JdA/DBk6iJ60RHscm8ROBGucUcsjb/fc/AGo1Tc64nqT76C/jzn7oLOZGfQKdiGlB7qa4mWmiZdaXVpaUpBRaEeQrqA5qVEQ0Gww==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774351950-345429
+X-HE-Meta: U2FsdGVkX19kw0IfXYEbCDxhuh4HzIoGUF/Ux5kG8IRZaQWyt1b6xKEBSpeA6KS9Q2RX6VL9IPOmIir11Qn8l4v4X5JixLoLwSH4jbFGxzG4XNHN3CEFH6LBS84MNkEYUL6dW4WqSBuGzYshFMVki4fFcborv/Ua6gJc7Ggg9VEuynbSKafnLexKQUDamJARWQKbO3ZEnRUNb3U0NhF6kxdqkN6RrYrjXx3/fahPS/MmXSsyPJle9yGaoEPvDuSnnMZuczgGmJBBIbCxeuAWbUlS3qfb1AFbSgqEKOzww3cK7xG6AV+Ekjso8fXPsxZcmx3YOfXlq1Vkb62otNzdEs5qUL8Sp5aZbKE3OtFbKlMLEnQTz4B9G90KYEzRHk0N59P9M9iaIPUULD40mYvN9V3Q4qkeZbnoFjM+BxqC0KGTSe7Y50WfMWaYw+nS49AN7VWjAEXJtujFhJuaIXy4Hw5YOqEEkKk6UUxDZiz9qykPixyMQnlAAH2I1REvqNsuqdENMlt+WBGxFRJZJY8lz4X7laSE8NpQUxoknI0GPsarMKJ9dgh8NW25bo3pBgupdkaND3esWCO9fdroumc8stNsHsETQoNGwTF8aJF4O2Io7wkY7mHLy4dRNb3jrsW3twgWriYwkOm5AsCK5MBOwXXu8i++uMptNw1BH+FGC5qGiivcxaBLZ76yChDWffW7mnGXEseRQr11Ljd5HJvfAdxweERsT6sH8XrUIvaXdOnjgDF31cQ5N/Z4HTbX34yz/HjiIoCH8fxpIxGGknNVTqvz1831V6epTWyiNZWEdfmCScNRSv6RJdi9lRv9VtSXNmzrAVBhTyrdf5RQHOjoBnWkHM2yKew5RS+86vdEgpr9z9rK6510GX0XnrnTsY5MphkJt/Li2V8cibRiVVn7DBlYL/FdByvyUR/mlteh5ADWbZKXJqzkYFYumhWngWXwlPAm6nkD1MLU7FCRmXq
+ G23FdI3T
+ 31NU6gZPjsZbll3mKHUXCbatnYzmnsVZ8RunHa/KTG1ZNKDkfY4fFhewR6QArD/wsIgu85W/76f0FamPO636VePFGLmB2k4UtnwIWoT2dx/+Q1L1FMe9Q8+VFJeQMn4Ygo0zwWfheZpuKyAfl96Q50oaEz/b3KnVkCtAr8dyGw6fVUSXuxTHoqxm4eGtDOJXbwr7/hx3jV44rpu1bBMkmBeK47EUNxnDz0GgBYqIBUqY1sgEdhHYjjaSRtr5fvaZWAY5z4Ser8iV0Z+E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,35 +112,86 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Reset pn->orig_objcg to NULL to prevent obj_cgroup_put()
-from being called agagin in __mem_cgroup_free().
+Now, the memcg_rstat_updated() is for vmstats_percpu->state and
+lruvec_stats_percpu->state, which are both of type long, so let's change
+the type of stats_updates to unsigned long as well.
 
-Reported-by: Usama Arif <usama.arif@linux.dev>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- mm/memcontrol.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ mm/memcontrol.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 992a3f5caa62b..ad32639ea5959 100644
+index a47fb68dd65f1..7fb9cbc10dfbb 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -4140,8 +4140,14 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 	for_each_node(nid) {
- 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+@@ -608,7 +608,7 @@ static inline int memcg_events_index(enum vm_event_item idx)
  
--		if (pn && pn->orig_objcg)
-+		if (pn && pn->orig_objcg) {
- 			obj_cgroup_put(pn->orig_objcg);
-+			/*
-+			 * Reset pn->orig_objcg to NULL to prevent obj_cgroup_put()
-+			 * from being called agagin in __mem_cgroup_free().
-+			 */
-+			pn->orig_objcg = NULL;
-+		}
+ struct memcg_vmstats_percpu {
+ 	/* Stats updates since the last flush */
+-	unsigned int			stats_updates;
++	unsigned long			stats_updates;
+ 
+ 	/* Cached pointers for fast iteration in memcg_rstat_updated() */
+ 	struct memcg_vmstats_percpu __percpu	*parent_pcpu;
+@@ -639,7 +639,7 @@ struct memcg_vmstats {
+ 	unsigned long		events_pending[NR_MEMCG_EVENTS];
+ 
+ 	/* Stats updates since the last flush */
+-	atomic_t		stats_updates;
++	atomic_long_t		stats_updates;
+ };
+ 
+ /*
+@@ -665,16 +665,16 @@ static u64 flush_last_time;
+ 
+ static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
+ {
+-	return atomic_read(&vmstats->stats_updates) >
++	return atomic_long_read(&vmstats->stats_updates) >
+ 		MEMCG_CHARGE_BATCH * num_online_cpus();
+ }
+ 
+-static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
++static inline void memcg_rstat_updated(struct mem_cgroup *memcg, long val,
+ 				       int cpu)
+ {
+ 	struct memcg_vmstats_percpu __percpu *statc_pcpu;
+ 	struct memcg_vmstats_percpu *statc;
+-	unsigned int stats_updates;
++	unsigned long stats_updates;
+ 
+ 	if (!val)
+ 		return;
+@@ -697,7 +697,7 @@ static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
+ 			continue;
+ 
+ 		stats_updates = this_cpu_xchg(statc_pcpu->stats_updates, 0);
+-		atomic_add(stats_updates, &statc->vmstats->stats_updates);
++		atomic_long_add(stats_updates, &statc->vmstats->stats_updates);
  	}
- 	free_shrinker_info(memcg);
- offline_kmem:
+ }
+ 
+@@ -705,7 +705,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
+ {
+ 	bool needs_flush = memcg_vmstats_needs_flush(memcg->vmstats);
+ 
+-	trace_memcg_flush_stats(memcg, atomic_read(&memcg->vmstats->stats_updates),
++	trace_memcg_flush_stats(memcg, atomic_long_read(&memcg->vmstats->stats_updates),
+ 		force, needs_flush);
+ 
+ 	if (!force && !needs_flush)
+@@ -4406,8 +4406,8 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ 	}
+ 	WRITE_ONCE(statc->stats_updates, 0);
+ 	/* We are in a per-cpu loop here, only do the atomic write once */
+-	if (atomic_read(&memcg->vmstats->stats_updates))
+-		atomic_set(&memcg->vmstats->stats_updates, 0);
++	if (atomic_long_read(&memcg->vmstats->stats_updates))
++		atomic_long_set(&memcg->vmstats->stats_updates, 0);
+ }
+ 
+ static void mem_cgroup_fork(struct task_struct *task)
 -- 
 2.20.1
 
