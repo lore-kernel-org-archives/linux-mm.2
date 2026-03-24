@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F56F54AD2
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 16:09:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C3E3F54AD2
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 16:18:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5E1D6B0089; Tue, 24 Mar 2026 12:09:31 -0400 (EDT)
+	id 062156B0088; Tue, 24 Mar 2026 12:18:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0F026B008A; Tue, 24 Mar 2026 12:09:31 -0400 (EDT)
+	id 039A86B0089; Tue, 24 Mar 2026 12:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D24D06B008C; Tue, 24 Mar 2026 12:09:31 -0400 (EDT)
+	id EB89C6B008A; Tue, 24 Mar 2026 12:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C56046B0089
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:09:31 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75E3EB7D82
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:09:31 +0000 (UTC)
-X-FDA: 84581441742.22.307DA01
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A653240007
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:09:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=07YayBE8;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D15306B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:18:20 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 199E0E04E6
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:18:20 +0000 (UTC)
+X-FDA: 84581463960.13.B06AF82
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1B81A140008
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:18:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K7pe2oN5;
+	spf=pass (imf23.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=07YayBE8;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774368569; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K7pe2oN5;
+	spf=pass (imf23.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774369098; a=rsa-sha256;
 	cv=none;
-	b=bQf+6qd1jASgQkY8mf4W1djpA8vuvKmmMrBnvctGwyNe0lnNuBbu6e4x35sE5ziYFSpqZL
-	3X1R9oYicMbHjb7lSYo8swQUPePJEYBRkNwYEU5utT/hLt5COGqHoAKRDwH59VA5rOuWBd
-	keVjJFvJ6I8HTyHPy300bAVcZXlriK4=
+	b=XZoPwHtL/3qbyh70gK6oTBf0lvk0e1IWjmGu76RXb9cOuQlZ5UCaLNBTbQNzObp1FvSRck
+	E+01Vj2guXZlEQFyJ5lGkkgWvr5VnCKVs9pTi97yxxmi7U8YvnIogNMI7ayxKfZ4wPcboS
+	CDm65nioKmUaKzR4n9UCaJHp76iKsTg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774368569;
+	s=arc-20220608; t=1774369098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GK0mAz/bAi96ru9zbnEYP0yBc0qad84ZcGATjWdLzF8=;
-	b=p1RWJtUPuBKKT0g+gJlqOjCTg8M39kbylzm8ulykYLAEkjZWSd58ar8/5R37zDPJr5Up2K
-	78iqMp7Mr5svcniIU+ifMFJPUziwSXzJ9YJKLcwE7QRZeY9d55HfzT7eREN6lhWAoQwMR2
-	ZCUWfbAXkyEzYrvPbxBYXyRop1iLv/E=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=5oyztmhKthfRsZiYvNFxTzAOZa3sBOv7owSR1z9x9mI=;
+	b=Re7UsBq2lagcOwUgI30NdrZcqyw7h1H9tBJgrH370O97AmNbB7mmKUjZOoAYWkY5tYF7U7
+	FNq0Z2AsbMQd41RTh470nKZWiLNUB/60K5NodLt+K6PfRtJDu0IllQzPoCheumhOeEbrCc
+	QHQFqs/8fHYN9UNjzrlBkNisbBF0SPo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 063EF60120;
-	Tue, 24 Mar 2026 16:09:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13225C19424;
-	Tue, 24 Mar 2026 16:09:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774368568;
-	bh=+VNZwLf2hFq4tQFgtsQXYLO62uURuRRQHVBaVT3NuT8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=07YayBE8Ncq4/YfhiSmUk+V5imcNswHCuEhleALDb/hAo8TDnKVgGaZP09RaZ/R4V
-	 bqkotKSQTkLaYp17fVGuZ72YNGJ1WxMQGPFZwyKWSPb350yaYBwuwiWK3jHVmTXI7o
-	 TdoP18t/YDq0Hdhvd8z+OmffHCx6lyMsO1xyJToU=
-Date: Tue, 24 Mar 2026 09:09:27 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chunyu Hu <chuhu@redhat.com>
-Cc: david@kernel.org, shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
-Subject: Re: [PATCH v6 0/6] selftests/mm: skip several tests when thp is not
- available
-Message-Id: <20260324090927.eeacb7987d22ed8ba13fada2@linux-foundation.org>
-In-Reply-To: <20260324013316.2590422-1-chuhu@redhat.com>
-References: <20260324013316.2590422-1-chuhu@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 0527D417F4;
+	Tue, 24 Mar 2026 16:18:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70BCC19424;
+	Tue, 24 Mar 2026 16:18:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774369096;
+	bh=/cUPzzLJI+cz39jGVtpY25JX5CIzYEoDyFD0cG64CVw=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=K7pe2oN5E5M5+gzqcVwNneA6DyFGEImzKSkzdM4asceF1zi5G2PbeTPOmwGPcB68E
+	 JXfw5YG7HP0Bb2RR2KnyArRTu4I+TbHGF3ypbJbBoH64tQtsRG7sc72z7R7tvD6rJu
+	 shXjuuj3quuKq9lXQBno2tI5mapyA1Kx8X5kt3svrzXdePdd3mffS039wQj9en5tGb
+	 rIoG0G9IqVOnt6/4vvpeCB6u/XmXfwre3Q7ysNsP+gxMqZRsb9InD+zmy19wwTLdky
+	 NGA9Z+Nql2rVYRc3ALh4ypvT4I06q+P1I+foET2IT0EBBtr11gjNoDB2R4Le9suZxE
+	 Qt9EcuZdx7GuA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02FFE3808203;
+	Tue, 24 Mar 2026 16:18:06 +0000 (UTC)
+Subject: Re: [GIT PULL] hotfixes for 7.0-rc6
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260323180007.d3f7db6a8b5dc59e72cb5f62@linux-foundation.org>
+References: <20260323180007.d3f7db6a8b5dc59e72cb5f62@linux-foundation.org>
+X-PR-Tracked-List-Id: <linux-mm.kvack.org>
+X-PR-Tracked-Message-Id: <20260323180007.d3f7db6a8b5dc59e72cb5f62@linux-foundation.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-03-23-17-56
+X-PR-Tracked-Commit-Id: 84481e705ab07ed46e56587fe846af194acacafe
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: e3c33bc767b5512dbfec643a02abf58ce608f3b2
+Message-Id: <177436908461.1187739.15267081620122808415.pr-tracker-bot@kernel.org>
+Date: Tue, 24 Mar 2026 16:18:04 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A653240007
-X-Stat-Signature: tq4rr9cqxr686y5g6q47ipkb3k9m6cwp
+X-Rspamd-Queue-Id: 1B81A140008
+X-Stat-Signature: zfn964unuwtot77o41zu3wod8mxrkgsw
 X-Rspam-User: 
-X-HE-Tag: 1774368569-866147
-X-HE-Meta: U2FsdGVkX18D4AmQsnDA2Mfz8esXbyQ+/vgZHmIcIMXZtd+HMomyi51GQ39Zo3bZSLgwCzRNMnMxZiRD3sAXc4zVGIC0vvOfi0Rzf2Rz2iXzdqhsl5B69mAm9j8tlCBelDihrUC4vjritUD//xzFMHE24EJvFcgPOU8hDbUf2XvqIvIieNmQYazFJHoiWSV7N9A1druFWyfWVEZlULVENj+hwhyYocc7wKsRS5QJxbpFykyohbL7R/6PfpJyqQqXTc+wF1NkKLRTSkOTIWLXbXRJvkQJQk6qRoDjWmQc89m6Rph2ErctJUEqLHcQGsRBpbwLiEBtzHSEMAbNIDnwABfKsVGuU73CVa7Xc+OhmhN5109DDEJUVZurFrJ9Og4M0h6IcQhkqr8mt+75XpSJkpX2w4wi8TNsFUC+CXfTtyVbvumSn+bx87o5eoKsmagHxL8GwWbvH9/8KFkG3U/eEZapvRec5ch/MJYg59Kc8EewcW/MUJyvlvhJUnp+tVd50mcaU556bwLXavYM4L35psGW4vMCenO6wKdCI4sPbx4e/0DbH+6vV/vsz/QOa9Osp4iFy2ZN+WNzm+aWENEP3AGzAKR/9GoXbHDofVPwgChM70p+RZ62AuhYER2k20boYil5GkgA/IuF0yXD53kL4zec7Ay2eJG4viKnrdw3jqw/7b1XKP911YBFnJaDELL0ZWvNrfhY3BDGSPwh0IA6Uun6IMyXmWP1jYmgKZUF/cfwoWMO1URpno0XSUoXw7+QM8S2KzTUdIW8BFixhWEqEkzDus+9h4IAuCThEpwM3VoZt9T+k/SmZ95yGKyfkKvgbjH/uArEm+cD08+Ts8KoE98Mw32A0rE9C09Qz258qSM9B8td0n8AsFxIMcx/HrXmc/Jw2J7QM/MwPc567H4Y6GpbIdcJktfOnVkDRldtG9HzlBQjsWI+reJhMNr2hP7C/oSMC07wieaKmwIUAqY
- 8JALs2kl
- xsEL3gVkBCZMUOFGoW8XyAvSUCtl4WePzG/DsRgigQGv4htYR2mn0lry2eeIFT9VVVzII5M5Z4I4/g9EK0fb8GdNFjexQIldWL4sk/TG2F6EA3LshUFOwcVG7tygdhW5pGxwtWIIx9/dYrDgBWO+5RCMx/Qiy8IIsyEo6XN1l2+1CDzfrhKHumVHoj2TOBLRQnRkY4cvjaXIIa3CeGH9/kMHLuJvRYQiDCAIQP9lLWx2fpuYINEoaVtQBWFCHtCL3OTZfyR84H3EEH9Q7dGqOOZzOkg==
+X-HE-Tag: 1774369097-94310
+X-HE-Meta: U2FsdGVkX18JimIUTCgFI0uILT8Eksn7DmieK7pfWmyVU8M2p2lOLJqqRIM3dz87xkMYPE55Ky9QmAkfLDXSRNCpN3VueUh7UapEPJOcmKIypIjlRSdcMxFzxOllD2T1r0QGq1Me0/61BUE5tvNloyY/fOHy/2V5qY0vxnE/ysg4w1bYhhknq+biXn+cIVpDB08K20TGktkWbuThL6s08PbFZJTdw+7ISjBDZ5SB3tM9o+bvIJiI6jEWmvGTCrYmK+/l9pC31uQvVeSZG2QvkM3u09leNe2KIsWRkvMInhC3YZ4VaEYAqSJzbuhzR8o8w0XYSkVmhgS94GUejxYzlUOEr3VTbie9rm/1iVdB9zG4N4D0Cotsn+/rS4zjnTRLGdCYmmw86RZwcAex/A3PIeIgNLOwjJPCJMEObz7h3vc6mgh7EvZ3600zkY8TkTyTtKFCfaMpbQToJYD2Dn5P7UQhq4ugS2o/RSoM0eaxBMT54ffOP/KHzbycETBgL0eNzUjbUa0VmIph6A4Hf/vQ6Ixo32aJ16kckzCBm8IZhxRClwEp1gIpEl44jrL3yklj7OnteY05+YbCJw7kGF56318GJh0LFxXQen1hmtbu/dY41XpCyfdh4MPaW4Z3cTXMNi/GJ6Em1o2vvkpnHUvm1H8Txh3BcvJgRjXkrseZmVTCu0A7nbfcVAhywe0NLXM85oMK7/oBDlu8tz7eWTH6ZtQIr8qGAo5reyPvFh8yisnqhWkCjmpGJUJMLv9Zgm+ViEtR70voLdlTi5Ne1BvN0ikYj1qYaSxayg5RkR0OdGaW8xMKwketGNvCGs8kl6CZU+AKVv+ma3Iyslady6OSXYHvkSy/vsFFIC5BIb+A/jNQCK356Euy09wTP/hUpr8GLMKtEV5B8pFnAIE7HRzRGVcq7Z7xdyldLXoATvEMQN/eM7fZPvUSgiZWnUUbHNiVsH121gUciD8mR7NmFiT
+ jtbsDgXX
+ eTzXvpF0QqVWAEVeibPRSHqZIxAAow8Eny2wqq0B0CUbwJ7HvZHm/IGJcboZ+OZzhvG2DCgKOR/VXXf990zb0cEGnajD5N6slom5mcE5BW1IAE3OirnIjdzquxCqqyGyZkFMR74ptOJb7AbmAmek8XKhHTiXbhcrQem+dy1z9DP3u/YAfVFfKHS/UKjpSnD1oAayAoAxDIGw7tRZ7kPwQXvtB6UnrfZJqFXX4lN/0MgDIOBQAekELkckrK7Wa9pSB3C/bzD3p6L3CxgOE+wWPbcvBLDZyE/1ToCfZeCcrdysjSSs0jZ88v0rxg2qkfSCUDpxEL7uO76Kq4zO42atYsscU1lH3mpTbsQOWq5r57K6yLfZOpu5hkzwTAmBHPx1ra8w1yH/WW/zYepk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,52 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 24 Mar 2026 09:33:10 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
+The pull request you sent on Mon, 23 Mar 2026 18:00:07 -0700:
 
-> There are several tests requires transprarent hugepages, when run on thp
-> disabled kernel such as realtime kernel, there will be false negative.
-> Mark those tests as skip when thp is not available.
+> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-03-23-17-56
 
-Thanks, I updated mm.git's mm-unstable branch to this version.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/e3c33bc767b5512dbfec643a02abf58ce608f3b2
 
-> Chagnes in v6:
->   - patch 3 add reviewed-by from Lorenzo
->   - patch 4 handle the errno before and after close(), suggested by AI
+Thank you!
 
-Here's how v6 altered mm.git:
-
-
- tools/testing/selftests/mm/vm_util.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
---- a/tools/testing/selftests/mm/vm_util.c~b
-+++ a/tools/testing/selftests/mm/vm_util.c
-@@ -785,15 +785,23 @@ int unpoison_memory(unsigned long pfn)
- 
- void write_file(const char *path, const char *buf, size_t buflen)
- {
--	int fd;
-+	int fd, saved_errno;
- 	ssize_t numwritten;
-+	if (buflen < 1)
-+		ksft_exit_fail_msg("Incorrect buffer len: %zu\n", buflen);
- 
- 	fd = open(path, O_WRONLY);
- 	if (fd == -1)
- 		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
- 
- 	numwritten = write(fd, buf, buflen - 1);
-+	saved_errno = errno;
- 	close(fd);
-+	errno = saved_errno;
- 	if (numwritten < 1)
--		ksft_exit_fail_msg("Write failed\n");
-+		ksft_exit_fail_msg("%s write(%s) failed: %s\n", path, buf,
-+				strerror(errno));
-+	if (numwritten != buflen - 1)
-+		ksft_exit_fail_msg("%s write(%s) is truncated, expected %zu bytes, got %zd bytes\n",
-+				path, buf, buflen - 1, numwritten);
- }
-_
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
