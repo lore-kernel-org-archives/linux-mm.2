@@ -4,116 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E491F532F6
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:53:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 689CFF532F6
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:57:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CD556B0089; Tue, 24 Mar 2026 04:53:43 -0400 (EDT)
+	id 854FC6B0005; Tue, 24 Mar 2026 04:57:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47E636B008A; Tue, 24 Mar 2026 04:53:43 -0400 (EDT)
+	id 82CBA6B0088; Tue, 24 Mar 2026 04:57:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36CB96B008C; Tue, 24 Mar 2026 04:53:43 -0400 (EDT)
+	id 742656B0089; Tue, 24 Mar 2026 04:57:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 206766B0089
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:53:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6C00E0BA7
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:53:42 +0000 (UTC)
-X-FDA: 84580343484.19.83F9F66
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 02095180009
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:53:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hnis4mFm;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 614C06B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:57:16 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C89591A1837
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:57:15 +0000 (UTC)
+X-FDA: 84580352430.17.4155706
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8579240011
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:57:10 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	spf=pass (imf01.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774342634; a=rsa-sha256;
+	cv=none;
+	b=F4DKgMo6POjmAjb+H+sW4C1UcDdsyi/ly/ljRXwYGDvgZzk+HdXt/tQOKnK5+wgHDvT68T
+	TNy0l6K1cAebzqfwNJcewMfUoUygq9HebHC5NdpBkj9nWxboGRdbqmonbZt9GnBVhQVTvK
+	Z2D+0lN2aLtfkWCxCQseYG1zeU5F6dI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774342421;
+	s=arc-20220608; t=1774342634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kze1ges43lCb7kREwIJMd42h9t5NMryI/FoPBiTgyD4=;
-	b=NbnckwzePMKbNn3vaVOBDsjfDEgE5ZzW29OTataKXqEs3OHhmHMKzlo4m44MaDbjcIpEXL
-	NLcRdYx3vvVGL4qWiiR+A9FVJOG8jSDpLnstpRBAIqMTCcrL+N4BQz/0P1/CtRc1BXyCuj
-	M8A1eqsLLJzK+Y9ep+n26hjZwl2OMLk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hnis4mFm;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774342421; a=rsa-sha256;
-	cv=none;
-	b=8I2bcPKGgGQzAYTIO91HUOga4PykVOq0Rs3ES0QCSWYDbVvqnxQxCKbwdj0OfTP80Jkgd8
-	rHTrWugdtDV/gCmpW9idp4Qs0ZWie5ZIXsCQkIuTJQ/+TFCzEKgEx+5c/YLaODxUkfvP9h
-	DDaj49Tq5z0w3UEYKw2Opn8RzO+IV0Q=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774342418;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kze1ges43lCb7kREwIJMd42h9t5NMryI/FoPBiTgyD4=;
-	b=hnis4mFmxk8UE5Ph4hvLT2YpX6ce7VQ4AmCZgAMaj4z+uGLDqMhYDoJvPDCWcfi0cgNbJi
-	IFKDU7+TfEUCxM8/gnJq65wUDQYGfxvbQMfNvAu236q4OxM0y4MuqWhoswILqskVnJIBLo
-	g67MREHBdhQsfRHzMJd6jBxvyOqpGck=
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: peterz@infradead.org,
-	david@kernel.org,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	ypodemsk@redhat.com,
-	hughd@google.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	jgross@suse.com,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v8 2/2] x86/tlb: skip redundant sync IPIs for native TLB flush
-Date: Tue, 24 Mar 2026 16:52:38 +0800
-Message-ID: <20260324085238.44477-3-lance.yang@linux.dev>
-In-Reply-To: <20260324085238.44477-1-lance.yang@linux.dev>
-References: <20260324085238.44477-1-lance.yang@linux.dev>
+	bh=sz0xeNVJrRFQyUEMm1eHZIRznmPl0y+111EPqkRhkVI=;
+	b=EjEbStVVEwVz4zoloMhKUEmtDJ8QCaA5CSi85pM1AZoulTJAB6vQ1a3qZcqeZfPgOkBkVn
+	jBgqbDm5DQNVXUz7iQsdN3q8lRaz5kbvLXdg/m3ewRXUkUhGhPWi016tfppBViw1VI0OXS
+	Hh6saGcq+Je7Re7EDqp2rkMa7QOcP4Y=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fg3nP3VYWzYQtrT
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:56:57 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.252])
+	by mail.maildlp.com (Postfix) with ESMTP id DBDCA40590
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:57:05 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP3 (Coremail) with SMTP id _Ch0CgB3o1DdUcJpXbwfCA--.50053S2;
+	Tue, 24 Mar 2026 16:57:02 +0800 (CST)
+Message-ID: <8b9e5300-c95f-40a6-bd8e-7c131a158281@huaweicloud.com>
+Date: Tue, 24 Mar 2026 16:57:01 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 02095180009
-X-Stat-Signature: g3co3esm7d56iiye1o93xq7fzfdci7rk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/8] mm/mglru: simplify and improve dirty writeback
+ handling
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
+ Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>,
+ Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan
+ <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org
+References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
+ <20260318-mglru-reclaim-v1-7-2c46f9eb0508@tencent.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20260318-mglru-reclaim-v1-7-2c46f9eb0508@tencent.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_Ch0CgB3o1DdUcJpXbwfCA--.50053S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3JFy7GFyUCryfur18ur1rZwb_yoW3Gr13pF
+	ZxKr9rAF4kJr43trZxZrsYkryakrWxKrW7JFy3Ww12kF1fXFW8KFy7Gw1rZrW7Cr98ZFyS
+	vrW7KFWku3WqqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkEb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
+	j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
+	kEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AK
+	xVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_Wryl
+	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+	AFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
+	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jIks
+	gUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Stat-Signature: yiyw9g6n137kkooo8zh3iwdzugrp8xij
+X-Rspamd-Queue-Id: 8579240011
 X-Rspam-User: 
-X-HE-Tag: 1774342420-401427
-X-HE-Meta: U2FsdGVkX1+WADXKDpZTD5ZfYuUX0BktYBCLPDw6Rza1kz5MMPf3hPhSL0x9/xPZa1DqtWPOdzB+NIhbeopPw5jWrSm/hxk51RlOo37GFtbYoLvrLGh4N5cJ8Kpw0DL/J5xiIq3d8gkZU56sltqwBQ7ewbmIo9ZWlAI7wtrdTnknXeIHPUgWzsSsuZxYgmlcKLlr5FmioaboYbKNopQJMbmenf2gcOJiqrMMcEwdGu4B0fu2Xd0N5eT4glUTqAHVvP8KRlGfYa9laJUN9q3gheQcSvJoo5v4z2aUkQSwwMWAmoC7Nhg/oomgVA3YWsEic1E4AsFHPqKkc84tzs1qTP05oniqYaHD3sTruRrvwAwi6146euHCKAfgvNR99g5t/awKPTy2yreVWEwcylV/dCeBsbuoTU+nfwUj7CDTnx93FaqpFA9vI0uQDpWuKmcHAa3xXYQtnVGoumxzDL67WJ0V1AHnixac6t2WrIy93nSHPW2oHzFox3apCWpw/2uSN0ze0NmphJRRlGJCh55N0hoWQhNSk+E623wQRPUxtedwwcR56B/otLizj4nl9ynr3I9G4fssFTSC+kRnUus40hVP/vwz7ei8ZTOgKG0WPiExO6JwuiYqV2n9wO1d1/HPxcBsYUMDLKRa8LRkzjtD75YiVS9KGTsqjLG9mEqaP+tki76ns+HzBbDshUlhmkcrrAK1yhOE5qAY5ACbXmi5w5htSbZd+ZJBfOGwNJYfzovyXCVnVRG4bs+wbhHn55UUXaMiHTUFdHALLSVRb3g/B2wtebDzziN93cRxxLFaTJczsCdPDkd3SWbaD2NYg4DlbWEt/mVpyEy5WXsQDhb29vsbj4hLCwLUxwR1uQTn6bV0OtPrHi8x2G5VY3lrtA0NI//M77gWR9f8aoeX7W7SvYjVQGG/y+pL6vLd6NBrTsX1DsMYJQM0dClX8p23movTUYfjtfWMuiL922oSAt5
- FTZxoRca
- OABAXvU2SAYVxzFZTI2NGqU0dElmAFouxyI/MBVtIf2KTS14MLtHEGjLETQcfpWJvXs0xZVv/ZjVzDNMDVSSOVbBPSmPXqqxWaBzLVwv4iy7fpdFlnZLcKnnuylQ0jAKGfmNGRd8TzAtA7rAAVTa3isjB96o6JqTR3sotOK95StD35U6YWw/sjubiVtujzHxcd7lrgTJ3h4kYQwPTHC+eylIG5cVP5CvvOO3t1UkTySb+jMuk9Iz8TAzaAFMkooe9HN82LPjOwb7X6f1rakbAqqZvY2R7IiAWb8F6i0hzovXOw9LgAng3fuun7JiF6mXjRUqM5JoIwUii6ElfFovCQkTghw==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774342630-560038
+X-HE-Meta: U2FsdGVkX18fDbgBg40ZZj2u480/+0qoJp6CLaJGUnvRXLZhZZJHjlmdEFM6wr+yeXbNL7pepqsb/2A3R0X6jia8MGgDY0QDNb/9vcfOE6Rlp1jc+L670+HG9bN4RL/1LRPN1ZDpbluUZzE0A+erDH15FaXPL2OtiBP12MYpPGQc2vUqq5LbVbZPckKFDH8ttqIoKGJZ5YmsIylPQlKwz6mTSQJD3HMg8zDm2IDyXF/GO3ZsnZY1/6rzslO11n+/svEVbaY92CZJ7zTK+ZBSuGgEV9rTvUIA8qVJeEytswhjdGZDpXAXuRTkbm1H5E7a4p5ndnQl1PsthpOWCpAbDOtMgoQZRQulckP9O1kpGl0P3o8ec7Ik4tO5x7xRHvL6+NZ3oODU9NAd4oxWRt0Ogd9xEPrn381fIMuV1LriEn2kQ7VXm9gDJ0yTnFMfvJbQdva5w9cphu5s7nL1y2W1cLYlBvDLMOz8IR4+hkPdxd/N0hoPITjAtnBSRk0UT9Fa2gNsRQHV+vaozNChXpijseKAM7nyQ5y9ebihDnzPSr1tzc106xZ2yQWEu6pRqq1aZYFVLSntGBNBfRI1fDkzO42gD4U7T4uBygocSb7XYO4fu3Ob13uT3GuuUCaGfAGDYluHowgZH9rifqia4oXBk6TakvW+SHDbYfsiyYuv9zOJZQjMII3pASfNT9cO0iWK0lc9qTJ6iSHz83eOBvm+zVgc5+QA1Nl1S+BRKjaLAu94MD9RGxPt3qzPQG+8QkUItcpcJIe43bsyGxqM/0Rlk7NDyYRnFgzjhgESxxS1MH6eQWC/HUFuwGbrfojXxMvjc9yjrLNzqzPQdgeO7k2v5nsvjbPI3fRDmB373XblaeedScEFjO7f5bUbL3zawxdTyaRP8hxJi/2UrTrd/3bBYyx/Q/xHSgBXX3VT4l8GP32YXJ/goi8yJWRzzbHECNzC9p2RaMRGUozyD8NBlhF
+ rRulKBme
+ ifAzIOlajg0ehRJSf70j5rLQcgqn/EK2+pSi0FPJoXhpfgZ4lM3Wi+Bl/t8vHd/jyLKKkydJlYrBfBvL/FV77cwsyrYZVvOz2kHkk0qRESKhthvL487vy9QU/HUzBH2KZbPE5xDzTQq2Du0q+rWAM/jVvV6+6/9cS2qyn2NWAqZz+vGiKZI2EzvcMEC4K8DaHbWLirfy/AbKTkbhgfKNmdBUMp/h9qlkEGcsXt2x+7dJG5nk8Sjn+A8yqK01BVsf6sez3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,153 +115,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
 
-Some page table operations need to synchronize with software/lockless
-walkers after a TLB flush by calling tlb_remove_table_sync_{one,rcu}().
-On x86, that extra synchronization is redundant when the preceding TLB
-flush already broadcast IPIs to all relevant CPUs.
 
-native_pv_tlb_init() checks whether native_flush_tlb_multi() is in use.
-On CONFIG_PARAVIRT systems, it checks pv_ops; on non-PARAVIRT, native
-flush is always in use.
+On 2026/3/18 3:09, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> The current handling of dirty writeback folios is not working well for
+> file page heavy workloads: Dirty folios are protected and move to next
+> gen upon isolation of getting throttled or reactivated upon pageout
+> (shrink_folio_list).
+> 
+> This might help to reduce the LRU lock contention slightly, but as a
+> result, the ping-pong effect of folios between head and tail of last two
+> gens is serious as the shrinker will run into protected dirty writeback
+> folios more frequently compared to activation. The dirty flush wakeup
+> condition is also much more passive compared to active/inactive LRU.
+> Active / inactve LRU wakes the flusher if one batch of folios passed to
+> shrink_folio_list is unevictable due to under writeback, but MGLRU
+> instead has to check this after the whole reclaim loop is done, and then
+> count the isolation protection number compared to the total reclaim
+> number.
+> 
+> And we previously saw OOM problems with it, too, which were fixed but
+> still not perfect [1].
+> 
+> So instead, just drop the special handling for dirty writeback, just
+> re-activate it like active / inactive LRU. And also move the dirty flush
+> wake up check right after shrink_folio_list. This should improve both
+> throttling and performance.
+> 
+> Test with YCSB workloadb showed a major performance improvement:
+> 
+> Before this series:
+> Throughput(ops/sec): 61642.78008938203
+> AverageLatency(us):  507.11127774145166
+> pgpgin 158190589
+> pgpgout 5880616
+> workingset_refault 7262988
+> 
+> After this commit:
+> Throughput(ops/sec): 80216.04855744806  (+30.1%, higher is better)
+> AverageLatency(us):  388.17633477268913 (-23.5%, lower is better)
+> pgpgin 101871227                        (-35.6%, lower is better)
+> pgpgout 5770028
+> workingset_refault 3418186              (-52.9%, lower is better)
+> 
+> The refault rate is 50% lower, and throughput is 30% higher, which is a
+> huge gain. We also observed significant performance gain for other
+> real-world workloads.
+> 
+> We were concerned that the dirty flush could cause more wear for SSD:
+> that should not be the problem here, since the wakeup condition is when
+> the dirty folios have been pushed to the tail of LRU, which indicates
+> that memory pressure is so high that writeback is blocking the workload
+> already.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Link: https://lore.kernel.org/linux-mm/20241026115714.1437435-1-jingxiangzeng.cas@gmail.com/ [1]
+> ---
+>  mm/vmscan.c | 44 +++++++++++++-------------------------------
+>  1 file changed, 13 insertions(+), 31 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index b26959d90850..e11d0f1a8b68 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4577,7 +4577,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+>  		       int tier_idx)
+>  {
+>  	bool success;
+> -	bool dirty, writeback;
+>  	int gen = folio_lru_gen(folio);
+>  	int type = folio_is_file_lru(folio);
+>  	int zone = folio_zonenum(folio);
+> @@ -4627,21 +4626,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+>  		return true;
+>  	}
+>  
+> -	dirty = folio_test_dirty(folio);
+> -	writeback = folio_test_writeback(folio);
+> -	if (type == LRU_GEN_FILE && dirty) {
+> -		sc->nr.file_taken += delta;
+> -		if (!writeback)
+> -			sc->nr.unqueued_dirty += delta;
+> -	}
+> -
+> -	/* waiting for writeback */
+> -	if (writeback || (type == LRU_GEN_FILE && dirty)) {
+> -		gen = folio_inc_gen(lruvec, folio, true);
+> -		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+> -		return true;
+> -	}
+> -
+>  	return false;
+>  }
+>  
+> @@ -4748,8 +4732,6 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
+>  				scanned, skipped, isolated,
+>  				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+> -	if (type == LRU_GEN_FILE)
+> -		sc->nr.file_taken += isolated;
+>  
+>  	*isolatedp = isolated;
+>  	return scanned;
+> @@ -4814,11 +4796,11 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+>  
+>  static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  			  struct scan_control *sc, int swappiness,
+> -			  int *type_scanned, struct list_head *list)
+> +			  int *type_scanned,
+> +			  struct list_head *list, int *isolated)
+>  {
+>  	int i;
+>  	int scanned = 0;
+> -	int isolated = 0;
+>  	int type = get_type_to_scan(lruvec, swappiness);
+>  
+>  	for_each_evictable_type(i, swappiness) {
+> @@ -4827,8 +4809,8 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  		*type_scanned = type;
+>  
+>  		scanned += scan_folios(nr_to_scan, lruvec, sc,
+> -				      type, tier, list, &isolated);
+> -		if (isolated)
+> +				      type, tier, list, isolated);
+> +		if (*isolated)
+>  			return scanned;
+>  
+>  		type = !type;
+> @@ -4843,6 +4825,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	int type;
+>  	int scanned;
+>  	int reclaimed;
+> +	int isolated = 0;
+>  	LIST_HEAD(list);
+>  	LIST_HEAD(clean);
+>  	struct folio *folio;
+> @@ -4856,7 +4839,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  
+>  	lruvec_lock_irq(lruvec);
+>  
+> -	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
+> +	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list, &isolated);
+>  
+>  	try_to_inc_min_seq(lruvec, swappiness);
+>  
+> @@ -4866,12 +4849,18 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  		return scanned;
+>  retry:
+>  	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
+> -	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
+>  	sc->nr_reclaimed += reclaimed;
+>  	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+>  			scanned, reclaimed, &stat, sc->priority,
+>  			type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+>  
+> +	/*
+> +	 * If too many file cache in the coldest generation can't be evicted
+> +	 * due to being dirty, wake up the flusher.
+> +	 */
+> +	if (stat.nr_unqueued_dirty == isolated)
+> +		wakeup_flusher_threads(WB_REASON_VMSCAN);
+> +
+>  	list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+>  		DEFINE_MIN_SEQ(lruvec);
+>  
+> @@ -5023,13 +5012,6 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>  		cond_resched();
+>  	}
+>  
+> -	/*
+> -	 * If too many file cache in the coldest generation can't be evicted
+> -	 * due to being dirty, wake up the flusher.
+> -	 */
+> -	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken)
+> -		wakeup_flusher_threads(WB_REASON_VMSCAN);
+> -
+>  	/* whether this lruvec should be rotated */
+>  	return need_rotate;
+>  }
+> 
 
-It decides once at boot whether to enable the optimization: if using
-native TLB flush and INVLPGB is not supported, we know IPIs were sent
-and can skip the redundant sync. The decision is fixed via a static
-key as Peter suggested[1].
+I may be missing something, but I think this change moves dirty/writeback
+folios into `shrink_folio_list()` without moving the corresponding reclaim
+feedback as well.
 
-PV backends (KVM, Xen, Hyper-V) typically have their own implementations
-and don't call native_flush_tlb_multi() directly, so they cannot be trusted
-to provide the IPI guarantees we need.
+Before this patch, MGLRU mostly filtered dirty/writeback folios in
+`sort_folio()`. After this patch they can be isolated and processed by
+`shrink_folio_list()`, but the new code seems to only keep the flusher wakeup
+and no longer feeds the resulting state back into `sc->nr.*` (`dirty`,
+`congested`, `writeback`, `immediate`, `taken`).
 
-Also treat unshared_tables like freed_tables when issuing the TLB flush,
-so lazy-TLB CPUs receive IPIs during unsharing of page tables as well.
-This allows us to safely implement tlb_table_flush_implies_ipi_broadcast().
+Those counters are consumed later by reclaim/throttling logic, so shouldn't
+MGLRU update them here too, similar to the classic inactive-LRU path?
 
-Two-step plan as David suggested[2]:
-
-Step 1 (this patch): Skip redundant sync when we're 100% certain the TLB
-flush sent IPIs. INVLPGB is excluded because when supported, we cannot
-guarantee IPIs were sent, keeping it clean and simple.
-
-Step 2 (future work): Send targeted IPIs only to CPUs actually doing
-software/lockless page table walks, benefiting all architectures.
-
-Regarding Step 2, it obviously only applies to setups where Step 1 does
-not apply: like x86 with INVLPGB or arm64.
-
-[1] https://lore.kernel.org/linux-mm/20260302145652.GH1395266@noisy.programming.kicks-ass.net/
-[2] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
-
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- arch/x86/include/asm/tlb.h      | 18 +++++++++++++++++-
- arch/x86/include/asm/tlbflush.h |  2 ++
- arch/x86/kernel/smpboot.c       |  1 +
- arch/x86/mm/tlb.c               | 15 +++++++++++++++
- 4 files changed, 35 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
-index 866ea78ba156..fc586ec8e768 100644
---- a/arch/x86/include/asm/tlb.h
-+++ b/arch/x86/include/asm/tlb.h
-@@ -5,11 +5,21 @@
- #define tlb_flush tlb_flush
- static inline void tlb_flush(struct mmu_gather *tlb);
- 
-+#define tlb_table_flush_implies_ipi_broadcast tlb_table_flush_implies_ipi_broadcast
-+static inline bool tlb_table_flush_implies_ipi_broadcast(void);
-+
- #include <asm-generic/tlb.h>
- #include <linux/kernel.h>
- #include <vdso/bits.h>
- #include <vdso/page.h>
- 
-+DECLARE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
-+
-+static inline bool tlb_table_flush_implies_ipi_broadcast(void)
-+{
-+	return static_branch_likely(&tlb_ipi_broadcast_key);
-+}
-+
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
- 	unsigned long start = 0UL, end = TLB_FLUSH_ALL;
-@@ -20,7 +30,13 @@ static inline void tlb_flush(struct mmu_gather *tlb)
- 		end = tlb->end;
- 	}
- 
--	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
-+	/*
-+	 * Treat unshared_tables just like freed_tables, such that lazy-TLB
-+	 * CPUs also receive IPIs during unsharing of page tables, allowing
-+	 * us to safely implement tlb_table_flush_implies_ipi_broadcast().
-+	 */
-+	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
-+			   tlb->freed_tables || tlb->unshared_tables);
- }
- 
- static inline void invlpg(unsigned long addr)
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index 5a3cdc439e38..8ba853154b46 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -18,6 +18,8 @@
- 
- DECLARE_PER_CPU(u64, tlbstate_untag_mask);
- 
-+void __init native_pv_tlb_init(void);
-+
- void __flush_tlb_all(void);
- 
- #define TLB_FLUSH_ALL	-1UL
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 294a8ea60298..df776b645a9c 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -1256,6 +1256,7 @@ void __init native_smp_prepare_boot_cpu(void)
- 		switch_gdt_and_percpu_base(me);
- 
- 	native_pv_lock_init();
-+	native_pv_tlb_init();
- }
- 
- void __init native_smp_cpus_done(unsigned int max_cpus)
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 621e09d049cb..8f5585ebaf09 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -26,6 +26,8 @@
- 
- #include "mm_internal.h"
- 
-+DEFINE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
-+
- #ifdef CONFIG_PARAVIRT
- # define STATIC_NOPV
- #else
-@@ -1834,3 +1836,16 @@ static int __init create_tlb_single_page_flush_ceiling(void)
- 	return 0;
- }
- late_initcall(create_tlb_single_page_flush_ceiling);
-+
-+void __init native_pv_tlb_init(void)
-+{
-+#ifdef CONFIG_PARAVIRT
-+	if (pv_ops.mmu.flush_tlb_multi != native_flush_tlb_multi)
-+		return;
-+#endif
-+
-+	if (cpu_feature_enabled(X86_FEATURE_INVLPGB))
-+		return;
-+
-+	static_branch_enable(&tlb_ipi_broadcast_key);
-+}
 -- 
-2.49.0
+Best regards,
+Ridong
 
 
