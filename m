@@ -4,105 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F9EEF54AAF
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 13:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DD05F54AA0
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 13:17:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B88C36B0005; Tue, 24 Mar 2026 09:15:57 -0400 (EDT)
+	id A7AB76B0089; Tue, 24 Mar 2026 09:17:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B12CB6B0088; Tue, 24 Mar 2026 09:15:57 -0400 (EDT)
+	id A03936B008A; Tue, 24 Mar 2026 09:17:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A01926B0089; Tue, 24 Mar 2026 09:15:57 -0400 (EDT)
+	id 8CA676B0092; Tue, 24 Mar 2026 09:17:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F5DC6B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:15:57 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44E41161C10
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:15:57 +0000 (UTC)
-X-FDA: 84581004354.13.CFACBFA
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C4D421A0011
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:15:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lCLEI5rn;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 712596B008A
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:17:28 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1BCB3141581
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:17:28 +0000 (UTC)
+X-FDA: 84581008176.16.051A2BA
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 86F00180011;
+	Tue, 24 Mar 2026 13:17:24 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=c4MIb9Qk;
+	spf=none (imf06.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lCLEI5rn;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774358154; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=c4MIb9Qk;
+	spf=none (imf06.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774358246; a=rsa-sha256;
 	cv=none;
-	b=mrdxqzBdWsrauOBOF0oX/uoNyGxOvZswCepxPO4B86pJ3/++Df0lW7nCWc3t6mx4tCBeZu
-	6MJHK+dNOa1KE8q7cQofhOCmEErZ+EhKlHcg/K5xl6iXPb0jA0qqzeWf8/DE+ZvVRHwS4V
-	8adovcBrz6lPdvbUUt6n2//3oIRl53M=
+	b=Rtx/8YvJVDBmko8XI1veAB9GWpe5O9rMNoz1luP7XcR1UhCXR55vNsObKpoazXwE9qjhvp
+	ny7Nudqy0092yDhXqGmzuVuVY9EMbnb7lPVzmsgyJjHDD+CZg6ARL+Drd1PJElDAuaS+YW
+	nkOzp/0gwtoo9ycwUHOu1jOjKzaxM/k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774358154;
+	s=arc-20220608; t=1774358246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/gTgQCP+5YBhbolPTDqqpYhG/7AEExmRx0uocLkbImg=;
-	b=RYQw3f0ntjvsbFhv+y/4x5QGj/EV+TDIEq4yMFuXjS3t6IsahWocVZLIhkv64a5OwY49PM
-	pV5l8Eju+SwKhe4NtR4zaW/42gizpiVVYX5IhZZoKq8cKpL7pYRQQP3gVg63cUTEK5cRUq
-	y8EDHfXv5Rl7xGQ2chftvfghH62S70U=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774358149; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=/gTgQCP+5YBhbolPTDqqpYhG/7AEExmRx0uocLkbImg=;
-	b=lCLEI5rnVCaGOatpQquuNr+NQzvHK+dxa0bWVOJQswXydAKL0FBWb32iFbukUTSHlxrFf/caIPltXXNajKU8V5OucvR6p4i7ziVY+vD803W6VxgAmC120+kcT70AAg2gmfpoLBlWKxOCONTSrMS/rNC03yBpuGmM1rA5e1fJ9Mg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R941e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X.ehy5D_1774358147;
-Received: from 30.42.98.36(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.ehy5D_1774358147 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 24 Mar 2026 21:15:48 +0800
-Message-ID: <33f09051-b5a2-4f40-8ea8-a7cade5019bf@linux.alibaba.com>
-Date: Tue, 24 Mar 2026 21:15:47 +0800
+	bh=2r2P0EuXUIpFebfcqs+V2aJI6SFcZOJexfLphbr7J9s=;
+	b=yKumHDqr4M8jliJuyVtmV2JMmKpbTRq9nnyZV5jQk2UqlAaB96H343e1btmCm5DstJbfMI
+	KC9Ll9bmyYu2/D8EQfRj4OtpPd14n63ayhPl4jCYzd9kqaxizazgxyz2QeyZliu5owj4RQ
+	QXxBV18l7RaIp/TnH62HBS40TP3GH3Y=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2r2P0EuXUIpFebfcqs+V2aJI6SFcZOJexfLphbr7J9s=; b=c4MIb9Qk/bHbiz4wX6m2X6msJr
+	oxY4CmAVyhXkZn2ex8skBdsVMy6D9fHjgZGKyDoZhixt+T6XNn4ZuCPCY4RodYRopRi6Up8Cx35gV
+	ksmFcaJu7gz5f0Zgd6McYixFQc6T++IH/jHp7rATGG9fJIvVL2R0Ml80Ry/Y9cVKqRRPn+WPAajUZ
+	tMFv8tbnZ1kC0DTmK9CGA9Nv4WNohsUA/HrMyF5rNQ353MYz7h1fSM0R0/niBS53UuVp3u5Y5um0p
+	XYJpneQzDASBCOWBAFFFIOjxNfzgzXTm9A5xbpwlXZxSZ2biNZcmoO1+TLZNvnb6KcU/M2lMHEjqU
+	U7uzKpsg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w51dE-00000001WkF-24HP;
+	Tue, 24 Mar 2026 13:17:16 +0000
+Date: Tue, 24 Mar 2026 06:17:16 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
+	Ted Tso <tytso@mit.edu>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 12/41] fs: Drop sync_mapping_buffers() from
+ __generic_file_fsync()
+Message-ID: <acKO3NRw852FdGUO@infradead.org>
+References: <20260320131728.6449-1-jack@suse.cz>
+ <20260320134100.20731-53-jack@suse.cz>
+ <acIjxUzWFstarlwv@infradead.org>
+ <ezdm6d34jqdrcohk7o6wycxvvlgtf6aqenwx5ffr3plfagdbzi@gibz7xwr6yhr>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/11] mm/khugepaged: remove READ_ONLY_THP_FOR_FS code
- in collapse_file()
-To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Song Liu <songliubraving@fb.com>,
- Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260323190644.1714379-1-ziy@nvidia.com>
- <20260323190644.1714379-3-ziy@nvidia.com>
- <7382046f-7c58-4a3e-ab34-b2704355b7d5@kernel.org>
- <E8D52134-B63E-44E9-BBBC-258DF74B8597@nvidia.com>
- <c20b7dbe-473d-4dca-a10b-b9f5267ad6da@kernel.org>
- <AF9011D6-8EA4-4134-B175-BD2DAB748419@nvidia.com>
- <71148f2e-cceb-418e-b762-c8dbd7a7eb1f@kernel.org>
- <FDC4C393-FB38-4422-9217-DAE95131C696@nvidia.com>
- <acGqbeSjktT4biku@casper.infradead.org>
- <9648838a-ada7-4983-99e3-d694e803e06b@kernel.org>
- <EA39EF46-4331-43AB-8602-D0A73E9C9C9B@nvidia.com>
- <16117b49-d83d-4ceb-b85d-d117d6993ce1@kernel.org>
- <C3591451-D910-453F-980E-C12CC66D731E@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <C3591451-D910-453F-980E-C12CC66D731E@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ezdm6d34jqdrcohk7o6wycxvvlgtf6aqenwx5ffr3plfagdbzi@gibz7xwr6yhr>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C4D421A0011
-X-Stat-Signature: 9exm8p6ico17aqxhqo9trtxkdbcs5d3i
+X-Rspamd-Queue-Id: 86F00180011
+X-Stat-Signature: dhsijdxowtq8xodrwjyp5qwcx9u6gsyz
 X-Rspam-User: 
-X-HE-Tag: 1774358152-203292
-X-HE-Meta: U2FsdGVkX1+1UpBic2hOjttW/a3EraG0ZBcM+q1AaPPecIEx9Q4lijClV2Voak4EAK+z1UCP1T5jBEXM4eAs19xUV/l1gp55PBUfMr7cCpGR3RVvDlSgvjes3rpDz/VHkGs8mACsKcdvp72r9dvcNoGc/x9BS/hOQto7TItxk7qYxbOwqIBBbgbSf7TpDcPiRqaVvAtLAwkRt1QY3HPTFh4tmAn3WND8JyVouFySX0ttYQlrAVDcYhVzuMppQsDFojAbGamPPm7CgORXJxDu3aelLh1OmemlkCqVl7OhNidVXUd6GdB0gq9IAEJ1Jmw/fvLWlZYppF8oT8A4kIFSymS8/b2ghxBaVoJmWEsgJlGHVi3W0Z7Pl6i7gV8gvwRFW/xbBh6Fq4M5hrNW7P9h4EWFDzkb3s/lH80d3Rp3qZqcLfwQ0mNPg/vaDA9P1GmTUvUe4I2FF9XMYVtEj6+EAn8JRSs6ZFoib7sMm542gr40bIKCV3M8yKF+DZFxEsKTNGcKqXgvxH5ApnSPZNPyHKdrfoZ6RjJcXizaSfeyu1fJQwsFL79hFk2U7YsTlI+xcwfApt1gH3EOpjpgw4c2OwKAvt2T86OasBD8/BLK/CfrMuERtoZ7RzioyPSKNBkr/fLjTDDvkC8k0lGInvUE9EO59q+LgV0wwqLo6Yx9f0GyjB1EgmF5RJEztKLVUgzgFJB3mQOHOlUyATZpgNHMuyglGCAmRAa+LqdJ85QpZ0MS38wIRH8nTwcn94/Tb2XFaymBi3REEo4zlX/Uxqrxq97BIMeo4i5bhM5yce2X0UQg9Fmqm94GjDHg9HybqI1g2hWFWXkpYC9vN8Zb7aFKO7z9H6FaWrkkqj9wdWKjFZuYaoz4989mUfD18BZDENy7aP/LJUhObpIXbaL0Ym0vE212ju5hlsDF4odpbQqRUCOsjOD8FBXEiN97yxIGABkCWLmswXSbzCDsIhtkHuI
- 3KVNxWHZ
- 1OpLsAHvMKWpZQSr+eBFckavqFDCKyVuIAAkLKDQtuyzUfjZy+6QHG3+szGMYsxLYrpO8SsbYszJTG/1O6F0Fafy6CimtpxG27iywCvbgz3DGdRwzCkQGwJXlcxhSFRnlfsP/tSSBP1GrsPo6bR5ks/OjQHCMS0C/YX9vnEfBj6MbvLkfrDkC/D6XST8h4RLu9hyrGbqs4WB7geA9mVTF/rVgJDTiQRGFcpPiwX3zXT6nib44HJLymNZrpdngMxB3JqwG/Wp4HfIlm4IJ3KpcnGa1RpCgQfqsvs9CiUMXCtc5PlIKYBWzOdlQE1OkhvnOTYt2m3LznYjI8BPLehXSlAkiWWqoDct9+iXetZ0adYOgA8o=
+X-HE-Tag: 1774358244-323832
+X-HE-Meta: U2FsdGVkX18CoK1NlC8XTo0qseaAx2Sb+U2Q2IUNJO3TskGsqhLUVkW314OJXSbkxZCEB0Fxotor7u556OHz0y5P3QpxLJp1/8ZRVZkwDM5uAAbZdseBoMN3lRzoX3MMfLyJs8JSFEGNQTz5G2ZyVDjo6rS+wwtKmSnvyipi2sv015WgFkRXNtP+XkDY9352MMEzCT9TBLd0xy6ECpRNZbJg60Fcwd1B/H0esjfphFI/0MJfkxcU7qFQ2UoKLhRMSlKS9J+fg+Yuaih20OAPDggcuMBdsgs7JaEkXBW+sX1f62kyjGBRAbrE3oU15yhJlfnf2dSEYsPy/UftBu/PayWq+EVsSHKYEWwdowTFXInP7L1ah2RZy48SdZlcuDRfph02HSQDHxUSfPDiBAWX+RISIl1ntINogSdFo6SLy1lWCuvzcd2RknyFhsd66GqYvLqhFAZkWuq0Ks4po+961ABPDUtjdYujyyAsuumOt6au2fjdLFJOO7oVzLWYBYRT/E2AZjvuseURZ64bQVLV6QEhg82dS0stdqY3K6GTgPw0sCNk1bwlISxoqJj7+PW2ChQUclRwxLNAfz1WtNtKXJEbkA+ZYBK2egUrmjxAt9VLSQYqkrHm1kXkYT2wNQTaSKpE2k1uK/xciA60JEGMk6wS3hTIMohpU4XVP8gAs7bQz7Mczj0Mw389prxTHb7QgGzTvYa23bqZQZbMZ/yvziUQXULPdcedVM4tu5Puzer90gk0CioirUv6/Cu29nZcXSw/ewL/tQKrZeavcGTyuVPCWGb5b6LR32h2NeezNBJ5GZ0U3kk7Oupk23Zo+i1WqfuJeE5HNh1io/1ieECqcg/Br6pPHj3xElSHf5ZlqtUT2LAr89p9YQIE+CLJtEe/8CItqqi2F4nUyYPhn0wlnJWasLoEP4d1BY5WYhIrNyGjC2P1//riidYpPKcU/oGPoOD2c4/IKMjjMDXr3uR
+ q54YPxaL
+ C1Gfu77FExDIA2mPyivkr9Q8bwQPzKaX/d4Z4BPysetWNTQwpEO/Fv/cqsXh+RIaF9kJbJwjltLoeOhINiycFTDC03tor+Z1ZGY/yfuR0z2Dv4sEmeTZwH5NhgMYRychc51CIdO+fkXPv3PjW9RbETLKATZa73t9vJ1I9Xq6vEBYReQC9GcfS1V+AcWkwknJGCGy8ky+FMTeBRRPqfn6CKjYMN0JRgaVNTqVT4TeE3P/PHZDa4udjNF4P8t/b7C9dk+EaHV3ARvGpa+tnGriAlFoFrHnQWtsko6BjYc7vjz2yLbC1pbZYQKRRyjMdqBZVLGo7kCffAyud6GJsJUgQxjWTLZYgI3vCoRVQLr3pmp1/2UestGEtRa07IkjRHSXDtB2pjbTazVKcWo7aOZaMMQLrh/YtpitCMfXAfijAgRxGkESRg2VGB3syjfSccmCKyVLKGpMnM4YAtpSj8wdUwLZQIHanXmbGhCm2pNDNiOZfy31yU/0IUsJhT8wMzxFInQ0ekcZq79+I6h8fIBnC95Ggim/ZHhZlx1j6rnH+EkRsRb/jst6Qk6A89eknDHZNDuMcXn6qI5ZmziN+BWS5JnyHHeA7BiunyhbsGAjp6nvddsM1w0eXdrgS0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,51 +102,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Mar 24, 2026 at 01:34:57PM +0100, Jan Kara wrote:
+> I'm fine with simple_fsync() name for the helper with the trivial behavior
+> of writing out the mapping and the inode. Code wise this will look somewhat
+> different given what you've suggested for the last patch.
 
+Yeah, the pitfalls of going sequentially through the series :)
 
-On 3/24/26 8:12 AM, Zi Yan wrote:
-> On 23 Mar 2026, at 17:21, David Hildenbrand (Arm) wrote:
-> 
->> On 3/23/26 22:11, Zi Yan wrote:
->>> On 23 Mar 2026, at 17:05, David Hildenbrand (Arm) wrote:
->>>
->>>> On 3/23/26 22:02, Matthew Wilcox wrote:
->>>>>
->>>>> Not necessarily that lucky; if you set VM_HUGEPAGE,
->>>>> do_sync_mmap_readahead() will allocate PMD-sized folios automatically.
->>>>> On busy database servers (and is there any other kind?), khugepaged
->>>>> takes too long to run and find opportunities to collapse text pages.
->>>>> Like, days.
->>>>
->>>> Yes, in particular given that the default khugepaged settings are awful.
->>>>
->>>>>
->>>>>
->>>>> I think the test needs to be:
->>>>>
->>>>> 	if (mapping_max_folio_order(mapping) >= PMD_ORDER)
->>>
->>> This is very helpful, since I was thinking about using
->>> mapping_large_folio_support().
->>>
->>>>>
->>>>> as there can be cases of filesystems which support up to, say, 64KiB,
->>>>> but not all the way up to 2MiB.  I disapprove of this situation, but
->>>>> this is where we are right now.
->>>>
->>>> Right, that's what I had in mind.
->>>
->>> Does Nico’s mTHP support for khugepaged include changes to collapse_file()?
->>> That might change the above test.
->>
->> At least not regarding adding support for other folio sizes. Baolin
->> (IIRC) had a version for shmem support, but that will come after Nico's
->> series was merged.
+But sketching this out I'm not even sure all this makes sense any more.
+Maybe instad of the allback we should just have a helper for checking the
+inode state like:
 
-Right. Here is the link to the RFC version:
+static inline bool inode_need_fsync(struct inode *inode, bool datasync)
+{
+	enum inode_state_flags_enum state = inode_state_read_once(inode);
 
-https://lore.kernel.org/all/cover.1755677674.git.baolin.wang@linux.alibaba.com/
+	if (!(state & I_DIRTY_ALL))
+                return false;
+        if (datasync && !(state & I_DIRTY_DATASYNC))
+                retun false;
+	return true;
+}
 
-Moreover, I have further updated my local tree based on Nico's series. I 
-will send out the new version once his series is merged.
+and otherwise just open code the calls int the two implementations
+without any callbacks, as it feels cleaner to avoid the entanglement.
+
+This helper might also be useful for other fs-specific implementations
+later on.
+
 
