@@ -4,138 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AFB5F532EA
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:05:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17690F532EC
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:06:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3B876B008C; Tue, 24 Mar 2026 04:05:50 -0400 (EDT)
+	id 7E5DE6B0092; Tue, 24 Mar 2026 04:06:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC5776B0092; Tue, 24 Mar 2026 04:05:50 -0400 (EDT)
+	id 7BD256B0095; Tue, 24 Mar 2026 04:06:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDB166B0095; Tue, 24 Mar 2026 04:05:50 -0400 (EDT)
+	id 6D3296B0096; Tue, 24 Mar 2026 04:06:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ACA986B008C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:05:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 554901B9E51
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:05:50 +0000 (UTC)
-X-FDA: 84580222860.18.9525D7B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6319E18000D
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:05:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=goE3OWbq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774339548;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C0C36B0092
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:06:22 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1CE213CC3A
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:06:21 +0000 (UTC)
+X-FDA: 84580224162.05.2EFFCD7
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C99BB80003
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:06:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cnsGYbNU;
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cnsGYbNU;
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774339579; a=rsa-sha256;
+	cv=pass;
+	b=jHS0mo17kL85F1Vf0ABXfpBCxv58zHe+9ftQox35/DKUIE6+MSPVMBwbI+a2yUKWIpMxJ7
+	4Gs551Y6ePmhsuZxRnXq0l5gkEBITmySxdBjLkrkT9toAEyoE17SbzrAju3ypFpiipLyby
+	X7FXv6ROKHaAWngTTF3M8mmDyFizrqI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774339579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BofAPnpPiZxoHh9sLYeRdTHI78bSXG0jS3FZFaG1vUA=;
-	b=vgmCcatHOqjZq7ssQADwyZmYC1c1dV+CRkN/egdBb4IgL/BKTJ0jGrp0XTwd9I7qkyOSSd
-	jwinpA8SeID7Fn3J5EHvoezsxQZjUC8QaSjHU+aL2aYLUie1jbCTLCxwE/Tc5SL0yTp3Tl
-	4xzIDb2C0uXxt0LFEl9taZ2NOCZpWtI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774339548; a=rsa-sha256;
-	cv=none;
-	b=Y+ve7DlLL7rpcigqB9Q1YqY7sdssgmb/q4NBVTodWvt7S/ZquHYMrsYwvnrz1SnjReoPO+
-	oet9l6mfKFw3m7DrTmDpqvD/quHAwLNQeWMoriiUglZ1fxZxgCpmRyZjFbXKNYzWuMp5h1
-	UqmoZXGJWP4YvwIJgWUxCgMynZ3W0y4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=goE3OWbq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 67E4443B38;
-	Tue, 24 Mar 2026 08:05:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38E7C19424;
-	Tue, 24 Mar 2026 08:05:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774339547;
-	bh=R3tUPav66vuh2+XNlYS0TIlLO+2gZChki+fScnkn0+o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=goE3OWbq+wiuW7jn3ojwJ2aTTY3bepFl3ITL6wOa9ecfISbctDqFx0fDwqDYbZMgI
-	 mY8GssZHDoARjvmjQjN04YED+wZsyAXGuYgCAXTrt1K8/QbAhX2xbw0G54tDycbYoJ
-	 HT2LSHIQplpmbAPpJ5ya+feBbIN/2z/TAsysqFDwL8NQSG/RHRIlkMUfL8BjUVwgQT
-	 GQqIQDYV4u0uk6y+AQ7MBUZxFygEklypAhv0pKEOLnRJZoD9Hayno5z3plsaLQE0uh
-	 lue6CMPXDV9Q34VMIYC8z6Ijwc0wOEZ1CpmC0d+nM4rbffwjlGPDjQTO6osa6J04wp
-	 kNMg/i54lGekA==
-Message-ID: <3ddd7629-7282-4ce9-9de5-9de201ea395d@kernel.org>
-Date: Tue, 24 Mar 2026 09:05:41 +0100
+	bh=AGHYqtwWpNoCe45E2GKfU+FkoX+p9Z6lhHttAf4NvOY=;
+	b=ToSMXMOoGlfbiCW0ML4SjFqcRPKUXuSmNCKZi2/gGF5wmo917rw3zZHAyerFeZ92OCS1oI
+	cj2IKOhh+kFCwKJxV3kvc0be0APyisojpNCmijqg8sdNPfRbeUFA+gODFxWotfBdyu1JU8
+	/9PjqB+RU8kgK+uJqWiKRHUicQitxmM=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b941762394aso646079266b.1
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:06:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774339578; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CdMziJWphPyVUN7ZpaElLI2DGd1UD2Co+3n9pNsqqVp7HF90D7dgIzSkVCFM20UszP
+         FkRK5BubiI89VdEf6PWwJEp/KmpkdsyDyR6CTs6OtocZVTfcZ+5jaWOG2AaV80COluh8
+         /vYjT/+jQm3ao0h8komsova1tT5bOQKRSJsenj1vKk3lEPTHIK0UGLKudpmKU38OT87c
+         dHc71YHxZiawWZdXHFSB5c9ZPnWsl5X/o7TOJFkMwVRshLN/YayVgErt6//pC98zJMZJ
+         qgyCLXRTrTgnZfNdjXV2ITrYp+imw52V13Z03yBp4GiJPsAflbHPttPfDg7t8I5GXaic
+         LR/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AGHYqtwWpNoCe45E2GKfU+FkoX+p9Z6lhHttAf4NvOY=;
+        fh=jALXmptdVv4jJHtv8u1HVP5abfxtP19pwxAFqOD1aBM=;
+        b=kttiRJI0JzrsnPDQL9rI6foRVwnCZuw80uK54uqdYGd/EYnXaiTAfeEgpJlDgvapnf
+         sUkiJzIWoOyJAzgjXgdo7Vs/v7+ziUY0cimSTHmZojKBGvQaTWdX740PpRvXwjABkt5s
+         ntwoyMrqefsry8Nml4TGO5iWUBwqbqrkokPzKfnELZtubL1dmEX/R7neKwAPDJrQHrFJ
+         MHI0JLS1VrK0UZ0jrioq43rBnurFB0lOhwGZ0t/2Ko5D3TVbWBWZ1+QnlPEKcA3ew/NK
+         ZaBcO0Sy4e1UsiKzG39J8DRcwvCnxuRunvfQrPOslydNWTYcRlj+m213cSqGIJ39dDgk
+         ruxQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774339578; x=1774944378; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AGHYqtwWpNoCe45E2GKfU+FkoX+p9Z6lhHttAf4NvOY=;
+        b=cnsGYbNU5RMUhrpsEdFjcJ/4k12PVvvn1UbBG6IaNd0+XyJ6Rk48gjTBdxgflHfutV
+         davxNm0BUK+N4P7nVR+hOZCLJGl7u6WllTcPkrfyas1xPvAhgLPkMiDwi/3LOcXoKRUW
+         sTq1NioRExMrqiCTNbllhOSleWd621QzrSa7f8b2xy6vrXmW2XJKFKryMpLlXYVS5qfy
+         zL7+niDWqk5QgNYJQMJ0g1Akrt2Opcj8YpQjVPP01dqaahGWgzuA6cvJyfOgWvVHS3Kc
+         CCbfjjowdU4b+5TgKIUM7Xvdijou8sSwDxk6RcRfaU8Dtit0FAYr535DbDW8eY2TxP6w
+         nISg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774339578; x=1774944378;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AGHYqtwWpNoCe45E2GKfU+FkoX+p9Z6lhHttAf4NvOY=;
+        b=VnIi28OKVm3o+/F4qQFdJ+jbvG0liYkRdpqztHYEM8CH6kOgU970rLYJrJxSwSAv+w
+         tdUgGKt6kaWUY/V71Yw9smSOPqVdWVPC4NReXzXi10Q9KFgWFmOqUoId6f8RvB5CT44M
+         KhuUznNwMz5zq6g2ExTmKo75YeI/t1IkLXnXM+GFzb07QjLPbTcN2AUPmz+DBWgbmE+d
+         yEIGFnK8P3d8GnlyWe0TaMw7qpfT/S4tX+oi91H7vDMAHOGh/U/sZVfYNT/A/2AvpKwa
+         hGsp8VfrNe0uiZYBPJVH/O78V9+BPL+w7jbacWLHCUob0wUlZYdzALuY4wUDTM9Rq6Bu
+         zPQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHjm49W4OJkgdEFU9jvaEZuUws4QtLq6aLIKd7mXN+Bo5IWwUVTtrFhFoLhyovPkMtEpSz4xChCQ==@kvack.org
+X-Gm-Message-State: AOJu0YwXydVmO4dgU6hSs7yt1Fp15lvMHUnParT6SJkbJuqZk2JmmhEv
+	CGL38ZiOmzzVkVe9L8SM4Go/TK9BSxD7J+mvrdQXJDNab02Le19uosPOni87flyVST3BJQSzj87
+	MNM6A/KlCYbkPJESOekgrOohBsRwaEkk=
+X-Gm-Gg: ATEYQzwrld4LDe6CrDYnIgqCtwwXGxzJbcYsvXEyx095A/PmQdt0QIEYpVz7M+o2J7K
+	eodWSaTGJmv8EflGoPB0LWZ8jyAYLSTkeORJSiYkr6/zlyYipExQ2DgAFg6P/+Mw3AnyBMda6Tu
+	OBfwCDzvBLzuzbb0m4sG/Db37g4OTEi4giwtFOZ2XN+yLczZb4KADGIorYdxFPPLXDgj9w+S7et
+	WmREbm34Ry2vXQi1BXhqEAluSigo+XqbA6nvkbkEvEzEnmGOF7Kv3IuaKs9KAYT5e3W4vgn2qDx
+	hgIeFznoKhhHgC6jwjAkf8xDgtLXW5nYZ4oOCJB1
+X-Received: by 2002:a17:906:27d7:b0:b97:7b94:a47d with SMTP id
+ a640c23a62f3a-b982f39968bmr827848066b.50.1774339577687; Tue, 24 Mar 2026
+ 01:06:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
- Alex Williamson <alex@shazbot.org>, Max Boone <mboone@akamai.com>,
- stable@vger.kernel.org
-References: <20260323-follow_pfnmap_fix-v1-1-5b0ec10872b3@kernel.org>
- <47346263-ee56-4a78-b55d-7f28c617c673@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <47346263-ee56-4a78-b55d-7f28c617c673@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6319E18000D
-X-Stat-Signature: coe6ezn9xa6xxgmpwt9z39e4fkoynq4a
+References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
+ <20260318-mglru-reclaim-v1-4-2c46f9eb0508@tencent.com> <CAJHvVcgi8m_O03+Grv7jPX8btaVvYuZxh8S6kLjALfREykToDw@mail.gmail.com>
+ <CAMgjq7CjwdaQk66=61sNLR_21eaPZrFiai2foaTQNbZ3uxQmRw@mail.gmail.com> <0427249d-c6c7-477a-aeff-e007198fcf45@huaweicloud.com>
+In-Reply-To: <0427249d-c6c7-477a-aeff-e007198fcf45@huaweicloud.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 24 Mar 2026 16:05:41 +0800
+X-Gm-Features: AQROBzAf5m8U4Bq5ZXZYskw541sdgh9Tc33l-kZNnHKHariQPHGx9z0hGIT_iio
+Message-ID: <CAMgjq7CGhMsf4qWrW5O-s2AP7BwpbpPahEFkd-u3Q9jGFGCeZQ@mail.gmail.com>
+Subject: Re: [PATCH 4/8] mm/mglru: scan and count the exact number of folios
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C99BB80003
+X-Stat-Signature: fyfsqhuq189ujdexkbppc8eayk8kp4eq
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774339548-810073
-X-HE-Meta: U2FsdGVkX19Uk5lHBTTiozAZA2yuswcc8xryLIRq1DC32wJDAeACZVM1ji8cw6erBXdOgTH8zJ3Gsic4Bybv+O8RwzAixbF5F7M823NId5bYU+qvh83YbVLTzuxgTWGhA9xcOs0SUhDqJw2Lu8HmHnr9/krRX3T0LsrV2NlBBbfP9MT3pnKOpQm+tWR6kpSBfLEvpGPavH+jmcmyamtRMejF/nlMjyLK8tE6nLG5ELOkPQjyMis3H3J5o3xemIVeWx3EExD+Txzwgnc2jnTRvli7I67jQ6sVR09VbHHuS65u2ZWQ5ABNTppL+43errjE+fwJd9Jhw6WtezlG9+f6Y7M4yAo8fAbGrV6wT+Qzmp2qoCCLlvjqwBWJukWrfGMWnWnbQ7oAATC0GusoWdozMAS/rF+D6ULpqKpZ+pZEyL0e6OmrhcSlBGkZpHS8aPtaYqThTZEykabAxJcHl1Rarft/MG6XDvsttrlvYlg2v+b0rA6StHNy4E6R7VvEWnSVEo8ENNohcuofT05EpbQSHr3+hBjF3e3xPEZ2gHOB/oXuTEVM+02+Qi2r3f7+SSN3NgOC4cPFzwBmyO9hfCGirwIS2njK8SJ5g6+3h5XCruglMJlcL6CjtUbdxos6oFX24/HAZTx4RkM5eqg7AdJjxL2LLirDVyYmZpx+SO76A8WIuxfJ23tcUl2aYWbIo8Ce25RxUinSI8iYgnsNBr4uK2yBLpQErmiekTsRMkn4hZCBl0VTyYePyGljjXlEV9Ff3kEKd9jvkXfFOuP973akd8l8ChI5NoJ2OXrsVTJKw2yUTmDc+Fgmt2hMViCy0PzRJPSX3cyPYI+ocM/WNJmbvXE7N9RzUJQtyR2AgcmTNoeR+xwYV4nHZxL38SgrRIKfJRRu6fbcQa4Id081BlISWyofpnxzdqQ1Mgkn2fcBgkRJHncti5a1YaOCp+/EAhoifKRTRbqgG+X6x0EFO1K
- R5eQKTqB
- vKEib4q2RQQOtb8QdZknEUrVT2LrzrPB7ZxJ81zKOWoM85PFSskDwo1qnh1AK8scgcaF1XfCmiI9XlQIMDgOQ1ZDdSVZybW3fBsCuRSUJA5ZcZiPI8a6aBF7i4DogG8byBu7SyiyPU6HjOV27KMqRFOokdejgOa3AFv1sTFI7E7cHw7TDCnse5rzKc5XAJ8miuP0eBi9W5RY4GAuijlsLJxdkCAxMhyeGJBIgrgY3bqSOEtdIqyFyWeUYvNUHjYg3H5CeFVT7wHdMVIZTX8M778k2a4RrafLQ+pPZ5NxAFmq6JRTv32TnHjAb7yKRQqwaShEXujZ0qN40Yks=
+X-HE-Tag: 1774339579-666070
+X-HE-Meta: U2FsdGVkX195AnZryQ5CyLmCfSDfTMQfg7QqSDdNYLaDWEk82rSJLuRR9bk37U0T/Yb2bNKY+mwzKxQtXB0ZqMi4iVpcLlul0Im2ozF7xenXiZZ6gMR4VJX4tNcwv2QmZ9jDVj6FAyI4Tv2EO21fv8F+4sIVijw33Cq14XKh94I7nPBFeqsQH4vE8no4FtGdVjLWzui1vJQypDd1KFjRDW5faGXKwf9sn1SFe1IlAv4usLENvtNSHbW57SdMQTcBuFQMymsn12IEvZOny8LLjFGzs7VTO1+tSwwnge7hRD/kKS5SJNYkRLjOhDulI4mTkbk5yBDLkEtI4QzXYdXBXQONBkq4lgWl66TxldpA2Q4pJu0+d+S+ZKhbl5+EbZxQqydBXtBSzQHdrH8tUz/2Z+icfIlbL66LhfhdM5+sh6et97vF52r8KGBW5IPE77JZN9s/Jv+hYAYnM9qtUx6qKSL+KyV4i8QXGbruX/ljeDlwDSnCID5+ur4rYA7wCZYET+okrNh89J1gbdgnZL7793TKGNQJZ/AqMhQpS9S0fZy/4ClINKYKZ9HzGeDmlVnsLyTJsyKvrFC4pFgbwcGIfy79+UBgVdkrJi90QLgq8gH4Q/QQ71acDgQx26Ze6BKeQnuGZGYy1PuH2EmuvMOujV1CrueW4i0uvEMVWXvvLiP1KlcD63TxxA0ozyL2Zf5rIPsg++NrSnZv8uVqFNtrpaOzU+k6Xs2aLJk09OiG2TsuGDjX8x9iiVuAJK+2yujNYEap6ZfqIDCNJ720pgUL/1ewgYpP8HWsLqGwtwQ9+M+hJpdDhjhFl8VyhcgjYP9WM48EdG3IfnRWwsQqPEOt6HEnByoRh8f1pSeFdfw9Kkpif4cwoT2dNX4SmNLybIkwQpHoYEuz16r5f3u2nu4/lQ0aN1iUv6jU69r6kRXL+92QtNqa6BTJKKMBfO766hh0gGb0vOwnyr851FLaymo
+ WhUrNJHL
+ S1/Npi0rAT2vgDi1J1bBHzRQmVrI4sAONSgDuiDG4yocKli6KIfEhbH9rzg2Bg1xrmDwqGWOXiunkB/MylMrNvAJjWNVLptgSB6LBCUHjcSRGz6eRF/8cY9NhkQFQtQaIPRUPXMEH4XT6xi43pvvqG9WH/xmQNNiMdfoDq2Tb3IXkrYsO8WAyU/2h2XYDzOjzqBwm1HtpU+bEmg8Waom7hLHMSWFqz9gYtCGB9gdoHYguVMp1VdK+5ysbWy6CQuD+6J4M5U3qet0f3g2Ao1ezFv2eduV2gpb5ZpqOrGr8v2bqhHC4un8nUlfjg9c1wFinerZ/7qoHgQuVlhDWXazFKUkqrqvWP4yu5N9AcHplAUdfM2w2oga7UFN2iaXODm+fO+h+hHQZI6wrH7tJN6ix8FcSqrtY4tVWMEfWOQSAGFcHkz6jEMYlT2SNObrDKAOpzb+18gshG8AAEyl6FhrCTrLC5qpjv9YnIHlThOmBv6aXxLt+rIHZPDFfEft33vY9zlaM+ZLTwoeB217XlSRbz1pFu92aQ/mGt2LttvEuPxLw2XxipoOSVE37Hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,58 +148,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/24/26 08:33, Vlastimil Babka (SUSE) wrote:
-> On 3/23/26 21:20, David Hildenbrand (Arm) wrote:
->> follow_pfnmap_start() suffers from two problems:
->>
->> (1) We are not re-fetching the pmd/pud after taking the PTL
->>
->> Therefore, we are not properly stabilizing what the lock lock actually
->> protects. If there is concurrent zapping, we would indicate to the
->> caller that we found an entry, however, that entry might already have
->> been invalidated, or contain a different PFN after taking the lock.
->>
->> Properly use pmdp_get() / pudp_get() after taking the lock.
->>
->> (2) pmd_leaf() / pud_leaf() are not well defined on non-present entries
->>
->> pmd_leaf()/pud_leaf() could wrongly trigger on non-present entries.
->>
->> There is no real guarantee that pmd_leaf()/pud_leaf() returns something
->> reasonable on non-present entries. Most architectures indeed either
->> perform a present check or make it work by smart use of flags.
->>
->> However, for example loongarch checks the _PAGE_HUGE flag in pmd_leaf(),
->> and always sets the _PAGE_HUGE flag in __swp_entry_to_pmd(). Whereby
->> pmd_trans_huge() explicitly checks pmd_present(), pmd_leaf() does not
->> do that.
->>
->> Let's check pmd_present()/pud_present() before assuming "the is a
->> present PMD leaf" when spotting pmd_leaf()/pud_leaf(), like other page
->> table handling code that traverses user page tables does.
->>
->> Given that non-present PMD entries are likely rare in VM_IO|VM_PFNMAP,
->> (1) is likely more relevant than (2). It is questionable how often (1)
->> would actually trigger, but let's CC stable to be sure.
->>
->> This was found by code inspection.
->>
->> Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> Should we also convert pgd_none() and p4d_none() checks to X_present() checks?
+On Tue, Mar 24, 2026 at 3:22=E2=80=AFPM Chen Ridong <chenridong@huaweicloud=
+.com> wrote:
+> On 2026/3/23 0:20, Kairui Song wrote:
+> > On Sat, Mar 21, 2026 at 4:59=E2=80=AFAM Axel Rasmussen <axelrasmussen@g=
+oogle.com> wrote:
+> >>
+> >> On Tue, Mar 17, 2026 at 12:11=E2=80=AFPM Kairui Song via B4 Relay
+> >> <devnull+kasong.tencent.com@kernel.org> wrote:
+> >>>
+> >>> From: Kairui Song <kasong@tencent.com>
+> >>>
+> >>> Make the scan helpers return the exact number of folios being scanned
+> >>> or isolated. This should make the scan more accurate and easier to
+> >>> follow.
+> >>>
+> >>> Now there is no more need for special handling when there is no
+> >>> progress made. The old livelock prevention `(return isolated ||
+> >>> !remaining ? scanned : 0)` is replaced by the natural scan budget
+> >>> exhaustion in try_to_shrink_lruvec, and sort_folio moves ineligible
+> >>> folios to newer generations.
+> >>>
+> >>> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-For these, we don't really support non-present entries yet (excluding
-hugetlb, hmmm)..
+...
 
-I have some more cleanups laying around here, I'll throw that in as
-well, thanks!
+> >>>  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lru=
+vec,
+> >>> @@ -4852,7 +4851,6 @@ static int evict_folios(unsigned long nr_to_sca=
+n, struct lruvec *lruvec,
+> >>>         struct reclaim_stat stat;
+> >>>         struct lru_gen_mm_walk *walk;
+> >>>         bool skip_retry =3D false;
+> >>> -       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> >>>         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+> >>>         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
+> >>>
+> >>> @@ -4860,10 +4858,7 @@ static int evict_folios(unsigned long nr_to_sc=
+an, struct lruvec *lruvec,
+> >>>
+> >>>         scanned =3D isolate_folios(nr_to_scan, lruvec, sc, swappiness=
+, &type, &list);
+> >>>
+> >>> -       scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
+> >>> -
+> >>> -       if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_G=
+ENS > lrugen->max_seq)
+> >>> -               scanned =3D 0;
+> >>> +       try_to_inc_min_seq(lruvec, swappiness);
+> >>
+> >> IIUC, this change is what introduces the issue patch 6 is trying to
+> >> resolve. Is it worth squashing patch 6 in to this one, so we don't
+> >> have this non-ideal intermediate state?
+> >
+> > Well it's not, patch 6 is fixing an existing problem, see the cover
+> > letter about the OOM issue.
+> >
+> > This part of changing is just cleanup the loop code. It looks really
+> > strange to me that increasing min_seq is considered as scanning one
+> > folio. Aborting the scan if there is only 2 gen kind of make sense but
+> > this doesn't seems the right place. These strange parts to avoid
+> > livelock can be dropped since we have an exact count of folios being
+> > scanned now. I'll add more words in the commit message.
+>
+> This change confused me too.
+>
+> IIUC, this change looks conceptually tied to patch 3. The following chang=
+e means
+> that evict_folios should not be invoked if aging is needed. So the judge =
+can be
+> dropped there, right?
+>
+>
+> ```
+>  static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_cont=
+rol *sc)
+>  {
+> ...
+> +               if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
+> +                       if (try_to_inc_max_seq(lruvec, max_seq, swappines=
+s, false))
+> +                               need_rotate =3D true;
+> +                       break;
+> +               }
+> ```
+>
 
--- 
-Cheers,
+Hi Ridong,
 
-David
+Ahh yes, as you pointed out, the explicit should_run_aging kind of
+guards the evict_folio. That's not everything, besides, previously
+isolate_folios may return 0 if there is no folio isolated. But now it
+always return the number of folios being scanned, unless there are
+only two genes left and hit the force protection, which also makes the
+judge here can be dropped.
+
+But not invoking evict_folios if aging is needed is an existing
+behavior, that commit (patch 3) didn't change it, just made it cleaner
+so we can see it well.
+
+Now the folio scan number combines well with the scan budget
+introduced in the previous commit.
+
+And I just noticed it might be even better to move try_to_inc_min_seq
+before isolate_folios, to avoid an empty gen blocking isolate_folios.
+Usually this won't be an issue since calling try_to_inc_min_seq after
+isolate_folios also ensures reclaim won't generate any problematic
+empty gen, but removing folio by things like freeing could introduce
+one or two empty gens.
+
+The forced gen protection may cause other problems but that's
+irrelevant to this commit, should be improved later.
 
