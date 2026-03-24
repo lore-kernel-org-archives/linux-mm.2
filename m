@@ -4,133 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B5DFEC119
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 21:24:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4759AFEC119
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 21:29:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0316C6B0005; Tue, 24 Mar 2026 17:24:29 -0400 (EDT)
+	id 875F66B0005; Tue, 24 Mar 2026 17:29:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 008EB6B0088; Tue, 24 Mar 2026 17:24:28 -0400 (EDT)
+	id 8270E6B0088; Tue, 24 Mar 2026 17:29:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E87F86B008A; Tue, 24 Mar 2026 17:24:28 -0400 (EDT)
+	id 706B46B008A; Tue, 24 Mar 2026 17:29:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA3936B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 17:24:28 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9AC0358EC5
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:24:28 +0000 (UTC)
-X-FDA: 84582235416.24.084005F
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 85909C000F
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:24:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mm93eJde;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf28.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774387466; a=rsa-sha256;
-	cv=pass;
-	b=dsnTYmMqncVVJ/tYifFvLFwl5EKAonDv20NdcuVL1/dt3lx/u7JotkdNHHoiqMyLoEo53P
-	wqCa2CyhFNjQO2UbyVsA/hhon4wZTGD/sKDtxLb+3jI225H/zYqVSB9lvJkby7wI/bfysc
-	WCUhBXkeppec7mHmBJycRu25tpV7JDE=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mm93eJde;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf28.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774387466;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B42C6B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 17:29:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9F45140452
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:29:29 +0000 (UTC)
+X-FDA: 84582248058.03.3598477
+Received: from hillsboro-edge.smtp.mymangomail.com (hillsboro-edge.smtp.mymangomail.com [5.78.130.219])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9A883100005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:29:27 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=c4hrJpkF;
+	spf=pass (imf14.hostedemail.com: domain of oskar@gerlicz.space designates 5.78.130.219 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
+	dmarc=pass (policy=quarantine) header.from=gerlicz.space
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774387768; a=rsa-sha256;
+	cv=none;
+	b=GG7lD2Kfm+iWjhZ3FucqNdVF/aFbqXSNU/6LuS4+tOLmwEp1LNhLGiLxPLKQT7L/x+TFuP
+	UTnoiApqOei8VG3g4aLYZj1LFqs6HmHTwYsmGZPnCJxmp9cT/tS2YXmpZ4HmldFScj4PmI
+	0XAuygU0iuNhnycaLO+fhMzIWP4s9sI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774387768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Osyz4LMrl4grZpa6FE1mV1/7khBzvzZkRNFcmPzp30=;
-	b=Hxe3SH88TE0RCQzzNLcw4OybY469AMQjdAHQ2I2eADriFN2N5hyHB6CFA/mkJv+ST8kIVd
-	/rhab5ol4IWIwXrAEncFYvFpZnSr5VdFEt6DXS+QqF1c++LsbbGJTxPt7CbmW+XDy7oJw6
-	tneL6CVvgkgZgFR97QD1SNmOLP2NHGA=
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a27c329e98so5678801e87.3
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 14:24:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774387465; cv=none;
-        d=google.com; s=arc-20240605;
-        b=k0iCILYCP87PWcmCnnOTn+XlPdCVNqgmYotK31j4Oopa9s03I4aiXnrxUfG5fGuKFa
-         zJHZhECjF9nEly6p+BWOavML1zI1ggXTb4wSPiVQR3nseuz+maLHwDhxo6XxzOmRSvYZ
-         ZS5E4FGPl6QjnDcUFRaoKR+jwMiev5A3YJ82/0wIIfN45gFFljfIUyUMWqox58g26uo8
-         Q/81eiJSV5xgNsdBH12AJhTwGbQsSZsnMFIT7WmqFgqhnaeJbtntZKA/Qwf+ZljS2GOD
-         fdIT5E7pjmlBmoSPUAyme6nOz4d3EAhG+ZUFkLmvSbzPiAkj5+2nxyPJBXYmDNER7rYb
-         ZXyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3Osyz4LMrl4grZpa6FE1mV1/7khBzvzZkRNFcmPzp30=;
-        fh=P+kzz2rtJs8MwX3ClS1RZs9P/hT5Poj5QQARbWiYpYw=;
-        b=ixO7dELPADR8spEUOzX2yw0o0qzx+yVgPWrsHiMJHBlGNyyK7zjJ/bgP+dcUDDUN5Y
-         N2HC2PeWD/pQ+XvvHYhao++wvBpme7yo+h+ceYciR3QQ/0MYDR7aU/FNUk46bDgCfQ/E
-         QHD6KV5m+5X/9lZ5qq5nat92Bq8yASS4REjCtdsyNCAAj156PdnXdnjt4kZw/dUIbtGs
-         VRdTMiJ4qijcdiWg9niODgmUUkvNRy6DXdkmtdkfz2kXGpkg3DeEZ/1qFo2WB8HHu9W2
-         grCX+JykI3TA7EzoxfgGFIoOJ3zLUAmfYZ6eoNcJRfwuIRApx6qDrjm+a6wigbs6jd1d
-         ka4g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774387465; x=1774992265; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3Osyz4LMrl4grZpa6FE1mV1/7khBzvzZkRNFcmPzp30=;
-        b=mm93eJdejHL6gIqOtz94d+1GhqB44SC+BtHC4WC1jf4Hj90BZwxeFY27YDRM4z5tba
-         JZ+hLVedw4fdxqvQjg23MFD4QJj9Tfk51jnDm3V/FhGnve63/cMI1gMgmrJpnRYjCw77
-         AUZNrPR60CgJntzxr1ax8ysdkCW6rl+kztqV+0tMkCNR1DLmki0sxW4sbN3mlkseKmo9
-         XspRjNF6fhJuJLi7yvrxXMpZw8NvH7RxUFHHyjbuasQxCTnyMrm4acLVqOFqnlz2Pe96
-         3+zRVvpOIjCs4NTPbVh06U4YVnXThVuGOPDbVTjPb022UY1K5RP/6ppj+LTxsJQVKrKF
-         brtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774387465; x=1774992265;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3Osyz4LMrl4grZpa6FE1mV1/7khBzvzZkRNFcmPzp30=;
-        b=cJzJT57x5BTwManqwRz3OhZfwVYtx/5+ougOQ49uu/K2WMXk2Twdc9BnZCRxdwUEhA
-         ZumlSwAd+lA/JFuD1OHMp8pm+SCn9Czh4fMlS1RSmA/H043xi1dfZ9CHJ/5W/lfnZH3J
-         8qlsAfu9wqpQChrYilI8RzjNiTkg1gX98zvdP1cNttm/TMTJWK/YTDyzoiq5GbGuHhcZ
-         ClVoay7pW6Cqkhde6gaPexhvKWPPCk882gU7HlurPCQra0jzOfAsoFR/N6b4Ieg6ersd
-         yPd0jP/2H0mv99l0pKkIU2wQkxSsL+pmkNP8ez7oK3Aq4Z4ZskA7FwHSOppO7kabBJZn
-         lXwg==
-X-Forwarded-Encrypted: i=1; AJvYcCXzqKS9PwrYecgFiuPxcehebDCDO5kkQa+BGfYmAdwqkT8vmK4RWsFQqQsqXZkZgSne3t/gT2iZoQ==@kvack.org
-X-Gm-Message-State: AOJu0YyB4XNDl5AD2KZbJzK3p4UDPH2+Pud1mqdWAcS3fqgehekNGqM3
-	cmrfdHy0gLUKT1zmqHmRPjFk/SJCx8CnpCXAIS7JS2hl25Rq86xlO58MLIcBYVpVfLj0isYQcWj
-	h2ZJq1u7nCl/D8kNJz1bo2+IvOptnktfMaW29WBzf
-X-Gm-Gg: ATEYQzzkojOrvXCsmjg0v4DmiDFWSVyD9gn9mTYdQJMVLfHRBIrlRKBnnyV/G6w+02p
-	Om7+9v69Uh/8KWa6LHPAyd5n77L3jPrN/pIP2xUIhMt1A/DC1Xts9szIZ+QMvXf6oRPTfSA+KyJ
-	SOaxcQfiDzhz+RzdwZAKRlE1WyEVyGI63hCuRWfVFXOwJcTz9CA9zNAfWyEb2UzuzBpJ6iahcrU
-	B8KopORqhO00JaXBQnZdSBwwaCKap3tzOCINxfpxv9TT8pKV3ZDxR7zdOwWt7b+W5Jief4US7E2
-	aFjquYC4
-X-Received: by 2002:a05:6512:114e:b0:5a1:4c8:a632 with SMTP id
- 2adb3069b0e04-5a29b976dacmr321914e87.13.1774387464172; Tue, 24 Mar 2026
- 14:24:24 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1oCpYm0KzSTu0Ip3vGkBopZtx8t/TNQY1UTxcF3u410=;
+	b=09VB6E6hk0/YZ/6wYQtscEO2hW+g1Ytbz6doue7o1SNjk8HZIWWZwQ7q8TsdNFIOYI1zmf
+	XxCOrY+4H3EJXpcYA06kLqKJ5dDdMVbpnxlfaYO6iqBw4B+gxFhKn+0PQ4lCmE1IhWz0dt
+	4MhDqmFVBtFMF0JpHFQw/TcqzLOGe9k=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=c4hrJpkF;
+	spf=pass (imf14.hostedemail.com: domain of oskar@gerlicz.space designates 5.78.130.219 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
+	dmarc=pass (policy=quarantine) header.from=gerlicz.space
+Received: from [127.0.1.1] (localhost [127.0.0.1])
+	by las-vegas.smtp.mymangomail.com (Mango Mail) with ESMTP id BE441418CA;
+	Tue, 24 Mar 2026 17:28:53 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
+	s=mango-1; t=1774387733;
+	bh=U3g2cJ4i0kfU7fAPqpRnGVtuJyqHXzzYfGdEhgmkup8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=c4hrJpkFB8lQJsNFKNROacA0nVLwxVgniVWlIQsJb8Wld5lCwcvt5xGlCqc4DKYkZ
+	 NfujZ/Rz+GIGS/5fdF8afxfDWbtWAc2q1mTRl7WQnmmucn/qy+P09LaJG/AduDKiq1
+	 pjKOnrI7O70gNdDXDQTZeydb9+xQQN9PvmpFnlmg=
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits)
+ server-digest SHA256)
+	(No client certificate requested)
+	by las-vegas.smtp.mymangomail.com (Mango Mail) with ESMTPSA id 7FFAC41694;
+	Tue, 24 Mar 2026 17:27:36 -0400 (EDT)
+From: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Baoquan He <bhe@redhat.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
+Subject: [PATCH v4 0/5] liveupdate: tighten handover cleanup and session
+ lifetime
+Date: Tue, 24 Mar 2026 22:27:25 +0100
+Message-ID: <20260324212730.65290-1-oskar@gerlicz.space>
 MIME-Version: 1.0
-References: <20260318141637.1870220-10-pasha.tatashin@soleen.com> <20260318141637.1870220-13-pasha.tatashin@soleen.com>
-In-Reply-To: <20260318141637.1870220-13-pasha.tatashin@soleen.com>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 24 Mar 2026 14:23:56 -0700
-X-Gm-Features: AaiRm52LXcc-C8LfZJHz0X5TGe6ipMfQUWo9odKChlYP9O7L9GCYExr5BHUEcbU
-Message-ID: <CALzav=fhwP1Wv9YjFTXoinX7R3rX-P0igvLbftBh+sZrL3dySg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/8] liveupdate: Remove file handler module refcounting
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, pratyush@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 85909C000F
-X-Stat-Signature: 6eg3qucs1buuokrxy1cja4ebumigzus4
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774387466-936307
-X-HE-Meta: U2FsdGVkX1+e+Bpx+mTcddTSFSFmhptvTPPgPBdF2wrgQz4k1AKuX+8zseFq2HAG0JAxpwzalNNIdNbBHftSD9G8Cbj6RlUc7hE3xlBTsr9UUbb5O96o6GS0FTd28XoGTLyyGQe6MxT3Xd9GKCrG9bPCiH6y4uJR62F665VS9Y/NItu8/b7k5a1NKSothjoXZi7+tCx/MZy1++qKJnCf7+A0rg5BtAcZvRzn7jQEgmvXdFw2iX1ekHtE4d8QtMYsCBg/GKlTlJz/QT70dLRANPlf4GyLvmJdtXYHEyXMTfNVYkvt4KS5E2znojB7eZCv4EUpcremvDczI4urpcYotfQgXBNNhPqFbB4wptkdZRPnU8bHYdeBHPomEbmp5QWu2fsZE4KRcIdZnVcLThMgCNrAL1apRJcS/mYOyENKgSWUlOtoiiuDbs4ntmfM5m2Sx9E4IqG+uLisTTC8K5GZtv/etXTlBS4aC6ugEfv4EJ6BkjFyB45+Cf/HsptUw4aUkZcJ7U6Q913Kpwb1uohfB0gOIenbnLtb46Fbg1pcUlF2V4g0rN+wZoIOlDbzwfemmVVbB7NH8KYLKqKZoNePl8+3ZjBpA1IIRywS6Ks8m+eWQD0FMbnFPemYgY1UjtOW9FUq4FLMGaXxZ+q3i6Ni7nyRck/8cvRtF8IsC3BB7FwIoHCeSZo4fWMQOAzOECtyRcYPeuQgjrueNYXQepDVLPzvtSP5REc+Gtkh5tGZsXLLZ74+PCRrqzYVkfo/GCN5so/HCq49ST3Pkg/gtuxjW2J6YJElUdMUGoXK1avzBauXwg6oyNGBrMaSDtLsohslCsg2U73D5l/Xy8EQAN6LVaTuTiFVErhBRzEBwLlH7yvlIJuLQY0g+brb+44Z49+UyzQ5daqP/M8ZMEVEcA17y8HViATSmVn5AZ50cnSxQEokduNlX251yETgq4NvQQhtY3MG9X0FU1c250KS7tR
- GRfRDqdh
- wJCKI8z7nXgGy6MFMvLkkYoa1gxdEoVG7aESAyOGjEScQeUOME5xugHoMwAq856TJSAE8g3q04pz89gt9hSu4KNaTPa9qRJy3FCgoy554pB37YHhFUhqEFGkqMjDcXPSimjS1XyYyt/aKl5GD0QFa092XJnZ5CgojH+4ZEXYU/7smnEXPjysxvE5LLlhwnGzIlT2SjIbNHSqXUdW55In7HBafyhJAUrpskw6RTbqCBIn89/U9R08F3V+OvxXcf793J1xEHxx9d38Kdg0mWYFSWdA3VcExJJIGHMqqLuqfuIkfEFM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9A883100005
+X-Stat-Signature: 8pryk1u6o3w84yx6ezykg199rxa8jr63
+X-HE-Tag: 1774387767-9879
+X-HE-Meta: U2FsdGVkX19dlOGyFsgH/Yk58NFzxz4b0SJ1APmQNhBy6Vt4rQ98eI3HM3xv9Qmz4qapMhSgJojJ538RhOy5Ztof47kekrSyrndAYpI+5lENe4bXFkgBeYhzQ9/nhnFq+smM27jYVDFUMmXKwUqhxqis9qGjvvOyOCgKCj+OBnVyHc+965KStU+2e5h4+8ceG7ED21vvQtdM3ifGDpDvETidW98pt1esulyLA+PlLseK+o74R+Lg7Jj5atDgZsZY/qgBHK5TkGPJUbhOW2g2iZQ7Zdy1Wk2GXzrvT6uEOyL0NIRU2YRRRSO2dK+9auy0XkbQs0oy/jDZ3frRDL6l6lJfCgapz1ECJ6IxjrrtHRfYuFto0PtH//s5eY9ueu/BxIz0EvsrQCU1OOdrGAHNw/pPNucrUg1YMcXDeSDeWm6fST1Rwt1oOk7ldWzzh/BGSycVXb8MSGDcJpP24SWqXyJhH+bd5m7dKrFEE4x6oSxbrEjYyNOoQVrLhZROkwkgAXUGrVs+P4l94HoP88BA2ITGwSmJRz2n1XJDIfYflTbaUGPDtu2nW/B36cAOB6n06h4/tO7xbCinU1SLp4k6wa5ICEJRF/rhZjuSEJ/8F6VL4gPlcoako4hBl8fi0Dcp5luL71AmcTlA2oh59uRVdAGkGGEBeCphR0FpCaNcLKQNwTgvkVytFNUBS2IQfrnQBUJhc1QWI5h1nxDsFJHy7KFD6VCJlIVBCm9tpuOR3zru2L6MTE7/kWLBn35c7BbUPnbXPeWFyKfw6wSoTjmIxJypllKYvKA37g3/qyJ3JYCjbHeHlB9FSTaE9Fca9s2j4YvnfgtkyfX4S/AcG5B6GPAJq/U5X1Y2dQ+cmRSeTiHkK9IEp/d7XeV8YuSGSfNAhv6glJVP+V+Iw0GC/Dbrb3S1ks7HOPRa2dcSDR8YQ3ZBuWaNzJIuaeEH5Rtz70BSMFbrIQ6KoCYDnIenmEZ
+ kBWXpgHO
+ 7SwtDUju6My0nBlzQV3NuKhRn0t8MWgk8dNkMvg1+kvTZQ8X4xzSOwf7v8wC03Br1EhSH2xc+X9NcwBEympGWmMcg1yVOQOucy4x9Kk3FiPfKxTHWShUC44wdsT4Ca1lIaz28dFbliqhB922txJ502JiIiYeyDT0GaF/7STGxyv2AsHQUee5yeuFuhiSSakChy/hUf8h85XYz9XuTyjBHMsTfILPjev9Z8n02NF5uOi2RSL+1M5iJq1nQXm90dcoeYZ1jzlBANH0rz1Y/w5pWIihIsEAAZ27IieeQlW7jAf2zak+KTkaNXeXOz+AHUoZWNRV7j8CZYO59Z47ONCtjSCQS1JbDEKndGFu4+xX2Ei3AJ+vKyKzxcnwDOfMmEw3ww62E143tnx3+6Ts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,23 +105,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 18, 2026 at 7:17=E2=80=AFAM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
->
-> File handlers do not need to pin modules indefinitely or during active
-> live update sessions. The VFS 'struct file' pins the file handler's modul=
-e
-> via f_op->owner during active sessions, making dynamic reference counting
-> unnecessary for handlers.
->
-> When a file is preserved, the live update core obtains a 'struct file'
-> via fdget(). As long as the file is kept open within the live update
-> session, the module is pinned by the VFS and cannot be unloaded.
+Hi Pasha,
 
-After invoking the file handler's retrieve(), LUO should probably
-check that the created file's owner matches the file handler's owner,
-since this scheme relies on that being true.
+this v4 keeps the simpler direction from your mail: outgoing handover is
+still driven by a boolean rebooting gate, refcount pinning of outgoing
+sessions during serialization, and session->mutex as the serialization
+point for in-flight mutations. There is no return to the earlier closing
+counter or a larger session state machine.
 
-If there is a mismatch, LUO can put the file that was just created,
-log a warning, and return an error up to the user.
+The main changes in this respin are:
+
+- reshape the series into five commits, each building and standing on its
+  own
+- keep incoming session origin immutable and use retrieved only as the
+  checked-out bit
+- make FINISH and implicit close consume incoming sessions without
+  reopening races through retrieve-by-name
+- route deserialize failures through explicit rollback paths for
+  sessions, files, and serialized memfd state
+- validate KHO-preserved extents before walking serialized metadata
+- harden incoming FLB lifetime and remaining teardown paths
+
+Patches 1-4 keep the core session, kexec, deserialize and validation work
+separate. Patch 5 carries the remaining FLB and teardown fixes needed to
+match the final tree.
+
+Oskar Gerlicz Kowalczuk (5):
+  liveupdate: block outgoing session updates during reboot
+  kexec: abort liveupdate handover on kernel_kexec() unwind
+  liveupdate: fail session restore on file deserialization errors
+  liveupdate: validate handover metadata before using it
+  liveupdate: harden FLB lifetime and remaining teardown paths
+
+ include/linux/kexec_handover.h     |  13 +
+ include/linux/liveupdate.h         |  17 +-
+ kernel/kexec_core.c                |   4 +
+ kernel/liveupdate/kexec_handover.c |  22 ++
+ kernel/liveupdate/luo_core.c       |  16 +-
+ kernel/liveupdate/luo_file.c       | 237 ++++++++++++--
+ kernel/liveupdate/luo_flb.c        | 116 +++++--
+ kernel/liveupdate/luo_internal.h   |  14 +-
+ kernel/liveupdate/luo_session.c    | 500 ++++++++++++++++++++++++-----
+ lib/tests/liveupdate.c             |   2 +
+ mm/memfd_luo.c                     | 160 +++++++--
+ 11 files changed, 934 insertions(+), 167 deletions(-)
+
+-- 
+2.53.0
 
