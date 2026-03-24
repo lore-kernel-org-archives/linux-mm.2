@@ -4,166 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9106F54ACF
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 15:18:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6491EF54ACE
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 15:23:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DCE16B008A; Tue, 24 Mar 2026 11:18:08 -0400 (EDT)
+	id 984FD6B008C; Tue, 24 Mar 2026 11:23:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18D956B008C; Tue, 24 Mar 2026 11:18:08 -0400 (EDT)
+	id 9366C6B0092; Tue, 24 Mar 2026 11:23:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 054E46B0092; Tue, 24 Mar 2026 11:18:07 -0400 (EDT)
+	id 8250A6B0093; Tue, 24 Mar 2026 11:23:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E44E16B008A
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:18:07 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 844A41396A7
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:18:07 +0000 (UTC)
-X-FDA: 84581312214.06.29DB291
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1321218000D
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:18:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=pCU6nPgn;
-	spf=pass (imf24.hostedemail.com: domain of sshegde@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sshegde@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 70D736B008C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:23:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F41D356977
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:23:32 +0000 (UTC)
+X-FDA: 84581325906.03.6F33EF3
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf18.hostedemail.com (Postfix) with ESMTP id ED3F41C0011
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:23:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Q4WJfDOA;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774365811; a=rsa-sha256;
+	cv=none;
+	b=mw7MxRmhi6PpTTM4Q23qXhXDN2fAJHBDSP53mBkegPERfToHauPU/0yIkYuC5jl2ZtvMXT
+	bYXsuZlJyLwQbhR18eHklgcLjNzZ1Wu9DKvX6TFZ/0sVtYs54W0pQnyZAGCCrhSaei614m
+	7NMEflSWCe0HFWneXHUFewxYYuelMok=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774365485;
+	s=arc-20220608; t=1774365811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f3OTHytKuvDipWBXDZMqSX0aVAx6IXCWrgqyxj3ydJo=;
-	b=TOaJom3MwRu0h3SYupdnuIeJI30TkjxNQtSScGIqurEng3h56/bCXscFguIKMNjESCJWfI
-	lsxzwNExaMltJ3v+gm6rh1QfxIIkEoew0Sb7GXRfUFrC249dVzdzdvOQlogupBrBPfs7T8
-	IOWaE7vRSdZbFeGAml83qr3HHY+ChE0=
+	bh=dN9bTdcC5or2P8tjA2XnE4l+JSY6/+Dfgf14OK19Eqo=;
+	b=TGeGpJIa3gnRcjcbjJCJQ1d9b8zNR8HZf/yUMp84XYx+YoAciGkuncsqjJc+jYzZDzctjk
+	cs1N6zr0gBYmfrV7lP+p7bxAjAF7lgdynQqnBdFsynLITmtkiezjSrEIMJMaT2u9nwU0sQ
+	tO3AqiMM+9l096MR8wcvrAlWwkMvsNc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=pCU6nPgn;
-	spf=pass (imf24.hostedemail.com: domain of sshegde@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sshegde@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774365485; a=rsa-sha256;
-	cv=none;
-	b=8KVfgfi5m4T69R0yg2i+/8HcAuANtboUfLO6K/oklub2XAOrfp8gl+nnNjjaHWxMxy2xRR
-	lMzLx10Qw8rURsXDeI4EHkgu60cmjob1MT9nvlKstMa5bkgMvCTQ9wy2R5G39/yxGL8rgf
-	WEr0RPksAbNcFiBXnnLPIbGvu6Vepxk=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62OEYcxo3559585;
-	Tue, 24 Mar 2026 15:17:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=f3OTHy
-	tKuvDipWBXDZMqSX0aVAx6IXCWrgqyxj3ydJo=; b=pCU6nPgnPlEai+yNjr4vqO
-	izYJD65R8Yqnm4MgZ1jIT/vQufPVK3JtvxDqH1+RbAewNouplF3WlXdDVgsgBgBy
-	weTYwAATWc89XVyCT9N8OJe7pr6u+k5yXuOpMq3eoFiblRBsEV4Eqvo7l2Wa+Hoy
-	fS7Bwstm68yMsNas/9DFT3RInBms7BLLT4mHe8Q9cA3MxMs+yK7SOAE1amiOdVOp
-	NFKjYjuXT8AnnH0mnnk48nIJCla3yF1ab1Buk0YOzAAuDRyKAWc7bqW1nkV0p0xl
-	+mWwnKq/o51ydaSKJRw8Ka9Btszj4N5VteYqkNnCy7smzRqrU+urNe+vlcBZEnag
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktuukrv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Mar 2026 15:17:37 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62OCXkw8026797;
-	Tue, 24 Mar 2026 15:17:36 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275ktcxx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Mar 2026 15:17:36 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62OFHYFE30540408
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Mar 2026 15:17:34 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C23152005A;
-	Tue, 24 Mar 2026 15:17:34 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 41AB82004B;
-	Tue, 24 Mar 2026 15:17:27 +0000 (GMT)
-Received: from [9.39.25.102] (unknown [9.39.25.102])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Mar 2026 15:17:27 +0000 (GMT)
-Message-ID: <c72fa095-654c-42c6-9e5b-1459b1b7e732@linux.ibm.com>
-Date: Tue, 24 Mar 2026 20:47:26 +0530
+	imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Q4WJfDOA;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-899ee491af3so13618636d6.1
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:23:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1774365810; x=1774970610; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=dN9bTdcC5or2P8tjA2XnE4l+JSY6/+Dfgf14OK19Eqo=;
+        b=Q4WJfDOA1ebvNl+Br0ntpqe2AfpR91QId2j+grQXf9al39nWpodRP8t0hzvl4Wxzwo
+         LjEEAWCuCWQ+4oIF+/jUTFv8FvqY0VDdBggHKc51OpclNhem4jxExhYkYFgSvzNL6Z+Q
+         j611hZ60I58eRIhrfjNVGVzTpWMYFVSQAY4g/NHmQWdzb1pVdG1Mr++1FhocYTI3ihMD
+         hyULb2ZwVDIhVMLbNkdgoQ2saAenFaNoi37fj+cD/O/P5woqUUpqUIY68qEcOGlKN/Nb
+         ZAI2cLULC44DP0DngNHZ4qN/BZ5SutkEsGlv4Fx27e4ETST19hI28FiNUX1YhDZkRZtd
+         hIPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774365810; x=1774970610;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dN9bTdcC5or2P8tjA2XnE4l+JSY6/+Dfgf14OK19Eqo=;
+        b=I6BuR6qXrLKmeVe8IH1LhhGDuaUtzk0AimWLkYlFHFqGn1AQ45D4WZeSr7kvuWZ4EC
+         vDHJJGHltwZuaze9LdrZTsEL2C2N6Jc6yj5HnKwpaXz6G9y5dsDbSGSj5AIEcsH86qN0
+         3IkZVvysYDHwxr0Kjvq3XivnOuxY/amcbJGuHl7sxuJb0SLUaHro3Ox7IfVDYWnKLj5j
+         DIWjoE0TM+0dthGBaFLlyBsjAWwX7Ja9u2YwalyNVmhrlkqGQrCE/r6TkXZPPEny232v
+         3g+vMQczKCPtUSJ2TTu5+7B6eOUfngQ30FkFjUQGZEmF3aod4/fXCb5rHmpHmnQEvxiz
+         Fkbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXUaV/KuDO5lTBArXqa3qNisnq8u7YiPEbgcED/rlm6c1ytXmDP9OMCrvwKtkkXzM6nTPx5Yz6N3w==@kvack.org
+X-Gm-Message-State: AOJu0YwZDXln5nqjaEI4m3gCRLqGLsJB3NLZTobAlIFbGnxGtAAdiu5H
+	PuVnxUblSf2yNcNieiuw89LRFGqy6IpRxDeMbjSkVyWVdVfJGcLDhGMeugZHbxo9Gb8=
+X-Gm-Gg: ATEYQzzvwKMC7ERUvs806jNa5XMXSlwtDaN3HzWPn9J1b0vl8F0kLotUIOcNm1+1YkU
+	JaVO1MbBBoC8Ac969BErLmNMI8zjLsojsQHbLiSAd43DT3rGSHEq5s0gidFZPkI8pkq9bviLGm5
+	mLLS2XkNsTX222w6eMxkCvao6Xx68ikzu9BVqyk5AffLU64kJ0AVUE8hiGrsY3hk94yW37GgdvU
+	0N/JyBamV4eEQpx39CX0K/je87TlLkYT+xtWsAPRP/xHfN3ek/Z8H1cAEFH+SDLvujvLR7oz4W0
+	RW8dq/d4nbBBlbZiJtDFezIWA+rw7YyJGR9hU7yu6WK7YfKgUgJOemf4tzd4Y7LLR1TLu8hm04y
+	K3VIWdMOjIwcd1bX8VlNnKOT2UmveXHKxItPLWLbbXiRvtzzF9NDQeQtE7OayANByR+FgXOFcng
+	jDJXypZVB2wnRAff8cnA==
+X-Received: by 2002:a05:6214:3306:b0:899:f929:d85b with SMTP id 6a1803df08f44-89cc4b1be87mr159996d6.61.1774365809892;
+        Tue, 24 Mar 2026 08:23:29 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([2620:10d:c091:500::de62])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89c85335745sm117576556d6.32.2026.03.24.08.23.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 08:23:29 -0700 (PDT)
+Date: Tue, 24 Mar 2026 10:23:27 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [RFC PATCH 6/6] mm/memcontrol: Make memory.high tier-aware
+Message-ID: <acKsb06lnywch8DV@gourry-fedora-PF4VCD3F>
+References: <20260223223830.586018-1-joshua.hahnjy@gmail.com>
+ <20260223223830.586018-7-joshua.hahnjy@gmail.com>
+ <90749965-ebc8-43b2-92e3-baec5f6e3de0@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v8 05/10] sched/isolation: Mark
- housekeeping_overridden key as __ro_after_init
-To: Valentin Schneider <vschneid@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, x86@kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-        Joel Fernandes <joelagnelf@nvidia.com>,
-        Josh Triplett
- <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>, Uladzislau Rezki <urezki@gmail.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Masahiro Yamada <masahiroy@kernel.org>, Han Shen <shenhan@google.com>,
-        Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-        Clark Williams <williams@redhat.com>,
-        Tomas Glozar <tglozar@redhat.com>, Yair Podemsky <ypodemsk@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>, Daniel Wagner <dwagner@suse.de>,
-        Petr Tesarik <ptesarik@suse.com>
-References: <20260324094801.3092968-1-vschneid@redhat.com>
- <20260324094801.3092968-6-vschneid@redhat.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260324094801.3092968-6-vschneid@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: lh1l74MIxKV7Fg_fwq_BieQeDYV6h-gv
-X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c2ab12 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=20KFwNOVAAAA:8
- a=7_2Gcuf7Guj4Ce4GsV0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDExOSBTYWx0ZWRfX1/ZffR5oMZ7x
- a32Hf/e+ABZBoL23PyRlPV/2b7h7Kc39ci3+3xosDrv48bm5ihck6SH2fd7JTy/wf7M4ucdS0PZ
- ekCKE/Inl+Z1wcta4U5JVFl7ZcoKPDeMub0yPBBqyDVMmjOtsjWbStRjqct4/TYeNUDgm26kHri
- ToburL5ciKtQge7yPQidqSJlpRSNbt6z6zHbK/lhgvpnxCzSQRkgq81WuZws61MJy8u7JtBo5Zm
- HmLpep3RfRR8yLIORnyLfw9+DnIj7NB8xkdeHhJ7ZQOyuHCsrSSZv2e+HHsU+cHvC5vlHqH8MP9
- Qn0CThDarfzCNoiv0cY00YTb4wqF3OFn5uOxn1CdviXff6iYKIvCeLOz5J84FwRYyspK4zC45/j
- zExG2xX5Dd8v+fidhbt8YJKOD3kld8LVCmH7OhZrg3MDB3ozFdy1Oj1199ySD/vNyrhKn4QeEVQ
- t39FmEiG6w/+gsu9gZw==
-X-Proofpoint-GUID: fs3pHPZOFeMxFT6VksEiHD_LbNcsVRBv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-24_03,2026-03-23_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240119
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <90749965-ebc8-43b2-92e3-baec5f6e3de0@linux.ibm.com>
 X-Rspam-User: 
-X-Stat-Signature: hwwkty5xjfahdcrj59fz7wroixzryaqy
-X-Rspamd-Queue-Id: 1321218000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774365484-370146
-X-HE-Meta: U2FsdGVkX19tm3JrNbl2WN6Ljnuhj7nAC4eWtqleD2sVlqtDrU5aaUhpJK6xqVT4oXCQP36eyl/2af4uqXWUCzGiItEOStJSuBlXz2uECmctWM4TnZiE9wvNjgPim04Ho9QciJmFgPGw+necJK+SY4kzyilCkjBzl6pLxflT2bunHBXkQSsl5cE8n8Dsok0d8Hv4Jgs7xHCU1k6/cwX0AwgjD/YU96quZpaYFVe81PtPu46/OnYIsM7ymeJjz9lXF9pp/KRUBveZ75n7SOE3p+ihwd3xIBcfZBFBVuHomHRjZRpbMSGMgHeG4iy39oKyaGF0LeKAWe3HmOLa8AuveldaZQktYDg6OfliQb/ajL+uRuIPP8C17Vy1qK3bfGoHXBj86MjID6nf0KtRq+xiyNP0IVS3GnOphYaNi/MhPkVcRJ802ntey1tIdj8LQU9Hi85Kfurd53GpyvTwONW+6yCrH1Z9ac88Qbkhk1otf7kA4aaPkJKJ6kMWCv12nRSg+jzEqXwSvmuTAM2waZQ8i2qO73WFue7G+vC6oos7tYWd2PwIJ7DB75e0q4qWigGqyMiv8NMnzljN9uTRSSoJATkByxmaBQm31ZWtAjtGn2r6U5W0g13zRY1qeRLjCbBBsxW2QfomgtTWburmKDOtmUN3unAQ9bSngL+TfkwNoc/6i7r2phunCCkE/YO8JTG51uM7q9S3wDuZaV1eF7aoEoa7mRwq3IMbFzUZ8khOPV9B2082hT0/KLKsykxMSi4mEy8e1lJfAswIXZvjOO2c9riiwPhZ8PXobbQqGmVQbmCVF4NLKHC0hsESJywVqHvLdd+qB0a49sgrHlZ+wJG6WaWyLQSWjrrb4YhTPEoiYQtqv7fHSup8J590Jn9yz7+7jQbPWmOj+TL9wGrQPLCYvAO9/JgetRYlZattllaso7TjxApnZnNsL1ZO7+RUqFxnfBoLoO9Qq5IfVA6G059
- lQxdT66e
- P79kfOz+O5R60FnzjwN+DjaP95LRlBqrqfucE4Ile4ehv2j1w1M8SFI1nb7FWFRa3ZOXnSLOWIZLMrKRoQpyG9Y2YHZmwUid0RI67HY5K6jsNPWb9iwh+AFRESna6ZvK6OsI6OxcTDSn2jIN6LyazHLmvZ2lmk4O7zmnH5TSQfQNvAVihIQWc6syZ7Sp/JrE/sUej4cxhwGRsLgEdHqVmVoiqYTQHSqyHzKDSBFcPpnSFSvAOw4wCOPqsfGtBe6xS9PC/8cwd5kl2JUne5hEohN2j/YQLD9yHtF3m8fjKrJRxZBOSo5rwsEm28QxstPIUs5Xu9KvbAjg5+lsnJCozY1HMNQWAL1Q6ldgq+D+VbFHLf/WynVNGTK4lnwKmvyy2dRb3V/XsVBpt66pI8mN3PbwF+g==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ED3F41C0011
+X-Stat-Signature: thm8395okxkuocwcoftcwf1g8gyctbmk
+X-HE-Tag: 1774365810-856940
+X-HE-Meta: U2FsdGVkX19EG8IrHoVp6XFqCr6kIoF3+579SHJIos0BtjMSxiylxVtu+7K0f9YkKtnYeT7nPwA4Y7yAdNy7st8ihBHXiDpWgCOBJcTb9HYQeGiDNzQhZc5FSfu4N8ciazABY+csOSYKmFIWk3KFuZjkyO0KhnGzVHx2T1DprerOkQDl0yzaBO/bCT61W1vmOWGHF5c3zhOl9COFTcI2FrWOuSX0AjTHQadYqNAi6giQlUso3jZ6XKoAxhE5yf2LH/zxwZwtXT9LflpvKNKOw4Rr57CcCqjB+PlMTpmxIz99mGtHjDYQagrG+xf2eo8EBfrjsRLh0gkeFbU9heaoebV+jG8at0BOd4u/8ZZn5SspAF2QeeCrTedBW+UQWNJjfrSxLru+i2pdqQhztx5FeCGpJhCdEjABLL0HIjhqzKRV3Q7DX70D8FUOv+fAF/YE1locDeOD9z7IFreY//9gTyny2jgKUb8+JYBJgvOl+zyU9Wbvp66h8KKOrr8iEocGp3kzMmYM0rQ4mesUY6+FCMjnxgLgTvJFPCT5CAISPEMHCA5Ju1J5/bxe9AQ9LtMH2AE8Ve7X34ebXefcOynHx0wQIMW643uRdUFKaGtNAZMNZci7lnc1ATrNyab8WFwk3Ay2Lp0mv/8+j+AHh5fLmSz7+0iChvHpr+Our7kQSUjg3PvORZKGBo3HqZwJ35FukCl/mIy5qZlleAklQwKLxMy4kVkXsM4Zj++p7xHAjgdfWipUlQGjI1W51OiyDcfVoIDQXrLIX1utfFQ/50dbvofmR0gRsBIYfZYnR742dyLfG9lOGB8J8+zcUa0UO8FgXawlowGUDr23YFKFyvEQ2l6Qh//GQXpTA713MwSxB0/B5rDpB6AVgTBzI+3hNSv4jFrZSZBLTGbkj9TlFrX2SW/UQXMCTQqlBSMSJ2JENOb4SDos5e2gKb7tdTYJ8niZbjdE9DhyLD7/a44tran
+ uCvuhmUT
+ X2boIXDNjxVpuWFo6AwDyzY7K9kCYxFFlBOAVjtkNPRitNAt6RWhSYEd0NjofXTKiRfrSFGWZX5MMyzhlIZZXjGP8+j6euaqg7FLH+rrHiMbShKTXOJHj3Fp2CXYsFt/uzdIX999JE7mKyzh15m/AeTJuW/AzYqMfccMCERxVFOiWhbOv3upi4Tmtcx5xnEVGeZT08NyhF1B8o7kwFq/W2hPVpSDZOKFPV4AAb6KcqIMv8reU5j0zoq5pHTRdfkqqITNJgEYWz7f9Zz43lBkdZaySWi+hw68R5HQujVEpGv45xuka5UORyjsmY/zv6MjsdwwruDXwbK2p3/7Oy5AXoHSKonLEGxaqAaoC6B2ZGJgoLf8Zgvg1c9rXYaEnadqLTFYqt7c9wcbkKuh1ojhtE6pDBKS+osVMA3WSnHIwe0BQJ1tUyq2Bo/DktTMfAyBlyMuf2ekUX5pFlDDIdm89npBwjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,33 +133,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 3/24/26 3:17 PM, Valentin Schneider wrote:
-> housekeeping_overridden is only ever enabled in the __init function
-> housekeeping_init(), and is never disabled. Mark it __ro_after_init.
+On Tue, Mar 24, 2026 at 04:21:06PM +0530, Donet Tom wrote:
+> 
+> IIUC The intent of this patch is to partition cgroup memory such that
+> 0 → toptier_high is backed by higher-tier memory, and
+> toptier_high → max is backed by lower-tier memory.
+> 
+> Based on this:
+> 
+> 1.If top-tier usage exceeds toptier_high, pages should be
+>   demoted to the lower tier.
+> 
+> 2. If lower-tier usage exceeds (max - toptier_high), pages
+>   should be swapped out.
 > 
 
-what about housekeeping_update which could be via isolated_cpus_update
-when creating isolated cpusets.
+This is not accurate and an incorrect heuristic.
 
-> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
-> ---
->   kernel/sched/isolation.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Transiently, lower-tier usage may exceed (max - toptier_high) for any
+number of reasons which should not be used as signal for pushing swap.
+
+driving swap usage is a function of (usage > memory.high) without regard
+for toptier / lowtier.
+
+> 3. If total memory usage exceeds max, demotion should be
+>   avoided and reclaim should directly swap out pages.
 > 
-> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> index 3ad0d6df6a0a2..54d1d93cdeea5 100644
-> --- a/kernel/sched/isolation.c
-> +++ b/kernel/sched/isolation.c
-> @@ -16,7 +16,7 @@ enum hk_flags {
->   	HK_FLAG_KERNEL_NOISE	= BIT(HK_TYPE_KERNEL_NOISE),
->   };
->   
-> -DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
-> +DEFINE_STATIC_KEY_FALSE_RO(housekeeping_overridden);
->   EXPORT_SYMBOL_GPL(housekeeping_overridden);
->   
->   struct housekeeping {
+
+This is also incorrect, as it would drive agingin inversions.
+Demotion is a natural extension of the LRU infrastructure:
+
+toptier active -> toptier inactive -> lowtier inactive -> swap
+
+if you do (toptier inactive -> swap) you have inverted the LRU.
+
+As far as I know, from testing, we retain all the existing behavior - we
+are just managing a limited resource (top tier memory) to manage the
+noisy-neighbor issue.  So...
+
+
+> Should we also handle cases (2) and (3) in this patch?
+
+No, I don't think we should
+
+~Gregory
 
 
