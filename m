@@ -4,91 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03F39E9A778
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:57:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E0DBE9A777
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 12:02:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67EC06B0088; Tue, 24 Mar 2026 07:57:39 -0400 (EDT)
+	id 9B91C6B0005; Tue, 24 Mar 2026 08:02:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 655E16B0098; Tue, 24 Mar 2026 07:57:39 -0400 (EDT)
+	id 969C76B0092; Tue, 24 Mar 2026 08:02:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 592E66B009B; Tue, 24 Mar 2026 07:57:39 -0400 (EDT)
+	id 8A71F6B0095; Tue, 24 Mar 2026 08:02:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 486836B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:57:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C00F6E0F44
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:57:38 +0000 (UTC)
-X-FDA: 84580806996.15.C093629
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3A7FCA0006
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:57:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mSipaLGO;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mSipaLGO;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774353457; a=rsa-sha256;
-	cv=none;
-	b=G89vO2FzWp3eYQRRe6xNJl+0z5NPfAaDaFBI80AFwLfKO0Yd9H4gBykG9u97qMhuhQsNVs
-	CbhTlcTgsDWZb7Vpa9YvcjL/mGH5rD4n30qLhykPABu+nqRAPntdptyC4ccmxqMN/1tN9A
-	NX+//G02eE4VW0PltEZFbfiVzKwSmqk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774353457;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SQ1UTZgmk3FuP20xcmvS43aaJ5O7ne9rvHK9Q4vgVMY=;
-	b=5YCuSYxy8rbh/lLPzr8hxgwoANY0mZmNPFrhoaqRaDeJBoSNeABWe3kEJpkbljlI5+jT84
-	rlv2S4d1sLIL/gzX2KPaABpUhiPq2855xWr4y/UNEho4IU9yFNqW//qs1v5Slm+fDp2rbq
-	kMrS7awS6HU0WAm32AQvGlWG+KHyKlA=
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CE8A6B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:02:09 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F09D91A1ADF
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:02:08 +0000 (UTC)
+X-FDA: 84580818336.02.F29B064
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2559E4001C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:01:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DPYBjgOm;
+	spf=temperror (imf27.hostedemail.com: error in processing during lookup of ljs@kernel.org: DNS error) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D0C36013E;
-	Tue, 24 Mar 2026 11:57:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6C2C19424;
-	Tue, 24 Mar 2026 11:57:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F2A1408E6;
+	Tue, 24 Mar 2026 12:01:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD42C19424;
+	Tue, 24 Mar 2026 12:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774353456;
-	bh=Yy6gXmBkDIayNYElsmxqEPYfSjNDuBzm4LVjiMDEWXo=;
+	s=k20201202; t=1774353718;
+	bh=cI3LTNSwlHdB+Tez7H66TSvkT89A3gqoLgFKYhi3sog=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mSipaLGOC8QG08/lBl1D7TYVOsjAMRyeheY/JeHpMP2a0vuoc+frReTirRTH5CJHk
-	 KhVOa7i1SLeSnyNhmFQqDJqBzJyvIwnAGkSLjtpfeE7PFBlgaxK4gxh+DDariYAcB7
-	 rxXRfW8AAxcQ25IrvXoAicSqWr/1K6YG/26UAHIdRObpwZHmPJ/mGChF0oeBCgL2yH
-	 VJbIaZp5J2L4cq4ISQwit6ioB43paKD/xnTAgH2/gTm45JBZZqyWcTQPTp+cJFRzRp
-	 6u4XoFpfGDs7yFm0fIwB+T9ITMxItBULGRYmq7hpXHhfd83KusuBrm72RIo23e4Y9S
-	 TITv9mIuse3gw==
-Date: Tue, 24 Mar 2026 11:57:33 +0000
+	b=DPYBjgOmiwqojj0OOlQmeiFoeAjOhy5a4hPL7cvL7nLD5C4+QWaD7EhuT4cDnTTFL
+	 KDhbDHAE8OjuBoTqhO7Q5dGuekcm4zCU74y8HfxKqB19LBvGyI42HKwF30BYLnOYV+
+	 0eobGLo0qjWukpZ47RfZiP9BW95zAHZsW8aTDDZ9iQUJ1d+S0RJLwZb1UdDF87iIaC
+	 /VS9PsjquDrz+05boyy9JCTrxljSnLN+IipYHji7SdkDkch29lFrl5IgmnzJUMSZHc
+	 wFiWlSqEOys52SAB+2jQtG1HsHkF+6vrsOWuszBbRH+g8EFp9cRurteq1YWmbxXFhm
+	 /8ZC1l1baIedQ==
+Date: Tue, 24 Mar 2026 12:01:55 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
-	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH 0/3] correct the parameter type of some mm functions
-Message-ID: <d17ed660-3180-450c-9d2d-25d96bb3549a@lucifer.local>
-References: <cover.1774342371.git.zhengqi.arch@bytedance.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Dave Chinner <david@fromorbit.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 6/7] mm: list_lru: introduce
+ folio_memcg_list_lru_alloc()
+Message-ID: <58ea360a-54e1-468e-99b5-57b716026088@lucifer.local>
+References: <20260318200352.1039011-1-hannes@cmpxchg.org>
+ <20260318200352.1039011-7-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1774342371.git.zhengqi.arch@bytedance.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3A7FCA0006
-X-Stat-Signature: x1argmqfr99chmcjp1yxq8n317qucrkj
+In-Reply-To: <20260318200352.1039011-7-hannes@cmpxchg.org>
+X-Stat-Signature: eyxs3s1aqs51n93rojuddb5z8ck58h1y
+X-Rspamd-Queue-Id: 2559E4001C
 X-Rspam-User: 
-X-HE-Tag: 1774353457-572970
-X-HE-Meta: U2FsdGVkX1+Ag6C6MovGioPcdColPmJNIHPncl4oufh4ORGDBb36sGwe4RXYlLMEs4BgxfSTnhYSU4TAE0ZSgGKs+4Rn7ZLh3NJlnDAkEcRhcK+MrbcNSTpApElH27LvGBzAAvw03/eLtqdPO9/wM8nMHAT3og4BNoZ+K+kCEhm4JrO+wjVz+aYX8i8SctzVFEpM60ZVTWqXY6wUJuUOOEyOV3u4jxnFlqStA45A0nI1eUmxKK5/a1ClnGd3gbeefI+/7KizAmNrrQKHGr13gQ3JaQJSlH8obQ0ZsANTp9oocddajJpoaoRF5ROtCby7W8q1GKvdeDzcG57OMA611/4FfIjlbjMrTa/vARg0TzEpmCZjAo354zgIGEMAJpv6OlB3m3c8rmZijpNtJagW5oyNB1Y3TIZ9Daj9tD3rzwRk71Kc2r+yuq66zTCse6DJ78mCqvUumUq6ECVPI5pfHHn0xoTd1LMyPrbuI7Nni7gzFgpI95TTMPruYBqm2E6q0cXugzWS5axIwZHq8MdiImTK/KCOFuSG2ysjeOYvbkhJVwP1yDT632Pmk+e3gSsnKLUeCaDWgv9pkZFaK/cYBoc2A8Siio9C3r457MJLonDsTQ3Z/17X9CeIkgARVZKV8o1xJFTEU/SAVDERwTibtaJtbaQ5C9/HE9zo19ahmfs2DGVIwCNOppiy/w2uFH8dd7OuIMbaedRPMsIh6CT8UN8wQXWaTEsCt1M5RsDyyOL//nfbTqPKzuyxeIGqk143Por2khGeKDshwGgb7LfPnfe62Nhtv2YbLUDuf4ST4MIPEzc1dMPpi7RbewSI/TwF93dB3Tao4rnrWQd5Qug3oNBUs/rX1PX3nTnnOwIL5AO3rnKY+JAR6ykAJ28ZS8Tk9pjwVz+cfWPEoZ2KzLFj0AwF1M6ijgX4wGi4poJ4rAHZWuInyjoHiQZv7EucYyzTr9jppRpCJVcQ3uyt44K
- iUT9qVZ0
- z7o7Kf9rD5brUETkyDeD0iL5PI44FTiNPzJhUPftz5DeQFttdjp6gxfJEcqTpqJyfnepXEB7fXOCRSeyxBk/0cs1XXVvPOHj2B/2LClpvsQh/uZH3eeVmCIEgq9iZwY5a/xwD2cPDQQP4YbGyGVUFDPk9f/fvYaOLmAm0Ejlge0kka7rtTgkPYicG64Mm5QSE48X5UdR88qUZPUWCVcvpSK6XjvNigpHdBye8quWoCnf1Zxr3ch5axqXgHW+bsrdntmTu
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774353718-671744
+X-HE-Meta: U2FsdGVkX19yy71UjRNnTuUEQFvq5FvXOzgDD/Ou2AM/C05tynS/O3Lf87PS7KF6BkR+rBMuX5zCjzwdCERErbwXAf/wFR4RmpSguzi5WzSqSFkzhq4fkJ5bJ6DzYjn3yI44D90Ipfsal5VOXjNYXgYsWrcAprxJqVpNw7fGeMBhPEXBJoeCBi4Y9tDZm0DUd6ARGF1jSzqfXkxwdYcV73nil3m7R4m12j52pYL2N/QFaptJF/qpFUtaHPalBgHzH3PYwoCN9u7VFnKXVxeDFuioLOvnM1Qc33AjL93USF3Kx6HWY59aaMT5PP88Py8VHTQeb/Izee7XXqJYE25RoWfLEXGognGzD1AfdxvLUj+bHntsnYjCyB9sEZcW4mQidooqx1Ln0z6+JRHOmge4tqJmRpuLZCKGonmrK90h2EDQxGla+jCXM1rP4ZAFW8V0gxcx8WyauSBAOBP5Mg045f6g4a0Z9RJqL7HwxRsC5Nq3T4/vWghtSBHbcyDUFRT628FVjo2fqb8EMgqaYvFC9+EizJfJZnE1n5qU59D7MOhr9yuwnhZdRwWeTXXOcO8GhO80IENXlDZHOrOfOf/dwwnWky5HxkHu6tEsxYdNS7wGA9G44p5EcFSL6qV18iYnDSYWyEkvtiWUgzmG2h6FIHUbd+f1O18JYshIJqX/sd178G7eULcCrw9nGSbiGSE+MA6HlnejBl7xoOQnJM6nuUdOHdzmMb6v82SOyqZDbEarsj0Sipp2gYrVrtmuD0A0qsOT70MAl0jUrwt8YoISL2nSVvrFERob581TUfeJ7GrJhgvntTbkZmlfIZnG7B4cFaCV4BS0fa8L/fVAt8v/TXMOcaXjtkDsfsv4iTS/gkA3B3c9wGBMmeomu5D/NROey7/XwVK9jtnz7UWc3Aq2nkX+JeDVWaDIIFBWHs6ylHuZnxbp4YBDjwz6w5JWEscBL+eVS+uuPys6ZL20z83
+ 8T6hohA5
+ iXdybFlubFxWHl9mpXLm2buOpUsVDwpkmcGzu7Kqs97s4OuBkjOPKGzqZobp72j9nKUnhFRkjUc/seRmLtpdydFL6G+onWhOT/hKIWoYPeOczbRNFsJNA+ygcwI6UQOo+FX9NyXbUTB4xhjI5QhqdHmHfsAOvxCP8L920J0ne7iZbn52o52y01f+2kVAs30deJAVfyaZwEuh4n6B1M+pnFzlqvI0NDO+KJAjax9rdbtihK5FE3us/gj8jX4RuYsI4TZdJbx3LCryNSlI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,42 +75,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
--cc old mail
+On Wed, Mar 18, 2026 at 03:53:24PM -0400, Johannes Weiner wrote:
+> memcg_list_lru_alloc() is called every time an object that may end up
+> on the list_lru is created. It needs to quickly check if the list_lru
+> heads for the memcg already exist, and allocate them when they don't.
+>
+> Doing this with folio objects is tricky: folio_memcg() is not stable
+> and requires either RCU protection or pinning the cgroup. But it's
+> desirable to make the existence check lightweight under RCU, and only
+> pin the memcg when we need to allocate list_lru heads and may block.
+>
+> In preparation for switching the THP shrinker to list_lru, add a
+> helper function for allocating list_lru heads coming from a folio.
+>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
-(just a gentle nudge to send stuff to ljs@kernel.org instead thanks :)
+Logic LGTM, but would be nice to have some kdoc. With that addressed, feel free
+to add:
 
-On Tue, Mar 24, 2026 at 07:31:25PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+> ---
+>  include/linux/list_lru.h | 12 ++++++++++++
+>  mm/list_lru.c            | 39 ++++++++++++++++++++++++++++++++++-----
+>  2 files changed, 46 insertions(+), 5 deletions(-)
 >
-> Hi all,
+> diff --git a/include/linux/list_lru.h b/include/linux/list_lru.h
+> index 4afc02deb44d..4bd29b61c59a 100644
+> --- a/include/linux/list_lru.h
+> +++ b/include/linux/list_lru.h
+> @@ -81,6 +81,18 @@ static inline int list_lru_init_memcg_key(struct list_lru *lru, struct shrinker
 >
-> As Harry Yoo pointed out [1], in the case of reparenting LRU folios, the value
-> passed to functions such as __mod_memcg{_lruvec}_state() may exceed the upper
-> limit of int, so this series aims to correct the parameter type of these
-> functions.
+>  int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
+>  			 gfp_t gfp);
+> +
+> +#ifdef CONFIG_MEMCG
+> +int folio_memcg_list_lru_alloc(struct folio *folio, struct list_lru *lru,
+> +			       gfp_t gfp);
+
+Could we have a kdoc comment for this? Thanks!
+
+> +#else
+> +static inline int folio_memcg_list_lru_alloc(struct folio *folio,
+> +					     struct list_lru *lru, gfp_t gfp)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>  void memcg_reparent_list_lrus(struct mem_cgroup *memcg, struct mem_cgroup *parent);
 >
-> This series is based on the next-20260323.
+>  /**
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index b817c0f48f73..1ccdd45b1d14 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -537,17 +537,14 @@ static inline bool memcg_list_lru_allocated(struct mem_cgroup *memcg,
+>  	return idx < 0 || xa_load(&lru->xa, idx);
+>  }
 >
-> Comments and suggestions are welcome!
+> -int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
+> -			 gfp_t gfp)
+> +static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
+> +				  struct list_lru *lru, gfp_t gfp)
+>  {
+>  	unsigned long flags;
+>  	struct list_lru_memcg *mlru = NULL;
+>  	struct mem_cgroup *pos, *parent;
+>  	XA_STATE(xas, &lru->xa, 0);
 >
-> Thanks,
-> Qi
+> -	if (!list_lru_memcg_aware(lru) || memcg_list_lru_allocated(memcg, lru))
+> -		return 0;
+> -
+>  	gfp &= GFP_RECLAIM_MASK;
+>  	/*
+>  	 * Because the list_lru can be reparented to the parent cgroup's
+> @@ -588,6 +585,38 @@ int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
 >
-> [1]. https://lore.kernel.org/all/acDxaEgnqPI-Z4be@hyeyoo/
->
-> Qi Zheng (3):
->   mm: memcontrol: correct the type of stats_updates to unsigned long
->   mm: memcontrol: correct the parameter type of
->     __mod_memcg{_lruvec}_state()
->   mm: memcontrol: correct the nr_pages parameter type of
->     mem_cgroup_update_lru_size()
->
->  include/linux/memcontrol.h   |  2 +-
->  include/trace/events/memcg.h | 10 +++++-----
->  mm/memcontrol.c              | 28 ++++++++++++++--------------
->  3 files changed, 20 insertions(+), 20 deletions(-)
->
+>  	return xas_error(&xas);
+>  }
+> +
+> +int memcg_list_lru_alloc(struct mem_cgroup *memcg, struct list_lru *lru,
+> +			 gfp_t gfp)
+> +{
+> +	if (!list_lru_memcg_aware(lru) || memcg_list_lru_allocated(memcg, lru))
+> +		return 0;
+> +	return __memcg_list_lru_alloc(memcg, lru, gfp);
+> +}
+> +
+> +int folio_memcg_list_lru_alloc(struct folio *folio, struct list_lru *lru,
+> +			       gfp_t gfp)
+> +{
+> +	struct mem_cgroup *memcg;
+> +	int res;
+> +
+> +	if (!list_lru_memcg_aware(lru))
+> +		return 0;
+> +
+> +	/* Fast path when list_lru heads already exist */
+> +	rcu_read_lock();
+
+OK nice I see folio_memcg() explicitly states an RCU lock suffices....
+
+> +	memcg = folio_memcg(folio);
+> +	res = memcg_list_lru_allocated(memcg, lru);
+
+...And an xa_load() should also be RCU safe :)
+
+> +	rcu_read_unlock();
+> +	if (likely(res))
+> +		return 0;
+
+So that's nice!
+
+> +
+> +	/* Allocation may block, pin the memcg */
+> +	memcg = get_mem_cgroup_from_folio(folio);
+> +	res = __memcg_list_lru_alloc(memcg, lru, gfp);
+> +	mem_cgroup_put(memcg);
+> +	return res;
+> +}
+>  #else
+>  static inline void memcg_init_list_lru(struct list_lru *lru, bool memcg_aware)
+>  {
 > --
-> 2.20.1
+> 2.53.0
 >
+
+Cheers, Lorenzo
 
