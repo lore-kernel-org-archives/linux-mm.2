@@ -4,93 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29C35E9A74E
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 09:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 224ACE9A74B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 09:48:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CB586B0005; Tue, 24 Mar 2026 05:44:00 -0400 (EDT)
+	id 6A83B6B0005; Tue, 24 Mar 2026 05:48:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47CC96B0088; Tue, 24 Mar 2026 05:44:00 -0400 (EDT)
+	id 658CC6B0088; Tue, 24 Mar 2026 05:48:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36B736B0089; Tue, 24 Mar 2026 05:44:00 -0400 (EDT)
+	id 520346B0089; Tue, 24 Mar 2026 05:48:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 249866B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:44:00 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BFBB6D040E
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:43:59 +0000 (UTC)
-X-FDA: 84580470198.17.C09302D
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8B2D94000E
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:43:57 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mkl7Yoip;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774345438; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 390AA6B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:48:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6BD91619AB
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:48:54 +0000 (UTC)
+X-FDA: 84580482588.15.1B47FAD
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CDDE3C0002
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:48:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZsRZqBXo;
+	spf=pass (imf22.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774345733; a=rsa-sha256;
 	cv=none;
-	b=s8OwTSisZP67AS19RsRtEShBfRMhzAJKaU1+AWTRmydD4xoHp1mW9nJTaYhzwF0lqD0DxW
-	DYz5OA7heiQccrXR6r8l+u+4ulUZRvPr1+w+/JUznAf/+2Wrar6ac6JaMbUPNi6T6wRpnh
-	fKgWFELanDc5RjP68vvJQcJh1jYw9UM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mkl7Yoip;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	b=SNXaokDR5ghU9ogjC2M7GS+bgvx17uTmc0gOe6uPIMmoI6wQVbYirMMKphmAa258Qy+sM6
+	KEFYsk7P076lWIEkGQAkKnHITx50T7/M1MdZe5YyJKiBklFiqxfbQWEKrdocdEBMOFE9N+
+	tB/X4Yoqwlzk6TMj6h/l9IvgAXYvPws=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774345438;
+	s=arc-20220608; t=1774345733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v75p65m8RMhjFfky2S+7xfKBrLIFiW2OCaPbc5P2w8s=;
-	b=rnrDF2DfwHgvGlxqm8t6Cy419mVGzSnx2fp+9QqCiuy4BHgrIsne2620DKbZnw1E5/CVIE
-	BXHDVBkemwwOO1jZQU7v10UwOzu23HXDiBMq7kEmpuAU52v1Cqj9pFMxvC8xadqUWjE9fH
-	13F/e+Zh1DSmtB5Mi8px7OlCzL/pUkI=
-Message-ID: <35d274d9-ed52-4325-80fb-c374e8af3169@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774345435;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=r49OgRNq7GpU7SB98x5c9ZEXeRkE2i//VurMbe1j5qY=;
+	b=H9kVHkVjhVzXp8dmFduV/2BCu6d58CxpGtkqF4cGQbYdZIKd/w0I6uu8/87Atws6ofIdxd
+	dA+oWYxBbvOr0lowlqvJXdHmMOjGxQoVO04DJq1sGRbyZPhnHqXsPeL+WMXtyzmTJei6YV
+	nTS7AmN3F7kxjNdvqsZa4vXs2V/wwLc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZsRZqBXo;
+	spf=pass (imf22.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774345732;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v75p65m8RMhjFfky2S+7xfKBrLIFiW2OCaPbc5P2w8s=;
-	b=mkl7YoipsSf/WqR/piviuToxSko975naRRFBoXy6TC/W9UJhLw1kvK3LZZKKuU2McMMzax
-	Fy/KRYDG36fKUH+J+nqGkH4RcYuX6rc6OVqjXsYnYnXp1LXqxGhwyuDGORktLrP/nttUIK
-	LwPBCC+C8V3iiNz/8ox32GleVjUqbBM=
-Date: Tue, 24 Mar 2026 17:43:04 +0800
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=r49OgRNq7GpU7SB98x5c9ZEXeRkE2i//VurMbe1j5qY=;
+	b=ZsRZqBXoUjrJY6Ba6d95GOLRVXif2Bn9byw13OsnDjuBIDy0u/iGRE/sk0Jy+OGfg7GxWd
+	bg5LzzAbqqBhfOBbkHBSTrWJ+18fdcjyP1P0Pe3KWBuR6ZLNEvTlf4P+A1f4/M7daMyVaJ
+	bsCu9ZVQI9bt+5fxyh3NbPWl1FQ78V0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-pKMJZhEbOnudYi5scFYu9Q-1; Tue,
+ 24 Mar 2026 05:48:48 -0400
+X-MC-Unique: pKMJZhEbOnudYi5scFYu9Q-1
+X-Mimecast-MFC-AGG-ID: pKMJZhEbOnudYi5scFYu9Q_1774345724
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7D4BE19560A2;
+	Tue, 24 Mar 2026 09:48:42 +0000 (UTC)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.44.34.246])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 94DCA3000223;
+	Tue, 24 Mar 2026 09:48:27 +0000 (UTC)
+From: Valentin Schneider <vschneid@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	x86@kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Han Shen <shenhan@google.com>,
+	Rik van Riel <riel@surriel.com>,
+	Jann Horn <jannh@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	Yair Podemsky <ypodemsk@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel Wagner <dwagner@suse.de>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: [RFC PATCH v8 00/10] context_tracking,x86: Defer some IPIs until a user->kernel transition
+Date: Tue, 24 Mar 2026 10:47:51 +0100
+Message-ID: <20260324094801.3092968-1-vschneid@redhat.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/alloc_tag: clear codetag for pages allocated before
- page_ext initialization
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260319083153.2488005-1-hao.ge@linux.dev>
- <20260319152808.fce61386fdf2934d7a3b0edb@linux-foundation.org>
- <CAJuCfpG5OG66mgfn3ez5ZXTjj7VC8yuK3L2u83uOZhyBbRH2Lw@mail.gmail.com>
- <CAJuCfpHD4SB30oP7Bdm=ey+2W7CAsFPruedEbqgR5OumrQErxQ@mail.gmail.com>
- <9ef1c798-a30f-4458-9684-900136ae8b7d@linux.dev>
- <CAJuCfpEt1EwS4_kiTbger7sBGFKKhi+6PBjrYrTK1HEJzxOTGg@mail.gmail.com>
- <575e727e-cd47-41df-966a-142425aa8a8b@linux.dev>
- <CAJuCfpH4Wpv+jFOm2Xc3UOpn-vcEsJj6W0JJC=SJ2nkA=gEOWg@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpH4Wpv+jFOm2Xc3UOpn-vcEsJj6W0JJC=SJ2nkA=gEOWg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: PLmfX6AMFe8AW-h6e93zUAMtRkPHEzdhOBThLyXgLw4_1774345724
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 8B2D94000E
-X-Stat-Signature: 3m7kqtyfcn3mzgqikcwou7tcqwjqi49m
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774345437-880119
-X-HE-Meta: U2FsdGVkX18/S2xea347RELBMcwEi/kYm3i5tql25dGV5YqYlwgcUk+uh42hMBmo5lmfY8cbIzL/CoviuebM/bY+UcXNK1WMmOYZno/CUqmm+r3Gwzv4BlcPnWJiRLGTs3SASA3HCX6GoU6C0lqSysLNCq8O/bQs24tz+aqSnY3eQql6Wx+nhK0Mmx1vOqsAamq0LUoE2XANEbXptvnq5yCX8AH7y180A9zEfF1fX8XkNipgKXtsDo0/Ln2y2Ywa9LkH04rESO7rMCT1nAPuPojdt7lzK6AzRCb56eBnmGh9CKj7e+ixJ5kuEecZtfBxhNrlII9RT59+bWi/pzJepQcU8MLCaN5iAnOrXHAIzOv9vsS8N65nh8+eaYPtVM3ic5+RdzxE6nnM2v9v/tLUbzhwvk41GVqjZFT/moyN0Uk9y0Ft2SDRx/KCXcel75re4CEOPTUgns8d5lc7D4XQAR9t1S8zWSeR5E3j//3ADt6gsXAfvUbGZtEQpnGu8rezm0blwqGQacpF4GlY9FcW0fTUr3nIIwL9xIen4wyCEgg6tSANuP9jihtf9XyI7WIgY+HVVpCnjgDvXk9wI1sLlwq1mbT6V0o/zjilnHBLkOPN4U38FQDgR7NXYYR9WZz0lUp1+pKSiUH7BqtSaKdW2aofNgjnSptbGEDu4LJsDl3XAHk8eTKnlfIPf+em0uWRN4QCxNMtSXSyh5JcV/hl93XNvH1A/x44tEePH9fuQXysEBqXckS+WhWyrQEm+duJlp0QJg5RpIF+VttLJDbf+RXQPrC46WBXoZHog7B4Sntt92V7V5lQDkZ0IV7L0MV0hvWcJHJrThBAQIz4Ulxtj4305BWJAoBuLjnfF58/SRddwl3mNvunur54xWG/zB875CAljv4cMgtiY6Rrhz/SC/yg16uaKHipXnrJ/Gf29RTjCj0q7ylIALLXnKyhqBuTahWH7c8DpWitFLOchwv
- Zvq9WGyf
- xhzunVy4CWawx63Lu0u9Ow/fu872kL089NOm7ZL7MzBrJwBR2KaTEzUeI8vwcDFsTuKBGztMhm7UFIXH0oAbwuE6bFgyHSrJqavSO5LfWcReZy+3iaISNSwfHT8yUSqwRUnZYs5nib3/Aq9Ekl1zLZh9yG4apm3XzwmmRIpL2rVYCfWlWZfks4RJ6jwR/7kVjpu4m+99iq2pvEJP5Oh28q+pzZmwQGrrgsu/wS9HvrcR+LzfxV0Ke3JaMQCWhwJAYrGxj+0khKZrw43UYVTL5qlDX4Ur0Q+jmVyO33JrNB0ISVtXofeIH+/LsWB3yCUfZTlKDZp1rEgusrb//hJm7tmJmUisZZ5m9gh0+nSssGycospExq+EDOf0p50a2al4drIVB9nF3es1rI0n5NjejfTwlTS50uLY53z0FfmGxpWI+LI0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CDDE3C0002
+X-Stat-Signature: exrg9748qdsnbtx48ezf8tucd6pfmd7b
+X-HE-Tag: 1774345732-660958
+X-HE-Meta: U2FsdGVkX1/MIOQQPzwRUtEhxgloo0rR/Pzp9OLL/ONhrZ/+HS8RysDIDBmzd0+HyUvOD1V9WOwvS9nw+WbOr/wzm4Ta+D6ObFeUmlUHJoutDMU/39Z53eOcN9IuLJxielieTpD9qsQT3bFIcCnnEB7DS9BJdsHUZ6OqKSAcfM3mV2BquHZNcnnyaDHIckU7dHGXD5wEgKID5+Cmzc5Sa2xwov0gsV5O1k4u0pBcCDkEomU/nhXXv2d+Aq6ofDcI9QIyeBoWMmUnoaLsy3EioTnuRqHMeLQ1n+qnLUsPRM/0sgmod+OM6x/GFOiNHbaKTca/Xh///KUqLLc1pq7igcHIdOUsH5gArTKoQ+CUx8Y23/9OBGxLQ8ZoSrQe/81/hZvKxp1qeoNAhQj83gs7/zmexdcqNe/uPCENIPTC6ZRTvgx4nXDSY+Gl+KeVzN/z5cL3eGVonrbo/KkM2aZMeepXCWc7BdD6DO868gw/xwIzrvOuWXE2DJRefRbCyssl34T7WWxZjBCi3ifAj0NMwLUMlWqrBxxGxizxQPCUXA+MEI9+YesPKKiK8wie+GjKdYvUEM/dkDCG9D/in02oKoJxZwOzUWlACZMBBMmfLdNwMY/0lQmhUv9PJsFHOR4gYRKu5ihmX3FV1S+rl7M+ZF7LxCx03386eL2+FFccmXc3dWBkwl1BwyylzbHEI5W7lcI9rJjnGQVsIWrNd8t89/h8s4vZ6KPp1XYr+w8DYHjxckjDsfokp/ka9w/Cp4rmQN1Up/8dyTKYdrzGdIPszkyM3Ixoz2xDee5ciG8G5pwZdW6efBNjjnthS8jvD36F2uJozqB6QAAVn3judBhfAIeXalmJm+z2Oc0w+H70t2rMG8hND2+FgVxP6+2mBKIu7E7zYkoWl4MDIQnX+cagEPYbhdtfgvJ7gceB3nvE3iZJb2nIDHR3EI1FFHWLMPR26YH/af55jZQcymSSE5A
+ RUwHtlzk
+ GxPCqlA4Dg1QktbaHEBQbdwafFYY6VjfYS6/ZSY3qH1ytIwU4U7tdv+EgfAjxk5+MAvniMrZp9eth3MnyuBb92K2rErSkPFFrhVZtH1rHVIacACpxzTDTf+e+s6Lxto3k3c9ICIVIBsmewyHYAf6NCqrvOyN9UZC5AeF/eWcQ2nQoX+yNv+dnhPKWV/m6UbGYiNPPBLe6HubLhfgPmAu2KlLNp+Kvirib7pYGndhT1/w55ieLHmyxk6CLwFkra9Uav7mHXOwpZjHFUYpJOjmI7U0CO2asJMq9W5DbbHkGVmPlowu1AkL731FPQxlvHkKeF8sRsv9mnrK71dZnyiRCdvq6vYyR0Z6ADl4mR9yKMT3A1XCpLFP8qYhOrxpkC0zQckb9g2gP+pWvf+5kOHzh0MHOG78Q0FOMWdWfHmjmb26UdMOwO65Gp5QFFJqyUlehd2xWJHvOhhT3bMki/hVbeJ7ywmNM44hKZNUx4P0e3g9dOMyTgOUuoI6vP5Kio559pbVyZMuGT5QRxGXNdqHgrP1iIis1Y/bVKrZLrW0ExKUF2vmF8PMrQhRYlLpmTGvjwqWHkbWehlUKCQPHoImH6W9VPxZ0KGIDf1AyfkP0wfCz6M0AGLDb0xh3YkksgrLE90J/cKceLrj36Ljebvah4vI3F6fGU46zIQ/7yUtpfW1cUirMP2o6iVJjthOrbJOk1FNH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,727 +141,307 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Context
+=======
 
-On 2026/3/24 06:47, Suren Baghdasaryan wrote:
-> On Mon, Mar 23, 2026 at 2:16 AM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> On 2026/3/20 10:14, Suren Baghdasaryan wrote:
->>> On Thu, Mar 19, 2026 at 6:58 PM Hao Ge <hao.ge@linux.dev> wrote:
->>>> On 2026/3/20 07:48, Suren Baghdasaryan wrote:
->>>>> On Thu, Mar 19, 2026 at 4:44 PM Suren Baghdasaryan <surenb@google.com> wrote:
->>>>>> On Thu, Mar 19, 2026 at 3:28 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->>>>>>> On Thu, 19 Mar 2026 16:31:53 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>>>>>>
->>>>>>>> Due to initialization ordering, page_ext is allocated and initialized
->>>>>>>> relatively late during boot. Some pages have already been allocated
->>>>>>>> and freed before page_ext becomes available, leaving their codetag
->>>>>>>> uninitialized.
->>>>>> Hi Hao,
->>>>>> Thanks for the report.
->>>>>> Hmm. So, we are allocating pages before page_ext is initialized...
->>>>>>
->>>>>>>> A clear example is in init_section_page_ext(): alloc_page_ext() calls
->>>>>>>> kmemleak_alloc().
->>>>> Forgot to ask. The example you are using here is for page_ext
->>>>> allocation itself. Do you have any other examples where page
->>>>> allocation happens before page_ext initialization? If that's the only
->>>>> place, then we might be able to fix this in a simpler way by doing
->>>>> something special for alloc_page_ext().
->>>> Hi Suren
->>>>
->>>> To help illustrate the point, here's the debug log I added:
->>>>
->>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>> index 2d4b6f1a554e..ebfe636f5b07 100644
->>>> --- a/mm/page_alloc.c
->>>> +++ b/mm/page_alloc.c
->>>> @@ -1293,6 +1293,9 @@ void __pgalloc_tag_add(struct page *page, struct
->>>> task_struct *task,
->>>>                    alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
->>>>                    update_page_tag_ref(handle, &ref);
->>>>                    put_page_tag_ref(handle);
->>>> +       } else {
->>>> +               pr_warn("__pgalloc_tag_add: get_page_tag_ref failed!
->>>> page=%p pfn=%lu nr=%u\n", page, page_to_pfn(page), nr);
->>>> +               dump_stack();
->>>>            }
->>>>     }
->>>>
->>>>
->>>> And I caught the following logs:
->>>>
->>>> [    0.296399] __pgalloc_tag_add: get_page_tag_ref failed!
->>>> page=ffffea000400c700 pfn=1049372 nr=1
->>>> [    0.296400] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
->>>> 7.0.0-rc4-dirty #12 PREEMPT(lazy)
->>>> [    0.296402] Hardware name: Red Hat KVM, BIOS
->>>> rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
->>>> [    0.296402] Call Trace:
->>>> [    0.296403]  <TASK>
->>>> [    0.296403]  dump_stack_lvl+0x53/0x70
->>>> [    0.296405]  __pgalloc_tag_add+0x3a3/0x6e0
->>>> [    0.296406]  ? __pfx___pgalloc_tag_add+0x10/0x10
->>>> [    0.296407]  ? kasan_unpoison+0x27/0x60
->>>> [    0.296409]  ? __kasan_unpoison_pages+0x2c/0x40
->>>> [    0.296411]  get_page_from_freelist+0xa54/0x1310
->>>> [    0.296413]  __alloc_frozen_pages_noprof+0x206/0x4c0
->>>> [    0.296415]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
->>>> [    0.296417]  ? stack_depot_save_flags+0x3f/0x680
->>>> [    0.296418]  ? ___slab_alloc+0x518/0x530
->>>> [    0.296420]  alloc_pages_mpol+0x13a/0x3f0
->>>> [    0.296421]  ? __pfx_alloc_pages_mpol+0x10/0x10
->>>> [    0.296423]  ? _raw_spin_lock_irqsave+0x8a/0xf0
->>>> [    0.296424]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
->>>> [    0.296426]  alloc_slab_page+0xc2/0x130
->>>> [    0.296427]  allocate_slab+0x77/0x2c0
->>>> [    0.296429]  ? syscall_enter_define_fields+0x3bb/0x5f0
->>>> [    0.296430]  ___slab_alloc+0x125/0x530
->>>> [    0.296432]  ? __trace_define_field+0x252/0x3d0
->>>> [    0.296433]  __kmalloc_noprof+0x329/0x630
->>>> [    0.296435]  ? syscall_enter_define_fields+0x3bb/0x5f0
->>>> [    0.296436]  syscall_enter_define_fields+0x3bb/0x5f0
->>>> [    0.296438]  ? __pfx_syscall_enter_define_fields+0x10/0x10
->>>> [    0.296440]  event_define_fields+0x326/0x540
->>>> [    0.296441]  __trace_early_add_events+0xac/0x3c0
->>>> [    0.296443]  trace_event_init+0x24c/0x460
->>>> [    0.296445]  trace_init+0x9/0x20
->>>> [    0.296446]  start_kernel+0x199/0x3c0
->>>> [    0.296448]  x86_64_start_reservations+0x18/0x30
->>>> [    0.296449]  x86_64_start_kernel+0xe2/0xf0
->>>> [    0.296451]  common_startup_64+0x13e/0x141
->>>> [    0.296453]  </TASK>
->>>>
->>>>
->>>> [    0.312234] __pgalloc_tag_add: get_page_tag_ref failed!
->>>> page=ffffea000400f900 pfn=1049572 nr=1
->>>> [    0.312234] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
->>>> 7.0.0-rc4-dirty #12 PREEMPT(lazy)
->>>> [    0.312236] Hardware name: Red Hat KVM, BIOS
->>>> rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
->>>> [    0.312236] Call Trace:
->>>> [    0.312237]  <TASK>
->>>> [    0.312237]  dump_stack_lvl+0x53/0x70
->>>> [    0.312239]  __pgalloc_tag_add+0x3a3/0x6e0
->>>> [    0.312240]  ? __pfx___pgalloc_tag_add+0x10/0x10
->>>> [    0.312241]  ? rmqueue.constprop.0+0x4fc/0x1ce0
->>>> [    0.312243]  ? kasan_unpoison+0x27/0x60
->>>> [    0.312244]  ? __kasan_unpoison_pages+0x2c/0x40
->>>> [    0.312246]  get_page_from_freelist+0xa54/0x1310
->>>> [    0.312248]  __alloc_frozen_pages_noprof+0x206/0x4c0
->>>> [    0.312250]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
->>>> [    0.312253]  alloc_slab_page+0x39/0x130
->>>> [    0.312254]  allocate_slab+0x77/0x2c0
->>>> [    0.312255]  ? alloc_cpumask_var_node+0xc7/0x230
->>>> [    0.312257]  ___slab_alloc+0x46d/0x530
->>>> [    0.312259]  __kmalloc_node_noprof+0x2fa/0x680
->>>> [    0.312261]  ? alloc_cpumask_var_node+0xc7/0x230
->>>> [    0.312263]  alloc_cpumask_var_node+0xc7/0x230
->>>> [    0.312264]  init_desc+0x141/0x6b0
->>>> [    0.312266]  alloc_desc+0x108/0x1b0
->>>> [    0.312267]  early_irq_init+0xee/0x1c0
->>>> [    0.312268]  ? __pfx_early_irq_init+0x10/0x10
->>>> [    0.312271]  start_kernel+0x1ab/0x3c0
->>>> [    0.312272]  x86_64_start_reservations+0x18/0x30
->>>> [    0.312274]  x86_64_start_kernel+0xe2/0xf0
->>>> [    0.312275]  common_startup_64+0x13e/0x141
->>>> [    0.312277]  </TASK>
->>>>
->>>> [    0.312834] __pgalloc_tag_add: get_page_tag_ref failed!
->>>> page=ffffea000400fc00 pfn=1049584 nr=1
->>>> [    0.312835] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
->>>> 7.0.0-rc4-dirty #12 PREEMPT(lazy)
->>>> [    0.312836] Hardware name: Red Hat KVM, BIOS
->>>> rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
->>>> [    0.312837] Call Trace:
->>>> [    0.312837]  <TASK>
->>>> [    0.312838]  dump_stack_lvl+0x53/0x70
->>>> [    0.312840]  __pgalloc_tag_add+0x3a3/0x6e0
->>>> [    0.312841]  ? __pfx___pgalloc_tag_add+0x10/0x10
->>>> [    0.312842]  ? rmqueue.constprop.0+0x4fc/0x1ce0
->>>> [    0.312844]  ? kasan_unpoison+0x27/0x60
->>>> [    0.312845]  ? __kasan_unpoison_pages+0x2c/0x40
->>>> [    0.312847]  get_page_from_freelist+0xa54/0x1310
->>>> [    0.312849]  __alloc_frozen_pages_noprof+0x206/0x4c0
->>>> [    0.312851]  ? __pfx___alloc_frozen_pages_noprof+0x10/0x10
->>>> [    0.312853]  alloc_pages_mpol+0x13a/0x3f0
->>>> [    0.312855]  ? __pfx_alloc_pages_mpol+0x10/0x10
->>>> [    0.312856]  ? xas_find+0x2d8/0x450
->>>> [    0.312858]  ? _raw_spin_lock+0x84/0xe0
->>>> [    0.312859]  ? __pfx__raw_spin_lock+0x10/0x10
->>>> [    0.312861]  alloc_pages_noprof+0xf6/0x2b0
->>>> [    0.312862]  __change_page_attr+0x293/0x850
->>>> [    0.312864]  ? __pfx___change_page_attr+0x10/0x10
->>>> [    0.312865]  ? _vm_unmap_aliases+0x2d0/0x650
->>>> [    0.312868]  ? __pfx__vm_unmap_aliases+0x10/0x10
->>>> [    0.312869]  __change_page_attr_set_clr+0x16c/0x360
->>>> [    0.312871]  ? spp_getpage+0xbb/0x1e0
->>>> [    0.312872]  change_page_attr_set_clr+0x220/0x3c0
->>>> [    0.312873]  ? flush_tlb_one_kernel+0xf/0x30
->>>> [    0.312875]  ? set_pte_vaddr_p4d+0x110/0x180
->>>> [    0.312877]  ? __pfx_change_page_attr_set_clr+0x10/0x10
->>>> [    0.312878]  ? __pfx_set_pte_vaddr_p4d+0x10/0x10
->>>> [    0.312881]  ? __pfx_mtree_load+0x10/0x10
->>>> [    0.312883]  ? __pfx_mtree_load+0x10/0x10
->>>> [    0.312884]  ? __asan_memcpy+0x3c/0x60
->>>> [    0.312886]  ? set_intr_gate+0x10c/0x150
->>>> [    0.312888]  set_memory_ro+0x76/0xa0
->>>> [    0.312889]  ? __pfx_set_memory_ro+0x10/0x10
->>>> [    0.312891]  idt_setup_apic_and_irq_gates+0x2c1/0x390
->>>>
->>>> and more.
->>> Ok, it's not the only place. Got your point.
->>>
->>>> off topic -  if we were to handle only alloc_page_ext() specifically,
->>>> what would be the most straightforward
->>>>
->>>> solution in your mind? I'd really appreciate your insight.
->>> I was thinking if it's the only special case maybe we can handle it
->>> somehow differently, like we do when we allocate obj_ext vectors for
->>> slabs using __GFP_NO_OBJ_EXT. I haven't found a good solution yet but
->>> since it's not a special case we would not be able to use it even if I
->>> came up with something...
->>> I think your way is the most straight-forward but please try my
->>> suggestion to see if we can avoid extra overhead.
->>> Thanks,
->>> Suren.
+We've observed within Red Hat that isolated, NOHZ_FULL CPUs running a
+pure-userspace application get regularly interrupted by IPIs sent from
+housekeeping CPUs. Those IPIs are caused by activity on the housekeeping CPUs
+leading to various on_each_cpu() calls, e.g.:
 
-Hi Suren
+  64359.052209596    NetworkManager       0    1405     smp_call_function_many_cond (cpu=0, func=do_kernel_range_flush)
+    smp_call_function_many_cond+0x1
+    smp_call_function+0x39
+    on_each_cpu+0x2a
+    flush_tlb_kernel_range+0x7b
+    __purge_vmap_area_lazy+0x70
+    _vm_unmap_aliases.part.42+0xdf
+    change_page_attr_set_clr+0x16a
+    set_memory_ro+0x26
+    bpf_int_jit_compile+0x2f9
+    bpf_prog_select_runtime+0xc6
+    bpf_prepare_filter+0x523
+    sk_attach_filter+0x13
+    sock_setsockopt+0x92c
+    __sys_setsockopt+0x16a
+    __x64_sys_setsockopt+0x20
+    do_syscall_64+0x87
+    entry_SYSCALL_64_after_hwframe+0x65
 
+The heart of this series is the thought that while we cannot remove NOHZ_FULL
+CPUs from the list of CPUs targeted by these IPIs, they may not have to execute
+the callbacks immediately. Anything that only affects kernelspace can wait
+until the next user->kernel transition, providing it can be executed "early
+enough" in the entry code.
 
-> Hi Hao,
->
->> Hi Suren
->>
->> Thank you for your feedback. After re-examining this issue,
->>
->> I realize my previous focus was misplaced.
->>
->> Upon deeper consideration, I understand that this is not merely a bug,
->>
->> but rather a warning that indicates a gap in our memory profiling mechanism.
->>
->> Specifically, the current implementation appears to be missing memory
->> allocation
->>
->> tracking during the period between the buddy system allocation and page_ext
->>
->> initialization.
->>
->> This profiling gap means we may not be capturing all relevant memory
->> allocation
->>
->> events during this critical transition phase.
-> Correct, this limitation exists because memory profiling relies on
-> some kernel facilities (page_ext, objj_ext) which might not be
-> initialized yet at the time of allocation.
->
->> My approach is to dynamically allocate codetag_ref when get_page_tag_ref
->> fails,
->>
->> and maintain a linked list to track all buddy system allocations that
->> occur prior to page_ext initialization.
->>
->>    However, this introduces performance concerns:
->>
->> 1. Free Path Overhead: When freeing these pages, we would need to
->> traverse the entire linked list to locate
->>
->>        the corresponding codetag_ref, resulting in O(n) lookup complexity
->> per free operation.
->>
->> 2. Initialization Overhead: During init_page_alloc_tagging, iterating
->> through the linked list to assign codetag_ref to
->>
->>        page_ext would introduce additional traversal cost.
->>
->> If the number of pages is substantial, this could incur significant
->> overhead. What are your thoughts on this? I look forward to your
->> suggestions.
-> My thinking is that these early allocations comprise a small portion
-> of overall memory consumed by the system. So, instead of trying to
-> record and handle them in some alternative way, we just accept that
-> some counters might not be exactly accurate and ignore those early
-> allocations. See how the early slab allocations are marked with the
-> CODETAG_FLAG_INACCURATE flag and later reported as inaccurate. I think
-> that's an acceptable alternative to introducing extra complexity and
-> performance overhead. IOW, the benefits of accounting for these early
-> allocations are low compared to the effort required to account for
-> them. Unless you found a simple and performant way to do that...
+The original implementation is from Peter [1]. Nicolas then added kernel TLB
+invalidation deferral to that [2], and I picked it up from there.
+
+Deferral approach
+=================
+
+Previous versions would assign IPIs a "type" and have a mapping of IPI type to
+callback, leveraged upon kernel entry via the context_tracking framework.
+
+This version now gets rid of all that, and instead goes with an
+"unconditionnally run a catch-up sequence at kernel entry" approach - as was
+suggested at LPC 2025 [3].
+
+Another point made during LPC25 (sorry I didn't get your name!) was that when
+kPTI is in use, the use of global pages is very limited and thus a CR4 may not
+be warranted for a kernel TLB flush. That means the existing CR3 RMW used to switch
+between kernel and user page tables can be used as the unconditionnal TLB flush,
+meaning I could get rid of my CR4 dance.
+
+In the same spirit, turns out a CR3 RMW is a serializing instruction:
+
+  SDM vol2 chapter 4.3 - Move to/from control registers:
+  ```
+  MOV CR* instructions, except for MOV CR8, are serializing instructions.
+  ```
+That means I don't need to do anything extra on kernel entry to handle deferred
+sync_core() IPIs sent from text_poke().
+  
+So long story short, the CR3 RMW that is executed for every user <-> kernel
+transition when kPTI is enabled does everything I need to defer kernel TLB flush
+and kernel text update IPIs. 
+
+From that, I've completely nuked the context_tracking deferral faff.
+The added x86-specific code is now "just" about having a software signal
+to figure out which CR3 a CPU is using - easier said than done, details in
+the individual changelogs.
+
+Kernel entry vs execution of the deferred operation
+===================================================
+
+This is what I've referred to as the "Danger Zone" during my LPC24 talk [4].
+
+There is a non-zero length of code that is executed upon kernel entry before the
+deferred operation can be itself executed (before we start getting into
+context_tracking.c proper), i.e.:
+
+  idtentry
+    idtentry_body
+      error_entry
+        SWITCH_TO_KERNEL_CR3
+
+This danger zone used to be much wider in v7 and earlier (from kernel entry all
+the way down to ct_kernel_enter_state()). The objtool instrumentation thus now
+targets .entry.text rather than .noinstr as a whole.
+
+Show me numbers
+===============
+
+Xeon E5-2699 system with SMToff, NOHZ_FULL, 26 isolated CPUs.
+RHEL10 userspace.
+
+Workload is using rteval (kernel compilation + hackbench) on housekeeping CPUs
+and a dummy stay-in-userspace loop on the isolated CPUs. The main invocation is:
+
+$ trace-cmd record -e "csd_queue_cpu" -f "cpu & CPUS{$ISOL_CPUS}" \
+                      -R "stacktrace if cpu & CPUS{$ISOL_CPUS}" \
+                   -e "ipi_send_cpumask" -f "cpumask & CPUS{$ISOL_CPUS}" \
+	           -e "ipi_send_cpu"     -f "cpu & CPUS{$ISOL_CPUS}" \
+		   rteval --onlyload --loads-cpulist=$HK_CPUS \
+		   --hackbench-runlowmem=True --duration=$DURATION
+
+This only records IPIs sent to isolated CPUs, so any event there is interference
+(with a bit of fuzz at the start/end of the workload when spawning the
+processes). All tests were done with a duration of 6 hours.
+
+v6.19
+o ~6000 IPIs received, so about ~230 interfering IPI per isolated CPU
+o About one interfering IPI roughly every 1 minute 30 seconds
+
+v6.19 + patches
+o Zilch... With some caveats
+
+  I still get some TLB flush IPIs sent to seemingly still-in-userspace CPUs,
+  about one per ~3h for /some/ runs. I haven't seen any in the last cumulated
+  24h of testing...
+
+  pcpu_balance_work also sometimes shows up, and isn't covered by the deferral
+  faff. Again, sometimes it shows up, sometimes it doesn't and hasn't for a
+  while now.
+
+Patches
+=======
+
+o Patches 1-4 are standalone objtool cleanups.
+
+o Patches 5-6 add infrastructure for annotating static keys that may be used in
+  entry code (courtesy of Josh). 
+
+o Patch 7 adds ASM support for static keys
+
+o Patches 8-10 add the deferral mechanism.
+
+Patches are also available at:
+https://gitlab.com/vschneid/linux.git -b redhat/isolirq/defer/v8
+
+Acknowledgements
+================
+
+Special thanks to:
+o Clark Williams for listening to my ramblings about this and throwing ideas my way
+o Josh Poimboeuf for all his help with everything objtool-related
+o Dave Hansen for patiently educating me about mm
+o All of the folks who attended various (too many?) talks about this and
+  provided precious feedback.  
+
+Links
+=====
+
+[1]: https://lore.kernel.org/all/20210929151723.162004989@infradead.org/
+[2]: https://github.com/vianpl/linux.git -b ct-work-defer-wip
+[3]: https://lpc.events/event/19/contributions/2219/
+[4]: https://lpc.events/event/18/contributions/1889/
+
+Revisions
+=========
+
+v7 -> v8
+++++++++
+
+o Rebased onto v6.19
+
+o Fixed objtool --uaccess validation preventing --noinstr validation of
+  unwind hints
+o Added more objtool --noinstr warning fixes
+o Reduced objtool noinstr static key validation to just .entry.text
+
+o Moved the kernel_cr3_loaded signal update to before writing to CR3
+
+o Ditched context_tracking based deferral
+o Ditched the (additionnal) unconditionnal TLB flush upon kernel entry
+
+v6 -> v7
+++++++++
+
+o Rebased onto latest v6.18-rc5 (6fa9041b7177f)
+o Collected Acks (Sean, Frederic)
+
+o Fixed <asm/context_tracking_work.h> include (Shrikanth)
+o Fixed ct_set_cpu_work() CT_RCU_WATCHING logic (Frederic)
+
+o Wrote more verbose comments about NOINSTR static keys and calls (Petr)
+
+o [NEW PATCH] Instrumented one more static key: cpu_bf_vm_clear
+o [NEW PATCH] added ASM-accessible static key helpers to gate NO_HZ_FULL logic
+  in early entry code (Frederic)
+
+v5 -> v6
+++++++++
+
+o Rebased onto v6.17
+o Small conflict fixes with cpu_buf_idle_clear smp_text_poke() renaming
+
+o Added the TLB flush craziness
+
+v4 -> v5
+++++++++
+
+o Rebased onto v6.15-rc3
+o Collected Reviewed-by
+
+o Annotated a few more static keys
+o Added proper checking of noinstr sections that are in loadable code such as
+  KVM early entry (Sean Christopherson)
+
+o Switched to checking for CT_RCU_WATCHING instead of CT_STATE_KERNEL or
+  CT_STATE_IDLE, which means deferral is now behaving sanely for IRQ/NMI
+  entry from idle (thanks to Frederic!)
+
+o Ditched the vmap TLB flush deferral (for now)  
+  
+
+RFCv3 -> v4
++++++++++++
+
+o Rebased onto v6.13-rc6
+
+o New objtool patches from Josh
+o More .noinstr static key/call patches
+o Static calls now handled as well (again thanks to Josh)
+
+o Fixed clearing the work bits on kernel exit
+o Messed with IRQ hitting an idle CPU vs context tracking
+o Various comment and naming cleanups
+
+o Made RCU_DYNTICKS_TORTURE depend on !COMPILE_TEST (PeterZ)
+o Fixed the CT_STATE_KERNEL check when setting a deferred work (Frederic)
+o Cleaned up the __flush_tlb_all() mess thanks to PeterZ
+
+RFCv2 -> RFCv3
+++++++++++++++
+
+o Rebased onto v6.12-rc6
+
+o Added objtool documentation for the new warning (Josh)
+o Added low-size RCU watching counter to TREE04 torture scenario (Paul)
+o Added FORCEFUL jump label and static key types
+o Added noinstr-compliant helpers for tlb flush deferral
 
 
-I have been exploring possible solutions to this issue over the past few 
-days,
+RFCv1 -> RFCv2
+++++++++++++++
 
-but so far I have not come up with a good approach.
+o Rebased onto v6.5-rc1
 
-I have counted the number of memory allocations that occur earlier than the
+o Updated the trace filter patches (Steven)
 
-allocation and initialization of our page_ext, and found that there are 
-actually
+o Fixed __ro_after_init keys used in modules (Peter)
+o Dropped the extra context_tracking atomic, squashed the new bits in the
+  existing .state field (Peter, Frederic)
+  
+o Added an RCU_EXPERT config for the RCU dynticks counter size, and added an
+  rcutorture case for a low-size counter (Paul) 
 
-quite a lot of them.
+o Fixed flush_tlb_kernel_range_deferrable() definition
 
-Similarly, I have made the following changes and collected the 
-corresponding logs.
+Josh Poimboeuf (1):
+  objtool: Add .entry.text validation for static branches
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2d4b6f1a554e..6db65b3d52d3 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1293,6 +1293,8 @@ void __pgalloc_tag_add(struct page *page, struct 
-task_struct *task,
-                 alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
-                 update_page_tag_ref(handle, &ref);
-                 put_page_tag_ref(handle);
-+       } else{
-+               pr_warn("__pgalloc_tag_add: get_page_tag_ref failed! 
-page=%p pfn=%lu nr=%u\n", page, page_to_pfn(page), nr);
-         }
-  }
+Valentin Schneider (9):
+  objtool: Make validate_call() recognize indirect calls to pv_ops[]
+  objtool: Flesh out warning related to pv_ops[] calls
+  objtool: Always pass a section to validate_unwind_hints()
+  x86/retpoline: Make warn_thunk_thunk .noinstr
+  sched/isolation: Mark housekeeping_overridden key as __ro_after_init
+  x86/jump_label: Add ASM support for static_branch_likely()
+  x86/mm/pti: Introduce a kernel/user CR3 software signal
+  context_tracking,x86: Defer kernel text patching IPIs when tracking
+    CR3 switches
+  x86/mm, mm/vmalloc: Defer kernel TLB flush IPIs when tracking CR3
+    switches
 
-@@ -1314,6 +1316,8 @@ void __pgalloc_tag_sub(struct page *page, unsigned 
-int nr)
-                 alloc_tag_sub(&ref, PAGE_SIZE * nr);
-                 update_page_tag_ref(handle, &ref);
-                 put_page_tag_ref(handle);
-+       } else{
-+                pr_warn("__pgalloc_tag_sub: get_page_tag_ref failed! 
-page=%p pfn=%lu nr=%u\n", page, page_to_pfn(page), nr);
-         }
-  }
+ arch/x86/Kconfig                        |  14 +++
+ arch/x86/entry/calling.h                |  13 +++
+ arch/x86/entry/entry.S                  |   3 +-
+ arch/x86/entry/syscall_64.c             |   4 +
+ arch/x86/include/asm/jump_label.h       |  33 +++++++-
+ arch/x86/include/asm/text-patching.h    |   5 ++
+ arch/x86/include/asm/tlbflush.h         |   4 +
+ arch/x86/kernel/alternative.c           |  34 ++++++--
+ arch/x86/kernel/cpu/bugs.c              |   2 +-
+ arch/x86/kernel/kprobes/core.c          |   4 +-
+ arch/x86/kernel/kprobes/opt.c           |   4 +-
+ arch/x86/kernel/module.c                |   2 +-
+ arch/x86/mm/pti.c                       |  36 +++++---
+ arch/x86/mm/tlb.c                       |  34 ++++++--
+ include/linux/jump_label.h              |  11 ++-
+ include/linux/objtool.h                 |  16 ++++
+ kernel/sched/isolation.c                |   2 +-
+ mm/vmalloc.c                            |  30 +++++--
+ tools/objtool/Documentation/objtool.txt |  12 +++
+ tools/objtool/check.c                   | 108 ++++++++++++++++++++----
+ tools/objtool/include/objtool/check.h   |   2 +
+ tools/objtool/include/objtool/elf.h     |   3 +-
+ tools/objtool/include/objtool/special.h |   1 +
+ tools/objtool/special.c                 |  15 +++-
+ 24 files changed, 331 insertions(+), 61 deletions(-)
 
-[    0.261699] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001000 pfn=1048640 nr=2
-[    0.261711] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001100 pfn=1048644 nr=4
-[    0.261717] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001200 pfn=1048648 nr=4
-[    0.261721] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001300 pfn=1048652 nr=4
-[    0.261893] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001080 pfn=1048642 nr=2
-[    0.261917] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001400 pfn=1048656 nr=4
-[    0.262018] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001500 pfn=1048660 nr=2
-[    0.262024] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001600 pfn=1048664 nr=8
-[    0.262040] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001580 pfn=1048662 nr=1
-[    0.262048] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea00040015c0 pfn=1048663 nr=1
-[    0.262056] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001800 pfn=1048672 nr=2
-[    0.262064] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001880 pfn=1048674 nr=2
-[    0.262078] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001900 pfn=1048676 nr=2
-[    0.262196] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
-[    0.262213] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001980 pfn=1048678 nr=2
-[    0.262220] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001a00 pfn=1048680 nr=4
-[    0.262246] ODEBUG: selftest passed
-[    0.262268] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001b00 pfn=1048684 nr=1
-[    0.262318] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001b40 pfn=1048685 nr=1
-[    0.262368] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001b80 pfn=1048686 nr=1
-[    0.262418] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001bc0 pfn=1048687 nr=1
-[    0.262469] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001c00 pfn=1048688 nr=1
-[    0.262519] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001c40 pfn=1048689 nr=1
-[    0.262569] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001c80 pfn=1048690 nr=1
-[    0.262620] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001cc0 pfn=1048691 nr=1
-[    0.262670] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001d00 pfn=1048692 nr=1
-[    0.262721] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001d40 pfn=1048693 nr=1
-[    0.262771] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001d80 pfn=1048694 nr=1
-[    0.262821] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001dc0 pfn=1048695 nr=1
-[    0.262871] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001e00 pfn=1048696 nr=1
-[    0.262923] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001e40 pfn=1048697 nr=1
-[    0.262974] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001e80 pfn=1048698 nr=1
-[    0.263024] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001ec0 pfn=1048699 nr=1
-[    0.263074] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001f00 pfn=1048700 nr=1
-[    0.263124] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001f40 pfn=1048701 nr=1
-[    0.263174] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001f80 pfn=1048702 nr=1
-[    0.263224] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004001fc0 pfn=1048703 nr=1
-[    0.263275] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002000 pfn=1048704 nr=1
-[    0.263325] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002040 pfn=1048705 nr=1
-[    0.263375] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002080 pfn=1048706 nr=1
-[    0.263427] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002400 pfn=1048720 nr=16
-[    0.263437] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea00040020c0 pfn=1048707 nr=1
-[    0.263463] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002100 pfn=1048708 nr=1
-[    0.263465] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002140 pfn=1048709 nr=1
-[    0.263467] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002180 pfn=1048710 nr=1
-[    0.263509] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002200 pfn=1048712 nr=4
-[    0.263512] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002800 pfn=1048736 nr=8
-[    0.263524] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea00040021c0 pfn=1048711 nr=1
-[    0.263536] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002300 pfn=1048716 nr=1
-[    0.263537] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002340 pfn=1048717 nr=1
-[    0.263539] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002380 pfn=1048718 nr=1
-[    0.263604] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004004000 pfn=1048832 nr=128
-[    0.263638] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004003000 pfn=1048768 nr=64
-[    0.263650] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002c00 pfn=1048752 nr=16
-[    0.263655] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea00040023c0 pfn=1048719 nr=1
-[    0.270582] __pgalloc_tag_sub: get_page_tag_ref failed! 
-page=ffffea00040023c0 pfn=1048719 nr=1
-[    0.270591] ftrace: allocating 52717 entries in 208 pages
-[    0.270592] ftrace: allocated 208 pages with 3 groups
-[    0.270620] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004002a00 pfn=1048744 nr=8
-[    0.270636] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea00040023c0 pfn=1048719 nr=1
-[    0.270643] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006000 pfn=1048960 nr=1
-[    0.270649] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006040 pfn=1048961 nr=1
-[    0.270658] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004007000 pfn=1049024 nr=64
-[    0.270659] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006080 pfn=1048962 nr=2
-[    0.270722] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006100 pfn=1048964 nr=1
-[    0.270730] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006140 pfn=1048965 nr=1
-[    0.270738] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006180 pfn=1048966 nr=1
-[    0.270777] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea00040061c0 pfn=1048967 nr=1
-[    0.270786] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006200 pfn=1048968 nr=1
-[    0.270792] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006240 pfn=1048969 nr=1
-[    0.270833] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006300 pfn=1048972 nr=4
-[    0.270891] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006280 pfn=1048970 nr=1
-[    0.270980] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea00040062c0 pfn=1048971 nr=1
-[    0.271071] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006400 pfn=1048976 nr=1
-[    0.271156] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006440 pfn=1048977 nr=1
-[    0.271185] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006480 pfn=1048978 nr=2
-[    0.271301] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006500 pfn=1048980 nr=1
-[    0.271655] Dynamic Preempt: lazy
-[    0.271662] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006580 pfn=1048982 nr=2
-[    0.271752] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006600 pfn=1048984 nr=4
-[    0.271762] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004010000 pfn=1049600 nr=4
-[    0.271824] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006540 pfn=1048981 nr=1
-[    0.271916] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006700 pfn=1048988 nr=2
-[    0.271964] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006780 pfn=1048990 nr=1
-[    0.272099] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea00040067c0 pfn=1048991 nr=1
-[    0.272138] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006800 pfn=1048992 nr=2
-[    0.272144] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006a00 pfn=1049000 nr=8
-[    0.272249] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006c00 pfn=1049008 nr=8
-[    0.272319] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006880 pfn=1048994 nr=2
-[    0.272351] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006900 pfn=1048996 nr=4
-[    0.272424] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004006e00 pfn=1049016 nr=8
-[    0.272485] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008000 pfn=1049088 nr=8
-[    0.272535] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008200 pfn=1049096 nr=2
-[    0.272600] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008400 pfn=1049104 nr=8
-[    0.272663] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008300 pfn=1049100 nr=4
-[    0.272694] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008280 pfn=1049098 nr=2
-[    0.272708] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008600 pfn=1049112 nr=8
+--
+2.52.0
 
-[    0.272924] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008880 pfn=1049122 nr=2
-[    0.272934] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008900 pfn=1049124 nr=2
-[    0.272952] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008c00 pfn=1049136 nr=4
-[    0.273035] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008980 pfn=1049126 nr=2
-[    0.273062] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008e00 pfn=1049144 nr=8
-[    0.273674] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008d00 pfn=1049140 nr=1
-[    0.273884] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008d80 pfn=1049142 nr=2
-[    0.273943] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009000 pfn=1049152 nr=2
-[    0.274379] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009080 pfn=1049154 nr=2
-[    0.274575] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009200 pfn=1049160 nr=8
-[    0.274617] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009100 pfn=1049156 nr=4
-[    0.274794] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009400 pfn=1049168 nr=2
-[    0.274840] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009480 pfn=1049170 nr=2
-[    0.275057] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009500 pfn=1049172 nr=2
-[    0.275092] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009580 pfn=1049174 nr=2
-[    0.275134] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009600 pfn=1049176 nr=8
-[    0.275211] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009800 pfn=1049184 nr=4
-[    0.275510] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009900 pfn=1049188 nr=2
-[    0.275548] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009980 pfn=1049190 nr=2
-[    0.275976] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009a00 pfn=1049192 nr=8
-[    0.275987] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009c00 pfn=1049200 nr=2
-[    0.276139] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009c80 pfn=1049202 nr=2
-[    0.276152] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004008d40 pfn=1049141 nr=1
-[    0.276242] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009d00 pfn=1049204 nr=1
-[    0.276358] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009d40 pfn=1049205 nr=1
-[    0.276444] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009d80 pfn=1049206 nr=1
-[    0.276526] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009dc0 pfn=1049207 nr=1
-[    0.276615] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009e00 pfn=1049208 nr=1
-[    0.276696] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009e40 pfn=1049209 nr=1
-[    0.276792] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009e80 pfn=1049210 nr=1
-[    0.276827] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009f00 pfn=1049212 nr=2
-[    0.276891] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009ec0 pfn=1049211 nr=1
-[    0.276999] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009f80 pfn=1049214 nr=1
-[    0.277082] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea0004009fc0 pfn=1049215 nr=1
-[    0.277172] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea000400a000 pfn=1049216 nr=1
-[    0.277257] __pgalloc_tag_add: get_page_tag_ref failed! 
-page=ffffea000400a040 pfn=1049217 nr=1
-
-and so on.
-
-
-> I think your earlier patch can effectively detect these early
-> allocations and suppress the warnings. We should also mark these
-> allocations with CODETAG_FLAG_INACCURATE.
-
-Thanks to an excellent AI review, I realized there are issues with
-
-my original patch. One problem is the 256-element array; another
-
-is that it involves allocation and free operations — meaning we need
-
-to record entries at __pgalloc_tag_add and remove them at __pgalloc_tag_sub,
-
-which introduces a noticeable overhead. I'm wondering if we can instead 
-set a flag
-
-bit in page flags during the early boot stage, which I'll refer to as 
-EARLY_ALLOC_FLAGS.
-
-Then, in __pgalloc_tag_sub, we first check for EARLY_ALLOC_FLAGS. If 
-set, we clear the
-
-flag and return immediately; otherwise, we perform the actual 
-subtraction of the tag count.
-
-This approach seems somewhat similar to the idea behind 
-mem_profiling_compressed.
-
-I would appreciate your valuable feedback and any better suggestions you 
-might have.
-
-Thanks
-
-Hao
-
-> Thanks,
-> Suren.
->
->>
->> Thanks
->>
->> Hao
->>
->>>> Thanks.
->>>>
->>>>
->>>>>>>> If the slab cache has no free objects, it falls back
->>>>>>>> to the buddy allocator to allocate memory. However, at this point page_ext
->>>>>>>> is not yet fully initialized, so these newly allocated pages have no
->>>>>>>> codetag set. These pages may later be reclaimed by KASAN,which causes
->>>>>>>> the warning to trigger when they are freed because their codetag ref is
->>>>>>>> still empty.
->>>>>>>>
->>>>>>>> Use a global array to track pages allocated before page_ext is fully
->>>>>>>> initialized, similar to how kmemleak tracks early allocations.
->>>>>>>> When page_ext initialization completes, set their codetag
->>>>>>>> to empty to avoid warnings when they are freed later.
->>>>>>>>
->>>>>>>> ...
->>>>>>>>
->>>>>>>> --- a/include/linux/alloc_tag.h
->>>>>>>> +++ b/include/linux/alloc_tag.h
->>>>>>>> @@ -74,6 +74,9 @@ static inline void set_codetag_empty(union codetag_ref *ref)
->>>>>>>>
->>>>>>>>     #ifdef CONFIG_MEM_ALLOC_PROFILING
->>>>>>>>
->>>>>>>> +bool mem_profiling_is_available(void);
->>>>>>>> +void alloc_tag_add_early_pfn(unsigned long pfn);
->>>>>>>> +
->>>>>>>>     #define ALLOC_TAG_SECTION_NAME       "alloc_tags"
->>>>>>>>
->>>>>>>>     struct codetag_bytes {
->>>>>>>> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
->>>>>>>> index 58991ab09d84..a5bf4e72c154 100644
->>>>>>>> --- a/lib/alloc_tag.c
->>>>>>>> +++ b/lib/alloc_tag.c
->>>>>>>> @@ -6,6 +6,7 @@
->>>>>>>>     #include <linux/kallsyms.h>
->>>>>>>>     #include <linux/module.h>
->>>>>>>>     #include <linux/page_ext.h>
->>>>>>>> +#include <linux/pgalloc_tag.h>
->>>>>>>>     #include <linux/proc_fs.h>
->>>>>>>>     #include <linux/seq_buf.h>
->>>>>>>>     #include <linux/seq_file.h>
->>>>>>>> @@ -26,6 +27,82 @@ static bool mem_profiling_support;
->>>>>>>>
->>>>>>>>     static struct codetag_type *alloc_tag_cttype;
->>>>>>>>
->>>>>>>> +/*
->>>>>>>> + * State of the alloc_tag
->>>>>>>> + *
->>>>>>>> + * This is used to describe the states of the alloc_tag during bootup.
->>>>>>>> + *
->>>>>>>> + * When we need to allocate page_ext to store codetag, we face an
->>>>>>>> + * initialization timing problem:
->>>>>>>> + *
->>>>>>>> + * Due to initialization order, pages may be allocated via buddy system
->>>>>>>> + * before page_ext is fully allocated and initialized. Although these
->>>>>>>> + * pages call the allocation hooks, the codetag will not be set because
->>>>>>>> + * page_ext is not yet available.
->>>>>>>> + *
->>>>>>>> + * When these pages are later free to the buddy system, it triggers
->>>>>>>> + * warnings because their codetag is actually empty if
->>>>>>>> + * CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled.
->>>>>>>> + *
->>>>>>>> + * Additionally, in this situation, we cannot record detailed allocation
->>>>>>>> + * information for these pages.
->>>>>>>> + */
->>>>>>>> +enum mem_profiling_state {
->>>>>>>> +     DOWN,                   /* No mem_profiling functionality yet */
->>>>>>>> +     UP                      /* Everything is working */
->>>>>>>> +};
->>>>>>>> +
->>>>>>>> +static enum mem_profiling_state mem_profiling_state = DOWN;
->>>>>>>> +
->>>>>>>> +bool mem_profiling_is_available(void)
->>>>>>>> +{
->>>>>>>> +     return mem_profiling_state == UP;
->>>>>>>> +}
->>>>>>>> +
->>>>>>>> +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
->>>>>>>> +
->>>>>>>> +#define EARLY_ALLOC_PFN_MAX          256
->>>>>>>> +
->>>>>>>> +static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX];
->>>>>>> It's unfortunate that this isn't __initdata.
->>>>>>>
->>>>>>>> +static unsigned int early_pfn_count;
->>>>>>>> +static DEFINE_SPINLOCK(early_pfn_lock);
->>>>>>>> +
->>>>>>>>
->>>>>>>> ...
->>>>>>>>
->>>>>>>> --- a/mm/page_alloc.c
->>>>>>>> +++ b/mm/page_alloc.c
->>>>>>>> @@ -1293,6 +1293,13 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
->>>>>>>>                  alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
->>>>>>>>                  update_page_tag_ref(handle, &ref);
->>>>>>>>                  put_page_tag_ref(handle);
->>>>>>>> +     } else {
->>>>>> This branch can be marked as "unlikely".
->>>>>>
->>>>>>>> +             /*
->>>>>>>> +              * page_ext is not available yet, record the pfn so we can
->>>>>>>> +              * clear the tag ref later when page_ext is initialized.
->>>>>>>> +              */
->>>>>>>> +             if (!mem_profiling_is_available())
->>>>>>>> +                     alloc_tag_add_early_pfn(page_to_pfn(page));
->>>>>>>>          }
->>>>>>>>     }
->>>>>>> All because of this, I believe.  Is this fixable?
->>>>>>>
->>>>>>> If we take that `else', we know we're running in __init code, yes?  I
->>>>>>> don't see how `__init pgalloc_tag_add_early()' could be made to work.
->>>>>>> hrm.  Something clever, please.
->>>>>> We can have a pointer to a function that is initialized to point to
->>>>>> alloc_tag_add_early_pfn, which is defined as __init and uses
->>>>>> early_pfns which now can be defined as __initdata. After
->>>>>> clear_early_alloc_pfn_tag_refs() is done we reset that pointer to
->>>>>> NULL. __pgalloc_tag_add() instead of calling alloc_tag_add_early_pfn()
->>>>>> directly checks that pointer and if it's not NULL then calls the
->>>>>> function that it points to. This way __pgalloc_tag_add() which is not
->>>>>> an __init function will be invoking alloc_tag_add_early_pfn() __init
->>>>>> function only until we are done with initialization. I haven't tried
->>>>>> this but I think that should work. This also eliminates the need for
->>>>>> mem_profiling_state variable since we can use this function pointer
->>>>>> instead.
->>>>>>
->>>>>>
 
