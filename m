@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A711FF532C0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 01:28:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED0ABF532C8
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 01:28:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E1F36B0092; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
+	id 898986B0093; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B91D6B0093; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
+	id 821776B0095; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F6186B0095; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
+	id 737A06B0096; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 01FC36B0092
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:28:56 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7EDB1F61C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D38A6B0093
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:28:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C50A4BE764
 	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:28:56 +0000 (UTC)
-X-FDA: 84579222672.04.B7F2237
+X-FDA: 84579222672.05.4EE3D7C
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D783814000E
+	by imf18.hostedemail.com (Postfix) with ESMTP id ECE031C0010
 	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:28:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=YnWJ9ElD;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf23.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=UUVp0Lic;
+	spf=pass (imf18.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=UUVp0Lic;
+	spf=pass (imf18.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774315735; a=rsa-sha256;
 	cv=none;
-	b=YD6Cub6er2R0GSmah7CibfegF8EnP0HQoE4nLk/tDddKB2CdBZgmhuBgBJJOUOvDRIrfXp
-	KwuLha6x6r7kU4r8CxzdfvnnjPhPNV9KUAlwB64Ok7IHwvBDo9jb6jdipikH7/9BIrm6qf
-	1FBPIQw6azdy3AGdofqfYybWZsuVO2E=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=YnWJ9ElD;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf23.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com
+	b=hQNNAVDfcWZOVj4XvwFCc5Qep/4X8mnaF2Ixduiyh9o5HzO9CP2Nn4BVlcCbWT1W0P3hsW
+	KWmS2Cg6aBx7ziTsb9aveEJOsKL9PsDwwDv2tCL4AKohn1t+uJ+oEzKIkUUILEvjGD6A05
+	ODP86wfN2wf2+EIq6Vu3Z/6reo9QAmM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774315735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W6JRFOUadqjciaiNHE1QDofRIxwv1kmNDZZ2Wj8Ios4=;
-	b=umx3l9DRVnL/91dHqCvzlWvQqaW3UbRVHfPp4/1SoLfkQUg6YWT+gxq3a+k0050MRQk2OL
-	v8vQh8SsH4eMSmyjoEwqs1DGY/J5lNyWfVWVHJpqyfBLRqBtIO3zoIjfm7pZZD9SxyzcRe
-	vI/zg6hjpTOyil52T3I53Cn6LAEZCT0=
+	bh=Vl65OewpyCNb1x+ocrpJYTSNh8NK5VQ+ZXQ5NOHIbn0=;
+	b=GIs52UgmQC2CLKyx66oRwXdeuuK5dRD4Nr5QiSAaAV7YGr29uVDdbn1G2gwIFChfbfbI8O
+	OZfDkNX7rlysB8+8Rze9aS75P++NP1vhvLdhFAZi+l/Tf9PG/RyA8Ruae9Mx5Ajtxby3HG
+	+ysCDu16tako/2SKiRvMY4Czcz4bOk0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=W6JRFOUadqjciaiNHE1QDofRIxwv1kmNDZZ2Wj8Ios4=; b=YnWJ9ElDJrJ3NE6m8liGiTosd8
-	ybIFtdCxq4+uGxr0YUoML5Ie4NFc3ZRtUgXVtjfyMvDgiQ1HEimnkEtYs/fEMjzzVDl7dBm6fGdnh
-	U/AkPcYscEjH4ztWCgUuD6DIwGjquju7iyDuC0y8fzslplZdJnAgz8Fgf5JPldCzjD+/tpOin4wDq
-	G4sXk3gFYN0vpgWv8mHtxKGDWba9xJQ9n/y0PZDpCOP4dvaKu3tKsKjhRB09mXmobwkoX+H0Ti3zN
-	y2UHdHmrSGtbZ4G59/TatYnuWdSenszH3SSKQFnfUqRqXGj4Qp356UKE0F6DKPjFIDhxRwruuCFJp
-	eb6buPJQ==;
+	bh=Vl65OewpyCNb1x+ocrpJYTSNh8NK5VQ+ZXQ5NOHIbn0=; b=UUVp0LicBjb96wh5AXNZ3wFGBA
+	BB9wP/mHQWju/1m3lCwIBLKBI96h/oKA6YpMkEWwCQ9AxehRtJ2dqUKZ0O0JX41n6DBd5GJF62DWi
+	iVWkGgxxdU8rzQP5w5C4TkhBjEDvlY+g705KMYtY1t4II+OPuuL+uLoNdJgWvDaPZm23AN8zi4wpy
+	pg2FvX2YbemW2d9EbjKllhjFcIaShhhBWsqmLLI1qllY/y9P9/T5o2DNbubnq7a2S99uHP8OILlNX
+	XA2KLPSybXgezXdrJ8lgSKYocpmnycBhD4cC5JtGkFLw+dG9oV3/rABzvly+YjsbKyHoYFOFmR/4a
+	RkqVBzfQ==;
 Received: from [179.93.15.111] (helo=localhost)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1w4qZc-0058EB-PU; Tue, 24 Mar 2026 02:28:49 +0100
+	id 1w4qZg-0058EG-Bd; Tue, 24 Mar 2026 02:28:52 +0100
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -74,22 +74,23 @@ Cc: linux-kernel@vger.kernel.org,
 	Mike Rapoport <rppt@kernel.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	SeongJae Park <sj@kernel.org>
-Subject: [PATCH v4 1/2] mm/memblock: Print out errors on reserve_mem parser
-Date: Mon, 23 Mar 2026 22:22:17 -0300
-Message-ID: <20260324012839.1991765-1-gpiccoli@igalia.com>
+Subject: [PATCH v4 2/2] mm/memblock: Add reserve_mem debugfs info
+Date: Mon, 23 Mar 2026 22:22:18 -0300
+Message-ID: <20260324012839.1991765-2-gpiccoli@igalia.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260318190816.1811325-1-gpiccoli@igalia.com>
+In-Reply-To: <20260324012839.1991765-1-gpiccoli@igalia.com>
 References: <20260318190816.1811325-1-gpiccoli@igalia.com>
+ <20260324012839.1991765-1-gpiccoli@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D783814000E
-X-Stat-Signature: sbb1a4zbm8hhmk7ytbpa777jon7rymq3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ECE031C0010
+X-Stat-Signature: s6un6ruzzrg4x8ytsfe4jtumey6u8ajp
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774315734-861705
-X-HE-Meta: U2FsdGVkX1/YfxzCNgENtcm8comnhljJgwtCfYMSP8LH3oI5DLIGK5MozSPE1ZtRFkgFq1lZfHdi803r5M8xtCbNdEV/0bK2uFzWLVDS+fZ2tFV/iKDeQN/ZIf9h+SKMMRfnI1N+3i5S0IFLb2IKrPD1wJ7ECjVnw0CxuP+6uwYtp8PwGj+hLQrWdyMGpGJP+NO26dLHdIWhl3+W6Wubu14KUi41Kx85xFZ4Nmw/s2U04C357bY7Th3TO3gAm1ZnzWNPAL4I1YSyjilDCmeQe5JpUWvQleFddMm0qbNkOI9HmxmOJ7pcHv8pEz0vnED8rhCHxzqEQnif4boGgxLe/8Mj39tiNNdjqU7G9n9zeoVMGBpMMDOntCWsoPh/7WnKIFAUDY08KUfPzBgS3kxhdXhsXB06CRyGThz01KGHgomsY/tfSy0fCFdwJ0YxmJYcmOSvny3FXlKKboNUTXldVWFMmCczORO+tVkx6EN5LqNTLj/O6RWP4LvtgXAA9cUewbinMEWauiXOoxYZa3lMMtGkQw/JmRK63qMTqM+BCFlCKoeaeee2KUFelHBwq4njGz7rWiImZe44xGE6kuyAADdeY0DOSx1oXk8+mL0+C3nr3NYdQZe5vVvp4hk+YusvyULbtW2+Y1kbze0mg9MZCBHXV9cI9ImquI6eaQQFgaB6FF6ZRVA7+72MqVg2B6DXFtpa958VZJjLEzRlvGW6zKvfWFklrQhQOvMlgFVj/u0ycpXbtmD6Qt/56j3pXE71hISzweLbgbJauLx9zbyzUvnCumZNF9rmNCPXb+dYv/paXLok5PEQlRiCzIPjo8CJYmYbjVxQGn4IKFRLY6ctifYh7ZOuKGjZe2V1MdQ86q4HANz2Nm0aryrVVDTVCjLYW6Oo3X0DLJAOtbA3DyVoS2YCcgHRCIcMAheUTB5zsySuIStgBdinv6Afe1zs+jYGnR5EimYVneCWeUivh68
- ax4h1owD
- Lc+ELYW9DykRKcPsL741SL/nL5Seyb+TAklfN2OMOtIgOrdSNpHRJ0jB+9G2Smodnp3bJk5ho4j1mUdHA3A9qNmmP1NrICvCm+mOdb1y0EiAKiOZh7a9iLb6dMc7gl3beMTDYUVb84Q1RY82qxKUKR8x1je/GDnyDF7ezypx19Wv+Bq4efYFEsU4Pm7MnnUrQZT2jx1bolQCKCnxyrosHBvCMgyQN28LJN+hFkNnRfe0vQmE//9LwmyUporwPaAj/onk0sqo/DEKsuH5f3l5jEm4j3649o/kt6+itnYsf1Ur/ZNkzb9c5K/rslu6gHyBXmrv0hKNJikLTftKtltVwvuWhp6uFFUZZV5Bx82FC4n1KQCZQyKKTf9UqgPt5Blykju6VQgOb3+lqo4fzVS+L6a1SKK0+lYcAPMkVKLmxjY5/T5aNwxjZK3iCxBW6v33yF34Ik4LF5rDoBlU=
+X-HE-Tag: 1774315734-621505
+X-HE-Meta: U2FsdGVkX19d2fIhfhVWEJ2wJAwbIInIM2HFKO5M9iG7947iK/t6Gohrka4pk1nV0fi5KVKKqWn1lnmpEKIQvWa+QSrDaENfJCJ6Hc29AYz13JczBjqlooeHeI7B5kT8/427Opzh9V+gTHa2bMtLxW6dPQ4emcxIE4a6aGGZKyFt0/YIGfp3JcZRfHuTpQoX8LK4tM+7x93Gl6ekXdBXgX/8ZLC0w2nAIDiIQ1lmQorPo5NmJlG1HpaJstAcEJi8D9HY7BsDdj5neaIKdcA3CYtJkolpFyl4WsUhVh4vCoTxyVc6isuiNRQSmty9LUWdu312KwrLjcbF0XgeZVNKe5jyMfAqizyiM79maoNB7H/mGBrYw5ys0ohYbE2nFUMkDfSS96r+r64I3xp96YwgmzCVk8tLOdYupyeAZwZINvzYXQpDwMiKI9PZgmFhnJ92ot1QEBVLUMjy4iMA1MChdtatl/MuGmW/8Gl4c4WRq2dLGjQBEkWcYAfGh3WOCbnlxYeQjhscqV2A1iuE4SWr763Y2HLuxgIu9mQNWemkB5qYqR+3tX78kV6CFN/AIll//CpFCljautiWxb98KQ/vZDbavlrtEDkbKlGs1jE5BhLa+PsfiaxGOrEJkqLI8UbidT84Q1+jWMr3gV2NwD5M52Vjf4x5rpexhHFecgkpgv7meHPt/H3K0ImFPCLDYUm1Qj10kmHFq2CSV2B5GHlWr8pqqoqP4x9mUJkXx/MVoF8BXQ20TocJnjz8ZletUgCZMraJ+LlSZBTB2/ROUQnNdQj2GjObbloq4ASTJXnOVn8V4he6XtLXGzSvJyLid4yRPBERe5E8X6YCzvIvr0HsoV0xjHew0DZCgIdFhQuU8w1jl6yiuiFWzRDGxMpLWmUjL+vVYXZ1HJVhXgDuU9ztcgQfiwb7QUEhyXBBggOxEF8+ToYGpUfHUUrd0wF1HjUqHVR1zqJ0VfZFoZkBx5a
+ XLnsxCt0
+ ZPZS4Eb4iqgfXZ4F+Bzva2ZkE7JTEt9uRaiKuTvV74V5o3Epl0cuOTEh6IZVqqMKayB04T98XSyzvyTYo+9LMdP6Q8HJmowqcgHNPQd2+xcZFHWU+r1LF2/dNDMUWL+UxX+Ef3CmOeODavxu3qeyn5waKZZFcZhhGsBAaynql5T8O2YbbtcgjK8wtMA07Zqt2DmNpG4vnNFIYNxVrhbSFzBbAp9Ey9UB7TVMdy+vkL7WSmtjUehRSY/wSgry+S5A5LomeYMPhfrDS51WJATwnyVE8UbdqUtPzQ/Vm0j1I7219Pmp1hnWK7cTCzqQTraUJ2yXKM3xcNvBi8BG3kEtATyxWXAf30xa3miTMj2HznGvutt14NazShi5lLJitAvhd7vLIZY8OXd1eGKHorqwGwqECX+cIgJ5b36CxWflFzpbFyeUlKTdtQeM8o68nuixi7MxczMtz+nSijPx1QRVEZhGGr6e+v6/44sxCofSncT7+8Xg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,106 +98,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The parsing of kernel parameter "reserve_mem=" is subject to
-multiple failures, like duplicate naming, malformed expression
-or even lack of available memory. Right now, all of these fail
-silently. Let's add some messages so the kernel log can provide
-useful information in case of failures.
+When using the "reserve_mem" parameter, users aim at having an
+area that (hopefully) persists across boots, so pstore infrastructure
+(like ramoops module) can make use of that to save oops/ftrace logs,
+for example.
+
+There is no easy way to determine if this kernel parameter is properly
+set though; the kernel doesn't show information about this memory in
+memblock debugfs, neither in /proc/iomem nor dmesg. This is a relevant
+information for tools like kdumpst[0], to determine if it's reliable
+to use the reserved area as ramoops persistent storage; checking only
+/proc/cmdline is not sufficient as it doesn't tell if the reservation
+effectively succeeded or not.
+
+Add here a new file under memblock debugfs showing properly set memory
+reservations, with name and size as passed to "reserve_mem". Notice that
+if no "reserve_mem=" is passed on command-line or if the reservation
+attempts fail, the file is not created.
+
+[0] https://aur.archlinux.org/packages/kdumpst
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Mike Rapoport <rppt@kernel.org>
 Cc: Steven Rostedt <rostedt@goodmis.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: SeongJae Park <sj@kernel.org>
 Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 ---
 
-V4: no changes.
+Hi folks, here is the V4 with the changes suggested.
+Thanks for reviews and suggestions!
+
+V4:
+- s/memblock_debugfs_make_dirs/memblock_debugfs_expose_arrays/g
+  (thanks Mike, apologies for my braino!)
+
+- Didn't change the code order of `#ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP`
+  (Mike also - thanks)
 
 V3 thread: https://lore.kernel.org/r/20260318190816.1811325-1-gpiccoli@igalia.com/
 
 
- mm/memblock.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ mm/memblock.c                                 | 48 +++++++++++++++++--
+ tools/testing/memblock/linux/string_helpers.h | 10 ++++
+ 2 files changed, 54 insertions(+), 4 deletions(-)
+ create mode 100644 tools/testing/memblock/linux/string_helpers.h
 
 diff --git a/mm/memblock.c b/mm/memblock.c
-index b3ddfdec7a80..ac08d7f8c15e 100644
+index ac08d7f8c15e..ef9c0bf59338 100644
 --- a/mm/memblock.c
 +++ b/mm/memblock.c
-@@ -2642,23 +2642,25 @@ static int __init reserve_mem(char *p)
- 	int len;
+@@ -17,6 +17,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/memblock.h>
+ #include <linux/mutex.h>
++#include <linux/string_helpers.h>
  
- 	if (!p)
--		return -EINVAL;
-+		goto err_param;
- 
- 	/* Check if there's room for more reserved memory */
--	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES)
-+	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES) {
-+		pr_err("reserve_mem: no more room for reserved memory\n");
- 		return -EBUSY;
-+	}
- 
- 	oldp = p;
- 	size = memparse(p, &p);
- 	if (!size || p == oldp)
--		return -EINVAL;
-+		goto err_param;
- 
- 	if (*p != ':')
--		return -EINVAL;
-+		goto err_param;
- 
- 	align = memparse(p+1, &p);
- 	if (*p != ':')
--		return -EINVAL;
-+		goto err_param;
- 
- 	/*
- 	 * memblock_phys_alloc() doesn't like a zero size align,
-@@ -2672,7 +2674,7 @@ static int __init reserve_mem(char *p)
- 
- 	/* name needs to have length but not too big */
- 	if (!len || len >= RESERVE_MEM_NAME_SIZE)
--		return -EINVAL;
-+		goto err_param;
- 
- 	/* Make sure that name has text */
- 	for (p = name; *p; p++) {
-@@ -2680,11 +2682,13 @@ static int __init reserve_mem(char *p)
- 			break;
- 	}
- 	if (!*p)
--		return -EINVAL;
-+		goto err_param;
- 
- 	/* Make sure the name is not already used */
--	if (reserve_mem_find_by_name(name, &start, &tmp))
-+	if (reserve_mem_find_by_name(name, &start, &tmp)) {
-+		pr_err("reserve_mem: name \"%s\" was already used\n", name);
- 		return -EBUSY;
-+	}
- 
- 	/* Pick previous allocations up from KHO if available */
- 	if (reserve_mem_kho_revive(name, size, align))
-@@ -2692,12 +2696,17 @@ static int __init reserve_mem(char *p)
- 
- 	/* TODO: Allocation must be outside of scratch region */
- 	start = memblock_phys_alloc(size, align);
--	if (!start)
-+	if (!start) {
-+		pr_err("reserve_mem: memblock allocation failed\n");
- 		return -ENOMEM;
-+	}
- 
- 	reserved_mem_add(start, size, name);
- 
- 	return 1;
-+err_param:
-+	pr_err("reserve_mem: empty or malformed parameter\n");
-+	return -EINVAL;
+ #ifdef CONFIG_KEXEC_HANDOVER
+ #include <linux/libfdt.h>
+@@ -2710,7 +2711,8 @@ static int __init reserve_mem(char *p)
  }
  __setup("reserve_mem=", reserve_mem);
  
+-#if defined(CONFIG_DEBUG_FS) && defined(CONFIG_ARCH_KEEP_MEMBLOCK)
++#ifdef CONFIG_DEBUG_FS
++#ifdef CONFIG_ARCH_KEEP_MEMBLOCK
+ static const char * const flagname[] = {
+ 	[ilog2(MEMBLOCK_HOTPLUG)] = "HOTPLUG",
+ 	[ilog2(MEMBLOCK_MIRROR)] = "MIRROR",
+@@ -2757,10 +2759,8 @@ static int memblock_debug_show(struct seq_file *m, void *private)
+ }
+ DEFINE_SHOW_ATTRIBUTE(memblock_debug);
+ 
+-static int __init memblock_init_debugfs(void)
++static inline void memblock_debugfs_expose_arrays(struct dentry *root)
+ {
+-	struct dentry *root = debugfs_create_dir("memblock", NULL);
+-
+ 	debugfs_create_file("memory", 0444, root,
+ 			    &memblock.memory, &memblock_debug_fops);
+ 	debugfs_create_file("reserved", 0444, root,
+@@ -2769,7 +2769,47 @@ static int __init memblock_init_debugfs(void)
+ 	debugfs_create_file("physmem", 0444, root, &physmem,
+ 			    &memblock_debug_fops);
+ #endif
++}
+ 
++#else
++
++static inline void memblock_debugfs_expose_arrays(struct dentry *root) { }
++
++#endif /* CONFIG_ARCH_KEEP_MEMBLOCK */
++
++static int memblock_reserve_mem_show(struct seq_file *m, void *private)
++{
++	struct reserve_mem_table *map;
++	char txtsz[16];
++
++	for (int i = 0; i < reserved_mem_count; i++) {
++		map = &reserved_mem_table[i];
++		if (!map->size)
++			continue;
++
++		memset(txtsz, 0, sizeof(txtsz));
++		string_get_size(map->size, 1, STRING_UNITS_2, txtsz, sizeof(txtsz));
++		seq_printf(m, "%s\t\t(%s)\n", map->name, txtsz);
++	}
++
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(memblock_reserve_mem);
++
++static int __init memblock_init_debugfs(void)
++{
++	struct dentry *root;
++
++	if (!IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK) && !reserved_mem_count)
++		return 0;
++
++	root = debugfs_create_dir("memblock", NULL);
++
++	if (reserved_mem_count)
++		debugfs_create_file("reserve_mem_param", 0444, root, NULL,
++				    &memblock_reserve_mem_fops);
++
++	memblock_debugfs_expose_arrays(root);
+ 	return 0;
+ }
+ __initcall(memblock_init_debugfs);
+diff --git a/tools/testing/memblock/linux/string_helpers.h b/tools/testing/memblock/linux/string_helpers.h
+new file mode 100644
+index 000000000000..dbf015cfff31
+--- /dev/null
++++ b/tools/testing/memblock/linux/string_helpers.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_STRING_HELPERS_H_
++#define _LINUX_STRING_HELPERS_H_
++
++/*
++ * Header stub to avoid test build breakage; we don't need to
++ * actually implement string_get_size() as it's not used in the tests.
++ */
++
++#endif
 -- 
 2.50.1
 
