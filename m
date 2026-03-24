@@ -4,63 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BAEEF54AB3
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 13:26:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A033AF54AB3
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 13:27:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5D2B6B0088; Tue, 24 Mar 2026 09:26:56 -0400 (EDT)
+	id 187E16B0089; Tue, 24 Mar 2026 09:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C326F6B0089; Tue, 24 Mar 2026 09:26:56 -0400 (EDT)
+	id 15F536B008A; Tue, 24 Mar 2026 09:27:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4AFA6B008A; Tue, 24 Mar 2026 09:26:56 -0400 (EDT)
+	id 09C0D6B008C; Tue, 24 Mar 2026 09:27:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A4F3B6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:26:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 476B9BF735
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:26:56 +0000 (UTC)
-X-FDA: 84581032032.19.1DA4897
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ECCC36B0089
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:27:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AAE18BF755
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:27:00 +0000 (UTC)
+X-FDA: 84581032200.18.3F73A05
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 57ED440017
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:26:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="qz9/LE2J";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774358814; a=rsa-sha256;
-	cv=none;
-	b=ohowfF4he5NItZZ0qEXV/4yLbt0WxgO/rdEgxzQBDmINmPBOWCnHjFwlUOLquvwlbXSFSk
-	zl4W0Wb1Qfnu4/g2uXEMYZjQ2kId4XA8j5xP7Ldc99TiHHDjm/Fw/vXoHjpZ8YDit0YRFd
-	5ECyPKkK9ZybSe3RQmMuW9P2ytjd5eM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="qz9/LE2J";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+	by imf30.hostedemail.com (Postfix) with ESMTP id DC45580005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:26:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Lay9mLSy;
+	spf=pass (imf30.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774358814;
+	s=arc-20220608; t=1774358819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CGW3oZnlWDMssFiT2FJNVXXub1CzFVucAsTwaXwtzc8=;
-	b=NHqCX2rWOIV2iAzurkgtn7gRQlZFUOnGF86LuNBTfBt/SHXikJygeconRuLNvhncTZ/LlO
-	Q8lrGDYo3W2hf8bpsv7b4Gj/oJXbs0zGBBeaBbo0LcEliBcWAjoQ+DH2Y5iWpriNIyRVZk
-	ezHHifxX4jayuFiqd9L6vYk49Sakvn4=
+	bh=Pl7V8WZ4+4EkuBa8SHgtqFusaJ7NmYNu+zD484Ca5KI=;
+	b=1Qqv/U8YaQfrA6xb+6boIus6DShAW5NVwl+5Kox90g06+qHmvTLS52Q4xA59GbjWz9yb2U
+	TJ3lF45G2uUu4HXZyduRZkSyOZ6Yp99wJYjR86tmHa9v0ZGxklmDV2F4lTjQENnkCZj752
+	iHy/5mHA0ucsPlBO00bvFO2zFE/JuSc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Lay9mLSy;
+	spf=pass (imf30.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774358819; a=rsa-sha256;
+	cv=none;
+	b=25CicN8+sxhDBYlHPivftHVII23rVPvfzTJPvtu9bm/XNrTl/OsrP7r8ZPooJSuf2zZQog
+	j1oJEbf9zeu0wW7WdfZX6g/cm6WdqL7rVONsclAmGDw5/VdT78LLPe1/dcBOpUzIRRWtip
+	PbYn2TjHH53W2BNcNuiGxF5zL2pnO9E=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 76496153B;
-	Tue, 24 Mar 2026 06:26:47 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 10331153B;
+	Tue, 24 Mar 2026 06:26:52 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2EE9B3FAF5;
-	Tue, 24 Mar 2026 06:26:49 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BD88D3FAF5;
+	Tue, 24 Mar 2026 06:26:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774358813; bh=6NeQ5I/ff6UfPXauvKRLpzI5NjSjxiyGIQia/li5NEU=;
+	t=1774358818; bh=VhBd0SXQdStB06Ok11/K+KdOFOf0X6cWYTl++e9UdAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qz9/LE2JSIbVqazwJDD5xbnrNC8yrlPETODw0hoy5dMfyizDqY+VzFRYSDYSH/CKK
-	 /c9GnUSEMsxDYg+JwKJvfdE3F6zZf3HzVb5xugM3CNuCzTEyDWJOiPTXlZP3CT4dzm
-	 Fj5EDqeQR83LSB8bdK9Sen3d8QclJAhA7SuLh9v8=
+	b=Lay9mLSy/mKrnA78g3qAMj48V6DZbVTZSKlQxfMcJT4P58/f6HDrxW5nnkZWA7i8v
+	 N4bdPcm3lyqUJky+4QOxQgv/m7/DvVhfe7M0UEBh86twBM/C8F7Ld4W4yjKhXniipe
+	 nOYfehEH0YKbdvhLs6jdw2/ti3BtLFWLvp1/FCCE=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Arnd Bergmann <arnd@arndb.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -94,23 +93,22 @@ To: Arnd Bergmann <arnd@arndb.de>,
 	Ryan.Roberts@arm.com,
 	david.hildenbrand@arm.com
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH v2 1/3] vmalloc: add __GFP_SKIP_KASAN support
-Date: Tue, 24 Mar 2026 13:26:27 +0000
-Message-ID: <20260324132631.482520-2-usama.anjum@arm.com>
+Subject: [PATCH v2 2/3] kasan: skip HW tagging for all kernel thread stacks
+Date: Tue, 24 Mar 2026 13:26:28 +0000
+Message-ID: <20260324132631.482520-3-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260324132631.482520-1-usama.anjum@arm.com>
 References: <20260324132631.482520-1-usama.anjum@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jhxdq6585npgktgqz3dm33aonqikrw3g
-X-Rspamd-Queue-Id: 57ED440017
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DC45580005
+X-Stat-Signature: pzmm5uieemu6ez6oa578unj1ec3utn8c
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774358814-606287
-X-HE-Meta: U2FsdGVkX1/SNzVWFh/WgzgLV4K+8BWL/QPNiwuM1FlQ15PxZuYmXf9LyBa5DcluuvSSzuAghjHW/RV3HotGDRq7qRLs+yoN7D57Ye+Mp8NJjV5mC4skV+EaNb9sNblFn/t6+YNfMldoJsLZozkdgCop2iIc2vkHrpcW3NNbwMo51UGvBjXXqg1WslHMXL1kFZyEPwutnofI0rYOFEAIznP8Z5mW6sBn4a+VXrMXLDzhBKzxOtjdtlXnj0FoCMpeYjqt4dxikD+84VNgKQtntJKfUAEsMyUc0SaGZgGxVy49FZQ/1aDkwqRaRS5JWaYY9jLEpib7aAyR1SRrEqc4kp8r34tUKo28LM2Ki+wTqscXR+SpI9COYmLaUcpa9qe0tqH3vUaVMefhbbgSq13gQ6oS/+2WLyPf37BfkCDqPRoUbnvVHffcepGs7Y7XYQluyRnp2LxOhjfS7icVt9miP2RsFpo5fdd424Q6s4D1NHDd/+3w4Navz8L6/XakE+xgHb0SQZwVSceZPVLz3CwtVXyJ3V7lML/pyrCx6PyIMBhbYRw5OS/mP+aphZQ2NBrUS/bgLcOD/1mq3whMgjIZQETVLb/qyTQV8usdZZTNtNpxGypemmqmQuJf5i1Ozs2ILkjZDkTOBONeKj62VRpabTEYBHR+f4IYkpU3CyfHwkSR90zQk3aWIL2VLsbiRL69xHmtsb1ahMhONRwo93NASBfUEWsYKuWvuQS6bMIL1BT6vHu7V9F2JyGz6ftZTrNsOS21BkPp8JE7GyrLdSJoPZOFaV0Rnr5+RedCK3uSNtc3F1dN893QT9iXrkwRl3FFte/EF7GDL55DO4JLqAALihFrRGxjPcUScOzjDpcB2XrcoV2AqwEr998xFuw5CJAO5mGNO12d9lRkgdWvfJ/uXjF/3Ir4p2/+0WOsj+CuxRSwH9vXPl3EyTFteUZ9HzMAqU1TJwoJokYJP2mQvYU
- x6XziBgF
- fREGfq7jOvJtxw3HdySpR3kv66G7O58EZTWVqun967teM6vtWhZaR/m7pdH0z9G47wYdiNLPlLlEMB66ffJnsvjRdVf3grPlis+1fFVk7KqHwovelkX1xYxOvE5flL23hxEcGPhcj3QTaf5Qi/T5S5p51IZN01YPGtejtWx6M6CRovd+sOy6iQlDqYpNeCOpaQvjEqJs0QAICcaR1VB75+9gu22BciRD/z1o6BVRogIPupAO9hFvcjO30mNiVAHKu4LxwBrug0dNq73Q5lCMMLmB9szugHtHdlG3dnDMdQKuEd387pn4E4hFkFJHoXyPHrx920bd0KwcY4t0=
+X-HE-Tag: 1774358818-876484
+X-HE-Meta: U2FsdGVkX18bzvksBj3JQJEiwBDwNyBvd16a/LvKZ6yYIwDaAvfMdWNAL+sEVDUGd2jEmPoHhbR3/NVSTYgc0/Hce8sPIoNFFeFp5w8we57P5UCoh+2IhyqyRSUUnNUBYwardNnOSgq/B/JXCd+f4zIuv568u5v4uWA8Iqj+fFmq1M6fDFyDWMOuiB9p0PS6lhGT8gUIldZLTHYaoow59qRqDiSlPPqGvC0u0tkhCUSK1blMQNEqj+gkMTIMK+fo/+9cVwu6jy4vXCpbfXbCV0EaMHjjkLahT+eqQ6NYYukDoy07kdaNwg7LX2UQCayoathh/AQo5D4k7Y/8g6TJ39fE0kZcT7Mk6raYTgl4FCDZgBJAp+7niioGPSG6BtYMrGR+UuekaB/YuwtMQ5YDmaNcR8BqSDfWBP3XzpioGkn4hvjPsNcGWu/7eTnhdRDIQLxTO9tfJFRZi21hNciNh/WVlZP1eGZuUHke1x9SQO9OO5l8GlTX85DpqNrm9sDw6SXUwYiUe3jKrt0QRjTLP/Pizt0ywlnCdbykqBg4Zt0d4+XU9PPGAYcNL72zNIxZd1KAflZeJRG5ttDdpPEfingEuOV4x03pJ2vJMsJCr06/aXbdR3JFy2ROhiST0gPL+kf4riE8cfFexk2RE9lIVxceF3MMQ8iPewEOG5mHoi7xSOYjXZ4gQ4k5ht59tLjjCegbHG6U4Ah/7OJHz6CkEc1E1ci+BHd+GyFBzTV6y7FDp5getYWHw0F5flKHeYUPz0sno0v1bS7NA01cC89Opxi9ntoIzVsgI0qYN3HaDA8M1/w+fyfxtW5W2S1cVYVanaXeHfHnE/Owyx/R8aT/MqhV+6Ho+tW8wrDTg9iSqUTKBlMk2h4KQadenTToPu+lOUzA3VejHlmRvKtEI4DNx7V+nQINLn/lCDSVOKIgTjf/z0RHanephTRUQZxNKXtGIPv+0k6QhjRCq8fuNPp
+ d73lllRZ
+ Oe0JA3LUQfwI4zAey1ks8WceFbns/DaJDcA5/NYZhwLQzMfs2v2U9kcBQ/Z80tF+dtAp/pwmmU3QjktopqNdyTlVf1EtMvSc0tg+VI+ZCv4bM16jorom5lfSXhC9GE3mglEgOxzM/y0j6cWckiBcyq0i2k17ZjRP1lkiefPKkOeAwFWTMB8g8gy/qg0BjA87BaYjZiphs8y6lGKm5r70InCERfiqlw8MTibuvpwh5TvTipFaJllr9T5jPqU39hNBkZ7t0ok22bY4tePpj2laxQoHt4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,72 +116,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For allocations that will be accessed only with match-all pointers
-(e.g., kernel stacks), setting tags is wasted work. If the caller
-already set __GFP_SKIP_KASAN, don’t skip zeroing the pages and
-don’t set KASAN_VMALLOC_PROT_NORMAL so kasan_unpoison_vmalloc()
-returns early without tagging.
+HW-tag KASAN never checks kernel stacks because stack pointers carry the
+match-all tag, so setting/poisoning tags is pure overhead.
 
-Before this patch, __GFP_SKIP_KASAN wasn't being used with vmalloc
-APIs. So it wasn't being checked. Now its being checked and acted
-upon. Other KASAN modes are unchanged because __GFP_SKIP_KASAN isn't
-defined there.
+- Add __GFP_SKIP_KASAN to THREADINFO_GFP so every stack allocator that
+  uses it skips tagging (fork path plus arch users)
+- Add __GFP_SKIP_KASAN to GFP_VMAP_STACK for the fork-specific vmap
+  stacks.
+- When reusing cached vmap stacks, skip kasan_unpoison_range() if HW tags
+  are enabled.
 
-This is a preparatory patch for optimizing kernel stack allocations.
+Software KASAN is unchanged; this only affects tag-based KASAN.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
 Changes since v1:
-- Simplify skip conditions based on the fact that __GFP_SKIP_KASAN
-  is zero in non-hw-tags mode.
-- Add __GFP_SKIP_KASAN to GFP_VMALLOC_SUPPORTED list of flags
+- Specify _GFP_SKIP_KASAN in THREADINFO_GFP and GFP_VMAP_STACK to use
+  it everywhere and cover the missed locations
+- Update description
 ---
- mm/vmalloc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ include/linux/thread_info.h | 2 +-
+ kernel/fork.c               | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index c607307c657a6..69ae205effb46 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3939,7 +3939,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
- 				__GFP_NOFAIL | __GFP_ZERO |\
- 				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
- 				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
--				GFP_USER | __GFP_NOLOCKDEP)
-+				GFP_USER | __GFP_NOLOCKDEP | __GFP_SKIP_KASAN)
+diff --git a/include/linux/thread_info.h b/include/linux/thread_info.h
+index 051e429026904..307b8390fc670 100644
+--- a/include/linux/thread_info.h
++++ b/include/linux/thread_info.h
+@@ -92,7 +92,7 @@ static inline long set_restart_fn(struct restart_block *restart,
+ #define THREAD_ALIGN	THREAD_SIZE
+ #endif
  
- static gfp_t vmalloc_fix_flags(gfp_t flags)
- {
-@@ -3980,6 +3980,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
-  *
-  * %__GFP_NOWARN can be used to suppress failure messages.
-  *
-+ * %__GFP_SKIP_KASAN can be used to skip poisoning
-+ *
-  * Can not be called from interrupt nor NMI contexts.
-  * Return: the address of the area or %NULL on failure
+-#define THREADINFO_GFP		(GFP_KERNEL_ACCOUNT | __GFP_ZERO)
++#define THREADINFO_GFP		(GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_SKIP_KASAN)
+ 
+ /*
+  * flag set/clear/test wrappers
+diff --git a/kernel/fork.c b/kernel/fork.c
+index bb0c2613a5604..4bc7a03662109 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -207,7 +207,7 @@ static DEFINE_PER_CPU(struct vm_struct *, cached_stacks[NR_CACHED_STACKS]);
+  * accounting is performed by the code assigning/releasing stacks to tasks.
+  * We need a zeroed memory without __GFP_ACCOUNT.
   */
-@@ -4041,7 +4043,9 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
- 	 * kasan_unpoison_vmalloc().
- 	 */
- 	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
--		if (kasan_hw_tags_enabled()) {
-+		bool skip_kasan = gfp_mask & __GFP_SKIP_KASAN;
-+
-+		if (kasan_hw_tags_enabled() && !skip_kasan) {
- 			/*
- 			 * Modify protection bits to allow tagging.
- 			 * This must be done before mapping.
-@@ -4057,7 +4061,8 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+-#define GFP_VMAP_STACK (GFP_KERNEL | __GFP_ZERO)
++#define GFP_VMAP_STACK (GFP_KERNEL | __GFP_ZERO | __GFP_SKIP_KASAN)
+ 
+ struct vm_stack {
+ 	struct rcu_head rcu;
+@@ -345,7 +345,8 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
  		}
  
- 		/* Take note that the mapping is PAGE_KERNEL. */
--		kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
-+		if (!skip_kasan)
-+			kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
- 	}
+ 		/* Reset stack metadata. */
+-		kasan_unpoison_range(vm_area->addr, THREAD_SIZE);
++		if (!kasan_hw_tags_enabled())
++			kasan_unpoison_range(vm_area->addr, THREAD_SIZE);
  
- 	/* Allocate physical pages and map them into vmalloc space. */
+ 		stack = kasan_reset_tag(vm_area->addr);
+ 
 -- 
 2.47.3
 
