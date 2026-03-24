@@ -4,93 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE7BF532F6
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:51:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9741EF532F8
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:53:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16DE36B0005; Tue, 24 Mar 2026 04:51:44 -0400 (EDT)
+	id C469E6B0005; Tue, 24 Mar 2026 04:53:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F8AF6B0088; Tue, 24 Mar 2026 04:51:44 -0400 (EDT)
+	id BF6956B0088; Tue, 24 Mar 2026 04:53:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F020D6B0089; Tue, 24 Mar 2026 04:51:43 -0400 (EDT)
+	id ABF236B0089; Tue, 24 Mar 2026 04:53:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D82E66B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:51:43 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 801D2141859
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:51:43 +0000 (UTC)
-X-FDA: 84580338486.08.1C036B9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B1AB712000C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:51:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V5pA00vr;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 950806B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:53:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2396B91731
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:53:20 +0000 (UTC)
+X-FDA: 84580342560.01.EBEE748
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6B5771C0016
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:53:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ehx+GvCQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774342398; a=rsa-sha256;
+	cv=none;
+	b=UiE8TuZyUb6t60AdS9ghJDzWI8Gagv981WJ4EBngK36DoBEKYiCA1zVVpCu09acQjvlXor
+	xC7JVqk+Fg4k0cmRu1SGTxyaExn/ImB5Z/3i3LzKq1Pc0DHdtKi0gqf+ksIh8yZ3m4ON9o
+	JE4Tiyx0BeJP7jK1FjzfCAJRXCaWXFM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ehx+GvCQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774342301;
+	s=arc-20220608; t=1774342398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NCICq6GziYw2DkMPbM/9imafDghrvczfaD2uxYTB3qw=;
-	b=fvBWgUci1jMc/2z6xUnmhATGKEGYmYxujFvZp8+6XovwwW26YZR3MS4rLTwTompPefy62B
-	Tp/fkAx18CTB8RMiV7yi2kDnRdZIG4ZZP35Mc/mJLbLj8PYlDtK4bQXjiSq0te131oGmTp
-	jluGhBhwD4Z/Ly9qeLetQd9DMQwEAxk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V5pA00vr;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774342301; a=rsa-sha256;
-	cv=none;
-	b=uWNRC+i2lG2c/D7KRkbjU2twQarJ7iOAzR2zHrvntYLO/rkE9SAhLhP19xRShURb95/Gcd
-	k+zqM2yQX34ThwEtMsEv7psdbUtaSYeUhWL+0p1fbFqtFRhoHIJ9YtWZTJNSw/icfMLaDe
-	ZD075y1UJeo12gsLMKo3IZSvpwU1h8Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AACA643F26;
-	Tue, 24 Mar 2026 08:51:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F86DC19424;
-	Tue, 24 Mar 2026 08:51:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774342300;
-	bh=MCVEK7Uy7kSgqvx88xO+6jxwJM48WzBfVnlulZ4Y5GU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V5pA00vrKH1i6oryi7GAHi0gW0eV3NAk1n5gRsgixc4E3kw8aGUwWWIbqmVnYwNl0
-	 yqCHvkeu3cdvhJq18BCkmneulFmq4n6EXIWcs/cbp5jVyJ4bn8TLp0S+q59CYf79+5
-	 1bxhjAn/+flkbvLD68WAZEa4/P4dm+2tD/ZyMTtZ3xX1P/cdqeu+GenYrQT7lTcSQk
-	 XeXzwmRii7IENAyPcRcxW9Lhgj41Lhj4eL82nwKun6N7FbEaa1Hxe1SmEYRrRzdt3t
-	 MhSD9/P4q7qSwDwLb6AjALk7kJN3MEB9ynRSLHCYjVK07IyZkBc8/mueVACtsf2EZp
-	 za3qldnDkMDOw==
-Date: Tue, 24 Mar 2026 09:51:34 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, jack@suse.cz, 
-	shuah@kernel.org, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org, 
-	dmatlack@google.com, pratyush@kernel.org, skhawaja@google.com
-Subject: Re: [PATCH 1/2] liveupdate: prevent double management of files
-Message-ID: <20260324-langzeitfolgen-altgedienten-ccef17d19349@brauner>
-References: <20260321175808.57942-1-pasha.tatashin@soleen.com>
- <20260321175808.57942-2-pasha.tatashin@soleen.com>
- <CA+CK2bD2aNu-NByET4KkBP0n2j8WQE2zjxb4g-1cv2hYfjaRZQ@mail.gmail.com>
- <20260323-leibhaftig-blasinstrument-58ec408b3c40@brauner>
- <CA+CK2bC6S7pFCYR0XS1ZPxw9HKjWgxy=0DkszYNjMUi735o_1Q@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=cooa/41xI7d+DZUvbghWmkV6GAOYjQWfhrGJsw3E+Hc=;
+	b=CenJSgPapYBlYCA6wyYgLMS5viKeNUcI561KJNQkGFkUFE4EW8ewIjF+GzQ5uw2nsvC4xP
+	8PExvSj1Spnzyif5nzp0S7uomXWM3c5NLPSj+yzbfjeUmcwLAOIe88Y+ECMJNZ8cUYJ658
+	T0W6AEBPTAkbv1JV67v5W/yRFruciso=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774342395;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cooa/41xI7d+DZUvbghWmkV6GAOYjQWfhrGJsw3E+Hc=;
+	b=Ehx+GvCQR7JSE3G0Gcv67EFfJuYOYPtcS6CVJgMxW9nvVX1uHVU+O9ZtrvqPr1sZO9Vos8
+	RZ8pygTVO30fZj+U9PODUBVQ4GmxXMmPvam/Z9FB2sPnjVwxAHx9+mYbDoG3O+ES6AekQF
+	Rz7lQiIdgJAhpWLNyo2xOXvidlRKOE0=
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: peterz@infradead.org,
+	david@kernel.org,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com
+Subject: [PATCH v8 0/2] skip redundant sync IPIs when TLB flush sent them
+Date: Tue, 24 Mar 2026 16:52:36 +0800
+Message-ID: <20260324085238.44477-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bC6S7pFCYR0XS1ZPxw9HKjWgxy=0DkszYNjMUi735o_1Q@mail.gmail.com>
-X-Rspamd-Queue-Id: B1AB712000C
-X-Stat-Signature: u9hydaf673mqd9metstgs114didzubfd
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: by76qnkhxk9dy517aknja6dttocf897m
+X-Rspamd-Queue-Id: 6B5771C0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774342301-700401
-X-HE-Meta: U2FsdGVkX19/VBxukzIQzz5xCjTOywDlSDmxlSJ4EkwTABHQ3O9ypceU9ousSLFCYhhztLQEeAOa7Nk65w82iFwsy9U01MvfMlPjs8mRo1BAe9X43hWCmAUAnQoRFgnaxrf9VhUd7bWp/+DnNOKO5EXH5CjkmnfiQA9aMffJdVR1rCiXQL7OBrJwCVloaoe05h6iF6w/JgrW0eHcvTjaW6MtbmcXD2zUFrmat+svJ4eqMHYweKGzzvOigaTMAvwWdB3BuSgU6gZVHOqOlLABdO0ZeMkI5KY2uHmTzXog66kL+S4lkkINbTls1zqhZzjlBhHvrSVTjRE9SpqR9RVDT6cDotBa6eIZBS0ZTnUy0gFDi7yyZBsmPA4niLiMfB4gkQ1tr9/s4Xl92sgw+NNH0AE4OpxMgUG8WtjFW6l2isBzASgAy93bXURntIXa0XV/ktRFUOCG41hYPg/R6jgbxDeeXRIM9jpX/MXblMuv+Rpn24LSfeV2chNlHWBhIpt2Ovp5RbGpB3juMXL+xFumxOob7tlXz7g/h+3ZJ8RCBSW/wVwoI+vZHBm+qVcQwDCJtGgEQqphpIUGSI+/RuLwvU5Tom2RI3eA/QtWOR1Qgr5bWYoVdCNwBwqY7dzsRjn52r0atCUpai600rNVx/ZwYmU+28X4U/2o7WXKrSxB5s+krVRewp2WYMdR908N+p+6E+Pnehp4Ed+AAlyI83NW4pmdoea+7L5mUeeUqLOkS1vQUP7FtW0wrqoShaTSsNxONOt4lcxAAXQCloHAE2Lr9sSSebR84pVoZVPEZoGlP9acRRaO8+EHPdqLyqi0IkKNa9wdSl/GVpgLWtbD3YfYJvSHKcL3KNOtgiSci6k88an1iFz/ock071dWwFXnGwh0ZtgR7EvQuNw0Dnm4C4s4k0a9r+beSYMOZbVfp9NIuc3dUr2Vsc1gggiQHEW+q7YjKNMm0aU0byzoBduUyiA
- K6aveJU6
- ud478+Mqop5gTYW2erO91C9/pfkV+tps9GDtRmmCyE6lp9JFdAnw62rx5CZ05kAY/x0twcTv7TTgSlqoDs9HiXutrM5a8HpRzgPl6a6ZgE2juIVlvELhEHvhbhK1z/LYuPWXRtDBcrDDAmruyNu1IZJoRqclY1BreuP6Tq/pd6di6e7OtmUOj+4agI01FQD+xpYgWb/4EbWLkmUJcmudsiJqXsC2OBh+zKnDUemmNUVUuSvvOQZaUimm2qqwku18NvrIX4gYmBCo5yg/JuKqBeoZqJjft17+Xx/zh3QLJa8ZrjS7S9S3cMeWjlCROSl7W5ZV3bep4s6RtNE+wR06c6cvnd4jmFKS6CAswYUGycrUM/Gh7k0L5xVlK8IhWa+lVUf3vTK6QZyK/siheH1JfXLkZmnMe8mEZ4kXuUxTFvPBsu5BL6xoQXhn+t7D1+rTIhzRs1+7SE84UppeSYxSdJD1ZyA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774342398-888517
+X-HE-Meta: U2FsdGVkX1+YfBJJr7dQ6MSeHxe9GCcwteaBnhVvJswuT8dAmoR6gN50mumHZ+2aau/CkOJAnuvU7UgLnLFRFVit1QHEux8c26dAMqp3pUMwfSr22d2+OTMkQ6LgxXEo49Q0JUdZzYj7ATqqGJ6BwJBU8l12nb4HUDVHobYUlHqT+gp8ddqtKfkhZGTIdxmGpWm1ySfH9U8x8wNBsd+492rxvJHxOGEBztIYDzLpW4BiuSX85bIfzauI5R6iy95lj8OCKxj7M4UuPbvBJ2YcvcjJ7aytoOnrN1VWManeEyQf+FM6EJ6wTIuTYS/5cqmyKH5yyX0rky77dUYTD0CY4XzufFscoVrNLciMwl+xPDe5vHQ6ItRQyBYXgT0zSmt4DV2PuxD3fBhQppjZzqo0UvJeUCtltT+ieMD4Zu+q3bja2C/aieUFrypCcGZGttvj8EX25e8FkNC68+7bLGOKvoUdCeU0/o6DE/EgaQLcZXe7MdvqgCdp9lnVjTAw+JNr2TVjaQ0Z3f81tUXBc+S1J3Njvbr4XMOtnysIBf2d+9uTopowAMCMMO+4Rw2yX6O/kXo1gr6TURXNq+6kJV7VDRiJapE+bs6Hm1u8dM9EMkskzNRje6JwLgtEc7njSmD+KFFMIax6QlQ+0ddtN3w1EIY+7ASFiOX4pMAtAoLeMThaj4tIu6pHHaMnUbcRYFR97Urw+5pYKoxNkgctmGu9pK830YcESbHwMaJitzN/MzrTR+iDGraPQzXIG0EMr+F1i5c32yOW6qy3EYBDQE5ZW0opsPRvTOwYRrKfNNV94QXJ0dN7emSskqin8Ux+h/yypG4NaH2YkdCpxFHx+65JZCL4Ku50zAWPZGi69gYJQP3TfJj7h+mKXlA2LErj9wE4C/+qrN2AyvU3gj5o7dvMkoEZDq5RRhYOLJs6R590d2L2Ax+8iVtZ4wGKksMlv11uULacuG4UJXKuRdhuMod
+ ggDopvmp
+ ef18srkT9tN2LL7MR3ljd0nhWNwWCnZ7KSPj4+lK8gMLsXH9GQkqrqZBTSa09DTLoqOxHQtPb0l55yR1TMYI3fHnGtxfEEXN6jYcYdpJCopuAxXMr6uQBce1Ft3lNEJJqZzxIrn/u3nGpTpcFwZltXNLImuWwxilX81FCBPVUA62QR3e44u/Hok9690cI8x+yegzUhwx83JDc5CRDEqFiGABxbORSjb6tjTvgSBMtmGo1WPqQTdrBU66k2ZAjGmtKUdNoryrs8PNptW8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,206 +117,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 09:18:03AM -0400, Pasha Tatashin wrote:
-> On Mon, Mar 23, 2026 at 7:55 AM Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > On Sat, Mar 21, 2026 at 09:04:53PM -0400, Pasha Tatashin wrote:
-> > > On Sat, Mar 21, 2026 at 1:58 PM Pasha Tatashin
-> > > <pasha.tatashin@soleen.com> wrote:
-> > > >
-> > > > Currently, LUO does not prevent the same file from being managed twice
-> > > > across different active sessions.
-> > > >
-> > > > Add a new i_state flag I_LUO_MANAGED and update luo_preserve_file()
-> > > > to check and set this flag when a file is preserved, and clear it in
-> > > > luo_file_unpreserve_files() when it is released.
-> > > >
-> > > > Additionally, set this flag in luo_retrieve_file() after a file is
-> > > > successfully restored in the new kernel, and clear it in
-> > > > luo_file_finish() when the LUO session is finalized.
-> > > >
-> > > > This ensures that the same file (inode) cannot be managed by multiple
-> > > > sessions. If another session attempts to preserve an already managed
-> > > > file, it will now fail with -EBUSY.
-> > > >
-> > > > Acked-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> > > > Acked-by: Jan Kara <jack@suse.cz>
-> > > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > > > ---
-> > > >  include/linux/fs.h           |  5 ++++-
-> > > >  kernel/liveupdate/luo_file.c | 27 ++++++++++++++++++++++++---
-> > > >  2 files changed, 28 insertions(+), 4 deletions(-)
-> > > >
-> > > > diff --git a/include/linux/fs.h b/include/linux/fs.h
-> > > > index 23f36a2613a3..692a8be56f3c 100644
-> > > > --- a/include/linux/fs.h
-> > > > +++ b/include/linux/fs.h
-> > > > @@ -712,6 +712,8 @@ is_uncached_acl(struct posix_acl *acl)
-> > > >   * I_LRU_ISOLATING     Inode is pinned being isolated from LRU without holding
-> > > >   *                     i_count.
-> > > >   *
-> > > > + * I_LUO_MANAGED       Inode is being managed by a live update session.
-> > > > + *
-> > > >   * Q: What is the difference between I_WILL_FREE and I_FREEING?
-> > > >   *
-> > > >   * __I_{SYNC,NEW,LRU_ISOLATING} are used to derive unique addresses to wait
-> > > > @@ -744,7 +746,8 @@ enum inode_state_flags_enum {
-> > > >         I_CREATING              = (1U << 15),
-> > > >         I_DONTCACHE             = (1U << 16),
-> > > >         I_SYNC_QUEUED           = (1U << 17),
-> > > > -       I_PINNING_NETFS_WB      = (1U << 18)
-> > > > +       I_PINNING_NETFS_WB      = (1U << 18),
-> > > > +       I_LUO_MANAGED           = (1U << 19),
-> > > >  };
-> > > >
-> > > >  #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
-> > > > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> > > > index 5acee4174bf0..86911beeff71 100644
-> > > > --- a/kernel/liveupdate/luo_file.c
-> > > > +++ b/kernel/liveupdate/luo_file.c
-> > > > @@ -248,6 +248,7 @@ static bool luo_token_is_used(struct luo_file_set *file_set, u64 token)
-> > > >   * Context: Can be called from an ioctl handler during normal system operation.
-> > > >   * Return: 0 on success. Returns a negative errno on failure:
-> > > >   *         -EEXIST if the token is already used.
-> > > > + *         -EBUSY if the file descriptor is already preserved by another session.
-> > > >   *         -EBADF if the file descriptor is invalid.
-> > > >   *         -ENOSPC if the file_set is full.
-> > > >   *         -ENOENT if no compatible handler is found.
-> > > > @@ -276,6 +277,14 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
-> > > >         if (err)
-> > > >                 goto  err_fput;
-> > > >
-> > > > +       scoped_guard(spinlock, &file_inode(file)->i_lock) {
-> > > > +               if (inode_state_read(file_inode(file)) & I_LUO_MANAGED) {
-> > > > +                       err = -EBUSY;
-> > > > +                       goto err_free_files_mem;
-> > > > +               }
-> > > > +               inode_state_set(file_inode(file), I_LUO_MANAGED);
-> > > > +       }
-> > > > +
-> > > >         err = -ENOENT;
-> > > >         list_private_for_each_entry(fh, &luo_file_handler_list, list) {
-> > > >                 if (fh->ops->can_preserve(fh, file)) {
-> > > > @@ -286,11 +295,11 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
-> > > >
-> > > >         /* err is still -ENOENT if no handler was found */
-> > > >         if (err)
-> > > > -               goto err_free_files_mem;
-> > > > +               goto err_unpreserve_inode;
-> > > >
-> > > >         err = luo_flb_file_preserve(fh);
-> > > >         if (err)
-> > > > -               goto err_free_files_mem;
-> > > > +               goto err_unpreserve_inode;
-> > > >
-> > > >         luo_file = kzalloc_obj(*luo_file);
-> > > >         if (!luo_file) {
-> > > > @@ -320,6 +329,9 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
-> > > >         kfree(luo_file);
-> > > >  err_flb_unpreserve:
-> > > >         luo_flb_file_unpreserve(fh);
-> > > > +err_unpreserve_inode:
-> > > > +       scoped_guard(spinlock, &file_inode(file)->i_lock)
-> > > > +               inode_state_clear(file_inode(file), I_LUO_MANAGED);
-> > > >  err_free_files_mem:
-> > > >         luo_free_files_mem(file_set);
-> > > >  err_fput:
-> > > > @@ -363,6 +375,9 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
-> > > >                 luo_file->fh->ops->unpreserve(&args);
-> > > >                 luo_flb_file_unpreserve(luo_file->fh);
-> > > >
-> > > > +               scoped_guard(spinlock, &file_inode(luo_file->file)->i_lock)
-> > > > +                       inode_state_clear(file_inode(luo_file->file), I_LUO_MANAGED);
-> > > > +
-> > > >                 list_del(&luo_file->list);
-> > > >                 file_set->count--;
-> > > >
-> > > > @@ -609,6 +624,9 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
-> > > >         *filep = luo_file->file;
-> > > >         luo_file->retrieve_status = 1;
-> > > >
-> > > > +       scoped_guard(spinlock, &file_inode(luo_file->file)->i_lock)
-> > > > +               inode_state_set(file_inode(luo_file->file), I_LUO_MANAGED);
-> > > > +
-> > > >         return 0;
-> > > >  }
-> > > >
-> > > > @@ -701,8 +719,11 @@ int luo_file_finish(struct luo_file_set *file_set)
-> > > >
-> > > >                 luo_file_finish_one(file_set, luo_file);
-> > > >
-> > > > -               if (luo_file->file)
-> > > > +               if (luo_file->file) {
-> > > > +                       scoped_guard(spinlock, &file_inode(luo_file->file)->i_lock)
-> > > > +                               inode_state_clear(file_inode(luo_file->file), I_LUO_MANAGED);
-> > > >                         fput(luo_file->file);
-> > > > +               }
-> > > >                 list_del(&luo_file->list);
-> > > >                 file_set->count--;
-> > > >                 mutex_destroy(&luo_file->mutex);
-> > > > --
-> > > > 2.43.0
-> > > >
-> > >
-> > > > Sashiko: https://sashiko.dev/#/patchset/20260321175808.57942-1-pasha.tatashin@soleen.com
-> > >
-> > > Sashiko reported two problems:
-> > >
-> > > 1. Are there any issues with mixing goto-based error handling and scope-based
-> > > cleanups like scoped_guard() in the same function?
-> > >
-> > > Initially, I thought that there should not be any problems, however,
-> > > after looking this up  I found in include/linux/cleanup.h the
-> > > following comment:
-> > >
-> > >  * Lastly, given that the benefit of cleanup helpers is removal of
-> > >  * "goto", and that the "goto" statement can jump between scopes, the
-> > >  * expectation is that usage of "goto" and cleanup helpers is never
-> > >  * mixed in the same function.
-> >
-> > There's a compile-time switch you might want to turn on when
-> > test-compiling code like this. I forget exactly what it is. Something
-> > like jump-over-uninit or something.
-> >
-> > >
-> > > Well, good to know, will not use goto inside scoped_guards.
-> > >
-> > > 2. Additionally, does setting I_LUO_MANAGED on the inode break the preservation
-> > > of anonymous inodes? Many file types (like eventfd, epoll, timerfd,
-> > > signalfd)
-> > >
-> > > This is actually a very good point. It looks like everyone who uses
-> > > anon_inode_getfd() has one shared inode. This is not a problem for the
-> > > existing LUO user memfd, or for the upcoming vfiofd and memfd, but
-> > > kvm-vmfd and kvm-cpufd also use it, and that might be a problem in the
-> > > future once we add support for Orphaned VMs.
-> > >
-> > > Therefore, we have two choices: either use a hash table, which adds
-> > > performance and memory overhead, or delegate this double-check to the
-> > > LUO file handlers, as they can use a private context to know if the FD
-> > > is already preserved.
-> >
-> > So, I'm not happy about I_LUO_MANAGED. I don't think we need driver
-> > specific stuff in struct inode and not in i_state. Track this in the
-> > driver please. I don't want this precedent and I'd rather have you get
-> 
-> I am planning to use an xarray in the next version.
-> 
-> > used to implementing such things in the driver right away rather than
-> > offloading this on general infrastructure. If we let this slide struct
-> > inode will be 2MB 1 in year.
-> 
-> Claiming that a single flag bit precedent would cause the overall
-> struct to grow by 2MB in a year is a slight exaggeration. :-)
+Hi all,
 
-Hm, you say that. But then you don't get ~5-10 patches a year that "just
-add a new member into struct inode with 4-8 bytes"... I'm just making an
-exaggerated point ofc. :)
+When page table operations require synchronization with software/lockless
+walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
+TLB (tlb->freed_tables or tlb->unshared_tables).
 
-But struct inode is used everywhere and I want it contained and small
-and whatever lands in it - even flags - better be VFS generic stuff.
+On architectures where the TLB flush already sends IPIs to all target CPUs,
+the subsequent sync IPI broadcast is redundant. This is not only costly on
+large systems where it disrupts all CPUs even for single-process page table
+operations, but has also been reported to hurt RT workloads[1].
 
-We sometimes do carve out exceptions for _filesystem drivers_ where no
-other way is possible ofc. But I don't think this should extend to
-drivers/.
+This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
+the prior TLB flush already provided the necessary synchronization. When
+true, the sync calls can early-return.
+
+A few cases rely on this synchronization:
+
+1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
+   of the PMD table for other purposes in the last remaining user after
+   unsharing.
+
+2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
+   and (possibly) freeing the page table / re-depositing it.
+
+Two-step plan as David suggested[4]:
+
+Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
+flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+guarantee IPIs were sent, keeping it clean and simple.
+
+Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+software/lockless page table walks, benefiting all architectures.
+
+Regarding Step 2, it obviously only applies to setups where Step 1 does not
+apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
+attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
+work and tuning; it will be submitted separately once ready.
+
+On a 64-core Intel x86 server, the CAL interrupt count in
+/proc/interrupts dropped from 646,316 to 785 when collapsing a 20 GiB
+range with this series applied.
+
+David Hildenbrand did the initial implementation. I built on his work and
+relied on off-list discussions to push it further - thanks a lot David!
+
+[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+[2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
+[3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
+[4] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+
+v7 -> v8:
+- Pick up Acked-by tags from David, thanks!
+- Add CAL interrupt numbers to the cover letter (per Andrew, thanks!)
+- Rewrite the [2/2] changelog and reword the comment (per David, thanks!)
+- https://lore.kernel.org/linux-mm/20260309020711.20831-1-lance.yang@linux.dev/
+
+v6 -> v7:
+- Simplify init logic and eliminate duplicated X86_FEATURE_INVLPGB checks
+  (per Dave, thanks!)
+- Remove flush_tlb_multi_implies_ipi_broadcast property because no PV
+  backend sets it today.
+- https://lore.kernel.org/linux-mm/20260304021046.18550-1-lance.yang@linux.dev/
+
+v5 -> v6:
+- Use static_branch to eliminate the branch overhead (per Peter, thanks!)
+- https://lore.kernel.org/linux-mm/20260302063048.9479-1-lance.yang@linux.dev/
+
+v4 -> v5:
+- Drop per-CPU tracking (active_lockless_pt_walk_mm) from this series;
+  defer to Step 2 as it adds ~3% GUP-fast overhead
+- Keep pv_ops property false for PV backends like KVM: preempted vCPUs
+  cannot be assumed safe (per Sean, thanks!)
+  https://lore.kernel.org/linux-mm/aaCP95l-m8ISXF78@google.com/
+- https://lore.kernel.org/linux-mm/20260202074557.16544-1-lance.yang@linux.dev/ 
+
+v3 -> v4:
+- Rework based on David's two-step direction and per-CPU idea:
+  1) Targeted IPIs: per-CPU variable when entering/leaving lockless page
+     table walk; tlb_remove_table_sync_mm() IPIs only those CPUs.
+  2) On x86, pv_mmu_ops property set at init to skip the extra sync when
+     flush_tlb_multi() already sends IPIs.
+  https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+- https://lore.kernel.org/linux-mm/20260106120303.38124-1-lance.yang@linux.dev/
+
+v2 -> v3:
+- Complete rewrite: use dynamic IPI tracking instead of static checks
+  (per Dave Hansen, thanks!)
+- Track IPIs via mmu_gather: native_flush_tlb_multi() sets flag when
+  actually sending IPIs
+- Motivation for skipping redundant IPIs explained by David:
+  https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+- https://lore.kernel.org/linux-mm/20251229145245.85452-1-lance.yang@linux.dev/
+
+v1 -> v2:
+- Fix cover letter encoding to resolve send-email issues. Apologies for
+  any email flood caused by the failed send attempts :(
+
+RFC -> v1:
+- Use a callback function in pv_mmu_ops instead of comparing function
+  pointers (per David)
+- Embed the check directly in tlb_remove_table_sync_one() instead of
+  requiring every caller to check explicitly (per David)
+- Move tlb_table_flush_implies_ipi_broadcast() outside of
+  CONFIG_MMU_GATHER_RCU_TABLE_FREE to fix build error on architectures
+  that don't enable this config.
+  https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
+- https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
+
+Lance Yang (2):
+  mm/mmu_gather: prepare to skip redundant sync IPIs
+  x86/tlb: skip redundant sync IPIs for native TLB flush
+
+ arch/x86/include/asm/tlb.h      | 18 +++++++++++++++++-
+ arch/x86/include/asm/tlbflush.h |  2 ++
+ arch/x86/kernel/smpboot.c       |  1 +
+ arch/x86/mm/tlb.c               | 15 +++++++++++++++
+ include/asm-generic/tlb.h       | 17 +++++++++++++++++
+ mm/mmu_gather.c                 | 15 +++++++++++++++
+ 6 files changed, 67 insertions(+), 1 deletion(-)
+
+-- 
+2.49.0
+
 
