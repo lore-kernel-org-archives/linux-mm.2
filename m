@@ -4,116 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D5C4F532C4
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 06:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75DC0F532D4
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 07:06:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4659F6B0089; Tue, 24 Mar 2026 02:50:01 -0400 (EDT)
+	id 9AEAE6B009B; Tue, 24 Mar 2026 03:06:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 416686B008A; Tue, 24 Mar 2026 02:50:01 -0400 (EDT)
+	id 938696B009E; Tue, 24 Mar 2026 03:06:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 304B76B0092; Tue, 24 Mar 2026 02:50:01 -0400 (EDT)
+	id 800246B009F; Tue, 24 Mar 2026 03:06:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AA5E6B0089
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 02:50:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B94E213CAFC
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:50:00 +0000 (UTC)
-X-FDA: 84580031760.12.89085AC
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DC2A44000B
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:49:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bLwt+ycY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774334998;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BDE56B009B
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 03:06:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 383B2E039C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:06:54 +0000 (UTC)
+X-FDA: 84580074348.07.46E1D8D
+Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 440AE80012
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:06:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=EZ+Z4NWc;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1");
+	spf=pass (imf02.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774336012; a=rsa-sha256;
+	cv=pass;
+	b=PLuWZwsuaq5jsug8Q9zHaXywguW6r9ZP04CoiaZEcpNvTaS1PjcWzMsdeMsQSmV33XOwN6
+	/ltPSdFhYGpci/OqpevybVhkunDC74k8bE97XjNk9JoOuWBcU5zyZXHCEgsKA9Ind+G2cd
+	V7y4zfXFR1vPP9B18X91GK/wO3fvBEg=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774336012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9BtRgbo5SYoBF3YUHMOjmQ4qRhqYMdpWB9iGrbsQFLk=;
-	b=y+Vtvd8h2yv/68zOtKT9/nnLquBa+aaZuLy3F+djZdj8grktAcuAFze0rAMLI0qsk1fzSz
-	x5sIJg2zX2+j4B4WHyqKvd89IBFxVLE/YB3Beq8CyG+qs73DaQ1myjULGNuxgk4lJFypnc
-	bcBXHDvY7Ef2OivkFb98SSSGagUmdc4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774334998; a=rsa-sha256;
-	cv=none;
-	b=u01SygTTWwdEmgc6foY8mHEmekiLmGVufZlhrjeQldRcmSNgqvngLKwVSqAOKot9wQ7TGJ
-	S4t89w0MDlpaq7rN/CLos96VyH68Rm//8PU+T2XRg4Ge/CbaBXeFR1UA5HMkWumOa1daw4
-	nYPPsavnGfgB6guqdxwLG1LJOxZrEBU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bLwt+ycY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a8fba3f769so23139085ad.2
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:49:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774334998; x=1774939798; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9BtRgbo5SYoBF3YUHMOjmQ4qRhqYMdpWB9iGrbsQFLk=;
-        b=bLwt+ycYh9oILsfFudf8CM3df3a40Qqu0rqyiFZ41Wj8f2OjayrPZ7+lnDurEVDvJd
-         p+/sS4dxIXA2amuFcKLRusQoeeJq3Bl65pxDF4UEc6sce/GQlD2qJSrArN/2kguYI+Da
-         9/Jc9lfJA3NJ91Pwv4hDMyx0ecToQ5rTjdcWccDxV449ce8Cn8EJcirpq4ITIm00DQkD
-         qPtXCqsJlgUw2lraa5ZfXESIn3XUycllhPoxezHhCqHujSAQaI8OPSfqRDD2qjbkIjaN
-         JY+I0SsysrHnO4sTczNREysTotFfWFU01qR9Gf8d1t2xFwEq0wXT1bhviZx+BnINVBIY
-         jz5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774334998; x=1774939798;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9BtRgbo5SYoBF3YUHMOjmQ4qRhqYMdpWB9iGrbsQFLk=;
-        b=ehKqUtHCASwd88bTDtsaBF8G0diaUT6vEBYANymfm3VFk2VAxAXBxRvbEqPXpeMovZ
-         Iel1uzdKXfb3PV+miojWagyftcAVsCUMjsKaywDBO1qUWV0pok66+jon6hkZUdyjFmBB
-         CoYGFjMnt7EanCHMcks4+25lmVY8YhJ0arUza6UmRKDsPQmMgu/BQPFVdzi5jQis7CBe
-         V8KcC8IezNiqiNejJW2pyGoFJxy9mcQKKxQr7NYivbPjVpNuv36JPlcowQrTM2sybJ+d
-         P4/71QGYp4lLfDUfZSdNuc/LvLIH5RUkyOwg6IwcrQM28Rva+0NBnOP9Dn+YRUtMxlZc
-         ZblQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWQFNeiruS29ZO14FZxq1Se5GPsDkyPskjQpPQIrtkjr4Kjv7SXDbxrCTpwnAGclydeGXNezwyoBw==@kvack.org
-X-Gm-Message-State: AOJu0YxKNTWd4z5BI3NQSlwqtGmxsixoV6y9Q4MFZQ5/GyAFhFPe+cyM
-	BTiv7yHRk8LSNVC1s4QuhUmoaQyK39AjLO+q1Bw924gaL1CwDE6SKchk
-X-Gm-Gg: ATEYQzzalvKcOabAePkHKT6stck1WGPf4GOunUdJjFP+yFsIuYJpYIEWGN1S7g/ig5M
-	TEE8GFIiTjDMHF8R7mMTA2VcHlX9ko21lOOD5aQq6jQpbbIOfm1L8Bi76WGwU9wnuIzCvpTqejL
-	21BzO1rT1+LUcTpfkoNL02yK1l/+suiwTctkVrmqoXr/KeESvHFkyMz413wNtI5mUxWsmJULB81
-	B+ABJD34cssjR2Xzvg/pzT8CVXP5jWmVTAsowZiQPow6t6uNvGPU35KwrMTXT9L+zUYG6EZJwEE
-	Y/1ZMbQDwLL/vZIET+gQ0/eMFa6eXdKYw8dwk90k2eNmIJN8B0jlFngIShUD6xq/MXzgG+kBl9x
-	MwDvt8LyIU2rwiPyDTxtDKVwvoIYG/lyRLsHDFTIW5dBX2nMtc9VK8ZGnlBbYwDZ+kewOw3XCPs
-	K592n68mDWuGQ44tqTq+qG/xuzJuGdV0HxguqCl6H4r8vagoCmUJor75R8jz5etarByiS0
-X-Received: by 2002:a17:902:f70e:b0:2ae:478f:2ec with SMTP id d9443c01a7336-2b08277b109mr133450355ad.29.1774334997612;
-        Mon, 23 Mar 2026 23:49:57 -0700 (PDT)
-Received: from KASONG-MC4 ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083655b45sm180639635ad.42.2026.03.23.23.49.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 23:49:57 -0700 (PDT)
-Date: Tue, 24 Mar 2026 14:49:52 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Pavel Machek <pavel@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, linux-pm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 2/2] mm/swap: remove redundant swap device reference
- in alloc/free
-Message-ID: <acIm_7vtj4XETdyP@KASONG-MC4>
-References: <20260323160822.1409904-1-youngjun.park@lge.com>
- <20260323160822.1409904-3-youngjun.park@lge.com>
+	bh=lP8i3Qty/bHUVvaH5kVoGQLcodg/p/1/bywjT4dTNhc=;
+	b=K9MEoNXWCz0tom1hwyP1F4AkTbAEC82Ei/ukcf5+Ka9WITUKRQ4RNtf4QTs1XBUIkHnkY5
+	RXa0ptHG6rggmT4AEe+OYSRWiWJVxtNEZjoUPQq+SFupfSLprn/yYYijLhTpEq6UWEBvLx
+	tfcw+y29tQSRaa4wnocUESEATHRtx+8=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=EZ+Z4NWc;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1");
+	spf=pass (imf02.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org
+ARC-Seal: i=1; a=rsa-sha256; t=1774335991; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=jP/cJdvUKvWgGl/m66OGGlqy6OEfSYEOQ6MikmzEG60N74+qBkVQL5WCMDbkNUEUeeT6OUnREnz6NIwTWXjToWnV2Be5ig04wmGNyqc23yA1WoXDHlshJ0kJEu7T8nihVRyqnUiAePqS+P2d665GHXPwuUVTAn0prfPqGyITsIM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774335991; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lP8i3Qty/bHUVvaH5kVoGQLcodg/p/1/bywjT4dTNhc=; 
+	b=QHhZ0F6QgC332Y3owawq5SWJ71rg+kUZ+D4KA3EgvZsRAG0CYkwU3gDmlHKgw55xvAkIp1I0Z/2wyKzdJNY/h7Xmi9wG3Yf+7HOoVuvZeJ+q0fL6as18KiTTrLqCXGBoz51Nz55KxeWX+18aY7o/Ez7CQIZPZr54DS4XtERqMwg=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774335991;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=lP8i3Qty/bHUVvaH5kVoGQLcodg/p/1/bywjT4dTNhc=;
+	b=EZ+Z4NWcp/pKJ7ARgcaqRUM6MeQieW6LmvEcOefoceBW8HKO9RcHPVoC69tlaxMt
+	uJxNNJMBRrt29IZuW5itXs3g9+CZGXyGiLfnwk4jz9qt6Wl9Ra5zV3bVczlKxbsGWnJ
+	j82sSwkTnUinqup1sT+0dMwIuicEA0jr+M6lxqes=
+Received: by mx.zoho.eu with SMTPS id 1774335988821909.6110963179683;
+	Tue, 24 Mar 2026 08:06:28 +0100 (CET)
+Date: Tue, 24 Mar 2026 07:06:25 +0000
+From: Josh Law <objecting@objecting.org>
+To: SeongJae Park <sj@kernel.org>
+CC: Markus Elfring <Markus.Elfring@web.de>, damon@lists.linux.dev,
+ linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5Bv3_1/3=5D_mm/damon/sysfs=3A_fix_param=5Fctx?=
+ =?US-ASCII?Q?_leak_on_damon=5Fsysfs=5Fnew=5Ftest=5Fctx=28=29_failure?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260324001500.86247-1-sj@kernel.org>
+References:  <20260324001500.86247-1-sj@kernel.org>
+Message-ID: <A0701CEF-CDF1-4B3E-B25A-C05A32AE822C@objecting.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323160822.1409904-3-youngjun.park@lge.com>
-X-Rspamd-Queue-Id: DC2A44000B
-X-Stat-Signature: 1ach5tspihnw3wkg8tquz5jx3g6oxzjc
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774334998-246407
-X-HE-Meta: U2FsdGVkX1+Vd8rFltJXcUbfJsHRkzTekQszGzUR7y9uP384O42cCQJ/RHNZJDrbxlvaMintn7yZ0IqBytNJpI+0HBUmFgux9iVqsYfliMJdDPs6m7WmGKKqWh/6osQZ+a5vbGLMC2tH0nfcC495bNisZCkPLSV4v87TMrNrbB6w8EVD+i7HjFZ/bi9xPuTqUjoHY7q2mO85eU0/idVQLji7bZsJxZWj9n1oqXnZYytOFxLV4dv9ll5pNSxkjJMzw2ZPXOdHOrKlafZ0TdBEUOiiD3+FAFPBMmGezl9JqsZZ2qKLw1ZXC5K9+cXfyhvgVZemGWgBUt8mhlYVbWvoJmPRTVcT+U3XwBR/tgosHnSo4TrMaPkNPez0RVnsCWgdB7rlDUlul7K0knHwuibRxzXw1aO6Qd46Tw5sbxj7uVk5Zx7kGIcEjw1B+igWdfbBVNdAmoCDkDCDf+7NwMFUfujuYWst3sDG3OCiq6LzHK3uK3pk2P9kvgGRoL3MwdKk8kFHesZRjowfclNSVVDSI49pvQ941hbuW/pW3vH/rRYxAhwj9NeHJJZC0VneE2P0PwcMfOGG9H01mOBRtFXWvojuU4suuBK2yBMmpTMX3akwcBaSqMTI6kr7kZvMWaP+U4+5A+njlWIAviDrOvNm0slqYhtQ8CjeuHKUUyQ+F9wDfbJddbS6lIFRiRKC18x3baM1Zn9fvKwHA60pdmXICySlP9Sllx7xiSC4rNnfe2pLzYJUuymiaiDVWNyI7z1PucDg+A2owu/ZOrVouTQv8lqTCcHmuIfELRWShSkcjKcyCclpKegrc1krKVHnlwMfjkFVA5I8R4XEGkl9LtwvxI9tOw2oMZwxNwkNqey88rN6qXZaMLSN1iG0Yx9hecna0WvEDC7SYjBM3i9y+omsudbON4Kedo54cxNofj1bNL9tVermkBhzY5NLaAvx+DLlt1v3NzPaRuLzTbeJINy
- +H1KbqZd
- HfDMZ91li2XQPs8kQKrwR1p3iWwqa82wC/SwXm9zPPHeIZz07oER9K3q+FP9D/lDUz6wgVGSX6JcSctpOdVc7xocWf81n01JZz8hn+r36vpZnbDss8hmFIrrprsJa+tJjL6Ox7s3ySD1l//CpN1OwwrbDe66uqwVqpZyGu0aKIygzFZxaOTT0Ir0IwBqnzSjjCAnvV0SrzRfbO4vHlIrA+GQGQdFTQt4jOGWTQfZCIw/mV56GuNi8fAQ1jpR8zHqc+bGnFkfeZHVhRmoHSIysqPxJSuitwpmh3pL2MyiiB7XWMO8UzE75YO05JQWQtJ8JBLjKBA0ppdVHi4e56KbIeB1j/YopaN7td9s8Cj5+wIM5peOdpBYA6vqhwSdgM1+opr/s7ZJRvveptSWhgzo/3PhIPaiNADFozNZ+2Q4Q4S1/mOfiZXgT+FNXEDCUEdSYf/yn+Yuq4byrVvW28k6X17d54oTrh5UXUBwo
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 440AE80012
+X-Stat-Signature: ak7yiq81ci4qay9h8u3tne3qtmfay5gu
+X-HE-Tag: 1774336011-35179
+X-HE-Meta: U2FsdGVkX1/NXf6+iftIqlssllOxPvzoV8PYXK85sI97/I4cWsTMp/WUtKdqFKMvjQzo5N4OPR+4sPgMW/FOwrrOaO/XmvvznkgCx3rg2EOOCDg5EvDqiMQuWcs7qGjKmNFhkIiqWVJpSVFaLUKcgwPErRM/PP06B8c0SNedLxPYTIkmCkff4F1LV8JR0CR9NqOQ8Wd/ECYzhlv1c/hPnwgSdZnBf3R7KF2JlC/vRTv750nFM5Ln3+LuBgxeqE5uZ3EKm7laTtepxi9UxX4SHHGDLxsI4FAyePqac1dY36LSrWJNygVC2O0ryLSj42ceGXWE1Dnm8pPfw5/kq7a3Yi9slZwKDsh0xNs4q5dLISDYg8Y3T2mxgthppvvwSjCAgtWEZqExVxoH+OuAbXUIQOxpzcPNVTIturVlsfHekueKVnmIKyanAisq7u4ln6d+u+ERE/TnkG8JOWYRPVM5aQpPfGGTT8mz6qmYhEH0lYziozw+aw88rvEsuWzcJkFOb2tZwdgx5TbEKhIMXH83jY1XAjFXR6S5TuYbHCMD3u0m4zELIDxRqyBGeIN8oLX0cXUxIDWdrRoPHkQD4srCGYETreAHtc28o73SJPM/CTr7sCtTl3Da+VfmuPS5IRCIHqrZ20yM9OAu63QjFPY+Ebnev5b1QhnV3zo0/hqW6pETLKEnK46ytVEW3VitqyaSvRvIySHvCEN1j8BdSCQmueDcbtA1mbCG3AIY/s4MAwGQAEizWrEtxM9YPgGLIPvKdOCbCEnCD4daY/RGyd49THedLdFEt5hYLpemODGWgJCrbwtg4rZmIPO/qmjenXWnLnty0ww3UxOxCowdgrb19u26bcNAlOHNFOJsIenfoAz/vjBGNbY3EHGr/bTiRQsgBZEx6A5XfHy8cVc0u78ASZkwdI5ejofIp3CLVdoSLHmftnkxFw/KDXl7yzDMazxZHgaPBw7qG1MwukQG5oS
+ lG7Iud5B
+ acZ1QJCUKtTzHi9gCxPej7NsGP1X2WvH9P1jKaHC/oQTZjUVAEW4nx4KJcwhq/CwiAjYR4MnlBOliUAJC8KzAGw8MSU2mIohPkOkURS9LZkAMEHOplvHdjPhunJap4vi8/1Rj1V7IDbYTDo/kzdifABbxRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,34 +103,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 01:08:22AM +0800, Youngjun Park wrote:
-> In the previous commit, uswsusp was modified to pin the swap device
-> when the swap type is determined, ensuring the device remains valid
-> throughout the hibernation I/O path.
-> 
-> Therefore, it is no longer necessary to repeatedly get and put the swap
-> device reference for each swap slot allocation and free operation.
-> 
-> For hibernation via the sysfs interface, user-space tasks are frozen
-> before swap allocation begins, so swapoff cannot race with allocation.
-> After resume, tasks remain frozen while swap slots are freed, so
-> additional reference management is not required there either.
-> 
-> Remove the redundant swap device get/put operations from the
-> hibernation swap allocation and free paths.
-> 
-> Also remove the SWP_WRITEOK check before allocation, as the cluster
-> allocation logic already validates the swap device state.
-> 
-> Update function comments to document the caller's responsibility for
-> ensuring swap device stability.
-> 
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> ---
->  mm/swapfile.c | 68 +++++++++++++++++++++++++++------------------------
->  1 file changed, 36 insertions(+), 32 deletions(-)
 
-Thanks!
 
-Reviewed-by: Kairui Song <kasong@tencent.com>
+On 24 March 2026 00:14:59 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
+>On Mon, 23 Mar 2026 16:48:19 +0000 Josh Law <objecting@objecting=2Eorg> w=
+rote:
+>[=2E=2E=2E]
+>> Also, unconnected to our topic!
+>>=20
+>>=20
+>> I've tried to backport Damon to 4=2E19 (for a personal android thing, a=
+nd failed! Of course)
+>>=20
+>> Can I have a bit of help if that's fine with you? The tree is based on =
+GitHub a bit
+>
+>Sure, I will be happy to help as much as I can without burning myself ;)
+>
+>Seems [1] Alma Linux has backported DAMON on their 4=2E18 kernel=2E  Mayb=
+e you can
+>try their port first?
+>
+>Also, what is the oldest kernel that you have to use?  As newer it is, th=
+e
+>backporting will be easier=2E  When I was in AWS, I backported DAMON of v=
+6=2E7 on
+>the v5=2E10 based Amazon Linux kernel, and the source is available on Git=
+Hub=2E  So
+>if you can use 5=2E10 based kernel, using that could also be a good optio=
+n=2E
+>
+>[1] https://oracle=2Egithub=2Eio/kconfigs/?config=3DUTS_RELEASE&config=3D=
+DAMON
+>
+>
+>Thanks,
+>SJ
+>
+>[=2E=2E=2E]
+
+
+
+well android likes using old kernels for some reasons, especially LTS, so =
+4=2E19=2E=2E
+
+V/R
+
+
+Josh Law
 
