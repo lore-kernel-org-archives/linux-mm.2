@@ -4,144 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D49BDFEC102
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 19:46:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2650FEC10B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 20:13:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCCE46B0005; Tue, 24 Mar 2026 15:46:19 -0400 (EDT)
+	id D97256B0005; Tue, 24 Mar 2026 16:13:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA4826B0088; Tue, 24 Mar 2026 15:46:19 -0400 (EDT)
+	id D56F36B0088; Tue, 24 Mar 2026 16:13:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB9E56B008A; Tue, 24 Mar 2026 15:46:19 -0400 (EDT)
+	id C6D246B008A; Tue, 24 Mar 2026 16:13:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BAAD76B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:46:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66B6458BD2
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:46:19 +0000 (UTC)
-X-FDA: 84581988078.06.162659F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0C71FC000D
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:46:16 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B80326B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:13:06 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 32E141603B7
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 20:13:06 +0000 (UTC)
+X-FDA: 84582055572.05.3FAB4FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 63D8BC000A
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 20:13:04 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dtu73KSn;
-	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774381577; a=rsa-sha256;
-	cv=none;
-	b=gjsAjBv8L8bIJLYpTfRcC+QpnahxlG5Qw6qrEFUHGBggNFN8AlaFCNqQxXINlgWdb98eqp
-	HD5kDSNdYKcSmW6D5y6NE4WkJi++61SAk5cWCUq27iqP4i+GuIdz47c2KdE2zAlG24w2wO
-	LOErXmznDzw4w7TeqnT2LJe0POu1iGE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774381577;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jfKSRA0ia5TBxEYus3S1w5DhvtkOE0LjE7GseOssoCY=;
-	b=rmSiY64yyFlG7qyam5NyBUGMOUkNGldHmWWZSIgRPf+r3ceoibojfh7v67xgQUYXoIYNti
-	SdeKOwrhaTEzGGyDRiWrfQ3EIiNFNKKzPqNwWd+mOnkollKnITvJTS88+xnKIYV5PvGg64
-	9/kiF7rm/O63HTjRicaQvah8//GfR2Q=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f4hSFRzm;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dtu73KSn;
-	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774381576;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jfKSRA0ia5TBxEYus3S1w5DhvtkOE0LjE7GseOssoCY=;
-	b=dtu73KSnbiarVqDZWEyI/J8Lf3o9dWpKxytdOybaN65KvcpXjv4DuB2obWt/ZbyBxHCB7U
-	eHMBdhr+3oVtTKTTFPenqFwwlqxizr8qaHdnyPuQhuLx1HDluk/4xHK3Tvo++gus+ut1d8
-	58i8QuP/ViG7UO5COAumzxemoeH1CS0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-184-w_9KoPgpOVu-m62ZuSLemA-1; Tue, 24 Mar 2026 15:46:14 -0400
-X-MC-Unique: w_9KoPgpOVu-m62ZuSLemA-1
-X-Mimecast-MFC-AGG-ID: w_9KoPgpOVu-m62ZuSLemA_1774381574
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so36540905e9.3
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:46:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774381573; x=1774986373;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jfKSRA0ia5TBxEYus3S1w5DhvtkOE0LjE7GseOssoCY=;
-        b=H5MaBma9PH85Wjod5hUrMflGL96VLph3V44qJmOt1pcqPQ3iXrCtD+UfrooA+/9oOx
-         I4xddTByJN/H5+G7piZrjftt+m5arBuCD1p1cY8Nqpq8CJE3YaLDq+UIySZp6d7OEuau
-         xEIO25/d6oOXXZUTESkaO/hVkKttBtPmUn8vAgDKYKHgbcEWtr+9dVtCKfe2jTyjE/ud
-         n6EjwgXPVUNqPQLCYpHoy74pfaN2NU6dvJZb0qAX4CxZ1WC0+np6XpZq4W1cIHnpIr7R
-         CKndyaxuZ/QUvC5YN9WR6GGXmCCOoku/46ejvVhgGX4UpLeC9VBwMPg6NGsW84aP3Bf9
-         GiQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCGns3EMreVv1EKvS6EjLs7snnaYrAzASp1HlPKAfMhbP/LFy81J1KqAzAegrz5x0eQgnL77gPGg==@kvack.org
-X-Gm-Message-State: AOJu0YxJXCWfK1sulff+u8mOtVw04hqQfTw+MuKdIh8rMdkLpvOrjB+s
-	vSQUcl6g6eztfNxLsEv07pL5k0gXmtjAiLJwXJsrElotZw/pzokYE1Zj/M1Is6xdtE88FQ85sQB
-	/RTOqMHEZNjmUknh4xdWq7eTYj/uL/easuc+sCo2WSB0w171fWGVD
-X-Gm-Gg: ATEYQzynBL12trlD/CGTtwdmz9VIuFCgi4jyUS2Yt3hknHRA8/P26vuPfrb9lfeK1bt
-	nip8/nYfHLu2W/gLwQMqj639qOTtV6zL5+qxyjVtoedfKVKUa9i397f1ZsGlF0hRqHnyzw+ChRU
-	aRpjgvqhiEZUC3WwFiuZ00RnWqXux5G1ACe8lhMqFm9Ehj3YskPVkaAAQTAPl1iSpyxdmqI7mtA
-	SSO7+3YqAwmKPe6vHNCb5X7U8oGzzP0/LzUjsW7g0b0Y/6krcpOvNSu26rL3f6Lca5CWwjrUlwU
-	+9OoCg0CoKvaVnnCmw4ciNO1op4hWYjqXZRgRkKXf1nzitPOvHr/rujNJzQPhytdwaa1vjjFbNc
-	4xMcDFrf/ZUSbaJvmTepuSWopUl/PtDtPANLM52uugSm07kSJPj8EOmbtD8CKVQm5Pehq7ZRG9u
-	qLMqBSoa4=
-X-Received: by 2002:a05:600d:8:b0:485:3b34:2f51 with SMTP id 5b1f17b1804b1-48715fb7251mr10210465e9.4.1774381573454;
-        Tue, 24 Mar 2026 12:46:13 -0700 (PDT)
-X-Received: by 2002:a05:600d:8:b0:485:3b34:2f51 with SMTP id 5b1f17b1804b1-48715fb7251mr10210315e9.4.1774381572919;
-        Tue, 24 Mar 2026 12:46:12 -0700 (PDT)
-Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-135-146.abo.bbox.fr. [213.44.135.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48716547649sm7811135e9.0.2026.03.24.12.46.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 12:46:11 -0700 (PDT)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, x86@kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo
- <acme@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>, Frederic Weisbecker
- <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Jason
- Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, Ard
- Biesheuvel <ardb@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- "David S. Miller" <davem@davemloft.net>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
- Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
- Uladzislau Rezki <urezki@gmail.com>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>, Andrew
- Morton <akpm@linux-foundation.org>, Masahiro Yamada
- <masahiroy@kernel.org>, Han Shen <shenhan@google.com>, Rik van Riel
- <riel@surriel.com>, Jann Horn <jannh@google.com>, Dan Carpenter
- <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>, Juri Lelli
- <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>, Tomas
- Glozar <tglozar@redhat.com>, Yair Podemsky <ypodemsk@redhat.com>, Marcelo
- Tosatti <mtosatti@redhat.com>, Daniel Wagner <dwagner@suse.de>, Petr
- Tesarik <ptesarik@suse.com>
-Subject: Re: [RFC PATCH v8 05/10] sched/isolation: Mark
- housekeeping_overridden key as __ro_after_init
-In-Reply-To: <c72fa095-654c-42c6-9e5b-1459b1b7e732@linux.ibm.com>
-References: <20260324094801.3092968-1-vschneid@redhat.com>
- <20260324094801.3092968-6-vschneid@redhat.com>
- <c72fa095-654c-42c6-9e5b-1459b1b7e732@linux.ibm.com>
-Date: Tue, 24 Mar 2026 20:46:09 +0100
-Message-ID: <xhsmhh5q5gge6.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f4hSFRzm;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774383184; a=rsa-sha256;
+	cv=none;
+	b=OPWhYYWVN4En5MGqvfvoX8yS+hZyE5NYSxe8FnCqP9n7UO2LKyOgfijjFHzYBFG5PtM7zW
+	T2uuks7GC9dD13KlY08149KaCCK2loB3iz4qr4+XW2OKTWKU6dCYXnOJ4CKSz8LS87bkxK
+	T8myPnszkOQm/8+9xvS3Fu4kgKhX2lY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774383184;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P9ENNJ2/WStIIHgcNADkEqIcixjD4RHhbJS24gMLHf0=;
+	b=E4SjHph6otUfWA0EcO51Q2DfTeRcQOKLoiQqs/wT1Q+KXqAY1j/pC2keilCKEdWhDKZbhv
+	SyD56oeIzogz55z0Xyoj+xgocN7PUVMBw3sRd75hjnqfmv4z13smlWZ6AynbUffU1PAHT8
+	KveByeKaUUEHMDnVsKntHZ92YAycDEA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AB2E5600AC;
+	Tue, 24 Mar 2026 20:13:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68964C2BC9E;
+	Tue, 24 Mar 2026 20:13:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774383183;
+	bh=Ntqkf0j8AhQ1QfbmlWiRJGsbUyfajr+sdoox1lR0fqE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f4hSFRzmOajxJBAfaNPOWzCVUDlIjeYpWV6tIqLeyaiUd+I5UHC8KBJ4Bfqomwk30
+	 18rXLexSoCDcXcyMAAeyjEnTQiiYHbbuJydZGfccJqZ6xS5ID8JVC2eivG5aP4Kc/d
+	 +jmx3QDKkRmNEUDol3c0YFdvpjQD8+Mst3Wz+i+Ti1X44+CHI0I3JCa0WbVXr/tI/g
+	 2sFr5SSjzclH0tgWNOK7i+NpQh4lmyAB+zv0To4r/Xs/wAZQAGpBinJXYLS+xWCR+B
+	 DgX0X6B/JLpx8Z/GKk6nbhUjIzXdy6qiQ7e77LO9Tor/2FM8IyqmqK1IGxRBNl1aDV
+	 4k4eI8OI0pmIQ==
+Message-ID: <aa7d5f7a-5fa2-4363-8061-7142fe4d10d0@kernel.org>
+Date: Tue, 24 Mar 2026 21:12:57 +0100
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: AXesf03arX82k8H05uyAIgUTyKVO4ZlHT4kgTnpK9FM_1774381574
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/mprotect: move softleaf code out of the main
+ function
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Dev Jain <dev.jain@arm.com>, Luke Yang <luyang@redhat.com>,
+ jhladky@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260324154342.156640-1-pfalcato@suse.de>
+ <20260324154342.156640-2-pfalcato@suse.de>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260324154342.156640-2-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 63D8BC000A
+X-Stat-Signature: t793om5nsg64xr8j6qmczs5jwzez7uhh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0C71FC000D
-X-Stat-Signature: gbjwknfwrqfzny4cdensjyqzsfse6x57
-X-HE-Tag: 1774381576-355552
-X-HE-Meta: U2FsdGVkX1/0iZlj7kkEH+VPjfzmWTbTu+5alFuU2rJCRaSKaTRdms9lv87Jq0OmjUs2xkqiMZLLsybNCrCQ/wfPOzL+PsTJpq5nUYv7ZS/AX4YeJIoh2gniyyXR83ZdJWLwj9Wqy8L7lhU7W0rUJlZSEWx5DQZwfAsgU+DK6DzHLZVnNve+f8/iWWHlWLhsMLijIgYRgcdodgfd8782xAZmyPW/ns0clQKLl19XCbgXI6hVDR4u5+GRDrmNWdhoQxD/vx1HTuLOMVgteUP9cRhljdCZb+VDbTLUSKyJfDucjpkFDaFnbkV9CvfWM3e8ASWjv95F8WtbizTqG22SxGW2u/f95C9r2n07/HNEbg2G9PsilpIBnyNvSp0m0FdOsZqylaOcDDLFvYZDiNwWm5wA+ERkW9nrtLY21QR1+NSMLmpN+RhjAW7JviCD7PYiRLT7O50YN9f9mNUusWm/Z2qeX0JSxmIwm63dZL0dRTx5qSJIFwhvuPH5eG5P2qxJlR7lXq6zfJNRhiXInkct/9PfbP0Vj6tnSL0Cj4L7/JOQKJ5klFfM6KxwlvS9o8X022mPzJmfcU86ZpSkqH6/zBlGFhKpNwATroN7XeVptQTnij7Ei51ijyvhxk3pxHSCrT2KsudsjbUxTct5Q+QItrqO8pg8wkgyBlg9lLsh16W7fQJZMo0SiioEMeNYxkeiDKg0Evq/GI7Tpa6a6Q32NdcvU6H5kBXEDAsgMUdbjC2K63Wo9CPfhXBuvoxBObYR9gtNXyYA5Ph3cFtrdIL6WKyZeX3Ci5+scXHCNbas78s8JvTa/hd5joqMk8fTWH9dAJ4E7Vw2enCPjwizRmWTeIeYhKPmXLGJBf2DA9ai0vMf2nl01TOMBhdedGeyFEOYOn1Evh90jN/y4cfR0qTwVgSjGO1A2FWmKWiK/tKHoPlALmT7fXRF+72MkDqfQPuCwh0WnuF3XBGVt5kCQUL
- ekS2BcuC
- PSCmI9P1KY7kqR3Be4hqM8yE2r7odkDhusJR8G77NvtyhkGttrv2V5/iPZzOkmaNbtWj6svIM4x3C0KFCDA0qvihgFIupkKeQDkNKPdxRVNM9j9OLnmJIBuKvoLuJBYGE1G4aT0fmrggm/P+0QM/c1wPrpZb/Bshp8NzA0TvwIxJPFNisVM2T4igBCtVwJVGcR62j+MuzW9PQVTjTczI6RN79U6/W7/b+x3a5bUM6ZQWQbAdyIf0KfaUxvqmloKoNzylLH05m8vYT6ehoSyfkqCVI/J0v7blB5MVlkUfJT0HS8iJomVWl6NMfoN+5Z4Q2ad75jsgm2R2iC85HJX6BIBOQyEWxLDnD2NFGMzUSAl5l1Qw3/0aWEF+5hOuJBemIBIwkBMLSqUD/Uvw=
+X-HE-Tag: 1774383184-552868
+X-HE-Meta: U2FsdGVkX19zGjQVwcNk8Fx1RxcHff3kPZpC/kKbz6zN4Yt8FSCZkchQQ84ii/iRo61exWVypqQsVgclqJ+/tJrTEjABS3YsU7d+iXh+opbLh/qegLK62aKLuCgHmkGXgC0IuvnE1NzVgPU7RKOxjj9LD0FVnEyxkzfDvVXvHd7niso7jCKILtgcXFHDis61DyKdchc5fzazeb9VhWbsXPyczWoO7Yu0m1nT9BVj5zz36iOoJOKNp6AD5+qPZG/nmqPHxYSdtRc/s5Y749nt8FyO3cCtYWPkUt8qOFJY0ui5/oZLbujqvlJHhAOfQF/ptpX6waeqG4EaKLxuD33gWIbUD6ICOu0HcKq/z1TvaOflBI3lZCX1/P9e9UmGzWhoOADYbQ2y5+E9sgtAtDu4fM8pDJ5y5kXjBv13MNI66Ym2YkCAq8KevO0bnwpknpq96SKtY1ukNOylm2oWQjHs6+5eGQTS6dRNDWAX3jAH4sygxaEPBWYbqBfi/2fFORQVITVwtoX6VnyugKMv5/svfvKqz96i5DZzm/yshaZ2lm4cuFKPGcMjTtg50y/bzU/NoxerQhG6LscTI3c3N+xTVhAMj7Qqe5Vb18jelm1TNh/401Cr/hm5Nhe5wa5m5+FnKAmsN2s5qFD0yRhCUKMtRn7TThofNIGZki25258J0NNAWSMllpV8kv3xkRLJuGYfac4nb00/o1gEF8uNWZEjX8elQuP2ne5EvN50mgrKVaMZ6/UGX2my1qORlP88woqb926LyA8S9tj3Tv/8H77MAoWX1ZyP2ERrIY+vre+KRb9bN6v8rcUdiAMtFPdzZVZVaM2XSN0levC72uCDK/J+ugW/g3cRdYTo5RSCj+czTEU7v30RT9dur261VnTQ9OfPckuCgOsimWPKYV/R6BmqCm46DDd4I+GHaeHumRmc3t1T9rWWmxn89LtLJAHgn81oDMbCAnVNhE+R8Vx37TY
+ XXkQHzq9
+ mEQrN5yJzt1InTMA27/uKciZragwg80e24JU64NBbMYdGMQKsZi6kTY1FXxodweCHgYujkyqo98HqJV3r5HUfUpjDOnB7JsUGZK1YXVHAvj9588ZkzMcGxKxl+2+W3Ps8cI7FV+ondA57Ss1yY6fCPCqS5DPr2VE66kFl29lqBBje99duPIfa5Gv+kBf5+yF6Rc40wIG6Pp6Sb0HNKJtBSIrwlvWHAlJ0oZ4kcEchnQo1E0KjdMmekC5XtPS8iIe4W8db+7eA7GeaUeRRqvaY7vPXEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,45 +142,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24/03/26 20:47, Shrikanth Hegde wrote:
-> On 3/24/26 3:17 PM, Valentin Schneider wrote:
->> housekeeping_overridden is only ever enabled in the __init function
->> housekeeping_init(), and is never disabled. Mark it __ro_after_init.
->>
->
-> what about housekeeping_update which could be via isolated_cpus_update
-> when creating isolated cpusets.
->
+On 3/24/26 16:43, Pedro Falcato wrote:
+> Move softleaf change_pte_range code into a separate function. This makes
+> the change_pte_range() function a good bit smaller, and lessens cognitive
+> load when reading through the function.
+> 
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> ---
+>  mm/mprotect.c | 129 +++++++++++++++++++++++++++-----------------------
+>  1 file changed, 69 insertions(+), 60 deletions(-)
+> 
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 9681f055b9fc..2eaf862e5734 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -211,6 +211,74 @@ static void set_write_prot_commit_flush_ptes(struct vm_area_struct *vma,
+>  	commit_anon_folio_batch(vma, folio, page, addr, ptep, oldpte, ptent, nr_ptes, tlb);
+>  }
+>  
+> +static long change_softleaf_pte(struct vm_area_struct *vma,
+> +	unsigned long addr, pte_t *pte, pte_t oldpte, unsigned long cp_flags)
+> +{
+> +	const bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+> +	const bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+> +	softleaf_t entry = softleaf_from_pte(oldpte);
+> +	pte_t newpte;
+> +
+> +	if (softleaf_is_migration_write(entry)) {
+> +		const struct folio *folio = softleaf_to_folio(entry);
+> +
+> +		/*
+> +		 * A protection check is difficult so
+> +		 * just be safe and disable write
+> +		 */
+> +		if (folio_test_anon(folio))
+> +			entry = make_readable_exclusive_migration_entry(
+> +					     swp_offset(entry));
 
-Doh, I'd even seen the patches but forgot to make a note of em. So yeah,
-that's not __init and the key is now flippable at runtime.
+We can now even fit this into a single line without feeling bad :)
 
-I suppose I could resurrect:
+> +		else
+> +			entry = make_readable_migration_entry(swp_offset(entry));
+> +		newpte = swp_entry_to_pte(entry);
+> +		if (pte_swp_soft_dirty(oldpte))
+> +			newpte = pte_swp_mksoft_dirty(newpte);
+> +	} else if (softleaf_is_device_private_write(entry)) {
+> +		/*
+> +		 * We do not preserve soft-dirtiness. See
+> +		 * copy_nonpresent_pte() for explanation.
+> +		 */
+> +		entry = make_readable_device_private_entry(
+> +					swp_offset(entry));
 
-  https://lore.kernel.org/lkml/20251114150133.1056710-6-vschneid@redhat.com/
-  + the is_kernel_noinstr_text() thing from
-  https://lore.kernel.org/lkml/20251114151428.1064524-5-vschneid@redhat.com/
+Same here.
 
-and have the IPI associated with flipping that key never be deferred, so if
-we suddenly have some CPU isolation, every CPU gets poked.
+> +		newpte = swp_entry_to_pte(entry);
+> +		if (pte_swp_uffd_wp(oldpte))
+> +			newpte = pte_swp_mkuffd_wp(newpte);
+> +	} else if (softleaf_is_marker(entry)) {
+> +		/*
 
->> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
->> ---
->>   kernel/sched/isolation.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
->> index 3ad0d6df6a0a2..54d1d93cdeea5 100644
->> --- a/kernel/sched/isolation.c
->> +++ b/kernel/sched/isolation.c
->> @@ -16,7 +16,7 @@ enum hk_flags {
->>      HK_FLAG_KERNEL_NOISE	= BIT(HK_TYPE_KERNEL_NOISE),
->>   };
->>
->> -DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
->> +DEFINE_STATIC_KEY_FALSE_RO(housekeeping_overridden);
->>   EXPORT_SYMBOL_GPL(housekeeping_overridden);
->>
->>   struct housekeeping {
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
+-- 
+Cheers,
+
+David
 
