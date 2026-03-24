@@ -4,146 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B852BF54AD7
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 16:00:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FC4F54AD2
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 16:06:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3A806B0089; Tue, 24 Mar 2026 12:00:03 -0400 (EDT)
+	id E33896B0088; Tue, 24 Mar 2026 12:06:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEB6C6B008A; Tue, 24 Mar 2026 12:00:03 -0400 (EDT)
+	id DE4976B0089; Tue, 24 Mar 2026 12:06:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E01636B0092; Tue, 24 Mar 2026 12:00:03 -0400 (EDT)
+	id CD2F76B008A; Tue, 24 Mar 2026 12:06:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CCCA76B0089
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:00:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8113F1A02FE
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:00:03 +0000 (UTC)
-X-FDA: 84581417886.11.9D1F400
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DC61618001C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:59:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="pa3Z/Mse";
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774367999;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BBF556B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:06:52 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 95F15E0487
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:06:52 +0000 (UTC)
+X-FDA: 84581435064.25.22B4D27
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 16F2FA0013
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:06:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="ltHEVA/O";
+	spf=pass (imf15.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="ltHEVA/O";
+	spf=pass (imf15.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774368410; a=rsa-sha256;
+	cv=none;
+	b=DJpN/ygCnWAYryFR8gcKOitBSbLLkW2KvESoCZUWTubkuMhop7RtzK2qLWPu1lDgHutQjn
+	NqZ4nxXnZjhEGxhLT2m8ugvQzzCOJ1XFHYPAzl10CPxNjZyZNZUANJIOJQUHUFicfvjpXj
+	KBC5KcVO+89iZPrLbhUgDgCBuz1CpeU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774368410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
-	b=R+KsvLZmmxnj3lJDkMxfMCnVr3yeByh7Aw1aO/4uDzsIGciuHUVcj7PGe28tzas2Fw1Oj1
-	JereQCstTHMp0XZCC9aDQZTxy7XlyJ0sa9SqGJR42lWP4ViC56kMuIoziyyisR1htgqZpU
-	HO6AB8G2B2f4BiSQhuNoA/GLLGuNJ48=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="pa3Z/Mse";
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774367999; a=rsa-sha256;
-	cv=pass;
-	b=lLFfodrPbLHguHYTh9GTUIo9uwEIGE6BLuwMPWdr9eUFeEqHIn32wwePM4cC9MQ+J8BIti
-	pnmMVabf83NcceHvfTUy27V5m99Szu/ugneJHL0fRh7xdszVBpyxc6qkxo2hWLZWsMhGAV
-	UaMCpYjGZO+gl0Wpe0isIUyrjSAXD6k=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5091ed02c54so494951cf.1
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:59:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774367999; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Sg9mK63CsoVlbSsV8/YBx1Musw2+t9vbaLCSEQuak6q92tzexvd2v7M4lRSoKqOuBn
-         1EWoApvUhx8kbiOcTvTRjhwOawgiP9Q6vEtIxzwIan9Td2Yw6jkQhp3FMXj9jE/768T7
-         hbraRSrSViDgtVUAFIwb44Zvo/HWKUFJTpXJ5NNxbzTGjeS0K1Gn/cs8c/d0HYt5lcBH
-         qrQyboZPrzcpPp+Y+Hib+QBlOFgUqrS/0eOZrVtwCYEDdpCiMI9eVxt/sc8jKlULF5le
-         RfgyX3/dHu3TGt5DFKGr72Okpks/MnUH8acqWqRNLJqd2iLwHA60mg5IHRLSPcsLjFin
-         kEkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
-        fh=Qbuish54FfbfhQUDagFVJDXGjzW5tD2fXsNRu0MZ3aU=;
-        b=NtqEruMo2uZSooFgLQPujNOPx0p+/ACAljHx3qWYzDLdUyjrT1kPns2dCCeupCorlh
-         fA0kpAFraNAnTI6ZtgI+Jez3GJFV05tHhe+jvD7tO/Ffmg9RvL8bcsVB5iQIH6iKvTaj
-         4hrgIhGDNotPbkEpCplSq3zm0UTIvZTQ1Dr6M9UgYJ8+ZMdyYoUf9LqBLdCKq3RbT5yx
-         42xF+wGoGazLSjrmp2RAUjUYKC9nv65pvuVWrnlaOvu3Pt5fOd1W/i9G4K9UBzuBTGtc
-         mWQ+DTSMQ8mRg8aZIvgLESu6+JQmYggnZA/PTCNnVHx6+cbYG8x0zAK6eX4h2t0zT9y5
-         MggA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774367999; x=1774972799; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
-        b=pa3Z/MseyYynLybYuboFmQpyYwmtuhnfGAN+ZbjLWQ+lfMQIYB+04iSO9aCtj+vZRR
-         a4yNFniieTeYywfS6tQBpBQo/RhClZQgIQOpkIzkhpmaYFxMn7uty2UbiaVPLO2hRTUS
-         RbzqEuFhxoPw2QCB2xiHGg1CMUQrLULoXuKOcC69VrBLwkM6KAN5GKKWJUzbwAIu17co
-         PqgLumZ1SzJgJVhg6kXoqxppTXG2ysQkmG/HP1wly4oS3LO6l+QpBjeprRjIhTk8TxGL
-         ERc9u2jk28UMCMXBXjLS27BSUHy5poFxe8FPfrU4MRVSWbt6NPLOI/jg0H5AZgjmH2UP
-         eDug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774367999; x=1774972799;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
-        b=Sla9KICt9tT/0Hjwt1MRFhxNO+Nx6HzAv+GOXPDPvDjR52Aj3uGVs0XOm8ALIPsl2a
-         UmGYI356wORojOVjAopBoYz3LUSgHndpQm1lxIjm3dlGwnhXBY9EnfwdDhIUdzqWi4Gi
-         SF4EwVMXzoY58Ho7Aay5SUqlRdWxgcLpHAUh44LLu50cTM9brTkvb8XGKugVGP6P/ZuN
-         JdTfmKK/GOiAOrMy+p/lWYHx2LyvsqgLDvjjMAjcQEYZHFkbCSmPHwx5yO7jH3J6pVzb
-         r6YIe1YAIRiDVCZFVHGeFTRMWk78UG+UYNev5a2Y9KvtKBRI409AqdgvyjLQFXuwFiHV
-         Yv+A==
-X-Forwarded-Encrypted: i=1; AJvYcCW1zE0bnB361W0SYYBKpo1YXioQ/VMghnp5gWTtRQ3PH2JiRaftR5GQ7ELvNjOELaMRE/W3QQiWtg==@kvack.org
-X-Gm-Message-State: AOJu0YxPxraD23gQ8GmnTemIke3PycPbzr18w+NIA7V3eKFn8xHaOXxv
-	BNCWcZLV+pXoeEkAIb48ILJGa7JDhY6rl+FbVnlKQF7XRFx5KI1DcBgmF8Z8Dff0qYNmPrZYWny
-	rjtmEMcUtBZIg1HG325P4pXpeS/4k9C7hn205tPL7
-X-Gm-Gg: ATEYQzyFqzcG1rn36VZiK9ILhq0c6IGlAI4Q5KWpUQd0hOSj3kJQH54GnwI9K2QAP9S
-	ig78mVA1kG+CjKewqZ2q3N7OW/wel8Koli2FQRTun+Jxu34eAsiVvtBU/3O6WZGcSkBPzClKWWq
-	9ocJMNAYi+d1YUwrzoAmKIW6jDSRHYbm2ChZh+Zb9HlP5XbMlbFg4mVl/SM7XpdgBqOioLRZrdX
-	AaV0efJPcstMlYBjdBMMfw5nMSSqXjtMUM5nHQxRogcnLx+XWmHh+D0gI4Ha+zcy3Mq4PQeZ3zd
-	NOlH5YFkdBUwt/cTxNDaEhjhXlMJXJofk7Nizg==
-X-Received: by 2002:a05:622a:8d15:b0:509:1eca:6d24 with SMTP id
- d75a77b69052e-50b6fab570emr14738871cf.2.1774367998125; Tue, 24 Mar 2026
- 08:59:58 -0700 (PDT)
+	bh=2DabmZmrMAnP5JPSCcsIQW6Bj+sjnHfmrij8n/J4K0w=;
+	b=AqT+r6E2vKr00v/swWqXPqAX/XKkYsGxIICGdH2IqbAaA9CUG9tHwOkPMqSUcRVEu17eQ9
+	S5hFDQHOLyCUNaYHXrAADzr8lnV13EyNbgh02Dv2wcyc+MHIjbEnkTDs1O3v2O4GL8rEze
+	iumTQsaPlY9oDRXgQ2OspYojWLxOkv0=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62O70Z5w415280;
+	Tue, 24 Mar 2026 16:06:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=2DabmZ
+	mrMAnP5JPSCcsIQW6Bj+sjnHfmrij8n/J4K0w=; b=ltHEVA/OjID7gMmJSyBGcM
+	Hpb6Z4qNZXY1KXvJCFbreuTuCSB8+FECfn6bTXuJwPXgJE50NCxA6XUaFXBZ0Jdi
+	yVQcY1WwVLrwWsaKA4Utdhdc3wodDpePL999Ig/NRLPbJBpgPZ/oLOwG/0XQA05M
+	XaTCIwHrAHhYOWxYqaBnZDDUjqQ6ZiR7+n39AgX9Apu7yJMT/c6hqe0fxNC/IzDT
+	AOKaBmT31+OVDCi45N+5zO0sngkPWej3afDFgdRReUi+aONTEWZKyKYzr+cxWi+R
+	lJG0nJKMnE1XtjTbS+/FWgdP6DBtdAsdA8V2cp4gUNjjo1JhhvvG7n4ReVGBV0/Q
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kumkvnv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 16:06:30 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62OFha2A031635;
+	Tue, 24 Mar 2026 16:06:30 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d25nstt93-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Mar 2026 16:06:30 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62OG6TrR22872764
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 16:06:29 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9C74B5805A;
+	Tue, 24 Mar 2026 16:06:29 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16D035803F;
+	Tue, 24 Mar 2026 16:06:24 +0000 (GMT)
+Received: from [9.39.25.178] (unknown [9.39.25.178])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 24 Mar 2026 16:06:23 +0000 (GMT)
+Message-ID: <537ea1c6-e631-4d13-8169-1a1b96834762@linux.ibm.com>
+Date: Tue, 24 Mar 2026 21:36:22 +0530
 MIME-Version: 1.0
-References: <20260322054309.898214-1-surenb@google.com> <20260322091723.dbc1a8e45f4412fca43ba510@linux-foundation.org>
- <CAJuCfpGEA17hB4BMdr5a7=NxfeF1RUt0q=_w2WieVv0XoN24Gg@mail.gmail.com>
-In-Reply-To: <CAJuCfpGEA17hB4BMdr5a7=NxfeF1RUt0q=_w2WieVv0XoN24Gg@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 24 Mar 2026 08:59:47 -0700
-X-Gm-Features: AQROBzAMqgNkN_nl_EndICe5F5XJG6Br11eHuUlOIjfDgcmYOvJ6ZgT0J1pHfxM
-Message-ID: <CAJuCfpHQ6ru79hjnRnz6vpb2-Rjff8QsM9d_4g9jd+_jb9-qvw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/4] Use killable vma write locking in most places
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	Roman Gushchin <kfree@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DC61618001C
-X-Stat-Signature: tbw4axukgfnmaqnk66qjfc8xpi7e8hfp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 6/6] mm/memcontrol: Make memory.high tier-aware
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        linux-mm@kvack.org, cgroups@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260324154414.195150-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260324154414.195150-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: r9ujSe3VNxAPEMHzMB-f4qRIQV0EF_vt
+X-Proofpoint-ORIG-GUID: iGZaYGwDGoTS6lHfgsxRnCrWibAtMXQp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDEyMyBTYWx0ZWRfXz2D+Y0KIRzTN
+ 3mRzWQmU8YYdEHBDMTYgRcjuij9OYd/WM/2JcE6km5CAi+m6jIxXJlLNrM8TeRfC0UT7tPQ/o57
+ qbnhLwvhrwWF5qXFJmdVPkGv4/jUiosCaeIJXn3qqx0OnikEVVd115deOV/dgqonM+HogMD6QvB
+ Rm8CHvIDVs3Cm5QdQumIyywCvLZcVaXdTiUpfbWQ9Kvsy3UGc6Zs0xSEPTxo+GmpZ/BzSj/cG+a
+ 55NiE1OdR8JjvU342EnZt9yjUsLhb0avdASknNmogYm9YTlfWdlzmXvx4GuVORl7YbftyL8rkFo
+ vcZizlsUH7AzbSMISPxdEjrkIUNhXH4RjJ9W67HOX4/1fACZM/8Nf4RWJExf8TpeDH4NIycRf1A
+ 6lk5AkQwIocTSBZ12tIFL+ta31QEkID3769uggylXJIlRg7TKEe3njKWs0I4w4xOX9aS3vLhhQT
+ /LtXwbdcxPm2A8nunKw==
+X-Authority-Analysis: v=2.4 cv=KbXfcAYD c=1 sm=1 tr=0 ts=69c2b687 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=DV77l5TmE7YLv7A2xvoA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-24_03,2026-03-23_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240123
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 16F2FA0013
+X-Stat-Signature: wp9usyank4cxho5nipfea89m8yjjzxca
 X-Rspam-User: 
-X-HE-Tag: 1774367999-806101
-X-HE-Meta: U2FsdGVkX18PsyetGAvmRjsTdPSbbehqOV1ZFSAieSrCOmDwTprAOyyvi0En5AZDqj68YYOl3XILRO1a/ZsrxH35IFB7g6fqLBzVuZS5wwMixJX/YyKw4BFxWVF4cJeSmT720V7aqzDk4oq5oP4ysE4lj6RgSkJMjSBKX4GIw/Fwslp3pom7KaNQYoG7UuRQxEhoWTh/QeHbF35Yr4Drt6pRyzPC6r5vuZye1KI6Ni9V6tD9xgsJ9gMKHaQbA4rfQmKtMuDhLkUH2gbUmwWaGUFgNWjYout0uHG9YtDk953i4gwhwXPZw7E/78DrJSv1tbd/niAmqk4CC3huvsvgUKX4Ob7+BV40U3+iHTNWwu/weJP19NR3C6aKYCGzuveQruEQL5vy1X/lQDaHp4lW++ULzD6njUl/zUxsdeZLzpXAsU/VnVjMvuYPmXiPnmWxW0sv/tPk8eRiHC9nAtg7dsl4QLtPxL3yqcNlMziIjpuaWqrEkBttgHhYF3vJ5GH6M8zDEQw0CnnOj6Wt/Co/zOr+fEh/vyyrSRTxA4nom9AoJAyKtDJcxGaqL3rUMI/YQYnz9khYEFjbB4JUCGx5SkCwZR8iNcOeL4upObnUWnyIZr699CaxKluaA7lxiKRk+RdDdSFEIZjunlTIDvTIp+iJGonjWdv0bgj0tyLFG7P+yxw2hLjACvsVHnHkbmlq+D9cZyFzlD1q6zh/woed4SwArQi5PvyWAGeHr7kDqXBJexvZwO+PMVbfP+GAuiP+wOtdDuNGVqcs6Dy9at0G+RbpbqVNm4VvJ9NpJMpEyeex2knP4E0XbMbz0AogR+f7pk2AAIGKWFxcNtU0Bcsk3NHqOfc6V923ezmRHoabKph7DCcc/ddtkfimPjFKnpZDWnF0jb/zjRd6RR/4fDRtFdTnBWjh0cMtAbGJ/r4jHXMZ15gRGU5Oxe5W5G9Fe7eVfs/XX7JSKr64+eAiV6b
- ct3PvEKG
- 9GdN4EH6VruWmjjGk5lJTUHFV25i72XVUfzRpDohyceKMda8dqg4Jtd2+Ar6dDTGtfqe0R0yFz8PDXX+CpijKVtCwZPMS4bVCglMMCRde1V9LdxDDqiDljaiVtLi9arFvFhjn2Uke+IXqAUS6/bsP9z0GGL1Bhn5O3lTAqhwqJrictc7LYUGUTeK5aRY3ms45Dz7OSjnA19j6frM7rgTHIpc4xVPiLo3EP5QwxdL4QLfDMTdrzdPYCUDDokTLHG11RLl18hpahE7Nr8knYz2N09srmhH2Qo+X/Dbr1a45bUDv/xpOMzvryJOczjDXBTp9JCr7N3/EpmdURbJdR7AJaMne5R67Sy0AQl6W/vLNJRwq43lSqi9BpORU6Y2PWRukksEEYA2ZC6jU3D215y04gQDh1RNCovnJE5TsgNiXHvBOXeJIT0JD/ijsOLk/OCfkYPfRclViMfdMIMg=
+X-HE-Tag: 1774368409-689600
+X-HE-Meta: U2FsdGVkX1/M/a94VSBvIbVXTuY3iuHiOmb41daU0KO8U3Pmn9RH7iiCF9Eha6rczVH+6oEVZ/4rzy3CW84uaE/DgrHt/MpEvWsXEzJAW1hFaZOkHkhI9nBwrZmstuGVSO246q3f+P/5dHje1fyDIFovUjIx5xlrIWy7xygzu3yQa6Z9ffQMkTmYasX2JWWiwuxI8GkZ+L1+NiNDbXGLjm+5Y9di3Ch+wUkYAYhLxIlGJe0SVi6n000YjTVqy31GOX84znGjeT/FXTxv5W0D1TO7B0MHifA5aXKfLz6bQyiZ30lP8Hz8A1jK1BnYC4zK1cnzalQRVrkwzSuj2YYyO64JwGm2fOkB+GrW7O//Nx1khZ/xq7TgRvQX6ummuGgNCy8lgcO2UyXi4Ixj7wGx4B9tmNplcTywU7l0V2f6Zg5S6oFORDUnYwMo3iZKaXFWNfm0rw6Vqg0Ehlomd9nUz7KwWuTbmxzoYwqQ/8zqdNXLeIvcXZMXv9eQjRzS+XhEuSpukn8cQH8GA/0+zGs4xDt8ISruCqM7a/xKeLOdXNpD4LHTIsbRmH8hnC7GVjSiV21a8ceQGTYVjdIAGriyERG8oNkTXk21T4l/CBZJdmjGZm2m0m0oF3Dil3din6dqU5jLTT03gY1r/fPQphSJIWTVgHbFgmldL7ZgJgXJJqqrxy+a4pjbTBWeX5D5mA+uEOxiGESvwigjhXKFOMInHPGwgB4Vn4GCvL/9HIFGROf1fyutHEzGo4jdeMkGy54LGTBtvMHN27GjTuCn69ySD6jWJTG2JGrG0YdQXD9kfAjmHMzMw14XqWVv1JFPYUr7rLUWHNol6tTk+iRBUxIvAUsqivKx+9OhYxOO/CV7u2YLQuuIl0Km5DPU3QGoNaS9d8IyH2Io6ZJU3DW6tz6FZOsin22FhvlMhMZYXNtR6smF5E1mg50qa4SOQsuoZ6vrkbrYWa7v61QXsIZU7Wy
+ P9lTKEiR
+ xDe4KXDC3CIGDOJgoHmG9uuSfPriIjp4zJNs1ualVGFALndiia/xUIWy/GvKrNtto0HyrktqCf36Wm6vIcuPTO0oIgPFYyMtNv6tMHAoiUe2hWvL6vGCGnL9IgfuBmmTaD3PdUhLAuGXk1xudZIgNjlyc2b4BI3+nRPat/OgpDTNGS5faHe3UeSkzUTb5ziCeZ86xIy26c7/sg7E5E5hlc2b9wDI8u6ipc4GSH4zNbnEboKkUGRfPL6yfzvf3KftTjOlwA7ET9jX4q+DLU7/2oI82lrg9/v2LKraReEbWwY6oKlMNggp5X/3eCMYO0duHH2i2CD98JNQi+Uf4EzkBRISmd1mSxAs+7+sOllO8q7TI4s4kS6zBDDBb+wTZ+J5smd63CnGjHy/rqx4ojauPJGO4yoQN3B/JkGEWVbM/r3ZRYLwRWZAgII58RtAmbQ2XDII9OYX9olSsvnDZL6X2FOaWe5Gx+N494tR0TWD/mHKd3vGQkXbKqblIQrMGe6NirFQv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,35 +151,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 22, 2026 at 9:29=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
+
+On 3/24/26 9:14 PM, Joshua Hahn wrote:
+> On Tue, 24 Mar 2026 16:21:06 +0530 Donet Tom <donettom@linux.ibm.com> wrote:
 >
-> On Sun, Mar 22, 2026 at 9:17=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
-ion.org> wrote:
-> >
-> > On Sat, 21 Mar 2026 22:43:04 -0700 Suren Baghdasaryan <surenb@google.co=
-m> wrote:
-> >
-> > > Now that we have vma_start_write_killable() we can replace most of th=
-e
-> > > vma_start_write() calls with it, improving reaction time to the kill
-> > > signal.
-> >
-> > Thanks.  Sashiko review raised a few possible issues:
-> >         https://sashiko.dev/#/patchset/20260322054309.898214-1-surenb@g=
-oogle.com
+>> On 2/24/26 4:08 AM, Joshua Hahn wrote:
+>>> On machines serving multiple workloads whose memory is isolated via the
+>>> memory cgroup controller, it is currently impossible to enforce a fair
+>>> distribution of toptier memory among the workloads, as the only
+>>> enforcable limits have to do with total memory footprint, but not where
+>>> that memory resides.
+>>>
+>>> This makes ensuring a consistent and baseline performance difficult, as
+>>> each workload's performance is heavily impacted by workload-external
+>>> factors wuch as which other workloads are co-located in the same host,
+>>> and the order at which different workloads are started.
+>>>
+>>> Extend the existing memory.high protection to be tier-aware in the
+>>> charging and enforcement to limit toptier-hogging for workloads.
+>>>
+>>> Also, add a new nodemask parameter to try_to_free_mem_cgroup_pages,
+>>> which can be used to selectively reclaim from memory at the
+>>> memcg-tier interection of a cgroup.
+>>>
+>>> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>> ---
+>>>    include/linux/swap.h |  3 +-
+>>>    mm/memcontrol-v1.c   |  6 ++--
+>>>    mm/memcontrol.c      | 85 +++++++++++++++++++++++++++++++++++++-------
+>>>    mm/vmscan.c          | 11 +++---
+>>>    4 files changed, 84 insertions(+), 21 deletions(-)
+>>>
+>>> diff --git a/include/linux/swap.h b/include/linux/swap.h
+>>> index 0effe3cc50f5..c6037ac7bf6e 100644
+>>> --- a/include/linux/swap.h
+>>> +++ b/include/linux/swap.h
+>>> @@ -368,7 +368,8 @@ extern unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+>>>    						  unsigned long nr_pages,
+>>>    						  gfp_t gfp_mask,
+>>>    						  unsigned int reclaim_options,
+>>> -						  int *swappiness);
+>>> +						  int *swappiness,
+>>> +						  nodemask_t *allowed);
+>>>    extern unsigned long mem_cgroup_shrink_node(struct mem_cgroup *mem,
+>>>    						gfp_t gfp_mask, bool noswap,
+>>>    						pg_data_t *pgdat,
+>>> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+>>> index 0b39ba608109..29630c7f3567 100644
+>>> --- a/mm/memcontrol-v1.c
+>>> +++ b/mm/memcontrol-v1.c
+>>> @@ -1497,7 +1497,8 @@ static int mem_cgroup_resize_max(struct mem_cgroup *memcg,
+>>>    		}
+>>>    
+>>>    		if (!try_to_free_mem_cgroup_pages(memcg, 1, GFP_KERNEL,
+>>> -				memsw ? 0 : MEMCG_RECLAIM_MAY_SWAP, NULL)) {
+>>> +				memsw ? 0 : MEMCG_RECLAIM_MAY_SWAP,
+>>> +				NULL, NULL)) {
+>>>    			ret = -EBUSY;
+>>>    			break;
+>>>    		}
+>>> @@ -1529,7 +1530,8 @@ static int mem_cgroup_force_empty(struct mem_cgroup *memcg)
+>>>    			return -EINTR;
+>>>    
+>>>    		if (!try_to_free_mem_cgroup_pages(memcg, 1, GFP_KERNEL,
+>>> -						  MEMCG_RECLAIM_MAY_SWAP, NULL))
+>>> +						  MEMCG_RECLAIM_MAY_SWAP,
+>>> +						  NULL, NULL))
+>>>    			nr_retries--;
+>>>    	}
+>>>    
+>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>>> index 8aa7ae361a73..ebd4a1b73c51 100644
+>>> --- a/mm/memcontrol.c
+>>> +++ b/mm/memcontrol.c
+>>> @@ -2184,18 +2184,30 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
+>>>    
+>>>    	do {
+>>>    		unsigned long pflags;
+>>> -
+>>> -		if (page_counter_read(&memcg->memory) <=
+>>> -		    READ_ONCE(memcg->memory.high))
+>>> +		nodemask_t toptier_nodes, *reclaim_nodes;
+>>> +		bool mem_high_ok, toptier_high_ok;
+>>> +
+>>> +		mt_get_toptier_nodemask(&toptier_nodes, NULL);
+>>> +		mem_high_ok = page_counter_read(&memcg->memory) <=
+>>> +			      READ_ONCE(memcg->memory.high);
+>>> +		toptier_high_ok = !(tier_aware_memcg_limits &&
+>>> +				    mem_cgroup_toptier_usage(memcg) >
+>>> +				    page_counter_toptier_high(&memcg->memory));
+>>> +		if (mem_high_ok && toptier_high_ok)
+>>>    			continue;
+>>>    
+>>> +		if (mem_high_ok && !toptier_high_ok)
+>>> +			reclaim_nodes = &toptier_nodes;
+>>> +		else
+>>> +			reclaim_nodes = NULL;
+>>
+>> IIUC The intent of this patch is to partition cgroup memory such that
+>> 0 → toptier_high is backed by higher-tier memory, and
+>> toptier_high → max is backed by lower-tier memory.
+>>
+>> Based on this:
+>>
+>> 1.If top-tier usage exceeds toptier_high, pages should be
+>>     demoted to the lower tier.
+>>
+>> 2. If lower-tier usage exceeds (max - toptier_high), pages
+>>     should be swapped out.
+>>
+>> 3. If total memory usage exceeds max, demotion should be
+>>     avoided and reclaim should directly swap out pages.
+>>
+>> I think we are only handling case (1) in this patch. When
+>> mem_high_ok && !toptier_high_ok, we are reclaiming pages (demotion first)
+>>
+>> However, if !mem_high_ok, the memcg reclaim path works as if
+>> there is no memory tiering  in cgroup. This can lead to more demotion
+>> and may eventually result in OOM.
+>>
+>> Should we also handle cases (2) and (3) in this patch?
+> Hello Donet! I hope you are doing well.
 >
-> Thanks! This Sashiko dude is good :)
+> For the second condition, should pages be swapped out? If a workload
+> is using 0 toptier memory (extreme case, let's say they haven't set
+> memory.low) then lower-tier should be able to use all the way up to
+> max memory.
+>
+> Maybe you mean if lowtier_usage exceeds (max - toptier_usage) pages
+> should be swapped out? But if we rearrange this
+>
+>                  lowtier_usage >= max - toptier_usage
+> lowtier_usage + toptier_usage >= max
+>                    total_usage >= max
+>
+> And this is just the memory.max check and is already handled by
+> existing reclaim semantics : -)
+>
+> I think case 3 is a bit more nuanced. If we directly swap out from
+> high tier and skip demotions, this is introducing a priority inversion
+> since memory in toptier should be hotter than memory in lowtier, so
+> we should prefer to swap out the colder memory in lowtier before
+> swapping out memory in toptier.
+>
+> The idea was discussed at length at [1]. It also feels like an orthogonal
+> discussion since the behavior isn't related to toptier high or low
+> behaviors.
+>
+> Please let me know what you think. Thank you, I hope you have a great day!
 
-Interestingly Sashiko had one false flag: "Does this code leave
-mm->locked_vm permanently corrupted if vma_start_write_killable()
-fails?"
 
-In mlock_fixup() the path that we call vma_start_write_killable()
-happens only if both new_vma_flags and old_vma_flags have their
-VMA_LOCKED_BIT set. In such case nr_pages is 0, so "mm->locked_vm +=3D
-nr_pages;" does not change the value of mm->locked_vm and we are fine.
-Perhaps this can be used to improve the model?
+Thanks, Joshua, for your clarification.
 
-CC'ing Roman.
+[1] disabled demotion from memcg. With memcg limits now being
+tier-aware, I was thinking about how to handle the demotion
+issue. You are right that this is a separate topic not related to this.
+
+[1] 
+https://lore.kernel.org/linux-mm/20260317230720.990329-3-bingjiao@google.com/
+
+
+> Joshua
+>
+> [1] https://lore.kernel.org/linux-mm/20260317230720.990329-3-bingjiao@google.com/
+>
 
