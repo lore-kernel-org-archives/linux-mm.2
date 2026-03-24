@@ -4,103 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0B98F532EB
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 07:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F392F532EA
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F76D6B0088; Tue, 24 Mar 2026 03:58:25 -0400 (EDT)
+	id 015DD6B0089; Tue, 24 Mar 2026 04:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CF4A6B0089; Tue, 24 Mar 2026 03:58:25 -0400 (EDT)
+	id F082E6B008C; Tue, 24 Mar 2026 04:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E5DD6B008A; Tue, 24 Mar 2026 03:58:25 -0400 (EDT)
+	id DFC256B0089; Tue, 24 Mar 2026 04:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F92A6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 03:58:25 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A634D5F89A
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:58:24 +0000 (UTC)
-X-FDA: 84580204128.21.1510D73
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E43C6140002
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:58:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BfYtF0MN;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CBDFE6B0089
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:00:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8D96F5F8AB
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:00:46 +0000 (UTC)
+X-FDA: 84580210092.22.1C0821D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BE69340012
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:00:43 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CutYbLr1;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774339103;
+	s=arc-20220608; t=1774339244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IPhVFv+TwC89kzECYtcnuzxoRCqzsAd/MZtxs/kEWb4=;
-	b=WekXSN3dm0fyZ5Oidb/8b2MnbydppojnEsJBbsD0xyF6Rd1WMgxmktrSGQNwGZ5hKOpfvk
-	YYbrH0UzR9vBVw2IDIy+r4Kv0SIryQWqkX7pKmmWN8wvi3Qnf4MlPlHxcKtx5I2sXPeTgz
-	YNmqs+nHx+V+rqiyU0+0v333JUhtBWk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BfYtF0MN;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774339103; a=rsa-sha256;
+	bh=hO3RoDkfaX40pOPnDHKWF3PTrk31AlPWS01n3tsNc4s=;
+	b=VFY9awyhlXAnQuxapdZmIhqhIi2owwqxqsD/4lek1aUnidxooB1abTFlEFXwV7TE24EUh8
+	7b3Jq8KhBcQocX3N1Ka1Y0DhdFvYlTbJA12k++bTLk209gDvZ//F5SavpRCmQuisgW6OZ8
+	cwj0DZZ9uQMIAoFhJlks0sGhTMwv+eA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774339244; a=rsa-sha256;
 	cv=none;
-	b=cXq0oPrDCihmpGbcGk/VvXz9f6DOHDts8pr0NldVyMRdeznIC6cTsRVhy0gO1La9vbilJ/
-	OIImqd1kHZq2iJJWle0XY6Zy6UqzwmHCOyFdy0N4USLShVPVtrjeCrrkqbux5v7xxBFRxM
-	G1PAgIQQe3IbR5D6XU7lcyYTFQMKUVc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D13934012D;
-	Tue, 24 Mar 2026 07:58:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F238C19424;
-	Tue, 24 Mar 2026 07:58:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774339101;
-	bh=hNlIhMrnoaeK7dW/zd8nU5BBV1Mm3cRRYly6T6Yi7ug=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BfYtF0MNVdjXZ5ZsElUjeXglMH7FXgwoQMkpDxwKn2c5N5x+Hy9C6jOoowjeIUlrN
-	 bJx0jExABLbSFr4+4+HmklH4/tRgFc/uH8Lh2EJaHZqVe7BmDKGrsrsB7oyp+cDoqB
-	 t31YCOL8U1WW3VkKDgjtkwSTPjM8V/G2j9QXVEXM856Jts3hm/JFg7kOYPBwovk1X8
-	 vT+JCTzsLuIBPXg5gBjjSXSdcIkFPO6a4H+5eoVBtDHxUx963SpJYIu9UknYf9ilFB
-	 VNvBhS0IUWPpvcUbnUcll3BVN1QtdNIaf2t4IyeXhyIhb1maDtbheV9P8luq+5P/fp
-	 RgpC/Cj9FWxdw==
-Date: Tue, 24 Mar 2026 09:58:12 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Pedro Falcato <pfalcato@suse.de>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/9] mm/huge_memory: refactor zap_huge_pmd()
-Message-ID: <acJEFArj6uw2Z_2e@kernel.org>
-References: <cover.1773924928.git.ljs@kernel.org>
- <20260319200917.ce345a369d035050b6329ac5@linux-foundation.org>
- <87tsu9kgv3.fsf@linux.dev>
- <20260320203311.715ed75bcd84c18d24894324@linux-foundation.org>
- <20260321171530.8b3e8207f89d5a7384b9f01f@linux-foundation.org>
- <5cd57c69-7193-422f-b6b5-75bb5234e5f3@lucifer.local>
- <j6hsn4mxnzoukebcdggu6ojkyaj54joohocbbkrzksm47km7ni@zzp7aurwmto7>
- <20260323143604.603b20aec4e3ab77cabec107@linux-foundation.org>
+	b=vYLWJmRPH3hGVU0jfO0WZXeBBU3Wqg+LeDFZaRKt/CahpbHNeujUzwi1636sT7rx0jmao6
+	0PtiSIPs5q/kG/4Cs6Xoqzf4ICKN1ARgSYfCnco8TujshEthrre6bF+PGFiBuQuxeQBSto
+	EFAbyFGADSMfNOPpt52ORViDo2EXwZA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CutYbLr1;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774339244; x=1805875244;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ocoi7pvGmuvDZoSOfl5t4+tndabVbyrA9wr21MqUqZY=;
+  b=CutYbLr1YUu0SJ9QRshYpp4CJBhtpxG/37PhFDhJRfcoav70Yy6NZ/ZN
+   W10mDixiR8GdT25mccG+t4YBNCc+caqclvqDOE+OCwTh1zrjGw9sydGTN
+   g7NMFVKYpPvRuNxgKysZpNGMStF8n5NkZH1UILNMANDYfQLrSU5Sqcjjf
+   lKj4/PsL7I4FArVntAIWxOOm6RZiJS+3geSbpgLpGrL5BTnceknMfpWbM
+   bTTrearfMM3NpZ+veBn5SbuguLG2bTFM0lA55K+P5cw0iG0SnBCq0dSUR
+   W1XYLGX9TSJxKBWGcHZ3zVu94byOw39wSr5SrlCYsg9RS+v83xEh4SdBB
+   w==;
+X-CSE-ConnectionGUID: RRnsB8GEQiSw9Yz5DTUoTg==
+X-CSE-MsgGUID: /rldCINHTo+2K4qPx7MMpA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="75060891"
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="75060891"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 01:00:42 -0700
+X-CSE-ConnectionGUID: fFzXhO+xS3SDWPlVar7ADQ==
+X-CSE-MsgGUID: Udc32wB4RE6CAt6sSsNiWw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,138,1770624000"; 
+   d="scan'208";a="262202678"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 24 Mar 2026 01:00:35 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w4wgh-000000004CD-2iTp;
+	Tue, 24 Mar 2026 08:00:31 +0000
+Date: Tue, 24 Mar 2026 16:00:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, x86@kernel.org, rppt@kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, derkling@google.com,
+	reijiw@google.com, Will Deacon <will@kernel.org>,
+	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+	Andy Lutomirski <luto@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: Re: [PATCH v2 07/22] mm: KUnit tests for the mermap
+Message-ID: <202603241512.3kG43FzT-lkp@intel.com>
+References: <20260320-page_alloc-unmapped-v2-7-28bf1bd54f41@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323143604.603b20aec4e3ab77cabec107@linux-foundation.org>
-X-Rspamd-Queue-Id: E43C6140002
-X-Stat-Signature: 8uktxff74xt3w35z5jijzthckgxy33uu
+In-Reply-To: <20260320-page_alloc-unmapped-v2-7-28bf1bd54f41@google.com>
+X-Rspamd-Queue-Id: BE69340012
+X-Stat-Signature: hr3w8f5caog15p19bfysg15rm49o7u6r
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774339102-703185
-X-HE-Meta: U2FsdGVkX1+/LTxPlsm1Q7SukhIwzeP/i7qy8VDDUNaZWC0gzboc8a968qT+4z6mCJxjsaPKjIDPcQmmBFvHhUaPYT21PcvgnfhT7hqQowLL2qqGFVRtO/hxamnx7VOW8wBrygmWP+lm7WAkWobdRdqx83UOfW3x7rYksnhYwQbm5OZBsgXmlL1FAkRqwQ5leXyZXt9M0iAmFFl0l8KBr5+tGK61zMzrfUaBpot6S37ONB2XNqcK/cC9H+5l+6K/8Z7psH9uIC9VDEogLRopuOxVJV0eqJTNY1IBLbXG53nWrGgpdFiDXR8Xo5nw73+/zMrw4CtePIQaVcJJQsYzo17dr34UWCaEe63o4Zx3nNJZiKZ7r+Zy2cttL/Om9lzApdqlYZGk37BWq8un6KS37FR11R7R+EGBHMaadTZPUBySBQzy9cR8kJWkltToZQGZ5+k6v+iFYn5BCw1ip628GFeZwV1UkRJ0DwPZX2aKXWwc0zg//y2BnuVJPszC2scUH2G2EaEYr92ikDiBtMENQRBar7ek2kaG8a0pqZCp7X/JF9FiQ0eO1gpZ1JI3xeSnrvg4wJa5HRKOFsmpd4DtgGjwaJxKvRU27dDzJdnpl876Km2G5zTBShFA9i9MZhqwBHaUW+RbvSVp6V85k28p/moaqbKoKWS47xPqN0st3eq4PG3BN1Y5Ob90V9aWt2Gb94Vp6hxDtIC7brvOOmKzZBo/ZBo8WXpKuEop/21Kmr21VcPWqvDqWH+0W1Z48BRajz+nnxELOfMGRTGLhoIJ8Qhpsbb+z4sB6l+J8ynch9cIe/Nh3urt3TC48txmT2XC0BnKzhDvpaeISKdbOQPZQeduk90piWB/xeyqRBJCqQ/k41yszmnTUP9NP+BUIUhebOuh0l0Isnr0ntb4sqL/esdIzHR+zkiWgS4pacdncKgx16jJ5AQDaMBmx68QYUsULhdA4G20O60L8epjT+a
- yBfLQ8CB
- BIfRRsuo3Mboviculs/53QoHZZvcmi+62n7rhOKldO//Dh93/Y26lyQnYAKqMb611OYzYVjTiwxIY9z40NPrwkZzrXr+gDtz7DAJdHx99zx48+/l0iX04pXZKpkHA1WtQ43zGcDZRxalXTfaja8qbuuOXJnknMZYASbyCB9Sm9JKGEcabwegnRrA9Jkil4liy6Gt9ArEOojavtDgfqBtsKg962WsPS74Sg2HkDYwRZHEaOnVZxobrJLRJLWh94dKdpDklZipv0aUpeKLE9tz+BQpwhBPvgj/ZMMPB4YSjfrDa1PHr880Nzo6GOw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774339243-54283
+X-HE-Meta: U2FsdGVkX1+z9go5U++P5JlG9FaZPJHneM81XjAhYXKD7c9yqYx4ElOuQMpPUkGXF6D5ARQz8uK0kTXp/OPRku+9B1keMQIKLYlRG04IDH05N4tFMH8KZWlZG2NEZLA6/K6F9NdLyFpUiHp4Iu7+Mh2EdDqNQ8NJd4NYpQARomXWrZf2OBz20Kr3FQf5HdAxiuCyBm0L1KoeN1nM5OzpqWSZuBsb5uQRzEW4u6GTTPKPaJesxoD1DhTON49wEYe9HGRIwH2GxhR+2QjiQe7zlnZ3PGBF6uYQcEk48SUjpAHNemjhdk8Vi6kRLgBXB3UjS2+pC0sfs7hxtKuJP4GPiKu1lc3uUFroKb9kRmFanPJ28R2YyxBvLapcRRQTWQuARVt5d1DV/1IFk5++AND46NXfhMxor9A3QHxUkJ8BgWjUr3RGhI755vcZmbvPOZrHzkq+owABSqxJg1xsMI8Z2rkovqcbE0o5HhdUnOfmS+rbzn7DQMSTJQKJ9FKONSp3G4JpJP6jrDF5mVcHfQ8LI2RiX3toeb95WhUcsG5qMEEQ1ZwY3y2g4cB3tctRWGUIzOmQbqDMWnxvQyiOu5Igc9rCADlB9GBXSjAS/0n89zLftmDoMEVxP/G7p5fRGnPWb2U2lDzQHibBr8g1fFcJ2e6yNtpLF2a1TMQALldPFs2JyMIqcvLUcbItfZGXgMEqC4z6b+iCeDAlMpugP6Vpdnv1uqJcY9LhvCy5gLX2jfTYpt1XFExz7ng6g4oLAoWIKyaDdbq+0XDgCxQC4jalk7NYOclPQrWZILbcxY5frKZfy8eZJ4/vE4gZdLPN3hVVyBGNfihj9op7zfUYd3ONmStNDghYzMGgU7LaY/HuDZWsb+df1DARidTqpKHTxo4iGS1UlsSHkV0rt6FwDbc5CidSR6aWwwIXW2wbaWojR6Hzb04g8/MfrtYEiuAS6sOcqYeNybKwWYQpsHyXtjL
+ Hi/eJ0xn
+ cujT3apt85Ys2mgpeBH/UyGKe2Vt+QiukOuDzdIt7Q2QVhbFGzN3c0T228cj9cRjIj/aSr9xU97RTFutGHyooionkbyt2FGAdBsJN6+Rqicov5CMziW592pAnHOFriLMMKZRkYA8dw3nQ3Jlp3jpDIBDB7lleEBWI2uvuUDdz1Z7y278srQX6xcNJo0atvCs9sspMAvHRqZJijjbKOo+1knWNNii4+GmvOW13G+hSFiiYCZRI1itY+NsvNHlA6beHFGFdXn6pLZa+/DpIYGXEvpuJ4oPVRp0bOONrk9mvpGEZPCaxzpleysa8iz257KVgGc9urxQM/fdSSAA/CbCoBstr8WCwj4kvNrbJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,86 +123,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 02:36:04PM -0700, Andrew Morton wrote:
-> On Mon, 23 Mar 2026 12:34:31 +0000 Pedro Falcato <pfalcato@suse.de> wrote:
-> > 
-> > FWIW I wholeheartedly agree. I don't understand how we don't require proper
-> > M: or R: reviews on patches before merging
-> 
-> I wish people would stop making this claim, without substantiation. 
-> I've looked (deeply) at the data, which is equally available to us all.
-> Has anyone else?
->
-> After weeding out a few special cases (especially DAMON) (this time
-> also maple_tree), the amount of such unreviewed material which enters
-> mm-stable and mainline is very very low.
+Hi Brendan,
 
-Here's a breakout of MM commit tags (with DAMON excluded) since 6.10:
+kernel test robot noticed the following build warnings:
 
-------------------------------------------------------------------------------
-Release        Total   Reviewed-by   Acked-by only   No review   DAMON excl
-------------------------------------------------------------------------------
-v6.10            318     206 (65%)        36 (11%)    76 (24%)           10
-v6.11            270     131 (49%)        72 (27%)    67 (25%)           17
-v6.12            333     161 (48%)        65 (20%)   107 (32%)           18
-v6.13            180      94 (52%)        29 (16%)    57 (32%)            8
-v6.14            217     103 (47%)        40 (18%)    74 (34%)           30
-v6.15            289     129 (45%)        45 (16%)   115 (40%)           43
-v6.16            198     126 (64%)        44 (22%)    28 (14%)           16
-v6.17            245     181 (74%)        41 (17%)     23 (9%)           53
-v6.18            205     150 (73%)        28 (14%)    27 (13%)           34
-v6.19            228     165 (72%)        33 (14%)    30 (13%)           64
-------------------------------------------------------------------------------
- 
-There's indeed sharp reduction in amount of unreviewed material that gets
-merged since v6.15, i.e. after the last LSF/MM when we updated the process
-and nominated people as sub-maintainers and reviewers for different parts
-of MM. This very much confirms that splitting up the MM entry and letting
-people to step up as sub-maintaners pays off.
+[auto build test WARNING on b5d083a3ed1e2798396d5e491432e887da8d4a06]
 
-But we are still at double digits for percentage of commits without
-Reviewed-by tags despite the effort people (especially David and Lorenzo)
-are putting into review. I wouldn't say that even 9% is "very very low".
+url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Jackman/x86-mm-split-out-preallocate_sub_pgd/20260321-042521
+base:   b5d083a3ed1e2798396d5e491432e887da8d4a06
+patch link:    https://lore.kernel.org/r/20260320-page_alloc-unmapped-v2-7-28bf1bd54f41%40google.com
+patch subject: [PATCH v2 07/22] mm: KUnit tests for the mermap
+config: x86_64-randconfig-101-20260324 (https://download.01.org/0day-ci/archive/20260324/202603241512.3kG43FzT-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
 
-> > Like, sure, sashiko can be useful, and is better than nothing. But unless
-> > sashiko is better than the maintainers, it should be kept as optional.
-> 
-> Rule #1 is, surely, "don't add bugs".  This thing finds bugs.  If its
-> hit rate is 50% then that's plenty high enough to justify people
-> spending time to go through and check its output.
-> 
-> > Seriously, I can't wrap my head around the difference in treatment in
-> > "human maintainers, experts in the code, aren't required to review a patch"
-> 
-> Speaking of insulting.
-> 
-> > vs "make the fscking AI happy or it's not going anywhere". It's almost
-> > insulting.
-> 
-> Look, I know people are busy.  If checking these reports slows us down
-> and we end up merging less code and less buggy code then that's a good
-> tradeoff.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603241512.3kG43FzT-lkp@intel.com/
 
-If you think this is a good trade-off, then slowing down to wait for human
-review so we merge up less buggy or less maintainable code is a good
-trade-off too.
+cocci warnings: (new ones prefixed by >>)
+>> mm/tests/mermap_kunit.c:156:2-3: Unneeded semicolon
 
-While LLMs can detect potential bugs, they are not capable to identify
-potential maintainability issues.
- 
-> Also, gimme a break.  Like everyone else I'm still trying to wrap my
-> head how best to incorporate this new tool into our development
-> processes.
+vim +156 mm/tests/mermap_kunit.c
 
-It would be nice if we had a more formal description of our development
-process in Documentation/process/maintainer-mm.rst and then we can add a
-few sentences about how to incorporate this tool into the process when we
-figure this out.
-
-Right now our process is a tribal knowledge, having "Rule #1" and a few
-others written down would help everyone who participates in MM development.
+   131	
+   132	static void test_multiple_allocs(struct kunit *test)
+   133	{
+   134		struct __mermap_put_args *argss[NR_NORMAL_ALLOCS] = { };
+   135		struct page *pages[NR_NORMAL_ALLOCS + 1];
+   136		struct mermap_alloc *reserved_alloc;
+   137		struct mm_struct *mm = get_mm(test);
+   138		int magic = 0xE4A4;
+   139	
+   140		for (int i = 0; i < ARRAY_SIZE(pages); i++) {
+   141			pages[i] = alloc_page_wrapper(test, GFP_KERNEL);
+   142			WRITE_ONCE(*(int *)page_to_virt(pages[i]), magic + i);
+   143		}
+   144	
+   145		for (int i = 0; i < ARRAY_SIZE(argss); i++) {
+   146			unsigned long base = mermap_cpu_base(raw_smp_processor_id());
+   147			unsigned long end = mermap_cpu_end(raw_smp_processor_id());
+   148			unsigned long addr;
+   149	
+   150			argss[i] = __mermap_get_wrapper(test, mm, pages[i], PAGE_SIZE, PAGE_KERNEL);
+   151			KUNIT_ASSERT_NOT_NULL_MSG(test, argss[i], "alloc %d failed", i);
+   152	
+   153			addr = (unsigned long) mermap_addr(argss[i]->alloc);
+   154			KUNIT_EXPECT_GE_MSG(test, addr, base, "alloc %d out of range", i);
+   155			KUNIT_EXPECT_LT_MSG(test, addr, end, "alloc %d out of range", i);
+ > 156		};
+   157	
+   158		/*
+   159		 * Read through the mappings to try and detect if they point to the
+   160		 * pages we wrote earlier.
+   161		 */
+   162		kthread_use_mm(mm);
+   163		for (int i = 0; i < ARRAY_SIZE(pages) - 1; i++) {
+   164			int *ptr  = (int *)mermap_addr(argss[i]->alloc);
+   165	
+   166			KUNIT_EXPECT_EQ(test, *ptr, magic + i);
+   167		}
+   168	
+   169		/* Run out of alloc structures, only reserved allocs should succeed now. */
+   170		KUNIT_ASSERT_NULL(test, __mermap_get(mm, pages[NR_NORMAL_ALLOCS],
+   171						     PAGE_SIZE, PAGE_KERNEL, false));
+   172		preempt_disable();
+   173		reserved_alloc = __mermap_get(mm, pages[NR_NORMAL_ALLOCS],
+   174					      PAGE_SIZE, PAGE_KERNEL, true);
+   175		KUNIT_EXPECT_NOT_NULL(test, reserved_alloc);
+   176		/* Also check if this mapping seems correct*/
+   177		if (reserved_alloc) {
+   178			int *ptr  = (int *)mermap_addr(reserved_alloc);
+   179	
+   180			KUNIT_EXPECT_EQ(test, *ptr, magic + NR_NORMAL_ALLOCS);
+   181	
+   182			mermap_put(reserved_alloc);
+   183		}
+   184		preempt_enable();
+   185	
+   186		kthread_unuse_mm(mm);
+   187	}
+   188	
 
 -- 
-Sincerely yours,
-Mike.
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
