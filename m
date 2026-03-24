@@ -4,128 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0F4F532C3
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:43:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA8BF532C0
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:49:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0A4F6B00A7; Mon, 23 Mar 2026 20:43:32 -0400 (EDT)
+	id 8F83A6B0088; Mon, 23 Mar 2026 20:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBAD16B00A8; Mon, 23 Mar 2026 20:43:32 -0400 (EDT)
+	id 8A9826B0089; Mon, 23 Mar 2026 20:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA9986B00AA; Mon, 23 Mar 2026 20:43:32 -0400 (EDT)
+	id 7BEF86B008C; Mon, 23 Mar 2026 20:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C4ED36B00A7
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:43:32 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 536575D703
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:43:32 +0000 (UTC)
-X-FDA: 84579108264.10.E376512
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6FD9F8000B
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:43:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FAuCnUjk;
-	spf=pass (imf30.hostedemail.com: domain of wyihan@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=wyihan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CDF36B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:49:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 158431B9625
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:49:33 +0000 (UTC)
+X-FDA: 84579123426.23.A4BC073
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8CF38A0002
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:49:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ldj034ey;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774313010;
+	s=arc-20220608; t=1774313371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tP4PkIA/dAss1SYdem97AuKhuaCH6Uwc8eZQpSWtLFc=;
-	b=tKkI4ztpC49VnB0Fd8NfqeYbhmXiRzke9cn305MG9zAOyqaM2YYtoJbopl/i3tw+fjkjVi
-	xZhrAmaVxkHyBXrPMa37JKmms44xWxuLfXuDuzeLGwW4QibT2E6mxFAwuQOoKbT2pja6t9
-	5ld2q752LJgb0cnhmDfrtLbSxae57ZA=
+	bh=3nG1Rw0s9rA42bux0DJgkfrcrirY1f21OYcL6BLQatY=;
+	b=UYqF0tU1XrUBklcYNF0wP3JaF4Zyq5Apkt+YGtpsxRefX72upSorn2omz+4K1wUJfPcODz
+	wwBkIUHEXSTP1JkrVedAAiVrmBEilgbW8CqgcR2jQYK6LmYKYMHgPy+cP+EzakPhWBq+ai
+	3YTcFw5n9Oi5shtkN32lqm/p3VN+Caw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FAuCnUjk;
-	spf=pass (imf30.hostedemail.com: domain of wyihan@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=wyihan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774313010; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ldj034ey;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774313371; a=rsa-sha256;
 	cv=none;
-	b=Lcr8E0eChsuKY7SgTv35Pz5qDZgHIBeDLK8fUdGEoUC/BlpFHwZ4Qi0XEMLgfyn7MXRBS0
-	7BZq2AzSuWkzb/x9TGUYMusP5O75lJ+1vlKiIEr2IoGOnoJiVMv8y6lGo8az2EdhKWOQtu
-	ttORrmlmHG/qT4cd05xK8luj9AFFElU=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2b052562254so44335ad.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:43:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774313009; x=1774917809; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tP4PkIA/dAss1SYdem97AuKhuaCH6Uwc8eZQpSWtLFc=;
-        b=FAuCnUjk6KEk1dfaaHioVqhSdO65FgGWFOdZNMScj7DMmVge0ppBglMzqf8AGe4JpA
-         MrwR8IOHEPPz9EybWN8D0vrhLkrPaKDI9AhlJnSIH/OGzU8Gde9SQoAELHaerrpDNt8D
-         me5qgv/BjZ1d/0yz8DI2eQZCcZGRQPbm6CtqqNtPvOsnrzAS3B1iMehYDD8NfQSeQAYv
-         Cgtr+y9RTNHNamvzr9D5g8Txc7zE89ppmXhpy499Kv3lC7OJlngrhKAJZHhWbEK2CDVo
-         1aj6OcHThZn5ZxrixlIuAAdlKaOuFkDPQNetpCBCZMJ5ky1Oqsebw+pDYb1oZebTe0f+
-         QN6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774313009; x=1774917809;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tP4PkIA/dAss1SYdem97AuKhuaCH6Uwc8eZQpSWtLFc=;
-        b=A8davd1rJiEf4deeK9Q6VlrPcErt2UBaZ/17KnUYphoSo69qxlg/xISUlwsOebBTrA
-         tcP15FmUx+ebbE5+yR/aq0JMyqqymrXywWJJEV++9WFXuGBHvZVEAyBa4/i2y8SsgkrT
-         Tp3l+LL3+coLHROu+8LO2S4FGrepphOgrfEztyVO4iZ+srBaKbksectEEaPhLmizBQu5
-         AUvGkOz6CiCUwKyIb1fUklcRzt9bpdizx9q9pIxXPJvNGm+AsoT5SwaQefDpCFOs3SjR
-         BBB35jgufLVgCpONZoH4AqYyuc9I/ELWYgNCyRIVxOPSDmGu6y02YubwDM4R++YPYLbN
-         RdCA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKJKYPAvRc6RTdD3PDfR4ra7hBJZulmb7Rf4dK3Yu3jNbR1xFibAd1p8ENKgUs9sR3zVHNVJDTMQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz+3FfTZPtlDv4MbMwAeuovUW5WgdcDZgoYbtiO8nQ0WoDtMYZA
-	Z2XV8VNueHoqarTII/ZVfLAgkJgI/3ffWBJGZZWbCN3E11JwOcRLHxv/dQlg32LdCQ==
-X-Gm-Gg: ATEYQzzmPc5CiCPq93C2i4X6u3+xSIQ3CR055e7WzeiKKc7LKRw5o5DHm6fcFcdslE7
-	SlGzOcuXuNPRGMXSngB9V5f/5dJ58BA2PEoa31S61pSijlbhpXzGrJrWIsGJsiLVbBfPm7TJ1SJ
-	+noHqISz4QUz9nUI1Hgy4OpeICbrdvXaTZ+2n3bTGZXkVrS8eZPaD/r5exKw5cC+ycn3rL9bFyQ
-	gnpJ9BcFrgRQARtARDvNYiwJdpvS4rUsoSEaVk6y7jMBWKUv0Si2UjXPiI2zx2qDeuoWkiDUyaD
-	jBubic5j412GuUJm9z9Ra1th5qi3qBW2j6ApN+HW+MmQWm9nQaiirl9XCDKDBAiSMlV79pOielg
-	ZFUesQJJc0V6Thzj5FRKLZ2PI3RWH0Aykbk0OFOaxyqwk4MI9WZ0gFP2+tn7XBTimy9aFmITpTO
-	fwDBsdrk3nfkB1SqAFV54tmX6EHQihuKuJYxe/w58uiZF3wx6SyCTOe7xb7wk=
-X-Received: by 2002:a17:902:f54b:b0:2b0:5b4c:a439 with SMTP id d9443c01a7336-2b0a5405594mr1757525ad.2.1774313008753;
-        Mon, 23 Mar 2026 17:43:28 -0700 (PDT)
-Received: from google.com (249.53.168.34.bc.googleusercontent.com. [34.168.53.249])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b0409c6besm12352073b3a.32.2026.03.23.17.43.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 17:43:28 -0700 (PDT)
-Date: Tue, 24 Mar 2026 00:43:24 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	b=TJM3/Lj8K5C618WVCfBJfh477JS611H/277NcHkXPEj/pgtIm4MLiDN+Y16gKJNMiM0YZa
+	BoXvQkmYKc+k6v0Gw4Ox66kKq1aNLCkO+i1i0iwJmqNVgsa8WaiHshdMpJLWBatHv3GaqO
+	n2+brVZ0QDI5frJX58hpcEH8Au9jN8E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 98DD0401FE;
+	Tue, 24 Mar 2026 00:49:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1F2C4CEF7;
+	Tue, 24 Mar 2026 00:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774313370;
+	bh=ZaXWNyOg2XPWmXfa+V0XWwnXp4bXe0r1OTT8sXXPW1w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ldj034ey75XF5zOvdPKcpjcNxXPmm9zzSrHMHntBi10cgrtdYQA5Spk6IA1E3H45N
+	 Kf/PLsmdo8wLOfUlrbF1epFNV57w3M//OJKcdGCsl+4V7PXUorwTTpxLZEJJQBEUbJ
+	 YzhY/QDY/43ii0ojQz/VOLf/UXYxgPRB+Oi2mnHIlJW0y5PnJG9pxnpR6NdoC2sJFo
+	 Uj7apBzIcas64FVxEiYn7ke4yoItkE8z9PgQzwardsuBfAi/6J/seDwhpXbWvC90MO
+	 2d/B+O/Gc0cuMhvg+jgc7AcnEcz6+6CyfSRSbBeIkec4ypOSe8E44wF6TerGWpHhgp
+	 UzaIn9whoffhw==
+From: SeongJae Park <sj@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, rientjes@google.com,
-	seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
-	michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
-	dave.hansen@linux.intel.com
-Subject: Re: [PATCH RFC v2 5/7] mm: selftests: Add shmem memory failure test
-Message-ID: <acHeLL0l948jRchK@google.com>
-References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
- <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-5-92c596402a7a@google.com>
- <78a855da-8fc2-4e85-90a0-6bf9af030c02@linux.alibaba.com>
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm: kmemleak: add CONFIG_DEBUG_KMEMLEAK_VERBOSE build option
+Date: Mon, 23 Mar 2026 17:49:22 -0700
+Message-ID: <20260324004923.87190-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260323-kmemleak_report-v1-1-ba2cdd9c11b9@debian.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78a855da-8fc2-4e85-90a0-6bf9af030c02@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6FD9F8000B
-X-Stat-Signature: bj9on5taddiz5trg5xgu9h3rmcqzwtd9
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774313010-149680
-X-HE-Meta: U2FsdGVkX19VVTYVnGQPJ9oqmfhc/Pu4SwJSXo05r+tMCnfasSR5+MS0dTRO2oCKJzCSHZEFjqeKDsWgpVtUkVuAqBtot8Ko42qgI1gOQ2fVUYsE6Ehh3wD3aNc0ke9oDRqD+f44z15WFL0jT+NiUiieUI0baMKgWJBiJ4ZAMnyhdrW1pozua1QEzPpGTZmManW44L6S+BDbBpkpc8k4Qzh2NetvUKicJg8RFVCKWznfkwOS8Hv5bH1XGA+OUHvMFzKpdcx4iHHJk09UYpAG0LYG1KMsyaw4UiWwPCJw76e47JLtu4g3RdtxLpzDIshBuSkG4vF3IJImez+TptekYoM92ej3oPKem4vIUwzwjAOaK5l9SyqL5r1e1XzPNYQ6jhV83aMAgxcVZ+qsrfLkJbRss1u3z5NDNdqC7t9JeBAlbQNYTmXQG4L3gWeS6QGPamwu9+hk4H2qqrm0Q7RHROTzNmdZJMabk2Z5Ijdpllxw5HThjKiSLDHvq2SMHXVk6n/FUvpDt/O+Fl7jRkViYUvM+CzlnOYIXT/TqOd2D8AqzSgPluXpdIrZRofypVFO1oD4gdj9xVb6xmfwXt0mtf1sIJZjgS3OkPWeMTAscCEzEkaaHDm8/Ex+fTdk9ykAWTxNxQa1qE+BJbancq0IGuArkqCGdqSbhcBel6WOSuK3nJwfMhFJi5pwXKcfmzC9dc1ELajOwwai5iN3pus/niD+mABLwsq2DZzZ6xpSoRYTtjy/9KX0tbS2e5lnVCeb2h6ky5twHt1sjk88uC+EuMrgfcYOzcIWN3fYF6wU4nJS0+OPVL/ByJMD3+oITSeWKCuuxOyTmc+gRiaUzaRrWLy4L9/GWPxKRk3S+Q/NUMWuJX5Ykeiro7u3FDQU1Ps59QMd/6Mw3x1H81Xh9/4XQOd8/dSgm34iZKOHWwizSKgatzl9yvdw+RCfaVj39Un3Rr9uaJJWEnkA4F5+UMk
- QnMHyJe3
- /Dq5+Z+R4V7GyykyDnrEkL6HuIZoqM4phGIkglfFr1joADjWtv1yAByp8VrB1O5JUEy61qH3f6VzWiBc2W9WzmuizJZ/EYZzRcRMJXHBKNC0wlTQ3qrdXajPCiCoe9sKc+HzlO2+akqpqREnxSPqO6MncOH3rtRDVi4R2vMeITscFWKxarza9FetCC4NgQt1E7qmbYmeJTQ5Of7cKO387iJDLJ2KunUxQae1UietgQXLL5aq7OONAZX0JVx0cBpV3c9G6GbZ0/DF7JhQblEznDFSOiamiwgn9G1LvM+oVC0WC9vp291+34eBpWm+XrqpW6glqpvHSPBl9S4YDoy4JWbaBnXXfj/K3n2fI8Vtz9ewx1EKw7y5cntt0cVtddPSZmszTVknDrWY2Ciy9FuYd/TLeOoJs7NCsKkOmTh1QT8n+dZM785Cp5o9grxrdZHvVjpNC
+X-Stat-Signature: 96k66jeromcyw85ituwnazshko1fsbgn
+X-Rspamd-Queue-Id: 8CF38A0002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774313371-578756
+X-HE-Meta: U2FsdGVkX1+eHV7lFmNXmrgRbgyCA/9hEKADadroydDvCuIQI6IZCMP+q5Oep8iplM0Z+uGuhJ71Sm6mnzzBNiMRlJlZaEkTq7TESy1sxkoBAtYRa7drvblPU9jqIS89rn52Ap3V6s1TeUwNTaDYzU9RwbZA+uO/gQ4xVella8VDFofl+A1tqgsxBceNtE5N3A/9jjSVk43N742rg4zPHxuOZKttDJuXQX7xVsQp/jY4m9be4lgxEErq+nPmVGnsUSN9BM54uKPqjdzV3kATwlKHD/jXPrmmYM4eNqMbB5juTI87nKdSIfTKlD2JFEuuTbCkMElI3o268WBDhY0KVGdOHFMqV+u9jpSbWuMM9EWU+VoyOx3UzivyuifLaP4E1KEtFFDq/z3arIbKdDJ5VPYq+MUkfyATNMUs35GnhZ3QiSk8GZFAZAQz1tNMqEzXYimQ7MO2hCTyYirM5MFTeDsET1gQKzHpZVuOhuIG5xm5g9sq3LXvFtFeVsGrgWhX3UqELQkZn4ae7mbQCqUOc8zne2vtLFKZ7RkK2rs8G5G/whmrbjJVOPkkAnsQLVbuEbtmo4fgBekhNw4RBDAuE/mIWT7ClpRpI67LHI63SXw1bSBwTY7Ln6cJUXPEPfsRHrY35/p7rE9XKOPv65Ufc+/4EKIYGkw8Y3pCMF/POvr8aSAJ+/UqEB/RkQTD8GAOi7WnEHXzCqMLZaS8q9GHBp/1sQhw1i7X4InxbicjH6NaKkMocBI9FR4IdIwnSZpbbwgVMPgAoMgYdOhkPdabe4bWijFYoFODZehBH1Lsyt/szIumRejkqKCDfA3GUAB3/K3Be1U54CWPXO78IqwgzKK8tNxUhA3h/td7gpZNMvt3qMwcqb4oNBXczTr7ZoCbwXY/XYqRpvsZa+qx3BdRQpC963vxDfFk+pisadTHovT6xlfSEhvmqGMlrIoxCC7snftYC9pPE9Omr/NaD/I
+ 7TTSz1hS
+ nDOdi6lXyYkvG/5I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,29 +101,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 21, 2026 at 02:30:04PM +0800, Baolin Wang wrote:
-> 
-> 
-> On 3/20/26 7:30 AM, Lisa Wang wrote:
-> > Add a shmem memory failure selftest to test the shmem memory failure is
-> > correct after modifying shmem return value.
-> > 
-> > Test that
-> > + madvise() call returns 0 at the first time
-> > + trigger a SIGBUS when the poisoned shmem page is fault-in again.
-> > 
-> > Signed-off-by: Lisa Wang <wyihan@google.com>
-> > ---
-> 
-> Why not move the shmem memory failure test into memory-failure.c?
+On Mon, 23 Mar 2026 04:12:13 -0700 Breno Leitao <leitao@debian.org> wrote:
 
-Do you mean let memory-failure.c kernel code check by itself?
-The reason I write the selftest instead of combining in memory-failure.c
-is because
-+ do not need extra checking code in kernel code
-+ make it easier to trace the entire execution flow, starting from the
-  madvise() down through shmem_error_remove_folio() and into the
-  truncate_error_folio() logic.
+> Add a Kconfig option to default kmemleak verbose mode on at build time.
+> This option depends on DEBUG_KMEMLEAK_AUTO_SCAN since verbose reporting
+> is only meaningful when the automatic scanning thread is running.
+> 
+> When enabled, kmemleak prints full details (backtrace, hex dump, address)
+> of unreferenced objects to dmesg as they are detected during scanning,
+> removing the need to manually read /sys/kernel/debug/kmemleak.
+> 
+> Making this a compile-time option rather than a boot parameter allows
+> debug kernel flavors to enable verbose kmemleak reporting by default
+> without requiring changes to boot arguments. A machine can simply swap
+> to a debug kernel and benefit from kmemleak reporting automatically.
+> 
+> By surfacing leak reports directly in dmesg, they are automatically
+> forwarded through any kernel logging infrastructure and can be easily
+> captured by log aggregation tooling, making it practical to monitor
+> memory leaks across large fleets.
+> 
+> The verbose setting can still be toggled at runtime via
+> /sys/module/kmemleak/parameters/verbose.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Pleas let me know if I've missed something. Thanks!
+Acked-by: SeongJae Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
