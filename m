@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3357F532C1
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:13:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20260F532C1
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:15:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 233186B00B0; Mon, 23 Mar 2026 20:13:31 -0400 (EDT)
+	id 876AA6B00AB; Mon, 23 Mar 2026 20:15:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20AC36B00B3; Mon, 23 Mar 2026 20:13:31 -0400 (EDT)
+	id 84E456B00AE; Mon, 23 Mar 2026 20:15:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1483D6B00B4; Mon, 23 Mar 2026 20:13:31 -0400 (EDT)
+	id 78B726B00B0; Mon, 23 Mar 2026 20:15:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0430B6B00B0
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:13:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6BD2413C28F
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:13:30 +0000 (UTC)
-X-FDA: 84579032580.17.B3A89A6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 968574001A
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:13:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U5WeZhN8;
-	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6807A6B00AB
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:15:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 12F6F160E64
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:15:08 +0000 (UTC)
+X-FDA: 84579036696.12.89426C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 41C38A000B
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:15:06 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sFN5xPhV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774311306; a=rsa-sha256;
+	cv=none;
+	b=iy5txfLo2lTEKHzeGmCuu9CPB1lIN9IkmxCIFCN2byyetT8gJQltt5fDKDZJaStISh5PwF
+	DrKg8qip8oWFBdJUgY04wc9sQGyw+BjMLxuovXQRWhmIaxIgOUu2/HDCBZ4Yo8PRLHRGSz
+	QXhm7wot3BRq0Zi5f8R/NfFkkWaVlIg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sFN5xPhV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774311208;
+	s=arc-20220608; t=1774311306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i7KBpqQKpwlfK7ajHOR7kNEPFkjtTfwbJMrpNV1Vm5M=;
-	b=4j+q2KF8Y8MZaXud2eeYiVnQgW3gzDpo2ysoW1IcLf/uKldRKTkcMYtnSUJor9J7M9Nicb
-	HXm+37CSI0H2GfdXnjyrcAnTZ/H7PzT3ZW+iYnPfhs1tghyZTG4GTAWU9b1g+31YOg61CX
-	YYf+kRXhnw3OdMWwlrQ1ejTUYU9x+B0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774311208; a=rsa-sha256;
-	cv=none;
-	b=V1S4TvK8CwzrwRuNNXdNkGvj++131gdY3seuSarIjAIYB8b0NyjgPr8y8JN8z1lyG0ZeZC
-	Nuiq5d7xAcnTsc3IpgRwGHPBZEaeeTA61NVfwnIPTwxA3oeB1BMJgEJUDSUBm+RlUIJkqL
-	REiQq6kVmPvbAKrhzW99SP0DwEwJ048=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U5WeZhN8;
-	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=bfszvMF3hdftnyukf42jIlC33hVDq/u5fFC0mHPEiac=;
+	b=yT3fAbGK0LxRVzKs9w/RXTHtL5Isw+NHkGbnov0UdXsb1G4gXfvZXKNYxwjNCIRcQsTelA
+	gRb5wBrqwWyx8pnODa1tvmVBy/bocajbvSlUVon1Lb0h++pviPM0Ys9J8S37WoN3enBnf3
+	om+ahq4aRJc0ewt+Js23+MhxDaHIrR0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E92660120
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:13:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BF3C2BCB5
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:13:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 36D85440B9;
+	Tue, 24 Mar 2026 00:15:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E209FC4CEF7;
+	Tue, 24 Mar 2026 00:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774311207;
-	bh=K6vWPNhQfmc7Mv4vXHrObzmoR4P9iWMg9c5bCa4Hpis=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=U5WeZhN82O5IaGPhmvAaAKFOIrPgm7g4HTEZI6df+K8344IaSD8bBDh3XC9wgcoBW
-	 JxgMtKB2WKJ6xujQXooqOGl7xHtVPbeKP9QjdDUSFj051Gr5OqxA99O9H3lI2tXUWp
-	 QM5sF0ZNhAYq4R/dM1B8h2Ub9ixreDMVvNWD/7lf/Wuak12czwEP4+z1yXAw7J7GrA
-	 v3UZT0SzmCrxTtYbG3roTyPMqW+XT+GJgth7DrjXWrzPUkljhE6FOFbGzcpp73a81q
-	 VvH7oERXT+ZoVGA9JGyqdsyeUHpd8EhRC4mcXZ4TDF6k2chDr0sNGImbKfk5H80VZA
-	 6ZDukShfneRcQ==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b97e6e48b24so149725566b.2
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:13:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV3W048Zy9prZrEGnl9wqFqsdxDCIe9R2GmvLer1GuqbwSOo0df4OHSwF4b7KHbqDut4lV5fy73jA==@kvack.org
-X-Gm-Message-State: AOJu0Yx4J2OdEqPVUn9O9oAKtsuapJ5+RoQs/igeas2Ph8TWSLNkecH2
-	dVCd6ILqKocfIYSfps9K2UaoHDMVoU1VZQp1KF38AJZ8kaEpxBRhHTapmGxClNkjhFZWJHUMA7b
-	s8G00tBGByDD5lNXa5Te2jywMJHqZpjk=
-X-Received: by 2002:a17:906:6a25:b0:b98:528b:8461 with SMTP id
- a640c23a62f3a-b98528b96f9mr684031466b.52.1774311206601; Mon, 23 Mar 2026
- 17:13:26 -0700 (PDT)
+	s=k20201202; t=1774311305;
+	bh=bL5TsY3mZar75uq4cPHULH9KGrxQsAUm5BHcGvhJ0RM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sFN5xPhVG4dpXaXm5iu5UF1N4xq5C6EUOpBzXqlbHMjbHJ7lNxLvm9Mf4aInb2HYd
+	 68LkohmqQ3deRRVz1JGYGW691klI6MwF4FD+8QBUB1yDoMxiOSt2nw1K+HhzTIMe4M
+	 2YeywJbauLPzC0pEDfScmvpDf7r3LAovvuP3CqMivbvxcCVyuwB4Viz/2JPoQiMVNq
+	 j86hxvcDO8Mhd9DsJ8Vq75y8hnpYQofWtDcZywr/YlNCUMJ1zGg5ZPVpRKylqBWko4
+	 V1BYUIc/u+8nP3FxhJVwIa3y/ZuXLG/aS23uwkJsZVNh5K85kknu3XECPuveZWK8OS
+	 Bdu30t26WKk8A==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Markus Elfring <Markus.Elfring@web.de>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [v3 1/3] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
+Date: Mon, 23 Mar 2026 17:14:59 -0700
+Message-ID: <20260324001500.86247-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <0E185D9C-311B-47C5-AF28-06F8D1235926@objecting.org>
+References: 
 MIME-Version: 1.0
-References: <20260322061038.156146-1-liwang@redhat.com> <20260322061038.156146-2-liwang@redhat.com>
-In-Reply-To: <20260322061038.156146-2-liwang@redhat.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 23 Mar 2026 17:13:14 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOwPnP9_AMX7Z_w4jLMYP=Ujs3BxNLWVXHOEAKVGFGfmQ@mail.gmail.com>
-X-Gm-Features: AaiRm51sDTJLIXwe6wg38ozJyHVTmTYj7Kk418jSg7POV9iqwyQKa2-Q0lx47O8
-Message-ID: <CAO9r8zOwPnP9_AMX7Z_w4jLMYP=Ujs3BxNLWVXHOEAKVGFGfmQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/7] selftests/cgroup: skip test_zswap if zswap is
- globally disabled
-To: Li Wang <liwang@redhat.com>
-Cc: akpm@linux-foundation.org, yosryahmed@google.com, nphamcs@gmail.com, 
-	hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com, 
-	muchun.song@linux.dev, tj@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, longman@redhat.com, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Stat-Signature: azc3p9qx8nhxcyxt74ckee37q5rjmd78
-X-Rspamd-Queue-Id: 968574001A
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 87atqrfwdp3q14dot4156hwdf8szm4c4
+X-Rspamd-Queue-Id: 41C38A000B
 X-Rspam-User: 
-X-HE-Tag: 1774311208-63377
-X-HE-Meta: U2FsdGVkX18LbzwBeovjxupLbWUV4SdE6Lg4u5hjAeQG47SGN8Ct9j6Fy1uuVkHVoMNGcScgnTN3eGvgXKGqnRDu2/30P/rcebED2VVBQh6h4WMGqe+zLN2qj8D1xc0cvFvxWzX0R/MZbMKl0IZbqliuivhfZP1ha2zurb06FOxe/K4dF1k3Xhun4JLO4TU/SisHDto6X3ryYLTk1dSx9A57fwhhxdfL5nvabRDy9wEHSAW2OLstcEoNs3wtfqI4jNhI/NQ8XH6ikeoMz0gcHKQ25AamEan2sk1h2meTTO369aK+ZuZrWi5IeAJnvDIHWJOpEVR3btQDjRSkMPWCweDK6uvGAKhgMQObT+7e7WvRvh9J0mffyBSvpFUmGzldTXo7CabVTfuDTi3fWEuL96oLW7/C2LGFx7KyJmMEk8a/01ZTNAt4phz1dCfYyf8XSMKVajGaDrZv7I+PbvqoEChSHvewLKuHmW6JM8GBsQ3zPbDURs0vkrgm9RvbFz6ZOpBypzcowZ9QWO2L7ZIHXdwHmEiLrfXJQ65tUeK1gByYEb5GKeLn1RZ35p9GTjJuOV0GZ3DQmxAhKJitYRhqubrJQOMU8PSd2g+RlKbLhT9tyyliM2yaxaEgnVXHloIPq2umDHtWG5ExIpX7bo+i72j/Xyz3kcWPB5js2yaBeAfkyIwJYYGuu5LiAyf3+y9Ax91Qy+E1ZZvQD/H9JWBQkKoKiotmJ9zruVh/8npTqaqWMmLtVBwzcHr3cQrepWl0Jk+LP7/wAvFhIOrJyUkCZLpl4dP18Ps56DXzdGnMDisJq9ti8f0w+ng9IjpAG88mlVuOEpadyvra0gbWu6Dt7w1mFhLI6Own25ngRAj8t0kGWjS5vQtKQVFCHLGSVGHxULe8mgGHuvm4XywlxfAm+MEuugOvUsVBR1gDbodkZ9R+0pFm3Lr4cWYzOR6NU9X/ItDLV9A/uB0YardNHOc
- FymettXk
- kUYb6GAyztrS/Ow4sRYEK/o3E6ocncRK7eBeAxTZAtBMX/f4tjj38XQ8Xp1ppK4sA6cL9cvo/xDtFvg2SVWcBxaE/Lsfzx/dl2srGI4OnPv19SjehXP2fSP5L053mu2JpnnAzHrzAXzrWGS7a7Fsy4m7L/VSnE0XxJcOa9dfx/Sdljs4MsANBWOyUuBysZ38fVyrM0HZY/4t/6AQ9rf95eV6AnonIikCPVg2cCGsT5YxBEmgxOuUaTiaC1JY2WqVS2OgGnjuLEF7TEQg2YdgIBamvX3KZljZWdkh5LysIrlxCE7CFmfR7Dk71JUUxHik08yfzaucJkDelQN4=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774311306-445551
+X-HE-Meta: U2FsdGVkX19WU3aXIRpAqfNU4/NJ47kOGTl7fdab0AwkQxX0Tn28uk2+6l7hPBlFIZ/habR9qcPed6O0IkWZAcyb+zVP6HJco5KsQq9Mocv1EZwPqeiCLdoyizTK/tiaQxemKCWw7c1mlO4NPttppYUZ2rkt2ByG0RIjpLuDn7bjLuZIP1tDZf/CgANzNw3bBxUbgYHnXRtFrp9lxKIPHQz4wsZloioWkGjaK9H9klPjHkosvfmqPi4vPUvX/DMiXdw15xKhXxvHtUxCY9DFw2uON1Mm7b4V3hpv9/AXbRbLIcX1ONEYFzyTZmngl5tGQeLVpFn4Xsu8sVYnbz+ilYUFyIdr/FsqXL8rWXXlUw20bR88pBH85JMBKW6Cr7HXupQ30VxVZDcF2c6RXyimUXuBhBn7oIa576jWHQFTgBu4dk34onSueM+wBKfO5lJgbLJjYEcJmpGhErmiv2m/GvhEIT4efLLribCtagfNX1k9/gZHKRDpDamiaND8XpbMsXSpHB7VfsKNNeHx2KXNF0vpajaL/sCCpgApz3Ipr0kJ1QqRScMtsZQd57I3jSN8R2LYtomk8ZAZz8urkcx1XYBsYcKJkSeYHUUhnlhGkcD5h5UHNCA5dBqSz4w18FmLqWFKb5OAPJvOvtGGKGCC4qQVAY7DyEUGBotCPed5LW5ao8rTDQPTq6yOebxa4SnZfQV5xp3PKfzsZcSHQ/sj8npQOzkaZxjcfN2hv5JKiuD6zLUbb/+U8xOySYHcuILKgMXQ5G+ESiZjicT6+G3Idkk8VBGI+kq1e7IIJ63qDQmUDlaRO48SOvtj+2lY7iqg9ikDzb3miTKSXgtYO3Gg1KkOz+JD5572Mg+jvXv/GG71/CsvkiMAVCy8z/AaV8Ix9BUZHBRY42utB7Zds7SyPcehORmLtfS22W0KMSok4MyDBnQm44ivvxUJ1mAQAKzTJ+nxhGHKbSCBpcxWDyW
+ euL6+8GM
+ Y2vHdiqQ1cCMVjI7fkXzmVWJ83HJkRI5/y+p+CHLnfskTG+Am9AXL+44Z2qpfdL8VA8RW6+oVgl9ph0O38DXmE5qXQURLmJ0zutuM3GVFrQpTDW/C9IIExq22MnfmZ/fOfINLYNznlY8byhYPq6XNjJz2cP+9tRLZ0WJ/Aq366VTajojrAU/3rwBTo9pwnn8i8LcYyWjBzgV9Gt492qOSVMQWFyotSPzr6fBiGpZ4J0vZc/EXrIuePWuupBgQ43WF2GIBf/7PbaQ7vQiz1G4aS9hpMmy3O5TJIG+O/ziWiGRrqQq1tQ2F2Zdezerq5EpGNSFntAtl4Wz1oWZS2GzEtJ0UNcrbb9rwKATEhwa5zCBJ/TKCjymX2T70NqGloOheNp/+pWc0ecH7JqsX71hqajh3CUMFqcjgA5W1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,34 +95,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-> index 64ebc3f3f203..e69d845d3592 100644
-> --- a/tools/testing/selftests/cgroup/test_zswap.c
-> +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> @@ -589,9 +589,21 @@ struct zswap_test {
->  };
->  #undef T
->
-> -static bool zswap_configured(void)
-> +static void check_zswap_enabled(void)
->  {
-> -       return access("/sys/module/zswap", F_OK) == 0;
-> +       char value[2];
-> +
-> +       if (access("/sys/module/zswap", F_OK))
-> +               ksft_exit_skip("zswap isn't configured\n");
-> +
-> +       if (read_text("/sys/module/zswap/parameters/enabled", value,
-> +                                               sizeof(value)) <= 0)
-> +               ksft_exit_fail_msg("Failed to read "
-> +                               "/sys/module/zswap/parameters/enabled\n");
-> +
-> +       if (value[0] == 'N')
-> +               ksft_exit_skip("zswap is disabled (hint: echo 1 > "
-> +                               "/sys/module/zswap/parameters/enabled)\n");
->  }
+On Mon, 23 Mar 2026 16:48:19 +0000 Josh Law <objecting@objecting.org> wrote:
+[...]
+> Also, unconnected to our topic!
+> 
+> 
+> I've tried to backport Damon to 4.19 (for a personal android thing, and failed! Of course)
+> 
+> Can I have a bit of help if that's fine with you? The tree is based on GitHub a bit
 
-In the next version please put "/sys/module/zswap" and
-"/sys/module/zswap/parameters/enabled" in macros to avoid all the line
-breaks here.
+Sure, I will be happy to help as much as I can without burning myself ;)
+
+Seems [1] Alma Linux has backported DAMON on their 4.18 kernel.  Maybe you can
+try their port first?
+
+Also, what is the oldest kernel that you have to use?  As newer it is, the
+backporting will be easier.  When I was in AWS, I backported DAMON of v6.7 on
+the v5.10 based Amazon Linux kernel, and the source is available on GitHub.  So
+if you can use 5.10 based kernel, using that could also be a good option.
+
+[1] https://oracle.github.io/kconfigs/?config=UTS_RELEASE&config=DAMON
+
+
+Thanks,
+SJ
+
+[...]
 
