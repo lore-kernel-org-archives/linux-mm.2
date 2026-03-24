@@ -4,113 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69D1CF532FE
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 09:10:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D2DBF532FE
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 09:10:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A65E16B0005; Tue, 24 Mar 2026 05:10:50 -0400 (EDT)
+	id A66346B0089; Tue, 24 Mar 2026 05:10:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EF936B0088; Tue, 24 Mar 2026 05:10:50 -0400 (EDT)
+	id 9F0216B008A; Tue, 24 Mar 2026 05:10:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B7096B0089; Tue, 24 Mar 2026 05:10:50 -0400 (EDT)
+	id 8B7E96B008C; Tue, 24 Mar 2026 05:10:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7666D6B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:10:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29FC15FA4B
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:10:50 +0000 (UTC)
-X-FDA: 84580386660.17.A5F0793
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1DFE214000E
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:10:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	spf=pass (imf09.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7784E6B0089
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:10:58 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C55A91C2A
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:10:58 +0000 (UTC)
+X-FDA: 84580386996.14.ECC7C7B
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E4CBC80011
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:10:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=Fyi42U4L;
+	spf=pass (imf02.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774343448;
+	s=arc-20220608; t=1774343456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dBYVKUDdLrM3qX3kkWGsUr4PJz86tpiGeFlMn8aHI+o=;
-	b=vdBWdCeKXzdaBbCggPCrUX73pXSsKUwsJPLTdMlIErQyYstCQlU+RmX9wQZAQu8CZl8kGn
-	D1tWi5KOaBvDa4PdHmUwtyxfA0VbeqHr97TLKT4FwpOcCN/jzLVYUKUw577fBD8QU+Vvzh
-	54mNzABxJC1F/MSESMHUrbhJPrMbdVA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=ySFCnBOOL5CefvlohZg7FDp7ZB+X1Q7Muut2F1vaWbU=;
+	b=pgGhWfkgmtM1yWmfyh6b/J5USb9r+5zdf0QiZYOXFNrnEHhfhNp+yt0T+PbSC1st/Euc1m
+	Z3XvUYrjFkgowHsi4U+d3h8n4pOjU2OUfw0UqSXQVE/Om8o4dSCxflhk5dAGoPbyNHq2qN
+	pHoni5rlquXrAjmsbrVjrQHKaR6weII=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774343448; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=Fyi42U4L;
+	spf=pass (imf02.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774343456; a=rsa-sha256;
 	cv=none;
-	b=Bd85BjSmrjW22GmCYSjzzd2XA7vjK0OX3NJVcYHa7mdw1RFQvUGEorjm/dxUHm2k8agQCK
-	AssOvLDI5hG7J84JTFonFT4Aw/lUrtgG8kFW5LBdLnuoY8nd5Ih4ATakqwb8PJ6r94Y6Eo
-	sximzGZh57v7gFyoq/fAfUbbnasPghQ=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fg44V5625zKHMZX
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 17:10:02 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 976684056F
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 17:10:39 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP1 (Coremail) with SMTP id cCh0CgBXp9cOVcJp9ZUrCA--.30839S2;
-	Tue, 24 Mar 2026 17:10:39 +0800 (CST)
-Message-ID: <ecf00130-ad30-41f1-81bb-cc9e1d360c52@huaweicloud.com>
-Date: Tue, 24 Mar 2026 17:10:38 +0800
+	b=ljEQTxHQZpOlsYVPJNWiAAuVXIZsi+3OLlX+f49SeeMHnqQIwBsz2B6mAbVv5URavxJ8kA
+	nQXIHxPuuAGZrOdkkMRHJXmKKJcb4fWycLdoOIT0P4Dwj6sU7M5Wx6txh1dd5bt0bFRtYH
+	WGZkYhh5jBo7XB4CERwzDEHEJX5KwQA=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-486fc4725f0so43394435e9.1
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 02:10:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1774343454; x=1774948254; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ySFCnBOOL5CefvlohZg7FDp7ZB+X1Q7Muut2F1vaWbU=;
+        b=Fyi42U4LNMhgKYTCMb5PyLZHwv/TpryFKGoQNCp8IZqqW5RezttI7j5fgADBWQQLgx
+         PSvnueoR2J4ZeXQz1WU7mo5HZ97mQlLqeAl3TXWC58q3/Up+O2hOl+GN6rSuwO2NG24U
+         WgDDTQ9xrAmm3eGpTW2CVs8gRQwMaltpQ6UQHuJW5Tdc0VvDrwSeZ+9LecyJ5wHCoE/B
+         B17kI/Bv7eh+i+u7qEz7OZLNl/eiNjVS5A0RqSzAdmR4/t7VKO5lSE7qqmo0/hrsoDeX
+         ubQ90Im/+zguPmTigbQZL5QVWeHqPHTypaIUpKOYNSQBrqGoFzOutB9x2jdTWnOMj6gT
+         Er5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774343454; x=1774948254;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ySFCnBOOL5CefvlohZg7FDp7ZB+X1Q7Muut2F1vaWbU=;
+        b=TXpyR4bx2rhKzysMHVb69v7fy7dx4FZCZfazY9XhwoNaKKaaz5bTfWoCbbpm/GIhY5
+         Ns4fzRXOkvO/xIdhTLwJX+PUuk+uMytn4CFfFsl7dIosP6fXq9zoyavqFWHNgjaE+3Xe
+         zACRuAlAulu5nlbZ/kSDVTldFR/M6kb4AyVwFkEHFuYrC8jjFO8oxD0jCFzSOhOwiQ4G
+         jRvMvhyz0N5mTwfR/oVnXWedRta2YmALeMq9vIt7wW/+mY0hnOV1sJ2SdbvE/R81cnHd
+         nT1sTcEKaFxP402t8ZUnIS2URqCz5CsM6duKlY17RALW7Y6G7Hob8anyIPu3aEGSFwPU
+         KEmw==
+X-Forwarded-Encrypted: i=1; AJvYcCVelP9eEKIRfB6cgH145KTWN3hjxrpj8ctaMMk9btMQx+R3WGm/yYk6KUa97fR3Un/PKwpJC9hQkg==@kvack.org
+X-Gm-Message-State: AOJu0Yxp06uAGgUg6gmSPsEOU87ykrmtOqDDlSii5rsqjdBZk/xOOPet
+	9rOf9479VsPGjfSpbcBszta/q0CDJZ4v0EZJbzZYBYsY3EwXSkhsei+aTdJeFdexJtXjhcdiDkM
+	p+U+4
+X-Gm-Gg: ATEYQzy4Eui0eElW73G9o2piV+0URMdf3QwsKS8MHEb4+plJUTZPvPvHlP1pqEElt6C
+	sWDBfkwH1cGfBTRtVCvUwXPyjnhUalqFB+Y0q4+kDdRpPFUIRTFvqJPg1+UiVj1yl5E+yQ5zW+e
+	IdHkvklusYb/PZ8OIeGKXfwSJd5bl3iRhLo4EKDSiheR1K85rtXJq7ZG9AvPoTXddBSn/f8RUhc
+	1RsLWg3bhmsUv7fgMAc0mrH1OaJbVkUzU8dM4I8DrhXW1uB66VINVKOz66nG2Li/R5VLDCK8JyO
+	7Zv35+OGcYuaQ3ovvBq+lUE5V2VbCvyaDDZzFCiXjWxo9pQCXjP95bps9i7yuGcE+yt/Bpp0p+S
+	cW1T56c/pFzuOSKCzMtqgVaaENzqGdI/VjfmJFOvtiEmgJuShxCHPanQqnmd9isps9fs5gprzxz
+	LBhand7QaUwkPJdtHCGXnenhk3sve3FJ7h8nHOwgQ=
+X-Received: by 2002:a05:600c:154b:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-4870f212c1emr37488815e9.13.1774343454041;
+        Tue, 24 Mar 2026 02:10:54 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871174f2desm44785325e9.9.2026.03.24.02.10.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 02:10:53 -0700 (PDT)
+Date: Tue, 24 Mar 2026 12:10:49 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, David Carlier <devnexen@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	David Carlier <devnexen@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
+ mem_cgroup_css_online() error path
+Message-ID: <202603241635.qNXDPwjs-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] mm/mglru: scan and count the exact number of folios
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
- Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>,
- Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan
- <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org
-References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
- <20260318-mglru-reclaim-v1-4-2c46f9eb0508@tencent.com>
- <CAJHvVcgi8m_O03+Grv7jPX8btaVvYuZxh8S6kLjALfREykToDw@mail.gmail.com>
- <CAMgjq7CjwdaQk66=61sNLR_21eaPZrFiai2foaTQNbZ3uxQmRw@mail.gmail.com>
- <0427249d-c6c7-477a-aeff-e007198fcf45@huaweicloud.com>
- <CAMgjq7CGhMsf4qWrW5O-s2AP7BwpbpPahEFkd-u3Q9jGFGCeZQ@mail.gmail.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <CAMgjq7CGhMsf4qWrW5O-s2AP7BwpbpPahEFkd-u3Q9jGFGCeZQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgBXp9cOVcJp9ZUrCA--.30839S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXF45AF1xZF4xCr18Aw43Wrg_yoWrXr4kpF
-	WDKa1jyFWDJrW5tryvqF4rtryYkr93JrykXFn7Ar1UAF9IqFyfGa17Kw1jkrWUur1rCw10
-	va12gry7Wa4YvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
-	j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
-	kEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AK
-	xVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
-	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_Wryl
-	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
-	AFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
-	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUxo
-	7KDUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1DFE214000E
-X-Stat-Signature: q991s6eu4c4oozzy7uootgq6nk3et5rs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260322164943.37460-1-devnexen@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1774343443-276856
-X-HE-Meta: U2FsdGVkX18hAp8WQbMhoO2VaAHZ1BOzuqiLDNmgp5cz3Op2jxBw/SS5RRUiz6tf+vOrfC5+hXf/ILTdmU+P1U5RfVQdQgZ67TPjb3u+KSGTlxAhyIdgFlJawVN3Mb8S/bc48mlcqFoZhF5pwDKPurKEp2Ucp4ZLfqci4TCvgFyKOCGAHdU2NqYvW9GNhBFKwxWt9JjBAZIhzLmoESAZ8vKPd+6VZC7xY7VpsyE88iWumvFs0tgsM5CrjIf8n0PRc6adQGGsYAJKZeEHwsavs3tVqpFKqeHZsYVw7IheDid4bqAkFj8mYCb44vyI4m/Bc3bmBjReqEp727e7rjSSG9it+Ebz/y6MwwY3JQhU20ATQ8pIqHvN0QklZDiXRfZYE2zof1aBzPnCDrLJporS2fyFFBmxNZWJLZYf43SxK1diE2ECwaGD8YtLxlY5MIV+UZWza6HrcajIL9A6W32QuL0cF8yeslNzEHKOBa1nzMPcIJWTPOnXP67kvda94a7CWcrvQPZi2zI22h8pKW9ZNISktX/RBsP1FuE/b+oabD1Puna/GIQTsmMPIXzyvT5Ws+Es8sjeTRzFCh8UZG88uK9x9U9zR1G9IuFowov9crf5cwGx4iDeZkyr3HGaUrZ/iJfCwzd4VjvvMC48mxAn6yM5+TDWPPLVozNId3gLTA6BUCEqhvyssouHBwpbfQOg9VQh4uWj61WwuwH5sdzEd5AAF8GQrjvu9WtoF/KadrCwsBNq1vEpRXYPLa/6dvaNRjmgaybikL8OP4aEfT1SGyiRg9VA6T83zdoeBRMyOBp4oo5sm7Muc1lfjfpRfXD5iva7RaSIkPn7Q/2nA+PLpoi7xIG8iUv46mbtQM21mh1F2EqZpVBA2WAj/0+EeiBrStl9TAeyJncr04Ak6zJccR/+MuVlGsacj509iXJ6Pk7oAE2A414QssPM9chhh4U3maDgNicY2bxNJzMbt+T
- HqdkCK7F
- 5fZEgl29OMPLIlJxfGvbTwn8DkSqcg8sXkFt7nTiFdZXSXLk/UueLLlTjoVfikVde6qFzoNKHzS8bzfiH1uhSpK59IByOB8nm88d7nSZEHfGPql7ckd/gPMQhMBP87zTnbxbJDYfQ/HlX4ScoSGiSoAe35jEFEioMY4eu2r98FVlPFmzlA9N/+BwbbANq31NHUpXtdDOwrRwozaBtzD5/XemJUWWAdIGtUG3CT4zstXKQMvLv8rstC4e/It3ZX47wgea710OjnMVKpFDVm/OvnM/ocX/h03be1Rq1WJYsbbQPKWnUlcNuKDdbzw==
+X-Stat-Signature: dybu8hcjp5u7hhzda59hbojou9dpxc7w
+X-Rspamd-Queue-Id: E4CBC80011
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774343455-329912
+X-HE-Meta: U2FsdGVkX1/QiMkuyu5jxv/HCUWbYZpnyBbNRuhmyv54Ov0dkuHLKwgFAhsLSp5BVpZo53ApEfXNYfifT9BGAp32sU4cd+8st7sqp7xeudjtKabiS38QNhDbTQs985BH2p8UG/uiTCvWaaiAhA+Dz9G2MVAjcdXlkZkFYhI5ZBBeqP9u/SbGY8xAZduQ3rIlBAEmqRoqH0TUE/2f1fn6TlXETXm7CVdJctQITJxZecECMOcRpJQdp6DhX5XjkAqlXPhiwBhIaPxdP3fRUk7Y2P7VwircKwvoLeMHs7zOsrNW5Auh0U16v5vipHR+Dvh05IdUn6uUYhCUR6OjgD3e92Jajh2Dxa0pwHZfM0lsrPE/0+a/lCR5xFEsuH2A+sAci95ivFNjOWrwltg4BHpNrV67vjIwdVtcI0FkrzZgLpJxNwoGhHtlfLL5qv+Vhh47EKX8eJb1ZZVzr1kuBpkrNI15B5tYrNTSZHlRTNcMuMk9Md5PRv2UxAS1aPsTzFz6U28OPd9D2buCfXVujTGLVZ3yv4FsVsDQqdjXI7oFZ4zPz2kMs+cowFT99Jz7F29ATutj5h80q4KWYf8qMXZUAoZRBufAXuu5Elml4txq1AoCG5qZVr2cS7Zyv6snE/y81Ox+z9C84wKdLkipTB8rEuQzDx1E6l8Ogkl1/FLlfVl/ZBpwFJBlUPn6xUXLNmOr7SsbxBgRmxkqK/5tzCcBLM4RwAd+mzZAyyt0o+WuQH17JVLJLTR4mysucDtQzbRwwFNvkQ1nj/uGZ+2mVG71vWRar56ilIN7BnZcMAJZ0QjSRCz5GEZJFtZ6jFaCp1PkJVHnOSM5n2XqsunosdPqUFepp/Q37z1yX9F+BWDLhzObAvKeOQ9V4/uFRHAeeie8wy9QYzU3RkFFJAWu7tqLBj5TqbD5r7qQjohuflvUucvB/WOO/oAfr0AKg5mpIAc7N3xu//PgHM8mQgbcijD
+ aC2DoaW7
+ HbY/prsA9sJ3IxjjmGStS8vc0D1hjoDN8VDq80Saf+nhq/hHyHN4UoGNddhJu4VU4eGWvt+gvJWCv1/gXFMe1n+N61BXeW4qZkYCqERpzn3WX1AMr+fJlHhfAsgGut3d+g/ijesLXha0g37mC2zhXtTgojUPiBy0RlPjgU33HRvDJ0MYmmK2wuN9u+9jMco7KhGP5Je54fsgHvhf/0AuwM35JWDpu6TkNeEk7GhnjT7ey/oNI2v8gq5i4aJm9UqMmS1ZbMWxCxqGKRDOsTv1t611BoYH0KuA6p2KZVKEX0p9NkTx3An/yCoK8oO9XO/XNt+ZNx7D3AOtJSkXyvuex3XSfOeE+gX9BPwmzOvRWEGFm+7Yl7darnBee/7v8iR34JXBGa7sgDzVsiTile7kAwZQGyioQ7IL4ejlt0pnUISYiOcELAF1OHk0LwLUy+evWNMOOsUAAkWNTp3bKgb2Rnf+YAOh7JCAbnkR6k0Fw01R9RPbxkkOTKZsi1jtELyP2HPaNxd7tfWny7lguUyBbkoo+wfOK6byxEDBUq76Xmf6oPDp/OvStGU7F1p5INRngM0ZU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,105 +125,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi David,
 
+kernel test robot noticed the following build warnings:
 
-On 2026/3/24 16:05, Kairui Song wrote:
-> On Tue, Mar 24, 2026 at 3:22 PM Chen Ridong <chenridong@huaweicloud.com> wrote:
->> On 2026/3/23 0:20, Kairui Song wrote:
->>> On Sat, Mar 21, 2026 at 4:59 AM Axel Rasmussen <axelrasmussen@google.com> wrote:
->>>>
->>>> On Tue, Mar 17, 2026 at 12:11 PM Kairui Song via B4 Relay
->>>> <devnull+kasong.tencent.com@kernel.org> wrote:
->>>>>
->>>>> From: Kairui Song <kasong@tencent.com>
->>>>>
->>>>> Make the scan helpers return the exact number of folios being scanned
->>>>> or isolated. This should make the scan more accurate and easier to
->>>>> follow.
->>>>>
->>>>> Now there is no more need for special handling when there is no
->>>>> progress made. The old livelock prevention `(return isolated ||
->>>>> !remaining ? scanned : 0)` is replaced by the natural scan budget
->>>>> exhaustion in try_to_shrink_lruvec, and sort_folio moves ineligible
->>>>> folios to newer generations.
->>>>>
->>>>> Signed-off-by: Kairui Song <kasong@tencent.com>
-> 
-> ...
-> 
->>>>>  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>>> @@ -4852,7 +4851,6 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>>>         struct reclaim_stat stat;
->>>>>         struct lru_gen_mm_walk *walk;
->>>>>         bool skip_retry = false;
->>>>> -       struct lru_gen_folio *lrugen = &lruvec->lrugen;
->>>>>         struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->>>>>         struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>>>>
->>>>> @@ -4860,10 +4858,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>>>
->>>>>         scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
->>>>>
->>>>> -       scanned += try_to_inc_min_seq(lruvec, swappiness);
->>>>> -
->>>>> -       if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS > lrugen->max_seq)
->>>>> -               scanned = 0;
->>>>> +       try_to_inc_min_seq(lruvec, swappiness);
->>>>
->>>> IIUC, this change is what introduces the issue patch 6 is trying to
->>>> resolve. Is it worth squashing patch 6 in to this one, so we don't
->>>> have this non-ideal intermediate state?
->>>
->>> Well it's not, patch 6 is fixing an existing problem, see the cover
->>> letter about the OOM issue.
->>>
->>> This part of changing is just cleanup the loop code. It looks really
->>> strange to me that increasing min_seq is considered as scanning one
->>> folio. Aborting the scan if there is only 2 gen kind of make sense but
->>> this doesn't seems the right place. These strange parts to avoid
->>> livelock can be dropped since we have an exact count of folios being
->>> scanned now. I'll add more words in the commit message.
->>
->> This change confused me too.
->>
->> IIUC, this change looks conceptually tied to patch 3. The following change means
->> that evict_folios should not be invoked if aging is needed. So the judge can be
->> dropped there, right?
->>
->>
->> ```
->>  static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->>  {
->> ...
->> +               if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
->> +                       if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
->> +                               need_rotate = true;
->> +                       break;
->> +               }
->> ```
->>
-> 
-> Hi Ridong,
-> 
-> Ahh yes, as you pointed out, the explicit should_run_aging kind of
-> guards the evict_folio. That's not everything, besides, previously
-> isolate_folios may return 0 if there is no folio isolated. But now it
-> always return the number of folios being scanned, unless there are
-> only two genes left and hit the force protection, which also makes the
-> judge here can be dropped.
-> 
-> But not invoking evict_folios if aging is needed is an existing
-> behavior, that commit (patch 3) didn't change it, just made it cleaner
-> so we can see it well.
-> 
+url:    https://github.com/intel-lab-lkp/linux/commits/David-Carlier/mm-memcontrol-fix-obj_cgroup-leak-in-mem_cgroup_css_online-error-path/20260324-010357
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260322164943.37460-1-devnexen%40gmail.com
+patch subject: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online() error path
+config: arm64-randconfig-r072-20260324 (https://download.01.org/0day-ci/archive/20260324/202603241635.qNXDPwjs-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 14.3.0
+smatch: v0.5.0-9004-gb810ac53
 
-Thanks for the explanation.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202603241635.qNXDPwjs-lkp@intel.com/
 
-Would it be better to combine this change with patch 3, rather than adding to
-the commit message?
+smatch warnings:
+mm/memcontrol.c:4180 mem_cgroup_css_online() warn: variable dereferenced before check 'pn' (see line 4176)
+
+vim +/pn +4180 mm/memcontrol.c
+
+6f0df8e16eb543 Johannes Weiner  2023-08-23  4168  	 * regular ID destruction during offlining.
+6f0df8e16eb543 Johannes Weiner  2023-08-23  4169  	 */
+e77786b4682e69 Shakeel Butt     2025-12-25  4170  	xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+6f0df8e16eb543 Johannes Weiner  2023-08-23  4171  
+2f7dd7a4100ad4 Johannes Weiner  2014-10-02  4172  	return 0;
+098fad3e1621cb Qi Zheng         2026-03-05  4173  free_objcg:
+098fad3e1621cb Qi Zheng         2026-03-05  4174  	for_each_node(nid) {
+098fad3e1621cb Qi Zheng         2026-03-05  4175  		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+59f75a1877fbf7 David Carlier    2026-03-22 @4176  		objcg = rcu_replace_pointer(pn->objcg, NULL, true);
+                                                                                            ^^^^^^^^^
+Dereference
+
+59f75a1877fbf7 David Carlier    2026-03-22  4177  		if (objcg)
+59f75a1877fbf7 David Carlier    2026-03-22  4178  			percpu_ref_kill(&objcg->refcnt);
+098fad3e1621cb Qi Zheng         2026-03-05  4179  
+4a2f95f5c79e02 Qi Zheng         2026-03-09 @4180  		if (pn && pn->orig_objcg) {
+                                                                    ^^
+Checked too late.
+
+098fad3e1621cb Qi Zheng         2026-03-05  4181  			obj_cgroup_put(pn->orig_objcg);
+4a2f95f5c79e02 Qi Zheng         2026-03-09  4182  			/*
+02b5fc7885d9f8 Andrew Morton    2026-03-09  4183  			 * Reset pn->orig_objcg to NULL to prevent
+02b5fc7885d9f8 Andrew Morton    2026-03-09  4184  			 * obj_cgroup_put() from being called again in
+02b5fc7885d9f8 Andrew Morton    2026-03-09  4185  			 * __mem_cgroup_free().
+4a2f95f5c79e02 Qi Zheng         2026-03-09  4186  			 */
+4a2f95f5c79e02 Qi Zheng         2026-03-09  4187  			pn->orig_objcg = NULL;
+4a2f95f5c79e02 Qi Zheng         2026-03-09  4188  		}
+098fad3e1621cb Qi Zheng         2026-03-05  4189  	}
+a0dd8b1942f5bf Muchun Song      2026-03-05  4190  	free_shrinker_info(memcg);
+da0efe30944476 Muchun Song      2022-03-22  4191  offline_kmem:
+da0efe30944476 Muchun Song      2022-03-22  4192  	memcg_offline_kmem(memcg);
+e77786b4682e69 Shakeel Butt     2025-12-25  4193  	mem_cgroup_private_id_remove(memcg);
+da0efe30944476 Muchun Song      2022-03-22  4194  	return -ENOMEM;
+8cdea7c0545426 Balbir Singh     2008-02-07  4195  }
 
 -- 
-Best regards,
-Ridong
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
