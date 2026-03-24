@@ -4,98 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75DC0F532D4
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 07:06:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25052F532E5
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 07:19:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AEAE6B009B; Tue, 24 Mar 2026 03:06:54 -0400 (EDT)
+	id 666356B009F; Tue, 24 Mar 2026 03:19:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 938696B009E; Tue, 24 Mar 2026 03:06:54 -0400 (EDT)
+	id 616BE6B00A0; Tue, 24 Mar 2026 03:19:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 800246B009F; Tue, 24 Mar 2026 03:06:54 -0400 (EDT)
+	id 52CD96B00A2; Tue, 24 Mar 2026 03:19:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BDE56B009B
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 03:06:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 383B2E039C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:06:54 +0000 (UTC)
-X-FDA: 84580074348.07.46E1D8D
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 440AE80012
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:06:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=EZ+Z4NWc;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	spf=pass (imf02.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774336012; a=rsa-sha256;
-	cv=pass;
-	b=PLuWZwsuaq5jsug8Q9zHaXywguW6r9ZP04CoiaZEcpNvTaS1PjcWzMsdeMsQSmV33XOwN6
-	/ltPSdFhYGpci/OqpevybVhkunDC74k8bE97XjNk9JoOuWBcU5zyZXHCEgsKA9Ind+G2cd
-	V7y4zfXFR1vPP9B18X91GK/wO3fvBEg=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774336012;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 40D076B009F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 03:19:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D6A814172B
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:19:21 +0000 (UTC)
+X-FDA: 84580105722.17.7DB8D4D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 43B03A0002
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:19:19 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qTK8LDAi;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774336759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lP8i3Qty/bHUVvaH5kVoGQLcodg/p/1/bywjT4dTNhc=;
-	b=K9MEoNXWCz0tom1hwyP1F4AkTbAEC82Ei/ukcf5+Ka9WITUKRQ4RNtf4QTs1XBUIkHnkY5
-	RXa0ptHG6rggmT4AEe+OYSRWiWJVxtNEZjoUPQq+SFupfSLprn/yYYijLhTpEq6UWEBvLx
-	tfcw+y29tQSRaa4wnocUESEATHRtx+8=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=EZ+Z4NWc;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	spf=pass (imf02.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1774335991; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=jP/cJdvUKvWgGl/m66OGGlqy6OEfSYEOQ6MikmzEG60N74+qBkVQL5WCMDbkNUEUeeT6OUnREnz6NIwTWXjToWnV2Be5ig04wmGNyqc23yA1WoXDHlshJ0kJEu7T8nihVRyqnUiAePqS+P2d665GHXPwuUVTAn0prfPqGyITsIM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774335991; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=lP8i3Qty/bHUVvaH5kVoGQLcodg/p/1/bywjT4dTNhc=; 
-	b=QHhZ0F6QgC332Y3owawq5SWJ71rg+kUZ+D4KA3EgvZsRAG0CYkwU3gDmlHKgw55xvAkIp1I0Z/2wyKzdJNY/h7Xmi9wG3Yf+7HOoVuvZeJ+q0fL6as18KiTTrLqCXGBoz51Nz55KxeWX+18aY7o/Ez7CQIZPZr54DS4XtERqMwg=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774335991;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=lP8i3Qty/bHUVvaH5kVoGQLcodg/p/1/bywjT4dTNhc=;
-	b=EZ+Z4NWcp/pKJ7ARgcaqRUM6MeQieW6LmvEcOefoceBW8HKO9RcHPVoC69tlaxMt
-	uJxNNJMBRrt29IZuW5itXs3g9+CZGXyGiLfnwk4jz9qt6Wl9Ra5zV3bVczlKxbsGWnJ
-	j82sSwkTnUinqup1sT+0dMwIuicEA0jr+M6lxqes=
-Received: by mx.zoho.eu with SMTPS id 1774335988821909.6110963179683;
-	Tue, 24 Mar 2026 08:06:28 +0100 (CET)
-Date: Tue, 24 Mar 2026 07:06:25 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: Markus Elfring <Markus.Elfring@web.de>, damon@lists.linux.dev,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Bv3_1/3=5D_mm/damon/sysfs=3A_fix_param=5Fctx?=
- =?US-ASCII?Q?_leak_on_damon=5Fsysfs=5Fnew=5Ftest=5Fctx=28=29_failure?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260324001500.86247-1-sj@kernel.org>
-References:  <20260324001500.86247-1-sj@kernel.org>
-Message-ID: <A0701CEF-CDF1-4B3E-B25A-C05A32AE822C@objecting.org>
+	bh=Hiko49fn7LC22t8PWPtSywlFPPgXeN+MKqf4WrBOh9w=;
+	b=DWo6t0RIRyfK7IHt43yAOL53csJm0BGkzZpx9bYE2s+fSAA1WzEFA4xaW9eo27nUa6owlb
+	QbjwhxZVpU/a4ctqofliOUtiStUsqjK4VATs4JuzlSi6Tmfhk4lx8kUrPe8NZaeBR/mxSS
+	3gi2zshA2le35r8dA/JnSssrBjRV3u0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qTK8LDAi;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774336759; a=rsa-sha256;
+	cv=none;
+	b=UxQa9puU/sy1jAy+1IK2i3/OUKUGMm2NwJUj1fVghkubbfMjiiWwdM/eznTJmJak2uQRnr
+	rvOKOFzixe87bptzdwvlYWNP9PwRqt15lTqB8Ah1AS0Gvq5bO23ZeDnCNjdW3lBx48hrmP
+	0cxInQ0ZGD2EmuYT0iONww3xXoytJs8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ECD5040AFA;
+	Tue, 24 Mar 2026 07:19:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13E6C19424;
+	Tue, 24 Mar 2026 07:19:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774336757;
+	bh=DkCzNKQCelwTBczdFWSBcOgnEgwkZZ3BqRcIv1TMB48=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qTK8LDAisQc6b2kaQRuW7qQllVEV0oEJ3ikNRwv4Wh9kji2YHUP4Gk9A3UjcoJvtx
+	 DVAQIsGY3zJ0m1ZkjqgBzYZatG6vM+M+MTqf2/8LTxoBOddeKJXDPyr/krbiNhaZIK
+	 HJLnmhWGba34WAYoDK8PGqhE8lp+yaCm4AcP9CPhDhEJWbPf7opggJZ6QCVSv3/DdK
+	 6EN8Nu+dzi9dvXOtaJ8PLn+Tm2iPs3Mf75j12RxQGdmIOFLM5iRDaMxgCqeQyHUd93
+	 ZPetrAQisfpUcHb1CkDGvgyqh2RRgA9Vq1d9kSxVjrLUfrudb7d6ku8GvCj33lNbbL
+	 s+ZTuDsA+cWHA==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
+Date: Tue, 24 Mar 2026 00:19:08 -0700
+Message-ID: <20260324071908.89152-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260322214325.260007-3-objecting@objecting.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 43B03A0002
+X-Stat-Signature: 7gyhgxzfk74i7ohwbdsjs1p95wigjbe9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 440AE80012
-X-Stat-Signature: ak7yiq81ci4qay9h8u3tne3qtmfay5gu
-X-HE-Tag: 1774336011-35179
-X-HE-Meta: U2FsdGVkX1/NXf6+iftIqlssllOxPvzoV8PYXK85sI97/I4cWsTMp/WUtKdqFKMvjQzo5N4OPR+4sPgMW/FOwrrOaO/XmvvznkgCx3rg2EOOCDg5EvDqiMQuWcs7qGjKmNFhkIiqWVJpSVFaLUKcgwPErRM/PP06B8c0SNedLxPYTIkmCkff4F1LV8JR0CR9NqOQ8Wd/ECYzhlv1c/hPnwgSdZnBf3R7KF2JlC/vRTv750nFM5Ln3+LuBgxeqE5uZ3EKm7laTtepxi9UxX4SHHGDLxsI4FAyePqac1dY36LSrWJNygVC2O0ryLSj42ceGXWE1Dnm8pPfw5/kq7a3Yi9slZwKDsh0xNs4q5dLISDYg8Y3T2mxgthppvvwSjCAgtWEZqExVxoH+OuAbXUIQOxpzcPNVTIturVlsfHekueKVnmIKyanAisq7u4ln6d+u+ERE/TnkG8JOWYRPVM5aQpPfGGTT8mz6qmYhEH0lYziozw+aw88rvEsuWzcJkFOb2tZwdgx5TbEKhIMXH83jY1XAjFXR6S5TuYbHCMD3u0m4zELIDxRqyBGeIN8oLX0cXUxIDWdrRoPHkQD4srCGYETreAHtc28o73SJPM/CTr7sCtTl3Da+VfmuPS5IRCIHqrZ20yM9OAu63QjFPY+Ebnev5b1QhnV3zo0/hqW6pETLKEnK46ytVEW3VitqyaSvRvIySHvCEN1j8BdSCQmueDcbtA1mbCG3AIY/s4MAwGQAEizWrEtxM9YPgGLIPvKdOCbCEnCD4daY/RGyd49THedLdFEt5hYLpemODGWgJCrbwtg4rZmIPO/qmjenXWnLnty0ww3UxOxCowdgrb19u26bcNAlOHNFOJsIenfoAz/vjBGNbY3EHGr/bTiRQsgBZEx6A5XfHy8cVc0u78ASZkwdI5ejofIp3CLVdoSLHmftnkxFw/KDXl7yzDMazxZHgaPBw7qG1MwukQG5oS
- lG7Iud5B
- acZ1QJCUKtTzHi9gCxPej7NsGP1X2WvH9P1jKaHC/oQTZjUVAEW4nx4KJcwhq/CwiAjYR4MnlBOliUAJC8KzAGw8MSU2mIohPkOkURS9LZkAMEHOplvHdjPhunJap4vi8/1Rj1V7IDbYTDo/kzdifABbxRw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774336759-635583
+X-HE-Meta: U2FsdGVkX1+R3gXM5L8R7WvZv66T3pMFPSj4wO4ydBY9kSd/oBZvRJBM22JyRpjky9StDpKmsYcPFsmSDU6aHaHecc3l9bmKMFbHh21YpD0qcIvbNrutBzxUdIT2BGnDRGCt+rgEmZ7QDVzH3lBuDa4/M81L5EhpfIhxfvKM5SoFDGO25Hc9C+drxhU1EY+8R5ziXrHMzZygGjp0/eE8SXz5xYtnp/U1/corL2/MTq+bVR4eno3oP8vdzG1+GX25Dz/NnFlOTjWSaBl57PRgw6EixZ1qn4v6S4dN3gQHtDXjvEzj+xwrE6LZQ/KhVZqcN6ys1jngFNRoinpGD5rhviEFXJw3xLjwvnp6LolpAw0NhJ3kASsCfZnQsezs8gaNsPf+b7r+W7GZMSMHXN7sfBjjzl0B1PLmIllTvi+7+sifQdtAxqF5edVG81VJ/jsTjo9+5JfebsnOJovRHvR2DrG9lDjHOztxcDim7bQMVzgEFiDLbaesiUXFUsVHvcg8O9E2E1/khVV3Bg+2WLRSdK3vBS8Ux3zVl30NH91FdlJZxhVcCiM7YcnETzf/9vOAMH5SZeDqhsLBekGC222g8IbJbYKxo3hi/oHYWPPdH3PwVaoqa7IUFbzTVBhbq70TMqTIYFOPaWoskYT8bYKR31914u4/UvBcz0Tschrp+AU4VQ09Qg+PlSQpkbSbVSQel53nJdqEZe5nFLO9MMKHcy9ncDcJMcH8I/GDR4t1/ik0mXiMijCNuLDNoMaLy5XQEYf0Mmj961745iVpus+f2EsD62OkujYcC51PkszIs3nU1D28q57pbnSGUbfeOdUVgwMOthuDOwWkXJoG/EX51IJBOqQUCCqTNutCcXc00c+WSq8JU2PFPSBvzVge5EZb+c5jaR08dyb8oM7clVAXT+FQYfqUHInuZxYl+2W2oJqMQ1bvAMFpZ1/GYVJhhqjv3+MkrbcZLQ6kYx72CnY
+ t2M/sEEH
+ 8fXOoQdps5KMJftZi/Ym3GnZ0iIvqyxbqA02qwwqZBsYN20wUA0aDd6TWfZvgcBsr6fahvMThbtcS2bdCEqPz+ziFOmYhpa+qUNrcsZNI6jlGAKgU3LpvDfVu6Ornd3kdQ6tNn1t/EF2S+Xp5+i+D5wbNpmNppapmBfh1qCmk4rCb0s9YWUhq7Tl9EsOAApM7RDhjnIVaeUG79bZqelqCA16qWz9iEVjciJ+YiDsitQwv7UXS3jBy7AD7fgI3QI2HXQi3ROmwtECp9V8ZRhz7TX4wKLzgE3cHEy2aSEhjnz7Gqkhi01pcGyzb5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,52 +93,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 22 Mar 2026 21:43:25 +0000 Josh Law <objecting@objecting.org> wrote:
+
+> Hardware integer division is slow. The function damon_max_nr_accesses(),
+> which is called very frequently (e.g., once per region per sample
+> interval inside damon_update_region_access_rate), performs an integer
+> division: attrs->aggr_interval / attrs->sample_interval.
+> 
+> However, the struct damon_attrs already caches this exact ratio in the
+> internal field aggr_samples (since earlier commits). We can eliminate
+> the hardware division in the hot path by simply returning aggr_samples.
+> 
+> This significantly reduces the CPU cycle overhead of updating the access
+> rates for thousands of regions.
+> 
+> Signed-off-by: Josh Law <objecting@objecting.org>
+> ---
+>  include/linux/damon.h | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index 6bd71546f7b2..438fe6f3eab4 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -960,8 +960,7 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
+>  static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
+>  {
+>  	/* {aggr,sample}_interval are unsigned long, hence could overflow */
+> -	return min(attrs->aggr_interval / attrs->sample_interval,
+> -			(unsigned long)UINT_MAX);
+> +	return min_t(unsigned long, attrs->aggr_samples, UINT_MAX);
+>  }
+
+I just found this patch causes below divide-by-zero when
+tools/testing/selftets/damon/sysfs.py is executed.
+
+'''
+[   42.462039] Oops: divide error: 0000 [#1] SMP NOPTI
+[   42.463673] CPU: 4 UID: 0 PID: 2044 Comm: kdamond.0 Not tainted 7.0.0-rc4-mm-new-damon+ #354 PREEMPT(full)
+[   42.465193] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   42.466590] RIP: 0010:damon_set_attrs (mm/damon/core.c:769 (discriminator 1) mm/damon/core.c:775 (discriminator 1) mm/damon/core.c:786 (discriminator 1) mm/damon/core.c:827 (discriminator 1) mm/damon/core.c:897 (discriminator 1))
+[   42.467287] Code: 48 39 c5 0f 84 dd 00 00 00 41 bb 59 17 b7 d1 48 8b 43 10 4c 8d 43 10 48 8d 48 e0 49 39 c0 75 5b e9 b0 00 00 00 8b 41 18 31 d2 <41> f7 f6 41 89 c5 69 c2 10 27 00 00 31 d2 45 69 ed 10 27 00 00 41
+All code
+========
+   0:   48 39 c5                cmp    %rax,%rbp
+   3:   0f 84 dd 00 00 00       je     0xe6
+   9:   41 bb 59 17 b7 d1       mov    $0xd1b71759,%r11d
+   f:   48 8b 43 10             mov    0x10(%rbx),%rax
+  13:   4c 8d 43 10             lea    0x10(%rbx),%r8
+  17:   48 8d 48 e0             lea    -0x20(%rax),%rcx
+  1b:   49 39 c0                cmp    %rax,%r8
+  1e:   75 5b                   jne    0x7b
+  20:   e9 b0 00 00 00          jmp    0xd5
+  25:   8b 41 18                mov    0x18(%rcx),%eax
+  28:   31 d2                   xor    %edx,%edx
+  2a:*  41 f7 f6                div    %r14d            <-- trapping instruction
+  2d:   41 89 c5                mov    %eax,%r13d
+  30:   69 c2 10 27 00 00       imul   $0x2710,%edx,%eax
+  36:   31 d2                   xor    %edx,%edx
+  38:   45 69 ed 10 27 00 00    imul   $0x2710,%r13d,%r13d
+  3f:   41                      rex.B
+
+Code starting with the faulting instruction
+===========================================
+   0:   41 f7 f6                div    %r14d
+   3:   41 89 c5                mov    %eax,%r13d
+   6:   69 c2 10 27 00 00       imul   $0x2710,%edx,%eax
+   c:   31 d2                   xor    %edx,%edx
+   e:   45 69 ed 10 27 00 00    imul   $0x2710,%r13d,%r13d
+  15:   41                      rex.B
+[   42.470046] RSP: 0018:ffffd25c4586bcb0 EFLAGS: 00010246
+[   42.470818] RAX: 0000000000000000 RBX: ffff891346919400 RCX: ffff8913502dd040
+[   42.471923] RDX: 0000000000000000 RSI: ffff891348527600 RDI: ffff891344d94400
+[   42.472972] RBP: ffff891344d94598 R08: ffff891346919410 R09: 0000000000000000
+[   42.474028] R10: 0000000000000000 R11: 00000000d1b71759 R12: 0000000000000014
+[   42.475104] R13: ffff891348527778 R14: 0000000000000000 R15: ffff891348527798
+[   42.476191] FS:  0000000000000000(0000) GS:ffff89149efd8000(0000) knlGS:0000000000000000
+[   42.477375] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   42.478235] CR2: 000000003a84f080 CR3: 000000004a824000 CR4: 00000000000006f0
+[   42.479291] Call Trace:
+[   42.479670]  <TASK>
+[   42.480044]  damon_commit_ctx (mm/damon/core.c:1538)
+[   42.480660]  damon_sysfs_commit_input (mm/damon/sysfs.c:2153 mm/damon/sysfs.c:2181)
+[   42.481389]  kdamond_call (mm/damon/core.c:3186)
+[   42.482492]  kdamond_fn (mm/damon/core.c:3428)
+[   42.483041]  ? kthread_affine_node (kernel/kthread.c:377)
+[   42.483766]  ? kfree (include/linux/kmemleak.h:50 mm/slub.c:2610 mm/slub.c:6165 mm/slub.c:6483)
+[   42.484257]  ? __pfx_kdamond_fn (mm/damon/core.c:3368)
+[   42.484855]  ? __pfx_kdamond_fn (mm/damon/core.c:3368)
+[   42.485459]  kthread (kernel/kthread.c:436)
+[   42.485959]  ? __pfx_kthread (kernel/kthread.c:381)
+[   42.486524]  ret_from_fork (arch/x86/kernel/process.c:164)
+[   42.487105]  ? __pfx_kthread (kernel/kthread.c:381)
+[   42.487668]  ret_from_fork_asm (arch/x86/entry/entry_64.S:258)
+[   42.488304]  </TASK>
+'''
+
+That's because damon_commit_ctx() is called to a context that just generated
+using damon_new_ctx(), which doesn't set the aggr_samples.  After applying
+below change, the divide-by-zero is gone.
+
+'''
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -676,6 +676,7 @@ struct damon_ctx *damon_new_ctx(void)
+        ctx->attrs.sample_interval = 5 * 1000;
+        ctx->attrs.aggr_interval = 100 * 1000;
+        ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
++       ctx->attrs.aggr_samples = 20;
+
+        ctx->passed_sample_intervals = 0;
+        /* These will be set from kdamond_init_ctx() */
+'''
+
+Also, kunit crashes like below.
+
+'''
+$ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests/
+[00:07:19] Configuring KUnit Kernel ...
+[00:07:19] Building KUnit Kernel ...
+Populating config with:
+$ make ARCH=um O=.kunit olddefconfig
+Building with:
+$ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
+[00:08:11] Starting KUnit Kernel (1/1)...
+[00:08:11] ============================================================
+Running tests with:
+$ .kunit/linux kunit.enable=1 mem=1G console=tty kunit_shutdown=halt
+[00:08:11] =================== damon (28 subtests) ====================
+[00:08:11] [PASSED] damon_test_target
+[00:08:11] [PASSED] damon_test_regions
+[00:08:11] [PASSED] damon_test_aggregate
+[00:08:11] [PASSED] damon_test_split_at
+[00:08:11] [PASSED] damon_test_merge_two
+[00:08:11] [PASSED] damon_test_merge_regions_of
+[00:08:11] [PASSED] damon_test_split_regions_of
+[00:08:11] [PASSED] damon_test_ops_registration
+[00:08:11] [PASSED] damon_test_set_regions
+[00:08:11] [ERROR] Test: damon: missing expected subtest!
+[00:08:11] Kernel panic - not syncing: Kernel mode signal 4
+'''
+
+It can run without the error after below changes are applied:
+
+'''
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -514,6 +514,8 @@ static void damon_test_nr_accesses_to_accesses_bp(struct kunit *test)
+                .aggr_interval = ((unsigned long)UINT_MAX + 1) * 10
+        };
+
++       attrs.aggr_samples = attrs.aggr_interval / attrs.sample_interval;
++
+        /*
+         * In some cases such as 32bit architectures where UINT_MAX is
+         * ULONG_MAX, attrs.aggr_interval becomes zero.  Calling
+@@ -532,7 +534,8 @@ static void damon_test_nr_accesses_to_accesses_bp(struct kunit *test)
+ static void damon_test_update_monitoring_result(struct kunit *test)
+ {
+        struct damon_attrs old_attrs = {
+-               .sample_interval = 10, .aggr_interval = 1000,};
++               .sample_interval = 10, .aggr_interval = 1000,
++               .aggr_samples = 100,};
+        struct damon_attrs new_attrs;
+        struct damon_region *r = damon_new_region(3, 7);
+
+@@ -544,19 +547,24 @@ static void damon_test_update_monitoring_result(struct kunit *test)
+        r->age = 20;
+
+        new_attrs = (struct damon_attrs){
+-               .sample_interval = 100, .aggr_interval = 10000,};
++               .sample_interval = 100, .aggr_interval = 10000,
++               .aggr_samples = 100,};
+        damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+        KUNIT_EXPECT_EQ(test, r->nr_accesses, 15);
+        KUNIT_EXPECT_EQ(test, r->age, 2);
+
+        new_attrs = (struct damon_attrs){
+-               .sample_interval = 1, .aggr_interval = 1000};
++               .sample_interval = 1, .aggr_interval = 1000,
++               .aggr_samples = 1000,
++       };
+        damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+        KUNIT_EXPECT_EQ(test, r->nr_accesses, 150);
+        KUNIT_EXPECT_EQ(test, r->age, 2);
+
+        new_attrs = (struct damon_attrs){
+-               .sample_interval = 1, .aggr_interval = 100};
++               .sample_interval = 1, .aggr_interval = 100,
++               .aggr_samples = 100,
++       };
+        damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+        KUNIT_EXPECT_EQ(test, r->nr_accesses, 150);
+        KUNIT_EXPECT_EQ(test, r->age, 20);
+'''
+
+Josh, could you please also take a look if these fixups are sufficient?  And
+once the sufficient fixes are found from your side, could you please post a new
+version of this patch after applying the fixees?  Also, please drop my
+Reviewed-by: from the new version.  I will review it again.
 
 
-On 24 March 2026 00:14:59 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->On Mon, 23 Mar 2026 16:48:19 +0000 Josh Law <objecting@objecting=2Eorg> w=
-rote:
->[=2E=2E=2E]
->> Also, unconnected to our topic!
->>=20
->>=20
->> I've tried to backport Damon to 4=2E19 (for a personal android thing, a=
-nd failed! Of course)
->>=20
->> Can I have a bit of help if that's fine with you? The tree is based on =
-GitHub a bit
->
->Sure, I will be happy to help as much as I can without burning myself ;)
->
->Seems [1] Alma Linux has backported DAMON on their 4=2E18 kernel=2E  Mayb=
-e you can
->try their port first?
->
->Also, what is the oldest kernel that you have to use?  As newer it is, th=
-e
->backporting will be easier=2E  When I was in AWS, I backported DAMON of v=
-6=2E7 on
->the v5=2E10 based Amazon Linux kernel, and the source is available on Git=
-Hub=2E  So
->if you can use 5=2E10 based kernel, using that could also be a good optio=
-n=2E
->
->[1] https://oracle=2Egithub=2Eio/kconfigs/?config=3DUTS_RELEASE&config=3D=
-DAMON
->
->
->Thanks,
->SJ
->
->[=2E=2E=2E]
+Thanks,
+SJ
 
-
-
-well android likes using old kernels for some reasons, especially LTS, so =
-4=2E19=2E=2E
-
-V/R
-
-
-Josh Law
+[...]
 
