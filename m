@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56439F532C0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:16:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0BAF532C0
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C222A6B00B2; Mon, 23 Mar 2026 20:16:10 -0400 (EDT)
+	id 34A766B00B3; Mon, 23 Mar 2026 20:17:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF9536B00B3; Mon, 23 Mar 2026 20:16:10 -0400 (EDT)
+	id 321F16B00B5; Mon, 23 Mar 2026 20:17:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B369E6B00B4; Mon, 23 Mar 2026 20:16:10 -0400 (EDT)
+	id 25EE06B00B6; Mon, 23 Mar 2026 20:17:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A358D6B00B2
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:16:10 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CCBB160E20
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:16:10 +0000 (UTC)
-X-FDA: 84579039300.07.55807D0
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 142CD6B00B3
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:17:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9E04BE0BA
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:17:25 +0000 (UTC)
+X-FDA: 84579042450.20.2CC6602
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 39205100003
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:16:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JIKAbPpH;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8A8994000F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:17:23 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rsogh3ho;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774311368;
+	s=arc-20220608; t=1774311443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Gx75jnNvcaM6576W+SZe+dNyLWeLhW4qqMK58nkH+E=;
-	b=7r/4/yZWz3mkDxJlihJf75PNFagkRQuxeVADpyuEpyaBqNaSsrO9wN3XMxAv21t74dFG3c
-	Jv8jC++qHpbDl15P1ustNs44kRCcgxLNyG9L0o0FCWHSI4vRK3rhzuaXmFsXccszPIQCBr
-	bURqfWB3Dz5aZewnY/ollx6jU3zVOEA=
+	bh=KMa/FPTvOK/dRPbAgxjP2GtzNpM1gPI9sCDOsYwzXJQ=;
+	b=6G7Wp595/xiOClRtMTmi37dvoLnzsvp3o0uG1q9A3psszOSmA+0AhaIQUmLb5CWXnvEiXT
+	iy5v/3n34qCBWEP/0I27p+kd4JK9s3KwAAtUI9IEQZ96IIBk8Em+bu3udm3zoRUF+aHf67
+	h2B2AXffHsQvT0DldXnzWCZncPj/u3w=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JIKAbPpH;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rsogh3ho;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774311368; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774311443; a=rsa-sha256;
 	cv=none;
-	b=y/f1fWMb5a6mLkt9KsUv5HDlJLVW3D3h51tRqHw0IXyNgYAkWsZ6grHhyYQYSOyFUVTtwJ
-	+tAxfsnUE7i8lXsfzj1hJEqxiynJfQLy7wZX1E7mXna5q+OcDUSgkhd+bQtnBYyWwWb08f
-	DeCBegC55sE43GdEJlqy7dWzulkDKH0=
+	b=i++C8rnToFo3nJqUed486k46Foch0Fh0bRmMOmowu7AWLseUR9A7XGCLW7F4GtZw9dd9YT
+	J9MtfCDT/kRZVa2ofav+W62hZu9ORmwqQmG73gJejMthxSQgQ3pC2l49FELm83qs9V9wch
+	22aGnxfhLBEmrnSxTiNNjvFqznE46Yk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 30F09444D4
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8FFC2BCC9
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:16:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9E792443E5
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:17:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526B1C4AF0F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774311367;
-	bh=6Gx75jnNvcaM6576W+SZe+dNyLWeLhW4qqMK58nkH+E=;
+	s=k20201202; t=1774311442;
+	bh=mkPMr+Ubw3gE/jNPJ4cFqrp/19KQd/EAePHNoJi1hak=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JIKAbPpHGROjBGv7IHh0X1W9lMdaGkdvyWXfU11Lw25fujx26kPAob5bNPyMATsEF
-	 DTtOUenelJ2eiNiwIHPn+jC/39bU8ZgRHyBZkqraTHfy+vl09GXfNJ1JErR80MbYQO
-	 bmZBniu1Qejnvlu41IsUPEv+3HI0xdWCi0prOOnUwKOzREL1pfMyPl0j5U1zCSuXAv
-	 O1ghQeGthh+UtOQUiDjgj1uKXloR4VM/vovM0DqlUlU0BDUUF0i9cnpALxpaqXgZEN
-	 hjl00wFRbPaV/l0ZgoHdgyqplYLk6NnokTR5Y0DVf/+0Nn66J3AMT4Ump/RooUJmU0
-	 u75XN3cSAWRUA==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b97e6e48b24so149997966b.2
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:16:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXWW/MZfHOCPO0SLbYT4m3dFgGeLII4n7muferaE6wdDuZVCWhOJtBuB2tK8UloXvwuojWNa5yOiw==@kvack.org
-X-Gm-Message-State: AOJu0YyWlAfybBBC9menUngbbYXQ+XRKN/R2kGqHuGi2hKVKmELssKhm
-	8+3Gf/wYW2ru889QyC4m4fkn8AjM0B377XrvBP5/oS1wbYJixdhOxfn5H64kYkyrBEIxlka4ktQ
-	piTiyKWz5miXv2hfkMai/y2Uq3ewrZ4c=
-X-Received: by 2002:a17:906:1d09:b0:b97:87e4:7f40 with SMTP id
- a640c23a62f3a-b982f37d43dmr878599966b.27.1774311365588; Mon, 23 Mar 2026
- 17:16:05 -0700 (PDT)
+	b=Rsogh3hoyoYJmf99kdqKt6lBJDTP+1xdPyj5kVS2IlN8iHQ3wzE8MkGQ2vG/+vCIQ
+	 jglMKyhVHQJLdfMPDmwTBMOYPrv3+D+zxHavwso9XNlhtALMMJjzVyWn1cyTquak5J
+	 eYPMoo4H9FNyOu7lRZ4j9CFL0iSDN1ty/nOFJ4CcUJFJDOyfvelrs4EnK/wpc3lDi3
+	 vUn5cGfhk9lLEhPwXRKx6PF/rSZNgL8Nn4GVPiuqcdjrhzR7kqcTLKCBF6Lk5unZeU
+	 brDDMtaAqTyg+Z5imL12U3VK6iprVbhLo9pompG9YcNDMsaP1Af8EnYT7q/u04edCt
+	 eUEztT/Te8+ag==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b98133bdc4bso571172566b.0
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:17:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUKxoSH3dSiZ5PbJ3an6cCIb84hjur+37/eIU/1Gs87PG3CPI4L9wbNiQL4aSy0PhSqCiFrFQXS6w==@kvack.org
+X-Gm-Message-State: AOJu0YwZiTGEA7iikoHKu9tuju+wVz30LiU+iK9pHOwryE4KsfY58brv
+	9Vni9aHuwAlAE7LZVLhCUifM1tum40QZnh5hOK6lJaNZhL3zfj2k06m0djV8InHLDivWLovYRAP
+	RVQC7+Sxh8w2zhKyt4jP+kSJbbF4wRPw=
+X-Received: by 2002:a17:907:3f28:b0:b98:4e9b:7e49 with SMTP id
+ a640c23a62f3a-b984e9b9366mr668007566b.33.1774311441088; Mon, 23 Mar 2026
+ 17:17:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260320204241.1613861-1-longman@redhat.com> <20260320204241.1613861-2-longman@redhat.com>
- <acE2MoIZ0pl7U7PX@redhat.com>
-In-Reply-To: <acE2MoIZ0pl7U7PX@redhat.com>
+References: <20260320204241.1613861-1-longman@redhat.com> <20260320204241.1613861-3-longman@redhat.com>
+ <acE2WDuto9cdp5Lx@redhat.com>
+In-Reply-To: <acE2WDuto9cdp5Lx@redhat.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 23 Mar 2026 17:15:53 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOTYPgqc_7TVWjQ=adn=pH1TLLX2cBNfa1Y-x=TOFJT1Q@mail.gmail.com>
-X-Gm-Features: AaiRm52fV4nUPr8f7ewBjl2IN6lomvXA8YiY3qcPBfQuorYLYyMi7pBpBc1tcdg
-Message-ID: <CAO9r8zOTYPgqc_7TVWjQ=adn=pH1TLLX2cBNfa1Y-x=TOFJT1Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] memcg: Scale up vmstats flush threshold with int_sqrt(nr_cpus+2)
+Date: Mon, 23 Mar 2026 17:17:09 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNqHVCOYcun=WWwF3CROi-nLAsJUSJJtcsrQGUKF-CKQQ@mail.gmail.com>
+X-Gm-Features: AaiRm531iQ3S4jGCxOVHcyk6sudkGI-5HpMDYVgYjNPDeV0yeExZpsLA0GLu9_E
+Message-ID: <CAO9r8zNqHVCOYcun=WWwF3CROi-nLAsJUSJJtcsrQGUKF-CKQQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] memcg: Scale down MEMCG_CHARGE_BATCH with increase
+ in PAGE_SIZE
 To: Li Wang <liwang@redhat.com>
 Cc: Waiman Long <longman@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
 	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
@@ -96,14 +97,14 @@ Cc: Waiman Long <longman@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
 	Li Wang <liwan@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 39205100003
-X-Stat-Signature: qi3bbjgxcgo9ciwacjw6ukanpjhkhkeu
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8A8994000F
+X-Stat-Signature: roigeeyjkg5gsxdy8kx7jymy9zuqgmkt
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774311367-155083
-X-HE-Meta: U2FsdGVkX18VXq7pZhwtCcz2b7o/cuDC3eNMWnrKOUkl23KF3/8yYJdwcsX7WxurdH9Tmj8pvjXmf4FiJa7jyH/Kyud6hc10uNELYqYU9PBVgIk6ZGPAo6rwnB9hy/QsiIU1740BA+rkLY7NJaXqOWjsDtN8H7mop+zWHvt7AumWnJQKhUjgYUmw0Phwd7QlPqzGbwnbaeXLFqDKvdzP7jd1XjprYUkdNdB4QOgSf60DJotuu6OngPJ6UbxnToxBSdn8mrjSvvhWDLEBOk+gAWIFwNXVJIh5cuMDSAZUJdQIG1LrXmTrCKWSwvjaDL3kjHVah0WPkHEqKIfCt9jPY1t90vD+D0lW+SKx4MxSEuc+ngbxEiXi2yR2ZYfa94ew5iaOIPo6p98KTzYqP41OpsNM2535QdD7AKpeknt0dMISVChi6jOqL0wL5Ars0lQR7zsCw+g7gmkIlojWIAHcN2zc6WlpitccY/R1hm70RUDRZv44/o0cdIvDZe++fJ4tD+wf96jmvVfxpB/PtLpWkbpVpojQziwrLhX+b26guqo8eSDaqrIugkjUIB2HPuTTuXTBF/sJr6qxeK0bsBVsC4Nz8c3s1lGLJH/aoObHirOCtgFpTZfI8oi5INt5cm5e2cVEbEB21RIEGFvb9kaLIF2AG+4Gc+/78F4NqEmqWzFvo0aRmEwrnFGYFY3kuBe+03IxLVwvnqQCtaMH79qfkfBX/0uLxGJZPVuUDkX7hAVB2SRUs5h/V2HvROB7I3iOryoKZupOfnU/H4yzvo0g55rOgEzAWfLPNJNNmcuyfdtn777qClSQ+45TRGOu13Tb4jaqjE7tiR1V2r2CPJggfc8XOEkfKKaHcHlGUagGNZcZr2h95WKYnuE3iTRKTHt+D/R//GwqWRM+8+QFzkvilgFfAwjOaJbP1roufbUAFQwDJ9yKA0Th2Q90P6EzdBAftuPOAw6YsMN46dSBzDv
- V+z5j/UA
- cfawdoWRMDr8R+FUxTc+uHwwFtnujf/M7GSqfirXuV8g0YnsErNySBT2KOBQnsd0OE6BxWkDPlp1TshLjRx7xn+wC33A2OWUfYHDxrjhx1WodKC65UotmVidCTGbsgEDhqzxpYdrYmh7lQei9Jq+VZGjXnkjM5EMrS5pF5cuYGgkPJm5OJ6zuvdL98AoaaCZ1zR1or45u/D31uOiGTtS76zmNEd2vgAkpkBnDJ3WKVk99fLDB3OF/vGWneRqh2XridqRegXjD8wXbblTcsdvV5lL4BFZ+5MAlC5N+VTJnv39Rf6wBFJMpuimdfNvjwmJ5uh4kon34WOA070EBbrNgt4Oc+XrLwcpnq6agsq2pMN042fkeu4h8AADJkw==
+X-HE-Tag: 1774311443-50859
+X-HE-Meta: U2FsdGVkX18nusY9IXhtcY3SDsbcnQMzf+vXDfkvT7ReJP2OYeDmP6NfooU2yFyh3DTscVC/oS2hfaxpFwbXDBsIjPbF4S7qxhnqX9fLvjdTwqJen9ov6VMwsF77En3/1xCqFGhGdXmXLLUUSrlwtjP9DhmPO0FfSFouxh8hNgB3p1XLnL9/dr8T6f5oiYyHUIod28BjLWLTmfdlFVS6mZjT8DojRUGyE9gyzXKDwzfMZwmjf0LwBoSO3OqO15We0CK1zQQB0y4VO+kfYdUyhqv2YDDFkhL6gB3c+auKBjWRnxJ43lXodr4HqunvtOTZNe3HLzrPn55KvYlyTYsJ86Yi9Ena4d7ZUsXpd29E3uyym11spDsxAPVTEVlTlG+DLgZBLbbZ5oh0qCqE7p4TsKLajchXRtHpKPpdf+P6joIpDeJCNwVB5Wy7hdS65/1hCouHL6EDpau4IYX9lI+KhXHaKJbQtvPd2J/nj5IN+bSW076MnBDPWrr3JuVDEh6eOLi6qwgxdxo9eUmofM12hziO/OmdOn3pAVvSXUnjn8V2XVbFS8VJnoRGXzI9nkSbIYpM+svhzutOJRXX2VTSdVcH1gRm+FpLuhnitm8MUYLzZA5e7lmgoI/0xsuTISvdxoOLlAc2W6hcRNj0ZK29htZNL8198BaUvdOhA3bm3tqpJTBSsCq5EeSDpgohydYGujA3K1i6pXqUORlPsBWsg6LD7QA13ruHH3PhNzjTiOJBYj84TC9M0iJ2zqn3vsBQv9iKz36zuQ6i+Wza8ncHme7ludpcvueDG0W4sn7fy+2qZ+76Oe5wSf1U0rLeVamAETr8Wb9LthAKhHNHf01ALjhp+ZnyMQ/zxa8PRDxHw7qXXwkdS/Yro0ucNEBebbzuQEJA9NSccfcdwltaVHc5sPw9TfmehsdSDI34vSBNZr2peiVl8dlybjlrhjHkgOYoxzyL6CgZmJjrp9EBswp
+ YTpo6L1X
+ 0Dbq/zz+7sDte4/zbJ5UU+TxzuK9h9Zp0bikhjvdgIRe6+Mwhz0aRRn6eZ5DK35JKhpAEhm/Eg9mOu/oT/RoHS9n1tAcxJbexmSc9KQR3hKT3CsLQSBXcqVkNGfgTQvO/e580lM4vJj/qm/Gpn0xv+BhI29GEKA+csSry2LU1mkvWtkXxfkCbE7KucYiaoNk2RBSH9ONj+wsclHhuRyQ9ythmU7VnOq1n0Tjbf1wbN/ppzaNZrgpq36EA0pG6CJt/aLZBwgC4aGve4Ut6YCZOmC4VoK7ZEWSnOOpVRLamPH9TlTJNiVCMkNBnkQbzoCs+OXQs7i9VSR4uAKNAWSiFQutjwuYx69e2qC5t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,48 +112,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 5:46=E2=80=AFAM Li Wang <liwang@redhat.com> wrote:
+On Mon, Mar 23, 2026 at 5:47=E2=80=AFAM Li Wang <liwang@redhat.com> wrote:
 >
-> On Fri, Mar 20, 2026 at 04:42:35PM -0400, Waiman Long wrote:
-> > The vmstats flush threshold currently increases linearly with the
-> > number of online CPUs. As the number of CPUs increases over time, it
-> > will become increasingly difficult to meet the threshold and update the
-> > vmstats data in a timely manner. These days, systems with hundreds of
-> > CPUs or even thousands of them are becoming more common.
+> On Fri, Mar 20, 2026 at 04:42:36PM -0400, Waiman Long wrote:
+> > For a system with 4k page size, each percpu memcg_stock can hide up
+> > to 256 kbytes of memory with the current MEMCG_CHARGE_BATCH value of
+> > 64. For another system with 64k page size, that becomes 4 Mbytes. This
+> > hidden charges will affect the accurary of the memory.current value.
 > >
-> > For example, the test_memcg_sock test of test_memcontrol always fails
-> > when running on an arm64 system with 128 CPUs. It is because the
-> > threshold is now 64*128 =3D 8192. With 4k page size, it needs changes i=
-n
-> > 32 MB of memory. It will be even worse with larger page size like 64k.
+> > This MEMCG_CHARGE_BATCH value also controls how often should the
+> > memcg vmstat values need flushing. As a result, the values reported
+> > in memory.stat cgroup control files are less indicative of the actual
+> > memory consumption of a particular memory cgroup when the page size
+> > increases from 4k.
 > >
-> > To make the output of memory.stat more correct, it is better to scale
-> > up the threshold slower than linearly with the number of CPUs. The
-> > int_sqrt() function is a good compromise as suggested by Li Wang [1].
-> > An extra 2 is added to make sure that we will double the threshold for
-> > a 2-core system. The increase will be slower after that.
+> > This problem can be illustrated by running the test_memcontrol
+> > selftest. Running a 4k page size kernel on a 128-core arm64 system,
+> > the test_memcg_current_peak test which allocates a 50M anonymous memory
+> > passed. With a 64k page size kernel on the same system, however, the
+> > same test failed because the "anon" attribute of memory.stat file might
+> > report a size of 0 depending on the number of CPUs the system has.
 > >
-> > With the int_sqrt() scale, we can use the possibly larger
-> > num_possible_cpus() instead of num_online_cpus() which may change at
-> > run time.
+> > To solve this inaccurate memory stats problem, we need to scale down
+> > the amount of memory that can be hidden by reducing MEMCG_CHARGE_BATCH
+> > when the page size increases. The same user application will likely
+> > consume more memory on systems with larger page size and it is also
+> > less efficient if we scale down MEMCG_CHARGE_BATCH by too much.  So I
+> > believe a good compromise is to scale down MEMCG_CHARGE_BATCH by 2 for
+> > 16k page size and by 4 with 64k page size.
 > >
-> > Although there is supposed to be a periodic and asynchronous flush of
-> > vmstats every 2 seconds, the actual time lag between succesive runs
-> > can actually vary quite a bit. In fact, I have seen time lags of up
-> > to 10s of seconds in some cases. So we couldn't too rely on the hope
-> > that there will be an asynchronous vmstats flush every 2 seconds. This
-> > may be something we need to look into.
+> > With that change, the test_memcg_current_peak test passed again with
+> > the modified 64k page size kernel.
 > >
-> > [1] https://lore.kernel.org/lkml/ab0kAE7mJkEL9kWb@redhat.com/
-> >
-> > Suggested-by: Li Wang <liwang@redhat.com>
 > > Signed-off-by: Waiman Long <longman@redhat.com>
 
-What's the motivation for this fix? Is it purely to make tests more
-reliable on systems with larger page sizes?
-
-We need some performance tests to make sure we're not flushing too
-eagerly with the sqrt scale imo. We need to make sure that when we
-have a lot of cgroups and a lot of flushers we don't end up performing
-worse.
+We need performance testing for this too.
 
