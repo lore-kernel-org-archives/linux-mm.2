@@ -4,169 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0E5DE9A769
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:15:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEE38E9A76D
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:17:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10E9F6B0005; Tue, 24 Mar 2026 07:15:11 -0400 (EDT)
+	id 2E65E6B0089; Tue, 24 Mar 2026 07:17:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BEE86B008A; Tue, 24 Mar 2026 07:15:11 -0400 (EDT)
+	id 297A06B008C; Tue, 24 Mar 2026 07:17:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC8B66B008C; Tue, 24 Mar 2026 07:15:10 -0400 (EDT)
+	id 1AD456B0092; Tue, 24 Mar 2026 07:17:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D84616B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:15:10 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74DC8D1685
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:15:10 +0000 (UTC)
-X-FDA: 84580699980.22.AB358C9
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012011.outbound.protection.outlook.com [40.93.195.11])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A977A40017
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:15:06 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Si3hj/c+";
-	spf=pass (imf07.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.11 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Si3hj/c+";
-	spf=pass (imf07.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.11 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774350907; a=rsa-sha256;
-	cv=pass;
-	b=vWo0zoMdVaAQr0c6u8qY9vg5eJpg71Lxi4o0Pv9T43hv7jwv1C7HyU+LzT9hUsb6EFGfto
-	gHKR7kSFhlwgJ3oOCJlLw07JiFR2IVQwudqSEipwbe+ZbcUHgtlGbPzVqlMyj7IwU2Cc7w
-	0Dzu7z/qd2zOYDAoS+AlKqB1MEgl/fM=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A1396B0089
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:17:34 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6BB81A1A52
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:17:33 +0000 (UTC)
+X-FDA: 84580705986.07.BA83A13
+Received: from sender-pp-o93.zoho.in (sender-pp-o93.zoho.in [103.117.158.93])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F1041A0002
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:17:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=uvp0vRqX;
+	spf=pass (imf25.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774350907;
+	s=arc-20220608; t=1774351051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=99JSYhBBd1Vxs+NOP5bCyrZ8/P3WQBXd/6wHUcXBPbI=;
-	b=mIcC76qFG1p1x7sT4cVXB4YNZOktKXaLllL+59uEDGZGkYXOar4ttMu2/rLYp1wTLrvkDJ
-	2Edj4aIikGqHydWPIP426m+r9e4EENi2WbF1yo0NLEdCFfjgsIR1yAN6YN3fjCwoy/Ni7j
-	xPm9EqKedkszZNbOUI9qTICUX0c3jTQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wUq0qGnkuS/oMZH2g0rHYUjU1Fee1+kG5tBxW2KZ+5WuTt42qddxY6Aedgt1AxbK38hwEUszzVCosnNqeIH9gMJg/sFoUNd1k/brZMVGp3p5PWhgAKnjPUK5v5rQG4DdZVzhnosSJEzzs6QH/t010ATrvE8uj6f22IeDoU1VuNbHGijVNM7XTTcH4PJpkx47mN19qrgt1Cd+5uQqoyYf15rt+9QXZn+F9vqjsMna+7ydzRwVw89UfZbR35dOs1+EyKK9cXP+RaeJScj0V1jo1JD4iP4J1wiDoEPTYgg7hmwO0NUriZU2dYIIMngxeLDi+BD0T8n9N4wVkjCMYuFKpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=99JSYhBBd1Vxs+NOP5bCyrZ8/P3WQBXd/6wHUcXBPbI=;
- b=cprz5fRzLIUATbLxvzRa9tSubRil5SiQDXxU+a4+PH10IeAI9FrMKobZiZ3sJDgjlL+QARL+8ej+ZxPazJDYQCmPvLGL4FMKaxSWdS6v1/Onv0s2hguKC5KQ1aPJ83qX7+BA9boO8q5WgKQviRm2z0ynVCWH2iMudQjWD2Rna7zlwtfFplR5ozmm8eVNrzdhaLaZ0nuCL0GUuB9ZaFeSKGu9q3kLT+2mvSdtNohmF4XCsZHyim+xG6VGrl1+nyQUYCkex53yTUKWz3oH78MXqe84ACWH3rOdK3dXZEcIZRE45A1qspLe7fKPGAL6pc7PvdPJEhthSt25hCD04EefvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=99JSYhBBd1Vxs+NOP5bCyrZ8/P3WQBXd/6wHUcXBPbI=;
- b=Si3hj/c+60oACD2Y3ISfQbZk2lHCROM+CG6arrTFwpbZEYHUtlDv3aF+NHiRcw5+3rbuPe9wuZBj2uZF7pf4TDUl+4u9nEDI4TN/WSHGjpV+nbMja/nPuUBPTU7h8pPOtnvkuGMPt8vD7AeArgIQ27KDU1RcHjxvpEoCxCk6VXxjzFrNbq9LuY9JzJSgIhfF9WcZWPvmxi2TB6e1gbXqoX0JR1P496FfxidlLo23xkWfhIYEPNtUsNKCA/OKXgHrzyx6VRf4n4dNQXjoxx9GBPUTWOeQ8aTXwHLnHDoI40K+Xan1u+FEf/Zoj+Q+q8r0BqLp701MGf6tvjkkiU795g==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SN7PR12MB8818.namprd12.prod.outlook.com (2603:10b6:806:34b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Tue, 24 Mar
- 2026 11:15:01 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9745.007; Tue, 24 Mar 2026
- 11:15:01 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Song Liu <songliubraving@fb.com>,
- Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [RFC PATCH 10/11] selftests/mm: remove READ_ONLY_THP_FOR_FS test
- in khugepaged
-Date: Tue, 24 Mar 2026 07:14:58 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <DAD4E4A7-5EB2-46DC-8BBC-D311E252133A@nvidia.com>
-In-Reply-To: <e7de962f-9cf9-4628-8272-0efdfd0931b3@kernel.org>
-References: <20260323190644.1714379-1-ziy@nvidia.com>
- <20260323190644.1714379-11-ziy@nvidia.com>
- <acGrokwjvIHqDmSP@casper.infradead.org>
- <e7de962f-9cf9-4628-8272-0efdfd0931b3@kernel.org>
-Content-Type: text/plain
-X-ClientProxiedBy: MN0PR02CA0002.namprd02.prod.outlook.com
- (2603:10b6:208:530::29) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=p7tXGynYfsSDKkcbLDDxpKOQD7Ln9t/0BxLua48ck+w=;
+	b=u5R+ACi/UxQ3WUupZMMNjIA++N6Dc6htP4ZYZN59cx9HmrnxpqbFTci6ZDg/pjgcXV97MU
+	gzBMbnP2NDdkZd65CUxYyo/8feu0ReWh9rs5H/6SVY7q9U4AIpqdTDlXbJR+xDi7v5JM9u
+	/T7bTkKfl8P/A4WwPZdRtdwhySHaMV4=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=uvp0vRqX;
+	spf=pass (imf25.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774351051; a=rsa-sha256;
+	cv=pass;
+	b=njHso6wGv1u7ohbmMQm9YaO1OzHAsQ6FjNb+42fX+ZtRuGrBgqxWEElNxzOMfRHvkXbKnz
+	H/+UrOnQrfNF980gPlwMG8fnXZ8APSF1c4gaY9Rerz9xGkE+/jyq3CVxKQOFEuTLvrpRgN
+	fYK8qC61pE0M31LqvkCrcVx4IdM8B8s=
+ARC-Seal: i=1; a=rsa-sha256; t=1774351027; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=BsH6a0cK+Y9bImB3qFB8RO7nIrQ5rcTuoGUEYfJJlrE3h/gayI6JSefmFbBXTDVP6oCO94jyTWuGtLORC/PTLxiiQTCc3Jt4CrP4i+KRpFxW+OsC3AjgeaEAh8QaNOG8wP+HRqCFTGw/s1e1w0Drpr7WupFjmcboXya9fwHF6F8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1774351027; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=p7tXGynYfsSDKkcbLDDxpKOQD7Ln9t/0BxLua48ck+w=; 
+	b=QN0ShOKWI9mHffzDMxyKC1yyBr/UR6ZFGaB2O/e0ju86DVrmw0t01EdIYAp63NttpgpSafcRqJp88alZKVuvosgeZDwAH3Ugu6R+S//pnYtmSbG3FyCVqvXocW76MMvE5JvXFPyrHyrimGehqmfdf1kuONl5lkXSv89kbKfiP4w=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774351027;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=p7tXGynYfsSDKkcbLDDxpKOQD7Ln9t/0BxLua48ck+w=;
+	b=uvp0vRqXrEvxIyZ1cw9UjEPzoN8zsWeGOb6jo80SY5l1m1t2gE+tsgf8swvrzFUj
+	v1HjHafM/9bAPcMEE0Jq6ucGTTAANb4RVWNgLzvDveTPcQ0nCmGJUS53zLnm0CK/tUV
+	AXDGZr/QX7+x17Jwp5WQqnJJLbWSn+1kCsH4NxUs=
+Received: by mx.zoho.in with SMTPS id 1774351024876793.8419221470616;
+	Tue, 24 Mar 2026 16:47:04 +0530 (IST)
+Message-ID: <9bf5d3f5-af3f-40ce-b7aa-35b105b8b772@zohomail.in>
+Date: Tue, 24 Mar 2026 16:47:04 +0530
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SN7PR12MB8818:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e81674a-951d-4098-7d29-08de899697a5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	8izNJ6kZoNZLOmDzv1HNcCkYiZMbdO8dr+RGLEG5Jik5CoByQgSDM0Ob1WRVPzHozkvOGI0E4OAAhcZs1RsoiBPA7v9zSGgvtGQM7p7ixfIoonBhYd/JHlSCcDdtIBxzQj/3j9Ip7RP0Iv300m6Gp7G5Ng0D2bzbvO9tkj7n39MSjRer+F91+UwXvMoYGkNFY4zIGwpu6yavMVjo5AQ6CgAsV5JuUOjYTEj/yUjiEh9mOb037RCtcaoRdNo9FQ2ifCyxyaqj4qkV/Kd/ScPEFBlXmP4LGP5CdKuE5EUMmaSVZttrvtgFBFKXSLXYgPRhyb3RdD7JemCtHfnogigPlN6MfNoYMHJmqhvfhrGnGFzHLMPuKGJAgMNfMsDE1LX1R/VJFpX2GscqKHQxIEFjH6iElKT5WcrqSbrhwUxMBJWWYCmYEbQmU+ElT47GIT4UVyXlD/ZMK/g8CRcurd6TlPGmkHeb4EaynRIixb9vdFgZNsXZgs5hIjvq9WoEigBOGLr9VF+/FYaYpZ/TzVncMS0g8JXWYRVbdEyJ3EgAI2WTHwPEW16t2fYWbzAgjJFlWcYsnqxDodPIYvxEWulWFZ4dgH4itTxhfE7dlzaG/3FXGKc1R+cNxAL9y4H22w6/UmL3Th1wHo7ER63gHZA3SFdRMGiVmeP3ijoGOKcG8puIQBof+uoo33vVzv4mfpTlN3hrl7iGbzz6rhWaHOaICwE8k9yiSZw9Q7fOYqbuRwg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XQNFXhuuHRYUOPrJkBgkl4UcrOOMNHdZU5wbCRzdCBlLBTx/ZRY+Bn2uwyeC?=
- =?us-ascii?Q?x6qRtgMUOHU7GSCWH1QF5rpOWoKjrwTuSyiYCIIU9q5JmIaF0hSaKxCCAANE?=
- =?us-ascii?Q?tAlNi7NL+eD+g8oxHvG6FHloGB+kMQXs8+5m6RaB/yodIPsK2KSEJnY9UOb5?=
- =?us-ascii?Q?398QsUwFyZrJxgmxvPJ5o6qHt+S5ml3qjkKcMdkFLI2DnglMUgec+IAyf+uC?=
- =?us-ascii?Q?AHLoV/7BigoZQt48UWhaWy9q81dB53g0nXFI6//Y4/oYlgmSu/mTaNoe2+ne?=
- =?us-ascii?Q?jAv2rCL1OkpOFKyZQTVAzq9KovHHM4Ym1kOVpkhVrma2E63CuOpg+pO63yMW?=
- =?us-ascii?Q?yCLKKI0m19r49gxEU/VVIO/02I3mYR5co7Pyo7WMeLhtZcPQnAO2GbmQTo4I?=
- =?us-ascii?Q?eg6ll4hCyH1QT8xzspLl/EtdsJTfV0bNi+OFgzPAKJacb8kMYq6FPFsCu7IL?=
- =?us-ascii?Q?Lej1RNxv5E96Dk4pGTpyTnZX4TjXT84EHvgV4uM1PI8cL7BRISBOXWz3WhgV?=
- =?us-ascii?Q?Dah4XRdFTs16lGQ3Jgxgp+eekli00H7h/na/brH4iA6XLuq7AeEjqbKul65W?=
- =?us-ascii?Q?SLqCixtCzclAfhr0S93cKzahyjGPdmzRnJwE1cA3zLYvwJchT7+rtDrHFVS/?=
- =?us-ascii?Q?qmEHlOHkN/V6N6Angc3FMIYt5hS2Zz2UHe11ia1DdustYkRCg5XKABGWYmSl?=
- =?us-ascii?Q?5QTWkJx1DGjY5bel8eckqIojAXKSeiKiePDtDoiBRKUkwwdcP1Kz1Qp2HH0x?=
- =?us-ascii?Q?OeQEmjJ/ztc5tqXHww8R8/weTT4pqfG9rIc9KjlomqALwX1WpsCftRc9xn5r?=
- =?us-ascii?Q?KCfcwNMbu1lyo6aXFVKf2+FoOrN6NYiUn+bTXsvFbz5ueWgbIvUNkzvV4Jaz?=
- =?us-ascii?Q?Ccvj8DAgz/jGOVOfrzPNVN0Z9wP3GPq0yxZDP60B71VGm+XlDywx2pNso620?=
- =?us-ascii?Q?eYo9HxA8rjS4PNFWVdll77FpNd9+kItdgTG20HWyQX+O/k5U4YrPcolizcYs?=
- =?us-ascii?Q?5BLmKQP7X/QiaNhtx0dpWstQbIzdDVGGJ6lRZ/1Ox287hVB2Pvlj0Limn1CZ?=
- =?us-ascii?Q?PliBZrsBkcy3nNoT77gkXJVWL+d1zwsdjBmYUMPKobrYqbc5vcb9XzgMGUTm?=
- =?us-ascii?Q?MtUXxJDk1ppx3Xjx0ijX2bcZkeVul3myNdTDgZCstuW3UKhJZV06gJ+beKXr?=
- =?us-ascii?Q?EGmxd1iO5+lH3/+zgBGycYzsGImtZg9Xs1JvH737/0GncA56ofgX8oIQoTcn?=
- =?us-ascii?Q?OTbzTcY+EXA80NsZFFB6bUZ5xFeWAQtV4cVYgvMDm1xStp1aO5E7DiZvwNTT?=
- =?us-ascii?Q?cQnAqrWIaYTM3lev2FhFygU4cqVAq6ykzQLU6sRwLc+v7LH1qms+UdgXayXq?=
- =?us-ascii?Q?3j8vJspRZOR5EDv+2xmlBjV+Vfztw9a4aQ5AZh2IJrDp9Z0ji2fTBkqHIxae?=
- =?us-ascii?Q?Q1FDUGnOng0OLBIf7HSBcGePugVNjWu+hsJXxSa1owbDV3W3o13HRpdng+f+?=
- =?us-ascii?Q?Y1Covq8Pu+VYAybiI8FU/BRfopIhTuXNxA6DYtQUzj7Ci8RE2EPdmLcelQIf?=
- =?us-ascii?Q?krauf1WGQWxjUcMYj61K7x4m4PJhAyzbYMiWpBHlINa8o//nSVwNml0kvvtR?=
- =?us-ascii?Q?/LICrZndQRPANXwq0W/H2rf+80ztRr2W8w3JfZrz/kWlD5CiPBoh4AlhKuLq?=
- =?us-ascii?Q?W/QlqWzZj/UiUv7of5ryS5MJsWdnvRogXgkyo4/L5GBllU2QQdnybGUxfwc2?=
- =?us-ascii?Q?r8qxxi0eMg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e81674a-951d-4098-7d29-08de899697a5
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 11:15:01.6590
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VV42huk2zmtYLEVTjVgt4bTv+cvpcZuuSUcnvex2UUQogTPtRIXeIuVxBK5t8SKt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8818
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A977A40017
-X-Stat-Signature: wfde6ksx38esb8t4w6bp5wa695qeiyrj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/6] mm/vmalloc: fix vrealloc() grow-in-place check
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+References: <20260324-vmalloc-shrink-v7-0-c0e62b8e5d83@zohomail.in>
+ <20260324-vmalloc-shrink-v7-2-c0e62b8e5d83@zohomail.in>
+ <acJvIbXjeZdxBlH5@google.com>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <acJvIbXjeZdxBlH5@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-HE-Tag: 1774350906-266018
-X-HE-Meta: U2FsdGVkX18IjDiIvw6Qa30TR4Fc7KRqpOdGOCKTQfQ6NcbLxgFpS6fww4u5GgNhD+vm1LjZjmAvh8NAssvfK+yy7wsZXO7HSgOqanMdiG6XRbVN67T2oLL871PeaxHSx7lkww3N0Z4J3ylH/tLEoVIJUqs0ggRDJV2oiSIa80XuClk6fuZvOBJ/9L8K7QPMpVD+5BMjERvKXnuUGqdyzuMcrEGB8Yxzf7KmGX/dEDfMPGMnmYVS0NIxI+JbBQCvWQcP5ArtC5v6Wekys8D4JKcOiUNW3/iU8y9Gyy3kN8ckgODy32nUtoKHuA2S1KYvTRkq41G9XACj1UPSLJgX+FH4ySvTuQmmfA2u3yJkcdWw1jU70PsZEIe84KlFneCtjms3C2WtF4TUFHQ3JsH6NCbIuZdDabKEAfXGQah3Xs27ZzXQbRlYK6/fa6ZbIt5KjcIJE1L5wxgGkvHzLrUucoTvqeUtD8Hg5GqadRMbFRLDt9b9wswzmHP09ntUSiqB4389PR7T6hpLV0svjB82964U6+J32TaJyld66IT4gI8nrc5tRV6huNwNTJ0wXoq98rNgIZZsI15T7vrj/gf6rUQMlwpeVJTLznf8H4hrbkLViua8z1c7a4qzwUnK8mSA9rnmSefWFvA5QJFZNIXkwP9EIbkWJnJYnJU/m38Jcm8EIHWFfh1J3FKoLROELWqwv4+qxJFgHObXu2gjZFdMXPLxyQ0+OFYho1oPYdxY1a45FyPDEC9mmh3MCIa5PdoRpV7KIXxsV5axLo+MQWjCg/hB7CpzrdZk6luPaoXMjWUhoVbN4zQLFu5J4iJW7IQ+s1xOchFmas9CEQZU+y0N0EchooujJZ/rFAfGGa+eJUr3Hx+zrBscXTtW0qzlqCd5oQCIen1RN8WwLb5ULrS2x5bzq+KHAOBOjW9zeiXB0L5R5pjkGxAIijYkh55r2JHve/l8srYjb3h28qccPuh
- hCiqrPP5
- qSeNJ0h6XvacVVEfvQYrKPczoeidGIeYK+ZtntcTnkGVMhIUxuZFrx3pqUwSKebR8MUixF1+n3HwhIX4JD718ge9/xtc2W+FsMNgyMAz2tPMfZYTgWoYlEat2sTjoFxNIUZQGQIDLvZRZDT61bQvOBUSroDsbf7pIvXDl6VJDiDGslf83scUI32Gwc1hDWftWGKTz4fRw/Ks85/bEieaX2xQb7gGkxgSARcn3Iry02AbQ4vQqkTw5YbJMBm7+mXGjnidAGwRBhs7U7nOD7XvCXtlBMc4Cfd9DoBp9doMvC+MjK9CXc3VeS0OgHW1zZfOED50RFQZqlal/DLfD8qeI08op1c1GxPZGyKxx450zdYwJ2ij6Pr+TLEWuIw==
+X-Stat-Signature: dz4jrmsacm7j9x3t15m1nhbpatoupwff
+X-Rspamd-Queue-Id: F1041A0002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774351050-627966
+X-HE-Meta: U2FsdGVkX18uZ77vbdcHNcyD7GTYOv19ezpbHN78U5UvLBKBmkmPdinBaKsETOhIx+2rv+sn6j062UMMiLrGVWgwvlmSHO8d2mX/Rj1bxMtqkQrpIz19HRdIwmQKpmo1am+LoNwLHNXDVc+k1/qd35fupHc6rFy/kRVB26rG8uh10m80DpfX4u7ju46v04ThGNkiTKmRywkt1LDFhFGdw2fAWa/SnWlg1fLmBKETUF17wQ1pT0L/8uFykgnVLRgZqHBgQejuRhsbcFE9KMyyyboH3ukvUd4A1awchPeHVY0HbGUtC+087c9Sp9Q3tMdbnWmddZIWbT+Erw6lVTRmJpNKdyh0/kdJB+Dap0E+ycVVEKxojuf1wZ3D0/N07jsgnEshmVEZlLriDtXdvgi3dMyB3SAuIesc+opvJUJZ5drUVeGtXTZhc8dZGejtmwL4xfjIKK6PqsLlPNM/Dq39UvBGrbPqecLXFeeXcCjj+ZOgsxSqybnyFHKgBU5HuLnjm57VR1i1BodZjXPBbTFqo8ybATNUEWKtpuM/leMozgcEgPyXRrsIBk03kKLPlGoOcjNHofHrPQ4s9AZDIXbMXTWhcxOkEmbUeQO8ME7dGBN5O/RkNpUoxBHb1501e+9ieGpDYGacH2l0+ZmqiMi9s34r1OHdO/cKvCw73n6Pj49Ou3OROoSx09BQSfwC76d2ARUau4KNyWum3O/AVndetA7aKumxqO2MQiNBOgnk1ykIYRCTUb2/vPY0gIfGoVVZtLcBXExmUvGwSP3x4nLlhMp/c47e7g9kAZC9W2aM8Rsyb/fsohXbqTuzpxavPXnaQ1HMoH3yZAWhxjRSQnPelq+xylqEXW5HhhTRP77pBB7cZdGIpzmLrUD6LMBbOPfMBsAgTf5MjgoKc5Qzruik5VxRVXHjc7FUC/V5gWNVGhuG/Xb2MUveQRA/H9Y1ayT9648aa6bn+vTVYmrjEII
+ 2eIK7ryI
+ f4IlFRa1fhLIUU7T1pFFrBGmR021ltmK58mvB52akdaZLGSOeo3rxJzY7OKKjnGqBVvtcEsIeTnhrqmtLQxQvbybNsiXRAJRKDXjOsfkBz6Ou9ePIIXNgMTAqLG8PIY0bjlhsLoA9iAhnxWKz6Ln27Pvf7JNKLiUNBJKP05trj+LXQwp3oL5EyI9Ii/QE4GIZw8FppO3WrC2Qfa2tYgYM5QSHRGvSPknhQ70tT8KM7t63XXykkZcMq+oJEpE6MMxrvDyXZb+e2E5zRa5E6yF5n76GBFWvmwRv0Jf5VlACAmjf1+zMaICTno6QXNnXUC+jqeYS9G7EvTD5E5OX5lfY5WN5gwyB4JNfMG28azFZ35dXQdQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,22 +104,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24 Mar 2026, at 5:04, David Hildenbrand (Arm) wrote:
-
-> On 3/23/26 22:07, Matthew Wilcox wrote:
->> On Mon, Mar 23, 2026 at 03:06:43PM -0400, Zi Yan wrote:
->>> READ_ONLY_THP_FOR_FS is no longer present, remove related test.
+On 24/03/26 16:31, Alice Ryhl wrote:
+> On Tue, Mar 24, 2026 at 03:30:27PM +0530, Shivam Kalra via B4 Relay wrote:
+>> From: Shivam Kalra <shivamkalra98@zohomail.in>
 >>
->> Um, surely we want to keep the test?  It's no longer conditional on
->> READ_ONLY_THP_FOR_FS being enabled, but we still want to collapse
->> mapped files.
->
-> Right, in particular this patch would also remove MADV_COLLAPSE support
-> (not just khugepaged support).
+>> Fix the grow-in-place check in vrealloc() to compare the requested size
+>> against the actual physical page count (vm->nr_pages) rather than the
+>> virtual area size (alloced_size, derived from get_vm_area_size()).
+>>
+>> The virtual reservation size (get_vm_area_size()) does not decrease when
+>> pages are freed during a shrink operation. Consequently, without this fix,
+>> a subsequent grow-in-place operation after a shrink would incorrectly
+>> succeed and attempt to access freed pages. Correcting this check is a
+>> prerequisite for the upcoming vrealloc() shrink functionality.
+>>
+>> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> 
+> This commit is titled 'fix', but is it actually a fix for a bug that
+> exists today? Or is it just a refactor to support the follow-up
+> shrinking logic?
+> 
+> Alice
+You're right, this is not a fix for a bug that exists today. Currently
+get_vm_area_size() and vm->nr_pages << PAGE_SHIFT always return the same
+value because no code frees tail pages from a live vmalloc allocation.
 
-I will keep these selftests in the new version, since the new one aims to enable
-READ_ONLY_THP_FOR_FS by default for all FSes supporting large folio.
+The two expressions only diverge once the shrink patch (patch 5/6) is
+applied, which reduces nr_pages while keeping vm->size unchanged.
 
-Best Regards,
-Yan, Zi
+I'll retitle this to something like:
+
+mm/vmalloc: base vrealloc() grow-in-place check on nr_pages
+
+and rephrase the commit message to describe it as a preparatory change
+rather than a fix.
+
+Thanks for catching this.
+
 
