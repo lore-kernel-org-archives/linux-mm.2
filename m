@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EDF8E9A772
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14442E9A76B
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:32:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB0536B0092; Tue, 24 Mar 2026 07:32:32 -0400 (EDT)
+	id 7DFE16B0096; Tue, 24 Mar 2026 07:32:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B604C6B0095; Tue, 24 Mar 2026 07:32:32 -0400 (EDT)
+	id 790566B0098; Tue, 24 Mar 2026 07:32:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4F3C6B0096; Tue, 24 Mar 2026 07:32:32 -0400 (EDT)
+	id 67F3F6B0099; Tue, 24 Mar 2026 07:32:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9474D6B0092
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:32:32 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66B0D1BA139
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:32 +0000 (UTC)
-X-FDA: 84580743744.11.3B91D0D
+	by kanga.kvack.org (Postfix) with ESMTP id 5548B6B0096
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:32:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1499A1A1A85
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:45 +0000 (UTC)
+X-FDA: 84580744290.16.C76A97D
 Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B1CA4C0010
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ieg4jbYX;
-	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5009920010
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RnCS1WTS;
+	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774351950;
+	s=arc-20220608; t=1774351963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yNYpUOaMZIeZUWxbOHw8FLcvpCl6K8p2fZA9SJluFcw=;
-	b=KVnHPOZmfIFUWbe34DRSBOrJb1QgcINzVG1MOxlmeMN8JSXsIffMjc9EGz39tzxnFBA0rY
-	JY4xCCLuD6V2wb4tGV9J40dj+F88XPNiWVKqgMLp4nUXjzTHQgMiZcPNRZ7CpdMWfKSNgH
-	CMUTm7fm4B+oG08EWaP9anvukSQxieA=
+	bh=mbp2ikBGYSHp7eYBpCkowJnRwz/ZIiettZ7OaupB1ME=;
+	b=Bt6ZekpSnF1uHIWFbSH7X1XTmAY2e3OTMQSBBWtMyYBRxRwvGxddr4oJBWq5FUr9sGQdm7
+	0N8wu7T9n/NArIHW9G8sWgubRo6Cg5v4HT+TNT6Lt+G9imRhn/wFkVgCvfKUfHjaQMxuAt
+	LKJGeHzOkCSVkZcJD1MuYie1bzSp+6w=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ieg4jbYX;
-	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RnCS1WTS;
+	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774351950; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774351963; a=rsa-sha256;
 	cv=none;
-	b=dUKUquzQ5hwPZSkWLZCbGmWQYv8NgzcMJ3cejsAg7X3xKkLiOqgdRVQ/0Hbnw+q+DRvsAw
-	LZ3Mb2f2vKdU9KU7yelTeGaqt8g8mB32XeBQwleJH/yIVD8fvM5pD1kBNFYHaKbqVYm2Vv
-	C4WVOntlN+oj5t/UitrBMyeZMAIvXH4=
+	b=XTwQRQrzW+y+k6hgfF8m4eMXUSmhnUkQ536wPoZouYG0KPQNvo2tjqAAvS8TsuJQLl5SS3
+	AAmKbQuHmVbbozCzAxgZO0m6DehF3G+LaHcO8CYRvnMKd+OGxoiSw7UVEzZNEzoudwj2+/
+	P9Btqtg/vjB5LhJfK+Jx0NKFnkaZ2ME=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774351948;
+	t=1774351960;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yNYpUOaMZIeZUWxbOHw8FLcvpCl6K8p2fZA9SJluFcw=;
-	b=ieg4jbYXQyfGbDByIxQL9Y6ghz7w9XESh4i7xYz6KL8RXyVjW6kO6tWU27EiTzzHjzwLZJ
-	khFvHaxvCXrzVN5ss/OceXPXFAoV3kqiiMHZpHVSPjL9nAZk2AzX2q9C4wMUUeGBnt5Thl
-	/Q4ckhoHwiyoKQewfEMysZU4TvgXFDk=
+	bh=mbp2ikBGYSHp7eYBpCkowJnRwz/ZIiettZ7OaupB1ME=;
+	b=RnCS1WTSFjuHo26aHrrzV7pr4WyI4hIUkXrh0R2Z6WYadAso5dDj5d/95zU0Wr8rCQ3M6i
+	ClRkAIt3dafHAjXQ/puVTZQDDlYFogOFA1CusD8DYjmpzamFKQIE0JqdMCvDov2/JqXe79
+	9d8KcFMMmMgpYNuKGEWrRAYMbBvCaXo=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -87,22 +87,22 @@ To: hannes@cmpxchg.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH 1/3] mm: memcontrol: correct the type of stats_updates to unsigned long
-Date: Tue, 24 Mar 2026 19:31:27 +0800
-Message-ID: <74022705dc8d5209ff7e603a178044fe4cfbae09.1774342371.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH 2/3] mm: memcontrol: correct the parameter type of __mod_memcg{_lruvec}_state()
+Date: Tue, 24 Mar 2026 19:31:28 +0800
+Message-ID: <90524ca3806e24105ab5f2d69435f57c2ae034cb.1774342371.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1774342371.git.zhengqi.arch@bytedance.com>
 References: <cover.1774342371.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B1CA4C0010
-X-Stat-Signature: fks775yd8k1dey3kmreg1zzgtqnc3bmr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774351950-345429
-X-HE-Meta: U2FsdGVkX19kw0IfXYEbCDxhuh4HzIoGUF/Ux5kG8IRZaQWyt1b6xKEBSpeA6KS9Q2RX6VL9IPOmIir11Qn8l4v4X5JixLoLwSH4jbFGxzG4XNHN3CEFH6LBS84MNkEYUL6dW4WqSBuGzYshFMVki4fFcborv/Ua6gJc7Ggg9VEuynbSKafnLexKQUDamJARWQKbO3ZEnRUNb3U0NhF6kxdqkN6RrYrjXx3/fahPS/MmXSsyPJle9yGaoEPvDuSnnMZuczgGmJBBIbCxeuAWbUlS3qfb1AFbSgqEKOzww3cK7xG6AV+Ekjso8fXPsxZcmx3YOfXlq1Vkb62otNzdEs5qUL8Sp5aZbKE3OtFbKlMLEnQTz4B9G90KYEzRHk0N59P9M9iaIPUULD40mYvN9V3Q4qkeZbnoFjM+BxqC0KGTSe7Y50WfMWaYw+nS49AN7VWjAEXJtujFhJuaIXy4Hw5YOqEEkKk6UUxDZiz9qykPixyMQnlAAH2I1REvqNsuqdENMlt+WBGxFRJZJY8lz4X7laSE8NpQUxoknI0GPsarMKJ9dgh8NW25bo3pBgupdkaND3esWCO9fdroumc8stNsHsETQoNGwTF8aJF4O2Io7wkY7mHLy4dRNb3jrsW3twgWriYwkOm5AsCK5MBOwXXu8i++uMptNw1BH+FGC5qGiivcxaBLZ76yChDWffW7mnGXEseRQr11Ljd5HJvfAdxweERsT6sH8XrUIvaXdOnjgDF31cQ5N/Z4HTbX34yz/HjiIoCH8fxpIxGGknNVTqvz1831V6epTWyiNZWEdfmCScNRSv6RJdi9lRv9VtSXNmzrAVBhTyrdf5RQHOjoBnWkHM2yKew5RS+86vdEgpr9z9rK6510GX0XnrnTsY5MphkJt/Li2V8cibRiVVn7DBlYL/FdByvyUR/mlteh5ADWbZKXJqzkYFYumhWngWXwlPAm6nkD1MLU7FCRmXq
- G23FdI3T
- 31NU6gZPjsZbll3mKHUXCbatnYzmnsVZ8RunHa/KTG1ZNKDkfY4fFhewR6QArD/wsIgu85W/76f0FamPO636VePFGLmB2k4UtnwIWoT2dx/+Q1L1FMe9Q8+VFJeQMn4Ygo0zwWfheZpuKyAfl96Q50oaEz/b3KnVkCtAr8dyGw6fVUSXuxTHoqxm4eGtDOJXbwr7/hx3jV44rpu1bBMkmBeK47EUNxnDz0GgBYqIBUqY1sgEdhHYjjaSRtr5fvaZWAY5z4Ser8iV0Z+E=
+X-Rspamd-Queue-Id: 5009920010
+X-Stat-Signature: d6dxx8swhzen1oiodsnmmkf5e946d5jn
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774351963-814470
+X-HE-Meta: U2FsdGVkX18H9x8eai9GJB22XlPFpZnHBePpDekvmo8P4g/7jpItTcdFpA7aMghM+IwZA0HTf2Aye95G9Sbv8vcS/AsmZ9zmbPWmOSObC7fZNaNxctLNrphDu6bSzEjEIlD58Ajntc7bC+9r0nBfP3ZpkEukMEI8rOoKWg7QwOc3IqwHLowtGme/8QTpRn7gDqvrXhlkxEt1/M31cqOumchRd0z6u3uDfYAsChu5VwvcCsFHKXCuEAQglTVoNkScBvEgSyG3vsqMutxtxvlFbYo5hVUv790E0MhzFSQ3xfkTEBiMeU0bRjk1oFbJicW+jkhYsqmCsK/sWAb2zxxJeLPKPuw4noL/M7iqE+2CP195FWE+EJx6zYutxIDyeiTETO72Ai/9jBNr1mt06BT7PLTrPe07WhFVaZ0ntZ5ptfHKmrMQRMcwHy3JuVOXn+A0zdfiSVHSKTesfNP2W/ppWVJOnuiMjpjIHnQhdJEX3CHY8maDEOS2NM4oBbh/2VIwvUjaoM8YdAibruoxRW1SW9TBLzYFUBNkrp0cfBhJrAp5apVtVbXXAYX8doY/Xkts1QnNiAxSINNAWNBYry4xCFPq1y0Mj4UjBF4wLVycdMdk4ry7/iN5DIExVZoOq5/gioqYscij4IbmFt0MNeJgUEsHD4eh3qCF13rL7mHZnT72akiAtjRQ2uEOb3CMdTUFSqOokDgaOkVgKvKKxRsA99rAqWBKDd1wkHfAQk3EUxnKE3fvy+EiboYk0dfLu9sFXWZJFQeuZJQUjmxNCY702/CysvG+6ys7mVB87E7bw/wk1YGvH1uh/fUQfITFWORUgA9mgMKDv7MWB0Lgn4YqtRUqsqz1CxDbBanKmezFo9bCa45TVS8a2Yzt+H0z0q1L//VPPDJw9Dg2DFgUNEK2QwHfhsLZee9YjeQ9NnKimqIVR4MatGuYh7AuB9tTsAhAaEmtC/fuASEP2VW4AsE
+ uRppQxV/
+ gFSdvZ8slvmFU9ZihQyM0u2sLF9q+1pn3LLpmuBm9S/gq+en1Y0Zcb1aWwIAN4V/9PL4GZZAp7D3y1e9ItbU6SX5wRt1sK/jW+vyUI/NLpgTSKf5UTw4uRmo2LsGUU2lSChtL5cvJH5ddoCOm9UX3CYB9YARAp2R26LtOpk+I9dLMVhQhr5RNDIQUGpktY/7T76sOJktzC/viryilFpkDR+9ylQ3P19AxLzd07I4dYER4vuQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,86 +112,102 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Now, the memcg_rstat_updated() is for vmstats_percpu->state and
-lruvec_stats_percpu->state, which are both of type long, so let's change
-the type of stats_updates to unsigned long as well.
+The __mod_memcg_state() and __mod_memcg_lruvec_state() were used to
+reparent non-hierarchical stats, the values passed to them might exceed
+the upper limit of the type int, so correct the val parameter type of them
+to long.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- mm/memcontrol.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ include/trace/events/memcg.h | 10 +++++-----
+ mm/memcontrol.c              |  8 ++++----
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
+diff --git a/include/trace/events/memcg.h b/include/trace/events/memcg.h
+index dfe2f51019b4c..51b62c5931fc2 100644
+--- a/include/trace/events/memcg.h
++++ b/include/trace/events/memcg.h
+@@ -11,14 +11,14 @@
+ 
+ DECLARE_EVENT_CLASS(memcg_rstat_stats,
+ 
+-	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
++	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
+ 
+ 	TP_ARGS(memcg, item, val),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(u64, id)
+ 		__field(int, item)
+-		__field(int, val)
++		__field(long, val)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -27,20 +27,20 @@ DECLARE_EVENT_CLASS(memcg_rstat_stats,
+ 		__entry->val = val;
+ 	),
+ 
+-	TP_printk("memcg_id=%llu item=%d val=%d",
++	TP_printk("memcg_id=%llu item=%d val=%ld",
+ 		  __entry->id, __entry->item, __entry->val)
+ );
+ 
+ DEFINE_EVENT(memcg_rstat_stats, mod_memcg_state,
+ 
+-	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
++	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
+ 
+ 	TP_ARGS(memcg, item, val)
+ );
+ 
+ DEFINE_EVENT(memcg_rstat_stats, mod_memcg_lruvec_state,
+ 
+-	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
++	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
+ 
+ 	TP_ARGS(memcg, item, val)
+ );
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a47fb68dd65f1..7fb9cbc10dfbb 100644
+index 7fb9cbc10dfbb..4a78550f6174e 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -608,7 +608,7 @@ static inline int memcg_events_index(enum vm_event_item idx)
+@@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
  
- struct memcg_vmstats_percpu {
- 	/* Stats updates since the last flush */
--	unsigned int			stats_updates;
-+	unsigned long			stats_updates;
+ #ifdef CONFIG_MEMCG_V1
+ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+-				     enum node_stat_item idx, int val);
++				     enum node_stat_item idx, long val);
  
- 	/* Cached pointers for fast iteration in memcg_rstat_updated() */
- 	struct memcg_vmstats_percpu __percpu	*parent_pcpu;
-@@ -639,7 +639,7 @@ struct memcg_vmstats {
- 	unsigned long		events_pending[NR_MEMCG_EVENTS];
- 
- 	/* Stats updates since the last flush */
--	atomic_t		stats_updates;
-+	atomic_long_t		stats_updates;
- };
- 
- /*
-@@ -665,16 +665,16 @@ static u64 flush_last_time;
- 
- static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
+ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+ 				       struct mem_cgroup *parent, int idx)
+@@ -784,7 +784,7 @@ static int memcg_page_state_unit(int item);
+  * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
+  * up non-zero sub-page updates to 1 page as zero page updates are ignored.
+  */
+-static int memcg_state_val_in_pages(int idx, int val)
++static long memcg_state_val_in_pages(int idx, long val)
  {
--	return atomic_read(&vmstats->stats_updates) >
-+	return atomic_long_read(&vmstats->stats_updates) >
- 		MEMCG_CHARGE_BATCH * num_online_cpus();
- }
+ 	int unit = memcg_page_state_unit(idx);
  
--static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
-+static inline void memcg_rstat_updated(struct mem_cgroup *memcg, long val,
- 				       int cpu)
+@@ -831,7 +831,7 @@ static inline void get_non_dying_memcg_end(void)
+ #endif
+ 
+ static void __mod_memcg_state(struct mem_cgroup *memcg,
+-			      enum memcg_stat_item idx, int val)
++			      enum memcg_stat_item idx, long val)
  {
- 	struct memcg_vmstats_percpu __percpu *statc_pcpu;
- 	struct memcg_vmstats_percpu *statc;
--	unsigned int stats_updates;
-+	unsigned long stats_updates;
+ 	int i = memcg_stats_index(idx);
+ 	int cpu;
+@@ -896,7 +896,7 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
+ #endif
  
- 	if (!val)
- 		return;
-@@ -697,7 +697,7 @@ static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
- 			continue;
- 
- 		stats_updates = this_cpu_xchg(statc_pcpu->stats_updates, 0);
--		atomic_add(stats_updates, &statc->vmstats->stats_updates);
-+		atomic_long_add(stats_updates, &statc->vmstats->stats_updates);
- 	}
- }
- 
-@@ -705,7 +705,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
+ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+-				     enum node_stat_item idx, int val)
++				     enum node_stat_item idx, long val)
  {
- 	bool needs_flush = memcg_vmstats_needs_flush(memcg->vmstats);
- 
--	trace_memcg_flush_stats(memcg, atomic_read(&memcg->vmstats->stats_updates),
-+	trace_memcg_flush_stats(memcg, atomic_long_read(&memcg->vmstats->stats_updates),
- 		force, needs_flush);
- 
- 	if (!force && !needs_flush)
-@@ -4406,8 +4406,8 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
- 	}
- 	WRITE_ONCE(statc->stats_updates, 0);
- 	/* We are in a per-cpu loop here, only do the atomic write once */
--	if (atomic_read(&memcg->vmstats->stats_updates))
--		atomic_set(&memcg->vmstats->stats_updates, 0);
-+	if (atomic_long_read(&memcg->vmstats->stats_updates))
-+		atomic_long_set(&memcg->vmstats->stats_updates, 0);
- }
- 
- static void mem_cgroup_fork(struct task_struct *task)
+ 	struct mem_cgroup *memcg = pn->memcg;
+ 	int i = memcg_stats_index(idx);
 -- 
 2.20.1
 
