@@ -4,119 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25BB8F532C0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 01:13:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2493EF532C0
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 01:27:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65E936B0095; Mon, 23 Mar 2026 21:13:26 -0400 (EDT)
+	id 589446B0089; Mon, 23 Mar 2026 21:27:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60E6D6B0096; Mon, 23 Mar 2026 21:13:26 -0400 (EDT)
+	id 53A6E6B008A; Mon, 23 Mar 2026 21:27:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5243C6B0099; Mon, 23 Mar 2026 21:13:26 -0400 (EDT)
+	id 450316B008C; Mon, 23 Mar 2026 21:27:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4369F6B0095
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:13:26 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EFE2C14101E
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:13:25 +0000 (UTC)
-X-FDA: 84579183570.08.0AF7AB6
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 28DFD20008
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:13:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RN910dX8;
-	spf=pass (imf03.hostedemail.com: domain of rientjes@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 358346B0089
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 21:27:44 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD45E8CDDC
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:27:43 +0000 (UTC)
+X-FDA: 84579219606.17.8D41770
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5888010000F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:27:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tnUvAwzj;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tnUvAwzj;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774315662; a=rsa-sha256;
+	cv=none;
+	b=BfavB6IyubzkLIqemKkoC7Qn/EsrBGquP3x0rAbBIfTAN+hAS/vQKApcY/vVEXExN6EZZr
+	Aof2iktj8Ph0B3MciD+GR2TUgxOY4WioumJ2PXG8sSEdeYPJl4LsPBLMY7MkRKljAFiwvE
+	DlYPF9W2WCC0wROL+Feyu33WwPBjeFk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774314804;
+	s=arc-20220608; t=1774315662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WDu91jmxCGX0vwdOqIXVmf+V+JaxTP+PZU0Tie2nYn4=;
-	b=qRfqNeZ3EiX40YdTlWUWph+4cYwCIOLjS9porwRaIrI7i3Ht4gnB1c3sTWR3ch4vjqpOEi
-	xuZVe/XXELL+fMuT85ZT2DcZo5d7Oi6DQbz0t2t2rI00Ba44W8ncwPK1jJ8Zfg0iEaY43p
-	6YDuZHNAMya8AiXlBT0I7c+yf4l5Ewc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RN910dX8;
-	spf=pass (imf03.hostedemail.com: domain of rientjes@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774314804; a=rsa-sha256;
-	cv=none;
-	b=EGB8xkiBDGW8x1GelVl6X27oJ+Q3kKuGASiMDC+G8L8pYqP6YdJuGx76SDgPTaTOy1/Qwm
-	+tUNl/Wp0Ad042mllbUTlHAUwW6wD4Go3SCNhH1ihpN2RftI9nQE5Fqcf6iSfIRhWVnCqS
-	1YYPCCnZYRYyFp8XKPFREaR9Y2NQCBU=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so43295ad.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 18:13:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774314803; x=1774919603; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WDu91jmxCGX0vwdOqIXVmf+V+JaxTP+PZU0Tie2nYn4=;
-        b=RN910dX8c5yw8IrLj+XPmEVzYvUwc9l5uU0MNTLAu4X3BoKjrDJnjSQ5IhCdiHjh0j
-         wpRyiB7/s7knIH8OccB64Cp/fxwAgWahATBKEHEDUtIIruxPxfjCsrQerg6AUE9JT5Sv
-         UdeN360DXsxWM2WWGlHm7vJ7IZojYChOl6DRQ90dGlKVPaPLO7zvKI+a4je4//sKT2TX
-         63DqT+l098cA83eiIMZU1o22wwIO5uF8ovqgZ/Ve+YnTTGoeVZ5P86trtAZ0lCBBdojN
-         LAb4uy1JH9dAbROY8EDcshUyihx3jFGgzPIUAq6KjaUNA7BbAvjJf0o1j3xBrBSGVIKM
-         BmOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774314803; x=1774919603;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WDu91jmxCGX0vwdOqIXVmf+V+JaxTP+PZU0Tie2nYn4=;
-        b=GvbLSdVhlVahKKtn+uHs1edzwHfeD1wOschXyZCmGacbb5+0k32Ag6D3kxD2AYl6Dm
-         yw77D/EYUZdjWuSPZRgJr5eGljTNUXRnbcLEDh5LdjB3O0IABl9Qla0xfpewtgw23b2F
-         rCZq02a1qxrABTfg9gps1r/bla1ghfulDxEl7rBmzIRQb1m1opiOBLU5QRYL9yLVxuuf
-         1bYmC95ASIvdbnYGGgx7bDJCF9JQblXucdbnsMWhrPuyjRkJ5/xj7RmrfISSyFUF/K0e
-         sxnHjZIv835DBxvlGr6vZ0X8Lzjk3Wl3Zb597pje51QzLWBE21pWWIRF/A1Blwtduayf
-         ynEA==
-X-Forwarded-Encrypted: i=1; AJvYcCWmSxyq85O6Y5Fzx1aDv6AWHP0qfLwpXbLFxRsHIDGUgGQnppzeFapssRhPaufYz8MUUT6LhF/48Q==@kvack.org
-X-Gm-Message-State: AOJu0YxKiFx3ZChrLDtpu6OPDubWaBIBbq61DhjhLvTIkoPICzL8ZfR9
-	NYjoF/v65LOfj/r2V8vl4OPsuYx1+wqhFcQkfA8N+TN0LVnLGB76LVwQONAZ7emURw==
-X-Gm-Gg: ATEYQzwZMe9NUxQY1tbmQie6yUzVUwINTAasYXyJD7RfeOha7ri1KbVJASiFFCyfMNu
-	plCe0IZZapYjsIQ4069bcqRkpVjlIVRkHoaQvjysY+pdp5BwmjqKo/Mzi9GyokLumitbQSebnHC
-	21Ts/9RTwJtQ5Y9KGyvEgTmaZiEBBJ5YsL8zf+Cypx4Yviqg2yFjoqvk/aGZ+h0+GhYYwt4tzT4
-	swNf9FtJfguwLfPWTnc25ZO2oC+mBdvCGBkW8X0w/fQ3rrGRs4snl4DvrPjs13m6pSeREsb/VUx
-	wTJ672OBRE3qdwmInyxrXxEihip4TtDdZutyCx9gkUga2THv2D0USLcxE47+xpuwYX0g77gqZo4
-	iuHZPkfXZDj1CM9zUMuB86mqpZQTqMHk1Df3WYTALgQvazmhBnpgJIxxeBxAcX4XKuip7a3TDm6
-	C0pr3rudrHDevywedIsJTJwZ7U0oPuFa5lmwt2Su69FKy8vz1X19A1YTMjRiDA9P6NUvELsaeNs
-	rp7gEaXjYi77tEAIAlpsmzCtsItmUjq2JKziLX4uKvr63to1MjI5A==
-X-Received: by 2002:a17:902:cf42:b0:2b0:7a9b:82f3 with SMTP id d9443c01a7336-2b0a53e6fc7mr1554665ad.8.1774314802283;
-        Mon, 23 Mar 2026 18:13:22 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:36e5:9ffd:34bc:bb90] ([2a00:79e0:2eb0:8:36e5:9ffd:34bc:bb90])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836b8b95sm125621305ad.83.2026.03.23.18.13.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 18:13:21 -0700 (PDT)
-Date: Mon, 23 Mar 2026 18:13:21 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Michal Hocko <mhocko@suse.com>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Brendan Jackman <jackmanb@google.com>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-    Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-    John Ogness <john.ogness@linutronix.de>, 
-    Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [RFC] mm, page_alloc: reintroduce page allocation stall
- warning
-In-Reply-To: <acFwIJTk0L6CWuW2@tiehlicka>
-Message-ID: <9c21e9e9-7347-18cc-9dd5-76fad75719dc@google.com>
-References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com> <acFwIJTk0L6CWuW2@tiehlicka>
+	bh=e8/e0rXHSBqAB/q8AZioHXD1zP+hZiTvz8LUDi18zWY=;
+	b=nXa389O0zSHXbugB4V330KF5/sazGXr5lAkVDwp2/Zqn+zjaKn4FBGjbFwXzCBMp9kvW14
+	lK3ec+/cNLkQeQafE49WePLcLtphq9TD771VUyL2TQWMavjDXkIuzWTtyxMlFsTCWSY8Ls
+	nEZsJbG95FJZs5VdrC/5nuWAsy1spCs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E9C243FE8;
+	Tue, 24 Mar 2026 01:27:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B07EC4CEF7;
+	Tue, 24 Mar 2026 01:27:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774315661;
+	bh=dtIGXjHCqBmAAmml2iPbNBnXhRFU1QkE5kANm1m/JNM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tnUvAwzjlJpD9qqZuKME+ic5r6VywcWiYZdBEPvnum/Gcn/E2JrQGiHU8U6ZX2Yz/
+	 kEZOjsVk8AQxXPcPgbTf6SHzJhs+H7V+WI47OzckcTnFv1hQ7QY5of5BLz470sWnaP
+	 mTviwerV4SnAKZCnbOCgkXuPJn46H7+mMgU610suLvcVqTUvLRHbDibyT0JFR6XYs1
+	 burFaghxubWVyUO7sNaljd0rlrU6AXZI8/v0hUzecEQPdC9QyS9d+8RKrDUGO1Aq0c
+	 cdepkZ2FlekaJbTHywgRrapbYZoLshRPqDw5PIg3Dxp81jxfv1Hmd0W858eHNwUps+
+	 CuVrOSyqFPhLw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko status) [RFC PATCH v5 00/10] mm/damon: let DAMON be paused and resumed
+Date: Mon, 23 Mar 2026 18:27:37 -0700
+Message-ID: <20260324012738.39394-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260323231538.84452-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 28DFD20008
-X-Stat-Signature: w1jjnihjrdgozx788utw84oiap5kgamy
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5888010000F
+X-Stat-Signature: nk5sbz697wmsii6k7jumdhiuzza4uipz
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774314803-974453
-X-HE-Meta: U2FsdGVkX1/Ij2pkDaaPlBCDIEAtiGomu4WAWDiRjI6a6D47eNkEd7V3DeLJvp5K3avrBCYckyRlwMkDOROV3pWnWtABwkril6VEqSA9DzlsvptPpO6XD+ivd51Df6O3pSOX4Qcdbj6+AKIEGNKWgEhkkSxuihPzFEvrBjGhk3n6F9ZJ4v3nFPD43a1BXBok2EzAvzxqicoXt0LJYYHlUMjBxDfrTKcurf3twvL1xXXGwWUDc3GqCXOewGf3r0RgLl5kqDkmiyH49ygst8Ug5WtIqA63z/vmmtmHVoLOYsNiV9GTIzDEXk9/0ZQEt64YycZWap0HztIk3vU4VPt+mhvaSyPmwWb92D1gs+piilm3uFNLiedL6CG6H9tS5JBWkwswCSYvWDRD4eSn8xv7HoRRN6b9kf0DUzxi6vrFG+nao+JvEHBPKkUhaN7UJbEDUNByXUaCIxcHfNTQixRWX3qYxRmYswr5mKSk/lP0njbZgLP+bm+qjGGFca/nrxwSYaZopcMf/LKrz4NtT9ZVQdjQcAlPWaM/9qd/G2XJB9HeAIjsBDlb7hn/NOjht9EJPElcbNNUKOTgfsRA7/FW56AVh7j9dDD1HVFYW47r5UlyIC9NpqEw8Z5CSjgqEw5zYQz/i82mZOSTEVpcrdofBFloYVrJ6pMfxqop00nur5z53kz1cL14h2EawNkXmvC62vzi46huWHUMoej3yxV6s2xvcbSkaXSSUtXF28mxDWlB82w4w2Yvza+OcTdFOAH6IIsqegb8FkHnl58PVpG9QJR15Zr2irF9XXU4wTmbIl7fvrRL4Q+UqNQtz0EgvkD1EfcloQdPtfUUgd7tItFID1bLzjW2omvtQ4cpY8VcGH2SnX2OtcFqMI+V4OVIi17SPK3z1BUwKKTLJpvhe066FB3evy8lQdIu1JBYKgrN5LegrJXMcrtlGFQsSZZGEUFwOtwA/sO1vCiWsZStXoB
- mwZWus8D
- sSXSPewWNIKQC7OC1zzkzjk8SJyAreXE94JB0KvIwnivDKbsSA1EudOwPu27ukZTGF97j9O48hQ1DzODJQH8NozQNUNa63tNehBuASlOmrrTj8Gmi3VSj8FIeOoY1i3JPU354O2eZ1PjxJAP2csgMMeacmUa75MpKeBQ8bs6hcv27anhm8F8owRf3pSADp3A4HLEDFiJmtfQ690WQES6WgjKZLV2kXvv8o6s3+3ytrIF5/sOUzB9vCxhfK898vsYAAPZnoGh7U4rZUXh9nR/aaNwn+F94fkVdDvCGXguqE5sl6HPfO+16z9lX3qpH/5MsznCynIzOPa595qrfg20DH4eErpQausFeTMf+kelLC2oaBuz5uOr9faKKAO3ugeNasU5ZSIykMnsgo02dTTm6DkZxGFENVKy1HoMd
+X-HE-Tag: 1774315662-165773
+X-HE-Meta: U2FsdGVkX1+sxd5bm0256yeD1fvI+Q0k6uNMq7+zMQDM/ZkLdU2vUdz43dW/Li3wqiXWGf/5hHQb76ns5n1C0TutvInuQsGJXtXKn7bBjm4XoPI6JrbE5LUWypMUikmOlRgiuCCLgkkbeBIoDNCR9RLa5HPrPIBu713gnFKdjFy1xrGjcDrZwI6xN6BlPK2BBMimymiLntFzxkBqh4ivi3nBYTfSWMtBM8XCRw45f6lYZjWCK2PuRJJCUWyNlhkriBQ56KLmhrnXfWeRuR9nuhlRmuluMIs4Yh2Lvbs+Gd9oxwE+uS/PXIbGI0+LCK0CBe+pQthPnpHfL5ukfqKnDAufmIwOHSD4KjKmyuSDzklRXn6klBM6vsH1HIoQqvoZXboUUBMV2GVczbXfGVDd2lJg7MTiBMs6v21r6s8mMMFxZDJibnHmRDiMSQGcNlq1ZewTaO1dSH3cY0DpRdybNxWKd6+ma4paWZgvRU3ohtNs+QMQCrivpfA0RM/+xd10A7S7bezCkL19QIhFFgOzcAMwwsy5Vv0iTcdPQ54V3q8jEqC0Pt/uHO2SfwB/D3dG+pV0bDymDDAuxfskkB7wtkH/Vi6yPa+Ogvu03kJj1nSvGsVNYS8ULzg1EMZxLR/i/weHQcRwLOl4kX7UfpOT7iz59Vh5J10G7OJzLWDFAPx125TtM5LIOjC75izNJtszBtOZsTtrrievyw2GlALznWn38DYkHfa3t0t6R2bKclScYHdQg+K15zy3HfQw1IykL1rsAfzjFU0D6sP7KXq3IUlg007fzveCm5CsKB5rSVTAxzWPObLbkP0HqNLcDhWcnT0DM42vy33Z69ABcuM2HTJCq9jNeR8uIcrP8E7Z3afxy9jQhVzybbGMTtcKETthP5SjV+rfkdNTlaUGMtlElg7VrbLtpuWbw3AVr/bwRnUtZjpwGNXYpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,54 +105,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 23 Mar 2026, Michal Hocko wrote:
+Forwarding sashiko.dev review status for this thread.
 
-> On Sat 21-03-26 20:03:16, David Rientjes wrote:
-> > Previously, we had warnings when a single page allocation took longer
-> > than reasonably expected.  This was introduced in commit 63f53dea0c98
-> > ("mm: warn about allocations which stall for too long").
-> > 
-> > The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
-> > warn about allocations which stall for too long") but for reasons
-> > unrelated to the warning itself.
-> > 
-> > Page allocation stalls in excess of 10 seconds are always useful to debug
-> > because they can result in severe userspace unresponsiveness.  Adding
-> > this artifact can be used to correlate with userspace going out to lunch
-> > and to understand the state of memory at the time.
-> > 
-> > There should be a reasonable expectation that this warning will never
-> > trigger given it is very passive, it starts with a 10 second floor to
-> > begin with.  If it does trigger, this reveals an issue that should be
-> > fixed: a single page allocation should never loop for more than 10
-> > seconds without oom killing to make memory available.
-> > 
-> > Unlike the original implementation, this implementation only reports
-> > stalls that are at least a second longer than the longest stall reported
-> > thus far.
-> 
-> Am all for reintroducing the warning in some shape. The biggest problem
-> back then was printk being too eager to stomp all the work at a single
-> executing context. Not sure this is still the case. Let's add printk
-> maintainers.
+# review url: https://sashiko.dev/#/patchset/20260323231538.84452-1-sj@kernel.org
 
-Thanks.
+- [RFC PATCH v5 01/10] mm/damon/core: introduce damon_ctx->paused
+  - status: Reviewed
+  - review: ISSUES MAY FOUND
+- [RFC PATCH v5 02/10] mm/damon/sysfs: add pause file under context dir
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v5 03/10] Docs/mm/damon/design: update for context pause/resume feature
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v5 04/10] Docs/admin-guide/mm/damon/usage: update for pause file
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v5 05/10] Docs/ABI/damon: update for pause sysfs file
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v5 06/10] mm/damon/tests/core-kunit: test pause commitment
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v5 07/10] selftests/damon/_damon_sysfs: support pause file staging
+  - status: Reviewed
+  - review: ISSUES MAY FOUND
+- [RFC PATCH v5 08/10] selftests/damon/drgn_dump_damon_status: dump pause
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v5 09/10] selftests/damon/sysfs.py: check pause on assert_ctx_committed()
+  - status: Reviewed
+  - review: No issues found.
+- [RFC PATCH v5 10/10] selftests/damon/sysfs.py: pause DAMON before dumping status
+  - status: Reviewed
+  - review: No issues found.
 
-> Also it makes some sense to differentiate stalled callers and show_mem
-> which is more verbose. The former tells us who is affected and the
-> second will give us more context and we want to get some information
-> about all of them. The latter can be printed much less often as it will
-> describe situation for a batch of concurrent ones.
-> 
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --thread_status --for_forwarding \
+#             20260323231538.84452-1-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
-Based on Vlastimil's suggestion I think this is trending in the direction 
-of 10-second reporting windows system wide unless that doesn't work for 
-some reason.  I do worry about reporting many stalls even without 
-show_mem(), however.  In situations where the allocations are 
-unconstained, all userspace goes out to lunch for 10 seconds and that can 
-result in thousands of threads all reporting stalls and spamming the 
-kernel log.
-
-Idea is a 10 second threshold for reporting stalls and then only one stall 
-report across a 10 second sliding window globally.
+Sent using hkml (https://github.com/sjp38/hackermail)
 
