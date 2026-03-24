@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B59BCF54ACF
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 15:27:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4877EF54ACE
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 15:32:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 238DD6B0088; Tue, 24 Mar 2026 11:27:46 -0400 (EDT)
+	id 85B026B0089; Tue, 24 Mar 2026 11:32:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2107D6B0089; Tue, 24 Mar 2026 11:27:46 -0400 (EDT)
+	id 80C106B008C; Tue, 24 Mar 2026 11:32:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14DBE6B0096; Tue, 24 Mar 2026 11:27:46 -0400 (EDT)
+	id 7218C6B0092; Tue, 24 Mar 2026 11:32:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 03FA86B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:27:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B9300140236
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:27:45 +0000 (UTC)
-X-FDA: 84581336490.26.29D0E9E
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 63915180004
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:27:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=temperror ("DNS error when getting key") header.d=alien8.de header.s=alien8 header.b="L/Wc8hjz";
-	spf=temperror (imf16.hostedemail.com: error in processing during lookup of bp@alien8.de: DNS error) smtp.mailfrom=bp@alien8.de;
-	dmarc=temperror reason="server fail" header.from=alien8.de (policy=temperror)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 653FC6B0089
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:32:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 10EF31395E2
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:32:31 +0000 (UTC)
+X-FDA: 84581348502.28.D3E7884
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2F13D140002
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:32:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A8CdR1TD;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A8CdR1TD;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774366349; a=rsa-sha256;
+	cv=none;
+	b=XSmbXbsd3c3l+Oz+akpwHmhNoVExKCRrUZ/25iVEWNkfjcG2XK2+RoyP2WovYg282G1iDr
+	a9ho+83Eod4ziHerjldn3wsaeBP5o3Dgv1iW1ktzu/3HM8AFb4K2OnWBn9g1q59hX4yk0Y
+	fyVkaNHEpa9FEeC66SlCwn1BFvLktgM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774366064;
+	s=arc-20220608; t=1774366349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vbFh0E0FSh8S2XvdC2/tmA6giRJv0hj0tcBin2Ta14A=;
-	b=E/PSBX3HGMX5vmEQgi2QZ+nmyLwnV4NwKmgK9XWy8+XlxLCf1coutlNSetaZsvjRvOk5gz
-	Vw36V+jzzs+zk4Gml/986xNJpFZ3d9ESvO84pE3xMknW/qk8NZ8AxOZEugdhPP+CZ9OMAx
-	exFacwQZgK7I9tYJ3z63oEL8+g4SIfk=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=temperror ("DNS error when getting key") header.d=alien8.de header.s=alien8 header.b="L/Wc8hjz";
-	spf=temperror (imf16.hostedemail.com: error in processing during lookup of bp@alien8.de: DNS error) smtp.mailfrom=bp@alien8.de;
-	dmarc=temperror reason="server fail" header.from=alien8.de (policy=temperror)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774366064; a=rsa-sha256;
-	cv=none;
-	b=7fQNuTllpku8fNlZAWWIrT0BgyNUZgWfElmF6VDAbmKyD6JeCNcgcHrK5l9nRWX6TkVfxk
-	t4WNLKHirqcVhR/uq3+tp0IcC13V5sJ+diwUKNpHm2WfvMsBFNVp7FzSz33ECL7IDw2cpy
-	nNn53vMKf9GyN5uXF1fv51xe+a3JOOE=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1C59140E0222;
-	Tue, 24 Mar 2026 15:27:40 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3jOQi4MILGUo; Tue, 24 Mar 2026 15:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774366056; bh=woigxbJtD5j6gM29aZB5V0scgECkZgH7JUCDsxKZ5ss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L/Wc8hjzK0WBM0c64iNEr9eZfAmWYoS9F4lg+u5DvdMzdJa0NXJmJeO7nKaUniN1x
-	 hnkOlrmfRZZyXBR4CJ5SPzOyKtOlMjWBFGX373mBtrKujarheaqDJiocPG7sZZR6Fy
-	 vGO8lCpswDWMiX0K25z1LtzpmUxDiYf4Iw3O0Mmk0OjEB+v+wluUh988WUG++XGDTg
-	 bsjv03lXWtyZvXzzKmLuetG3ZgdtPV7Y3QMzRP89Zc9dngmwA7CHYtY/Y0AskiyJl7
-	 6JfT8sTOb6e+XKlulZlmz73ROWxwtuXfV36QFROjTNPG3bfdQs5mfmFr8YXDOLB4eH
-	 dq/pT8TxcJeLIvIqN9/3jUjWXWPRTdP9eFSfQYsNPEF5o805CMvfrZ/lt2G5GU49Ng
-	 zBFqpIqRspKCLp23HlDjN6rbt9TnBnyyRKv5ZcbPwvOKS/HBuDGpodCoZDWTyEq/4i
-	 6n0z8lBWe6ho3d2WfqE+hRFvkQcJSxKvdJoor1kJri7gn062HmqM3kzO3JWXz9jtwk
-	 hRCrji4RY0lxVQhBrD9YAXZ877RoDPLbUN15aDHoJ/sNYMI/SAik7d5b5h8re1FtK0
-	 CBS6gYjvpi7e6G+AeXpSwzu26QdCuW3psOBT/3BVyw/Wd/3JPFrWGTqKp7GWRM0fHA
-	 0aRq3JkMOZMIbtqoAVH9Gjtk=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 49D8640E0031;
-	Tue, 24 Mar 2026 15:27:10 +0000 (UTC)
-Date: Tue, 24 Mar 2026 16:27:02 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org, rppt@kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, derkling@google.com,
-	reijiw@google.com, Will Deacon <will@kernel.org>,
-	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
-	Andy Lutomirski <luto@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
-Subject: Re: [PATCH v2 01/22] x86/mm: split out preallocate_sub_pgd()
-Message-ID: <20260324152702.GLacKtRrAGFea3FGqH@fat_crate.local>
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-1-28bf1bd54f41@google.com>
+	bh=b+vuny8JAx0aKUj6V31VSjrqdsJT9Ay7FWF/QSJhi+4=;
+	b=aBhGFz3DxNgOzbwM093TQagg+ee6Ua1AbKUhqBOUReoRms/ZrFs8deOY6qRemTRrXarOmw
+	S9yzaW+oZuZTj9FKkNaY4Fc7sdfudw6c74zqJCYQdtPkegtZK6UsVVk22apPMzOZDUB2gO
+	Qp58z3qFnBeXYDtOWtPZdCdP1+zn9BM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1FBE240D73;
+	Tue, 24 Mar 2026 15:32:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E0FC19424;
+	Tue, 24 Mar 2026 15:32:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774366348;
+	bh=Pj+OtiBpuBF7IoC42Kw/vtLSB42CPkuKUZUpsmZAtF8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=A8CdR1TDIvUqf/UIBWs17Nn4y+ea/fY6CzTak5aX12J4D+twwLfy+SwnX5lrhff4D
+	 CUzBvNr9gv4/0D50Bsuh5GstOCFIQ7l1/YDJTViyrQcTcXkjPsV2NcEd1kTpkceCXt
+	 qvmlEfeNjP0yn00Q1AmSFrv9QGGtJ2oKpyqS2VkQuMlb7xlEpzGPo2Z8H/X24jQkzS
+	 /dRZDV1lzwWddAwn65weghGa9oo7qiThUc/kW/BhhH1pEumyxJoYG7WP3BMi6+9/xr
+	 Y4kgvnO6kl4rFLyL5hI2Nvbd4V/5vHv9ZNMEpKAQRKpcauDbgPeLzXT7iYy5Aj7+iX
+	 gcx1tICooGAPQ==
+Message-ID: <ee66e204-4439-482f-a8cc-93de1d332a8d@kernel.org>
+Date: Tue, 24 Mar 2026 16:32:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260320-page_alloc-unmapped-v2-1-28bf1bd54f41@google.com>
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 63915180004
-X-Stat-Signature: iykxkany7kidwuc5cnimmnhecnpfpgxd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 08/21] mm: add vm_ops->mapped hook
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Bodo Stroesser <bostroesser@gmail.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
+ linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ Ryan Roberts <ryan.roberts@arm.com>
+References: <cover.1774045440.git.ljs@kernel.org>
+ <4c5e98297eb0aae9565c564e1c296a112702f144.1774045440.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <4c5e98297eb0aae9565c564e1c296a112702f144.1774045440.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2F13D140002
+X-Stat-Signature: k8ws3ioqt7fsryof5u5wx53bs83t3mut
 X-Rspam-User: 
-X-HE-Tag: 1774366063-123755
-X-HE-Meta: U2FsdGVkX18qt7FQEzU1+KPfRThYN/XW0DHzyxh/RAYZQ0LHXmv0gFYaMz2z8JkrMzttMgR5acr/hj+DXHZgziD0lywi3U6oEXDZHJV2CExWg1cvz3Zf7O2pdyNJGeYknOrxShRRfg+UbXPmjCyiMFUBg78vVyPDbX7KP3kyer1CNwhDg5xC2vDXTpA9T3atDh5LRtz6Uvgha7fFaeXwsEs+qwdmkfJzjKmDkagR3mkNFtloq+Va9NFBQl8NXoiO0dKkF/gsYNiaM6eaMYCZIQs7ENpueVwV8/6e31MbgvrWAaGA9NS72GsxEm8RHQsplMITU9vV/TbwMtbFiTH5/Gg8T8qBfEPT6PllJkf7FZPTDAIliY9YIH3cSpgp1lNqKWo8Ov/WxhOpFsPBWC74r+rMAuY2plTbf3Xy8ammFag7IVbwQDBnKRLAzqB5IAsnx2w35vzJqDo8aIQNMW2ZaYIzvpri71C92K01bfk6wANYr+dZJ3AWnFa7S56qA1N8nKJHbnn3xGD3dKBQMkwy0SyWoQ8lwheAhmZ7IWge7PkNYXS1OOMPc7p5qUwLDJzhBfNIBHDdaDmzaEGJWXdBiI2SxlAxSAUGjszI8pQjluQaWtR2G3rWiamfRjuy63zeGKJMCFAsM0T0EeIB1f8hN8kgmsK8KcXb3fttYyzKLA+zlbz4e3jb+YIo37BHDw8MMUUVXRSkPDiVbG1TiD/JDlZLH/g8eiaK0dcavdYpfAHug2Ut3xcZxAMl+IFeBG9erPY3SJS+AsekDQGIzj7IIafEeRLq4pVFor9MWIsIxoOi37htboinJdVlFsvthQ11BOkBtWNGsNhKmCcPGSC3SbuSOVaD/9nbWriXOBvzXlfCtcJhFdV2R05uJeIsigs1Xpa2Ek7W0cpCdhq3NNhMlupKXI1XfohVSNFSd2Ls7tuMuyG1jMrMMedLAaCyQ7m5SETgruOXHeOhN7T0Nmn
- Dozuh1p+
- XtNxex1CvCEb+nG2uQt7XE8rh61eZNntmwxK5nY5g1tvx29AL9xPL1m/ww7JkG4rgPWHxTtuqnjbbRagvnvsluWt7sDdKN6qEh8MQFsvoP2auWr93iC8RMEeM+sbFl5XbGX3VNle9flR2TTcZUdM0bH78AR5+Nb9RXfoCimM7qzVp9sZRWLKz6y1YqQfRYO5P+CMnCQNYL1cTXF/CtRaz6trws3ar0j6ctbddrJBfYQBCBRpMzZ7lpOk3EjQZf7i3pQkkWOnAtfVEWXQHPTaSMaRleIPC5YrLFVuoTVahI0ogbTuvTAbKmTkGzyKBMLe77ypxQG1YUIlQJLKtmy0Pc+iBfUn59Xq+0drhXzyZUdJ/lSz3ZYW1ZcQCheb7QmVkM9rSMDtsCmpmS64uR8xuDA6pll/v7eiNp6YnV3mj/nBIwlluIqHIp/tzfpbaEQgX8bWer16hlm5HTIWqmdb/D8CEqzzzCjfoHMRhUaZS/p1Io9QHP5vM7HvX25AOjcTQWval
+X-HE-Tag: 1774366348-366552
+X-HE-Meta: U2FsdGVkX18eMFekDYO4GEpNdk8njbXcVnDV0pC3k0Iym0VF608DJgaUm4rKHqJEnsG5CcBj0Rr1bIlvcDl59GCLBE5wJ+YsxGKpP7CcWfbYUDKRtLY06ERHB1BOqmj5rgkxGCh3da5wR31da2lCkEQan8MW6Xbnk7OGndx/5FC55EbKbsEEn/N29wKMj/DdwliUtAITxxRu/yyPBjhHLEyi2kF6FLAjZemKPB4CKkjsPkbCuhsZ2llQrUoi09xr7LWd7aB0O8nZH0v+Q8wj1JK19LQjZ6EUVpa2U2MsOBrNgU8HoPQGVLmDTicbl2wiV1/331qWJi1lzV12BORP3lfz5yUGArfSDMSBTSdqJbTDMyVYHn0dSKnKGz2pNPrXC9I6RjP52IryIorBciuSsethaPwP0f3Rsu2XiR5fp/zfUkQHsfAbvkfMbCTdma0rT+s55AhtNO3gVt+NnVhNcc1EBctjlTdslgyFrtT7P4T8txVCp1EkyTv5hioKDT9sS7MEB3t9qrrLKx32wYp+FC0SjC8YdewauwxvOBXKwxo59sAWoCHdYcxC62ZHWT4DfEz9SxvZ3kfatGvaMriOcSJSmEX9V5JbFDoVf6HBNxcO4rQfvi2e5LNKOPoBnj6Ezgfwt3DVWzemxCXeCMd0KakBv2EKC8IqbrxJk6GXUseimbe5IPuvnC5ZK/7o951oKbrW3hlxql5OapyeezL66pef0+ZCRqutE1vJaMvFwjUaHGs3l9z/TnFb4JR6gXDq/NrL432YkZbtctrN3Xgi6ptAs3mVx6J5p3+Q2h97EC3JKOot23zbFWPMQX4QNhBWYUP59FbKQVbL3HRHTDwMU+qOQX4IgtqXut0cl03vbxWRJA4s9ijGWh6jyd7du0CVCo0xv+Cprqq/sgla9pcXQ54v3U70aMEOpIJyL2zUh8njaHWZmWfjHpk0qbtuGVgJhk72mz20FXqdWgMWTn9
+ ZHwixUtC
+ r+QXzonhBggkzA5E7J1cWjnLSCea72+MmJSBPHFvVtaUlKSClJTbbypd/UaTFc57NdtMjlRxX1nfn3o2IJtVHUkQMHSM6e1UQoGkzAnGEMWvlzz/sBonlgPt4dlqrMc2B5ivaf9S4oCZhrZ6mj2OoexG71i3j/E83r1rndckwJ8oNi1Su1xaFxc7V1GMukHJctNzf8UIHKRrUCYXUPZnDnaXlIcncfGZlT0UNakUVrrRWkT9zXZGTHsUnQRC30GBLgaRXQE8EgUVObJC0+fVbkgHAKuLevGDPIiUxE0ylXnDNeP+2ia0imdKkaNsO210fTQ9sOtK1iNi3pSRzx2/b6I23OXyklrIevxCeiNAmoHrnP5wq7CDYaUsSA19DzlynX1lilNPlJmrTfu1HDxNRDsAvVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,45 +121,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 06:23:25PM +0000, Brendan Jackman wrote:
-> This code will be needed elsewhere in a following patch. Split out the
-> trivial code move for easy review.
->=20
-> This changes the logging slightly: instead of panic() directly reportin=
-g
-> the level of the failure, there is now a generic panic message which
-> will be preceded by a separate warn that reports the level of the
-> failure. This is a simple way to have this helper suit the needs of its
-> new user as well as the existing one.
+On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
+> Previously, when a driver needed to do something like establish a
+> reference count, it could do so in the mmap hook in the knowledge that the
+> mapping would succeed.
+> 
+> With the introduction of f_op->mmap_prepare this is no longer the case, as
+> it is invoked prior to actually establishing the mapping.
+> 
+> mmap_prepare is not appropriate for this kind of thing as it is called
+> before any merge might take place, and after which an error might occur
+> meaning resources could be leaked.
+> 
+> To take this into account, introduce a new vm_ops->mapped callback which
+> is invoked when the VMA is first mapped (though notably - not when it is
+> merged - which is correct and mirrors existing mmap/open/close behaviour).
+> 
+> We do better that vm_ops->open() here, as this callback can return an
+> error, at which point the VMA will be unmapped.
+> 
+> Note that vm_ops->mapped() is invoked after any mmap action is complete
+> (such as I/O remapping).
+> 
+> We intentionally do not expose the VMA at this point, exposing only the
+> fields that could be used, and an output parameter in case the operation
+> needs to update the vma->vm_private_data field.
+> 
+> In order to deal with stacked filesystems which invoke inner filesystem's
+> mmap() invocations, add __compat_vma_mapped() and invoke it on vfs_mmap()
+> (via compat_vma_mmap()) to ensure that the mapped callback is handled when
+> an mmap() caller invokes a nested filesystem's mmap_prepare() callback.
+> 
+> Update the mmap_prepare documentation to describe the mapped hook and make
+> it clear what its intended use is.
+> 
+> The vm_ops->mapped() call is handled by the mmap complete logic to ensure
+> the same code paths are handled by both the compatibility and VMA layers.
+> 
+> Additionally, update VMA userland test headers to reflect the change.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-"Describe your changes in imperative mood, e.g. =E2=80=9Cmake xyzzy do fr=
-otz=E2=80=9D instead
-of =E2=80=9C[This patch] makes xyzzy do frotz=E2=80=9D or =E2=80=9C[I] ch=
-anged xyzzy to do frotz=E2=80=9D, as
-if you are giving orders to the codebase to change its behaviour."
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-> Other than logging, no functional change intended.
->=20
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
->  arch/x86/include/asm/pgalloc.h | 33 +++++++++++++++++++++++++++++++
->  arch/x86/mm/init_64.c          | 44 +++++++---------------------------=
---------
->  2 files changed, 40 insertions(+), 37 deletions(-)
->=20
-> diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgal=
-loc.h
-> index c88691b15f3c6..3541b86c9c6b0 100644
-> --- a/arch/x86/include/asm/pgalloc.h
-> +++ b/arch/x86/include/asm/pgalloc.h
 
-Why in a header?
-
-That function is kinda bigger than the rest of the oneliners there...
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
