@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7200F532DC
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 05:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54C9FF532DD
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 05:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02C466B008A; Tue, 24 Mar 2026 01:40:30 -0400 (EDT)
+	id 8E1F16B0088; Tue, 24 Mar 2026 01:42:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1F9D6B0088; Tue, 24 Mar 2026 01:40:29 -0400 (EDT)
+	id 8B9A46B008C; Tue, 24 Mar 2026 01:42:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBFB46B0092; Tue, 24 Mar 2026 01:40:29 -0400 (EDT)
+	id 7A8106B0093; Tue, 24 Mar 2026 01:42:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB3906B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:40:29 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 6B2E66B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:42:26 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C86A1A1581
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:40:29 +0000 (UTC)
-X-FDA: 84579856578.17.F4E14F6
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3B44216159F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 05:42:26 +0000 (UTC)
+X-FDA: 84579861492.17.AD17A6D
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0D88C4000C;
-	Tue, 24 Mar 2026 05:40:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="UVOVo/0l";
-	spf=none (imf27.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 458954000C;
+	Tue, 24 Mar 2026 05:42:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ShZJIyBs;
+	spf=none (imf07.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774330827;
+	s=arc-20220608; t=1774330944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rws42ckkqTkzgDuxRUNY3njePEBRVGzgiYWDAJf7PBI=;
-	b=yiSA9CnkayZcnjLFPlvQwphvQewv8dMuBhFhWCgzx57V2xImWduQqWvno2vORXcnyq/QWI
-	lH17jp2y4kUXgNKCgsV6jcY6t9oVnkMjAVp1YGmiPF7/19XRNuIuYkDzp5tEDkb7+AzD69
-	JC/m3mVhImxd1hxUaUMWEKBkbOBJ5Pg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774330827; a=rsa-sha256;
+	bh=gnGFQgv2BByGLzw1hq9qZga1CuZS+vQ8g5BMMQp3Me4=;
+	b=7jzJJMopKwTnOhOwMvR8E3DK0sqxiDFyCHAFRr0fNY3WqYc/YQTfuoQh2yJYGymws+yVN9
+	CEGMpecmNTGoWCe9l8b7zd6ufMnoiMlMxhtcxPxgURaOWErvS6Kb43HSJqULrUh1ICrJTr
+	4mAgWdCA1C7bS2o7n3bND7b4YnnfKSU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774330944; a=rsa-sha256;
 	cv=none;
-	b=Pf4bf4V2nAjQ/UGkw2XHcwl25wHzeFQX5hBx6rFPBrS32xVKn+z3vHmVO6NWOreXAfy5c1
-	ex9ArMJP18/r0mw32dshTHAyGdk1jCi7ORkzs7LyYdA4x5ZAS/B4EiHg0vMkPvAf9CPff1
-	pYqi/FreWkBRF0dJ8Ony0EQfdd0L45M=
+	b=1wCaitbxE+heR/AKIhsrP/bt7g0u1QfQvCBXLcjrR+FHGxGL2nyl60ViJH6AeyneLardj4
+	dO+ujo7zLORKgm5X52ujwl536hL9zlrRgVwhddrsEUwhJ+0iu9SC6CfiiA9LlNVMVLDzwL
+	99KUyTk4zcrK5JQPExeP64kyzaqfWTU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="UVOVo/0l";
-	spf=none (imf27.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ShZJIyBs;
+	spf=none (imf07.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rws42ckkqTkzgDuxRUNY3njePEBRVGzgiYWDAJf7PBI=; b=UVOVo/0luHBqwmh2QZx1wxwIY/
-	hu58zpUtJw0wGB/QWwp4cdHOgHDAlvSY+NVY1LMGInsfWZRFLmzOU0F5BFEz31QSzEj8fC7o472w9
-	hCuQP4DV9/pBeprydJmGaiC6z/NK2oPohr8PVbxN9c2hRf75abGI9xyh4bXx79qCM8vEvQKXuagGr
-	+DPYmzKE++y2Pt99Jp1QEmFMYBoO9Fhi+rhAJL1O148lSTE8cVzGB9eklaL1jrQfzLKQzCXizqp16
-	VRgNQq5FoiL+RflBRkdGV1CAgIVShlFYCpCrAqu63+vKwte0Io4VTvrj3PG/RgJSM70v4chBpuoiZ
-	DgxT88vw==;
+	bh=gnGFQgv2BByGLzw1hq9qZga1CuZS+vQ8g5BMMQp3Me4=; b=ShZJIyBsPXklu8G8Q2+rirXnpz
+	m9KHOWtXQviysvw1bU77BDdHs88FzgEmFKq6rJQKNyE6K07zB1zFlmXDr9uoNQqe1j9z3qewfntOe
+	SiNtFmOmubhI/X5uf5wMClzwKnDdAVPYQfeJFAL8i681WEXEJ6Ge/kbNm/sIi8BhXVfs0IlqcMZgl
+	iWkD6S2J9+7CRMttEN8ODM2cw4HwZ6qd9bMawbsWUC7AOBJ0hjAScvzE3LKhED1QRAEPqoh+HLmra
+	19I4mUAVR7gsRhaa/0XPtpgK+TmJNyqPD9xkyiZdskMH8HLvcfUEyiiMCuLOVSjjrHHQW4tmPtXF8
+	eiug5RSw==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w4uV3-00000000bOf-3sgy;
-	Tue, 24 Mar 2026 05:40:21 +0000
-Date: Mon, 23 Mar 2026 22:40:21 -0700
+	id 1w4uWw-00000000bSG-1SyC;
+	Tue, 24 Mar 2026 05:42:18 +0000
+Date: Mon, 23 Mar 2026 22:42:18 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: Jan Kara <jack@suse.cz>
 Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
@@ -75,24 +75,24 @@ Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
 	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
 	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 12/41] fs: Drop sync_mapping_buffers() from
- __generic_file_fsync()
-Message-ID: <acIjxUzWFstarlwv@infradead.org>
+Subject: Re: [PATCH 20/41] fs: Ignore inode metadata buffers in
+ inode_lru_isolate()
+Message-ID: <acIkOmat4Y_M2SUC@infradead.org>
 References: <20260320131728.6449-1-jack@suse.cz>
- <20260320134100.20731-53-jack@suse.cz>
+ <20260320134100.20731-61-jack@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260320134100.20731-53-jack@suse.cz>
+In-Reply-To: <20260320134100.20731-61-jack@suse.cz>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ekm1yxsnji57oqfsomejp1964c4ok8ne
-X-Rspamd-Queue-Id: 0D88C4000C
+X-Rspamd-Queue-Id: 458954000C
+X-Stat-Signature: xd9t8e8hdyzh95twmg3i9dhpa9ckrjfn
 X-Rspam-User: 
-X-HE-Tag: 1774330826-292345
-X-HE-Meta: U2FsdGVkX1/wiN81RbpPw+BUHxuuIftHWUbIJdu8Fk9WA3rgpIXAuL2hd3zVlcxZpe632TammLhGuzMfam7EgRVMuBxwr0HrvBdO5Xtv07JOeISQqAGOawGA3vb1qq9rDz4STgak0KtlmAH3SYIPQgzz1zhtj2JdZBimsO7hi5R1f7fajLpzWLzwnBWo6ojI4m8DlkuDDm30eSlb7pTVcLbPtfDsZVN6ikgZ5JcakkhxD00arR/l4m6LJeKhV9vi5bZMOYV00cAxMemPr/xnwVDfyzuV2GtWX4X2E/KXIchXJGEXKafREpsAJtXUTKeOWkFXAU9m3w9sS2ggbqvzW7td9ybMGKFY3aLWC3Zts/lyKykgwLePUzg7sFUznc5SL4iiu6OyZeFH3EMfH+pl5D19PoHCvYCK6SDLpMXlmAj0b91Rxcy1TxLVa+vqXEJ1nOXCSESFdj1xe3rKaQ0DBL82nouTtLZcUbyzUEegEwAhqP9u8Dxg6YOApnbPvdbUq/pGHue0RlVbqV/0bxyQn18gYLnDgWCEw28pH8a+SPrs+Ns9n4pJgqFpJotJxs0N3p9Jcg6esh81THfb349TkhTmn3l2RjfVb48dGXV0V1ponQ+oXd32C+JtmxCmO403QupHA654SDFGZG1ucoLvPFL4VQfExVennhZFzV0wWizccVflywXMspsX6wFVE8iGdg5+qd1tJ862dbhcqKMimBkmZ6TOAXwY/lsodMljavtu9i5n2olsY/L9A+tGj9NNRipS7psp2nw39j3Rixm7UpgWMCDeRGYnglVnOEGO49IUY23cQoVpvNGw6XxZ6Toq6A1AXRwHxsGLdWIHgv8nwLBdHdKUOqJp4v5UHm/RaWYE9vt9QRAuXGDg1cec5bnuqwuOvg2DxrBFXi+ZcH48cYujIq/ky+kQpKC3Njnkhju/mfxzdY1hmgQ+D/ylq9wdnxgJqaGKfRlo750tm88
- Lf/Y9tIM
- R88kRqa/7qZUDE3o/B9mSGvO4CSDvUP4cEKfdfIVoGoYGxI0jaQiaq91p4eY6HciTbcs24Hq9v/zZeM25B6/5dQ36LP5CA82zX43Jh62BA6AjXQVEwSpwAH2TcrbfdfdSu93TQ7YlYCVVfaodgxEXCv7+4c6ubqWr4mpV8/UH/oxXg5DW9Fa4XKEB/cW+r0441rCwCTPwBK5Ej+fz98cyHLZ5tHLqETD9VZvsIQKIb+FTC7oaTp4mOyjlTkx06cPfgz742AYgWIALf6C1b4iySKhTDIN5GVinATvvQltmM43r0iUg1RvWr7mda06rvZxY6BqS9N45EqkrDfGXysyElO2ug4fgQWDXTpA0H3n6h51/BaZq0TqSBPkL0ABe+S7QDf2wOhA1PS8aJ7SLRW0oz4WBDife8zfLptIsBRpBM/KU6QvKybLMCZdgpsDdniYQn5OgkOtwb3e3ZKlLx9Y9XNWYq16uaakONVuT6BER+D41Xjix9MuKQEvcrnSVBbbcHBnBXTGriWfP5oHBZmsmBrHwxCuA7zxEiiwemfIAc11K7JEjGyee6PCQBMUl0IFpt0GzVinEjfHhAQXYJRgpeBIWSBuv4DAPXqlSVLdjPk4C43ZJHNHDVto/XA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774330944-721132
+X-HE-Meta: U2FsdGVkX190TkbyBmIXrMBMq9iky9hyQ2sPz9wFGFx7XMJwo7Bt4XeQ4r+vxm6P4El2cyCXFYIfvuvgLLlfaHLDrZsSuK8yidO7hsNNWkuHI3yOXvZsCY2Jq+CoQGpj91VUkOP19ffQVbWn5vZWRremt/nYkF62nobFhq2mqHdkZMnFW7VCnl8oTfJImG0/X76gk73maCPQWS8ZKwvBItZQT/CW5ms6/sVV4cIGJwZAbgtg7WQ+qiCv1D5fKg2w4par2pWgMHW9GesxtUQzriNwR4VUlaZOpCfl8e42tQ7bXD2K5ZqNoHTkgvUGrZHDxdKd7hHFhwFbP/5qaGhkTg6iEl70NWSe/7PniZF8iLMH36kbCQ5rBJafEqVfKM8XRP5tdcIKAKzZJ0hlFbI4gPk62xy99LB9QK3Ow5Hv4a8/coHuzjMyMdNGhgR7tyhrAZjDQvAtdrivdpwh8+cdddbnqnxF8ttFyjYSb1jcgYSuIsJVyb6nQCTYXeA28dl641NAoqal+Jy2ulN5y4NgL2ELToM50/7ohru0iF/84QYOmzanj+hLLHXj+oCE2sf8CoD6uaw+OhvQuoNUh6J9k55qojdKZFVt62/8U784kSevRdjxxjTyp7bPPMRCaRpau10NNH9qy7hoq0PSw9GGDfaJluJw/9TC3IyrWUS6M7bAvVrNZaOjpMp27+UbuH4EyJgfdjK/Sfsx/gwPqMAseeDZwyBxNMoZtuqfqW6f0oIYx2cZBwqFfp57Ckkp1hh7IpSWUTmxBS9TNdkIWWU09/Rjq24Wn+H2aMgxZjR7gJAP5bM373mj6quGyAXSV9T1J48EB/uEJyKRMpOElDCShYFGPU0RNur7/zAhG/WIL0ifJGLTIrqzoZj6qB+rAAbyeACndACh//kdvnh0Ne3Jlylg/e1gmCvxJlywmdobeKsYk+o+FBvs8c0gAsQL4U8GwHI83lMnLapGDkI5vjT
+ BDCLnPge
+ p1NHHw9bMTzyQZNimlBLWrnbhCmS71yCwHPdoZb7FjmlfZLSgn8sXX9pzLGKbR3vVy2sHro3w8alJV37qbSEsqZau+uJQhPRORcXfCktG8ZrXXk8ct447FWiIKX2tkSrkIMAp6fD7pg1Robxx5Pz7VO1TC+v1nI/PSee/WZNREoSisDdLSxGcWs+ITvnue02P0zXPuiKEczJEydUelyOYPY458l4dZi3UawYvncdvg4QbuBDOLp1Dm4N3sPcycvQ7joMQyFhN61FZZ71SiOfr2Hv1oOFD0ADh14JZ1f1xLbY+0hPq+RKDgWYxTE38Ku7mYc4x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,54 +100,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 02:41:07PM +0100, Jan Kara wrote:
-> No filesystem calling __generic_file_fsync() uses metadata bh tracking.
-> Drop sync_mapping_buffers() call from __generic_file_fsync() as it's
-> pointless now.
+On Fri, Mar 20, 2026 at 02:41:15PM +0100, Jan Kara wrote:
+> There are only a few filesystems that use generic tracking of inode
+> metadata buffer heads. As such it is mostly pointless to verify such
+> attached buffer heads during inode reclaim. Drop the handling from
+> inode_lru_isolate().
 
-Given how much this changed, maybe rename it to simple_fsync now to
-provide an obvious breakage for anyone trying to use it?  That name
-is probably also better as it's not all that generic.
+But the code isn't just verifying (which to me implies debug code),
+but doing actual work to remove the buffers.  This does look like a
+behavior change to me, buf it is not due to previous patches or
+because it was dead code, it would help greatly to explain that here.
 
-> 
-> Signed-off-by: Jan Kara <jack@suse.cz>
-> ---
->  fs/libfs.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/fs/libfs.c b/fs/libfs.c
-> index 74134ba2e8d1..548e119668df 100644
-> --- a/fs/libfs.c
-> +++ b/fs/libfs.c
-> @@ -1555,23 +1555,19 @@ int __generic_file_fsync(struct file *file, loff_t start, loff_t end,
->  {
->  	struct inode *inode = file->f_mapping->host;
->  	int err;
-> -	int ret;
-> +	int ret = 0;
->  
->  	err = file_write_and_wait_range(file, start, end);
->  	if (err)
->  		return err;
->  
->  	inode_lock(inode);
-> -	ret = sync_mapping_buffers(inode->i_mapping);
->  	if (!(inode_state_read_once(inode) & I_DIRTY_ALL))
->  		goto out;
->  	if (datasync && !(inode_state_read_once(inode) & I_DIRTY_DATASYNC))
->  		goto out;
->  
-> -	err = sync_inode_metadata(inode, 1);
-> -	if (ret == 0)
-> -		ret = err;
-> -
-> +	ret = sync_inode_metadata(inode, 1);
->  out:
->  	inode_unlock(inode);
->  	/* check and advance again to catch errors after syncing out buffers */
-> -- 
-> 2.51.0
-> 
-> 
----end quoted text---
 
