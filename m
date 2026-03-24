@@ -4,117 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EACAF54AD2
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 15:55:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B852BF54AD7
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 16:00:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFB426B0093; Tue, 24 Mar 2026 11:55:07 -0400 (EDT)
+	id F3A806B0089; Tue, 24 Mar 2026 12:00:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAB806B0096; Tue, 24 Mar 2026 11:55:07 -0400 (EDT)
+	id EEB6C6B008A; Tue, 24 Mar 2026 12:00:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9A996B0098; Tue, 24 Mar 2026 11:55:07 -0400 (EDT)
+	id E01636B0092; Tue, 24 Mar 2026 12:00:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B0D306B0093
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:55:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C8B91B7331
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:55:07 +0000 (UTC)
-X-FDA: 84581405454.27.58B60F4
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7E56480003
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:55:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fFeg31Ge;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of naup96721@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=naup96721@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774367705; a=rsa-sha256;
-	cv=none;
-	b=KHt+kk1e2iOU1PZWUE6ZjhnGL9Jpc62fESzbqHkrF4CDcl4udyGiQe8NfHiAmkogQ6yc2Y
-	2RIxtBNY0t85RYj9l8yktbO7q3ajYYKzwcxdnljrdOI+qGT66p8NWYtY3ygsgy+L0xi9i2
-	o6FUQHTWi6+TTYbsFNrD368EAaNhugE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fFeg31Ge;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of naup96721@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=naup96721@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774367705;
+	by kanga.kvack.org (Postfix) with ESMTP id CCCA76B0089
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:00:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8113F1A02FE
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 16:00:03 +0000 (UTC)
+X-FDA: 84581417886.11.9D1F400
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DC61618001C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:59:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="pa3Z/Mse";
+	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774367999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AADFUoq/x8dJnaFKMGvyyjEOCGHhgTDn8qBc2nRaMNg=;
-	b=KKRh090DozO5TNu+UPhGTIutSik40sMIo6KTUhtLCnmKyUvLPvncWu6nr0wmTPtpD3v8SS
-	USCmfAU+qPXiPABY/u1pOuocs3LvPPZCETx/qi8VKc0ONdidE2ICHhaSYQK+n2TgsqhEpg
-	3hILy4AYzLVu0UrDzTQ4Xtg4nryNAJc=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b0586d5bb8so39956275ad.3
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:55:05 -0700 (PDT)
+	bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
+	b=R+KsvLZmmxnj3lJDkMxfMCnVr3yeByh7Aw1aO/4uDzsIGciuHUVcj7PGe28tzas2Fw1Oj1
+	JereQCstTHMp0XZCC9aDQZTxy7XlyJ0sa9SqGJR42lWP4ViC56kMuIoziyyisR1htgqZpU
+	HO6AB8G2B2f4BiSQhuNoA/GLLGuNJ48=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="pa3Z/Mse";
+	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774367999; a=rsa-sha256;
+	cv=pass;
+	b=lLFfodrPbLHguHYTh9GTUIo9uwEIGE6BLuwMPWdr9eUFeEqHIn32wwePM4cC9MQ+J8BIti
+	pnmMVabf83NcceHvfTUy27V5m99Szu/ugneJHL0fRh7xdszVBpyxc6qkxo2hWLZWsMhGAV
+	UaMCpYjGZO+gl0Wpe0isIUyrjSAXD6k=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5091ed02c54so494951cf.1
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:59:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774367999; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Sg9mK63CsoVlbSsV8/YBx1Musw2+t9vbaLCSEQuak6q92tzexvd2v7M4lRSoKqOuBn
+         1EWoApvUhx8kbiOcTvTRjhwOawgiP9Q6vEtIxzwIan9Td2Yw6jkQhp3FMXj9jE/768T7
+         hbraRSrSViDgtVUAFIwb44Zvo/HWKUFJTpXJ5NNxbzTGjeS0K1Gn/cs8c/d0HYt5lcBH
+         qrQyboZPrzcpPp+Y+Hib+QBlOFgUqrS/0eOZrVtwCYEDdpCiMI9eVxt/sc8jKlULF5le
+         RfgyX3/dHu3TGt5DFKGr72Okpks/MnUH8acqWqRNLJqd2iLwHA60mg5IHRLSPcsLjFin
+         kEkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
+        fh=Qbuish54FfbfhQUDagFVJDXGjzW5tD2fXsNRu0MZ3aU=;
+        b=NtqEruMo2uZSooFgLQPujNOPx0p+/ACAljHx3qWYzDLdUyjrT1kPns2dCCeupCorlh
+         fA0kpAFraNAnTI6ZtgI+Jez3GJFV05tHhe+jvD7tO/Ffmg9RvL8bcsVB5iQIH6iKvTaj
+         4hrgIhGDNotPbkEpCplSq3zm0UTIvZTQ1Dr6M9UgYJ8+ZMdyYoUf9LqBLdCKq3RbT5yx
+         42xF+wGoGazLSjrmp2RAUjUYKC9nv65pvuVWrnlaOvu3Pt5fOd1W/i9G4K9UBzuBTGtc
+         mWQ+DTSMQ8mRg8aZIvgLESu6+JQmYggnZA/PTCNnVHx6+cbYG8x0zAK6eX4h2t0zT9y5
+         MggA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774367704; x=1774972504; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AADFUoq/x8dJnaFKMGvyyjEOCGHhgTDn8qBc2nRaMNg=;
-        b=fFeg31Ge1iUtPEsuM/nlSO2YtqFWpdMOnvcUc+Ub2khTeUQtwtlB4Rr/EqYgYBM4Y3
-         hFTncv7JkeyvrgI198bjlONO5w8M9elFrL8nHmC/NBNfpO6bWMAqjabAButf/6aUjGBs
-         p391EmHgDd/Rj2AsLcizyDI4aZb12dPaihbC42nlT4gubzbJlCo642ejXO9mngel8SBB
-         +CHHzORBDjbxjgw4RggNXcxLajVSIrT7LLrEllwvoI3V45DeQwisUzsR+ALT/Mw70mRj
-         JuYgxhseLAQde+xHjnhoiT18PxAg0dBpbjKIsSmaDONan0CDJ0HuV1rXSPvMDdfJgWJV
-         53Jw==
+        d=google.com; s=20251104; t=1774367999; x=1774972799; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
+        b=pa3Z/MseyYynLybYuboFmQpyYwmtuhnfGAN+ZbjLWQ+lfMQIYB+04iSO9aCtj+vZRR
+         a4yNFniieTeYywfS6tQBpBQo/RhClZQgIQOpkIzkhpmaYFxMn7uty2UbiaVPLO2hRTUS
+         RbzqEuFhxoPw2QCB2xiHGg1CMUQrLULoXuKOcC69VrBLwkM6KAN5GKKWJUzbwAIu17co
+         PqgLumZ1SzJgJVhg6kXoqxppTXG2ysQkmG/HP1wly4oS3LO6l+QpBjeprRjIhTk8TxGL
+         ERc9u2jk28UMCMXBXjLS27BSUHy5poFxe8FPfrU4MRVSWbt6NPLOI/jg0H5AZgjmH2UP
+         eDug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774367704; x=1774972504;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AADFUoq/x8dJnaFKMGvyyjEOCGHhgTDn8qBc2nRaMNg=;
-        b=oE5zpJ2NA/dRdesy20+osGFMP/srByszXhopiDdZCb0upAiTnuGpkCXcMp/SDeq9lw
-         rb/uj0Q1Ay5Gz6fzqfc0c7DXKTkojQFGzYS7SuoG2hvrRYOP47G4kljmhz4mkAgHwYhb
-         7pErXq2srjlPK5MfGaeiP1QEsKjAr6cHLV8TGZp3jNtNJPCPst8fmJaaH89Af4y0JGHq
-         b4Rj3sNrkrKDA0fWbehREnPz0awJVRo4gVVbDvUG589e0I4xG6lltYnqwyeaaI1f1HQl
-         Wd80B3G/mr0RbFXYYqre4Ta8WcPLz4bRpQMpAJ6vZ961/TeQisa/mw8P9rwx1uGPtANx
-         ktgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVS9uzdG5pQ+Vg8w/wuK2BheItM0PluynX7PCtkAbFXZOD7MDXG0DuicT8F9hX3aHsOj8+PZDHv/g==@kvack.org
-X-Gm-Message-State: AOJu0Yx5nA2/q10iF5i34X+fuMznJtjHFp5j4Mrh0TFaHtU1sGgw872O
-	6THtjYEIUzfvMLTZpAhRv7XamirFcJtktvhceAgN4DfUML1hd/LRpXGc
-X-Gm-Gg: ATEYQzwEF84XL6YgiYPUqdA58zWpRh4XRiwZCFbxzrfPnb2aRFwWGiW2hOhfS3fYn0U
-	DPItpGN80C045Mtipgo6GCIgZtRljLKo6OpIkzwQcLo03Lb061nGBUzRhAY03QGkLWYb82bGwCq
-	2RjjrS3jn/HF98WE/S2ywjX0iBpwL7yNmB4Miu7lse4MtvQRwJxDxfh+v4wmXjN4UqzEHIHicUM
-	ytiohMUrF5oHP8CET8lFnQuKPnzb5AYrH1sqgdCIu3FAumQF43H5sOnrPlRbZkHbwobSC8pb4/t
-	6fK1XR34sPeRQmWtyYSPg4xYOYuHJvDdrM7WMCxbRySu+NVJ28e3l1rVhxfHBOrkmiGVWxBM9GZ
-	vDpjSqCGwRSpl4yUIvV2t0HviyTKNWTZldmEQarBPl/pZWEE9zEwagGHdxdRjU6+hK+hHRezo3Y
-	oxdzJm+4iMjsSNjFvsibvXIobL00Q2+vHKFLlBfaMyB0xajCh1
-X-Received: by 2002:a17:903:182:b0:2ae:5163:c2aa with SMTP id d9443c01a7336-2b0b0a6a8demr1383605ad.20.1774367704153;
-        Tue, 24 Mar 2026 08:55:04 -0700 (PDT)
-Received: from naup-virtual-machine ([140.113.92.221])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0adcf1b4fsm12618935ad.83.2026.03.24.08.55.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 08:55:03 -0700 (PDT)
-Date: Tue, 24 Mar 2026 23:54:59 +0800
-From: Hao-Yu Yang <naup96721@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@kernel.org>, mingo@redhat.com,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hillenbrand <david@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, linux-mm@kvack.org
-Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
- and vma_replace_policy
-Message-ID: <acKz06p/kaSw+ANn@naup-virtual-machine>
-References: <20260313124756.52461-1-naup96721@gmail.com>
- <87a4vyihlx.ffs@tglx>
- <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
+        d=1e100.net; s=20251104; t=1774367999; x=1774972799;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XLrSVgO5Jwz0u6hqz5pvyqn1EORmtlk3PJkOIiSuuek=;
+        b=Sla9KICt9tT/0Hjwt1MRFhxNO+Nx6HzAv+GOXPDPvDjR52Aj3uGVs0XOm8ALIPsl2a
+         UmGYI356wORojOVjAopBoYz3LUSgHndpQm1lxIjm3dlGwnhXBY9EnfwdDhIUdzqWi4Gi
+         SF4EwVMXzoY58Ho7Aay5SUqlRdWxgcLpHAUh44LLu50cTM9brTkvb8XGKugVGP6P/ZuN
+         JdTfmKK/GOiAOrMy+p/lWYHx2LyvsqgLDvjjMAjcQEYZHFkbCSmPHwx5yO7jH3J6pVzb
+         r6YIe1YAIRiDVCZFVHGeFTRMWk78UG+UYNev5a2Y9KvtKBRI409AqdgvyjLQFXuwFiHV
+         Yv+A==
+X-Forwarded-Encrypted: i=1; AJvYcCW1zE0bnB361W0SYYBKpo1YXioQ/VMghnp5gWTtRQ3PH2JiRaftR5GQ7ELvNjOELaMRE/W3QQiWtg==@kvack.org
+X-Gm-Message-State: AOJu0YxPxraD23gQ8GmnTemIke3PycPbzr18w+NIA7V3eKFn8xHaOXxv
+	BNCWcZLV+pXoeEkAIb48ILJGa7JDhY6rl+FbVnlKQF7XRFx5KI1DcBgmF8Z8Dff0qYNmPrZYWny
+	rjtmEMcUtBZIg1HG325P4pXpeS/4k9C7hn205tPL7
+X-Gm-Gg: ATEYQzyFqzcG1rn36VZiK9ILhq0c6IGlAI4Q5KWpUQd0hOSj3kJQH54GnwI9K2QAP9S
+	ig78mVA1kG+CjKewqZ2q3N7OW/wel8Koli2FQRTun+Jxu34eAsiVvtBU/3O6WZGcSkBPzClKWWq
+	9ocJMNAYi+d1YUwrzoAmKIW6jDSRHYbm2ChZh+Zb9HlP5XbMlbFg4mVl/SM7XpdgBqOioLRZrdX
+	AaV0efJPcstMlYBjdBMMfw5nMSSqXjtMUM5nHQxRogcnLx+XWmHh+D0gI4Ha+zcy3Mq4PQeZ3zd
+	NOlH5YFkdBUwt/cTxNDaEhjhXlMJXJofk7Nizg==
+X-Received: by 2002:a05:622a:8d15:b0:509:1eca:6d24 with SMTP id
+ d75a77b69052e-50b6fab570emr14738871cf.2.1774367998125; Tue, 24 Mar 2026
+ 08:59:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
-X-Rspamd-Queue-Id: 7E56480003
-X-Stat-Signature: 15iu6fbab9xshqstqbd5e5opuhf9aric
+References: <20260322054309.898214-1-surenb@google.com> <20260322091723.dbc1a8e45f4412fca43ba510@linux-foundation.org>
+ <CAJuCfpGEA17hB4BMdr5a7=NxfeF1RUt0q=_w2WieVv0XoN24Gg@mail.gmail.com>
+In-Reply-To: <CAJuCfpGEA17hB4BMdr5a7=NxfeF1RUt0q=_w2WieVv0XoN24Gg@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 24 Mar 2026 08:59:47 -0700
+X-Gm-Features: AQROBzAMqgNkN_nl_EndICe5F5XJG6Br11eHuUlOIjfDgcmYOvJ6ZgT0J1pHfxM
+Message-ID: <CAJuCfpHQ6ru79hjnRnz6vpb2-Rjff8QsM9d_4g9jd+_jb9-qvw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/4] Use killable vma write locking in most places
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
+	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
+	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
+	Roman Gushchin <kfree@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DC61618001C
+X-Stat-Signature: tbw4axukgfnmaqnk66qjfc8xpi7e8hfp
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774367705-461914
-X-HE-Meta: U2FsdGVkX18pxcNIlo5kl7ykRYUHzvATR+1KyPMr98lUe+raYO5bt93tAKEGJFohpF61IITxpZC8AqpW9q69xipatFqlm+WSCiYu4dJjjIAG1iudYgyrGXruzAiZbfDfEVAVPirf3Iy0wb00xXQW4Z75Omib5hmXh7LwyMyIazhmKW4cXZ53dgMxm+dfYiDZRul6/SZNeWQSb4FUF4b+wSCu6b7FxcvO5/oypmu29S+5dklXGAI7dXrU2Oz0rYoIf+DfjGkNFN+QA6EWSvSFAq4lt/ClJgl7cTg9SOMtO+0jISJTa3/gMn1Y2vLxoK/mhJwycsZOvqTnDX/LzqlaELj1JzXhF/CmB3crpY4GPCYxIeU0Yi54yPxsPZb4s1MJX7PpcAOFppuuaaN2cOhr7QxFXcOpvS84hXX8MuohR4HCVXTmeQ2xWAbtV05kyYLLgcfBiUnEjYxKlR5m17UrAMSbjEALfm3UT9gwSTfCFmV2PvNF1q1iBTjEt7WmpApBSW1sRbwfHCoEVoOrdk65ivuTZluM241QAACz3xfExJ/e2Knn7URDaUskLgfM43ISod+Eb+S0HVL5DnFjOxw1LFAYAS8hrBrbbMmLlstncc1Jbm4IiK0rQcltO1i4PTCa6A28JNhuH/u6GLMh1MooMKd/8SOwJVDg0q4s6/jf9Z0WuW2IkPo5gwfKdd4BpeJS6IzO5Qd+a9PWwYI244VzmRi7OwinPBnH2oo2+USMHSSn0Q+ds18q6V3h8phsnZ21vUwfRWtf/ruW/bL2pCiYXT+p23wi+6OKWpT5ykZyqSzkxy/bFqYTTxawmYHIZd8IMoDIhRQPJyh9v9Zk79YnUx9L9VBOHYyR2hopGh2nHsPrdI83BOIp/D3kpD2917d7v4gzuA4DTL//4Pstn1z10qbah81xodyY+RDEGVEVutpGTKm0fkfkIdkSoc+TQQbP4JZVapDAUH+AAVTGNno
- D154hbvO
- jUP0xFxRDcxsuuC6DrSn9o2yvAJql1rNVIs4MeHoi5gO9MYUUopwtax51SQYRtPYGmV65zDr6iKCT4EOEjuLDQSzdjlDmawPRej9aW0/xIuq44ftYtggnkksqGGtLhM+dIZ2ZDS/r+rRThDPCUVHPO+8PmpKlMAGe0/tK6n/ryo9Png0TLOybkrjKXyCHcexk+HtABtKdn7JVJHwdc480LoIOvrK7oitApIhdC/QJXZ+iN8QYplgQTAHmeJO30hiBmNWzTwCMBmU6X6d9ITDpELYW4KMUKfURnHt8fnGm/sTAxdMLFZnFbGQ30NVdRiM+MonpT5HwSiIO98zTKxfrOdZAgGKM8P922otvSBDAT3Cwy/rnFIl2RpEdODVm4TMTf5ttTS8NeXO0fdECaRyQn09qO6pHhAgyxHXErs0zlVdrGkfVMEPb2bmqZeLA3bvzKNZDA+iZPynFm3M08AIjKi45gxRRlpNOqGQkzGhQht0HUAjnH0l2bkxjDG/KWWN4JToS
+X-HE-Tag: 1774367999-806101
+X-HE-Meta: U2FsdGVkX18PsyetGAvmRjsTdPSbbehqOV1ZFSAieSrCOmDwTprAOyyvi0En5AZDqj68YYOl3XILRO1a/ZsrxH35IFB7g6fqLBzVuZS5wwMixJX/YyKw4BFxWVF4cJeSmT720V7aqzDk4oq5oP4ysE4lj6RgSkJMjSBKX4GIw/Fwslp3pom7KaNQYoG7UuRQxEhoWTh/QeHbF35Yr4Drt6pRyzPC6r5vuZye1KI6Ni9V6tD9xgsJ9gMKHaQbA4rfQmKtMuDhLkUH2gbUmwWaGUFgNWjYout0uHG9YtDk953i4gwhwXPZw7E/78DrJSv1tbd/niAmqk4CC3huvsvgUKX4Ob7+BV40U3+iHTNWwu/weJP19NR3C6aKYCGzuveQruEQL5vy1X/lQDaHp4lW++ULzD6njUl/zUxsdeZLzpXAsU/VnVjMvuYPmXiPnmWxW0sv/tPk8eRiHC9nAtg7dsl4QLtPxL3yqcNlMziIjpuaWqrEkBttgHhYF3vJ5GH6M8zDEQw0CnnOj6Wt/Co/zOr+fEh/vyyrSRTxA4nom9AoJAyKtDJcxGaqL3rUMI/YQYnz9khYEFjbB4JUCGx5SkCwZR8iNcOeL4upObnUWnyIZr699CaxKluaA7lxiKRk+RdDdSFEIZjunlTIDvTIp+iJGonjWdv0bgj0tyLFG7P+yxw2hLjACvsVHnHkbmlq+D9cZyFzlD1q6zh/woed4SwArQi5PvyWAGeHr7kDqXBJexvZwO+PMVbfP+GAuiP+wOtdDuNGVqcs6Dy9at0G+RbpbqVNm4VvJ9NpJMpEyeex2knP4E0XbMbz0AogR+f7pk2AAIGKWFxcNtU0Bcsk3NHqOfc6V923ezmRHoabKph7DCcc/ddtkfimPjFKnpZDWnF0jb/zjRd6RR/4fDRtFdTnBWjh0cMtAbGJ/r4jHXMZ15gRGU5Oxe5W5G9Fe7eVfs/XX7JSKr64+eAiV6b
+ ct3PvEKG
+ 9GdN4EH6VruWmjjGk5lJTUHFV25i72XVUfzRpDohyceKMda8dqg4Jtd2+Ar6dDTGtfqe0R0yFz8PDXX+CpijKVtCwZPMS4bVCglMMCRde1V9LdxDDqiDljaiVtLi9arFvFhjn2Uke+IXqAUS6/bsP9z0GGL1Bhn5O3lTAqhwqJrictc7LYUGUTeK5aRY3ms45Dz7OSjnA19j6frM7rgTHIpc4xVPiLo3EP5QwxdL4QLfDMTdrzdPYCUDDokTLHG11RLl18hpahE7Nr8knYz2N09srmhH2Qo+X/Dbr1a45bUDv/xpOMzvryJOczjDXBTp9JCr7N3/EpmdURbJdR7AJaMne5R67Sy0AQl6W/vLNJRwq43lSqi9BpORU6Y2PWRukksEEYA2ZC6jU3D215y04gQDh1RNCovnJE5TsgNiXHvBOXeJIT0JD/ijsOLk/OCfkYPfRclViMfdMIMg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,61 +151,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-So this patch is correct? What i need to do?
+On Sun, Mar 22, 2026 at 9:29=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Sun, Mar 22, 2026 at 9:17=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
+ion.org> wrote:
+> >
+> > On Sat, 21 Mar 2026 22:43:04 -0700 Suren Baghdasaryan <surenb@google.co=
+m> wrote:
+> >
+> > > Now that we have vma_start_write_killable() we can replace most of th=
+e
+> > > vma_start_write() calls with it, improving reaction time to the kill
+> > > signal.
+> >
+> > Thanks.  Sashiko review raised a few possible issues:
+> >         https://sashiko.dev/#/patchset/20260322054309.898214-1-surenb@g=
+oogle.com
+>
+> Thanks! This Sashiko dude is good :)
 
-On Tue, Mar 24, 2026 at 03:00:19PM +0100, Peter Zijlstra wrote:
-> On Mon, Mar 23, 2026 at 06:24:42PM +0100, Thomas Gleixner wrote:
-> 
-> > >  include/linux/mempolicy.h | 1 +
-> > >  mm/mempolicy.c            | 2 +-
-> > >  2 files changed, 2 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
-> > > index 0fe96f3ab3ef..65c732d440d2 100644
-> > > --- a/include/linux/mempolicy.h
-> > > +++ b/include/linux/mempolicy.h
-> > > @@ -55,6 +55,7 @@ struct mempolicy {
-> > >  		nodemask_t cpuset_mems_allowed;	/* relative to these nodes */
-> > >  		nodemask_t user_nodemask;	/* nodemask passed by user */
-> > >  	} w;
-> > > +	struct rcu_head rcu;
-> > >  };
-> > >  
-> > >  /*
-> > > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > > index 0e5175f1c767..6dc61a3d4a32 100644
-> > > --- a/mm/mempolicy.c
-> > > +++ b/mm/mempolicy.c
-> > > @@ -487,7 +487,7 @@ void __mpol_put(struct mempolicy *pol)
-> > >  {
-> > >  	if (!atomic_dec_and_test(&pol->refcnt))
-> > >  		return;
-> > > -	kmem_cache_free(policy_cache, pol);
-> > > +	kfree_rcu(pol, rcu);
-> > >  }
-> > >  EXPORT_SYMBOL_FOR_MODULES(__mpol_put, "kvm");
-> > 
-> > While this looks functionally correct it is incomplete in terms of RCU.
-> > 
-> > The vma->vm_policy pointer needs to be marked __rcu. That then requires
-> > to use rcu_dereference_check() at the reader side and
-> > rcu_assign_pointer() and rcu_replace_pointer() on the writer side.
-> 
-> I hate that sparse annotation; it mostly just makes the code unreadable
-> for then requiring those unwieldy rcu helper functions.
-> 
-> Not to mention we don't actually need any of that here, because:
-> 
-> > Especially the writer side is required so that the proper memory
-> > barriers are inserted for architectures with a weakly ordered memory
-> > model.
-> 
-> The vma->vm_policy thing is written under mmap_lock held for writing,
-> and the futex consumer is a speculative read lock. Specifically the
-> ordering is through the associated seqcount.
-> 
-> All that is really needed is to extend the lifetime of the mpol to the
-> associated RCU period. Which is exactly what this patch does.
-> 
-> Want me to go write up a better Changelog?
+Interestingly Sashiko had one false flag: "Does this code leave
+mm->locked_vm permanently corrupted if vma_start_write_killable()
+fails?"
+
+In mlock_fixup() the path that we call vma_start_write_killable()
+happens only if both new_vma_flags and old_vma_flags have their
+VMA_LOCKED_BIT set. In such case nr_pages is 0, so "mm->locked_vm +=3D
+nr_pages;" does not change the value of mm->locked_vm and we are fine.
+Perhaps this can be used to improve the model?
+
+CC'ing Roman.
 
