@@ -4,118 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93656E9A777
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 264B1E9A777
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 11:50:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E87F66B0005; Tue, 24 Mar 2026 07:49:02 -0400 (EDT)
+	id 64C126B0096; Tue, 24 Mar 2026 07:50:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E37E76B0088; Tue, 24 Mar 2026 07:49:02 -0400 (EDT)
+	id 5FCA76B0098; Tue, 24 Mar 2026 07:50:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D26C46B0095; Tue, 24 Mar 2026 07:49:02 -0400 (EDT)
+	id 4EC1A6B0099; Tue, 24 Mar 2026 07:50:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BDC286B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:49:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B15F5FC59
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:49:02 +0000 (UTC)
-X-FDA: 84580785324.15.221A135
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9DC4F80008
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:49:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PGnL8Y89;
-	spf=pass (imf02.hostedemail.com: domain of akiyks@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=akiyks@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774352940; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C5F26B0096
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:50:22 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CE491141B20
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:50:21 +0000 (UTC)
+X-FDA: 84580788642.28.7A91A0F
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E63224000B
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:50:19 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lzTs3iuR;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lzTs3iuR;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774353020; a=rsa-sha256;
 	cv=none;
-	b=wlxs//SG7fBZ+bAxUYie6x2CBR4HSA6+Gsjfim3PjvBj9rUEhxpAzWx/KlUyfJzeAqgbLd
-	LcwEWge7phPlI4xZYjFtgABAEGdPLi9jXPJnjO4pZpaH5TermQJGhQMhYTb8PwCQ8KlxH0
-	CsrVgGTjTsfgPR5xsewaqRd7jiJVYxs=
+	b=TpV6RKbJL7Xef0p+EnvuCBUWMF+8H9jAhOgYBzSO+iyC+laeOHnNAYvkUosGeesTdxzYhB
+	ArF0sr3OJj91zVPU2Y/BJC6uK5d3wWNvFiL644WHS/PishIMirHeujcMDg/j8EFihQBoAz
+	EhrIwI2qYVkgal1pHs0buwaUU2kIPUM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774352940;
+	s=arc-20220608; t=1774353020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EOmnOvJidcot6jxLrH1u76JLYVqpj1sXzmwoS6+GMMY=;
-	b=afTWARsfO6GSEf9ghHvHAewUUXCcSvnC4x0rzT+GD7hOZ532jiMPRXaiS5LJKZky38z0uA
-	kkHLGg6Glwmcmlsn6Js41GlRCyjMAFeIRpIJUMHPGgf31reafm/6tMh4CLquEWlM76s330
-	W9g84220BADvO20kzye8kdBW4Rw1/GA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PGnL8Y89;
-	spf=pass (imf02.hostedemail.com: domain of akiyks@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=akiyks@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35a1230c60eso1857896a91.3
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:49:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774352939; x=1774957739; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EOmnOvJidcot6jxLrH1u76JLYVqpj1sXzmwoS6+GMMY=;
-        b=PGnL8Y89aLP1xv6jD5dpwe6hDKyiJJ1GxIoFUKxlxoB+6ACwdjM+Fnp3V1ZU/X/yvt
-         yzvIZi2K/+iCCnY4zhXZMDMLZwTIMd5M1eL/BM8roP6o5RFDmat/vQ4j+pMibXaskT82
-         xLENZbPLL64yFyhlhiZBE7YCT5k1QeOuma6T83/uBlv3oc4SV/uVXfOMKytjbmeLOsTQ
-         lETHHsTBehXzoYGD+AEy7rnumvpGiX03NgGBCUjkKNIXlfYPBYWIGbSUURFprKtj7a00
-         gx4d/IUf/b8Wt5Ch7k5D2wYHGUfZ/vYrS9cHlvD16OSY5LKdk05oHIwlDnFKDCvSDiJR
-         LLdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774352939; x=1774957739;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EOmnOvJidcot6jxLrH1u76JLYVqpj1sXzmwoS6+GMMY=;
-        b=Y63vfA41qb5w4fJ7X4h7G9L5Y7RjAQf1aZiXg/oMJUG+11w/oCr+XaZJgRQJEHBQIh
-         x58wlpf+cER49QCObtUTHQhP0/544wRnz1Li5I/Hx4yFVYnofBlo0IzP6GPMNtSwlDjq
-         YODgyqjKaTKjml9wpP3FzNqUnGOSOHs3FWdugbxlQ3fI59GVTyccqZAYkvnOqrj9P7Qr
-         ChCQ23Cqo8zPLaeXstLqNWy756rGOBy0+SqGnjx9X39mRPt/0Tt5msiSsIlIj7CXQdbx
-         fKhrqVdUq9x4rno5bJkye/DiFkt0gdi6TBCN/aQEL9LzL83f7XKfl+jXHoMXHA5308Zh
-         xLpw==
-X-Forwarded-Encrypted: i=1; AJvYcCXr/9iCn3yAH1dJLoaUyGfdQjcUYFKut64/SXlgUy5vNa21EW+1c1wRlZWOgNN84pVge21Qg1gN4w==@kvack.org
-X-Gm-Message-State: AOJu0YzSwJHj9Yrpmg0u77uw14MLgoDLst/uEbz2c8tSQX+YtlfwzsZl
-	g42l+pr7eR3thIJnC5YtXt+HOsKFPF0rOhIHa7zrDen5llI022rOaS4O
-X-Gm-Gg: ATEYQzyl/j90xFwkih0CRCOsi2xy+LCg6Kcl+KSTbOzutaQZ3HQXZLxtjTWw7G2Vx89
-	n/9/cweCExjMZDevmibxYYKUkUbg/wbea+MuEk8cRqBMP3gITyfymwpgH/Jrshtr0LVaTC/ffoP
-	ndhNUpL6GDu7Ljatk5kBg3YshkQnAtXyzGl4d/hnhLcv3P5l9+Q3PyNLJGm380RtnKwOGhNdCjU
-	HSQEgyau/EqmsyRSNg3tYrLrJPzEOx6mInN5zj27v3GE+Gpq8T1ye/si+KRmebDLm+DFkED5tAG
-	a4J6HwfKJ2qT1T4ZqB0ZySzEciJmWov/1L+7vQ1DemuFoxH5owsL6Uet52v7815x0xV9KRFLOoa
-	lfL6Kpfvk3lCKjjQxNWWWOjeq3QJB9Szu9NceZNLy9tn9eAO79iwBoDqdoMURDkmvCN75bEb5me
-	RcSIY89k3iMFHqwL93DQduSdirejhIQ95esog2PSNOqHQAiw3GY+5EDYhb6AU5gRHE+g92
-X-Received: by 2002:a17:902:e54a:b0:2ae:825b:49a5 with SMTP id d9443c01a7336-2b0825bf592mr154385155ad.0.1774352939359;
-        Tue, 24 Mar 2026 04:48:59 -0700 (PDT)
-Received: from [10.0.2.15] (KD106167137155.ppp-bb.dion.ne.jp. [106.167.137.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0836a31ecsm143127965ad.77.2026.03.24.04.48.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Mar 2026 04:48:59 -0700 (PDT)
-Message-ID: <2ceb291b-3b18-43a7-9d51-5c752f1eebf4@gmail.com>
-Date: Tue, 24 Mar 2026 20:48:55 +0900
+	bh=1H0PcRwRWsj1424kk+Vkpn7bu1YblVD7xgckWcbNsX4=;
+	b=imgwGUy/X+F98bO0rdE4ZqVJiGMjlqiW9kh31ImZ7NtV8NOfiPntggTJUtMV7thfS0TC7L
+	CZWa4snU4MOv4Kow4JQcYNDT6Pxfixp/byGZmDSEDLIWsYVAuOXRy4OvvgEVoA3HFxAdNK
+	Xa4MeksiR2ECztA5U0COlbv3xFEfQwc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774353017;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1H0PcRwRWsj1424kk+Vkpn7bu1YblVD7xgckWcbNsX4=;
+	b=lzTs3iuR1Pwv68Prted2fEIVq4VUS4eCdaB1zvJOFuJdsux7ry8b1utL9Ph3MCObjnAYzS
+	3aaZ5KgPl44IF+KmJUNzrTv+ifD33oSkuTsr01h/xiGYiqN0Z3wxbXEuXqg8gVpNpLhQLZ
+	rabGQdpt6g4fUHahmu88tNqiWC/qb3Q=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev,
+	bhe@redhat.com,
+	usamaarif642@gmail.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH] fix: mm: vmscan: prepare for reparenting MGLRU folios
+Date: Tue, 24 Mar 2026 19:49:37 +0800
+Message-ID: <20260324114937.28569-1-qi.zheng@linux.dev>
+In-Reply-To: <e75050354cdbc42221a04f7cf133292b61105548.1772711148.git.zhengqi.arch@bytedance.com>
+References: <e75050354cdbc42221a04f7cf133292b61105548.1772711148.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: leitao@debian.org
-Cc: akpm@linux-foundation.org, corbet@lwn.net, kernel-team@meta.com,
- linmiaohe@huawei.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, nao.horiguchi@gmail.com,
- rdunlap@infradead.org, skhan@linuxfoundation.org
-References: <acJh0Sk4UdjaTFLh@gmail.com>
-Subject: Re: [PATCH 2/2] Documentation: document
- panic_on_unrecoverable_memory_failure sysctl
-Content-Language: en-US
-From: Akira Yokosawa <akiyks@gmail.com>
-In-Reply-To: <acJh0Sk4UdjaTFLh@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E63224000B
+X-Stat-Signature: sq7wuje6jdzi581gwscoupk8zjhjtwg6
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9DC4F80008
-X-Stat-Signature: 4b9df67zr3iqt34o7yk3m5rfg84mpo36
-X-HE-Tag: 1774352940-966354
-X-HE-Meta: U2FsdGVkX1/tvnCRGO6msPaT3/V2LTmSEyZ1eO+VI6+UZe9Ly3m7TK6XQTZ1YXh17QuIXHCM4joPenpsmvH1p4JrOqkwsSs8KSSnrY4ihEoaUY8jqz4JLjcPNdj6mUMktxqAxL/2lkEzUqoeeTFCFywniMk+Mf1uVo2lKxPxbAa9hgVrYl7JS7Ccv7c0HgxayN0zXe9XvRZUONZPNxFBf+KyjEhrGsIx/W5dO+PLGp04lZzKHog8+cvrxmZjUcDe5TtkelWxa3n68V+qcQsTYvxYU6AGNaktru399QQ4MruyeYb6sE8i5xu/KbLdsJgc7C9Ul4Og3Wu1wcWgdtFAL/99aeZgvlrKYs3C8PIHRYZtsujFyIdWiq/C2gRW4cJkZ2c+pOON9d+6C6q0OSCERU2BPd4LJNqNXDr2B0yy6LnDxLgL5f50/6u4MVZktAqDMgeRchyJrCWdp2VDbSpSJjcmU5wrZiIw/tOWjSjAcMQHXpmXKewict3VVSFZpQ1anmAnYvGK6kwRcEugvsy2rXeeiu+RArMDlpzJoLIBjQs57pQ/0qDs4sAg+ZBG+/DYNw+GEE6Gw1HJr35+I+aoXZJnn0wk3Ak1K0dHYWcB6JijWUMWq0O3+dowEiUm9G9afXSAjMozQzw78L8/3j3dgsdHllFfjp7lrNhHoI3FjGwRZKJcJQjrBpADZhmNMFZpqpoPX5OisTdxCx0iy6eDWbeYo6DXM9Kr0ZS5a2hZB46fjTLf31KbsSC8Kq7stqvUnYPjEltol9p1yWrpj+Bijzx3K+Lg/Tc++vA6ckqU0hcgkQH+wxYvRMfiJciOvwdshicNFgWPoT52NEfK02HKiP+4Fp6spR2FKzyDJUqqJX92RtXe+MdhDtWbkHyG4N/pC53CFOg8TgMcS38uthkOru6Bq7WxVtr4v7Un/GhtN00UPa/Njkp/A2TBe/cnEJQTcb+d36IWjHt0y5zma5N
- pP4WA8Lq
- vujo3Xlw+ngZHIXqv5TNMZexQf6A2SPxy9Zd8lY5feAq8YXsMygm2LcwW2WIeu8XqlP2apCdrU5U3H1rXiLLjZORlPjrme8Deg0lacxUaY3iWXr9S6fNrQPSorFpm1dcNH1+S3Pux4ScwlZcRG+44cKscrlZkYoFD1MfIMb5c+UtC9Ko=
+X-HE-Tag: 1774353019-815816
+X-HE-Meta: U2FsdGVkX19IvttMEp0JfS6UK+fhVE4pJKy9yI4tNVjarJvePk0qnAgfCYWdAbSsyuCIVprCVi+r5anyIiPpbxT8VSyckuDkBWz8HYhzP6WIxCkyxKR7JFUhQvvqiTcNM0OuQX3SDESwms76VdH7bzYhRy+4e7J4WSZB1gMdanvhigZ6ilhuG/1jl5mgcCynZZD6acWOyYW3ftzdOGJTrO2Aat0OX+INkCSH4mpPWBryLUE8DuHZdE+1GjEdqFHH2OjJbcMvKGtQJcWNTmTJLc62bDh5R6Fo6o8vHaNNM8Qve0YvYmwsIlnz/wuQ0IA1cDKkOopqGXL7SCbokYTGRkPB78xsNa9e65x1ZmNfHH6POAvg/GzxnfQXhTVo/a+1zpk+jYpua/T7c8xhr93/ff+w/GqG8B97b9LdXgCAQrWvOdy6TKzWflcSG1rWIVjSgdP248Hl/X9LFBnMSojG2mvy030+VEFZGxOUsVmENrSXMghEtNy/nu84wdNDi7hKPMLPzFd/CPb4hJ4DcX1FSaJNVAfUBFToCOVLQ2LBUsUDT1KG8SKZZ2uvBdaknD4w19Ic38+32e3AVNVYHh4PT1UkQFlSXGkAFqge1kjYcWoBIl1lcbFbzZtHGlIWA21WF6iqS/gF4qJd7gIL6JVMll+b2bwkLpScOaJt/3XcZEMTnK4IKvrUVc5/VLrDHZgSKxv/5yFqwM0HmQBVtTRlw63UXWTNw/5ele6GtGelvEgstwNURDJYVOrk9FrfL9FEZbO7OLeXdVvabajTVvd4XpjuHgx40ZsQy5Kr1h9YOhdhxHdb8c5TsDhOJ89w3Z91/lLqgI98yR/V94fen8TziT1AkDBSyxhzshlTgHQ29isjzJgsbQ5WB+upeuwW7enn4KgD+cbfBCz3RlU5cOqNV6xH71ddJgrUTv9sVLJuEkYiZoPcfPEuSwQ3OqGjROCb03gujBbdwBHCOsDAkIo
+ SxtCSg3G
+ FJBFYkb2VyUhq6aEWFINBujCGZjLrVamUmCuglHc/GJFyNIr7QpbquIBxCb5bmFA8fv16/nKD8clCYwIrSqIrtma64e9fOAYrXuvFF/qGey1gq7KnKIaUM/4ZTIFmtvbu1DTUyoV7kTgHsnyU6ppt+hFoU/6vwfPdgK36XgQWmjEiNpZjpyDflmo6JA2pxT1Tr4FWsdbiv0LtrKlEyCeOFjr5jgZCaIS6mtNiEHdq6NhmHm/x+Vi0d27zdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,68 +110,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-On Tue, 24 Mar 2026 03:09:25 -0700, Breno Leitao wrote:
-> Hello Randy,
-> 
-> On Mon, Mar 23, 2026 at 09:51:55AM -0700, Randy Dunlap wrote:
->> On 3/23/26 8:29 AM, Breno Leitao wrote:
->> > Document the new vm.panic_on_unrecoverable_memory_failure sysctl in the
->> > admin guide, following the same format as panic_on_unrecovered_nmi.
->> >
->> > Signed-off-by: Breno Leitao <leitao@debian.org>
->> > ---
->> >  Documentation/admin-guide/sysctl/vm.rst | 27 +++++++++++++++++++++++++++
->> >  1 file changed, 27 insertions(+)
->> >
->> > diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
->> > index 97e12359775c9..3310fb8272fb9 100644
->> > --- a/Documentation/admin-guide/sysctl/vm.rst
->> > +++ b/Documentation/admin-guide/sysctl/vm.rst
->>
->>
->> > +
->> > += ===================================================================
->> > +0 Try to continue operation (default).
->> > +1 Panic immediately.  If the ``panic`` sysctl is also non-zero then the
->> > +  machine will be rebooted.
->> > += ===================================================================
->>
->> The table begin and end lines must be at least as long as the text (may be
->> longer). Please extend the =========== lines by a few characters.
-> 
-> The HTML renders correctly in Sphinx (likely due to automatic column
-> expansion), but I agree the raw table format should be properly
-> structured.
+The lru_to_folio() returns the tail folio, and the lruvec_add_folio() adds
+folio to the head, so the tail page is colder. Since we always assume that
+the folios in child memcg (about to go offline) are always colder, we
+should use list_splice_tail_init() to reparent the child folios to the
+tail of the lru list of parent memcg.
 
-Just to be clear, Sphinx is behaving as expected here.
+Reported-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ mm/vmscan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-The table is in the form of so-called "simple tables" in the reST
-(or docutils) parlance.  The rightmost column can exceed the width
-indicated by "==========".
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 33287ba4a5003..e4a1078254ff1 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4524,8 +4524,8 @@ static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec
+ 		int parent_lru_active = lru_gen_is_active(parent_lruvec, gen) ? LRU_ACTIVE : 0;
+ 
+ 		/* Assuming that child pages are colder than parent pages */
+-		list_splice_init(&child_lrugen->folios[gen][type][zone],
+-				 &parent_lrugen->folios[gen][type][zone]);
++		list_splice_tail_init(&child_lrugen->folios[gen][type][zone],
++				      &parent_lrugen->folios[gen][type][zone]);
+ 
+ 		WRITE_ONCE(child_lrugen->nr_pages[gen][type][zone], 0);
+ 		WRITE_ONCE(parent_lrugen->nr_pages[gen][type][zone],
+-- 
+2.20.1
 
-Quote from [1]:
-
-   The rightmost column is unbounded; text may continue past the
-   edge of the table (as indicated by the table borders). However,
-   it is recommended that borders be made long enough to contain
-   the entire text.
-
-[1]: https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#simple-tables
-
-So, it's just a recommendation, rather than a requirement.
-
-"Grid tables" have a stricter rule.
-
-Hope this helps.
-
-Regards,
-Akira
-
-> 
-> I'll send v2 with this corrected.
-> 
-> Thanks for the review,
-> --breno
 
