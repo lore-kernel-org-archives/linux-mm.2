@@ -4,112 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB550FEC0FC
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 21:15:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B5DFEC119
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 21:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C58EA6B0005; Tue, 24 Mar 2026 17:15:44 -0400 (EDT)
+	id 0316C6B0005; Tue, 24 Mar 2026 17:24:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C09B76B0088; Tue, 24 Mar 2026 17:15:44 -0400 (EDT)
+	id 008EB6B0088; Tue, 24 Mar 2026 17:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF8876B008A; Tue, 24 Mar 2026 17:15:44 -0400 (EDT)
+	id E87F86B008A; Tue, 24 Mar 2026 17:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D9AC6B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 17:15:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3CF24E0366
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:15:44 +0000 (UTC)
-X-FDA: 84582213408.07.4DAAFE1
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5DECF8000E
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:15:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ultC5i+S;
-	spf=pass (imf30.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ultC5i+S;
-	spf=pass (imf30.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774386942; a=rsa-sha256;
-	cv=none;
-	b=Lb4Q1nod/qDPmM/UMlVEo6c3s5ciExwFVMDIcsWwxc5djr64dbbbiKL+o2yGUJHuXS7X2N
-	4jYNkyKZW2WHlGT1fcJwpFtrLxESgyMk2HZiHKsEMuKaVui6SMcqnnT2F8EPzo+KBTOFeN
-	7f2oZOgZBodaeXKwQtIQwe0QI7IR6ck=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774386942;
+	by kanga.kvack.org (Postfix) with ESMTP id DA3936B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 17:24:28 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9AC0358EC5
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:24:28 +0000 (UTC)
+X-FDA: 84582235416.24.084005F
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 85909C000F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:24:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mm93eJde;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf28.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774387466; a=rsa-sha256;
+	cv=pass;
+	b=dsnTYmMqncVVJ/tYifFvLFwl5EKAonDv20NdcuVL1/dt3lx/u7JotkdNHHoiqMyLoEo53P
+	wqCa2CyhFNjQO2UbyVsA/hhon4wZTGD/sKDtxLb+3jI225H/zYqVSB9lvJkby7wI/bfysc
+	WCUhBXkeppec7mHmBJycRu25tpV7JDE=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mm93eJde;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf28.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774387466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MLDhxrVQ3JPNzGwHxdK1b/M6GFU5OnGRZQ4Lon9SeW4=;
-	b=dRdFfrRXNY21IJjrbHar5foiyMHqqs8O3HKVCZsHtYc7049smIom8y/vdn+iHNqpHGgTtO
-	ofqJxEbca5XpT5D6OV5oZoylqIzhHfUJb/zlAOJvUHDMV98TclVaw+3DK/IiZaCUukqf++
-	6UION4x94dD7mmtaMrEJiHCQqWH2MAU=
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35b97ed057cso2764953a91.1
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 14:15:42 -0700 (PDT)
+	bh=3Osyz4LMrl4grZpa6FE1mV1/7khBzvzZkRNFcmPzp30=;
+	b=Hxe3SH88TE0RCQzzNLcw4OybY469AMQjdAHQ2I2eADriFN2N5hyHB6CFA/mkJv+ST8kIVd
+	/rhab5ol4IWIwXrAEncFYvFpZnSr5VdFEt6DXS+QqF1c++LsbbGJTxPt7CbmW+XDy7oJw6
+	tneL6CVvgkgZgFR97QD1SNmOLP2NHGA=
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a27c329e98so5678801e87.3
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 14:24:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774387465; cv=none;
+        d=google.com; s=arc-20240605;
+        b=k0iCILYCP87PWcmCnnOTn+XlPdCVNqgmYotK31j4Oopa9s03I4aiXnrxUfG5fGuKFa
+         zJHZhECjF9nEly6p+BWOavML1zI1ggXTb4wSPiVQR3nseuz+maLHwDhxo6XxzOmRSvYZ
+         ZS5E4FGPl6QjnDcUFRaoKR+jwMiev5A3YJ82/0wIIfN45gFFljfIUyUMWqox58g26uo8
+         Q/81eiJSV5xgNsdBH12AJhTwGbQsSZsnMFIT7WmqFgqhnaeJbtntZKA/Qwf+ZljS2GOD
+         fdIT5E7pjmlBmoSPUAyme6nOz4d3EAhG+ZUFkLmvSbzPiAkj5+2nxyPJBXYmDNER7rYb
+         ZXyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3Osyz4LMrl4grZpa6FE1mV1/7khBzvzZkRNFcmPzp30=;
+        fh=P+kzz2rtJs8MwX3ClS1RZs9P/hT5Poj5QQARbWiYpYw=;
+        b=ixO7dELPADR8spEUOzX2yw0o0qzx+yVgPWrsHiMJHBlGNyyK7zjJ/bgP+dcUDDUN5Y
+         N2HC2PeWD/pQ+XvvHYhao++wvBpme7yo+h+ceYciR3QQ/0MYDR7aU/FNUk46bDgCfQ/E
+         QHD6KV5m+5X/9lZ5qq5nat92Bq8yASS4REjCtdsyNCAAj156PdnXdnjt4kZw/dUIbtGs
+         VRdTMiJ4qijcdiWg9niODgmUUkvNRy6DXdkmtdkfz2kXGpkg3DeEZ/1qFo2WB8HHu9W2
+         grCX+JykI3TA7EzoxfgGFIoOJ3zLUAmfYZ6eoNcJRfwuIRApx6qDrjm+a6wigbs6jd1d
+         ka4g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774386941; x=1774991741; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MLDhxrVQ3JPNzGwHxdK1b/M6GFU5OnGRZQ4Lon9SeW4=;
-        b=ultC5i+STKSYITWs4EYSVKwZ6cyKjBIUL50HdfaYVuKBnzv4aaexNNCLIj8oA1bkwn
-         zdRRQGdigpHYPXiI7bSxAMQS6Na2OBeS0XLCXuwfbhopyf581mL+jZkUMj3cnNoB/qjJ
-         opl/bfbanwQF79OApogKKpX3OMLYlVCY/MdqqPlZrVH8QP61VcBxEtS9z4rLtezvtA6K
-         dxqV6I+yu8HLKhBl27pnNULh5BHiUYflv+UzDtTvLzbThBCIgfGnqJs/iKobhL8kLXQc
-         Iye35FV2nwrfIJY5Y6iUPssFt+Ee15zqX/+XCqYM/hGuJaTBnA+ALiop71+wP4NxnrFp
-         eoVg==
+        d=google.com; s=20251104; t=1774387465; x=1774992265; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3Osyz4LMrl4grZpa6FE1mV1/7khBzvzZkRNFcmPzp30=;
+        b=mm93eJdejHL6gIqOtz94d+1GhqB44SC+BtHC4WC1jf4Hj90BZwxeFY27YDRM4z5tba
+         JZ+hLVedw4fdxqvQjg23MFD4QJj9Tfk51jnDm3V/FhGnve63/cMI1gMgmrJpnRYjCw77
+         AUZNrPR60CgJntzxr1ax8ysdkCW6rl+kztqV+0tMkCNR1DLmki0sxW4sbN3mlkseKmo9
+         XspRjNF6fhJuJLi7yvrxXMpZw8NvH7RxUFHHyjbuasQxCTnyMrm4acLVqOFqnlz2Pe96
+         3+zRVvpOIjCs4NTPbVh06U4YVnXThVuGOPDbVTjPb022UY1K5RP/6ppj+LTxsJQVKrKF
+         brtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774386941; x=1774991741;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MLDhxrVQ3JPNzGwHxdK1b/M6GFU5OnGRZQ4Lon9SeW4=;
-        b=UEW3Rd2BDumFazlyHoHda5EYeBSprhXpDvNNbfz+xyu+CmOEVoIXRpTfR0VKu86zTO
-         Lz8ee3fHSCgjI2kmi+1sQGmrzR52A/fMLIa2akTNmdUTSBReA0xXkaP7DXLNtFdgkTHM
-         9//DvK+X1sLSa3j5swzSp3bTsGFmRY2qWw7Qso9mpRgSuk9D5IEZaLSiOqEFLOqOJXu8
-         vQE7GhuvF2gXmeiN3+/IsAp+kGZ3hi+LDBN6fSnW7YzdtucZkN5jwqbZ0uhejLAjIOKk
-         NCUoMt4y0mpAp4hISpB21nc43I/oDvJOJfL3yXd9f2R2inQKK8XjNLORlJYMiQDYoJ8I
-         Tjzg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7thAaI83Iekvjem4SqVKtK+AtLQa7QMLwv/PEseGLe1HwrGxBM4z60epabsDhF7g3Q7DloO8Q+g==@kvack.org
-X-Gm-Message-State: AOJu0Yzzyl00o+VZP4DEzGhQId0PiVVmp3v+89jIs1ZkKWlvzW4kYXmP
-	ElHti0CNwfMYjzol8vSp1flacgOFaVHMdACLCwnTefLAu8+BqlUpsWWstT54/GvI2w==
-X-Gm-Gg: ATEYQzxfKQXo7WbrNEF8mbgYRbcStbvTmXrbo7KWVNlWjFMGQuQPuGVLCfQxOyF8EEb
-	pTwA0ZpLaFc6zQVc9LelR8m7BSZEnlh5CvZljS2asFEoe1lMARGmce3+90EX11xrUwugW56Rnu5
-	KbA2TZfCx8S1zuaTIHGBTnu1jK6exo934265V33Epm35Q2PC4CJLsd/lK8Kebjtg9zAMmdYdRqx
-	6piv4tpsakGWYA8GX2hvuF1Ix2nPzVe+0d40OZ98kFqRiWhFImYAQldhBvs9AJlVrQItRFGW8ri
-	iJxg23IDbWvXhoCQUkaD1Vw8tY2YJDzeFeNs6i6znxH5X+d7DmlDCA2pPu7/nx9HPQmZmy8zWSl
-	4/wHm0a5z+5WCTOdL4t3+9ZSXKiimSg6NJaIJE9jmDY3CsrQUl9igsNuB3GQeb3I8ZyTca0DKxt
-	LkZmUv3h8Xh3XHfbeDlLa1SpdxtD8jNfahb12UGoTmcW2G9U9yAQ3IL50qFfIJF6zoFrR4A9Ii
-X-Received: by 2002:a17:90b:1647:b0:35b:9958:4edd with SMTP id 98e67ed59e1d1-35c0ddb0222mr711393a91.30.1774386940708;
-        Tue, 24 Mar 2026 14:15:40 -0700 (PDT)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c0312f1a5sm3248479a91.3.2026.03.24.14.15.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 14:15:39 -0700 (PDT)
-Date: Tue, 24 Mar 2026 21:15:35 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, pratyush@kernel.org
-Subject: Re: [PATCH v2 3/8] liveupdate: Remove file handler module refcounting
-Message-ID: <acL-96VeL3rAPbgo@google.com>
-References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
- <20260318141637.1870220-13-pasha.tatashin@soleen.com>
+        d=1e100.net; s=20251104; t=1774387465; x=1774992265;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3Osyz4LMrl4grZpa6FE1mV1/7khBzvzZkRNFcmPzp30=;
+        b=cJzJT57x5BTwManqwRz3OhZfwVYtx/5+ougOQ49uu/K2WMXk2Twdc9BnZCRxdwUEhA
+         ZumlSwAd+lA/JFuD1OHMp8pm+SCn9Czh4fMlS1RSmA/H043xi1dfZ9CHJ/5W/lfnZH3J
+         8qlsAfu9wqpQChrYilI8RzjNiTkg1gX98zvdP1cNttm/TMTJWK/YTDyzoiq5GbGuHhcZ
+         ClVoay7pW6Cqkhde6gaPexhvKWPPCk882gU7HlurPCQra0jzOfAsoFR/N6b4Ieg6ersd
+         yPd0jP/2H0mv99l0pKkIU2wQkxSsL+pmkNP8ez7oK3Aq4Z4ZskA7FwHSOppO7kabBJZn
+         lXwg==
+X-Forwarded-Encrypted: i=1; AJvYcCXzqKS9PwrYecgFiuPxcehebDCDO5kkQa+BGfYmAdwqkT8vmK4RWsFQqQsqXZkZgSne3t/gT2iZoQ==@kvack.org
+X-Gm-Message-State: AOJu0YyB4XNDl5AD2KZbJzK3p4UDPH2+Pud1mqdWAcS3fqgehekNGqM3
+	cmrfdHy0gLUKT1zmqHmRPjFk/SJCx8CnpCXAIS7JS2hl25Rq86xlO58MLIcBYVpVfLj0isYQcWj
+	h2ZJq1u7nCl/D8kNJz1bo2+IvOptnktfMaW29WBzf
+X-Gm-Gg: ATEYQzzkojOrvXCsmjg0v4DmiDFWSVyD9gn9mTYdQJMVLfHRBIrlRKBnnyV/G6w+02p
+	Om7+9v69Uh/8KWa6LHPAyd5n77L3jPrN/pIP2xUIhMt1A/DC1Xts9szIZ+QMvXf6oRPTfSA+KyJ
+	SOaxcQfiDzhz+RzdwZAKRlE1WyEVyGI63hCuRWfVFXOwJcTz9CA9zNAfWyEb2UzuzBpJ6iahcrU
+	B8KopORqhO00JaXBQnZdSBwwaCKap3tzOCINxfpxv9TT8pKV3ZDxR7zdOwWt7b+W5Jief4US7E2
+	aFjquYC4
+X-Received: by 2002:a05:6512:114e:b0:5a1:4c8:a632 with SMTP id
+ 2adb3069b0e04-5a29b976dacmr321914e87.13.1774387464172; Tue, 24 Mar 2026
+ 14:24:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260318141637.1870220-10-pasha.tatashin@soleen.com> <20260318141637.1870220-13-pasha.tatashin@soleen.com>
 In-Reply-To: <20260318141637.1870220-13-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5DECF8000E
-X-Stat-Signature: 5mcg966fduzqizzyzc5codf1d7gnx3a6
+From: David Matlack <dmatlack@google.com>
+Date: Tue, 24 Mar 2026 14:23:56 -0700
+X-Gm-Features: AaiRm52LXcc-C8LfZJHz0X5TGe6ipMfQUWo9odKChlYP9O7L9GCYExr5BHUEcbU
+Message-ID: <CALzav=fhwP1Wv9YjFTXoinX7R3rX-P0igvLbftBh+sZrL3dySg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] liveupdate: Remove file handler module refcounting
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, pratyush@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 85909C000F
+X-Stat-Signature: 6eg3qucs1buuokrxy1cja4ebumigzus4
 X-Rspam-User: 
-X-HE-Tag: 1774386942-392279
-X-HE-Meta: U2FsdGVkX1+vJluhycUuWjmH04m4Y0dlwAbMZOm6naQz12lC6iDAeArJRa3nhJ4v4wAulGvQuKcYqv9/kn6P1g1fqgQmF+cebrYpPE5etpX5M+p0rOBcEJrTJzReTs+HtngGTWhep4PBtd25qrdFALUeZwvr1nbV4tZZr/zUXiqWi/yIxxvBxWtrp9SIF5QLHg+RpvoQyLM/baV/lK6MFMVKRWvfyHJQ1bX6aCDltm781IWAwc73yNlf6maxkqCnoOBygBmw8vE7IxJxz4J9h7TEaP+m/2CRob4qbRaBT0Y/VTzIgbciiMmjn2M6/c7/oUCNevzhdA+tvh+bs25GvDrW6hpFxQw9u91LRLy+ZDGd3djzMXbOJYhM9OxNeH74PsbrrdyOO6U1ygR8Eys5cGpsbkWq95G1tZQw+9pkM24I3ss/miEAVyVzEQnbPBEuU73YbqDko8jlSWf61Aq6OY55kng5Uyk2goxrJ/RQc7dk8Y8FppAwnc0Vp+ikAs78fBfk/d1uWezRw1YX28DhGEuGnFKzFvi3K9HoVAQV6mVVJ1k4ntFHtlk4mAmRlV94S33HkmOxz00xVPvxJqfu/FvJoJ9mRVZZ0f/h1YmErFZZ01Kv9L2zPHVpE8DsyiA2K6lscJ/b7KsKGqVDgeajh8SnHVj2jj9H/Ml5DyAy+BvBby/Ad8Vs6QPJ7QtLRiSvAYO6enOQ1ylMaWMygVxP9MVM4ET43aURyY3yLyoRwRp7sy/PbNLiltwo7zS+D3PLTtcjyjDFy+jlyQbqyW1JiXlrG3Bxetm1lXLDJFLlk+VCWt3webXA9RaG1J2Hq0D1J7+kaFFG9jFL1LlcMDMETigZvnWBZcprU2qPyTjH6yNiIE8KQigxQ9wyeq+qDJwCbF2bcfaGIvDHMK26xVRN8e5iUTiE7KXuBCH11vKFpc6k4PfNipdsI0XzNSOB2wE1g1StLo5fFYG1vwn+qYP
- GcSjZZzz
- B90nOfDzqCpfnWp17FW18Ake4JabSFzFFLrjZRjUI2BHTWIuBQx5zWkj+f0lq4A4UmXHT6N7AjF3nWvOeki8C6tzPsNBUfAtEYbO31OWdGSqEB+KX8lJrxm7sjO9TtgYSNpDW0rFT3+wmLvWrLS40IgoFa01Ummv/BqsQXis5x0e39asG1Frt65JjWLcbRnJoRhOjGd4cjzdVSBu/fxycndA0u56eN34WxN4kkSZlgigkesEBUN8/m0wha9OD0XBp/3wsgTstWjUhgj787UeaiXlWO4OP0too7Ns9eyQ7Ymgbjh95NqM/EdoAnjpcSMSuQITdNO+uo/ZClydB0AEn/ksC1J6WMXln1qZyM/jiEcgpf3xrr/AZozm/R/9cXUsaCIneT3JoX5P2NTayynEhaWVHaw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774387466-936307
+X-HE-Meta: U2FsdGVkX1+e+Bpx+mTcddTSFSFmhptvTPPgPBdF2wrgQz4k1AKuX+8zseFq2HAG0JAxpwzalNNIdNbBHftSD9G8Cbj6RlUc7hE3xlBTsr9UUbb5O96o6GS0FTd28XoGTLyyGQe6MxT3Xd9GKCrG9bPCiH6y4uJR62F665VS9Y/NItu8/b7k5a1NKSothjoXZi7+tCx/MZy1++qKJnCf7+A0rg5BtAcZvRzn7jQEgmvXdFw2iX1ekHtE4d8QtMYsCBg/GKlTlJz/QT70dLRANPlf4GyLvmJdtXYHEyXMTfNVYkvt4KS5E2znojB7eZCv4EUpcremvDczI4urpcYotfQgXBNNhPqFbB4wptkdZRPnU8bHYdeBHPomEbmp5QWu2fsZE4KRcIdZnVcLThMgCNrAL1apRJcS/mYOyENKgSWUlOtoiiuDbs4ntmfM5m2Sx9E4IqG+uLisTTC8K5GZtv/etXTlBS4aC6ugEfv4EJ6BkjFyB45+Cf/HsptUw4aUkZcJ7U6Q913Kpwb1uohfB0gOIenbnLtb46Fbg1pcUlF2V4g0rN+wZoIOlDbzwfemmVVbB7NH8KYLKqKZoNePl8+3ZjBpA1IIRywS6Ks8m+eWQD0FMbnFPemYgY1UjtOW9FUq4FLMGaXxZ+q3i6Ni7nyRck/8cvRtF8IsC3BB7FwIoHCeSZo4fWMQOAzOECtyRcYPeuQgjrueNYXQepDVLPzvtSP5REc+Gtkh5tGZsXLLZ74+PCRrqzYVkfo/GCN5so/HCq49ST3Pkg/gtuxjW2J6YJElUdMUGoXK1avzBauXwg6oyNGBrMaSDtLsohslCsg2U73D5l/Xy8EQAN6LVaTuTiFVErhBRzEBwLlH7yvlIJuLQY0g+brb+44Z49+UyzQ5daqP/M8ZMEVEcA17y8HViATSmVn5AZ50cnSxQEokduNlX251yETgq4NvQQhtY3MG9X0FU1c250KS7tR
+ GRfRDqdh
+ wJCKI8z7nXgGy6MFMvLkkYoa1gxdEoVG7aESAyOGjEScQeUOME5xugHoMwAq856TJSAE8g3q04pz89gt9hSu4KNaTPa9qRJy3FCgoy554pB37YHhFUhqEFGkqMjDcXPSimjS1XyYyt/aKl5GD0QFa092XJnZ5CgojH+4ZEXYU/7smnEXPjysxvE5LLlhwnGzIlT2SjIbNHSqXUdW55In7HBafyhJAUrpskw6RTbqCBIn89/U9R08F3V+OvxXcf793J1xEHxx9d38Kdg0mWYFSWdA3VcExJJIGHMqqLuqfuIkfEFM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,36 +138,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-03-18 10:16 AM, Pasha Tatashin wrote:
+On Wed, Mar 18, 2026 at 7:17=E2=80=AFAM Pasha Tatashin
+<pasha.tatashin@soleen.com> wrote:
+>
 > File handlers do not need to pin modules indefinitely or during active
-> live update sessions. The VFS 'struct file' pins the file handler's module
+> live update sessions. The VFS 'struct file' pins the file handler's modul=
+e
 > via f_op->owner during active sessions, making dynamic reference counting
 > unnecessary for handlers.
-> 
+>
 > When a file is preserved, the live update core obtains a 'struct file'
 > via fdget(). As long as the file is kept open within the live update
 > session, the module is pinned by the VFS and cannot be unloaded.
-> 
-> Similarly, during deserialization, file handlers are matched based on
-> the compatible string. Because the handler list is protected by
-> luo_file_handler_lock, there is no race that requires dynamic
-> module refcounting.
 
-Sashiko found a potential bug here when reviewing my VFIO patch series:
+After invoking the file handler's retrieve(), LUO should probably
+check that the created file's owner matches the file handler's owner,
+since this scheme relies on that being true.
 
-. If luo_file_deserialize() reconstructs preserved file structures and
-. assigns the handler to luo_file->fh without calling try_module_get()
-. to lock the module in memory, could the module be unloaded before the
-. file descriptor is actually retrieved?
-.
-. This would cause liveupdate_unregister_file_handler() to run on module exit.
-. If userspace subsequently calls luo_retrieve_file(), could it result
-. in a use-after-free by dereferencing the dangling luo_file->fh->ops pointer?
-
-https://sashiko.dev/#/patchset/20260323235817.1960573-1-dmatlack%40google.com?patch=7973
-
-I think LUO would need to take a module reference in
-luo_file_deserialize() and drop it once the file is retrieved. At that
-point LUO can rely on the file's reference to the module to keep it from
-being unloaded while LUO still has references to it.
+If there is a mismatch, LUO can put the file that was just created,
+log a warning, and return an error up to the user.
 
