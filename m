@@ -4,88 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79C96F532C0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B84B5F532C3
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:29:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0CD66B00B0; Mon, 23 Mar 2026 20:27:59 -0400 (EDT)
+	id D47C06B0088; Mon, 23 Mar 2026 20:29:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE4726B00B3; Mon, 23 Mar 2026 20:27:59 -0400 (EDT)
+	id D1FDC6B0089; Mon, 23 Mar 2026 20:29:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B21536B00B4; Mon, 23 Mar 2026 20:27:59 -0400 (EDT)
+	id C35F36B0093; Mon, 23 Mar 2026 20:29:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EB816B00B0
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:27:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3BB27160ED0
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:27:59 +0000 (UTC)
-X-FDA: 84579069078.29.A678124
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9B2F680004
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:27:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c3d5O1zQ;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B111F6B0088
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:29:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5BE6FC3F51
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:29:43 +0000 (UTC)
+X-FDA: 84579073446.02.70CB00C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A4D67C0002
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:29:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Lff1/uUm";
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774312077;
+	s=arc-20220608; t=1774312181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vNBbEO41TGRIcfLATTm4gHmPxLY0yiFGVzJFvTskGZ0=;
-	b=1B/Jkv6Lbqim0TgVID6DSpnOH8smQLzUkeH22eeO2Pm3hA/DX8rdSZnSpjF9EVsaur6NkV
-	rq1+qQQBAHZOD65UViaVYPp4q+nH+rc4ATXBItmcuC/4T4Ttg5uef6HKmXQk/UYObvjU/q
-	BhqioOlrAnWUG59puunv7ZN+9vr1/Qk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c3d5O1zQ;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774312077; a=rsa-sha256;
+	bh=sgxQoXZoMRqpKHASnBu2POaPAVutkDcOpO00V0ep4HM=;
+	b=Tb8BWSCfRQ2yOwQqDovpASCiLru4iwJfSiqZp02/ovsRpEI5pecfeO5oAEYvBOYr0SjaXG
+	xys8lNh7NZ5hoR5EwMZdAGPpoerux76xfU/fYRxOfwWUbCWbZOl7h2tfmE8I0bDbuu8FuA
+	cZxpxvlVPFmfJGK0eM96G5PKP1LNVeQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774312181; a=rsa-sha256;
 	cv=none;
-	b=fZmkch1M8m4BcMReaAM2+Yrk8xTG652zcJjgarSgmmNkE2Tc7f7lo7/5c8FzfTO4MQSSDy
-	GMSJ14aly/EmRQlL1arnRJiILAF6WVpcu0Ayg9dWN226dmRUwXQpybiS5HIWiD6b1EfDzK
-	mcS5A8sNoLl+05/LXvs4CAP2n39WT9U=
+	b=58ZY1lHJs3pkJUUdEZiJvsJBi9OMHA+Wu93aT+mAw/Vwfkv9DJ+Bvb6n0RSrqmEZhKIpK7
+	tLXXsoCBE65Goa7VxXtlHsT/sZIJ9VIKx6p+iGg8olcQPrpDKJbyA/e8TdbkC4ZuIvj8VE
+	zDK+Wi1L6SivIFJrRQb3vYIeBwn+aFg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Lff1/uUm";
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1830260120;
-	Tue, 24 Mar 2026 00:27:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C083C4CEF7;
-	Tue, 24 Mar 2026 00:27:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BAC5C43CCD;
+	Tue, 24 Mar 2026 00:29:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC1DC4CEF7;
+	Tue, 24 Mar 2026 00:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774312076;
-	bh=CXHUdTyfTNdbD2JJq9Hsvz57+3dMhKPZJcBepqZpPew=;
+	s=k20201202; t=1774312180;
+	bh=84oF5StXlVFM1n0EH38q9LyOhne9+NiaW3HGzpjiGRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3d5O1zQ811WSnUGMoslPtMT2h/0SBlgLhNZQuaF6NXRz3i+qZyYPY1eqVGbTjVA8
-	 J/pIHmbNivVi9QqgRhCxK0LhmUnKk9vScprO2uoaZXtiaGCJTuZNDdIfcsFZcZ8J1W
-	 cpEncRyTN0vhLrD+wfJezFHkNIG3/MQijZOuMGqaTfd1Mzn/cBOyQx8e5SBAeZ334x
-	 OzFOg1Q3uV4F3VNB5pgZRBvgbqqLtFpysXR89MRU9ulBYdemeNJsWGGHhKgnkxmbc8
-	 pHhCsEuCmDGOjs2CmsyqwGwwlwLLnQ/p3FMbUgEJYv6adqtc3ngr/k4xtjKm6XWNeH
-	 mtYnR3+dY3TWA==
+	b=Lff1/uUmxbVvOZ9EJJ+4R89lBZdIrsToD8UvgKOAnB6ajDrqzszez4G+SFVcJ4V8M
+	 5Yw3fOb7PsbHI2QqRTVb+IN5qoORgfqZmlYw8o9oko/5A+W+x3Jx6hJlV86HG2b6Af
+	 n/OZgE42YkjRq88gbmAnTD5iib5OtKZ8VNtxJdR+TJL6W8PkZ2tDAl1i5qy2JC7pV/
+	 eITXzooZcjeIrDn6H3NGF3gdSLT1xVO9WkoGNRNkoSBvNGS7rRM55AlfndhHL3N/1U
+	 cxsg/zcZVd8lLWgvAowQ9MyXr2ctDeNOcPLYt/8ljBMHP/v2hWj15OCw0DZ0ja3zX6
+	 KRLlp1KCfxQcA==
 From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
+To: gutierrez.asier@huawei-partners.com
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
 	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/core: optimize kdamond_apply_schemes() with pre-filtered scheme list
-Date: Mon, 23 Mar 2026 17:27:49 -0700
-Message-ID: <20260324002749.86524-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH v2 1/1] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
+Date: Mon, 23 Mar 2026 17:29:36 -0700
+Message-ID: <20260324002936.86653-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <43C21A6B-B27F-428B-B65C-1BBC9D66AF38@objecting.org>
+In-Reply-To: <20260323145646.4165053-2-gutierrez.asier@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A4D67C0002
+X-Stat-Signature: zgxqsebia3tyyjeezyfghgpw6teboh34
 X-Rspam-User: 
-X-Stat-Signature: ncdktzxjy93fdtbrfhrjfjdikb81u1ay
-X-Rspamd-Queue-Id: 9B2F680004
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774312077-276157
-X-HE-Meta: U2FsdGVkX19OGtO+gkUWaqTs5EtZItdPMV0I24V7WuSMqpZOSXWTmFRRoOLGsVi7XBRyKnSsD8QbT6uIP3JONq+sCcm3XPPCSvzzLYg69SuVMzq96rR2IfeBXgiJzWppy+TBHM5ujCYjWXNRZbME45kr/o4pmtUZirYZB22hErbei0iNq5758M8XhsosrlfMUl8gC8spwFU5+95zZGi6W4NzUNkwjPwpUHEJY5W+QxD1utU+ugdFZqLGUMIUFR60Ue7JEEzMbUMiHUhiNrMNDArILmccjcaqxA0B6zczKh5is+5Q+3HUpK9xNj78exjTifsNqLScqsA9pvn9otoXms7vWsw4hEETo5ZTb9pq0BdSGoHyHU0P8LaV+CJu3gjfA52jg1fiJFsJJa9P/EPpcNRhM5Vz0/KH1JbyS7yZEudjFMfAZY0Q2s7S6goghHxohkSbs5/WA/xI6iVIjSfLzXyOizqpPWElKW4Mq5VP0xouVlTpjTxSTf6Xdnx23sKpNE70xxe9BP4ke80y+Tj09VEHN7y4INGMlZ4Nz8cHJ1GeK//Fmh0MK4xUs4iNIz2FzTTSsac5BYAJYt3Qaf3VxtrwmdeulrYVlK24QzuCIz4LZSxCSpYnJ3/a1vNB3EuAEdsvfCfNghzalxDVW1wtrstspCuErcvXx79hbqKlEPKxFUaWYfEsmi7xyTB7qmAj3IpvHkAWTsusgyTKUh14qG7akOJ+MpHKB1C46MeExkIscBrkrywR2y9/aDBHPyVV8AOHQT3MEDzMjozvMYeJNXnlWvFWCJnAloXA7+PS1hbn/2LvABKt7ctEJOAY0hN9MxT+GmBuL56TtMRkeXcm9O2+kfSsIYk0c0pXDzCut0hyTAz0Hn2vgnD/c8zBYVTy8xy864o0iN182VXI6IgjyTgQg40sOn2renJYtJ3aQMkqiUBoGnEAYx8AZhRbA//6MF3iIHHu6/vXdl+96K+
- e3F00cNY
- GiQ/HDn1NTNLU1Wx51ULLvSx1RbW59lQKzAdYULJyDvrydFlII2SAj6H5yXwx5wwTR/7VOZHP/g+bpbtzyvUuW4o/mqKKHCK8uCjXGqMsIYJPCJWA7bycfW4OYH5KKmtWYheeKFaNegP9jcx/T+sgrUH5SS4akPcaBhF/IKy/lnZCc84nIZcNWnC4z3nSykG1zQQNorPGyRhiVcqbQRXmMlmt8LkVktiPORr2nGfif45+p98Wps9ww7e1UY9qhxZL2tXCglNi5rOObRCVy+sIopRP7lohAlaFz51jm1ZFkAtaispG4Or+gnDI+A39S1wUh+1S
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774312181-184505
+X-HE-Meta: U2FsdGVkX183vgOwabTwSOl1MjToNhh9w5m1JlPd2aaFPo9ecMTC9LHK8qeJad/rUtH9ZYjZ/KUAvPXqE24ePTJwEAuspLd98fh9zsvQqnebRI51T5yo1kjmhBvwg8VWwAa8atjrUX0yrU1F2PaaqGox79rlsvaa/Iv5mglEVBC++wAY8RE+odGJTZC7pvDjLp4KnGqsedi9fXIIpH4sQGoTmZfkB5owoxbx4b4pIgUeFAcxDOmtKvwC2TtzesPPSIdgKtNsmlxWue/Iuw93lmUq1f1UPFcg3wzXArBDolo/N9owv1B5ccLkKCXsPkh718H/jYZpRPt3HhOKe7Li1Mv4HchqTq2sILVPWB6wXlPfd4/2+HaJ2t0JnzanbZEJD23EaEzTh8VwZD9afDh/FCmC4J3qXSnVqZg+Wm3ZpiLkdpS8fXNNpC8jj64UeMnRmoU7vMPHvyQ6QXinrIYsAh64Zv05oVFzDNxyXHy1U7sqMWWdqvD70RJVV8D2cNcX9WiiE2bETfgJV0aZQMVuOrVAg41fr8wWK/8Cp6kt14TVcfbL2h4lhOjTpapaGfrnvyIOOnAn0uGJvKBuVL6Fa3pod/VwvD4iXOhQ6LTLgEY+KJrkSNV3fMKs97JFbj3FeG7libHT0hOkzQUQnXYHk5aw69QNlAqwWxk0QPUHxw+8Qm0WGOEfN1cXTCAPfzw0KAaF8szBQWGBFZH3qP6SACwV6FbCaE4TgyEpOnZcitp+DlWJudKYqnvGUNdnyjWlo4NpwNIO2x4YPESM3b0BiVi7H9koHlUW4vW6P1aA+p/JB2ibBtRdP57wuzDFwkVG1m2zx4T9Hs3TkrKKLGCFiNHXlYkHhLJi60KHe1O68u0Up7T6MNcJ4bwWQq39Vn0TRXUKMNDtpvssn762aF7mIqJQ2vA2cTfwPMXgexMaZWnPubusx/X9h/Rs9HFvwAnybiT64zEuFCEJTK7INty
+ KqG1QRhJ
+ YxuNYFRi4Ed0mB56EujQPcmsZSVXlLwdX+HFcokSR+tk+AXK/19sNJYYWmEO7U573iDZE9ubL/nCU1BaqevWv1VQ79UOPFQn+91puAMfUJAVFNY92EL/xKsC6xYxJNHk+IARSyA/VbHOnqcp2FhDJ1P9IaZ79ql8Olw9WD1/QrQ3j7gxgP8TIrAiHiooG5o1c/gBsZqFg+ysd9FQYQn0MoBPtPW1A/TomMfxfNFoLw0Iy8c1V1L31l5zsYC0yjH15qERV8sIoWq1T5EqTCFAVuGY5w129aesY6Fq/D42ausG6a0FIu+e7nr0xa+nobQiWKEtulcO6NgwXFPSrfVgVM4luiEtmGj0vlsuSN71mSxUcMEFzbFx65NS4XKkmA98l087iMflVlkpxar/AO8kL/FZc+lUMlqcuRiV5TZ/i6IeRaT8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,30 +107,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 23 Mar 2026 15:18:16 +0000 Josh Law <objecting@objecting.org> wrote:
+Forwarding Sashiko review for doing discussions via mails.
 
-> 
-> 
-> On 23 March 2026 14:20:51 GMT, SeongJae Park <sj@kernel.org> wrote:
-> >On Sun, 22 Mar 2026 22:56:27 +0000 Josh Law <objecting@objecting.org> wrote:
-[...]
-> >I'd suggest to hold this for now, and revisit if this becomes clearly a
-> >bottleneck of a real use case, e.g., a user claims so.
-> >
-> >
-> >Thanks,
-> >SJ
-> >
-> >[...]
-> 
-> 
-> Yep, ill shelve this at the moment. Thanks for the clarification
+# review url: https://sashiko.dev/#/patchset/20260323145646.4165053-2-gutierrez.asier@huawei-partners.com
+# start of sashiko.dev inline review
+commit eaed291e6fae91842b1836c68bab867d53525db5
+Author: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-Thank you for kindly accepting my suggestion, Josh.
+mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
+
+This commit introduces a new DAMON action, DAMOS_COLLAPSE. It allows
+DAMON to synchronously collapse an address range by calling madvise
+with MADV_COLLAPSE.
+
+Link: https://lore.kernel.org/damon/20260313000816.79933-1-sj@kernel.org/
+
+[ ... ]
+> diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+> index 3aa5c91548a5..c6476e63f4fb 100755
+> --- a/tools/testing/selftests/damon/sysfs.py
+> +++ b/tools/testing/selftests/damon/sysfs.py
+> @@ -123,11 +123,12 @@ def assert_scheme_committed(scheme, dump):
+>              'pageout': 2,
+>              'hugepage': 3,
+>              'nohugeapge': 4,
+> -            'lru_prio': 5,
+> -            'lru_deprio': 6,
+> -            'migrate_hot': 7,
+> -            'migrate_cold': 8,
+> -            'stat': 9,
+> +            'collapse': 5
+> +            'lru_prio': 6,
+
+Will this cause a Python syntax error when executing the selftest? It looks
+like there is a missing comma after 'collapse': 5, which might break the
+execution of the DAMON sysfs test suite.
 
 
-Thanks,
-SJ
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260323145646.4165053-2-gutierrez.asier@huawei-partners.com
+#
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260323145646.4165053-2-gutierrez.asier@huawei-partners.com
+#
+# [1] https://github.com/sjp38/hackermail
 
-[...]
+Sent using hkml (https://github.com/sjp38/hackermail)
 
