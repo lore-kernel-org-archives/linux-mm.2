@@ -4,132 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AAC5FEC11A
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 22:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2A1FFEC11C
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 22:20:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A9436B0005; Tue, 24 Mar 2026 18:06:46 -0400 (EDT)
+	id EB52E6B0088; Tue, 24 Mar 2026 18:20:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15A4A6B0089; Tue, 24 Mar 2026 18:06:46 -0400 (EDT)
+	id E3FA86B0089; Tue, 24 Mar 2026 18:20:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0494A6B008A; Tue, 24 Mar 2026 18:06:45 -0400 (EDT)
+	id CDEFD6B008A; Tue, 24 Mar 2026 18:20:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E38676B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 18:06:45 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 616AE8B75D
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:06:45 +0000 (UTC)
-X-FDA: 84582341970.15.03E2B4F
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 599C614000C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:06:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ILt99KmH;
-	spf=pass (imf26.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774390003;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B845F6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 18:20:04 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DD121A0501
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:20:04 +0000 (UTC)
+X-FDA: 84582375528.27.B958C74
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5A1D2C000C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:20:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uW5xvVvg;
+	spf=pass (imf10.hostedemail.com: domain of avagin@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=avagin@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774390802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=31RLaPoXgoqacAsqS3rULshRlRBQNXVz3bwTKZ44LII=;
-	b=Fmaw9nNUW+6BKGUjiOntzQuC5peDCtV92h59Qk6n+61KgtiX13+ytHhzYnboiYqDwZoSYY
-	XD0JdmAnPpzLbDn1Z0t4LfPNMkvBieatmvF27mQgo9uK2XQybgncXBJunbcn65CNLIWbuH
-	saA1ey+Rcf/UXdO8nixChBuXvj4Tes4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774390003; a=rsa-sha256;
-	cv=none;
-	b=apiykIMIuQab34BQqu93YygDtSlPLr8HKYw1E9sM86SzrO2MoCHLS0IicpUAUOsNIXWjvD
-	p0D6A8O6X+UVbGHJfOLSueDwikR8tb3LcYat3eeEiNPE/XhCaSMgoESjxOOkcU5OZfnQU6
-	Ad0d57poNO/aMUu+miCNmBl3Rekv6Dc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ILt99KmH;
-	spf=pass (imf26.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-486fd5360d4so19825335e9.1
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:06:43 -0700 (PDT)
+	bh=iA0qEOtZ8sY0A4PQMCyKkXrxyPKJc9xjSndOAsg0m2c=;
+	b=3ANsq35iMndzyfcFBEQvHP5XjbhPcPHYw8ntqwbJfA89xPsaOt4OkbYMVJTO2i3CRS8VkC
+	G1QyAvE8hDR4+fQktiIAwDlMkzQ/69B3OKpX7Qdk7N6HqJ3MlXX1RHCC+1adbLA+Ag9csi
+	F7HaV21z+E27lFauSgI3Wa5GCl10mrs=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uW5xvVvg;
+	spf=pass (imf10.hostedemail.com: domain of avagin@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=avagin@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774390802; a=rsa-sha256;
+	cv=pass;
+	b=3xbp3R6/vWFEUxnQllA61mDL1Em4bGh9Wd6Agk54dRhLuCkBsJaL/43j2C35uLYVDDTe3X
+	QwACxzs3RvxKuKWecTDbc320bSzm8JqNRCTsgQ1659t9/AF+D2TtkEvodwo7kv2b0KcwQb
+	pKv7IBCKkubONDx0irdnx4+lPXts/gg=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-509069a7a7fso195211cf.0
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:20:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774390801; cv=none;
+        d=google.com; s=arc-20240605;
+        b=a/ehehhgGCgfizB+EnG5sufBOjNqEcB9EkM0WPNVUHoFQLnbbIDppdFoth3YMu9pm8
+         Yh/0+GvtHVdks5+W7BRCUkfCDhBUCnBfXS8eXwGIIOD8ijBasnCr9gArnXln0rgGEMvi
+         BqGzdjTzFg6ZI6l6NAiulOVlpzzQfe8gqu1lgnYzNuzBqKjnJvX7rpv1bX6W7MaUILeT
+         rhBfH1tpSTcpCAWgV44CcD/0UZQvC3FvqlkitCoSrVrzseX2wLlgywiJw/3HyIn6tuWS
+         iqPWUG7pVFKpYwbqXzrIcXeDqQVgZka5YiOdK6QghMyiiYOlRVcNtftcUXYHiA8Vf6my
+         Xw1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=iA0qEOtZ8sY0A4PQMCyKkXrxyPKJc9xjSndOAsg0m2c=;
+        fh=TAk0/BGjdMrxT4z6P8EZX47tmYM3X9ZrJ5O56JnK3z4=;
+        b=jM/qeGMOGgAnLALG7l+UMQLXoK33MBe+n2Um/5EC7QmPKGbbYHdLN2ZWgbIZ/G80wv
+         q6mRLJgTrbeYG8DM035+T+4CrwfrJiZA9OWR1PwQtwXNPIZ8jLkpZxBd7QtXVDeFcsZL
+         rpZrmsA83JR0Bmrf/VNtfn/Pot6TMCqKUlOCS95tTe1rzXBfeigR2RcHnaEyA4X6syln
+         CPWG9iGchAGOprQPdrXPna0K5Elqb5TfRIzbUF+SiFMBonnBaiJg+Zg6SxglwN4uap32
+         scVV/3rm1HIVg0J/guXwqxadrdcgfQKUQi2zUlqRPp7mFgPk0rtlUpBcqkXRzv+/uoV4
+         z3PQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774390002; x=1774994802; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=31RLaPoXgoqacAsqS3rULshRlRBQNXVz3bwTKZ44LII=;
-        b=ILt99KmHYDMxTphM/9Hwhz0ZbMlGBvvzCWRAIUDK7m15+Pn5A0ak2yoq5ZYKPwvCm0
-         LHG1Si3a3pZes4+OCj9V1YxTptQ/Dt/VWlo/VlLcfdXj/O5EZUQJBWYHe5u7JVjODCP6
-         75r5IxbkC0xIownv6jYAfzWTsCK1mqxlOyMR7bQNbwsXrLAP2DPz+v3PVJ/FYGW/nS/s
-         MZQVya9lkyEmpNlUqf6qbfcBul7ze2YG+713UK1eQY+0l/PufLbBQnGltPVhHQzN2iKU
-         NpPjUK1y8qrwzkiR8kuxmBzYomaUtAJcWBg+a7M7k3vcA0+29Uy11EtHYcuWHkcLq5uv
-         wIAg==
+        d=google.com; s=20251104; t=1774390801; x=1774995601; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iA0qEOtZ8sY0A4PQMCyKkXrxyPKJc9xjSndOAsg0m2c=;
+        b=uW5xvVvgBoBwqUsGYykOm7hvWBUul7DMmdnu8+eUmklq4fgm6HAAQKXx6RSclaZ6QF
+         1CjQ6unu/sd7d0bauUnJlCexPFZ2w48M/Q+IIxcbFfknRLUAjLfK5vL/bnUSk/UpZA6r
+         4SAs55L0KXSia38/0TI9nrMdyNdmGwWxA7N9PffdPkwWCVESqiEjCYAv5/Lemr6pYf8j
+         /AxB0UmKMD6tz1fPtIzYQ40onuZTq4IXOqQ6SabWqmeiM2lsN+rwdWsMi6hDq4C5IN9l
+         HTcTsqUpDq1nR9zRizXwcos84Yi4m4X+wMuDU3ViKjdHup/coG5dVtqiC69u7jP6cKzT
+         oQmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774390002; x=1774994802;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=31RLaPoXgoqacAsqS3rULshRlRBQNXVz3bwTKZ44LII=;
-        b=gmEINHCmBfLdZ9WJrAxdtoh/61Rbd1aMiAWC0kNNsNJpBpl8Z65FZiTR0zTjlrMu4q
-         5T98OTSVMNYYhHIHBQkm3nRHB55QTE/w0R0qVLcEv3HCkQ75ar/cPA8jCFXf2Pd+TXsf
-         8/sUW2aQDh+C76sD2He9ns6FZuvHih7VFsf+JLBD5y1ba/pza8Un9Y4CvbfEUybsjkWe
-         MQv0OE9BsS1f6/jYepIvmLQ7diTqQ9PXgiQXnEJJhDD9zKkGsFLOadlGu2qbBpIF2vbY
-         smKjcAB2fxoGwLvOu3i2jnlNJCQUxw4TdlSJE8XUX0REoOLGRb4f8gFNyZambytWoa7l
-         dBQA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3k1LS3OT2v1NKXOavzSWL4B+IbPEAhUAc6+WXmP7RDl/4B/8S64miOL8S3ieEENqx8+xaZ6DIXQ==@kvack.org
-X-Gm-Message-State: AOJu0YwmFYnLsmJd+xWjm4eECk13L3UfQQ0XUDcCDo9M78SQev05TfHV
-	P+Sg0N3gKj/f0H0fQ2CTPlOEnpQHCz1MrawKSbmtik4uAERCqwVt+bJPLJDZdA==
-X-Gm-Gg: ATEYQzyg/J2TjPfSzLVcEW9/ym2fnz7wTKnHLtMKQB8wRBawP9wuOB3xdhb+bqantNU
-	XhBDFbfeNqsamR3NTJolGerZx2kyhHS8IfWQpMcbwRD1lT5rSiPrYzOCqLjtysjKvCGH3YRpj+D
-	ocCs/Xp55uY7U8jyvLTzSMZAmFVAChFjfpuF3guCSmjF9KJsdfZDpyxPbdhDxIwyq0PqVjHsZ/O
-	biYf9GktzadccTyJflUbnELiu6YYzitkab3Jj+wNBYjPHqptAQu0VLezX0zyUA3HH3WVVkpfU1C
-	rKnYa4gm4rilXBl6eVs5HyMDAZSLQBasUL4FvUKAJTCqHNIuhRxHrxD+E2PYqoM9VMTuixywrNw
-	JxB9Dk6fO8ZzdVluNEVrReJH8ehcCmOsbmpiAmkxoUsAkZRmqtgjga+2BJbq3AvAQ/Pz0KTvvqC
-	+Tw/IDW5F6/OcMxhz0z//4V/bmGoSc1D5acRAn50G4bA8F+Q==
-X-Received: by 2002:a05:600c:1e2a:b0:487:18c:7acf with SMTP id 5b1f17b1804b1-4871606d963mr19826655e9.25.1774390001583;
-        Tue, 24 Mar 2026 15:06:41 -0700 (PDT)
-Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48716547649sm12045235e9.0.2026.03.24.15.06.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 15:06:41 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feun <boqun.feng@gmail.com>
-Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush work
-Date: Tue, 24 Mar 2026 19:06:39 -0300
-Message-ID: <acMK75mqEZoZAdhH@WindFlash>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <acJ7aS7Pt3KknN1B@localhost.localdomain>
-References: <20260302154945.143996316@redhat.com> <20260302155105.214878062@redhat.com> <abSH40oW9qiVDXZS@pavilion.home> <abb2E3QW7t5Rhxrt@WindFlash> <ablYPt92Y63GcIu2@localhost.localdomain> <acCZsEOsrv5Ku-mu@WindFlash> <acJ7aS7Pt3KknN1B@localhost.localdomain>
+        d=1e100.net; s=20251104; t=1774390801; x=1774995601;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iA0qEOtZ8sY0A4PQMCyKkXrxyPKJc9xjSndOAsg0m2c=;
+        b=rIgkZLfMsX+cSHdUBgfa0RcxSIZ6A3yvY4X0g7+X4MJJ07tQgKY+DZsd2YIZJJfW+O
+         WDAnFmQiOaEgJaNmLgpk+Ml5X2kXyBU2g9tOKkmrXN9zCadxMAS1dzcQTqLDeo1RkZwY
+         28RA/qk3Xm7ThfsXX5M649meG3DOf+W+pzDOm1GqnXioUWma7lGSlfBbXylM4R7fjX+t
+         0fZs4ryEyR9SrWx8dX2Eedn9ZvtWvO+Tx5AnyDXiBaEmdlScCOqeJwW+18KLwTfpW5gq
+         h1T7pfjdIhjzQRQm1QxPBfxigH2Z593u4ddSRwL33E9CO1PfQYPTYza/RVm0QCEoIigu
+         mk3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXIP1FexevVT76stTjRUL9/T5ifr+Bi24esIray6WiZ/cVO9J7DKJLTqTdfgA+ZOkmJwE+NtL8l6A==@kvack.org
+X-Gm-Message-State: AOJu0YzpTZm0QxK3Em263rWqN8SAHkTCXzsjATV7F0axzm0Y0T9utCpa
+	yMwO7Lxi8ODeewt1pg6F5KS3fePFmCsYw9ZkR6D1kabpdNbnFAQUOFn2euwYBxlh7A/Yb47HyP3
+	eSGR5G0CF9zJ5y5CD1V2SHj3fqqjZN57cB4+SAU6w
+X-Gm-Gg: ATEYQzzsHsUDDhKoiuTzQCp+j6X2nT+3RR2jFN7ZqEvj3bgRWd3Mfuf6x4fBJqU1gwB
+	nvJTvJ1xD+S5KSKhrS9x00L1aRgWMqK5jDFiKGpyMW2S8pM+LtAIK+V1gYmU6S+dNxNdzKqS11C
+	mWiFXQ2V1Z5Qf9vk72HbXXqd/LLWvI0liyVS7K9VT02nwatNZ6nEv29SQQx95p2/IT4/u+KcG4a
+	oRJSYSWdx+FuF6zEdmTxousNKSMbAUEMJFvt9QWZ4Gh1eO0yelUogTTcjk7ZxGT9QYHiOuMiN5x
+	SkW9z1Y=
+X-Received: by 2002:a05:622a:a0b:b0:50b:4e90:44ae with SMTP id
+ d75a77b69052e-50b83d9432fmr2305211cf.17.1774390800883; Tue, 24 Mar 2026
+ 15:20:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: qf4tu8a7uw9uj4e53h781in5x786onqq
-X-Rspamd-Queue-Id: 599C614000C
+References: <20260323175340.3361311-1-avagin@google.com> <20260323175340.3361311-2-avagin@google.com>
+ <acGEonF9I6sPA42B@J2N7QTR9R3.cambridge.arm.com> <acJnOB-rlyt-3jU4@willie-the-truck>
+In-Reply-To: <acJnOB-rlyt-3jU4@willie-the-truck>
+From: Andrei Vagin <avagin@google.com>
+Date: Tue, 24 Mar 2026 15:19:49 -0700
+X-Gm-Features: AaiRm52g4xzDr5_5nSdTi4eazdyhs8piBH0WKAbvFvJLqkZfV7WhTKZGEWCKiO0
+Message-ID: <CAEWA0a7iR8YHooqXJfhersV6YhAXGMZDUhib3QQH5XGn=KNowA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] exec: inherit HWCAPs from the parent process
+To: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>
+Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Cyrill Gorcunov <gorcunov@gmail.com>, 
+	Mike Rapoport <rppt@kernel.org>, Alexander Mikhalitsyn <alexander@mihalicyn.com>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, criu@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	Chen Ridong <chenridong@huawei.com>, Christian Brauner <brauner@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Eric Biederman <ebiederm@xmission.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Koutny <mkoutny@suse.com>, 
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5A1D2C000C
+X-Stat-Signature: xnyubg91q8s3n64ectzfqc6ppekt6d1u
 X-Rspam-User: 
-X-HE-Tag: 1774390003-141469
-X-HE-Meta: U2FsdGVkX1/N9IfGzfrCwKUbh2S+/bZFjCZbTDIGmfjG0ScyheVAhck4l4TBtmp9/lpUBsmhKwCFpeMh/nhyvCV8ybm6eG/UcMSEbkZ2nmVC7pfBXB8iGdFBTFRfu+iibex0j/3BcvdMs/r6xNoIghAYYRu1bocUTdGsWieV3j9Yj48zCuZRgHOeqnwNEMaytNSxR/zN2KUemUuiXz7zBG0h/VtdRFLsm9jyh2gWGMZ0EcfxEwEoqa/AalhN03OiiP1DStwrV4rqP9Gp/YOntX1Un3pGk8IaKUqwEqAo4qolsVcd2+a2ksURXz5zCHALjZVm0ehmAnvq4zbpEbOqvunAE0vKAiMfgVvF94Q3g8vGXTFQXDftB3cYRzO58NcHR6FQnKZgl0JlUvwAHsZz+vkl60CqWoK1PrqEONfhZ3G3InZaAXWsVQelDBsW0Iu9gf/o8COMZPyyUYy0rhVXKVbPVaGAIFNJxS5WCJ3nQClGQHfe9F9RwuTBa1gSUHFdjZtV1ZGvaI66MDCGE+6kSa8iUqEnebhmarM5oW5cl0IWL9U/970KgW3x3hoWLLm1NYWePk7z9buBS75WH2x9Be2jEnrLtCoYmQGAwlRLQoOZ3EzOcGbFygyp7jSFFVcxRRdgNhyG1B2jd8hQl9kkTZXENa92SXOPtnWu/t7/sp5buAVx1F0u7iT0nOOj9FbF03I4BwWsVZL+Nbv8CqZk40+1pzWM2fl6HdAKdV9xQ3CkiqIZTpkHGKJVe6XbVw4pmMpIX8c0WK+9BhiViO3QnliBR3AK91AoO/KrYu3bq53nb6ISWwOtr2z8Dk8My1Mid6Y6E8zumYDyYrzQA4vETqyAb7IkffA9yvFzX9q2RKBxYCx4xy9eLhAKUfSS/dnlwFRBA5s9OAv2XcVFnf5I3aNDcBa13CGIuYlkRKIcpH6DxbNl29p7uPGEw0dyevk4JDr1wT3YATaBi5FM/ct
- Pc/nZIWk
- SCSQCiAKE99xfG1u5+STQTuMXGe9tls4iJs1JCC0yPYSnJYrV2oCqjcHgLWMkgNp6nT5+abl/OwIvZNZmmiX9IuYnlYEcURuvqmSgfvn8d0aEZsmUwk4oslqVGeS61CiDhOyvpQVe/NuKa0zvAk1QLBFLtcnBNWEb1mlBscLaA2Tce+3+nD8+pGCgUhlD2eYdKHSkl4dIAE6rgr1rCf6uy9FSALmQoVjqGXtSFhuVEWeuYYsWgJJE4frZ0r2Cbvpy1RnXNCeRoSvbajE1x3tk1XidCh7qk9lbXrf2ZF9NoGKuOjHUr+qbYPN1T13U6MlASXfyxPKL3PGrCQe2YddHCvx7Q3gk3kawXFSQZ4ZOcZC1+DlDAqaeW5FWmTngAMxKVKzBgugS1lwlaW3cP7+QbERQQwlX03U/WfWY+8L7riZXsv9i6PWvWr2u3tB0bAsR4H4cE1NMYmwSZeagBQIzz/zZoPrFxjjMYtiYlTTV8x6ri0YtKj5CoT7Z8s065C8kCEXXdJAgb4Z4II6cavgp1sl0Jg3+tl3ttK3cJJZcQrb6FkDb0b5EG0KYXwOUHspxWVZVGuFz4ObJ3TbaT8SnYmdB0RffYHE3gkfhPGOQX4OZXgxifoaMbs68YrXd8xfZ4rMf+OSkOsAiW78YMXK8fx1BslkCPeYyE1cSHhARAqf0bjvrtsyjszXejA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774390802-783251
+X-HE-Meta: U2FsdGVkX18+JdMDqnXPVLT8wlVjljn6u5iEyYBikSV0R/PgOxuG59AEVHkCHi2LvBSkaRem9vv6bgTAFgDtcHICIn8mQC+jqB+DF832SJDhSD/OJUngL/Cu/IYOBRwGWfYyaoyvu3qw+qchyaB45r2S+rrn8Ikdg8lmnSIQbWIQpU/h9BYS83uZdhLiyAVQavFCJ5ofEwMzQVmOE6/2KIIvWKN0Hdxtq0LKqsmv/+NTdXM9upbHjWG1PKb+hCITZB/Pxf2MJ2jUJilvQOUvHdgs2snp5mmTOTAdO7k26f4kCtTU7N3EAz5RGrvVWvkzk7OOM2Ho/PVYlZg77py51r+/qW8pqo+lJyKK3cK85G+Ap1e4GPcBf3JjXx+LyekBYiIKqWUjdsPANa/4cx64C239IdQIdSnmmL+h24Px2EoLaVi7dWWvT7zezYlVL7DqyqLCmcgNwQelMsnKZbs+bXBmoNTS3AaUIzgrAbe6EE0jI0C+jxEmSCjE4BbJieRhcFxxTp8mlYQ+9A5qOWHHi74PNt5LBPavINikm+xd5tx/pka8RNKjv+y0bBrGabueF/XOw9ZD124gKiWExhIpAH0zk+h+ZHWij7VMrtBcG2h4TIrvXeJhixQxdcC66Rh+g2S8uquZm5z3/4NPVv33BWJaRXrh2bQCN340DvZFYsGWEtWsU7bRrqEK+U14Nd5yB/XH187L+KZ1L5uv1hARjiYXUzVRP74Ndw1wQt7FdMj1JeAlB65qriM48Gs4MLSyDdkdqgcxzIbAmUqFdqt6a1kGPzMZ1UQBZ6ETfvVYjITpYmFxtPU1w8VKWKh8/o0Iu63Ul+/tHINTN5Z4OZ1ZIR9Tr179ef5vP0vfKBpV+0k/Rngp2Xfxfw72twMP6NsmvaKVaqlLGtsYYCjK386kcsWHMadlhK218+WQyrmD6VhoC1W2wZ1i7vwDOObMP1rzrEmBOphXyVtfSBn8NJK
+ /Ji4DekT
+ LRmiumfD+Pt4CofguRqnK2idnn05gfs0ID+yM4srqXrvSp+EjxuI2raYw9ZCuLGOvo2eHRKkwLSWZvn326nV+Qkg2vf5mnsscjbsDRgqg2bsIsvQ1V0zJ2W7i58VzZcgojSbnnAxUsMqRRaRyIdiU2gNGH2leDkwQ/wJTCEpj/f3TWKhbyVHKyV+dTh2yR67/yvd/CC6p3Ezcvd3bKKDm2y8uMl0IjTUbiN1WS2+GMn0DUT0p4bi9+6/7tvEY/cAgtNgmEybjyuOkUVA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,204 +146,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 12:54:17PM +0100, Frederic Weisbecker wrote:
-> Le Sun, Mar 22, 2026 at 10:38:56PM -0300, Leonardo Bras a écrit :
-> > On Tue, Mar 17, 2026 at 02:33:50PM +0100, Frederic Weisbecker wrote:
-> > > Le Sun, Mar 15, 2026 at 03:10:27PM -0300, Leonardo Bras a écrit :
-> > > > On Fri, Mar 13, 2026 at 10:55:47PM +0100, Frederic Weisbecker wrote:
-> > > > > I find this part of the semantic a bit weird. If we eventually queue
-> > > > > the work, why do we care about doing a local_lock() locally ?
-> > > > 
-> > > > (Sorry, not sure if I was able to understand the question.)
-> > > > 
-> > > > Local locks make sure a per-cpu procedure happens on the same CPU from 
-> > > > start to end. Using migrate_disable & using per-cpu spinlocks on RT and 
-> > > > doing preempt_disable in non_RT.
-> > > > 
-> > > > Most of the cases happen to have the work done in the local cpu, and just 
-> > > > a few procedures happen to be queued remotely, such as remote cache 
-> > > > draining. 
-> > > > 
-> > > > Even with the new 'local_qpw_lock()' which is faster for cases we are sure 
-> > > > to have local usages, on qpw=0 we have to make qpw_lock() a local_lock as 
-> > > > well, as the cpu receiving the scheduled work needs to make sure to run it 
-> > > > all without moving to a different cpu.
-> > > 
-> > > But queue_work_on() already makes sure the work doesn't move to a different CPU
-> > > (provided hotplug is correctly handled for the work).
-> > > 
-> > > Looks like we are both confused, so let's take a practical example. Suppose
-> > > CPU 0 queues a work to CPU 1 which sets a per-cpu variable named A to the value
-> > > "1". We want to guarantee that further reads of that per-cpu value by CPU 1
-> > > see the new value. With qpw=1, it looks like this:
-> > > 
-> > > CPU 0                                               CPU 1
-> > > -----                                               -----
-> > > 
-> > > qpw_lock(CPU 1)
-> > >    spin_lock(&QPW_CPU1)
-> > > qpw_queue_for(write_A, 1)
-> > >     write_A()
-> > >        A1 = per_cpu_ptr(&A, 1)
-> > >        *A1 = 1
-> > > qpw_unlock(CPU 1)
-> > >     spin_unlock(&QPW_CPU1)
-> > >                                                    read_A()
-> > >                                                        qpw_lock(CPU 1)
-> > >                                                            spin_lock(&QPW_CPU1)
-> > >                                                        r0 = __this_cpu_read(&A)
-> > >                                                        qpw_unlock(CPU 1)
-> > >                                                            spin_unlock(&QPW_CPU1)
-> > >                                                    
-> > > 
-> > > CPU 0 took the spinlock while writing to A, so CPU 1 is guaranteed to further
-> > > observe the new value because it takes the same spinlock (r0 == 1)
-> > > 
-> > 
-> > Here, if we are in CPU0 we should never take the qpw_lock(CPU1) unless we 
-> > are inside queue_percpu_work_on().
-> > 
-> > Maybe I am not getting your use case :/
-> > 
-> > Also, I don't see a case where we would need to call 
-> > queue_percpu_work_on() inside a qpw_lock(). This could be dangerous as it 
-> > could be the case in another cpu and cause a deadlock:
-> > 
-> > CPU 0 				CPU 1
-> > qpw_lock(0)			qpw_lock(1)
-> > ...				...
-> > queue_percpu_work_on()		queue_percpu_work_on()
-> > 	qpw_lock(1)			qpw_lock(0)
-> 
-> Ok I just checked the practical usecase in the patchset and it was me not
-> getting your usecase. The qpw lock is used inside the work itself. And now
-> that makes sense.
-> 
-> > 
-> > 
-> > > Now look at the qpw=0 case:
-> > >                                   
-> > > CPU 0                                               CPU 1
-> > > -----                                               -----
-> > > 
-> > > qpw_lock(CPU 1)
-> > >    local_lock(&QPW_CPU0)
-> > > qpw_queue_for(write_A, 1)
-> > >     queue_work_on(write_A, CPU 1)
-> > > qpw_unlock(CPU 1)
-> > >     local_unlock(&QPW_CPU0)
-> > >                                                    // workqueue
-> > >                                                    write_A()
-> > >                                                        qpw_lock(CPU 1)
-> > >                                                            local_lock(&QPW_CPU1)
-> > >                                                        A1 = per_cpu_ptr(&A, 1)
-> > >                                                        *A1 = 1
-> > >                                                        qpw_unlock(CPU 1)
-> > >                                                            local_unlock(&QPW_CPU1)
-> > > 
-> > >                                                    read_A()
-> > >                                                        qpw_lock(CPU 1)
-> > >                                                            local_lock(&QPW_CPU1)
-> > >                                                        r0 = __this_cpu_read(&A)
-> > >                                                        qpw_unlock(CPU 1)
-> > >                                                            local_unlock(&QPW_CPU1)
-> > > 
-> > > Here CPU 0 queues the work on CPU 1 which writes and reads the new value
-> > > (r0 == 1). local_lock() / preempt_disable() makes sure the CPU doesn't change.
-> > > 
-> > > But what is the point in doing local_lock(&QPW_CPU0) on CPU 0 ?
-> > 
-> > I can't see the case where one would need to hold the qpw_lock while 
-> > calling queue_percpu_work_on(). Holding the qpw_lock() (as is the case of
-> > local_lock()) should be done only when one is working on data particular to 
-> > that cpu structures. Queuing work on other CPU while touching this cpu data 
-> > is unexpected to me.
-> 
-> Yep!
-> 
-> > > > > Like Vlastimil suggested, it would be better to just have it off by default
-> > > > > and turn it on only if nohz_full= is passed. Then we can consider introducing
-> > > > > the parameter later if the need arise.
-> > > > 
-> > > > I agree with having it enabled with isolcpus/nohz_full, but I would 
-> > > > recommend having this option anyway, as the user could disable qpw if 
-> > > > wanted, or enable outside isolcpu scenarios for any reason.
-> > > 
-> > > Do you know any such users? Or suspect a potential usecase? If not we can still
-> > > add that option later. It's probably better than sticking with a useless
-> > > parameter that we'll have to maintain forever.
-> > 
-> > Out of my head, I can think only on HPC scenario where user wants to make 
-> > use of the regular/RT scheduler for many small workloads, but doesn't like 
-> > the impact of IPI on those cases.
-> 
-> There are many more IPIs to care about then. I suspect the issue would be more
-> about the workqueue itself.
+Hi Mark and Will,
 
-There are some mechanisms for workqueues to be offloaded to other CPUs if 
-those are isolated, we could easily mimic that if wanted (or use isolcpus)
+Thanks for the feedback. Please read the inline comments.
 
-It's more about the locking strategies: some code uses local_lock + 
-queue_work_on() and it is really effective in a lot of scenarios, but that 
-relies on IPIs which can be terrible in other scenarios.
+On Tue, Mar 24, 2026 at 3:28=E2=80=AFAM Will Deacon <will@kernel.org> wrote=
+:
+>
+> On Mon, Mar 23, 2026 at 06:21:22PM +0000, Mark Rutland wrote:
+> > On Mon, Mar 23, 2026 at 05:53:37PM +0000, Andrei Vagin wrote:
+> > > Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
+> > > AT_HWCAP2, etc.) from a parent process when they have been modified v=
+ia
+> > > prctl.
+> > >
+> > > To support C/R operations (snapshots, live migration) in heterogeneou=
+s
+> > > clusters, we must ensure that processes utilize CPU features availabl=
+e
+> > > on all potential target nodes. To solve this, we need to advertise a
+> > > common feature set across the cluster.
+> > >
+> > > This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
+> > > auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  W=
+hen
+> > > execve() is called, if the current process has MMF_USER_HWCAP set, th=
+e
+> > > HWCAP values are extracted from the current auxiliary vector and stor=
+ed
+> > > in the linux_binprm structure. These values are then used to populate
+> > > the auxiliary vector of the new process, effectively inheriting the
+> > > hardware capabilities.
+> > >
+> > > The inherited HWCAPs are masked with the hardware capabilities suppor=
+ted
+> > > by the current kernel to ensure that we don't report more features th=
+an
+> > > actually supported. This is important to avoid unexpected behavior,
+> > > especially for processes with additional privileges.
+> >
+> > At a high level, I don't think that's going to be sufficient:
+> >
+> > * On an architecture with other userspace accessible feature
+> >   identification mechanism registers (e.g. ID registers), userspace
+> >   might read those. So you might need to hide stuff there too, and
+> >   that's going to require architecture-specific interfaces to manage.
+> >
+> >   It's possible that some code checks HWCAPs and others check ID
+> >   registers, and mismatch between the two could be problematic.
+> >
+> > * If the HWCAPs can be inherited by a more privileged task, then a
+> >   malicious user could use this to hide security features (e.g. shadow
+> >   stack or pointer authentication on arm64), and make it easier to
+> >   attack that task. While not a direct attack, it would undermine those
+> >   features.
 
-QPW is about letting user decide which locking strategy to use based on 
-it's workloads :)
- 
-> > Such systems that explore memory at it's 
-> > limit will also benefit from those, for example, if cache gets drained 
-> > remotely very often.
-> > 
-> > None of those necessarily will need to or benefit from isolcpus, and may 
-> > want to just use the kernel scheduler policies.
-> 
-> This sounds like "just in case" usecases that could be dealt with later if
-> needed. But like Marcelo said, those who want to rely on cpuset isolated
-> partitions would need to enable that on boot.
-> 
+I agree with Mark that only a privileged process have to be able to mask
+certain hardware features. Currently, PR_SET_MM_AUXV is guarded by
+CAP_SYS_RESOURCE, but PR_SET_MM_MAP allows changing the auxiliary vector
+without specific capabilities. This is definitely the issue. To address
+this, I think we can consider to introduce a new prctl command to enable
+HWCAP inheritance explicitly.
 
-Agree, he could exemplify much better :)
+>
+> Yeah, this looks like a non-starter to me on arm64. Even if it was
+> extended to apply the same treatment to the idregs, many of the hwcap
+> features can't actually be disabled by the kernel and so you still run
+> the risk of a task that probes for the presence of a feature using
+> something like a SIGILL handler or, perhaps more likely, assumes that
+> the presence of one hwcap implies the presence of another. And then
+> there are the applications that just base everything off the MIDR...
 
-> > > > QPW comes from Queue PerCPU Work
-> > > > Having it called qpw_queue_work_{on,for}() would be repetitve
-> > > 
-> > > Well, qpw_ just becomes the name of the subsystem and its prefix for APIs.
-> > > For example qpw_lock() doesn't mean that we queue and lock, it only means we lock.
-> > > 
-> > 
-> > Locks for queue'ing per-cpu work. :D
-> 
-> Right!
-> 
-> > 
-> > > > But having qpw_on() or qpw_for() would be misleading :) 
-> > > > 
-> > > > That's why I went with queue_percpu_work_on() based on how we have the 
-> > > > original function (queue_work_on) being called.
-> > > 
-> > > That's much more misleading at it doesn't refer to qpw at all and it only
-> > > suggest that it's a queueing a per-cpu workqueue.
-> > > 
-> > 
-> > Humm, maybe qpw_queue_for/on()?
-> > 
-> > Or maybe change the name of the API for pw:
-> > pw_lock()/unlock
-> > pw_queue();
-> > pw_flush()
-> > 
-> > and so on?
-> > 
-> > That way it stays true to what means :)
-> 
-> Would better to keep the same prefix for all APIs :-)
-> 
+The goal of this mechanism is not to provide strict architectural
+enforcement or to trap the use of hardware features; rather, it is to
+provide a consistent discovery interface for applications. I chose the
+HWCAP vector because it mirrors the existing behavior of running an
+older kernel on newer hardware: while ID registers might report a
+feature as physically present, the HWCAPs will omit it if the kernel
+lacks support. Applications are generally expected to treat HWCAPs as
+the source of truth for which features are safe to use, even if the
+underlying hardware is technically capable of more.
 
-Naming was always hard with this mechanism :D
+Another significant advantage of using HWCAPs is that many
+applications already rely on them for feature detection. This interface
+allows these applications to work correctly "out-of-the-box" in a
+migrated environment without requiring any userspace modifications.  I
+understand that some apps may use other detection methods; however, there
+it no gurantee that these applications will work correctly after
+migration to another machine.
 
-Will try to come with something meaningful and consistent across this and 
-other APIs.
+>
+> There's also kvm, which provides a roundabout way to query some features
+> of the underlying hardware.
+>
+> You're probably better off using/extending the idreg overrides we have
+> in arch/arm64/kernel/pi/idreg-override.c so that you can make your
+> cluster of heterogeneous machines look alike.
 
-Thanks!
-Leo
+IIRC, idreg-override/cpuid-masking usually works for an entire machine.
+We actually need to have a mechanism that will work on a per-container
+basis. Workloads inside one cluster can have different
+migration/snapshot requirements. Some are pinned to a specific node,
+others are never migrated, while others need to be migratable across a
+cluster or even between clusters. We need a mechanism that can be
+tunable on a per-container/per-process basis.
+
+>
+> On the other hand, if munging the hwcaps happens to be sufficient for
+> this particular use-case, can't it be handled entirely in userspace (e.g.
+> by hacking libc?)
+
+CRIU often handles workloads with a mix of runtimes: some linked against
+glibc, some against musl, and others like Go that bypass libc entirely.
+CRIU is mostly used to handle containers that can run multiple processes
+possible based on different runtimes. It means available cpu features
+should not be only specified for one runtime, they have to be passed
+across different runtimes. I think the pure userspace solution is near
+infeasible in this case.
+
+Thanks,
+Andrei
 
