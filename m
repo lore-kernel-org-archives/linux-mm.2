@@ -4,107 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0BAF532C0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:17:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2EBEF532C1
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 00:18:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34A766B00B3; Mon, 23 Mar 2026 20:17:26 -0400 (EDT)
+	id E97626B00AE; Mon, 23 Mar 2026 20:18:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 321F16B00B5; Mon, 23 Mar 2026 20:17:26 -0400 (EDT)
+	id E6EE66B00B0; Mon, 23 Mar 2026 20:18:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25EE06B00B6; Mon, 23 Mar 2026 20:17:26 -0400 (EDT)
+	id DAC5B6B00B3; Mon, 23 Mar 2026 20:18:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 142CD6B00B3
-	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:17:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9E04BE0BA
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:17:25 +0000 (UTC)
-X-FDA: 84579042450.20.2CC6602
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8A8994000F
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:17:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rsogh3ho;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CC5AB6B00AE
+	for <linux-mm@kvack.org>; Mon, 23 Mar 2026 20:18:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 695A48D355
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:18:51 +0000 (UTC)
+X-FDA: 84579046062.06.06525B9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7CF30180006
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:18:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dWnHBod7;
+	spf=pass (imf16.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774311529; a=rsa-sha256;
+	cv=none;
+	b=nufExSZznJJQxoUMp3lHKyABk1e/Q21LHSf/ZmtGzXn6v1eh4WPVHpO3fYFdvFardc6vuo
+	SaqDjDRu6ucjI5qX+AiQwCKAfvn1JEPoLAg8LlkfNCavuMdc4d7TFV3kcBF37mJB9Dm70u
+	DLf4VTLIOssMZnTI621F/eu2gqHJ8lk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774311443;
+	s=arc-20220608; t=1774311529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KMa/FPTvOK/dRPbAgxjP2GtzNpM1gPI9sCDOsYwzXJQ=;
-	b=6G7Wp595/xiOClRtMTmi37dvoLnzsvp3o0uG1q9A3psszOSmA+0AhaIQUmLb5CWXnvEiXT
-	iy5v/3n34qCBWEP/0I27p+kd4JK9s3KwAAtUI9IEQZ96IIBk8Em+bu3udm3zoRUF+aHf67
-	h2B2AXffHsQvT0DldXnzWCZncPj/u3w=
+	bh=vXzLmy9yBL+MosyDIkq8eObiDBonWwPvsZwMJQOiiLk=;
+	b=wpJFT/GZ4fOVt8MfpCbO6ZHGF7/8u60XnfM62sU+vI6aFpKJpP+FTaUtSeoNknGWIJ3hBA
+	238l+8dCdApJBtAJkU1U4XqSHsV2diKBSWL4l3kAWV5EtNDkx3ZnijaXEBdI9MkTLQRYLX
+	OyM9W2vcz7VvMwY0gmzNe0pvAxanepA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rsogh3ho;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774311443; a=rsa-sha256;
-	cv=none;
-	b=i++C8rnToFo3nJqUed486k46Foch0Fh0bRmMOmowu7AWLseUR9A7XGCLW7F4GtZw9dd9YT
-	J9MtfCDT/kRZVa2ofav+W62hZu9ORmwqQmG73gJejMthxSQgQ3pC2l49FELm83qs9V9wch
-	22aGnxfhLBEmrnSxTiNNjvFqznE46Yk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E792443E5
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:17:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526B1C4AF0F
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 00:17:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774311442;
-	bh=mkPMr+Ubw3gE/jNPJ4cFqrp/19KQd/EAePHNoJi1hak=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Rsogh3hoyoYJmf99kdqKt6lBJDTP+1xdPyj5kVS2IlN8iHQ3wzE8MkGQ2vG/+vCIQ
-	 jglMKyhVHQJLdfMPDmwTBMOYPrv3+D+zxHavwso9XNlhtALMMJjzVyWn1cyTquak5J
-	 eYPMoo4H9FNyOu7lRZ4j9CFL0iSDN1ty/nOFJ4CcUJFJDOyfvelrs4EnK/wpc3lDi3
-	 vUn5cGfhk9lLEhPwXRKx6PF/rSZNgL8Nn4GVPiuqcdjrhzR7kqcTLKCBF6Lk5unZeU
-	 brDDMtaAqTyg+Z5imL12U3VK6iprVbhLo9pompG9YcNDMsaP1Af8EnYT7q/u04edCt
-	 eUEztT/Te8+ag==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b98133bdc4bso571172566b.0
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 17:17:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUKxoSH3dSiZ5PbJ3an6cCIb84hjur+37/eIU/1Gs87PG3CPI4L9wbNiQL4aSy0PhSqCiFrFQXS6w==@kvack.org
-X-Gm-Message-State: AOJu0YwZiTGEA7iikoHKu9tuju+wVz30LiU+iK9pHOwryE4KsfY58brv
-	9Vni9aHuwAlAE7LZVLhCUifM1tum40QZnh5hOK6lJaNZhL3zfj2k06m0djV8InHLDivWLovYRAP
-	RVQC7+Sxh8w2zhKyt4jP+kSJbbF4wRPw=
-X-Received: by 2002:a17:907:3f28:b0:b98:4e9b:7e49 with SMTP id
- a640c23a62f3a-b984e9b9366mr668007566b.33.1774311441088; Mon, 23 Mar 2026
- 17:17:21 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dWnHBod7;
+	spf=pass (imf16.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774311528;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vXzLmy9yBL+MosyDIkq8eObiDBonWwPvsZwMJQOiiLk=;
+	b=dWnHBod7kcsix+tqXG3QQpceFBJ+m8IOb8fLo9J7n1SnrG1B9Bhdk6da4F6ilCE9F/p7IJ
+	ON+Tocgd38zR8QTnLE8+ivvjxH2Fk4GaJCw+Ja1CKBKeoYR0R0/7irZXI+tOsd4ZwVuYpV
+	AyL0n++0c/yVePxKxWEazjNT3K3jOS4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-482-wdIQRatmOOyip77YOmUoFg-1; Mon,
+ 23 Mar 2026 20:18:43 -0400
+X-MC-Unique: wdIQRatmOOyip77YOmUoFg-1
+X-Mimecast-MFC-AGG-ID: wdIQRatmOOyip77YOmUoFg_1774311520
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DEF5F19560AA;
+	Tue, 24 Mar 2026 00:18:39 +0000 (UTC)
+Received: from gmail.com (unknown [10.72.112.53])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6DF5419560AB;
+	Tue, 24 Mar 2026 00:18:30 +0000 (UTC)
+Date: Tue, 24 Mar 2026 08:18:24 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@kernel.org, shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev
+Subject: Re: [PATCH v5 4/6] selftests/mm/vm_util: robust write_file()
+Message-ID: <acHYUE1rn5TYyxgR@gmail.com>
+References: <20260323151753.2576137-1-chuhu@redhat.com>
+ <20260323151753.2576137-5-chuhu@redhat.com>
+ <20260323153941.289938dd9ced4dbb76ca7804@linux-foundation.org>
 MIME-Version: 1.0
-References: <20260320204241.1613861-1-longman@redhat.com> <20260320204241.1613861-3-longman@redhat.com>
- <acE2WDuto9cdp5Lx@redhat.com>
-In-Reply-To: <acE2WDuto9cdp5Lx@redhat.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 23 Mar 2026 17:17:09 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNqHVCOYcun=WWwF3CROi-nLAsJUSJJtcsrQGUKF-CKQQ@mail.gmail.com>
-X-Gm-Features: AaiRm531iQ3S4jGCxOVHcyk6sudkGI-5HpMDYVgYjNPDeV0yeExZpsLA0GLu9_E
-Message-ID: <CAO9r8zNqHVCOYcun=WWwF3CROi-nLAsJUSJJtcsrQGUKF-CKQQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] memcg: Scale down MEMCG_CHARGE_BATCH with increase
- in PAGE_SIZE
-To: Li Wang <liwang@redhat.com>
-Cc: Waiman Long <longman@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	Sean Christopherson <seanjc@google.com>, James Houghton <jthoughton@google.com>, 
-	Sebastian Chlad <sebastianchlad@gmail.com>, Guopeng Zhang <zhangguopeng@kylinos.cn>, 
-	Li Wang <liwan@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8A8994000F
-X-Stat-Signature: roigeeyjkg5gsxdy8kx7jymy9zuqgmkt
+In-Reply-To: <20260323153941.289938dd9ced4dbb76ca7804@linux-foundation.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: 25T50MlElR3QL0pI4G6YPryM0rqMGlKrlxXKaDnppHg_1774311520
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-HE-Tag: 1774311443-50859
-X-HE-Meta: U2FsdGVkX18nusY9IXhtcY3SDsbcnQMzf+vXDfkvT7ReJP2OYeDmP6NfooU2yFyh3DTscVC/oS2hfaxpFwbXDBsIjPbF4S7qxhnqX9fLvjdTwqJen9ov6VMwsF77En3/1xCqFGhGdXmXLLUUSrlwtjP9DhmPO0FfSFouxh8hNgB3p1XLnL9/dr8T6f5oiYyHUIod28BjLWLTmfdlFVS6mZjT8DojRUGyE9gyzXKDwzfMZwmjf0LwBoSO3OqO15We0CK1zQQB0y4VO+kfYdUyhqv2YDDFkhL6gB3c+auKBjWRnxJ43lXodr4HqunvtOTZNe3HLzrPn55KvYlyTYsJ86Yi9Ena4d7ZUsXpd29E3uyym11spDsxAPVTEVlTlG+DLgZBLbbZ5oh0qCqE7p4TsKLajchXRtHpKPpdf+P6joIpDeJCNwVB5Wy7hdS65/1hCouHL6EDpau4IYX9lI+KhXHaKJbQtvPd2J/nj5IN+bSW076MnBDPWrr3JuVDEh6eOLi6qwgxdxo9eUmofM12hziO/OmdOn3pAVvSXUnjn8V2XVbFS8VJnoRGXzI9nkSbIYpM+svhzutOJRXX2VTSdVcH1gRm+FpLuhnitm8MUYLzZA5e7lmgoI/0xsuTISvdxoOLlAc2W6hcRNj0ZK29htZNL8198BaUvdOhA3bm3tqpJTBSsCq5EeSDpgohydYGujA3K1i6pXqUORlPsBWsg6LD7QA13ruHH3PhNzjTiOJBYj84TC9M0iJ2zqn3vsBQv9iKz36zuQ6i+Wza8ncHme7ludpcvueDG0W4sn7fy+2qZ+76Oe5wSf1U0rLeVamAETr8Wb9LthAKhHNHf01ALjhp+ZnyMQ/zxa8PRDxHw7qXXwkdS/Yro0ucNEBebbzuQEJA9NSccfcdwltaVHc5sPw9TfmehsdSDI34vSBNZr2peiVl8dlybjlrhjHkgOYoxzyL6CgZmJjrp9EBswp
- YTpo6L1X
- 0Dbq/zz+7sDte4/zbJ5UU+TxzuK9h9Zp0bikhjvdgIRe6+Mwhz0aRRn6eZ5DK35JKhpAEhm/Eg9mOu/oT/RoHS9n1tAcxJbexmSc9KQR3hKT3CsLQSBXcqVkNGfgTQvO/e580lM4vJj/qm/Gpn0xv+BhI29GEKA+csSry2LU1mkvWtkXxfkCbE7KucYiaoNk2RBSH9ONj+wsclHhuRyQ9ythmU7VnOq1n0Tjbf1wbN/ppzaNZrgpq36EA0pG6CJt/aLZBwgC4aGve4Ut6YCZOmC4VoK7ZEWSnOOpVRLamPH9TlTJNiVCMkNBnkQbzoCs+OXQs7i9VSR4uAKNAWSiFQutjwuYx69e2qC5t
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7CF30180006
+X-Stat-Signature: ihjfxfheddsh9ow1u9bydk3fxeafucij
+X-HE-Tag: 1774311529-338589
+X-HE-Meta: U2FsdGVkX19MHEyirrQJnHAZcnQTQacEp83UBzWxd55WjM2SfWmMkCHuXr/x8A2fY4ugojiF8/LBvdGw1SRi4QZQvIP8MMYY2XTbpp4Pi4f13NAhyu7J38qOQfU7Z08swXx00GwGAGYL/19VvL+RY0eHDWEchHg0wMuWUbDvRajgmib9NHYuwD2fAA//d8gLktdGmQnv3qT+0v7n+egWbsUZ0SlLR6krgxugS0D+Ro7oSwD9opnuPj4OwHqhwSVf0N3z4UVxOf0qhfj6mxSVSCgr+QksH7hVupb/X3znTqzScxjmoIH/oS+kRghxD/OBhJrTdabLCbzgNKQPfWxh8ICxp5zDtViJva8nljNuRIvNmSTDK+ARLFShA5a4GCx3lbycpDtfK+qsqSZb1rhmWI8mkbNuEpHxJ0g+8G3PWVbLIW9rXQXGpqcChTa9JNLMPB4DDZzkSnufURXJJETrqn7crthfcLrx7v3j/7HYqjEcihOgFmZgpofypM1zQfFTDsoXVW3LhmWWRx1E9FaD1MuxjLGcU07qsoVwhXbTkJ7Peq/h7CbGr/g86BDZbTDFMIURLKdLCfNaQOjhnYzFq/wWctr2tsjPWW9NcwKTgtsHSSqfAzxQi9P308Cv5jNLqoWrhpLstHptcna3OkmrMwXjQBsERp8yeckaZR7vdimiWYYVdMyi80FlLuKVNJ95s0PyjdRXDpOEf7WlcN6LRQ09thwyhS8fEh5teeuYt6HQt9arXR19z7ohK2KjZ3QDeTYkRpmnDA/WGhyH1C7a61++E5zOSdm7leC97Oa/bmioPRoKBDzWE+1fBUzJrKE2g3aSTK9xdUgMch1LMgD7zUqpLSK9g2liwNMoQvR7EKRqcRBgqjuuAci9tkCPeBl58JH7URPk2aCx/HDqG/G+uWOLMvQt+GT42vIgzJk7tnHtSH+wLho3KzYnXYbm2/p5pRh5/ME0Yy5jFsNHJMW
+ GUpbZpPB
+ zWucdLfDJ3KOElq+R0qju3RN1cAh6kN8dWKKK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,39 +110,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 5:47=E2=80=AFAM Li Wang <liwang@redhat.com> wrote:
->
-> On Fri, Mar 20, 2026 at 04:42:36PM -0400, Waiman Long wrote:
-> > For a system with 4k page size, each percpu memcg_stock can hide up
-> > to 256 kbytes of memory with the current MEMCG_CHARGE_BATCH value of
-> > 64. For another system with 64k page size, that becomes 4 Mbytes. This
-> > hidden charges will affect the accurary of the memory.current value.
+On Mon, Mar 23, 2026 at 03:39:41PM -0700, Andrew Morton wrote:
+> On Mon, 23 Mar 2026 23:17:51 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
+> 
+> > Add two more checks for buflen and numwritten. The buflen should be at
+> > least one, otherwise the 'buflen - 1' could underflow and cause trouble.
+> > The numwritten should be equal to 'buflen - 1'. The test will exit if
+> > any of these conditions aren't met.
+> > 
+> > Additionally, add more print information when a write failure occurs or
+> > a truncated write happens, providing clearer diagnostics.
+> > 
+> > ...
 > >
-> > This MEMCG_CHARGE_BATCH value also controls how often should the
-> > memcg vmstat values need flushing. As a result, the values reported
-> > in memory.stat cgroup control files are less indicative of the actual
-> > memory consumption of a particular memory cgroup when the page size
-> > increases from 4k.
-> >
-> > This problem can be illustrated by running the test_memcontrol
-> > selftest. Running a 4k page size kernel on a 128-core arm64 system,
-> > the test_memcg_current_peak test which allocates a 50M anonymous memory
-> > passed. With a 64k page size kernel on the same system, however, the
-> > same test failed because the "anon" attribute of memory.stat file might
-> > report a size of 0 depending on the number of CPUs the system has.
-> >
-> > To solve this inaccurate memory stats problem, we need to scale down
-> > the amount of memory that can be hidden by reducing MEMCG_CHARGE_BATCH
-> > when the page size increases. The same user application will likely
-> > consume more memory on systems with larger page size and it is also
-> > less efficient if we scale down MEMCG_CHARGE_BATCH by too much.  So I
-> > believe a good compromise is to scale down MEMCG_CHARGE_BATCH by 2 for
-> > 16k page size and by 4 with 64k page size.
-> >
-> > With that change, the test_memcg_current_peak test passed again with
-> > the modified 64k page size kernel.
-> >
-> > Signed-off-by: Waiman Long <longman@redhat.com>
+> > --- a/tools/testing/selftests/mm/vm_util.c
+> > +++ b/tools/testing/selftests/mm/vm_util.c
+> > @@ -769,6 +769,8 @@ void write_file(const char *path, const char *buf, size_t buflen)
+> >  {
+> >  	int fd;
+> >  	ssize_t numwritten;
+> > +	if (buflen < 1)
+> > +		ksft_exit_fail_msg("Incorrect buffer len: %zu\n", buflen);
+> >  
+> >  	fd = open(path, O_WRONLY);
+> >  	if (fd == -1)
+> > @@ -777,5 +779,9 @@ void write_file(const char *path, const char *buf, size_t buflen)
+> >  	numwritten = write(fd, buf, buflen - 1);
+> >  	close(fd);
+> >  	if (numwritten < 1)
+> > -		ksft_exit_fail_msg("Write failed\n");
+> > +		ksft_exit_fail_msg("%s write(%s) failed: %s\n", path, buf,
+> > +				strerror(errno));
+> 
+> AI review
+> (https://sashiko.dev/#/patchset/20260323151753.2576137-1-chuhu@redhat.com)
+> points out that `errno' was overwritten by the close().  Maybe.  Or
+> maybe a successful close() leaves errno alone, dunno.
 
-We need performance testing for this too.
+I'll address this errno part by adding a save and restore before/after
+the close().
+
+> 
+> Apart from that the comments appear fairly minor.  Please lmk if you
+> think we should proceed as-is.
+
+For the other two minor questions about buflen == 1 and non-null
+buffer, user should know a string buffer need to be '\0' ended. 
+Those are really minor, we can leave as it is. 
+
+
+AI's comment on patch 5 should be other topic, and minor. Let's 
+leave as it it.
+
+> 
+> (I'm really trying to slow things down now - we have a *lot* of
+> material and a few weeks of consolidation is needed.  But selftests/
+> tend to get a pass, for obvious reasons)
+> 
+
 
