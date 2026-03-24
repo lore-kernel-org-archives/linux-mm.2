@@ -4,103 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C33FBFEC116
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 21:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA2CFEC11A
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 21:35:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C5D16B0005; Tue, 24 Mar 2026 17:33:45 -0400 (EDT)
+	id 1C8A96B0005; Tue, 24 Mar 2026 17:35:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 176E86B0088; Tue, 24 Mar 2026 17:33:45 -0400 (EDT)
+	id 1793A6B0088; Tue, 24 Mar 2026 17:35:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 065F66B008A; Tue, 24 Mar 2026 17:33:45 -0400 (EDT)
+	id 08F3B6B008A; Tue, 24 Mar 2026 17:35:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E8F986B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 17:33:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8B47A1604D9
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:33:44 +0000 (UTC)
-X-FDA: 84582258768.03.7E00648
-Received: from las-vegas.smtp.mymangomail.com (las-vegas.smtp.mymangomail.com [205.185.121.143])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 622C88000E
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:33:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=LAqVOAbt;
-	spf=pass (imf02.hostedemail.com: domain of oskar@gerlicz.space designates 205.185.121.143 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
-	dmarc=pass (policy=quarantine) header.from=gerlicz.space
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774388022; a=rsa-sha256;
-	cv=none;
-	b=JeEVkY6/q40IcPgZy7USaaSFkpVpRBtAFMv80N6CqfNIyWnUnxvtknrn1nWQaR+DKAT6bd
-	gwxJQCymtc+pYG9u+818g232MtSqgVgUJMWe8waR/64Q+sgGelGFUykq/QS3fGwQABfiic
-	Yfm63YukCNotqBBDbznFXAV1yJ7YEyI=
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EA2236B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 17:35:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A44D1404A0
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:35:24 +0000 (UTC)
+X-FDA: 84582262968.18.CB535AD
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 93CF94000D
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:35:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Tdw1Hhqv;
+	spf=pass (imf27.hostedemail.com: domain of jannh@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774388022;
+	s=arc-20220608; t=1774388122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F7xhDy1BgyrskKJuIWlurbpu3icLSDlAbkwHOC+AdOs=;
-	b=toQZxGL/qEFvpQ5l1+fOmv2rDkgRhOcAVtxIIgSc3nYyN+j08f+Gifbxzbnwegz/pamrtE
-	SsVBhS+S8vE5eOItJCNWWm9GPiAsJX/Vhz8tlabFDjGYXKxLKGBOHj2F7Lfb3GjbuLkMt7
-	ftk1gIkdeoTvN9X5g7LY5dro/rD1D2g=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oT0RY53ohSbpUHq/mckzhfzjGE6xK7YwQGcozbaC4yQ=;
+	b=3XaXdoXEnGSHViBFfPAyVJDLEGSMgJXVCoh2+Ss4mKjzpLp/PDyJ1JU+cRaNiE2YcIva9n
+	OwQRb2ttwpgsLWUuCbPs7wyQ4sDengbN0uMNwGQXsRX8tqUc6s+zXL2UNWPq3C0DYBC1NS
+	drAFDeLRdDwjInypuMcFMmHUYRepbYE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=LAqVOAbt;
-	spf=pass (imf02.hostedemail.com: domain of oskar@gerlicz.space designates 205.185.121.143 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
-	dmarc=pass (policy=quarantine) header.from=gerlicz.space
-Received: from [127.0.1.1] (localhost [127.0.0.1])
-	by kansas-city.smtp.mymangomail.com (Mango Mail) with ESMTP id 21E07FC9A4;
-	Tue, 24 Mar 2026 17:32:03 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
-	s=mango-1; t=1774387923;
-	bh=7mgxkaS+I+cyWVazKf/NNLcFoK8RM90Iih9vQSgw1A8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAqVOAbtu/JkwkGytv01uAGAM+C75VgslnRRTA5D0UJZoGg/fzkOCfzT1jYalV9Py
-	 ZEdlmkhJ/TIg+uluV0kzQrwSMJQoQ02cKh0InKeifi4gmUiTno39sLlEmg3YD/lebn
-	 qF8+/mNXJMJU2EIh35q/cGG/tpKV96W1U97shP8s=
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-X-Mango-Origin: 1
-Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits)
- server-digest SHA256)
-	(No client certificate requested)
-	by kansas-city.smtp.mymangomail.com (Mango Mail) with ESMTPSA id CC427FC989;
-	Tue, 24 Mar 2026 17:30:50 -0400 (EDT)
-From: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Baoquan He <bhe@redhat.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
-Subject: [PATCH v4 2/5] kexec: abort liveupdate handover on kernel_kexec()
- unwind
-Date: Tue, 24 Mar 2026 22:27:27 +0100
-Message-ID: <20260324212730.65290-3-oskar@gerlicz.space>
-In-Reply-To: <20260324212730.65290-2-oskar@gerlicz.space>
-References: <20260324212730.65290-1-oskar@gerlicz.space>
- <20260324212730.65290-2-oskar@gerlicz.space>
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Tdw1Hhqv;
+	spf=pass (imf27.hostedemail.com: domain of jannh@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774388122; a=rsa-sha256;
+	cv=none;
+	b=7AIu//0MniQ70a1gzSR5XhRZ9eIwZj/px7J40uIVSfOILShdqR9kxa0+CiyYzFbamuo3HL
+	AvniFUW8z/gCOQdAqIpHfE/eBISgJKS1GwW89zDxxZNdCKoHSlT2H3tlPL8IfzkpRlZb25
+	cjCDvkDCTUTeCQj6IqtUdSMJn2SXtp4=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-486fb990b9eso25865e9.0
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 14:35:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774388121; x=1774992921; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oT0RY53ohSbpUHq/mckzhfzjGE6xK7YwQGcozbaC4yQ=;
+        b=Tdw1HhqvfjU8IsqZJwA+Obb29L4EgCFoevjHmJdkOvdZvATCbh2U6nmmHJ1ZTETwf/
+         Gd+bIHrDZWf9QHtgEQfQcxnZnP7p1J9zEaU5fzVpcw3TK0+EidjhxeOXoFd4CHWkg/oL
+         KFHdzbYvDE7eMeo21G9O0NwZPfM74Hw9SSPM+N1mZWR9wRfMYFLNQqdelgDFHxb7gsX4
+         XFARVy8RiLHy9+iq3nYJMEvKI1wDK6+/fEMrvHZXDLMgMcKjkLiwabMqSxXK9R1HfKOo
+         QQkULtHmsvHWkKTY4ZOqpcJSRAUTIyGWYjvwtnodPhBOpR3A11pmhukHJfup8iO4mVpX
+         hZng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774388121; x=1774992921;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oT0RY53ohSbpUHq/mckzhfzjGE6xK7YwQGcozbaC4yQ=;
+        b=rucTu8e2PUYhYGvXBlYIRxK1ibpYHygcs0NyldLMK3qFRz+8KmG/zfQBYObFEfeCzy
+         6ufF7ssOKLWL+MDgRsckOez858rrRzwnXOxJIA1+PYFUzJEAkPF6hZcf8Bbf7SxKXSoL
+         3+ZeV8j+xHzPeOtu1+Qg4NzqXL7z/So1u4D5hF5T6l0FpEmFfL07b0AgFb0hRDLTZs2h
+         F29rEYSf/nrLgm685hDHPUjHP87UPk8XaknS1IINpDKjCGhr3mzyBGgWIbeEEqhScVsN
+         TsxCfeyuKd3hdOBeT+KXT+JNMsifXv0rk+pmVHuAohr0sTcPz6zRngoaeuKRCFZ5mkgE
+         91iA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8fTpnLHZA+V7KC+F8PvUcHYDL4WtZFrgj2r+vH6435q3KtoAsoO/piwkRLa+kOUXt+Xq4bIpjjw==@kvack.org
+X-Gm-Message-State: AOJu0Yz6k5rAIze61xb/XXo44wZNrwZuCaL8G5ch5d8KVVVHhebo6jCq
+	P0HAOWKPRkKemozrRuIsTU4q8KOGMamjW0byC8+eQBj1kRmKucKe0+hBwRPY4DrQfg==
+X-Gm-Gg: ATEYQzy27Ut/mbvlNicSnGl24R+6YzfmhZ+8DkFmj0hin+tWQRL/cLkIDVigj8Hku5Z
+	rNDidcAMuklTSbokMjIMAx+OE1RNSHZrQeyXPJiTlEQq7/aXPYD4q2LqKNuxyaaBY33750TM4AC
+	cjOrZXKaHOZdNCckNUtlRUNtcF9a0RLNC2H0sXbMKzNOoTcG/LAYhYktyg6FXKMIJ6YMqb3Uxuu
+	Nsiu2Gxxj+Pe5FIFwzQHh77puP3ieJCIFQTNZvCb6JP3DbsWJVyU7AYFsXKJVws4upYdZccEIZ0
+	apLejZML6RKD68k7vtm1ZjN8m569X3DFwQupcBnIAomSX+R49tNNS7vnPu0XIAeStUoxGLwliky
+	NCej+9/eQwDB1l4cLRzKWwbh19aZLMWqVRbuSCjwsY3xSJeMyUvIODj74vSF9qMZIw6ypdJESOO
+	AQhMxpMphAGYuImHijv0YrGfOVLIfyDr7Ni0I9lkQ6qmY0W1mieoTMHuNQFRjDDw==
+X-Received: by 2002:a05:600c:c1c8:20b0:486:f772:91c4 with SMTP id 5b1f17b1804b1-48716819f7emr188615e9.8.1774388120569;
+        Tue, 24 Mar 2026 14:35:20 -0700 (PDT)
+Received: from localhost ([2a00:79e0:288a:8:ded1:e23b:8c0a:3b21])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43b8aa474b6sm710974f8f.10.2026.03.24.14.35.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 14:35:19 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Date: Tue, 24 Mar 2026 22:35:12 +0100
+Subject: [PATCH] slab,rcu: disable KVFREE_RCU_BATCHED for strict grace
+ period
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260324-kasan-kfree-rcu-v1-1-ac58a7a13d03@google.com>
+X-B4-Tracking: v=1; b=H4sIAI8Dw2kC/x3MwQpAQBRG4VfRXbs1xkS8iiwm/uGmhu5ESt7dZ
+ PktznkoQQWJ+uIhxSVJ9phRlQVNq48LWOZsssY2praON5985C0owDqd7NAG1xlbtwiUq0MR5P6
+ Pw/i+H49oAKphAAAA
+X-Change-ID: 20260324-kasan-kfree-rcu-4e7f490237ef
+To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ "Paul E. McKenney" <paulmck@kernel.org>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, 
+ Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+ Dmitry Vyukov <dvyukov@google.com>, rcu@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774388116; l=1651;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=usnnnH7wUGYWY5NIsmoimFYx19G6HqPPrRI2oZAKt1Q=;
+ b=SgmquGvg0X9VR0OP0g3btEDHfyjT6PMsoHAYVyfCmCV0ATxqjDCX7hohdeoRiLQJIAjY7BLQY
+ dwd1J12BZ0kD7ik8LI0ZUha0325jzs7B3OE7eJaqSFXoG05/MNUX12w
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+X-Rspamd-Queue-Id: 93CF94000D
+X-Stat-Signature: tpi77rkudobfgdw3fhazf8tjhtry66jy
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 622C88000E
-X-Stat-Signature: qqfzfj3dnim83cu9zxfz5otmdy8q9myn
-X-HE-Tag: 1774388022-80037
-X-HE-Meta: U2FsdGVkX1/T3nBEMIpDg97lD9IuWJ9Jkg7Vz90S4fZapIdamKigKvDu6pC5yhJa9gPfym9Uj+mGvpDls2c03+Rqz4R+P7wRDoSfFcSuQzkn6JWNiGNY8qrLTYqk1KhlRUxQ6+of+aZ2wZMM4O3zwcht7kvB+ln886KkyuRNo7webr+NWzZGl+QDBjjYEE1mkhBV+Kv8w00mFTmVrDIMiGZxO7kU0y3k6j377sA/9t+YsV5eKE1TFuEgvjEjxvv1Jd6dXDkE5ogIrcFRdpcUFxzz/2GMrjK0clE3G/vdH9WcWhtwLArkzRe01SWttDenww/HrkJdSooui5EuGjjJe4iGLXjiXhhnonQ/WTHDKINndSy4KJD6T1wJuNj3WOJX5wETi9VKkwlAcOkLb7k4/pQ241FPDl5xYvy5kGOb+yFp/PofXv59GZ32SubPgQ6mLr6BkiHDnke14uN/7caIsI7DZ6JAhtYGuNAy0DQDK8LQae5/yprOce1Eo6ww8knG2l0wWrD67JQtyAHh4ab0xL+d80tSCq7E+i5R1eKhMaWhk84gQa2z4IC4k2r4TBfNAh6sGCEUxQi+AKH1L//JUbE72QLs5hm4VzB6aIedbfBeE5cbjRCounfYXFLbu3PvSNG/X9j8vJViKUu0RjhSOCRACKCYZik0fy9AzTpYwSv3YKxDdR6+irdwvxvoAc3O8rix9P1EFO/iftNwB4zedsM+Gol0Sstsktz/7wXIY9+bKb7O5UnAIoMM7Zo4AvBueiTVHb+T2Cb3Y1N6xQpuuu/3YnfJkDplKM9ZuZgRQqVzb9BTbxL0kvEylIZTHj1eXKxOJvAAbXAgqNLnlyK2FDG8D6jXGPGRbkV0ULRg0jX1kiVroRoAKNLYdkXrnWVrtATwkqrI6EP/hM4kM9H9AK40siC1+yc8D1DszclGLSUz24U5dVHLJmrWv5WhRiVWiWJHpbFUg+43s7ixCnQ
- vbboI3DH
- Zc1Mk/hi8KVwrArpMYoA9pNDF+zpsa473upfQT0zj+Y8h6iZbBzQIONOFQktltqV/vpD+MoHX/CVCDHrGdFPMUTDio+J26Rc/ZydhHr5LLda7frIQhkxaBDYMaoyFuj9xHktRZGtYepEM8UUGcFAW7oDDUvZ9R19JSPb8I4bRpGneXSr2Z7Em68GfmOY9ak/dhH+YrDqmI6HCIQlW815DLGhmcMTazn0lwBMS3ctmNTt5D5rKDfrxhAx1zVU9JkZp2Zbwehs6bAoREe9yBgbkklk4GJZETKKIQGp1Z5FjW0N8EL8lzHmmYyUYwGSyQg/LSSh+uONaT+NWSuVGEYINtXjhyAZJWkAiu9Qt857Q72k2hm3VktmNpeal1BK0jOUER/q0ZQbNF4ZUXxG59I008Eebsp9mP19FYHsDeLDJgstCXuMyZ5LCF0qiaHRLGCwfmeCX3HVy6V+vIJqXifMqbnsOaaeJt3mNKpQ/
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774388122-754245
+X-HE-Meta: U2FsdGVkX18tZSSBRRGB6y3DgsfVTYQmr3X7ZFdLXirPtxEBn0y9iPqO1FTd1DpLU6mbIhhhyshsgzQHl15FljXdYsyENcLSdHXNvR6N7E+G1IB0/AAqGtvzh+E7lkR9a8YzYqOdHJ8PhBPymbviL9DkDy1W7G+AeIhyATdSigv/3UB5t8GgsSEc4pvoBhYIJ/F4YLBxz6Gg2v/laNexvdL+k1z1F1qBgZZKvlQzRODASMWz3wJ9kLNX+C3FLvW3UUvjqf7HFoYc8ozL2wHFCQCRb9Fh6PberjTMT2kMcOGrlf8eHxQAoch37Pfo5Lmp+Utxd8DwK7qpeqvC1BOdrmy4qKluJxaO8e3IXTjQGUwyoHOq+IyvN6p6lVxhnHbkpmLDp1C6kh/Nsr1CuAI47OB6Fll1SsHD7np4KZ3XA2lHXvpBgBmfLb+oCGjnGP6byrd30kScLe4RgAL+N65qy/1SX38B96HHmn7ZdFcXJLpKEZJiKyJZfi7JxQEFMmelU7g0SyCTvL44Il8N1Ec1+1SQmU75YcEhzpR+12YnIUyZMrUZ0Ht4tERIKNS7hSFEafvY3yZV7frQPwv4IxEp2wsBOy/S2bhKg6inhILRk4ywYESo3cSzzDYRMNt59DHsAkM4j3UfebxBVD1ijnVkKpli4a9Lyvi8Ytua5AFjR4ZwmP0fGHvQMMCej0LMkfAdMdwbg7q5ezVMfiJcyz+KHOOa3ybseWH3tgs5IZz5+BlqFQBTDAsAIj2aOFFf/NY0uqs6ZTJPLR3fkzUhgOtDMs7wCyvTfqHpq+w9wXfcQ3SmyMyJF9j//GauAm+ksmo8btKZF5X9qOXW0XBMmxyNPa2sns+8ZfYrOKWY5nCaTw3M3JH98H7XefbjnBA6qEoHVOEsCNkqL+2ZPtLEPVA1+Yh+oDQrJIK3lb3O1wnb4xhB6B21Kx2ijXDC2I8FIOUCmalPvYngWDi6Vrox4Eb
+ 32WXHwty
+ ufRc8wBUwR9+/DLky/ClH47mOw1Hwn+rxyKrO7MpRjfgRO9NwZOv2FRwL0rK89N0ZEVlj+qoW4RUYzMLQnKE9ITENrtPbcAVk1u586V3Nji5SsYqs/4OYmHf+9I0MfHTHCWxQQAlA1LxYVo+J/gHGl3IHqv6CFS220Mn0NK1l7jOjDzdXlN1l/RBtSK4faI3i62QoAxX5hhefnkW/fiBzLbiQNU1Hd9oBFH0IID5H+4JKMeG3ff5kqpws4EBHG/eiTrktmT4PD4maq703Fbz6RtfpaI54ls90ZEU6K9C5nBo2J67IglLo4P2gvquUStQy3bYIBVSK6mp/xBxQpoxh7bsLf+UG+R91NFWlDzD0bS+y8IHJmUDEkujxOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,173 +137,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-liveupdate_reboot() can freeze outgoing session state before the kexec
-transition completes. v2 only unwound that state when kernel_kexec()
-returned a non-zero error, which misses the preserve_context path where
-machine_kexec() can return to the old kernel with error == 0.
+Disable CONFIG_KVFREE_RCU_BATCHED in CONFIG_RCU_STRICT_GRACE_PERIOD builds
+so that kernel fuzzers have an easier time finding use-after-free involving
+kfree_rcu().
 
-If that return path skips the abort, outgoing sessions remain stuck in
-the reboot state and later user space operations cannot make progress.
+The intent behind CONFIG_RCU_STRICT_GRACE_PERIOD is that RCU should invoke
+callbacks and free objects as soon as possible (at a large performance
+cost) so that kernel fuzzers and such have an easier time detecting
+use-after-free bugs in objects with RCU lifetime.
 
-Treat every return to the original kernel after a prepared liveupdate
-handover as an unwind point and call liveupdate_reboot_abort() there as
-well.
+CONFIG_KVFREE_RCU_BATCHED is a performance optimization that queues
+RCU-freed objects in ways that CONFIG_RCU_STRICT_GRACE_PERIOD can't
+expedite; for example, the following testcase doesn't trigger a KASAN splat
+when CONFIG_KVFREE_RCU_BATCHED is enabled:
+```
+struct foo_struct {
+  struct rcu_head rcu;
+  int a;
+};
+struct foo_struct *foo = kmalloc(sizeof(*foo),
+    GFP_KERNEL | __GFP_NOFAIL | __GFP_ZERO);
 
-Fixes: 8b32d3ced269 ("kexec: abort liveupdate handover on kernel_kexec() unwind")
-Signed-off-by: Oskar Gerlicz Kowalczuk <oskar@gerlicz.space>
+pr_info("%s: calling kfree_rcu()\n", __func__);
+kfree_rcu(foo, rcu);
+msleep(10);
+pr_info("%s: start UAF access\n", __func__);
+READ_ONCE(foo->a);
+pr_info("%s: end UAF access\n", __func__);
+```
+
+Signed-off-by: Jann Horn <jannh@google.com>
 ---
- include/linux/liveupdate.h       |  5 +++++
- kernel/kexec_core.c              |  6 +++++-
- kernel/liveupdate/luo_core.c     | 11 ++++++++++-
- kernel/liveupdate/luo_internal.h |  1 +
- kernel/liveupdate/luo_session.c  | 30 ++++++++++++++++++++++++++++++
- 5 files changed, 51 insertions(+), 2 deletions(-)
+ mm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index dd11fdc76a5f..d93b043a0421 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -226,6 +226,7 @@ bool liveupdate_enabled(void);
+diff --git a/mm/Kconfig b/mm/Kconfig
+index ebd8ea353687..67a72fe89186 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -172,6 +172,7 @@ config SLUB
+ config KVFREE_RCU_BATCHED
+ 	def_bool y
+ 	depends on !SLUB_TINY && !TINY_RCU
++	depends on !RCU_STRICT_GRACE_PERIOD
  
- /* Called during kexec to tell LUO that entered into reboot */
- int liveupdate_reboot(void);
-+void liveupdate_reboot_abort(void);
- 
- int liveupdate_register_file_handler(struct liveupdate_file_handler *fh);
- int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh);
-@@ -250,6 +251,10 @@ static inline int liveupdate_reboot(void)
- 	return 0;
- }
- 
-+static inline void liveupdate_reboot_abort(void)
-+{
-+}
-+
- static inline int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
- {
- 	return -EOPNOTSUPP;
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index 2fea396d29b9..95710a7d5e56 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -1139,6 +1139,7 @@ bool kexec_load_permitted(int kexec_image_type)
- int kernel_kexec(void)
- {
- 	int error = 0;
-+	bool liveupdate_prepared = false;
- 
- 	if (!kexec_trylock())
- 		return -EBUSY;
-@@ -1147,6 +1148,7 @@ int kernel_kexec(void)
- 		goto Unlock;
- 	}
- 
-+	liveupdate_prepared = true;
- 	error = liveupdate_reboot();
- 	if (error)
- 		goto Unlock;
-@@ -1230,7 +1232,9 @@ int kernel_kexec(void)
- 	}
- #endif
- 
-- Unlock:
-+Unlock:
-+	if (liveupdate_prepared)
-+		liveupdate_reboot_abort();
- 	kexec_unlock();
- 	return error;
- }
-diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-index dda7bb57d421..95a0b81ce60d 100644
---- a/kernel/liveupdate/luo_core.c
-+++ b/kernel/liveupdate/luo_core.c
-@@ -233,8 +233,9 @@ int liveupdate_reboot(void)
- 	err = kho_finalize();
- 	if (err) {
- 		pr_err("kho_finalize failed %d\n", err);
-+		liveupdate_reboot_abort();
- 		/*
--		 * kho_finalize() may return libfdt errors, to aboid passing to
-+		 * kho_finalize() may return libfdt errors, to avoid passing to
- 		 * userspace unknown errors, change this to EAGAIN.
- 		 */
- 		err = -EAGAIN;
-@@ -243,6 +244,14 @@ int liveupdate_reboot(void)
- 	return err;
- }
- 
-+void liveupdate_reboot_abort(void)
-+{
-+	if (!liveupdate_enabled())
-+		return;
-+
-+	luo_session_abort_reboot();
-+}
-+
- /**
-  * liveupdate_enabled - Check if the live update feature is enabled.
-  *
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index e29e1a46b491..d6e9e85004b0 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -87,6 +87,7 @@ int luo_session_retrieve(const char *name, struct file **filep);
- int __init luo_session_setup_outgoing(void *fdt);
- int __init luo_session_setup_incoming(void *fdt);
- int luo_session_serialize(void);
-+void luo_session_abort_reboot(void);
- int luo_session_deserialize(void);
- bool luo_session_quiesce(void);
- void luo_session_resume(void);
-diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-index 63aee9cc881d..cc03fc2bef97 100644
---- a/kernel/liveupdate/luo_session.c
-+++ b/kernel/liveupdate/luo_session.c
-@@ -294,6 +294,13 @@ static int luo_session_finish_retrieved(struct luo_session *session)
- 	return luo_file_finish(&session->file_set);
- }
- 
-+static void luo_session_unfreeze_one(struct luo_session *session,
-+				     struct luo_session_ser *ser)
-+{
-+	guard(mutex)(&session->mutex);
-+	luo_file_unfreeze(&session->file_set, &ser->file_set_ser);
-+}
-+
- static int luo_session_release(struct inode *inodep, struct file *filep)
- {
- 	struct luo_session *session = filep->private_data;
-@@ -797,6 +804,29 @@ int luo_session_serialize(void)
- 	goto out_put_sessions;
- }
- 
-+void luo_session_abort_reboot(void)
-+{
-+	struct luo_session_header *sh = &luo_session_global.outgoing;
-+	struct luo_session *session;
-+	int i = 0;
-+
-+	guard(rwsem_write)(&sh->rwsem);
-+	if (!READ_ONCE(sh->rebooting))
-+		return;
-+
-+	list_for_each_entry(session, &sh->list, list) {
-+		if (i >= sh->header_ser->count)
-+			break;
-+
-+		luo_session_unfreeze_one(session, &sh->ser[i]);
-+		memset(&sh->ser[i], 0, sizeof(sh->ser[i]));
-+		i++;
-+	}
-+
-+	sh->header_ser->count = 0;
-+	luo_session_reboot_done(sh);
-+}
-+
- /**
-  * luo_session_quiesce - Ensure no active sessions exist and lock session lists.
-  *
--- 
-2.53.0
+ config SLUB_TINY
+ 	bool "Configure for minimal memory footprint"
+
+---
+base-commit: b29fb8829bff243512bb8c8908fd39406f9fd4c3
+change-id: 20260324-kasan-kfree-rcu-4e7f490237ef
+
+--  
+Jann Horn <jannh@google.com>
 
 
