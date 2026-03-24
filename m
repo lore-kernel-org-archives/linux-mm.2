@@ -4,143 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17690F532EC
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B417FF532EC
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:11:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E5DE6B0092; Tue, 24 Mar 2026 04:06:22 -0400 (EDT)
+	id F3ECC6B0005; Tue, 24 Mar 2026 04:11:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BD256B0095; Tue, 24 Mar 2026 04:06:22 -0400 (EDT)
+	id F16476B0088; Tue, 24 Mar 2026 04:11:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D3296B0096; Tue, 24 Mar 2026 04:06:22 -0400 (EDT)
+	id E53336B008A; Tue, 24 Mar 2026 04:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C0C36B0092
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:06:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1CE213CC3A
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:06:21 +0000 (UTC)
-X-FDA: 84580224162.05.2EFFCD7
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C99BB80003
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:06:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cnsGYbNU;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cnsGYbNU;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774339579; a=rsa-sha256;
-	cv=pass;
-	b=jHS0mo17kL85F1Vf0ABXfpBCxv58zHe+9ftQox35/DKUIE6+MSPVMBwbI+a2yUKWIpMxJ7
-	4Gs551Y6ePmhsuZxRnXq0l5gkEBITmySxdBjLkrkT9toAEyoE17SbzrAju3ypFpiipLyby
-	X7FXv6ROKHaAWngTTF3M8mmDyFizrqI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774339579;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D75746B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:11:02 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89120CEC8F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:11:02 +0000 (UTC)
+X-FDA: 84580235964.14.3E88C03
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 572DE4000C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:10:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Jd6les8F;
+	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774339860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AGHYqtwWpNoCe45E2GKfU+FkoX+p9Z6lhHttAf4NvOY=;
-	b=ToSMXMOoGlfbiCW0ML4SjFqcRPKUXuSmNCKZi2/gGF5wmo917rw3zZHAyerFeZ92OCS1oI
-	cj2IKOhh+kFCwKJxV3kvc0be0APyisojpNCmijqg8sdNPfRbeUFA+gODFxWotfBdyu1JU8
-	/9PjqB+RU8kgK+uJqWiKRHUicQitxmM=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b941762394aso646079266b.1
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 01:06:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774339578; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CdMziJWphPyVUN7ZpaElLI2DGd1UD2Co+3n9pNsqqVp7HF90D7dgIzSkVCFM20UszP
-         FkRK5BubiI89VdEf6PWwJEp/KmpkdsyDyR6CTs6OtocZVTfcZ+5jaWOG2AaV80COluh8
-         /vYjT/+jQm3ao0h8komsova1tT5bOQKRSJsenj1vKk3lEPTHIK0UGLKudpmKU38OT87c
-         dHc71YHxZiawWZdXHFSB5c9ZPnWsl5X/o7TOJFkMwVRshLN/YayVgErt6//pC98zJMZJ
-         qgyCLXRTrTgnZfNdjXV2ITrYp+imw52V13Z03yBp4GiJPsAflbHPttPfDg7t8I5GXaic
-         LR/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AGHYqtwWpNoCe45E2GKfU+FkoX+p9Z6lhHttAf4NvOY=;
-        fh=jALXmptdVv4jJHtv8u1HVP5abfxtP19pwxAFqOD1aBM=;
-        b=kttiRJI0JzrsnPDQL9rI6foRVwnCZuw80uK54uqdYGd/EYnXaiTAfeEgpJlDgvapnf
-         sUkiJzIWoOyJAzgjXgdo7Vs/v7+ziUY0cimSTHmZojKBGvQaTWdX740PpRvXwjABkt5s
-         ntwoyMrqefsry8Nml4TGO5iWUBwqbqrkokPzKfnELZtubL1dmEX/R7neKwAPDJrQHrFJ
-         MHI0JLS1VrK0UZ0jrioq43rBnurFB0lOhwGZ0t/2Ko5D3TVbWBWZ1+QnlPEKcA3ew/NK
-         ZaBcO0Sy4e1UsiKzG39J8DRcwvCnxuRunvfQrPOslydNWTYcRlj+m213cSqGIJ39dDgk
-         ruxQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774339578; x=1774944378; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AGHYqtwWpNoCe45E2GKfU+FkoX+p9Z6lhHttAf4NvOY=;
-        b=cnsGYbNU5RMUhrpsEdFjcJ/4k12PVvvn1UbBG6IaNd0+XyJ6Rk48gjTBdxgflHfutV
-         davxNm0BUK+N4P7nVR+hOZCLJGl7u6WllTcPkrfyas1xPvAhgLPkMiDwi/3LOcXoKRUW
-         sTq1NioRExMrqiCTNbllhOSleWd621QzrSa7f8b2xy6vrXmW2XJKFKryMpLlXYVS5qfy
-         zL7+niDWqk5QgNYJQMJ0g1Akrt2Opcj8YpQjVPP01dqaahGWgzuA6cvJyfOgWvVHS3Kc
-         CCbfjjowdU4b+5TgKIUM7Xvdijou8sSwDxk6RcRfaU8Dtit0FAYr535DbDW8eY2TxP6w
-         nISg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774339578; x=1774944378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AGHYqtwWpNoCe45E2GKfU+FkoX+p9Z6lhHttAf4NvOY=;
-        b=VnIi28OKVm3o+/F4qQFdJ+jbvG0liYkRdpqztHYEM8CH6kOgU970rLYJrJxSwSAv+w
-         tdUgGKt6kaWUY/V71Yw9smSOPqVdWVPC4NReXzXi10Q9KFgWFmOqUoId6f8RvB5CT44M
-         KhuUznNwMz5zq6g2ExTmKo75YeI/t1IkLXnXM+GFzb07QjLPbTcN2AUPmz+DBWgbmE+d
-         yEIGFnK8P3d8GnlyWe0TaMw7qpfT/S4tX+oi91H7vDMAHOGh/U/sZVfYNT/A/2AvpKwa
-         hGsp8VfrNe0uiZYBPJVH/O78V9+BPL+w7jbacWLHCUob0wUlZYdzALuY4wUDTM9Rq6Bu
-         zPQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHjm49W4OJkgdEFU9jvaEZuUws4QtLq6aLIKd7mXN+Bo5IWwUVTtrFhFoLhyovPkMtEpSz4xChCQ==@kvack.org
-X-Gm-Message-State: AOJu0YwXydVmO4dgU6hSs7yt1Fp15lvMHUnParT6SJkbJuqZk2JmmhEv
-	CGL38ZiOmzzVkVe9L8SM4Go/TK9BSxD7J+mvrdQXJDNab02Le19uosPOni87flyVST3BJQSzj87
-	MNM6A/KlCYbkPJESOekgrOohBsRwaEkk=
-X-Gm-Gg: ATEYQzwrld4LDe6CrDYnIgqCtwwXGxzJbcYsvXEyx095A/PmQdt0QIEYpVz7M+o2J7K
-	eodWSaTGJmv8EflGoPB0LWZ8jyAYLSTkeORJSiYkr6/zlyYipExQ2DgAFg6P/+Mw3AnyBMda6Tu
-	OBfwCDzvBLzuzbb0m4sG/Db37g4OTEi4giwtFOZ2XN+yLczZb4KADGIorYdxFPPLXDgj9w+S7et
-	WmREbm34Ry2vXQi1BXhqEAluSigo+XqbA6nvkbkEvEzEnmGOF7Kv3IuaKs9KAYT5e3W4vgn2qDx
-	hgIeFznoKhhHgC6jwjAkf8xDgtLXW5nYZ4oOCJB1
-X-Received: by 2002:a17:906:27d7:b0:b97:7b94:a47d with SMTP id
- a640c23a62f3a-b982f39968bmr827848066b.50.1774339577687; Tue, 24 Mar 2026
- 01:06:17 -0700 (PDT)
+	bh=ovdqLfrLfNLqQkHe/B9nBLf4SoIZKFL5iWuK+Ra6vtg=;
+	b=z+VH8AwuMoT6ThDUxcKRqeU+0S7bE1LldcFteGQD82cjEXhJoll4ePx0xi1DRd9XLYma6F
+	b5qgxcBDjeFk9thmuZt738ZAJubPdGSK/tQi3cIo33Nw2VDCXC5foKINbpWogsBGMywwLc
+	YpDOeY0MIkGbWoAnz7m0jf0RT1MMuKY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Jd6les8F;
+	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774339860; a=rsa-sha256;
+	cv=none;
+	b=BpHBgNLmpZwQfi1b9YLYFyQUNmPw2MxlZ0Nl0MsfMrA80gSZW6cLdnSRFzIpOPHltJMkrn
+	q3t6SQg+N+R0742wGi/705y8RJzywk003luI8W/o2Es9212/jbTjXbpxy273hPRLmOtbcP
+	nw6GCxpSCLTZrTqQeNpDBrGu3b5tWo8=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774339856; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=ovdqLfrLfNLqQkHe/B9nBLf4SoIZKFL5iWuK+Ra6vtg=;
+	b=Jd6les8FeSnW0aboMMI+OhbsSN+y0ILcyo3s3bux1L8yeoAMHfraxSlc9EY70EmD7Bn8rMIe10FMQvLbZDxI1LMBlMBjTpuLYX/8HO+yFTHh1ACipTwIIZM/i0nzHX4uxeOHIeAbBjRxUTHtB1Cfnb7Jym+AT38Cg2Nq6/kWxc0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=39;SR=0;TI=SMTPD_---0X.dvi7y_1774339843;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X.dvi7y_1774339843 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 24 Mar 2026 16:10:53 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,
+  <lorenzo.stoakes@oracle.com>,  <Liam.Howlett@oracle.com>,
+  <vbabka@kernel.org>,  <willy@infradead.org>,  <rppt@kernel.org>,
+  <surenb@google.com>,  <mhocko@suse.com>,  <ziy@nvidia.com>,
+  <matthew.brost@intel.com>,  <joshua.hahnjy@gmail.com>,
+  <rakie.kim@sk.com>,  <byungchul@sk.com>,  <gourry@gourry.net>,
+  <apopple@nvidia.com>,  <dave@stgolabs.net>,
+  <Jonathan.Cameron@huawei.com>,  <rkodsara@amd.com>,  <vkoul@kernel.org>,
+  <bharata@amd.com>,  <sj@kernel.org>,  <weixugc@google.com>,
+  <dan.j.williams@intel.com>,  <rientjes@google.com>,
+  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
+  <dave.hansen@intel.com>,  <hannes@cmpxchg.org>,  <jhubbard@nvidia.com>,
+  <peterx@redhat.com>,  <riel@surriel.com>,  <shakeel.butt@linux.dev>,
+  <stalexan@redhat.com>,  <tj@kernel.org>,  <nifan.cxl@gmail.com>,
+  <linux-kernel@vger.kernel.org>,  <linux-mm@kvack.org>
+Subject: Re: [RFC PATCH v4 5/6] drivers/migrate_offload: add DMA batch copy
+ driver (dcbm)
+In-Reply-To: <20260309120725.308854-14-shivankg@amd.com> (Shivank Garg's
+	message of "Mon, 9 Mar 2026 12:07:31 +0000")
+References: <20260309120725.308854-3-shivankg@amd.com>
+	<20260309120725.308854-14-shivankg@amd.com>
+Date: Tue, 24 Mar 2026 16:10:43 +0800
+Message-ID: <874im51wcc.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
- <20260318-mglru-reclaim-v1-4-2c46f9eb0508@tencent.com> <CAJHvVcgi8m_O03+Grv7jPX8btaVvYuZxh8S6kLjALfREykToDw@mail.gmail.com>
- <CAMgjq7CjwdaQk66=61sNLR_21eaPZrFiai2foaTQNbZ3uxQmRw@mail.gmail.com> <0427249d-c6c7-477a-aeff-e007198fcf45@huaweicloud.com>
-In-Reply-To: <0427249d-c6c7-477a-aeff-e007198fcf45@huaweicloud.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 24 Mar 2026 16:05:41 +0800
-X-Gm-Features: AQROBzAf5m8U4Bq5ZXZYskw541sdgh9Tc33l-kZNnHKHariQPHGx9z0hGIT_iio
-Message-ID: <CAMgjq7CGhMsf4qWrW5O-s2AP7BwpbpPahEFkd-u3Q9jGFGCeZQ@mail.gmail.com>
-Subject: Re: [PATCH 4/8] mm/mglru: scan and count the exact number of folios
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
-	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C99BB80003
-X-Stat-Signature: fyfsqhuq189ujdexkbppc8eayk8kp4eq
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-HE-Tag: 1774339579-666070
-X-HE-Meta: U2FsdGVkX195AnZryQ5CyLmCfSDfTMQfg7QqSDdNYLaDWEk82rSJLuRR9bk37U0T/Yb2bNKY+mwzKxQtXB0ZqMi4iVpcLlul0Im2ozF7xenXiZZ6gMR4VJX4tNcwv2QmZ9jDVj6FAyI4Tv2EO21fv8F+4sIVijw33Cq14XKh94I7nPBFeqsQH4vE8no4FtGdVjLWzui1vJQypDd1KFjRDW5faGXKwf9sn1SFe1IlAv4usLENvtNSHbW57SdMQTcBuFQMymsn12IEvZOny8LLjFGzs7VTO1+tSwwnge7hRD/kKS5SJNYkRLjOhDulI4mTkbk5yBDLkEtI4QzXYdXBXQONBkq4lgWl66TxldpA2Q4pJu0+d+S+ZKhbl5+EbZxQqydBXtBSzQHdrH8tUz/2Z+icfIlbL66LhfhdM5+sh6et97vF52r8KGBW5IPE77JZN9s/Jv+hYAYnM9qtUx6qKSL+KyV4i8QXGbruX/ljeDlwDSnCID5+ur4rYA7wCZYET+okrNh89J1gbdgnZL7793TKGNQJZ/AqMhQpS9S0fZy/4ClINKYKZ9HzGeDmlVnsLyTJsyKvrFC4pFgbwcGIfy79+UBgVdkrJi90QLgq8gH4Q/QQ71acDgQx26Ze6BKeQnuGZGYy1PuH2EmuvMOujV1CrueW4i0uvEMVWXvvLiP1KlcD63TxxA0ozyL2Zf5rIPsg++NrSnZv8uVqFNtrpaOzU+k6Xs2aLJk09OiG2TsuGDjX8x9iiVuAJK+2yujNYEap6ZfqIDCNJ720pgUL/1ewgYpP8HWsLqGwtwQ9+M+hJpdDhjhFl8VyhcgjYP9WM48EdG3IfnRWwsQqPEOt6HEnByoRh8f1pSeFdfw9Kkpif4cwoT2dNX4SmNLybIkwQpHoYEuz16r5f3u2nu4/lQ0aN1iUv6jU69r6kRXL+92QtNqa6BTJKKMBfO766hh0gGb0vOwnyr851FLaymo
- WhUrNJHL
- S1/Npi0rAT2vgDi1J1bBHzRQmVrI4sAONSgDuiDG4yocKli6KIfEhbH9rzg2Bg1xrmDwqGWOXiunkB/MylMrNvAJjWNVLptgSB6LBCUHjcSRGz6eRF/8cY9NhkQFQtQaIPRUPXMEH4XT6xi43pvvqG9WH/xmQNNiMdfoDq2Tb3IXkrYsO8WAyU/2h2XYDzOjzqBwm1HtpU+bEmg8Waom7hLHMSWFqz9gYtCGB9gdoHYguVMp1VdK+5ysbWy6CQuD+6J4M5U3qet0f3g2Ao1ezFv2eduV2gpb5ZpqOrGr8v2bqhHC4un8nUlfjg9c1wFinerZ/7qoHgQuVlhDWXazFKUkqrqvWP4yu5N9AcHplAUdfM2w2oga7UFN2iaXODm+fO+h+hHQZI6wrH7tJN6ix8FcSqrtY4tVWMEfWOQSAGFcHkz6jEMYlT2SNObrDKAOpzb+18gshG8AAEyl6FhrCTrLC5qpjv9YnIHlThOmBv6aXxLt+rIHZPDFfEft33vY9zlaM+ZLTwoeB217XlSRbz1pFu92aQ/mGt2LttvEuPxLw2XxipoOSVE37Hg==
+X-Rspamd-Queue-Id: 572DE4000C
+X-Stat-Signature: adp3ktfz13xt93xx3f5rfryckg5b9rn5
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774339859-864872
+X-HE-Meta: U2FsdGVkX1/7YGA9zmdlBDvLOKHBeh5DaSdB9zQ7s39QI2oGIDfIjrw6nlC+lL3UtbJKc6VnRvQu0rzgYI+yZ4Zr/rdQQcFg76Q18mthNREl1/wmXTFK3GwXVUlP0s/SLBYrwR1ZRpbxPUXrADfJgTdiCWraPkn3ERXjzZ+mTaokg2e9v2z3+8k1vLxpU2SAZTgmWfdmimAMZtvy1qve+siYdC5Bp/1jseS0B6yYD2IxGDqgRTLSxT5KM/TmbBtO+CmplxP1UCkJqK7c7A3xmYdLGpit1fpfhhpnbiaDpGPu8nXlLDNjr2+DvImNWQDRttkh4prvTtca8zUj4JEkstbB0rCyRJcQu7SKYzJU2ocint0mrEXiagsrD/Q4LNRoxkbCa4wyM2Bgfv605yBB48l1SGq1ep+toHq+QBoVrfK3LP+kS26lbk6ylj4bmhy/KRP4JfGVkK56ELkQl6jOOnDmKW/1tODr0kuAqjiHcys1aDypDzRyDZEwjDwjp0AgVE4kLz3CN2BJMlFW0ZNqL265lS/pGED/UWoXvsn4bH16QFjA9JBGawC0280l2oU1H9/AOPQSrmPRvR9+pKjgYB6GTbwKWVruXooskGzScA7+jGGYSZaZFZ3nahsL2m3XmZITpPO6b1Vd6YbtiMoVcU2M14fIbXXrA0n0fJvVfycDj9W/jmKpLoHlXj+GW0kAt8N35zRbHP+FUmKBS4pOGypQou0enrc/EstEMr3IpxpbMpsuMsTGnZSVzQPrn0gwLDufuUi4LziSj4OAi/wADwz/EGD2wBGpBb6YgezvSHsYvwD/Mzv+AJvvoTiOriUVevHq3oFpghSjTRANOboR652hZ8XsKJDBAHMrcgRUJOoyuTLDpuYWgDB1R0YAHhzfN54g4kbXFUYiLIEz7LKZKB5PfHYyNFsVVR5g2dxYXexyxC+UtSAXrbsQ/7+6pPIFZZg0RMWESdGRFcDsJZm
+ H0OqJqGu
+ LC5ibau7+4Q5Z059jtHp6MWGmm9rKQypvULxbQKxBffeOafo7wQx/jpYT5lNRIygCzS094dnB9AiczBKrUEqrE5fn5mzNnkF515mTUDI9XxWFbDEQgLUUYIB8Tq26JGvLHKGRSxRNrGqLWNgYlBJmfr2AmTJMuyaHRqPw9+PQ70+ZDNeM3rKzJvqg1cRFJNA3FvpapTwRd+25dfkc/US+rXH81jeU6aYeqZJoPgzBIly3sxHowv+VrtTD/T+sBRg3EJzSvqp7JANiHnSznA+9c+hm+O0FelkBA3BeR9mkenksItxmO1nz7lStv5BUYH/07cXSQmmlfJoh/anb8X/wSydN/LXnLaGgiWtlp8dHdvBdmcE4t9rLF1GvkTwU+1jRCLp7Bi8YdHUOVJpzTrFdDuPeUrrD7kGvKS3u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,115 +100,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 3:22=E2=80=AFPM Chen Ridong <chenridong@huaweicloud=
-.com> wrote:
-> On 2026/3/23 0:20, Kairui Song wrote:
-> > On Sat, Mar 21, 2026 at 4:59=E2=80=AFAM Axel Rasmussen <axelrasmussen@g=
-oogle.com> wrote:
-> >>
-> >> On Tue, Mar 17, 2026 at 12:11=E2=80=AFPM Kairui Song via B4 Relay
-> >> <devnull+kasong.tencent.com@kernel.org> wrote:
-> >>>
-> >>> From: Kairui Song <kasong@tencent.com>
-> >>>
-> >>> Make the scan helpers return the exact number of folios being scanned
-> >>> or isolated. This should make the scan more accurate and easier to
-> >>> follow.
-> >>>
-> >>> Now there is no more need for special handling when there is no
-> >>> progress made. The old livelock prevention `(return isolated ||
-> >>> !remaining ? scanned : 0)` is replaced by the natural scan budget
-> >>> exhaustion in try_to_shrink_lruvec, and sort_folio moves ineligible
-> >>> folios to newer generations.
-> >>>
-> >>> Signed-off-by: Kairui Song <kasong@tencent.com>
+Hi, Shivank,
 
-...
+Shivank Garg <shivankg@amd.com> writes:
 
-> >>>  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lru=
-vec,
-> >>> @@ -4852,7 +4851,6 @@ static int evict_folios(unsigned long nr_to_sca=
-n, struct lruvec *lruvec,
-> >>>         struct reclaim_stat stat;
-> >>>         struct lru_gen_mm_walk *walk;
-> >>>         bool skip_retry =3D false;
-> >>> -       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> >>>         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> >>>         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
-> >>>
-> >>> @@ -4860,10 +4858,7 @@ static int evict_folios(unsigned long nr_to_sc=
-an, struct lruvec *lruvec,
-> >>>
-> >>>         scanned =3D isolate_folios(nr_to_scan, lruvec, sc, swappiness=
-, &type, &list);
-> >>>
-> >>> -       scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
-> >>> -
-> >>> -       if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_G=
-ENS > lrugen->max_seq)
-> >>> -               scanned =3D 0;
-> >>> +       try_to_inc_min_seq(lruvec, swappiness);
-> >>
-> >> IIUC, this change is what introduces the issue patch 6 is trying to
-> >> resolve. Is it worth squashing patch 6 in to this one, so we don't
-> >> have this non-ideal intermediate state?
-> >
-> > Well it's not, patch 6 is fixing an existing problem, see the cover
-> > letter about the OOM issue.
-> >
-> > This part of changing is just cleanup the loop code. It looks really
-> > strange to me that increasing min_seq is considered as scanning one
-> > folio. Aborting the scan if there is only 2 gen kind of make sense but
-> > this doesn't seems the right place. These strange parts to avoid
-> > livelock can be dropped since we have an exact count of folios being
-> > scanned now. I'll add more words in the commit message.
+> Simple DMAEngine based driver that uses memcpy channels to batch-copy
+> folios during page migration. Primarily for testing the copy offload
+> infrastructure.
 >
-> This change confused me too.
+> When DMA fails the callback returns an error and the migration path
+> falls back to per-folio CPU copy.
 >
-> IIUC, this change looks conceptually tied to patch 3. The following chang=
-e means
-> that evict_folios should not be invoked if aging is needed. So the judge =
-can be
-> dropped there, right?
->
->
-> ```
->  static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_cont=
-rol *sc)
->  {
-> ...
-> +               if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
-> +                       if (try_to_inc_max_seq(lruvec, max_seq, swappines=
-s, false))
-> +                               need_rotate =3D true;
-> +                       break;
-> +               }
-> ```
->
+> Sysfs interface under /sys/kernel/dcbm/:
+>   offloading      - enable/disable DMA offload
+>   nr_dma_chan     - max number of DMA channels to use
+>   folios_migrated - folios copied via DMA
+>   folios_failures - fallback count
 
-Hi Ridong,
+How about placing the sysfs interface under /sys/module/dcbm/?  We will
+have multiple migrator implementations in the future, so dcbm behaves
+more like a driver, right?
 
-Ahh yes, as you pointed out, the explicit should_run_aging kind of
-guards the evict_folio. That's not everything, besides, previously
-isolate_folios may return 0 if there is no folio isolated. But now it
-always return the number of folios being scanned, unless there are
-only two genes left and hit the force protection, which also makes the
-judge here can be dropped.
+---
+Best Regards,
+Huang, Ying
 
-But not invoking evict_folios if aging is needed is an existing
-behavior, that commit (patch 3) didn't change it, just made it cleaner
-so we can see it well.
-
-Now the folio scan number combines well with the scan budget
-introduced in the previous commit.
-
-And I just noticed it might be even better to move try_to_inc_min_seq
-before isolate_folios, to avoid an empty gen blocking isolate_folios.
-Usually this won't be an issue since calling try_to_inc_min_seq after
-isolate_folios also ensures reclaim won't generate any problematic
-empty gen, but removing folio by things like freeing could introduce
-one or two empty gens.
-
-The forced gen protection may cause other problems but that's
-irrelevant to this commit, should be improved later.
+[snip]
 
