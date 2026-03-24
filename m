@@ -4,95 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EED3FF54ABA
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 14:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 110EDF54ABA
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 14:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01C2C6B0005; Tue, 24 Mar 2026 10:12:17 -0400 (EDT)
+	id 797BD6B0088; Tue, 24 Mar 2026 10:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0EB56B0088; Tue, 24 Mar 2026 10:12:16 -0400 (EDT)
+	id 76EBC6B0089; Tue, 24 Mar 2026 10:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E24116B0089; Tue, 24 Mar 2026 10:12:16 -0400 (EDT)
+	id 685026B008C; Tue, 24 Mar 2026 10:13:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEC3E6B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 10:12:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 334AA93A12
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 14:12:16 +0000 (UTC)
-X-FDA: 84581146272.14.FBB885B
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 469A6100012
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 14:12:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kIQoAm2j;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 55A2F6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 10:13:05 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DF2B7161BE0
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 14:13:04 +0000 (UTC)
+X-FDA: 84581148288.05.248F567
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 327E2C000C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 14:13:03 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hp6Wdyut;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774361534;
+	s=arc-20220608; t=1774361583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RKNKZO1PbDIycc63ngbj8ytXMIyj96P0J6kd55apnPc=;
-	b=04CZ74LE+gfrcziXpg14BoxCSmZCEzBEzL1pWCLn+01Ialk1R5zjamRnY2sLzFfUVpC8Jo
-	isGH89Zq1WdJ513hhRLvZpeMnRweAsENiKaiYouMrWfZa4u9vrFAuHhJomwkK6sPcnkZr0
-	96ZiBphuqoobmMa9cfcoxlq1bqXKMVU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kIQoAm2j;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774361534; a=rsa-sha256;
+	bh=ieDpOKVhAe4pkUbjK8jU2NwRAkEXujQ2SrjVR5izplQ=;
+	b=GF1/J0KX3i199311nwHV8gxBas6I1d2/2EQqxUmWa74RhnccKb5hOSb+WDha1D4fQY2bA9
+	WWj1FREpoyjBVigt+Ywv3eI3aXHKnD/e/qWETrfaezuWOCoo+oqww1gTUNzgTx36qaR0rB
+	mztSZsKNH1IVWP6WXMCTc3/OTbJREQ4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774361583; a=rsa-sha256;
 	cv=none;
-	b=XsqgbAlfJb+EPKKVnJIncDhB3onOh+szQrOI2oQHnACKJBx27zQEsAoOVtvZZdvQW+JFhn
-	nyoCZcNfTwzyML97HfDxErjgcqyDQ2lNSECd6Ae/lCC0419XNxjApQ+06GVr2mz2YVnYTt
-	7OPUhl8Vq/W1yERe3KEFAO+JwlWLeSY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=RKNKZO1PbDIycc63ngbj8ytXMIyj96P0J6kd55apnPc=; b=kIQoAm2jaL+V9pTcaMnaKYeDuJ
-	bGm1wxYkTbQEUfD7aggvjhnMlMDdM66UO6ERcgyRtV8494+Au6FVCzvNp1XHW8K7Bs+a/qXwMhHTb
-	fQVS3CsgcD5v/ura4Wm7HoCpvOTtJS8hfjNw3+tYLb4kIP6RLi/6GtpBuPkG2DW9XmjuK09DTsonN
-	tRvEk0VvGxZbs2vMsb/qfUzjy0gDU/r4hLFXUtA2Sh0yZFbjcJLAgRVwLIq6mZ8SmNCrrBGx7HSt4
-	gA/6jgfjHqAYSKRBE5pO8uUvdc//7sGBCe9GoEYdKeh3hDn8mNGdnE4kqK8vhge+RivgnjE7QYg9W
-	L6sBl7og==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w52UC-0000000E8K6-16qW;
-	Tue, 24 Mar 2026 14:12:00 +0000
-Date: Tue, 24 Mar 2026 14:12:00 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
-	mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev,
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	chenridong@huaweicloud.com, mkoutny@suse.com,
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
-	apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com,
-	usamaarif642@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH 2/3] mm: memcontrol: correct the parameter type of
- __mod_memcg{_lruvec}_state()
-Message-ID: <acKbsF__VQjtgnKz@casper.infradead.org>
-References: <cover.1774342371.git.zhengqi.arch@bytedance.com>
- <90524ca3806e24105ab5f2d69435f57c2ae034cb.1774342371.git.zhengqi.arch@bytedance.com>
- <98dfab09-f3c5-4503-94e4-c3f097539afd@lucifer.local>
+	b=ZjJkPkes4yQj+ohbedTqPw+Q2P3CjzpxzKWZg3lKbjTxmxvM0hTkbz2QTCR4CJ/m19h8YD
+	aqw7feKcq+ImCc4Rm0bZ3x0tlXtj0WvZdUWrHb4EI82VlPSZpYRsXZlP2VGFSvzKyU2U4z
+	wl5bXbWEoqvMGMrfHTWo6WT4WDDwtHQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hp6Wdyut;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E74D600AC;
+	Tue, 24 Mar 2026 14:13:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B455CC19424;
+	Tue, 24 Mar 2026 14:13:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774361582;
+	bh=R67EKc7NRuD/wiIvZo05R08AzOlBa2CEd878B2zKNJI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hp6WdyutUOSgeEyipB4ayrX4y+JtZtuf1cYBQ5b0ClfwmzI86AbGagTkwWRMEsrWE
+	 /6vxU9HL20Hseu/i8XL4QDSwzAAxoayBk2+1Qfu7c98uT+UdDro+AgVlRLNg1d5bF4
+	 1gnU5Oa2yyQxPnXXOgMt7qQcTp75OxPhiaMlPPf1F7tavd7gw2G7x/spb+xjnJsqBH
+	 mKokgkgFuqN3tVwRwWrcJGlVO7+OU4v27VoIS11WaxhnH6/bTnyPMq3GL85Sdt9jPm
+	 1W8+Bd655SEQM/i9UhhHes1p+kAPh8c8B9hu7h4p9yjR/wCHVr5NRRQCuKTDspzPIv
+	 eUSlRU2KkDLNQ==
+From: SeongJae Park <sj@kernel.org>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 1/1] This patch set introces a new action: DAMOS_COLLAPSE.
+Date: Tue, 24 Mar 2026 07:12:57 -0700
+Message-ID: <20260324141257.91322-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <48580762-eec3-49b6-b17a-59fa486bebec@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <98dfab09-f3c5-4503-94e4-c3f097539afd@lucifer.local>
-X-Rspamd-Queue-Id: 469A6100012
-X-Stat-Signature: x7ko6dizzgz8euzbkwy4eaty4nwm4tjb
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 327E2C000C
+X-Stat-Signature: np7rx6med1fuft5o4zsew3xsjxq5u67y
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774361533-566127
-X-HE-Meta: U2FsdGVkX19KQVCuomw+X0qELfjjG0Eppwk8RUasyvnf5x3RFWMQNqEUuNnEjhekYqg91tOwDUqiFp7j+/aiIlaDriT/3v5kVZO9KhZvFTasB2AeWfxZzSWKuWnYzkDe+kOrfSIVO85OSegQ9SnE0hxD9zRy6GyfSd34cZIpmrx7qkaIOWYEmUcBg6OmenKtTEkWlvIpwTwn/71MUdo8URCQuZZHj7xxf1ruQdRohYjOkcVcaSsHGxSiqWEIPGLkkC8D+gdefMYlv3XNYVpNETqbJkOUEvu3hlJ3kW5o5m1bz//3D2kCaxZswzGu5A4b5wB2eaHI6/OfNpZUkb6hk8skmqz9HnbfVn+iEK1cTQSFEn+4xs5082MOvd/uO1mi9oTynfddj0FVUEpy5g488+rqT0/SOMfX1mRe7TQpH6wIzGQ4wFGq2zaUbeNMltkcs83zYmLsQrBmQO8Qe1xQGILnD8VGUn5QKEIS/V1EVokDUDzToElsQs726azT0iZJ2WWTSq8hsOBU278ntdMQBIMjufnL3uIqfbD/rlD90WvuU3oK1kGNncJdI9wKaLYHh92tHLJmDt/dVQcAEF4XdNMIsb2DXOuZDK5SorY+TQPO5+ww2SwqUChXJEhEcdUIe8QmEhbLq6AL7Nkq55wnwWzOQI9+KHtYxUPhZS4VuUavJ8rO8UUVT/G4q2NTdxyLSpBSFVg/8eD2tUrufmyz6DOUBXWmOe1pu2+fuJCRyAajLU3W5d8X2GjPOEBECIdncZ2fgmEfV1UkIaSbUAbHCGn1O73tv7pIwMYndFre/zqie2d4nwmwKEX+IdIatZv/f01WsgNnJuVuHLYwGKcFH87i8yl0FGBkENEJo8XZvdAEDZhPHgicduzEl1iu/l0aQ58Z2PBCQlzCSZBoCHDsv2e9fZoQFFz1V1qd1I9BSXuLVNYFbex+jDfRKcEB7n0Tu5os3SpOFBhRauLo5nS
- aw88lB9p
- KAVSpGFgqWuSZQkZZqz0tgX2K90swO2PrKRqgxeEcgveP2U/m9Bt2EqQqRhYPDKeshRpvNtK5r4gPQKQgS6VJNxfDssXTF5SLM5xPhk1evcnAgNClxR4iBl/rtVgAOX6zrSX7fCyUhaIQOGyRd3LJvv8gcBQQkqX+nPvADPCi77jQl0sRTVVAXYzrrNZc9b7V8h99U/6xdK8YBQTKuj5R70vHyP5zPyo/u7EZTJOneT+irwUY7cOoAOEk3utgweKL4sFe7qSpXL99+/94OtVuKrABAK/FJz9UHId8DkcuKPu7dcFv5sRgT+y+mZJg0eRLPX22
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774361583-869122
+X-HE-Meta: U2FsdGVkX1+zDb48HLrMiSbxvVLGj+TBOf26kQOAy4Cp4NmxHO5/N9U0usKc//P8a/+KhCz1pGRmbVWKpEdzpFkPdUR5c3VTFoXiTPF7UPxAR5qSHTCrI5FLRtdB4WmfPuv0Eu/dFLjgNf/l5uRCPxyqcbskZ7YBapmx0tMyyvClKNeX/K+5FxF8pXpE0ejvMsf2KrDTejqDR9YMfBF/170jdygxW62te7SvEtsPzHnv4X2Ud2sidlTpxDmzrJO0W2raDEuR0+cj+ZAkQZ9R37d4uamdOd4aQylAOQ5EU3VX6pjza8aSnEDKQjpgQQNChhNBfCwJKE8pRQLcHcMEDNA9BL5Wi5QMIrzuhiUPkrLY/WCBPJ/4y6rC35gQ/ABBWvFFI0EXkxGCZ0m+owcq2wb+keFi+LxWm9N7nA1ne8fzbLDYgXgrvYBvlP7xOH/hpOIG4gq3RATzCPo5aYbniCxubsUlNhyGj1F1PAg4c/PKi1/wQsaO+3U5pYpjnIKjhBAv96gaHEzjbst0Mi8pgXRf4Adw6r02f0RopkBVBDt4kdxYOI05BrK9dPFjHY5L5m7XhvxLfJTV86lrPJgDTPm19NHOFAOhQhEh1y7EQAX7ad1OfftplfW9UVeb8UY8hKxKKC/nMZ1kVpY40p6OJTQGLvR2rLhdDkpOkO1OBHSMEZI1ddnJ6AQDQ0Y8fWZD4nTu6oWwiISr7AL5tfth6OrcavbCN7KxHd33/26Ak7GQlkiEVNdITBmpPWb/dxG86tfmsYTfTxdka1dJbsRW/LJea1bcbJnVEuq3KtWkXA4Tw3HEIGO1Uq/KZB70FMrQldqlBmN3A9F9EgBwwKulkRvc5SYTLbWNeQU5Wf7AyNJ5tFYwcrF72jQN3auHnDdkKfzT0iVlrjP3K81c0qpFnJp+UjQYj6SrqzYtTPDTsUwfhcwt4mTYh5MzUxwFPRZ+CiA6stkzI03o7XspPMu
+ BbAftEoK
+ koXndKLa5xWUfLsc362Nc5DBuk1Dn5JDbeCwAw5ykWul/fyIq+1N3632taQek8ortB7bG2FHgq9U/wa6yoobyWi8lY/0yd/ZdpFrwEVeP18nGpdDWv4qXfsPnx4qbKaYFQqT3UR/ngzVcRNeq7kfE9xEOO3I8aPiwnFcTt3Nb/BQcV8bH67Xk14ED0tvBkwKWq2QO8uiQN3/0FI3EPQkHGB5fXoS0kB5FyEVryyO5xHzlUDZH/LPL55++SlYE39J6n4QifTjO3A7pjRpK52NG8Izpfc7XMaYXrrDhSzDvXGzwMJ5EN6zcFvQLbQzorbq7uhjOHCtHMtsoT9hNSICMoRLk/BgkMJuSL5sFJmmBO0JOcDQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,20 +107,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 12:21:06PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> On Tue, Mar 24, 2026 at 07:31:28PM +0800, Qi Zheng wrote:
-> > From: Qi Zheng <zhengqi.arch@bytedance.com>
-> >
-> > The __mod_memcg_state() and __mod_memcg_lruvec_state() were used to
-> > reparent non-hierarchical stats, the values passed to them might exceed
-> > the upper limit of the type int, so correct the val parameter type of them
-> 
-> Why might they? What precipitated this change?
-> 
-> > to long.
-> 
-> Why is it a signed value?
+On Tue, 24 Mar 2026 16:57:22 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-Because 'mod' can both increase and decrease this counter.  It must be
-signed.
+> 
+> 
+> On 3/24/2026 3:39 AM, SeongJae Park wrote:
+> > Hello Asier,
+> > 
+> > On Mon, 23 Mar 2026 14:56:45 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> > 
+> >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> >>
+> >> For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
+> >> working, since it relies on hugepage_madvise to add a new slot. This
+> >> slot should be picked up by khugepaged and eventually collapse (or
+> >> not, if we are using DAMOS_NOHUGEPAGE) the pages. If THP is not
+> >> enabled, khugepaged will not be working, and therefore no collapse
+> >> will happen.
+> >>
+> >> DAMOS_COLLAPSE eventually calls madvise_collapse, which will collapse
+> >> the address range synchronously.
+> >>
+> >> This new action may be required to support autotuning with hugepage as
+> >> a goal[1].
+> >>
+> >> [1]: https://lore.kernel.org/damon/20260313000816.79933-1-sj@kernel.org/
+> >>
+> >> ---------
+> >> Benchmarks:
+> >>
+> >> T n: THP never
+> >> T m: THP madvise
+> >> D h: DAMON action hugepage
+> >> D c: DAMON action collapse
+> >>
+> >> +------------------+----------+----------+----------+
+> >> |                  | T n, D h | T m, D h | T n, D c |
+> >> +------------------+----------+----------+----------+
+> >> | Total memory use | 2.07     | 2.09     | 2.07     |
+> >> | Huge pages       | 0        | 1.3      | 1.25     |
+> >> +------------------+----------+----------+----------+
+> > 
+> > Thank you for sharing the benchmark results!  But, I'm having a hard time to
+> > understand what this really means.  Could you please further clarify the setup
+> > of the benchmarks and interpretation of the results?
+> I will fix the cover in the next version, which I will submit soon.
+> 
+> I tested the patch in a physical server with MariaDB 10.5. I run
+> sysbench to load the server.
+> 
+> I check 3 scenarios:
+> - DAMON action hugepage for the database task, THP as never
+> - DAMON action hugepage, THP madvise
+> - DAMON action collapse, THP never
+> 
+> I compared the memory consumption, both in overall in the server and
+> anonymous huge page consumption. The results are in the table
+> 
+> T n: THP never
+> T m: THP madvise
+> D h: DAMON action hugepage
+> D c: DAMON action collapse
+
+Thank you for sharing the details of the setup, Asier.
+
+> 
+> +------------------+----------+----------+----------+
+> |                  | T n, D h | T m, D h | T n, D c |
+> +------------------+----------+----------+----------+
+> | Total memory use | 2.07     | 2.09     | 2.07     |
+> | Huge pages       | 0        | 1.3      | 1.25     |
+> +------------------+----------+----------+----------+
+
+Could you please further share interpretation of the results?  What these
+results mean?  Does it show some benefit of DAMOS_COLLAPSE?
+
+Also, how is the performance?  Does it show some difference?
+
+> > 
+> >>
+> >> Changes
+> >> ---------
+> >> v1-v2:
+> >> Added benchmarks
+> >> Added damos_filter_type documentation for new action to fix kernel-doc
+> > 
+> > Please add Changelog on the commentary section [1].  Also, please consider
+> > adding links to previous versions.
+> > 
+> >>
+> >> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> >> ---
+> >>  Documentation/mm/damon/design.rst      |  4 ++++
+> >>  include/linux/damon.h                  |  2 ++
+> >>  mm/damon/sysfs-schemes.c               |  4 ++++
+> >>  mm/damon/vaddr.c                       |  3 +++
+> >>  tools/testing/selftests/damon/sysfs.py | 11 ++++++-----
+> >>  5 files changed, 19 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+> >> index 838b14d22519..405142641e55 100644
+> >> --- a/Documentation/mm/damon/design.rst
+> >> +++ b/Documentation/mm/damon/design.rst
+> >> @@ -467,6 +467,10 @@ that supports each action are as below.
+> >>     Supported by ``vaddr`` and ``fvaddr`` operations set. When
+> >>     TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
+> >>     fail.
+> >> + - ``collapse``: Call ``madvise()`` for the region with ``MADV_COLLAPSE``.
+> >> +   Supported by ``vaddr`` and ``fvaddr`` operations set. When
+> >> +   TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
+> >> +   fail.
+> >>   - ``lru_prio``: Prioritize the region on its LRU lists.
+> >>     Supported by ``paddr`` operations set.
+> >>   - ``lru_deprio``: Deprioritize the region on its LRU lists.
+> >> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> >> index d9a3babbafc1..6941113968ec 100644
+> >> --- a/include/linux/damon.h
+> >> +++ b/include/linux/damon.h
+> >> @@ -121,6 +121,7 @@ struct damon_target {
+> >>   * @DAMOS_PAGEOUT:	Reclaim the region.
+> >>   * @DAMOS_HUGEPAGE:	Call ``madvise()`` for the region with MADV_HUGEPAGE.
+> >>   * @DAMOS_NOHUGEPAGE:	Call ``madvise()`` for the region with MADV_NOHUGEPAGE.
+> >> + * @DAMOS_COLLAPSE:	Call ``madvise()`` for the region with MADV_COLLAPSE.
+> >>   * @DAMOS_LRU_PRIO:	Prioritize the region on its LRU lists.
+> >>   * @DAMOS_LRU_DEPRIO:	Deprioritize the region on its LRU lists.
+> >>   * @DAMOS_MIGRATE_HOT:  Migrate the regions prioritizing warmer regions.
+> >> @@ -140,6 +141,7 @@ enum damos_action {
+> >>  	DAMOS_PAGEOUT,
+> >>  	DAMOS_HUGEPAGE,
+> >>  	DAMOS_NOHUGEPAGE,
+> >> +	DAMOS_COLLAPSE,
+> >>  	DAMOS_LRU_PRIO,
+> >>  	DAMOS_LRU_DEPRIO,
+> >>  	DAMOS_MIGRATE_HOT,
+> >> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+> >> index 5186966dafb3..aa08a8f885fb 100644
+> >> --- a/mm/damon/sysfs-schemes.c
+> >> +++ b/mm/damon/sysfs-schemes.c
+> >> @@ -2041,6 +2041,10 @@ static struct damos_sysfs_action_name damos_sysfs_action_names[] = {
+> >>  		.action = DAMOS_NOHUGEPAGE,
+> >>  		.name = "nohugepage",
+> >>  	},
+> >> +	{
+> >> +		.action = DAMOS_COLLAPSE,
+> >> +		.name = "collapse",
+> >> +	},
+> >>  	{
+> >>  		.action = DAMOS_LRU_PRIO,
+> >>  		.name = "lru_prio",
+> >> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> >> index b069dbc7e3d2..dd5f2d7027ac 100644
+> >> --- a/mm/damon/vaddr.c
+> >> +++ b/mm/damon/vaddr.c
+> >> @@ -903,6 +903,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+> >>  	case DAMOS_NOHUGEPAGE:
+> >>  		madv_action = MADV_NOHUGEPAGE;
+> >>  		break;
+> >> +	case DAMOS_COLLAPSE:
+> >> +		madv_action = MADV_COLLAPSE;
+> >> +		break;
+> >>  	case DAMOS_MIGRATE_HOT:
+> >>  	case DAMOS_MIGRATE_COLD:
+> >>  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
+> >> diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+> >> index 3aa5c91548a5..c6476e63f4fb 100755
+> >> --- a/tools/testing/selftests/damon/sysfs.py
+> >> +++ b/tools/testing/selftests/damon/sysfs.py
+> >> @@ -123,11 +123,12 @@ def assert_scheme_committed(scheme, dump):
+> >>              'pageout': 2,
+> >>              'hugepage': 3,
+> >>              'nohugeapge': 4,
+> >> -            'lru_prio': 5,
+> >> -            'lru_deprio': 6,
+> >> -            'migrate_hot': 7,
+> >> -            'migrate_cold': 8,
+> >> -            'stat': 9,
+> >> +            'collapse': 5
+> > 
+> > Comman is missed?
+> > 
+> >> +            'lru_prio': 6,
+> >> +            'lru_deprio': 7,
+> >> +            'migrate_hot': 8,
+> >> +            'migrate_cold': 9,
+> >> +            'stat': 10,
+> >>              }
+> >>      assert_true(dump['action'] == action_val[scheme.action], 'action', dump)
+> >>      assert_true(dump['apply_interval_us'] == scheme. apply_interval_us,
+> >> -- 
+> >> 2.43.0
+> > 
+> > Other than the selftest part, code looks good.  Please consider dropping RFC
+> > tag from the next spin.  Clarifying more details about the test would be
+> > helpful, though.
+> > 
+> > [1] https://docs.kernel.org/process/submitting-patches.html#commentary
+> > 
+> > 
+> > Thanks,
+> > SJ
+> > 
+> 
+> SJ, should I remove the RFC tag for the next version?
+
+If you feel comfortable with it, please do so.
+
+
+Thanks,
+SJ
+
+[...]
 
