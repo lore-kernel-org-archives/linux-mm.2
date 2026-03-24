@@ -4,81 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49FD1D58CCA
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 12:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93989F4613D
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 12:51:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A25E16B0005; Tue, 24 Mar 2026 08:48:11 -0400 (EDT)
+	id E4ACD6B008C; Tue, 24 Mar 2026 08:51:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D70E6B0088; Tue, 24 Mar 2026 08:48:11 -0400 (EDT)
+	id DD2ED6B0098; Tue, 24 Mar 2026 08:51:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9144E6B008A; Tue, 24 Mar 2026 08:48:11 -0400 (EDT)
+	id C9AE06B0096; Tue, 24 Mar 2026 08:51:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 80FA66B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:48:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C756C1F6E
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:48:11 +0000 (UTC)
-X-FDA: 84580934382.08.288FD86
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3F3FD40006
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:48:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774356489; a=rsa-sha256;
-	cv=none;
-	b=0Ph/b2y/6XWzFNsTO/ZPXra8vz1w7Zp+smxTwiRl3BqNxKJoblu4xXj9vjFa+dKcQeosPM
-	zxohV0IEkzc6qXD9Hqtoqq7p8xPpY+/6ft/MsMEG0i8UDpTkXMjOrqfcmyL2jZo3Zd/Dap
-	UNaeUr9B5K0wck59JVR/jaWCr5xpiVM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id B1C246B0095
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:51:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7ACC2140A5A
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:51:22 +0000 (UTC)
+X-FDA: 84580942404.26.7E69942
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 09CC940006
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 12:51:19 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CkXM2qqf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="lS/AAT+a";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CkXM2qqf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="lS/AAT+a";
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774356489;
+	s=arc-20220608; t=1774356680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HRpxd9RTXL576aPfqqDyMly65x4HwOi/VWSI2D8gaYg=;
+	b=jHi0RMNvMqKGUu/MNnRna/MemtoEC6Xns7mFbNAVZ7la8AIrtrke6fJdXpNQbm5pyuPRQV
+	/t0mc6h/PY5nJ8gk0/HKgaTdmfw1aaCHczE3jA71RkxUaEfjH5Teru7OiMreLgrbAuJLM2
+	gvht1ql/rsFB6b9/dxkFxWugyAXxEHE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774356680; a=rsa-sha256;
+	cv=none;
+	b=1J6IF1DhxEgnuQfn5ery/A8LiNZdFnFWjkv14Udik7FcxiA4f0cRJlEACGDM/kC+ENjseK
+	aiu3HR5d8rfsIUpL5i0gnxZPOOzsdncoIqhizX5nVNEDL/FQUzf100Eqrhd3J6nWQy7Muw
+	QsgyvF1JggasP8qTy4w5N0KbLcKVaIo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CkXM2qqf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="lS/AAT+a";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CkXM2qqf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="lS/AAT+a";
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 75CA74D4E6;
+	Tue, 24 Mar 2026 12:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774356678; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rNoNuJPsb0Zu2MhBxSefTW2Wr6TV6iWZ94UbdLbBscY=;
-	b=oKY76HAB3vfYIbqDwXFwhFp+srQGsoftTsK2ldlfAMP9qCv4cZdtKzkAsdU+j4oYUn+zDn
-	6ZGYOPjrwkovhZoisrWGLHgovfgPWZCyTURPWRpku9NmC4IucBbUB4fkNpgiBRWxvZhahS
-	BK14j+AtNuQtoiadMD+t5ZAf0CPJUtk=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 24 Mar 2026 21:48:04 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Tue, 24 Mar 2026 21:48:04 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Pavel Machek <pavel@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
-	linux-pm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 1/2] mm/swap, PM: hibernate: fix swapoff race in
- uswsusp by pinning swap device
-Message-ID: <acKIBGjQDZrMQXjF@yjaykim-PowerEdge-T330>
-References: <20260323160822.1409904-1-youngjun.park@lge.com>
- <20260323160822.1409904-2-youngjun.park@lge.com>
- <acH_svpUwaNtFeJN@KASONG-MC4>
+	bh=HRpxd9RTXL576aPfqqDyMly65x4HwOi/VWSI2D8gaYg=;
+	b=CkXM2qqfqoQoJPfy5qQoPuU0n2jdb6wAEMMNP74JiXs3pb0gw+ZWdZLUv7fOIMKwbm8wbI
+	4tMsvX1TIn9EO1e7hHwjbv99Zrc4viJXRMMEkfh0fXD+m1rkUyBSVNWI1E49Ypalm2v2pv
+	VmnlXOZJV24RIXdcyXCAksUa5wTEynU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774356678;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HRpxd9RTXL576aPfqqDyMly65x4HwOi/VWSI2D8gaYg=;
+	b=lS/AAT+ag7CxAS5QsLazid/zTAJYBU8bEnu0S3GpJCClX7OfBrY45XPrARrzgHDVGJOX8S
+	EA7+x2UkU1LNo5AQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774356678; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HRpxd9RTXL576aPfqqDyMly65x4HwOi/VWSI2D8gaYg=;
+	b=CkXM2qqfqoQoJPfy5qQoPuU0n2jdb6wAEMMNP74JiXs3pb0gw+ZWdZLUv7fOIMKwbm8wbI
+	4tMsvX1TIn9EO1e7hHwjbv99Zrc4viJXRMMEkfh0fXD+m1rkUyBSVNWI1E49Ypalm2v2pv
+	VmnlXOZJV24RIXdcyXCAksUa5wTEynU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774356678;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HRpxd9RTXL576aPfqqDyMly65x4HwOi/VWSI2D8gaYg=;
+	b=lS/AAT+ag7CxAS5QsLazid/zTAJYBU8bEnu0S3GpJCClX7OfBrY45XPrARrzgHDVGJOX8S
+	EA7+x2UkU1LNo5AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 648DF43E48;
+	Tue, 24 Mar 2026 12:51:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 60WAGMaIwmkoAwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 24 Mar 2026 12:51:18 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 26FB3A0B32; Tue, 24 Mar 2026 13:51:18 +0100 (CET)
+Date: Tue, 24 Mar 2026 13:51:18 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
+	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 20/41] fs: Ignore inode metadata buffers in
+ inode_lru_isolate()
+Message-ID: <flb3si2jxjg4gy7beqxr3zt3tvq74msftee5ewmwgpd77vqj5r@h5rqgjuws3zr>
+References: <20260320131728.6449-1-jack@suse.cz>
+ <20260320134100.20731-61-jack@suse.cz>
+ <acIkOmat4Y_M2SUC@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acH_svpUwaNtFeJN@KASONG-MC4>
-X-Stat-Signature: mxsgcmqkx5mo6kb7ngrjcggmzz6r6q9b
-X-Rspamd-Queue-Id: 3F3FD40006
+In-Reply-To: <acIkOmat4Y_M2SUC@infradead.org>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: qezu659q6k68c7sqixi7h5unady3jqbo
+X-Rspamd-Queue-Id: 09CC940006
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774356487-770822
-X-HE-Meta: U2FsdGVkX1/QBAPkvnNZM6IlvtQ2P2wSBesSEVIongNDzCywkJHEf9pKPTrJbkZwevQuyuU1WcEIYc2Dj94JG7YNfaJQzT73lPo9kK3uMtNvnW/ydzzOQiQ99brz9PkNgLpEaLXvmn/3xU5PB6zZoLdftOa7S8EdvxQ0IQ5zBGOqhdWKFYPlqHjIy3jjV8ZEdaV6DeCBq8fMsTyT7LsvS9IERTd9U5YjBSfgqh8nOJMewSVyX6xOnQLaAhQbjRYVyvkgclVB0MlbOzMdFqLs7HNgLWm81yXz3Ri/dmPv0ffF3BHmzi6zBOf1+VSwrm6IaPtv/rLIOzq+mDDWdOtbzVnhH0vnPXzfSMz+Vp/oPWVYD0gsjZWPNK7WSwnu3KFNxa3h71Cie/Y02V3rgqxSeANVFZ9RujcMIFOhAE04r8hBDqFsz+G7GB0ojYXjoOwA9CFaYQAO4nsKXNjViMDmKsei+NfvYBO4WoMf3/czGfiYTrZGPKCLu0AqSALFHEr2XS66dbdnt1VsUOwZ+7i8mFOQaySGUpcnkk0IaypsJkbOsPRlzSTyDtomNDMOl6vScj09fhwJlrRWb6L1289ggFJ4nbl3HMYxNr3cRJuq7h9/5UQNYZ2Yl0KVILYujwYVmNaeODMtY8HBlAQ11kzN14I6o5Yxc90D2Wlreim2YOQ6XLtAPzZ97pVcvMsPSUYnJY9TOi66GyzEDyqONDgu2MoOmG3PvCuZR2SXwAASwHKiFG1JYRfhzCGHLWxoaOXUdcAvw9KsnJ1WBk3eKYI0nIW3NWhqcRLmyiyCzVreU4lTSCVn8/3FFl6N02dmcPsBt4xtUbW7n84Ll8i8bJ+BSa0l0NcG8A37VHWvksTxFq+0E5Urm3axPQ==
+X-HE-Tag: 1774356679-697948
+X-HE-Meta: U2FsdGVkX19Ij7epo1ntMDQvKE3nnq1qML9um85nhANgknCkDKLjyXSNFRps7RDWdbIXUA7mAujya0vEcNGdDKPOXdszN2MD7f5Qdi4VoGtoB2mAWYxYB8dMZ6LuU2OuENZVwrLJgaxfq5/FjBnciGsj7jYPg41FlT1JYt1HpppoZ44tLyCJSUiPthaAGUYRxRIUEFWRwXXPQXn5ASIULo/wW/QxknePdbrBhfE3k9b67eIX03dsjlusEFXnwza4qVQJGoudWVZ1jioaJhYHdSsE0ygz/tDqTBO0TbjtI+YSgLrDiVC58efszXNIgKBpOmV98LR4tamfEWgou6vhP4ztLK5iX+5KNkiWt6HPqqXjgXg86OFihcB1R9UYjfztPZ/icczHGdjqW6QL2bunR/IEqwDJruVJ4LcjQR9s98GrKiq38TyNcFKB1x7uhE1K8ESOeQQ5tmWcIJDkJw8g+dqzh+I1b+6Nhvt4bBFuw0Kmn4dwPHnOealEJlQMvE0OeFuL+/XlUHzxdj9xYK1JyswwdcP7TYgnK9SQ0AclAoFkBhDpbTZDfzecihceriJ0MfhbhTMp05yeqBbHiW6dVctkM86kkfDoN2cwJOiKHRa2r4ytkY27+M+PfyyR4eNqOgknhnkdolfP0R8ZkdaB+mQrzIrOjimI4Ad/7uce3svU5e3ratmQfVFQX3zDYL+sYSQhvlDb93+lGUPxuieD6drbavqe7CfbYbjMDDwyyoFVSDj/9L6E05fahTxmVV3e0x3pT92k1kIQ6QH3VoCyMVkZ7VN71esliwNmUUeyVO9L2JZ6EaBh9Rupnvyx5do9DdYdJgOid7W6pJxs/frNQ0pPbByAEl6WYeTsxlPYLAigtOP9i4z070aKmR4kUb8zi4DMg7asNU88adZv+2qeJBTyBqntYm+b/0OEIhGVa+EMQHP0/cMqaZLcvLcTSsdZUHTh1ySsZOxrMsSPLLi
+ HlhFGtVK
+ E+SaAwzr6+yycsBXvyL80s9kmbM+xR+iB9sFNHS+aiUqpzsBZAP0jk4dCN1EptgJoKGq1rLLcExrq/zZxrWbv5VH3x23zw2tEnFg04JraVzbvsiLiHn8vchyPGih4usvBXTitujHUnJ/uYF7oyJK3sQ5Qzo2dzFj4gye6qV1vqzEsq+R0JCgseiPi4Ou1rrwItRMDlqkmfx7pdtEnFc8LFJQEQhUSuyi+Oz4bpnAIV0ivuqgJMPktdiqp5zjATOynFi42O3CEIUY6puGvGYeee3DDourcU+iB84Xj5yXqtQDcpkXv/ibwUcZ5HTLUw3pXyELjpdlzDQoOGkwlS3ug307g6QcVa9JsnzuJOCjq2s0mg5vUgUksqqYlg2bMTI5BOswpDz38bI4DINzfbJzKTzGfD3egqGmUazWy0vO5l1XGzq1xQAaBfUjaiMKc/YSi4PenOzu1XFKP+Ss=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,78 +139,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 01:53:33PM +0800, Kairui Song wrote:
-> On Tue, Mar 24, 2026 at 01:08:21AM +0800, Youngjun Park wrote:
-> > Hibernation via uswsusp (/dev/snapshot ioctls) has a race window:
-> > after selecting the resume swap area but before user space is frozen,
-> > swapoff may run and invalidate the selected swap device.
-> > 
-> > Fix this by pinning the swap device with SWP_HIBERNATION while it is
-> > in use.  The pin is exclusive, which is sufficient since
-> > hibernate_acquire() already prevents concurrent hibernation sessions.
-> > 
-> > The kernel swsusp path (sysfs-based hibernate/resume) uses
-> > find_hibernation_swap_type() which is not affected by the pin.  It
-> > freezes user space before touching swap, so swapoff cannot race.
-> > 
-> > Introduce dedicated helpers:
-> > - pin_hibernation_swap_type(): Look up and pin the swap device.
-> >   Used by the uswsusp path.
-> > - find_hibernation_swap_type(): Lookup without pinning.
-> >   Used by the kernel swsusp path.
-> > - unpin_hibernation_swap_type(): Clear the hibernation pin.
+On Mon 23-03-26 22:42:18, Christoph Hellwig wrote:
+> On Fri, Mar 20, 2026 at 02:41:15PM +0100, Jan Kara wrote:
+> > There are only a few filesystems that use generic tracking of inode
+> > metadata buffer heads. As such it is mostly pointless to verify such
+> > attached buffer heads during inode reclaim. Drop the handling from
+> > inode_lru_isolate().
 > 
-> Looks good to me, thanks!
-> 
-> Reviewed-by: Kairui Song <kasong@tencent.com>
+> But the code isn't just verifying (which to me implies debug code),
+> but doing actual work to remove the buffers.  This does look like a
+> behavior change to me, buf it is not due to previous patches or
+> because it was dead code, it would help greatly to explain that here.
 
-Thanks for the review, Kairui, and for all your feedback throughout
-the revisions!
+Right, I've rewritten the changelog to explain things better:
 
-> Just one trivial nit picks below.
+There are only a few filesystems that use generic tracking of inode
+metadata buffer heads. As such the logic to reclaim tracked metadata 
+buffer heads in inode_lru_isolate() doesn't bring a benefit big enough 
+to justify intertwining of inode reclaim and metadata buffer head
+tracking. Just treat tracked metadata buffer heads as any other metadata
+filesystem has to properly clean up on inode eviction and stop handling
+it in inode_lru_isolate(). As a result filesystems using generic
+tracking of metadata buffer heads may now see dirty metadata buffers in
+their .evict methods more often which can slow down inode reclaim but
+given these filesystems aren't used in performance demanding setups we
+should be fine.
 
-> > +/**
-> > + * unpin_hibernation_swap_type - Unpin the swap device for hibernation
-> > + * @type: Swap type previously returned by pin_hibernation_swap_type()
-> > + *
-> > + * Clear the hibernation pin on the given swap device, allowing
-> > + * swapoff() to proceed normally.
-> > + *
-> > + * If @type does not refer to a valid swap device, this function
-> > + * does nothing.
-> > + */
-> > +void unpin_hibernation_swap_type(int type)
-> > +{
-> > +	struct swap_info_struct *si;
-> > +
-> > +	spin_lock(&swap_lock);
-> > +	si = swap_type_to_info(type);
-> > +	if (!si) {
-> > +		spin_unlock(&swap_lock);
-> > +		return;
-> > +	}
-> > +	si->flags &= ~SWP_HIBERNATION;
-> 
-> Will the code will be simpler if you just:
-> 
-> if (si)
-> 	si->flags &= ~SWP_HIBERNATION;
-> 
-> Just personal taste, free feel to ignore.
-
-Noted on the style preference. I'll keep it in mind. :D
-
-> And as you mentioned this is on top of swap table p3 so you based
-> it on mm-new - but isn't p3 already in mm-unstable? Maybe we can
-> have it there? Not sure how much conflict are there with PM.
-> 
-> The code and design looks OK.
-
-Regarding the base branch. Andrew is already aware of the
-potential conflicts in linux-next, and we've discussed possibly
-parking this for the next cycle depending on Rafael's input.
-So I think we can keep it as-is for now and see how things go!
-
-Best regards,
-Youngjun Park
+							Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
