@@ -4,165 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 728F6F54AA0
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 13:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D1CF54AB0
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 13:26:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8A8D6B0088; Tue, 24 Mar 2026 09:19:45 -0400 (EDT)
+	id B98BD6B0005; Tue, 24 Mar 2026 09:26:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D62136B0089; Tue, 24 Mar 2026 09:19:45 -0400 (EDT)
+	id B49E26B0088; Tue, 24 Mar 2026 09:26:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C03536B008A; Tue, 24 Mar 2026 09:19:45 -0400 (EDT)
+	id A5FAB6B0089; Tue, 24 Mar 2026 09:26:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B0B686B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:19:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 70E2D55D98
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:19:45 +0000 (UTC)
-X-FDA: 84581013930.30.F3FE807
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 917F8100014
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:19:43 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ABD+g7yD;
-	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774358383; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 959FA6B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 09:26:52 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40C22161C14
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:26:52 +0000 (UTC)
+X-FDA: 84581031864.21.FBA4531
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4117740010
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 13:26:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GAPjGmLN;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774358810; a=rsa-sha256;
 	cv=none;
-	b=XaiVHuxqh74CWwzcnNdEELxDpbGreQeAG9Tdv9buwjOSpfvyvAJiBENfGIaBk3/1LqGfpr
-	218o9e09I4FM0H4weP8AqcSs9GWu1z2qM/mxURyWRezkIfjki4heDWouBWLCyTiV7qOf/Z
-	Hi72TgYGPyrB98+tpm9Jf1h/lv+jKkQ=
+	b=mPafj+iIe60Lfmn1AjehTZOklLebCjVMmIx8Z+ymOItIXDIN4T5w3QQPQ41qFtl8Wt289o
+	bz1ebFjhf6Pive+v171ad/iY/ihS1A95IRycudl9dG72eoiVzO6FxR5iU3ufZqjSlibp7D
+	+qtdd+ri47YEGC0mRUpwk7KcnygVYFs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GAPjGmLN;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774358383;
+	s=arc-20220608; t=1774358810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hDW9QxylvtudolC4OrULLL0I8iMCwV1m1od/FFAOgBU=;
-	b=fBeqR/6smG0LO4La0zEfz2SsleFBu909tlyUu+gEIsZpFrYSCsg4EMCelYQ2D3QghuEZ2F
-	rm8hd+O6Vab+1PCmlMtJ/Yzlo+MvciPwcjZd0EK9zxOXWu+M/2xh3AJVtp6XGtuKQVHP4a
-	iPzpf4/X8VvcG2bYScDxDrlnzn5AH4U=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ABD+g7yD;
-	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-486fda2a389so31814245e9.1
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:19:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774358382; x=1774963182; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hDW9QxylvtudolC4OrULLL0I8iMCwV1m1od/FFAOgBU=;
-        b=ABD+g7yD65o83SROgK9X6aQ4Oddy/ZND45GVhK4l/3548OImmuv+jWIBfCZUu1lbkL
-         jqE4rAZzFkKWNFn5eV85Wsv8Huri96BsfLLNTcLATQEQPwkFOdH1iZOxcfF4kaIEvGCH
-         tGr1QDL7+iaCmgNTRpm8UNgg47tUHG3eHgWWDHFFbB8tYGBO/iCF3z3Rga45i25joyVL
-         adRjMbetJRRwmMcgH2nrOARsiGKyS12RcgEnfIB3tZ8qzLUar8PmZlWaIBmkHvItr9on
-         kcUFxjNnmnovXEzQ4f/jGUh1WT7HK6mS567WWRIqcKBQbHnfWnIuLBcgf5HCynQu91vO
-         CvcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774358382; x=1774963182;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hDW9QxylvtudolC4OrULLL0I8iMCwV1m1od/FFAOgBU=;
-        b=DYv45MWxMKwH0c47Sl4jwKDRRscpSEGSBQ0R1bWTouvHRamj9tcJ4g1got7+ODzSix
-         EKWszCPwdPnJ0oU28hgKixAZgZnXAG6gBIAgFCfccti2NQDKEm3QoZPJcVHa0bfJq9Yv
-         bK5uhabPK51/F/9h2pj0Ev3MnYEIDUdM/8NkEI7ej+1Calx12jm963VG2v3A3dmjtXv5
-         kVsT32oZbC6KV3K07HhQUjQjcy7viffhRqPle60PJ31ZPVMeQOlDYvzMLKSrwVLgVCls
-         SPCeKWM+S83gI92DBP9DV1/K6glrS8HwdOEffOQT6wOCIpKFmVUKm+RQzJKFVO797rpN
-         t7wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdKMrUg+cbzvFi39rrckaS/4T+JnimkMjYLZn2YZ/0n+2eXzkVuL5h1Fm90aAoyFhRzotkdItehg==@kvack.org
-X-Gm-Message-State: AOJu0YwhK8hZBmtvYoKn/mJYIVx8RcZqA8d+kufj5R4fpxxu+3GRcgIi
-	MvTTru7Bk54zzMnVN7gqIqqMmIwRXvry2apnwxFXjZ1PkQS/evpPP/VI
-X-Gm-Gg: ATEYQzz3uVcXx46tLsXIGPslD/7/QyFjQgfSfe0QnEb4ZIQ2NMN1dy8NQff1mZdzw4Q
-	KmVha9ndVp8ED01e2CDph8phk3rWwzO80l8JGKjkYITMoZLNC10uC3LvQJxFuZ1cnGbHOLf46zY
-	oRTtU1J0G1+Bwj/rENMbiEGadBo1jVaHw8FN4s4fjODPA3nnZ9mjiLUEoP1NI4UTzI5LKnGWAFU
-	sLbF7tcWQAlolXOllLpPYPPv3MjQWqVsFNvh0pwy0+L+DNroRcXj5hQoq/UhNum5fEDUC5DBvmq
-	mgNaAERmqYveAUlgadCllfzjkGKjlqoankVVss++wE2h7oL1slHohvcwvCYSmVC1q1nNBPRndFx
-	HxuOhGArYYtccUknpCOoKTRus8NAAKRaMfbeWnVoCht2e+6yPaMAu/gOIsd1dHh1ShjkpTlSO3C
-	iMfEaRA5DMlG3FEMYXylw=
-X-Received: by 2002:a05:600c:1c16:b0:485:39d4:2dd9 with SMTP id 5b1f17b1804b1-486ff04fb4cmr260524475e9.33.1774358381485;
-        Tue, 24 Mar 2026 06:19:41 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-487116939b8sm77926095e9.3.2026.03.24.06.19.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Mar 2026 06:19:40 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: nphamcs@gmail.com
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	apopple@nvidia.com,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	bhe@redhat.com,
-	byungchul@sk.com,
-	cgroups@vger.kernel.org,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	corbet@lwn.net,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jannh@google.com,
-	joshua.hahnjy@gmail.com,
-	kasong@tencent.com,
-	kernel-team@meta.com,
-	lance.yang@linux.dev,
-	lenb@kernel.org,
-	linux-doc@vger.kernel.org,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9CtP85zYJWf6ny5avoGWyCAahNBDAgLwjniCirSLW4w=;
+	b=LIIzHY/VRSCohGt6n38TMITfL4Yyl0OU8msY9GI6lXLXUY4L97AqKaSjlb3WHXTpPd6Lee
+	iqzuqK0O4lCwqI3VeMMTN7LkBRFhsy/hiT04CoipevcT+AkDqr64Erh4T8JX5yU1mXABB1
+	Advs388flRChWlLd4S2TpQryX3J0RIw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DFCBA1476;
+	Tue, 24 Mar 2026 06:26:42 -0700 (PDT)
+Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 935103FAF5;
+	Tue, 24 Mar 2026 06:26:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774358808; bh=F/htvyFctlbNCF0Y3WWbR6ZEMytC7JSoA3t6ZZQxiTE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GAPjGmLNA2YBz+piw50rSr90wWg1hKu2xeFC6b9WohZRg5sJn/f7FEuJnwTJu0flv
+	 CWF5JGZxgDVFsK7L3pWn1XO/yZuSgRC5qDd1WdH/9cHcgbY29uCOLYoYZLWaRyJm4H
+	 phG4Qg87ZrNFvEut2qjD6YcSPCYyH4utTyOI86Js=
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+To: Arnd Bergmann <arnd@arndb.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	linux-arch@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	matthew.brost@intel.com,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	npache@redhat.com,
-	pavel@kernel.org,
-	peterx@redhat.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	rafael@kernel.org,
-	rakie.kim@sk.com,
-	riel@surriel.com,
-	roman.gushchin@linux.dev,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	surenb@google.com,
-	tglx@kernel.org,
-	vbabka@suse.cz,
-	weixugc@google.com,
-	ying.huang@linux.alibaba.com,
-	yosry.ahmed@linux.dev,
-	yuanchu@google.com,
-	zhengqi.arch@bytedance.com,
-	ziy@nvidia.com,
-	Kairui Song <ryncsn@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-Date: Tue, 24 Mar 2026 16:19:31 +0300
-Message-ID: <20260324131931.4004123-1-safinaskar@gmail.com>
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Peter Collingbourne <pcc@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan.Roberts@arm.com,
+	david.hildenbrand@arm.com
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+Subject: [PATCH v2 0/3] KASAN: HW_TAGS: Disable tagging for stack and page-tables
+Date: Tue, 24 Mar 2026 13:26:26 +0000
+Message-ID: <20260324132631.482520-1-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260320192735.748051-1-nphamcs@gmail.com>
-References: <20260320192735.748051-1-nphamcs@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 94hbcnk99mu8bi8ita9wsf3ijwhyrw74
+X-Rspamd-Queue-Id: 4117740010
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 917F8100014
-X-Stat-Signature: q15qunekpt17p3mxcauw76jbwmjkoju3
-X-HE-Tag: 1774358383-541534
-X-HE-Meta: U2FsdGVkX1/o8IeYauBiw1hg2I0VmYNRidQ/vEyHZRnLKrwJ/NWpb0/c2E4XFEDDEsYP/+XOZ6rbYduENC9MvE4fU1Op4toxfiC7o9fj5CkgqR/J8zX5KBm4ZY7uc3WmUS/nRnAlWq/21d9YzMnV/tLZjax1VZYsOBO14y9qyKtnTeoVMLwE+/zpkREahS61aoCNo72LAJ5skJgZL4PhmBDuBM+urN1Kyv0EtzpSuu27L2e5l1kG09d2GgaH8F969XA142v9uh5/U+mH0mFe3LOf02ajsL3X4eGdqzb/DYtNQYcuFC6aGkZbVipZyfswoZOg1HgIwjBSpK9JPMdx9zHP0icKD1xP522XbPdO7WZyqeczpUuWOAl9Nrt1CSwmMMx40+jsAeIodQ2UaabfUGmi3/c82PimEzMgVdGi3U7SvVSvOHlAUIGIMdmDR3W34jr24zJvyLZf8PUi75p3HLZEiIz1bTis9MwcaIh5yTtqKLzIzYCyep0xiXQquel89Yc3z6wBz1WvPOOffBmY8CtvQplu5i6g9fLejAncyRYA6KuqobUIfbEjVxAvuSKICV2w+QWGJ16aTVxJTRLJpGhBZRyCWh7XFa3/IEL5MppAalAfegLp3ny55/+NrLdC1xYfYNM62OZxpW63mYg/d0duYe/9EC0aWdfP2FcD/9q/QpFFR2a/Zaj78UiGIu0UJtctFF35zBedt8OgK0d3cEi2O2/YqWuQHmDIlP2LNz3d4LfXjLms+7iMHJg6DNq/EhsMiLRABmV0Ersuk2aM7ovqS6/GxB68Ed1gbu7YCa36Fb9XyjpLJii1RMiPVkhEqV7yOaPxAtj8n8rNcYs/g/Y5ZnzZ9E3Tg9vy3soIXV8BAjEP7IHBqs5THexmEQXO4Um6YpRd18Jf+HiAqyoJCmfl5z44WtxQV0NBOrHfulAFVXE2IRlHaCvabJj1Z1OiY4GguKsZ1ugtt8vu3p4
- Bx9oB9Om
- rroqQ7gQLs/wKQa/xkSPJimgp3yXlBVFjx+dkMql5W3On4AFEPEI6jcDV8lpbG6lzCAX1rFPezWBFmNPn4wbu9vvmAr67OXM0bm5VYRoOt+TT4Dx2AvAoOQTaee9jznuMs+AceclZsyswTOKghLq+nGCa0e3ZegjdpxcqM12NQ1bhMrZfBmyGIYXGzeYZZIqzKS2D0AY4IbF/t9XBq22aUMAteSiFvkPr2lW07nRIIbNhPBVdybIngbEvHB13oSXR2LzLvMb23Ky99MYILrxrgPLNnBRMsQflnZo4lDrGKHKkuaHISonx0HgwlmD26zF60B4OpXmamPC7vQZa7ewDCZcVeGEyMJgKmhl0+1TOvFkZzbVNYRjNBXuJz8tC7j41Pj7jxP9uLbLJH3N5+Ku67QyNxwRm1p/CWLcGmKG8R+7vNTxMaZWEzcFNBnC/ZiQ+bCOtkYssYe37duPQiC2UpDxcqd6MYQyjNvuTOGIh4NND1e9d6ptXcbkOeyKtKCorfc6V2TfZwA+Ip4FBnnnLrLfazNYAf0A1qwHBj0piLxHNm6tlfHS0VksDtw==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774358810-269888
+X-HE-Meta: U2FsdGVkX1+ONGi7671ljRfsbjQgUurViMvD3sahXy0v27gAgfh8/m84xeFDTof9U95mjIDXlBi0IgW4/3ALSOfzzl9/fY0LdMe4sfxuaquXxqawLJAswkLW8bYQbK9VjY5BWvBmqWHCtdcavA254jULFDb2zm+kwB3Vyqq3oA46Qq2zAEv8Lno6ttMJcBU5FtGJzKTKdAZlYcDjoQy4B9l47J3H5AVfthqwBEPW2sSuJdyNFCJH2WHXjBreI1DYgmXezLI/aMrKfYQnl0WDXKbn3x7qBS8Ebk0lRh0kGVr2wzGyky2pX1LhaweRdBPWePQTKqzCFW8dxsYy9AqaiOeQzTzXxB2NO06IeYsP/yJdoD7wpz5DrQc8LhfG2t/Aqoj8S8j7tiARlkPDRwL6/mPNBDvHxZbQo33TOmRK0k08g9OjnL21OOcvSy+tBV1pjq1PNoqeBjEkVC5cQlea0WHagkfnmKlhO3fvVYnXF0tBbjA/QRJ95JlhTWoWdVzpnTPjOOXjcrh/eTXuSWC0Hsn5SR+BG6JX4hi/EeBDDdtKUqQH8e3Iddv/SXapWj6lv/5qDIG/Lksw5l3OaDJfrnIBWt2kEMCiczFG1R+FGudkCf/54bv4z9d1cRxyHLeIpHNsZw70fxSyZvGqc4REf+4XwHLeDx4VxYSUApKnl+amGXfTc4Vlzt93kLHSmxQiLMSuGZREr+BrkmpM6Hxfpmf5I/gw+vZEOsG0xPGR7sAfcEoLW9Xb+L9a0RDfxFJb7ngpVV6R4vG/aJz118fonHmc798sDnw4Lo1NIbs+JkOupIyPo3frqFfM47g6PxEIlRr1YH7ySCWGIkexkP/3LuL+e1JXpJ6OYwQa5+ZydNhRIRPjZOvR9/zZUThlpBBuU8lSEBLImmWg+KDlXTNpOAX6VLdbLigZkceXmgTzgOcXfjZThTYXleqesA4kvuHk5aBhLvoe48KzHH1bP1e
+ ERUlwXAI
+ r1OTERaGoPQ3ITvV1B+qDshKdB8ekAvXiQcxYQvhOHR6YteuQgOz53/JXaOp6rF+ZdpuS8xCBNkKUBB8xb0g3t3QvLA4JjfsMP0dFX0yihGKf9TVB2dx2g7/YgpvUzuZrvmZq7e2gOq4/17fvRAtOwmD/zfKvH4igNNzp/EtIq6iuZxzz87aTwGAG7H2iXLGvMJoKbIECQywTz46VkrdI4rYDBWtB3qTUUXwwnAWLYCzniRr5UIiWitA1rndHw+D7Sxh0EAc6rZOM3cA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,16 +115,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nhat Pham <nphamcs@gmail.com>:
-> We can even perform compressed writeback
-> (i.e writing these pages without decompressing them) (see [12]).
+Stacks and page tables are always accessed with the match‑all tag,
+so assigning a new random tag every time at allocation and setting
+invalid tag at deallocation time, just adds overhead without improving
+the detection.
 
-> [12]: https://lore.kernel.org/linux-mm/ZeZSDLWwDed0CgT3@casper.infradead.org/
+With __GFP_SKIP_KASAN the page keeps its poison tag and KASAN_TAG_KERNEL
+(match-all tag) is stored in the page flags while keeping the poison tag
+in the hardware. The benefit of it is that 256 tag setting instruction
+per 4 kB page aren't needed at allocation and deallocation time.
 
-This is supported in zram. The support was added here:
-https://lore.kernel.org/all/20251201094754.4149975-1-senozhatsky@chromium.org/ .
-It is already in mainline.
+Thus match‑all pointers still work, while non‑match tags (other than
+poison tag) still fault.
+
+__GFP_SKIP_KASAN only skips for KASAN_HW_TAGS mode, so coverage is
+unchanged.
+
+Benchmark:
+The benchmark has two modes. In thread mode, the child process forks
+and creates N threads. In pgtable mode, the parent maps and faults a
+specified memory size and then forks repeatedly with children exiting
+immediately.
+
+Thread benchmark:
+2000 iterations, 2000 threads:	2.575 s → 2.229 s (~13.4% faster)
+
+The pgtable samples:
+- 2048 MB, 2000 iters		19.08 s → 17.62 s (~7.6% faster)
+---
+Changes since v1: (summary only)
+- Update description/title
+- Patch 1: Simplify skip conditions based on the fact that __GFP_SKIP_KASAN
+- Patch 2: Specify _GFP_SKIP_KASAN in THREADINFO_GFP and GFP_VMAP_STACK
+
+Muhammad Usama Anjum (3):
+  vmalloc: add __GFP_SKIP_KASAN support
+  kasan: skip HW tagging for all kernel thread stacks
+  mm: skip KASAN tagging for page-allocated page tables
+
+ include/asm-generic/pgalloc.h |  2 +-
+ include/linux/thread_info.h   |  2 +-
+ kernel/fork.c                 |  5 +++--
+ mm/vmalloc.c                  | 11 ++++++++---
+ 4 files changed, 13 insertions(+), 7 deletions(-)
 
 -- 
-Askar Safin
+2.47.3
+
 
