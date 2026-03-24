@@ -4,127 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E5FF532C4
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 06:46:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D5C4F532C4
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 06:50:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D96C6B0005; Tue, 24 Mar 2026 02:46:11 -0400 (EDT)
+	id 4659F6B0089; Tue, 24 Mar 2026 02:50:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 289AA6B008A; Tue, 24 Mar 2026 02:46:11 -0400 (EDT)
+	id 416686B008A; Tue, 24 Mar 2026 02:50:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A5266B0092; Tue, 24 Mar 2026 02:46:11 -0400 (EDT)
+	id 304B76B0092; Tue, 24 Mar 2026 02:50:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C7146B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 02:46:11 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 875D71A1630
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:46:10 +0000 (UTC)
-X-FDA: 84580022100.18.D1BC099
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5204440007
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:46:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="W9vL/smi";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AA5E6B0089
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 02:50:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B94E213CAFC
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:50:00 +0000 (UTC)
+X-FDA: 84580031760.12.89085AC
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DC2A44000B
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 06:49:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bLwt+ycY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774334768;
+	s=arc-20220608; t=1774334998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HZ8xVYWaHSz/DiDizdbC8TysAumrqF9ybkeOEPMtddU=;
-	b=C5xj5uL6O1IcdYcNILm7Gi+mXwtqlOODjqsIKmo+X/tsDcGJVXtQWsatj0I08FxzGB7s+a
-	pCfwp0hiiBrzTS4WCyEdFp6RTyVCtVmahZ0Euw/cDAl3FLtf+QtxWFq3q9CvNI7MmssD+Z
-	zAvO9poW42pWr4qK99D0fylXukB23zY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774334768; a=rsa-sha256;
+	bh=9BtRgbo5SYoBF3YUHMOjmQ4qRhqYMdpWB9iGrbsQFLk=;
+	b=y+Vtvd8h2yv/68zOtKT9/nnLquBa+aaZuLy3F+djZdj8grktAcuAFze0rAMLI0qsk1fzSz
+	x5sIJg2zX2+j4B4WHyqKvd89IBFxVLE/YB3Beq8CyG+qs73DaQ1myjULGNuxgk4lJFypnc
+	bcBXHDvY7Ef2OivkFb98SSSGagUmdc4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774334998; a=rsa-sha256;
 	cv=none;
-	b=1a8mdQz7+u5jYd7biBaFoY7KvQ2sYKNcgwyenPpyVZgPQUlqHt/Tz8eM5akmkLD8FjQP+B
-	V9CnlVG0YQqZws/MoLbdjaAmSnfgawH3BbB8hUMDvLmCU0kHjjTrGSAIk6qZwdzkf7b0nm
-	w8YNvm+OIvGfSqeUN47VAB87N9wwi0g=
+	b=u01SygTTWwdEmgc6foY8mHEmekiLmGVufZlhrjeQldRcmSNgqvngLKwVSqAOKot9wQ7TGJ
+	S4t89w0MDlpaq7rN/CLos96VyH68Rm//8PU+T2XRg4Ge/CbaBXeFR1UA5HMkWumOa1daw4
+	nYPPsavnGfgB6guqdxwLG1LJOxZrEBU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="W9vL/smi";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774334767;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HZ8xVYWaHSz/DiDizdbC8TysAumrqF9ybkeOEPMtddU=;
-	b=W9vL/smiW1DEuidzO5GN94T0nLM/TiQvtF5vNu00wKFbECJ3eD+CaXXBpmuscrOcN1k9gQ
-	hRJHMnFn99k5qStheGdjiQql0/1DIWhdqBZghBZUA4la6oWy9h0HTHNKXswLdZKkYX2xUa
-	mod5pSptagfT4/p3cUbTPra/QV3CLZs=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-cp5Ti4ydMOW_9wEa8lYJWQ-1; Tue, 24 Mar 2026 02:46:06 -0400
-X-MC-Unique: cp5Ti4ydMOW_9wEa8lYJWQ-1
-X-Mimecast-MFC-AGG-ID: cp5Ti4ydMOW_9wEa8lYJWQ_1774334765
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8230d6d54a5so5228600b3a.1
-        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:46:05 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bLwt+ycY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a8fba3f769so23139085ad.2
+        for <linux-mm@kvack.org>; Mon, 23 Mar 2026 23:49:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774334998; x=1774939798; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9BtRgbo5SYoBF3YUHMOjmQ4qRhqYMdpWB9iGrbsQFLk=;
+        b=bLwt+ycYh9oILsfFudf8CM3df3a40Qqu0rqyiFZ41Wj8f2OjayrPZ7+lnDurEVDvJd
+         p+/sS4dxIXA2amuFcKLRusQoeeJq3Bl65pxDF4UEc6sce/GQlD2qJSrArN/2kguYI+Da
+         9/Jc9lfJA3NJ91Pwv4hDMyx0ecToQ5rTjdcWccDxV449ce8Cn8EJcirpq4ITIm00DQkD
+         qPtXCqsJlgUw2lraa5ZfXESIn3XUycllhPoxezHhCqHujSAQaI8OPSfqRDD2qjbkIjaN
+         JY+I0SsysrHnO4sTczNREysTotFfWFU01qR9Gf8d1t2xFwEq0wXT1bhviZx+BnINVBIY
+         jz5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774334765; x=1774939565;
+        d=1e100.net; s=20251104; t=1774334998; x=1774939798;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HZ8xVYWaHSz/DiDizdbC8TysAumrqF9ybkeOEPMtddU=;
-        b=FJGIjpzEct19a5Gv5UsYhaZe87dnN+9p0IScGp5hUgrQPo8Rn1uz+pCy/cZ1KRYaeJ
-         cL7NCpOXJAkop1YpH09ZAiwOwLrRhOHc4f5AoY28MHfcq4whyhjpQCM96pq86xvbQmXr
-         +opLjtz34kIzig18sfBapHU3xpkhixO9edBJtRPxtVdQAgZQshh9zdJ05JaUf9636yPq
-         6Muxe2LhC0jQAm50sRZKOdIuCM6CmcJ6qnWxmHgaSkO19pVducKwZ4uzlOUmJe3smXE2
-         77v/SWgCFlV+fn/OmHmuY4b1b1sLChGWHVurstv+oBA0olfwNEOxq0BCUwUUbsbP36ug
-         aHAg==
-X-Forwarded-Encrypted: i=1; AJvYcCX/EXfLEmxUOECpL0NhtLZ9p6mlRZni19u0ASLd5kS65Sg4J7IVoZC09Exng8FK4qbsCqChniRYNw==@kvack.org
-X-Gm-Message-State: AOJu0YyRTuGjAg2sOetmopjZN2YnLP0SGx2aG1M/HGKCD7N9JBZEt403
-	gthUq1sGLk7aREdyc1rE0vpvXn/OKE5RpvQLeZDHpy3dDbkiY7pCCdozGDsgT2aBATNspRIQ5Kp
-	9KP+U5n+NowtucKq/QvKDtoNTIF/aR8YI4qfB3JKb6JrtVmyrS2q6
-X-Gm-Gg: ATEYQzwOl9oZGERVMAWMmWYBd4s5/nWMsHkMV23ryPxVeAXYrMpc52vcpqVbkC+GfR/
-	y9BqCI43W0AXWY8Ng4E/6FJ5j9bk8Dg+2ukiifw0wPUtiGjVXLFTiNcIFxNFQye6n9ReYZbGw1R
-	En1kxg56/ociee9CMarXLmepcTqrZGZPgJlGgRZCQhRqVXp/91Xb/3TKyknDW1DL9JDOjYqfPSm
-	9XfQSgf/jZZsy47nE1fxdgkTSyh5edwuAKvtgLq1/dG+TbmAlqXWWmFv6ZLcf0zBISOHodTiCNS
-	ftnIKiaHj1L2phM/VbWPuVW270n0qjievP2bOKXio9C9cfwZM5TRrLluemdtc1FD0ZDG+FaTXaZ
-	sTmnAGrE9NebiEIIQAA==
-X-Received: by 2002:a05:6a00:94dc:b0:82c:20c2:81d4 with SMTP id d2e1a72fcca58-82c5bf386bcmr1893823b3a.30.1774334764948;
-        Mon, 23 Mar 2026 23:46:04 -0700 (PDT)
-X-Received: by 2002:a05:6a00:94dc:b0:82c:20c2:81d4 with SMTP id d2e1a72fcca58-82c5bf386bcmr1893812b3a.30.1774334764600;
-        Mon, 23 Mar 2026 23:46:04 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03bc1e59sm11954332b3a.13.2026.03.23.23.46.03
+        bh=9BtRgbo5SYoBF3YUHMOjmQ4qRhqYMdpWB9iGrbsQFLk=;
+        b=ehKqUtHCASwd88bTDtsaBF8G0diaUT6vEBYANymfm3VFk2VAxAXBxRvbEqPXpeMovZ
+         Iel1uzdKXfb3PV+miojWagyftcAVsCUMjsKaywDBO1qUWV0pok66+jon6hkZUdyjFmBB
+         CoYGFjMnt7EanCHMcks4+25lmVY8YhJ0arUza6UmRKDsPQmMgu/BQPFVdzi5jQis7CBe
+         V8KcC8IezNiqiNejJW2pyGoFJxy9mcQKKxQr7NYivbPjVpNuv36JPlcowQrTM2sybJ+d
+         P4/71QGYp4lLfDUfZSdNuc/LvLIH5RUkyOwg6IwcrQM28Rva+0NBnOP9Dn+YRUtMxlZc
+         ZblQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQFNeiruS29ZO14FZxq1Se5GPsDkyPskjQpPQIrtkjr4Kjv7SXDbxrCTpwnAGclydeGXNezwyoBw==@kvack.org
+X-Gm-Message-State: AOJu0YxKNTWd4z5BI3NQSlwqtGmxsixoV6y9Q4MFZQ5/GyAFhFPe+cyM
+	BTiv7yHRk8LSNVC1s4QuhUmoaQyK39AjLO+q1Bw924gaL1CwDE6SKchk
+X-Gm-Gg: ATEYQzzalvKcOabAePkHKT6stck1WGPf4GOunUdJjFP+yFsIuYJpYIEWGN1S7g/ig5M
+	TEE8GFIiTjDMHF8R7mMTA2VcHlX9ko21lOOD5aQq6jQpbbIOfm1L8Bi76WGwU9wnuIzCvpTqejL
+	21BzO1rT1+LUcTpfkoNL02yK1l/+suiwTctkVrmqoXr/KeESvHFkyMz413wNtI5mUxWsmJULB81
+	B+ABJD34cssjR2Xzvg/pzT8CVXP5jWmVTAsowZiQPow6t6uNvGPU35KwrMTXT9L+zUYG6EZJwEE
+	Y/1ZMbQDwLL/vZIET+gQ0/eMFa6eXdKYw8dwk90k2eNmIJN8B0jlFngIShUD6xq/MXzgG+kBl9x
+	MwDvt8LyIU2rwiPyDTxtDKVwvoIYG/lyRLsHDFTIW5dBX2nMtc9VK8ZGnlBbYwDZ+kewOw3XCPs
+	K592n68mDWuGQ44tqTq+qG/xuzJuGdV0HxguqCl6H4r8vagoCmUJor75R8jz5etarByiS0
+X-Received: by 2002:a17:902:f70e:b0:2ae:478f:2ec with SMTP id d9443c01a7336-2b08277b109mr133450355ad.29.1774334997612;
+        Mon, 23 Mar 2026 23:49:57 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083655b45sm180639635ad.42.2026.03.23.23.49.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 23:46:03 -0700 (PDT)
-Date: Tue, 24 Mar 2026 14:46:01 +0800
-From: Li Wang <liwang@redhat.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: akpm@linux-foundation.org, yosryahmed@google.com, nphamcs@gmail.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com,
-	muchun.song@linux.dev, tj@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, longman@redhat.com,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 1/7] selftests/cgroup: skip test_zswap if zswap is
- globally disabled
-Message-ID: <acIzKTax5hpvQUkT@redhat.com>
-References: <20260322061038.156146-1-liwang@redhat.com>
- <20260322061038.156146-2-liwang@redhat.com>
- <CAO9r8zOwPnP9_AMX7Z_w4jLMYP=Ujs3BxNLWVXHOEAKVGFGfmQ@mail.gmail.com>
+        Mon, 23 Mar 2026 23:49:57 -0700 (PDT)
+Date: Tue, 24 Mar 2026 14:49:52 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Pavel Machek <pavel@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, linux-pm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v8 2/2] mm/swap: remove redundant swap device reference
+ in alloc/free
+Message-ID: <acIm_7vtj4XETdyP@KASONG-MC4>
+References: <20260323160822.1409904-1-youngjun.park@lge.com>
+ <20260323160822.1409904-3-youngjun.park@lge.com>
 MIME-Version: 1.0
-In-Reply-To: <CAO9r8zOwPnP9_AMX7Z_w4jLMYP=Ujs3BxNLWVXHOEAKVGFGfmQ@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LaQKu8O7-FSPY-skylIB8dCO0O0xQAeROecJiZs4wC0_1774334765
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 5204440007
-X-Stat-Signature: 3kgtdoxjdaht6ims1edut1w5ba9nnqy4
+In-Reply-To: <20260323160822.1409904-3-youngjun.park@lge.com>
+X-Rspamd-Queue-Id: DC2A44000B
+X-Stat-Signature: 1ach5tspihnw3wkg8tquz5jx3g6oxzjc
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1774334768-937189
-X-HE-Meta: U2FsdGVkX19mHxWHGiRsc09yE7u4kJKYLI34GsbiTxgSfF/XRBSByYyftmu5pCfAr/h7m49iLPQXDuWQBS3GY5Hjb+KZmcx8WQAwfurKFlAYMIoZ4u4nPwvskYvtiJ0RFj7YI6LTFMh8mbSK0aiwmANPtTfaMaAeQRfUwVicTgyCeFb84GxJAKDNkuSKrH722sJL45g06gJZ4TF1SVC8vygmddSXNa6zM/kNZ71byrzvNM5xG87yADEN5vB/ik538df4AwO/CQycmFPgf2SiuzqfEkv0p94igUUMiNJA1mHH2ZvTUNJAdbGdQIHkccQjWnOMIDlQQ6AnlA5cn11CB/yH3EOfgrfZk4zvgrGK8ENFf+zVzwNwbXxYYroVg40HewbMKJOc1iPMdNjO8b1GV0DiMaEHDG8lLW2WNjxOBIBLUAaDkJvIh4TRevU/Oq8ERAaVrP2ALVpfceaLmMlKwmHtxupIDaw66/g2aw2Td0zjeCEwMWz7cbCI4Vu/7hP9qUvGzA+26rXPO/8f1lzviEWQx1KmNSl5T4FC4Jcclo5NGQXP/fwhMfmsgtgton60QpuR7ty8ijrz9A5Hws8AS9jAxtOOmxP1RpiSTtLdWJ6uAuTlICaWY4dPIueLkgrVOCxR4kz2L6BmZ20e1uaD7Ky3dVY3nK51d2SUNXj3/HQSz88S+sgO4ecxCy7UaGrmxwNTnfprLCkP2G6JJbpaptxkIjqSa9d/WHaFcxeDJ/GZycNxCAf1YipbDESyDNJZQbB3FJ0yJLgdKuxG+4BrlfirdtpMAqZ/TqwSqttgwXRmkdKCcanlhAj7ipg8e4GLP+VuuSsr01xar3V7Zp1zrmaHsKiPRkRLnSmnbh/R1h5VxclDgJ/JJ9aiH1l2rZwoHjThyO9pt46D/lBN3zqbXKXY2riVGWbA4YXA4lmuERz6yjzjtARM5I0as+sfBCS3YlH5iqOR3CgBtnb7wgr
- gUw3jMkN
- wbZK5/RcVTL9YKWEygX1Pil7GBFTPkANP5vsnwlsqDg8i61SlsfRl9lcLI4gzRFeZRrvL0oMbiJpAmkPN0H+ebCjLSIi7T8e4j95E1CELGDkUYbMtEyGeeYZDzCOfNBN/oi6va13b5hPwXvouwHSF/d2lRIOQ2j3x1ZMpVFPx4TrI3ArpkyZ8AmkPbkU8TKfbZcroA+kSlteCsMlosaJ4j1cR9yjQoa3yRFxvQst3bygn9uLOZ7jsHzRrY5YFLpiMD5H3qV/Zk1GH+b2Sj0XWwyAWELBYwvx/wM4RG4WaeI1yCGFEdBmgckNnGY+BzJwejQnCVkM2b7OFC07W4OBjN4s2QCJVulObGG8/nVuMaY4oyuyBXU8qTI0JX1p3h9a7/EMiH9Yk8xMghts63p+Pn4aHkdXy8A9GDbsIVyTqcRZGbPaio/nDKu+wFyTYZ4perZHQof+9/mNYCX4eQypstcENavsSg6HP7H0Y
+X-HE-Tag: 1774334998-246407
+X-HE-Meta: U2FsdGVkX1+Vd8rFltJXcUbfJsHRkzTekQszGzUR7y9uP384O42cCQJ/RHNZJDrbxlvaMintn7yZ0IqBytNJpI+0HBUmFgux9iVqsYfliMJdDPs6m7WmGKKqWh/6osQZ+a5vbGLMC2tH0nfcC495bNisZCkPLSV4v87TMrNrbB6w8EVD+i7HjFZ/bi9xPuTqUjoHY7q2mO85eU0/idVQLji7bZsJxZWj9n1oqXnZYytOFxLV4dv9ll5pNSxkjJMzw2ZPXOdHOrKlafZ0TdBEUOiiD3+FAFPBMmGezl9JqsZZ2qKLw1ZXC5K9+cXfyhvgVZemGWgBUt8mhlYVbWvoJmPRTVcT+U3XwBR/tgosHnSo4TrMaPkNPez0RVnsCWgdB7rlDUlul7K0knHwuibRxzXw1aO6Qd46Tw5sbxj7uVk5Zx7kGIcEjw1B+igWdfbBVNdAmoCDkDCDf+7NwMFUfujuYWst3sDG3OCiq6LzHK3uK3pk2P9kvgGRoL3MwdKk8kFHesZRjowfclNSVVDSI49pvQ941hbuW/pW3vH/rRYxAhwj9NeHJJZC0VneE2P0PwcMfOGG9H01mOBRtFXWvojuU4suuBK2yBMmpTMX3akwcBaSqMTI6kr7kZvMWaP+U4+5A+njlWIAviDrOvNm0slqYhtQ8CjeuHKUUyQ+F9wDfbJddbS6lIFRiRKC18x3baM1Zn9fvKwHA60pdmXICySlP9Sllx7xiSC4rNnfe2pLzYJUuymiaiDVWNyI7z1PucDg+A2owu/ZOrVouTQv8lqTCcHmuIfELRWShSkcjKcyCclpKegrc1krKVHnlwMfjkFVA5I8R4XEGkl9LtwvxI9tOw2oMZwxNwkNqey88rN6qXZaMLSN1iG0Yx9hecna0WvEDC7SYjBM3i9y+omsudbON4Kedo54cxNofj1bNL9tVermkBhzY5NLaAvx+DLlt1v3NzPaRuLzTbeJINy
+ +H1KbqZd
+ HfDMZ91li2XQPs8kQKrwR1p3iWwqa82wC/SwXm9zPPHeIZz07oER9K3q+FP9D/lDUz6wgVGSX6JcSctpOdVc7xocWf81n01JZz8hn+r36vpZnbDss8hmFIrrprsJa+tJjL6Ox7s3ySD1l//CpN1OwwrbDe66uqwVqpZyGu0aKIygzFZxaOTT0Ir0IwBqnzSjjCAnvV0SrzRfbO4vHlIrA+GQGQdFTQt4jOGWTQfZCIw/mV56GuNi8fAQ1jpR8zHqc+bGnFkfeZHVhRmoHSIysqPxJSuitwpmh3pL2MyiiB7XWMO8UzE75YO05JQWQtJ8JBLjKBA0ppdVHi4e56KbIeB1j/YopaN7td9s8Cj5+wIM5peOdpBYA6vqhwSdgM1+opr/s7ZJRvveptSWhgzo/3PhIPaiNADFozNZ+2Q4Q4S1/mOfiZXgT+FNXEDCUEdSYf/yn+Yuq4byrVvW28k6X17d54oTrh5UXUBwo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,43 +121,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 05:13:14PM -0700, Yosry Ahmed wrote:
-> > diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-> > index 64ebc3f3f203..e69d845d3592 100644
-> > --- a/tools/testing/selftests/cgroup/test_zswap.c
-> > +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> > @@ -589,9 +589,21 @@ struct zswap_test {
-> >  };
-> >  #undef T
-> >
-> > -static bool zswap_configured(void)
-> > +static void check_zswap_enabled(void)
-> >  {
-> > -       return access("/sys/module/zswap", F_OK) == 0;
-> > +       char value[2];
-> > +
-> > +       if (access("/sys/module/zswap", F_OK))
-> > +               ksft_exit_skip("zswap isn't configured\n");
-> > +
-> > +       if (read_text("/sys/module/zswap/parameters/enabled", value,
-> > +                                               sizeof(value)) <= 0)
-> > +               ksft_exit_fail_msg("Failed to read "
-> > +                               "/sys/module/zswap/parameters/enabled\n");
-> > +
-> > +       if (value[0] == 'N')
-> > +               ksft_exit_skip("zswap is disabled (hint: echo 1 > "
-> > +                               "/sys/module/zswap/parameters/enabled)\n");
-> >  }
+On Tue, Mar 24, 2026 at 01:08:22AM +0800, Youngjun Park wrote:
+> In the previous commit, uswsusp was modified to pin the swap device
+> when the swap type is determined, ensuring the device remains valid
+> throughout the hibernation I/O path.
 > 
-> In the next version please put "/sys/module/zswap" and
-> "/sys/module/zswap/parameters/enabled" in macros to avoid all the line
-> breaks here.
+> Therefore, it is no longer necessary to repeatedly get and put the swap
+> device reference for each swap slot allocation and free operation.
+> 
+> For hibernation via the sysfs interface, user-space tasks are frozen
+> before swap allocation begins, so swapoff cannot race with allocation.
+> After resume, tasks remain frozen while swap slots are freed, so
+> additional reference management is not required there either.
+> 
+> Remove the redundant swap device get/put operations from the
+> hibernation swap allocation and free paths.
+> 
+> Also remove the SWP_WRITEOK check before allocation, as the cluster
+> allocation logic already validates the swap device state.
+> 
+> Update function comments to document the caller's responsibility for
+> ensuring swap device stability.
+> 
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> ---
+>  mm/swapfile.c | 68 +++++++++++++++++++++++++++------------------------
+>  1 file changed, 36 insertions(+), 32 deletions(-)
 
-Sure, I will. Thanks!
+Thanks!
 
-
--- 
-Regards,
-Li Wang
-
+Reviewed-by: Kairui Song <kasong@tencent.com>
 
