@@ -4,110 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD011F532E9
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 07:22:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33808F532E5
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 07:23:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C6886B0095; Tue, 24 Mar 2026 03:22:59 -0400 (EDT)
+	id A160A6B0099; Tue, 24 Mar 2026 03:23:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09E0F6B0096; Tue, 24 Mar 2026 03:22:59 -0400 (EDT)
+	id 9ED3B6B009E; Tue, 24 Mar 2026 03:23:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1D356B0098; Tue, 24 Mar 2026 03:22:58 -0400 (EDT)
+	id 929D86B00A0; Tue, 24 Mar 2026 03:23:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF29D6B0095
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 03:22:58 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 53FE55F800
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:22:58 +0000 (UTC)
-X-FDA: 84580114836.18.AA5E6BA
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 194AD180005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:22:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	spf=pass (imf24.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774336976;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 836FF6B0099
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 03:23:09 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 627A4CAD74
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:23:08 +0000 (UTC)
+X-FDA: 84580115256.29.E289AC4
+Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 47F5A4000F
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 07:23:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=NLDM5yrF;
+	spf=pass (imf27.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774336986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WJS3NF/M4WPgBRzxGIiV9Ja4QEpGtBwod0o+PxQX9x0=;
-	b=AbPo0mtDFj4pFAm6XnmLsL9qu+Lt/rtIw9yX/yWK70zBuerpfkrWx4jDiaIGc8ToUgG9g3
-	gxOpYqo6+8a0KvVphEa/CczXf42GFjmHsiV3hBSeclRhy9KbXqT51w9yT1xcyPe/GFtZXu
-	Rdwpq8y/5d9VVqs1vsxigMUmZ4I2YbY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774336976; a=rsa-sha256;
-	cv=none;
-	b=TXP765c16Zy45V5ATcF1V18f/D4Xz5rTSvoSo6M1Mp+Ijz69l7BFVOxMcjWv75nfxZMsM7
-	jKVbPISAPjuatnR31t2X7av7QF0z3e/awUBqXG8sHeQRtUZK4iRiY72n0SBgz5TTP++mMk
-	WHnAB3P9KrbAr/Wp2AXryLVRo+Vz62A=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fg1h040znzKHMLn
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:22:08 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 55AFE4058C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:22:45 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgAX8UvDO8JpUawyCA--.57253S2;
-	Tue, 24 Mar 2026 15:22:45 +0800 (CST)
-Message-ID: <0427249d-c6c7-477a-aeff-e007198fcf45@huaweicloud.com>
-Date: Tue, 24 Mar 2026 15:22:43 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aCvtUfHhPT8xNOs2dDx7Ez7/7fbw+3cZJxP5S8bI/co=;
+	b=g+aX55Zofx9eS3zrDvY4uwArS3eIrQHGIRdCsuKxbqOlOBMyQB+/J9lfpLjXpL6T+N/oBH
+	YL84KHbc0EzEqDrf+ZElo8kji/aYs34lmmOiupC75LyWf8lQBba9G8FAXQfYuUDbMdaQI+
+	C/e4A4Tt3B80Qz9edpWE4msxxiAWOI8=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=NLDM5yrF;
+	spf=pass (imf27.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774336986; a=rsa-sha256;
+	cv=pass;
+	b=HDhtLbEvWlpqMLsqOTWc1ofquPVP3Hh7Ip17yMDt2bDOQpqMQNwhRgzQMieDmAhoTLO85Q
+	ww9vepDvU9cwivou2CN36GH5S+wIn+ReRfflAygbC1vl4Z0YTEHIee7BnR6U2+KFZmZu02
+	Rzy/Wh0SCEMZW5R1hBKy8RtwXJR+Emo=
+ARC-Seal: i=1; a=rsa-sha256; t=1774336954; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=eRuUJv0Gbnr2OB9G44E+HGC/pViBj49DoluAQK1TVWWh3CzOA+rIL/zPFGlFZ9Li7HWRYzWkojzS/tJop278oZtp1I8cttsw/V7eAdBipRLlFyw0xCf1ytGMTsEz3j27tMCUW8J6hh8opxTXt25gZwVng08+7l6e8eJPR1c0k4k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774336954; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=aCvtUfHhPT8xNOs2dDx7Ez7/7fbw+3cZJxP5S8bI/co=; 
+	b=jRYvSHrKoIISv3MawPjrt8MjyVAreHPTi5VPrHe/B5CEAE03ytyxtn8qa9eNFPKyJN5xziaSS6hmnJZqEIY9IfiDjdz5mvk1VCZvg69M7tXgYbdm52JNQXikKheZ+WkW6Ahf6/SPy6ZWKFvnMA8od+kNOVdjWUrtKgnJPnSmEDQ=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774336954;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=aCvtUfHhPT8xNOs2dDx7Ez7/7fbw+3cZJxP5S8bI/co=;
+	b=NLDM5yrF0NJd7KzAX4gHw0oUi2Rv34xNrQjpmpbvba5sLjA0mkpk02GZydPhDfUX
+	zB+C/lma0ReBSOihgI5Lcm+8vIJ2s6JNAKXMPsKOGe/865KpxeBPGa1Yk50m+idxUzG
+	soE+z5hnw8kxLMjIX364sA0rillGukxwVRQFwgKE=
+Received: by mx.zoho.eu with SMTPS id 1774336951189256.58536417741925;
+	Tue, 24 Mar 2026 08:22:31 +0100 (CET)
+Date: Tue, 24 Mar 2026 07:22:28 +0000
+From: Josh Law <objecting@objecting.org>
+To: SeongJae Park <sj@kernel.org>
+CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_2/2=5D_mm/damon/core=3A_eliminate_hot-?=
+ =?US-ASCII?Q?path_integer_division_in_damon=5Fmax=5Fnr=5Faccesses=28=29?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260324071908.89152-1-sj@kernel.org>
+References:  <20260324071908.89152-1-sj@kernel.org>
+Message-ID: <F25B7F53-2D07-4761-A400-E5130A023716@objecting.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] mm/mglru: scan and count the exact number of folios
-To: Kairui Song <ryncsn@gmail.com>, Axel Rasmussen <axelrasmussen@google.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
- Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>,
- Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan
- <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org
-References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
- <20260318-mglru-reclaim-v1-4-2c46f9eb0508@tencent.com>
- <CAJHvVcgi8m_O03+Grv7jPX8btaVvYuZxh8S6kLjALfREykToDw@mail.gmail.com>
- <CAMgjq7CjwdaQk66=61sNLR_21eaPZrFiai2foaTQNbZ3uxQmRw@mail.gmail.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <CAMgjq7CjwdaQk66=61sNLR_21eaPZrFiai2foaTQNbZ3uxQmRw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgAX8UvDO8JpUawyCA--.57253S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxtrW7Jr1xXr4DGF43Kr17KFg_yoW7Ww4fpF
-	ZxKay2yFW8XrWagryvqr4Fkr1akrZ8tryxXFyxAw1ayFnIqFyfG3W3Kw1jkFWUur48CF10
-	v3W7KF47u3WjqFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Queue-Id: 194AD180005
-X-Stat-Signature: n6syysohcruxi18b57ik7ui7mgrjopks
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774336970-773888
-X-HE-Meta: U2FsdGVkX1/CkLiu/Oln+TpjvfcLmOKrETnERXzlM986B49eQoGyMTJ8XHSx1fcceNB2vUchS3oaUEFgwhw1lKoUgFS6z6bSWnLh8Pp1DiPvwVwCicgZCAdOAkZagdU2IEnXzgYh3roJGsWwyvl030O6PuPvBFAG5VubOQaiTEGptltSd6AOZbcXti8w/na9XjvnBq+AJcpfH4jAhjJ3WRBcYJa16uwzZ4LX9z5PxBOXtemztQYNyHoaQHW9Tidcn6ZOCX7CK/2mWrbSCv+pBy8/VBPjl3sFpXx1gT2n9QqONAouqRd4kaJb12LyQN2PnN6rgfPxy3R7rDC7J8PMsGWhgXib8Exis6e3BZhgO80m8Sk/mYn+nxDDxyee0G59YzG4jyadXqTBph7j0g1mCww5IPryhwzSHXQEj/UV4qYyjbnqWwuCPIfYkkuqAgvs7zxH7IeKJTRY1tNnb6+D7E0o4xLcDTUcSmLJTEq5YSthF5PhVKpgwAMbizJVGYEOJJARSnSqJcHxMpboOS3MWl/7SC6Xod04nrZezIb/3CCxnCDZ2xOc4+w/lc7QwwxErAl4bS+U1HbE8hsgF2FyIGpSJfX+WztewHLlD8ASdAI+fhhJyjDLL0aqMC6EvbHatzWiZOCiVVod82BDmU+N5eWh9Wn+DfYS5+HMpFjr1PqrPIYmS10fp+1q759dRpQIgLcUjXLYJnO5wHlJgmsLQmuVUVOuFOn16Ze3jrr9BDhNd0uwFbztB/6QLXSCAzujOzmL4E7FVkVgCsQvLRz6iVwIGu2NZvyrVcLAldyeWQWhGBFmtj7dxz4TiBekTKpxM6hQNpHN85b2sLNzHVXKtLmQEbQ6AQLoKhIIYaX0DDnmFXg0EdAiLRQSRhidH2j1V2Mc+nnJtzIMPIgzxEbsYm4rKlB/2BaAUKPZ/KeTjV+oQajUcdKtqMsQD3VDfaKBmzXCSeOtugGQmeCy3pU
- hAcbjkLF
- 0UiWRCzy85kaVxINvNFD2b+3G3vchcoKRYUPh/bhSclBG82zWrQoQZ5U9DCmL04Dmd/u0RUk5I3KEXHTwafMn1sKbXyb97/TX7OKMtHDQRK0Mvz9/AfvURAnVPhh2HYbUtu7NZfJKGQcSDXyGF0Fi/Ji24QXwANLcVfmTYQeMWl00D0mBngghMn+crETlocmxIUSqXsVU1hQd8oCoed/Cf7m+TITF6aXM3Fq8dQnEYi9JH/yGFmnuWpg7OWRJs/QVdXFx0ASOVZd0xkPeOaxfazDd4M9WloVSTHo0
+X-Stat-Signature: pt1u5q9o6k1jtrs8ymg6em48ua48tioc
+X-Rspamd-Queue-Id: 47F5A4000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774336986-157478
+X-HE-Meta: U2FsdGVkX1+AHRUZ/uVfku61UgPj1XUDJLQR421Pf0PnHVbXCXTxbMQWgl+/w0B3wobV26RCBK/vEFf0SIcD/uZULKvFAZBLzIsBKsWVaOVkVxSGmFUoT83jLw3kckZU019r+KzR9trVx5llE7m024h4OsB1om2UGZVS9JJuCxL27XmbrCKHawIj5OMwrQP1Q2YcGq94rDpZXHdtxdRKAT/zXW3k9DedCdR6ekdbNbvuxjcB8bYUSS/ftSo6I4j5vuyRn77i6DSQT4wftdAvrAIhdKGVLdio07pL+9TQK0BHN0LDt8yr6JeKaNmu1kC631E/DwTc7SyfhudKOwfG5IScygx4fN0rgyfY9nzNlC2oomYUNSTTpZFM9RmZnRZhL62BemJzk6rm2yd2I+NSPWNN+OS9QwIGRYB+Q15b0ATM1H9+7St4nCR77/8jegsW2WRT6AfSrRwXpWc5Tvk8ZQ2l4XnUJWtOroNhyvgbBIbC5mPKaTwQTo+UqfbKuVo/yCCd3Vk/wA9nyAVQC7ahtNRXgrxzRWeBl6QqynWJQjRvVyldLrV03kxlZ1bcBSfzMZG2hTvU8O19otZ2nO3brXmGDN2CQN9ju38B3jLeCyQMVzBdhjkEi/2gOfddHGLdhZR+JCGimlo89fJYAbFGomALNp+rgtCjsjGy6AM/eBR3uFishbplhWo4/1JHVi73/L7OJC6a2XrwauK1FPABoJkTlX9lNmNsBXyVIPKsSjS0ZPEOnbhGv9cTLJyky2nvqEo6GGxJh4IoWzIswHXBaP/b9Mkz04n20S4PU1CQ+XS56HNKE/Ya0b+16MuTTPVP1g598twTSrIkFbNM7Pd19+D+tRip2oMQxnSduZ4dxZLvlMJXk0xjYfvxuJnZMsxfBRKcoGf1Bckho6IesboKzkIoiWf8rLg1xvaHMgb4p04aDBiAJsZ0tFeqMG425/hZxykB79ekwzbd0aqZ0HY
+ n8C1+bAI
+ q6JN3G3Akk7xVd2yydO9UBSISrLZF44M+jv9c8Lh4V8tqJci+2gMT6bGSxFYDnpzftG92tzNDbqL4JPjfd0JDkzZSmQKRVT4jfzXzXM9g56y4LDMSo5KP58N3HmAY5Po+0EbjD1HD1mkr++RqBLFMJIWOlmsfS3bV19jmTRIDMM6CFLdbS0fUKCeF/FqIzBwVp6IdTcMR/LVV2griagUVDF0rjx9uTaQkWWXlUQ8iThjWjFMIQomyOq9z7kviER1yZ76O9Ra/4RoHqdZocTUJ5HYLXglz852KiohgJBJT2wKhhiQ7lcwRaKiSEaTXzl4Pik9Z3q6lOOBKG3ZCE39U0MGeMZOQEV4Gr22B5uihdxjP5YjbQtyDVGwGqzM+g6akmfU+k4YqQzJ6YVuj+t8BRxGesgrIJ5ipDN28pSwywcpHI/zClrPXFTY18XFHrjgR5IxmQUPWnJZuJagrXSm42V1g1wfhZt1YBaMS2t4JPh2PsfrIMYGWN0Ige2CUHCDZInUUkMbATEYRJARS9Zlc1VZviCS8WD3oZWmuvpifRPhQxkVJdPPmXzPBCzJ/A23w7b2IwLUqD4xmhfFECrT+6KbjVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,152 +104,256 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/3/23 0:20, Kairui Song wrote:
-> On Sat, Mar 21, 2026 at 4:59 AM Axel Rasmussen <axelrasmussen@google.com> wrote:
->>
->> On Tue, Mar 17, 2026 at 12:11 PM Kairui Song via B4 Relay
->> <devnull+kasong.tencent.com@kernel.org> wrote:
->>>
->>> From: Kairui Song <kasong@tencent.com>
->>>
->>> Make the scan helpers return the exact number of folios being scanned
->>> or isolated. This should make the scan more accurate and easier to
->>> follow.
->>>
->>> Now there is no more need for special handling when there is no
->>> progress made. The old livelock prevention `(return isolated ||
->>> !remaining ? scanned : 0)` is replaced by the natural scan budget
->>> exhaustion in try_to_shrink_lruvec, and sort_folio moves ineligible
->>> folios to newer generations.
->>>
->>> Signed-off-by: Kairui Song <kasong@tencent.com>
->>> ---
->>>  mm/vmscan.c | 27 +++++++++++----------------
->>>  1 file changed, 11 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>> index ed5b5f8dd3c7..4f4548ff3a17 100644
->>> --- a/mm/vmscan.c
->>> +++ b/mm/vmscan.c
->>> @@ -4680,7 +4680,7 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
->>>
->>>  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>                        struct scan_control *sc, int type, int tier,
->>> -                      struct list_head *list)
->>> +                      struct list_head *list, int *isolatedp)
->>>  {
->>>         int i;
->>>         int gen;
->>> @@ -4750,11 +4750,9 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>                                 type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->>>         if (type == LRU_GEN_FILE)
->>>                 sc->nr.file_taken += isolated;
->>> -       /*
->>> -        * There might not be eligible folios due to reclaim_idx. Check the
->>> -        * remaining to prevent livelock if it's not making progress.
->>> -        */
->>> -       return isolated || !remaining ? scanned : 0;
->>> +
->>> +       *isolatedp = isolated;
->>> +       return scanned;
->>>  }
->>>
->>>  static int get_tier_idx(struct lruvec *lruvec, int type)
->>> @@ -4819,23 +4817,24 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>                           int *type_scanned, struct list_head *list)
->>>  {
->>>         int i;
->>> +       int scanned = 0;
->>> +       int isolated = 0;
->>>         int type = get_type_to_scan(lruvec, swappiness);
->>>
->>>         for_each_evictable_type(i, swappiness) {
->>> -               int scanned;
->>>                 int tier = get_tier_idx(lruvec, type);
->>>
->>>                 *type_scanned = type;
->>
->> I think this is problematic, now `isolate_folios` can scan a nonzero
->> amount of > 1 type of memory. Then the caller (`evict_folios`) calls
->> `trace_mm_vmscan_lru_shrink_inactive` with the total scanned amount,
->> with only the last type we scanned (misattributing part of the scan,
->> potentially). Not a "functional" issue, but it could mean confusing
->> data for anyone watching the tracepoint.
-> 
-> Thanks! Nice catch, I'll introduce another variable for the tracepoint
-> then it should be fine.
-> 
->>
->>
->>>
->>> -               scanned = scan_folios(nr_to_scan, lruvec, sc,
->>> -                                     type, tier, list);
->>> -               if (scanned)
->>> +               scanned += scan_folios(nr_to_scan, lruvec, sc,
->>> +                                     type, tier, list, &isolated);
->>> +               if (isolated)
->>>                         return scanned;
->>>
->>>                 type = !type;
->>>         }
->>>
->>> -       return 0;
->>> +       return scanned;
->>>  }
->>>
->>>  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>> @@ -4852,7 +4851,6 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>         struct reclaim_stat stat;
->>>         struct lru_gen_mm_walk *walk;
->>>         bool skip_retry = false;
->>> -       struct lru_gen_folio *lrugen = &lruvec->lrugen;
->>>         struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->>>         struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>>
->>> @@ -4860,10 +4858,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>
->>>         scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
->>>
->>> -       scanned += try_to_inc_min_seq(lruvec, swappiness);
->>> -
->>> -       if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS > lrugen->max_seq)
->>> -               scanned = 0;
->>> +       try_to_inc_min_seq(lruvec, swappiness);
->>
->> IIUC, this change is what introduces the issue patch 6 is trying to
->> resolve. Is it worth squashing patch 6 in to this one, so we don't
->> have this non-ideal intermediate state?
-> 
-> Well it's not, patch 6 is fixing an existing problem, see the cover
-> letter about the OOM issue.
-> 
-> This part of changing is just cleanup the loop code. It looks really
-> strange to me that increasing min_seq is considered as scanning one
-> folio. Aborting the scan if there is only 2 gen kind of make sense but
-> this doesn't seems the right place. These strange parts to avoid
-> livelock can be dropped since we have an exact count of folios being
-> scanned now. I'll add more words in the commit message.
+On 24 March 2026 07:19:08 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
+>On Sun, 22 Mar 2026 21:43:25 +0000 Josh Law <objecting@objecting=2Eorg> w=
+rote:
+>
+>> Hardware integer division is slow=2E The function damon_max_nr_accesses=
+(),
+>> which is called very frequently (e=2Eg=2E, once per region per sample
+>> interval inside damon_update_region_access_rate), performs an integer
+>> division: attrs->aggr_interval / attrs->sample_interval=2E
+>>=20
+>> However, the struct damon_attrs already caches this exact ratio in the
+>> internal field aggr_samples (since earlier commits)=2E We can eliminate
+>> the hardware division in the hot path by simply returning aggr_samples=
+=2E
+>>=20
+>> This significantly reduces the CPU cycle overhead of updating the acces=
+s
+>> rates for thousands of regions=2E
+>>=20
+>> Signed-off-by: Josh Law <objecting@objecting=2Eorg>
+>> ---
+>>  include/linux/damon=2Eh | 3 +--
+>>  1 file changed, 1 insertion(+), 2 deletions(-)
+>>=20
+>> diff --git a/include/linux/damon=2Eh b/include/linux/damon=2Eh
+>> index 6bd71546f7b2=2E=2E438fe6f3eab4 100644
+>> --- a/include/linux/damon=2Eh
+>> +++ b/include/linux/damon=2Eh
+>> @@ -960,8 +960,7 @@ static inline bool damon_target_has_pid(const struc=
+t damon_ctx *ctx)
+>>  static inline unsigned int damon_max_nr_accesses(const struct damon_at=
+trs *attrs)
+>>  {
+>>  	/* {aggr,sample}_interval are unsigned long, hence could overflow */
+>> -	return min(attrs->aggr_interval / attrs->sample_interval,
+>> -			(unsigned long)UINT_MAX);
+>> +	return min_t(unsigned long, attrs->aggr_samples, UINT_MAX);
+>>  }
+>
+>I just found this patch causes below divide-by-zero when
+>tools/testing/selftets/damon/sysfs=2Epy is executed=2E
+>
+>'''
+>[   42=2E462039] Oops: divide error: 0000 [#1] SMP NOPTI
+>[   42=2E463673] CPU: 4 UID: 0 PID: 2044 Comm: kdamond=2E0 Not tainted 7=
+=2E0=2E0-rc4-mm-new-damon+ #354 PREEMPT(full)
+>[   42=2E465193] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), B=
+IOS 1=2E16=2E3-debian-1=2E16=2E3-2 04/01/2014
+>[   42=2E466590] RIP: 0010:damon_set_attrs (mm/damon/core=2Ec:769 (discri=
+minator 1) mm/damon/core=2Ec:775 (discriminator 1) mm/damon/core=2Ec:786 (d=
+iscriminator 1) mm/damon/core=2Ec:827 (discriminator 1) mm/damon/core=2Ec:8=
+97 (discriminator 1))
+>[   42=2E467287] Code: 48 39 c5 0f 84 dd 00 00 00 41 bb 59 17 b7 d1 48 8b=
+ 43 10 4c 8d 43 10 48 8d 48 e0 49 39 c0 75 5b e9 b0 00 00 00 8b 41 18 31 d2=
+ <41> f7 f6 41 89 c5 69 c2 10 27 00 00 31 d2 45 69 ed 10 27 00 00 41
+>All code
+>=3D=3D=3D=3D=3D=3D=3D=3D
+>   0:   48 39 c5                cmp    %rax,%rbp
+>   3:   0f 84 dd 00 00 00       je     0xe6
+>   9:   41 bb 59 17 b7 d1       mov    $0xd1b71759,%r11d
+>   f:   48 8b 43 10             mov    0x10(%rbx),%rax
+>  13:   4c 8d 43 10             lea    0x10(%rbx),%r8
+>  17:   48 8d 48 e0             lea    -0x20(%rax),%rcx
+>  1b:   49 39 c0                cmp    %rax,%r8
+>  1e:   75 5b                   jne    0x7b
+>  20:   e9 b0 00 00 00          jmp    0xd5
+>  25:   8b 41 18                mov    0x18(%rcx),%eax
+>  28:   31 d2                   xor    %edx,%edx
+>  2a:*  41 f7 f6                div    %r14d            <-- trapping inst=
+ruction
+>  2d:   41 89 c5                mov    %eax,%r13d
+>  30:   69 c2 10 27 00 00       imul   $0x2710,%edx,%eax
+>  36:   31 d2                   xor    %edx,%edx
+>  38:   45 69 ed 10 27 00 00    imul   $0x2710,%r13d,%r13d
+>  3f:   41                      rex=2EB
+>
+>Code starting with the faulting instruction
+>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   0:   41 f7 f6                div    %r14d
+>   3:   41 89 c5                mov    %eax,%r13d
+>   6:   69 c2 10 27 00 00       imul   $0x2710,%edx,%eax
+>   c:   31 d2                   xor    %edx,%edx
+>   e:   45 69 ed 10 27 00 00    imul   $0x2710,%r13d,%r13d
+>  15:   41                      rex=2EB
+>[   42=2E470046] RSP: 0018:ffffd25c4586bcb0 EFLAGS: 00010246
+>[   42=2E470818] RAX: 0000000000000000 RBX: ffff891346919400 RCX: ffff891=
+3502dd040
+>[   42=2E471923] RDX: 0000000000000000 RSI: ffff891348527600 RDI: ffff891=
+344d94400
+>[   42=2E472972] RBP: ffff891344d94598 R08: ffff891346919410 R09: 0000000=
+000000000
+>[   42=2E474028] R10: 0000000000000000 R11: 00000000d1b71759 R12: 0000000=
+000000014
+>[   42=2E475104] R13: ffff891348527778 R14: 0000000000000000 R15: ffff891=
+348527798
+>[   42=2E476191] FS:  0000000000000000(0000) GS:ffff89149efd8000(0000) kn=
+lGS:0000000000000000
+>[   42=2E477375] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>[   42=2E478235] CR2: 000000003a84f080 CR3: 000000004a824000 CR4: 0000000=
+0000006f0
+>[   42=2E479291] Call Trace:
+>[   42=2E479670]  <TASK>
+>[   42=2E480044]  damon_commit_ctx (mm/damon/core=2Ec:1538)
+>[   42=2E480660]  damon_sysfs_commit_input (mm/damon/sysfs=2Ec:2153 mm/da=
+mon/sysfs=2Ec:2181)
+>[   42=2E481389]  kdamond_call (mm/damon/core=2Ec:3186)
+>[   42=2E482492]  kdamond_fn (mm/damon/core=2Ec:3428)
+>[   42=2E483041]  ? kthread_affine_node (kernel/kthread=2Ec:377)
+>[   42=2E483766]  ? kfree (include/linux/kmemleak=2Eh:50 mm/slub=2Ec:2610=
+ mm/slub=2Ec:6165 mm/slub=2Ec:6483)
+>[   42=2E484257]  ? __pfx_kdamond_fn (mm/damon/core=2Ec:3368)
+>[   42=2E484855]  ? __pfx_kdamond_fn (mm/damon/core=2Ec:3368)
+>[   42=2E485459]  kthread (kernel/kthread=2Ec:436)
+>[   42=2E485959]  ? __pfx_kthread (kernel/kthread=2Ec:381)
+>[   42=2E486524]  ret_from_fork (arch/x86/kernel/process=2Ec:164)
+>[   42=2E487105]  ? __pfx_kthread (kernel/kthread=2Ec:381)
+>[   42=2E487668]  ret_from_fork_asm (arch/x86/entry/entry_64=2ES:258)
+>[   42=2E488304]  </TASK>
+>'''
+>
+>That's because damon_commit_ctx() is called to a context that just genera=
+ted
+>using damon_new_ctx(), which doesn't set the aggr_samples=2E  After apply=
+ing
+>below change, the divide-by-zero is gone=2E
+>
+>'''
+>--- a/mm/damon/core=2Ec
+>+++ b/mm/damon/core=2Ec
+>@@ -676,6 +676,7 @@ struct damon_ctx *damon_new_ctx(void)
+>        ctx->attrs=2Esample_interval =3D 5 * 1000;
+>        ctx->attrs=2Eaggr_interval =3D 100 * 1000;
+>        ctx->attrs=2Eops_update_interval =3D 60 * 1000 * 1000;
+>+       ctx->attrs=2Eaggr_samples =3D 20;
+>
+>        ctx->passed_sample_intervals =3D 0;
+>        /* These will be set from kdamond_init_ctx() */
+>'''
+>
+>Also, kunit crashes like below=2E
+>
+>'''
+>$ =2E/tools/testing/kunit/kunit=2Epy run --kunitconfig mm/damon/tests/
+>[00:07:19] Configuring KUnit Kernel =2E=2E=2E
+>[00:07:19] Building KUnit Kernel =2E=2E=2E
+>Populating config with:
+>$ make ARCH=3Dum O=3D=2Ekunit olddefconfig
+>Building with:
+>$ make all compile_commands=2Ejson scripts_gdb ARCH=3Dum O=3D=2Ekunit --j=
+obs=3D8
+>[00:08:11] Starting KUnit Kernel (1/1)=2E=2E=2E
+>[00:08:11] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>Running tests with:
+>$ =2Ekunit/linux kunit=2Eenable=3D1 mem=3D1G console=3Dtty kunit_shutdown=
+=3Dhalt
+>[00:08:11] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D damo=
+n (28 subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>[00:08:11] [PASSED] damon_test_target
+>[00:08:11] [PASSED] damon_test_regions
+>[00:08:11] [PASSED] damon_test_aggregate
+>[00:08:11] [PASSED] damon_test_split_at
+>[00:08:11] [PASSED] damon_test_merge_two
+>[00:08:11] [PASSED] damon_test_merge_regions_of
+>[00:08:11] [PASSED] damon_test_split_regions_of
+>[00:08:11] [PASSED] damon_test_ops_registration
+>[00:08:11] [PASSED] damon_test_set_regions
+>[00:08:11] [ERROR] Test: damon: missing expected subtest!
+>[00:08:11] Kernel panic - not syncing: Kernel mode signal 4
+>'''
+>
+>It can run without the error after below changes are applied:
+>
+>'''
+>--- a/mm/damon/tests/core-kunit=2Eh
+>+++ b/mm/damon/tests/core-kunit=2Eh
+>@@ -514,6 +514,8 @@ static void damon_test_nr_accesses_to_accesses_bp(str=
+uct kunit *test)
+>                =2Eaggr_interval =3D ((unsigned long)UINT_MAX + 1) * 10
+>        };
+>
+>+       attrs=2Eaggr_samples =3D attrs=2Eaggr_interval / attrs=2Esample_i=
+nterval;
+>+
+>        /*
+>         * In some cases such as 32bit architectures where UINT_MAX is
+>         * ULONG_MAX, attrs=2Eaggr_interval becomes zero=2E  Calling
+>@@ -532,7 +534,8 @@ static void damon_test_nr_accesses_to_accesses_bp(str=
+uct kunit *test)
+> static void damon_test_update_monitoring_result(struct kunit *test)
+> {
+>        struct damon_attrs old_attrs =3D {
+>-               =2Esample_interval =3D 10, =2Eaggr_interval =3D 1000,};
+>+               =2Esample_interval =3D 10, =2Eaggr_interval =3D 1000,
+>+               =2Eaggr_samples =3D 100,};
+>        struct damon_attrs new_attrs;
+>        struct damon_region *r =3D damon_new_region(3, 7);
+>
+>@@ -544,19 +547,24 @@ static void damon_test_update_monitoring_result(str=
+uct kunit *test)
+>        r->age =3D 20;
+>
+>        new_attrs =3D (struct damon_attrs){
+>-               =2Esample_interval =3D 100, =2Eaggr_interval =3D 10000,};
+>+               =2Esample_interval =3D 100, =2Eaggr_interval =3D 10000,
+>+               =2Eaggr_samples =3D 100,};
+>        damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+>        KUNIT_EXPECT_EQ(test, r->nr_accesses, 15);
+>        KUNIT_EXPECT_EQ(test, r->age, 2);
+>
+>        new_attrs =3D (struct damon_attrs){
+>-               =2Esample_interval =3D 1, =2Eaggr_interval =3D 1000};
+>+               =2Esample_interval =3D 1, =2Eaggr_interval =3D 1000,
+>+               =2Eaggr_samples =3D 1000,
+>+       };
+>        damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+>        KUNIT_EXPECT_EQ(test, r->nr_accesses, 150);
+>        KUNIT_EXPECT_EQ(test, r->age, 2);
+>
+>        new_attrs =3D (struct damon_attrs){
+>-               =2Esample_interval =3D 1, =2Eaggr_interval =3D 100};
+>+               =2Esample_interval =3D 1, =2Eaggr_interval =3D 100,
+>+               =2Eaggr_samples =3D 100,
+>+       };
+>        damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+>        KUNIT_EXPECT_EQ(test, r->nr_accesses, 150);
+>        KUNIT_EXPECT_EQ(test, r->age, 20);
+>'''
+>
+>Josh, could you please also take a look if these fixups are sufficient?  =
+And
+>once the sufficient fixes are found from your side, could you please post=
+ a new
+>version of this patch after applying the fixees?  Also, please drop my
+>Reviewed-by: from the new version=2E  I will review it again=2E
+>
+>
+>Thanks,
+>SJ
+>
+>[=2E=2E=2E]
 
-This change confused me too.
 
-IIUC, this change looks conceptually tied to patch 3. The following change means
-that evict_folios should not be invoked if aging is needed. So the judge can be
-dropped there, right?
+Aw, I didnt notice that, I'm so sorry, I'll fix this soon
+
+V/R
 
 
-```
- static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- {
-...
-+		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
-+			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
-+				need_rotate = true;
-+			break;
-+		}
-```
-
--- 
-Best regards,
-Ridong
-
+Josh Law
 
