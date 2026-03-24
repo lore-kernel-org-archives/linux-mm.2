@@ -4,99 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F1B3F54ACF
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 15:54:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EACAF54AD2
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 15:55:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82DEE6B0095; Tue, 24 Mar 2026 11:54:34 -0400 (EDT)
+	id DFB426B0093; Tue, 24 Mar 2026 11:55:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DEB76B0098; Tue, 24 Mar 2026 11:54:34 -0400 (EDT)
+	id DAB806B0096; Tue, 24 Mar 2026 11:55:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A5586B0095; Tue, 24 Mar 2026 11:54:34 -0400 (EDT)
+	id C9A996B0098; Tue, 24 Mar 2026 11:55:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E70C6B0093
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:54:34 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 073AF1A02C7
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:54:34 +0000 (UTC)
-X-FDA: 84581404068.10.7D4DFD1
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8C57B1C0003;
-	Tue, 24 Mar 2026 15:54:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SFRR2AU2;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B0D306B0093
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 11:55:07 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C8B91B7331
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:55:07 +0000 (UTC)
+X-FDA: 84581405454.27.58B60F4
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7E56480003
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 15:55:05 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fFeg31Ge;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of naup96721@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=naup96721@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774367705; a=rsa-sha256;
+	cv=none;
+	b=KHt+kk1e2iOU1PZWUE6ZjhnGL9Jpc62fESzbqHkrF4CDcl4udyGiQe8NfHiAmkogQ6yc2Y
+	2RIxtBNY0t85RYj9l8yktbO7q3ajYYKzwcxdnljrdOI+qGT66p8NWYtY3ygsgy+L0xi9i2
+	o6FUQHTWi6+TTYbsFNrD368EAaNhugE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fFeg31Ge;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of naup96721@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=naup96721@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774367672;
+	s=arc-20220608; t=1774367705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0OJwGIwkcTDehRPnixVOyfTvqxydByh7rJFCM6sQA7s=;
-	b=Cqj34JOLGnx5uTiLS1kEC6HuUsFxqAY3KW6W9Mca7B6X/JZJIfX9qCh0E8YBd62GhR6tuJ
-	9u3CZDfU9Ek9PGy0NZ3fp0OlNyGhqEzUs/xPBxm/bJJ7FiipSP//bvwBBdHV2awLg3noh6
-	hMAgEgzHm0GuYSDAcxH/yMX53AIaDe8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774367672; a=rsa-sha256;
-	cv=none;
-	b=bLzA4ZRvi/FTIT46SDUADVRSb2MTZ1d/oBXwnZM+V2pm65mnqE6VYM9YFuQMrkFAP7ERjH
-	yluXeGIJirLViSZ0Gb6JcY8F4ivEN1EiPJYDatmg3pfhoEsumUDj2N5eCRPEmIAurYF04R
-	1soLsOAb/tjicSTHL54emv4bXOCgrCo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SFRR2AU2;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a75e1166b7f241dd976+8248+infradead.org+hch@bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0OJwGIwkcTDehRPnixVOyfTvqxydByh7rJFCM6sQA7s=; b=SFRR2AU25aXwGVjJvwFLF3gDgO
-	CbdZeKb/9jBMzKy//cI8sVP8V51izbKH4hpRVvaHwZbOh82i7nQikRYyuBXjMYeYC967m3zMLJHy8
-	6fVM0TP4GYzJpa7ESSVcTUm9ozOeEK03eAAsAy5Fzb13DOlWRhyOPfJK2gPJInrQKVW0Zs0SGpQ5m
-	gGQrFqYn0+XosNl5gdgE/zUCzR3PuGtomDL14UimKDey4wIeHnhBuYZxW2hKBf0HwS2XZam2L1NpT
-	d9+5W8CgiiDjPzRCvAGIiKiyJIp81T9jngiiv21p8l/Uld1yt1cl/xmOYjyoqD1TE5xWtWSAZTI3y
-	bZNRjwVQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w545G-00000001nIU-1AG0;
-	Tue, 24 Mar 2026 15:54:22 +0000
-Date: Tue, 24 Mar 2026 08:54:22 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Christoph Hellwig <hch@infradead.org>, linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 12/41] fs: Drop sync_mapping_buffers() from
- __generic_file_fsync()
-Message-ID: <acKzrqjnKFNK0xmh@infradead.org>
-References: <20260320131728.6449-1-jack@suse.cz>
- <20260320134100.20731-53-jack@suse.cz>
- <acIjxUzWFstarlwv@infradead.org>
- <ezdm6d34jqdrcohk7o6wycxvvlgtf6aqenwx5ffr3plfagdbzi@gibz7xwr6yhr>
- <acKO3NRw852FdGUO@infradead.org>
- <rsftk7gdlamfryksv63vhmewdi6etvvfyi6as5m2zs75ctvzkq@fnoiwumyfdsv>
+	bh=AADFUoq/x8dJnaFKMGvyyjEOCGHhgTDn8qBc2nRaMNg=;
+	b=KKRh090DozO5TNu+UPhGTIutSik40sMIo6KTUhtLCnmKyUvLPvncWu6nr0wmTPtpD3v8SS
+	USCmfAU+qPXiPABY/u1pOuocs3LvPPZCETx/qi8VKc0ONdidE2ICHhaSYQK+n2TgsqhEpg
+	3hILy4AYzLVu0UrDzTQ4Xtg4nryNAJc=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b0586d5bb8so39956275ad.3
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:55:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774367704; x=1774972504; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AADFUoq/x8dJnaFKMGvyyjEOCGHhgTDn8qBc2nRaMNg=;
+        b=fFeg31Ge1iUtPEsuM/nlSO2YtqFWpdMOnvcUc+Ub2khTeUQtwtlB4Rr/EqYgYBM4Y3
+         hFTncv7JkeyvrgI198bjlONO5w8M9elFrL8nHmC/NBNfpO6bWMAqjabAButf/6aUjGBs
+         p391EmHgDd/Rj2AsLcizyDI4aZb12dPaihbC42nlT4gubzbJlCo642ejXO9mngel8SBB
+         +CHHzORBDjbxjgw4RggNXcxLajVSIrT7LLrEllwvoI3V45DeQwisUzsR+ALT/Mw70mRj
+         JuYgxhseLAQde+xHjnhoiT18PxAg0dBpbjKIsSmaDONan0CDJ0HuV1rXSPvMDdfJgWJV
+         53Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774367704; x=1774972504;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AADFUoq/x8dJnaFKMGvyyjEOCGHhgTDn8qBc2nRaMNg=;
+        b=oE5zpJ2NA/dRdesy20+osGFMP/srByszXhopiDdZCb0upAiTnuGpkCXcMp/SDeq9lw
+         rb/uj0Q1Ay5Gz6fzqfc0c7DXKTkojQFGzYS7SuoG2hvrRYOP47G4kljmhz4mkAgHwYhb
+         7pErXq2srjlPK5MfGaeiP1QEsKjAr6cHLV8TGZp3jNtNJPCPst8fmJaaH89Af4y0JGHq
+         b4Rj3sNrkrKDA0fWbehREnPz0awJVRo4gVVbDvUG589e0I4xG6lltYnqwyeaaI1f1HQl
+         Wd80B3G/mr0RbFXYYqre4Ta8WcPLz4bRpQMpAJ6vZ961/TeQisa/mw8P9rwx1uGPtANx
+         ktgA==
+X-Forwarded-Encrypted: i=1; AJvYcCVS9uzdG5pQ+Vg8w/wuK2BheItM0PluynX7PCtkAbFXZOD7MDXG0DuicT8F9hX3aHsOj8+PZDHv/g==@kvack.org
+X-Gm-Message-State: AOJu0Yx5nA2/q10iF5i34X+fuMznJtjHFp5j4Mrh0TFaHtU1sGgw872O
+	6THtjYEIUzfvMLTZpAhRv7XamirFcJtktvhceAgN4DfUML1hd/LRpXGc
+X-Gm-Gg: ATEYQzwEF84XL6YgiYPUqdA58zWpRh4XRiwZCFbxzrfPnb2aRFwWGiW2hOhfS3fYn0U
+	DPItpGN80C045Mtipgo6GCIgZtRljLKo6OpIkzwQcLo03Lb061nGBUzRhAY03QGkLWYb82bGwCq
+	2RjjrS3jn/HF98WE/S2ywjX0iBpwL7yNmB4Miu7lse4MtvQRwJxDxfh+v4wmXjN4UqzEHIHicUM
+	ytiohMUrF5oHP8CET8lFnQuKPnzb5AYrH1sqgdCIu3FAumQF43H5sOnrPlRbZkHbwobSC8pb4/t
+	6fK1XR34sPeRQmWtyYSPg4xYOYuHJvDdrM7WMCxbRySu+NVJ28e3l1rVhxfHBOrkmiGVWxBM9GZ
+	vDpjSqCGwRSpl4yUIvV2t0HviyTKNWTZldmEQarBPl/pZWEE9zEwagGHdxdRjU6+hK+hHRezo3Y
+	oxdzJm+4iMjsSNjFvsibvXIobL00Q2+vHKFLlBfaMyB0xajCh1
+X-Received: by 2002:a17:903:182:b0:2ae:5163:c2aa with SMTP id d9443c01a7336-2b0b0a6a8demr1383605ad.20.1774367704153;
+        Tue, 24 Mar 2026 08:55:04 -0700 (PDT)
+Received: from naup-virtual-machine ([140.113.92.221])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0adcf1b4fsm12618935ad.83.2026.03.24.08.55.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 08:55:03 -0700 (PDT)
+Date: Tue, 24 Mar 2026 23:54:59 +0800
+From: Hao-Yu Yang <naup96721@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@kernel.org>, mingo@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hillenbrand <david@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
+ and vma_replace_policy
+Message-ID: <acKz06p/kaSw+ANn@naup-virtual-machine>
+References: <20260313124756.52461-1-naup96721@gmail.com>
+ <87a4vyihlx.ffs@tglx>
+ <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <rsftk7gdlamfryksv63vhmewdi6etvvfyi6as5m2zs75ctvzkq@fnoiwumyfdsv>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 8C57B1C0003
-X-Stat-Signature: 5fs73647d3dseiesx1qusg1c68sx71ka
+In-Reply-To: <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
+X-Rspamd-Queue-Id: 7E56480003
+X-Stat-Signature: 15iu6fbab9xshqstqbd5e5opuhf9aric
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774367670-998163
-X-HE-Meta: U2FsdGVkX18nNHLC+gwkLRcALiEdUxNpF3NxA1UadRc7tiaulwuoSPLX0ch1o+Xlc84vd+a3yWov3lbDkn/6kP4kdk/i94sTmbtRdWI+zVy+UWWYMfIjx8CIij9T5kz1qCsnkdp5/+uL+SLoy1BqDIM802FBHLCREXrGf5uRyuc7/+5VyzF0NcfnXSRKswa8w1kz8QxmuAruhU5t3VoNhbPDmgJnBSnV0FoKAnAH2JWIdYd2v56tGSW8ulYdrE4Al1NPomp8We4onqnkH/KpdqFlfaaMawMhklRE1YWlI23iq2M6l72divfQ2E3rFuYbCmDncxyeDz7pTvFPWgNRHjo4j+9dnKoNFFwhwdk8sEg6whA30BT+SwvbTqYokjK6xYZGxlFOHISJ/D+IDzVEqAPzZM+KQxrLtRA94Zr0ewOv1yBTWC9i70UxeuGkZmgKoMJgsPR85oK5uh2fgztIYHkUvjvgy/gsptd0q5rr0QhZkiDYlweYIna1sQUH4PIErf6p2RKR6hU25NILk6P10Ka26lTkTsnZsx3o3sGQhMrOtIqlNacIJIwkknqC6qT+KYcSOoGwAz1vS90C39ft/2Q75u/2/6mawnWFvSO/7YyQcOqvA50q+186sfetNUXRQ9pDhGDscIfyk3sgUm7KJo193x7Zy1IJRpsm9glpTO9GfdPu3hPD2S4hB0708bOQaCue1qszKBPGTRrJyoGK5QDtafEI9NgIZ3wyvg4WqpHvHvAfOP7t+16WyiwYsqpYuX9up9/vrjcg3QE1Fo9SeBGHndzGTAwUtaQgZ1RHuYS75kmb7z0qDtQzZEJHM6K069+oKCghAL78jxvo3mzSntSS3y9fiY37+HlKtMKckvWWr+qVZB5ChjdSY/yw00GbaMSblqwy6fSTLyMMLbARnizzFoqkrxpGSrMRJO0ah+b3ze4Rx85wD7jygmgNpafrONKf8illPDXG66dxfQz
- OQ15Jh0A
- 1rMcUKXXizPN9P08vp9OpOfJYZnb3xfptnUlDe9YhWi8COfONNm1HGsQggArR8CXWUMxAA0ntzcv9F9tavAvEgpUcmAIPgMZevrNtjrmTkaqrq5nOvn4950wCCyu0nXDFAEpU9PgxcKDqKEzTa5R9MSOEHv+WfU6WOe7Kv1WOHAQ0FfH5xqDbJFXpIjTwwBwhqEMCMgTZZ/bnCNGKPZgBkIY++U2iZYg+M4D8BZi571kLDHFrWeVz55lSfQsOGVt2Qxw4VAct0UXjS4xlOzvhONlaqp7ybunjBTyjdcxXGWChsUCK3bw0d/estVT7Ms27zKDIJj+OTbHlE/CXZXSb9T61UMrhQ+NWHSJCInq6KqmDNAkMy47clg+Pbo03V27tpD0CO8neBGOYa5iI2YkfH47jiUzf5gDdfBi/mOs36QYuK1aS0g6Ukt7BgdL8i1rubvoUd+DY3MHvmFRgBPdLvU3nVyCYJScRsfDG+KH9s032K/lu+GWouZlG0mz8jaORLZAmTcqcAbfOyz7e6vK9gLCpE2XzTN6auovj6JBiKySwY+VH9HC2fs2E/ucLmUL3fUX7w+eFY+9cEpfcp3Dowx5nPaYiNHSa5aSeVahRwB2oDvCB8F3byR6gCYVGrHNWYxzoUhZgVkZBNtY=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774367705-461914
+X-HE-Meta: U2FsdGVkX18pxcNIlo5kl7ykRYUHzvATR+1KyPMr98lUe+raYO5bt93tAKEGJFohpF61IITxpZC8AqpW9q69xipatFqlm+WSCiYu4dJjjIAG1iudYgyrGXruzAiZbfDfEVAVPirf3Iy0wb00xXQW4Z75Omib5hmXh7LwyMyIazhmKW4cXZ53dgMxm+dfYiDZRul6/SZNeWQSb4FUF4b+wSCu6b7FxcvO5/oypmu29S+5dklXGAI7dXrU2Oz0rYoIf+DfjGkNFN+QA6EWSvSFAq4lt/ClJgl7cTg9SOMtO+0jISJTa3/gMn1Y2vLxoK/mhJwycsZOvqTnDX/LzqlaELj1JzXhF/CmB3crpY4GPCYxIeU0Yi54yPxsPZb4s1MJX7PpcAOFppuuaaN2cOhr7QxFXcOpvS84hXX8MuohR4HCVXTmeQ2xWAbtV05kyYLLgcfBiUnEjYxKlR5m17UrAMSbjEALfm3UT9gwSTfCFmV2PvNF1q1iBTjEt7WmpApBSW1sRbwfHCoEVoOrdk65ivuTZluM241QAACz3xfExJ/e2Knn7URDaUskLgfM43ISod+Eb+S0HVL5DnFjOxw1LFAYAS8hrBrbbMmLlstncc1Jbm4IiK0rQcltO1i4PTCa6A28JNhuH/u6GLMh1MooMKd/8SOwJVDg0q4s6/jf9Z0WuW2IkPo5gwfKdd4BpeJS6IzO5Qd+a9PWwYI244VzmRi7OwinPBnH2oo2+USMHSSn0Q+ds18q6V3h8phsnZ21vUwfRWtf/ruW/bL2pCiYXT+p23wi+6OKWpT5ykZyqSzkxy/bFqYTTxawmYHIZd8IMoDIhRQPJyh9v9Zk79YnUx9L9VBOHYyR2hopGh2nHsPrdI83BOIp/D3kpD2917d7v4gzuA4DTL//4Pstn1z10qbah81xodyY+RDEGVEVutpGTKm0fkfkIdkSoc+TQQbP4JZVapDAUH+AAVTGNno
+ D154hbvO
+ jUP0xFxRDcxsuuC6DrSn9o2yvAJql1rNVIs4MeHoi5gO9MYUUopwtax51SQYRtPYGmV65zDr6iKCT4EOEjuLDQSzdjlDmawPRej9aW0/xIuq44ftYtggnkksqGGtLhM+dIZ2ZDS/r+rRThDPCUVHPO+8PmpKlMAGe0/tK6n/ryo9Png0TLOybkrjKXyCHcexk+HtABtKdn7JVJHwdc480LoIOvrK7oitApIhdC/QJXZ+iN8QYplgQTAHmeJO30hiBmNWzTwCMBmU6X6d9ITDpELYW4KMUKfURnHt8fnGm/sTAxdMLFZnFbGQ30NVdRiM+MonpT5HwSiIO98zTKxfrOdZAgGKM8P922otvSBDAT3Cwy/rnFIl2RpEdODVm4TMTf5ttTS8NeXO0fdECaRyQn09qO6pHhAgyxHXErs0zlVdrGkfVMEPb2bmqZeLA3bvzKNZDA+iZPynFm3M08AIjKi45gxRRlpNOqGQkzGhQht0HUAjnH0l2bkxjDG/KWWN4JToS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,18 +122,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 02:36:53PM +0100, Jan Kara wrote:
-> Leaving the two implementations separate certainly works for me as well
-> (that's why I've put that patch to the end because I've expected some
-> discussions around it :)). Just the amount of common trivial calls you need
-> to do (fdatawrite(), sync_inode_metadata(),
-> file_check_and_advance_wb_err(), blkdev_issue_flush()) looked high enough
-> to me to be worth merging the implementations. But I don't feel strongly
-> either way.
+So this patch is correct? What i need to do?
 
-I don't really feel either way, and I really should not micro-manage
-the series either.  So go for what you think works best.  The important
-part is to have the fsync changes early and to avoid hardcoding
-buffer_head knowledge into libfs.c.
-
+On Tue, Mar 24, 2026 at 03:00:19PM +0100, Peter Zijlstra wrote:
+> On Mon, Mar 23, 2026 at 06:24:42PM +0100, Thomas Gleixner wrote:
+> 
+> > >  include/linux/mempolicy.h | 1 +
+> > >  mm/mempolicy.c            | 2 +-
+> > >  2 files changed, 2 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
+> > > index 0fe96f3ab3ef..65c732d440d2 100644
+> > > --- a/include/linux/mempolicy.h
+> > > +++ b/include/linux/mempolicy.h
+> > > @@ -55,6 +55,7 @@ struct mempolicy {
+> > >  		nodemask_t cpuset_mems_allowed;	/* relative to these nodes */
+> > >  		nodemask_t user_nodemask;	/* nodemask passed by user */
+> > >  	} w;
+> > > +	struct rcu_head rcu;
+> > >  };
+> > >  
+> > >  /*
+> > > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> > > index 0e5175f1c767..6dc61a3d4a32 100644
+> > > --- a/mm/mempolicy.c
+> > > +++ b/mm/mempolicy.c
+> > > @@ -487,7 +487,7 @@ void __mpol_put(struct mempolicy *pol)
+> > >  {
+> > >  	if (!atomic_dec_and_test(&pol->refcnt))
+> > >  		return;
+> > > -	kmem_cache_free(policy_cache, pol);
+> > > +	kfree_rcu(pol, rcu);
+> > >  }
+> > >  EXPORT_SYMBOL_FOR_MODULES(__mpol_put, "kvm");
+> > 
+> > While this looks functionally correct it is incomplete in terms of RCU.
+> > 
+> > The vma->vm_policy pointer needs to be marked __rcu. That then requires
+> > to use rcu_dereference_check() at the reader side and
+> > rcu_assign_pointer() and rcu_replace_pointer() on the writer side.
+> 
+> I hate that sparse annotation; it mostly just makes the code unreadable
+> for then requiring those unwieldy rcu helper functions.
+> 
+> Not to mention we don't actually need any of that here, because:
+> 
+> > Especially the writer side is required so that the proper memory
+> > barriers are inserted for architectures with a weakly ordered memory
+> > model.
+> 
+> The vma->vm_policy thing is written under mmap_lock held for writing,
+> and the futex consumer is a speculative read lock. Specifically the
+> ordering is through the associated seqcount.
+> 
+> All that is really needed is to extend the lifetime of the mpol to the
+> associated RCU period. Which is exactly what this patch does.
+> 
+> Want me to go write up a better Changelog?
 
