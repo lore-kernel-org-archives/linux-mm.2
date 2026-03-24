@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4153F532ED
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:42:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE7BF532F6
+	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 08:51:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E37D6B0005; Tue, 24 Mar 2026 04:42:14 -0400 (EDT)
+	id 16DE36B0005; Tue, 24 Mar 2026 04:51:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 494666B0088; Tue, 24 Mar 2026 04:42:14 -0400 (EDT)
+	id 0F8AF6B0088; Tue, 24 Mar 2026 04:51:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AA2D6B0089; Tue, 24 Mar 2026 04:42:14 -0400 (EDT)
+	id F020D6B0089; Tue, 24 Mar 2026 04:51:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 27E0A6B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:42:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BA0EE5A12F
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:42:13 +0000 (UTC)
-X-FDA: 84580314546.17.BFE0855
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1B77C1C000C
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:42:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=o+JER3Hm;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774341730; a=rsa-sha256;
-	cv=none;
-	b=7bw02W3cI7bNhl/uT9kYKainuncP6yxE0+wVs3SNOaOlkQIjiUzAoHGeQ7DtixwM34SYp6
-	fxc3nULnDFEy2Kq351ynmOIELO/JRacxmI3gDGPFG3J6vkEhwaHT20beUuT8uVMI49osKI
-	LvhBy/IqDBYn71ZMk27XsurHXvZeAnw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=o+JER3Hm;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D82E66B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 04:51:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 801D2141859
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:51:43 +0000 (UTC)
+X-FDA: 84580338486.08.1C036B9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B1AB712000C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 08:51:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V5pA00vr;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774341730;
+	s=arc-20220608; t=1774342301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pbAujaAPG3PI7tjdCMceehwF0A1vZDewqB4hYIY6V0E=;
-	b=w4csDcCw3JqLjcE/UYMIGHVaPzqjEOI4MNtqVAddQYxnpjdXk6kO1BeHbjrS+GKmy2QnIc
-	cIJ2UqAKfib15JS5KTsZDYbfpzo268Z0hH89W0/D665JkeVBzx3UA/pePfsYOqRbKHLCYI
-	xHdYNgasqf4r8L4hFnNvs+eMaG6Ds+g=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774341723; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=pbAujaAPG3PI7tjdCMceehwF0A1vZDewqB4hYIY6V0E=;
-	b=o+JER3HmoBlkUZDUwtp8PhVRVDzPu5UbycGQgDUniw9/MDa8jDAH1Q//RfS48fu9PSUBaY23s2Qg9dcJgIZA+hwVcw66FjHnaOM9dm2VA02zCOj7F/3cKSa9V/nb/5Mig1ZzWh2jALCC+Q6zoc/8qkABe4ndil8AodUprz6fuW0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R541e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=39;SR=0;TI=SMTPD_---0X.duPY3_1774341719;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X.duPY3_1774341719 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 24 Mar 2026 16:42:01 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,
-  <lorenzo.stoakes@oracle.com>,  <Liam.Howlett@oracle.com>,
-  <vbabka@kernel.org>,  <willy@infradead.org>,  <rppt@kernel.org>,
-  <surenb@google.com>,  <mhocko@suse.com>,  <ziy@nvidia.com>,
-  <matthew.brost@intel.com>,  <joshua.hahnjy@gmail.com>,
-  <rakie.kim@sk.com>,  <byungchul@sk.com>,  <gourry@gourry.net>,
-  <apopple@nvidia.com>,  <dave@stgolabs.net>,
-  <Jonathan.Cameron@huawei.com>,  <rkodsara@amd.com>,  <vkoul@kernel.org>,
-  <bharata@amd.com>,  <sj@kernel.org>,  <weixugc@google.com>,
-  <dan.j.williams@intel.com>,  <rientjes@google.com>,
-  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
-  <dave.hansen@intel.com>,  <hannes@cmpxchg.org>,  <jhubbard@nvidia.com>,
-  <peterx@redhat.com>,  <riel@surriel.com>,  <shakeel.butt@linux.dev>,
-  <stalexan@redhat.com>,  <tj@kernel.org>,  <nifan.cxl@gmail.com>,
-  <linux-kernel@vger.kernel.org>,  <linux-mm@kvack.org>
-Subject: Re: [RFC PATCH v4 3/6] mm/migrate: add batch-copy path in
- migrate_pages_batch
-In-Reply-To: <20260309120725.308854-10-shivankg@amd.com> (Shivank Garg's
-	message of "Mon, 9 Mar 2026 12:07:27 +0000")
-References: <20260309120725.308854-3-shivankg@amd.com>
-	<20260309120725.308854-10-shivankg@amd.com>
-Date: Tue, 24 Mar 2026 16:42:00 +0800
-Message-ID: <87se9pzkiv.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=NCICq6GziYw2DkMPbM/9imafDghrvczfaD2uxYTB3qw=;
+	b=fvBWgUci1jMc/2z6xUnmhATGKEGYmYxujFvZp8+6XovwwW26YZR3MS4rLTwTompPefy62B
+	Tp/fkAx18CTB8RMiV7yi2kDnRdZIG4ZZP35Mc/mJLbLj8PYlDtK4bQXjiSq0te131oGmTp
+	jluGhBhwD4Z/Ly9qeLetQd9DMQwEAxk=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V5pA00vr;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774342301; a=rsa-sha256;
+	cv=none;
+	b=uWNRC+i2lG2c/D7KRkbjU2twQarJ7iOAzR2zHrvntYLO/rkE9SAhLhP19xRShURb95/Gcd
+	k+zqM2yQX34ThwEtMsEv7psdbUtaSYeUhWL+0p1fbFqtFRhoHIJ9YtWZTJNSw/icfMLaDe
+	ZD075y1UJeo12gsLMKo3IZSvpwU1h8Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AACA643F26;
+	Tue, 24 Mar 2026 08:51:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F86DC19424;
+	Tue, 24 Mar 2026 08:51:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774342300;
+	bh=MCVEK7Uy7kSgqvx88xO+6jxwJM48WzBfVnlulZ4Y5GU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V5pA00vrKH1i6oryi7GAHi0gW0eV3NAk1n5gRsgixc4E3kw8aGUwWWIbqmVnYwNl0
+	 yqCHvkeu3cdvhJq18BCkmneulFmq4n6EXIWcs/cbp5jVyJ4bn8TLp0S+q59CYf79+5
+	 1bxhjAn/+flkbvLD68WAZEa4/P4dm+2tD/ZyMTtZ3xX1P/cdqeu+GenYrQT7lTcSQk
+	 XeXzwmRii7IENAyPcRcxW9Lhgj41Lhj4eL82nwKun6N7FbEaa1Hxe1SmEYRrRzdt3t
+	 MhSD9/P4q7qSwDwLb6AjALk7kJN3MEB9ynRSLHCYjVK07IyZkBc8/mueVACtsf2EZp
+	 za3qldnDkMDOw==
+Date: Tue, 24 Mar 2026 09:51:34 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, jack@suse.cz, 
+	shuah@kernel.org, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org, 
+	dmatlack@google.com, pratyush@kernel.org, skhawaja@google.com
+Subject: Re: [PATCH 1/2] liveupdate: prevent double management of files
+Message-ID: <20260324-langzeitfolgen-altgedienten-ccef17d19349@brauner>
+References: <20260321175808.57942-1-pasha.tatashin@soleen.com>
+ <20260321175808.57942-2-pasha.tatashin@soleen.com>
+ <CA+CK2bD2aNu-NByET4KkBP0n2j8WQE2zjxb4g-1cv2hYfjaRZQ@mail.gmail.com>
+ <20260323-leibhaftig-blasinstrument-58ec408b3c40@brauner>
+ <CA+CK2bC6S7pFCYR0XS1ZPxw9HKjWgxy=0DkszYNjMUi735o_1Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Queue-Id: 1B77C1C000C
-X-Stat-Signature: 7nrnyzsecgyzqh7uxpca76mzjhmmr1gp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bC6S7pFCYR0XS1ZPxw9HKjWgxy=0DkszYNjMUi735o_1Q@mail.gmail.com>
+X-Rspamd-Queue-Id: B1AB712000C
+X-Stat-Signature: u9hydaf673mqd9metstgs114didzubfd
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774341728-620779
-X-HE-Meta: U2FsdGVkX1/oN6AQnx4OHVm7KZSkCvyWCr41DH5cPqc+cKASXnViIYV10xzH/QANFsWJ9f0Rk2h1ECz8Rxa1uHDLPUZgEXno60o2sGLe2Tnt8ZVRGfn1phm240W78Jez8xk203fH3vgtfcg58M1J0P8hny4B1PX263bIy77lUwwyb+rj+TfTzP9KWBy3hsMBsKYwKXdmw/PzK3qpuq9+27GOr+wH4X81SlYfiSunZLqIzinWYF7KA8hqDHhAXbVEw8coaaRc7akW/PTtJ1gC55DeYXeTFIsHu/DCPHNMivWYKMgmjVWVAOY40vS8ZbrGzAO5Uh2CdRRyLzMFUKh3qamMfPYegkHdJAKbiGSP91WgY7Yq4WwDNLmf6Fs3mevztKxHRSkNVL1FrLvwClfaZZvZU/MyRWkO/OHXCCo6gFAtR486oW/yFb/8oefcdgbWWB1FKs4qJG/U4e3boTazo7jqmExlcmF5ulqVDytzaVzWOrOu1QuCBXtQmADqTBjWW9Ij4L4J6gxYMS2I4ZFSxFovUvvkzLwg0e+STvZ0qBz96qgSJolJ99iOLoNoVgImnbOi4oGhR64f/bBVyPXbUUpCm5s5zdvr09VxtawJ7nDVpDc6Z1DbsAP9phQ5dMj+fo8PXYfx5doex2+nonCGZHvoZfjA+F7xlB5r9cLVvaMZa7abHOx5jHSbZaRqsRab5nCSsEMpkNyJXZXiIRhTUaMvFH3XPfR3JSufzLe7Cmidd++891EoKJTlm2m+m+CpGUFxv4IlcbzjUp2aeiEdN94bi81YQ80clQhZgHrtSirbvLWzjfSzLSFuSquSO6MQ736qnQIGQi1HTgi3BjF9ii4T3PJHTYZHyEBupBhzGitYt64qPlxrSxAnpd5nyqFIDm0rTsWCPrFQoy1vurrS3Nn4Ri2oOJvkBY/DqjxeTZ4WgCIrgsneYp6JCgxyew1DuZRI1/wpMpGkB71u0bX
- M6CroEGw
- GED3XKy/7oDwu5QfiUK8BhxMCcBtFimjVzF2ScaGCRbbvRd0r/b9+1pv9iqeaVsf1j0XbZcnlZ2mGHclqOWzHStN1TkzMwOvYD3mG34NNrrenmFpjTqovC6mRQiYymJvr2vaNxnUpUocdoA9G8z8qcJ3o95K/K3OvzqoGjmOmFKm2n/CDg0aC3QbPkGX1coRVHFuUoMw1OKsxH5eQSYHy0QSAMey7dl7JINPhdq5dQxHHMtwhkJozOS+KAquuW/QTnV0611bFDAcqRbTp3HH4mS/qof0OcrV41DWZefDkt66r2p7MdKOErt82gsa7jDm65K3TL+ggx229diOUHn7ZFuoMx8DYO1fV29GYThcapxCcReMcVEAdckH/0uP5odGPW2ra0TAhszTqkec0xVzM3vP2ZFfUtjgpLz1srZJxaYIR1b3qALHIK7iAeajvAbdf7SlZ
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774342301-700401
+X-HE-Meta: U2FsdGVkX19/VBxukzIQzz5xCjTOywDlSDmxlSJ4EkwTABHQ3O9ypceU9ousSLFCYhhztLQEeAOa7Nk65w82iFwsy9U01MvfMlPjs8mRo1BAe9X43hWCmAUAnQoRFgnaxrf9VhUd7bWp/+DnNOKO5EXH5CjkmnfiQA9aMffJdVR1rCiXQL7OBrJwCVloaoe05h6iF6w/JgrW0eHcvTjaW6MtbmcXD2zUFrmat+svJ4eqMHYweKGzzvOigaTMAvwWdB3BuSgU6gZVHOqOlLABdO0ZeMkI5KY2uHmTzXog66kL+S4lkkINbTls1zqhZzjlBhHvrSVTjRE9SpqR9RVDT6cDotBa6eIZBS0ZTnUy0gFDi7yyZBsmPA4niLiMfB4gkQ1tr9/s4Xl92sgw+NNH0AE4OpxMgUG8WtjFW6l2isBzASgAy93bXURntIXa0XV/ktRFUOCG41hYPg/R6jgbxDeeXRIM9jpX/MXblMuv+Rpn24LSfeV2chNlHWBhIpt2Ovp5RbGpB3juMXL+xFumxOob7tlXz7g/h+3ZJ8RCBSW/wVwoI+vZHBm+qVcQwDCJtGgEQqphpIUGSI+/RuLwvU5Tom2RI3eA/QtWOR1Qgr5bWYoVdCNwBwqY7dzsRjn52r0atCUpai600rNVx/ZwYmU+28X4U/2o7WXKrSxB5s+krVRewp2WYMdR908N+p+6E+Pnehp4Ed+AAlyI83NW4pmdoea+7L5mUeeUqLOkS1vQUP7FtW0wrqoShaTSsNxONOt4lcxAAXQCloHAE2Lr9sSSebR84pVoZVPEZoGlP9acRRaO8+EHPdqLyqi0IkKNa9wdSl/GVpgLWtbD3YfYJvSHKcL3KNOtgiSci6k88an1iFz/ock071dWwFXnGwh0ZtgR7EvQuNw0Dnm4C4s4k0a9r+beSYMOZbVfp9NIuc3dUr2Vsc1gggiQHEW+q7YjKNMm0aU0byzoBduUyiA
+ K6aveJU6
+ ud478+Mqop5gTYW2erO91C9/pfkV+tps9GDtRmmCyE6lp9JFdAnw62rx5CZ05kAY/x0twcTv7TTgSlqoDs9HiXutrM5a8HpRzgPl6a6ZgE2juIVlvELhEHvhbhK1z/LYuPWXRtDBcrDDAmruyNu1IZJoRqclY1BreuP6Tq/pd6di6e7OtmUOj+4agI01FQD+xpYgWb/4EbWLkmUJcmudsiJqXsC2OBh+zKnDUemmNUVUuSvvOQZaUimm2qqwku18NvrIX4gYmBCo5yg/JuKqBeoZqJjft17+Xx/zh3QLJa8ZrjS7S9S3cMeWjlCROSl7W5ZV3bep4s6RtNE+wR06c6cvnd4jmFKS6CAswYUGycrUM/Gh7k0L5xVlK8IhWa+lVUf3vTK6QZyK/siheH1JfXLkZmnMe8mEZ4kXuUxTFvPBsu5BL6xoQXhn+t7D1+rTIhzRs1+7SE84UppeSYxSdJD1ZyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,167 +98,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shivank Garg <shivankg@amd.com> writes:
+On Mon, Mar 23, 2026 at 09:18:03AM -0400, Pasha Tatashin wrote:
+> On Mon, Mar 23, 2026 at 7:55 AM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > On Sat, Mar 21, 2026 at 09:04:53PM -0400, Pasha Tatashin wrote:
+> > > On Sat, Mar 21, 2026 at 1:58 PM Pasha Tatashin
+> > > <pasha.tatashin@soleen.com> wrote:
+> > > >
+> > > > Currently, LUO does not prevent the same file from being managed twice
+> > > > across different active sessions.
+> > > >
+> > > > Add a new i_state flag I_LUO_MANAGED and update luo_preserve_file()
+> > > > to check and set this flag when a file is preserved, and clear it in
+> > > > luo_file_unpreserve_files() when it is released.
+> > > >
+> > > > Additionally, set this flag in luo_retrieve_file() after a file is
+> > > > successfully restored in the new kernel, and clear it in
+> > > > luo_file_finish() when the LUO session is finalized.
+> > > >
+> > > > This ensures that the same file (inode) cannot be managed by multiple
+> > > > sessions. If another session attempts to preserve an already managed
+> > > > file, it will now fail with -EBUSY.
+> > > >
+> > > > Acked-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> > > > Acked-by: Jan Kara <jack@suse.cz>
+> > > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > > > ---
+> > > >  include/linux/fs.h           |  5 ++++-
+> > > >  kernel/liveupdate/luo_file.c | 27 ++++++++++++++++++++++++---
+> > > >  2 files changed, 28 insertions(+), 4 deletions(-)
+> > > >
+> > > > diff --git a/include/linux/fs.h b/include/linux/fs.h
+> > > > index 23f36a2613a3..692a8be56f3c 100644
+> > > > --- a/include/linux/fs.h
+> > > > +++ b/include/linux/fs.h
+> > > > @@ -712,6 +712,8 @@ is_uncached_acl(struct posix_acl *acl)
+> > > >   * I_LRU_ISOLATING     Inode is pinned being isolated from LRU without holding
+> > > >   *                     i_count.
+> > > >   *
+> > > > + * I_LUO_MANAGED       Inode is being managed by a live update session.
+> > > > + *
+> > > >   * Q: What is the difference between I_WILL_FREE and I_FREEING?
+> > > >   *
+> > > >   * __I_{SYNC,NEW,LRU_ISOLATING} are used to derive unique addresses to wait
+> > > > @@ -744,7 +746,8 @@ enum inode_state_flags_enum {
+> > > >         I_CREATING              = (1U << 15),
+> > > >         I_DONTCACHE             = (1U << 16),
+> > > >         I_SYNC_QUEUED           = (1U << 17),
+> > > > -       I_PINNING_NETFS_WB      = (1U << 18)
+> > > > +       I_PINNING_NETFS_WB      = (1U << 18),
+> > > > +       I_LUO_MANAGED           = (1U << 19),
+> > > >  };
+> > > >
+> > > >  #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
+> > > > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+> > > > index 5acee4174bf0..86911beeff71 100644
+> > > > --- a/kernel/liveupdate/luo_file.c
+> > > > +++ b/kernel/liveupdate/luo_file.c
+> > > > @@ -248,6 +248,7 @@ static bool luo_token_is_used(struct luo_file_set *file_set, u64 token)
+> > > >   * Context: Can be called from an ioctl handler during normal system operation.
+> > > >   * Return: 0 on success. Returns a negative errno on failure:
+> > > >   *         -EEXIST if the token is already used.
+> > > > + *         -EBUSY if the file descriptor is already preserved by another session.
+> > > >   *         -EBADF if the file descriptor is invalid.
+> > > >   *         -ENOSPC if the file_set is full.
+> > > >   *         -ENOENT if no compatible handler is found.
+> > > > @@ -276,6 +277,14 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+> > > >         if (err)
+> > > >                 goto  err_fput;
+> > > >
+> > > > +       scoped_guard(spinlock, &file_inode(file)->i_lock) {
+> > > > +               if (inode_state_read(file_inode(file)) & I_LUO_MANAGED) {
+> > > > +                       err = -EBUSY;
+> > > > +                       goto err_free_files_mem;
+> > > > +               }
+> > > > +               inode_state_set(file_inode(file), I_LUO_MANAGED);
+> > > > +       }
+> > > > +
+> > > >         err = -ENOENT;
+> > > >         list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+> > > >                 if (fh->ops->can_preserve(fh, file)) {
+> > > > @@ -286,11 +295,11 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+> > > >
+> > > >         /* err is still -ENOENT if no handler was found */
+> > > >         if (err)
+> > > > -               goto err_free_files_mem;
+> > > > +               goto err_unpreserve_inode;
+> > > >
+> > > >         err = luo_flb_file_preserve(fh);
+> > > >         if (err)
+> > > > -               goto err_free_files_mem;
+> > > > +               goto err_unpreserve_inode;
+> > > >
+> > > >         luo_file = kzalloc_obj(*luo_file);
+> > > >         if (!luo_file) {
+> > > > @@ -320,6 +329,9 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+> > > >         kfree(luo_file);
+> > > >  err_flb_unpreserve:
+> > > >         luo_flb_file_unpreserve(fh);
+> > > > +err_unpreserve_inode:
+> > > > +       scoped_guard(spinlock, &file_inode(file)->i_lock)
+> > > > +               inode_state_clear(file_inode(file), I_LUO_MANAGED);
+> > > >  err_free_files_mem:
+> > > >         luo_free_files_mem(file_set);
+> > > >  err_fput:
+> > > > @@ -363,6 +375,9 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
+> > > >                 luo_file->fh->ops->unpreserve(&args);
+> > > >                 luo_flb_file_unpreserve(luo_file->fh);
+> > > >
+> > > > +               scoped_guard(spinlock, &file_inode(luo_file->file)->i_lock)
+> > > > +                       inode_state_clear(file_inode(luo_file->file), I_LUO_MANAGED);
+> > > > +
+> > > >                 list_del(&luo_file->list);
+> > > >                 file_set->count--;
+> > > >
+> > > > @@ -609,6 +624,9 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+> > > >         *filep = luo_file->file;
+> > > >         luo_file->retrieve_status = 1;
+> > > >
+> > > > +       scoped_guard(spinlock, &file_inode(luo_file->file)->i_lock)
+> > > > +               inode_state_set(file_inode(luo_file->file), I_LUO_MANAGED);
+> > > > +
+> > > >         return 0;
+> > > >  }
+> > > >
+> > > > @@ -701,8 +719,11 @@ int luo_file_finish(struct luo_file_set *file_set)
+> > > >
+> > > >                 luo_file_finish_one(file_set, luo_file);
+> > > >
+> > > > -               if (luo_file->file)
+> > > > +               if (luo_file->file) {
+> > > > +                       scoped_guard(spinlock, &file_inode(luo_file->file)->i_lock)
+> > > > +                               inode_state_clear(file_inode(luo_file->file), I_LUO_MANAGED);
+> > > >                         fput(luo_file->file);
+> > > > +               }
+> > > >                 list_del(&luo_file->list);
+> > > >                 file_set->count--;
+> > > >                 mutex_destroy(&luo_file->mutex);
+> > > > --
+> > > > 2.43.0
+> > > >
+> > >
+> > > > Sashiko: https://sashiko.dev/#/patchset/20260321175808.57942-1-pasha.tatashin@soleen.com
+> > >
+> > > Sashiko reported two problems:
+> > >
+> > > 1. Are there any issues with mixing goto-based error handling and scope-based
+> > > cleanups like scoped_guard() in the same function?
+> > >
+> > > Initially, I thought that there should not be any problems, however,
+> > > after looking this up  I found in include/linux/cleanup.h the
+> > > following comment:
+> > >
+> > >  * Lastly, given that the benefit of cleanup helpers is removal of
+> > >  * "goto", and that the "goto" statement can jump between scopes, the
+> > >  * expectation is that usage of "goto" and cleanup helpers is never
+> > >  * mixed in the same function.
+> >
+> > There's a compile-time switch you might want to turn on when
+> > test-compiling code like this. I forget exactly what it is. Something
+> > like jump-over-uninit or something.
+> >
+> > >
+> > > Well, good to know, will not use goto inside scoped_guards.
+> > >
+> > > 2. Additionally, does setting I_LUO_MANAGED on the inode break the preservation
+> > > of anonymous inodes? Many file types (like eventfd, epoll, timerfd,
+> > > signalfd)
+> > >
+> > > This is actually a very good point. It looks like everyone who uses
+> > > anon_inode_getfd() has one shared inode. This is not a problem for the
+> > > existing LUO user memfd, or for the upcoming vfiofd and memfd, but
+> > > kvm-vmfd and kvm-cpufd also use it, and that might be a problem in the
+> > > future once we add support for Orphaned VMs.
+> > >
+> > > Therefore, we have two choices: either use a hash table, which adds
+> > > performance and memory overhead, or delegate this double-check to the
+> > > LUO file handlers, as they can use a private context to know if the FD
+> > > is already preserved.
+> >
+> > So, I'm not happy about I_LUO_MANAGED. I don't think we need driver
+> > specific stuff in struct inode and not in i_state. Track this in the
+> > driver please. I don't want this precedent and I'd rather have you get
+> 
+> I am planning to use an xarray in the next version.
+> 
+> > used to implementing such things in the driver right away rather than
+> > offloading this on general infrastructure. If we let this slide struct
+> > inode will be 2MB 1 in year.
+> 
+> Claiming that a single flag bit precedent would cause the overall
+> struct to grow by 2MB in a year is a slight exaggeration. :-)
 
-> Split unmapped folios into batch-eligible (src_batch/dst_batch) and
-> standard (src_std/dst_std) lists, gated by the migrate_offload_enabled
-> which is off by default. So, when no offload driver is active, the
-> branch is never taken and everything goes through the standard path.
->
-> After TLB flush, batch copy the eligible folios via folios_mc_copy()
-> and pass already_copied=true into migrate_folios_move() so
-> __migrate_folio() skips the per-folio copy.
->
-> On batch copy failure, already_copied flag stays false and each folio
-> fall back to individual copy.
->
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  mm/migrate.c | 55 +++++++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 44 insertions(+), 11 deletions(-)
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 1d8c1fb627c9..69daa16f9cf3 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -43,6 +43,7 @@
->  #include <linux/sched/sysctl.h>
->  #include <linux/memory-tiers.h>
->  #include <linux/pagewalk.h>
-> +#include <linux/jump_label.h>
->  
->  #include <asm/tlbflush.h>
->  
-> @@ -51,6 +52,8 @@
->  #include "internal.h"
->  #include "swap.h"
->  
-> +DEFINE_STATIC_KEY_FALSE(migrate_offload_enabled);
-> +
->  static const struct movable_operations *offline_movable_ops;
->  static const struct movable_operations *zsmalloc_movable_ops;
->  
-> @@ -1706,6 +1709,12 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
->  	return nr_failed;
->  }
->  
-> +/* movable_ops folios have their own migrate path */
-> +static bool folio_supports_batch_copy(struct folio *folio)
-> +{
-> +	return likely(!page_has_movable_ops(&folio->page));
-> +}
-> +
->  static void migrate_folios_move(struct list_head *src_folios,
->  		struct list_head *dst_folios,
->  		free_folio_t put_new_folio, unsigned long private,
-> @@ -1805,8 +1814,12 @@ static int migrate_pages_batch(struct list_head *from,
->  	bool is_large = false;
->  	struct folio *folio, *folio2, *dst = NULL;
->  	int rc, rc_saved = 0, nr_pages;
-> -	LIST_HEAD(unmap_folios);
-> -	LIST_HEAD(dst_folios);
-> +	unsigned int nr_batch = 0;
-> +	bool batch_copied = false;
-> +	LIST_HEAD(src_batch);
-> +	LIST_HEAD(dst_batch);
-> +	LIST_HEAD(src_std);
-> +	LIST_HEAD(dst_std);
+Hm, you say that. But then you don't get ~5-10 patches a year that "just
+add a new member into struct inode with 4-8 bytes"... I'm just making an
+exaggerated point ofc. :)
 
-IMHO, the naming appears too copy centric, how about unmap_batch and
-unmap_single?  "unmap" is one step of migration.
+But struct inode is used everywhere and I want it contained and small
+and whatever lands in it - even flags - better be VFS generic stuff.
 
->  	bool nosplit = (reason == MR_NUMA_MISPLACED);
->  
->  	VM_WARN_ON_ONCE(mode != MIGRATE_ASYNC &&
-> @@ -1943,7 +1956,7 @@ static int migrate_pages_batch(struct list_head *from,
-
-unmap/dst_folios  in comments need to be changed too.
-
-			rc = migrate_folio_unmap(get_new_folio, put_new_folio,
-					private, folio, &dst, mode, ret_folios);
-			/*
-			 * The rules are:
-			 *	0: folio will be put on unmap_folios list,
-			 *	   dst folio put on dst_folios list
-			 *	-EAGAIN: stay on the from list
-			 *	-ENOMEM: stay on the from list
-			 *	Other errno: put on ret_folios list
-			 */
-
-
->  				/* nr_failed isn't updated for not used */
->  				stats->nr_thp_failed += thp_retry;
->  				rc_saved = rc;
-> -				if (list_empty(&unmap_folios))
-> +				if (list_empty(&src_batch) && list_empty(&src_std))
->  					goto out;
->  				else
->  					goto move;
-> @@ -1953,8 +1966,15 @@ static int migrate_pages_batch(struct list_head *from,
->  				nr_retry_pages += nr_pages;
->  				break;
->  			case 0:
-> -				list_move_tail(&folio->lru, &unmap_folios);
-> -				list_add_tail(&dst->lru, &dst_folios);
-> +				if (static_branch_unlikely(&migrate_offload_enabled) &&
-> +				    folio_supports_batch_copy(folio)) {
-> +					list_move_tail(&folio->lru, &src_batch);
-> +					list_add_tail(&dst->lru, &dst_batch);
-> +					nr_batch++;
-> +				} else {
-> +					list_move_tail(&folio->lru, &src_std);
-> +					list_add_tail(&dst->lru, &dst_std);
-> +				}
->  				break;
->  			default:
->  				/*
-> @@ -1977,17 +1997,28 @@ static int migrate_pages_batch(struct list_head *from,
->  	/* Flush TLBs for all unmapped folios */
->  	try_to_unmap_flush();
->  
-> +	/* Batch-copy eligible folios before the move phase */
-> +	if (!list_empty(&src_batch)) {
-> +		rc = folios_mc_copy(&dst_batch, &src_batch, nr_batch);
-> +		batch_copied = (rc == 0);
-> +	}
-> +
->  	retry = 1;
->  	for (pass = 0; pass < nr_pass && retry; pass++) {
->  		retry = 0;
->  		thp_retry = 0;
->  		nr_retry_pages = 0;
->  
-> -		/* Move the unmapped folios */
-> -		migrate_folios_move(&unmap_folios, &dst_folios,
-> -				put_new_folio, private, mode, reason,
-> -				ret_folios, stats, &retry, &thp_retry,
-> -				&nr_failed, &nr_retry_pages, false);
-> +		if (!list_empty(&src_batch))
-> +			migrate_folios_move(&src_batch, &dst_batch, put_new_folio,
-> +					private, mode, reason, ret_folios, stats,
-> +					&retry, &thp_retry, &nr_failed,
-> +					&nr_retry_pages, batch_copied);
-> +		if (!list_empty(&src_std))
-> +			migrate_folios_move(&src_std, &dst_std,	put_new_folio,
-> +					private, mode, reason, ret_folios, stats,
-> +					&retry, &thp_retry, &nr_failed,
-> +					&nr_retry_pages, false);
->  	}
->  	nr_failed += retry;
->  	stats->nr_thp_failed += thp_retry;
-> @@ -1996,7 +2027,9 @@ static int migrate_pages_batch(struct list_head *from,
->  	rc = rc_saved ? : nr_failed;
->  out:
->  	/* Cleanup remaining folios */
-> -	migrate_folios_undo(&unmap_folios, &dst_folios,
-> +	migrate_folios_undo(&src_batch, &dst_batch,
-> +			put_new_folio, private, ret_folios);
-> +	migrate_folios_undo(&src_std, &dst_std,
->  			put_new_folio, private, ret_folios);
->  
->  	return rc;
-
----
-Best Regards,
-Huang, Ying
+We sometimes do carve out exceptions for _filesystem drivers_ where no
+other way is possible ofc. But I don't think this should extend to
+drivers/.
 
