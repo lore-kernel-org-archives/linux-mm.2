@@ -4,99 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4944EFEA82E
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 07:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC5CEFEA82E
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 07:36:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD1636B0005; Wed, 25 Mar 2026 03:36:36 -0400 (EDT)
+	id 5CF916B008A; Wed, 25 Mar 2026 03:36:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A81A56B008A; Wed, 25 Mar 2026 03:36:36 -0400 (EDT)
+	id 5A0C06B008C; Wed, 25 Mar 2026 03:36:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BEA56B008C; Wed, 25 Mar 2026 03:36:36 -0400 (EDT)
+	id 4DD236B0092; Wed, 25 Mar 2026 03:36:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E8106B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 03:36:36 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2158AC29FC
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:36:36 +0000 (UTC)
-X-FDA: 84583777992.19.25D6B19
-Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 307DE1C000A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:36:33 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=cAlP9RBE;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	spf=pass (imf21.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774424194; a=rsa-sha256;
-	cv=pass;
-	b=8LsuwxuuZvhxHcci69H1j7vcrWfS6LYxhJZarKvd8Bzozbr++weUN/KpPrM6hBRBTlq6+l
-	bZMAGeRBJuOhUD8XOxE+J564OwOyJfbg92f6TC3FMWDAFxOB8lg7joVzEJ0dOZZfIdgV/H
-	UjzHRVq1Xs5l48syIKTQZo8rcPMNqfM=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774424194;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 409A26B008A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 03:36:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BCF2E5AC23
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:36:54 +0000 (UTC)
+X-FDA: 84583778748.22.116FA49
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2AE12180005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:36:52 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VoZyamcp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774424213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VtUKY5DO0st46tC4ZDWh2PAEENO7whJpWxG4Ec9CYhc=;
-	b=B3XbRiFQuN3WGW6mFWu5hv84bjmsJMoiMNJ/NgNt84shuMUCbvMVbZs6g05oBI/HFUdhrk
-	jql7DcS7LrSqIP5VOCBOv/BBiuhEooHT9TwtUIT9NccFmT2rKbYHw2LFOSUAxzehu03Y77
-	yUu+K3FQ2DRqhr4SdjrvFrynRfheLJI=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=cAlP9RBE;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1");
-	spf=pass (imf21.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1774424182; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=eE4I+XSjwIxjR7xH/5s8KFOt7C5SlpQhkRkYW/fXSDTdRKDplD8d9CUvFTsEPB+B+nA+pC/f9CmlN7WMRYBXrchY0p3kseFBOf5UY0G8w9IXCGkBBTGy4Ihqm6B+zYMP0ox4kz8wtZWBkwdHIpPejX4aeqwPmKbryuMWeJ6U8Bo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774424182; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=VtUKY5DO0st46tC4ZDWh2PAEENO7whJpWxG4Ec9CYhc=; 
-	b=LrP4Ewm6BQ6LVCsZ8n/Te6p9k3inhkKWIlttMiIMaVngiwFVqI40zRWJl3JTsvNfKKgTXsIS678CnvTQNKk+K46vg5wRhllqS8CL1MMbW0mpQnU5EX5lUKPewv1T7lBHS40fmmoLJSNegbBTzo9JXsusD2R3nyeS523CwqgwV9M=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774424182;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=VtUKY5DO0st46tC4ZDWh2PAEENO7whJpWxG4Ec9CYhc=;
-	b=cAlP9RBEsJ1x7tezSY/N1Jaqo9Km/1RnS2SW0lq7ksRbiB1sLpgSoRpw2NQdg6av
-	f2AsfY8dD0gRRjINrXlWn7d45LLLGM816iD8lIsCXnWdUre5qYismt+mVv9ybOcY3wM
-	cWhQIay8ZRDM2E3xxRENtF85B88Wim9wJw7pfRWY=
-Received: by mx.zoho.eu with SMTPS id 1774424179714678.2530095985786;
-	Wed, 25 Mar 2026 08:36:19 +0100 (CET)
-Date: Wed, 25 Mar 2026 07:36:20 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=28sashiko_review=29_=5BPATC?=
- =?US-ASCII?Q?H=5D_mm/damon/core=3A_eliminate?=
- =?US-ASCII?Q?_hot-path_integer_division?=
- =?US-ASCII?Q?_in_damon=5Fmax=5Fnr=5Faccesses=28=29?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260325011653.85502-1-sj@kernel.org>
-References:  <20260325011653.85502-1-sj@kernel.org>
-Message-ID: <E4E214DB-E7C0-4B69-8DC2-2A9640BF5CC6@objecting.org>
+	bh=4QDqa8Oss2P57ZZPk/DNe4VJvd5IIMEBJdZf2wj5P/s=;
+	b=Feh0Lpq+U6T06AziPxP1FEsUsFygJJ3MktR5uJHOZfn7sxZHjhN4S39G+AnnulIfTYYukv
+	HLWIQLgKTIHcUOLgtXW9FqFO5qfqC3yG6KPiizs24XaJ+n3NLBMAqpt2xVSQ+mgnn6Hp1H
+	etBsMHmk4DyTxJx96NM8emwVBqS9Mb4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774424213; a=rsa-sha256;
+	cv=none;
+	b=e8yHsoeoHaCDuhaE/RBwAx+yrTOYdaBk1731TraBfleFhUfWbBL/tU0VPtrJOzR8ycMSsL
+	wevhreeFaXJV+atTIBHC4RryWvYgeziP/FWSayACztmnICBrr5hO3xj2ue6LW10q+rVP/T
+	ZkFvE/OxcK7N2tyZ6vXQn+3hugB8Vto=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VoZyamcp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 233D7440B3;
+	Wed, 25 Mar 2026 07:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FD5C4CEF7;
+	Wed, 25 Mar 2026 07:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774424212;
+	bh=opMqCnHb5NP/n4eovyOLUHlmdDCFdJVAToF0fcD3gVU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VoZyamcpvTqhe3Hs60wKIY2dMLK/Juv5gUS2KsvWJ26bDipnCR/28YSrriFXpdOnV
+	 2Q6+eQjiMFsiPwQVGdVd3P1RrxUDm0d6brZygx10ZEmYjHszYinD7Kzqvhnl5Kb1Zj
+	 Cgz4ZC4yEc/3XrF1oC375hv3BbOcs7eKPpiUhFnahkQxOZO5SfpzEpaa7TpilK4Mj4
+	 r8HsoT53C90bpXJCF+X18aLcr+xxsBj3YSVe+MNMPbwffDAlvZY3inGlOMi2z9Pjxa
+	 GTS3wRIgLjp2m1BVojuBBieD7ev+EwBHO5l3MlwLq8QFqyoeSHzQij4J5BG3qGr7Mz
+	 mJ2yCyP7W6nHA==
+Date: Wed, 25 Mar 2026 16:36:49 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com,
+	mkoutny@suse.com, akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH 2/3] mm: memcontrol: correct the parameter type of
+ __mod_memcg{_lruvec}_state()
+Message-ID: <acOQkTDJvieu3sh-@hyeyoo>
+References: <cover.1774342371.git.zhengqi.arch@bytedance.com>
+ <90524ca3806e24105ab5f2d69435f57c2ae034cb.1774342371.git.zhengqi.arch@bytedance.com>
+ <acM93qmvDFofjWdM@hyeyoo>
+ <5a9d9152-8e23-4438-a322-ec524fd159a6@linux.dev>
+ <acNv8w-xNWwZHVo9@hyeyoo>
+ <d86749f2-c4fb-4c7f-b630-27fca222066c@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d86749f2-c4fb-4c7f-b630-27fca222066c@linux.dev>
+X-Rspamd-Queue-Id: 2AE12180005
+X-Stat-Signature: db5wm3s5zt6jh7zcq8be9tck5tgd8q57
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 307DE1C000A
-X-Stat-Signature: tz433xubo69ka6i6zk7an1wus4m71dcq
-X-HE-Tag: 1774424193-21231
-X-HE-Meta: U2FsdGVkX19L1LY9Rkph4eeIi0d42IGKSMfR0tb5CiR9++YnPr8Wd6x/HNb9Fx+GEAnug2EJd2tENjASm/7nfnRqlH7xJ/UNBsNmItZe6QLzfsyKvPB1xHEg3GQrnCWp+jd6bcUfuYh/PbdaU6UHOBn85yKqsV1VPy6U9t47l4HRo70EInY1dNfKi3DmOOI7fRhbjNsS4JZn7hqbUxK99rB7yzdVXCcraWcTU00VOyfOfXcB1zw+i4An6YfT91rm9tpkWVqRb3eiowSlE6quAf5hesRJg6yqF/7QaG1WfCcBxI7gGOMj/H0jqr4pvRXjQyqS4BpZHLeDshIoutbEUJDGmbDqOKG8b0aTMJYd7CpHHOgW9tQAco6KQ0yF0OkJCKubJjSIx3s67c3go8tzeOqLCfiEHz3g7AdRql1Y493CqdEz873EKTX2C+WYAgBVzdpRqkNVvIdU2FEqIWE5t242kW+Lvi1PMne0yoDIe3F7ugoP8Itg7KTa0BweRp7a8XCtw0hkT+uliIobwbC755gRRTLc9Ca6QJ7ncgFZFQHK3Nwd8eQ5wsbV9rOxN/+Lf84qzMEB4u+esnBDTUvkkSlrBIUADYpfbahUbAorOuc5ot6P0oY1AnFptVJPccXPURpk/Jo0ljUycFJMMrys31sbK9iQ93U2TOnVwPhfEfuIx1dk8RthGRIm21RYnd2QVZxqLH3sAr3kSxnpJOmXEkUN3LUtwntxUUNMwuyjT59KSCKMNBgcFhjFDA6HdOWF2wRq5mk1/OWRRGe7b5yo4Ri9vVkLdGJFQ/268kHnWzGY67xSe2twb7SEnlXCwtI4hMds5q+Hja2vfmOR9SMW4Nt5NXWcvgnQhGIAVs+xakeFD5hyuYA1J6siQkR1Eh7hEAINnolbP1hYmzIXL7fVrotu1Wwxu5kSMdb762h4xhTrlVT17ph1c3OyIQS2o0WuSEhVji3lQhrSgTbvDIO
- p/rYvsUV
- jjQ72XjHwWbotWpMrHV+R3ap7eDcJsqaBQvvzaoGiR9jocWA9eLBAubZkVdGie4ndtvEiCTjRQEPdnPRQupQyIGZlaeXxBtOZHMvMOJn8WZdRAcuenSHMA4ENoP9BPCzDoD7Nh6WEPhssNvMA+reyonOIcUjsxPgF8yKTPQyYNztpiJw4tbj63C8mpAK+OWQ2eWb3gTSRbcjRGGgQ6zog3cAejNMqRX8VVHwQ8SB6qRIaY5ISTWbeu73ya1POERPPdZaPLpKoPFv73NHWe4kUFxPZSt4S2Np3cNvAsMfPLkZNlTnPN0r/Q+7INoocVs4o0cY97f+BGW0pxsn1NqiwayWraI/ePy7WsR7SFCWNYysI3UVCK+YXds2vtqzJBxgYNOMAQ/+e8XxIebXg8zOtkJhuePN8oKPflK8IuAgnY4Yi7+Y3Ph7Q01rjVgw+FZWCaYpNOM7qnUC0xIXnBvYUMBxvDbgchfk0VAs5X74UQcis5+xGZW0dGQZZeIiQuWQG72SXaZdGjzqq6odCNc/EKdAMBs/3p8MiR1lfu3tFLAOx7ahgrpK7s2jPjU5D8v0P5HjIB0NWg0OTqDMsNvPE7D/RDvI82GaYKWYVx1Glw1CSUJ4jiuWCU4PhmjPqQIjdjK72/fy0sQcBAk82xzED8PSkJOwgNbQQm4gsp/axh98RI1s=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774424212-676784
+X-HE-Meta: U2FsdGVkX19YlGyrIK2KAfQe5a+5vN040M6QjN8aYMRVWZqrkvneY1Q2T+sWHWWUpKi9SpE+7hl8mWFtUaJzKxhKhB/LYICyiE1CP7aidrpFZrojYuyWyQXTa6HYfvIV5AYfphy1MQU9g4y4Xk0biQ1urASCcLuuKHrIKcPNkmDTEdeEfQb2eUL+PRgYWnlQX1915gdvNSvdmnfgn69vXIv6e8zW3QpDO8YM3eAcMsKgVj6hrIpTKCsIF2kTQ70BuTwUw/nrD0t4BWWdgc6rSAoiwFugZbQxOS/Gla8pnJMjkhWR/aIpL16CvV3MqjJI39n6D09YUHya+9o/xtyg5yFviwDGj5W0NKcjXD0XBLOUd6r+iV4lIUeqZhYOxbw9WTRArEuC/OKRBYZz2jSnBkKWB0jIg+RRGrloUYw+DwxiYrRRHbnLL8y2lJrNT2b61FL5V7aAmOb1gHGptah49ubhsrW0MIbuxZ5vda4gI6DRlsoshUQt/rtgUQOORyITHSJiZpFnqy8jnax55F5fBCZ1JEVbMH9+z5K0Bmw9IcNmuLSYJQIvEv/vOIm1UVnHkC9VIelI1CHKeAr8mv4aLFGRsx2v90H4dM85NVR3ZCm3MaNLiOyrPNN3XPtgH6Rcecwn0RMjD8sK9CRpMYbxK47cu9rYY2UHXQKzt0ah6jEg8zGzhmfoGq6b97AhI/Bey51VVW+9Y1L8kuijexo3JPZn6EgPoNv35FWnkzE+8eQfPeao/gepYL/3kojmxRc6BjUc2Hl/5f1wPlxnhLEQS8zWb6OF5yeRA4/yqqVacgFAQO+hnFXDgsrGTf3oGlFrOPXUcOQpgDSwrBjTNftc31V023H2kqmY4RwQciynPrecpDSjy/62GB9rx/2Sx+dvzzKSpIsK/Uwy+wOxpQmbzK1NELHpJG7z21c48K3XwY5WFG7v7oxEkAVKhw/CfTVjXdlAqt2CiY9ReVfQenm
+ aGsQW2w3
+ SGf3V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,107 +105,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Mar 25, 2026 at 03:26:46PM +0800, Qi Zheng wrote:
+> 
+> 
+> On 3/25/26 1:17 PM, Harry Yoo (Oracle) wrote:
+> > On Wed, Mar 25, 2026 at 11:25:06AM +0800, Qi Zheng wrote:
+> > > On 3/25/26 9:43 AM, Harry Yoo (Oracle) wrote:
+> > > > On Tue, Mar 24, 2026 at 07:31:28PM +0800, Qi Zheng wrote:
+> > > > > From: Qi Zheng <zhengqi.arch@bytedance.com>
+> > > > > 
+> > > > > The __mod_memcg_state() and __mod_memcg_lruvec_state() were used to
+> > > > > reparent non-hierarchical stats, the values passed to them might exceed
+> > > > > the upper limit of the type int, so correct the val parameter type of them
+> > > > > to long.
+> > > > > 
+> > > > > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> > > > > ---
+> > > > >    include/trace/events/memcg.h | 10 +++++-----
+> > > > >    mm/memcontrol.c              |  8 ++++----
+> > > > >    2 files changed, 9 insertions(+), 9 deletions(-)
+> > > > > 
+> > > > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > > > index 7fb9cbc10dfbb..4a78550f6174e 100644
+> > > > > --- a/mm/memcontrol.c
+> > > > > +++ b/mm/memcontrol.c
+> > > > > @@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+> > > > >    #ifdef CONFIG_MEMCG_V1
+> > > > >    static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> > > > > -				     enum node_stat_item idx, int val);
+> > > > > +				     enum node_stat_item idx, long val);
+> > > > >    void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+> > > > >    				       struct mem_cgroup *parent, int idx)
+> > > > > @@ -784,7 +784,7 @@ static int memcg_page_state_unit(int item);
+> > > > >     * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
+> > > > >     * up non-zero sub-page updates to 1 page as zero page updates are ignored.
+> > > > >     */
+> > > > > -static int memcg_state_val_in_pages(int idx, int val)
+> > > > > +static long memcg_state_val_in_pages(int idx, long val)
+> > > > >    {
+> > > > >    	int unit = memcg_page_state_unit(idx);
+> > > > 
+> > > > Sashiko AI made an interesting argument [1] that this could lead to
+> > > > incorrectly returning a very large positive number. Let me verify that.
+> > > > 
+> > > > [1] https://sashiko.dev/#/patchset/cover.1774342371.git.zhengqi.arch%40bytedance.com
+> > > > 
+> > > > Sashiko wrote:
+> > > > > Does this change inadvertently break the handling of negative byte-sized
+> > > > > updates?
+> > > > > Looking at the rest of the function:
+> > > > > 	if (!val || unit == PAGE_SIZE)
+> > > > > 		return val;
+> > > > > 	else
+> > > > > 		return max(val * unit / PAGE_SIZE, 1UL);
+> > > > 
+> > > > > PAGE_SIZE is defined as an unsigned long.
+> > > > 
+> > > > Right, it's defined as 1UL << PAGE_SHIFT.
+> > > > 
+> > > > > When val is negative, such as during uncharging of byte-sized stats like
+> > > > > MEMCG_ZSWAP_B, the expression val * unit is a negative long.
+> > > > 
+> > > > Right.
+> > > > 
+> > > > > Dividing a signed long by an unsigned long causes the signed long to be
+> > > > > promoted to unsigned before division,
+> > > > 
+> > > > Right.
+> > > > 
+> > > > > resulting in a massive positive
+> > > > > number instead of a small negative one.
+> > > > 
+> > > > Let's look at an example (assuming unit is 1).
+> > > > 
+> > > > val = val * unit = -16384 (-16 KiB)
+> > > > val * unit / PAGE_SIZE = 0xFFFFFFFFFFFFC000 / PAGE_SIZE = 0x3FFFFFFFFFFFFF
+> > > > max(0x3FFFFFFFFFFFFF, 1UL) = 0x3FFFFFFFFFF
+> > > > 
+> > > > Yeah, that's a massive positive number.
+> > > > 
+> > > > Hmm but how did it work when it was int?
+> > > > 
+> > > > val = val * unit = -16384 (-16KiB)
+> > > > val * unit / PAGE_SIZE = 0xFFFFFFFFFFFFC000 / PAGE_SIZE = 0x3FFFFFFFFFFFFF
+> > > > max(val * unit / PAGE_SIZE, 1UL) = 0x3FFFFFFFFFFFFF
+> > > > (int)0x3FFFFFFFFFFFFF = 0xFFFFFFFF = (-1)
+> > > > 
+> > > > That's incorrect. It should have been -4?
+> > > > 
+> > > > > Before this change, the function returned an int, which implicitly truncated
+> > > > > the massive unsigned 64-bit result to a 32-bit int, accidentally yielding the
+> > > > > correct negative arithmetic value.
+> > > > 
+> > > > So... "accidentally yielding the correct negative arithemetic value"
+> > > > is wrong.
+> > > > 
+> > > > Sounds like it's been subtly broken even before this patch and nobody
+> > > > noticed.
+> > > 
+> > > Thank you for such a detailed analysis! And I think you are right.
+> > 
+> > No problem ;)
+> > 
+> > > The memcg_state_val_in_pages() is only to make @val to be in pages, so
+> > > perhaps we can avoid the above problem by taking the absolute value
+> > > first?
+> 
+> For more clearly, here is the diff:
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 6491ca74b3398..2b34805b01476 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -787,11 +787,17 @@ static int memcg_page_state_unit(int item);
+>  static long memcg_state_val_in_pages(int idx, long val)
+>  {
+>         int unit = memcg_page_state_unit(idx);
+> +       unsigned long uval;
+> +       long res;
+> 
+>         if (!val || unit == PAGE_SIZE)
+>                 return val;
+> -       else
+> -               return max(val * unit / PAGE_SIZE, 1UL);
+> +
+> +       uval = val < 0 ? -(unsigned long)val : (unsigned long)val;
 
+We could use abs() macro in linux/math.h here :)
 
-On 25 March 2026 01:16:52 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->Forwarding Sashiko review for doing discussions via mails=2E
->
-># review url: https://sashiko=2Edev/#/patchset/20260324154005=2E83651-1-o=
-bjecting@objecting=2Eorg
-># start of sashiko=2Edev inline review
->commit ff5e227a18cd69435749b0aae0dc2c762c4f0a47
->Author: Josh Law <objecting@objecting=2Eorg>
->
->mm/damon/core: eliminate hot-path integer division in damon_max_nr_access=
-es()
->   =20
->Hardware integer division is slow=2E The function damon_max_nr_accesses()=
-,
->which is called very frequently, performs an integer division=2E
->However, the struct damon_attrs already caches this exact ratio in the
->internal field aggr_samples=2E We can eliminate the hardware division in
->the hot path by simply returning aggr_samples=2E
->
->> diff --git a/include/linux/damon=2Eh b/include/linux/damon=2Eh
->> index d9a3babbafc1=2E=2E04c8a052fcfb 100644
->> --- a/include/linux/damon=2Eh
->> +++ b/include/linux/damon=2Eh
->> @@ -978,8 +978,7 @@ static inline bool damon_target_has_pid(const struc=
-t damon_ctx *ctx)
->>  static inline unsigned int damon_max_nr_accesses(const struct damon_at=
-trs *attrs)
->>  {
->>  	/* {aggr,sample}_interval are unsigned long, hence could overflow */
->> -	return min(attrs->aggr_interval / attrs->sample_interval,
->> -			(unsigned long)UINT_MAX);
->> +	return min_t(unsigned long, attrs->aggr_samples, UINT_MAX);
->>  }
->
->If an administrator dynamically updates aggr_interval via sysfs and commi=
-ts
->the inputs, will attrs->aggr_samples be correctly recalculated?
->
->If aggr_samples becomes stale, kdamond_fn() will compute the real aggrega=
-tion
->loop count and allow r->nr_accesses to increment up to the new bounds (fo=
-r
->example, 80 loops)=2E Meanwhile, damon_max_nr_accesses() will return the
->stale aggr_samples cache (for example, 20)=2E
->
->When evaluating schemes, damon_hot_score() normalizes r->nr_accesses agai=
-nst
->this stale maximum, producing a freq_subscore that severely exceeds
->DAMON_MAX_SUBSCORE=2E This causes the calculated hotness to exceed
->DAMOS_MAX_SCORE=2E
->
->For DAMOS_PAGEOUT actions used by damon_reclaim, damon_cold_score() retur=
-ns
->DAMOS_MAX_SCORE - hotness, yielding a highly negative score=2E
->
->Could this negative score cause an out-of-bounds write on the
->kernel heap when used as an array index?
->
->mm/damon/core=2Ec:damos_walk() {
->    =2E=2E=2E
->    c->regions_score_histogram[score] +=3D damon_sz_region(r);
->    =2E=2E=2E
->}
->
->> diff --git a/mm/damon/core=2Ec b/mm/damon/core=2Ec
->> index db6c67e52d2b=2E=2Eafb058f7da5c 100644
->> --- a/mm/damon/core=2Ec
->> +++ b/mm/damon/core=2Ec
->> @@ -587,6 +587,7 @@ struct damon_ctx *damon_new_ctx(void)
->>  	ctx->attrs=2Esample_interval =3D 5 * 1000;
->>  	ctx->attrs=2Eaggr_interval =3D 100 * 1000;
->>  	ctx->attrs=2Eops_update_interval =3D 60 * 1000 * 1000;
->> +	ctx->attrs=2Eaggr_samples =3D 20;
->
->Since this value is cached here, but not updated when intervals change, d=
-oes
->it remain permanently stale during dynamic updates?
->
->
-># end of sashiko=2Edev inline review
-># review url: https://sashiko=2Edev/#/patchset/20260324154005=2E83651-1-o=
-bjecting@objecting=2Eorg
->#
-># hkml [1] generated a draft of this mail=2E  It can be regenerated
-># using below command:
->#
->#     hkml patch sashiko_dev --for_forwarding \
->#             20260324154005=2E83651-1-objecting@objecting=2Eorg
->#
-># [1] https://github=2Ecom/sjp38/hackermail
->
->Sent using hkml (https://github=2Ecom/sjp38/hackermail)
+val should not be LONG_MIN, but it should be fine
+to assume it won't reach LONG_MIN.
 
+> +
+> +       res = max(mult_frac(uval, unit, PAGE_SIZE), 1UL);
+> +
+> +       return val < 0 ? -res : res;
+>  }
+> 
+>  #ifdef CONFIG_MEMCG_V1
+> 
+> > That would work for memcg_rstat_updated(),
+> > but not for trace_mod_memcg_state()?
+> 
+> Why? The trace_mod_memcg_state() seems to accept 'long' type,
+> am I missing something?
 
+Nevermind. Without the diff, I misunderstood what you meant.
 
-So it's nacked? Or is it just a review
+Thanks!
 
-V/R
-
-
-Josh Law
+-- 
+Cheers,
+Harry / Hyeonggon
 
