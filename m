@@ -4,138 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F527103A99F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 02:43:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD5F103A99F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 02:43:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BD076B008A; Tue, 24 Mar 2026 22:43:54 -0400 (EDT)
+	id A4DE16B008C; Tue, 24 Mar 2026 22:43:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 347336B008C; Tue, 24 Mar 2026 22:43:54 -0400 (EDT)
+	id 9D9926B0092; Tue, 24 Mar 2026 22:43:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20EA06B0092; Tue, 24 Mar 2026 22:43:54 -0400 (EDT)
+	id 8C6076B0093; Tue, 24 Mar 2026 22:43:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B9E56B008A
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:43:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67DDA140654
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:43:53 +0000 (UTC)
-X-FDA: 84583040346.17.FE80C9C
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 47A15C0002
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:43:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=gm+VbmHo;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774406631; a=rsa-sha256;
-	cv=pass;
-	b=3RGYrMLSD06xmkiNnPSSwd2EAPtJfJUwZiqCNkxs2YbM4xzcHxhv/eUn72tc7M/68dJ8R6
-	FdmXPTDrY8agQjN+DLCKhs5ZXL57rEEK8/GcyNn24xDH6cMl9eF0xIN/HWgFDmVj2kyBQR
-	/lDlGaGEmacS7M8cm6cB5EpXlSzd0yU=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774406631;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A25D6B008C
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:43:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10B6559D30
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:43:57 +0000 (UTC)
+X-FDA: 84583040514.28.E3ACC27
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1911CA0002
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:43:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JqJYxCEq;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774406635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S49Ro2Awewt8DGHII5530iVBK0Fi/44fxcec5lAc15w=;
-	b=ilo/vI44gBImWBkquU+0hcT1cS2d6qYHjI0PX1V67nLadCzpJkFBbbXR+E3w7YGBj62rtL
-	0jmsuJYbDaJqF45K045RxP1MBqGskX2qGy3TPsobuoUuUcb4Ujut4aPCT2TnugXwrGmftc
-	TdciRdl7eqHOREPxvE7V5aThowGSDbw=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=gm+VbmHo;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-661cfb9f3aaso7953754a12.2
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:43:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774406629; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iXQNPWT4Uy/f6TMoFGCt/jBIOypnLu2goOgrzKSt3ftRAxM6Fey3Zzb5rw7UVs29jH
-         sXAqBIU3c6xMsLX27OYoeExqsPjhjotqy8rOAGlZIbEVtq0ihGQu5FzAvipc0DX9xPUR
-         p1IAg6WVy4ptMqQXK6GJK5dhHnIp4DZeGZ6XmeU7KC8KqeKDBdcWBtEnfl7zb/wrDPn/
-         5H66NuSgPm4sW+AOGv5UFPx0wkjb9kpUYqWbgQc4Kk4fDN8W+s4l1SsrDjlIlbPGaqsl
-         DRjUjD3FLv0zPCy/OxktXn6T3jEEnB/zzfs9vzf3ZRPeJCtY/OW4zi9CXZr2HW2z13m0
-         g/KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=S49Ro2Awewt8DGHII5530iVBK0Fi/44fxcec5lAc15w=;
-        fh=NupFN0s+zrlGTVtWH7dcRqAgvX6AmxA27j6XI/FNxJo=;
-        b=YHTyteOMRbsGN8u5l/7Oo3UpCXaTE41vNnwCSF0hOPigCLviRx/j0skk7rKJmUPLgz
-         5n2rLyPl8SAfG8l/EQ0+2SNQHUAjEKhbB3DwZfLJaXKAqyVNYPBFzWITbKSsdk9B/1sx
-         qrPcSm+2h3g9OQR7zIKdYgvB7smgnjnlACFBP41wLD2v04YPceojAQc5dGx68nAVw23P
-         5nt1pgFYeU+VMzqL5Bj5vEHRhepjogLJLk0N5vmrBotfQsWqfw30lg9MHl0scJp+8dcP
-         f446l5i8NsWe/3NhVsyBaFpuZ8mP067RtZcptfGfyzNM6ReKWRsHIE3zuupYCwj8+g4j
-         fDxg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774406629; x=1775011429; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S49Ro2Awewt8DGHII5530iVBK0Fi/44fxcec5lAc15w=;
-        b=gm+VbmHoDYiQYA3+je7/cZnX8IM/1LjNuzNb23yOB6HfI6wNV3kcxJxL6e3Cthe82f
-         uwIAGv1nXOOKHFOJE7GUZU1RqFaD5eJFJgYTXlK+l92f3bmm9BfO9TM2BGPKtkwIBVqp
-         7aMQPdYB1DodZ6MbgoNz2O7r8T9u8Y37iT6HJBonoyDOdGrSJ091whzJJj5FA30zh67Q
-         VgROxIaS9IuuyyG+XjoQk6mSuL+ZX33a6GA018eI31rL8hrwQfAn8r9x0CopOlXgaoVz
-         +5CpMwX1eeutk+438wrOIj7VhXEBRyBnsTcnG3IPcEkEv1yv/zvaFdFBAjxow9Ymu7FV
-         51cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774406629; x=1775011429;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=S49Ro2Awewt8DGHII5530iVBK0Fi/44fxcec5lAc15w=;
-        b=diTjjuBiCTWFt9xdEbmoA9xUckWsgUNe3rJv3cOjPRKspLel8iLsE+3ODaWuN1HosA
-         EBVw5D+cP5sxYFAwhEdAN8uHlTR9g5NHk+ydnCNcwAxrklszYTHLim4JcBD+bwZxaamK
-         UvKqLjDAV+Ns1UX19FU39NzRZcGZRK3FejjtOetEiUD1HaPRWkjAosIFx3Fi/5hd8qqO
-         sOty9PEPjR5hvYZRiAzSvXny17HwiPl39OQ+unfBWLqFLPLh9YGCKqeX0G5IuNthw848
-         rXBR5qLLimC0VhiIjs456wGKcV8/M5hEDf8LyExkMHqGUYcTFSx9fhBkeSlOUCD6dtlP
-         N4yA==
-X-Forwarded-Encrypted: i=1; AJvYcCU87+5PSMRFHEleD94dBVtOJeBZ9Q8KeuO9qv/pS21GPpHG21xwaZlDx7exOegMPeXGOYdRfPG42Q==@kvack.org
-X-Gm-Message-State: AOJu0YxH2N6oLnvTje+SZvHpQ9TZyyDDOmQ28icO873iJCBYT7PkBXau
-	bXbnwQqY36x/Of6zywdvJ98tc61Iu1a4Ap52oVL6yRCQUvrzWU6rlDsCbkCUmNAwo/kLCuUPZ9O
-	DWb1UzoXxDHh5IjhVG9xqC4f+FgIqbx0fYgc25T/Qqw==
-X-Gm-Gg: ATEYQzx9t1TM6Ee2LlE37NuW3VOQTBJWI0aT5YfZkapAlPnWjEkVDJUzh65w9yq/RPN
-	uE/ZYZXiSPJeThix1LVAj0wOyBZPRZnENsQ7eYc5qOwYHshOGlyOPpwVMrDrDNn9Jp2o6/qGKBS
-	qFDka4TzzpWB1Pu3XW9ny26Te35Nqao5AzbKQ9/pXp4FUy66JprSmxhasnDZ1p54k8/M1vgGDXx
-	JNd1DFGIdFaZjYgmSUUx91jNvLfdRWtcUdQEyYqtqmmEsvDYowsbH3tQPf6dumRrGsmiNtebSGI
-	2zPyQQu6prJyuSsxwKTfGVWQLoMtIjzdOEzcUg==
-X-Received: by 2002:a17:907:6d19:b0:b97:98e9:1b17 with SMTP id
- a640c23a62f3a-b9a54254cefmr104541966b.28.1774406629257; Tue, 24 Mar 2026
- 19:43:49 -0700 (PDT)
+	bh=ei/9l0yY7Rn5LSa4qZLzjXvD8FXeXbiuykIdzrEGGI8=;
+	b=ST32nXJQIJvbZatPEZRYsHDsiTYeyDsnpc8/C8G/E6c+rihUAA6JMrKCvaQ4BBkHSCnlks
+	2Ldoz8xBY4slCINxPGoavQzxv+GTUj7/FxdjEZgqnu/AUnMV1pfHs1fRt0KKyUVAWZQKmh
+	Hxqg3/Kla7FRKsEAlqqIiq4WSlansak=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JqJYxCEq;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774406635; a=rsa-sha256;
+	cv=none;
+	b=4fqvefS/k26qNH81kkzM+bJKWxV2oO416aGEW/Bzw6OeiyccQaj31tCMgHF4hTyL8K+zGV
+	UlLbvv2YGshxny0h3IVx167g5sIiizsCz2exxtICJVO7pojQRE+gEwAOaSLNEPjgT1aPHX
+	NTyEKR/csc/3SUJyjw3Sjn8upI3nq/0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774406632;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ei/9l0yY7Rn5LSa4qZLzjXvD8FXeXbiuykIdzrEGGI8=;
+	b=JqJYxCEq+lrhrLpLxEyPYrKajW5e8CXwMDWT8tH66YKkSs1lIqcLLBSimJDzH2ilNjg2fr
+	XqMyL9OU6mgfjoBf8JGd1h7NnAf5wUyg9Sl9kJtncCi0D3BfYneybyTawTqCbvGyi29LLu
+	TyhR/3ijGiBXv1xiv7Di0IYSdgxmA4Y=
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org,
+	peterz@infradead.org,
+	dave.hansen@intel.com,
+	david@kernel.org
+Cc: dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v8 0/2] skip redundant sync IPIs when TLB flush sent them
+Date: Wed, 25 Mar 2026 10:43:37 +0800
+Message-Id: <20260325024337.56681-1-lance.yang@linux.dev>
+In-Reply-To: <20260324114339.2c0777f7b2c5483281a15667@linux-foundation.org>
+References: <20260324114339.2c0777f7b2c5483281a15667@linux-foundation.org>
 MIME-Version: 1.0
-References: <20260321175808.57942-1-pasha.tatashin@soleen.com>
- <20260321175808.57942-2-pasha.tatashin@soleen.com> <CA+CK2bD2aNu-NByET4KkBP0n2j8WQE2zjxb4g-1cv2hYfjaRZQ@mail.gmail.com>
- <20260323-leibhaftig-blasinstrument-58ec408b3c40@brauner> <CA+CK2bC6S7pFCYR0XS1ZPxw9HKjWgxy=0DkszYNjMUi735o_1Q@mail.gmail.com>
- <20260324-langzeitfolgen-altgedienten-ccef17d19349@brauner> <20260324114021.f5546d2de5b6a2b0490f63cf@linux-foundation.org>
-In-Reply-To: <20260324114021.f5546d2de5b6a2b0490f63cf@linux-foundation.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 24 Mar 2026 22:43:12 -0400
-X-Gm-Features: AQROBzDD_dN5K67m768ffew-lTTbV5PIJ8L5d861vCwJTCIzcd1-cpNV-0z3o_s
-Message-ID: <CA+CK2bCbgXHnZ0PhzfKE=NkykyqMKq6KBXW6JqMpq2R3k3RXDw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] liveupdate: prevent double management of files
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christian Brauner <brauner@kernel.org>, linux-kselftest@vger.kernel.org, rppt@kernel.org, 
-	jack@suse.cz, shuah@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org, 
-	dmatlack@google.com, pratyush@kernel.org, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1911CA0002
+X-Stat-Signature: ch5af7amzrt4qpq75t48ppbmt79bksqg
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 47A15C0002
-X-Stat-Signature: dnnxy6uyjf7uuaqw6ou8h4cqyafmjpjp
-X-HE-Tag: 1774406631-815110
-X-HE-Meta: U2FsdGVkX18is/CW66hJCgxLWxQiyjIWIcJjTQVd4Vpp1DeoPyFAZjQGVvxA7boXeKuIYYguSZVFpYjv/XEZaorhGKFL/a4YHFKt+dZYaRtBurMPlEm7aLvKLyko12CLAUItv005q31+9OzdVBzffQ6Kk5bqNkAAtaIYtvCQTFOUR9Rvm1hj0+sHGnJXe7P8St0rExrVr1A8o7EpZCCuf9PQh4svAvHbN18fPcp7fRpNzRWmbYCX1m0OALATxuBN+AZSS5IKgL7f/+IgRxOTxwOQKQcynglFI5id80DxO3ESkSayudBw84SJEIxiTWMdsp15L6/wFgaV9fXF64GYDl1Ju+ElMm8jp0I82EwfNwMQHdnsa5ajvK605BVB4Kqrf8Nvu4M2URIWjp/NuG97vCIbvuPZ/J+THRWEGKiFX3TqepO9MvLAZqhiQ/V97mbdd3dJBIKQimZ0h1iwal5Tt6aDCaBT8GSeE3k3/Vj7k+eZpH+DQS8oFr3d4bC7AJKf3bzmuWOnCl0sXBFaXNvwZSUIJcIChGVHl1mjkPq4uOUNH7Zo5zk/btO074tNE7CHIHpSZQMQKfoNOtnIK3Zd/AOxEU2+GviF/KJa+NG8W2LjCzuIFTd4rxzMjhEPEtqmze1A7kxUUeU6hsM/k8e2tI+p1W5TdWVG2UN7ka9Kah6UhzonotwrQCSPdQFqsM/Iy1uIRxviXP/G323OBMAJdO5zbnFEt+4n/pkuMHXBslhj92cIKMYxgUQ3Amn6FurnGDrV7CIlccLo61ahAXoP3sNAFBq1Dav3DYOSOxDOPaqMl76EsUebQCbX7dlHXKS5g7XDXYRm70teJVMf7V/piuqBiOol16oFcxfo72qao7lRkJrD9ep+uPPfWvX2LUWRExCBxHDsqAYU4wwoxp+seJPPrKDZClbhNSVGXriUHwFUEI7ZJUkCdm5OtgRTcFLvnKhtpe+VfT8tkCpjcsj
- U6W7u/Fq
- Ile7b3jpMVQ3trhSL7AmL2ORa4WRUohgPgdB29vxJGbY+5tIUnbEUBHjoPRWxWKuSXrx76I1VwnvppiKbFslVlqdBvAQjU0ME6Ocie8NZs6AkS0LZmOjhAeD9d8NaNSVqKhXydVXDp7VPp9Hg00q5uihJVKN6CA6HmD1poakXXWWGBUWg9VObv8ORWcEfmIEXufZqSUlqhtrnyFZ+F7fAEOfbuBxjAgzKBEIHlrRd1JPt2HhgTUY1c2MFXsBe1Ntc41bJtmv8OQgb8T9wzBLIhw0ln4UJn470HVdaabkanomoNpg4GVYOgTlPLjdyvx1u9G2shqs/3Wlp62J9EY9gnHp9WR+hfgjRm72EnXuKD+ZjFrJfXhD7O9PHT0zqMspt4NpN
+X-HE-Tag: 1774406634-751087
+X-HE-Meta: U2FsdGVkX19ccz1Y0mi8kE3HtlOZIGqxisHFZ8nxoaqRBZCzXHIfOvfcO4rOmHfLapH93/0YtP/xZ7h2i3XqvGueRc1AAl+4eQ6J8V6jpcl5lWc3Vn1TB6ZP5j+qVSNl2/Pde36gRIDTFYRM2E57FnlfBq2i+Lw14aXS4cBAnlD6lQWPcybQzHddfesMukbqCHYYW0zVdyuP55YK8xHewDWJ2yyc56YDxkCDtITP7zj35h8QMobdD6lawjcmYANqKJpIxyEZD5NXzoD0hidM55sPRM+tTPdnqxLwWaGu7UnC1ODHvd6zqjELkhMd0EfOD+EWm2YF43XHSaGNxVQsDhDzlftLnoLj73HJZG+mPbZQ+EYe/jwG1DTY0N12vE7xMWM4KDvp1uRrPxAr1I4WmEqBBOq/mGr7qBQ/yGMB1A23bXMa8Pq3fq8SZBqzFomacoN4E++BtQxj10FGD1GchLBOgUP+gF19edt2ipHz0uxEbKkkON0XK1N8oy96na2nBESXwOA/Duj7JgTcGcOPaURzkE+6Tjsu3kvW2CHgWSyWkTUBN0/ukx1uG938g/w/kgPvI9IEXuEzgapBA+Din/A0U/LXyhunf7v/CHrNWBLV/YHvbsmoZr5xCYv3lWbluyF2CqLJS0tKStNETiSOgCYs/aZ909SsL4qHCM+Jrmj4TZqiVF57THcz9jERZBb6WPgYhVgLFDD0TyKN7o2BrJXaUrmoo+hW4Pi+bvEzh4DJ9D8rqBxFiY2vObBJwVFd9lDs1JIJkQXfk4O7eF1UFRdUAWOaA5W6iT9ZEAD26emSB6uM6gMTIa0z7xLUYrC4ot1Cbknjfv1EmFu+nTeZg4Gbs5Ns54BtOwzfNsyEEkh9Tgc5f5RGE+ibKgo1ATl/czqwMLlUCGPdEB3J9HSih0UcX7V43iwXHBoh5sV6JUKm47IRtFMj3SgS52LnNFOTzHPGomTh6/tLEQksu0F
+ vnAT6iSS
+ dy/n8pdN5DpHAddzg56IxSzgiBNrOd45jmjYTbFrxXaVnMD1PD9WtFwA8H3gLKxUMQA0iyeWTq/iMNQnOFyDGmCaO4D5eemo6QN2Ac5Gxfj+7hsKbIB248A0YtCni3Zod5QZmh1x8523QmC8u81bmKFIYVrLCAF7jVlDPpM7gr/7gHQxToYFXopjW28cz2bnp9BrWCnQlJs+ugDdWPyQ1rljF4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,35 +123,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 2:40=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Tue, 24 Mar 2026 09:51:34 +0100 Christian Brauner <brauner@kernel.org>=
- wrote:
->
-> > > > So, I'm not happy about I_LUO_MANAGED. I don't think we need driver
-> > > > specific stuff in struct inode and not in i_state. Track this in th=
-e
-> > > > driver please. I don't want this precedent and I'd rather have you =
-get
->
-> Well dang, I just merged v2 but Christian wasn't cc'ed.
->
-> > > I am planning to use an xarray in the next version.
->
-> That's what v2 did, and I_LUO_MANAGED has gone away.
->
-> Christian, does v2 look OK?  It's at
-> https://lkml.kernel.org/r/20260323203145.148057-1-pasha.tatashin@soleen.c=
-om
 
-Yes, v2 is fine. Here, we discussed about the previous approach, this
-is one of the reason why v2 exists: not to modify inode, and also not
-to rely on inode being different for every preserved file.
+On Tue, Mar 24, 2026 at 11:43:39AM -0700, Andrew Morton wrote:
+>On Tue, 24 Mar 2026 16:52:36 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+>
+>> Hi all,
+>> 
+>> When page table operations require synchronization with software/lockless
+>> walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
+>> TLB (tlb->freed_tables or tlb->unshared_tables).
+>> 
+>> On architectures where the TLB flush already sends IPIs to all target CPUs,
+>> the subsequent sync IPI broadcast is redundant. This is not only costly on
+>> large systems where it disrupts all CPUs even for single-process page table
+>> operations, but has also been reported to hurt RT workloads[1].
+>> 
+>> This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
+>> the prior TLB flush already provided the necessary synchronization. When
+>> true, the sync calls can early-return.
+>> 
+>> A few cases rely on this synchronization:
+>> 
+>> 1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
+>>    of the PMD table for other purposes in the last remaining user after
+>>    unsharing.
+>> 
+>> 2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
+>>    and (possibly) freeing the page table / re-depositing it.
+>> 
+>> Two-step plan as David suggested[4]:
+>> 
+>> Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
+>> flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+>> guarantee IPIs were sent, keeping it clean and simple.
+>> 
+>> Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+>> software/lockless page table walks, benefiting all architectures.
+>> 
+>> Regarding Step 2, it obviously only applies to setups where Step 1 does not
+>> apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
+>> attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
+>> work and tuning; it will be submitted separately once ready.
+>> 
+>> On a 64-core Intel x86 server, the CAL interrupt count in
+>> /proc/interrupts dropped from 646,316 to 785 when collapsing a 20 GiB
+>> range with this series applied.
+>
+>Well that's nice.
+>
+>Which other architectures could utilize this?
+
+Thanks! RISC-V looks like a candidate, and if I get some time I'll dive
+into it.
+
+>
+>> David Hildenbrand did the initial implementation. I built on his work and
+>> relied on off-list discussions to push it further - thanks a lot David!
+>>
+>> ...
+>>
+>>  arch/x86/include/asm/tlb.h      | 18 +++++++++++++++++-
+>>  arch/x86/include/asm/tlbflush.h |  2 ++
+>>  arch/x86/kernel/smpboot.c       |  1 +
+>>  arch/x86/mm/tlb.c               | 15 +++++++++++++++
+>>  include/asm-generic/tlb.h       | 17 +++++++++++++++++
+>>  mm/mmu_gather.c                 | 15 +++++++++++++++
+>>  6 files changed, 67 insertions(+), 1 deletion(-)
+>
+>Can the x86 maintainers please review these changes?
+
+Yes, an x86 review would be much appreciated, please!
+
+After commit a37259732a7d ("x86/mm: Make MMU_GATHER_RCU_TABLE_FREE
+unconditional"), tlb_remove_table_sync_one() is no longer a NOP, even on
+native x86 without INVLPGB, so it ends up issuing a redundant IPI
+broadcast.
 
 Thanks,
-Pasha
-
->
->
+Lance
 
