@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 108FC109C041
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:42:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1934E109C046
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:47:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54DF36B0089; Wed, 25 Mar 2026 12:42:32 -0400 (EDT)
+	id 46A846B008A; Wed, 25 Mar 2026 12:47:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525286B008A; Wed, 25 Mar 2026 12:42:32 -0400 (EDT)
+	id 41C276B008C; Wed, 25 Mar 2026 12:47:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 462586B008C; Wed, 25 Mar 2026 12:42:32 -0400 (EDT)
+	id 30A816B0092; Wed, 25 Mar 2026 12:47:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 337346B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:42:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C87A58C876
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:42:31 +0000 (UTC)
-X-FDA: 84585153702.02.9A12585
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8C1AAC0004
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:42:29 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M85FIDU6;
-	spf=pass (imf10.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 19A686B008A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:47:42 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C443C3265
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:47:41 +0000 (UTC)
+X-FDA: 84585166722.12.FC98FCA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6D44040006
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:47:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a4Rzizqx;
+	spf=pass (imf04.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a4Rzizqx;
+	spf=pass (imf04.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774457259; a=rsa-sha256;
+	cv=none;
+	b=I7uh8jk0pHvP9+tZDO2TeL95sDDZ3QTiD9NtClMhLd6q9erBiBTApkK8GrlsJkoR9Q6EmF
+	dzRMaDMj9iAqdMIAwjZB9HdK3U+CN0zWA/gnwuXurKU9xxAPM3nMyCuvg0eWfuIUmV6pZ5
+	1dStbWiff7Si3W3gKQu7M9V9IJ/pZ40=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774456949;
+	s=arc-20220608; t=1774457259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k8Ejv58wPUbDLQJ+Tj4MdIi2shlj9vonZOVFSYDuwn8=;
-	b=pP7EOwaOLv9eJMNloCiYbYieeWaRhpqKA0QgrBAIpZkr88e+80cg5QcCwO3XAzjO1BzEEy
-	tnYuc9uu6h6QpnB3WPyQTSbHkHZuO9yifOnz68GTP72h+z5pHhc47qDAd7h1W7Grpg1ZpD
-	34YjzBIt3/FxN1h5vupZcL9mzqhwi8Q=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M85FIDU6;
-	spf=pass (imf10.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774456949; a=rsa-sha256;
-	cv=none;
-	b=3Uw/eJELFGhr5xL8qmIIKR2zzNoSBays2FkogeTSsJ5cTWMJ4Nb3wKwlDqPmzZY6HeobGy
-	0Z8cINP1Zl7Pf2A1n3OVKVexXMUVyWhK9JZmPOZPrhrc0C98EouJ9sMlIocdu7KbOcQSdq
-	z3ZZiAX8wBOLC9WhsWvGpex61JDRiI4=
+	bh=1qr1ol5vgsFYLsTQCwug9Kc0NRV9WjDpLVa+vxqFIkA=;
+	b=10fYQMHQ2/9GnQFH/gJCWHihEVNXO507ouEMEod7fUre5lXH/QoSSsML9NkunGjvIseSlP
+	1m0OA+KjE77m4zqjLKiYFrCfAGxUGsMs/7P9dBZ3D+9pVDUEmnoKI1ug1qC6vY9EnZyfic
+	M+zpPeHzITzH4jzooCXbJpLprukxXFU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774456948;
+	s=mimecast20190719; t=1774457258;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k8Ejv58wPUbDLQJ+Tj4MdIi2shlj9vonZOVFSYDuwn8=;
-	b=M85FIDU6/l+oRzy1M5UNH395SWIXjgtQsxc5IAwrUgwUPClsngi/MnmE4jPf7BSReKXjn0
-	0DGbzXKCcz2+fqw+nZwKAhzF3OP6HAE7F0jh4VNoLw+DnqMrs4iBeeiZQTCwc4FpjEYfHp
-	C21KrPY3pH8OkOh1l3Mz4wW6NlWg/Sc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=1qr1ol5vgsFYLsTQCwug9Kc0NRV9WjDpLVa+vxqFIkA=;
+	b=a4RzizqxMFvslvxVVkyQXz1r6+BX1xIG36d5kuLHu7fIG65wqKdqxFixCHlXZx299fLvu1
+	hsm6vhYP2SjxEnx6wCDABX8vcZB8rKaIgMe2Qbn1nsh1KlNnRvztSo0z04/Z2T9DciiUoG
+	66F3b4A6mXqL6R1szg3lma0EllvxYiw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-lcagNMoDMTGvBrvVXY_vqg-1; Wed,
- 25 Mar 2026 12:42:23 -0400
-X-MC-Unique: lcagNMoDMTGvBrvVXY_vqg-1
-X-Mimecast-MFC-AGG-ID: lcagNMoDMTGvBrvVXY_vqg_1774456938
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-510-LZwgIJoPN5aDYJv_C8P7yg-1; Wed,
+ 25 Mar 2026 12:47:34 -0400
+X-MC-Unique: LZwgIJoPN5aDYJv_C8P7yg-1
+X-Mimecast-MFC-AGG-ID: LZwgIJoPN5aDYJv_C8P7yg_1774457252
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 94F8618005B4;
-	Wed, 25 Mar 2026 16:42:17 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 73AC2195607A;
+	Wed, 25 Mar 2026 16:47:31 +0000 (UTC)
 Received: from [10.22.90.27] (unknown [10.22.90.27])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9C8571800351;
-	Wed, 25 Mar 2026 16:42:13 +0000 (UTC)
-Message-ID: <82661a8e-256c-4cf4-96b2-98d52cf62cde@redhat.com>
-Date: Wed, 25 Mar 2026 12:42:12 -0400
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4E61D19560B1;
+	Wed, 25 Mar 2026 16:47:27 +0000 (UTC)
+Message-ID: <f7159388-c13f-408c-8cb5-02da8b474f57@redhat.com>
+Date: Wed, 25 Mar 2026 12:47:26 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/7] selftests: memcg: Increase error tolerance in
- accordance with page size
-To: Li Wang <liwang@redhat.com>
+Subject: Re: [PATCH v2 1/7] memcg: Scale up vmstats flush threshold with
+ int_sqrt(nr_cpus+2)
+To: Yosry Ahmed <yosry@kernel.org>, Li Wang <liwang@redhat.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
@@ -94,23 +94,24 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Sebastian Chlad <sebastianchlad@gmail.com>,
  Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
 References: <20260320204241.1613861-1-longman@redhat.com>
- <20260320204241.1613861-5-longman@redhat.com> <acDzaouBPCIpB7Ij@redhat.com>
+ <20260320204241.1613861-2-longman@redhat.com> <acE2MoIZ0pl7U7PX@redhat.com>
+ <CAO9r8zOTYPgqc_7TVWjQ=adn=pH1TLLX2cBNfa1Y-x=TOFJT1Q@mail.gmail.com>
 From: Waiman Long <longman@redhat.com>
-In-Reply-To: <acDzaouBPCIpB7Ij@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: 9mR2jgNpIwA5nhKi6kxS7Jp8jt9W5fLz79DC7j_r-Ls_1774456938
+In-Reply-To: <CAO9r8zOTYPgqc_7TVWjQ=adn=pH1TLLX2cBNfa1Y-x=TOFJT1Q@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: exgmwRiGd0MVnorEzQNiG_5VyXAsneBEjNM6EPLm-Ko_1774457252
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8C1AAC0004
-X-Stat-Signature: wdqcxbnmb1kdj5eh7qyxwhafmbm7nbmm
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6D44040006
+X-Stat-Signature: xwwdhafmd6skizuanhw3r157zqappwup
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774456949-614876
-X-HE-Meta: U2FsdGVkX1+osT4sj8LQQWqSqyyogexhGOVvIdv+/6b7Lmn83u5qBPAvEmjWbxOsRUnhlhyPBpNHlDpcHNJjBc+lanp/i7oAiGNgQSgnpkkzEdbBZYt6DIvUQpUGSwfyr+csY/353yIrU1K8gLpFMZkPi1nlOqgU6ZZgyHokachYMiFPTUjR+r0l1iDui8lI2jry57nZCv2eycFuNJlOkawg+yS16FHmYSH2EP7v/yC8gCxsv1SYEjskwn4XCgUkRrR4TqVOKVccYOJsK99q0p2OkJVYeutnJEFEdCsCflLipEYSJnP5dRMMKX12wLr5t+/JxqQlEE2+JhzawIZ/KRHM+21romFg2sNgLQfsR2V6ku5YMijU/cHXVPBHzvlYAFT7BDJc/hZxfF0cmiGrFr+IvNJWugtd9gEg0+ItFZi0L2dZs4pmvi5Q7ZxSN/xfzBFtBxaxHhntADQqy27RpeVkYWvzzy/IN/TW/kxRMo5dKeAxDpXVANsQ8+rJxW1/0VWyKiVLxAJCZ50VulJLvl4TZql1zvzWkHBdlTfAn8LqSHWxuPmw4RiYACTgZ06G6razq0dUtcC92r4v2VSRyz3XJdxy7ddC7W+/AL7IP8GSCOkNQP6b9zl1XWU7xDAjTOjD4Y1ZMP4LWzHWeq7zsijX+9caM2SN6L6cZlHzYYP4Llh+KPfX6wGXyicgqBid49k2DgR+nv4a87I/UPupFVEi2AocTdm76c5nMFP6Hbsk+HUGVQ6Hrd85Cwb6ok5i+81hT8vHC6CMgXgh/ZHeDlmcQVZBUzPrOaOjkEid+m2kWn07M7SsEK3yKEpBgeo4zrxiHK/8+hb/wNXZ4lRYgaJuh0DCaIn7+OAiLRKMRZuR8MUxYJaV+7LafKF4z2+HU8fOXKMQC4dn+hhwIgWctLPRVbSyJt/JUzWDgXO4Id6EH7+fE/rl5VHfeN2/PXmCCUQvyIEU3UBVK3lnOho
- Yd12koQt
- NgkOZgZYX2XW7nw7zJzcC1fg8Ux9+DmEVNaLcAAuhEkRFQoidpmJ+zCqSTUOdZXn1c41OgqZ9oLsAv5DV+WDOXwgYS1wEUIGLcceN30GO0XN9bRznkCkHikXNEeMjJyI7PwHtHA0obu4OYq349wVo8NlHETXJp/8MW1A3y2uSBfPxaTMMw+bSlbPVyLcrDrVzRtc40EDRQjjRYAv7w8Zng/DHkbbeIHshZaLVILp63qmGya1guQfD/RrMNwarF9JBbcQkA6hJLidXcpEpB1uvsXvhja+I2weg/y25EGNFcAAjiK1YgkbF92wnFm8SBw2v2U8s0St4IVxYGg17dxEyXr++V0Snt6GIjlhhCIm8uYU56hxRARWsfgRwoZfkNu4f5nz+/LRFQp5n8m8VTikKtGMZ6bAyLVLTDa6m
+X-HE-Tag: 1774457259-712974
+X-HE-Meta: U2FsdGVkX19mAe60BFLjfhMQdBsFZU/Ru5wcptdTv1wGOBMmXWXvUeEBtlYYRoXX08awZCgc7sAKNJQO/5XVfwrP91svLkopil0ZDf7Y0pEGHe78I1XhUAIhlms6p0eVVV8Ikwd9ZG0hRBTfhMEwQ1DqdNtzSmZ+2lVof8ghDTtKeUGtMVCb3KLfOkOLFYb6zOyE0/VXjSfga7BEBJ6rN8Ct+6T1APsxIOERbvU+Zpv+J2j4xDd9S//yKA8jzi9S6Z4G8qY7L6zT4qqKFJDEJ5Kc8JFrDTJrDmxybuNK65IWyLQGTvG7uvVjIRKTFuKdRNxYsgNdBsQ5QvyXFsiElh00FV8OIY2S4Oe863Il6Kv0m8SAy29Xyp/bhEHOpsELDLSj6/kOi5LY4yeT9sgTfYD0GintbGObTvzamPqSasI8MT0wa25nA2lEqymEGWk3bamR2RMKojyUu7J4VZjg29zAsLqjyktdLJmTn7YWdIawmMKLA9b/Y9lBaqw0osrDjAAxRfUsnCz1lQ0XTMWL2QyyyUpFmSK1lmwYc53fQrB8HvhvmVJqC5hR7SAWUkxEcwGxisQJU1ucerbBnk4JtTKyAtXSn7337RRHmiFuLkyL3TSuvo80yuoZgALFbTtziMSuNkO9UepJSZuFufEG5pF+qADnjTBPpIfNdSZS5+HEFH3sQkMZMemFIWB2+Yo8qCIE58gYKy3q0dhtg1Vhj45/zqEeuxAbW9B89tB9nPyqfezq3/cNa27nKnDLrWed2P4/DMOwKbK4xvmgB1PCQa8Su/uJZmi5nzFfINz4RhjCCodPh1sSSytLWZnXu+RuGjA+nXewZrYrlp9LxAxrmD5St/NEOkf1jQC25+9HuRWV/y0lJhs7F2pwykzMgmTZ/cuhlPaG0ADySJKy6cNIme2u9wkDDjUZgxJoQHPExfEx6iZcy1j13wPslaUXyrwFdwyZNYn4C6j82eLtSNX
+ QI6emkSb
+ 8D+Uf0qJFIRc2yZa1S2Kp3Nae0AJ2XLfD8lpKuhQoZHPtKc9hd4v2bXRv3/q+wMdJlCgG/IhINy/UVINhFxWOK353pMJgQg+Beib5iz0f2TUjHAaNRXUsPwkD3u/zE87Wzvovt35UdvGskjp2KruF7uVoKVBcffiHor/lH6vN4p0qVUZAoxs1hZcHG87pa61nqKPI/Vdw2VcQuC1LUQlPUv8yYKh+4lpS9PiBRNfD9qI9kwJIYsQvVQF2gZSrISAnIrIjlYk0n+mW1g5GIdEG4h96/A54YCDatsRIAPfnMnJwT2/wMKpI1VTRxbggMoK381nlB53wJmjWoSNzYWaZAFI3e3Gp80XFJUaoHBdYI6YDGidNPy0eM/cINLnbyVUxEf6Ar1XYAz5Exu6Bttbs63DbMdrLrYQ+xsiuaB3ZtNBGt+wt3n5KNDTrZk+XPNSziypd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,144 +119,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/23/26 4:01 AM, Li Wang wrote:
-> On Fri, Mar 20, 2026 at 04:42:38PM -0400, Waiman Long wrote:
->> It was found that some of the tests in test_memcontrol can fail more
->> readily if system page size is larger than 4k. It is because the
->> actual memory.current value deviates more from the expected value with
->> larger page size. This is likely due to the fact there may be up to
->> MEMCG_CHARGE_BATCH pages of charge hidden in each one of the percpu
->> memcg_stock.
->>
->> To avoid this failure, the error tolerance is now increased in accordance
->> to the current system page size value. The page size scale factor is
->> set to 2 for 64k page and 1 for 16k page.
->>
->> Changes are made in alloc_pagecache_max_30M(), test_memcg_protection()
->> and alloc_anon_50M_check_swap() to increase the error tolerance for
->> memory.current for larger page size. The current set of values are
->> chosen to ensure that the relevant test_memcontrol tests no longer
->> have any test failure in a 100 repeated run of test_memcontrol with a
->> 4k/16k/64k page size kernels on an arm64 system.
->>
->> Signed-off-by: Waiman Long <longman@redhat.com>
->> ---
->>   .../cgroup/lib/include/cgroup_util.h          |  3 ++-
->>   .../selftests/cgroup/test_memcontrol.c        | 23 ++++++++++++++-----
->>   2 files changed, 19 insertions(+), 7 deletions(-)
->>
->> diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
->> index 77f386dab5e8..2293e770e9b4 100644
->> --- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
->> +++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
->> @@ -6,7 +6,8 @@
->>   #define PAGE_SIZE 4096
->>   #endif
->>   
->> -#define MB(x) (x << 20)
->> +#define KB(x) ((x) << 10)
->> +#define MB(x) ((x) << 20)
->>   
->>   #define USEC_PER_SEC	1000000L
->>   #define NSEC_PER_SEC	1000000000L
->> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
->> index babbfad10aaf..c078fc458def 100644
->> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
->> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
->> @@ -26,6 +26,7 @@
->>   static bool has_localevents;
->>   static bool has_recursiveprot;
->>   static int page_size;
->> +static int pscale_factor;	/* Page size scale factor */
->>   
->>   int get_temp_fd(void)
->>   {
->> @@ -571,16 +572,17 @@ static int test_memcg_protection(const char *root, bool min)
->>   	if (cg_run(parent[2], alloc_anon, (void *)MB(148)))
->>   		goto cleanup;
->>   
->> -	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50), 3))
->> +	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50),
->> +				       3 + (min ? 0 : 4) * pscale_factor))
->>   		goto cleanup;
->>   
->>   	for (i = 0; i < ARRAY_SIZE(children); i++)
->>   		c[i] = cg_read_long(children[i], "memory.current");
->>   
->> -	if (!values_close(c[0], MB(29), 15))
->> +	if (!values_close(c[0], MB(29), 15 + 3 * pscale_factor))
->>   		goto cleanup;
->>   
->> -	if (!values_close(c[1], MB(21), 20))
->> +	if (!values_close(c[1], MB(21), 20 + pscale_factor))
->>   		goto cleanup;
->>   
->>   	if (c[3] != 0)
->> @@ -596,7 +598,8 @@ static int test_memcg_protection(const char *root, bool min)
->>   	}
->>   
->>   	current = min ? MB(50) : MB(30);
->> -	if (!values_close(cg_read_long(parent[1], "memory.current"), current, 3))
->> +	if (!values_close(cg_read_long(parent[1], "memory.current"), current,
->> +				       9 + (min ? 0 : 6) * pscale_factor))
->>   		goto cleanup;
->>   
->>   	if (!reclaim_until(children[0], MB(10)))
->> @@ -684,7 +687,7 @@ static int alloc_pagecache_max_30M(const char *cgroup, void *arg)
->>   		goto cleanup;
->>   
->>   	current = cg_read_long(cgroup, "memory.current");
->> -	if (!values_close(current, MB(30), 5))
->> +	if (!values_close(current, MB(30), 5 + (pscale_factor ? 2 : 0)))
->>   		goto cleanup;
->>   
->>   	ret = 0;
->> @@ -1004,7 +1007,7 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
->>   		*ptr = 0;
->>   
->>   	mem_current = cg_read_long(cgroup, "memory.current");
->> -	if (!mem_current || !values_close(mem_current, mem_max, 3))
->> +	if (!mem_current || !values_close(mem_current, mem_max, 6 + pscale_factor))
->>   		goto cleanup;
->>   
->>   	swap_current = cg_read_long(cgroup, "memory.swap.current");
->> @@ -1684,6 +1687,14 @@ int main(int argc, char **argv)
->>   	if (page_size <= 0)
->>   		page_size = PAGE_SIZE;
->>   
->> +	/*
->> +	 * It is found that the actual memory.current value can deviate more
->> +	 * from the expected value with larger page size. So error tolerance
->> +	 * will have to be increased a bit more for larger page size.
->> +	 */
->> +	if (page_size > KB(4))
->> +		pscale_factor = (page_size >= KB(64)) ? 2 : 1;
-> This is a good improment but I still think the pscale_factor adjustments
-> are a bit fragile, each call site needs its own hand-tuned formula, and only
-> three page sizes (4K/16K/64K) are handled. If a new page size shows up,
-> every call site needs revisiting.
+On 3/23/26 8:15 PM, Yosry Ahmed wrote:
+> On Mon, Mar 23, 2026 at 5:46 AM Li Wang <liwang@redhat.com> wrote:
+>> On Fri, Mar 20, 2026 at 04:42:35PM -0400, Waiman Long wrote:
+>>> The vmstats flush threshold currently increases linearly with the
+>>> number of online CPUs. As the number of CPUs increases over time, it
+>>> will become increasingly difficult to meet the threshold and update the
+>>> vmstats data in a timely manner. These days, systems with hundreds of
+>>> CPUs or even thousands of them are becoming more common.
+>>>
+>>> For example, the test_memcg_sock test of test_memcontrol always fails
+>>> when running on an arm64 system with 128 CPUs. It is because the
+>>> threshold is now 64*128 = 8192. With 4k page size, it needs changes in
+>>> 32 MB of memory. It will be even worse with larger page size like 64k.
+>>>
+>>> To make the output of memory.stat more correct, it is better to scale
+>>> up the threshold slower than linearly with the number of CPUs. The
+>>> int_sqrt() function is a good compromise as suggested by Li Wang [1].
+>>> An extra 2 is added to make sure that we will double the threshold for
+>>> a 2-core system. The increase will be slower after that.
+>>>
+>>> With the int_sqrt() scale, we can use the possibly larger
+>>> num_possible_cpus() instead of num_online_cpus() which may change at
+>>> run time.
+>>>
+>>> Although there is supposed to be a periodic and asynchronous flush of
+>>> vmstats every 2 seconds, the actual time lag between succesive runs
+>>> can actually vary quite a bit. In fact, I have seen time lags of up
+>>> to 10s of seconds in some cases. So we couldn't too rely on the hope
+>>> that there will be an asynchronous vmstats flush every 2 seconds. This
+>>> may be something we need to look into.
+>>>
+>>> [1] https://lore.kernel.org/lkml/ab0kAE7mJkEL9kWb@redhat.com/
+>>>
+>>> Suggested-by: Li Wang <liwang@redhat.com>
+>>> Signed-off-by: Waiman Long <longman@redhat.com>
+> What's the motivation for this fix? Is it purely to make tests more
+> reliable on systems with larger page sizes?
 >
-> How about centralizing the page size adjustment inside values_close()
-> itself? Something like:
->
->      static inline int values_close(long a, long b, int err)
->      {
->            ssize_t page_adjusted_err = ffs(page_size >> 13) + err;
->      
->            return 100 * labs(a - b) <= (a + b) * page_adjusted_err;
->      }
->
-> This adds one extra percent of tolerance per doubling above 4K, scales
-> continuously for any power-of-two page size, and also fixes an integer
-> truncation issue in the original: (a + b) / 100 * err loses precision
-> when (a + b) < 100.
->
-> With this, the callers wouldn't need any changes at all.
->
-> This method is inspired from LTP:
->    https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/controllers/memcg/memcontrol_common.h#L27
+> We need some performance tests to make sure we're not flushing too
+> eagerly with the sqrt scale imo. We need to make sure that when we
+> have a lot of cgroups and a lot of flushers we don't end up performing
+> worse.
 
-Good point. I will implement something like in the next version.
+I will include some performance data in the next version. Do you have 
+any suggestion of which readily available tests that I can use for this 
+performance testing purpose.
 
 Cheers,
 Longman
