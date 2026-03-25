@@ -4,109 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADDFB106B50D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 12:14:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D4D9106B522
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 12:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 210EE6B00A4; Wed, 25 Mar 2026 08:14:41 -0400 (EDT)
+	id E14B46B00A3; Wed, 25 Mar 2026 08:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C1776B00A6; Wed, 25 Mar 2026 08:14:41 -0400 (EDT)
+	id DC53F6B00A5; Wed, 25 Mar 2026 08:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D7B46B00A7; Wed, 25 Mar 2026 08:14:41 -0400 (EDT)
+	id CDBC46B00A6; Wed, 25 Mar 2026 08:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F17ED6B00A4
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:14:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A3F428C535
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:14:40 +0000 (UTC)
-X-FDA: 84584478720.13.819FFB1
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A7C84180005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:14:38 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=zu6ayGgX;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BBD0E6B00A3
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:34:02 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F427BB6B3
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:34:02 +0000 (UTC)
+X-FDA: 84584527524.23.46C46A9
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9D30F4000B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:33:59 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774440879;
+	s=arc-20220608; t=1774442040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qlG0lXGt3ihgGzr2zmzy5cEjDh7Y5/V+vvfJk0BQROA=;
-	b=nMNNuj9YThZZEkJdoIgiwvREYbCCOAxyxgQwQKkXHOT/tGjmcMgDwB6Lazq31qSi17PNcx
-	ZJ79Z4wd1M5JgAkaRoHb+cCjDnFCqiIbNWF4yjn/kXw/o2/YO8dOJ38alJTcWqtOfK6xle
-	nHsx62ZV867LfiCSw8oqc+YzV5FL+Mw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774440879; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WO0dR/NY2JNfumCqOX/M/VrwAyOM8ihHCQeJIbuAmtc=;
+	b=lGh3Ap0YtGvLqIf4Chokg/uhuNcIAINT9CcFrJG/OoMfXg+jaYWgTNGVJz826R7BkNy8iM
+	N5lZJS/OMec92gK5emR6arTBuETWwiNBbL+tCP+eYIFawkurN4QiLia6Ebru3iTzM9LER9
+	RYT/YltQK8+X0hQXeH7Gmodo8ST1xiI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774442040; a=rsa-sha256;
 	cv=none;
-	b=5xUCcwRUcvLIYA/YTIUA+4Ik3FxbrqU8+pOqpbtfw74LmUEligWABqaxUEeCtL9zYIWxFw
-	CXf5VcHiD1NcbSZ1nZWj827BqnM7EeHQas4Ox4QvuUT2TWeh1L88OMEwbJYqCHG2CRlS9a
-	mfPQotk49LDQ1hmGDvqu08qVE5P1jQk=
+	b=7c4NHY1MzaFcyGjrKu2AwEomvcLOq7ihxIM/Vi/D8EWB3b3WJl+30/o9GMbo42M9Ysp2Gs
+	hX6wJ7JHxjiwyUyziKKBVLkqWBj9H3RAi//OCjovLm6TZyjrzBqatWcYFQFifJuP6BnEfk
+	LLjKk/VcZL7Jzzcn/7zUTIp8QUQDnMY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=zu6ayGgX;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 6AD19BDCF2;
-	Wed, 25 Mar 2026 12:14:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1774440876;
-	bh=qlG0lXGt3ihgGzr2zmzy5cEjDh7Y5/V+vvfJk0BQROA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=zu6ayGgXCX0hcZJvTh3J9FChG/6KiLH3P1J7k0JVvWTPTPwZtvYJVhLyJS5uBHtdC
-	 6CcIxgxYmZBERel4KjS0dtjFi+Cizpjmz764CTTjAyJAxloip9zr3IM5unS/Ll578z
-	 Qr+w0As2/AEnYMg2xU6dWsULHH5gulRX1tOolGdk=
-Date: Wed, 25 Mar 2026 12:14:35 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH v4 0/5] mm: zone lock tracepoint instrumentation
-Message-ID: <acPRq1YPeGR8EqMB@shell.ilvokhin.com>
-References: <cover.1772206930.git.d@ilvokhin.com>
- <aa7G1nD7Rd9F4eBH@casper.infradead.org>
- <aa7XdpIVtLFS3FIu@shell.ilvokhin.com>
- <aa7dgQDMEz34eadj@casper.infradead.org>
- <20260309151317.7bba06dd@gandalf.local.home>
- <aa8xawMxLeUjkyHx@casper.infradead.org>
- <20260309171700.063318b5@gandalf.local.home>
- <abhAoF5EpiPigsx7@shell.ilvokhin.com>
- <abv4riGLlubast8v@shell.ilvokhin.com>
- <20260324163918.1a3c5c960d85a4243c9ae314@linux-foundation.org>
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fgmXZ1cdNzHnH55;
+	Wed, 25 Mar 2026 20:33:18 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8520740569;
+	Wed, 25 Mar 2026 20:33:53 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Mar
+ 2026 12:33:52 +0000
+Date: Wed, 25 Mar 2026 12:33:50 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Rakie Kim <rakie.kim@sk.com>
+CC: <akpm@linux-foundation.org>, <gourry@gourry.net>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<ziy@nvidia.com>, <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
+	<byungchul@sk.com>, <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
+	<david@kernel.org>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
+	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<dave@stgolabs.net>, <dave.jiang@intel.com>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
+	<dan.j.williams@intel.com>, <harry.yoo@oracle.com>,
+	<lsf-pc@lists.linux-foundation.org>, <kernel_team@skhynix.com>,
+	<honggyu.kim@sk.com>, <yunjeong.mun@sk.com>, Keith Busch <kbusch@kernel.org>
+Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce
+ socket-aware weighted interleave
+Message-ID: <20260325123350.00004d48@huawei.com>
+In-Reply-To: <20260324053549.324-1-rakie.kim@sk.com>
+References: <20260320165605.000024c0@huawei.com>
+	<20260324053549.324-1-rakie.kim@sk.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324163918.1a3c5c960d85a4243c9ae314@linux-foundation.org>
-X-Rspamd-Queue-Id: A7C84180005
-X-Stat-Signature: czkinedd8jgzysa1snukdaqsnj3uwiwb
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Rspamd-Server: rspam12
+X-Stat-Signature: et7cyi5uub7cws8ts7bncgdi6c1wsjuj
+X-Rspamd-Queue-Id: 9D30F4000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774440878-115464
-X-HE-Meta: U2FsdGVkX1/S2jK6nEqVhydqxMqSQ5FVhMKz2poTy8GZCTMx3mWzodhEB0smi9RxjBNASh1ehYzld/Y130GirebU/Ruvu8t5sUYIGuyY40Gfc6WlGAQBtvQRc1QHvx6zPslV0UBHpvJL+zsBmo9Vim3DJJwv17LEJQ8vWoqH0+kbBujQT1btnfgmU6IFm2dfPhyt+isAQbvvcMkIJXELfPeanCS2VM+IwJxaolAN7ibsvS4DzczjKPuOo/RITqXYkf2WG1ui8KcgYqKS83u0c46TRP6vlk4R4o45IprV/N91YlipHMbKlu1+jj10JEIejiJctaFG5Is4O/uFDI8+s7A8ve1eYLEU4zWxm/A0mnR8rkmYxJJQ5RY2c5KS3xUfdp3lQz4ShddzQwb71LLEZ/kGTRGa7kXQs2LRay36y/DHqSbk+Y91Rgai3zVyNEIG8MMBCxYfMyousO8kJWhi3pPAUbODeP6xdpf+1Am++m7pFWlEorK3jamu91Qn1dIza4OPtC1Mdyz3CihiBcs7njlqHnuDfKyW4sheuUl98RqWvCCWr1hKgLoaUiKcOWSHQWwuRNYyW1Iq5p3btULQSjyjZnQXjESs/vywu026EHCkEZOhHIM6t8qKHCiZjACGRPWiNOGnIABLk9qTDpmxyItazIf71AWpgGNoRIjI3X29d+2Svvy/YD1YMtKSnBSwiEkBQMASKHNfsqLESeIb0e0Ckb7NGabB/e0Teh4PxLZnh0Hl40AycOG+uOsszDoHsvj/KAJRf2Wv4B6aYIVa/iLv9GVTO/vgxMrEGIWMUCwqUtnDUHMX5iPCBWFPsHvdBXDwr1WDhUbqLLWhLGrVazrkR9qRaps0R0HiiEp8/k6bLhiwew0VSm647sIpW0CWSaLvg1xePiE3nhPtY2fs35Zy+yYdAO5tvoQvxyM5hDpz0+tgRAlmvv6Di2kc0Ad4kI3ZnODauIVqe5/nz7K
- jA0EhPBT
- u7SJyvldgmH02XmorT2lV81TM38jqqF1fPH23NbrX6qpEG4v0VvcZcDABhA0wiHVTGo5Gp7ruD4E50HJe3NXa7P3hQYzHnK3xj2gml1A1V5G4mqi01l8PxMqryK8OuYTIY4kx76ZkXdmECT5XSlBHktEwkdq++fCs4WS5f3sNUzrSmZ7qsNTSm/JNw23cKNwuFApbPXUxE7YhzAxYptjv8pmE7K3RzDZ5GImfAxBn8AEK92CyzmOMWUNdr5O/rHduwfcvU2L9onk2k/uYBw4CSUPTdPVxsRbybhDGjvhQNViIXJ4xLiyXSTCJzimVIrXdjBan
+X-HE-Tag: 1774442039-887670
+X-HE-Meta: U2FsdGVkX19nEBD+UeSH5maVONshr32pnSdxyyDbHVJUt758x/jevRYNqh1S9Wc5G4ZfQMQiRnXY4fDNsjx48TnO78e7GKb3d2r1JSp2UJdqXlSsetJaX6IWDNQeKB7g359Dn9Ho9U2ZhR/IWiySYIaK5dfwGUZnC5OwUfwDv4EmItVTuQtCLmMFduVJiqt0ZIK1B0RT5DHfYuf47YCUpWcCiljr8yC3y+Qoawf6hWQ18kBPvPWKoknQDkrkAYyJc/Nh2cET6Idvbha0kujtQeepCJjDrsLhgb5H6G1OgD+7r4T5ibtjSDVyGlfZcC/z7gvmrf+bqs00M0GlAQoM6sKWyT3sG8qDy63eLajj5cgQNcJWMVD2RDQxXyR6z9CcUeGqVamWqu+izzNWS7J1ir0ETRirL1D/64dopmTKSUT4I1+29ZJY+Ojx+MGWsuFDMGiasYyBNZdjEdGZ54J6jq1QuNeZv4tkGyEhgQ2LaSjm4WxhnWaPjeHq4bM6P1GomO4tYXJ1kBICFXciHn2wUvUnUJgu5cGa2QpF+wZVMCDgXlA6PW3hFqyZjkTwwbW81j4lzx5TysCNGgZsYG3wkyOdcQFrV0gFHt92rAwjTe2vBfD+DehJbm1wlOV7fwDY5aEbfdBwGkz+xbi0M6hRZbjia6LnetY2yjARBVgOm9ewxCNqexLVkYOYLgsYGdliKxdadS4pDNWvS74pqHrDf3WnEq1nzGLxTozhK1bfyvrYKz39g3xsYhbpQ7QBaw7HQHZr2x6KHrTvUYkP975J0u9NKpClFwfEr1vNMPUfQy46eH78qJtIGl6ndzKQsez9MCp7URQyghA9UoJ52M/CVjkGQKwCsIB7zItCrdH1YSTpVkL1TjUIveGZmY9ObyUhW3obiZRe3BI16I8UFc6xd3TjG5r/ByT4rWn8BuTnJckpDg4Vr7H0nNVrts8mQDkiUZaHwiOdIkUFekOQ421
+ wqom7bL/
+ Ea/UCwKuDxDrMFjd3T71A3EH0ZCNvsM/G4ipxo6wx9mzr2By0zRZ/H9TeX28hgmTWGQhgDSyCkw7k+rNv8bFUx2U9aPaZpKv0gMJkfiIPIYnBMJ+8//8ZMgrR+YyMSbwjiKfdAbbVpDwwz95PgayKO1RxIxmYJSMckRDccN3Ye9KLBAcWMWIKzRSkKXuqa0mJD+OzOj/PjDMLnrtohyCCxbfeQR0R78tjc0LBJVpQ5pCqzDZHL/6XsqCp053xY+fieaJZyvD2R3uGJl4Zpim0U3OwUJ5emCnqA4aMz9iXSGhw85TiIcUUZxgoON4BHI6KMcugTTwquTTRxDNr2CppnQ/XBA3CErEnc6uayYQgvRq0HFmCW1+GtWZuKnQ7fp9+7h9oNG1SUbuYnarg2/cyJVuncF+exITxatlSjWnEvEhbCOmtvF/BCiZg+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,71 +101,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 04:39:18PM -0700, Andrew Morton wrote:
-> On Thu, 19 Mar 2026 13:22:54 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> 
-> > On Mon, Mar 16, 2026 at 05:40:50PM +0000, Dmitry Ilvokhin wrote:
-> > 
-> > [...]
-> > 
-> > > A possible generic solution is a trace_contended_release() for spin
-> > > locks, for example:
+On Tue, 24 Mar 2026 14:35:45 +0900
+Rakie Kim <rakie.kim@sk.com> wrote:
+
+> On Fri, 20 Mar 2026 16:56:05 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+> >   
+> > > > > 
+> > > > > To make this possible, the system requires a mechanism to understand
+> > > > > the physical topology. The existing NUMA distance model provides only
+> > > > > relative latency values between nodes and lacks any notion of
+> > > > > structural grouping such as socket boundaries. This is especially
+> > > > > problematic for CXL memory nodes, which appear without an explicit
+> > > > > socket association.    
+> > > > 
+> > > > So in a general sense, the missing info here is effectively the same
+> > > > stuff we are missing from the HMAT presentation (it's there in the
+> > > > table and it's there to compute in CXL cases) just because we decided
+> > > > not to surface anything other than distances to memory from nearest
+> > > > initiator.  I chatted to Joshua and Kieth about filling in that stuff
+> > > > at last LSFMM. To me that's just a bit of engineering work that needs
+> > > > doing now we have proven use cases for the data. Mostly it's figuring out
+> > > > the presentation to userspace and kernel data structures as it's a
+> > > > lot of data in a big system (typically at least 32 NUMA nodes).
+> > > >     
 > > > 
-> > >     if (trace_contended_release_enabled() &&
-> > >         atomic_read(&lock->val) & ~_Q_LOCKED_MASK)
-> > >         trace_contended_release(lock);
+> > > Hearing about the discussion on exposing HMAT data is very welcome news.
+> > > Because this detailed topology information is not yet fully exposed to
+> > > the kernel and userspace, I used a temporary package-based restriction.
+> > > Figuring out how to expose and integrate this data into the kernel data
+> > > structures is indeed a crucial engineering task we need to solve.
 > > > 
-> > > This might work on x86, but could increase code size and regress
-> > > performance on arches where spin_unlock() is inlined, such as arm64
-> > > under !PREEMPTION.
+> > > Actually, when I first started this work, I considered fetching the
+> > > topology information from HMAT before adopting the current approach.
+> > > However, I encountered a firmware issue on my test systems
+> > > (Granite Rapids and Sierra Forest).
+> > > 
+> > > Although each socket has its own locally attached CXL device, the HMAT
+> > > only registers node1 (Socket 1) as the initiator for both CXL memory
+> > > nodes (node2 and node3). As a result, the sysfs HMAT initiators for
+> > > both node2 and node3 only expose node1.  
 > > 
-> > I took a stab at this idea and submitted an RFC [1].
+> > Do you mean the Memory Proximity Domain Attributes Structure has
+> > the "Proximity Domain for the Attached Initiator" set wrong?
+> > Was this for it's presentation of the full path to CXL mem nodes, or
+> > to a PXM with a generic port?  Sounds like you have SRAT covering
+> > the CXL mem so ideal would be to have the HMAT data to GP and to
+> > the CXL PXMs that BIOS has set up.
 > > 
-> > The implementation builds on your earlier observation from Matthew that
-> > _raw_spin_unlock() is not inlined in most configurations. In those
-> > cases, when the tracepoint is disabled, this adds a single NOP on the
-> > fast path, with the conditional check staying out of line. The measured
-> > text size increase in this configuration is +983 bytes.
-> > 
-> > For configurations where _raw_spin_unlock() is inlined, the
-> > instrumentation does increase code size more noticeably
-> > (+71 KB in my measurements), since the check and out of line call is
-> > replicated at each call site.
-> > 
-> > This provides a generic release-side signal for contended locks,
-> > allowing: correlation of lock holders with waiters and measurement of
-> > contended hold times
-> > 
-> > This RFC addressing the same visibility gap without introducing per-lock
-> > instrumentation.
-> > 
-> > If this tradeoff is acceptable, this could be a generic alternative to
-> > lock-specific tracepoints.
-> > 
-> > [1]: https://lore.kernel.org/all/51aad0415b78c5a39f2029722118fa01eac77538.1773858853.git.d@ilvokhin.com 
+> > Either way having that set at all for CXL memory is fishy as it's about
+> > where the 'memory controller' is and on CXL mem that should be at the
+> > device end of the link.  My understanding of that is was only meant
+> > to be set when you have separate memory only Nodes where the physical
+> > controller is in a particular other node (e.g. what you do
+> > if you have a CPU with DRAM and HBM).  Maybe we need to make the
+> > kernel warn + ignore that if it is set to something odd like yours.
+> >   
 > 
-> That submission has met a disappointing response.
+> Hello Jonathan,
 > 
-> How should I proceed with this series "mm: zone lock tracepoint
-> instrumentation"?  It's not urgent so I'm inclined to put this on hold
-> while you pursue "locking: Add contended_release tracepoint to spinning
-> locks"?
+> Your insight is incredibly accurate. To clarify the situation, here is
+> the actual configuration of my system:
+> 
+> NODE   Type          PXD
+> node0  local memory  0x00
+> node1  local memory  0x01
+> node2  cxl memory    0x0A
+> node3  cxl memory    0x0B
+> 
+> Physically, the node2 CXL is attached to node0 (Socket 0), and the
+> node3 CXL is attached to node1 (Socket 1). However, extracting the
+> HMAT.dsl reveals the following:
+> 
+> - local memory
+>   [028h] Flags: 0001 (Processor Proximity Domain Valid = 1)
+>          Attached Initiator Proximity Domain: 0x00
+>          Memory Proximity Domain: 0x00
+>   [050h] Flags: 0001 (Processor Proximity Domain Valid = 1)
+>          Attached Initiator Proximity Domain: 0x01
+>          Memory Proximity Domain: 0x01
+> 
+> - cxl memory
+>   [078h] Flags: 0000 (Processor Proximity Domain Valid = 0)
+>          Attached Initiator Proximity Domain: 0x00
+>          Memory Proximity Domain: 0x0A
+>   [0A0h] Flags: 0000 (Processor Proximity Domain Valid = 0)
+>          Attached Initiator Proximity Domain: 0x00
+>          Memory Proximity Domain: 0x0B
 
-Thanks for the follow-up, Andrew.
-
-My current plan is to focus on the "locking: Add contended_release
-tracepoint to spinning locks" work and drive it to a clear conclusion:
-either by getting feedback that it's not a good direction, or by getting
-it into mainline.
-
-In the meantime, it seems reasonable to drop the "mm: zone lock
-tracepoint instrumentation" patchset from mm-new to avoid confusion
-until the direction is clearer. I can revisit and respin it if the more
-generic locking approach doesn't pan out.
+That's faintly amusing given it conveys no information at all.
+Still unless we have a bug shouldn't cause anything odd.
 
 > 
-> Please send that v2 sometime and hopefully Steven can help push it along?
+> As you correctly suspected, the flags for the CXL memory are 0000,
+> meaning the Processor Proximity Domain is marked as invalid. But when
+> checking the sysfs initiator configurations, it shows a different story:
+> 
+> Node   access0 Initiator  access1 Initiator
+> node0  node0              node0
+> node1  node1              node1
+> node2  node1              node1
+> node3  node1              node1
+> 
+> Although the Attached Initiator is set to 0 in HMAT with an invalid
+> flag, sysfs strangely registers node1 as the initiator for both CXL
+> nodes.
+Been a while since I looked the hmat parser..
 
-I'll send the next version of the generic locking series soon. Any help
-in pushing it along would be appreciated.
+If ACPI_HMAT_PROCESSOR_PD_VALID isn't set, hmat_parse_proximity_domain()
+shouldn't set the target. At end of that function should be set to PXM_INVALID.
+
+It should therefore retain the state from alloc_memory_intiator() I think?
+
+Given I did all my testing without the PD_VALID set (as it wasn't on my
+test system) it should be fine with that.  Anyhow, let's look at the data
+for proximity.
+
+
+
+> Because both HMAT and sysfs are exposing abnormal values, it was
+> impossible for me to determine the true socket connections for CXL
+> using this data.
+> 
+> > > 
+> > > Even though the distance map shows node2 is physically closer to
+> > > Socket 0 and node3 to Socket 1, the HMAT incorrectly defines the
+> > > routing path strictly through Socket 1. Because the HMAT alone made it
+> > > difficult to determine the exact physical socket connections on these
+> > > systems, I ended up using the current CXL driver-based approach.  
+> > 
+> > Are the HMAT latencies and bandwidths all there?  Or are some missing
+> > and you have to use SLIT (which generally is garbage for historical
+> > reasons of tuning SLIT to particular OS behaviour).
+> >   
+> 
+> The HMAT latencies and bandwidths are present, but the values seem
+> broken. Here is the latency table:
+> 
+> Init->Target | node0 | node1 | node2 | node3
+> node0        | 0x38B | 0x89F | 0x9C4 | 0x3AFC
+> node1        | 0x89F | 0x38B | 0x3AFC| 0x4268
+
+Yeah. That would do it...  Looks like that final value is garbage.
+
+> 
+> I used the identical type of DRAM and CXL memory for both sockets.
+> However, looking at the table, the local CXL access latency from
+> node0->node2 (0x9C4) and node1->node3 (0x4268) shows a massive,
+> unjustified difference. This asymmetry proves that the table is
+> currently unreliable.
+
+Poke your favourite bios vendor I guess.
+
+I asked one of the intel folk to take a look at see if this is a broader issue
+or just one particular bios.
+
+> 
+> > > 
+> > > I wonder if others have experienced similar broken HMAT cases with CXL.
+> > > If HMAT information becomes more reliable in the future, we could
+> > > build a much more efficient structure.  
+> > 
+> > Given it's being lightly used I suspect there will be many bugs :(
+> > I hope we can assume they will get fixed however!
+> > 
+> > ...
+> >   
+> 
+> The most critical issue caused by this broken initiator setting is that
+> topology analysis tools like `hwloc` are completely misled. Currently,
+> `hwloc` displays both CXL nodes as being attached to Socket 1.
+> 
+> I observed this exact same issue on both Sierra Forest and Granite
+> Rapids systems. I believe this broken topology exposure is a severe
+> problem that must be addressed, though I am not entirely sure what the
+> best fix would be yet. I would love to hear your thoughts on this.
+
+Fix then bios.  If you don't mind, can you provide dumps of
+cat /sys/firmware/acpi/tables/HMAT  just so we can check there is nothing
+wrong with the parser.
+
+> 
+> > > 
+> > > The complex topology cases you presented, such as multi-NUMA per socket,
+> > > shared CXL switches, and IO expanders, are very important points.
+> > > I clearly understand that the simple package-level grouping does not fully
+> > > reflect the 1:1 relationship in these future hardware architectures.
+> > > 
+> > > I have also thought about the shared CXL switch scenario you mentioned,
+> > > and I know the current design falls short in addressing it properly.
+> > > While the current implementation starts with a simple socket-local
+> > > restriction, I plan to evolve it into a more flexible node aggregation
+> > > model to properly reflect all the diverse topologies you suggested.  
+> > 
+> > If we can ensure it fails cleanly when it finds a topology that it can't
+> > cope with (and I guess falls back to current) then I'm fine with a partial
+> > solution that evolves.
+> >   
+> 
+> I completely agree with ensuring a clean failure. To stabilize this
+> partial solution, I am currently considering a few options for the
+> next version:
+> 
+> 1. Enable this feature only when a strict 1:1 topology is detected.
+Definitely default to off.  Maybe allow a user to say they want to do it
+anyway. I can see there might be systems that are only a tiny bit off and
+it makes not practical difference.
+
+> 2. Provide a sysfs allowing users to enable/disable it.
+Makes sense.
+> 3. Allow users to manually override/configure the topology via sysfs.
+
+No.  If people are in this state we should apply fixes to the HMAT table
+either by injection of real data or some quirking.  If we add userspace
+control via simpler means the motivation for people to fix bios goes out
+the window and it never gets resolved.
+
+> 4. Implement dynamic fallback behaviors depending on the detected
+>    topology shape (needs further thought).
+
+That would be interesting. But maybe not a 1st version thing :)
+
+> 
+> By the way, when I first posted this RFC, I accidentally missed adding
+> lsf-pc@lists.linux-foundation.org to the CC list. I am considering
+> re-posting it to ensure it reaches the lsf-pc.
+
+Makes sense. Make sure to add a back link to this so it is visible
+discussion already going on.
+> 
+> Thanks again for your profound insights and time. It is tremendously
+> helpful.
+
+Thanks to you for starting to solve the problem!
+
+J
+> 
+> Rakie Kim
+> 
+> >   
+> > > 
+> > > Thanks again for your time and review.  
+> > 
+> > You are welcome.
+> > 
+> > Thanks
+> > 
+> > Jonathan
+> >   
+> > > 
+> > > Rakie Kim
+> > >   
+> 
+
 
