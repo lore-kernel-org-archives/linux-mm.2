@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DD3E106B53F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 489ED103A9BD
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:14:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02C5E6B0095; Wed, 25 Mar 2026 10:14:19 -0400 (EDT)
+	id B029F6B0096; Wed, 25 Mar 2026 10:14:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 004536B0096; Wed, 25 Mar 2026 10:14:18 -0400 (EDT)
+	id AD9AC6B0098; Wed, 25 Mar 2026 10:14:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E83A46B0098; Wed, 25 Mar 2026 10:14:18 -0400 (EDT)
+	id A16966B0099; Wed, 25 Mar 2026 10:14:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D7E9F6B0095
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:14:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 82B191B8C9A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:14:18 +0000 (UTC)
-X-FDA: 84584780196.14.21963BA
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A93CB180016
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:14:16 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H7cVHfis;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9223A6B0096
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:14:27 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2BB6BBBB74
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:14:27 +0000 (UTC)
+X-FDA: 84584780574.02.25F2788
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6EBAB4000D
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:14:25 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZAJ6icaC;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774448056; a=rsa-sha256;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774448065; a=rsa-sha256;
 	cv=none;
-	b=m4x9JrbKbxrFB3th+buxNqOOhxD5gAL9Yd0irksE7FNecGpPTeqQk1o97VlkTuuLkEho0r
-	3CjXljqYKcTdB76gq7hLkca0fRO8Th77SmEk5GnWQHTfEqQfswsH26i5gQ9kgqkTF/bEkW
-	FvuK//K0wYQ83gbmJt00UmYPqeihlg4=
+	b=WOoykMsUk34F4YCoL+btX4FqHvNJqrYg4uMBP2XZGGN8SPyioF/U2jPLKTkQYSbpYLXRSm
+	XMYjNWVpSZ7/2K56LnsRVlseA7iE017uZHda755cAe5owmvhOTj8pM81TeBHspnUgCjzd7
+	LzCk8MSBAVMin0cUgCbRHgquqhso9WI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H7cVHfis;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZAJ6icaC;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774448056;
+	s=arc-20220608; t=1774448065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fUxL3aCWfBrV4Mh30s4f7F0Tm+DKPzxkGVhhwaaaROg=;
-	b=RiuzOT9gTtG0QsmYfjKCZlxN/AP0Q8eZ1qUV5A0SwKlXllyHzVnEdRMKVq2MvpPE5kTalc
-	i2wx6k3K39uYLmcyk22t8j/jWI1LHhlLzx5gsErJdJrzqqb591dyggrmb3pAPF+/Vt/IuW
-	iXh316fpnN0N3X2ZxOyXi9H/T3WqeGo=
+	bh=oW5WwMfr6eST7PZhdxPXZ5zdHEpOxSHtk2D9WvewHSs=;
+	b=U+CmJjubk/NUVhRhyqeQm1MPoiYmrEMb1O1WubKSMB0hnbw+Rg/eoGfFZJCvescxQgGkye
+	WyZ8+dG5S6BS+sVHin8X0hiuZ+V6CVjk17YscecC+OxcAGVql9jhIrs6BrftmErnWixAPw
+	ZvS6NMV+ni/XEEyxY3+0hmQaVAxB4NQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774448053;
+	t=1774448063;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fUxL3aCWfBrV4Mh30s4f7F0Tm+DKPzxkGVhhwaaaROg=;
-	b=H7cVHfisxoDodyEGI1H7uAcKULR+QbHbPyERexScdsEjhh8gOA6XneHqYCAAZKremhK9uy
-	fmUBs9uAhFH777GqGsKo2ESInqi/hjOyyMFPzPk9qtVPadoIAVGs/I2j/qcEEEkmtvWk6b
-	A77LKX2euCL8bOjJtA5r4W0FkHxQ3/g=
+	bh=oW5WwMfr6eST7PZhdxPXZ5zdHEpOxSHtk2D9WvewHSs=;
+	b=ZAJ6icaC2Mog6ze6nBhzlho9byETaTdXK5NdsvWgh2j5dvfkw0tycDQ3PcNU8Lgtukt+Gf
+	0S6coAB4SLLUVt5wVSQ9M7s1JWKqERa4uU2JNlbXBakpMS67d7CEtNOlEoLZSl4h/LGIuW
+	wSzf3MXy5Wc+ZTr/0Vhtg0FVzh4ikTc=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -87,22 +87,22 @@ To: hannes@cmpxchg.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v2 2/4] mm: memcontrol: change val type to long in __mod_memcg_{lruvec_}state()
-Date: Wed, 25 Mar 2026 22:13:23 +0800
-Message-ID: <5c42058df0e52a4698da005e502deb2fae7bf819.1774447069.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 3/4] mm: memcontrol: correct the nr_pages parameter type of mem_cgroup_update_lru_size()
+Date: Wed, 25 Mar 2026 22:13:24 +0800
+Message-ID: <c5b169a3056ee634f6a38cc8cb349d6be541df6d.1774447069.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1774447069.git.zhengqi.arch@bytedance.com>
 References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: odmiab7yzhjz1bns9gni6qr9cw9eurfo
-X-Rspamd-Queue-Id: A93CB180016
+X-Rspamd-Queue-Id: 6EBAB4000D
+X-Stat-Signature: 787xicenqd6qoz4fk6gnkzz5gez4gcue
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774448056-719216
-X-HE-Meta: U2FsdGVkX1/z6G8pqh9kqffH2q9Zw6MJFkJcByO2IZ7TaMlYFJtMWreLIP2YS4UVqDMj5AV1yTpxI07h2EmxoqsHHb8mDVDJHMiNtOnJ6Qd51SxT+dIO9soh7saLRf07i+d80HvbnYyaoJCcxnMmpfRMlJcYAVn5hHoPHke84XsUvNHjyEC97otvGRcIY7Ab6DKLtozflYh+v2Zc21k7VDvD5FwHpsZmuRfqXAbKX6h0R9dnAjTboUXvv1zneblo53whoTVwph8Zs+3PXVHuPDlyQR9AyuEiw5+h/qtVxlaThcTcB2q40jytZRNcLihbPByCbukNaf07Ied7ts89YO83RrK30psCju1AujgDP++j+zLUTlfhSWwqpP84hroZVsnxkBcQN6VfHOgnyXYRKdsefdmYRlt6g0LGWt7rAmjsqC11JyEMRiI65oJMjttFH/xU/e91Wyh8Pz+0eAXckAYzvspl6GBw7VnCtfKJMYjFyCnzULtT3Mon59mdgdKPkRxjbgQ6lpta1kw04SoyW1Naiu2q07U/nnACICanHLNm056VKDoTGjtnuQgNLx/qmHNzYeNFpArPx+tebDlPoTUjZn9D9w2kf8T8uJx5fOpPqObQl8XCGAlQVkTTWsivyzU94g7VlZIwgK8khdSq3br+qwA+rLIpnSLZ6CL3qsAEUz4e3wrgMdXRZUY2KKiRPMwENV+0IgMHH0lfy2Fp5xjHoV1QisBxE6tdp67rBUje9zIW1o5kPXvScjeuEp48tAveR88o843KGV8xlWZhU2hcqLkXpDJP1yOSIa9J5CflzzWom5TYeb9ZdisZcTUPjc5O1Fvv7yuiFXX2CNX1m3Mlz08UJEF9LdzoIkgc4CIQqZg6AHw1uFb5fzvKHPG28KMZ6uNtZW8InNFFyqNx0lmSFG1fJMXwRcLD2ener++DmDRGeQ34aa5c4dneAE4L3q5fULrn6nR/n1nUQt1
- Uq7c8/Af
- 9hIPn8NERBdeZZDkt9gDzmwos6sqwO490Fvb2P4/H3xY/KR7hoKMu5zsBESzzaRbtsR1PIRBZmtHVNo4Pipd4ThojvTS4dWzZmou7w9kyCROKTxDqgUbKD4PT61SnpamM094TJ+5lYK7duUQ/5WBJjP4NAd/TzmJy3o4N1oRNj0jMCnl0UbOeOU6C7xrlwhUFLAxFML38avigs04fIRxAQVnoEMwZMWB2dML8W9c3L56OWnA=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774448065-232110
+X-HE-Meta: U2FsdGVkX1/vusJ0BsgZ4+30HJ4PkmjnxG+9sfi7MD88M2P5mkuQgEjQmYL7QL5uylAsyZGDBHaThMoFMHm2Z6h1BY2DzFZpIFqB+6kXQXU2S62vOd1xAdntxraiJzHRx+vDPzkyEzqJ93yp0+GeVbZKLsjkoHYNwMoqY8HkwMsFi9IQhMAHIKgSIgRhClvoXdSPHxz09Mz9ep8nUtlLEhGlaEmwZ80pvJqBsP5QOSmFOVVSAgnEm5lVX3nLqvmrzOSpLzjbOGDvgw8Wlunicp/N3a7RluX+KLCpYD9Q0gHFwi0LCL2GNOy5Z7bhXUUxg4OzFZqbeqdj9nQVn1R/Kl0S/592+cCTZvgjdOjXe0u8Yz8ywUEttZgS0cA4b5YCp2s79WYeyk9DLcBY9Qn6h3OyJlfKa1Mg/ioH3+qBUxzC/FRV72pBu6L2gQtvIioVhnWQV0isooTBClrMJlb3Pib1yfsot7/3kULX4Tb/fXv71P1ABB+ICNJn4qbC2t/jS2wXkB9SRBdmm8IfzrUHjTjQWumKSTVVYIIAcFYjE/Chuf17c/g/Gk/D3cuFHCFE+bKEV11o9PXZxYJazPEH4rCPebL9XkqmL5wXdbuuq+1zHjpeH58bn3exJJx2YS/HwqA3j7rj3YqHJ0vK7irlStMEAJT2K04oCvamiNMY1xtT6pjSiV2aQhRhuod7n0gHGjLIcwCIznwBz+zjRk+rJTh65xJ10h/oJbUQKsTO7td/EQe2Y8UHe+Uo9EYZUp2BifIS2sUva/xIOe5dvCNqAI94CMQ3vylCciRv9/LiPmAeIeB3yz92SVoe8j++gssUA8R25hFM3naJqrIwK7v+uheWluiXSsYKLQzSU8PrmvAMQZdUBl4FE+mviB4y1Rv1fYYxaNdY4Xc4yPR+VPwD5GBXmkFxLk2tG/u2zUN9Ta4U6200ClpUvs9CPQfqh/yRf6k66NyDZgkh3OX2wuB
+ cb10BfT+
+ FqGPhp9i/AsYNqBBt0XycniFADlqX4AyzesN9R0QZOEupepQI0ykFXXGx7LPXgRGeiNzoC6KqvfCH0Xy6iuchhsQyh8kPHDPyhv3xPjeJq3LC5g10sFALNwOFhg99z5FJimdsjfXbQLw/rt8g0YE5rx9BO5UcX61uE6O8u/VZVKHwsilG6IejGev7jLgRyGoMa6Uz3bGgbEbOKezJhiQTbnE8gseTF1sPuYZbs1Ej7ol0OOM02J9+MH+7qAvrMHB4F70T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,106 +112,56 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-The __mod_memcg_state() and __mod_memcg_lruvec_state() functions are also
-used to reparent non-hierarchical stats. In this scenario, the values
-passed to them are accumulated statistics that might be extremely large
-and exceed the upper limit of a 32-bit integer.
+The nr_pages parameter of mem_cgroup_update_lru_size() represents a page
+count. During the reparenting of LRU folios, the value passed to it can
+potentially exceed the maximum value of a 32-bit integer. It should be
+declared as long instead of int to match the types used in lruvec size
+accounting and to prevent possible overflow.
 
-Change the val parameter type from int to long in these functions and
-their corresponding tracepoints (memcg_rstat_stats) to prevent potential
-overflow issues.
+Update the parameter type to long to ensure correctness.
 
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- include/trace/events/memcg.h | 10 +++++-----
- mm/memcontrol.c              |  8 ++++----
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ include/linux/memcontrol.h | 2 +-
+ mm/memcontrol.c            | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/trace/events/memcg.h b/include/trace/events/memcg.h
-index dfe2f51019b4c..51b62c5931fc2 100644
---- a/include/trace/events/memcg.h
-+++ b/include/trace/events/memcg.h
-@@ -11,14 +11,14 @@
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 0861589695298..dc3fa687759b4 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -878,7 +878,7 @@ static inline bool mem_cgroup_online(struct mem_cgroup *memcg)
+ }
  
- DECLARE_EVENT_CLASS(memcg_rstat_stats,
+ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
+-		int zid, int nr_pages);
++		int zid, long nr_pages);
  
--	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
-+	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
- 
- 	TP_ARGS(memcg, item, val),
- 
- 	TP_STRUCT__entry(
- 		__field(u64, id)
- 		__field(int, item)
--		__field(int, val)
-+		__field(long, val)
- 	),
- 
- 	TP_fast_assign(
-@@ -27,20 +27,20 @@ DECLARE_EVENT_CLASS(memcg_rstat_stats,
- 		__entry->val = val;
- 	),
- 
--	TP_printk("memcg_id=%llu item=%d val=%d",
-+	TP_printk("memcg_id=%llu item=%d val=%ld",
- 		  __entry->id, __entry->item, __entry->val)
- );
- 
- DEFINE_EVENT(memcg_rstat_stats, mod_memcg_state,
- 
--	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
-+	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
- 
- 	TP_ARGS(memcg, item, val)
- );
- 
- DEFINE_EVENT(memcg_rstat_stats, mod_memcg_lruvec_state,
- 
--	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
-+	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
- 
- 	TP_ARGS(memcg, item, val)
- );
+ static inline
+ unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 7fb9cbc10dfbb..4a78550f6174e 100644
+index 4a78550f6174e..04076a139dbe3 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 
- #ifdef CONFIG_MEMCG_V1
- static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
--				     enum node_stat_item idx, int val);
-+				     enum node_stat_item idx, long val);
- 
- void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
- 				       struct mem_cgroup *parent, int idx)
-@@ -784,7 +784,7 @@ static int memcg_page_state_unit(int item);
-  * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
-  * up non-zero sub-page updates to 1 page as zero page updates are ignored.
+@@ -1466,7 +1466,7 @@ struct lruvec *folio_lruvec_lock_irqsave(struct folio *folio,
+  * to or just after a page is removed from an lru list.
   */
--static int memcg_state_val_in_pages(int idx, int val)
-+static long memcg_state_val_in_pages(int idx, long val)
+ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
+-				int zid, int nr_pages)
++				int zid, long nr_pages)
  {
- 	int unit = memcg_page_state_unit(idx);
+ 	struct mem_cgroup_per_node *mz;
+ 	unsigned long *lru_size;
+@@ -1483,7 +1483,7 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
  
-@@ -831,7 +831,7 @@ static inline void get_non_dying_memcg_end(void)
- #endif
- 
- static void __mod_memcg_state(struct mem_cgroup *memcg,
--			      enum memcg_stat_item idx, int val)
-+			      enum memcg_stat_item idx, long val)
- {
- 	int i = memcg_stats_index(idx);
- 	int cpu;
-@@ -896,7 +896,7 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
- #endif
- 
- static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
--				     enum node_stat_item idx, int val)
-+				     enum node_stat_item idx, long val)
- {
- 	struct mem_cgroup *memcg = pn->memcg;
- 	int i = memcg_stats_index(idx);
+ 	size = *lru_size;
+ 	if (WARN_ONCE(size < 0,
+-		"%s(%p, %d, %d): lru_size %ld\n",
++		"%s(%p, %d, %ld): lru_size %ld\n",
+ 		__func__, lruvec, lru, nr_pages, size)) {
+ 		VM_BUG_ON(1);
+ 		*lru_size = 0;
 -- 
 2.20.1
 
