@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8020103A9BD
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F3D91093168
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:19:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C164A6B0089; Wed, 25 Mar 2026 10:16:52 -0400 (EDT)
+	id B2FB06B0093; Wed, 25 Mar 2026 10:19:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC74E6B009E; Wed, 25 Mar 2026 10:16:52 -0400 (EDT)
+	id AE1016B009E; Wed, 25 Mar 2026 10:19:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADD206B009F; Wed, 25 Mar 2026 10:16:52 -0400 (EDT)
+	id 9F6E66B00A0; Wed, 25 Mar 2026 10:19:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B7956B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:16:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 375051A09A2
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:16:52 +0000 (UTC)
-X-FDA: 84584786664.13.B744979
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 52D0940003
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:16:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SbEu0mJ2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774448210; a=rsa-sha256;
-	cv=none;
-	b=T08qXyIMYeYpnhhzESd8WXCJwgvp1KRNldM2UjS/aCNKVsluXJI4T9SARhJIiQce0hcvPa
-	IWTB+EEN6oAOJgfw8/4gKcJaFIvWgMB/C5cDf6J9s7QtwimmFPRDOZS9Lc4kOaCkuxBwba
-	NtZvsYWdm6NY+AH9JwDmxeFiUIiuIyw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SbEu0mJ2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9185D6B0093
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:19:18 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33E37E0280
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:19:18 +0000 (UTC)
+X-FDA: 84584792796.24.0FA90D8
+Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6169614000A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:19:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774448210;
+	s=arc-20220608; t=1774448356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yhVIlpHmi2opi+9CDarB44lMTCxpp0yPj9q2T0Gl3B0=;
-	b=2VKXSJZe+i1C7SH7OBneWkujdIyDQTQ75l6j0FDALYYQpAg7J/xcrKOFSvwKo7nTb9e/LS
-	Q/4sgTas2jDeXYPvtGa21IFr3caUdrMQxhT3zPRpMSf4jzgD4em1SK3u5ms5PO0m6IC/zz
-	tz8iB2IifvURkOtzoybfGg2edZhrLCg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1B9AA41779;
-	Wed, 25 Mar 2026 14:16:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C294DC4CEF7;
-	Wed, 25 Mar 2026 14:16:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774448209;
-	bh=8ngHDk8lWpxvFOPiWfS0KRFxiWHuNBJQ/GDAuJ99gWk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SbEu0mJ2dvQV/K5tuQS9fLd/5QfQEZJ1AuXyxzFLEGHOPmX5Q5RgBY6Jb9MLmGgtP
-	 KsXdOxp0Un8VMpdkZZOGbRjtlpT/NkkOP82QEqIB2TcMAdq/EqKujVy+tPpPvQIkv5
-	 GbYswH+1Ovsc9ReRSRi3irUbs9cbqZCSAHKsmXELTAWcvrkD9tj6Dw48Cp+Oft1n9j
-	 1oQBHLA5Jew9pc0r+xH8xc93+iTk5hiDatPmX3eECeN8S9hy/8aG+afOr90uhU3zf1
-	 g/CvKeLb54HC8JWQKCb0cTXVUoiXukXE4RvG36Z5jozMro9gcDV3tXQCzc5Yt/a4O4
-	 77Agr73H0j61A==
-Date: Wed, 25 Mar 2026 09:16:48 -0500
-From: Rob Herring <robh@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-mm@kvack.org, iommu@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH v3 0/7] Refactor reserved memory regions handling code
-Message-ID: <20260325141648.GA2685599-robh@kernel.org>
-References: <CGME20260325090029eucas1p1932917cc4839c3349932aeda37a7125d@eucas1p1.samsung.com>
- <20260325090023.3175348-1-m.szyprowski@samsung.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9JKMwSLfumsF4b7cd02f8z7LSLOVI8Oat/c80ePsBOI=;
+	b=T5B0mfYPpFA76wIfhj+ADwsVEF4earsKPg/y6wOwwMhaNELTqBB9bY6z7VfJgYBfY9z9Mp
+	VgezhPsGc67WwUXt7/Kwrrpc7pN1p5pXS7fzHCwwb9HBW9jwiUzPw1YvScYVrp+QbdMXqb
+	bWVQK93v72CnAQ+j2DlrZihlKWLKzfE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774448356; a=rsa-sha256;
+	cv=none;
+	b=0w1K0+hoT3aeBTXs3OYvuGKulFvVLBlt+D9gAhkFuS0rjDMMa7ETT1UcuUPXUmxrj/aJw+
+	i5HmP9Vz19YgxX5dqfMvbPKAz1EKWXDCyX8E1jQYWnQxKCOgOtbIWBDW0zXcfCYH4BBcIs
+	l5JwqeWjcrXRRS6DhbnLfkx7fH9yhsw=
+Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27EDABBCAB;
+	Wed, 25 Mar 2026 14:19:13 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf07.hostedemail.com (Postfix) with ESMTPA id AC7222002C;
+	Wed, 25 Mar 2026 14:19:07 +0000 (UTC)
+Date: Wed, 25 Mar 2026 10:19:46 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox
+ <willy@infradead.org>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Oscar
+ Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 0/5] mm: zone lock tracepoint instrumentation
+Message-ID: <20260325101946.41c613ab@gandalf.local.home>
+In-Reply-To: <acPRq1YPeGR8EqMB@shell.ilvokhin.com>
+References: <cover.1772206930.git.d@ilvokhin.com>
+	<aa7G1nD7Rd9F4eBH@casper.infradead.org>
+	<aa7XdpIVtLFS3FIu@shell.ilvokhin.com>
+	<aa7dgQDMEz34eadj@casper.infradead.org>
+	<20260309151317.7bba06dd@gandalf.local.home>
+	<aa8xawMxLeUjkyHx@casper.infradead.org>
+	<20260309171700.063318b5@gandalf.local.home>
+	<abhAoF5EpiPigsx7@shell.ilvokhin.com>
+	<abv4riGLlubast8v@shell.ilvokhin.com>
+	<20260324163918.1a3c5c960d85a4243c9ae314@linux-foundation.org>
+	<acPRq1YPeGR8EqMB@shell.ilvokhin.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325090023.3175348-1-m.szyprowski@samsung.com>
-X-Rspamd-Queue-Id: 52D0940003
-X-Stat-Signature: d7uptwsbfz7ne74eohzw3fdxn3bsebzy
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/EMkt4khKrTUfV151jFVgSJ/6WQG5xPGI=
+X-HE-Meta: U2FsdGVkX18CJYrOTc7hVR96FhN5yCibV3LQj4C7QJWHQd5CtYPpmFI5Ak5tJTbML02SPWJJs1n1pcrr5b+mM2O/2nhj0D1ILm08d78uSc4jhaXkh0u/jOFtbXpv5AQIp9xh12/yPSQdsTUpCjwCSvCF+PTrOg/MhY1uejk0xP3xxfiHPmkMH5dcttFZpoXUYEyQZsCd8fbix5P+GQwn6p1kpygA+K0H+WufhLP9mP/6JmyLh/zYaVXSBQZUWecJCX4l3TSg6BaEGAztVQB5Fv2ERbA3GLl88MUAKldXSJLQ272axuD9DrgZjtjipA7SdjKT4ErE0byYNs1x7SKz2ePVbrZg8IWANBEzEzAvpoBoJ2BRSn1lGDkwBPiLB2h/
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774448210-415074
-X-HE-Meta: U2FsdGVkX1+xHlTP5+aEBelKR4Fc3jY9OmR1Bc+sgBKzbLurZ3476xeVtLvezqEcod6Tq/4Z4gladTv+zD/d2CoSjMWOZ7l+/oJrN4+s47JtpGBXDspp7Wp2A5p+FQMh3GB/qoIS7VQHZNxFlrZ/6YVXi0UBiJw4PLpbZwtJfOl3X1evZjl9RyPlOwaK66PpQ+rI0Z5bQ8fWIDYaqLdOKsc01k8yr/6UKn0soPk4ZG+kBwLussFFdWn6cZN4NqDLYPovRGAPWnPnRsWN+aKJtJzfvu/8k2ulj+E4R+uXwhGo8GlDtxeIA/aVOfbxIX2FKkNsRdt37ApxOcX0gHitjxpUi4+GBvlyeSTych5I1Q84RlDqSOgR8OqffmSONEx/Lg0MTv3FiGSgXcnTiVmmi4rYzVf8Ui7/QGb9Hs7SJEcnYVdaK/hiJtjni0UhXukJqGHRnMIZWFGOaktXf8+7/IoI7NyxpPlXwwkA7gBmDA8Y1/MEtTNCzPtpoaOSLtE+9vjSdhngW0rsIeOZTd2xkEG9FJ2AIlXdQytp1KjGLCAN+CCkgEgVpHQKfNpblj1aF2ELhxfvlFA1z4j1/O3zRDgUOMiiUB8MRrZAB9VlFNN4Oqdo2AUKqgBNTKUUDhKa99hgvXJvVldYbFZbo0rm9N6hs2vmCpOwpwGX0b5+DQYKGfzwy74pMOlAM09MTZy4rB4tmHpoVw34HyCdO8yrm2RQVdkvNawNu07Bi65sgZURXHJgm+jxXZT6qR6TpEZ3vPxxye+RLer2MSyK/1YJ6Np+VTu489vWG8Z+BU0lXBgDrt6ZtpVmsG47yyohdqmqGexBIqa9YmWwOe3IHG+/kiz5Q1lss7/gjyc7iuSSl4fLCHDg3+kfvz/PHtcIB8c+4PIBhLFyRqRz0VrDWjUXcXfonOwvt2/uOgLoswEQTCXogZEUTBShJTsMuV8zeGRg0fyWs7rqqvAxuqcRmnM
- G7u+QHXp
- WIHzvpaOAbSmIijnW8owIrGp2ouCBNpWlb9SXdepoabYk9SHOJeEDScZTtv4kQ7f2xZySz60glQ8ptnClRQi6ccvq9CIZOmzfzgYdHIc7xE4QdXxCREBn4gdc3gfaAkpVXX34NiDoNAif7g4NHj9lzWnKvwtnMc5XYjsczTsy6oGlJ6sl87WvrtmlnAee2W795t3hRtpDfQjBVv7aklJRU0+xqEm+hCEQPcyGHxhEE4fFgfVf+ARXnJz9rOoNT2Xpz64QcSr1vKptwk7MbGuSUdxbaSFjl2Yp7ZpAzzUfPzTSp5yXqAtf+kwIkK4A0Fhh4xfTFsuMoqsiHwHn3pqN3M28OEbWlaFpmaR/Ak0RFcfJ7ig=
+X-Rspamd-Queue-Id: 6169614000A
+X-Stat-Signature: 5pc3ns6srogdgk3or4s6ppnqsb11ntij
+X-Rspamd-Server: rspam06
+X-HE-Tag-Orig: 1774448347-522659
+X-HE-Tag: 1774448356-956521
+X-HE-Meta: U2FsdGVkX19FppDmvCmS7Va5x9sx/BjcS7NL6K0eu4s5MOEYUVC4fwK81G6Qgk5+8PBMbZd67TaCd+yIpPhn4YGdex8DVJPVekIj6+9/vq0tJALSEK4KFts8Zvh+TS31tfiEVQauni/4AuUtsv1/91Q/FMsrAm6uE3ZUoF9UxYFdzd610m5dUYEDBXctv+jq9BZC0Tip0YOb8ZVTv9lMxXjA7Pkp1GY+FjPG699/V0RqzuqVsgPzcEjJAWIkzNzhacEXURZYXs/7lFtd77VlZIejgi3MmcmaFqUUoErBpj+SH1gkYm/wnzFiEt0mR9QvcL+8puvXO22ZmZhdxdpxZycFygKWSvaxBKuH3zC1QFEOjrdOBSeOVrhMgd+a4EvLyOpg4guADNPbmjza9U98ILt5AzpEj7zQKLA1m+82vrq/8tRJiDf9D7j4foII8xzXXQAyvh0/L8h7GjYlOrqkrReh5bWl95TTdKrCdeWlorT/LFod6SVVcH436cvq+d0oTcITWzCvo9okb/DBkVXoxfpip8czslhe21A8+LbgcF2vQ83KtTU7pOqckP6/stm9RtLcK3viArOQy7EunvvVfW3c8svhLVpxK9dbQ3nRbEOeNLZtz3qr7ImxDLLuZ9YjhyqqNJAaDS9ZLIMslfA8kzi0TltLeG4MscepO2s7YmPiBxMbFnMjh1PhhFfa3Lm6ClY/ZTA4XBJgj1NQia33Gapl8XNacQtHTUmqXZ4Q4s7gFDVFGwnKOFm5XVLlQYxE9hqPTp+1VZtmgDW/eeZsT78jH9bHWDhsu2ZqWp6fFcYiOqx3+W7KbzoO7ARc9i8cxFCiLLewpQqhD+Whvlqn0Tz/OJB6GYX1XnYyI+XnA5+q6r2UZi+rT4FDmaeoTaHCQTT+J5WBrd7LymgBQE8Ho2dD+fLYeskRCK725cDFeXuDxtN4tnaoWxpMOPIRpWQY/hTzAL0piM2wYSdNJ88
+ iZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,60 +104,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 10:00:16AM +0100, Marek Szyprowski wrote:
-> Hello,
-> 
-> The reserved memory regions handling code was reworked to handle
-> unlimited so called "static" memory nodes in commit 00c9a452a235 ("of:
-> reserved_mem: Add code to dynamically allocate reserved_mem array").
-> 
-> The side effect of this rework was a set of bugs fixed later by commits
-> 0fd17e598333 ("of: reserved_mem: Allow reserved_mem framework detect
-> "cma=" kernel param") and 2c223f7239f3 ("of: reserved_mem: Restructure
-> call site for dma_contiguous_early_fixup()"). As a result, the code in
-> drivers/of/of_reserved_mem.c became a mix of generic code and CMA
-> specific fixups.
-> 
-> In this patchset I try to untangle this spaghetti and perform some code
-> cleanup. I hope nothing breaks this time.
-> 
-> Best regards
-> Marek Szyprowski, PhD
-> Samsung R&D Institute Poland
-> 
-> 
-> Changelog:
-> 
-> v3:
-> - fixed more issues pointed by Sashiko in
->   https://sashiko.dev/#/patchset/20260323100901.4079171-1-m.szyprowski@samsung.com
->   (restored use of _OF_DECLARE macro, extended some comments and commit
->   descriptions, the remaining items I consider not relevant)
-> 
-> v2: https://lore.kernel.org/all/20260323100901.4079171-1-m.szyprowski@samsung.com/
-> - added missing ops assignment removal in tegra210-emc-table and swiotlb
->   drivers
-> - fixed issues pointed by kernel test robot and Sashiko: removed typos,
->   improved comments
-> - fixed incorrect node passed to fdt_validate_reserved_mem_node() in
->   fdt_scan_reserved_mem_reg_nodes()
-> 
-> v1: https://lore.kernel.org/all/20260313150802.1121442-1-m.szyprowski@samsung.com/
-> - initial version
-> 
-> 
-> Patch summary:
-> 
-> Marek Szyprowski (7):
->   of: reserved_mem: remove fdt node from the structure
->   of: reserved_mem: use -ENODEV instead of -ENOENT
->   of: reserved_mem: switch to ops based OF_DECLARE()
->   of: reserved_mem: replace CMA quirks by generic methods
->   of: reserved_mem: rearrange code a bit
->   of: reserved_mem: clarify fdt_scan_reserved_mem*() functions
->   of: reserved_mem: rework fdt_init_reserved_mem_node()
+On Wed, 25 Mar 2026 12:14:35 +0000
+Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-I've applied the series, thanks!
+> > Please send that v2 sometime and hopefully Steven can help push it along?  
+> 
+> I'll send the next version of the generic locking series soon. Any help
+> in pushing it along would be appreciated.
 
-Rob
+I'll see what I can do when I see v2!
+
+-- Steve
 
