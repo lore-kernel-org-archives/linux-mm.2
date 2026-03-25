@@ -4,86 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 957DC103A9A0
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 02:53:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ED76103A9A0
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 03:00:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7A736B0005; Tue, 24 Mar 2026 22:53:28 -0400 (EDT)
+	id DEEEC6B0005; Tue, 24 Mar 2026 23:00:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E51686B008C; Tue, 24 Mar 2026 22:53:28 -0400 (EDT)
+	id D98356B0089; Tue, 24 Mar 2026 23:00:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8E7B6B0092; Tue, 24 Mar 2026 22:53:28 -0400 (EDT)
+	id C86FA6B008A; Tue, 24 Mar 2026 23:00:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C75D76B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:53:28 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B1E51B8610
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:53:28 +0000 (UTC)
-X-FDA: 84583064496.13.5C16A2A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BCB3B180003
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:53:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SmYINUJv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B78B76B0005
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 23:00:05 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E01AB7B78
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 03:00:05 +0000 (UTC)
+X-FDA: 84583081170.29.28AD9E8
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A06DA140002
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 03:00:03 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kTRQfc4I;
+	spf=pass (imf09.hostedemail.com: domain of rientjes@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774407206;
+	s=arc-20220608; t=1774407603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2HfCox+wTQvgAMwQKckRC0O3FhSeeUwGDehB01eZMKc=;
-	b=Apb0Akxtimb3upbTJsikWWi+SxU2ya7dwEzQYDBuG8VQjLVPqJSjatOXrcUki+wzCvfU1e
-	i64ykCVss4MpnAIfI59pF3+72OZHWI5nLqh+sHbofV57C7Gjrw2/XOQWOFFVGIMTKL/NWI
-	qqlqahxYheT/bA1RzZ0axJpR+GV9AYY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774407206; a=rsa-sha256;
-	cv=none;
-	b=KhPTajzNjXFPYWO6JAJ+W7JetdHX87Rq1oObws+ZMzqoT/EOTEQw8nkiSL/P6aCsZukXZD
-	cWZvLZvp0s41509tHChsrcKh5zbyuk+4AnUCFHnb8UJfBi00inWqfKa/VddeN6lbcgL5XH
-	lN4UuIoaEJ1SAEh8VX6/RCpQatbfPe4=
+	bh=GLCYT1BBJZAVEfo2dGruLL5s+wMzYpDGhybdNbcCskE=;
+	b=uPkp45U0yuy8xDBNxkOkjV/lSB5/dBUO16D7W7c+9CLYRs+TtYe1EtfplspDomVedLAU4W
+	ZOITuRevcHz77M2qa5k3jgBJ6L4tZLrgKSChXr6nf5ATuUgQsBvlW7m73APbwIe6UE6imF
+	gYil0DL7NjN/2Hn1FcLKfuXXi1ez+GA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SmYINUJv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BDD7542D78;
-	Wed, 25 Mar 2026 02:53:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7765AC19424;
-	Wed, 25 Mar 2026 02:53:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774407205;
-	bh=9WOf1K1dbf9+9pgjiz2eJYCj8xI0zOxa68b/VvHN8pw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SmYINUJveBPg4slR9ROjzQYgRJRo99Y/c7i2+uUXgMjwyOZ0mvozj/EVQcelfzYN3
-	 LTySjyzYVF3e7oibxnjJGzQhoREJMYKEvJ/cpQWYSUbF5HyFWCJR6GqMqMoc28muE9
-	 LG1MlvNcUYUJ7irscjqOWsaTkxQMradBgDrHDM1sgKHTwFUNntBT/MIO3/MKVN3GtH
-	 kEw6Cd/2smwKJHbZ6F7NOz3lURDuniXWiXSHYGTo92vcWwKjSzFHrkdbeUMTf1B+2B
-	 o2q3KJGT8gVa0DindVL2RnBQT9zRIXlZebvE+22n8k+Lf8NwLUU+AFt8VSGS/ZabIZ
-	 MAmh6Gl8QlSNQ==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC v5] mm/damon: add synchronous commit for commit_inputs
-Date: Tue, 24 Mar 2026 19:53:16 -0700
-Message-ID: <20260325025317.86571-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260325013939.18167-1-aethernet65535@gmail.com>
-References: 
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kTRQfc4I;
+	spf=pass (imf09.hostedemail.com: domain of rientjes@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774407603; a=rsa-sha256;
+	cv=none;
+	b=dR3BQjHmyP4YaVxjpEXKIilI7AIxbUFnYFjcXJQdCdCuAP37A5/kWblzsAnppH1N2ECPN3
+	geV9TMjBEiPIMFOVH5YutJdcxyzmfxbnTS08JZ0lk8H1mEM3j9Ay6HOJwPGsQSpPtrXiRA
+	cVEp1J5fbY6xWOg1Ie5qhc4dBqhdvFg=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b04c9e3eb7so47065ad.0
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 20:00:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774407602; x=1775012402; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GLCYT1BBJZAVEfo2dGruLL5s+wMzYpDGhybdNbcCskE=;
+        b=kTRQfc4Iv+fI2Or1lT/csXLbltxmFPOpah7XEeI95DzO5wORzSMDsW2yk/T5LZR54k
+         eVoBvwHkmhzl+tYKnf3H0+DzEG2bE3MifGEPzvGl0OjmSXXkBDwDQYaB9xRYI4YOXa4X
+         mLAZWwaGXNPXAjo5Kzo6MDL+mS0QDKSWm9EP957p601hFwQ8JAfWA7Z1ONRFGuZo7Dyw
+         aetE3IoIS/PaRTI137PQ4mfZBV5RqKbut5zbH5Yl2Yvv39+9ScA4pKmAIkPRTid45fZ1
+         wyVugM9pe6AZRJ/hjCKUan46MItmcXF/EilWFLtsWjCAZ65bymru39gbiKpmdzpEoZqc
+         +xCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774407602; x=1775012402;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GLCYT1BBJZAVEfo2dGruLL5s+wMzYpDGhybdNbcCskE=;
+        b=e7tqjNs2ohGvoiXpHkSnHQWiZVC/zK7K/m5mIaYniX5I5Np45BqXNujywPt86GE4pO
+         e3/cMf0pbMxcEVX/wndpG4tU27JwqF8pkgHDUeS0EcAOtqZSDqct3nvEHPXLgUlvvDfr
+         DXTMR4m73TuNz0tF6o6OMknnCxzLD5I/myVcmjEy4prdVGzyTk74uQJsuRyoe9mRcHcW
+         sKa//k1T2cauZCKi3N2hz67pO7eo39zhmYczS28GcRxaZ1qwf2ZEtLWwDkitR9istZ+p
+         XuBA4P0MgT63xR75bxXkLnjmg+diUWH05DiV0kIwSn6w5mRt3VOCGqPvbqEXcT3PuOTM
+         XVLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXBqMTf4N5SH4+Cs26YHuDK4KR+/tgyOzQrdzqcuwLo1ZKg6MY6NgT2piSmFOe9HwsAI6/MphXzxw==@kvack.org
+X-Gm-Message-State: AOJu0YyuZEPNCh6ICh+fD8n/EAnjZe0j1rr/wWxfRbhCz2B6ZR9LwOEd
+	aW13UoZqo1mf+z7saCN935M8Vp92I6uFEnthdrSArYZe4BpTLrSNl6eJFadLThw81A==
+X-Gm-Gg: ATEYQzzcMmBYP+HGb/PQUPA++22Vn3BofnHN8yEFzu/Xc6WXeMW6yjhfckloozUyil3
+	5wHv0K4AYTXcBZ+yt7l4YisHVGx3uLJvjMaMdoGxAO/V4cPyF1obI9r3+ofD7A4V/wSI90HQgAY
+	GSJqFrtmeaJ9urhEs6ROo2cGCkg7jqmA+bQDG38QDWEUPg3R0ESSXiKoMSpE9pohm2VYmdhLgup
+	VGiAlG+mRh+0CtZSBgpmGqgT1dV47m1AlL6zVwSWf2n03QcxwK3mESjVpD3+yYCcKfiRmdAcPh5
+	2DeAJopjEzkQpAY8YvqYzxKMnx+6OTihTx3AM1CN94EDjEFnRnMla6kk99XdkMq1T/MifzqoxWP
+	KJcUur059WcOmu9am5oGTutW7bxH9q8LUBFkkHWaGbjFrM3UqbKouFv5Bs8qcnfVLeG4th2DqYb
+	hAkXo+0s5bKyFhDobRbGMdzqO7/GN+KzcYvB3ZZXQiw60QMgwVv3nr1/d/p1ioT2afHwMGtEX4a
+	r7FVIYYdyhRa9U5h1OOgtmPV21H8/jHx85BEVwtv8Sfuj6FWg8=
+X-Received: by 2002:a17:902:ea12:b0:2ae:575b:2345 with SMTP id d9443c01a7336-2b0b2a3f61bmr1084935ad.9.1774407601650;
+        Tue, 24 Mar 2026 20:00:01 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:5267:b1e5:66fd:936] ([2a00:79e0:2eb0:8:5267:b1e5:66fd:936])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03bc6881sm16083424b3a.22.2026.03.24.20.00.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 20:00:01 -0700 (PDT)
+Date: Tue, 24 Mar 2026 20:00:00 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Jann Horn <jannh@google.com>
+cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Roman Gushchin <roman.gushchin@linux.dev>, 
+    "Paul E. McKenney" <paulmck@kernel.org>, 
+    Joel Fernandes <joelagnelf@nvidia.com>, 
+    Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
+    Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+    Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+    Dmitry Vyukov <dvyukov@google.com>, rcu@vger.kernel.org, 
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] slab,rcu: disable KVFREE_RCU_BATCHED for strict grace
+ period
+In-Reply-To: <20260324-kasan-kfree-rcu-v1-1-ac58a7a13d03@google.com>
+Message-ID: <a77995fe-4fa0-3b02-6800-3e5a98c800bb@google.com>
+References: <20260324-kasan-kfree-rcu-v1-1-ac58a7a13d03@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BCB3B180003
-X-Stat-Signature: eqs8gaajijdk8877hiduyeux19xqxmmh
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774407206-902324
-X-HE-Meta: U2FsdGVkX19AYlczl3m57jlTERup9DPIVFER5MxQd8TjyLFmw1zwk4e0u03ERuCr19PY4lClFv6CqjG7dl5KB/G5i+0uKFsFlsV1HaKEaeh7bvF8XvKtnEUiVd0LJgKJNvz+WoeMNxopibVLQFsXm0GT9A+pWfJ585cBSF7/kzn3cSD4J6hn/4nZGy/oo+0afAiTkBtjT/2+/xXtpbsTtL3/N6BIQ+VLduSR5hUzRJ8LI5mfUSfocHYgm1QawOTi4Khu5mWzzqxvJESjXxJ7T+vHrZp9a7ioMM0q3rn+d51xHwoe4Y8qICoT5vKq+iJ3+LscXH7oyV+FKJpjrkDif2+givstLzcvE3ZvDG2WJRZM2NfadhuceuiNoTFTUzH0S3ILnOkMm7X4hpxs7iPkh9Ihy749WOmrN2mGPgizZlSjwG8dBdDjvsykk2K/CPy5n6yshhTXX519QL9q7xDgYEqjhBvt2D1cIi4ZPf/8D6DbIoktxD1pAWiF8XivyC3W1Uox8c32noIbAbPCJ2Q9TDDKVNXEKLpEoWeuqKzHqWEOM6N3w1nqpyhivumHTfsVZsf2sqXh6nsOJi65Z7W9woL/UGQpzYoF/nXHrBK03MGF7pSpGkUbViFepJ9QxYE7JzlMmgNDOByMhQPCAc8jALOjwIFu0zBueKCRwwDT7uA0SbtqIVuTImvb/W0R2Dy9xUvQuOaXosEkrtI5ELpxy/7+dt2A24hwc2yYptz3v4KeyKEMRJSd7SIvI5OgeeVdvEUPD4QrtnTQyyO2pWzJAyTvCxLe3XeLCFYGJNEy+d8Gkp9RJ56qFmEeGENV3yQdT/tToX/I5iQiYxufbuUKe1W2fEPJKNtzXJel3071yS9dyOiuvZygvkyUWDrsoyBQ6xsNBET+IXaqHwyHcPRmigm/h34KxKE8JOXOT2JkA/1/AKMUod2jqUefPqKhXrMnPsIKTlxYnv+ueHRRrwq
- rg06xgcv
- vEYjoaQpJs8UAfs4TkWpyQEmKk9uvfa6XUj4Np9a7HiQ4wu6JtxlF8HTKIa2fCyHwowuhDoYq4Nl7L2/MZzP3XHe3GabeJOGdnRUD/6REl1olclqPqhwIJM3aDrnNa8jm7v+7yWtQJrUBNVEZHXJZhf6HxZp2qysCx694V5/8ym5MtTo3obrlA+2AEmedIauAoDyGJanPCPEUeQTcwkEwgv0RRoWmopOt3a3zsCEC1ku9AX5ibRmwO3b1hAohfvV18dQm3qsPdH0pi6XIBy2epeQbLudEi0aVHR32ZjyZcy/X9KK+jq5VHqbSBNZu6MemIMIDryHbn7iD5i0SmkIvRuFgFUBJZREQIM9h8Cp8bCG24FElvNnGy0+NdqD1U8geIYdU
+X-Rspamd-Queue-Id: A06DA140002
+X-Stat-Signature: zfz5dufzij5x9utt43cgn6cpnr36kqgi
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774407603-737294
+X-HE-Meta: U2FsdGVkX19FULNJbBL5JQX0DpGwh7dGybSW74JeStj2Kt3QJik49WpnE0g8XbSEjtBDwmWlkBC6LCgojugQItL+LovsEK51cPVD6ARJsY5SPx/hWcS5kae0uE1LDi5vmd4I6WFqo/80NIcf5RB/ZmHp/IZDzM8it7HIl0pSJgw0uHinGSkWWQTmlMoD3mztLLIlBGiu95fxI30fQohdUTgUFhqOBQScPc/2oPiee6EVrdtoKkGSpSJ6JGqPdafnJ7woXbkuBMQqQqNL8iIk7KK7UPX0fTnWcQgjekXsVSH7f9ErnLq81ZSofvMT3V/GnpiICOGuoI/UM3zrCLNS/f7WnL6SPodTzsf3wdQMUWk/D/7YmSuxt+805n0uWx8Z50pAeAPgOkQR6b05YF2Xr7+jI44p4DN62gyfbb/USTNpdbAX+wKvPdvHRiNWNti0/nVnpFQnM292bvVcK2CkBwzVvLbwq5878KQVFt4K58gZA3DFdD6GzqCXE9+gnnNM9J+uVJ9QZHcGK48xGt5Uk8g4nz5TjgdkvtfFRsSf3NqjX3oUtod+t5ZhIkuG3l2ZTaYLrUa/qedjq/mAe9dJHGrFURtPlj8TmgQ9a4zOBthGgRa1o4jjCjPYJE3w/sCpgkV4o66Wa5AenEJy0kpJnmeGcU4Y7ievcseNSVnz8rlz6WKj4Su48aBSa6c+o8dvB1SPx2irM3jHN6zrJqFf9cbis9aoh18Ad+4MYdGOE+IyMHaYRDy1SkPMRbUq8koInuyfML6eZM4wooU7+qcZ35kG3mx5ZX6zo5LfVXcUd0g0ikAy/KG1a82jNzLEg8kH/JW4ux1vRXPHpLddYjRfZGng93TMT4eQ2cOjbhREIzQuZdYIV+rlzAb6bLfJkbMHERLqjGX4cyQDcM6TBUJNjL340DDDDTyI+bJBzDzTZ/WNAp1U1695CB/obZdIbQ8vGUZamhXeys79VFpDt5h
+ CV8ukzSu
+ LJfItw/pailGVuIu52jdgJIHOLjcrSmLRBWcGWRQEAI2yTLD8/pG+vGXoVjlvJdBlgRmnAiWZWGr3gLN18IHGd5EmB/7hz2YP0u4CQ5o885cpgrA44DBGEkrMMETwHV6sZJFgeJ38/XTaPy6qmrcVXASEu4MJx3cf4rrhfO4YbAgMO9UNzAN+xug+dgMgHxn7GWj+VA0l/7jKrCi+FhnIjn7/00F1zjBgJRLztkoY1FWMUoo1Ahbvw4lGJas7iGBWNa7JQjYka6smQqBpbMoQ7FvIMjEhlqPG1LxCvNLFy25QlJPBBI8JdYcTpi+2oieH15uSh4VmgJYJCVOR5fVYi0M4oi5PwBdQIVBmMOmnyq0IhEDMj5zR3VQ8cPL5ZjZ8hSbj8WdDPChT53X9UChcEQ4NNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,133 +127,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding Sashiko review for doing discussions via mails.
+On Tue, 24 Mar 2026, Jann Horn wrote:
 
-# review url: https://sashiko.dev/#/patchset/20260325013939.18167-1-aethernet65535@gmail.com
-# start of sashiko.dev inline review
-commit 60ccea4154b0c58741fae2323454a5a9496b67fa
-Author: Liew Rui Yan <aethernet65535@gmail.com>
+> Disable CONFIG_KVFREE_RCU_BATCHED in CONFIG_RCU_STRICT_GRACE_PERIOD builds
+> so that kernel fuzzers have an easier time finding use-after-free involving
+> kfree_rcu().
+> 
+> The intent behind CONFIG_RCU_STRICT_GRACE_PERIOD is that RCU should invoke
+> callbacks and free objects as soon as possible (at a large performance
+> cost) so that kernel fuzzers and such have an easier time detecting
+> use-after-free bugs in objects with RCU lifetime.
+> 
+> CONFIG_KVFREE_RCU_BATCHED is a performance optimization that queues
+> RCU-freed objects in ways that CONFIG_RCU_STRICT_GRACE_PERIOD can't
+> expedite; for example, the following testcase doesn't trigger a KASAN splat
+> when CONFIG_KVFREE_RCU_BATCHED is enabled:
+> ```
+> struct foo_struct {
+>   struct rcu_head rcu;
+>   int a;
+> };
+> struct foo_struct *foo = kmalloc(sizeof(*foo),
+>     GFP_KERNEL | __GFP_NOFAIL | __GFP_ZERO);
+> 
+> pr_info("%s: calling kfree_rcu()\n", __func__);
+> kfree_rcu(foo, rcu);
+> msleep(10);
+> pr_info("%s: start UAF access\n", __func__);
+> READ_ONCE(foo->a);
+> pr_info("%s: end UAF access\n", __func__);
+> ```
+> 
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-mm/damon: add synchronous commit for commit_inputs
-
-Writing invalid parameters to sysfs followed by commit_inputs=Y previously
-failed silently. This patch uses damon_call() to synchronously commit
-parameters in the kdamond thread's safe context, returning validation errors
-immediately to userspace.
-
-Link: https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
-
-> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-> index 554559d72976..a2410f648b51 100644
-> --- a/mm/damon/lru_sort.c
-> +++ b/mm/damon/lru_sort.c
-
-[ ... ]
-
-> +static int damon_lru_sort_commit_inputs_store(const char *val,
-> +		const struct kernel_param *kp)
-> +{
-> +	bool commit_inputs_request;
->  	int err;
-> +	struct damon_call_control control = {
-> +		.fn = damon_lru_sort_commit_inputs_fn,
-> +		.data = ctx,
-> +		.repeat = false,
-> +	};
->  
-> -	if (!commit_inputs)
-> +	err = kstrtobool(val, &commit_inputs_request);
-> +	if (err)
-> +		return err;
-> +
-> +	if (!commit_inputs_request)
->  		return 0;
->  
-> -	err = damon_lru_sort_apply_parameters();
-> -	commit_inputs = false;
-> -	return err;
-> +	/*
-> +	 * Skip damon_call() during early boot or when kdamond is
-> +	 * not running to avoid NULL pointer dereference.
-> +	 */
-> +	if (!ctx)
-> +		return -EBUSY;
-> +
-> +	err = damon_call(ctx, &control);
-
-Can this sequence lead to a system-wide deadlock on kernel_param_lock?
-
-Because damon_lru_sort_commit_inputs_store() is a sysfs .set callback, it
-executes with the global kernel_param_lock held.
-
-If kdamond_fn terminates (e.g., due to an invalid parameter like addr_unit=3
-causing a non-power-of-2 min_region_sz), it processes its exit sequence by
-calling kdamond_call(ctx, true) to flush pending requests. After flushing, it
-eventually sets ctx->kdamond = NULL at the very end of the thread.
-
-If a user writes to commit_inputs exactly in the window after
-kdamond_call() finishes but before ctx->kdamond = NULL is set:
-
-Thread 1 (kdamond_fn):
-    kdamond_call(ctx, true);
-
-Thread 2 (sysfs write):
-    damon_call(ctx, &control);
-        if (damon_is_running(ctx))
-            wait_for_completion(&control.completion);
-
-Thread 1 (kdamond_fn):
-    ctx->kdamond = NULL;
-
-Thread 2 will sleep indefinitely in wait_for_completion(). Because Thread 2
-holds the global kernel_param_lock, this permanently freezes all module
-parameter sysfs interfaces system-wide.
-
-> +	if (err) {
-> +		/*
-> +		 * If kdamond is not running, damon_call() returns -EINVAL.
-> +		 * Remap it to -EBUSY to better reflect that the operation
-> +		 * failed due to the current state of the system.
-> +		 */
-> +		if (err == -EINVAL && !damon_is_running(ctx))
-> +			return -EBUSY;
-> +
-> +		return err;
-> +	}
-> +
-> +	return control.return_code;
->  }
-
-> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> index 86da14778658..4cbd67e08d56 100644
-> --- a/mm/damon/reclaim.c
-> +++ b/mm/damon/reclaim.c
-
-[ ... ]
-
-> +	/*
-> +	 * Skip damon_call() during early boot or when kdamond is
-> +	 * not running to avoid NULL pointer dereference.
-> +	 */
-> +	if (!ctx)
-> +		return -EBUSY;
-> +
-> +	err = damon_call(ctx, &control);
-
-Does this code share the same kernel_param_lock deadlock potential as
-damon_lru_sort_commit_inputs_store() described above?
-
-
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260325013939.18167-1-aethernet65535@gmail.com
-#
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260325013939.18167-1-aethernet65535@gmail.com
-#
-# [1] https://github.com/sjp38/hackermail
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+Acked-by: David Rientjes <rientjes@google.com>
 
