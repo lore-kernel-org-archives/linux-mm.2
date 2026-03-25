@@ -4,140 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03A1F109C028
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E40CA109C033
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:28:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B0906B008C; Wed, 25 Mar 2026 11:25:45 -0400 (EDT)
+	id 3320E6B008A; Wed, 25 Mar 2026 11:28:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 688CF6B0098; Wed, 25 Mar 2026 11:25:45 -0400 (EDT)
+	id 3096F6B0096; Wed, 25 Mar 2026 11:28:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59DAF6B009B; Wed, 25 Mar 2026 11:25:45 -0400 (EDT)
+	id 2470E6B0098; Wed, 25 Mar 2026 11:28:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 49DA86B008C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:25:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17B0E1A0497
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:25:45 +0000 (UTC)
-X-FDA: 84584960250.12.6B75756
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 16E9840014
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:25:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kxkBnysV;
-	spf=pass (imf07.hostedemail.com: domain of edumazet@google.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=edumazet@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774452343;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1554E6B008A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:28:44 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7386E0E07
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:28:43 +0000 (UTC)
+X-FDA: 84584967726.17.5C9696C
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 33604160002
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:28:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=g+6UZMLU;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774452522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ZgVnh0vBzrzdLKpRyko+vKpC3HHuo/gtjQSZOYIEAU=;
-	b=GMdGuq07CNuEihPcFjxkbtm6s6w0e1EBD4+rUhJRADsP7FuSX5Z8djntyLr34Ywb5CQX8h
-	V5S1AJJZcXCdYa8QICSh4tVRhU4fA0Qwo6OdcTSlqNno9nrR2GWaX5dixXeW+hkoUIb2Yv
-	DZau/nx7OA+vKCvzV7phjfGMYGrqYwQ=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kxkBnysV;
-	spf=pass (imf07.hostedemail.com: domain of edumazet@google.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=edumazet@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774452343; a=rsa-sha256;
-	cv=pass;
-	b=nUti8LiEIrsNwdbcNPtuPR0bEg24bpjxC33H0x43pKX091FKXyMYHh9avvx07s7BOfbDu+
-	rPal0Pd5ZYmnNPKUVQYu223xOYUSvufVM+ioV8txQJZAKpwNRySxNQ59ZO2e13uwUa9ErJ
-	sD9JqCSiYUKX7mN8QXq3Zp/oHX9Rjro=
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79801df3e42so15645457b3.0
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:25:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774452342; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QHgp3gMTSCc33b8cfmALbfqbxRYHQ+alga2IG0boOxO9/Ivm1KHuRbsE2FRA5HGJP8
-         RGOtMPCaPnTwTeZJlPhdSSDcXrXD+3PE09cxGAvRWbdLwTTlhWzS9u0aNhbJFKHw2RLU
-         GAvNGYQkFLc1vigXZvmbkg5SInfibQjn07E0ja+r16GhRntfi7Ma3aeUJOHlOnrEwNBb
-         NyQ3PaQlvcvq6KIOa5+4GtiETLggl8t+raP5YZGZWpNNwbLkB3IEI0tX/MXctynY4xiP
-         3aazfNI2ofPur1GCq3dZ2yzLeek2+Pw5Sn6GPzRbmqyZCwc/XmQu8yl8pECfORcqJyaB
-         AFpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/ZgVnh0vBzrzdLKpRyko+vKpC3HHuo/gtjQSZOYIEAU=;
-        fh=wi2K3IIlK6N+O575ATDnjdxbddqCXhWCFRqv6saR5rA=;
-        b=OMFpr1qXIQGS1qh0MopjGqRDt8NnUX/69NUaEvsJlfQPFNys17uan59J4lVWffFo1l
-         f4LfS/Zo2r1f0LR2jXE6IT/76XWY/fE4VN7IWcR7lntm7odu4zIZjG0DGlLj8U6KhdTu
-         tYUV1yU/08JPB6o7vTW7fFK+rNuWiL0l76IfNKv7UNNqpnRiWAdlraCxwAWtuRyooA9W
-         6bUi6OWrPz25An4y/sgE0j7dRVyoQvx6i/HoR/l2hVbb/6iYiN0LvaJCUooCt1Tctsx6
-         ScRo1B1KbBvblVyNZ214PmDkZDY5CiPmHr2cEGKFgO2f8e8gC3EvXWkPPB/8cLUoHh5y
-         XxLg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774452342; x=1775057142; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/ZgVnh0vBzrzdLKpRyko+vKpC3HHuo/gtjQSZOYIEAU=;
-        b=kxkBnysVS87M/AFiHtlgjfaRhISkSw1MId4EhBAAjs7geYOiJmY0hobhvlwkUa4Lvg
-         KwKx1kGgCv3GmWnssVGKRxpZhfvCLGt6P9+AY81PGfLyEcYyIr5hXQAag2iWDvEx9Th5
-         tk+cOr5FSGEzQ3JXRbMkqgPjpzhVuV3DhxrenmVOOtku1MdsZZ/+Rsi1EWftdo3rbd6k
-         VskjSRVnQICUzqibfA4dFYodDtsNjXUf2aJp3MWY9PNJcqqg76ZrfClGqQ0TJ04a6ypv
-         94U/tz+dyZXDSaJU3eOhhK26uEHbwxuhDgIXe2jzNnOeXBLJOhYODwDdxjHvlEO6yytT
-         +81Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774452342; x=1775057142;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/ZgVnh0vBzrzdLKpRyko+vKpC3HHuo/gtjQSZOYIEAU=;
-        b=CjVklYSq2+38sd//DSqqlR8t0KTOeBP5AH+oNjpAr2p2KAMQ8zADTtrf7MYoOAakpv
-         o57iUpK83R6CTnx9ujSoFuqrwmmt2/UE5Uz0hZmt7/LrxAZDJfV8GHIEle3h4zbowdSu
-         CBQ/EBo7kX9Pt42slAWwewBtRC27rBAUcl/DQ8PcrtV76+t4lvpgNmAHbwA+DE7fqt82
-         AmwG0glfPgns0k/L/c6nKCM4gvRwK5F5C2ybj/g4CUws9OK6TeNRfNsnCPYSf96o+P6/
-         wqORLMjNUs8Vna/qdXeqPyqrJnWmdsF+ayWD5/n691wSGFiySzAfW6osfCdXhHc97VP7
-         zWnA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6f9k5PH37RyOnmb8zZ2ruZqeI32RSRFX9UZJxN0YcQf5Sncv0aoEqG+PPZ19FSeU6zbFdJJcGSQ==@kvack.org
-X-Gm-Message-State: AOJu0YzXceaNXJBvOJVmrxKzBukhcrkPo1XqadA+ezgvU6l34vwz71rf
-	lNElR4MkCmVVCOQQe+9UIu8e/+PU7RW60AsZFefA1OiLaoxss7rUHx61Dohc6J6POk50p/zDgLh
-	JJkA9s24OrvJWICanuduZw4PFiQDA8MvSsN47dXma
-X-Gm-Gg: ATEYQzwSgft+GsbJ0EpzjAfore0Bnrm0jacRiJ23rXdxr6Y3w9Wkez3OIfuv3Vc5Pfi
-	U+hkp/pid0OoOLD1GnabuBnTQdFQcfM7tsYnWdU96uIKowH7/mJYXhlh3PzqROdO8elp+UXQTzt
-	zzsV7hh9nxfiYbsfY5DGJGaR2zETDtuKFjd90dskHaMbfJWj1uBKMBNb+buXTtMvs1ADgd+Xf5b
-	sCGjfKdUQVztcOy0OyuaeufC3F5f5Z6daCHzeDg8Bqq+YeND0EcAui3XSEvrooG0eurShSHHRDN
-	o9TJB8tk29Gu05A+Cqru4Qsk1BmbZNQzIyLTS3XrW2wTNF4=
-X-Received: by 2002:a05:690c:12:b0:79a:c5b5:d094 with SMTP id
- 00721157ae682-79ac5b5e61cmr56555727b3.22.1774452341523; Wed, 25 Mar 2026
- 08:25:41 -0700 (PDT)
+	bh=aAaE1cmct4Ax0hsF4P3343EFIFASkKmlY++QqxjAvYQ=;
+	b=xdc8H+YmGuk0CHfZPC07KuMDhxFtXV/6bb0jFujA2pkpWT9k6u4yfYX6WL6l+IBAiyg+wz
+	7tnjA4lBiyzfmH+Yi2KyJKsMUAR5x65Qck65hKT+VQBHAAcuvkpVEUbKD6i4yTB52ppgnz
+	ojzGoeXB4Sbh9Oswg0UiPVga7oNZZ9A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452522; a=rsa-sha256;
+	cv=none;
+	b=6DpD0lZ1qK3LceqkmmtBOcKw6MbGvE3fbNcVuZMetU3tntRccrK5PGNJL+AOtw+1dmvLxv
+	hYkncGij92j2DB78ktGi7+dX9S20UTMc4+IBwnqnjnFrBwtb7O2tPbbgcwYYOaC3OJ3rL+
+	nnbEoV6r95VVdaAzHAdlS6L+YJoJNAQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=g+6UZMLU;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=aAaE1cmct4Ax0hsF4P3343EFIFASkKmlY++QqxjAvYQ=; b=g+6UZMLU6OPQTahV7L1Or45Qhk
+	teEyLF1KRx8BhTgUFvG1thOrA1Xv0GZL6YaRCjndq9v9zKSpSyX6ou8ICcdBGBBt2gBEEwAgRDjnk
+	PtSWnYIjviyGCH3Txk7PIepvcN5vclndlCx73JxK1M6bA5HEkt0zlsMjK0GfI/mBQABLEohi6D9wN
+	NaGwB67xEeqnq6I8KGxoIGBetL8nMHS2PwDgTU6Gv96qYVQLWqjs92rNs3+eVO7ctO1ac3C3ra9xP
+	5PTIiliCrujAHucK5CVuuROFTGwuQruIicSlp8xf9k+Mr2TWRXMZMFUh/3WNRQ+3GN5diElo3g0Xd
+	CijWneog==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w5Q9l-0000000G4b2-2rml;
+	Wed, 25 Mar 2026 15:28:30 +0000
+Date: Wed, 25 Mar 2026 15:28:29 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	"Garg, Shivank" <shivankg@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/migrate: rename PAGE_ migration flags to FOLIO_
+Message-ID: <acP_HVmrhP9_6s7j@casper.infradead.org>
+References: <20260324114720.864478-2-shivankg@amd.com>
+ <54398FC0-2F68-410C-B9C4-2802810C119B@nvidia.com>
+ <41cd005e-3702-4c67-8d32-0c09274194e9@amd.com>
+ <cb383f3f-b74c-41a8-a77d-d00e93b7fe94@kernel.org>
+ <f844a2ce-105e-4002-a106-b936ddd98a99@amd.com>
+ <857B5E73-94AC-41B9-A3BE-953E59A5DB40@nvidia.com>
+ <27b1b602-129f-4bc5-a553-386e8d1f5d90@kernel.org>
+ <539EA481-9CA0-4B2A-B0B4-C254E34BA7EC@nvidia.com>
+ <218144c5-6f51-44c9-bd70-e171005d3606@kernel.org>
+ <925CC2D7-D525-4272-A01D-2A1E50127401@nvidia.com>
 MIME-Version: 1.0
-References: <20260313124756.52461-1-naup96721@gmail.com> <87a4vyihlx.ffs@tglx>
- <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
- <87fr5pgp5x.ffs@tglx> <20260324174418.GB1850007@noisy.programming.kicks-ass.net>
- <c892e7ce-473d-41e5-aa99-b95e0366c3fd@kernel.org> <20260325151445.GH3738010@noisy.programming.kicks-ass.net>
- <CANn89iLnJv9_HRV1vuURFM5uVA-y4SqBsBRD24kSJe7UmBtXSQ@mail.gmail.com> <20260325152206.GH3738786@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260325152206.GH3738786@noisy.programming.kicks-ass.net>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 25 Mar 2026 08:25:29 -0700
-X-Gm-Features: AQROBzD6WOJq9HMl9PviVje0X7fhAoychNxXs72Q_9-4-I9MLN_UexI4AEBhPts
-Message-ID: <CANn89i+cJ+BOs_swGU4vHbKPHVV+vqmHjaSywUxDzBu=nXfmtQ@mail.gmail.com>
-Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
- and vma_replace_policy
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Hao-Yu Yang <naup96721@gmail.com>, 
-	mingo@redhat.com, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 16E9840014
-X-Stat-Signature: z1ffdc9retemd8fsd4g7j4nfrks7yj9t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <925CC2D7-D525-4272-A01D-2A1E50127401@nvidia.com>
+X-Rspamd-Queue-Id: 33604160002
+X-Stat-Signature: oxjsjjgregx6c3aca9jswc1euw7hqu8b
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774452342-54669
-X-HE-Meta: U2FsdGVkX19gcKVe3OmGiT8W+Gvrhkn/2QQ2pcf84jQt6FHIcRQK3piNc4iLTFVln2FD++DIduhpCyeqVLr76Xf1R9fE+/MA0nF5qBisYFtO/y+zRdlZPRWheo1BgBrIFs3hNgQ7jv0pRk2289a35ojBt0am2GpI0r76E7Tj8TuILCWJuaCiugDLZhzID+SBhpWddbjdwRNesA6ABACuenNylG3KZ0plq1dsv27pt5hAxOREOWKARNzgizlz0iLRy7gnsNJxLeTRtoU+JoLsldCUK6XL+832wJVNFeV246NTB39HPZfMvWDVeGkGIWHbrOOW7Xvd2Zc0Zm6ENuouEQBSkDh+eppaIbsmfirdtRV4kJJodXkG00aUWvrMLvdmAJoWGFAWQslQbX36PsuJn58S+Q84yCpOhMm/KBfWvZu1UfTlsmrDS9PmZ9lP/tX7+64NMTKFQAX1rwOfeyLckfjllOdhol4n5A3J3J/Xe/rvKnxnqRCN94ilk9LIkqU1Rh6EmkCQYRg5ZYWhYu03Wx8pVWkQxQV0bWVa2pUdgk13NLUPuPvH2/SDS5qFWI6VlOvMfDwEWQat8ZYlT6oWJuN3tZDkNbRE8+5u2Z8t/DXzvIYGlRwzukDmzwvw8Vb7Hq+UM6V26lpUiad7/n/2idRsw6BIPuqVjLiAQ+QG6sCNPyimQMq6hXpFpMIi1XyZ/oV6KPmz7YF15RF3R1ZTmjkL1Q49JO76YrboBCx7KZmoYIwnXInLq3xmS7nP4k6ITf6J5h2hyfF/u2GOs7GF57uiHqy+RuIbTNKRTBHYCqEBRR9p3wkb1lV/eqSx/HQx6HxZO7sgFypjGRwSG6oTQn1rS/edrcHYVkUUc3x5QwyTc2/Dx/FVxqxMmPcufQ8URwBtn28hbhJzr/zUGExXM9Vx3Wa1QXcOpITEiqhEEg6KfY27I6j7csJzjT1MM6vyH2ADlByKJqzspIQF9Ol
- xeVnvqF1
- npcuyOEecCK6KqMEsPe9HXJYXHClBvjYg7mI07Uh9+U53S9+vz9+wElgPxlwbnj/fF1D4csTEZkCkSOFmaAOAKnb1tfeva+XvdARrZiYt80LKqhPBfuqnDLiJmSEXieJCTczPPsODey1m6BFsld2qedDYj1/DlYsR3eHxa4cUYekAf+5nfExDpBS+QLcTc1uZk9DuBpSdEqAQjTzNqnBSUm8w3zvc+GNCN4QVqeTfW41MO3xayT2q9mkKP/riHude1DUOqGsqHeqZL1VB1Ukp3CxB/tNDaGFKubQILz0+Hv+AXWmoNE5auq6yJEmgocAZ0YhNN3ycfaFIKDl07cDSEtefmigC4kAH35oneiiArQ9PCH8=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774452521-6286
+X-HE-Meta: U2FsdGVkX1+bzk07re4oUq1qs0a98tbK0Uz4GbtGhyK5k95FCVRMPUCvXmoMs0iYWiQG3ieEacuShvSXAlmxlmCpoznLI8tlCR7EyuMjiIiP2ITi9v6IPOX8e4I/GtrHhY1gGAAsd9ZPXW0FpFRj9S3CgSfkUrLMX3zEEn10SHXTzztiNUOIfx2fWvG65hrko1p+7bBtgFD6Vy4kIjen9yWXm5FDEazhs8/oWcQq7mODSsFLWPHNnF7ika5KXkQy4WOLgaaxw0ukV3rQRxbyRWmzhZbqyYDDNcugcwp0SaRInktNMgSNDLwVV8HCOYv7szYosYzamtEt9OxI1Dr/FVdqiNPvIlSs3t0sFkI7eA8MUcF3H9upg0T2EB/OJfbVQ6C+Q2SAZ985YcCHTaZAHpQxCIi8K6rxdc2Tz04LTJ4wpYIjFfDayihmmNVj8H7rwpNhRXRduHalKHgcfZ7Yn2w4tu064z1FKl1rbaZ4yLp2HFCbIhPBPsbkEEoT2D+fvLX8Y5gNzuscqIQY/8dPgVEl9zjfLnmG5VmZN0pDCSkgsT2jYsvkF1PE06vKZZFdEar+g466Mtj9ztxkaSliBfqUewIpCwAbPJxTs0G/6o3B0UNjX0rkJq5uxZ08FqkcdErhzU9uldO0HBlIb6VU49MDeOOw7DmDHUTRUf+YKcFHeEY08urzOfydki3yyjQYso3m1zUcrAuGp02eFG1sne2lyCZ55ravJYtI5+BFEuPbzTd8p0g8cfMkDOzMiW62ljFv41JpWcF2tm1q8PgIAILcVlKA+6wXhSs50jxT4kafRpt2+8R6f5Ar5J49/SdYU/Qlp7RR/CxkiVOfSvIUuGIPAJk9667TwrrQ9gpe1qZ/zVxK1/2Se88ICHBHeQdl507ENAWe9rV37inNBzl+edgPsp77woArnwUQKcViMKa/6miCc65w0WSRVBpQrU2r+fcqlerlau+j2YSnNij
+ nssbCdeU
+ qvBrKPlctwZKQemB7viIq7p4xgoi05u3S04CYnc/BPGP+DK9kPCtXpEv5DGtY9H114/z7N934Hch6lqOmm45TD7jOQ3YnJ7w3BqOJYQojc3rd22WcrN67Izoe1GHxgBDE0h1P7htUYklZMXEWJo8082hLBKhHHmdVM0qatYGJ1meqj1ieYxuGJ4kqa/SX13h0KcT9Trj6WCccLH+xES62GEf62lvk83VrJmgC1MFUmZYwl0sVdxw14OBj50c4TMq1++lgzWLEcPv/nHOfFzcStuFB/Ur3g7FHZ3kiYfnObt25LjiKoJiuROsydY8Yx5I0pV78kX5w3qVQ+kfUN7V8ry/hjffZop1Vx31rEsUJCwMqhJ37u/s4DF2t1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,35 +105,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 8:22=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
+On Wed, Mar 25, 2026 at 11:05:44AM -0400, Zi Yan wrote:
+> On 25 Mar 2026, at 11:04, David Hildenbrand (Arm) wrote:
+> 
+> > On 3/25/26 16:00, Zi Yan wrote:
+> >> On 25 Mar 2026, at 10:53, David Hildenbrand (Arm) wrote:
+> >>
+> >>> On 3/25/26 15:21, Zi Yan wrote:
+> >>>>
+> >>>>
+> >>>> Hi David,
+> >>>
+> >>> Hi,
+> >>>
+> >>>>
+> >>>> In terms of folio_change_private(), I did not think it is related to
+> >>>> folio_{attach,detach}_private(), since the latter change folio refcount during
+> >>>> the operation. If folio_change_private() is related to attach/detach,
+> >>>> I imagine it would check folio refcount before touches ->private. But
+> >>>> that is my interpretation.
+> >>>
+> >>> I mean, given that
+> >>>
+> >>> a) It's located in pagemap.h in between folio_attach_private() and
+> >>> folio_detach_private()
+> >>>
+> >>> b) It clearly states that "The page must previously have had data
+> >>> attached and the data must be detached before the folio will be freed."
+> >>>
+> >>> This is the wrong API to use?
+> >>>
+> >>> Sure, it sets folio->private but in different context.
+> >>>
+> >>> I can spot one user in mm/hugetlb.c, that likely also should not be
+> >>> using this API, because there likely was no previous attach/detach.
+> >>>
+> >>>>
+> >>>> BTW, do you know why we have set_page_private() but no folio_set_private()?
+> >>>> I would suggest folio_set_private() if it exists.
+> >>>
+> >>> folio_set_private() sets ... PG_private. :)
+> >>>
+> >>> folio_test_private() checks PG_private and folio_get_private() returns
+> >>> page->private.
+> >>>
+> >>> A cursed interface.
+> >>
+> >> Oh man. folio_get_private() should be renamed to folio_get_private_data(),
+> >> so that we can have folio_set_private_data().
+> >
+> > Likely we should strive towards only using folio->private (and the API)
+> > really for fs-private data (i.e., the pagemap.h interface), and add
+> > proper custom members for all other use cases.
+> >
+> > For page->private it's a different discussion (requires more work I
+> > guess, because there are many more use cases.
+> >
+> Makes sense to me.
 
-> Fair enough. Like so then..
->
-> --- a/kernel/futex/core.c
-> +++ b/kernel/futex/core.c
-> @@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm
->         if (!vma)
->                 return FUTEX_NO_NODE;
->
-> -       mpol =3D vma_policy(vma);
-> +       mpol =3D READ_ONCE(vma->vm_policy);
->         if (!mpol)
->                 return FUTEX_NO_NODE;
->
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -1026,7 +1026,7 @@ static int vma_replace_policy(struct vm_
->         }
->
->         old =3D vma->vm_policy;
-> -       vma->vm_policy =3D new; /* protected by mmap_lock */
-> +       WRITE_ONCE(vma->vm_policy, new); /* protected by mmap_lock */
->         mpol_put(old);
->
->         return 0;
+The long term plan ...
 
-LGTM, thanks !
-
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+ - Remove PG_private (we're pretty close actually).  That kills off
+   folio_set_private() / folio_clear_private()
+ - Reimplement folio_test_private().  It just checks whether folio->private is
+   NULL.
+ - Remove folio_get_private().  It's actually longer than just using
+   folio->private and offers no advantages.
 
