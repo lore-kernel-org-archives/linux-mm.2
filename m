@@ -4,88 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DFF8109C02F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:04:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0629C109C02F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:04:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B3B46B008A; Wed, 25 Mar 2026 11:04:21 -0400 (EDT)
+	id 50AD36B0092; Wed, 25 Mar 2026 11:04:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88BA46B0092; Wed, 25 Mar 2026 11:04:21 -0400 (EDT)
+	id 4E27F6B0098; Wed, 25 Mar 2026 11:04:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C83C6B0098; Wed, 25 Mar 2026 11:04:21 -0400 (EDT)
+	id 3F8246B0099; Wed, 25 Mar 2026 11:04:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6802F6B008A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:04:21 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 194F8BBE01
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:04:21 +0000 (UTC)
-X-FDA: 84584906322.18.1320C68
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5BFE6120011
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:04:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JCOnoye0;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 2C7A36B0092
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:04:36 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCF061409BD
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:04:35 +0000 (UTC)
+X-FDA: 84584906910.15.B279C23
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BD688140022
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:04:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r8UfF+Ps;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JCOnoye0;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774451059; a=rsa-sha256;
-	cv=none;
-	b=GuRzP72hstSiFzKjN8xImgsxU7a3HEogooKooGmvb7BUV7UKi6D2bVyzH73p04qhYBotjw
-	XGB94tX3wPr9b+clVrV6oCpuzpbacJZ0kOswkm8oqbh3bZ3KHAjlwa0dhKXZ/tZ700L7Vp
-	lqHBU2kHDEPiqpWanySDkkE8m6hBQgo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774451059;
+	s=arc-20220608; t=1774451074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vKea0lohIccY0HdpGx7M03dWoFYAzebgiogvP+wV+ao=;
-	b=npDlcQ3TnwsuCSKDJieYvPDSe4PMgSahJO5l/LV3YCNda7R9QR88mJkkwyZB22DApUUMH3
-	Xe8Vg1F2pG6AOznO4w1C+BuZH0lzkroSJ5XgEIAD4x0M9/eJSO+ljsk/TvL7Yk9oGIr8cl
-	iOhCwbd4N/0PRkEn5S8aWzM5FhpaMw8=
+	bh=2Veh1BfpIt/H7zLtOQan6MKyLMGl3Rn2T1Z3hAkNao4=;
+	b=MKJcYItWJqTP7EyqqHTdGiqQbNgjLM58BElXwfuWxYjBVTYuFbJ6P52jHzuoJhaMRs0qzd
+	e4Z1BdbJwXSSflZ9nHt3UAoBTxE+POMvzSL4U4UnR8N7YNeS/x9tpETSZ+FyNSHo8bVQjt
+	hR/RFG1zdd8J/XIFmGC5XsPUR+z50aI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r8UfF+Ps;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774451074; a=rsa-sha256;
+	cv=none;
+	b=gGYll5P2gnjTQCw7klR9rlD+KDU/mlOxADhL0wdSh4VUMZCvGr9KuKGvwQu4YgP8sAWl+m
+	R75E5stWPa6I6tiFzjVINqMRQoJMsv3UpNl8e7Nw31Hyj8oTz1rlSU6jkL8iAMACWzgTll
+	YaQ0VjK5jcqXQ+mOodz0mzF0JpQqvKQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D20B5600AC;
-	Wed, 25 Mar 2026 15:04:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD1DC4CEF7;
-	Wed, 25 Mar 2026 15:04:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8913C43FD7;
+	Wed, 25 Mar 2026 15:04:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7DBC4CEF7;
+	Wed, 25 Mar 2026 15:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774451058;
-	bh=UD3pMRTQnc7mmQ6/kqhD1kZgF1YPF0ihrkNbU0vkgqw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCOnoye0iRgKQ2/Hkv1xCXmCs2iJwfAE1Iz4Pqv08JDL6zWTRDdATiNeJxSkbuLkm
-	 W6VhgwYWT7ONxhf84Ljf0iLwP7DW1oQlpPb/jApYhZnkWrc5Fzbi/HNFm+nG6l94QS
-	 whi9KTK2GaDC+9dWJbW8oAkDX0oKwUylyZ+4kAkhxhMbToBfPqBKqY2pfjzLTT9+lX
-	 qLJnwF9xzMLjTvtYQQa6/bly0eDxYL4BN/oayNeNYxAUfjBwI/t3mnbEJ447sJAmig
-	 2oTUoFUJtYXtcEEipxpCK8my4F2x5LBZpqF+aWz57JsAPhc2tP6+K77IJL+ceD2das
-	 GqeDo9nQG9e5g==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Josh Law <objecting@objecting.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (sashiko review) [PATCH] mm/damon/core: validate goal nid before accessing node data
-Date: Wed, 25 Mar 2026 08:04:10 -0700
-Message-ID: <20260325150411.88357-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260325143740.87690-1-sj@kernel.org>
-References: 
+	s=k20201202; t=1774451072;
+	bh=i0ERc1OsUCkfB9lMfbeJ3a9BcadwOiGGVEUgGY3EN10=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=r8UfF+PscrBhC/lLVJISEiVsy7q+phLRbGO2IARZO232xtTxofwAIKpQFaa6DDYpq
+	 tsr7mvXmqESrlViyrWp72p9lwUH/cPYnDjoySxxO7M0eFCavBU4SejpSJY92NOM9w3
+	 ccvZ8Ow3Sp+RpXCw9DRwTAq/xnQlxpy0KMmN7DqqKi7lNbMzi0ZQmlMsb9XzEpA02Q
+	 Nmy8XhTlZjYSyxF0TGbYB7sN5gnKn5rJR69/WUR7k9nlW6FtIuktk8tg35AJ88B29v
+	 YM3tOpDfdgHldC08n4hWOGaHjlD4DAS3i5aLEX8nkgmUyug81OI1/0ZmkdRw8aT17I
+	 9/chLEbG7foAA==
+Message-ID: <218144c5-6f51-44c9-bd70-e171005d3606@kernel.org>
+Date: Wed, 25 Mar 2026 16:04:26 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5BFE6120011
-X-Stat-Signature: 4y6zbwztxne3fpyjaoqgeh64mp44f3an
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/migrate: rename PAGE_ migration flags to FOLIO_
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Garg, Shivank" <shivankg@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260324114720.864478-2-shivankg@amd.com>
+ <54398FC0-2F68-410C-B9C4-2802810C119B@nvidia.com>
+ <41cd005e-3702-4c67-8d32-0c09274194e9@amd.com>
+ <cb383f3f-b74c-41a8-a77d-d00e93b7fe94@kernel.org>
+ <f844a2ce-105e-4002-a106-b936ddd98a99@amd.com>
+ <857B5E73-94AC-41B9-A3BE-953E59A5DB40@nvidia.com>
+ <27b1b602-129f-4bc5-a553-386e8d1f5d90@kernel.org>
+ <539EA481-9CA0-4B2A-B0B4-C254E34BA7EC@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <539EA481-9CA0-4B2A-B0B4-C254E34BA7EC@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BD688140022
+X-Stat-Signature: ai31f5er1xyg98hg8nsp3yn6s67onmqj
 X-Rspam-User: 
-X-HE-Tag: 1774451059-186457
-X-HE-Meta: U2FsdGVkX1+IFLInTWWDZSKxyahRS4qAdXCa0xF5ZbgeBVnI2UQ3le3m0XJCMQ0kux3IhW0GD4uQkbh7acJgfEx8CA0IjujOvDS5DmWC3Z6WFbz2yUqPPosPjqhFAulfrM3YzEtnddo5NSWSFk7ER/H++WI427EddvSHx0Fv6pZproAWc5e37l992FUOiIC8hJBf9FTbCYxwn1vDiyi0yPAITrhA3fr+zy/IPN5xe1QMWDU4Bs4oJ0mgOxinB58E7rAmNar41KRcSfqsc4aIVixVy6mMYD/daC+uL9m/v2OkG64j85A2aULCntURVFw32tfXWYWo9MF8wADB0w3nsAfDJMo5OHzV423tCxnoFsQ1Zl3RPU4U+6kIe99O0Nf/bPxZQU+yUuAwc7B8+kKrf/ol4BsY6rxrrehE6uw05uIj6Qh81KE1iyEzz8o1Gv1pjbtHi5ESnz8Jb5Nogasq6/rdzz0OoLVv75YWJPmL/1lDzkAVGIW3n1DSXx8HX25RUMTJSZvHolCUKk+ZKN2Hel9JY3XMb0B+Tne4pPFI8k8WlzL1LGiQHC93M69YKJr1NcgvOi0cwFUztzmHsGS0efucaOwS11wGDHRtmKNNKBWyDoxRCdi3jCANiZMa3PF+GZ+1GKoB0z36uCejZfyL3r8xoPb0N9MWH6p4Y61l546We1TWAJFx9oBgVNUCDffuKB99kwnj+ivoK1GJVn5PEPBFn+MF9LtyTbp9RfKmb90zwdJCQGPj3y5UWRZjJuZ/3uD+3rEaeIYqUJr7hi8bB9pjPGhbmJNs9bTFzx6Yyd7lV3bbyCv0nPlp5RJ2oEvsn503Td4+Gx5u984Mrgd0WbjyFd3sIhDkdBz2YaVVrVUH3fEbJTxJTTGhBwwwUEToRgu5sShWuluz4fSZOJLV3PGTcFo+SHs5ac47rOiEldK7+meCj2HghJeNyX8I9KVJR5By+efYwR2nZIakm4o
- dxWtnmkh
- DsU5tVwUeRIFyjPIh13lHSWwvKo11ej1NG7KuEzhYLDLZx5F18sRvcVDSye4LrnvCSg6Slp1NRkoNPseIlyUjiS0VI1t/9/uf+PRQ8M09W/bL0Oh2AnI6UqSLWfhZebX95oI/IoLI2tgdfBwzH+4BhW40ciUlSHGdNoSYatnxaiGQNKy94fXBBpcfuC+2tepNSS4xiRnS6/5xvuZmNDD+p/FIHO7Ma4osSX6wAo/ffMzpOTwaCiq0sUZXPU9xxjpap87tNnvCSGO01xUG6swvJXAvE8ma/zmy4MJT3Gwc4vLcILk/AAi8FDrDHXBH4g58EXt/VUNo3ZAwSwxjKTxPErY6RwmHh/XJiqpP
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774451073-693920
+X-HE-Meta: U2FsdGVkX1/fdMtfc0fzUpPaoep2b1KpHWX5X8H2lt0SHb72WYAlYjxe00uWMqK/cnLKP4zzcCWGGeZzID0AqO/G2MYOaGpaGIkWxnrS53qiUqEU5UDiZOC4s23hS7fPZlaJgyRx9bNADJgj2xUrQXGVFIoEbk1pRwvrBSM177KYlS2mGd2x9yeQSXYoZOMQTfJspMF73oXjGuCBRaE6QX5ZbIu1obzh0rWrk4iMaDdGgkxAFhI9gfIUmS18fH5GfmWo754zVeuOShk1dCp8iIIK7PRUv4XTkp1kPWcoaDr0eC0c8Te++5BwC2zo2r1NwnnrR0rbrc3DUroZx6nLTwd87fheXYJ5dewEHynfibJ7gYTZK8uFO366kvOU4nW7TS7GHOj0KNQQNArTwFhZZ2ygLk+cWVm7QLY7i9fU5zu/FfE8/tWeDEV/rCleklXMRTuX0/i8D5Yjm+QcAbSqUEmSqarjDNmyW2gRWcPmYKpDUOG3H2Q45HanE8sS10sN83LWMs0xAoCljKoa793lDT16LAx2k1kLMqSs0alFB5+n5yYmZ7a0uKZ/edmsU2tSUaS1HHGiYyw4aGecd1CGe1QfeKVd+OhHZcthfW44gyvXBxTPRpkW2YtJAhUrnUgupq8JFHeB2F2+R8iVS5Eyz2dX7obkPnsxna4Ay19vYk8Hqw2pZ4LsyNfCzmkzDhqc1gs+W6X5nVr80wGDuv7xA9Bi4OeU3Z1flryctPXJmwaG0UglLjVg/9bYAQziId8ii/kLms7L29ec6gNUV+blgSPcDYkctNHJETyHdhIAGkBXd50txtJv0dOKQrC4UocF5Z1mv+4xjY2Zc94zQcQxOCgRpJkeHqksc5iwgN4rwuUaOOzerB3HQd4ULEXwqFZMsV7/pgAGvEd8eNIRwgMVmPOwrUMzDU3U4I0aC79dj9QriEty+UFTO5iO6YGAwSo7spuc3Z+HRrltRXJtfja
+ qQKRbYoj
+ XFR7dg7rnHY/xt+Ts7yVDJzfDgkPWYxv4CCihlMgyyyihQOFeZYCBzKLF6+Cxs1E3hOGBdrWo2pdfnvjcKJOi8X4bxuF+oBeFI5jvbaFf82P3iWWGrki7ayMw6WhKiv5uLfTtsurfHOXC+Gh48vEigpdDQTXyOwPLg8MMzC/j4lJ+VKgaa8SXhLq9j99HpgqOF1V1/QsCJD1/Qxix6f/CYkZHeWdEEdqZbgrt4HxdgiCVp2OZKdJ7O/YoOwiIQ+PgJdEBwIS3xJdMSSDK2DsAWSkF63yj7dNnCDrznrk5jnWI5ypqhcUVkjnZKW1/iSDu+aitxyoVhoMUTPCqzB6UCcSBZUcv8KvEi+kRvzsPtWXUB6VQtqLNFi4G7xqplHIW0AbO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,75 +150,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 07:37:39 -0700 SeongJae Park <sj@kernel.org> wrote:
+On 3/25/26 16:00, Zi Yan wrote:
+> On 25 Mar 2026, at 10:53, David Hildenbrand (Arm) wrote:
+> 
+>> On 3/25/26 15:21, Zi Yan wrote:
+>>>
+>>>
+>>> Hi David,
+>>
+>> Hi,
+>>
+>>>
+>>> In terms of folio_change_private(), I did not think it is related to
+>>> folio_{attach,detach}_private(), since the latter change folio refcount during
+>>> the operation. If folio_change_private() is related to attach/detach,
+>>> I imagine it would check folio refcount before touches ->private. But
+>>> that is my interpretation.
+>>
+>> I mean, given that
+>>
+>> a) It's located in pagemap.h in between folio_attach_private() and
+>> folio_detach_private()
+>>
+>> b) It clearly states that "The page must previously have had data
+>> attached and the data must be detached before the folio will be freed."
+>>
+>> This is the wrong API to use?
+>>
+>> Sure, it sets folio->private but in different context.
+>>
+>> I can spot one user in mm/hugetlb.c, that likely also should not be
+>> using this API, because there likely was no previous attach/detach.
+>>
+>>>
+>>> BTW, do you know why we have set_page_private() but no folio_set_private()?
+>>> I would suggest folio_set_private() if it exists.
+>>
+>> folio_set_private() sets ... PG_private. :)
+>>
+>> folio_test_private() checks PG_private and folio_get_private() returns
+>> page->private.
+>>
+>> A cursed interface.
+> 
+> Oh man. folio_get_private() should be renamed to folio_get_private_data(),
+> so that we can have folio_set_private_data().
 
-> Forwarding Sashiko review for doing discussions via mails.
-> 
-> # review url: https://sashiko.dev/#/patchset/20260325073034.140353-1-objecting@objecting.org
-> # start of sashiko.dev inline review
-> commit 7e17cbe1dc95a0cd1a1410be38ab6964f78fb15c
-> Author: Josh Law <objecting@objecting.org>
-> 
-> mm/damon/core: validate goal nid before accessing node data
-> 
-> This commit adds bounds checking and node_online() validation for the
-> goal->nid in the DAMON quota metrics. It prevents out-of-bounds accesses
-> to NODE_DATA() when an invalid or offline NUMA node is provided by userspace.
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index db6c67e52d2b..81ce27baa1a1 100644
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> > @@ -2245,6 +2245,10 @@ static __kernel_ulong_t damos_get_node_mem_bp(
-> >  	struct sysinfo i;
-> >  	__kernel_ulong_t numerator;
-> >  
-> > +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
-> > +	    !node_online(goal->nid))
-> > +		return 0;
-> > +
-> >  	si_meminfo_node(&i, goal->nid);
-> >  	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
-> >  		numerator = i.totalram - i.freeram;
-> >  	else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
-> >  		numerator = i.freeram;
-> >  	return mult_frac(numerator, 10000, i.totalram);
-> 
-> Could this cause a division by zero if the node is online but memoryless?
-> 
-> For CPU-only compute nodes or nodes where all memory has been hot-removed,
-> node_online(goal->nid) will evaluate to true. When si_meminfo_node() is
-> called for these memoryless nodes, it populates the sysinfo struct with
-> i.totalram = 0.
-> 
-> The mult_frac() macro unconditionally performs integer division and modulo
-> by the third argument, which could trigger a kernel panic when dividing by
-> zero.
-> 
-> Would it be safer to check if i.totalram is zero before returning, or use
-> node_state(goal->nid, N_MEMORY) instead of node_online()?
-> 
-> [ ... ]
-> 
-> > @@ -2261,6 +2265,10 @@ static unsigned long damos_get_node_memcg_used_bp(
-> >  	unsigned long used_pages, numerator;
-> >  	struct sysinfo i;
-> >  
-> > +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
-> > +	    !node_online(goal->nid))
-> > +		return 0;
-> > +
-> >  	memcg = mem_cgroup_get_from_id(goal->memcg_id);
-> 
-> The same division by zero risk exists here when mult_frac() is called at the
-> end of this function.
+Likely we should strive towards only using folio->private (and the API)
+really for fs-private data (i.e., the pagemap.h interface), and add
+proper custom members for all other use cases.
 
-I think sashiko's comments make sense.  I also suggested using
-node_state(N_MEMORY).  What do you think, Josh?
+For page->private it's a different discussion (requires more work I
+guess, because there are many more use cases.
 
+-- 
+Cheers,
 
-Thanks,
-SJ
-
-[...]
+David
 
