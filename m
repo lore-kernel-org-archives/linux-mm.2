@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E7B1FEA803
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 04:02:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD67FFEA807
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 04:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F098D6B0089; Wed, 25 Mar 2026 00:02:44 -0400 (EDT)
+	id D7F3A6B0005; Wed, 25 Mar 2026 00:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB8C36B008A; Wed, 25 Mar 2026 00:02:44 -0400 (EDT)
+	id D30066B0089; Wed, 25 Mar 2026 00:27:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCEE26B008C; Wed, 25 Mar 2026 00:02:44 -0400 (EDT)
+	id C45E96B008A; Wed, 25 Mar 2026 00:27:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB2B26B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 00:02:44 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63F22E02D9
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 04:02:44 +0000 (UTC)
-X-FDA: 84583239048.04.F98158B
+	by kanga.kvack.org (Postfix) with ESMTP id B85E16B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 00:27:01 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5D174E0A3A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 04:27:01 +0000 (UTC)
+X-FDA: 84583300242.05.E47394A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id ACB9640008
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 04:02:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mUgovg8O;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id AFE8740007
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 04:26:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IPnaDLGJ;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774411362;
+	s=arc-20220608; t=1774412819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uZ31552Jf56EyGf+Azy9UhDPa0IxRsolKRX24gshYl8=;
-	b=b9OmmqTEYuVpS2rB8FSqSRxZvPTI7U53FcB0svfqR6BefxYZLAPc3fraVjB5M/AiVNcoDZ
-	bAzujPNyHa+8FrrQ1KiHwYLDzDlyMKVwQdaTZ6Af7yoolhSdt45Ojp2vSjNWYgrrTZff6Y
-	hKEelstvbhQORt6eJ40FUPKcpre5ZXU=
+	bh=iJBOQguA8LMZKv10Bibv7DO61iuQkcG+E6PA//H8vYE=;
+	b=rp5HQp7Q+tzYM69lsXnHIlw267IGRR6+QlWcNXdd9Ashs8au1FzUgGlgcHjX4fT1wh9DA/
+	LjM4V/0PpSfKoQgf6+54y2ZTMMoTbfVZmW6uQkas+YayHCUs7UaiNmEc03to/2Md4jSR6a
+	8N0BrJldG1CbhXp8jIKHVH/Pk11PTtg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mUgovg8O;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IPnaDLGJ;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774411362; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774412819; a=rsa-sha256;
 	cv=none;
-	b=IYQgp0RRUvOmFkBa7F6X8vVo5hQNYYzQTD2J2ZEKYY+oiCrtsem1sWWC/nnerCJ2MVWSWZ
-	UJxOpC92ZiN/9d7p5t4FpxuWf4BtZSLjQfDVxiss92GCX11eynITDuC+lhOaP4eOk8l88b
-	OOU0HJj/aJsBEFmCHAccoT39ZIXlqxg=
+	b=e8J+aEgOtRBuUmNyjhTB3ZDHXj+pXNdPRPrutN57RvTR3nj6x1S4LUlkANsGgfsJyQ3bqO
+	+TdXjb1zlfnbuDjdgL5RahaQUedVGVdJG/9hD/mMWnz9aiAwdJkv1d/9mCDAHrQzeu1Egx
+	P1mC1agzscraeoRrvGKA3Torrbuyz6Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C658600AC;
-	Wed, 25 Mar 2026 04:02:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB3FC4CEF7;
-	Wed, 25 Mar 2026 04:02:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A83160127;
+	Wed, 25 Mar 2026 04:26:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9272CC2BC9E;
+	Wed, 25 Mar 2026 04:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774411361;
-	bh=UAftIg0iP2CTL4GG/cYK3JPqeZRxazTdlKZPm4R/BjY=;
+	s=korg; t=1774412818;
+	bh=IPwqk6SASt6Y5QcfetNCYxTed8oJqjxL9aGx5lCMFkc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mUgovg8OO4pY+wWN5GhLHYSuthRryo4Vg5p5G/q/Zzzm2h2i4H6F6brO17xhMnGul
-	 zpB6+wcWXGLeJr3/UxJVYxl5Cekya4sXNHgB8+z8UiOhR9zmXnhupb2nhyGCBdvSd2
-	 PpiGwT32uVKZ7pf9RW98JjbN2uxq0ceVlJbYoSCY=
-Date: Tue, 24 Mar 2026 21:02:40 -0700
+	b=IPnaDLGJBoRuY/7WP63Me3fhrJm3K3ZTRwJrVzU2h8UR6rOtzHi5Ey9gkH6edlseW
+	 tcv0W1ZF3AWpwnB5Wmd/1nMbXiHHi4U07znOzHdJ0DqV/iX5Y0AJQB+XyOqVxhXn2Q
+	 LzH4zNAu9aiWqC2A4WbQBX4o0x7dnK9vu9NDe7QY=
+Date: Tue, 24 Mar 2026 21:26:58 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "Ard Biesheuvel" <ardb@kernel.org>
-Cc: "Andy Shevchenko" <andriy.shevchenko@intel.com>, "kernel test robot"
- <lkp@intel.com>, "Kees Cook" <kees@kernel.org>, "Paul Walmsley"
- <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou"
- <aou@eecs.berkeley.edu>, "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Dmitry Antipov" <dmantipov@yandex.ru>, oe-kbuild-all@lists.linux.dev,
- "David Hildenbrand" <david@kernel.org>, "Linux Memory Management List"
- <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-nonmm-unstable 49/110]
- __efistub_cmdline.c:undefined reference to `__efistub___lshrdi3'
-Message-Id: <20260324210240.ec7ebca1b16a8fe6ed610f62@linux-foundation.org>
-In-Reply-To: <529d4fa6-e163-4b4b-9c51-f9f880492b76@app.fastmail.com>
-References: <202603041925.KLKqpK6N-lkp@intel.com>
-	<aag95SSwClx4IzJU@ashevche-desk.local>
-	<aahAgJ0G1uYSCFnF@ashevche-desk.local>
-	<529d4fa6-e163-4b4b-9c51-f9f880492b76@app.fastmail.com>
+To: Philip Li <philip.li@intel.com>
+Cc: kernel test robot <lkp@intel.com>, Chengkaitao <chengkaitao@kylinos.cn>,
+ <oe-kbuild-all@lists.linux.dev>, David Hildenbrand <david@kernel.org>,
+ "Linux Memory Management List" <linux-mm@kvack.org>
+Subject: Re: [akpm-mm:mm-stable 72/140] arch/sparc/mm/init_64.c:2582:16:
+ error: implicit declaration of function 'vmemmap_pgd_populate'; did you
+ mean 'vmemmap_populate'?
+Message-Id: <20260324212658.a267bb861af1dcbf119a1901@linux-foundation.org>
+In-Reply-To: <acNdJ/q5tNB0nNjp@rli9-mobl>
+References: <202603251147.CtgepAeH-lkp@intel.com>
+	<20260324202754.6f29c4f6530ec7ea9d1f753d@linux-foundation.org>
+	<acNdJ/q5tNB0nNjp@rli9-mobl>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ACB9640008
-X-Stat-Signature: tw5fkctat1fhn5x1cjjeamodmoya7s7t
+X-Rspamd-Queue-Id: AFE8740007
+X-Stat-Signature: jjezbh7oe549gh98rrddo7unjd1ah8aa
 X-Rspam-User: 
-X-HE-Tag: 1774411362-652399
-X-HE-Meta: U2FsdGVkX1/kRffaDfZ1afGrgVZDKbzbdDk1GJ5F8OWf/c5SUNfaqqwP9GFgOW5iUazL9vq08XXxsE6kQPzrp7LCkGjJSHk07rOL8ebmlVbn/ZxAE6hGbWEEjgUSJwtajK0qwg++V8+Uaw/7Wi6u5jCq5P5Yp8uwBDeI6vIrYZOYA/atQyGtOncQF9cGpt51MeBR/YVn0wxNZbw8xL8yG5gIDOKHg9Tzo31Ulw0UgI6eMp746WwsOzG9DUfQwYAtBZJZZnnStBIZB+76Q4RO3VwPZAYAuqBvSDj2E5sZFXsHAXc9bTGoMuKwlyh5yCjaRtUyZFrzUldkgJg8PLip4gz/S/lVQ6Ugz3phR+dwAIV7fQFH28VVjf2b7I2P8P0kCwcQstiac+0cpEC5hb2PEMsEel58ed2kaby7haZBByXmxF+JN+yS/yr73pmR55Qs4Fj43XC5bw/D5guMjLt1hjIEFI7zgrvyfg5xMoSsNccuCfejZRAq4wrx8IOiMyIqsr0EsvVrroTmZFUElHP+ExCYbuNkh+VfAw6uPs0R2UsrOz3DtHy1Ckzfx9CMu7k6Ju702rtWBW31InOoIattxHY8p/RKawL13Y3tIb2xqvIBFvEY+ulpI/Dly//flToZ60RUzyOFjPSie9w10jVcF+xmkk3vXTDryBJwzll+cAokKxXledfXfs0/HJz6TtVbmm4lhx/aJJAw85knPS5ZJ8JOYP5SMq/QObwUK7ZgohUV0oh1ErGhDR/reCzVRgQhDUzjGz1X2fXp9k7MFckf2m1NUhDO24SCt9lEgQatjP8uOIBFmbNfIYCNPJE8yqmBk4250slMXDXcLI6NFXO+4iR2eFmyBFdlUj8MdazxTrM36MCFBpkmxXJpLwwb/qzIiVodcnbKE96TQz7vZWWq14+uwC9s1aI/Ng+XFgQed6N4v8CPplPVXjxfGLkRtwMu7Y0PA0BHD25ivwoWEMV
- y4ZRham/
- iIlWWNTQVxxR0nV9qGZkuiZ3UAp6CFg0+3LwmUzA/EuXsVpsxPDa6aIQU5N9hiui29rcT5gqBXGa8uiHumj3DgvutdC0k8qgN6WcDGTqUmY0ssv88nz1RqgGjwF2/5nihOeaSU90lF+Mi9fS6LqyDKAibbyAlTRIWBdaTVkASmx9X7zZu0hEtBIf1LPCzUx1sLNQ5LhT6E/erR3OQGw3mgrXmr1W92dTWdXUnE31YkPfQ53dNXf4r7LDAw+Kgll5dncc4EnAP7iVLiU7kvHJ7jUjLIvtwrFGbng0thPFrYEijVaJqcNGjDONDT6Pv1f8ncsiBnBxyCCIRRtQ4eSVMd8/702TuqkpuKQ3t0nje+O9ovJoVX54jNuyu+9r9etZYk9oqp5FU3+im1+F2vNykCVd0Tg==
+X-HE-Tag: 1774412819-940428
+X-HE-Meta: U2FsdGVkX1/MWEqCT8vEG0AgqEQxZPtAimlKLRKOKEpMJsXlt8ND9EUe+6xO1s+J10775QISEoOi9YSv0CBtwFo86PEj2FAUSWo8uzO40dbMgHkwIJWfJ7llA7N87n7hisZsMYi3iRu+1QaxUMQgo7JQTNtRvrQauK3ZB3D40yo2aHOxHQXHhVw+Pk0DR3lxfgxqTiax+PpAhIrAiNvQnRuJgCf+ND0WrndRrzLI2R9s8AneeEus9Gh7+0+uNShbcU39n4Yo0YeN7sc/Xd8/akqqtQujdGsCJgQomTqPfAY4fbKOmdeLJKWoaB9GaryoPdM2GTyb5bQN0al5/M0EM8NnX0G2nwhl2gIggAhz+VuRjb2ATIO4aAgYa36xkelQsOxd32T/cxW5BIOLaNUhDXJU99rvIkerdFRStq6Z+ph/HBZmdWs6kBG+moVQF8Oh/xnY73Cv9o7irUDbgwPTDDMpMldKb/9ARYaYsP6bNpkLsQO4j0I89ZjQDevpqCSMw7gN8Yg0pjlpBmIWGv80BOiKBnQclucA1ErBD9REKQdIIFwBi/ytVUxqyTWXbVMjxzei4zN5IXKEa5ekUfnobb4v0Tgrb9SK8l5pYNBZizVruo78EDyEzIM9z+ozD5SHMDbIFAZ1VWEiO+H6/04WAPBMenEm2n0pVRaOBLS5Ll60rSl9TryeiES/gD2WZIsQD1PUXazlMfpN/eS10zKxPXc72G3+Q8Q33aFxLXAIWGBjl9txranhzfCcMB8+F5Z+/zinkl87Rz5vZd5BHNuzqi9RLU1BBmggo/sHXfy/YesAbDo6FnBlXHEIeXQ6F+NMeJjkPdI0r+dQAolYAKIZMg5xS8xgnIAqvBbP5gZVNW6OSbE5xR6yMzN+8eYwsAVpsKrFXZsxPC78qsrz1XbmVM8i2kXfgQzQRyHRnQ4UUmYlLQvtXUclQBdu6GckquwrrabJwzmhxVbP11a2xjs
+ nt/6Cexs
+ 7JYagyJWaUhVPihHQjzto6h2ewwnUrTb3LEID0sCTNhKvI1VBgD/6TfDOo02KC/omYzYpTKGndm3csHTjq23E6WNdKFFjqMRoTKYJpewHL41gWFeM9ICwR7tI32ZZbrfXqu3bBrtnfSax5/Ygel20crUo1x0EHQKNa3Tqkjxbz9ur8ZtACxQy4l4KQel4f18tIjdH6h7bHnVtDr0TCpbeKWZu3GjMCA7ufj1GxbVqbavhYmdY6aaCZtCz0o3WxEP2R2ZvzXbi2vIEYveT6Hz7aWPPY0Vf1BJBZw7S9U/0bQcdtMpY7O3mRu525R/TIBL1QjtkfF4zNVZ4JP4xqTBSeLDLpg/iteHwcORVcAGxdDDPKjg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,31 +94,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 04 Mar 2026 16:35:01 +0100 "Ard Biesheuvel" <ardb@kernel.org> wrote:
+On Wed, 25 Mar 2026 11:57:27 +0800 Philip Li <philip.li@intel.com> wrote:
 
-> Hi Andy,
+> > The coincidence is too great.  I assume Kernel Test Robot is somehow
+> > treating the mm-stable differently from other branches?  Can we please
+> > not do that?
 > 
-> On Wed, 4 Mar 2026, at 15:24, Andy Shevchenko wrote:
-> > And since it's riscv, adding people from there.
-> >
-> > It might be that they simply need to include the corresponding library to their
-> > architecture builds (we have lib/lshrdi3.c)
-> >
-> 
-> I didn't manage to reproduce this, but if EFI boot on 32-bit RISC-V is really a thing, then doing the below should be sufficient. Alternatively, we might just disable EFI boot on 32-bit RISC-V, as I don't think it is likely to be used by anyone in practice.
-> 
-> --- a/arch/riscv/kernel/image-vars.h
-> +++ b/arch/riscv/kernel/image-vars.h
-> @@ -31,6 +31,7 @@ __efistub___init_text_end     = __init_text_end;
->  #if defined(CONFIG_EFI_EARLYCON) || defined(CONFIG_SYSFB)
->  __efistub_sysfb_primary_display        = sysfb_primary_display;
->  #endif
-> +PROVIDE(__efistub___lshrdi3    = __lshrdi3);
->  
+> Sorry for this "coincidence", the bot does treat all branches equally and
+> there's no special handling of mm-stable. One possibility is the randconfig
+> is just generated on 20260325 "sparc-randconfig-001-20260325", which is able
+> to expose this issue for sparc arch.
 
-I haven't incorporated this, so the series will still break the build.
+huh, OK, thanks.  I was able to reproduce it with sparc64 defconfig.
 
-Dmitry, can you please test, review and ack this?  Or should I drop the
-series and we revisit for the next cycle?
 
 
