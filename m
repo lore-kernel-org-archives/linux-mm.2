@@ -4,116 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F17D6FEA83D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC23FEA839
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:48:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEE956B0005; Wed, 25 Mar 2026 05:47:34 -0400 (EDT)
+	id 0E6E76B0096; Wed, 25 Mar 2026 05:48:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9F536B008A; Wed, 25 Mar 2026 05:47:34 -0400 (EDT)
+	id 0BD9F6B0098; Wed, 25 Mar 2026 05:48:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8E536B008C; Wed, 25 Mar 2026 05:47:34 -0400 (EDT)
+	id EEF926B0099; Wed, 25 Mar 2026 05:48:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C48676B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:47:34 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70B098C483
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:47:34 +0000 (UTC)
-X-FDA: 84584108028.04.9684CF1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9AE73A000E
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:47:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h7rjxRys;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774432052;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DAD4B6B0096
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:48:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 938AA16083E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:48:21 +0000 (UTC)
+X-FDA: 84584110002.17.A503426
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9DCEC140008
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:48:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FoWmc6Tj;
+	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774432099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d27maMT+gaVBX+I8KOk4v9fQBs+qrT50oEtm7+Gc3S4=;
-	b=Oeexr4IvVdYRFNM3M6gomM6msaP8MmUj8hv4kmZbqOd7+8M1iLi76C+jVFocT2fQ8+7uf7
-	EFqfmtpirbh1IQW2BMiw2Xr6D33s7v1pr70uYnHQlc4TRgA7O1nK6133CiMPGiHILoQN8X
-	0HVBuI/zPaf+zy4qR2lySEt2cDEF8Vw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h7rjxRys;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774432052; a=rsa-sha256;
-	cv=none;
-	b=eSSTULRIvfjLmPaYt6TydT2TpgQ7VEBYejXE413IEjuXAbg86JSbqTsSilDaDv3V8LIGDr
-	/jlke5PlpvDX5LaMu6k4iwRvOxbv8pQbBMyOdgj+9B0xvBUmwqrUUb5+50iGBdA9owWGXd
-	PJsN3l06ouEVdGRJmHlsG3AoVFfgkQ8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B0374417E;
-	Wed, 25 Mar 2026 09:47:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F83C2BC9E;
-	Wed, 25 Mar 2026 09:47:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774432051;
-	bh=vUFrcOFz84OveU1pgKHoD1qwpdPZX9ciji33h3siGaE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=h7rjxRys800WY0i8LFUswSR3PcQtVI+WfcvFbM55iwz1ZH6sEQagzhf2LyOreVOSW
-	 R1lGyQTKbfLllWJzdn5W8eaoKRVYpL0edcGcr6SCeDfoN1NRmrSZOCLjsPkGst2Vue
-	 whTAV+F4IJb7xm4J+qcGoX5SFmIZFB+fhBwrR2605pUGNgx0fg/E3JSQRqS9sFkabZ
-	 CtbaFD/j2jHu/4k19QPOkOOINFcC55JlaP/BKzrZDZAQkiiAvQh9vim4ubQ9CkIKj9
-	 xhp7ke2Xf5zs7lnOYxqAky/AVcczwO5PeQU9qs8vfUKFRe22DcZ0GFLqD7cqpncinF
-	 7/z8KNyW3nyVA==
-Message-ID: <2bf17da7-fb46-4503-8de9-9368a73d8487@kernel.org>
-Date: Wed, 25 Mar 2026 10:47:21 +0100
+	bh=Q42hLuNnyE/SONvYBPSd1qNaKVxpDDOLa5+gI5Lz+Cs=;
+	b=PRlTDshjJs93Yy9N0nac5rbw9BL9PHJO3XbWXgXVhozCvjrHvzTBaqE3Y5CHJFiNaI/7sc
+	xNVg2d7iTyQeZekSMtRGhgoBryDP1DyjKL8zihFTr/J0kx0lrcC+f38J7xTSjgVDwqTJ5m
+	XTzP16kxGZ92EJZxBYMnhQu6JFvClqw=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FoWmc6Tj;
+	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774432099; a=rsa-sha256;
+	cv=pass;
+	b=FBM6K9Jq8lxeRtZAQTBHewxHPmWBwz4IxeJrjIb3O3BAH0owP6i3XqWpiylU9kRiyH6ohf
+	eT6+Q/j4mTRhSsR23Uh0sIhgrtvIeEWgcBT/8hmWAzKpZJRoRTzV1jRVN+FLbvBBdnyCkl
+	Iq2W3K4H6wpydh5syxvgglv1q1lHLnc=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6676d55d01dso6636346a12.3
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:48:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774432098; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MOQONGl/GhNgXCdLpauf657sRPPI3hbcJK7EsVNxCweEt1T+dV9TQDy20ZiMSPwjHc
+         0Pr1v80HdRnRd32x/gCXCBYsrN3K83bUtcY3zLHORulSYmk3zXA3+49USFgOQG0gccmH
+         R+6++sxumT5bg8qpIDmkgTK1suV0GROkzAJ0ATPL1FNrCoWN0e5rJD7mRouP9wPfeIVe
+         1eaRy2ok34Livz4P1+NvGpdNkpdOxKvxa8rL/DnxEdp27vRaXbz5s3I+fcXH6+iBvQ6Y
+         L1fiixREDz1k/JnfVcsIZmYPO/NWbU+Y6CXavKToaSkVnnlh2LzTm3IgNB0IfKxZgcLv
+         ohXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Q42hLuNnyE/SONvYBPSd1qNaKVxpDDOLa5+gI5Lz+Cs=;
+        fh=s29UgilmMNtDP+2rxfUvIikeOr8PFIf+kjvPE3KCX+w=;
+        b=EcEMxT6BthmpbKPdsieZG/lEomKdLrcw/BL6rubobsPwN0z6XZ7IbOFYtuMxo+25Ea
+         Wvj2YZNR6Ue6H+qUDVrFAXzDF8HDFoNcqdnZAR/XC9YsXZOfjmium5vlYEIAmkqDjkQN
+         34/NQe6EI2AuYZFqxG+sIWRhowF+xF9vPXAAxKs0UKX7h1vjoAjofxab0q+G7efTNWGh
+         N1fEnK93hpKP7RO4zEk95sR5qVJaPU5A5RolTVb76FPKD7F1/tL3vYRQUM2uEe1qF6c1
+         TMswOMg6kv1QX0atmDzvb7ZivOzsmxC6VH9YIDNaD9D8uDZkoyV4yzDubv0yIFTyunGg
+         42Cw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774432098; x=1775036898; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q42hLuNnyE/SONvYBPSd1qNaKVxpDDOLa5+gI5Lz+Cs=;
+        b=FoWmc6TjB8EvCIePGoRf6Ypsz8JnhMID5FPe7rspNfQy+IzxvaPdXS6zVDOwVx9djA
+         v/oCmVbXg31WLutg7imNfWs/Y9uBrzllDiB8bsgFmogKfbLyupWBpPrcA5l4XBZMEglj
+         b5tvbl6E9hG3nBxiOurPxb1Kp87LLMJhV3NCkyL/gEUyvE7Dx1GmqbecWU5EIAOKdtQS
+         uGwYMNPSh+5rQT0Mf609ksVKYm9XKXqioEuBvR1tWBtAUoWLFgKrOxq5HmnlFCLV71mB
+         nCs0BtKH1RZBKHL0Izy/VdhbF9Bfy3lcfObfsg8EeWp5CII1qU5DNTgrp7QoD4NwFx5y
+         lPyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774432098; x=1775036898;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Q42hLuNnyE/SONvYBPSd1qNaKVxpDDOLa5+gI5Lz+Cs=;
+        b=QWBl+p8fdOjvUPDOOZqvGI0K6AjnlBHe6nwi6u+cHY36lgrxrxJ1WT8dEAlmxIqtEr
+         uzZaXAKSEOVZyqB4/kry9hlWnamC7qnGtL9vpiKpEYmT5TDkuYbrwCruhRNEe1U/dbS1
+         I3NyZmLOzmg87vp8z2P599aZamfqYcLCiigRSiywQ/3DIXrnWmgBK+W5PXWFlgyctjOj
+         gi6c0MDj7262ABw2xPabf1DbwwKZLcjsokUUyVznuCi9oIdZGh28GxifqmGatRjc7WXS
+         UQ2t9/kOKjFPfFQTOB7OtpCzTDuK+b2wpRis8GqbuDVyjhRJaT16h2GcjDJ9tDeGaXZ9
+         QTMA==
+X-Gm-Message-State: AOJu0YxDCAwz6IAmvnlc94OV1wxHkpyzbK613AAd0/NfJIx4nYuU1wSg
+	UKh1SbXu51SYuqTj7B+XNASiyIIvh+5XweHr92c9esV8H3F1Tq4n1g0rGWswizttl5O+FokwVq7
+	GZLS+BfeSG2FLNUG2oeG5HMOdQEFGeyA=
+X-Gm-Gg: ATEYQzxG8JukojtROOhPbfG94OKiclO82ovNIAiXhi8DLY7inJUFTLTizFPeUg6NlIK
+	LFrW+OjbUmrkVjPM9xwCALMQhrGBMhWje8fZDnLGoakRghbcZaEW4MNYi0mNigL1iEDxlAyfZop
+	lyK5js3SJ1snyQCr4alrVusJiw5W0QR1lnRtDnlgysqIhkWFEX2Ls8DIByQ5uEW3W0WZSRLsYKE
+	okivEOyr5pJVfmhPhmwW3OtVpjPz260/FJVF2QNm0sBW0LBJAsaSnH88QT3DqUgDchQQI3Vw54+
+	5h88zqA3GXmlWv7OcZvKsAWIcURVm9Hc/1g1mn8O
+X-Received: by 2002:a05:6402:34c8:b0:65c:cf5:193b with SMTP id
+ 4fb4d7f45d1cf-66a826c90admr1575170a12.24.1774432097703; Wed, 25 Mar 2026
+ 02:48:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/21] fs: afs: restore mmap_prepare implementation
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Bodo Stroesser <bostroesser@gmail.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
- linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <cover.1774045440.git.ljs@kernel.org>
- <ad9a94350a9c7d2bdab79fc397ef0f64d3412d71.1774045440.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <ad9a94350a9c7d2bdab79fc397ef0f64d3412d71.1774045440.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9AE73A000E
-X-Stat-Signature: rznesod45ewyyjuiwbzeysrt5qiu6gnf
+References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
+ <7ab8edd7-381f-4db2-9560-b58718669208@cachyos.org> <CAMgjq7CuEYAzZFmS2T7N6je6VHffVkH1hh64YUuShFBnrJJvqA@mail.gmail.com>
+ <85b4be3c-09a3-4a28-924d-71a20db3fd62@cachyos.org>
+In-Reply-To: <85b4be3c-09a3-4a28-924d-71a20db3fd62@cachyos.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 25 Mar 2026 17:47:41 +0800
+X-Gm-Features: AQROBzAKre_lagO9AmBYBRDKe5AeR3BiM1-e80RZ1iTw0IYy9x9Ii-Cn8O4XbKw
+Message-ID: <CAMgjq7AQeP8maeMWNun=60oyq_KDu18MwXfGEyK4bwj_k92NgQ@mail.gmail.com>
+Subject: Re: [PATCH 0/8] mm/mglru: improve reclaim loop and dirty folio handling
+To: Eric Naim <dnaim@cachyos.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9DCEC140008
+X-Stat-Signature: 6335cg6tuuxox7i571ce4kagjtiofrsh
 X-Rspam-User: 
-X-HE-Tag: 1774432052-38493
-X-HE-Meta: U2FsdGVkX1+6i447a5UGl1XMdOzX7Gw60aJqVG75tvea9mZgbLbj7n6wLVQIK9NPnfoC+vznw2blkV0jc8wqJOOBOiZkXA2rwCJw/xa9w/67kBTZ8q8XzE2057AtNRt4URk2IwtoHDUh2jd+mX7Zd0fCMob7onGTH+6W//qKYth+e/CFr6eMQw8Frng7QLWVYqZ8vZb/tEOAtNjcCKCO89pMO9H5zV89eDdgjzKfOxYPsTYxZ6YIFUPD7hDX/MWxNKQ1MCv72Xc0lm/I4FNM6RxmcfftQ4Qp0lJ5zNWQxcnf7irDYnFV9l4RZJ5pulSmRfWQhgEcGo+D/3/GZrAy36US+/X0ZNac5arIrqCLjsaUW5X2WfG9JMhN1+qO3kP4i1poEtk2q4GMGe1QPf95+VM9LcEbtIxiusic89PuowdER/zgqh3qPUIuzScxRRuHa1da1ETyssoBb5uSERMrKXebMD5k8Zi6HFdePcfKD2QkWCnSLmXeyXqUy3AYqe601YRTIylXpV+2uMgIZtO2RnP5phfwFINr68RAYblbn/X/hED1XJewVOTUGfgEAfuU8XR8mtyklVzp0Rl6RPAKcOMiFLNxOIp0n5iFMW6M9yOiodGRIl0yQmuU0M3plMl275SAritSRnqzYI0h6q64uuNU13lTTMN8bJPb3//SCvoSvSaw5T5b5wS4Nl1d1091u0GGsIBkhw7fLwAUVGx9lYoMx50dlMdvq1XCe1GInDQcg9AXVnTvCfs3MCnpMWmOTEc6dKe225L7vCiG/FWr2g4c5DpkBBqq7G7ObnFEZE3OyH4pbsED42w4wuU19Z4+O7GzTELguigknxL7AsaxUh15AF6kjHqO43AR0IK+DvTpJTH+eswYae7/2U9p+44xh+psA203P0Mueidlxs1WTnrTCWEk5vdSIe4RQWszlnhes3y3AIjfB6KNWciizeNPJ9bVovdGLuPm9tjKNXI
- ijceI2Qr
- 5cbcG4q5W7Q3b2Zwfka97geQCwKTRF5BsDRL3+kjnxRYsk5ZJnK+EnHe2v1ybHfqiFBuCfaM6g/5ISp30vGnMInVP4aUxpEsciqj1AAc8NH58WLQgDNkl7dqDZ2V9XJr3OFM/r1KWapyu5hmH7RSvhdM6j1zQ5amU9r9A8VjcMigMC9o2HSdne7oGZhJvxCVAKoREttG4z5gJtA3DVwtOjbyy1fjZXuT7P+6IhN6YJEnWInvuXV1fLm1pNRMIRk3hAFGOLIMU6SLJK8K/5qGYqX/E22OU9HZ5hp+RSuASpOhN1omyYZD1p84f07Q/1jTNU/bWvuLZ0vBNy3Xvmmmk1jWlyXmFxKTkM7+Sqyy63WdCWh7LA/U1zROYf1DgHCU/JDN274t9LtyFhWqcuSSSAdg6Gv2ybEKDRDokjwkBxrzbCNFikhr3CFyNjA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774432099-918109
+X-HE-Meta: U2FsdGVkX1+3DRBitG/Tr2xOIwd1GIT9kLz41IjW8Yv4jsgjVvnpfewjgiCmpPWqewl9JwgJmaYuatE1ydsZY/+sUpou11bP07vnqSc0hm0hJAWVBG0Ppi6XXfu7xeeFADpuavYLk2S6nEVSir0E2YNIKs5389xrMn1bpv6iLXj8dDn8weO1NH85veWy9ZtSnDvAXwUpm8Onj0DnJuX4Eiezm8suu6FdeuOlN0nTiCQbeR02kxV61z2RuT2Go5l1SrHtZen1Pq4w9uL+5oGsA3HshCXsRsiph/NNV3EwFjDaZM4ZORqd48mbxmkGJ1Hxt+bGqGdJ3htKUoS50AXk36BqVQXfOHDvzKMiaRuvLZDxAwHnTMvA2P1Ohlke2fU/IOI75xdvboR7BqX8f2VkVEBj/AEg0+Hx+Nim+j3CHErxj1+0IbSBvxnIG7QfkdWIaopvePCrNMVd7DaR8LlRxSBMkr0DYVebVnAnErPHHw3l5YxbZGiEPzH8lAdFUSGziBJsglWONoWQliXA641g/8lPM8YChsyo/glBhc4QnkZE6YnHPylHrxpE/Kr9m1P2Rp2pDMmisTt/V9f6+lvPti5W8rWPSBbv1zzhWgXtMQpv+XkJA3FnmbaBQ4j0HNMvB3Xu71oSSZzIlWeYujPlNMLAezMItQRdStpi1hnQtk3IVaxKKL2+m1GyZfd1sztgk/rd/dNicz8o6N1TeSkws2OXBLzK4i55f4LnCBN5iDVEj6BgQxEb+9AL2vFJoVjmC6TfkIu6pGOgr0hQ4ZcLTbKsh8dRiA8p7jG6xsHp02TQdS3DeQt2vfsP1VIHTxs5U2PpvCRENz0ACc0UdUBl0zQOG76+qMUyIm1Fldzw+Ysf/PwO/mUajxDZ2mQoTAQaMWIxDkjvAfTMmqsnhWoGi2f0RxZ+XMk40xbqgwr2DB4x4WN38kzGzs8DX3yRVBQT0S2CFjr9oNLTTAslLX/
+ LWUDNWVz
+ bRCZcif3Y6iK2IdG3JVt9m4Cu2YwXqBU+vzjc6hI/8+ksezeqAo9khKaJ+2ZyhEmvjymczX+g/3zSO/sCESyi7DH6Gp6n7NB6QHn7PZgUUWr4yNgIiIoie2q2zLHCw3LSjCKYoYRr7bdzcprSeJVzl7dUlwA0RRUxXhlRRXZlREWeryziiDHHBTuJR8FbrUDG9lBxtZXZZby9DcPF5M6YIYFY/rNxvo96Xy9+mxQ7WiD4rg4I6WPpCXO4ZT02yMUsBigBgyu+LWeMnQKDWqxQ6uS43qN8bFF6Wqn6UTg9hNAztowVsUXdA9yAcGM2sWMBchTAfm9uL+eCSCeSZxxpzm7CopWtRC494ZNVlaz6Ot5/tpwKXhvq/w0lFOvcI4VY+EIPppZEI0xnc5BDVtwgwy3bJXl/VX9jYL/obuA9ZGtzBynV+Rby5eeueDoFQcGZQgklsqo7QiU6iu2ZHyz/hUOFonkNMtm/V3ex+kW1kM7/mq+X/Bs4r/jqLtrd3vIl6sQuAfGoPdBPXZqQJPRfz9ZDOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,143 +148,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
-> Commit 9d5403b1036c ("fs: convert most other generic_file_*mmap() users to
-> .mmap_prepare()") updated AFS to use the mmap_prepare callback in favour
-> of the deprecated mmap callback.
-> 
-> However, it did not account for the fact that mmap_prepare is called
-> pre-merge, and may then be merged, nor that mmap_prepare can fail to map
-> due to an out of memory error.
-> 
-> This change was therefore since reverted.
-> 
-> Both of those are cases in which we should not be incrementing a reference
-> count.
-> 
-> With the newly added vm_ops->mapped callback available, we can simply
-> defer this operation to that callback which is only invoked once the
-> mapping is successfully in place (but not yet visible to userspace as the
-> mmap and VMA write locks are held).
-> 
-> This allows us to once again reimplement the .mmap_prepare implementation
-> for this file system.
-> 
-> Therefore add afs_mapped() to implement this callback for AFS, and remove
-> the code doing so in afs_mmap_prepare().
-> 
-> Also update afs_vm_open(), afs_vm_close() and afs_vm_map_pages() to be
-> consistent in how the vnode is accessed.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Wed, Mar 25, 2026 at 5:27=E2=80=AFPM Eric Naim <dnaim@cachyos.org> wrote=
+:
+>
+> On 3/25/26 1:47 PM, Kairui Song wrote:
+> > On Wed, Mar 25, 2026 at 1:04=E2=80=AFPM Eric Naim <dnaim@cachyos.org> w=
+rote:
+> >>
+> >> Hi Kairui,
+> >>
+> >> On 3/18/26 3:08 AM, Kairui Song via B4 Relay wrote:
+> >>> This series cleans up and slightly improves MGLRU's reclaim loop and
+> >>> dirty flush logic. As a result, we can see an up to ~50% reduce of fi=
+le
+> >>> faults and 30% increase in MongoDB throughput with YCSB and no swap
+> >>> involved, other common benchmarks have no regression, and LOC is
+> >>> reduced, with less unexpected OOM in our production environment.
+> >>>
+> >
+> > ...
+> >
+> >>
+> >> I applied this patch set to 7.0-rc5 and noticed the system locking up =
+when performing the below test.
+> >>
+> >> fallocate -l 5G 5G
+> >> while true; do tail /dev/zero; done
+> >> while true; do time cat 5G > /dev/null; sleep $(($(cat /sys/kernel/mm/=
+lru_gen/min_ttl_ms)/1000+1)); done
+> >>
+> >> After reading [1], I suspect that this was because the system was usin=
+g zram as swap, and yes if zram is disabled then the lock up does not occur=
+.
+> >
+> > Hi Eric,
+> >
+> > Thanks for the report, I was about to send V2 but noticing your report
+> > I'll try to reproduce your issue first.
+> >
+> > So far I didn't notice any regression, is this an issue caused by this
+> > patch or is it an existing issue? I don't have any context about how
+> > you are doing the test. BTW the calculation in patch "mm/mglru:
+> > restructure the reclaim loop" needs to have a lowest bar
+> > "max(nr_to_scan, SWAP_CLUSTER_MAX)" for small machines, not sure if
+> > related but will add to V2.
+> >
+>
+> As of writing this, I got some new information that makes this a bit more=
+ confusing. The kernel that doesn't have the issue was patched with [1] as =
+a means of protecting the working set (similar to lru_gen_min_ttl_ms).
+>
+> So this time on an unpatched kernel, the system still freezes but quickly=
+ recovers itself after about 2 seconds. With this patchset applied, the sys=
+tem freezes but it doesn't quickly recover (if at all).
+>
+> Curiously, I had the user test again but this time with lru_gen_min_ttl_m=
+s =3D 100. With this set, the system doesn't freeze at all with or without =
+this patchset.
 
-Yep that should take care of that reference count problem.
+Ah thanks, that makes sense now, the downstream patch you mentioned
+limits the reclaim of file pages to avoid thrashing, and your test
+cases exhaust the memory on purpose which forces the kernel to reclaim
+all reclaimable folios including page cache.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+A thrashing page cache causes desktop hangs easily, using TTL is an
+effective way to avoid thrashing and trigger OOM early. That's why the
+problem is gone with lru_gen_min_ttl_ms =3D 100 or le9.
 
-> ---
->  fs/afs/file.c | 42 +++++++++++++++++++++++++++++-------------
->  1 file changed, 29 insertions(+), 13 deletions(-)
-> 
-> diff --git a/fs/afs/file.c b/fs/afs/file.c
-> index 74d04af51ff4..85696ac984cc 100644
-> --- a/fs/afs/file.c
-> +++ b/fs/afs/file.c
-> @@ -19,7 +19,7 @@
->  #include <trace/events/netfs.h>
->  #include "internal.h"
-> 
-> -static int afs_file_mmap(struct file *file, struct vm_area_struct *vma);
-> +static int afs_file_mmap_prepare(struct vm_area_desc *desc);
-> 
->  static ssize_t afs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter);
->  static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
-> @@ -28,6 +28,8 @@ static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
->  static void afs_vm_open(struct vm_area_struct *area);
->  static void afs_vm_close(struct vm_area_struct *area);
->  static vm_fault_t afs_vm_map_pages(struct vm_fault *vmf, pgoff_t start_pgoff, pgoff_t end_pgoff);
-> +static int afs_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
-> +		      const struct file *file, void **vm_private_data);
-> 
->  const struct file_operations afs_file_operations = {
->  	.open		= afs_open,
-> @@ -35,7 +37,7 @@ const struct file_operations afs_file_operations = {
->  	.llseek		= generic_file_llseek,
->  	.read_iter	= afs_file_read_iter,
->  	.write_iter	= netfs_file_write_iter,
-> -	.mmap		= afs_file_mmap,
-> +	.mmap_prepare	= afs_file_mmap_prepare,
->  	.splice_read	= afs_file_splice_read,
->  	.splice_write	= iter_file_splice_write,
->  	.fsync		= afs_fsync,
-> @@ -61,6 +63,7 @@ const struct address_space_operations afs_file_aops = {
->  };
-> 
->  static const struct vm_operations_struct afs_vm_ops = {
-> +	.mapped		= afs_mapped,
->  	.open		= afs_vm_open,
->  	.close		= afs_vm_close,
->  	.fault		= filemap_fault,
-> @@ -492,34 +495,47 @@ static void afs_drop_open_mmap(struct afs_vnode *vnode)
->  /*
->   * Handle setting up a memory mapping on an AFS file.
->   */
-> -static int afs_file_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int afs_file_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
->  	int ret;
-> 
-> -	afs_add_open_mmap(vnode);
-> +	ret = generic_file_mmap_prepare(desc);
-> +	if (ret)
-> +		return ret;
-> 
-> -	ret = generic_file_mmap(file, vma);
-> -	if (ret == 0)
-> -		vma->vm_ops = &afs_vm_ops;
-> -	else
-> -		afs_drop_open_mmap(vnode);
-> +	desc->vm_ops = &afs_vm_ops;
->  	return ret;
->  }
-> 
-> +static int afs_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
-> +		      const struct file *file, void **vm_private_data)
-> +{
-> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
-> +
-> +	afs_add_open_mmap(vnode);
-> +	return 0;
-> +}
-> +
->  static void afs_vm_open(struct vm_area_struct *vma)
->  {
-> -	afs_add_open_mmap(AFS_FS_I(file_inode(vma->vm_file)));
-> +	struct file *file = vma->vm_file;
-> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
-> +
-> +	afs_add_open_mmap(vnode);
->  }
-> 
->  static void afs_vm_close(struct vm_area_struct *vma)
->  {
-> -	afs_drop_open_mmap(AFS_FS_I(file_inode(vma->vm_file)));
-> +	struct file *file = vma->vm_file;
-> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
-> +
-> +	afs_drop_open_mmap(vnode);
->  }
-> 
->  static vm_fault_t afs_vm_map_pages(struct vm_fault *vmf, pgoff_t start_pgoff, pgoff_t end_pgoff)
->  {
-> -	struct afs_vnode *vnode = AFS_FS_I(file_inode(vmf->vma->vm_file));
-> +	struct file *file = vmf->vma->vm_file;
-> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
-> 
->  	if (afs_check_validity(vnode))
->  		return filemap_map_pages(vmf, start_pgoff, end_pgoff);
-> --
-> 2.53.0
+> > And about the test you posted:
+> > while true; do tail /dev/zero; done
+> >
+> > I believe this will just consume all memory with zero pages and then
+> > get OOM killed, that's exactly what the test is meant to do. By lockup
+> > I'm not sure you mean since you mentioned OOM kill. The system
+> > actually hung or the desktop is dead?
+>
+> The system actually hung. They needed a hard reset to recover the system.=
+ (pure speculation: given a few minutes the system would likely recover its=
+elf as this seems to be a common scenario)
 
+Yeah I believe so.
+
+Thrashing prevention is why MGLRU's TTL is introduced, so I do suggest
+using that. It can be further improved too.
+
+Will keep that in mind and try to make some test cases to cover your
+case too and make some adjustments.
+
+BTW how does the kernel behave with MGLRU disabled for your case?
 
