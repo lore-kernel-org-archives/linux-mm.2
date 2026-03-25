@@ -4,135 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8810109C05D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 095D9109C05D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:35:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5DA26B0088; Wed, 25 Mar 2026 16:34:04 -0400 (EDT)
+	id 592C06B0089; Wed, 25 Mar 2026 16:35:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE7F36B0089; Wed, 25 Mar 2026 16:34:04 -0400 (EDT)
+	id 543D66B008A; Wed, 25 Mar 2026 16:35:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AF3E6B008A; Wed, 25 Mar 2026 16:34:04 -0400 (EDT)
+	id 480BA6B008C; Wed, 25 Mar 2026 16:35:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 860276B0088
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:34:04 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 41D571B6FBB
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:34:04 +0000 (UTC)
-X-FDA: 84585737208.02.DC6D354
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 257284000E
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:34:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jdUo64yG;
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774470842;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 390B66B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:35:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8BC013BFB1
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:34:59 +0000 (UTC)
+X-FDA: 84585739518.26.482F59B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4AA0F140003
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:34:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bbYBhCbS;
+	spf=pass (imf23.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774470898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Bx7O08fLm3R/wc0dHMJOEG74sKjKAWbEHkEchxKEVc=;
-	b=4lDWonYauTKIkF1IQQesexa6+KTbvFRJI/XiTW3v/wt2687SEKSNocPCUwBcskT1RO2Rak
-	eNtywXD80ULGhwtScjl7QiJm+bu1dtcF0PHtbl6IIALFdbNZnqzlrxYyNML4FWZ5Io2LUD
-	9RSZvkjgYCrii2NxtraiOsfZsmHZWLo=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jdUo64yG;
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774470842; a=rsa-sha256;
-	cv=pass;
-	b=cLgEhZyaMM/w/Wejapn6fE10/DSFZmRTOMozvRpc9Wwaer58eIVFLNv96xsVwU413GYQvV
-	UpcoL2KnSEBCQUDbDq2AmEtpo+BTsoLyCGKUtKjETgA9auvNmBJ+uwu6nj5Smzya69E06U
-	t4/o9AJjm6CcluFm9EqfTOadO1EShD0=
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a298acb395so423491e87.2
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:34:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774470840; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DhtRitVtydyT8pQ7XiZLWzOZF/zl/rEFo6zNt6Ut9Bv40SpImqtAw7tIoid2QKNXmo
-         C1JIEH7LjZbgUwgFJXeWDGZNrtkPUwDBouC+v+oYRRTTh1G2gHS1dLqZxzQ6RFH5Xlhn
-         B30QmOvChcyGENe8RxLH2+QKPJAZpbZJBlZcmWtOIx4alH9xwixLt3P3adeZn4XOw4jM
-         o3sX83J1lQeYsznykTBEmWFXUf3QtqpgbPvaP14hlqwlQyCaGA5vPmMAcBUVLxQu2dvX
-         7MEpE/nblN5EDLi6/MpDBk55TLk21lfon6+PIFp/HhgqGdRWN2fhZl5iTcYNS/HZ5vpN
-         WQEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9Bx7O08fLm3R/wc0dHMJOEG74sKjKAWbEHkEchxKEVc=;
-        fh=3V1Zl2aCRrGTktEkaiySvqv7/lgfTXwvki2WYBoDfos=;
-        b=VQpJFvJzuRSOCzVZgLg5wNojLOrp2EdoQps7XODUJhC65D0kqjK8CdskDz/eMuOuiB
-         vWnGGc7hcS9wV7X6m8/RMYfa69bWd5bTy5/ySaD/e4NVvUQOfujScYCKnU3/TvHVfLu6
-         wTfrmY52FEnpBaNzBhsuPv4A/PB1hpElw60APCcDlRBH/qQ6OrFY4fJ9o2vNHssxC2c9
-         RnYNPFSI/thmIpNEH9e6wB2UY86DOECXk//kpUQhXZk2K8AK/peahHc68tEOfiS97kfu
-         OZSXpuajyit+BCg5EeoLwRa6UOtJnKP9diU6ydddGNIlpSdTMhZn86VGyGiDtYBl3FR5
-         TIDg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774470840; x=1775075640; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9Bx7O08fLm3R/wc0dHMJOEG74sKjKAWbEHkEchxKEVc=;
-        b=jdUo64yGJC7qNyCTdxJt7wrAKoojpTYcQS1eqbbpHQdrJuRPxOlXND7Qm93UU38fRS
-         fp0aQ+bMoiRdRJEKJSyCWJ9WRdcYHAXven2jYvFX2Zha5HvTX2+glRvNBx4jx/3BlVcj
-         rRkOIwKx8IHAozIRjL1hLXipZtQfwpKzOgkn2oSsShCoSDh4m71QMlupM4IYMmwFs1+u
-         BgdFq48VDVFdF3N/ZxvGxv17b/xN1pGDaBhpzZXXZH2SDxaW29IGLLbbDFenPxwjxum0
-         E93/E7kWRz4dabvvaEJHRLiBQhhp7t96275qT9iTgeYSxjhHPnx7voBlVWijhkCY2ahL
-         lnig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774470840; x=1775075640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9Bx7O08fLm3R/wc0dHMJOEG74sKjKAWbEHkEchxKEVc=;
-        b=nFDBPUQVHNujkRj3v8UGI9bQ4e4Cf8DWPO8OarZC2pR2jk9PQ6JfFAvzI2gWFt7TsB
-         8ryXnnnjqc5YaaxspGusJzsjScbtfvLaZsN8bh31dAWx5j2vi52Z421822LMWsu4pHRW
-         amORriYkkLItC1YBFcdfN0GbTJqEl3xQiMDZwWVp5Y8LY+nUbI6scdQLb9auA3JgQr5/
-         WaW87WjOrSJ1uyY+MBTCSjYWZp1wFpAHYW19ytKg8oKabEAEVkrQ4rawlycfVqjiPZu7
-         LGaiFc0fXagL1U2g4nLN4B4B7M8aug42kQV7u6kwt36xVH7ygZpGjj2+FUe5Ev4hdihT
-         aLVg==
-X-Forwarded-Encrypted: i=1; AJvYcCWErVHk8Nydq/YRtir+H1UhDQ9pwd6Ylww+W7qoxCLQ2IxYjBmnTh5ivtccKAKoE/lx5aTI6ty+xw==@kvack.org
-X-Gm-Message-State: AOJu0YyhM9Eif8i/r6rUf5nKK0kC0yZBD/xRncse5G9O0au6uHhEdTan
-	9mUyJNtJ+tcyXz/m+N73opCNqtcegqTjukUCrP25nqLT20HRla2R1VjYseQHbCa21B6P1kwB2xK
-	biboI4pxgYTFeEDeiwgVYtd2ESn7O6wsdkLuxAZdE
-X-Gm-Gg: ATEYQzyPvSvqO1OZK/EzQSnTen6ZQLgkBtK7WY9a4/1BZEt7bEqIwn+Pp8QICtszsSJ
-	sBdl9deJ6W56oH/dp9BY6ROPpsbk3gzajFQTMySnPqHQ1bTu2AtaNlA3g2Y22IrcoG51whYTQA6
-	runxXKz7CzYrucJKfJzn4iRdrcLxGsavBYGceErul5LDDTOYXfyNbhS3cpQrZQnr0bdLNvhR5ta
-	4S/5+HQT02KtjkpikjiUQuQmgTLXCji0ofVDK+6N/Ef4WYLC9yDqJo6fQAfG5vprucQbbRXLUVe
-	Ici/8S7A
-X-Received: by 2002:a05:6512:108f:b0:5a1:3134:923f with SMTP id
- 2adb3069b0e04-5a29b99ef33mr1526971e87.40.1774470839740; Wed, 25 Mar 2026
- 13:33:59 -0700 (PDT)
+	bh=hPXlDI1QcmZ+5Fe+XHVTnW0r2MT0sKRg8V1Lk71k1Zk=;
+	b=zvJo9XKb3g/MM0tt4nqiAE7no9P70lPWAIRzW7oo4sHhFqdP2Aj2Gw2qbhif3BYAlqMhqN
+	y0aRtU4nUENClGjyVk2x0RciklbvV21GtNBPCkMMSZnoC/CQd0pB+ZWF0IoTNxCcztOlgW
+	txP22vfgWYJkGsrvgBkseWpHsNR9bY8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bbYBhCbS;
+	spf=pass (imf23.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774470898; a=rsa-sha256;
+	cv=none;
+	b=39CCv/W2m/BFafp4tgw+ryRnZ3Iz0IriE5vaLizeEjvc5spSHIzdQCMTj84Qg6rTZkgsnY
+	ZtsGOy6wC3mT7K3hEXlr4FSJitxyn2iOyGfOZEkLFx9+ukH9+PGdB833P3T56F1KVPeq1b
+	KrHve6iHrh+FUr/NLgGWnKyDbDLHRsA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B790260053;
+	Wed, 25 Mar 2026 20:34:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9764DC4CEF7;
+	Wed, 25 Mar 2026 20:34:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774470897;
+	bh=hY080uvPl+LEJJt54gSEYsldkDiD0CJld2/4td8A6aI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bbYBhCbSSQyOTk2rJFqHAHyFkKsd73IqUwcFy1AxQRkoLCwLLPF6umiKPs2LeSj7H
+	 Hb2Y1u24jgh3bjfi6QzV4qDUu44EkKemZiprOOLgNgmHHUayATDX8gnaSXKhoYUck0
+	 oaxE1niv2eRDUu2vHcH/hKX7Tbh4hCPoz0Y/MIbst2XgsBzoS8Ttync+PNpOfwa3bH
+	 5IVdXJnMAQ6hoLZ/Amx7/4E0zDBlAaMvXFa03NeGgd1xTLyLS8gVLGk4rAzXdR/mU+
+	 6xueRiigw4BkQhn+wkJqXsBN1gQeiEN02uf1TnMkhR3uvyRnMWgxgs0oifdlPY5Cca
+	 fgS5DepuxPWMA==
+Date: Thu, 26 Mar 2026 07:34:45 +1100
+From: Dave Chinner <dgc@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH RFC v4 2/3] iomap: use BIO_COMPLETE_IN_TASK for
+ dropbehind writeback
+Message-ID: <acRG5f9QjdEKg2JB@dread>
+References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
+ <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
 MIME-Version: 1.0
-References: <20260325182026.467307-1-pasha.tatashin@soleen.com>
- <20260325182026.467307-2-pasha.tatashin@soleen.com> <2vxzikajacgc.fsf@kernel.org>
-In-Reply-To: <2vxzikajacgc.fsf@kernel.org>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 25 Mar 2026 13:33:31 -0700
-X-Gm-Features: AQROBzBIp18gRPLcKPfh3wjTKZUVHHVImeKDpRy0cS80NjooMtufSaZyOa4m9uM
-Message-ID: <CALzav=eybgJwMQEtvSi2bUv8u7cic6d45r4wFZdZiKFFrrLJfQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] liveupdate: prevent double management of files
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kselftest@vger.kernel.org, 
-	rppt@kernel.org, shuah@kernel.org, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 257284000E
-X-Stat-Signature: ydu7qp6q1u58uc4hxcef8z1fa18jr6tt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
+X-Rspamd-Queue-Id: 4AA0F140003
+X-Stat-Signature: noiigkf9i9ofhussri6d5cphrwrnqad9
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1774470841-325471
-X-HE-Meta: U2FsdGVkX1/wWYGSMJDwTsup83EGe3F2aqfxYmCHst1cq+VMM3e/mLtTpTKSDvHrtVP9WLsJQY3C9Yw3E0XU4SvgYs1wf0hLqYLpKYEHMKTUW1lOUh7DvIrlHVULhhBoV3I/PWHXM7JwBOQ3SLCoeT+cctkAtf6WSLhwuvDBXd6QEKOevUVqn+nS60qWHouq0lt+oCOJ8rDk6xKb9xzlp+nfoXWruO/zfcm9tNrM2HlV05+oWdGYZBIlaD0zmVR+HPUfKOei/WzX/R4OpBkql+0UU1B4J9a60QxuxIduTegqcfRWlMZL3+6DfcygDzFTm4riN+sth0kR5bMmlB3D4HQrpgM5QufTSwJKRRWZb3Y95tIRqgCu77v3pITBNeAgSmoPxr+cNmXx2CoYw9JRlvDowqBWq58Lkfs1Jnx3tUga4XdffpDu9ZkEZB0Ze1OIjgaXeTTG1Q+Nab3ljqjwgY2bdcwRu/vxdj4F+MKespOZBl2nnko61xn12S2lLQJP8ReUqrD4DHE3gCaeTz+tz4LCYppf9i6iYm7869Js9UXQAvT57px7K/xq4hq+LaPBgDIUOCXSUznAoGS94e8ReNX78xnfiX26IlWoAf6/vVxFSlJoUMsaeZLu18/Jwbqo9KJYzSyf9AKAsOPUCxQg1QPV8NxmBLZURbtNMDnvM6TB/xhmfz6jHRULKk2y9tB0zXae4Ivsu4PiZOoXLaAJmSe+VlIZEqxruP5reR9eTL0nAlQNbK89HrcSrnibEQWl5vNHR39Gmv2RKEwu5GNC63bfCPbSTuUjQ3VWXuSj0IB2zbYPA6tAoIxGdqir5eOtfKwS3/FwJeZrYfx7fQDx8VE8EKY92oCY/nMi5ys6pWeDi/3RDDBKcQqoEsAKt5SnyjloF+364GYFkSPqRE2DsvTJOqwEA6eWdFJbVWJrJ+7nABqdre3mhbTpxgMye7umHWduSL8hdaEi3GPSBBm
- sGyekiNW
- E/jnc+PONMHV3TWDgKnn1qYW1FiPKJxCRH07W945j5zI5jY2FwQYz48UZZ7/dqXuLwdRa7CjZF6o7q/quJEfxt+zeMxM0qdkr8UkeENP+CSXoDsJMMY6xqNJ/zHVwjrdg+UYRLmwu0exu0qgFQK2sjAtHDpKcpD/Y+pwRzIVTRYVFKikTRkCCVSVFd6Skm//+f49MkJytMEJ1uU5cl6bD9Z6k1Ts18xX65hipMuMG+QUg6nFwlsN1D3QF+ePTIqorMAWv
+X-HE-Tag: 1774470898-849524
+X-HE-Meta: U2FsdGVkX1+g40/hJVA8bb2ELHgJs2CkAhfJbZZbAhewxgGou1QubRapCpUuHtkOezhYnUf+p2TNFBDUZHz6bmXT7ARWVm2hOhEHoPbvBxpGirHQkrzJcZvgrwlGRjZ8+8ykmFpc3nvNSTHvARaI206I515QpoDTSMpYjGNFy6VgKbEI+XMF2ePsPoj0pVBaMDMIyH4kSxKpqsvqMQ+dnCUJCflIz6gxBnezrpGOPAQfkFE5EmskLQHmT84LpWcEwynh0NR30m/L9dhIJaDqkeNA7H03M3ZytbFRNySh2LpvQ6+Me8h1kx1psYc11+u4kY7JmrEJQ8YBFU+pHD1LNAqGPYhcZcqW0bYD/wUwhqaHz0VpRGJX6W8qjTmfBBRlsxFpdqKWi/jNf5Hy3PNExjalirvuKcFCJ63o+N3UtnKEzlbShkBXcO8yIkBpk+8az++0bjfeuiQejrRNzSidlhM7NQce2MWZc/OsHzF75b1qSjtu47HP5iWEm4PGRBIrePkSubjWxHIbLVZi5X1mhx/T039DBVDp5w7WIgWpqsmjTHOxwEw7SVj6Jel5M0OLLbF3/WvcViMp0gUaWGrMR2lV2bI7sauczdlJUClwndYVXd3UUODMM2x6IXfUk7hj2Vuvr+OBWxKxM0EkH7kzHeDKjOUoPTyPvZJgGLKomU8d9A0/GGwN34MRkwL9T608gKa/paMEmh1nYynDtVqkvO+3sl64dnt0IVtgNXX8yb0bBAuwm9b6+XD+yw27EmAIDwWLZAo4liBpIa/k7OCUwd4YpUGlT22Y1hwIBXrNed/ELXUpPVzet4AMz1kfS2QB+hoWzPHx38QI32wcneHg33gQmsTDfJw6abtTKpLLTT/a60ECYzY4xyXnyAqHKOzjvd6RKs/pgWagjc0saRS9cnsPExm5wZwzS91jT1b3SNv5ubJ2zb/neTDyUcqzXsiQlWSrq3C4z+jCYskl/JU
+ VEyo2VGk
+ AQGdmO2L3NbOd8dHYY8vayQ0LoOCbiwTc7kWyDFeEq83h6hgOv9lPiimIkQbBN91E4O0RFktkoljTkptY75+8I5JkxCF8ayZVVl4ugsnjxR4DZBFN/7BZXAb/FmfO4XX4H3qwm5GGMiQBhJFfnmkRAMfGFx9PXrCHjGkO9zDNJgnrLg960GS7GPykYJPF4bO041JabZQFa00AcP17/FKqKC09GTWMQta43NtsV5pq4usqopYaV2BZcAWOt3UovC/Qen0B35Avwj6aEYYw0WbBN4Hd0kbMQTgxJ3a+duEoUhcV7y9l5siVc90vYztlyIX3xiJS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,23 +99,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 1:20=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
+On Wed, Mar 25, 2026 at 02:43:01PM -0400, Tal Zussman wrote:
+> Set BIO_COMPLETE_IN_TASK on iomap writeback bios when
+> IOMAP_IOEND_DONTCACHE is set. This ensures that bi_end_io runs in task
+> context, where folio_end_dropbehind() can safely invalidate folios.
+> 
+> With the bio layer now handling task-context deferral generically, XFS
+> no longer needs to route DONTCACHE ioends through its completion
+> workqueue for page cache invalidation. Remove the DONTCACHE check from
+> xfs_ioend_needs_wq_completion().
+> 
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  fs/iomap/ioend.c  | 2 ++
+>  fs/xfs/xfs_aops.c | 4 ----
+>  2 files changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/iomap/ioend.c b/fs/iomap/ioend.c
+> index e4d57cb969f1..6b8375d11cc0 100644
+> --- a/fs/iomap/ioend.c
+> +++ b/fs/iomap/ioend.c
+> @@ -113,6 +113,8 @@ static struct iomap_ioend *iomap_alloc_ioend(struct iomap_writepage_ctx *wpc,
+>  			       GFP_NOFS, &iomap_ioend_bioset);
+>  	bio->bi_iter.bi_sector = iomap_sector(&wpc->iomap, pos);
+>  	bio->bi_write_hint = wpc->inode->i_write_hint;
+> +	if (ioend_flags & IOMAP_IOEND_DONTCACHE)
+> +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
+>  	wbc_init_bio(wpc->wbc, bio);
+>  	wpc->nr_folios = 0;
+>  	return iomap_init_ioend(wpc->inode, bio, pos, ioend_flags);
+> diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
+> index 76678814f46f..0d469b91377d 100644
+> --- a/fs/xfs/xfs_aops.c
+> +++ b/fs/xfs/xfs_aops.c
+> @@ -510,10 +510,6 @@ xfs_ioend_needs_wq_completion(
+>  	if (ioend->io_flags & (IOMAP_IOEND_UNWRITTEN | IOMAP_IOEND_SHARED))
+>  		return true;
+>  
+> -	/* Page cache invalidation cannot be done in irq context. */
+> -	if (ioend->io_flags & IOMAP_IOEND_DONTCACHE)
+> -		return true;
+> -
+>  	return false;
+>  }
 
-> For memfd and hugetlb at least, we serialize the _inode_ not the file.
-> The inode has the contents that we care to preserve.
->
-> So if two FDs point to the same inode, this will break. You can do this
-> by first creating a memfd and then by opening "/proc/self/fd/<fd>". Then
-> you would be able to trigger the preservation twice, causing all sorts
-> of problems. Same on the retrieve side.
+Ok, so higher layers can set it.
 
-> So unless I am missing something, I don't think this approach will work.
-> As much as I hate to suggest it, I think we need to move this check to
-> each caller so they can find out the object they need to serialize and
-> check if it already is.
+At this point, I'd suggest that we should not be making random
+one-off changes to the iomap and filesystem layers like this just
+for one operation that needs deferred IO completion work. This needs
+to considered from the overall perspective of how we defer
+completion work -  there are lots of different paths through
+filesystems and/or iomap that require/use task deferal for IO
+completion. We want them all to use the same mechanism - splitting
+deferal between multiple layers depending on IO type is not a
+particularly nice thing to be doing...
 
-I think LUO can still enforce that the file is not preserved twice.
-HugeTLB and memfd's preserve() functions just need to also check that
-the associated inode has not already been preserved?
+-Dave.
+-- 
+Dave Chinner
+dgc@kernel.org
 
