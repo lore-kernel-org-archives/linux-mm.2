@@ -4,135 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6918109C036
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB9CD109C036
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:16:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CBB56B0089; Wed, 25 Mar 2026 12:16:35 -0400 (EDT)
+	id 32C5B6B008C; Wed, 25 Mar 2026 12:16:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A3CA6B008A; Wed, 25 Mar 2026 12:16:35 -0400 (EDT)
+	id 303A76B0092; Wed, 25 Mar 2026 12:16:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B9DB6B008C; Wed, 25 Mar 2026 12:16:35 -0400 (EDT)
+	id 219B26B0093; Wed, 25 Mar 2026 12:16:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ECE7B6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:16:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4F70E0A14
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:16:34 +0000 (UTC)
-X-FDA: 84585088308.23.A77B698
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 72E134001D
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:16:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XQICvlRq;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774455392;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C9876B008C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:16:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3B52C30CF
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:16:43 +0000 (UTC)
+X-FDA: 84585088686.12.948D5C9
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B6B7CC000A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:16:41 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=khRcxBEF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774455401; a=rsa-sha256;
+	cv=none;
+	b=qBwnA/1jpKGlISc7yl6CuvyPjcDEDCPq+viyrmntq5Y2+jsnq45UqJ7zA9Jou43p021APL
+	ZBUQ7tsKK4qFVzrs98EUNLL0KvWxVVVdC6AbU0NMWkfwRl1trFCdh0EcxDhpM8ExcIhvBp
+	KyuiXiOFNVrFHoJDMtwGG35NPJEJoHs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=khRcxBEF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774455401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gdesG3FCbAJVDCjzINb0WPV8HWIuE46VHkVQSk+5ZBs=;
-	b=GQuv065h8Sh+sNciV87n4sPr02yuEePDRPDkdPJhEvVdTrAFVsJnKNGXjOUoHtODvxY6VE
-	iWbrlrSKInwoz0NIRyC09EMOy9ERv0IYlvARftIwok0n40lK8C5228cojcy2b1Nt90tpGj
-	axabU72uHxoSE88oXQeHoWqqw1W8+40=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774455392; a=rsa-sha256;
-	cv=pass;
-	b=UVouQX1SU5WtG8U9bsJMqDJur3QHQzGJjPLzEG65qAbktyTwAPfiRLSGcPn9tv2AZvjIhz
-	BLKue7om9fzxTij/Q2durRyA72RWmAP/cNXTOvC4jltzk8Zpk+9SKnFAzSLrGSvafSz5Cb
-	aXYq4cwF78eBFhy7KCEw6MOIyfkUwhM=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XQICvlRq;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-667acaeae82so10696442a12.3
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:16:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774455391; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YcFrNwZUE0j9Kc3IwkEWka8oQguOutDjYVf7LhS+omKg3/VpHEfPsfJ2do3BI+csu+
-         mIbfiXzPKLNYQfd5oWSUfA/fpqvrfBBlef4xu6GJrUnhtgEaxBn4Aj8WgDOna9YlXdBc
-         u9Bs5VAfDn4vbX79Pj8pIOgiuuD2Ry1tJxSVnhvMD5WJcw1+UptLRi1Duf7spQPvnwyj
-         vFCb3xHdnlwYLBsPFKM4dFDdv+kgXEZiTCJuIP0QoTITPq2f9+kkZb7ycrA0il1vcL1L
-         KgdPzbVKKmr8gZaZh78nyk7w0mWsVoR7Vv0McBTJ8BR6ZNAgmfoE7VMOY1XH1qeSZzKW
-         zHRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gdesG3FCbAJVDCjzINb0WPV8HWIuE46VHkVQSk+5ZBs=;
-        fh=A7y+Pb9x4jmGUvk1cezYCw081hED5C5o7Ek+dA7IHjI=;
-        b=ccQ+lFcM+7XBhrqAlGbIUGH/odetwrX2CIwOn8V4jCMBqnT0LDo1GWiiX3+veeD+IB
-         5zlUMr/wq4e7NOgwegaGPiXJ5ZzMFU88mnPA4bRkWGYWJLoJfp2iZvznzzEG9nEBdabL
-         KVxCbuLQcCAFzOrf6mEfKi2XtG52Bw2UFVkDzH8JzDW5Dufj3PFQtSCDKJggUicsC6TP
-         tc7nSN9pfDq6QRHMZl/CuTAcQIgARcOihX/2RvjyKQsPjdiQcN2LP9c0mWth9xHmL2Le
-         XJAOG9hV0JmDFFP0OVYRdMsRcNo83enFtIZVOIXnlqbR5lu/m1B6JvtjgvDzs8I29b89
-         dL1g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=mQNkW1E4iLDlDxzhZtGOPx0+whhP6nU11icM6Ww2f1o=;
+	b=oDYmnl/2jEWy9jc91xrFLdGQZwQ9qwwqDrDBn1WULuXdDvMu3sIkkoFhrSjC3TeQKcWwpc
+	d94drL1gDL9DquLapBNI1SPkUkd0VmwLBebaQxi1D14+15V3eDW5yvS4Ht+YhYwhl/9za8
+	Xrq0zdBLMJtxdImdwv1kb1GfZRr4XLw=
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a13a06fc85so120329e87.1
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:16:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774455391; x=1775060191; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gdesG3FCbAJVDCjzINb0WPV8HWIuE46VHkVQSk+5ZBs=;
-        b=XQICvlRq/yqjX5kXEPLpPrykp8Uh51sfhW006b6HVgkUQJedgTJTgGGzzXWZW71U5A
-         0mAYBqjZPx8mUfV7vdUsmbpVtxMjkQVUzhAK8OgRS0hc9hHbLl2BlKtFKX9R0pDcx3r2
-         pmAUM7La9xjcPtRgIXM7Zsf5exY2fI0yWjkFtNgrVXtNFRDxjZnUMDDZK4nfyhht/ypK
-         MJf/iRZlWl7Fn61G66EymAjSrEfnTkXCmCJqzEctGzMnBurJZeiUJNdeti629yO44kcX
-         wfJ5PGTp9MZs54JHoCpb63QJLFiWZsyTg/0eAY5gI+eMNFfOtXnq4LBjRhz7emiYHs+L
-         zDpA==
+        d=gmail.com; s=20251104; t=1774455400; x=1775060200; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mQNkW1E4iLDlDxzhZtGOPx0+whhP6nU11icM6Ww2f1o=;
+        b=khRcxBEF9nLyjCdxzRiCCNIVUp47JmgWNfQ17lY4PLrKwP7uEQp6Ry8GlRyjkUVJB6
+         h+VYLj13/lLNumlPGX/ESmGW9RGuHOiEE5ZNfQeUPg/DOEtkq8inD1gGP8hlPSsv/RTB
+         ETLFDT9qgKmLLbpKx2gDHXfpCyWR54EXsoRTN6zynpFSq9t/3eymZOUcC7QhnuBGNafU
+         7+W+8keumjrDVekxixE86k24t6yUu06o4m1+1n3hyZVwilnlANHZMBmTZyICZxwjSX9q
+         2SuRouLuXt19HEYf2sDVD5kEFaXMKhltZv3Po/NP1Tgf6F1B77O0nLe5EaKqbOaLefvV
+         s4IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774455391; x=1775060191;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gdesG3FCbAJVDCjzINb0WPV8HWIuE46VHkVQSk+5ZBs=;
-        b=gs7BD8EPq0irQu8xf7Y0qv0jJdjc4I47OTs7xol7XJJtl5eH94BFqaX2iItZSbhHtV
-         D9lgvWQo07vbCZmhKDFceycAlJwVSprMrzy2Muu0SCnXmOx7Kcf+h8XOx4ji2qw0MTq9
-         zXt9xSbzdwegQ7+62dDuUT1FO+vK4ZiIBpSD4YTYPv9pR7Q3dXQ4Aa7r6C9mpoahHwNN
-         X7XyPAj6Ra1SGS29IzXJQfpEwBruFU1my6lsz7C9bq38mkZPVlhwhQoCnZGVUbEXii86
-         R/jcnFeDne/2OH//NTReTKAm6JI00hZkaCy/0VGLN2w/hF0lArYmMqY+uMPYzjBoUcy4
-         sLyA==
-X-Forwarded-Encrypted: i=1; AJvYcCXyeO2Cn4iaju1T8gMjv2Y5AYStzKxSVZsp7pVG205hCkmrTLhSz/ZqRpnwfdkw4p4/5I2wBjdEhQ==@kvack.org
-X-Gm-Message-State: AOJu0YxYuVN9qVD0R+A7abdP3PPcW3czAc7Ur8sdWsH6vW7dXkg8ljNO
-	LNye9r53tVHxp2TelTETPvm1wmc0WeuCY+LHY/1ub5nXIl5x9WP+Bvd567mhuf1Hjj0CIygfSV5
-	rAMN44HCbEeoLEVPTdXjrhU1tbgl+I4MsBw7TCPJTRw==
-X-Gm-Gg: ATEYQzxm5DQT1mMZ+h1nvE2z42Gb8FAZTjJ8svZPLX3UMN5lyMRlEyTP31TpWVB7EV0
-	mobud5uNp1Xy41mIF4NLEqxRNZvbFtCOwx+4Imzt78vWw5PzLvtWJKZ8Rv/LQkA4oLqOAcql7c6
-	UCDMITzOdxZ6NoD1SHRNVOaoF/kyIHxZo0FcIWrsHo1XkBjL/CAK6hBNM2/mNFYWh6MIcXz89PA
-	ID+eB9G9bLdJHQ45PSpjo6kgglXNWFpPPvjHSBWCvQCnlTB8iDbRW10quQbGwhNRbEIwyS+p6TI
-	+MSGyFb7oh1OlCp6YhFl4zprDZQHhXB9ZW4Dfw==
-X-Received: by 2002:a05:6402:458d:b0:668:57f8:cb86 with SMTP id
- 4fb4d7f45d1cf-66a82672c4dmr2605591a12.22.1774455390316; Wed, 25 Mar 2026
- 09:16:30 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774455400; x=1775060200;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mQNkW1E4iLDlDxzhZtGOPx0+whhP6nU11icM6Ww2f1o=;
+        b=HjXoa+mDmrJbgAytdYSNEkUEsKJdpqPPkMQukMBbuiqIxLSUyjlhzBwozZyFX/rc8L
+         X1Yii0yL3a87fQhf8PId4k46fP4BgyrvJwBE0OTu0gYhswF13AXEFguX4UYRlDjqA6lh
+         gyc4memXYnT4UX2kakpeqbaJz0kl3q+pFJh5SbW1C9rwXT+ZcN5qocBc1M7KJ377mm0V
+         FnoeeE9Uk6b16zG0APOnskpPGGtLFaGEf1cWbGXwZ6yFg1FCOmrhFlWxJPecBUZxqnWJ
+         stseULwRDldHJxwfHOL2ftLyabgFlhWY76GbJt5LS8T1GQnS1fGPb5cuzN9DBCNn/ucN
+         BOOA==
+X-Forwarded-Encrypted: i=1; AJvYcCWfsQFND1NptW82eN6zaihbi4dsPMVmGMr51q2wysJg/KwO0IiGl9maHmH3uM7lU0tO9KqFRER2dQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyn3+d051mTgGn4y/jGnnloE4L0j1KtmZ5bnDYBPQCaWo2PnKWx
+	s/qpNTB9gkF369/DMU2xBrlhdfRwS7xdO63ni7CygUM7N4aV2QJbQ5bc
+X-Gm-Gg: ATEYQzxPPQsoZpYLyfgsezCNArO627T80/LoBaPYz5EpxD/MJw/BCxEjF3bR2jGU1kd
+	dHnX+QINRyDgIq2EkHTZuXoyPLAcZjltHkIXS2A1HdZ2zRyzB9ObrzBk6X0yLXPmRU57M20Qfih
+	epo7dLQRqdMRZwWSGKjmVwpycp13DCS+6BvfMPCJvfdPRI+aFifs63qbHfAk5kseDu8U93H+3c9
+	TKyuxxhVlqlhjH2qVyrlGvfmYlSHhJ9nbirhF56nrx36RAVR6R2Tx5cs64qiKSZeZoU3VmdX+aR
+	MYqX8Mbmw8TfgMYnkakrs+yOWCLG0qn+6MlgY0EuUQMbtNCEqhKykEoYRyPN61dnCzPJidDicGq
+	hXxqP7+WW4TRBTHhWeH3OWqm2Vdcf25PDwmSuiAZyOCAR+THzHdYSmpXfMaIWPrRm
+X-Received: by 2002:a05:6512:33c6:b0:5a2:7ba1:4932 with SMTP id 2adb3069b0e04-5a29b99ef6fmr1703865e87.42.1774455399259;
+        Wed, 25 Mar 2026 09:16:39 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2a064d35esm4117e87.34.2026.03.25.09.16.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 09:16:38 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 25 Mar 2026 17:16:36 +0100
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>,
+	Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	Ryan.Roberts@arm.com, david.hildenbrand@arm.com
+Subject: Re: [PATCH v3 2/3] vmalloc: Optimize vfree
+Message-ID: <acQKZBqTjpm6-k2f@milan>
+References: <20260324133538.497616-1-usama.anjum@arm.com>
+ <20260324133538.497616-3-usama.anjum@arm.com>
+ <1D88CFF0-8A74-413F-9A6A-39E27B760AE1@nvidia.com>
+ <acOjIcqyIVY9KNn0@milan>
+ <a79ff8ba-ed4a-43d0-9c4b-d2883a5c48e8@arm.com>
 MIME-Version: 1.0
-References: <20260323203145.148057-1-pasha.tatashin@soleen.com>
- <20260323203145.148057-2-pasha.tatashin@soleen.com> <acP_6wY_HVMyTLHk@kernel.org>
-In-Reply-To: <acP_6wY_HVMyTLHk@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 25 Mar 2026 12:15:53 -0400
-X-Gm-Features: AQROBzBAMaBv6yy_H3sc1rFwDSbkGqaJ8neT4FLiAwZOaJsWHcMPguK5VNMeOp8
-Message-ID: <CA+CK2bDNu4+eR1FPOeaN+rZf1GWkiFHCaHwvS8wCKUPJkmWKOg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] liveupdate: prevent double management of files
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	dmatlack@google.com, pratyush@kernel.org, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 72E134001D
-X-Stat-Signature: itmypkh34iok38e6yy53dd18o15giwte
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a79ff8ba-ed4a-43d0-9c4b-d2883a5c48e8@arm.com>
+X-Stat-Signature: t11dxycxx81ikmsy5hi3chdahhydjnzn
+X-Rspamd-Queue-Id: B6B7CC000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774455392-558870
-X-HE-Meta: U2FsdGVkX1/RRJdLJWiCaLD/GTRqyA/o4jIGqU9vw2WsuFXnCsSJtTxw9lmfHHz6dFMq4TSbtjWq6yZfjF/PXXxgrbtEiVoBAObC9VOq9dlIJS7vymDFNRWFRSPRqG+SA5Z4Of90J8uWLTi3uA7KHbqVn5M4Yq6+5N5mWBsdfq34gYKPJzJg/nXLs0WPtEfG2i2LnL5X9EQToFhGOaosKU2CYFj3X9HbIOQq0gzGKXjAnUnJLbUjYATYvbUSs5ebxT9HNNVD7G5Q4eOMlFrqn33fuLwfDNhnv33Sx2rvtzoP/Fp1Xn/HCb7WLPdSGbM2tQm+44l6oqrX1qoPctjzQ5E68aX+eePhEa7mL08QqvHVI3evkjnQ8Ws3G8RerkBRFkXpcrbS6lRKgRUyBTlmU+73P8OPzLTGZKMn1dUkPomVzI/H7hLhRmxgzh8DaMRB9fD8WGRL1CNGLO9dCp/OSQTxz/D6ke290ahWDyq0A2ZJ/EttdCgducVbspOXSFfrU7fXHBAntJUCzD8aEDd2XozqWC/WT5IXmqYjyVWj0vComCHY8egDwNeCVKLMFpfgh1WbFcCXB1l6391XY83Ce8XZcH3mI77m3epSYYu3lU96+KQKelc85lBLPVgerrkVU2sTVzYtwdx/ehZT+N8BWrtAjdoTZTq+T0VPF4b01cmVol9B59Aykk4rXTe1oTR8mComD+wDr8Hb0+tMfjTtVqaGD4CTgAW+1K+cbHuFhDivyOCWqsL+DhP3nSw0pdCwc/5mXIcFL//S6/fz55HMfpnjHX2Q4VijpYpYkbliCkGNSwy1QW1SvMC2q4esQEv6objYsLEFXCh9lCCTxwPcRtIrIXNLq3xTmbxXIsRY04BRvJOMNeYkGjCg2NoSn1o4Wxkh2Nk6jNFGqbQfkIOQX7oduXkRlsSzFvmWu0xMwlhOWMs3kem4zTwuOd87XrenLD+L8zo9RScJeIDAr0L
- jGPeVdn3
- w/58iz2ot4QrT5lz5axf04Th67dUc3bjwf7pA4PnvRSVs1lfYToTZ3qb1Eqs4zX2Mbf6ZnXFxYe7elpCo1vZ/R545qWJxpl9sbfB/iPja/xwX1F8LvQMm20VE459UOyEtlwKnAXGa8SL2wc/RFwfb6J/vEOoLV1vlB+3Vhx8USAxswTIf/UhU8LwfgH7QSzOB61JVaWyKeKE88xJPE2fTl/FF5bN2fCvKFFSH6UUQXv0p61OTINE51ybBS9XKFxN9I8WtcnuNAfhWYEO1sw8i0+23Kh1XNKyEvBqKx9GRwiJUlXzduH+uryquvC7Hnph+WVkl93gI76Tno/vXvBKhH4wKl+HeJIYvWOFA
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774455401-374292
+X-HE-Meta: U2FsdGVkX19Y62PB1CjoHViuBmbHURe1n0U7kr0JTnmtkNm6ighcNLByE8BJsezU5W+M0sI+MHRdgI0iR85yje7alKQnuIUHmCnwoUi1Uxpc1dgsW/8/k61k2TyhIsUJHiLHgTz0htpxbGseOpkMDe/eHhwvdo14vCQZzL5RgdHY7fLbuCDtNXj+nYn2mKvwQyRq9FW+uY87JLdDiHO84a3YxnHWUCOeLYObPrlIBdLy/50YQQx/cDwZ8aWCXukKPlXVXxwxQYq4h1QfWwZAlH6QHWo13NjXfCgOpnUT8nYEYeShPuSkFakCSE7fo40fZUVPuTsnyeDOMwCnhiS8A0wWf9VutI6oBa7MbZT+uwnoiNvTgMBwri4YNkTYy4B0I1lBbwAylQgoWe0Nxf07eE2JBtzFP4uNNu17NJPujbQxckTYBPMJrLA75FBU2QeexVZzQlSeUExew7Exzh85yzC7Brq37ztfKKtrOzdHsmFDy0mK/io7GbALnCETepY71pFr+WaYy1xTDncMvBdZgGYkKvVMNL+NeSqx7yyUwqG8JkPNOLFjCuq4BS8T0VDM1voquO7LGBmjpo4v3TVdt7bmzbpAAPXe0ag2HJmrMh//u0O292XebOtYXOiTXoYIOls5TlgIyu01fxxw7IDzQkboWpig6OMH2FnBQxI5nMAnacstV+fFvywvvlwwaWw2POVz+G36K0gvzbuOYzEkE/4pOyaSMRPdjH78DdFj7V0XAjxgBo8BLtMqZmiA54I8LYEtwVp8/rx2V5r0qQEmiHLj2sJ3gwqBBWlXGb3+P77oDsYJdwh2Nt1K2o+Tt47+aHxcQYOLbAjG1h3lobc45Nhnz7bTl1yDtwybCA4hcyKD00BZ+HfTeCFn7aGFjI0i2EHTpO+ECfIETH1WOYJvvKol4/Evv7CwHddbCbl8wiFxWn1k2EdcePAdkdQgcERj0pwv5nX+oRSJcr/99dw
+ fndNbZNp
+ iFr61UqH2/asGahtyjTO9kMGXnQWYX9nx9f/0EADwgK7H+xIxxf2gy03IxOWroVDLoMT8NeflAVhQYyw9TPVlgs/vwm2qdIGa9gfGGajsH+gCyz3QhfDKiWfUGHbNIbJgMF7WRSiluZW1iLOcINSdSIh6LDz8/DMuQlbiMJY7Xe/g5xuogp3I/ai2Fz0zlLzKE5YpJ7qgThNoCyaARgj06WRAC1XKl5bV8LYLOLuJfKVEAeXUpXZzVF0Ooc5UpkQkilii9LNbZp7EMOlVW9ai3K+sY9OKAOonrRa2QRzXAJ2OQxjStHIPRTt3DX1zMYmMNmPoc7+iTi7TfHZHS9GZ1SutWtW9O1gol9Hx1uE4CC/Mec72J5srYnxzq56ZNQ0E/NV9m/zKVSazOetOY3i9FpDMg+yiEX2npA8YkfTdsCf4oONyDw71fjyhKOI21AoX78G4Iyvm4guYVsNJ1tHL5UIsEYALzZGld87mGL9Fvnwcy0bMheRjbGkvZIhut3tdUbR4SRxBw7CIrHM687TAY3932ucrguWFto5PiPX4FrOie+JX26GRNKErm+lgK5MLWMpntWqlNlNhgOXT7ExdZwuWmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,123 +133,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 11:32=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
-ote:
->
-> On Mon, Mar 23, 2026 at 08:31:44PM +0000, Pasha Tatashin wrote:
-> > Currently, LUO does not prevent the same file from being managed twice
-> > across different active sessions.
-> >
-> > Use a global xarray `luo_preserved_files_xa` to keep track of file
->
-> Do we really need _xa suffix?
+On Wed, Mar 25, 2026 at 03:02:14PM +0000, Muhammad Usama Anjum wrote:
+> On 25/03/2026 8:56 am, Uladzislau Rezki wrote:
+> > On Tue, Mar 24, 2026 at 10:55:55AM -0400, Zi Yan wrote:
+> >> On 24 Mar 2026, at 9:35, Muhammad Usama Anjum wrote:
+> >>
+> >>> From: Ryan Roberts <ryan.roberts@arm.com>
+> >>>
+> >>> Whenever vmalloc allocates high order pages (e.g. for a huge mapping) it
+> >>> must immediately split_page() to order-0 so that it remains compatible
+> >>> with users that want to access the underlying struct page.
+> >>> Commit a06157804399 ("mm/vmalloc: request large order pages from buddy
+> >>> allocator") recently made it much more likely for vmalloc to allocate
+> >>> high order pages which are subsequently split to order-0.
+> >>>
+> >>> Unfortunately this had the side effect of causing performance
+> >>> regressions for tight vmalloc/vfree loops (e.g. test_vmalloc.ko
+> >>> benchmarks). See Closes: tag. This happens because the high order pages
+> >>> must be gotten from the buddy but then because they are split to
+> >>> order-0, when they are freed they are freed to the order-0 pcp.
+> >>> Previously allocation was for order-0 pages so they were recycled from
+> >>> the pcp.
+> >>>
+> >>> It would be preferable if when vmalloc allocates an (e.g.) order-3 page
+> >>> that it also frees that order-3 page to the order-3 pcp, then the
+> >>> regression could be removed.
+> >>>
+> >>> So let's do exactly that; use the new __free_contig_range() API to
+> >>> batch-free contiguous ranges of pfns. This not only removes the
+> >>> regression, but significantly improves performance of vfree beyond the
+> >>> baseline.
+> >>>
+> >>> A selection of test_vmalloc benchmarks running on arm64 server class
+> >>> system. mm-new is the baseline. Commit a06157804399 ("mm/vmalloc: request
+> >>> large order pages from buddy allocator") was added in v6.19-rc1 where we
+> >>> see regressions. Then with this change performance is much better. (>0
+> >>> is faster, <0 is slower, (R)/(I) = statistically significant
+> >>> Regression/Improvement):
+> >>>
+> >>> +-----------------+----------------------------------------------------------+-------------------+--------------------+
+> >>> | Benchmark       | Result Class                                             |   mm-new          |  this series       |
+> >>> +=================+==========================================================+===================+====================+
+> >>> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |        1331843.33 |         (I) 67.17% |
+> >>> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         415907.33 |             -5.14% |
+> >>> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         755448.00 |         (I) 53.55% |
+> >>> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1591331.33 |         (I) 57.26% |
+> >>> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1594345.67 |         (I) 68.46% |
+> >>> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |        1071826.00 |         (I) 79.27% |
+> >>> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |        1018385.00 |         (I) 84.17% |
+> >>> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        3970899.67 |         (I) 77.01% |
+> >>> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        3821788.67 |         (I) 89.44% |
+> >>> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        7795968.00 |         (I) 82.67% |
+> >>> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        6530169.67 |        (I) 118.09% |
+> >>> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         626808.33 |             -0.98% |
+> >>> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         532145.67 |             -1.68% |
+> >>> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         537032.67 |             -0.96% |
+> >>> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        8805069.00 |         (I) 74.58% |
+> >>> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         500824.67 |              4.35% |
+> >>> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |        1637554.67 |         (I) 76.99% |
+> >>> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        4556288.67 |         (I) 72.23% |
+> >>> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         107371.00 |             -0.70% |
+> >>> +-----------------+----------------------------------------------------------+-------------------+--------------------+
+> >>>
+> >>> Fixes: a06157804399 ("mm/vmalloc: request large order pages from buddy allocator")
+> >>> Closes: https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
+> >>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> >>> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> >>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> >>> ---
+> >>> Changes since v2:
+> >>> - Remove BUG_ON in favour of simple implementation as this has never
+> >>>   been seen to output any bug in the past as well
+> >>> - Move the free loop to separate function, free_pages_bulk()
+> >>> - Update stats, lruvec_stat in separate loop
+> >>>
+> >>> Changes since v1:
+> >>> - Rebase on mm-new
+> >>> - Rerun benchmarks
+> >>>
+> >>> Made-with: Cursor
+> >>> ---
+> >>>  include/linux/gfp.h |  2 ++
+> >>>  mm/page_alloc.c     | 23 +++++++++++++++++++++++
+> >>>  mm/vmalloc.c        | 16 +++++-----------
+> >>>  3 files changed, 30 insertions(+), 11 deletions(-)
+> >>>
+> >>> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> >>> index 7c1f9da7c8e56..71f9097ab99a0 100644
+> >>> --- a/include/linux/gfp.h
+> >>> +++ b/include/linux/gfp.h
+> >>> @@ -239,6 +239,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+> >>>  				struct page **page_array);
+> >>>  #define __alloc_pages_bulk(...)			alloc_hooks(alloc_pages_bulk_noprof(__VA_ARGS__))
+> >>>
+> >>> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages);
+> >>> +
+> >>>  unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
+> >>>  				unsigned long nr_pages,
+> >>>  				struct page **page_array);
+> >>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> >>> index eedce9a30eb7e..250cc07e547b8 100644
+> >>> --- a/mm/page_alloc.c
+> >>> +++ b/mm/page_alloc.c
+> >>> @@ -5175,6 +5175,29 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+> >>>  }
+> >>>  EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
+> >>>
+> >>> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
+> >>> +{
+> >>> +	unsigned long start_pfn = 0, pfn;
+> >>> +	unsigned long i, nr_contig = 0;
+> >>> +
+> >>> +	for (i = 0; i < nr_pages; i++) {
+> >>> +		pfn = page_to_pfn(page_array[i]);
+> >>> +		if (!nr_contig) {
+> >>> +			start_pfn = pfn;
+> >>> +			nr_contig = 1;
+> >>> +		} else if (start_pfn + nr_contig != pfn) {
+> >>> +			__free_contig_range(start_pfn, nr_contig);
+> >>> +			start_pfn = pfn;
+> >>> +			nr_contig = 1;
+> >>> +			cond_resched();
+> >>
+> > It will cause schedule while atomic. Have you checked that
+> > __free_contig_range() also can sleep? Of so then we are aligned, if not
+> > probably we should remove it.
+> Sorry, I didn't get it. How does having cond_resched() in this function
+> affects __free_contig_range()?
+> 
+It is not. What i am asking is about:
 
-I liked it, because `luo_preserved_files` is a little too plain, and
-not self-descriptive. Anyways, I can change it.
+<snip>
+spin_lock();
+free_pages_bulk()
+...
+<snip>
 
-Pasha
+so this is not allowed because there is cond_resched() call. We
+can remove it and make it possible to invoke free_pages_bulk() under
+spin-lock, __but__ only if for example other calls do not sleep:
+
+__free_contig_range()
+memdesc_section()
+free_prepared_contig_range()
+...
 
 >
-> > pointers being preserved by LUO. Update luo_preserve_file() to check an=
-d
-> > insert the file pointer into this xarray when it is preserved, and
-> > erase it in luo_file_unpreserve_files() when it is released.
-> >
-> > This ensures that the same file (struct file) cannot be managed by
-> > multiple sessions. If another session attempts to preserve an already
-> > managed file, it will now fail with -EBUSY.
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  kernel/liveupdate/luo_file.c | 17 +++++++++++++++--
-> >  1 file changed, 15 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.=
-c
-> > index a38ea4975824..5f48c3c8c561 100644
-> > --- a/kernel/liveupdate/luo_file.c
-> > +++ b/kernel/liveupdate/luo_file.c
-> > @@ -110,11 +110,15 @@
-> >  #include <linux/sizes.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/string.h>
-> > +#include <linux/xarray.h>
-> >  #include "luo_internal.h"
-> >
-> >  static DECLARE_RWSEM(luo_file_handler_lock);
-> >  static LIST_HEAD(luo_file_handler_list);
-> >
-> > +/* Keep track of files being preserved by LUO */
-> > +static DEFINE_XARRAY(luo_preserved_files_xa);
-> > +
-> >  /* 2 4K pages, give space for 128 files per file_set */
-> >  #define LUO_FILE_PGCNT               2ul
-> >  #define LUO_FILE_MAX                                                 \
-> > @@ -249,6 +253,7 @@ static bool luo_token_is_used(struct luo_file_set *=
-file_set, u64 token)
-> >   * Context: Can be called from an ioctl handler during normal system o=
-peration.
-> >   * Return: 0 on success. Returns a negative errno on failure:
-> >   *         -EEXIST if the token is already used.
-> > + *         -EBUSY if the file descriptor is already preserved by anoth=
-er session.
-> >   *         -EBADF if the file descriptor is invalid.
-> >   *         -ENOSPC if the file_set is full.
-> >   *         -ENOENT if no compatible handler is found.
-> > @@ -277,6 +282,11 @@ int luo_preserve_file(struct luo_file_set *file_se=
-t, u64 token, int fd)
-> >       if (err)
-> >               goto  err_fput;
-> >
-> > +     err =3D xa_insert(&luo_preserved_files_xa, (unsigned long)file,
-> > +                     file, GFP_KERNEL);
-> > +     if (err)
-> > +             goto err_free_files_mem;
-> > +
-> >       err =3D -ENOENT;
-> >       scoped_guard(rwsem_read, &luo_file_handler_lock) {
-> >               list_private_for_each_entry(fh, &luo_file_handler_list, l=
-ist) {
-> > @@ -289,11 +299,11 @@ int luo_preserve_file(struct luo_file_set *file_s=
-et, u64 token, int fd)
-> >
-> >       /* err is still -ENOENT if no handler was found */
-> >       if (err)
-> > -             goto err_free_files_mem;
-> > +             goto err_erase_xa;
-> >
-> >       err =3D luo_flb_file_preserve(fh);
-> >       if (err)
-> > -             goto err_free_files_mem;
-> > +             goto err_erase_xa;
-> >
-> >       luo_file =3D kzalloc_obj(*luo_file);
-> >       if (!luo_file) {
-> > @@ -323,6 +333,8 @@ int luo_preserve_file(struct luo_file_set *file_set=
-, u64 token, int fd)
-> >       kfree(luo_file);
-> >  err_flb_unpreserve:
-> >       luo_flb_file_unpreserve(fh);
-> > +err_erase_xa:
-> > +     xa_erase(&luo_preserved_files_xa, (unsigned long)file);
-> >  err_free_files_mem:
-> >       luo_free_files_mem(file_set);
-> >  err_fput:
-> > @@ -366,6 +378,7 @@ void luo_file_unpreserve_files(struct luo_file_set =
-*file_set)
-> >               luo_file->fh->ops->unpreserve(&args);
-> >               luo_flb_file_unpreserve(luo_file->fh);
-> >
-> > +             xa_erase(&luo_preserved_files_xa, (unsigned long)luo_file=
-->file);
-> >               list_del(&luo_file->list);
-> >               file_set->count--;
-> >
-> > --
-> > 2.43.0
-> >
->
-> --
-> Sincerely yours,
-> Mike.
+> The current user of this function is only vfree() which is sleepable.
+> 
+I know. But this function can be used by others soon or later.
+
+Another option is add a comment, saying that it is only for sleepable
+contexts.
+
+--
+Uladzislau Rezki
 
