@@ -4,92 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ACB9109C055
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:36:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99294109C059
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:40:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F6AE6B0089; Wed, 25 Mar 2026 14:36:56 -0400 (EDT)
+	id 0A4106B0005; Wed, 25 Mar 2026 14:40:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CF466B008A; Wed, 25 Mar 2026 14:36:56 -0400 (EDT)
+	id 07C0F6B0089; Wed, 25 Mar 2026 14:40:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46F296B008C; Wed, 25 Mar 2026 14:36:56 -0400 (EDT)
+	id ED3426B008A; Wed, 25 Mar 2026 14:40:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36E146B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:36:56 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BDD0F5C0A0
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:36:55 +0000 (UTC)
-X-FDA: 84585441990.01.AA09998
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 88FED14000E
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:36:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774463814; a=rsa-sha256;
-	cv=none;
-	b=HLXpdpTabQzoPEWaFVV7io1wi2zWf//GWhZGG2+dwTC6/d4eOgBzBewO6aXZMxn+rSekp3
-	F5lbQ/zmeTfNxser7b7zIolAsaqozKAmDGRBoSbzsRP5MhLlWGtP5kTV+wWZl9LY1GqVVM
-	kPFXSG0RF+HqtliQqGOu4nOz1cdVD2M=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC4F86B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:40:05 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6844FBC1BD
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:40:05 +0000 (UTC)
+X-FDA: 84585449970.25.FC79D2D
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E36D6A0018
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:40:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=R82g9xbk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CeKczkdZ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ahQQq2GP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=A3buodUM;
+	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774463814;
+	s=arc-20220608; t=1774464003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YYDGDrGfIn122PZC9+Po4r/LTcmi8K6tGyJ7hJ3pxfU=;
+	b=rYJWZpm8OGQrpnu55NCJjd8f6E4IOkXMdD65vG4H+WLVLMSzDtQaCcF4UkTosnQjXZ3JhU
+	LtkUzQ5xzJciSYM5Q4wiNdU/s1tS9ThuLPsMiuH9aqoM1s9DLotKZrj+cAEMFUTWDoRXy4
+	Skez9Cz1lXd9vIiYW9IcIIgVH4d0YZg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774464003; a=rsa-sha256;
+	cv=none;
+	b=57tb8Xiyx8q7JsZx13wemDnr+seGhgfJqouuTGu30soXoOCk6mix1Jgm93ljEYahxJukoJ
+	fo29EkMrVh0GDM/Jagl7JAqSGBkpxXPQQRxtxQcWuurT1nreiFOC/v+zohPkxw0+Ezi451
+	2Hl/yt/OZmbELcsP6nimtW1FM18fkXw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=R82g9xbk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CeKczkdZ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ahQQq2GP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=A3buodUM;
+	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2C3A95BCF8;
+	Wed, 25 Mar 2026 18:40:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774464001; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dFmA3BmQAY+HafIIoroCR7sOUBNlQq8ZjodkljHOGpA=;
-	b=kVUXo1ywDKiUPWH/gURXGupqrMFKPJRoICQytvGC/jNP911DKBxWnLPR3Lz7MQHWD7O1VK
-	qU4G9UZDb7sHn9PNMAhk9PErTJH96DTCZas0ZqP1sqUE1pgFPzIc81aH+KGNC3mcuoFwK/
-	r7bSMCiFCuFxOYmTRXoJM1IpVH2D/Ts=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 26 Mar 2026 03:36:49 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 26 Mar 2026 03:36:49 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: kasong@tencent.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com,
-	cgroups@vger.kernel.org, chengming.zhou@linux.dev,
-	chrisl@kernel.org, corbet@lwn.net, david@kernel.org,
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org,
-	hughd@google.com, jannh@google.com, joshua.hahnjy@gmail.com,
-	lance.yang@linux.dev, lenb@kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev,
-	npache@redhat.com, pavel@kernel.org, peterx@redhat.com,
-	peterz@infradead.org, pfalcato@suse.de, rafael@kernel.org,
-	rakie.kim@sk.com, roman.gushchin@linux.dev, rppt@kernel.org,
-	ryan.roberts@arm.com, shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com, surenb@google.com, tglx@kernel.org,
-	vbabka@suse.cz, weixugc@google.com, ying.huang@linux.alibaba.com,
-	yosry.ahmed@linux.dev, yuanchu@google.com,
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com,
-	riel@surriel.com
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-Message-ID: <acQrQYHJgqof0yx4@yjaykim-PowerEdge-T330>
-References: <20260320192735.748051-1-nphamcs@gmail.com>
+	bh=YYDGDrGfIn122PZC9+Po4r/LTcmi8K6tGyJ7hJ3pxfU=;
+	b=R82g9xbkKRFUHDDEQ0sYaqpkgMyIA/uThYtui3aHU8RIAH4fXR2zekzITuIJIAY9TzAQMe
+	i3l+bePv+AeOWBQfb7j3LrxZoXnF1oHRl4KZ//PoISvSNE8g79x+Hl2/3rxQsZ/O2pbwNs
+	lV8wy6DuFgUA6d8L9aUM9WhDs8tTz0Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774464001;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YYDGDrGfIn122PZC9+Po4r/LTcmi8K6tGyJ7hJ3pxfU=;
+	b=CeKczkdZKp+ZH0otzOb+1i8ldwwh29DdNYBJXt/l5s73zBSg/aujgeRvfXgpmdhU1mFHGb
+	DQJ8O5vR+4ADF8AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774464000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YYDGDrGfIn122PZC9+Po4r/LTcmi8K6tGyJ7hJ3pxfU=;
+	b=ahQQq2GPbGUZ/H/+nbVfo8WGKCPHnKFbq8iFFU2lYW/t7svJLKxAqmSUuvLoUlLcuOFdzm
+	0EgpA/s0y/usHEcoeO1hRpL5YjJGmvr1asFc+ad39x6LijiB1NwXF+2Oylyu8hSLz4GdBo
+	gW43moFk3FMkwZGeqCxjnpcCoiXOkIE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774464000;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YYDGDrGfIn122PZC9+Po4r/LTcmi8K6tGyJ7hJ3pxfU=;
+	b=A3buodUM4dUxTK65Jm8S0deVGOmbR8Y7lBnKO2SfyM9XNernv7ihWdK7NTeRY2KzMna7Bz
+	57wa0HlvX3g3XNDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2451644543;
+	Wed, 25 Mar 2026 18:40:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SInMCAAsxGleTAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 25 Mar 2026 18:40:00 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id A307DA0B32; Wed, 25 Mar 2026 17:12:23 +0100 (CET)
+Date: Wed, 25 Mar 2026 17:12:23 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, Jianzhou Zhao <luckd0g@163.com>
+Subject: Re: [PATCH v2 2/2] udf: Fix race between file type conversion and
+ writeback
+Message-ID: <mrtedxufgnu3pguazamd6p3fgu7crj2hkx2gkmckodmn2zccfb@x3g5vrmntkxa>
+References: <20260324105132.30490-1-jack@suse.cz>
+ <20260324105316.28684-4-jack@suse.cz>
+ <acN6YNzbgVUPGETm@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260320192735.748051-1-nphamcs@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 88FED14000E
-X-Stat-Signature: r85hyt6npxjwypoduyudies7kkyiduok
+In-Reply-To: <acN6YNzbgVUPGETm@infradead.org>
+X-Rspamd-Queue-Id: E36D6A0018
+X-Stat-Signature: he1xnxi9im6m4xoorhx7h9xw93zt6gpi
 X-Rspam-User: 
-X-HE-Tag: 1774463812-293414
-X-HE-Meta: U2FsdGVkX18Dx7iK+3qHUJ22mRimpjEH/Oke0BVADlSSLyE50DNEUVFY1PZPHMEdiJSEN1F33r5VeICDQg9qXID87g+0MN9Pj0dIo2IwXwoGi5shUkNnZEmeFe77Sh55yFU1PoJEW5ogIEs2l0+GiZZjyKiCTZbm6tO8n1mYnCwj4tV83OZJU0cuofLdqjdMW5cpQCE9y/6HqBO1o4tA/YFvTmDBZzWm6uO9pq4nty5CO75QWSsN7gHk64OHou7XAQMVt2d4LGfHktMkcy6nNywKQ98j1CREzOFJIEAPi6cv5Vdhy/0xYrv9fkJ5pkuXJJ4IFZgmJ1S8VHoiA3tgIEXAJn5eEyEgS9YYlNwnKxsxtGkEGXJWaNg7542qAHbajcHYDS+Q3qEYrCC9AuOCGOJCPHRU7LKh/xwk95ltVbH4rNsbz8VJFBnW2Xb6oQ/EnrkfETCqOSwIQhWjoe6tetDErELutQaxetJ5h2tBCM9U5LsZXKEsRCsTEPfkbjbZ3MaYzslfdR9C8qMYagf4j/emBBV5kfjj5C1cN23dZBqhlo4M/L2BpI1tRo/0Ckx4o7rpuQtnf6MiG18xN6qjQZPhisFvfVjYDjTL4DgXlPMPWhjlgZqV7BqLK1ihsdpMyEX+6d9b2WlsYVno3mxAnNFs4jw8/vBHOlIwxnVv556828PEv9pmU58jfawh3cY37TfxlxB63iR+/L026IjLLejUXCmTLykNpvID4UbCwQXrWa8RcplhHrr7nGc0CZqWubd3hNTSbfOdmipmHVVVI/xuiWG1l6SyxtaiM2rsSEKOyYKGwHqtDRWudVtg4H+wzL38WdBg8ChsATZQ5HauNC+EhfHhfcItuJ2jDP1m5CtAoPqkkPhafAOvQA12aR/hkJxkf7++SJ/DUWow78AvRJ7bySSijoziv98XwnjHpJXlgnnM49q7+Hbeid0OCYeN0w2rLyKxaKcZt2aIJ9F
- ihoHLHjh
- T2ZqQJOVBuLQfmbGQZY16QTh4B2ccp06kZwdvwbXTvMVZ8MAEniHH3Sm0LhmavH6uM5GMuO7gsZTj2gG/R2el9iAkER5apyQ4bJtYNfEXqPaItXh7F8vNAftykxX0Kmwp009bvFliMw9Qj08ML78Vo7y7+l/bQBphQQVvow0PLYlMQ/dltohFoO8JRXtyW3bELzRd/oec2YrkFASvupnxvy/knNCSwEc7Hsz1R6djNhh/swaRW1gKZasclMuZlmcCKjuJDTmW/4EbK8vncHtmcac88vaiW5r0hiedyf6RVx3A2ozUzwNG1Yce+BLVd+3OSMfPw8xrU4L0Dysf0+ojU7waJg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774464002-145695
+X-HE-Meta: U2FsdGVkX19lXVMSoMq3C7EHkkP13OHhLmALa9vUfEv5jObyaF/tPhla314XBXO1BD26rXwDKE3mPcOJza5GU68OtJXKwIOJY31yZMmM+TB4o9O/Ion444hjESZh/yckPFkRrVJv2EiaI04zYbIIn+MC+Xsjxo+n2/c1By4kTpgYS4poLUKX3zGBW032SO84hKA/YR7FbMF6GHHN7H5QQ213t8qgznc+ZW45upqcDB0EiBOafS6tzFeyzIqnVo+8s6E6A8tUb7kd88FHN3Tp37TYvdy2JIwxobNvtQzKF5HIipWRyk2iqYv+aAJbE93KnL2nS/p6Y2KvDROylUN5lgOXu2fRQkXySWNj1XSNCTiRhRnDhicW2+RDFaeWcolRvFCisCwLan3oXk0bffskfIPOabIMV+1iNRT97kdT2BgppQiaqqtH7wcdIxdFcDzp5GLz1kJ9t0DORrJ/xogX/bJg2A5JZUhwtMGdYVszgL+IekzZZbLathxCP5TCJ/+k+cjXprtTUASIffNO16drRn6mib6V8i+zehmvmpCthB6H8jRfXTSos64cjZ8i+P5+734Numn2MkDfTXBiHZbO1POMNbWOB2MGUgc8k8aNFZEFTC4ekZ4X7WS5kAA9bTFJmuFW5Nkzw4V9QzObwV4kolygVENTY+9NlJ1/wG4wlVMQ8lcJOu8pthTyoGVkcPsYhy+nFC0seWY5abrG+tDtpHxQxlyuIfYkOHtAMGaS8T2Ao8rbyNjVC78T3/IdVf/icsv10dG/zQ6KFHOlLQec4dCPF04O7RS6rNYKPGy/6oK3fzJA0hRQBArD4DE+Qg/7GncqOX0t++gqVOhV15vbcTx58AQUqyVR9NPaqLMn814/jOQQEQqPIg6ek0Hv9wzfJ5vpdjufcOidSBBghp22OH5sOmmh7TGMK4Fnbf9Bz9ujCUraUbe0N/2U2bDXDXdQhkIHWPjY2hbiqQ5a5h9
+ mXMZUsUG
+ YWM6cREJIXiVumStUPZsF6XPeyWwgzLq5Mmg8EuOFMuV+lxjMNtiPMCOOh5/9ZstVrr4sEs8+kK9buvuqp/ZHYpPzB2VA3ua5quv/4pFjTSTTzxKFIkKdCS1xKqu35mrIYH0SqFWULgEfH4QpIXdcip4zFJZPDo6bNqsITi3Gx8KT1n8GOwkvf7+aNMuGmXgKsCGoXcuWIe9+PisVf7rkXBD67X3EIuOFqqIzLvv4I16mRqtNIW76NdpHkWG93uVIa8vZE4DobEq+Rxcy/pdYYh5JDsA3aDS4O4eMjKee06hIhVLoXg7f/hLh8VMNZzQE8HBA01ihoFfxaY/aeRQsfRJcdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,104 +134,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 12:27:14PM -0700, Nhat Pham wrote:
+On Tue 24-03-26 23:02:08, Christoph Hellwig wrote:
+> The race is real, but I don't like exporting the writeback internals
+> for it.
 > 
-> This patch series is based on 6.19. There are a couple more
-> swap-related changes in mainline that I would need to coordinate
-> with, but I still want to send this out as an update for the
-> regressions reported by Kairui Song in [15]. It's probably easier
-> to just build this thing rather than dig through that series of
-> emails to get the fix patch :)
+> It seems like the somewhat cleaner version would be to have a version
+> of mpage_writepages that takes and extra callback called in the
+> writeback_iter() loop and allows bypassing mpage_write_folio when
+> say returning a positive value?
 
-Hi Nhat,
+With a single user I don't think that's really worth it. I think it's
+easier to just opencode that small function in UDF. It won't be the first
+filesystem doing the "is it dirty, wait for writeback, clear dirty bit"
+dance on its own. Thanks for feedback!
 
-I wanted to fully understand the patches before asking questions,
-but reviewing everything takes time, and I didn't want to miss the
-timing. So let me share some thoughts and ask about your direction. 
-
-These are the perspectives I'm coming from:
-
-Pros:
-- The architecture is very clean.
-- Zero entries currently consume swap space, which can prevent
-  actual swap usage in some cases.
-- It resolves zswap's dependency on swap device size.
-- And so on.
-
-Cons:
-- An additional virtual allocation step is introduced per every swap.
-- not easy to merge (change swap infrastructure totally?)
-
-To address the cons, I think if we can demonstrate that the
-benefits always outweigh the costs, it could fully replace the
-existing mechanism. However, if this can be applied selectively,
-we get only the pros without the cons.
-
-1. Modularization
-
-You removed CONFIG_* and went with a unified approach. I recall
-you were also considering a module-based structure at some point.
-What are your thoughts on that direction?
-
-If we take that approach, we could extend the recent swap ops
-patchset (https://lore.kernel.org/linux-mm/20260302104016.163542-1-bhe@redhat.com/)
-as follows:
-- Make vswap a swap module
-- Have cluster allocation functions reside in swapops
-- Enable vswap through swapon
-
-I think this could result in a similar structure. An additional
-benefit would be that it enables various configurations:
-
-- vswap + regular swap together
-- vswap only
-- And other combinations
-
-And merge is not that hard. it is not the total change of swap infra structure.
-
-But, swapoff fastness might disappear? it is not that critical as I think.
-
-2. Flash-friendly swap integration (for my use case)
-
-I've been thinking about the flash-friendly swap concept that
-I mentioned before and recently proposed:
-(https://lore.kernel.org/linux-mm/aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330/)
-
-One of its core functions requires buffering RAM-swapped pages
-and writing them sequentially at an appropriate time -- not
-immediately, but in proper block-sized units, sequentially.
-
-This means allocated offsets must essentially be virtual, and
-physical offsets need to be managed separately at the actual
-write time.
-
-If we integrate this into the current vswap, we would either
-need vswap itself to handle the sequential writes (bypassing
-the physical device and receiving pages directly), or swapon
-a swap device and have vswap obtain physical offsets from it.
-But since those offsets cannot be used directly (due to
-buffering and sequential write requirements), they become
-virtual too, resulting in:
-
-  virtual -> virtual -> physical
-
-This triple indirection is not ideal.
-
-However, if the modularization from point 1 is achieved and
-vswap acts as a swap device itself, then we can cleanly
-establish a:
-
-  virtual -> physical
-
-relationship within it.
-
-I noticed you seem to be exploring collaboration with Kairui
-as well. I'm curious whether you have a compromise direction
-in mind, or if you plan to stick with the current approach.
-
-P.S. I definitely want to review the vswap code in detail
-when I get the time. great work and code.
-
-Thanks,
-Youngjun Park
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
