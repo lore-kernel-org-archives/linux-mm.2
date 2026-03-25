@@ -4,101 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8495109C058
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:43:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96F2F109C058
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1926E6B0005; Wed, 25 Mar 2026 14:43:10 -0400 (EDT)
+	id E3ECD6B0005; Wed, 25 Mar 2026 14:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1437A6B0089; Wed, 25 Mar 2026 14:43:10 -0400 (EDT)
+	id E16836B0089; Wed, 25 Mar 2026 14:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 059AC6B008A; Wed, 25 Mar 2026 14:43:10 -0400 (EDT)
+	id D2C806B008A; Wed, 25 Mar 2026 14:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E1DC06B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:43:09 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A0C8140A62
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:43:09 +0000 (UTC)
-X-FDA: 84585457698.05.38C9A61
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C593B6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:44:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6840714055F
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:44:28 +0000 (UTC)
+X-FDA: 84585461016.06.1DA4577
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B3334140007
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:43:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LkXHMwRx;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf18.hostedemail.com (Postfix) with ESMTP id A79C21C0006
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:44:26 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="b/v6i8fo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774464187;
+	s=arc-20220608; t=1774464266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J5E6fB4pp2tjbIj/aOSCEhGMI9quecY+maikD52to/M=;
-	b=FHXjFGSwFppyt76alojIJpQ1tagEwTV9HBIL8aEkm4EH5BP7MFbozPfJb3Dq8PR6dJHgUS
-	O7E9W0r8SRx1idePc0ym8Wm7XwOkFmIawGJWG68K5ZzNQU93tRCdRkKlNiFmGUh6n5YKeO
-	qz/GpS2h9jV0CLwLygB6C69q3kpSAfA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LkXHMwRx;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774464187; a=rsa-sha256;
+	bh=Q4Vizb1B1cpQvvFYrjV9Str+6hi34rpWBD8aY9TqbfI=;
+	b=VqC20TOAdwoNvB20CDbQOJtRI5xnFRu5nZxjhApCIgvKnbXXEGRAS+SrNeNba8wR2ZPgCm
+	qBWX+cfCEhkiVaffcm4CNrc9ZJT62Y00biHJz6tsUiHCMHm60SIhvQxrln5j+ohUvrHyTW
+	/ylC9/1BHqhXdjjZOwFkofAmKSsgYJ8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774464266; a=rsa-sha256;
 	cv=none;
-	b=fSWksKN+9hPB75Hee0tn0cPeiktVNt3kzU7jHNuwIdekvZEBrrBMDivbTjFLFnLtkdgQLF
-	o+/szfYWiCVw43f5sd0R3Rl2QjlmCTkdf4I6ZZCBhX7lKpf4wTgz5A4QGqOBHuMP4EGyNj
-	bjDVPPx5+MwrtCdPlaYgvT0r94VEAjY=
+	b=7FI+NuXEXcf0U7nYyGRDfqbUiDgoqsPUZAfCdpmP7NGWi/uaXYkws+80v7nz7MXWB/PKpw
+	drLe5dEfSqVNXwaMlwNJFjAbm98aE9+cW0StdwM7ObEp+vC1J65OjwJot0PARLPci4yp8l
+	7jHDuVCPkXMnDFgOYOV0oVxgtNgfDrE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="b/v6i8fo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2B5643524;
-	Wed, 25 Mar 2026 18:43:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FF0C4CEF7;
-	Wed, 25 Mar 2026 18:43:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774464186;
-	bh=+Unmw6la/0i7L3Ak+hrpuDTeYedxjmRE5YlwitIeT7I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LkXHMwRx/EP5PKLQA6PCuyAc6VF6poEVme2JKWNdEXNwLOFsOJv33RvUh/cr5fMHX
-	 IxlWMPfRJad+CPHGefe3Ag0D5mSTOIO2lFxou+cEFZyxdf9Xi7F9hIFWyWLCjAXUFO
-	 I2UH+M6VXpm6bc1UbhBM0eb0qNqa7h7Oe/u11nBQ=
-Date: Wed, 25 Mar 2026 11:43:05 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Barry Song <21cnbao@gmail.com>,
- catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- dev.jain@arm.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the
- references for large folios
-Message-Id: <20260325114305.eb90add580948aa56a88373b@linux-foundation.org>
-In-Reply-To: <7820cffe-60bf-4ff6-af10-89c774f0fe0c@lucifer.local>
-References: <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
-	<43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
-	<e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
-	<86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
-	<e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
-	<e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
-	<e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
-	<20260325083016.a32095bea3f04488a7c9005a@linux-foundation.org>
-	<af9d8a6a-074c-412c-ac5e-3f0dadde3e7d@lucifer.local>
-	<20260325092300.9008e605ed5550ce4935638f@linux-foundation.org>
-	<7820cffe-60bf-4ff6-af10-89c774f0fe0c@lucifer.local>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 969FE43678;
+	Wed, 25 Mar 2026 18:44:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24946C4CEF7;
+	Wed, 25 Mar 2026 18:44:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774464265;
+	bh=Q4Vizb1B1cpQvvFYrjV9Str+6hi34rpWBD8aY9TqbfI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b/v6i8fo+vCDTuurUcBJ6vIdUXSzqxb7B/H+jyR7aziWaxChVparkP1xpzHA4L+Kh
+	 0+1G6NUJO+VCs044hBHbYry3sea3INNqk7t0OXSop7kK5AFE6+TV1USZMWYfrTWg8j
+	 jChBK3dgjXD7onzbUo4rew4EgiAnImaScdAATampyOermEf2S4+tueQT1DEeySLNN7
+	 +C1nJXrvxSmvCUSUxc3imsiO1O/XlT+bAFM9byzYzFr3UcRgxYAzPP3U9yE3FGbBEn
+	 f3QXzFPLvC1/nhdJGTidMO1E4V+YOCqWwK6fYm8qftH9YVIwmMVgXEjBHRRNEV3si6
+	 nbeb1Qgql8q2w==
+Date: Wed, 25 Mar 2026 18:44:13 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Gao Xiang <xiang@kernel.org>, 
+	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Tony Luck <tony.luck@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>, 
+	Babu Moger <babu.moger@amd.com>, Damien Le Moal <dlemoal@kernel.org>, 
+	Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 3/6] mm: always inline __mk_vma_flags() and invoked
+ functions
+Message-ID: <1ae3915e-19ef-4be0-aa5f-fd66a2e18179@lucifer.local>
+References: <cover.1772704455.git.ljs@kernel.org>
+ <241f49c52074d436edbb9c6a6662a8dc142a8f43.1772704455.git.ljs@kernel.org>
+ <ndtnvnobevdymu5a5tdxdbi4tcsqshs3d6x2vnfgnuclxvgwok@bhbqkzilsets>
+ <d352055d-06fe-43b2-8ad3-b73ab99683d0@lucifer.local>
+ <20260325090949.795e06f48ec455053db9ae89@linux-foundation.org>
+ <959b34ea-69a7-4fda-a494-0b9a1773ec1d@lucifer.local>
+ <20260325112755.e62cd89508224f703239f03a@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325112755.e62cd89508224f703239f03a@linux-foundation.org>
+X-Rspamd-Queue-Id: A79C21C0006
+X-Stat-Signature: ubnai988tcydcjgnmomq3ur5omct5ndo
 X-Rspam-User: 
-X-Stat-Signature: pykko6ot5fdxgcr1sc38psgiw3fokyp9
-X-Rspamd-Queue-Id: B3334140007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774464187-471998
-X-HE-Meta: U2FsdGVkX18YYOoH3E0fpw8uHGfiTGpICTvJSm8eUHQ4z5eZu7hn9ONirbpIV/Hii+KsNzrcG2V2TllUCmQWAGdbhGP4299nYkjf0fqChp522iJJ95U9FsPyYC4yCn6Iz8P+8Rf5Gj+9YK1zPmKPhok9CmSwz/WBi5Jk63XLESl29dnh7TCXgcT3pOa+k6ht6F2091HBKSO7fwwCAxILOSBC12OXBJNQFC/5nwEcIeAXiBRgTF5V3arPd0DaD3dWC+i3XUjCsCfbe4DJZ6oaqpk7AGJ2ExIBndvoBvNcMHuPB/2kzHEVh9TGkgctxGx64YKYR2GXCrBAHdAINI2o/meT2w3f1EuAZ8y+sAqVlgFJavSyoa8MJKuI6t3tF6VBwg7na5Fq5LeqWHG8XSGAMI+bGzztFSC9EJxO74BiZ5OZKxU2nNuJ+RQIwmIsIw/5vor4K5rdBzQbn7Z0p2XKKbF3MK/ckF3n8Dg3uib857aVijYrxs2+3h7Y/TNyW3sdlQTkA9UKfCc0wF5iBlyBPssABKuaFFrocSdE2BSz4XtMn3icjoOCN21nlRPRYq4KhORQfFpULS8bykswyU9N1lSYfoRVogIB3GIHiJGB34a06cFm7jdxbzBsT+IF+NH9jDNfDuAHPSCT0v3zhq6TdL+2Rr2jzQ1iSQOBqCjor1Valoukp7cZSiM31qo/uKbA3lkevRmAJI/19WbpHNtMw1CnBTy05meTbefec74XWq40oT0Z1IVrGhNkdJmshnwvZXewuoHmmdg/Db2Jrg59Ol6q6i3NVUhK1y0bQ83ZxvzcNUrcGQSMmmwub0yRSUElpAxYz9Y95KZ43gY1y0hjsbMjxl5QEa8J1cdT9MrCc5GyxdM8c+yJEuzlQNr9a81BVB+bfR4Md45JGg9rOUFVm7bg//hTy2xSWMsbPv+VmiddU0z/EEabEN2RwFkM7fai9Xjxl1SkTsJjTCpSpcE
- ka9J3QZx
- E3i8deLACho3ZZfiYhfgcCGdM8BfSvGj1PE1vV4+756Hq+qoc9FZ9B6qq6jq5Ej3ydsm22BqQJa+2LIVD8170hZCXW6YwbNlZaF0v/5GhT1XVgkcDd98ihbBw3OL69waOTMbp2X01GfcVgkTUZ0zzKjC0LG1rUm2mx1pHCgZBwMbjL2HCEBIUtM5Uzp1hwxTx0FWDitroxHMbXuM4+WkS3rfmvJVRU+kplwICbcU+E5iwi3iJ6HaeW89td3fM/IQo23kT45arDM4Ad5XODiFdy8mFv/Izssz+pBZSbaYbpK1L6/sQk9diIDJ3qyFSRubfPXsWja5/EmXd0kk=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774464266-399060
+X-HE-Meta: U2FsdGVkX18pzn53HleKju4d9MwOtr2uYyU+jKtwIk2dHEWu7pYYVekk3Y/AFqcVR9ebRwgoOInp3k4up/zjFAPMGyP/QZx3JodpWrvUyCb01dBWAgT/k3zoB9iM/uglXUOKuuWe9P1VP560tsuEKnEk12zJJOk1I8b6Wm8w5DMIRExlrr5KcaPNulj441Gax/uS2ekDObBFM7IqeqiUWjoGOyGDYZGCmQs2/v396uFEV9fkezG5jbAYEZ4n9GLNlyIlbpPGueUgPrOREalAWmkb8h8Owdt8Q/sSyBHFz+Wmef+DLKTb9gPxWa2PiSZ8dAJOjBlAfdgqToyUMGPEvW4Ir2MyoKrbJSFbs12PL17WbY3HZ+6Tj16p1lNPvaU7m5W4tEyY0uYeesrGJs61Fxv7mbt6EKihPkQAdYpnVe9t/hSjYzs+1gv7uAfBf947KeedBDacxbh8mRjUFUwfxr4dHyXffCBHYqOvNooeBf8wHUAswtuWGGZsy0M0K+ORAkLD0Tzy6a/4E5RidKpjphNzBn9u5HAGOacJCCE3nUDg3HSjJZOa2+gbk/pNtDof4aaVEZXEj61/tfQdoBB6fkAu4xhV2VIw89tg7r8WBHGXEKQWySbVZGC3FoIHtDVFBioWW6OEuv+1BkFZTQQ2WVZ2JCF58abVY/9AH43w7HffrL+cqM0m4wpb+NAadrJWzgvWXsqTTUyV5wRIKI9AaezL6VwTZuD/JSo7svM2Wjy27OqWT+jLD3yCFp2AV+LfNuAFcicUABCbViVSjHNB/FDr9wBo2WKb8bM0/WADkMkp4Xv7XNvLzds8TlBGDqQJPRmSfyp0OuOTAl5x3g+mzXQdwLpJXWFmBfi/N7mgIkJCTFTzlDRN8Cvay3o5SserKvSt2d/mzbZ/bNZ03G7txxEuEQRV1o6MO8ln/XfHDJAaGXsP+s/0TLiw+CNbz1ydx756ANJ2J1bZi1f+9XY
+ QdGIi4Cq
+ N08voxKCjxDgKcanX/FXCeWTAy1iEpHGaj29ikbKAoyJrCuOpIyhhyGpG34HBMoqIos8ZCvlAXg7iNlUcTwWZkpuJMmdzx8mq9NBkgLiNkEmFmvpTsIAd/fjSoM33au3dhX5wdSfDoVtfwNbWh8laFnIQ4uqg5uQrRUFR13d6tJgQR4ZuoWdBjVIIqBczkkm4lkhaADJYfSFehQS27EPFnPJNg7fMK5KlNZeEw6+0PkeEFrIrVQ1ofplBOnw2wlocC5jDXcObqokfqrTwfPyuxLxaZqEv2xQAwu4c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,33 +115,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 16:28:18 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+On Wed, Mar 25, 2026 at 11:27:55AM -0700, Andrew Morton wrote:
+> On Wed, 25 Mar 2026 16:23:53 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+>
+> > Maybe 'into an inline constant value' is better?
+>
+> <bikeshedbikeshed>
+>
+> How about
+>
+> : Be explicit about __mk_vma_flags() (which is used by the mk_vma_flags()
+> : macro) always being inline, as we rely on the compiler turning all
+> : constants into compile-time ones.
+>
 
-> On Wed, Mar 25, 2026 at 09:23:00AM -0700, Andrew Morton wrote:
-> > On Wed, 25 Mar 2026 15:32:50 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-> >
-> > > Really I guess I'd like to know the timing of when mm-stable is taken so I can
-> > > know the deadline for stuff like this.
-> >
-> > Yeah, as mentioned elsewhere I'll add some words into the series file to
-> > try to describe this.
-> >
-> > But the start of the migration is quite variable (-rc4 through -rc6) so
-> > I'll aim to keep people updated in the weekly "mm.git review status"
-> > emails.
-> >
-> 
-> Thanks. Wasn't aware that was a thing actually, but I see
-> https://lore.kernel.org/linux-mm/20260323202941.08ddf2b0411501cae801ab4c@linux-foundation.org/
-> now.
+Well I think that loses the meaning a bit.
 
-Well now I'm all sad.
+Something like:
 
-Yeah, I started doing this Feb 2, shall attempt to sustain this weekly
-after we've hit -rc4 ish.  I expect I'll be adding more waffle to these as
-things occur to me.  A general overview of where the tree is at.
+Be explicit about __mk_vma_flags() (which is used by the mk_vma_flags()
+-macro) always being inline, as we rely on the compiler converting this
+-function into meaningful.
++macro) always being inline, as we rely on the compiler to evaluate the
++loop in this function and determine that it can replace the code with the
++an equivalent constant value, e.g. that:
++
++__mk_vma_flags(2, (const vma_flag_t []){ VMA_WRITE_BIT, VMA_EXEC_BIT });
++
++Can be replaced with:
++
++(1UL << VMA_WRITE_BIT) | (1UL << VMA_EXEC_BIT)
++
++= (1UL << 1) | (1UL << 2) = 6
++
++Most likely an 'inline' will suffice for this, but be explicit as we can
++be.
 
-I can Bcc: people if asked ;)   lmk.
+Should verbosely cover that off.
 
-
+Thanks, Lorenzo
 
