@@ -4,107 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB7D8109C02F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E559109C027
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14FEE6B0092; Wed, 25 Mar 2026 10:52:53 -0400 (EDT)
+	id 87D3F6B0093; Wed, 25 Mar 2026 10:53:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1278B6B0093; Wed, 25 Mar 2026 10:52:53 -0400 (EDT)
+	id 854816B0095; Wed, 25 Mar 2026 10:53:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03D9F6B0095; Wed, 25 Mar 2026 10:52:52 -0400 (EDT)
+	id 76A496B0096; Wed, 25 Mar 2026 10:53:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E89EC6B0092
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:52:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98583BB8AA
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:52:52 +0000 (UTC)
-X-FDA: 84584877384.01.884C798
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 67C2680012
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:52:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e5mYx3c0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=USEIf2+W;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e5mYx3c0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=USEIf2+W;
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450370; a=rsa-sha256;
-	cv=none;
-	b=oP4xnmz1aEs4HgA1FHVxEo06BETJq0AgaprwQPVGU6THarOLzLEtPsfEkNLMTu4kS1K/Sd
-	8AWwxZsfR2xXzZoluXHnxGJFlvtuxI8TdgVL6jisFLMw1DfqevMvI77i06dvqG7kkUV7lE
-	JzgeaH/NCuM9JlpBoLkLjFz/NxjC3hM=
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 662056B0093
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:53:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3BAB25BAD1
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:53:34 +0000 (UTC)
+X-FDA: 84584879148.25.B06145A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6F08A18000B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:53:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bvHMKGo7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774450370;
+	s=arc-20220608; t=1774450412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O4SULWt0KCdL7QOnodPGLpDDDaEYVeMtxr9H10Fko0g=;
-	b=5AiSAfzZ3DAGIBbM7CkvjQFD8OmwZTUgbvn7a0bDcwRX2lcq/w5NTk+1F/brvU8t6Edbig
-	4OzxYll7aRSCAVWFn8DIggywaLENAKCcBoNJkuVD1jz5zxzV8EXvq7kLR/GcbEW9QjpoVO
-	MgwWkvQ2XDbJnMNJj/Oj9KbelS0rkIo=
+	bh=pg9BGRjMnJsXPkM0swwEs/eI5ok+Dj8gFwFH1IOCh5g=;
+	b=k78Xf0rhxrC940yyK/n88a1UZj7r3qReoCSyd1fWyPA1WEg6XkywPNuCugqpVOgMUxcUQI
+	IChBlOmQ4smDT88bXo98zt09KfHwztrtHY6bodCP7ohVJfypt/XusA8eLd95pJsfbcx2r8
+	w+JErtDa6VaPh7JY6+oOc/9gOQ0IEBo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450412; a=rsa-sha256;
+	cv=none;
+	b=bA6PC1qjadIo458mZh2Qh5VuII4Z16UNA7OUgHlR0kK+HecHUPpeGQp+FW5yLkoYCXGKf1
+	2SD0R036QD49GSHJ0AHvPPe7Y1C44AI3SX+T4ryU7T/ENPocvH5XHVADrjbffpMlX8ceEU
+	XX8PDQ7nHMcofuMBNCHo9aYMOdA4tE8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e5mYx3c0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=USEIf2+W;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e5mYx3c0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=USEIf2+W;
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 026255BCE7;
-	Wed, 25 Mar 2026 14:52:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774450369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O4SULWt0KCdL7QOnodPGLpDDDaEYVeMtxr9H10Fko0g=;
-	b=e5mYx3c0CsDNuAC0rVZs98Ba0qaer4VtARkMyazV2coOQ4FycPa7yB0lA6rCKOoKwyLW2X
-	IU4bBftpxLpt7dd85qs80s2VCpUQnozngJxKWoSOO1ImpAV0Z+Jvl2SPtbIAA8hCUTfwPN
-	vnxQYMCqh4XzRhe+49RCSAE6NWwBZqQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774450369;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O4SULWt0KCdL7QOnodPGLpDDDaEYVeMtxr9H10Fko0g=;
-	b=USEIf2+WokW7JCKUojIiYBamgaikqLlbPQT0gYowWNaJlfvD7zobS5NNose+MdXtBotSEL
-	LqypVTABHSzAQhCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774450369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O4SULWt0KCdL7QOnodPGLpDDDaEYVeMtxr9H10Fko0g=;
-	b=e5mYx3c0CsDNuAC0rVZs98Ba0qaer4VtARkMyazV2coOQ4FycPa7yB0lA6rCKOoKwyLW2X
-	IU4bBftpxLpt7dd85qs80s2VCpUQnozngJxKWoSOO1ImpAV0Z+Jvl2SPtbIAA8hCUTfwPN
-	vnxQYMCqh4XzRhe+49RCSAE6NWwBZqQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774450369;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O4SULWt0KCdL7QOnodPGLpDDDaEYVeMtxr9H10Fko0g=;
-	b=USEIf2+WokW7JCKUojIiYBamgaikqLlbPQT0gYowWNaJlfvD7zobS5NNose+MdXtBotSEL
-	LqypVTABHSzAQhCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3AC6044460;
-	Wed, 25 Mar 2026 14:52:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VwP/Cr72w2nrYAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 25 Mar 2026 14:52:46 +0000
-Date: Wed, 25 Mar 2026 14:52:44 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bvHMKGo7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5EA564189D;
+	Wed, 25 Mar 2026 14:53:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1631AC4CEF7;
+	Wed, 25 Mar 2026 14:53:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774450411;
+	bh=pg9BGRjMnJsXPkM0swwEs/eI5ok+Dj8gFwFH1IOCh5g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bvHMKGo7C2FvWUchrPoeFaP+aBjxBO1iDfBDPu1ftOdOR9CZZDLVUFhCz/c7WGA7e
+	 why6Yw24IOjuRI1p2bP95VB6ClN3gKVLzT0jfMnfC6i/nYozQuCobhRSSwOyXF1N3e
+	 byo4/RyWBj3jJuX+8109h+cusNOVoW1YRJJbnkzrjTlLtysvhWEr4e7NJhA0wos2+k
+	 fx1cPkStcPHCC3jsOhMQDS1F6pwJ6xb82zQvvaulOqpwhrnvUJ/5TyvKvTmDP6MVMS
+	 pJz6XV1MltczUwUgLDYNLrOBFtEIandUJarxRBC8UrloEnhtM8rgFwrglv5AFfDkkq
+	 NMz0cLZrxbpPA==
+Date: Wed, 25 Mar 2026 14:53:14 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
@@ -125,22 +86,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
 	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
 	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 2/6] mm: add vma_desc_test_all() and use it
-Message-ID: <gj5z2ayiyb5nxgpwr3mdbaxgohei5g2asrweib2xul6hs2cppn@fcu5z3yj7yil>
+Subject: Re: [PATCH 1/6] mm: rename VMA flag helpers to be more readable
+Message-ID: <f72132e1-a2a3-4445-80ec-adeb525dcfff@lucifer.local>
 References: <cover.1772704455.git.ljs@kernel.org>
- <568c8f8d6a84ff64014f997517cba7a629f7eed6.1772704455.git.ljs@kernel.org>
+ <0f9cb3c511c478344fac0b3b3b0300bb95be95e9.1772704455.git.ljs@kernel.org>
+ <6c6le67q23xsity3tkfq2uazzhwustmqcsqj3talft6qq737hz@dytog6bi4vsa>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <568c8f8d6a84ff64014f997517cba7a629f7eed6.1772704455.git.ljs@kernel.org>
+In-Reply-To: <6c6le67q23xsity3tkfq2uazzhwustmqcsqj3talft6qq737hz@dytog6bi4vsa>
+X-Rspamd-Queue-Id: 6F08A18000B
+X-Stat-Signature: iguxuuk5yuc8h1tct93jsr4hp6d8awp3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 67C2680012
-X-Stat-Signature: cfgp337tczzucyfuzy3mrm3n9wkzq4za
-X-HE-Tag: 1774450370-258630
-X-HE-Meta: U2FsdGVkX18+OBhmih+K2ne6cq7JkMlA5mrPTegTUhKfaLQOxj3Zywq73ADXyKHR7aK7Vo4SN95rVCKCW7lbFvkOk4/6ORqhfGd1WQ3Sp/Hhoweg8O5GmznM2O+7FPqi9+V6CdTG4z6dfSDHDT9/2xKbUbTSSabbBwBDhg4ebgnCZGdOsPkpuSW2ZJqRDTqZUq052whnDYOwJEd8ADnjB3GBHYUyX9pG0iSy2p6XF8/vUmiQUetP5hFTLlHgP2c5bvQKI+JetSu3WqNg9RJsJVFSLOBcaGGh31XOJkqv2i7LclM0aVCarA4HVGCFnkx6SGW1Q/ZfVX/i4se+GiDvRtshAgMVKkGohKiuXarMvmZsu99fY2N9+PMN8qo+rHvmKFMJuRQoMkrBAmL0erQxjwy8YKYywLS+NXIhxyv490jUJ5R1erQ7l4C5ayaNbryIX14f8O+kZM6yphyLFXFZEtyx1Zr43sZgAAQuKmDzBESCNV2mwnfvB9C0+DZsW3ECtH57p/FuLfTDjDFBBR0iAs6AJhIg86P/gopt6FFpDCdx5o1PiR3zJMgyxgh+yMj4JbqEaVNOhoK/OfxFmOF/Pm+HM5Q1oRALGepWQnHFEIn3nSw8DMh+IjUtvKO7UMRP+cA5ywjbbrZYhZ9/2Lov5mlyi88Er7ZhCguu3LkTZ5XcEeRhr7GOJJJcfmSNe7MHr3Xhgh+M8bGGlc2bo2QOdiVWxwtlkARKbCcK1L22owhg/vW1g1pvfmfeh5agdPmtB3cshEx2d4md1nQlU2DMuWNeWxJfhL6QGZrPAo58h+jdc1MXP7fIyhCXaT6hKGtyKmtVwCIXPfEuzBEnmiNovoVITbaVBiV7ukjZXokIlUCko2jYAJljCphbEswL3EcWvRougW/8ftUzU4W+adhlrQaEHHvTmhDOlN8e6GTZxJ4psmgbgrhft5KqUWPgCS578dTsRORJySmEw5ntn2u
- MCF6ssxm
- 0IIdIw39o8I4R/zhDD4QrK4y6HbsTztrQQN28++p+Cl/2F/iK2C1HQ21IueuNAkbsDlPlKNEvD/RDRocirVp82FBH5Rh8UhTwzSxqonj51rQSAXGUK5w5lxEMO894TlTvAxYqZQIWKT5zoL3wNfVAj7SbviOx9kMTfxeRqg7LLqOyrdcvd9XlYnt1MqXFLaDRCS/21X4ok1qiZbfFhADusQ8HpxG5a6f2CrP5oZ6nFL+sxGrYi0JGhaE86tFgoySxAwi89d+iMFJkEqdtYZqUNds4ZMqCx3jpESEca10qeOC66Y6RAnS96OBWz7bI1/j6h9sCyl853S6A1GnnrEMx/Lv6vt3QTa1gvrbnmNyRQShnVB8iTrt6tHxY1A==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774450412-921289
+X-HE-Meta: U2FsdGVkX1+pYuxMK+gNJ2Sy/COztKWZmede4Z8K069n8iCGJW6IqU0JrXL1qZ4zfak4GUkeEKMNOC28HA+bdpayJyAdjcgH33Hd0/x9SoEbvwqXDE/7QUAYEsxsxNnM6ATFUbr1lVjxXbySMKg+3TLFW4Bm5L12IiBY5btvbBTIOU84ruTmgS4dngMgvt2QLwosGCDnck7SX5NnuN35WszDiN7Dovflqsb+mrhg/a3DM1wUBO+fnDr1DepaET5vkUV729SMYsSMuHheDrNJ7SjO2SKGAlxcjRezkkaxbtNwVEW/GkgrQHubqcP2T4vYDlAHDOhNy+kl5a3TWO9L3N8UqSH832Ck7jwfOSpqDM58lXZ1VcGBDP80wHUxMOVYIzVHm5OBP5Y5up6s8fXwUL020Ldcs22evHr6Kk6TQGntxuvkBQ2TZQ9ZaX9RcCpezE6ncTtwt9AJ7Bs4wj5c6zyHAfcLzQ88u/fB6xPjP8hEdNyCU/lf4r6ZDanWoXSjTFKJJ2gCZEs9/nIqWcBPvNDqetX4P+7+ss8jNRET3iX3uWfw6ukpZQMHjzaRuZ3w8/A3cO+aR8hW2rR6uyLURu75kvABMbly7LAlVxtaZDVaRqBGulc6VOmPVm3yXwDvEmb+WbfnfsiENv20sz0/qzUafFR02wmb9IpYFrgTmwUS9UzZn+dvXBXQ3RY5fuvCiTgqYVS3Z0fDgYUKV819ykTE4CUiEo/+UGxnjQrLvdwGkGE2et8FQRFblxhjJfrj4hUbVVyuMVLFISU404f31st7CWHYWuuShuBYxGJaM8/+5Tv8384CZxyQPI6QGthoPXFQzbgKqY8KjbiTs8mLU2/aUTrWQmTVJc+jye3d5oi2x0iKMKXTnhqFbPY+38GGuyoa/EyvzE7fHEvcqFOzSiUpYyO5dFRt5P75q4kerorTNgSSGpj6JpRyPWUknsquhf3G8p6V0PbBbbNVLcn
+ RGNtZvAj
+ z+JLQfP7fzntB1XyvedZX1cQb4MzMd9iUqzj0dZSMlSshkLQ9LTDGk9ySL1ibb29p1slCRweRHh7st0xy9mAi8e6HHjZNI/ZVX7wsaWETxcrvYyS7GwEV09NkUUL0kBapLwCPu944IHl0NRVWRf+3uqh3mYPG6Y12JsudQJhzYLnHEleYKta4HKjN7FCiImuDkTRUii3g6SDEfoyWywbrH2vCxBVjh6pekFFOub7hrrnPJeg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,21 +110,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 10:50:15AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> erofs and zonefs are using vma_desc_test_any() twice to check whether all
-> of VMA_SHARED_BIT and VMA_MAYWRITE_BIT are set, this is silly, so add
-> vma_desc_test_all() to test all flags and update erofs and zonefs to use
-> it.
-> 
-> While we're here, update the helper function comments to be more
-> consistent.
-> 
-> Also add the same to the VMA test headers.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Wed, Mar 25, 2026 at 02:51:04PM +0000, Pedro Falcato wrote:
+> On Thu, Mar 05, 2026 at 10:50:14AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > On reflection, it's confusing to have vma_flags_test() and
+> > vma_desc_test_flags() test whether any comma-separated VMA flag bit is set,
+> > while also having vma_flags_test_all() and vma_test_all_flags() separately
+> > test whether all flags are set.
+> >
+> > Firstly, rename vma_flags_test() to vma_flags_test_any() to eliminate this
+> > confusion.
+>
+> Hmm. The names are getting longer. We should fix this One Day.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+:) yeha it's a bit of a trade-off still. But for now keeping it (fairly)
+straightforward.
 
--- 
-Pedro
+>
+> >
+> > Secondly, since the VMA descriptor flag functions are becoming rather
+> > cumbersome, prefer vma_desc_test*() to vma_desc_test_flags*(), and also
+> > rename vma_desc_test_flags() to vma_desc_test_any().
+>
+> >
+> > Finally, rename vma_test_all_flags() to vma_test_all() to keep the
+> > VMA-specific helper consistent with the VMA descriptor naming convention
+> > and to help avoid confusion vs. vma_flags_test_all().
+> >
+> > While we're here, also update whitespace to be consistent in helper
+> > functions.
+>
+> Extremely amazing patch! you were truly inspired!
+>
+>
+> > Suggested-by: Pedro Falcato <pfalcato@suse.de>
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+:) thanks, I don't know who could have suggested such an amazing idea, well I
+won't read the tags to check + spoil the surprise... :>)
+
+>
+> --
+> Pedro
+
+Cheers, Lorenzo
 
