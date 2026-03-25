@@ -4,165 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90DD9103A99F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 02:35:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F527103A99F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 02:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F2A96B0005; Tue, 24 Mar 2026 22:35:45 -0400 (EDT)
+	id 3BD076B008A; Tue, 24 Mar 2026 22:43:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A3A06B0089; Tue, 24 Mar 2026 22:35:45 -0400 (EDT)
+	id 347336B008C; Tue, 24 Mar 2026 22:43:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 892556B008A; Tue, 24 Mar 2026 22:35:45 -0400 (EDT)
+	id 20EA06B0092; Tue, 24 Mar 2026 22:43:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 777716B0005
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:35:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEF9B1A06B1
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:35:44 +0000 (UTC)
-X-FDA: 84583019808.12.9E78578
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 15708140008
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:35:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OB6Zmb0o;
-	spf=pass (imf23.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774406143;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B9E56B008A
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:43:54 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67DDA140654
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:43:53 +0000 (UTC)
+X-FDA: 84583040346.17.FE80C9C
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 47A15C0002
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:43:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=gm+VbmHo;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774406631; a=rsa-sha256;
+	cv=pass;
+	b=3RGYrMLSD06xmkiNnPSSwd2EAPtJfJUwZiqCNkxs2YbM4xzcHxhv/eUn72tc7M/68dJ8R6
+	FdmXPTDrY8agQjN+DLCKhs5ZXL57rEEK8/GcyNn24xDH6cMl9eF0xIN/HWgFDmVj2kyBQR
+	/lDlGaGEmacS7M8cm6cB5EpXlSzd0yU=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774406631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e/WqiqBCLyiLY/v28qTyeW3QcaRTjQUhA8ri92uqPms=;
-	b=Dd9xximhBCMHq0AVTTatMNLoyZII2rhM2dDOp7A+4Ts4Pgi4cNHFdCJj3AiaoybdyGXDz1
-	K+w6j+piZOgj2tvQCJyiv1fU5nO9/WoVCHQuuY441Q0VA/JRu7B0UeapUAI+G5f1lAA+gn
-	sCSyTkFzVE/vbDtPZ4/SlpbDRMFFsa4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774406143; a=rsa-sha256;
-	cv=none;
-	b=srs/ZIg7XsPF668DJHHnvmeMA6tebiBq9jVrYvWxUOsrqOjYQKMzLX2Hsnm7kxkMGb1Ong
-	Xms39AZmlib8DA/VJxp5KJ+XfqWXPb4bJd5Is/Or35rCHHoGn8ZoqZTvGXZ2+LaEM4Vv+X
-	eB4rJa/P0LAW3pE5yCPgBf1wUJj4FQA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OB6Zmb0o;
-	spf=pass (imf23.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-486fb439299so50016795e9.0
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:35:42 -0700 (PDT)
+	bh=S49Ro2Awewt8DGHII5530iVBK0Fi/44fxcec5lAc15w=;
+	b=ilo/vI44gBImWBkquU+0hcT1cS2d6qYHjI0PX1V67nLadCzpJkFBbbXR+E3w7YGBj62rtL
+	0jmsuJYbDaJqF45K045RxP1MBqGskX2qGy3TPsobuoUuUcb4Ujut4aPCT2TnugXwrGmftc
+	TdciRdl7eqHOREPxvE7V5aThowGSDbw=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=gm+VbmHo;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-661cfb9f3aaso7953754a12.2
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:43:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774406629; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iXQNPWT4Uy/f6TMoFGCt/jBIOypnLu2goOgrzKSt3ftRAxM6Fey3Zzb5rw7UVs29jH
+         sXAqBIU3c6xMsLX27OYoeExqsPjhjotqy8rOAGlZIbEVtq0ihGQu5FzAvipc0DX9xPUR
+         p1IAg6WVy4ptMqQXK6GJK5dhHnIp4DZeGZ6XmeU7KC8KqeKDBdcWBtEnfl7zb/wrDPn/
+         5H66NuSgPm4sW+AOGv5UFPx0wkjb9kpUYqWbgQc4Kk4fDN8W+s4l1SsrDjlIlbPGaqsl
+         DRjUjD3FLv0zPCy/OxktXn6T3jEEnB/zzfs9vzf3ZRPeJCtY/OW4zi9CXZr2HW2z13m0
+         g/KA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=S49Ro2Awewt8DGHII5530iVBK0Fi/44fxcec5lAc15w=;
+        fh=NupFN0s+zrlGTVtWH7dcRqAgvX6AmxA27j6XI/FNxJo=;
+        b=YHTyteOMRbsGN8u5l/7Oo3UpCXaTE41vNnwCSF0hOPigCLviRx/j0skk7rKJmUPLgz
+         5n2rLyPl8SAfG8l/EQ0+2SNQHUAjEKhbB3DwZfLJaXKAqyVNYPBFzWITbKSsdk9B/1sx
+         qrPcSm+2h3g9OQR7zIKdYgvB7smgnjnlACFBP41wLD2v04YPceojAQc5dGx68nAVw23P
+         5nt1pgFYeU+VMzqL5Bj5vEHRhepjogLJLk0N5vmrBotfQsWqfw30lg9MHl0scJp+8dcP
+         f446l5i8NsWe/3NhVsyBaFpuZ8mP067RtZcptfGfyzNM6ReKWRsHIE3zuupYCwj8+g4j
+         fDxg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774406141; x=1775010941; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1774406629; x=1775011429; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e/WqiqBCLyiLY/v28qTyeW3QcaRTjQUhA8ri92uqPms=;
-        b=OB6Zmb0oh9u902P0zsCNL1S+MDxm87JmusDEl+6b2Tz/ZH/cJAJdvHAhks9mj+n5gt
-         mpvF9B7Dnr50Wi9sysimpF8QXvgM7FvSQdvKsa87cSPhNuE842K6//q+Akt1AzVbZZLB
-         +9XotW00uQPTvACiIPbcubLqP0xoqh7myqVeIgBaLLJNQmyd495ryIpljSn5eMBZlykv
-         lpRhCwJaCJcdoD9yGHEcMwq0bNwWXagyIOvZL0YGURDRT5+ALo88KCTcePQZiUModWcU
-         uz6UhYhc+uVIMIPclzFmG+y3rfbJf5rZEeluYUQDYiZy1aXeGHhBmq4dOOQnwBDzWOqX
-         0IsA==
+        bh=S49Ro2Awewt8DGHII5530iVBK0Fi/44fxcec5lAc15w=;
+        b=gm+VbmHoDYiQYA3+je7/cZnX8IM/1LjNuzNb23yOB6HfI6wNV3kcxJxL6e3Cthe82f
+         uwIAGv1nXOOKHFOJE7GUZU1RqFaD5eJFJgYTXlK+l92f3bmm9BfO9TM2BGPKtkwIBVqp
+         7aMQPdYB1DodZ6MbgoNz2O7r8T9u8Y37iT6HJBonoyDOdGrSJ091whzJJj5FA30zh67Q
+         VgROxIaS9IuuyyG+XjoQk6mSuL+ZX33a6GA018eI31rL8hrwQfAn8r9x0CopOlXgaoVz
+         +5CpMwX1eeutk+438wrOIj7VhXEBRyBnsTcnG3IPcEkEv1yv/zvaFdFBAjxow9Ymu7FV
+         51cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774406141; x=1775010941;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1774406629; x=1775011429;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=e/WqiqBCLyiLY/v28qTyeW3QcaRTjQUhA8ri92uqPms=;
-        b=GPOKU2T5MVuWbaZB6rj0IrrdwMKRZDDkBiKPJiwTsP3Om9a8XDgua8BwIuVdqZrpob
-         C3BG1FsiBPhSddgG6GFSUo/Rq2zdLz+/TzKO105+aWzDOR/ktDIHv5qal1V+Z/QNTkI2
-         P74g08Xgj9CSeUTUIbae69l16DB+aPDX8GyYPvd/3yaivicGB5cGRjEZQDoC1+NGPDoH
-         dPXo1klUyNAuWAeEyCvRWlzjsefazuRLgH/17PACvXx17j5T2FDMKzACvTdTaDg45rhg
-         XhOBN9pGFvah6qLACF+VoaqqGxxaF+ZI6wVEq3BJsgMRlNLozRTMupE/UfDCKlpIByZG
-         0AJw==
-X-Forwarded-Encrypted: i=1; AJvYcCVDZwWjZyIFjiemHQsrVvksveB7Yn9aSSsUxb61ezl3O/95LJgPEmWZvZ3liLfoEt7g6Eyny+7+tA==@kvack.org
-X-Gm-Message-State: AOJu0Ywc4AOL8u4WwdYFMoAXoTCHt/bXRt2bEiwMnH2dxJw/ONp8OXUj
-	rldza7aGzcVR9MQqBQ6Srg+H7QYtEGp0ZASZ0BLroG/EkNyc8/V2xvU7
-X-Gm-Gg: ATEYQzxzkq+nuepp2niD70aF5vgxT6vnKW4c/bByR254M7avcrbguCNB4pxB6zNYTXv
-	38DpNFrKn9MjmHhte126yUd7e78HNmZbgNiIDejToouN51OSmkjF1H7ftOa9SpammPKMjEZ0COS
-	llDohsEr6Zkk+rzYmgm7HyyEyAjbohZde/Qjq3ip0j9DmAhSq9L9Vg98bcaWLKkN7nXEJzfSQNO
-	f3SiOzF+1S9SyFsNFD2Cn0uDV5cVWn+DXvgI+X+FKmWD8kMqzTuEBTAjXfJ89a8itxszlLTbjbw
-	490HwpoEO7+UKAkfnPWCqQtIrwbJC2SR1yVldFVxdmp14ia316LEC2juHCYI3C4ySw3KA26KvbG
-	2WhkD9+uOrWP7yNH4caK8rfsDihoilVqlTa4tW83BnYaRb45aQ1hnp6V5nWEoK9e2hyeAsZkVQL
-	ydEA65pI7hVzYcxJVgLXJ/fPIF0gDFfA==
-X-Received: by 2002:a05:6000:18a8:b0:439:b440:b8a2 with SMTP id ffacd0b85a97d-43b88a0d156mr2181278f8f.28.1774406141184;
-        Tue, 24 Mar 2026 19:35:41 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-43b6470f902sm45426571f8f.28.2026.03.24.19.35.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Mar 2026 19:35:40 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: nphamcs@gmail.com
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	apopple@nvidia.com,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	bhe@redhat.com,
-	byungchul@sk.com,
-	cgroups@vger.kernel.org,
-	chengming.zhou@linux.dev,
-	chrisl@kernel.org,
-	corbet@lwn.net,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jannh@google.com,
-	joshua.hahnjy@gmail.com,
-	kasong@tencent.com,
-	kernel-team@meta.com,
-	lance.yang@linux.dev,
-	lenb@kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	matthew.brost@intel.com,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	npache@redhat.com,
-	pavel@kernel.org,
-	peterx@redhat.com,
-	peterz@infradead.org,
-	pfalcato@suse.de,
-	rafael@kernel.org,
-	rakie.kim@sk.com,
-	riel@surriel.com,
-	roman.gushchin@linux.dev,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	ryncsn@gmail.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	surenb@google.com,
-	tglx@kernel.org,
-	vbabka@suse.cz,
-	weixugc@google.com,
-	willy@infradead.org,
-	ying.huang@linux.alibaba.com,
-	yosry.ahmed@linux.dev,
-	yuanchu@google.com,
-	zhengqi.arch@bytedance.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-Date: Wed, 25 Mar 2026 05:35:30 +0300
-Message-ID: <20260325023530.222944-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAKEwX=MgoPmiFdBQXK_4=XuR-8mVpGr+3Ku2MfjPmHCeuUdGJg@mail.gmail.com>
-References: <CAKEwX=MgoPmiFdBQXK_4=XuR-8mVpGr+3Ku2MfjPmHCeuUdGJg@mail.gmail.com>
+        bh=S49Ro2Awewt8DGHII5530iVBK0Fi/44fxcec5lAc15w=;
+        b=diTjjuBiCTWFt9xdEbmoA9xUckWsgUNe3rJv3cOjPRKspLel8iLsE+3ODaWuN1HosA
+         EBVw5D+cP5sxYFAwhEdAN8uHlTR9g5NHk+ydnCNcwAxrklszYTHLim4JcBD+bwZxaamK
+         UvKqLjDAV+Ns1UX19FU39NzRZcGZRK3FejjtOetEiUD1HaPRWkjAosIFx3Fi/5hd8qqO
+         sOty9PEPjR5hvYZRiAzSvXny17HwiPl39OQ+unfBWLqFLPLh9YGCKqeX0G5IuNthw848
+         rXBR5qLLimC0VhiIjs456wGKcV8/M5hEDf8LyExkMHqGUYcTFSx9fhBkeSlOUCD6dtlP
+         N4yA==
+X-Forwarded-Encrypted: i=1; AJvYcCU87+5PSMRFHEleD94dBVtOJeBZ9Q8KeuO9qv/pS21GPpHG21xwaZlDx7exOegMPeXGOYdRfPG42Q==@kvack.org
+X-Gm-Message-State: AOJu0YxH2N6oLnvTje+SZvHpQ9TZyyDDOmQ28icO873iJCBYT7PkBXau
+	bXbnwQqY36x/Of6zywdvJ98tc61Iu1a4Ap52oVL6yRCQUvrzWU6rlDsCbkCUmNAwo/kLCuUPZ9O
+	DWb1UzoXxDHh5IjhVG9xqC4f+FgIqbx0fYgc25T/Qqw==
+X-Gm-Gg: ATEYQzx9t1TM6Ee2LlE37NuW3VOQTBJWI0aT5YfZkapAlPnWjEkVDJUzh65w9yq/RPN
+	uE/ZYZXiSPJeThix1LVAj0wOyBZPRZnENsQ7eYc5qOwYHshOGlyOPpwVMrDrDNn9Jp2o6/qGKBS
+	qFDka4TzzpWB1Pu3XW9ny26Te35Nqao5AzbKQ9/pXp4FUy66JprSmxhasnDZ1p54k8/M1vgGDXx
+	JNd1DFGIdFaZjYgmSUUx91jNvLfdRWtcUdQEyYqtqmmEsvDYowsbH3tQPf6dumRrGsmiNtebSGI
+	2zPyQQu6prJyuSsxwKTfGVWQLoMtIjzdOEzcUg==
+X-Received: by 2002:a17:907:6d19:b0:b97:98e9:1b17 with SMTP id
+ a640c23a62f3a-b9a54254cefmr104541966b.28.1774406629257; Tue, 24 Mar 2026
+ 19:43:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 15708140008
-X-Stat-Signature: ne9buhzwxzeb6krq4zbg54kmnmb3xtit
+References: <20260321175808.57942-1-pasha.tatashin@soleen.com>
+ <20260321175808.57942-2-pasha.tatashin@soleen.com> <CA+CK2bD2aNu-NByET4KkBP0n2j8WQE2zjxb4g-1cv2hYfjaRZQ@mail.gmail.com>
+ <20260323-leibhaftig-blasinstrument-58ec408b3c40@brauner> <CA+CK2bC6S7pFCYR0XS1ZPxw9HKjWgxy=0DkszYNjMUi735o_1Q@mail.gmail.com>
+ <20260324-langzeitfolgen-altgedienten-ccef17d19349@brauner> <20260324114021.f5546d2de5b6a2b0490f63cf@linux-foundation.org>
+In-Reply-To: <20260324114021.f5546d2de5b6a2b0490f63cf@linux-foundation.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 24 Mar 2026 22:43:12 -0400
+X-Gm-Features: AQROBzDD_dN5K67m768ffew-lTTbV5PIJ8L5d861vCwJTCIzcd1-cpNV-0z3o_s
+Message-ID: <CA+CK2bCbgXHnZ0PhzfKE=NkykyqMKq6KBXW6JqMpq2R3k3RXDw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] liveupdate: prevent double management of files
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christian Brauner <brauner@kernel.org>, linux-kselftest@vger.kernel.org, rppt@kernel.org, 
+	jack@suse.cz, shuah@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org, 
+	dmatlack@google.com, pratyush@kernel.org, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774406142-921117
-X-HE-Meta: U2FsdGVkX18AeCnskI8V8B5TtjK0kPgDJEmc0N1vUOrHPWpVo6euNY7lC32rh4ePK4u5OytNVJAjF06+4fJS6Ot5Ms2iaedrdj0hFTcot29DUVoxHVJDF56dpSAoLYdQpM/Xi3EzpGt5kToxMi0RinFtSOTpmUPyeLeDh0TyY6Sa7RZag6z/KWtSBkEUKit/gINI0ZMxKHjhfaF76PQGwLaunxOvnJRDhaMLtrGc/jyI+mcpnQyZotwixaYkhZDik2xlF7doBuKCy1/hYcPtOoZRk9yjeRDhxttNBFog30GNeJyH8mraOk6Imepll8OKeWcqsT58KDvLuG6baF8jKtopskhO+gpVmmSeXipuww7ckh+I1tZPQ4d9SH6p+eUtMP/p2DDykEoq+ERb62fHBy+3JNmOYlNfsb6oLmm2866kAsQOfZHI88pfcYuRrFvQdfwiCJD3kqQ7Jb3TIcOSsAQ6t2yWYpBCEIZoU2CH5yW3mo4xlIoc2MEpBmoMEe8nqFj7EzoKl9WuznwY+k27CMKTshYpGgu6C2zM0nwiB6h4cIH7UgAnUC2PS6nwlVpWwAteyorFSfR41r5al04RaZ/2KMoDrz4RJe4b8GovDhaHUmVuHRoXalTsjoASLIfP0nDvR3rfO2JzdCK1mtcVXmw/HIBhb+VrEhtW8VlKYKxy8jrK1oiCumfsPa4NiztGthRdH0rDKjkTFyjeyvKNmQzkqqeJW0nSCJfSKOw14YRQNPePZ/zbuGscuNBq9vaslHnIPt46JNxaLj9Dd77tAVXVpWTad01ZOcmvHTj05yqYJuy0LoRX7kiMP5b0Aff0/jbV5PER/l2RdR19Jb5lCt4jnu8OIIIn6p1Gadacxwr+LPha65TmpTC3oIeJGmZDsreI4AnnoUX5KbNyNCq9wtnSfJKG75uUUNHJ8GMaI0EP1DkDrrOSxkV4/bLfTdbrTp7hKSoNBfbkzYwc2zn
- AJqAIJug
- 0c0+rfXek18ozyqacfgrZdtfdMGViru/aYhA+9s9CdijSVgdn3kgIwD/HRnwyttfVi9TmIBvM2hmIh+VuEETnoV7JszmGjzAhic43pY/1M7hLcN0RLj3ahOO9mnyuys8Pir+AC1Y0aGJAw+SdDlyD+KJ1Rnq6InEA6DRkv7DUIppMoDgxja9CSCM5LfHIU6m3U1jTxk9Tc7pApEVjfkKr871E7Kxl6gPShU1T65xVltzZesVR9xdr4mvNSWKCERceCbSWo6YEsMhMkJzR20Xsh7EAS8vIj4UPkg78T+n1fjtJ3NaSSy2YisEYmjUT0s6wNCAHsrpRxtQBhWVqmna2Mz4yqloABMS47dLXoQzP8sXwuz5mISM8kRV2PsVhs69onduemk+suWg1GZvTcZHh7634LoTjJCeOfc8j0fhO1o2ytAW9BIJ0dFAdgqkcO+NYUoXEW9AJtPzudzB78Ksee9fJrX7HQZH9tzAtKFdY6wVovmU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 47A15C0002
+X-Stat-Signature: dnnxy6uyjf7uuaqw6ou8h4cqyafmjpjp
+X-HE-Tag: 1774406631-815110
+X-HE-Meta: U2FsdGVkX18is/CW66hJCgxLWxQiyjIWIcJjTQVd4Vpp1DeoPyFAZjQGVvxA7boXeKuIYYguSZVFpYjv/XEZaorhGKFL/a4YHFKt+dZYaRtBurMPlEm7aLvKLyko12CLAUItv005q31+9OzdVBzffQ6Kk5bqNkAAtaIYtvCQTFOUR9Rvm1hj0+sHGnJXe7P8St0rExrVr1A8o7EpZCCuf9PQh4svAvHbN18fPcp7fRpNzRWmbYCX1m0OALATxuBN+AZSS5IKgL7f/+IgRxOTxwOQKQcynglFI5id80DxO3ESkSayudBw84SJEIxiTWMdsp15L6/wFgaV9fXF64GYDl1Ju+ElMm8jp0I82EwfNwMQHdnsa5ajvK605BVB4Kqrf8Nvu4M2URIWjp/NuG97vCIbvuPZ/J+THRWEGKiFX3TqepO9MvLAZqhiQ/V97mbdd3dJBIKQimZ0h1iwal5Tt6aDCaBT8GSeE3k3/Vj7k+eZpH+DQS8oFr3d4bC7AJKf3bzmuWOnCl0sXBFaXNvwZSUIJcIChGVHl1mjkPq4uOUNH7Zo5zk/btO074tNE7CHIHpSZQMQKfoNOtnIK3Zd/AOxEU2+GviF/KJa+NG8W2LjCzuIFTd4rxzMjhEPEtqmze1A7kxUUeU6hsM/k8e2tI+p1W5TdWVG2UN7ka9Kah6UhzonotwrQCSPdQFqsM/Iy1uIRxviXP/G323OBMAJdO5zbnFEt+4n/pkuMHXBslhj92cIKMYxgUQ3Amn6FurnGDrV7CIlccLo61ahAXoP3sNAFBq1Dav3DYOSOxDOPaqMl76EsUebQCbX7dlHXKS5g7XDXYRm70teJVMf7V/piuqBiOol16oFcxfo72qao7lRkJrD9ep+uPPfWvX2LUWRExCBxHDsqAYU4wwoxp+seJPPrKDZClbhNSVGXriUHwFUEI7ZJUkCdm5OtgRTcFLvnKhtpe+VfT8tkCpjcsj
+ U6W7u/Fq
+ Ile7b3jpMVQ3trhSL7AmL2ORa4WRUohgPgdB29vxJGbY+5tIUnbEUBHjoPRWxWKuSXrx76I1VwnvppiKbFslVlqdBvAQjU0ME6Ocie8NZs6AkS0LZmOjhAeD9d8NaNSVqKhXydVXDp7VPp9Hg00q5uihJVKN6CA6HmD1poakXXWWGBUWg9VObv8ORWcEfmIEXufZqSUlqhtrnyFZ+F7fAEOfbuBxjAgzKBEIHlrRd1JPt2HhgTUY1c2MFXsBe1Ntc41bJtmv8OQgb8T9wzBLIhw0ln4UJn470HVdaabkanomoNpg4GVYOgTlPLjdyvx1u9G2shqs/3Wlp62J9EY9gnHp9WR+hfgjRm72EnXuKD+ZjFrJfXhD7O9PHT0zqMspt4NpN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,21 +143,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nhat Pham <nphamcs@gmail.com>:
-> I'm aware of that work. It's an improvement, but my understanding is:
+On Tue, Mar 24, 2026 at 2:40=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Tue, 24 Mar 2026 09:51:34 +0100 Christian Brauner <brauner@kernel.org>=
+ wrote:
+>
+> > > > So, I'm not happy about I_LUO_MANAGED. I don't think we need driver
+> > > > specific stuff in struct inode and not in i_state. Track this in th=
+e
+> > > > driver please. I don't want this precedent and I'd rather have you =
+get
+>
+> Well dang, I just merged v2 but Christian wasn't cc'ed.
+>
+> > > I am planning to use an xarray in the next version.
+>
+> That's what v2 did, and I_LUO_MANAGED has gone away.
+>
+> Christian, does v2 look OK?  It's at
+> https://lkml.kernel.org/r/20260323203145.148057-1-pasha.tatashin@soleen.c=
+om
 
-Thank you for answer!
+Yes, v2 is fine. Here, we discussed about the previous approach, this
+is one of the reason why v2 exists: not to modify inode, and also not
+to rely on inode being different for every preserved file.
 
-Also, is it possible to have checksummed swap?
+Thanks,
+Pasha
 
-I want to have checksummed swap to be protected from disk bit-rot
-(I already have ECC memory, so RAM is protected).
-
-And hibernation image should be protected, too.
-
-I tried to put swap on top of dm-integrity, but this is
-incompatible with hibernation in mainline kernel.
-
--- 
-Askar Safin
+>
+>
 
