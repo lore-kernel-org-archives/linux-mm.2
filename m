@@ -4,104 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E7BE103A9A1
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 02:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A78D3103A9A1
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 02:49:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E73F96B0089; Tue, 24 Mar 2026 22:49:33 -0400 (EDT)
+	id E00386B0092; Tue, 24 Mar 2026 22:49:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E24666B008A; Tue, 24 Mar 2026 22:49:33 -0400 (EDT)
+	id DDC6D6B0093; Tue, 24 Mar 2026 22:49:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3A706B0092; Tue, 24 Mar 2026 22:49:33 -0400 (EDT)
+	id CED9B6B0095; Tue, 24 Mar 2026 22:49:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C39FB6B0089
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:49:33 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65E82E0895
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:49:33 +0000 (UTC)
-X-FDA: 84583054626.09.AD742A9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 52619A0013
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:49:31 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L3TyWO2R;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774406971;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BD2DF6B0092
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 22:49:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 42CAB13B6FD
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:49:55 +0000 (UTC)
+X-FDA: 84583055550.27.FBD69F1
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3465A180006
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:49:52 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=g2AF4qHF;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774406993; a=rsa-sha256;
+	cv=pass;
+	b=8hTK+XUHA0oFDY/Hr/De9HO9AjhhOJrgM60BpzohtviWeUWd73yJyYgNCjwCxlzKDIMPoz
+	rRxXVy3UqKpMKUBmGu2AGdZPWwqf5h37u8N7EEhVSkhU+ugS7GAp9cp1JYXzDn4+M3Bq18
+	o9b6cLIFAex7sr/vOM/tfiWmsgnGMQM=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774406993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HKZfsfiRfH0jHmXCxHBrLnzAChk4AmqGHg6bTL9OJcM=;
-	b=CZhTjzog3nv2CPz5Kme1z69nQOk3ayFzECjoAumqAC6NPsPb9CSipqkqNm93efBsau0JCp
-	8dUxvmifFb4+X2kFhM3fuCQmF1705lRpTLj6Z5qAdkG07bVED7UvIBtZrrm/5USRsgI6pY
-	ImA5trvvLuGczitPVhjo6aa5H6U+kkc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L3TyWO2R;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774406971; a=rsa-sha256;
-	cv=none;
-	b=P76t7Qpi9MIoKIaF1LxeWaj/Xgz/oiRxpJQCHYI8IDXPI2U4NYhetaYEm8qQx5YycAz4EI
-	QXR1oEKge4+e/066c/1WoN0m2JYcP9Lba4iX2iUy0i8aMrV/seK/doAD0cNDM0/LFxBZjx
-	FZaKeFcFtqgPvSIkm8NTg5NnoR2yaUI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 178BB444C0
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:49:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDF5C2BCB8
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:49:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774406970;
-	bh=f94cZgTZJW4iWE7r4y4Agv+EdHqjRzOhJnMgcftx1s0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=L3TyWO2RaWI7Qr7K+U1eHoxj9NPRqHuY8/aE1zGn7CgYj7RH27XXweus0y/VxFNwo
-	 5PtwwrGBqlEFpDl/4V5fFaE5R26HX9bQG9gexBD76upKNLt9Zjnr6WzQjZQM3SJbnP
-	 hQgERltARaesck+woHdDfHdHzlqOstOAGxB+IgSM/JiOP8vPHqbMjEnQeF+cMfs4WJ
-	 4f5h0q6B4samFjnV6CaKW01fEfJaqBHQ0J4ctKPl/HbzglWNgRFZEFjdi0pj414/5K
-	 DpM2trCQtbrYRohsZwytMoO6AT83Il6YS571z7/odmn8dfpt3fOj1RiWGGoY+0V6EP
-	 B5Z30MMwfAy7w==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-66a33f61d80so3184710a12.0
-        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:49:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWuzS9esMM1RPPDqlJDLsVDwM0ovGxAjK8LuiwBUbmoWw78U6yKwVcMpAiQeLPhAZZSA8ro4CqWLw==@kvack.org
-X-Gm-Message-State: AOJu0Yxlaga87oprTBbkqgPXkqjiGhHolbb/uVKbjnnxIJ5Iv27ffffK
-	JHX9+w1bgelgVblJuIJJ8YoI9Clfp1jB5poRovR5LWP4pfaiKC7sfpPsfit3zALxSBd6Z9eLpXN
-	A5zl8SYYf7SrtFvqmQrmi7+DH+vM0PD4=
-X-Received: by 2002:a17:907:a609:b0:b97:cbb9:2290 with SMTP id
- a640c23a62f3a-b9a3f1665f6mr119783966b.11.1774406968649; Tue, 24 Mar 2026
- 19:49:28 -0700 (PDT)
+	bh=KPBVA7DytOKZolOQDdATvF4ncnsezwN+Y1tNL9TRSSM=;
+	b=gz90Ws3u//LZvAvqW1PJzJt+i7j5qkXzUBJjUE68QrxumiuDg2UFSPjIClwJP6//5VpyyE
+	875Zr2UepbNKWuxLIRVaLA8nldwW9PsgApGR0VEN0fLu7FFtAIWr/fvth+5rd02ej5t5hz
+	bDjkiSFDI3DVkDgGkiuEJ/xobXHSPi0=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=g2AF4qHF;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6686697f578so3209109a12.0
+        for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:49:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774406991; cv=none;
+        d=google.com; s=arc-20240605;
+        b=V+bpG2OsytKouTMO7Sj1HNph7GGcnLA4UmhSqN4SPYX8CSAkFaMbQVk1fgY6xVWiWY
+         /cCIErau+KNAIwyEryoljV1pII9j18faZ9NNoQ9KIv402rwSxuEejXuyr0pX9xkRfKYc
+         JgUj3AIk/MHzRMe/jeukmnuaIku7QAFmkH2vgVFX0kHUWUwghvDZKTo1qEqIDP85QS5M
+         K1Dln84P4Q7QR16evwOXlzHiOjzUqUCs5uNWj5afm9pip8LonEktqs7z7cFQl+YQis+7
+         HDla4p7LY8d1ZhNBpqYP2NvBfOTLfa0AOqr6vrVPX7X9qNUhlFzl28vcv1ya+K0ESedO
+         qL7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KPBVA7DytOKZolOQDdATvF4ncnsezwN+Y1tNL9TRSSM=;
+        fh=dZULZjeusKkXGvdNAMUhzmY1cXX+kXiSIuD/SOB/Xs4=;
+        b=FxzQW52K3DkfNdrLksjB11VU3Dbvs5avexzRzJ9cR4nld1F/EDsV613MJW4Epn9B9G
+         fMn4RmcuUuwxf9lBMz5RdLEwa62XhnpkxI7qATYbJ162RvT2WFEXZhBagvAyfb5gNtLf
+         t84w61Th2xId1w88A+PRNcX6ntq4nOKSGwp4hTKl3RCyziLvPNlNB7GBDbj7D1TNJvXD
+         n96PE1ldtkl77tl5C+DYiCTkcYPr8K/XDgDaPaqTHw5hjq5BHwgWEEUJG8xcqd6rSbB4
+         e4mKYCCzSeCtNFvdcg9p+vFBT/1lkpw2p/zlhtSEERYKgfB9GHNtZ1M94RqHVAWcsPPJ
+         E4DQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1774406991; x=1775011791; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KPBVA7DytOKZolOQDdATvF4ncnsezwN+Y1tNL9TRSSM=;
+        b=g2AF4qHFPk85ebBecgOuXMOU5tZUPpjpFZA6TQZ0+u0UZSkfv5mwgm+4bapEP8zzX1
+         vvAenlqK3YwFVpERKwlCV5YHs7pRI8NZsAnWs0EQGytOoyj9M9RyKQLhUODeJQvaE7/k
+         PPe+EBTThTiwUW8j6He4/2Le8VwZWNFN38JGLJ8i28hdUfNOh5J8X/yHT9fYD7irtE6+
+         mGU/NXTYIQy1YfbryPFhOsyCZ+6xG9tO5/F0O+XLn/MJqxa42rbaSpHf/k7Od0irfG0P
+         ZYLgbKO70Iy9K75g8PN4Toe0tLKu7fQrkLS2rvv0YZ6I+svqxE3D4Lie7EvVKoosnkmJ
+         IKFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774406991; x=1775011791;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KPBVA7DytOKZolOQDdATvF4ncnsezwN+Y1tNL9TRSSM=;
+        b=NJubY/+FJmQfRRcClQ83C/eHNhYzz1FohwCOVn3xMUvIfyUD75SMTmzxyA9VWFnHeA
+         SyQcMztzPJRiuko0JdF+JCWXjnNV0Clk5eK6nLmJFlJn98xB7Hd3E9aSQB0VLNp8Gg0x
+         Wy9AXGrX+fhI/Ze8aH9ncLmux3yUR4sdo242UkF0I30Q8Ulxtw9VNsPCkuZGbrywWMBL
+         Em11FBWrOozxAghIc+chhPBT/pwR+D9XPK9soQff2MWQ2utJygfw3ViHgzGK5OJpF5sI
+         I4KFziFr1/7JzR6WA+bMh2PauPp5Pus9rcq+tafGn989qQdTkKLqUeH3l4LSgMgFD7Fw
+         c5nA==
+X-Forwarded-Encrypted: i=1; AJvYcCUADG+QqnwZNx+Ne6SKsDDYOd69eqaKNiyGPGMjs6n5sY9SIuctkG/NDukJUNZcT/9sgNirKQq4sA==@kvack.org
+X-Gm-Message-State: AOJu0Yw4iRF+h28OxzjeQRgXsm047SOolapvIDmLdJ5PCaKzf54Bwpk4
+	QkFXHHQAmjPjgz8YTiFWB3sqMTuU6NzCOHmCGJ7k38DmS8uOPnRNceK9NY1o5IYOeEWTCxiV0kr
+	gyXkB2y3cRRtRWN2Mi8Sq/vC5Kd6rk+Ty3Zk7utI5HQ==
+X-Gm-Gg: ATEYQzxNL4AxQkpiWFy4sB71bZDfqAhpu1N7VuuBkrVvigSHMoqtqkTSqKB0QenQoVm
+	fTzaLdwMsEcSnfQelLMf4L8flXmJjQedD00KP0m/4n+jp6XPWY751IL/bpr4+TlOOEzOiCUxsen
+	vg5UXJJltb7loQuh5C1amgX0BUolY3P5fqPEBP1H7uLqkRC2pdjpJjQSNYB5j8AMyuXuENrlHZE
+	FuGHYxnmRW/ZL1/gyWI3UrCpLZduMDVjXansjZY/6qZ7JMHfBT9UYDd9vyo5p4cFsOJ2r4ICYny
+	7xPZY5l3rEwWyha3jsX7aPrg+OkXoYOfzJsWyg==
+X-Received: by 2002:a05:6402:4582:b0:66a:3948:d038 with SMTP id
+ 4fb4d7f45d1cf-66a826e4411mr904611a12.19.1774406991473; Tue, 24 Mar 2026
+ 19:49:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260322061038.156146-1-liwang@redhat.com> <20260322091851.e965d3a2f0d6af5bd985407f@linux-foundation.org>
- <acCyPNCBoTGAJjfs@redhat.com> <CAO9r8zPxUv5V+VKEBuyacJUsc-UWh7hGc06yNQntY2GcUJLBPw@mail.gmail.com>
- <acKAr0TYzuYPxH4A@redhat.com> <CAO9r8zOCGWSX1+t8-5qe+04UZ6i4mChPJ8hkpiS5Z8pAPZ0sZg@mail.gmail.com>
- <acNH6C6Ay7As4y60@redhat.com>
-In-Reply-To: <acNH6C6Ay7As4y60@redhat.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 24 Mar 2026 19:49:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO2Nq=8dGBuJ0xpQTEr4EM2iJ=WNULtCU5FLLj4a23dYA@mail.gmail.com>
-X-Gm-Features: AaiRm50VK0jNxXzN3lqG3s8-GclVxKcP8tps6ilvisx0LReDcBcJLdXYVJVJk04
-Message-ID: <CAO9r8zO2Nq=8dGBuJ0xpQTEr4EM2iJ=WNULtCU5FLLj4a23dYA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/7] selftests/cgroup: improve zswap tests robustness
- and support large page sizes
-To: Li Wang <liwang@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, longman@redhat.com, yosryahmed@google.com, 
-	nphamcs@gmail.com, hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com, 
-	muchun.song@linux.dev, tj@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
+ <20260318141637.1870220-13-pasha.tatashin@soleen.com> <CALzav=fhwP1Wv9YjFTXoinX7R3rX-P0igvLbftBh+sZrL3dySg@mail.gmail.com>
+In-Reply-To: <CALzav=fhwP1Wv9YjFTXoinX7R3rX-P0igvLbftBh+sZrL3dySg@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 24 Mar 2026 22:49:14 -0400
+X-Gm-Features: AQROBzC0DwhMMWi0EsUVCJug7-pyk_Y26naXj4MKTWNsdNop8tv0j-A6EbSiOVU
+Message-ID: <CA+CK2bCU=4XQQJ_-3HrhbENBNWoDf=ZzHpp66nZaPxGUAU=U9g@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] liveupdate: Remove file handler module refcounting
+To: David Matlack <dmatlack@google.com>
+Cc: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, pratyush@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 52619A0013
-X-Stat-Signature: usbtt4ejweyz9efcbepdowos771euj5m
 X-Rspam-User: 
-X-HE-Tag: 1774406971-496068
-X-HE-Meta: U2FsdGVkX1/RUmJMD8fFnPsUiXSrVtDF01bCZ71pqQnnZ1TMYEiLZdR6OzUeAGUIMT4fobod67vVcrIDzsNUwziaKn+CjAGbhA8yhqvXt9GZG2u/j2YgJZc9Zzix5LaCT7UD7cKod1Fqq5NZAvuCznJW8kyBuihdysdkU62HheZxtby0lgfQ+LQXmsCAjHXNWz8sdQDZjCw2y7s7fx49FJ/HNioiV5oZoygI8j0CbOi2k9F9zeCZEvku4iUKnPgJjTSzO2PeLsgBeIHe7ECjCVWph4MLPszlbzdnFPaGHhgjKTD4ubtFOkUrMzqe1mRQFyDjwoExQmk1hy4lcZkUz0B99lVoHlqPGv0Ch8n6Xjyp4xR2HFuba5wgbwVwANyMLGg5cFcPz1avOGkYo8cwsYosMP5LVhDyzbqjrJY/6iLZaVZatEd8pHSlpri5Dq1i0LQzGjVBHpqoPNXnPlRn+qK9bCpOSnGzJWHhGnJ5wi0LRWl+3Mei3h0q9uejt+c1d1Pp1L10kbVDpubrKEssYa44fWJ/JmAjT5XjQm0OtWzqp7SRtNwsLEcvI7KgmIuNdPk447cCpL2OCgjsDFB38pwu82zAOYGTYX1YLV/dt9HEgomt3D/JACgQeDfn3i6anMSdgsKmiopTKyUWDZjOIofLDJNc933x3RflpjtKFMicr4Xn+BbGAYAYb8L1ekZwG6c7cpH0gBB3DGCcUMZ7SlWJn5aS8jeMTt8M9MDGSpOgm/EEPyiv5+2j+AP/qVySCWEXfO2KRvh3Ukqc3fJcxOo/3Vg06OAD08ltyf4Rr5ZXQQ/BZ/Iyv/31cGnLeSxW8VfSu53Gl4WDsrFzvBfomjQSUi32Or9jCSGEpaZ7gKI8dxLp5tzQcsM9lNV77mqmagBwthM7zGFihS/s6NX9BH1PL+5KpcoOUn/KU94WCzYrvNwcWVkq32hre+Lm/m7c6jhxEkqTWxTG7EO0Oxu
- ZGvcaU3D
- qrmoTvU+LriaSe3ZFi3XHwnaCHHOzFNBIEXA/+5YOP5PDHL7GWIOBGEoQkTOx7dtRF/gYJqDkOV/qJ6ZgJbDk6jExioxTWv25HDD/3Q6HkhyUXv009lBKVxb/EbYsFF5kbazf4j+ffljcbyNu6DdZQZ5fnIU1+KKOsVfFnxxyzOEo6da/TeZ3moZPjQX+GCSdcxX0orKagZP8llMZA+4li0rf6ozW/ILRUZyzgzlzpNg6HU9W7dbC44RRluqmIZ3vnHIzSu/xQ4A/gbt0IRfuF7zI+d3xfpKrShnowuqWQt71MvPe5z3JVbkt5/Ajh2nVJFXkRWIo9ad+foeED8iFNH94jQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3465A180006
+X-Stat-Signature: o3wn11kajwsczj5x5f7bb8fzt1wru8a3
+X-HE-Tag: 1774406992-80015
+X-HE-Meta: U2FsdGVkX1+FPBL2nRAu206ClUZGXI5nXZwl2y6sdFqVjVaTuy6TDCHbU8FsLLRznV1kNre6OIB/BhXquPk3ftKwDMxqP32ck2nJIiKdfO93rgLyaYCdz9VM4PZRvAj7jwNYLrugUA1LvkfP1bTuOHnznf9YXh3dH88I7JNr3UQbhtch4BI29gEPADhGaO4gdjjHBEuhp35NytrVlvwRVl4RDgn14TE3Z3e1oAAYYDqfHtdmUIeOsAlgUrW0drb9F5eqPXGg308vwKZybXmv7LlDIulVV4KQjojlUy0Kkq5Ug879WMN5UmcowIj6qy1OmBsvDgUxsnjTv7DaDjojWTsST5rJmhAb5FVLsDqj0xqiC2T0yl1g8BeVybpfPaJ/rWSR9fVB01Q+yPNL2ZPslyQABk0vz4jsdj+b9K+E+w50IWOVXRti/dowSngnJYEVrUyvcMCy55aJsxJKZS3qoU7bffOsWCHAkTKqzmkG8lsYgKOFoA3sPVmm3/EmffbimJNS5S3JH8baWJOVwzhzGsdMjNkqnEXrgvIf9Tk67CXzwSkoKkQWWb4TFdUMF7R7OYmDvhmY8MlJvgrqkQtSobGEMvo95pEqu6b6ZERryUThRm0xXRIwTn+4eDw1oiBD2+Ziy36RTjqkyFFmGbr5x6AnnIZ7ZFi/U69gYksOw9k//a1V2hPzPLzudUd2/ArC8W7GND3W/WTSrfSpTU88deFmQScAZjFYsUz9i0FmjJmUCUm4XJLFCO3ZpH+O0Ofq/M23jXIeJC/rAIC5O6RZ3zSYo2tZxR3PsLfEPJFpArfr+1+kYF3u7tiTXM6D8idPiIbyrhfyRLiPHk0FxXqvVHvJd3GmBSON26lztufhIvNuf+l2EiVq+IrLo178iEI5ESLiYDxfBGslhtTYpxM0jpDl9MIeOxeeSpQHV/pmwv44FkVHa0tFLpKeVcgeB1/dILPWxXLdBbb/NQxd3pB
+ uKXt41Pi
+ ND8gRoUiYSOo+Ifn/aDrTm+F5vd6v2F8aYG+u5HRmelt/iiKhxtisI8NInQfcAJfFQHBlvJVBNwjidHr2gF4qonKI/9I0FXQ7EaCW8t6wLHjFIckF8kGyX7roLyR1ndrFl1Iga+5WipngvbPnOyxhex4ReXOS2TVVTi6AgLnUcjpVEazuMa901zpD1hFhNWqKdGlaw7+WOEzb1pGpv68RtQ09qziH22n6NFT8V24SmQSSY7Vpl07r0GLL4th3fRC8AhhP3I6TufQFlNgSDsQVcSFFwY7Efa36jf7m/mplSQN7kHZQ7VaINc8SAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,95 +139,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 7:26=E2=80=AFPM Li Wang <liwang@redhat.com> wrote:
+On Tue, Mar 24, 2026 at 5:24=E2=80=AFPM David Matlack <dmatlack@google.com>=
+ wrote:
 >
-> On Tue, Mar 24, 2026 at 01:28:12PM -0700, Yosry Ahmed wrote:
-> > > > Sashiko claims that 512 pages will end up consuming 11K to 15K in
-> > > > zswap with this setup, do you know what the actual number is?
-> > >
-> > > Not very sure, I guess each 64K page contains 1 byte of 'a' and 65535=
- bytes
-> > > of zero. A single page like that compresses down to roughly 20=E2=80=
-=9330 bytes
-> > > (a short literal plus a very long zero run, plus frame/header overhea=
-d).
-> > > So the estimate is roughly 512 =C3=97 25 bytes =E2=89=88 12.8 KB, whi=
-ch is where the
-> > > "11 to 15 kilobytes" ballpark comes from.
-> > >
-> > > > Especially with different compressors? If it's close to 64K, this
-> > > > might be a problem.
-> > >
-> > > Yes, good point, when I swith to use 'zstd' compressor, it doesn't wo=
-rk.
-> > >
-> > > > Maybe we can fill half of each page with increasing values? It shou=
-ld
-> > > > still be compressible but not too compressible.
-> > >
-> > > I tried, this method works on Lzo algorithm but not Zstd.
-> > > Anyway, I am still investigating.
+> On Wed, Mar 18, 2026 at 7:17=E2=80=AFAM Pasha Tatashin
+> <pasha.tatashin@soleen.com> wrote:
 > >
-> > Do you mean the compressibility is still very high on zstd? I vaguely
-> > remember filling a page with repeating patterns (e.g. alphabet
-> > letters) seemed to produce a decent compression ratio, but I don't
-> > remember the specifics.
+> > File handlers do not need to pin modules indefinitely or during active
+> > live update sessions. The VFS 'struct file' pins the file handler's mod=
+ule
+> > via f_op->owner during active sessions, making dynamic reference counti=
+ng
+> > unnecessary for handlers.
 > >
-> > I am pretty sure an LLM could figure out what values will work for
-> > different compression algorithms :)
+> > When a file is preserved, the live update core obtains a 'struct file'
+> > via fdget(). As long as the file is kept open within the live update
+> > session, the module is pinned by the VFS and cannot be unloaded.
 >
-> Well, I have tried many ways for ditry each page of the total, but none
-> works on zstd compreseor.
+> After invoking the file handler's retrieve(), LUO should probably
+> check that the created file's owner matches the file handler's owner,
+> since this scheme relies on that being true.
 >
-> e.g,.
->
-> --- a/tools/testing/selftests/cgroup/test_zswap.c
-> +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> @@ -9,6 +9,7 @@
->  #include <string.h>
->  #include <sys/wait.h>
->  #include <sys/mman.h>
-> +#include <sys/random.h>
->
->  #include "kselftest.h"
->  #include "cgroup_util.h"
-> @@ -473,8 +474,12 @@ static int test_no_invasive_cgroup_shrink(const char=
- *root)
->         if (cg_enter_current(control_group))
->                 goto out;
->         control_allocation =3D malloc(control_allocation_size);
-> -       for (int i =3D 0; i < control_allocation_size; i +=3D page_size)
-> -               control_allocation[i] =3D (char)((i / page_size) + 1);
-> +       unsigned int nr_pages =3D control_allocation_size/page_size;
-> +       for (int i =3D 0; i < nr_pages; i++) {
-> +               unsigned long off =3D (unsigned long)i * page_size;
-> +               memset(&control_allocation[off], 0, page_size);
-> +               getrandom(&control_allocation[off], nr_pages/2, 0);
+> If there is a mismatch, LUO can put the file that was just created,
+> log a warning, and return an error up to the user.
 
-This should be page_size/2, right?
+Is there a reason why taking a file handler module reference is
+problematic for vfio or iommu? Could we take it while files are
+present in incoming or outgoing sessions? Overall, it is because it
+cover corener cases such as if the file struct owner is the same as
+LUO file handler and also this approach covers the deserialziation
+side nicely.
 
-nr_pages is 1024 IIUC, so that's 512 bytes only. If the page size is
-64K, we're leaving 63.5K (99% of the page) as zeroes.
-
-
-> +       }
->         if (cg_read_key_long(control_group, "memory.stat", "zswapped") < =
-1)
->                 goto out;
->
-> Even I tried to set random data for all of the pages, they still not
-> works (zstd). But it can be worked on lzo compressor, I don't know if
-> the zstd have any addtional configures or I missed anything there.
->
-> My current thought is just to satisfy the lzo (default) compressor in
-> this patch series, and leave the zstd for additional work.
->
-> What do you think? any better idea?
-
-Let's check if using page_size/2 fixes it first. If a page is 100%
-filled with random data it should be incompressible, so I would be
-surprised if 50% random data yields a very high compression ratio.
-
-It would also help if you check what the compression ratio actually is
-(i.e. compressed_size / uncompressed_size).
+Pasha
 
