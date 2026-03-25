@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06F2FFEA837
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72677FEA839
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:00:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29A406B0095; Wed, 25 Mar 2026 05:00:38 -0400 (EDT)
+	id CD4CC6B0098; Wed, 25 Mar 2026 05:00:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6BD6B0098; Wed, 25 Mar 2026 05:00:38 -0400 (EDT)
+	id C83E16B0099; Wed, 25 Mar 2026 05:00:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECF006B0099; Wed, 25 Mar 2026 05:00:37 -0400 (EDT)
+	id B4C6D6B009D; Wed, 25 Mar 2026 05:00:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC4546B0095
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:00:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE918E0799
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:37 +0000 (UTC)
-X-FDA: 84583989714.20.644A581
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A58D6B0098
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:00:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52422C2A00
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:39 +0000 (UTC)
+X-FDA: 84583989798.25.5F1EDA1
 Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf24.hostedemail.com (Postfix) with ESMTP id ABA90180005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vJh1PR6R;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf24.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429235; a=rsa-sha256;
-	cv=none;
-	b=WruHBhLO9HbCfM3QB8efgczhNpgrzs0N58ugLH68OY6K4t/3QS60B+OAZZHlb6lSG+8mHi
-	u3RTbkict6m0phhL7weexTDPQ+Hdly/bx4CRiANUdE3ujYqtwBy1JaEQXCYMtBe+ozXPZR
-	9rqpk32YWu+lJoeYNj1JKeKAtRacduY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vJh1PR6R;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf24.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	by imf17.hostedemail.com (Postfix) with ESMTP id EF12C40008
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:36 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=ivAGQBxD;
+	spf=pass (imf17.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774429235;
+	s=arc-20220608; t=1774429237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7VLOktVyCw/sFKOWYlySyASENC5MrPmRSGXG0sIJP9g=;
-	b=QTprp5VbPqQwjCsGiMrXZedbPhXcfgNSkU2cj/fBip2ecLVWcNxWG8dS8DdXhwezXWs30l
-	0hI18KrxTXbWPyDGtamFNvrwK4X1AbQaEf/Xul5QSOkWf74Vz9g5nI57iTVFVD8g4s39xB
-	S+0Tj8vmWWJO0734MIBocpVQCjQwnZM=
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260325090033euoutp011281493eedeef4198972d158d3da5fec~gCfyWOy_12240722407euoutp01f
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:33 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260325090033euoutp011281493eedeef4198972d158d3da5fec~gCfyWOy_12240722407euoutp01f
+	bh=VJvoL7Svez6wRSfUGCmBuRi8m+f/G0Wc/DykecDJV2k=;
+	b=y/KDQopQRylJ2XWL/TkowETpGEaP69TNLoC6YZJOhzkQ7OH71sSjzCDPdH/HTzFjPQNFXo
+	cdFzdzUiTKSiOE5+O+pGvRdP20ThMyMey3w7bQTviPGt4Z7yEapOh+UVRbN9bHLqQphqX3
+	Z0RTPadSuP73Yp/SMeqs8nac1rD1hvM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=ivAGQBxD;
+	spf=pass (imf17.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429237; a=rsa-sha256;
+	cv=none;
+	b=BhySU2JP394uGdy2AgODocYDStD4U5qwvoR6rLQ5u810xFB1TIAMgSCyGOAiUya133VLiY
+	PEVHWrk4zLtT0lAnkp3M0LvRx2ABRpY4SrZZuwMDPkIczTApbHZ2MD6AlEIBupaCaf8LkB
+	Dj+RWSOZb7YPoyocz2Qe+il8JK7gIlc=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260325090034euoutp01f308af0d7f323d8f7876caef7bf96bc0~gCfzh7Dn82273022730euoutp01J
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:34 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260325090034euoutp01f308af0d7f323d8f7876caef7bf96bc0~gCfzh7Dn82273022730euoutp01J
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1774429233;
-	bh=7VLOktVyCw/sFKOWYlySyASENC5MrPmRSGXG0sIJP9g=;
+	s=mail20170921; t=1774429234;
+	bh=VJvoL7Svez6wRSfUGCmBuRi8m+f/G0Wc/DykecDJV2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJh1PR6R/JJrJQT0Yy9l+oeTPEAESSNCukDx8KwAlQ0GZ83nScB+YYStOxYHarYF5
-	 38ruH8knTj16gvDc6w1pszGt9x+8I83y9dwgNu42HujE/IEf4c04y2aRycomHynjls
-	 Ylhjzmkrrf/26hDTlzhr2iz+5tJvJmZYcQvMZGnQ=
+	b=ivAGQBxDvj1e/LcGA0Bnu3dhxJuZBzp4M50oH5+6E4DArMz/uHngUdD86AE9LeJHH
+	 OXmv5T08PnWBDe8tdbqg5gTg2SnZvZqDytFG6Kss0aytHGJ6g34RCOiYvl2bJo6kgv
+	 5E2uKEWqIPu7qiux7fKT1zXT+dcmMuXs6s0Ee/zE=
 Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260325090033eucas1p1715349936f9737a7bc7968351fcab7f5~gCfyEzQz70601006010eucas1p15;
-	Wed, 25 Mar 2026 09:00:33 +0000 (GMT)
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260325090034eucas1p2fb10744edcc6cf8550e9855973492a00~gCfzU3Jn23169331693eucas1p2i;
+	Wed, 25 Mar 2026 09:00:34 +0000 (GMT)
 Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
 	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260325090032eusmtip1584a0042647e55c92d56f1e00b3a2c3d~gCfxiiw4T0281802818eusmtip1-;
-	Wed, 25 Mar 2026 09:00:32 +0000 (GMT)
+	20260325090034eusmtip15244f1412a032a5a834b55e8229409f2~gCfyy4X3J0318403184eusmtip1m;
+	Wed, 25 Mar 2026 09:00:34 +0000 (GMT)
 From: Marek Szyprowski <m.szyprowski@samsung.com>
 To: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-mm@kvack.org, iommu@lists.linux.dev
@@ -76,29 +76,30 @@ Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Rob Herring
 	<oreoluwa.babatunde@oss.qualcomm.com>, Saravana Kannan
 	<saravanak@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Robin
 	Murphy <robin.murphy@arm.com>
-Subject: [PATCH v3 5/7] of: reserved_mem: rearrange code a bit
-Date: Wed, 25 Mar 2026 10:00:21 +0100
-Message-Id: <20260325090023.3175348-6-m.szyprowski@samsung.com>
+Subject: [PATCH v3 7/7] of: reserved_mem: rework
+ fdt_init_reserved_mem_node()
+Date: Wed, 25 Mar 2026 10:00:23 +0100
+Message-Id: <20260325090023.3175348-8-m.szyprowski@samsung.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260325090023.3175348-1-m.szyprowski@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260325090033eucas1p1715349936f9737a7bc7968351fcab7f5
+X-CMS-MailID: 20260325090034eucas1p2fb10744edcc6cf8550e9855973492a00
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260325090033eucas1p1715349936f9737a7bc7968351fcab7f5
+X-RootMTR: 20260325090034eucas1p2fb10744edcc6cf8550e9855973492a00
 X-EPHeader: CA
-X-CMS-RootMailID: 20260325090033eucas1p1715349936f9737a7bc7968351fcab7f5
+X-CMS-RootMailID: 20260325090034eucas1p2fb10744edcc6cf8550e9855973492a00
 References: <20260325090023.3175348-1-m.szyprowski@samsung.com>
-	<CGME20260325090033eucas1p1715349936f9737a7bc7968351fcab7f5@eucas1p1.samsung.com>
-X-Stat-Signature: 538pjpt4emd9gx58pbfrhjitnfs4hti1
-X-Rspamd-Queue-Id: ABA90180005
+	<CGME20260325090034eucas1p2fb10744edcc6cf8550e9855973492a00@eucas1p2.samsung.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EF12C40008
+X-Stat-Signature: 8qppuxpohh5yfe5tmzhe5k655c1hpueb
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774429235-604790
-X-HE-Meta: U2FsdGVkX18SXi0XLRXSnNnV3C1gRab600OXpizJ9Zt/cEvIPVXAnWEt1qaco11+nQdHKjXrKeAyDAnVvkHXLbqpSEJUpxD2Qjf7XGuSjSSnUBl3h2ONgrMQXTzHJ3vE0GEpGVbWGV29HHTAZDpEkp8edOo4zp2z6BWnO4h80DkipbLJONhEyKos//cI1hjm1/7EJizJyPlPB6kzhgRiwVs7qXWPDN5FrYy/oVG/YU0wjxJYqjUbbiuyWU45pIqq45Efw46aZf7yMHQLQ37guwaIJ7jT6PZSKpEril8wmJDA+RpAG+2FaMk4wsWPwb+2d6zFN/aZiTLW+o7mwtqywUn7VbYN/gNg4AmKImECTlZUxy09DEXmtuShTs2vHHulXTGJw0srAPZSq2YfpBlivYETd3/+qYbVnSbcEA2v+C27j7MXLQnQ7RpOwyoCJZ0gs/IeIWCMC7jcxVuQqlAPx9CcouYJkGakVGDqjg0oqeR++Slu3md1pbDQjDsJ3vpKk4u8ObyVVO+o9YLoZZYwy6ihDFeNW0gY52xX3AByoSe7a4Br4RFjfR6WvD+KeONjRdbxuy0kz0LeDOz4aRkLd7ra8DpED8ItuUtAkVmnvi93a7aMwHmy2gfIAXODhTeSkldq6Z/NT5YN/ZPEjcCcRCeZXzS95Rxmx6A/bEt5IbzaZMOO8W4BCd5Bnt0p/8R5LF8pptVMDiEPIca7BrK/cJ84wAP2FImfuFNxJMFVfQGgjF8D5eScFF1K2oemGiBcDNLU310VHO9OWN5ydGyFigFg9vddlZMzyAwf98IhmUKfiBAcINbjargprsddaioJavjIutC7ig0IZgLF8hIZ4CAEYI9DWOWZp6JM8dSi7zgZSqUUO7gVxUQB/gd7HJzeQow4gaymVRmAC33vx/m6j7l45sLJA4FnGEt02K8iPKE4LK0DDW/VODuBCjsMt3OlWAO3GORqPnfTdFjdZtB
- ZwmJB5ND
- Zom68hCrHajaeJHmFJAsGJTc3+edM1crQP1StbXThTOvoyOo=
+X-HE-Tag: 1774429236-929714
+X-HE-Meta: U2FsdGVkX18Q+jlXemnxwGp9V/fFjjoL3jMFOUCVwHmKRBfshvS/gvvtuHOwglwZEMBCtYhA4/9vvYXoIxIziR+gCuKZ/gl0wSRrET4AMu7T2+Oc6vFTgIcQciWkypjXvhB5/C74SkADNiaq8tzdT8YUmB/LcW5ym7Wx2sw++pTUzsNwHqV6BYy8otg9A02bXwaT7VMF1KoOaNs9wduF4MXAucz/YDskSOxtPiEwmR1DIVjOft9ilc1xgiLN1qdYnjyjO53g74nMTvFfdSJYSGQ8dsmj1CLBFEH/QFlpThIsixXlmFIqePcOh5vQASCw0smv+ZYWTFkGhc714sKJS/7gHdMEMIcPWOnNYYoaEgjwYDKBZw2guJhj7NRmkpYB0+XonTijSBoOUQ2dHi3G08iIp0LRqXUhKWbLxxeDuhLBX8GR3w9zsuPzXdKlWuJqsmcPR3I9GLjG/A6/hPlt37SCSSV3iZt3hc1d2soba2m7YFj6tQ+80/udjYTo8dHPHEr7Cm/j1S+as7SM6h/GU/B2qcKIDpABXyYfIjwKY2UAakDSgjsNMf670EB4oLTN9CdlBv+/Vth/G2DKgKqnmPVdPg2nkbwSmDdzUsR6dudPpZlZkUaBXnx74STXDOfjUoDpkuC6LmHcdwEOp0xMybcmyLc/30xt2cWC2KDqqtpTjilah5u0G6OaiVk4Xr7jCqtlkeJUt4jgbWSkF/F0/Ho1SDebTws1IdZEr+9nlLxudce+r/5u0oFQv1H6n+fVeVY1NOEcnHTDZ6tJ8Bu05i0VgcaRmvpe35E4MUX244OTuEQBOBrz7nBJYaiG3ULR/zUy2e/iVHUlYE7w50OzIg1gDnZdjmCzUuMje/rdADMaT+aNeUSVm/fniV7DFrs1fB9/RxqN62h57CUr165zAXS8KG5KIAZp8jJybNfQEvde5i/tKemTSrayLNnY9nAgIzwfF6leKe6tgZFFHi7
+ IEmYr51R
+ 8R5nlUSYpk9vCNeuGJ8dPvSLdLQzSscW0lTZGWRA2ElJxK2+ZuNWPIp1vS9wCjPZI7rUt/4i9zOyeZ4GrdHpDSPrGoPkd/LbhXCCZMQTbXcMPC56+j6pmLl3XN82riiJwaq3mITcraj1Qp8k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,132 +107,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move __rmem_check_for_overlap() and __rmem_cmp() functions before
-fdt_scan_reserved_mem_reg_nodes() to avoid forward declaration and keep
-related code close together.
+Move the content of fdt_reserved_mem_save_node() to
+fdt_init_reserved_mem_node() function. Initialization is no longer
+performed in two steps as it was initially, so
+fdt_reserved_mem_save_node() name is a bit misleading and that function
+now performs full initialization of the reserved memory region.
+
+This also fixes the problem of keeping pointers to the regions, which
+failed to initialize, what might cause issues when such region is
+assigned to the device.
 
 Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 ---
- drivers/of/of_reserved_mem.c | 99 ++++++++++++++++++------------------
- 1 file changed, 49 insertions(+), 50 deletions(-)
+ drivers/of/of_reserved_mem.c | 62 ++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 34 deletions(-)
 
 diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index 5dd585bcf8a8..f9b6d3ebcc20 100644
+index 037e3d74dde1..8d5777cb5d1b 100644
 --- a/drivers/of/of_reserved_mem.c
 +++ b/drivers/of/of_reserved_mem.c
-@@ -214,7 +214,55 @@ static int __init __reserved_mem_check_root(unsigned long node)
+@@ -102,36 +102,13 @@ static void __init alloc_reserved_mem_array(void)
+ 	reserved_mem = new_array;
+ }
+ 
+-static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem,
+-					      unsigned long node);
++static void fdt_init_reserved_mem_node(unsigned long node, const char *uname,
++				       phys_addr_t base, phys_addr_t size);
+ static int fdt_validate_reserved_mem_node(unsigned long node,
+ 					  phys_addr_t *align);
+ static int fdt_fixup_reserved_mem_node(unsigned long node,
+ 				       phys_addr_t base, phys_addr_t size);
+ 
+-/*
+- * fdt_reserved_mem_save_node() - save fdt node for second pass initialization
+- */
+-static void __init fdt_reserved_mem_save_node(unsigned long node, const char *uname,
+-					      phys_addr_t base, phys_addr_t size)
+-{
+-	struct reserved_mem *rmem = &reserved_mem[reserved_mem_count];
+-
+-	if (reserved_mem_count == total_reserved_mem_cnt) {
+-		pr_err("not enough space for all defined regions.\n");
+-		return;
+-	}
+-
+-	rmem->name = uname;
+-	rmem->base = base;
+-	rmem->size = size;
+-
+-	/* Call the region specific initialization function */
+-	fdt_init_reserved_mem_node(rmem, node);
+-
+-	reserved_mem_count++;
+-}
+-
+ static int __init early_init_dt_reserve_memory(phys_addr_t base,
+ 					       phys_addr_t size, bool nomap)
+ {
+@@ -316,7 +293,7 @@ void __init fdt_scan_reserved_mem_late(void)
+ 
+ 		if (size) {
+ 			uname = fdt_get_name(fdt, child, NULL);
+-			fdt_reserved_mem_save_node(child, uname, base, size);
++			fdt_init_reserved_mem_node(child, uname, base, size);
+ 		}
+ 	}
+ 
+@@ -515,9 +492,8 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
+ 	}
+ 
+ 	fdt_fixup_reserved_mem_node(node, base, size);
++	fdt_init_reserved_mem_node(node, uname, base, size);
+ 
+-	/* Save region in the reserved_mem array */
+-	fdt_reserved_mem_save_node(node, uname, base, size);
  	return 0;
  }
  
--static void __init __rmem_check_for_overlap(void);
-+static int __init __rmem_cmp(const void *a, const void *b)
-+{
-+	const struct reserved_mem *ra = a, *rb = b;
-+
-+	if (ra->base < rb->base)
-+		return -1;
-+
-+	if (ra->base > rb->base)
-+		return 1;
-+
-+	/*
-+	 * Put the dynamic allocations (address == 0, size == 0) before static
-+	 * allocations at address 0x0 so that overlap detection works
-+	 * correctly.
-+	 */
-+	if (ra->size < rb->size)
-+		return -1;
-+	if (ra->size > rb->size)
-+		return 1;
-+
-+	return 0;
-+}
-+
-+static void __init __rmem_check_for_overlap(void)
-+{
-+	int i;
-+
-+	if (reserved_mem_count < 2)
-+		return;
-+
-+	sort(reserved_mem, reserved_mem_count, sizeof(reserved_mem[0]),
-+	     __rmem_cmp, NULL);
-+	for (i = 0; i < reserved_mem_count - 1; i++) {
-+		struct reserved_mem *this, *next;
-+
-+		this = &reserved_mem[i];
-+		next = &reserved_mem[i + 1];
-+
-+		if (this->base + this->size > next->base) {
-+			phys_addr_t this_end, next_end;
-+
-+			this_end = this->base + this->size;
-+			next_end = next->base + next->size;
-+			pr_err("OVERLAP DETECTED!\n%s (%pa--%pa) overlaps with %s (%pa--%pa)\n",
-+			       this->name, &this->base, &this_end,
-+			       next->name, &next->base, &next_end);
-+		}
-+	}
-+}
- 
- /**
-  * fdt_scan_reserved_mem_reg_nodes() - Store info for the "reg" defined
-@@ -565,55 +613,6 @@ static int __init __reserved_mem_init_node(struct reserved_mem *rmem,
+@@ -619,30 +595,46 @@ static int __init __reserved_mem_init_node(struct reserved_mem *rmem,
  	return ret;
  }
  
--static int __init __rmem_cmp(const void *a, const void *b)
--{
--	const struct reserved_mem *ra = a, *rb = b;
 -
--	if (ra->base < rb->base)
--		return -1;
--
--	if (ra->base > rb->base)
--		return 1;
--
--	/*
--	 * Put the dynamic allocations (address == 0, size == 0) before static
--	 * allocations at address 0x0 so that overlap detection works
--	 * correctly.
--	 */
--	if (ra->size < rb->size)
--		return -1;
--	if (ra->size > rb->size)
--		return 1;
--
--	return 0;
--}
--
--static void __init __rmem_check_for_overlap(void)
--{
--	int i;
--
--	if (reserved_mem_count < 2)
--		return;
--
--	sort(reserved_mem, reserved_mem_count, sizeof(reserved_mem[0]),
--	     __rmem_cmp, NULL);
--	for (i = 0; i < reserved_mem_count - 1; i++) {
--		struct reserved_mem *this, *next;
--
--		this = &reserved_mem[i];
--		next = &reserved_mem[i + 1];
--
--		if (this->base + this->size > next->base) {
--			phys_addr_t this_end, next_end;
--
--			this_end = this->base + this->size;
--			next_end = next->base + next->size;
--			pr_err("OVERLAP DETECTED!\n%s (%pa--%pa) overlaps with %s (%pa--%pa)\n",
--			       this->name, &this->base, &this_end,
--			       next->name, &next->base, &next_end);
--		}
--	}
--}
- 
  /**
   * fdt_init_reserved_mem_node() - Initialize a reserved memory region
+- * @rmem: reserved_mem struct of the memory region to be initialized.
+  * @node: fdt node of the initialized region
++ * @uname: name of the reserved memory node
++ * @base: base address of the reserved memory region
++ * @size: size of the reserved memory region
+  *
+- * This function is used to call the region specific initialization
+- * function for a reserved memory region.
++ * This function calls the region-specific initialization function for a
++ * reserved memory region and saves all region-specific data to the
++ * reserved_mem array to allow of_reserved_mem_lookup() to find it.
+  */
+-static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem,
+-					      unsigned long node)
++static void __init fdt_init_reserved_mem_node(unsigned long node, const char *uname,
++					      phys_addr_t base, phys_addr_t size)
+ {
+ 	int err = 0;
+ 	bool nomap;
+ 
++	struct reserved_mem *rmem = &reserved_mem[reserved_mem_count];
++
++	if (reserved_mem_count == total_reserved_mem_cnt) {
++		pr_err("not enough space for all defined regions.\n");
++		return;
++	}
++
++	rmem->name = uname;
++	rmem->base = base;
++	rmem->size = size;
++
+ 	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
+ 
+ 	err = __reserved_mem_init_node(rmem, node);
+ 	if (err != 0 && err != -ENODEV) {
+ 		pr_info("node %s compatible matching fail\n", rmem->name);
++		rmem->name = NULL;
++
+ 		if (nomap)
+ 			memblock_clear_nomap(rmem->base, rmem->size);
+ 		else
+ 			memblock_phys_free(rmem->base, rmem->size);
++		return;
+ 	} else {
+ 		phys_addr_t end = rmem->base + rmem->size - 1;
+ 		bool reusable =
+@@ -654,6 +646,8 @@ static void __init fdt_init_reserved_mem_node(struct reserved_mem *rmem,
+ 			reusable ? "reusable" : "non-reusable",
+ 			rmem->name ? rmem->name : "unknown");
+ 	}
++
++	reserved_mem_count++;
+ }
+ 
+ struct rmem_assigned_device {
 -- 
 2.34.1
 
