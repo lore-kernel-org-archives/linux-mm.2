@@ -4,99 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04923109C058
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 19:11:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68B16109C059
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 19:11:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 675F46B008C; Wed, 25 Mar 2026 15:11:25 -0400 (EDT)
+	id D2E406B0089; Wed, 25 Mar 2026 15:11:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627416B0092; Wed, 25 Mar 2026 15:11:25 -0400 (EDT)
+	id D05826B008A; Wed, 25 Mar 2026 15:11:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53CD66B0093; Wed, 25 Mar 2026 15:11:25 -0400 (EDT)
+	id BF4896B0092; Wed, 25 Mar 2026 15:11:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 420856B008C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:11:25 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E66D0BC44A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 19:11:24 +0000 (UTC)
-X-FDA: 84585528888.06.6DD0055
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AF4FB6B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:11:50 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5BC80E0CD1
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 19:11:50 +0000 (UTC)
+X-FDA: 84585529980.08.B37CE9A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1B1E4180004
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 19:11:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tISE3rgV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774465883; a=rsa-sha256;
-	cv=none;
-	b=ILFHTiTKAa9aBLT/Zmn7iqi8qFVRUbBKEdCk7vonUhIPrzmlodMVMeO/W1yVt/B8e79Wqp
-	G0dDEZ14DJirToGrKB+487XD20JMosqseZkLNoTOskJejb0KRVC8L/HfR9XlF/t05RcHAx
-	067Don+N6bpyGHIHfD/NOWE3qsP35Mc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tISE3rgV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 90A9C40015
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 19:11:48 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n+B7jA29;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774465883;
+	s=arc-20220608; t=1774465908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n4muvIZdik9IfFFCJrCg8Xdvp9I7cKIuqFuVgWYAry8=;
-	b=JOn63XULhFqpFf75dZ3aZEl3PW3osIUa4X1Qy5XDIS4Bwalg10vBcSrwm/dETZMYQuPOum
-	Q7JtJy0YLwmlPohOsdzftgDneL1N0GbSe2LZCJuCEyMGYoAOFEnZlWEG5jZ2/SV9UpBael
-	th4vDZsRcDyF2cuhb2sKxpzoih30FWs=
+	bh=po04g+LbVixcaFTdbtAzejVAtFF7E6B6fHxWMAEB7DQ=;
+	b=ljELuG9JLwSjfdGdwQcdicFZ+wkMoKYc6TIXeWCvBsq40r9mbGVBspoGRR0yJCN2KXcyZL
+	M8/fY6bNzoSZsgwruNDja3XcVDSWtKjg87Los59B+LwdlZf3JE2haeXVrgllRfw5l8ivEK
+	JH5dWi9sxOvLWDvwwn+InknjrMw/APY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n+B7jA29;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774465908; a=rsa-sha256;
+	cv=none;
+	b=vFuKmbN21sjM8iEfk8Am/r0EGtFVb6aGQNEZ3isAVZRwb6zjS9GSGdYFV+dM1kVmd4EJDb
+	H4YRexkdyvRmczQ4auvzcJPPLsqr5DC0X4m/HeT6h3Ia7fZjuDkucHlyHI52qOTv8bfB1b
+	pYUANGH8yc4Y8WZ+Pn6ClhnyeznbsRQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2992F4037F;
-	Wed, 25 Mar 2026 19:11:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C55C4CEF7;
-	Wed, 25 Mar 2026 19:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774465882;
-	bh=+7WMGti3dXwAOyhG5CeCqAhjakNMSRvjhZh/2jZRxoY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tISE3rgV54h2NbgNcJwFnAMi0cL06Z7rnwc1d9XbX+CnLsXyLle4Q4Y8WdNNLL5l0
-	 7bEEM7w6i/vpH21LFGWA5EznC65bhF7oqFBfLUBGNHWVFL7ngdrl0n4bc5j8/kb0sF
-	 fR22PbMNFGCx8vc5V0y4uEcX1G8IkjcxLJuzeoWaRp0nl0Mbv6csL7vdOUvtO7wgWx
-	 33s7bEkT+2GV3j6dkyWIJ4RpSDkV1lMGNKKYftfwxHuYxmNILb6214YB3c49QgjM4+
-	 I4wye5WfNV4yx/TtDtTaNamJUYakAZg8YxP5fb1A0yQD6WR1BEiB1/0msYQKQJcXCG
-	 zMd3be9feOANA==
-Date: Wed, 25 Mar 2026 21:10:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jianhui Zhou <jianhuizzzzz@gmail.com>, jane.chu@oracle.com,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Jonas Zhou <jonaszhou@zhaoxin.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Subject: Re: [PATCH v4] mm/userfaultfd: fix hugetlb fault mutex hash
- calculation
-Message-ID: <acQzLYrp8W3PJZsh@kernel.org>
-References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
- <20260310110526.335749-1-jianhuizzzzz@gmail.com>
- <12e822c4-a4f2-4447-80b9-2eec35a03188@oracle.com>
- <CAEgWzV5ryMBgJWH3QmWfr9LaZoihXcffFWKjK6OfJF=pDF6BtA@mail.gmail.com>
- <20260324170311.dc5b54fe0765f2e680e3cc90@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260324170311.dc5b54fe0765f2e680e3cc90@linux-foundation.org>
-X-Rspamd-Queue-Id: 1B1E4180004
-X-Stat-Signature: tg6zpttfi5zux4syytiur9xjg4fydrce
+	by sea.source.kernel.org (Postfix) with ESMTP id 91BEB4052A;
+	Wed, 25 Mar 2026 19:11:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F077C19423;
+	Wed, 25 Mar 2026 19:11:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774465907;
+	bh=R8trGOgutAbT9TZyCLIzQHNIqzASbQS+83BkcRfxwPk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=n+B7jA29HYBmodMSUv0jabYWqYQkkzI25KIVUfzjjK3zF1RxFmsERQAksEeZZEv1h
+	 iDMFChCVfnLLUa7gKSv1HXmC8QYOQ2DoFFNevqSjWHHy7buMTrhvRcmzF6+Bru4h1/
+	 SBYFb48e+BEYOYgHK10JdqzPoTkS++h4SrH0RokU=
+Date: Wed, 25 Mar 2026 12:11:45 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams
+ <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Dave
+ Jiang <dave.jiang@intel.com>, Gao Xiang <xiang@kernel.org>, Chao Yu
+ <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, Jeffle Xu
+ <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, Hongbo
+ Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Muchun Song
+ <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
+ Hildenbrand <david@kernel.org>, Konstantin Komarov
+ <almaz.alexandrovich@paragon-software.com>, Tony Luck
+ <tony.luck@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, Dave
+ Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>, Babu Moger
+ <babu.moger@amd.com>, Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota
+ <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Jason
+ Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
+ nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 3/6] mm: always inline __mk_vma_flags() and invoked
+ functions
+Message-Id: <20260325121145.24f51861d9933f8577b7d6c7@linux-foundation.org>
+In-Reply-To: <1ae3915e-19ef-4be0-aa5f-fd66a2e18179@lucifer.local>
+References: <cover.1772704455.git.ljs@kernel.org>
+	<241f49c52074d436edbb9c6a6662a8dc142a8f43.1772704455.git.ljs@kernel.org>
+	<ndtnvnobevdymu5a5tdxdbi4tcsqshs3d6x2vnfgnuclxvgwok@bhbqkzilsets>
+	<d352055d-06fe-43b2-8ad3-b73ab99683d0@lucifer.local>
+	<20260325090949.795e06f48ec455053db9ae89@linux-foundation.org>
+	<959b34ea-69a7-4fda-a494-0b9a1773ec1d@lucifer.local>
+	<20260325112755.e62cd89508224f703239f03a@linux-foundation.org>
+	<1ae3915e-19ef-4be0-aa5f-fd66a2e18179@lucifer.local>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 90A9C40015
+X-Stat-Signature: 1gqn7gma7m3ydgnw87ahnbwz6rnut9u8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774465882-165895
-X-HE-Meta: U2FsdGVkX1+EkurR58Sj7AtQ7YlOQOXDVurhk/p+TtHy2e3NlnIA36aTNCyr8G2Jte0Vh6LO5LOTvNoHOlHhK7iscjclA+ZgyPxXtKymQACoy+hKiQ+TNNJNaUYTqbxdrj5TlaHQ0O6gB3GSo7dndX06zbFQbeWSZ0WXLyezGi07DCY0eDAw8NDQL6ZAEFuZCdHx+lElMvfj1FtsWjjubo9wMpZ2MoymanQ500jjcChzVL7oSx55MllU/ZNWvRJFaaUVAQFdwpqVyYMi6nu+CM6MfVtqsldyT+d8GtOi8lb0FHSDtB1jF6NqA8E+qtxXHzHiYir9mQVnwUnb7TBkPaVG2Bk9AvPlhdVaMgVRHSoi5nTZL5POxsRT1MGH5y/IFtMN+PMV97GO0Uat5mCVDYCJ9ZGWi+L7CN+HvpN27NgIw88DsY+/+qmUuqEkvyT7j52xJlJNPYXRM6J0O4LYp7PTdWxHz+8OMzl2xArOC1jK4Dn7GeqXVtgHVjdsLK5VYvYl0BFeTVQSPo0bP0sY1bVgICSvyEBxRvNP7pvMuAfgiQUgsA7eQM1KMW4Rymc5y6w8rLXLt7ciiFZYNxqr41W6NB4ZAlAY0hvtutKaxKI6pd/I+37Cm9lm/SpnFKBmJac6ij5wb9kbtPKe8kKIrRuebWPFllaP7ay8UzatxI6JprRoMYzVxopOdwyS+gjTSpgk1EJnd15/Lb3cypu3gzwsjwcGu0C4s1jq0LoqeyCj+4oIwR6SdfJep+5TBJIS0SLO7W8oGnRvd9FNC1XkXO/nVvZhB+8X2bFVzEHh5po+7huQ1AjCwUe5L8+Iw1OIjYD5itoVqbRDiNwQ6RMkCzZS07gFocpg+AkWn7ej5Y0eKhWOf2ZOBriRgAsqurFhoLmFStvUxOwDCmT4BzWSKOTTFii88f97LC8PUGRQLfsrb4+960YgWr9JKfcbS05PqMFkBsYIh6SlScYkRkc
- ENHielGO
- hEb3S5LdDJxqJFWt1+YLfdYpaQB577DDqXRYlcKPvYJ1hY3xGk7aLYFAuWoGabaIR3zfcYBmnPrmGEWz4m8SSEekHMFs0bC6pmiP/otCzQYqJSflPsH5aqQQN47+6YOFdwP/WRlJiw6PIeTL8UmDwAliDdLkCIOFw7c5Bt0WgSES8tPCHpf7ed1nTKu/JLBhkT3iavKO2ca1rIES0rSVNu8EwECfATeaAVMiDkRsOQJ3pkTxZ3mPH4gux//ltPeNaIz6RpUeeTnkVy9B+wMHehHO8obh5z3coM4rdo0jFZIRh3A/nMvrJr/ZlptRPSYYX8StWNTQ7mBrcrykfT7LWOQZihdCCe1GxPIQbL6K38/ZfYd7QSmwGx6SOVAHXekp03VLgFWdOZB06QiF79j0DLULO2nlwY1Ge+fqaeOj4nx39pC6kQCNo2miWEWH9yr04CHilYZvXQScpgfabzEphnP+ekvqC3HElT9qg0EJafLvLSYkQqP/80M89ZKXs49GDIN3AFb/kScv2Clqztac9RRBYN8KYlRgHcuJK/FUcB08vgSHLIGmmpEdoucQWhGQgoE4nM/IlXpSkubCWM25xfcGmHo+JzRnsZvXK2Avbkr1FvlhSZ6DLOD6tTQSUIa6adrhnOKuYlXirjZi7Zsc4FHCCZQnX67znuiO5FShLk9H7LklwFAuvwxcQQXPG4AjC5sDGqPcO/WIG2Qc=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774465908-307826
+X-HE-Meta: U2FsdGVkX190PANUl+8E7Zr7/UzRYDLNA9CQmLL1qPCLAATEyAMYpeM+qJz+8l8TeJbzBej8TGgwjl0WuyZouVxTg22+vmxiHwXEYrnHpdjsdo9NenMk5bmITdfkqvXIObNnMVa7PxWEL3tFD7/8yx5BI1vuY6AHNcqRkKcKWrJdCNJ4NTD0gsfubwSH9gGzFOgdOAaxdcmP0gcsJjMJUnsLmkDDK6yV1SCBPVfN4fe3pQ3Vfq37s3/fHAseKRMvOhMDMdOZo7eomnCiRj7lCAho0ML4MUmbx9lwjnuOKk94idspps8V5U7CD8upUvHCxb2cTaXkq5CAiXH2tlIRTvRCxADAoDMGndBqFlL6Tzco0PhAKSXVf4pcRZCtvXrRgjIASPazFEJAwEf9MEV5ZC7ECVG2D6U+Ue/fzFE6icDd/TPxolk8qF32U+XC4P+S2r6tKSet5zsIiHyGex6BaVX4KOA4NY96i4uIjw5VmU7O8Me0jDLd0k8HJ2zNPSYzf/bz/v+OA3rh6IMAXPFXSNfgJTFpcoQNZQx5FpSv8gNWJEbK5OTCx90TheoP/bhh9L01G9/RtoTI2HyL/B1xLgjTAYfksvgxkkRClPc99L5OjXiXkAGmsegYq2Thax5vYDYzHzuGPhtFjZ4op+aGoYvdnJjHJ7KCUdQACy4PxfnWGpNjNQgQnQqMipKh5hAN9Xc8n2vkDMUc4KxG1of8CkNdIjtkOoCejm74LVLud656dqjBuG4PDY209p0xowzrnLtjX+V3N+tS/G6O8RUDZYpgm/9lSlsAb3UmPOU1zodLj9Q6hi9u26EFrEWwTtp/CYMVELyFulxBN3Py6b+O+6IJ++DyLpNOw2TUyvsSLtviYY2ag2+e2I2KNnNokM1DayaNX8Ijkq5UfiyNCdoiVtQnFjdOV2IeWC/6ul6C4gJMLW2DG75IxaZXDqzMyC9eLCXxVk5eLrBOZo7yYme
+ Vt3n7UQk
+ EU/RCe58xF7/K+6UqA5/3IWxyD4zSc0FhgF7e/vXtx63WYOldoWG8cQxwvc+t7cDYTN+WWlw1BvpP830f/05tZuXiSGZKNilPKWo7JjWABZQ6noy10iUiIXzezSxzNr/BWoNemoAjKdGh+S7zincM7n971BOf6rZfKLqdrXj/sa1BhmZlKnIWGSpCZAjqtaNoi97uFWoEzEdz3CFXIxa4sU9WbEj/+XN07uKkmYHYKVxI6637OrLBNuxJu3amY263Lt4/MfB0/acWvhQm9RRaGPpKP1QGbzB4ysW9im4sbdh9nHbK0E+SZ25pdrFtxtlgQetp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,112 +118,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 05:03:11PM -0700, Andrew Morton wrote:
-> On Wed, 11 Mar 2026 18:54:26 +0800 Jianhui Zhou <jianhuizzzzz@gmail.com> wrote:
-> 
-> > On Tue, Mar 10, 2026 at 12:47:07PM -0700, jane.chu@oracle.com wrote:
-> > > Just wondering whether making the shift explicit here instead of
-> > > introducing another hugetlb helper might be sufficient?
-> > >
-> > >      idx >>= huge_page_order(hstate_vma(vma));
-> > 
-> > That would work for hugetlb VMAs since both (address - vm_start) and
-> > vm_pgoff are guaranteed to be huge page aligned. However, David
-> > suggested introducing hugetlb_linear_page_index() to provide a cleaner
-> > API that mirrors linear_page_index(), so I kept this approach.
-> > 
-> 
-> Thanks.
-> 
-> Would anyone like to review this cc:stable patch for us?
-> 
-> 
-> From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-> Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
-> Date: Tue, 10 Mar 2026 19:05:26 +0800
-> 
-> In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-> page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
-> returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-> expects the index in huge page units.  This mismatch means that different
-> addresses within the same huge page can produce different hash values,
-> leading to the use of different mutexes for the same huge page.  This can
-> cause races between faulting threads, which can corrupt the reservation
-> map and trigger the BUG_ON in resv_map_release().
-> 
-> Fix this by introducing hugetlb_linear_page_index(), which returns the
-> page index in huge page granularity, and using it in place of
-> linear_page_index().
-> 
-> Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
-> Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-> Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
-> Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-> Cc: Andrea Arcangeli <aarcange@redhat.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Hugh Dickins <hughd@google.com>
-> Cc: JonasZhou <JonasZhou@zhaoxin.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: SeongJae Park <sj@kernel.org>
-> Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+On Wed, 25 Mar 2026 18:44:13 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-Looks fine from uffd perspective, and simple enough for stable@.
-
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
+> > : Be explicit about __mk_vma_flags() (which is used by the mk_vma_flags()
+> > : macro) always being inline, as we rely on the compiler turning all
+> > : constants into compile-time ones.
+> >
 > 
->  include/linux/hugetlb.h |   17 +++++++++++++++++
->  mm/userfaultfd.c        |    2 +-
->  2 files changed, 18 insertions(+), 1 deletion(-)
+> Well I think that loses the meaning a bit.
 > 
-> --- a/include/linux/hugetlb.h~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-> +++ a/include/linux/hugetlb.h
-> @@ -796,6 +796,23 @@ static inline unsigned huge_page_shift(s
->  	return h->order + PAGE_SHIFT;
->  }
->  
-> +/**
-> + * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
-> + *				 page size granularity.
-> + * @vma: the hugetlb VMA
-> + * @address: the virtual address within the VMA
-> + *
-> + * Return: the page offset within the mapping in huge page units.
-> + */
-> +static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
-> +		unsigned long address)
-> +{
-> +	struct hstate *h = hstate_vma(vma);
+> Something like:
+> 
+> Be explicit about __mk_vma_flags() (which is used by the mk_vma_flags()
+> -macro) always being inline, as we rely on the compiler converting this
+> -function into meaningful.
+> +macro) always being inline, as we rely on the compiler to evaluate the
+> +loop in this function and determine that it can replace the code with the
+> +an equivalent constant value, e.g. that:
 > +
-> +	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-> +		(vma->vm_pgoff >> huge_page_order(h));
-> +}
+> +__mk_vma_flags(2, (const vma_flag_t []){ VMA_WRITE_BIT, VMA_EXEC_BIT });
 > +
->  static inline bool order_is_gigantic(unsigned int order)
->  {
->  	return order > MAX_PAGE_ORDER;
-> --- a/mm/userfaultfd.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
-> +++ a/mm/userfaultfd.c
-> @@ -573,7 +573,7 @@ retry:
->  		 * in the case of shared pmds.  fault mutex prevents
->  		 * races with other faulting threads.
->  		 */
-> -		idx = linear_page_index(dst_vma, dst_addr);
-> +		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
->  		mapping = dst_vma->vm_file->f_mapping;
->  		hash = hugetlb_fault_mutex_hash(mapping, idx);
->  		mutex_lock(&hugetlb_fault_mutex_table[hash]);
-> _
+> +Can be replaced with:
+> +
+> +(1UL << VMA_WRITE_BIT) | (1UL << VMA_EXEC_BIT)
+> +
+> += (1UL << 1) | (1UL << 2) = 6
+> +
+> +Most likely an 'inline' will suffice for this, but be explicit as we can
+> +be.
 > 
+> Should verbosely cover that off.
 
--- 
-Sincerely yours,
-Mike.
+ok ;)
 
