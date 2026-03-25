@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B9E7109E52F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 23:57:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54FFF109E530
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 23:59:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7F2C6B0089; Wed, 25 Mar 2026 19:57:20 -0400 (EDT)
+	id B868D6B0089; Wed, 25 Mar 2026 19:59:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D56226B008C; Wed, 25 Mar 2026 19:57:20 -0400 (EDT)
+	id B37526B008C; Wed, 25 Mar 2026 19:59:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C93036B0092; Wed, 25 Mar 2026 19:57:20 -0400 (EDT)
+	id A4D7C6B0092; Wed, 25 Mar 2026 19:59:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4A26B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 19:57:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6805EE0E09
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:57:20 +0000 (UTC)
-X-FDA: 84586249440.01.309973C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A61514000A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:57:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=J7dVm3oH;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 96CE86B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 19:59:34 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 234F0160AE4
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:59:34 +0000 (UTC)
+X-FDA: 84586255068.04.AF3B947
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7C8A18000F
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:59:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NfI7TnYV;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774483038;
+	s=arc-20220608; t=1774483172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a2q8s6xZcDdvosR0n40JTwr5B4ZKU1GOKhCNbIGTyIA=;
-	b=dugr5I23pOZlbxv6kEux1T5f5wwHHTkBIyVD8+3aMluGSTcgthW5FDJopeSDt0N73lhhtY
-	GIE0pJA98cl2wmBTy02oSrbV/HdhSWAJYUw0Nik0MQ8hHe/vT9Ik3wnhtrvgrh3roPVpp7
-	U+KLO5n+zFN3Qs3dah63wykVZyyv/9c=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=J7dVm3oH;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774483038; a=rsa-sha256;
+	bh=t3hyIQXguCalIbD10RUToHhOERJxGEvCTtNShxMC57k=;
+	b=AwNcUPIa4wqpOp4m2iFp70p3RmctTuMX1khhYsfS68oTh/OHQ2TjrCbq21dfRne6y+3Jnr
+	vGPepb0+93e/ygyG0ibFiOKGQM9sel1rtkbwb59EaX2leu4y3gAXFE92hJEcLLEgCKcpCD
+	zxM3Hnhgu+S/3cvXshKtMSZ1Fs7lwXU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774483172; a=rsa-sha256;
 	cv=none;
-	b=f81VlsAIM18i1qtJJ663HWH3R9Nk3tRIdTE5pYyy/0C/Qonq5dmFYju0wkQe51Z1qMjev7
-	gupvHRAvYlUrIcQnamDp8iGyUxpjElQg/Q/Lek0QVZuqpwyIMhLBfo/ZjWX41e5wwjfG5l
-	vz7+l5yW07zSWabYGUNKLEPw1QXUFa8=
+	b=kf0eAIraIAXnpi47VQGl6mF3tBD18WFqRlcOu6+YWiqDtyBipXHPIO7m35lvq34C+5nCvU
+	W+EYpxdw8smWfturZZis02a1ZKvoCaGRo9QDwV6eG3jrgJdbrnqJxUOw+/ebb3dWGx/Hqf
+	SzXsK+QLnjUkgMMlyoEM9/azS+nJkng=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NfI7TnYV;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8103C42D76;
-	Wed, 25 Mar 2026 23:57:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DB0C4CEF7;
-	Wed, 25 Mar 2026 23:57:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774483037;
-	bh=b3rC6hR82s7Sj9fmU9Bmvjfv+VSj3BR0pCSd0SQMDTg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=J7dVm3oHxaqbESIAhtHy/bRJtU3jMAYnjBfyqsVKCpUV/oYma6wQBIy43T1apTF5d
-	 +oYJcB1kApd10QnaJnvJ70khNnecrLLls2qcuD1K85jNf6ub9QlRv6dxjx4crlmv5V
-	 w0oyR8ZjbbnX9dQ/51UFQKfcqL8FQHZEYc3h6LHM=
-Date: Wed, 25 Mar 2026 16:57:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@kernel.org, ljs@kernel.org, ziy@nvidia.com, harry.yoo@oracle.com,
- yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Qi Zheng
- <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 0/4] fix unexpected type conversions and potential
- overflows
-Message-Id: <20260325165716.5d63522ba825f25a63e74e3e@linux-foundation.org>
-In-Reply-To: <cover.1774447069.git.zhengqi.arch@bytedance.com>
-References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id E2BC460053;
+	Wed, 25 Mar 2026 23:59:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C412C4CEF7;
+	Wed, 25 Mar 2026 23:59:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774483171;
+	bh=Ia+YtXVLsyftT2gQjhtcxVdiFisfZe6MrM3hQLVJS/4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NfI7TnYVxBB8YFjdv6ubD4x/YqmK9rNwmFtuovjFyEFXhdVvFVcgXYhB7mengXFVS
+	 CoAnoRdKS75d0n8EMgmV9G/Mnh2KMiCk399SvwoxAkz5DqqB/nxh5AGp+mMQaQMbBR
+	 DYUG+YCkz4hjL+X82HFJFBx5NrfU7ypDn/O+cff1ElCSSTwWGGD5x1bgyn0aCB9e+3
+	 KcXQ6yPCk8+b1PKNsPvkIcmRV43Uhwo416oSo2xlLnwrxnBGon7gbZZKLOC3eWXhkE
+	 HYNf0reHugTzcpz4IroYwtesCkccT6tEqKKLYnTw2AiAL183vrcBbzflrw+gmaVs5L
+	 nS7dZk90Ic8jA==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: (sashiko status) [PATCH] mm/damon/core: deduplicate core and ops filter commit functions
+Date: Wed, 25 Mar 2026 16:59:28 -0700
+Message-ID: <20260325235928.76076-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260325204250.254364-1-objecting@objecting.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 38ucuupu99yrigu5rdm9q3kxiqm3tamr
+X-Rspamd-Queue-Id: 7C8A18000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A61514000A
-X-Stat-Signature: r1niie5tpaw18khfzj6uwk3mqag4i8af
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774483038-669400
-X-HE-Meta: U2FsdGVkX19RexlfuD3304Zy3kF9IwZWFKe1ajntXii9IGMVmoRyCkwTc1aDkxERmNHrIODTCXQjSQZ5J+4WpFehdWLqK1jJpOI/5NyLXhuI3RUw5qs/qvG4BQBS3f6f3LU23NDQKNpwD1uIDhRKAU/gt7oWM6CZUOjOWtEH0zKomF5unQOooiEBWiCEH8tOjeR6vxAXANBGWTkNtwJ3A4rw4TsFaVm0o8eAqGzqFbLqc7LTFmU9Yqe2wVeMIQjh6xlTDAGGAvUrNLZm78NNna5rTGYNp+9ZANq/nX99jny72fQnPzEUi1+DhtJJ4e5SMqsDLLJpTyi9GAfg3qokkccWmTf8wW8Vf/NACoIYlzcip63O+GymVe4If3Yfpp7Bc6Vm5B6NC+zbwiaAqs53WgwcTJnMMTm9ky+TchRU5AD6OhPYXYMVPxlDipz6r4ZGftnwCmE6GCaFwaQ34PUnNpghrpSkmsBKo6u+piaJriBo6wjARChX2woPY+ZpqapCcv8bLLHkqLYsV6yzefFPPVABO1ScqTINrv9YTLBg8jgFA9NrjgiV+mSWHEyFynURN6+2ScDvTnt+Y80VXIaqTEMxN7D05771rbh+vaEkcShO+O8Xz8XF/HykYoUjsPN8fLvPWPa7UybIn4EO/eM5PSRpmcEdnK0weTM/9T8nuqccYqZvluOc4J9RfJzb0SM38W18oYQUpVqXFEfuR8uhobxgFkCyz9VowcDNl+typ/e6m8u55AWflEHUXLcsrgUSR0L6DEVZKui1Og8NT+swxngRgPOPvkOf8o+/2dUgVQOD5gvM2xuwbpX0pxmye+IAe62VbL7UiUIET+Al7vP/MGkynxaD5ijPI4VOInisFrsckCr4MSo8qmVnzg48oRb4Wqi3CgJLmXMPf53Q7VVEb4vD1EXlntJdU6pO5LxkviuTXR0yniUzp4cleo1s4bjgwxj+ZvHjiL0R3BN9Py1
- GfkDqhdg
- sh+R4Hc/8In9Xcr8IxHOsABRfKXVf4rADyAEUYDexaxtUyLNe2HnCqv2INiPpdIbs0IzEwtVh0cBdWylXZjAJpexc1oAGLrZm2oRg72+g0xkYohJH/fcgG2zOeW5s10m5SWmHNsMd/J9uHaFHrR+YAmfWNHJmC2MkS9GIx/hUngaHmSrqCzpJYxJog1WCWAE0v7TkiWuiR4+2Absm4hOG4HE+mrJrdx9S+qDcOvZPtZtDqgfUgG8lbSgR86Sw3WSNQ4h5Z2SwtDQdy7r6MGRDCCrIOuhkMABlKXC0f8sVJaSztCObEmyOk7A0ZmVUPb/CuXPHxRiMaY1huHR5EadPZ48JnYnKkcezhSOW3RNkeWuD2PI=
+X-HE-Tag: 1774483172-143987
+X-HE-Meta: U2FsdGVkX1/m/Uh52rTlPi2Y3KHG3h6qBkBvM78M5435dHz/KMkfOyCpHhArlgviDydpbcsJW5uhM5Fw2VroBNkSpArAUMCYAasBIm8K+2jU8T7uhmtmIe65EPApLJza/VxHgRauFgaV4tzMp7gGQoq9YrfDAg5F/Kg9lozsLUdltlc6g5vAfduwKOefXUeF8Vq2MUUJc22VdLb/5v+TIEY1PkiP+c7xCnDl5JzJ4t7YtUy3OcLaEZW20kGYk2kkmEtwQTLVumgCrRa9+Fh2v233vXfp2TxK2Lfi2ZSa5A283fUigS8Vw76LwFrekGqIGem3/e9ukCxwIEYB12A70XhlmJzBLagDABaZvvym/EMwcM9F9hAa60eVEiBhnh7ItcAqQIcoAOHlccJM/jCTNfHjIoQ8LeRARtoUH5RZ0nYePjsKViUbBnLov5wTLLyn0DZdUUmLdoVYI5mAuyMtXsCbDblmE2sYQRISiirUE7lwGsyNP/+lwAVKceHsShoTuGhz7f6VaZVuj/SBn/vqdt2zBYLpdXhg3msFrredeuyPCP3/1yj68iJ1VsKSP+DiNGB2DjmYLmqaFJQAJ25y1G6M5H1JsgCWbV6MC7goB0u5c6m080WajT4WQdtTk3f2jG1LZjLF+9Gtg+xAByMZYJrinSoJakHtM5VtxdOm+3ca5IqaM+/QLSkJhUcC9jVL5xTb6gYRKsAUpKb9rCc3xM24bYlYhQj29twKE4uFBqX5m53adTei2E9JvWY7elP2genz3r5p3TdZilMyzqHlbRxKD/VLfO3DAgVLIRHANe/IH4/W/ZjFdIFLqtMrJZhtGtEuqfEqEkkyU36HLVzI0+3T5XbsCGqKi2cw9Hev2rc4xJLnCN63DXyAS1jESuVvxvl00KGfyDFBhjjEk5cGP2UWqgFDMJEwogQKZ8VpVNyM/CjeO5dB9Fg/xoY8d+ssyb7qw08fu9e9ZytrD07
+ ilrFJZVa
+ lec+EDYzUgvqpKzZ6+lJ+/XVflRsSe75EpRRxJx2LmD41o5BXfWbaR6Y8FYnZ43ZRNHeG9qo41y81oXhgITiVuGFilvI3EBgzVMLCmEDldsJvNPHcbfJZlJf8hy5stvXvbpEgBeBqDD8+mxvoYoSQ+3lYhbC+yz3HOBAyAN65TL6wLAsDKXzGS/x6wbb5iZ3RT1E+LvAg37eTHLX8MbKIFvJVlCP+rjvHOhzZzXZRchOUc1s5nLwn+/GKJMnk9QNua2vxDe6399J1R9UjQ8tm0GRF46QgTWZqTw2rqGVgVv86RtrtenFywZ5yAllIBwoIWp+AGOO50rWlixNBqttdcYRwh02sFdeasVwU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,38 +93,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 22:13:21 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+Forwarding sashiko.dev review status for this thread.
 
-> As Harry Yoo pointed out [1], in scenarios where massive state updates occur
-> (e.g., during the reparenting of LRU folios), the values passed to memcg stat
-> update functions can accumulate and exceed the upper limit of a 32-bit integer.
-> 
-> If the parameter types are not large enough (like 'int') or are handled
-> incorrectly, it can lead to severe truncation, potential overflow issues,
-> and unexpected type conversion bugs.
-> 
-> This series aims to address these issues by correcting the parameter types
-> in the relevant functions, and fixing an implicit conversion bug in
-> memcg_state_val_in_pages().
+# review url: https://sashiko.dev/#/patchset/20260325204250.254364-1-objecting@objecting.org
 
-Thanks. I'll add this to mm.git's mm-new branch.
+- [PATCH] mm/damon/core: deduplicate core and ops filter commit functions
+  - status: Reviewed
+  - review: No issues found.
 
-AI review
-(https://sashiko.dev/#/patchset/cover.1774447069.git.zhengqi.arch%40bytedance.com)
-still points at the problem in [2/4], now describing it as a bisection
-hole.
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --thread_status --for_forwarding \
+#             20260325204250.254364-1-objecting@objecting.org
+#
+# [1] https://github.com/sjp38/hackermail
 
-In
-https://lkml.kernel.org/r/5fed0611-434c-4fd4-956c-39f23e0459a1@linux.dev
-you said you were going to address this by using abs(), and I see that
-being done in [4/4] so yup, runtime bisection hole.
-
-I'm inclined to mark this "don't care".  But if we decide to backport
-[2/4] ("to prevent potential overflow issues") then we might have a
-problem.
-
-Also, if some downstream person decides to backport [2/4] into their
-kernel without [4/4] then they'll have a bad day.
-
-So perhaps this issue should be addressed within [2/4]?
+Sent using hkml (https://github.com/sjp38/hackermail)
 
