@@ -4,92 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6C7A103A9BD
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 11:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 570E1103A9AD
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 11:37:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E81BD6B0092; Wed, 25 Mar 2026 07:36:24 -0400 (EDT)
+	id C396F6B0095; Wed, 25 Mar 2026 07:37:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E590B6B0093; Wed, 25 Mar 2026 07:36:24 -0400 (EDT)
+	id BEA006B0096; Wed, 25 Mar 2026 07:37:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFA706B0095; Wed, 25 Mar 2026 07:36:24 -0400 (EDT)
+	id B00556B0098; Wed, 25 Mar 2026 07:37:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C06B26B0092
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:36:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 575515B818
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:36:24 +0000 (UTC)
-X-FDA: 84584382288.01.675D6BA
-Received: from eu-smtp-delivery-195.mimecast.com (eu-smtp-delivery-195.mimecast.com [185.58.85.195])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5E823160007
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:36:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gsacapital.com header.s=mimecast20170115 header.b=bohOWLCB;
-	spf=pass (imf08.hostedemail.com: domain of rushil.patel@gsacapital.com designates 185.58.85.195 as permitted sender) smtp.mailfrom=rushil.patel@gsacapital.com;
-	dmarc=pass (policy=none) header.from=gsacapital.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774438582; a=rsa-sha256;
-	cv=none;
-	b=FI7E3jJuOL4jxpN465SR9NPasj/jaSL5pWvxLY1sRdnQxqp211jdaNMxkEfoOg+rdacOwg
-	wS0EP3Pc8a5mm0xjwKkrjAsMapZt3qXFLUNAtBVt6D2pwtcLkmif+TyvehEPad0ZcDId/B
-	GPCF9BWhIb9NVhbnlzvpDLQw0QtxGR8=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E62F6B0095
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:37:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4EF451A080D
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:37:46 +0000 (UTC)
+X-FDA: 84584385732.22.F6869E4
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EC4A680008
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:37:43 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C4Rg9HUN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+X+ddI8g;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C4Rg9HUN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+X+ddI8g;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774438582;
+	s=arc-20220608; t=1774438664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yUVSyEDvebuqZuvn/YoiC1PqlwIm4XkHWHkdGzIev3I=;
-	b=6lRUTUyuEtZrAkPjCVR6xbisNtdg1z0J+KXYsy2X/0CCieyPkz6wanV3g1aC0yt0Gof3xP
-	0385crD4Gr9+m4oJGU1AvFPAh3+L0x5oIrb4dFuU05q42R3aKfvdEvNUdPmEYsRf0/pjhB
-	nwPxBluE4GIwTmJn8hepHDo1nVBP3zY=
+	bh=hGOiQCiQisXR76KhBKJZQggBhPWcoMLU1aMLzL81b4I=;
+	b=LuTin1Mt84s8nPmC+XzEuklIq1pA7T/3xHNWg7y+LcW6mrwXQUybBVF60F7TG3VVePtxd0
+	MkPRz3Uxl34cVsbZrGWUIpndgEE8LP+O/3khMAzm7C+Top0rKWLt24NeFCXAPi9n2/Esdj
+	NnETqblLF5EubMUTWHTyJqQCT+pBlyo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gsacapital.com header.s=mimecast20170115 header.b=bohOWLCB;
-	spf=pass (imf08.hostedemail.com: domain of rushil.patel@gsacapital.com designates 185.58.85.195 as permitted sender) smtp.mailfrom=rushil.patel@gsacapital.com;
-	dmarc=pass (policy=none) header.from=gsacapital.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gsacapital.com;
-	s=mimecast20170115; t=1774438581;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C4Rg9HUN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+X+ddI8g;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C4Rg9HUN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+X+ddI8g;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774438664; a=rsa-sha256;
+	cv=none;
+	b=Y6+TxIpB6wtSqEj7HNs6u92W9maHxqovxsXYNw/owVhBdrxA1sSbJ69F8eVr5jfhak8k75
+	ifg2iS0/gvhfunwkR2Yqu+tMKdB1qqVicne9d5Xmqr3dB//SRp0XCx4o3HWZ4aBKMNPan5
+	ISoND/OVlV97OTYEwJdRhpNl44xVvhU=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 220FD4D21F;
+	Wed, 25 Mar 2026 11:37:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774438662; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yUVSyEDvebuqZuvn/YoiC1PqlwIm4XkHWHkdGzIev3I=;
-	b=bohOWLCBarWPoLPAUY8iznoo36BD66IOqfckMLKOJodMNrgT2e7PDJik8UK2HvAYL1mKmc
-	1uTiNA5b2AnqjXpLvdm14KTwJYRX4yqveH+NRwbHgcp6MyaJ2h8jSnu1iX6JWzZ3vavDOg
-	SozI3VE86bGD7ZL8xEsnkNb/ep3TDb8=
-Received: from mailrelay.gsacapital.com (185.137.2.10 [185.137.2.10]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id uk-mta-160-b5qONeUlOTmmFbnNNarSmg-1; Wed,
- 25 Mar 2026 11:36:19 +0000
-X-MC-Unique: b5qONeUlOTmmFbnNNarSmg-1
-X-Mimecast-MFC-AGG-ID: b5qONeUlOTmmFbnNNarSmg_1774438579
-From: Rushil Patel <rushil.patel@gsacapital.com>
-To: Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Rushil Patel <rushil.patel@gsacapital.com>
-Subject: [RFC PATCH 1/1] mm/filemap: make writeback wait killable in __filemap_fdatawait_range()
-Date: Wed, 25 Mar 2026 11:36:16 +0000
-Message-ID: <20260325113616.785496-2-rushil.patel@gsacapital.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260325113616.785496-1-rushil.patel@gsacapital.com>
-References: <20260325113616.785496-1-rushil.patel@gsacapital.com>
+	bh=hGOiQCiQisXR76KhBKJZQggBhPWcoMLU1aMLzL81b4I=;
+	b=C4Rg9HUNS37XMwgC1buZRhb+cZpQ+KfAKIsZ51mFhBlXSRM01/L4WBiUWJ696kDj3ALH/b
+	caCS58O73Da+93fAQQy3WN0vIfz/AzxIa9dMHYlR9RaLVPSIafQaN8DXIDQc156B0Lf91G
+	Tq+U8Sjf73P0znTxrJi4BN5hLgOTgKM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774438662;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hGOiQCiQisXR76KhBKJZQggBhPWcoMLU1aMLzL81b4I=;
+	b=+X+ddI8gk6lPVHOUv0u8jJD4b89SDbcyTn/CXDXhOEbvcD7rl5CF+00kav3JbIVAQ8hFMS
+	Haal6955sB83FIDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774438662; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hGOiQCiQisXR76KhBKJZQggBhPWcoMLU1aMLzL81b4I=;
+	b=C4Rg9HUNS37XMwgC1buZRhb+cZpQ+KfAKIsZ51mFhBlXSRM01/L4WBiUWJ696kDj3ALH/b
+	caCS58O73Da+93fAQQy3WN0vIfz/AzxIa9dMHYlR9RaLVPSIafQaN8DXIDQc156B0Lf91G
+	Tq+U8Sjf73P0znTxrJi4BN5hLgOTgKM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774438662;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hGOiQCiQisXR76KhBKJZQggBhPWcoMLU1aMLzL81b4I=;
+	b=+X+ddI8gk6lPVHOUv0u8jJD4b89SDbcyTn/CXDXhOEbvcD7rl5CF+00kav3JbIVAQ8hFMS
+	Haal6955sB83FIDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5CC8A4439C;
+	Wed, 25 Mar 2026 11:37:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8bJEEwXJw2ntFAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 25 Mar 2026 11:37:41 +0000
+Date: Wed, 25 Mar 2026 11:37:39 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>, 
+	Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm/mprotect: special-case small folios when
+ applying write permissions
+Message-ID: <dccxy3i3kaprljloxbyo2u346bu6xwev42cpvt5lfbbli2hbap@6n2rd5mftffh>
+References: <20260324154342.156640-1-pfalcato@suse.de>
+ <20260324154342.156640-3-pfalcato@suse.de>
+ <fbabc728-a87b-48e2-87dc-68ac21eb02d4@kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wNSDKIkEE6OLVTDiMeTktgRqBoA9izFxNFulhn1YzfM_1774438579
-X-Mimecast-Originator: gsacapital.com
-Content-Type: multipart/alternative;
-	boundary="MCBoundary=_12603251136201591"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fbabc728-a87b-48e2-87dc-68ac21eb02d4@kernel.org>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: EC4A680008
+X-Stat-Signature: pdj6zp7ouj9xc59i7bgrten796uc143p
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5E823160007
-X-Stat-Signature: sro35czdcgq6iunonq6w6b57koxqpgpc
-X-HE-Tag: 1774438582-305961
-X-HE-Meta: U2FsdGVkX19hP/F9Wg1cVtGRcopJvAD1FSf9cemA+xLHTGKRRw5IkR8l342kdqC0oKgShb8TmQhmXYvd4u6NhhJC9VN5XjaMo2u8QaZjIFXwZzUTAocuK+yfvK8R1BwRYPs6UYfAg02iKX4weuoL4fY3KBo8JqslM1kJ/U8cWWZpP0YydbuOnte//n8IzelGkkKoSJFor56vh5jIKZDzKreqppTFTNfHkUkXrHNYk2gJNd11Rzg2Y5Kn3FeOl33a3zSFPaM74TwBkaac0plVmY5nucTFYQfIQk6cjAnTy99IWpOuNVra/tnsYKJmE1B+FYpjjPmrzJ9UEr7UUIV7FbKjBEFTa+YZ4efH8WeephWEPuWgrzrvt3+/CD/q1bBl8QxGWEcoxQDuRSujS7tk9YnjVwjCwq2SRBtQNY16xsc/QdX6EjFtPrrKLXJgaUzjM1hBifgKRzLcOusejcieWGtXtr+vL4IBqJrWS1cDXNOSgHwW08OGerGMsIAGXlvygSd/WmTps9308Klw2h3wSc/jCVkLcu9YDiNJ2VU7nd5yIZqywKRacqwEjTuyBJPzofTB+uY+cncH3rFRrnGOP4k8tmydtybIf/4V67wPKoJUelTYOkGRM2EQsnZ0SAGtxSRuT5ZkhxourYD40wEbW7x/RbvVvj/b8nvRl+hWQto/9IyiwIaj/EyY9GjnRTla9SSDu6IXXQ1dQCnWtaiXSlChjp7iiv/v4uuotRJlkyksfMcWWxbluFNGzmk6nmy6uudyyCmQ9nzpHnK7YMk7EyLB8zfyX8A4IuTXq+TZ+055e6Gm6Jvu634/tn26TUnnADZyTQtweaKbWQiFP/kzBHKLM8O4gvp65N+VkqW1svHWnyoWHnxhfDl1rYRJ9SVYdzoaxw53jipVkW9VsWPk7QW+So/f07xfqS1/Cw244J/d1S9B9L6S7PNwgN+AcR6EwJgfkcuXnOJ0nKEqS3P
- 0x5FDJ5U
- z0D3S0nqVKHGasCUfw4fbJXiSqxOJUdxaopW+fAT6IkG+wt2eNqIByim7LaaORbedBJqwLby1/NPTpv6RYI6qjvT0XMhPTjKDYitUkVnl55pQA87E6OxB6hNXOaZdJT1L0fqIUb/MZ4K+vU1mnMIAG+7ZAB8vC8jSoF2cHTl3XUTDVRA629i7Q3cdnKiEg/kicqPTBVC92JHOADb3/7bHFW67Zhgpe8NOhB9ABuvKY9DCo9v4bxR4oimiDACbfzCA1t0Fnowp/t421f4E77VhdwgqFZ92OuKjh1p1SB8uS+Y0CYrh9NyP3NIQpxl03HloOna4QnQvvLIW6nWCUhLqdMBzJcxT8vuqfsV7ygMGrxCm91D1TxnJD/A5B9gF9cNJMqZrS9YxVtUUn1HooEGyvbZ4ddJz/QX+9o/jdZT/kgAn8QPxdVyvyW7bkA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774438663-736518
+X-HE-Meta: U2FsdGVkX18oa1+V7CA+6TJBu5F7Bzz0luIIf+btbZwdtHoLyIhRJ7eD/FTTFJr4vPJuE/YqYNLoStD5TNm5qy/pEpfy7yiRaUOjOt5//uK/XJMgOUaMuwHGoqIyBJECdkIODvmpzNKXffacSHTQGGnuDTa2d2/hhJRLUXnveBAr2PJTr1MX4eHQjWdec/MPVYp2UjsfEavmVON1nFAlWTzsJ7YYWwmWuDsWu1Xt4XuN7PlEDg5qTndfAp5svaZZccWmCeawh+/GBmmCxxhQyR4ONf6kwd9VoYaIla2ojRdie5xe9GfMA2zsXr6cd/494oTRjY4Le6wyNzYlz3OtjQxZiKYN+VGQUejLmXDHiUM+pbJWfG+WnUx7p2SgPUao3k9PIIzMMMT+WdZQqVcTsB/gzjDvo73T42/H9hRVMXqOSNYXATq1sbngGi7D2IBy3POT2duLHtBF3r/cxUvGdmsZ635kOO4gdsqastiAY69G4me/i9gojn3utt0YHr6w2mbkYayUefbm5sOk71MKW4zXPWKIR5NDx97dlU0QKkvaKzWDVW1OipklbQHzlVOdGOo/PeaoRZI+4sjZ0vkcKZtqVDyQrsWk3Xan1WSdxfszgU7QFYJaEm3CA29cgVFgMYWbJ331GWQFBns10iC7CQpppYkempKHPfLztE/GftTMGycHzfOY/+k42wyoULrTEBbF3d9qCf0Llt7FgSG8Yt9lnUNBxEOQYtPvhf9djq+C6F30bi7tCA+yVoxcv3NkIdr9Uruq1DbSqWbLdF6TRc2BTyEJYNLNW8T+gjHdk+4/8VdbKXG75A/sZt154XoUcsLT4R+X79Coa9YL32qKUozNYchsdEzjBeJ/mc/3e/STm09w+5MHnxQPzK67kWAM/+NOXoKFIWyB9ub9+4oU5e+fxlazAbALN7QArjhfCnX6Zv99O5KLGdI51KbBWx35D/RwVmPOp87zC4RbMGd
+ CdJrdsX3
+ CNDnUvI/jDYrpKzGR7xMyqNtMax62HxsXtTkhHQScus5mDpOqOHIcnVcr0SUWCok/YllUQf6mFc3CRCHCEtqFDRJu/5s/Y7LsAElODJdWDHR62yfRQcjBIHGAKkLLkWe2SDIfvE0ylRGYDvwtlykzhGQICaYqDBPyU1lyEoHhSDkb8YGJQ/CDvsQc82RIMUPR7Jjmly4p57yQ2xorraoi/BpQ08HC2+ULa25klkRAnw+BWQ7Dda7zKL2hE1AIjoVQlbHAsJ8fHgL15EMEBf4ySE9n3jXViK04LKcLqg6D/Kzo4JOy8f2dN68QZjCcqK1fNi1U3usMWmfW4vpGYx22JlfAocxVFfOPOGfvzKFBmPtOnbU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,196 +136,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---MCBoundary=_12603251136201591
-Content-Transfer-Encoding: quoted-printable
-content-type: text/plain; charset=UTF-8
+On Tue, Mar 24, 2026 at 09:18:42PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/24/26 16:43, Pedro Falcato wrote:
+> > The common order-0 case is important enough to want its own branch, and
+> > avoids the hairy, large loop logic that the CPU does not seem to handle
+> > particularly well.
+> > 
+> > While at it, encourage the compiler to inline batch PTE logic and resolve
+> > constant branches by adding __always_inline strategically.
+> > 
+> > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> > ---
+> >  mm/mprotect.c | 17 ++++++++++++-----
+> >  1 file changed, 12 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index 2eaf862e5734..2fda26107066 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+> > @@ -103,7 +103,7 @@ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+> >  	return can_change_shared_pte_writable(vma, pte);
+> >  }
+> >  
+> > -static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+> > +static __always_inline int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+> >  				    pte_t pte, int max_nr_ptes, fpb_t flags)
+> >  {
+> >  	/* No underlying folio, so cannot batch */
+> > @@ -117,9 +117,9 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+> >  }
+> >  
+> >  /* Set nr_ptes number of ptes, starting from idx */
+> > -static void prot_commit_flush_ptes(struct vm_area_struct *vma, unsigned long addr,
+> > -		pte_t *ptep, pte_t oldpte, pte_t ptent, int nr_ptes,
+> > -		int idx, bool set_write, struct mmu_gather *tlb)
+> > +static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
+> > +		unsigned long addr, pte_t *ptep, pte_t oldpte, pte_t ptent,
+> > +		int nr_ptes, int idx, bool set_write, struct mmu_gather *tlb)
+> >  {
+> >  	/*
+> >  	 * Advance the position in the batch by idx; note that if idx > 0,
+> > @@ -169,7 +169,7 @@ static int page_anon_exclusive_sub_batch(int start_idx, int max_len,
+> >   * pte of the batch. Therefore, we must individually check all pages and
+> >   * retrieve sub-batches.
+> >   */
+> > -static void commit_anon_folio_batch(struct vm_area_struct *vma,
+> > +static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
+> >  		struct folio *folio, struct page *first_page, unsigned long addr, pte_t *ptep,
+> >  		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
+> >  {
+> > @@ -177,6 +177,13 @@ static void commit_anon_folio_batch(struct vm_area_struct *vma,
+> >  	int sub_batch_idx = 0;
+> >  	int len;
+> >  
+> > +	/* Optimize for the common order-0 case. */
+> > +	if (likely(nr_ptes == 1)) {
+> > +		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, 1,
+> > +				       0, PageAnonExclusive(first_page), tlb);
+> 
+> To optimize that one, inlining prot_commit_flush_ptes() would be
+> sufficient. Does inlining the other two really help? I don't think we
+> can optimize out loops etc. for them?
 
-__filemap_fdatawait_range() waits for writeback using
-folio_wait_writeback(), which sleeps in TASK_UNINTERRUPTIBLE. On network
-filesystems (NFS, CIFS, 9P) the server can stall for minutes or hours,
-leaving processes in unkillable D-state. The only recovery is a node
-reboot.
+Well, I'm getting meaningful (smaller) wins from adding those
+__always_inline's. (and I also get a small win for __always_inline on
+set_write_prot_commit_flush_ptes, but I didn't realize that until now).
 
-Replace folio_wait_writeback() with folio_wait_writeback_killable() so
-that SIGKILL can interrupt the wait. On fatal signal, release the folio
-batch and return early. The writeback itself continues on the server --
-only the client-side wait is interrupted. The dying process never
-inspects the return value, and other processes get correct error
-reporting through errseq_t (mapping->wb_err) which is set by the
-writeback completion path independently of this wait.
+> 
+> I would have thought that specializing on nr_ptes==0 on an even higher
+> level--where we call
+> set_write_prot_commit_flush_ptes/prot_commit_flush_ptes() would allow
+> for optimizing the loops entirely for nr_ptes==0?
 
-Additionally, skip the writeback wait entirely when the calling process
-has PF_EXITING set. This handles a re-entry trap discovered in testing:
-when SIGKILL wakes a process from the killable wait, do_exit() sets
-PF_EXITING and then exit_files() closes file descriptors, which on NFS
-triggers nfs4_file_flush() -> nfs_wb_all() -> filemap_write_and_wait()
--> __filemap_fdatawait_range(). At that point wants_signal()
-(kernel/signal.c) rejects all signals for PF_EXITING tasks -- including
-SIGKILL -- because the PF_EXITING check precedes the SIGKILL exception.
-The second killable wait would therefore block forever. Checking
-PF_EXITING at entry avoids this: the process is dying and has no use for
-writeback confirmation.
+That could also work, but then set_write_prot_commit_flush_ptes (holy cow
+what a long name) would definitely need inlining. And might be a little uglier
+overall.
 
-Signed-off-by: Rushil Patel <rushil.patel@gsacapital.com>
----
- mm/filemap.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+This is the part where having data points other than my giga-fast-giga-powerful
+zen5 could prove handy :/
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 406cef06b684..d348f1dd75f9 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -515,6 +515,15 @@ static void __filemap_fdatawait_range(struct address_s=
-pace *mapping,
- =09struct folio_batch fbatch;
- =09unsigned nr_folios;
-=20
-+=09/*
-+=09 * If the process is exiting (PF_EXITING), skip the writeback wait.
-+=09 * During do_exit(), nfs4_file_flush() re-enters this function, but
-+=09 * wants_signal() rejects signals for PF_EXITING tasks so a second
-+=09 * SIGKILL cannot wake us from the TASK_KILLABLE wait below.
-+=09 */
-+=09if (current->flags & PF_EXITING)
-+=09=09return;
-+
- =09folio_batch_init(&fbatch);
-=20
- =09while (index <=3D end) {
-@@ -529,7 +538,10 @@ static void __filemap_fdatawait_range(struct address_s=
-pace *mapping,
- =09=09for (i =3D 0; i < nr_folios; i++) {
- =09=09=09struct folio *folio =3D fbatch.folios[i];
-=20
--=09=09=09folio_wait_writeback(folio);
-+=09=09=09if (folio_wait_writeback_killable(folio)) {
-+=09=09=09=09folio_batch_release(&fbatch);
-+=09=09=09=09return;
-+=09=09=09}
- =09=09}
- =09=09folio_batch_release(&fbatch);
- =09=09cond_resched();
---=20
-2.47.3
-
-For details of how GSA uses your personal information, please see our Priva=
-cy Notice here: https://www.gsacapital.com/privacy-notice=20
-
-This email and any files transmitted with it contain confidential and propr=
-ietary information and is solely for the use of the intended recipient.
-If you are not the intended recipient please return the email to the sender=
- and delete it from your computer and you must not use, disclose, distribut=
-e, copy, print or rely on this email or its contents.
-This communication is for informational purposes only.
-It is not intended as an offer or solicitation for the purchase or sale of =
-any financial instrument or as an official confirmation of any transaction.
-Any comments or statements made herein do not necessarily reflect those of =
-GSA Capital.
-GSA Capital Partners LLP is authorised and regulated by the Financial Condu=
-ct Authority and is registered in England and Wales at Stratton House, 5 St=
-ratton Street, London W1J 8LA, number OC309261.
-GSA Capital Services Limited is registered in England and Wales at the same=
- address, number 5320529.
-
---MCBoundary=_12603251136201591
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset=UTF-8
-
-<html><body>__filemap_fdatawait_range() waits for writeback using<BR>
-folio_wait_writeback(), which sleeps in TASK_UNINTERRUPTIBLE. On network<BR=
->
-filesystems (NFS, CIFS, 9P) the server can stall for minutes or hours,<BR>
-leaving processes in unkillable D-state. The only recovery is a node<BR>
-reboot.<BR>
-<BR>
-Replace folio_wait_writeback() with folio_wait_writeback_killable() so<BR>
-that SIGKILL can interrupt the wait. On fatal signal, release the folio<BR>
-batch and return early. The writeback itself continues on the server --<BR>
-only the client-side wait is interrupted. The dying process never<BR>
-inspects the return value, and other processes get correct error<BR>
-reporting through errseq_t (mapping-&gt;wb_err) which is set by the<BR>
-writeback completion path independently of this wait.<BR>
-<BR>
-Additionally, skip the writeback wait entirely when the calling process<BR>
-has PF_EXITING set. This handles a re-entry trap discovered in testing:<BR>
-when SIGKILL wakes a process from the killable wait, do_exit() sets<BR>
-PF_EXITING and then exit_files() closes file descriptors, which on NFS<BR>
-triggers nfs4_file_flush() -&gt; nfs_wb_all() -&gt; filemap_write_and_wait(=
-)<BR>
--&gt; __filemap_fdatawait_range(). At that point wants_signal()<BR>
-(kernel/signal.c) rejects all signals for PF_EXITING tasks -- including<BR>
-SIGKILL -- because the PF_EXITING check precedes the SIGKILL exception.<BR>
-The second killable wait would therefore block forever. Checking<BR>
-PF_EXITING at entry avoids this: the process is dying and has no use for<BR=
->
-writeback confirmation.<BR>
-<BR>
-Signed-off-by: Rushil Patel &lt;rushil.patel@gsacapital.com&gt;<BR>
----<BR>
- mm/filemap.c | 14 +++++++++++++-<BR>
- 1 file changed, 13 insertions(+), 1 deletion(-)<BR>
-<BR>
-diff --git a/mm/filemap.c b/mm/filemap.c<BR>
-index 406cef06b684..d348f1dd75f9 100644<BR>
---- a/mm/filemap.c<BR>
-+++ b/mm/filemap.c<BR>
-@@ -515,6 +515,15 @@ static void __filemap_fdatawait_range(struct address_s=
-pace *mapping,<BR>
- =09struct folio_batch fbatch;<BR>
- =09unsigned nr_folios;<BR>
- <BR>
-+=09/*<BR>
-+=09 * If the process is exiting (PF_EXITING), skip the writeback wait.<BR>
-+=09 * During do_exit(), nfs4_file_flush() re-enters this function, but<BR>
-+=09 * wants_signal() rejects signals for PF_EXITING tasks so a second<BR>
-+=09 * SIGKILL cannot wake us from the TASK_KILLABLE wait below.<BR>
-+=09 */<BR>
-+=09if (current-&gt;flags &amp; PF_EXITING)<BR>
-+=09=09return;<BR>
-+<BR>
- =09folio_batch_init(&amp;fbatch);<BR>
- <BR>
- =09while (index &lt;=3D end) {<BR>
-@@ -529,7 +538,10 @@ static void __filemap_fdatawait_range(struct address_s=
-pace *mapping,<BR>
- =09=09for (i =3D 0; i &lt; nr_folios; i++) {<BR>
- =09=09=09struct folio *folio =3D fbatch.folios[i];<BR>
- <BR>
--=09=09=09folio_wait_writeback(folio);<BR>
-+=09=09=09if (folio_wait_writeback_killable(folio)) {<BR>
-+=09=09=09=09folio_batch_release(&amp;fbatch);<BR>
-+=09=09=09=09return;<BR>
-+=09=09=09}<BR>
- =09=09}<BR>
- =09=09folio_batch_release(&amp;fbatch);<BR>
- =09=09cond_resched();<BR>
--- <BR>
-2.47.3<BR>
-
-
-<hr>
-<font face=3D"Arial" color=3D"Gray" size=3D"1">
-For details of how GSA uses your personal information, please see our Priva=
-cy Notice here: <a href=3D"https://www.gsacapital.com/privacy-notice" targe=
-t=3D"_blank">https://www.gsacapital.com/privacy-notice</a>
-<br>
-<br>
-This email and any files transmitted with it contain confidential and propr=
-ietary information and is solely for the use of the intended recipient. If =
-you are not the intended recipient please return the email to the sender an=
-d delete it from your computer and you must not use, disclose, distribute, =
-copy, print or rely on this email or its contents. This communication is fo=
-r informational purposes only. It is not intended as an offer or solicitati=
-on for the purchase or sale of any financial instrument or as an official c=
-onfirmation of any transaction. Any comments or statements made herein do n=
-ot necessarily reflect those of GSA Capital. GSA Capital Partners LLP is au=
-thorised and regulated by the Financial Conduct Authority and is registered=
- in England and Wales at Stratton House, 5 Stratton Street, London W1J 8LA,=
- number OC309261. GSA Capital Services Limited is registered in England and=
- Wales at the same address, number 5320529.<br>
-<br></font>
-</body></html>
-
---MCBoundary=_12603251136201591--
-
+-- 
+Pedro
 
