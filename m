@@ -4,150 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73817109C05B
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00484109C05D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:14:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C46896B0088; Wed, 25 Mar 2026 16:06:56 -0400 (EDT)
+	id 2B5F36B0088; Wed, 25 Mar 2026 16:14:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF77F6B0089; Wed, 25 Mar 2026 16:06:56 -0400 (EDT)
+	id 266CA6B0089; Wed, 25 Mar 2026 16:14:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE69C6B008A; Wed, 25 Mar 2026 16:06:56 -0400 (EDT)
+	id 155D16B008A; Wed, 25 Mar 2026 16:14:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C0E16B0088
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:06:56 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 457F3C343B
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:06:56 +0000 (UTC)
-X-FDA: 84585668832.29.88AD276
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5DCB1140004
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:06:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ircltfMb;
-	spf=pass (imf26.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0102D6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:14:56 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9ABF4BC32E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:14:56 +0000 (UTC)
+X-FDA: 84585688992.10.3AAAA87
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7E7EA140003
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:14:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b="ZtDC1s/L";
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of axboe@kernel.dk designates 209.85.160.43 as permitted sender) smtp.mailfrom=axboe@kernel.dk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774469694; a=rsa-sha256;
+	cv=none;
+	b=Rmh4pZleuN/FieaXvimGaZIY3XB7fTyRLtFuV+OM3iEGYAOkVfTph5amfD8fo9RK81MQD9
+	08iRmrZsbSgf42vPnQSJz5GIqU03aellbBhyRAz8zYDl1RHbru48TEOPSXo0EBc4KB8Y0R
+	BZpB0XDw7MvjdYArg+KS9UZMQujkUHc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b="ZtDC1s/L";
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of axboe@kernel.dk designates 209.85.160.43 as permitted sender) smtp.mailfrom=axboe@kernel.dk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774469214;
+	s=arc-20220608; t=1774469694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+fZRp4AJi5cb/F6jA80ZrndPdXYxEQL1IK9u8/P+m9k=;
-	b=Bi9rF4Xbhbd1UEcgURcySheQz9+mi695Pz3CYBH7l6L2nOWLjUtXC59XMp8ZrK/5NdLslH
-	udmv+PdwBjrOoiOMiiq1TuQvGg2XqY/xLooeMF1USZDKJ8vw8P0J0rPAXWnriQsZbH0LZv
-	eiYZ06f4gYmBEi3vl+CCoAXC/WPifEc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ircltfMb;
-	spf=pass (imf26.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774469214; a=rsa-sha256;
-	cv=none;
-	b=QjGFmqf3HpjAdpia1DVDjfOD7GlvZzq9FHPoQYdKriMENYC3U0up+x83KOyV89ynx+Jua9
-	KIHzxazgf+q0zQLDl/umfAsRgLzg3R8NOVT+BMRvpyY1DDofg200Eb2pT1Vuf6GAmVyOvO
-	D5yIzHkM62mMrkNA2tVY7oDsWJX+Uqg=
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c2af7d09533so235996a12.1
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:06:54 -0700 (PDT)
+	bh=6PlzBqe1IIMZnSLJe3Nt9W0mLjdauDVoWC1E+bHzQXs=;
+	b=43Zo8p/YuOlfQzIfGGTYDh/DQTyk/9ATdsHvnWVKnq0pFnGJ6xPrxdye5/AbCQcDS2rtGe
+	NhCUOppiCBnW7Zt8YBPd5Q9o8RZq1L46yRNKflytTXWuXcYjx63cP1HSKj05E+FePP2tLY
+	6cIn9U+Qb+/JTEXUR58AMI2kmrOHxug=
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-41c420d1460so130772fac.3
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774469213; x=1775074013; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+fZRp4AJi5cb/F6jA80ZrndPdXYxEQL1IK9u8/P+m9k=;
-        b=ircltfMbdyooQtBswBLt30rmIAPt8qWO0C2PsJi2aiUhLXR2ku9E919hIqrQN9NB7B
-         u6ybu2BceH9lQC9ueWQ6avz8W5jL7qfn4qGxNpYgIfhZfXCLlPxNcDJGI5aXdA01D3aY
-         rb3m+MBPNEZ17qzgoIK7FONfSbISy3MqAS2Qd+Jnsm4cvmZhr5OgC0haVBcHrlKYoO3P
-         2R3g/TVuar/5cthQTmiqyHZAHr0FoaIaSqhGSNe3GjutKzeOgZaZWCLoKb28vKBJ/Hnt
-         BNV301NIvpCv5PZQCC+bnwaFKEKWl3q2kuOt8lX4Fj1w3yhCQsjgtAJoUodwSJY1B/t+
-         449w==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1774469693; x=1775074493; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6PlzBqe1IIMZnSLJe3Nt9W0mLjdauDVoWC1E+bHzQXs=;
+        b=ZtDC1s/LC9N6IkUcMgyq4IvwlXfyCnhAZX9CbXCHf3+fcBaJqCH/v7KqBj2Msj9R6x
+         FLBdn4+4L5PQimqnlEvpeX75zvSI0ULp7QI2/9PuUsar3EXBaI14iDRL9rmpF0pafofy
+         LpuKkbqQNecrsBPMDqqA6MLwAHbq2GcBUToo0ZZRAd6ZKoUR/lmTcCD5RKKasDMKD9oi
+         6N63vm3i2UI24lS0yFYaIsy1DyIR+OvCpX+s/UlNF81ztIVN6J06HDm+cyxYwcJadVJt
+         SFPaiL4uHdPJDqHXyKH5Hi3cWSg/rcROkQWXgQxhKEOKEBPIpvwy/8cKl7E3PXdQgvjS
+         DQLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774469213; x=1775074013;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+fZRp4AJi5cb/F6jA80ZrndPdXYxEQL1IK9u8/P+m9k=;
-        b=QFywL52KS2wl0o1QjzzlulIL067VEh5CQvT+Hs/PbUn0LYgOKdDgPI3t9gfm6L/FRm
-         VyugcPsSvEKoonnIC/xtyjCQgPuGDLnBw7mo/eYpxy5YBi62APAlt0zG3TI2qpGmG4Lf
-         mmrJE929u4PhO8b9XX3xM2yUx8LedFPO2P3AALuGpVg9fCeT86YqtHyaV7TBrMkYReSy
-         ENOcw0/gCqYhLjHhUHn0+cy3boOBZ4+T0+rza513XqfydozgCp3CW7WBl2jA16j/KjKy
-         2Dj0gZhV1fIO6lrJBs6dq3e0BgcU+Pz+Ox26rSyOnXPcTpbtMlFCnXm4g0Kr0UQ0wICK
-         8IhA==
-X-Forwarded-Encrypted: i=1; AJvYcCVN+4FelcS8aWIUBPt1PTmungC3OKkG5rVtzqDPPORxI4um5CyPG10A3D0863gF91oPMzKKc5xdhQ==@kvack.org
-X-Gm-Message-State: AOJu0YzqLF8DnnEm4GOWy9wLe+d6UmcIiYeqjgpseIXWd30rW3RQNqbN
-	uzA7+m9fsmhC7cngVWMpq3u4rRLUB3Vca/wjqDd5m7U/2KOOG825tJv8SmDYIFmgGA==
-X-Gm-Gg: ATEYQzzs5aIT2ZfqctUQIUMt5X9yIuQArevTBOH7CYxLccckBK/e++QXNyXPV+KgJPU
-	6zl9t8xgJF96MvpgSOXGxwv1Nh54YnBsecjlDIeGnBdbb3su5GyeRipp8L9cSe7r9QY7gm8LPUM
-	L5LTyGkN/zUn8ryH8/vC/PjJfYNswwWVURbe2bVbbmjCngF2+e/Ycl2SkFApWgzsv9FKTe2Qas4
-	PtnJ5dGL2Zv6lnDpnJw9gR6jPn6CultBxILtPDO4hNnwI6VA3M1i7kEX76+UISWhXkjaktiZYEI
-	xJ2K62XDj1DH3JEzlLvmXCOCm3zQvOoJO64ePnD9wrO0PmvJMvBqEJkeQ7S1xbf0CJRLXMWOU/c
-	FaPdCM3rM5gRTwohTG/OSvqdLWuVT8imnPx1QOl9g/JEzSFwlyPqeHQNX25jZeMrtubEJgCNhFN
-	nYThdmYVIWyxgs1D3qBidv7GZJg+3/BHjiM38M36xT9rYJQbdRw9NORb2BCXrdJA==
-X-Received: by 2002:a05:6a20:8ca6:b0:398:b3bd:de58 with SMTP id adf61e73a8af0-39c4aed5082mr3746836637.65.1774469212632;
-        Wed, 25 Mar 2026 13:06:52 -0700 (PDT)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7673819da1sm305751a12.11.2026.03.25.13.06.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 13:06:51 -0700 (PDT)
-Date: Wed, 25 Mar 2026 20:06:47 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
-	Askar Safin <safinaskar@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Chris Li <chrisl@kernel.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	kexec@lists.infradead.org, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
-	Marco Elver <elver@google.com>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
- across Live Update
-Message-ID: <acRAV7IK6RW8h_QM@google.com>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-3-dmatlack@google.com>
+        d=1e100.net; s=20251104; t=1774469693; x=1775074493;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6PlzBqe1IIMZnSLJe3Nt9W0mLjdauDVoWC1E+bHzQXs=;
+        b=EPnHmZhNW2y0jQ+0799SB22oK5ilH8PWvI7GQbygKMwPqtlsRJLzVi0qadCmEFYElU
+         /D6BgeCx0qAFBACDUhEo0UggNMUDA2yjGSZQFZ9gGNAFEiUPcFsV6F4shz2KPGmXIMHp
+         bJtgjnWY696gzI6DUcevpxINE+IzEEQfCVsyAGSrlAgFGG9lk0zHmrUWs8anr8GmbiND
+         IBNwh7EZSWA/5alEebYo4ihHuhJwiEDxIKZwMN+NjsjRLAUxjbliQGjODCNud2StHV7M
+         zrpOKr/l+i0qd+tdWDiy5dKsT1x3YAn2hVGDnC2AXuak90u10e0+W//cWIcsVxGIzWnl
+         u4WA==
+X-Forwarded-Encrypted: i=1; AJvYcCV5GymFN6C0Rg0uSQOUjSTvb2zMd+ZtyALGJ2eRPNtViT9/MB137UTlYQaTJcpucYLGvXIfumV9uw==@kvack.org
+X-Gm-Message-State: AOJu0YyUTNHGjVB4MmSpifYYp4MITx+0bDelBxfJhmu9bjNkvTAp0m5Z
+	IwtzdRprF036cIZZhi0l/VSfRXCYF5ZpiQpoG5TeU/uizjr3aIC4yj8re6OCA1GUc9w=
+X-Gm-Gg: ATEYQzzFoEpsmS/U3eoUXxoqJdNmxzKBY0Z71bJ1te4jsNs/jm08tRXQgEnrXX8powq
+	pI0EjDy/KzskTUm0BQypR487vVdhfWfVCLQKHwDGwAHUkEYCEn+5ur9j5eafpyrNHv1uxVlmOGf
+	3CsVgwgiVTDnr7StOJBHlFxfhRhSK+/xd3yBoaS+Wip8d/zmkTrLsVxMY7/CAivrLuQgJKlvS0O
+	NViDL8VP3il8dv0R6c8rHDCsrdP9eJ/DlHbmybxlZunb846OLD6uSo4Ypgq2/qn+zDT6kUQ2ZiI
+	GsmO0QZqj/J7HIO85Mf+C8OQPBokJ7ESXcTsH2jLJmk7YcjHWCg5u8HaWugDLxibEKZg2mp1xiO
+	TWrRRPiCScdKexBnVl8sRx0RrRUDmcTrdVvVlO/WAJAsp/uogWdJgR8xVZ1+1uw13NFFB5okcX0
+	ji9UsqDIjw0h9sVLaMS9GocGFJVJbjz99adCS4hclo18dj0htHdfVNi2glUF/Xm7G11soqsxnFO
+	APqRz5T
+X-Received: by 2002:a4a:edcd:0:b0:67b:be84:e085 with SMTP id 006d021491bc7-67dff50ad22mr2303872eaf.27.1774469693263;
+        Wed, 25 Mar 2026 13:14:53 -0700 (PDT)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-67e0ab1b9e3sm535628eaf.12.2026.03.25.13.14.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Mar 2026 13:14:52 -0700 (PDT)
+Message-ID: <c4453f4e-c1a2-4f5a-b278-76b63d5dc4a3@kernel.dk>
+Date: Wed, 25 Mar 2026 14:14:51 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260323235817.1960573-3-dmatlack@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v4 1/3] block: add BIO_COMPLETE_IN_TASK for
+ task-context completion
+To: Tal Zussman <tz2294@columbia.edu>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Christian Brauner <brauner@kernel.org>, "Darrick J. Wong"
+ <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
+ <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7E7EA140003
+X-Stat-Signature: 8a87wu1g5rdef77nnp3jipqawko3jzyn
 X-Rspam-User: 
-X-Stat-Signature: upm4b8kdicrbm86fcbc4sx1z6wm1rppj
-X-Rspamd-Queue-Id: 5DCB1140004
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774469214-851442
-X-HE-Meta: U2FsdGVkX18YZWRSBqfx75m9R2i00nKh1shP9c4zTH5wCVEEYiijIWJzDqSKCG/L8vFMHWQgFEykpYl5rD89eby/MDai7Deo3nXjop+uu9rKq3QdLF2B2x6/JqBcF95Qp8MPFatcMQooNxEgBUqQ2+e+MqeGMAvoEBL5/qv3486esWNtflmS4aU3RQsiVS0IMbKC4AXMWD7eJziC9yzNKw9sFFvYQ70Q6no7PEfewDhFV/ZHr3aUdATeJtK5gcOzIqvcnbAfxiAWucf0AIayJ6WMjm1zsd1vzKdjcDz6LjIC9/7OLilFLPyLOWZe18vBERxOIKHot+9WxgHILk0HZQGyfsQS0CxhnRclt0mQDiekXyL68ZJRSOtJbatkzCWnvu8ezC0+MWbOsV1TNjU9rhV7M2dcWjikYB+gi+RdvJmAap3KVgVwGX77I+UEIWXeqNeE37u1IgOxv7RI9zry4Ml4/ddNM7vX8QuzA1XH0Jx6fWq9UImbyNj0VA5bQrLN5SVr10H1DxWGGKXSRRc6yHv7GBJIh3bUlPD6hSCTwPtCszGQYWb5jhS4zOqNuIVgTDv0MEGLpn+yHDpALidoztg+MUVEsu1ADXzymN81mAbfIoTIy+HrL8QS44zOS94IdzJimzuz93VAh9wMxc9q1haxGnrTsTzbkY+7+ZW6tGGAx1m32lHyTTM0ihUTQ8gC7mZv2E2UnIfEbM8dseSYrNHyXWAqxGB+qReKE4wG5bjwnx/PPq4xK+fXUoP0JXCL3z1LepfHKyMifgYUyVw2WzxYR9kT9/3uY8rAUqczofPJEomclM+3Dk0RPwhLIjyBI8hDp9lJspmzDEVeFtbS+Z3YwTvUKuJ0ly0UdA7up7MlIolTB6Wu1u4mKFNneYzTylgvfUTjRb8wZjKojDNVtHTyJM/5fO550ow2cSAzxGKzaU2OC16aU/tl3pvdP01BFC5/89dVFB4HL6xTjZX
- 3xEW+mwj
- nZwGS5c179MAUrCTmepKVQeJEraIyuzhr//nCPw6/rnefytwYBQUzyIQDq/Hp/JgYkcLoAjfLKo3T36lepCBUytUw0C7rqfoAmu9F4ovkxRzX4I6mOGgh2cQDaoTABKmYnVJVPuvWlAFpib0ygCqONHpR+RmZpVFnzIvxDfffqqU3aKY97P9G71XduKh0yWER53yDd5+npfxtb1DcGE/IWLptIz8+rdk/NwDicfkclgyefVHj58DTr639ZicR90F5SJvkmrKllv9UwgCGOhV/0m0MPYpXynmOvtdfydi48k1BDS/vk3diyjURCQ9jaxGOLpgSho0s+fSzHswZ7hclQ5T61inJwAgfLvW207vwOM6J1aL0gs0Ihn5iaaHLQ8hyEz2UegjDFfsoS64pJ7IczqAYfakshdr16Nnl
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774469694-575587
+X-HE-Meta: U2FsdGVkX1/56ymqjYutoZb0cQ4ECfkpOZn/n319JBhwfS/RSi6UfRkM4isRadJLcD7bVn+JoajnTeF5ldtFtGwbBjsyA+xkXsd8jMnfZs3PZd1oH0bN0QoVDCwAPrmxBDJrGfsdBu6qtJuZuyDD2FjrZfMXMZ8xRlh602Ip0cuKxPq0hkP1Np3Is/lSDls48tTdYh9Ek4GIce7Nz/BGBbQfRoGp3PhXxysqfY3uYyX+Rh+CNh0cVn6xn3QLUWHtdOQtVAxttGgj8V1+00OOLH4nk/MuRzJKp3l07s33wqiPZ0tTPZzAJklJITUB0XQi+FhjI1ABvINwoiXnLpNZfi4jQF19ycjna+9nT7xBxQ12y75L6eqPv77QD1uXFDfDAxMg9FiVqgAKCF9oKfuMvEPtMpSnwaVvR5BK0JVLE0AC5oeFpVxW+u4FtOWzmFpQDtZhe/TnJs3ns1yiDG6EJlcqbRSEKjcuc34HRAtR/v0N5KRCFKUk6L2gZ7InO2rPvs1X7lfX87hv2dLK0FBuyb5I5wSOAhKcuUo/c8PCId6A8xToOIPq+kLXXOVOcyU5DBnxNSbkDnWjyGSo31BRE9zt05N4tnZUj3K49eu0FC4rlwTWnm/nU815+gKl1dONWPXL3EMMKSvYMkpluYiEKbFPGw9+2yZpa+NA8z4HwcUrIEw66D1ylaRsGrriCCC8x5e1eUu33dgeohm5XO3Jj1ikYV/nz1ny1PcG4p6WdbEI8TRjYxmmxa3sUZQraLyIeEAD+SIDeD/3VH//Hl9cbEH5miF+GWd4hJVvHXe+jWbUSDZqdnTWwtJPRDH6ilOQw+bD2TBkC2k1d9S87w6FcdxiQ8/7zKzT+ETq0yEJkGGGu+eLv/e/Ay86Y0fASim0/fv4oTLX/o3lVY42COZKWg8PhAPKME3ykvQpq+wrKwmKegPR3nWylmr14dOLHFSUdjtntk5TX8vgH4XFTOQ
+ rrzqViC7
+ jzAXD1LTZ/2A+X1XxDylG525YBQQ4pHrVoJHUt+rmzhYbiOu0cjrnEykKTSLRQ/Kkcd1q0vhfsoTHpoc0oqRs1FOdUFbLZ0pHV5Ny2pkDKnieOV6XmMLx0lgwV1Gp3H1VEP+A/t4Ysnp0gvLmULMDiNIwtX4QZTDjxV7bxOFBzMzTNsdmJ8qfoCwpVXBsOBd+6LpZxwNoCrRcky/HfXmH1ErzG+HlbA6jBWozX1mnjsUaZh4/20ojIz9Hzk96wXEQUfJgJjsg1vGNw1xt063PRwFirHRl3u98fJ0AcYG1Zgi0QtPdEYcDL/YV1AlJeJ2uzuXyBj8TNwxr20fEbZ1p8efXxIxNSQ5SekGV6n9TFmlW/6Bk09GKwErPexzFpNza+l8KZLCTXBdcjuPYYRdiHvBdNRymGkRnPJrbfiyeFmMT1xHZ/KYPf8iAQrV4Rqq1gIXyRSSXl4BKWgGbCG22eb/MKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,94 +129,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-03-23 11:57 PM, David Matlack wrote:
-
-> +static void pci_flb_finish(struct liveupdate_flb_op_args *args)
-> +{
-> +	kho_restore_free(args->obj);
-> +}
-> +
-> +static struct liveupdate_flb_ops pci_liveupdate_flb_ops = {
-> +	.preserve = pci_flb_preserve,
-> +	.unpreserve = pci_flb_unpreserve,
-> +	.retrieve = pci_flb_retrieve,
-> +	.finish = pci_flb_finish,
-> +	.owner = THIS_MODULE,
+On 3/25/26 12:43 PM, Tal Zussman wrote:
+> diff --git a/block/bio.c b/block/bio.c
+> index 8203bb7455a9..69ee0d93041f 100644
+> --- a/block/bio.c
+> +++ b/block/bio.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/highmem.h>
+>  #include <linux/blk-crypto.h>
+>  #include <linux/xarray.h>
+> +#include <linux/local_lock.h>
+>  
+>  #include <trace/events/block.h>
+>  #include "blk.h"
+> @@ -1714,6 +1715,60 @@ void bio_check_pages_dirty(struct bio *bio)
+>  }
+>  EXPORT_SYMBOL_GPL(bio_check_pages_dirty);
+>  
+> +struct bio_complete_batch {
+> +	local_lock_t lock;
+> +	struct bio_list list;
+> +	struct work_struct work;
 > +};
-...
-> +static int pci_liveupdate_flb_get_incoming(struct pci_ser **serp)
+> +
+> +static DEFINE_PER_CPU(struct bio_complete_batch, bio_complete_batch) = {
+> +	.lock = INIT_LOCAL_LOCK(lock),
+> +};
+> +
+> +static void bio_complete_work_fn(struct work_struct *w)
 > +{
-> +	int ret;
+> +	struct bio_complete_batch *batch;
+> +	struct bio_list list;
 > +
-> +	ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)serp);
+> +again:
+> +	local_lock_irq(&bio_complete_batch.lock);
+> +	batch = this_cpu_ptr(&bio_complete_batch);
+> +	list = batch->list;
+> +	bio_list_init(&batch->list);
+> +	local_unlock_irq(&bio_complete_batch.lock);
 > +
-> +	/* Live Update is not enabled. */
-> +	if (ret == -EOPNOTSUPP)
-> +		return ret;
-> +
-> +	/* Live Update is enabled, but there is no incoming FLB data. */
-> +	if (ret == -ENODATA)
-> +		return ret;
-> +
-> +	/*
-> +	 * Live Update is enabled and there is incoming FLB data, but none of it
-> +	 * matches pci_liveupdate_flb.compatible.
-> +	 *
-> +	 * This could mean that no PCI FLB data was passed by the previous
-> +	 * kernel, but it could also mean the previous kernel used a different
-> +	 * compatibility string (i.e.a different ABI). The latter deserves at
-> +	 * least a WARN_ON_ONCE() but it cannot be distinguished from the
-> +	 * former.
-> +	 */
-> +	if (ret == -ENOENT) {
-> +		pr_info_once("PCI: No incoming FLB data detected during Live Update");
-> +		return ret;
+> +	while (!bio_list_empty(&list)) {
+> +		struct bio *bio = bio_list_pop(&list);
+> +		bio->bi_end_io(bio);
 > +	}
 > +
-> +	/*
-> +	 * There is incoming FLB data that matches pci_liveupdate_flb.compatible
-> +	 * but it cannot be retrieved. Proceed with standard initialization as
-> +	 * if there was not incoming PCI FLB data.
-> +	 */
-> +	WARN_ONCE(ret, "PCI: Failed to retrieve incoming FLB data during Live Update");
-> +	return ret;
-> +}
+> +	local_lock_irq(&bio_complete_batch.lock);
+> +	batch = this_cpu_ptr(&bio_complete_batch);
+> +	if (!bio_list_empty(&batch->list)) {
+> +		local_unlock_irq(&bio_complete_batch.lock);
 > +
-> +u32 pci_liveupdate_incoming_nr_devices(void)
-> +{
-> +	struct pci_ser *ser;
+> +		if (!need_resched())
+> +			goto again;
 > +
-> +	if (pci_liveupdate_flb_get_incoming(&ser))
-> +		return 0;
-> +
-> +	return ser->nr_devices;
-> +}
-> +
-> +void pci_liveupdate_setup_device(struct pci_dev *dev)
-> +{
-> +	struct pci_ser *ser;
-> +
-> +	if (pci_liveupdate_flb_get_incoming(&ser))
+> +		schedule_work_on(smp_processor_id(), &batch->work);
 > +		return;
-> +
-> +	if (!pci_ser_find(ser, dev))
-> +		return;
-> +
-> +	dev->liveupdate_incoming = true;
+> +	}
+> +	local_unlock_irq(&bio_complete_batch.lock);
 > +}
 
-There is an inerent race between callers of
-liveupdate_flb_get_incoming() and liveupdate_flb_ops.finish(). There is
-no way for callers to protect themselves against the finish() callback
-running and freeing the incoming FLB after liveupdate_flb_get_incoming()
-returns. Sashiko flagged this as well [1].
+bool looped = false;
 
-After some off list discussion with Pasha and Sami, the proposal to fix
-this is to have liveupdate_flb_get_incoming() increment the reference
-count on the incoming FLB. We will add a liveupdate_flb_put_incoming()
-to drop the reference when the caller is done using the incoming FLB.
+do {
+	if (looped && need_resched()) {
+    		schedule_work_on(smp_processor_id(), &batch->work);
+		break;
+	}
 
-I plan to include a patch for this in v4.
+	local_lock_irq(&bio_complete_batch.lock);
+	batch = this_cpu_ptr(&bio_complete_batch);
+	list = batch->list;
+	bio_list_init(&batch->list);
+	local_unlock_irq(&bio_complete_batch.lock);
 
-[1] https://sashiko.dev/#/patchset/20260323235817.1960573-1-dmatlack%40google.com?patch=7974
+	if (bio_list_empty(&list))
+		break;
+
+	do {
+		struct bio *bio = bio_list_pop(&list);
+		bio->bi_end_io(bio);
+	} while (!bio_list_empty(&list));
+	looped = true;
+} while (1);
+
+would be a lot easier to read, and avoid needing the list manipulation
+included twice.
+
+> +static void bio_queue_completion(struct bio *bio)
+> +{
+> +	struct bio_complete_batch *batch;
+> +	unsigned long flags;
+> +
+> +	local_lock_irqsave(&bio_complete_batch.lock, flags);
+> +	batch = this_cpu_ptr(&bio_complete_batch);
+> +	bio_list_add(&batch->list, bio);
+> +	local_unlock_irqrestore(&bio_complete_batch.lock, flags);
+> +
+> +	schedule_work_on(smp_processor_id(), &batch->work);
+> +}
+
+Maybe do something ala:
+
+static void bio_queue_completion(struct bio *bio)
+{
+	struct bio_complete_batch *batch;
+	unsigned long flags;
+	bool was_empty;
+
+	local_lock_irqsave(&bio_complete_batch.lock, flags);
+	batch = this_cpu_ptr(&bio_complete_batch);
+	was_empty = bio_list_empty(&batch->list);
+	bio_list_add(&batch->list, bio);
+	local_unlock_irqrestore(&bio_complete_batch.lock, flags);
+
+	if (was_empty)
+		schedule_work_on(smp_processor_id(), &batch->work);
+}
+
+Outside of these mostly nits, I like this approach. It avoids my main
+worry with this, which was contention on the list locks. And on the
+io_uring side, we'll never hit the !in_task() path anyway, as the
+completions are run from the task always. The bio flag makes sense for
+this.
+
+-- 
+Jens Axboe
 
