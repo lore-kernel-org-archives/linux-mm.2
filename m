@@ -4,98 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE0DFEA807
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 05:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1630FFEA80A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 05:24:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4589A6B0005; Wed, 25 Mar 2026 01:17:45 -0400 (EDT)
+	id 414946B0005; Wed, 25 Mar 2026 01:24:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 409986B0089; Wed, 25 Mar 2026 01:17:45 -0400 (EDT)
+	id 3C5076B0089; Wed, 25 Mar 2026 01:24:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31F2C6B008A; Wed, 25 Mar 2026 01:17:45 -0400 (EDT)
+	id 2B4256B008A; Wed, 25 Mar 2026 01:24:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 236E56B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:17:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C8DA21B8034
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:17:44 +0000 (UTC)
-X-FDA: 84583428048.26.227F1F9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 405FA40005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:17:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sbyTnvQX;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774415863; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 16F406B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:24:14 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7FAD1606FC
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:24:13 +0000 (UTC)
+X-FDA: 84583444386.15.65AA87F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3158C100005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:24:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LGgSD4R6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774416251; a=rsa-sha256;
 	cv=none;
-	b=1ANhzxC0Lq3qGEXdH1m37Wnee2IglAm1q1TpnyNHOJTIKbVb1onlyNaZjc9LytuqZuX0DK
-	0wbyXqSb+Q+Ap1rc/hzgJogIotw+w0Mn9zgGYahnw3bk8U9b4qvRaGggqbJtiZ0JzmpKN3
-	DD/XITXBwSkVGImk5n9onPwA3nFupLE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774415863;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/HducUYbwe5EZQIsYv3Zl2v/PYNEHVmUXeWTxd9fkKM=;
-	b=QdqsUpuzSIn/IKXQoLycwig3HbOIUxd7+Mz5lLar1nuYekTzOONYMRIjEUfNbT9+A/w36L
-	QOmFnZioD4EK8TDDk2Usm/IjES5mMSJJ6s7mEOe7JzyIl0gCaIoP1d5PZe0Af9a0xPjq89
-	DiuZM5X1FqqMd0uZvhWXaPC0JNb0xfc=
+	b=eYClTX7To63eJDsckA01pgnRHctlf9fM6FQOQIFVpFMBu4m7e1OdWpaNm8pLYnRFykd5q9
+	T7KognwqLdDRqcxe+AhOF6Le70OghUTI4fHxLEt86YFC9b0/jfryTRG0/kzYMLtRXb4K3z
+	tryyZsYJVjIVRC/JCAf3N2tM5NpaUzA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sbyTnvQX;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 39A8E600C4;
-	Wed, 25 Mar 2026 05:17:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A087C4CEF7;
-	Wed, 25 Mar 2026 05:17:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774415861;
-	bh=pjCTKc2xw7ZjdrFHVDgRIXNLOjgy/TRByZz3N7OKr24=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sbyTnvQXzYmouz0eYNVcPEX6pMhS8V6URGzQpnmCRb0P7u4qw+MybOEB1rtSyBcxl
-	 epwRgUITlUDkRsv9POXJEM5oXbLtv9PKoRgy3xmeJ1lTBKf/cm0QKBbGl6bF84Swjn
-	 Zr1ZBKZAwcAbKGF/uqLZvr1xPgaxD1vrVWK1WRnRKz571ns0ycn1JgKd8NL/aX+ntJ
-	 ThVYCz5bxT2XHtCFCMTSFWCf3hQ9O6gyU0KjF4ni2Px8pC9h0XnDtx4XxiD6V8qDIq
-	 zQdYqBz/9mnUARWpOVUPbkGF7twb9qM4Z8jcm2Q4TbDe7O2/iNizT+TgwMtroCbdXG
-	 QMZNdBkqxQCMg==
-Date: Wed, 25 Mar 2026 14:17:39 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
-	kamalesh.babulal@oracle.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com,
-	mkoutny@suse.com, akpm@linux-foundation.org,
-	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
-	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH 2/3] mm: memcontrol: correct the parameter type of
- __mod_memcg{_lruvec}_state()
-Message-ID: <acNv8w-xNWwZHVo9@hyeyoo>
-References: <cover.1774342371.git.zhengqi.arch@bytedance.com>
- <90524ca3806e24105ab5f2d69435f57c2ae034cb.1774342371.git.zhengqi.arch@bytedance.com>
- <acM93qmvDFofjWdM@hyeyoo>
- <5a9d9152-8e23-4438-a322-ec524fd159a6@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a9d9152-8e23-4438-a322-ec524fd159a6@linux.dev>
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LGgSD4R6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774416251;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=6zkFOY/CuqW+Rj0vk+tXC4jnRaEY53MLFoCHgXb2Pbs=;
+	b=ZUsluD+YxqyDbIitvTDiGpXIau3mfanM5yLUU3D5OkiXWdybNQSVvdAmmKpSJ5xU1tDuo0
+	RMkFwvgSV+WQDnA7ApMplZzSIJMu03OBNlwdUN4II4xnoDOBTegHWzA4eE2PxrNafwEj/Q
+	5b8I734Akc/NGWtpDGhiPNfzIfWdUf4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774416252; x=1805952252;
+  h=date:from:to:cc:subject:message-id;
+  bh=DQrJC7dyBQ9LgVoCAfL8W6FvWRvjfLA74pprv2ClgI4=;
+  b=LGgSD4R6NVoP3PnwJ79M4bBR4mamVnkvJZoKPncbGOFbFaXg1zkSBeNg
+   a6BsfP5JDJIzaI3IgW/yHsocLWIby7mpSUXA+7d2BUo0TmpiW/gW4a8QV
+   ysQVm0UjWJiKCAy6UqP6NQiRZSF6KiZs47WmjBjuC6RVane6yG/AkCjzV
+   OPl2oJRJ1PG1t0G42Di3AysYcOUrms2z8QtkqOB5TrK4DvvFLxy8L/lVH
+   67Nlh9HtHbZ66Q7Evjx1QwCBGhaRaAEmQUHANjxLFdvv5YRa33I6LKq6L
+   SmuesVxrHPT4SI3g+uJWJPIshbjCvfc5G+OkRR7VtdGrUrK3iqloIsEBo
+   Q==;
+X-CSE-ConnectionGUID: M/iQ6XW3R5mB5XfEMQ3HPw==
+X-CSE-MsgGUID: HPEWUAiJSNKIxcZrTKmsHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="75333112"
+X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
+   d="scan'208";a="75333112"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2026 22:24:10 -0700
+X-CSE-ConnectionGUID: 7cdP0t8cRjO0giEige8+mA==
+X-CSE-MsgGUID: +cdNCMBXQUS9SH1SIz5a+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
+   d="scan'208";a="226211092"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 24 Mar 2026 22:24:07 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w5Giq-000000006Ej-3sFb;
+	Wed, 25 Mar 2026 05:24:04 +0000
+Date: Wed, 25 Mar 2026 13:23:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chengkaitao <chengkaitao@kylinos.cn>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-stable 72/140] arch/sparc/mm/init_64.c:2582:16:
+ error: call to undeclared function 'vmemmap_pgd_populate'; ISO C99 and later
+ do not support implicit function declarations
+Message-ID: <202603251338.grra8xt7-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: bqh5cbdmipihib13bnke7atqjixspaob
+X-Rspamd-Queue-Id: 3158C100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 405FA40005
-X-Stat-Signature: f7wewzdszihccsjaxh4px5f5wid4o3dt
-X-HE-Tag: 1774415863-276566
-X-HE-Meta: U2FsdGVkX1/mzj5FQFG0oO3j9CEkt3WBVA2ihLSrF6pxi4UZsIik2Y009b6VIverILPdChABT/bT57cUw/q/vX9tvb5DTOFP6YWwlFw1ib6u6gs+WFMASI209vTZYS5bHQ97ZVh6BIpf4Ep9W5LsIXNZC6kBnO6zrxv1uZbH9P1/2+0z6wQkCcFupX+FhsexPz84l5m4CZXMNZAkR6d1gU5s5DiFYYTDq9AaI8DcF4QDeCpW21pyTc+OVoUxU7Ptf2aKK+YGTuch15QNrA3JKB6mlc6PjsTINC8l2FpwP5iFgCIflQpx/gqPyIsYiXlE9Kt+oQlApXaUNuQtFbFD64FZJwTRLU44bB22WX/Q6DclBG7+WQKwJVcRz6kxPROXoV+yKtFcHwFZoa+1G2DEPDislWpL/VJVeKQ7MGCqr/GFUv+C0KdvxsFXwXoQLRkeVr1CIfZONdj2185Mkl8wxjUdDZe1rCBWEw+BsrZLkB314FXj2/NxhiPf5Q1InD3d3mi/03Z+MdtjVySoxAK/uoRhVDXkiRw52/BV9DsOHU4bEURWIbuTsyWla/ioo+ntDLXIfGCZ1wCS2o4GkxObztjb0Hnmv8JZm50sZTl5u9XAv5bI25Gx1DnqIkDWTf3cDqh1GXMdqfnHmWOt25i2BA9KfteM4bS+QEkgaQ2gofMOiXlHjGcV/+6bsmefzsZ6BNvGbZhEkkDZtrVMiTJhuhpbKfh2u4Tn6u+PMR9J0Rlux79E9O1bDKl/N8WqsedRIiETa7Oy+4ixhESTwK3ZHNhAWpWnUDEgMNOC5QDzobcKVa/+r+nZFMgf5SqiTD22sM0Gpd2GJs+Ewc2GzNEDOoacuof6LUxgg0U1l7rAd1jtl9OQpvwmVLIWbZ+j1baJMsViTCdMQZx9/fLYw/8qkFFrGeqNnFJKe3C2uCn3I9r4fkCVMJ9rqHfEhyU3d7PlO1ewAxAwq3oVHg44frw
- LCCU/LmK
- GHjhhtklAOFtCM3n0MUTUJRuGo74lgFJyWpiFC/Fki8X6MI6JW2EPFWvhhGedA1S4AVoDHUM5KaZdzYEmKx4IuWQqO2JYNS/Ia0DbQUunnVmcFJqmqK57Dj1j68r020xloqzoF7tpmqLmTP1sn8ECo7JmZJPpQKjGMekuxemuLzfPUeNRutHEdFpwxGwAK3+KNxD7IELgbXr5bWavl2WpHkBTKP1giyEedCrPZ8bWkVp60EsbMWHgOWbE/DnMP6aaY0zRiS91wYWFC3PbRSHzfheIx+XXb0E41Q7PLMaguCSeVuFzTRDW+kFkjdnwuC0NUP7Zrj02Z32IsEhb3VSstUwbquCvgXL+dRwcaOr3qJnVNRPJl5H2nBMZko8OjMHdlnSd
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774416250-124037
+X-HE-Meta: U2FsdGVkX1+J35Ui1KxFsYk79RlObgyEHINnOj6HlYD3aMGnbl6Cp8teuWtXzP7tAAPKQ5zwUbBQ4a+BMIz6l732AqZ109/6FbzCLqUkytA/BaEYFSoaHttDIXGkJ0h1ZinRgSIAar8yEJKKquo2hRxkhnmqvtpt9fVahJrEjpzNbVHU/A9khXRj9J5JZnQHW2kWKmkrYiHCjfRQKkHA3hrdYvo9+KZSeTNWzIDOsgIK06zpEFq2Ws7cmhPFLlLleLZ+xAupYCN+fRrdaBmhO5cIFse/+57FVeUrHTzwogUEdGmszNLzDrsqDcblYUof7Ksh2BQFI2P2UNI97fZB10IK0JTXeJ6W+zUf+Vw4XNXkXV1f4VmNVRx7hvC5UBFHl2SKJvfG4CEmXboWlWbD3tCrJ9pt8/inWB6Ldo60d5c2QC14wZFK4dQWFDDUx1zDWT3/NKRcCtYvsoijDmmR4+H805AqdSk7q3qbZStHdOGXoYQwf50+VUFytw19lkBheRR7Tl7dYt30+hJnSp3jAI+5snHgrhEl6EpsdVEUsPMHKq+9zndYQ8+cKUwQkacExEm1PBtE6mG7DV7Pdhs0SudQ2/owUbD1xkQWrCOBB2OCCzsPC1x51YTdAloQctf5apSG8MxZZU8fh+hUGBkz1koe+xf6WldUER8MizQb2vPwLb/UWVC8c+/Pqzxo5RFLPk6dagyAKCZaiNcQKTQykHSb8zmhaA8nANn45OBAS26FbNstu4lI1AEcaa+LiNsAVuO9tcLu6cI1gRJkhZxUIQOp36tX6QdMnRzNzx65hoFSF+JrsPV5fdJcZvSe9NJF7PvLHS0GJfV+SFaf3ubdAY3yNA9F9sTmlo4/Bj9T2w6DwoCYNmb104rjbos98YoU5oS3OSjmp6xGShiGVfW6EWeL5QFFotOeXZZssYuUGhSu3YH5uFcncItSDryxpf7HZXijYOiQP/uIRCaF3Pt
+ xBoKx8MH
+ PBdIVkc2enjtKLPcCG1zxv9s7hwPUZ4RPJWaiVYy+zHr3hFow410ziPOPwaTUjSsdB4L7bGgRl5DoT429mbAjclfRKHwR5YbVCSPoTCTKg0uu2yk1uJoLf9SCia+L23wxcKiWz055Fd7Jr/oxlx4TBeMmFXIpzsg1EnT3PQuCuwCD2Oysdshvo8LjY284OCtNb4aHkO9AGTSK9Xffl/D58kHV0YtKYiMGdTCaMlfmQW+YgIe8cibvLJj716+loW3ff8fY31eK2e7mv8JKbfruCnvl+CYdnk2yqWkZi60/v5OVWHDcfbS1/n3aDd76fl2EhakNxoIhKWHtX0Teytf6T6l3GWbjJmhqnYohvtaVTcSZjntmV2B+EG8BJLVGpvy35uC6PVUhz6qvYtyj5lboadzC4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,112 +104,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 11:25:06AM +0800, Qi Zheng wrote:
-> On 3/25/26 9:43 AM, Harry Yoo (Oracle) wrote:
-> > On Tue, Mar 24, 2026 at 07:31:28PM +0800, Qi Zheng wrote:
-> > > From: Qi Zheng <zhengqi.arch@bytedance.com>
-> > > 
-> > > The __mod_memcg_state() and __mod_memcg_lruvec_state() were used to
-> > > reparent non-hierarchical stats, the values passed to them might exceed
-> > > the upper limit of the type int, so correct the val parameter type of them
-> > > to long.
-> > > 
-> > > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> > > ---
-> > >   include/trace/events/memcg.h | 10 +++++-----
-> > >   mm/memcontrol.c              |  8 ++++----
-> > >   2 files changed, 9 insertions(+), 9 deletions(-)
-> > > 
-> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > index 7fb9cbc10dfbb..4a78550f6174e 100644
-> > > --- a/mm/memcontrol.c
-> > > +++ b/mm/memcontrol.c
-> > > @@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
-> > >   #ifdef CONFIG_MEMCG_V1
-> > >   static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
-> > > -				     enum node_stat_item idx, int val);
-> > > +				     enum node_stat_item idx, long val);
-> > >   void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-> > >   				       struct mem_cgroup *parent, int idx)
-> > > @@ -784,7 +784,7 @@ static int memcg_page_state_unit(int item);
-> > >    * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
-> > >    * up non-zero sub-page updates to 1 page as zero page updates are ignored.
-> > >    */
-> > > -static int memcg_state_val_in_pages(int idx, int val)
-> > > +static long memcg_state_val_in_pages(int idx, long val)
-> > >   {
-> > >   	int unit = memcg_page_state_unit(idx);
-> > 
-> > Sashiko AI made an interesting argument [1] that this could lead to
-> > incorrectly returning a very large positive number. Let me verify that.
-> > 
-> > [1] https://sashiko.dev/#/patchset/cover.1774342371.git.zhengqi.arch%40bytedance.com
-> > 
-> > Sashiko wrote:
-> > > Does this change inadvertently break the handling of negative byte-sized
-> > > updates?
-> > > Looking at the rest of the function:
-> > > 	if (!val || unit == PAGE_SIZE)
-> > > 		return val;
-> > > 	else
-> > > 		return max(val * unit / PAGE_SIZE, 1UL);
-> > 
-> > > PAGE_SIZE is defined as an unsigned long.
-> > 
-> > Right, it's defined as 1UL << PAGE_SHIFT.
-> > 
-> > > When val is negative, such as during uncharging of byte-sized stats like
-> > > MEMCG_ZSWAP_B, the expression val * unit is a negative long.
-> > 
-> > Right.
-> > 
-> > > Dividing a signed long by an unsigned long causes the signed long to be
-> > > promoted to unsigned before division,
-> > 
-> > Right.
-> > 
-> > > resulting in a massive positive
-> > > number instead of a small negative one.
-> > 
-> > Let's look at an example (assuming unit is 1).
-> > 
-> > val = val * unit = -16384 (-16 KiB)
-> > val * unit / PAGE_SIZE = 0xFFFFFFFFFFFFC000 / PAGE_SIZE = 0x3FFFFFFFFFFFFF
-> > max(0x3FFFFFFFFFFFFF, 1UL) = 0x3FFFFFFFFFF
-> > 
-> > Yeah, that's a massive positive number.
-> > 
-> > Hmm but how did it work when it was int?
-> > 
-> > val = val * unit = -16384 (-16KiB)
-> > val * unit / PAGE_SIZE = 0xFFFFFFFFFFFFC000 / PAGE_SIZE = 0x3FFFFFFFFFFFFF
-> > max(val * unit / PAGE_SIZE, 1UL) = 0x3FFFFFFFFFFFFF
-> > (int)0x3FFFFFFFFFFFFF = 0xFFFFFFFF = (-1)
-> > 
-> > That's incorrect. It should have been -4?
-> > 
-> > > Before this change, the function returned an int, which implicitly truncated
-> > > the massive unsigned 64-bit result to a 32-bit int, accidentally yielding the
-> > > correct negative arithmetic value.
-> > 
-> > So... "accidentally yielding the correct negative arithemetic value"
-> > is wrong.
-> > 
-> > Sounds like it's been subtly broken even before this patch and nobody
-> > noticed.
-> 
-> Thank you for such a detailed analysis! And I think you are right.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-stable
+head:   e393ce79b3cf63c2810be882eb6e531a54f520f4
+commit: e504282091c8e4dc4f945c89d9b44ac2e0bfe504 [72/140] mm: convert vmemmap_p?d_populate() to static functions
+config: sparc64-randconfig-002-20260325 (https://download.01.org/0day-ci/archive/20260325/202603251338.grra8xt7-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 054e11d1a17e5ba88bb1a8ef32fad3346e80b186)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260325/202603251338.grra8xt7-lkp@intel.com/reproduce)
 
-No problem ;)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603251338.grra8xt7-lkp@intel.com/
 
-> The memcg_state_val_in_pages() is only to make @val to be in pages, so
-> perhaps we can avoid the above problem by taking the absolute value
-> first?
+All errors (new ones prefixed by >>):
 
-That would work for memcg_rstat_updated(),
-but not for trace_mod_memcg_state()?
+>> arch/sparc/mm/init_64.c:2582:16: error: call to undeclared function 'vmemmap_pgd_populate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2582 |                 pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+         |                              ^
+   arch/sparc/mm/init_64.c:2582:16: note: did you mean 'vmemmap_populate'?
+   arch/sparc/mm/init_64.c:2565:15: note: 'vmemmap_populate' declared here
+    2565 | int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+         |               ^
+>> arch/sparc/mm/init_64.c:2582:10: error: incompatible integer to pointer conversion initializing 'pgd_t *' with an expression of type 'int' [-Wint-conversion]
+    2582 |                 pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+         |                        ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> arch/sparc/mm/init_64.c:2591:9: error: call to undeclared function 'vmemmap_p4d_populate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2591 |                 p4d = vmemmap_p4d_populate(pgd, vstart, node);
+         |                       ^
+>> arch/sparc/mm/init_64.c:2591:7: error: incompatible integer to pointer conversion assigning to 'p4d_t *' from 'int' [-Wint-conversion]
+    2591 |                 p4d = vmemmap_p4d_populate(pgd, vstart, node);
+         |                     ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> arch/sparc/mm/init_64.c:2595:9: error: call to undeclared function 'vmemmap_pud_populate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2595 |                 pud = vmemmap_pud_populate(p4d, vstart, node);
+         |                       ^
+>> arch/sparc/mm/init_64.c:2595:7: error: incompatible integer to pointer conversion assigning to 'pud_t *' from 'int' [-Wint-conversion]
+    2595 |                 pud = vmemmap_pud_populate(p4d, vstart, node);
+         |                     ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   6 errors generated.
+
+
+vim +/vmemmap_pgd_populate +2582 arch/sparc/mm/init_64.c
+
+c4bce90ea2069e5 arch/sparc64/mm/init.c  David S. Miller   2006-02-11  2563  
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2564  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+0aad818b2de455f arch/sparc/mm/init_64.c Johannes Weiner   2013-04-29 @2565  int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+7b73d978a5d0d2a arch/sparc/mm/init_64.c Christoph Hellwig 2017-12-29  2566  			       int node, struct vmem_altmap *altmap)
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2567  {
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2568  	unsigned long pte_base;
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2569  
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2570  	pte_base = (_PAGE_VALID | _PAGE_SZ4MB_4U |
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2571  		    _PAGE_CP_4U | _PAGE_CV_4U |
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2572  		    _PAGE_P_4U | _PAGE_W_4U);
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2573  	if (tlb_type == hypervisor)
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2574  		pte_base = (_PAGE_VALID | _PAGE_SZ4MB_4V |
+494e5b6faeda1d1 arch/sparc/mm/init_64.c Khalid Aziz       2015-05-27  2575  			    page_cache4v_flag | _PAGE_P_4V | _PAGE_W_4V);
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2576  
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2577  	pte_base |= _PAGE_PMD_HUGE;
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2578  
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2579  	vstart = vstart & PMD_MASK;
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2580  	vend = ALIGN(vend, PMD_SIZE);
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2581  	for (; vstart < vend; vstart += PMD_SIZE) {
+df8ee578894ebb5 arch/sparc/mm/init_64.c Pavel Tatashin    2017-11-15 @2582  		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2583  		unsigned long pte;
+5637bc504834045 arch/sparc/mm/init_64.c Mike Rapoport     2019-11-24  2584  		p4d_t *p4d;
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2585  		pud_t *pud;
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2586  		pmd_t *pmd;
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2587  
+df8ee578894ebb5 arch/sparc/mm/init_64.c Pavel Tatashin    2017-11-15  2588  		if (!pgd)
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2589  			return -ENOMEM;
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2590  
+5637bc504834045 arch/sparc/mm/init_64.c Mike Rapoport     2019-11-24 @2591  		p4d = vmemmap_p4d_populate(pgd, vstart, node);
+5637bc504834045 arch/sparc/mm/init_64.c Mike Rapoport     2019-11-24  2592  		if (!p4d)
+5637bc504834045 arch/sparc/mm/init_64.c Mike Rapoport     2019-11-24  2593  			return -ENOMEM;
+5637bc504834045 arch/sparc/mm/init_64.c Mike Rapoport     2019-11-24  2594  
+5637bc504834045 arch/sparc/mm/init_64.c Mike Rapoport     2019-11-24 @2595  		pud = vmemmap_pud_populate(p4d, vstart, node);
+df8ee578894ebb5 arch/sparc/mm/init_64.c Pavel Tatashin    2017-11-15  2596  		if (!pud)
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2597  			return -ENOMEM;
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2598  
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2599  		pmd = pmd_offset(pud, vstart);
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2600  		pte = pmd_val(*pmd);
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2601  		if (!(pte & _PAGE_VALID)) {
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2602  			void *block = vmemmap_alloc_block(PMD_SIZE, node);
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2603  
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2604  			if (!block)
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2605  				return -ENOMEM;
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2606  
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2607  			pmd_val(*pmd) = pte_base | __pa(block);
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2608  		}
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2609  	}
+2856cc2e4d0852c arch/sparc/mm/init_64.c David S. Miller   2012-08-15  2610  
+c06240c7f5c39c8 arch/sparc/mm/init_64.c David S. Miller   2014-09-24  2611  	return 0;
+2856cc2e4d0852c arch/sparc/mm/init_64.c David S. Miller   2012-08-15  2612  }
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2613  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+46644c2477c5890 arch/sparc64/mm/init.c  David Miller      2007-10-16  2614  
+
+:::::: The code at line 2582 was first introduced by commit
+:::::: df8ee578894ebb591c2995cce422e6189c8bb757 sparc64: simplify vmemmap_populate
+
+:::::: TO: Pavel Tatashin <pasha.tatashin@oracle.com>
+:::::: CC: Linus Torvalds <torvalds@linux-foundation.org>
 
 -- 
-Cheers,
-Harry / Hyeonggon
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
