@@ -4,114 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1934E109C046
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:47:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3629A109C046
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:49:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46A846B008A; Wed, 25 Mar 2026 12:47:42 -0400 (EDT)
+	id 72D786B0005; Wed, 25 Mar 2026 12:49:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C276B008C; Wed, 25 Mar 2026 12:47:42 -0400 (EDT)
+	id 7048F6B0092; Wed, 25 Mar 2026 12:49:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30A816B0092; Wed, 25 Mar 2026 12:47:42 -0400 (EDT)
+	id 61AE86B0093; Wed, 25 Mar 2026 12:49:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19A686B008A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:47:42 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C443C3265
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:47:41 +0000 (UTC)
-X-FDA: 84585166722.12.FC98FCA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6D44040006
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:47:39 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5147B6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:49:29 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDD931A0873
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:49:28 +0000 (UTC)
+X-FDA: 84585171216.01.1BE9B8B
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 03C6840015
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:49:26 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a4Rzizqx;
-	spf=pass (imf04.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a4Rzizqx;
-	spf=pass (imf04.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774457259; a=rsa-sha256;
-	cv=none;
-	b=I7uh8jk0pHvP9+tZDO2TeL95sDDZ3QTiD9NtClMhLd6q9erBiBTApkK8GrlsJkoR9Q6EmF
-	dzRMaDMj9iAqdMIAwjZB9HdK3U+CN0zWA/gnwuXurKU9xxAPM3nMyCuvg0eWfuIUmV6pZ5
-	1dStbWiff7Si3W3gKQu7M9V9IJ/pZ40=
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LZN6RyHB;
+	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774457259;
+	s=arc-20220608; t=1774457367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1qr1ol5vgsFYLsTQCwug9Kc0NRV9WjDpLVa+vxqFIkA=;
-	b=10fYQMHQ2/9GnQFH/gJCWHihEVNXO507ouEMEod7fUre5lXH/QoSSsML9NkunGjvIseSlP
-	1m0OA+KjE77m4zqjLKiYFrCfAGxUGsMs/7P9dBZ3D+9pVDUEmnoKI1ug1qC6vY9EnZyfic
-	M+zpPeHzITzH4jzooCXbJpLprukxXFU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774457258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1qr1ol5vgsFYLsTQCwug9Kc0NRV9WjDpLVa+vxqFIkA=;
-	b=a4RzizqxMFvslvxVVkyQXz1r6+BX1xIG36d5kuLHu7fIG65wqKdqxFixCHlXZx299fLvu1
-	hsm6vhYP2SjxEnx6wCDABX8vcZB8rKaIgMe2Qbn1nsh1KlNnRvztSo0z04/Z2T9DciiUoG
-	66F3b4A6mXqL6R1szg3lma0EllvxYiw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-510-LZwgIJoPN5aDYJv_C8P7yg-1; Wed,
- 25 Mar 2026 12:47:34 -0400
-X-MC-Unique: LZwgIJoPN5aDYJv_C8P7yg-1
-X-Mimecast-MFC-AGG-ID: LZwgIJoPN5aDYJv_C8P7yg_1774457252
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 73AC2195607A;
-	Wed, 25 Mar 2026 16:47:31 +0000 (UTC)
-Received: from [10.22.90.27] (unknown [10.22.90.27])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4E61D19560B1;
-	Wed, 25 Mar 2026 16:47:27 +0000 (UTC)
-Message-ID: <f7159388-c13f-408c-8cb5-02da8b474f57@redhat.com>
-Date: Wed, 25 Mar 2026 12:47:26 -0400
+	bh=0KHc+LjoEpTOzgKnEsolcMaPHiEs9PP1WuXP2Jldb0w=;
+	b=Qv5dCVBiq4PcAbwV5RpGILVm0/SAwsJCIeN1zAUiCM7Kh7qxlJQ9pq3F15c/QEP2s5rXFu
+	zTa5cOkhBER1+kiijzeN1XXryZnjcDbf5mOT8Nli2BTNJEpnBgTnpNzBYJBfbHVuHG79Mu
+	jUNzpDzvL/V/5XEOeVqG7o/MihbsD20=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774457367; a=rsa-sha256;
+	cv=none;
+	b=lZDDjHRCxD2LdvgEPuNswXo/NFxYjwj2Glv59es64NPtIYX7zYgpB2goLNr1ClKH49Mhlt
+	OhxvhY5hb9OtO5JjMNK3tWoKxPboVLwcogx4ckUkvn/kxYTgJ507ryPtNpxLGyF6E/0CIC
+	43BLot/Ncpsj10XDbOI8zWs1fTQoZj4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LZN6RyHB;
+	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-38a42a0d7f7so9989691fa.1
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774457365; x=1775062165; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0KHc+LjoEpTOzgKnEsolcMaPHiEs9PP1WuXP2Jldb0w=;
+        b=LZN6RyHB2lJtUsEh0HUecABNYY08Wa847kc57714Qw/0ntm/lAwQeF3b5/VqvoitW5
+         8FZnyUThzJWmmj9pk4/XAGZq+rMZbEVYavDfnkAx5t9ln1DmZm6ntubz2soh+XryKkIL
+         Q8b3LDruvU0XijEvhN0EeZIaH5t3X4wSgxiVLHIV8/Ni3Guu9YKW4XbKmmXWlYf88HPo
+         7Be3rzLXxM3f/EUGz1giNLT2QI5Newj0LnZitj9dtmXqqDlyXrrshzTUj3pdcSOz9iHY
+         olTHJCsRaz99Lu+nc2r7ajLWBH7l9SQ9XLEvnhcJr4FqAbUtrb//8NaDlOqo7CQ+aCLI
+         Bd6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774457365; x=1775062165;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0KHc+LjoEpTOzgKnEsolcMaPHiEs9PP1WuXP2Jldb0w=;
+        b=TEch7jCej433eoj01FreiFOjTAKSmYXnbYXzgYXsIrj46QIdBhJPCx5i5/W5Jpp2Lh
+         yQ8ncImEoHFw3Fptc0ay0kWGb0wpZVACcHXHiWpwzvDiwhWIjWceE+CFf9pPLLQVb8Wi
+         Dk7X9cq525ydY0dSQpjGpA9Oi+NHWHfCWBA3N5GO5P6UhulFIC0XcvsFMyO8AhvInUn0
+         eBdsPU/Tw0F3jCyBqV6FkVp3wkdqGwA+OCnKx7lb4c5jT+GPTAD3JQcOJT8f/X99Q/zg
+         iqzzOcAMg/Ff48f4ZN9VmXfu5Agp/ZNkmZ4yZ+XsGFjbsfXiijQA6Fn+g9ey9J6tWoW+
+         rT2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWlu9qutBYtLpNIVe/0HQzCSX26D6YLApo3vBcviWVlJpq4MN6mfx53g4qNfaWGTQy7FXVdYeMc8A==@kvack.org
+X-Gm-Message-State: AOJu0YxvarZs5Ir/nmk2BQRGsJTpY428KKdzc/py37mPPCKiWJRLAGGR
+	075iK6kHTBEMBYoUXyqqREubq9p5vspG+KDWxVbNpuyliG+P6WWLanXg
+X-Gm-Gg: ATEYQzwLeP7w1jHpRFnNisnWyq56J+xQRrhbY+NW3MZXMtgvEn+EqALzo1+l4/Y9Jib
+	jMm/d3wyiSAqsG8Wa5VnvB5DXGzOOCZIb+2aAY4vlCmz9gROjKX6pHYOfQsmMW524KnR61rK0yp
+	LeUYz7fX7pjI3jJK3cGqY4dZZvRT/1lEo+QD9j20z9ex2M68Q+kps9DLK63W6OlEKa3SlvztDDG
+	MuXe1UFOoDtPVAMvPduIgOdxFKVRcs4qwmFBl1CSbYOlHZM39NFq9MumZNu8HjDKVx1g7afYVVA
+	910FVJDEi9Ia9krW0qBMma273JUPjATJZTIEo8vVUl+soTmbpga3R3VeEnvhLutfTkWNFsLndfJ
+	A1OPAOkPEHqOgGuGXSo9EzlALdfl0UUPOHensv08WudM4UTziUJB4EMr84iifVsWJ
+X-Received: by 2002:a05:6512:15a9:b0:5a1:3d15:2861 with SMTP id 2adb3069b0e04-5a29b4f8bccmr1758576e87.6.1774457364681;
+        Wed, 25 Mar 2026 09:49:24 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2a06892b2sm13867e87.40.2026.03.25.09.49.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 09:49:23 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 25 Mar 2026 17:49:22 +0100
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
+	Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>,
+	Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	Ryan.Roberts@arm.com, david.hildenbrand@arm.com
+Subject: Re: [PATCH v3 2/3] vmalloc: Optimize vfree
+Message-ID: <acQSEn2ZfF5zEtE6@milan>
+References: <20260324133538.497616-1-usama.anjum@arm.com>
+ <20260324133538.497616-3-usama.anjum@arm.com>
+ <1D88CFF0-8A74-413F-9A6A-39E27B760AE1@nvidia.com>
+ <acOjIcqyIVY9KNn0@milan>
+ <a79ff8ba-ed4a-43d0-9c4b-d2883a5c48e8@arm.com>
+ <acQKZBqTjpm6-k2f@milan>
+ <84f14a13-6236-47ef-afc5-e168d16caeec@arm.com>
+ <cbc7c2d7-963e-4630-baf5-287fb127774f@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] memcg: Scale up vmstats flush threshold with
- int_sqrt(nr_cpus+2)
-To: Yosry Ahmed <yosry@kernel.org>, Li Wang <liwang@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
- James Houghton <jthoughton@google.com>,
- Sebastian Chlad <sebastianchlad@gmail.com>,
- Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
-References: <20260320204241.1613861-1-longman@redhat.com>
- <20260320204241.1613861-2-longman@redhat.com> <acE2MoIZ0pl7U7PX@redhat.com>
- <CAO9r8zOTYPgqc_7TVWjQ=adn=pH1TLLX2cBNfa1Y-x=TOFJT1Q@mail.gmail.com>
-From: Waiman Long <longman@redhat.com>
-In-Reply-To: <CAO9r8zOTYPgqc_7TVWjQ=adn=pH1TLLX2cBNfa1Y-x=TOFJT1Q@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: exgmwRiGd0MVnorEzQNiG_5VyXAsneBEjNM6EPLm-Ko_1774457252
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6D44040006
-X-Stat-Signature: xwwdhafmd6skizuanhw3r157zqappwup
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cbc7c2d7-963e-4630-baf5-287fb127774f@kernel.org>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: u4d1ifguqb9u7nkguw69dcoa7zg6gdqm
+X-Rspamd-Queue-Id: 03C6840015
 X-Rspam-User: 
-X-HE-Tag: 1774457259-712974
-X-HE-Meta: U2FsdGVkX19mAe60BFLjfhMQdBsFZU/Ru5wcptdTv1wGOBMmXWXvUeEBtlYYRoXX08awZCgc7sAKNJQO/5XVfwrP91svLkopil0ZDf7Y0pEGHe78I1XhUAIhlms6p0eVVV8Ikwd9ZG0hRBTfhMEwQ1DqdNtzSmZ+2lVof8ghDTtKeUGtMVCb3KLfOkOLFYb6zOyE0/VXjSfga7BEBJ6rN8Ct+6T1APsxIOERbvU+Zpv+J2j4xDd9S//yKA8jzi9S6Z4G8qY7L6zT4qqKFJDEJ5Kc8JFrDTJrDmxybuNK65IWyLQGTvG7uvVjIRKTFuKdRNxYsgNdBsQ5QvyXFsiElh00FV8OIY2S4Oe863Il6Kv0m8SAy29Xyp/bhEHOpsELDLSj6/kOi5LY4yeT9sgTfYD0GintbGObTvzamPqSasI8MT0wa25nA2lEqymEGWk3bamR2RMKojyUu7J4VZjg29zAsLqjyktdLJmTn7YWdIawmMKLA9b/Y9lBaqw0osrDjAAxRfUsnCz1lQ0XTMWL2QyyyUpFmSK1lmwYc53fQrB8HvhvmVJqC5hR7SAWUkxEcwGxisQJU1ucerbBnk4JtTKyAtXSn7337RRHmiFuLkyL3TSuvo80yuoZgALFbTtziMSuNkO9UepJSZuFufEG5pF+qADnjTBPpIfNdSZS5+HEFH3sQkMZMemFIWB2+Yo8qCIE58gYKy3q0dhtg1Vhj45/zqEeuxAbW9B89tB9nPyqfezq3/cNa27nKnDLrWed2P4/DMOwKbK4xvmgB1PCQa8Su/uJZmi5nzFfINz4RhjCCodPh1sSSytLWZnXu+RuGjA+nXewZrYrlp9LxAxrmD5St/NEOkf1jQC25+9HuRWV/y0lJhs7F2pwykzMgmTZ/cuhlPaG0ADySJKy6cNIme2u9wkDDjUZgxJoQHPExfEx6iZcy1j13wPslaUXyrwFdwyZNYn4C6j82eLtSNX
- QI6emkSb
- 8D+Uf0qJFIRc2yZa1S2Kp3Nae0AJ2XLfD8lpKuhQoZHPtKc9hd4v2bXRv3/q+wMdJlCgG/IhINy/UVINhFxWOK353pMJgQg+Beib5iz0f2TUjHAaNRXUsPwkD3u/zE87Wzvovt35UdvGskjp2KruF7uVoKVBcffiHor/lH6vN4p0qVUZAoxs1hZcHG87pa61nqKPI/Vdw2VcQuC1LUQlPUv8yYKh+4lpS9PiBRNfD9qI9kwJIYsQvVQF2gZSrISAnIrIjlYk0n+mW1g5GIdEG4h96/A54YCDatsRIAPfnMnJwT2/wMKpI1VTRxbggMoK381nlB53wJmjWoSNzYWaZAFI3e3Gp80XFJUaoHBdYI6YDGidNPy0eM/cINLnbyVUxEf6Ar1XYAz5Exu6Bttbs63DbMdrLrYQ+xsiuaB3ZtNBGt+wt3n5KNDTrZk+XPNSziypd
+X-HE-Tag: 1774457366-4217
+X-HE-Meta: U2FsdGVkX1+mZVhW3wrvR/OyVT0mAehddAvfR5/m2jTPJ2hpfneA2edN9TA4Nwmfrhf8tfD8d7fE5vtlFc/j/WiLatCYgonvuI92R+hZ7eDnBK/j7K1XwAJDv7hqrCbGzjpaDDPP91SSj+HG3tYXaswxVbD6tAaBnBXh28BcfNUAB6ZqaFM2qggOUdefp2IfMt5Vl4KlvBwGLgw3C2rj3Bu61CBSj+OiaviDFLDEEwVqMRM8hg3kWhACyv05zixmeR/EbaTqKC4v1wMTGvq1OeW+G3/Hm0anH7zuz5ZcS2PU+y6iPLk62xYV3JQLXJD3oSPIi34oMGYG9ugx60WNyaB4JyCe48qH9ExBfEmyssxnnMV6cfz4WtmwdM8c4wmx4gb7kbUXglm7Ik+/JpHS8AntE11MwdaK1Ily5ffU+uF3tq1MieJA1efkGvJ5cXMeGz7N4lkaoZq2DvdOIOyK6JUk61hwl99vdwgUc7rb5etEE6V7pAEqvSt/Ug+HFfWBHS+DILqe7bMLHzH5wI9I2bLYB2UL29wyPRaL0lgJe8xm+ifYKH0m5xgzyp3cdf2xw7crwoQXkbXDs1/3R77Uss4YODHAUrqeE86QEo8SLNu63lqnTr2IEKepKHrms/FbLx12eO/rL4ieyq5BbvsKOcwOkymDknGH8jNuFMIGqUb7eXuzC/fum/WgCz9KaqSUaqvIhK4l2BWe1nJWu6UQIvkd0SQEG47j+PGAjNs1fEkxrfk6k6LZCzHnskVZ+LubnSm6frVm7v4iSwcehtvpYEd1/S/b6lpCfqyzJDFERvbQVVEOzbA6L2UWoSyRJFu4wKUScA1jhmKakwxG0vTI6dNJHyRCNoM7oX9lICWloo/b5wqlj/boH9pIOQH0Y5rfwf5snxkNdSHkbSjkaWWQwz9KR/F68xxlrSLozFlNMLESsD1a6rSQnNexTAN9f2CU/GmCDxwkqUxMGnGX8aZ
+ GN9lXFsy
+ PWFItd8VMh5/C8m53jsdUxAMNF7eY6WS5hZKPqZzYFNWKE6CQZvvs3vFNclEo17Bdq1f0r8w3UnLvo6mtDJ2xH1U8rFxVTl916wHs22eL0VbREMnouiPJu0x4bI85IGfgKH3HAfLzBacRmvivsgvMU8vi6ashM6yBVwZhFlnJm1Xxfum++ijbyc7MSz3QrzfBPbV6QpXKssKqyme6YaUZTyInDLFpx0A7G58Q5xYDhUq1mr9p+wd2oUs9Xn2B08VdwCH8jrYabL4i5zkVlOgms7+y+cL3uRx+YESRmqDWGFCnfDn4FJVy7xD2jTM8zL36n+laFNELfPeekjhsDl5EjOR+xwfRQLtd3H4aRwQkFhsSbXXvTS0GUp9ErpmGxB3dhdrFutof71C4IViriiF6hLzSw/zj8QKQrwaSdfuc8Zled6Iq2hlBOJAJoeH82cTeUCsOA717Jdr8+JophqpdQcwiI85CGMMIBa4U9C1qsnbqPNVKOvFvLHGcHVRu0aMXrjMYkg5Ry62ZsrH0y95RbNePmej/jksKFwT9lf9S8iMZ2C0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,54 +137,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/23/26 8:15 PM, Yosry Ahmed wrote:
-> On Mon, Mar 23, 2026 at 5:46 AM Li Wang <liwang@redhat.com> wrote:
->> On Fri, Mar 20, 2026 at 04:42:35PM -0400, Waiman Long wrote:
->>> The vmstats flush threshold currently increases linearly with the
->>> number of online CPUs. As the number of CPUs increases over time, it
->>> will become increasingly difficult to meet the threshold and update the
->>> vmstats data in a timely manner. These days, systems with hundreds of
->>> CPUs or even thousands of them are becoming more common.
->>>
->>> For example, the test_memcg_sock test of test_memcontrol always fails
->>> when running on an arm64 system with 128 CPUs. It is because the
->>> threshold is now 64*128 = 8192. With 4k page size, it needs changes in
->>> 32 MB of memory. It will be even worse with larger page size like 64k.
->>>
->>> To make the output of memory.stat more correct, it is better to scale
->>> up the threshold slower than linearly with the number of CPUs. The
->>> int_sqrt() function is a good compromise as suggested by Li Wang [1].
->>> An extra 2 is added to make sure that we will double the threshold for
->>> a 2-core system. The increase will be slower after that.
->>>
->>> With the int_sqrt() scale, we can use the possibly larger
->>> num_possible_cpus() instead of num_online_cpus() which may change at
->>> run time.
->>>
->>> Although there is supposed to be a periodic and asynchronous flush of
->>> vmstats every 2 seconds, the actual time lag between succesive runs
->>> can actually vary quite a bit. In fact, I have seen time lags of up
->>> to 10s of seconds in some cases. So we couldn't too rely on the hope
->>> that there will be an asynchronous vmstats flush every 2 seconds. This
->>> may be something we need to look into.
->>>
->>> [1] https://lore.kernel.org/lkml/ab0kAE7mJkEL9kWb@redhat.com/
->>>
->>> Suggested-by: Li Wang <liwang@redhat.com>
->>> Signed-off-by: Waiman Long <longman@redhat.com>
-> What's the motivation for this fix? Is it purely to make tests more
-> reliable on systems with larger page sizes?
->
-> We need some performance tests to make sure we're not flushing too
-> eagerly with the sqrt scale imo. We need to make sure that when we
-> have a lot of cgroups and a lot of flushers we don't end up performing
-> worse.
+On Wed, Mar 25, 2026 at 05:34:08PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/25/26 17:25, Muhammad Usama Anjum wrote:
+> > On 25/03/2026 4:16 pm, Uladzislau Rezki wrote:
+> >> On Wed, Mar 25, 2026 at 03:02:14PM +0000, Muhammad Usama Anjum wrote:
+> >>> Sorry, I didn't get it. How does having cond_resched() in this function
+> >>> affects __free_contig_range()?
+> >>>
+> >> It is not. What i am asking is about:
+> >>
+> >> <snip>
+> >> spin_lock();
+> >> free_pages_bulk()
+> >> ...
+> >> <snip>
+> >>
+> >> so this is not allowed because there is cond_resched() call. We
+> >> can remove it and make it possible to invoke free_pages_bulk() under
+> >> spin-lock, __but__ only if for example other calls do not sleep:
+> >>
+> >> __free_contig_range()
+> >> memdesc_section()
+> >> free_prepared_contig_range()
+> >> ...
+> >>
+> >>>
+> >>> The current user of this function is only vfree() which is sleepable.
+> >>>
+> >> I know. But this function can be used by others soon or later.
+> >>
+> >> Another option is add a comment, saying that it is only for sleepable
+> >> contexts.
+> > Thank you for detailed response. I can move cond_resched() to vfree() and make
+> > free_pages_bulk() allowed to be called form sleepable context. But I feel the
+> > current implementation is better to avoid latency spikes. I'll put explicit
+> > comment that this function can only be called from sleepable contexts.
+> 
+Sounds good!
 
-I will include some performance data in the next version. Do you have 
-any suggestion of which readily available tests that I can use for this 
-performance testing purpose.
+> That's probably good enough for now. It can accept arbitrarily large
+> areas, so the cond_resched() in there is the right thing to do. :)
+> 
+I agree, since it will be available for other callers, adding the
+comment is a right way, so people know :)
 
-Cheers,
-Longman
-
+--
+Uladzislau Rezki
 
