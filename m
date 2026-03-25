@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB6A4109C057
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55BD5109C05B
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:59:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26C876B008A; Wed, 25 Mar 2026 14:58:41 -0400 (EDT)
+	id 888A36B008C; Wed, 25 Mar 2026 14:59:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21D866B008C; Wed, 25 Mar 2026 14:58:41 -0400 (EDT)
+	id 8607F6B0092; Wed, 25 Mar 2026 14:59:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 133376B0092; Wed, 25 Mar 2026 14:58:41 -0400 (EDT)
+	id 79D7D6B0093; Wed, 25 Mar 2026 14:59:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 033036B008A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:58:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E7B6140A30
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:58:40 +0000 (UTC)
-X-FDA: 84585496800.08.67CF3A3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 01FE480010
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:58:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EPjEZEVV;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB246B008C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:59:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42BD6E02F6
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:59:36 +0000 (UTC)
+X-FDA: 84585499152.18.70E65A7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9BC854000C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:59:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yLuJWyw8;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774465119;
+	s=arc-20220608; t=1774465174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VlLhePYL80sOu02aUw6u8m/4ZKI00p8+/Y45HKjk0/A=;
-	b=W8HYXGc/QrfDyrlrffEoNkGQ6vlS8FTcoY1/j/C4EDCiufVb2eJcIDpFFaCUNsKN18xKuw
-	wVPdtzsgJojNJ7ZedsdX5BUz48lkO5OmXqcfVLY8uaVlbGWjImSGAMZsz++0Ux3KBcWF4x
-	w3Ef4tFWBnF6PK1HUaOiF+pfKy+ryWU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EPjEZEVV;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774465119; a=rsa-sha256;
+	bh=WPGyIvWOhHoXYi3NZl/gatuyekwEEky9/KP79NUt1HM=;
+	b=wbYoldp2hNWqfldqBoR3vJFNuyHGEXJ7Y564+mDOpypgRE48DwuFVcjyB2FO+px/StLUJD
+	MIpVarjS18n/7nfa0bWwgYl9tGUR/43m/gBfyYq+FVbAQ/sXIOclFgTnzH0iyeofn9Y/Vs
+	WFK16bwYxM8TtAj23Nm96sXr3gnnxaU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774465174; a=rsa-sha256;
 	cv=none;
-	b=VB23g9A2zm9fRjYeSLecjFFKfsKOFK1SIsxFDpICtzuOjk0c83dzkFRwGp/SH/UAz4rpGR
-	5SACOekBCKxs8b9gV2uM7Hipa+Toxg18JAxrpvvasGNU0yoYUTTRH1gZz99mPbXb7S0A55
-	ugvfOtF6wkcWpC13ZaoOapI3vS2EzrA=
+	b=1Adyo2shrJiSs8rYVAOjXslcPMCwYmOXR3/sO5sfSUYK9GvHdZfo8FxUS37pK379N4G0yn
+	9SHpg4nGvmBzqibo/jtldSoWr+9zBfli7ZyrhT4UVAKVA7pXgnE5+1G5BB8YN+DLdUw04v
+	sJcklKNBuvLsM6XJrlTHIE7q4TmA64E=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yLuJWyw8;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 11488400A9;
-	Wed, 25 Mar 2026 18:58:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC86C4CEF7;
-	Wed, 25 Mar 2026 18:58:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774465117;
-	bh=4wiJb71r8PouC2/f0A5EgwpoJUcINFnRCFiI7rXCalY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EPjEZEVVQk+BooWQbKW7Ksnp8brOVn6HUSS502JAp69PF4/u1BGp6R/hmHGl5WR3+
-	 XSriiIBGBiecnBYISBNXfK6H4K9NqNvKILt9H6eKYbTO052CnkqGYKtEDjvwouf1V0
-	 QheFOcAqWp04zUAZo3UAbMgndolyQPgP6MAL0qtkexjGQfy/P+KTq2UacijgwM3E4+
-	 6UeVAOPpMsRHcpzmjaAoKrLeInomrdF+om93X7p/hRJWHbg66WIBrSGKGxbzpEHouv
-	 q1mWa13Vhm1Slz3w/NPfmhX+69jYqpErrohKCY1A7492nGSM70gMMjNKb9cPj7bnoV
-	 ooomwlbcpt6/Q==
-Date: Wed, 25 Mar 2026 18:58:30 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <21cnbao@gmail.com>, catalin.marinas@arm.com, 
-	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
-	willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the
- references for large folios
-Message-ID: <92e77b03-b7d4-45f0-8077-b3f745727785@lucifer.local>
-References: <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
- <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
- <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
- <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
- <e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
- <20260325083016.a32095bea3f04488a7c9005a@linux-foundation.org>
- <af9d8a6a-074c-412c-ac5e-3f0dadde3e7d@lucifer.local>
- <20260325092300.9008e605ed5550ce4935638f@linux-foundation.org>
- <7820cffe-60bf-4ff6-af10-89c774f0fe0c@lucifer.local>
- <20260325114305.eb90add580948aa56a88373b@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325114305.eb90add580948aa56a88373b@linux-foundation.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 01FE480010
-X-Stat-Signature: c1kb7z69o749nkk5rkb61stogbtngdbs
+	by tor.source.kernel.org (Postfix) with ESMTP id E7514600AC;
+	Wed, 25 Mar 2026 18:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46627C4CEF7;
+	Wed, 25 Mar 2026 18:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774465173;
+	bh=yU8n7i686vmEbMl4LvG5Kc7Jit1Pd4MHO3KrX4OKmYk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=yLuJWyw8VJjfd2r8DoF/0eMer0lCzXXkWlWRL+EX0F56xSlCQlbPTjPgce7R94nXX
+	 xSOLmofJT5+bbBQ3150CjnvU/8Jum03M6fCSLnrVZVrKQdvMVuPpYj6oPUVUW0HpYU
+	 W16yNDrl/bc9CH5MA/PDC4GkleeCbd6mfvENIMIU=
+Date: Wed, 25 Mar 2026 11:59:32 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, "Lorenzo Stoakes (Oracle)"
+ <ljs@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress
+ number
+Message-Id: <20260325115932.d2841f29f318454709fd4f21@linux-foundation.org>
+In-Reply-To: <CACZaFFMb_1u7ckb5+7=wWApOx-u5kBxx-+2Y1Cjd1Qad4kgHRg@mail.gmail.com>
+References: <20260221093918.1456187-3-vernon2gm@gmail.com>
+	<20260224035247.r6mxsfcpiev4wnce@master>
+	<zo2o25tesjzdvxdbjo6rc7crqmf76z5zwlykrnvhydaowgngya@hv3vgfa7zcgi>
+	<1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
+	<hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
+	<8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org>
+	<CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
+	<22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
+	<20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
+	<3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
+	<8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
+	<0437ad42-612e-461f-906d-6757eb19a8de@kernel.org>
+	<CACZaFFMb_1u7ckb5+7=wWApOx-u5kBxx-+2Y1Cjd1Qad4kgHRg@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9BC854000C
+X-Stat-Signature: jkcmb3ioyajsnxtp7q4p9545xtmj41cg
 X-Rspam-User: 
-X-HE-Tag: 1774465118-712901
-X-HE-Meta: U2FsdGVkX18mrUK8FNrutem6MCfj8SpWYBgtPOBGvLt7Dc09yk2+6x45CmUVPaR+934B58ez/syINZI0eabVuIjjaWLlxxH+4kLXICRZF0xlhOqPtRa6T0HwxytvQZVKkrRIRg/B6rV04fFBHVZC9bvnjAVF0SIIzrx6QT5CJOnMkVlAkF8OhlHRmWDvQuWQBmwf0tcNXxBnDC4C9mHd1tbRi53fVu+M8Pr9Lw+dPL2COE1RArRlVOmxaqZiduomDJNpfri+e/L0PDBercZI709iEcoMSyx1UFhHxYlRpjQXq/QUApKFevlnCqZ5SfH5nuLP1FuoRr1yHe0sf1w15SXYmvaJF/SXBoqfmxR+mVfXNCjy9QGVrG9yUG/bdakfKS3tMxZb5zJOMveSO3UGmTp43xRIoRw7SMQApFaC54QzVGic7+QEOPq58+UHl9AgvfzNxQP9cwnhhoBf4FMsbcZBqm1MkPLHT/P1q7xu8yUDSCfsmkIGWXJhzOg926jMz7rBus/2vT/BZKyaD8EOckHje3bsus+ElU4hWIMmiDuIpA1wslwTi/s7Zqobrt9RKuvQjq4zH1fLMEP1jtG+zZ6HY6bKJWoWmLNNNz8/q/vnY5hCPRdpoMiJhwAYc1hQZz4AXC9FMx1XvotWwpa4zfk58DL/2IAREjHEjOTzY97v//y/jKTQm1xZC8LW1SYaL/JTPpseGpKp+2NCXesf1TtX+Cc9oNxnSc/VCAO0ZUG9kDyOnn/veRk+gCBclxd7dnW+VWkA+/TkwsaXK+n8gASuhzVIhU8q3KaO82yhnJVts0kkniuQvfacsAnn9MSrI8S1K4VtpaRCR5aEbO56RcV3IAd3XnKoJ/NBIalBzVj++h+BWaCBfmqmKEKVxd1Fn4xrEiYWokTQKZAebCk4K5xFm2imHO6aAkbJDTKPwH0EOPSmEG+SqCddwuS7j49g9cKvM5O+aor/9wQR1NP
- cmO+yU6N
- zEWmD6HTXszZNVvqCc3JDclfx7XrAhsKVc5JRVCRMXf4tZNOWrSibEeKbybA4AiInYcpzOlisLKjSRTQwWKzl9wfltCivGvhKqlzcz+mIXn93zKBJ3eDcxfkRpv/Pr8kzkHc+CeaalAp1Teq+2sRqvsnx6RSUWK99MM5fR85c0iskHQitBFR2bZO6h48FjeFEb3KuCP53pI+wc/m25aL6c40h0vIuv5aEpQ/abcCYR2zdDWPjYZY2GlrGJ5eazrces3qsTJVaNkvL5YyXkd4bdWc+caqa7hgdX6DidOq0AlMNuJI=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774465174-39319
+X-HE-Meta: U2FsdGVkX1/FEqZnLUAMAwPouMQNPME2krpxG5H6OtNNt730gQHnzpsU1I4tw4Z6HGUj7q515G5JeNKJuL+N3w0uChgR+SubRNVVQ8VHYnAT/GfsGWORq35vLAYwuOnIyLkkqhR+XQgCEpMYGthftqou92AStFMsRqGcqetBOHPh8toYpdp0eFeeiB6dBOgGHMDyka7B6d30IYW2iRjIhkKaCBTvzANdb9AjB/g8YqiJZxnITbwa4lStU5QQwQGoocDISsU2DrY5EUPqw2MllvzTQnx2yOgNrH9nTAad6ibMLN7KO4fhf465H9B+HbfxuKVOfqFzs1+0S5Ua4SlS8xpnnWQ5dOK0K5wFq5FUCR1LFU9IoDiFPR6JZru8x/OMUDq10KhAwPwnsftcl4Z303+Q2q2HUTAxVxNn2bX1cgzy0l+CisM6+3Wj0DPAZ62iYNU8UunJ5QLr2Stsv68OHB2/xpuTDLX8tzsrlgu0sIXPXBLj7st9C8s5dhM/OqmWhI1moARW/FqFLTpOpy92LTi41cURqQUj63lZNe6aQSWkfT1dw5pXlJaEzEX5MiSExQZaU9RHxbNyaST9cYMuO+HWq6kQ6XkJkxNuw4X3/URiXeITFVLKil3+1JBPg3BK8XmmBhoA8c1K3vRybraw+HpxUrNutq9Qjbnmy5Rrz3Jxxi0YntjwU3+FA0VNd5+t7/gP/zAHd/Y4MnPZckzBciMGbn8hlvUKHNpUB52BUOWSP/VhCmv4pmxG/wY+eR0YLsmzNBJR+nbGHrVorSEd/tEQXMWQJ9BgaVt/Cjoc9pyGPP1qkwpGIurJC3NzkVvV54EZVpSZvwMhq1okFwqzyuNLZG8pfmdmyCXQhUxHid24RpbpTvfEHJDpQ9cD0bAfrCmoiWyuaJNbGDFbPnbBIgT6llMUCb/PiLLwcfjSf1wn1/2oCowga9u5m/BUYk62coQIZdH8MGEOyjZ/CYx
+ iT1u2W5X
+ RjbkiUjxqG/Cek1Mzl2/QsuoXF0aSKvJbA2SnLCOiskMCX7SfiZ5Qa833hwaAaHfK+NVaJunPHZocuKd7vv6WbM/EC9DGRMEcz4IgM61LoB59E8W3wuFIO5zBGjLmSdV9040191UM0A09fG8WGOblWh89OeJCNdhYMRU6/noOPeoUofuHcEtWhYpk7GObhZsI4ouxs5aGWA4PG9WLNIVY0Lz4yK+cVopU4G2xjg7WGn9YBPSGAGrNVBv/7SMvaz/IPVnxPU87YCPACm1BZSlZInxE/ulKFn4od+nZExh8OP3j/F28re9ZBDs1p2I8PvziSXwWztMolHssrED21xdCL9R6fA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,37 +105,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 11:43:05AM -0700, Andrew Morton wrote:
-> On Wed, 25 Mar 2026 16:28:18 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
->
-> > On Wed, Mar 25, 2026 at 09:23:00AM -0700, Andrew Morton wrote:
-> > > On Wed, 25 Mar 2026 15:32:50 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-> > >
-> > > > Really I guess I'd like to know the timing of when mm-stable is taken so I can
-> > > > know the deadline for stuff like this.
-> > >
-> > > Yeah, as mentioned elsewhere I'll add some words into the series file to
-> > > try to describe this.
-> > >
-> > > But the start of the migration is quite variable (-rc4 through -rc6) so
-> > > I'll aim to keep people updated in the weekly "mm.git review status"
-> > > emails.
-> > >
-> >
-> > Thanks. Wasn't aware that was a thing actually, but I see
-> > https://lore.kernel.org/linux-mm/20260323202941.08ddf2b0411501cae801ab4c@linux-foundation.org/
-> > now.
->
-> Well now I'm all sad.
->
-> Yeah, I started doing this Feb 2, shall attempt to sustain this weekly
-> after we've hit -rc4 ish.  I expect I'll be adding more waffle to these as
-> things occur to me.  A general overview of where the tree is at.
->
-> I can Bcc: people if asked ;)   lmk.
->
+On Thu, 26 Mar 2026 01:00:23 +0800 Vernon Yang <vernon2gm@gmail.com> wrote:
 
-Yes please!
+> Although this patchset is already in the mm-stable branch, if we want to
+> resend V9 version, I'd be happy to do so. Please let me know. Thanks!
 
-Thanks, Lorenzo
+Depends on what changed in v9.  If it's a major change then I expect
+I'd drop this series from mm-stable and we restart the clock on the
+integration and review of this work.
+
+If it's a minor touchup then a standalone patch against mm-stable would
+be fine, or just leave things as-is and prepare that change after
+7.1-rc1.
 
