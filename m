@@ -4,143 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C896109C029
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03A1F109C028
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:25:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FD656B0005; Wed, 25 Mar 2026 11:24:39 -0400 (EDT)
+	id 6B0906B008C; Wed, 25 Mar 2026 11:25:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D5066B0089; Wed, 25 Mar 2026 11:24:39 -0400 (EDT)
+	id 688CF6B0098; Wed, 25 Mar 2026 11:25:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EAFD6B008A; Wed, 25 Mar 2026 11:24:39 -0400 (EDT)
+	id 59DAF6B009B; Wed, 25 Mar 2026 11:25:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C6EB6B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:24:39 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8E31C301C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:24:38 +0000 (UTC)
-X-FDA: 84584957436.14.7DA8A40
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5FE99160002
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:24:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GTjsV3ov;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452277; a=rsa-sha256;
-	cv=none;
-	b=tdahy/AjDRbXe4tjyl42EMxrNI9y8K7ml3ApPBN4OMUcSMU23uznRy7gfgbJMDiztc31gC
-	yg6rvmXQWpmJ8OcG07qJh/G/HBBp6so1U7dsK/sUfdn/GXe2AdJidr7wSuypBht2yYecGL
-	vvbpsoy2Sso2kbG27bTAAgxqc3rZdYc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774452277;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 49DA86B008C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:25:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17B0E1A0497
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:25:45 +0000 (UTC)
+X-FDA: 84584960250.12.6B75756
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 16E9840014
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:25:42 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kxkBnysV;
+	spf=pass (imf07.hostedemail.com: domain of edumazet@google.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774452343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8YaUeAKnhHDMNsqZXAzh8AyTj+RoVDiVN7DAspZky3c=;
-	b=tnjFdsQzCdgiDgHOLbL00R0W8xCJyLmMy3MM32ValsaQaom9kBx+XJ6NAUwkCnBF4BPEVX
-	pM5XlhcnZPRGkSAYoCc4rYgArqvxCgF5CLVJQVryJW5AlA4s3xXqHywGs5vIAffh2PU3Oq
-	dat7/pflXvppGi7NkXalbZEzo6MW+KI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GTjsV3ov;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AFD36600AC;
-	Wed, 25 Mar 2026 15:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0577C4CEF7;
-	Wed, 25 Mar 2026 15:24:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774452276;
-	bh=CvCkYeIxBeSF+4kW5iTX2aH4Uo4OeNuvaWXY2mOVVBU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GTjsV3ovCtsUP2jZmJD6YZaU0o0OAnZ6CziIpQB1w4USl4W7v34PUQ1DT38XlTfXo
-	 OR+gmanvcUo2BbtCZuAthZug4MsT8QcoMwLM645HBJEqQea2MJrcqBjRUT6mJfGPnh
-	 7aKjQHBohQ3mo0VLR2B7iSnn/tsl13efatj/F6v1keotNVjp5gx6f9sDeeXFVCNQDB
-	 ZQEcG40hyaLOSFoUxu+kK7HjRWQUrH+JS2oErULOLhXDrYwk2A0Nv3ZRkGUdU0UIw4
-	 I1EOtRgzBRdE3aDKKlBBepStxOMLbRYb9fz1SrJ7BZeVbzpfPqTbWgdkDxAoddGEr7
-	 aKD86SauNu9ZA==
-Message-ID: <90361397-395d-446b-b1a5-580efe23bb70@kernel.org>
-Date: Wed, 25 Mar 2026 16:24:29 +0100
+	bh=/ZgVnh0vBzrzdLKpRyko+vKpC3HHuo/gtjQSZOYIEAU=;
+	b=GMdGuq07CNuEihPcFjxkbtm6s6w0e1EBD4+rUhJRADsP7FuSX5Z8djntyLr34Ywb5CQX8h
+	V5S1AJJZcXCdYa8QICSh4tVRhU4fA0Qwo6OdcTSlqNno9nrR2GWaX5dixXeW+hkoUIb2Yv
+	DZau/nx7OA+vKCvzV7phjfGMYGrqYwQ=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kxkBnysV;
+	spf=pass (imf07.hostedemail.com: domain of edumazet@google.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774452343; a=rsa-sha256;
+	cv=pass;
+	b=nUti8LiEIrsNwdbcNPtuPR0bEg24bpjxC33H0x43pKX091FKXyMYHh9avvx07s7BOfbDu+
+	rPal0Pd5ZYmnNPKUVQYu223xOYUSvufVM+ioV8txQJZAKpwNRySxNQ59ZO2e13uwUa9ErJ
+	sD9JqCSiYUKX7mN8QXq3Zp/oHX9Rjro=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79801df3e42so15645457b3.0
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:25:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774452342; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QHgp3gMTSCc33b8cfmALbfqbxRYHQ+alga2IG0boOxO9/Ivm1KHuRbsE2FRA5HGJP8
+         RGOtMPCaPnTwTeZJlPhdSSDcXrXD+3PE09cxGAvRWbdLwTTlhWzS9u0aNhbJFKHw2RLU
+         GAvNGYQkFLc1vigXZvmbkg5SInfibQjn07E0ja+r16GhRntfi7Ma3aeUJOHlOnrEwNBb
+         NyQ3PaQlvcvq6KIOa5+4GtiETLggl8t+raP5YZGZWpNNwbLkB3IEI0tX/MXctynY4xiP
+         3aazfNI2ofPur1GCq3dZ2yzLeek2+Pw5Sn6GPzRbmqyZCwc/XmQu8yl8pECfORcqJyaB
+         AFpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/ZgVnh0vBzrzdLKpRyko+vKpC3HHuo/gtjQSZOYIEAU=;
+        fh=wi2K3IIlK6N+O575ATDnjdxbddqCXhWCFRqv6saR5rA=;
+        b=OMFpr1qXIQGS1qh0MopjGqRDt8NnUX/69NUaEvsJlfQPFNys17uan59J4lVWffFo1l
+         f4LfS/Zo2r1f0LR2jXE6IT/76XWY/fE4VN7IWcR7lntm7odu4zIZjG0DGlLj8U6KhdTu
+         tYUV1yU/08JPB6o7vTW7fFK+rNuWiL0l76IfNKv7UNNqpnRiWAdlraCxwAWtuRyooA9W
+         6bUi6OWrPz25An4y/sgE0j7dRVyoQvx6i/HoR/l2hVbb/6iYiN0LvaJCUooCt1Tctsx6
+         ScRo1B1KbBvblVyNZ214PmDkZDY5CiPmHr2cEGKFgO2f8e8gC3EvXWkPPB/8cLUoHh5y
+         XxLg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774452342; x=1775057142; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/ZgVnh0vBzrzdLKpRyko+vKpC3HHuo/gtjQSZOYIEAU=;
+        b=kxkBnysVS87M/AFiHtlgjfaRhISkSw1MId4EhBAAjs7geYOiJmY0hobhvlwkUa4Lvg
+         KwKx1kGgCv3GmWnssVGKRxpZhfvCLGt6P9+AY81PGfLyEcYyIr5hXQAag2iWDvEx9Th5
+         tk+cOr5FSGEzQ3JXRbMkqgPjpzhVuV3DhxrenmVOOtku1MdsZZ/+Rsi1EWftdo3rbd6k
+         VskjSRVnQICUzqibfA4dFYodDtsNjXUf2aJp3MWY9PNJcqqg76ZrfClGqQ0TJ04a6ypv
+         94U/tz+dyZXDSaJU3eOhhK26uEHbwxuhDgIXe2jzNnOeXBLJOhYODwDdxjHvlEO6yytT
+         +81Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774452342; x=1775057142;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/ZgVnh0vBzrzdLKpRyko+vKpC3HHuo/gtjQSZOYIEAU=;
+        b=CjVklYSq2+38sd//DSqqlR8t0KTOeBP5AH+oNjpAr2p2KAMQ8zADTtrf7MYoOAakpv
+         o57iUpK83R6CTnx9ujSoFuqrwmmt2/UE5Uz0hZmt7/LrxAZDJfV8GHIEle3h4zbowdSu
+         CBQ/EBo7kX9Pt42slAWwewBtRC27rBAUcl/DQ8PcrtV76+t4lvpgNmAHbwA+DE7fqt82
+         AmwG0glfPgns0k/L/c6nKCM4gvRwK5F5C2ybj/g4CUws9OK6TeNRfNsnCPYSf96o+P6/
+         wqORLMjNUs8Vna/qdXeqPyqrJnWmdsF+ayWD5/n691wSGFiySzAfW6osfCdXhHc97VP7
+         zWnA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6f9k5PH37RyOnmb8zZ2ruZqeI32RSRFX9UZJxN0YcQf5Sncv0aoEqG+PPZ19FSeU6zbFdJJcGSQ==@kvack.org
+X-Gm-Message-State: AOJu0YzXceaNXJBvOJVmrxKzBukhcrkPo1XqadA+ezgvU6l34vwz71rf
+	lNElR4MkCmVVCOQQe+9UIu8e/+PU7RW60AsZFefA1OiLaoxss7rUHx61Dohc6J6POk50p/zDgLh
+	JJkA9s24OrvJWICanuduZw4PFiQDA8MvSsN47dXma
+X-Gm-Gg: ATEYQzwSgft+GsbJ0EpzjAfore0Bnrm0jacRiJ23rXdxr6Y3w9Wkez3OIfuv3Vc5Pfi
+	U+hkp/pid0OoOLD1GnabuBnTQdFQcfM7tsYnWdU96uIKowH7/mJYXhlh3PzqROdO8elp+UXQTzt
+	zzsV7hh9nxfiYbsfY5DGJGaR2zETDtuKFjd90dskHaMbfJWj1uBKMBNb+buXTtMvs1ADgd+Xf5b
+	sCGjfKdUQVztcOy0OyuaeufC3F5f5Z6daCHzeDg8Bqq+YeND0EcAui3XSEvrooG0eurShSHHRDN
+	o9TJB8tk29Gu05A+Cqru4Qsk1BmbZNQzIyLTS3XrW2wTNF4=
+X-Received: by 2002:a05:690c:12:b0:79a:c5b5:d094 with SMTP id
+ 00721157ae682-79ac5b5e61cmr56555727b3.22.1774452341523; Wed, 25 Mar 2026
+ 08:25:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
- and vma_replace_policy
-To: Peter Zijlstra <peterz@infradead.org>, Eric Dumazet <edumazet@google.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Hao-Yu Yang <naup96721@gmail.com>,
- mingo@redhat.com, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>
 References: <20260313124756.52461-1-naup96721@gmail.com> <87a4vyihlx.ffs@tglx>
  <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
- <87fr5pgp5x.ffs@tglx>
- <20260324174418.GB1850007@noisy.programming.kicks-ass.net>
- <c892e7ce-473d-41e5-aa99-b95e0366c3fd@kernel.org>
- <20260325151445.GH3738010@noisy.programming.kicks-ass.net>
- <CANn89iLnJv9_HRV1vuURFM5uVA-y4SqBsBRD24kSJe7UmBtXSQ@mail.gmail.com>
- <20260325152206.GH3738786@noisy.programming.kicks-ass.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
+ <87fr5pgp5x.ffs@tglx> <20260324174418.GB1850007@noisy.programming.kicks-ass.net>
+ <c892e7ce-473d-41e5-aa99-b95e0366c3fd@kernel.org> <20260325151445.GH3738010@noisy.programming.kicks-ass.net>
+ <CANn89iLnJv9_HRV1vuURFM5uVA-y4SqBsBRD24kSJe7UmBtXSQ@mail.gmail.com> <20260325152206.GH3738786@noisy.programming.kicks-ass.net>
 In-Reply-To: <20260325152206.GH3738786@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 25 Mar 2026 08:25:29 -0700
+X-Gm-Features: AQROBzD6WOJq9HMl9PviVje0X7fhAoychNxXs72Q_9-4-I9MLN_UexI4AEBhPts
+Message-ID: <CANn89i+cJ+BOs_swGU4vHbKPHVV+vqmHjaSywUxDzBu=nXfmtQ@mail.gmail.com>
+Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
+ and vma_replace_policy
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Hao-Yu Yang <naup96721@gmail.com>, 
+	mingo@redhat.com, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 16E9840014
+X-Stat-Signature: z1ffdc9retemd8fsd4g7j4nfrks7yj9t
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5FE99160002
-X-Stat-Signature: 8h8pko8ny9mnawcp7b3fiqgqw8g7z3j3
-X-HE-Tag: 1774452277-761861
-X-HE-Meta: U2FsdGVkX1880LC5y9T5rs656ryDeRP+hBOe0os+WwPv+v+Xqv9VT/FsdjPSmtachQpp2ShZzHXnUzTakGaAUOL8OwtEHtp187ehLK5KcoPOEIIcQ3YzGSTdwPuTGHJtuKFsVKsUDVSECwdz+/6gTckwSBwA2oBBG12btwZP0A+kxhCwTC6WbReCxRwwKpRCRUGcZIQF+OiL5aFoL/pZD7czx3BnuV4gadzRwcEJGHCj4hX1+u4LyE2AVhuWShMdnymTt36njQVDIbWpt4FlssOtPDJK5coqAT/RtpAj2JS2vvXQssXEMefibEComTxzImV1ngEXab77Qh/8njwjkcGVdXSQ6mrKc851d6U/TuwyarUd4SidcZ0GL4TjPaSiA5kgqNojWdQGPvVi48YMExKbHjdMf04MCU0mhpzzeHiTE7hfXzSsFZJxduMuJN5OAarMLSDCUDsKcdbi3Z5Hu8o6hN2o6BOuPIRkcqyYpB0IOE19G4UdFSJ7D7Tk04vI2eqlXL2xp6sTaNpMrprw6Lc2wAHDKNE+aqYOAFLTqVXpGNYQxedCU82RUXjeITq8icxpG47mjZEWsEAxpCyj0uzBACujHh+e6WtdawORgB08QqbYBsbPwTWlNJuoTF/P6q4Wc8mUkUXNlYBZCOoWMxgLMY1HpW/jve2Ba45BqcgHkXR6I1FVyOLQi1rIAom7TZMOlKJlVd0PK2KAPphfyFJP7dQBjJsZ90i6PLN2NaZw5nbKlP1S7B6kz+nGvHUTgCAk8fzOxEtBVBwLZxVWfgXZOGPCEFYcK0Q+LnkT6AZ6nltGhG6YFae5WjFuc+6cm8Af0YtpPmmKaIkqvpoDEmSjBraUg5nO8/YRyldtojzPk476KFdU1mpQ+mg3SNYkI6jtwx6fxH1SRdcDAbL89kL0lGOWiGsK5gbc3s5PrqK329z95NkMoFd/21W//IWUBtQLe9PMKFpjLfXq6Mx
- 6D98zjub
- Kpc9A
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774452342-54669
+X-HE-Meta: U2FsdGVkX19gcKVe3OmGiT8W+Gvrhkn/2QQ2pcf84jQt6FHIcRQK3piNc4iLTFVln2FD++DIduhpCyeqVLr76Xf1R9fE+/MA0nF5qBisYFtO/y+zRdlZPRWheo1BgBrIFs3hNgQ7jv0pRk2289a35ojBt0am2GpI0r76E7Tj8TuILCWJuaCiugDLZhzID+SBhpWddbjdwRNesA6ABACuenNylG3KZ0plq1dsv27pt5hAxOREOWKARNzgizlz0iLRy7gnsNJxLeTRtoU+JoLsldCUK6XL+832wJVNFeV246NTB39HPZfMvWDVeGkGIWHbrOOW7Xvd2Zc0Zm6ENuouEQBSkDh+eppaIbsmfirdtRV4kJJodXkG00aUWvrMLvdmAJoWGFAWQslQbX36PsuJn58S+Q84yCpOhMm/KBfWvZu1UfTlsmrDS9PmZ9lP/tX7+64NMTKFQAX1rwOfeyLckfjllOdhol4n5A3J3J/Xe/rvKnxnqRCN94ilk9LIkqU1Rh6EmkCQYRg5ZYWhYu03Wx8pVWkQxQV0bWVa2pUdgk13NLUPuPvH2/SDS5qFWI6VlOvMfDwEWQat8ZYlT6oWJuN3tZDkNbRE8+5u2Z8t/DXzvIYGlRwzukDmzwvw8Vb7Hq+UM6V26lpUiad7/n/2idRsw6BIPuqVjLiAQ+QG6sCNPyimQMq6hXpFpMIi1XyZ/oV6KPmz7YF15RF3R1ZTmjkL1Q49JO76YrboBCx7KZmoYIwnXInLq3xmS7nP4k6ITf6J5h2hyfF/u2GOs7GF57uiHqy+RuIbTNKRTBHYCqEBRR9p3wkb1lV/eqSx/HQx6HxZO7sgFypjGRwSG6oTQn1rS/edrcHYVkUUc3x5QwyTc2/Dx/FVxqxMmPcufQ8URwBtn28hbhJzr/zUGExXM9Vx3Wa1QXcOpITEiqhEEg6KfY27I6j7csJzjT1MM6vyH2ADlByKJqzspIQF9Ol
+ xeVnvqF1
+ npcuyOEecCK6KqMEsPe9HXJYXHClBvjYg7mI07Uh9+U53S9+vz9+wElgPxlwbnj/fF1D4csTEZkCkSOFmaAOAKnb1tfeva+XvdARrZiYt80LKqhPBfuqnDLiJmSEXieJCTczPPsODey1m6BFsld2qedDYj1/DlYsR3eHxa4cUYekAf+5nfExDpBS+QLcTc1uZk9DuBpSdEqAQjTzNqnBSUm8w3zvc+GNCN4QVqeTfW41MO3xayT2q9mkKP/riHude1DUOqGsqHeqZL1VB1Ukp3CxB/tNDaGFKubQILz0+Hv+AXWmoNE5auq6yJEmgocAZ0YhNN3ycfaFIKDl07cDSEtefmigC4kAH35oneiiArQ9PCH8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,76 +145,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/25/26 16:22, Peter Zijlstra wrote:
-> On Wed, Mar 25, 2026 at 08:19:24AM -0700, Eric Dumazet wrote:
->> On Wed, Mar 25, 2026 at 8:14 AM Peter Zijlstra <peterz@infradead.org> wrote:
->>>
->>>
->>> Bah, at that point we might as well RCU the thing like so, I suppose.
->>>
->>> --- a/mm/mempolicy.c
->>> +++ b/mm/mempolicy.c
->>> @@ -1026,7 +1026,7 @@ static int vma_replace_policy(struct vm_
->>>         }
->>>
->>>         old = vma->vm_policy;
->>> -       vma->vm_policy = new; /* protected by mmap_lock */
->>> +       rcu_assign_pointer(vma->vm_policy, new); /* protected by mmap_lock */
->>>         mpol_put(old);
->>>
->>>         return 0;
->>> diff --git a/kernel/futex/core.c b/kernel/futex/core.c
->>> index 4bacf5565368..6336a80e3dca 100644
->>> --- a/kernel/futex/core.c
->>> +++ b/kernel/futex/core.c
->>> @@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm_struct *mm, unsigned long addr)
->>>         if (!vma)
->>>                 return FUTEX_NO_NODE;
->>>
->>> -       mpol = vma_policy(vma);
->>> +       mpol = rcu_dereference_raw(vma->vm_policy);
->>>         if (!mpol)
->>>                 return FUTEX_NO_NODE;
->>
->> Yes, but sparse will bite :)
-> 
-> Oh gawd, yes, and then people will go 'fix' it and it'll turn into an
-> unholy mess.
-> 
->> READ_ONCE()/WRITE_ONCE() on these two locations seems acceptable.
-> 
+On Wed, Mar 25, 2026 at 8:22=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+
 > Fair enough. Like so then..
-> 
+>
 > --- a/kernel/futex/core.c
 > +++ b/kernel/futex/core.c
 > @@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm
->  	if (!vma)
->  		return FUTEX_NO_NODE;
->  
-> -	mpol = vma_policy(vma);
-> +	mpol = READ_ONCE(vma->vm_policy);
->  	if (!mpol)
->  		return FUTEX_NO_NODE;
->  
+>         if (!vma)
+>                 return FUTEX_NO_NODE;
+>
+> -       mpol =3D vma_policy(vma);
+> +       mpol =3D READ_ONCE(vma->vm_policy);
+>         if (!mpol)
+>                 return FUTEX_NO_NODE;
+>
 > --- a/mm/mempolicy.c
 > +++ b/mm/mempolicy.c
 > @@ -1026,7 +1026,7 @@ static int vma_replace_policy(struct vm_
->  	}
->  
->  	old = vma->vm_policy;
-> -	vma->vm_policy = new; /* protected by mmap_lock */
-> +	WRITE_ONCE(vma->vm_policy, new); /* protected by mmap_lock */
->  	mpol_put(old);
->  
->  	return 0;
+>         }
+>
+>         old =3D vma->vm_policy;
+> -       vma->vm_policy =3D new; /* protected by mmap_lock */
+> +       WRITE_ONCE(vma->vm_policy, new); /* protected by mmap_lock */
+>         mpol_put(old);
+>
+>         return 0;
 
-LGTM, feel free to add my
+LGTM, thanks !
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-
--- 
-Cheers,
-
-David
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
