@@ -4,94 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8573109C05D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:26:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8810109C05D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:34:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18EE86B0088; Wed, 25 Mar 2026 16:26:41 -0400 (EDT)
+	id B5DA26B0088; Wed, 25 Mar 2026 16:34:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13FBC6B0089; Wed, 25 Mar 2026 16:26:41 -0400 (EDT)
+	id AE7F36B0089; Wed, 25 Mar 2026 16:34:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 056786B008A; Wed, 25 Mar 2026 16:26:41 -0400 (EDT)
+	id 9AF3E6B008A; Wed, 25 Mar 2026 16:34:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E885D6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:26:40 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9B4C75BA99
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:26:40 +0000 (UTC)
-X-FDA: 84585718560.20.3C5EAEC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D0AAB20002
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:26:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uD5iE6Sj;
-	spf=pass (imf03.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774470399;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 860276B0088
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:34:04 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 41D571B6FBB
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:34:04 +0000 (UTC)
+X-FDA: 84585737208.02.DC6D354
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 257284000E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:34:01 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jdUo64yG;
+	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774470842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WVJ3eZgqE/AC5KtSkn3uMydjBYBtwn4S3cMw8+uNFXw=;
-	b=eTWUdM/+XCdXdnv3SfZsdbbDYKd7iptzfInX/2VR4hfjYvfp/EI8xTmlOG1bEioqd2YKKw
-	jgbzMZ8M9d7SB1GZQUFXZmSd9SgfORWXFGW9NXhKLKGgm90jhxiATtms5oIMNPSpcBiL3p
-	6jmIz/2rIyyWGzo3MZOp1YYa/ZKmAu0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uD5iE6Sj;
-	spf=pass (imf03.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774470399; a=rsa-sha256;
-	cv=none;
-	b=A3yVdfjzDmVc+CFF2E07lyEe0XsR89tQ/JawqkOyH/PUBZStBV4Kx7awO4jo5dhtmajVSe
-	bEfdUc2qv9krJh2RXxmNzUJ3/GCFqDFUkzioNR7pM8eF+sOfFAj+NoWNCUEesLPOFOIn5h
-	4TZFH/scrij3dA4J5Iq5xpRImqw2HrY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C296B436A6;
-	Wed, 25 Mar 2026 20:26:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A580C4CEF7;
-	Wed, 25 Mar 2026 20:26:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774470397;
-	bh=9288nGTYu2PySycaWl6yYADhv0GQ8SwE+yNWJslpqHc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uD5iE6SjH9WPG+cYdKim6O8OR5sTVTPtHq+SWQB0fE4gy6fDWyg5VERw0RBdt39LV
-	 feFpMZN1GedzzBxHW87hlZwsy58LhN9KHpA7Hi/redu99FWpLsM8Qz0G8n7RoUxtJy
-	 rvE05dlBbG52qcahxGlHOP2GbjiPMYmYtSO5mjD+9M+LCiWmI40IaZTFIwkz2n0STL
-	 oTdKL6dI8ne31KxPI53rWozgN7njx3Fyl29r6+ZDEwUXQ01S4y+HaaQb1ArdGSUB1K
-	 dsf23HhFH2v+p1HleKK4oWqgDxumGfqfutXLzuzwOQmmIuZTa7igIt6uOpGTY9th0v
-	 lHK4BJH35ihKw==
-Date: Thu, 26 Mar 2026 07:26:26 +1100
-From: Dave Chinner <dgc@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH RFC v4 1/3] block: add BIO_COMPLETE_IN_TASK for
- task-context completion
-Message-ID: <acRE8pp6HxjK7Z74@dread>
-References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
- <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
+	bh=9Bx7O08fLm3R/wc0dHMJOEG74sKjKAWbEHkEchxKEVc=;
+	b=4lDWonYauTKIkF1IQQesexa6+KTbvFRJI/XiTW3v/wt2687SEKSNocPCUwBcskT1RO2Rak
+	eNtywXD80ULGhwtScjl7QiJm+bu1dtcF0PHtbl6IIALFdbNZnqzlrxYyNML4FWZ5Io2LUD
+	9RSZvkjgYCrii2NxtraiOsfZsmHZWLo=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jdUo64yG;
+	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774470842; a=rsa-sha256;
+	cv=pass;
+	b=cLgEhZyaMM/w/Wejapn6fE10/DSFZmRTOMozvRpc9Wwaer58eIVFLNv96xsVwU413GYQvV
+	UpcoL2KnSEBCQUDbDq2AmEtpo+BTsoLyCGKUtKjETgA9auvNmBJ+uwu6nj5Smzya69E06U
+	t4/o9AJjm6CcluFm9EqfTOadO1EShD0=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a298acb395so423491e87.2
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:34:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774470840; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DhtRitVtydyT8pQ7XiZLWzOZF/zl/rEFo6zNt6Ut9Bv40SpImqtAw7tIoid2QKNXmo
+         C1JIEH7LjZbgUwgFJXeWDGZNrtkPUwDBouC+v+oYRRTTh1G2gHS1dLqZxzQ6RFH5Xlhn
+         B30QmOvChcyGENe8RxLH2+QKPJAZpbZJBlZcmWtOIx4alH9xwixLt3P3adeZn4XOw4jM
+         o3sX83J1lQeYsznykTBEmWFXUf3QtqpgbPvaP14hlqwlQyCaGA5vPmMAcBUVLxQu2dvX
+         7MEpE/nblN5EDLi6/MpDBk55TLk21lfon6+PIFp/HhgqGdRWN2fhZl5iTcYNS/HZ5vpN
+         WQEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9Bx7O08fLm3R/wc0dHMJOEG74sKjKAWbEHkEchxKEVc=;
+        fh=3V1Zl2aCRrGTktEkaiySvqv7/lgfTXwvki2WYBoDfos=;
+        b=VQpJFvJzuRSOCzVZgLg5wNojLOrp2EdoQps7XODUJhC65D0kqjK8CdskDz/eMuOuiB
+         vWnGGc7hcS9wV7X6m8/RMYfa69bWd5bTy5/ySaD/e4NVvUQOfujScYCKnU3/TvHVfLu6
+         wTfrmY52FEnpBaNzBhsuPv4A/PB1hpElw60APCcDlRBH/qQ6OrFY4fJ9o2vNHssxC2c9
+         RnYNPFSI/thmIpNEH9e6wB2UY86DOECXk//kpUQhXZk2K8AK/peahHc68tEOfiS97kfu
+         OZSXpuajyit+BCg5EeoLwRa6UOtJnKP9diU6ydddGNIlpSdTMhZn86VGyGiDtYBl3FR5
+         TIDg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774470840; x=1775075640; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9Bx7O08fLm3R/wc0dHMJOEG74sKjKAWbEHkEchxKEVc=;
+        b=jdUo64yGJC7qNyCTdxJt7wrAKoojpTYcQS1eqbbpHQdrJuRPxOlXND7Qm93UU38fRS
+         fp0aQ+bMoiRdRJEKJSyCWJ9WRdcYHAXven2jYvFX2Zha5HvTX2+glRvNBx4jx/3BlVcj
+         rRkOIwKx8IHAozIRjL1hLXipZtQfwpKzOgkn2oSsShCoSDh4m71QMlupM4IYMmwFs1+u
+         BgdFq48VDVFdF3N/ZxvGxv17b/xN1pGDaBhpzZXXZH2SDxaW29IGLLbbDFenPxwjxum0
+         E93/E7kWRz4dabvvaEJHRLiBQhhp7t96275qT9iTgeYSxjhHPnx7voBlVWijhkCY2ahL
+         lnig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774470840; x=1775075640;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9Bx7O08fLm3R/wc0dHMJOEG74sKjKAWbEHkEchxKEVc=;
+        b=nFDBPUQVHNujkRj3v8UGI9bQ4e4Cf8DWPO8OarZC2pR2jk9PQ6JfFAvzI2gWFt7TsB
+         8ryXnnnjqc5YaaxspGusJzsjScbtfvLaZsN8bh31dAWx5j2vi52Z421822LMWsu4pHRW
+         amORriYkkLItC1YBFcdfN0GbTJqEl3xQiMDZwWVp5Y8LY+nUbI6scdQLb9auA3JgQr5/
+         WaW87WjOrSJ1uyY+MBTCSjYWZp1wFpAHYW19ytKg8oKabEAEVkrQ4rawlycfVqjiPZu7
+         LGaiFc0fXagL1U2g4nLN4B4B7M8aug42kQV7u6kwt36xVH7ygZpGjj2+FUe5Ev4hdihT
+         aLVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWErVHk8Nydq/YRtir+H1UhDQ9pwd6Ylww+W7qoxCLQ2IxYjBmnTh5ivtccKAKoE/lx5aTI6ty+xw==@kvack.org
+X-Gm-Message-State: AOJu0YyhM9Eif8i/r6rUf5nKK0kC0yZBD/xRncse5G9O0au6uHhEdTan
+	9mUyJNtJ+tcyXz/m+N73opCNqtcegqTjukUCrP25nqLT20HRla2R1VjYseQHbCa21B6P1kwB2xK
+	biboI4pxgYTFeEDeiwgVYtd2ESn7O6wsdkLuxAZdE
+X-Gm-Gg: ATEYQzyPvSvqO1OZK/EzQSnTen6ZQLgkBtK7WY9a4/1BZEt7bEqIwn+Pp8QICtszsSJ
+	sBdl9deJ6W56oH/dp9BY6ROPpsbk3gzajFQTMySnPqHQ1bTu2AtaNlA3g2Y22IrcoG51whYTQA6
+	runxXKz7CzYrucJKfJzn4iRdrcLxGsavBYGceErul5LDDTOYXfyNbhS3cpQrZQnr0bdLNvhR5ta
+	4S/5+HQT02KtjkpikjiUQuQmgTLXCji0ofVDK+6N/Ef4WYLC9yDqJo6fQAfG5vprucQbbRXLUVe
+	Ici/8S7A
+X-Received: by 2002:a05:6512:108f:b0:5a1:3134:923f with SMTP id
+ 2adb3069b0e04-5a29b99ef33mr1526971e87.40.1774470839740; Wed, 25 Mar 2026
+ 13:33:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
+References: <20260325182026.467307-1-pasha.tatashin@soleen.com>
+ <20260325182026.467307-2-pasha.tatashin@soleen.com> <2vxzikajacgc.fsf@kernel.org>
+In-Reply-To: <2vxzikajacgc.fsf@kernel.org>
+From: David Matlack <dmatlack@google.com>
+Date: Wed, 25 Mar 2026 13:33:31 -0700
+X-Gm-Features: AQROBzBIp18gRPLcKPfh3wjTKZUVHHVImeKDpRy0cS80NjooMtufSaZyOa4m9uM
+Message-ID: <CALzav=eybgJwMQEtvSi2bUv8u7cic6d45r4wFZdZiKFFrrLJfQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] liveupdate: prevent double management of files
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kselftest@vger.kernel.org, 
+	rppt@kernel.org, shuah@kernel.org, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 257284000E
+X-Stat-Signature: ydu7qp6q1u58uc4hxcef8z1fa18jr6tt
 X-Rspam-User: 
-X-Stat-Signature: mhk1jbionbu4z5dp6xjaiwhqitr8sjbr
-X-Rspamd-Queue-Id: D0AAB20002
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774470398-608359
-X-HE-Meta: U2FsdGVkX1/Ts4bnaoK8KC2s/Iu7+QEMGpBAbIevScj/G/xqyPCeM6icVdE+R8uPqOzZoo4nZBK4TllG1pybLMMkn/ZGUIdZe300/hWxw4lxOllIdnGuINxZL8CY1TCjiEVBtC4loXgAte0plL20CC0TTrYTFpofl3GF2AcQX+2c6o5arg16xK1nbdo2NQpyt+FF8etNabmZ+D4E2FKMEJ2dMPRwOYwzz0eN161FGOSJwFBi7N/xBG/jS83Q8Z0496beC3m9aqX3CW8/XSseX1YknzaiVXWMeV3qhgGE3MrdGiE7+ouheMP+k2TohBvM84W1dzcXsUigG2tnbJr+lI6odDHvWHklEqZnIdAO7bNG6GinCcEkddVIyNPWTkIYmQrn/jCP2q8YH0rhKzrIN7vFS6+MG1G5ekG2jTGILwP7Tpvhbqth44Gzo9S4B7V2QfmeTRQODLRUrZBZ51mnqc8RRNdmQOagwBuUMR9qZKTig/skbxR9z97p10JJNasGE3n7TlzqMgOnoyme+/r+zm0HnuoEpJSgWUV1P6+ASFSkMa5WInS+fYbGnfNF3stx89L1HSTuI5O0GMl+O5X+Ddeg42ANcWG3rgbb4GXmZWYdLW26/U/a7GJsoLHHLUafAa9Wbp09BTYJLfFIybhDjfZ7V/l5Y6FnhDjaewsraVc3BCXiua+c0A/O4NLZ9hrefb59W1aqLylgItw0OGZTJPdPMbrGcPUOIp2xpcAQB3YOcWWIKzofdmVQa9wHOluMZDOOtbyh6hGMfTSvZhl8AZwep/RFavLJnte7VkwSnVeIiIt8EJXH5VX33k6/EIeBtdzcCYEuIFe88kG07CW7PeH2Bf1E33lJodAL6yv4UrZkCv06xCqukHhFGEWDT/VApxHzgiCZI0+fC4bC4JkM2pZoUECnNc3tLij4q3Bc+Q9iB+kuav9AHjiKNzfPmsKC4FhRqElWN5quB8c8jKk
- BiGHVp28
- 4SueChjxyBbAfaU5fE6GHud7VSPIMcY8Y18OFyb4UhOnaiVgxQug2oNqsDsh9GjUZhlyelt3NWva4laDsIvXzuKfgPb1FEmJlcBqkXrDo00yfDwW6EtVsAxP2cCKB9+b8Iwn4kO+JQ4B2mxeoIRkRVPxjnlb7fduf0ZBKgLa8xHM5XkJkrmLyMYk5hlL8hGcLx7/Uy4qCzoAHET2ChtGBGwsJp2rSDPKnGoXYgKYfd2FqzIQYfeBJZkpNPPcw6YNafrz7SGo2oo0RqxuzJvS9PTmaqT8eoMnnY0njvc1qV/DnCqfUTHqzj5RVRdbLdFi5qkelFQYJP4YmrvUfuxecT6zizA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774470841-325471
+X-HE-Meta: U2FsdGVkX1/wWYGSMJDwTsup83EGe3F2aqfxYmCHst1cq+VMM3e/mLtTpTKSDvHrtVP9WLsJQY3C9Yw3E0XU4SvgYs1wf0hLqYLpKYEHMKTUW1lOUh7DvIrlHVULhhBoV3I/PWHXM7JwBOQ3SLCoeT+cctkAtf6WSLhwuvDBXd6QEKOevUVqn+nS60qWHouq0lt+oCOJ8rDk6xKb9xzlp+nfoXWruO/zfcm9tNrM2HlV05+oWdGYZBIlaD0zmVR+HPUfKOei/WzX/R4OpBkql+0UU1B4J9a60QxuxIduTegqcfRWlMZL3+6DfcygDzFTm4riN+sth0kR5bMmlB3D4HQrpgM5QufTSwJKRRWZb3Y95tIRqgCu77v3pITBNeAgSmoPxr+cNmXx2CoYw9JRlvDowqBWq58Lkfs1Jnx3tUga4XdffpDu9ZkEZB0Ze1OIjgaXeTTG1Q+Nab3ljqjwgY2bdcwRu/vxdj4F+MKespOZBl2nnko61xn12S2lLQJP8ReUqrD4DHE3gCaeTz+tz4LCYppf9i6iYm7869Js9UXQAvT57px7K/xq4hq+LaPBgDIUOCXSUznAoGS94e8ReNX78xnfiX26IlWoAf6/vVxFSlJoUMsaeZLu18/Jwbqo9KJYzSyf9AKAsOPUCxQg1QPV8NxmBLZURbtNMDnvM6TB/xhmfz6jHRULKk2y9tB0zXae4Ivsu4PiZOoXLaAJmSe+VlIZEqxruP5reR9eTL0nAlQNbK89HrcSrnibEQWl5vNHR39Gmv2RKEwu5GNC63bfCPbSTuUjQ3VWXuSj0IB2zbYPA6tAoIxGdqir5eOtfKwS3/FwJeZrYfx7fQDx8VE8EKY92oCY/nMi5ys6pWeDi/3RDDBKcQqoEsAKt5SnyjloF+364GYFkSPqRE2DsvTJOqwEA6eWdFJbVWJrJ+7nABqdre3mhbTpxgMye7umHWduSL8hdaEi3GPSBBm
+ sGyekiNW
+ E/jnc+PONMHV3TWDgKnn1qYW1FiPKJxCRH07W945j5zI5jY2FwQYz48UZZ7/dqXuLwdRa7CjZF6o7q/quJEfxt+zeMxM0qdkr8UkeENP+CSXoDsJMMY6xqNJ/zHVwjrdg+UYRLmwu0exu0qgFQK2sjAtHDpKcpD/Y+pwRzIVTRYVFKikTRkCCVSVFd6Skm//+f49MkJytMEJ1uU5cl6bD9Z6k1Ts18xX65hipMuMG+QUg6nFwlsN1D3QF+ePTIqorMAWv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,207 +140,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 02:43:00PM -0400, Tal Zussman wrote:
-> Some bio completion handlers need to run in task context but bio_endio()
-> can be called from IRQ context (e.g. buffer_head writeback). Add a
-> BIO_COMPLETE_IN_TASK flag that bio submitters can set to request
-> task-context completion of their bi_end_io callback.
-> 
-> When bio_endio() sees this flag and is running in non-task context, it
-> queues the bio to a per-cpu list and schedules a work item to call
-> bi_end_io() from task context. A CPU hotplug dead callback drains any
-> remaining bios from the departing CPU's batch.
-> 
-> This will be used to enable RWF_DONTCACHE for block devices, and could
-> be used for other subsystems like fscrypt that need task-context bio
-> completion.
-> 
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> ---
->  block/bio.c               | 84 ++++++++++++++++++++++++++++++++++++++++++++++-
->  include/linux/blk_types.h |  1 +
->  2 files changed, 84 insertions(+), 1 deletion(-)
-> 
-> diff --git a/block/bio.c b/block/bio.c
-> index 8203bb7455a9..69ee0d93041f 100644
-> --- a/block/bio.c
-> +++ b/block/bio.c
-> @@ -18,6 +18,7 @@
->  #include <linux/highmem.h>
->  #include <linux/blk-crypto.h>
->  #include <linux/xarray.h>
-> +#include <linux/local_lock.h>
->  
->  #include <trace/events/block.h>
->  #include "blk.h"
-> @@ -1714,6 +1715,60 @@ void bio_check_pages_dirty(struct bio *bio)
->  }
->  EXPORT_SYMBOL_GPL(bio_check_pages_dirty);
->  
-> +struct bio_complete_batch {
-> +	local_lock_t lock;
-> +	struct bio_list list;
-> +	struct work_struct work;
-> +};
-> +
-> +static DEFINE_PER_CPU(struct bio_complete_batch, bio_complete_batch) = {
-> +	.lock = INIT_LOCAL_LOCK(lock),
-> +};
-> +
-> +static void bio_complete_work_fn(struct work_struct *w)
-> +{
-> +	struct bio_complete_batch *batch;
-> +	struct bio_list list;
-> +
-> +again:
-> +	local_lock_irq(&bio_complete_batch.lock);
-> +	batch = this_cpu_ptr(&bio_complete_batch);
-> +	list = batch->list;
-> +	bio_list_init(&batch->list);
-> +	local_unlock_irq(&bio_complete_batch.lock);
+On Wed, Mar 25, 2026 at 1:20=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
 
-This is just a FIFO processing queue, and it is so wanting to be a
-struct llist for lockless queuing and dequeueing.
+> For memfd and hugetlb at least, we serialize the _inode_ not the file.
+> The inode has the contents that we care to preserve.
+>
+> So if two FDs point to the same inode, this will break. You can do this
+> by first creating a memfd and then by opening "/proc/self/fd/<fd>". Then
+> you would be able to trigger the preservation twice, causing all sorts
+> of problems. Same on the retrieve side.
 
-We do this lockless per-cpu queue + per-cpu workqueue in XFS for
-background inode GC processing. See struct xfs_inodegc and all the
-xfs_inodegc_*() functions - it may be useful to have a generic
-lockless per-cpu queue processing so we don't keep open coding this
-repeating pattern everywhere.
+> So unless I am missing something, I don't think this approach will work.
+> As much as I hate to suggest it, I think we need to move this check to
+> each caller so they can find out the object they need to serialize and
+> check if it already is.
 
-> +
-> +	while (!bio_list_empty(&list)) {
-> +		struct bio *bio = bio_list_pop(&list);
-> +		bio->bi_end_io(bio);
-> +	}
-> +
-> +	local_lock_irq(&bio_complete_batch.lock);
-> +	batch = this_cpu_ptr(&bio_complete_batch);
-> +	if (!bio_list_empty(&batch->list)) {
-> +		local_unlock_irq(&bio_complete_batch.lock);
-> +
-> +		if (!need_resched())
-> +			goto again;
-> +
-> +		schedule_work_on(smp_processor_id(), &batch->work);
-
-We've learnt that immediately scheduling per-cpu batch
-processing work can cause context switch storms as the queue/dequeue
-steps one work item at a time.
-
-Hence we use a delayed work with a scheduling delay of a singel
-jiffie to allow batches of queue work from a single context to
-complete before (potentially) being pre-empted by the per-cpu
-kworker task that will process the queue...
-
-> +		return;
-> +	}
-> +	local_unlock_irq(&bio_complete_batch.lock);
-> +}
-> +
-> +static void bio_queue_completion(struct bio *bio)
-> +{
-> +	struct bio_complete_batch *batch;
-> +	unsigned long flags;
-> +
-> +	local_lock_irqsave(&bio_complete_batch.lock, flags);
-> +	batch = this_cpu_ptr(&bio_complete_batch);
-> +	bio_list_add(&batch->list, bio);
-> +	local_unlock_irqrestore(&bio_complete_batch.lock, flags);
-> +
-> +	schedule_work_on(smp_processor_id(), &batch->work);
-> +}
-
-Yeah, we definitely want to queue all the pending bio completions
-the interrupt is delivering before we run the batch processing...
-
-> +
->  static inline bool bio_remaining_done(struct bio *bio)
->  {
->  	/*
-> @@ -1788,7 +1843,9 @@ void bio_endio(struct bio *bio)
->  	}
->  #endif
->  
-> -	if (bio->bi_end_io)
-> +	if (!in_task() && bio_flagged(bio, BIO_COMPLETE_IN_TASK))
-> +		bio_queue_completion(bio);
-> +	else if (bio->bi_end_io)
->  		bio->bi_end_io(bio);
->  }
->  EXPORT_SYMBOL(bio_endio);
-> @@ -1974,6 +2031,21 @@ int bioset_init(struct bio_set *bs,
->  }
->  EXPORT_SYMBOL(bioset_init);
->  
-> +/*
-> + * Drain a dead CPU's deferred bio completions. The CPU is dead so no locking
-> + * is needed -- no new bios will be queued to it.
-> + */
-> +static int bio_complete_batch_cpu_dead(unsigned int cpu)
-> +{
-> +	struct bio_complete_batch *batch = per_cpu_ptr(&bio_complete_batch, cpu);
-> +	struct bio *bio;
-> +
-> +	while ((bio = bio_list_pop(&batch->list)))
-> +		bio->bi_end_io(bio);
-> +
-> +	return 0;
-> +}
-
-If you use a llist for the queue, this code is no different to the
-normal processing work.
-
-> +
->  static int __init init_bio(void)
->  {
->  	int i;
-> @@ -1988,6 +2060,16 @@ static int __init init_bio(void)
->  				SLAB_HWCACHE_ALIGN | SLAB_PANIC, NULL);
->  	}
->  
-> +	for_each_possible_cpu(i) {
-> +		struct bio_complete_batch *batch =
-> +			per_cpu_ptr(&bio_complete_batch, i);
-> +
-> +		bio_list_init(&batch->list);
-> +		INIT_WORK(&batch->work, bio_complete_work_fn);
-> +	}
-> +
-> +	cpuhp_setup_state(CPUHP_BP_PREPARE_DYN, "block/bio:complete:dead",
-> +				NULL, bio_complete_batch_cpu_dead);
-
-XFS inodegc tracks the CPUs with work queued via a cpumask and
-iterates the CPU mask for "all CPU" iteration scans. This avoids the
-need for CPU hotplug integration...
-
->  	cpuhp_setup_state_multi(CPUHP_BIO_DEAD, "block/bio:dead", NULL,
->  					bio_cpu_dead);
->  
-> diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
-> index 8808ee76e73c..d49d97a050d0 100644
-> --- a/include/linux/blk_types.h
-> +++ b/include/linux/blk_types.h
-> @@ -322,6 +322,7 @@ enum {
->  	BIO_REMAPPED,
->  	BIO_ZONE_WRITE_PLUGGING, /* bio handled through zone write plugging */
->  	BIO_EMULATES_ZONE_APPEND, /* bio emulates a zone append operation */
-> +	BIO_COMPLETE_IN_TASK, /* complete bi_end_io() in task context */
-
-Can anyone set this on a bio they submit? i.e. This needs a better
-description. Who can use it, constraints, guarantees, etc.
-
-I ask, because the higher filesystem layers often know at submission
-time that we need task based IO completion. If we can tell the bio
-we are submitting that it needs task completion and have the block
-layer guarantee that the ->end_io completion only ever runs in task
-context, then we can get rid of mulitple instances of IO completion
-deferal to task context in filesystem code (e.g. iomap - for both
-buffered and direct IO, xfs buffer cache write completions, etc).
-
--Dave.
--- 
-Dave Chinner
-dgc@kernel.org
+I think LUO can still enforce that the file is not preserved twice.
+HugeTLB and memfd's preserve() functions just need to also check that
+the associated inode has not already been preserved?
 
