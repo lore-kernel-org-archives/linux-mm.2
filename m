@@ -4,74 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA1EEFEA838
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 08:57:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1D3DFEA837
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 08:59:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A3196B0005; Wed, 25 Mar 2026 04:57:43 -0400 (EDT)
+	id 249BB6B0005; Wed, 25 Mar 2026 04:59:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5544E6B008C; Wed, 25 Mar 2026 04:57:43 -0400 (EDT)
+	id 1FABE6B0089; Wed, 25 Mar 2026 04:59:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46A1D6B0092; Wed, 25 Mar 2026 04:57:43 -0400 (EDT)
+	id 111226B008A; Wed, 25 Mar 2026 04:59:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 33A496B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 04:57:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EA5865B0FB
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:57:42 +0000 (UTC)
-X-FDA: 84583982364.01.CD4B702
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3733840005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:57:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Up7LdXhy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429061; a=rsa-sha256;
-	cv=none;
-	b=j6ZNH4tEoGWijxUFeWxj71GZUOg8Fw+e5uX/Upes4vwM+HntQfiLexaLbXHwoLP5GWabbH
-	ye5J8jSHyPWPig5ucGvtS9KkQzNfW2ZvH+YZhl5SaxOpxz62f0FabyUoYqJcrVyXF5e0Dw
-	qRajbJ9PeqcROjC0NrmWr4UiIR/MWXA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Up7LdXhy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F2CB96B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 04:59:11 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 982298C40A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:59:11 +0000 (UTC)
+X-FDA: 84583986102.10.358A8DA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DD81D140005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:59:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iERiDiLf;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774429061;
+	s=arc-20220608; t=1774429149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+i4QtjsZduZvrgtOyI0JoJhbcx6QDc5DtE1CkJjHOM=;
-	b=1AglqQkkuHVH4s1GLN1agR+OZJzuGMOx9rb+6VkaawCycBZFvma4x6AIWQwUHXHlOlsYSP
-	5sp3lCVWdBHJsV42CLT2241sFINkAGyO5+MaeSY1DOwkv6y8vDAS/NTyXXJ2O53zcz9ABt
-	roSNea6nznBUQ8l/bPWYfhjcM6sFsIA=
+	bh=YKPAoXysMVsdVB4QWCj3imwXrWnlYrYuey5ddRMMwF4=;
+	b=glfHD1aak1O9o0FDSnaTn+eRQmCkW/PWyDLkpYTxkJ1dOcA3cTXo7SoVJmXM4BfT9Vt0Vb
+	hZwt3yIs56PAKCHEvHy9jDKdHD7dAk5/vp+Zz2SZMt/EwjqL/OAr5Psa53lm5OEFI6QuCb
+	k707OHj3eqOaqyjUEn7gcoEYW1Y1nhI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429149; a=rsa-sha256;
+	cv=none;
+	b=oPxB0o9xopd2BfjdmxqqIfAFj4FM/255n8WxyhKKLiv17zDX9i5uAHhgOmh4LJzyD+kDJe
+	BpNqtjIMrjPlU483bo/GPB6CSR+6ELstf82YgRRTgMzLNSf8k4r0rYr5RRkI8D3dBJUl3B
+	q6Lj5mzJh2PAxkKZSZX/peUYk3/JZeI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iERiDiLf;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5640543F0A;
-	Wed, 25 Mar 2026 08:57:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DC5C4CEF7;
-	Wed, 25 Mar 2026 08:57:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2F78660103;
+	Wed, 25 Mar 2026 08:59:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D434C4CEF7;
+	Wed, 25 Mar 2026 08:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774429060;
-	bh=yfxv6pHELzGlv2oobJT9AbDKLWNfM0JfoxxEIEleLqA=;
+	s=k20201202; t=1774429148;
+	bh=Pv7urIhMMBL2ocxusGwdyHEj1oFC8nFHlp57cSBJ93M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Up7LdXhyLQj2Uj4oDFLXhdmGHMqOhUL+XCximoI0LCeWAmcG3+n1T/b0ZgRc3kE6q
-	 ArPo1EXE8R48KzNNzdt6yCvT3aHF4RG0z3VvQbnoHiFVXdrgbo9MhBRZhI4FPnsRku
-	 /zg6d1YEF1wixxP/JXLmHLwqxgyAgv0uzitxifSQ3oqC+uwSrLDrw/RyAfC6ZHrGNN
-	 luLMjjt5tY0jRuCvI/ag8QknNU1ijC43qm99tCMQJk5dcuNpU6TjWoR/ivA7ZmC0jZ
-	 ljzRuVTNrLdAiaO4ulQYeyXnhbsFrb5Y62VZv4fNhVIuO0auUors/U5COdlDV8Z+mQ
-	 7wvdDEhmQ57Dw==
-Message-ID: <e5bd51ae-8937-4cca-94bb-b705b1e8aa26@kernel.org>
-Date: Wed, 25 Mar 2026 09:57:26 +0100
+	b=iERiDiLf++5bl/FDoLs/I4SrbVtH64RIeByQPlcqcwrGq9EcOzuexH5tWl1gGtFQj
+	 FC8h5uxpzmBNLtL6bH6tsxJbwuClunaNI0YiMtJkxq9gw3V7fNNnQMKOv+wsvotj+N
+	 45xdhriy71Y9rawAiZZuQQpO6JNmKQIwWeSZ01trFFXQdJG4NdJL0y8w/PXn8CCabi
+	 lc+fVFDMSIdw+6D3b4ukWEiUMlgyyRJGKsiBc5ChcvFYF3RYKOKiMB7LiyMQu6MBu4
+	 dnwNQyOOPhhy+xWI/iyjRaycgJFkZ54yh6GfFODyWneHxdajE+9VBP3pqSd3/yoEqy
+	 FNQdbf9x0yvyQ==
+Message-ID: <9203050e-eda6-49a1-97b6-a134da2da313@kernel.org>
+Date: Wed, 25 Mar 2026 09:58:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] tools/testing/vma: add test for vma_flags_test(),
- vma_desc_test()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+Subject: Re: [PATCH 2/6] mm: add vma_desc_test_all() and use it
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Dan Williams <dan.j.williams@intel.com>,
  Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
@@ -87,18 +88,16 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
  Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
  Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox <willy@infradead.org>,
  Jan Kara <jack@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>,
  Pedro Falcato <pfalcato@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
  linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
  linux-cxl@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-mm@kvack.org,
  ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org
 References: <cover.1772704455.git.ljs@kernel.org>
- <376a39eb9e134d2c8ab10e32720dd292970b080a.1772704455.git.ljs@kernel.org>
- <f11ec383-d688-4512-a9ea-700cc2d42f3a@kernel.org>
- <f6f396d2-1ba2-426f-b756-d8cc5985cc7c@lucifer.local>
+ <568c8f8d6a84ff64014f997517cba7a629f7eed6.1772704455.git.ljs@kernel.org>
+ <d0111a86-7fc9-4e2f-b652-9ecbb894ada5@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -145,17 +144,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <f6f396d2-1ba2-426f-b756-d8cc5985cc7c@lucifer.local>
+In-Reply-To: <d0111a86-7fc9-4e2f-b652-9ecbb894ada5@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7bqybidptc7manwxip6g9uen3nx18bd4
-X-Rspamd-Queue-Id: 3733840005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: mwgriqwy7m56q9f8soup5aogepbspr1a
+X-Rspamd-Queue-Id: DD81D140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774429061-607319
-X-HE-Meta: U2FsdGVkX18PVsAvgRO2HFgoOvGG2i08MotJCdXbpQp31iy+6/9gJBUvz6RD922Cyv4/+Hykn5/QplbHPAW9P67IqUWQwIZ2gfGlXBlExFeUGGq4NFYRYiT3uAg0q3XpOjQ3seVHpL6vi9A0qeX8dFtGhkuESGAh4mB9ZDoBb3ZpvdzHyhkMjn+lvvLGlvForkRkOa7Q5efH3c6yq6n9i/lAVooOV8jmp0zpNN0G7bc0kVaUnqxxNWmFNbu7pU/PGWXK8EvMMLrJKen67hRhlYHFQTooye5x07BneKTpJtxJzv2s/BGCrX9GyUy6caJriwg4duars0EwGpOsnEvSd/y24qWdyyjMJAgpXUoLzFf7Lvq9KsxcC3yZZ6QoIvHZ/1dOVU1IBvJopGxlOmyrDp5F8MMJ2vJpRNryf8LJxh9IEef15332++wEi519WBObux98XzYCOYbgXsZOn+pWrYxyWBro6KAN4QbQNIAN7ErtxTNkQb3uNGjxS42yMz1jkYK9Pu+qXGoLGouT0u5UpiN3nW539XoOQtCZafjUGOXvXKnfn75zQV8kV5HwVPcOxnUXNK63aL7ojXa8XhA8QcR9PKk7QkX65EQ+ntWLkC49AdnWjV8OrdE2aOa8U7+TiIPY1Shz7+hHmZdz7wKHRWt5RgtGGkm+/w4fOd6djPpSR3t+oGI/C41NeBhSBfIf9Z2CVNgqDL8bqmu92KBMiFNOeH8ISDykseZ1kFtIjS56ENy9ewpek9phOwpY0rB3KowwJwt2ap5jXbCSzNuVuxdPmXpUEyz1q5RUsyqVdDAi/jeSO6i8aTQtma8k9WrigJNX1OmjNGOE5kw3Tv9mU6h0ndqrPn24pixq/igXNxlMFd+6ysYZMpvcB0oUlxyNdkItgrcFhBHm9wdHISBhB2q//VRloALJCJenFZ7RZMD4TrHQAMX0T16+evyJJ0tKbUORxTy2StFgzRgrWrw
- pb1J4LEJ
- T1Ao13SBKCnQ/vQE=
+X-HE-Tag: 1774429149-927299
+X-HE-Meta: U2FsdGVkX1/SNV1k5Kg6/vXdIDmZPG70z4qrdjkMyPZxbxTDqsQpOYRSxExm3es3lHpP0YpWSfpUX4HVXp65C7i4DfItXrY4dO1/maKU0csgCydUKdG4CZR4y/HOh9tbK6BnItR4LQBDJfM8zBDR1U+srErEPEeJQsC93P+VlQePt8SQ0aoo1ZYu+mnvISFEbOKozFV8Qs/8z/Iwh/Uqd0Dl3uFmMnZJEMWScb48yipm6TrMrBQCIUqOg/Trn/b0SoXgr86o6aqsfl3JKYO9dUHL1rdWVBsOwHtQWza1UE90pKglikJMOKnHcmk+k6R/P2RTYF0BlHgoSFRrFMFKN4ElVSSPxMxWg5lG8J2S63r5wdOWSARtTOZhZvayRgqFkGqC5c9PBbIvRq0YtAASbwpBi0oP7k0jM0mcVd0v+9/HpiinFC55WJyPA2fYj6QSb4soFCSxrZNTAhsajEWDoeAmYUh3DGXC6L6FuQUkVbVewLi0wsKiK+rmaq+wDDTLMnmmddwwIDqc+KOtGMUyohiYY9IGhCj/HNIWOxojYPx/svK6apApUyB/OUPnCr34QRba/lykgtgo8qYBS8Msm89ym7heYJWc4QQ25/quGMCPt+fA5RzP6451mPAGq+vNDPY6F0NxRJqxQcr5G9ZZGpYo4sYPw9mhTLJpyGKgvDTQw6Wm3RybhTWoBEhLGioy+UxQKmAdlHMlSgWNuFHrCSuQBoBcQk/bU481h/2Reheirlyct5t4JL7SH1HTkxzovtf6gz9QLrA9stat9zT4UNAl4mHM/AJA/gCX01+fkLetFTM2i40C4Gh0ik+gisatjDpdZaXgfYZTGTUCtWkgIL+Q1eMKpe7pfef5kVZ3LFzgWFhMqX9Weg9OR9GnKLOCve9KlvoCal793k3RWOaWzvpIZ18EsfasjUuA2FbYC/5VJ9WrdeyvvxM4yK4MXGEO/pERbcV85zXYi8/Td3R
+ YF/77Dl6
+ 2gvoTDvF7yqpsA4n922IKKvxUtPLGjuVY+7dqMNq2sQUuoOwAcccWjvsHrINyUJ31KK72+33c1ZrB808XQPfahx0p9cdAFv+AMoyTcUTmlkKEcrbg/kE1M3/7FSOwphW1tK5CMyrKrlA2ONedP+BTus7FHWuEjcSym0F6pO5Wt8NtJPeRewe9WOxHHw59UUJIRMsyYXuMxy/6xLu0tBXVOfFuFuRK4QMaNW8Cx/uJ4r0Zkc2aUNQvIZLV4C5tdjNvzTNU54/2DUM+zbfiYmpNe31m0TcRB/3cfGtfF8m6eQU6VoNQ3C7W+ipzn8NWtRc6T5ul3f3IjkMWZ+M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,54 +162,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/5/26 16:01, Lorenzo Stoakes (Oracle) wrote:
-> On Thu, Mar 05, 2026 at 02:52:20PM +0100, David Hildenbrand (Arm) wrote:
->> On 3/5/26 11:50, Lorenzo Stoakes (Oracle) wrote:
->>> Now we have helpers which test singular VMA flags - vma_flags_test() and
->>> vma_desc_test() - add a test to explicitly assert that these behave as
->>> expected.
->>>
->>> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->>> ---
->>>  tools/testing/vma/tests/vma.c | 36 +++++++++++++++++++++++++++++++++++
->>>  1 file changed, 36 insertions(+)
->>>
->>> diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
->>> index f031e6dfb474..1aa94dd7e74a 100644
->>> --- a/tools/testing/vma/tests/vma.c
->>> +++ b/tools/testing/vma/tests/vma.c
->>> @@ -159,6 +159,41 @@ static bool test_vma_flags_word(void)
->>>  	return true;
->>>  }
->>>
->>> +/* Ensure that vma_flags_test() and friends works correctly. */
->>> +static bool test_vma_flags_test(void)
->>> +{
->>> +	const vma_flags_t flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
->>> +					       VMA_EXEC_BIT, 64, 65);
+On 3/25/26 08:31, Vlastimil Babka (SUSE) wrote:
+> On 3/5/26 11:50, Lorenzo Stoakes (Oracle) wrote:
+>> erofs and zonefs are using vma_desc_test_any() twice to check whether all
+>> of VMA_SHARED_BIT and VMA_MAYWRITE_BIT are set, this is silly, so add
+>> vma_desc_test_all() to test all flags and update erofs and zonefs to use
+>> it.
 >>
->> When already using numbers, I was wondering whether you'd want to stick
->> to numbers only here.
+>> While we're here, update the helper function comments to be more
+>> consistent.
+>>
+>> Also add the same to the VMA test headers.
+>>
+>> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > 
-> Numbers are for flags > 64 bits, we currently don't define any, it's to make
-> sure everything works at higher bitmap sizes, the tests currently set the bitmap
-> size to 128 bits.
-> 
->>
->>> +	struct vm_area_desc desc;
->>
->>
->> struct vm_area_desc desc = {
->> 	.vma_flags = flags,
->> };
->>
->> ?
-> 
-> Ack can do, fix-patch for Andrew below :)
+> I thought I saw David review all of the series and so focused on other
+> stuff, didn't notice he skipped this one :)
 
-Not sure if I provided a tag, but here it comes
+I think I skipped it because it looked too mechanical when scanning and
+I was like "ofc I trust Lorenzo on that one blindly". So I missed to reply.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Tag provided now if it helps.
 
 -- 
 Cheers,
