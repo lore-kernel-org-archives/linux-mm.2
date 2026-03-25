@@ -4,111 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E79DD109C055
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:28:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB362109C058
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:36:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F38176B0005; Wed, 25 Mar 2026 14:28:00 -0400 (EDT)
+	id D70DD6B0005; Wed, 25 Mar 2026 14:36:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE94A6B0089; Wed, 25 Mar 2026 14:28:00 -0400 (EDT)
+	id D48526B0089; Wed, 25 Mar 2026 14:36:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFEB46B008A; Wed, 25 Mar 2026 14:28:00 -0400 (EDT)
+	id C852E6B008A; Wed, 25 Mar 2026 14:36:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CBD066B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:28:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6FDCEE0F19
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:28:00 +0000 (UTC)
-X-FDA: 84585419520.21.9365AE4
+	by kanga.kvack.org (Postfix) with ESMTP id B7F976B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:36:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E7708C9C2
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:36:54 +0000 (UTC)
+X-FDA: 84585441948.13.286889B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BD7CA1A000A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:27:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ahl4PxDM;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id A91EE40011
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:36:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=O8FVjyTQ;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774463278;
+	s=arc-20220608; t=1774463812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hpBw4RUY8JjxM8HYPYakB9zRBXoDbpL5Vame81dIANQ=;
-	b=4iJziQt0Pm/riSkeJSQJ7QW78XYS4M403DRSJWBNTKEkYd0gZKyPWEaSMilZ4BMNydD0c2
-	OirJYtNUQ9unm7jjsdmmrEpvP50iPHflNZiho+Gcpvr23e9F0hxjBk7RwbH+T9gEacfuDy
-	BAngZT21M9BiKutidcd9Xc8TU1cZpy8=
+	bh=41nNK2gQXsUphrcfvyGM3BOJitxQANW59gRbaHOkMZo=;
+	b=VXFgftCyb23JZmsYxHLK8euM8CSZbdIqmWIxDORuaLzdGwi2v/Taa2mQpzjwnjq2bI6xqv
+	UlpObsa5F/q6Jfjqze6xccuwl4o8OG8ugfXk/s620FqTF2Q90kfRrDRmsKlApQNfz3c5H0
+	oYFSsDeJbaCjNEhS/wTWCSH+7bWMmh4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ahl4PxDM;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=O8FVjyTQ;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774463278; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774463812; a=rsa-sha256;
 	cv=none;
-	b=WItGg8z4rQX8IngInVw1e1m5E1KK3bLsvUpiZP7yvCOrx9eCS/Q6VA5C4ymD8DmUDgBuoW
-	Dak6J3NpVdxaz8Wr8Hb2RzbgkZZwzI8WKbw0VHl0Wm0V7tHAkzCi6EXJGGXAxelBI5Z5MP
-	/JBuGFoNbvC4bf5q2Z6od6Lns6EJYqc=
+	b=clKekxV1rBNyY/KWMzpnz3mJOCCyP1zCXbV7/ojuWs5N5gP+cuh8XWQyioDDQiG94Q8Deh
+	q0bDOJGU0hmTydUdAw/kn7bgzzrmE1TQwmTkz/ILN5jefap+Vkiu/1VzBvj/z0Zh4ZIhXM
+	RCQSGa5hwN15sVns/tUQI1rJBLTM8NQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0850D60053;
-	Wed, 25 Mar 2026 18:27:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DC5C4CEF7;
-	Wed, 25 Mar 2026 18:27:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0555D60053;
+	Wed, 25 Mar 2026 18:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48555C2BCB4;
+	Wed, 25 Mar 2026 18:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774463277;
-	bh=hpBw4RUY8JjxM8HYPYakB9zRBXoDbpL5Vame81dIANQ=;
+	s=korg; t=1774463811;
+	bh=Jxayhcb//oD4+znitc73BQEL/cUnyQ8hHgrsXT22Mm0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ahl4PxDMAZ4buO2ISagSICzQMCXJfWkl7I97eQ6yR1mOWfRwIu5UCh/gTbztrdxGC
-	 fyA4HaqEAQXvNkPRoB9oqv1WPgBs8xAqNMYN0V08jI/FvWZ2bJt3m2qa09whBmgni2
-	 JtFJg0xwVqAE8hSGnxFjcSYieb7qyA4v+ZsDWGt0=
-Date: Wed, 25 Mar 2026 11:27:55 -0700
+	b=O8FVjyTQ6c/QqX7Gs2olBJyhvNq0/8M5h5C1H2GVUgbJGDIrefJUeDUg1McWkBeHQ
+	 S0s7SpnQYljIx6QAdAGMTaDYs4aNgCRa+WmL7WDSUGwYAxMCzZd79TRcjD6M2NYahM
+	 Jn/PaW1P48aP2hKx/zQLWIu1i2aajKLonNCm/ehA=
+Date: Wed, 25 Mar 2026 11:36:50 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams
- <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Dave
- Jiang <dave.jiang@intel.com>, Gao Xiang <xiang@kernel.org>, Chao Yu
- <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, Jeffle Xu
- <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, Hongbo
- Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Muchun Song
- <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
- Hildenbrand <david@kernel.org>, Konstantin Komarov
- <almaz.alexandrovich@paragon-software.com>, Tony Luck
- <tony.luck@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, Dave
- Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>, Babu Moger
- <babu.moger@amd.com>, Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota
- <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox
- <willy@infradead.org>, Jan Kara <jack@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Jason
- Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- linux-erofs@lists.ozlabs.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
- linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/6] mm: always inline __mk_vma_flags() and invoked
- functions
-Message-Id: <20260325112755.e62cd89508224f703239f03a@linux-foundation.org>
-In-Reply-To: <959b34ea-69a7-4fda-a494-0b9a1773ec1d@lucifer.local>
-References: <cover.1772704455.git.ljs@kernel.org>
-	<241f49c52074d436edbb9c6a6662a8dc142a8f43.1772704455.git.ljs@kernel.org>
-	<ndtnvnobevdymu5a5tdxdbi4tcsqshs3d6x2vnfgnuclxvgwok@bhbqkzilsets>
-	<d352055d-06fe-43b2-8ad3-b73ab99683d0@lucifer.local>
-	<20260325090949.795e06f48ec455053db9ae89@linux-foundation.org>
-	<959b34ea-69a7-4fda-a494-0b9a1773ec1d@lucifer.local>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Vernon Yang
+ <vernon2gm@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress
+ number
+Message-Id: <20260325113650.fc6997e07a0a4ad0e46278d5@linux-foundation.org>
+In-Reply-To: <06c83e1b-d7ee-48d5-a5c4-faad39db2f53@lucifer.local>
+References: <1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
+	<hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
+	<8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org>
+	<CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
+	<22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
+	<20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
+	<3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
+	<8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
+	<0437ad42-612e-461f-906d-6757eb19a8de@kernel.org>
+	<20260325091735.bf440358cf83c5d0369e0674@linux-foundation.org>
+	<06c83e1b-d7ee-48d5-a5c4-faad39db2f53@lucifer.local>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BD7CA1A000A
-X-Stat-Signature: 944sifn9ffp8t6cyy85uok1wad13e4k3
 X-Rspam-User: 
-X-HE-Tag: 1774463278-737602
-X-HE-Meta: U2FsdGVkX19LY2bxaaxhwQI8YvfE1UbVQirnh0za3ZCuqS6RPfZuO11k7VzLjlKZW2c0Slp6NULeJMQRcaajlcWxhqtrLJKMKSf4HzfK78tSzrpnBk9v1sfd63+kMcFj8OuBwUyYCmtoaIZrjJU3OgatxlMS0p/ZmP8iwVrECJ1TB9Qr6QZDA306gvExicEaNR5P4BkYnJMoRsFDRXjfZKyYfJV7nd5Py4QCrClsMUR4lX3au/v5vP95nXQ1BUwmIRCLf3GQaQupt+zomuGu4oVAwPqAYBs/plHRsp70uYuIa9dYMJUeuf7deq5e6yIaL1zy+m1FIhMvUbxtGoiJoFIDZ2Y6KNtlHxvsJVQyG9XHBqCh7ZUfVooL2LkJeG9NMrud1sFKHfFy/UKtfSKDHjZCxyDHcdMCVItevH9uMiTjBBZU4Zbrq2iOD9Zuwc2mvJNL7XLULC6lgdc4WfP7+fqBJ5YduwKDqTdeTcf+SSOTGmTzieFS0ZRt7TZDJYoX2EQtIvsy/pdwqEJr7plrWQfAxCmgoggTGH4vR1m41oUujDjOMCn8xMIyjZ9JdjY+M5WWTsl6Da0G9l0aBAh1rMNAO6RrOuKmcbOBCusGdO69936fjYJGgEmapTo8pO05qk5LcpCB2ddNtE7KoZ6o4Q8EUGYI54VbgNMCrFcazELxzRTE2gRtbqCkm/KSaxLNad3PtAqq1rt1FA+yD+h/MU8a8l2wlLpNZ0lbzFPKcMl/0V7ZEM7rY0BOIfdjQxMA2LMUBj9yEDhagvcaxBeK9bPHoeODlFC1OjW52/Z0b30HyaTDsWdqwYNGVC+a5T1OBrYzLS2HZKg9Y+lSLTzxu2baJ5T2BIh/99MFCXj9fWHWvRGAEbGeavU8XAWn3jPmUPqrbBBbpyRvPlsZUZiIHUyZUuktrCX6n6dFTMNCm5SROgcwfULuTvJaKw1iaUjoHG5LV6vrxGY+PoNTae+
- c0BEcwqU
- 55Ok7PoZlX5ePNica3GDw6WmcgcsanWreN1fJTKmzaWCvbR0DPc8bMaukImtEfzleWR9sFXFP1bxE4FfQitqONpRz5eFoDreZcA1sIomdSBuLZbZUt8tFA9t/H6izeWoY9AQ684PtlzcwmqCEU/+2G73EV3tjdrNI/z2hZyX0MbFHLIvNkx6jOoK0OUABzDhoY1O+WGSP2RU7yO86/txhpXUx4/U3EWvY/r1PhQwxh6O0WZ27v8nDce46Q7im7ij7XDnjfx4ze8a5/Di7oJwYLtws77IDOUJy3uBhOul+bb2/9fpEkoDqIj5VkXhSrfhVf9RO
+X-Rspamd-Queue-Id: A91EE40011
+X-Stat-Signature: ex61dibbnbsi9nk98owubxwb1jnnefwe
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774463812-688653
+X-HE-Meta: U2FsdGVkX1/34ZxRL21kcdI2GLPZ1RSDbHusorOHCSfTDJd6Et23E2q8kQZ+xkM0SNFvsHHs875eYc5J9GcEu5++6unauTI6qWb34cEvXf0bD7/QCPsjyEn/b1C2KSqSIN870HydqVGAyb2qsz4SStiDtNOTaOTWqn3IUeaifV4q+IHUqIz/AaUbTVNxPqgv+JQ9BAMs1PK2JNosS31AF7qJCZquBR4gdnu5zBrEsgDC8sCTImW/xElZBy12JqCMkiWWUi18AvBqEsyQq2tzaNTWxp/E3ew5nJ5KnLnz1YZ88aQMPWzsDy/lUNrJpQ7YzR0Ue0K87+tBLC2tepSWfiiAzkRx2qhX4POopXr8jCuHqWlgI+HR2YYGctp8bSXJDUUPF/YZg/jWijv3AaBlewIb0PblhZGKYBxoms1h1HBAyBlqumHYIAF/D3QAKPFRweufBZPTJNzsMZBT7iBV4nkAgGfgm38EVmL7r2ev8vj3TobzzWTXrpmEu5FoE5d4sX9PECOiwD55uB4k/r5rTrXIDV7+26D7hN0RlBDjvpX8S2G9rvkkbjl1UpT1dTUpiyMq1oFHpke5YsAdAe3cs+cHi6ogXI/Um8rnefvCBlfWsKeWqWXIQeDcBIu2vMqJl8UONkS8RaiSVdUr5TyBJLO8KWnJVQGc9nXnkVVfNolOE7a/T2Tpq0rIjER4XKwriFLMRFd1elX3F8G1mNr+LD74bRNbBi8WT5ozc5k89NxdbKDRtmc9IC4iR2pwlJ1f4iDdySRYlOtK06TwXmpeJFTW8NvTM9uh15hH+aF2hrx7gXB6VfZeQnPqfyg1zRibSo7xv5cc5hlGtR0nHIIpoRZo/KL0/p2BZEGLkfdwsEIQGluKfLStsGWyIIV6tTdpYIqtRakyRVHJKKatS53O5mIJjZarwagJMZpZmBQLEbwf9RRIAwrMIPrpQ7jcTudIdtRaHYC7AaNZYBjK1dE
+ QXLbfWAN
+ oaTbnihT0cF/xLx131Hby31FbEvmzY6dPzqRf5QbLrLSdFxj8/osSwJbJM/DnJBSX7x2jf6OZN1oWOUmp+boEeDMqmWv0UhUcvdbwv2RUSID3eJC8sxmeOZhoNmqeXqcOYbUTKzkI4jgtSSl7I7lIOwlVFGBvX6yy7z/W2h03ohv0G1GxmlRzlrf7BuXkYv+9XPANLT+XqL0CBIQDKlPM+n4vYxgOKT8Y0k7CQhrVnAwJ0VJK7Vw7xGpzAsaO8cn6XI84iS5LKWzo9PQyv2NN7Errw2vWUu6uK8rp5h1OyekNrqyJDFaiUTwuhmiIlWjfwbGq3hkf4Jl5eKEH/BETRf6/WJ5sGEqhnf9yN7SDx3HIUg+Bc/Zg/dS5QkNxmPEYgNAa3w+xt3W8108lTalmJVqjB3MwOH2szy4LZGieBDG/zlohSQ05tleuCj5CHRQzgVtJ0Tu3OEsM4vtKA5MFs16VMCiZu9qDNP6Q++IByrrY/gPIdoqear70U5+yGpdT46EX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,16 +103,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 16:23:53 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+On Wed, 25 Mar 2026 16:26:12 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-> Maybe 'into an inline constant value' is better?
+> > hm OK, so what to do.  We're OK with teeny -fixes but anything more
+> > substantial we ask for a full resend and I do the heres-what-changed
+> > reply?
+> >
+> 
+> Yeah that works for me.
+> 
+> > I presently don't fold the -fixes until the very last moment.  Could do
+> > that much earlier if it helps anything?  Possibly useful to people who
+> > are looking at the series in the mm.git tree.
+> 
+> It'd generally be easier imo to have those changes folded, but with something
+> added to the commit message to indicate this so I can know whether or not that
+> was folded in.
 
-<bikeshedbikeshed>
+I always add a [footer] when folding -fixes, eg:
 
-How about
+[sj@kernel.org: verify found biggest system ram]
+  Link: https://lkml.kernel.org/r/20260317144725.88524-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20260311052927.93921-3-sj@kernel.org
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Yang yingliang <yangyingliang@huawei.com>
 
-: Be explicit about __mk_vma_flags() (which is used by the mk_vma_flags()
-: macro) always being inline, as we rely on the compiler turning all
-: constants into compile-time ones.
+So one can simply chase the link.
 
+
+An unfortunate exception is when the -fix is from myself - I don't take
+the patch from a mailing list so I have no Link: to include, eg
+
+[akpm@linux-foundation.org: fix spello, add comment]
+Link: https://lkml.kernel.org/r/20260220151500.13585-1-rioo.tsukatsukii@gmail.com
+Signed-off-by: Rio <rioo.tsukatsukii@gmail.com>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Wang Jinchao <wangjinchao600@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+But these things are usually quite minor and the precipitating
+discussion can be found by reading the main Link:.
+
+> Maybe just directly squash the commits?
+
+Not understanding this proposal?
 
