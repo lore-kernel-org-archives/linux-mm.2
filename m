@@ -4,100 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCF1B109C034
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 811E4109C034
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:33:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 534866B0092; Wed, 25 Mar 2026 11:33:00 -0400 (EDT)
+	id EAAB86B0093; Wed, 25 Mar 2026 11:33:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50BD96B0093; Wed, 25 Mar 2026 11:33:00 -0400 (EDT)
+	id E81A66B0098; Wed, 25 Mar 2026 11:33:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4491D6B0098; Wed, 25 Mar 2026 11:33:00 -0400 (EDT)
+	id DBEF86B0099; Wed, 25 Mar 2026 11:33:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3809B6B0092
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:33:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DD8271B8D36
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:32:59 +0000 (UTC)
-X-FDA: 84584978478.16.4CCF9D0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 51163100014
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:32:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A2FomEXr;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id D0E6F6B0093
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:33:06 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E1E2BBAE2
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:33:06 +0000 (UTC)
+X-FDA: 84584978772.26.60403CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1FEE21C0015
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:33:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d5CsmeBf;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774452778;
+	s=arc-20220608; t=1774452785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5rta02Onm0qeuXEZF0HcOxMb+qiRyBBcKxQaID0hT3E=;
-	b=ngEi3aNO15qGFN8qhuu6aNEYJd8EooGwNsn2xPyGsffMPozFn4iyG9HjeZXX4WsYfrCoKw
-	AZzVuP6WP3KM473+8sJrk7WaqOX4ebAjLURi6KtmNN4Aep5LiDUjDy/LY3Xqb7Q6Yh1pbE
-	l59PgVTmbdp+np89nM1Ocrq37xXhOb4=
+	bh=qvWVTUgf6w1AXSx3Wg4/erfOza/20+14ifQeDfmFXV8=;
+	b=U/OKHK1SFVBtkncGWD5wQ1J0HAz8Go+OCSxKprqCQFDlgm6YpYqCQc8ZxdfakL5PRyBs0I
+	OLSshWZjq6mCXfJL+yOVWNZtcLNijVVSC7iPpDg9rXR4mCNLt9GW4WB1lKn43gHMCN2/nJ
+	+ytM+7en7Ik8zbMiqB04GLVlgbmsyEU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A2FomEXr;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d5CsmeBf;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452778; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452785; a=rsa-sha256;
 	cv=none;
-	b=cp8ohZy0XkPsrBqf1dlwIirqtYyJi1wwrgmbmKYIfgxl0K7zo31d6JBH+RnfMg5pV07eAA
-	McBVbhDOsZmyLpEItI2EvQx5fFLvYrcWGodW5VyfGCqgm7aP19FYJiE0gZbF42vQaa0lSp
-	7UQ6h6LS8ZRxr8VRC5fF5TVb1MXFfX4=
+	b=jMCgDxTNWi/f5FpwoHADQltWxIRjM7cSVdKE4gwP36dJaDEm12eCnAEqyLkaRV96EkrCGz
+	MOrtREd3c9TQ7dtNatZ7+OJiZAzquIFeX3jJ+dpRwgKfvrNTt07VSC7Ej864qZzFkB9Po9
+	/YN5YoFYHQ0ItnmhHIJSUE7h4BRbO/g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B00A6600AC;
-	Wed, 25 Mar 2026 15:32:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30ECC116C6;
-	Wed, 25 Mar 2026 15:32:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2B3EF43DB7;
+	Wed, 25 Mar 2026 15:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B941C2BCB0;
+	Wed, 25 Mar 2026 15:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774452777;
-	bh=7Q7S5BUEPnjJPL+sZVIXSsmkmWcRrS8Apgpdbcvnh48=;
+	s=k20201202; t=1774452784;
+	bh=T7n3kYoF9cKOPNN6IPaYAgeLjjX+mkPzNg+Va4FI/6Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A2FomEXrTMPyqxzxStLtMsZG/Zisr9kMk1EKI14uWOQ8knCEFgEa459V7sDg6IZ40
-	 IOZ2/WTTIRPJtB2/99NDbrCSMb3MqP/OCZSLcrk+N8XPPRUSZgnZF+R+6H5r5Y+yqk
-	 sjdNaocYIQ3CnHR/ddTab6GzQ0adaHbG34IBwj4hp23lSPLhnNXzdLcz4beBFWXkgz
-	 IRpsJTyVuXs8mehyJHySSc7uNHx+xB+6UU2j0WWrsqVzwdZjD78PL2gRqmAaAqw577
-	 eJawpY2Uf5ffcZOT6yP2F5oZtnoDY/L6UnLRtBIV+43RSs3DR/BcPIUAYNgSvhFGoX
-	 veUcY23jail8g==
-Date: Wed, 25 Mar 2026 15:32:50 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <21cnbao@gmail.com>, catalin.marinas@arm.com, 
-	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
-	willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the
- references for large folios
-Message-ID: <af9d8a6a-074c-412c-ac5e-3f0dadde3e7d@lucifer.local>
-References: <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
- <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
- <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
- <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
- <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
- <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
- <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
- <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
- <e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
- <20260325083016.a32095bea3f04488a7c9005a@linux-foundation.org>
+	b=d5CsmeBf+fIrWJ2sb2LRnHbwvi5AE3FuqklJLJpfm8jFWPyiX1ZwG8kRlDk9jL20F
+	 k5e0CFMD4Fcj7YcuNSrL45WsSVLYXRhq/AyhrDthEC53PcafET2bEKw4+2ypqaS4vf
+	 Ah5G+/quEqcjIsKVrAzwgjktFES9elXMY+fB7RQkET6Rhwjrv5mDfrh4Jfp0fN6k29
+	 viidAKX20j25BMKkk5YWzgSDJ+mdFV5so4mvS0DxA9kUJ4qYsgWoAic0o3Bk2dX07O
+	 JmrRuGYTzxuvvXuVr0bWkPzt0NIlp7ZPyZ2MQwwfR0JinOfhlm8Vmp8bKS8+ClkplQ
+	 n7Em841g9Ibpw==
+Date: Wed, 25 Mar 2026 17:32:57 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, dmatlack@google.com,
+	pratyush@kernel.org, skhawaja@google.com
+Subject: Re: [PATCH v2 2/2] selftests: liveupdate: add test for double
+ preservation
+Message-ID: <acQAKTjkIjcsBpaf@kernel.org>
+References: <20260323203145.148057-1-pasha.tatashin@soleen.com>
+ <20260323203145.148057-3-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325083016.a32095bea3f04488a7c9005a@linux-foundation.org>
+In-Reply-To: <20260323203145.148057-3-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1FEE21C0015
+X-Stat-Signature: p3a1ekf6i4o6mko4czztbjgbbp3mqxu4
 X-Rspam-User: 
-X-Stat-Signature: x8gk9x8ynno7opjhwfkm5sk74onuxfz4
-X-Rspamd-Queue-Id: 51163100014
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774452778-48560
-X-HE-Meta: U2FsdGVkX19S2ohPTuhcx9gFIVsUcnMB8Mqlpw0qcOMgB6TIprrz5793E6P53LB5J3u9x6P/sFaANx/fPI+mTHKT0frEt531znHba+9yYUpd7w9rVNRMkwOD4u8nkz5TbWuFIrCIh0xvmOOIoR8PWuI4cvQ55OE1KUuIo7Uvjrc4gDvvxrjkhkw1/Meo8XJubAO6wN5d7v33zov8lqjMBIzj7ytvT0/RBl6H6KJhYMZW68fs6hsXoBf+EZp0Tak9jLEySa1eRpky424pam5KwmHKk4AsS+HcTX0XS4UaEFzVQMlrpSaZBmuN2Hv5xKk4rm3poaeDTLzjOucCSwFzOmB2SGkvFyBtTynL5w93vCmCa+xBSDZ0CQAAvqdRnZ07FsUbdLnKYlWpgQViamlGdP0ddPQxKR85m2FeN9PLRiV1dAWCngU7Wa2McoQLtPhm7o0EmJsluPyJ4fQ6cH/Mo2ATAF7YgquZRJWAY+IoJBGZqu8Ecr7lvnl8L8GVi6N8RECmY9gTCEDCT5q4I5/Pyg1mg8sZEMRlkxkp86Q6vh88iVw2zyLK9GlhGmqxZJFyx0V23wmDqcKsRrX3vHsvC7qseXc4VGZF+vNrFKA+Fc6ZIom93QJ4pflVHmwM/aEJxtN7s/7/2VG+76bO1NunCdJFBCUYUCynv9i1q/zJktXQOTCibyqcxAmNcaKjC0x6JugsWEQfJncaA/VaLMAoWmEb+yajeGDM4ZzJiIqVfaJJI1uA57fbJhzZvEIIV3/eXsTM31BznLB3Fm2jVwq8Rh62lAuVaREg1ByL1oEnOULlYIXQg8+kIPTi+Bb765qz5QyiSypp1gKCHtqRh0g5j7xwKd5U83d/i+D9vFRB94e4zj/R+nq1ztDJ6IX9bqDzDjI2j/TS0RO9uVSb36n8CjPDnwsWH/6a04qqpG6TkKFgSTxfKLSOaSOPXwGTuM+DuDvKHGDTdV/WvO69LkW
- Ek+/Ade3
- bCfWpHtYW7l74ed135n6r/V8roS7twExyGsIjMJ4n9i5QEB7fO58SjvHjdHmZrJYJdG7HT/Z9GsNztj+rvQti7w5wausJIJDFZZ0gdMF+Ae+54o4Te20Mw6VJUFBx6F0Ay5MIbKkdN8lR/67uNzzonweiqYWbghrHghTLPj7Cl+HGWf2ABczGpTJjWHSPrs6BI8t/dbIEuyvpUQ8QZiyUJTvW6d0fwttAXAdEgTy6wlE5r4M=
+X-HE-Tag: 1774452784-335386
+X-HE-Meta: U2FsdGVkX1+HEYEyfmBkaV5ardepQZUrHw/NQao5/mnHO4Q7p6iAIGFiLMHSN8+5qfQ9cTT1qrH8zUj2dBzKQjS31b61gsdfIA7yigP2w/zMWjmquVd8eeSs099R7QATiFT09bPUnG/tmCGAPjU5p2u9QDTUpIZgxWyByBq4NcQJdLWX9+lRA8i3ynTb7qD70QbL11TVzh7BaK7wuA0vd42H2QFdOgHCtSLuvXGm9ix4aTtDsHORE/EDfjjFzPYaUDdVYgdgfKVK+a20wUZinRXKttqSGNpePCJUQn9pSlShjUTJTOXKHlFiTgUutVmPGXjvofnyGDni9lkVcezcz8KdicBBhIgcQRmTpiGRRKAp9d3DKBj7ZrNAJO9LKZ7i3wXsQNRdMKf52pxPstr4CkCoqpG2/AMnb6pqDNHJ/XATc45iaVCi3+KK6otrGeYQV1Zh/zlEgoX/ddOSqkdi4ACWhG/dkwaqYHAtxmvl13aEwjEFeHsB3QtrTX0z/pDZg+D0SAmua2bEereXGN6fPOnf8rOuWIXnZzDZWErBhdgsDgXw1Sv/uMQKxlTeBu2grSAleJuyH5wT01WmHgm4MeqmyzeGSUkNwAoK4mzKULj36o94GQrR+194E/U+VbZVjDBmbQcu0aAdpss6Sc85R+zUXRmfzNDEiMcMNwR63FCBpsxnKZwDghf2ZS/ZNwGeL/IZ+gPmSMZ9hZCc58Kd6dMc9ihL5JDP+VDvQ6XgP7ex3Wij5ywAFY8RidXG07/qDrMjQbKduTo49HMa43EOo2uwR0OSsApX2QFAH9H6+IqC1ZK+/l01ACBGgLGc/KCdsgrJtxawhHDTO+FEo0AnrjiywDILhMMBNxzGoZtAL7C8pr1n1wC9yXWXGcy/0Vb8nHMRU/tNNtC/F00O0IuuItPkSaDjRPT1gsztokyJgqrexDc9P/MeBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,36 +92,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 08:30:16AM -0700, Andrew Morton wrote:
-> On Wed, 25 Mar 2026 15:06:26 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
->
-> > > > Sorry unclear here - does the series need more work or does a follow up patch
-> > > > need more work?
-> > >
-> > > Follow up!
-> >
-> > Ok good as in mm-stable now. Sadly means I don't get to review it but there we
-> > go.
->
-> Well, this was sent 6 weeks ago, at v6!
+On Mon, Mar 23, 2026 at 08:31:45PM +0000, Pasha Tatashin wrote:
+> Verify that a file can only be preserved once across all active
+> sessions. Attempting to preserve it a second time, whether in the same
+> or a different session, should fail with EBUSY.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-Yup I know, I've struggled to clear my backlog.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
->
-> But please go ahead.  If review is very bad, there's git-rebase
-> (happens sometimes) or some followup fix and a minor bisection hole
-> (happens a bit more often).
->
-> And those followup fixes will trickle in all the way out to 7.1-rc7,
-> via the hotfixes path.  This happens a great deal - about half(?) of
-> hotfixes pertain to material we added in the current -rc cycle.
->
+> ---
+>  .../testing/selftests/liveupdate/liveupdate.c | 41 +++++++++++++++++++
+>  1 file changed, 41 insertions(+)
 
-Well given the other tags it's unlikely that would happen, so it doesn't feel
-really worthwhile at this point.
-
-Really I guess I'd like to know the timing of when mm-stable is taken so I can
-know the deadline for stuff like this.
-
-Thanks, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
