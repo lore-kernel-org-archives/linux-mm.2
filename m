@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FD20109C024
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4313D109C024
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:36:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF48D6B0089; Wed, 25 Mar 2026 10:34:43 -0400 (EDT)
+	id 975436B0089; Wed, 25 Mar 2026 10:36:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA55C6B008A; Wed, 25 Mar 2026 10:34:43 -0400 (EDT)
+	id 926806B008A; Wed, 25 Mar 2026 10:36:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBAA66B0095; Wed, 25 Mar 2026 10:34:43 -0400 (EDT)
+	id 83C026B0095; Wed, 25 Mar 2026 10:36:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A07FD6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:34:43 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36B89140817
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:34:43 +0000 (UTC)
-X-FDA: 84584831646.18.A961AAA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 47BF44000A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:34:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=BPDlcuAx;
-	spf=pass (imf01.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 765CB6B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:36:49 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F403C2E15
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:36:49 +0000 (UTC)
+X-FDA: 84584836938.27.C6540EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 77C73140013
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:36:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Ehl7K/4r";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774449281;
+	s=arc-20220608; t=1774449407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WRt4DJdFCetftqTlbCfStqMHbX75OE0GMvpU713/3BM=;
-	b=KZRPECyx5yFoFlcHk5FZS9lL8KDMMAACUhoecWvYqsA/9XUaiFwsmR+7tRXwm2N/UGV48a
-	TwvOPdHqYttVmSfS97vQiM4X5VDxyKSd8eQz0ov4d7lzsTfOyHNcyKBA0nR+y/3HQDqmoq
-	1Gb/0InLiNsO+cFVI33ieQm39sKMNJw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774449281; a=rsa-sha256;
+	bh=1s/oLbJCdbJG+H5bcsLc7QVlHnEEasfd6M2und9S9aM=;
+	b=uQUEOdXynZYo64Fq4edBPzG5hsJ99esFFDXERmE1553y4+j+VraJCZF9ZixG+Tpj+E/hnr
+	dR0fbFYCExN0V166Eayo0ZrD72TtB25H+5xdpH8O0bXspifWress1jIxJvy+xCF1vmL0ZH
+	W0EF0iDnljh/ClvT2/SBEfeUoBlJHQE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774449407; a=rsa-sha256;
 	cv=none;
-	b=roaHSH7Z96qLWxupIeONoEEG+oCM1/uJJOPsozzkIdyZggjDvOpoNPnb8pgG+SmPFnSd4A
-	owyMVVeBgMBuLxvn4OIYdny172tr/3rcg9fR7SMId4Efa+FicL5Yh8LqWWL9NAIQVU3PKE
-	369HilWG0CwNxZ4WffScGr7S3X7ii/k=
+	b=nQQlu3+c8LOzOJJKBFvjtHNjxDNNs/wzu4iBlmrxrusk2ufOxF6MoaI9SDFJXSsgb7cR2i
+	sliewLMR22r2Tz7O98+r+LZn7D4UdTCPirlkLJZ+C+WPgMApi+JF37/VnWzc/aaQ0ys60B
+	S7r+oFEqlY9Z5at8/dDqbiYBgXT+Rfc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=BPDlcuAx;
-	spf=pass (imf01.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2216D1F91;
-	Wed, 25 Mar 2026 07:34:34 -0700 (PDT)
-Received: from [10.1.194.63] (e142334-100.cambridge.arm.com [10.1.194.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B644F3F836;
-	Wed, 25 Mar 2026 07:34:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774449280; bh=6/u6HKYQDsWx6V41hulRBAMFC+hy/qZJazOJY5r5Rmk=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=BPDlcuAxL4aXuXQ8Rz7EjB+h55HmaQlwOQxJGa3gYVwAmSuKM5tpQ7gB738eHHnlf
-	 k12R0YuctQPWcvu5NQEdtTVUtt2sbw8t90IUopt1Yd6Fj9KVK2j8oIaH08yx8g9ZN9
-	 99yOkdve+glFLZtZjDymTldx7BrJmgMrb7LoXZqo=
-Message-ID: <c379889b-42eb-44ea-8cf4-1f29a45b6ce1@arm.com>
-Date: Wed, 25 Mar 2026 14:34:36 +0000
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Ehl7K/4r";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 04532600C4;
+	Wed, 25 Mar 2026 14:36:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29837C4CEF7;
+	Wed, 25 Mar 2026 14:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774449406;
+	bh=1s/oLbJCdbJG+H5bcsLc7QVlHnEEasfd6M2und9S9aM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ehl7K/4rE1asXxBnk+ljYExLi38p1QY5H3JQPyU3Dw1aVS7AlxcjALQupCiBIbhK7
+	 1XwxolSPpD2kzFv8Ve62pYgU2ezvRA70PlVSHqhsrj57EqZf26UdWCt+ylLwstzzcj
+	 mLAxBQf0BwgyX85q+y4HrWi0HolMOoyrhmhIDebh3oULdo5uid4NYYcdGGJIbXYYq+
+	 b8Mdq17b/vt86HPndC0RdwQ26TSEnaW36fYjUJZj6xPEotLJD7x0DHO6L1MHOpTSqB
+	 MaBWZPAmmlrmDBl1Wp3uz/Ww7A2eHC5s38FLk4pgAgHm3UsU6SvNS2cGdxjWInlyPr
+	 Ir+GgF58W4yQQ==
+Date: Wed, 25 Mar 2026 14:36:43 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org, catalin.marinas@arm.com, 
+	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
+	willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the
+ references for large folios
+Message-ID: <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
+References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
+ <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
+ <CAGsJ_4yEWn3kVZPQZatOJX7NLLv-OK9pAqUDuWz25XxG5hpV=w@mail.gmail.com>
+ <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
+ <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
+ <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
+ <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
+ <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
+ <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
- David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- Ryan.Roberts@arm.com, david.hildenbrand@arm.com
-Subject: Re: [PATCH v3 2/3] vmalloc: Optimize vfree
-To: Zi Yan <ziy@nvidia.com>
-References: <20260324133538.497616-1-usama.anjum@arm.com>
- <20260324133538.497616-3-usama.anjum@arm.com>
- <1D88CFF0-8A74-413F-9A6A-39E27B760AE1@nvidia.com>
-From: Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <1D88CFF0-8A74-413F-9A6A-39E27B760AE1@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 47BF44000A
-X-Stat-Signature: 1hmm34tpjqibeo4yt49eh1kdcyoff6d3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
+X-Rspamd-Queue-Id: 77C73140013
+X-Stat-Signature: d7mdax4q74xso5bnnw9pqog8q1ebg7re
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774449281-116224
-X-HE-Meta: U2FsdGVkX18YvhHmt0hg1VNORb7ZYbFdvoKvSkEg2irVGMUMN2ERJuDWYVeEjp8PmKd97DGjtxJEwtvSQywBf/JbBCsGnwdiTgbk/L1R4YSfd4e+hbE0uc+CiwJW+Tha88TrBzvt+Mv96hWsB77Ki6mvNrvSye8LZBiYoRzgs6IPH2rRFqJ2FmrHsB8njxGIeLzV5tIQVcBX97bJOfJ7Cs3NBVF/NaWQP8ZyVP58wcr4/E4/ePIRx0PjftTHq+ucgdL/P/ZwOULg7jX/0omomlylfzOE+L9YwljZkrVfbMIv3Uih9sT9qrF4mDgmhgiqTE6ew6DP2iO1SE7w5LpijFsCTmwGGJcc6VKXKQVyaCfHgM+J+Cc5aSVrhgvpRlOSubNXD1P9uAuAdMZIBaIriIa3gJUkbBM+IR05rp2gkGb22csLB9OP/Jskqo2lBXY9Hx9iIGDgAOkZvpu/niqIO7dsD8oemjjFqxeJyMAma3arwIM+wMSQRv1OPvuoajsUBX9g7t+DNMoynVkuaw91IlxfFoiLIdlblvZ9JJBOzktrOFM79mySQO1YNbeWOOBpvKsugPpmksXCEvDvttG8887cpCEDmcMn/e+jA9OjBEBuv2MdIKnOjw0XzAlS6nveK26us3hDY/7yTsWVkbzZMLbRC7fZp0Kj0W10P+bWLHWkd1LP54rjurdJjQV3PRk3stJEte/Zcrg/6f1oaJdm1tNWw2xg8IWfypjlNRkY3p8tpwFHVtwwTNjzyzzo/9zavvr/nxwelQ3oXsSKR8S6qItx1u1i5CbayFyXNDbAxU2nZo+nuc6aWnx3nULOFYm6yZ0LdEXnT9V7LMdR23qWwtrJOSB12KtPf2GnibPifp2PdDLwJvsq8iclCTx8xx5lZ0y7xc6OuJFhk9V+jbFR0I9WRe56IxZNrtjQ6e/Mx/q9tjHMxRKk12C08PyzDpOONLz8DiUX1zZviOoV1FR
- 2B7iPM7r
- 85mWBllacAZtEcWtENZ/6d4O33kBEyNchLvwOUW6fVXceNEPixdtPk+7KyieYDeDfbrLyb3Ul97AErC+cEvPUwgxTL744P2p5PxEHzgrsT3VfT+hnm1MR3ehLjTkhna/+dpLN8PyXIWbBItr6IXhiky+wp+Z2GiYBnm0AjJigYX7zrL0Trbxv1Q9NMPfUqibhLdeoJdfA54F+dnzKenjNOnU/gycjTMKzf2XLnwXjYf3AsLTUUUuJmcP1dkWWv0JCXsbTuv2VvNvpTDiWRRzB4YbkTtmcmQzsJxC9zN9LsVNk02qfD8CKhNpk91g21jhd0sB6pEdLwc2OoAM=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774449407-339272
+X-HE-Meta: U2FsdGVkX1939T7P+9aB/KWFaNbCrGCUDpd/fQEtsAgac4ROVjE3nx9c21ZRGrKq2iBzMBvxJhawO8pRlVnvhfNJKcCnR8TPL8jSv34N9rr08m7s36T0xPTOmhG+YMwHcsFG9OxbCJIggUjW9A3Eb86XqFpZh3R7quMkH8ot+i/uuwPSpyAbr8Iue113ka447wtMuxDTA00LikluocAk3NRPWA8V+yijylaS/rrjuD5L+rZb9qlZ1XHNJ0g2+w19sQiRk4nXZSiY+OPG4UpBmV5LpWPNty3qoh0qMvsac1xzn3EGTeUXE+0kMqTuxricqPdia/1VxqfC5UYB1pRvkSir0bIQ/cCv9co50fzVS2hkFUegYCUaJ58pqiEnX7EVR/0bETyd57soRhe3kAy+QsYbf7Utspk0GKsLzs7I4b9/lzUTMrzoQFc/geDXpwOGys7iI+52guULXthl9mF+qLXE6tA87GiOgRS+S3tK4dztUmnOqPYAcOYYcs1k7ng5PuaGxb0AyWxy71qBkyFc1V65rVhA7RIRxz5ZXLxvJgH1YAoa5bjUjF1zTu+tFkNAtp8TEzf36IF2Eja21+pCEJs25RJm9LvsOGeo6/FP6neY4jotvPS4d6oAcTcKV+Xr2zgFFvzYP6kiSLPaTSrPKavm9YKatY4jWcE2JwJ6yL73AahS0dsJ+6Z0XFBaruWuwSOebueodMHDDLvtQEO1yD0KH9LYYm6TVfAPaDvuxhH30DUgC7c+R8VYRcgv7v973bEEAkHFtqNW5kSgWSXh1L/SB4gy2zfOjKfGYe/OPinfWZTgS6m7ABfpJESijIh6GSvq9Wr5CoBfOFqAmZsp6vg3gEz5WnYxCd1hscH3SgqaDdA4Mcq38IyATR+MrH8PVVXZKqTwNMI5HKIWBFs0O5cKmRQcKEeodBFuCyB4arq3lIcJE4FjKhe3cSZMNuKEzPSjzPH7O60cXqQUGhT
+ 4+x7bBD0
+ Zk50g8/tvgaR+Iw6et4Lel4TUhiwBwTraFq1X1axGHsEhUT/Tr+7/xKxLZX4JKO6P3pkv6v76DBw07rKmmeJqa7rKw+Z/8cbl32l3k77+1iGSTzgFnBpKZ5K28u5JqO7b90WtDfUOSpPQ5mwXm9a8MLzByl6S7LcVbzdpmTv9pMMhB7MbWat7oX+K6GV8zneTtQBe4kuO7Zs1prIFqHpbt1upc61L4sCcDgkv85g1QGvGUYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,86 +106,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-<snip>
->> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
->> +{
->> +	unsigned long start_pfn = 0, pfn;
->> +	unsigned long i, nr_contig = 0;
->> +
->> +	for (i = 0; i < nr_pages; i++) {
->> +		pfn = page_to_pfn(page_array[i]);
->> +		if (!nr_contig) {
->> +			start_pfn = pfn;
->> +			nr_contig = 1;
->> +		} else if (start_pfn + nr_contig != pfn) {
->> +			__free_contig_range(start_pfn, nr_contig);
->> +			start_pfn = pfn;
->> +			nr_contig = 1;
->> +			cond_resched();
->> +		} else {
->> +			nr_contig++;
->> +		}
->> +	}
->> +	if (nr_contig)
->> +		__free_contig_range(start_pfn, nr_contig);
->> +}
-> 
-> free_pages_bulk() assumes pages in page_array are sorted in PFN ascending order.
-> I think it is worth documenting it, since without sorting, it can degrade
-> back to the original implementation.
-I'll add the kerneldoc comment.
+On Mon, Mar 16, 2026 at 03:15:18PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/16/26 07:25, Baolin Wang wrote:
+> >
+> >
+> > On 3/10/26 4:17 PM, David Hildenbrand (Arm) wrote:
+> >> On 3/10/26 02:37, Baolin Wang wrote:
+> >>>
+> >>>
+> >>>
+> >>> I understand your point. I’m concerned that I can’t test this patch on
+> >>> every architecture to validate the benefits. Anyway, let me try this on
+> >>> my X86 machine first.
+> >>
+> >> In any case, please make that a follow-up patch :)
+> >
+> > Sure. However, after investigating RISC‑V and x86, I found that
+> > ptep_clear_flush_young() does not flush the TLB on these architectures:
+> >
+> > int ptep_clear_flush_young(struct vm_area_struct *vma,
+> >                unsigned long address, pte_t *ptep)
+> > {
+> >     /*
+> >      * On x86 CPUs, clearing the accessed bit without a TLB flush
+> >      * doesn't cause data corruption. [ It could cause incorrect
+> >      * page aging and the (mistaken) reclaim of hot pages, but the
+> >      * chance of that should be relatively low. ]
+> >      *
+> >      * So as a performance optimization don't flush the TLB when
+> >      * clearing the accessed bit, it will eventually be flushed by
+> >      * a context switch or a VM operation anyway. [ In the rare
+> >      * event of it not getting flushed for a long time the delay
+> >      * shouldn't really matter because there's no real memory
+> >      * pressure for swapout to react to. ]
+> >      */
+> >     return ptep_test_and_clear_young(vma, address, ptep);
+> > }
+>
+> You'd probably want an arch helper then, that tells you whether
+> a flush_tlb_range() after ptep_test_and_clear_young() is required.
+>
+> Or some special flush_tlb_range() helper.
+>
+> I agree that it requires more work.
 
-> 
->> +
->>  /*
->>   * This is the 'heart' of the zoned buddy allocator.
->>   */
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index c607307c657a6..e9b3d6451e48b 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -3459,19 +3459,13 @@ void vfree(const void *addr)
->>
->>  	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
->>  		vm_reset_perms(vm);
->> -	for (i = 0; i < vm->nr_pages; i++) {
->> -		struct page *page = vm->pages[i];
->>
->> -		BUG_ON(!page);
->> -		/*
->> -		 * High-order allocs for huge vmallocs are split, so
->> -		 * can be freed as an array of order-0 allocations
->> -		 */
->> -		if (!(vm->flags & VM_MAP_PUT_PAGES))
->> -			mod_lruvec_page_state(page, NR_VMALLOC, -1);
->> -		__free_page(page);
->> -		cond_resched();
->> +	if (!(vm->flags & VM_MAP_PUT_PAGES)) {
->> +		for (i = 0; i < vm->nr_pages; i++)
->> +			mod_lruvec_page_state(vm->pages[i], NR_VMALLOC, -1);
->>  	}
->> +	free_pages_bulk(vm->pages, vm->nr_pages);
->> +
-> 
-> stats is updated before any page is freed. It is better to mention
-> it in the commit message.
-I'll mention it.
+Sorry unclear here - does the series need more work or does a follow up patch
+need more work?
 
-> 
->>  	kvfree(vm->pages);
->>  	kfree(vm);
->>  }
->> -- 
->> 2.47.3
-> 
-> Otherwise, LGTM.
-> 
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> 
-> Best Regards,
-> Yan, Zi
-> 
+As this is in mm-stable afaict.
 
-Thanks,
-Usama
+Thanks, Lorenzo
+
+>
+> --
+> Cheers,
+>
+> David
 
