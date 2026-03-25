@@ -4,102 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD406FEA833
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:00:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8015FEA837
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:06:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E14A56B0099; Wed, 25 Mar 2026 05:00:39 -0400 (EDT)
+	id 38E2B6B008A; Wed, 25 Mar 2026 05:06:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D480A6B009E; Wed, 25 Mar 2026 05:00:39 -0400 (EDT)
+	id 365A36B0092; Wed, 25 Mar 2026 05:06:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC11C6B009B; Wed, 25 Mar 2026 05:00:39 -0400 (EDT)
+	id 2A2436B0099; Wed, 25 Mar 2026 05:06:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AAD576B0099
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:00:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35F8BE0B81
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:39 +0000 (UTC)
-X-FDA: 84583989798.08.07F42EC
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 280D040014
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=O+R8hPse;
-	spf=pass (imf04.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429237; a=rsa-sha256;
-	cv=none;
-	b=1NYYVWHZcrAKuqI7AvznADM1696eS+tccq8Qs32SIDZElCCuHHc8d4k8AQXazKvthuLIwC
-	AW63BTwgqMFFgqBz03rqqHw4isyXr/v+AHRIlM1MNL8VGZYWAunMS6xe6kRkVumbELYhGJ
-	jI1DAXtL6+Q0u75k7eRka+aCWXQ06bk=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 197026B008A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:06:28 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC3468C47D
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:06:27 +0000 (UTC)
+X-FDA: 84584004414.05.7162BF6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 11F211A0016
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:06:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="B/pXGWqx";
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774429237;
+	s=arc-20220608; t=1774429586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d+89c32tU4lTTTppNlFl+vXaQCaUGhisq2Ypb82nMCo=;
-	b=IZ5PMhxY+mj6PqR3ctpSN4s/yVo8VIUxTXW4Y9HlFZweh6b+Q95OccbhDkW1zYzrxFPg6W
-	dIZz+TUAXLIpZf4dsMXOQqgtUAak7VYa0QCuB0jmZHuAZ2Oau3ZnN0RvCLyafF/5koGWUN
-	5d2bGY+VE/qcf7ImeMHSap9KlcXMbFg=
+	bh=v5MEwpolUsVqDZFrL2ms2b43O01KTVFde67xSj4RB2Q=;
+	b=3ZH8ODkDZowaZaiezRfR/B8+w04R3rriP9bHhmvmgTgsrs0264yOBECj0vRcYGVsLGDogE
+	l5TjeS+qS1TLvIscCsOJmntG8jexhBF3qaQgdBuAZkN/npM74DZVIYV67amZnpzfEZjhC3
+	tvxKUmyPG3zNiYcCgS7KptbfYaG/RLg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=O+R8hPse;
-	spf=pass (imf04.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260325090034euoutp02f253def5189b854d6c01a176dd23f505~gCfzDB3iS0388203882euoutp02B
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:00:34 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260325090034euoutp02f253def5189b854d6c01a176dd23f505~gCfzDB3iS0388203882euoutp02B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1774429234;
-	bh=d+89c32tU4lTTTppNlFl+vXaQCaUGhisq2Ypb82nMCo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+R8hPsenLyzl0FkSCF0zsxaWOjqsB2sn2m6zYEGWn/RoU523pfK0Y3UReyR8ZDsS
-	 /hlkReXM02nvJGlnVmWxD2aAhCXNrdZpnHs7Ry1BaYLzK2bvm6mfADxMTsxKamcUVu
-	 Y4xy2NwxGgtKwF/E3Z9Y+pacgHdsL/OIF4Q/nEuo=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260325090034eucas1p17e2eefa714bbc8cd4828a7e88c2dbfd3~gCfytXeNy1762717627eucas1p1k;
-	Wed, 25 Mar 2026 09:00:34 +0000 (GMT)
-Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260325090033eusmtip154597783022f9c979a4fa8fc7bb4a0d4~gCfyKkZO_0170001700eusmtip1T;
-	Wed, 25 Mar 2026 09:00:33 +0000 (GMT)
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-To: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-mm@kvack.org, iommu@lists.linux.dev
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Oreoluwa Babatunde
-	<oreoluwa.babatunde@oss.qualcomm.com>, Saravana Kannan
-	<saravanak@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Robin
-	Murphy <robin.murphy@arm.com>
-Subject: [PATCH v3 6/7] of: reserved_mem: clarify fdt_scan_reserved_mem*()
- functions
-Date: Wed, 25 Mar 2026 10:00:22 +0100
-Message-Id: <20260325090023.3175348-7-m.szyprowski@samsung.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260325090023.3175348-1-m.szyprowski@samsung.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="B/pXGWqx";
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429586; a=rsa-sha256;
+	cv=none;
+	b=jK6RL6kH1aolGdsVpaa7DyaIvbCJY1uwKs4Gk10WC+/7v9Tat6mYCbTzanGzC9iG2/MMwn
+	JmRoeLlFf2R7EulN3ILVy6nb5gUWYGWm8lPZRh1rhEEKcS2s8HMxZzH7Kp47REqNaCUMqu
+	+GIMQIL1RZU/mFKwppSau6TPkeFFAlM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 73617600AC;
+	Wed, 25 Mar 2026 09:06:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5A1C4CEF7;
+	Wed, 25 Mar 2026 09:06:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774429585;
+	bh=TGeHJllmZaOU480qUtXeb/jUm42/azepnhJdaLl9P5A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=B/pXGWqxkc77H/QNjcNN4hXFs+1yWtOO/K6ZlFDqfhgwHp4yHtUXBY1gINF1N/v7H
+	 Swoeh/4pl25iEnor6XcK93/xaSpBQCXea/x0tJWaU2vmaO0gQrTCNvrvDCRgFprVKV
+	 1KqlwKP+22aqYID5Rc4LF4kA7w+kAFXYTzDiwCQpdMmDJrHF9HDz+HIU9m1OkF3LTb
+	 /jwCEhab+UIAPA9vKX7zWI8lclKZJMoZ3e82DcRkAVWva3ZfDqkkW0tKKWs9g8wCY/
+	 xPGCmHA6G5g4E8Zs8WC6hluY2t54Kvjz8OpvZWbU1RkOlOvI5O2Nk6MOymHovUB97F
+	 cRXNnffbCU5+g==
+Message-ID: <e9e9c3a3-26fb-4ca5-af27-158f4860a810@kernel.org>
+Date: Wed, 25 Mar 2026 10:06:15 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260325090034eucas1p17e2eefa714bbc8cd4828a7e88c2dbfd3
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260325090034eucas1p17e2eefa714bbc8cd4828a7e88c2dbfd3
-X-EPHeader: CA
-X-CMS-RootMailID: 20260325090034eucas1p17e2eefa714bbc8cd4828a7e88c2dbfd3
-References: <20260325090023.3175348-1-m.szyprowski@samsung.com>
-	<CGME20260325090034eucas1p17e2eefa714bbc8cd4828a7e88c2dbfd3@eucas1p1.samsung.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 09/21] fs: afs: revert mmap_prepare() change
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Bodo Stroesser <bostroesser@gmail.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
+ linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ Ryan Roberts <ryan.roberts@arm.com>
+References: <cover.1774045440.git.ljs@kernel.org>
+ <08804c94e39d9102a3a8fbd12385e8aa079ba1d3.1774045440.git.ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <08804c94e39d9102a3a8fbd12385e8aa079ba1d3.1774045440.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 11F211A0016
+X-Stat-Signature: 7rsht9e7dqo5qgji1n59qjweo3gok9pn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 280D040014
-X-Stat-Signature: emedssdsc574qjffo1dj59fikmtyt3nc
-X-HE-Tag: 1774429236-518088
-X-HE-Meta: U2FsdGVkX18sfB5HfS2BacaKm3Jbh/DPb+oxAOLXH5Ki3O3JrkSH/xyiURNCLPjUNNlv91vBvAJ8vpEqg7gFotSnP65rZZcid9tSl5erZ3zzG9+yt633leFZ95cKypgO2NCAL4RhjVZSk1fumHoz/Zfyh1h/7XCUZVo2MGDkMGcQxkKsRj6aq0DheeuuBbAEb3Aae38zKhbefOh5sxeJNIf3LiKrThHnDN6kWpafM6hoP89llvvueHc5+fRz37vv7fpNJZ42gL4xrg45vbabWvcICCpNLPrxr3DS8AoatrshPwtTEpyBZKA1++475jswZCNWmm6kSrMzionst+r6FtXGdTwExIob11R9vwYs0bJ4W7QKyb5ZhSfZ4MzgZ5yIaXFFBJn5xTbIN4jtgR+b9jaEBa5j97Xo6kzjrmG1qEUibRqo61QD/YyN9HQH8DsRRGAQI7pJw0pWz/G3wldiLO5HyZGefCCSoUyItF5/j6gFgNJRGjTfCp8Ai9gB/X6ZEtdx2zD5rSoT3s5ks7DSaI0K/u7Hz3jRMsnHUVxA2e/vnu+7TQgPTkBeq0+XMNIXmTYAmw5RTFEC9WWvSQOJYuwjrWMeV1B7hYtT83SRAk2Q1IaocAN6ZnpjeKeJFiSDOiDti3AMUgORM3fE2qQ2ikbqeWzcrzQKrCnCMoNXDt94xla7WvbvF6xj3KCn3e74IG9MpGMVHJN/Qgu4GtXT9v+SFZeFO2JDZWC9KJY0OflSH8wDaCtDEDNG6KMB+Uy1lNSXp9GW59Wh9Hde4clr4I+dRAUHHrXYUu2+TeDNdywNXKae22z9Da5+ssV64kHLR9OED2el4AH3sN8F88A9tPjTiQS1D80Em47ploHXGggbz2YI3Hn6ZNyVD9YiEL+slx/mv72/n5kglu9D9CGZ36YhrT5NHOtB3fClAxmlQuOxpHwqqsSYMCkF9G9voqYOSAB7IUkuH2R8uWjjn+7
- VkNyA0Iu
- Y5Vu26K/Q1Lb1aKmzh5SpJSh6TeuCOWxW3wst3R4XEVHJ5Dqy9zoAA3eh16VuBKwds0O0CwWgmLGMZssS2pFsEBl0pLJBHUqtgtefk/fy+euJvlCU9AmLz5Ie2r5TvCdmanggVfdHjKG/8BxpBLw4FHkMuDDGPmSP90aP
+X-HE-Tag: 1774429585-730787
+X-HE-Meta: U2FsdGVkX1/AgLaqWAuWnTib4ocAKcjSP6qezxQDoQJKIKT3aoR97Ym6T65/UshG3nAN9ct+PCYIgGEPtbOiLQqNhO2hsgZ4vqTQdRjbGQ76okbx9DEv+/6/GoYiFf2s53ngQ+cDI6r3GAOd7LhdevRiVaxbdRDRDUyhg7g8E2sLcVq3WyeQwTaa0Yvrwm0YRdi3PBUu316ICTbSaji37tbfKZUl6h2ezn4KgXDuXJ+uy7YdGKZtgPq39fIjvKOqeYuR7aZZbylFnBvq0quS1OeQH4bbFZs5cGFQ53kHAkolKF0fWzF19zwI4uOv7hx3vBKrFfJKjdQ6K9dV0CYXZWfa+yDJPyz6Yo4lQINMOn7cRjkb+5TFnQNPZOdnkVJbZ5Zgxf3MO2mJ8FNqeXWAOhWC9P7wFPdqTbn7Y9a/yT6DLYBCNUHEUHUTUhMsZ+nllZnfT2a/+ul6pkgpOqF22z5s97W3b5F26PlJ23oLVZBM93gLvJSBVP8loqxBiRiw6Hpak6O/kJ61oip7+3axagENVjJMF/jP9bZQrHs1XUHQbfSY4ZhszjZggq3bgpunJaR9HvodnTrTgmquGYp028Rs255jXtaS9TOfa1yX5PfH6py+VxlR1IFrNyP79Uu4SWZIkpk6h9tuEUSD2iiJmmktaYXB44QJxpdCBv3GqB0gdzX6ilTb2DbkkUr6GjoI9HoyL0yH3ocAqahItRPrMyv7v6FQjHq5GrIeDWGtDNVGmxYwwBGFlcttz3VzbwcBqqs/IwSkZj3TSuBfSTIAqk7CWPKNH5GHWlYo+izmq7l6huSBI6BQU7G7bI2bx+6DBXwiEr52MeYNlKTOiISotqMLk2jnD8CLgsLvtyC4XWY+Re2TFc0iUHwT1vwsc5z83SeaymTr7ls8w6it/B18fWmaXJIB3J0/mPFgejWt1MgCIq49/SHJ9rYvMwz3v//w+QK31qMKHc/xux1j17v
+ SPaxhEK/
+ d2k+2R472So69vqD79DPGtnH016QLGWUk/LI0wooM/j0tcEi6E4AHTytJeR2Uc9gt2u9XdoIqiA1Byg6UIlIXQ3txhCs6Yq+fy+wqqK7L4/TJ3T+X4YnbgsWjI/uD0I+1SYP2T9V+T6p5DHc/rmrBa/FOhHNpJ9m26PQj/0dD60N2nMokr7Dtar0giT3knnpOW+rzgUK5g0WZJHqAWFsno17qJPFiDTt2tn+pBrWFpKmeb/sAnS2In41UUXIEwwQMjn9R+4L8zzBb/h1wH1fwPsLgvheHSzsd9x5YixRoFEGq1mPLlaKh9882zVyIwd2V9tGQumWr4w7wSh4Cu7Hqh4FvFosvL/z01nSnr8Mw+zjRM6bjqfCFQQm7MTKxdqyeMog8ieAGqm33GPahJFPqdOhKvmZFhDdG2PjzRwr1HLazgaB9u+8zUgIM2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,88 +121,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rename fdt_scan_reserved_mem_reg_nodes() to fdt_scan_reserved_mem_late()
-to clearly show how it differs from fdt_scan_reserved_mem() and update
-description of both functions.
+On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
+> Partially reverts commit 9d5403b1036c ("fs: convert most other
+> generic_file_*mmap() users to .mmap_prepare()").
+> 
+> This is because the .mmap invocation establishes a refcount, but
+> .mmap_prepare is called at a point where a merge or an allocation failure
+> might happen after the call, which would leak the refcount increment.
+> 
+> Functionality is being added to permit the use of .mmap_prepare in this
+> case, but in the interim, we need to fix this.
+> 
+> Fixes: 9d5403b1036c ("fs: convert most other generic_file_*mmap() users to .mmap_prepare()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
----
- drivers/of/fdt.c             |  2 +-
- drivers/of/of_private.h      |  2 +-
- drivers/of/of_reserved_mem.c | 24 +++++++++++++++---------
- 3 files changed, 17 insertions(+), 11 deletions(-)
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 2967e4aff807..104e697bee7b 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1295,7 +1295,7 @@ void __init unflatten_device_tree(void)
- 	void *fdt = initial_boot_params;
- 
- 	/* Save the statically-placed regions in the reserved_mem array */
--	fdt_scan_reserved_mem_reg_nodes();
-+	fdt_scan_reserved_mem_late();
- 
- 	/* Populate an empty root node when bootloader doesn't provide one */
- 	if (!fdt) {
-diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
-index df0bb00349e0..0ae16da066e2 100644
---- a/drivers/of/of_private.h
-+++ b/drivers/of/of_private.h
-@@ -186,7 +186,7 @@ static inline struct device_node *__of_get_dma_parent(const struct device_node *
- #endif
- 
- int fdt_scan_reserved_mem(void);
--void __init fdt_scan_reserved_mem_reg_nodes(void);
-+void __init fdt_scan_reserved_mem_late(void);
- 
- bool of_fdt_device_is_available(const void *blob, unsigned long node);
- 
-diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index f9b6d3ebcc20..037e3d74dde1 100644
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -265,16 +265,15 @@ static void __init __rmem_check_for_overlap(void)
- }
- 
- /**
-- * fdt_scan_reserved_mem_reg_nodes() - Store info for the "reg" defined
-- * reserved memory regions.
-+ * fdt_scan_reserved_mem_late() - Scan FDT and initialize remaining reserved
-+ * memory regions.
-  *
-- * This function is used to scan through the DT and store the
-- * information for the reserved memory regions that are defined using
-- * the "reg" property. The region node number, name, base address, and
-- * size are all stored in the reserved_mem array by calling the
-- * fdt_reserved_mem_save_node() function.
-+ * This function is used to scan again through the DT and initialize the
-+ * "static" reserved memory regions, that are defined using the "reg"
-+ * property. Each such region is then initialized with its specific init
-+ * function and stored in the global reserved_mem array.
-  */
--void __init fdt_scan_reserved_mem_reg_nodes(void)
-+void __init fdt_scan_reserved_mem_late(void)
- {
- 	const void *fdt = initial_boot_params;
- 	phys_addr_t base, size;
-@@ -328,7 +327,14 @@ void __init fdt_scan_reserved_mem_reg_nodes(void)
- static int __init __reserved_mem_alloc_size(unsigned long node, const char *uname);
- 
- /*
-- * fdt_scan_reserved_mem() - scan a single FDT node for reserved memory
-+ * fdt_scan_reserved_mem() - reserve and allocate memory occupied by
-+ * reserved memory regions.
-+ *
-+ * This function is used to scan through the FDT and mark memory occupied
-+ * by all static (defined by the "reg" property) reserved memory regions.
-+ * Then memory for all dynamic regions (defined by size & alignment) is
-+ * allocated, a region specific init function is called and region information
-+ * is stored in the reserved_mem array.
-  */
- int __init fdt_scan_reserved_mem(void)
- {
--- 
-2.34.1
+> ---
+>  fs/afs/file.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/afs/file.c b/fs/afs/file.c
+> index f609366fd2ac..74d04af51ff4 100644
+> --- a/fs/afs/file.c
+> +++ b/fs/afs/file.c
+> @@ -19,7 +19,7 @@
+>  #include <trace/events/netfs.h>
+>  #include "internal.h"
+>  
+> -static int afs_file_mmap_prepare(struct vm_area_desc *desc);
+> +static int afs_file_mmap(struct file *file, struct vm_area_struct *vma);
+>  
+>  static ssize_t afs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter);
+>  static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
+> @@ -35,7 +35,7 @@ const struct file_operations afs_file_operations = {
+>  	.llseek		= generic_file_llseek,
+>  	.read_iter	= afs_file_read_iter,
+>  	.write_iter	= netfs_file_write_iter,
+> -	.mmap_prepare	= afs_file_mmap_prepare,
+> +	.mmap		= afs_file_mmap,
+>  	.splice_read	= afs_file_splice_read,
+>  	.splice_write	= iter_file_splice_write,
+>  	.fsync		= afs_fsync,
+> @@ -492,16 +492,16 @@ static void afs_drop_open_mmap(struct afs_vnode *vnode)
+>  /*
+>   * Handle setting up a memory mapping on an AFS file.
+>   */
+> -static int afs_file_mmap_prepare(struct vm_area_desc *desc)
+> +static int afs_file_mmap(struct file *file, struct vm_area_struct *vma)
+>  {
+> -	struct afs_vnode *vnode = AFS_FS_I(file_inode(desc->file));
+> +	struct afs_vnode *vnode = AFS_FS_I(file_inode(file));
+>  	int ret;
+>  
+>  	afs_add_open_mmap(vnode);
+>  
+> -	ret = generic_file_mmap_prepare(desc);
+> +	ret = generic_file_mmap(file, vma);
+>  	if (ret == 0)
+> -		desc->vm_ops = &afs_vm_ops;
+> +		vma->vm_ops = &afs_vm_ops;
+>  	else
+>  		afs_drop_open_mmap(vnode);
+>  	return ret;
 
 
