@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E40CA109C033
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:28:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFBE3109C032
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:29:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3320E6B008A; Wed, 25 Mar 2026 11:28:44 -0400 (EDT)
+	id 270256B0096; Wed, 25 Mar 2026 11:29:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3096F6B0096; Wed, 25 Mar 2026 11:28:44 -0400 (EDT)
+	id 246AC6B0098; Wed, 25 Mar 2026 11:29:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2470E6B0098; Wed, 25 Mar 2026 11:28:44 -0400 (EDT)
+	id 183AE6B0099; Wed, 25 Mar 2026 11:29:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1554E6B008A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:28:44 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7386E0E07
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:28:43 +0000 (UTC)
-X-FDA: 84584967726.17.5C9696C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 33604160002
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:28:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=g+6UZMLU;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B4D66B0096
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:29:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B2E21140951
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:29:04 +0000 (UTC)
+X-FDA: 84584968608.14.7163311
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EC615140011
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:29:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CsU1vZ+n;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774452522;
+	s=arc-20220608; t=1774452543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aAaE1cmct4Ax0hsF4P3343EFIFASkKmlY++QqxjAvYQ=;
-	b=xdc8H+YmGuk0CHfZPC07KuMDhxFtXV/6bb0jFujA2pkpWT9k6u4yfYX6WL6l+IBAiyg+wz
-	7tnjA4lBiyzfmH+Yi2KyJKsMUAR5x65Qck65hKT+VQBHAAcuvkpVEUbKD6i4yTB52ppgnz
-	ojzGoeXB4Sbh9Oswg0UiPVga7oNZZ9A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452522; a=rsa-sha256;
+	bh=GZoG/KtFMymaV5jHuhCZ7WF+MbGglZumYUi+g7zM6MI=;
+	b=eFp7e1i24Q7qJ62t4zBpxq2cu0XF5L/whQSbAntuHlVBPjh64WDuM5GDHeqWfm3V74xwKn
+	QssuZEqlxI4mqhWRfN2PnPbAl7Ng2j6MeWtNKXI2kOPJWjS3oXDE9oPn4enTgwc13Y4Hy4
+	PQi8SLtkEQnkkKn/ubqKlyV9HwdE82M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452543; a=rsa-sha256;
 	cv=none;
-	b=6DpD0lZ1qK3LceqkmmtBOcKw6MbGvE3fbNcVuZMetU3tntRccrK5PGNJL+AOtw+1dmvLxv
-	hYkncGij92j2DB78ktGi7+dX9S20UTMc4+IBwnqnjnFrBwtb7O2tPbbgcwYYOaC3OJ3rL+
-	nnbEoV6r95VVdaAzHAdlS6L+YJoJNAQ=
+	b=kENbJXFEX9qvuRTFrSy4y5wOY/stsz8OtY7Z+9wa1QIQzC2FlnYgXjGKY++Jwyi/F3xjh+
+	aurc4DgeNYTj4FYt/Pit5eQqH22orUSmYaRIHuSwI5e4JwhO72eBdKSv9hDsHdx20TOE96
+	KzspsG216kZ442wvY+we8eTQQBpX2U8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=g+6UZMLU;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=aAaE1cmct4Ax0hsF4P3343EFIFASkKmlY++QqxjAvYQ=; b=g+6UZMLU6OPQTahV7L1Or45Qhk
-	teEyLF1KRx8BhTgUFvG1thOrA1Xv0GZL6YaRCjndq9v9zKSpSyX6ou8ICcdBGBBt2gBEEwAgRDjnk
-	PtSWnYIjviyGCH3Txk7PIepvcN5vclndlCx73JxK1M6bA5HEkt0zlsMjK0GfI/mBQABLEohi6D9wN
-	NaGwB67xEeqnq6I8KGxoIGBetL8nMHS2PwDgTU6Gv96qYVQLWqjs92rNs3+eVO7ctO1ac3C3ra9xP
-	5PTIiliCrujAHucK5CVuuROFTGwuQruIicSlp8xf9k+Mr2TWRXMZMFUh/3WNRQ+3GN5diElo3g0Xd
-	CijWneog==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w5Q9l-0000000G4b2-2rml;
-	Wed, 25 Mar 2026 15:28:30 +0000
-Date: Wed, 25 Mar 2026 15:28:29 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	"Garg, Shivank" <shivankg@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/migrate: rename PAGE_ migration flags to FOLIO_
-Message-ID: <acP_HVmrhP9_6s7j@casper.infradead.org>
-References: <20260324114720.864478-2-shivankg@amd.com>
- <54398FC0-2F68-410C-B9C4-2802810C119B@nvidia.com>
- <41cd005e-3702-4c67-8d32-0c09274194e9@amd.com>
- <cb383f3f-b74c-41a8-a77d-d00e93b7fe94@kernel.org>
- <f844a2ce-105e-4002-a106-b936ddd98a99@amd.com>
- <857B5E73-94AC-41B9-A3BE-953E59A5DB40@nvidia.com>
- <27b1b602-129f-4bc5-a553-386e8d1f5d90@kernel.org>
- <539EA481-9CA0-4B2A-B0B4-C254E34BA7EC@nvidia.com>
- <218144c5-6f51-44c9-bd70-e171005d3606@kernel.org>
- <925CC2D7-D525-4272-A01D-2A1E50127401@nvidia.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CsU1vZ+n;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id F363A41ACA;
+	Wed, 25 Mar 2026 15:29:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2560C4CEF7;
+	Wed, 25 Mar 2026 15:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774452541;
+	bh=S+gB9lXh3YOTsDeZFSd4g0zO49rKXLKXwGpvrhbPAu8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CsU1vZ+neeDNy1FrFSsnvYWLJC+Y5AbizxD9JdhZhz5TLzWJXU8AeQ3/KAJVp9MJx
+	 nOnwLgRcxQq9RfFkwfFk5uupxbbMwYYlGjMjdxWQpMAMjmrn9JmWZc0AQnNfWLu/Rf
+	 4Shltt28OwDtEK6WwAPksJHzbrjfupQIkuYDawBFDDct8c8wSAwHLyF+ypUqBVmAji
+	 hiATEKCQbMcNYZWKj0qzZWHrWjfnEN3hKeLKYbMauPawZHgMiqCm/oKaSc2WjpwFQo
+	 spyzsqqnWDx97KRa0TK60JZpbHBH8qbORj5iWLnp/C95Fm9oYth+ZOZkLciVq8wk+w
+	 He9oxW9vKHw9Q==
+Date: Wed, 25 Mar 2026 15:28:53 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 1/4] mm: memcontrol: correct the type of stats_updates
+ to unsigned long
+Message-ID: <fcd29ba1-e02a-4c91-80d1-2d1280e2ff99@lucifer.local>
+References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
+ <158fa0b1296168047342f02050e9d2bda6888d27.1774447069.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <925CC2D7-D525-4272-A01D-2A1E50127401@nvidia.com>
-X-Rspamd-Queue-Id: 33604160002
-X-Stat-Signature: oxjsjjgregx6c3aca9jswc1euw7hqu8b
+In-Reply-To: <158fa0b1296168047342f02050e9d2bda6888d27.1774447069.git.zhengqi.arch@bytedance.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: mmero3imaiud6q48go1gjhopa44denww
+X-Rspamd-Queue-Id: EC615140011
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774452521-6286
-X-HE-Meta: U2FsdGVkX1+bzk07re4oUq1qs0a98tbK0Uz4GbtGhyK5k95FCVRMPUCvXmoMs0iYWiQG3ieEacuShvSXAlmxlmCpoznLI8tlCR7EyuMjiIiP2ITi9v6IPOX8e4I/GtrHhY1gGAAsd9ZPXW0FpFRj9S3CgSfkUrLMX3zEEn10SHXTzztiNUOIfx2fWvG65hrko1p+7bBtgFD6Vy4kIjen9yWXm5FDEazhs8/oWcQq7mODSsFLWPHNnF7ika5KXkQy4WOLgaaxw0ukV3rQRxbyRWmzhZbqyYDDNcugcwp0SaRInktNMgSNDLwVV8HCOYv7szYosYzamtEt9OxI1Dr/FVdqiNPvIlSs3t0sFkI7eA8MUcF3H9upg0T2EB/OJfbVQ6C+Q2SAZ985YcCHTaZAHpQxCIi8K6rxdc2Tz04LTJ4wpYIjFfDayihmmNVj8H7rwpNhRXRduHalKHgcfZ7Yn2w4tu064z1FKl1rbaZ4yLp2HFCbIhPBPsbkEEoT2D+fvLX8Y5gNzuscqIQY/8dPgVEl9zjfLnmG5VmZN0pDCSkgsT2jYsvkF1PE06vKZZFdEar+g466Mtj9ztxkaSliBfqUewIpCwAbPJxTs0G/6o3B0UNjX0rkJq5uxZ08FqkcdErhzU9uldO0HBlIb6VU49MDeOOw7DmDHUTRUf+YKcFHeEY08urzOfydki3yyjQYso3m1zUcrAuGp02eFG1sne2lyCZ55ravJYtI5+BFEuPbzTd8p0g8cfMkDOzMiW62ljFv41JpWcF2tm1q8PgIAILcVlKA+6wXhSs50jxT4kafRpt2+8R6f5Ar5J49/SdYU/Qlp7RR/CxkiVOfSvIUuGIPAJk9667TwrrQ9gpe1qZ/zVxK1/2Se88ICHBHeQdl507ENAWe9rV37inNBzl+edgPsp77woArnwUQKcViMKa/6miCc65w0WSRVBpQrU2r+fcqlerlau+j2YSnNij
- nssbCdeU
- qvBrKPlctwZKQemB7viIq7p4xgoi05u3S04CYnc/BPGP+DK9kPCtXpEv5DGtY9H114/z7N934Hch6lqOmm45TD7jOQ3YnJ7w3BqOJYQojc3rd22WcrN67Izoe1GHxgBDE0h1P7htUYklZMXEWJo8082hLBKhHHmdVM0qatYGJ1meqj1ieYxuGJ4kqa/SX13h0KcT9Trj6WCccLH+xES62GEf62lvk83VrJmgC1MFUmZYwl0sVdxw14OBj50c4TMq1++lgzWLEcPv/nHOfFzcStuFB/Ur3g7FHZ3kiYfnObt25LjiKoJiuROsydY8Yx5I0pV78kX5w3qVQ+kfUN7V8ry/hjffZop1Vx31rEsUJCwMqhJ37u/s4DF2t1w==
+X-HE-Tag: 1774452542-852125
+X-HE-Meta: U2FsdGVkX18ZwMwa42Szhlbry3vqa2YLdl7NzLchrpjMjsgL7fG+UOe6+es/UGZ8CF190MM6zsi5iHdigZMkT4jT1hwq7lOkMBNNrR1dwglNLtDharv8++jMgwkQfZGDcDVD9HctkebtjxwfsPr8hU+iqEUqvPsMkzCuQybCzfTJgTIw+uBwqF5VAQ9zqW27Ci0BTdcWIolDsZrAKwvgc+K5XXMyZ4iGvnaIVtUlkvzQD+eVdozQ0QDZIK50UQvhpzZh+g5LL/qN6e6CyQBbbWRkiwiW5vLtozK2kTfs9//fF4CrsIGA/oB3VF8w2/sgHUHDOaTuzEdciurrOkIopJa/PuS5prnqBFPgBCd6L5D3yHa8Z2H002qeHcauYNwDlksVGqLS18WwjIp/3OpXnU1LLaZ/vfZxvIS86hZ8vssAcXxN4OuPmZxmmM7/PSSIXBbTNFH+WtG3EeSNTiipMKUw1NYINKxwidHvNjExElXT1lhESSvAoYPgEMNW7aRKpJOhcmiICzqZVHxRBPlqnfUpptuzsyaE59VxZOPgBHTQFujquJ2oOqwdJclcISageGsjmV8c4zZfsBs3HuD0jyfDZHuclLxODrU56qYf+c7qbh8JxhqKGzsLveCtbWTfKpzAWMLuIG7CMOKpiq2PV2zzzjfbUY6kbCSEHo2cOEeKUJy0b1DizE+wK5tY6pmrVbc6SRQ16UYNTCWXMtyE6eyTOvAMRv5B7lyaLKqsVNlCgEyUSx0bBUYJ+IrWSVzPQRRHcsK/+IvbAQgRLUFSy9v/dg2ZXkXSWSDUqVPK4Y8z7ouLCoqeAcWd3hwgQ1KO4/vKJ16wxwlyr5dBAkSUOatTCzCyoZtfzNNIjmu0AyZE5slcJNLpCSK/ouKB/Xxk8ZFt7RwJ3JH8EJ5oT7enUBVkuiJJufkxGuH3DGG8p6+oLOqtTFiqgSQZFPD5DZyq0kkEMNVy/02iPgz79bv
+ UPWWs2VY
+ LqYEXLPDuezM8kBNFU3VTcbI23i+DqTLimNVJW/745z2OtiJwZDAUA7C+JYgWdlugK7taFVFXxeq0N8slD563lG6JYFsPMXQal1GeDvdqZv3/hYc6yXNmkC13kziMjuvJMWkUETpzKFHnVz81KEz9M8JDIjSNAYruddcqgSouuEuT0XYWNxrmeUhkSj7rIh0V/7lQnNR9rhCyLIKlMZFvEuYREMg7wPR8wdmSlPdoyC3Ea0PxFzHcHRiLX4ESIqongmddvaQ8KDVmU7VeDauoN0VQGC0iWJfIOxbpSiZzUrmdMsL+BVR+9uobBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,70 +98,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 11:05:44AM -0400, Zi Yan wrote:
-> On 25 Mar 2026, at 11:04, David Hildenbrand (Arm) wrote:
-> 
-> > On 3/25/26 16:00, Zi Yan wrote:
-> >> On 25 Mar 2026, at 10:53, David Hildenbrand (Arm) wrote:
-> >>
-> >>> On 3/25/26 15:21, Zi Yan wrote:
-> >>>>
-> >>>>
-> >>>> Hi David,
-> >>>
-> >>> Hi,
-> >>>
-> >>>>
-> >>>> In terms of folio_change_private(), I did not think it is related to
-> >>>> folio_{attach,detach}_private(), since the latter change folio refcount during
-> >>>> the operation. If folio_change_private() is related to attach/detach,
-> >>>> I imagine it would check folio refcount before touches ->private. But
-> >>>> that is my interpretation.
-> >>>
-> >>> I mean, given that
-> >>>
-> >>> a) It's located in pagemap.h in between folio_attach_private() and
-> >>> folio_detach_private()
-> >>>
-> >>> b) It clearly states that "The page must previously have had data
-> >>> attached and the data must be detached before the folio will be freed."
-> >>>
-> >>> This is the wrong API to use?
-> >>>
-> >>> Sure, it sets folio->private but in different context.
-> >>>
-> >>> I can spot one user in mm/hugetlb.c, that likely also should not be
-> >>> using this API, because there likely was no previous attach/detach.
-> >>>
-> >>>>
-> >>>> BTW, do you know why we have set_page_private() but no folio_set_private()?
-> >>>> I would suggest folio_set_private() if it exists.
-> >>>
-> >>> folio_set_private() sets ... PG_private. :)
-> >>>
-> >>> folio_test_private() checks PG_private and folio_get_private() returns
-> >>> page->private.
-> >>>
-> >>> A cursed interface.
-> >>
-> >> Oh man. folio_get_private() should be renamed to folio_get_private_data(),
-> >> so that we can have folio_set_private_data().
-> >
-> > Likely we should strive towards only using folio->private (and the API)
-> > really for fs-private data (i.e., the pagemap.h interface), and add
-> > proper custom members for all other use cases.
-> >
-> > For page->private it's a different discussion (requires more work I
-> > guess, because there are many more use cases.
-> >
-> Makes sense to me.
+On Wed, Mar 25, 2026 at 10:13:22PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>
+> The memcg_rstat_updated() tracks updates for vmstats_percpu->state
+> and lruvec_stats_percpu->state. Since these state values are of type long,
+> change the val parameter passed to memcg_rstat_updated() to long as well.
+>
+> Correspondingly, change the type of stats_updates in struct
+> memcg_vmstats_percpu and struct memcg_vmstats from unsigned int and
+> atomic_t to unsigned long and atomic_long_t respectively to prevent
+> potential overflow when handling large state updates during the
+> reparenting of LRU folios.
 
-The long term plan ...
+Do we need a Fixes, possibly cc: stable for that? Apologies if already
+asked + answered.
 
- - Remove PG_private (we're pretty close actually).  That kills off
-   folio_set_private() / folio_clear_private()
- - Reimplement folio_test_private().  It just checks whether folio->private is
-   NULL.
- - Remove folio_get_private().  It's actually longer than just using
-   folio->private and offers no advantages.
+>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+
+Anyway logic seems fine to me, so:
+
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+> ---
+>  mm/memcontrol.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
+>
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index a47fb68dd65f1..7fb9cbc10dfbb 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -608,7 +608,7 @@ static inline int memcg_events_index(enum vm_event_item idx)
+>
+>  struct memcg_vmstats_percpu {
+>  	/* Stats updates since the last flush */
+> -	unsigned int			stats_updates;
+> +	unsigned long			stats_updates;
+>
+>  	/* Cached pointers for fast iteration in memcg_rstat_updated() */
+>  	struct memcg_vmstats_percpu __percpu	*parent_pcpu;
+> @@ -639,7 +639,7 @@ struct memcg_vmstats {
+>  	unsigned long		events_pending[NR_MEMCG_EVENTS];
+>
+>  	/* Stats updates since the last flush */
+> -	atomic_t		stats_updates;
+> +	atomic_long_t		stats_updates;
+>  };
+>
+>  /*
+> @@ -665,16 +665,16 @@ static u64 flush_last_time;
+>
+>  static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
+>  {
+> -	return atomic_read(&vmstats->stats_updates) >
+> +	return atomic_long_read(&vmstats->stats_updates) >
+>  		MEMCG_CHARGE_BATCH * num_online_cpus();
+>  }
+>
+> -static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
+> +static inline void memcg_rstat_updated(struct mem_cgroup *memcg, long val,
+>  				       int cpu)
+>  {
+>  	struct memcg_vmstats_percpu __percpu *statc_pcpu;
+>  	struct memcg_vmstats_percpu *statc;
+> -	unsigned int stats_updates;
+> +	unsigned long stats_updates;
+>
+>  	if (!val)
+>  		return;
+> @@ -697,7 +697,7 @@ static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val,
+>  			continue;
+>
+>  		stats_updates = this_cpu_xchg(statc_pcpu->stats_updates, 0);
+> -		atomic_add(stats_updates, &statc->vmstats->stats_updates);
+> +		atomic_long_add(stats_updates, &statc->vmstats->stats_updates);
+>  	}
+>  }
+>
+> @@ -705,7 +705,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
+>  {
+>  	bool needs_flush = memcg_vmstats_needs_flush(memcg->vmstats);
+>
+> -	trace_memcg_flush_stats(memcg, atomic_read(&memcg->vmstats->stats_updates),
+> +	trace_memcg_flush_stats(memcg, atomic_long_read(&memcg->vmstats->stats_updates),
+>  		force, needs_flush);
+>
+>  	if (!force && !needs_flush)
+> @@ -4406,8 +4406,8 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+>  	}
+>  	WRITE_ONCE(statc->stats_updates, 0);
+>  	/* We are in a per-cpu loop here, only do the atomic write once */
+> -	if (atomic_read(&memcg->vmstats->stats_updates))
+> -		atomic_set(&memcg->vmstats->stats_updates, 0);
+> +	if (atomic_long_read(&memcg->vmstats->stats_updates))
+> +		atomic_long_set(&memcg->vmstats->stats_updates, 0);
+>  }
+>
+>  static void mem_cgroup_fork(struct task_struct *task)
+> --
+> 2.20.1
+>
 
