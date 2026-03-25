@@ -4,142 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D0C109C029
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:54:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE765109C029
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:54:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 326936B0095; Wed, 25 Mar 2026 10:54:09 -0400 (EDT)
+	id 12B596B0096; Wed, 25 Mar 2026 10:54:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FDF86B0096; Wed, 25 Mar 2026 10:54:09 -0400 (EDT)
+	id 103886B0098; Wed, 25 Mar 2026 10:54:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2151B6B0098; Wed, 25 Mar 2026 10:54:09 -0400 (EDT)
+	id 040526B0099; Wed, 25 Mar 2026 10:54:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 101636B0095
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:54:09 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A40E913BD64
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:54:08 +0000 (UTC)
-X-FDA: 84584880576.27.D4BF8C0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E4F67C0010
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:54:06 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ajhMjt4F;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA9A36B0096
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:54:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A494B8C4EE
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:54:51 +0000 (UTC)
+X-FDA: 84584882382.19.EC980A8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E68F8A0012
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:54:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UoRIgOhn;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774450446;
+	s=arc-20220608; t=1774450490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9yBFBc6nhgECLvWUQvqBo5IN9HtcEWLWVeM4IzOvHwo=;
-	b=BL8xNl/twvsY7xWO3WC7rUIJGWpjCmSwRrpn+ZAKqMVj+TEBOr13GegikDYQgVNvEFiSxM
-	JxEMu9gbUyjp3ugrcj8QuzJYj3Pful8ctHMa/A7EJD0pDdrLMFcfSShWr6zcHuLmmKDLa3
-	wKZWsWroU5jE5A9K4NBBGNjKMHYhPtk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450446; a=rsa-sha256;
-	cv=none;
-	b=pqNVFXccLa1qahXWNLEz2scssUfWOXkLqwja11nqkKIZvCRFkDmbLdUY7ER2ql9fTV3StF
-	aZuBuFCLdw36J3zWzMNwtTOVYWSpcvaERSec8stZKZvCHUqd9cWxeGL3dBKGAhduf8QT0P
-	wFpD/aWcQuv82ZgKaB/04dwE9QAPv3A=
+	bh=GjBdcSNUkBqsKpbWQqMLgJ9XSoufYNKd3JUxfHFa5s4=;
+	b=u+4PcLnc4CE/9QVkevZ7nGry1+x9XLaUlZQMMZIGm5JVRG468cywGKCr9Zv6IOxNX97MXo
+	cWDbPMd0mNl8T3c0U5otk/gcrpvEQNqFl8nUFuOJRK4T4d3jnTZIvHDmRIg8c0UUvIeV3X
+	fYBqtkXm3ivEC0gYUr566eLNEOhsbMk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ajhMjt4F;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UoRIgOhn;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450490; a=rsa-sha256;
+	cv=none;
+	b=06xO/xS26YcsQCIuTxUZOAv8E/tgd+oS8ATz3OtFCrwADTZdnsqu1KETra2MdjLsQgEptr
+	Jrk+oR5quDYzG70ZTfbzHBUWQGmXbglTR9UBBLw8Q0wDG8h6hm+hFrbm+NfO7YNPfr//zO
+	AX8P0Rq0X22RubMGHleOe/VOsA1KsbE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52471600C4;
-	Wed, 25 Mar 2026 14:54:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF16C19423;
-	Wed, 25 Mar 2026 14:54:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F37D9415F6;
+	Wed, 25 Mar 2026 14:54:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65F5C4CEF7;
+	Wed, 25 Mar 2026 14:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774450446;
-	bh=TiRQ+ZcNteLWEUlMa6hmUHy0u948Jpn7nl6mHJvJZCI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ajhMjt4F8x+ODWSbHiXFeyWWdrBdaJxTCOvvjL1SP39YyW5LQhd9wvr7N2eUOKi81
-	 OsgMUE7Zussx+3+FQ97CDrgeQbjHeQyKj3aTVi+Pckj8fMIsvUkLh8eISNttCcVrWi
-	 Ca0a6NN47jr8f3CUhJK0M9DUGftG2RNM/0e9ej3uQofL36KzGOsq3f8fteiicrAd5z
-	 M18luba1Q/LCWZT2vHqhanqMpCcW4KTkgGi+FF9Ff1hVN9ic6G+Ipw8uVlrtAanNgv
-	 yaG1oCvT5YvnZT6ja8CJBOY9zOuNqF6sHNdLbPAPs7op9VaHpL9vsow8xP4h+kkexE
-	 HbzU8nChO3WhQ==
-Message-ID: <27b1b602-129f-4bc5-a553-386e8d1f5d90@kernel.org>
-Date: Wed, 25 Mar 2026 15:53:59 +0100
+	s=k20201202; t=1774450488;
+	bh=lrf0z5bvG1v0mlYr6634sLmsiqfSBpG+1b5Vled0Cqo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UoRIgOhnJFqGaS7j+ghb1dkb5nBHqB93nT2V1uvZ6BzWeKCMa3bUReXKdSdN5OEzj
+	 AQ2dIYCQ33Vl1zhAqMRd7T+hMgpSGyJt0s9V/K9EnpW7CA7ALUnLMtZdL1ga8jVKvQ
+	 PE/GaWQooBNL6ppUWDIWCUckuGlJ76nT1ZbPg6hV8h8amymC9bCQPJWpKjlt9iQT+y
+	 S6BHOQRZ6Lh9riaV6w3hPFP11w44m9iM9Us//MbdcZToaNAILGx9rDNkm+CD6KhzRn
+	 zMW9yeGZlpxKptas8zxOfu96Y4GEPvl70muQ0Npx3kgaYacRpTbNI4cRTI0MmC64vz
+	 CoKBcIGlUnIug==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
+Date: Wed, 25 Mar 2026 07:54:46 -0700
+Message-ID: <20260325145447.87994-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260324154005.83651-1-objecting@objecting.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate: rename PAGE_ migration flags to FOLIO_
-To: Zi Yan <ziy@nvidia.com>, "Garg, Shivank" <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260324114720.864478-2-shivankg@amd.com>
- <54398FC0-2F68-410C-B9C4-2802810C119B@nvidia.com>
- <41cd005e-3702-4c67-8d32-0c09274194e9@amd.com>
- <cb383f3f-b74c-41a8-a77d-d00e93b7fe94@kernel.org>
- <f844a2ce-105e-4002-a106-b936ddd98a99@amd.com>
- <857B5E73-94AC-41B9-A3BE-953E59A5DB40@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <857B5E73-94AC-41B9-A3BE-953E59A5DB40@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: rwpxthub9k87r3gebg6a5pafk37n486n
-X-Rspamd-Queue-Id: E4F67C0010
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1774450446-251010
-X-HE-Meta: U2FsdGVkX186gAzrbaxIfm/4OsZZ72OEIk6x0CwOCfFn3iKPis7M0bUb67edK6h4j5ErLEEsED0HDCUak5zh2YDUP+7eo05gGSfYQaBYqkUeqXJqhuo1WoGV8VI0Tg+/JmKmIIDD4qQN/CU5YlbtOVskpm1snKin4oTq+7WHPHv2LBDR8DPzKB85Oc/2WBFXP3kJrwqjnnOq67W9wk/6TIBjnerK6DDpF/84yFY3mhI7MBKxIzH8Clf7/fjBXcArOLN+lEtoR04R1JKmjN3NhLx+L5uLQHZ7qF5JyiXEHiQmPR146unoRbPFc2tJVrzfp3KRa4mZ5bb8JFR6u39p7IPW57STLFPLeznPK5aAEL+LyW9UloMoBGTKaGu164id0GyCnqEJpaHjasE0rvlAOlIvWxhKJ5lmIG2rnNhT+0Qc9FCrZqyBGJljhcpz4+ZmVuKudrcSWtgFn6Hb1OHqZsa3vkrGGNKfPt5ReJvEWn4VUAbwutfE+pIufI/KkMBIlv+FlS/xZrfySTfVKIy1a1nNylbyd3iC0VD11/usDRZbdID9YXwaacur+sm+floT/zoWw4NSqHb9GAG3YNBLzOaTVfR1026t5VjODmv/p2VgrAJT7WzpEcW/h1yqVCltoDF8Fy8/tZjsxFVQKF+FuwAgDc5fbDkA6ALKsMVF1GpqqQILl2Gsb8ExR1rsB6sLSgQU/cdM9pE9wXMkJ+oD0FWnLbyEvPl6wAh6emeeWEv5jtikO1PNtnRrwsYRDT0kiZgGPCZOM90ApwfN9Ip4putOwTGLcOrqfC45sz1SMoTRoKEa2sxK2l2kG/zJx3grbtMp4OIv8RHMftT/VTWf0aaLwTrqfAyqJgMxVCjxSre1RQ6Ni253ygUgKcpc0xlm6pPO26Ly2VnCCdU1IefWyFu8wkzV8jd32pd89UlJkcLnxqWEtrBikZ/zHAGaZlulUkbUafKzpSDUtZbcejo
- Jj8CvgjO
- 09Gv0EVhcCQk655sxerbvwCxDIn8zYJd2/18ne9dNzXSJiOYJRj2xuxZrkXQrh00IRjGVNxJcSveMJGW9zIH4WgbW+/v91NY1wfv7ijgyu1qpAezIRr824PGh0sa7HNdrzVbIefjythvUlBjyEqrutezXZG/zjSzz+8Dz3K4YG/1yvPv07Cfri+i2BlH5dvGRhzBzsVa7vl/EffVwd9tYvSZ/nI4Hc4yr2FriTao/ESen3/ZieXLNLgP90h/6sNSyFEfxYmLP1fx2yPhMSHzqXedzlAxJPyYyIhvsy5QMZmDaGJnQ1/d8fWT/0FDu8EWbZuOhjOQrjO/Qzzvs225XeY8WiPPLaL6vI1g1R4cTdoobSDu56HHNiePJEg==
+X-Rspamd-Queue-Id: E68F8A0012
+X-Stat-Signature: rbibzc44dan8qpi7qu984tnqdktbcpnh
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774450489-292156
+X-HE-Meta: U2FsdGVkX1+oSslSeVCvGbc+zZk3JjM8PLKCu5RhTbSGe1NxbQFkdGwSpsh5L8V6M0VgPdJlITYgEobnNbqgD3J4vUtVYnUduhShCLIiS31HfS6uO3KEBWbNLbncRssWqHZqnH/vUmv5ctVg9Mu+x32BcV4tj/Pzn/S8Q6WpG2Wv3mR27sktavpZ7TCuFPCcf+ofRM4DoLso0XRqywk4hHWwYe7E6YdSUGsNsYPkbK8Gcrh181bztdVzMoMQFUrBEQQqKt2emTDbBVZTSSwFGiFTrCHDnZaFTeNTXJsTIceWMd4wjhgH2/ZjKSukmO9j9Qitoeo+ts48713svHH47RU8dzMHBxp6jDY8J34YFG3j4TeqGxZZINqvwjDmAxE9AqFzue+lOemmX2e6Lw9cjkq/kvQ1w13ZgEuBLXpu8Lt+QDxFxNVFaHrq6VQqFFcWPAMEILyc77VXlEXzrWBgFR+ShSHXxvEP5OIqeTWNYe1Ej227BLEa3/yIaDqut7knuDX/mWk+cWp+45LxfCReV64kTmboRVuF9cRksKQA15LBh7Rj8W4ieev7UztiL0A7Te7GVpzWsp/uwflBrEqYb5iKf3Ypf7V2kB6PWZtnepE9uWTziK/yrBCv16eVVJ6ZW/tY1AE7btr5qJKs3lr1FMJV/eCekXtCBHmLcS9xzIECl5Bd3u4kSd0tT/extpT83bNY/sz1EZ1XdoiWz4EMom60gupzpP7Nv3WrO38DvbMMAcEpGzkBIMp4wFysSCmlUGBZIuCn5QWE3IVOxh9vc5dPp9B7fdbiExCWmcOnVG6spVtyWtqScU/B3t+lgJCcSLODr41/Gve/MF42t8kiFlvKyjNLfn443jEPeSZ80cy/VRNnhP3lcjpDr+g/t48Xv+0N/B7qY8hNJzo5AptyAPJRXM9g4cZJ2IBpCprAe+TwAUvw9iAj5kQsMo0bsksbeEIJT4Lu7zhzvLSFzD/
+ U2CyeNhj
+ HMDsJG2PmnBeBgBRgm6QZLR74Z7/USVBf7yg1Q2jZPl5Q+ics6w/5STAceKOg1mFUo1V9WZEjXoUGoLeJL8YJRMomY2WSInE6zjs2rb9LK4YfhVuN8V/PDMmpp8OYUauDFKjl+YQjJUco7JsLq9n40qKlNNb4bB5o5AUWvI8Cg1gerRST63HN5LO+A3bl5P3QZb6OzCgWZSzHF9/UfQZHECrIPWph8/g5CoXrXx4LF9K7FahUmWazn4r8StQ4sOo1fo2RJDOpzbJ3MfQeLE7uT7fnBz0ZBy7+CWEALlfwFbVwg6eBiLh7k2v2lQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,80 +93,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/25/26 15:21, Zi Yan wrote:
-> On 25 Mar 2026, at 7:04, Garg, Shivank wrote:
+On Tue, 24 Mar 2026 15:40:05 +0000 Josh Law <objecting@objecting.org> wrote:
+
+> Hardware integer division is slow. The function damon_max_nr_accesses(),
+> which is called very frequently, performs an integer division.
+> However, the struct damon_attrs already caches this exact ratio in the
+> internal field aggr_samples. We can eliminate the hardware division in
+> the hot path by simply returning aggr_samples.
 > 
->> On 3/25/2026 2:55 PM, David Hildenbrand (Arm) wrote:
->>>
->>>
->>> Isn't folio_change_private() part of the
->>> folio_attach_private()/folio_detach_private() interface that has
->>> completely different semantics?
->>>
->>> "The page must previously have had data attached and the data must be
->>> detached before the folio will be freed."
->>>
->>> (btw, that comment should refer to pages)
->>>
->>> So I would not use folio_change_private(). An accidental
->>> folio_attach_private() / folio_detach_private() would be rather undesired.
+> Signed-off-by: Josh Law <objecting@objecting.org>
+> ---
+>  include/linux/damon.h       |  3 +--
+>  mm/damon/core.c             |  1 +
+>  mm/damon/tests/core-kunit.h | 16 ++++++++++++----
+>  3 files changed, 14 insertions(+), 6 deletions(-)
 > 
-> Hi David,
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index 6bd71546f7b2..438fe6f3eab4 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -960,8 +960,7 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
+>  static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
+>  {
+>  	/* {aggr,sample}_interval are unsigned long, hence could overflow */
+> -	return min(attrs->aggr_interval / attrs->sample_interval,
+> -			(unsigned long)UINT_MAX);
+> +	return min_t(unsigned long, attrs->aggr_samples, UINT_MAX);
+>  }
+>  
+>  
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index b0ab0ee6eab9..59b709f04975 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -582,6 +582,7 @@ struct damon_ctx *damon_new_ctx(void)
+>  	ctx->attrs.sample_interval = 5 * 1000;
+>  	ctx->attrs.aggr_interval = 100 * 1000;
+>  	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
+> +	ctx->attrs.aggr_samples = 20;
+>  
+>  	ctx->passed_sample_intervals = 0;
+>  	/* These will be set from kdamond_init_ctx() */
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index e86d4f4fe261..56d03ef6a5a4 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -416,6 +416,8 @@ static void damon_test_nr_accesses_to_accesses_bp(struct kunit *test)
+>  		.aggr_interval = ((unsigned long)UINT_MAX + 1) * 10
+>  	};
+>  
+> +	attrs.aggr_samples = attrs.aggr_interval / attrs.sample_interval;
+> +
+>  	/*
+>  	 * In some cases such as 32bit architectures where UINT_MAX is
+>  	 * ULONG_MAX, attrs.aggr_interval becomes zero.  Calling
+> @@ -434,7 +436,8 @@ static void damon_test_nr_accesses_to_accesses_bp(struct kunit *test)
+>  static void damon_test_update_monitoring_result(struct kunit *test)
+>  {
+>  	struct damon_attrs old_attrs = {
+> -		.sample_interval = 10, .aggr_interval = 1000,};
+> +		.sample_interval = 10, .aggr_interval = 1000,
+> +		.aggr_samples = 100,};
+>  	struct damon_attrs new_attrs;
+>  	struct damon_region *r = damon_new_region(3, 7);
+>  
+> @@ -446,19 +449,24 @@ static void damon_test_update_monitoring_result(struct kunit *test)
+>  	r->age = 20;
+>  
+>  	new_attrs = (struct damon_attrs){
+> -		.sample_interval = 100, .aggr_interval = 10000,};
+> +		.sample_interval = 100, .aggr_interval = 10000,
+> +		.aggr_samples = 100,};
+>  	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses, 15);
+>  	KUNIT_EXPECT_EQ(test, r->age, 2);
+>  
+>  	new_attrs = (struct damon_attrs){
+> -		.sample_interval = 1, .aggr_interval = 1000};
+> +		.sample_interval = 1, .aggr_interval = 1000,
+> +		.aggr_samples = 1000,
+> +	};
+>  	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses, 150);
+>  	KUNIT_EXPECT_EQ(test, r->age, 2);
+>  
+>  	new_attrs = (struct damon_attrs){
+> -		.sample_interval = 1, .aggr_interval = 100};
+> +		.sample_interval = 1, .aggr_interval = 100,
+> +		.aggr_samples = 100,
+> +	};
+>  	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
+>  	KUNIT_EXPECT_EQ(test, r->nr_accesses, 150);
+>  	KUNIT_EXPECT_EQ(test, r->age, 20);
+> -- 
+> 2.34.1
 
-Hi,
+I think this amount of change is somewhat too much maintenance burden for the
+simple optimization.  Apparently aggr_samples was not designed for this use
+case.  I think another way should be used, but failing at finding a good
+alternative.  And I'm not very sure damon_max_nr_accesses() deserves that much
+time to optimize.
 
-> 
-> In terms of folio_change_private(), I did not think it is related to
-> folio_{attach,detach}_private(), since the latter change folio refcount during
-> the operation. If folio_change_private() is related to attach/detach,
-> I imagine it would check folio refcount before touches ->private. But
-> that is my interpretation.
+So, if you find a better way for optimizing damon_max_nr_accesses()
+without adding maintenance burden or evidence of benefit that justifies this
+amount of maintenance burden, please feel free to repost a new version.  But,
+in my humble and frank opinion, I don't see that much worth in the
+optimization.
 
-I mean, given that
 
-a) It's located in pagemap.h in between folio_attach_private() and
-folio_detach_private()
+Thanks,
+SJ
 
-b) It clearly states that "The page must previously have had data
-attached and the data must be detached before the folio will be freed."
-
-This is the wrong API to use?
-
-Sure, it sets folio->private but in different context.
-
-I can spot one user in mm/hugetlb.c, that likely also should not be
-using this API, because there likely was no previous attach/detach.
-
-> 
-> BTW, do you know why we have set_page_private() but no folio_set_private()?
-> I would suggest folio_set_private() if it exists.
-
-folio_set_private() sets ... PG_private. :)
-
-folio_test_private() checks PG_private and folio_get_private() returns
-page->private.
-
-A cursed interface.
-
-What we should likely do is:
-
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 3944b51ebac6..702cb2c0bc0e 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -426,6 +426,7 @@ struct folio {
-                        union {
-                                void *private;
-                                swp_entry_t swap;
-+                               unsigned long migrate_info;
-                        };
-                        atomic_t _mapcount;
-                        atomic_t _refcount;
-
-And not using folio->private in the first place. Just like we did for swap.
-
--- 
-Cheers,
-
-David
+[...]
 
