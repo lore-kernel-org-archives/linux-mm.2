@@ -4,153 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3C5A109C04A
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 17:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E232B109C04A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 17:55:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25FD96B0005; Wed, 25 Mar 2026 13:29:59 -0400 (EDT)
+	id 284EE6B0005; Wed, 25 Mar 2026 13:55:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 237456B0089; Wed, 25 Mar 2026 13:29:59 -0400 (EDT)
+	id 235AE6B0089; Wed, 25 Mar 2026 13:55:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14C856B008A; Wed, 25 Mar 2026 13:29:59 -0400 (EDT)
+	id 0FD8E6B008A; Wed, 25 Mar 2026 13:55:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 03F006B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:29:59 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9ADAA1A0A5A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 17:29:58 +0000 (UTC)
-X-FDA: 84585273276.14.1F5ACCD
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A7C6DA0017
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 17:29:56 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ay3PDww2;
-	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED0CE6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:55:01 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9EDAA160A44
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 17:55:01 +0000 (UTC)
+X-FDA: 84585336402.13.1D0B277
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 71C2A180008
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 17:54:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774461300; a=rsa-sha256;
+	cv=none;
+	b=algJSJh2iog2JwHAwzAbM/3cIaI1OcT07KzeVRFRz1Yl8VEf46XNCHzuvS/vUm6PpaoEYr
+	SsognukgvIkf1b5eFpO6UAk2W/xEfkTzYjCVNeZg3xYwrjBs1sbS9MQNyzj1mAzfnU378M
+	Q/sOYxucyvohoZn8Mc16Iyvz3t8AAeA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774459796;
+	s=arc-20220608; t=1774461300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tqtdz49F1thS+8gpmqv2HF5sNOiFchZq7BXU6+8jf4U=;
-	b=AHHFlKT6jPX2CIDHBaMddYkArNSY1IP85lWxaqu/0MEcK6LRCkE2eWuj4vCsQmB8rRXr5Y
-	J3Bt62wTWHIode2cEUWQxFC45Sh1GyrI9/lNxlkHT1J2RziXFJziFt5XwSheQGLmPqI4VD
-	CQb3pY9cE5oK14W50znJ0i21IRSMhy4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ay3PDww2;
-	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774459796; a=rsa-sha256;
-	cv=none;
-	b=gID8NEYAQEk2HNnGQ8srYTEEffK5Y9hEWmfnZnDXs5w1NgMwgBd4zBPhI+siCXJd5Lzebs
-	NmnnuK2vlukh4TtsWDoS/oefz/TeVjjZP+m0zIGRBdWLabPS8fEI/0qEasPNoxyPs5O3BX
-	QlY9UyKVfV9TxSBRPrJBM7Rueker97Q=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82c68339cf0so860916b3a.0
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:29:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774459795; x=1775064595; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tqtdz49F1thS+8gpmqv2HF5sNOiFchZq7BXU6+8jf4U=;
-        b=ay3PDww2uz94pq+6/OJGpxEzdEIHAyzrrip9104AftrHs0AHD7/z386EeE/84lfGds
-         k7kJu9f6YkmJobV8CGaYel9OzIA9Xt/8BzlGyXBGDFwA+CdMmIiGRI3Q/eL/b/MEPctZ
-         j0JI/RGbLhnS73ZWPrGA/7CPdYk+H+G3tZ1CnsFCECXSQSjdqLXnM+PkvvushrfKa7oa
-         cTarTFoGhQsyTuPZ1HdFZnEymd6wlfj10jPA7q7LMFMuDOrB7k6/T5ijxGqh6UP0Oaz5
-         ER3Bhd0mV+AicvFs11O/FmmbGVV/Rj/bebJYMlBBxHclDHX6Jl8cngztr7hdA0d3Fm5W
-         pGSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774459795; x=1775064595;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Tqtdz49F1thS+8gpmqv2HF5sNOiFchZq7BXU6+8jf4U=;
-        b=TrEhhwLUfngxKm4m6sQ9MdFcarpuz7h3H1YxexsOW05fppa09d0pSBpOkwUxtEryIO
-         aY3FQzIgy0+D0UCOlNiNNi1h3Ke+xWZCFBNLGfjAlO8msqdcnQaBEpH6CFEoOUInvsjB
-         p9nFHQQmLxwE+4ifTQ2/VRVQecil82W2D9u0RjZzaJ5rAuOlV6vwalJ9IXLNhuQRn0eK
-         24xUZt4+JgXXtHRxklDSanPA4Bz62H2wM59UxMlot2a3Yt4PlxlAQOLEPjUtbiFt9/PI
-         ea7/4Nag8QLAT4lKVm7sT7keUYuzjqplsl5bu8vzbyyW3XiZKEMkhHnqLhDDUetV1/iT
-         zUrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUT1gNSK07irRT4W3PgQ6WxKpMMFS1yiZfRRAaVkS4ljnMpUKttIxO3S6CeYL3/1LLEaDgs2dMEpw==@kvack.org
-X-Gm-Message-State: AOJu0YzlzXJoXMdNkfrA9VUqaRYc3Pf1365cgelrYQ2dt7hsvJL0YJYT
-	x3P1JGPJuYi2FKn5y+Gu47OLzYsWS7iy8zXgO1Fm2rsFUPrm1qf4Z0hCFxHZNTPDgg==
-X-Gm-Gg: ATEYQzz/T+H15apOcI3X+zUi2tQhnq5eEOfGYP3OTXsWVDf/FLJomhA9CchMtjmkIj5
-	+aMxljsUiHvemyts68oHL/8lq/uTdT8Pw3d2tYw8X2It2VJ1QOyAJ4sPKnICwhG3gj9KWcfTsdG
-	sNHwu3fixseHj/DpvVLogjw8OFH6fnEMWW+nMcPzpP/ROvhtA85OmSmnUfBsa7uCm95KNukTspo
-	As1OixRIMq9ikMaL+8zSs9QWB+pL0pVa+QLq9MXHkQ43j4SVrJ4twFP5sv/Sd0MBbIQSfUA0aXZ
-	59Sp+u+TCgOEvBYC4VVJxLeXVOk7UqSW/pGihrIG0J736U8LFdXuQ06P2wx2VMkFBISyOcWpjvQ
-	bHBcQsySDBgqm4qZfwFSnzE3GRGcKdNus4rAx5IgaZa43BT787cTpvVORIm7w7emCN9YYq/POE+
-	7DOlOuMmBMvebW0d+1WLT8xIU6F4/uZ/Me3nTY92gMJ7wOIWokUzYC/gZIFk8hOw==
-X-Received: by 2002:a05:6a00:1826:b0:827:2dff:7116 with SMTP id d2e1a72fcca58-82c6d99ac23mr4021492b3a.13.1774459794263;
-        Wed, 25 Mar 2026 10:29:54 -0700 (PDT)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d216a0esm312308b3a.17.2026.03.25.10.29.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 10:29:52 -0700 (PDT)
-Date: Wed, 25 Mar 2026 17:29:48 +0000
-From: David Matlack <dmatlack@google.com>
-To: Yi Liu <yi.l.liu@intel.com>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
-	Askar Safin <safinaskar@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Chris Li <chrisl@kernel.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
-	kexec@lists.infradead.org, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
-	Marco Elver <elver@google.com>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v3 03/24] PCI: Require Live Update preserved devices are
- in singleton iommu_groups
-Message-ID: <acQbjF53aIzv7Ieq@google.com>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-4-dmatlack@google.com>
- <376910fa-4232-4e58-bf87-0504202866a5@intel.com>
- <acLRICLAP5Ccqt9I@google.com>
- <b16f93af-1ec6-43f5-b4d0-b1d390e3c23c@intel.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=NPycBRWEaQ5W/s1eKUZdWSqPyDHH0vLvX4h1Yp3r7p4=;
+	b=qVV+J8Gu+dRmXrAbVkfpo1zDufvIg49Fq+G/aQkb/jTK8p0Pk+a01AKS0Lvzy7KTxkwwDr
+	kaYGReH/tt1GNonB+nGciY4u7NxS2Ks5InsA7JzU68UgP06lnWxXrTApewPW/3I8zpi1yn
+	u90RsqQ0lFu4RP95v8C8LNmei1pDhaU=
+Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 26 Mar 2026 02:54:54 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+From: Youngjun Park <youngjun.park@lge.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kasong@tencent.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	baohua@kernel.org,
+	gunho.lee@lge.com,
+	taejoon.song@lge.com,
+	hyungjun.cho@lge.com,
+	mkoutny@suse.com
+Subject: [PATCH v5 0/4] mm/swap, memcg: Introduce swap tiers for cgroup based swap control
+Date: Thu, 26 Mar 2026 02:54:49 +0900
+Message-Id: <20260325175453.2523280-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b16f93af-1ec6-43f5-b4d0-b1d390e3c23c@intel.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 71C2A180008
+X-Stat-Signature: 1tcki4g87z7nu5yioop9xhtgwqk387pj
 X-Rspam-User: 
-X-Stat-Signature: yqpneaefndfpfysk8bj8qtt1c9j3wdg5
-X-Rspamd-Queue-Id: A7C6DA0017
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774459796-963459
-X-HE-Meta: U2FsdGVkX19Bjpj0n6YGD1mTOV1WlsWSjrIYWoTvu5hRuUeWa2rSEjXLeXh92XBaR8f458vQTC3qZ3uErVEyloQm77O4gVwKbk5CU7Nh84oCfBs0ZWnCDjU66fgs82ug6NhIUYAYMLY93jHosysvyCjD7JfgMoHRCTNe7geDI8rchTJnBMGPA9CBczZUgFLrzL1jW9OR+1hoXjGyQHrzhHr581C2qLh0k90sLkBIr2My0IuS6aspZ2g1TIbp4T4yP26G8KLvJPu5XQ2UbAImEy3cbKH2BDMEbxeRDRxTca0v+K3l3LCc5VanzB7tpsoq6PVoA50JhcmusDSWPQiZEfl4jGysw9RUJwel27eNkrdtfcx1OJM590LA2P0zb1GOD4HGQhMSXmKDcwCfPN5laGqTBmmUbgoDEewe3pcH5Q3FVkKAsyWNYlhqIuf39yx00wENsvoNQGWfGEkpzr9le3dCosMDN88iGG4K0BkCr5Fn7GYHPzGuTP5XzF4y5JEc+KzvmsurDKP2AAQnr+GUCBj0gIEDvMmkeZdSi8clFqowd+NxP/8RC7USC2vh9//rPaCLlwv4NYJCPX0/MLNVaBot8gXh55h9NajoaFpvUAwpEzwBv6OJk13Y9aEK/nTedwh85pC3OpOBYYJ6aNVExP7fJ66lT26urLze4EVOE1LjdvtuZ2xejapmEzwdrlH0YzvoEtnQ01k9Iz/v4yr3KULTA2XTgYH0a0Ldg160yIQv48dwYwYJKJzsh5mkQVsjYiZ88i2139Sf466YPuIXIs16h2X3Bp4g1bYX8pE+qMkLYGoDy3WmWAX5a2AfaC5iVXsvXbHJXlWzZV9NScV4sZjrT6vFRIJQuqznCY3XTogD9JeRLGTqp+XWsKKsvtFArJ2Z9GTXIRKwOUaS5SFrkGVbK6cm2m+hNOeQj6KVPRc1WHGmC33xrZ0crIfTaTqtqPKNiwWl3yN3bd9Eujx
- TH65qFn/
- 2DjVtCxN0oCyfdoIi0tY5oEszFJBYtzKeSWXd+fLs8F7M7UgWyqc3ohL0w93UdNCYgYqD3HhXRCY9jW5QvcyVNu/EEgX9KZYA0Zp4r27aRBdfl5M4536f7UdhfpFyJqTydVaOwQhzO9Q+4qrNcTbYorv1NcHfiGW7766fjgUYVyWqzDpz16/4e4zEmmEx+ldsHM10M9QdDnKb7SxPtc/eeLUR39hL6aAGD9vZST1mQHwN6ifFDYt9ni0vtW0k85AE83PZIQwmikO1/iQQAUPErjuqN9B/FjhZ53bRwqjGBgjJnx01JrDUcy3sgorbTjJ2QoQ409i7nTSzA+q5LZlkHnjxPoxG/6lzqP6T6UxoaBJkJMSAt5owq6dTY25IQw8splq+GX9vTRNwivXJAdAkV96RYJQ/ugBHUl2tLMaNwXnKHt8emu29UmK5Ond45AaBCza6yfMSTWCP1I3vNDZcqh/cEYDyIUXBCZ4AgcHq0EMbSm8=
+X-HE-Tag: 1774461298-340004
+X-HE-Meta: U2FsdGVkX1+amyBgpxLiHfRgYwFSMfI7V2Gswq/oD2ej3ct3jmOB4Idd2nF1Gefv2CkmZxT2QKC51LEx5/pYXsV7+rFDP7P0O3dPSPOYv7t9gWYZ/w2Ki+o69bBGEgNKTmHaRsyVSDFUoAZEKn8/sBS7gY+A6D/byB3GD/m58djWGFlF6/0U5xibLG8gLya1VVb6/XhylB/qFqfAH/ETa6gty4gRERgDsRdldIxCWhcYg26RmvZWpPdXCmPjFCe9rZNOrhnyd4j1U1Hvm6VhqLk9G4ZoxfsPKudrR+RnXN9KxmyCJ9G5KsxAD4ZHMF22MmlsblZy2US4zQlZMN+/FgglIKBP9MiESc1Q8JdtYxUlYG2G839O6Z/z24TT1Uyj98URPHdAzpFAJezvnCbNOb2FGF2TsRpDpulm4iD4Na0zRZi55g9XcUHbrfcjuVxZKznRgs+yhBEjMBdKJ5U/wNA7loEWFPhZyE3epsl+XfvP1NZwH6Z4JY9lrHFfQGWKN1u5DgdKEGN18Jqqm0g0Un1zbxhONdqJOIjMT1+sDUWgMUOY7+R/GXk+BmoXvS70KvMoDkpS+fyN3yuWUoXzprGELcAuv0ttvDfIrbQ68oWa+8gl9G72cy2UYqs6CBxUihtsxzdDfi4EdO7y/2qRJAa17+rVb3AyNG7qBkATScD+AtboHAuu8hi5l0uOhhdAbzDvNZQr1OYdHT0rkDWJDs4iZuLg4J+0YCbBLTSZSyhRCwo+TfbF69hOalFmraeBPJUDF6nR+PtPaUtKr0TsSdKCOm5pZJjSUgkVJm0g65GKQ3KuGnO2F5N1vsWbdXAcgg/B/qrZYNin8aZK9WGR83oYJ4vMOGXfAlOTU9iup9d5PmNWnDxGAtv0Kn/vVcIFXg3cl7VHgJ/P9zHwMZPItxL8hTE13QtwY6IXDWSL3STPtIvQzwN0MvIbU2L5CVHnkSfa/k2W0DC5j005I+I
+ z1tgIyVu
+ ZRbiijd/DcOJiQ4ozDEL52g9K7xyn2xErO2iMbcoiPuyNJ3TseuUxKTVJh4jzITKqgylqUak8GQb2G53tYelRZYUrhHBGMqOEMSIOvYGHvLmFuTbHbWIlHP9xWmOMJE2e8KLOu7esQOcLQB5s3CUCyk4bmElmYdtsQ6CTYI5pthUzfG3bz5s4bXLwXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,108 +93,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-03-25 07:12 PM, Yi Liu wrote:
-> 
-> 
-> On 3/25/26 02:00, David Matlack wrote:
-> > On 2026-03-24 09:07 PM, Yi Liu wrote:
-> > > On 3/24/26 07:57, David Matlack wrote:
-> > > > Require that Live Update preserved devices are in singleton iommu_groups
-> > > > during preservation (outgoing kernel) and retrieval (incoming kernel).
-> > > > 
-> > > > PCI devices preserved across Live Update will be allowed to perform
-> > > > memory transactions throughout the Live Update. Thus IOMMU groups for
-> > > > preserved devices must remain fixed. Since all current use cases for
-> > > > Live Update are for PCI devices in singleton iommu_groups, require that
-> > > > as a starting point. This avoids the complexity of needing to enforce
-> > > > arbitrary iommu_group topologies while still allowing all current use
-> > > > cases.
-> > > > 
-> > > > Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> > > > Signed-off-by: David Matlack <dmatlack@google.com>
-> > > > ---
-> > > >    drivers/pci/liveupdate.c | 34 +++++++++++++++++++++++++++++++++-
-> > > >    1 file changed, 33 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> > > > index bec7b3500057..a3dbe06650ff 100644
-> > > > --- a/drivers/pci/liveupdate.c
-> > > > +++ b/drivers/pci/liveupdate.c
-> > > > @@ -75,6 +75,8 @@
-> > > >     *
-> > > >     *  * The device must not be a Physical Function (PF).
-> > > >     *
-> > > > + *  * The device must be the only device in its IOMMU group.
-> > > > + *
-> > > >     * Preservation Behavior
-> > > >     * =====================
-> > > >     *
-> > > > @@ -105,6 +107,7 @@
-> > > >    #include <linux/bsearch.h>
-> > > >    #include <linux/io.h>
-> > > > +#include <linux/iommu.h>
-> > > >    #include <linux/kexec_handover.h>
-> > > >    #include <linux/kho/abi/pci.h>
-> > > >    #include <linux/liveupdate.h>
-> > > > @@ -222,6 +225,31 @@ static void pci_ser_delete(struct pci_ser *ser, struct pci_dev *dev)
-> > > >    	ser->nr_devices--;
-> > > >    }
-> > > > +static int count_devices(struct device *dev, void *__nr_devices)
-> > > > +{
-> > > > +	(*(int *)__nr_devices)++;
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > 
-> > > there was a related discussion on the singleton group check. have you
-> > > considered the device_group_immutable_singleton() in below link?
-> > > 
-> > > https://lore.kernel.org/linux-iommu/20220421052121.3464100-4-baolu.lu@linux.intel.com/
-> > 
-> > Thanks for the link.
-> > 
-> > Based on the discussion in the follow-up threads, I think the only check
-> > in that function that is needed on top of what is in this patch to
-> > ensure group immutability is this one:
-> > 
-> > 	/*
-> > 	 * The device could be considered to be fully isolated if
-> > 	 * all devices on the path from the device to the host-PCI
-> > 	 * bridge are protected from peer-to-peer DMA by ACS.
-> > 	 */
-> > 	if (!pci_acs_path_enabled(pdev, NULL, REQ_ACS_FLAGS))
-> > 		return false;
-> > 
-> > However, this would restrict Live Update support to only device
-> > topologies that have these flags enabled. I am not yet sure if this
-> > would be overly restrictive for the scenarios we care about supporting.
-> 
-> yes. It's a bit different from that thread in which not only require
-> singleton group but also need to be immutable.
-> 
-> > An alternative way to ensure immutability would be to block adding
-> > devices at probe time. i.e. Fail pci_device_group() if the device being
-> > added has liveupdate_incoming=True, or if the group already contains a
-> > device with liveupdate_{incoming,outgoing}=True. We would still need the
-> > check in pci_liveupdate_preserve() to pretect against setting
-> > liveupdate_outgoing=True on a device in a multi-device group.
-> 
-> this looks good to me. But you'll disallow hotplug-in during liveupdate.
-> not sure about if any decision w.r.t. hotplug. is it acceptable?
+This is v5 of the "Swap Tiers" series.
+For clarity, this cover letter is structured in two parts:
 
-Anyone doing hotplug during the middle of a Live Update is asking for
-trouble IMO. And it would only prevent a hot-plugged device from coming
-up if it were to be added to the iommu_group as an existing preserved
-device. I think that is reasonable.
+  Part 1 describes the patch series itself (what is implemented in v5).
+  Part 2 consolidates the design rationale and use case discussion,
+  including clarification around the memcg-integrated model and
+  comparison with BPF-based approaches.
 
-> BTW. A question not specific to this patch. If failure happens after
-> executing kexec, is there any chance to fallback to the prior kernel?
+This separation is intentional so reviewers can clearly distinguish
+between patch introduction and design discussion (for Shakeel's
+ongoing feedback).
 
-There are many failure paths during the reboot() syscall that can return
-back to userspace, and then userspace can figure out how to bring the
-system (e.g. VMs) back online on the current kernel.
+v4:
+  https://lore.kernel.org/linux-mm/20260217000950.4015880-1-youngjun.park@lge.com/
 
-But otherwise, kexec is currently a one way door. Once you kexec, into
-the new kernel, you would have to do another Live Update to get back
-into the previous kernel.
+Earlier RFC versions:
+  v3: https://lore.kernel.org/linux-mm/20260131125454.3187546-1-youngjun.park@lge.com/
+  v2: https://lore.kernel.org/linux-mm/20260126065242.1221862-1-youngjun.park@lge.com/
+  v1: https://lore.kernel.org/linux-mm/20251109124947.1101520-1-youngjun.park@lge.com/
+
+Earlier Approach (per cgroup swap priority)
+  RFC: https://lore.kernel.org/linux-mm/aEvLjEInMQC7hEyh@yjaykim-PowerEdge-T330/T/#mbbb6a5e9e30843097e1f5f65fb98f31d582b973d
+  v1: https://lore.kernel.org/linux-mm/20250716202006.3640584-1-youngjun.park@lge.com/
+======================================================================
+Part 1: Patch Series Summary
+======================================================================
+
+Overview
+========
+Swap Tiers group swap devices into performance classes (e.g. NVMe,
+HDD, Network) and allow per-memcg selection of which tiers to use.
+This mechanism was suggested by Chris Li.
+
+This series introduces:
+
+- Core tier infrastructure
+- Per-memcg tier assignment (subset of parent)
+- memory.swap.tiers and memory.swap.tiers.effective interfaces
+
+Changes in v5
+=============
+- Fixed build errors reported in v4
+- rebased on up to date mm-new 
+- Minor cleanups
+- Design docs with validation (by Shakeel Butt discussion)
+
+Changes in v4 (summary)
+=======================
+- Simplified control flow and indentation
+- Added CONFIG option for MAX_SWAPTIER (default: 4)
+- Added memory.swap.tiers.effective interface
+- Reworked save/restore logic into snapshot/rollback model
+- Removed tier priority modification support (deferred)
+- Improved validation and fixed edge cases
+- Rebased onto latest mm-new
+
+Deferred / Future Work
+======================
+- Per-tier swap_active_head to reduce contention (Suggested by Chris Li)
+- Fast path and slow path allocation improvement
+  (this will be introduced after Kairui's work)
+
+Real-world Results
+==================
+Tested on our internal platform using NBD as a separate swap tier.
+Our first production's simple usecase.
+
+Without tiers:
+- No selective control over flash wear
+- Cannot selectively assign NBD to specific applications
+
+Cold launch improvement (preloaded vs. baseline):
+- App A: 13.17s -> 4.18s (68%)
+- App B: 5.60s -> 1.12s (80%)
+- App C: 10.25s -> 2.00s (80%)
+
+Performance impact with no tiers configured:
+<1% regression in kernel build and vm-scalability benchmarks
+(measured in RFC v2).
+
+======================================================================
+Part 2: Design Rationale and Use Cases
+======================================================================
+
+Design Rationale
+================
+Swap tier selection is attached to memcg. A child cgroup may select a
+subset of the parent's allowed tiers.
+
+This:
+- Preserves cgroup inheritance semantics (boundary at parent,
+  refinement at child).
+- Reuses memcg, which already groups processes and enforces
+  hierarchical memory limits.
+- Aligns with existing memcg swap controls (e.g. swap.max, zswap.writeback)
+- Avoids introducing a parallel swap control hierarchy.
+
+Placing tier control outside memcg (e.g. bpf, syscall, madvise etc..)
+would allow swap preference to diverge from the memcg hierarchy.
+Integrating it into memcg keeps swap policy consistent with
+existing memory ownership semantics.
+
+Use case #1: Latency separation (our primary deployment scenario)
+=================================================================
+  [ / ]
+     |
+     +-- latency-sensitive workload  (fast tier)
+     +-- background workload         (slow tier)
+
+The parent defines the memory boundary.
+Each workload selects a swap tier via memory.swap.tiers according to
+latency requirements.
+
+This prevents latency-sensitive workloads from being swapped to
+slow devices used by background workloads.
+
+Use case #2: Per-VM swap selection (Chris Li's deployment scenario)
+==================================================================
+  [ / ]
+     |
+     +-- [ Job on VM ]              (tiers: zswap, SSD)
+            |
+            +-- [ VMM guest memory ]  (tiers: SSD)
+
+The parent (job) has access to both zswap and SSD tiers.
+The child (VMM guest memory) selects SSD as its swap tier via
+memory.swap.tiers. In this deployment, swap device selection
+happens at the child level from the parent's available set.
+
+
+Use case #3: Tier isolation for reduced contention (hypothetical)
+=================================================================
+  [ / ]                    (tiers: A, B)
+     |
+     +-- workload X        (tiers: A)
+     +-- workload Y        (tiers: B)
+
+Each child uses a different tier. Since swap paths are separated
+per tier, synchronization overhead between the two workloads is
+reduced.
+
+How the Current Interface Supports Future Extensions
+====================================================
+
+- Intra-tier distribution policy:
+  Currently, swap devices with the same priority are allocated in a
+  round-robin fashion. Per-tier policy files under
+  /sys/kernel/mm/swap/tiers/ can control how devices within a tier
+  are selected (e.g. round-robin, weighted).
+
+- Inter-tier promotion and demotion:
+  Promotion and demotion apply between tiers, not within a single
+  tier. The current interface defines only tier assignment; it does
+  not yet define when or how pages move between tiers. Two triggering
+  models are possible:
+
+  (a) User-triggered: userspace explicitly initiates migration between
+      tiers (e.g. via a new interface or existing move_pages semantics).
+  (b) Kernel-triggered: the kernel moves pages between tiers at
+      appropriate points such as reclaim or refault.
+
+  From the memcg perspective, inter-tier movement is bounded by
+  memory.swap.tiers.effective -- pages can only be promoted or demoted
+  to tiers within the memcg's effective set. The specific policy and
+  triggering mechanism require further discussion and are not part of
+  this series.
+
+- Per-VMA or per-process swap hints:
+  A future madvise-style hint (e.g. MADV_SWAP_TIER) could reference
+  the tier indices in /sys/kernel/mm/swap/tiers/. At reclaim time,
+  the kernel would check the VMA hint against the memcg's effective
+  tier set to pick the swap-out target.
+
+BPF Comparison
+==============
+The use cases described above already rely on memcg for swap tier
+control, and real deployments are built around this model.
+A BPF-based approach has additional considerations:
+
+- Hierarchy consistency: BPF programs operate outside the memcg
+  tree. Without explicit constraints, a BPF selector could
+  contradict parent tier restrictions. Edge cases such as zombie
+  memcgs make the resolution less clear.
+- Deployment scope: requiring BPF for core swap behavior may not
+  be suitable for constrained or embedded configurations.
+
+BPF could still work as an extension on top of the tier model
+in the future.
+
+Youngjun Park (4):
+  mm: swap: introduce swap tier infrastructure
+  mm: swap: associate swap devices with tiers
+  mm: memcontrol: add interfaces for swap tier selection
+  mm: swap: filter swap allocation by memcg tier mask
+
+ Documentation/admin-guide/cgroup-v2.rst |  27 ++
+ Documentation/mm/swap-tier.rst          | 159 +++++++++
+ MAINTAINERS                             |   3 +
+ include/linux/memcontrol.h              |   3 +-
+ include/linux/swap.h                    |   1 +
+ mm/Kconfig                              |  12 +
+ mm/Makefile                             |   2 +-
+ mm/memcontrol.c                         |  95 +++++
+ mm/swap.h                               |   4 +
+ mm/swap_state.c                         |  75 ++++
+ mm/swap_tier.c                          | 451 ++++++++++++++++++++++++
+ mm/swap_tier.h                          |  74 ++++
+ mm/swapfile.c                           |  23 +-
+ 13 files changed, 923 insertions(+), 6 deletions(-)
+ create mode 100644 Documentation/mm/swap-tier.rst
+ create mode 100644 mm/swap_tier.c
+ create mode 100644 mm/swap_tier.h
+
+base-commit: 6381a729fa7dda43574d93ab9c61cec516dd885b 
+-- 
+2.34.1
 
