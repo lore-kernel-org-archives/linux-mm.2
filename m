@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00093FC72DA
-	for <linux-mm@archiver.kernel.org>; Tue, 24 Mar 2026 23:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98D5BFC72DA
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 00:03:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C1796B0088; Tue, 24 Mar 2026 19:56:10 -0400 (EDT)
+	id DA2976B0088; Tue, 24 Mar 2026 20:03:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299406B0089; Tue, 24 Mar 2026 19:56:10 -0400 (EDT)
+	id D52276B0089; Tue, 24 Mar 2026 20:03:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D63A6B008A; Tue, 24 Mar 2026 19:56:10 -0400 (EDT)
+	id C67C86B008A; Tue, 24 Mar 2026 20:03:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ED1B6B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 19:56:10 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C390A86090
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 23:56:09 +0000 (UTC)
-X-FDA: 84582617658.25.18F7CC9
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B7C1D6B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 20:03:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A3E316053B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 00:03:15 +0000 (UTC)
+X-FDA: 84582635550.28.54D68B7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 342EFC0002
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 23:56:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PBp9KCP+;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id B7804120013
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 00:03:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TRskfX5O;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774396568;
+	s=arc-20220608; t=1774396993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R0K/BeYyv/79GnAkQR3Pc+53//iQWf/atDo2TbDZAqU=;
-	b=jZGK0rR+z27jchVNzlEGoEapWvJOjbQUEqPQoY8ulqyLPcVmiSrGVIzjHaazuq03hx1GKB
-	R0IJJpJnlRcdjBieZpnV0hVinPG/caB7Jv0PXPZABZtfLsp4rlWh8nHbn+H9/wUay2Z5VX
-	54M/nLLqV5tr++pOEIl62Y7BM2nv2q0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774396568; a=rsa-sha256;
-	cv=none;
-	b=x4OtfhAmVIZ0Fljf3BM71EXD6ZGszXF4Qv6sM2GdKmU5dp78ajpvGbr8DTw2BO93KmRZMH
-	AtXLh5i5/ltvEiIafyrPmQ9++vu8jwtW8D0R/Qra3WKyvfIb2NrttJLOsEt7V8GJpi2QYW
-	k8kboOG9V7jxXajhK6X0mgINPe2zefo=
+	bh=s08sc4kAFvTO4YbdnNzQGMrAXZSnpdqvAu72Ux9zhnw=;
+	b=5LKR+YVpkvaE2WliPUret1rj189zd+TEAHU4in/qmFB9p5Bidy2BTbRA0MLMVRbNLmC5NY
+	VxmcooJoVKyO8YJS9/nq2BPuw/tmJFN/qoxuQF9tskgavBlq223Sfl+L5g05s8MZH86trt
+	3gpTi5XsSsxv76BPKxenkck/4Cu2vbs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PBp9KCP+;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TRskfX5O;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774396993; a=rsa-sha256;
+	cv=none;
+	b=CHc5mw0G44t0RyXXzctp6j8eh4nt89HzNukSKaHuS27dTIKY6mOOW/DSUYzk8BbuZ6Ja9z
+	VQmhYAPnsrWOIDbPm/GD7vz3pIfvhmP4Yy9ixZcZ4qgJSmynQz87lZC60nXBnnIrAn+wQt
+	lW6aFQgj8oLa6XhkDXrIQUAfN4A9Z+Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9DA7C600C4;
-	Tue, 24 Mar 2026 23:56:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C5FC19424;
-	Tue, 24 Mar 2026 23:56:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 13BF360103;
+	Wed, 25 Mar 2026 00:03:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AD0C19424;
+	Wed, 25 Mar 2026 00:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774396567;
-	bh=4uNybzToUKp0EAa2ve7IC4o/Ki+L3VO4Pq1iJB1BAU8=;
+	s=korg; t=1774396992;
+	bh=9f1wmmDRQ/xST5bhgNGmjzcn3IciZmk6Nk6ssBF2BL4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PBp9KCP+HTB22gb2kXON2RUvZihG+skEDsleFplTuA9hcaKXm0c7btgBY7E+je8tg
-	 NG+mNtn94cmgHl2PQb/6bKQe+GDc2rtIqwKbuAtwmQF4eWKkM2znUoOTCvCkChd8Kv
-	 KFtbZGAhe4u4GFoI17yLq9TIJObhfUfcF+yGHKds=
-Date: Tue, 24 Mar 2026 16:56:06 -0700
+	b=TRskfX5O3wTobE3L7tFsGmIeqmyMGpwrGJ6xjnepIeXmhMkDOQdMYtdjnoFJwU3WR
+	 W0OO14ZyvCUXs267Rh00QnZGAhBMu6OpK/4ZU9l5xnCNiZ9Ar4VCWqu+FK4qFI48qu
+	 qNWx8LsYrHLs4HTwFcfXlIKbWkn/VM2pqHBTquF4=
+Date: Tue, 24 Mar 2026 17:03:11 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Sayali Patil <sayalip@linux.ibm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Shuah Khan
- <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>, Zi
- Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>, Oscar Salvador
- <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain
- <dev.jain@arm.com>, Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 09/13] selftests/mm: skip uffd-wp-mremap if UFFD
- write-protect is unsupported
-Message-Id: <20260324165606.d75200ac0e5458a5ffb83d5d@linux-foundation.org>
-In-Reply-To: <0e9cea41-7c49-446a-b67b-256584960516@linux.ibm.com>
-References: <cover.1773305677.git.sayalip@linux.ibm.com>
-	<ed23ff57a80881c9d087d22709862af40addf49b.1773305678.git.sayalip@linux.ibm.com>
-	<457dddf1-04ec-4d1e-8640-b04997fac4f1@kernel.org>
-	<0e9cea41-7c49-446a-b67b-256584960516@linux.ibm.com>
+To: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Cc: jane.chu@oracle.com, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, David Hildenbrand
+ <david@kernel.org>, Peter Xu <peterx@redhat.com>, Andrea Arcangeli
+ <aarcange@redhat.com>, Mike Kravetz <mike.kravetz@oracle.com>, SeongJae
+ Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>, Sidhartha Kumar
+ <sidhartha.kumar@oracle.com>, Jonas Zhou <jonaszhou@zhaoxin.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Subject: Re: [PATCH v4] mm/userfaultfd: fix hugetlb fault mutex hash
+ calculation
+Message-Id: <20260324170311.dc5b54fe0765f2e680e3cc90@linux-foundation.org>
+In-Reply-To: <CAEgWzV5ryMBgJWH3QmWfr9LaZoihXcffFWKjK6OfJF=pDF6BtA@mail.gmail.com>
+References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
+	<20260310110526.335749-1-jianhuizzzzz@gmail.com>
+	<12e822c4-a4f2-4447-80b9-2eec35a03188@oracle.com>
+	<CAEgWzV5ryMBgJWH3QmWfr9LaZoihXcffFWKjK6OfJF=pDF6BtA@mail.gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 342EFC0002
-X-Stat-Signature: ufp6jftcc4pk6of8g8nstbak633i8eqf
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B7804120013
+X-Stat-Signature: n3qsus85scsdy95paiyoi8tegayyyf4c
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774396568-659160
-X-HE-Meta: U2FsdGVkX1/STG6gpCARJkZ52rz0fhuFfPzGS2U0w4MC3tS9Fs24SdVabDHRtC1w6KJ0adtw92UPl1TZPOu0Fm++1AaOtOxT1dP3A4A/L9h+590OfvvbKa0bpCwIx/UzxOXyQ1Vrz8BGxUdwh+99JkAFQyGT9GGITnt+YBO+tFhiYXwmKmEaThzaXOKQ5cafwdAbffYwbzKjRuwWZkBU1x3Ll/jGsy410VgR7IYm0uXnRm5APMg9I6cYpjLiMko4lrba9e+HlS55LR03XzP6fsK5JKimKxG0b1qX3lAxWqmKgeoWcsVYCIUs7V+PhVQSm8dQ7F0v8EXM0xpbTLzKDyo7XaY8PG/Jm93VAqyvS6nDRQ7GYAEMTjSao3F2eulRvWCOxcaY+6O/zvM30B86YkjjVpyg/RFHYhUR07Snq7Y+Ao3WF/ia9EbXiDYaArm02Hfl3KwAQ6EoMmXQXfr74xNK/3eH8MYn7K8FlbP811qTVN3ocfqGQqwynFDJIPXO4MjabLrezzP256gh79l9oVohGODrOP/6vzQfu1OmSTobDmILbG2mS1Khrek5b1Vi0S3mYMI0DaHAvR2JvdmWdAP4UBZbOumPnuHSNmEtYvBpIfO83fpkUkiCLMcT9ezEU/tBi83/0kg/qWLIpBQjJAVLJArlRJ6n2d6FO2NBvxooh4BqhD2y5qifQ/W5VZpG6IRT95EBjp/LAHf/3w6bgm8MnzmWufRCl8pzo1g/PScl903KhD0fxNFqMylAwmaEiwcb6vUsLxWWFBP34/M4TjgQvcpL8/iQ2JB/Ddnxgtlh0HENcPqzFojbdN2/mYz5MHZ8tjCDyU4qkCRinrb+QyHGp6fe+/R8RMwLRTaNye+E1GGXFXrlOnwd+E5PLvJxxpW/WDE3Xki+PFXieAwos1j2W4vCG8zg/vwG9FSVmt2uMxMD/NhII+qbDujPjg+sVKPDA+PJLXrMWIwLcJb
- +04f2/yk
- rn4fIJD58EQQl1XltIJ83FDQXhgXfG+BYk8K0gv/UhqrVKx7N3UzQZFYRzFTsOKgWd5Lx4lAqUxbDmq+2qfUNxq1+G96UVdW6nHUBDnqsmukez3jZu7GzGwkchTmYZv2K5nPuYWbH7/B7wy77PARLRcA5RCtbP+gBuQQ8l1hVf1cASgCBLwfd4FYScoHVlocOL6CeUixM+4EvkK0/3skNVWCf0seQVf5sgVM+cJD318j1SrNDGEZBX4h7fVOFOrdm0ODUI+ODxZxDK7W0kLtYteg/sUxslRcOiN0mSL3UOPgg6/+hfl6cSnJZI5o5RRuII/VMsPcxkiGRvPPYZ54ly5jRvsnoSERIwvGPTXti8gnGCz4=
+X-HE-Tag: 1774396993-537955
+X-HE-Meta: U2FsdGVkX1+cyKbztavam37J34IS7XYW/HHeux6VKds8kp+5Z1xJPQGoXwOqkLnOUw6QFhntWjMx+DTt4FTxLIy6B2TKvMx+y7AGdg21hAb208G5fp+fH4nCNqJAViJJ+IaFFLvyX6TgQIjx6SHFHZEkXs7EBBfEt8VnObu9Ggk2V8e7DyWw+B1O+8j6TWHfFLJP7xtdnFhqNplb5KzAs9cI7uwZYhos6Emfk4ys8akDDLcpoR7cXMK6Uye7YEZmr9WVlapEsPHogRNjFe9xvoZ0aWuzpBpf1zd6fFkv+D0lpoFQ1ezwiDZ5rQ2uP67kJh01EUSWYIkIVMzivA6ha8Ne8Pp8CWXP6c/NPZ9QUQpPlpqqb3a/MqoVSEyDrSd5454uSiC2zMoCnHcQmTTD0v0hWESzax9UgGd3b/qJak/hAqAQoigmUT0uoovdHSwmloWzmw8jZMDiAPAK+Vv7nnWSJFfvofGoX6MP0q4/C2Axgf3m5FMNDqtXjrQ9Lj5cNdhY9EyjE3OvnhBH3zl960OUAeliDcRz7LrJ6CPUIw7xb7fStqu7yDKm3NyQeCAeL8XlVuiBsFLaIRtpb9w4T7OU+RTHefvN+UriHcbyU9+ac3soQe+7aRYwmfPDtpWkNy/QLjUBP3JY1v/Dji9Cp9BBfXpS62ld9w1vK95DJ6CL8pMQ+bX9Uf3+uIXiJ0nppd/Xkybf4bPsNn5pH+KBV/5mbKzMzBwRAQhOjR1kvwjekJ7x9OP6m4fB58sZzeeH00GnoQZrt00VFyqOyGo3lokJy2AHhZxKfXsH0+tUF71PqJTNgs3QKX2/MZbfm0CcHt86uzY6O0X/RzzpCaFhrIENsxJTAVeo2QJC7ohdu1M1G0/Pf2Cojb/ZLIKamVUuXmuTgymdljEva5XKw4dcD9/qDJB4sysf4HfxKHarDVMQ7lUqU/tnBVNrT8qEuRZbJt5a8llNTUkAe/NW6ps
+ rAnN/vfQ
+ 4lJQZ+qneN7QHzo+1MCwzD0hws9HNNZXVC6uDltGEnY4eyg7Ly+hB0dpwLk4K7HNLOPNqIjXQ5HAxCsPawVbKm2ID9IkFEyr1yEfV+BUnUl0o3GmNE6wnzjd8FkKvBJUGm/AQXKa2VqEQc3uPz6OOG612MF0ce18cO6p8R4tSJsIPS54UCl0Q3CXHQsGLRG0ZMcnOlWE26bBLj9p9+oL4MfpgOZgtd6NIRHwF/r/McBOu5cHwMabWI4VbRZVJFNh8oFZVKpZ/Qa5gwQUlw0ugQXpDsIiQDZioLVQxoAMACz7fMJvjOXMDl08/VF0UOKo2iZd9VyyRBp3OOFNfgoGBbIrIK0DISkLL2/1rKybPAl0kDr9zJHegpg5P79aZ22HUgtkp2kj2hZuux6ZG077rhbRMf5bEODLULQIe6OUEVOYjxbM5zE/GplVCmWISCFLpZqYYLhT+EBGQgmugeNAbWuj5yfTA8I6Qp0SvGa0ZD3G661UJBTVcDHl0lJHtkSFhaZ/ZKnSTygSJyGLT4HKSY+m6NDS4AJaPEAI+LAkR3sx7sMFxgQ8Wx7eLeWNqT4ndUCaXBO4R5YfgSzDvgQ1IkXrztiWjyV4fl1MAJAapKtY2dQ0zt9qmuVwKmP+QBIuusB4f1lH6XSlCkqgCYKxGyu0tj4eoWSlmZgPnxpma2ZVHUvxvfCOER4dEoyHELek1SwBS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,38 +99,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 13 Mar 2026 19:56:01 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
+On Wed, 11 Mar 2026 18:54:26 +0800 Jianhui Zhou <jianhuizzzzz@gmail.com> wrote:
 
+> On Tue, Mar 10, 2026 at 12:47:07PM -0700, jane.chu@oracle.com wrote:
+> > Just wondering whether making the shift explicit here instead of
+> > introducing another hugetlb helper might be sufficient?
 > >
-> > Because right now it reads as if it would be returning a bool.
-> >
-> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> >
-> Thanks for the review. I'll rename it to
-> "check_uffd_wp_feature_supported()" in the next version.
+> >      idx >>= huge_page_order(hstate_vma(vma));
+> 
+> That would work for hugetlb VMAs since both (address - vm_start) and
+> vm_pgoff are guaranteed to be huge page aligned. However, David
+> suggested introducing hugetlb_linear_page_index() to provide a cleaner
+> API that mirrors linear_page_index(), so I kept this approach.
+> 
 
-There was no next version.  I added this:
+Thanks.
 
---- a/tools/testing/selftests/mm/uffd-wp-mremap.c~selftests-mm-skip-uffd-wp-mremap-if-uffd-write-protect-is-unsupported-fix
-+++ a/tools/testing/selftests/mm/uffd-wp-mremap.c
-@@ -19,7 +19,7 @@ static size_t thpsizes[20];
- static int nr_hugetlbsizes;
- static size_t hugetlbsizes[10];
+Would anyone like to review this cc:stable patch for us?
+
+
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Subject: mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Date: Tue, 10 Mar 2026 19:05:26 +0800
+
+In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
+returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+expects the index in huge page units.  This mismatch means that different
+addresses within the same huge page can produce different hash values,
+leading to the use of different mutexes for the same huge page.  This can
+cause races between faulting threads, which can corrupt the reservation
+map and trigger the BUG_ON in resv_map_release().
+
+Fix this by introducing hugetlb_linear_page_index(), which returns the
+page index in huge page granularity, and using it in place of
+linear_page_index().
+
+Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
+Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: JonasZhou <JonasZhou@zhaoxin.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/hugetlb.h |   17 +++++++++++++++++
+ mm/userfaultfd.c        |    2 +-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+--- a/include/linux/hugetlb.h~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/include/linux/hugetlb.h
+@@ -796,6 +796,23 @@ static inline unsigned huge_page_shift(s
+ 	return h->order + PAGE_SHIFT;
+ }
  
--static void uffd_wp_feature_supported(void)
-+static void check_uffd_wp_feature_supported(void)
++/**
++ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
++ *				 page size granularity.
++ * @vma: the hugetlb VMA
++ * @address: the virtual address within the VMA
++ *
++ * Return: the page offset within the mapping in huge page units.
++ */
++static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
++		unsigned long address)
++{
++	struct hstate *h = hstate_vma(vma);
++
++	return ((address - vma->vm_start) >> huge_page_shift(h)) +
++		(vma->vm_pgoff >> huge_page_order(h));
++}
++
+ static inline bool order_is_gigantic(unsigned int order)
  {
- 	uint64_t features;
- 
-@@ -347,7 +347,7 @@ int main(int argc, char **argv)
- 	struct thp_settings settings;
- 	int i, j, plan = 0;
- 
--	uffd_wp_feature_supported();
-+	check_uffd_wp_feature_supported();
- 
- 	pagesize = getpagesize();
- 	nr_thpsizes = detect_thp_sizes(thpsizes, ARRAY_SIZE(thpsizes));
+ 	return order > MAX_PAGE_ORDER;
+--- a/mm/userfaultfd.c~mm-userfaultfd-fix-hugetlb-fault-mutex-hash-calculation
++++ a/mm/userfaultfd.c
+@@ -573,7 +573,7 @@ retry:
+ 		 * in the case of shared pmds.  fault mutex prevents
+ 		 * races with other faulting threads.
+ 		 */
+-		idx = linear_page_index(dst_vma, dst_addr);
++		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
+ 		mapping = dst_vma->vm_file->f_mapping;
+ 		hash = hugetlb_fault_mutex_hash(mapping, idx);
+ 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
 _
 
 
