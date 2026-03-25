@@ -4,144 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C203109C030
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC99A109C02F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E1C06B0089; Wed, 25 Mar 2026 10:57:31 -0400 (EDT)
+	id 1CC5B6B0099; Wed, 25 Mar 2026 10:57:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B9BA6B0099; Wed, 25 Mar 2026 10:57:31 -0400 (EDT)
+	id 1A4026B009B; Wed, 25 Mar 2026 10:57:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D0486B009B; Wed, 25 Mar 2026 10:57:31 -0400 (EDT)
+	id 0E17B6B009D; Wed, 25 Mar 2026 10:57:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FA796B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:57:31 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2334A5B94E
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:57:31 +0000 (UTC)
-X-FDA: 84584889102.11.E4A3460
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DCA6D1C0002
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:57:28 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z0X0CLof;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXLtH7DF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z0X0CLof;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXLtH7DF;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 020196B0099
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:57:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5066140996
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:57:52 +0000 (UTC)
+X-FDA: 84584889984.04.0503170
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0D42910000B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:57:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hEOslwJi;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774450649;
+	s=arc-20220608; t=1774450670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
-	b=5YAJCfyyjxcSx5i/v7HmaM2TgCqjHElu+hZPpo9J0EVLZapnm/eBAx8cXot+C66S18fEim
-	W3D9bWhcyD3E3NGsEOUWvW+rVEQ3iboL5yrs0DVYmvz6Ter3V2VKfNTlGSr0txbrNSUxmQ
-	TNaprSyyl2qrVPzsDKZPP2eQlYYRD8k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450649; a=rsa-sha256;
-	cv=none;
-	b=2aFuFHOcNiAtXy+oeXVtOet31Phi6fKhXCiK1of43sUcoM6nSJ9PWr205Lc9IYJVyX6YNv
-	E414hgW6miM0+DL0O253TWXgpqa4j5vzjPDUFJzM8NiTPGSEqIr6lihpe0B5fuDdjwXc4S
-	A6qwc8ETxDm4LKQiBW1IApvYdbSbJ7Q=
+	bh=Jo6d5vnD/b2Oupj3N4fRtQBbwRt1fICWyQgHTAqlgtY=;
+	b=I8sLBVF9bWTgyOdTnoOizxvHUKLy3P2lVRey7LXEpRIPPkCAncaQx6X7Fa/3dDXNOt4tKG
+	lTclAcbwZBz58m0uKP2slyR6T/PBy8zBAQodRvhMe0keYmYB8ffko40ryDle8Nly/Jo89U
+	oj7UWuuRBgd1z6DH8+eDFfrcM7q/two=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z0X0CLof;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXLtH7DF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z0X0CLof;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXLtH7DF;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 69CF44D247;
-	Wed, 25 Mar 2026 14:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774450647; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
-	b=Z0X0CLofVTVeW9Uy5z61QcbE0hv2Mx0SSfcQwg9dLcSDgPk6W38Ah0+h7hQEKiH6UB3Bxo
-	3U+NJQF5wTPtYdvt3cLUCXKd0DXwvdMqOcKT1bbuavgUJED1ONu3jhMVCi4DbuhTiapmeG
-	QB4/WKUudqPIpKmXBpExPhD5Amfd5IQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774450647;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
-	b=GXLtH7DFDEli9jy70jmcgm6qgJltNATHWPDFjxipYjbSjh1gVBm0R2nEyXGIdoaeZj6f41
-	l/pqruwQ3HZvRIDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774450647; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
-	b=Z0X0CLofVTVeW9Uy5z61QcbE0hv2Mx0SSfcQwg9dLcSDgPk6W38Ah0+h7hQEKiH6UB3Bxo
-	3U+NJQF5wTPtYdvt3cLUCXKd0DXwvdMqOcKT1bbuavgUJED1ONu3jhMVCi4DbuhTiapmeG
-	QB4/WKUudqPIpKmXBpExPhD5Amfd5IQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774450647;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
-	b=GXLtH7DFDEli9jy70jmcgm6qgJltNATHWPDFjxipYjbSjh1gVBm0R2nEyXGIdoaeZj6f41
-	l/pqruwQ3HZvRIDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B409E44464;
-	Wed, 25 Mar 2026 14:57:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3imQKNT3w2lcZQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 25 Mar 2026 14:57:24 +0000
-Date: Wed, 25 Mar 2026 14:57:22 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
-	Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, 
-	Chunhai Guo <guochunhai@vivo.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Tony Luck <tony.luck@intel.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
-	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>, 
-	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
-	Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 4/6] mm: reintroduce vma_flags_test() as a singular flag
- test
-Message-ID: <palfy4jm7iifa44hjkku4ljlwy6mkvyoq5q2v7a2dilb7fpzui@v54cr4xnd443>
-References: <cover.1772704455.git.ljs@kernel.org>
- <f33f8d7f16c3f3d286a1dc2cba12c23683073134.1772704455.git.ljs@kernel.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hEOslwJi;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450670; a=rsa-sha256;
+	cv=none;
+	b=8Upribfoabi3h/eyHMyrXzvxqodXXX4dsqAqvMf16nlUn6kKl8Mbkzk1F3UYNKhA7zEeub
+	OHhPEGMK9XXZMArRBuDtN3vmtGQYzxuTy3vGP77mo426L2Ey7NBdL/LWGzAO1gK9XfcddX
+	h2YzI7SUnqMY+gK+ZsM58Mp2pQ0YC7c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 63362600C4;
+	Wed, 25 Mar 2026 14:57:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BEEC4CEF7;
+	Wed, 25 Mar 2026 14:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774450669;
+	bh=4GSx9AFpoG65jD6G5Qw9iA42wbY1V+x5tjlC4TYn/Pk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hEOslwJi/G72R/9cw2jvefeEooIwtA/tWDtu94soIPyrp6E4GtJSyOMD5vo434/sl
+	 GAuipYBrAJNnlziQrYKt56w1kyGFaVSEbp266M5ujvSGmBqoMp9cqN17EAWB0T9T74
+	 zuyNP82UYB7syRO78z1WbrF65un0PRV7mdXC5ICsZWOXtFKafTzBIclqx3B3oU47s9
+	 aNw+3EXcSeag0D+xIRs+Kl2vFl063Lo7uMntSbwq5SZwDQRtGFYyDcSAc8Djv33VA6
+	 jsABWtSQB9+C09XVxTfIACinDKoDhdKNxYDnHnTI7/Rm00CUkwh0HC7tC7buunMfQ7
+	 1DnR9TdoKXJsw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Josh Law <objecting@objecting.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: (sashiko review) [PATCH] mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
+Date: Wed, 25 Mar 2026 07:57:47 -0700
+Message-ID: <20260325145747.88132-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260325011653.85502-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f33f8d7f16c3f3d286a1dc2cba12c23683073134.1772704455.git.ljs@kernel.org>
-X-Rspamd-Queue-Id: DCA6D1C0002
-X-Stat-Signature: m7npw7pqmc5qqmnwks4ibf9cn45hfauq
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0D42910000B
+X-Stat-Signature: ijukbi5jes7u4jk19h8qwzcf78xxu3ha
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774450648-502245
-X-HE-Meta: U2FsdGVkX1/6nknpoZvDRsx1PU/RvNc4+dS9ACRgYrw7iQVJvjQ+7vWcjd8S4B1ZSDV1s8cerS3uG/jGJZjBxHtyqSu1tCr9j10iudsSJAWmhhzSfuWo7pvR1wjX46ITmIi+eHdykFqJuDiEW72WXqmL8ZBhffn8I75CpExeMBJcJLegg8g/HQ16BnPKdPEhyHIZWRln/tRHfETtwAI0u5i7c0KsNDbZVWJu3HYixHDOtzQf31hNjvfjUPccEFRkdSVxihs/RB4TypbWdcMMOBIItxX9FOSFNAsn09ZlLGs6gIES4odp7XoBMmnuIQa3b2bzLg6eNaOWcGOKvnBtBPPiYXwIswQSkCtcRCQ1FJTO2DXJMOYzMB6Y9uVrUAEf4j0S2mBKG3+2lGZIzpVeawx9JDQ6u5D+JY5z4Hcm2kfSpr0sqtb9SQwhBM+ywVWd60YStDM1LOKGUUHtYpQFhdME+9WkZJLkbowfP3k+LUCKN6YhteL9ILCTD9pURoncXFJB4Mm87PznbqWTS3/S8yqLUwIZtzZRrPH5PpRev7UO5utRCquJnSrS4UH/4QQL2r4ZgisbK8Y5zku/xN9iq8FFX33iZfJBQYeLJHgYVFNRiE8hdaASvzeLFw/Iyn8wgH5ZaaRiCtJbz+IY20p1UJ6JtajS7EkvY8zJjaUpFWjh2WBzQLbm31cuHUGIykZHHOSDIcuW3xxTbWqTuA5SuCio7XwX6cIxFLjwBXc59meHv2kkWKwUWG3x+zlMt8mfDRjHRbwz545jAAvHN+5hReu2kdxncmXbuy4nF7UAGmcr5ICpIYLTjr2GL2NNzR+jcz0LELxTFhirIz0cpEWUS7hjSC8GGr1jlgyFOPmz07EZG1NX8l7AG9yfU83d1IHm5gt104GaqRklO3UNRYxzAIJPtX8PSYmJMksqiFyTzxjGDWBdBOctOuabQhQbiO/1vkFyMri0+K5WBcj89h2
- kjCLZYaT
- bmIZETRtwBj6l/FAXLhI/jwZZzLIggP/SQMZwN8YhZBu8LYnoRHii/J6cpkhBkm5oLXZ1fGbSDnb7+exfpF8Mmhm4dD+rlqFQ80I+pq+Mo3G7BQC3/xU05To5jcr2z0oiHlN5f2AsChGwqnm01yGmts5bWU4uS3O3T+Ybyef8sVSv3/utsJ7jMjIeFKTRyCkZmrxU+4h4lkWd/DrsUz5Lr0RT5WwdQfj8GmI+92qN9aSE0+10YhRDwTVFI/4R3hg1fXw/ylxqsUSlUIMhUlu9ucZw7kygLENquQUd51CfYaJF9ZnvGmOrrwTkFw4g0RKoXXWkyqWtLCn0ndraSjHDgB1etuqjHs9j6bVl/Eqsf/spisVKqqNBsvCCoQ==
+X-HE-Tag: 1774450669-236359
+X-HE-Meta: U2FsdGVkX18/jvaJFZGDlaIRRydEyE5GBIoS+xbAwgDVrrExOUnbIOlfcY7jGI4tE7eKScQoKQi3hJjAGMdFaOYLKmVyYhBUUDzcuG318CG7XSCgZ1gjDP1/lYPE1AO6Fy9r8JivcGk3eRBUEIm5nkJOoi2CfQGLL7we+5D0kBjA9/fK3JdEtilK2aIlYVTfhLRV184Bzn9r54KXCwC0ELOiE9JgFDdOJykdwGyoKlXcLB7fKHmGBjL/lvZ1fmYVdBv4PSYXqAUvR9Oxz/ekprbgqtgg5+OSV+GfOfg4TFNRGclJ17lH7HgRHm2qZhC6B6XC8+z95LOKR70Hx+EEY2Zy6eTIdUhJDGK9BRumPx5vQzj61pRxeZHAQASxSCI6ZsyBaatDEGlXaLVioEYCEA4cBUsL5FMaafxIci5ynM/HE+XWcoR/zgMCwZxUw6FFk2vM1xARMx5AbYaGQjgwDm3ie6VURUxFJWLV47D4JLf289PlMkrrzA+dtwSkLrk+gcKJvt5rCMRikoexwAaz9VHR31b+oZ3S7l2jZVjnjvkjg5GHVTMau1qQFY3dRe3Z3+7norw7wybsC1Kn83BO7qt72IALDq+SJ7fC3Fn/K8vON/AjFhnRLLS9haUJ9dPw8nW1O/K6Sv3OtqYzXZI0bHtaLWwOQZhKc7pX4H34ZIem95hy9bfMmf5pQDT1UoDi+D7Fp+3eJt3h5H5DtQIm4EZOrA5/rLaIV3Ro7Kd1+3vfDMM/vQMsZixKAdeija81eMU7WTuru8SZt0rkq9T1pxrBG2NabFNgSG+Wr62p1j8SjWcC6wt+AhJLw/Rjl7hqMCGibhmT2af40HC1XSl0cwyeaoUvqh247bWuiXasy5/ecQpq1uG9hvQ3bPVYOohesWCosdjT9NMikaG/ItgXBCkrA3ONg8pwWmsc8PF3GkAmgMvL4LpfgDiAum0aXTTce4vNhnfZys927YF/COd
+ 0q9T4a9v
+ +TdHDN6tGBPyAy/a+mQoDcBR/RcgxbI1GrOZc+rtHB9mNM4Lo0Z29HIU/LDONTqh4HPOvkelgzfYEXFCLUIXGPB0yQ4ajszfNwvlFz3Kk/1jter/SFVsM0aMbX1MQqOEO8t1AG50NlJuKi90BbsQj7BGwzcIV6lvBkGr08rvtCx/GxmjbnlJhMEj1QknJ46KbS13wRuRKf3/oBV4JRPDbpR1Qj7CoE/nbOXgxyqwCglVQ954dNACf8T+6HQnQ4BiemHI3wVwUkQYKtOEb7UxJT65i5igvmCkGHRXaGiVD/aK8zHCgg2Vk1SGRhrm/nxvyuVV3wJaSpp9tvACsSOnEfNVDzWugXNMbo0icGUqo6vSzOzdFswysYSRvxF5G6Jg7eTmthSufw+q7xqo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,31 +93,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 10:50:17AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> Since we've now renamed vma_flags_test() to vma_flags_test_any() to be very
-> clear as to what we are in fact testing, we now have the opportunity to
-> bring vma_flags_test() back, but for explicitly testing a single VMA flag.
-> 
-> This is useful, as often flag tests are against a single flag, and
-> vma_flags_test_any(flags, VMA_READ_BIT) reads oddly and potentially causes
-> confusion.
-> 
-> We use sparse to enforce that users won't accidentally pass vm_flags_t to
-> this function without it being flagged so this should make it harder to get
-> this wrong.
-> 
-> Of course, passing vma_flags_t to the function is impossible, as it is a
-> struct.
-> 
-> Also update the VMA tests to reflect this change.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Tue, 24 Mar 2026 18:16:52 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Forwarding Sashiko review for doing discussions via mails.
+> 
+> # review url: https://sashiko.dev/#/patchset/20260324154005.83651-1-objecting@objecting.org
+> # start of sashiko.dev inline review
+> commit ff5e227a18cd69435749b0aae0dc2c762c4f0a47
+> Author: Josh Law <objecting@objecting.org>
+> 
+> mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
+>     
+> Hardware integer division is slow. The function damon_max_nr_accesses(),
+> which is called very frequently, performs an integer division.
+> However, the struct damon_attrs already caches this exact ratio in the
+> internal field aggr_samples. We can eliminate the hardware division in
+> the hot path by simply returning aggr_samples.
+> 
+> > diff --git a/include/linux/damon.h b/include/linux/damon.h
+> > index d9a3babbafc1..04c8a052fcfb 100644
+> > --- a/include/linux/damon.h
+> > +++ b/include/linux/damon.h
+> > @@ -978,8 +978,7 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
+> >  static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
+> >  {
+> >  	/* {aggr,sample}_interval are unsigned long, hence could overflow */
+> > -	return min(attrs->aggr_interval / attrs->sample_interval,
+> > -			(unsigned long)UINT_MAX);
+> > +	return min_t(unsigned long, attrs->aggr_samples, UINT_MAX);
+> >  }
+> 
+> If an administrator dynamically updates aggr_interval via sysfs and commits
+> the inputs, will attrs->aggr_samples be correctly recalculated?
+> 
+> If aggr_samples becomes stale, kdamond_fn() will compute the real aggregation
+> loop count and allow r->nr_accesses to increment up to the new bounds (for
+> example, 80 loops). Meanwhile, damon_max_nr_accesses() will return the
+> stale aggr_samples cache (for example, 20).
+> 
+> When evaluating schemes, damon_hot_score() normalizes r->nr_accesses against
+> this stale maximum, producing a freq_subscore that severely exceeds
+> DAMON_MAX_SUBSCORE. This causes the calculated hotness to exceed
+> DAMOS_MAX_SCORE.
+> 
+> For DAMOS_PAGEOUT actions used by damon_reclaim, damon_cold_score() returns
+> DAMOS_MAX_SCORE - hotness, yielding a highly negative score.
+> 
+> Could this negative score cause an out-of-bounds write on the
+> kernel heap when used as an array index?
+> 
+> mm/damon/core.c:damos_walk() {
+>     ...
+>     c->regions_score_histogram[score] += damon_sz_region(r);
+>     ...
+> }
 
-This is a lot nicer, though I am wondering if there is any difference in
-codegen as well...
+I didn't take deep look here, but sounds like true.  I also had similar
+concern.
 
--- 
-Pedro
+But this takes too much time for the small optimization, so I suggested another
+direction.  So I will not take more time on this sashiko comment.
+
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index db6c67e52d2b..afb058f7da5c 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -587,6 +587,7 @@ struct damon_ctx *damon_new_ctx(void)
+> >  	ctx->attrs.sample_interval = 5 * 1000;
+> >  	ctx->attrs.aggr_interval = 100 * 1000;
+> >  	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
+> > +	ctx->attrs.aggr_samples = 20;
+> 
+> Since this value is cached here, but not updated when intervals change, does
+> it remain permanently stale during dynamic updates?
+
+Ditto.
+
+
+Thanks,
+SJ
+
+[...]
 
