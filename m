@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 971111075269
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 01:17:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A95611075269
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 01:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EABC76B0088; Tue, 24 Mar 2026 21:17:04 -0400 (EDT)
+	id 89C696B0088; Tue, 24 Mar 2026 21:24:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5CB66B0089; Tue, 24 Mar 2026 21:17:04 -0400 (EDT)
+	id 84D296B0089; Tue, 24 Mar 2026 21:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D63286B008A; Tue, 24 Mar 2026 21:17:04 -0400 (EDT)
+	id 762F26B008A; Tue, 24 Mar 2026 21:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C0D776B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:17:04 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40D431A0636
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:17:04 +0000 (UTC)
-X-FDA: 84582821568.02.92C4F3C
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 65AB96B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:24:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0962D1A05CB
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:24:28 +0000 (UTC)
+X-FDA: 84582840216.14.0F0D5ED
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 92CE340005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:17:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDebcREA;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6E7C1140005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:24:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g5/PSVdV";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774401422; a=rsa-sha256;
-	cv=none;
-	b=Y7wAh9On3AYpTckSMD79/G60u1z0zDZKbu4lLZMQL1fpX8mtNSmrgtUfCJr2qODl3oEAfm
-	+ohm7dxCkHg9aKPqFT901nzqTATaTrPl8v6R5eI2EK/Ihnc0LjOzTbUMZb5MkR0lKQTIg8
-	wW8lvlZzSNu8PEdRbrMgk7Pf2w02UqQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDebcREA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774401422;
+	s=arc-20220608; t=1774401866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=03B0rml+cB29N+qWQ2mM+0XMhuqXGxDqpi6OBTff/X8=;
-	b=CPM1ysEfUlMRS0kGJPFBmbiJmkljoNfD+ncyJNz7HTqh/7igkTAL6F+7msrfcOuzS8LP5g
-	TvPEt+U5+ZcU7Fhat0GFGO/ur+X6YU6vvleHHCPE4pPzMs0elOVxPMaKqJej0roM08RNbF
-	3aDBiQfP3NK4+7tQQkEsRo04BxZi9W4=
+	bh=vqa2bWddDU6XV8CM4CDB7LCD3kZXcGd/DfbHcejua3Y=;
+	b=YTadCpuZD3GF2SzAxDeUvkEvNKiKwXitpAa5GS1eHPukHY9jpoFzSWROzP8kRPx+eaZhCw
+	T+El/6OLFNTI9sCG3S+r/1b6+7pYmFSFmBJoe2y9iKOWKYNq0Vlw7N4CTc7zvt2Jxu3W2g
+	nhqM1cTCzAj6UKqT6LZcphjxf0s6IM4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774401866; a=rsa-sha256;
+	cv=none;
+	b=puQyqiIrM0XMpprtQKkgGUFifnr+FPbbFmoKz5eeZIhPgsE591SNELFo5KbZ8f5b90CYWh
+	Y+EdyrQ2eXIO+EG+UuC/9aGfRNf0p7lFQKdz0imTrgVCGRRK+wZgO+qO5s99OQP86s9bCm
+	KNQ7AfUDHkpaquo+OhnpsxX2w2GNucc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g5/PSVdV";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F0CC9600AC;
-	Wed, 25 Mar 2026 01:17:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD2CC19424;
-	Wed, 25 Mar 2026 01:17:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ABA5E600AC;
+	Wed, 25 Mar 2026 01:24:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD33C19424;
+	Wed, 25 Mar 2026 01:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774401421;
-	bh=nbpn1HlNS+cTXXOL5D8pJ35n5ChNxTXKV92YCz9TAoU=;
+	s=k20201202; t=1774401865;
+	bh=HmYsbKwFs4P5opJoMQMaxNmUmh60o8lPuHPw/FnXv3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDebcREAm/zGVG4vNA/rTt/xIPC1Jn6idgfjKVKuop5NLhgbCt/C+Vu+dz2smYnGM
-	 nCJnd4KBuiHOsNY2ugsIlopjvgIEdwcYdPzi4RYgF5tx82MO+TF6VzKORgv8INEYn3
-	 eUkWkIAm1X9845uVt/Yay+0AKqdT9ClNfMXuQxIKpumvRa+QU/Hr1wc/O4J+HD34De
-	 sWarPv8f6bXsBY/BWzAi1mTWH0uY5XcZe8nw/KK3uAQp3rcCAsQO6Set1cI7z05M73
-	 Y+Tdb8PqNDLYsjllOr5GnL1DZTQk7eO6n8xifCDk8xMqjx+7qXQ+lfvqA+ibyAmwpd
-	 7Lgg9nETqZvrw==
+	b=g5/PSVdVo9XAywDdtLl+uLMNuZalgJhlZk9qbPWvpmrnQ0fxSIPK/jUiMm4jZ16M2
+	 gQRW3NewP3ajzbI8wXcRzQXiisY4+A9S2QJnfwe4V/OphKcnLt1NLuBQAMI8soaZK5
+	 aBpVVerB8tA7HXy+scQNFno3GWDF+JkIIYlaWFDOcfoI9yjS2cKosJ/+XBSeRreDkR
+	 4CpO0APDkQfaf8ku9KvXYTqhtmJU9ozUJQ4EPAFtxE0kV5m8pGVOz0deG6OBe9CEHM
+	 PXyVFFA7ujEkA6+eVpRkjq/diAx3ppU/L6RzJZNPCpyF1mDXT+w+Ue7fjG9p6DwOco
+	 JTxtrT0Jik7UQ==
 From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (sashiko review) [PATCH] mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
-Date: Tue, 24 Mar 2026 18:16:52 -0700
-Message-ID: <20260325011653.85502-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com,
+	kernel@gpiccoli.net,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v4 2/2] mm/memblock: Add reserve_mem debugfs info
+Date: Tue, 24 Mar 2026 18:24:23 -0700
+Message-ID: <20260325012423.85658-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260324154005.83651-1-objecting@objecting.org>
+In-Reply-To: <20260324012839.1991765-2-gpiccoli@igalia.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bp7ps3x8u757zu1ytb919od38yod9q3p
-X-Rspamd-Queue-Id: 92CE340005
+X-Rspamd-Queue-Id: 6E7C1140005
+X-Stat-Signature: zj9yrqu5tgr1eaofrqxarzdbck78gjyk
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774401422-908215
-X-HE-Meta: U2FsdGVkX189ba77/7JUXafY+LBgOOzIgBBqjmoVwsFpkNpZmusOMSYjCD26eRJJUvxv9X0TRAohJaQT/q4ULfZ26jD9B297ERbSwmqbE5qT6zlpF3HDTyRkk3grqXKo+hgR5UI6gMZi4FYVnuQDSuO1RGlU/rbHnKglf1VIu7mMAstJ1IoAFNmptyuM9/lVvojbJMPazWoFG4AbKEs+QL9Q/WbF9/Kn4KDSNeGbCi6rbJIl8YtEYXPEsZMOfKaYd4ZTeRM1eMPjOnxESfT20qdWAnKIVa+tT8bevi5lZ1N5zDK7S/8amav5h/le8rHP2fqa8TitHKrSUXJ5YYIKz04PQv1oX4+XRONmgXdrC3sQL/aisncrY1O7y4b4XjUBolWfywP3jxXOElx2UdRsdB+/gv+NUAKsa3Sufssp4f1ite3B2tkedAoYRAOnrOF5D1n/e3or6Z3e1AijBFjnp9XXybV7OfMwBBPQnPZ1izDpl7WManDtEOywSwV27kTQ5RaRtGPido0mi4z0D5IOWlNbuApqlwHqly3sWMSytPpBMrovyChhN1kQtN4mKFX6IFCIBBkeFR4XjUlYUPNdoK6+reOuIdYwBaID0iL0+Mf0z+WMHxDch9nqjUJKmnzPjiJi6piLyvMTbBIcpayBOpG6vViyc0IqIyl8Po8gXuBwjE/cgQWHcoHSuk6AEfK0k/ni3QLu+zDkSEZloMAMO7sksQo90xURt06Wa+s6xCeiwsv6yhzrT+CDawqzv0qg+BNKnd/OCKKvpJa8lJlExu4FyMIpLUtwTq8qcB77NRtV0P6fFPjIg9IwsNXDozkVIZxIyZ3FphcVxdgZL4nr0aIptEYpimNSxZfIalDmZ6DPY6Xj7+51MwYenqe3ydHe3pCI9p6LgynOOn3naf6hmhqjUAEqXhVmWFu0sZDiXt0afI+6NdEL5nybILA8U7uh5214Kyv2on2AxLUS2ZJ
- zdfPpWUm
- 037A9mm+6JwOcJtp41wv1SDHAhLAGEudlpbKTbt+2rOlHA3ANk54foZ6++vl09I13oKnhtYM3f4rgUQmb3C35LrAKDoOUuWol4mlMfWTCaQfiqDxBxCSAcbzks1BBjtPADx1EU2QxGQxj/1hX+KX4D6X/4KmOyXXAfy1himG2/xq8pE6ciEOP4jy44g+FHM8yb69BWeI6JBPaYVTm2apikMnojkSCredoIAt2bsJ6g5LmzCo+d0WCc9QEqrs2S8gZDrio5NjvE5BADVP4b8hy/wT1aIi4aTSUT4L80nV+XVcs9iFHp05F+3zxyXsuvXx3OlyVqnJwF1mcb2NiRvK664wNKc6FG6JIyLrSUbcotuD0ZgpGCc8Hs82+6ZwnjB0Bp9aEkMqHiTKOKes=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774401866-636810
+X-HE-Meta: U2FsdGVkX18gPaAK4aIbFP473ux0Wy/Fw+lik9RToo06LHGxLRevYiy9k24t66K63Is3CTLVtpisd3mqf3aeXV8wHwAZndsYRjQlu1N159cVDHddPWOEYB08M53knsbFYUWaSRU1LF169MlbH+ffxzfT5Uw4zEDIoEEnw+DIcT1qZTuNsb8oZ27pfR1n4T9fJL8txWQwlle2Dp1taXwx0EutGLUxMTXN9r15iRTZscqwzw3B1ZLT5hI1Tk8tnSmg/C4C/QL+F992I56l8qKLP8HyyE215UNV5F1skQ20uaZwSOHNwukxwhAzHQfN0SeQvcrXBeiixOB8N2TdlP0Qsh2fuUOHJ0LS0HXKWmrVUlCGw1NyNN3ANCuEAObKtDW5rUS6lm0ZZ2eSpkk8BhPXosF/15kz9DuRfAzPqcHZZhD3689yrneMy7/+t1YD1xqjzOKiCuWgS8R6G31uBoFQ9sNSqH5CQM1Qym0guZBbiLLRo2M4XhFLwUJZO2yxWRz74QKCRpVbHQmoDQwzTEGDs57i4jjnf1k8r0mu0bjE2HE52GWPhA16UsIwn+wz0gdJgCtwkrVEzf45pzqs+zaEtisUHXp9rdhpPts1LDgWnzo6sf3CbCbsVTC8ke9NuoieZXqJP2BEfM0ASjqU6gmBc1ef0tZE29SkdRNoqkNYwhqMQdP6qxcW7JBunj1a6F45vUg1M1BIyJXHlFidVmpZxiLFdnLP5E12plPvH4MfUyORPU8j9VEbFsnre9gjNVFdbMMCV6n06C6xOwMWAk8FzGunLsXdEay9zsLF+wQZewU29Xm7r+RZ3ZOqerr0+2EQ8EQWq0MTIuCDQ43DATnsi3nCiPgFN+ADnBF7yYyWVzxhBW1KXI6gqtjbf4+T1PPZIQEDfSYCw90lkRF8CmE+C8rP3dlpoF5mHxjoCvGBDj6YkIAKYyZg54ha0U/F5y5JcWFZNou86od+mWSqCW7
+ 1lZ2QPpy
+ B/+He36290pnadz7GDPJwsOyQDge4okeXe6/J5ScIEwQ43qioIqOF8E7Orml3NHrMYz4Vpf42weAtROCRJIilqagdO0V4wuAGvfaVX6mtmOYZgOPKKTHf9rrO5DColjOT3xWXxwwXTPANypOHxH96onrnaP9q+Y2l8F8hyYIVWVeejweiQrTTeezxjDV4Pa7bwH1rvhIn0mY1APY+nvuTAowlGGmJYWj3eSt/SZee4vbo9OG3i4Fe2ePvcObNu7v7RW4yKO8yaj78eA3dlLjGxC3fuSW9PZm/O9wmx5FB44i1OVHMu+0iE0huRq6Bojukl58LJuthvE2+om5UWoSMrapWfaci0l/rjUoDpXFB7JkJW3aCRW1bblXjFybS52FM3s8GISWmEDni/ofs04UlU2odsXrTFDL5OYjP9fWcnTV86iVHCSc7x6qioDiD3NLJgvt4dfWRQ9QO/DbYnnAT/UnDMPnDej+qJuIy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,83 +96,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding Sashiko review for doing discussions via mails.
+On Mon, 23 Mar 2026 22:22:18 -0300 "Guilherme G. Piccoli" <gpiccoli@igalia.com> wrote:
 
-# review url: https://sashiko.dev/#/patchset/20260324154005.83651-1-objecting@objecting.org
-# start of sashiko.dev inline review
-commit ff5e227a18cd69435749b0aae0dc2c762c4f0a47
-Author: Josh Law <objecting@objecting.org>
+> When using the "reserve_mem" parameter, users aim at having an
+> area that (hopefully) persists across boots, so pstore infrastructure
+> (like ramoops module) can make use of that to save oops/ftrace logs,
+> for example.
+> 
+> There is no easy way to determine if this kernel parameter is properly
+> set though; the kernel doesn't show information about this memory in
+> memblock debugfs, neither in /proc/iomem nor dmesg. This is a relevant
+> information for tools like kdumpst[0], to determine if it's reliable
+> to use the reserved area as ramoops persistent storage; checking only
+> /proc/cmdline is not sufficient as it doesn't tell if the reservation
+> effectively succeeded or not.
+> 
+> Add here a new file under memblock debugfs showing properly set memory
+> reservations, with name and size as passed to "reserve_mem". Notice that
+> if no "reserve_mem=" is passed on command-line or if the reservation
+> attempts fail, the file is not created.
+> 
+> [0] https://aur.archlinux.org/packages/kdumpst
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
-    
-Hardware integer division is slow. The function damon_max_nr_accesses(),
-which is called very frequently, performs an integer division.
-However, the struct damon_attrs already caches this exact ratio in the
-internal field aggr_samples. We can eliminate the hardware division in
-the hot path by simply returning aggr_samples.
-
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index d9a3babbafc1..04c8a052fcfb 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -978,8 +978,7 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
->  static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
->  {
->  	/* {aggr,sample}_interval are unsigned long, hence could overflow */
-> -	return min(attrs->aggr_interval / attrs->sample_interval,
-> -			(unsigned long)UINT_MAX);
-> +	return min_t(unsigned long, attrs->aggr_samples, UINT_MAX);
->  }
-
-If an administrator dynamically updates aggr_interval via sysfs and commits
-the inputs, will attrs->aggr_samples be correctly recalculated?
-
-If aggr_samples becomes stale, kdamond_fn() will compute the real aggregation
-loop count and allow r->nr_accesses to increment up to the new bounds (for
-example, 80 loops). Meanwhile, damon_max_nr_accesses() will return the
-stale aggr_samples cache (for example, 20).
-
-When evaluating schemes, damon_hot_score() normalizes r->nr_accesses against
-this stale maximum, producing a freq_subscore that severely exceeds
-DAMON_MAX_SUBSCORE. This causes the calculated hotness to exceed
-DAMOS_MAX_SCORE.
-
-For DAMOS_PAGEOUT actions used by damon_reclaim, damon_cold_score() returns
-DAMOS_MAX_SCORE - hotness, yielding a highly negative score.
-
-Could this negative score cause an out-of-bounds write on the
-kernel heap when used as an array index?
-
-mm/damon/core.c:damos_walk() {
-    ...
-    c->regions_score_histogram[score] += damon_sz_region(r);
-    ...
-}
-
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index db6c67e52d2b..afb058f7da5c 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -587,6 +587,7 @@ struct damon_ctx *damon_new_ctx(void)
->  	ctx->attrs.sample_interval = 5 * 1000;
->  	ctx->attrs.aggr_interval = 100 * 1000;
->  	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
-> +	ctx->attrs.aggr_samples = 20;
-
-Since this value is cached here, but not updated when intervals change, does
-it remain permanently stale during dynamic updates?
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260324154005.83651-1-objecting@objecting.org
-#
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260324154005.83651-1-objecting@objecting.org
-#
-# [1] https://github.com/sjp38/hackermail
+Thanks,
+SJ
 
-Sent using hkml (https://github.com/sjp38/hackermail)
+[...]
 
