@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F2C8109C02D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:55:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C203109C030
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E992A6B0005; Wed, 25 Mar 2026 10:54:59 -0400 (EDT)
+	id 9E1C06B0089; Wed, 25 Mar 2026 10:57:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E712C6B0098; Wed, 25 Mar 2026 10:54:59 -0400 (EDT)
+	id 9B9BA6B0099; Wed, 25 Mar 2026 10:57:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D86C76B0099; Wed, 25 Mar 2026 10:54:59 -0400 (EDT)
+	id 8D0486B009B; Wed, 25 Mar 2026 10:57:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CCB3B6B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:54:59 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E038E0AA4
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:54:59 +0000 (UTC)
-X-FDA: 84584882718.02.3137B59
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FA796B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:57:31 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2334A5B94E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:57:31 +0000 (UTC)
+X-FDA: 84584889102.11.E4A3460
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7681E1C000B
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:54:57 +0000 (UTC)
+	by imf20.hostedemail.com (Postfix) with ESMTP id DCA6D1C0002
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:57:28 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kfjBhpkW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KxKmaq0G;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eslfnx7h;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bOKSc2s0;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450497; a=rsa-sha256;
-	cv=none;
-	b=JBe/6JspUgSS8S5G7pOVoz7c4sK6OO046rXmkCQD+/Vd9IHWgLQCBoGqN36IhNBqC4hb7q
-	jeq1kiLasAdtVcXTGmXjXNZwGCOK+Kk4see1hEVewUs7A2Z7aa5wNFwUP7IKij9v6jsnfl
-	4cZX+TNPxI16yjV7foDdgwVqF0GUILA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kfjBhpkW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KxKmaq0G;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eslfnx7h;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bOKSc2s0;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z0X0CLof;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXLtH7DF;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z0X0CLof;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXLtH7DF;
 	dmarc=pass (policy=none) header.from=suse.de;
 	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774450497;
+	s=arc-20220608; t=1774450649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D/wXjEuEJQTN4k0jag/OQOqiBqUpftxguZi3Bfxxazc=;
-	b=xewGptK0QKJeFKk2peOCkcB+BaYIWsCukgAJeVyF9SpXfGdEW+Td3fr3G1sArdEHeqnwqw
-	Fbk+ODGShXaqn6x0/UXKxusoBucUYut2g9V2FWCNsts9/HFqfBm78QvFJcO/oz/h+n1OgA
-	KJLUtx9SspiLivK7us1fhIZS2j6ZR7A=
+	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
+	b=5YAJCfyyjxcSx5i/v7HmaM2TgCqjHElu+hZPpo9J0EVLZapnm/eBAx8cXot+C66S18fEim
+	W3D9bWhcyD3E3NGsEOUWvW+rVEQ3iboL5yrs0DVYmvz6Ter3V2VKfNTlGSr0txbrNSUxmQ
+	TNaprSyyl2qrVPzsDKZPP2eQlYYRD8k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450649; a=rsa-sha256;
+	cv=none;
+	b=2aFuFHOcNiAtXy+oeXVtOet31Phi6fKhXCiK1of43sUcoM6nSJ9PWr205Lc9IYJVyX6YNv
+	E414hgW6miM0+DL0O253TWXgpqa4j5vzjPDUFJzM8NiTPGSEqIr6lihpe0B5fuDdjwXc4S
+	A6qwc8ETxDm4LKQiBW1IApvYdbSbJ7Q=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z0X0CLof;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXLtH7DF;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z0X0CLof;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXLtH7DF;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E2A964D244;
-	Wed, 25 Mar 2026 14:54:54 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 69CF44D247;
+	Wed, 25 Mar 2026 14:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774450495; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1774450647; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D/wXjEuEJQTN4k0jag/OQOqiBqUpftxguZi3Bfxxazc=;
-	b=kfjBhpkWS16JY8q2qhzrpMm8Qqcs2ZrtKS4zlJEvRrcKzCGUHSYFoBdcLJsmKv4hjTURyd
-	yd4A/VFS1ynIvUXSdfbN+WxSwj3zLyvx02En3KZUx/jYp4phNK6LAOI8yTXuWVz/Nltv20
-	hyTn2mpZxIoIAv6/6Rvb3UfWqNm23fM=
+	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
+	b=Z0X0CLofVTVeW9Uy5z61QcbE0hv2Mx0SSfcQwg9dLcSDgPk6W38Ah0+h7hQEKiH6UB3Bxo
+	3U+NJQF5wTPtYdvt3cLUCXKd0DXwvdMqOcKT1bbuavgUJED1ONu3jhMVCi4DbuhTiapmeG
+	QB4/WKUudqPIpKmXBpExPhD5Amfd5IQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774450495;
+	s=susede2_ed25519; t=1774450647;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D/wXjEuEJQTN4k0jag/OQOqiBqUpftxguZi3Bfxxazc=;
-	b=KxKmaq0GZ6SbmxU5yVYvT3J98IVPybrqCzJYC2RmzYb9aKP+qaSl9V6BjPBkq9CVdvc8UG
-	MmoaFM8Fl1XcZvBQ==
+	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
+	b=GXLtH7DFDEli9jy70jmcgm6qgJltNATHWPDFjxipYjbSjh1gVBm0R2nEyXGIdoaeZj6f41
+	l/pqruwQ3HZvRIDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774450494; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1774450647; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D/wXjEuEJQTN4k0jag/OQOqiBqUpftxguZi3Bfxxazc=;
-	b=eslfnx7hQIz+CqBMaKTHFfI4A5TaGYs6A9oOjOoC6EAoJqhv9gkRua4SGXrrlzy3kuKdzT
-	bzw+G48vIqIIz5lkBfsEk+Dd6ymbTjzXBQMGW1sbCTIV5CxReOHAtNecLZSpjk1qvgUfR9
-	nmZyWiv2dQf45miza5KfPMuQPZOpR3w=
+	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
+	b=Z0X0CLofVTVeW9Uy5z61QcbE0hv2Mx0SSfcQwg9dLcSDgPk6W38Ah0+h7hQEKiH6UB3Bxo
+	3U+NJQF5wTPtYdvt3cLUCXKd0DXwvdMqOcKT1bbuavgUJED1ONu3jhMVCi4DbuhTiapmeG
+	QB4/WKUudqPIpKmXBpExPhD5Amfd5IQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774450494;
+	s=susede2_ed25519; t=1774450647;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D/wXjEuEJQTN4k0jag/OQOqiBqUpftxguZi3Bfxxazc=;
-	b=bOKSc2s03svO8ZobkiDMrnkLqmSYPCdv3zFSNzJ05OB0u9gYR0s9JtEEpIiTbIKzp6ATVb
-	nBCfqs3dIyX5voCg==
+	bh=TDThzbfm4z51swQNpP/Sz73BBVvad0AbQ7d+bdgHlTI=;
+	b=GXLtH7DFDEli9jy70jmcgm6qgJltNATHWPDFjxipYjbSjh1gVBm0R2nEyXGIdoaeZj6f41
+	l/pqruwQ3HZvRIDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F61244462;
-	Wed, 25 Mar 2026 14:54:52 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B409E44464;
+	Wed, 25 Mar 2026 14:57:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id tAkWDDz3w2lQYwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 25 Mar 2026 14:54:52 +0000
-Date: Wed, 25 Mar 2026 14:54:50 +0000
+	id 3imQKNT3w2lcZQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 25 Mar 2026 14:57:24 +0000
+Date: Wed, 25 Mar 2026 14:57:22 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -125,23 +125,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
 	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
 	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/6] mm: always inline __mk_vma_flags() and invoked
- functions
-Message-ID: <ndtnvnobevdymu5a5tdxdbi4tcsqshs3d6x2vnfgnuclxvgwok@bhbqkzilsets>
+Subject: Re: [PATCH 4/6] mm: reintroduce vma_flags_test() as a singular flag
+ test
+Message-ID: <palfy4jm7iifa44hjkku4ljlwy6mkvyoq5q2v7a2dilb7fpzui@v54cr4xnd443>
 References: <cover.1772704455.git.ljs@kernel.org>
- <241f49c52074d436edbb9c6a6662a8dc142a8f43.1772704455.git.ljs@kernel.org>
+ <f33f8d7f16c3f3d286a1dc2cba12c23683073134.1772704455.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <241f49c52074d436edbb9c6a6662a8dc142a8f43.1772704455.git.ljs@kernel.org>
-X-Stat-Signature: j1f77bqfuaxykr9grf14bhbpb8tr136b
-X-Rspamd-Queue-Id: 7681E1C000B
+In-Reply-To: <f33f8d7f16c3f3d286a1dc2cba12c23683073134.1772704455.git.ljs@kernel.org>
+X-Rspamd-Queue-Id: DCA6D1C0002
+X-Stat-Signature: m7npw7pqmc5qqmnwks4ibf9cn45hfauq
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774450497-364807
-X-HE-Meta: U2FsdGVkX1/rFrWJTS90tcsM4MXcWWwBSKtuo29odaNOY79dybQ2xet0SqujtEHQOVl/kzK7XKLqDLRwnt5AJ5QXU6iExEtKjteLxvwwxpOhPa94iYRuHhmp47w01238vwZBuCx3J722MUWJA4hHG0iRc2h1A5Gs9UR3E32iYwpEc3PUMe9pTZmOkustxovyjWglGU/uvykffJlgEp3BvKjmn3vUAtpYHrGShVGUVv0h7F7at8ebXaAUH8Se9TdEZFyO3kS8z66FBiCInatBAcdu76AQPZuqW4JBi0FWaG25L5U64NJvOIZ+DWR/AsXq8C9tY+yhQc9ej5uH2cwtzjoQoHwW2jz76+qQ+19LeFS9kV65yoM/4on9mPPbYB/ppUfA6SRwz/bAN7Qr/lLw6gXSQj99Jc8eZInYvnfKXO04n7vo/7pIxm9GFUgPwKNZKFwd6yakwW8Ta4nKCGKUYk0phv79gtAvQKhM1h+Jbus0RDDwvLgLSDgLCPmtiVPbqHguNnJ1SHSjWBJ4bTArlhts6yJhq97Y1rW6U8QSP/s6gD6Uqq2NQfSViWvMKOafHoxo7d5a3qDaPjscaHVDaKtfCjDhjKBaasqVjS0Sq/9BST/TPDg8FqKpCUlDffxvQJWGMA4n5AbKhrtklhwyaU2O3wzut3jMdRvfQu8RZr5iiwd0olybvSGBiKhHynrBhwVOYlwN79rvvPAFRshoydQk/MFGqqxTioNolf8c32+2QXqQoWQbKl/uq9jK5QNBy5+c3ykU+tPL9c0WXSbrSCsPbdM0XWuSK8VjVTt/XKWgQO6OEOiAFExJ7A0+lJrx7aaX1k8pUJGo4Gj78FGDXPnpuIezx8Ys4id8xx/zUcq93qE7DDHur/8qr9lFJvHeSoZdQPDYmyjMCKLrQBcu8VOFk7Yu7WBnDeX0RFJRGEOoh+Oyp+Wm2RKslLmMHQV/FVrP3ry4YztxOa+B84m
- EA3/uT5H
- sMoPwTWpnQDxf0wL3xmzvmVfLUw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774450648-502245
+X-HE-Meta: U2FsdGVkX1/6nknpoZvDRsx1PU/RvNc4+dS9ACRgYrw7iQVJvjQ+7vWcjd8S4B1ZSDV1s8cerS3uG/jGJZjBxHtyqSu1tCr9j10iudsSJAWmhhzSfuWo7pvR1wjX46ITmIi+eHdykFqJuDiEW72WXqmL8ZBhffn8I75CpExeMBJcJLegg8g/HQ16BnPKdPEhyHIZWRln/tRHfETtwAI0u5i7c0KsNDbZVWJu3HYixHDOtzQf31hNjvfjUPccEFRkdSVxihs/RB4TypbWdcMMOBIItxX9FOSFNAsn09ZlLGs6gIES4odp7XoBMmnuIQa3b2bzLg6eNaOWcGOKvnBtBPPiYXwIswQSkCtcRCQ1FJTO2DXJMOYzMB6Y9uVrUAEf4j0S2mBKG3+2lGZIzpVeawx9JDQ6u5D+JY5z4Hcm2kfSpr0sqtb9SQwhBM+ywVWd60YStDM1LOKGUUHtYpQFhdME+9WkZJLkbowfP3k+LUCKN6YhteL9ILCTD9pURoncXFJB4Mm87PznbqWTS3/S8yqLUwIZtzZRrPH5PpRev7UO5utRCquJnSrS4UH/4QQL2r4ZgisbK8Y5zku/xN9iq8FFX33iZfJBQYeLJHgYVFNRiE8hdaASvzeLFw/Iyn8wgH5ZaaRiCtJbz+IY20p1UJ6JtajS7EkvY8zJjaUpFWjh2WBzQLbm31cuHUGIykZHHOSDIcuW3xxTbWqTuA5SuCio7XwX6cIxFLjwBXc59meHv2kkWKwUWG3x+zlMt8mfDRjHRbwz545jAAvHN+5hReu2kdxncmXbuy4nF7UAGmcr5ICpIYLTjr2GL2NNzR+jcz0LELxTFhirIz0cpEWUS7hjSC8GGr1jlgyFOPmz07EZG1NX8l7AG9yfU83d1IHm5gt104GaqRklO3UNRYxzAIJPtX8PSYmJMksqiFyTzxjGDWBdBOctOuabQhQbiO/1vkFyMri0+K5WBcj89h2
+ kjCLZYaT
+ bmIZETRtwBj6l/FAXLhI/jwZZzLIggP/SQMZwN8YhZBu8LYnoRHii/J6cpkhBkm5oLXZ1fGbSDnb7+exfpF8Mmhm4dD+rlqFQ80I+pq+Mo3G7BQC3/xU05To5jcr2z0oiHlN5f2AsChGwqnm01yGmts5bWU4uS3O3T+Ybyef8sVSv3/utsJ7jMjIeFKTRyCkZmrxU+4h4lkWd/DrsUz5Lr0RT5WwdQfj8GmI+92qN9aSE0+10YhRDwTVFI/4R3hg1fXw/ylxqsUSlUIMhUlu9ucZw7kygLENquQUd51CfYaJF9ZnvGmOrrwTkFw4g0RKoXXWkyqWtLCn0ndraSjHDgB1etuqjHs9j6bVl/Eqsf/spisVKqqNBsvCCoQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,33 +149,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 10:50:16AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> Be explicit about __mk_vma_flags() (which is used by the mk_vma_flags()
-> macro) always being inline, as we rely on the compiler converting this
-> function into meaningful.
-		meaningful what?
-
+On Thu, Mar 05, 2026 at 10:50:17AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> Since we've now renamed vma_flags_test() to vma_flags_test_any() to be very
+> clear as to what we are in fact testing, we now have the opportunity to
+> bring vma_flags_test() back, but for explicitly testing a single VMA flag.
 > 
-> Also update all of the functions __mk_vma_flags() ultimately invokes to be
-> always inline too.
+> This is useful, as often flag tests are against a single flag, and
+> vma_flags_test_any(flags, VMA_READ_BIT) reads oddly and potentially causes
+> confusion.
 > 
-> Note that test_bitmap_const_eval() asserts that the relevant bitmap
-> functions result in build time constant values.
+> We use sparse to enforce that users won't accidentally pass vm_flags_t to
+> this function without it being flagged so this should make it harder to get
+> this wrong.
 > 
-> Additionally, vma_flag_set() operates on a vma_flags_t type, so it is
-> inconsistently named versus other VMA flags functions.
+> Of course, passing vma_flags_t to the function is impossible, as it is a
+> struct.
 > 
-> We only use vma_flag_set() in __mk_vma_flags() so we don't need to worry
-> about its new name being rather cumbersome, so rename it to
-> vma_flags_set_flag() to disambiguate it from vma_flags_set().
-> 
-> Also update the VMA test headers to reflect the changes.
+> Also update the VMA tests to reflect this change.
 > 
 > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Is there an actual difference in codegen here? On -O2.
+This is a lot nicer, though I am wondering if there is any difference in
+codegen as well...
 
 -- 
 Pedro
