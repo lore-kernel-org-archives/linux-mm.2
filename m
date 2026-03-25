@@ -4,194 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14139109C022
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:27:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F680109C022
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:29:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34DF96B0089; Wed, 25 Mar 2026 10:27:44 -0400 (EDT)
+	id AA2786B008C; Wed, 25 Mar 2026 10:29:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 326016B008C; Wed, 25 Mar 2026 10:27:44 -0400 (EDT)
+	id A7AE76B0092; Wed, 25 Mar 2026 10:29:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EDAB6B0092; Wed, 25 Mar 2026 10:27:44 -0400 (EDT)
+	id 9B7D46B0093; Wed, 25 Mar 2026 10:29:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AA546B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:27:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D16391A091B
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:27:43 +0000 (UTC)
-X-FDA: 84584814006.03.1361C52
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011018.outbound.protection.outlook.com [40.107.130.18])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 004CF120015
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:27:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=p4TybNw7;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=p4TybNw7;
-	spf=pass (imf29.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.130.18 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Authentication-Results: i=3;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=p4TybNw7;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=p4TybNw7;
-	spf=pass (imf29.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.130.18 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1774448860; a=rsa-sha256;
-	cv=pass;
-	b=B318YAElL6XhFOBZwPernS0/0lpi5ec8/6sq3IETTdsrJT9kjvfpevDaP7h3oEY5/nm0zQ
-	gprw4srHH0YaAzy04s/0wf+slk2CQ80O4GyVes73uKZnLw4p56J8DwGJae3hEKn3ctrAwV
-	N22+YyLGe1s70turYersmqeDQsd6Pp0=
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774448860;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 88C266B008C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:29:25 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D59814095E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:29:25 +0000 (UTC)
+X-FDA: 84584818290.25.EFF2AD9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7529F8000F
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:29:23 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XAi1x6xe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774448963; a=rsa-sha256;
+	cv=none;
+	b=gtRxBnd9QYV3cvB1mof0b71EpgUx9ke077g16q/mgo/OhonfLgonWOZ3zxo7+MtrwNX2uc
+	V8AC4NgMKl9z2N5+JGpwC9m4svp+SokdWf1yaMeCdIm8bNpCvq5SmKRBck5++8+SslIifW
+	DJ9a9jCacRlfZUvtasnJRk5cvy8WmZI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XAi1x6xe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774448963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aXHZXf+ZdIiAdDnmaW/AA/NP16bP+Lzb3wGBMLQTJK8=;
-	b=BXrOlZ/z8WdHeD5EkQTsusm2hVbo7eQzSwTONm2MFw3oE2FPJeD3saLXLbBx1P3fB3pGeX
-	ieDksvUyy4u23B1Jt50j1gXQS5Chu6hOa2Ui/8MfiDw8P9M7K259lyRhtXE7oyPkSFUWfF
-	iVqBM9MK2lf9R+QngeuROi3iXFqq3o4=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=SOPsTSMHy8JmWqDBTdNMo0yP2FnzRB7MWssaRMN4o0A9EtY5k/TA75MFfnhx6kWLuAYp535q0BKUsTj3OI+8i5whdMh4uHCvUKEzTP6LR9G8+J6iCgAfrhKP+Yk9jJ51llsEeNcQG4IAwfGsFXHqrNgL2g+WrSRybRakrG8uvOkBSVxVoZb+xZ4jci8bOSz1QBwSTLpwp0PbtfEAuQTzxaTL8FCQyejcvwZvj2jeGf5RzTBTFIv95yCMKeQjsIgkiaJN/LUmsJ4WpZioULSTIcefZ4BL4t7tUazCl9BLTniOQ6SsAn3ppTpY0BR7+20UMocD+5rfd6XLY13z6J0s6A==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aXHZXf+ZdIiAdDnmaW/AA/NP16bP+Lzb3wGBMLQTJK8=;
- b=aPf5BjzhAajSGCBHOxRO6DNANUCmALMluK3uJDYiHEIXaiT+qLiwipYsRNlC7m+ZT2lM3iyixK2eIYkDjV6nIHnid7STze0buh1CM0Qm+LR6Mrqe458tT/0dWbmSHPBII+eP/8cEgG4Fgc0EiwAbbHAChLHhgRg0vzko64UBRpIBHo3Xw8X5mC8N3PXwX5j7RInkn1XPdbBCXrNkQlIQqSfxs+5iI47aCGF5TDzwNAC/qJy6JUcWd4shwQ+EARhiZHYUmH+tXaHSCil9XilM42V0RUS7s22BDw+cWe0Lq1j60Ju+wfsh5t5C/4A/yowR4HciA0tT+PLFP44kggOKfg==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aXHZXf+ZdIiAdDnmaW/AA/NP16bP+Lzb3wGBMLQTJK8=;
- b=p4TybNw7FOz6XYVePglsA/ijLDRNRWdmlWUFcd/Kf5ylU7inUisO/RB1dN62X6VUiy+Fuq5+tQoom9wQKLzVyJFUtTNDZZ8QT+YSlh7/HDtpSf9JLfDHhYiASWHSuzBp+/7xrjsyG7nf3wHS8NRhq2+8N9vmT35th7ivfnKF0S0=
-Received: from DUZPR01CA0306.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b7::16) by PAXPR08MB7351.eurprd08.prod.outlook.com
- (2603:10a6:102:229::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Wed, 25 Mar
- 2026 14:27:32 +0000
-Received: from DB5PEPF00014B9E.eurprd02.prod.outlook.com
- (2603:10a6:10:4b7:cafe::1b) by DUZPR01CA0306.outlook.office365.com
- (2603:10a6:10:4b7::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9723.31 via Frontend Transport; Wed,
- 25 Mar 2026 14:27:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB5PEPF00014B9E.mail.protection.outlook.com (10.167.8.171) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.21
- via Frontend Transport; Wed, 25 Mar 2026 14:27:30 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a/htAsAwtKo/Tdf2Kfjy3DEfdNQA4AAYBrFoWNMG4TZ5LddNGrHciDECwhh4hViI+JbTp0XU0J/wCBzz1SJD/XCiglbt5cY4qXl8QmifmC83DOlV4CpTzEDwYD3rsNKRM7mhuxe21s0LJFazRLAHJp0ss0Tx9rCo/NOfSI6hvQNGOrEG2U1gipupcp6BHkoiPSlQAj40B2eEELDpWdBN6dq4VtL9xvsY6hh/3lt4tZx8pM2E9v+MJz/dSeWrc2x3iW041z+vCOX0liM3N4oKd+WhQmFgsxIy1MpATcjlmfvJ0snaJcSVSpAfdN00iUN8VuuNwaq68rcUhmxU/zAATg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aXHZXf+ZdIiAdDnmaW/AA/NP16bP+Lzb3wGBMLQTJK8=;
- b=gHk8p1A80lC6MVzum2C7Iz9SNiT3RN4f97Pojkd70KYT9dnlgZ52xd9JcM6mcbMdWcQC8vEwiTbrJPGWDchSFcHs3FYyDpQF1CGQYoT/jJ9wh+X6H3xoEgVToRfV2lzAAFLL8v1horB79Z0M6UXUQP+hM5vYlABdRhELZ8Cebz6Dh7osYHX4zeWVZW8nqw4MNPTnFjHVTzX+ee7RaUKZjKLVUv9yDACZ07s2k0KGW6yLWYU2uTpxHGCjkYdf+eom7hvStT723mauYJ3vYQQ4Xye4PERYw/7qeu5WAx4p4vnnVCId8p0PKWH6Hehkm10+tYn9A/kGoOdcso7PH9eAGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aXHZXf+ZdIiAdDnmaW/AA/NP16bP+Lzb3wGBMLQTJK8=;
- b=p4TybNw7FOz6XYVePglsA/ijLDRNRWdmlWUFcd/Kf5ylU7inUisO/RB1dN62X6VUiy+Fuq5+tQoom9wQKLzVyJFUtTNDZZ8QT+YSlh7/HDtpSf9JLfDHhYiASWHSuzBp+/7xrjsyG7nf3wHS8NRhq2+8N9vmT35th7ivfnKF0S0=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from AM6PR08MB3414.eurprd08.prod.outlook.com (2603:10a6:20b:49::10)
- by DBAPR08MB5830.eurprd08.prod.outlook.com (2603:10a6:10:1a7::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
- 2026 14:26:25 +0000
-Received: from AM6PR08MB3414.eurprd08.prod.outlook.com
- ([fe80::dde8:bf0b:1dc:2a2]) by AM6PR08MB3414.eurprd08.prod.outlook.com
- ([fe80::dde8:bf0b:1dc:2a2%4]) with mapi id 15.20.9632.017; Wed, 25 Mar 2026
- 14:26:25 +0000
-Message-ID: <80dc24d6-944c-46d8-a692-24a9be408a59@arm.com>
-Date: Wed, 25 Mar 2026 14:26:24 +0000
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
- David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- Ryan.Roberts@arm.com, david.hildenbrand@arm.com
-Subject: Re: [PATCH v3 2/3] vmalloc: Optimize vfree
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-References: <20260324133538.497616-1-usama.anjum@arm.com>
- <20260324133538.497616-3-usama.anjum@arm.com>
- <e5d4e527-5e81-4713-a145-c87100973bea@kernel.org>
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <e5d4e527-5e81-4713-a145-c87100973bea@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0566.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:33b::16) To AM6PR08MB3414.eurprd08.prod.outlook.com
- (2603:10a6:20b:49::10)
+	bh=SWH/TiRcilxWQn5hnM+luG8t6f4F5WJQL/D0lblxV4U=;
+	b=wIBlRLkcwV6wTVMuZUm96LfqavUaMImuTs4Wrn1lQK6T1pz0Nc+Dw+wn6m5n9KdWIp9HWN
+	cuKHIpQcIzLtTcG8LpdyFVqTEinFiBtQIADPYJIpwHeou7R1FP7vPC3ItpHDWIFGF7QoKc
+	HJ7gdum2+N0Z6GEtOWosdUMpYAkeuLE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C61943866;
+	Wed, 25 Mar 2026 14:29:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4551EC4CEF7;
+	Wed, 25 Mar 2026 14:29:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774448962;
+	bh=zkNO+kmO7YyIbGFRyvNSq0hpZ0emcBw0JOFFgh57z4g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XAi1x6xeD+KtwLZfVNtI59E5LVvL9fks5GhoESNiKYd6b45jJ4dZ8YE3M4SoS8hLZ
+	 LLYbVrkgwqrQpgcLAck9wtTc7cot5keSQ0dxzckxwjD3w4MCI9XiSeLl57jhfy/Ntk
+	 ZIYq58HVN/LWfIx7YvYA1svz/Zww5NPdO2B/p2UucHNVBXrsU6xd8ZCyzwp2WnkCk/
+	 Ew1HB+Ym/LxdvN411rN0KHXL+ZiLpY14tgmMOECIacSfSQoGVUi9nLgiikCw6r/lgb
+	 66bYWLM2dsaSfc8+B5VpqEEqqkZDQg0C0FZ/KeGNhWbvVleAMiFSfERW5uzNlX4lKH
+	 rgkTT+p9LTpJw==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC v5] mm/damon: add synchronous commit for commit_inputs
+Date: Wed, 25 Mar 2026 07:29:20 -0700
+Message-ID: <20260325142920.87299-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260325013939.18167-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	AM6PR08MB3414:EE_|DBAPR08MB5830:EE_|DB5PEPF00014B9E:EE_|PAXPR08MB7351:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e4a2dd4-ed94-4a8c-786a-08de8a7aa5ff
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info-Original:
- TxVF8+mdYQd+1TD+y4ID7SVxfxnVAXhXfpfEG6Y3nG3qcuyOVdPjML67Zi39kEyWqlfjuIzAU9OoMEVqFBMB3JuUrdWunPlIImOw8M0EOHcLPy9Y7iGZKf1GSmfvdwOk+mKzq1r+Sn9XmuUggclXb3c/bdP3y951PDRIh4IBr9n79gIG9pfCs1Ns/fjviTQUc9ysgh4nM0J9pyoGtpEWavAOAWcaZPDRr2P4E3EWRqZegqQ4HHV0O3N+3JQo8ZS3IHfNTzVOPuoW2m7L3YM1PwlK9fPD1CumrogpLBJdbCheqjQy3ap82UlTiNpUOMCc8YVXLgVfirbh+4dB7nsj5jqWew4shcJO8/f94mdJj9svKOApE3EKrexqrd/YZyoim/p9lfHZl531k0uorVcZD+OZ9JRr4hmmPfrkGsrk3fV5UMAaiitvIRHjBwftPmeHadi9b/3a3jTG7IEcpZjUyGDhgGzLpbSF0j2booMoBosrkkhNOI+v36M4VCB00cPbum5YcrnTX8kovgI6h8hPNlqtYK271SWIJpG4HZg6r64DX8RVvs56ppw4gSpxh4kUrcWvAnH5cUKgmldtCH0kVAJzqrldZm6n87ICSdlAL/iLHVzy/S5OpuU3js2NzSOFagicsgFWwh2o4SsQbxat72JZZ1/O4uII57sne9Lr0StnRggEqLsgKk5fcpXso8Ip
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR08MB3414.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- JXwcJoEgUU2+X3c3H3O56hG8/ueLB+8Sdz8WkYKygC78PpfJPtg7N2TO3Lqg2DJ+rkWZ2AdwkCyLtBVGp2C6PokrAKDEZUyNIyXpT649LzKa0384Rjjz24h9toAzYFHcMHpICbTYuuB+7S56luUfvL6gtzODw7JsUOoC5/tV5b8OSTC9x5Tw6dTAmWOzMH9xgos24YBRyRKk7yfuhkvcm36PivzSPYFqtBF8q/gR1y7wLR+pyxSgPb2EEx1G9Vv9SQWcjYMKqU9FzlLjmsi9DkBEyNqPwsGGss4+IlkxM7XWmsGLOY29a6reFM+82WZ22Hm0sihOt+DpW0ftLZ3tLA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR08MB5830
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB5PEPF00014B9E.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	9789627c-1824-4218-4bbf-08de8a7a7ef3
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|14060799003|376014|7416014|36860700016|82310400026|1800799024|35042699022|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	JKhVIL2TMCqVyxpIfBvWH+n7u+xRbxLISKipRtQ8lOeSos2mXLKJ4W2qbw62XOsq/2pZAGDk1WPeRAR170Thv3gDGcjdPDENLsb0b0fJbqbVD5LSNIoz+1bfAFKjEuIHZDHvE2p2KMkJm0Tn8SfjiwfPlsROWxNG7Rb0OkYfc7M+M4tLNDLSZfTKj8OU/Gr2+7SMyiIKCuhwQmgP8RTHTKY+eynQvlv1DStz/ncoKBPobpB3M71hjFTPKKGizrTeuw7ueMJJBhuiT9SZ2hDMdf6Z2VFiPl1HiALq+xNYWEcLVTvyAhGEXXbTau4/3CMQgrTgl4FC0K9iyHZVT3r80aUTZhVL2KqIjm5dfaCVZVAkU0sgxZyh8Yc5GH3Udzi9SNTQSQwolU0RzhRmJtkyJQ0VG2UBE8nUmKJjbKBQ066yydioxGAisb/6PIK6ls7iDlvamFpPqVT+MTDmkgYBT2ofjAVrAy4mmx6d7Y1DLaVQSol+EW8GxHMfmcrziiaxPzycA3LJbrJMgyyM7oyboPZRtgNpb4iDoW0V1PClTYB2zL94vVChvAxZQ83vbQPvdDPhfkA3DMDE8fCz3yEzijwWYa1zCDXTSGTDXdurhuLsZOc6NlyqCIm2TJU2KnMF18CsUREtsNTmPQb13sideooCvrw1W20o+HfJewY4NnvsFPB+ibB7cBTf57uzpky09848k31fr/a3Olx3L4gAFvJ4aohx47PO2oSYJxRAT50=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(376014)(7416014)(36860700016)(82310400026)(1800799024)(35042699022)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	T8US9uYWuq/74INXq2IcDrj0WngfeAzDstGEpanUKBoZrBIpWL45CFHa4f31lCq8QW8NUw1OShIt16Z1Ait7nqjsGD7hkahstgDmj/2dUOh24jJG19Ex96AeQDrn3ihhiVfcmHMmeUvEK0WRRk3JeaJZbGCI5dFPpgLMovMFFO8T6lC6Vnn4iNrGwP3OFitc9xTS6S7WAyxk5WSA2SxSjIDx9eXheS45gHWqvI6S0VBO+vBJCHCOUNMQkJX+/Nuh86kDqIxYSlJDTQFzEUZ2S02tJoWMlT/oSDxuiAmwyjABaU3K3fHqtovgrJZvu2SPmF6zRwLsWyT9pKQcC5siVTdjo62vtxVcj5V1c++rYvdk8hih9fTT0JMdnvf2KmJlsVBfkd0OKfr0/aRDRKuhL0zsJ7aUaEVAnUb8i4A0+m9w/gQ1+7flzYSNb5Q4dld0
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 14:27:30.7728
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e4a2dd4-ed94-4a8c-786a-08de8a7aa5ff
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B9E.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB7351
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 004CF120015
-X-Stat-Signature: pqtmej49q1ku9gfzh161y39duk6grhgk
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7529F8000F
+X-Stat-Signature: cyjcu8nnbmq7x754qpgz45s5of9wotkk
 X-Rspam-User: 
-X-HE-Tag: 1774448859-779107
-X-HE-Meta: U2FsdGVkX19kQQWLrDvmgH1F7onGnfwX7AuG2TtCVQzn/nESXPWZd2qfsX2EzSwkj6ic6VTcZVu+4GFDHLMLXu2gdfAZEKKD1ulS/krcJm4cUJds3AHyMezaCPC7AyZ8xv4w2bQV3WL7ovu5yWNbIV4LE4f95XNiS9lelmSESphUfVrlWod9q3lUh0knm4fyUX3aeRRpCcI+p9FE42a2cCg8S5F4/2L8UNXIDOXWfuD8+hZm2oJnp0OiURCL52Vg9LCdKn/RueaOHp9U5AAIUgh/ULzZBijQvNKW/UYRF2UOvaVG7J6oTtOinP9xVFIKJNZYo3kLQIzgYVWwwPFapeLNWRWu3S/dvE/rVUP5vg1Yl7su2NzdM7t0qJhkdckQcznz/CfjVqfW81gxKd1epy0MtzotAUup6wI9VhXgYOJaeYv52TTn8MWraqTx3QbvgECiVg7nIXw0302+eT9UnIyYh2MCnf+0pYkZASTJn8WFudOo1QL6MutbUe0efMV9u2jE4ssi1WPF+IgxX9lpNgy6YTWzVxJzbt1hpv6l8CtAUdGZTdIMh6o1pkXB99gSttogBfmf2qLZGAcqTzlzq2j5RgDLyMhU0vOEcX0JxZX8OTuqrN+T12eLIYnqQKVq+0NfzqE477msoDhVmX2WBONVw2tRjX/BCvjE2pSCsrxEcSuoow3dAiMI4wUUiFA4tOxi7aji/tEIpQE1ANBlBKqoS4FFfBnI14nJT/laGKOZI/qxJLDPHcq/Kg97zxXuMqo7VWH8w1Bk9RoaGMeqD41iRz04JocVmC4oQm9hxbVvVyD29w3r+DuVjnY/2pmLJyMK/8VylP5DktcN0qm3cvKE87vcFRPvWROK40x0ekom5MQ4NoMoxmy2Z51qhefxBoGqfsazkxqDWwtOmHwlZMTMe1ZzxxaePHiIvvb4LLh5YCjeb6tvTmGJO4TOSe1ZFA3+b6MwGLlEc65AazJ
- N0rQMwJU
- Rnfc7eiX0SS92eHfJs/SJf/RqLJEt3c4inALhTLDHrGg5DmC/85/CVpLtTOIUMge0HnrA6JTKZrea233lDUbxVUrihSEck3hi58L6QxQpcMBPWNr67e66PRfv4Zf/woEyLGXOOLk8gd3/bO4L8+SpG1QUN17UJGsSA59h6zUyGUFLI4tXLuLMOqcHl78/u6Ipzb6j7eNcC/8iEyR3hjumVHuesXjJ1cDurTcPwUHdEidkCEztv0lEtxt1rCEiyKJxsbM5l4JIZR+FBcpJMpOQNR7n4iqRO7rTlkpTti4u4bwVZQe048uG/qkn/2s7ZGbW8rqDhLUMddzMhCxlQ2npKicEPSvPRjvUo0mZ/35I5JOZWHIfbJe0pmm553Z+3N9nvT5pM2onj32EfqVuD+SLX9Qz9q3edTp+8Qtjl/w8LV8nFM9458j8PummsINM2jss8d2y2QzTVJBMddwGyCd1Pf0lCUuUg0h5BKi+IfAYY1v+9X2RZAj4G/UC45KTtut4MKV235QOiCY7SwwD5lyr3OE9RvffdYyf93owTJcg/Ak7sabvRhtRA/U6jj91U2urav6me6BMOpapNZybdpFpBOyPMA==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774448963-369890
+X-HE-Meta: U2FsdGVkX1+w5J27oFQ+bYlH8mys7vdJ7gvvffa/0l8ZyQ4vrQkh5tNI2FoT6E27w7LPeMKVQApTfn1qGFJa7hFVdKMvsjdFil03bGxTKTknU8oLT6MJAlfE9PHy9iXuODbCGFlw3Fjv/O/WzuJmE9Lx5MZvZfwrKmXBFHdqlqsJ8AZ48tXMqAG1k4iC8lG1sD0rgA1T02MhdQ/J7D10y4lJMPrZFBGIm2NHH8i690PMp4J+yMS5FstfwNTnfEPVqhJbFWbz3WPQj9PyuA0F3tcp6Mt0uEliny0qcWylI3l/pbNx7FKdp7QwGY5/86x1gzYssASEhGuB9s1qqCmFCcYxSEH8CXmmW07IbzyJUFP6+NztDR4xltpxIzfP0Odv2WhkGTuVVfFJ4noM9SDrIpbUNmhDYLKDP7OkExoL7SYUp58JSbStkaJmewCNmQpbz1KAWlW9pVU9ndaprjB+N9A9SVOgsc48sv+XLbIs3CXg2QXMZGJ4mb8166idIsrD7xc2Q3sYJ13Orlh9719uwUfdS6ES2RDKHCqljTNZsgeRzT5T7CdggjE6iYv0ieB1GAlhUw4vcMd4oJF8G+TJR49SC8+w26qrw1AQhzQyfo0G6DfNphDwcJHJp2C851dknYogUAB2y+mTz6dT38nvDSyiKJmheiUBWPILGF21uAldtEa2kvRAsKt2Z6AGoC5TBEIvpLusEl5WyFvG2ZiGvHs+UiBnHj8ZAh9cUqxVwo2A8cDIXUmIfflE0S2C9MAvRsup1W5B6vAyu8TcP++INUg1HNXmmD8YM8OeAgqxb6YUESYehjtSqqIZ1f3kkbR52bshHLTupdhEtV6q5BEi7gIxfgnj/RSpgcGdCd+oSAKDKqH+aAjMB2PUwlSS2dNflkUH1MJ1d3tc/23NBdCQdKC9PuXxhZGmVUYnpirRfma0fpMhBakeP8ogtSs194sBS3CraJDeh66tivRXR+1
+ Ts/QPvTZ
+ NbQv+yTDCOMvkYEs7u+2l8d5+5gWt++4BPxWYFKbeFuySZ6zIbsVdh6N8q6avxwoBPwuMI91+ci8YFzv4rs6bAhBU2LbRx7nFbdaZogK9u4P9Dy8sKGHYH1B/6toBdoI9LA8QzyPnoNA13K1TmRZ50OacSCS8athkMCX7djjWvtW7Reo3bnxv5w/zmEDkek8Pd47nm8fIyO7ByInnUJGtU+Dj91hh6OwgL+qEvtAKOrQ5fRp85n48DotizO5ptK1ocMTBvH5DMGRPzszrMLmdNffTFKvADSMK580MZQvU1zzyyh8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -199,188 +91,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25/03/2026 10:05 am, David Hildenbrand (Arm) wrote:
-> On 3/24/26 14:35, Muhammad Usama Anjum wrote:
->> From: Ryan Roberts <ryan.roberts@arm.com>
->>
->> Whenever vmalloc allocates high order pages (e.g. for a huge mapping) it
->> must immediately split_page() to order-0 so that it remains compatible
->> with users that want to access the underlying struct page.
->> Commit a06157804399 ("mm/vmalloc: request large order pages from buddy
->> allocator") recently made it much more likely for vmalloc to allocate
->> high order pages which are subsequently split to order-0.
->>
->> Unfortunately this had the side effect of causing performance
->> regressions for tight vmalloc/vfree loops (e.g. test_vmalloc.ko
->> benchmarks). See Closes: tag. This happens because the high order pages
->> must be gotten from the buddy but then because they are split to
->> order-0, when they are freed they are freed to the order-0 pcp.
->> Previously allocation was for order-0 pages so they were recycled from
->> the pcp.
->>
->> It would be preferable if when vmalloc allocates an (e.g.) order-3 page
->> that it also frees that order-3 page to the order-3 pcp, then the
->> regression could be removed.
->>
->> So let's do exactly that; use the new __free_contig_range() API to
->> batch-free contiguous ranges of pfns. This not only removes the
->> regression, but significantly improves performance of vfree beyond the
->> baseline.
->>
->> A selection of test_vmalloc benchmarks running on arm64 server class
->> system. mm-new is the baseline. Commit a06157804399 ("mm/vmalloc: request
->> large order pages from buddy allocator") was added in v6.19-rc1 where we
->> see regressions. Then with this change performance is much better. (>0
->> is faster, <0 is slower, (R)/(I) = statistically significant
->> Regression/Improvement):
->>
->> +-----------------+----------------------------------------------------------+-------------------+--------------------+
->> | Benchmark       | Result Class                                             |   mm-new          |  this series       |
->> +=================+==========================================================+===================+====================+
->> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |        1331843.33 |         (I) 67.17% |
->> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         415907.33 |             -5.14% |
->> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         755448.00 |         (I) 53.55% |
->> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1591331.33 |         (I) 57.26% |
->> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1594345.67 |         (I) 68.46% |
->> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |        1071826.00 |         (I) 79.27% |
->> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |        1018385.00 |         (I) 84.17% |
->> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        3970899.67 |         (I) 77.01% |
->> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        3821788.67 |         (I) 89.44% |
->> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        7795968.00 |         (I) 82.67% |
->> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        6530169.67 |        (I) 118.09% |
->> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         626808.33 |             -0.98% |
->> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         532145.67 |             -1.68% |
->> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         537032.67 |             -0.96% |
->> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        8805069.00 |         (I) 74.58% |
->> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         500824.67 |              4.35% |
->> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |        1637554.67 |         (I) 76.99% |
->> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        4556288.67 |         (I) 72.23% |
->> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         107371.00 |             -0.70% |
->> +-----------------+----------------------------------------------------------+-------------------+--------------------+
->>
->> Fixes: a06157804399 ("mm/vmalloc: request large order pages from buddy allocator")
->> Closes: https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> ---
->> Changes since v2:
->> - Remove BUG_ON in favour of simple implementation as this has never
->>   been seen to output any bug in the past as well
->> - Move the free loop to separate function, free_pages_bulk()
->> - Update stats, lruvec_stat in separate loop
->>
->> Changes since v1:
->> - Rebase on mm-new
->> - Rerun benchmarks
->>
->> Made-with: Cursor
->> ---
->>  include/linux/gfp.h |  2 ++
->>  mm/page_alloc.c     | 23 +++++++++++++++++++++++
->>  mm/vmalloc.c        | 16 +++++-----------
->>  3 files changed, 30 insertions(+), 11 deletions(-)
->>
->> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
->> index 7c1f9da7c8e56..71f9097ab99a0 100644
->> --- a/include/linux/gfp.h
->> +++ b/include/linux/gfp.h
->> @@ -239,6 +239,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->>  				struct page **page_array);
->>  #define __alloc_pages_bulk(...)			alloc_hooks(alloc_pages_bulk_noprof(__VA_ARGS__))
->>  
->> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages);
->> +
->>  unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
->>  				unsigned long nr_pages,
->>  				struct page **page_array);
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index eedce9a30eb7e..250cc07e547b8 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -5175,6 +5175,29 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->>  }
->>  EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
->>  
-> 
-> Can we add some kerneldoc describing call context etc?
-Yes, I'll add short kerneldoc here.
-> 
->> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
->> +{
->> +	unsigned long start_pfn = 0, pfn;
->> +	unsigned long i, nr_contig = 0;
->> +
->> +	for (i = 0; i < nr_pages; i++) {
->> +		pfn = page_to_pfn(page_array[i]);
->> +		if (!nr_contig) {
->> +			start_pfn = pfn;
->> +			nr_contig = 1;
->> +		} else if (start_pfn + nr_contig != pfn) {
->> +			__free_contig_range(start_pfn, nr_contig);
->> +			start_pfn = pfn;
->> +			nr_contig = 1;
->> +			cond_resched();
->> +		} else {
->> +			nr_contig++;
->> +		}
->> +	}
-> 
-> Could we use num_pages_contiguous() here?
-> 
-> while (nr_pages) {
-> 	unsigned long nr_contig_pages = num_pages_contiguous(page_array, nr_pages);
-> 
-> 	__free_contig_range(pfn_to_page(*page_array), nr_contig_pages);
-> 	
-> 	nr_pages -= nr_contig;
-> 	page_array += nr_contig;
-> 	cond_resched();
-> }
-> 
-> Something like that?
-__free_contig_range() is already checking for the sections. If
-num_pages_contiguous() is called here, it'll cause the duplication
-of the section check.
+On Wed, 25 Mar 2026 09:39:39 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
+> Problem
+> =======
+> Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
+> silently (no error returned to shell), because the validation happens
+> asynchronously in the kdamond.
 > 
->> +	if (nr_contig)
->> +		__free_contig_range(start_pfn, nr_contig);
->> +}
->> +
->>  /*
->>   * This is the 'heart' of the zoned buddy allocator.
->>   */
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index c607307c657a6..e9b3d6451e48b 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -3459,19 +3459,13 @@ void vfree(const void *addr)
->>  
->>  	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
->>  		vm_reset_perms(vm);
->> -	for (i = 0; i < vm->nr_pages; i++) {
->> -		struct page *page = vm->pages[i];
->>  
->> -		BUG_ON(!page);
->> -		/*
->> -		 * High-order allocs for huge vmallocs are split, so
->> -		 * can be freed as an array of order-0 allocations
->> -		 */
->> -		if (!(vm->flags & VM_MAP_PUT_PAGES))
->> -			mod_lruvec_page_state(page, NR_VMALLOC, -1);
->> -		__free_page(page);
->> -		cond_resched();
->> +	if (!(vm->flags & VM_MAP_PUT_PAGES)) {
->> +		for (i = 0; i < vm->nr_pages; i++)
->> +			mod_lruvec_page_state(vm->pages[i], NR_VMALLOC, -1);
->>  	}
->> +	free_pages_bulk(vm->pages, vm->nr_pages);
->> +
->>  	kvfree(vm->pages);
->>  	kfree(vm);
->>  }
+> Solution
+> ========
+> To fix this, the commit_inputs_store() callback now uses damon_call() to
+> synchronously commit parameters in the kdamond thread's safe context.
+> This ensures that validation errors are returned immediately to
+> userspace, following the pattern used by DAMON_SYSFS.
 > 
+> Changes
+> =======
+> 1. Added commit_inputs_store() and commit_inputs_fn() to commit
+>    synchronously.
+> 2. Removed handle_commit_inputs().
 > 
+> This change is motivated from another discussion [1].
+> 
+> [1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+> 
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> ---
+> Changes from RFC-v4:
+> - Rename the 'yes' variable in commit_inputs_store() to the more
+>   understandable 'commit_inputs_request'.
+> - Return -EBUSY instead of -EINVAL when 'commit_inputs' is triggered 
+>   while kdamond is not running.
+> - Link to RFC-v4: https://lore.kernel.org/20260323021648.6590-1-aethernet65535@gmail.com
+> 
+> Changes from RFC-v3:
+> - Added checks for 'ctx' and 'damon_is_running()' to prevent NULL
+>   pointer dereference during early boot. (Found by Sashiko.dev)
+> - Removed handle_commit_inputs() and its associated polling logic as
+>   they have become dead code after moving to the synchronous damon_call()
+>   approach.
+> - Ensure the 'commit_inputs' is properly updated.
+> Link to RFC-v3: https://lore.kernel.org/20260322231522.32700-1-aethernet65535@gmail.com
+> 
+> Changes from RFC-v2:
+> - Removed damon_validate_attrs(), now using damon_commit_ctx() for
+>   synchronous validation in the kdamond context.
+> - Following DAMON_SYSFS pattern for synchronous commit via damon_call().
+> - Link to RFC-v2: https://lore.kernel.org/20260321140926.22163-1-aethernet65535@gmail.com
+> 
+> Changes from RFC-v1:
+> - Remove question from commit message area.
+> - Added synchronous validation for DAMON_RECLAIM.
+> - Rename damon_valid_attrs() -> damon_validate_attrs().
+> - Exported a new function damon_validate_attrs() and declared it in
+>   damon.h.
+> - Link to RFC-v1: https://lore.kernel.org/20260321002642.22712-1-aethernet65535@gmail.com
+> 
+>  mm/damon/lru_sort.c | 54 +++++++++++++++++++++++++++++++++++++++------
+>  mm/damon/reclaim.c  | 54 +++++++++++++++++++++++++++++++++++++++------
+>  2 files changed, 94 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> index 554559d72976..a2410f648b51 100644
+> --- a/mm/damon/lru_sort.c
+> +++ b/mm/damon/lru_sort.c
+> @@ -39,7 +39,6 @@ static bool enabled __read_mostly;
+>   * the re-reading, DAMON_LRU_SORT will be disabled.
+>   */
+>  static bool commit_inputs __read_mostly;
+> -module_param(commit_inputs, bool, 0600);
+>  
+>  /*
+>   * Desired active to [in]active memory ratio in bp (1/10,000).
+> @@ -349,18 +348,59 @@ static int damon_lru_sort_apply_parameters(void)
+>  	return err;
+>  }
+>  
+> -static int damon_lru_sort_handle_commit_inputs(void)
+> +static int damon_lru_sort_commit_inputs_fn(void *arg)
+>  {
+> +	return damon_lru_sort_apply_parameters();
+> +}
+> +
+> +static int damon_lru_sort_commit_inputs_store(const char *val,
+> +		const struct kernel_param *kp)
+> +{
+> +	bool commit_inputs_request;
+>  	int err;
+> +	struct damon_call_control control = {
+> +		.fn = damon_lru_sort_commit_inputs_fn,
+> +		.data = ctx,
 
+You don't really use the data in the callback function.  Why don't you just
+unset it?
+
+> +		.repeat = false,
+> +	};
+>  
+> -	if (!commit_inputs)
+> +	err = kstrtobool(val, &commit_inputs_request);
+> +	if (err)
+> +		return err;
+> +
+> +	if (!commit_inputs_request)
+>  		return 0;
+>  
+> -	err = damon_lru_sort_apply_parameters();
+> -	commit_inputs = false;
+> -	return err;
+> +	/*
+> +	 * Skip damon_call() during early boot or when kdamond is
+> +	 * not running to avoid NULL pointer dereference.
+> +	 */
+> +	if (!ctx)
+> +		return -EBUSY;
+> +
+> +	err = damon_call(ctx, &control);
+> +	if (err) {
+> +		/*
+> +		 * If kdamond is not running, damon_call() returns -EINVAL.
+> +		 * Remap it to -EBUSY to better reflect that the operation
+> +		 * failed due to the current state of the system.
+> +		 */
+> +		if (err == -EINVAL && !damon_is_running(ctx))
+> +			return -EBUSY;
+
+In my opinion, EINVAL is a better return value.  It was failed not because
+something is busy but just because DAMON is not running.  Committing something
+to DAMON while DAMON is not running seems invalid operation to me.
+
+> +
+> +		return err;
+> +	}
+> +
+> +	return control.return_code;
+>  }
+>  
+> +static const struct kernel_param_ops commit_inputs_param_ops = {
+> +	.set = damon_lru_sort_commit_inputs_store,
+> +	.get = param_get_bool,
+> +};
+> +
+> +module_param_cb(commit_inputs, &commit_inputs_param_ops, &commit_inputs, 0600);
+> +
+>  static int damon_lru_sort_damon_call_fn(void *arg)
+>  {
+>  	struct damon_ctx *c = arg;
+> @@ -374,7 +414,7 @@ static int damon_lru_sort_damon_call_fn(void *arg)
+>  			damon_lru_sort_cold_stat = s->stat;
+>  	}
+>  
+> -	return damon_lru_sort_handle_commit_inputs();
+> +	return 0;
+>  }
+>  
+>  static struct damon_call_control call_control = {
+> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+> index 86da14778658..4cbd67e08d56 100644
+> --- a/mm/damon/reclaim.c
+> +++ b/mm/damon/reclaim.c
+
+Comments for lru_sort.c apply here, too.
+
+
+Thanks,
+SJ
+
+[...]
 
