@@ -4,63 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92325103A9AD
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 11:36:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6C7A103A9BD
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 11:36:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DC156B008A; Wed, 25 Mar 2026 07:36:23 -0400 (EDT)
+	id E81BD6B0092; Wed, 25 Mar 2026 07:36:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88D5B6B0092; Wed, 25 Mar 2026 07:36:23 -0400 (EDT)
+	id E590B6B0093; Wed, 25 Mar 2026 07:36:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A2A46B0093; Wed, 25 Mar 2026 07:36:23 -0400 (EDT)
+	id CFA706B0095; Wed, 25 Mar 2026 07:36:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 686836B008A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:36:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 10E93140816
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:36:23 +0000 (UTC)
-X-FDA: 84584382246.08.E6AB860
-Received: from eu-smtp-delivery-195.mimecast.com (eu-smtp-delivery-195.mimecast.com [185.58.86.195])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3E34D18000B
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:36:20 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gsacapital.com header.s=mimecast20170115 header.b=bhZKQAZw;
-	spf=pass (imf16.hostedemail.com: domain of rushil.patel@gsacapital.com designates 185.58.86.195 as permitted sender) smtp.mailfrom=rushil.patel@gsacapital.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C06B26B0092
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:36:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 575515B818
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:36:24 +0000 (UTC)
+X-FDA: 84584382288.01.675D6BA
+Received: from eu-smtp-delivery-195.mimecast.com (eu-smtp-delivery-195.mimecast.com [185.58.85.195])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5E823160007
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:36:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gsacapital.com header.s=mimecast20170115 header.b=bohOWLCB;
+	spf=pass (imf08.hostedemail.com: domain of rushil.patel@gsacapital.com designates 185.58.85.195 as permitted sender) smtp.mailfrom=rushil.patel@gsacapital.com;
 	dmarc=pass (policy=none) header.from=gsacapital.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774438582; a=rsa-sha256;
+	cv=none;
+	b=FI7E3jJuOL4jxpN465SR9NPasj/jaSL5pWvxLY1sRdnQxqp211jdaNMxkEfoOg+rdacOwg
+	wS0EP3Pc8a5mm0xjwKkrjAsMapZt3qXFLUNAtBVt6D2pwtcLkmif+TyvehEPad0ZcDId/B
+	GPCF9BWhIb9NVhbnlzvpDLQw0QtxGR8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774438581;
+	s=arc-20220608; t=1774438582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=bt5JFko0dMhC8KatqhMqVwMjvYD1jEEdorxPfhqMy98=;
-	b=Wy5XUUw5Avw8hTxhuURIFerHsdqL63whMw9qJ6SCrLxOuvrhGqQ3HEgdHN47IGI7Vd6SvG
-	j3169c8FhfCN1Hqx5easdZd/4tqEzpmyoynreP1YSjeVxdkewZYUzSgxGamg5OdXenMIcb
-	OXT/lwKpTcu57O/7EXnEoTk+GhN62UE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774438581; a=rsa-sha256;
-	cv=none;
-	b=IQ10oa30xlvgRS5QKhTFs5z4ubETw0KH1NAdtyYhA/5tlXcdmgeEeNlbcfWOccZMZMJ6xZ
-	GGnjAYIzCU8djPS2OW0P0WXTzvUyxfWXL5Mekno8noNJBCame63A5v94QR4QyFvr6Ud2Lj
-	m9gZr5/FOoAZjwAPYqq/AKl2wWhBRpk=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yUVSyEDvebuqZuvn/YoiC1PqlwIm4XkHWHkdGzIev3I=;
+	b=6lRUTUyuEtZrAkPjCVR6xbisNtdg1z0J+KXYsy2X/0CCieyPkz6wanV3g1aC0yt0Gof3xP
+	0385crD4Gr9+m4oJGU1AvFPAh3+L0x5oIrb4dFuU05q42R3aKfvdEvNUdPmEYsRf0/pjhB
+	nwPxBluE4GIwTmJn8hepHDo1nVBP3zY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gsacapital.com header.s=mimecast20170115 header.b=bhZKQAZw;
-	spf=pass (imf16.hostedemail.com: domain of rushil.patel@gsacapital.com designates 185.58.86.195 as permitted sender) smtp.mailfrom=rushil.patel@gsacapital.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gsacapital.com header.s=mimecast20170115 header.b=bohOWLCB;
+	spf=pass (imf08.hostedemail.com: domain of rushil.patel@gsacapital.com designates 185.58.85.195 as permitted sender) smtp.mailfrom=rushil.patel@gsacapital.com;
 	dmarc=pass (policy=none) header.from=gsacapital.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gsacapital.com;
-	s=mimecast20170115; t=1774438579;
+	s=mimecast20170115; t=1774438581;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=bt5JFko0dMhC8KatqhMqVwMjvYD1jEEdorxPfhqMy98=;
-	b=bhZKQAZwC+/kbaVdP5OE2JuCsYukl24Ik04kf/eQW09KQP/xUe1gUBwTAP5lRv9SdF58NK
-	abuLLfMxIJykpNiYAQw/LLeu1mv1i+ajhtN9R94Ku3MCDZXqX8KA3vOsON8QAMRHJ0386s
-	3EsZJtbSzVd84FcpUlejGaSRXJkZyJc=
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yUVSyEDvebuqZuvn/YoiC1PqlwIm4XkHWHkdGzIev3I=;
+	b=bohOWLCBarWPoLPAUY8iznoo36BD66IOqfckMLKOJodMNrgT2e7PDJik8UK2HvAYL1mKmc
+	1uTiNA5b2AnqjXpLvdm14KTwJYRX4yqveH+NRwbHgcp6MyaJ2h8jSnu1iX6JWzZ3vavDOg
+	SozI3VE86bGD7ZL8xEsnkNb/ep3TDb8=
 Received: from mailrelay.gsacapital.com (185.137.2.10 [185.137.2.10]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id uk-mta-247-45vwAdfFO6SopuH8bJ86qg-1; Wed,
- 25 Mar 2026 11:36:18 +0000
-X-MC-Unique: 45vwAdfFO6SopuH8bJ86qg-1
-X-Mimecast-MFC-AGG-ID: 45vwAdfFO6SopuH8bJ86qg_1774438578
+ cipher=TLS_AES_256_GCM_SHA384) id uk-mta-160-b5qONeUlOTmmFbnNNarSmg-1; Wed,
+ 25 Mar 2026 11:36:19 +0000
+X-MC-Unique: b5qONeUlOTmmFbnNNarSmg-1
+X-Mimecast-MFC-AGG-ID: b5qONeUlOTmmFbnNNarSmg_1774438579
 From: Rushil Patel <rushil.patel@gsacapital.com>
 To: Matthew Wilcox <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -68,24 +70,26 @@ Cc: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Rushil Patel <rushil.patel@gsacapital.com>
-Subject: [RFC PATCH 0/1] mm/filemap: make writeback wait killable in __filemap_fdatawait_range()
-Date: Wed, 25 Mar 2026 11:36:15 +0000
-Message-ID: <20260325113616.785496-1-rushil.patel@gsacapital.com>
+Subject: [RFC PATCH 1/1] mm/filemap: make writeback wait killable in __filemap_fdatawait_range()
+Date: Wed, 25 Mar 2026 11:36:16 +0000
+Message-ID: <20260325113616.785496-2-rushil.patel@gsacapital.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260325113616.785496-1-rushil.patel@gsacapital.com>
+References: <20260325113616.785496-1-rushil.patel@gsacapital.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wR0_MZMU_4zvap-0EQqqvqLkvKqvyKqIgSQYBmsOQfs_1774438578
+X-Mimecast-MFC-PROC-ID: wNSDKIkEE6OLVTDiMeTktgRqBoA9izFxNFulhn1YzfM_1774438579
 X-Mimecast-Originator: gsacapital.com
 Content-Type: multipart/alternative;
-	boundary="MCBoundary=_12603251136190191"
-X-Rspamd-Queue-Id: 3E34D18000B
-X-Stat-Signature: 7y5dpb15tee4t4cgd55j7qqwzxizhsj7
+	boundary="MCBoundary=_12603251136201591"
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774438580-129591
-X-HE-Meta: U2FsdGVkX1/ONs3k2XAf9RLoWU+FwBrxOyGD69wq6BiQ94ecGTdhev4S/II6Sqv5pNfQfrit/OdoLbOCNWJe2d9pGXKlOD6Kwp7VwsLh2f6q6/oLLDjl88wIp2Oc0AlIAMpqyPMRFfVS8N9eFKRD6v2fEQMBoTFFyRy93/DkbW3Fr2fvtfXYc4i/5n/no5HMR8yQ7ADVbj8dHcAKnQa1jfECG20QFfBUHPZ+GWethmspCXWy8OUigyHIyuvwTWDforWto0REMv9wedj/OE2WuJ6dG62w2Rx6if6KF9hnwI8l4zOlFe3Su7/DlDvsFcESnpRTYvi59+SfGBA3KuniLiDdtldfAXPb5ow7uDtZtXUBW/TuA6fkSw+MwODnTpZI7xCpiUVEyXyJ/1PWyHTp/nuJfACVA98uNpuXwyrgo5Ud4KpR4dInPPpnIpHriSdRY/paeLO5K9/jINS9pWprgUjfeYCgJZHTYD+IVKzHGFVMtq10JxbGNNQRLfWIBtZx+TZmu6s27NOn27ADu/929I29oEFKzleykEC51A2cwV/JZ4FZQorm6c+677EP/ZJOktKOnuBJePCYDCZIaZeHhwHHnXdw6Pq0R3NgG16U671WOgD/jWHjvR/nplpLnchQFQ8NgYHFy8I1pCscbw83CJW/XBylonzgp7HU00NoDaQMxoZQpVQfNVxJ8vlz6qUfWEgGfpNuimaxHyC2JDl4nNG0omhLcPhzguB69egmOK+diHqbv//D0skw3PlhMvbYOSr3ZA2RHQHsh7eLn1xUCAwQKx1MkbvZyf8RKrldZNV+lsGlfYfZzNriIdNvywB5JbPQbkzYutVB3Ip3EjHxcSAX2wa2/11+aXCqo6e/kGXv0kJivr0jeI538bs/rO4OU2bFdH/46qJoWEGKV12FUh8qpcLk8zdTF8rxrPgPd6Rf2c+RzOesdVyYsAqkBqhR1Ls8kDn5pgUIw/W6DeS
- rRH0xoFT
- pgYmPyaF/Of14LTg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5E823160007
+X-Stat-Signature: sro35czdcgq6iunonq6w6b57koxqpgpc
+X-HE-Tag: 1774438582-305961
+X-HE-Meta: U2FsdGVkX19hP/F9Wg1cVtGRcopJvAD1FSf9cemA+xLHTGKRRw5IkR8l342kdqC0oKgShb8TmQhmXYvd4u6NhhJC9VN5XjaMo2u8QaZjIFXwZzUTAocuK+yfvK8R1BwRYPs6UYfAg02iKX4weuoL4fY3KBo8JqslM1kJ/U8cWWZpP0YydbuOnte//n8IzelGkkKoSJFor56vh5jIKZDzKreqppTFTNfHkUkXrHNYk2gJNd11Rzg2Y5Kn3FeOl33a3zSFPaM74TwBkaac0plVmY5nucTFYQfIQk6cjAnTy99IWpOuNVra/tnsYKJmE1B+FYpjjPmrzJ9UEr7UUIV7FbKjBEFTa+YZ4efH8WeephWEPuWgrzrvt3+/CD/q1bBl8QxGWEcoxQDuRSujS7tk9YnjVwjCwq2SRBtQNY16xsc/QdX6EjFtPrrKLXJgaUzjM1hBifgKRzLcOusejcieWGtXtr+vL4IBqJrWS1cDXNOSgHwW08OGerGMsIAGXlvygSd/WmTps9308Klw2h3wSc/jCVkLcu9YDiNJ2VU7nd5yIZqywKRacqwEjTuyBJPzofTB+uY+cncH3rFRrnGOP4k8tmydtybIf/4V67wPKoJUelTYOkGRM2EQsnZ0SAGtxSRuT5ZkhxourYD40wEbW7x/RbvVvj/b8nvRl+hWQto/9IyiwIaj/EyY9GjnRTla9SSDu6IXXQ1dQCnWtaiXSlChjp7iiv/v4uuotRJlkyksfMcWWxbluFNGzmk6nmy6uudyyCmQ9nzpHnK7YMk7EyLB8zfyX8A4IuTXq+TZ+055e6Gm6Jvu634/tn26TUnnADZyTQtweaKbWQiFP/kzBHKLM8O4gvp65N+VkqW1svHWnyoWHnxhfDl1rYRJ9SVYdzoaxw53jipVkW9VsWPk7QW+So/f07xfqS1/Cw244J/d1S9B9L6S7PNwgN+AcR6EwJgfkcuXnOJ0nKEqS3P
+ 0x5FDJ5U
+ z0D3S0nqVKHGasCUfw4fbJXiSqxOJUdxaopW+fAT6IkG+wt2eNqIByim7LaaORbedBJqwLby1/NPTpv6RYI6qjvT0XMhPTjKDYitUkVnl55pQA87E6OxB6hNXOaZdJT1L0fqIUb/MZ4K+vU1mnMIAG+7ZAB8vC8jSoF2cHTl3XUTDVRA629i7Q3cdnKiEg/kicqPTBVC92JHOADb3/7bHFW67Zhgpe8NOhB9ABuvKY9DCo9v4bxR4oimiDACbfzCA1t0Fnowp/t421f4E77VhdwgqFZ92OuKjh1p1SB8uS+Y0CYrh9NyP3NIQpxl03HloOna4QnQvvLIW6nWCUhLqdMBzJcxT8vuqfsV7ygMGrxCm91D1TxnJD/A5B9gF9cNJMqZrS9YxVtUUn1HooEGyvbZ4ddJz/QX+9o/jdZT/kgAn8QPxdVyvyW7bkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,61 +97,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---MCBoundary=_12603251136190191
+--MCBoundary=_12603251136201591
 Content-Transfer-Encoding: quoted-printable
 content-type: text/plain; charset=UTF-8
 
-We run Slurm on compute nodes with NFS mounts (NFSv4.1, NetApp).
-When a job is cancelled, processes with dirty NFS pages get stuck
-in D-state inside folio_wait_bit_common() because
-__filemap_fdatawait_range() uses folio_wait_writeback(), which is
-TASK_UNINTERRUPTIBLE. If the filer is slow to respond these processes are
-unkillable - we've found the only recovery in practice is rebooting
-the node.
+__filemap_fdatawait_range() waits for writeback using
+folio_wait_writeback(), which sleeps in TASK_UNINTERRUPTIBLE. On network
+filesystems (NFS, CIFS, 9P) the server can stall for minutes or hours,
+leaving processes in unkillable D-state. The only recovery is a node
+reboot.
 
-The patch switches to folio_wait_writeback_killable() so SIGKILL can
-interrupt the wait. Writeback itself continues on the server, we just stop
-waiting for the ack. All 6 callers of __filemap_fdatawait_range() detect
-errors independently via errseq_t / filemap_check_errors(), so the early
-return doesn't suppress error reporting.
+Replace folio_wait_writeback() with folio_wait_writeback_killable() so
+that SIGKILL can interrupt the wait. On fatal signal, release the folio
+batch and return early. The writeback itself continues on the server --
+only the client-side wait is interrupted. The dying process never
+inspects the return value, and other processes get correct error
+reporting through errseq_t (mapping->wb_err) which is set by the
+writeback completion path independently of this wait.
 
-The tricky part is a re-entry through do_exit(). Making the wait killable
-alone isn't enough - we hit this in testing:
+Additionally, skip the writeback wait entirely when the calling process
+has PF_EXITING set. This handles a re-entry trap discovered in testing:
+when SIGKILL wakes a process from the killable wait, do_exit() sets
+PF_EXITING and then exit_files() closes file descriptors, which on NFS
+triggers nfs4_file_flush() -> nfs_wb_all() -> filemap_write_and_wait()
+-> __filemap_fdatawait_range(). At that point wants_signal()
+(kernel/signal.c) rejects all signals for PF_EXITING tasks -- including
+SIGKILL -- because the PF_EXITING check precedes the SIGKILL exception.
+The second killable wait would therefore block forever. Checking
+PF_EXITING at entry avoids this: the process is dying and has no use for
+writeback confirmation.
 
-  1. SIGKILL wakes the killable wait, signal is consumed by get_signal()
-  2. do_exit() -> exit_signals() sets PF_EXITING
-  3. do_exit() -> exit_files() -> nfs4_file_flush() -> nfs_wb_all()
-     re-enters __filemap_fdatawait_range()
-  4. wants_signal() checks PF_EXITING *before* the SIGKILL special case
-     (kernel/signal.c:951 vs 954), so it returns false
-  5. No signal can wake the second wait -> stuck in D-state again
-
-The PF_EXITING check at the top of the function avoids re-entering the
-wait entirely. This is the same pattern used in mm/oom_kill.c,
-mm/memcontrol.c, block/blk-ioc.c, and io_uring/.
-
-Reproduced with iptables DROP on port 2049, confirmed the killable-only
-revision gets stuck on re-entry, and the PF_EXITING + killable revision
-kills cleanly.
-
-Sending as RFC because this touches the generic writeback sync path in
-mm/filemap.c rather than being NFS-specific. NFS can't really fix this on
-its own - it reaches __filemap_fdatawait_range() through
-filemap_write_and_wait() and doesn't own the wait. But I wanted to get
-guidance on whether this is the right place for the fix, or if you'd prefer
-a different approach.
-
-Best regards,
-
-Rushil
-
-Rushil Patel (1):
-  mm/filemap: make writeback wait killable in
-    __filemap_fdatawait_range()
-
+Signed-off-by: Rushil Patel <rushil.patel@gsacapital.com>
+---
  mm/filemap.c | 14 +++++++++++++-
  1 file changed, 13 insertions(+), 1 deletion(-)
 
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 406cef06b684..d348f1dd75f9 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -515,6 +515,15 @@ static void __filemap_fdatawait_range(struct address_s=
+pace *mapping,
+ =09struct folio_batch fbatch;
+ =09unsigned nr_folios;
+=20
++=09/*
++=09 * If the process is exiting (PF_EXITING), skip the writeback wait.
++=09 * During do_exit(), nfs4_file_flush() re-enters this function, but
++=09 * wants_signal() rejects signals for PF_EXITING tasks so a second
++=09 * SIGKILL cannot wake us from the TASK_KILLABLE wait below.
++=09 */
++=09if (current->flags & PF_EXITING)
++=09=09return;
++
+ =09folio_batch_init(&fbatch);
+=20
+ =09while (index <=3D end) {
+@@ -529,7 +538,10 @@ static void __filemap_fdatawait_range(struct address_s=
+pace *mapping,
+ =09=09for (i =3D 0; i < nr_folios; i++) {
+ =09=09=09struct folio *folio =3D fbatch.folios[i];
+=20
+-=09=09=09folio_wait_writeback(folio);
++=09=09=09if (folio_wait_writeback_killable(folio)) {
++=09=09=09=09folio_batch_release(&fbatch);
++=09=09=09=09return;
++=09=09=09}
+ =09=09}
+ =09=09folio_batch_release(&fbatch);
+ =09=09cond_resched();
 --=20
 2.47.3
 
@@ -170,71 +188,78 @@ ratton Street, London W1J 8LA, number OC309261.
 GSA Capital Services Limited is registered in England and Wales at the same=
  address, number 5320529.
 
---MCBoundary=_12603251136190191
+--MCBoundary=_12603251136201591
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/html; charset=UTF-8
 
-<html><body>We run Slurm on compute nodes with NFS mounts (NFSv4.1, NetApp)=
-.<BR>
-When a job is cancelled, processes with dirty NFS pages get stuck<BR>
-in D-state inside folio_wait_bit_common() because<BR>
-__filemap_fdatawait_range() uses folio_wait_writeback(), which is<BR>
-TASK_UNINTERRUPTIBLE. If the filer is slow to respond these processes are<B=
-R>
-unkillable - we've found the only recovery in practice is rebooting<BR>
-the node.<BR>
-<BR>
-The patch switches to folio_wait_writeback_killable() so SIGKILL can<BR>
-interrupt the wait. Writeback itself continues on the server, we just stop<=
-BR>
-waiting for the ack. All 6 callers of __filemap_fdatawait_range() detect<BR=
+<html><body>__filemap_fdatawait_range() waits for writeback using<BR>
+folio_wait_writeback(), which sleeps in TASK_UNINTERRUPTIBLE. On network<BR=
 >
-errors independently via errseq_t / filemap_check_errors(), so the early<BR=
->
-return doesn't suppress error reporting.<BR>
+filesystems (NFS, CIFS, 9P) the server can stall for minutes or hours,<BR>
+leaving processes in unkillable D-state. The only recovery is a node<BR>
+reboot.<BR>
 <BR>
-The tricky part is a re-entry through do_exit(). Making the wait killable<B=
-R>
-alone isn't enough - we hit this in testing:<BR>
+Replace folio_wait_writeback() with folio_wait_writeback_killable() so<BR>
+that SIGKILL can interrupt the wait. On fatal signal, release the folio<BR>
+batch and return early. The writeback itself continues on the server --<BR>
+only the client-side wait is interrupted. The dying process never<BR>
+inspects the return value, and other processes get correct error<BR>
+reporting through errseq_t (mapping-&gt;wb_err) which is set by the<BR>
+writeback completion path independently of this wait.<BR>
 <BR>
-  1. SIGKILL wakes the killable wait, signal is consumed by get_signal()<BR=
->
-  2. do_exit() -&gt; exit_signals() sets PF_EXITING<BR>
-  3. do_exit() -&gt; exit_files() -&gt; nfs4_file_flush() -&gt; nfs_wb_all(=
+Additionally, skip the writeback wait entirely when the calling process<BR>
+has PF_EXITING set. This handles a re-entry trap discovered in testing:<BR>
+when SIGKILL wakes a process from the killable wait, do_exit() sets<BR>
+PF_EXITING and then exit_files() closes file descriptors, which on NFS<BR>
+triggers nfs4_file_flush() -&gt; nfs_wb_all() -&gt; filemap_write_and_wait(=
 )<BR>
-     re-enters __filemap_fdatawait_range()<BR>
-  4. wants_signal() checks PF_EXITING *before* the SIGKILL special case<BR>
-     (kernel/signal.c:951 vs 954), so it returns false<BR>
-  5. No signal can wake the second wait -&gt; stuck in D-state again<BR>
+-&gt; __filemap_fdatawait_range(). At that point wants_signal()<BR>
+(kernel/signal.c) rejects all signals for PF_EXITING tasks -- including<BR>
+SIGKILL -- because the PF_EXITING check precedes the SIGKILL exception.<BR>
+The second killable wait would therefore block forever. Checking<BR>
+PF_EXITING at entry avoids this: the process is dying and has no use for<BR=
+>
+writeback confirmation.<BR>
 <BR>
-The PF_EXITING check at the top of the function avoids re-entering the<BR>
-wait entirely. This is the same pattern used in mm/oom_kill.c,<BR>
-mm/memcontrol.c, block/blk-ioc.c, and io_uring/.<BR>
-<BR>
-Reproduced with iptables DROP on port 2049, confirmed the killable-only<BR>
-revision gets stuck on re-entry, and the PF_EXITING + killable revision<BR>
-kills cleanly.<BR>
-<BR>
-Sending as RFC because this touches the generic writeback sync path in<BR>
-mm/filemap.c rather than being NFS-specific. NFS can't really fix this on<B=
-R>
-its own - it reaches __filemap_fdatawait_range() through<BR>
-filemap_write_and_wait() and doesn't own the wait. But I wanted to get<BR>
-guidance on whether this is the right place for the fix, or if you'd prefer=
-<BR>
-a different approach.<BR>
-<BR>
-Best regards,<BR>
-<BR>
-Rushil<BR>
-<BR>
-Rushil Patel (1):<BR>
-  mm/filemap: make writeback wait killable in<BR>
-    __filemap_fdatawait_range()<BR>
-<BR>
+Signed-off-by: Rushil Patel &lt;rushil.patel@gsacapital.com&gt;<BR>
+---<BR>
  mm/filemap.c | 14 +++++++++++++-<BR>
  1 file changed, 13 insertions(+), 1 deletion(-)<BR>
 <BR>
+diff --git a/mm/filemap.c b/mm/filemap.c<BR>
+index 406cef06b684..d348f1dd75f9 100644<BR>
+--- a/mm/filemap.c<BR>
++++ b/mm/filemap.c<BR>
+@@ -515,6 +515,15 @@ static void __filemap_fdatawait_range(struct address_s=
+pace *mapping,<BR>
+ =09struct folio_batch fbatch;<BR>
+ =09unsigned nr_folios;<BR>
+ <BR>
++=09/*<BR>
++=09 * If the process is exiting (PF_EXITING), skip the writeback wait.<BR>
++=09 * During do_exit(), nfs4_file_flush() re-enters this function, but<BR>
++=09 * wants_signal() rejects signals for PF_EXITING tasks so a second<BR>
++=09 * SIGKILL cannot wake us from the TASK_KILLABLE wait below.<BR>
++=09 */<BR>
++=09if (current-&gt;flags &amp; PF_EXITING)<BR>
++=09=09return;<BR>
++<BR>
+ =09folio_batch_init(&amp;fbatch);<BR>
+ <BR>
+ =09while (index &lt;=3D end) {<BR>
+@@ -529,7 +538,10 @@ static void __filemap_fdatawait_range(struct address_s=
+pace *mapping,<BR>
+ =09=09for (i =3D 0; i &lt; nr_folios; i++) {<BR>
+ =09=09=09struct folio *folio =3D fbatch.folios[i];<BR>
+ <BR>
+-=09=09=09folio_wait_writeback(folio);<BR>
++=09=09=09if (folio_wait_writeback_killable(folio)) {<BR>
++=09=09=09=09folio_batch_release(&amp;fbatch);<BR>
++=09=09=09=09return;<BR>
++=09=09=09}<BR>
+ =09=09}<BR>
+ =09=09folio_batch_release(&amp;fbatch);<BR>
+ =09=09cond_resched();<BR>
 -- <BR>
 2.47.3<BR>
 
@@ -262,6 +287,6 @@ thorised and regulated by the Financial Conduct Authority and is registered=
 <br></font>
 </body></html>
 
---MCBoundary=_12603251136190191--
+--MCBoundary=_12603251136201591--
 
 
