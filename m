@@ -4,96 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43AE0109C036
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:29:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD8BD109C03A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:34:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADF516B0092; Wed, 25 Mar 2026 12:29:14 -0400 (EDT)
+	id 170AF6B0005; Wed, 25 Mar 2026 12:34:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A90B06B0096; Wed, 25 Mar 2026 12:29:14 -0400 (EDT)
+	id 122326B0089; Wed, 25 Mar 2026 12:34:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CD016B0098; Wed, 25 Mar 2026 12:29:14 -0400 (EDT)
+	id 010816B008A; Wed, 25 Mar 2026 12:34:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CDC56B0092
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:29:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F37C1B8E5C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:29:14 +0000 (UTC)
-X-FDA: 84585120228.19.542A4AD
-Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 250151C000C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:29:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=Q+mnHiIz;
-	spf=pass (imf18.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774456152;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E1BDB6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:34:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90CD91B756E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:34:18 +0000 (UTC)
+X-FDA: 84585132996.29.F04484D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C3F8D8000B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:34:16 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y7h94x2k;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774456456; a=rsa-sha256;
+	cv=none;
+	b=rMMLRlvLRvJnxU1S9YgSzvb6ubLI5riWCZP6aMMLpK/tJNzQ2ztX3yjemlJqn9qbASpUgj
+	vrdfdS5XTU2RYTA57TJ4rAHNdjJDRfRMsokJeqHmC/JKm0yya95BoUP9jXlb2gWoGNdXPW
+	qCaCkhonx9xuM5GjP/pelnAqzig4NMg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774456456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oeL6ks64Ze/pGwHs2qvXBTZpnyzzF7fV/OGrrVTI+fE=;
-	b=ruGtCa/THvErpb1O1rVifKQLjjaOqUqiGnE1kjLn71cKRiHNqgwLo8KHHgdXgg+aUwxHgU
-	RS+kYnVAEDoPp1FN63MryHtz3DuVoQHnA8d/PJnvPL1JU3ULCKoCW393faZWuvj6shRgjL
-	LMhnEYhfZOn4mykzWUY+DlxLDODuatw=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=Q+mnHiIz;
-	spf=pass (imf18.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774456152; a=rsa-sha256;
-	cv=pass;
-	b=5w/Fc9+qD3t5SKRgPvBAIwd4gh9NbI+zqiWOKtTD1nHHyifWXP+eYOLxWFvYCQOI+sITe7
-	gK0V7la2dOkNk1oTUL1xQTjs4KHPRiFxr2d3p0dbXdzZp1GXMjLyIvRVXmS/rbl37iKlSz
-	HAQWXReIwUCh1Q2RI0wwD6oumbcaLe0=
-ARC-Seal: i=1; a=rsa-sha256; t=1774456141; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=gRsaQRDiy+FmYqh9n3a7FIuikyYTYiHVKE/k8Esol/HJL4rjLIYnazzlJj1jVkcANeODLSkCuTUMbKV4lSBHZOaExZQ/Acz7m7yNWr4VZ7swOGFoZmkZItumamGVph8m15G+1lLwrVCSQHyeZbLUVonXucG16t0TGzWvPjBIi1o=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774456141; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=oeL6ks64Ze/pGwHs2qvXBTZpnyzzF7fV/OGrrVTI+fE=; 
-	b=PA/AZNbOoW+DkhM8Kn1+rOBNBhG0IZSP546CuAiA5hoCeqGK0FVNEGWHWioMGAnfzCFLOcDnd3qtcIySIMo12EKEy0//lcvnjTVi9SBfEs0PzULSv6vgHK6Iy7mDHfD+UuslwpGy2EtvRVxrm2pYMPjVcFEdGodFaAByOKDR5Z0=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774456141;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=oeL6ks64Ze/pGwHs2qvXBTZpnyzzF7fV/OGrrVTI+fE=;
-	b=Q+mnHiIzlSoEzqFyrU/ucAwSjef8B716hAKKXSG/8GaOq5LOaVbGlQqb/DCllA6l
-	rXqv+Wpfk088e4oPy4C2dYI+W3YkqgBHp0wu/luNovyRcvGGIwlRLK9osY8oOSC4nIh
-	pYZN27RDo/NKdM5R3sQVQ2mvDid+I5H3RSk55RZI=
-Received: by mx.zoho.eu with SMTPS id 1774456138981542.036524592639;
-	Wed, 25 Mar 2026 17:28:58 +0100 (CET)
-Date: Wed, 25 Mar 2026 15:44:46 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: (sashiko status) [PATCH 0/3] mm/damon/core: small cleanups
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260325145827.88239-1-sj@kernel.org>
-References:  <20260325145827.88239-1-sj@kernel.org>
-Message-ID: <645AE1AF-0BA6-47C9-9B53-058F21DDB327@objecting.org>
+	bh=Rre2cOdgM+E9HHigvGd1CwNndTiuqrhdoEqYsnNT7cw=;
+	b=mdnXUOZ7sIEHOj+zUrEEFIuhUc+HBT52pCOYiR+FEFNByqsbEb1Y/+pmPEBJTzGCDNXdFh
+	k2g4g0sl/XsekliPG4z1zpos6kQRssnPvrtTvegpBk2xQIPTA2srf+5AA5PXcvNNiYRldN
+	vPdRraf/ObUSWO9+YRM3qkgAdUsI97Y=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y7h94x2k;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C37260121;
+	Wed, 25 Mar 2026 16:34:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDBFC4CEF7;
+	Wed, 25 Mar 2026 16:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774456455;
+	bh=EK+MXobnSf1BBibce4fu/sJoIEkh81eUcMOgGablWuc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y7h94x2kdDHczeELc5j9D4V4ZkNKjvFG0ghhN/UJqJUp1YSldk7TY8Y89o93EpPd/
+	 UYgGijBvukwnDYfccGvcD+TpFvk9QvJadmXSam6z+iGy9GTQEPcSxFG0J8i5ybWvKj
+	 J0as3Klj9WNbZc1uXs71rW5QsAsB9WGgNZQ3bhwrpMA2I6kWBFRRDS96xN/iCVYZ8M
+	 Dnhs9dDmTZuoLv1Yg9s7NhquLHif+p/HmcTLvRht81fNjyH2N/+fv/aK6Bsc6qYLlo
+	 9rNnxq/VvGFuo6jMNsUrlRjbKBf3nPyskonKjIZiv2yVKpsMcbQfRjl3+akdMcjtkT
+	 Qle77GdWeZ41g==
+Message-ID: <cbc7c2d7-963e-4630-baf5-287fb127774f@kernel.org>
+Date: Wed, 25 Mar 2026 17:34:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 250151C000C
-X-Stat-Signature: 8ohpnhbt1dhsnyfirepj1wa9y9sw54op
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] vmalloc: Optimize vfree
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Nick Terrell <terrelln@fb.com>,
+ David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ Ryan.Roberts@arm.com, david.hildenbrand@arm.com
+References: <20260324133538.497616-1-usama.anjum@arm.com>
+ <20260324133538.497616-3-usama.anjum@arm.com>
+ <1D88CFF0-8A74-413F-9A6A-39E27B760AE1@nvidia.com> <acOjIcqyIVY9KNn0@milan>
+ <a79ff8ba-ed4a-43d0-9c4b-d2883a5c48e8@arm.com> <acQKZBqTjpm6-k2f@milan>
+ <84f14a13-6236-47ef-afc5-e168d16caeec@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <84f14a13-6236-47ef-afc5-e168d16caeec@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774456151-216020
-X-HE-Meta: U2FsdGVkX18Q+zzlnT0CvuCCrpgnoTvHdPtKEh34McPY8ZB9L3cgUEvXfIfTvsHY79cjDiKVLHMYLU/BDHLbGmSsZgARNLOnDcw05vowl1m2psFBaf4TX0KPuqAwBaG7C9Lj5S7t23Su+2y7bFKNg9t3c2BXRjKF+068GfgS+xIfn+o3+9stZaf+vF5Mg0dZ/ZIohr4oVpUwJQ+XoJSSYl3r228Zq2nqgYAmykCQ3lqtOJmDm10xCXAurFYm2+xFA2+cRK9JIb4dUJJqDtsOsINvStVD86c3XuJKbXm8zStGGBn5G+nAslb3xfQpPxxQ+gdT17IReq8ofsjVl5KTqq3KemepyAG6LEjXCcOCfrWKdoetyxAuyFBoTIRFbNuvQIordHLGrWiutTeIh6vWlqmJNqMWTDjR7iH+nGUnIFiIvB/9gg1RThEIM4wUonEt9M3pzxe6m8yUGNGN7Cii2nTLDBNdNE2S6lkqi7xjopq8QUsobd74QCXpzjMOb4gXqZ4mIlgHxAKvxwKJ3PYuhGEtpN7rmguGWMFTAnNCYRqXQ5UJ9TSe2J8j1UzmMDeqXFZa8gjiki+9Y2WLuNgdoyUe0oi2YVPB8rul7OuzRXNijdBbuGcHYnm5bHjzI9ZhdroKiQ2PBkcYdBc+GNHmuODb9jX2dCn8vDgJW7Lsn41icHXn0QMyHJQ7FhJ2X60um0aF8OD/VXegJsjYrlvvzdvXH3VEImJdpunOwp6dXfuVPX7SSLsvrK8GjyN7d4szPA4nBkqv/ViMHKzx87pOtkaf4ArDll4ezz60SZZmCpV7KyKboFcsM7vWfSuHcEJY/+V78RAGxJKOJT4bX2YbDuHJ+LJITE4O2ZUzwShzUgC9c0jppaZtREFJC6thqaaBs+/FmDGtTpAhl2PGbuduibCahOvm0gZuA3Dpt1sYQNlfeogphXH6e7WOgW31jUAdQxhOEclms0kxeVIkPJ1
- KC2vpMja
- vHeHBoZI/LhfD+xwHO3m8BXJNShCT5oqItnZyw5W+BP1oyBHmTS8zHWzjEaSb0LLdng74gz03w5JVjer00hAz+JeZJVJ+rzWf2zgiP1WrlWxxS6U/vkkBUykVBHc0xT+utgQ0Sgpa5IP0XHIsqbxYz4Dx4+Fa9t8TGNtPCjSx9szSHRrWTKkzokpzv6kyIGf8Od6H1LBkilOm8zfLdbSr8qSt1PLP1TL9o55w0YRo53tXRi0Ox8hTIAhobzG1WH0IXxIBaBw1Apt34eqYtgeTJQnZaaTAhb29NO860yl4oSkPWmPMboiFpN+tLy9jUhwGk0KrLRonXe+Q33HrXNoYs4beHg7OwV6x8nyz2jDX4GpeAGQDH+EdkoFzwPx8Qet5W5HbNthEFinrigVgUOwIf2OlZ1JshBniRqXgWZV+LBYF34cnsv7OPrUKiFYROxkSrn6JbKMYjImux1lwPOjiz524TGkZD2hv3A34KikTiwYbg9DMnhVtKbcf8Oxx5grL50IsDJQFMwbFLNvwQun8WMGJFICs9My4FpTQZcGvF6gpCpQmOQMrPBhUOV0kGrPhYr+8
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C3F8D8000B
+X-Stat-Signature: fxhj3zi3596fkfm54fu3s919bwb44agn
+X-HE-Tag: 1774456456-445903
+X-HE-Meta: U2FsdGVkX1+OmvNZKNh5ZbwCxPs3Grsw9AM0ua6/rRKmd//Cji+/0ZzM9PkuSWIcknY6awcTt7RcJWs9Fxvzpvp23brZgnWnozJwxANtOpwXmFP8pvCJIJES8H5PpYMfN3oHH4tor+M2ADYHlxkp8YrBgsUbAVrGLcVzhzkmUyg7GwDQ2HXXxX7WosieAvUzyIlYcCDDK62rMixSDzQwYWqrLMldq0BlPH5nEWHFp77h1Q8JCfZMbKoDp7VymWb9k2oaeFKwP1Uoy8nCimbOlI2eV80f1PlYLH6W9tyfczNYTo7Y10qCM1QT3CnC2a7uMAbAcEEpg0v6kHq7xY9sdwk82MGABpQGe0pWkqyG9hQ4HcYkyvqPHFI5sq8BbND+AOchp10NnxlM9HFEdjhaIAvEJRUJm+nidcHp5oERuV2kt6WMag+y7lQa8pOvDZOEPEhLXDnzfgD6ZgOuoTKAkac0vNQVn6HlCOpyNMoUTZP7HENKfDu02e7QM5CS+DGICY0XEGoTRwzxdChG8yilLbJG4R4jd7OGPXFkLF1PRz5xDtW8QUL8JKnpGc2SFzlxyJ4jPIwW/eMgT9uKFlhc4f7IkE7p5iJnMRWk7htsvxcs6Hk3qdLZQZ+ONLtyXLysDjUZWpTtav4qJYcILIy03oluAL1Sl7P7hwtS9r1fRm2xPytdIMLqyBMWMMeMHmypz2h8Q8AaatWm9ZLPskrJUC5JQyccBCbNZjOdSWltFhssKv7CaL2y1o0EaBKrnhsTNda0rz17T3QurYB8FlOLXeq7q9QLiFb0PbWISg+rSdvypl8ia1yhp4Vr21hretReDt/VMz1WVjpaAujjm7TPx/2q5Q6J+rzRam0zKt/eXxA9uoc6S2YLtgMPZB9tLL7r0/pAYFTTzC49l9+IEmNJ5s5EjzMtYL5lSlUIyrXZWimWxt7h7l10N4hHiRbrH6GhQ6IB7/pHl0tW/RdAeNM
+ gFJS7Tlo
+ kkDBokDdqw0vpBBtyPuhWykKdLGII5p6cgWZzvVnRdVrdJ/gy55K0SCuhT4tQjYMJH3tQ0EsrCBoFqjs5T9Qpa8ph4thV7Tyribif/Xjdr7hQjeHL2EXL04V1fco7O/rThoBlfP+7iVjZCWKlX6/7YW1PxwrzvdlLPM18l3aASYVn5QoepxWWSb+3jYc7NCwfxMbmvfC46xc/csLw9v7LwmE+fOdKELIn+TAOBSzYl566riaAqkwaRrz3LepRpN0dy1S7JA0+lsdMXd0+Ivfu0OcyMrfe8wr0TZRhRBmbUvmuyEJ8kqNiYyFiZi59uUkwyH+YB6ToL66ZiSA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,37 +149,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 3/25/26 17:25, Muhammad Usama Anjum wrote:
+> On 25/03/2026 4:16 pm, Uladzislau Rezki wrote:
+>> On Wed, Mar 25, 2026 at 03:02:14PM +0000, Muhammad Usama Anjum wrote:
+>>> Sorry, I didn't get it. How does having cond_resched() in this function
+>>> affects __free_contig_range()?
+>>>
+>> It is not. What i am asking is about:
+>>
+>> <snip>
+>> spin_lock();
+>> free_pages_bulk()
+>> ...
+>> <snip>
+>>
+>> so this is not allowed because there is cond_resched() call. We
+>> can remove it and make it possible to invoke free_pages_bulk() under
+>> spin-lock, __but__ only if for example other calls do not sleep:
+>>
+>> __free_contig_range()
+>> memdesc_section()
+>> free_prepared_contig_range()
+>> ...
+>>
+>>>
+>>> The current user of this function is only vfree() which is sleepable.
+>>>
+>> I know. But this function can be used by others soon or later.
+>>
+>> Another option is add a comment, saying that it is only for sleepable
+>> contexts.
+> Thank you for detailed response. I can move cond_resched() to vfree() and make
+> free_pages_bulk() allowed to be called form sleepable context. But I feel the
+> current implementation is better to avoid latency spikes. I'll put explicit
+> comment that this function can only be called from sleepable contexts.
 
+That's probably good enough for now. It can accept arbitrarily large
+areas, so the cond_resched() in there is the right thing to do. :)
 
-On 25 March 2026 14:58:26 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->Forwarding sashiko=2Edev review status for this thread=2E
->
-># review url: https://sashiko=2Edev/#/patchset/20260325073800=2E141756-1-=
-objecting@objecting=2Eorg
->
->- [PATCH 1/3] mm/damon/core: deduplicate scheme index lookup into helper
->  - status: Reviewed
->  - review: No issues found=2E
->- [PATCH 2/3] mm/damon/core: use damon_nr_regions() in damon_commit_targe=
-t_regions()
->  - status: Reviewed
->  - review: No issues found=2E
->- [PATCH 3/3] mm/damon/core: move last_nr_regions from static local to da=
-mon_ctx
->  - status: Reviewed
->  - review: No issues found=2E
->
-># hkml [1] generated a draft of this mail=2E  It can be regenerated
-># using below command:
->#
->#     hkml patch sashiko_dev --thread_status --for_forwarding \
->#             20260325073800=2E141756-1-objecting@objecting=2Eorg
->#
-># [1] https://github=2Ecom/sjp38/hackermail
->
->Sent using hkml (https://github=2Ecom/sjp38/hackermail)
+-- 
+Cheers,
 
-
-
-Yay! No regressions
+David
 
