@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41B1CFEA82C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 07:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374CDFEA82F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 07:38:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A106B6B0089; Wed, 25 Mar 2026 03:38:20 -0400 (EDT)
+	id B4B866B0005; Wed, 25 Mar 2026 03:38:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C0C46B0005; Wed, 25 Mar 2026 03:38:20 -0400 (EDT)
+	id AAB1B6B0093; Wed, 25 Mar 2026 03:38:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D6F66B0092; Wed, 25 Mar 2026 03:38:20 -0400 (EDT)
+	id 92C626B008C; Wed, 25 Mar 2026 03:38:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CB5C6B0005
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D4466B0089
 	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 03:38:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21E7A1B89AF
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 284985ADC4
 	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:38:20 +0000 (UTC)
-X-FDA: 84583782360.02.053A8F1
+X-FDA: 84583782360.29.565C3B6
 Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3093E14000B
+	by imf08.hostedemail.com (Postfix) with ESMTP id 16351160004
 	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:38:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=Fx1OVqB6;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=fvjLZYLl;
+	spf=pass (imf08.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
 	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	spf=pass (imf09.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
 	arc=pass ("zohomail.eu:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774424298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0kayvcEZaNNI6TyXOdbY7FEWhmp/oITq1MJpxJ5exok=;
-	b=lbI6uvb2K1yy3ksE41uJSxrxUQsqu0G9T9c4sp2xBasK9wR49/IRqVTSOGJT15B6QAS/PC
-	WDOo9+G56OlyIWQk9Rn6Q+saAxb+pu0IlX4BmLFdQVS0cRw6H6ZldpOwnMFdnaXYuCanVf
-	se8DtN7E5RHqmI3CPtZVKuIDgowOQQg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UiDWbq+Vesxlf62C23Hm8indkustIaG2EimGmGm7dUo=;
+	b=6XTaUfceg7/UKOF+j7rK8O0sIPqssS9e1r3kwSgSTts+cN2mgvuvAK+TfF+pFOZu9yAzQE
+	8Au59N0u9AyURe8nHd/MB2GBV2QznoGaqFoY2e/nXaKfucvoj+iO71KCvvAhqpQFr62zKu
+	rbAlQBf/nQdw+t+AiAQPdL0hLO14qAM=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=fvjLZYLl;
+	spf=pass (imf08.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
 ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774424298; a=rsa-sha256;
 	cv=pass;
-	b=DOkvfFQxOeJdF2KcU2AP2LUz+NTzHC9qmC2PVp3y5KUw72WQdHQh8E5eKqKOVhZdaiC4HW
-	KYT/Z3V+6988v7q+mqt2Qi70oAV6pXePdXJowN42sUDoORa/PF6naX4TEEVF0DxxmqYd5H
-	RFgusR9jSlcNCYeqpOR/eieg+HlKzOE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=Fx1OVqB6;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	spf=pass (imf09.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=1; a=rsa-sha256; t=1774424284; cv=none; 
+	b=g2VZN8le8fzax7zvzLPEwK+lwCU+Zriz/nNi2OXx3cV4aoWRDD8nD0bEn/Q1XmfehtYL2C
+	MuZkuA3Oe++OZMzjgTP6tAS8i/kTG9IysKH1YlSvAsqXRkdbM0B4dHfZl2VUxe2MJw5S5X
+	QXWCoGGIBWlK4nx2k+g/ILOXi1cdSPI=
+ARC-Seal: i=1; a=rsa-sha256; t=1774424285; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=QPL3xoec3+J16npX/yz/2M5R3W1E6C3tR1py4XzMlTvaCFq4LUuzPH2gTSiT+3/ZHadMhEuco1CCIiEHXBeEvrShTlo6BrX49OBwKJ7TDdQkx7zuNjrLcRmptyCPkRTQVJD/o3pPe19zjt4wNowSXcvPqpHoJsbU6E17CfLrM4Q=
+	b=YUzINS5O5bYJ12stM1hz4afv2mWnJwNouWzE9tsnTZwfsF/eo4twLFV1MLog0ODzKPR+tkmtHU8Eqdhjv9NLRcSkQL22vn66WmaAZsyVvHGANpVynkp+a9M6LyONtyW4WtKdjF7II08qVdSkqU7RBsSxVyZRl/nZG9oO4JPy6qg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774424284; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0kayvcEZaNNI6TyXOdbY7FEWhmp/oITq1MJpxJ5exok=; 
-	b=gVGMeEifXtiSW/dOGM8LOOBNr3STQQ8iAcdz12Np9Tr/zLl6x3XJrJar1/BWWOePbbkQA/3LgOAwnEEiC6xhXIEmrYM0llK/ey0iVpBDI2Xb+4nxJDmM1suFdA/32+dBhXkgLE0GY4RwoKQ/MN3oVAsEmAFt/6JCEn+GRA7Rvvc=
+	t=1774424285; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=UiDWbq+Vesxlf62C23Hm8indkustIaG2EimGmGm7dUo=; 
+	b=NUMZ631GPwwuMUAfMzWO4/FTB8pp6rxMkVrU/dwxVIs6/RB9ipKwBYIa7GX9DREJbgtvN/2YL9P3GJ3Shgwd8ffiswCDVwJSCWmMTtni3WCgMpL/XkCQQ+grEB398DHEGvVfw+V+RVhDuvHGeAAC+WryF5wsMsqckVsowZSHmqw=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=objecting.org;
 	spf=pass  smtp.mailfrom=objecting@objecting.org;
 	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774424284;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774424285;
 	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=0kayvcEZaNNI6TyXOdbY7FEWhmp/oITq1MJpxJ5exok=;
-	b=Fx1OVqB6WtNEBn8pwvSs1o03QLWi9WcRTJReosKdlkqH1w27ArGsuvpYIAkH2G2C
-	fzdSrB1r/2qqBuKHu2Thr1mlXtPWmuoa9i3eSqHm62RaKTQK5Xl7xBpyB0BWgnwjOXY
-	XPrjkz6DCePqPIrr/KqeFWPy6xEKmmUBwHMd5kfE=
-Received: by mx.zoho.eu with SMTPS id 1774424281840800.3483260836631;
-	Wed, 25 Mar 2026 08:38:01 +0100 (CET)
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=UiDWbq+Vesxlf62C23Hm8indkustIaG2EimGmGm7dUo=;
+	b=fvjLZYLlsfhzXVv87/zGnHVe1ANmLrP76ixhW6UGJ7FKpYKZyqll5IHXQKv8WypX
+	U7liFT/wyr8BdcF0vqJU3AjvthuXoTCW0v0JhJ3cuR1T7i7C8VJiJb0RMmTCBQTAlsi
+	ppRTPmPX6USpkm4QEjn3aAYUbGZLrM8N/UxTcA8A=
+Received: by mx.zoho.eu with SMTPS id 1774424282494241.87438479042987;
+	Wed, 25 Mar 2026 08:38:02 +0100 (CET)
 From: Josh Law <objecting@objecting.org>
 To: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -77,21 +77,23 @@ Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Josh Law <objecting@objecting.org>
-Subject: [PATCH 0/3] mm/damon/core: small cleanups
-Date: Wed, 25 Mar 2026 07:37:57 +0000
-Message-Id: <20260325073800.141756-1-objecting@objecting.org>
+Subject: [PATCH 1/3] mm/damon/core: deduplicate scheme index lookup into helper
+Date: Wed, 25 Mar 2026 07:37:58 +0000
+Message-Id: <20260325073800.141756-2-objecting@objecting.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260325073800.141756-1-objecting@objecting.org>
+References: <20260325073800.141756-1-objecting@objecting.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 3093E14000B
-X-Stat-Signature: b9ouws45orpgxfs6e4mxas83f3an4n33
+X-Rspamd-Queue-Id: 16351160004
+X-Stat-Signature: 7drsfnbp7jccbb3pf5tuaqtxiajusmdp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774424297-688755
-X-HE-Meta: U2FsdGVkX18MPmDtK1t30KbcThzyRVuZ0kIUKRo5xMkVVBynk/AW7R5X6dlhPM8iiQmyDXajh6oAfprn1tTKpcFEYSAbC+bkOIuWslviI4ZPFEiVbnuNxQA/Go/pTrnSpfdXNzOHK1qYYxFwxpbkQRQwfeCkAw2TjO+pwzAy0TOz5tfI0jzWTL+hNzLEBBUWR4+hhaE0Q0xUVFjR2k9FRO0Ru8vdHQxcEx1EZwBO3YDCKikz9LNJv7UktIwaXh3BSHQ9ywwh5bsCktDa85295ljRia8pf2vkhfXSMWK1YiZVhvmj6GmSg5Bf71YSlcxl9cvZ5z7KGi9TcQ+hvaGVnOC9ajDYxFPYf7qE3/6bT+qxBYfQrvqXkdCwK53T+/QU+77XGZflTsN6qSq/4nJ14rKkViJtd4fQ7X4TPaIjbvDrKXa8a4wyHdCugIU98mbBx4icz//ythex1NTyJbeUpXef3cXekmMb1//cHHOCp/rT8XY6cShrPyyDdnP24WNCPET9xdhJff/t/ARzHtP9MaIr/0XjfbVLGUholUZ6sRmmVh7JSEmbtuGCPQ/9bXGImzK/IYLaUkfwmj7QN7MSUOe/w+dJ9SX3sPPBy3+kX0BZ7yjCc9xLSH2VqQ9NZ0PTrIbmUhQebPVQgYtM1+hdR2ET0xgQjtAuCt4DGnu/4Hbb6vN1azwjizxBR/EREQR03c8zxeyPZeowvZbWnqbmamWVfdfdzlXfs74zNqCYUhiAmEp4oJbTRCV6JdO8jNika3RqNksU23aRbgTyYwdwtaV8WQv1OfqGTpiI4jBZKW2jATtLCHzVULhf4CmcF5HXptfa52SQLvD9INo6BdzZU1XQNz4zP64Zbzu9hYvNepBLD3lW91lVOXt2AEPBQfin3RFyp2dvRoYkxyN225HQioWuwKHqvpf6xTUaFMXn8KiJ0olgOv8+ByMnVBSVL+NPIxjtiKqbRdGG2+Lml7P
- lHTX+LWD
- xJ/aUnAIa0+EMuY7LiF5AulgukxJ3Mxv2renrBp3atdFqZXQqfoxo6NgRJpnsE6zpIQAKSsiFJGrSK8E3RhmBnPdx+YnoMhY/hkqXK3oq904Nj4BtORToTy4Pol9f+65LHeNf4gi5QGH38yWzQ7ardYTxz55HeaCWbXihz28oHlZOa3S33LNSX6Asg/86zxFH5or+Zh3bDcceD0UeMSXt4371c8AKATQLcVYIquBzJId+M15QPp0j160zNMUeeAN9SJMAan1mnldjbWzO/vdcM4nj1xfSLTR7xgDyGhZ2mo80SH+BzCJA1dPyXxN86FSpll1r
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774424297-793512
+X-HE-Meta: U2FsdGVkX1/VJU54QOze3NgS8/VLqVOcM5YHpqkGhr4htJB91eLL5EFyVQjbRGw25msNeWDKszCxDT47AdGTFMPeDIIm0sx3EL3Q6p8NZZAZG5VOsqhEjU9krRo/UdhHLXT1Ac7AeycjwXDHDWymz3thwfLJ8/wSSt3Ugg6T6MJI9OlbZpWY9KkXP583fuCcj7PJ3ozwxv+YLsd1DKpZ393KPN8OsnFcuL9AKXZrzvGcLNaNDPLGodZHNdC+zV7wVE3Rv/E7795jPFzkvG09c1KoZEURc1feBlyBtdX617PK2zis/rShxhWp/RQ3HLBDuuqg2avkwJcTjBpnd7p8nJYZXL42+tK9zwRMhseaCmJzMJ2zwKIkVpspHsTmRCFn+3v1xp3MGPnzXRlvJL5ZWvuRjBXEFPRd6zdOHcoWlE/3RFjUOvA/wmKHRPRswT+8f+FxkaS2OWAIkMzGMKY0QsFZ0B+xUdB3JXLGiXsEylYMr633SMUna2hkS3hYiYQfLwU3eIRbyHOLIX+7k+ZH25cslhZK7zSI2FaSTr+leq1QZeRItyLt2LKtNgk9q9PM3QAP1B4t01CdrCDR+4mD0iW6AulPWditu9f33uzKOHjlPs0tjFbVsgycmc8pIv9pcRXsCNBGJmTpfTRPfXB/UZ0oBB+z7lwMHYPXMn/OZYv+J7FmYPlzaZUgphHMbDv02eEM/9VD7rE8t7Z2cuiUq4rmDwIppw1lyFbg8n24uA24GTsLyZiAum0YW5DBFS2R86azIFl6sHHZCgFO56Yl7ah0RZVWu6rlXdwXRN6Fs4/gp5xUl/yR5z5zggK3N1fWzrIKlNiooCcIwNTIVsP+A2F48VzXFo8zW+aqrLECLksI7nFZWvfvug25YOlrrYn0uPUVwI7d2ur2IjNeX0v/1jxgA5fYS3K3H6+GOFXs8mHjrOJ+cbTefvZbV90v9fDGgQmuAYodcg29lE/PTeU
+ fd2rFbVw
+ keFrs3pJTI4OoCXo4fy2VnQlGF+FifgSMPdAxjGj9pRE8mn9lJH3RFVPYr71TyiacRf2X+ByH4BGAaRN8+26Sc/+Et+tEuMPSsrJ57JRPXeqU0gW7ecKoWHUhqS3Tt7PCJMqqLjxTpRNPiqYBSl9Q9BvuW90nBueVW0xLTfYiUBKk9INZ2iJbnXfmGQ8rHAV0pOtJz3WwlJc9s6C6/cVZBxecCsaI4A6YHpxYe5FRlgvnv0C3eTNyMLggAI1lLzvFHueu+Op42j0EDG2Su3mcUdxa2FsarrhL6xVJsMaGKO+NgJS1d3UomEGhtp5kdd8O6f32hcSaf+uF2swJb3D+AVFbe0u0wyXiPhB0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,25 +101,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Three small cleanups for mm/damon/core.c:
+Three functions (damos_apply_scheme, damos_trace_esz, damos_trace_stat)
+contain identical loops walking the schemes list to find a scheme's
+index for tracing.  Extract the common pattern into damon_scheme_idx().
 
-1. Extract duplicated scheme-index-finding loops into a helper.
+Signed-off-by: Josh Law <objecting@objecting.org>
+---
+ mm/damon/core.c | 41 +++++++++++++++++------------------------
+ 1 file changed, 17 insertions(+), 24 deletions(-)
 
-2. Use the already-maintained damon_nr_regions() instead of walking the
-   region list to count in damon_commit_target_regions().
-
-3. Move the static last_nr_regions variable in kdamond_split_regions()
-   into struct damon_ctx so each kdamond tracks its own state.
-
-Josh Law (3):
-  mm/damon/core: deduplicate scheme index lookup into helper
-  mm/damon/core: use damon_nr_regions() in damon_commit_target_regions()
-  mm/damon/core: move last_nr_regions from static local to damon_ctx
-
- include/linux/damon.h |  2 ++
- mm/damon/core.c       | 54 ++++++++++++++++++-------------------------
- 2 files changed, 24 insertions(+), 32 deletions(-)
-
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 6ee421141996..56372e577931 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2045,6 +2045,19 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+ 	mutex_unlock(&ctx->walk_control_lock);
+ }
+ 
++static unsigned int damon_scheme_idx(struct damon_ctx *c, struct damos *s)
++{
++	unsigned int idx = 0;
++	struct damos *siter;
++
++	damon_for_each_scheme(siter, c) {
++		if (siter == s)
++			break;
++		idx++;
++	}
++	return idx;
++}
++
+ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 		struct damon_region *r, struct damos *s)
+ {
+@@ -2060,7 +2073,6 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 	 * index here.
+ 	 */
+ 	unsigned int cidx = 0;
+-	struct damos *siter;		/* schemes iterator */
+ 	unsigned int sidx = 0;
+ 	struct damon_target *titer;	/* targets iterator */
+ 	unsigned int tidx = 0;
+@@ -2068,11 +2080,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 
+ 	/* get indices for trace_damos_before_apply() */
+ 	if (trace_damos_before_apply_enabled()) {
+-		damon_for_each_scheme(siter, c) {
+-			if (siter == s)
+-				break;
+-			sidx++;
+-		}
++		sidx = damon_scheme_idx(c, s);
+ 		damon_for_each_target(titer, c) {
+ 			if (titer == t)
+ 				break;
+@@ -2394,15 +2402,7 @@ static void damos_set_effective_quota(struct damos_quota *quota)
+ static void damos_trace_esz(struct damon_ctx *c, struct damos *s,
+ 		struct damos_quota *quota)
+ {
+-	unsigned int cidx = 0, sidx = 0;
+-	struct damos *siter;
+-
+-	damon_for_each_scheme(siter, c) {
+-		if (siter == s)
+-			break;
+-		sidx++;
+-	}
+-	trace_damos_esz(cidx, sidx, quota->esz);
++	trace_damos_esz(0, damon_scheme_idx(c, s), quota->esz);
+ }
+ 
+ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+@@ -2469,18 +2469,11 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 
+ static void damos_trace_stat(struct damon_ctx *c, struct damos *s)
+ {
+-	unsigned int cidx = 0, sidx = 0;
+-	struct damos *siter;
+-
+ 	if (!trace_damos_stat_after_apply_interval_enabled())
+ 		return;
+ 
+-	damon_for_each_scheme(siter, c) {
+-		if (siter == s)
+-			break;
+-		sidx++;
+-	}
+-	trace_damos_stat_after_apply_interval(cidx, sidx, &s->stat);
++	trace_damos_stat_after_apply_interval(0, damon_scheme_idx(c, s),
++					      &s->stat);
+ }
+ 
+ static void kdamond_apply_schemes(struct damon_ctx *c)
 -- 
 2.34.1
 
