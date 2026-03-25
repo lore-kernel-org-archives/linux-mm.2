@@ -4,100 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55BD5109C05B
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:59:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E94A109C059
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 19:00:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 888A36B008C; Wed, 25 Mar 2026 14:59:36 -0400 (EDT)
+	id 99B516B0089; Wed, 25 Mar 2026 15:00:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8607F6B0092; Wed, 25 Mar 2026 14:59:36 -0400 (EDT)
+	id 952016B008A; Wed, 25 Mar 2026 15:00:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79D7D6B0093; Wed, 25 Mar 2026 14:59:36 -0400 (EDT)
+	id 861FC6B008C; Wed, 25 Mar 2026 15:00:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DB246B008C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:59:36 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42BD6E02F6
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:59:36 +0000 (UTC)
-X-FDA: 84585499152.18.70E65A7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9BC854000C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:59:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yLuJWyw8;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 77B366B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:00:55 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02E2F1A0AD1
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 19:00:54 +0000 (UTC)
+X-FDA: 84585502470.12.25EC023
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 65758120002
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 19:00:52 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pnsR0lbn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XjWOqJW1;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pnsR0lbn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XjWOqJW1;
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774465174;
+	s=arc-20220608; t=1774465252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WPGyIvWOhHoXYi3NZl/gatuyekwEEky9/KP79NUt1HM=;
-	b=wbYoldp2hNWqfldqBoR3vJFNuyHGEXJ7Y564+mDOpypgRE48DwuFVcjyB2FO+px/StLUJD
-	MIpVarjS18n/7nfa0bWwgYl9tGUR/43m/gBfyYq+FVbAQ/sXIOclFgTnzH0iyeofn9Y/Vs
-	WFK16bwYxM8TtAj23Nm96sXr3gnnxaU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774465174; a=rsa-sha256;
+	bh=B2oYYheOhGCTdUtGseN0WmGmhiRAd3tOmDJdOSLqv28=;
+	b=CfceUMxgPWUzquP+4gmlt+2Wn0WRKTga6yjjlUVPLCKzUlu6rM+FLvv7V1ACZOPboJyM3l
+	0DyTKcKudtpoWGSmZkPaOe7zpfnJh8cc+KFAB+Wl8xxJDnqVc9tTCL7itfN98qzU4GkFxQ
+	ZONOmudH/IIJzOYZJINmE1Co5jqsOvA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774465252; a=rsa-sha256;
 	cv=none;
-	b=1Adyo2shrJiSs8rYVAOjXslcPMCwYmOXR3/sO5sfSUYK9GvHdZfo8FxUS37pK379N4G0yn
-	9SHpg4nGvmBzqibo/jtldSoWr+9zBfli7ZyrhT4UVAKVA7pXgnE5+1G5BB8YN+DLdUw04v
-	sJcklKNBuvLsM6XJrlTHIE7q4TmA64E=
+	b=KV3eMtwk6e5lS4mCoa0EnYqokUzwF1HzUJwn6/3R6HRHYe4VzFvLvye6qa9+8dFc5Qkfhr
+	Xu2T5/6LHI1Pa77p4sD+d/3WvrZ1KgI0nq4AB2ZbsVmFd7u2tEGEX2By/NGmyU2KcuXv0q
+	CNbLSZwlixttThlP/it6uy+wqV6+1Sc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yLuJWyw8;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7514600AC;
-	Wed, 25 Mar 2026 18:59:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46627C4CEF7;
-	Wed, 25 Mar 2026 18:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774465173;
-	bh=yU8n7i686vmEbMl4LvG5Kc7Jit1Pd4MHO3KrX4OKmYk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=yLuJWyw8VJjfd2r8DoF/0eMer0lCzXXkWlWRL+EX0F56xSlCQlbPTjPgce7R94nXX
-	 xSOLmofJT5+bbBQ3150CjnvU/8Jum03M6fCSLnrVZVrKQdvMVuPpYj6oPUVUW0HpYU
-	 W16yNDrl/bc9CH5MA/PDC4GkleeCbd6mfvENIMIU=
-Date: Wed, 25 Mar 2026 11:59:32 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, "Lorenzo Stoakes (Oracle)"
- <ljs@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress
- number
-Message-Id: <20260325115932.d2841f29f318454709fd4f21@linux-foundation.org>
-In-Reply-To: <CACZaFFMb_1u7ckb5+7=wWApOx-u5kBxx-+2Y1Cjd1Qad4kgHRg@mail.gmail.com>
-References: <20260221093918.1456187-3-vernon2gm@gmail.com>
-	<20260224035247.r6mxsfcpiev4wnce@master>
-	<zo2o25tesjzdvxdbjo6rc7crqmf76z5zwlykrnvhydaowgngya@hv3vgfa7zcgi>
-	<1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
-	<hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
-	<8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org>
-	<CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
-	<22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
-	<20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
-	<3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
-	<8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
-	<0437ad42-612e-461f-906d-6757eb19a8de@kernel.org>
-	<CACZaFFMb_1u7ckb5+7=wWApOx-u5kBxx-+2Y1Cjd1Qad4kgHRg@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9BC854000C
-X-Stat-Signature: jkcmb3ioyajsnxtp7q4p9545xtmj41cg
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pnsR0lbn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XjWOqJW1;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pnsR0lbn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XjWOqJW1;
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BE1574D25B;
+	Wed, 25 Mar 2026 19:00:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774465250; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B2oYYheOhGCTdUtGseN0WmGmhiRAd3tOmDJdOSLqv28=;
+	b=pnsR0lbnogWDDvWWHJaZzoB1nD/ry2v6mA2qDgaMq74hwNvkm1mpDtNRhLpjQ4tTDhynep
+	lLNzOKpBD3cmQnFSNdgQ7yOODIma8pCS4vTPTbM0gRPUqGDyZ1poXXLvZ6zCLuK9bKi19Q
+	Ze8Ia03faCzlwGzPLOKircNffb2KZmU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774465250;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B2oYYheOhGCTdUtGseN0WmGmhiRAd3tOmDJdOSLqv28=;
+	b=XjWOqJW1HANyX+2k8BQ1Z3LcemmfpqeilUlFb8XOnE1EzFWnDH6LBfGw5o1ex7vO6WVEHQ
+	xAHkyQK+4qrTggCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774465250; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B2oYYheOhGCTdUtGseN0WmGmhiRAd3tOmDJdOSLqv28=;
+	b=pnsR0lbnogWDDvWWHJaZzoB1nD/ry2v6mA2qDgaMq74hwNvkm1mpDtNRhLpjQ4tTDhynep
+	lLNzOKpBD3cmQnFSNdgQ7yOODIma8pCS4vTPTbM0gRPUqGDyZ1poXXLvZ6zCLuK9bKi19Q
+	Ze8Ia03faCzlwGzPLOKircNffb2KZmU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774465250;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B2oYYheOhGCTdUtGseN0WmGmhiRAd3tOmDJdOSLqv28=;
+	b=XjWOqJW1HANyX+2k8BQ1Z3LcemmfpqeilUlFb8XOnE1EzFWnDH6LBfGw5o1ex7vO6WVEHQ
+	xAHkyQK+4qrTggCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B02BC44558;
+	Wed, 25 Mar 2026 19:00:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +7L2KuIwxGkBYQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 25 Mar 2026 19:00:50 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 6F330A085A; Wed, 25 Mar 2026 20:00:42 +0100 (CET)
+Date: Wed, 25 Mar 2026 20:00:42 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
+	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 31/41] fs: Provide functions for handling
+ mapping_metadata_bhs directly
+Message-ID: <f7e57f3wfmzkh7wcsq662q5igqnxza4ryfk4uzm5kba5f5stfg@be4tpgtp5nga>
+References: <20260320131728.6449-1-jack@suse.cz>
+ <20260320134100.20731-72-jack@suse.cz>
+ <acImXDl7MTsmVK_U@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acImXDl7MTsmVK_U@infradead.org>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
+X-Stat-Signature: zgpnkg69f7gsawro8wpnukb3mm3ep9gm
+X-Rspamd-Queue-Id: 65758120002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774465174-39319
-X-HE-Meta: U2FsdGVkX1/FEqZnLUAMAwPouMQNPME2krpxG5H6OtNNt730gQHnzpsU1I4tw4Z6HGUj7q515G5JeNKJuL+N3w0uChgR+SubRNVVQ8VHYnAT/GfsGWORq35vLAYwuOnIyLkkqhR+XQgCEpMYGthftqou92AStFMsRqGcqetBOHPh8toYpdp0eFeeiB6dBOgGHMDyka7B6d30IYW2iRjIhkKaCBTvzANdb9AjB/g8YqiJZxnITbwa4lStU5QQwQGoocDISsU2DrY5EUPqw2MllvzTQnx2yOgNrH9nTAad6ibMLN7KO4fhf465H9B+HbfxuKVOfqFzs1+0S5Ua4SlS8xpnnWQ5dOK0K5wFq5FUCR1LFU9IoDiFPR6JZru8x/OMUDq10KhAwPwnsftcl4Z303+Q2q2HUTAxVxNn2bX1cgzy0l+CisM6+3Wj0DPAZ62iYNU8UunJ5QLr2Stsv68OHB2/xpuTDLX8tzsrlgu0sIXPXBLj7st9C8s5dhM/OqmWhI1moARW/FqFLTpOpy92LTi41cURqQUj63lZNe6aQSWkfT1dw5pXlJaEzEX5MiSExQZaU9RHxbNyaST9cYMuO+HWq6kQ6XkJkxNuw4X3/URiXeITFVLKil3+1JBPg3BK8XmmBhoA8c1K3vRybraw+HpxUrNutq9Qjbnmy5Rrz3Jxxi0YntjwU3+FA0VNd5+t7/gP/zAHd/Y4MnPZckzBciMGbn8hlvUKHNpUB52BUOWSP/VhCmv4pmxG/wY+eR0YLsmzNBJR+nbGHrVorSEd/tEQXMWQJ9BgaVt/Cjoc9pyGPP1qkwpGIurJC3NzkVvV54EZVpSZvwMhq1okFwqzyuNLZG8pfmdmyCXQhUxHid24RpbpTvfEHJDpQ9cD0bAfrCmoiWyuaJNbGDFbPnbBIgT6llMUCb/PiLLwcfjSf1wn1/2oCowga9u5m/BUYk62coQIZdH8MGEOyjZ/CYx
- iT1u2W5X
- RjbkiUjxqG/Cek1Mzl2/QsuoXF0aSKvJbA2SnLCOiskMCX7SfiZ5Qa833hwaAaHfK+NVaJunPHZocuKd7vv6WbM/EC9DGRMEcz4IgM61LoB59E8W3wuFIO5zBGjLmSdV9040191UM0A09fG8WGOblWh89OeJCNdhYMRU6/noOPeoUofuHcEtWhYpk7GObhZsI4ouxs5aGWA4PG9WLNIVY0Lz4yK+cVopU4G2xjg7WGn9YBPSGAGrNVBv/7SMvaz/IPVnxPU87YCPACm1BZSlZInxE/ulKFn4od+nZExh8OP3j/F28re9ZBDs1p2I8PvziSXwWztMolHssrED21xdCL9R6fA==
+X-HE-Tag: 1774465252-411002
+X-HE-Meta: U2FsdGVkX18qYFSHLzRye0NTHx3Bf2zoQQPu605TnBDajQojIALskldZcS8XJ7+tH6cmVD3XK4uFDnj8aWQkmIAh3abLexKttS1R/1pykpQ7Sp7obEIUfMR0GhiDw9V+XT8mdFiF8l5rOOinvKKkii5ibRDaQslDo13iBACjfssX0+6NfPUSc+DNLMYZ/hkeG+SWgQt7Ou6chn1pZADIbQfAwPEyleYOUl12F+5wnMOby3uwBmyJowKUUAoBdcubAw2xkyzickAU3+oBoCNb2vAtU4c6W0k201fdaA/nUnVgGukKqj7GHszAGLa8SdbSeZanYSnjm3TW8BTACM5wCcyAhzDgjmCArQAPkDwiI9q+xXADSdApZ0DFvmu0S5Ys5barbxlZCRJbtfxnXy1y9nVBfU8XB6R+bSAHX1N2uVvFDrmlIaJ5toS9ojYV+rSdu5yvtzB2d0kju2PZik27jZku6gmCGA0ctBGDJ74MfjgBeMrdEc7Zp2KaIl8+GIuUO/hwcySkx8I8p0riIx7h/CS5YUhNY/cB7aZq71LUcUbmsHiyGoUJSXfOzMXrGP+Q2P9AXxCpT3ikqWcIZ/sR00SyULi4/NrBoKTI+OgF2pBwQQCwWqOFiXjBhbHbkq1A9D5+jhMn2gTloip7viHRw17HOdE6o3qtk8u6D5AXzE0fKC8vSxgrsiX/fpr0usxGx2Y7pcvu/8NmE8liKl26cCkNUZnE4Wlk3V1YnCyJQvgnrsLuM+OVKvLtIdkLFczFIpQQyUVz9CDp8oJshd9HJH3dmMchP5/pp0IHh8nsFDx/7za5E2VH5yCx3kfD9RHfvgbYTbXH8+6D0W+qD9JsJgiTfILp8hpa+n1z8ZdeFbh5wvFrytD6D15sjSxug3nqouFjxgPTadRi/kazIrnawbQu1fD5fOzSlAzyW0nkT9dL7fficP/Mtjhf77Dbx7Sl5RaOyATqc43BGgJ+SSk
+ oRiT6wKr
+ vgvWhqe3AFOtRv/dlsscgctjJmLFf5yBJq0uk0vtsetj6YBu6AN5Ke1Qji9Yew4zgEw0GN0S3e/lYS3Q3YiYMbq93wS5j99g4QDCaKGFHWQgY4/CeJIO6olDzBuCSvQHag9cfTJ+Y8JDoZ/yY0EivAMmWXrStLo/hWJ6FQr+4T9vbubdW8wugydkpE5ybC4vpWpd//niyzxpQeqeS+Rbs2+S5x3NQ7xJPFw2IJXPIxujOhKBbf0AGIRtgGL3y/KSGZo+66gYsI2gJz/Amq9aAcyautd1v5JfaONotwfC40z1TW8zww/TKZ7s+OuePSDKDOYOMIny4pKoEiS4vaDmD/luUcqIRPOkrmyNurDGY30VPAiFmEdPHWE0pvREweO9sddIomz3l/Jsgcs94otF/OxYrMRxd+zYgmXSTbafboePFtGqWTKQoHgtXcuXMzm0Igi/VDG7Jli/rwm8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,16 +140,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Mar 2026 01:00:23 +0800 Vernon Yang <vernon2gm@gmail.com> wrote:
+On Mon 23-03-26 22:51:24, Christoph Hellwig wrote:
+> On Fri, Mar 20, 2026 at 02:41:26PM +0100, Jan Kara wrote:
+> > As part of transition toward moving mapping_metadata_bhs to fs-private
+> > part of the inode, provide functions for operations on this list
+> > directly instead of going through the inode / mapping.
+> > 
+> > Signed-off-by: Jan Kara <jack@suse.cz>
+...
+> > @@ -553,9 +547,8 @@ EXPORT_SYMBOL_GPL(mmb_has_buffers);
+> >   * buffer stays on our list until IO completes (at which point it can be
+> >   * reaped).
+> >   */
+> > -int sync_mapping_buffers(struct address_space *mapping)
+> > +int mmb_sync_buffers(struct mapping_metadata_bhs *mmb)
+> 
+> mmb and buffers in the same name feels a bit redundant.
+> 
+> mmc_sync_all?  mapping_sync_buffers?
 
-> Although this patchset is already in the mm-stable branch, if we want to
-> resend V9 version, I'd be happy to do so. Please let me know. Thanks!
+I've called this just mmb_sync() and I've also shortened
+mmb_invalidate_buffers() to mmb_invalidate().
 
-Depends on what changed in v9.  If it's a major change then I expect
-I'd drop this series from mm-stable and we restart the clock on the
-integration and review of this work.
+> 
+> > +int generic_mmb_fsync_noflush(struct file *file,
+> > +			      struct mapping_metadata_bhs *mmb,
+> > +			      loff_t start, loff_t end, bool datasync)
+> 
+> mmb_fsync?  mapping_buffers_fsync?
 
-If it's a minor touchup then a standalone patch against mm-stable would
-be fine, or just leave things as-is and prepare that change after
-7.1-rc1.
+This I've called mmb_fsync().
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
