@@ -4,91 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A95611075269
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 01:24:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB4A1093163
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 01:30:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89C696B0088; Tue, 24 Mar 2026 21:24:28 -0400 (EDT)
+	id A79C76B0088; Tue, 24 Mar 2026 21:30:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84D296B0089; Tue, 24 Mar 2026 21:24:28 -0400 (EDT)
+	id A2A966B0089; Tue, 24 Mar 2026 21:30:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 762F26B008A; Tue, 24 Mar 2026 21:24:28 -0400 (EDT)
+	id 940856B008A; Tue, 24 Mar 2026 21:30:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 65AB96B0088
-	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:24:28 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0962D1A05CB
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:24:28 +0000 (UTC)
-X-FDA: 84582840216.14.0F0D5ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6E7C1140005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:24:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g5/PSVdV";
+	by kanga.kvack.org (Postfix) with ESMTP id 874316B0088
+	for <linux-mm@kvack.org>; Tue, 24 Mar 2026 21:30:04 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20B13C22E4
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:30:04 +0000 (UTC)
+X-FDA: 84582854328.27.C3B75EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 93CA3A0007
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 01:30:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a757H79L;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774401866;
+	s=arc-20220608; t=1774402202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vqa2bWddDU6XV8CM4CDB7LCD3kZXcGd/DfbHcejua3Y=;
-	b=YTadCpuZD3GF2SzAxDeUvkEvNKiKwXitpAa5GS1eHPukHY9jpoFzSWROzP8kRPx+eaZhCw
-	T+El/6OLFNTI9sCG3S+r/1b6+7pYmFSFmBJoe2y9iKOWKYNq0Vlw7N4CTc7zvt2Jxu3W2g
-	nhqM1cTCzAj6UKqT6LZcphjxf0s6IM4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774401866; a=rsa-sha256;
+	bh=rvR4kmjBJCkzWid6bu6sc0JptSCoeAWKFX8ZKe34A2w=;
+	b=0mc7ZZUb52OL9XZtvi+ke0kJdt8yybDvWK5deEMP+TqbsPrWdzdN559Kp8wLp7QBRjAsP1
+	bgtuJcgdNrYBz+3rnOX+5Gb9Ancl+hV73jVUZudlC3fRGOi9FpGmCfuQ2gazBlg65B6Y89
+	WINBfin+jLM6enex3u/Gop14fWZjKOM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774402202; a=rsa-sha256;
 	cv=none;
-	b=puQyqiIrM0XMpprtQKkgGUFifnr+FPbbFmoKz5eeZIhPgsE591SNELFo5KbZ8f5b90CYWh
-	Y+EdyrQ2eXIO+EG+UuC/9aGfRNf0p7lFQKdz0imTrgVCGRRK+wZgO+qO5s99OQP86s9bCm
-	KNQ7AfUDHkpaquo+OhnpsxX2w2GNucc=
+	b=jBkYyUHDmG7x4+9g64ONkuizXqW7jxXedlVIncd/Ncvkt5JD/t70+pAZ036FmbhPMznP69
+	4Xdk8nllzWhQ4b/G5/QPiutvhy6CeMq2Zfe7jil8lH50Fej2vTwE5qTh3bAnI/j4qLSyDy
+	n3176EWmgle74oLIMEyEREyNVZInfgI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g5/PSVdV";
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a757H79L;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ABA5E600AC;
-	Wed, 25 Mar 2026 01:24:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD33C19424;
-	Wed, 25 Mar 2026 01:24:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A2ED42DAD;
+	Wed, 25 Mar 2026 01:30:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F3EC19424;
+	Wed, 25 Mar 2026 01:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774401865;
-	bh=HmYsbKwFs4P5opJoMQMaxNmUmh60o8lPuHPw/FnXv3k=;
+	s=k20201202; t=1774402201;
+	bh=5SbBFDgIR67bL1d5NEGk//PNELzmL89PM+jsBTcyznw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5/PSVdVo9XAywDdtLl+uLMNuZalgJhlZk9qbPWvpmrnQ0fxSIPK/jUiMm4jZ16M2
-	 gQRW3NewP3ajzbI8wXcRzQXiisY4+A9S2QJnfwe4V/OphKcnLt1NLuBQAMI8soaZK5
-	 aBpVVerB8tA7HXy+scQNFno3GWDF+JkIIYlaWFDOcfoI9yjS2cKosJ/+XBSeRreDkR
-	 4CpO0APDkQfaf8ku9KvXYTqhtmJU9ozUJQ4EPAFtxE0kV5m8pGVOz0deG6OBe9CEHM
-	 PXyVFFA7ujEkA6+eVpRkjq/diAx3ppU/L6RzJZNPCpyF1mDXT+w+Ue7fjG9p6DwOco
-	 JTxtrT0Jik7UQ==
+	b=a757H79Li4IBGL1ALHzdgXLsUTHiTqglD9EdIalBAY+hP+BAUeddSjXsAlrkiFi13
+	 EIggSReE8akulpv/CyWmPxpcf7tpSOkE+B1FP6fXiX9qUXTPSEzpb6GG/zIYhBdUq6
+	 vNEFD2neVHf+Xl5mrjiJ+LZc5IlVzWIjNeKOxGGOJY9K8JvxYfPEBL/CqoIrgt3JT/
+	 TwnAorebRYKCIOguye8khPH5fWqF7aD689ZtIJrnMjOy4Q4GYpSs9u/4Nam8dxtXMx
+	 1JL7bErJSHbzRP1/zaNtgG1YFEL1qIxpAjf4GPM+BedeMPhk+L+oPO9Fpa+sIbinrD
+	 ZXjDhTc7H5feQ==
 From: SeongJae Park <sj@kernel.org>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
 Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-dev@igalia.com,
-	kernel@gpiccoli.net,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v4 2/2] mm/memblock: Add reserve_mem debugfs info
-Date: Tue, 24 Mar 2026 18:24:23 -0700
-Message-ID: <20260325012423.85658-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 1/1] This patch set introces a new action: DAMOS_COLLAPSE.
+Date: Tue, 24 Mar 2026 18:29:53 -0700
+Message-ID: <20260325012954.85785-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260324012839.1991765-2-gpiccoli@igalia.com>
+In-Reply-To: <6a07479d-0ddb-442e-bc1b-027f4c6d3b77@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E7C1140005
-X-Stat-Signature: zj9yrqu5tgr1eaofrqxarzdbck78gjyk
+X-Rspamd-Queue-Id: 93CA3A0007
+X-Stat-Signature: 7qejd43tfbifnoraghp1tgnwimj3awkm
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774401866-636810
-X-HE-Meta: U2FsdGVkX18gPaAK4aIbFP473ux0Wy/Fw+lik9RToo06LHGxLRevYiy9k24t66K63Is3CTLVtpisd3mqf3aeXV8wHwAZndsYRjQlu1N159cVDHddPWOEYB08M53knsbFYUWaSRU1LF169MlbH+ffxzfT5Uw4zEDIoEEnw+DIcT1qZTuNsb8oZ27pfR1n4T9fJL8txWQwlle2Dp1taXwx0EutGLUxMTXN9r15iRTZscqwzw3B1ZLT5hI1Tk8tnSmg/C4C/QL+F992I56l8qKLP8HyyE215UNV5F1skQ20uaZwSOHNwukxwhAzHQfN0SeQvcrXBeiixOB8N2TdlP0Qsh2fuUOHJ0LS0HXKWmrVUlCGw1NyNN3ANCuEAObKtDW5rUS6lm0ZZ2eSpkk8BhPXosF/15kz9DuRfAzPqcHZZhD3689yrneMy7/+t1YD1xqjzOKiCuWgS8R6G31uBoFQ9sNSqH5CQM1Qym0guZBbiLLRo2M4XhFLwUJZO2yxWRz74QKCRpVbHQmoDQwzTEGDs57i4jjnf1k8r0mu0bjE2HE52GWPhA16UsIwn+wz0gdJgCtwkrVEzf45pzqs+zaEtisUHXp9rdhpPts1LDgWnzo6sf3CbCbsVTC8ke9NuoieZXqJP2BEfM0ASjqU6gmBc1ef0tZE29SkdRNoqkNYwhqMQdP6qxcW7JBunj1a6F45vUg1M1BIyJXHlFidVmpZxiLFdnLP5E12plPvH4MfUyORPU8j9VEbFsnre9gjNVFdbMMCV6n06C6xOwMWAk8FzGunLsXdEay9zsLF+wQZewU29Xm7r+RZ3ZOqerr0+2EQ8EQWq0MTIuCDQ43DATnsi3nCiPgFN+ADnBF7yYyWVzxhBW1KXI6gqtjbf4+T1PPZIQEDfSYCw90lkRF8CmE+C8rP3dlpoF5mHxjoCvGBDj6YkIAKYyZg54ha0U/F5y5JcWFZNou86od+mWSqCW7
- 1lZ2QPpy
- B/+He36290pnadz7GDPJwsOyQDge4okeXe6/J5ScIEwQ43qioIqOF8E7Orml3NHrMYz4Vpf42weAtROCRJIilqagdO0V4wuAGvfaVX6mtmOYZgOPKKTHf9rrO5DColjOT3xWXxwwXTPANypOHxH96onrnaP9q+Y2l8F8hyYIVWVeejweiQrTTeezxjDV4Pa7bwH1rvhIn0mY1APY+nvuTAowlGGmJYWj3eSt/SZee4vbo9OG3i4Fe2ePvcObNu7v7RW4yKO8yaj78eA3dlLjGxC3fuSW9PZm/O9wmx5FB44i1OVHMu+0iE0huRq6Bojukl58LJuthvE2+om5UWoSMrapWfaci0l/rjUoDpXFB7JkJW3aCRW1bblXjFybS52FM3s8GISWmEDni/ofs04UlU2odsXrTFDL5OYjP9fWcnTV86iVHCSc7x6qioDiD3NLJgvt4dfWRQ9QO/DbYnnAT/UnDMPnDej+qJuIy
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774402202-520491
+X-HE-Meta: U2FsdGVkX18jdz4snKJ6n3Fst0Fndi2cOgMJZAhDXO4X6nrbAICGo1Ckh29P8/NGRdkTFtGimhxEABEJNDNf88tRCdKL/lbhhhKK6tjRPafIrs40mbbVpCo8ibSZ3zDXwXw/Oap47SaLP6VYrQ7MArnaV3VZrrq5T8Cei0ocx9GdfcioQQeumgW00IsE5wdbb5x/THtLvU3XTtdwsZftERzMe/mJwDcubCVRedvWjS29AhgpW6DHNkTAB8FYkBJbCLPtU5a7gTPJdb0qNxfb8YJX/XnYZtnT3JeRcUAR+zRbX7t8TWrxPqtNTctlDBXXAdTtz/RZ7qiBo0oN1V0g+qdOzqE7646ypUOOn5PpCZ5qKqISVP8kfMNA4M0lmPeiRGBsioPgMXAQMYwXHJLI7c5N9Vtijs1Gax7YiwaiEuV48A11WUADyoKWIlDxTdqnSdHVcHc172WgLvlkI2yhghZGx7ULdsiBodLFuuC988w0Q5HTuOj5ivxyTr7fEBq6ew4afY6ACdiDLaZI9XN9xf/Sr+3gnTKQcxZrm+9lnafhNaFHBXms0+1RQKLTHMT32+boRaf9txtZkSG5HYVgv3yhYvKJ1I3+bPE2SqAfz/2//UNkI8gW91LkyHnbYfgR2J1bosZzU8jbgR/34o0BuW0liP1czanrqdo4zv4wWU3lHemiVTX2iXG/ABfUPaTvi9m56d9q0j7HAjssDtW3gI1tLkxShYLAnAXZY3giRaXleOrsMGg1qOk9V9k3UHyp+jjwzu6aMZtZTrf7EUQoQwKPyMIMKJVPUPYx0gjJ0wXss6iQtevk32nHVincVCiogLrfC+Jcx1pnW+X+w/Qs937xeIuqexm1Jp1ps3WCuKbxf5nR7wWfh6wiV5ECbJNJSAqhDtqNYy1jO4bJJdFBaNrr34nlh9bVD5SVSHcKo7o55E8ZBYau8d3o2KKq4ZxuYqISs6+FJfDyNpYIFjh
+ Sm7q2p6t
+ IB1nfsoOPQxTtMQc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,35 +107,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 23 Mar 2026 22:22:18 -0300 "Guilherme G. Piccoli" <gpiccoli@igalia.com> wrote:
+On Tue, 24 Mar 2026 18:01:23 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-> When using the "reserve_mem" parameter, users aim at having an
-> area that (hopefully) persists across boots, so pstore infrastructure
-> (like ramoops module) can make use of that to save oops/ftrace logs,
-> for example.
 > 
-> There is no easy way to determine if this kernel parameter is properly
-> set though; the kernel doesn't show information about this memory in
-> memblock debugfs, neither in /proc/iomem nor dmesg. This is a relevant
-> information for tools like kdumpst[0], to determine if it's reliable
-> to use the reserved area as ramoops persistent storage; checking only
-> /proc/cmdline is not sufficient as it doesn't tell if the reservation
-> effectively succeeded or not.
 > 
-> Add here a new file under memblock debugfs showing properly set memory
-> reservations, with name and size as passed to "reserve_mem". Notice that
-> if no "reserve_mem=" is passed on command-line or if the reservation
-> attempts fail, the file is not created.
+> On 3/24/2026 5:12 PM, SeongJae Park wrote:
+> > On Tue, 24 Mar 2026 16:57:22 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+> > 
+> >>
+> >>
+> >> On 3/24/2026 3:39 AM, SeongJae Park wrote:
+> >>> Hello Asier,
+> >>>
+> >>> On Mon, 23 Mar 2026 14:56:45 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> >>>
+> >>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> >>>>
+> >>>> For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
+> >>>> working, since it relies on hugepage_madvise to add a new slot. This
+> >>>> slot should be picked up by khugepaged and eventually collapse (or
+> >>>> not, if we are using DAMOS_NOHUGEPAGE) the pages. If THP is not
+> >>>> enabled, khugepaged will not be working, and therefore no collapse
+> >>>> will happen.
+> >>>>
+> >>>> DAMOS_COLLAPSE eventually calls madvise_collapse, which will collapse
+> >>>> the address range synchronously.
+> >>>>
+> >>>> This new action may be required to support autotuning with hugepage as
+> >>>> a goal[1].
+> >>>>
+> >>>> [1]: https://lore.kernel.org/damon/20260313000816.79933-1-sj@kernel.org/
+> >>>>
+> >>>> ---------
+> >>>> Benchmarks:
+> >>>>
+> >>>> T n: THP never
+> >>>> T m: THP madvise
+> >>>> D h: DAMON action hugepage
+> >>>> D c: DAMON action collapse
+> >>>>
+> >>>> +------------------+----------+----------+----------+
+> >>>> |                  | T n, D h | T m, D h | T n, D c |
+> >>>> +------------------+----------+----------+----------+
+> >>>> | Total memory use | 2.07     | 2.09     | 2.07     |
+> >>>> | Huge pages       | 0        | 1.3      | 1.25     |
+> >>>> +------------------+----------+----------+----------+
+> >>>
+> >>> Thank you for sharing the benchmark results!  But, I'm having a hard time to
+> >>> understand what this really means.  Could you please further clarify the setup
+> >>> of the benchmarks and interpretation of the results?
+> >> I will fix the cover in the next version, which I will submit soon.
+> >>
+> >> I tested the patch in a physical server with MariaDB 10.5. I run
+> >> sysbench to load the server.
+> >>
+> >> I check 3 scenarios:
+> >> - DAMON action hugepage for the database task, THP as never
+> >> - DAMON action hugepage, THP madvise
+> >> - DAMON action collapse, THP never
+> >>
+> >> I compared the memory consumption, both in overall in the server and
+> >> anonymous huge page consumption. The results are in the table
+> >>
+> >> T n: THP never
+> >> T m: THP madvise
+> >> D h: DAMON action hugepage
+> >> D c: DAMON action collapse
+> > 
+> > Thank you for sharing the details of the setup, Asier.
+> > 
+> >>
+> >> +------------------+----------+----------+----------+
+> >> |                  | T n, D h | T m, D h | T n, D c |
+> >> +------------------+----------+----------+----------+
+> >> | Total memory use | 2.07     | 2.09     | 2.07     |
+> >> | Huge pages       | 0        | 1.3      | 1.25     |
+> >> +------------------+----------+----------+----------+
+> > 
+> > Could you please further share interpretation of the results?  What these
+> > results mean?  Does it show some benefit of DAMOS_COLLAPSE?
 > 
-> [0] https://aur.archlinux.org/packages/kdumpst
+> In the first row is the total memory consumption in GB by the server
+> and in the second row the huge page consumption.
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: SeongJae Park <sj@kernel.org>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> What this table shows is that DAMON action "hugepage" doesn't lead
+> to any hugepage collapse unless THP is set to madvise. If DAMON
+> action is set to "collapse", hugepage collapses happen, even when
+> THP is disabled. The memory consumption for DAMON "collapse" is
+> slightly lower than with "hugepage", since madvise applies to the
+> entire server and other application may request to collapse pages
+> through madvise.
+> 
+> Regarding the performance, I saw improvement from no hugepage at all
+> to use of hugepages. No significant difference between "hugepage" and 
+> "collapse" actions. I will have a look to the logs and publish it a bit
+> later.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Makes sense, thank you for clarification Asier!
+
+So this result shows the functionality well.  Meanwhile, it doesn't clearly
+show performance gain.  Given the small size of the change and rationale of
+MADV_COLLAPSE that I believe explored when it was introduced, I think this test
+result is also good.  I wouldn't strongly require more tests for this patch.
+
+That said, if you find some more interesting thing from logs, please share, by
+or after the next version of this patch.
 
 
 Thanks,
