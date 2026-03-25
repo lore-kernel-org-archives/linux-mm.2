@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC4D106B53D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:01:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40224106B53D
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:03:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B0DC6B008C; Wed, 25 Mar 2026 10:01:05 -0400 (EDT)
+	id 636366B008C; Wed, 25 Mar 2026 10:03:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 287F96B0092; Wed, 25 Mar 2026 10:01:05 -0400 (EDT)
+	id 5E7996B0092; Wed, 25 Mar 2026 10:03:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19E216B0093; Wed, 25 Mar 2026 10:01:05 -0400 (EDT)
+	id 4FD2F6B0093; Wed, 25 Mar 2026 10:03:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 084E56B008C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:01:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 921BBC2F73
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:01:02 +0000 (UTC)
-X-FDA: 84584746764.01.6DC3379
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ED9B4A0030
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:00:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BECD6B008C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:03:36 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D33958C679
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:03:35 +0000 (UTC)
+X-FDA: 84584753190.27.087EEC4
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 13B94A001A
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:03:33 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uVreSsST;
-	spf=none (imf15.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=ktgIYLtY;
+	spf=none (imf15.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774447260;
+	s=arc-20220608; t=1774447414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NF/Fzmt3riyXynsc3GneO0T3XfJ1kmXmj8mDb9HEBzU=;
-	b=6MjkZ5LmIh/vaa2qth/O/xR227qtbsp/7QjKnQd62Q99yn6FIAemEi381mjqRNsVH3nQz6
-	0rCHh34uOfFdb8YTshjo1/YKqIzZka5eB6YgthDy/0U47OJXnwECh1kMIz7eqWIoyQ61BC
-	SIC6lalnnjptciSu5sZ03P5r2MK9NIc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774447260; a=rsa-sha256;
-	cv=none;
-	b=PfSOzx1NBIiNdn/7q+I2XoUZgKxnKI/iFhiKSu6TLJdtIOALMlKkpkRZmu13XT/FDC1cCW
-	yzGTs8cv2xPx1zDXDiGyuqy6RKoNLnVduYjWMc+hjCn6N0fw+M21TmrOClygxfEM1zPJQl
-	2apCNl1VbxNVv4ARUmiDvICeGzJNne8=
+	bh=N7t76lq+4DYdf4zt4uMNUzUlaUKfu3wh5rJDihRxgOs=;
+	b=HXiReZ0xhFhLeAxe8qx/BwDO7Zlg4r+HvuDa3NPCxDqp7qQRkoe3/yTz4Up/JlETOEEZ7j
+	egwRPQdgFWv+thZjeevtY6Ra4Qx+JvVG3m6RWMmC/G+QMvzvBzc1CuS9kKrKNrpzlHwKpq
+	asf3S6O1smvaRaJDyvmAO/B9NdUCax0=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uVreSsST;
-	spf=none (imf15.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=ktgIYLtY;
+	spf=none (imf15.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774447414; a=rsa-sha256;
+	cv=none;
+	b=cFmxtwoK6gnPxfkzW2oY8FSMS4dL23gojLuY796O2GKZYc9OgB4x3LAyAXnu7hxeVUUQZd
+	M8/OjRlqvSe8QlcVhqgR0jZlgsrbFCUZtWBt2cHvJPQy0zUloGdz7bEZ+MZ5zt1Eir70Cy
+	buJsqG4wfI6NdFNVNcfgr+zhT6ZKKmc=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NF/Fzmt3riyXynsc3GneO0T3XfJ1kmXmj8mDb9HEBzU=; b=uVreSsSTreEtJDOHcz9Zf36/0N
-	Xeix1I/f118jkE4t4TN5lnwgOh1w9sp4ljJaeMD5e28uwk+8vGXr434dzkoUleWhb6NYyd1s9+I3u
-	dYcpBveNuxRndLYDiv0TgPF/BN89+D6D5s/9W47W5zmalTuUWQS5bb8ypgExMqTy6Z+c0VVeZ0eUF
-	BaFltWHK13Z/Iq+EDHsw+XkxOZ0PgqVbBbesavc1BajFsY19yoZx98GdcSvvCT8FCYe7bDOTAJZWl
-	yVLWStNjSSBNhC/OQfoP/wLOg0SHShYs6EJyoKeAIhnvijTJFmTgdo7ODwoc61YDZIb2ksi8/Qph8
-	TOy8dDJQ==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w5On0-0000000FxLE-03fj;
-	Wed, 25 Mar 2026 14:00:54 +0000
+	bh=N7t76lq+4DYdf4zt4uMNUzUlaUKfu3wh5rJDihRxgOs=; b=ktgIYLtYWVkXoXspxfWbJV4wRe
+	w1LMcNyCticYILZiWuJQ9mr+llxlxHngNu9/EEoOH/LXlYsZRKCUmkJyLjRqRXtmEE532TZh5hy6P
+	5lilkJG8QTR0exsg5AwyoSBmSOT6gM+TJw6+7jYJHCIiSeFQfNz5asWHYB908Ev4EwHYI8DV5/dLf
+	vWAq70aQdw6clbvzx55rTMLoVu3sqdqofRuOZYlESwojZL7I6grKeClz53M48ll3V7Upf1TTfAOYx
+	42MSx6EUo0CY5aglNAUDqUqVedvo+7SXq8dgM7QUbOggEZVLp0hxw4RHyhyPHAVTsek5YOkbLMO3N
+	YhVVy9ow==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w5OpR-00000006Ijg-1rCM;
+	Wed, 25 Mar 2026 14:03:26 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2AE03300400; Wed, 25 Mar 2026 15:00:53 +0100 (CET)
-Date: Wed, 25 Mar 2026 15:00:53 +0100
+	id EE5FB300400; Wed, 25 Mar 2026 15:03:24 +0100 (CET)
+Date: Wed, 25 Mar 2026 15:03:24 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Qiliang Yuan <realwujing@gmail.com>
 Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
@@ -94,21 +94,23 @@ Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
 	Ingo Molnar <mingo@kernel.org>, Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
 	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 06/15] sched/core: Dynamically update scheduler domain
- housekeeping mask
-Message-ID: <20260325140053.GC3738786@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH 07/15] watchdog: Allow runtime toggle of lockup detector
+ affinity
+Message-ID: <20260325140324.GD3738786@noisy.programming.kicks-ass.net>
 References: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
- <20260325-dhei-v12-final-v1-6-919cca23cadf@gmail.com>
+ <20260325-dhei-v12-final-v1-7-919cca23cadf@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325-dhei-v12-final-v1-6-919cca23cadf@gmail.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: hn7ze3r4xn78rrnb56pmzaxgqmwd4b51
-X-Rspamd-Queue-Id: ED9B4A0030
+In-Reply-To: <20260325-dhei-v12-final-v1-7-919cca23cadf@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 13B94A001A
+X-Stat-Signature: t91b41mjt46j9tucu6of57jq9z5f4oyf
 X-Rspam-User: 
-X-HE-Tag: 1774447259-134437
-X-HE-Meta: U2FsdGVkX1+WXoDGD/IZY3azgQoWGVmqEvSkzjy67NdkKzYmaZkbi2j+S9UFJ2A+ZfEx3rcZM1z6vLMhjnF2Rfvvg1EUI872688rErYj5QFqgQ20u4x/UDQdFrDSDCjUe1gFzlWp/zn+9K6r0YMo2U39jefpW65yuJlkrr6p6zYBJv9hZ29A5EEBaRBLwUTR0bCekOxU4DuPG2ZR++f0lM3SOJvR1q8ao5bx4Tdxq3BhEtXLokj9cqBtknXu/YYwBKVsm9iKb9jrC618QuhUUzI9FdwYnYIZGQKBLKcIV2TBaC3QX0dSn+u9Kl7iOiwAWHa94LJhk+LiMZfn/qEvF6htRsgjbo6qk8kKJr6p3zYN9hHbmf/tE9vXh0FwhlAK5WmnnJ0oY2rtFChOWfDO3Eg3vqvGSnfnLELeFrSZPdaUOtxgOjlUFtFm+wW87wO2/XHhdWe39b17SSkKnvPVKnIBiotSR//7i/CNSBCQF4vawfyrmmy5K8KDnBdeTL+M4ZQxaA90EsJ8s/aFM8HWbXlnwSIwdFpYShGR7WMmEoMJMZkMx5PVE6IDJTTgC+jN7ehfnCt1at/TF3EC2KenaDrhbKYbgFawgL88c61bhHcHoHzAT1+/sWcPaEj3A+QKKFKnjLL0eoik8UzuTYM9LechEzpEmXRl5SrmxMKH+YQevhKN9R2lG3Cl31fMZ+ZV0bfz1Pahc4tISsqgzvL7NpqKaimt1Dd3r2LFPBcfbI2GVSzyQebuF4176bmWML46ra6iEPS3sAmWJoE0Xlh4DhjNKZ4w5BDfsxLY/ongyqsXMsN2q8lXbxdS1kX6peoMg823+sQ65uzZ1sj/mggaYAJnSg5i9KRSj3puz783q6K0NY0Cm/wmPEsOuNywI39B98+lFWgV1T04NBvLIEmkt2xn/wfdGbUS4H8TX2NuTT27WskgHrfluCA2xnsVWpwhxctOd4rW4JY=
+X-HE-Tag: 1774447413-30713
+X-HE-Meta: U2FsdGVkX1+lxta72/vzmkSdovqUaMf8D3hfL4cUDzEJXGRnCEpPiYp/dkXCkRqYF23eu4z9NSHLRPirR3yKhXpRt1TwuQPIgJPoA5TuMkLdNjuqXpOH4QFbN1q3W3fze/tH3e205OEIKE/6LKszb2jinN0jvZ3Ws6VfpBToLfprUT2qoMbbgQQ05rAXOFeG56dTW+Rj1qcrB6Nmiej+JVqDzTINuyb3apYOJr9yZ9lYHcW70/kDIFc38qRlOZCpmUSj9kS0GFMmvPoi3hKX40UHzdK52sEiq9ywvR4GjkbyXHPBECZ4CqO1ceWFzK+C8LVqgd6VxkEklu+0XHbOwMNn/7r01lIM6EJCHX1kYRPeDCBIFctgbWAJ8HnrfWHqTAsf5sVRViuYK4tKLGsGRxjckSIB9PX2KO3R/3mKhGHIpNpe61gV8Kq50MRBQezeHJVLg4KZ5oO0Nyfgojmkt+1r79dIBkuvw69wzASLzR8BOfw4TL6Pp2SYC2DlMo5+MtM46VMnJtv55hTAr25DSVJKgplI2K02wDd6L551htAgSPeFWNm2CRx6hBW5MxQRqsCpvAAhhAwMJ35wXK4wUp5wWQuHcE4BzL3qTtoxJJNVfmF20jY2Vocnnnqrz+spk6MYQyCePo2e7cn8H+6+wXnh/VLxNj5prdBsxglWraCzWzKctEIdueJ9WohY00NQoltwcJ/3PZTRMZPOjtAHtoXv5baEJiyipzpZau4I42dc1+5mkAzWdgWMMwlTMjgyXBZPkPKb5K9LnZ370j/grMwmPU6LIza6+JI7+vKkIKTz67qezbgbrpllSbKwiNe12+hdEHKYCJMEKxt1Fdn6cPgRd3eVQ8P9Uo7tDt7MYUWr1bIkFgVmXlq2l251Wgxe0/vG5RinOIQOe5WCnk6+Qt8L8l0EyisEDpgsxpawgFKnEk2hDZX9wasf5fwug86jAebbh8z+PWl7aO1MzuE
+ 4Rv8dpqE
+ c2G8EZeOl20OCoc5qwF9cvDAhr3RHf436p2YxX0MsNkh3dvJIp8HD1djPb/jLjuZ7eeg651pYizaPu9aB2Z4Vs0nk8+DA4lzd/S+T/UlXfqCbx6n55wd0AFoZHakPie9pJvTq6tnosnBm6Xv1xOmhyJ63LWwyCdqMXZvBB9LcKK8CIJ1ssSjSD+h9DeLr18NYKVmN9ZdxhEYb4mW+1faM2nO200VCG8J82WLvfFvSrw6clz56D4UDgYaZVTFYHiB8+G8KAK8ZQZIWyk33+6jhIw6cE/m5y1sY8d65
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,11 +118,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 05:09:37PM +0800, Qiliang Yuan wrote:
-> Scheduler domains rely on HK_TYPE_DOMAIN to identify which CPUs are
-> isolated from general load balancing. Currently, these boundaries are
-> static and determined only during boot-time domain initialization.
+On Wed, Mar 25, 2026 at 05:09:38PM +0800, Qiliang Yuan wrote:
+> The hardlockup detector threads are affined to CPUs based on the
+> HK_TYPE_TIMER housekeeping mask at boot. If this mask is updated at
+> runtime, these threads remain on their original CPUs, potentially
+> running on isolated cores.
+> 
+> Synchronize watchdog thread affinity with HK_TYPE_TIMER updates.
 
-This statement is factually incorrect. You can dynamically create
-partitions with both cpuset-v1 and cpuset-v2.
+Doesn't the normal watchdog run off of perf, using NMIs? How is that
+TIMER?
+
+And again, why do you think you need more than _ONE_ mask?
+
+In the end, NOHZ_FULL needs all the masks to be the same anyway. There
+is absolutely no sane reason to have this much configuration space.
 
