@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D00B109C029
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C99CF109C028
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:22:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BFB86B0092; Wed, 25 Mar 2026 11:21:03 -0400 (EDT)
+	id 3C5966B0093; Wed, 25 Mar 2026 11:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 596B36B0093; Wed, 25 Mar 2026 11:21:03 -0400 (EDT)
+	id 39CD86B009B; Wed, 25 Mar 2026 11:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D3F16B0095; Wed, 25 Mar 2026 11:21:03 -0400 (EDT)
+	id 2B2CA6B009D; Wed, 25 Mar 2026 11:22:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BFD76B0092
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:21:03 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB39613B8F2
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:21:02 +0000 (UTC)
-X-FDA: 84584948364.15.A167D1D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 49F9D140004
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:21:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7Nmi5Ur;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 188FD6B0093
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:22:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7ADCBB9D1
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:22:13 +0000 (UTC)
+X-FDA: 84584951346.19.48B8BE3
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 883911A0010
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:22:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ngPfHWaN;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf19.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774452061;
+	s=arc-20220608; t=1774452132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J60nfALV8EvCaP60dpkenGqCSTlVRH7CiTn8A4+BOp8=;
-	b=U7fNsI6190n70KSPg/1LtfXduxnpAs0DzBGV3AfxJi2KVciHKe7doHXzoMtpNBLveFro/v
-	a/9ag50RlmlJ3tnQ3sSRrE3juXGYre80qAWSsZ7ff62Faxo6yvUQYK7rt4XZZIDw7iRSLR
-	cm7bOB+9iKJtVhppSiuh37PVy+E5WXI=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7Nmi5Ur;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452061; a=rsa-sha256;
+	bh=Ouu8y2VMlIQ3NjrnnBtkXQCrxDc+lrHn6mGN4M1Qu2g=;
+	b=jdlwmwLtSii9I4aj7+lkHdpTCnE07KHN7FEFCw4+w+lMbq0Gj+fXbbbWvz6Ww7nWEXauca
+	lk8nXarg6pArxWqQ4AU69+GgpL3RN6w2vrRPHeTvLhrfD7b6Tb2M95vd1KZLgOGp3JT9v3
+	jHSUBJn34tPwrM3KEiJAVHkON5ckvhk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452132; a=rsa-sha256;
 	cv=none;
-	b=ctH0HrHl0AC1KKuEJ0Rw6gLRAswVWddceqqqB4uLxuvJUkc+I/mMgG5cNXXlxCGUwWqYcy
-	JBNudWacwhKzT0WIco2D5WCDNq6MmmbBuSzohBAfPSsE2PTtoRxY+Awf7fD2dOgwwMF1Sg
-	VnAkVUshmb2QFEUts4cVrXx1HdhbFak=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B2E80600AC;
-	Wed, 25 Mar 2026 15:21:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90231C4CEF7;
-	Wed, 25 Mar 2026 15:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774452060;
-	bh=27h46b3j9DijQ/Ik+vVFMkoOTVwU8O9sVthj0b5oE18=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c7Nmi5Urec3RhO+Ohugiu0N+6vBJK+jWCqGxt/tJoJ0blUCcXNu4tTQdAXfrkBvvT
-	 Q0oPXSSMXvg6XBv0NARx2rD1ipNO9V6NmryU71RMOgTFXLh3rfRDDpflDw+71EVt7i
-	 8vOH5Cf6yjqgx6XDHk0rY+G9r0HE6B4V4pSvpdS+LZwDXqyhMqHNSdOfWgcU6nF0xf
-	 LvM1wlarL2BdtBVK1W7wfgw00PgG7RGwArkstORlDKSOi2It1UwZcLFNzpteU5+jiP
-	 +wtHngzVUSEGDUwkwECknv4N6IqoTdEzQ8uvwdRGhtm46gJWHTW6GgBOQBuCKpBALV
-	 wcKqbUq3hI7XA==
-Date: Wed, 25 Mar 2026 15:20:55 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vernon Yang <vernon2gm@gmail.com>, Wei Yang <richard.weiyang@gmail.com>, lorenzo.stoakes@oracle.com, 
-	ziy@nvidia.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress number
-Message-ID: <8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
-References: <20260221093918.1456187-3-vernon2gm@gmail.com>
- <20260224035247.r6mxsfcpiev4wnce@master>
- <zo2o25tesjzdvxdbjo6rc7crqmf76z5zwlykrnvhydaowgngya@hv3vgfa7zcgi>
- <1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
- <hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
- <8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org>
- <CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
- <22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
- <20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
- <3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
+	b=MABGpj13ka6gHhPA8loDmKh6EG5IbXDb2LX0k+nZns+z09n8TqO5h4+87avnK8VMgf5bkq
+	MNwg25SElb1Vmt42xehCX0rhF4KPRwTZpG9+3p4hPZ9YTDJfEN5ax5PQi2tbmlP4B31rkS
+	bKY3ESUN9GiRDsVV98k69IWCzQqDz34=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ngPfHWaN;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf19.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=Ouu8y2VMlIQ3NjrnnBtkXQCrxDc+lrHn6mGN4M1Qu2g=; b=ngPfHWaNuTdEWFecBlMqJVZLbZ
+	UjHCci+mc4+m2b0xrxeof+0JLPJLA5Ay080MBB0KUiBec1WZzBd6QVghx4Hc6onu3YjOD1it1aNRm
+	nbU4BkhtlbPZZz9KQaxZ8iLrkrVd7aEQHd4YsUzIA+M1lAFddPnAyZM3/FUuaWxqufFbCAooNN7OE
+	CqWF2vOwAqgGUgQtMvDGC2UKqpME31EUzTF2OKPorCoZkumQ5dcsYt23fTpah08Z9lQBHkutGPPOm
+	EgPyQm29HSb12y+Lg3jEAQXpwgst++yyfiwkQMOPU6oMGUQ1rjlSHkwzrfAt4sahU7l392dF0/gTq
+	CUtY6WsA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w5Q3c-0000000G3qq-22UA;
+	Wed, 25 Mar 2026 15:22:08 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C80DD300312; Wed, 25 Mar 2026 16:22:06 +0100 (CET)
+Date: Wed, 25 Mar 2026 16:22:06 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Hao-Yu Yang <naup96721@gmail.com>, mingo@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
+ and vma_replace_policy
+Message-ID: <20260325152206.GH3738786@noisy.programming.kicks-ass.net>
+References: <20260313124756.52461-1-naup96721@gmail.com>
+ <87a4vyihlx.ffs@tglx>
+ <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
+ <87fr5pgp5x.ffs@tglx>
+ <20260324174418.GB1850007@noisy.programming.kicks-ass.net>
+ <c892e7ce-473d-41e5-aa99-b95e0366c3fd@kernel.org>
+ <20260325151445.GH3738010@noisy.programming.kicks-ass.net>
+ <CANn89iLnJv9_HRV1vuURFM5uVA-y4SqBsBRD24kSJe7UmBtXSQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 49F9D140004
-X-Stat-Signature: nxcwgyqa9drwyimsgsmsomwqmg8peiue
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANn89iLnJv9_HRV1vuURFM5uVA-y4SqBsBRD24kSJe7UmBtXSQ@mail.gmail.com>
+X-Rspamd-Queue-Id: 883911A0010
+X-Stat-Signature: fx53xxnmdfhciwke7mkxud6fdcj9eq3y
 X-Rspam-User: 
-X-HE-Tag: 1774452061-189151
-X-HE-Meta: U2FsdGVkX19Lw0vE+xod9Q1wMJ+r36D/s9pcIgs1Dp9VpvP7wvYfGH9CRVfhvBwwBLitDZawvdSF4kKN28wsUVLkIRUf0Z/H1JkzDRVhJDtcajLEcMj/GucmsNxdQIzR0dZlaBVyUFMYXAzhI9utAJBj3UG912BSDSbbxJ56v2zIZLz/I//svl3vxy+Ltakl3xGCYukkDm9yT1P0Vmd+yPxvQAN7fkXnawl1oUa2s0W0UY0FJrwBvx34VJXOERHzNcWkatirbBkQmZvcNZjhF+u5aLu54/Txn9BbSOb2APsh50UyyDtExks7G8Ac4Tjwz4XSmNTstk6quia4hlL9apL+d0wrq9eZeN2ABhHpzB4CioxObyoXSPIpRzmjAlRMG33UnzW7x3MV7SvH7CWgUc/7/VNhpsl5Gv0eqeKGFeQn4P4OTR2gndfpdxlgRXQVPM8l1dyt14ybdEzcDbT6CDk8/k21MSapIn6kXv75LcgAhycx9y5gBT4oaXV3nG/HH5gB0mpgeOCsMkgkXaAHdv/YZnbujY25L37XYMJDULbiIiTGhM/OLfMnv0UVOg8fX5RK5KI7APj4U0FxAFtDKBvIod4De6PGMRRbgvwGyaWn93UWfdjY8cfA1VX8UIhCUqGZ/xTPquCAtixbb7SIybLoSOkARCdEhqrUzPkPLx9hDtiukndsB0/vYNJnTyJJ6zCZ69laJbPBUXa7iHDxDJ+UWyJ5T0TCwdNBeIo9hYCdplrhoyU1sfz/jx/kp6+64y+42ikXZLbj0rkTeBYYy3l3Y4WMefyrKGfck8L/k/j1J3/P37uYorvGM7xidDMujsLCKwsZPbE7bfDZUZBliufM7X4jTyhpyJfdgMJ+qw+OIqSKF1jI/qDep3T7foES4uKeLpwp6+1iLbI7OMGt3Xm3i5XZ9nwcb1ZmSQ1pmgY4rxcLxiIxkrnP5XPmWtkcqD7MSdCXafaw7PCS5g3
- x+fSggyp
- N7PYFYLDNPxEPbbswsdxaOzitdG01UQrgBlTwohu+0/gQf7xb8Q0ph0jr15/+/hXtfdCsF7+qdY7TLzjRFV/+3dyt0RZ0OtzX2VsHI2HJS8igNiZTyuFwq/CMbQHdDhMlmxwrneOPYXWbFmTZSBB2809GAWYZaZoIzJHdsPwTZncQv5mvs4/orOM8MyNU28YHfH79YlzBsMXhoC2hNV7CEUf78FbM/TnYzIBvgq0HJKHh9gJVrv1yXst1rn7fVu8gDoDtl3LGKsf9M16h26GKV0vDEQ2LDtBzJbH+ybBUSLParmypV75tx70c3A==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774452131-116653
+X-HE-Meta: U2FsdGVkX1/WOsQgjjNGDtGDVIsldVAXLFe7yxntu6ALJ91CYv955ae8mSwVpGI37y6ZKABATdNsXXF9aFVhYfhmqPgUmyBcztwdT6pFQUfJTZBo0hZyb2peyYQV3VQZTDPF2FntKawE7Yv7LrRFz/BY5BsSlqrZigSNHBWxTvLoxW5fZCmH4pprZiQeyuV8cGjbt/p9wR6cGuzJst1WCqAO17T7z1U+4cQ2XvZUp4RT/BNEOJW1PXYz0wEkaJMVuLHK1D3KydJlorFvYyAMg4KQ6aKTBlcy2AFQgfEcTESqfzMDPBhT5vltzOXZ7Ji9t3MiM49OKkfP6NYoLBqiBatP/WUgYMzLEhiEs9avTqxq87dm9tfoCLXyqdrkSXdQ5T4/BeVB6kDZDPM3nHubIBIembIfs4nhUgN2c+q5uKAGqBmF1x1H/fFaxIu7t+JsuMPTvsr6tAbEkzjl2EoB28PAhQQPT90XvTtEG3dJvtY1FIxQH+3XkVQGPTtXWuXPhM2B8GvI5/+owy0WBCInAVHkSpDJGQG42oU8zrnQAP7NA6lYuyDJiZ3kz8AzNGAQxT7kHhkkVF1jvVZNynlmnSJ6wRzhTPkAe0VFT76Qg+x69v1MZmXCP9mNejCTTy135ks2RCMH3HEnvU+tNmgH8Qjtd86XrTn4+giE0MI25IVhHkb7dmzRA2RBBDpYSx5MHqPBujqpaye26x4JHt6B4wP5P+dZtrgpsovDoK2VroA6J27FO2qhyFVYDObZ9lFiaagHHzQCOIpM2BSZrLgCcOTmR5swlEmLkquiBuKsyc75MAl3CmK6kAh8Rd1R/k6o1jEFXuct0RbinvMmL1QQ6kcVa1pFMnJkeph8dW+Y9Gda3RNxXSY5N+saQNxYHz6Rs9gx4LggOvMWajYfYPcw3sVDstzuMG3ROU22OQ/gCQXGsN/ocX3HkWeA9ltyNKoaVXojTV+VtUHqEiPMhmF
+ En2+Sdo3
+ jFqSwQp5I3vA38yfFRgfLbSCqlkBa5emwGtg1yp1bt6vivTVLig/VTSERnsRzisrHZeqcxD2gy5raJUph/YV7ahkXPJ9tb6/yjLI3OQJ+6OsmR67P8ZCMe/EUvrupPP3gbqMUTSII4dgnapqlettfmE7RcbT04ODDXhbvRpvgfA6sdP8eC0a/iR8EPJhbvSmA87buA/W71VBuH/py8XtDlglbB2eGRbbnP+CPy3RQoih3G5Pl22VUlB1wvvYr63UwP7svKfio81fUTa0NPNMjaswbJ5Bmw4KE6u/ZS5QTo+l4SOYoIqIYjafidWsEpSpe9ttONA21sWeHmzKTKTzdFBsfnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,62 +106,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 04:17:21PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/25/26 16:09, Andrew Morton wrote:
-> > On Wed, 25 Mar 2026 14:10:23 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+On Wed, Mar 25, 2026 at 08:19:24AM -0700, Eric Dumazet wrote:
+> On Wed, Mar 25, 2026 at 8:14 AM Peter Zijlstra <peterz@infradead.org> wrote:
 > >
-> >>> No need to update the patch description.
-> >>
-> >> I will take a look at this (sorry for delay) but general point - while
-> >> fix-patches are convenient, they're incredibly anti-reviewer.
->
-> +1, I could have sworn we brought that up before. :)
->
-> >>
-> >> I hope at some point in the future we can move away from that so you can look at
-> >> a series on list and know that what's shown there is the actual patch.
+> > On Tue, Mar 24, 2026 at 09:27:41PM +0100, David Hildenbrand (Arm) wrote:
+> > > So IIUC, futex_key_to_node_opt() looks up a VMA under RCU, without
+> > > holding the mmap lock. Concurrent mmap-write lock is detected by using
+> > > the mmap_lock_speculate_try_begin()/mmap_lock_speculate_retry() seqcount.
+> > >
+> > > After looking up the VMA, we access the VMA policy.
+> > >
+> > > vma_policy() does a straight vma->vm_policy.
+> > >
+> > > What prevents the compiler here to do some load tearing while it is
+> > > getting modified by mbind()? Or what stops the writer side to to some
+> > > store tearing?
+> > >
+> > > Shouldn't we be using at least READ_ONCE/WRITE_ONCE() etc?
 > >
-> > Oh.  I've never really received that message, at least not at all
-> > clearly.
+> > Bah, at that point we might as well RCU the thing like so, I suppose.
 > >
-> > I've been hoping that the -fix patches are actually pro-reviewer, for
-> > those reviewers who have looked at the previous version.  A full resend
-> > of something you've already looked at is quite annoying!
+> > --- a/mm/mempolicy.c
+> > +++ b/mm/mempolicy.c
+> > @@ -1026,7 +1026,7 @@ static int vma_replace_policy(struct vm_
+> >         }
 > >
-> > I try to mitigate that by sending the
-> > heres-what-you-changed-since-last-time replies.  It's a little more
-> > work at this end, but that's not at all a problem.
+> >         old = vma->vm_policy;
+> > -       vma->vm_policy = new; /* protected by mmap_lock */
+> > +       rcu_assign_pointer(vma->vm_policy, new); /* protected by mmap_lock */
+> >         mpol_put(old);
 > >
-> > I see a couple of options here
+> >         return 0;
+> > diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+> > index 4bacf5565368..6336a80e3dca 100644
+> > --- a/kernel/futex/core.c
+> > +++ b/kernel/futex/core.c
+> > @@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm_struct *mm, unsigned long addr)
+> >         if (!vma)
+> >                 return FUTEX_NO_NODE;
 > >
-> > a) I can fold the -fix into the base patch then send out the
-> >    resulting diff as a reply-to-all.
-> >
-> > b) We can just deprecate the -fix things and ask people for full
-> >    resends.
-> >
-> > It depends on what people prefer.  How do we determine that?
->
-> I like "fix" for smaller "obvious" stuff where a resend is really just
-> noise.
->
-> But for bigger stuff I prefer a full resend (we can still have these
-> temporary fixups, but for reviewers a follow-up resend is better).
+> > -       mpol = vma_policy(vma);
+> > +       mpol = rcu_dereference_raw(vma->vm_policy);
+> >         if (!mpol)
+> >                 return FUTEX_NO_NODE;
+> 
+> Yes, but sparse will bite :)
 
-Yeah, it's really about being able to come to a series later and be able to
-comment line-by-line.
+Oh gawd, yes, and then people will go 'fix' it and it'll turn into an
+unholy mess.
 
-Really larger stuff should be resent I think, esp. if there's multiple
-fixes in the series.
+> READ_ONCE()/WRITE_ONCE() on these two locations seems acceptable.
 
-A reply with the same-patch-but-with-fix-applied would definitely be
-useful!
+Fair enough. Like so then..
 
->
-> --
-> Cheers,
->
-> David
-
-Thanks, Lorenzo
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm
+ 	if (!vma)
+ 		return FUTEX_NO_NODE;
+ 
+-	mpol = vma_policy(vma);
++	mpol = READ_ONCE(vma->vm_policy);
+ 	if (!mpol)
+ 		return FUTEX_NO_NODE;
+ 
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1026,7 +1026,7 @@ static int vma_replace_policy(struct vm_
+ 	}
+ 
+ 	old = vma->vm_policy;
+-	vma->vm_policy = new; /* protected by mmap_lock */
++	WRITE_ONCE(vma->vm_policy, new); /* protected by mmap_lock */
+ 	mpol_put(old);
+ 
+ 	return 0;
 
