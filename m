@@ -4,100 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62933FEA838
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:10:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E34FEA838
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:10:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C47196B00A5; Wed, 25 Mar 2026 05:10:46 -0400 (EDT)
+	id 9AE836B00A7; Wed, 25 Mar 2026 05:10:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF75E6B00A7; Wed, 25 Mar 2026 05:10:46 -0400 (EDT)
+	id 95FE16B00A9; Wed, 25 Mar 2026 05:10:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE6126B00A8; Wed, 25 Mar 2026 05:10:46 -0400 (EDT)
+	id 84E966B00AA; Wed, 25 Mar 2026 05:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AA716B00A5
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:10:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 42109C2A9A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:10:46 +0000 (UTC)
-X-FDA: 84584015292.12.D5E57FE
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 525E280003
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:10:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eWGKB6b9;
-	spf=pass (imf02.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E5A16B00A7
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:10:53 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3CA4E13BB0B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:10:53 +0000 (UTC)
+X-FDA: 84584015586.05.07A0A3C
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5D6EAA0008
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:10:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YGV1tPfj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=realwujing@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774429844;
+	s=arc-20220608; t=1774429851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AVaXBsXyrGbsFUqtfIJ4CxUQ0g0L6QfqD42wgzMQLJ4=;
-	b=pTogNJBLxspU30A8Q0pQFlQ+EdDkjz19dvH5rEBSyPsWuRk8nvtb2+cUCTIuivAbLHbr3S
-	WnVpXFxSK9YZysMNqWiciY2zZD2i3rg7iHs2gd/RS1eylO11HaNVKv/uAwNqXbaGdsNJKr
-	CSpMQ9FMCVJTuSnFKI+vCxPwbtxhm8c=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eWGKB6b9;
-	spf=pass (imf02.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429844; a=rsa-sha256;
+	bh=0ZgSquaLuKBFQZpkdx/1H4ca5cGKSrUW15huIE1GEBI=;
+	b=us2uYf7dTnf6v7WXZA1rB3fUOWESw2dZU63Wzuo8KKYTSWoOlmm+X34cvgVXV4hdXexJ5F
+	cpqkH//BWMlCHZmYqQNVOPiAprGsL2rqOEKs5+K/eln7jdgFwhnTVdR5au3tPQnCtonUqg
+	iJayizjjBet46gwuOZ77zGt5MR+W/1Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429851; a=rsa-sha256;
 	cv=none;
-	b=brUvDr6zI0CVHWX1bHCoGNT6hMtnEOc9KS+6OIcjzUPyY+gAFD5tvWpBKlrUuDyX2EbAs3
-	R173TEHCWp6wxOKebqD826HZ4HlRobt85CjwR1R7+iwzh7LWbJHDsH2ZHFKAPJv7OxjXsm
-	Q4kTAyrVqCZm9kuTlGXAfYvjqE8aP5A=
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2c1632faeb9so621094eec.0
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:10:44 -0700 (PDT)
+	b=18in3Zx7qiMebqkoDngfSgaKGn7WYoGaL8Nqx9vVRCs9i7eYBl2csQDqqznShIO0kZBaOK
+	TMHX+33T3rq7Ce17JdhR4g+goq2n7uS2gSQnWfdqnQTe6WxlTJYR/ouXOPphLcZDLfG/10
+	/GukRyoCHcSsBlovPElpV5C5+AvO0DE=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YGV1tPfj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=realwujing@gmail.com
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2c0fa90d47bso381453eec.0
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:10:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774429843; x=1775034643; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1774429850; x=1775034650; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AVaXBsXyrGbsFUqtfIJ4CxUQ0g0L6QfqD42wgzMQLJ4=;
-        b=eWGKB6b9Wc6/N+4htQCoelLnGIaMWmI8IiK5mduii5OJvqnS3ShJLPnsTbO76bhMo2
-         w7cwdJNQZpm9ujK77iReB2PPya1fkJIF9iYgh8gSNWceIY8EktWUnchlG8Jw7nby8OEP
-         5qHlSOr+P+etOFCeZNzdQNmecK0dRZVnWspolacqZWHyGtglp7l9jd/EatO0OlEpVJWZ
-         mltgEG6KEgSOWzkE1aBWaLczDzHAcKNf8v0ShJpyg1VOoJ705fILZ1B4OYs7gz6wlVNc
-         U2SItLNn52cGEE7OQ2ix/3Vks47MxSIdaZYvmRIDqhZv2Vlfk9A5dGhafzedBZjXg/i0
-         mY5g==
+        bh=0ZgSquaLuKBFQZpkdx/1H4ca5cGKSrUW15huIE1GEBI=;
+        b=YGV1tPfjIbxHCLZmwcJWG7nnbQdhr6K6JtZrqY0lUZ92frmn4w9T1P6BHIbj4IDVm1
+         Phj9YEWWCcAu0PV2/UlyYLkl9h+XGgWwFj4z2SVEDCqK9nzlxVnj1ukGkaGRhuvy7m18
+         qsydpKNe7nd0pKNlCPeTwqZVbpzkZDOasDFtRQ/lUFYGsmkpXdLVJ7oPAzZyBp0fCXDC
+         Eg6cIYfRGZW4Ixl7ywINHk1i2APXtWbBY3TVPBDmcTOSvw5189YbvsvtgiByoYQToBoS
+         t210lynderAZ4hzkbiBAZxOqT1bFKH9FvMV+B/s/AXTObS6xRGzr/B7rMvBXtVn4f4ZN
+         ocWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774429843; x=1775034643;
+        d=1e100.net; s=20251104; t=1774429850; x=1775034650;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=AVaXBsXyrGbsFUqtfIJ4CxUQ0g0L6QfqD42wgzMQLJ4=;
-        b=ZDERiF3ZW63P1uhWmKEY45YbNjC04YzZ6jXprzJG/Je5RKzFNcb63WvhhX7+fXdr9f
-         ZL+hzWu5HdPaOOjBsaarhx+ynDgUacZ5VLKnM7TZlVFmzPVJvf/3VlaUHW9SXaZB9c++
-         533BURhcuGi+O7FLjSg7M7c+oDr/ynA0INUbJH35w7tx1seRRT/on4h6oclDt/DY/DJ6
-         02ZzzK9VZSsWe67y7DuwQWIcU4seoPM32iZU4MQ3uSkKr6n4JCz92imPJF9QXoReS+4l
-         J6fKNqchKLXwbodgDPur+CNj3SgR0P1mR2x3zfPnGFxJK2zBQNceQmBD7523xOSaq8ZQ
-         z3RA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWGL8tRevvdr74VElsFn5a8fC5d9zU+C3TxCNuA+vh9tcz1fNmO/x8SIs5h5s+Aazk9OjYzsJ4Hw==@kvack.org
-X-Gm-Message-State: AOJu0YzUislm5bp0zea/VBQbSvHk1uwJdeXl0S4igBXNsuXgX4hnjgJn
-	qJRAGfFp3RMa0ILMT3dCv8KaYUpppdyjsJ+gEsuO4jiPtoxO5bu3WCYw
-X-Gm-Gg: ATEYQzz2JP8QVqQxgu7MQORYjIFjYH/6K4m1OodKG1ZdvcgrmrFJ3lV+kDlMrcDROm0
-	qVwhyH6ZTWZfAmngMd1mjzBaCJhgmOG4VGQYgIgzNxiDLCWZKK8f69LlCGT1K8A2TIJVudSKJAv
-	2xaWVUyxGnXegeLWCagLVavit0G4YCDLo0A/nspDLwF7qAbDvUYoPZgqB5kqahQ8U4NHxx81n0m
-	NvF0FfVy9Hd6Z9+hx9OaZMjeH/vyXj1SAzgKg3T15mSdvA3PlVdTLnOYFWlPTPnyA7huZ9Q52kF
-	GIqN3Wf//tX0nRLmOM+y3TMoTw9kT+PGxSLeWqC4clGo/MtKqh6ib4IdTTXoTjaBwJdsNN5SdvY
-	P21ru3byzFRuVchmjsftl7oAUXFyusr6WwRGAuYloSHFC9bN04wPQEb4ejCFgtV2PmbsyPJlJ58
-	fLsjmkgYXlENM8QP2h
-X-Received: by 2002:a05:7301:e0a:b0:2be:9886:d4cc with SMTP id 5a478bee46e88-2c15d31dab0mr1366051eec.3.1774429843054;
-        Wed, 25 Mar 2026 02:10:43 -0700 (PDT)
+        bh=0ZgSquaLuKBFQZpkdx/1H4ca5cGKSrUW15huIE1GEBI=;
+        b=fCeL9BeIqg+6M1rup5YzQN3RoBWJTcDUKE0kfI56mpgqTlm+sw4MUhw/EQ9KVKJUTR
+         z8J5y0dOJ8sp8/2nXBKqtAusJ/ssuV6rmj0cENFEAPhaplSz9LB9FAMZ3BohnCJe2O7n
+         R9OwzeMzWiE1yI2yDkfWIilMpfP47TIU5naqH9K6a/y3f6NIOGNCm/RGz8Rak8x+VCxo
+         OWdMQoygiBo+ymGWjeaI53Xx2deOf3aBBvAbNfwmAZGWDf7uj0ty91jmVklaZOU3z+2g
+         ZctPPjx/ycedKbYJp8GUzIAWpLXjN4TofZ5G9+/k+di916nQEwjLGoTR+LNvTn6Kay1C
+         qIWw==
+X-Forwarded-Encrypted: i=1; AJvYcCUjEHBo30xWEHMvdeLJi8RRNFlX8391eGLRQNmKsZyJqj2TUT1bQxSaSjT44nMUV5Vr5UR+rFVH6w==@kvack.org
+X-Gm-Message-State: AOJu0YyKUaiWd+6LTXUIquDmXF9th8yJrM8IS4zxqJYcDjUUK6HTU/T5
+	8zeLC/xFSlke7VAFdPSEBy2+cOxL43c+e13lfaEidFgezWSfdXeU/HBH
+X-Gm-Gg: ATEYQzy46Hs+5n8SMc3c65U8Dvtqvik4EaiicFtuwocSEEvYCYYXrkckEWAHDFKcxCm
+	VqGC/RCRd0WMcYGqZ0kpcvgKn91DCeLvsO3tb8/swv0CXTN+SQON+LtiJb92nynp+95+v29pIDm
+	wU3Ij11ZlEMDRbvE7kJ1u+1Wuz2etlolx3WLCzNOpevceU+tyvTTSs8vo6z/geg1WeY2GXyevb3
+	O7n+a3bDoNq9yDp8SEak9KZFGutjxDPalYznPkAy6Wgo7NJgLkpTUE5RNlaBtMxYtShYWiQlXyR
+	ilzm4J++H+HtdN7O5+pKjEyAMf3DWAJPYgCkfjd4GURUe884lRPAR8InDBq8SIlItS0VKFK/YeS
+	F9+iskpg56Ru5KiWHd+/gGSt7pcoXpfgdwe+hf4t5ZajIWytBC8zr3hSgHhDLu4uskyE1RlqKSU
+	vKaAQOpIpEe3bNVrKc
+X-Received: by 2002:a05:7301:9f14:b0:2c0:ac4e:1516 with SMTP id 5a478bee46e88-2c15bd3cb1cmr1301131eec.11.1774429850168;
+        Wed, 25 Mar 2026 02:10:50 -0700 (PDT)
 Received: from wujing. ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c159e25dc7sm2786389eec.27.2026.03.25.02.10.35
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c159e25dc7sm2786389eec.27.2026.03.25.02.10.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 02:10:42 -0700 (PDT)
+        Wed, 25 Mar 2026 02:10:49 -0700 (PDT)
 From: Qiliang Yuan <realwujing@gmail.com>
-Date: Wed, 25 Mar 2026 17:09:39 +0800
-Subject: [PATCH 08/15] workqueue: Support dynamic housekeeping mask updates
+Date: Wed, 25 Mar 2026 17:09:40 +0800
+Subject: [PATCH 09/15] mm/compaction: Support dynamic housekeeping mask
+ updates for kcompactd
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-dhei-v12-final-v1-8-919cca23cadf@gmail.com>
+Message-Id: <20260325-dhei-v12-final-v1-9-919cca23cadf@gmail.com>
 References: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
 In-Reply-To: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -123,14 +124,14 @@ To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org, 
  linux-kselftest@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>
 X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 525E280003
-X-Stat-Signature: 6q58rhknrpwkdn1nminxt8zb5yt3k7fw
+X-Rspamd-Queue-Id: 5D6EAA0008
+X-Stat-Signature: 5sqii7jugz8yct8hh1uphummnauehicr
 X-Rspam-User: 
-X-HE-Tag: 1774429844-12360
-X-HE-Meta: U2FsdGVkX1+8Dh92bE3fQ76a3Jeho/yjFO4Dr/iOuccxitYqijr3eGe1AQqSkOYUmoi4cv2VcKaOK/70Huvvyg8bv9redANAoz3bX8YoNLnrznhN8VQot4854gQUPE2b5TADLqMDLuD/7odcBAjkcswYrqG+cD1oZknG5D2jyuHq70RTy60iKp9MTrQcseFhZ4y2YmCIptJdYIRHJGxB1A2nusllujBcLISA+Vo7JPmtYk+F4nig+MEiLkCAGes+p64S2uxTZJpeSrimwP03ebTcWcBYXNSZNYYEgZkyGa7uqsJzTDcGFUQON5HXAKCvIHpvId4RPpASqk5DoUHEMZGMkgxY42WSyIgfrlHV/aC7WaQfVgwNrtV9+QAc8AkUbZ7nAkqL6zTYBsi8BMiEkOlAFv3+mm3qJ9otyznHwJOP5QczNjjrFsHEJUs55aE1U0TC+lsEW2NKWsxEoRpQgV7p/UrfdQApmB4D8YsMHxSLaNHmPobQTDJxEDia5PgyAB8O9N6s+hnVUPgAQzm31qPqda/F7irImDhHcsWzoRe0HhWXqX2vWvNlzb2hb4zL6SXk6vBxZfLxinzuKlBrxY0ZFwCZZwpi+WoNOeJewioYUtkfPrTReoVKmZdZLZVSkxrSK10uUMK8jgpq5k+feHz5Ha0Z6ABtWUMqXCyEnXj71N96oov5xbm/5a38UAeaJjqWezMFDpw1ODN+AbuUmZCHbk3ybhCaO1iBU+EHGf8FbA+AKiy4ZDVMSnW8bWL6s+CKtF2mrs17hIaEkKe6tSuCZU6H1YlyK4S0uMXfnNM7uQjt/6xaE23nEUAhVb344dpldHhD8d0BaT+D4KkFsXz0EXdEYYB0TtLA5SV0QZcZhR3SZP0I530Oo4bmr3MK/EvHe3uH03Lo1bePibLGU3MnDSwE0VqOrOS1gLiZrwg3oDuqGvK1JPiHq4/c5HnZzYdplDoDdAEnm8QY1PQ
- cY3qoTuJ
- bE0r1DnpnUOTIbBI5A3hIAfm7UUOyanc8vwkztFqtQ7nzRV0t0960VBK6ApNenlq2Yz7FwcT8HbwQ4/FYBiTj7c0ChWQq0qGU2s619mKiZ6DHkaL+Q8pmP4OBNhXN4xe9/JpXavsvM1/ddecGmR59+MdK0YocdlNrAey61dQhMlNDctAcF/Ka3+EEknDl+k0c32fEMMrsbbSknry4puI+I0eTzyu5lheFjMBkEVX9ay+W2kDN7mLuljIrxUPCuF62M06/nWRYG6EMWVoQGKgp38eMInQ819Ivd+GK3O0r2CdXxJiruG+lVMRA/C8TXt4M9Xxc8bJBvQeIVOZG6DgFTFjkDNS7MpIL37l9sX8EpZT6oB1YxbbmWQzpwvjeB8hzCJOjXmZk3HTKIrZo5VkcAC9xA3H11NXHEiSWo6BDE+THyUtVYPS2sh0cL5ETsTuXg26gXr/UY5+wSPRdNrOJSKUe2w758hZqYLd0PCJ0I7GfGCnbLWpLwngDRQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774429851-574462
+X-HE-Meta: U2FsdGVkX1/MeakbccTKS/xQ0SFYUNw7/9SM8x8wcNznBaPhcjYejUhmdDC2Nu/oQX/6S7UWhFr49btytYRQ7APwBhskRx2Q6kW0itSPr9RQ5EQ84GFOvFunSdZ4FkfOtxsdGs5z2Wv/WazGdWj9AXocppK6aYlPw1MxVhcXjM80jl0DJOBkwHQcAatTS4YClboAAVTI0h4nU7mYGaijPc9Lb82QmTzH6C8uoVVJWUIbb0P+ZinhoyFj5nUk0P0Ih7M399Bw6Eho0xGtibnv9DXG34srno1DJD3rQhuLVdsWwp3wmxNakr8hXXZ8WtQ/yPHidt/EeZPQ4z8fTbtvh7Q+CBhIVsQ+WZp5p0T6n8U2y/eCAsF3FBc7fq7LaX238frae1X+MvaLuHiXkGCPqeP+8Mbn04GbWrEghuWaUQM4Vv7zi61QHcLPeMNOXsLUubrRzivRIKchbfQjAzdDXbyO7+F3+80UXnuDxNdO1CQi3HZS9yIGw4G76BXl9MgDAFrpaQ19p8u5K7Xh/6c9nP0vMH8ndGwjLb7WtPMQNVyiJCrq0UdEIPGPTDRPKNc7DPk3ppgY8XRsRZtY3bl6rj4VwOOa+sRJg9G1yeChz2tHdwbBXq407PH9dEHxH9B2NjY/v6t2tB5YS9NQuvj0KDIp0JNEr62djqdue33D6mGrw0u9uxQL/Im/8IRg2EzXmlSvffmrvkrHRQgEoBM7aOCtQwm4PfK4/UAhzqU7vngNCGn5gsET3F4vqphq7OzGt5RkgwUL3Sn+buGwdzlZz7Ou5E29Y8poBLQ2Y5X6L+mmghPOflMgBUT/qPxNuwN1K/VY4QaG9mpbh+cDMtkPm7ZcnNzahTm+T3ABjn34qEDbIrDkKn/vWishR5jvZhdZy7dxJ3e/5X0D+xuUuIRi9Nq6i46gMi43zVFmmY/+/gX9alIVMzNx9v0jFUi+bEH3KoFJecN42irprbJGTf4
+ VaOWzhEl
+ splwtazMVg63Y2qx/G2PIZ5dFhgvAAV0cEsKKDnm+g7oBCCGZKEQjwz6U3O/pDqTX6hpiu4kxJXxetG4TFg+V8NDbO87FWWLNz7D7g7ZprcU/7htra1O8rUvaS6zRjvAOzYMSF2U0xf0JJ6Lzdy4G0Vi64IfQrteihi0XmFrSM1kRnQ5WHvkXSE6tPdo5V+xSTsDdLT+wapM+RmCnyJsEHtCMKeKfunUWVtHgoqnnEhnYFvFJBBDJcWnP5qGnkWOv/2/0vWxsGRMnPoh1r2brWXUe5LYCNzgveLMy04V1kswGRPaFdmarp1jjc2gkQCP8l5dfHpVNE9cETkldKnIwtMaBNeqWYaiBAUMgZSf5i5UdoHkWApNbD0UWSIw83aASnFW0YHN5edIswOmGcTL2eK3MMzeluDLIzuFz5o1Oz/cNgrUy/nSo8fmr3TX9OvOwusEQKK951IASp4DLlbG1K8X2WDMgHNlSS3L+U9PMInre7TRpnO/iduOtdPdA0MiHVtjs7ZsLsTJn3l2pxmo+zjfSQ6CFt9NXg3bmvPec3R1l9nReRi6WO7xPeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,80 +139,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Unbound workqueues use HK_TYPE_WQ and HK_TYPE_DOMAIN to determine
-their default CPU affinity. These boundaries are currently static and
-only enforced during early boot.
+The kcompactd threads are affined to housekeeping CPUs (HK_TYPE_DOMAIN)
+at boot to avoid interference with isolated workloads. Currently,
+these threads do not migrate when the housekeeping boundaries are
+reconfigured at runtime.
 
-Implement a housekeeping notifier to update unbound workqueue affinity.
+Implement a housekeeping notifier to synchronize kcompactd affinity.
 
-This enables unbound workqueue tasks to respect dynamic isolation
-boundaries at runtime.
+This ensures that background compaction threads honor the dynamic
+isolation boundaries configured via the DHEI sysfs interface.
 
 Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
 ---
- kernel/workqueue.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ mm/compaction.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 253311af47c6d..ef3ef7e3fe81f 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -7904,6 +7904,47 @@ static void __init wq_cpu_intensive_thresh_init(void)
- 	wq_cpu_intensive_thresh_us = thresh;
- }
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 1e8f8eca318c6..574ee3c6dc942 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -24,6 +24,7 @@
+ #include <linux/page_owner.h>
+ #include <linux/psi.h>
+ #include <linux/cpuset.h>
++#include <linux/sched/isolation.h>
+ #include "internal.h"
  
-+static int wq_housekeeping_reconfigure(struct notifier_block *nb,
-+				     unsigned long action, void *data)
+ #ifdef CONFIG_COMPACTION
+@@ -3246,6 +3247,7 @@ void __meminit kcompactd_run(int nid)
+ 		pr_err("Failed to start kcompactd on node %d\n", nid);
+ 		pgdat->kcompactd = NULL;
+ 	} else {
++		housekeeping_affine(pgdat->kcompactd, HK_TYPE_KTHREAD);
+ 		wake_up_process(pgdat->kcompactd);
+ 	}
+ }
+@@ -3320,6 +3322,30 @@ static const struct ctl_table vm_compaction[] = {
+ 	},
+ };
+ 
++static int kcompactd_housekeeping_reconfigure(struct notifier_block *nb,
++					      unsigned long action, void *data)
 +{
-+	if (action == HK_UPDATE_MASK) {
-+		struct housekeeping_update *upd = data;
-+		unsigned int type = upd->type;
++	struct housekeeping_update *upd = data;
++	unsigned int type = upd->type;
 +
-+		if (type == HK_TYPE_WQ || type == HK_TYPE_DOMAIN) {
-+			cpumask_var_t cpumask;
++	if (action == HK_UPDATE_MASK && type == HK_TYPE_KTHREAD) {
++		int nid;
 +
-+			if (!alloc_cpumask_var(&cpumask, GFP_KERNEL)) {
-+				pr_warn("workqueue: failed to allocate cpumask for housekeeping update\n");
-+				return NOTIFY_BAD;
-+			}
++		for_each_node_state(nid, N_MEMORY) {
++			pg_data_t *pgdat = NODE_DATA(nid);
 +
-+			cpumask_copy(cpumask, cpu_possible_mask);
-+			if (!cpumask_empty(housekeeping_cpumask(HK_TYPE_WQ)))
-+				cpumask_and(cpumask, cpumask, housekeeping_cpumask(HK_TYPE_WQ));
-+			if (!cpumask_empty(housekeeping_cpumask(HK_TYPE_DOMAIN)))
-+				cpumask_and(cpumask, cpumask, housekeeping_cpumask(HK_TYPE_DOMAIN));
-+
-+			workqueue_set_unbound_cpumask(cpumask);
-+
-+			if (type == HK_TYPE_DOMAIN) {
-+				apply_wqattrs_lock();
-+				cpumask_andnot(wq_isolated_cpumask, cpu_possible_mask,
-+						housekeeping_cpumask(HK_TYPE_DOMAIN));
-+				apply_wqattrs_unlock();
-+			}
-+
-+			free_cpumask_var(cpumask);
++			if (pgdat->kcompactd)
++				housekeeping_affine(pgdat->kcompactd, HK_TYPE_KTHREAD);
 +		}
 +	}
 +
 +	return NOTIFY_OK;
 +}
 +
-+static struct notifier_block wq_housekeeping_nb = {
-+	.notifier_call = wq_housekeeping_reconfigure,
++static struct notifier_block kcompactd_housekeeping_nb = {
++	.notifier_call = kcompactd_housekeeping_reconfigure,
 +};
 +
- /**
-  * workqueue_init - bring workqueue subsystem fully online
-  *
-@@ -7964,6 +8005,7 @@ void __init workqueue_init(void)
- 
- 	wq_online = true;
- 	wq_watchdog_init();
-+	housekeeping_register_notifier(&wq_housekeeping_nb);
+ static int __init kcompactd_init(void)
+ {
+ 	int nid;
+@@ -3327,6 +3353,7 @@ static int __init kcompactd_init(void)
+ 	for_each_node_state(nid, N_MEMORY)
+ 		kcompactd_run(nid);
+ 	register_sysctl_init("vm", vm_compaction);
++	housekeeping_register_notifier(&kcompactd_housekeeping_nb);
+ 	return 0;
  }
- 
- /*
+ subsys_initcall(kcompactd_init)
 
 -- 
 2.43.0
