@@ -4,134 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E39FEA838
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E8A3FEA835
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:21:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9B856B00B3; Wed, 25 Mar 2026 05:11:42 -0400 (EDT)
+	id 5A0B56B00A2; Wed, 25 Mar 2026 05:21:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4AFC6B00B5; Wed, 25 Mar 2026 05:11:42 -0400 (EDT)
+	id 578296B00A3; Wed, 25 Mar 2026 05:21:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93A946B00B6; Wed, 25 Mar 2026 05:11:42 -0400 (EDT)
+	id 48E586B00A4; Wed, 25 Mar 2026 05:21:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D4946B00B3
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:11:42 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F36DC299D
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:11:42 +0000 (UTC)
-X-FDA: 84584017644.27.FD556B0
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 48F4314000A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:11:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RYOkcOxr;
-	spf=pass (imf23.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774429900;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A5036B00A2
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:21:46 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D32B81B8A8E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:21:45 +0000 (UTC)
+X-FDA: 84584042970.12.26BC703
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011033.outbound.protection.outlook.com [52.101.62.33])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 96B29140002
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:21:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="Odp7fj/M";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.33 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774430501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5i4iFnlZOOrZJKAXSL28N68w+sPjuPG58XQHlTJ8bXg=;
-	b=upsVBWFrWM2cyB7SQzzjrzb3roDfnyLDimnJPq2txSR0Dt6NkznTerQx8UoDDZpTsV1qz0
-	2RKaIp/94OstImDSSp/viJhSl8fSKG8VLU6oaAkB0EOMVXFArKlxzNHPdgjzZmaX3zY5BW
-	C+5k7iME8/MiA6SFJPpO0SCsRwaq21Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774429900; a=rsa-sha256;
-	cv=none;
-	b=JQnledHbI2DwUfn5xfu5vwao4jCSZ8rTR4HV+NG1gRWsCaMGJV4igadwobApBdcw3ccotr
-	19XPO7mQbQI4ZXhf6icWSIvWA7wPhwaKfl6q3LywoCYZzK52dGz4PW6fKcpSLwq+23PZJS
-	uquPdc1zzj5Bra4yjM7iVUETXnvPrS8=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RYOkcOxr;
-	spf=pass (imf23.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2c1092cc08cso2898303eec.1
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 02:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774429899; x=1775034699; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5i4iFnlZOOrZJKAXSL28N68w+sPjuPG58XQHlTJ8bXg=;
-        b=RYOkcOxrAFig2g+VXzvF6CbANvu7K/RjWsMD1E9xVgkIXOseOdNjC9sqIN93yaPUXR
-         jSIY1WTYakIpfffJ3hs5G+up9ORD7QqJzmrulaQp1ZxBQJxRLJ6i1yQYLEb0FZSQxJXo
-         3rh/Bwu7EMEcCg8oKadg3900bEaCnoaY2aAZJjiOTNo6Lys9rY44Ttoq0paL/GNu8vV7
-         sdF25tkkFXmvkBjg0a5dwDpOYQTwhWUbW+8U4vjnmtXTRls1DYSxV4I0eQHh2RpQgYLj
-         cZShco1UrFwR4W9aWybn4VMHjsxTe+8F04rPS+3SGnSeJjhswg1Neaa2l7PLFWGeCySY
-         FTZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774429899; x=1775034699;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5i4iFnlZOOrZJKAXSL28N68w+sPjuPG58XQHlTJ8bXg=;
-        b=cmJqNzCPJY6wE7X8W2aSrHx/h2PJ+kFo80ydPelt0N7zhBrDlXPhVOtH6enjRd8dke
-         aHeb/xP8z5McU7o9gTDtBLd6dseOk0Y/sW3cEW/g1230wjyaE6n00PGgh+itLWWaZ/xN
-         7V1EMAfg8fj8924I3CRqWrR0ttDdbIVt/FAFfcnFTR/3VmUhyGZXRh374/n3M3b9hCEo
-         w0/15JWXV1yPh2FilPoQhLbw38Q/y5Ptbo7L20EUaFXSP5hlcsO+HPzUL50oG/eI7SAn
-         A+L8DY04FYx0jdBoJVZxrvSUJWkVoe3yXLG1PIepF7Mv+sbbSOlgw/TKyB3wU/CgOAEt
-         98Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLED7OGq+e1kYFifzFMRhWvYAXiIQNgE/J4cLzOEmg/zaNXpvgr4MADZS97Txde12BwN1StWucog==@kvack.org
-X-Gm-Message-State: AOJu0YxZAYZWIV2HvydqnCY2JD+GJ5IcEPSHighOsBrDKTNG5YsB6was
-	5IGDnrslz08ZTt/y38wANwtOe2keSxpSUlW9+4DGlzB85gOUFFfLKcii
-X-Gm-Gg: ATEYQzz71HHpJw9QZJnQhLOHG9229Hv8ThKq3DmBGZZwxVZ5VrmLnvyNrKY4UX4xHyO
-	r1FHTHrTv9advD2UMnoau9lJxVxNTC6M5/PvM7aEZ74nh5nyDsATIkp8fwe0SvDWDVeabcKNYef
-	cS5KHhj8LhnXmUYSy8PRAYJKKdNOUsCPjqE0KZ4euehHTKC2TVKEfVhiSb9AW1yCBWud/a4twc6
-	b/1rai1/mTEmsHfCwgpw3x8PoJIsFnfVF0bVyjBDGpdE3ccDl3iEFSJEUv0N5ALNzI2kNiw17Z0
-	TT7thNWHNQ+Jk6C+IvKFjt6v4p60cRMTw6uPHWABkFt7yvN3aM4AIeNxW/ym/xEYCW1B9+s74Q7
-	3zrmRHU1nrfeF1y4zc4i+5P0CMUH0RIeDBAvObyO9DrgO9ZnizZy6E5WW69zK70t3z+uNofNNfm
-	dljPPSbcWYCg3lf7Pt
-X-Received: by 2002:a05:7300:148f:b0:2be:2cfe:68b7 with SMTP id 5a478bee46e88-2c15d36146dmr1280732eec.11.1774429898988;
-        Wed, 25 Mar 2026 02:11:38 -0700 (PDT)
-Received: from wujing. ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c159e25dc7sm2786389eec.27.2026.03.25.02.11.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 02:11:38 -0700 (PDT)
-From: Qiliang Yuan <realwujing@gmail.com>
-Date: Wed, 25 Mar 2026 17:09:46 +0800
-Subject: [PATCH 15/15] selftests: dhei: Add functional tests for dynamic
- housekeeping
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	bh=othJ91rGJfaNbm5EnN+LGnI73TscjzICSbG66MEUtIc=;
+	b=mvP5BSsF7WOQ1BRPx/slfzH50giaaBPEf3JCkT8kmNARVe42D6BdyfxhU2iafiqAtb7ieC
+	yc2A/Ls2knEJJXWB+2jXZ5vYkDrVqL2aSRPrpNKiPvp6oanj4CMGblU+cdowG0nWNsYpQA
+	e5kz7G9CERTKENC/p6qsKpvrtZcJ+lU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774430501; a=rsa-sha256;
+	cv=pass;
+	b=w2ggBQ1snb2aBUm1xMH2Q0jgCRs/A2bE0XyA0u1h5CHnWVSAJpBpCyc14xTp3xyjMBTCDG
+	4AT4+e56aPiU1V45t6tfcCMo4Q0eHpzZvmabInnj0act4pFcIKnXoF1oGLRusI8VHoezI5
+	4qY4TFUYMeuSvYCm+q3RT+XzjgVb/hw=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="Odp7fj/M";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.33 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TYWH/VH1ji93BgpJ2NpcjBBXBVQwDt80+FNKrBt5tJQxUlM89Xn9o/e5D20LyQfoHMvLJ1/jFVTsX3Spu7KUsStn0nCoH6JQxcADbkYQLJ9RSCYnHf4A7ENgEI6eCI20Dr45CtgYugnvahBKQKJSRWfN6q2MMgkTawv+IBaFb7aNcnTQciUcUzyCHfsH3OscA2wpEKL/7q1NmCqRGmFHair7h/iG++ZguQlZDCHkUUE8IzXJ6Xi9u9pY8pGjiiry/rbn1enS7TCG5f10Qv2HmXcsiBlh+pSC5zF+ROozW2pTtbge+D6ndInE2hEFQ+rbBhAWiNGrjec9VnNTWmSqeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=othJ91rGJfaNbm5EnN+LGnI73TscjzICSbG66MEUtIc=;
+ b=FMuz9Zo9Yjgv0L20BZYOheJ3vqadlwaW1fJRt3Sex8lyq9UOpuYcqVZa8/d//skkqspvxNYo4BDxG707q4C6nzKl4HvC4BGMbXFWwIsL+G4KGLNthgY7CtCVk0GoMulqjfcW8JCQ1JtTVGjFkXuyoeu0s8UQalts9FMlCjC+F6a6JmTIXtWWIhw0eDkJLoHBG74AvJupP00u9MNc3ePsbQdRfJ5qA//RVARBSAIrnjDDA8ICfnRVWdM6XDtqNldG0u9+sqDQnQ7VAzVwxAAprXCyEv9HSdx/X3EpqATCAcsN+KMna/emybeZpvIvsTtKw9D+wceiZooxpVT6ZLmb7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=othJ91rGJfaNbm5EnN+LGnI73TscjzICSbG66MEUtIc=;
+ b=Odp7fj/M5XVN38TlIkmdKJft3HKQyCvSstjBWSvPTMN20g5P8n9xXmPZvTpCwd43zzG09X+14A9h4LLBd7H69C2mFUG6nrWOgxtvlxiKFgUa8MJwEdNX7EEUHXKYPtss2tzp7NYIJDzAdeVDK7m/qVT97/vLQhlKiPf6L02gYmY=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by DS0PR12MB7582.namprd12.prod.outlook.com (2603:10b6:8:13c::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Wed, 25 Mar
+ 2026 09:21:38 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%3]) with mapi id 15.20.9745.019; Wed, 25 Mar 2026
+ 09:21:38 +0000
+Message-ID: <41cd005e-3702-4c67-8d32-0c09274194e9@amd.com>
+Date: Wed, 25 Mar 2026 14:51:31 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/migrate: rename PAGE_ migration flags to FOLIO_
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, willy@infradead.org,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260324114720.864478-2-shivankg@amd.com>
+ <54398FC0-2F68-410C-B9C4-2802810C119B@nvidia.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <54398FC0-2F68-410C-B9C4-2802810C119B@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260325-dhei-v12-final-v1-15-919cca23cadf@gmail.com>
-References: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
-In-Reply-To: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
- Thomas Gleixner <tglx@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
- Joel Fernandes <joelagnelf@nvidia.com>, 
- Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
- Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Ingo Molnar <mingo@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>
-X-Mailer: b4 0.13.0
+X-ClientProxiedBy: PN4P287CA0060.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:270::6) To BN9PR12MB5259.namprd12.prod.outlook.com
+ (2603:10b6:408:100::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|DS0PR12MB7582:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e801584-918b-4871-5455-08de8a4fead1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	VVeBTuV/mmvtFO0HomBaV47oWvvMc26X5foP0YOlXfldPGhGKb1KSRcA3+yYKCZMcAF8C+DlMgYfIRmiZrN2BBDhL/uj+6naqG5LeZr2VGLbFSXbiU82H/QKKkGn3LhaOiH2NM+lzEYTrV47AnR/7BCw9HcU4VQfIm06xAq9vXgLmyNaVphidgW895wF5m9SmnWA+zzSjIcjdd+IW3dLrM5/E+tEHMooob7N1a7f+KkxJ27YhOwfsGHDvVBmoopst9OHRXuRcsgzxLxo8yzeBbMpxBZLQBnxdhtMQk23jFxWRfkxW8DjiU7tJR+mDuDuIoTJrHt4yYE7Fv01S51AWH53hp3wrvBWYqTtk9Lgh1b2u8zjHNJdWCDi1vLRjjFhj2Pxj7IC+ValpkF/sAWkhQ5NabVsP8E2TPPLk2bHuNQo0RImFNdMG3QhT/9zIY/+ptT3rcSRrbec+AC4/Nb4+7rQeZpSr4XESYE/ThkWfXh5oohsJTqFnHgm3/qV/LR4o4uEQfmN1zXvCDAX+iPOCZUEcJ0Fzu19Edm5htJQAvXhciiozACp3pnIjxejSQ/FBlRklSftJNUl66m68MbyavgefmjsEMnbnytrBmJbxPdm6oHgsEUHA48aP/Q359Jf/jdcK+xLs2YMVIixy3MCQ52jZUHls0FYu2Bn0LVvU2CilXf06xkPVLX4KQ5KrHvef1yZ6ca8OpJbylw0ldgvqcIqHdNQZ71I6+1HDvqqAYg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b3puSk0wTWpCTVJha1lmei9WUWkwYmZqYkJRRWJtQTJXanJUY2JXT2IwS0p4?=
+ =?utf-8?B?L2h4aUkzRWVlVDNIckVkM056TjhuUVpJdWo5WTFQa1pFaDROV3FldFpKbFFO?=
+ =?utf-8?B?UXIzRUpsWXFreFdORTE1S3k3MDUyVXo4THpiOUxTeTNKSzErV05SeDRpVzhZ?=
+ =?utf-8?B?eVVqTklqa3V5K3l3YkRqbmMzL1pTblQzRzlQaDB0bjI4SUhsQitIRTBvaHJG?=
+ =?utf-8?B?WU9kMGgrYWFJQUZGNHFLeDB6Nzc5ODJCNm1Qdndjd1dmNXdoWjdQbHJYNjN0?=
+ =?utf-8?B?bkVVREY4djVGWXNOQzc0endncGFXZkVCYVNURzhvSDhlM212UGgzTVlRR3M5?=
+ =?utf-8?B?VW1SeDRTaHlub1lVNG8yeTk0bTJOWVhYNlJNeUkya3dLUUJmbnV2NFg3NWxr?=
+ =?utf-8?B?eEd6eDFpbmVSVWdrMUlFQmxJOHJ4Yk9Gekg5R0dJQTBjT1AyaTk0RWc3djRG?=
+ =?utf-8?B?di9Kd0xDUldoOWdqNEUxWGhUTXFsVjNqVDhLMk50bVBCZ0o2eW0rM3JiNm02?=
+ =?utf-8?B?UXJIR0xteHNMaGNXMWFqSWlTYlRFRThQUmhkMjJrVTBZdXpiU2VXYnBoNFZY?=
+ =?utf-8?B?RU03Z3pMcmFLTXFvZ2pQQTYrVTBoNDR3V08vMndOcGtBRjA0dCs4Z2hKZTlm?=
+ =?utf-8?B?dkU3OEJSN1JXVHNpMzN5bnpkVFE2NTQ1eW03VEZNeGYwY3FGVXYwRU1XVDRC?=
+ =?utf-8?B?b215bEhuaTc4VHZzN3kvVHRrM1M2M21IVlg3WmVGazNMRzF4UXdFM2JwSS9P?=
+ =?utf-8?B?bVBwQnFPQkUyVmQ5dXo1bEE3M1dJVTAwaDl5RnMzMkg5MHZFaE1jSUhtN21m?=
+ =?utf-8?B?UVpwMHpQUzU3VW5lRmM5dHZHZUgwU3BTV0h0OU9Xd0QxV1pWZUt6T3RvR1ZC?=
+ =?utf-8?B?VzN4RWdrakovaExBTmpqU0JqTlppSjdiUVBpdklwbmpDam10YXFPeFV2Zzlq?=
+ =?utf-8?B?OHYvOVRCWVJTcGprV0N0YkZXSXI3ME5ZQW9ndG1oNVRaU2lJTnFYUGVzamc2?=
+ =?utf-8?B?dE9tMkd5NEJXM05YOHJaUXhiNVp0ZStzaFFrSXhSS2R2WGRMcnIxS0NWMEow?=
+ =?utf-8?B?WFNYMnVaSHg4NEMxUVU3dGZ6VUQ0dEc1eXJ1N01JOUVUeGtpb253REVVMVAv?=
+ =?utf-8?B?dkV2YzVsRENXNVZaMUg2Q1lZRkpYTjFSUjBta1BsWExCbHhyci96aGVRbWxu?=
+ =?utf-8?B?bDBmcG9hY0daZHcvUTNMQWZJcXErc2JBNkVzWDVlNnlEMlZnODFKN25HV2pa?=
+ =?utf-8?B?MWEwRnltWXEvdTczajZUSVZaQ01LOVFtcVRtLzROWjJGZkdJakwyZXdBTEFO?=
+ =?utf-8?B?d0t2WHFrQnI2M2t0UTdoc1B3bWZaZXR3MHA4Si9DVDhvOHFYYXZhc2ExOGdK?=
+ =?utf-8?B?Y0F1a084UGxlNGdMTzgyMGJXWkZCeWlaNXo2bkZ5MDZqbXJLTVd3OWtxYkxu?=
+ =?utf-8?B?ZUwvd2dJUS81QlFTK1JSN0xNVmJrZGgzTlArS2NzcXByN2VSYkdiNko2OVc1?=
+ =?utf-8?B?VnJ1VzI1YUpUTjM5VzRQelZPcXdoaEdkbzJJNGhpZ001VVVIcnlSVzlWMk9u?=
+ =?utf-8?B?NWxWWFFnNW5hYmZQTDQzelYzNmFqWlN3MnZjTkE2VEN4MEVXdDBMTzNlc2RI?=
+ =?utf-8?B?c08vbFRBekFKNlA4WkpjK1EzRU1VT2xQR3VFMzlSdkVCaGJKRkhnZjZNYVN4?=
+ =?utf-8?B?QkVWY3VuNE5ZQTRUMDdqeXdzOXdpVk8rVG1GaWg1ckc3akdvcC9hSzQrZmll?=
+ =?utf-8?B?TEZ4SUxGN2ZMeEZYdXRmRWx1STVFUU03cURTOGlvanN6YzZDWmFLMlVhR0xa?=
+ =?utf-8?B?dDNZYXpzeUFVWnVQdCtyd3JjN0F3NXlpblExTVZiNExmditKWVRENkozN25J?=
+ =?utf-8?B?U2Z2ZFJrU3I5YTl2YlhCV2FnenowVlUrNTBrRzRwR1RPQXlWTFdYWG9hTUFv?=
+ =?utf-8?B?WXBQUVhjVW5JZzBHeDBKMkM1VDFmeDcrYTl3YkNvTDIvR3BUc09PRnUvTXlv?=
+ =?utf-8?B?OEhIb0dxSUpVY004MFdiZ0puTEhPWEwrWmNzY0daR1RQaEJuT3R2dEFzZDB3?=
+ =?utf-8?B?dFREcnpqaXg3djdra1ZWeEZxYVRpNnlWbWhVd2dDbWE3WWRXSTVPSTVROXB3?=
+ =?utf-8?B?cDVYdEwxRnVYc2YwdVFqKzB4UmFiVE5ubkIyTzgwMWt4eHJNdTlOM1g3Z3Mw?=
+ =?utf-8?B?Q3B2elBQWGRsRGI0T25CdVQ1UC9RU0QwUkxpTjdIMWJQanBvUmpuZnk0MEhC?=
+ =?utf-8?B?UmQ1NkEzM2FNV1NnTkhvMGkwWEUwczRGaTRtREh5dm1RUlBFcXZZUHpmNjB5?=
+ =?utf-8?B?ZFBBNW92K21OL1poc1RualNCTFZ6RXVVeitQR2pETUZkb2xXUHhndz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e801584-918b-4871-5455-08de8a4fead1
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2026 09:21:38.0923
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dnGLYuVy3zROiLqNxcc+vmxGxy/zO2Cas4lsLnJVLjFOT4BeiFEwmB1pJP5SHodRPoCTR91zmvvRVCWaK32CVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7582
 X-Rspamd-Server: rspam12
-X-Stat-Signature: xqjkiynjgd9jt66xrayzjgaumruywwyo
-X-Rspamd-Queue-Id: 48F4314000A
+X-Stat-Signature: pmaqsr9zko3rdic8dgtif31i5pnh4xb5
+X-Rspamd-Queue-Id: 96B29140002
 X-Rspam-User: 
-X-HE-Tag: 1774429900-735002
-X-HE-Meta: U2FsdGVkX1/pfYxe0l86qqZy4PDaLmzL0l5J3blqnr5AQqrd1vMg/MSuKFC3dLxwM3yDrG+PCDo00FTDLChA8wCOQFMgYkNcJeGiyjLMXd1GUFqow8+27Af/Zcw5DhrEnB8cTl/Y/i2F46vUsUcB5UMZz64lpS/z87J8JJtMO+8J6ILdzJ8vYFX4P7q9GA6+wOCf0e039tOgqDI/b+300W68+CHib0/6YsMnZN572agMzXQYKF+zebuSf6Ibmtm/YWoKcaine+8sbcLBUYxGbDEFeqClnh8qfaBk3JMz1cxTapwYppHdlqvNEYAAyWuusZgHycVlsHSUVGZW7uBNPqBHI3xeqcS3IhCv02UG2c2P5iNMUiJLfjakysVLcxxLkunv5PByTNvWng+EnMIrLVOB060EQfLGvp/pfha282Af5AZT1nQ8UlkokfXiFc0UIBtK1hEIvZdxNL6MuNOSTd6P/H3BJUddhR00bJUDp4VL3/Ovxy0BfYuCbfymKrPfRWq55OZjifu+2RDqNKGHEgy1w89r6NajE5EcdXAj8TL9B9Vrvbns9Ed9b0Nce3cVMrE22/S9Qa3N9PKwOmU7w2hHykZmiqojUk3/Oe+0FjX6DA4KT68TC4rgNJ9vaxS+iQ9c7KHLzV6Sf+q1ASPOpnIaaSE1ZsDorXkgY0QwMVAvUZY6YEZzv9KQm55PRZAifR82nHU2yTTuORhIT/UAPUFHJ+5XVzv0mrjo886/f1ycHFB6JSZQ3Gs8Y7yRhjU/9s0EJ3SpXPJfx6LjFN+y5W/36rol+hDWG0afSbd6iKQYRwQb8yQnMYFAbp1THGkxmZHZfzBvY8sXW2qx4OKL2nPk7K5fYLAAWDfiqX/6t+CVeJ1NqMAc2M+pT8r6mHAnkBIjjxoa5ItpZBn4jix3dH9jVYjkXw9bqMI1Xts53US0t8L908jSCLdngjIqCG+qYgkIfULWbFVmoV2I3WR
- pb9Wxtam
- dFQD0iNrGVLfCHY2nag0UnR23nakESuC1yeqnFpvuUBiMIl+PgyfGn/ZaeyxiXIp8b6iNRHFwAmMTvSLMPJcGRl4GivSLf7e0M6PpTvTwCEYsYIcwZD1+VUryRYm6qV7s/JFwjIFJOlCJdLB7wls9lLtKw8VPbyOCXDN9XPahfjxDqJSTvkeqD7cF94gyBIV6rB4JBP1rPf9L50SXMKZPgjkoGMRo7lftqr29iaIarGPiprgyZ0X/6hUEGR8qAscZjhG3Dwq1aDk90oN/9dcY8vMQ7r+Y1CjHTBobYiQi6eIBkPa7N2n+KLvrs4XnZa9/BLSEWpf+UfDBDnCKWuS76o/0B8ztrijK1gpNAjYwaD8XTvg50j6YAXyGzxbIQMfCUhHgxABWn6AhxgyehHwgg72F/48Lw1XI1hO8gp3VytMcCtcvBqJli8cVIhQqPoC/wjYmsWgpjvyhgJFtfZgWIXFQyg5IktpR0LbInwARkpnsA7RFjDES9YDEzA==
+X-HE-Tag: 1774430501-580721
+X-HE-Meta: U2FsdGVkX186s4FcPivBer9Wjm9FkQ9rP1Dvbx/ogBV/eoiRAmclSffezkzrLBe4v1QlHPmKgkrIwt42j4yWC1TaXVR+Av/HzEDKPKN7h+mTUPLtBT6eMxgugJCPWS+wHWp9tgcoRk9wMvcrgevh0iXHlb5nawP7C9VXCo9CC/F+xEadDqu/TgsPaRO3liRaQWK46eZNR3RYYiFaMCK4ksRpbrQ32c8AHoE8tYo7CrqIzT2s5rOHYklGeCsSuSjsARcEqBxnOOJvwa8sBbCAOnzz/8pMTNCBrLDuNQdGUsLrWBypFzx0mC9E6RprPOtcTet7jDKFwy1SVxD8HfW4tNsfK8jwhkokkQD5YNLbLZCWDoNZRsof5/XjUtkEVIObT4lInUZzzYEhaZSlUht1FgSVoopchR3nwO6YLQpMHmhCiizaUEGaY2SAQYGJMgZWnydPbwRW2Pbh6UIw0fqsPxTs0IspORkZScbVJ/P6YkhzN72jcRbbhGSb5hAlsDZhZ13UWnB7RMdnMozSt8jTF6NyOwkslIrm+VenniDDF9Soe4y79cK7Vn8XWp7ZWtrPbVRrVKJ5A6tGvweh0KH19zz2g9A7VEh6kWHNRtR6o3pAfkNNzogunlY5WAl3bm9K3JzBTyQnKlHckpMGPtyPqZ2K87wnaBhswy+3yiPfMhS+VrIYOjfH3mn3H/iy0SUnZew7o6od63ClH6In+hizVyTDU0e2ZIO6oxMOvb7wOtBNTGQluiJc5Ta6SDtqWdG8Bj88imwCwDKeidCLQXxlKanjyywnlMzpeZKh0NeaPkr3RgCJA6XpMrj/mCNXNFO2yGQOasYDdxuFbBnE/04NRs9FQFwcwY2U4QgsEI6aIaulGpfIeL9Zw2WeNcRvuZjDFnY/ZPXqmZtLAdRZLXUu50IbNp1LDwhv7Ua1WJkMoAk6ZZjVLnuCJfkdQXOiXFuBfW3DZ3r8DlHbWrp+k0b
+ KwECQ87L
+ DOeyImcmX017IRVac8pSAKbvBnZzhx5I7tMVFqjJsyiaePCEkAHawMPII6gKKMhvd/8gypwx4uOZpyk+GhBy20L4i3K5DhLNlOw/9Xe4jnuBT5DhEVl4sqZG1gsGLK30lyiljjIA9M2QWumXPHLRTtFYrNp64vxNMGP61PJq/JtFPGhldZs4Qc+WikIkeF2Q5wyiEH1X8nCxrHtoT2IUm8KKvPnRPhXzZMY8gZiHg6+Bh5kzdkI4PVenNOYvaWFOmI7MBNlO38CKozG7h6fK0V1mrLI0sqMInemuUmLNCwshcZUIJnwnjiGw9m1XeKnc/AZrzwDwTAV+lfNVOVjW1D+L1HitnrPokCZ5GE5stkn1V/S35n2wqvwi2Td7sQD5k5PndRnWFfc3PyqjggRSZXml22WZvKL9j2M3qcXA8rYzd4Fi5o+z9e7yJhejkiD3QHKGzqL9fBNY79goXYZ+++SbI69br+vM3fxb9iwjTjkZqglM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,219 +176,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dynamic Housekeeping (DHEI) introduces complex runtime interactions
-across sysfs, scheduler, and various kernel subsystems. There are
-currently no automated tests to verify the integrity of sysfs
-boundaries, safety guards, or SMT-aware isolation logic.
 
-Implement a kselftest suite for DHEI to ensure functional correctness.
-This includes a dedicated test script (dhei_test.sh) covering sysfs
-interface accessibility, safety guard enforcement, and SMT-aware grouping.
+>>
+>>  static void __migrate_folio_record(struct folio *dst,
+>> -				   int old_page_state,
+>> +				   int old_folio_state,
+>>  				   struct anon_vma *anon_vma)
+>>  {
+>> -	dst->private = (void *)anon_vma + old_page_state;
+>> +	dst->private = (void *)anon_vma + old_folio_state;
+>>  }
+>>
+>>  static void __migrate_folio_extract(struct folio *dst,
+>> -				   int *old_page_state,
+>> +				   int *old_folio_state,
+>>  				   struct anon_vma **anon_vmap)
+>>  {
+>>  	unsigned long private = (unsigned long)dst->private;
+>>
+>> -	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
+>> -	*old_page_state = private & PAGE_OLD_STATES;
+>> +	*anon_vmap = (struct anon_vma *)(private & ~FOLIO_OLD_STATES);
+>> +	*old_folio_state = private & FOLIO_OLD_STATES;
+>>  	dst->private = NULL;
+>>  }
+> 
+> Just an observation on folio->private, it is void*, but page->private
+> is unsigned long. It confused me a bit. There are folio_get_private()
+> and folio_change_private(), I wonder if we want to use them here
+> instead of direct ->private accesses. Feel free to ignore this,
+> since it is irrelevant to this patch.
 
-The suite also incorporates stress-ng based pressure testing to verify
-load-shedding efficiency on isolated CPUs, Tick suppression under active
-task load, and Workqueue restriction under competitive system pressure.
+Would something like this as a follow-up patch work?
 
-Usage:
-  make -C tools/testing/selftests/dhei run_tests
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 6d4a85f903d8..55d1af6c9759 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1143,17 +1143,17 @@ enum {
+ static void __migrate_folio_record(struct folio *dst,
+ 		int old_folio_state, struct anon_vma *anon_vma)
+ {
+-	dst->private = (void *)anon_vma + old_folio_state;
++	folio_change_private(dst, (void *)anon_vma + old_folio_state);
+ }
+ 
+ static void __migrate_folio_extract(struct folio *dst,
+ 		int *old_folio_state, struct anon_vma **anon_vmap)
+ {
+-	unsigned long private = (unsigned long)dst->private;
++	unsigned long private = (unsigned long)folio_get_private(dst);
+ 
+ 	*anon_vmap = (struct anon_vma *)(private & ~FOLIO_OLD_STATES);
+ 	*old_folio_state = private & FOLIO_OLD_STATES;
+-	dst->private = NULL;
++	folio_change_private(dst, NULL);
+ }
+ 
 
-Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
----
- tools/testing/selftests/Makefile          |   1 +
- tools/testing/selftests/dhei/Makefile     |   4 +
- tools/testing/selftests/dhei/dhei_test.sh | 160 ++++++++++++++++++++++++++++++
- 3 files changed, 165 insertions(+)
-
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 56e44a98d6a59..9d16b00623839 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -16,6 +16,7 @@ TARGETS += cpu-hotplug
- TARGETS += damon
- TARGETS += devices/error_logs
- TARGETS += devices/probe
-+TARGETS += dhei
- TARGETS += dmabuf-heaps
- TARGETS += drivers/dma-buf
- TARGETS += drivers/ntsync
-diff --git a/tools/testing/selftests/dhei/Makefile b/tools/testing/selftests/dhei/Makefile
-new file mode 100644
-index 0000000000000..a578691cc677c
---- /dev/null
-+++ b/tools/testing/selftests/dhei/Makefile
-@@ -0,0 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0
-+TEST_PROGS := dhei_test.sh
-+
-+include ../lib.mk
-diff --git a/tools/testing/selftests/dhei/dhei_test.sh b/tools/testing/selftests/dhei/dhei_test.sh
-new file mode 100755
-index 0000000000000..a6137c52e7132
---- /dev/null
-+++ b/tools/testing/selftests/dhei/dhei_test.sh
-@@ -0,0 +1,160 @@
-+#!/bin/sh
-+# DHEI (Dynamic Housekeeping & Enhanced Isolation) Full-Coverage Verification Script
-+# Strict POSIX compliant version for reliability on all shells.
-+
-+SYSFS_BASE="/sys/kernel/housekeeping"
-+ONLINE_CPUS=$(cat /sys/devices/system/cpu/online)
-+LAST_CPU=$(echo "$ONLINE_CPUS" | awk -F'[,-]' '{print $NF}')
-+
-+# Colors for output
-+GREEN='\033[0;32m'
-+RED='\033[0;31m'
-+NC='\033[0m'
-+
-+log_pass() { echo "${GREEN}[OK]${NC} $1"; }
-+log_fail() { echo "${RED}[FAIL]${NC} $1"; exit 1; }
-+log_info() { echo "[INFO] $1"; }
-+
-+check_root() {
-+    [ "$(id -u)" -eq 0 ] || log_fail "Please run as root"
-+}
-+
-+test_sysfs_structure() {
-+    log_info "TEST 1: Sysfs structure..."
-+    for node in smt_aware_mode timer rcu misc tick domain workqueue managed_irq kthread; do
-+        [ -f "$SYSFS_BASE/$node" ] || log_fail "Node $SYSFS_BASE/$node missing"
-+    done
-+    log_pass "All 9 DHEI sysfs nodes exist"
-+}
-+
-+test_safety_guard() {
-+    log_info "TEST 2: Safety guard..."
-+    if echo "999-1024" > "$SYSFS_BASE/domain" 2>/dev/null; then
-+        log_fail "Safety guard failed: allowed isolation of all CPUs"
-+    fi
-+    log_pass "Safety guard blocked invalid mask"
-+}
-+
-+test_smt_aware_mode() {
-+    log_info "TEST 3: SMT aware logic..."
-+    [ -f /sys/devices/system/cpu/cpu0/topology/thread_siblings_list ] || { log_info "SMT not supported"; return; }
-+    SIBLINGS=$(cat /sys/devices/system/cpu/cpu0/topology/thread_siblings_list)
-+    FIRST=$(echo "$SIBLINGS" | cut -d',' -f1 | cut -d'-' -f1)
-+    echo 1 > "$SYSFS_BASE/smt_aware_mode"
-+    if echo "$FIRST" > "$SYSFS_BASE/timer" 2>/dev/null; then
-+         echo 0 > "$SYSFS_BASE/smt_aware_mode"
-+         log_fail "SMT mode failed: accepted partial core"
-+    else
-+         log_pass "SMT mode correctly rejected partial core"
-+    fi
-+    echo 0 > "$SYSFS_BASE/smt_aware_mode"
-+}
-+
-+get_tick_count() {
-+    grep "LOC:" /proc/interrupts | awk -v cpu="$LAST_CPU" '{print $(cpu+2)}'
-+}
-+
-+test_tick_dynamic() {
-+    log_info "TEST 4: Dynamic Tick toggle..."
-+    [ "$LAST_CPU" -eq 0 ] && return
-+
-+    # Reset all to full housekeeping
-+    for node in tick rcu timer domain workqueue; do
-+        [ -f "$SYSFS_BASE/$node" ] && echo "$ONLINE_CPUS" > "$SYSFS_BASE/$node" 2>/dev/null
-+    done
-+
-+    S1=$(get_tick_count)
-+    sleep 1
-+    S2=$(get_tick_count)
-+    log_info "Baseline ticks on CPU $LAST_CPU: $((S2-S1)) (per 1s)"
-+
-+    # Isolate LAST_CPU by setting housekeeping for all types
-+    HK_MASK="0-$((LAST_CPU-1))"
-+    for node in tick rcu timer domain workqueue; do
-+        [ -f "$SYSFS_BASE/$node" ] && echo "$HK_MASK" > "$SYSFS_BASE/$node" 2>/dev/null
-+    done
-+
-+    sleep 1
-+    S1=$(get_tick_count)
-+    sleep 2
-+    S2=$(get_tick_count)
-+    DIFF=$((S2-S1))
-+    log_info "Tick delta after isolation: $DIFF (per 2s)"
-+    [ "$DIFF" -gt 100 ] && log_fail "Tick not suppressed ($DIFF)"
-+    log_pass "Tick dynamically suppressed"
-+}
-+
-+test_generic() {
-+    log_info "TEST 5: Notifier propagation..."
-+    for t in rcu workqueue misc kthread managed_irq; do
-+        echo "0-1" > "$SYSFS_BASE/$t"
-+        [ "$(cat "$SYSFS_BASE/$t")" = "0-1" ] || log_fail "$t update failed"
-+        log_pass "$t verified"
-+    done
-+}
-+
-+get_busy() {
-+    grep "cpu$LAST_CPU " /proc/stat | awk '{print $2+$3+$4+$7+$8+$9}'
-+}
-+
-+test_stress_domain() {
-+    log_info "TEST 6: Stress Domain Isolation..."
-+    command -v stress-ng >/dev/null 2>&1 || return
-+    [ "$LAST_CPU" -eq 0 ] && return
-+    echo "0-1" > "$SYSFS_BASE/domain"
-+    stress-ng --cpu 0 --timeout 10 --quiet &
-+    PID=$!
-+    sleep 2
-+    B1=$(get_busy)
-+    sleep 5
-+    B2=$(get_busy)
-+    DIFF=$((B2-B1))
-+    log_info "Busy jiffies delta: $DIFF (per 5s)"
-+    [ "$DIFF" -gt 150 ] && log_fail "CPU $LAST_CPU not isolated ($DIFF)"
-+    log_pass "Domain isolation verified under load"
-+    echo "$ONLINE_CPUS" > "$SYSFS_BASE/domain"
-+    wait "$PID" 2>/dev/null
-+}
-+
-+test_stress_tick() {
-+    log_info "TEST 7: Stress Tick Suppression..."
-+    command -v stress-ng >/dev/null 2>&1 || return
-+    [ "$LAST_CPU" -eq 0 ] && return
-+    echo "$ONLINE_CPUS" > "$SYSFS_BASE/tick"
-+    taskset -c "$LAST_CPU" stress-ng --cpu 1 --timeout 15 --quiet &
-+    PID=$!
-+    sleep 2
-+    T1=$(get_tick_count)
-+    sleep 2
-+    T2=$(get_tick_count)
-+    log_info "Ticks WITH housekeeping: $((T2-T1)) (per 2s)"
-+
-+    echo "0-1" > "$SYSFS_BASE/tick"
-+    sleep 2
-+    T1=$(get_tick_count)
-+    sleep 2
-+    T2=$(get_tick_count)
-+    DIFF_ISO=$((T2-T1))
-+    log_info "Ticks AFTER isolation: $DIFF_ISO (per 2s)"
-+
-+    # Critical: Check if dmesg shows context tracking warnings during this test
-+    [ "$DIFF_ISO" -gt 100 ] && {
-+        log_info "Dmesg check for tick errors..."
-+        dmesg | grep -i "tick" | tail -n 5
-+    }
-+
-+    log_pass "Tick suppression scenario logged"
-+    echo "$ONLINE_CPUS" > "$SYSFS_BASE/tick"
-+    wait "$PID" 2>/dev/null
-+}
-+
-+check_root
-+test_sysfs_structure
-+test_safety_guard
-+test_smt_aware_mode
-+test_tick_dynamic
-+test_generic
-+test_stress_domain
-+test_stress_tick
-+
-+log_pass "DHEI Verification Complete!"
-
--- 
-2.43.0
-
+Thanks,
+Shivank
 
