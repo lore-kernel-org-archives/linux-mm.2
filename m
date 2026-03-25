@@ -4,102 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE8D5109C029
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:49:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95544109C02A
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:51:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 198E66B0005; Wed, 25 Mar 2026 10:49:48 -0400 (EDT)
+	id 063366B0089; Wed, 25 Mar 2026 10:51:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 170E56B0089; Wed, 25 Mar 2026 10:49:48 -0400 (EDT)
+	id 03AA06B008C; Wed, 25 Mar 2026 10:51:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ADD56B008C; Wed, 25 Mar 2026 10:49:48 -0400 (EDT)
+	id E92E56B0092; Wed, 25 Mar 2026 10:51:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F03946B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:49:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 93818160777
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:49:47 +0000 (UTC)
-X-FDA: 84584869614.25.DB57C80
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EE8C91C0014
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:49:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hIvE9/sy";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450186; a=rsa-sha256;
-	cv=none;
-	b=2xSaNvAe69+rLWZqDJtPcWg7Ph7Ou6t5wn1xfncJ+J10RQE/Jh5djkEhHOLjYhm1CRrAhe
-	vYdt/vTtm9Y6folRDvani3QyxcXPuExfQ6NIz3Ruo0mHCLSmRA7CK1vKuOEQDQTB2TS9Hy
-	ZnTfahBB2OsFt+kZodLodyuFLBdSziI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hIvE9/sy";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D5FA06B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:51:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7985CC2FA1
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:51:13 +0000 (UTC)
+X-FDA: 84584873226.14.D6B9E0D
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 213C1140012
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:51:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HWmOZ5Fg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u14cIhOK;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HWmOZ5Fg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u14cIhOK;
+	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774450186;
+	s=arc-20220608; t=1774450271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vdWnaW52OsF7GWkudyaJaZPtWfOFC41QjwCdtOIDjs0=;
-	b=GkZ+kV6+FXr6NqczU5F7a9Hv9YVoVaLPmPMFC/d6yVPM7cCuyFnO0WDh1qi3Q8HBhWs6nf
-	w//h+OWvugoTIl9SB/oFoh7Wzaa0FzJHHoxx63V5pRn7UanTBwUrnWx5KVLVKNMsoDf4Mb
-	RoHxYkNiJdyjkYs20Vk21Aw7WJ+//gk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 451B8600AC;
-	Wed, 25 Mar 2026 14:49:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381DCC4CEF7;
-	Wed, 25 Mar 2026 14:49:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774450185;
-	bh=vdWnaW52OsF7GWkudyaJaZPtWfOFC41QjwCdtOIDjs0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hIvE9/sy1vmKBSUAPVv4Qy9n2m0p+NOPQ8XGAZUYs6NMNe3LUc5bgbq08wWIM3FNS
-	 kMH63dXBn5+ImPB59lsIqBesbous6WDSgw/0VUitiZsHOlb9SbA6fufyNyypBimWbA
-	 DLkTep8Nqz0CgOm8NEQBuS/003Vv/s24so29PGsUFrsB57HCKngKJTm5rjESnQNCvT
-	 tajAKihUY+kGVGs+PBiglNd4ccT7cqBNkBSbkL7ZL/IQwBT5Uzfaog2JTAOB7B2cOk
-	 i/kfRpczYNrDRuaeQLDAYqd7nJQthNzFGOhDHXcaB4qYNcsgmzjUf2T7W3+g2GhmaV
-	 Q2MMe06tMBk3g==
-Date: Wed, 25 Mar 2026 14:49:30 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, aarcange@redhat.com, anshuman.khandual@arm.com, 
-	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
-	dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz, 
-	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
-	lance.yang@linux.dev, Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, 
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
-	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
-	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
-	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
-	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
-	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
-	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
-	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v4 2/5] mm: introduce is_pmd_order helper
-Message-ID: <74104214-5759-451d-9279-37498918ec3e@lucifer.local>
-References: <20260325114022.444081-1-npache@redhat.com>
- <20260325114022.444081-3-npache@redhat.com>
- <eed250c8-7a31-4ace-b5e2-9f2898599ec8@lucifer.local>
- <20260325074516.46bfcf772d5eb4482d7df36d@linux-foundation.org>
+	bh=/IbrNguOL2oU7ugpbxDymPY+bcfAOeIY2ch0aNWgxbs=;
+	b=yyJ/UtV8rS9zlz0L908z8QTi971uziR/bWTGZQlj1gEcJUTvxDJa256z5d1XHmFgDvV+jL
+	N4nkeKAvYA4AZ486KRMrkDVMD+wI+Yyz3akLBG7gCEnFJg/Z19hKZA4tBPbWrYiAyPGVvm
+	E09esZ6n9dKncWlVw6Haz95TqRNhFvE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HWmOZ5Fg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u14cIhOK;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HWmOZ5Fg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u14cIhOK;
+	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450271; a=rsa-sha256;
+	cv=none;
+	b=3mJbRJMB78SHByCZFw8BzvbEOduSDpLozEdDiGUIaVUQ80sJvCZZQJRiflnE/vHYqVuKe+
+	J/sA+D8MoC9UBCKGqcKtgroGL9EnD0gISIFkkzDrmpcEo+3w2lc+utXYyiZKpie7sgH/yK
+	R7xuBpEobir+4PRdTIarF1kATaxaecA=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 63F235BD52;
+	Wed, 25 Mar 2026 14:51:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774450269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/IbrNguOL2oU7ugpbxDymPY+bcfAOeIY2ch0aNWgxbs=;
+	b=HWmOZ5FgwDtrteSM2Ew5PXqlKiEfNmaAxZwNcrDu5cm7qqyNqx+T4KuS+fzLrhGhLe0BMw
+	4jK5lnRLUqHsAlBFQz+I+hBfsPpC3uQ9V4D0BKTscU6LcEG3GYwivCMcvxhC1hemevb4sH
+	uOKbUkmNtRHNhlJlq6nBbg/lY2lzSfY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774450269;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/IbrNguOL2oU7ugpbxDymPY+bcfAOeIY2ch0aNWgxbs=;
+	b=u14cIhOKRc22D/k23HZ0bIZUBPARER5TAWoWA++mI3iuA8hY3F7HH/iLi3+LZe1XvB+eno
+	2GHcX4DZFxOCZCDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774450269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/IbrNguOL2oU7ugpbxDymPY+bcfAOeIY2ch0aNWgxbs=;
+	b=HWmOZ5FgwDtrteSM2Ew5PXqlKiEfNmaAxZwNcrDu5cm7qqyNqx+T4KuS+fzLrhGhLe0BMw
+	4jK5lnRLUqHsAlBFQz+I+hBfsPpC3uQ9V4D0BKTscU6LcEG3GYwivCMcvxhC1hemevb4sH
+	uOKbUkmNtRHNhlJlq6nBbg/lY2lzSfY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774450269;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/IbrNguOL2oU7ugpbxDymPY+bcfAOeIY2ch0aNWgxbs=;
+	b=u14cIhOKRc22D/k23HZ0bIZUBPARER5TAWoWA++mI3iuA8hY3F7HH/iLi3+LZe1XvB+eno
+	2GHcX4DZFxOCZCDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B7C9A4445E;
+	Wed, 25 Mar 2026 14:51:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zMJkKVr2w2nWXgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 25 Mar 2026 14:51:06 +0000
+Date: Wed, 25 Mar 2026 14:51:04 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
+	Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, 
+	Chunhai Guo <guochunhai@vivo.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Tony Luck <tony.luck@intel.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
+	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>, 
+	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
+	Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/6] mm: rename VMA flag helpers to be more readable
+Message-ID: <6c6le67q23xsity3tkfq2uazzhwustmqcsqj3talft6qq737hz@dytog6bi4vsa>
+References: <cover.1772704455.git.ljs@kernel.org>
+ <0f9cb3c511c478344fac0b3b3b0300bb95be95e9.1772704455.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325074516.46bfcf772d5eb4482d7df36d@linux-foundation.org>
-X-Rspamd-Queue-Id: EE8C91C0014
-X-Stat-Signature: aubsu896uy8edk9x4x8snefqoyu8sm7f
+In-Reply-To: <0f9cb3c511c478344fac0b3b3b0300bb95be95e9.1772704455.git.ljs@kernel.org>
+X-Rspamd-Queue-Id: 213C1140012
+X-Stat-Signature: m64cwsxjhodoo8zcota7yhbbou6zc1qf
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774450185-101959
-X-HE-Meta: U2FsdGVkX1/ZsDT0s8O6aDLfXdOBGP7hauABQdGiIMvevACe7Q9KA5erPuYtX1GDjwvpWVZpW08Gq9UfSGWCrQCgf0VVjK0wYVnW7m1LY0oYEqejHogoKyMTkt10CLRS9fE0/dK4kzqPvw8GahvelgEP3174jWu/25WJ8ud//2qewAeOfMSkWyN7XMg/ur1hQTAS1ULJeGOoeBloFk1yfP4G34+wuTnW4J5I8rGCnokPhicLCCsD1rixp5xB7BgU/E283NyUg+37/M6617QhLSe7lAXic0qXuwS66QKgZIFQgY9i5HRDoHhEgcx1mp4F/J8JboQ/a4GajSNdU+xkq0qnx6zLo2hma777MHhaF+B+tSgoKx+GkVp9nt0Ae1DC5tbLG0vxsck9ytsLVwd0jUAV/YwcUk1igpC2juwudamYtAOo0qLxSJAAHGQoJkMG79DBy37Hr6eu49FElMVjwqr+T6pw9B6K9cGBmfnDx0dqQU+Ad9aYvrB5PK9iAcrEDhLkEjfJUC1033tpCsiowbKdm9gWxFfRNppeSKR4pJgoPLaga/Il5xp5xJHAkhtCnOvsL2oGzzsLT+45lQvAmmzTXu0tJBNKhEQhD98sMZMEOyoqrcK/pKQBEZrmyY0nKy3sXnBb8/4uebXPnazXXaOhhvYwQLgm4UVpsjhjQi2g8u40q3jO0zQ+7smi15bIU7bT5cyM2eI1Op15u4CTIUM7XzV7ONO9Ajw+hWDbDT+TT8ciRUf+4v2FZmWHuEe6AeO+zzaV5GWADQ0Zc9BKmbIJniWF0EkLo/5LK8POvRQDgHC11B3xhx9dkUGl23Tz8fOrwS2VUDTGYTMetyaEvqPe6rxkdb5HTdJocmG0M2ChMKeGGubMQ/HUT/ORUhkyPt8Br3ROjFdseqlcfQepqlfC7PaCY1YK/cM4YjqYcbPfBjdWyiFAk/PwhnGSPvZsCLmpFOeOQg5Jkm8vx7I
- l+O74Q/G
- XH6tSqVJdJCMcmmIUfdVqv7fX3pdgIo0/sA1trbiNRExOzIBjxQSk6AkZWm9X0DjHEyON3O7+g5iuDBbgvHi/xTnm7TjRudRlWnZz580Ar8Y3IZpDvSie0PqsuMTlFhZK0SfwKkgv4IpTYv+E6AUTViQ2bLTvJDc1jfJbIMDcfthBFGGy4pGygilk1qqxGM+Eqcr5vcTsIrZgiGtkDbbu+Cyj+zB0L9Cbmuyqs7K9ilBwDe2dCMtDWkXfgrUasDIFKsXlnNP4zoInO/wdlwuSd8m6GqCa0XxTHC50syrdwoRtitwltac+eJdXzu8gfazg+VBkIEpdcBepre0RVX8w466DYIlg3fXDFPeewN07Y6yIv3rMmSfB0yhNqNBx6P6wjQvAt4vLx5nIfmHVRQNX5Yy10ODed4xM5QdKB1z7yO6Ieg09bh6L2+kQaDbZY2fo99jLMmbUOZ6qhQ0Es28+vmvNYFSetk1AvkKu9YjVzaTr65PWwSeyc5ng3xtGIczgTiVB
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774450270-652858
+X-HE-Meta: U2FsdGVkX1/hgo955+zGIt3JwRgNDEuzxiX+hlxlKGqiC4LzvNeE92C9B/cgJ361p0T+eUyqYmDko4wVfnMgctRN32DNKmISttB8TOyhHDR5dCYOFhxKfSv2DBAAQNuBzeOGVGUY7Mjlmu/4AsLOXtN85RT9J2eDqGMNoWgoanZyzIul8BbCcZyXk7O8zhIm/lFWhlIZ8I2yIZB8X9XKyh2ZgYzqswM2lZPUOzxTaXkrJz2Ho/4/Aucs4t+fEjTPlZFS/k3IXsx44YImUA6Coeoql9pT9tQEMA2CM9DUbbi28EN+3gCJTtl6XdosV+hNBvJDFw/PoFZ94tkMcvbXY6+6HYduoKsLwIwxMJKT2kjXBUKZtNc5DNzBiFiTrIDuF+lCW6EgD/jA7l3wLIK7b9qSEbLKLEpw7B7cdIizViH3hmj3AlFQnk0/AiWL8l7RZQ8A6txM7zhihG8E26jvaZKCtzlzr1cKWJCp+pwtuppaTyMV/zQIw1OqJtQzlROK1WmoILviz9ZlM20nnoYmYXfoTHPFuTVVKtY2ssvbjOzIf3WuzqkWtDUE8vHPAgsMtG6qdm9pm6QaSTuQIMFNfJ+yYqUUumyERfSPO8iTcqQnJ0trXux33xuJCIlkbswquacuC26/1zPCzyV1OPeJn4PS9IF5CCKOSWG5E833aeKND4Gy2KsVoQUKGYBCQ7wCjpcuCDjq+zZvUOON7d+B84ISUhhIanN+T6RyvJxiNUtOtqTzTSx/UKtbsKAgktnKHa1f8lzmKf4dQbBkZLw6PddZiocM/35Px9TPmoUZaxpixnKFFWSlkMgkPDKpSFtPUamkpXTxRIRTwkCvDd7Z+Yb1zks32ErFNg2FxLKKkn8fDB6M6YeR0anVpsLakNt5toUN35KPUom6Pgeppc7J71qxTXy+arrzotxTYn0tdoN+4Vs/mdAy1pltWMjpeTQZJJ2B2EBQVOJAUI2Mlw2
+ txhZlPUs
+ g5/HQZ1NK35F9OU/NLeM4KABmySmQm77dGcnElO8W2tn1zpSGwsUNkmjSSeO43dlB1wwUifgnw8VBST4c+iqVsgGuGWWDkIWC9E2Qjb5yLUjocimHffCfQ7yq3PxRmE5iRsppVYsmoiM1Wm8BCctOL1tOM0cpQRhMDXZvtEdVsCwVkAG7fFcA/tpbeBQe6uIiA8XteeFhhCwdrBq+//2omFS+sbTTEVZuTX9ivFD/8/3own8xA8a2j9A1yGhgJxHg/UpgQQqU+TDod8OiBdyEXUyiz7saw2WaY4kAwbbRRSrzb8C4k6Yi8qbVa/B9qNvBQDsvdAXug3aOjQY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,40 +148,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 07:45:16AM -0700, Andrew Morton wrote:
-> On Wed, 25 Mar 2026 12:11:43 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
->
-> > On Wed, Mar 25, 2026 at 05:40:19AM -0600, Nico Pache wrote:
-> > > In order to add mTHP support to khugepaged, we will often be checking if a
-> > > given order is (or is not) a PMD order. Some places in the kernel already
-> > > use this check, so lets create a simple helper function to keep the code
-> > > clean and readable.
-> > >
-> > > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> > > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > > Reviewed-by: Dev Jain <dev.jain@arm.com>
-> > > Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> > > Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> > > Reviewed-by: Barry Song <baohua@kernel.org>
-> > > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> > > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > > Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> >
-> > Nit, but could we please update both to:
-> >
-> > Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->
-> hp2:/usr/src/25> grep lorenzo.stoakes@oracle.com patches/*.patch|wc -l
-> 105
->
-> Please lmk if you'd prefer that I go through these and update the email
-> address.
+On Thu, Mar 05, 2026 at 10:50:14AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On reflection, it's confusing to have vma_flags_test() and
+> vma_desc_test_flags() test whether any comma-separated VMA flag bit is set,
+> while also having vma_flags_test_all() and vma_test_all_flags() separately
+> test whether all flags are set.
+> 
+> Firstly, rename vma_flags_test() to vma_flags_test_any() to eliminate this
+> confusion.
 
-That'd be useful thanks.
+Hmm. The names are getting longer. We should fix this One Day.
 
-It's not a huge big deal, but trying to gently nudge the transition forwards a
-bit...
+> 
+> Secondly, since the VMA descriptor flag functions are becoming rather
+> cumbersome, prefer vma_desc_test*() to vma_desc_test_flags*(), and also
+> rename vma_desc_test_flags() to vma_desc_test_any().
 
-Cheers, Lorenzo
+> 
+> Finally, rename vma_test_all_flags() to vma_test_all() to keep the
+> VMA-specific helper consistent with the VMA descriptor naming convention
+> and to help avoid confusion vs. vma_flags_test_all().
+> 
+> While we're here, also update whitespace to be consistent in helper
+> functions.
+
+Extremely amazing patch! you were truly inspired!
+
+
+> Suggested-by: Pedro Falcato <pfalcato@suse.de>
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+-- 
+Pedro
 
