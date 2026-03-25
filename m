@@ -4,139 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 168BE109C03D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:38:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 108FC109C041
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:42:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 805E66B0005; Wed, 25 Mar 2026 12:38:00 -0400 (EDT)
+	id 54DF36B0089; Wed, 25 Mar 2026 12:42:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DD5D6B0089; Wed, 25 Mar 2026 12:38:00 -0400 (EDT)
+	id 525286B008A; Wed, 25 Mar 2026 12:42:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F3916B008A; Wed, 25 Mar 2026 12:38:00 -0400 (EDT)
+	id 462586B008C; Wed, 25 Mar 2026 12:42:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EAA26B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:38:00 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 02C5013B194
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:37:59 +0000 (UTC)
-X-FDA: 84585142320.23.9F17090
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 851C62000D
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:37:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PVCwoTM1;
-	spf=pass (imf13.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 337346B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:42:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C87A58C876
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:42:31 +0000 (UTC)
+X-FDA: 84585153702.02.9A12585
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8C1AAC0004
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:42:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M85FIDU6;
+	spf=pass (imf10.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774456677;
+	s=arc-20220608; t=1774456949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FQtkmDxmslIExkFjEKNG8vtTuvQMZ1PB/p38zRImO1c=;
-	b=tf0cEHC/O7XKfaYHQHX2S1uw6iJwOOrR3ps7FstFRba/ZsKtrjBRir0MDLkXKCndrEXHNX
-	GpvIIaBZzvw79qi0hISmEPGoOtDJ2sisEieJ3zTsz6EISQor+UAVTbrg38+E/7lR0rCuqn
-	3UffQPQECwZ90ttlr0FWsCoIW9Moe5Q=
+	bh=k8Ejv58wPUbDLQJ+Tj4MdIi2shlj9vonZOVFSYDuwn8=;
+	b=pP7EOwaOLv9eJMNloCiYbYieeWaRhpqKA0QgrBAIpZkr88e+80cg5QcCwO3XAzjO1BzEEy
+	tnYuc9uu6h6QpnB3WPyQTSbHkHZuO9yifOnz68GTP72h+z5pHhc47qDAd7h1W7Grpg1ZpD
+	34YjzBIt3/FxN1h5vupZcL9mzqhwi8Q=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PVCwoTM1;
-	spf=pass (imf13.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774456677; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M85FIDU6;
+	spf=pass (imf10.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774456949; a=rsa-sha256;
 	cv=none;
-	b=njBFPwqHN3CzjL91n0/CBqi/Fl4HRXbbKMrQf4kRnqEKRHLyFVHVAlbIGs5rbjXPIYJX4p
-	uBM9XN6ZBEt/g23rvu6kh5nA5ktRclp5kxHDi6/5GtXun0pAhlmBeY7y0bDTbOirjlN451
-	07GNihU1lCH499oSd07kwiQ5LkZ6Fbw=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62P9vdu0962883;
-	Wed, 25 Mar 2026 16:37:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=FQtkmDxmslIExkFjEKNG8vtTuvQMZ1
-	PB/p38zRImO1c=; b=PVCwoTM1GUxlYZzeY5gTWFwZkiK/Oq+MiK1gjafgzC/qkw
-	8WIp39LSbjdNIMDwK5EXOLlC/qWbtQfSDxR2FHuXU8XVavmTFcndPaf2aOzUr9TK
-	gktdUo1O1HbV998Zav8vZsuvFcmzCZv2LKBmG1IQrJLhVDVaaiHiXKmmCoB1sjfo
-	TzNrLz2jQ/esbRLASo76DYtXsMJGjTRJRh99ELSVSTpTn7wcAQa+g+TwcWZ4pN18
-	2MFDJ+ASPj4AcEIAa0eQ7xGXKcNrvgYoFGZ7ROarqJafbBWjiOicdfTPfXY5U7Ye
-	o4MuuUruBFmmo62RhJR80Yo52g9tFniEU7321l0w==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxqhehh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 16:37:50 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62PFNnix026681;
-	Wed, 25 Mar 2026 16:37:49 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275ky85a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 16:37:49 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62PGbjRG47448432
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Mar 2026 16:37:45 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6997A2004B;
-	Wed, 25 Mar 2026 16:37:45 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 369E720043;
-	Wed, 25 Mar 2026 16:37:45 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.52.215.75])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 25 Mar 2026 16:37:45 +0000 (GMT)
-Date: Wed, 25 Mar 2026 17:37:43 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
-Message-ID: <939c4ed1-3335-47ef-a25b-6ccdbd48d464-agordeev@linux.ibm.com>
-References: <cover.1774420056.git.agordeev@linux.ibm.com>
- <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
- <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
- <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
+	b=3Uw/eJELFGhr5xL8qmIIKR2zzNoSBays2FkogeTSsJ5cTWMJ4Nb3wKwlDqPmzZY6HeobGy
+	0Z8cINP1Zl7Pf2A1n3OVKVexXMUVyWhK9JZmPOZPrhrc0C98EouJ9sMlIocdu7KbOcQSdq
+	z3ZZiAX8wBOLC9WhsWvGpex61JDRiI4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774456948;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k8Ejv58wPUbDLQJ+Tj4MdIi2shlj9vonZOVFSYDuwn8=;
+	b=M85FIDU6/l+oRzy1M5UNH395SWIXjgtQsxc5IAwrUgwUPClsngi/MnmE4jPf7BSReKXjn0
+	0DGbzXKCcz2+fqw+nZwKAhzF3OP6HAE7F0jh4VNoLw+DnqMrs4iBeeiZQTCwc4FpjEYfHp
+	C21KrPY3pH8OkOh1l3Mz4wW6NlWg/Sc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-lcagNMoDMTGvBrvVXY_vqg-1; Wed,
+ 25 Mar 2026 12:42:23 -0400
+X-MC-Unique: lcagNMoDMTGvBrvVXY_vqg-1
+X-Mimecast-MFC-AGG-ID: lcagNMoDMTGvBrvVXY_vqg_1774456938
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 94F8618005B4;
+	Wed, 25 Mar 2026 16:42:17 +0000 (UTC)
+Received: from [10.22.90.27] (unknown [10.22.90.27])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9C8571800351;
+	Wed, 25 Mar 2026 16:42:13 +0000 (UTC)
+Message-ID: <82661a8e-256c-4cf4-96b2-98d52cf62cde@redhat.com>
+Date: Wed, 25 Mar 2026 12:42:12 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ep-i31MGON5OlTVgHzD44qA7jGtcSV4f
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDExNyBTYWx0ZWRfX69MY7zL9dYkK
- OOwrsP2i3IO+E8dzEkot+WcOQZ9DXy4PWqnzre6V8fRHZ+NgcsDWCcKjWhulxWSQssOcczL/I8H
- m+kQ05AI5VajjO/mI+dww3OQfJP91uYmIvEDivusZ7/WA8Vu19MwNQeSxvzIBK2D8A1/OkUbifa
- h8OUXnMJRySj8732fani84Er4jcyo48Htb2YCBmNgdPPwIcUYG+VR2nh5hzr1euMb3SwSNuWMfM
- fYHlDiKmwXjTFVBUtSQkIf7AzXSZVwXJMuGUK9d+eUaAFIasW9smzVTPuCrd79vS2HPin+rC0xH
- gfjG/4/Fr+EPjDhjzdfBoZ1lvRhQrW+nzHYMKt+P/2N04uhZw8UVuoa7zdrV0aEp6hMpYica32c
- o9qpa0NT4SRYusS7Vx8766TyOXnLv+TsPB+IiHpeVdcAwrx+7xmR7urMUcXJVHpYIo2VMqUME7S
- BwNKTrAg4EWvTEd9VyQ==
-X-Authority-Analysis: v=2.4 cv=bLEb4f+Z c=1 sm=1 tr=0 ts=69c40f5e cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VJWC2A9Rxtiui5an8dEA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: ep-i31MGON5OlTVgHzD44qA7jGtcSV4f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-25_05,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 clxscore=1015 phishscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603250117
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/7] selftests: memcg: Increase error tolerance in
+ accordance with page size
+To: Li Wang <liwang@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+ James Houghton <jthoughton@google.com>,
+ Sebastian Chlad <sebastianchlad@gmail.com>,
+ Guopeng Zhang <zhangguopeng@kylinos.cn>, Li Wang <liwan@redhat.com>
+References: <20260320204241.1613861-1-longman@redhat.com>
+ <20260320204241.1613861-5-longman@redhat.com> <acDzaouBPCIpB7Ij@redhat.com>
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <acDzaouBPCIpB7Ij@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: 9mR2jgNpIwA5nhKi6kxS7Jp8jt9W5fLz79DC7j_r-Ls_1774456938
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8C1AAC0004
+X-Stat-Signature: wdqcxbnmb1kdj5eh7qyxwhafmbm7nbmm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 851C62000D
-X-Stat-Signature: wdg5eo6qcp8c7zusrgdrrw5h39r9k7e1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774456677-80490
-X-HE-Meta: U2FsdGVkX1/H8rydzt7kBeIcbBY5r7f70Wgdlt5WCPERNjxoLbDXpY8X934TS00eg44O5SS0JtffYlApB7001AIS82qSlzz0Ul1nsSfepRcJKCIAByZSx8/4Ek/2k5SK67UhvnBepKE8TPlt7U2zdGpZU9V2X9X+P/EA+wSp/qhMGTL29ipxZGfWqNnyzsQOt3fy2eORhkv61iZJkY1cvP02FOcOLxCRsrb6njcxTa0yv5vDi3gE9YwD7xaoQuB1+Za96VkA2lJ5xDs56MEr3Ah1jV5RGUpohbnq6SKNhdLxU2gOjZgVLK0GQQPQtrVOqdauVKgqE8rI5fqkOr43aYABqEBolUkqbbmzlRNbZhTqBc35s56qxAPV7vzZbywqgmydvHeAsnKSfouDCkDy9Qb2hKJW4zbfKKZF/2O4HIFt4D53WM6IBLoKJ0aVfqgn6MJCqcVUKhohIwT7BZMpNSRtenWJIY9LAxlCFEiZOZ6h/Q7PtVUVn2c/2LtBHuLYczpn2kOztFCRzHC9EKBJSpOcfD2NHGLMUtzWgycHOGg26odForxJDKHBLHo1Rvv+BccUth4Ve2NQD2FX/I175kq5+VM048et4P6V9/8o9ZEnM3QH9IAtAJEhD5u5KFuHX7jVqzGkFY1F07yeIbOb9kMFz6iLZbPWsiTKsFF9MPrPtlc5JNyfoRuDV9uZCyo95eRY8Ak6bl+qLOh+tenIySsDKIGYet5fCU9PCln1v5GtixegTCauHu2bTVhfPV+IHhylL2O92dra8KOT9a/JKAgE7nT/r4cukqJ69Nzv7u6k/FHqPENQmcnxkmeKlQoJXARzqI5NWRb2vi0f/uJJXUbbU5ssqjcch99I+kSqgfzXdhlJQCvZNRRayyi9cAnUXXaLhbyvsQCpVUf+qYMSjrzAFnbhNrXXObs45uSGDhUsFItUym0vsanDS7NIhWwNGlgrU9F7h2/3cUXp7KA
- vAdrSofZ
- sKDxYtW/uoh6mQSicNpX/xIbPBxuLBLT8LskQcYt1Ejxwe1/z0Eb6f4TPHiiGddsZDGe4hzjN5JaIBljRnYRomPKc1bzcjHXOqvaVYTU7LeFgnTtb84fVQtcMx9tWtNteZUf1Ec4EsbyN90VhsKmmv36wVZPPkDalvs/w9qeJrDZdGvzb+vLS4TQUPXrZoDUWDyou8EPwq+sKDQRQs+gGBwpWjWWNLp4gSGsV
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774456949-614876
+X-HE-Meta: U2FsdGVkX1+osT4sj8LQQWqSqyyogexhGOVvIdv+/6b7Lmn83u5qBPAvEmjWbxOsRUnhlhyPBpNHlDpcHNJjBc+lanp/i7oAiGNgQSgnpkkzEdbBZYt6DIvUQpUGSwfyr+csY/353yIrU1K8gLpFMZkPi1nlOqgU6ZZgyHokachYMiFPTUjR+r0l1iDui8lI2jry57nZCv2eycFuNJlOkawg+yS16FHmYSH2EP7v/yC8gCxsv1SYEjskwn4XCgUkRrR4TqVOKVccYOJsK99q0p2OkJVYeutnJEFEdCsCflLipEYSJnP5dRMMKX12wLr5t+/JxqQlEE2+JhzawIZ/KRHM+21romFg2sNgLQfsR2V6ku5YMijU/cHXVPBHzvlYAFT7BDJc/hZxfF0cmiGrFr+IvNJWugtd9gEg0+ItFZi0L2dZs4pmvi5Q7ZxSN/xfzBFtBxaxHhntADQqy27RpeVkYWvzzy/IN/TW/kxRMo5dKeAxDpXVANsQ8+rJxW1/0VWyKiVLxAJCZ50VulJLvl4TZql1zvzWkHBdlTfAn8LqSHWxuPmw4RiYACTgZ06G6razq0dUtcC92r4v2VSRyz3XJdxy7ddC7W+/AL7IP8GSCOkNQP6b9zl1XWU7xDAjTOjD4Y1ZMP4LWzHWeq7zsijX+9caM2SN6L6cZlHzYYP4Llh+KPfX6wGXyicgqBid49k2DgR+nv4a87I/UPupFVEi2AocTdm76c5nMFP6Hbsk+HUGVQ6Hrd85Cwb6ok5i+81hT8vHC6CMgXgh/ZHeDlmcQVZBUzPrOaOjkEid+m2kWn07M7SsEK3yKEpBgeo4zrxiHK/8+hb/wNXZ4lRYgaJuh0DCaIn7+OAiLRKMRZuR8MUxYJaV+7LafKF4z2+HU8fOXKMQC4dn+hhwIgWctLPRVbSyJt/JUzWDgXO4Id6EH7+fE/rl5VHfeN2/PXmCCUQvyIEU3UBVK3lnOho
+ Yd12koQt
+ NgkOZgZYX2XW7nw7zJzcC1fg8Ux9+DmEVNaLcAAuhEkRFQoidpmJ+zCqSTUOdZXn1c41OgqZ9oLsAv5DV+WDOXwgYS1wEUIGLcceN30GO0XN9bRznkCkHikXNEeMjJyI7PwHtHA0obu4OYq349wVo8NlHETXJp/8MW1A3y2uSBfPxaTMMw+bSlbPVyLcrDrVzRtc40EDRQjjRYAv7w8Zng/DHkbbeIHshZaLVILp63qmGya1guQfD/RrMNwarF9JBbcQkA6hJLidXcpEpB1uvsXvhja+I2weg/y25EGNFcAAjiK1YgkbF92wnFm8SBw2v2U8s0St4IVxYGg17dxEyXr++V0Snt6GIjlhhCIm8uYU56hxRARWsfgRwoZfkNu4f5nz+/LRFQp5n8m8VTikKtGMZ6bAyLVLTDa6m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,7 +118,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Multiple different ranges still could be processed, but then one should
-> continue using arch_enter_lazy_mmu_mode().
-                 lazy_mmu_mode_enable()
+On 3/23/26 4:01 AM, Li Wang wrote:
+> On Fri, Mar 20, 2026 at 04:42:38PM -0400, Waiman Long wrote:
+>> It was found that some of the tests in test_memcontrol can fail more
+>> readily if system page size is larger than 4k. It is because the
+>> actual memory.current value deviates more from the expected value with
+>> larger page size. This is likely due to the fact there may be up to
+>> MEMCG_CHARGE_BATCH pages of charge hidden in each one of the percpu
+>> memcg_stock.
+>>
+>> To avoid this failure, the error tolerance is now increased in accordance
+>> to the current system page size value. The page size scale factor is
+>> set to 2 for 64k page and 1 for 16k page.
+>>
+>> Changes are made in alloc_pagecache_max_30M(), test_memcg_protection()
+>> and alloc_anon_50M_check_swap() to increase the error tolerance for
+>> memory.current for larger page size. The current set of values are
+>> chosen to ensure that the relevant test_memcontrol tests no longer
+>> have any test failure in a 100 repeated run of test_memcontrol with a
+>> 4k/16k/64k page size kernels on an arm64 system.
+>>
+>> Signed-off-by: Waiman Long <longman@redhat.com>
+>> ---
+>>   .../cgroup/lib/include/cgroup_util.h          |  3 ++-
+>>   .../selftests/cgroup/test_memcontrol.c        | 23 ++++++++++++++-----
+>>   2 files changed, 19 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+>> index 77f386dab5e8..2293e770e9b4 100644
+>> --- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+>> +++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+>> @@ -6,7 +6,8 @@
+>>   #define PAGE_SIZE 4096
+>>   #endif
+>>   
+>> -#define MB(x) (x << 20)
+>> +#define KB(x) ((x) << 10)
+>> +#define MB(x) ((x) << 20)
+>>   
+>>   #define USEC_PER_SEC	1000000L
+>>   #define NSEC_PER_SEC	1000000000L
+>> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+>> index babbfad10aaf..c078fc458def 100644
+>> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
+>> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+>> @@ -26,6 +26,7 @@
+>>   static bool has_localevents;
+>>   static bool has_recursiveprot;
+>>   static int page_size;
+>> +static int pscale_factor;	/* Page size scale factor */
+>>   
+>>   int get_temp_fd(void)
+>>   {
+>> @@ -571,16 +572,17 @@ static int test_memcg_protection(const char *root, bool min)
+>>   	if (cg_run(parent[2], alloc_anon, (void *)MB(148)))
+>>   		goto cleanup;
+>>   
+>> -	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50), 3))
+>> +	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50),
+>> +				       3 + (min ? 0 : 4) * pscale_factor))
+>>   		goto cleanup;
+>>   
+>>   	for (i = 0; i < ARRAY_SIZE(children); i++)
+>>   		c[i] = cg_read_long(children[i], "memory.current");
+>>   
+>> -	if (!values_close(c[0], MB(29), 15))
+>> +	if (!values_close(c[0], MB(29), 15 + 3 * pscale_factor))
+>>   		goto cleanup;
+>>   
+>> -	if (!values_close(c[1], MB(21), 20))
+>> +	if (!values_close(c[1], MB(21), 20 + pscale_factor))
+>>   		goto cleanup;
+>>   
+>>   	if (c[3] != 0)
+>> @@ -596,7 +598,8 @@ static int test_memcg_protection(const char *root, bool min)
+>>   	}
+>>   
+>>   	current = min ? MB(50) : MB(30);
+>> -	if (!values_close(cg_read_long(parent[1], "memory.current"), current, 3))
+>> +	if (!values_close(cg_read_long(parent[1], "memory.current"), current,
+>> +				       9 + (min ? 0 : 6) * pscale_factor))
+>>   		goto cleanup;
+>>   
+>>   	if (!reclaim_until(children[0], MB(10)))
+>> @@ -684,7 +687,7 @@ static int alloc_pagecache_max_30M(const char *cgroup, void *arg)
+>>   		goto cleanup;
+>>   
+>>   	current = cg_read_long(cgroup, "memory.current");
+>> -	if (!values_close(current, MB(30), 5))
+>> +	if (!values_close(current, MB(30), 5 + (pscale_factor ? 2 : 0)))
+>>   		goto cleanup;
+>>   
+>>   	ret = 0;
+>> @@ -1004,7 +1007,7 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
+>>   		*ptr = 0;
+>>   
+>>   	mem_current = cg_read_long(cgroup, "memory.current");
+>> -	if (!mem_current || !values_close(mem_current, mem_max, 3))
+>> +	if (!mem_current || !values_close(mem_current, mem_max, 6 + pscale_factor))
+>>   		goto cleanup;
+>>   
+>>   	swap_current = cg_read_long(cgroup, "memory.swap.current");
+>> @@ -1684,6 +1687,14 @@ int main(int argc, char **argv)
+>>   	if (page_size <= 0)
+>>   		page_size = PAGE_SIZE;
+>>   
+>> +	/*
+>> +	 * It is found that the actual memory.current value can deviate more
+>> +	 * from the expected value with larger page size. So error tolerance
+>> +	 * will have to be increased a bit more for larger page size.
+>> +	 */
+>> +	if (page_size > KB(4))
+>> +		pscale_factor = (page_size >= KB(64)) ? 2 : 1;
+> This is a good improment but I still think the pscale_factor adjustments
+> are a bit fragile, each call site needs its own hand-tuned formula, and only
+> three page sizes (4K/16K/64K) are handled. If a new page size shows up,
+> every call site needs revisiting.
+>
+> How about centralizing the page size adjustment inside values_close()
+> itself? Something like:
+>
+>      static inline int values_close(long a, long b, int err)
+>      {
+>            ssize_t page_adjusted_err = ffs(page_size >> 13) + err;
+>      
+>            return 100 * labs(a - b) <= (a + b) * page_adjusted_err;
+>      }
+>
+> This adds one extra percent of tolerance per doubling above 4K, scales
+> continuously for any power-of-two page size, and also fixes an integer
+> truncation issue in the original: (a + b) / 100 * err loses precision
+> when (a + b) < 100.
+>
+> With this, the callers wouldn't need any changes at all.
+>
+> This method is inspired from LTP:
+>    https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/controllers/memcg/memcontrol_common.h#L27
+
+Good point. I will implement something like in the next version.
+
+Cheers,
+Longman
+
 
