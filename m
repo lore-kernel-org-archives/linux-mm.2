@@ -4,95 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7609C109C033
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B342109C02F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:02:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB6246B0089; Wed, 25 Mar 2026 11:52:40 -0400 (EDT)
+	id CDB556B0005; Wed, 25 Mar 2026 12:02:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3FC36B008A; Wed, 25 Mar 2026 11:52:40 -0400 (EDT)
+	id CB3076B0089; Wed, 25 Mar 2026 12:02:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C075A6B008C; Wed, 25 Mar 2026 11:52:40 -0400 (EDT)
+	id BEFF36B008A; Wed, 25 Mar 2026 12:02:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB5306B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:52:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53345C30E5
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:52:40 +0000 (UTC)
-X-FDA: 84585028080.27.8CC824F
-Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4DAC0C0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:52:38 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=gvTVpj8F;
-	spf=pass (imf28.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774453958;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ABC476B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:02:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B1ECC1DF4
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:02:55 +0000 (UTC)
+X-FDA: 84585053910.30.6663E3E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 494EA100014
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:02:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qVFbM5u4;
+	spf=pass (imf05.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774454573; a=rsa-sha256;
+	cv=none;
+	b=0B73Gkn/GCJqpqyIZ5awTk03aLFPzW2kHOIF+7Wr1JtYlcNWfMW+fUOfgpp0a6deWmwxJQ
+	9DShpvdXmaDDCL7lAqP1ntSAeQtTyi4iJsyKfkk+QyvTfXwz6qghFe/SK9LxqBU7lwFdZE
+	XOl9SdPZXsEfkROfQn4JABV1Yb1fC0w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774454573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+OzSO0IWlJMDnZOc5tQIiXlFwu3Jx/5/svjrKhbwCZM=;
-	b=Jn3CtDlzQFVUhrFVvy8/4okZQhLHhqEX95bNdjX6xT8x1qVNAXjq3H16UhwA9zZXJ8U3r+
-	5cuGt2wBjxWBIdP4pMRKIR2gc5UsnxqdFYR/kuXjkez9D3Q3UOaQ9nmrkow/LqZ+2mA+m3
-	CuS6LihlCX61TER/UaqRg216HLfjGLg=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=gvTVpj8F;
-	spf=pass (imf28.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774453958; a=rsa-sha256;
-	cv=pass;
-	b=KE8+biTnvS6y4W6SHYhtljzN7AIrNWrju2HKhwdIlfpuJCISpcBEHDWocteNy4uxbE7B0P
-	jNeiNZochY7zesbKclOJAuWE3gkcfwJB9qiky4IpZ3N3hJwGuEo7KbpLUN5HyxoE/wLkLn
-	IzLFSakNA+RhpQkR1kJlhlMkeFUTqbw=
-ARC-Seal: i=1; a=rsa-sha256; t=1774453946; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=QdFFblBuAIkc6r/hP0G/80ZU7VKnIJtskTQLbHME4lRh/tygvBog4xcTtiUlLFzZU5rGd0A1gs2Fwm63WzcEKRZqhmEWoS0K5NkxgsfOPdoYI/gAdJSWuDjIH9G8xgpfFKFQ3fhFhUzdBOsPJKe6ZukaFNEdZRrB5Wkl+owup2g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774453946; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=+OzSO0IWlJMDnZOc5tQIiXlFwu3Jx/5/svjrKhbwCZM=; 
-	b=cENAaHNeGLRRVYUam3qFB8h+BQvS/7Lcaop9gRCmEaN3bbW/+yK3HZszuXv2zc6Jn4un0df95S0fqObgtVcInWN3KrTug7C7Lbxvi3dSVzv4ZaGKRtvspCz58YEFu+t0wQECUiTBkIfCysdxmdYDFw8ayof3kJydbmYNk1ROCoU=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774453946;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=+OzSO0IWlJMDnZOc5tQIiXlFwu3Jx/5/svjrKhbwCZM=;
-	b=gvTVpj8F2f5gybCbW7aMb360K5/13wRUmPh06eJonIc5nItoMp4GzmVzkBxsEySi
-	BPG7GZgT9akuW8c6ESR2uvBmLViiAdgaD1dB6VMjE00xeVuuljMwls5Im+A0ALk4GyV
-	4DN4BezgucKGlEtdD7d3AKI7sknT0zwy55NT4ni4=
-Received: by mx.zoho.eu with SMTPS id 1774453943350571.0589292966793;
-	Wed, 25 Mar 2026 16:52:23 +0100 (CET)
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Josh Law <objecting@objecting.org>
-Subject: [PATCH v2] mm/damon/core: validate goal nid before accessing node data
-Date: Wed, 25 Mar 2026 15:52:21 +0000
-Message-Id: <20260325155221.202700-1-objecting@objecting.org>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gqQt+GzM/DRaB8zZaqOuCpXtzjD+exs+ugOTqW32/pI=;
+	b=ECFS2HMPIUn/wJyki6oJXvCLZ/g11m9vsMz9lsjzrTOJffHcRfw1rwd/9qiWblP0eh0s3b
+	Fq5S+6t8A0xFsuFrOrN/to75BikhHE91yQujF+SbXtbgqTaY6QDSsinA416bGPKONlinLh
+	lpghla4lJxZh9LXzq8iHT4YD8pZXmBk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qVFbM5u4;
+	spf=pass (imf05.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 59D9C40BC4;
+	Wed, 25 Mar 2026 16:02:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0988EC4CEF7;
+	Wed, 25 Mar 2026 16:02:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774454572;
+	bh=GITsNDMkclAIBjNKnyGg5xvX4405o6x9Qefz9+3Snn0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qVFbM5u4OPn3HWPHYzho/hMZVIujEIkAyumg4ZmiBJU0EhVMhrHCltUKyfhNnKJOI
+	 ZSx0apo6vy9FR+LCxy6+rF0rhDdKj3ADfENvRcV0lo2jiAZuCKcXK7YU7zPlUUHqz+
+	 5J5paHJWH18ceQt+JTFhiLeMKpVHDynyVjE6eM3htcixlLso2yzwaYG8ULhyIv1Fl4
+	 o75FuDAHxjm7gxDciwhVAxthJH+7yRxbQsoVMsx8OVCDhnkezBr09vVM2zu3Zdi433
+	 Lx3YielnCJXfE2/bPY0vbMeu9vz360kPaJkO1S0aIV8Y8/XdPhTZ2sN9Y4FkyxIA1J
+	 NRO6w/7tUFc3g==
+Date: Wed, 25 Mar 2026 06:02:51 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Qiliang Yuan <realwujing@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 00/15] Implementation of Dynamic Housekeeping & Enhanced
+ Isolation (DHEI)
+Message-ID: <acQHKwGhYrpoOH1P@slm.duckdns.org>
+References: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4DAC0C0005
-X-Stat-Signature: 8jz9448nsmn5e1115zhezbo4ywxnrogc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1774453958-160588
-X-HE-Meta: U2FsdGVkX1/MvjL6oLkyUJNokVQ+ItwDXzbFJ1b2Ha0W7lkaeQeo8IzJ3jEdvDbOCiKYcPe96L01VJPw+s74gh0Gsg+HuTBIIRunImY4QRFSdgEGsZfYWOhSRaqxxUQfAmECC9T7B7F66B1DXFJ67uLFHIFBWuA9EPmE3bSFIqlI6UkpwinfqrbJEYANGQ3uBbJYyimfwxQtKKiO9haohH/4/qsdfdOcfDrsp030wuApJSDieV7pucwtWTlwCm2VSZy3NXBxNzsQcM9I+FnbTNHN2kBWgowoT4vfWEz41k6Vvc7hg/9iPRjYHtKe2ynZQ8N5hz6MpNY6MdTNkAyeLyi3BtqJzkIWjOAOwmx6QALRz7yKjhACIsrCoRxCTntlJl83A+xcMiJjO3UtFHhmtxKyIfJTp4avEyDR+tRYccbdY3rsz4Vq3F/dtxHBbP2Zj8eRyWba5tu+YdBdYUAT++HVQwFwTxeEnHsELYa7irVpp/2YLOXwjdJ6QvScnE1zGTv78Xm+hz+GizVLbRovXpvi+bF4Ql9NEE8jDFsEmDiaAJzU14nx5gP5oRYnczs8rL1slDDS1yVlhAnxQOWFxXTV3BYxM1dscgdqXxAxC2nch9q9HYDKBaYCDO9okwLhstqEQCuuVjP4O6qBnjIIpXZLtut2Gt0S4eMPgS6q673j7+nKtEPNPZR3vr75tj+825S+G40eB6FTWRGqTTwCV8DuredKoUA52ljvg9gvPbxRQrc2xPKbrk+EuKocg/UjYpZqWVDtLibYBzruiQICHlpt73g4xnWY9UQBY+XAT6Gdpv7P073tOLyPAjb44ejEtbgoHnCceb1ocvWGuwb07Larar9xejg81Gqx34logoG9Ri9IJPIIZDzTV3RGx88eTJraWsMdSzbbsMZUxvO3qV8m2oAtxzdVdCH7xt8upqrILiw7VVyI+Qrg84uB/g+6E7mGLZ4FjCLvpwMUsw1
- yUc7fMUC
- +FrPft9OKNF8r80LcOh762sHe+SRNWstdBwq7/1kZsLrSOilvVFQaaHXUauTVTPAOV4H9ukXJMKALRczsHUYbPsWKRzyUFnFQWpRs6AQpf1Lxwi8WZwAIcGJTUBsD1Z2WWt/oNiwDv+klvI0YcWbRsnKKFZJpygllU2tlchypIibPwGagMYYelFmrW9B2WiEjjVvTG8la2irNvbje23kogB0ElZ+ndXTonzDQsD3u0PvfN0yBlr9t6GkQpF3YtHxNoFr0b1IAzzhXKviuZgG1hEw3R7NeG65zsYlvDIW/8KaMp274C3/mLpy6gQfGpMHdqEfsMlbuq05xt4hG3eROCx4SbERMPo/YrRTSQnpdsEyLDjMoKK78wijTqg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 494EA100014
+X-Stat-Signature: pojd6sh8grsramo61ahknrmc9dtg9er9
+X-HE-Tag: 1774454573-745711
+X-HE-Meta: U2FsdGVkX195iGWUxgbBL+oXIGu8GN/Vb7P94xcBXHnlMkYQYr60MU2g2SCH1C4yJRIpQC2vj9B0vfRFZPu8M98QemB2gUF1jcJbOudPW/bSEEJ8AkmFKGYG+MJkt+jTMLOmzF3q1u3hOe6GlqcSMjrAZl4zjPAkfT6wDgipBlgxR4gxVorQsbXRj1dDSuiAIlRtJPr5QQTauBdJI5cgK9T+SbpTII5M2ff0XTyIfhzSh8xswqteWa1QMxYGoom9A9O19oe6Qnyo22umEFsRY6Jd3qMu970qj/jlHuAGqAg2XvtmSTF6E5Q8BgWn/cav6AUF3FcK0O5fqONpZqaBL9ntQxTCvnAMq2puDdGLu6cHhKrRcBP+g75C144qapPO+sPTnMsftWmF/qNxqixhKqiMbRfOsOZP1bDQMiJbiyCcY2rw92MUx/P8n1dUo9qqu676dfs/dnJkyKPG2Tlw7FI7+p0bgAhbWO4s6mEDWVr8GZw4eGgcPNfPTZ4c//bwyr/BKqEzXNV6VDKa/rnovYVt4l9Pn4oq/GtLijGUozIOS/0wArD5fnn8sO5xep/Ish6vL7S72PMCWiqdTGB3mlunY3uJM3pmgiSM+FaUIIRmCPlSLE0tQPMV9tSPXMM/kK3abrdTfrbUkR60mWis9tSieYtCSTHx5tWXOFcOjsLJtABQSLSO6orIxF2rxnK5R199wPofoxQGiJi6miRkzmFxnFA3mCJHXUo1RL/VMw1dOoiXY19N/8h2UNhTADsjRT3Gl1kuKSpUY80X8y/LDgGtAKuZjc1xOfO+eU2FYS3OhqvziOkXwg6+IB562q04fV+mCsCGUJtmc90kKOkyPWMmC1K7RKJ2621mo7Ksm6PwoAWa/lQQ3FAGFdbND4oggHa8sIDCgDjdgAlRxSJeFRLBAIozX1AlET18JEr7EkRl7YN8ZLZOM0jv6unJDf/lw6Lp62oDuA7zTyjfhln
+ ukyglPcj
+ BK9T7NqJ183Awwlar5IendMw0UIVtJnWYbjs70SgmxeNz+C+T2vkbuBIn/LoWV2Hfw9pUQv1mPYPQ0FgUXLcN/KvHeF0rH9yb3mQK4/4wkmQE+O3wNrPDonpk1Q4ViWxQ5rx+PUxPghDSGb16OQc9TP9mQBuzkSLjduclyT4oV37NOi/Xvd+IqNEknir0cpS08y6F+CkjxOoLZFftg2w3caTVFyCSNLIR3KlXl/alg/lPUqR7xjM5XyjGn6TfS7W7+q342qfhAV5rRB7fHLeoUYxvLyMWrkDNVX41
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,50 +117,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_get_node_mem_bp() and damos_get_node_memcg_used_bp() pass
-goal->nid directly to si_meminfo_node() and NODE_DATA() without
-checking that it refers to a valid, online NUMA node.  Since
-goal->nid is set from userspace via sysfs with no validation, a
-negative or out-of-range value causes an out-of-bounds access in
-NODE_DATA(), and a valid but offline node gives undefined results.
+On Wed, Mar 25, 2026 at 05:09:31PM +0800, Qiliang Yuan wrote:
+> The Linux kernel provides mechanisms like 'isolcpus' and 'nohz_full' to
+> reduce interference for latency-sensitive workloads. However, these are
+> locked behind the "Reboot Wall" - they can only be configured via boot
+> parameters and require a system restart for changes to take effect.
+> 
+> In modern cloud-native environments, CPU resources often need to be
+> dynamically re-partitioned to accommodate container scaling without
+> the performance penalty and downtime of a full system reboot. Similarly,
+> high-frequency trading (HFT) platforms require the ability to fine-tune
+> CPU isolation at runtime to minimize jitter for critical execution threads
+> based on shifting market demands.
+> 
+> This patch series introduces Dynamic Housekeeping & Enhanced Isolation
+> (DHEI). DHEI allows administrators to reconfigure the kernel's
+> housekeeping boundaries at runtime via a new sysfs interface at
+> /sys/kernel/housekeeping/.
 
-Add bounds and node_state(N_MEMORY) checks before using the nid,
-consistent with damon_migrate_pages().
+I think I asked for this in the previous thread but please coordinate with
+existing cpuset and isolation mechanisms. You aren't even cc'ing Waiman for
+cpuset.
 
-Fixes: 0e1c773b501f ("mm/damon/core: introduce damos quota goal metrics for memory node utilization")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
----
- mm/damon/core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thanks.
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 59b709f04975..112125b635d7 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2227,6 +2227,10 @@ static __kernel_ulong_t damos_get_node_mem_bp(
- 	struct sysinfo i;
- 	__kernel_ulong_t numerator;
- 
-+	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
-+	    !node_state(goal->nid, N_MEMORY))
-+		return 0;
-+
- 	si_meminfo_node(&i, goal->nid);
- 	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
- 		numerator = i.totalram - i.freeram;
-@@ -2243,6 +2247,10 @@ static unsigned long damos_get_node_memcg_used_bp(
- 	unsigned long used_pages, numerator;
- 	struct sysinfo i;
- 
-+	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
-+	    !node_state(goal->nid, N_MEMORY))
-+		return 0;
-+
- 	memcg = mem_cgroup_get_from_id(goal->memcg_id);
- 	if (!memcg) {
- 		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
 -- 
-2.34.1
-
+tejun
 
