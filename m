@@ -4,139 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A50FEA839
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:25:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6055FEA839
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 09:27:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6FAC6B00A0; Wed, 25 Mar 2026 05:25:47 -0400 (EDT)
+	id 0EDAF6B00A3; Wed, 25 Mar 2026 05:27:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1F7F6B00A3; Wed, 25 Mar 2026 05:25:47 -0400 (EDT)
+	id 09E866B00A6; Wed, 25 Mar 2026 05:27:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0E876B00A4; Wed, 25 Mar 2026 05:25:47 -0400 (EDT)
+	id ECF8C6B00A8; Wed, 25 Mar 2026 05:27:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ABE446B00A0
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:25:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 53A511A0805
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:25:47 +0000 (UTC)
-X-FDA: 84584053134.11.6A54C79
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1FC9018000C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:25:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qu54+9I7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D659F6B00A3
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 05:27:05 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C7D5E0B7F
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:27:05 +0000 (UTC)
+X-FDA: 84584056410.21.753360B
+Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7B080100004
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:27:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=cachyos.org header.s=dkim header.b=J+Y14x9q;
+	spf=pass (imf05.hostedemail.com: domain of dnaim@cachyos.org designates 202.61.224.105 as permitted sender) smtp.mailfrom=dnaim@cachyos.org;
+	dmarc=pass (policy=quarantine) header.from=cachyos.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774430745;
+	s=arc-20220608; t=1774430823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QhNKp+bSaBbHv9TpPknFPkyYGWI8c16o/XncvHeJqbM=;
-	b=irm024HvE0f+bI1Ks74e6fjNmGzd075l7xqLZU1PLIu+qQblpKMJeDfP83s00hl7bT6W4t
-	D16CdhAaelbJ1JS9/vQbVVbFGPAM1SuwRXlNicnEkT/+jALlfu6/a5i15Wtok/WAIAIc8A
-	WocAkAbSZyTmMm9q4Kb6qKMu32/8/m4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774430745; a=rsa-sha256;
-	cv=none;
-	b=EfrQKk2NX6d1Wie5CwXV/R8iC9fNY4jKUgz+bADvV9nbS+HbXSo31SXjpbXr8RENjXw5oJ
-	WCcGwpEVkcpp+hTrvVC8d8ebdJD9nPfnhRLcGSnmJoxHXt6IhsBNWz1/t8BjrpUdxxxZov
-	jJEGE91osnN8198kPowdB6cvmhR3RGw=
+	bh=jJ0Oay0Ddvqtq5h49ewinbwftm2X0gyMiyUqmVphS6k=;
+	b=YcyQ9LbT3/v2tg/MUPQ1jyigMJnPHebCaYolb+Xorlttr/GkWlNCVO6KEBHkccGf61y0fA
+	UKiVxpv5NW1vq6ph3qvKSYBsY3SHBjrz74kit0CNtEvN7Y7m4ckGDuw5hKJz9OkZ463H3R
+	dYzOB/1CJ97NzTYKBrv4cmc0bToPhnE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qu54+9I7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0BA7541AA7;
-	Wed, 25 Mar 2026 09:25:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C31C4CEF7;
-	Wed, 25 Mar 2026 09:25:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774430743;
-	bh=qN9PV3pMstC3+EeBcglCDVULqFxuh6hi8lriYypUBIY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qu54+9I7o80OjHqpR9tCfLx7p9+v/QDq7sV2Dtx0nJZt1de9Qv1+ILwgQe/UYpwfW
-	 lMMjHmMoiQHg6dRd8v2FMhS7hf46WuSBv6MRtbvfZUTW6/P+UJvWxKjiLrkcSFrkqk
-	 GYjO8zvG4p4u7baCyrHTHavOOrI+WfWhZzrJl16nJzmDBSxbq70ltPY4WIJalTq51w
-	 iSEjuLgzfXnBr3Fl0gMituhHpJp7GxUIl2mjxmzzmC903l6oAqxy9v+XpaCal3Z9sz
-	 DyP8NMPVyy9hZztYS5uMbA1X0wmBVmkd3GlSeTC75rGYbMCteeqUt4GvVR5sA6dtZb
-	 IBQB92NOk97SA==
-Message-ID: <cb383f3f-b74c-41a8-a77d-d00e93b7fe94@kernel.org>
-Date: Wed, 25 Mar 2026 10:25:36 +0100
+	imf05.hostedemail.com;
+	dkim=pass header.d=cachyos.org header.s=dkim header.b=J+Y14x9q;
+	spf=pass (imf05.hostedemail.com: domain of dnaim@cachyos.org designates 202.61.224.105 as permitted sender) smtp.mailfrom=dnaim@cachyos.org;
+	dmarc=pass (policy=quarantine) header.from=cachyos.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774430823; a=rsa-sha256;
+	cv=none;
+	b=6ACmCpVt9pQs7314LS9ZqWtH1nVMyFXR4uRHx06XqeliKjHsgVKKSyu6ZkrvyJwVKwVVZ4
+	Qj0obbXohVbYJVKWbLves543gUCKEHJMqZGGRg9IN0KXSK9wH+KBrG712jn1c8eVaqgxMW
+	XJxk7FSx6rwXhFva8Zaz8MJ4lwRQwks=
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 766722860C1;
+	Wed, 25 Mar 2026 10:26:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
+	t=1774430820; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=jJ0Oay0Ddvqtq5h49ewinbwftm2X0gyMiyUqmVphS6k=;
+	b=J+Y14x9qfMHiQBalxiMyaw28F2f9KFOp/2ClRApslKiDAaepkl9Sv+PQphIbscHqjRbmer
+	VKPmVFVN/4aDy4pDIQ0B17hGCLhVq6dTxbRl+GFNZQN4Pka+Z9rpeQB4K8c47TBIhS09QH
+	ma6cGb7yRy88Da4Z5dKRw/dYtrEFcbCPS7zXPfcwFdq11aD1qQxtfcgPaDXAG3pUikcYT1
+	Z9hSAdAcGZw1SXhhWz8YviTz0vQDNrx8dJBGX9jWt2dmLk7ni05BRp0pD9bxYPuyvDeCEF
+	jhBpFWqtjeIOtdQ4XlX/WM9xe6bTmkx6g4EC5ZRf7rjkflil4zH9X2Qu0az37A==
+Message-ID: <85b4be3c-09a3-4a28-924d-71a20db3fd62@cachyos.org>
+Date: Wed, 25 Mar 2026 09:26:00 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate: rename PAGE_ migration flags to FOLIO_
-To: "Garg, Shivank" <shivankg@amd.com>, Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260324114720.864478-2-shivankg@amd.com>
- <54398FC0-2F68-410C-B9C4-2802810C119B@nvidia.com>
- <41cd005e-3702-4c67-8d32-0c09274194e9@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <41cd005e-3702-4c67-8d32-0c09274194e9@amd.com>
+Subject: Re: [PATCH 0/8] mm/mglru: improve reclaim loop and dirty folio
+ handling
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org
+References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
+ <7ab8edd7-381f-4db2-9560-b58718669208@cachyos.org>
+ <CAMgjq7CuEYAzZFmS2T7N6je6VHffVkH1hh64YUuShFBnrJJvqA@mail.gmail.com>
+From: Eric Naim <dnaim@cachyos.org>
+In-Reply-To: <CAMgjq7CuEYAzZFmS2T7N6je6VHffVkH1hh64YUuShFBnrJJvqA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1FC9018000C
-X-Stat-Signature: 4sjjjickcbxujdpiwibe4oxgkqit398y
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 7B080100004
+X-Stat-Signature: yaumyfaiekyhsef8gdawb13neb3t9yng
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774430744-925584
-X-HE-Meta: U2FsdGVkX1+KSIZj+lwr3+jX5/QGugEhruW8lJD8vfJWlGlE5sGPBqfHUOGGXADeDxucRcgRkONkZqI9r4KivN9wZPzdpcTKAdcJ7NFmlDtPGz4G1haNJYxSlIWiMhNX3DAVZ3p5Yw/fFOBsenWqmSLKBHohEwzb5hkXeOT7BxjeSacxxaC1yFCDf4IoC5+Mv600Ok2brQoro3RX09yOeqrQcY8+yNOfZ62ch+SwaguUaddV1SClN2dm4AVQKOwUUWTmdHgBcQaGIGB2UnaAm6y0NfiQYFNse6pZGWPeGwAUYcdEobhVmNOqurAF2EyCI6Lp4dQnJT+GpcsBK5KmKh+A+rmO2tUKngDVhek9Yg8t5s5qR8cBAIIaX+cHSFX2AeAAkaaAlPNxa5HqRUHT9ex3txZcrWzCqa04btdeubT2M4WqgR5NGq1b4hK5ATsICMkGnqsco7WpPja0l3arjl6Hv7gjdzacoJzXA206dAyzWuhVs6pTWrUNoGo8YUHxxKa+qAhLgr2xNaJzHaRQvK8lUr4BKICK5iPc5YtFLIB88vOu21KgdlJsssNcLRiLOhpJEE3o5C12eWgaLrYFnXsr3oxOT8Es8ROAH/nn5CZgoAH/M17a0jlmXqrOMwinsUjeVQpSxyJ85aeogDzy4lmWdSE/eFc5HqR2ihSQNYlRkuhk0zLHP6n1VowiYx8Zaj6ie6qwpJHHQQBTHSABmA+XRoCH/KdfKEB4ShoAmpzaR5LtphxEUZUV5sTEtNdIn38jqbsDWyvJKgHmDjTCZ61rCfewsOCrwrizsxrfLQ5vFGuWQS9Tiw+DbeDJe2bQkytJ59+HAfQpQWESNmmeffB7Tndk65fVKSsZ1c6qXf+nzvJnPCbh7GYmGX0G/Fc3sYMLG4LaHciqAQr4vGrZCrWJ3Jgq719Zm02XaljNCWTLRv9ROyzGT2ek+J7Q3EKRufqtBhbTzsI+qCpLF5B
- hXD5K7He
- WIwbATy8QHeHq8EfMs8UoHCsPMe8RXz77DZ8Rf2EwTtVcQJyLfAPMg1ysO2B3Snws49DBHBmPIdODKvRQjo3TEk2AGsGwae5pSOlKmul8ata1kqHopmZMKAnk0iPLNnZBrIAbbt0lO0agSGcV65vRsyO/aYa2IWZ6cQbQE4MKUCssf36+37B+b/ZmtUTwNw88q1PDBG7tLVYvP/MTIE/vH+gaUVMoCV3eQEk/5QG6ZGmWpxuQ6tZGLSloXT5MaGJl6RFabBo2ZbjPfRptcglX1YYWk4BUJn5yp11x1SZk9cINk++3dAKhuFacioTnBSEhW2T2P9i2FVq+tSP/Nes72/lFcYLpiSBbE1pRzIXU7qwvmbvxqlaD9INYOi3Nv21ST+Fx
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774430823-985002
+X-HE-Meta: U2FsdGVkX1+M1ZICOWQlIKtCaFccqd3rWDlqm+VuW0bCJnmPqE3rqwNeDCBteUGGC1h2/IA4mMR9qAzAIZg/iGBF6fd9KngGvi5pFIuR6UOq6vofMFGLuzA/44+NZpU7/d0qu7/HSXu1P1yRm3yejBOBMKdSOGqTxhc2sm1uyvA/5vb1cWKaynRIXMr5VjW3VkUR9QYnKQ7EvGFyOzY2BUuvccnIS/M6/4zwBOJn4Piop0gDez2+w2gKwvQiYTfIj4rZL0tsa7fDmFXiymTqfyrKnV4YROZkVJEIlpI4RRnKKNdmWpNT/jjJjunPV10o/JxP9TUcwBh15JVHRyItb4u/U8xWJgd4G0MYKjpPITnOdAkUJp2Qcq1dcnnMLZUTTOlLf1mvW3+5WS6ImCdeGM8VXNZRMIqwDuso/eBYuCFAfGhMx7Pc7BRR0GDZnNIQlKgVwFE8TrW1ueU74OphcizWrZB02JLE3AKijRU1qYxSkIb4hHLN52IdWC+TgfMwZQBqJ/+lO1Ph6i1I3oTlN28S+ZOmCMyyQjHANhPH+G0zAHY1+FO1lRinH+6MtSVL6Sk7ctX5CVfIeqYPyN5j9TT0RVbmWALmOLHRi5+uAnSmtiqY9dpMSXYUZyErRd5LT0m8UiGiaFSh/ewwhmYRyU/aJ57mP6VZ9+Bi0DPC42E4bSCaJbUaRnQJoafyknpFjSAo+AFgVBQXS9wzuXRi8iQu6NmoZTjmbiJxtZCBmRw1NcGdTY3HeEglOv7yzrouUwzIDadhqM6sn6p80Pq6IYMQnNTAzLgoy0wVPq6RJxq9sakr7Han/IPIUa0A+WClOX/UyGwZnZpsSSywL0RP1PtmhNuMhGKnNI/GgsF52HL7YwqWyUyCL8TZLgnOvwhkoy4OkVahN89tRVygjBPtgWz0CJglj56hvkwUxazwcl8Eqq3cXbtXDktcggJt6HYwQKO78rNZEJLb7xYaUMC
+ AXJi3L9e
+ wkRf0PRRP1ytxY/qR7b5GgOyYzqZkgKJzkKUwwxs3fT3nfkavTWZtmOCG0gn4u8k/2ZcDm95t1shus18lwHlJ/XgTHpYE+hGUHk+t8L3n+S5UihGruu2myu84Wa2p4htFu0LBfMp/rY32cP2DPiSwrg5H6oRzWHwwxLuT83jlb3Sdjnh8N6Do7M247wz9cpn3iGFQgY/PqL+fIZyGG/ImnTpG8caRXw2uj2zd1ZRUvRU6Gwxhc6j97Sz5E8JXk+0/BZzReINTlqsJcm0L9VCPo/Es5aEddf/KX6foceuFJo+Nm5aqGiG1FJuxp9UBps8Yz4NPkUeDP0bxIFQ0AnMcdMa95kVRJWIdHwpKhehLv8gG8eElknfy0nRqA/gEYsfioZxZQmxbtoBGFIQ8EmXmalb1bUo2q6McE1Gfu2DeGv7IHl0e0T89BoAwjpDnP4qOkdsi3VTJV99nMC8lL6vzUCAPGw7w9mmbGvo4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,79 +101,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/25/26 10:21, Garg, Shivank wrote:
-> 
->>>
->>>  static void __migrate_folio_record(struct folio *dst,
->>> -				   int old_page_state,
->>> +				   int old_folio_state,
->>>  				   struct anon_vma *anon_vma)
->>>  {
->>> -	dst->private = (void *)anon_vma + old_page_state;
->>> +	dst->private = (void *)anon_vma + old_folio_state;
->>>  }
->>>
->>>  static void __migrate_folio_extract(struct folio *dst,
->>> -				   int *old_page_state,
->>> +				   int *old_folio_state,
->>>  				   struct anon_vma **anon_vmap)
->>>  {
->>>  	unsigned long private = (unsigned long)dst->private;
->>>
->>> -	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
->>> -	*old_page_state = private & PAGE_OLD_STATES;
->>> +	*anon_vmap = (struct anon_vma *)(private & ~FOLIO_OLD_STATES);
->>> +	*old_folio_state = private & FOLIO_OLD_STATES;
->>>  	dst->private = NULL;
->>>  }
+On 3/25/26 1:47 PM, Kairui Song wrote:
+> On Wed, Mar 25, 2026 at 1:04 PM Eric Naim <dnaim@cachyos.org> wrote:
 >>
->> Just an observation on folio->private, it is void*, but page->private
->> is unsigned long. It confused me a bit. There are folio_get_private()
->> and folio_change_private(), I wonder if we want to use them here
->> instead of direct ->private accesses. Feel free to ignore this,
->> since it is irrelevant to this patch.
+>> Hi Kairui,
+>>
+>> On 3/18/26 3:08 AM, Kairui Song via B4 Relay wrote:
+>>> This series cleans up and slightly improves MGLRU's reclaim loop and
+>>> dirty flush logic. As a result, we can see an up to ~50% reduce of file
+>>> faults and 30% increase in MongoDB throughput with YCSB and no swap
+>>> involved, other common benchmarks have no regression, and LOC is
+>>> reduced, with less unexpected OOM in our production environment.
+>>>
 > 
-> Would something like this as a follow-up patch work?
+> ...
 > 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 6d4a85f903d8..55d1af6c9759 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1143,17 +1143,17 @@ enum {
->  static void __migrate_folio_record(struct folio *dst,
->  		int old_folio_state, struct anon_vma *anon_vma)
->  {
-> -	dst->private = (void *)anon_vma + old_folio_state;
-> +	folio_change_private(dst, (void *)anon_vma + old_folio_state);
->  }
->  
->  static void __migrate_folio_extract(struct folio *dst,
->  		int *old_folio_state, struct anon_vma **anon_vmap)
->  {
-> -	unsigned long private = (unsigned long)dst->private;
-> +	unsigned long private = (unsigned long)folio_get_private(dst);
->  
->  	*anon_vmap = (struct anon_vma *)(private & ~FOLIO_OLD_STATES);
->  	*old_folio_state = private & FOLIO_OLD_STATES;
-> -	dst->private = NULL;
-> +	folio_change_private(dst, NULL);
->  }
+>>
+>> I applied this patch set to 7.0-rc5 and noticed the system locking up when performing the below test.
+>>
+>> fallocate -l 5G 5G
+>> while true; do tail /dev/zero; done
+>> while true; do time cat 5G > /dev/null; sleep $(($(cat /sys/kernel/mm/lru_gen/min_ttl_ms)/1000+1)); done
+>>
+>> After reading [1], I suspect that this was because the system was using zram as swap, and yes if zram is disabled then the lock up does not occur.
+> 
+> Hi Eric,
+> 
+> Thanks for the report, I was about to send V2 but noticing your report
+> I'll try to reproduce your issue first.
+> 
+> So far I didn't notice any regression, is this an issue caused by this
+> patch or is it an existing issue? I don't have any context about how
+> you are doing the test. BTW the calculation in patch "mm/mglru:
+> restructure the reclaim loop" needs to have a lowest bar
+> "max(nr_to_scan, SWAP_CLUSTER_MAX)" for small machines, not sure if
+> related but will add to V2.
+> 
 
+As of writing this, I got some new information that makes this a bit more confusing. The kernel that doesn't have the issue was patched with [1] as a means of protecting the working set (similar to lru_gen_min_ttl_ms). 
 
-Isn't folio_change_private() part of the
-folio_attach_private()/folio_detach_private() interface that has
-completely different semantics?
+So this time on an unpatched kernel, the system still freezes but quickly recovers itself after about 2 seconds. With this patchset applied, the system freezes but it doesn't quickly recover (if at all).
 
-"The page must previously have had data attached and the data must be
-detached before the folio will be freed."
+Curiously, I had the user test again but this time with lru_gen_min_ttl_ms = 100. With this set, the system doesn't freeze at all with or without this patchset.
 
-(btw, that comment should refer to pages)
+> And about the test you posted:
+> while true; do tail /dev/zero; done
+> 
+> I believe this will just consume all memory with zero pages and then
+> get OOM killed, that's exactly what the test is meant to do. By lockup
+> I'm not sure you mean since you mentioned OOM kill. The system
+> actually hung or the desktop is dead?
 
-So I would not use folio_change_private(). An accidental
-folio_attach_private() / folio_detach_private() would be rather undesired.
+The system actually hung. They needed a hard reset to recover the system. (pure speculation: given a few minutes the system would likely recover itself as this seems to be a common scenario)
+
+> 
+> I just ran that with or without ZRAM on two machines and my laptop,
+> everything looks good here with this series.
+> 
+>> zram as swap seems to be unsupported by upstream.
+> 
+> That's simply not true, other distros like Fedora even have ZRAM as
+> swap by default:
+> https://fedoraproject.org/wiki/Changes/SwapOnZRAM
+> 
+> And systemd have a widely used ZRAM swap support:
+> https://github.com/systemd/zram-generator
+> 
+> Android also uses that, and we are using ZRAM by default in our fleet
+> which runs fine.
+> 
+>> the user that tested this wasn't able to get a
+>> good kernel trace, the only thing left was
+>> a trace of the OOM killer firing.
+> 
+> No worry, that's fine, just send me the OOM trace or log, the more
+> detailed context I get the better.
+
+Mar 25 08:24:22 osiris kernel: Call Trace:
+Mar 25 08:24:22 osiris kernel:  <TASK>
+Mar 25 08:24:22 osiris kernel:  dump_stack_lvl+0x61/0x80
+Mar 25 08:24:22 osiris kernel:  dump_header+0x4a/0x160
+Mar 25 08:24:22 osiris kernel:  oom_kill_process+0x18f/0x1f0
+Mar 25 08:24:22 osiris kernel:  out_of_memory+0x4ab/0x5c0
+Mar 25 08:24:22 osiris kernel:  __alloc_pages_slowpath+0x9ac/0x1060
+Mar 25 08:24:22 osiris kernel:  __alloc_frozen_pages_noprof+0x29a/0x320
+Mar 25 08:24:22 osiris kernel:  alloc_pages_mpol+0x107/0x1b0
+Mar 25 08:24:22 osiris kernel:  folio_alloc_noprof+0x85/0xb0
+Mar 25 08:24:22 osiris kernel:  __filemap_get_folio_mpol+0x1ff/0x4c0
+Mar 25 08:24:22 osiris kernel:  filemap_fault+0x3e3/0x6e0
+Mar 25 08:24:22 osiris kernel:  __do_fault+0x46/0x140
+Mar 25 08:24:22 osiris kernel:  do_pte_missing+0x154/0xea0
+Mar 25 08:24:22 osiris kernel:  ? __pte_offset_map+0x1d/0xd0
+Mar 25 08:24:22 osiris kernel:  handle_mm_fault+0x89c/0x1280
+Mar 25 08:24:22 osiris kernel:  do_user_addr_fault+0x23b/0x720
+Mar 25 08:24:22 osiris kernel:  exc_page_fault+0x75/0xe0
+Mar 25 08:24:22 osiris kernel:  asm_exc_page_fault+0x26/0x30
+Mar 25 08:24:22 osiris kernel: RIP: 0033:0x7fec4beb43c0
+Mar 25 08:24:22 osiris kernel: Code: Unable to access opcode bytes at 0x7fec4beb4396.
+Mar 25 08:24:22 osiris kernel: RSP: 002b:00007ffcb348d698 EFLAGS: 00010293
+Mar 25 08:24:22 osiris kernel: RAX: 00000000c70f6907 RBX: 00007ffcb348d8d0 RCX: 00007fec4bb1604d
+Mar 25 08:24:22 osiris kernel: RDX: c6a4a7935bd1e995 RSI: 4fb7dae88ad99bfb RDI: 000055ee77cc8150
+Mar 25 08:24:22 osiris kernel: RBP: 00007ffcb348dd60 R08: 000055ee77cc8158 R09: 000000000000000c
+Mar 25 08:24:22 osiris kernel: R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+Mar 25 08:24:22 osiris kernel: R13: 000055ee77cc8150 R14: 0000000000000064 R15: 431bde82d7b634db
+Mar 25 08:24:22 osiris kernel:  </TASK>
+
+Here's the call trace that was recovered. Some mm related settings that we set in our kernel in case its useful:
+
+vm.compact_unevictable_allowed = 0
+vm.compaction_proactiveness = 0
+vm.page-cluster = 0
+vm.swappiness = 150 
+vm.vfs_cache_pressure = 50
+vm.dirty_bytes = 268435456
+vm.dirty_background_bytes = 67108864
+vm.dirty_writeback_centisecs = 1500
+vm.watermark_boost_factor = 0
+
+/sys/kernel/mm/transparent_hugepage/defrag = defer+madvise
+
+[1] https://github.com/firelzrd/le9uo/
 
 -- 
-Cheers,
-
-David
+Regards,
+  Eric
 
