@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB362109C058
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:36:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ACB9109C055
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 18:36:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D70DD6B0005; Wed, 25 Mar 2026 14:36:54 -0400 (EDT)
+	id 5F6AE6B0089; Wed, 25 Mar 2026 14:36:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D48526B0089; Wed, 25 Mar 2026 14:36:54 -0400 (EDT)
+	id 5CF466B008A; Wed, 25 Mar 2026 14:36:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C852E6B008A; Wed, 25 Mar 2026 14:36:54 -0400 (EDT)
+	id 46F296B008C; Wed, 25 Mar 2026 14:36:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B7F976B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:36:54 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E7708C9C2
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:36:54 +0000 (UTC)
-X-FDA: 84585441948.13.286889B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A91EE40011
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 36E146B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:36:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BDD0F5C0A0
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:36:55 +0000 (UTC)
+X-FDA: 84585441990.01.AA09998
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 88FED14000E
 	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:36:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=O8FVjyTQ;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774463814; a=rsa-sha256;
+	cv=none;
+	b=HLXpdpTabQzoPEWaFVV7io1wi2zWf//GWhZGG2+dwTC6/d4eOgBzBewO6aXZMxn+rSekp3
+	F5lbQ/zmeTfNxser7b7zIolAsaqozKAmDGRBoSbzsRP5MhLlWGtP5kTV+wWZl9LY1GqVVM
+	kPFXSG0RF+HqtliQqGOu4nOz1cdVD2M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774463812;
+	s=arc-20220608; t=1774463814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=41nNK2gQXsUphrcfvyGM3BOJitxQANW59gRbaHOkMZo=;
-	b=VXFgftCyb23JZmsYxHLK8euM8CSZbdIqmWIxDORuaLzdGwi2v/Taa2mQpzjwnjq2bI6xqv
-	UlpObsa5F/q6Jfjqze6xccuwl4o8OG8ugfXk/s620FqTF2Q90kfRrDRmsKlApQNfz3c5H0
-	oYFSsDeJbaCjNEhS/wTWCSH+7bWMmh4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=O8FVjyTQ;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774463812; a=rsa-sha256;
-	cv=none;
-	b=clKekxV1rBNyY/KWMzpnz3mJOCCyP1zCXbV7/ojuWs5N5gP+cuh8XWQyioDDQiG94Q8Deh
-	q0bDOJGU0hmTydUdAw/kn7bgzzrmE1TQwmTkz/ILN5jefap+Vkiu/1VzBvj/z0Zh4ZIhXM
-	RCQSGa5hwN15sVns/tUQI1rJBLTM8NQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0555D60053;
-	Wed, 25 Mar 2026 18:36:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48555C2BCB4;
-	Wed, 25 Mar 2026 18:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774463811;
-	bh=Jxayhcb//oD4+znitc73BQEL/cUnyQ8hHgrsXT22Mm0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=O8FVjyTQ6c/QqX7Gs2olBJyhvNq0/8M5h5C1H2GVUgbJGDIrefJUeDUg1McWkBeHQ
-	 S0s7SpnQYljIx6QAdAGMTaDYs4aNgCRa+WmL7WDSUGwYAxMCzZd79TRcjD6M2NYahM
-	 Jn/PaW1P48aP2hKx/zQLWIu1i2aajKLonNCm/ehA=
-Date: Wed, 25 Mar 2026 11:36:50 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Vernon Yang
- <vernon2gm@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress
- number
-Message-Id: <20260325113650.fc6997e07a0a4ad0e46278d5@linux-foundation.org>
-In-Reply-To: <06c83e1b-d7ee-48d5-a5c4-faad39db2f53@lucifer.local>
-References: <1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
-	<hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
-	<8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org>
-	<CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
-	<22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
-	<20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
-	<3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
-	<8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
-	<0437ad42-612e-461f-906d-6757eb19a8de@kernel.org>
-	<20260325091735.bf440358cf83c5d0369e0674@linux-foundation.org>
-	<06c83e1b-d7ee-48d5-a5c4-faad39db2f53@lucifer.local>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dFmA3BmQAY+HafIIoroCR7sOUBNlQq8ZjodkljHOGpA=;
+	b=kVUXo1ywDKiUPWH/gURXGupqrMFKPJRoICQytvGC/jNP911DKBxWnLPR3Lz7MQHWD7O1VK
+	qU4G9UZDb7sHn9PNMAhk9PErTJH96DTCZas0ZqP1sqUE1pgFPzIc81aH+KGNC3mcuoFwK/
+	r7bSMCiFCuFxOYmTRXoJM1IpVH2D/Ts=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 26 Mar 2026 03:36:49 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 26 Mar 2026 03:36:49 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: kasong@tencent.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com,
+	cgroups@vger.kernel.org, chengming.zhou@linux.dev,
+	chrisl@kernel.org, corbet@lwn.net, david@kernel.org,
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org,
+	hughd@google.com, jannh@google.com, joshua.hahnjy@gmail.com,
+	lance.yang@linux.dev, lenb@kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev,
+	npache@redhat.com, pavel@kernel.org, peterx@redhat.com,
+	peterz@infradead.org, pfalcato@suse.de, rafael@kernel.org,
+	rakie.kim@sk.com, roman.gushchin@linux.dev, rppt@kernel.org,
+	ryan.roberts@arm.com, shakeel.butt@linux.dev,
+	shikemeng@huaweicloud.com, surenb@google.com, tglx@kernel.org,
+	vbabka@suse.cz, weixugc@google.com, ying.huang@linux.alibaba.com,
+	yosry.ahmed@linux.dev, yuanchu@google.com,
+	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com,
+	riel@surriel.com
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+Message-ID: <acQrQYHJgqof0yx4@yjaykim-PowerEdge-T330>
+References: <20260320192735.748051-1-nphamcs@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260320192735.748051-1-nphamcs@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 88FED14000E
+X-Stat-Signature: r85hyt6npxjwypoduyudies7kkyiduok
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A91EE40011
-X-Stat-Signature: ex61dibbnbsi9nk98owubxwb1jnnefwe
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774463812-688653
-X-HE-Meta: U2FsdGVkX1/34ZxRL21kcdI2GLPZ1RSDbHusorOHCSfTDJd6Et23E2q8kQZ+xkM0SNFvsHHs875eYc5J9GcEu5++6unauTI6qWb34cEvXf0bD7/QCPsjyEn/b1C2KSqSIN870HydqVGAyb2qsz4SStiDtNOTaOTWqn3IUeaifV4q+IHUqIz/AaUbTVNxPqgv+JQ9BAMs1PK2JNosS31AF7qJCZquBR4gdnu5zBrEsgDC8sCTImW/xElZBy12JqCMkiWWUi18AvBqEsyQq2tzaNTWxp/E3ew5nJ5KnLnz1YZ88aQMPWzsDy/lUNrJpQ7YzR0Ue0K87+tBLC2tepSWfiiAzkRx2qhX4POopXr8jCuHqWlgI+HR2YYGctp8bSXJDUUPF/YZg/jWijv3AaBlewIb0PblhZGKYBxoms1h1HBAyBlqumHYIAF/D3QAKPFRweufBZPTJNzsMZBT7iBV4nkAgGfgm38EVmL7r2ev8vj3TobzzWTXrpmEu5FoE5d4sX9PECOiwD55uB4k/r5rTrXIDV7+26D7hN0RlBDjvpX8S2G9rvkkbjl1UpT1dTUpiyMq1oFHpke5YsAdAe3cs+cHi6ogXI/Um8rnefvCBlfWsKeWqWXIQeDcBIu2vMqJl8UONkS8RaiSVdUr5TyBJLO8KWnJVQGc9nXnkVVfNolOE7a/T2Tpq0rIjER4XKwriFLMRFd1elX3F8G1mNr+LD74bRNbBi8WT5ozc5k89NxdbKDRtmc9IC4iR2pwlJ1f4iDdySRYlOtK06TwXmpeJFTW8NvTM9uh15hH+aF2hrx7gXB6VfZeQnPqfyg1zRibSo7xv5cc5hlGtR0nHIIpoRZo/KL0/p2BZEGLkfdwsEIQGluKfLStsGWyIIV6tTdpYIqtRakyRVHJKKatS53O5mIJjZarwagJMZpZmBQLEbwf9RRIAwrMIPrpQ7jcTudIdtRaHYC7AaNZYBjK1dE
- QXLbfWAN
- oaTbnihT0cF/xLx131Hby31FbEvmzY6dPzqRf5QbLrLSdFxj8/osSwJbJM/DnJBSX7x2jf6OZN1oWOUmp+boEeDMqmWv0UhUcvdbwv2RUSID3eJC8sxmeOZhoNmqeXqcOYbUTKzkI4jgtSSl7I7lIOwlVFGBvX6yy7z/W2h03ohv0G1GxmlRzlrf7BuXkYv+9XPANLT+XqL0CBIQDKlPM+n4vYxgOKT8Y0k7CQhrVnAwJ0VJK7Vw7xGpzAsaO8cn6XI84iS5LKWzo9PQyv2NN7Errw2vWUu6uK8rp5h1OyekNrqyJDFaiUTwuhmiIlWjfwbGq3hkf4Jl5eKEH/BETRf6/WJ5sGEqhnf9yN7SDx3HIUg+Bc/Zg/dS5QkNxmPEYgNAa3w+xt3W8108lTalmJVqjB3MwOH2szy4LZGieBDG/zlohSQ05tleuCj5CHRQzgVtJ0Tu3OEsM4vtKA5MFs16VMCiZu9qDNP6Q++IByrrY/gPIdoqear70U5+yGpdT46EX
+X-HE-Tag: 1774463812-293414
+X-HE-Meta: U2FsdGVkX18Dx7iK+3qHUJ22mRimpjEH/Oke0BVADlSSLyE50DNEUVFY1PZPHMEdiJSEN1F33r5VeICDQg9qXID87g+0MN9Pj0dIo2IwXwoGi5shUkNnZEmeFe77Sh55yFU1PoJEW5ogIEs2l0+GiZZjyKiCTZbm6tO8n1mYnCwj4tV83OZJU0cuofLdqjdMW5cpQCE9y/6HqBO1o4tA/YFvTmDBZzWm6uO9pq4nty5CO75QWSsN7gHk64OHou7XAQMVt2d4LGfHktMkcy6nNywKQ98j1CREzOFJIEAPi6cv5Vdhy/0xYrv9fkJ5pkuXJJ4IFZgmJ1S8VHoiA3tgIEXAJn5eEyEgS9YYlNwnKxsxtGkEGXJWaNg7542qAHbajcHYDS+Q3qEYrCC9AuOCGOJCPHRU7LKh/xwk95ltVbH4rNsbz8VJFBnW2Xb6oQ/EnrkfETCqOSwIQhWjoe6tetDErELutQaxetJ5h2tBCM9U5LsZXKEsRCsTEPfkbjbZ3MaYzslfdR9C8qMYagf4j/emBBV5kfjj5C1cN23dZBqhlo4M/L2BpI1tRo/0Ckx4o7rpuQtnf6MiG18xN6qjQZPhisFvfVjYDjTL4DgXlPMPWhjlgZqV7BqLK1ihsdpMyEX+6d9b2WlsYVno3mxAnNFs4jw8/vBHOlIwxnVv556828PEv9pmU58jfawh3cY37TfxlxB63iR+/L026IjLLejUXCmTLykNpvID4UbCwQXrWa8RcplhHrr7nGc0CZqWubd3hNTSbfOdmipmHVVVI/xuiWG1l6SyxtaiM2rsSEKOyYKGwHqtDRWudVtg4H+wzL38WdBg8ChsATZQ5HauNC+EhfHhfcItuJ2jDP1m5CtAoPqkkPhafAOvQA12aR/hkJxkf7++SJ/DUWow78AvRJ7bySSijoziv98XwnjHpJXlgnnM49q7+Hbeid0OCYeN0w2rLyKxaKcZt2aIJ9F
+ ihoHLHjh
+ T2ZqQJOVBuLQfmbGQZY16QTh4B2ccp06kZwdvwbXTvMVZ8MAEniHH3Sm0LhmavH6uM5GMuO7gsZTj2gG/R2el9iAkER5apyQ4bJtYNfEXqPaItXh7F8vNAftykxX0Kmwp009bvFliMw9Qj08ML78Vo7y7+l/bQBphQQVvow0PLYlMQ/dltohFoO8JRXtyW3bELzRd/oec2YrkFASvupnxvy/knNCSwEc7Hsz1R6djNhh/swaRW1gKZasclMuZlmcCKjuJDTmW/4EbK8vncHtmcac88vaiW5r0hiedyf6RVx3A2ozUzwNG1Yce+BLVd+3OSMfPw8xrU4L0Dysf0+ojU7waJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,49 +97,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 16:26:12 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-
-> > hm OK, so what to do.  We're OK with teeny -fixes but anything more
-> > substantial we ask for a full resend and I do the heres-what-changed
-> > reply?
-> >
+On Fri, Mar 20, 2026 at 12:27:14PM -0700, Nhat Pham wrote:
 > 
-> Yeah that works for me.
-> 
-> > I presently don't fold the -fixes until the very last moment.  Could do
-> > that much earlier if it helps anything?  Possibly useful to people who
-> > are looking at the series in the mm.git tree.
-> 
-> It'd generally be easier imo to have those changes folded, but with something
-> added to the commit message to indicate this so I can know whether or not that
-> was folded in.
+> This patch series is based on 6.19. There are a couple more
+> swap-related changes in mainline that I would need to coordinate
+> with, but I still want to send this out as an update for the
+> regressions reported by Kairui Song in [15]. It's probably easier
+> to just build this thing rather than dig through that series of
+> emails to get the fix patch :)
 
-I always add a [footer] when folding -fixes, eg:
+Hi Nhat,
 
-[sj@kernel.org: verify found biggest system ram]
-  Link: https://lkml.kernel.org/r/20260317144725.88524-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20260311052927.93921-3-sj@kernel.org
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Yang yingliang <yangyingliang@huawei.com>
+I wanted to fully understand the patches before asking questions,
+but reviewing everything takes time, and I didn't want to miss the
+timing. So let me share some thoughts and ask about your direction. 
 
-So one can simply chase the link.
+These are the perspectives I'm coming from:
 
+Pros:
+- The architecture is very clean.
+- Zero entries currently consume swap space, which can prevent
+  actual swap usage in some cases.
+- It resolves zswap's dependency on swap device size.
+- And so on.
 
-An unfortunate exception is when the -fix is from myself - I don't take
-the patch from a mailing list so I have no Link: to include, eg
+Cons:
+- An additional virtual allocation step is introduced per every swap.
+- not easy to merge (change swap infrastructure totally?)
 
-[akpm@linux-foundation.org: fix spello, add comment]
-Link: https://lkml.kernel.org/r/20260220151500.13585-1-rioo.tsukatsukii@gmail.com
-Signed-off-by: Rio <rioo.tsukatsukii@gmail.com>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Wang Jinchao <wangjinchao600@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+To address the cons, I think if we can demonstrate that the
+benefits always outweigh the costs, it could fully replace the
+existing mechanism. However, if this can be applied selectively,
+we get only the pros without the cons.
 
-But these things are usually quite minor and the precipitating
-discussion can be found by reading the main Link:.
+1. Modularization
 
-> Maybe just directly squash the commits?
+You removed CONFIG_* and went with a unified approach. I recall
+you were also considering a module-based structure at some point.
+What are your thoughts on that direction?
 
-Not understanding this proposal?
+If we take that approach, we could extend the recent swap ops
+patchset (https://lore.kernel.org/linux-mm/20260302104016.163542-1-bhe@redhat.com/)
+as follows:
+- Make vswap a swap module
+- Have cluster allocation functions reside in swapops
+- Enable vswap through swapon
+
+I think this could result in a similar structure. An additional
+benefit would be that it enables various configurations:
+
+- vswap + regular swap together
+- vswap only
+- And other combinations
+
+And merge is not that hard. it is not the total change of swap infra structure.
+
+But, swapoff fastness might disappear? it is not that critical as I think.
+
+2. Flash-friendly swap integration (for my use case)
+
+I've been thinking about the flash-friendly swap concept that
+I mentioned before and recently proposed:
+(https://lore.kernel.org/linux-mm/aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330/)
+
+One of its core functions requires buffering RAM-swapped pages
+and writing them sequentially at an appropriate time -- not
+immediately, but in proper block-sized units, sequentially.
+
+This means allocated offsets must essentially be virtual, and
+physical offsets need to be managed separately at the actual
+write time.
+
+If we integrate this into the current vswap, we would either
+need vswap itself to handle the sequential writes (bypassing
+the physical device and receiving pages directly), or swapon
+a swap device and have vswap obtain physical offsets from it.
+But since those offsets cannot be used directly (due to
+buffering and sequential write requirements), they become
+virtual too, resulting in:
+
+  virtual -> virtual -> physical
+
+This triple indirection is not ideal.
+
+However, if the modularization from point 1 is achieved and
+vswap acts as a swap device itself, then we can cleanly
+establish a:
+
+  virtual -> physical
+
+relationship within it.
+
+I noticed you seem to be exploring collaboration with Kairui
+as well. I'm curious whether you have a compromise direction
+in mind, or if you plan to stick with the current approach.
+
+P.S. I definitely want to review the vswap code in detail
+when I get the time. great work and code.
+
+Thanks,
+Youngjun Park
 
