@@ -4,96 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D4D9106B522
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 12:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48772106B526
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 13:15:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E14B46B00A3; Wed, 25 Mar 2026 08:34:02 -0400 (EDT)
+	id 1349E6B0096; Wed, 25 Mar 2026 09:15:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC53F6B00A5; Wed, 25 Mar 2026 08:34:02 -0400 (EDT)
+	id 0BE1E6B0098; Wed, 25 Mar 2026 09:15:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDBC46B00A6; Wed, 25 Mar 2026 08:34:02 -0400 (EDT)
+	id EC7D56B0099; Wed, 25 Mar 2026 09:15:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BBD0E6B00A3
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 08:34:02 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F427BB6B3
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:34:02 +0000 (UTC)
-X-FDA: 84584527524.23.46C46A9
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9D30F4000B
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:33:59 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774442040;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D73DD6B0096
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:15:29 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9DC12160950
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:15:28 +0000 (UTC)
+X-FDA: 84584631936.01.D492366
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7F56B40012
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:15:26 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kGjY0dPY;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774444526; a=rsa-sha256;
+	cv=pass;
+	b=HyjJ7ehAlinCA6Lv46weoAbCcPNO6OAmftmu9h0BLK5RPalKK/hEDyrRNz8Jdv+2tPPxAa
+	vCPqvV23kHJ/TcK0hOTqkfn0JaT5CSAp5CR54zM3q9Vh0s329Cf68wBEsYDiFEFDq+gOjf
+	sgbQCT4D40KcIvnYddMSN6rGj/O/Ahs=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774444526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WO0dR/NY2JNfumCqOX/M/VrwAyOM8ihHCQeJIbuAmtc=;
-	b=lGh3Ap0YtGvLqIf4Chokg/uhuNcIAINT9CcFrJG/OoMfXg+jaYWgTNGVJz826R7BkNy8iM
-	N5lZJS/OMec92gK5emR6arTBuETWwiNBbL+tCP+eYIFawkurN4QiLia6Ebru3iTzM9LER9
-	RYT/YltQK8+X0hQXeH7Gmodo8ST1xiI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774442040; a=rsa-sha256;
-	cv=none;
-	b=7c4NHY1MzaFcyGjrKu2AwEomvcLOq7ihxIM/Vi/D8EWB3b3WJl+30/o9GMbo42M9Ysp2Gs
-	hX6wJ7JHxjiwyUyziKKBVLkqWBj9H3RAi//OCjovLm6TZyjrzBqatWcYFQFifJuP6BnEfk
-	LLjKk/VcZL7Jzzcn/7zUTIp8QUQDnMY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fgmXZ1cdNzHnH55;
-	Wed, 25 Mar 2026 20:33:18 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8520740569;
-	Wed, 25 Mar 2026 20:33:53 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Mar
- 2026 12:33:52 +0000
-Date: Wed, 25 Mar 2026 12:33:50 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Rakie Kim <rakie.kim@sk.com>
-CC: <akpm@linux-foundation.org>, <gourry@gourry.net>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<ziy@nvidia.com>, <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
-	<byungchul@sk.com>, <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
-	<david@kernel.org>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
-	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<dave@stgolabs.net>, <dave.jiang@intel.com>, <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
-	<dan.j.williams@intel.com>, <harry.yoo@oracle.com>,
-	<lsf-pc@lists.linux-foundation.org>, <kernel_team@skhynix.com>,
-	<honggyu.kim@sk.com>, <yunjeong.mun@sk.com>, Keith Busch <kbusch@kernel.org>
-Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce
- socket-aware weighted interleave
-Message-ID: <20260325123350.00004d48@huawei.com>
-In-Reply-To: <20260324053549.324-1-rakie.kim@sk.com>
-References: <20260320165605.000024c0@huawei.com>
-	<20260324053549.324-1-rakie.kim@sk.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bDbAo8IUmxWgPOvsvbn8yIlSkMojhtz3e7wvODdaKPk=;
+	b=kcoi2b9ks/UzZLvFI7WWZXbyctDnpwWGtoN9rS/e9q2UDnlWVn1Tj6xSCOX6TiRv8IWdJG
+	QNw1t1YWzSgFkNQ83V0h1B32Y5/g+h1zuoAfjV2b+Sd829V4PZzKodFvLQNx714YCnFeMk
+	c9RZxaSqJ7maX2WSnymB5ZNhuiLNIn8=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kGjY0dPY;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf04.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a27daa652fso6679021e87.0
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 06:15:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774444524; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kFESck3iILaKcsYTFIqI66FDfhsU9LJF9lDZIilSkxKoWhIYTn0owYZetkogX/zM0R
+         PHwp4XkkpNu3BIXos4NegyxHzQ7g891icRUtmDkvPZ78wUSfuuOgR9AOQxH/QH7b2YNT
+         9YoONz7W/iuQVv3GPIz+ShSrRLUJqdJnnkITkQ0K+Iw2pYet6LlXjJC4Ohyz/w3cUyAL
+         QnsR7YqrAcAPJyOO6Cu1I3sTl7h9eM3n0iziE9uZuMAp3HhdagS7Zs2rxcRhsGCWsvLv
+         i8P9XnBm4mm5h7i38gjEW3fPbjrBVrJf/41n/xruDxyakTew5yhqDsM4Jsj2xH2wKcl9
+         0Yxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bDbAo8IUmxWgPOvsvbn8yIlSkMojhtz3e7wvODdaKPk=;
+        fh=1JFFDREPVFGYPacMPqlulR+fE90zFvVgAeFfv02dLMk=;
+        b=Wh1qiD62UmnikqYtJVgGB761NDK4FAHiGvCL+8qqo38SsPfE9Fw8wTBAB+yReAI5Zu
+         rD6te9IsDNCI62FliDYvNOk5Pc5y4eI+7uRDZxuxTuojDpnuyXNMT2yQAYYX8RIjQWKh
+         yUwzOB//PBXiJ2JdlM5OVauoeNMJopkfcdEXHfPvDb2Gw3YXaRsNj1d0aBvapKb2yQMd
+         HZ407nHiT58onrkrOxLiRLUcoHevv/v3nbVtALHJbMR7ksiy/j9wDBWcJgpFgjaSScJz
+         Z7pIbBAajs4D6+THi7+KVdKJLWjhQg4HSP0+v0WEt3JOnzy/rJEZCqPUoHVxYyuhiMnV
+         xx3w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774444524; x=1775049324; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bDbAo8IUmxWgPOvsvbn8yIlSkMojhtz3e7wvODdaKPk=;
+        b=kGjY0dPYSJV70Oy9d/l9/TErhdiWZjVBLEe9xXLejGBsjLyUD3sWj0aTxaYNP29FQo
+         MxgNbFawWr7wwIU75vXFeddBSjnzQxrbdXjVtekBwK2GfSJtwUshRZVkOfuhCgkk9Msc
+         MUhaGmbad8AxoHXZJJOcubOGsAhUiZuBeikjEv2otBVi7fLiU3z1ML4AVewWecTc59s7
+         GIlK6IwjR1LHlVaCnyje7h4MHxXgdVIJ7hB93Sn/pbRVGrlTbTHzA1AiqiGSpWK73Oes
+         GXUNWK/sfAiuREl9YLThjbo2E0vT1SOfi7hla5/2Gw/mafcyxNDhCnweErRoO5MI6hj3
+         DvbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774444524; x=1775049324;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bDbAo8IUmxWgPOvsvbn8yIlSkMojhtz3e7wvODdaKPk=;
+        b=qKzlhyxOrNqhFXQcs+r2QTZ6MtuGEmrADIVe/D1SLpQroYaySdnnZCdxAwT3hGSaG9
+         zsR6zF9JbUmKDH9OWm4CVqJ+6BzI0opBiOWxbXjI8wLUUXDNN+lJlKz067gfyv5zpPV0
+         uSJd8zPY+4NGfkGRz37UcWs4dyd2TpHBukbbL7i8GiaffB7YCww80vnHkdZ4DcUJxl8j
+         FLLgwrTaE1R7VHuu82RNK+RvQsysjRyKrohyz811x7zeLAVyLWrUo0lBVi6vvg+AsO/B
+         LEp47v15ZKIQYnfB8sQhOhKyaCtKzJ67/DGvGZ9pDdMX1t/aJve9Mqs7EqbgjoCXxeYQ
+         NaHw==
+X-Forwarded-Encrypted: i=1; AJvYcCVE2X+EBSPKYsN0df9Q2z5WGVx2BntLkedmc7WvTefBcrBkDG381qvApHNFHOf7RuYKxk4HOjHBgA==@kvack.org
+X-Gm-Message-State: AOJu0Yw2d046m2wYQCAYlK0DVsqLB415m5vD6dkoTdDR4v/vPOw4LJtt
+	XrCCXCmEe4XMvi2ZUJbI8Qo/EIDhtMnDtcpprI33ooVb0LPj8I29ThvkxlYAj7sY/QrTn/5jB/i
+	t0g2ZMKHJxptC9yy43R8kUiXYmFUcwkZ/tnnQP57M
+X-Gm-Gg: ATEYQzwcKhAULMIPScH2fea1pnIUcZCLkjbX8/B+WXER8TJB4ZWJghD5RLongaIG9FN
+	bxDRE9iPgs8CUDULIMe0Hu4hucVBXr7wYHSqMgrd4y4WhA0of6F0gUv4KJFzW2zeLCwxibHGXIQ
+	kyAmI7ujNSjWNa+K9A4WXuS6Yvi7aJHsti/fa1QCxj5Um6rj4aGVOfbBSQTwj/pw+630O1hhYQ8
+	Y1mjUvc/w7vpO5/wE2MS2ohk426EyYPkEV/JQleAdYVrEeAEUKlkmt4ZNHZAx+KgQldaBCCOjjg
+	iPrBTD+d
+X-Received: by 2002:a05:6512:15a5:b0:5a2:8530:9f9c with SMTP id
+ 2adb3069b0e04-5a29b97cc15mr1467061e87.16.1774444523884; Wed, 25 Mar 2026
+ 06:15:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- dubpeml500005.china.huawei.com (7.214.145.207)
-X-Rspamd-Server: rspam12
-X-Stat-Signature: et7cyi5uub7cws8ts7bncgdi6c1wsjuj
-X-Rspamd-Queue-Id: 9D30F4000B
+References: <20260318141637.1870220-10-pasha.tatashin@soleen.com>
+ <20260318141637.1870220-13-pasha.tatashin@soleen.com> <CALzav=fhwP1Wv9YjFTXoinX7R3rX-P0igvLbftBh+sZrL3dySg@mail.gmail.com>
+ <CA+CK2bCU=4XQQJ_-3HrhbENBNWoDf=ZzHpp66nZaPxGUAU=U9g@mail.gmail.com>
+In-Reply-To: <CA+CK2bCU=4XQQJ_-3HrhbENBNWoDf=ZzHpp66nZaPxGUAU=U9g@mail.gmail.com>
+From: David Matlack <dmatlack@google.com>
+Date: Wed, 25 Mar 2026 06:14:55 -0700
+X-Gm-Features: AaiRm52xBEnsxl9GOccbKITc8Iyj6vaHWBblh3FjQzcsEvAqRAz4n6CDKHbm6A0
+Message-ID: <CALzav=eGYJAFH+yhoMH76rM3U8L-_H12=UsvaN1v8hgn8BPhiQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] liveupdate: Remove file handler module refcounting
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, pratyush@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1774442039-887670
-X-HE-Meta: U2FsdGVkX19nEBD+UeSH5maVONshr32pnSdxyyDbHVJUt758x/jevRYNqh1S9Wc5G4ZfQMQiRnXY4fDNsjx48TnO78e7GKb3d2r1JSp2UJdqXlSsetJaX6IWDNQeKB7g359Dn9Ho9U2ZhR/IWiySYIaK5dfwGUZnC5OwUfwDv4EmItVTuQtCLmMFduVJiqt0ZIK1B0RT5DHfYuf47YCUpWcCiljr8yC3y+Qoawf6hWQ18kBPvPWKoknQDkrkAYyJc/Nh2cET6Idvbha0kujtQeepCJjDrsLhgb5H6G1OgD+7r4T5ibtjSDVyGlfZcC/z7gvmrf+bqs00M0GlAQoM6sKWyT3sG8qDy63eLajj5cgQNcJWMVD2RDQxXyR6z9CcUeGqVamWqu+izzNWS7J1ir0ETRirL1D/64dopmTKSUT4I1+29ZJY+Ojx+MGWsuFDMGiasYyBNZdjEdGZ54J6jq1QuNeZv4tkGyEhgQ2LaSjm4WxhnWaPjeHq4bM6P1GomO4tYXJ1kBICFXciHn2wUvUnUJgu5cGa2QpF+wZVMCDgXlA6PW3hFqyZjkTwwbW81j4lzx5TysCNGgZsYG3wkyOdcQFrV0gFHt92rAwjTe2vBfD+DehJbm1wlOV7fwDY5aEbfdBwGkz+xbi0M6hRZbjia6LnetY2yjARBVgOm9ewxCNqexLVkYOYLgsYGdliKxdadS4pDNWvS74pqHrDf3WnEq1nzGLxTozhK1bfyvrYKz39g3xsYhbpQ7QBaw7HQHZr2x6KHrTvUYkP975J0u9NKpClFwfEr1vNMPUfQy46eH78qJtIGl6ndzKQsez9MCp7URQyghA9UoJ52M/CVjkGQKwCsIB7zItCrdH1YSTpVkL1TjUIveGZmY9ObyUhW3obiZRe3BI16I8UFc6xd3TjG5r/ByT4rWn8BuTnJckpDg4Vr7H0nNVrts8mQDkiUZaHwiOdIkUFekOQ421
- wqom7bL/
- Ea/UCwKuDxDrMFjd3T71A3EH0ZCNvsM/G4ipxo6wx9mzr2By0zRZ/H9TeX28hgmTWGQhgDSyCkw7k+rNv8bFUx2U9aPaZpKv0gMJkfiIPIYnBMJ+8//8ZMgrR+YyMSbwjiKfdAbbVpDwwz95PgayKO1RxIxmYJSMckRDccN3Ye9KLBAcWMWIKzRSkKXuqa0mJD+OzOj/PjDMLnrtohyCCxbfeQR0R78tjc0LBJVpQ5pCqzDZHL/6XsqCp053xY+fieaJZyvD2R3uGJl4Zpim0U3OwUJ5emCnqA4aMz9iXSGhw85TiIcUUZxgoON4BHI6KMcugTTwquTTRxDNr2CppnQ/XBA3CErEnc6uayYQgvRq0HFmCW1+GtWZuKnQ7fp9+7h9oNG1SUbuYnarg2/cyJVuncF+exITxatlSjWnEvEhbCOmtvF/BCiZg+Q==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7F56B40012
+X-Stat-Signature: 63hdgpgur36agby53fcx8d9w4e35aku5
+X-HE-Tag: 1774444526-185384
+X-HE-Meta: U2FsdGVkX19ofPJtZqbejpI87fVS2WAshnYYjymsoKv3pZvPj7YKQyl8bpQtcltvElDRThyPF4jzpRaI5GNQX0kJyTNx2bOaKPhgCLCMQCJwP4iuwsFWRXgbSV2Sf8aWMC8zXztkEpiWYA2zuL8C+ZpBaueUD1Vb4sCuHr9OaVZrkIapEcNZghE5c/G+i/t2arxMb20NiVG7n78CJfK+4/+1liTYv4piNf4sIkHGTxr10HeeHCgbkmggDtHEbmw3nYamh7WNqKTItBozwfbFWiZ1ypEocFat41+nkKm3IvFXWgY0QMxy7M02CAaGzLoYKEs7r/oSRPpcTIxEDnhkyco6uLOwzKjxqTNDRqH1jjl7QkUZMgSaf/oYea+gX0gAiQSKLFtwmxWyyj+vOWvGndBekKvZgfRx6XhyHAFAE0gxXaFs9+BEYVdFAI2prNaHv8RJ8YpiDzcPknE9qM18cX85d6fO5WumvH8OQXSJm3n0MdSi3w0kUDIOvAyTWcHnKZHywI8PGSAioTt+bDz7YWY3ocl1h5YkoPlC4+VV4wT2DEjFKtwX9uOXj0R9YmdKbWrwB0XOM+0u+A/PZEHrxMeAC0OXWNe9A2vX1At6kXAve2E0nG6fnJISpjpt9AFiPTryxEpPfCRKffLYTirlujFSMQ/vQ+JnlBvEXzanPwPqX0WkSVpstUQ5hXDAN3PuT/b+Znqbn8wlDKa95eaIRb5CW22y8zpKR7P/BLz0AVm7qb3TSNF9hxX/Ii5xBQfhoHadPt0CQISA6xDG9Bg214tT6z6hhHuOPtdCMeHqZzzgZQnkQmGskG+6ajN612v3+VY8AhqLgoD7tSif2X1vPoNvxEl4Y22Q9Kafdnj/gXnbBo2+scVYQxRhIvic7r93kzlRfwUnxIk8jEYdJVGkq4P5CzqM+CAEm6on4ShAQHa0nnnvfYYvS7vHbo9VSVToUpNnumnuXaR1QqtBQto
+ 1Mb7xVZj
+ KDhmi2W6hNmzDdRg4D9KBE7Lu4tQF02UlRHEQ3TZC+x+3pG1Zh7AMx0pUjW0o5rCw6qAaNIc03C+VmJJ9c3MYMIhgbcckrfVZEzz2OJquRmGL8lxc5yCfcrVU7IHaakGLkbG9dNrBbKI7Z3qoVmJw7AfRkWBYT0tvqroBSJ7029E43JtK/97gxKQ8Q91Vyuc2GBGSskfmGaTwDC35/UCN9MUYJyfb9WHnktR6o/kVGjcomRnDFXPrWO8Mxc2bZm/qNHYeuzH20WwFWLo/DscVR5KBuJbJDT726ujB/vLFcXO14Etd0D5UFcaYh39pqTXmvJBgnz2VmvrDVg49gv9oLMEUQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,256 +140,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 24 Mar 2026 14:35:45 +0900
-Rakie Kim <rakie.kim@sk.com> wrote:
+On Tue, Mar 24, 2026 at 7:49=E2=80=AFPM Pasha Tatashin
+<pasha.tatashin@soleen.com> wrote:
+>
+> On Tue, Mar 24, 2026 at 5:24=E2=80=AFPM David Matlack <dmatlack@google.co=
+m> wrote:
+> >
+> > On Wed, Mar 18, 2026 at 7:17=E2=80=AFAM Pasha Tatashin
+> > <pasha.tatashin@soleen.com> wrote:
+> > >
+> > > File handlers do not need to pin modules indefinitely or during activ=
+e
+> > > live update sessions. The VFS 'struct file' pins the file handler's m=
+odule
+> > > via f_op->owner during active sessions, making dynamic reference coun=
+ting
+> > > unnecessary for handlers.
+> > >
+> > > When a file is preserved, the live update core obtains a 'struct file=
+'
+> > > via fdget(). As long as the file is kept open within the live update
+> > > session, the module is pinned by the VFS and cannot be unloaded.
+> >
+> > After invoking the file handler's retrieve(), LUO should probably
+> > check that the created file's owner matches the file handler's owner,
+> > since this scheme relies on that being true.
+> >
+> > If there is a mismatch, LUO can put the file that was just created,
+> > log a warning, and return an error up to the user.
+>
+> Is there a reason why taking a file handler module reference is
+> problematic for vfio or iommu? Could we take it while files are
+> present in incoming or outgoing sessions? Overall, it is because it
+> cover corener cases such as if the file struct owner is the same as
+> LUO file handler and also this approach covers the deserialziation
+> side nicely.
 
-> On Fri, 20 Mar 2026 16:56:05 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
-> >   
-> > > > > 
-> > > > > To make this possible, the system requires a mechanism to understand
-> > > > > the physical topology. The existing NUMA distance model provides only
-> > > > > relative latency values between nodes and lacks any notion of
-> > > > > structural grouping such as socket boundaries. This is especially
-> > > > > problematic for CXL memory nodes, which appear without an explicit
-> > > > > socket association.    
-> > > > 
-> > > > So in a general sense, the missing info here is effectively the same
-> > > > stuff we are missing from the HMAT presentation (it's there in the
-> > > > table and it's there to compute in CXL cases) just because we decided
-> > > > not to surface anything other than distances to memory from nearest
-> > > > initiator.  I chatted to Joshua and Kieth about filling in that stuff
-> > > > at last LSFMM. To me that's just a bit of engineering work that needs
-> > > > doing now we have proven use cases for the data. Mostly it's figuring out
-> > > > the presentation to userspace and kernel data structures as it's a
-> > > > lot of data in a big system (typically at least 32 NUMA nodes).
-> > > >     
-> > > 
-> > > Hearing about the discussion on exposing HMAT data is very welcome news.
-> > > Because this detailed topology information is not yet fully exposed to
-> > > the kernel and userspace, I used a temporary package-based restriction.
-> > > Figuring out how to expose and integrate this data into the kernel data
-> > > structures is indeed a crucial engineering task we need to solve.
-> > > 
-> > > Actually, when I first started this work, I considered fetching the
-> > > topology information from HMAT before adopting the current approach.
-> > > However, I encountered a firmware issue on my test systems
-> > > (Granite Rapids and Sierra Forest).
-> > > 
-> > > Although each socket has its own locally attached CXL device, the HMAT
-> > > only registers node1 (Socket 1) as the initiator for both CXL memory
-> > > nodes (node2 and node3). As a result, the sysfs HMAT initiators for
-> > > both node2 and node3 only expose node1.  
-> > 
-> > Do you mean the Memory Proximity Domain Attributes Structure has
-> > the "Proximity Domain for the Attached Initiator" set wrong?
-> > Was this for it's presentation of the full path to CXL mem nodes, or
-> > to a PXM with a generic port?  Sounds like you have SRAT covering
-> > the CXL mem so ideal would be to have the HMAT data to GP and to
-> > the CXL PXMs that BIOS has set up.
-> > 
-> > Either way having that set at all for CXL memory is fishy as it's about
-> > where the 'memory controller' is and on CXL mem that should be at the
-> > device end of the link.  My understanding of that is was only meant
-> > to be set when you have separate memory only Nodes where the physical
-> > controller is in a particular other node (e.g. what you do
-> > if you have a CPU with DRAM and HBM).  Maybe we need to make the
-> > kernel warn + ignore that if it is set to something odd like yours.
-> >   
-> 
-> Hello Jonathan,
-> 
-> Your insight is incredibly accurate. To clarify the situation, here is
-> the actual configuration of my system:
-> 
-> NODE   Type          PXD
-> node0  local memory  0x00
-> node1  local memory  0x01
-> node2  cxl memory    0x0A
-> node3  cxl memory    0x0B
-> 
-> Physically, the node2 CXL is attached to node0 (Socket 0), and the
-> node3 CXL is attached to node1 (Socket 1). However, extracting the
-> HMAT.dsl reveals the following:
-> 
-> - local memory
->   [028h] Flags: 0001 (Processor Proximity Domain Valid = 1)
->          Attached Initiator Proximity Domain: 0x00
->          Memory Proximity Domain: 0x00
->   [050h] Flags: 0001 (Processor Proximity Domain Valid = 1)
->          Attached Initiator Proximity Domain: 0x01
->          Memory Proximity Domain: 0x01
-> 
-> - cxl memory
->   [078h] Flags: 0000 (Processor Proximity Domain Valid = 0)
->          Attached Initiator Proximity Domain: 0x00
->          Memory Proximity Domain: 0x0A
->   [0A0h] Flags: 0000 (Processor Proximity Domain Valid = 0)
->          Attached Initiator Proximity Domain: 0x00
->          Memory Proximity Domain: 0x0B
+I see no problem with LUO taking a reference to the file handle module
+owner while a file associated with it is preserved in an incoming or
+outgoing session.
 
-That's faintly amusing given it conveys no information at all.
-Still unless we have a bug shouldn't cause anything odd.
+And I realized that VFIO can have different owners for the file (vfio
+module) and file handler (vfio-pci module), as it is currently
+implemented. It should still be safe to rely on the file reference,
+but explicitly taking a reference to the file handler would be simpler
+to reason about. So I am ok with going back to what you had in v1 [1].
 
-> 
-> As you correctly suspected, the flags for the CXL memory are 0000,
-> meaning the Processor Proximity Domain is marked as invalid. But when
-> checking the sysfs initiator configurations, it shows a different story:
-> 
-> Node   access0 Initiator  access1 Initiator
-> node0  node0              node0
-> node1  node1              node1
-> node2  node1              node1
-> node3  node1              node1
-> 
-> Although the Attached Initiator is set to 0 in HMAT with an invalid
-> flag, sysfs strangely registers node1 as the initiator for both CXL
-> nodes.
-Been a while since I looked the hmat parser..
-
-If ACPI_HMAT_PROCESSOR_PD_VALID isn't set, hmat_parse_proximity_domain()
-shouldn't set the target. At end of that function should be set to PXM_INVALID.
-
-It should therefore retain the state from alloc_memory_intiator() I think?
-
-Given I did all my testing without the PD_VALID set (as it wasn't on my
-test system) it should be fine with that.  Anyhow, let's look at the data
-for proximity.
-
-
-
-> Because both HMAT and sysfs are exposing abnormal values, it was
-> impossible for me to determine the true socket connections for CXL
-> using this data.
-> 
-> > > 
-> > > Even though the distance map shows node2 is physically closer to
-> > > Socket 0 and node3 to Socket 1, the HMAT incorrectly defines the
-> > > routing path strictly through Socket 1. Because the HMAT alone made it
-> > > difficult to determine the exact physical socket connections on these
-> > > systems, I ended up using the current CXL driver-based approach.  
-> > 
-> > Are the HMAT latencies and bandwidths all there?  Or are some missing
-> > and you have to use SLIT (which generally is garbage for historical
-> > reasons of tuning SLIT to particular OS behaviour).
-> >   
-> 
-> The HMAT latencies and bandwidths are present, but the values seem
-> broken. Here is the latency table:
-> 
-> Init->Target | node0 | node1 | node2 | node3
-> node0        | 0x38B | 0x89F | 0x9C4 | 0x3AFC
-> node1        | 0x89F | 0x38B | 0x3AFC| 0x4268
-
-Yeah. That would do it...  Looks like that final value is garbage.
-
-> 
-> I used the identical type of DRAM and CXL memory for both sockets.
-> However, looking at the table, the local CXL access latency from
-> node0->node2 (0x9C4) and node1->node3 (0x4268) shows a massive,
-> unjustified difference. This asymmetry proves that the table is
-> currently unreliable.
-
-Poke your favourite bios vendor I guess.
-
-I asked one of the intel folk to take a look at see if this is a broader issue
-or just one particular bios.
-
-> 
-> > > 
-> > > I wonder if others have experienced similar broken HMAT cases with CXL.
-> > > If HMAT information becomes more reliable in the future, we could
-> > > build a much more efficient structure.  
-> > 
-> > Given it's being lightly used I suspect there will be many bugs :(
-> > I hope we can assume they will get fixed however!
-> > 
-> > ...
-> >   
-> 
-> The most critical issue caused by this broken initiator setting is that
-> topology analysis tools like `hwloc` are completely misled. Currently,
-> `hwloc` displays both CXL nodes as being attached to Socket 1.
-> 
-> I observed this exact same issue on both Sierra Forest and Granite
-> Rapids systems. I believe this broken topology exposure is a severe
-> problem that must be addressed, though I am not entirely sure what the
-> best fix would be yet. I would love to hear your thoughts on this.
-
-Fix then bios.  If you don't mind, can you provide dumps of
-cat /sys/firmware/acpi/tables/HMAT  just so we can check there is nothing
-wrong with the parser.
-
-> 
-> > > 
-> > > The complex topology cases you presented, such as multi-NUMA per socket,
-> > > shared CXL switches, and IO expanders, are very important points.
-> > > I clearly understand that the simple package-level grouping does not fully
-> > > reflect the 1:1 relationship in these future hardware architectures.
-> > > 
-> > > I have also thought about the shared CXL switch scenario you mentioned,
-> > > and I know the current design falls short in addressing it properly.
-> > > While the current implementation starts with a simple socket-local
-> > > restriction, I plan to evolve it into a more flexible node aggregation
-> > > model to properly reflect all the diverse topologies you suggested.  
-> > 
-> > If we can ensure it fails cleanly when it finds a topology that it can't
-> > cope with (and I guess falls back to current) then I'm fine with a partial
-> > solution that evolves.
-> >   
-> 
-> I completely agree with ensuring a clean failure. To stabilize this
-> partial solution, I am currently considering a few options for the
-> next version:
-> 
-> 1. Enable this feature only when a strict 1:1 topology is detected.
-Definitely default to off.  Maybe allow a user to say they want to do it
-anyway. I can see there might be systems that are only a tiny bit off and
-it makes not practical difference.
-
-> 2. Provide a sysfs allowing users to enable/disable it.
-Makes sense.
-> 3. Allow users to manually override/configure the topology via sysfs.
-
-No.  If people are in this state we should apply fixes to the HMAT table
-either by injection of real data or some quirking.  If we add userspace
-control via simpler means the motivation for people to fix bios goes out
-the window and it never gets resolved.
-
-> 4. Implement dynamic fallback behaviors depending on the detected
->    topology shape (needs further thought).
-
-That would be interesting. But maybe not a 1st version thing :)
-
-> 
-> By the way, when I first posted this RFC, I accidentally missed adding
-> lsf-pc@lists.linux-foundation.org to the CC list. I am considering
-> re-posting it to ensure it reaches the lsf-pc.
-
-Makes sense. Make sure to add a back link to this so it is visible
-discussion already going on.
-> 
-> Thanks again for your profound insights and time. It is tremendously
-> helpful.
-
-Thanks to you for starting to solve the problem!
-
-J
-> 
-> Rakie Kim
-> 
-> >   
-> > > 
-> > > Thanks again for your time and review.  
-> > 
-> > You are welcome.
-> > 
-> > Thanks
-> > 
-> > Jonathan
-> >   
-> > > 
-> > > Rakie Kim
-> > >   
-> 
-
+[1] https://lore.kernel.org/lkml/20260317025049.494931-4-pasha.tatashin@sol=
+een.com/
 
