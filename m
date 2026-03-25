@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E032109C024
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48180109C027
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:43:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A87EC6B0089; Wed, 25 Mar 2026 10:37:50 -0400 (EDT)
+	id 8E3276B0005; Wed, 25 Mar 2026 10:43:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5F5A6B0095; Wed, 25 Mar 2026 10:37:50 -0400 (EDT)
+	id 893D26B008A; Wed, 25 Mar 2026 10:43:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99C906B0096; Wed, 25 Mar 2026 10:37:50 -0400 (EDT)
+	id 7AA696B0092; Wed, 25 Mar 2026 10:43:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D23B6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:37:50 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 424C5C2AF1
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:37:50 +0000 (UTC)
-X-FDA: 84584839500.21.360571E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 861654000F
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:37:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lJ2RtyiZ;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 699D86B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:43:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 15B111A085F
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:43:51 +0000 (UTC)
+X-FDA: 84584854662.09.135C18F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7133310001D
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:43:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YIw5e6wM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774449829; a=rsa-sha256;
+	cv=none;
+	b=3Hb2qKWtExBQp90nzBXYFzSpiwaNcSTDic6qxBko6BUjaoMUmGV11SU2bajjJgdtX8lTMf
+	rXyXP5GTVOrE91tpELcKPygFrLq+rLG2AwGxApMGkSMN2APEtC08lAnKqzlddz3VZibJAw
+	vv0Zb509DXVR90o4fRUn2TTa0V0Fm+E=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YIw5e6wM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774449468;
+	s=arc-20220608; t=1774449829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/XKQ+ZWJtBFcwnn9FqABw0r8omGwjDNMF+BmDsMLONQ=;
-	b=V7n7qyvZkIJj/qoIDKGexwxB6t6LHg8+UTzxluyZR5icCP06TL0n8D1NCl2RN8v1CdLTUA
-	JkBStcbfDI4JUFfnnwPnL87MvrzOfDkAmBcmaE+Z0ZXv2XTBQFhzY9WqkUofnbK9CjCKaA
-	fl5Lpgydjn3LFcCT21n3x4G07DLHcSQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lJ2RtyiZ;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774449468; a=rsa-sha256;
-	cv=none;
-	b=j2R0PCEWqvLk0xj9WCOX0MOy7tYB3/Zh4fCG0W+ooxm+y/L+DXl/+RuUjxU+OoMA69TR+B
-	T9PyH+kCbTTjLaD42Jjy1qLUJFkR76L562IjXc7xw20yS06xUPmGbbUHU6HGsA7W/D60y+
-	n8QJZuq0cQuGgTDBm+dAuv4BNefqe64=
+	bh=cm1P2rDiDEmkS976TYd/u3vjuo6EaRbE2CVLyW3fCCU=;
+	b=5GPHni3s4vMzEp/S/7J8ok0bSX0K8cBTFCENI5RQ9ZiUbJDxn7CYOPryvPyCW8DNl+PNmh
+	T98dmf4eDf4N8NDQ964ftlgVhvSSeTA7DfB4h/eADV3ZYA0d19iI7p+AMUZOMgdXsVWjkt
+	RBm8Wepb+VmCPbCMepK8NOtNfFirE0s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 97EB141AA1;
-	Wed, 25 Mar 2026 14:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D5AC4CEF7;
-	Wed, 25 Mar 2026 14:37:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D7B68600C4;
+	Wed, 25 Mar 2026 14:43:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728D0C116C6;
+	Wed, 25 Mar 2026 14:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774449467;
-	bh=k/MsHHjnglulTtuQp2KFJd4JaMLVffpszcrg/qv0xsA=;
+	s=k20201202; t=1774449828;
+	bh=fz0PH7iPdSPVhHcrWudA4xa1kfyWU1uxxd4GADXVVEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJ2RtyiZOlkU54ojrOOo0w8LrVCduRJ3hDJbsWLSoxu/Fufog6AgrA37CkZa9KLxL
-	 vG3hmLIkaT+2QJZGtKVrUi6Vo+/suROFGdl1D5JppxFxCRGf8wn8ACa/dSorvp70eI
-	 nFB53f9h6gjT9HqjB4O0z4XrJE+toYcVB7LaWL48ZUuf9bQAUglX9EzJM7z20Vnihb
-	 tAeutkdoeXsgRM0IZXjilgrGz3WsrZ0uzB6gRzvffCgD50hiw3J6GHmMPver56JePH
-	 pSGrtrgopsuI3v7Yesw78Oot57pRb0Xnt+UPORYjErqsCimfBUvnKCiYy+4AVChGCV
-	 BvItSvGr35fWQ==
+	b=YIw5e6wMpwqsBArxqgPqW29Eovlha+8sP/PTHAchI25czpN3OXsjCVgW7EgERL1c8
+	 My3d17ab8a5zHMYQi8ouEaakQaf6sDq3Ru+E1qoq4aC81KWIntcvpBpN3ENlheg260
+	 AzshRMXkeoyW75MWosBPPsriMsm2jUiS5Sk17GoyP6i9hd/HkSgtpMKUEqjtr6eRNi
+	 PGYIwJHRPwdcbNYQykyQVOdpfPVQmHvgC5yYmUdK7xem6OIjfT5InA6UuSc92vudMU
+	 +4fi066thhTqs6JDxPzKJ/zyFkzAAyaGzoz8mZW0V5PNOhQhXG0nBmo8C/awYzhZ8u
+	 Zgb6fYSxrKMPg==
 From: SeongJae Park <sj@kernel.org>
 To: Josh Law <objecting@objecting.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	akpm@linux-foundation.org,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: (sashiko review) [PATCH] mm/damon/core: validate goal nid before accessing node data
-Date: Wed, 25 Mar 2026 07:37:39 -0700
-Message-ID: <20260325143740.87690-1-sj@kernel.org>
+Subject: Re: (sashiko review) [PATCH] mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
+Date: Wed, 25 Mar 2026 07:43:46 -0700
+Message-ID: <20260325144347.87818-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260325073034.140353-1-objecting@objecting.org>
+In-Reply-To: <E4E214DB-E7C0-4B69-8DC2-2A9640BF5CC6@objecting.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 861654000F
-X-Stat-Signature: bbsgf556zhrjddc44hw1kg51pbqcpng9
+X-Stat-Signature: hswiharp4zjptkkuospq6yo6poyakobs
+X-Rspamd-Queue-Id: 7133310001D
 X-Rspam-User: 
-X-HE-Tag: 1774449468-878322
-X-HE-Meta: U2FsdGVkX191LPOR33yX+O4tb0PlYVokZ65CKNOHgS/IDkPVjuzCYpNFdgMg1fwD92GVdU+Xd1N9pb/FV0el3kPJn2YYw7yhRuj6UO47+6BpeFkOy0Z9HxJIDXk3giPll5h4pZlR4zYcN+mENSfnEXjJwri6pgwoDSWOZm+T0qrNp45d11DWA34+fuo+7HF1tGkFB7NoqFJr9RbrTTeL3mhVbD2LM8fq2OJDpcAVXvpdXzMlGVlU7srd5Q7d3Vhhd1MRWoyL9EAVcpn5UXIp3ZEqNo6ErCG/ZK01Cf6Pe8I/oMHlmPt0BWnhX9L/H96FmgEdnRnSUZfpb8GasRgQhnQR7eM+oBvEKyiwUhdC2GztAMFeEu3T93MvVnKiKReDz7e3w2qUfWCqhi5ySvQhNAWB0lnNZHtnUo/yoZbGu61w7j7O52Dy3oGgTOkkL1taE/qbIvnYl5tAIUFjJHW3IijxUwqI16MRSeEBZiT4GYVRAEoi6kbrl3v/A1wZPfyOH+BZHl/ZjWYKv1Giez84+A3mqzmIer5PMDLx6CBbxCRgwpyVGYTzRbHK/+EvVkm2hZ1YNwMW0xbQVfr9C1+uZiM3jB0GxRgT6cNPc9/UNO0slji+cqR4xysOo/+DkBxiY5iow3havxQwVGM6AA2jNwPROvL+jGctJpf8Cz4haVesKbOSXmF89UoKYukybHPwywMNsLOIKRDh06l10F042Sei66Op0UMSmSni70lwoOwOz5tfw9D5wC6808q6Gob3TPQPoKJ1WE0Mw1m1vSw5wPFEOaKmg/rDJZRGHd2sHtXBS1QB/IAYVu/r0anvuZcgs5kFKmvGLro6YjfW/l3OjXrR2rPI7tcb/UM0/fUUqQe+n/GlIAlUYIiCk9SVsA5L3us/W69kOycp9DkGz4tvWB/g++l+qbYCKFWyrVq8E/EcawDXKp4shHp7X+miZ7uJS/lwNB1zTZjBpQGCoMw
- mZHrjOr2
- CIb5QvrFArVt3RbkJJhbzqgcFbqIxX4lkB4D/0hja62hR3qP/s3fAtqdKE4zCVeCrtCR9v6owp8Q2Ta7ePUfKofd6RAanMxQRo/kmWhNS0IH43529eTPobDKqir8T+uGqeeaZAB1Oajh8Oq1RneUJbNA9FHuQZYBpgHF8KH8rsvMqhqOutfsXbyM4qQUfmqMoSxfZdaYRk5TfpOchtnOSgdk6u+tRkeMP84CLrqq+6w2lKRPIkAGl68/jhLwLR6W21XKLlUiphCuylqPuESdHbgljZj1moaNaaPgzPmb18sLAIsm85+wlw/Eigli1sGzBaTYNvW67OnuAvI5ZqSGM4V1aRJuqRqDTlmxX
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774449829-643520
+X-HE-Meta: U2FsdGVkX19SfqWKi7AAFp7lrqblJGdFoegUjeT1parB0+dqplBtFfVorUEk+wWW/IJ3+xu0Y2uHTx6duCnA693c8iWouDotI0wJN0GXIq8HI0rSUnDoOZQN/3EPf6fP0dgBoAbFnGXrrTIzJyrJEdY2IsrqBeZiF1xuK2N1h6AmbAMLz8M58xGNDJCtfljvqiKJzGTdzHrJMJCK0lXckb39SF0sZKKjX4g323GzElM1vL5DvgaAPnBJmJ53c1YnQKJ8p4L9BdOGdrsLedZPglmISKtyVuOSoVe9BUfGz/tdJF3nqtCLxs//fdWbv0uDcxkA6uNEibHEl+5S+jmR9GewLmzfXDxF8b2Iu2Gk1xqtYR6qwdXd97uf5+gJ/TrSX8oQQp4J2IJhEgYqxqjW7ODfiGGGSiuhZcKiz2cjMiT0FvcBMD5OmuZn0uvpm9YRHlCHBfBitgEbFO8LLjQd8KZ3q0qe4y1rqrfEHa6IJZCxxoIZZwlIp0xcco9v7fCHhqJL57PgPSexdVoOzjLzqT91YpLDhqaBCxbuAotPjbJCItIDMVFOGU55mpCv4zXx/cFUCIlQmKsClvqtTS6VQYEug9d5RKRo8hdEOsKWm4jikF7ynhmzyJsktxOletEkD5twycycUA83uoeYvBiXd1ZRn8EK4YeikWB15zA5lZKN2AlkiKuxNQn9gxb6Xw3k0bbmXhPY++33O5nfqsKM2uAmtbk3Jvl54PtugA9y0aCjuYEZNovljiLnAMiD8ARTxo4iiozRdo/5tDOb+GQ1rXKutxtJB+C6EAf2ZZ59EQSZ8JTYwBj1PAO+2MMQosr4qp4CR1SZ3vBI/6BTbTvKFvmv+M1kfzCZ/gkBRgbkL1UjwB3NSS5YDIdvufmKA2wcHXCW+h3euRI9Mxch4KLEq581sjj19tV+Wnfn8/W7wkwgs8ZG5k2e4wE0fd7FIJMC1sIF+Bch/rUjVsb+uko
+ SrVegVy7
+ C4ctEQ6K0Jby1q1VvllVAjc4bdE/ZVDmHUHJcvMleHCaSjP2YxDSZZdOB8gMiz/WeuCzVZfii2yuBlceEHCzGIW0PdTEssbz+pHnUEwOeYmqYZYCR49gL0L0zoF+I1Iv90mY6pcL9C+5LJQW0DFpEDu4dF0pH7No0dXg1BO6j+6qububb/+iidhfiE+Wwq1QwBnXEU/c90WGgq0gAGvdyywd3pmKA8kfgdE7O0wEYiGEf+Kb1HBKaQanSwqTXXh7dQPFW+Mr1pZbtrIlBp8Jax4kk7ZZjnu3fMb6gu+DnruYJUSacP12w67d5qhR2+oftpO+cCS72BGBbP7iaLviuNTuT0mc8WNk9dVCcQJnrIhp67TCR1KUdiFRsr/geAWgoDwMNZbqYsMWNYWERRKSRYpEg1fTjGtGxelJ9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,78 +93,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding Sashiko review for doing discussions via mails.
+On Wed, 25 Mar 2026 07:36:20 +0000 Josh Law <objecting@objecting.org> wrote:
 
-# review url: https://sashiko.dev/#/patchset/20260325073034.140353-1-objecting@objecting.org
-# start of sashiko.dev inline review
-commit 7e17cbe1dc95a0cd1a1410be38ab6964f78fb15c
-Author: Josh Law <objecting@objecting.org>
+> 
+> 
+> On 25 March 2026 01:16:52 GMT, SeongJae Park <sj@kernel.org> wrote:
+> >Forwarding Sashiko review for doing discussions via mails.
+> >
+> ># review url: https://sashiko.dev/#/patchset/20260324154005.83651-1-objecting@objecting.org
+> ># start of sashiko.dev inline review
+> >commit ff5e227a18cd69435749b0aae0dc2c762c4f0a47
+> >Author: Josh Law <objecting@objecting.org>
+> >
+> >mm/damon/core: eliminate hot-path integer division in damon_max_nr_accesses()
+> >    
+> >Hardware integer division is slow. The function damon_max_nr_accesses(),
+> >which is called very frequently, performs an integer division.
+> >However, the struct damon_attrs already caches this exact ratio in the
+> >internal field aggr_samples. We can eliminate the hardware division in
+> >the hot path by simply returning aggr_samples.
+> >
+> >> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> >> index d9a3babbafc1..04c8a052fcfb 100644
+> >> --- a/include/linux/damon.h
+> >> +++ b/include/linux/damon.h
+> >> @@ -978,8 +978,7 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
+> >>  static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
+> >>  {
+> >>  	/* {aggr,sample}_interval are unsigned long, hence could overflow */
+> >> -	return min(attrs->aggr_interval / attrs->sample_interval,
+> >> -			(unsigned long)UINT_MAX);
+> >> +	return min_t(unsigned long, attrs->aggr_samples, UINT_MAX);
+> >>  }
+> >
+> >If an administrator dynamically updates aggr_interval via sysfs and commits
+> >the inputs, will attrs->aggr_samples be correctly recalculated?
+> >
+> >If aggr_samples becomes stale, kdamond_fn() will compute the real aggregation
+> >loop count and allow r->nr_accesses to increment up to the new bounds (for
+> >example, 80 loops). Meanwhile, damon_max_nr_accesses() will return the
+> >stale aggr_samples cache (for example, 20).
+> >
+> >When evaluating schemes, damon_hot_score() normalizes r->nr_accesses against
+> >this stale maximum, producing a freq_subscore that severely exceeds
+> >DAMON_MAX_SUBSCORE. This causes the calculated hotness to exceed
+> >DAMOS_MAX_SCORE.
+> >
+> >For DAMOS_PAGEOUT actions used by damon_reclaim, damon_cold_score() returns
+> >DAMOS_MAX_SCORE - hotness, yielding a highly negative score.
+> >
+> >Could this negative score cause an out-of-bounds write on the
+> >kernel heap when used as an array index?
+> >
+> >mm/damon/core.c:damos_walk() {
+> >    ...
+> >    c->regions_score_histogram[score] += damon_sz_region(r);
+> >    ...
+> >}
+> >
+> >> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> >> index db6c67e52d2b..afb058f7da5c 100644
+> >> --- a/mm/damon/core.c
+> >> +++ b/mm/damon/core.c
+> >> @@ -587,6 +587,7 @@ struct damon_ctx *damon_new_ctx(void)
+> >>  	ctx->attrs.sample_interval = 5 * 1000;
+> >>  	ctx->attrs.aggr_interval = 100 * 1000;
+> >>  	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
+> >> +	ctx->attrs.aggr_samples = 20;
+> >
+> >Since this value is cached here, but not updated when intervals change, does
+> >it remain permanently stale during dynamic updates?
+> >
+> >
+> ># end of sashiko.dev inline review
+> ># review url: https://sashiko.dev/#/patchset/20260324154005.83651-1-objecting@objecting.org
+> >#
+> ># hkml [1] generated a draft of this mail.  It can be regenerated
+> ># using below command:
+> >#
+> >#     hkml patch sashiko_dev --for_forwarding \
+> >#             20260324154005.83651-1-objecting@objecting.org
+> >#
+> ># [1] https://github.com/sjp38/hackermail
+> >
+> >Sent using hkml (https://github.com/sjp38/hackermail)
+> 
+> 
+> 
+> So it's nacked? Or is it just a review
 
-mm/damon/core: validate goal nid before accessing node data
+Just a review from an AI :)
 
-This commit adds bounds checking and node_online() validation for the
-goal->nid in the DAMON quota metrics. It prevents out-of-bounds accesses
-to NODE_DATA() when an invalid or offline NUMA node is provided by userspace.
-
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index db6c67e52d2b..81ce27baa1a1 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2245,6 +2245,10 @@ static __kernel_ulong_t damos_get_node_mem_bp(
->  	struct sysinfo i;
->  	__kernel_ulong_t numerator;
->  
-> +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
-> +	    !node_online(goal->nid))
-> +		return 0;
-> +
->  	si_meminfo_node(&i, goal->nid);
->  	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
->  		numerator = i.totalram - i.freeram;
->  	else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
->  		numerator = i.freeram;
->  	return mult_frac(numerator, 10000, i.totalram);
-
-Could this cause a division by zero if the node is online but memoryless?
-
-For CPU-only compute nodes or nodes where all memory has been hot-removed,
-node_online(goal->nid) will evaluate to true. When si_meminfo_node() is
-called for these memoryless nodes, it populates the sysinfo struct with
-i.totalram = 0.
-
-The mult_frac() macro unconditionally performs integer division and modulo
-by the third argument, which could trigger a kernel panic when dividing by
-zero.
-
-Would it be safer to check if i.totalram is zero before returning, or use
-node_state(goal->nid, N_MEMORY) instead of node_online()?
-
-[ ... ]
-
-> @@ -2261,6 +2265,10 @@ static unsigned long damos_get_node_memcg_used_bp(
->  	unsigned long used_pages, numerator;
->  	struct sysinfo i;
->  
-> +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
-> +	    !node_online(goal->nid))
-> +		return 0;
-> +
->  	memcg = mem_cgroup_get_from_id(goal->memcg_id);
-
-The same division by zero risk exists here when mult_frac() is called at the
-end of this function.
+I treat sashiko review as just another review comments.  I'm forwarding these
+in this way for a case that someone is interested in the comments and want to
+share some findings from those in a way easy for mailing list based
+communication.
 
 
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260325073034.140353-1-objecting@objecting.org
-#
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260325073034.140353-1-objecting@objecting.org
-#
-# [1] https://github.com/sjp38/hackermail
+Thanks,
+SJ
 
-Sent using hkml (https://github.com/sjp38/hackermail)
+[...]
 
