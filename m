@@ -4,100 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2DBA109C033
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43AE0109C036
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:29:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E60C46B008C; Wed, 25 Mar 2026 12:28:28 -0400 (EDT)
+	id ADF516B0092; Wed, 25 Mar 2026 12:29:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEA206B0096; Wed, 25 Mar 2026 12:28:28 -0400 (EDT)
+	id A90B06B0096; Wed, 25 Mar 2026 12:29:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD9976B0098; Wed, 25 Mar 2026 12:28:28 -0400 (EDT)
+	id 9CD016B0098; Wed, 25 Mar 2026 12:29:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BDF4C6B008C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:28:28 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 62DF28C679
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:28:28 +0000 (UTC)
-X-FDA: 84585118296.13.2C96CB6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B4B014000E
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:28:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="N32Bb1k/";
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774456106;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CDC56B0092
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:29:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F37C1B8E5C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:29:14 +0000 (UTC)
+X-FDA: 84585120228.19.542A4AD
+Received: from sender-of-o55.zoho.eu (sender-of-o55.zoho.eu [136.143.169.55])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 250151C000C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:29:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=Q+mnHiIz;
+	spf=pass (imf18.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774456152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lCxMkEB/o5gdbYZE0+iRtn9u5fm4j3732mUXLl/5g9E=;
-	b=yMN9foIhbg48DGnMidTUqklYOuWdsq3CdauOviM51+y3TuHoudN1g45B7iLMRDWEGIEg8K
-	Kj1xvnp4UaGEZEHO+MM/Yp8nhe4WWl0/C1f0r0lenJYdZBEPXYykTfdYEbrBer+Jwj8oiN
-	JHhrOOVooi0XvsZ6iLD07FTXxPrf71Q=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="N32Bb1k/";
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774456106; a=rsa-sha256;
-	cv=none;
-	b=yJrnERWtCI6FffshT/IDPc4x3Z1BSeXAs62Abh46QvLbzNoatZ254/VzmhQ3YfoEjQqjgE
-	QpY9wBhc6uyvF+mEhgxoZqYH1mCyK7+pzDe6s/3M0rzSNmYnziebSLGMVjGiGwnjAFfsNS
-	tAwk20vb7iQ7RispiVtWH7eFP0wwxmI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C909E43584;
-	Wed, 25 Mar 2026 16:28:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17366C4CEF7;
-	Wed, 25 Mar 2026 16:28:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774456105;
-	bh=lCxMkEB/o5gdbYZE0+iRtn9u5fm4j3732mUXLl/5g9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N32Bb1k/zv2p6lSyAKgweBz/FAtOjmZBtVW7MG+v3QXiDq7LNKJchljdP6UAQEZ3g
-	 rvtbrZRLnhhizq+qGX3zN0PD54Jjw0zDQdLquyFZT1pbrYt7QJTxspoX8jxvuB67fO
-	 wLb4+hbxN2SSZXdilZv4LfP/1S8fGkYdx8lQSQtSTIMconDLEBcKxyYSbZ8RsC/Xxz
-	 CTTOdgOrdR53YgHKzzb7mdROLm6cnrCngh95uOL2d79FnG16ulc8xgFAm4awUiqoTZ
-	 AbaJQcE+DfMXynzehSgecv9vU4BvjFkYgrJ7e+GjVT2k7I5K6t2XyxiOspx8IBjMkW
-	 tSu3aiuY1mjAw==
-Date: Wed, 25 Mar 2026 16:28:18 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <21cnbao@gmail.com>, catalin.marinas@arm.com, 
-	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
-	willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the
- references for large folios
-Message-ID: <7820cffe-60bf-4ff6-af10-89c774f0fe0c@lucifer.local>
-References: <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
- <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
- <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
- <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
- <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
- <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
- <e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
- <20260325083016.a32095bea3f04488a7c9005a@linux-foundation.org>
- <af9d8a6a-074c-412c-ac5e-3f0dadde3e7d@lucifer.local>
- <20260325092300.9008e605ed5550ce4935638f@linux-foundation.org>
+	bh=oeL6ks64Ze/pGwHs2qvXBTZpnyzzF7fV/OGrrVTI+fE=;
+	b=ruGtCa/THvErpb1O1rVifKQLjjaOqUqiGnE1kjLn71cKRiHNqgwLo8KHHgdXgg+aUwxHgU
+	RS+kYnVAEDoPp1FN63MryHtz3DuVoQHnA8d/PJnvPL1JU3ULCKoCW393faZWuvj6shRgjL
+	LMhnEYhfZOn4mykzWUY+DlxLDODuatw=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=Q+mnHiIz;
+	spf=pass (imf18.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.55 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774456152; a=rsa-sha256;
+	cv=pass;
+	b=5w/Fc9+qD3t5SKRgPvBAIwd4gh9NbI+zqiWOKtTD1nHHyifWXP+eYOLxWFvYCQOI+sITe7
+	gK0V7la2dOkNk1oTUL1xQTjs4KHPRiFxr2d3p0dbXdzZp1GXMjLyIvRVXmS/rbl37iKlSz
+	HAQWXReIwUCh1Q2RI0wwD6oumbcaLe0=
+ARC-Seal: i=1; a=rsa-sha256; t=1774456141; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=gRsaQRDiy+FmYqh9n3a7FIuikyYTYiHVKE/k8Esol/HJL4rjLIYnazzlJj1jVkcANeODLSkCuTUMbKV4lSBHZOaExZQ/Acz7m7yNWr4VZ7swOGFoZmkZItumamGVph8m15G+1lLwrVCSQHyeZbLUVonXucG16t0TGzWvPjBIi1o=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774456141; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=oeL6ks64Ze/pGwHs2qvXBTZpnyzzF7fV/OGrrVTI+fE=; 
+	b=PA/AZNbOoW+DkhM8Kn1+rOBNBhG0IZSP546CuAiA5hoCeqGK0FVNEGWHWioMGAnfzCFLOcDnd3qtcIySIMo12EKEy0//lcvnjTVi9SBfEs0PzULSv6vgHK6Iy7mDHfD+UuslwpGy2EtvRVxrm2pYMPjVcFEdGodFaAByOKDR5Z0=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774456141;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=oeL6ks64Ze/pGwHs2qvXBTZpnyzzF7fV/OGrrVTI+fE=;
+	b=Q+mnHiIzlSoEzqFyrU/ucAwSjef8B716hAKKXSG/8GaOq5LOaVbGlQqb/DCllA6l
+	rXqv+Wpfk088e4oPy4C2dYI+W3YkqgBHp0wu/luNovyRcvGGIwlRLK9osY8oOSC4nIh
+	pYZN27RDo/NKdM5R3sQVQ2mvDid+I5H3RSk55RZI=
+Received: by mx.zoho.eu with SMTPS id 1774456138981542.036524592639;
+	Wed, 25 Mar 2026 17:28:58 +0100 (CET)
+Date: Wed, 25 Mar 2026 15:44:46 +0000
+From: Josh Law <objecting@objecting.org>
+To: SeongJae Park <sj@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: (sashiko status) [PATCH 0/3] mm/damon/core: small cleanups
+User-Agent: Thunderbird for Android
+In-Reply-To: <20260325145827.88239-1-sj@kernel.org>
+References:  <20260325145827.88239-1-sj@kernel.org>
+Message-ID: <645AE1AF-0BA6-47C9-9B53-058F21DDB327@objecting.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325092300.9008e605ed5550ce4935638f@linux-foundation.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 250151C000C
+X-Stat-Signature: 8ohpnhbt1dhsnyfirepj1wa9y9sw54op
 X-Rspam-User: 
-X-Stat-Signature: kzdox1paq6pwzurm3pdidgwhbshpkfmu
-X-Rspamd-Queue-Id: B4B014000E
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774456106-968750
-X-HE-Meta: U2FsdGVkX1+7VEK99sYyr83D89a/FwvIbp1XoqFJQcdfDEdr0lwvYH6+CT2a61ZXGon3mSOINmVgM7XmQSMWYP6iMvpzEgDh3y2LPbXtALOtsmu3Cg0FwrISISu+AriouG5dmtyoKKgw7/x3oBXiZxVoPntpSqX/wMCNmuj1e5iyCZS+ImNtzYd4zN+d98Kx11tDKbfj0VYgonUNEDJ/IR/Qa301rEDozjrtV5J+SzKvD2tjp4wo4MxmIyT7yZ5bjlhg49S+G+5yxvoP+7NFXISWZEvoZQczpHgO1GNrX4fz4H11A4q3cSSjvRfscyncpR9Vz6HbPXllQnwvHlipUjVdAkAdqqBkbJrNjc+6s5kp4LxqWQ7bBZg4MdtLcc2S9CjBR8AkPpk2msdDz+HmNhXzSeBfc+cX0E+9inntbXROo7iCJg2IzHlrkSoS+u0jDPrYmfBqRCcJ9sDiOAEP0EdL4NgZ7SyIao94rxob22VI/ei3lkUuixBo5avYYNNgddjB04Xh3GgPS0oelpHN25l1IrNJgjmLLJ3t+6BjUUQRI/MtniV5AuBYOe9pd7rVdvC4M4tBlY9+DLM1AFx66vISXXtoR4vtvPVvpT1wHO9fTcZeIyzpsPv3za991JpMEIbZdgKcJoXU9CIbrFVbGVp6uTE5OsJJMrgFAuf+PJGElJNePjwo8QwGknvrwaLVvsjFI+NSHr4adKl3tP9LvOkRynLIcozLESnkDfGBNTshXTLRLfERH8+ni2qYG9xpSztnH70bH1HwziTV86+hQ5LiumqpMjXOmdngt1IPGmqdo4u2ucku68SGpG8ULMvM9+96mwjWDeCOHD0aR/lWBtKKJ1vBRRS4eCu22zOrw8DtRvmPR5mVgwdGx3mUPtRaMV++lRux96N3Ve5DNtXB9OrRyiRVwNVuZ8/Ug9THcwMWpvjaKoPttOGgGM/ia9Pr/jEcEnr74eeiD2UHX+W
- 2SZOLN4o
- eQRSUO1RgJe3+XwEcURTLkPK7nd2LiiGqlkt7tkv8a/+Keu5l7LvTHl52k67vjQI35AhyrJ2SUzflxJhck0L6IWlvcNOz0lEN7iCWngQidjGPvvBNZDrjI8PLaB4+jxF5OM20Ov+MOYOxoVjmZM7TG20OWDXJ6biJ1CfMrp9uSIn8uctQysDrRJzt4aNJpTpjjgFMajWYGr38My5rQkt4l89X78GGpmejHjgSsR9gBLiTa0WtObcRAagV0UqKEQdUJXd5PJ4Nf9snpf6VH7kr2zwI58odjW9Qgch+i6Gbz8RLF9I=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774456151-216020
+X-HE-Meta: U2FsdGVkX18Q+zzlnT0CvuCCrpgnoTvHdPtKEh34McPY8ZB9L3cgUEvXfIfTvsHY79cjDiKVLHMYLU/BDHLbGmSsZgARNLOnDcw05vowl1m2psFBaf4TX0KPuqAwBaG7C9Lj5S7t23Su+2y7bFKNg9t3c2BXRjKF+068GfgS+xIfn+o3+9stZaf+vF5Mg0dZ/ZIohr4oVpUwJQ+XoJSSYl3r228Zq2nqgYAmykCQ3lqtOJmDm10xCXAurFYm2+xFA2+cRK9JIb4dUJJqDtsOsINvStVD86c3XuJKbXm8zStGGBn5G+nAslb3xfQpPxxQ+gdT17IReq8ofsjVl5KTqq3KemepyAG6LEjXCcOCfrWKdoetyxAuyFBoTIRFbNuvQIordHLGrWiutTeIh6vWlqmJNqMWTDjR7iH+nGUnIFiIvB/9gg1RThEIM4wUonEt9M3pzxe6m8yUGNGN7Cii2nTLDBNdNE2S6lkqi7xjopq8QUsobd74QCXpzjMOb4gXqZ4mIlgHxAKvxwKJ3PYuhGEtpN7rmguGWMFTAnNCYRqXQ5UJ9TSe2J8j1UzmMDeqXFZa8gjiki+9Y2WLuNgdoyUe0oi2YVPB8rul7OuzRXNijdBbuGcHYnm5bHjzI9ZhdroKiQ2PBkcYdBc+GNHmuODb9jX2dCn8vDgJW7Lsn41icHXn0QMyHJQ7FhJ2X60um0aF8OD/VXegJsjYrlvvzdvXH3VEImJdpunOwp6dXfuVPX7SSLsvrK8GjyN7d4szPA4nBkqv/ViMHKzx87pOtkaf4ArDll4ezz60SZZmCpV7KyKboFcsM7vWfSuHcEJY/+V78RAGxJKOJT4bX2YbDuHJ+LJITE4O2ZUzwShzUgC9c0jppaZtREFJC6thqaaBs+/FmDGtTpAhl2PGbuduibCahOvm0gZuA3Dpt1sYQNlfeogphXH6e7WOgW31jUAdQxhOEclms0kxeVIkPJ1
+ KC2vpMja
+ vHeHBoZI/LhfD+xwHO3m8BXJNShCT5oqItnZyw5W+BP1oyBHmTS8zHWzjEaSb0LLdng74gz03w5JVjer00hAz+JeZJVJ+rzWf2zgiP1WrlWxxS6U/vkkBUykVBHc0xT+utgQ0Sgpa5IP0XHIsqbxYz4Dx4+Fa9t8TGNtPCjSx9szSHRrWTKkzokpzv6kyIGf8Od6H1LBkilOm8zfLdbSr8qSt1PLP1TL9o55w0YRo53tXRi0Ox8hTIAhobzG1WH0IXxIBaBw1Apt34eqYtgeTJQnZaaTAhb29NO860yl4oSkPWmPMboiFpN+tLy9jUhwGk0KrLRonXe+Q33HrXNoYs4beHg7OwV6x8nyz2jDX4GpeAGQDH+EdkoFzwPx8Qet5W5HbNthEFinrigVgUOwIf2OlZ1JshBniRqXgWZV+LBYF34cnsv7OPrUKiFYROxkSrn6JbKMYjImux1lwPOjiz524TGkZD2hv3A34KikTiwYbg9DMnhVtKbcf8Oxx5grL50IsDJQFMwbFLNvwQun8WMGJFICs9My4FpTQZcGvF6gpCpQmOQMrPBhUOV0kGrPhYr+8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,21 +101,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 09:23:00AM -0700, Andrew Morton wrote:
-> On Wed, 25 Mar 2026 15:32:50 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
->
-> > Really I guess I'd like to know the timing of when mm-stable is taken so I can
-> > know the deadline for stuff like this.
->
-> Yeah, as mentioned elsewhere I'll add some words into the series file to
-> try to describe this.
->
-> But the start of the migration is quite variable (-rc4 through -rc6) so
-> I'll aim to keep people updated in the weekly "mm.git review status"
-> emails.
->
 
-Thanks. Wasn't aware that was a thing actually, but I see
-https://lore.kernel.org/linux-mm/20260323202941.08ddf2b0411501cae801ab4c@linux-foundation.org/
-now.
+
+On 25 March 2026 14:58:26 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
+>Forwarding sashiko=2Edev review status for this thread=2E
+>
+># review url: https://sashiko=2Edev/#/patchset/20260325073800=2E141756-1-=
+objecting@objecting=2Eorg
+>
+>- [PATCH 1/3] mm/damon/core: deduplicate scheme index lookup into helper
+>  - status: Reviewed
+>  - review: No issues found=2E
+>- [PATCH 2/3] mm/damon/core: use damon_nr_regions() in damon_commit_targe=
+t_regions()
+>  - status: Reviewed
+>  - review: No issues found=2E
+>- [PATCH 3/3] mm/damon/core: move last_nr_regions from static local to da=
+mon_ctx
+>  - status: Reviewed
+>  - review: No issues found=2E
+>
+># hkml [1] generated a draft of this mail=2E  It can be regenerated
+># using below command:
+>#
+>#     hkml patch sashiko_dev --thread_status --for_forwarding \
+>#             20260325073800=2E141756-1-objecting@objecting=2Eorg
+>#
+># [1] https://github=2Ecom/sjp38/hackermail
+>
+>Sent using hkml (https://github=2Ecom/sjp38/hackermail)
+
+
+
+Yay! No regressions
 
