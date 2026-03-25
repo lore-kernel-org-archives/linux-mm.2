@@ -4,101 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C99CF109C028
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72248109C028
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:23:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C5966B0093; Wed, 25 Mar 2026 11:22:14 -0400 (EDT)
+	id DB1AA6B009B; Wed, 25 Mar 2026 11:23:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39CD86B009B; Wed, 25 Mar 2026 11:22:14 -0400 (EDT)
+	id D88C66B009F; Wed, 25 Mar 2026 11:23:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B2CA6B009D; Wed, 25 Mar 2026 11:22:14 -0400 (EDT)
+	id C9F936B00A0; Wed, 25 Mar 2026 11:23:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 188FD6B0093
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:22:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7ADCBB9D1
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:22:13 +0000 (UTC)
-X-FDA: 84584951346.19.48B8BE3
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 883911A0010
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:22:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ngPfHWaN;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf19.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B8F986B009B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:23:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 789261A09EB
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:23:04 +0000 (UTC)
+X-FDA: 84584953488.03.688E828
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8EED1180011
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:23:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eVYOI9lb;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774452132;
+	s=arc-20220608; t=1774452182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ouu8y2VMlIQ3NjrnnBtkXQCrxDc+lrHn6mGN4M1Qu2g=;
-	b=jdlwmwLtSii9I4aj7+lkHdpTCnE07KHN7FEFCw4+w+lMbq0Gj+fXbbbWvz6Ww7nWEXauca
-	lk8nXarg6pArxWqQ4AU69+GgpL3RN6w2vrRPHeTvLhrfD7b6Tb2M95vd1KZLgOGp3JT9v3
-	jHSUBJn34tPwrM3KEiJAVHkON5ckvhk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452132; a=rsa-sha256;
+	bh=LGwDabwP5XQbxlumPbBAhNNFDnYskxaczTx3yykDc6s=;
+	b=fkaLOf1zlWsJZQlNmeBJkBTyXYNSt1XBW3ydM5HtwB8W02MpctMBTq6oaXH/qgcRYva1mS
+	373gNHsT6L+Fr2kioOHDcBjawLsuNDmc6foAEu3aPxO4s2Oa2LX92hrRoPsl+aVVaT92gs
+	u+DrPZB64bxnZt3psMBh1/CEfC7HYBk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774452182; a=rsa-sha256;
 	cv=none;
-	b=MABGpj13ka6gHhPA8loDmKh6EG5IbXDb2LX0k+nZns+z09n8TqO5h4+87avnK8VMgf5bkq
-	MNwg25SElb1Vmt42xehCX0rhF4KPRwTZpG9+3p4hPZ9YTDJfEN5ax5PQi2tbmlP4B31rkS
-	bKY3ESUN9GiRDsVV98k69IWCzQqDz34=
+	b=lPjwYc5qq4MYhda5ENbmkUYp2bHqduWe4CJFkrq4tWlsW6+ASBYDXb1YaHKpkZ4LTKtWXw
+	3WkWtDHxJbpL+FZiyfubFlYhpI8s13qeaLs0oBMc6XKAPcaImrwrEQbEx3UvKZG+uMmeij
+	Jh9hSC7tk1CiO0eqCP9fuCMloxHD1MU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ngPfHWaN;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf19.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=Ouu8y2VMlIQ3NjrnnBtkXQCrxDc+lrHn6mGN4M1Qu2g=; b=ngPfHWaNuTdEWFecBlMqJVZLbZ
-	UjHCci+mc4+m2b0xrxeof+0JLPJLA5Ay080MBB0KUiBec1WZzBd6QVghx4Hc6onu3YjOD1it1aNRm
-	nbU4BkhtlbPZZz9KQaxZ8iLrkrVd7aEQHd4YsUzIA+M1lAFddPnAyZM3/FUuaWxqufFbCAooNN7OE
-	CqWF2vOwAqgGUgQtMvDGC2UKqpME31EUzTF2OKPorCoZkumQ5dcsYt23fTpah08Z9lQBHkutGPPOm
-	EgPyQm29HSb12y+Lg3jEAQXpwgst++yyfiwkQMOPU6oMGUQ1rjlSHkwzrfAt4sahU7l392dF0/gTq
-	CUtY6WsA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w5Q3c-0000000G3qq-22UA;
-	Wed, 25 Mar 2026 15:22:08 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id C80DD300312; Wed, 25 Mar 2026 16:22:06 +0100 (CET)
-Date: Wed, 25 Mar 2026 16:22:06 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Hao-Yu Yang <naup96721@gmail.com>, mingo@redhat.com,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
- and vma_replace_policy
-Message-ID: <20260325152206.GH3738786@noisy.programming.kicks-ass.net>
-References: <20260313124756.52461-1-naup96721@gmail.com>
- <87a4vyihlx.ffs@tglx>
- <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
- <87fr5pgp5x.ffs@tglx>
- <20260324174418.GB1850007@noisy.programming.kicks-ass.net>
- <c892e7ce-473d-41e5-aa99-b95e0366c3fd@kernel.org>
- <20260325151445.GH3738010@noisy.programming.kicks-ass.net>
- <CANn89iLnJv9_HRV1vuURFM5uVA-y4SqBsBRD24kSJe7UmBtXSQ@mail.gmail.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eVYOI9lb;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 06675600C4;
+	Wed, 25 Mar 2026 15:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D4BC4CEF7;
+	Wed, 25 Mar 2026 15:22:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774452181;
+	bh=oTwKPZot8IGlH5BDcbmz4Mk8U0uoED5BNZV7Zy8YYDI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eVYOI9lbLQellrI0qrShwRe7VmWibuaTbMIOGD8J5a5QoCHSEOkiM6Mt3S93TjKRu
+	 uFujU2H+zsMO5NfUQ6bmyUhvYzhp6R0QEwJeN2fZrUIIhzeDu+dXFgtib6JahKYprk
+	 3UHh8iONJyWa3QI/Oqno7C5JqKLkLRZf9El3tWK9G2XPR4Cf2xg6qpJpKhxh8VCyHp
+	 /PtVBXfvttM0pZXsPVa3eLwdilnWj6jo837amr3WBuVB/mmcV91J8PWuUqXiJcSKZB
+	 /7fuwexWaXULVK6+Lwq6wYy+RiFeaTm1DmtcCS86ToDji3ZwbuwrfJp9NoXfX/rxFZ
+	 AHz4YP7EqPFEw==
+Message-ID: <0437ad42-612e-461f-906d-6757eb19a8de@kernel.org>
+Date: Wed, 25 Mar 2026 16:22:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iLnJv9_HRV1vuURFM5uVA-y4SqBsBRD24kSJe7UmBtXSQ@mail.gmail.com>
-X-Rspamd-Queue-Id: 883911A0010
-X-Stat-Signature: fx53xxnmdfhciwke7mkxud6fdcj9eq3y
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress number
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vernon Yang <vernon2gm@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260221093918.1456187-3-vernon2gm@gmail.com>
+ <20260224035247.r6mxsfcpiev4wnce@master>
+ <zo2o25tesjzdvxdbjo6rc7crqmf76z5zwlykrnvhydaowgngya@hv3vgfa7zcgi>
+ <1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
+ <hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
+ <8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org>
+ <CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
+ <22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
+ <20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
+ <3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
+ <8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8EED1180011
+X-Stat-Signature: 3h77x3xgre6qfpxyragncftahyrnin6h
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774452131-116653
-X-HE-Meta: U2FsdGVkX1/WOsQgjjNGDtGDVIsldVAXLFe7yxntu6ALJ91CYv955ae8mSwVpGI37y6ZKABATdNsXXF9aFVhYfhmqPgUmyBcztwdT6pFQUfJTZBo0hZyb2peyYQV3VQZTDPF2FntKawE7Yv7LrRFz/BY5BsSlqrZigSNHBWxTvLoxW5fZCmH4pprZiQeyuV8cGjbt/p9wR6cGuzJst1WCqAO17T7z1U+4cQ2XvZUp4RT/BNEOJW1PXYz0wEkaJMVuLHK1D3KydJlorFvYyAMg4KQ6aKTBlcy2AFQgfEcTESqfzMDPBhT5vltzOXZ7Ji9t3MiM49OKkfP6NYoLBqiBatP/WUgYMzLEhiEs9avTqxq87dm9tfoCLXyqdrkSXdQ5T4/BeVB6kDZDPM3nHubIBIembIfs4nhUgN2c+q5uKAGqBmF1x1H/fFaxIu7t+JsuMPTvsr6tAbEkzjl2EoB28PAhQQPT90XvTtEG3dJvtY1FIxQH+3XkVQGPTtXWuXPhM2B8GvI5/+owy0WBCInAVHkSpDJGQG42oU8zrnQAP7NA6lYuyDJiZ3kz8AzNGAQxT7kHhkkVF1jvVZNynlmnSJ6wRzhTPkAe0VFT76Qg+x69v1MZmXCP9mNejCTTy135ks2RCMH3HEnvU+tNmgH8Qjtd86XrTn4+giE0MI25IVhHkb7dmzRA2RBBDpYSx5MHqPBujqpaye26x4JHt6B4wP5P+dZtrgpsovDoK2VroA6J27FO2qhyFVYDObZ9lFiaagHHzQCOIpM2BSZrLgCcOTmR5swlEmLkquiBuKsyc75MAl3CmK6kAh8Rd1R/k6o1jEFXuct0RbinvMmL1QQ6kcVa1pFMnJkeph8dW+Y9Gda3RNxXSY5N+saQNxYHz6Rs9gx4LggOvMWajYfYPcw3sVDstzuMG3ROU22OQ/gCQXGsN/ocX3HkWeA9ltyNKoaVXojTV+VtUHqEiPMhmF
- En2+Sdo3
- jFqSwQp5I3vA38yfFRgfLbSCqlkBa5emwGtg1yp1bt6vivTVLig/VTSERnsRzisrHZeqcxD2gy5raJUph/YV7ahkXPJ9tb6/yjLI3OQJ+6OsmR67P8ZCMe/EUvrupPP3gbqMUTSII4dgnapqlettfmE7RcbT04ODDXhbvRpvgfA6sdP8eC0a/iR8EPJhbvSmA87buA/W71VBuH/py8XtDlglbB2eGRbbnP+CPy3RQoih3G5Pl22VUlB1wvvYr63UwP7svKfio81fUTa0NPNMjaswbJ5Bmw4KE6u/ZS5QTo+l4SOYoIqIYjafidWsEpSpe9ttONA21sWeHmzKTKTzdFBsfnA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774452182-388911
+X-HE-Meta: U2FsdGVkX19hqQIRBxUwWULwmh8wTblPVySmBMBMfMz7PT6Uw5Pg2oLUmuJMz/0GmXMkiTHPkY99Cw6Kn4SxK0whKEDRAxTLpPzRNMPIrx3D9DjQK+vAJFk1a4HA/drVa3UqX+3pg7Hlood6rSPMXqRwou8hMk6rKVI+/ib58BwQdhSCwAj8RTbD+ts1b1kbv74eX8Y2cEphRcS2/qMf7e2zGP+QJoACflxyPWbGxcGNzVHUfSGZuudqiYB92bKKCHjMQdfWk7ZlY6h5p6HjaEgr+ttYQ2HGq3NIbAi3WWETe+3mH/eaadtoEmYkaGVksIgDODtdP1gwvj5k68FheeXs7Go2wCvv2nQFFej+KQ4cbnaAo7oxuz2+RrCaULaruVsoUXYN16EpE8whgDEJhANCpm3ZH1VgHJw1B1eEXfhE84bpj3gEb/Z69Dt6w7Km2ng7//UdzUpZerK8d0dHQjVq//XICsrV5uIyrbNhTfMTUm58bUFFwFMivnJqoD7J7Qpfc8SXEDxeuJwBnAUlRnd3CLMJvF2I2a79mat4lkVLLuDHUjXia6V2nxvwepvDuw4zsi6HcfZwZz0WZ6KsX0PzOF7FQdXw0QTnglUveds/4FYvmlMSyJhrS5wMDACna6cTrmoGwzCxj10vSoeSE9ngu+X+Knf1f8yVHjt0cYZZNC4xj/Z/Ekx6MW69QA9esTqUhN7NBb5CW9iDYhHlePy0yUo1emX6Uiw66DhFQRyxFxoYke5HmjatoNrfbPk/VzLYWNNnnrysRCTtrT3FAM3V1sXuK50g911oKGI9pgcPG7BrHHoqIddqs6anEl1S513ucgouH6mOnflaeMht01Hemdg/SZ7vJx9yrDGlE/C25OeAMAuHZnXaNME5L7LcechCiYZJzz1nZNJYmSYC0pe8DuIH4ymc9D801NDgpW0VCR6guQu9q/3FpVTm44YttswHjIFlMsJQZvHyJo7
+ ascOqF8x
+ KxGgZcaGwxi4vKAEvgwcL/TlAFKe50/hETjeCE5qSxJsG3UC13Lg2zlwmoQKvA7DlWozCmtCKZ+2sl88r4YZOeUs7v+oBpYU2bceuv5LuPlJg4wFsZ+8El52e8xH2pa7MeQ4kILnN/FMS8hpRWwp+7smMBsU6C9FnM2ygGZBlAnYhJTM6sY2IJECVG6EbfsbrW9IpmGxoFny0zmSWlxX6dUI5hn0E3xvmb4gRiceGKq/qLmJ9ykNR6wLBHXuTfCB2wP74KwnbM1UIkYZcgZXmiOVJokugH5WqJULLJUeVDMx9kt/5rBuG9BIToLx03fDC9JQdPcnrHMYaBfw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,79 +150,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 08:19:24AM -0700, Eric Dumazet wrote:
-> On Wed, Mar 25, 2026 at 8:14 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > On Tue, Mar 24, 2026 at 09:27:41PM +0100, David Hildenbrand (Arm) wrote:
-> > > So IIUC, futex_key_to_node_opt() looks up a VMA under RCU, without
-> > > holding the mmap lock. Concurrent mmap-write lock is detected by using
-> > > the mmap_lock_speculate_try_begin()/mmap_lock_speculate_retry() seqcount.
-> > >
-> > > After looking up the VMA, we access the VMA policy.
-> > >
-> > > vma_policy() does a straight vma->vm_policy.
-> > >
-> > > What prevents the compiler here to do some load tearing while it is
-> > > getting modified by mbind()? Or what stops the writer side to to some
-> > > store tearing?
-> > >
-> > > Shouldn't we be using at least READ_ONCE/WRITE_ONCE() etc?
-> >
-> > Bah, at that point we might as well RCU the thing like so, I suppose.
-> >
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
-> > @@ -1026,7 +1026,7 @@ static int vma_replace_policy(struct vm_
-> >         }
-> >
-> >         old = vma->vm_policy;
-> > -       vma->vm_policy = new; /* protected by mmap_lock */
-> > +       rcu_assign_pointer(vma->vm_policy, new); /* protected by mmap_lock */
-> >         mpol_put(old);
-> >
-> >         return 0;
-> > diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-> > index 4bacf5565368..6336a80e3dca 100644
-> > --- a/kernel/futex/core.c
-> > +++ b/kernel/futex/core.c
-> > @@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm_struct *mm, unsigned long addr)
-> >         if (!vma)
-> >                 return FUTEX_NO_NODE;
-> >
-> > -       mpol = vma_policy(vma);
-> > +       mpol = rcu_dereference_raw(vma->vm_policy);
-> >         if (!mpol)
-> >                 return FUTEX_NO_NODE;
+On 3/25/26 16:20, Lorenzo Stoakes (Oracle) wrote:
+> On Wed, Mar 25, 2026 at 04:17:21PM +0100, David Hildenbrand (Arm) wrote:
+>> On 3/25/26 16:09, Andrew Morton wrote:
+>>>
+>>
+>> +1, I could have sworn we brought that up before. :)
+>>
+>>>
+>>> Oh.  I've never really received that message, at least not at all
+>>> clearly.
+>>>
+>>> I've been hoping that the -fix patches are actually pro-reviewer, for
+>>> those reviewers who have looked at the previous version.  A full resend
+>>> of something you've already looked at is quite annoying!
+>>>
+>>> I try to mitigate that by sending the
+>>> heres-what-you-changed-since-last-time replies.  It's a little more
+>>> work at this end, but that's not at all a problem.
+>>>
+>>> I see a couple of options here
+>>>
+>>> a) I can fold the -fix into the base patch then send out the
+>>>    resulting diff as a reply-to-all.
+>>>
+>>> b) We can just deprecate the -fix things and ask people for full
+>>>    resends.
+>>>
+>>> It depends on what people prefer.  How do we determine that?
+>>
+>> I like "fix" for smaller "obvious" stuff where a resend is really just
+>> noise.
+>>
+>> But for bigger stuff I prefer a full resend (we can still have these
+>> temporary fixups, but for reviewers a follow-up resend is better).
 > 
-> Yes, but sparse will bite :)
+> Yeah, it's really about being able to come to a series later and be able to
+> comment line-by-line.
+> 
+> Really larger stuff should be resent I think, esp. if there's multiple
+> fixes in the series.
+> 
+> A reply with the same-patch-but-with-fix-applied would definitely be
+> useful!
 
-Oh gawd, yes, and then people will go 'fix' it and it'll turn into an
-unholy mess.
+Right, for completeness, this is what we had in an off-list thread:
 
-> READ_ONCE()/WRITE_ONCE() on these two locations seems acceptable.
+"
+Not sure if that's a problem for others, but I got the feeling that this
+escalated a bit lately.
 
-Fair enough. Like so then..
+I know, that we prefer fixups to sort out smaller stuff. So far so good.
+In the last time there were some series where I was seriously completely
+lost which state of the patches would go upstream, or what I should even
+review, because there were just fixups over fixups.
 
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm
- 	if (!vma)
- 		return FUTEX_NO_NODE;
- 
--	mpol = vma_policy(vma);
-+	mpol = READ_ONCE(vma->vm_policy);
- 	if (!mpol)
- 		return FUTEX_NO_NODE;
- 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1026,7 +1026,7 @@ static int vma_replace_policy(struct vm_
- 	}
- 
- 	old = vma->vm_policy;
--	vma->vm_policy = new; /* protected by mmap_lock */
-+	WRITE_ONCE(vma->vm_policy, new); /* protected by mmap_lock */
- 	mpol_put(old);
- 
- 	return 0;
+Fixups are nice, but for someone reviewing a series, too many fixups
+(either as inline patch or even worse, as independent patches) just
+causes a mess.
+
+It also gives the impression of "this is mostly done, so don't waste
+your time reviewing it anymore." --- "just the finishing touches" ---
+"don't jump in late and cause trouble".
+"
+
+-- 
+Cheers,
+
+David
 
