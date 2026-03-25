@@ -4,99 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3324109C05C
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076C7106B504
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 21:04:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 079326B0088; Wed, 25 Mar 2026 16:50:01 -0400 (EDT)
+	id 23C1F6B0088; Wed, 25 Mar 2026 17:04:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 002C26B0089; Wed, 25 Mar 2026 16:50:00 -0400 (EDT)
+	id 1ED0B6B0089; Wed, 25 Mar 2026 17:04:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0CA86B008A; Wed, 25 Mar 2026 16:50:00 -0400 (EDT)
+	id 1036F6B008A; Wed, 25 Mar 2026 17:04:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA28C6B0088
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:50:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80FE2E0F1C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:50:00 +0000 (UTC)
-X-FDA: 84585777360.29.59DCE1D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7CC9C120010
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:49:58 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gppLDZ0v;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gppLDZ0v;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774471798; a=rsa-sha256;
-	cv=none;
-	b=ZzLOBhvLpM8JiUKNWMczrCAacP+91fbtdCXaBgoA/fHjq+95Pvk1pdLdZB9u7HK+fxDFRG
-	3On6iGEvwnZbsSlFLhcHH0d0llh/Bjm8GdoA906dd0NpXTJKvwGO/+q/QRLqGv2xPEK/0x
-	KTegE/lRUrhSwEiWOOTl1WkoSfzFprU=
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F3D4C6B0088
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 17:04:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 963AEE0DD8
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 21:04:10 +0000 (UTC)
+X-FDA: 84585813060.20.A7530B0
+Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7984EC000E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 21:04:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=d+SBetD5;
+	spf=pass (imf10.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774471798;
+	s=arc-20220608; t=1774472648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a7cKFzcJHpL9j4Aat/RZIzjWabg/dXzGe55O5nZe0Dg=;
-	b=o965eDv9pIWKGbIMhHSGZhKZPV39ayyoNO/VxzoZQgQWODTo7wcjG8pcbhqDqrX5fNdoNA
-	Bu6LVj8+lVyi7+zYbjJ1TXvD7SfUdHKWb7JXA2pneMmE5yxsW//kD7OHyZaSDLsc3hmqd9
-	H8EERZV0vuheUHR8gWvGdGZnDX1S8LA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 85D9944299;
-	Wed, 25 Mar 2026 20:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE30C4CEF7;
-	Wed, 25 Mar 2026 20:49:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774471797;
-	bh=12gWYwz5+UXNYe/GprR8bIjp7XZsuOCyWF6dzqhGQgs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gppLDZ0vI9UUtn6MhYJMTujUQ4p8ZgNZMcHSfqeyZlJAB2FxSUKXGOCdge0xcuU4w
-	 QBHBp6LX4BHGdYiYk6pRJ/E9xIbk24RAnwIDsyNtcSpiKpQcUIURogQ5qxGFPxurSl
-	 8y9/PUMDxd6fcoKABFgWXVaIxQZQLG3VLEfi+4DQ=
-Date: Wed, 25 Mar 2026 13:49:56 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Vernon Yang
- <vernon2gm@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress
- number
-Message-Id: <20260325134956.0ceceb29a77fb367d657815b@linux-foundation.org>
-In-Reply-To: <93f3be43-0883-4fde-86c2-a35f8a9c999c@kernel.org>
-References: <22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
-	<20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
-	<3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
-	<8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
-	<0437ad42-612e-461f-906d-6757eb19a8de@kernel.org>
-	<20260325091735.bf440358cf83c5d0369e0674@linux-foundation.org>
-	<06c83e1b-d7ee-48d5-a5c4-faad39db2f53@lucifer.local>
-	<20260325113650.fc6997e07a0a4ad0e46278d5@linux-foundation.org>
-	<bddac979-24d2-441e-9c5e-529ca2f58366@lucifer.local>
-	<20260325121549.2b887a8a8c154d5bf8529ea9@linux-foundation.org>
-	<9930979b-7bab-430b-ad29-fb35f36712b6@lucifer.local>
-	<93f3be43-0883-4fde-86c2-a35f8a9c999c@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	bh=97Z41foFc+tZXOntpL6elWdJfICUWmGkxy05YMBEDcM=;
+	b=Z/Uf5npDIyoAMe4Ls3DXdugMnAZ2qq+Jis7ibTiQVztmdlPZVQ6zfjyOAvpwqnN0rK8vZC
+	2sKy2HNow4XbsHvSHgkmTpgRKeHr6L0ey4Q66we5GVpKlkpJZhEg29aokOqh/TB+OTyH37
+	np8UR9qN5bHijdanUlc6Ru0FHRXxUgY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=d+SBetD5;
+	spf=pass (imf10.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.14 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774472648; a=rsa-sha256;
+	cv=none;
+	b=huTMk8jqKXkWVDf7topGG15CCocsflAIOWvQN12SlwT80njhs6NWLiU9lsC3FiPX/QZjKx
+	SzwyI3705LofAVvM5kczyWAFMx9O28baixwKUd/9UhvFFr3o4xcixYF4j+HxQxHPss/47l
+	51wNr1giuSgBOvYqT6q1l6kZO0Alb8M=
+Received: from localhost (localhost [127.0.0.1])
+	by 011.lax.mailroute.net (Postfix) with ESMTP id 4fgzsy2sJbz1XM0nj;
+	Wed, 25 Mar 2026 21:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1774472628; x=1777064629; bh=97Z41foFc+tZXOntpL6elWdJ
+	fICUWmGkxy05YMBEDcM=; b=d+SBetD5T0ANFFheTW1fVKWSFv622BZGQ6g+ZEyE
+	UNlC3HQ/P0Ll2JB997Q6LcPJtI+v0U1Clqwcx1FhJR3izYI6raLBgB1ccBDpql9t
+	SDsR2f20v2xMEnwl7XT54GdVTWWDvNYTSv0vTutu8ugaRgu7qeWcu9ryU8tlZaiM
+	RQighKsSFMsM51W+FZM4BSWFc1MifYA5yFIdIvcKQqOvkbzyWC4jlEIZR2qMwknu
+	Lftj++TFcm7/uLSgSjaZUhsBBP5nLMq8N9BuXEWTMmmbMBrjtXdBYQDgpEeH90j/
+	wJoddw+Wy4daftuF0ePYNFACEC9w5GPMp1Ze9+4w1dZ0Mw==
+X-Virus-Scanned: by MailRoute
+Received: from 011.lax.mailroute.net ([127.0.0.1])
+ by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id VRWQ3mJKAFHd; Wed, 25 Mar 2026 21:03:48 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4fgzsW1yFlz1XMG4r;
+	Wed, 25 Mar 2026 21:03:42 +0000 (UTC)
+Message-ID: <8f554173-4864-46fc-85e0-0a7f3ca70210@acm.org>
+Date: Wed, 25 Mar 2026 14:03:40 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v4 1/3] block: add BIO_COMPLETE_IN_TASK for
+ task-context completion
+To: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Christian Brauner <brauner@kernel.org>, "Darrick J. Wong"
+ <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
+ <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7CC9C120010
-X-Stat-Signature: 51iu7pwgxqd9kgsyguqyjszp93j8n17m
+X-Rspamd-Queue-Id: 7984EC000E
+X-Stat-Signature: jh5bqqx9tj5w5gwo5g5xpun7coesfd31
 X-Rspam-User: 
-X-HE-Tag: 1774471798-739485
-X-HE-Meta: U2FsdGVkX1+YD0aDD1vL5I+Z6Q+OhcPejSrmhFdMoOZ9UKjLYCHGoQ7U8gnilufWbEIk6Z9660/CloZE6oE9v2UdfYlI7GYIv8ZXxzzJ+zQ7mZ3I8mc/4x/nWFftl4z/5DJvmOxxo4YwkMTIOW2s2FUFgsay3JQkpmuFhlf//k5dAq9jXcjJzR0I7AssIcDayMlXHp14RBWcFMmaRsrwC1JxQhdk5+ooGWbZbJrcOKpz3mjZaH197vdTYQTEG04ow2wZF+6Q/Lz2CkwUW5QbK6rhHhgmlJE5H6jIQcTsHBljZIt07AmDu1OndnS2vKRjpJfhxxDvfrTu8nsQBqc3FqW+VGPeQYlwNZ6BIPjLc2z9ah9axtY/NxiNqGmBKylfSVbUVUpSZa7UbMffHxjcGcpQbOv7wRt4KOZBfEdBIflO5EeB3tD/g7ZGLd+MEBld7udpgcvRwI52giQUAqMT83sL/qY6ikec9l9H23Uv3ojaBCsS1M0RQu6UgdMm3RpaoZG9G1yC1tGSfPL/T0Z1wo2r5Goy47s/qWOhp9ZmOZJhBQvrnrToQnvEJByFLxlWvgRSOd49BTckv9We1gVjk0C/2qJKQ+ZWjFzZVmKQPqpTOaHSyI7B2uok7arzMaWFLh8oXZAwufT7mdc2sWN4UcFrpwAZeOLFtxDepS5YW7Lfi3R2HnAzLaJBXCr+G5hF0K0a5gYh6E6yLzvlxUkwlAr5BSaCW1OTIZ114ts6BPjEa/XiCFX25Nv+wL9AJZSE7jN/73tHn81V5cw0tJ9mEZcGFrVvRJVz3dEgv5/zD3b8FxxXSu8atq22n9F+mGULpP5unQuGgYvs0yAneGrVr7NRtCyPUvuB2IqH8PWeF5HxgrKtn2zS4NfmywJut0HZLLorUfdmSrRl7W4KEIAOPUc3kEETJvzAgMA26d3ZWTfN2fZNv7wZqRO8nVrtkCEIE8rjaBBiAo1e3dQ3VDn
- GVLiVURZ
- IRIamHjA0hyluexGcdEAj4BjLuu78jYcUPqnWsCfWeKnEixwAhTPR9jBHlJN/puaaToB6u6iajIqjUQOFyBKaX/S2bRcbfR/TY1bsu08o3Bi/0CwxuZ7lzvnU0mloJAG2Av77NZM6Jcmtip2ygIzf9iv+G/ZsK/hNyDCnJk/UWg28MTFVq0RJ9A9Rerm3VZRmzwxcKtSdP3K/IIueYjAEp+GTwj/9BEIj+nfWYbnKoNPLFBRo8dRUOo/RMI9nxcZ+LNzV0TWigO+hgqMVzt3Oc4mwWbVtz0SsnflG5ZXhuCkpAuQxo6dMHcpv5R3rf5/rzs/ay0kxdvdgmDVOJFLT74DCFTrnE06MORVq
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774472648-958113
+X-HE-Meta: U2FsdGVkX1/3mxqQkIA3BXlM1eFzOZaA2mtAUfcLnmJyFgMLjI0xNQpmKZFM6rfNzh7bhvwiM9V2W99wy7OsWXjFbhihvB42xZZkBhHe9T5mIJBdJV7ItyT+yW1YeGlcOf2jZwevur71rHOOJm4RZqidCvj7ERLQ95HJjl5z0A2i6U8xyI/jlgm2JtFMGSRdjJ1NHgGUVb5SYucCF8NbLqds+EdSHMtf1wDj3rrBG6qMcsmbFrwUglP7LmS87fgUT1EPMEJEPhVF2pWD1zFC1wiJwbmMQ1arMlsVJ3VSzDsDl00WXWAGf0/hcCtpy/HDj7jh+rVVX6CvyNB5QJNNaqrHldmC+RfQbSjUIJufXQtJEySN6UK82HNNFlyUfLQH4FbHEI9rJJlNlnkqq4Sht+IcOzI07r+OM0Uj/ude7NpiPJYuAeUa3sSSdEkCWQ5NusZ/MuHb1AKtjsFz+E9pGanlc43KuE/HDuEA5WkRfRk6NlRr35n5xN5O+OjfgCny/tPeE70OEvGlbyK9FnhTdmAvwglagZL08UZhZXSGYovA52tm8vaNF1FUqeb7ZvMDqwLqdj8u8pW4DakkAP1tiK2ZNx7zBceqR+u5Jz/ACA10VZQfDNsZ9wkEeyPYOFY2NnevdV2zYa6FydyFvsHJ5DTuCrANMaKPfLjjNPwpMw00LadEzxqpY/tQX9EbKFlYXJjDQYbWgD7HhJE/6JaDZY+e+1Eh3mg2ZmOyxvwBUgN8ZDHCn+Z7WY6f7QFTfPi3QzVeelvifju1OyTiHuLpmbBaTjdkQWzDd5xAuIJgSv5S2ow1pTv7oREp1yKDfUCPt6EXjZ9mGhdsLUJHL5oiXdmRQsoieBJna1DOhjlW5WqNirykeO8935BEQMTcN45EFwrLvG3CfArzhlJ8F5xZN/4jo7aYFJfKmWtB4n3qeSr2uS3M9ZfZ7L7p3ynym6jJOukgD746lCLruy/z2E6
+ mTHFf//D
+ OQso+uWyC7/Mvcr5Azm40iBrZuE+67FYbBH7bxIwzRIDFxGllkSVV679TdFQLGFca7mk4BfRV+lkleOs2vcHWLCTcnG9gVOqL9FuKNvkpl2ZcuUurMiz0Uj5tW6IVEGMKtmDIG+1kmuvqUpKV3OK5lWQqv4Iw/iXl7M295MxzV7CouOEPbLHenvTVXzD3/Ev8hLpmMzbq9PB1XNb4NzVMB2G/NM6VvoNPvfrfDaV2/e6BjO7hsJ63Qe51oeo1L1jznDWsIgOwof0KVYW/e6Qt+JGphZGH8gbwdWKfuFu7NLx7SHjLM3HMop7F+NquufQ+zsBxeD/8UopETw4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,52 +110,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 21:16:11 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On 3/25/26 11:43 AM, Tal Zussman wrote:
+> +	schedule_work_on(smp_processor_id(), &batch->work);
 
-> On 3/25/26 21:03, Lorenzo Stoakes (Oracle) wrote:
-> > On Wed, Mar 25, 2026 at 12:15:49PM -0700, Andrew Morton wrote:
-> >> On Wed, 25 Mar 2026 18:53:40 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-> >>
-> >>>
-> >>> I mean instead of having a separate commit for the fix, put that fix into the
-> >>> patch before it and denote it with a footer as you put above.
-> >>>
-> >>> I guess that translates to what you do when you rebase and fold the fixes into
-> >>> commits as you do now anyway.
-> >>>
-> >>> I don't see any reason not to do that right away, as really it's good to see the
-> >>> combined change in one go for all practical purposes (if I resend, I'll be
-> >>> combining work, if I can grab it from the tree and avoid a git rebase -i all the
-> >>> better).
-> >>
-> >> OK.  So what have we concluded here?
-> >>
-> >> Is it: if I get a -fix, I add that in the usual way, then temporarily
-> >> fold it into the base patch and mail the result out for fyi.  Then
-> >> after <period> I permanently fold the fix into the base and add the
-> >> footer?
-> >>
-> >> If so, what's <period>?
-> > 
-> > To me it feels like that should be 0, just squash it in right away,
+Since schedule_work_on() queues work on system_percpu_wq the above call
+has the same effect as schedule_work(&batch->work), isn't it? From the
+workqueue implementation:
 
-OK...
+	system_percpu_wq = alloc_workqueue("events", WQ_PERCPU, 0);
 
-> since the trees are being rebased constantly right?
+[ ... ]
 
-yup, the mm-*_unstable branches and mm-new are blown away and rebuilt
-from quilt each time.  And the quilt patches are rediffed and refreshed
-during this.
+	if (req_cpu == WORK_CPU_UNBOUND) {
+		if (wq->flags & WQ_UNBOUND)
+			cpu = wq_select_unbound_cpu(raw_smp_processor_id());
+		else
+			cpu = raw_smp_processor_id();
 
-> > And that means the tree contains exactly what it would if the series were
-> > re-sent.
-> > 
-> > David, what do you think?
-> 
-> How often was it helpful that a fixup patch would stay separate? I would
-> assume "not often". :)
+Thanks,
 
-Not often.  Sometimes a -fix is messed up and we grow a -fix-fix.  The
-record is something like -fix-fix-fix-fix-fix.  I suppose there's
-slight value in tracking this for a while.  Not much though.
+Bart.
 
