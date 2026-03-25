@@ -4,95 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF008FEA82F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 07:40:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E9A7FEA82F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 07:41:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECE6F6B0098; Wed, 25 Mar 2026 03:40:25 -0400 (EDT)
+	id AD8816B0005; Wed, 25 Mar 2026 03:41:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7F046B0099; Wed, 25 Mar 2026 03:40:25 -0400 (EDT)
+	id A622F6B0093; Wed, 25 Mar 2026 03:41:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6E426B009B; Wed, 25 Mar 2026 03:40:25 -0400 (EDT)
+	id 902946B0099; Wed, 25 Mar 2026 03:41:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C244B6B0098
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 03:40:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 856F41607DD
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:40:25 +0000 (UTC)
-X-FDA: 84583787610.30.6BB47C2
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B762B8000B
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:40:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gXtG5BnY;
-	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 77AC76B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 03:41:31 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15757E0B48
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:41:31 +0000 (UTC)
+X-FDA: 84583790382.27.D57F749
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9851F40002
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 07:41:28 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="pNQ/4u3B";
+	spf=pass (imf27.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774424488; a=rsa-sha256;
+	cv=none;
+	b=zeNTH6p5m8fpjBN9mXLUAQjH28yU61V2rEMIBo/8Y7CvNBS/32rx3yIhBswHTi5aDUki26
+	ZQfa2QJzKwHqHTb6YoEc2jOMAcb4dIiZb2Wp+Ns5MVtFQCQoTI7CtPZd6/xW13RK5V8+HZ
+	iDLpBDqOfoAdnftyNfKvCvQFIWtcpto=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774424424;
+	s=arc-20220608; t=1774424488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B0CLR6YbY6BbPn5BbvUeaUgxF//HUlX85mhdlERM2EU=;
-	b=K9gIpAmuxXsyx30wDacvSH8q8y9PoSB1cG9iayTrigoX7AC4QIHvPT514Tx/PuTzisxNjN
-	MvRDchQ357LBNd+xZiEtJp72hs9ux8/GEM1jB5rGCB4M44vYksZp8NlbzsqnhBAgaGCmLm
-	K6eBPBhOP45whfSfMTH5WxsuX9wNazs=
+	bh=Ckm/FcFRukBQ1O64EkVj9RpIXX2CRy2+3nXyBotkBao=;
+	b=OUEo/4FEFRz3vT5kMA5xNxY9az++kUXcOeTe629sF6Hh+cqGjMmIlwcAEfZ7Nfg4oYYxyI
+	nob4j+5KdpenmBJbhKY4Z7uhdhLYz5nccnhcTGARxJmoVfZJ6I6SPIEmzIJ7YTCKXnREYZ
+	84ZIoS4kJEQ+8XIH9rNjjY0On5qIZJc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gXtG5BnY;
-	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774424424; a=rsa-sha256;
-	cv=none;
-	b=0ogtOGkbz3IQx1E/kRRF+cXX4LEfqIudqvi8vP+Fe7uEPHRnG1OTw5/u0YxFcYCJ9y58rH
-	tTnGZLyJG3JRdWkJPZmKH0NR3YCVoHDUwyFRrnbiNxmNXT99owWuh+dO8U1HaH2cTgrFtq
-	k6QNoLWjWyMYqpX6TbX4wrKAmCSPUco=
-Message-ID: <5fed0611-434c-4fd4-956c-39f23e0459a1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774424421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B0CLR6YbY6BbPn5BbvUeaUgxF//HUlX85mhdlERM2EU=;
-	b=gXtG5BnYmoxr+q9PJgyyvvbmG2Y7X3JRDmYJ6pwDIdQW+l2WQjQHq+YR4OeDKfJQvgrutJ
-	rnQrPUSNZo0i//tEs4OKF2kK2m3UlvTKo1dLwCAxV228fWFN0LvtrwSC/HcVVujH/ndpSr
-	itpv6UhpawYGqJhloWmooFazaaFOXMY=
-Date: Wed, 25 Mar 2026 15:39:56 +0800
+	imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="pNQ/4u3B";
+	spf=pass (imf27.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62OGGNeB3893308;
+	Wed, 25 Mar 2026 07:41:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=Ckm/FcFRukBQ1O64E
+	kVj9RpIXX2CRy2+3nXyBotkBao=; b=pNQ/4u3BZMPqHPS0SkeQ0jYj63b1Cp5PS
+	UvVXrolL+gaBOS97pG+w/g3p9UXxBWf3INI+WVNxUUH+17YP0gOdCud53kNMsPYl
+	T6VtGsN89OGu8KfyyZOknlPFbfQ/gNFXEM21Fz7YYcPo/TxxOjCNqR/JR6LFTKef
+	quHYjRzT9XZ5xgk+NMbhp1A5KZNXWJvRn6GSRaNzoCr7zIX9RMWLrSNwyzWAujvQ
+	bxCzBCGKmree0Dj5gsr3bIPwIrnlA+QV1NI9UZltX0Yi1G4N0SWH+b2ECc27bE88
+	uC5BnlEyyqI/6XDQ5Nm67ywKPIwf+C0fQeKnFe0esksLNwtFKvc4w==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktuxjnb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Mar 2026 07:41:25 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62P2QaTh004398;
+	Wed, 25 Mar 2026 07:41:24 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d28c25a5y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Mar 2026 07:41:24 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62P7fJHd44040476
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Mar 2026 07:41:20 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B96B02004D;
+	Wed, 25 Mar 2026 07:41:19 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 831B320040;
+	Wed, 25 Mar 2026 07:41:19 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 25 Mar 2026 07:41:19 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 6D7BCE0782; Wed, 25 Mar 2026 08:41:19 +0100 (CET)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 2/2] s390/mm: Batch PTE updates in lazy MMU mode
+Date: Wed, 25 Mar 2026 08:41:19 +0100
+Message-ID: <a00e58e3293ead1881e0c5a5fb471edd23ea76aa.1774420057.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1774420056.git.agordeev@linux.ibm.com>
+References: <cover.1774420056.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 2/3] mm: memcontrol: correct the parameter type of
- __mod_memcg{_lruvec}_state()
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1774342371.git.zhengqi.arch@bytedance.com>
- <90524ca3806e24105ab5f2d69435f57c2ae034cb.1774342371.git.zhengqi.arch@bytedance.com>
- <acM93qmvDFofjWdM@hyeyoo> <5a9d9152-8e23-4438-a322-ec524fd159a6@linux.dev>
- <acNv8w-xNWwZHVo9@hyeyoo> <d86749f2-c4fb-4c7f-b630-27fca222066c@linux.dev>
- <acOQkTDJvieu3sh-@hyeyoo>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <acOQkTDJvieu3sh-@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B762B8000B
-X-Stat-Signature: z7dica8381nr9ryy476jpde8nr3ekpe3
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: M6Cy7zsO6ZnuTNPAq2O3dr5NcThJ0uLG
+X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c391a5 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=QahWx_JG-LKBn9TrOFAA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDA1MCBTYWx0ZWRfXzMEMCK2Nd42a
+ q4KEdkzPUV/2E9pQtn4m5qt9/PAOdbl7CtOHTaeJMIvYdFUJAlw6NDZb2nIFSk/ITyo1Ms9ecUx
+ eBYZKkx25Aj6MZwDu2RxbLyvqbsmAgez/0AYdPKGCWwW/suvI9aAqigxSudydwA7sQu3YNy9HXT
+ yP0AWv1JGbWZZ7YNNlfu5EsPpILpgb0aIyPgD0UmI3Z+kRXljieTvHUdyhIjFzqkK3aFAs0FszV
+ C0T5uQRP+Rn2euJVxoBx9T8AMiBHinW6iVuoDs+3u4EYpbJiLN/mDS4+cs8ARxzK1UF4AlkAzo+
+ kgOqiTxzqZmCf5Jppzb7sNUxShnJYh/lFUrt5eQ6lDVei2k5SzB+GrlgEUNhKpUslZIWXu0KtCD
+ D3kZxc+oQE7KNuYjhbpPDlCIK6gc6/yhg8t6+a+s74n5OZRDvuHbIHoWZhRh30aaPFzLRRdvHve
+ vp6pD4rhJ7tPJIh8hag==
+X-Proofpoint-GUID: M6Cy7zsO6ZnuTNPAq2O3dr5NcThJ0uLG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-25_02,2026-03-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250050
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774424423-187031
-X-HE-Meta: U2FsdGVkX1/3TAgAnp9G5dPw2s1rcH+GOLxgc1rNA7Fr80PtAnW4SGB4OyszPXIw0WGm7mM1sW9dOEj23yACIDaTS0NtcGYEyh1H/+jezORlu73wZqIboQDmalaaaPnYnp7LRKcs3d/clFqmxy/IYultWp4zzrl9L/OIPWK0X4fpCWlVQm+tnb633/l2cz03wZUmgZppXrh6jOPLGRe1KTkrOsK1uydzF25l5bduEuyvGKqXHS2OY+oSnurGSIytaLNtvP25BXSVnLyN3t34fVpm8jfpE0DAQUlQP6hZA7DF/BYVV9YhjielGHBL0NYuDKJrN93gKA5oSC678FCRFffmDtWA6dk+6coH+s6Q+C6JJ+c3YZuvvNYbGykqlsQRu2u1O8rFNVnvszpfM6WVTfGxtk1uNqcGpwbYSwyxgKtS/wSex49cYmqiVSdvAtPclo0HOat3odrR57tdsfCWxZSPPUPhvmXmuKahhvk1nONJqCEn2XGI5lNpc1yB8v8unbOlbqJ/fiAguVwaQiVxN275vV/ZaAVL87xd3uWW4iFVA5j2iD6UQOJX3ATwdBMzOgWemYVWcVJCw6jp8g/HnRVGHlikXZ+0nhbwnFbCv4duJAC0drndckSaZTjUHrAMxrd4BppW+SEKt8uTXp9GSs03po4c6NrKYjX+hFVR+aMlHQpOvOe4w2BKfYRP4qjQQkg57riJYql/CC/aDehj2OedsxCFh0WCWJTb63jmFo9EXaHpCDUyymd1fdoLTn+nEbWRUf7nXMPYBmvH7EZQ2G0+2EnlqPm4rO5tV/yr2+tcx9U2Byau0bpR0BF5bX1OHSFH9GSDocnhZhltF0V/8TUIMkCJaBpLCXessp4pPkYmAcUN7Y0a67SU1t3pkl/gxp3Uqw/Kck1SjBR/4gFhpqHyF3Owlo2EbAJh8dK1kevUO/VKAvUMFYU/KsKHe0iIWg877h8rJ0yiOc6lTB2
- /Zc59kny
- DDSvsUj5dxrgy4/6lT4UYAO+hPTggX9ZBM+H35C3mjOaxnDvEviUfH2YRGIPAqmqhNmy6cskKsyuRnQS0zk2BEeMIH1Ap46CCqs0z4ikiWbCf2LirB8zeN6IDRlyQx4Fm1W11LSifwQT+4frzJsj5wUpTsrBB/hodaBFY/FdCn8JdFV6zXe6+9/SvEzMvwuVlPCefrVv5ZFgQhQEADuiAsvvxp02bQ2Uym3VcKnPu87P+QCX88gYCfNQENekBhLSc6N7WO9xixcaHpnUdHf0+AJxUakqphH2pW1xBMzKY8Eckq4SPfCURqUcnicejdI2638zNkrq31ylXSEcxamB5GCJPYA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9851F40002
+X-Stat-Signature: bmfscs4ou51uu59b6fzmg8bb4orfx81m
+X-HE-Tag: 1774424488-3549
+X-HE-Meta: U2FsdGVkX186WH6D67BH5SmNj6T69kWCZpd/w+GhXG8pQulxzPsvvzHSmVUYDcbALxaVbmXW6ereBrzpKRo0WKD/hWIvyrX+n+ROT7XD1mYw3wNXI+5XO7I9zv1gknYQUoyev12VNNyUwoR7nTDTENrjjdUY4Mw3+S6NKAaz8h4s5yOowdPVEY5WUT40C1Jsc2Bvqz4CaYXLIFfO6LnVLyxAGMCX9bDP48X/4HyLrID1alUYg+Sedn9H87F+kfYO/GLJLSPNl2UT56v4/IdkzIYW/yWw94ibCv/f1R5plutHvZpRQY0PF53qfq2aU3SyB4RO8TyzjsGFWzVvSW0fjBNRMHaVlFCzJh0p1ocG32XkFNBRm2yjppDOrjz9fi537/7NoyoNe+1MVagGUeX/ulvF54jH6bvwzGdCWl6exh1HrVSEttmYFkRFdyPjddgIEK5HF2I/Zip/trHq2PRHxSYiFwfJn+ZFewmY7AWsDXQDxLR+YE2FMFf2eQKK3gevnB8kouTv5LSNEczUsG+TYdfgurRJaI6knODFjpWfBKozRBxoVfWmamIdFjpYJ7Hqwzu05TgymT66185tKFWSou5aox+cG2zJHQV0jpIp01Da1Qw9tLnXyxlANOh4ZZ16KChI02rQXc5O//tV6LAIlFDIWiXFV7S62x49Td8JTe30dEt0Tvpf2qbus8Z+Bfh+Yq2XcMem6w0/6eoYtHQakTM2uNQsQJykTIdfxJpxTIVNLaIzzdabuuxKM9X7si2BapYgeaTttnctpPdCmJA7TrnY594g0DfUNzw+xMsvC3wXHbGzLWOw7o0fa6+tGO5d5YH7RXEDOJ6+FNwFjI9VMTABGeduGF3LrnmMQGCUZ3KE67NMoC3hx3lE4/DDcBefcnrZxOUMpjnPgwUcVtJ6lkWC4ObOtxdl3MPXO+5RF6rOtuDM4oCbPUca03fbmbOUzw0ln8vk1+A/MKbJHf5
+ Db4x9adB
+ Mzc7yNLN5FXK32sbIMoZKnA2/vuDW657dl709MGAnAwcz6fGMfgRxf1a1fD14bxkuNXjn0nqz4SvQ20IlTJP+wO6Ti6fumLyav9SUI4sixPy4ThZHmgjpiYlvUzRfsbrI5OZqACswQ2iMrAz49zYkekuSpknIotirQ5FfMcLOuCZRErR0fWpuh88qe95Nd8tAneBmE/vVmACkHwPwcfkXw5hQex4Wbs3F0HPe/BQLeMWwRU0dgXvu3JhQSDh1d6fa+EWO+cJEYUV54MPaGZXJsCXNjAWNLFFCNVPEXlpgRb0rlgc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,166 +142,857 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Make use of the IPTE instruction's "Additional Entries" field to
+invalidate multiple PTEs in one go while in lazy MMU mode. This
+is the mode in which many memory-management system calls (like
+mremap(), mprotect(), etc.) update memory attributes.
 
+To achieve that, the set_pte() and ptep_get() primitives use a
+per-CPU cache to store and retrieve PTE values and apply the
+cached values to the real page table once lazy MMU mode is left.
 
-On 3/25/26 3:36 PM, Harry Yoo (Oracle) wrote:
-> On Wed, Mar 25, 2026 at 03:26:46PM +0800, Qi Zheng wrote:
->>
->>
->> On 3/25/26 1:17 PM, Harry Yoo (Oracle) wrote:
->>> On Wed, Mar 25, 2026 at 11:25:06AM +0800, Qi Zheng wrote:
->>>> On 3/25/26 9:43 AM, Harry Yoo (Oracle) wrote:
->>>>> On Tue, Mar 24, 2026 at 07:31:28PM +0800, Qi Zheng wrote:
->>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>>
->>>>>> The __mod_memcg_state() and __mod_memcg_lruvec_state() were used to
->>>>>> reparent non-hierarchical stats, the values passed to them might exceed
->>>>>> the upper limit of the type int, so correct the val parameter type of them
->>>>>> to long.
->>>>>>
->>>>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>> ---
->>>>>>     include/trace/events/memcg.h | 10 +++++-----
->>>>>>     mm/memcontrol.c              |  8 ++++----
->>>>>>     2 files changed, 9 insertions(+), 9 deletions(-)
->>>>>>
->>>>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->>>>>> index 7fb9cbc10dfbb..4a78550f6174e 100644
->>>>>> --- a/mm/memcontrol.c
->>>>>> +++ b/mm/memcontrol.c
->>>>>> @@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
->>>>>>     #ifdef CONFIG_MEMCG_V1
->>>>>>     static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
->>>>>> -				     enum node_stat_item idx, int val);
->>>>>> +				     enum node_stat_item idx, long val);
->>>>>>     void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
->>>>>>     				       struct mem_cgroup *parent, int idx)
->>>>>> @@ -784,7 +784,7 @@ static int memcg_page_state_unit(int item);
->>>>>>      * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
->>>>>>      * up non-zero sub-page updates to 1 page as zero page updates are ignored.
->>>>>>      */
->>>>>> -static int memcg_state_val_in_pages(int idx, int val)
->>>>>> +static long memcg_state_val_in_pages(int idx, long val)
->>>>>>     {
->>>>>>     	int unit = memcg_page_state_unit(idx);
->>>>>
->>>>> Sashiko AI made an interesting argument [1] that this could lead to
->>>>> incorrectly returning a very large positive number. Let me verify that.
->>>>>
->>>>> [1] https://sashiko.dev/#/patchset/cover.1774342371.git.zhengqi.arch%40bytedance.com
->>>>>
->>>>> Sashiko wrote:
->>>>>> Does this change inadvertently break the handling of negative byte-sized
->>>>>> updates?
->>>>>> Looking at the rest of the function:
->>>>>> 	if (!val || unit == PAGE_SIZE)
->>>>>> 		return val;
->>>>>> 	else
->>>>>> 		return max(val * unit / PAGE_SIZE, 1UL);
->>>>>
->>>>>> PAGE_SIZE is defined as an unsigned long.
->>>>>
->>>>> Right, it's defined as 1UL << PAGE_SHIFT.
->>>>>
->>>>>> When val is negative, such as during uncharging of byte-sized stats like
->>>>>> MEMCG_ZSWAP_B, the expression val * unit is a negative long.
->>>>>
->>>>> Right.
->>>>>
->>>>>> Dividing a signed long by an unsigned long causes the signed long to be
->>>>>> promoted to unsigned before division,
->>>>>
->>>>> Right.
->>>>>
->>>>>> resulting in a massive positive
->>>>>> number instead of a small negative one.
->>>>>
->>>>> Let's look at an example (assuming unit is 1).
->>>>>
->>>>> val = val * unit = -16384 (-16 KiB)
->>>>> val * unit / PAGE_SIZE = 0xFFFFFFFFFFFFC000 / PAGE_SIZE = 0x3FFFFFFFFFFFFF
->>>>> max(0x3FFFFFFFFFFFFF, 1UL) = 0x3FFFFFFFFFF
->>>>>
->>>>> Yeah, that's a massive positive number.
->>>>>
->>>>> Hmm but how did it work when it was int?
->>>>>
->>>>> val = val * unit = -16384 (-16KiB)
->>>>> val * unit / PAGE_SIZE = 0xFFFFFFFFFFFFC000 / PAGE_SIZE = 0x3FFFFFFFFFFFFF
->>>>> max(val * unit / PAGE_SIZE, 1UL) = 0x3FFFFFFFFFFFFF
->>>>> (int)0x3FFFFFFFFFFFFF = 0xFFFFFFFF = (-1)
->>>>>
->>>>> That's incorrect. It should have been -4?
->>>>>
->>>>>> Before this change, the function returned an int, which implicitly truncated
->>>>>> the massive unsigned 64-bit result to a 32-bit int, accidentally yielding the
->>>>>> correct negative arithmetic value.
->>>>>
->>>>> So... "accidentally yielding the correct negative arithemetic value"
->>>>> is wrong.
->>>>>
->>>>> Sounds like it's been subtly broken even before this patch and nobody
->>>>> noticed.
->>>>
->>>> Thank you for such a detailed analysis! And I think you are right.
->>>
->>> No problem ;)
->>>
->>>> The memcg_state_val_in_pages() is only to make @val to be in pages, so
->>>> perhaps we can avoid the above problem by taking the absolute value
->>>> first?
->>
->> For more clearly, here is the diff:
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 6491ca74b3398..2b34805b01476 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -787,11 +787,17 @@ static int memcg_page_state_unit(int item);
->>   static long memcg_state_val_in_pages(int idx, long val)
->>   {
->>          int unit = memcg_page_state_unit(idx);
->> +       unsigned long uval;
->> +       long res;
->>
->>          if (!val || unit == PAGE_SIZE)
->>                  return val;
->> -       else
->> -               return max(val * unit / PAGE_SIZE, 1UL);
->> +
->> +       uval = val < 0 ? -(unsigned long)val : (unsigned long)val;
-> 
-> We could use abs() macro in linux/math.h here :)
-> 
-> val should not be LONG_MIN, but it should be fine
-> to assume it won't reach LONG_MIN.
+The same is done for memory-management platform callbacks that
+would otherwise cause intense per-PTE IPTE traffic, reducing the
+number of IPTE instructions from up to PTRS_PER_PTE to a single
+instruction in the best case. The average reduction is of course
+smaller.
 
-OK, will use abs() macro.
+Since all existing page table iterators called in lazy MMU mode
+handle one table at a time, the per-CPU cache does not need to be
+larger than PTRS_PER_PTE entries. That also naturally aligns with
+the IPTE instruction, which must not cross a page table boundary.
 
-> 
->> +
->> +       res = max(mult_frac(uval, unit, PAGE_SIZE), 1UL);
->> +
->> +       return val < 0 ? -res : res;
->>   }
->>
->>   #ifdef CONFIG_MEMCG_V1
->>
->>> That would work for memcg_rstat_updated(),
->>> but not for trace_mod_memcg_state()?
->>
->> Why? The trace_mod_memcg_state() seems to accept 'long' type,
->> am I missing something?
-> 
-> Nevermind. Without the diff, I misunderstood what you meant.
+Before this change, the system calls did:
 
-OK, will apply this diff and send the v2.
+	lazy_mmu_mode_enable_pte()
+	...
+	<update PTEs>		// up to PTRS_PER_PTE single-IPTEs
+	...
+	lazy_mmu_mode_disable()
 
-Thanks,
-Qi
+With this change, the system calls do:
 
-> 
-> Thanks!
-> 
+    lazy_mmu_mode_enable_pte()
+    ...
+    <store new PTE values in the per-CPU cache>
+    ...
+    lazy_mmu_mode_disable()	// apply cache with one multi-IPTE
+
+When applied to large memory ranges, some system calls show
+significant speedups:
+
+    mprotect()    ~15x
+    munmap()      ~3x
+    mremap()      ~28x
+
+At the same time, fork() shows a measurable slowdown of ~1.5x.
+
+The overall results depend on memory size and access patterns,
+but the change generally does not degrade performance.
+
+In addition to a process-wide impact, the rework affects the
+whole Central Electronics Complex (CEC). Each (global) IPTE
+instruction initiates a quiesce state in a CEC, so reducing
+the number of IPTE calls relieves CEC-wide quiesce traffic.
+
+In an extreme case of mprotect() contiguously triggering the
+quiesce state on four LPARs in parallel, measurements show
+~25x fewer quiesce events.
+
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ arch/s390/Kconfig               |   8 +
+ arch/s390/include/asm/pgtable.h | 209 +++++++++++++++--
+ arch/s390/mm/Makefile           |   1 +
+ arch/s390/mm/ipte_batch.c       | 396 ++++++++++++++++++++++++++++++++
+ arch/s390/mm/pgtable.c          |   8 +-
+ 5 files changed, 603 insertions(+), 19 deletions(-)
+ create mode 100644 arch/s390/mm/ipte_batch.c
+
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 7828fbe0fc42..5821d4d42d1d 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -732,6 +732,14 @@ config MAX_PHYSMEM_BITS
+ 	  Increasing the number of bits also increases the kernel image size.
+ 	  By default 46 bits (64TB) are supported.
+=20
++config IPTE_BATCH
++	def_bool y
++	prompt "Enables Additional Entries for IPTE instruction"
++	select ARCH_HAS_LAZY_MMU_MODE
++	help
++	  This option enables using of "Additional Entries" field of the IPTE
++	  instruction, which capitalizes on the lazy MMU mode infrastructure.
++
+ endmenu
+=20
+ menu "I/O subsystem"
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgta=
+ble.h
+index 67f5df20a57e..fd135e2a1ecf 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -39,6 +39,82 @@ enum {
+=20
+ extern atomic_long_t direct_pages_count[PG_DIRECT_MAP_MAX];
+=20
++#if !defined(CONFIG_IPTE_BATCH) || defined(__DECOMPRESSOR)
++static inline
++bool ipte_batch_ptep_test_and_clear_young(struct vm_area_struct *vma,
++					  unsigned long addr, pte_t *ptep,
++					  int *res)
++{
++	return false;
++}
++
++static inline
++bool ipte_batch_ptep_get_and_clear(struct mm_struct *mm,
++				   unsigned long addr, pte_t *ptep, pte_t *res)
++{
++	return false;
++}
++
++static inline
++bool ipte_batch_ptep_get_and_clear_full(struct mm_struct *mm,
++					unsigned long addr, pte_t *ptep,
++					int full, pte_t *res)
++{
++	return false;
++}
++
++static inline
++bool ipte_batch_ptep_modify_prot_start(struct vm_area_struct *vma,
++				       unsigned long addr, pte_t *ptep, pte_t *res)
++{
++	return false;
++}
++
++static inline
++bool ipte_batch_ptep_modify_prot_commit(struct vm_area_struct *vma,
++					unsigned long addr, pte_t *ptep,
++					pte_t old_pte, pte_t pte)
++{
++	return false;
++}
++
++static inline
++bool ipte_batch_ptep_set_wrprotect(struct mm_struct *mm,
++				   unsigned long addr, pte_t *ptep)
++{
++	return false;
++}
++
++static inline bool ipte_batch_set_pte(pte_t *ptep, pte_t pte)
++{
++	return false;
++}
++
++static inline bool ipte_batch_ptep_get(pte_t *ptep, pte_t *res)
++{
++	return false;
++}
++#else
++bool ipte_batch_ptep_test_and_clear_young(struct vm_area_struct *vma,
++					  unsigned long addr, pte_t *ptep,
++					  int *res);
++bool ipte_batch_ptep_get_and_clear(struct mm_struct *mm,
++				   unsigned long addr, pte_t *ptep, pte_t *res);
++bool ipte_batch_ptep_get_and_clear_full(struct mm_struct *mm,
++					unsigned long addr, pte_t *ptep,
++					int full, pte_t *res);
++bool ipte_batch_ptep_modify_prot_start(struct vm_area_struct *vma,
++				       unsigned long addr, pte_t *ptep, pte_t *res);
++bool ipte_batch_ptep_modify_prot_commit(struct vm_area_struct *vma,
++					unsigned long addr, pte_t *ptep,
++					pte_t old_pte, pte_t pte);
++
++bool ipte_batch_ptep_set_wrprotect(struct mm_struct *mm,
++				   unsigned long addr, pte_t *ptep);
++bool ipte_batch_set_pte(pte_t *ptep, pte_t pte);
++bool ipte_batch_ptep_get(pte_t *ptep, pte_t *res);
++#endif
++
+ static inline void update_page_count(int level, long count)
+ {
+ 	if (IS_ENABLED(CONFIG_PROC_FS))
+@@ -978,11 +1054,32 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+ 	WRITE_ONCE(*pmdp, pmd);
+ }
+=20
+-static inline void set_pte(pte_t *ptep, pte_t pte)
++static inline void __set_pte(pte_t *ptep, pte_t pte)
+ {
+ 	WRITE_ONCE(*ptep, pte);
+ }
+=20
++static inline void set_pte(pte_t *ptep, pte_t pte)
++{
++	if (!ipte_batch_set_pte(ptep, pte))
++		__set_pte(ptep, pte);
++}
++
++static inline pte_t __ptep_get(pte_t *ptep)
++{
++	return READ_ONCE(*ptep);
++}
++
++#define ptep_get ptep_get
++static inline pte_t ptep_get(pte_t *ptep)
++{
++	pte_t res;
++
++	if (ipte_batch_ptep_get(ptep, &res))
++		return res;
++	return __ptep_get(ptep);
++}
++
+ static inline void pgd_clear(pgd_t *pgd)
+ {
+ 	if ((pgd_val(*pgd) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_ENTRY_TYPE=
+_R1)
+@@ -1149,6 +1246,26 @@ static __always_inline void __ptep_ipte_range(unsi=
+gned long address, int nr,
+ 	} while (nr !=3D 255);
+ }
+=20
++#ifdef CONFIG_IPTE_BATCH
++void arch_enter_lazy_mmu_mode_pte(struct mm_struct *mm,
++				  unsigned long addr, unsigned long end,
++				  pte_t *pte);
++#define arch_enter_lazy_mmu_mode_pte arch_enter_lazy_mmu_mode_pte
++
++void arch_pause_lazy_mmu_mode(void);
++#define arch_pause_lazy_mmu_mode arch_pause_lazy_mmu_mode
++
++void arch_resume_lazy_mmu_mode(void);
++#define arch_resume_lazy_mmu_mode arch_resume_lazy_mmu_mode
++
++static inline void arch_enter_lazy_mmu_mode(void)
++{
++}
++
++void arch_leave_lazy_mmu_mode(void);
++void arch_flush_lazy_mmu_mode(void);
++#endif
++
+ /*
+  * This is hard to understand. ptep_get_and_clear and ptep_clear_flush
+  * both clear the TLB for the unmapped pte. The reason is that
+@@ -1166,8 +1283,8 @@ pte_t ptep_xchg_direct(struct mm_struct *, unsigned=
+ long, pte_t *, pte_t);
+ pte_t ptep_xchg_lazy(struct mm_struct *, unsigned long, pte_t *, pte_t);
+=20
+ #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+-static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+-					    unsigned long addr, pte_t *ptep)
++static inline int __ptep_test_and_clear_young(struct vm_area_struct *vma=
+,
++					      unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte =3D *ptep;
+=20
+@@ -1175,6 +1292,16 @@ static inline int ptep_test_and_clear_young(struct=
+ vm_area_struct *vma,
+ 	return pte_young(pte);
+ }
+=20
++static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
++					    unsigned long addr, pte_t *ptep)
++{
++	int res;
++
++	if (ipte_batch_ptep_test_and_clear_young(vma, addr, ptep, &res))
++		return res;
++	return __ptep_test_and_clear_young(vma, addr, ptep);
++}
++
+ #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+ 					 unsigned long address, pte_t *ptep)
+@@ -1183,8 +1310,8 @@ static inline int ptep_clear_flush_young(struct vm_=
+area_struct *vma,
+ }
+=20
+ #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+-static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+-				       unsigned long addr, pte_t *ptep)
++static inline pte_t __ptep_get_and_clear(struct mm_struct *mm,
++					 unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t res;
+=20
+@@ -1192,14 +1319,49 @@ static inline pte_t ptep_get_and_clear(struct mm_=
+struct *mm,
+ 	/* At this point the reference through the mapping is still present */
+ 	if (mm_is_protected(mm) && pte_present(res))
+ 		WARN_ON_ONCE(uv_convert_from_secure_pte(res));
++	return res;
++}
++
++static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
++				       unsigned long addr, pte_t *ptep)
++{
++	pte_t res;
++
++	if (!ipte_batch_ptep_get_and_clear(mm, addr, ptep, &res))
++		res =3D __ptep_get_and_clear(mm, addr, ptep);
+ 	page_table_check_pte_clear(mm, addr, res);
+ 	return res;
+ }
+=20
+ #define __HAVE_ARCH_PTEP_MODIFY_PROT_TRANSACTION
+-pte_t ptep_modify_prot_start(struct vm_area_struct *, unsigned long, pte=
+_t *);
+-void ptep_modify_prot_commit(struct vm_area_struct *, unsigned long,
+-			     pte_t *, pte_t, pte_t);
++pte_t ___ptep_modify_prot_start(struct vm_area_struct *, unsigned long, =
+pte_t *);
++void ___ptep_modify_prot_commit(struct vm_area_struct *, unsigned long,
++			       pte_t *, pte_t, pte_t);
++
++static inline
++pte_t ptep_modify_prot_start(struct vm_area_struct *vma,
++			     unsigned long addr, pte_t *ptep)
++{
++	pte_t res;
++
++	if (ipte_batch_ptep_modify_prot_start(vma, addr, ptep, &res))
++		return res;
++	return ___ptep_modify_prot_start(vma, addr, ptep);
++}
++
++static inline
++void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long a=
+ddr,
++			     pte_t *ptep, pte_t old_pte, pte_t pte)
++{
++	if (!ipte_batch_ptep_modify_prot_commit(vma, addr, ptep, old_pte, pte))
++		___ptep_modify_prot_commit(vma, addr, ptep, old_pte, pte);
++}
++
++bool ipte_batch_ptep_modify_prot_start(struct vm_area_struct *vma,
++				       unsigned long addr, pte_t *ptep, pte_t *res);
++bool ipte_batch_ptep_modify_prot_commit(struct vm_area_struct *vma,
++					unsigned long addr, pte_t *ptep,
++					pte_t old_pte, pte_t pte);
+=20
+ #define __HAVE_ARCH_PTEP_CLEAR_FLUSH
+ static inline pte_t ptep_clear_flush(struct vm_area_struct *vma,
+@@ -1223,9 +1385,9 @@ static inline pte_t ptep_clear_flush(struct vm_area=
+_struct *vma,
+  * full=3D=3D1 and a simple pte_clear is enough. See tlb.h.
+  */
+ #define __HAVE_ARCH_PTEP_GET_AND_CLEAR_FULL
+-static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
+-					    unsigned long addr,
+-					    pte_t *ptep, int full)
++static inline pte_t __ptep_get_and_clear_full(struct mm_struct *mm,
++					      unsigned long addr,
++					      pte_t *ptep, int full)
+ {
+ 	pte_t res;
+=20
+@@ -1236,8 +1398,6 @@ static inline pte_t ptep_get_and_clear_full(struct =
+mm_struct *mm,
+ 		res =3D ptep_xchg_lazy(mm, addr, ptep, __pte(_PAGE_INVALID));
+ 	}
+=20
+-	page_table_check_pte_clear(mm, addr, res);
+-
+ 	/* Nothing to do */
+ 	if (!mm_is_protected(mm) || !pte_present(res))
+ 		return res;
+@@ -1258,9 +1418,21 @@ static inline pte_t ptep_get_and_clear_full(struct=
+ mm_struct *mm,
+ 	return res;
+ }
+=20
++static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
++					    unsigned long addr,
++					    pte_t *ptep, int full)
++{
++	pte_t res;
++
++	if (!ipte_batch_ptep_get_and_clear_full(mm, addr, ptep, full, &res))
++		res =3D __ptep_get_and_clear_full(mm, addr, ptep, full);
++	page_table_check_pte_clear(mm, addr, res);
++	return res;
++}
++
+ #define __HAVE_ARCH_PTEP_SET_WRPROTECT
+-static inline void ptep_set_wrprotect(struct mm_struct *mm,
+-				      unsigned long addr, pte_t *ptep)
++static inline void __ptep_set_wrprotect(struct mm_struct *mm,
++					unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte =3D *ptep;
+=20
+@@ -1268,6 +1440,13 @@ static inline void ptep_set_wrprotect(struct mm_st=
+ruct *mm,
+ 		ptep_xchg_lazy(mm, addr, ptep, pte_wrprotect(pte));
+ }
+=20
++static inline void ptep_set_wrprotect(struct mm_struct *mm,
++				      unsigned long addr, pte_t *ptep)
++{
++	if (!ipte_batch_ptep_set_wrprotect(mm, addr, ptep))
++		__ptep_set_wrprotect(mm, addr, ptep);
++}
++
+ /*
+  * Check if PTEs only differ in _PAGE_PROTECT HW bit, but also allow SW =
+PTE
+  * bits in the comparison. Those might change e.g. because of dirty and =
+young
+diff --git a/arch/s390/mm/Makefile b/arch/s390/mm/Makefile
+index 193899c39ca7..0f6c6de447d4 100644
+--- a/arch/s390/mm/Makefile
++++ b/arch/s390/mm/Makefile
+@@ -11,5 +11,6 @@ obj-$(CONFIG_DEBUG_VIRTUAL)	+=3D physaddr.o
+ obj-$(CONFIG_HUGETLB_PAGE)	+=3D hugetlbpage.o
+ obj-$(CONFIG_PTDUMP)		+=3D dump_pagetables.o
+ obj-$(CONFIG_PFAULT)		+=3D pfault.o
++obj-$(CONFIG_IPTE_BATCH)	+=3D ipte_batch.o
+=20
+ obj-$(subst m,y,$(CONFIG_KVM))	+=3D gmap_helpers.o
+diff --git a/arch/s390/mm/ipte_batch.c b/arch/s390/mm/ipte_batch.c
+new file mode 100644
+index 000000000000..49b166d499a9
+--- /dev/null
++++ b/arch/s390/mm/ipte_batch.c
+@@ -0,0 +1,396 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/pgtable.h>
++#include <asm/facility.h>
++#include <kunit/visibility.h>
++
++#define PTE_POISON	0
++
++struct ipte_batch {
++	struct mm_struct *mm;
++	unsigned long base_addr;
++	unsigned long base_end;
++	pte_t *base_pte;
++	pte_t *start_pte;
++	pte_t *end_pte;
++	pte_t cache[PTRS_PER_PTE];
++};
++
++static DEFINE_PER_CPU(struct ipte_batch, ipte_range);
++
++static int count_contiguous(pte_t *start, pte_t *end, bool *valid)
++{
++	pte_t *ptep;
++
++	*valid =3D !(pte_val(*start) & _PAGE_INVALID);
++
++	for (ptep =3D start + 1; ptep < end; ptep++) {
++		if (*valid) {
++			if (pte_val(*ptep) & _PAGE_INVALID)
++				break;
++		} else {
++			if (!(pte_val(*ptep) & _PAGE_INVALID))
++				break;
++		}
++	}
++
++	return ptep - start;
++}
++
++static void __invalidate_pte_range(struct mm_struct *mm, unsigned long a=
+ddr,
++				   int nr_ptes, pte_t *ptep)
++{
++	atomic_inc(&mm->context.flush_count);
++	if (cpu_has_tlb_lc() &&
++	    cpumask_equal(mm_cpumask(mm), cpumask_of(smp_processor_id())))
++		__ptep_ipte_range(addr, nr_ptes - 1, ptep, IPTE_LOCAL);
++	else
++		__ptep_ipte_range(addr, nr_ptes - 1, ptep, IPTE_GLOBAL);
++	atomic_dec(&mm->context.flush_count);
++}
++
++static int invalidate_pte_range(struct mm_struct *mm, unsigned long addr=
+,
++				pte_t *start, pte_t *end)
++{
++	int nr_ptes;
++	bool valid;
++
++	nr_ptes =3D count_contiguous(start, end, &valid);
++	if (valid)
++		__invalidate_pte_range(mm, addr, nr_ptes, start);
++
++	return nr_ptes;
++}
++
++static void set_pte_range(struct mm_struct *mm, unsigned long addr,
++			  pte_t *ptep, pte_t *end, pte_t *cache)
++{
++	int i, nr_ptes;
++
++	while (ptep < end) {
++		nr_ptes =3D invalidate_pte_range(mm, addr, ptep, end);
++
++		for (i =3D 0; i < nr_ptes; i++, ptep++, cache++) {
++			__set_pte(ptep, *cache);
++			*cache =3D __pte(PTE_POISON);
++		}
++
++		addr +=3D nr_ptes * PAGE_SIZE;
++	}
++}
++
++static void enter_ipte_batch(struct mm_struct *mm,
++			     unsigned long addr, unsigned long end, pte_t *pte)
++{
++	struct ipte_batch *ib;
++
++	ib =3D &get_cpu_var(ipte_range);
++
++	ib->mm =3D mm;
++	ib->base_addr =3D addr;
++	ib->base_end =3D end;
++	ib->base_pte =3D pte;
++}
++
++static void leave_ipte_batch(void)
++{
++	pte_t *ptep, *start, *start_cache, *cache;
++	unsigned long start_addr, addr;
++	struct ipte_batch *ib;
++	int start_idx;
++
++	ib =3D &get_cpu_var(ipte_range);
++	if (!ib->mm) {
++		put_cpu_var(ipte_range);
++		return;
++	}
++	put_cpu_var(ipte_range);
++
++	lockdep_assert_preemption_disabled();
++	if (!ib->start_pte)
++		goto done;
++
++	start =3D ib->start_pte;
++	start_idx =3D ib->start_pte - ib->base_pte;
++	start_addr =3D ib->base_addr + start_idx * PAGE_SIZE;
++	addr =3D start_addr;
++	start_cache =3D &ib->cache[start_idx];
++	cache =3D start_cache;
++	for (ptep =3D start; ptep < ib->end_pte; ptep++, cache++, addr +=3D PAG=
+E_SIZE) {
++		if (pte_val(*cache) =3D=3D PTE_POISON) {
++			if (start) {
++				set_pte_range(ib->mm, start_addr, start, ptep, start_cache);
++				start =3D NULL;
++			}
++		} else if (!start) {
++			start =3D ptep;
++			start_addr =3D addr;
++			start_cache =3D cache;
++		}
++	}
++	set_pte_range(ib->mm, start_addr, start, ptep, start_cache);
++
++	ib->start_pte =3D NULL;
++	ib->end_pte =3D NULL;
++
++done:
++	ib->mm =3D NULL;
++	ib->base_addr =3D 0;
++	ib->base_end =3D 0;
++	ib->base_pte =3D NULL;
++
++	put_cpu_var(ipte_range);
++}
++
++static void flush_lazy_mmu_mode(void)
++{
++	unsigned long addr, end;
++	struct ipte_batch *ib;
++	struct mm_struct *mm;
++	pte_t *pte;
++
++	ib =3D &get_cpu_var(ipte_range);
++	if (ib->mm) {
++		mm =3D ib->mm;
++		addr =3D ib->base_addr;
++		end =3D ib->base_end;
++		pte =3D ib->base_pte;
++
++		leave_ipte_batch();
++		enter_ipte_batch(mm, addr, end, pte);
++	}
++	put_cpu_var(ipte_range);
++}
++
++void arch_enter_lazy_mmu_mode_pte(struct mm_struct *mm,
++				  unsigned long addr, unsigned long end,
++				  pte_t *pte)
++{
++	if (!test_facility(13))
++		return;
++	enter_ipte_batch(mm, addr, end, pte);
++}
++EXPORT_SYMBOL_IF_KUNIT(arch_enter_lazy_mmu_mode_pte);
++
++void arch_leave_lazy_mmu_mode(void)
++{
++	if (!test_facility(13))
++		return;
++	leave_ipte_batch();
++}
++EXPORT_SYMBOL_IF_KUNIT(arch_leave_lazy_mmu_mode);
++
++void arch_flush_lazy_mmu_mode(void)
++{
++	if (!test_facility(13))
++		return;
++	flush_lazy_mmu_mode();
++}
++EXPORT_SYMBOL_IF_KUNIT(arch_flush_lazy_mmu_mode);
++
++static void __ipte_batch_set_pte(struct ipte_batch *ib, pte_t *ptep, pte=
+_t pte)
++{
++	unsigned int idx =3D ptep - ib->base_pte;
++
++	lockdep_assert_preemption_disabled();
++	ib->cache[idx] =3D pte;
++
++	if (!ib->start_pte) {
++		ib->start_pte =3D ptep;
++		ib->end_pte =3D ptep + 1;
++	} else if (ptep < ib->start_pte) {
++		ib->start_pte =3D ptep;
++	} else if (ptep + 1 > ib->end_pte) {
++		ib->end_pte =3D ptep + 1;
++	}
++}
++
++static pte_t __ipte_batch_ptep_get(struct ipte_batch *ib, pte_t *ptep)
++{
++	unsigned int idx =3D ptep - ib->base_pte;
++
++	lockdep_assert_preemption_disabled();
++	if (pte_val(ib->cache[idx]) =3D=3D PTE_POISON)
++		return __ptep_get(ptep);
++	return ib->cache[idx];
++}
++
++static bool lazy_mmu_mode(struct ipte_batch *ib, struct mm_struct *mm, p=
+te_t *ptep)
++{
++	unsigned int nr_ptes;
++
++	lockdep_assert_preemption_disabled();
++	if (!is_lazy_mmu_mode_active())
++		return false;
++	if (!mm)
++		return false;
++	if (!ib->mm)
++		return false;
++	if (ptep < ib->base_pte)
++		return false;
++	nr_ptes =3D (ib->base_end - ib->base_addr) / PAGE_SIZE;
++	if (ptep >=3D ib->base_pte + nr_ptes)
++		return false;
++	return true;
++}
++
++static struct ipte_batch *get_ipte_batch_nomm(pte_t *ptep)
++{
++	struct ipte_batch *ib;
++
++	ib =3D &get_cpu_var(ipte_range);
++	if (!lazy_mmu_mode(ib, ib->mm, ptep)) {
++		put_cpu_var(ipte_range);
++		return NULL;
++	}
++
++	return ib;
++}
++
++static struct ipte_batch *get_ipte_batch(struct mm_struct *mm, pte_t *pt=
+ep)
++{
++	struct ipte_batch *ib;
++
++	ib =3D &get_cpu_var(ipte_range);
++	if (!lazy_mmu_mode(ib, mm, ptep)) {
++		put_cpu_var(ipte_range);
++		return NULL;
++	}
++
++	return ib;
++}
++
++static void put_ipte_batch(struct ipte_batch *ib)
++{
++	put_cpu_var(ipte_range);
++}
++
++bool ipte_batch_set_pte(pte_t *ptep, pte_t pte)
++{
++	struct ipte_batch *ib;
++
++	ib =3D get_ipte_batch_nomm(ptep);
++	if (!ib)
++		return false;
++	__ipte_batch_set_pte(ib, ptep, pte);
++	put_ipte_batch(ib);
++
++	return true;
++}
++
++bool ipte_batch_ptep_get(pte_t *ptep, pte_t *res)
++{
++	struct ipte_batch *ib;
++
++	ib =3D get_ipte_batch_nomm(ptep);
++	if (!ib)
++		return false;
++	*res =3D __ipte_batch_ptep_get(ib, ptep);
++	put_ipte_batch(ib);
++
++	return true;
++}
++
++bool ipte_batch_ptep_test_and_clear_young(struct vm_area_struct *vma,
++					  unsigned long addr, pte_t *ptep,
++					  int *res)
++{
++	struct ipte_batch *ib;
++	pte_t pte, old;
++
++	ib =3D get_ipte_batch(vma->vm_mm, ptep);
++	if (!ib)
++		return false;
++
++	old =3D __ipte_batch_ptep_get(ib, ptep);
++	pte =3D pte_mkold(old);
++	__ipte_batch_set_pte(ib, ptep, pte);
++
++	put_ipte_batch(ib);
++
++	*res =3D pte_young(old);
++
++	return true;
++}
++
++bool ipte_batch_ptep_get_and_clear(struct mm_struct *mm,
++				   unsigned long addr, pte_t *ptep, pte_t *res)
++{
++	struct ipte_batch *ib;
++	pte_t pte, old;
++
++	ib =3D get_ipte_batch(mm, ptep);
++	if (!ib)
++		return false;
++
++	old =3D __ipte_batch_ptep_get(ib, ptep);
++	pte =3D __pte(_PAGE_INVALID);
++	__ipte_batch_set_pte(ib, ptep, pte);
++
++	put_ipte_batch(ib);
++
++	*res =3D old;
++
++	return true;
++}
++
++bool ipte_batch_ptep_get_and_clear_full(struct mm_struct *mm,
++					unsigned long addr, pte_t *ptep,
++					int full, pte_t *res)
++{
++	struct ipte_batch *ib;
++	pte_t pte, old;
++
++	ib =3D get_ipte_batch(mm, ptep);
++	if (!ib)
++		return false;
++
++	old =3D __ipte_batch_ptep_get(ib, ptep);
++	pte =3D __pte(_PAGE_INVALID);
++	__ipte_batch_set_pte(ib, ptep, pte);
++
++	put_ipte_batch(ib);
++
++	*res =3D old;
++
++	return true;
++}
++
++bool ipte_batch_ptep_modify_prot_start(struct vm_area_struct *vma,
++				       unsigned long addr, pte_t *ptep, pte_t *res)
++{
++	return ipte_batch_ptep_get_and_clear(vma->vm_mm, addr, ptep, res);
++}
++
++bool ipte_batch_ptep_modify_prot_commit(struct vm_area_struct *vma,
++					unsigned long addr, pte_t *ptep,
++					pte_t old_pte, pte_t pte)
++{
++	struct ipte_batch *ib;
++
++	ib =3D get_ipte_batch(vma->vm_mm, ptep);
++	if (!ib)
++		return false;
++	__ipte_batch_set_pte(ib, ptep, pte);
++	put_ipte_batch(ib);
++
++	return true;
++}
++
++bool ipte_batch_ptep_set_wrprotect(struct mm_struct *mm,
++				   unsigned long addr, pte_t *ptep)
++{
++	struct ipte_batch *ib;
++	pte_t pte, old;
++
++	ib =3D get_ipte_batch(mm, ptep);
++	if (!ib)
++		return false;
++
++	old =3D __ipte_batch_ptep_get(ib, ptep);
++	pte =3D pte_wrprotect(old);
++	__ipte_batch_set_pte(ib, ptep, pte);
++
++	put_ipte_batch(ib);
++
++	return true;
++}
+diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
+index 4acd8b140c4b..df36523bcbbb 100644
+--- a/arch/s390/mm/pgtable.c
++++ b/arch/s390/mm/pgtable.c
+@@ -166,14 +166,14 @@ pte_t ptep_xchg_lazy(struct mm_struct *mm, unsigned=
+ long addr,
+ }
+ EXPORT_SYMBOL(ptep_xchg_lazy);
+=20
+-pte_t ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long a=
+ddr,
+-			     pte_t *ptep)
++pte_t ___ptep_modify_prot_start(struct vm_area_struct *vma, unsigned lon=
+g addr,
++				pte_t *ptep)
+ {
+ 	return ptep_flush_lazy(vma->vm_mm, addr, ptep, 1);
+ }
+=20
+-void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long a=
+ddr,
+-			     pte_t *ptep, pte_t old_pte, pte_t pte)
++void ___ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned lon=
+g addr,
++				pte_t *ptep, pte_t old_pte, pte_t pte)
+ {
+ 	set_pte(ptep, pte);
+ }
+--=20
+2.51.0
 
 
