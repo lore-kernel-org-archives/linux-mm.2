@@ -4,117 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF037103A9BD
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:13:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 030E9103A9BD
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:13:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 534176B0093; Wed, 25 Mar 2026 10:13:23 -0400 (EDT)
+	id 6E2776B0005; Wed, 25 Mar 2026 10:13:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50BD06B0095; Wed, 25 Mar 2026 10:13:23 -0400 (EDT)
+	id 6BA966B0092; Wed, 25 Mar 2026 10:13:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 421F16B0096; Wed, 25 Mar 2026 10:13:23 -0400 (EDT)
+	id 5F7E36B0095; Wed, 25 Mar 2026 10:13:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FEA76B0093
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:13:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD1388C74D
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:13:22 +0000 (UTC)
-X-FDA: 84584777844.19.6AC0EA9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CF87D80011
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:13:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=THeeRJa+;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 511BB6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:13:58 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1EB2F1A094B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:13:58 +0000 (UTC)
+X-FDA: 84584779356.29.636291C
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4836A2000D
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:13:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vpHIGM3v;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774448001;
+	s=arc-20220608; t=1774448036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1F+7Gw+G/hP5z5nt7152wgtEV1xSsKN3O2mDCBx1HUw=;
-	b=R6zGxOrCxpP597wgtaY8TrKpWoleVLwpyP9RkBO3krM9aWsRuqcvKzN+Yze3e0QcZQtNID
-	tqlEZiEwNKYHaJ68O4DBhPhykPd8EvEPYY434n4Ua8QEun3XzP5gR/cj+jvC1fPCLMbAXI
-	VjL4Uq4SUuUyVZiW/m9NdkFGlyZgzPI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=THeeRJa+;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774448001; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=saGG4Qei2/D9ljTHLKXPOXlFFn9u3Nykrh8s/nvHDvM=;
+	b=uCGbrKJKHhrreYDSW+xMxtIw0Z5GUq8fTwawKyXhehsdl5K0JmM6q+jba5UX93nOugYGKq
+	RPvv/Eikw2WEkggnU938EUcyAyHnxR2pgb6Btdr8T16JnkNkIfJ83c2E62Ee+rG9KaQPhv
+	jkISRPdBUPh6xEg0VHv+jAaieanAy8c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774448036; a=rsa-sha256;
 	cv=none;
-	b=I06Q2SH0VnEhWeDDuzICp1qAhjod2hEICHfvN59wTXAGW1XmniG0r4Uwx1rZZ33moY+4CV
-	+JmVRriCEueCe3Ad4wFvchC3sB7odbxFh/nPCJLb8oxcrJRm7Xs6HP4+KBPWXpzb3awlch
-	Pyg5HSjntJI3/uzcHfPyTIYTeYVCADA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C103043D70;
-	Wed, 25 Mar 2026 14:13:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2230C116C6;
-	Wed, 25 Mar 2026 14:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774447999;
-	bh=O4KR79NA3w5wXHTjCgl3Y/eCUkwrrxsmxAb2QYX2GZc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=THeeRJa+fvQrbUlWi1AzdB4xesJwfM/iMX3IW08X/F2tnmO2Sq9kSk/X2JbnvBwo+
-	 iPnryERXRmcoJKHw/RDO7vBm9UnM6P4u2a/TcWW6nfb0TUYORcveAXebJPr293zK4g
-	 +Ias1QKlEaBi/7zTZtA8JdEJ1rJD+alcOdsXxMvOub3PzN5vN6Q+XGM1CXkMhPMjr2
-	 Csb2YPWXjwzAvXrWoN0WUbuDkR+1/J4hY4VMkUm1BHPU75vVOYy14wxbfq7tTP5S66
-	 vlraXxz0FCKhIq2kJIQumHP3qwlqv9CrN5md/W0QopKDjxp/BTGH75Ssk1SU3JAold
-	 B+q4e2Bddgs5Q==
-Message-ID: <92042416-251e-43bf-b5a7-cfa9c826d020@kernel.org>
-Date: Wed, 25 Mar 2026 15:13:09 +0100
+	b=COkZElvxY8Jf4Tm+8Oc24TUZKDMzF9ZZBIZQsdCImsnRT5sOhjelzuZ/6UDW2eOBUwVV1+
+	J5y91f+cDJ1ULVsUfIXyVI8T5d/TZYHTRJmY0Ymrw5AwVLCOvkt2s2SYlXw8MT1wM+trjQ
+	qsJe+rk/W7ugsRfsftRfjUGEr6eTXzE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vpHIGM3v;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774448031;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=saGG4Qei2/D9ljTHLKXPOXlFFn9u3Nykrh8s/nvHDvM=;
+	b=vpHIGM3vD8Cj3t5gomLzRm9u+inuYL6O4YHakNxqmTlftLBTERNxXAYsa+cUz1OpMc9H0Q
+	NXMTAcwx2RZSNoo9lFWrxv9lHTdCx1dH2NhQTcKQIMLEkLTzI7ZgLQSZ1A0DzgNaXS9N+x
+	bat6cR4ITfGma3axr7DekT55xNXc/Sc=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev,
+	bhe@redhat.com,
+	usamaarif642@gmail.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 0/4] fix unexpected type conversions and potential overflows
+Date: Wed, 25 Mar 2026 22:13:21 +0800
+Message-ID: <cover.1774447069.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 19/21] uio: replace deprecated mmap hook with
- mmap_prepare in uio_info
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Bodo Stroesser <bostroesser@gmail.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
- linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <cover.1774045440.git.ljs@kernel.org>
- <157583e4477705b496896c7acd4ac88a937b8fa6.1774045440.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <157583e4477705b496896c7acd4ac88a937b8fa6.1774045440.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: afpx7aqym6o3i91dp1styz4rwgde9j1e
+X-Rspamd-Queue-Id: 4836A2000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CF87D80011
-X-Stat-Signature: 9bxf199sctfgh3dw9cjjjb6u5a35ehzt
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774448000-855
-X-HE-Meta: U2FsdGVkX188tXvSYTY125bFgwMzfj8k+GC9W6cVC0Nor0KVqxVDfhcGYNOzAZSzk7/uXjBJTsAaxF13AvDFpen6NcDPrVMrfNAmLCvW9LoEKBVEPsrE1ypehS4eQUYiFmpgaf/TcQ+5Nvc5oVYsugR8iFmXU+SEfmMvoL7+hpItlWUuvhErdb8lZbt7W3MjZcKCUjA1DwSVPyQ0mwy0le9fo2oDPMMHLqidx4dpPEVu9eoQydUbcPNNxvecNaGYSd7G4gUfUjsssz8twdpnXnQqm1llY9RnqANghEgtEWM0gkUpYpsWOIbvmBfHa2x+G8c69h3c2lLyozyYjdeZh1xgYb2rhhsQJdq1FBMOOs3mcpgXdPa240TmnD9d+Q1elU6GAFdnuqIAXesR1KbWf61doKvzFSCQWc7DLvmN7PjC8KLE05CHzZ6KVD6wQAjJBrYVGhUkPGif1XNYbr/537f8IgdR+e/r3vrRV3D8aYgchERgHbj+M3b0sYpl0f8CcZBMcgvvSDdtULfEqw2cLelyGX2ziqv+DEx11ITrfSX8qbQ5BhHgZp5/gAkYZ8OJzJ4cVWHG/r5XYK1jDy5Em98DRJfHPzsL0yy2tk8LdP5SlWx//PxA5bvHH6Q9zcImVyCFaBUVDRMbDbfzSMWX4ckOG5SPplhPY+WlAVM1qd7P7cjmf84pGP9r+Hujbx2DTjdSUFxUdj6s3/3OzjoZlnW+SiZ+mz2CWmLZR8+k7VcnTO9DfXAGHU/4TSKpEE2+OOBMoYoyoGhAfzVW/k/fdZwd5og4MDjSIKzAHno6geIKZtWHbuoMEJ1zYIbcmNmHRXGNcvKthWGfdMz65UWJXLM1sbHYeBXSC4YN4mKiu0UrXUF5XIAmNYFJ4nl9U0XMh645OXopaGSYHf5oAji50B1ziTnM1eJethuhh25V0U4ZEA1a6bkx8dSaS2nFUetIFrC8bPgktcGyTx507gO
- rfOEoxos
- M9I1hQ8J/BcfXYFgD7RHwenUxt3wQSE9Lpo4gpkxpGCegnp2bNrcCfFvBltzTHFh5DkVfIEIOZQ+19B2hob20/VqaisvjwY502SqejdrMQv05lmXdPxEyhUm4z5HvQVE8d8uMXfVBYwWFg6C0hYTy4BCZc5ayOPuwYQSs0KWcnzgR4oCY/X1kdUnJ7MgePikbUCd+m1RT0Fi2droXET9FX7CkAHx1rWtNpuvwyCtb2NYu9eWidBOwtnrb7qds5asrPjpX0lBpyby8fBjF3Pfc0zHacoX+TPND7+lBHmmpUvUzEel8zs2Mbm/7Iwz6WShEjkUM3AygtCq1VsUzFOV0AjWuitOZ8lLUeylxUHHiuoGZVasUTefrUk337cTh+O+6v7+Hsa+5sAcnmqOLWjsjrhSnKw==
+X-HE-Tag: 1774448036-214018
+X-HE-Meta: U2FsdGVkX1+mzDrE/eeNdpfjw69leu5S3Gjkstg/nkSlxPrxXbxUPBnsALH1UvDSawYCm/tVGj/ToeHxqO1ITDvyF4Sz5ChC5kBAvWEe7WBlfLSFqQy3k0QJZ7cDMP+jynB3JGCq0x55i+EN0/jLq6/qnLA/hkXWiwr588XPe1YsFAXPimj7idPiuaXdZtw1yExn2Uw+gcXYuV20R4xcwTWksZEo1GgT3ZmkmtH85afbX3dbWO732O/j1BQD9VGoeG6lJ36+1A7SA2HzG8n+cgjR9RPNYH+ZcDWOeUpIJWpoSSuPAAHkQ2Ef72w2H3yF3jpBVTYIgg9KXmtGVJq3efUqB/BsDIy9tU578NPq+d/bggkHtQ18+c9ewvCm8sGr3Xzc0kX7qTpLajIox8f6JT4wtiHfW4uBXp0OlwJfsfso/pDng/ugL8wPQsESwzei8T+gR5EOHn4IWh+0G/9Q/BM9ixvSgNJw0Uwl5cZxW5xF6EoSpFgjgLHjDZhXh/gZXMKzqbTr2SsW8HE/ptWcSdpHnzOUakpFhiTmdjceXGWvHm8FbO4Cmh0KdZoJN+FdO5yf7AgaPJJ2R/CMvAn5Mk1a1TBGXloqgjc4/KrK2J0sqRiY4HKxk9TgmHZ4V684/LA5OiftMBrg6BepbSXbNlx2J98pZopQnmHlYjzVNbCVN7G9F4hDpaX8wlrti+0Fgzcbm08D7ikr7RkOcQdpPCfc8CX4RCEQ0dgrWQ4q0TEopf5lST8p10ecj5cdEnHxCbItvEiUlbd4Rwgp5hyCXZm+VH2BarHWMAKLVecbEdwfYUqYxJH+VKUMBHFrVxQ34WRrHBQ0a5AP5SBEd6jLMPvlyrNGPxV+0PqhyuFkHyAC2lFaS/p08Ge7K7Ov9uTGi/MYHaIfGgaMr1hnXPCqzXu735K9m2bbcGY3ck8fmWfWBM/1WCVKgail+HZapiKlazBv26HL1liIG6OYMp2
+ 14a8bkAf
+ Qffy/v4H1oO4OD7E0QE5kgoxfbzoJ1udx+4MDgyAq0X6TQDyR9kehQ+PWIk5V41lpsckKrrhPBswOrwzplzIPwz3Ep99AF6+b86ilETHJ+gBuBQQXoI3tZRSq/n7HqWANfl7TLT7gZbUsS0BaeNCJ0CPz/7AeTfi79+Iea5hKvFD1rTA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,50 +107,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
-> The f_op->mmap interface is deprecated, so update uio_info to use its
-> successor, mmap_prepare.
-> 
-> Therefore, replace the uio_info->mmap hook with a new
-> uio_info->mmap_prepare hook, and update its one user, target_core_user,
-> to both specify this new mmap_prepare hook and also to use the new
-> vm_ops->mapped() hook to continue to maintain a correct udev->kref
-> refcount.
-> 
-> Then update uio_mmap() to utilise the mmap_prepare compatibility layer to
-> invoke this callback from the uio mmap invocation.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Hi all,
 
-> ---
->  drivers/target/target_core_user.c | 26 ++++++++++++++++++--------
->  drivers/uio/uio.c                 | 10 ++++++++--
->  include/linux/uio_driver.h        |  4 ++--
->  3 files changed, 28 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-> index af95531ddd35..edc2afd5f4ee 100644
-> --- a/drivers/target/target_core_user.c
-> +++ b/drivers/target/target_core_user.c
-> @@ -1860,6 +1860,17 @@ static struct page *tcmu_try_get_data_page(struct tcmu_dev *udev, uint32_t dpi)
->  	return NULL;
->  }
->  
-> +static int tcmu_vma_mapped(unsigned long start, unsigned long end, pgoff_t pgoff,
-> +			   const struct file *file, void **vm_private_data)
-> +{
-> +	struct tcmu_dev *udev = *vm_private_data;
-> +
-> +	pr_debug("vma_mapped\n");
+As Harry Yoo pointed out [1], in scenarios where massive state updates occur
+(e.g., during the reparenting of LRU folios), the values passed to memcg stat
+update functions can accumulate and exceed the upper limit of a 32-bit integer.
 
-This looked like testing leftover at first, but it matches
-tcmu_vma_open()/close() (in case anyone else wonders).
+If the parameter types are not large enough (like 'int') or are handled
+incorrectly, it can lead to severe truncation, potential overflow issues,
+and unexpected type conversion bugs.
 
-> +
-> +	kref_get(&udev->kref);
-> +	return 0;
-> +}
-> +
+This series aims to address these issues by correcting the parameter types
+in the relevant functions, and fixing an implicit conversion bug in
+memcg_state_val_in_pages().
+
+This series is based on the next-20260323.
+
+Comments and suggestions are welcome!
+
+Thanks,
+Qi
+
+[1]. https://lore.kernel.org/all/acDxaEgnqPI-Z4be@hyeyoo/
+
+Qi Zheng (4):
+  mm: memcontrol: correct the type of stats_updates to unsigned long
+  mm: memcontrol: change val type to long in
+    __mod_memcg_{lruvec_}state()
+  mm: memcontrol: correct the nr_pages parameter type of
+    mem_cgroup_update_lru_size()
+  mm: memcontrol: fix unexpected massive positive number in
+    memcg_state_val_in_pages()
+
+ include/linux/memcontrol.h   |  2 +-
+ include/trace/events/memcg.h | 10 +++++-----
+ mm/memcontrol.c              | 37 +++++++++++++++++++-----------------
+ 3 files changed, 26 insertions(+), 23 deletions(-)
+
+-- 
+2.20.1
+
 
