@@ -4,117 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 775BA106B53F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 13:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8AC3106B53F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 13:58:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF7156B0089; Wed, 25 Mar 2026 09:58:10 -0400 (EDT)
+	id 1E9626B0005; Wed, 25 Mar 2026 09:58:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCE4F6B008A; Wed, 25 Mar 2026 09:58:10 -0400 (EDT)
+	id 1C0EC6B008A; Wed, 25 Mar 2026 09:58:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE4626B008C; Wed, 25 Mar 2026 09:58:10 -0400 (EDT)
+	id 0FDE56B008C; Wed, 25 Mar 2026 09:58:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BD9256B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:58:10 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E6FE5B900
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:58:10 +0000 (UTC)
-X-FDA: 84584739540.19.D78EF73
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8E95714001A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:58:08 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a/Isf1Nn";
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F08FE6B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:58:30 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 91AAE1B8B64
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:58:30 +0000 (UTC)
+X-FDA: 84584740380.09.6712A1B
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8C817140008
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 13:58:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=JR3OsthR;
+	spf=none (imf23.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774447088;
+	s=arc-20220608; t=1774447109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s5C26zCJLmThL5P9gL0eaNPwT8Ft4vwHwAr08kkFcwE=;
-	b=uCyzkeimgR1Q5UFmb1DZi8qDL3l6zBJ7MmBk22NwOWkIQQn+ETwI9C8T7nYSk0whj41wt8
-	/tIw5kSsjO2KDts53GEstoFGHWedKBcz4wnxrloyrQNx9q9c0zV6wVrDwgPpke7VfioL3q
-	jUonYH8v7wPxLZ9H46+C5L7P8lJsRTc=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a/Isf1Nn";
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774447088; a=rsa-sha256;
+	bh=0Wh5nuRIVjmmR3h1DHbl/7y/dEHsy8Ic5tYZGLWZU9U=;
+	b=cnNLT3JrFBYZgVhOvF0DRV3yohYCvGhoGzWuyFOZL2xlPBHep6/NdZcxqNaKLQBLDo/DFo
+	E39nS3Xa9QIUOvGn3qi6VYPGpC/IRzLxOKOOSd1lWfVo7WEPdbj1gzoLBgQCF6KTBeO1W0
+	VWIAWz/fAjCCrpxlyjcBOyZEubEPbMw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774447109; a=rsa-sha256;
 	cv=none;
-	b=AiAd64iGG/F4zYxjkE+b0CFKKAGew6YRYQN/LV78UTWJ/xQ9gTFws5z7oNAtBejmY9S0FM
-	kA6Gog2KoUyFZbuACLl68X1GbIitJa18P2bnGf0YFjhU7LP24jGcjeqXelq3csYrEaAKyd
-	U5EiYtkWcdPrDGJ3mFGDkSjgl8hy7x0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF39C600C4;
-	Wed, 25 Mar 2026 13:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A8AC4CEF7;
-	Wed, 25 Mar 2026 13:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774447087;
-	bh=KyjiwAokSYk7ozvT6M+V8CAJzdrqAh71WLKooyLlGIw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a/Isf1Nn7bbzilJ+WFOdPoPwPnR5v6LhxMrlFuBsyYg2XAwIEm2QemKRxXZjHN5Nu
-	 AChgjyjIk7vb33QJ6oLak9yHuJmn9pok4FzY118/Z+xhCYL9ZvqY/49+WryhvTm+9I
-	 H/uz07412nF3UDASUIjgPac3fueYVdb60S7vSKmq1WNoCwue6s87ja2S3Tsh5l+e3f
-	 64SHJjpAkfwmhNBTPQZWk39ka/fPMUqC0l5Alm8rDrmCIyjXRQby1EnxD/KFHZR4nK
-	 FM9Uffh/ooy89oUPe3IV97KvalyzhwV1CHWkx0R4J2p9nJcR4wxJQ24/KPk84FZbM0
-	 vIlUGx35sv7Jg==
-Message-ID: <b1b682fb-9d79-4388-8499-4623d0785ec0@kernel.org>
-Date: Wed, 25 Mar 2026 14:57:57 +0100
+	b=x3aISJ4OWWyPUXiDujnBsGhBrjsGJ9H+umbnJF6NydwKW/t34Yi5UPcREEDNmzYZnBHoH1
+	n/Qc48h3mTYrWMG2KEoEJneizVbpsOtVzJEx+wTUUcSBBcyu4xswggsqpg7sV1kNb1CzXm
+	klTSjm90P7Ggw2icokvh0Dsgp9t8Gvs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=JR3OsthR;
+	spf=none (imf23.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0Wh5nuRIVjmmR3h1DHbl/7y/dEHsy8Ic5tYZGLWZU9U=; b=JR3OsthRB0FWUAQKcRzH6GOUYD
+	G0lJgZ6r49/3yIaaPiy0bfMepMP+55l5tq1iETprIi/AociiRYj0JfsoypiQx3Tg26VUcFGELYHHS
+	ILSSQoxQaRwl9QkCPKJrSYPQp2ttw+Q+8kEyum2trVSUYWs5Pfu84pm4VP5Ab/EpNNEn+ikvsgomU
+	CH/xmi7rSzUQyoaKTRDsIE7gYzYiu7XcOtLY1oAVwLv6fQO4vMmsOBNNQXyhPlKHMsx3rcyM74MWM
+	7T3s03vGBYY1zVxVPvSjn9SpMc4jFxqbYa1g2+Klc7hHBqXO1uUB7CoeXfOUSrCx6cJ2wfHMk7S1j
+	v8BKDhIQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w5OkY-00000006Hv5-1bO9;
+	Wed, 25 Mar 2026 13:58:22 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D1C15300400; Wed, 25 Mar 2026 14:58:21 +0100 (CET)
+Date: Wed, 25 Mar 2026 14:58:21 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Qiliang Yuan <realwujing@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 02/15] sched/isolation: Introduce housekeeping notifier
+ infrastructure
+Message-ID: <20260325135821.GA3738786@noisy.programming.kicks-ass.net>
+References: <20260325-dhei-v12-final-v1-0-919cca23cadf@gmail.com>
+ <20260325-dhei-v12-final-v1-2-919cca23cadf@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/21] drivers: hv: vmbus: replace deprecated mmap hook
- with mmap_prepare
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Bodo Stroesser <bostroesser@gmail.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
- linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <cover.1774045440.git.ljs@kernel.org>
- <05467cb62267d750e5c770147517d4df0246cda6.1774045440.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <05467cb62267d750e5c770147517d4df0246cda6.1774045440.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325-dhei-v12-final-v1-2-919cca23cadf@gmail.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rayxxxyqkgh9fd68pb3otgue9tepbyub
+X-Rspamd-Queue-Id: 8C817140008
 X-Rspam-User: 
-X-Stat-Signature: oi56fwjf59rpewdur95ycpond9nnnhai
-X-Rspamd-Queue-Id: 8E95714001A
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774447088-163578
-X-HE-Meta: U2FsdGVkX187D9iPSDDSP4WVyJbg4+AQL3OY6Eq9Gv7nCc8OayGteeZL65EI3DfIxdyNPum0Ss0sH1w6cXCjU9LytHgllALtZrRPvJ77A5SEYzVdKEpei275OXBmrMl7k3VtfyONNx5EAw3aEnzpk3l0dhUSdnBZQ3AplRuSkAMPyGBpfQkV+vDuQ22UW08REo5DPeavcyYl0oKDs/sFH6Hb5XUwxYlhc7TUeZCS6R7rXoRFN+f3hYyZVdjYxl08XTL8JwhvY3MqhD+SQ6yG8Zl3KgisYQjuyt0NiUFPFBJqlc1M8D4kFfni50N2jjzsLBqQX5mEE7YT0mMowx45/v/FgBzcJoYJbv2z5LVt7zsRR45ZJx/IRxVK3NhsbY8oqLyJPlNGmFOd6bhTKnya+Yfno9KKQK/Rm0xAIqdc1MFzgerTRQ3pcyNwu3mvPfa4heFxI0XRO0qmX0F/TSWqDE/3O3y7+F/TCnoSEV/QBL+RBGkpz1QPMWUpHhfEPdL6vaRpxypp2M0D55HcbLdi8FVi+lm4xFzVzfy7iltthq+PrmHYpujBK+eAkz9OYysnN2ejJ94KayxVPOb3cR4WsghNYBGJLMZnPtK4QmDYe64njYSynArVaJhrrtORu4u7+gcMh4R/CgnJ9i4pOTIZCWP3DJv/qHhs4o/uGW1+SgxscF9X4mOnYoFA/WM82cQVLqC1anPtfGNX5r7s801cYt8KWbFrlKJF3JrMHSD/M/9SSD8GXV3fO0WzqPQxTnzFLCKbh3q3oTqWc7PxJCkj+v9Aq/w8zEpyYR9SPDfTw/QoJ/kFcI3r9+rgoBw2qjyAWOL92n9uX9MTlXEpgj8lmgIR54PMKOwcrRUOA15NBkDyfsOONKme/nmNPtI6xfJAVM/MAGcpbsH08RS78xwGIcoW/yiQHOgJrZYtVHyNk+FNsoAl4gl5H7Kp3/gcBGcWrFp6/TyFg2DfHxCziEm
- SGbidWdH
- lVM/MMJ2Blh7kvWXAcfv7UZadvm0ShhpicNO22ht7VKHHxirOt0obKx54fTs3dbLn5EwtbyHm5ztzvMxv9p+JYfynvsIc8LxqBtZoMdmru7YJmdPC1ACZezh3hROh5aQgOLLBfjj75Fa0KAjQXUnJWmf1BJNR+500LukSXK4TuCl2MLyWznhB73htHkxohQ+UXU0V7NHKe7oHudKa5Q9dO1r52Ba7Eyahod9/z5lN1wOgVzgsqhWeiLj0HMZ6e2qEk4KYe0fuKfUf1BdGWv0odMFH7sZzrR2OWhVxLwxJ3ZeJgwxmu+1/DDFGPvOPZaFubMjWHt3SgY7Otsq6OZLRJus7c7HcnZauhSJK6RdJmkB7GnX6G6P4xAOMqSK3+rVICc2qhUdbXmJQH3eN90paJSipGA==
+X-HE-Tag: 1774447108-217999
+X-HE-Meta: U2FsdGVkX19CughnXFX12PMpp2X9+n2mhAFdhyo7Ez2rzgLbIe9V1Uf3rx/BVufNVpRuBJSe5kHIKK2LcBSOP0/BZEN2d0bcQKl3OBJikK8RVzdhAlxVngA2zsh3GhzLSbHee6TTLRuArRRep9oY/aRbUmKNHE+LNii1XoWLguHcXI59tyCrqZz3yARoqNiUyr7jwCuez/7AmmbgaAveAfcc0mytmNVI86o1SC/r7mc+Sv8ep3Tyw9GyGBHG3mu4YuID0VrrRjQ3rZztouJNFD5+z0623I0Kd6JhcpKMZ/YI4hqB6nQ3fz06xtSwflUZRFgBq9tRHo41N8LigLDr5wj4Fwp3vUxTqApqcMKZRjWLf6uxvuK1mOfyPYQCPVe1irnPD2wXrTxwpgHMHQopnW65QLZOm1qTpY9nJ6w+z9CQICIBX5h0Iwh4dB/Y+kZTmFjCZFrkq6ki15ItnyZpl4ysRhe/hO5/NatVaBcoYGMwjDX65AjKQ4hkSmnSKOuradfYZJ0V4rSdl9iLVEWMEjt0k6tync35NRBEl4V3OAD+GEQDo+1HUfQ8iKki0PVHz6329VsfMwUvTt8t79sSSAp+v7gVwlLWnFT6K/elrHYGshKLchjEmf0+OA85kw5hZKG2FG9eLMSU97HotqAvuUR4OxKFxMQvioLlKtoAPPlWGmj6eWOfc9JmfFfyANYkG2eT6BpvjZyBDBQOZSDneToCB30P/BAgQyyVBTgGE8+Z8BSAM7LrkjVXKBNzXVZhvKkcmn8yJU+fHtYrLiTq8vqWLqeA7hOQJyQH3Cye2LtHXFI7HLdIxthadYj0SkQIVCdX23wlmcXNEqQmESDrOD7+Gao0GZE5n79LFzl9ga1Wfjmse/tX/W/FS8Tk54nCpiesD40VSDcrplQN3E0fVxUEARXMyfZ0hIPTH4tbBL1SHkT0K9ya3Q0mwe5jUnspuYdai9Gp8e5wE6sL0fS
+ t5fjryLG
+ HwyufIflBC3plVx1B7Z5o7IKd41zmQTe75tEd0wu3gmaK39pDH7MCiB4Rife3lBWhvqGSycjXrhqKyw8XHaBKpYDj1BjLFvKjt4sIx6QL6B1nHh3ZWFuQJx64jM18okWILAePSQ5F/NhfV3avsc6PxUjfHiWpQM3TJHNdZ7yCZsXQKSDWK4LZqt6t+Xhsh7yhyd9q8t7TiWj/AZ8lB2gMK7lZ4p9RuRL7uKr7hPA+Qqc++B/l+NfP/T2JZJdg92lrChF2cK7msVFWCDw/GjNpebZIUhpMmYlUYPwd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,26 +118,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
-> The f_op->mmap interface is deprecated, so update the vmbus driver to use
-> its successor, mmap_prepare.
-> 
-> This updates all callbacks which referenced the function pointer
-> hv_mmap_ring_buffer to instead reference hv_mmap_prepare_ring_buffer,
-> utilising the newly introduced compat_set_desc_from_vma() and
-> __compat_vma_mmap() to be able to implement this change.
-> 
-> The UIO HV generic driver is the only user of hv_create_ring_sysfs(),
-> which is the only function which references
-> vmbus_channel->mmap_prepare_ring_buffer which, in turn, is the only
-> external interface to hv_mmap_prepare_ring_buffer.
-> 
-> This patch therefore updates this caller to use mmap_prepare instead,
-> which also previously used vm_iomap_memory(), so this change replaces it
-> with its mmap_prepare equivalent, mmap_action_simple_ioremap().
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Wed, Mar 25, 2026 at 05:09:33PM +0800, Qiliang Yuan wrote:
+> Subsystems currently rely on static housekeeping masks determined at
+> boot. Supporting runtime reconfiguration (DHEI) requires a mechanism
+> to broadcast mask changes to affected kernel components.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
+Can we eradicate the whole DHEI naming please? It makes no sense.
 
