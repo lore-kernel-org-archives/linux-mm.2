@@ -4,88 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1664F109C029
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A0F1109C02F
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 14:58:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 835DD6B009D; Wed, 25 Mar 2026 10:58:37 -0400 (EDT)
+	id E29756B009E; Wed, 25 Mar 2026 10:58:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E66D6B009E; Wed, 25 Mar 2026 10:58:37 -0400 (EDT)
+	id D8C286B009F; Wed, 25 Mar 2026 10:58:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7238A6B009F; Wed, 25 Mar 2026 10:58:37 -0400 (EDT)
+	id C54A36B00A0; Wed, 25 Mar 2026 10:58:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 656DF6B009D
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:58:37 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01EBA140955
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:58:36 +0000 (UTC)
-X-FDA: 84584891874.11.A47E1CB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B423A6B009E
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 10:58:47 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D4618C4A0
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:58:47 +0000 (UTC)
+X-FDA: 84584892294.18.21B7756
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 57D8C140002
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:58:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z5rpiVQa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id C48FD120004
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 14:58:45 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qVbsLwkG;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774450715;
+	s=arc-20220608; t=1774450725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vccCkJeFSK7lbC8FnMs6QjYD7Tn4R9ZKb39ERuhTdlg=;
-	b=24yECryV6/WSlGHoB3CVzYqhSt8INhN46gdwcgyEqgiwWSSy2kRugO/wLl+yK67M+CeUUJ
-	mYplECfmCQcpxCYMboQaU642seR7OwStEhsrAzwSkg2l6EvA7LjaZJ9MpBq84Nk2oBrWPo
-	YwmSrg1+eW6nWiHUrOWHVbavxr6B0bg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450715; a=rsa-sha256;
-	cv=none;
-	b=4AGV1w3GG7yHVgYDmP0jmfzOhafdNB4jG1G4MVKvngh34CVRMIfrtg6iAUhEmAqWJtN0rN
-	//juQJxNjPW62gRFw2wyAV+KXbKKgBeibw3s+zZoiJnpCq+n1X+qImqzpNvYEzIxjoN+mE
-	H0LFb8v9jQ4HK8jFAkorp1/62B0gRaA=
+	bh=eO11bQx7sjhbWBYTR5ThY1PJIGNvBjQog7Wuvh14JpM=;
+	b=pAc4Y58g7oKBlMXYQb/Tq4Rbc9FSuEG7wYMReLu/m2yXGW2QUp8FtbXjSA+g2DG8B6xrhx
+	xwc8oBtWM7QMAD9pXiIN8pi4q09Bbn6xFAVX2CN9/m2f+iYAbjQD56gILBHhk2ikrdQFk2
+	LVoLoWngmzDLxtfVs+WvUGwIVPJWLf4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z5rpiVQa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qVbsLwkG;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774450725; a=rsa-sha256;
+	cv=none;
+	b=XzQyXcuwOSGFP5EVW7SAJwmsDSjKFizFrGEy5gWuSjevgLdahOQ6JzrKbn18DPsTVwprIE
+	ONxtRybZjAz5WgOV3lbkS5AHmh/wnonmMZEACnl6aG05N3mAhVqAm2wAvTRqTpD1po/pGu
+	BI2s7F/zafFLWZXxsp3wtgXhalGlxA8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DE68A600C4;
-	Wed, 25 Mar 2026 14:58:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74791C19423;
-	Wed, 25 Mar 2026 14:58:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4856D600AC;
+	Wed, 25 Mar 2026 14:58:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0453EC116C6;
+	Wed, 25 Mar 2026 14:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774450714;
-	bh=5VPo4Xz6qxiaSF1DeT+HopouvLgzZgCEx7q/c9OS0g4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5rpiVQazkVl+/Uf4hxeNzefvz1dscY0p6VIOCZRkcRAUdT6xjC9m5Q3ZmGOs4Acz
-	 rgB/QXWWqACD01Jo2GbD/bB2b22Qqfo0frdC/+7WnK4KMTyxJ9yMI7FEW74WeUvzeF
-	 xkTD3aeoT+NsQ4Dw/5gRXYoG4Qj5gDpN2eQ14GfLPEBb7wr2c3EtUzJHuJe2y+E6Kz
-	 lv/5J5M0oqc3PGbyYc5b0zALZ9tDUQOOuPb34HIWwk+zrFSqxirCWzhgJ31pvclFCB
-	 wC+UDLBX093gQOuDevYXEvxKT9XJ2DNOekzbo8S4JgX7iW8Dpze/PP75qq+QTuunt0
-	 8lEgjq9OAISMg==
-From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (sashiko status) [PATCH 0/3] mm/damon/core: small cleanups
-Date: Wed, 25 Mar 2026 07:58:26 -0700
-Message-ID: <20260325145827.88239-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260325073800.141756-1-objecting@objecting.org>
-References: 
+	s=k20201202; t=1774450725;
+	bh=dMcR2tX4bnCEJoOrr+QTNvL7UiCnZ4AW/utzbNb95Xs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qVbsLwkGch7h/7HSMmGtaC3uNnBXdDP2+NYlx+NZvoOzV75V0RgnusAq9j7F+EQ8c
+	 UNqKNUwrfsqhcVbtnWBDbLku4fdFZKeHU6foHHcc7cONdL9uzvG9d3nh85PVEsnmpq
+	 Itt+ye8x4DFvGucFINKbdXeDEg/YV29W4Hr0Te3CJboNNQ3LgxGQq0v7XolbmHQUtR
+	 Vc5ZNeA2AYpdOr7fvj0pS39bCUy1HOTsr3NiT3fDgtAf0A0VGFJGSR+DCHcR5a1Agk
+	 c3BYc/1MYVCxQJ9w5vin0G1Tu3d2wi7vL/Al3Z/IDutB7v4fg6qnf2a3OeCtH51FbJ
+	 zXd2cojMJVA+Q==
+Message-ID: <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
+Date: Wed, 25 Mar 2026 15:58:36 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the references
+ for large folios
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ dev.jain@arm.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
+ <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
+ <CAGsJ_4yEWn3kVZPQZatOJX7NLLv-OK9pAqUDuWz25XxG5hpV=w@mail.gmail.com>
+ <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
+ <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
+ <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
+ <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
+ <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
+ <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
+ <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 57D8C140002
-X-Stat-Signature: fxsm5oodnm5ezo4rug1y1w7t1hqwmeq3
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774450715-994881
-X-HE-Meta: U2FsdGVkX18qkZjchP2zVaDaUBnlJESxJZY+WfFO1mOVVK2NIWCtRj8X+bsPiyeEV2v2Nj7S7WdpxDZciOR3H3FbuzdxHgQ44xXFMnVjH1cxMYYvbM91gJqMyUDQ4nV8lAc9aIht1qfOqfWS+e+o15IvS4UR1H7iq7plmN/fgHxOO/NrgXuAFG+yg0MaZ7RGRBrwGOCnsiuhyQd5e1dZuiW5rfGo5s/cmB1FG2dHrSQdlcyTSn1AB4JvKn+Ng5ViHtBtMDtUSunxCLKw0s5VSaVQtGbC+213UJT1a4U/DcZqe3O7YXnXz5prIcP+FGTT7YuKaE+EB38gtrwErk2y3a2fZOjAIXQ9DhocGULLTzFcqRkf0XeRlhWcHWh1fxjS5zKo8g0icr9DASxwtD9+0Dzm6NZFWH/r3q83DtgXYccH2P7+xpFmEMC7iyZJcrLJnYS3IBRdK4riWb1uhBOCeNMtWbDkpt3+vEvzetwr/n1khNbZMzUKuibidjuAXalm/pqgqqMn9GJV2CP/P0E7kxCei6AexiwNbNxHH1cludsOoKS/H04FYsNLmq0yjPP2FolCr9eMDlAM/kpCUJu62EJmqvhkLmZR5N6dIUj5jeewr3xlJKcoIepMVuQOAebnLK2fDdlAYd1Sp9U44cuN1158yCnEutYShsFWwVAQey+mOB4MwuKOzOLAbsS6oeTyZARfw3eJw+0hsOWWjdxYCHecSL1SIlgjh3VpmwfD4Ew8JecjE0rPPDjUgy2a6gjLqXcu6jLH5mlbrj7/slCq1yDsYMqEJlb6s8SGYMi+OSCzggUKHMQbFq5cLFgQElk2b9mpG/jTZ13+WA3RouuytgpnRCBDvW7Xcw/RERgAb0VzQevpqB2JVlZdgg34hQpBs34cdnPwJDF0TEPoZoEfGKdWTt5olyoMv/FGiFzVTaeVCodzXjImxFEfXzA6IQyxuN7UW7w4FAMcN/mkUyk
- buWXdAgm
- TwrHPYYrw4+aFhmYrcqXKsorKhztqbz9tCinwi6qOmMm95D8hdFGlCPybVVcN76PlgjfJAa8rsL+Qolr92E+w4QNxag76NxlS6QVUxqvWY6nxoLVOIMMMcDoZARp2SZJ2NT7St72U/L5sAnVelwtUYXl5KxV3ED8amE+aN0jfFAYNa4pYEPPFvbW4Z6PzhJep7D2jhsq7pGKrPFuoXOBl9A/3Ot4/v57Bk0L0afmFZembqxpX2pfgMZYJHyz9WgFi3ql4JYKbt2SYlxnfPbDj7Gh67dXiHz+9cEECsuIGbPtEXlxz8jlV1mIugFfQSl2ZC4hHlAHxk9acIyjdMmRkm3fZOYFvgipHlinu
+X-Rspamd-Queue-Id: C48FD120004
+X-Stat-Signature: cddfx6bjdjbrwxe4pe5rzkschqp6bsos
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774450725-700129
+X-HE-Meta: U2FsdGVkX18budLee4HUz2nmGFKPtDwQqafc6strrDlLsXdohl934PHi382j7yviH6L5eUn1Y9TSy/RqvKRPuHReqfTEpMGw4XbhR67LwncSPuKjH7xvTQnKp7ja+Nwvm4FwvMLYc3GD6K3R1coKZt4/vHc1AzjHhxVR1GTgBLGPBg+h8uX7RD0T1KSrsGj86/o4eBI2uxqLL6oP2V8qOZ3jdSOQTlkE74eH009IFAzJxPtPeGVTxVwiMRgFOLatipr9aPWpucxYWMbBlR032zxcLmZjG5eyS0rn5AdiC6hWdXQItLYyMeysNK1kCahuP3r7RCBSLNNAKB4os26uiaSFhO4KU2FsruwOZnPBkch+TaMYB7ibS+8brsRceePi1zqiJDA+LFn2bOaq10gSi69ocK1/kuMQ7piFPvQQM9X++uXt5VrFWIDSElvKpG+zUgr+yFVSxvxabe6Tn3PMqnV/1XSqgzNLo0CF1LoOntHBSsJmY+pTUXzS5aWr4j7KOgvYNI7IPSF4Ntn8+gYTWQxFYDSp9T4Ea7LImkPo+Wk/w3//CYB/a1jPRd+hz5mIDXbusA0djtyOOrb+1t5swcNtjQuG+tFa3pLbDxHSrRmchMedCebki2x36M889cE3RAeqMp25+ksqFV0Msb0e+Tx2nJ1xjc0uyI73m9hBXdEeyfD7n/4sx0yNJLD+a8FrhM84R1L5e4J2l5FpAzdwAkhEr2XTfi4N1RWYr8xzHi8wpAkPiILDrgKCWlp3wYMDgI2EZM6UtzUSsqE/sqosOAujnJAYurZGd8bmNh24IdTqyXsX4z/nH2ZGvTZl0QNsIZRvwsJAN+5h6jbse51wZlF/J/WUnGfptsj0/1V4g4/hXUpmP6XGAzQkoCVhjqsW+GewSyJhRla58wKTx8b/h2G2xV8IPQFp4UuVqhWAtDiITgQ0yFywCiC7d2SwWpLR0lefdcLTV/iwNjrJXvw
+ HvgKfDoU
+ F/ipqLewaSXB2teDG+k1Gz4WfEi53XnV7LpXcdaJQ7Rvh4vRqYVoSsjgMOYVak+JKLG1L9tKcilRicOTF2yabymIb1+uqhOenan0Uw1Mr7jPymB0z6vKlyHn7JhKOknAdjNPLWVjJ17YQY3V3Sw4JyALH5Vt53Hr8ILXCGWZmdVnNzHcg/+xlpyRceSZnT+DrmQpidvp5NJjM8ezqGwG84ywpNE/Kh04BDqmZwN4/SYTM/BlY1BeJWSHTeu2w2H/7+ppIPwn9EdhV0KZa5jqlCggX1lfogD+9kyBs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,27 +153,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding sashiko.dev review status for this thread.
+On 3/25/26 15:36, Lorenzo Stoakes (Oracle) wrote:
+> On Mon, Mar 16, 2026 at 03:15:18PM +0100, David Hildenbrand (Arm) wrote:
+>> On 3/16/26 07:25, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> Sure. However, after investigating RISC‑V and x86, I found that
+>>> ptep_clear_flush_young() does not flush the TLB on these architectures:
+>>>
+>>> int ptep_clear_flush_young(struct vm_area_struct *vma,
+>>>                unsigned long address, pte_t *ptep)
+>>> {
+>>>     /*
+>>>      * On x86 CPUs, clearing the accessed bit without a TLB flush
+>>>      * doesn't cause data corruption. [ It could cause incorrect
+>>>      * page aging and the (mistaken) reclaim of hot pages, but the
+>>>      * chance of that should be relatively low. ]
+>>>      *
+>>>      * So as a performance optimization don't flush the TLB when
+>>>      * clearing the accessed bit, it will eventually be flushed by
+>>>      * a context switch or a VM operation anyway. [ In the rare
+>>>      * event of it not getting flushed for a long time the delay
+>>>      * shouldn't really matter because there's no real memory
+>>>      * pressure for swapout to react to. ]
+>>>      */
+>>>     return ptep_test_and_clear_young(vma, address, ptep);
+>>> }
+>>
+>> You'd probably want an arch helper then, that tells you whether
+>> a flush_tlb_range() after ptep_test_and_clear_young() is required.
+>>
+>> Or some special flush_tlb_range() helper.
+>>
+>> I agree that it requires more work.
+> 
+> Sorry unclear here - does the series need more work or does a follow up patch
+> need more work?
 
-# review url: https://sashiko.dev/#/patchset/20260325073800.141756-1-objecting@objecting.org
+Follow up!
 
-- [PATCH 1/3] mm/damon/core: deduplicate scheme index lookup into helper
-  - status: Reviewed
-  - review: No issues found.
-- [PATCH 2/3] mm/damon/core: use damon_nr_regions() in damon_commit_target_regions()
-  - status: Reviewed
-  - review: No issues found.
-- [PATCH 3/3] mm/damon/core: move last_nr_regions from static local to damon_ctx
-  - status: Reviewed
-  - review: No issues found.
+-- 
+Cheers,
 
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --thread_status --for_forwarding \
-#             20260325073800.141756-1-objecting@objecting.org
-#
-# [1] https://github.com/sjp38/hackermail
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+David
 
