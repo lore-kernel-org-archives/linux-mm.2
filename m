@@ -4,70 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 095D9109C05D
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79CAC109C05B
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 20:39:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 592C06B0089; Wed, 25 Mar 2026 16:35:00 -0400 (EDT)
+	id BB4396B0088; Wed, 25 Mar 2026 16:39:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 543D66B008A; Wed, 25 Mar 2026 16:35:00 -0400 (EDT)
+	id B64D36B0089; Wed, 25 Mar 2026 16:39:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480BA6B008C; Wed, 25 Mar 2026 16:35:00 -0400 (EDT)
+	id A7AF36B008A; Wed, 25 Mar 2026 16:39:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 390B66B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:35:00 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8BC013BFB1
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:34:59 +0000 (UTC)
-X-FDA: 84585739518.26.482F59B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4AA0F140003
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:34:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bbYBhCbS;
-	spf=pass (imf23.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 954766B0088
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:39:28 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A742160AFD
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:39:28 +0000 (UTC)
+X-FDA: 84585750816.23.61B1CAF
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 67E17180009
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:39:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=o4dEHtRV;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774470898;
+	s=arc-20220608; t=1774471166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hPXlDI1QcmZ+5Fe+XHVTnW0r2MT0sKRg8V1Lk71k1Zk=;
-	b=zvJo9XKb3g/MM0tt4nqiAE7no9P70lPWAIRzW7oo4sHhFqdP2Aj2Gw2qbhif3BYAlqMhqN
-	y0aRtU4nUENClGjyVk2x0RciklbvV21GtNBPCkMMSZnoC/CQd0pB+ZWF0IoTNxCcztOlgW
-	txP22vfgWYJkGsrvgBkseWpHsNR9bY8=
+	bh=qX+god1XVd2ivXCYier0tY7NsB6ICtw7odjLzfpR+Aw=;
+	b=n1RMEOOcdXmEA/3E8mp1YLCIjxYRhqxdmxuz63t8oURlaVCK3iV0ESCanLm9/zREaYBlZ4
+	w9xVucCVoWOI8bzxY7tSXKuNeTkjtYhWbm8II7NkW4u8Ut1ndzwemDP413BvRQojSBy6FC
+	HaHPXZ3CYF4Wkyc39igndHJFsmWmYpI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bbYBhCbS;
-	spf=pass (imf23.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774470898; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=o4dEHtRV;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774471166; a=rsa-sha256;
 	cv=none;
-	b=39CCv/W2m/BFafp4tgw+ryRnZ3Iz0IriE5vaLizeEjvc5spSHIzdQCMTj84Qg6rTZkgsnY
-	ZtsGOy6wC3mT7K3hEXlr4FSJitxyn2iOyGfOZEkLFx9+ukH9+PGdB833P3T56F1KVPeq1b
-	KrHve6iHrh+FUr/NLgGWnKyDbDLHRsA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B790260053;
-	Wed, 25 Mar 2026 20:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9764DC4CEF7;
-	Wed, 25 Mar 2026 20:34:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774470897;
-	bh=hY080uvPl+LEJJt54gSEYsldkDiD0CJld2/4td8A6aI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bbYBhCbSSQyOTk2rJFqHAHyFkKsd73IqUwcFy1AxQRkoLCwLLPF6umiKPs2LeSj7H
-	 Hb2Y1u24jgh3bjfi6QzV4qDUu44EkKemZiprOOLgNgmHHUayATDX8gnaSXKhoYUck0
-	 oaxE1niv2eRDUu2vHcH/hKX7Tbh4hCPoz0Y/MIbst2XgsBzoS8Ttync+PNpOfwa3bH
-	 5IVdXJnMAQ6hoLZ/Amx7/4E0zDBlAaMvXFa03NeGgd1xTLyLS8gVLGk4rAzXdR/mU+
-	 6xueRiigw4BkQhn+wkJqXsBN1gQeiEN02uf1TnMkhR3uvyRnMWgxgs0oifdlPY5Cca
-	 fgS5DepuxPWMA==
-Date: Thu, 26 Mar 2026 07:34:45 +1100
-From: Dave Chinner <dgc@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	b=V+bl2KBiVSLDmrj0I7dtEGzXKDztXP6jyfKIZJhdrxw9oZp7yoldK5sxpZpFc6xiJC4zlW
+	BQuz83nCIxxjI4Nzp897n9O+paXlBxeF3TfBr25nBJsvPpVjBNymM5sLL3fZpVaeygqvsi
+	FG6X1FHY5KHkJZlF4lfcsnDaznbo4/U=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qX+god1XVd2ivXCYier0tY7NsB6ICtw7odjLzfpR+Aw=; b=o4dEHtRV1qXOf0mlPmYYJI7Li5
+	x8pyBl3KLeP8H95MLyv95XfcTpXFj0RR4J/a52leLhCW7ttG0fTz0hqwNNotVSklYRexKk28Pi+1L
+	mcjlPNvgZ0Gd2qr35dYqIgUD3YTHCudurWe6B3yOfjYap5P8QxfRTj1tlT6ekKTUPDDWgv7ZpP93E
+	t5i9d2nuRSHinYSzvotcMDSsacKfGdWyP1c0dDiSNDE807yrFR0EQMc8dSAGK+5z5fV5Ry+sH1cr1
+	MdUoOS3RIk/Elmy2VjrESqB5cqbwrU+QL1Rp0atHaOAP4atcCq2RDO2/YNEi2cVgiXGdhPTHl5FYV
+	zGMsX7LQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w5V0b-0000000GVxU-2CYm;
+	Wed, 25 Mar 2026 20:39:22 +0000
+Date: Wed, 25 Mar 2026 20:39:21 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Dave Chinner <dgc@kernel.org>
+Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
 	Christian Brauner <brauner@kernel.org>,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Carlos Maiolino <cem@kernel.org>,
@@ -75,23 +72,24 @@ Cc: Jens Axboe <axboe@kernel.dk>,
 	Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH RFC v4 2/3] iomap: use BIO_COMPLETE_IN_TASK for
- dropbehind writeback
-Message-ID: <acRG5f9QjdEKg2JB@dread>
+Subject: Re: [PATCH RFC v4 1/3] block: add BIO_COMPLETE_IN_TASK for
+ task-context completion
+Message-ID: <acRH-fWPKkFFXcLZ@casper.infradead.org>
 References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
- <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
+ <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
+ <acRE8pp6HxjK7Z74@dread>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
-X-Rspamd-Queue-Id: 4AA0F140003
-X-Stat-Signature: noiigkf9i9ofhussri6d5cphrwrnqad9
+In-Reply-To: <acRE8pp6HxjK7Z74@dread>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 67E17180009
+X-Stat-Signature: s6r44gi53ak7n6jsmhea69fr7kc6oqrw
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774470898-849524
-X-HE-Meta: U2FsdGVkX1+g40/hJVA8bb2ELHgJs2CkAhfJbZZbAhewxgGou1QubRapCpUuHtkOezhYnUf+p2TNFBDUZHz6bmXT7ARWVm2hOhEHoPbvBxpGirHQkrzJcZvgrwlGRjZ8+8ykmFpc3nvNSTHvARaI206I515QpoDTSMpYjGNFy6VgKbEI+XMF2ePsPoj0pVBaMDMIyH4kSxKpqsvqMQ+dnCUJCflIz6gxBnezrpGOPAQfkFE5EmskLQHmT84LpWcEwynh0NR30m/L9dhIJaDqkeNA7H03M3ZytbFRNySh2LpvQ6+Me8h1kx1psYc11+u4kY7JmrEJQ8YBFU+pHD1LNAqGPYhcZcqW0bYD/wUwhqaHz0VpRGJX6W8qjTmfBBRlsxFpdqKWi/jNf5Hy3PNExjalirvuKcFCJ63o+N3UtnKEzlbShkBXcO8yIkBpk+8az++0bjfeuiQejrRNzSidlhM7NQce2MWZc/OsHzF75b1qSjtu47HP5iWEm4PGRBIrePkSubjWxHIbLVZi5X1mhx/T039DBVDp5w7WIgWpqsmjTHOxwEw7SVj6Jel5M0OLLbF3/WvcViMp0gUaWGrMR2lV2bI7sauczdlJUClwndYVXd3UUODMM2x6IXfUk7hj2Vuvr+OBWxKxM0EkH7kzHeDKjOUoPTyPvZJgGLKomU8d9A0/GGwN34MRkwL9T608gKa/paMEmh1nYynDtVqkvO+3sl64dnt0IVtgNXX8yb0bBAuwm9b6+XD+yw27EmAIDwWLZAo4liBpIa/k7OCUwd4YpUGlT22Y1hwIBXrNed/ELXUpPVzet4AMz1kfS2QB+hoWzPHx38QI32wcneHg33gQmsTDfJw6abtTKpLLTT/a60ECYzY4xyXnyAqHKOzjvd6RKs/pgWagjc0saRS9cnsPExm5wZwzS91jT1b3SNv5ubJ2zb/neTDyUcqzXsiQlWSrq3C4z+jCYskl/JU
- VEyo2VGk
- AQGdmO2L3NbOd8dHYY8vayQ0LoOCbiwTc7kWyDFeEq83h6hgOv9lPiimIkQbBN91E4O0RFktkoljTkptY75+8I5JkxCF8ayZVVl4ugsnjxR4DZBFN/7BZXAb/FmfO4XX4H3qwm5GGMiQBhJFfnmkRAMfGFx9PXrCHjGkO9zDNJgnrLg960GS7GPykYJPF4bO041JabZQFa00AcP17/FKqKC09GTWMQta43NtsV5pq4usqopYaV2BZcAWOt3UovC/Qen0B35Avwj6aEYYw0WbBN4Hd0kbMQTgxJ3a+duEoUhcV7y9l5siVc90vYztlyIX3xiJS
+X-HE-Tag: 1774471166-106425
+X-HE-Meta: U2FsdGVkX1/FeUjUbcoY4km/BVs0mWVlWIW05saPnR9ZuOr9UN7/HtEZ101u5z3aPeqxqf2YN1mqDYpRbaS90HodwVxyH58uBrFErVJbcgHeaJpZNEEpuKEtxbcxzwqk6QbHnaIkq3AbUD5E5QtCIZV2cYiLFwzolIRMTchWTrNywCiL3/naDSRP0w+AJK28EFFV2M3gYR5AItaLmohCTwLmCogRXnJ/NR1vhSpvQYGUwP4QW9bzWbaXyX1CIFgOwuyMZfFqq3TIdQVHxVTzH9OpEA2eeNSqkFrlBmLOy9kA9VwsWNZb/sD/fSpswoCjJdLq+SMuMtKQsLh8RNvPOGiKdGRlGE5wYUGlRxgl+Unq+N7YE4Z51mDGf8xPF3hgB9frzWFZ3d6F98W0zsQsyls4cpo+XdJDhMdzs95HidsOun1b/Se1KwrIoMZrKMITz05QZ2jSU6ggMYYermvuPCnZY+AvrQCsJdoQcsm5snKmAgt90UBoYb0tvadIOlOkKml3/rGw35w5ZVTCtGbz8NMgmthI+DBy7jUoPPR+w0UK29eiAmaoPpF9eBO0d+5Bo67PhGyhGeBzHL7rP1NkqzRNwLItFTTRUSw6psUDDzItHOASStTEgkAFJrVlwEOLUAtqnjDbzTwiRFqU5F5ne0N3YoRwciwcYUNku7wdy+RHIK0NTV/rlrUopdrbcJ8eaCnEeVF6Dd+Uo/l5FU8wQntFBXXeyuJyh7g4IDhfYHbGX1sS8ybz2mr8SkSxtEs8ujOmgwQq5plJ1FPxWqlA6QuLxV/hu++rQfGjfKa8ZvyF98ka8t6L+7RsGC6XDWw7bPBEAttOFd5j/DJI/tZHNZ6ZjGbBUs3LG1dFyfgI6nOJkVGx26zAYYXwQIfeHMnRIISDzhF3gE6IJdygCWH5YgJU0abTw8R2jQH8hKd2hquG0k7Pu+QHTWlWAdZnYF/vFuWfQgYknDvzXED4nA4
+ kFh9cc+v
+ pLnsjmOrPhSHpROo5vUMNvr16/9YDL3i/TimgwoY9yupP9nvb5SpkZ3yRDlht2GByFMAepMQm/EcAQZL/qTVBFLUxGaUUoJx4ulJaYnT1iS0SqWbVZQOf7U6WlxBF89Chsw9RJKe0XXOXM7pih9la8ogg0kz1yHNi52VaDGgrkViapfZ/D6Q6EoD1r8IGIBHxIxzOf9za1QsOKwFJXixDFq6GeFhO9HClHakCKDBfMwem/YTe5c30c3TP50GB6lqCPJUJWffJjgl6WcMQa8m189GiP2+3mgej/IQRGiuznvNzrg8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,64 +97,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 02:43:01PM -0400, Tal Zussman wrote:
-> Set BIO_COMPLETE_IN_TASK on iomap writeback bios when
-> IOMAP_IOEND_DONTCACHE is set. This ensures that bi_end_io runs in task
-> context, where folio_end_dropbehind() can safely invalidate folios.
+On Thu, Mar 26, 2026 at 07:26:26AM +1100, Dave Chinner wrote:
+> > @@ -1988,6 +2060,16 @@ static int __init init_bio(void)
+> >  				SLAB_HWCACHE_ALIGN | SLAB_PANIC, NULL);
+> >  	}
+> >  
+> > +	for_each_possible_cpu(i) {
+> > +		struct bio_complete_batch *batch =
+> > +			per_cpu_ptr(&bio_complete_batch, i);
+> > +
+> > +		bio_list_init(&batch->list);
+> > +		INIT_WORK(&batch->work, bio_complete_work_fn);
+> > +	}
+> > +
+> > +	cpuhp_setup_state(CPUHP_BP_PREPARE_DYN, "block/bio:complete:dead",
+> > +				NULL, bio_complete_batch_cpu_dead);
 > 
-> With the bio layer now handling task-context deferral generically, XFS
-> no longer needs to route DONTCACHE ioends through its completion
-> workqueue for page cache invalidation. Remove the DONTCACHE check from
-> xfs_ioend_needs_wq_completion().
+> XFS inodegc tracks the CPUs with work queued via a cpumask and
+> iterates the CPU mask for "all CPU" iteration scans. This avoids the
+> need for CPU hotplug integration...
+
+Can you elaborate a bit on how this would work in this context?
+I understand why inode garbage collection might do an "all CPU"
+iteration, but I don't understand the circumstances under which
+we'd iterate over all CPUs to complete deferred BIOs.
+
+> > +++ b/include/linux/blk_types.h
+> > @@ -322,6 +322,7 @@ enum {
+> >  	BIO_REMAPPED,
+> >  	BIO_ZONE_WRITE_PLUGGING, /* bio handled through zone write plugging */
+> >  	BIO_EMULATES_ZONE_APPEND, /* bio emulates a zone append operation */
+> > +	BIO_COMPLETE_IN_TASK, /* complete bi_end_io() in task context */
 > 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> ---
->  fs/iomap/ioend.c  | 2 ++
->  fs/xfs/xfs_aops.c | 4 ----
->  2 files changed, 2 insertions(+), 4 deletions(-)
+> Can anyone set this on a bio they submit? i.e. This needs a better
+> description. Who can use it, constraints, guarantees, etc.
 > 
-> diff --git a/fs/iomap/ioend.c b/fs/iomap/ioend.c
-> index e4d57cb969f1..6b8375d11cc0 100644
-> --- a/fs/iomap/ioend.c
-> +++ b/fs/iomap/ioend.c
-> @@ -113,6 +113,8 @@ static struct iomap_ioend *iomap_alloc_ioend(struct iomap_writepage_ctx *wpc,
->  			       GFP_NOFS, &iomap_ioend_bioset);
->  	bio->bi_iter.bi_sector = iomap_sector(&wpc->iomap, pos);
->  	bio->bi_write_hint = wpc->inode->i_write_hint;
-> +	if (ioend_flags & IOMAP_IOEND_DONTCACHE)
-> +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
->  	wbc_init_bio(wpc->wbc, bio);
->  	wpc->nr_folios = 0;
->  	return iomap_init_ioend(wpc->inode, bio, pos, ioend_flags);
-> diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
-> index 76678814f46f..0d469b91377d 100644
-> --- a/fs/xfs/xfs_aops.c
-> +++ b/fs/xfs/xfs_aops.c
-> @@ -510,10 +510,6 @@ xfs_ioend_needs_wq_completion(
->  	if (ioend->io_flags & (IOMAP_IOEND_UNWRITTEN | IOMAP_IOEND_SHARED))
->  		return true;
->  
-> -	/* Page cache invalidation cannot be done in irq context. */
-> -	if (ioend->io_flags & IOMAP_IOEND_DONTCACHE)
-> -		return true;
-> -
->  	return false;
->  }
+> I ask, because the higher filesystem layers often know at submission
+> time that we need task based IO completion. If we can tell the bio
+> we are submitting that it needs task completion and have the block
+> layer guarantee that the ->end_io completion only ever runs in task
+> context, then we can get rid of mulitple instances of IO completion
+> deferal to task context in filesystem code (e.g. iomap - for both
+> buffered and direct IO, xfs buffer cache write completions, etc).
 
-Ok, so higher layers can set it.
-
-At this point, I'd suggest that we should not be making random
-one-off changes to the iomap and filesystem layers like this just
-for one operation that needs deferred IO completion work. This needs
-to considered from the overall perspective of how we defer
-completion work -  there are lots of different paths through
-filesystems and/or iomap that require/use task deferal for IO
-completion. We want them all to use the same mechanism - splitting
-deferal between multiple layers depending on IO type is not a
-particularly nice thing to be doing...
-
--Dave.
--- 
-Dave Chinner
-dgc@kernel.org
+Right, that's the idea, this would be entirely general.  I want to do
+it for all pagecache writeback so we can change i_pages.xa_lock from
+being irq-safe to only taken in task context.
 
