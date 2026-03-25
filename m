@@ -4,132 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3629A109C046
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:49:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9782F109C045
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:57:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72D786B0005; Wed, 25 Mar 2026 12:49:29 -0400 (EDT)
+	id D7A9C6B0005; Wed, 25 Mar 2026 12:57:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7048F6B0092; Wed, 25 Mar 2026 12:49:29 -0400 (EDT)
+	id D529A6B008A; Wed, 25 Mar 2026 12:57:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61AE86B0093; Wed, 25 Mar 2026 12:49:29 -0400 (EDT)
+	id C47A96B008C; Wed, 25 Mar 2026 12:57:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5147B6B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:49:29 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDD931A0873
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:49:28 +0000 (UTC)
-X-FDA: 84585171216.01.1BE9B8B
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 03C6840015
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:49:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LZN6RyHB;
-	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF4096B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:57:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5914A8C88B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:57:47 +0000 (UTC)
+X-FDA: 84585192174.16.26C7BF4
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B9A2E180019
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:57:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774457367;
+	s=arc-20220608; t=1774457865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0KHc+LjoEpTOzgKnEsolcMaPHiEs9PP1WuXP2Jldb0w=;
-	b=Qv5dCVBiq4PcAbwV5RpGILVm0/SAwsJCIeN1zAUiCM7Kh7qxlJQ9pq3F15c/QEP2s5rXFu
-	zTa5cOkhBER1+kiijzeN1XXryZnjcDbf5mOT8Nli2BTNJEpnBgTnpNzBYJBfbHVuHG79Mu
-	jUNzpDzvL/V/5XEOeVqG7o/MihbsD20=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774457367; a=rsa-sha256;
-	cv=none;
-	b=lZDDjHRCxD2LdvgEPuNswXo/NFxYjwj2Glv59es64NPtIYX7zYgpB2goLNr1ClKH49Mhlt
-	OhxvhY5hb9OtO5JjMNK3tWoKxPboVLwcogx4ckUkvn/kxYTgJ507ryPtNpxLGyF6E/0CIC
-	43BLot/Ncpsj10XDbOI8zWs1fTQoZj4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=toBUxHy0MhOQMJLTYSumofQ95FJKAPNkxOclR1RiohY=;
+	b=5LBNCtQO4mOsl77X9yKrBI3WkG+WoOvxyIv0IeqE1PfOTXZcyPOJ3SSydM3+p8dLBCAifJ
+	wLxlS4ZjRgVqrccarJ5k2FDwJWM7Z0N9McZqktcNBztP4s9vAvz8i6RKZrfZ9LXmtqPVVL
+	7i2AZSuRtI2K+bWNUexL3jxdCGaSyx8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LZN6RyHB;
-	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-38a42a0d7f7so9989691fa.1
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 09:49:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774457365; x=1775062165; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0KHc+LjoEpTOzgKnEsolcMaPHiEs9PP1WuXP2Jldb0w=;
-        b=LZN6RyHB2lJtUsEh0HUecABNYY08Wa847kc57714Qw/0ntm/lAwQeF3b5/VqvoitW5
-         8FZnyUThzJWmmj9pk4/XAGZq+rMZbEVYavDfnkAx5t9ln1DmZm6ntubz2soh+XryKkIL
-         Q8b3LDruvU0XijEvhN0EeZIaH5t3X4wSgxiVLHIV8/Ni3Guu9YKW4XbKmmXWlYf88HPo
-         7Be3rzLXxM3f/EUGz1giNLT2QI5Newj0LnZitj9dtmXqqDlyXrrshzTUj3pdcSOz9iHY
-         olTHJCsRaz99Lu+nc2r7ajLWBH7l9SQ9XLEvnhcJr4FqAbUtrb//8NaDlOqo7CQ+aCLI
-         Bd6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774457365; x=1775062165;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0KHc+LjoEpTOzgKnEsolcMaPHiEs9PP1WuXP2Jldb0w=;
-        b=TEch7jCej433eoj01FreiFOjTAKSmYXnbYXzgYXsIrj46QIdBhJPCx5i5/W5Jpp2Lh
-         yQ8ncImEoHFw3Fptc0ay0kWGb0wpZVACcHXHiWpwzvDiwhWIjWceE+CFf9pPLLQVb8Wi
-         Dk7X9cq525ydY0dSQpjGpA9Oi+NHWHfCWBA3N5GO5P6UhulFIC0XcvsFMyO8AhvInUn0
-         eBdsPU/Tw0F3jCyBqV6FkVp3wkdqGwA+OCnKx7lb4c5jT+GPTAD3JQcOJT8f/X99Q/zg
-         iqzzOcAMg/Ff48f4ZN9VmXfu5Agp/ZNkmZ4yZ+XsGFjbsfXiijQA6Fn+g9ey9J6tWoW+
-         rT2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWlu9qutBYtLpNIVe/0HQzCSX26D6YLApo3vBcviWVlJpq4MN6mfx53g4qNfaWGTQy7FXVdYeMc8A==@kvack.org
-X-Gm-Message-State: AOJu0YxvarZs5Ir/nmk2BQRGsJTpY428KKdzc/py37mPPCKiWJRLAGGR
-	075iK6kHTBEMBYoUXyqqREubq9p5vspG+KDWxVbNpuyliG+P6WWLanXg
-X-Gm-Gg: ATEYQzwLeP7w1jHpRFnNisnWyq56J+xQRrhbY+NW3MZXMtgvEn+EqALzo1+l4/Y9Jib
-	jMm/d3wyiSAqsG8Wa5VnvB5DXGzOOCZIb+2aAY4vlCmz9gROjKX6pHYOfQsmMW524KnR61rK0yp
-	LeUYz7fX7pjI3jJK3cGqY4dZZvRT/1lEo+QD9j20z9ex2M68Q+kps9DLK63W6OlEKa3SlvztDDG
-	MuXe1UFOoDtPVAMvPduIgOdxFKVRcs4qwmFBl1CSbYOlHZM39NFq9MumZNu8HjDKVx1g7afYVVA
-	910FVJDEi9Ia9krW0qBMma273JUPjATJZTIEo8vVUl+soTmbpga3R3VeEnvhLutfTkWNFsLndfJ
-	A1OPAOkPEHqOgGuGXSo9EzlALdfl0UUPOHensv08WudM4UTziUJB4EMr84iifVsWJ
-X-Received: by 2002:a05:6512:15a9:b0:5a1:3d15:2861 with SMTP id 2adb3069b0e04-5a29b4f8bccmr1758576e87.6.1774457364681;
-        Wed, 25 Mar 2026 09:49:24 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2a06892b2sm13867e87.40.2026.03.25.09.49.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 09:49:23 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 25 Mar 2026 17:49:22 +0100
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
-	Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	Ryan.Roberts@arm.com, david.hildenbrand@arm.com
-Subject: Re: [PATCH v3 2/3] vmalloc: Optimize vfree
-Message-ID: <acQSEn2ZfF5zEtE6@milan>
-References: <20260324133538.497616-1-usama.anjum@arm.com>
- <20260324133538.497616-3-usama.anjum@arm.com>
- <1D88CFF0-8A74-413F-9A6A-39E27B760AE1@nvidia.com>
- <acOjIcqyIVY9KNn0@milan>
- <a79ff8ba-ed4a-43d0-9c4b-d2883a5c48e8@arm.com>
- <acQKZBqTjpm6-k2f@milan>
- <84f14a13-6236-47ef-afc5-e168d16caeec@arm.com>
- <cbc7c2d7-963e-4630-baf5-287fb127774f@kernel.org>
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774457865; a=rsa-sha256;
+	cv=none;
+	b=UmddTQR7+EuJxjRK2uWa/P1aVoQ1QjYM3zw31lBdhKGzuGizZHVIFpdUxb0p+qAD0c2Uvg
+	Voatry3wjC6Kui6iqdL9lAc9z/Oah7kYj2BGHZXVr1V6in6IVFV/P26xm5zkREtP1gCqfl
+	tvlZ+puoKDWDjjyyZxlChclkClTgBOI=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fgtPQ3WKBzJ46F1;
+	Thu, 26 Mar 2026 00:57:30 +0800 (CST)
+Received: from dubpeml500008.china.huawei.com (unknown [7.214.146.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4ED5640584;
+	Thu, 26 Mar 2026 00:57:39 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.146.71) by
+ dubpeml500008.china.huawei.com (7.214.146.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 25 Mar 2026 16:57:37 +0000
+From: <shiju.jose@huawei.com>
+To: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
+	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>
+CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<shiju.jose@huawei.com>
+Subject: [PATCH v18 0/2] ACPI: Add support for ACPI RAS2 feature table
+Date: Wed, 25 Mar 2026 16:57:10 +0000
+Message-ID: <20260325165714.294-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cbc7c2d7-963e-4630-baf5-287fb127774f@kernel.org>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: u4d1ifguqb9u7nkguw69dcoa7zg6gdqm
-X-Rspamd-Queue-Id: 03C6840015
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.48.146.71]
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ dubpeml500008.china.huawei.com (7.214.146.94)
 X-Rspam-User: 
-X-HE-Tag: 1774457366-4217
-X-HE-Meta: U2FsdGVkX1+mZVhW3wrvR/OyVT0mAehddAvfR5/m2jTPJ2hpfneA2edN9TA4Nwmfrhf8tfD8d7fE5vtlFc/j/WiLatCYgonvuI92R+hZ7eDnBK/j7K1XwAJDv7hqrCbGzjpaDDPP91SSj+HG3tYXaswxVbD6tAaBnBXh28BcfNUAB6ZqaFM2qggOUdefp2IfMt5Vl4KlvBwGLgw3C2rj3Bu61CBSj+OiaviDFLDEEwVqMRM8hg3kWhACyv05zixmeR/EbaTqKC4v1wMTGvq1OeW+G3/Hm0anH7zuz5ZcS2PU+y6iPLk62xYV3JQLXJD3oSPIi34oMGYG9ugx60WNyaB4JyCe48qH9ExBfEmyssxnnMV6cfz4WtmwdM8c4wmx4gb7kbUXglm7Ik+/JpHS8AntE11MwdaK1Ily5ffU+uF3tq1MieJA1efkGvJ5cXMeGz7N4lkaoZq2DvdOIOyK6JUk61hwl99vdwgUc7rb5etEE6V7pAEqvSt/Ug+HFfWBHS+DILqe7bMLHzH5wI9I2bLYB2UL29wyPRaL0lgJe8xm+ifYKH0m5xgzyp3cdf2xw7crwoQXkbXDs1/3R77Uss4YODHAUrqeE86QEo8SLNu63lqnTr2IEKepKHrms/FbLx12eO/rL4ieyq5BbvsKOcwOkymDknGH8jNuFMIGqUb7eXuzC/fum/WgCz9KaqSUaqvIhK4l2BWe1nJWu6UQIvkd0SQEG47j+PGAjNs1fEkxrfk6k6LZCzHnskVZ+LubnSm6frVm7v4iSwcehtvpYEd1/S/b6lpCfqyzJDFERvbQVVEOzbA6L2UWoSyRJFu4wKUScA1jhmKakwxG0vTI6dNJHyRCNoM7oX9lICWloo/b5wqlj/boH9pIOQH0Y5rfwf5snxkNdSHkbSjkaWWQwz9KR/F68xxlrSLozFlNMLESsD1a6rSQnNexTAN9f2CU/GmCDxwkqUxMGnGX8aZ
- GN9lXFsy
- PWFItd8VMh5/C8m53jsdUxAMNF7eY6WS5hZKPqZzYFNWKE6CQZvvs3vFNclEo17Bdq1f0r8w3UnLvo6mtDJ2xH1U8rFxVTl916wHs22eL0VbREMnouiPJu0x4bI85IGfgKH3HAfLzBacRmvivsgvMU8vi6ashM6yBVwZhFlnJm1Xxfum++ijbyc7MSz3QrzfBPbV6QpXKssKqyme6YaUZTyInDLFpx0A7G58Q5xYDhUq1mr9p+wd2oUs9Xn2B08VdwCH8jrYabL4i5zkVlOgms7+y+cL3uRx+YESRmqDWGFCnfDn4FJVy7xD2jTM8zL36n+laFNELfPeekjhsDl5EjOR+xwfRQLtd3H4aRwQkFhsSbXXvTS0GUp9ErpmGxB3dhdrFutof71C4IViriiF6hLzSw/zj8QKQrwaSdfuc8Zled6Iq2hlBOJAJoeH82cTeUCsOA717Jdr8+JophqpdQcwiI85CGMMIBa4U9C1qsnbqPNVKOvFvLHGcHVRu0aMXrjMYkg5Ry62ZsrH0y95RbNePmej/jksKFwT9lf9S8iMZ2C0=
+X-Stat-Signature: 7y6hanuhjd84x59r87kiocibdnpbwinn
+X-Rspamd-Queue-Id: B9A2E180019
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774457864-398345
+X-HE-Meta: U2FsdGVkX1/AxOnDEbm/9ar9BYzRcl0fHCwEkahykQkTvMndJd5dkHkY/7BDLQPW19y7o1bF5qN0mjM/iZXNaGRqiaOsf2UG+c5Wm/UEXEudxXLuZMxEkRocrAEkLEBCjXSs9Vte82HU1pZ6yGPnDGKc1SnrDENlJUEGN+CXfKrUUbYBc4uhNr6/QtIy8yymJ4yc8Bindjd2WvQo69MOCqcix/POI8H4l+rH8c1VuhLvErKrdStmoaLEo4Ap/0sjRhp/mfMAMp8Ahb6Umyhw4l+Du2c7UrUXWh7xUpl7FamXBdp1pEqrb2qwM7pExUuu26NJ1tVTp+r9W5WsT5W52ktOkPW5wIL8A55lPCmQeXgk8wB/mF/XCdO1W1YjsBp8a/EOOoBMAuPC58o7I/Q19z8mhs32G85D6tdYYswd4/6tZH0SucTGMyJBbfF8BIZZY1aGuMDKWfy53G2IVH9yMZIHIX9JzoOjWbrxT0PS6GB/MzU2WUaWDvK+xtsBg6yRjzOhylnsj2keja6srNgVyY+pGiOlsdgXwXCfcMeb7/XK+j+uhcWx6yBvINYqe4r+RcPncUsDdUCTvS3/FbhaOlOY32Lmk3QpySb7JdKM6Zd7KItMdSbpVijb1th0ojCqQtPuQiuGtlbHnK4fdQGmQn6GLWb7eD7l2av/HdhY0TXP4PQjcC5TC2zBWTS48/ajooU40UE1SRCIJ3gqjBleSLniJHJxF3Vcp/dPock09Mk7tY0uwdZzPCJ4DqJ+nQiTn99+FUkQKTI7fuO+VAuRE9EpDuk1uEg+8J/zJKva0TXq7Z9fmUcU8gt2o1JD4Mk8fLFW2mCeeNpOR8ueP9tJhtb0tdi6mO+8lIktAZ03yoiJU+6ZdTRuSkc8cYmRkKIvFe/nPbsbWIYH7+JQ82kWepplP22sFykTyARZZOQMjgkeeis/1Hveppchn1M1JbpoZb5hc88nSrHt8Jz0Ih3
+ W5FeB6vo
+ C+Vsiz3p6lXezX+Q7MuX+lLOPgX5wKo8laJK5Vqw9jx9dL7WJ5LFtH/uGcRSuYnOVfzyeIpH4aH7jeNobk0A6FnmVx0pNozbYKgaQfgOQgJZzCqUexzThWoRBivINrQMiAsEGxebDx0zefw2Z+IFI2ldhUKEgT9hVqxbJ/IFiunJz3hhqW+GlnXyFyel/75M3XfqAreTWIS8nykRZqxCCGidgzfBt4sH5h6o84Wgqrge6PO1JEFUOB6dhqYKMGfAXJNvwkHHGIrSVaVmQ9NTfBy4MLSUoDibXfvmwoAcYSgoUI2TecH6lobm5mlazQXjnCImVbpiFzqrLTXjGbGl6JALIYgMyckuU274IIAXdAb9AuyF6c9plQ486CdIFp94zIYUKcbUhb+iPmu3RIF0rR/VBRVSANx3iIIZ89nr8sBGtaYd39Fv8wUbYFY1F42XnkOmFbdzv500B5hq/oaRN+jFJRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,50 +100,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 05:34:08PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/25/26 17:25, Muhammad Usama Anjum wrote:
-> > On 25/03/2026 4:16 pm, Uladzislau Rezki wrote:
-> >> On Wed, Mar 25, 2026 at 03:02:14PM +0000, Muhammad Usama Anjum wrote:
-> >>> Sorry, I didn't get it. How does having cond_resched() in this function
-> >>> affects __free_contig_range()?
-> >>>
-> >> It is not. What i am asking is about:
-> >>
-> >> <snip>
-> >> spin_lock();
-> >> free_pages_bulk()
-> >> ...
-> >> <snip>
-> >>
-> >> so this is not allowed because there is cond_resched() call. We
-> >> can remove it and make it possible to invoke free_pages_bulk() under
-> >> spin-lock, __but__ only if for example other calls do not sleep:
-> >>
-> >> __free_contig_range()
-> >> memdesc_section()
-> >> free_prepared_contig_range()
-> >> ...
-> >>
-> >>>
-> >>> The current user of this function is only vfree() which is sleepable.
-> >>>
-> >> I know. But this function can be used by others soon or later.
-> >>
-> >> Another option is add a comment, saying that it is only for sleepable
-> >> contexts.
-> > Thank you for detailed response. I can move cond_resched() to vfree() and make
-> > free_pages_bulk() allowed to be called form sleepable context. But I feel the
-> > current implementation is better to avoid latency spikes. I'll put explicit
-> > comment that this function can only be called from sleepable contexts.
-> 
-Sounds good!
+From: Shiju Jose <shiju.jose@huawei.com>
 
-> That's probably good enough for now. It can accept arbitrarily large
-> areas, so the cond_resched() in there is the right thing to do. :)
-> 
-I agree, since it will be available for other callers, adding the
-comment is a right way, so people know :)
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
---
-Uladzislau Rezki
+ACPI RAS2 patches were part of the EDAC series [1] and
+this is the 38th version (20 + 18) of RAS2 patches sending
+in last 3 years.
+
+The code is based on linux.git v7.0-rc3 [2].
+
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://github.com/torvalds/linux.git
+
+Changes
+=======
+v17 -> v18:
+1. Fixed few AI tool reported issues shared by Borislav. Thanks.
+https://lore.kernel.org/all/20260312165247.GSabLvX5DjzhDtmyuh@fat_crate.local/
+2. Re-add support for user setting scrub address range for Daniel's 
+   reply in v16, which was removed in v13 because of request to simplify the code and
+   with the expectation that the firmware will do the full node demand scrubbing and
+    may enable these attributes later in the follow-up patches.
+   https://lore.kernel.org/all/df5fe0ed-3483-4ac5-8096-447e4e560816@os.amperecomputing.com/
+
+v16 -> v17:
+1. Merged all changes suggested by Borislav.
+https://lore.kernel.org/all/20260126171552.GJaXehSJp33nFnpvVd@fat_crate.local/
+2. Changes for Borislav's feedback "Add remove_aux_device() which unwinds everything
+   add_aux_device() does for all those devices".
+
+v15 -> v16:
+Attempt to modify throughout the code and logs for the below comments from Borislav.
+Thanks for the comments.
+https://lore.kernel.org/all/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local/
+https://lore.kernel.org/all/20251231131512.GBaVUh4NSWqvr2xhbM@fat_crate.local/
+https://lore.kernel.org/all/20260119111701.GBaW4Sres045xnfkpz@fat_crate.local/
+
+v14 -> v15:
+1. Incorporated new changes suggested by Borislav on v13.
+   https://lore.kernel.org/all/20251231131512.GBaVUh4NSWqvr2xhbM@fat_crate.local/
+   
+2. Rebase to v6.19-rc5.
+
+v13 -> v14:
+1. Modifications for changes wanted by Borislav.
+   https://lore.kernel.org/all/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local/
+
+2. Changes for the comments from Randy Dunlap 
+   https://lore.kernel.org/all/4807417b-a8f7-47a3-b38a-94ea7bdbf775@infradead.org/
+   https://lore.kernel.org/all/af7b6cdc-c0a7-4896-ba6b-6bb933898d37@infradead.org/
+   https://lore.kernel.org/all/26083ba9-1979-4d14-8465-3f54f2f96d23@infradead.org/
+   
+v12 -> v13:
+1. Fixed some bugs reported and changes wanted by Borislav.
+   https://lore.kernel.org/all/20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local/ 
+
+2. Tried modifying the patch header as commented by Borislav.
+
+3. Fixed a bug reported by Yazen.
+   https://lore.kernel.org/all/20250909162434.GB11602@yaz-khff2.amd.com/
+
+4. Changed setting 'Requested Address Range' for GET_PATROL_PARAMETERS
+   command to meet the requirements from Daniel for Ampere Computing
+   platform. 
+   https://lore.kernel.org/all/7a211c5c-174c-438b-9a98-fd47b057ea4a@os.amperecomputing.com/
+
+5. In RAS2 driver, removed support for scrub control attributes 'addr' and
+   'size' for the time being with the expectation that a firmware will do
+   the full node demand scrubbing and may enable these attributes in the
+   future.
+   
+6. Add 'enable_demand' attribute to the EDAC scrub interface to start/stop
+   the demand scrub, which is used for the RAS2 demand scrub control.
+
+v11 -> v12:
+1. Modified logic for finding the lowest contiguous phy memory addr range for
+NUMA domain using node_start_pfn() and node_spanned_pages() according to the
+feedback from Mike Rapoport in v11.
+https://lore.kernel.org/all/aKsIlFTkBsAF5sqD@kernel.org/
+
+2. Rebase to 6.17-rc4.
+
+v10 -> v11:
+1. Simplified code by removing workarounds previously added to support
+   non-compliant case of single PCC channel shared across all proximity
+   domains (which is no longer required). 
+   https://lore.kernel.org/all/f5b28977-0b80-4c39-929b-cf02ab1efb97@os.amperecomputing.com/
+
+2. Fix for the comments from Borislav (Thanks).
+   https://lore.kernel.org/all/20250811152805.GQaJoMBecC4DSDtTAu@fat_crate.local/
+
+3. Rebase to 6.17-rc1.
+
+v9 -> v10:
+1. Use pcc_chan->shmem instead of 
+   acpi_os_ioremap(pcc_chan->shmem_base_addr,...) as it was
+   acpi_os_ioremap internally by the PCC driver to pcc_chan->shmem.
+   
+2. Changes required for the Ampere Computing system where uses a single
+   PCC channel for RAS2 memory features across all NUMA domains. Based on the
+   requirements from by Daniel on V9
+   https://lore.kernel.org/all/547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com/
+   and discussion with Jonathan.
+2.1 Add node_to_range lookup facility to numa_memblks. This is to retrieve the lowest
+    physical continuous memory range of the memory associated with a NUMA domain.
+2.2. Set requested addr range to the memory region's base addr and size
+   while send RAS2 cmd GET_PATROL_PARAMETER 
+   in functions ras2_update_patrol_scrub_params_cache() &
+   ras2_get_patrol_scrub_running().
+2.3. Split struct ras2_mem_ctx into struct ras2_mem_ctx_hdr and struct ras2_pxm_domain
+   to support cases, uses a single PCC channel for RAS2 scrubbers across all NUMA
+   domains and PCC channel per RAS2 scrub instance. Provided ACPI spec define single
+   memory scrub per NUMA domain.
+2.4. EDAC feature sysfs folder for RAS2 changed from "acpi_ras_memX" to  "acpi_ras_mem_idX"
+   because memory scrub instances across all NUMA domains would present under
+   "acpi_ras_mem_id0" when a system uses a single PCC channel for RAS2 scrubbers across
+   all NUMA domains etc.
+2.5. Removed Acked-by: Rafael from patch [2], because of the several above changes from v9.
+
+v8 -> v9:
+1. Added following changes for feedback from Yazen.
+ 1.1 In ras2_check_pcc_chan(..) function
+    - u32 variables moved to the same line.
+    - Updated error log for readw_relaxed_poll_timeout()
+    - Added error log for if (status & PCC_STATUS_ERROR), error condition.
+    - Removed an impossible condition check.
+  1.2. Added guard for ras2_pc_list_lock in ras2_get_pcc_subspace().
+        
+2. Rebased to linux.git v6.16-rc2 [2].
+
+v7 -> v8:
+1. Rebased to linux.git v6.16-rc1 [2].
+
+v6 -> v7:
+1. Fix for the issue reported by Daniel,
+   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+   if (status & PCC_STATUS_ERROR) check. 
+   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
+
+v5 -> v6:
+1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+   after firmware return INVALID DATA error for scrub request with invalid addr or size.
+   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+   
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature.
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+
+Shiju Jose (2):
+  ACPI:RAS2: Add driver for the ACPI RAS2 feature table
+  ras: mem: Add ACPI RAS2 memory driver
+
+ Documentation/ABI/testing/sysfs-edac-scrub |  13 +-
+ Documentation/edac/scrub.rst               |  70 +++
+ drivers/acpi/Kconfig                       |  11 +
+ drivers/acpi/Makefile                      |   1 +
+ drivers/acpi/bus.c                         |   3 +
+ drivers/acpi/ras2.c                        | 428 +++++++++++++++++
+ drivers/edac/scrub.c                       |  12 +
+ drivers/ras/Kconfig                        |  13 +
+ drivers/ras/Makefile                       |   1 +
+ drivers/ras/acpi_ras2.c                    | 504 +++++++++++++++++++++
+ include/acpi/ras2.h                        |  80 ++++
+ include/linux/edac.h                       |   4 +
+ 12 files changed, 1135 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
+
+-- 
+2.43.0
+
 
