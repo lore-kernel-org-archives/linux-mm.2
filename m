@@ -4,137 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23DBE109C036
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:20:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9329109C033
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 16:21:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 728AA6B008C; Wed, 25 Mar 2026 12:20:25 -0400 (EDT)
+	id 3CEF26B008C; Wed, 25 Mar 2026 12:21:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D9916B0093; Wed, 25 Mar 2026 12:20:25 -0400 (EDT)
+	id 3A6566B0093; Wed, 25 Mar 2026 12:21:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C7EB6B0095; Wed, 25 Mar 2026 12:20:25 -0400 (EDT)
+	id 2BCAA6B0095; Wed, 25 Mar 2026 12:21:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AEEA6B008C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:20:25 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11D9113BF1C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:20:25 +0000 (UTC)
-X-FDA: 84585098010.19.323DFF6
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 876291C0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:20:22 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kZZDIXt7;
-	spf=pass (imf18.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kZZDIXt7;
-	spf=pass (imf18.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774455622; a=rsa-sha256;
-	cv=none;
-	b=UozidwHuspQgoUbRSJj5p4iWkHTgIOuEGAtJiAezYd872nzipIvwnAcBRd9XHzsx3YNGMj
-	hGOLAHw8EpgOX9SsFkGSR2w7tmICOT8cdNpFRpSGbTB+ruJxKUWyHLmUJH41VP66eV3WEN
-	DTTU1qJ5a41402m9FJb6sddmVTh/uyk=
+	by kanga.kvack.org (Postfix) with ESMTP id 1B4BD6B008C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 12:21:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCF941B72AD
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:21:07 +0000 (UTC)
+X-FDA: 84585099774.27.C6D514C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EE304C0017
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 16:21:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DCx2cd6z;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774455622;
+	s=arc-20220608; t=1774455666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UKAdTMpd2psr2ZVs6jscsxEONjlFsUjOIx1eQLvo0Qo=;
-	b=Krz+b0UFkTiOMFxamBvmpBkO24rVVmgpSu8eXReWCw2iyTM7o3a8lA9EDhreb/LimH1Miv
-	qHXmYRMIQSNXcr6KwBaSuJcMAngqCCCpAnSzF1Btdd/J4ZnR/4ugum7VDTRVyD2B+hR2Ka
-	bDdfm7ocggNGrN0LK260jfrwIJXhbvg=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62P3O4Td3189918;
-	Wed, 25 Mar 2026 16:20:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=UKAdTMpd2psr2ZVs6jscsxEONjlFsU
-	jOIx1eQLvo0Qo=; b=kZZDIXt7cHCuMOVJ5Tnzo7drzXEGX8T3gKWeO0sHNCrlAV
-	5Aom1awBSMrGmQXDOWDI7j4drjKNdYMMM5I6HvtR9jiEqizg4z8JlYLnh+eR6dVw
-	EDb/OvbIzhgXesFl2tqOsbyK3j9xRJZ8L1fDA1BzGoQkbqh+bND9A7FTabOwijDW
-	GIu+y2KaTRczF9ZEvxSrpLUjht3QJN3elNgodi4BFqophfk5rnYgXWlqn73O4vJL
-	7sY30K3PXoZjGnOaYUPBdAkqAVV067YI96YtSgswiV+hjhTnsiiXsV9ZUxzL0szJ
-	PrUAw+YtRUgt17xwTMEV8h4UUkT1RNYVJMUUvs4w==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kwa1b7h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 16:20:06 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62PFIJAJ008732;
-	Wed, 25 Mar 2026 16:20:05 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d26nnq94a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Mar 2026 16:20:05 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62PGK11h51970504
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Mar 2026 16:20:01 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 767D020043;
-	Wed, 25 Mar 2026 16:20:01 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4A9DE2004B;
-	Wed, 25 Mar 2026 16:20:01 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.52.215.75])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 25 Mar 2026 16:20:01 +0000 (GMT)
-Date: Wed, 25 Mar 2026 17:20:00 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
-Message-ID: <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
-References: <cover.1774420056.git.agordeev@linux.ibm.com>
- <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
- <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
+	bh=30sEGPYmo4wjL7Oo7ljbsi2DNSmoaKkA5yEONMUty08=;
+	b=MGtlsPZLs24E+6+WRgrJMLUd8EoVtagY16mMwXcX+fgr93fCkHaoqsN4cKKBmi2a1YYwTr
+	WXxweVwnOVAaV3jekkaZsKvzJNDXQndDaDMgwVzt8muG/eNGlez27mxi4vusEaDMH9N2kj
+	L8QaJcF9nYYzG7bF5cGvgfJZ3jquDBM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774455666; a=rsa-sha256;
+	cv=none;
+	b=1sBEmcnEInJHsacxZo4zmulRbLZXm+gVn65a/y1ikVpT51IyUeSrrY7a7BNQ3XcVIUyw/h
+	dobspx9esF3Zp5yETFy3gmpPx5m0ZGp7ifafXw5Jv2WDqxHd3ipey8qrxMaab8KrNt7Bji
+	vVBsU2K61rxihzhQ+v9PkvRxU4T0tx8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DCx2cd6z;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CDAD1438E8;
+	Wed, 25 Mar 2026 16:21:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44374C4CEF7;
+	Wed, 25 Mar 2026 16:20:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774455664;
+	bh=Mp1C8uMxxYv3PANUHWINKbqxycLFn539lBbC90jp5lM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DCx2cd6zdjs5WTU0Ci34/oFQ5wXmmkfSsnBz8cMDfEve+sYMCeXPhZU1jOQ/lqQ6J
+	 K4fkBqOO0AYOHqX8kdOutVBupk+dZ4inVj6O/4xS800zVfx9V5aJBWzRMhP4QeyEj7
+	 dFL7a0cGWZMFi7C3k11k5mMb804D14ZLSuN5c4fUUJiZDNW6RSxOstKalegopwBm1F
+	 QPS9KU6uR+nSOcUitxRacDeRokQQd62w8D1jSPIPoEV6V4iHwbFPoCuFPZr0PWaKrZ
+	 rzICz3Ro0D4xW72Cz4CSSfywCrOmJ1StSpNEjTTlf9N+GbSJT6ISjmIxo9uRhYdXMM
+	 4GvoqkIw17B0g==
+Date: Wed, 25 Mar 2026 16:20:52 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Gao Xiang <xiang@kernel.org>, 
+	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Tony Luck <tony.luck@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>, 
+	Babu Moger <babu.moger@amd.com>, Damien Le Moal <dlemoal@kernel.org>, 
+	Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-mm@kvack.org, 
+	ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 2/6] mm: add vma_desc_test_all() and use it
+Message-ID: <ef1e4362-4922-4857-8211-fca47031b63e@lucifer.local>
+References: <cover.1772704455.git.ljs@kernel.org>
+ <568c8f8d6a84ff64014f997517cba7a629f7eed6.1772704455.git.ljs@kernel.org>
+ <20260324161212.4b0a6f4fd5eb57ff2ffa7ea5@linux-foundation.org>
+ <24163ac9-bb0d-402c-a028-d1af7f56caa1@lucifer.local>
+ <20260325073054.490f2e9658cbd75312732fbd@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: yL58iBxIX8XO1NVeYsxW9NJdtgDshetF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDExNCBTYWx0ZWRfX+V4Qloa/gD73
- 8QOTBINLCysTn37RJK+r1HJinZJCZDCY2V6eGnQ/9nakaijuobBPzo3EvAeLR8D0+R7lZ1v+1mr
- CKcccZ0bp4oSACchVpUty4hdVtqxEVkoO3pjAOf/TyvhzPPsd19/+IOhnmhwyvwsRlalxtlBOL0
- L+e0lrj6AeUaU8M6/+WZbcwvZGGaRn7WTILGi+d3NSxBeqAP5BioMZrafcT1FqK3o5gAHbpNPEG
- n67VaZyp/EhqC+5M/+eQ3qWG751zuN37ZAXNRs4kLSsO5x9sNv1OqHCvlSu2r+DB8BNSHR8OtgK
- 4aOXhYJFu5BokNFkCgx3pBvetwRTxPRQcFQN8+Lr7kQYiz47rhkb35JAJCXRYp/6E5bYRvO1GLk
- qDfqDWJgbrKdRA/Sml0cA1wZTOPx6CIEjxFDqrxMXqeWt5hGnQKhgQ3H3+iZxClsl4JWJDQU7bs
- d3el5u81Yl7BAFtc1OQ==
-X-Proofpoint-GUID: yL58iBxIX8XO1NVeYsxW9NJdtgDshetF
-X-Authority-Analysis: v=2.4 cv=OsZCCi/t c=1 sm=1 tr=0 ts=69c40b37 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VemTcPfm9ugi35iZvo4A:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-25_04,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 clxscore=1015 phishscore=0 suspectscore=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250114
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 876291C0005
-X-Stat-Signature: 9frunaz7jmamkodur8n9nhb4eomf7h5c
+In-Reply-To: <20260325073054.490f2e9658cbd75312732fbd@linux-foundation.org>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 3dpyz6xqc3sdnxu4fxicjak8n9pf3ai3
+X-Rspamd-Queue-Id: EE304C0017
 X-Rspam-User: 
-X-HE-Tag: 1774455622-630133
-X-HE-Meta: U2FsdGVkX1975BJX7E8F0clP1FWz7gKVm7okB+0eWH670wGAEuhpEEug0s7keh6ldHzC2q4QkUZg28+KQlLJHnXtxDzztjTkK7eqiTXJfgmHNSKP2XJUldYka2KT/0ENU1Hby6C1iYOppzlrbqTKaIxkyr8eMW44MDwJxjA75dal5K8gXTtzFycZ3VmFwlBT/jIYt81jisV2ppmpV2rbc/jO3IKUdRPu44Z33blLV69LIF5g8704PWeHnEBmDlQeOMCrdOQJBBwtoUlgdd8MTLPf9Uc7VtlG8K0cErmklCI3DQ0t9emJrhaM2GD4HcwzlZtPookd3Fm79tW6Wq6EGfjd3afjQ7YRAOfvlNWH6FiZFtXeVBenAjaQp5fP+eikM9B/nsZLx2jAj/5BrEcOnWCb/fTnFmvBnOTnlxyshBqjg+DFLYNzDOC5JKh8Fd6n4UF25iqluAoWnKfHJG3O37pQKbRnhMp+6duf+lh2f8TSAeVnY3fzijkdYpbWpxW4hPjCC3CFhttBM8ob7vJoGfL/idf0cWAXC8KohF8m6WU0Q7HJwQ04f12rW5qSwGj6LBz/mH+g89Dojtqyska0tW+woe+bDWTUE4O8zHTcmneKdoBMeB6knwOU0JzCS0VxQjuH6z9TPYw3UMDWsKJnA9ZrZ9B4v7fkOIliW0ie4dAUn/6JPWj/n3WbD450k37CnmB6dTXaG/bpHuEvdFghrCtZNAHVyQzg1yUKoB8KkxOP+FioAegZkHN3rcU/AlkAvN3RtEgyNXd/HmjfJwSEqZN87FDw6oQjeSIFAvt82CylSCmaQ8+8FIj5ruZRMGiGxPX/VzexlbZ4xinOVWZH35Q8xjZ0qQG1aCH39BND6wjSCMzztc7ZJC2fpP5lt0MnJLKYtATz8IOHuUyEm+BxI5pjxa9a10CiQ4YUQjRk/BZjjBt8P2tiUGsoV6zDqG6H9SRMT++4fT47TFNCcZY
- N/7U5Gds
- SzqzE8L/6Ku/vADzoa93ofNgfrvzWxoCOGNC//pm+WOoFvHZZRh5sFDx2FxhU1/pVETyegel/c+ikAwfG9Ig9fQR/w8OD8CHYSaOkrV7YLyDNl95vBsqb7ueHHmvNAhuEpy0VgtTLyFq5WmoP1kIxAOKG8+a5v3UiI4iUWowCLrHefsxao89FJOfhbG7PaHlBcJ9yTYF92/PduG93UxgpXr2h0VBZ3wcvc2AF
+X-HE-Tag: 1774455665-799069
+X-HE-Meta: U2FsdGVkX19Gnbo8y2ef0PIg8rZrNYd0L+ul5+vIfUQNOyvtJksuA8+VYwFFNwUyGhSB+i96agXp7Y7FK7ROM8gm+cTiZAHk869skSGld8xDK9lndtWlDeLRNMTY+xv/EJZgq3ozMAMjqqLAn0UBnI9kF4eIU98QeqPokwb8xjobTgt9pWLCtnmxLnr+Sri7vV8ugxfnHVZf+H9LcJQJIMmQkWzxNmh/63cc/VYkD8utWPXzq6kHVsG+0IlbeGo2Mjlgf8pmiWJpAitrVck3Isxbl0ZMR4ZJQ6N8WgFD0DLAMxHa/H/jRBsEc3pqNaWCIfe1IPTy4MsckaLr+DKVXAFAg8cR32uO34yslfM4vV2OHihhMLGyMafEvr6LuQEp0/rMBNt4NrhcipVAOk98pHkTlWRB4zVqZ0+y0q1EwrNyyJK77zHFDlQNQ9GOG0FphVmOG6D2rEZZWfzfpHH1VOL8mDor07PDPSh/nVn1RBZIC0m9LSbnhFm2nuBTH92gfmQMTDejb5gcqfA4GT+CcqzHUidmQPRbpy7feEUx7eXg8pEYhe8d4zpqJUccNjYqK0xbh0WBI7fyyKrbnMtD4idBuesGNWsSk8F0vVdEEL8YGMYhuBeLKX+zKmC2uCr+PUZrTfgoViLWubC6s8P9VGQvKdw3wLcmWpfPBqDXKl3rD1CQUJPct1LT5PwGAguvEoU/EaJNq13GqZ3knx/0U0v32AjcluITbP6SKAQKV262YO5RRKZ9frBOUU4huTY351LO2tj3CJE2PM0dlWI13nXkKpTJMudAY2p5i4u0QR/DQI0CkN7KGeS2W1Phk/SN+sNq6PR5lat4NIsbP/GGNWRMPgsiNq+LFtlqXF6aOSjDwSFO6Uk3QagiKKzquOi6viJa+EXv0SHCjSCn+BuZL9qwnUvJgycwoJOe1ENV7sU5WjqgfnWvB+ppxjKCq9sXRYgcJfbwarybXCe49bp
+ kYTz4Bjb
+ 861t0Nw4TUCmksflLsRAlwuSSbAwDeiNG+C5INpPolsn37PZi7GBLVDHZZywo3bhoL87+acWXkOuMn0RxINTu1mdiyelJ8uQRxNfxPGkAmhN/mQAMJvRdh9AlfB/hhirj4hWmpBXsSAmP8fJxgZHnjciy3ehSC/mzr0wGTZ85XZuFU/3QrhfLirqapqqVxTxK3TsUsa0TNane+lKaif1Usi7bD6pRkJvdZd3dyqrpILMMRZuEHlE2JRik/TXKDLgjVWwOz/tjA2cKjxQLoFnsP87WeZlOsRnanBnH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,84 +112,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 10:55:23AM +0100, David Hildenbrand (Arm) wrote:
+On Wed, Mar 25, 2026 at 07:30:54AM -0700, Andrew Morton wrote:
+> On Wed, 25 Mar 2026 07:08:22 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+>
+> > On Tue, Mar 24, 2026 at 04:12:12PM -0700, Andrew Morton wrote:
+> > > On Thu,  5 Mar 2026 10:50:15 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+> > >
+> > > > erofs and zonefs are using vma_desc_test_any() twice to check whether all
+> > > > of VMA_SHARED_BIT and VMA_MAYWRITE_BIT are set, this is silly, so add
+> > > > vma_desc_test_all() to test all flags and update erofs and zonefs to use
+> > > > it.
+> > > >
+> > > > While we're here, update the helper function comments to be more
+> > > > consistent.
+> > > >
+> > > > Also add the same to the VMA test headers.
+> > >
+> > > fwiw, we have no review tags on this one.
+> >
+> > Based on the discussion we had about this previously I was under the impression
+> > if submitted by a maintainer that wasn't required?
+>
+> Well, it's a gray area.  Obviously it's better if people's stuff is
+> checked by co-maintainers or by others.
 
-Hi David,
+OK that contradicts the previous conversation we had where you had to
+convince me that this was ok (which I ended up agreeing with), rather than
+being a grey area.
 
-> > +/**
-> > + * lazy_mmu_mode_enable_pte() - Enable the lazy MMU mode with parameters
-> 
-> You have to be a lot clearer about implications. For example, what
-> happens if we would bail out and not process all ptes? What are the
-> exact semantics.
+We had quite a long conversation about maintainers are in a trusted role so
+a co-maintainer would have called it out it was wrong and etc.
 
-The only implication is "only this address/PTE range could be updated
-and that range may span one page table at most".
+But sure it'd be nice to get review, obviously I agree with that.
 
-Whether all or portion of PTEs were actually updated is not defined,
-just like in case of lazy_mmu_mode_enable_pte().
+>
+> I'm not inclined to make a fuss about it though (hence "fwiw").  Quite
+> a lot of unreviewed maintainer-authored material ends up going upstream
+> and I don't think that's causing much harm.
 
-Makes sense?
+I think you need to be a lot clearer in communicating these things while
+the process remains undocumented.
 
-> > + * Enters a new lazy MMU mode section; if the mode was not already enabled,
-> > + * enables it and calls arch_enter_lazy_mmu_mode_pte().
-> > + *
-> > + * Must be paired with a call to lazy_mmu_mode_disable().
-> > + *
-> > + * Has no effect if called:
-> > + * - While paused - see lazy_mmu_mode_pause()
-> > + * - In interrupt context
-> > + */
-> > +static inline void lazy_mmu_mode_enable_pte(struct mm_struct *mm,
-> > +					    unsigned long addr,
-> > +					    unsigned long end,
-> > +					    pte_t *ptep)
-> 
-> It can be multiple ptes, so should this be some kind of "pte_range"/
-> 
-> lazy_mmu_mode_enable_for_pte_range()
-> 
-> A bit mouthful but clearer.
-> 
-> > +{
-> > +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-> > +
-> > +	if (in_interrupt() || state->pause_count > 0)
-> > +		return;
-> > +
-> > +	VM_WARN_ON_ONCE(state->enable_count == U8_MAX);
-> > +
-> > +	if (state->enable_count++ == 0)
-> > +		arch_enter_lazy_mmu_mode_pte(mm, addr, end, ptep);
+In this case for instance, I took that to mean that you required review,
+the 'fwiw' doesn't really make it clear that this was optional, especially
+given this patch is so trivial.
 
-I will also change arch_enter_lazy_mmu_mode_pte() to
-arch_enter_lazy_mmu_mode_for_pte_range() then.
+>
+> In a lot of cases this is pretty much unavoidable because the patch
+> comes from a sole maintainer (SJ, Sergey, Ulad, Liam come to mind).
+> But when the author has co-maintainers, perhaps those people could step
+> up.
 
-> > +}
-> 
-> I'm wondering whether that could instead be some optional interface that
-> we trigger after the lazy_mmu_mode_enable. But looking at
+Right.
 
-To me just two separate and (as you put it) mouthful names appeal better
-than an optional follow-up interface.
+>
+> > I'll nag people, but I'm a bit surprised if this is why you haven't moved this
+> > to mm-stable, given how trivially obviously correct this patch is.
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/pc/devel-series
+> shows my expected merging order.  It looks like this one will be in the
+> next batch ->mm-stable.
+>
 
-> lazy_mmu_mode_enable() users, there don't seem to be cases where we
-> would process multiple different ranges under a single enable() call, right?
+I'll definietly need some decoding of that to understand where each batch
+is?
 
-Multiple different ranges still could be processed, but then one should
-continue using arch_enter_lazy_mmu_mode(). E.g. these were less obvious
-than traditional walkers and left them intact:
+To me it reads as a bunch of inscrutible #'s and file names...
 
-	mm/migrate_device.c
-	mm/tests/lazy_mmu_mode_kunit.c
-	mm/userfaultfd.c
-	mm/vmscan.c
-
-> -- 
-> Cheers,
-> 
-> David
-
-Thanks for the quick review!
-
+Thanks, Lorenzo
 
