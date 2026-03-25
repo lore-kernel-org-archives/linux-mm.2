@@ -4,102 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7855109C032
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 792F3109C028
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:09:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FC446B0099; Wed, 25 Mar 2026 11:06:37 -0400 (EDT)
+	id E12E56B008C; Wed, 25 Mar 2026 11:09:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D3CF6B009D; Wed, 25 Mar 2026 11:06:37 -0400 (EDT)
+	id DC3F86B00A0; Wed, 25 Mar 2026 11:09:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 311536B00A0; Wed, 25 Mar 2026 11:06:37 -0400 (EDT)
+	id CD96D6B00A1; Wed, 25 Mar 2026 11:09:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C9816B0099
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:06:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D0B0B5B902
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:06:36 +0000 (UTC)
-X-FDA: 84584911992.13.E6AA4C4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 02EED1C000C
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:06:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BnD9gwi0;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BnD9gwi0;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774451195; a=rsa-sha256;
-	cv=none;
-	b=IjtdWP0WERMPZGvgmep1oVDJBOyNFigthg6OW4ZMiEb0XEXIHkNs6m5w7bATvblMqg3AFF
-	zzy9f2CW5D4koObVOPqsexvItdR9BdhZ9bw8jBDQEt4u4jUyC0eO9mu1jAeQM/pmhlMHnF
-	rtEB0eOKFNRLYcS5LwEMM0rFxnlRXAg=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BB9BF6B008C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:09:34 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D3EA1A09CA
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:09:34 +0000 (UTC)
+X-FDA: 84584919468.22.7B325D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F091EC0007
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:09:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VoPTODcg;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774451195;
+	s=arc-20220608; t=1774451373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lnnlSk5FC62h+SQFH8Nxu8sIUC1RcsZVRgl9S0CLkWY=;
-	b=y/G8a7Tv3ZlwUttGHhmjv9mGBmvCF700jHJWpC1wbkmOajlsfAsajHd+90FSj8Lq7uDF1l
-	kenc1Vinvu9hsuIqetHpDARaIG5Gt9y1nk/E6Fj9skQ40DKCmAZ8xE7hRnFaIEknkM9t+i
-	as3TtvgHE6JS1HUhp7ZgY98rg5gDWbY=
+	bh=xoH1h5znVoWkoA18fvEtLwe9bsSeVKbeCHjR7P+2V0M=;
+	b=cac/Jmy3aFbBWJD8rjMyUSUF6NcWFkq9SarzKshSKVHDzTSCntdPff7wWkZP6FNkr5GjpT
+	eK7NlEJUvwOLAAtTp5rvxUbUw8VVy70UkcOU2wlWfeqsGEuteqEEKZut2gfp/r1KYk4UJF
+	ktM49JphUTV1q6DbJ6dnhrVeRXn6fMw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VoPTODcg;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774451373; a=rsa-sha256;
+	cv=none;
+	b=UDRbwD+6TjxzeGNsojNeIkPxLH5Yi12ls4/FghH49ZOysP6qGbYYtySdK/x5oUmeMuI9mY
+	hNJmuwQ06nhVSTY5a010Hw4rNr7+B70KmLCYj6nXWyHhhWM6VkvYKOom/14dwGi42qeY/l
+	BBWTXlFvn0/PNpR4+JWpte+QyubytJQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C20A9442D9;
-	Wed, 25 Mar 2026 15:06:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD1FC4CEF7;
-	Wed, 25 Mar 2026 15:06:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774451193;
-	bh=lnnlSk5FC62h+SQFH8Nxu8sIUC1RcsZVRgl9S0CLkWY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BnD9gwi0VQwGVJZwxlZQSOLmSOral2e3j++2mIQTX80noalI4x2J+rOnTVVsPd5ua
-	 bijGBS4S+PN15GS2dwJyCXUcUl1+I4PSqcUyBG4KMCANZt9ucF/XE1bBdhJZFUXPrB
-	 pmR3QfTDBIoNgVHkDUSxRCCuwFFvYbo0ARFItqVTCM999NZ04o69nLKszndiNSCW/o
-	 TGVS2SyH8n2FSXZNGDFHnW9gJal76Pf4kPiku88kYtICDUCIpfRbQJnZ1nNG+WqI7L
-	 2xKtn/qdYmPNFLV6GbRerLsyg16lm2w2zUDlrMOn94GiYGx3bPLRGnrwyMZZpk5ata
-	 jBo6ZVd/Hp3iw==
-Date: Wed, 25 Mar 2026 15:06:26 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org, catalin.marinas@arm.com, 
-	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
-	willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the
- references for large folios
-Message-ID: <e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
-References: <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
- <CAGsJ_4yEWn3kVZPQZatOJX7NLLv-OK9pAqUDuWz25XxG5hpV=w@mail.gmail.com>
- <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
- <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
- <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
- <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
- <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
- <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
- <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
- <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 02EED1C000C
-X-Stat-Signature: zijhgjocohrfsjxf4aaghmex81rt1nx5
+	by tor.source.kernel.org (Postfix) with ESMTP id 57C06600C4;
+	Wed, 25 Mar 2026 15:09:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE18AC4CEF7;
+	Wed, 25 Mar 2026 15:09:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774451372;
+	bh=vk0ipjWHUhSNlIqD6a4UgVk0+BRVGEiJ5SvoUSaszPw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=VoPTODcg56NIL0NjPLeYHnNo6sz5XPpvH/X9UWLOo9zV1CvL/R5m9MfmuxvpCpZt7
+	 wKh01AcwFxd+zonrjg1JYyrTCXWJoyx8ESu5s5M1OlYMASSZlGl7YpK1gf5vUpfOyd
+	 D6AnTeyq2iJO0bO5U2OpLiLoW63E8/D/QXdtvJdw=
+Date: Wed, 25 Mar 2026 08:09:30 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Vernon Yang <vernon2gm@gmail.com>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress
+ number
+Message-Id: <20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
+In-Reply-To: <22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
+References: <20260221093918.1456187-1-vernon2gm@gmail.com>
+	<20260221093918.1456187-3-vernon2gm@gmail.com>
+	<20260224035247.r6mxsfcpiev4wnce@master>
+	<zo2o25tesjzdvxdbjo6rc7crqmf76z5zwlykrnvhydaowgngya@hv3vgfa7zcgi>
+	<1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
+	<hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
+	<8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org>
+	<CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
+	<22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F091EC0007
+X-Stat-Signature: eku4gxj9em6sxf85pr5mr1gu45f34iui
 X-Rspam-User: 
-X-HE-Tag: 1774451194-375532
-X-HE-Meta: U2FsdGVkX19lOuqsjBWPvvf01OW1KF6glGbl43bJqZowfv0pZ5yXHBZzzrljyIBgWv+w9Ywtm8hZOv3ydYaBkOnwGcOmb/325zS+2uvwzfsoUe/G+Q1SqwLnwfobF43tp2x3ZWbNDGwRiNlBP2tjA50d8y0pfOVDOqgi2OLUV1wawdA9fyswMZqyzQrtHYeOfnnFLKXzZl7bk7oe0u0wNqCnXgHNySpxtOnjjtmtUx0lO6+qkK/hsg6AyRMQkAI91Qgiv2jcWvOVC/pIQOwMgR7hoafqJAo2VpEckVMURJMhVUKf7S3qOIpIpOsG8oCHtbPMRnu6tV6EPDgS681qh+uDMk01I91+Ul/C/5WGxZgawt1+y6H2IZcmZu434/rthAP4GnW3Et7GsZqh4DUC3oSZmTh0brX/hIsOGF+4v+qphKRamgTjYIwHl09S5TkL3M7M/ubw7SB6bH80nNPV1ezw6TjkaDlEAZ5srL7ogDlVsxybj5Iyw+sR6/ow7cbWxiGS+kT/GII3xhN26Iz17EabnvmM+xz3kV1PcGkL8v25NaTWiv5o2wWNN6rpCgi9conNBI+bEWCk3ElKB9IaPgq4ESoWKMEGsXFi2ZcqpBS9d5MPXlWQiQ+w4Dgj+H5MkGK8PY4MCMw48X31FN1G90HxuBt0Jjtze2PUqe8RmCNWqBX2heNlsPMuTEDWBpSja2P+/hEwXiWiCDfCiFWjF7EXD62XTlDZPjf8zteCFhn5ezUjUFfMWRFTJ13a9F/0WrLHfFspQq+3ND+pAT7dVYpRKOZzOD10kmFKkJqALjxw5AFgQESOG0wgIWJx7zSHDW/CxRbXnjMcBiZLPxw/unPAlJFsnPxP/R63h/85AMGDSoKKw191hidA9JNQ1kJh2HOjcvgNIwoqYG24nsqgxs/Q4SQxLCPTP7ZT57JFdVVMgdiLxhnDeY0gEiYyiEL00WzArNTDQjl+f3qSXiP
- SEWPEcBq
- WMEemUW9RkNcz3882c4PD7SFe3SFv+UPk2/lGEo+Xffu3JG8RR9015APOxokz6nAQ/K0DM4MXrsCtOZidH6nxFEEwOiwZt3U8ifh9VEge112KSBPOCnnKC6px+rf+rMp96o0o94lTmdccaYswbh+hdQDsHxgOaMSQmqtk5Yr04MDtslOd2h4l8UcRjXuimD58M7H4bS52qP7AY9aqrHTXAc8Yr4gjP9I87SxBmegx3RgEL2c=
+X-HE-Tag: 1774451372-442082
+X-HE-Meta: U2FsdGVkX18k8HZjJCGHRyi45Wl5To8j8E04guQ2iZk2tYMfU2vRhNtiqkSxkg8z2R3cQikoOz0aicDeVj/hHLiJSzwGEjl/58DYPl2Uwuurma7DXyCjer7YvJDtaljPS8mJPmQXFJQdWGKeOyEJ0Jv/+OKvJYlVUrYP+jdxmkJMl7wJ3bWJtMSyObwJA6rmyhFcDgCeS74gOjw6YS8dS3n+EooXqSGJQacLXquK8E8nBO4zpX3cO/tFYuioiqbgREzuKxGnWxggsaXQagI9ehMiOm5dz8KFJyzheqLWrvyRVXeJPC38JxQTZXeYSbcpoprgPaRMzDvdHf6/EVEqSW9O9YEiJSHkzGHZcRmfh07SjtwFtIui9SzrV5c/0ofTW2oLtScCpAaA5nqBFkhqrbeONaBdc6bsKySoBh+lt0ClyZQNwyq/n1vE7FpAYYcVc3On92u0tkkDYfp/DkiuXC56euVrI5zL3HUvGNWRLgYnbnpqHl7Klwogeabzk5SufqaRB8DwKhwBXSCOr7a3kSF96eldiiqxIDCdY1w7ap3Dpm6nEs4bjN/h8IKHCBSsN9fZ8P5J+ZjWTC1PQlsQXWaHjYPIkjYi6MtMWZpTg9QhU7yEyARtCsb1KenMY+ZQ0W2grMNhz0ur5GIzB8tffkoSvLOAP0hSr4omVvARRH4FH0aUAhG9RMpNep1gtC8N4S9AEL1tiYJsfX2LVJ1owEol7ebbQ6UYx2c3UEocvPgL/XxoXtyo/FSGqUrcIeRNtbto/+gwGIQxeMV2WM8aOkph0Dcd8Ay40tclF8yVFv49lAS7WlZaY9D4uBuGbHc62pxZGxygo6sTThvyfAWOui1WSPTTuyy1o601OQU8u91Wp5W00ucR1sRqnJeHUZ0u89iraLXqjlPHuNweOfeGV69Mvypsams9iWDPOKI4cUnnho0raLpmVeSVcdORh6HDlGHQekFUx6r7KsUJ/ri
+ EWMyhZ7D
+ k3zw93+l/yDB/jR9FOhAFadAr0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,55 +101,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 03:58:36PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/25/26 15:36, Lorenzo Stoakes (Oracle) wrote:
-> > On Mon, Mar 16, 2026 at 03:15:18PM +0100, David Hildenbrand (Arm) wrote:
-> >> On 3/16/26 07:25, Baolin Wang wrote:
-> >>>
-> >>>
-> >>>
-> >>> Sure. However, after investigating RISC‑V and x86, I found that
-> >>> ptep_clear_flush_young() does not flush the TLB on these architectures:
-> >>>
-> >>> int ptep_clear_flush_young(struct vm_area_struct *vma,
-> >>>                unsigned long address, pte_t *ptep)
-> >>> {
-> >>>     /*
-> >>>      * On x86 CPUs, clearing the accessed bit without a TLB flush
-> >>>      * doesn't cause data corruption. [ It could cause incorrect
-> >>>      * page aging and the (mistaken) reclaim of hot pages, but the
-> >>>      * chance of that should be relatively low. ]
-> >>>      *
-> >>>      * So as a performance optimization don't flush the TLB when
-> >>>      * clearing the accessed bit, it will eventually be flushed by
-> >>>      * a context switch or a VM operation anyway. [ In the rare
-> >>>      * event of it not getting flushed for a long time the delay
-> >>>      * shouldn't really matter because there's no real memory
-> >>>      * pressure for swapout to react to. ]
-> >>>      */
-> >>>     return ptep_test_and_clear_young(vma, address, ptep);
-> >>> }
-> >>
-> >> You'd probably want an arch helper then, that tells you whether
-> >> a flush_tlb_range() after ptep_test_and_clear_young() is required.
-> >>
-> >> Or some special flush_tlb_range() helper.
-> >>
-> >> I agree that it requires more work.
-> >
-> > Sorry unclear here - does the series need more work or does a follow up patch
-> > need more work?
->
-> Follow up!
+On Wed, 25 Mar 2026 14:10:23 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-Ok good as in mm-stable now. Sadly means I don't get to review it but there we
-go.
+> > No need to update the patch description.
+> 
+> I will take a look at this (sorry for delay) but general point - while
+> fix-patches are convenient, they're incredibly anti-reviewer.
+> 
+> I hope at some point in the future we can move away from that so you can look at
+> a series on list and know that what's shown there is the actual patch.
 
->
-> --
-> Cheers,
->
-> David
+Oh.  I've never really received that message, at least not at all
+clearly.
 
-Thanks, Lorenzo
+I've been hoping that the -fix patches are actually pro-reviewer, for
+those reviewers who have looked at the previous version.  A full resend
+of something you've already looked at is quite annoying!
+
+I try to mitigate that by sending the
+heres-what-you-changed-since-last-time replies.  It's a little more
+work at this end, but that's not at all a problem.
+
+I see a couple of options here
+
+a) I can fold the -fix into the base patch then send out the
+   resulting diff as a reply-to-all.
+
+b) We can just deprecate the -fix things and ask people for full
+   resends.
+
+It depends on what people prefer.  How do we determine that?
 
