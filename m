@@ -4,89 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E906109C02F
-	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:14:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C0A109C029
+	for <linux-mm@archiver.kernel.org>; Wed, 25 Mar 2026 15:17:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89CD16B008A; Wed, 25 Mar 2026 11:14:57 -0400 (EDT)
+	id A004A6B0092; Wed, 25 Mar 2026 11:17:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 874BE6B008C; Wed, 25 Mar 2026 11:14:57 -0400 (EDT)
+	id 9B0916B0099; Wed, 25 Mar 2026 11:17:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78A6B6B0092; Wed, 25 Mar 2026 11:14:57 -0400 (EDT)
+	id 878396B009B; Wed, 25 Mar 2026 11:17:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C2236B008A
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:14:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2AD7D1B8E0D
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:14:57 +0000 (UTC)
-X-FDA: 84584933034.26.4D84480
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 83F5A1C0010
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:14:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jVNYUWsk;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 77DDB6B0092
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 11:17:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 56643E0D65
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:17:30 +0000 (UTC)
+X-FDA: 84584939460.28.78B57E0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7090E180016
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 15:17:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JrViTMQJ;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jVNYUWsk;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JrViTMQJ;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774451695; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774451848; a=rsa-sha256;
 	cv=none;
-	b=NUDOMUgJahjcetLSCvEl2QiaxaMhLIzvHsqO0x+fHzQfDVoz5GXTMFRN4KbAGt3+Czc3I+
-	HaYzZ1T9NYHoMvlzCKg5q/mMnQvJH/ut3tGDlRdqh+gQaFLd9a3Gk8+NkBH0hgQS6GvXHu
-	wfIViIABae13+dmsGnhZwiUV0lVwxOg=
+	b=7oJdIYum5KBzEO1OS7XoDjJS7082H3ZkUH54IPFaIBd0oIYrtIBcNvc6tmmarWgs8IY1q0
+	4X4J2iVsjqzf5Im7s/unic8Lk0TUkOtARDI6DfNh6jLkiYAKOvLrLyVvcHFXE5gno0l/Sg
+	fwZyMNjaO9IlVSA9XHELbqrNLV1YDWI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774451695;
+	s=arc-20220608; t=1774451848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mCuq/BfXsO+UxkqMXxR1KEryLOyGUIZPs7M4CmYgH5U=;
-	b=JBfDG+e6WqlvHGXFTDpzg4OdW3yR/YWky8pAhfX/26gqp1Qh2D079F7QWTGBYHidkfMt8X
-	uE/etO4RQoMhn2gB5WWx6g7kClOI5259AvzNtYPHcJXBCqvpVcCFLwRL/Fgort0tHQ3V5n
-	Jw9M9WcUP4IQpqrQvmU7O7S/K9Sbcb4=
+	bh=tQ5FI2Hmnnc5abNAJPx9JHZNlIM36zt5U6ixI/lDtO4=;
+	b=MSlJqCvNWZnmlWtEk+IWSZHROV5xCEM6eKFHFuxd98RZjI7iI6u3fswtxkOa3X85xoACqP
+	kQlDpiqOoFtPeXp7APvGs7ppUoG+8e49gvwqHOOisjgb8YxdVEGV2COCKyUUkI75pO++y2
+	VHIK5tJLNQzicrPNXTUcB0dpB5EiYEM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C5DA96012A;
-	Wed, 25 Mar 2026 15:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C76C116C6;
-	Wed, 25 Mar 2026 15:14:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6B8AC436C1;
+	Wed, 25 Mar 2026 15:17:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C27C4CEF7;
+	Wed, 25 Mar 2026 15:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774451694;
-	bh=7MnbjeWtsH0JvaYpZpR7lXnkxJmkUg7sLS611uhlmAM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jVNYUWskpSXx7XlaVxDiUSu6HaYLYfHqaeFSIdOumJl/ERR8k9IwD1vPAvamEdGVM
-	 o0DyrHmHQfJhELVqkFxzUjKzLWeEtThITrHuiLl8rWEn6EK1Px9AkCej7hc7c4N1YZ
-	 qWUT/6cezQ3EL8ZqTXlDY8ilrZkRG0ENkS1YqLzj2lNiw+cngXbIu61vfui+X62uvc
-	 btWBlVMC3FFTOHr1fk3xxdS1ln7PU+Gv22zU6XVdX9Sg/7Max+dp2qA3ixhlxbmfJ6
-	 LvgIuu35q9ij90FP6+GAhjJRPB4MVmwwFm5HOw/XI6WP5QNjVyFYxYgJDKtzL77tlZ
-	 kDXLV0d5aGyXA==
-Date: Wed, 25 Mar 2026 15:14:49 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: mboone@akamai.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/pagewalk: fix race between concurrent split and
- refault
-Message-ID: <6c413f17-01c8-43fa-b5d5-45fe32dd14a8@lucifer.local>
-References: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
+	s=k20201202; t=1774451847;
+	bh=ksUMt37J8BPZlt6VGxoJ1gDJt4iZE368GqGtTG1peQQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JrViTMQJWQ4XiUVYH096cYPmF10u5v97fWD1ge/RfAiD7NufBwAv5H4LZ3t3LmHna
+	 BBFfUJrxaa7nYwiFtDRArkhuKyqau0FmIDMZI/pgurWCr7q62msJ/5VdT9wlyr92GI
+	 BJQW/Ep4PG0/G9aKsO5fmRPlevp9EiNWRttaP6YpBUFrzJcI+BnkxSXjKhkb8af5F1
+	 0uv9kqBWB/Iis2LFgomU7apAVYnYK5lQyKfRwl4R6WL6vROjU8Xbq4P7MsA6O/IZKo
+	 MEJE8Szwdkflfr80v0VKYN0L1+tD4SPZC6IssXM4re5469jPTND/zIFG0STDu8wpAb
+	 7cnWEBoF76ARQ==
+Message-ID: <3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
+Date: Wed, 25 Mar 2026 16:17:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress number
+To: Andrew Morton <akpm@linux-foundation.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Vernon Yang <vernon2gm@gmail.com>, Wei Yang <richard.weiyang@gmail.com>,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260221093918.1456187-1-vernon2gm@gmail.com>
+ <20260221093918.1456187-3-vernon2gm@gmail.com>
+ <20260224035247.r6mxsfcpiev4wnce@master>
+ <zo2o25tesjzdvxdbjo6rc7crqmf76z5zwlykrnvhydaowgngya@hv3vgfa7zcgi>
+ <1da56bbb-9211-42d7-9b08-3ee56d2b538d@kernel.org>
+ <hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
+ <8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org>
+ <CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
+ <22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
+ <20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 83F5A1C0010
-X-Stat-Signature: m3px1abgx6byy4by78mgaja7nybqqryh
+X-Rspamd-Queue-Id: 7090E180016
+X-Stat-Signature: o7khif6bx13d5wp81tu8yjnt7ysreumh
 X-Rspam-User: 
-X-HE-Tag: 1774451695-732667
-X-HE-Meta: U2FsdGVkX1+ajDJgoeUgnUrC1a0+3HdzsvQmhdv2oR1jgA8VAANtQnil67zBj2G7gOw7viEkvnHMJhYswk3/Ej8f9gncmwBn01rvT7UWov6WmxuIUzL37Num0LmrFe/wuYfUo79Q0zqiFjqIq8lNI0J41fPmWvHyiO9/cF/FSaBed1L1xBEUJk3XxFqBMtO0y/qXK36MU/Db1el5+0jMjirZ/CfHz+bn7sziBGC1DK6YNfxumOOXS8KxA2KxQ1gHjXip4giFiuNyVYoujW3D8ANqP1mEJOVS/1grzKw/mJa2341G3DRlaSO34SpnOKzKSx9TrefXSSV83ywQiiV7u1KpDPa/jKBo5klZ3EXK+SPF4PrNmbb7bRK195WcT7X2sirIPgWtcS854AxS4ZazwO2Rs1toz/1cdVRx/BEGRGXGoiBswI1qDdgFkAGkyAAhtVGkmyHo18AdbGaBiENzk/L5rqVkWzcHVXsKG4qSgi1mmrj9TGbewfZ2dPxkGTclmv/G2G61pUutS3HNS75Sk8RwDbfYQL01NqKkF7ivCK8swTXCQcvNrZ3nF6gFLzE1x3KnPm6QTQMrt4vmn4ayPqWWUf1MnHJ4QnF/qwEb5gUsY4dVdSE+XCJ/qMQn/I1bU7yaFf9oWMiEH/CzOi2PaIuvVziSIb1OWAaPh8H+349Cajgc4vUwlb/GsAoDDcr0XAHay4E+fuG1F8MrZcPmRUcVMp7ADUCpktSMjax1seIucabHGpkgNdy4cHNAgh0NUjmfgqWeLLe/0OHXCNm8wGL5Vo/LE2IHf9d5/W9voeC4F58ixtD43q5VZXrV8NE2Ouc+9wzK+CUlcEWaQ4k6ncGoc0UaljJfQJY/V0iZFxgPuxRIDjuh8VQ/6Y0VdVzbwBWkRKsaGp6J8JS1L+mgmoz/fuHmwH4OJL0e9dTPX2VFzORPWM7ecin82z8BRedoVpDBPn6V8UydO+JcXK7
- TsiA7MZy
- FmZ110NLwW865DflP9IOa7wt3UikkBQhp2WXvwAMgzNyjrFcFMSwMu11nDTAnoeLaJeQMDZqaEwgmQzzX1BXe1nyyZbsX/ltZi8ko/q/ChQonQ1IGIBizRw4yVm5naduWKpYqeKpD2W1gVKBZM2qgAND284rzVhFF5BAZKRBrqkmEitrYQPPwNyk5CUMGhs4LrD66tDJrzS7QfLQQaY7kmNF3IrBgM2cbIiZzCwUo4XyYDpmEioopD7+GAAb/CMuDnS2H
+X-HE-Tag: 1774451848-182917
+X-HE-Meta: U2FsdGVkX1/09okNIvZ4lNc7u4eiKuAAZ5xUB2DMY6cS1viqn6QI3a14Du7xk5zqfAktgCoxOhaAveRTJl3ZRwJDDu8DjPpIWOWQ7nHrV81a+8U/64RVN6+OzjjT9njwNxKLFkxNfp3a40436klpxA6q/8JbGm8VDtZwkTHs0uD7MhozKD9/08PFhB4YPAUnGCTGd14VHeUSm66EF3+UEvCQGmGgUxKzMml7B+DXW0NWj8Sy1r4iVDt9PWWw0n7hcGz5ewm4L7nKuVDdMGPIjcib6A7W8FG1r0OJ8QDhqa5eAdU8XVQfVxu4+m0keyPVVC1lzdull0mW1p7NG+rHSBB1UiKIJNIxPqOHFJoRBbCbAgT2XBpmo3SUCPex07c71ZB/nwaI+9cuN3qBNAoVTEM9l/RmrE3YSSa/SyvSAIZyCgQLy3sRKcrNRlK01jgznl98IV1GfeZGzVMS+qmFXXHj6fCBGFQYm/FtwMurV0p9lNWRPhl4sf/fXHAIHvOl4Uc9vgZL7vHkb2nikKKZdhVR80mHGzT3db0sycgo69N5TVzszbeufTEIB4kkbEX1+cKxOuQme7Wgp3aU8Oapu1q9dVrX7TaE+eY71SEisM+m+sCq24dHbsfqB1OmLKnA5o6nmIBH/CmTGKkAoYrWet3Tnov7lw4xgaKs9YlDF8pPeM9XrpRKHe/+SiRyPDsV7z+bttcNq3TXDGDerBFta6zqQqs3PHHRkoVY/94WE8QGtW7vkMMhd8j7WjTs4U1QxE4IAgPQUFe1ugESrbedmfdslCdc4AkFiaQJWj9lG3sp7Hn8ryRlJkuydpY/vJyMK3ohg+NZ4fDfNy1mo0ZO693S74K4g/R8z19g2MlchgqPPdfOTeDJhwWo5cifEPI3Ri5JWU2P9AenfEfDP5f2W+7jFGHc6HDq5PLj2mOAYUO1q0y+LlrZkQTPUtVT+AbSG/+WKRr8subQdExqRXw
+ UdQuCMpb
+ DjYOLuh9YZiVu2DSH0hTkE5O2x/Vg0SnG7ps8RCmz1289JYxAB0PRfI2OWuTMBjHrh6tsjeVs36uwcu3FDlHaSFg/Lhn4RjEuc//JbMFBfQZxaZ3AAb91RM2TdAgcJDQakAi+pEuOYOcj50/s824ZrMCvZvWSp0HzHBmkbUAwH6sS/PVaQaUbFp+qZ90AV2DCvHu/Xv3H0zYy6D1PR1tGr7NnqV+CcIp73rUyMALzM+ip1h/cG9nLZZALhOcS9KA8aQwh5ks3Qq18lAviMJErKMELaqvuzi3aQ3cS/fg/OhGFf53VCo/YpBXAYUrvYQo8DtWM72sLuLn+UHRVUOV6Q5lp7NWMVD2FYxgW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,171 +149,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 10:59:16AM +0100, Max Boone via B4 Relay wrote:
-> From: Max Boone <mboone@akamai.com>
->
-> The splitting of a PUD entry in walk_pud_range() can race with
-> a concurrent thread refaulting the PUD leaf entry causing it to
-> try walking a PMD range that has disappeared.
->
-> An example and reproduction of this is to try reading numa_maps of
-> a process while VFIO-PCI is setting up DMA (specifically the
-> vfio_pin_pages_remote call) on a large BAR for that process.
->
-> This will trigger a kernel BUG:
-> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-> BUG: unable to handle page fault for address: ffffa23980000000
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP NOPTI
-> ...
-> RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-> Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-> 28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
->    9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-> RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-> RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-> RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-> RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-> R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-> R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-> FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-> knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
->  __walk_page_range+0x195/0x1b0
->  walk_page_vma+0x62/0xc0
->  show_numa_map+0x12b/0x3b0
->  seq_read_iter+0x297/0x440
->  seq_read+0x11d/0x140
->  vfs_read+0xc2/0x340
->  ksys_read+0x5f/0xe0
->  do_syscall_64+0x68/0x130
->  ? get_page_from_freelist+0x5c2/0x17e0
->  ? mas_store_prealloc+0x17e/0x360
->  ? vma_set_page_prot+0x4c/0xa0
->  ? __alloc_pages_noprof+0x14e/0x2d0
->  ? __mod_memcg_lruvec_state+0x8d/0x140
->  ? __lruvec_stat_mod_folio+0x76/0xb0
->  ? __folio_mod_stat+0x26/0x80
->  ? do_anonymous_page+0x705/0x900
->  ? __handle_mm_fault+0xa8d/0x1000
->  ? __count_memcg_events+0x53/0xf0
->  ? handle_mm_fault+0xa5/0x360
->  ? do_user_addr_fault+0x342/0x640
->  ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
->  ? irqentry_exit_to_user_mode+0x24/0x100
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x7fe88464f47e
-> Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-> 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
->    f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-> RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-> RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-> RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-> R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-> R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
->  </TASK>
->
-> Fix this by validating the PUD entry in walk_pmd_range() using a stable
-> snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
-> walk via ACTION_AGAIN instead of descending further. This mirrors the
-> retry logic in walk_pte_range(), which lets walk_pmd_range() retry if
-> the PTE is not being got by pte_offset_map_lock().
->
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Max Boone <mboone@akamai.com>
+On 3/25/26 16:09, Andrew Morton wrote:
+> On Wed, 25 Mar 2026 14:10:23 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+> 
+>>> No need to update the patch description.
+>>
+>> I will take a look at this (sorry for delay) but general point - while
+>> fix-patches are convenient, they're incredibly anti-reviewer.
 
-LGTM, so:
++1, I could have sworn we brought that up before. :)
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>>
+>> I hope at some point in the future we can move away from that so you can look at
+>> a series on list and know that what's shown there is the actual patch.
+> 
+> Oh.  I've never really received that message, at least not at all
+> clearly.
+> 
+> I've been hoping that the -fix patches are actually pro-reviewer, for
+> those reviewers who have looked at the previous version.  A full resend
+> of something you've already looked at is quite annoying!
+> 
+> I try to mitigate that by sending the
+> heres-what-you-changed-since-last-time replies.  It's a little more
+> work at this end, but that's not at all a problem.
+> 
+> I see a couple of options here
+> 
+> a) I can fold the -fix into the base patch then send out the
+>    resulting diff as a reply-to-all.
+> 
+> b) We can just deprecate the -fix things and ask people for full
+>    resends.
+> 
+> It depends on what people prefer.  How do we determine that?
 
-(I reviewed before but maybe you didn't see that I was fine with you
-applying tag after nits addressed :)
+I like "fix" for smaller "obvious" stuff where a resend is really just
+noise.
 
-> ---
-> Changes in v2:
-> - extended the comment in walk_pmd_range with split/refault example.
-> - changed fixes, race not introduced by hugepage splitting but rather
->   with huge pfnmaps of BARs.
-> - clarified that the retry logic mirrors walk_pte_range instead of
->   walk_pmd_range.
-> - style changes (removed trailing newline)
-> - Link to v1: https://lore.kernel.org/r/20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com
+But for bigger stuff I prefer a full resend (we can still have these
+temporary fixups, but for reviewers a follow-up resend is better).
 
-Thanks, Lorenzo
+-- 
+Cheers,
 
-> ---
->  mm/pagewalk.c | 25 ++++++++++++++++++++++---
->  1 file changed, 22 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index a94c401ab..4e7bcd975 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->  			  struct mm_walk *walk)
->  {
-> +	pud_t pudval = pudp_get(pud);
->  	pmd_t *pmd;
->  	unsigned long next;
->  	const struct mm_walk_ops *ops = walk->ops;
-> @@ -105,6 +106,24 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->  	int err = 0;
->  	int depth = real_depth(3);
->
-> +	/*
-> +	 * For PTE handling, pte_offset_map_lock() takes care of checking
-> +	 * whether there actually is a page table. But it also has to be
-> +	 * very careful about concurrent page table reclaim.
-> +	 *
-> +	 * Similarly, we have to be careful here - a PUD entry that points
-> +	 * to a PMD table cannot go away, so we can just walk it. But if
-> +	 * it's something else, we need to ensure we didn't race something,
-> +	 * so need to retry.
-> +	 *
-> +	 * A pertinent example of this is a PUD refault after PUD split -
-> +	 * we will need to split again or risk accessing invalid memory.
-> +	 */
-> +	if (!pud_present(pudval) || pud_leaf(pudval)) {
-> +		walk->action = ACTION_AGAIN;
-> +		return 0;
-> +	}
-> +
->  	pmd = pmd_offset(pud, addr);
->  	do {
->  again:
-> @@ -218,12 +237,12 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->  		else if (pud_leaf(*pud) || !pud_present(*pud))
->  			continue; /* Nothing to do. */
->
-> -		if (pud_none(*pud))
-> -			goto again;
-> -
->  		err = walk_pmd_range(pud, addr, next, walk);
->  		if (err)
->  			break;
-> +
-> +		if (walk->action == ACTION_AGAIN)
-> +			goto again;
->  	} while (pud++, addr = next, addr != end);
->
->  	return err;
->
-> ---
-> base-commit: b4f0dd314b39ea154f62f3bd3115ed0470f9f71e
-> change-id: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
->
-> Best regards,
-> --
-> Max Boone <mboone@akamai.com>
->
->
+David
 
