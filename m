@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 784BF106F2EB
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 08:03:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A8A5106F2F0
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 08:06:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDA256B0088; Thu, 26 Mar 2026 04:03:46 -0400 (EDT)
+	id 5D80A6B0089; Thu, 26 Mar 2026 04:06:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C89986B0089; Thu, 26 Mar 2026 04:03:46 -0400 (EDT)
+	id 588816B008C; Thu, 26 Mar 2026 04:06:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC7606B008C; Thu, 26 Mar 2026 04:03:46 -0400 (EDT)
+	id 49E776B0092; Thu, 26 Mar 2026 04:06:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AC48B6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 04:03:46 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 44354140440
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:03:46 +0000 (UTC)
-X-FDA: 84587475252.03.DCA798B
+	by kanga.kvack.org (Postfix) with ESMTP id 39D856B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 04:06:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 025F5140440
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:06:07 +0000 (UTC)
+X-FDA: 84587481216.27.890A17D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C083140009
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:03:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="os/wDXFS";
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 584624000A
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:06:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Us+jO5Lm;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774512224;
+	s=arc-20220608; t=1774512366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Is681LQUPsLEFXcKol92/hc1x3OPimV82eg87scF5pU=;
-	b=lZgrDMSIJ3l05marEJ0FsWuBvRAKW5kdTIySoGf+MLct343lpc0SwibL9wlcWMvuiNmv6C
-	uiZeEmB4rJbVHLRi38+lfU5zuNjvGztXzntfFFRwHiNQdm5AEXvSX8SF285YhYyaJK7bAa
-	CYTMwWiYcknD0BPo5Pu8Ilkuu3zrSy8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774512224; a=rsa-sha256;
-	cv=none;
-	b=gdiH/mBiXCSS2oNZXoDOt8Fa8FZ/2b4EL5qL5sI94VqMtPFNN+tV4nDPWeIbePpbJYaXhx
-	NzdLu45vpYA/X2n9aNSo/WX1pLBopEWOWwd4E4mD4LrwsK4Hun+Q618CAOkFruaMF5rM5/
-	qGgTUN5K1R/8owV0EEOwRyTxQ1oVGfM=
+	bh=qocLzhKoNwuEpBKBumgzNhJetl4M5jN1U/FB4uOTE5E=;
+	b=nrmGqEajssvp3IDL7gngKACJdivX6tbOfVPI8QB8hu6cORxui+bmIrl/MpIDGn/PX1x89A
+	att+13EnOhRuK5F78WxZOMHoZ3GjPqcKssmRpKzdZNUUDP9gRNrUDwrJ40M52RDV6tFbD5
+	nWlIggDNcZganXb4OD9L2QfHe3QF75o=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="os/wDXFS";
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Us+jO5Lm;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774512366; a=rsa-sha256;
+	cv=none;
+	b=FWLX54bCLRwp01wI27mSocFSoUBU3Z8UEkV717MXrAwS546PQZGFvvLvkYq6qeJWXYC1TD
+	YrBIQsYI5EiC5CRT9hPaQuzRd6d4+BQ/xipLge6nbtjVWP0FmOuaKUT33ab/gXHzKqEAPX
+	Zh4LHz7HZJCNsJy3RQ7Pcu6RPqpzp7o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B4CA243CEF;
-	Thu, 26 Mar 2026 08:03:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FBAC116C6;
-	Thu, 26 Mar 2026 08:03:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5426843AF0;
+	Thu, 26 Mar 2026 08:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DC6C116C6;
+	Thu, 26 Mar 2026 08:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774512223;
-	bh=DKaiju7quAHqvOs2yPxqnK5F5PmgaoW7tHK0lx36PCo=;
+	s=k20201202; t=1774512365;
+	bh=qocLzhKoNwuEpBKBumgzNhJetl4M5jN1U/FB4uOTE5E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=os/wDXFSNf5cGkdYDdYXg+FtaXRECKlpYMQpgBxI8rX+fb660ekBz1FQww2/pKysn
-	 nzPgl2UQbWbNUsZsidhTlI8ANZrBtLnFtpk4VY5l6WZVNaXh7sQ1U+TABDwbCAEPmO
-	 9FYx9qpVym4MKxW66W1qs+PzCqj26+yLgFktqpWB31Nof1cnbz/eM4WO54JmQ5AKsn
-	 wjmrUllGjz1XCwsdpZOX9NVYIEP1QWrcJ5cQiNYZATOSwSf34y19QBN6hWL3mx6OiR
-	 xOG8ouJB4cLjtypYJxnBrX5RdFGNfvIG+anjn/CsG+3IjkvhGR0zMmKQZLCIFn3zQN
-	 Y/rH1niF4neyw==
-Date: Thu, 26 Mar 2026 08:03:38 +0000
+	b=Us+jO5LmAS8vTN0skQ/Gyvi5wp7dJizYUkwWyiMv0jbc9m1/rr92yozXMieqJZ+Ob
+	 MeaZZagHCuVdgI7IiLvw04CUH5gfJc00cMV6BNFSDS5jghA0YBaVl4bL7IdpquuvD5
+	 b9o/jex3ZFRk0KPW4jhjlUqegB5rKA2v6zG+vJSMrf58ROoxTNPR5Mkcuu65EJHoZB
+	 imYc5bUK4AO+kuwhUmjYbyBfh5YtEHEjlXHoteU/pTaUquHGpe04ox3rnD8XHucKBu
+	 eO7z/gz03O4i01TjrYroOlMBZyU/ggZvu7hpgX5fcluNMV0uyafoNwrmCYQThTIsre
+	 GoArltuDDBTrw==
+Date: Thu, 26 Mar 2026 08:05:57 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, lorenzo.stoakes@oracle.com, 
-	ziy@nvidia.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress number
-Message-ID: <de946da5-a14a-4841-ac13-97c06c5af543@lucifer.local>
-References: <CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
- <22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local>
- <20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
- <3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org>
- <8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
- <0437ad42-612e-461f-906d-6757eb19a8de@kernel.org>
- <CACZaFFMb_1u7ckb5+7=wWApOx-u5kBxx-+2Y1Cjd1Qad4kgHRg@mail.gmail.com>
- <20260325115932.d2841f29f318454709fd4f21@linux-foundation.org>
- <65853d35-718f-4899-b4e2-e0d339e57e5a@lucifer.local>
- <CACZaFFMXtujt89--cWr4Wnmeais1QU0afqRrNcrr6cFZp0rxAA@mail.gmail.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 1/4] mm: memcontrol: correct the type of stats_updates
+ to unsigned long
+Message-ID: <3eb8b252-b6fa-4708-8c84-bf90142fe682@lucifer.local>
+References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
+ <158fa0b1296168047342f02050e9d2bda6888d27.1774447069.git.zhengqi.arch@bytedance.com>
+ <fcd29ba1-e02a-4c91-80d1-2d1280e2ff99@lucifer.local>
+ <c46cc185-5c23-4145-bfad-5c455b84857f@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACZaFFMXtujt89--cWr4Wnmeais1QU0afqRrNcrr6cFZp0rxAA@mail.gmail.com>
-X-Rspamd-Queue-Id: C083140009
-X-Stat-Signature: 7b3owuczc1tr3m6qr5ocqyk1n7yjzeew
+In-Reply-To: <c46cc185-5c23-4145-bfad-5c455b84857f@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774512224-514061
-X-HE-Meta: U2FsdGVkX19U4RFjABu1h3gEuMZdpSqRX+nmrI6TrRb74t49CvaHIjt2qh5Dlv2MGANXMDqz4Bw1tMnh54nd+4BLe/qIhuqw+HL/WP8s+zUlb9mqrCYVUdMGoJa5mEeFNJ4S6ng/8RcEhTrtGFZtbFxxVCLJUULNsq0Y1PTQyHsQu1QBX/AufDeYbpF6lENFAm7mdcH82ec9WDlAcoXIXkru39Oh67WDPvqYYyph4GilX1/yB/09a9WuIV361FA7pw5oLk5qQOisga7wrLOBFylr3RHVBwWJF29L81Q6XWOVQz1KSljbkyAh4PBWw/ieciUB+KU4iCzMwgXmNdspNEYsFfMrEiCSjQdN6e1oUPCUc3VQzlg30lSTNyDolkscEwa8VTJO7JJGgSrninpY9pVFeHGKxwzvCQk4fqe/0DtYD+SbCK/Pih2CtySNqbsUhuOT5JjBxJ50tvY790uo2Cc+jqomF1HcciEajLrsZ/hXzqdcnvzXNxw403fEykV2JbZcJxSbtAD/sHtXan3wleFj9V5xSXfMIUm5XMBSJkgqdLiA/VaC3Cs2DRm4WWgHib6VuH88eKtk+HLTJRl/cRysC1/F+Z/icQutlwUxZDLsjjdmmGLW5j6Xn9mpIISx7nIesy5ZIJnEVVd/sFbFgGlBbGQjs/elxN3vq+Ut8EAmZKXbx/8ancVANl5cIaKmC9ukro6SBxS1ATZgML5MHLmgerkFNiRRz/QdMPDNo97Ek3DLDWSIHRtqTwx7vQL61upi9mkvdxdqr1/Mz+6q5ZjBCZBngyCfiJyT4C5XGY1O5PsfJoac/B22EcXArTWgLG3IXG6oMC0NZbYnEYhkJLX7tvbb9d6Q2sy82L/wc7ykYl1IbcTbXN/tBqtY4StPSLssZsWOwwVtu3dPlW7WzjdQ0wfvgeXUHXNb9PNvoHhtpjIoMAMZpWGOJ6t2Oj63RRHtUkjJUaEmFQjLgeB
- vXw==
+X-Rspamd-Queue-Id: 584624000A
+X-Stat-Signature: my77s95fztfao6837w4c679rn7gnbeqj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774512366-480157
+X-HE-Meta: U2FsdGVkX1/nbdnFLlvDzF5ajuHGlagMf7Nd72mIuJnlEUTR9AlbGqQZ3cb+70/Rig5vdA0KkXHtoQSpi0yoqlsx03qTwHpg/chyCkVYfqRqI3lBTrEg9vo+i9eo/IpW6Fyexbl61JSzw39QcWzKmcwEdbYWBKE93L98kl5X5JWbEqfwpKj1mU36kyFpo7OOzMxvGoEEoaDTf04v9BP6bCrEizs/xxaTlhXmwLpeq4pqIFNvusGRnMM5gNAe/Dn43YEzbvX4DD+FfCDJ9iRBjKQUMnL9MRji4WGuo7vvas9tLIHNGSpcFdxuuPvGSdW9OO9F6Jq53pv4mCBfncACuoi5pxFxcKWn6k5iy/YYAmpBuwHUV0fILv1NG8IzxQIdJKT3ZzOEjoLZW7/rdt03WdoFEoyQvbtmRMXiHYMfcSIGmeN/IvkhvdfF/PvRjmnfW2dYTM3RFA6m6wf+arTuyUncy/3JiO+2fXbKsargaaAMUucOq9ACrXyCCvq9A95spfSqxI/K9HE1vPbeHMtvJkiLVUMv3+OT9Y53TDJ5JNiCuafy6wna8Yd+CVNuqQMGWUdmaVWauUa1tgXyQJ7ZI+m0s1kni9/4i/22xp6EgE/v7wP5ZRadrswZEP1IW7fIonexUXlyLR3KtE9HXJvz2cik5oA8GaTkseaZ4cB3Hden5h7fJ37I5Ny8uv5aHpvEbml8f7h4HgJyQxt16EAb8NtOemoWpAKyBFeQl8/n0IP0/c5x0Or+L47IhjIqUgyUQ108xmnPtvWblphsoLpu3pWFkMe6kjOPl8Fwp3VLu7R+1NdHHC0q4X+G56go4z60/C1d7A7A5sry9OKN/27JjKYliyQN9aeiNoXOgt5S04xtIV3tp1iItm8GhxLqMrtqr3+lHWiTvizFIan/Z9J3YAa2ilVANKl7/st7hiBkyhfXXHnWkvO9Y5W8gGdeKL85FSbnD4M447ZzGb1SyVX
+ Urv9PnZF
+ aDXLg/+6Tb+qBe9ebPMwo7tLCmB7N1p8RNiqMM2PjbxILpwuRQxHG2lEbV4dqInSe6fsdcR3qDpzbMhH/pZEveiTlOGdQW1B9ChXZ38uL8p0qJD/anoZ7xjGI7j6DB27i9Pk66mluwhhvPDrzgeDUULxM5eXiN8Q4PfdotxYY5hVP5qLRCQYlb0tsPjfmnGn/7ZlCVIuBKS9X1hP9eiUH5u5bYMwNMlv79DDEXyvpsisnhJM3eZ8AWHKDOLXrjwNOG0RqV4oQ7x6SxX+bXaadp7UUfj1qsylN/wLc8CHEXd3x1JPCj1nnr13CZO0pzz/je5ug4GH82XLOcH5TggBWGKmzTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,30 +102,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 09:59:46AM +0800, Vernon Yang wrote:
-> On Thu, Mar 26, 2026 at 3:04 AM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
-> > On Wed, Mar 25, 2026 at 11:59:32AM -0700, Andrew Morton wrote:
-> > > On Thu, 26 Mar 2026 01:00:23 +0800 Vernon Yang <vernon2gm@gmail.com> wrote:
-> > >
-> > > > Although this patchset is already in the mm-stable branch, if we want to
-> > > > resend V9 version, I'd be happy to do so. Please let me know. Thanks!
-> > >
-> > > Depends on what changed in v9.  If it's a major change then I expect
-> > > I'd drop this series from mm-stable and we restart the clock on the
-> > > integration and review of this work.
-> > >
-> > > If it's a minor touchup then a standalone patch against mm-stable would
-> > > be fine, or just leave things as-is and prepare that change after
-> > > 7.1-rc1.
-> >
-> > I think he means just resending this for the sake of reviewability or
+On Thu, Mar 26, 2026 at 10:32:43AM +0800, Qi Zheng wrote:
 >
-> Yes, Just resending this for the sake of reviewability.
+>
+> On 3/25/26 11:28 PM, Lorenzo Stoakes (Oracle) wrote:
+> > On Wed, Mar 25, 2026 at 10:13:22PM +0800, Qi Zheng wrote:
+> > > From: Qi Zheng <zhengqi.arch@bytedance.com>
+> > >
+> > > The memcg_rstat_updated() tracks updates for vmstats_percpu->state
+> > > and lruvec_stats_percpu->state. Since these state values are of type long,
+> > > change the val parameter passed to memcg_rstat_updated() to long as well.
+> > >
+> > > Correspondingly, change the type of stats_updates in struct
+> > > memcg_vmstats_percpu and struct memcg_vmstats from unsigned int and
+> > > atomic_t to unsigned long and atomic_long_t respectively to prevent
+> > > potential overflow when handling large state updates during the
+> > > reparenting of LRU folios.
+> >
+> > Do we need a Fixes, possibly cc: stable for that? Apologies if already
+> > asked + answered.
+>
+> Before LRU folio reparenting was introduced, we wouldn’t pass in such a
+> large value, so this wasn’t a problem. Since LRU folio reparenting is
+> still in mm-unstable, so I didn't add a Fixes tag in [4/4].
 
-Yeah then there's no need, let's leave this as it is.
+Ah, well these patches should be _before_ the LRU folio reparenting then?
 
-Separately - thanks very much for doing this Vernon :) paying down technical
-debt in THP is _very_ much appreciated!
+Andrew - can we ensure correct ordering here?
 
-Cheers, Lorenzo
+>
+> >
+> > >
+> > > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> >
+> > Anyway logic seems fine to me, so:
+> >
+> > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>
+> Thanks!
+>
+>
+
+Thanks, Lorenzo
 
