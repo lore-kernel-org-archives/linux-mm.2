@@ -4,97 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A8A5106F2F0
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 08:06:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66CF6106F2F3
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 08:08:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D80A6B0089; Thu, 26 Mar 2026 04:06:08 -0400 (EDT)
+	id 89AD96B0005; Thu, 26 Mar 2026 04:08:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 588816B008C; Thu, 26 Mar 2026 04:06:08 -0400 (EDT)
+	id 84B5D6B008C; Thu, 26 Mar 2026 04:08:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49E776B0092; Thu, 26 Mar 2026 04:06:08 -0400 (EDT)
+	id 761C46B0092; Thu, 26 Mar 2026 04:08:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 39D856B0089
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 04:06:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 025F5140440
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:06:07 +0000 (UTC)
-X-FDA: 84587481216.27.890A17D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 584624000A
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:06:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Us+jO5Lm;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 647956B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 04:08:45 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C50FB5C2B4
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:08:44 +0000 (UTC)
+X-FDA: 84587487768.05.145DB79
+Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F1B132000A
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:08:42 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=A5mM2ZJa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of 3ienEaQYKCMQ241oxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3ienEaQYKCMQ241oxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--surenb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774512366;
+	s=arc-20220608; t=1774512523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qocLzhKoNwuEpBKBumgzNhJetl4M5jN1U/FB4uOTE5E=;
-	b=nrmGqEajssvp3IDL7gngKACJdivX6tbOfVPI8QB8hu6cORxui+bmIrl/MpIDGn/PX1x89A
-	att+13EnOhRuK5F78WxZOMHoZ3GjPqcKssmRpKzdZNUUDP9gRNrUDwrJ40M52RDV6tFbD5
-	nWlIggDNcZganXb4OD9L2QfHe3QF75o=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Us+jO5Lm;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774512366; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=DpXsG0Sw3JfIN9g3oAH6M8VS1bS1PNOXhE36FO51Iqg=;
+	b=UGwbMqmnJC5G5lzs0v6PEY+sz2TQzs86rrDIubzslKZv0Vk9PN3T7/QH8oWvRI4D2FUayx
+	76kkSj+wRJr/4EBVdCqJ7zAmzOhEebKutvKJCts6pMjMGR2i4AIPQ/AQ8tGZIdzxBGhHy7
+	vh+R9hds0/uyQpOw1Dxar11pN9Y1SIs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774512523; a=rsa-sha256;
 	cv=none;
-	b=FWLX54bCLRwp01wI27mSocFSoUBU3Z8UEkV717MXrAwS546PQZGFvvLvkYq6qeJWXYC1TD
-	YrBIQsYI5EiC5CRT9hPaQuzRd6d4+BQ/xipLge6nbtjVWP0FmOuaKUT33ab/gXHzKqEAPX
-	Zh4LHz7HZJCNsJy3RQ7Pcu6RPqpzp7o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5426843AF0;
-	Thu, 26 Mar 2026 08:06:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DC6C116C6;
-	Thu, 26 Mar 2026 08:05:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774512365;
-	bh=qocLzhKoNwuEpBKBumgzNhJetl4M5jN1U/FB4uOTE5E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Us+jO5LmAS8vTN0skQ/Gyvi5wp7dJizYUkwWyiMv0jbc9m1/rr92yozXMieqJZ+Ob
-	 MeaZZagHCuVdgI7IiLvw04CUH5gfJc00cMV6BNFSDS5jghA0YBaVl4bL7IdpquuvD5
-	 b9o/jex3ZFRk0KPW4jhjlUqegB5rKA2v6zG+vJSMrf58ROoxTNPR5Mkcuu65EJHoZB
-	 imYc5bUK4AO+kuwhUmjYbyBfh5YtEHEjlXHoteU/pTaUquHGpe04ox3rnD8XHucKBu
-	 eO7z/gz03O4i01TjrYroOlMBZyU/ggZvu7hpgX5fcluNMV0uyafoNwrmCYQThTIsre
-	 GoArltuDDBTrw==
-Date: Thu, 26 Mar 2026 08:05:57 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
-	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 1/4] mm: memcontrol: correct the type of stats_updates
- to unsigned long
-Message-ID: <3eb8b252-b6fa-4708-8c84-bf90142fe682@lucifer.local>
-References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
- <158fa0b1296168047342f02050e9d2bda6888d27.1774447069.git.zhengqi.arch@bytedance.com>
- <fcd29ba1-e02a-4c91-80d1-2d1280e2ff99@lucifer.local>
- <c46cc185-5c23-4145-bfad-5c455b84857f@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c46cc185-5c23-4145-bfad-5c455b84857f@linux.dev>
+	b=wAw5i8qGwNSV/Gc+5hvjPqZhEzyOhkuCNUaQMcc941K1KdaETbgSgKG3PKROaXcYTvG+el
+	MMdLUUyQpAYSM561ZTilLVzm3uaNvEl5QXbcLvPensgbCPAn+DBeADUf07GQDvItRExDyK
+	a72Rp8gmEuPPKrRg6YyjYdp7cs6sTW4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=A5mM2ZJa;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of 3ienEaQYKCMQ241oxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--surenb.bounces.google.com designates 74.125.82.73 as permitted sender) smtp.mailfrom=3ienEaQYKCMQ241oxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--surenb.bounces.google.com
+Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-1279caef718so663651c88.1
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:08:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774512522; x=1775117322; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DpXsG0Sw3JfIN9g3oAH6M8VS1bS1PNOXhE36FO51Iqg=;
+        b=A5mM2ZJa5bAwtIKNX2YMITp7laVe2O7PQU9fpB0RAfdft5K/Yh6pGiOYoSyndT3V6P
+         npy8brvDoF4LgvvupNOkRJypp8dQo1+rqIusRneWVNFj+n3jSVZezl86/rmLaq+MLy1r
+         X7RpMvRRvf/1G7qnAY6+3c3ptdloRkKOGi7F5wpufmO55ncUG6kt4O9iZgN3FY/Es9QQ
+         EYkfejvnSu+P7A36ovtVWxMKtQrbCm9ojlbzCjLfYRs1LutBt4C4YEYZ8Bfk/m3YCB7o
+         PxQ7CFE85qgfsLj/wxJSUi5OhwjHFm8TR8shEIzzgm7v4iWuvX8zu0oce9KpzR9ft4ZP
+         PDGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774512522; x=1775117322;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DpXsG0Sw3JfIN9g3oAH6M8VS1bS1PNOXhE36FO51Iqg=;
+        b=nno6O3EXMQ3uD/PXYRp4x5qYMg7bmPxOS20i1ib5rVKRRdGufJvrrkSMX4RS8gvNF/
+         ozGbkfpu+LVbPRBkCb4MkQlvAtDFdCEv8H+Z7Sk5mAL1FlZH2XwSvAW1rSDJX94ElIC3
+         jwweIpvGpaOvcjjz52gQeve/G7Za0cnloCeVAcY1Mzak3/ySzz9lC8ShxVrWIkqTkzbO
+         farTXkt4KTwGas+aaAXP/7QK0VYMJz7uUecrmU3VT8cCS7r6Yb3sVYYscFKnW6kzUTf0
+         EbvAHWWrMdBvZBSBnAnRDqKHLAa4JkqsqqDHHCDH93NqzrZinmaAdm/kUE0iyPZlTqCF
+         5utA==
+X-Forwarded-Encrypted: i=1; AJvYcCWr35JpyiFY7R6Nkx85RKntSABZE4QmYQSAWfL0P/mv2S09NSabqE9T+XL6/W7lph8wVy9pDLLQLQ==@kvack.org
+X-Gm-Message-State: AOJu0YwmSxYCKPX0q/oUytTopPK3ZnGpFFhdfCVrmS/NiQaLw/QMt2Jf
+	PDC+v0nBmoTplU+04HzwKF+s6OKnQVLEjOmL+Pn4xqm+zzr3BLJXXpj7wNbstz3pbGtBIcVbQF1
+	vND5dsg==
+X-Received: from dlbuy10.prod.google.com ([2002:a05:7022:1e0a:b0:12a:6d14:dfd9])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:eac3:b0:11b:b622:cad9
+ with SMTP id a92af1059eb24-12a96eceb8emr2826837c88.21.1774512521385; Thu, 26
+ Mar 2026 01:08:41 -0700 (PDT)
+Date: Thu, 26 Mar 2026 01:08:30 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
+Message-ID: <20260326080836.695207-1-surenb@google.com>
+Subject: [PATCH v5 0/6] Use killable vma write locking in most places
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
+	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
+	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: F1B132000A
+X-Stat-Signature: udaczapi861qmozkaa3m4perm4py844j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 584624000A
-X-Stat-Signature: my77s95fztfao6837w4c679rn7gnbeqj
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774512366-480157
-X-HE-Meta: U2FsdGVkX1/nbdnFLlvDzF5ajuHGlagMf7Nd72mIuJnlEUTR9AlbGqQZ3cb+70/Rig5vdA0KkXHtoQSpi0yoqlsx03qTwHpg/chyCkVYfqRqI3lBTrEg9vo+i9eo/IpW6Fyexbl61JSzw39QcWzKmcwEdbYWBKE93L98kl5X5JWbEqfwpKj1mU36kyFpo7OOzMxvGoEEoaDTf04v9BP6bCrEizs/xxaTlhXmwLpeq4pqIFNvusGRnMM5gNAe/Dn43YEzbvX4DD+FfCDJ9iRBjKQUMnL9MRji4WGuo7vvas9tLIHNGSpcFdxuuPvGSdW9OO9F6Jq53pv4mCBfncACuoi5pxFxcKWn6k5iy/YYAmpBuwHUV0fILv1NG8IzxQIdJKT3ZzOEjoLZW7/rdt03WdoFEoyQvbtmRMXiHYMfcSIGmeN/IvkhvdfF/PvRjmnfW2dYTM3RFA6m6wf+arTuyUncy/3JiO+2fXbKsargaaAMUucOq9ACrXyCCvq9A95spfSqxI/K9HE1vPbeHMtvJkiLVUMv3+OT9Y53TDJ5JNiCuafy6wna8Yd+CVNuqQMGWUdmaVWauUa1tgXyQJ7ZI+m0s1kni9/4i/22xp6EgE/v7wP5ZRadrswZEP1IW7fIonexUXlyLR3KtE9HXJvz2cik5oA8GaTkseaZ4cB3Hden5h7fJ37I5Ny8uv5aHpvEbml8f7h4HgJyQxt16EAb8NtOemoWpAKyBFeQl8/n0IP0/c5x0Or+L47IhjIqUgyUQ108xmnPtvWblphsoLpu3pWFkMe6kjOPl8Fwp3VLu7R+1NdHHC0q4X+G56go4z60/C1d7A7A5sry9OKN/27JjKYliyQN9aeiNoXOgt5S04xtIV3tp1iItm8GhxLqMrtqr3+lHWiTvizFIan/Z9J3YAa2ilVANKl7/st7hiBkyhfXXHnWkvO9Y5W8gGdeKL85FSbnD4M447ZzGb1SyVX
- Urv9PnZF
- aDXLg/+6Tb+qBe9ebPMwo7tLCmB7N1p8RNiqMM2PjbxILpwuRQxHG2lEbV4dqInSe6fsdcR3qDpzbMhH/pZEveiTlOGdQW1B9ChXZ38uL8p0qJD/anoZ7xjGI7j6DB27i9Pk66mluwhhvPDrzgeDUULxM5eXiN8Q4PfdotxYY5hVP5qLRCQYlb0tsPjfmnGn/7ZlCVIuBKS9X1hP9eiUH5u5bYMwNMlv79DDEXyvpsisnhJM3eZ8AWHKDOLXrjwNOG0RqV4oQ7x6SxX+bXaadp7UUfj1qsylN/wLc8CHEXd3x1JPCj1nnr13CZO0pzz/je5ug4GH82XLOcH5TggBWGKmzTw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774512522-843928
+X-HE-Meta: U2FsdGVkX19oQBWUfK8o9mVe5sXnLaGZmy4cufRX5or9nEylXlaZS1VVtNsnKka37VjLU8ScjyB5EBM3TqNcPesApx1Q4YMijli2IZXUb5EOvT220mkMQ7HiePlnj6IEX/KkG6CZCr8gkbA5Tb/sFX3Yh9Glxy5r/GJ6dOdMnnBpf4AQNwdkytNG4Jyxe7rO+SUPpOlX8Rih+qFcMZcpQmqb0z7XwZlilmuEKjCGTxEXOE+yPLMUG3lXVbSaOsHEZZq97XcZwnHgB1i6cvc55A+dX2r24w8el1uXHVpMeNamjp+NVH26LzV7mBRnyA52usmkRz18doF6mEli6aB8Ktttny5bND5gyD5DOg7h8z5kWQs/+m5Sy1VZRYBaoWGbb15JfjRlQ/5GJmh5ZGrluVq+h5lLBDt0hjYWvvpAi9JdRR7WgZx7MJqmf+Od8GfLZ9yXvraejoS2xwU53/lzyTUJT5VALI85+EUzXZ019D2iNV5ADVtUVB+tDkF4MJUiXhkpuOZGQ3tRklTWu89sLCC7ILdWYYZ6j6WVKyf3mt6cvfvYlxX95eGITwftkVhC3zYOaCI0EENFzY0sHF+Wop4tKYs0Op4IrZwZkPeB/+xk67fdmT38VBprzHO5WW91MhSqXyrnX25DaeU5HWXTb5JU5cpsZyEU2u6meRV81VHJIWA2GFDGNqOt/IdZviQQkltZclAnKnHXstgKIA+WVg2PwYCRknTIhj2F8m4pcQQ4MrYeZ26lWx4hw9C5RRWfNOCP+B5ySbI2CrgIj20tE858V4nFtvm5TesFjm/gy1pf528PWD90Gr7gkr82MTP5lvy7q5jAQ4CvYdmEaz8C/tkaJ0mR9cxPKaitA4XTV3SeT0XfJvQbePDyh8W0kt+n/i6ao5Z/ptv3OXdT2wgU/OHuIrR3D8gTybeQ2TgyGRmItiHLbsDha7Xc5DKaj36pD834iFLxr1b/5AFx4Bg
+ D1j5IJQV
+ 9DOAwREJIoIR9l0pD/ccKk2Q6Wg1CLtIpgS+u+CwKF3cmbM8EgT2T2rLt/qu/MnMucULMy8Rk6zedMnlse78JaPMleJFNFshcdCwlY7sTOdQrh7WD4ORf9CDBF8IkTFD4mARm3k5YDXxSIgQk/KYfvmflMiMHlwHQ7ow6YexsWc3iiPnmp+ZLQ04i/opm6flrFnhcvQw8OfdQp+C/Tf6/d8GexXCFdHKxDVtWStanslnPor86ud9Lc2d2XoNOA66kTULJrlw3bQF7U5LM8UB11luTBoeqHDpZ/u6CCKxOlYKW8FpGeJ5IQdtlqNYYtrbDQbl4PFFRYvFMQ05BzrKfAheT1YLUyaNPnXkiUWJ6b1HQmUID+7af93sOfSQklIyapyCeLsI4NRMXxAMW/yzgbUQEjqdqJ2HRLrCkJ7kW/qNwo+BFnePZGWjOxjndEe8+wMM88gFjbtDYL90FfMfkwwzZha6ceeM+Xz7nGGLxTqY5w6ATBdIogkY8ADhm9c1zBSm2ivvPTG+LMvzWd+u7FohX/Uus/6zs6WqlUZgONt4hx42imYJE4ny99RNzi6+a3YuPYYL+3RpIXQ5ki/x+TOXq2zUWR/z4HOGUrIF5xzU2THZB+7dOKo8Mmw2Wp2HyanyMOi8xsmGTqa7NydV8/TejvlryjA/QfJ8EpA81xHUEKEmkucZtkMtP+WU1HFwXJ8OZSsQhowUDIU1f/ugptSH3qw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,46 +115,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 10:32:43AM +0800, Qi Zheng wrote:
->
->
-> On 3/25/26 11:28 PM, Lorenzo Stoakes (Oracle) wrote:
-> > On Wed, Mar 25, 2026 at 10:13:22PM +0800, Qi Zheng wrote:
-> > > From: Qi Zheng <zhengqi.arch@bytedance.com>
-> > >
-> > > The memcg_rstat_updated() tracks updates for vmstats_percpu->state
-> > > and lruvec_stats_percpu->state. Since these state values are of type long,
-> > > change the val parameter passed to memcg_rstat_updated() to long as well.
-> > >
-> > > Correspondingly, change the type of stats_updates in struct
-> > > memcg_vmstats_percpu and struct memcg_vmstats from unsigned int and
-> > > atomic_t to unsigned long and atomic_long_t respectively to prevent
-> > > potential overflow when handling large state updates during the
-> > > reparenting of LRU folios.
-> >
-> > Do we need a Fixes, possibly cc: stable for that? Apologies if already
-> > asked + answered.
->
-> Before LRU folio reparenting was introduced, we wouldn’t pass in such a
-> large value, so this wasn’t a problem. Since LRU folio reparenting is
-> still in mm-unstable, so I didn't add a Fixes tag in [4/4].
+Now that we have vma_start_write_killable() we can replace most of the
+vma_start_write() calls with it, improving reaction time to the kill
+signal.
 
-Ah, well these patches should be _before_ the LRU folio reparenting then?
+There are several places which are left untouched by this patchset:
 
-Andrew - can we ensure correct ordering here?
+1. free_pgtables() because function should free page tables even if a
+fatal signal is pending.
 
->
-> >
-> > >
-> > > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> >
-> > Anyway logic seems fine to me, so:
-> >
-> > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->
-> Thanks!
->
->
+2. userfaultd code, where some paths calling vma_start_write() can
+handle EINTR and some can't without a deeper code refactoring.
 
-Thanks, Lorenzo
+3. mpol_rebind_mm() which is used by cpusset controller for migrations
+and operates on a remote mm. Incomplete operations here would result
+in an inconsistent cgroup state.
+
+4. vm_flags_{set|mod|clear} require refactoring that involves moving
+vma_start_write() out of these functions and replacing it with
+vma_assert_write_locked(), then callers of these functions should
+lock the vma themselves using vma_start_write_killable() whenever
+possible.
+
+Changes since v4 [1]:
+- added Reviewed-by, per Barry Song and Lorenzo Stoakes (wherever the code
+stayed the same)
+- split patch 2 into 3 parts, per Lorenzo Stoakes
+- converted vma_start_write() in mseal_apply(), per Sashiko
+- changed vma_start_write_killable() error handling in
+set_mempolicy_home_node(), per Lorenzo Stoakes
+- added comment why mm->locked_vm is fine even when we exit early,
+per Sashiko
+- moved vma locking before vrm_calc_charge() in move_vma(), per Sashiko
+and Lorenzo Stoakes
+- set give_up_on_oom on error in vma_merge_existing_range() to propagate
+the error, per Lorenzo Stoakes
+- moved validate_mm() out of the error path in expand_upwards(),
+per Lorenzo Stoakes
+- dropped the patch changing S390 error handling, per Sashiko and
+Lorenzo Stoakes
+- reworked error handling in clear_refs_write(), per Lorenzo Stoakes
+- uninlined process_vma_walk_lock() while changing its return type,
+per Lorenzo Stoakes
+
+[1] https://lore.kernel.org/all/20260322054309.898214-1-surenb@google.com/
+
+Suren Baghdasaryan (6):
+  mm/vma: cleanup error handling path in vma_expand()
+  mm: use vma_start_write_killable() in mm syscalls
+  mm/khugepaged: use vma_start_write_killable() in collapse_huge_page()
+  mm/vma: use vma_start_write_killable() in vma operations
+  mm: use vma_start_write_killable() in process_vma_walk_lock()
+  KVM: PPC: use vma_start_write_killable() in
+    kvmppc_memslot_page_merge()
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
+ fs/proc/task_mmu.c                 |  12 +--
+ mm/khugepaged.c                    |   5 +-
+ mm/madvise.c                       |   4 +-
+ mm/memory.c                        |   2 +
+ mm/mempolicy.c                     |  12 ++-
+ mm/mlock.c                         |  28 ++++--
+ mm/mprotect.c                      |   5 +-
+ mm/mremap.c                        |   8 +-
+ mm/mseal.c                         |   5 +-
+ mm/pagewalk.c                      |  22 +++--
+ mm/vma.c                           | 146 +++++++++++++++++++++--------
+ mm/vma_exec.c                      |   6 +-
+ 13 files changed, 190 insertions(+), 70 deletions(-)
+
+
+base-commit: e53c9040ab1b738dd2c83b57558f141902caaf4f
+-- 
+2.53.0.1018.g2bb0e51243-goog
+
 
