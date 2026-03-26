@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 345F4FEA800
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 03:27:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA41109E543
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 03:27:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 657516B0005; Wed, 25 Mar 2026 23:27:40 -0400 (EDT)
+	id DF7C76B0092; Wed, 25 Mar 2026 23:27:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 608006B0092; Wed, 25 Mar 2026 23:27:40 -0400 (EDT)
+	id DCF996B0093; Wed, 25 Mar 2026 23:27:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 544E66B0093; Wed, 25 Mar 2026 23:27:40 -0400 (EDT)
+	id CBED06B0095; Wed, 25 Mar 2026 23:27:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 469766B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:27:40 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C610160BB1
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:27:40 +0000 (UTC)
-X-FDA: 84586779480.23.5BBAEF3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1929B1C0004
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:27:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=de4xc4Ku;
-	spf=pass (imf20.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=de4xc4Ku;
-	spf=pass (imf20.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774495658; a=rsa-sha256;
-	cv=none;
-	b=ZtTC3OIjhbgB2M1BMeHjebnpK+srfZTeEQgMcCxQkkA3y0ArwtcRRnopQpwo8u/BCAL2nE
-	0HeIcajGsFSq3/blKktiaV03MN+BPvrFzZ9mBLFRaBwhTAZ2t+r624GTqFUUq4qKgcI9MO
-	/YoMXkXzxKkscvlPG9XatShLhJ3Jyv8=
+	by kanga.kvack.org (Postfix) with ESMTP id BD4856B0092
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:27:48 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7ED49C226B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:27:48 +0000 (UTC)
+X-FDA: 84586779816.11.8E2C63F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 88F851C0015
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:27:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C75I5VSI;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774495658;
+	s=arc-20220608; t=1774495666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mpe5+6BEENtzobjSR9FLGbgq/dfpUrP+sg7IFVwkji8=;
-	b=nOhaG4VEVjr8By3tl4Qnru3J0ebB0QtSRxRqvIJSOaU3P5y9Ueh2nMY3I8Q4J8T8t9gx9a
-	+4KjuH6R2TvL4zGlwhNT/li0/YJX4RtFhrwFu5ObDhFidrC0YLJcZLtFNZXeRE0lttwiZs
-	4whHWjFgtCOaUkAYndh/iNV9JA8VRPI=
+	bh=lRnxTPWpAQYJ1HE6KZj4d+ShQv4DEVn8EUx0vr44r/E=;
+	b=h1jTdPe/gRgFnZYpFF/KkFLwPinihF7PK3TP5tuOXiaiLZI3dckyy7rwHv0y5Jez+lYOsq
+	VeJ/Y+pA8pj6j98IqHdV7qKpvNcXERsnRMZ9dPnAhV7BlPTmDIJmkHkh69ZZWxVH2ZPqXU
+	2dKSxCfyTNtHScJKyk3PMvghRp5Rz/A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774495666; a=rsa-sha256;
+	cv=none;
+	b=vX1dUsCZOjXH1zgdw1TopjDa7e5esXfuSD8lKqmvJVN74N0VOh3YgAiodTy6Bp+9q8K38s
+	ULw7arcS+9lKF7fq1qqb0Rn8wNctJCajxq4RfO4qs/PgfpfL6NGkE3lm+p1KHwlMK6yMry
+	zxy8HdOcQ/b+ovpLcB0LDKC9cJqSBPk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C75I5VSI;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774495657;
+	s=mimecast20190719; t=1774495665;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mpe5+6BEENtzobjSR9FLGbgq/dfpUrP+sg7IFVwkji8=;
-	b=de4xc4Kuc2F/t4nfDEaVaeXdUUlsvVB0TSzQXbIY3aGyr5yX2f+lOMP9OCWKYTAPzuwjnl
-	vsMt8J2YYMFJTK9/Mjdlqbz1/YDP3sNUtu+eI+emN45EZaJMDCw+K08Uf4cpw24UlZwebN
-	C7B6i4tk8zW5RDMCJCtrZyecbW4mTFE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=lRnxTPWpAQYJ1HE6KZj4d+ShQv4DEVn8EUx0vr44r/E=;
+	b=C75I5VSI3wHltc5xSJeRjMjVi9XuI/zIDin6rmNWVLhFiHUnw0T7KLZsVtWrAxtpcAF643
+	kcLZQs1iXKnvMNi/4qKJtOA5M0anadWl4NeVYZOp+rJAbwnUEW71hmbMXWobJmUW51/9bS
+	XMlfdilbDgAobtDOUPw/F/RoUiMXICk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-f-2A5cPvMGCNGCUaiYzyXA-1; Wed,
- 25 Mar 2026 23:27:33 -0400
-X-MC-Unique: f-2A5cPvMGCNGCUaiYzyXA-1
-X-Mimecast-MFC-AGG-ID: f-2A5cPvMGCNGCUaiYzyXA_1774495652
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-R6a8-Oo6N6WpjTAbUIP45Q-1; Wed,
+ 25 Mar 2026 23:27:41 -0400
+X-MC-Unique: R6a8-Oo6N6WpjTAbUIP45Q-1
+X-Mimecast-MFC-AGG-ID: R6a8-Oo6N6WpjTAbUIP45Q_1774495659
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D4AAD195608D;
-	Thu, 26 Mar 2026 03:27:31 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 026E718005BE;
+	Thu, 26 Mar 2026 03:27:39 +0000 (UTC)
 Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.83])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B61DD1955D84;
-	Thu, 26 Mar 2026 03:27:25 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 801321955D84;
+	Thu, 26 Mar 2026 03:27:32 +0000 (UTC)
 From: Li Wang <liwang@redhat.com>
 To: akpm@linux-foundation.org,
 	yosry@kernel.org,
@@ -90,26 +90,27 @@ Cc: longman@redhat.com,
 	liwang@redhat.com,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v5 3/8] selftests/cgroup: use runtime page size for zswpin check
-Date: Thu, 26 Mar 2026 11:26:53 +0800
-Message-ID: <20260326032658.96819-4-liwang@redhat.com>
+	linux-mm@kvack.org,
+	Yosry Ahmed <yosryahmed@google.com>
+Subject: [PATCH v5 4/8] selftests/cgroup: rename PAGE_SIZE to BUF_SIZE in cgroup_util
+Date: Thu, 26 Mar 2026 11:26:54 +0800
+Message-ID: <20260326032658.96819-5-liwang@redhat.com>
 In-Reply-To: <20260326032658.96819-1-liwang@redhat.com>
 References: <20260326032658.96819-1-liwang@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: fp_soEIu8FoC0Wh2rVFqB2RaA8-ogvWCLed7Qcodnr0_1774495652
+X-Mimecast-MFC-PROC-ID: gAb7O79cFiv_BNaffht1GG5Hw9qa7JtlFmIVkcek-6E_1774495659
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1929B1C0004
-X-Stat-Signature: uto3ws6mak4fkjjdwj4ejrz53r8pq4en
+X-Rspamd-Queue-Id: 88F851C0015
+X-Stat-Signature: 7y544msihcsw7ipqp591kpodpfurresg
 X-Rspam-User: 
-X-HE-Tag: 1774495657-405937
-X-HE-Meta: U2FsdGVkX1+YIO+pGvM5OwMWnB9inNLX3Wj1oHrDA9CDAETeBpj6ZoEj0DeYxMb3PoxqiEQnFwUwkMM64wBe+PZKqLkTnF5EMcHEN31Z88Tt0iJhhvk2z4XWr4hd7nFzoMmjMkjFa0XOrUWYzse6UejUAn2lxAAzLNQ8WsAtwd/7wHwJwwu08pRhJwMhMdFBo3FMHkgnzU/2EsVvdEjIt9ZY715X3m+9K1djkLFWjwONrroVvyJijibm8Ynqshzgjj0nfBgr+PAbrBR/5PHChZQBKqnYu4Lq550AUejRIbErVYakGmKjH6lASN1TovLSKKYh0jKNjuWwQTHsAJjSSl/FdOMvrCwa2F/ceVnWQOLIT5NxmFVYakw2d8kxdYljUoZvK0oqVSpXnZE9ZdNl8QPwxLlE/YngQxsvT1ktX1B6udpi+oDsK8/p1K46Qrj2J8/5uI96TrLyj2dxenoA6X+z1+rwgS7b9pVtzBMSIqzI3hRRyDwvrgkrQU16kfcaaQpor7C41qE+hIRyeJPeR8yEXybXEER9ze4FAN6/GCwR6w737BPMw0bDPX91oMkbCj8Cv0yTm+htJ7xfstvfB7MAF8ixP+y/qWO4MICdr7adrWxDM0uioW5xnSHP7AJegvSmeIj8pQKiJn6aJQ7O6FuysZHGCivn7a4O4/a4OG2ABSpia9PbKjv8/2mFsTtlyVtQcNYWENvISR5HTcBgNGEYCT7Ys9SO/Hov9n459mZd2+8xYIYDRd/+1/zqjAlJL2CFHF2Fa+18Qac2Voii+Xnf/KfuXJ+JdGw1uuVmD3yNyf+tISlCBT1sADyUMOXk8+igfeVvhcwFAbw4x4zSnotj+LJPvssoVVBJxpc8NXn5GS14maDycf9sGoW1cWOl1Ly+IL9/NjHKOBMxI3Te4cseiC4tEA0wwe5cCTIV+3DkGXES3u/IRf1vguprNrDE9YKuZrr7odTLsN3ANa5
- xbIcUrTs
- oamKiCE0XRNMFeM8eVq1vvGjrM8eznp3DhPLigubPdaPC7jsITdrDH53991XPokcwU5TcDAUlWKPsVVvKvuPDstIVsbWC7G4Pk9CjInROxuCWOc6AsI1KxqoBH9x8+AtWpaBh+5TRV61fQcEyYn2H1EUDPfK/avvq/syBEVPlULmCrwDRNcY97mtBJrEUQ+mB+xJLoXenGzUUzNPfyqEe+005pfkIxMVfo4LcG6QudKIWF61O8nfXzj2knRIgzUsQqrLB98Uh9etEhqISmMXekBlekd4G0EEll/QUE4Jee5dHpHuaJ1xi8OLJOVPASDm8SKeUl2ONHWjnABqr0uD2AjpbJols1Pg/5hI919uu9o80ZTtoqtsK/Dk/5lcyMn+OuClE2zsPdGaFQDzrmr8G6nbZIuq95VHxvzieqTACJycR3ehvA9rudoOFOfIm/8DmtOHGm7Rc49aqykY+TcU6D4FGl+Mf+RVwVNzBljBEQLhxd6CB9alH+Gdz0Ao0tU5RjTPRThSSVoK+nGeQggZoFXOyVg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774495666-730281
+X-HE-Meta: U2FsdGVkX18cZvAgsndZ0g01xr7OxwUO0cGuyCIHrzjErbiUXHCAE5ezW5F9E2lbVj46J4ea4FoAuhwR/4Hc2WQ/l7O+IvSJssoISbchaHfOL9PnliNjWHNiUj/hPbK/lwP/+kt+8TQVpC6Oael/B488ji9VxwcEtdcxU4TGu/WwWbwSr8TACDW/AXaEHsAm4NqyKJ4/+Jf4YkiIyOtDyzIyGRlvkQ6RvBm28A7RV5bA/FWOselP1xxNj4qiEICIMzkM97DGzB/XepeltlJONWAMP3JqJKTNMDL5eIc1Ojr+8KfdVO/xNvxhleWorTNKut+yf6jSVjlzGKo1NGl1u018N68LQFsrzs8eaR2vea0nVx6VzqojEKc3zO5Sbd/91DNT8Qg2EeUKYfa0X3UJaLKa4IPOD1+Du3uweyprbnNl+WZmZFxh2obb4HKKjhp0OA3Pg7FeLBKPxH85fsyOyDDAMZatBUDEtP3LisXXoRsGhck/7df1sZ4HFWX6kNTgX4O8Iwh+HmAp20O1p1niZafRBMnvJn+N+hVYRKpUGcNDcu4b3bcjHTDaKToFCL4YmtR+sfM5BX8u5WFjFN4uAFrMBPrvOieDtlkHh2DS4jFA1dx7ZQLgOcomWGPqYzBS11qObVOTYaR2aDoA6GlsF80jyn38RkO/qrDD/sMDD6fxO3m66yIh14ww7r34xaIcONSlaL2gsVa+kqaO6mHPzBbC5vEc8l42FS4xTLE+UONeTiYbZoaC9I71ZjmpYoXnXPiQQcwRCvNQ3vbEd826g/8e0givpNlRd1TqIQ5EiRGCu+oO3K3yHe355kOpsjxMkBjy/eKfJ/H3yB9nnGHWykEXecKkNBdkQtCF1KMTl2XMlLaZWbv+VcIOQ1TkRqCawv8hodpZIEOA+b+C3J4t6jkkWjmicvwy1YsnldMK69S4yMS0oPkqWqh7SMq1P1wnz9rEtIl69Hte5yj8Bkv
+ OAUr9BwT
+ 35cycFB+fzWonApibD0eY5nIgVpfYP3qmGh4pvp+/fZpgNQj/+Zf783I+wQRd83UrzT6Cz6zdyTJLl0rBJ5zWLXPKpiRID/D2cJcryxMIWJcuMx9965Vf0CJTbXWPtVoxaz1p/NyxynOma4iBOzoIuc3LGZTFTX6Qj2Ka9fxoCsucT1gLCOv+FK84WnVeOrTjuqgN7GKPXBL8uUE05aMDSgMORXysrHvt+6mfsdeYvBNeCtwWrFjgMQbfXCty7A0qKB2pIr/4p5f8w+6R+1dLheFN4HOH94dMxUdNJ0jC0rQQEKlq9ISsEycPmrXvRiKWCUj/EUWJAuYZgfs10NA2bHoCa/OcnFea2xE8rrS7Hx8vxfrUTQ8mU53grbf9nxzkGnpip2vQBBbdajtdwzUO80KAEkTQUkOtYAGus46CWamlFYdbBt3Z44bowM1zPDz0JOV9U7v0Sxdvm+VkpQ3XlhiUn3ln5cfuAbkPOXDGYVDvZ2D1gxskTthelzuPPzJ6EveSLHZ7rUautkITLamfBVg971jiVHjkpSQMyI+2HXD6VdLzTeSXdIPi7wXoNQyGVsEuXviAhQRU8NQjA1dyIbEw9w4n65wU9Vat
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,18 +118,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_zswapin compares memory.stat:zswpin (counted in pages) against a
-byte threshold converted with PAGE_SIZE. In cgroup selftests, PAGE_SIZE
-is hardcoded to 4096, which makes the conversion wrong on systems with
-non-4K base pages (e.g. 64K).
+The cgroup utility code defines a local PAGE_SIZE macro hardcoded to
+4096, which is used primarily as a generic buffer size for reading cgroup
+and proc files. This naming is misleading because the value has nothing
+to do with the actual page size of the system. On architectures with larger
+pages (e.g., 64K on arm64 or ppc64), the name suggests a relationship that
+does not exist. Additionally, the name can shadow or conflict with PAGE_SIZE
+definitions from system headers, leading to confusion or subtle bugs.
 
-As a result, the test requires too many pages to pass and fails
-spuriously even when zswap is working.
+To resolve this, rename the macro to BUF_SIZE to accurately reflect its
+purpose as a general I/O buffer size.
 
-Use sysconf(_SC_PAGESIZE) for the zswpin threshold conversion so the
-check matches the actual system page size.
+Furthermore, test_memcontrol currently relies on this hardcoded 4K value
+to stride through memory and trigger page faults. Update this logic to
+use the actual system page size dynamically. This micro-optimizes the
+memory faulting process by ensuring it iterates correctly and efficiently
+based on the underlying architecture's true page size. (This part from Waiman)
 
 Signed-off-by: Li Wang <liwang@redhat.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Michal Hocko <mhocko@kernel.org>
 Cc: Michal Koutný <mkoutny@suse.com>
@@ -137,24 +145,237 @@ Cc: Nhat Pham <nphamcs@gmail.com>
 Cc: Tejun Heo <tj@kernel.org>
 Cc: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
 ---
- tools/testing/selftests/cgroup/test_zswap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index ed257d464bd6..516da5d52bfd 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -243,7 +243,7 @@ static int test_zswapin(const char *root)
- 		goto out;
+Notes:
+    v5:
+        - Merge Waiman's work into this patch (use page_size)
+    v4:
+        - Use page_size instead of BUF_SIZE in test_memcontrol.c
+    
+    v3, v2, v1:
+        - No changes.
+
+ .../selftests/cgroup/lib/cgroup_util.c        | 18 +++++++++---------
+ .../cgroup/lib/include/cgroup_util.h          |  4 ++--
+ tools/testing/selftests/cgroup/test_core.c    |  2 +-
+ tools/testing/selftests/cgroup/test_freezer.c |  2 +-
+ .../selftests/cgroup/test_memcontrol.c        | 19 ++++++++++++-------
+ 5 files changed, 25 insertions(+), 20 deletions(-)
+
+diff --git a/tools/testing/selftests/cgroup/lib/cgroup_util.c b/tools/testing/selftests/cgroup/lib/cgroup_util.c
+index ce6c2642fd9b..0be525ed11db 100644
+--- a/tools/testing/selftests/cgroup/lib/cgroup_util.c
++++ b/tools/testing/selftests/cgroup/lib/cgroup_util.c
+@@ -125,7 +125,7 @@ int cg_read_strcmp(const char *cgroup, const char *control,
+ 
+ int cg_read_strstr(const char *cgroup, const char *control, const char *needle)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 
+ 	if (cg_read(cgroup, control, buf, sizeof(buf)))
+ 		return -1;
+@@ -155,7 +155,7 @@ long cg_read_long_fd(int fd)
+ 
+ long cg_read_key_long(const char *cgroup, const char *control, const char *key)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 	char *ptr;
+ 
+ 	if (cg_read(cgroup, control, buf, sizeof(buf)))
+@@ -191,7 +191,7 @@ long cg_read_key_long_poll(const char *cgroup, const char *control,
+ 
+ long cg_read_lc(const char *cgroup, const char *control)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 	const char delim[] = "\n";
+ 	char *line;
+ 	long cnt = 0;
+@@ -243,7 +243,7 @@ int cg_write_numeric(const char *cgroup, const char *control, long value)
+ static int cg_find_root(char *root, size_t len, const char *controller,
+ 			bool *nsdelegate)
+ {
+-	char buf[10 * PAGE_SIZE];
++	char buf[10 * BUF_SIZE];
+ 	char *fs, *mount, *type, *options;
+ 	const char delim[] = "\n\t ";
+ 
+@@ -298,7 +298,7 @@ int cg_create(const char *cgroup)
+ 
+ int cg_wait_for_proc_count(const char *cgroup, int count)
+ {
+-	char buf[10 * PAGE_SIZE] = {0};
++	char buf[10 * BUF_SIZE] = {0};
+ 	int attempts;
+ 	char *ptr;
+ 
+@@ -323,7 +323,7 @@ int cg_wait_for_proc_count(const char *cgroup, int count)
+ 
+ int cg_killall(const char *cgroup)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 	char *ptr = buf;
+ 
+ 	/* If cgroup.kill exists use it. */
+@@ -533,7 +533,7 @@ int cg_run_nowait(const char *cgroup,
+ 
+ int proc_mount_contains(const char *option)
+ {
+-	char buf[4 * PAGE_SIZE];
++	char buf[4 * BUF_SIZE];
+ 	ssize_t read;
+ 
+ 	read = read_text("/proc/mounts", buf, sizeof(buf));
+@@ -545,7 +545,7 @@ int proc_mount_contains(const char *option)
+ 
+ int cgroup_feature(const char *feature)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 	ssize_t read;
+ 
+ 	read = read_text("/sys/kernel/cgroup/features", buf, sizeof(buf));
+@@ -572,7 +572,7 @@ ssize_t proc_read_text(int pid, bool thread, const char *item, char *buf, size_t
+ 
+ int proc_read_strstr(int pid, bool thread, const char *item, const char *needle)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 
+ 	if (proc_read_text(pid, thread, item, buf, sizeof(buf)) < 0)
+ 		return -1;
+diff --git a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+index 77f386dab5e8..ca4a161c17a4 100644
+--- a/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
++++ b/tools/testing/selftests/cgroup/lib/include/cgroup_util.h
+@@ -2,8 +2,8 @@
+ #include <stdbool.h>
+ #include <stdlib.h>
+ 
+-#ifndef PAGE_SIZE
+-#define PAGE_SIZE 4096
++#ifndef BUF_SIZE
++#define BUF_SIZE 4096
+ #endif
+ 
+ #define MB(x) (x << 20)
+diff --git a/tools/testing/selftests/cgroup/test_core.c b/tools/testing/selftests/cgroup/test_core.c
+index 102262555a59..df7fac7e5554 100644
+--- a/tools/testing/selftests/cgroup/test_core.c
++++ b/tools/testing/selftests/cgroup/test_core.c
+@@ -87,7 +87,7 @@ static int test_cgcore_destroy(const char *root)
+ 	int ret = KSFT_FAIL;
+ 	char *cg_test = NULL;
+ 	int child_pid;
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 
+ 	cg_test = cg_name(root, "cg_test");
+ 
+diff --git a/tools/testing/selftests/cgroup/test_freezer.c b/tools/testing/selftests/cgroup/test_freezer.c
+index 97fae92c8387..160a9e6ad277 100644
+--- a/tools/testing/selftests/cgroup/test_freezer.c
++++ b/tools/testing/selftests/cgroup/test_freezer.c
+@@ -642,7 +642,7 @@ static int test_cgfreezer_ptrace(const char *root)
+  */
+ static int proc_check_stopped(int pid)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 	int len;
+ 
+ 	len = proc_read_text(pid, 0, "stat", buf, sizeof(buf));
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index 2fb096a2a9f9..94d7b9de978c 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -25,6 +25,7 @@
+ 
+ static bool has_localevents;
+ static bool has_recursiveprot;
++static size_t page_size;
+ 
+ int get_temp_fd(void)
+ {
+@@ -33,7 +34,7 @@ int get_temp_fd(void)
+ 
+ int alloc_pagecache(int fd, size_t size)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 	struct stat st;
+ 	int i;
+ 
+@@ -60,7 +61,7 @@ int alloc_anon(const char *cgroup, void *arg)
+ 	char *buf, *ptr;
+ 
+ 	buf = malloc(size);
+-	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
++	for (ptr = buf; ptr < buf + size; ptr += BUF_SIZE)
+ 		*ptr = 0;
+ 
+ 	free(buf);
+@@ -69,7 +70,7 @@ int alloc_anon(const char *cgroup, void *arg)
+ 
+ int is_swap_enabled(void)
+ {
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 	const char delim[] = "\n";
+ 	int cnt = 0;
+ 	char *line;
+@@ -112,7 +113,7 @@ static int test_memcg_subtree_control(const char *root)
+ {
+ 	char *parent, *child, *parent2 = NULL, *child2 = NULL;
+ 	int ret = KSFT_FAIL;
+-	char buf[PAGE_SIZE];
++	char buf[BUF_SIZE];
+ 
+ 	/* Create two nested cgroups with the memory controller enabled */
+ 	parent = cg_name(root, "memcg_test_0");
+@@ -183,7 +184,7 @@ static int alloc_anon_50M_check(const char *cgroup, void *arg)
+ 		return -1;
  	}
  
--	if (zswpin < MB(24) / PAGE_SIZE) {
-+	if (zswpin < MB(24) / sysconf(_SC_PAGESIZE)) {
- 		ksft_print_msg("at least 24MB should be brought back from zswap\n");
- 		goto out;
+-	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
++	for (ptr = buf; ptr < buf + size; ptr += page_size)
+ 		*ptr = 0;
+ 
+ 	current = cg_read_long(cgroup, "memory.current");
+@@ -413,7 +414,7 @@ static int alloc_anon_noexit(const char *cgroup, void *arg)
+ 		return -1;
  	}
+ 
+-	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
++	for (ptr = buf; ptr < buf + size; ptr += page_size)
+ 		*ptr = 0;
+ 
+ 	while (getppid() == ppid)
+@@ -999,7 +1000,7 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
+ 		return -1;
+ 	}
+ 
+-	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
++	for (ptr = buf; ptr < buf + size; ptr += page_size)
+ 		*ptr = 0;
+ 
+ 	mem_current = cg_read_long(cgroup, "memory.current");
+@@ -1670,6 +1671,10 @@ int main(int argc, char **argv)
+ 	char root[PATH_MAX];
+ 	int i, proc_status;
+ 
++	page_size = sysconf(_SC_PAGE_SIZE);
++	if (page_size <= 0)
++		page_size = BUF_SIZE;
++
+ 	ksft_print_header();
+ 	ksft_set_plan(ARRAY_SIZE(tests));
+ 	if (cg_find_unified_root(root, sizeof(root), NULL))
 -- 
 2.53.0
 
