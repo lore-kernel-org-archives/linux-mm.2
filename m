@@ -4,86 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83516109E52B
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 01:57:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3232D109E535
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 02:00:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5B696B0005; Wed, 25 Mar 2026 21:57:26 -0400 (EDT)
+	id 53F5C6B0005; Wed, 25 Mar 2026 22:00:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0C376B0088; Wed, 25 Mar 2026 21:57:26 -0400 (EDT)
+	id 50F926B0088; Wed, 25 Mar 2026 22:00:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D22BA6B0089; Wed, 25 Mar 2026 21:57:26 -0400 (EDT)
+	id 426086B0089; Wed, 25 Mar 2026 22:00:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C07626B0005
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 21:57:26 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 423FAE0F17
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:57:26 +0000 (UTC)
-X-FDA: 84586552092.05.EE1119D
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BC0934000C
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:57:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hfhQA9kP;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774490244;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 30AC06B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 22:00:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F23615C311
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:00:01 +0000 (UTC)
+X-FDA: 84586558602.09.5B3E7E6
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DD134A0010
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:59:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="EwHWqXo/";
+	spf=pass (imf25.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774490400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4P3HZeFpAYcP9fuDTLYiiV3smE1BlqrAdg4KKIFqogo=;
-	b=WyZkQtQ1p1aH6KZxQVO//sX01FgulyDzWzy0NHhvncRQvnnDNDhTPsUDee/U8POe6zGfNl
-	80iA34MuDjDUjwFpjIvsnhkVQ7t12ahmWSIJFRVOu6JyUMaeUqsTPDrOPCDGQWvjFwxf5j
-	IIiMErdK9RrIYhsVi+iTazIZJRGfzLM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hfhQA9kP;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774490244; a=rsa-sha256;
-	cv=none;
-	b=zeTHYx8DYgvC9eBj1PBATCQ3TJuwD1q4rWKDEBAw4wjDYY5Teq3vnwTa44fZbh7MOWY1i3
-	d/2N8MBRwC+7LGgEoZsL83MUOS6i8NBd9PhJvEzZCegvblwbAeMPk1Ypq4xgGbWtnynvXp
-	joaSMPg1WhvcupLGlaMi4tA4WeYIim0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774490241; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=4P3HZeFpAYcP9fuDTLYiiV3smE1BlqrAdg4KKIFqogo=;
-	b=hfhQA9kPs5g/qY9GwftzRrTVa3H2UEHKjG3MG2+KKdu8d0qFQ9j+Y7GEep+JHD7hiv98KpO89pfNjlYOXsXmr+yksMtoCssS07gYwVk2VdDlfF/jKUFdFp9M2QYQawo2ckyQgR8lReLyS4y9ezl9RVlYfwuaznu7LI/0el3K2k4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X.jkM2T_1774490239;
-Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.jkM2T_1774490239 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Mar 2026 09:57:19 +0800
-Message-ID: <035e7e83-1811-4f8d-b8ed-0f5025e66399@linux.alibaba.com>
-Date: Thu, 26 Mar 2026 09:57:18 +0800
+	bh=xvWZrRCLZkYBx7RNlry+W4Vz7X6l93gflpZqKgr2VYI=;
+	b=JN5y9wqR19KjDnOUX06BLaSHUHHkseACjxHCer+dPUaRf34p3CbhJbTPNMYDvtlvLtcxjr
+	MpyuaumlxGmb3s7+gy3hpHSD8dR3wiy15W/gVlA/VN6lEO0swyTxqGEnQ3VcIJ+vrkHbha
+	pqgi6X3SVcgRscXs25VdoFVG3oD5Dhg=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="EwHWqXo/";
+	spf=pass (imf25.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774490400; a=rsa-sha256;
+	cv=pass;
+	b=skr/NnqLleGVNpLzsNGN+9ai2naaMiI233lvu57h9LYOiOw4RyQnpr1YLX0rBJ3/e+PEMM
+	wBeTdyUqIDoUXxQjX2lwLCVnyaO+dEUPpcN/p1zl5edjwjRxbT+RUWEkJPtckbYb5UrP/Y
+	tyOhb++eX+zCftVehmstaUXFjqAjohI=
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38c620f1699so611171fa.0
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 18:59:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774490398; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fxVI0MMZFhqRK2RgkjYWEQo0KwEtqRhkA9girhIAHwa02yUZZWo0fv8gLAvKzFzul1
+         K9FsGSvyn7SqPXU/u1Ym5WatKpBh7zg3wuogTeRGjzL1zDMDoKRNA9w3d3892cdzD5L6
+         qcAJerVOIUSB0LyomrQQ+SIOJ4rUwwFu0O5MuX+HC1iXP2cfCNWujeF5+qyTsTu+zYuS
+         /Ks6iNT51xS83pHx5aM9lUjl1aa8Uj+5whqyqaH+Js130DkHyAdIB2phGk4dbFsPcnye
+         148OM5SzZjvM2V7H90F3s69PoauTTDBLx4miF/feEJVmIHms5vxdSEnGwtOh5gAp6MPh
+         6NWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xvWZrRCLZkYBx7RNlry+W4Vz7X6l93gflpZqKgr2VYI=;
+        fh=etAajHXysWIPznOB4tbcBqsmH5Jk/Y+qR/WIcb9MSJ4=;
+        b=L6+3gnPYx2m6QINiLrpojfa+ZUXI+mA96rD7PmaSHWKyLRb4lEhhTipHbXA1R7Qf6g
+         vui78TBqJU1LlKcnYG2rhOhSDwphOoeLHRjPhBVr4kxoSu8i/cR0FYBtSNE81DRupv3H
+         Ubhdk7tTfGq/oImBhGuuyxu3s0a4JeS67quyy2bh1Do59PHnd984DW7HDoVUx189c4bX
+         XM+31CKRH9mE2CecIuyHQ/wtBSJ2joiFuzGGkfVqy4hSlrEaSRNdRfilUAjGqB73j+92
+         whAZ4rpQTKWzuH75giU7GlX6+EDPwBU7thqhUinzy7p06IH6dP9ePZrHxbu63mSSz6jq
+         iO7g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774490398; x=1775095198; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xvWZrRCLZkYBx7RNlry+W4Vz7X6l93gflpZqKgr2VYI=;
+        b=EwHWqXo/21ay1frrPgHsQ6spX4wNqOJPWxRJ36PENNlCxU+ODjijVNM2BRAlhN3XjL
+         p170tarkdoOU8iYokgEZePzjzMVpPSkB5wASzl5Yiqxh5/Xw7ae0P1SlqK2Y9rPphHAp
+         0sdm81rgFTmdGDaE/8gMZOY2V11i1h6lbFqywpg1tjC6PIwWMIJe4Ew8fYDNSJ3WbkRr
+         UusU4P3MpUtYJtWVMSJjycwwXptmnwpNzI0OnE1cSsrRLN7ZZfnncwXVzlvvS+gxWNZP
+         F7k8Uxt2ff2r6ST+hJaVUYRYHjFabEpV6oFLMHAi6ce6joZ1eTdujHrE0+8DtDNvdcMB
+         GdJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774490398; x=1775095198;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xvWZrRCLZkYBx7RNlry+W4Vz7X6l93gflpZqKgr2VYI=;
+        b=Rv+SUXhvXMSrRiR0DUSGTXaKfK+SHu0N5fxjMsoYFhsZxchQP6CP/Pfi20KeLeLoGJ
+         4CLT+Jp9f/BYQjxsjpq02Zz9C7kihqn6ZCg4prgr2ukRaED2U29eiyymECkWbwL4IvnW
+         BCvlszAwm1ggdpzyhxRE65Pgz7Df324JdslJ+6WACkuU3R7rwMo6LIZq3/KajrTzE2kZ
+         1ZYfP8EyOJWvzR7SmkcShexGNHHc5TcQYtZzdEdkdfEVvnfzzk1FuGSK2/CSZu3Fe1Uu
+         xLkMpPESC7X0QVBXiBHEJyzI7yRZBGcKe71UeQ6ujCMbG4xX/tsOfXXYKnBs8wrran/d
+         NRlA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3d9lyZzpwNFgYpVpMyqWZVA2pHpk+SXm48XQnCgWY0/+ODcPz0t8yKFz/kylRbwwqpz37mqIhEg==@kvack.org
+X-Gm-Message-State: AOJu0YzgMinJJIriq8ko4vKCawunQ8mhj3/3zK3G0A7HNrCSPdP+Y6Zl
+	3WyF736GsKQVgyuzfjny/ko3fJgApn+E9EFb0m9B5EEz98GmzPO1ZCPmR8YRqfe14d8vEvhbWXj
+	EUBfamE9fvKn/9Zxx7i9riaaeHj+NGcg=
+X-Gm-Gg: ATEYQzxRoldkyhgQOssWNza2tCctHHtPpA7fMhvX7Grddg1aER6Bhbe4imB2ZUS8AFc
+	g2W0iu0gJvFJlDte9Bg+0DkfT6y4VhlYl9pYGDFYqI9KAdzfBcsemlAdiLMGG+upixfy+/xJzsb
+	RnRHik5WBfyTbOaV1fBbQLpl08vqiulVZ/d04B2ioFRKgBA/xbH8NhIa5VK/edUBO6ODbr9K8Yx
+	rkYwx6uuWKQ1jcmAqfFPkpLYvki2hNZChTmiALQYtihhwEMOvt5c/uuavPdAmAfpUA6UcViQGNj
+	8UJNhR5g
+X-Received: by 2002:a05:651c:410f:b0:38a:5b91:ec34 with SMTP id
+ 38308e7fff4ca-38c431ea12fmr13920621fa.33.1774490397725; Wed, 25 Mar 2026
+ 18:59:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: vmscan: fix dirty folios throttling on cgroup v1
- for MGLRU
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org,
- mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- baohua@kernel.org, kasong@tencent.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-References: <bf40a20cd93b6c21f10db95657928fdae185e843.1774438978.git.baolin.wang@linux.alibaba.com>
- <acPOn07xah2eh0WU@KASONG-MC4>
- <f3d680da-7480-4d05-ac44-e669e0914a32@linux.alibaba.com>
- <acPkASQIcn4VHHjs@KASONG-MC4>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <acPkASQIcn4VHHjs@KASONG-MC4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <hbftflvdmnranprul4zkq3d2iymqm7ta2a7fwiphggsmt36gt7@bihvv5jg2ko5>
+ <8a5277e0-d70e-4849-9763-ed90e350a118@kernel.org> <CACZaFFPfx=y5Fy+nwT8o8TA=W0QBfOvTqbJnhVPn8B95SFxijg@mail.gmail.com>
+ <22dccc17-787c-448e-a571-23c7a9afeaff@lucifer.local> <20260325080930.a205fca9e7e61c4a793f5228@linux-foundation.org>
+ <3cf94628-3c6a-43ed-9fc1-29bd5a911497@kernel.org> <8d2e809c-e4c8-4d35-a2ae-62777b6dfbcc@lucifer.local>
+ <0437ad42-612e-461f-906d-6757eb19a8de@kernel.org> <CACZaFFMb_1u7ckb5+7=wWApOx-u5kBxx-+2Y1Cjd1Qad4kgHRg@mail.gmail.com>
+ <20260325115932.d2841f29f318454709fd4f21@linux-foundation.org> <65853d35-718f-4899-b4e2-e0d339e57e5a@lucifer.local>
+In-Reply-To: <65853d35-718f-4899-b4e2-e0d339e57e5a@lucifer.local>
+From: Vernon Yang <vernon2gm@gmail.com>
+Date: Thu, 26 Mar 2026 09:59:46 +0800
+X-Gm-Features: AQROBzBNXFONkiewJYAiC2cc4C1is1BijW8kTftBr1N9NdeMqf4s58w6ZMXAfYg
+Message-ID: <CACZaFFMXtujt89--cWr4Wnmeais1QU0afqRrNcrr6cFZp0rxAA@mail.gmail.com>
+Subject: Re: [PATCH mm-new v8 2/4] mm: khugepaged: refine scan progress number
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Wei Yang <richard.weiyang@gmail.com>, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: qgjjktysfne3acs5mw9kjik3tor6dyuh
-X-Rspamd-Queue-Id: BC0934000C
+X-Stat-Signature: e5pbw5kje9atye3kzck5n5tpwawhi1ri
+X-Rspamd-Queue-Id: DD134A0010
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1774490243-810237
-X-HE-Meta: U2FsdGVkX1+ttlo6Ecpyt4fJU6Im7LVPDozr1kFU6XUo+2Na9MYYabTcCzEcMmLrf9LhFB2VwNYTlSPJvZFSacNYOtWoFpKmrqBKttz/sO4NA49jj3zIN/viBe+J7TLlZ2mqghL33ChVxNAfdLbNiyYM3KFYGugudmvfuBjS5lDAa75KseKElpvmIhSH51jFWjz1r8Kmbyg1gADLyWpnRK5mYxIuy0VW0g6Q0QVueICU607Dpf8R4jw2gzh04QOYUAyFWDXRSsPaTSPGZK9ORl3ii/b1oYA+tU8UhBF2wJ8IBu7cw1CfgUExe6s19gOx1i/Gvkz+ZPeQIj38T9I/sjlr6+9V192EZhnCrH8EDAV7EuvTvvX+4+0O19RTAAlCSbWUJORUVx8VziYT/+WZbr2BSDtw0RLY/T/C1eDTZFSU/RfuKre82Vp93wm7N5QctpmzSo5iQzWzMkVRFEgccLn+2RaCvtaUJVklXbsbgCyaR8GhZLuODXgXKMFbtJJG8cf6R+nZ7NGeo6WHWTT8kMcOdFSiLTI6uav4/d+RYvMwqqKJX83P3Kb8j9ERq+PGOFd91TTr6+ECPLq0ukzGUhSSLo+AE/ku0f9V4bRpMa37k/6zfkwUlaCFRTwU85ojEIC2nhNRo2PVQUwdcPqBjA7oY1y5EQigi/tIbm8OCQjdykQ0QwThYxL5OLezPQf6pN0m0VyWTic/H2buuWBZOX5SyGsQZkQ7xLUvp7mLt4s22bLlJswn9kNQXxU32fFdmKmNoefvp6UMcRPXxm221j5XtZ3iJWGiHo9Ji6HhaJWym0AIWVYILIKRfnMsIOymHWOlydWGwNJTbhJw+G9A/2hhvIfpxBp+ZLqJz2UGq9X5tYxoNsLpGb28Aw0Q3GA9oTPnYAGtQdlrWI5vgi9tf+rh5EWhn6Rm
+X-HE-Tag: 1774490399-252697
+X-HE-Meta: U2FsdGVkX1//OS5WcZ9Wnjoqd1iblVCWpGOiPif7WKjKg6PhKwoaq7o3jNqgPnPDi70oEJ9uQokXURXMZapEZJFn9cDART4DZlQgaqFkPGltAg/JM+PE6TbtINodE3JMuQJ05dFSadaZ+fMxcHgJ93dn6+YB6w9zIoPAymy/F/Ig8Bn6xHrPebzmCYRLDk5U5h5GqAwYUJCqtwHklRZkKZTOzL5sCjGFHqrJ4mrkX9b1v6Td2d9fTl077yly2K/GYJLaVcXb7R4asEp/KryOWTCdqA25Jc/G3SwgdjJL3ryfL1/dVP7OG0+P3sm4QIRRxrXF7KS/SCvZ2uvCVM7rCPVV5Ik8PkfEUHnmvQs7a4riFlFWMlPCAsGomphRw4T+OB18jSxj65UolKwinQEsP+Oz/k+IEXC4p2l7gd/fhm8B4dAwcHEcgs++A51jIHaBckMt42iikPC5cUWqvtWRXBBso7N/V7fRiVnwq6WY80s8Dq+HcTORXI3G6gvQICWOVDlcTG+ajCmKnHoSRyNRiSimJkDuOYOR2l0qur9gBLwK2w+GareAGIEk4DaQTk73AYqPynxVVi6cp9n8emTsG09/NfePvHbHfVCjvmwaHZFlPxJWxJgQtsy60Tl/Rza0+kRMZQQMdQQ3tSAgdsRIMJnKVcCNLzpi9bUNFAcsKIgBu2KoDztkpt2iJNsvkoNbzoFTDQwgBsmN5K+GSvd2sDOUZpBZhsAvJvO9KGq5c0vPVReMfLBmqXld7nTIS7yaIRQWj4xIavk+XB27haN3OrTTY3KSIILQ5fSFcJlvVJCqCHlfJHQGwdnbCxcFayX1gMKsDGO7DEuN+Od8qpOZvaxX55/vxySLnXgBGzCjnSQvIoDiJcfHsXBvEqCuU1Wy95ALGntDV4UK6XEE6q+r/L8VNP3t+2VXTjg14+jH45M40bAW1LK3z9AGJOaWzf8GK7VeEhMUe1QjETx6IHf
+ HrpMkc2Z
+ Ux6QvCDWTRNpO2NJEe4oQ70gJkcosKcAOyYel0rvoogC/gFiyjQZMjiiRnDcxQuUlsnoRr+XIzGAA4Cywkpg1c6+B4ARCHBRP5jlP3cbAuIaGc7gqjdYDOTwZdV1NBcw0M6RAno2nAaiXuFmfX/8s6Nlf6Lf7BM0yDmr30Vokabkia4YNM7o1vLOjIvEigu479+RY3MlZTKxoTEXZOwlYVux8gEdWAbWtuvC7FFuQNKRPOGkdTUb11R+r1YGG/ldQL2+gHc/zNs2lguIoDB/YtCmUXvAveO9oFof6n1HA8EViOVIaJe88ul/+pR0Gm3IW7m0dtth23wxbd3Z/OMGI5YnsHHBvCUeDo+OX7CReAjKfPCN7ZcFAeGRaVZFrGGP2dRHXDksJNls1pkn3XvqfqiQGCcLrTBErkZY7vh6jS75XTTumHVRdISXB2+3utkdAFpQeT2gvPm+Xp54N/h4m8nK9MfeMBuOqzEiLAJ9wuXKE5u0Gf4xvvRQUv7YpkH8faVH3UoIocZSXd28=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,110 +145,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Mar 26, 2026 at 3:04=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
+l.org> wrote:
+> On Wed, Mar 25, 2026 at 11:59:32AM -0700, Andrew Morton wrote:
+> > On Thu, 26 Mar 2026 01:00:23 +0800 Vernon Yang <vernon2gm@gmail.com> wr=
+ote:
+> >
+> > > Although this patchset is already in the mm-stable branch, if we want=
+ to
+> > > resend V9 version, I'd be happy to do so. Please let me know. Thanks!
+> >
+> > Depends on what changed in v9.  If it's a major change then I expect
+> > I'd drop this series from mm-stable and we restart the clock on the
+> > integration and review of this work.
+> >
+> > If it's a minor touchup then a standalone patch against mm-stable would
+> > be fine, or just leave things as-is and prepare that change after
+> > 7.1-rc1.
+>
+> I think he means just resending this for the sake of reviewability or
 
+Yes, Just resending this for the sake of reviewability.
 
-On 3/25/26 9:35 PM, Kairui Song wrote:
-> On Wed, Mar 25, 2026 at 09:20:55PM +0800, Baolin Wang wrote:
->> Hi Kairui,
->>
->> On 3/25/26 8:07 PM, Kairui Song wrote:
->>> On Wed, Mar 25, 2026 at 07:50:40PM +0800, Baolin Wang wrote:
->>>> The balance_dirty_pages() won't do the dirty folios throttling on cgroupv1.
->>>> See commit 9badce000e2c ("cgroup, writeback: don't enable cgroup writeback
->>>> on traditional hierarchies").
->>>>
->>>> Moreover, after commit 6b0dfabb3555 ("fs: Remove aops->writepage"), we no
->>>> longer attempt to write back filesystem folios through reclaim.
->>>>
->>>> On large memory systems, the flusher may not be able to write back quickly
->>>> enough. Consequently, MGLRU will encounter many folios that are already
->>>> under writeback. Since we cannot reclaim these dirty folios, the system
->>>> may run out of memory and trigger the OOM killer.
->>>>
->>>> Hence, for cgroup v1, let's throttle reclaim after waking up the flusher,
->>>> which is similar to commit 81a70c21d917 ("mm/cgroup/reclaim: fix dirty
->>>> pages throttling on cgroup v1"), to avoid unnecessary OOM.
->>>>
->>>> The following test program can easily reproduce the OOM issue. With this patch
->>>> applied, the test passes successfully.
->>>>
->>>> $mkdir /sys/fs/cgroup/memory/test
->>>> $echo 256M > /sys/fs/cgroup/memory/test/memory.limit_in_bytes
->>>> $echo $$ > /sys/fs/cgroup/memory/test/cgroup.procs
->>>> $dd if=/dev/zero of=/mnt/data.bin bs=1M count=800
->>>>
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> ---
->>>>    mm/vmscan.c | 13 ++++++++++++-
->>>>    1 file changed, 12 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 33287ba4a500..a9648269fae8 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -5036,9 +5036,20 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
->>>>    	 * If too many file cache in the coldest generation can't be evicted
->>>>    	 * due to being dirty, wake up the flusher.
->>>>    	 */
->>>> -	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken)
->>>> +	if (sc->nr.unqueued_dirty && sc->nr.unqueued_dirty == sc->nr.file_taken) {
->>>> +		struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>>> +
->>>>    		wakeup_flusher_threads(WB_REASON_VMSCAN);
->>>> +		/*
->>>> +		 * For cgroupv1 dirty throttling is achieved by waking up
->>>> +		 * the kernel flusher here and later waiting on folios
->>>> +		 * which are in writeback to finish (see shrink_folio_list()).
->>>> +		 */
->>>> +		if (!writeback_throttling_sane(sc))
->>>> +			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
->>>> +	}
->>>> +
->>>>    	/* whether this lruvec should be rotated */
->>>>    	return nr_to_scan < 0;
->>>>    }
->>>
->>> Hi Baolin
->>>
->>> Interesting I want to fix this too, after or with:
->>> https://lore.kernel.org/linux-mm/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com/
->>
->> Thanks for taking a look.
->>
->>>
->>> With current fix you posted, MGLRU's dirty throttling is still
->>> a bit different from active / inactive LRU. In fact MGLRU
->>> treat dirty folios quite differently causing many other issues too,
->>> e.g. it's much more likely for dirty folios to stuck at the tail
->>> for MGLRU so simply apply the throttling could cause too
->>> aggressive throttling. Or batch is too large to trigger the
->>> throttling.
->>
->> Thanks for sharing this.
-> 
-> Hi Baolin,
-> 
->>
->>> So I'm planning to add below patch to V2 of that series (also this
->>> is suggested by Ridong), how do you think? There are several
->>> other throttling things to be fixed too, more than just the
->>> V1 support. I can have your suggested-by too.
->>
->> But I still think this fix deserves its own commit, because this is indeed
->> fixing a real issue that I ran into. Even if the throttling isn't perfect
->> for cgroup v1, it aligns with the legacy-LRU behavior and is essential to
->> avoid premature OOMs firstly. MGLRU dirty folio handling improvement can be
->> done as a separate optimization in your series.
->>
->> Anyway, let's also wait for more feedback from others.
->>
-> 
-> Sure, fixing this first is fine to me, just saying that you may
-> still see unexpected throttling or ineffective throttling with this.
-> 
-> This is no conflict between these two approach. I can rebase that
-> series on top of yours, and that series would help to solve the
-> rest of issues.
-
-OK. Thanks.
+> whatnot?  Anyway if it's for my sake it's fine there's no need, it's
+> already in mm-stable and I don't want to make a fuss, I'll just try to
+> structure review more efficiently in future so I don't end up with BOTH a
+> backlog AND a random-walk of what I actually review :)
+>
+> Thanks, Lorenzo
 
