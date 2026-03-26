@@ -4,112 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FA10106F318
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 10:10:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FB85106F31B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 10:30:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0B5C6B0132; Thu, 26 Mar 2026 06:10:15 -0400 (EDT)
+	id 9958D6B0124; Thu, 26 Mar 2026 06:29:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBC0C6B0133; Thu, 26 Mar 2026 06:10:15 -0400 (EDT)
+	id 946436B0126; Thu, 26 Mar 2026 06:29:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF9356B0134; Thu, 26 Mar 2026 06:10:15 -0400 (EDT)
+	id 85BBD6B0128; Thu, 26 Mar 2026 06:29:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BD8C56B0132
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:10:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6BBB5E1126
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:10:15 +0000 (UTC)
-X-FDA: 84587793990.11.DEE2E02
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A934A80018
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:10:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HddpbqIw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3AwbFaQkKCHgWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3AwbFaQkKCHgWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 71C676B0124
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:29:59 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 242AE57356
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:29:59 +0000 (UTC)
+X-FDA: 84587843718.17.0026BA7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 28E6FA000D
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:29:57 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eFad7qen;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774519813;
+	s=arc-20220608; t=1774520997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lBGicU27laianFvyzY656GHLSJPIgkYXNKTwZ0wPpek=;
-	b=IpmH5vMOIwbgJGXRGYtlaAL4Fvs5CWGpNmGeosOKk54ljhx3IKNDz06vevLNVEzofgrwUq
-	Bf1x8zNyaxVSLB9ZvRyqX5GIbCm7ATKk4L3Vx0tSVv5YaYytw+cJBSNNvPs6Pu2eQm4Bw7
-	cA/V9qKM1WSs7QHQZK8iUZasUARoClA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774519813; a=rsa-sha256;
-	cv=none;
-	b=Hyk2vBSIB+LIbbWMEW/X2wQQ/z2MSL7UrliXzx1EL0WEwRB0kCdSYHnFYYKgnRtRnMWl1C
-	xrp/i75qfLhbAfQG7GaBEME63R5zfEGVsF8ls/ryBsEDp7Eq+KXVAm6WtnfL8bebfJNO70
-	WcUzr4ly3RL/B/YV20r1XX50u5OjOxs=
+	bh=8aJLDcTH2MWm6gSRCunoWe05jCvpS86QFZJvkr9vEIQ=;
+	b=ym8f5xQIf4Ps4cK9ecOFx/zoYW1z3ctd5qT/h//UL2mVhOxifM5DViIV9dKjAy+t3yGW/e
+	0ch4Oklg3pr3SPmFwrqd/rIoGPBXE+7apnxcH1rCBgK9MXhuhokC550bqs6nOeJfNEPFD1
+	P95IFOZLnjEIOLYnzg2F4X3J09z3e+I=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HddpbqIw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3AwbFaQkKCHgWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3AwbFaQkKCHgWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43b3d3d2d22so808614f8f.0
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:10:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774519812; x=1775124612; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lBGicU27laianFvyzY656GHLSJPIgkYXNKTwZ0wPpek=;
-        b=HddpbqIw5b53vih9TNDzZThBLMauPeiKzC/780lknT2xfwj6jU5xqPttzPU2/kw5Jp
-         gakR8heUB5AJcSXe3AtgBSVEDiktYQE2kuns0iv91Md1owTw1pFGfR+eXuKkfKii/Ip8
-         TwxhjgvW0iA1djco9mYKLHrISDN3BBs5ekZ40ISBLpE+6g13lfTrCzSMRZtbZ5qDaA2j
-         TdHtV+MKBuX+hpHsI3JcG9TsJnmWgH1I7/yYGFzpVqEp47qOMIFbscOOdJC8vThCwqRD
-         yMcgL1eLkUiQ+Jms7Jby4uvUEGA9HW+qbAj+Utwgblyuc01tmx+KNu3NsYedTlBDKVJH
-         Xisw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774519812; x=1775124612;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lBGicU27laianFvyzY656GHLSJPIgkYXNKTwZ0wPpek=;
-        b=FMjn4mFV8WM86zu8w40E1coTj2j3Uv89fGzvqIAQ03dGF28z4g6il1dPb5tAHp8qmY
-         xoztapcsf6C/s8XJ2uVbm39ylTxzRPBlZ0s0RRWVERXpo0tXAksdwkD+onoDa6Fay6tq
-         amtMe3MnYtbroJn0PAAMvKDJMwa5ZO2gQP1bwwT9OzlX4ReIP05hOmu4JdIb+9WQaLUV
-         XCEOe8s7bcO9hi2lYEzm+CuVS30TkTKw4YfRCxXs4KRVIrChuAwy662oJXCYP8IAXW7J
-         j/3N+V9GI05b77IuB+ip/h6VfyRqrtTx0dd9XYJg5N7UPqcYZ+vMsp5BsLKesadNuk61
-         LrPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU7PdJHBVYfLwaeBDMNXqhxzLHSXn4i3Auip6JbYY3l23evWPUbW4JVJ0brLLAeiD+xt/sy5t0kvQ==@kvack.org
-X-Gm-Message-State: AOJu0YwBQLXuoypAZEgPGeWNwtjQTRc4Wf/4hbJSmDiG1YG84jtqU9Dl
-	jp78QKIGRpi1B+xNOcRo52BrlxzfvETGlN6cko3ogRq5FJHh1fQn342232GjYdOFlgX3HLCVTex
-	IwNwpYsn1O7+QT59s4g==
-X-Received: from wmoo2.prod.google.com ([2002:a05:600d:102:b0:47d:5bef:a379])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:890b:b0:485:6ec7:2df with SMTP id 5b1f17b1804b1-48715fd50abmr80350625e9.8.1774519811752;
- Thu, 26 Mar 2026 03:10:11 -0700 (PDT)
-Date: Thu, 26 Mar 2026 10:10:10 +0000
-In-Reply-To: <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
-Mime-Version: 1.0
-References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk>
-Message-ID: <acUGAsjYvNvTEO92@google.com>
-Subject: Re: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
-	akpm@linux-foundation.org, anton.ivanov@cambridgegreys.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	david@davidgow.net, gary@garyguo.net, johannes@sipsolutions.net, 
-	justinstitt@google.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
-	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
-	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
-	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com, 
-	will@kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: A934A80018
-X-Stat-Signature: mgq3bk7b9sgiote9iphmpmpu4ri4mq3h
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eFad7qen;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774520997; a=rsa-sha256;
+	cv=none;
+	b=aqlkmBccAevun+XvDiHvKdd7LgV+Hnoe2o3a641bbNhvhd/HimZOTZbTRCXEsBlYfTwwZt
+	Ev7QFmzxHO/hxUX+6DISzwuYTdtBW4R8nB5AJ08CzhbowOV2WsgSHkF6tSII/xBYR7In4J
+	ODLxCt5Q5+tPXuFBuQv5f5Fis5w3aeA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 420E0436A4;
+	Thu, 26 Mar 2026 10:29:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129A4C116C6;
+	Thu, 26 Mar 2026 10:29:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774520996;
+	bh=r+HgD2u/Tq9CkbDGZ3lEw+byiueM4J5FP2Q5P+aBkaM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eFad7qenAiwEVed1LXvS4QaXK2JMFhGBaPYAYgHB6A1moVO1UUUcPfEnRq4thbQzf
+	 xV5JT4zamYEBbTOKqunfvM+AVzTh/mnRLLD1rQPR+rYzVEBI/etuZYyEGlPNesXAPm
+	 uy2TPA5e5kW55GOGJIFWu+prPRS6lgc5T6/YKgnVO07ZFfMenrP7oFcg2OlrJqiVyG
+	 jb/NyXpOLuPBU3uoF3UmHO+KHKgMQ3HqOX1zD0utenGax9mnzRkeZ0UArTZDqVMSoq
+	 TTvl5A7QPtAgl4Vd2K/V1B8fDCXN4jtNGjl9KHEtDGPfKqMI352RrgvYhi3ZwoMYrc
+	 pAGz4MW4Mo6oQ==
+Message-ID: <f41ab7cb-4430-4338-8812-eb6aa98e9bf9@kernel.org>
+Date: Thu, 26 Mar 2026 11:29:49 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sched/numa, mm: Skip page promotion if cpu pid is valid
+To: Donet Tom <donettom@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>, Juri Lelli
+ <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>
+References: <20260326071216.11883-1-donettom@linux.ibm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260326071216.11883-1-donettom@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 28E6FA000D
+X-Stat-Signature: 13wwigqa6fjw99os7q1cmoi4hny8a7sh
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774519813-654708
-X-HE-Meta: U2FsdGVkX18BwAwuQ4XpzgIu33qegcFqqLObbNF2dp7e7DMMCo4nSG8NGHy4vJHvxLyy5DMRPtLv3/gMo/YwGhRpQJ7NIPQGcgmc6HCtQQzryQlJwdo1CAI+65UoeDJsHKyAVWhMUKMoHy0c4wMYyb/WKlHb2Odzrv+t9oheZcQnbUSclSDpyQG+AtA0BpUMgEpTvgxAeXCB6ewtvQWHUQsO+e43etYYiK823xuavfciZLji6iYDuCZGVp0DTo7M53XFUaqmxgfYAjQBdJCkvJOi8pzPGMzRPBvePnbCUIlAoyTXq3l0yj+0iEyvk+RpTxXIELKNO6l7rZx96kpS0mlWyPOdw+eKQlbRrbsEXEloDqSs3mr42JSPNyikbv/kSE3iHfJWNOUm0RbAXXeMmi0a7ToiCxZp2Y1X/xhd9pIbGVmHHvDjeES2Z0JC2qp87fTmU/uliCyYgeQxbnqSmJu5pmmfSBDWjjvXAztm35t+kwf50yiQ/8SW627E6ovh13vFYW2YY7E9yJYRkOKnkOKxN89CJvo8DYUizHH41u7YCYdBW202BGqr3st1kmu6CCqFPKZ9xS7Xow4l60V0yuBTmZUdf4vH2Y81zdzhb8srA8ExDjANydIdFTkKjB+JC5ulpOTOIrhYClG9JAx79hFnK4wVd9REGg71OB+6rq+z6B/wqTh6+M03JHaBnKrqgghP69Os0AaIsSvUD23pbVQX+ZtdT6YRQkct0ZLigjZEmWdoK+ONufRNpLgyl0XUiURC/d6jlQCVfZKZxh/nzv3Pqd7oZ3uP7U+m5Fn+PSayjti74XmnRzeRR/ON7KT+sSz/U+fhd9zIINQkW1eCs414DTmGGANRHl+kCp08QIg38ftKJwHuSBmqjm2GiMwzy8WAH26imGFBDi6jrq2eWTKYyOrUIc4EzRkiQvIS8unaEOOc6vG8hVvOQQBsp1ehopqb5+WIsS/aP9naS/m
- 5B+qxQhN
- 5UuW4N/fUivGqldsdkBLj98dNc69Bz8SifIXmaUPb2wmJr20YvJj5tQiidBSw58L+0xhKCdlTFUEg7WY5uXvPD8BXLHIg0zitiQQdPWhsNIYfsM+uRKB8UULy0eAxgaLR2QTShfa2GFWZVocb0jdMbU8I4ZD19vzhubIju2TXTYPyCDnuhLFUSQSqDVesMEVCBxXEE/riQRzoXaODWMyrJzURUfV2aFvfY4rVX+tmOwFQFrjnC6Im8vV8e0xewrUaqzh5EX09MVfH+bMfeCtop1EFFHBh+BXRm56XXnIMXhRi1qRWKiJZ20XgFkhf5M1GXQyRCaL6TtOg5dY6NYOUHmzK+F2y/Uy7XhimagKPg1hhA98PXqq4r9GC2+yGMUPiOjQaQ0cOsrjvK6LbQXGiIm1jRfs5vb+8nMfqDuaKRbG+dvA0zhxOWJgGnrDpV/jyJvdg+0D1jHkyEeF1CEfMVqJZ9VMIBKLPrXQ0BXISZizAwFKn2Ks6ihyLwqj9GYKchqDoWBbKkY6JMxqWehnFRlMPbng4I2Kkqc7HrkIHcdPxJ7mnWRm6OutKrj6wam6ZoqJt8q5+Swtcf3yXx075KrcCk52rVy6XlujkcWDf7+8F2TA3AeVK6lX9JerE46LclY7entRMwjdjaClwCXUKC6/CZSqwke0fH4330Uvn0yBmF+lTGESLJYkBGri3Y8o7QdgWOju5UljO2UsFk4SJt4GQ8SMI+5pcwJldWBbMxy1gT0FA2IGx7NR03g==
+X-HE-Tag: 1774520996-153752
+X-HE-Meta: U2FsdGVkX19TJOlbT6olCfMFKNw2eetw46QgOHhlNS8W5g64gmrjzPy9Jf8hO2lAcBPajNpCE42X25oGS/tj7QpolQOii1S5Xsj8i1R8yvMlMUT5IWcU1CY1IMm/q/31pqF9+rd02whwZOISXZul9grhRNce+oaA2vD3+zDBL64NclgypwclHj64GPTHIAM9zvhdG11sSIeqR9U0QVe0yfnG6+ANh1zv9n0YFqHiHqKYMw4781keFPA4kOPI4/pmFd3OW4h+h4ye86WA/LSHqrXOxNPtDlCh45sIY5f+wj+DGSij9NYjPKCFSZMSakm3+oQlEa/XoXcovmAJyDFOK479ojTyfd5YFApyJ91JF1/MrX+hbrMw8GY+V7lEv7unoJZi5WA9P9BYLZWxHAsGcHjDIbpmKT21LXAdg8iP96nX5AYCNorlLnUcQG054wEP6C2CRjTE0IkEB4HSv/KfhxwqwqEV1ARr/e4224Tp+jpVoKjrWAsNV2lhMX0aApAw2PMvbji0jvnlK1n4Ies3/u2A3BPLIUaCRFsWI7qk1P2j+5747B7lQaYJ+wMAbSqW0lOHLA6RAIFjf7ZTU+aou7KasaZEJYFWhtDpXA+XrdntcMIvRoQ/NKRjFTIjODJp2D2jymhnSUZqyyJMkDZp+jJpwInc3tlkZz5LuL31UlsZeKwBhN+a2H2S9ryzZsi3wcK/PTJOHd6AKEx3l1IskxeiIIO2vNQK+VCqM119Mk7Cg4GY/wYogJEkw6ULLQVPyr5KPEMZGpkqp6ol4JSH19YDW2p4JGdIkJyV6pv8oQku1c1epjv0Qq450sLrVVh/nKg0YsoW5H38egwd0FmQy3v9hcDkIwIt90j00qahh50SQ1kUhcOrmfOHsDksIGEVGA4bMbYQsIC3fqDQTNz+d2lKPWQlQm7LiE4k+kLuFJ1XSYbdqh4IgA0pEgVWkJ1xmK8H5VuNfSUPm8Tq5Pq
+ yNoVd9JY
+ bqb1LUpiawz1V4SgobP3U6uXeef8/+9CShqFKc+U/9DIP+jAlPjHdywf8UHymJXCAVWDOgBr9tUvkiDqOm+ganGOZQYft18TA0nnAd57MRjtAkjQqJ3CPsyvLfALJsPL0KQpl4ZooFx3O8pCTLbjumnNdJrbcXpn8FznJeVmRPeO23lH1k+6f4MxhCHuFHcGY+fCSkt9YnNLJMwsdQ/Ku6ZYpOQeijNcEvk5rwDsRTBi0YMndzLo+8X7bB7cmyUo0PwmlSjQ6Id6LNrKJlCYmzo63EANwFGtVKANnxiwAAhGtUb9wS+FMlYTPrVQdAnd5k+XH6aq5nCgHUqpY+wlPH35gZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,39 +144,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 10:03:26AM +0000, Russell King (Oracle) wrote:
-> On Mon, Mar 23, 2026 at 01:03:27AM +0100, Miguel Ojeda wrote:
-> > On Sun, 22 Mar 2026 20:21:59 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
-> > >
-> > >     On the other hand, regardless of whether we fix this (and another
-> > >     issue in a separate email found thanks to the UML build), we could
-> > >     instead add `depends on` listing explicitly the architectures where
-> > >     this is going to be actually tested. That way maintainers can decide
-> > >     whether they want to support it when they are ready. Thoughts?
-> > 
-> > Another one for arm 32-bit:
-> > 
-> >       LD      .tmp_vmlinux1
-> >     ld.lld: error: undefined symbol: __aeabi_read_tp
-> >     >>> referenced by uaccess.rs:349 (rust/kernel/uaccess.rs:349)
-> >     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
-> >     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
-> >     >>>               samples/rust/rust_misc_device.o:(<rust_misc_device::RustMiscDevice as kernel::miscdevice::MiscDevice>::ioctl) in archive vmlinux.a
-> >     >>> referenced by uaccess.rs:543 (rust/kernel/uaccess.rs:543)
-> >     >>>               drivers/android/binder/rust_binder_main.o:(rust_binder_main::rust_binder_ioctl) in archive vmlinux.a
-> >     >>> referenced 36 more times
-> 
-> Why is Rust generating code for userspace thread accessors for kernel
-> space, where userspace threads are meaningless. This is totally wrong.
-> The kernel must not reference __aeabi_read_tp().
-> 
-> Note: I know nothing about Rust, but I know enough to say the above is
-> pointing to a fundamental issue in Rust for 32-bit ARM.
+On 3/26/26 08:12, Donet Tom wrote:
+> If memory tiering is disabled, cpupid of slow memory pages may
+> contain a valid CPU and PID. If tiering is enabled at runtime,
+> there is a chance that in should_numa_migrate_memory(), this
+> valid CPU/PID is treated as a last access timestamp, leading
+> to unnecessary promotion.
 
-I noticed that the Makefile currently uses the arm-unknown-linux-gnueabi
-target. It should probably not be -linux target to avoid this? Probably
-it should just be armv7a-none-eabi, right? We gate HAVE_RUST on
-CPU_32v7, so we should not need to consider the other variants.
+Is that measurable? Should we at least have a Fixes: ?
 
-Alice
+> 
+> Prevent this by skipping promotion when cpupid is valid.
+> 
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> ---
+>  kernel/sched/fair.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 4b43809a3fb1..f5830a5a94d5 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -2001,6 +2001,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>  		unsigned int latency, th, def_th;
+>  		long nr = folio_nr_pages(folio);
+>  
+
+/*
+ * When ...
+
+> +		/* When tiering is enabled at runtime, last_cpupid may
+> +		 * hold a valid cpupid instead of an access timestamp.
+> +		 * If so, skip page promotion.
+> +		 */
+> +		if (cpupid_valid(folio_last_cpupid(folio)))
+> +			return false;
+> +
+
+IIUC, as timestamp we use jiffies_to_msecs(). So, soon after bootup,
+we would no longer get false positives for cpupid_valid().
+I suppose overflows are not a problem, correct?
+
+So what we're saying is that folio_use_access_time()==true does not
+imply that there is actually a valid time in there.
+
+In numa_migrate_check() we could still use the valid cpuid I guess and
+make that code a bit clearer?
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 631205a384e1..ba68933a9e4a 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6119,10 +6119,9 @@ int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
+         * For memory tiering mode, cpupid of slow memory page is used
+         * to record page access time.  So use default value.
+         */
+-       if (folio_use_access_time(folio))
++       *last_cpupid = folio_last_cpupid(folio);
++       if (!cpupid_valid(*last_cpupid))
+                *last_cpupid = (-1 & LAST_CPUPID_MASK);
+-       else
+-               *last_cpupid = folio_last_cpupid(folio);
+ 
+        /* Record the current PID accessing VMA */
+        vma_set_access_pid_bit(vma);
+
+
+The change itself here looks reasonable to me.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
