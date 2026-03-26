@@ -4,138 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C9FA10AB82F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D50710AB82E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:23:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFB8D6B00BD; Thu, 26 Mar 2026 19:13:03 -0400 (EDT)
+	id 47FAF6B00B5; Thu, 26 Mar 2026 19:23:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAC356B00C2; Thu, 26 Mar 2026 19:13:03 -0400 (EDT)
+	id 4309E6B00B6; Thu, 26 Mar 2026 19:23:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9AF96B00C3; Thu, 26 Mar 2026 19:13:03 -0400 (EDT)
+	id 3469C6B00B9; Thu, 26 Mar 2026 19:23:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A56FA6B00BD
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:13:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3667113C396
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:13:03 +0000 (UTC)
-X-FDA: 84589766646.29.7BB51DE
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4083DC0006
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:13:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ExLIWgtl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774566781;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 234CD6B00B5
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:23:47 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9AD1140B96
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:23:46 +0000 (UTC)
+X-FDA: 84589793652.04.0A1C2D0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 14FB0100016
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:23:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bXZehikS;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774567425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jQ71j0XJntFgJwNhav4Ldsylgfk15393wSbfyYOBmK8=;
-	b=v5bqvxK1dhFeX1krS68nFC4AmNOSRYfZnL+IyBuHMzCBU4ZlQcUQlNHSdfHs0NcSJF6VDv
-	ZPNt/x3T4VzsY5cwFGZcJv8QTTG3Ypnt5bTtwv/qssqSzGbwLTxBiE3Cpv35nm8GtnEeLu
-	PVeBmhqyS/VfOsOFIOB2DaIloeeLLjE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774566781; a=rsa-sha256;
-	cv=pass;
-	b=HzJtD6W0HgfH4RRcl00aJOZALEihyLtHEZ7RetWr8k0M9DCAH8iu9bSp7xF1pRsPSMT0Xs
-	PM19FbioJHzfyVnbK/Tct4yUaijGUOgL9Uy5RehTsghNH/RVo8l+PI4rhAMeLo71rlgKBG
-	o2CDokiikVNmR1gALAenG3XeP3lQufQ=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ExLIWgtl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5094e1d17d3so14960921cf.3
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:13:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774566780; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UPySO7eFvpWvcYp/CkAmolw6GCKgpA6hVWb5CyQ8wclxibDa2zCQAyfTlw05gAIFUA
-         n52ovF1kcZsRVLfzWcB48TmNWD48qB0Qra4CePYKVmqy14OdyigQWA9YP70Mw74PTQnd
-         xrUGGX5y+WeTnxue+Czhg+EGksYpSmfl4BDBlfooplYxH+w5wpgo2dYIrEgN1HBcD43o
-         nCnwAcB4du9rhhNnCaK9BvQw+g01DiEZrEuUsci0p+b0mKZL5mKOjnEzSBrUpxkPdhjp
-         z1eDNV2AgEYunLs5mmfiisssT3o0xGVNDCTPFbvjqoVoQ5fb6ErjnVNUXB4k/yLNLCm4
-         S88A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jQ71j0XJntFgJwNhav4Ldsylgfk15393wSbfyYOBmK8=;
-        fh=17hY+THTCAOpsm7yYKHstgebtJgEur3VtwotAjHiVm8=;
-        b=eIZUFIbpJqUjIOvtNqwLsLdHuHXUhr1wjwYLfZIQtsMYu5I+kce4w4CEUhGYczGSNl
-         ofFexRNFD2c0NWYaA0fuVu3HC5vUNt3wJp3ErhuPR0xRxqwBLzqZkJUNDh1ZaGEBsjWB
-         X6Tj5IgE8kPKd89PygO9GjbK2lJ6oft+0EczOKDcvcioqXQXuAO4SY/4iGrj6j5I+wfQ
-         A9YfJJ4i0cYr2Xv/tzRdd+5gsCsANixZ14jrU7kXwsVbRYrRKiA0hM69yRPkLPR3x/HY
-         S4vpm1LNsuBq75j1J9dZ9LgNEAYPdWCCk45eTMYzFrclubw5Rc7t4ZepuH1CsMKg0Wod
-         gl9A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774566780; x=1775171580; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jQ71j0XJntFgJwNhav4Ldsylgfk15393wSbfyYOBmK8=;
-        b=ExLIWgtln1b6GJkjqFOiKoV5bqyX29k9n982fAB6hjpgMXvjiToWe1a7WwtLn464Lr
-         PHeIhnjmkzifOvBo/ZjKsK3CEFtdN2NwdWsLMyvLFxHyWZhg+K14Uea0vDZDJJIfV1hA
-         0nvWqzox8habZeSU8umOAg6VPilUFCtpapbn89U+QzET6V2rgoDv7OTdedC4vlxCep4A
-         G41cG70kBNGK6YpXdqnwcHkesKVBTxCJnw+Vlsgzo6lCMnCAdAeJJXr1EF27+aXf2mMI
-         2QGsJKcjWnihSQGOiS96ra0ybJlMPrv+uggJGOmfYR33MVKNJmWHeZG4TQwcl4eKUszA
-         BO6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774566780; x=1775171580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jQ71j0XJntFgJwNhav4Ldsylgfk15393wSbfyYOBmK8=;
-        b=NCNKNVvnWIg+NtakwBMvhTb+SnmPL4t9VAwPM0Wl4QywHVxwJ2RSKJ0BdVWZxzbDGz
-         Q1SsfRYcWvX3gfsjR4YAstPwBw/HpZuVXlv+1Kp4ATE2ZUN9Q8ViXhKqhQ6/tw5q5w0d
-         IL0H614iisfkLkDJJI7IemvGDAi0QLB3AFXmC8OL29QZoDpZWkemZ9+/HBZlI/gJr1/l
-         V4HbU/S+3ADVvl4m0KPVxpGnLYvDjkMca2PO2JH+5uGHe1+vYBnDJxcwsXwR4iGFZVdN
-         dFoO6MR39eraoROjCbhqmgFOIxbEjmtz3rhKAewQz1ybd7SLz8o1XSsLNPgdANZmvt0c
-         dDdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUoK1v5fqQ8KHmBjRiNM0m5EaSyCPeZu3oHLlA13Eagh8QdDhvsI+Br1vHcSd2OjEJJPLImQrqdXA==@kvack.org
-X-Gm-Message-State: AOJu0YwCfcMhsBzSTMM6nkGXEvV+DvcaYcaqhxakk/OQUSFhomsXT4Eg
-	IyQYvBw0eSpCIdQ470RPACGJ3YbIQpJn7KCU59hRxGh8QH5U+RYP1xgiS9rc5AcWsPLlzMMlDl/
-	3otXa1FpPcWvQqYObumpH2l9ACrBZR/0/nORE4Rc6AQ==
-X-Gm-Gg: ATEYQzx11FY9/T2alF7tbWXiOMx2wOZFJHT9DBOZbBX5WQf/296uQ3sT8GnjaAG0I1J
-	2DyyGUGC07JXrBGo+fIPDHlwMQCZICQ9gK54dQfuxJNdU0cRRLGUivhEEgiuL6vOIHKCWI4/ZS/
-	m5YDwbLiKgKZatvcENysM1eiVTWmFsverUeO2S37EIgHiUu31+TpqMUv6uCM3DXVSVtH7ShNKjf
-	hdHvJAy1cFAmQei7bwXzJLkiqFWapaUi1SWVDytz8xBZC2UIX6rDfpxzomd4XU1RpDwDr9aETul
-	osZ9QkZ4xiuF/0LxyDOE93oWFWzcFsLvQVBxbGw/uR+Y/TPcInSEtsVzm18HBU4xfISsezsUQA=
-	=
-X-Received: by 2002:a05:622a:4812:b0:509:31bd:3de4 with SMTP id
- d75a77b69052e-50ba39780fbmr6194181cf.56.1774566779779; Thu, 26 Mar 2026
- 16:12:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260326185629.355476-1-ljs@kernel.org>
-In-Reply-To: <20260326185629.355476-1-ljs@kernel.org>
-From: Barry Song <21cnbao@gmail.com>
-Date: Fri, 27 Mar 2026 07:12:48 +0800
-X-Gm-Features: AQROBzDWtmGuHyTAVLNjdgvosAE-X5FzIYF4Z1xpQcLS_XcNeBXNo16LCUjjHpA
-Message-ID: <CAGsJ_4zmveWi1XSr70XbcrjR-wVqwKKTAAES5Gpvo0wp2O=hGw@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>, 
-	Kalesh Singh <kaleshsingh@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4083DC0006
-X-Stat-Signature: erbjsdzgmgfcfayc9krcqjt9f6cy3mh1
+	bh=OQ+9vnYotY3DONXzWRCmVazKV9uZH+sc1uEoa5gi3KA=;
+	b=7iSXr9PlPep3jDtbiu3T2h4Zzxs0Anh3mg3YGXP2cVWXKXNm0dzacNXgJAgHU2cSGLaXVM
+	wVfs4GP/uH6+XbeQxERBylKg3XyBHqkWrnpsKq/V/M+b7bJmcts4rBM+yrOMjK2FULN431
+	WZYmu4gvcFa0o8TkLQVZKZDt54VYBG0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bXZehikS;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774567425; a=rsa-sha256;
+	cv=none;
+	b=yN5s4J5J7bg7qTEvnaFz9MuqGRMSsA8/7L9pYqsKkfoH19PXH2qRdhP+jkr3+WUnhZF9pC
+	x8gJIBzOAe0c3ki+ItyhK1XWy290EZEnh6AEW3PUyubHiD8M6a3XkpU3lr4PUd+H7hC8es
+	ZpUacbp6cf55d546XJ2ULUPzu2j+W3g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C0C5A44511;
+	Thu, 26 Mar 2026 23:23:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57D4C19424;
+	Thu, 26 Mar 2026 23:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774567423;
+	bh=ywefAlrhCimBtUrBIPGiIi039tfFwchTq617Tcwm5Zg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bXZehikSOnzJCjqTWi0vMkzNfGuZk/eIT/VwIhjH+YfQJA7FfwufOkVdraXZLMtit
+	 UFempOXqyIbWdgsdvIhVsdje87SqXt0LakogZA+AVEscO5nxcNvZivw0Js6Ko2SmCv
+	 WXz3MnsabMlyPLfXxSQ4Yi2IA2HAJPnOJ22/LWqk=
+Date: Thu, 26 Mar 2026 16:23:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>, Axel Rasmussen
+ <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
+ James Houghton <jthoughton@google.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin
+ <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 00/15]  mm, kvm: allow uffd support in guest_memfd
+Message-Id: <20260326162342.b8178cb8940123324c1c9211@linux-foundation.org>
+In-Reply-To: <20260306171815.3160826-1-rppt@kernel.org>
+References: <20260306171815.3160826-1-rppt@kernel.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774566781-938478
-X-HE-Meta: U2FsdGVkX19DEZuNTRk+WomBHGHhLhnkII4r71JbmDE1+CH1E48YZD28YMTUMsu+bWyCkxD/JGBoXyOsoaGRXobWiXip3yUiPnR5W/Wrjn8xzNYYwohndSXEX13RSFYLonzWuZvxQ18khQNzZxeYxe0HcKpPZR1uvA+w0MIA/jdlok6OTSUwT8afHHgHgq5KZH1d3R//m/gmcYkOAE6wNOgwEKYjxvCuSPTUHKHet9dlh0KkMJjA47EtGwEsv3Jlsvd6h5Y0WaOAcZ7Jtf7+pJtVBmJYg37oJpuYJ6jA8SkFEmRwniIVD82bgXzs/qPnfYj1vlTIGzzda/VwyGQq4ectWC8dqCjF5CM2wNK9ynsK9+pxtcHcQTu9zgXMeI8i9bqiM9FRxurwhDpnZaa7Z1Y92yxZ7P5Tav58toEkZlL1S/pdwZMosXJ+zrWCMp99PrTw88rp2HdXbvaitHi9eWSmTFNiPT1B+IhYVjS5od+19zzn8hR9PCXM1yIGI4mUwHRmXtsRzuq9CYco2BX3WSoJNiGELsRyqTRBHEI7D30EWu2dZaJi2LoO2fdbQ7AQsZjO6HS276wzyHP8ZBOt8yJWEjHErGGSGJB4P0HihnuYwLlcKkuUIOOxubaBtR0NRuwbr18myiIutcVeD4LrX1z/PF6cqBuEg6J1vlOf1LLNIHY8yGbIHy9l1RFvUBdZyyHfQuDDrHYfmFgb+edbhR+o3glF+jBCCTH8Gp3HtibeAPHFL7SIQ4rUZrMW9p64g4WeBIjuW36yUEkuOTnbSI0v2HF0a2hARsB/EVHP9XQuA9h/vIuk78FMAW/7/xCYtS51Pi1f+xdxXmbFHzD4pxof6bdv/YI1fgeh8+dJmxiToQeltkeRvk6qgMVnMymDQd1ew2RAkxU3RagXm3DYJ3P/7M21bKSQ9Y+5Z4S/A3MoSD0kbRHZOnBXrpu8m3hMMTPZ60POdc+j8Xbhq8s
- /8Kvq466
- 7/OrllzkhK+tAYuFLlh/7W++wXeXTS9XqAvJBLGhXFB0YuGLjPxeq4PBlLiEIWyyn+lTy+RVfHOp5INSSMOD1gOdpW+oy7x8nJGyzXdafiI1/3M26Nd+ruzRxTJRSCl0hK9HnDFBWKLrOMQaLyEVvkGLS2y7wWhs3i6/DEzM1l23LT7Lv7/VT7eKIk+GNl7RfHd0NaoaUhnKmUVudc2TEoglz8a++1u/5d4mjmbJKAQNQBi4daCWDAuh9NagkNblQkC946m/rPeOCcvuxBseHrsk0YvDIJJ6Vu8WZdhk4FqgoUnCCq2q2laq9/j1kTN45Bi+vTGizXEry2Zzk1UuHnqIpT0M3JSJRO5foQv0ULa3YL2SKytQa7NxMleGX9vmbS/iLvlef7aJJPx6FD2KO0AYZHBrH/8zFpgtX0FwvMT8UYEk=
+X-Stat-Signature: eo9dyqni153ir4t6p1ofz15ceht54q1c
+X-Rspamd-Queue-Id: 14FB0100016
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774567424-822385
+X-HE-Meta: U2FsdGVkX18k9TkvEVnajSOntb5186koKn8EsveLXIGdRDeJu12mqNsOpmxwp6y8HiWSJCHSavzArL8dNEEpcJIfP5zOTmZ52pa/w2s3gvtfLdam48QXCHxoJ5Z1+Yrofrw5Fe6MqnkyYGOZHngLViXOEaOUs4w/nCNb4rl+d2HeXDDwuTxBaE5XI7S0WDVirZQkJPiLqVB2jvprXtV6aQKl+vP98pD8PP/iBb3S7OwzFn3Bgk7sZwE8HAb6dfE7O0x7NguJWG4aXYi9xV9AzLTH/RMl2ORvUjhFd2RXkDAEP0Uv/RLJbXjYwrKQ5PudG9zYR5FBDVHtNNT5ji4C0t7DCapzSwC9rq8mCezwTrxQIMFLX5OPVYv1NNeyUgKSp96aBGwIW+FvpySyZeugSNPTDHibpVao0TgE+UY20KvvGEeHMrf40o9wF7lv58plX5wGqEbDQLHn4AoJfkHWKkopJipmNBgUTG42/0jqarwkMf/R8GneF5AGW/QLG3H6qVHoipJ1MM4+fDCsCVg03vhWYKjTXEUtmJq29FM+ozAGicjvA6cG49ei4tX/Lj1SIwbAuwAQK/2mpKIwYj2/arX9d4x/bQEtXJsVjLf/KPPbUr9rPAAvKjE+ZOgvhECM1xKG6BtxStAnE2tglyFUB4I8az5ZSdE6a6jZ3piEK6+yhdtLf3MEZN82fv74jdhd59gzxMvd0/FX6l8a3XlaT7AX/J/NxaEQf5t2pNrhz8wsBIgvgv4aF7iFneGssi712dKnAHnuOoOSBXjJYOyAYUj3wfnnN3haEwSnM0zWoisU3nKzoY6VAR7MGyqGPKkC2b1jI9XQVV18biNFHmGVQe69yXnDNhNN/sNyj3ksTdJj9+U0Ys9Rvhzbj7G3XcD+zFQ4UT9WXga2V5bMAA3qsysOrnylRx9A9+jnM5aF536ogoT/lK5tfvdGdZ5bNzKJrFz+gf1KXAP8CXviLDe
+ jSIs+glA
+ +2Y2ohtz2cTqWz2cVGJx7gQwy345QuR2taAvS83lUsYPb5d40UyCyGBND3RTN0TRCEPKw9WbKaQq5veenFp+Yryh3f0ZcMcmmO5k7+zj8nVCYLLtdencI45zCYlh3iqep4NnMx3cjZ6WPWew0BcZcrkhJN2XtSIWj/nNJf6fRCXY7tNJ1d/GbaAxpV6Xfg7XvTdeBgCdVOgoMHylLL/pPO1DwxE19WnFMEcYAldbFp+zo12dtjGOGoLBM2YNymzLeZjOfqJLAtjaN4fx72YgqDcgmnFwaEE2N6rEPN269ehz9mxjmSFKuY1qdKwI9PVQdYMGB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,43 +100,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 2:56=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
-l.org> wrote:
->
-> We are moving to a far more proactive model of maintainership within mm a=
-nd
-> thus put a great deal of emphasis on sub-maintainers being active within
-> the community both in terms of code contributions and review.
->
-> The MGLRU has not had much activity since being added to the kernel and t=
-he
-> current maintainers who kindly stepped up have unfortunately not been abl=
-e
-> to contribute a great deal to it for over a year, nor engage all that
-> heavily in review.
->
-> As a result, and within no negative connotations implied whatsoever, it
-> seems appropriate to downgrade the current maintainers to reviewers.
->
-> At this time nobody is quite exercising the maintainer role in this area =
-of
-> the kernel, but there is encouraging activity from a number of people who
-> are trusted elsewhere in the kernel, and who have contributed relevant wo=
-rk
-> or review.
->
-> Therefore add further reviewers, and at this stage - to reflect the reali=
-ty
-> on the ground - we will not have any sub-maintainers listed at all.
->
-> Each of the files listed are shared with other sections in MAINTAINERS, s=
-o
-> this doesn't reduce sub-maintainer coverage.
->
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+On Fri,  6 Mar 2026 19:18:00 +0200 Mike Rapoport <rppt@kernel.org> wrote:
 
-Thanks so much for the trust!
-I=E2=80=99m glad to work on MGLRU and help drive progress.
+> These patches enable support for userfaultfd in guest_memfd.
 
-Acked-by: Barry Song <baohua@kernel.org>
+Review of this series is very thin at this time so can I please ask
+potential reviewers to spend some time with it?
+
+To create additional time for review I have relocated this series to
+the tail of the mm-unstable queue.  That probably means that movement
+into the mm-stable branch and upstreaming will occur in the second week
+of the upcoming (7.1-rc1) merge window.
+
+Thanks.
 
