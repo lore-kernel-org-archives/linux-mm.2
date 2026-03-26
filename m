@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1563410AB833
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:37:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35FC910AB832
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:37:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A1E26B0005; Thu, 26 Mar 2026 19:37:06 -0400 (EDT)
+	id E09F46B0089; Thu, 26 Mar 2026 19:37:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 778DC6B0089; Thu, 26 Mar 2026 19:37:06 -0400 (EDT)
+	id DE2366B0093; Thu, 26 Mar 2026 19:37:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F3686B0092; Thu, 26 Mar 2026 19:37:06 -0400 (EDT)
+	id C0AD46B0089; Thu, 26 Mar 2026 19:37:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 48B8B6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:37:06 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D16098D2CE
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A3FFA6B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:37:07 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 65EE0160ECF
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:37:07 +0000 (UTC)
+X-FDA: 84589827294.03.562AE00
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 99338A0005
 	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:37:05 +0000 (UTC)
-X-FDA: 84589827210.28.135FFEA
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0FCF3180006
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:37:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TpCKsRDZ;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VZIR4es0;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3HsPFaQsKCBErt1v82vFA4xx55x2v.t532z4BE-331Crt1.58x@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3HsPFaQsKCBErt1v82vFA4xx55x2v.t532z4BE-331Crt1.58x@flex--ackerleytng.bounces.google.com
+	spf=pass (imf15.hostedemail.com: domain of 3IMPFaQsKCBMtv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3IMPFaQsKCBMtv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774568225; a=rsa-sha256;
+	cv=none;
+	b=huk+0pM3cT1ZIS+WHBC/YrBNdtT5g7XbrvJE/DV++HlkMSYGTM07qiSSdChlHnmFXIoigo
+	ZPj2ULlK/YiYhav+IG35UY1eraoOFNYZB1WmxiI+keYyi4zCmKdjJ2JXf0YgHrRTP68/Hj
+	Qp5fGEglfNKLpj/OeRxbX5ff15YCVqg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=VZIR4es0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of 3IMPFaQsKCBMtv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3IMPFaQsKCBMtv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774568224;
+	s=arc-20220608; t=1774568225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=anFkcCozf8v6Cel8diSJv50ROa2IxgRDEcI6Q1pEpvA=;
-	b=uKI85Ab4Ma0XuLCxXQuedY3CCvjhMK7xK3n60+sG70OIZ0Dn0/bneckrvAugBTRx43RAnH
-	J1bjvn5LlPjEFShJuu+Pc6HtOpe9fODjvwF0FfsTHn/bOLjCs0v5yCilfxCqfRb6ZAbqfI
-	YIoY/bWrbIg6ZeM7VIQBKn3qRcTBYao=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774568224; a=rsa-sha256;
-	cv=none;
-	b=Ho2bHx3sA0XaXLYjuQejySGq08MDF9qAgOPiCNdajS+9KFFg/DAi/lm4EwWS5JRdwTrZE4
-	sSPWAqybzTY7sAK8OVp050DOVAFkx1C7LZ/+tWJh693ISY81sLXPzaH77AE0RY8fbIz0d1
-	7dC4pi8ndEqWO5RsuW6cpXkPD1vxmQI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TpCKsRDZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3HsPFaQsKCBErt1v82vFA4xx55x2v.t532z4BE-331Crt1.58x@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3HsPFaQsKCBErt1v82vFA4xx55x2v.t532z4BE-331Crt1.58x@flex--ackerleytng.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c7a84a43eso3207505b3a.0
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:37:03 -0700 (PDT)
+	bh=SLjwHN4/NEPHQ5GPdLGfuv8Jy0iItB0IfnGqB+YcFdI=;
+	b=iYfvaUgAmvfV44iWd5alO8zoJzlnVRDQJqmcOfB5vVmQ787obHLyb1HurL2D6AKPH6sSyI
+	TyebOKXEN825ZcXlBIH2TVXry5a8xLcq1xs66Vfh+hOOhN8A8MU+D9shsImq+YMF9HOclr
+	HYTGNobXdFY+Cap8AubHEYpu7BFuv3M=
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c63f85c84so1087297b3a.2
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774568223; x=1775173023; darn=kvack.org;
+        d=google.com; s=20251104; t=1774568224; x=1775173024; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=anFkcCozf8v6Cel8diSJv50ROa2IxgRDEcI6Q1pEpvA=;
-        b=TpCKsRDZSVij/OdPkkLGwbcr3LS3KhyNYwqCtVcju7mUHvWgcaGOpG+kSgPAVEKzzp
-         sawA9TO3xzY2ZOfmgvwFSKfeE3GlhTXWKMga6upsurGz6Kt39zhx0ny1fgaosUKUv7wl
-         eFcAmAWc7TOCJHxGce1h2SzG1tXFtaYfokPiET2ETejQsYJ6he6+b9jpOutogCpR8g9P
-         /yw7oAWZszQRAHBJHheKA1ZfXpDYYC+OgWkSBf6xqJ/V/D5BTG0X8ZCtA7/wGabNBOgU
-         ifKB1AbjGQ2/Nyw+ZVKKlMgky75kiHC4PNW2MVnpuuydF9hQpPBRzqodJ3VHaSE3oF3g
-         c0NA==
+        bh=SLjwHN4/NEPHQ5GPdLGfuv8Jy0iItB0IfnGqB+YcFdI=;
+        b=VZIR4es0aw7ZGp3S0kF0uDyuflSYywiQsh2XiAzuE/rdbrjC1zeIr/y/u7REKNA2Qj
+         9bUk646YkAMKkVH2xXJ5dOV440VTHOctYT2+6d1U0AYzF3vpP63+mT7YmIpCPIKmedMk
+         Yhnero2ccN0eUGGD6KI3KytOaU1ioHoKSTjTkr21yum8Tc5Duk3IJXem7ViLumXX+JnU
+         hTEs2/ldr1ISbn3md+rcDtitQbRGJ+qbTayHGzaiyaO8BQDoj576NIBFQBjd++DRrucK
+         QIwY/S1AZ7EqC4la7qOwBLE74ETTDa3CFvyBFHl9usVbloEpG1E6xGkpaq59DYunx+vn
+         +7bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774568223; x=1775173023;
+        d=1e100.net; s=20251104; t=1774568224; x=1775173024;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=anFkcCozf8v6Cel8diSJv50ROa2IxgRDEcI6Q1pEpvA=;
-        b=YBJzD6hMmFxxggsuxM2VGXs/UeTBHxoxpBss1tyqoYvRRlbYTQAeex4wzTxEckepj0
-         oK2biANImMMhVN4VOCdMYVAsSqNThnMGX6ByGFJpaO9dAepe/yinUg4Uskg7wBwtcW08
-         qAmgv3GKAVFWXEdHUMiNU4xokO/uV9j1cza84CvPRL+k/7ZPfflJPX18vxlICtdw4SaM
-         aH/bES+yKWNOo1u95/UrwCKNEy6B8gxoR1Ry3afGLkKOv6Sz1ardsy/rsjn1GDRd7r8v
-         YPAoOWXs+kvUvYcz7CWlJtSLLuYjPphn37SSMbPfZS6bcuNgnLestHJjT9khz9cYUryz
-         enbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVFRYNMfO6bS6YVsAClKU75Rh8at772jPd1g1NIgtDiEjVh1NgA/8sdZTvD/3vIk1nDGS0oVkdtJQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw6rmI+qI0PW+XWk2K0qZiudRk02mSEYU/Gij5/Bxp3Oo6WbVKl
-	k5OKASiJCKTwerQbtTKX4yIXbV+5Z0X/BS1hwH1aAY8EauSoCt+mUjReUJcrHkCIh8EO39gQq33
-	Am0yMzUefNVsBQPuMB86jODuQwA==
-X-Received: from pfbbe3.prod.google.com ([2002:a05:6a00:1f03:b0:82c:70d1:f303])
+        bh=SLjwHN4/NEPHQ5GPdLGfuv8Jy0iItB0IfnGqB+YcFdI=;
+        b=OyPSBXSWuKKV3BxbHauFHQd05e8G8kjMPgK77MMW3WbeYdOwpN2XbjmQOIs9s7nO4p
+         rjfh3CLhZI5w9fzYbPVAG02s4cUT+O4iObfWTFdsebDmpfnHzFS5GDdrJE4oF2v048ux
+         L9FaYq2wcHmWmi9x+em8/l8y6povtN+NAsQ+Db4z/z07l3LMMcuhTTMyaWXQMhjzfoA5
+         G8bZJgPzi9sShoNJxR79xvh+Vedp6dxM/zcyW9o6ASTM8ks4JUmblGq+3HgljVQt3mI/
+         0xR4e1jB3zmq1Zy9IJME8HJCx4w4o5leZ4iWPcsRkGN7Qg0S/UangVhzFZn3Id6q/NL1
+         xhmw==
+X-Forwarded-Encrypted: i=1; AJvYcCX/n3OqZf98QD+yYxiuESEQPylrHFKCynDAOr0REHJYnsd8OGOcZSUEXuchX+1A+d5Y5G8OyGZX0Q==@kvack.org
+X-Gm-Message-State: AOJu0Yxt/Dli98FTzSHlxye9FqTbnzV4F0cCtQ7xXUSIC+qjbhd4FV2S
+	P5Yab/zVi3RbS4C164SMvyyU+nlNa1cUbb/WTLy8Z2j+Vbqdtvzbe9fuLOVFViQR/1+mtc1F6AY
+	0TYjV5N55MLiDrDjceFIyscVmMQ==
+X-Received: from pfblm12.prod.google.com ([2002:a05:6a00:3c8c:b0:829:7245:b797])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2d86:b0:823:1212:8e87 with SMTP id d2e1a72fcca58-82c95ebf212mr318666b3a.32.1774568222396;
- Thu, 26 Mar 2026 16:37:02 -0700 (PDT)
-Date: Thu, 26 Mar 2026 16:36:40 -0700
+ 2002:a05:6a00:aa04:b0:824:a8f2:7de7 with SMTP id d2e1a72fcca58-82c960a6bcdmr260470b3a.60.1774568224072;
+ Thu, 26 Mar 2026 16:37:04 -0700 (PDT)
+Date: Thu, 26 Mar 2026 16:36:41 -0700
 In-Reply-To: <cover.1774568083.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com> <cover.1774568083.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <a31bee8e57f464078672a95b638724e1cad423ba.1774568083.git.ackerleytng@google.com>
-Subject: [POC PATCH 2/6] KVM: selftests: Call snp_launch_update_data()
- providing copy of memory
+Message-ID: <fd0d2a694fb71dbcb69a9af7f92474e1896b3f48.1774568083.git.ackerleytng@google.com>
+Subject: [POC PATCH 3/6] KVM: selftests: Make guest_code_xsave more friendly
 From: Ackerley Tng <ackerleytng@google.com>
 To: ackerleytng@google.com
 Cc: aik@amd.com, akpm@linux-foundation.org, andrew.jones@linux.dev, 
@@ -111,14 +110,14 @@ Cc: aik@amd.com, akpm@linux-foundation.org, andrew.jones@linux.dev,
 	willy@infradead.org, wyihan@google.com, x86@kernel.org, yan.y.zhao@intel.com, 
 	yuanchu@google.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 0FCF3180006
-X-Stat-Signature: sw7868ihb5tgd5z4smmgp8q6hqetes56
+X-Rspamd-Queue-Id: 99338A0005
+X-Stat-Signature: tb3s8nifnxb7gf7ddsman6rinaqx9wfh
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774568223-51386
-X-HE-Meta: U2FsdGVkX1/qicErqAHFjWMCJbYJXP3peapDgsRzMJu2L79HYTU3VQrAUZ7DdSI20yoCrOveV/cqE3ejoXza14SfE09XoETWuxBHVf/055+ngWAYk0sc9Du72u9iIctdLU/DmGxLI1/d3yCXh0so2573evDDGehohXYDEsBEdnwChMS4479WL4XGBVMuuGcRKCwe8e91z94JaHkyXHoe8wOhzG7fdzY2VIOBt6TizFAJ3cRkqu68jcXYAWDTW2EwBnqHvtbH4VAc+LJsRDRT1XLxgWx33u9aCpK64ayhV3jOLwVhdanlbGFnyDUPraskg7I0Ugm25/t9ZPvIsifJDq2m3eZYCZZx0PfwY4PZA1oALmK9bEC3fZJFIXarsFekO+U5DQsO4/q4juL2Oyx14ea3FBPd0wl/pFFw0KwK31Od2zVH/g2d54u184XFQBI27EbxAy3QKgs2qr1Y1tIr83ZU3ZHgTHg0SLA50ohGOnCHn8Pp9WGtJKoF0GTRO5yWsJZsCl3ZXRlkehsZDRD89Pd9QunZABomBFrAKjII9bSBUR7kb5toHDhHVm6bLb2eQlZpUJTC5BytPUXYy+IMy5ZYkJVocfSoOhJTHJ74UGR7QUmXaziVH5VNnfaae5sF8zPwme6a4cKBOwwVUlvzZI/EgE6ZsvZiXN647+gXyiGPqps9S/G9qdcWLa2UEKUc+qIpoKrgbKygnhVErHLllEW89nabIQk0C4PVnWhvgp4WRDPvB0o+PuRqdo3nMpQV7Vm7DEaT1goI0vw5mRbDx7CVs8ykgCwqJ2x3uB7PhiSrYG+H5+5cpU5um1Wem6fZ5baTlpdaYc3ZsKSI7dbXLVEdntm5Qx5ltrIP1c77+RVnCUivMyuXsvEyJkLOIbSyZ2zU0OxC9vuNiRarCszLhPti840gH1yYYnAGlKI7oe1c2Dozy0jTaJMYZK9azyeT8EYSLoqgqg+vyU4DCZ7
- Q8KF9gAj
- DAVJpHiKdRuvkhy2sofTkBIEb2uhfSjDNREDpnGLayrbdKDiHVIShfMPJuWh1ZVZZHr89AdWL0itMeVF1476atJMMBY6FVU4HlhreX2gXVlncYAsN+edEC1mAodcYFg1sw1+10ar9zOt8TVrZaIKEKhA2gIfWriPZHs4rIga8oLKmewm1KO+xCGrIkkeMQ39iS80LeRM8+ZXRd3m01O/JeE9YTnCPp5SMNEjvfXEaxJHtxkHDAVtMVnllDf3BcIYr1LyKm+s7kSBEZFLYLo61PSxgCYExxilzW6Y+Cz5L9MJyq49sV7lMibyWRyvlAPsB/29mZmxIEzDCyUGUrxPQ34RPq3Pm7So9L0z1IEEFkFi9vaW+9acH+6OknG8TielLv82yEU1UmKzh2rQZW6bMgX1Pk3RRqEQX4y6L2C6uZmsywC3ScG6QufmO502u9y9e0rxCzi0If6OQC6fGS7450Jrq2nlL94qfoDW3YJSPBnci5awVihA0OwuMLkLRetliZ5QanAZ++pBFBIn/IP4gEfByYg9pOpU/USQTCh/U/wdzMqJKVV6PV/JRA35At4LSELSEkzAGTgGfJ5/UMEy0GLDlgB5ziNkzW6KZuDS4zqKtwAFIHCB+D4FePKOHs+HBMbQ6AsFntwp9Ff8p++fdu5ebnhKyy01hDfRyHKi73YKjlsPf8T2elCJQzlwTC2PLBExt41Fw12otL8P/1PCub4e3IA==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774568225-422053
+X-HE-Meta: U2FsdGVkX1/9tGVUE1FL6KQEXprDd0W3VkgBdpanyU/hJFf5vhwjo5syXosOIMvebqzPiqPQLmYr7SVg1fvRgWj+CVUbR6S8lGNwM79t0gaVTltMl82Wj6Tg+mu2x+QXXyutLbtwoKRMOF4+uDuhO/78aTm9/gvUdQ3NZdeIqAjOP6MfOh4EFtObPRveoRtBrPasPJLN1my1j5Ur4U/1HEUV4jTI8yFw0wqFXWFqoLVxHP57iXfSh7BQB4UtrJ/KFQ836/USDftGekiRqJFPtaO/obC3GKpjKVQtevGYd+H/XlWAhNlKaN/EXeZnvtBTRrg28u4axTuVWdnxwzzry9tN7aw1eN4r3lNaYhU769JTpr8YF8QeOP9Vs8Ite8HZWR4bXzZ44iFCrt5WXWxSGSsqjyrcETj4rU8WJDB2zbPd/Jsx9Gatsp21WWRZywkuBcyUuEZH9bq/5W03JC+N88Hoy8qysbJGNLyxYANtZcpT1sxTt65zhA5/OyCchARspx2cHLnOYjFHzYSQw3L504bz8O+f7EH3lZi6Y0pKAB0beD9JdqNy/bW0Z8KR2jfemGwTpGyU/BwEeUpV53/IugF4jbgX0XhJ5G088hG2/f1ITCCyF1Feis80L4bARhjtUlZ/zbJYPNVe5o2WFlIJzk6GxgWBaJrQEbGpiwU2+RnrWeAocIidZxBh7GcY7R8VWT0LAQ0+cQ6GTs+O5TyW8YYdtKbDZTz6PyDKwEwWgzvdMOkkZLADn1XRG0G3HWVFMPzy9/otI5ZffuppRibA5dsX0HWmgSqt7wP4YEdiXzdWz+8q5htNgPwif2KZWQ8SG/q7QqAbyZBRDyPXmIGSPMEQ69TGAiVYhD7pYQUnZpuMF+vhHeu7ywg73m6zM8hVhUc5RV/EVlXs4mtSTtgzmpND4xQ8aU9RLs0EIYIjsBXB/EiIHN1BSy42C4/Nt2w9F5JG/tvfPswaVs6Zz+h
+ Xwlaw6f/
+ FYkeFh/NUTzRGN70ITPTFsRgEAz1d0ZYoO/dIXZb4seMxAMGQvQPpPAXNzjVAiZKaSI0CXEz2yEo8eg0XGi5bFaVYfa6v4JnGLfrSDeQ3/ulKbQ90P/WmEmRpHKFkwvY51vQQI6Ig5jNdnu+hy18GTttX+28Hfeo51PlU3vdg1CsmpoqxBzcoCJ/N1RG/y7UrOzun9ULMKhCqDxG/eVv8ZxNUeaFTTW6kR4+Hl5j8pgBOrLPtew28WuRjk8aW7tpb5gpDoLXs4kwq8Y9tsdebC5PKhG0awbhQaOFt7RCIGGCoChxuCrugIEGL4Vv/Br0Gakj4mYlytTxbRRwJ3IFyeMa4lTdymRUNLJgbfGbVgb+YBd/Gkf3A9sFJAymKj/c+LqKf02aC2BYJAv2kQa7vI5MQgABii13x11Gyiw1GegvfQEV9a7SOJ2yF9rRzhHqezr8AS17wMP3fH9SOMxB02uVIWJCpalJfe1krlOf+/ONSCztOicBIzKN+4OyuLJqodUe0bj9EUvJborc/HtmwmPX10/tRBu1kXp+o4RBh13lO4/GVth7wMs0tVkMF4sGCFKaSVE7wwaezBw72GU78aXvWZz9TCbCEgXZQ0SDqyVBh/xI7e2gUXAPaxqj9r0hwIgSEd7ukzw18mq3+qfmdICI0+DYM5kLrJNYC9IkkriU1PBhKLlkJp/EK3+OwirvQg2V4Ia0opMiy/0XV8e2mFwel3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,82 +125,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Call snp_launch_update_data() providing a copy of the memory to be
-loaded. KVM_SEV_SNP_LAUNCH_UPDATE populates memory into private memory by
-first GUP-ing the source memory, then encrypting it into private memory.
+The original implementation of guest_code_xsave makes a jmp to
+guest_sev_es_code in inline assembly. When code that uses guest_sev_es_code
+is removed, guest_sev_es_code will be optimized out, leading to a linking
+error since guest_code_xsave still tries to jmp to guest_sev_es_code.
 
-The hva that was specified as the source is in this case also the
-destination where the private memory will be placed after encryption.
+Rewrite guest_code_xsave() to instead make a call, in C, to
+guest_sev_es_code(), so that usage of guest_sev_es_code() is made known to
+the compiler.
 
-KVM_SEV_SNP_LAUNCH_UPDATE requires the destination to be private memory,
-but private memory cannot be accessed by the host and hence cannot be
-GUP-ed. Hence, make a copy of the memory to be loaded, and use that as the
-source, so that the source can be GUP-ed, and the destination is still
-private.
+This rewriting also gives a name to the xsave inline assembly, improving
+readability.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/lib/x86/sev.c | 35 +++++++++++++++++++----
- 1 file changed, 29 insertions(+), 6 deletions(-)
+ .../selftests/kvm/x86/sev_smoke_test.c        | 24 +++++++++++++------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
-index d3a7241e5fc13..1b937034a5c11 100644
---- a/tools/testing/selftests/kvm/lib/x86/sev.c
-+++ b/tools/testing/selftests/kvm/lib/x86/sev.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- #include <stdint.h>
- #include <stdbool.h>
-+#include <sys/mman.h>
- 
- #include "sev.h"
- 
-@@ -31,17 +32,39 @@ static void encrypt_region(struct kvm_vm *vm, struct userspace_mem_region *regio
- 	sparsebit_for_each_set_range(protected_phy_pages, i, j) {
- 		const uint64_t size = (j - i + 1) * vm->page_size;
- 		const uint64_t offset = (i - lowest_page_in_region) * vm->page_size;
-+		void *source;
-+
-+		/*
-+		 * Is SNP the only place where private=true? If yes,
-+		 * then we don't need the private parameter, we can
-+		 * just check if the vm is SNP. Or maybe it depends on
-+		 * whether TDX, etc use the private parameter.
-+		 */
-+		if (private) {
-+			const void *hva = addr_gpa2hva(vm, gpa_base + offset);
-+
-+			source = kvm_mmap(size, PROT_READ | PROT_WRITE,
-+					  MAP_ANONYMOUS | MAP_PRIVATE, -1);
-+			/*
-+			 * Make a copy before setting private, because
-+			 * snp_launch_update_data() needs to GUP the
-+			 * source, and private memory cannot be
-+			 * GUP-ed.
-+			 */
-+			memcpy(source, hva, size);
- 
--		if (private)
- 			vm_mem_set_private(vm, gpa_base + offset, size, 0);
-+		}
- 
--		if (is_sev_snp_vm(vm))
-+		if (is_sev_snp_vm(vm)) {
- 			snp_launch_update_data(vm, gpa_base + offset,
--					       (uint64_t)addr_gpa2hva(vm, gpa_base + offset),
--					       size, page_type);
--		else
--			sev_launch_update_data(vm, gpa_base + offset, size);
-+					       (uint64_t)source, size,
-+					       page_type);
- 
-+			kvm_munmap(source, size);
-+		} else {
-+			sev_launch_update_data(vm, gpa_base + offset, size);
-+		}
- 	}
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 8bd37a476f159..7e69da01cecf4 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -80,13 +80,23 @@ static void guest_sev_code(void)
+ 	GUEST_DONE();
  }
  
+-/* Stash state passed via VMSA before any compiled code runs.  */
+-extern void guest_code_xsave(void);
+-asm("guest_code_xsave:\n"
+-    "mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
+-    "xor %edx, %edx\n"
+-    "xsave (%rdi)\n"
+-    "jmp guest_sev_es_code");
++static void xsave_all_registers(void *addr)
++{
++	__asm__ __volatile__(
++		"mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
++		"xor %edx, %edx\n"
++		"xsave (%0)"
++		:
++		: "r"(addr)
++		: "eax", "edx", "memory"
++	 );
++}
++
++static void guest_code_xsave(void *vmsa_gva)
++{
++	xsave_all_registers(vmsa_gva);
++	guest_sev_es_code();
++}
+ 
+ static void compare_xsave(u8 *from_host, u8 *from_guest)
+ {
 -- 
 2.53.0.1018.g2bb0e51243-goog
 
