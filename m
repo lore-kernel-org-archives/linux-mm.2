@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C783C10AB803
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 18:50:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6D8210AB802
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 18:50:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 025FF6B0088; Thu, 26 Mar 2026 14:50:05 -0400 (EDT)
+	id 3F7786B0089; Thu, 26 Mar 2026 14:50:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F198B6B0089; Thu, 26 Mar 2026 14:50:04 -0400 (EDT)
+	id 3A8DC6B008A; Thu, 26 Mar 2026 14:50:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2F106B008A; Thu, 26 Mar 2026 14:50:04 -0400 (EDT)
+	id 2BEB06B008C; Thu, 26 Mar 2026 14:50:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CE0D26B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:50:04 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84C021B92FD
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:50:04 +0000 (UTC)
-X-FDA: 84589103928.15.A336B43
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 70EC5100004
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:50:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ocb5rEa4;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BC986B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:50:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 97505C45AC
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:50:43 +0000 (UTC)
+X-FDA: 84589105566.18.5A66D5D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 42432140007
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:50:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rOPmq8Oc;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774551041; a=rsa-sha256;
+	cv=none;
+	b=xrMs4ZhBRdyRxjGx/grOiutIJqZwtwE3U/pxPQ14Oy+rC9RwYhMuJHMNhuCIAdDzXK+ZGV
+	4Dm4cjx1qaTM1aVvSpPIYVeLJpJ2AdCOSXO+mJNxYvA2+KDe8cWMVOxlPV4dizKg2XM2k9
+	SF96pdZDgKXdUIfYsWCfD9Hjd8JyU0I=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rOPmq8Oc;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774551003;
+	s=arc-20220608; t=1774551041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hfFEqSk7MC3gXpsizNtYg3OJej5GD4C2LciSFQWJMH4=;
-	b=qe81gk6Iuf++fj4wLq+fa2SU+oDMSf8trRYc3fZtkxIjmYEQZ8sQ8Llt96vvT+dpnKqWZe
-	l4qmImpDqGijUb0qc1agZlmwjlNetFAzdVov5VPvHzUiiXUVnzmMevv2Rsqqbe6tBEO8kl
-	HJS76TWoDRHmtdDeTT+E1fEM9j+wE1Q=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ocb5rEa4;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774551003; a=rsa-sha256;
-	cv=none;
-	b=gyvIeVEL75yOeu0VpRchehRwws1rN+itwJCMIIPzbpJOl5qHh/cL7oko0OTgIprwrxec8r
-	J5wkOoxq620Kk8f9sNEQoZqyWJBS9+lN65A96VwVcdUKS8cCV6JI2OfQfs8bvSvlfMrExt
-	kNJONcyqNOhwIOrRrlqC/XUewJHWqnw=
-Date: Thu, 26 Mar 2026 11:49:49 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774550999;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hfFEqSk7MC3gXpsizNtYg3OJej5GD4C2LciSFQWJMH4=;
-	b=ocb5rEa4Vhf7dQDm6mOVJ7Q5U9qVntdAcRctK9BW1rf/KGQ9xL1MKFqhwDKXRm7T/yMipq
-	G4ymDDV5NeiDv9zIsQf4PInLagFK3TFtd0xlCoWwJuX9ijYGmOogJMLoTFPqS8vD/3azmp
-	zePXiGS6hiJn10PTMsJnKraFH8fsipo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Kairui Song <ryncsn@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Gregory Price <gourry@gourry.net>, 
-	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, David Rientjes <rientjes@google.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, wangzicheng <wangzicheng@honor.com>, 
-	"T . J . Mercier" <tjmercier@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-Message-ID: <acV5d7D7wsoN2aa4@linux.dev>
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
+	bh=pAtm0fNUVAYL5+qZLwfmQO+K/vAmdgBiRMAwyGFyurs=;
+	b=Yz1KH71+Y0Aic8JHvmciBkLe3u7GQIxptTcwjfNISM1UmpuK4jSvj8/GVaSVxl1vFQ9DmG
+	Qa63epcrXnvHKoYv+zd+xtqw3FJDz260EREBWhMdR7l47oLfHwy9TApoUM/Ll1yfxanKh/
+	7zFugpTXjm55+nAdzciSJqw40hERfz4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 332982EC6;
+	Thu, 26 Mar 2026 11:50:34 -0700 (PDT)
+Received: from [10.57.84.204] (unknown [10.57.84.204])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B6D73F905;
+	Thu, 26 Mar 2026 11:50:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1774551040; bh=hX5RuAfVZuu9EjPLtOuIJgSOsJcmn+KII6lpSyZXG6M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rOPmq8OcbhwMsWDjaRQuflNsGh7tZmtGNniKq4H/xfOblZFgHneRZbOAWtPu9qNtt
+	 QmZjLD7tdqg9nV5E6LklVdQW2w4jd7W2f0VMN1+cKL5cNvTYCvFbZadPnmBcP0uIvW
+	 9NvZ3i/hDQiFg4l4L6EC2fpb47iNdEt8/sOfRQ6A=
+Message-ID: <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
+Date: Thu, 26 Mar 2026 18:50:35 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 70EC5100004
-X-Stat-Signature: 6344shidfrrt9p1xy8yt1q7xo3fd9ftu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
+Content-Language: en-GB
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+ Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
+ "Paul E. McKenney" <paulmck@kernel.org>
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
+ <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org> <acV36oPNFMgL4puz@milan>
+ <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ew91sz8thnp9py9d7yy9wb39m8sodo4g
+X-Rspamd-Queue-Id: 42432140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774551002-838819
-X-HE-Meta: U2FsdGVkX1+vJp/vIcxdIsaQyVMqE6/sSDPrVtiRkYr0FYdInosJuTsjs5d3rQgdmCKYuYviNPHsfbIMtbk4p8Loq/VmMNck7p3QWfHnxXHmQsUwF9IiIS9d8/rC3YG+/TcLy5HmKNbt6CqvJKcNgdOTgneVAkpYAb8/MLTcoZDzgQid2cqYjhLxNQKTKznalBrXn5/9AIuwKx0OuGAem80OfUqE1iwAaf+GLpZvkrn1UoY270Sk2QmauYLSMtz4Qbv8IeAWSzPBRhWT1GjiEa7P7KCmMFD2vXk27cstFOjq33X18wIJFD972e4QGD/kfiFcgif0h/INfAvhtxOGwuqnNqvKcmjHTdOZgifE/vKEoa+mmPmMEtiQ8yuV3ThMrP7vNit4gM15AAt16aPAh7e6+ARqfo3PSZFN6xRa975eR/4SNOer19pZMKDNxYUqqUPm6kLaK23cCb1aCGrAMUmjzIh04ZHh7ckmVD7QjqiPXp30PBnmQV8/GSaX8pFt/EF1VYz/Dj+3zCNZMcq4hK3plfpjwKtwD9EXGcKdtOFDsdZ8nJih1EavfGGRo/quTIfEWe9V41q8w/YO2IFnoiCRhDz7HBLmoTpmP7Ys//Jf5dfEkbyPEFGq1D11IUg7YnKPZg5IXZjQEKTz97rXX86K78ElDVc+mH1bIkuC0w6VvaKcjOb3uVoZTSYrTLbmook4PGPNQR+G0JqqQA6YrqWR0wXhvv7AMjKtIrMGFzwtXJiwGq73FaIr3Ah+jAPZLigi4F6VB93SS2LXzzCkfMSBk6vz3GiT/DKyqXylWsKFhw7l+NjqCa6S6Ef4A741mOjtbHMSMGuzwfUcTa4J1MaxxUcdxsw8Ta9X0LpP6U2yEFjn+HOm73hqSon5hCHCL/Kq8aDXwVk8dIO6QKQVSi9Cm2NJOQ8pU27tXc04LFy0N3AbBKypBVLTZYFvnFsDtem+SzLvW6S8grmJUTy
- ko3fvs4/
- 3N7Yorb+uSuNUqWpEXOUXqe/Q87vDPoNpXaFKY1wggH75t+Ag0ObDKuOM0oxdx+5/M7dcBwXQgGjndP2lq6S1TyPrYsOJ7wSUVE9GTEdp2sfcXWr+b73AC7tsrYjsShnAKqp1ekD3BSSM6rHXjOQDNJ9BvLZZ2pY6ihPJI8m/3QpwY4iHpo7Po3rbIqOI2jsyRB69OJPNuPo0+7JHT/QI0m4NfFQQalekE0GYSCgrBA+RhmE6b6P9piXNayPKYRwgY0sb
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774551041-437319
+X-HE-Meta: U2FsdGVkX18bSuVq/Dy6eKzioBNQ9k8JbV/kKue5/pb+XrF1+FKpxWTRf+To1R+TcheJHk8CGUggfrSfzrixgCqz/aYOF1oGEeXtf9+vwd/QYMx+1mcsDgIQT3s9O9SdPY7rT6g0GF1Arc3XZussMXmFf7kefqwMd7lonCSfTvawqKdyDWDPk8Yo+KiFpnP2rmBULvdPZHhhizBeL2gnYTGvsSnyiUXt7MUV2tgxTcZ8RmiY/WwSAlJK2HWYplfdRdComCPiM7yf2tutdenXnpNlTc7g+xGCWtmh7UbOG2n2jS852eEElv3d40XPARX4doSNOK6oKxEmokx0zQaC05+k7Yd8FR62FGf8C6Kh/igx6MVvPjnL3deIXBDIis8BjE4SS2HP+grE5ho8yrA4cZy2vnZZGmbSdH4nh9vT3C1lnSZQ+sJYgZ6Cc6E9CiFKq8E46V5UF8wSdFvYHNrUJIghQrbi+xdBuh7dbfzDeITpMu6MTeZ7s4ljGP2R4V8vtH1BiqDCINjxt8f0xz+SUm+5y9JVtHIrhTWA3QzGwyEiiUlYBebBbXlr5O5hJj/mUkpdqtQPEHUPvEcXIq/eQ7eMz/LW44weCwpZ98eLHo1sASBL/0eaM1OZ/b/Y85l+Yoffe8eyCog59yLLCIy4p498/CPuuQv0UXKwu1mPhJ1uoZlS3R7Vj1j/mqTH+Yjp1sajsFcOP4mTi8Kxzv0uoWTjUbp2pmsAEX4Z4n6FC0uOMFuxv1Uvy+2lJBBQtzMsMjnLQcnbjjNoDmYz0iBP/DiF0lFucUHdeKsfxkFdWRd1ZcujlJ7JGY0A3sg/D2U+0U4t8vQ2kQsHlsyQn34RgTtJO/nqpVyOJa2WurufNnC6ycbs3kcB4ISpANBmpZhXhACSX7shIHE3q5JlD+LCYvDGJraEI32AUJt+f1fXFPbLL9z2F7U1Ofo/E0pdp7dcw2kyu5mqs44HoUZKq2y
+ OzK+uPX2
+ nSF5rEAT+DHAYllJqHj1ZuGsIsQtvmewbkbj7KkCWkN2D4rakMbWgXu78HA+oE2fYl6CmQ0KAfkrbz0CnbYvMdQpT8gnwWNk5EEycq36RRILz0zhcncz2dbDHNXcdpN5Y08w8/HZ9pCTEZj9vUwGtpwdk0zdX/hMFPy/ZV0j95P0umvf+S5sXoOQgpiVd9A3nOfwN/lJqFV1XQHyozjA0KLxAQgSUeblls8cSRRRV5i8w99oKC+3sRTOzo3Ig5BYKsq3v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,85 +106,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 11:43:46AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> On Wed, Mar 25, 2026 at 02:06:37PM -0700, Shakeel Butt wrote:
-[...]
-> >
-> > The Fix: One Reclaim, Pluggable and Extensible
-> > -----------------------------------------------
-> >
-> > We need one reclaim system, not two. One code path that everyone
-> > maintains, everyone tests, and everyone benefits from. But it needs to
-> > be pluggable as there will always be cases where someone wants some
-> > customization for their specialized workload or wants to explore some
-> > new techniques/ideas, and we do not want to get into the current mess
-> > again.
+On 26/03/2026 18:24, Vlastimil Babka (SUSE) wrote:
+> On 3/26/26 19:16, Uladzislau Rezki wrote:
+>> On Thu, Mar 26, 2026 at 03:42:02PM +0100, Vlastimil Babka (SUSE) wrote:
+>>> On 3/26/26 13:43, Aishwarya Rambhadran wrote:
+>>>> Hi Vlastimil, Harry,
+>>>
+>>> Hi!
+>>>
+>>>> We have observed few kernel performance benchmark regressions,
+>>>> mainly in perf & vmalloc workloads, when comparing v6.19 mainline
+>>>> kernel results against later releases in the v7.0 cycle.
+>>>> Independent bisections on different machines consistently point
+>>>> to commits within the slab percpu sheaves series. However, towards
+>>>> the end of the bisection, the signal becomes less clear, so it's
+>>>> not yet certain which specific commit within the series is the
+>>>> root cause.
+>>>>
+>>>> The workloads were triggered on AWS Graviton3 (arm64) & AWS Intel
+>>>> Sapphire Rapids (x86_64) systems in which the regressions are
+>>>> reproducible across different kernel release candidates.
+>>>> (R)/(I) mean statistically significant regression/improvement,
+>>>> where "statistically significant" means the 95% confidence
+>>>> intervals do not overlap”.
+>>>>
+>>>> Below given are the performance benchmark results generated by
+>>>> Fastpath Tool, for different kernel -rc versions relative to the
+>>>> base version v6.19, executed on the mentioned SUTs. The perf/
+>>>> syscall benchmarks (execve/fork) regress consistently by ~6–11% on
+>>>> both arm64 and x86_64 across v7.0-rc1 to rc5, while vmalloc
+>>>> workloads show smaller but stable regressions (~2–10%), particularly
+>>>> in kvfree_rcu paths.
+>>>>
+>>>> Regressions on AWS Intel Sapphire Rapids (x86_64) :
+>>>
+>>> The table formatting is broken for me, can you resend it please? Maybe a
+>>> .txt attachment would work better.
+>>>
+>>>> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+>>>> | Benchmark       | Result Class            |   6-19-0 (base) |  
+>>>>   7-0-0-rc1 |   7-0-0-rc2 |  7-0-0-rc2-gaf4e9ef3d784 |   7-0-0-rc3 |  
+>>>>   7-0-0-rc4 |   7-0-0-rc5 |
+>>>> +=================+==========================================================+=================+=============+=============+===========================+=============+=============+=============+
+>>>> | micromm/vmalloc | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 
+>>>> (usec) |       262605.17 |      -4.94% |      -7.48% |             (R) 
+>>>> -8.11% |      -4.51% |      -6.23% |      -3.47% |
+>>>> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 
+>>>> (usec) |       253198.67 |      -7.56% | (R) -10.57% |            (R) 
+>>>> -10.13% |  (R) -7.07% |      -6.37% |      -6.55% |
+>>>> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)           
+>>>>   |       197904.67 |      -2.07% |      -3.38% |             -2.07% |  
+>>>>      -2.97% |  (R) -4.30% |      -3.39% |
+>>>> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 
+>>>> (usec)  |      1707089.83 |      -2.63% |  (R) -3.69% |               
+>>>> (R) -3.25% |  (R) -2.87% |      -2.22% |  (R) -3.63% |
+>>>> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+>>>> | perf/syscall    | execve (ops/sec)            |         1202.92 |  (R) 
+>>>> -7.15% |  (R) -7.05% |         (R) -7.03% |  (R) -7.93% |  (R) -6.51% |  
+>>>> (R) -7.36% |
+>>>> |                 | fork (ops/sec)            |          996.00 |  (R) 
+>>>> -9.00% | (R) -10.27% |         (R) -9.92% | (R) -11.19% | (R) -10.69% | 
+>>>> (R) -10.28% |
+>>>> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+>>>>
+>>>> Regressions on AWS Graviton3 (arm64) :
+>>>> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+>>>> | Benchmark       | Result Class            |   6-19-0 (base) |  
+>>>>   7-0-0-rc1 |   7-0-0-rc2 |  7-0-0-rc2-gaf4e9ef3d784 |   7-0-0-rc3 |  
+>>>>   7-0-0-rc4 |   7-0-0-rc5 |
+>>>> +=================+==========================================================+=================+=============+=============+===========================+=============+=============+=============+
+>>>> | micromm/vmalloc | fix_size_alloc_test: p:1, h:0, l:500000 (usec)      
+>>>>       |       320101.50 |  (R) -4.72% |  (R) -3.81% |               (R) 
+>>>> -5.05% |      -3.06% |      -3.16% |  (R) -3.91% |
+>>>> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)      
+>>>>       |       522072.83 |  (R) -2.15% |      -1.25% |               (R) 
+>>>> -2.16% |  (R) -2.13% |      -2.10% |      -1.82% |
+>>>> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)      
+>>>>      |      1041640.33 |      -0.50% |  (R) -2.04% |                 
+>>>> -1.43% |      -0.69% |      -1.78% |  (R) -2.03% |
+>>>> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)    
+>>>>       |      2255794.00 |      -1.51% |  (R) -2.24% |             (R) 
+>>>> -2.33% |      -1.14% |      -0.94% |      -1.60% |
+>>>> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 
+>>>> (usec) |       343543.83 |  (R) -4.50% |  (R) -3.54% |             (R) 
+>>>> -5.00% |  (R) -4.88% |  (R) -4.01% |  (R) -5.54% |
+>>>> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 
+>>>> (usec) |       342290.33 |  (R) -5.15% |  (R) -3.24% |             (R) 
+>>>> -3.76% |  (R) -5.37% |  (R) -3.74% |  (R) -5.51% |
+>>>> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 
+>>>> (usec)  |      1209666.83 |      -2.43% |      -2.09% |                 
+>>>>    -1.19% |  (R) -4.39% |      -1.81% |      -3.15% |
+>>>> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+>>>> | perf/syscall    | execve (ops/sec)            |         1219.58 |      
+>>>>         |  (R) -8.12% |         (R) -7.37% |  (R) -7.60% |  (R) -7.86% 
+>>>> |  (R) -7.71% |
+>>>> |                 | fork (ops/sec)            |          863.67 |        
+>>>>       |  (R) -7.24% |         (R) -7.07% |  (R) -6.42% |  (R) -6.93% |  
+>>>> (R) -6.55% |
+>>>> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+>>>>
+>>>>
+>>>> The details of latest bisections that were carried out for the above
+>>>> listed regressions, are given below :
+>>>> -Graviton3 (arm64)
+>>>>   good: v6.19 (05f7e89ab973)
+>>>>   bad:  v7.0-rc2 (11439c4635ed)
+>>>>   workload: perf/syscall (execve)
+>>>>   bisected to: f1427a1d6415 (“slab: make percpu sheaves compatible with
+>>>>   kmalloc_nolock()/kfree_nolock()”)
+>>>>
+>>>> -Sapphire Rapids (x86_64)
+>>>>   good: v6.19 (05f7e89ab973)
+>>>>   bad:  v7.0-rc3 (1f318b96cc84)
+>>>>   workload: perf/syscall (fork)
+>>>>   bisected to: f1427a1d6415 (“slab: make percpu sheaves compatible with
+>>>>   kmalloc_nolock()/kfree_nolock()”)
+>>>>
+>>>> -Graviton3 (arm64)
+>>>>   good: v6.19 (05f7e89ab973)
+>>>>   bad:  v7.0-rc3 (1f318b96cc84)
+>>>>   workload: perf/syscall (execve)
+>>>>   bisected to: f3421f8d154c (“slab: introduce percpu sheaves bootstrap”)
+>>>
+>>> Yeah none of these are likely to introduce the regression.
+>>> We've seen other reports from e.g. lkp pointing to later commits that remove
+>>> the cpu (partial) slabs. The theory is that on benchmarks that stress vma
+>>> and maple node caches (fork and execve are likely those), the introduction
+>>> of sheaves in 6.18 (for those caches only) resulted in ~doubled percpu
+>>> caching capacity (and likely associated performance increase) - by sheaves
+>>> backed by cpu (partial) slabs,. Removing the latter then looks like a
+>>> regression in isolation in the 7.0 series.
+>>>
+>>> A regression of vmalloc related to kvfree_rcu might be new. Although if it's
+>>> kvfree_rcu() of vmalloc'd objects, it would be weird. More likely they are
+>>> kvmalloc'd but small enough to be actually kmalloc'd? What are the details
+>>> of that test?
+>>>
+>> static int
+>> kvfree_rcu_2_arg_vmalloc_test(void)
 > 
-> OK so I was with you up until the pluggable bit :) it's like you're
-> combining two things here, obviously - unification and pluggability.
+> Oh so that's what the test is measuring? Thanks for clarifying.
 > 
-> I think we should consider both separately.
+>> {
+>> 	struct test_kvfree_rcu *p;
+>> 	int i;
+>>
+>> 	for (i = 0; i < test_loop_count; i++) {
+>> 		p = vmalloc(1 * PAGE_SIZE);
+>> 		if (!p)
+>> 			return -1;
+>>
+>> 		p->array[0] = 'a';
+>> 		kvfree_rcu(p, rcu);
+>> 	}
+>>
+>> 	return 0;
+>> }
+>>
+>> static bool kfree_rcu_sheaf(void *obj)
+>> {
+>> 	struct kmem_cache *s;
+>> 	struct slab *slab;
+>>
+>> 	if (is_vmalloc_addr(obj))
+>> 		return false;
+>>
+>> 	slab = virt_to_slab(obj);
+>> 	if (unlikely(!slab))
+>> 		return false;
+>>
+>> 	s = slab->slab_cache;
+>> 	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
+>> 		return __kfree_rcu_sheaf(s, obj);
+>>
+>> 	return false;
+>> }
+>>
+>> it does not go via sheaf since it is a vmalloc address.
 
-Yes, I should be more explicit that these are two different steps. First
-unification and then provide a framework for extensibility.
+Isn't vmalloc doing slab allocations for vmap_area, vm_struct, etc, which will
+occasionally go via sheaves though? I had assumed that was the reason of the
+observed regression.
 
-[...]
+> 
+> Right so there should be just the overhead of the extra is_vmalloc_addr()
+> test. Possibly also the call of kfree_rcu_sheaf() if it's not inlined.
+> I'd say it's something we can just accept? It seems this is a unit test
+> being used as a microbenchmark, so it can be very sensitive even to such
+> details, but it should be negligible in practice.
+
+The perf/syscall cases might be a bit more concerning though? (those tests are
+from "perf bench syscall fork|execve"). Yes they are microbenchmarks, but a 7%
+increased cost for fork seems like something we'd want to avoid if we can.
+
+Thanks,
+Ryan
+
 
 > 
-> > New ideas get implemented as new policies, not as 3,000-line forks. Good
-> > mechanisms from MGLRU (page table scanning, Bloom filters, lookaround)
-> > become shared infrastructure available to any policy. And if someone
-> > comes up with a better eviction algorithm tomorrow, they plug it in
-> > without touching the core.
-> >
-> > Making reclaim pluggable implies we define it as a set of function
-> > methods (let's call them reclaim_ops) hooking into a stable codebase we
-> > rarely modify. We then have two big questions to answer: how do these
-> > reclaim ops look, and how do we move the existing code to the new model?
+>>
+>> --
+>> Uladzislau Rezki
 > 
-> Hmm, I'm not so sure about that. But it depends really on who has access to
-> these operations.
-> 
-> The issue with operations in general is that they eliminate the possibility
-> of the general code being able to make assumptions about what's happening.
-> 
-> For instance, the .mmap f_op callback meant that we had to account for any
-> possible thing being done by a driver. You couldn't make assumptions about
-> vma state, page table state, etc. and of course things happened that we
-> didn't anticipate, leading to bugs.
-> 
-> So I guess it's less 'no ops' more so 'what do we actually expose to the
-> ops', 'what assumptions do we bake in about how the ops are used' and very
-> importantly - 'who gets to populate them'.
-> 
-> If they're _exclusively_ mm-internal then that's fine.
-> 
-> Reclaim is a _very_ _very_ sensitive part of mm. At the point it's being
-> activated you may be under extreme memory pressure, so a hook even
-> allocating at all may either fail or enter infinite loops.
-> 
-> We are also very sensitive on things like rmap locks and also, of course, -
-> timing.
-> 
-> It's not just a perf concern, if we are too slow, we might end up thrashing
-> when we could otherwise not have.
-> 
-> Also there ends up being a question of how much now-internal functionality
-> we end up exposing to users.
-> 
-> So we really need a good definition of who we intend should use this stuff,
-> and how any such interface should be designed.
-> 
-> I mean, if sufficiently abstracted, and with very carefully restricted
-> constrainst perhaps we could work around a lot of this but we have to tread
-> _very_ carefully here.
 
-Good points and I think we are still at the early stage of defining what
-operations these would be. One of the complain during MGLRU upstream effort was
-that the traditional LRU is too rigid and is very hard to experiment new ideas.
-I want to eliminate such future complains. If you want to experiment some new
-algorithm or new heuristic, experiment using the new framework.
-
-I think once we start unifying the reclaim mechanisms, these operations will
-start becoming more clear.
 
