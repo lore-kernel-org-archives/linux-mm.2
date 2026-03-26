@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34823FEA800
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 03:28:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7295D109E546
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 03:28:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DAC06B0098; Wed, 25 Mar 2026 23:28:02 -0400 (EDT)
+	id DD0D16B0099; Wed, 25 Mar 2026 23:28:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1A86B0099; Wed, 25 Mar 2026 23:28:02 -0400 (EDT)
+	id D81B36B009B; Wed, 25 Mar 2026 23:28:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EE8D6B009B; Wed, 25 Mar 2026 23:28:02 -0400 (EDT)
+	id C70E76B009D; Wed, 25 Mar 2026 23:28:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DD296B0098
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:28:02 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 341EDBCB07
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B36FF6B0099
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:28:04 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E09F1A0442
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:28:04 +0000 (UTC)
+X-FDA: 84586780488.26.51621BF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 94CEE40006
 	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:28:02 +0000 (UTC)
-X-FDA: 84586780404.30.E21AF92
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8317940003
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:28:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NRz2L4yx;
-	spf=pass (imf01.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IYhwmay3;
+	spf=pass (imf04.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774495682; a=rsa-sha256;
+	cv=none;
+	b=X1WpyJG9pr7Bmx5U8HrPET3FxGgeBXlaSCRH7xLljfvUKGwHkBTjFpYWxNo/YaqdtTDEy6
+	1E/P99+6cYsr7Z10/A6+iCr4k0Jp3qC5pUE8rMGWUJ5/c2ezxGIW7SAesrY+tAIDxgN+7i
+	TKHohePqzL7SUtrf3gMw1U1blfWSyqQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774495680;
+	s=arc-20220608; t=1774495682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NkrZmV+ciJiAg2eJxu0EA95Ha45gXSvLLHXumh7zBiQ=;
-	b=q8RRxZSbcJSuxIbyOW+0+RpjXrjKLiGV+Psyo1BxdPq3Hu/iyi6AkyB62RzvAPYp8Hi7BD
-	RQe5jt9FaZFLpVDa3RQ5IWY4JReaVDtg/tijVLC+UV9ZpIYU24Ijv55V0WUQ9zCxBsyfPc
-	MY70F+9Tmk03gp+gwGlRyo9MevQF5ZA=
+	bh=5FEF4PcMxcimzj0nghaejrMWC+mQHsYsFdwp2v61C34=;
+	b=vPVTpAsy1y9emdklBOHYZHiAGBCKGo8FWuCIp39Tjvif7lJI/dUW8HMue+7h3MpvkhjD8o
+	XNyPsVg9abEpCgcfL7lefOGOY/SXn+fMk0jXijhDwEh/b5iyhN59OjHDVKYSGPlfKdDuwh
+	TKpV6a4Pda68XgxaVGwk6MU/q7ekl6w=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NRz2L4yx;
-	spf=pass (imf01.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IYhwmay3;
+	spf=pass (imf04.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774495680; a=rsa-sha256;
-	cv=none;
-	b=hVp3wPgBaKcwiEkqkWmF7pCRNpcopxlxzwxIwZxJTm4RZj8Frf+Q1X3c9UM93UNXH4m7se
-	6HArA0WJuArvF6LfEj37NTOjaziPaZJYfHjSHVxYChyiw6Ywj2qGD6fw7OUECu+ajIwwXh
-	7m2RiIepeF8bSMPvj+v4Adv/GygVoA8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774495679;
+	s=mimecast20190719; t=1774495682;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NkrZmV+ciJiAg2eJxu0EA95Ha45gXSvLLHXumh7zBiQ=;
-	b=NRz2L4yxJxgMx5AML6TWJ0cJpdPOLwnNHZFta1MmxqQ7Qf0V2wgCIiWLny1wqwgIcbj+1w
-	zXKmeRtmoenXVGwfCUUMZ2iHWsh+SgiQvmQ+dO+XsIpNuTOo8+t7Gy+FiXQhSaVNJHn6xB
-	HltSpNJzCabWuysNcChHRsuvhcjB8RM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=5FEF4PcMxcimzj0nghaejrMWC+mQHsYsFdwp2v61C34=;
+	b=IYhwmay3kd0FQab9L6EFss7LJcQx8RKctVJMVL/B9RSIsmwUpCWtboAotQyHI5WiIX+d+M
+	+gHcwFt/YOf1vbuoICCiFnOqu5nWsBfUFH/7xPCdiuq3bgMYyjv4k+O6BAgH7mKY0lyzsJ
+	vydgJxWTTE2/U2toFR7rilonSfgC5wI=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-BtFk9MNAPCK8rq26DfrzFA-1; Wed,
- 25 Mar 2026 23:27:54 -0400
-X-MC-Unique: BtFk9MNAPCK8rq26DfrzFA-1
-X-Mimecast-MFC-AGG-ID: BtFk9MNAPCK8rq26DfrzFA_1774495672
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-318-Zk5XMdgqMyqNHJrO1O5hKg-1; Wed,
+ 25 Mar 2026 23:28:00 -0400
+X-MC-Unique: Zk5XMdgqMyqNHJrO1O5hKg-1
+X-Mimecast-MFC-AGG-ID: Zk5XMdgqMyqNHJrO1O5hKg_1774495679
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A98C19560A6;
-	Thu, 26 Mar 2026 03:27:52 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CF6DD1944EB8;
+	Thu, 26 Mar 2026 03:27:58 +0000 (UTC)
 Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.83])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 15A8E1955D84;
-	Thu, 26 Mar 2026 03:27:45 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 160451955D84;
+	Thu, 26 Mar 2026 03:27:52 +0000 (UTC)
 From: Li Wang <liwang@redhat.com>
 To: akpm@linux-foundation.org,
 	yosry@kernel.org,
@@ -90,27 +90,26 @@ Cc: longman@redhat.com,
 	liwang@redhat.com,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Yosry Ahmed <yosryahmed@google.com>
-Subject: [PATCH v5 6/8] selftest/cgroup: fix zswap test_no_invasive_cgroup_shrink on large pagesize system
-Date: Thu, 26 Mar 2026 11:26:56 +0800
-Message-ID: <20260326032658.96819-7-liwang@redhat.com>
+	linux-mm@kvack.org
+Subject: [PATCH v5 7/8] selftest/cgroup: fix zswap attempt_writeback() on 64K pagesize system
+Date: Thu, 26 Mar 2026 11:26:57 +0800
+Message-ID: <20260326032658.96819-8-liwang@redhat.com>
 In-Reply-To: <20260326032658.96819-1-liwang@redhat.com>
 References: <20260326032658.96819-1-liwang@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: pksIWR-S4cehfdxsByl4OoEbNq-vzuZfy8MoipIy1IU_1774495672
+X-Mimecast-MFC-PROC-ID: dVw2rsgJEQwdkJUTRPVEZX74rRBxd8cyVPboF0cjgtw_1774495679
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: txb7rqfbtuwqzj3ommsmpebii6sdmueb
-X-Rspamd-Queue-Id: 8317940003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774495680-767904
-X-HE-Meta: U2FsdGVkX19TUrFX7nrTLZa5q1gVQZ2V6s6DGkyFUwsRafdvCCV2ivmugJNxwqbXh0xs7iT/KtZ1Ib/572E5rf4dqAz2ssTXugK+W7matMfr76N5bfoLODvQJFyxA2OJCT2oLCnf3sWrIiGsjjQ0578PaJ4hUGaDRFPV0M43zmdNAimaYot4XRrOWGai6OwtbRhx/ZYs3tiF3nz+F5V2okq3J/PuUuFiX1zL+GKIM1Hmups6a11MtAefgHIBrQ2NdHeRqPUXjyMWTYGTnluTe6/PitjjSiuoyUZKiwoRUN9Ur8IVDkMj1XIZ7azhckoD3LPT4JN4w1lzxFv78JDvXu0KsvQoyUnZq6M24aRjLxRxSGG98GPUpxdlzPOwVSIMDwXCZ64eYhEWWYBSgHt4+m+TNniWUH4es0Gud1NGV1cQzGyQBLx62O193bY868miFsr0L8Vhyi6JI89C1Nf3vLYbbqa3BRpEWpRMIwBD5ZXGLjJwr/duWKZprXiYeba1mWr5sNEFLx+1wRGoTriYcQCut6mvnBxgoLWlLoKFIIK2yUsIYm/fRpJAW6uM2hyZrIt28P4Cfv9ALN6qOA73MLVPFykVSizqKiiIbBfY0i8Fb8pcWLEQEyebp5d20/hPmyExvQHC2/YZyC72oXl/ZRbwgIVxK1+DqOaKlkNiITcrSI056e8n6y7LSJMDAb3aRLZ4IF7FNDbgQIYBxJ2kw0hbksyJ9Vdriyyp7Tn5MhMTykkJFzaxQpF3tYU4WtNKk5Fx3ViRlVTSdH9jlZmcguERE32weP+2tyI707TcX+G4kTbRUPRHnamgIOxk/axPw9rBX7psQhDxotVak1gp2cSj33MhplMc/kVP1Ckq9lyk8LM2liJuW1a/dXUXQ0bORTRRyhqpq6taGPYFfLcNPBYX+B8SDBMQSEB1PGwfFefL6xbB7gYpdFOgB2ldyDuqEnZm0Qtgi+84czgjOMV
- SSDgP8vA
- YVWtvsnIXLUP1QgkOGr4fhgTOq/Jus34KysEk29roCjxS/DjFP9B7qLy/Y9tw+O4X8ig2
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 94CEE40006
+X-Stat-Signature: zm5ig87bnteq7bewpfzzk5k3rres9tp5
+X-HE-Tag: 1774495682-160676
+X-HE-Meta: U2FsdGVkX1/wWrSlABD3ehQXey4At1GXbp2tDATX0FHfnBLkBw77sqbNUHRZEv+fjKhZnEf3ME3zl/560mHAzGEDOM8qFoy14pBoGDWkC1w2F/VO8/FDDsMHwe9lTNH9f99Z8MsySLRoV51tDJFiR9iGECATfLPciWqqiDoPpNe6iKGqbkdNuvtaRTFFmiJCqHJH4iK8kLAHuqPxT41FXTCQAc/lyTSfCB7aCYhsyluPnBKl6qPgB7zHu/hFsa7YvFokn8srzF/P6fqG57P9ecWjwvUdJCrmuRPq1l608EgERu3Nz3DA+q3Z7dZ0qvb7Fts7mh5gf4BD63sDWiPb4WZHqC11DvnbZwqxgu5ZwTw2p7hl/F862GYzj31dtH9+BBoh3ugJnE5cnIwVP9Kaas52xheLcHrsMhp8CkHOv4/fcCmt0f46nYHcD/kRUlFfS6rnBEW7akBDzUHQ95o5qsq0bhYR6YD+opYDOmo/UMm3xWRKkqKeukX0bCkTP7fOwKd0pE6XnnRB7TLPNMzEdfJXDfhgcqwFzAVeR56gyTVdZhysUJu38YSNZt/dYi1NWSfHR6Bs6jd5IY9QiAIV3tN4NA/Q5lq9s9OoEdXAoH/1Z4te3qUmtUSS7Xy4KoVG+dxdPg4hu0o8+CumsLThbPJaKHlZyG1QliRplVA3YVSKE4mLPIR+XfFCsiRsN4SJHadeOZ9qoB6L9W3H0du56vYtKIIpKgayoqJL4uemFEavPDlaV1VZZ1zhKHD7KIMaUUNUvMQrYmhhnvo1GMqOKj6CWbGpkHEN67b02YHPnMD97eOKtnaRsvh73xo0BX9Mln8c9oMTUNpBkgitRc6fun2IQroBArk45vLxC2+sqi8lOIOp5ElrAHpq5EwzI2xJgfa/fTpxohXJrLGwMhgAssvIecMT7xhGOEEex7ZRic9lW9GIViBWlstW36+hAffI1Iw6t1p5afPUfrLBSIW
+ WH85ylCQ
+ u9uqcg/YpQX1csIxQTi8vX5+4nWI8CXwr68RGoIhBksyzEc9CSBdv+YkC2oI9pIQIqLw1iRhFsX7cQe/FbLGa3fGD6+SfhyFdzYHPWa4E7M4OEvEE5lqJz8Pl0Lq2Di1Va/16JMS2e0gkNycdAbMtibPmIP9qxmzAmfuCx8pl9r7UNMikzTl/9Oll7Hy7t9EppTd+p0+FMFSS0PDm68+XSY0Uo2Owj9Dw9gaQukcOH26HA0hr/I7EnSOV3s5gayNoY1Kabf48K4FPWWXMqjzNmz4VD1FIGmRugAOZk+O1WVHZeKu06A+gKw0umuBxxMqrQv9IuqhC5XqQsXxeoFijIfuyb5qIrqYhprQlJbRhIruzV94AvMJGl9FANgbtYNHrfBjZFAXqZxrwuThkMBaW320QBCbLzsCK4wttmx3yErIVckeS+13s/KEAZYAbb13xsrSPRZh92FCjM6Fwhy1ZwIZ+RSaRf0EjK2n/TNmqagK1ZVgvNTAKugVQC3fNTzOClY+SHVB/RlUV+pj08b03UQrcuN/ShB7a5DInx7ZXuwlbhCqFuZ8yTgDCB0EcPtOWIqYmfRVDPwKJLaw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,45 +117,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_no_invasive_cgroup_shrink sets up two cgroups: wb_group, which is
-expected to trigger zswap writeback, and a control group (renamed to
-zw_group), which should only have pages sitting in zswap without any
-writeback.
+In attempt_writeback(), a memsize of 4M only covers 64 pages on 64K
+page size systems. When memory.reclaim is called, the kernel prefers
+reclaiming clean file pages (binary, libc, linker, etc.) over swapping
+anonymous pages. With only 64 pages of anonymous memory, the reclaim
+target can be largely or entirely satisfied by dropping file pages,
+resulting in very few or zero anonymous pages being pushed into zswap.
 
-There are two problems with the current test:
+This causes zswap_usage to be extremely small or zero, making
+zswap_usage/2 insufficient to create meaningful writeback pressure.
+The test then fails because no writeback is triggered.
 
-1) The data patterns are reversed. wb_group uses allocate_bytes(), which
-   writes only a single byte per page — trivially compressible,
-   especially by zstd — so compressed pages fit within zswap.max and
-   writeback is never triggered. Meanwhile, the control group uses
-   getrandom() to produce hard-to-compress data, but it is the group
-   that does *not* need writeback.
+On 4K page size systems this is not an issue because 4M covers 1024
+pages, and file pages are a small fraction of the reclaim target.
 
-2) The test uses fixed sizes (10K zswap.max, 10MB allocation) that are
-   too small on systems with large PAGE_SIZE (e.g. 64K), failing to
-   build enough memory pressure to trigger writeback reliably.
-
-Fix both issues by:
-  - Swapping the data patterns: fill wb_group pages with partially
-    random data (getrandom for page_size/4 bytes) to resist compression
-    and trigger writeback, and fill zw_group pages with simple repeated
-    data to stay compressed in zswap.
-  - Making all size parameters PAGE_SIZE-aware: set allocation size to
-    PAGE_SIZE * 1024, memory.zswap.max to PAGE_SIZE, and memory.max to
-    allocation_size / 2 for both cgroups.
-  - Allocating memory inline instead of via cg_run() so the pages
-    remain resident throughout the test.
+Fix this by:
+- Always allocating 1024 pages regardless of page size. This ensures
+  enough anonymous pages to reliably populate zswap and trigger
+  writeback, while keeping the original 4M allocation on 4K systems.
+- Setting zswap.max to zswap_usage/4 instead of zswap_usage/2 to
+  create stronger writeback pressure, ensuring reclaim reliably
+  triggers writeback even on large page size systems.
 
 === Error Log ===
- # getconf PAGESIZE
- 65536
+  # uname -rm
+  6.12.0-211.el10.ppc64le ppc64le
 
- # ./test_zswap
- TAP version 13
- ...
- ok 5 test_zswap_writeback_disabled
- ok 6 # SKIP test_no_kmem_bypass
- not ok 7 test_no_invasive_cgroup_shrink
+  # getconf PAGESIZE
+  65536
+
+  # ./test_zswap
+  TAP version 13
+  1..7
+  ok 1 test_zswap_usage
+  ok 2 test_swapin_nozswap
+  ok 3 test_zswapin
+  not ok 4 test_zswap_writeback_enabled
+  ...
 
 Signed-off-by: Li Wang <liwang@redhat.com>
 Cc: Johannes Weiner <hannes@cmpxchg.org>
@@ -167,124 +164,42 @@ Cc: Nhat Pham <nphamcs@gmail.com>
 Cc: Tejun Heo <tj@kernel.org>
 Cc: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Yosry Ahmed <yosryahmed@google.com>
+Acked-by: Yosry Ahmed <yosry@kernel.org>
 ---
 
 Notes:
     v5:
-        - Swap data patterns: use getrandom() for wb_group and simple
-          memset for zw_group to fix the reversed allocation logic.
-        - Rename control_group to zw_group for clarity.
-        - Allocate memory inline instead of via cg_run() so pages remain
-          resident throughout the test.
+    	- Setting zswap.max to zswap_usage/4 to create stronger writeback pressure.
+    v3-4:
+    	- No changes.
+    v2:
+    	- use pagesize * 1024 which clearly shows the page numbers.
 
- tools/testing/selftests/cgroup/test_zswap.c | 69 ++++++++++++++-------
- 1 file changed, 48 insertions(+), 21 deletions(-)
+ tools/testing/selftests/cgroup/test_zswap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index fc7a9aa27e27..72082e5d4725 100644
+index 72082e5d4725..e96e316f7c47 100644
 --- a/tools/testing/selftests/cgroup/test_zswap.c
 +++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -9,6 +9,7 @@
- #include <string.h>
- #include <sys/wait.h>
- #include <sys/mman.h>
-+#include <sys/random.h>
- 
- #include "kselftest.h"
- #include "cgroup_util.h"
-@@ -424,44 +425,70 @@ static int test_zswap_writeback_disabled(const char *root)
- static int test_no_invasive_cgroup_shrink(const char *root)
+@@ -273,7 +273,7 @@ static int test_zswapin(const char *root)
+  */
+ static int attempt_writeback(const char *cgroup, void *arg)
  {
- 	int ret = KSFT_FAIL;
--	size_t control_allocation_size = MB(10);
--	char *control_allocation = NULL, *wb_group = NULL, *control_group = NULL;
-+	unsigned int off;
-+	size_t allocation_size = page_size * 1024;
-+	unsigned int nr_pages = allocation_size / page_size;
-+	char zswap_max_buf[32], mem_max_buf[32];
-+	char *zw_allocation = NULL, *wb_allocation = NULL;
-+	char *zw_group = NULL, *wb_group = NULL;
-+
-+	snprintf(zswap_max_buf, sizeof(zswap_max_buf), "%zu", page_size);
-+	snprintf(mem_max_buf, sizeof(mem_max_buf), "%zu", allocation_size / 2);
- 
- 	wb_group = setup_test_group_1M(root, "per_memcg_wb_test1");
- 	if (!wb_group)
- 		return KSFT_FAIL;
--	if (cg_write(wb_group, "memory.zswap.max", "10K"))
-+	if (cg_write(wb_group, "memory.zswap.max", zswap_max_buf))
-+		goto out;
-+	if (cg_write(wb_group, "memory.max", mem_max_buf))
-+		goto out;
-+
-+	zw_group = setup_test_group_1M(root, "per_memcg_wb_test2");
-+	if (!zw_group)
- 		goto out;
--	control_group = setup_test_group_1M(root, "per_memcg_wb_test2");
--	if (!control_group)
-+	if (cg_write(zw_group, "memory.max", mem_max_buf))
- 		goto out;
- 
--	/* Push some test_group2 memory into zswap */
--	if (cg_enter_current(control_group))
-+	/* Push some zw_group memory into zswap (simple data, easy to compress) */
-+	if (cg_enter_current(zw_group))
- 		goto out;
--	control_allocation = malloc(control_allocation_size);
--	for (int i = 0; i < control_allocation_size; i += page_size)
--		control_allocation[i] = 'a';
--	if (cg_read_key_long(control_group, "memory.stat", "zswapped") < 1)
-+	zw_allocation = malloc(allocation_size);
-+	for (int i = 0; i < nr_pages; i++) {
-+		off = (unsigned long)i * page_size;
-+		memset(&zw_allocation[off], 'a', page_size/4);
-+	}
-+	if (cg_read_key_long(zw_group, "memory.stat", "zswapped") < 1)
- 		goto out;
- 
--	/* Allocate 10x memory.max to push wb_group memory into zswap and trigger wb */
--	if (cg_run(wb_group, allocate_bytes, (void *)MB(10)))
-+	/* Push wb_group memory into zswap with hard-to-compress data to trigger wb */
-+	if (cg_enter_current(wb_group))
-+		goto out;
-+	wb_allocation = malloc(allocation_size);
-+	if (!wb_allocation)
- 		goto out;
-+	for (int i = 0; i < nr_pages; i++) {
-+		off = (unsigned long)i * page_size;
-+		memset(&wb_allocation[off], 0, page_size);
-+		getrandom(&wb_allocation[off], page_size/4, 0);
-+	}
- 
- 	/* Verify that only zswapped memory from gwb_group has been written back */
--	if (get_cg_wb_count(wb_group) > 0 && get_cg_wb_count(control_group) == 0)
-+	if (get_cg_wb_count(wb_group) > 0 && get_cg_wb_count(zw_group) == 0)
- 		ret = KSFT_PASS;
- out:
- 	cg_enter_current(root);
--	if (control_group) {
--		cg_destroy(control_group);
--		free(control_group);
-+	if (zw_group) {
-+		cg_destroy(zw_group);
-+		free(zw_group);
-+	}
-+	if (wb_group) {
-+		cg_destroy(wb_group);
-+		free(wb_group);
+-	size_t memsize = MB(4);
++	size_t memsize = page_size * 1024;
+ 	char buf[page_size];
+ 	long zswap_usage;
+ 	bool wb_enabled = *(bool *) arg;
+@@ -311,7 +311,7 @@ static int attempt_writeback(const char *cgroup, void *arg)
+ 		}
  	}
--	cg_destroy(wb_group);
--	free(wb_group);
--	if (control_allocation)
--		free(control_allocation);
-+	if (zw_allocation)
-+		free(zw_allocation);
-+	if (wb_allocation)
-+		free(wb_allocation);
- 	return ret;
- }
  
+-	if (cg_write_numeric(cgroup, "memory.zswap.max", zswap_usage/2))
++	if (cg_write_numeric(cgroup, "memory.zswap.max", zswap_usage/4))
+ 		goto out;
+ 
+ 	/*
 -- 
 2.53.0
 
