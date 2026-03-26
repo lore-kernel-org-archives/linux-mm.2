@@ -4,102 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EDF810A88FC
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 18:24:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0D5D10A88FD
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 18:24:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 445FD6B0088; Thu, 26 Mar 2026 14:24:47 -0400 (EDT)
+	id 138C26B0089; Thu, 26 Mar 2026 14:24:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41DC46B0089; Thu, 26 Mar 2026 14:24:47 -0400 (EDT)
+	id 110AA6B008A; Thu, 26 Mar 2026 14:24:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35AF06B008A; Thu, 26 Mar 2026 14:24:47 -0400 (EDT)
+	id 026776B008C; Thu, 26 Mar 2026 14:24:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 273C86B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:24:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AB6495C98B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:24:46 +0000 (UTC)
-X-FDA: 84589040172.19.1E36155
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 05D4C40019
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:24:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CpoOSRow;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774549485;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E91B66B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:24:50 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57FF4C3F18
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:24:50 +0000 (UTC)
+X-FDA: 84589040340.01.B3B9245
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 482A3C0012
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:24:48 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DgE1oDlm;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774549488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hIaUKJAlYIzwPXfQJvm95X176REbACqGXzLAbAeQbr8=;
-	b=zi/YSKue7qP9OX0P27GVu8bw0vw8jWeeZMygddKkNy/VBuTM3dEX5ZAK5/i4tlTVO0mi/e
-	XYSrt85IB4hX7wWDyZmaH4jvsKKrPd9hK0qPEreTM3aAZw2A36+3nbPttXhrHjpdehnKUz
-	YzEg16QipfeGaJZ01G4S0qfiaZpplOk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CpoOSRow;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774549485; a=rsa-sha256;
-	cv=none;
-	b=ppljNaHbE3C4XaGyeCHZ4v0ixQipJrQKL9oYOW31ktiyXUO7lAjw/K+uMvggBqbIcV+jrJ
-	Ejc0GF47D6od1EYpAM7XPzUfqVBJX1WYJF9CytTmRrAJ3urzHcBe75RnAMmrxb7GFom9Uc
-	YyZIB0dPUjo5AZsZNlMqhuyaaunib0A=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 640D860103;
-	Thu, 26 Mar 2026 18:24:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D563C116C6;
-	Thu, 26 Mar 2026 18:24:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774549484;
-	bh=IHNSo2lQb/4glv2cQ687MuEaTyDzFMobiyxhmzeckqw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CpoOSRowTPncy6NDxqny1BWJGN0YgqPfZFckHNyG1FTQIeQB9nru3J/2Ew20j2dUS
-	 qNiKv7suYE/4lfi1mrW5IHRM1RbNGQwlW8Htxb8NHLcvw+K5MUoLhpn+qScGg0HOCr
-	 JfTeGkGHAtB0xHykwg0KWHPHtod6q6ZHCnb5lEpPLHdy96Ep8GPPBAtBIgN/xjyltl
-	 p36TT4XQmuB6DLPB7tpnE+6f5cnzHbwZJ/pROEGJcFD7+m7J3rCvVOUoWRfuUB4tOl
-	 QcL1Q7f6dEo/z4Zv19VU1oKefEdfM8DKu5a2VGzHGQlzmp6QsO/hjEy0Wf7mvlLQ5c
-	 FFFPWh19LVkyg==
-Message-ID: <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
-Date: Thu, 26 Mar 2026 19:24:37 +0100
+	bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
+	b=qpd2ttQi0Qp6113qx7R/6Gy25TpFo7h4EsJ5AACNmGJi78uQuRdCppw4XV/ZDII9YmAVQq
+	pznVGh099/W1Nv8S1iuga/tSC5YQi0QmL/BsfhKZmtUUsReIm9Laae363op0bA7W7i2RhI
+	smKXLTDOmjPt4nyJuTa6xRRnwef9X6c=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DgE1oDlm;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774549488; a=rsa-sha256;
+	cv=pass;
+	b=34nLB5XO2wp7Vt8ISb3u2fRfK31CRtIMw6MgbqAcrI9HiVAq3xTrnsggCdAfOkD3fGM3gh
+	LUb1SnjlJF52BKjhb0UseUeZfqUeXo2Tv1LSkWiQ7+5zr4O1JMg/Mbzl/hQhWFVSO9K4Nf
+	q3J9uJWizqIyXMuXaaJaTJPJrTbWfDk=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50b6c45781aso88351cf.0
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:24:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774549487; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cgAeXFtdZUg+M/4XggnvaTot0hltFaTw7mEnZ0sLMOps7FB3g3LneiXCa2wUY2MPmt
+         rL/BVKBwpkKSlAFiK4b9tgE0oWPdoe3TGEzokp0zbxW6kTcIHnOznim0fVLT0FcnAlIk
+         aYrJntdfoA/TMFpwotfWxq1OaXlGDH8DwTsZ/DzheOi/NRLw66K0VOwJ9/VrS8XcUSSh
+         lof9sPNJSV59ItH8nexEtG8840j5HyXwZo8GHCCP+QIScz0UoWNnJCzCAspFarrz0ghG
+         EA4hZgoODH7P6ZcJh53gdKnujT/Uo8RogXBJPjfvhIUFWupP++cp81GUqKxQBo9A6Uox
+         DCKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
+        fh=MtEFVqBzCkI0Cd4GX7aLBGTHs8JSQVvUoAPQ6MYtUPU=;
+        b=ksQS0MyjK4C9n7ds/2bKcrBSOcjXHiLQ5+i4db/kYdfVU/4q7nO8o59Y2h2DHWT44L
+         1achfSS2aBEuQi5ozxzwhnEBr6aNOyJ6vozmYPVRkBYaiw36JdyFVomdbygaboNRtQk4
+         K0WswQ0QIaooKcZ3Kp2Gqp6PrMJlCCkeMpFfhNDWjVOX4/fOttcI3+L38RGh0tyaxyEw
+         nk9MOrzBvGXRUOnVoEDJovxbdYcsyJYLmWHmtlz8XN+nySCRuo7p1zuNZxlMHdeY3IX9
+         2SdpYXp5AMgS06BiIxyKw2k30J1TRR3v2L6R+G0rbp1jgA/HN1lIsmxI7AWpxkID4e05
+         NmSw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774549487; x=1775154287; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
+        b=DgE1oDlmYRp+IM/xpY6kPfFStKsLhWVi1lytrG2rIy0IPHwMAxIMFAs4Dyfb26QsY+
+         p6NKhh2gNgFq/vQoeIr462lyhxwgqYCjvslCo23XIrtTDCcIhfxDzf4X35pEoKkHtijH
+         Y88im3g14D5Oqb/n3jEaCjOPll0HkedaMr3bSrKZ7AfpuyiKc3BKkQ/1VfUflJt2QVhi
+         YnVRmdJdPlrdVvgmsZq6C0a2RL7NTjrlLb7ssi6lR+XDqVA6sH9a+ecvRahQX/aLO0w5
+         SZ286r8aK0ODLLBCzbROukjYbmUj00IUJD7nzjwN98yP0x4fJJpReNHCcUAUIANpzQ4i
+         EU+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774549487; x=1775154287;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
+        b=f8ogVzyls+XZPyzjURbAqOrBmi9eEdDtkQ9LgWf/ZtTMIY63hlVXiuLU534voVQeXR
+         hbX2CrKpcCJj6QP+4LLh69UqDgsyWRfFTDSYmzLTThaha9IniFCQHq8+URNJmOXPqx2E
+         Wm7is4Pc9SDZzckR4MO0sKJCtifTg7g5W6rLScvWTMuBwvv7IZoPM5Kw7st+3W2kjsqm
+         zF/uvVyclz/rk4mDtwsg3meIbYU+15TAGHG61cnBNT7fY+UOQSz+Mo6vLaDDUm/prD1E
+         wQSLgW/h5jHf03rF7ZbPQJxx2soPzIyieFdn8KjP4mg0K0Wv6NB6ojdQgpcnDYQjJhln
+         QbWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXRHR/XkdfweCa1ldyouh87Nnpi5dWhyh2JHkjvn965E2YSl1FgeepmgKq1sTxsKV/bjI2eYn/8xQ==@kvack.org
+X-Gm-Message-State: AOJu0YxW81G6SMKb4HJEZFFuTnsZxOgQ9102Cny7VK9BY2sdwWPwbCOC
+	GhxVJc5p6R4PJvlE9JRUIXlp/s1gR8L5BFvy7+xC0iQ1EhNgSHDjN5Rt05kGvhyehk7KLOj2ZYa
+	J8C6bhBHASCkGLAvuqs5LmIwSYu99GaA6B4E3AoIU
+X-Gm-Gg: ATEYQzyqOSm4JCFuFuVsb5w3ckm6fPY/JJYFCA+584Uk+QgXjU7dL+sW6oZVUUbrSgd
+	G2wBBniMKt6wlA0wTtbh5IHF9Md3qTVkwYzrR6sfpGvVu80nBP5SFJqFZE9ZG5K2BpSgN8S08vJ
+	J8wUQnuDUP5UthFmbtda+eLqBxkI0wTShN9/pgSoTIbWPQoUv1T+T75pxK6Ym3Q9mYtDSwM8vd4
+	QPpovGB47wh5je7LuxjlRev9VDSat5QgvRcx3ykOAvbyiXnSUz4s45Tomm7hacA4/2uiq1pTixr
+	95AHeOYPxujhLdTLqZlCKXzJlZ28uhO8mg==
+X-Received: by 2002:a05:622a:93:b0:50b:71e4:878c with SMTP id
+ d75a77b69052e-50ba1e41c39mr1037271cf.15.1774549486349; Thu, 26 Mar 2026
+ 11:24:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
-Content-Language: en-US
-To: Uladzislau Rezki <urezki@gmail.com>,
- Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
- Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
- "Paul E. McKenney" <paulmck@kernel.org>, ryan.roberts@arm.com
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
- <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org> <acV36oPNFMgL4puz@milan>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <acV36oPNFMgL4puz@milan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 05D4C40019
-X-Stat-Signature: t5ndg1gs6j1erj1w3s9u7e7b3nogq6eh
+References: <20260326080836.695207-1-surenb@google.com> <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
+In-Reply-To: <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 26 Mar 2026 11:24:35 -0700
+X-Gm-Features: AQROBzDeN__PRe-Y7mIO9LZxPL3s1KNrdWWWOsbo7He0DKFlde5Dab9lnrvUpiU
+Message-ID: <CAJuCfpG_xa5nxSRrvu4TnwhCrmocPkHpWEQbE_yeyN3L69Y6tQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/6] Use killable vma write locking in most places
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
+	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1774549484-592804
-X-HE-Meta: U2FsdGVkX1921FuYNLpwH7JPRugbCm6LfpJ28+eQErONw3nahXtPJawqo+xgBdwTjmKyJiPijo0pcO/zt2DkLoRnanM2QeSJz/CRycMap8XU9FPn3LNsV22tFTmocqBKCHK7V5nhAqy59hjSK0p+5/eKVRLnwAX2jvunWvwZkDwhhbO21M30FMtYJEc2CxhwEVUcy+407oeCa9KfqugioGL+F2S9Xbbm/YynZUo4EyGDGPGdpZIPUBhOWYRe9op5J2z3brRjJYeBgrqfnhQhGuj6UwVrwekebtGpdTebPD6VCgFAmOyodxhshCZFEB2vcC+EuDdhFAfWyxgiYRkVdEEB8H5V9sWUAAKEe895sbKmLOWJGgcBY1Pt9lXN4WXTdQMjniv431jEXsOtNPQLpYdZF5IJLbuiPqJrl5P02+pLK1hPmYtAwwX/DVN1t/qT8TeRq/S/mY94zf45MJz6Y4fCvukMtH8jnsOwzuae7Vuu5E1ULzBkkLRqfkmxAIWSQ8TV4+oMnfrjRfZaCd/LpcFJnBXVNDpDJHJ7t3zsKqohUP/FMrn8cZBb1cexTijJX2n6PnRmlNRK+zHEIEaJRYOqHG16XlpZRSK4s0Io1pQBXCdxbXRExJKvfzTfy4zu1fDa8xibcLIi6I2/YrpVWYjZnVyZCjnYF0ZcQ8GNT/rsBcc6c+SHgUDcqhRCihOEX7n4ph0k7E6tF0O49hg1D0UOkBx4d2csm+a6lU2Bx6q+DUwqZQa2hpAj3Exv8SA1cjKJ5ekhbqBmDozk27wxJK33FCN6DHVI3UN6s+9Fnbnf6zQ0kSDKcZ+FfiRdHSOzx4de3LqxqXlksMpgxUfKqRHl4xQ2Ei8vo71xI4jEkccPJ4wJh+OHFmO4ZrM0r0iKL6GcawDcpDFOYsDpDTEZP+3oNuAcsZd0ToMV6mU3sw/KQprZX/pDQ1ChzRH78ZNY0Oh5R84Vk+g5OzV7ai7
- XF7P9Rnu
- IBeuMvOvijOCf61VnNApcNeTuwJ168/vYYh5OUYV+9C9kGcZKTexyyLk/TB3xWvuExddkGtb5P69x3EL7yCdTCh9AYF2moNCZH+DHD5ruRBVJLJlQR88QX5AZ7xiV7crnACeLlyw6iutvS4ZdzKuMQiUMKMJD+3gE7cxc+gRIfMCdFWNLqEuOxW8YrDmZ7MvPFO12wT+xob+CACOcf1PxANxJ3aOW+UKzqgHo+bzRTiTL1xrOf8FAfCiY+yeKMWpL0PdPzPQJ4zKJURJiURZuLfrIq8Tan6SshEej
+X-Stat-Signature: aopq4f3jjd1yrq18nbtpanrkjwxk37km
+X-Rspamd-Queue-Id: 482A3C0012
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774549488-410177
+X-HE-Meta: U2FsdGVkX1/iRi47+VsGCzJE3NZP8+gxsy2avBWt6gNVvCDhC5MwT3jkO3D2E2HNEsaUW7yLP/++t1/tQzkaY80HhOQzFR86V8aKF/Kz6+LRVkJr5K+rMo22eIdiB3ouPdHFT20MLvEDiK0owZyfNrxOq0hIHBM3T2q13Dsr82IeeRvS3D8KYTcRA7mrd7WktMWJHjgcwNzc2i5xKT7VnIITJsPLVRIAl+e0DoibFJLyG1eEKtKZToD2N+IWhALexf7F+Y2Q9fl/3S0k67YBkJKcOH0FsOLRIl6mjzzUKKjVjAp7S/FYxhMFisgWRwl8oRl+X7U/65YltVhscfUlauL5mgwaGcWpGFF0Usbu8Lg2ddl+H2i5n6uRwe9lLLlR4NQL58x6rTuc/SNrCJrrT/+9lIbi3EQ3iR7qMEA1jxWmCHIoytknKx7PDUQRWPynh4fmrJd6jiwn6mwHNHN5i++OJt4oh2M4Je8GkJpHTZDQqtRAcILxxlc9fwX45Sgri5JmGQa6Ol7Wex2GGcwQDaeFG3jjL5KFITtN8IMvuSunLjGnf2hRGWc3vqYk5tFf9mReXbkShKQf1HMAFoszXiwmFayX/ems4MKwz4xWvm6MQdEtO/8/x8rh1zwRZKvQDxxbB3q0vQbxtw3k2jWoF+RC/oaMHbLn9r56glv8I7EP1l7XoGvyQRKHwrnkQURMFjYTVxRxze3Lz7WfbxFDCZnwSCoBJxAxrc+jkp7QHoXJh31mNnpyQ+vlonA8TMUT7aAVY8pgkeghvPKeS0InfpN6A4JwjBct2Ih6KGlqKo5D62X2a6yPvJP36MyrveTQL3Y49KcYL4rgBf/oQ7Bcmh7kQjhzqtsWJrHW2YDgFHMUwtUj18yFvO8adOQUrSWbsp2Ral24Bjtt+v/IvKAKPeTnmWDcDBA3Cn57b7nS/PgbdipgwXpa+BBNpuwmVosaGOlXnIca+mfalK3y1IW
+ E08pHvhc
+ iWoszgVx6BhHVS8apXYhV3kRiKNIkPc0KRtpWp2bNxlzK5M3TVQ3NXRY7Qo2hKGtsKHdH0Ih29drqMcJO03T2Nkz0gxjTmcV66vin7WR/daCXQZsXNw1FFM4Bns160IUpsfiO0YScAcv8HXRnapmG1E9qGpVhFe0R9gEiuHv2XyEx/bkvh3xSTkX0/OY2AD6D5jeWuwZTZGvuRWtIo1D7TLvaYBf2PUhbMc5S78pbAd7vWARXLZeiKUaD2lkVT4hgR0Gw64qtIcDc96f2UM5GbOc3RGDp6hEI04++ekhccuaQ4HX5Ft1LniLo4lJyX4zXIM0kdoikVtvDfpkYcdaayu42yr2q4vZ1UqkC6vir6uJxcuY2l4cru6U6zkdA50TBP6/PKDxEGRlq7jmSCrOam2i0pwBhYfCmhW0R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,191 +150,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/26/26 19:16, Uladzislau Rezki wrote:
-> On Thu, Mar 26, 2026 at 03:42:02PM +0100, Vlastimil Babka (SUSE) wrote:
->> On 3/26/26 13:43, Aishwarya Rambhadran wrote:
->> > Hi Vlastimil, Harry,
->> 
->> Hi!
->> 
->> > We have observed few kernel performance benchmark regressions,
->> > mainly in perf & vmalloc workloads, when comparing v6.19 mainline
->> > kernel results against later releases in the v7.0 cycle.
->> > Independent bisections on different machines consistently point
->> > to commits within the slab percpu sheaves series. However, towards
->> > the end of the bisection, the signal becomes less clear, so it's
->> > not yet certain which specific commit within the series is the
->> > root cause.
->> > 
->> > The workloads were triggered on AWS Graviton3 (arm64) & AWS Intel
->> > Sapphire Rapids (x86_64) systems in which the regressions are
->> > reproducible across different kernel release candidates.
->> > (R)/(I) mean statistically significant regression/improvement,
->> > where "statistically significant" means the 95% confidence
->> > intervals do not overlap”.
->> > 
->> > Below given are the performance benchmark results generated by
->> > Fastpath Tool, for different kernel -rc versions relative to the
->> > base version v6.19, executed on the mentioned SUTs. The perf/
->> > syscall benchmarks (execve/fork) regress consistently by ~6–11% on
->> > both arm64 and x86_64 across v7.0-rc1 to rc5, while vmalloc
->> > workloads show smaller but stable regressions (~2–10%), particularly
->> > in kvfree_rcu paths.
->> > 
->> > Regressions on AWS Intel Sapphire Rapids (x86_64) :
->> 
->> The table formatting is broken for me, can you resend it please? Maybe a
->> .txt attachment would work better.
->> 
->> > +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
->> > | Benchmark       | Result Class            |   6-19-0 (base) |  
->> >   7-0-0-rc1 |   7-0-0-rc2 |  7-0-0-rc2-gaf4e9ef3d784 |   7-0-0-rc3 |  
->> >   7-0-0-rc4 |   7-0-0-rc5 |
->> > +=================+==========================================================+=================+=============+=============+===========================+=============+=============+=============+
->> > | micromm/vmalloc | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 
->> > (usec) |       262605.17 |      -4.94% |      -7.48% |             (R) 
->> > -8.11% |      -4.51% |      -6.23% |      -3.47% |
->> > |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 
->> > (usec) |       253198.67 |      -7.56% | (R) -10.57% |            (R) 
->> > -10.13% |  (R) -7.07% |      -6.37% |      -6.55% |
->> > |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)           
->> >   |       197904.67 |      -2.07% |      -3.38% |             -2.07% |  
->> >      -2.97% |  (R) -4.30% |      -3.39% |
->> > |                 | random_size_align_alloc_test: p:1, h:0, l:500000 
->> > (usec)  |      1707089.83 |      -2.63% |  (R) -3.69% |               
->> > (R) -3.25% |  (R) -2.87% |      -2.22% |  (R) -3.63% |
->> > +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
->> > | perf/syscall    | execve (ops/sec)            |         1202.92 |  (R) 
->> > -7.15% |  (R) -7.05% |         (R) -7.03% |  (R) -7.93% |  (R) -6.51% |  
->> > (R) -7.36% |
->> > |                 | fork (ops/sec)            |          996.00 |  (R) 
->> > -9.00% | (R) -10.27% |         (R) -9.92% | (R) -11.19% | (R) -10.69% | 
->> > (R) -10.28% |
->> > +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
->> > 
->> > Regressions on AWS Graviton3 (arm64) :
->> > +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
->> > | Benchmark       | Result Class            |   6-19-0 (base) |  
->> >   7-0-0-rc1 |   7-0-0-rc2 |  7-0-0-rc2-gaf4e9ef3d784 |   7-0-0-rc3 |  
->> >   7-0-0-rc4 |   7-0-0-rc5 |
->> > +=================+==========================================================+=================+=============+=============+===========================+=============+=============+=============+
->> > | micromm/vmalloc | fix_size_alloc_test: p:1, h:0, l:500000 (usec)      
->> >       |       320101.50 |  (R) -4.72% |  (R) -3.81% |               (R) 
->> > -5.05% |      -3.06% |      -3.16% |  (R) -3.91% |
->> > |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)      
->> >       |       522072.83 |  (R) -2.15% |      -1.25% |               (R) 
->> > -2.16% |  (R) -2.13% |      -2.10% |      -1.82% |
->> > |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)      
->> >      |      1041640.33 |      -0.50% |  (R) -2.04% |                 
->> > -1.43% |      -0.69% |      -1.78% |  (R) -2.03% |
->> > |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)    
->> >       |      2255794.00 |      -1.51% |  (R) -2.24% |             (R) 
->> > -2.33% |      -1.14% |      -0.94% |      -1.60% |
->> > |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 
->> > (usec) |       343543.83 |  (R) -4.50% |  (R) -3.54% |             (R) 
->> > -5.00% |  (R) -4.88% |  (R) -4.01% |  (R) -5.54% |
->> > |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 
->> > (usec) |       342290.33 |  (R) -5.15% |  (R) -3.24% |             (R) 
->> > -3.76% |  (R) -5.37% |  (R) -3.74% |  (R) -5.51% |
->> > |                 | random_size_align_alloc_test: p:1, h:0, l:500000 
->> > (usec)  |      1209666.83 |      -2.43% |      -2.09% |                 
->> >    -1.19% |  (R) -4.39% |      -1.81% |      -3.15% |
->> > +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
->> > | perf/syscall    | execve (ops/sec)            |         1219.58 |      
->> >         |  (R) -8.12% |         (R) -7.37% |  (R) -7.60% |  (R) -7.86% 
->> > |  (R) -7.71% |
->> > |                 | fork (ops/sec)            |          863.67 |        
->> >       |  (R) -7.24% |         (R) -7.07% |  (R) -6.42% |  (R) -6.93% |  
->> > (R) -6.55% |
->> > +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
->> > 
->> > 
->> > The details of latest bisections that were carried out for the above
->> > listed regressions, are given below :
->> > -Graviton3 (arm64)
->> >   good: v6.19 (05f7e89ab973)
->> >   bad:  v7.0-rc2 (11439c4635ed)
->> >   workload: perf/syscall (execve)
->> >   bisected to: f1427a1d6415 (“slab: make percpu sheaves compatible with
->> >   kmalloc_nolock()/kfree_nolock()”)
->> > 
->> > -Sapphire Rapids (x86_64)
->> >   good: v6.19 (05f7e89ab973)
->> >   bad:  v7.0-rc3 (1f318b96cc84)
->> >   workload: perf/syscall (fork)
->> >   bisected to: f1427a1d6415 (“slab: make percpu sheaves compatible with
->> >   kmalloc_nolock()/kfree_nolock()”)
->> > 
->> > -Graviton3 (arm64)
->> >   good: v6.19 (05f7e89ab973)
->> >   bad:  v7.0-rc3 (1f318b96cc84)
->> >   workload: perf/syscall (execve)
->> >   bisected to: f3421f8d154c (“slab: introduce percpu sheaves bootstrap”)
->> 
->> Yeah none of these are likely to introduce the regression.
->> We've seen other reports from e.g. lkp pointing to later commits that remove
->> the cpu (partial) slabs. The theory is that on benchmarks that stress vma
->> and maple node caches (fork and execve are likely those), the introduction
->> of sheaves in 6.18 (for those caches only) resulted in ~doubled percpu
->> caching capacity (and likely associated performance increase) - by sheaves
->> backed by cpu (partial) slabs,. Removing the latter then looks like a
->> regression in isolation in the 7.0 series.
->> 
->> A regression of vmalloc related to kvfree_rcu might be new. Although if it's
->> kvfree_rcu() of vmalloc'd objects, it would be weird. More likely they are
->> kvmalloc'd but small enough to be actually kmalloc'd? What are the details
->> of that test?
->> 
-> static int
-> kvfree_rcu_2_arg_vmalloc_test(void)
+On Thu, Mar 26, 2026 at 2:18=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
+l.org> wrote:
+>
+> -cc old email
+>
+> (Gentle reminder to please send all new stuff to ljs@kernel.org - at some
+> point I'm going to set a rule to ignore kernel mail sent to the old addre=
+ss
+> so, if you need a response you should send to the new :)
 
-Oh so that's what the test is measuring? Thanks for clarifying.
+Ack, sorry about that and thanks for all the reviews, Lorenzo!
 
-> {
-> 	struct test_kvfree_rcu *p;
-> 	int i;
-> 
-> 	for (i = 0; i < test_loop_count; i++) {
-> 		p = vmalloc(1 * PAGE_SIZE);
-> 		if (!p)
-> 			return -1;
-> 
-> 		p->array[0] = 'a';
-> 		kvfree_rcu(p, rcu);
-> 	}
-> 
-> 	return 0;
-> }
-> 
-> static bool kfree_rcu_sheaf(void *obj)
-> {
-> 	struct kmem_cache *s;
-> 	struct slab *slab;
-> 
-> 	if (is_vmalloc_addr(obj))
-> 		return false;
-> 
-> 	slab = virt_to_slab(obj);
-> 	if (unlikely(!slab))
-> 		return false;
-> 
-> 	s = slab->slab_cache;
-> 	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
-> 		return __kfree_rcu_sheaf(s, obj);
-> 
-> 	return false;
-> }
-> 
-> it does not go via sheaf since it is a vmalloc address.
+I noticed Sashiko's concerns at [1] and a number of them are false
+positives but I see at least one new claim which might be legit. I'll
+check if it holds water.
 
-Right so there should be just the overhead of the extra is_vmalloc_addr()
-test. Possibly also the call of kfree_rcu_sheaf() if it's not inlined.
-I'd say it's something we can just accept? It seems this is a unit test
-being used as a microbenchmark, so it can be very sensitive even to such
-details, but it should be negligible in practice.
+[1] https://sashiko.dev/#/patchset/20260326080836.695207-1-surenb%40google.=
+com
 
-> 
-> --
-> Uladzislau Rezki
-
+>
+>
+> On Thu, Mar 26, 2026 at 01:08:30AM -0700, Suren Baghdasaryan wrote:
+> > Now that we have vma_start_write_killable() we can replace most of the
+> > vma_start_write() calls with it, improving reaction time to the kill
+> > signal.
+> >
+> > There are several places which are left untouched by this patchset:
+> >
+> > 1. free_pgtables() because function should free page tables even if a
+> > fatal signal is pending.
+> >
+> > 2. userfaultd code, where some paths calling vma_start_write() can
+> > handle EINTR and some can't without a deeper code refactoring.
+> >
+> > 3. mpol_rebind_mm() which is used by cpusset controller for migrations
+> > and operates on a remote mm. Incomplete operations here would result
+> > in an inconsistent cgroup state.
+> >
+> > 4. vm_flags_{set|mod|clear} require refactoring that involves moving
+> > vma_start_write() out of these functions and replacing it with
+> > vma_assert_write_locked(), then callers of these functions should
+> > lock the vma themselves using vma_start_write_killable() whenever
+> > possible.
+> >
+> > Changes since v4 [1]:
+> > - added Reviewed-by, per Barry Song and Lorenzo Stoakes (wherever the c=
+ode
+> > stayed the same)
+> > - split patch 2 into 3 parts, per Lorenzo Stoakes
+> > - converted vma_start_write() in mseal_apply(), per Sashiko
+> > - changed vma_start_write_killable() error handling in
+> > set_mempolicy_home_node(), per Lorenzo Stoakes
+> > - added comment why mm->locked_vm is fine even when we exit early,
+> > per Sashiko
+> > - moved vma locking before vrm_calc_charge() in move_vma(), per Sashiko
+> > and Lorenzo Stoakes
+> > - set give_up_on_oom on error in vma_merge_existing_range() to propagat=
+e
+> > the error, per Lorenzo Stoakes
+> > - moved validate_mm() out of the error path in expand_upwards(),
+> > per Lorenzo Stoakes
+> > - dropped the patch changing S390 error handling, per Sashiko and
+> > Lorenzo Stoakes
+> > - reworked error handling in clear_refs_write(), per Lorenzo Stoakes
+> > - uninlined process_vma_walk_lock() while changing its return type,
+> > per Lorenzo Stoakes
+> >
+> > [1] https://lore.kernel.org/all/20260322054309.898214-1-surenb@google.c=
+om/
+> >
+> > Suren Baghdasaryan (6):
+> >   mm/vma: cleanup error handling path in vma_expand()
+> >   mm: use vma_start_write_killable() in mm syscalls
+> >   mm/khugepaged: use vma_start_write_killable() in collapse_huge_page()
+> >   mm/vma: use vma_start_write_killable() in vma operations
+> >   mm: use vma_start_write_killable() in process_vma_walk_lock()
+> >   KVM: PPC: use vma_start_write_killable() in
+> >     kvmppc_memslot_page_merge()
+> >
+> >  arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
+> >  fs/proc/task_mmu.c                 |  12 +--
+> >  mm/khugepaged.c                    |   5 +-
+> >  mm/madvise.c                       |   4 +-
+> >  mm/memory.c                        |   2 +
+> >  mm/mempolicy.c                     |  12 ++-
+> >  mm/mlock.c                         |  28 ++++--
+> >  mm/mprotect.c                      |   5 +-
+> >  mm/mremap.c                        |   8 +-
+> >  mm/mseal.c                         |   5 +-
+> >  mm/pagewalk.c                      |  22 +++--
+> >  mm/vma.c                           | 146 +++++++++++++++++++++--------
+> >  mm/vma_exec.c                      |   6 +-
+> >  13 files changed, 190 insertions(+), 70 deletions(-)
+> >
+> >
+> > base-commit: e53c9040ab1b738dd2c83b57558f141902caaf4f
+> > --
+> > 2.53.0.1018.g2bb0e51243-goog
+> >
 
