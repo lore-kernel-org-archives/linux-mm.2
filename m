@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A88C4106F316
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:56:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52762106F311
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:56:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9A606B00C5; Thu, 26 Mar 2026 05:55:57 -0400 (EDT)
+	id 089A36B00C9; Thu, 26 Mar 2026 05:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A72196B00C9; Thu, 26 Mar 2026 05:55:57 -0400 (EDT)
+	id E43216B00CA; Thu, 26 Mar 2026 05:56:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89CA56B00C5; Thu, 26 Mar 2026 05:55:57 -0400 (EDT)
+	id D58EE6B00CB; Thu, 26 Mar 2026 05:56:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 50DB66B00C6
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:55:57 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1AA6E160C73
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:55:57 +0000 (UTC)
-X-FDA: 84587757954.05.749DCDA
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C44756B00C9
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:56:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BD4C13BF24
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:02 +0000 (UTC)
+X-FDA: 84587758164.16.576B785
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AFDE84000A
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:55:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Y/qbVuo2";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UkAt+b1u;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Y/qbVuo2";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UkAt+b1u;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3BE10100005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1ohE+/+i";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yWbswddA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1ohE+/+i";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yWbswddA;
 	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518960; a=rsa-sha256;
+	cv=none;
+	b=a8ouaIZbWg0NhFhpXgQGUYIldM00eHXoXVJnaWB/+gAXOXAzdDNF0F9oMaAvL3uVHSSyuH
+	jsVG7bezMXoMKh0H3nmymJeIuzavJurVRmsC5HYJhsTMedHMBa9BrO6wXLbA5YlaVzrUUu
+	mVqSdybnOmhqQOAF1yEDBaoZoVnpIZU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1ohE+/+i";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yWbswddA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1ohE+/+i";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yWbswddA;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774518955;
+	s=arc-20220608; t=1774518960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2PW0X+G87Q0jqXEESIhnV7Zw/Azr5UfRKiauVgcVR0w=;
-	b=ZYNjLt5Xvn50zUGtGATCsMLy5bQX1zjLpo9QXjSMpHtPuJlCJc2AtK8FFPv2b40MZtIeFp
-	kyr35yxZOmZK+U+txJEmVchqjsFLVXUJhgh9Qxn1yNySaRDSc1xH1GJUNrRBCN0kkUlqwI
-	c93xL0mxKIyo63J+We6IsUmLtg9FuuY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518955; a=rsa-sha256;
-	cv=none;
-	b=6tAj5qG9PrFg1MvH7QDtZmypzkmkSl9mf0wXQ/LvV2BXggjwkX5kh5aZCrjl68CElvUNs1
-	+smdrdY0Dn1VHRI2E7WnQRDIXXHuO5aA9Ik4+En2x8lyn/0iLCUqV+1JNdqGnC2hebiBLS
-	cq1hzmxn0jpEwKh7FVKrs2Ok2RDmWA0=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Y/qbVuo2";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UkAt+b1u;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Y/qbVuo2";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UkAt+b1u;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=VVxrfcguPtdd7IFlG2je9aVAhodhyZEE5rzXzcTNmTg=;
+	b=IyWMc4x4gzKWAWmKF7dyxwT6ZFPF8ynpsMMvGg7c3AXbTCbQGohciVwE77n+gb+QjEzGui
+	BQRFLo/zk0SM2Qdtuz38lMQfo90IN+T9FZXMx/a1K+DJknbQlAazBKUjTPEj75nR6TaiC9
+	e2syv9UdNXjuJxLVuX4klciY12NOuEs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 453AF5BD9F;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4E2B15BDA7;
 	Thu, 26 Mar 2026 09:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1774518897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2PW0X+G87Q0jqXEESIhnV7Zw/Azr5UfRKiauVgcVR0w=;
-	b=Y/qbVuo2TsF3t6N5oYbim5B01JbYhSomLALeBMuonfj8yAoQ5W21Nwd0RU62zk2BHsNrJl
-	clPZxzL+d1Jz6jkedXcM8NTKEb6mXi+jMyVVpDok2Ns5iUtYcCi9w1h1moZCiX2TSzTjC+
-	b0QaOstfiKyakh+RWHi+1XYl8+5KCGw=
+	bh=VVxrfcguPtdd7IFlG2je9aVAhodhyZEE5rzXzcTNmTg=;
+	b=1ohE+/+i/xI+ZskyUv4EraTVvaP+8Cjj0qm477ZOZiHRc0dCwpKq13EBod8DcAiY7oqPJ2
+	f7AQIoAy7s+GdxLzZDn+qvl8/8QmG0BTP+3zxTCOktV/BlQqzvJ+pmwbUhFySKgckZJ5L1
+	QIUEKg5cRbt8M4kmIRL4QUAcklNuDlY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1774518897;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2PW0X+G87Q0jqXEESIhnV7Zw/Azr5UfRKiauVgcVR0w=;
-	b=UkAt+b1u0bDeTbgAVIpagAoJVUef24MK3jBjPJMcxxY/HOm07BYbsu6rgrjo/q9DNLX5lE
-	RYTcNZyUV6BK7BCA==
+	bh=VVxrfcguPtdd7IFlG2je9aVAhodhyZEE5rzXzcTNmTg=;
+	b=yWbswddAYIxQUSFHwvF4fQlh5m0e2ajdTafaEUrMfuigAL6k24RHUCB8HqdCAeqjtb9elE
+	mzpG1fDtmU9M3PBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1774518897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2PW0X+G87Q0jqXEESIhnV7Zw/Azr5UfRKiauVgcVR0w=;
-	b=Y/qbVuo2TsF3t6N5oYbim5B01JbYhSomLALeBMuonfj8yAoQ5W21Nwd0RU62zk2BHsNrJl
-	clPZxzL+d1Jz6jkedXcM8NTKEb6mXi+jMyVVpDok2Ns5iUtYcCi9w1h1moZCiX2TSzTjC+
-	b0QaOstfiKyakh+RWHi+1XYl8+5KCGw=
+	bh=VVxrfcguPtdd7IFlG2je9aVAhodhyZEE5rzXzcTNmTg=;
+	b=1ohE+/+i/xI+ZskyUv4EraTVvaP+8Cjj0qm477ZOZiHRc0dCwpKq13EBod8DcAiY7oqPJ2
+	f7AQIoAy7s+GdxLzZDn+qvl8/8QmG0BTP+3zxTCOktV/BlQqzvJ+pmwbUhFySKgckZJ5L1
+	QIUEKg5cRbt8M4kmIRL4QUAcklNuDlY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1774518897;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2PW0X+G87Q0jqXEESIhnV7Zw/Azr5UfRKiauVgcVR0w=;
-	b=UkAt+b1u0bDeTbgAVIpagAoJVUef24MK3jBjPJMcxxY/HOm07BYbsu6rgrjo/q9DNLX5lE
-	RYTcNZyUV6BK7BCA==
+	bh=VVxrfcguPtdd7IFlG2je9aVAhodhyZEE5rzXzcTNmTg=;
+	b=yWbswddAYIxQUSFHwvF4fQlh5m0e2ajdTafaEUrMfuigAL6k24RHUCB8HqdCAeqjtb9elE
+	mzpG1fDtmU9M3PBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3B89C4A0A3;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 43A564A0A7;
 	Thu, 26 Mar 2026 09:54:57 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bsuGDnECxWnKYAAAD6G6ig
+	id QEOGEHECxWnMYAAAD6G6ig
 	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 09:54:57 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id EF427A0C18; Thu, 26 Mar 2026 10:54:48 +0100 (CET)
+	id 0D883A0C5D; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -125,25 +125,24 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 15/42] fat: Sync and invalidate metadata buffers from fat_evict_inode()
-Date: Thu, 26 Mar 2026 10:54:09 +0100
-Message-ID: <20260326095354.16340-57-jack@suse.cz>
+Subject: [PATCH 17/42] minix: Sync and invalidate metadata buffers from minix_evict_inode()
+Date: Thu, 26 Mar 2026 10:54:11 +0100
+Message-ID: <20260326095354.16340-59-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260326082428.31660-1-jack@suse.cz>
 References: <20260326082428.31660-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=858; i=jack@suse.cz; h=from:subject; bh=rtWRYYCi+3xOxheWOY6jlzCuMWKqys5cHOCNYJEuNWY=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQI+VzC4YbQ9T0Z4TeuYJcjZHgbt9+t9ryNIR 3V2CHcYpCeJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCPgAKCRCcnaoHP2RA 2YhHB/4vxvzXM8PjhQqlguQjvSfaMmwzwoRYgpnjUCjnzuSo/IYWrynUOLoOBVbC6S+PmQlJrE6 b5Pf4/wgb0FqVvw+X8juDydr95IBx0SAUZIu/hLCtwg6ntBeVnOoPIK8VNjqvdLA8gbHD5hKx8m 55XIOxMDGEFndABvSDT46kom2h2VpLxDa3rfAFZqBkA5aIvgD6+DPMNqkmZ6uUTdcfAmTi7mZ2U vq0CnYnmS6nw45pqdR5pdwlThY9zPP5VufYNmTOLY+IrocHv7RvMH7j9LJN8GztjhQOGqOYH+7i Tbv32pmQaeyN8kAAxNB/B+eVSRTNsG7HbRxkj05MHoQpW1PT
+X-Developer-Signature: v=1; a=openpgp-sha256; l=796; i=jack@suse.cz; h=from:subject; bh=S1BAqXV/Jqi4FmJijCh+slBc7/Xi7wKphfEUon5Scy0=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJA8bYqxZ3+JTUWtvnp18qagzJO877Mdw6cB sfHYzZzTaWJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCQAAKCRCcnaoHP2RA 2TLYB/9xXXjlaa9QiiyDHdW4cz1emasnfHuX/cDFhXlHKgGMqEsSXRN3dc4h3zlXv2nAjeYWlns Gfgv7SzMVNqgS1HRUCFEDV05oZu4CEZSKE+YnzGHQyM2AuXJimH/kUOWqmbI7W/CieZnC7lR8DL nWKa47GOpOxpJPJzCXN1ukTqP5DCQ5vB2qhclQtQ7rcTLdyg8HtYUayX7J5K735fCjpegQ2x8FS 6PdXVrbXwDpf9wq2rUu/qe9SR5pOhEQpmuhBmlQxsE9kNUgklbt/OqcbdDjoVm//8bOLeUbZJmZ uXgBv5BKQC0h9wvCDUt1Q0zZLI0X1oUY1NU4V461WW2drIIl
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: AFDE84000A
-X-Stat-Signature: qo5eqyrjfi1dx39j7potdntfakx38txc
+X-Stat-Signature: imie89sxutstaj314f1cqr3pcurfe7q3
+X-Rspamd-Queue-Id: 3BE10100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774518954-538394
-X-HE-Meta: U2FsdGVkX18YpgGHp3Kxa7aSx7svrXez2MUQgc/ubWRLGZGUQJTqk5Is0ZfrFxhQMxZYvJAmndbjidNPnWJRNFOJTLUPFHtIjGS4AT8ruWiSeWb5LyoZVCouKOrWj8OuatzupI9P+t2fqsLBhYHnGRXVxUsSh5deqRYHuU6Ts341T0P26CV97r+i2m5PvpRIBmm8eRT6f0OXP7DtR82RC7ciF8sdmV/4MLSrJ/BAoYKqxq4LTi6TkbZKYvfKgHyKUK7A4PuHmY18MHVWUnUqjYk2/6kgpID+wm826V6bVJC9vxwIbIsamh2FJ78PEeSe+qzJqOXMacjFrBxxVBedC6vu+yRyJk/6DaNRLEiQ5/9Q14sRbS7FLov5jEyfRvgB0nYvlp+aYqtnsfWPIZuDmMfW5SSHWNcxMR4fnFZpJ6ar9Na+AC0eNdxHC/oXRlA06fzVxO86W0WxSKjcKgDNY0TCJl9xUNsuLI3/yCGybSuTbxamzCAes1bG5IlHKGm0reFFluf8x/LOo6HiuluO2MzYwx535z4HJtfmeaTRjRazHwwuqKE9mOS/iZA+MiF2cf2o6Wv+6hNXBmMJNk2cDB9SlSOdFnj23M3qsIsQVk4zprSNmt5QMLMj6vJ0MgAaegfgjCtTXdYxAAiIAtGNIM5zEYR4lX6uIIbBol2a61y47YjodF6hXRHnehOr6D7+OyW1aUHAi3JeitUkoie7U4sRKGqG6TZDzkfBz3q/9nW9JtDSDdnaQZs+JAPbvjEl/HxYkpXF/dVm96AMpC1gHKe78vtstYrsaFnUOosYN0Xz7727JxGlxEZogj/2ouBGUuLedeURyutDBCcNBSUyiQGgNh1JxQ5drUqSuHQtBltmj6e4Yk8ZtwDtEwRFFKAdgMdDGa8BA+YZcy8fPRb5sjnkP/DR34c+YoIMRgepaA8koW1e0uhQkW7T7FLfT9LRWjBvwWsLatPLouSYxS0
- wrFaqE77
- DS2nmQ2w+zCCK1Y1PODXfgVNEx3AKOF4HvltXao97F586yxEvoZAVPS09JEAQWJKufN3hQh2Ae62fU9X4Ha3rx6Jolpxb33PN3a8c4/uCC3K3FKs5VjGOD3QB3psuhQxtC+b7UMbZK4FFY+2/8UMU1/eheQAvEZvWUeem+ovmRNLMFdrKgvc3iBAw/+sRxePPqFSWapfiDawLj4lq1GXrVrYGsXc9KIzrsCqRTlA0rUuPSVKEnJQkANJLSD5u+y3vMyIcBnmy4dL3JQOREYPO0Z1syM5VoAwePRrIoO7xPhSwUni9Mci8SO7znBG4Xg0mMeMDFO47hnabpoDl4l4gVYO6F7W8ZkgdWfLeB/6y6nEVgoE=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774518960-723195
+X-HE-Meta: U2FsdGVkX1+9CDR+sj/P2NfFAyuuHVmrUnJbEVygtyEMD2/2qEcda9B+L3dJ5M/5tl2xTtUEvNm8B1VYvUOM0KClmJ4dcQl4emiQzhFZVJCmrIFsU6g3TflWXuxf+czD++ZI0jUcd6i2mLfdNaFpbxrgpVC15IUKskfg81TWIT+ZZzBkLDImho+2LlrCBRVreVPpGXt4aqu19l8dibwDtjbAdjoP9EJDVL4cahdBcmrhEJIQNwemCs5OLvtmPEkC0qdh/c8Kaw9Rf/j9+2B9bUoPuhSUAq4FwPfGvoXBAaQSkSq1XxrFFIkvX6tQz/Cv3y3FNyZoxnTq1qpfVr8nrth//t1KXSuY07iQKplX0d484paN55nobIVxSKwHfihYVccapF8VG0ooN/L9C7xdIi+956udaNd/PfBhjkCRyhw3fWcXXSSEA4SfEdHi5rjKnPvTEPjBcT1+p9b+OGaxIkVt+j1N1iW4KdgCRbI44P8E13CIGlkFv4WZaTmYbZiy417N+zFmhBny+0h2q1FU8eXLBvc3Sv63wJIWZDHt6txeHpcJ5AHiZYHrO2NPG7R93C+QJ04y5NaecCa95cJfGxrWY3IXUg8JTWr5sgJgBoTm2QWk+4QmWC5ElKjkEg/EGdycKz+LNwG0GVB0UO+MJpkEs2jC8MH45Gi22beH87OSDfLFCOB5AGChBE9jCVwygTYLckmeXSIvk+/PvWn89K07RJmuY/ZjGYFGKGZuslYgmMOPAd9Oy/Ra97f7SpLzXSrhDkFGa7EUxICEr32IjhVt97s98zirxX0iuxljMp/FexCI3UnxqryEowDZxPY5KlXdFheC7oQLwTmU50zQ1xhhkhU7lHJH5AGnWmIpt5/+LPSBlmoQVcHyKX0LKT0xrsHNFPBv8FgpxO9LAtdnZCzS/Yekz3rbXBQ2pYSFwv6PYcUicp4/9FuKmr7idgcf6Z3SDToe9ruDKOm9aaz
+ vb1nyiGd
+ Q1mgwArTEGkzEMZhapITAIWUlHyt8JB0N5G3HQXZkmGmokKk/2l0cAOfKuFzL1nzlVmHmaQvisrsCNKfCH9+ZzoGhwDkHnTPytNBP2LYoAIaMtBY7c2LBYIXmLGFzYwgEYPtr1lVglcpWbuKLrj+H+3epR7bkcmLZHDkWtti1Zf4hEWuQ4LTk0aibaAXYDQ2KUp3LYzW3W1UdnIz6VzHSZMYpqUkK71Gyl/F6MW+8NJny33l+IPA+LITDY7h3GS8DcJBU643rJwp8AVpvO/AkwcclWj83BuSKr7HOooKiDfOQihhSD3w/uFOkaujBJ7Ci1XQKlsJ+yXD9JA1k7y3MoOFYLbvJl1Tcm0nC/4cziRk5Fs8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,23 +157,20 @@ metadata buffers attached so write them out and prune them.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/fat/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/minix/inode.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/fat/inode.c b/fs/fat/inode.c
-index 3cc5fb01afa1..ce88602b0d57 100644
---- a/fs/fat/inode.c
-+++ b/fs/fat/inode.c
-@@ -657,8 +657,10 @@ static void fat_evict_inode(struct inode *inode)
+diff --git a/fs/minix/inode.c b/fs/minix/inode.c
+index 99541c6a5bbf..ab7c06efb139 100644
+--- a/fs/minix/inode.c
++++ b/fs/minix/inode.c
+@@ -48,6 +48,8 @@ static void minix_evict_inode(struct inode *inode)
  	if (!inode->i_nlink) {
  		inode->i_size = 0;
- 		fat_truncate_blocks(inode, 0);
--	} else
+ 		minix_truncate(inode);
 +	} else {
-+		sync_mapping_buffers(inode->i_mapping);
- 		fat_free_eofblocks(inode);
-+	}
- 
++		sync_mapping_buffers(&inode->i_data);
+ 	}
  	invalidate_inode_buffers(inode);
  	clear_inode(inode);
 -- 
