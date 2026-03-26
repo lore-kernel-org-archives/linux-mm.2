@@ -4,146 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DACA6109E52F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 00:10:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BEF1109E531
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 00:10:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2214B6B0089; Wed, 25 Mar 2026 20:10:51 -0400 (EDT)
+	id B48D96B008C; Wed, 25 Mar 2026 20:10:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D2086B008C; Wed, 25 Mar 2026 20:10:51 -0400 (EDT)
+	id AF9C86B0092; Wed, 25 Mar 2026 20:10:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E8346B0092; Wed, 25 Mar 2026 20:10:51 -0400 (EDT)
+	id A0FC56B0093; Wed, 25 Mar 2026 20:10:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F0CAD6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:10:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9CC241B903E
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:10:50 +0000 (UTC)
-X-FDA: 84586283460.17.C52961A
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 869DF80011
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:10:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OMYwP7oV;
-	spf=pass (imf30.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774483848;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 917566B008C
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:10:56 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36D155C3BD
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:10:56 +0000 (UTC)
+X-FDA: 84586283712.26.CEBFF7E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9E0421C0006
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:10:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lRcY8t+M;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774483854; a=rsa-sha256;
+	cv=none;
+	b=MusicBDa8O4ubSRTG+h3A0Rc6xYRxe9pt9fn51CO703Dutoy4mqxR8FzwCTfNx4uGLXnDN
+	Vq8V+a6X37wB8Ynky8xveN7kFff907XB+KFnOOzVcn0fbKzoVuUfMf+h/DqmnbMyEJKl9g
+	82hFYtMNt1QU+/Dkeynj2E+4R0tMFmM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774483854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yR8CPRX+MCla1c54IvCJe3qdIOwVb1zd9FVeuuRvr94=;
-	b=n4cGHzPq5MEt81me1shg7ZuehU4tmpOB5cLcHXXijLuNNIfHJuFe9rVGorAzZgSRAjdYRi
-	QUN13nGb791Y32iq0qi6RNqV7+jrV4ZsZpsBYhVg+P6p84Usu2VU0p6UT8u80NB3js/BPg
-	F+VwKEUkesw5q+b0dQsL72xXv4hIXnY=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OMYwP7oV;
-	spf=pass (imf30.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774483848; a=rsa-sha256;
-	cv=pass;
-	b=G6+D/VvOiTXkc6gTRa86hvvzYqTUSAd7lqRLqAeCLwmgFvU4nfLfJWBWziczEYdALnyEGa
-	StPM+sqrHgquCPG41by7rJgTpz3cs4AnvCG1toesiYDnNF5rtkfdtFvV+xKdrPTv4NMsVh
-	H72P2bXQ3fKSTTHoqYc2AGsHRYY+Bd8=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48569636800so30135e9.0
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 17:10:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774483847; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AP4FX6FJKM7YMrLxGO7mgm5CdD5Y1GjjCbLhaSNirW2KuEFKDdKqHJm8SQfj7XA5d9
-         D5nsso1ySVxMn2L1WVXhIp0O3GifbOwA/uFA2ATRqteRp8MpGyDYU038Ot3MpX95mUax
-         HM/doVDqQB6VW+ZPntTyv04N459FlgB62zaasT/XMr1aF+nhv2BwL/RfBnaYXTPV761O
-         nZq3uPl3KM+B5kmG0MiD3M0Sh9jX7PCiq1eP19GJeBbgZeM7Xk5ZvzqXiXB6wvBFOrcH
-         zxWsoNnj9S1LW1L3I3HZ8eN2S8NXlL5lmbRkfildL1YsI+Vpk4CVEj5rJiqXjHK+BJQn
-         4F8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yR8CPRX+MCla1c54IvCJe3qdIOwVb1zd9FVeuuRvr94=;
-        fh=POieeyJOQAi9KX/+SFBwCKyC5wKbQEX0JnvyibvnlXQ=;
-        b=WqANLMuFOKrBrnXIGbEXJvPHFz7aGxAi2wdWMjEnQZQKTiaWXUqfMmq5y5Ffi4xT0u
-         Dw035T6FqjTLz0RnTFpR9UfmuOyNp9m2yP9TuDU+XqDNgdpuz1jc4QHuK8i9I9Ny0onh
-         f8zPjUQ2yTFaPmTPgqyfrE9F8zx2tJTTq2EqMzbP6gpKltnQPnkF5aXt0Cc9lk7N1yk0
-         xMK6MoiVsowqK+KRXE3Vh2DkVVaQSOAcQ5Dfb5m9BYKvWD0B3Qra3AJcj+RGIZL49UEJ
-         4Z/brwvd1QTPrzE6qtKaJDEm6lfH0WPoMXaQDKB0F58AHMqXopjpgLGbEzqhowr4rsdD
-         nxLQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774483847; x=1775088647; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yR8CPRX+MCla1c54IvCJe3qdIOwVb1zd9FVeuuRvr94=;
-        b=OMYwP7oVs/iHS3Kbwz8gZwt2w7VGzgZy0juqVthXhtQzC/5H/4bKyYOwRbIEvlZgTB
-         GlP2mCRcU1SxZj074DOzuSs/byxBsXjy8k4GDE8rUZfYm1oePAO795p5JjZS5Kp+pyuO
-         gKMhMhyRPLgDmpa6qriYDTsWSwkHR3IK+SF3IiSZowR2G+HBRmo13T9qXuqMbNAdk3gw
-         Jlf8M8gwgi3hjoc0gjiY0qBaQzclPBbz1ngkoPUqepyYiQHy2umDGU5XOM6gTMQDxR7e
-         9pta7gbAJm6GfdTrBZ4CXyQJykjFLPyelerPj6jzwLhbSmY4iWOaIlnR6v4qFijU0tHX
-         jfig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774483847; x=1775088647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yR8CPRX+MCla1c54IvCJe3qdIOwVb1zd9FVeuuRvr94=;
-        b=aUnpT93KIDeYW5bW3li7L8N/3uSGVnQPfYqACFYipVVkg8+vYybPNtj428W8wFmV4v
-         GarCwH6JFztsN792mZCzXI10xZ2oreO5EfkVcTbzl+d5nMaiwIkGR12t90U8Rme9rOFT
-         k+ToKjAvqtETQ3ALL7tHpPYbRb3MDpdI6xGAhuiFaL6N2Qwk6gTKBrH1AoH+gTj0KtrN
-         ARlQjdBq6i75oPCieIkJijv6VQDCUSMhyY7TLAg0fCfsQoQtwtx1dsaU6DaEsK9xeOQz
-         /FROza87Y1YG5V7dS8s5OjSFOQObqPzU84BBXmp683CVNeWeROXRfrlG1tTJkvUjHBY3
-         kOSA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+ymnJBbF6hMZ7wlpGtCRzaj/Inltkka2bnlb/LK/Vyy53xEIkJkbDleODFLiU/TZPVBQ2bOib3w==@kvack.org
-X-Gm-Message-State: AOJu0Yzo0WMXqqbW/rTpawiQ6lJYmHSp32dVIzesvHAEfqYI1ieGKTt/
-	N3AhnqcrLP/TrdJQlkDc5+8i0grslWhQRcejRO8wM5P9JSKTegW49TPoS531GV73iITteVh3/yx
-	tuKHMzSdp1CRF1YARtspOSwRhTZG5m0EgctGCHuiI
-X-Gm-Gg: ATEYQzxhJR2fNSxCm8/S775WrrY+wtiJ3EYDpUEqGP49aVkX1ImL3TOOxWr4dva70j1
-	U2KG6lj8i93WYRAUx3AZ0uMYqTV51oVB1Tllkkz7D/IA7gPPNkK5xai0sVn8voc+n3CR/dWx5j0
-	m2ZUtbiZ6CNIPJWxipIlf87cRn8Rrw9zHen+TnwpnQBlmFtr8acc282tNOlvDLIVHOiiKm5m5gs
-	/xhNCU10W89qfod6eXHjusnzjOn259j3TwfJolDgRmPrlm2sernFQXY9WI1cMV9xVslaMsJ66om
-	iHXKa6o2jmot3kS+/r7sjOdBB9rwXE38iJ/r+QXH9Gi7Lsf9O95hpuJzmXjQ5XNCfHKyPS9tB+o
-	uLlik
-X-Received: by 2002:a05:600c:9a2:b0:477:255c:bea8 with SMTP id
- 5b1f17b1804b1-48720938fd9mr89845e9.7.1774483846234; Wed, 25 Mar 2026 17:10:46
- -0700 (PDT)
+	bh=zIkzEcg3JV46r6vMcx0xxcxyU7tRCJld3XnkxZnQRc8=;
+	b=xrA1yWhIXiwa809UPN71nEouUOEcp4pq1r/mkj5jibl+gOeVhvdBErR2ts9mGkYus4C5ED
+	OFl5IgQpIevyewiP/23EvyIMe7MR6IwXgDIT3IMnJt7xvK6ci1ygxlJ5mc30FGAbGrTGY+
+	JTVb5wwGLaayCBeSzbrICaaASFvh/5Q=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lRcY8t+M;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EE02E60103;
+	Thu, 26 Mar 2026 00:10:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8196EC116C6;
+	Thu, 26 Mar 2026 00:10:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774483853;
+	bh=H1uJeJjuVLiW2H0lN6tKp4wmh1kXqFB+xJI6QRzxJ7A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lRcY8t+Mgx+XtwOWgVVm+hRYh9cMyMV7cjyfzockwWwAgp/Zq85XQ/qEz/VMgS9Gd
+	 LuMvDYEZmXDs5fEBlWfzGWe/3tyyVm/qUEiQJ42RKmgGpVHVy5oKfxtKgqMCsj+v1L
+	 3w5UJfPz2aWlMhOMLuMdfdU4UPK3SbLP5iJnTafopPhCnE3lDBWYizkAGZ9lZD6WXX
+	 EqPxpzPKHv4SBZ+O3I2uGdDFC04LYYfE6Ni5FbPFYiLQBVwWigjpz+qC2DzvJVhX3h
+	 B0XrfvTx/StXzF2gF/hxjvN3qIU8fZK2HaHOJnB22zvkW/EUMgSn5uLhLEb1Lc8Ynj
+	 N2Zc4Z0QuDwYw==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: (sashiko review) [PATCH v2] mm/damon/core: validate goal nid before accessing node data
+Date: Wed, 25 Mar 2026 17:10:50 -0700
+Message-ID: <20260326001051.76219-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260325155221.202700-1-objecting@objecting.org>
+References: 
 MIME-Version: 1.0
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
-In-Reply-To: <20260325210637.3704220-1-shakeel.butt@linux.dev>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Wed, 25 Mar 2026 17:10:34 -0700
-X-Gm-Features: AQROBzDjd7k8G07gelmzXRNjlVKmHcP--nooUDgMHNLNynxjKIo0XEEcejoxIEI
-Message-ID: <CABdmKX2T9AmFH4RvShSB_82+_W1fY6fqsAX18C82nOzmTruq6Q@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim (reclaim_ext)
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kairui Song <ryncsn@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Gregory Price <gourry@gourry.net>, Barry Song <21cnbao@gmail.com>, 
-	David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	wangzicheng <wangzicheng@honor.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 869DF80011
-X-Stat-Signature: dji68qjq5tsh5t4gr5y95bdm6wornux8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1774483848-164540
-X-HE-Meta: U2FsdGVkX19jPvZB+2Bj0SOCE4dFMkIT+y3VtfMV3H0BGZRcDlwztv2Uyjc9G/sAncd9u6uJMW3Du0EwiOs6qpbep49Ro4fdP16me/zLb5EevY1rDtf0cMI+OJp0kt6RD8cKYHPuCCjiFeHkUWqnAuxKBsTnYsWUPGlXfhbM7CJbgkqnaITvS/5yBUvsI9DWZxYkt3lGT1jp2FatnXBCaIiXoHi1YMS8osttV2ikqvEBfKJmpJBIkeDJObfYTB0CFSruQcATkenAD2/Sol2nHfDJ/O4DfRn9msdbQ4dvm6wTx2zA4sUkcuTFov0dv33c7F1+YizufVHYbHqLSMLhfzaY1VyniLQKe/RzENMqT/SyhltJOlO+08HTpqqG0PHlPNQw2asVEu3wnaVYr4jIrr+S7AAFiT44KLsuIW5BgO7CJui6V3t7RcDZmeYHyj0kj4SLlOMVWxPNPw4nQFq/L4s35UVOkBoaxKULF6emaNZYMnJnYwYvRkxX6QpZH7tjYue88FEa5sCu8NfpPFaQVKS4/xhkAgsP5YOipGdHadUOpl1tE/aSUWjM9PUm0utdOQ8770jLRxaYHGQ9rer43oC8ssz6x2+cw2PzQ17HVLzyAvQJ0pHPIYIZUPppaVDQ+qkHXJN6p3iuA5jhOlUViYUG6fPspH5vGGAYFb0qaJPxXo+Uk5TDeT7lhcJDdO2nvrILoQuhx2H2nxKByf47+I83jzfTsHbKplzp9i38qNvJLWHXvmh9sa3yWNjLE0L5x41+5PqFoZm9Oid7Yb1LBBngtPr6ZRiPRn8gpL8Og4F7zxcQZTuazAP8gb7N1sToYIS8jDjj0iRBHMHZ687KA9+0WJr16vxA4h+GJREpVD6N/jcKU5iErYql4MZx4YU+TFryQaSx3M0ir2nbtrEEi6nUvWMOtK5Ju9+OhChGwgQbwdgaMNS3uJLK7ctkV97zCDns+SZ5jiPoRY+/2zt
- iDMeSdl3
- HKoI7nbsJuLhqR/Ama7lxOOxlmOjWEyPtyNDG8k8myZ1YPxUHc63pbWdTMkVdHAT8yPtNwHL9+AGB+Lp4AgREmgfn5Zk9fSp33AVF2vnMc9XyDGUi/M4nkLu6DMwm4lwlrGdVYMsd59pzY3Oo+9azz9KxEFnskhO2UfDUIPOIElG311R2kJaGpCrpDFyi/MsIXKyft94pni6hRna9XdjqtwqgSbrGmEiAAmoJ/2t5ChAqxcMXIeaQOQAQTIJEkJxltEMewBsibsOsIp52sxMbMOmnfrWx5A3wblv92l/JzvpNAjEmB7MUdhDyF976kvn+LgII
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9E0421C0006
+X-Stat-Signature: u689wjj7u4frqmwimapgefu9xdw77nze
+X-HE-Tag: 1774483854-5097
+X-HE-Meta: U2FsdGVkX1+RzV53hbhpQqD+xxtQ5El15kS8Sm05yH0vxSW0h4QMAjYzmMCIYQ9ucR/AhDBckQEQuHpLcCu3iHZITBCZPEP/VelmCtoeteJ+GfotSVMcpGtlQTr5YfHzPiJCrSm9SkRmARWii9ASMun/+P5mMMoOaHSfmvchJFuwgJfeQrPDuyHfSR+8jOZwpWz64KK58zZ6OjCoegE/9zgwJ2fkKy57oeu28mQU+yXjJwkAZEuIvw1axYURAs8tBCSkSDYuRS/vHIwFwoIbAzAhgF5yZaZUadolP38F87O3bJuYXBg39KlJiJDuLpi2XDhTVQeyUEHN5n1KZy4sXN5wCExBEmWU83k24t9kWESkjVo5oxMrZjbm5wl8l0fzcAYO6+ehJcwjYNKZ7e1KNcXNWgPGy1ymkDBv5ARzg8LHB+ULS9kB2V9Go9eL+Z9gvxLbdWxn3g5US2iyMiEEL15hbZ6Eqbws7Edx8BVivcO3JKeG7p+G00auxz1m9oPE9Z5yP6kj+t7ZdEaLpmcMmEqorz5vAgbjPmN49zndYuTwEqlDfz18boKDyo//Y/PibjEpenXqjpx05USJUEBONosPgxd4XIvjI1T52FvPocCnbIPirogpVHz5oyyFNnz0cXUozmt9F/lGBVbwK+lNSadk0zHDJXIL3vU/Fni7W+6r36QMiq/NCO+joU5HAc9FnTp67yi5nYbZog3DGQtstxAK0qbf7fZR9VciBzGdNJW8kMxT88YnYfbXAblkHF+XBRFRb7wII4fy4QoalctXBJneOXGTZhy9EyTthtLQIbb5M9UQ0+00d7mSobE9NF8LlAsxbVtXp1y22taORP3FD/7ZC6W/ycRdnE8rtWl52V/q4931nSulp08jjLqfFA4Ug7gZuncoQozV1D7d0ZNtkMk5Mb8u+WlZ2A0hcqAG1c8OzXpnQoRXPccMs83vf4bndrfU6d/3quZi2zMcTTU
+ YloTalJI
+ sciOcwvPYvWuubsj5blBvZXdWfCEqHFnC0WSsmjw/DkVEoyaWNHEwUqA6YpLGoyPMfraIdt9E+wQP4pk69Of/x/aPcyt+HCN885H1cpJ93blCV0MK9XAVqXigllFUNcoyLVJLzJ2ytzoOnfNKT8VQAKOQFIdudRYH9hIOlWdKW84aSVh5PlSOJnfaIEhuSTb4B1F5TUIk5HS7TRo1qgwzKyZn4t0GB3RD7TSltRawBH7QEPomTnwoz/hLDCTAXUyl4Wg4stSI4YUCMa/fNebdQnS+rt7uZvbyrTZOEdJBZ97z38UedJtimvgLsnmi8nMPWOGwLcKSTb5YvacMm8FoDrUFpm3bUQbGXIYXkwSst+iW9mYIopRjSu+tFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,204 +94,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 2:07=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> The Problem
-> -----------
->
-> Memory reclaim in the kernel is a mess. We ship two completely separate
-> eviction algorithms -- traditional LRU and MGLRU -- in the same file.
-> mm/vmscan.c is over 8,000 lines. 40% of it is MGLRU-specific code that
-> duplicates functionality already present in the traditional path. Every
-> bug fix, every optimization, every feature has to be done twice or it
-> only works for half the users. This is not sustainable. It has to stop.
->
-> We should unify both algorithms into a single code path. In this path,
-> both algorithms are a set of hooks called from that path. Everyone
-> maintains, understands, and evolves a single codebase. Optimizations are
-> now evaluated against -- and available to -- both algorithms. And the
-> next time someone develops a new LRU algorithm, they can do so in a way
-> that does not add churn to existing code.
->
-> How We Got Here
-> ---------------
->
-> MGLRU brought interesting ideas -- multi-generation aging, page table
-> scanning, Bloom filters, spatial lookaround. But we never tried to
-> refactor the existing reclaim code or integrate these mechanisms into the
-> traditional path. 3,300 lines of code were dumped as a completely
-> parallel implementation with a runtime toggle to switch between the two.
-> No attempt to evolve the existing code or share mechanisms between the
-> two paths -- just a second reclaim system bolted on next to the first.
->
-> To be fair, traditional reclaim is not easy to refactor. It has
-> accumulated decades of heuristics trying to work for every workload, and
-> touching any of it risks regressions. But difficulty is not an excuse.
-> There was no justification for not even trying -- not attempting to
-> generalize the existing scanning path, not proposing shared
-> abstractions, not offering the new mechanisms as improvements to the code
-> that was already there. Hard does not mean impossible, and the cost of
-> not trying is what we are living with now.
->
-> The Differences That Matter
-> ---------------------------
->
-> The two algorithms differ in how they classify pages, detect access, and
-> decide what to evict. But most of these differences are not fundamental
-> -- they are mechanisms that got trapped inside one implementation when
-> they could benefit both. Not making those mechanisms shareable leaves
-> potential free performance gains on the table.
->
-> Access detection: Traditional LRU walks reverse mappings (RMAP) from the
-> page back to its page table entries. MGLRU walks page tables forward,
-> scanning process address spaces directly. Neither approach is inherently
-> tied to its eviction policy. Page table scanning would benefit
-> traditional LRU just as much -- it is cache-friendly, batches updates
-> without the LRU lock, and naturally exploits spatial locality. There is
-> no reason this should be MGLRU-only.
->
-> Bloom filters and lookaround: MGLRU uses Bloom filters to skip cold
-> page table regions and a lookaround optimization to scan adjacent PTEs
-> during eviction. These are general-purpose optimizations for any
-> scanning path. They are locked inside MGLRU today for no good reason.
->
-> Lock-free age updates: MGLRU updates folio age using atomic flag
-> operations, avoiding the LRU lock during scanning. Traditional reclaim
-> can use the same technique to reduce lock contention.
->
-> Page classification: Traditional LRU uses two buckets
-> (active/inactive). MGLRU uses four generations with timestamps and
-> reference frequency tiers. This is the policy difference --
-> how many age buckets and how pages move between them. Every other
-> mechanism is shareable.
->
-> Both systems already share the core reclaim mechanics -- writeback,
-> unmapping, swap, NUMA demotion, and working set tracking. The shareable
-> mechanisms listed above should join that common core. What remains after
-> that is a thin policy layer -- and that is all that should differ between
-> algorithms.
->
-> The Fix: One Reclaim, Pluggable and Extensible
-> -----------------------------------------------
->
-> We need one reclaim system, not two. One code path that everyone
-> maintains, everyone tests, and everyone benefits from. But it needs to
-> be pluggable as there will always be cases where someone wants some
-> customization for their specialized workload or wants to explore some
-> new techniques/ideas, and we do not want to get into the current mess
-> again.
->
-> The unified reclaim must separate mechanism from policy. The mechanisms
-> -- writeback, unmapping, swap, NUMA demotion, workingset tracking -- are
-> shared today and should stay shared. The policy decisions -- how to
-> detect access, how to classify pages, which pages to evict, when to
-> protect a page -- are where the two algorithms differ, and where future
-> algorithms will differ too. Make those pluggable.
->
-> This gives us one maintained code path with the flexibility to evolve.
-> New ideas get implemented as new policies, not as 3,000-line forks. Good
-> mechanisms from MGLRU (page table scanning, Bloom filters, lookaround)
-> become shared infrastructure available to any policy. And if someone
-> comes up with a better eviction algorithm tomorrow, they plug it in
-> without touching the core.
->
-> Making reclaim pluggable implies we define it as a set of function
-> methods (let's call them reclaim_ops) hooking into a stable codebase we
-> rarely modify. We then have two big questions to answer: how do these
-> reclaim ops look, and how do we move the existing code to the new model?
->
-> How Do We Get There
-> -------------------
->
-> Do we merge the two mechanisms feature by feature, or do we prioritize
-> moving MGLRU to the pluggable model then follow with LRU once we are
-> happy with the result?
->
-> Whichever option we choose, we do the work in small, self-contained
-> phases. Each phase ships independently, each phase makes the code
-> better, each phase is bisectable. No big bang. No disruption. No
-> excuses.
->
-> Option A: Factor and Merge
->
-> MGLRU is already pretty modular. However, we do not know which
-> optimizations are actually generic and which ones are only useful for
-> MGLRU itself.
->
-> Phase 1 -- Factor out just MGLRU into reclaim_ops. We make no functional
-> changes to MGLRU. Traditional LRU code is left completely untouched at
-> this stage.
->
-> Phase 2 -- Merge the two paths one method at a time. Right now the code
-> diverts control to MGLRU from the very top of the high-level hooks. We
-> instead unify the algorithms starting from the very beginning of LRU and
-> deciding what to keep in common code and what to move into a traditional
-> LRU path.
->
-> Advantages:
-> - We do not touch LRU until Phase 2, avoiding churn.
-> - Makes it easy to experiment with combining MGLRU features into
->   traditional LRU. We do not actually know which optimizations are
->   useful and which should stay in MGLRU hooks.
->
-> Disadvantages:
-> - We will not find out whether reclaim_ops exposes the right methods
->   until we merge the paths at the end. We will have to change the ops
->   if it turns out we need a different split. The reclaim_ops API will
->   be private and have a single user so it is not that bad, but it may
->   require additional changes.
->
-> Option B: Merge and Factor
->
-> Phase 1 -- Extract MGLRU mechanisms into shared infrastructure. Page
-> table scanning, Bloom filter PMD skipping, lookaround, lock-free folio
-> age updates. These are independently useful. Make them available to both
-> algorithms. Stop hoarding good ideas inside one code path.
->
-> Phase 2 -- Collapse the remaining differences. Generalize list
-> infrastructure to N classifications (trad=3D2, MGLRU=3D4). Unify eviction
-> entry points. Common classification/promotion interface. At this point
-> the two "algorithms" are thin wrappers over shared code.
->
-> Phase 3 -- Define the hook interface. Define reclaim_ops around the
-> remaining policy differences. Layer BPF on top (reclaim_ext).
-> Traditional LRU and MGLRU become two instances of the same interface.
-> Adding a third algorithm means writing a new set of hooks, not forking
-> 3,000 lines.
->
-> Advantages:
-> - We get signals on what should be shared earlier. We know every shared
->   method to be useful because we use it for both algorithms.
-> - Can test LRU optimizations on MGLRU early.
->
-> Disadvantages:
-> - Slower, as we factor out both algorithms and expand reclaim_ops all
->   at once.
->
-> Open Questions
-> --------------
->
-> - Policy granularity: system-wide, per-node, or per-cgroup?
-> - Mechanism/policy boundary: needs iteration; get it wrong and we
->   either constrain policies or duplicate code.
-> - Validation: reclaim quality is hard to measure; we need agreed-upon
->   benchmarks.
-> - Simplicity: the end result must be simpler than what we have today,
->   not more complex. If it is not simpler, we failed.
-> --
-> 2.52.0
->
+Forwarding Sashiko review for doing discussions via mails.
 
-Hi Shakeel,
+# review url: https://sashiko.dev/#/patchset/20260325155221.202700-1-objecting@objecting.org
+# start of sashiko.dev inline review
+commit 24e25058b8f508495d0b3db33bed16564df7fed4
+Author: Josh Law <objecting@objecting.org>
+Subject: mm/damon/core: validate goal nid before accessing node data
 
-Nice outline, I'd be quite interested in this discussion. It's a
-little difficult for me to imagine a reclaim_ops getting us to
-complete convergence, but it seems like a good way to start making
-progress.
+This patch adds bounds and node_state(N_MEMORY) checks before using
+goal->nid from userspace to prevent out-of-bounds access in NODE_DATA().
 
-Unfortuantely I got an LSFMM Invitation Decline, so I won't be there.
-Take good notes. :)
+Cc: stable@vger.kernel.org
 
--T.J.
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index db6c67e52d2b..ed45a7443abe 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2245,6 +2245,10 @@ static __kernel_ulong_t damos_get_node_mem_bp(
+>  	struct sysinfo i;
+>  	__kernel_ulong_t numerator;
+>  
+> +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
+> +	    !node_state(goal->nid, N_MEMORY))
+> +		return 0;
+> +
+
+When goal->nid is invalid or offline, this unconditionally returns 0.
+For the DAMOS_QUOTA_NODE_MEM_FREE_BP metric, wouldn't returning 0 imply
+0% free memory?
+
+Could this cause the DAMON feedback loop to interpret the goal as
+severely under-achieved and drastically increase the scheme's
+aggressiveness?
+
+Should this fallback logic check the metric type and return 10000
+(100% free) for FREE_BP metrics to fail gracefully, mirroring the
+existing fallback logic used when a memory cgroup lookup fails?
+
+>  	si_meminfo_node(&i, goal->nid);
+>  	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
+>  		numerator = i.totalram - i.freeram;
+>  	else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
+>  		numerator = i.freeram;
+>  	return mult_frac(numerator, 10000, i.totalram);
+
+While not introduced by this patch, since this function is being
+modified to handle node edge cases, is it possible for a node to have
+N_MEMORY set, but have 0 managed pages? For example, if all of its
+memory is reserved for hugetlb or unmanaged ZONE_DEVICE memory.
+
+If so, si_meminfo_node() would set i.totalram to 0. Would the call
+to mult_frac() then cause a divide-by-zero panic when it evaluates
+x_ / d_ ?
+
+> @@ -2261,6 +2265,10 @@ static unsigned long damos_get_node_memcg_used_bp(
+>  	unsigned long used_pages, numerator;
+>  	struct sysinfo i;
+>  
+> +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
+> +	    !node_state(goal->nid, N_MEMORY))
+> +		return 0;
+> +
+
+Similar to the function above, returning 0 unconditionally here for
+DAMOS_QUOTA_NODE_MEMCG_FREE_BP might artificially trigger maximum
+reclaim aggressiveness.
+
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260325155221.202700-1-objecting@objecting.org
+#
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260325155221.202700-1-objecting@objecting.org
+#
+# [1] https://github.com/sjp38/hackermail
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
