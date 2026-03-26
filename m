@@ -4,154 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E0E810A62CF
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 13:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A854D10A62D5
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 13:43:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86C826B0088; Thu, 26 Mar 2026 09:42:49 -0400 (EDT)
+	id 190446B0089; Thu, 26 Mar 2026 09:43:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844976B0089; Thu, 26 Mar 2026 09:42:49 -0400 (EDT)
+	id 13FE66B008C; Thu, 26 Mar 2026 09:43:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75A876B008C; Thu, 26 Mar 2026 09:42:49 -0400 (EDT)
+	id 0562B6B0092; Thu, 26 Mar 2026 09:43:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 66FC36B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:42:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EA1B96B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:43:39 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 019048D15F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:42:48 +0000 (UTC)
-X-FDA: 84588329658.20.D546355
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E6DC51A0016
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:42:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kV5ljdU2;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74A678D04A
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:43:39 +0000 (UTC)
+X-FDA: 84588331758.20.9B2A770
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DBB582000D
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:43:37 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXFL1wlX;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774532567;
+	s=arc-20220608; t=1774532617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lvmTvbVmObL6MMPWQihLKJYeyHCKrXJrr2lSI/8mvnY=;
-	b=kZAjIS1f9hbrJljE5BOF9GgEtx4lOyj4YacTyIx3ENHHVFSUh8CrSQh4LiYD3s9tLH7JK1
-	kuqhJGudEU9CIcr30xhq6dy13AoqRD4y3i4qa7/9QwWWHcI2m1Zy68t0Uo18X307CxWcXM
-	A+9HkLT2FkNkYP8GKqC3uYAvAoxEI94=
+	bh=/wg7a6btFk1VmDMySpNEXAfDTU6wawmqxT+TsOczRZQ=;
+	b=FkVAT+PO9dtci8tQNa1f7DVjFiwIS/PoxN3RnT44wyXq9Fu7Qprw0Z8kIp4QQ76RB7pOuE
+	Crso3//48BzSfuYpV9+p4o5aZVqewxkPE9ZOUOJfARcurPgUg9JPEMRKBN0iDrE91JgTRj
+	2Wno2ukzZNUbEGWfiKJhm5l9kZVG/V0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kV5ljdU2;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXFL1wlX;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774532567; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774532617; a=rsa-sha256;
 	cv=none;
-	b=buAolj248MAj4NS26Rg+5kBGjYMD1/XxIUE8Bo8GYAMB9OoY1wYNasfaTgqR6hOLX38QNo
-	vUo+T1xKrEhIfcUjQTlsb/auPiL/yDa8ymAtQJDeaEOurnZdyvPTq43rBekANjAQ/7HR4Z
-	ko/fjsUeAjkwvBA8BlXHMgjLu2XgBNU=
+	b=12pB6BP9k94F9Di8sgS0JwXFjt7P8JJcy/NGYV/YAZaXJazvRXnzZ2c7XS+Aqqck33XXjw
+	W3K87uzu+9OYaxfE1WTZM07p4wOsjqV00p0SMdv87C6rg/aJsUyRD5RqDqO9VQwTF8xmSs
+	ocsnZfIevQ1CXCbTDURDKtrvQr3n4Ho=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CCC9E43305;
-	Thu, 26 Mar 2026 13:42:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4449C116C6;
-	Thu, 26 Mar 2026 13:42:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B1A4600C4;
+	Thu, 26 Mar 2026 13:43:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9781C116C6;
+	Thu, 26 Mar 2026 13:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774532565;
-	bh=aqeaVyOgj2nhbWGaqNG8pdXcUvJ3CJyTuuyl/s9Mc8k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kV5ljdU2Wlclco25t1YBWfkmbtNb8y5Yi56M5iUA09lTbuQX6gK8atvoEY3qoPku/
-	 UVfi34mtvWbnQ8f4MEPq+UdWzHEcHVC3df6ldOkrnV8We3h2oGHjGobdaN/B0fjgDD
-	 kz/x1kP7/HtIcvP9AmZZtDC8Q5F3naLPxqHX1Lzn+m9CSuYCh/4Y/BBndrfQbvpwD+
-	 8MCfggugpwG93/9MBrNYPJCKTEe98O20LnYwgTWLagqtpDz8x/THLxcYaULLgJ4w6a
-	 CTnat6u3U+wX98CDuB6VZjqa03cbOOYuFYUwtO86iQ+FNIVAcyqJjMZ+3ZU2Jafx37
-	 kqFy5mXfAEDkw==
-Message-ID: <b340e43f-2e08-4a77-8176-e49667387e85@kernel.org>
-Date: Thu, 26 Mar 2026 14:42:35 +0100
+	s=k20201202; t=1774532617;
+	bh=nk0Mdre4v1viW8JBlbFncIzJhJccn/rmA5Bx5nxUNzY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BXFL1wlXJd4uxRJSa0WrDUDRqCzaFsXqiIKqhJFYJEZRbUCz2RRktkdm1waxjShwy
+	 LQWSa/H6/KLntrERss9EHxpp3gBItF5uermP3OjPehZccDq79Kf4VPcW2Qv3qOFyKP
+	 TWWZ50aaoQKAUMiDiz90vrKBrL6l/fu0R3R+0AWmG/r6dw0QyBhQeu8hRk28so4f/n
+	 IgRdlADsEVsguMIVEqX9xAPFM9JRyQeUcrvlQxvjN9DpUTF01yp/FV/mZk9EBYlXOI
+	 lMW0ObYiA+2gqCHIQLCfZF9Vrpz4Z22ajNBvtIDM7YB/Jor/ouBKU/KZqjB8Vy6g25
+	 xNIBAVGEZQmUw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 14 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH 2/2] mm/damon/core: fix damon_call() vs kdamond_fn() exit race deadlock
+Date: Thu, 26 Mar 2026 06:43:29 -0700
+Message-ID: <20260326134330.90521-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260326062347.88569-3-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Kairui Song <ryncsn@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>, Andrew Morton
- <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- lsf-pc@lists.linux-foundation.org, Johannes Weiner <hannes@cmpxchg.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>,
- Chen Ridong <chenridong@huaweicloud.com>,
- Emil Tsalapatis <emil@etsalapatis.com>, Alexei Starovoitov <ast@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Matthew Wilcox <willy@infradead.org>,
- Nhat Pham <nphamcs@gmail.com>, Gregory Price <gourry@gourry.net>,
- Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>,
- Vernon Yang <vernon2gm@gmail.com>, David Rientjes <rientjes@google.com>,
- Kalesh Singh <kaleshsingh@google.com>, wangzicheng <wangzicheng@honor.com>,
- "T . J . Mercier" <tjmercier@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
- <acTaRgusrxfCoKqe@tiehlicka>
- <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
- <CAMgjq7B_twv3xhd5VmMJxngAknf9YaLAiwGYpdi6H2n1cXD3-A@mail.gmail.com>
- <67f1588e-a094-413c-9746-9c28bdf6cc56@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <67f1588e-a094-413c-9746-9c28bdf6cc56@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E6DC51A0016
-X-Stat-Signature: qaysqkhuag6xdatnppjhzi611zct7a1u
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774532566-322238
-X-HE-Meta: U2FsdGVkX1+qKY5SdvH/eD7VeKzEGG90J9Z97sPrQod6Qq12ciNvtTR1+VvkUSXxhp3s5l4LfoAuDfeJRC/hhHDEad4kQVLY6v/iLcKbD7DCs1jRdX96TaifVpsIHgrW+yyrvifj/fJClcS1kCZBNPaXYL3buOdNSkW8MYrDEoqWAXvvegYWX/rGFJL/3LSTR5yfyI64BOZwShmLJ0DD200Mi97SpIrOQVYUk/owZM4RTAzzWjiInHw4SxO6E/QUdreVPFy7UgUsq7LM/ZcfQ4RyzlOeLN2d+6OMlFxDmUchmMPfF+sxFDJ2ITJZS6DDyfRKF0KSZw8TfWSqm//Qu5soSBe/S6QoQU7FjXeu2GFkRgn4RZtOfrzkcUmRrpcZMf0ShMOTDvMNsmzViNITaVfGHXUZ00D6HMfSc2ZNt5zNoJ2aO6z6B+pOGk2jX0JdX7vbcPmeYoPivA0Tj2aZHUYURdgYYm1kbb1P/6cd0Obi2qbxVyL5N895ePFi2fzuLmho6jyvLHLz44wjKAoVK1cy6yvvl4/FxRHLlDEHuuWtUOHIbEgGEemf/0VobIyk+eTwgeokmO3j/saTi4FmMfjjdfv+Kg9gEQy/JX7UdryqpFJ7ApxZSQao9/XmftqB783zPKkcsz6TlINAwb0vxm38t+38SqOta+98DExfugRidkFxBiVZJEzNunClrsqNkOyKeSFAo2ZO8GyiJW/Db/QsFNcfnecj1o2tlLq/K5076zkRihaKSP8lC0650zzwAc0mV8NRj2nHtVNTOg28pxoKQm0wllr3SBAYqbZ5mpuqf/foiiyJKrj9H6cOCauwh7V1NsVH4r9guKSr4N8nKc8esKv17lvm+ITslpW8r8XWwfrQ3kK0Fky5JPzRqSOVBmEOtfZwNJQouBFomP5oYjXMOj7oN1B2pZXMsD+GmEwPbNDKVxBtwq07dL1N8Ecbc2ajPYC7PIQkdsiHY+Z
- xr09lvz+
- zc2L/n/kW9ZJ1+C2bER5yMBzbHTcs5sqOLJJ1ntcAvkxMkhtlyJXy/41tVHuQx7Qv40XK3ROY9mtKG4VYOnfnSO6qY1LeYbNrdC5+8/gKYlRfJ/drB3Vxdj96eY5qh0e2z+ED6XY4sh1bzZ2FdvP/BINzEsKGsRetPAtOKSVO0k8/uFN/JOLoP6PIPB7FM3IluaCji9TeRhohv3VzR6iQ5IbbOPYb3OwZUbPosJqoi2rRH401o8vmp/wgxJOrim4O79MyAxfGo7ul151rT5nPAnb/GUQU4JFaqSg8GTLah6v7Mv0VCkLt2Yeas8hksjtZeL0MvfKYjT6YT84miWuLsJmHZZ59fZ4QDYwbU91pFAhsCs066lH2GnKGb1p0BN4D78R+rdGMbDpQPVKWbJNiSTx7UmyZQblsxQ6UiDLkIhEZHqqS/G+s0T4bNRK3SpH0jp7Z3L+l6msOLlwJIaCdlcvwvU6BWNFbONteFyS01QgvSKzS8sFsofGIgz4mY2Bfk5T6NSxggWFmi+2yhSdcDQ84lnwnIpC2JahXAZoUfdRhRcXU2yd7vGkqtYE67boGMOjCXLjBM4kqHTc=
+X-Rspamd-Queue-Id: DBB582000D
+X-Stat-Signature: s46op6u6j3omcad5t1aoyq5rii6sd7jc
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774532617-244753
+X-HE-Meta: U2FsdGVkX193qWg8D/fpuIWCE95V5Ktjex7m4Shh6Gohs6hsgVf5nNyoe8gfDV6ilLrgF3dyyot9hlRymav/2uw1E/jyUvHRXWqZmB8cOG3kWNZZHrtIdGXkUHSJsbmXasEk6cY9fANx2ACNnXWgyTD69i5kDdfbEMcZ+t/zRmJeN42WHfkN6Xb0HJupcd3VTWjTQIJ2werEwAu1HJ7pLpgU0gec6aZFtNeEiuWZ1Jy/+p7BuCfoSULC+CyU+TBE78fj1OaB80O2TKhCXHXFiIwgXHcGG/sCMmvwRvbgTIn5p1iRxNVFT2tum3Hqq1Aq9YtqAitGNWPtKnRlcJzyRqib+2MzKdhB/BPsYu+Tpfp68MxgJWa2YdN4EWaYeMGJ2ixXa1ux+efSaRS4NxnSMOHkJxVi9lLwrJjP+Ky3eqRc2FYzPnmcOzpQ8ANe6hpzq4qGFYS/N3sZxCsMV20bdxzt1FSvBHhBnNFyL1vCjo1GuXlCcsuoqPdByaGxKcsopAFIsDCSOudjPKcr4dtUn1IUkZPGNDl3TSvKAJMmQ64OQjZ7uFkZPOz+Ld2WAmsnZl9vKUJ/4Rd483ehQOswxZiRLV4MLbvmWTAxn/zr2UciJQZQEft82XnY22eLCtTV81lx2oWUZmRaqUI9betUpPR1j7JbxY6n1zn9Qh3c7EbDNUzTld/+WoBaE0+hzOG4C68mL9gW2mpPXWz+Ro7H/5Q9nBzNMeQPByY9P9U3aSn0QFzdtumT0HTx7CHgldBTotLOaEICaViXX+RL5UvZmATWb6r7X7Q0cvz/GQIasKYWJe9gJ1tpbiRPrQwJEvKX1GUrCkCZt+85kTy1IULa2DB1M+FT1+3lng0VhCgwe3TQKKSYPzBT+KEOPViGU4ra/etRetnS/77GtyfrYc+klraM9w1M6A3oJtX8wybhlC+znIM8H3kocZZR8OwChFCWAwpUtw13MgJsX3+/h0W
+ cViT1mM6
+ BjmlVBjKW2FfY1ak8AxKalkDN820rWWKHlQCXU4lrytRa0q6Q7jhsbBATfkGJKEz/gPXChh1mL+yzfvKlpoj3GyH73u4xUZ3WaUmjtPd8bKOl0G9whpAChPIhonnAb+bntWbtmFBEYbeiUiO7ZUD7PWEo0oeOilEQJalj/7EJB1xAM7kOXgcmhGrGxYQRchmUoPAGuzTL/QkAVvqtQ8q3MOvQ4LUSX6usU7dHarcyordqyP5Dm4yCo4ZjkJ9q357bLosrmKyoBtHbwo/8NNbdY6oFiHtzfetmLFd8xTo6Yru5ZdBRCXAXUXvd4XxVYRJ4gB1lsEiIQ9oWRi4kGzIsW91wUureGR3iCCkQCIG63dHjMTQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,99 +93,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/26/26 14:13, Lorenzo Stoakes (Oracle) wrote:
-> On Thu, Mar 26, 2026 at 08:37:06PM +0800, Kairui Song wrote:
->> On Thu, Mar 26, 2026 at 4:02 PM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
->>>
->>>
->>> I'm quite concerned about maintainership, as it seems the MGLRU maintainers have
->>> not been all that active, and the MGLRU to me at least is currently a black box.
->>>
->>> I'm not the only one who's raised this (see [0]).
->>>
->>> That'd very much have to be resolved and the community reassured that MGLRU is
->>> _actively_ maintained before we could even contemplate it replacing the
->>> 'classic' reclaim approach IMO.
->>>
->>> I hope that Kairu, Barry, Zicheng and others who are interested int it resolve
->>> this, however!
->>
->> Hi everyone,
->>
->> Right, I think we are starting to make good progress on improving
->> MGLRU recently. For the last few years we already have some commits
->> stashed downstream to enable that on our fleet, most of my effort in
->> upstream is spent on other parts like SWAP, really looking forward to
->> making MGLRU better upstreamly.
->>
->> Yesterday I was still discussing with CachyOS folks about their usage
->> while working on that series for MGLRU cleanup and dirty flush
->> optimization, and got some nice feedback later from their chat server
->> that MGLRU's TTL resolved their thrashing issue very well. With
->> classic LRU they needed a le9 patch downtreamly.
->>
->> For many other typical workloads under stress, MGLRU performs
->> significantly better too (e.g. database, build kernel could be more
->> than twice as fast), it would be a huge loss to leave it unmaintained.
->>
->> Barry also provided some really helpful ideas about MGLRU like
->> readahead handling. We are also seeing other vendors and people
->> contributing to MGLRU like Leno and Baolin recently. Things are
->> looking promising.
-> 
-> Guys, can I please make a plea then for you guys to AT LEAST become
-> reviewers in MAINTAINERS please:
-> 
-> MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
-> M:	Andrew Morton <akpm@linux-foundation.org>
-> 
-> Well Andrew is Andrew :)
-> 
-> M:	Axel Rasmussen <axelrasmussen@google.com>
-> 
-> git log mm/vmscan.c has 0 results.
-> 
-> Axel has however engaged in discussion on
-> https://lore.kernel.org/linux-mm/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com/
-> recently for example, but not much in 2025 afaict.
-> 
-> M:	Yuanchu Xie <yuanchu@google.com>
-> 
-> git log mm/vmscan.c shows 1 result from August 13th 2024.
-> 
-> Yuanchu has engaged in some MGLRU discussion also recently, here and there.
-> 
-> R:	Wei Xu <weixugc@google.com>
-> 
-> git log mm/vmscan.c shows 2 results from October 2024.
-> 
-> Wei doesn't look to have engaged in discussion on MGLRU recently.
-> 
-> L:	linux-mm@kvack.org
-> S:	Maintained
-> W:	http://www.linux-mm.org
-> T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> F:	Documentation/admin-guide/mm/multigen_lru.rst
-> F:	Documentation/mm/multigen_lru.rst
-> F:	include/linux/mm_inline.h
-> F:	include/linux/mmzone.h
-> F:	mm/swap.c
-> F:	mm/vmscan.c
-> F:	mm/workingset.c
-> 
-> It doesn't really feel like MGLRU is currently maintained at all, quite
-> honestly.
-> 
-> So I think we need people to step up here.
+Forwarding Sashiko review for doing discussions via mails.
+
+# review url: https://sashiko.dev/#/patchset/20260326062347.88569-3-sj@kernel.org
+# start of sashiko.dev inline review
+commit b886bf00a72b1462f29533c91c431cd2ba3fa3a6
+Author: SeongJae Park <sj@kernel.org>
+mm/damon/core: fix damon_call() vs kdamond_fn() exit race deadlock
+
+This commit introduces a call_controls_obsolete flag to protect damon_call()
+from racing with the kdamond termination sequence. This replaces the previous
+after-registration damon_is_running() check.
+
+Link: https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org
+
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index db6c67e52d2b8..a2b553e2c5a81 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+[ ... ]
+> @@ -1629,10 +1600,12 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+>  	INIT_LIST_HEAD(&control->list);
+>  
+>  	mutex_lock(&ctx->call_controls_lock);
+> +	if (ctx->call_controls_obsolete) {
+> +		mutex_unlock(&ctx->call_controls_lock);
+> +		return -ECANCELED;
+> +	}
+>  	list_add_tail(&control->list, &ctx->call_controls);
+>  	mutex_unlock(&ctx->call_controls_lock);
+> -	if (!damon_is_running(ctx))
+> -		return damon_call_handle_inactive_ctx(ctx, control);
+
+Does this removal cause an indefinite wait if damon_call() is invoked on an
+unstarted context?
+
+For a newly allocated damon_ctx, call_controls_obsolete is zero-initialized
+to false. Without the damon_is_running() check, if a caller invokes
+damon_call() before damon_start(), it appears the request will be queued and
+block on wait_for_completion() indefinitely since no kdamond thread is
+running to handle or cancel it.
+
+>  	if (control->repeat)
+>  		return 0;
+>  	wait_for_completion(&control->completion);
+[ ... ]
+> @@ -3062,6 +3038,9 @@ static int kdamond_fn(void *data)
+>  	damon_destroy_targets(ctx);
+>  
+>  	kfree(ctx->regions_score_histogram);
+> +	mutex_lock(&ctx->call_controls_lock);
+> +	ctx->call_controls_obsolete = true;
+> +	mutex_unlock(&ctx->call_controls_lock);
+>  	kdamond_call(ctx, true);
+>  	damos_walk_cancel(ctx);
+
+Can this sequence also cause a spurious -ECANCELED failure when a context is
+restarted?
+
+When restarting a context, kdamond_fn() signals kdamond_started before
+calling kdamond_init_ctx():
+
+        complete(&ctx->kdamond_started);
+        kdamond_init_ctx(ctx);
+
+If damon_start() unblocks and immediately invokes damon_call(), couldn't it
+observe the stale call_controls_obsolete == true from the previous run and
+return -ECANCELED, since kdamond_init_ctx() has not yet reset the flag?
+
+Also, is damos_walk() vulnerable to the same termination race being fixed
+here for damon_call()?
+
+In kdamond_fn(), damos_walk_cancel() processes cancellations before
+ctx->kdamond is set to NULL. If damos_walk() is called during this window,
+it checks damon_is_running() (which still returns true), sets the walk
+control, and blocks on wait_for_completion().
+
+Since cancellations are already processed, will it wait indefinitely?
 
 
-Ans some serious cleanup of the entry to reflect who is actually
-involved nowadays, if at all.
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260326062347.88569-3-sj@kernel.org
+#
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260326062347.88569-3-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
-Master of MAINTAINER updates, I assume you'll take care of that?
-
--- 
-Cheers,
-
-David
+Sent using hkml (https://github.com/sjp38/hackermail)
 
