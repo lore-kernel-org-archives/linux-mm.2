@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D09109E55B
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 06:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98D14109E55B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 06:48:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BD186B0005; Thu, 26 Mar 2026 02:47:33 -0400 (EDT)
+	id 0F6F06B0088; Thu, 26 Mar 2026 02:48:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 846D96B0088; Thu, 26 Mar 2026 02:47:33 -0400 (EDT)
+	id 0A79D6B0089; Thu, 26 Mar 2026 02:48:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73ABB6B0089; Thu, 26 Mar 2026 02:47:33 -0400 (EDT)
+	id EFF366B008C; Thu, 26 Mar 2026 02:48:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B85D6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:47:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D121A5C6DE
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:47:32 +0000 (UTC)
-X-FDA: 84587283144.11.0A8E8F9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DA2386B0088
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:48:31 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72952160C15
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:48:31 +0000 (UTC)
+X-FDA: 84587285622.02.D6DCE5E
 Received: from toronto-edge.smtp.mymangomail.com (toronto-edge.smtp.mymangomail.com [209.38.81.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B8D52180004
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:47:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=fapLmS1C;
-	spf=pass (imf16.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
+	by imf28.hostedemail.com (Postfix) with ESMTP id BCF38C000C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:48:28 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=XxwiZltz;
+	spf=pass (imf28.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
 	dmarc=pass (policy=quarantine) header.from=gerlicz.space
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774507650;
+	s=arc-20220608; t=1774507709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n7isdfrqjLl4oRkGVkjigFFtWxBai5gXnoimO6gOWXE=;
-	b=h4LlX0ckAepI966beYqpwMTOSNsA/sX/Ei5S1GBAeT2rBJ9DDNfRJOKXyyxxpMIZ60A/hq
-	i/wj0eGi9/6pmdOxsOBz69HXN0YK9ohE6+BTQdQ/1W7kDl5Nf3UKhscR8nrLyQfbzcCSvh
-	ZQJwcmX9wwcthB90a5gNhUj+63zLpDo=
+	bh=vatpyTHCvApxrpdQIC/dp3cKCrlOiEv4QlZzcoloOko=;
+	b=albsNa5iWzmZOipt5FPZzS+cMYfIAI/3NlRN1i7BOu9PppSOAHiR5OLP3cq7gJH+uiH53w
+	sZDcMUzHajTrk9Uxu1W1FhY72iIL33RhLdqJGk4G32oJpYBIUPIspGK7sjEltuyMHrZRNZ
+	YvJ63BQ2uIdN+3jnNWL/23vSv/o1dus=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=fapLmS1C;
-	spf=pass (imf16.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=XxwiZltz;
+	spf=pass (imf28.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
 	dmarc=pass (policy=quarantine) header.from=gerlicz.space
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774507650; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774507709; a=rsa-sha256;
 	cv=none;
-	b=3kKtYNzeTA/CeRtKcLhlf07ya6esIliK63JtP136TwTvLi5l01X6JYecy8+9eAGm8dYt0p
-	HJV4Hnu+u4to3UiIptt5EYLcR+sYcDonz1qZGZkZbdeI8iGrurow4aeqwONkMSF6Vs42Tu
-	K/KtN8WXNKLx2fyQ1qfuVMXQ5jZLjbk=
+	b=NA71eoEeTj6a5ny/E4A2JcBtSZmVEGWFEDWiTCSSBA4qQKQ4CXSHlEkg4yqWi2fwcbHCSO
+	yQD1WoTGwFwn+da5yTPd9FHk2tKrsVWvjz2yXp6WsB/A7G5X3voWTcebr9ZXoXTRyADF7D
+	TaqOT2VyNIDDq4BVzGee8k6/WXNBEdw=
 Received: from [127.0.1.1] (localhost [127.0.0.1])
-	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTP id 6F9455D9C1;
-	Thu, 26 Mar 2026 02:47:00 -0400 (EDT)
+	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTP id 84F925D9C4;
+	Thu, 26 Mar 2026 02:48:12 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
-	s=mango-1; t=1774507620;
-	bh=bAXOMshbJhQGZ5ZyyPvepWgn87EqYBruY6YlzgtvPQ0=;
+	s=mango-1; t=1774507692;
+	bh=3EuSxHtkudq5kGLqdpvQzp2LofPCcj5NY0hFbWKHRwY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fapLmS1C/M/jQxsPcnjq+DOgpFyxPADZ+rZCkITfFoqsxWN0TdSWfM3XbcelVvhnn
-	 QdbWUcRmr/PMwEPr7Px41Pcs0COZQioKBioSXWTPNjJNltU+YAWpfwQS5RLPlKYMCa
-	 samGEIWtFzvAtCkXCBkmK0T9jhTsKSyHpBSnIAvo=
+	b=XxwiZltzYTzUbZgbJj7WdHS/IcmTagynFNvDFKTtrfQuZJwGK7TMBAd2aZttyswUD
+	 JL5uX5IcAlO4lplY7KVS13SzRnfYndqizuE2LkfdAHuHuw6A4llsFC1YcQKFvNG6ai
+	 r8SwfWUgtWQ/JQ/HUrMw7PncyoE+fbwoSCv+/v88=
 X-Mango-Origin: 1
 X-Mango-Origin: 1
 X-Mango-Origin: 1
@@ -72,10 +72,10 @@ Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest
  SHA256)
 	(No client certificate requested)
-	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTPSA id 6A03D5D9BD;
-	Thu, 26 Mar 2026 02:43:55 -0400 (EDT)
+	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTPSA id 796195D9BD;
+	Thu, 26 Mar 2026 02:47:04 -0400 (EDT)
 MIME-Version: 1.0
-Date: Thu, 26 Mar 2026 07:43:54 +0100
+Date: Thu, 26 Mar 2026 07:47:03 +0100
 From: oskar@gerlicz.space
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: Mike Rapoport <rppt@kernel.org>, Baoquan He <bhe@redhat.com>, Pratyush
@@ -87,19 +87,19 @@ In-Reply-To:
  <CA+CK2bCiqCg1Tt0WgP3KszrK96Qahcgfyfige4eUQOkMVyLUqg@mail.gmail.com>
 References: <20260324212730.65290-1-oskar@gerlicz.space>
  <CA+CK2bCiqCg1Tt0WgP3KszrK96Qahcgfyfige4eUQOkMVyLUqg@mail.gmail.com>
-Message-ID: <414949e275fcecf58cddaf422fed0b1a@gerlicz.space>
+Message-ID: <7628da0465cd09bfc16bf9353f37045c@gerlicz.space>
 X-Sender: oskar@gerlicz.space
 Content-Type: text/plain; charset=UTF-8;
  format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
+X-Rspamd-Queue-Id: BCF38C000C
 X-Stat-Signature: btsrq4goz41utbzwgqz7nez4kdcc975n
-X-Rspamd-Queue-Id: B8D52180004
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774507649-821587
-X-HE-Meta: U2FsdGVkX1+LXUVBTFARZliLLZM/mpSCZpuaK4WR5fek4VJJLvgwtAU0+pZQ/NDtTqj0fH5HMzCzADCUhocteR0N7mlYnBzKx6VeUMrvh6DIk4TeZrrCyC/iyNg0U1yqP2s1JP5tn4CWkoQoizF+Y2mnZy8i4qlGLXic4BksaU9C1FFWx5WtfvTUlREualDckoljHetCPFsKIaDjE33m2BWRi8w4bomZfQBnRKpltg8x5oq7c4eZhPVseSNN8QzJ/Tix//Z/bTKWJx6tZvV0hSj9Cjeo/Q9j4RzQwAIo5p9O+mU1K5vUsGlxOvxqjX3E1c8V5kJAXnhMp1FQBx1jYC3tgAKlo1/PFytfPif7Qwr81T8OZPFysfKAqw3wNZd2gygzMYzgjafPzGIUYGq/c9jcP1H6pcoVUTvUYXLagriGMzjFVpPayRkjLIsVK6sBTo/jT11g4GzaVuGXSi2E7AoDXYHjWcDd9jctJVU4enZOLXYdJYnUYwV1EET4pnPhdOULMHpawQ5gxYtlsnpQK9C6Nps/MC7CI7LCGHnDZc/uxbVHDzdGVRGd6KTX9a1KDJ5X7foGYnpaC3o9qn6dn5p9/iina6n770mwNOwqvjVsknW6xg1HUE+dLjYCz6U3EUepSLkXJ1egKCjnjbLa5MMqm2wHlYpB83a+tgK7p/NJsqr3N0azIQHYzIyhCZadfbil8cZt7OHHdEUm8cAB7QkF384DVM6koi/iDSaWqq7LSIYc+8eeGSr4g37IAHlfumsGIdqRHwJJAehXINCVTxp/ZJDiFYE+rxzDmhco3pM5GlXSzN6fDGPqgq+tTVJ1uen1K9+j11U+eP2gTD+S3P2qJJFxNiCDZnuPta3OJBHEivwm0D3szX0vd3+kvWZq3SNS8d7APXP/K6HFdNQvFMlA93oZKl4/+X83DHKaW3U2T+hkIdYWT/QGoqDPL0rXDreXeCPPuYtbxt3+7Rc
- Z5QBfKfg
- AcSYBBrzL0FJmRnQ6UM8tx0IgCSXTmXIWazVvt8S8p7xcLD5edXUnlXqGuP+ijcoN3x9z1OXtucbPYy2/GjUC3dQteAr6sX07Ok0zCFXlrAGNEfeLOhLf0tWcTTr7ZJcxJYL0vfK8chk1WduMGO5wCi65Om6vJ051KlXSMBgjhHf1EeCeUn9tVdOIMKBpzcjdb8F3hkJCcVt3LRlD8Ac0ENYvGYjfMmt4Y1/uPoG0Gqzfhyv54OHbDd0M70yukUY6tYAu9QkWv+A3fxNvEheplPtKdCRzZSP6X3uC/vCxHmMuIzF5KQ+8WOKrcGYVhNGgxrVRAB+VaH3NIgKvdubD6o9FUNwI6EukBzHvciTo4F2dvF5/7wG+TLGVWARQhsznB2jpvhn3Fo9k3FiNHIE+CdWJP5UfT/YyiU5/w/k3apPuxG7HG1aizeePkQiaD0Aj87Vg2dd6JPihpTo=
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774507708-763959
+X-HE-Meta: U2FsdGVkX18m81BLVMO+I4PG5IASECSBZtu9rs0F8siPXyz7/VS9aP4fdZTnZ0+P6GQZQqxle2SWx6rRTO+7w+8H8GY+2qMQgHeD4aRlpGG9v/Ic1Q/ec2lbA+mKU/oolMoOducQno8Q5kbYtFA6U85LAAi5V18jAlUffZ6/lpkZdHT2ZLNW8nBlaLpvE6RiIG/Pr7SvZTQ/ZUEfK05c7BQt1WCYMYmKKA9bq9odkjOQTphcrV7OsjhIyUOOy8pKRrIerxXAOt+4GEFioalwL1oJ8xYj2LQfeOPSJ8HVuAEK5OLWKYOdKo5KiOh+9gkbSbFm7DR7ddSp7709oB+JekZSpCyiikucYvT2mV8D3DD1ZLgAzAFRe70sV1Q6NT92EsztHYhA+XKBJpAwrPqXdC3oHaCgK/IHR3HD88YMVSyWR5N2HksnBotV3N5yOoQSja6249wdgPkD8H4YsqLG5Rv5m+0phc2K5cXC1UMLa1vxF+qmYGHMhBLpHg3liYLPgrI5INQqaHFZcxVVHr+1ywF+dOwkN4VUKB6/+WyIieBJ36YbE94Pnk3UytUIiBTHoryJvR5XH8Tt8g6H7Qoe7859Ts/31wrjUIrRPBV25jrgb7UkJ8HZA6MH20HP/aIAyfdfoeA6SW3DFqrnCFj+8tukNoAIDdZcUcaY9/IE4lle6RDkuyJu2Xv55n64NxIy8X+RLLcBXsyoMMtF+Ku5RYDNLKn6Zk17r+/h7FTE2UvMNxEykOPN41wrO4+1WUBjrOLGmirKXcSWVv5rxELdfaeGrU/i+mwNwb73C191O2g1Z5+lOt6GFBshzUAyeEYcCHqpHVdPTqaG4TSlUAsMbwszLI0zUZnk1374EZiKAlB3A3a/YRpFag1O/JuxnRz3xcR66v+bupR9suej2ZWzqTkcuQZLgJRdo54rSPArTWlKOi8iF4FQEcLaCrRfc1Aqv85yek/U2CwuN7cJlph
+ kcv1I4xO
+ ImD0hdxyf/BtaTZVl4rjIijKNjPFNHOt3CCuqPoBG66Z78+fSKa7F49HhRu5o2H+ixsXpREdQyWcTfROwWxCbTuFvS7J+5deA1ibfBlJ8PdTPBEIxY4JzDFt+ECTqv4/HsUYudeiB8prt1ViVmF6P6cafMOuvGkO5IaC3tFP41bsE3ClO7uz5P2DjxKcLBUywsjSrTR0b/sBnA0gtMXAC1ujpIKAOIyDTWghNA3Hw7433fVYP5DE8WbS1zpmZPmCwdLRdBuyk1rYwyF/JkkPmnNyLYHtHieAgDIlcKki7OI/KcbMGmO/n9hIQFVvvkB9jOmK1mg0WM/3xAo1/Qu3EK4sFUn7Jw4HU4vFmiMvyS+ftSkrFi9QXQENpOQrQafHT37WfK/dL7BjqDhTfEwWeyYK9wzHb3uu2ZCx08VvnBXv6Re8/U7tXGi+JSdPI070Db5MvMc2Y2YS9t4k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -252,6 +252,8 @@ On 2026-03-25 14:38, Pasha Tatashin wrote:
 Hi Pasha, thank you for the detailed feedback and for sharing your 
 patches. I understand that my previous version was overcomplicated. I 
 will rework the series to follow your approach and keep the changes 
-minimal. I plan to send an updated version later today. Thanks, Oskar 
-Gerlicz-Kowalczuk
+minimal. I plan to send an updated version later today.
+
+Thanks,
+Oskar Gerlicz-Kowalczuk
 
