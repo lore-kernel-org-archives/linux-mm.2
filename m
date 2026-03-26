@@ -4,125 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69E1410A62F9
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 14:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E58D10A62FE
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 14:42:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 980DB6B0005; Thu, 26 Mar 2026 10:37:43 -0400 (EDT)
+	id 0FC986B0089; Thu, 26 Mar 2026 10:42:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 932586B0089; Thu, 26 Mar 2026 10:37:43 -0400 (EDT)
+	id 0866D6B008A; Thu, 26 Mar 2026 10:42:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 847716B008A; Thu, 26 Mar 2026 10:37:43 -0400 (EDT)
+	id E90316B008C; Thu, 26 Mar 2026 10:42:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 764AB6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:37:43 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C3141608C5
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:37:43 +0000 (UTC)
-X-FDA: 84588468006.26.A83DFD5
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 239B820011
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:37:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="TrtP/KI5";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774535861; a=rsa-sha256;
-	cv=none;
-	b=qOscCHTR/D6TyGhwd0cpGI3hCAmhALKWI10zVKBISBoaH7TzG89VFdwnD0VsUBZPKsovH/
-	3dwJRMRmIk7eZzbrcQUR0Ucr9N2g44Be8q6tE1sU4E8y+dmBXx8Lsjc5kRSqN8tm7LrZyp
-	kIMsrEcv4sKXkJ8WffMwq8dHpJoDAiU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="TrtP/KI5";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D4B2F6B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:42:12 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8369813BB48
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:42:12 +0000 (UTC)
+X-FDA: 84588479304.30.85E493F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B1DFA1C0003
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:42:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJGW7ISV;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774535861;
+	s=arc-20220608; t=1774536130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LExnV0j7gKvFxp2DijKwHbwyH1cYLP8Al1bnrSceMkk=;
-	b=1IviOWQGT98oJLXnFYyaXiOkjnZhL9mCasFHGcgjCivz4Lxnek5xZR7LHcBMEuo6ac5Qo3
-	yjPvUFzLAyaLO5jKiE1KFekKENypU8yF/LUh0Nu/IfNRiHRPZOTDliPfURlKOfc81IE2OS
-	pfBEPiIL0kl7PtXnRI0LuLhli5htmL0=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48374014a77so12790975e9.3
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:37:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774535859; x=1775140659; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LExnV0j7gKvFxp2DijKwHbwyH1cYLP8Al1bnrSceMkk=;
-        b=TrtP/KI5m2ZF5rUzw7Z40QgFEkMPEJrBAeNC8cKhuKfA0UmaCmxurpiZ0TwddPaezS
-         ssG+O7AHdXYvdLF9MGcg3AWLZR0nYBnNu3gbSpeofbOvnN73cSjzOx7e+/vsCjCEkTMq
-         xFF6g8eE72txlPRHoRu82KBqtrENmSf6dRLDpdvWu30vCLeJs3FWdsXdIfG69RBKfOjj
-         +rqbmUitT6k9KTVFvLcbGtqrGfQh4vM+sIpGkiNuEhXH446U3dBGn2Wl0xSZf41js/0O
-         n0luBaKVpDsF79zmTAjbpK0lzhkHUvFEeHuiputS8V7zE4ANLzG/qiMA6EJPYEmnFdXn
-         pXuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774535859; x=1775140659;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LExnV0j7gKvFxp2DijKwHbwyH1cYLP8Al1bnrSceMkk=;
-        b=Q25eUkgVUZn4ZSBsxoGlLGPyHsswrM6Lxxa4/WooidK2eRhZhBCcEr0tkK84xqpG0x
-         W532HYFYloHofGgO3B4bcG0lfMKVCHEXnZ6zYUSTXbw9LdMQ9ekZM3AgRoD8z+JtKmiX
-         OUShFDsDYvr44i7LSBNn2nHYmv555uwFe1fkQ+mrCtgH/qTcgAvCwOO/9bzaNe14g638
-         BDsJcw8+s4imHXV77BXnyIv7TYZiO44VBL+EtR6VxfECEG/yhYbDsVJ5vDoBPxyvTsQP
-         zSd7i3Dul938mquk1cJfwY7avJUi7Iyn+Kv87fyh6P9IzZcQ6ufZAmmEWKDQuhOj34xX
-         bT3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWC7zGaOWzjSWWSDaajzQyi7dVtVYVngwGCeubfTbQOwyyrfAtfMvAxJB3zOdxU7CA/+5DQD9qJTA==@kvack.org
-X-Gm-Message-State: AOJu0Ywy3SoP8dYlculBZT54nQDyJuq/WJCDsAHYhVzG6mAawId3RQbN
-	qECKFnuoUVDlniVtP8Y0q++FqNgZ2FwvhQExV9S6ASYd2G1QBeltxFKf
-X-Gm-Gg: ATEYQzwQlhbeXlasRJrEEsTqzuwZHE1Wc8Y8WAJr7NlCGtvehtNy/Wzn20Dfut63iIC
-	kRwf8EsmOU4SPrO3h1iRUU/rTNOg9KFuQLVy2WjdTz8sAH8agF+pbljQAN2sOTUb081DPFjsFCi
-	XqbOjJGlEUVT/6hizBordy5m9xiiW053+Lzy6vahol70tpslNPZ6U59l1ZgmwvfFgLFD1sj5DpV
-	msxQPj1QV7ptiIWP6c8Zs78Cu2cSGxcKdYgqOA9NrsHJaV5zoJpa4oylsGZVoCzKK4YLd7GjkkR
-	FuusoqQ4efie73gIIQODSvVn1g2uNLzwjO3yma+Q6GmUQjKUUQoDIYOEV4KlyErIjylCXqKelY0
-	WLzExpOSKizm4uxwjeh56SieV10tydzH16Tz0QlmjImF1NMoHDPZSI97I3K/FCGwyAJHUehjkKX
-	02SCqpcFgCLUlMIn9ZMMJbl1EW8/sh2eapmrSEFbKwYh9zgD3YAjq1XM7wVKhodCoU
-X-Received: by 2002:a05:600c:4685:b0:485:2ce2:4c87 with SMTP id 5b1f17b1804b1-48715fc3562mr126363235e9.4.1774535858924;
-        Thu, 26 Mar 2026 07:37:38 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871fbbf65asm24277075e9.2.2026.03.26.07.37.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 07:37:38 -0700 (PDT)
-Date: Thu, 26 Mar 2026 14:37:36 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@kernel.org, ziy@nvidia.com,
- harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
- akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
- apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com,
- usamaarif642@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 2/4] mm: memcontrol: change val type to long in
- __mod_memcg_{lruvec_}state()
-Message-ID: <20260326143736.12d22e38@pumpkin>
-In-Reply-To: <ac9c3d78-6244-424f-82b0-d5501145484c@lucifer.local>
-References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
-	<5c42058df0e52a4698da005e502deb2fae7bf819.1774447069.git.zhengqi.arch@bytedance.com>
-	<ac9c3d78-6244-424f-82b0-d5501145484c@lucifer.local>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	bh=gfVQux8xXbvE3mOKP+p6blgPBFvKdzztd0WHKrIC8h4=;
+	b=IMHpoCOJTkvu5yb5liQVMcfTkX4y9Ar9B2SEy5eBKXZT2QUjfLgcXwfN4Mm9McqjCa9M5A
+	s9+pf8uWC8kyDqhYTg89D2Avf/upgZLgaa+vzXWJmp4A8MlnjN9xuK59u/rwMPJXXs7ORp
+	MBaMamN1IMb6X6Y4eVtEsSVMLrqQTm4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774536130; a=rsa-sha256;
+	cv=none;
+	b=UUhpzexzFfX2zVjwMD5O+LqRJ8dHSEhfGAHpHsPha38tgKzW9+9fJqNEjs1mdXz81NFueW
+	1xujP939AX9W0o503HsYk+0VuTfIK6HvGspou1Smpd0eBVEGGUH7PRa4HbQTiMYnyKe/jl
+	qipVaITVD+KC5IOkBx+JqoE2HpZEN+Y=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oJGW7ISV;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C20934435C;
+	Thu, 26 Mar 2026 14:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649AFC116C6;
+	Thu, 26 Mar 2026 14:42:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774536129;
+	bh=7TlnbERDNjc6uhJyi+oMJD2jmKqEDwbDwVIc+hkUZEQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oJGW7ISVLU2YiYHfmF5uSo+2vBsV7P+HyOWUTkVjZKUT8dhqGFtnzWEi1id2M6bFl
+	 zK2k2qodpuiHzPdLVNhbAiq+eG4LedGvj7suugTlzkwLpNVM/aRx0DtHBy1Puv4mm9
+	 0PxiWYbPDTa4UokhoT/9S0hIDIDFNuZ3u/6XGd2ESe1YfWRmfaJnflgbQSCMy64REw
+	 VOIDaZ67yv0TFyxmgLT7qvHEudIoKJLA5ZmtsQlItctgitEOhgrPZmXjdFZn2hksMt
+	 xnA6j1oErvGfId4Rp7xhgzQ1rOBxU+44fHaS8yWqpLw0uQUMCHFyZz1rQUveRi3uBg
+	 1TNLNwaxYFUiQ==
+Message-ID: <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org>
+Date: Thu, 26 Mar 2026 15:42:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 239B820011
-X-Stat-Signature: sdq5agsib83cqd4z1bm17djroufya6fw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
+Content-Language: en-US
+To: Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+ Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
+ "Paul E. McKenney" <paulmck@kernel.org>, ryan.roberts@arm.com
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B1DFA1C0003
+X-Stat-Signature: jfmbk454utg4zjkuptxww5iqu4q6kd1n
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774535860-960037
-X-HE-Meta: U2FsdGVkX18RwYo17tElDZ55aepz+VBbmpY01YYoqF+qkRyTXjXUM2Jt8CCsxW96/XboFmpccJ/kJ/J+87ogGveHqQE0l6w9KS9DvnT78pO5Vqul+H4cwcxktnBaPr3FaQD6EEHw9lJEyStHrEUY8k+T8S2OE/ctihrQ6ntJBmzfU+VX8AwnLibIKFVGAobSS6Mf6Lxhf7mvOXMVwFu3iriCGdXb/3Iu+q3+GDGUSb8hPM6RMp496tuaGvu1fhX86GxVvU/LDDuZxXvjWFCocoxftT0RdUz81LpYxH5IoJ7fPVym0KEiB05VK5XqSJaN+dB9STbihXzSDIYMvWsEdqXsEYZLgXPdetbr/1SeQzOQVrqXU4xo/b4Eli4SaFXr4xv0CZpMjL2edhOQYNUo2epjF5E9oAN7yuBvVxWjseS+vXaHrIIo2sdweTOqYxrR9rRyo8dFtr1fsun1ulRbInbDO8mYNFGBarBkMSrCcLkejRoDZrrkJ7g9ppQ39Z+kYxg5LceK9QsLtJICmRRW9A/t8EpEcb+yMn5w8pZ4d/AyofbBwwXnokSNZzl1c8kJVebEKBexO+VDlBX8Gwl1NUa2q5892QC2biGt9EbxiB9RBnItMSKdPVUGezNH4iXRh0pXVFJAYr7oe4AFnLPVaiShul7z75rKyqi5U039ogYTRFctOMB0f3Ywl8byvG5tVMPC/UJaaVKyXMjZeET6MYwNBjOgDlqPKhhjijfjEdBzIoUrosWGIcD4g3BzjpzqFqOcdemokGi4Nymqspx0eFv5ZiO328BDRAXS0M8vNoD84009e4roaJHWk3o7Ni2WCq/91O0K1EaY8O6B+cp2dTk1wbVu5zeWEADb/Mr1hXLAu9PcusaLnSyqqluNbe+v1PJlSRs1jwN2y+Oxlnz5gB4Xptc7WH45bwVUfGFCNQoedmkbjz8ErXfasQVtLLlzPOP774AWqqRdEV7c9Mq
- JNnIKURD
- UUpSZTAjtLBFV9YYRGzHO27e8pVve1TTvVC8ubqe9snZ7BXIB+6MuRLoLtFqoHeEQxTQaweMZjP3HimwvDKGYMIC4XY3qWzLUGpuHjPpodTRXmWMI8amFuZhGv/Fz0NWQ+UUEwDECzgo4+SaiurZmqcsO0RI4mXMOXYPb6B5XhZpq3G0wkQIx/yMN+Mfx3IqmTQKrOVh78NZ8J3tSRxS99LwEI/DtC8BwESp5DkNbYBIU9pn++H4fclYGUF9jVJymVp3nkyN0cPIOqWdWWnqKZv8huHbckVURnOA7mgRFLB2bZIgJEaTRrwxrkrmMF8bgOSKLDu0BmP1k71kVjaZjQ/8TwYy3YP56bij/DRTEbTawKDaRR0eGA6OHJiOxyKUEWLi3EPdWvcg9fuKzYWoyeMTStgG/t2sooEey9BwIGP+DzhQLJgunBNybtvluELXdd+jt0mtceM9r9Y5f/0ZbNUF6uxMfALxvkkUVUgSDc4nZSZ0AqUNnjUa2UHIapvanEUJiqmX45xEa5wOWmzl1azs/qVvekaj6Nv6cT6yd2flUDlVku+avwSYXcLmuIhM5WTTI9UtLhJfR39nEDW6Ugx5EciFKi2N/jMfy0sLgg19Ev4A=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774536130-566976
+X-HE-Meta: U2FsdGVkX1/8cXPx9JIMcp4RptIkY80MwuFClOeLA6lISxoaNNgz4Bzh9T594PFxYZNItF+QBF/fswPtbC0bZJneIA41Z4clXp7kuBAaPrzalxCX3gi/y3Bu6iXa4o2/GZqzKXx6ohXt8GPuFlG6zbyFKbWTxdoAFYBvS8XK33xLtvq+fHCLamHil1eWZJIgArTEhyQY8slBazRUr7YrFPwwlrASJkojZbkHunfais/aMEH/5q6q3kHrrQhhTxHLelw4ZNUgYvhCkEocQN7iUfXG/jIUWBrtkQpdbBETqvrJbOv1Bc94fjFnIckNnMy47TIfhB9IfK7saBIiIYZJLwlDZdvRYLuvr/t98gBz2T9pBKl6uZbjhCtJ0lGgtgcj2/4UTi2VO7iG8FvM6kHGbLNWYRI1L3ePc35FFqp5CeRCNuaCiqkolumPWjGKh07z2j2JwrwQ58qUrF2M3BVWK8lfujaljyVLmHNpIS3MDjqYUAdvFpsn0B27nmzVq6hufJ9CuVgvxF82ffSFkidqqtOfDf6gWcEZS4dkjyveekvkSGghYs8Z8Pw2oAqyTXyLRdGj7GGeMO9yBH/JSUJ/AXhQjC7ytuh1uK8kbssp8+YYMTVAYr3dLkFnCbCRsZYYSdzdTFo8zjhYGjKMDnRMCAuCji3T/LxdxFf21NssXqb8gsJwAHcDllnkVvxRZ6QyR/g/U9mRQVIMKBQI9+bgrtBE2R7SAcnKIJkSYiNzsW78GJEExVr8Xy2VmL5iGMxU/r4Ykdw0x+qVNUVuvlAzobNELVbSovhK2tMXxuqG6dJfWNGZTwECLrbSaFe1s1EicSk8aKkt3GbvcMGfZ4sLNh6BmVoOncjMavGpoKqYmzeca1IIURnunxzxgsYreiM2qPncuHcxs3hQHzi8LecOPxp03MvJIgV4t30FWXmaw+M22P6rrjRkrHhoyy5flVrdrlg94eBBMGbmVlhHdRJ
+ Y9J3y52X
+ 8NAxAvjVipq7spWrJeOcKJoqHuUk+VG8UgLICrDeXas3rSEEO832djG8+h3urSSi0cDpDP5jP/fL5D8s2HfW5OANChaTIOM+eLmet6EoEV1pRLEg88DXqDism/3i2Law2gIdE8jta44PxDXhzL3vnpLbY4tugmXDlTjHHxOqjkEU7hMpOEzEaMRO1ecYRLDggkw3nfEu7ziVvVQO8JmV55nX8tE2qde28kvbY3Mu7JQOc/yVxoLyWh0lJ34cbaKcl/sVtsI26BGTJCTQ3xdnmBRCja5iB8vY/fRCp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,126 +106,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Mar 2026 09:19:29 +0000
-"Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+On 3/26/26 13:43, Aishwarya Rambhadran wrote:
+> Hi Vlastimil, Harry,
 
-> On Wed, Mar 25, 2026 at 10:13:23PM +0800, Qi Zheng wrote:
-> > From: Qi Zheng <zhengqi.arch@bytedance.com>
-> >
-> > The __mod_memcg_state() and __mod_memcg_lruvec_state() functions are also
-> > used to reparent non-hierarchical stats. In this scenario, the values
-> > passed to them are accumulated statistics that might be extremely large
-> > and exceed the upper limit of a 32-bit integer.
-> >
-> > Change the val parameter type from int to long in these functions and
-> > their corresponding tracepoints (memcg_rstat_stats) to prevent potential
-> > overflow issues.
+Hi!
 
-Won't that are be true on 32bit systems?
-Which means the underlying values need to be u64 not long.
-
-	David
-
-> >
-> > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>  
+> We have observed few kernel performance benchmark regressions,
+> mainly in perf & vmalloc workloads, when comparing v6.19 mainline
+> kernel results against later releases in the v7.0 cycle.
+> Independent bisections on different machines consistently point
+> to commits within the slab percpu sheaves series. However, towards
+> the end of the bisection, the signal becomes less clear, so it's
+> not yet certain which specific commit within the series is the
+> root cause.
 > 
-> LGTM, so:
+> The workloads were triggered on AWS Graviton3 (arm64) & AWS Intel
+> Sapphire Rapids (x86_64) systems in which the regressions are
+> reproducible across different kernel release candidates.
+> (R)/(I) mean statistically significant regression/improvement,
+> where "statistically significant" means the 95% confidence
+> intervals do not overlap”.
 > 
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> Below given are the performance benchmark results generated by
+> Fastpath Tool, for different kernel -rc versions relative to the
+> base version v6.19, executed on the mentioned SUTs. The perf/
+> syscall benchmarks (execve/fork) regress consistently by ~6–11% on
+> both arm64 and x86_64 across v7.0-rc1 to rc5, while vmalloc
+> workloads show smaller but stable regressions (~2–10%), particularly
+> in kvfree_rcu paths.
 > 
-> > ---
-> >  include/trace/events/memcg.h | 10 +++++-----
-> >  mm/memcontrol.c              |  8 ++++----
-> >  2 files changed, 9 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/include/trace/events/memcg.h b/include/trace/events/memcg.h
-> > index dfe2f51019b4c..51b62c5931fc2 100644
-> > --- a/include/trace/events/memcg.h
-> > +++ b/include/trace/events/memcg.h
-> > @@ -11,14 +11,14 @@
-> >
-> >  DECLARE_EVENT_CLASS(memcg_rstat_stats,
-> >
-> > -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
-> > +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
-> >
-> >  	TP_ARGS(memcg, item, val),
-> >
-> >  	TP_STRUCT__entry(
-> >  		__field(u64, id)
-> >  		__field(int, item)
-> > -		__field(int, val)
-> > +		__field(long, val)
-> >  	),
-> >
-> >  	TP_fast_assign(
-> > @@ -27,20 +27,20 @@ DECLARE_EVENT_CLASS(memcg_rstat_stats,
-> >  		__entry->val = val;
-> >  	),
-> >
-> > -	TP_printk("memcg_id=%llu item=%d val=%d",
-> > +	TP_printk("memcg_id=%llu item=%d val=%ld",
-> >  		  __entry->id, __entry->item, __entry->val)
-> >  );
-> >
-> >  DEFINE_EVENT(memcg_rstat_stats, mod_memcg_state,
-> >
-> > -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
-> > +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
-> >
-> >  	TP_ARGS(memcg, item, val)
-> >  );
-> >
-> >  DEFINE_EVENT(memcg_rstat_stats, mod_memcg_lruvec_state,
-> >
-> > -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
-> > +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
-> >
-> >  	TP_ARGS(memcg, item, val)
-> >  );
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 7fb9cbc10dfbb..4a78550f6174e 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
-> >
-> >  #ifdef CONFIG_MEMCG_V1
-> >  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
-> > -				     enum node_stat_item idx, int val);
-> > +				     enum node_stat_item idx, long val);
-> >
-> >  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-> >  				       struct mem_cgroup *parent, int idx)
-> > @@ -784,7 +784,7 @@ static int memcg_page_state_unit(int item);
-> >   * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
-> >   * up non-zero sub-page updates to 1 page as zero page updates are ignored.
-> >   */
-> > -static int memcg_state_val_in_pages(int idx, int val)
-> > +static long memcg_state_val_in_pages(int idx, long val)
-> >  {
-> >  	int unit = memcg_page_state_unit(idx);
-> >
-> > @@ -831,7 +831,7 @@ static inline void get_non_dying_memcg_end(void)
-> >  #endif
-> >
-> >  static void __mod_memcg_state(struct mem_cgroup *memcg,
-> > -			      enum memcg_stat_item idx, int val)
-> > +			      enum memcg_stat_item idx, long val)
-> >  {
-> >  	int i = memcg_stats_index(idx);
-> >  	int cpu;
-> > @@ -896,7 +896,7 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
-> >  #endif
-> >
-> >  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
-> > -				     enum node_stat_item idx, int val)
-> > +				     enum node_stat_item idx, long val)
-> >  {
-> >  	struct mem_cgroup *memcg = pn->memcg;
-> >  	int i = memcg_stats_index(idx);
-> > --
-> > 2.20.1
-> >  
-> 
+> Regressions on AWS Intel Sapphire Rapids (x86_64) :
 
+The table formatting is broken for me, can you resend it please? Maybe a
+.txt attachment would work better.
+
+> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+> | Benchmark       | Result Class            |   6-19-0 (base) |  
+>   7-0-0-rc1 |   7-0-0-rc2 |  7-0-0-rc2-gaf4e9ef3d784 |   7-0-0-rc3 |  
+>   7-0-0-rc4 |   7-0-0-rc5 |
+> +=================+==========================================================+=================+=============+=============+===========================+=============+=============+=============+
+> | micromm/vmalloc | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 
+> (usec) |       262605.17 |      -4.94% |      -7.48% |             (R) 
+> -8.11% |      -4.51% |      -6.23% |      -3.47% |
+> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 
+> (usec) |       253198.67 |      -7.56% | (R) -10.57% |            (R) 
+> -10.13% |  (R) -7.07% |      -6.37% |      -6.55% |
+> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)           
+>   |       197904.67 |      -2.07% |      -3.38% |             -2.07% |  
+>      -2.97% |  (R) -4.30% |      -3.39% |
+> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 
+> (usec)  |      1707089.83 |      -2.63% |  (R) -3.69% |               
+> (R) -3.25% |  (R) -2.87% |      -2.22% |  (R) -3.63% |
+> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+> | perf/syscall    | execve (ops/sec)            |         1202.92 |  (R) 
+> -7.15% |  (R) -7.05% |         (R) -7.03% |  (R) -7.93% |  (R) -6.51% |  
+> (R) -7.36% |
+> |                 | fork (ops/sec)            |          996.00 |  (R) 
+> -9.00% | (R) -10.27% |         (R) -9.92% | (R) -11.19% | (R) -10.69% | 
+> (R) -10.28% |
+> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+> 
+> Regressions on AWS Graviton3 (arm64) :
+> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+> | Benchmark       | Result Class            |   6-19-0 (base) |  
+>   7-0-0-rc1 |   7-0-0-rc2 |  7-0-0-rc2-gaf4e9ef3d784 |   7-0-0-rc3 |  
+>   7-0-0-rc4 |   7-0-0-rc5 |
+> +=================+==========================================================+=================+=============+=============+===========================+=============+=============+=============+
+> | micromm/vmalloc | fix_size_alloc_test: p:1, h:0, l:500000 (usec)      
+>       |       320101.50 |  (R) -4.72% |  (R) -3.81% |               (R) 
+> -5.05% |      -3.06% |      -3.16% |  (R) -3.91% |
+> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)      
+>       |       522072.83 |  (R) -2.15% |      -1.25% |               (R) 
+> -2.16% |  (R) -2.13% |      -2.10% |      -1.82% |
+> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)      
+>      |      1041640.33 |      -0.50% |  (R) -2.04% |                 
+> -1.43% |      -0.69% |      -1.78% |  (R) -2.03% |
+> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)    
+>       |      2255794.00 |      -1.51% |  (R) -2.24% |             (R) 
+> -2.33% |      -1.14% |      -0.94% |      -1.60% |
+> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 
+> (usec) |       343543.83 |  (R) -4.50% |  (R) -3.54% |             (R) 
+> -5.00% |  (R) -4.88% |  (R) -4.01% |  (R) -5.54% |
+> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 
+> (usec) |       342290.33 |  (R) -5.15% |  (R) -3.24% |             (R) 
+> -3.76% |  (R) -5.37% |  (R) -3.74% |  (R) -5.51% |
+> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 
+> (usec)  |      1209666.83 |      -2.43% |      -2.09% |                 
+>    -1.19% |  (R) -4.39% |      -1.81% |      -3.15% |
+> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+> | perf/syscall    | execve (ops/sec)            |         1219.58 |      
+>         |  (R) -8.12% |         (R) -7.37% |  (R) -7.60% |  (R) -7.86% 
+> |  (R) -7.71% |
+> |                 | fork (ops/sec)            |          863.67 |        
+>       |  (R) -7.24% |         (R) -7.07% |  (R) -6.42% |  (R) -6.93% |  
+> (R) -6.55% |
+> +-----------------+----------------------------------------------------------+-----------------+-------------+-------------+---------------------------+-------------+-------------+-------------+
+> 
+> 
+> The details of latest bisections that were carried out for the above
+> listed regressions, are given below :
+> -Graviton3 (arm64)
+>   good: v6.19 (05f7e89ab973)
+>   bad:  v7.0-rc2 (11439c4635ed)
+>   workload: perf/syscall (execve)
+>   bisected to: f1427a1d6415 (“slab: make percpu sheaves compatible with
+>   kmalloc_nolock()/kfree_nolock()”)
+> 
+> -Sapphire Rapids (x86_64)
+>   good: v6.19 (05f7e89ab973)
+>   bad:  v7.0-rc3 (1f318b96cc84)
+>   workload: perf/syscall (fork)
+>   bisected to: f1427a1d6415 (“slab: make percpu sheaves compatible with
+>   kmalloc_nolock()/kfree_nolock()”)
+> 
+> -Graviton3 (arm64)
+>   good: v6.19 (05f7e89ab973)
+>   bad:  v7.0-rc3 (1f318b96cc84)
+>   workload: perf/syscall (execve)
+>   bisected to: f3421f8d154c (“slab: introduce percpu sheaves bootstrap”)
+
+Yeah none of these are likely to introduce the regression.
+We've seen other reports from e.g. lkp pointing to later commits that remove
+the cpu (partial) slabs. The theory is that on benchmarks that stress vma
+and maple node caches (fork and execve are likely those), the introduction
+of sheaves in 6.18 (for those caches only) resulted in ~doubled percpu
+caching capacity (and likely associated performance increase) - by sheaves
+backed by cpu (partial) slabs,. Removing the latter then looks like a
+regression in isolation in the 7.0 series.
+
+A regression of vmalloc related to kvfree_rcu might be new. Although if it's
+kvfree_rcu() of vmalloc'd objects, it would be weird. More likely they are
+kvmalloc'd but small enough to be actually kmalloc'd? What are the details
+of that test?
+
+> I'm aware that some fixes for the sheaves series have already been
+> merged around v7.0-rc3; however, these do not appear to resolve the
+> regressions described above completely. Are there additional fixes or
+> follow-ups in progress that I should evaluate? I can investigate
+> further and provide additional data, if that would be useful.
+
+We have some followups planned for 7.1 that would make a difference for
+systems with memoryless nodes. That would mean "numactl -H" shows nodes that
+have cpus but no memory, or that memory is all ZONE_MOVABLE and not ZONE_NORMAL.
+
+Thanks,
+Vlastimil
+
+> Thank you.
+> Aishwarya Rambhadran
+> 
+> 
+> On 23/01/26 12:22 PM, Vlastimil Babka wrote:
 
