@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68209109E530
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 00:28:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35372109E532
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 00:35:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B151D6B0089; Wed, 25 Mar 2026 20:28:25 -0400 (EDT)
+	id 776316B0089; Wed, 25 Mar 2026 20:35:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC64E6B008C; Wed, 25 Mar 2026 20:28:25 -0400 (EDT)
+	id 727516B008C; Wed, 25 Mar 2026 20:35:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DBF26B0092; Wed, 25 Mar 2026 20:28:25 -0400 (EDT)
+	id 63D3E6B0092; Wed, 25 Mar 2026 20:35:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BD506B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:28:25 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D1621B9045
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:28:25 +0000 (UTC)
-X-FDA: 84586327770.17.2510AE1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B1D2B12000F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:28:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="RC0dW/1l";
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="RC0dW/1l";
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774484903; a=rsa-sha256;
-	cv=none;
-	b=SZ7Ss+zGc87vHS/Lv0MHtaksPrWqAHfhRRJRdmlxdqFO5xQVmoSzcpciCGjThkGhqUbx0J
-	2YC013YIwEMpf1Ym2ByFrHsKDZy5hVrkO/1derLNryJXOWlX6IA7byyekBmVdQBPs7owX4
-	uAQ0YnM3WVvNsYIxCiNwjOesU+dVuBA=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 56B6A6B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:35:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD02B8CBA5
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:35:26 +0000 (UTC)
+X-FDA: 84586345452.27.2A31F6F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2D79B40003
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:35:24 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLnwvxPg;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774484903;
+	s=arc-20220608; t=1774485325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CH5ZozcUWQ6lq8A1NVyqYm/jbMnbClOkF4kahXsoU9I=;
-	b=0pJcDE4juWF8OkWsJlMBOyrVvXJ40U1QusBq58UHDzIBsHRTy0tgy4u2ONCFn1ILspoCkp
-	qZ/1OoQyDvYrsHtVgpVLOhNRRT1NnOHRVpimdy8AMLe+Ai6UZOHY9oZkCp0ID8xYoGDqPZ
-	tbx6+R/qz5scRfsJSHBz1bN1FSpnXNI=
+	bh=rZDowMQkOhi6AObyx1RRxhZpFD+yjMtPDc29neBxVzA=;
+	b=V83kFzy7r+W0sTnBTgtpP0UtUJUayWf7xopX3EtLzfSWLovrTHz4y+/md4uToI9r8znjfb
+	2gUEJ/uEbytIoxQFOMRNucK+28Oxs5Ufq2VLbsCpPO1fcojn3/7C79uGB8aiCdLYyXJVg+
+	57HZGXhh+o2F3xDenUhqKswLO0EJjFE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLnwvxPg;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774485325; a=rsa-sha256;
+	cv=none;
+	b=gB8NZQVD5+YYzDGtRbAPek5g9DaLxhUORDwmL4UenQ5aDQJa9gpPpjGl+EuCnJ8CLd3il+
+	nFXBbm23/PSo6gUxdJF+wSGO0FesZWpkmPyFJkcz7B+9dlK+FVRfUamH037H0cW9nC0z4k
+	pL3IBeKgBFXBwzy3ZTFmPvkYHXK1FCE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EE9C160053;
-	Thu, 26 Mar 2026 00:28:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12576C4CEF7;
-	Thu, 26 Mar 2026 00:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774484902;
-	bh=w/b8eyEOh/mk1W3dBx5+GgWy18Ixkyxc+RfaUwy7zlg=;
-	h=Date:From:To:Subject:In-Reply-To:References:From;
-	b=RC0dW/1lAhJ+jsD6juY3kSZgjXnUdGcAuLneGLOX4lepKrAIjVqL9AWTGUnpjG+5v
-	 4OMN9fMsnC3uuqWG/ALz8kW/ln2EyMAbiWATu2v9u6/6sZyAoavgaI2hhLAy4YsbAq
-	 /CorONRKp3kt22ef4Sf1mH8PKy8aVgMdvqLzIjng=
-Date: Wed, 25 Mar 2026 17:28:20 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, ziy@nvidia.com,
- harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Qi Zheng
- <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 0/4] fix unexpected type conversions and potential
- overflows
-Message-Id: <20260325172820.95a0ecda646c6c06dfc97ee0@linux-foundation.org>
-In-Reply-To: <20260325165716.5d63522ba825f25a63e74e3e@linux-foundation.org>
-References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
-	<20260325165716.5d63522ba825f25a63e74e3e@linux-foundation.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B1D2B12000F
-X-Stat-Signature: bb5yehpripwhx156hiyinoi1b77agprm
+	by sea.source.kernel.org (Postfix) with ESMTP id 307AE43993;
+	Thu, 26 Mar 2026 00:35:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE76AC4CEF7;
+	Thu, 26 Mar 2026 00:35:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774485324;
+	bh=JgRgmv19Ob1z5FWl2YmQ9MrKOZCFSCB4WRvOcKg/+90=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GLnwvxPgM6IFQbMezL9MtZrDzM1hsTBXxvfaI+sjUez3ue0H+ua8UG77/uPyY1Uf+
+	 iFRLS6lpqX2hRyDdvECbFSfCFbByNU3SAMqmzR493pyBhuR+RShpC0IGCSdiMW8LVE
+	 xiYytcRiQBY//nE6dA9uJ1o9RowTcM8AA3/sUFWEFeSH/q3fzSQntxW7fBVEO+3Yec
+	 g2pz0AiRXp5FHCkzoZ6nfOsFW+sYgwFAlxc9FQZ6j2r8r/iO/hTIrchcsWrN2jrfmW
+	 qrs/UuCYcNs9xARygbuqWqVVGLbccGLhkZMQ/KpunO5UKhTqEPm6Fqg801C87yyQS5
+	 HYeZ8qPSg6TvA==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/damon/core: validate goal nid before accessing node data
+Date: Wed, 25 Mar 2026 17:35:14 -0700
+Message-ID: <20260326003515.77311-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260325155221.202700-1-objecting@objecting.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1774484903-45452
-X-HE-Meta: U2FsdGVkX19tM5gojbFUssLVzQsd/NInd7p+l7IAVmc8EBQPgP/ziJ9gUjH9KJIKz8RJhn3qSf8FxB3bVvyeIsrmYe1WNliSRDUKiAQfiDEPaRspSLpwTegNajkqOY49tRE2Y5kOUWFfN7HFNrFjk24hBuBRHg6WQuGDxwj9jYdBKBK7XouPCcoMMILCR+bAnlNRZFdEN8xTja4kfrX7i0qPSb3bwpdWwnciYiIq0nvPLNtYpFzY351ytg0bYEuNlf83De6WgQLe+mFEcciVYqIZGyDTXhn1Hybpn0TVaD62sl2apDipj37zX94n7+worDagC9pEGCp9lyVZo49/4QSe2MM0Z8HXKzrJjE1SXRx/BcolVEDVeoFuE/FD2fqoLaTA2BYuvSS+NxWizSbvPAXvWtOVrshaYqLgHmMVMPzJ0F4vsOT6A/CEleVrGoXc9u4cQ4ZxB+NkOc9TxHr7/juOQw5rH0simD6RbkFMX+p7R6e9Z4SJQ1xiGF0MND8IyEcTEuDtOJ7NaMV4AJcmtrRLlPysoZX8XiLX9KV1SdShi12G7lu7OJ9GKURRsZNNGizp3ZzRzJg3byM4wJiddR8w3vo6Qr9g2WmmjWN5H1vMfBMnlb0OeyobSKjbsnfvFCGWT+Nq7vjF1CA1eTXdbMknIcUYvWVjAcOQUCsBtRVhaweTLWpMYf/ohkhzztHb9YrlJ9IpfucttdZ/ZDotj0PHE0uSGLPYZvCEnFAPIjhZ13WORRDfGUFu8hoO4m7lNda/bn/eEj/1Pt4xulsAi1WBZX5Y6fByAAEO+RKhwo8KqxPfAcK204j6BfP7bgTxdLdVyUH5kG52iMXYVRzchAmSrI/Q70aPtZ/iKZdk2/mLhdXzDLF3aWzkvvowdQmGoIx+THSElj0IK8Zy4CpbQLhjgm+RzkuWUFbv8C1MiXQ=
+X-Rspamd-Queue-Id: 2D79B40003
+X-Stat-Signature: ii3t6sbhqqiy1xccze3jxznst8tcrw56
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774485324-869668
+X-HE-Meta: U2FsdGVkX1/7Lr9dlblskJF90h1zU60d1+KEa7kS8NC8+RRhmFosX6S+eKjQ0zbn9/7dR4G4HBebfdCUNAPVw5lJEnPbFewxYLrsc2ABmTogStCKvjWOW86k5d2z0y70GCzwlfCULjzwEREWjJwy1lgCtrrHTGVdSyOoAmfubGLPj8iL99jqgDSveujFMg85j9PvP2qvhdFGQn043ksf/LZI41Dj99fhkU7CB/h0Ygft0yZvVCzqKiLFb+tMnjEWCu098nWmataO2cq+jyiwVswGtSgRFnVwU/0XHasynARft59N2RNL/kCzMO0zJ18GSuwvpKcin0fhaL3IqbSUX8ZDacfcPVgL016HJgQXz5qQftIijcEe7M7+z7jPlsbNtgeYsQ10eTaLZ6AjwtlR9WLSrnC44wTa5azDys5xIQJyrixLYq/UAWsMNaAjD2f3wap0wMc0pW2AAtOSV0IxCTlApkCJnjpA90orWHpnh0mUfoimenotbcMc6NPs2Hwq5vjXmouDarYgZywJb5Ahh3QFfoVV2PZS3tpR6KgB+TX8/BgRr+eNyLcWVtXmxqEm1ULseXQZTI91pKVQEXoEFy+jO/G1Q0cSKs/AjUmwvX+2sJtEYaNlM9cudZxhWz16fo0Yn+/perMEBvrJEHvgn6vRxF1qkqoBPdPt4PUiFBHJP1rEfVpRo3k/m/hTb+LGqf+LOFv6m3CtzvibCRupc9kX9lmCr3m9HMdYcuPpZjVpa9uw3ZQiQVa81pDz5OSDslkwqxgMR819cY3DQp6IF1z47gpwO1xmgWdSAw2fRAQiJK6eDI0mYpMf26msuTAvTFGRHPn6QH+icKAcV+6c6xUvzMrxSHVfpaYMCqwmTy0pnYs5K4tEo0c5HrhEOJpUKe45YqGedwC6Gj7BXg6mXyAoBVicy7MWBthdAX23fC1rVLzozWNCmOANvmXQ3PqWHjt7muJ0i9ULRiHylrK
+ antdmNyf
+ 6i2l0LCsbYUP/5PyC4LGrug4hUClaBEAGwblYZihsjPn8vBHXdmwP8paw5yV57KVlvuGW7K/egaHRWqIP4MgLz5SLQHlRWVgtCspmb14xfIB1Ms7QGNLhgmwkA3gu5qlmtB4mF2n1YoZaen34EcEN4QY7V7WUR/tkQv2aYWAX+SPZTqGzGPs+vxxvti419vMLNx4UiawKrOgBbo/5z+XU2UOPpAg2Pm528m0JWgV8cuG/UIxujrwOljpXZjydJd4YAXYvFQvkVTC213d+Bevvpo/8TtxxHfSVj/dv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,19 +94,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 16:57:16 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Wed, 25 Mar 2026 15:52:21 +0000 Josh Law <objecting@objecting.org> wrote:
 
-> I'm inclined to mark this "don't care".  But if we decide to backport
-> [2/4] ("to prevent potential overflow issues") then we might have a
-> problem.
+No rush, Josh.  As I mentioned before, please give about a day after the last
+comment on the previous version of the patch, before posting a new version.
+That could help giving enough time for others to add their important findings.
+
+> damos_get_node_mem_bp() and damos_get_node_memcg_used_bp() pass
+> goal->nid directly to si_meminfo_node() and NODE_DATA() without
+> checking that it refers to a valid, online NUMA node.  Since
+
+s/online/memory/ ?
+
+> goal->nid is set from userspace via sysfs with no validation, a
+> negative or out-of-range value causes an out-of-bounds access in
+> NODE_DATA(), and a valid but offline node gives undefined results.
 > 
-> Also, if some downstream person decides to backport [2/4] into their
-> kernel without [4/4] then they'll have a bad day.
+> Add bounds and node_state(N_MEMORY) checks before using the nid,
+> consistent with damon_migrate_pages().
 > 
-> So perhaps this issue should be addressed within [2/4]?
+> Fixes: 0e1c773b501f ("mm/damon/core: introduce damos quota goal metrics for memory node utilization")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Josh Law <objecting@objecting.org>
+> ---
 
-Actually I can trivially do this locally if you like - just turn [4/4]
-into a -fix patch against [2/4], squash them together later on.
+As I also previously mentioned, please add changelog here.
 
-Please lmk if you'd like me to do that.
+>  mm/damon/core.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 59b709f04975..112125b635d7 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2227,6 +2227,10 @@ static __kernel_ulong_t damos_get_node_mem_bp(
+>  	struct sysinfo i;
+>  	__kernel_ulong_t numerator;
+>  
+> +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
+> +	    !node_state(goal->nid, N_MEMORY))
+> +		return 0;
+> +
+>  	si_meminfo_node(&i, goal->nid);
+>  	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
+>  		numerator = i.totalram - i.freeram;
+> @@ -2243,6 +2247,10 @@ static unsigned long damos_get_node_memcg_used_bp(
+>  	unsigned long used_pages, numerator;
+>  	struct sysinfo i;
+>  
+> +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
+> +	    !node_state(goal->nid, N_MEMORY))
+> +		return 0;
+> +
+>  	memcg = mem_cgroup_get_from_id(goal->memcg_id);
+>  	if (!memcg) {
+>  		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
+> -- 
+> 2.34.1
+
+I will add more comments as a reply to sashiko comment.
+
+
+Thanks,
+SJ
+
+[...]
 
