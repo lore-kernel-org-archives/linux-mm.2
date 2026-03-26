@@ -4,81 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8792310A62DA
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 14:05:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3117510A62D7
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 14:07:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C85516B0005; Thu, 26 Mar 2026 10:05:01 -0400 (EDT)
+	id 92C586B0005; Thu, 26 Mar 2026 10:07:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C35686B0088; Thu, 26 Mar 2026 10:05:01 -0400 (EDT)
+	id 8B6B36B0088; Thu, 26 Mar 2026 10:07:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4B576B0089; Thu, 26 Mar 2026 10:05:01 -0400 (EDT)
+	id 7CBF76B0089; Thu, 26 Mar 2026 10:07:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EB1B6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:05:01 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FD9D8CFAB
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:05:01 +0000 (UTC)
-X-FDA: 84588385602.28.9D8F384
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 043EA14001C
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:04:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6ACEF6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:07:06 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 247FBE1343
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:07:06 +0000 (UTC)
+X-FDA: 84588390852.18.B607B93
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 51B66A000F
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:07:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ejoJehc+;
+	spf=pass (imf15.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774533899;
+	s=arc-20220608; t=1774534024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VzVz9UhisR6vGSyYO7FUeszn7lVZ7MuoiICh/abxE64=;
-	b=SJ8cT88oqJvXcf6Nv7vJ/g7PM0SlwetbUVeF5WzfvtwG69lTthMTHg5gC4vOFyNqNpbtkS
-	Ail+Ry4Trzvdj6JBz2rRFEL9UEMgQ9YtVnDJvK+ZdMqWloJU+Onawkk5cArtrJZYU0oHJu
-	PW3ktwvUyVN6xVsi9KQzxQsS4lqIQSo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774533899; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QOKJFizyTR5umdHYgVUAXVA3he9VT71OTXEy32PHG4s=;
+	b=IJXlx8g3zgMlMjujQLGfRfiGcTsbjKA7J2mfUdv0ldY4y2OEcGINKipWfte6xwBKCch5uZ
+	UBVHV1I2m75izKwvh0MDkZbWmnLUryMhvnRYaovnxuwnbtzJR+igitMHrGrqk1nwyxP4ED
+	kPGxhyS9RuotGDhaV8q7CPNpJMp0Jrg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774534024; a=rsa-sha256;
 	cv=none;
-	b=r5bIaWHTkY1NNcWcozPnwpgxGZrG20mrocE00Mr1ZY3AUJuuJrdUfoCUImsjxTbRKVdcUy
-	UVNkNPJi5o3HjaaS5hZVxVTAqwhU12khpZ2XVzTAQW2hx/5Egfr292HfjZj9RCk8SDj6+L
-	rQROZ2fl6FLk6loQTkPbR+nJzgEOAgk=
+	b=FXLORapg5uzSMD+7+CDQPE22WxtPjO8nf7SIBAvoW5yxc+WN5iZSXPnWBMs/6z0DkHcwap
+	xhxTsbK+sU904Q5TzAvLM1r6TCkPYsMOew51QF/1uazK7ZzYZ1PrPRSdZ+DVyes12nnfhm
+	umsjKo5hlRID67YcUDpIgdzZJMwzHhc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 26 Mar 2026 23:04:54 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 26 Mar 2026 23:04:54 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
-	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com
-Subject: Re: [PATCH v5 0/4] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-Message-ID: <acU9BjGRgGDRWQ4X@yjaykim-PowerEdge-T330>
-References: <20260325175453.2523280-1-youngjun.park@lge.com>
- <20260325162003.136dc86796eb124d3c7210ac@linux-foundation.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ejoJehc+;
+	spf=pass (imf15.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774534022;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QOKJFizyTR5umdHYgVUAXVA3he9VT71OTXEy32PHG4s=;
+	b=ejoJehc+9XeltsZwJdbLLn/drlelJ3g+QCLhk/gYvHrn5PQt7B34959RboBNwMXrdkoknB
+	op+y/z+lgw+rrG12sx9t9ra22or6Pd4WGyl6q0hA83JFFA4Jf420lRuvIAVKb1mlIKqdKb
+	tUyyzotucEThIsorIle/Pp6L4fdIJzY=
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH v2] mm/alloc_tag: clear codetag for pages allocated before page_ext initialization
+Date: Thu, 26 Mar 2026 22:05:54 +0800
+Message-Id: <20260326140554.191996-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325162003.136dc86796eb124d3c7210ac@linux-foundation.org>
-X-Rspamd-Queue-Id: 043EA14001C
-X-Stat-Signature: oyyzdwxshptwwzuga6tpjgn8edxh5sb8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: yxxqenhaq1cgfnxe3u18ro4kus7egaf7
+X-Rspamd-Queue-Id: 51B66A000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774533897-543335
-X-HE-Meta: U2FsdGVkX19jU0kVunqXoKnN/jNVD3mAKcqJpIR66TCP+T9v4ygnm6dxezbMbBQ30qmg5+v5JqUKSJ5aVQhWE2WaFaCJnk7+W3zt4cNbRq+zWpnAKS2hx1Pu2OR89qkc08+mJLvExnIxv12k1NG0+5JUpWVjy6MWdYfsFvjYTnUkwGMtWeU+IRlGUjsPDd3AasdXyCQhBbGzEC1nGjj5esUiHXS59C/vtrP97jWBhJPqAdcs4pwtHrGLUuNZcOrMcnAyQDp9DslmMEYLMYAApnq2KpXEPCWgDUByg74RnADnWhClvDg6CHNvf9Ydah39QXIfPccdsXArv26ypRCA0xl9/mozYGPwwW2B07xdYKwJEvc0vdcCdmDrkAIlICpaHsK+EwMtdoIk086Vc+t1dqTpKCo30F/dT+M5In/9Yjm/2NqkS5gnYzLZgtEO5zYDOJpIguEs0X6ozUJFrUNBHeApDKEsqlVqwIRhBfEiPc/nfBFIAxTDDcfvdTJvFXrLRQFvnMegAlejzuQXS8mv3nM1SG+PuIjxdd/f/F389VPDtEygWn3nreie0l3Qr8bqa7eqyVpQddn1lqUsOZjCe3UveiPIqagyWy6MYYqZ9LLrPW1G8WaTpCtRXFkYU86tv0decCHfjYRBGigsXpIAyqLSUBq4UhieILcZv73WeiIOAbmG4y0MnV45Gb89YsiRpHI9GzR7qqqcpbTWlwrcvVwQlrUWjNRoCEF+XwV2NLIbBWhTAfcCH1zzoA8kHF0UzynkfKuvoA3xYKQMeH771EuO8I85XnKFcYtA1wjDDXhZm+DvgSlzX077vlsjXeFgHsjHnrhTXKVVBGG+BViZ1S0b5x+xx1ih0/z/XNJdjGJCnKV7IApfOJ7+SZGxXa9WSjWQG6E9563XHi7brwpTk4PiqCwPpJHqJI0Ti+3biNiZIZPyYS6t3utxJphhY5RUjTwiH5X3gOqxf1ORq8S
- fqHpr8jj
- Q2h89RZBmJz6P7a1hsEviFUzxXtOAe9dEY7XdDCE6zaB3KVgBqTEDIjmeEaGz1iFBHZYe2A0kLVR9PCjwI5ks6qzYaUkFotEApWGydNsq0vQLC/BqJdbY7zuChaQADQDsaDVigK0MIADuXyC5NvuprQcBdEjzfCj9m/tOIhswNFGTtxX6QYx3h1GLI43oOgA7sZoOkC4Brh2gAKda6u4KsKQeZ630Wzb5l7S6IroeIBZ9TanIdPRazOJK+It/cnmH5xxvBdYQMkXmGgvtLcYsW5AZrH5VALDE4MEoKaIN+wqzHaX7xc2STPpBACo87Z9YPTnntz99krymYa4s1gqMK/FfYULzqpDwHPUchoVK0vJY0mk0f0Y5HzU2mvx6cvXHbys70Bt4dyNZVpOWGT2YztaOAA==
+X-HE-Tag: 1774534024-728875
+X-HE-Meta: U2FsdGVkX1/Nyi3wJuYW3vybFfYyFtWOCEdLB6jWSV/kPeUdgYdXHZ0OP3xzt9y2pvbVwUBA0oz7DTt84AfICvXHm3r4Pde3GPrfRg6DpI1TZFucTuSy4e3qIVeXljpRVA9E4MtL/6+ds1jtKl4UTFVSj44HwMrg9ptB4++vTaxf+2f+qDcOXMUMb1iRnEbiM8kFmRC4FSNl0sGEU15oYpCYmwq0ChreLuVLVqDjqC/7Da1liKDQ/zpzO7b2Guq52XQXC385yfjW/f89FdsSFehbKBnhOdTrTiXkzM/LX0cL6fJ/zfnrBB9pRQKh8qsNpwEm8JmH/blScrd1SGkO2XOiuTPBwoauJg/RRQ60NnY3wscSFTkizTPnVgXwdK1hmyi9wxSONwg7pQjCUAB8FpMbovSejszsMm+/nZEh9u7xcpp9sdRHt/oRwJGSI6+f0vF701hMYqeV5meiVlwuQzvdUBO5V4bDJgeZfJj8uSM2ZdQ6/aILCaWAnCtsqLiDiggLP1oefTrg9XW4xDM7wW+AeVkoKVbPArR122nrDozksnXHS09aB0AzeypbL9Q2Icqpb7xjtr40RvGInnhuKVTdb8ss23dVQv8LHwwgKUM4EL8ZVEpLPVpoq7INV3fdKj7qWeoQgwEH8MphXEAoB2X436j87ysvoYvDauSk0eaCaWmGLHRMEL50MmaLmZ8MyPTD/oMnztVBTTL5awK/QChOtKBTxz0RvADERUbZYyQpTUzx7QgIpEtW2YoAfOgfVkn4MxbQ5ZEdP6qiYv0aFKvGVEPA9ssVmCj7AwfHl5C6/HPhEWlJ0Azd9MXKP2+iI+cxLl3XyUGcCwFm+/gaGGsncVJoUKlJcDrSHukuNByGBZQnxvXgu31d94CAXPe7/nzBaP57kPrApDohmXOkli0xTFgU4GGXsREFiblgowN2Xd5uc9H0ppM7AwBKQZwLmMbCq8VKmPY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,26 +84,266 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 04:20:03PM -0700, Andrew Morton wrote:
-> On Thu, 26 Mar 2026 02:54:49 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
-> 
-> > This is v5 of the "Swap Tiers" series.
-> 
-> Thanks.  I'd prefer to hold off until the next cycle, please.  As I
-> mentioned in 
-> 
-> https://lkml.kernel.org/r/20260323202941.08ddf2b0411501cae801ab4c@linux-foundation.org
-> 
-> Also, AI review had a lot to say, Please take a look.  Should you do
-> so, I'm interested in learning how much of that material was useful. 
-> Thanks.
-> 
-> https://sashiko.dev/#/patchset/20260325175453.2523280-1-youngjun.park%40lge.com
+Due to initialization ordering, page_ext is allocated and initialized
+relatively late during boot. Some pages have already been allocated
+and freed before page_ext becomes available, leaving their codetag
+uninitialized.
 
-Hi Andrew, Understood. 
-I'll address the AI review comments and run syzbot CI, 
-then resubmit for the next cycle.
+A clear example is in init_section_page_ext(): alloc_page_ext() calls
+kmemleak_alloc(). If the slab cache has no free objects, it falls back
+to the buddy allocator to allocate memory. However, at this point page_ext
+is not yet fully initialized, so these newly allocated pages have no
+codetag set. These pages may later be reclaimed by KASAN, which causes
+the warning to trigger when they are freed because their codetag ref is
+still empty.
 
-Thanks,
-Youngjun Park
+Use a global array to track pages allocated before page_ext is fully
+initialized. The array size is fixed at 8192 entries, and will emit
+a warning if this limit is exceeded. When page_ext initialization
+completes, set their codetag to empty to avoid warnings when they
+are freed later.
+
+The following warning is observed when this issue occurs:
+[    9.582133] ------------[ cut here ]------------
+[    9.582137] alloc_tag was not set
+[    9.582139] WARNING: ./include/linux/alloc_tag.h:164 at __pgalloc_tag_sub+0x40f/0x550, CPU#5: systemd/1
+[    9.582190] CPU: 5 UID: 0 PID: 1 Comm: systemd Not tainted 7.0.0-rc4 #1 PREEMPT(lazy)
+[    9.582192] Hardware name: Red Hat KVM, BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[    9.582194] RIP: 0010:__pgalloc_tag_sub+0x40f/0x550
+[    9.582196] Code: 00 00 4c 29 e5 48 8b 05 1f 88 56 05 48 8d 4c ad 00 48 8d 2c c8 e9 87 fd ff ff 0f 0b 0f 0b e9 f3 fe ff ff 48 8d 3d 61 2f ed 03 <67> 48 0f b9 3a e9 b3 fd ff ff 0f 0b eb e4 e8 5e cd 14 02 4c 89 c7
+[    9.582197] RSP: 0018:ffffc9000001f940 EFLAGS: 00010246
+[    9.582200] RAX: dffffc0000000000 RBX: 1ffff92000003f2b RCX: 1ffff110200d806c
+[    9.582201] RDX: ffff8881006c0360 RSI: 0000000000000004 RDI: ffffffff9bc7b460
+[    9.582202] RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff3a62324
+[    9.582203] R10: ffffffff9d311923 R11: 0000000000000000 R12: ffffea0004001b00
+[    9.582204] R13: 0000000000002000 R14: ffffea0000000000 R15: ffff8881006c0360
+[    9.582206] FS:  00007ffbbcf2d940(0000) GS:ffff888450479000(0000) knlGS:0000000000000000
+[    9.582208] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    9.582210] CR2: 000055ee3aa260d0 CR3: 0000000148b67005 CR4: 0000000000770ef0
+[    9.582211] PKRU: 55555554
+[    9.582212] Call Trace:
+[    9.582213]  <TASK>
+[    9.582214]  ? __pfx___pgalloc_tag_sub+0x10/0x10
+[    9.582216]  ? check_bytes_and_report+0x68/0x140
+[    9.582219]  __free_frozen_pages+0x2e4/0x1150
+[    9.582221]  ? __free_slab+0xc2/0x2b0
+[    9.582224]  qlist_free_all+0x4c/0xf0
+[    9.582227]  kasan_quarantine_reduce+0x15d/0x180
+[    9.582229]  __kasan_slab_alloc+0x69/0x90
+[    9.582232]  kmem_cache_alloc_noprof+0x14a/0x500
+[    9.582234]  do_getname+0x96/0x310
+[    9.582237]  do_readlinkat+0x91/0x2f0
+[    9.582239]  ? __pfx_do_readlinkat+0x10/0x10
+[    9.582240]  ? get_random_bytes_user+0x1df/0x2c0
+[    9.582244]  __x64_sys_readlinkat+0x96/0x100
+[    9.582246]  do_syscall_64+0xce/0x650
+[    9.582250]  ? __x64_sys_getrandom+0x13a/0x1e0
+[    9.582252]  ? __pfx___x64_sys_getrandom+0x10/0x10
+[    9.582254]  ? do_syscall_64+0x114/0x650
+[    9.582255]  ? ksys_read+0xfc/0x1d0
+[    9.582258]  ? __pfx_ksys_read+0x10/0x10
+[    9.582260]  ? do_syscall_64+0x114/0x650
+[    9.582262]  ? do_syscall_64+0x114/0x650
+[    9.582264]  ? __pfx_fput_close_sync+0x10/0x10
+[    9.582266]  ? file_close_fd_locked+0x178/0x2a0
+[    9.582268]  ? __x64_sys_faccessat2+0x96/0x100
+[    9.582269]  ? __x64_sys_close+0x7d/0xd0
+[    9.582271]  ? do_syscall_64+0x114/0x650
+[    9.582273]  ? do_syscall_64+0x114/0x650
+[    9.582275]  ? clear_bhb_loop+0x50/0xa0
+[    9.582277]  ? clear_bhb_loop+0x50/0xa0
+[    9.582279]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[    9.582280] RIP: 0033:0x7ffbbda345ee
+[    9.582282] Code: 0f 1f 40 00 48 8b 15 29 38 0d 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff c3 0f 1f 40 00 f3 0f 1e fa 49 89 ca b8 0b 01 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d fa 37 0d 00 f7 d8 64 89 01 48
+[    9.582284] RSP: 002b:00007ffe2ad8de58 EFLAGS: 00000202 ORIG_RAX: 000000000000010b
+[    9.582286] RAX: ffffffffffffffda RBX: 000055ee3aa25570 RCX: 00007ffbbda345ee
+[    9.582287] RDX: 000055ee3aa25570 RSI: 00007ffe2ad8dee0 RDI: 00000000ffffff9c
+[    9.582288] RBP: 0000000000001000 R08: 0000000000000003 R09: 0000000000001001
+[    9.582289] R10: 0000000000001000 R11: 0000000000000202 R12: 0000000000000033
+[    9.582290] R13: 00007ffe2ad8dee0 R14: 00000000ffffff9c R15: 00007ffe2ad8deb0
+[    9.582292]  </TASK>
+[    9.582293] ---[ end trace 0000000000000000 ]---
+
+Fixes: 93d5440ece3c ("alloc_tag: uninline code gated by mem_alloc_profiling_key in page allocator")
+Suggested-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+v2:
+  - Replace spin_lock_irqsave() with atomic_try_cmpxchg() to avoid potential
+     deadlock in NMI context
+  - Change EARLY_ALLOC_PFN_MAX from 256 to 8192
+  - Add pr_warn_once() when the limit is exceeded
+  - Check ref.ct before clearing to avoid overwriting valid tags
+  - Use function pointer (alloc_tag_add_early_pfn_ptr) instead of state
+---
+ include/linux/alloc_tag.h   |  2 +
+ include/linux/pgalloc_tag.h |  2 +-
+ lib/alloc_tag.c             | 92 +++++++++++++++++++++++++++++++++++++
+ mm/page_alloc.c             |  7 +++
+ 4 files changed, 102 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index d40ac39bfbe8..bf226c2be2ad 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -74,6 +74,8 @@ static inline void set_codetag_empty(union codetag_ref *ref)
+ 
+ #ifdef CONFIG_MEM_ALLOC_PROFILING
+ 
++void alloc_tag_add_early_pfn(unsigned long pfn);
++
+ #define ALLOC_TAG_SECTION_NAME	"alloc_tags"
+ 
+ struct codetag_bytes {
+diff --git a/include/linux/pgalloc_tag.h b/include/linux/pgalloc_tag.h
+index 38a82d65e58e..951d33362268 100644
+--- a/include/linux/pgalloc_tag.h
++++ b/include/linux/pgalloc_tag.h
+@@ -181,7 +181,7 @@ static inline struct alloc_tag *__pgalloc_tag_get(struct page *page)
+ 
+ 	if (get_page_tag_ref(page, &ref, &handle)) {
+ 		alloc_tag_sub_check(&ref);
+-		if (ref.ct)
++		if (ref.ct && !is_codetag_empty(&ref))
+ 			tag = ct_to_alloc_tag(ref.ct);
+ 		put_page_tag_ref(handle);
+ 	}
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index 58991ab09d84..7b1812768af9 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -6,6 +6,7 @@
+ #include <linux/kallsyms.h>
+ #include <linux/module.h>
+ #include <linux/page_ext.h>
++#include <linux/pgalloc_tag.h>
+ #include <linux/proc_fs.h>
+ #include <linux/seq_buf.h>
+ #include <linux/seq_file.h>
+@@ -26,6 +27,96 @@ static bool mem_profiling_support;
+ 
+ static struct codetag_type *alloc_tag_cttype;
+ 
++#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
++
++/*
++ * Track page allocations before page_ext is initialized.
++ * Some pages are allocated before page_ext becomes available, leaving
++ * their codetag uninitialized. Track these early PFNs so we can clear
++ * their codetag refs later to avoid warnings when they are freed.
++ *
++ * Early allocations include:
++ *   - Base allocations independent of CPU count
++ *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
++ *     such as trace ring buffers, scheduler per-cpu data)
++ *
++ * For simplicity, we fix the size to 8192.
++ * If insufficient, a warning will be triggered to alert the user.
++ */
++#define EARLY_ALLOC_PFN_MAX		8192
++
++static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
++static atomic_t early_pfn_count __initdata = ATOMIC_INIT(0);
++
++static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
++{
++	int old_idx, new_idx;
++
++	do {
++		old_idx = atomic_read(&early_pfn_count);
++		if (old_idx >= EARLY_ALLOC_PFN_MAX) {
++			pr_warn_once("Early page allocations before page_ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
++				      EARLY_ALLOC_PFN_MAX);
++			return;
++		}
++		new_idx = old_idx + 1;
++	} while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx));
++
++	early_pfns[old_idx] = pfn;
++}
++
++static void (*alloc_tag_add_early_pfn_ptr)(unsigned long pfn) __refdata =
++		__alloc_tag_add_early_pfn;
++
++void alloc_tag_add_early_pfn(unsigned long pfn)
++{
++	if (static_key_enabled(&mem_profiling_compressed))
++		return;
++
++	if (alloc_tag_add_early_pfn_ptr)
++		alloc_tag_add_early_pfn_ptr(pfn);
++}
++
++static void __init clear_early_alloc_pfn_tag_refs(void)
++{
++	unsigned int i;
++
++	for (i = 0; i < atomic_read(&early_pfn_count); i++) {
++		unsigned long pfn = early_pfns[i];
++
++		if (pfn_valid(pfn)) {
++			struct page *page = pfn_to_page(pfn);
++			union pgtag_ref_handle handle;
++			union codetag_ref ref;
++
++			if (get_page_tag_ref(page, &ref, &handle)) {
++				/*
++				 * An early-allocated page could be freed and reallocated
++				 * after its page_ext is initialized but before we clear it.
++				 * In that case, it already has a valid tag set.
++				 * We should not overwrite that valid tag with CODETAG_EMPTY.
++				 */
++				if (ref.ct) {
++					put_page_tag_ref(handle);
++					continue;
++				}
++
++				set_codetag_empty(&ref);
++				update_page_tag_ref(handle, &ref);
++				put_page_tag_ref(handle);
++			}
++		}
++
++	}
++	atomic_set(&early_pfn_count, 0);
++
++	alloc_tag_add_early_pfn_ptr = NULL;
++}
++#else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
++inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
++static inline void __init clear_early_alloc_pfn_tag_refs(void) {}
++#endif
++
+ #ifdef CONFIG_ARCH_MODULE_NEEDS_WEAK_PER_CPU
+ DEFINE_PER_CPU(struct alloc_tag_counters, _shared_alloc_tag);
+ EXPORT_SYMBOL(_shared_alloc_tag);
+@@ -760,6 +851,7 @@ static __init bool need_page_alloc_tagging(void)
+ 
+ static __init void init_page_alloc_tagging(void)
+ {
++	clear_early_alloc_pfn_tag_refs();
+ }
+ 
+ struct page_ext_operations page_alloc_tagging_ops = {
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2d4b6f1a554e..8f9bda04403b 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1293,6 +1293,13 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 		alloc_tag_add(&ref, task->alloc_tag, PAGE_SIZE * nr);
+ 		update_page_tag_ref(handle, &ref);
+ 		put_page_tag_ref(handle);
++	} else {
++		/*
++		 * page_ext is not available yet, record the pfn so we can
++		 * clear the tag ref later when page_ext is initialized.
++		 */
++		alloc_tag_add_early_pfn(page_to_pfn(page));
++		alloc_tag_set_inaccurate(current->alloc_tag);
+ 	}
+ }
+ 
+-- 
+2.25.1
+
 
