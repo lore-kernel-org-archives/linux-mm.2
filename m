@@ -4,98 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0172A10A3D78
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:04:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1047E10A3D80
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:06:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 345F46B00B0; Thu, 26 Mar 2026 08:04:22 -0400 (EDT)
+	id 45B736B0005; Thu, 26 Mar 2026 08:06:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CFE06B00B1; Thu, 26 Mar 2026 08:04:22 -0400 (EDT)
+	id 40C226B0089; Thu, 26 Mar 2026 08:06:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 197936B00B2; Thu, 26 Mar 2026 08:04:22 -0400 (EDT)
+	id 2FAB36B0092; Thu, 26 Mar 2026 08:06:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 03B456B00B0
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:04:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7AEC85CDA4
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:04:21 +0000 (UTC)
-X-FDA: 84588081522.08.3874B8D
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5C1BF80015
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:04:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oaKtZJBA;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774526659;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B0A66B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:06:54 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8E995160D16
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:06:53 +0000 (UTC)
+X-FDA: 84588087906.22.27DA58A
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8EB511C000B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:06:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sPmDsN4B;
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774526811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWQfC+vkVg6s6Aluh+qkk7w2aQ6dzgjp3pNFuJDRRHM=;
-	b=W6J7Br2eCd5Zqj3yFi5fKrkIpamhjtIkOLYhjzAoOAi+rVWkRP2A8t3ojTqSUxhnVEKKZD
-	JDpBbNPa2KE5DNtAH2f3BAO3hr2YiZaQS9XMiPE4gWWnvtG3pEx5ht2/vNgdi4DTgkNOr3
-	QM3k9p1ZFm6paZF1xLJilVTJwDc7aSE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774526659; a=rsa-sha256;
-	cv=none;
-	b=KORT8pOoXfS1NI1SrGJD8Jzd0FWA67i0GcAvFJ4AXrYn1XaJyDqbiXwzIQkyS+KcPtTCkc
-	PxdnfWTZy7y0E5iK1J0r9mHClko3vCgTGn1UZca5EVrgjrhD/8ZdLPvH/Bmqw+1JfBqoZN
-	C7QP6w7C+fx95ayc8hZGjX2wL5DjMK8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oaKtZJBA;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774526654; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=LWQfC+vkVg6s6Aluh+qkk7w2aQ6dzgjp3pNFuJDRRHM=;
-	b=oaKtZJBAwGp77tY10qxy/IUg+WMuIzZGDohF65UMj7Y5fPfXgogbfOl1PcDgVUz+ILDQADUSy9gvBlxw0+4HfImatrLa6QXpSZwYcBde7WbFo+GVdWUXhTYH+c9PUL62L1FKEsuktpkJXRJzVjHO7Hi8xpymjm6FROVTpzYQFkI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R701e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X.lAXzx_1774526650;
-Received: from 30.42.98.36(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.lAXzx_1774526650 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Mar 2026 20:04:12 +0800
-Message-ID: <aef474b9-5286-46f4-99d2-43d0b85f7176@linux.alibaba.com>
-Date: Thu, 26 Mar 2026 20:04:10 +0800
+	bh=UCPMWIti4WpvFBx+uoiLacb08LQC6AbfsXQqCnT6+V4=;
+	b=34zLFPYoW+939HQdDFZiByol4I957gUHJKW6rTJvv6EIOV57fRaMymQuFDP2efpdtiT1RC
+	zHrxOxxZOrGw6Qf3cA6ZvuhTZiB/80uer+zBwmS15aOmk88iZFFYKNJSxYbQvCZwoQQso2
+	yPGebaEwqAYYbAUUwlAhY7Z+IE5eabY=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sPmDsN4B;
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774526811; a=rsa-sha256;
+	cv=pass;
+	b=j0PWMui9POmSDxktYqsUvJEabBRT3ZPtUaZ31S1wr07vCDw+T4p1KUT1tLJ6XnNI52PJWb
+	ixoogI66iooaNo+lQS/bKj0JrlPa0869DJoZ9EypDF7PKTm39WzYGeBUMmJJeS81d416fl
+	wkoXwmhic25AME9MOXV8b34z/n8wcEE=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-66970715adbso1722117a12.3
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:06:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774526810; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GVvb1PNYutxhzWnvAGIvoPk2dNayNW4n0fachINMme05pB94kq43WxKX8kYgg8z6UR
+         26kxcdXu/QxhA5rhxNtF4MHpXIqXseTItAU12EbPl2hOZekkoiUNPYXPgSK5yNYAtXB6
+         O8FEH7SGbi9nal9zjB/2VBItpPz9ZWQod/sdsNO0Ivjcrjnr1lmiIftOqBckxbpEptSe
+         oOi1o7JGrW3tp/jngFVwQ4rRmQYqgJ6i2IEQeeq16VU95W3n8emcNvr6spXMtDBQmViV
+         OJ/dOOYCwoEaOPPlfIgCv06Xk8UHS4cfq9LQAKeqSm4NM3uxcuY37O6ec9P7Ogqt13Ia
+         q15g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UCPMWIti4WpvFBx+uoiLacb08LQC6AbfsXQqCnT6+V4=;
+        fh=8W9K4V1ibD8QHntMYBsiJ6a5VjLn73KS/JnwMcKkYQ4=;
+        b=gzquLtE4JVvUnlPHgu5vrK2QJ0K0N3MqBm9sVAdr9FIt4h1fATSl4Wd9VzX9HrTqNY
+         pqFFUKN4QSRrvt7hUIx+SbDQYG90sax4Iuy3V1y7BaivLk2/VuYpl9vLyIvg9BMtBShW
+         7dnDL1dHz2dtclI4B05qKFouCC7EFbCbE/AnnpbfbAhXXtBuWXBfdx1jueOxD4S9fhqZ
+         8X0VeoND0GlKHZHyspcT2vumQuxvrAFwtCzdgZTxOoILhvwvlS0gXa6YN3O+oayVeicV
+         A37TPpe23ZbTH5dNtu/FztfjtZotO0ZAf4EKnlTSNElp+AKrqFbvTJOnkNdGPCx1rto3
+         NkkQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774526810; x=1775131610; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UCPMWIti4WpvFBx+uoiLacb08LQC6AbfsXQqCnT6+V4=;
+        b=sPmDsN4BICzz29X+l2CG26BxuFAjyiz5IGJwMBrzbLAwoHNCJ3rXqWOtRErLWiwhjo
+         +N+wSgxibtnyU6iRGTdwYs9wTxDgA1pnvy8R/a3F5/6d/TOpydgrCszcVGX6CaN9l4tB
+         xKoIrEURW1EFYAetlb9zoVJ7ApSjz8CZE0Fw54f7hLQ97MzH51oLbp6Z6GEbQy9AMQ1i
+         FeVWWxVAf819TbyqO3TVxBPjevSM/WfxokUrQ74jmoOPnpkp03PiAtij7/H8VkQNBpnS
+         1z/UxYH/kVJy/JaYGPx5RAbDQw1cGFeZ65A6cqDWUncuNngrCDBB8M2sWeOWwGJFqCQI
+         rRRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774526810; x=1775131610;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UCPMWIti4WpvFBx+uoiLacb08LQC6AbfsXQqCnT6+V4=;
+        b=hdcGg5C3l08PhjuEZ4ZSMq9WYOQCpHKxEUAkIQPHdotfznucnquYfgIAvXWrXLpgqc
+         U8WoxSvGFLZuxnCYfnG/aTk1mNKMKJQDLDS9UfbfraTxocMxmihqGOhGe+VmwDKNQTzO
+         +lcQc6l1BuyTVBWIE7PR3axplLxx7M8263M24DVlL0DhnnrzrJEK3xJGGEzfh0CfUVx6
+         BGnIDNnKJEdcoiYly61TzkEQw8nIBbV7WarGnHlS+GAUo09MjnGlUR6RMW2A+PQ7dlIj
+         /8hfFn9BsNsNLX6mkU7ui/9hRXaynj40AIf4RlCkfxdaJ1i6lH8gcQ+7RW+G0TCpJqCJ
+         +0WA==
+X-Forwarded-Encrypted: i=1; AJvYcCXWVdJXNDz/ZAk5kjvz/slSkia97B3BX7+ZWPdIUA42yAo39s2Ukny45jcmQfbZi2CP62MApPzG6g==@kvack.org
+X-Gm-Message-State: AOJu0YxRnHVhELnCFcHUvztuS6Qg3C5CN1OtbNyqr3ogDatNvtsrGFaI
+	Gcscm3cZIg4z54jnfTNsorLwGzp6sE434QfhmMSmqvtvOn8lNMcDnW3LOlyO4Se0IuJmbf19lI8
+	gFgkCX9eCpCvtUPHf6txI2ek85H09TnQ=
+X-Gm-Gg: ATEYQzyG0OWdJxZPVQElkOc64WDpKJPXE+xRQTuEgcKIqqDgFI2K/vmbUGWZqoS1fyb
+	XV/2odXMOGlqcU/Nv/qncSUZhXhMQmH7XbwbAk8UX2UAkF1J7kiUZw54djGkHKy973sSJdRQCmf
+	+ET3Ya7POUMeayPFPPAdZhK6JrQ/2JVBcqhoUEuF75nnMErHeclw+4YtjwPtUmqFTvBr9hwpzZh
+	4ZwJJZPchsz3xJdQ7vZ0sAkRP8o1WAcN5YciRXExT1LMsfnj5y9oGK4pek1FI2y3bMcR9dogLtP
+	NJjVolY1/ca/KCLgltaNhj4rpMNfmtaa0h8JEdGO
+X-Received: by 2002:a05:6402:400f:b0:665:33eb:22fe with SMTP id
+ 4fb4d7f45d1cf-66a82622bc2mr5320318a12.9.1774526809603; Thu, 26 Mar 2026
+ 05:06:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the references
- for large folios
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- dev.jain@arm.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
- <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
- <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
- <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
- <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
- <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
- <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
- <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
- <e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
- <bfd282b1-523d-4945-97a0-ec30fe1df577@linux.alibaba.com>
- <a0181a7c-d191-483d-bbc9-678bc355a984@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <a0181a7c-d191-483d-bbc9-678bc355a984@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5C1BF80015
-X-Stat-Signature: 9cwx1mizmb4yquzu5t7xwozkoktc6s51
+References: <20260325210637.3704220-1-shakeel.butt@linux.dev> <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
+In-Reply-To: <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 26 Mar 2026 20:06:13 +0800
+X-Gm-Features: AQROBzCNij5ZIZYiccbOybvn12nUAvCYLf33aTbpussW3sa2ckcJHvGDC3YLdQo
+Message-ID: <CAMgjq7A01C+wyHxytZfVFVvaJ+gUNqkKvYN61_Peo911YaBHOw@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim (reclaim_ext)
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Gregory Price <gourry@gourry.net>, Barry Song <21cnbao@gmail.com>, 
+	David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
+	David Rientjes <rientjes@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	wangzicheng <wangzicheng@honor.com>, "T . J . Mercier" <tjmercier@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8EB511C000B
+X-Stat-Signature: 65asrwo5pie8dhjw4jfkpnkoepfbgyeo
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774526658-191302
-X-HE-Meta: U2FsdGVkX19LPv8SCcYhv81UldnooVm938L0qS0708qkUzwrbWD8b7mNkIgKidCKcwm4v3s19Q6OjFm9I+8k6xDBvENdb6CWcaQJiiJjFE176CJ6LDP411Ap/m73Gy8km7U14ghKx+BQEiE81kdXwTVZz2Ls6chy7rImYTsX39W6P3jQk6P5+ZV74tPKhr74SmOTBF/zmk5B8frVuztABJOtSjtDVL8wWnGykATLnuEaZq2QNOlKGy5RsRia8gOl+2RUw0vihS9obz+XxZ4O5FF2XQyMzIYpiqZx6tT4wu1RaRdQltJ6yjyWnvCe8vOING8svEzOICsS41DjcdJmOikhGsmjG6B6PQ+JShKlYdaOoteK55v3W9tZ/xyc2oo+TkqE0NcqLOFc7cp/Tru/JAicnr9PVD+l5oTjPn2QK5lPlqKJOSBB0PNry5hwnJlo0XE+mq0xSGkBzSxi4QQwXHl9biYriZlBmIm4B/yab0d3uwBj8I9u1m90uykO3x83EwFTOn2Kid4WNikqH2ii3eX/qb14zSF3n8Yzl5FrfqJ1y+B29C2nf8QP08guLPeR6QWQykZlbt6Vh1fHHtxHmxH1L6p5KMmHNPmAUbJZI6CjsJAYMqwH4zYkbWlwS7N0PGeS1n05SwqDh0NduMeqDEHTl2+DEGbhwV+S8KS5+ZjbtUfM33wVeLAH+4peuil7DEnYJRPujWWREo2JtBqyczf9Qh8vsW+mNkWe3UUu20+/jogdt2jXuD6f1pvTWRoa4X6Dd0hCW3qoURRtIL7QMvOdOklY4cQ5swvCP0uqC4KvpSV8LJYKd/dvdUSEFt/7GGQZpIYNlcDc6gALYVBjXL0UWSAeI2Q16T2FPXbmJFJ004aqp266EoejBGAcT76K9T//35u6bbat+5ibhLG9A5DDWoRycGXRghUxABnfTNy9E53rJTqUiB20XEZrDmxdYJYPB0G7Bv8c6ahzreS
- 7sE0mWSl
- /mFVYBp/kImwAFiOwS6RZsGkoEeiPvvimd8wCoCQ+PA2c26Dw6Ehvd1a/J6n8AtVf8Fwdxb+kIUuxQXfzilPiiadwH1U+AIRuZMqObWjcjtTjcF9b6GR9hO5BsR+1mdBLCNgfBN30+9SqG9yqjkf4cc8J1EvkBBt1NGZNZQ0uSzwbdFIskerBODj7uFmnDzZBja/QXi7slCT0JxNV8FdiMq5gcN+/c2QRW88XJhCsLk9yMynsw1A5RuvOMSg2NMIyvh7gJTRab1QxsnE5BVSaYl1aY9EuOK9bCwb5Pfal2cawPFVS20ChxQzcXEwb7rHb21xk/25OX2D/FJ2y7bwtoqkxRuGbp7zdM3O634xNhx5tfNOgbq58H12nInlubAZhGsKJ+sKRNJUnXx9RQY6TYxzxL8euAFtcOTWYWIykpof6aV90nverscZcnw==
+X-HE-Tag: 1774526811-768694
+X-HE-Meta: U2FsdGVkX1+T3Cam7/XT7zK9AFQ5PGf530s3ePHQWs+4iTcp2sVkoSN9DiwdAVkgaMgn+OUcdqOn9ne47OUl6OFNsxrgoNRN4F3xEva+8gvyprzvK3gCvJ0+w9k1fVhPKSdFYzlITg0akdCl2jGnttC/pDGrpXhuG179s8Y4gXmhpqGOdOQ2Al/FSrLW2bwRcn00m+LD/IwsNP/O4yhxfVQtOAg8tQ4pLvqTx6hhXnXUOvrhQ8LuEKXqvtVX8OlG35ij76iXX25e0nqL/yweh0X6wqytzrr37JvBeVf+R1YIjC3PnG6LO1xhsdvCa4EUCQLiH4FECN6Mp9CLKbaKGSO2PQ0LQktccNgQOHIACB0+XPXcT5hzHtUmgz0ErffaAN67GtEarJQO3DJNwQEq611RzN7aJJrf/0njqbKwgYrfq56iq+/Mo5Ac0BiqKrKH9Gdo/fxS8ZJRGgWeW+0bt8/lQZGfU83hiSS+W+EaeR8BJRSDDDEq8qHtxSbFGkNop5B2D1TXNWsek7aqyAqzvMg1pUrw4J3B89QBrbZndHtGgFqkskrzxeyTnsuxxn04gqa5xJjRVUaLbilTcsNdSJQyqM+Eb8Q36XW5kJ1X7CG/H5OEkAJj3OeUj4BaDP9QK1SeUbc2c1I5jCwN56x6qCNDlMu5Pnpwi2aR+O5Rb3q0ahXT0YXweocS53vAdJB8gAdoi/0UtVhMjHGbgKlyUP6sg9O6xCrVC0LI5kCYiFrKRZcqNvGzRVYwTKnVbmMUVaHQirTGlFcQpiKby9i7pJJ2MmK4soNoG1oKMmaBGJkbPHpif61bNgfG/jCiJEqYJ9lFNd3b5JIEIBBdE1z0umnozVssu2O2YCVn+VKSfrjtMIuJC06CXiMfUzBN93Le4w0HvJ+x3gtlupiTvLmuyBWSEHrq+sB9AO/XetQfKI5/AwR703p34M3/URPa1ika5ow3ZPyoy+px9iQaYsA
+ Cq95Up0v
+ wDIwg8IXdk1I9R9PCPNm8JM7jE1pdaJZE+tzSdm0K26TMLHWVn0tN4xkeyrOtnZvBXjHUlS2pGBwDgq5SKGRhM+1fmcgzlrF9Wy5Zd+KEAjcE4P/KrOl6u5jSQ5UIxcNfYGVBzJAQ9B3ImZ2MmH6vlNx9V1f049GrlGHj+Gdx8xMxaq0LrOdzyAyZYrkahP5ubVtYMsm3TMWkR5SHJRWUJgq6ktWChw18l63asbuX61JQqRInaCEgGD8SStLaDyHCxVtw6XPQmcoFLhW5GWK9gFoVzjyQJU64kBidk/DxBPeiDQQhqdH5XjtcXcVhXrO/cSnJCPX4/HJAxR6v7Abldcmfcez5XSUcDmV8QkJqgvE7bt/CCxMFwJrcMEdDbv/OIUMHrH6wb78GpLrJ+aIkz9fyGUpyKKozB2QGfktbaRzkv0MFBTAPlIqj1NETfQlu0gn43hMZrLhy65e4H7tnaR4hHP3VaLQ7n16FSpdzIiXba6BulrK3FJwq9GTTLELPCkz/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,129 +150,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Mar 26, 2026 at 10:05=E2=80=AFAM Andrew Morton
+<akpm@linux-foundation.org> wrote:
+>
+> On Wed, 25 Mar 2026 14:06:37 -0700 Shakeel Butt <shakeel.butt@linux.dev> =
+wrote:
+>
+> > We should unify both algorithms into a single code path.
+>
+> I'm here to ask the questions which others fear will sound dumb.
+>
+> Is it indeed the plan to maintain both implementations?  I thought the
+> long-term ambition was to knock MGLRU into shape and to drop the legacy L=
+RU?
+
+I personally also agree on that, so far I'm not aware of any major
+issues with MGLRU except some corner cases that are not hard to fix.
+Once these are done, I don't see the need for more complexity.
 
 
-On 3/26/26 7:10 PM, Lorenzo Stoakes (Oracle) wrote:
-> On Thu, Mar 26, 2026 at 09:47:51AM +0800, Baolin Wang wrote:
->>
->>
->> On 3/25/26 11:06 PM, Lorenzo Stoakes (Oracle) wrote:
->>> On Wed, Mar 25, 2026 at 03:58:36PM +0100, David Hildenbrand (Arm) wrote:
->>>> On 3/25/26 15:36, Lorenzo Stoakes (Oracle) wrote:
->>>>> On Mon, Mar 16, 2026 at 03:15:18PM +0100, David Hildenbrand (Arm) wrote:
->>>>>> On 3/16/26 07:25, Baolin Wang wrote:
->>>>>>>
->>>>>>>
->>>>>>>
->>>>>>> Sure. However, after investigating RISC‑V and x86, I found that
->>>>>>> ptep_clear_flush_young() does not flush the TLB on these architectures:
->>>>>>>
->>>>>>> int ptep_clear_flush_young(struct vm_area_struct *vma,
->>>>>>>                  unsigned long address, pte_t *ptep)
->>>>>>> {
->>>>>>>       /*
->>>>>>>        * On x86 CPUs, clearing the accessed bit without a TLB flush
->>>>>>>        * doesn't cause data corruption. [ It could cause incorrect
->>>>>>>        * page aging and the (mistaken) reclaim of hot pages, but the
->>>>>>>        * chance of that should be relatively low. ]
->>>>>>>        *
->>>>>>>        * So as a performance optimization don't flush the TLB when
->>>>>>>        * clearing the accessed bit, it will eventually be flushed by
->>>>>>>        * a context switch or a VM operation anyway. [ In the rare
->>>>>>>        * event of it not getting flushed for a long time the delay
->>>>>>>        * shouldn't really matter because there's no real memory
->>>>>>>        * pressure for swapout to react to. ]
->>>>>>>        */
->>>>>>>       return ptep_test_and_clear_young(vma, address, ptep);
->>>>>>> }
->>>>>>
->>>>>> You'd probably want an arch helper then, that tells you whether
->>>>>> a flush_tlb_range() after ptep_test_and_clear_young() is required.
->>>>>>
->>>>>> Or some special flush_tlb_range() helper.
->>>>>>
->>>>>> I agree that it requires more work.
->>
->> (Sorry, David. I forgot to reply to your email because I've had a lot to
->> sort out recently.)
->>
->> Rather than adding more arch helpers (we already have plenty for the young
->> flag check), I think we should try removing the TLB flush, as I mentioned to
->> Barry[1]. MGLRU reclaim already skips the TLB flush, and it seems to work
->> fine. What do you think?
->>
->> Here are our previous attempts to remove the TLB flush:
->>
->> My patch: https://lkml.org/lkml/2023/10/24/533
->> Barry's patch:
->> https://lore.kernel.org/lkml/20220617070555.344368-1-21cnbao@gmail.com/
->>
->> [1] https://lore.kernel.org/all/6bdc4b03-9631-4717-a3fa-2785a7930aba@linux.alibaba.com/
->>
->>>>> Sorry unclear here - does the series need more work or does a follow up patch
->>>>> need more work?
->>>>
->>>> Follow up!
->>>
->>> Ok good as in mm-stable now. Sadly means I don't get to review it but there we
->>> go.
->>
->> Actually this patchset has already been merged upstream:)
-
-Let me try to make things clear.
-
-> Err but this revision was sent _during_ the merge window...?
-> 
-> Was sent on 9th Feb on Monday in merge window week 1, with a functional change
-> listed:
-> 
-> - Skip batched unmapping for uffd case, reported by Dev. Thanks.
-> 
-> And then sent in 2nd batch on 18th Feb (see [0]).
-> 
-> So we were ok with 1 week of 'testing' (does anybody actually test -next during
-> the merge window? Was it even sent to -next?) for what appears to be a
-> functional change?
-
-I posted v5 on Dec 26th[0], and it collected quite a few Reviewed-by 
-tags and sat in mm-unstable for testing.
-
-Later, Dev reported a uffd-related issue (I hope you recall that 
-discussion). I posted a fix[1] for it on Jan 16th, which Andrew accepted.
-
-Since then, the v5 series (plus the fix) continued to be tested in 
-mm-unstable. We kept it there mainly because David mentioned he wanted 
-to review the series, so we were waiting for his time.
-
-On Feb 9th, after returning from vacation, David reviewed the series 
-(thanks, David!). I replied to and addressed all his comments, then 
-posted v6 on the same day[2].
-
-Additionally, v6 had no functional changes compared to v5 + the fix, and 
-it mainly addressed some coding style issues pointed out by David. I 
-also discussed this with David off-list, and since there were no 
-functional changes, my expectation was that it could still make it into 
-the merge window. That is why v6 was merged.
-
-[0] 
-https://lore.kernel.org/linux-mm/cover.1766631066.git.baolin.wang@linux.alibaba.com/#t
-[1] 
-https://lore.kernel.org/linux-mm/20260116162652.176054-1-baolin.wang@linux.alibaba.com/
-[2] 
-https://lore.kernel.org/all/cover.1770645603.git.baolin.wang@linux.alibaba.com/
-
-> And there was ongoing feedback on this and the v5 series (at [1])?
-
-Regarding the feedback on v5, I believe everything has been addressed.
-
-> This doesn't really feel sane?
-> 
-> And now I'm confused as to whether mm-stable patches can collect tags, since
-> presumably this was in mm-stable at the point this respin was done?
-> 
-> Maybe I'm missing something here but this doesn't feel like a sane process?
-
-Andrew, David, please correct me if I've missed anything. Also, please 
-let me know if there's anything in the process that needs to be 
-improved. Thanks.
+> And that Linus has expressed such a desire, but my googling fails me.
 
