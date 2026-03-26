@@ -4,98 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 739B010A3D81
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 385FF10A3D8E
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:43:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7F006B00B6; Thu, 26 Mar 2026 08:41:29 -0400 (EDT)
+	id 8141B6B00B8; Thu, 26 Mar 2026 08:43:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C56086B00B8; Thu, 26 Mar 2026 08:41:29 -0400 (EDT)
+	id 7C4B66B00BA; Thu, 26 Mar 2026 08:43:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6BF56B00B9; Thu, 26 Mar 2026 08:41:29 -0400 (EDT)
+	id 6DAFD6B00BB; Thu, 26 Mar 2026 08:43:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A4E2A6B00B6
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:41:29 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7893F160B6B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:41:29 +0000 (UTC)
-X-FDA: 84588175098.13.65AB2E0
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7E48D4000D
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:41:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K4yXwAFX;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A2456B00B8
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:43:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 02E28140C83
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:43:02 +0000 (UTC)
+X-FDA: 84588179046.26.C4CC92D
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1904B8000E
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:43:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=k9ccN9pN;
+	spf=pass (imf02.hostedemail.com: domain of naup96721@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=naup96721@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774528887;
+	s=arc-20220608; t=1774528981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06KB53lThvomRpyYQxy3Sh2rJb39T5D6WNpA7eb1gCM=;
-	b=Z4gyMkxMlTnrd7rdkszBYgAbsd5ekrf825bxIkiiZadKCKwG0SEhAcVps6DT4zhWcpkH/R
-	VVlZJ26l/bphE5BMkhtVFitl+AOavl00r1vb8aAi8z+2dK217zNeFo38zjWvLJExFgN/XR
-	TWRjuqOiqZ6lEXOvBw9qKzPDxeCMAqE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K4yXwAFX;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774528887; a=rsa-sha256;
+	bh=kJs5QJBGG1FM2VvPdTH5F9RsetpEkS8GbS1JPRoYtms=;
+	b=GokSUhwnNXxXFXZVY1TWXRUZ3kSINmIXEMApMIAM7BSfMZQTPcm3LJ0wY3YOkA41Av62vt
+	nzQQ3bn0JPMGnrFoAM3pvhBbUr551pO10IofBAqUzU6ZQ4TsNB+vZvOpr3HdLL2nixon6m
+	3GWCJ/lxGgVySN+2hZdQ6Ovk+ccs0Ks=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774528981; a=rsa-sha256;
 	cv=none;
-	b=1g13/uBc2kKpomjWtJXjZzwnT9OhWMQintj53weN1ee6tGvf3IIZ8bhjHAT+K2zTBE1618
-	iSKhMdqw6e0vsAUaJnRrztDIlqVNG4CiIJJ2hSBx5vVwmsLBENYZhXsjaCaDr6aPnIso3l
-	MoE27AQ4VmYTFYDx0irM4K5XGQi6JTI=
-Message-ID: <0ce07bc5-6365-4c54-90e2-4e56ad2b7465@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774528885;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=06KB53lThvomRpyYQxy3Sh2rJb39T5D6WNpA7eb1gCM=;
-	b=K4yXwAFXMX0fmJ8EBL0HJNpbjd+3Q1RJx589DnC0Z6DFYmyjstFt8kC+beKS2yTg3QT2AD
-	0sT6NpNguoAvjDsNI17ZlCd877xod5JgPcDxp4aJyO9QfJCSdDQETFzDUiubr4AqzwuQ01
-	yfW+d4keIyheJf1HUII1d5s6AvtIIOc=
-Date: Thu, 26 Mar 2026 08:40:21 -0400
+	b=JWk2e3g8UD7pDxwUsgbI1IsopqlnKcg/WLH06mo+GXkhT/lzGQpP395LF9qW1vctOv+Deg
+	we8bOJoWP5T7VP/9RDQ3zlYDGXYpNhb2nSfW51pT+a6cXkobKzcDSNWQ9I3psATtJ4mqlg
+	IiU2KyoFz99UdBKhv/BLKpCmcpcsdn4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=k9ccN9pN;
+	spf=pass (imf02.hostedemail.com: domain of naup96721@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=naup96721@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c70ea5e9e9dso449811a12.1
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:43:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774528980; x=1775133780; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=kJs5QJBGG1FM2VvPdTH5F9RsetpEkS8GbS1JPRoYtms=;
+        b=k9ccN9pNrkmFb3jpJSQNgIf+2DcKzyjQ7e9bTE7Qj14xkTguOtuV0ongBPbBLkIKuq
+         3ozKy/K2a3ROpODapy98XiY9mGg17GWYIjW//xsBoQUpFkjd8udi6rWHr1qPn4wN0lb+
+         8g3eEBBGNpVogqeiGo/7hR8XHCwX5ljlZ6qTR9DJ5/AaH602Li4TuaCUSR3hXaVfjg+I
+         oE+Eqa+K3M0NJ/UHpj7Yf78bcsXZIltzxHqnPL0GNQOKxNHaJHC37AqSsRJ+2ul0Q3pH
+         gSDPSs+u9f8K/mblD6T+R7SAnH0XOo2+7Jyp7BqhM0TewfZ5bJH5DjVTrZzyxTQg1nds
+         Zkow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774528980; x=1775133780;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kJs5QJBGG1FM2VvPdTH5F9RsetpEkS8GbS1JPRoYtms=;
+        b=RssIq0UCrOe0zGC3ubvW3YuMg4IOgIyrKuutb0o5w/zlg3uCWtQYth1FnaIExjNWMH
+         2SF0t96Q2aWDh67a01ZoJjtT1YVfk1lFM6wWwgsAfAufM7eaMCfz9YI/sNr69n/3da5u
+         T5ySbLDHiV7Su0C/rCKvqyF7MI0UhprLiBPVkLO4FoReukG8kE4HoX8tQtHEhAoY2HBQ
+         sx6tY+vgoMugatbVQTM42doboxyI9JmjHS9MGYlpRgb2ewX37pSimcAFoKRdAU1/joB1
+         5XVcPYOiCKgBU7JufiQePwnL24eDbfobeAQx1EuYpEOHhJegT8e/zApAPfyQKIupDxMg
+         XR0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXCHB08B6/ZYkzjzftuWkJZLO2cRSXKhQpm+t4Hfr9+PhaN1IMkDnjtU9GiFIAii6QXLLFqZipgeA==@kvack.org
+X-Gm-Message-State: AOJu0YxOg9KAWi4KHpO1mH7ZfXbRlhQQwQc5sJ0mWrM2pRXnzxGLl/aR
+	EMRIhrSm9E9ql0XhXVHdDv1dQXD/0Bo4BkGCseCyiEM5EUYfbFYKNBGu6niDOIUVtTc=
+X-Gm-Gg: ATEYQzzs86JBCEYFWllcGs9843etqp23oBMnKUAYiIaWXe/BIy1iVtR9guph3G7Wu46
+	04xWGvCbft5fCZFwzFbBSRNpELOogcOrdLrfjMw98UECPW7jsvuiw8wGBcHCdOfIRIwXy1eqVs4
+	d+j0cemrvUcjMxmyZFFfnofOutcOnNvGvew0e8pnsEVfENRFCXp8H53B19lxNBhrVe7qA+ckep4
+	A5YnTxwpioqDE4jFile3ZDuSCBbQWgAJ5eTTV1wfK+xI5e2I4gGT+XrFfAZfguBl0DawApiVVp9
+	3UiOH9cDEiNXYMShbDFe8+rXJ9BCpndPIfDJn+lpdt268typgWhx0Tl/WLDoO7WwHUgLi0Yo91j
+	hpaZrAFNoK/AxMDVYfEPcclMrHdvGZOROuUzo8tLlGSWWaUYQuBWvCjvRUamnAF5jra5y23JuDd
+	oJffd96STnxUPcixTJAA8wdjLsYbj8ka8f+e7/B7qNvKDoHgWwVlMIfFOSX0UavhhegeH6GVddJ
+	IZ73YI0yRfk8mk=
+X-Received: by 2002:a17:903:2f4f:b0:2b0:7509:1b25 with SMTP id d9443c01a7336-2b0b0ac1de5mr87112115ad.37.1774528979694;
+        Thu, 26 Mar 2026 05:42:59 -0700 (PDT)
+Received: from naup-virtual-machine (111-246-111-57.dynamic-ip.hinet.net. [111.246.111.57])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc881bacsm28941455ad.46.2026.03.26.05.42.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 05:42:59 -0700 (PDT)
+Date: Thu, 26 Mar 2026 20:42:55 +0800
+From: Hao-Yu Yang <naup96721@gmail.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, mingo@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
+ and vma_replace_policy
+Message-ID: <acUpzzUMMN32WriG@naup-virtual-machine>
+References: <20260313124756.52461-1-naup96721@gmail.com>
+ <87a4vyihlx.ffs@tglx>
+ <20260324140019.GE3738010@noisy.programming.kicks-ass.net>
+ <87fr5pgp5x.ffs@tglx>
+ <20260324174418.GB1850007@noisy.programming.kicks-ass.net>
+ <c892e7ce-473d-41e5-aa99-b95e0366c3fd@kernel.org>
+ <20260325151445.GH3738010@noisy.programming.kicks-ass.net>
+ <CANn89iLnJv9_HRV1vuURFM5uVA-y4SqBsBRD24kSJe7UmBtXSQ@mail.gmail.com>
+ <20260325152206.GH3738786@noisy.programming.kicks-ass.net>
+ <CANn89i+cJ+BOs_swGU4vHbKPHVV+vqmHjaSywUxDzBu=nXfmtQ@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 2/4] mm: replace exec_folio_order() with generic
- preferred_exec_order()
-To: Jan Kara <jack@suse.cz>, david@kernel.org, ryan.roberts@arm.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
-	linux-mm@kvack.org, r@hev.cc, ajd@linux.ibm.com, apopple@nvidia.com,
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
-	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
-	kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com,
-	vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-	wilts.infradead.org@quack3.kvack.org, ziy@nvidia.com,
-	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
-	kernel-team@meta.com
-References: <20260320140315.979307-1-usama.arif@linux.dev>
- <20260320140315.979307-3-usama.arif@linux.dev>
- <k45xs6btmt62uerbglqe665jozrtkeoklu4rek6odgxjdj63ni@ftw6ef3ug33x>
-Content-Language: en-GB
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <k45xs6btmt62uerbglqe665jozrtkeoklu4rek6odgxjdj63ni@ftw6ef3ug33x>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANn89i+cJ+BOs_swGU4vHbKPHVV+vqmHjaSywUxDzBu=nXfmtQ@mail.gmail.com>
+X-Rspamd-Queue-Id: 1904B8000E
+X-Stat-Signature: kiyxorf749b3xuyjacapy7mboapm99a9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7E48D4000D
-X-Stat-Signature: e9fdo7zncscwqonqkdbikxcsb8tm9jer
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774528887-915369
-X-HE-Meta: U2FsdGVkX18vUdu/UTSXiT1+imjG/2T1t3rdRdZJcW4NAAtUngkXKJc3URyWprJKuHRvwyVPcY56ri5C8jQnn8URyi5S4uzIxbgPWXfvpAJq4GNQc9bC8nK94fW4eRCEhIIdc6gbbV+U+/3ZD83R9M8b5uEeW5GfUxl+iz6Z9M42SbSjGpC6UJzYlbMnD2Vn/AJISFRFRiU/iOC4wf694xDw0QaUVBi8b75eEggH9GRu++S8Jl+AJdRE/re65fdE+J5bpztoYKfU+3+50jqfwBSmf52KN3Hv2K969VGT5dE8O1x0WuVkQq2ktxZBRfqyIzQTmqSi/P8PAOKlL1uZEhsChcwkIuUDrZGdvSOVeQdxbJeEWTcADzTHZbWXMQ6bdVcQ/HTvyV3l2DBFq8deEe348sjSGNKIB0wRa2IgMMfkBRb3/6jmaDXrlJkJ2ctEMcRcA3rI0fv19+NeedrUyiGkL/sDBFKy1Lbet2SaixE6zFoDQTdS8KXbuU/Hfcqc9+2Kbe4KPqD80gXycpGj9xr3JneO+cIwMpiB/9YlzU1jXMQrDIJYeSRRe5sUY9Ghhc3nEbDUYcddOCZTUWyUoeHQqIxGiRkG2DR5zW6fDmH3JiAQuhzqNw0jwo3JslVejCgFmH9rAVscPO6SAOp5i4Qn73WBgRynYmre9+a+C0x3Jg9w/vbzpoDh5/ZlLeRQPBRJqj9HGVY+mCew2lBTqOfQ21S5NyNSpTKBJ2AB4VG/1UJ/xoOo8qG9tGh/5wV9YafDALaZBnRtDFdztsTLtnq7FaULEHELFLpCNaYCCExeoF+pfSBInvk9rjADsp89qL5T/Yvc/8jvgPQAxijO2mOkj46yxj+43sIfxbXLaFyTre0gzevv1G8EJAL5+pmck+htxkUPptgK8jGfZbxLQd1KsdKZ8IPnQM2Zg8PZwslV3c7JxQKqBMlC1wK+zgr9+jqBjubVtfhO8CNcJmg
- klmtugSm
- /dkUxr/RziPmj/CxZHlQBVbDTxLb3bFV1MKDem8glSSeBcGbOE+Hc+sDBTeOnFGr3E4xPPqsHZEXd355zkXD9O/JN1CyrCsBaGXsM03XbfRgiMvQ8gDpfvBRzVlnDzkKPrcxYHzHMVpHKu8trEBtcwUZ2A9OpUNJBrYCwutvHd6bhY95C7OG2cZnZ/Ag77O+td45Jdzh8cHG65tn+yJv9J/vtWR7u4A2NboELC7w4etH8Xth+HjREHkH9wB2wFDU56du/
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774528980-87335
+X-HE-Meta: U2FsdGVkX1+z/s5c18Aso3fMTbKhHpic6hRldNhooh+5oWFYu0oNQTMJQOzD4jjW9Yb2aDJCXnK94Q1kLPpVhDfOouRTL7CSmkMGZr60OEyB33plGaacHjwmfcYKt13i+PyokhYrECElW/VS2UF4O7A06Un205yns5E9IK8UrENQVBgDIkNWYLXdAAVoFPFfvUy8y4L9npIW0hg35uh+s1tK+0bHeZc4ZNueJUUdC+9wE7YL2XnO88oHR6ZNiwjOo6c+fxuLAGPfSj+uFtW3qtaIvCit+EixEun26kphTSsaWxEVDHE+M8y10tL6kyM4QHunpIfvXOdyz+U8XlHixr7JEbSoPebOJRKZk72P3p3SpyeGDcQhM7QObT9omMITTmS9PQf3gsAUkVZgAIqPBDrIlsrp/fX2n4AAv98FKnxMFctb5HC1Hi7+Askjcy+CTIcoM5GJNHcsc8t1U93v3+a1yeA8UeUMX/LZfj22wRkEt6+PfXW8f3Sp6qbi4L1Ofpxz3DzsN6uz7YbABy+dmq1MDlpkvdX+pqOhQovbxMuRg6GLi9xeL1/zIribxnZPiunV6p5dblyZHJ3hD6aqezAXhaw6xFnwn1jNd7B3sUrzD0OFbM0/4tg0FrmvQmbLtzlfrOoI/UuHRIh7PORHWiAdZaVUdN5HucLFO79+QxR8mztx34CjiUGKhNiwWMVpUbFLVwZ2zYY4g5aShXy1XtLq/GwnaOJ+DOzX+moXDpJlpb9/QWXmkNqZFvjjEtGHkww0bQ8jTqCTjiXQ8GVVdysJComImjGwaXwa5TudyzzWhhJ16cl5fM87H8avG8O4Bw8MXm/gUwKAJg3ev5sScUEOjl7vZfvxiR1AkO4f2BbbA3IE624cY5CFhiPDGqFj96+HITv52IA9NULigEno13IsCAQexfHQRDqOVvA17KQAub608gRnA8CJN3DIinH0+YPmpjqzYquxrTPQjrM
+ eXSHbOrd
+ DIUls5pkjufsryJlosA9N5IjQee3w/u2igkASsAaTt0NVO7KReXAEtUI4ZLNvrDEQz53SrdzHWcwQdV0JKf4etOKdjnXtW9nCcwqkEJeFJpdVj37fjvaOiq/tt6CamlfVkjlld9YZmBPxrz6r7hNMho3EBeO07fxFdiyrMu8stAqtGVViSlBZc6wCBNsFCrlR0+92aBMNA10c+uVv9zsQmkCXHuUq5Vwv4oJSfkeUEnJ+CQ1IfrODU6EYSC+PSlMwc2rYwVHjbRaCrGwMjtr3u5tSOsM000MTpGW95y3k/Xfp94s5pe5VxbY4TfKn5FC0FY7qvNOmgBxMueagrb2DwIRdaSGpKpn8mI7+M8cBeJ99f2nM434MaRNMY3iS+IOutbQ2usx81nVTZIIGJMAMM+QjWVi8hGxB7UJXRQWXhl7n5wTdbJPO9l9xJel8cLs//+rWBqXcRReVprPndPoug6vI1xE1FDG9bOyAtM6QQgKRJ2IyxvBXori4ugthhPmAXktxUujyJVEse0GpRqSWs2CsJq7OA0j9m6Ydh8tvCMJrGS9RpbUdMsooADHg8DUpLDNtYqAHcXsDv3w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,91 +135,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+I need to send patch v3? If i need how i need to change about this patch?
 
-
-On 20/03/2026 17:42, Jan Kara wrote:
-> On Fri 20-03-26 06:58:52, Usama Arif wrote:
->> Replace the arch-specific exec_folio_order() hook with a generic
->> preferred_exec_order() that dynamically computes the readahead folio
->> order for executable memory. It targets min(PMD_ORDER, 2M) as the
->> maximum, which optimally gives the right answer for contpte (arm64),
->> PMD mapping (x86, arm64 4K), and architectures with smaller PMDs
->> (s390 1M). It adapts at runtime based on:
->>
->> - VMA size: caps the order so folios fit within the mapping
->> - Memory pressure: steps down the order when the local node's free
->>   memory is below the high watermark for the requested order
->>
->> This avoids over-allocating on memory-constrained systems while still
->> requesting the optimal order when memory is plentiful.
->>
->> Since exec_folio_order() is no longer needed, remove the arm64
->> definition and the generic default from pgtable.h.
->>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ...
->> +static unsigned int preferred_exec_order(struct vm_area_struct *vma)
->> +{
->> +	int order;
->> +	unsigned long vma_len = vma_pages(vma);
->> +	struct zone *zone;
->> +	gfp_t gfp;
->> +
->> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
->> +		return 0;
->> +
->> +	/* Cap at min(PMD_ORDER, 2M) */
->> +	order = min(HPAGE_PMD_ORDER, ilog2(SZ_2M >> PAGE_SHIFT));
->> +
->> +	/* Don't request folios larger than the VMA */
->> +	order = min(order, ilog2(vma_len));
+On Wed, Mar 25, 2026 at 08:25:29AM -0700, Eric Dumazet wrote:
+> On Wed, Mar 25, 2026 at 8:22 AM Peter Zijlstra <peterz@infradead.org> wrote:
 > 
-
-Hi Jan,
-
-Thanks for the feedback and sorry for the late reply! I was travelling
-during the week.
-
-> Hum, as far as I'm checking page_cache_ra_order() used in
-> do_sync_mmap_readahead(), ra->order is the preferred order but it will be
-> trimmed down to fit both within the file and within ra->size. And ra->size
-> is set for the readahead to fit within the vma so I don't think any order
-> trimming based on vma length is needed in this place?
-
-Ack, yes makes sense.
-
+> > Fair enough. Like so then..
+> >
+> > --- a/kernel/futex/core.c
+> > +++ b/kernel/futex/core.c
+> > @@ -342,7 +342,7 @@ static int __futex_key_to_node(struct mm
+> >         if (!vma)
+> >                 return FUTEX_NO_NODE;
+> >
+> > -       mpol = vma_policy(vma);
+> > +       mpol = READ_ONCE(vma->vm_policy);
+> >         if (!mpol)
+> >                 return FUTEX_NO_NODE;
+> >
+> > --- a/mm/mempolicy.c
+> > +++ b/mm/mempolicy.c
+> > @@ -1026,7 +1026,7 @@ static int vma_replace_policy(struct vm_
+> >         }
+> >
+> >         old = vma->vm_policy;
+> > -       vma->vm_policy = new; /* protected by mmap_lock */
+> > +       WRITE_ONCE(vma->vm_policy, new); /* protected by mmap_lock */
+> >         mpol_put(old);
+> >
+> >         return 0;
 > 
->> +	/* Step down under memory pressure */
->> +	gfp = mapping_gfp_mask(vma->vm_file->f_mapping);
->> +	zone = first_zones_zonelist(node_zonelist(numa_node_id(), gfp),
->> +				    gfp_zone(gfp), NULL)->zone;
->> +	if (zone) {
->> +		while (order > 0 &&
->> +		       !zone_watermark_ok(zone, order,
->> +					  high_wmark_pages(zone), 0, 0))
->> +			order--;
->> +	}
+> LGTM, thanks !
 > 
-> It looks wrong for this logic to be here. Trimming order based on memory
-> pressure makes sense (and we've already got reports that on memory limited
-> devices large order folios in the page cache have too big memory overhead
-> so we'll likely need to handle that for page cache allocations in general)
-> but IMHO it belongs to page_cache_ra_order() or some other common place
-> like that.
-> 
-> 								Honza
-
-So I have been thinking about this. readahead_gfp_mask() already sets
-__GFP_NORETRY, so we wont try aggressive reclaim/compaction to satisfy
-the allocation. page_cache_ra_order() falls through to the fallback path
-faulting in order 0 page when allocation is not satsified.
-
-So the allocator already naturally steps down under memory pressure,
-the explicit zone_watermark_ok() loop might be redundant?
-
-What are your thoughts on just setting
-ra->order = min(HPAGE_PMD_ORDER, ilog2(SZ_2M >> PAGE_SHIFT))?
-We can do the higher orlder allocation with gfp &= ~__GFP_RECLAIM
-for the VM_EXEC case.
-
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
 
