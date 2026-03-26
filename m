@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A680910AB82A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 22:25:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CA8B10AB82C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 22:25:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F01F6B00A7; Thu, 26 Mar 2026 18:25:03 -0400 (EDT)
+	id 672126B00B7; Thu, 26 Mar 2026 18:25:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A1256B00A8; Thu, 26 Mar 2026 18:25:03 -0400 (EDT)
+	id 64AC76B00B8; Thu, 26 Mar 2026 18:25:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18D866B00A9; Thu, 26 Mar 2026 18:25:03 -0400 (EDT)
+	id 538F76B00B9; Thu, 26 Mar 2026 18:25:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D9DF06B00A7
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:25:02 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF293E13E4
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AE986B00B7
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:25:05 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 081C9C4099
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:05 +0000 (UTC)
+X-FDA: 84589645770.20.0AB5828
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2C21DC0004
 	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:02 +0000 (UTC)
-X-FDA: 84589645644.18.37DDF72
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B1D741C000A
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=McFSBPqB;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3O7LFaQsKCAwmowq3xqA5zss00sxq.o0yxuz69-yyw7mow.03s@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3O7LFaQsKCAwmowq3xqA5zss00sxq.o0yxuz69-yyw7mow.03s@flex--ackerleytng.bounces.google.com
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="PqG66/GL";
+	spf=pass (imf28.hostedemail.com: domain of 3PbLFaQsKCA4oqys5zsC71uu22uzs.q20zw18B-00y9oqy.25u@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3PbLFaQsKCA4oqys5zsC71uu22uzs.q20zw18B-00y9oqy.25u@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="PqG66/GL";
+	spf=pass (imf28.hostedemail.com: domain of 3PbLFaQsKCA4oqys5zsC71uu22uzs.q20zw18B-00y9oqy.25u@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3PbLFaQsKCA4oqys5zsC71uu22uzs.q20zw18B-00y9oqy.25u@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774563903; a=rsa-sha256;
+	cv=none;
+	b=gdnux3vZQTWP1goA++oLFvPcREMe4b1em0C71Q1Kn81n9g8li5HFKgDU8K+TCgedbxF66t
+	S5IRrxaisvxOoEhQbuhMcgGExaKMZezl+UwHgkw0rSx40bh3URu0e8bmo3nZpQOmOn5RpJ
+	oQpVS2Z+6ouS9EQXawIWZZPJcqfw3IM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774563900;
+	s=arc-20220608; t=1774563903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ammt0BhOIyLXS2ULMUn5WewBTpBTKqlX10HzkZ/Adsk=;
-	b=2o4v/JIy/s1QafSFglgKtu1DDCxn5Hgz+DsS3+Y6CwmIdvp7Wsy05xyfkwMnZGDTGPN73+
-	RGXtK6TfhJ98W0kHS/Q5FLlO9bOTrn0+5IgMxohIABrtCOuQ22r1ilAeS+dbcxwK/4SGFO
-	GuK3SOR71v314/jhK+Y8K+gDEFV82P4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774563900; a=rsa-sha256;
-	cv=none;
-	b=bO+iO8HD47bzRzPkqXsoktT1Wu4eSHIAZTihay/4J5EnrOxLdW7rVSkA+UZ+BHzGxN3zt/
-	YD7pFJoZGfDzzawwAHCGvRN89AmxOioHybn37S8ifsYkn5nOHZoqo7K0QTsnscorjk+wFy
-	63k60B5D9IV6kWANzBeIJXFb4snFR94=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=McFSBPqB;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3O7LFaQsKCAwmowq3xqA5zss00sxq.o0yxuz69-yyw7mow.03s@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3O7LFaQsKCAwmowq3xqA5zss00sxq.o0yxuz69-yyw7mow.03s@flex--ackerleytng.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c8768a633so1553537b3a.2
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:25:00 -0700 (PDT)
+	bh=afYjOzvP16h/SfxvhTKPo6PFaH7oiLN+m8p/p0wfDgE=;
+	b=1vqtK/uGIPY96MhxHKmNJAqJuuxGmg0Tz8bjXVf7RvPJjHClIZHpgeV1bhYWB2Mw23m0Mp
+	FzSHaDvctIioPYsJmEyg+/DlX4vF5pjluuHmKCmUC62NfxeCrQwQ8j1QRPahntLBFXIz3a
+	/IDZx/yOZ4zdq/d1VPnqYe2A3TFNSl8=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354bc535546so1637305a91.3
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774563899; x=1775168699; darn=kvack.org;
+        d=google.com; s=20251104; t=1774563902; x=1775168702; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ammt0BhOIyLXS2ULMUn5WewBTpBTKqlX10HzkZ/Adsk=;
-        b=McFSBPqBMy9PptRXE5wkanLs2UgsVIyK8s3S6N1vfT8URWHe2lonj8dZpfPmyVs5Up
-         WWa9r6L9Gt3Ltzqpf9WakKTbbSzHkpvzdmpoGqkTm6ebqNmSjKz8gNY3TydTwRX5zh3c
-         4KrJnulG/cj9wyH+qTUgknQnUGvG1EY38snLmeE7h879MRzqKeYWC2mvkFrijQ6b+VPD
-         6QyjwQ08ZGfVzO2RAtTtIDWupZ7rvCnBIQ7AGD78WEP2QFVQ+7+LHZrsl4/L46gnCm/n
-         kXgwanzpdGVUvXtnNgNCNLkFZwxLN+9yf9FsI6JuG4gyyK4SRbB7By++R9Yd0+ds/OJT
-         lhaA==
+        bh=afYjOzvP16h/SfxvhTKPo6PFaH7oiLN+m8p/p0wfDgE=;
+        b=PqG66/GL6Cn2c7N1wkEG7k6LqMdUZwFCxSFYiyIeg4cVMTCfK4ChGBVJrGIEbbi75f
+         qb9VDdv5AzhlKLcMOQbVyeVGjb+8NmcXtooXDvIKmTNNi2xPZy+o42BFuWnp2K8UnU26
+         MiYXkS3KZem5FqMEtnYbJqYCycwRdr30K54+zcFaV6H9gHy07jqHzCxsRi4yanSaioCv
+         fvzjSyhQZ8JKjKzmjH9GHILQDMX9vtdXN1q3rVL/zbgFb9UR3wqUswS3QR2SgjxTtDe9
+         4NjVZtV4iYnNVnx2vImls771mh8ehYfQWhyu/LoeQZaPrZRm+JDiWtzhIhgEn1dTPZ7e
+         zyTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774563899; x=1775168699;
+        d=1e100.net; s=20251104; t=1774563902; x=1775168702;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ammt0BhOIyLXS2ULMUn5WewBTpBTKqlX10HzkZ/Adsk=;
-        b=pmjmUFP4VKLSfH53/xIR057Z9r1Oyn3ox2M74INoXmhb4pbrRzNsFgHjK+uopTa+a4
-         pmK3lKcpArTCrIl7il40tx50HETfkxYJ1VncVjzS7UEAZXLuM40I4YKu+8GYznRfvkmH
-         E/gtf7UjfSlQvGLv06PJpMU33seqNWBHEBIlpkuhDlXi7YF9WlLfiN40UTVFQeVv8Hjj
-         g+iXC4iXWmVjzmOv6m6tkpmerT9AgLKwMJaOGFF0HmKD/Xvag4eGJk5jCJIgkVmdwm6s
-         otrgTBEA8kczyKXUlL1uIcjsv4yM5ct2np+T0cI+CKAYYvrHqAuV0HGatf7YMByVg3Ya
-         LjkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjudHy8QHs7ytaBKV7Mwawg0WRtv+Cocspp8SAJN501x+hUU1KrOJ7so82mldUeiGZZb+0WwN68g==@kvack.org
-X-Gm-Message-State: AOJu0YxR3sF8wvZO8Hkhmaa7bJufYyDUBuHuSgMItbRbpgFO+MMjJi3T
-	8Fxu2l4wBEO/7mYEucOn8yfSFcXT6+ovJqNX+d80bWbjmoFcSBPt6WGBQmMnN85Fs6HdmDFQMzr
-	3IUauzwHFta04EVVdhmDTH2EknA==
-X-Received: from pfblh10.prod.google.com ([2002:a05:6a00:710a:b0:827:1713:6de8])
+        bh=afYjOzvP16h/SfxvhTKPo6PFaH7oiLN+m8p/p0wfDgE=;
+        b=fUP6+cE5GFTqzWX/1EQM997+k+L+/i0rJcXvpKdJCyzWBBSYQNFCBUBA+SDyfeyX0c
+         13Sxlcfa4cwd3yMJMZzBNZg3z+bJOS/hgd0wMpl6eQrGo5VajVPzHQfbpSmkjQDj0oul
+         7vxpN2tY0J7pWfKJhQOButZLm07ABjMLgA6BfhBR0fDktQ1up5Oazwv1ScH6hBEAvbaH
+         KfBarX8eFIJCL0N/YS3PfAvzpSUncwL3BuKGP2Lxh6Kpbo/SIhsNfTB3ppJ+kNMjXcnr
+         57ke7tCH+ZhLd2rFdvAqf0TklMCgpSi3pfqnqXt757V6ei/y6bk2Yf1mcKCTsdF9PXvT
+         M9xQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVLdC71idSyaGIZrt8ZriUMkIvaSatLVJjAVG4+UCSvuHSzrrFeLtF8sitsYz1cV9C+dsC/zCBVcw==@kvack.org
+X-Gm-Message-State: AOJu0YyeTP6Ijy9m2HC//UsnH493YehSBHBaCrFnY2DSzYJ8ksz1VzwF
+	6FJlNnjYv0kpEezI5qaC1e6dc+NYlR+QX2gjUd9wasa3GEBffPlMxMQlLsqDfdVB/pIMqgXHiXt
+	O7plP96q6tdEjlrdQTEfejshGnw==
+X-Received: from pgli25.prod.google.com ([2002:a63:1319:0:b0:c6e:1869:6f24])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:909e:b0:829:86a5:d30a with SMTP id d2e1a72fcca58-82c95d3979fmr158458b3a.16.1774563899156;
- Thu, 26 Mar 2026 15:24:59 -0700 (PDT)
-Date: Thu, 26 Mar 2026 15:24:26 -0700
+ 2002:a05:6a21:9992:b0:398:a5c7:3dc9 with SMTP id adf61e73a8af0-39c87b6affdmr315892637.49.1774563901450;
+ Thu, 26 Mar 2026 15:25:01 -0700 (PDT)
+Date: Thu, 26 Mar 2026 15:24:27 -0700
 In-Reply-To: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
 Mime-Version: 1.0
 References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774563861; l=2856;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774563861; l=2780;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=YkFqhRwEQZVyHiDJUj6H4E4tU4Wvsdzaj7skS/qkZuE=; b=fYqOIs0iI3/nAEboIQ/PrkKD3DqiKgh0ZKOH0/alwG+ByCa4bQDdDE7B7eewnHx+Vkr5yyN3L
- qYWooCrUe9JDhY0cerupGdZo3deYAs2/zlmrWXsG3XBYe8lS1/Lli9y
+ bh=7TZkUYE885M/wXgOBZe37BZPynsdjK5T8U6+o9woLC4=; b=314JAxzEs6WcJiM6YyGFVmcscyTLi7cuvImPq+mUF9Ii+v6RmtfL08R7F3Q+0ERv7vn2+MJyY
+ FZVNih8negYDvxZ4BfDeQXb+WPayqddg+asn8A0sbOoVY9TrZpWfcM2
 X-Mailer: b4 0.14.3
-Message-ID: <20260326-gmem-inplace-conversion-v4-17-e202fe950ffd@google.com>
-Subject: [PATCH RFC v4 17/44] KVM: Let userspace disable per-VM mem
- attributes, enable per-gmem attributes
+Message-ID: <20260326-gmem-inplace-conversion-v4-18-e202fe950ffd@google.com>
+Subject: [PATCH RFC v4 18/44] KVM: selftests: Create gmem fd before "regular"
+ fd when adding memslot
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -119,14 +119,14 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
 	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: B1D741C000A
-X-Stat-Signature: win8do184jopjyuo3knxmuaduisjajra
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2C21DC0004
+X-Stat-Signature: py66e3qpdq3yaiix9ea14sjkdsfbouju
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774563900-985233
-X-HE-Meta: U2FsdGVkX1+zR/HKQzLWXlJSoPCmVWwaSWIbGo580g3gpN8+OTwoCJcBdbArGisUTZRsd6TafHVrjLpQi3QWWTOK1Y1K2QJ8IHSBe7LmEP5q3PdOC6UdZeaP0jrXAbm6UIoPENNCcGL1R/868skCVHmaKwTKxA0Sd4khD8YMx2ngCBcVcoG/eQXVAIwdwQn56/nnBikVaMK7eht+y/6Er1dZ4R7L51i9ne0XONaN+3JJQeakMIBGehMKO/JzFTE4wrZzZ1gvKz4yI7iRwi/cQ+BSYRLdTCbo4ot6MAjcnPhFtNQ72fqFR4ziGXin4cUaf1nw90nTQkrMwGYC1x0qOUMCUZB0jJggO3s2hHn+TrneU4Qa9jc/kK0BWBM8maQJbjX/uWyrxm+Lrlc/qYPipkkT+v0pR83SWwxbRJd9plE1mH9CSQY8ysErJ+T0caWxJh2wsEruJi2Z5IhC3VTMbxiISWiy9Hs95JAXrhTLqMmt/FbyU3WjYV6jnZST/tlVEATEC8qXhmHTFPtGNr/QqfHnVoXJBYApq7bFt/4flisY8bhhkhsCo9fRR9LNJpYncKYYWFhVYHn99leIeOxqmWO/cNkFUzz/BERhq2zVEb/K3oe9Rw1IOKBfXbEI2BC0W3c6oUnZ9pRYJPfDNGGYzfGvM9b8uy1KBC1D0LjpbzJu3pigKcvw2CveMn2EvLnVPNpVxq1TAi9P5c5xpxX3BxV9vqyprieplLmXrJxhUTidRDn3A8ffQzSZXAnEwCOndsH+WuzyhTMC0xyMz7gjfu/jwe+8hQGuskYhz5hNmDE3qI4Ra4o/JnAlOUCBQ8DibI+wY19PTpPq86q5gXvNxSnWLXk/vbGoXn4Wm3y1h3tBFMTpydOMVHew6b8CxTvXQtllNS0W8LFsaPRQ3ak/FSZeUjyWOvNsDoQWOYNP5/XezslvirJ9T7CevQr7lIxvOG1T1442JNLShvbbPL1
- CfjxE85V
- bpOwszinMXdXnPVbv0BRAb8LDwp6CjeKS1hMdD7RAOQRC72ntlEX7pEijAJKmLS+wMA75J6APOCAWXIxIFHMnU8GKytUt74zRZPzagxd6ocIFaBI5Fpdl03qDjvA6ohZBOJ0gwpO9PnFiyN6zazefAIiYMDyvNamKS2FJ028d+u75EUtl3EV/RXwcPSDilb8BAdvqsW1ceIwgBcTcIKp2L/oDcZW+IVLLY2fnoQzBY2D49U/QhpyP4A85XpxIIzNpPQ2JPgr1ViqjUdYBdHqumETTjvbr7vfcqbnBRNQ16hnLEnSs+oEQjkKVanjuyosvaN7AAEc7FIrFIlwGlrhmSKfdDZwC6Lhx7Wx67T1Guy1R8URiPDmyXMurw0E9Ztj7MbSAiQH3PTEV4DkDdwmxG3z/wrurswWcW+j6a19ZF0Xw0irnOt2oSSWrtdN4ksMC5YmoWnasUV5L9dW3ugMdGbfQpClQFmC5iyFsUjtN8J8+0y8ry3xTBvCb0JCl3UiuOQyMDdNFIZnePbCPdgUazkymYCxJ5JVZ0l1QvEHK+ZruPWvppxVkUAoOrWMcpZij3fo6qC4Dh/2+p1GBWT4fcM9XOW2wHZERpn5vajP3h3jTm40mrOVSOktvzdSD0WmXab47MNj2go9KKeY/U9TKUbAMamTKItyQUlm8DDdn1cmrI2U=
+X-HE-Tag: 1774563902-435050
+X-HE-Meta: U2FsdGVkX18ng9NwwSz+p+1agqT1tlVLzpNXOSOrV1Ad4/FYi37sWUqpnRsK2t1PLB8ereYQ9mXWtb9VsO+r4qFheStjG/iAc8P/CrIURJxCmqfWgGTKbwo6m1FjtGosxFg1A3neca+w8n8OVm3Oegx1Txg6IPQ1s8pWuzG22N2XHDDqQ+MCnSmqJCxjwJRJ5w4+GqF8OI3hdNlcBx9kMnNXObMdL6jZV+dHhEOmwhoy/qZUxrUnvrAnyUfc2RapOYywFldS3D77tY5600A6WZ3P7IVZJg6++NSoMMntL+aPtLAdVvCx/RFhPnOQQ0jK30WaD8ILH2oPc+D8W3Pvn7vXVgbSRzQHNY2CCuRrRQ4ugoU03U8pbJZ8WFkpGHyKT2y1qXLpYEpzRdfDf3B3sCUTDEzLSqas3BG9BN6+KT+02LnKgQ8bXNhpyPxYStIs/cadsNnsTHL6M/PhXRqWT/pkoU/GbuDtvwDN4d5BTDLBk4ZR/bKOpTubxYIddCIt5JuTF1tfjH+cfKj26I8TIoC4wr83o8LwjGrPtH+Qjwy3o3Zn2f8fAqQnOffCMvayOdVxEAwyv4D9Ey7SXhFfD6ynfImZ8BB4TMsZp0nQtA3oSCZc+9qIDQcSnZyNP7BGbdmTTOjADh7ShiQ2YKVg1yciq8zytD1+7GzeGtYoo5YYv/8Rkgjr8VBRCgXTd0yXDqMErLUYkwl0gO+eoXK5rzVc2/3WbslYr3cLffobzjBALGJa1LTHHX2kM1kx7vCtrDRW9aP5TAObnYFxJIQd45bN/vmmO0mmp0iOXa56OH0mPlUm+mDojX2B1/MI3AAHBZcG+wd1ovOjnQuTiKxruXxYP0ODLHlssWdqvOJrBFtnI+lsPz+VGohpBT9KXD/t2MoNPz99mXnsUTIsCNndp5t9XilccBKfcwy4rO0irJcfK0lXf5m2V7I0KSwq7VdLtR8s84u9EwE1zkukLY2
+ 46I0/Rgz
+ /vnSiPNGHLA4acZc7RUO+987OMOyERe/3Pkfael0ivbgX1XVLeESIdWdhuJad31DyePa3fVkkZDEVidyeYRDlAUYkJUqPeKEX7HYH9w/kWE7N2UPmOCL2WSAM7UPhiOUEfDQ5XYv9VM/ZWDgyoWbi7Uoq8fEjwwEeQplGH2/vPpmPh0PIwbBbevqNL4OSgMHbL0+qIjHvjy6NMVOx8R9LkIJecCOk62EnoG60sRsCP/wZ2tEdKTqwf+7YA/LENSK26R1S+94/XWy8AQeN+GOuCsOnliQNV3Kyz9QRewAsJllBHTcPle5gmew1lDxh2KFFTR8Ld46qmkrmmMXic3bux9HC3L95jVejZvMIqPu1bsOqL0cUZhdyZn15878P8bKWnZ85YVMlArM8UgjQTSOikVuIBE3AtfeFWuSiyR7Sp3EfORjcdM4q0eTeI8dhHFebpJM8CWEDW+aKHv/udyuM8PK8BNSNXANgIjIRhUQhY806y9rzyAe27qQJp4ZwhAYR/xjm54m9WYhNoBW25IoaTgBfo0Bos8lRLk5K6qsNJ0pOQ9O++XxGU0uImTs7odFY5i8P895yGmzGCsKAFZRs8fjowKceo7V2iphuNKdfGx5h2BqR8yZCx+pCiMUB6LPNutK2BKPhUgvlDa/HAY9zP6JZTL4xbhoFxKXXDxug8Jwfas4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,78 +136,79 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sean Christopherson <seanjc@google.com>
 
-Make vm_memory_attributes a module parameter so that userspace can disable
-the use of memory attributes on the VM level.
-
-To avoid inconsistencies in the way memory attributes are tracked in KVM
-and guest_memfd, the vm_memory_attributes module_param is made
-read-only (0444).
-
-Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
-that might use vm_memory_attributes.
+When adding a memslot associated a guest_memfd instance, create/dup the
+guest_memfd before creating the "normal" backing file.  This will allow
+dup'ing the gmem fd as the normal fd when guest_memfd supports mmap(),
+i.e. to make guest_memfd the _only_ backing source for the memslot.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/Kconfig | 13 +++++++++----
- virt/kvm/kvm_main.c  |  1 +
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 45 +++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index b6d65ee664d0f..8b97d341bd33f 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -82,13 +82,20 @@ config KVM_WERROR
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 1959bf556e88e..610cb32ff207e 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -1061,6 +1061,29 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	if (alignment > 1)
+ 		region->mmap_size += alignment;
  
- config KVM_VM_MEMORY_ATTRIBUTES
- 	select KVM_MEMORY_ATTRIBUTES
--	bool
-+	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-+	bool "Enable per-VM memory attributes (for CoCo VMs)"
-+	help
-+	  Enable support for per-VM memory attributes, which are deprecated in
-+	  favor of tracking memory attributes in guest_memfd.  Select this if
-+	  you need to run CoCo VMs using a VMM that doesn't support guest_memfd
-+	  memory attributes.
++	if (flags & KVM_MEM_GUEST_MEMFD) {
++		if (guest_memfd < 0) {
++			uint32_t guest_memfd_flags = 0;
 +
-+	  If unsure, say N.
++			TEST_ASSERT(!guest_memfd_offset,
++				    "Offset must be zero when creating new guest_memfd");
++			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
++		} else {
++			/*
++			 * Install a unique fd for each memslot so that the fd
++			 * can be closed when the region is deleted without
++			 * needing to track if the fd is owned by the framework
++			 * or by the caller.
++			 */
++			guest_memfd = kvm_dup(guest_memfd);
++		}
++
++		region->region.guest_memfd = guest_memfd;
++		region->region.guest_memfd_offset = guest_memfd_offset;
++	} else {
++		region->region.guest_memfd = -1;
++	}
++
+ 	region->fd = -1;
+ 	if (backing_src_is_shared(src_type))
+ 		region->fd = kvm_memfd_alloc(region->mmap_size,
+@@ -1090,28 +1113,6 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
  
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
- 	depends on EXPERT
- 	depends on KVM_X86 && X86_64
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	help
- 	  Enable support for KVM software-protected VMs.  Currently, software-
- 	  protected VMs are purely a development and testing vehicle for
-@@ -139,7 +146,6 @@ config KVM_INTEL_TDX
- 	bool "Intel Trust Domain Extensions (TDX) support"
- 	default y
- 	depends on INTEL_TDX_HOST
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
- 	help
- 	  Provides support for launching Intel Trust Domain Extensions (TDX)
-@@ -163,7 +169,6 @@ config KVM_AMD_SEV
- 	depends on KVM_AMD && X86_64
- 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
- 	select ARCH_HAS_CC_PLATFORM
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_PREPARE
- 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 6607127eaaeed..05e203f5292be 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -105,6 +105,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
- #ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- bool vm_memory_attributes = true;
-+module_param(vm_memory_attributes, bool, 0444);
- #endif
- DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
+ 	region->backing_src_type = src_type;
+ 
+-	if (flags & KVM_MEM_GUEST_MEMFD) {
+-		if (guest_memfd < 0) {
+-			uint32_t guest_memfd_flags = 0;
+-			TEST_ASSERT(!guest_memfd_offset,
+-				    "Offset must be zero when creating new guest_memfd");
+-			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
+-		} else {
+-			/*
+-			 * Install a unique fd for each memslot so that the fd
+-			 * can be closed when the region is deleted without
+-			 * needing to track if the fd is owned by the framework
+-			 * or by the caller.
+-			 */
+-			guest_memfd = kvm_dup(guest_memfd);
+-		}
+-
+-		region->region.guest_memfd = guest_memfd;
+-		region->region.guest_memfd_offset = guest_memfd_offset;
+-	} else {
+-		region->region.guest_memfd = -1;
+-	}
+-
+ 	region->unused_phy_pages = sparsebit_alloc();
+ 	if (vm_arch_has_protected_memory(vm))
+ 		region->protected_phy_pages = sparsebit_alloc();
 
 -- 
 2.53.0.1018.g2bb0e51243-goog
