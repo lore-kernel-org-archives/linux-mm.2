@@ -4,117 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A3E710A1E64
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 10:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FA4910A1E64
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 10:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 989126B013C; Thu, 26 Mar 2026 06:47:01 -0400 (EDT)
+	id 73FD16B013D; Thu, 26 Mar 2026 06:47:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 939806B013D; Thu, 26 Mar 2026 06:47:01 -0400 (EDT)
+	id 717516B013F; Thu, 26 Mar 2026 06:47:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84F5C6B013E; Thu, 26 Mar 2026 06:47:01 -0400 (EDT)
+	id 62D886B0140; Thu, 26 Mar 2026 06:47:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7669D6B013C
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:47:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13E441B9321
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:47:01 +0000 (UTC)
-X-FDA: 84587886642.09.B0881D8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5CA5418000B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:46:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uouhDF4Q;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 520B16B013D
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:47:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 053CE13C11E
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:47:38 +0000 (UTC)
+X-FDA: 84587888196.23.BF392B4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EB525100004
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:47:35 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KHomx3ov;
+	spf=pass (imf05.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774522019;
+	s=arc-20220608; t=1774522056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9KWyP7k8xCjeo6QZkYLluIOVg6pijIJ6pG+T5hYCQxs=;
-	b=h7yA5PFCDW7CuiJRc8kn3H6/Rf1d+A+jv2TzOl1h2VrByUwgc/TRxPOu0tWdipGs4Fm2+C
-	TSxEFdvvHNwBnVh7c8+FONNcpEOaZSu08ubdC3HswgidedMyqjilZx3zSW1C8BySDKwWR/
-	7w7+IUz5swo2u99jjm1M898ois5lhR4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774522019; a=rsa-sha256;
+	bh=vmw7T0PnOLgxIpELQ9rQpU7AHBZsSNPxjlfKpKQj97s=;
+	b=Cudn0FDjLIWAc1+4QM3VTmVupAbFqKMf6cwKmuEL+G3Yl8kAqLf4O0+An7KERgnzd6yOr6
+	yLGvc2Pqh7T18bWR12vPcOHnwKVJAe5oeGtrp8oXRxaOl04FMTP6UmzQATg+THLQ3TyS8l
+	mB3YdXXYgZR/seQHu9EexJd7oTZMwoY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774522056; a=rsa-sha256;
 	cv=none;
-	b=2YpKCp2Vs6W/+JGtS02iTAeMgC5fHQ7E49U8pfHsFclV8eKTlcH2SGmfML1IkrE4Z7spd8
-	vw8a4u/GrrLRZ4wZ7u2x/c+BTyi/z2WcZ1ncQsAbTfLUQ40ayvvD8z3f2KY/dPzQhY+vmQ
-	XqFCcTusks1yEEDQTGgbRaJhCgWyCAc=
+	b=apj2zjaE5Y8hkGdpbUrhOZ7LeMpgaM3DnKAhmF5HvqLwMTTaOaNKmTVEsXW24ofrDwrcwj
+	INxesR4Sw3nXPiFdGgZj1Hxo5MDbV/pv76GZtNtNm+7rG9M01no1YuGpYrzlzJpBhKPK+p
+	OWpECOnFd6aEF2ERYlQEj5eYKJ9UlgE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uouhDF4Q;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C369960053;
-	Thu, 26 Mar 2026 10:46:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E84C19423;
-	Thu, 26 Mar 2026 10:46:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774522018;
-	bh=jz4QKqDvyuc0OVYL41YLkI+2R+GPNLQTDLA2i1KuuD8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uouhDF4Qa318/Z9nX9Ws4mHmW4Xj1lUe3ecVX69vddoTww6TykXBFcfxzgLsjsVUr
-	 uKEecElGaHwHYwRB5sfVpD/OA8X8sVBjVkid9cXNQoz/6KSifPhScJyeqBMrEDo8oX
-	 kXSsXRIlElj4UylHMzwh3I8/YWYRmOgzn/Fvk8BThWe7Ed5I2HEPkk2q0o6tM260d/
-	 VEgQAHNg8pmhJezXZ4OK7g48WOO1fuI9Upi7y7U9026H/AmdcAXA4lLqumD439oT/M
-	 Pzl4dym+ApN3Z6gmLabe7ExmLvPanhPpcuvksSt4QNF6HwEvXMWbKjIEqggYMGlpNw
-	 iwwZm3ig9pXBA==
-Message-ID: <171549fc-8d65-41d8-9343-7fcaeeda25b1@kernel.org>
-Date: Thu, 26 Mar 2026 11:46:48 +0100
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KHomx3ov;
+	spf=pass (imf05.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774522055;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vmw7T0PnOLgxIpELQ9rQpU7AHBZsSNPxjlfKpKQj97s=;
+	b=KHomx3ov+TWDkoUfZjO6EuJwfc5f9y529L2rdXc3WBTYnBt6d9NxAaW8znbnsHmmBy4gVQ
+	6w24IP2HqClPzQgj2lijwZabac4y9s9jrjaNtZVTU5ltx9ifb4PeJlEebMtU1AJbgboGGL
+	4wGZOVvUr3kcfZTqhVYdhke2ZUOHBqE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-jGSoJECHMrekBUYeanVpuA-1; Thu,
+ 26 Mar 2026 06:47:29 -0400
+X-MC-Unique: jGSoJECHMrekBUYeanVpuA-1
+X-Mimecast-MFC-AGG-ID: jGSoJECHMrekBUYeanVpuA_1774522046
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 483F218005B2;
+	Thu, 26 Mar 2026 10:47:26 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.33.121])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8E95019560B1;
+	Thu, 26 Mar 2026 10:47:19 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Paulo Alcantara <pc@manguebit.org>,
+	linux-mm@kvack.org
+Subject: [PATCH 09/26] mm: Make readahead store folio count in readahead_control
+Date: Thu, 26 Mar 2026 10:45:24 +0000
+Message-ID: <20260326104544.509518-10-dhowells@redhat.com>
+In-Reply-To: <20260326104544.509518-1-dhowells@redhat.com>
+References: <20260326104544.509518-1-dhowells@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 21/21] mm: on remap assert that input range within the
- proposed VMA
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Bodo Stroesser <bostroesser@gmail.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-mtd@lists.infradead.org,
- linux-staging@lists.linux.dev, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-afs@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <cover.1774045440.git.ljs@kernel.org>
- <0fc1092f4b74f3f673a58e4e3942dc83f336dd85.1774045440.git.ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <0fc1092f4b74f3f673a58e4e3942dc83f336dd85.1774045440.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: m3do1md7w7f4h1mjbd5z1ixujab9pj6t
-X-Rspamd-Queue-Id: 5CA5418000B
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: 4tvWGGPxw87XmAGWdisvZOntRwfLwKbx2V5iQ-NTXy0_1774522046
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Queue-Id: EB525100004
+X-Stat-Signature: ywzayju8do5xpqaiyhk6wwx5u8nmyyf5
 X-Rspam-User: 
-X-HE-Tag: 1774522019-955188
-X-HE-Meta: U2FsdGVkX19H2eKmAX77i1kLmsQ99jqadkIR6GkQghmdflOMXcdYMaOgfNeIv73E+TDT2Ah7zyHNzHwVgbhbtgbAk2hFYm1vqVBOt21tX0Ie4LscQxO/fqBrAJK0SPMRTLmd0Cs2ThUcbF1JnHhFxYlckGumlOWLgVkKrqY0gxfEd4dpvqRM4nNr5YSM6puiuKKosukKh1+ILQJ5giMad+bY3WI0qxRKS3N56vlei7M9DXs22uUX/kNo4I7BPv7C1mhYsqHE2H/qjWSUKVVV/GFbSzbsguNxKMhLws/AyNMLLiQ7cSfR39n0wp4PAdKUXbAFu+yT13ciFkyLHncPR05j59ng5HFJ73xdzq3l7WRpopAwWSIZ+UZV/T/bwEb7Kq43P20mqsfFFqHsf6vwzvoAobwhQLnqs5gkhh71+T67N9pN+XIQmCQmjOHlehOS1PnJcxHOsyBHXfjpaJjoxDNztiMOvbqYPIfS7gISCTSkMQSRf1BKN8Soxm9qsr9cHIbrMzUHi5ljvVGFFgjSeufKpWApycMI2I/IP/fTvKXNGXTGd0z1r8+h0jm388sOQqFcXJfiEJwOZq/0igyXbryTgbIVyhAzvtUN04mIJfRc3fGOLWinF85Qpfo+4vrQnujrnhqYcyESEfIR4ET/EtaYaD4qY/5FnOY6rE2jJkWBo6ue6i/vtmSUibK9Vc3NpFfiIWvBld2vDInY4wICsaBQs+8dOIHyFe+3e/uCVsdp3MZQVX8E84AA1izcGaoai7NJE2HdH7eaWW70qp0CZVb/Lg7mmB6IxpgV2j3BfVsVOPS8E+SE4gN9j/MQf0vf8p5z1bzchIqmakItRjjSyMPw2bLmvaok5LdZSeyeZN0+cTn0KQZXhyF9G1E441TxeCnf/TEftjzIhm2364hiaI8qa74GK/YKtwZsRLigS76dklsWyKHvZTQxwOkOXocj9AedWmrADmGRfUfQQMO
- ViVn5zVI
- tEJy3NkTixPBRJG/bJ9MA9Os+a3ja/zcOvzZarU4VAnxa4KdOIpPD/otVgeG16rNCBXST9tJuq+LA8X2ngh6uxAzLLky8PSlRiu7dqoU95SyVAu1l24IDUVsGS2IAI0XSNl0ppDXDtcqIO/dMttJYiPUIc5AH0Ewzhtzg5M1pf9G+uVkjHA+s+eORDw5qtlWp+lWSmJC44arN/EksEkS1GeA1ObOghsNGjFBEPutJjGGiyYWm+lOqQHmGqibRp04dn0q0ajC0Dv1v05yv4Rp8BKYS7GXuhD+VPpq+dyeueS7KL1hLeGJwvPZeFZe5MtkwBPsCbkRJ9dvhkPtzZl20vb7k4jYNHEi70iM3gwTdb1BZhnQTqrzGI4LSvg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774522055-94762
+X-HE-Meta: U2FsdGVkX19xYlOBUFKJKQ9zU2p9kXAxBxvyNTkTUhTwMN9x67prP78EZvlqRu3SfqTrHslzC/81mJFLaSTIs5kSUIrBXztdWDdQCg/hq6Nkm1DPZ69YCGzCzIf+OBiNIzuino4ffiwtAMObh6hrEpww8Ha16COa7+Kuon9RrCmdZ9JEk7CPpdJneJRVcuk191jmCqchFFoRr1i6hNuxCoMg4YEdudaKIjpD71yn3Gg0aVZnPrD7ytUG9KGjII65PqTXkeJgj20Py9Z/0w+0Lvo6303rDO29mMtxuO+le5swZc9GW+7tHChbVhloYrsZX2zbuSqYESo10W/9paYJc4KY7UTmwlpPkEjdUzcen7lfoFB1/oHQ+NhEeW9UW07pIu6Og3Hx25S8DeTnIbJ7qdX1DsNr/gypgJNrraCiNkvttxjNux7hmXFfSY8nGDcTIqPoXtyPUMSy56+O2dAnVKd9nqFo8/SGZ8lhkH+2qffkcKPuDHpQ+abLXXwA+HuntaBgCAS5fDG6qtxc15Mf8c7qEp/10Ojg4Sl7xx8o+b5yix3f8uohuoDeVKRFdknWM04mPUDVB+X/OwQtQJUc4FuIkfi8DYVJ42cPtqqA99YYlcoXddMl9n434bLvcyM/ij9DSZu+nqOPiZzOdtbOano73E/opPEibyKHK+U7z8D3jKZ5k1JyGMV+PVjzfyWatO7DhK1R5NN4JereeycL+GF1LUT1LqutzPXee4PEpqws99+Z/fR+pJ4kJ4DkSLzZwyFwkiF0abVAXs5kSYklLSAcEOibWC0rDp6G5dcsrZ/opBAlfucBFVMlyyP8LrP4wwqPinGu3fLLIWsIGrRv4MuVLhdE6+iliYgYcUt1yrVXvAwx2tk2KQFn5CaW2G7YGjsDmxCRKCpgjFe+oBuu+8TvvOQjVZXRKIb71KGucS/RMqDHxBPdHx1s1k4nzOzScBOTvK56q+fNUrHzfJf
+ Uy5SM2fX
+ i7c27rGNzxSx8QFUXyRRGyyW4UqtgucODFACb0IeUzUEO+G0sdXngZoxaew7eioK+iow8Qwop2QEmRD9qaEI00PRNsQEDOnVGR6uz6T0udgmQK6mVwHqfq3lKEv7MKUoO3oRYzZ91bOX1vC8IcBiwDGJG/pKReyVj683GzRk4aG0QkHyEzur0FRYmQUlwK0GPzMAcmUr6dH2M+ksO8WZTfJbhIjOGuQbDOWqV7Jv73EWxOU4bmjH4+EfKC4PcqAuO9KSlvSBab0J5kgd45m+5N6ujBXWVjA4b4+mKVpPAqPpFOWyupuh6uHSkIYnLjGB400y5oYIypsfZCFNJ05nKKw9Wr3iOTMeCzU0Yw9Q0lxbwSlqVdA3afKkL4EDpUdJxie0DhArshGHFwqh74Z1nbY+Ztzq/4xZKWmBGR4UWQOu3lxWrwH/4SECGzT+wfvM1SR+DYs/HH/beuBo5XKyYHkJm1/rIyq6Um01LM7FHCYPafFMKGfODov434lrizFCtR6dPfd+hF/t2H/8O0qclVTUlTAHCCFhFzIE7+smLmJG7mO5RNvHtObmdVBSGzGL/+Q32Vs+8Ip4WzQ6LsAnkOmTZXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,37 +127,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
-> Now we have range_in_vma_desc(), update remap_pfn_range_prepare() to check
-> whether the input range in contained within the specified VMA, so we can
-> fail at prepare time if an invalid range is specified.
-> 
-> This covers the I/O remap mmap actions also which ultimately call into
-> this function, and other mmap action types either already span the full
-> VMA or check this already.
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Make readahead store folio count in readahead_control so that the
+filesystem can know in advance how many folios it needs to keep track of.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ include/linux/pagemap.h | 1 +
+ mm/readahead.c          | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-> ---
->  mm/memory.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 53ef8ef3d04a..68cc592ff0ba 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -3142,6 +3142,9 @@ int remap_pfn_range_prepare(struct vm_area_desc *desc)
->  	const bool is_cow = vma_desc_is_cow_mapping(desc);
->  	int err;
->  
-> +	if (!range_in_vma_desc(desc, start, end))
-> +		return -EFAULT;
-> +
->  	err = get_remap_pgoff(is_cow, start, end, desc->start, desc->end, pfn,
->  			      &desc->pgoff);
->  	if (err)
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index ec442af3f886..3c3e34e5fe8a 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1361,6 +1361,7 @@ struct readahead_control {
+ 	struct file_ra_state *ra;
+ /* private: use the readahead_* accessors instead */
+ 	pgoff_t _index;
++	unsigned int _nr_folios;
+ 	unsigned int _nr_pages;
+ 	unsigned int _batch_count;
+ 	bool dropbehind;
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 7b05082c89ea..53134c9d9fe9 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -292,6 +292,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 		if (i == mark)
+ 			folio_set_readahead(folio);
+ 		ractl->_workingset |= folio_test_workingset(folio);
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		i += min_nrpages;
+ 	}
+@@ -459,6 +460,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+ 		return err;
+ 	}
+ 
++	ractl->_nr_folios++;
+ 	ractl->_nr_pages += 1UL << order;
+ 	ractl->_workingset |= folio_test_workingset(folio);
+ 	return 0;
+@@ -802,6 +804,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		ractl->_index = folio->index;
+ 	}
+@@ -831,6 +834,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		if (ra) {
+ 			ra->size += min_nrpages;
 
 
