@@ -4,133 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FB3E10A88E7
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 17:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7592310A88E7
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 17:14:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB0966B0005; Thu, 26 Mar 2026 13:07:49 -0400 (EDT)
+	id 7D2E36B0005; Thu, 26 Mar 2026 13:13:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A880A6B0088; Thu, 26 Mar 2026 13:07:49 -0400 (EDT)
+	id 7AB326B0088; Thu, 26 Mar 2026 13:13:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 976CC6B008A; Thu, 26 Mar 2026 13:07:49 -0400 (EDT)
+	id 6C1846B008A; Thu, 26 Mar 2026 13:13:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 879726B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:07:49 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C3098C39F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:07:49 +0000 (UTC)
-X-FDA: 84588846258.17.2405F59
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C972040013
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:07:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zg37qVxv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9pi4ixHJ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zg37qVxv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9pi4ixHJ;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774544867;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D64C6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:13:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00D2C5D4CD
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:13:58 +0000 (UTC)
+X-FDA: 84588861798.25.03358C8
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 02C4914000B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:13:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rb7VeVjF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774545237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P7lANbKM3g4gWkcXuxWHlfM6yAtC+tfeO+S+WqbphMc=;
-	b=Udhh5QMtLVjzVgZXWjWxcQ6etLl7tJ2HzmQWuibGVoODOz5t5t0crFiG9OYST4fTOz0hKg
-	73y7Tv8Itk/Agx3hrNQW+j7nKedALZXSY9U9CN3vrlaiYfPBQxcXHXl423Lps5odrBSAQr
-	VCYgcOD8bTDH45aLKArxrgYpUs22mUA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774544867; a=rsa-sha256;
-	cv=none;
-	b=Y6TMLZ2MbG3qxaP8QN1EegC+P4m+45/nl8Lerx+/H0O48iLXBmLIGJHPiALb8MQ2YyCydz
-	8q/FuDhDzZ6xxI3gWyf8XfMPwkAk/Gk5aG6yHDkibBZT6uOEqfoPpw7wnWQExayPxJ8+nK
-	FYZ/SM1b7vweMTtPfGN2Z35+oE/Jqas=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zg37qVxv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9pi4ixHJ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zg37qVxv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9pi4ixHJ;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4E9385BD48;
-	Thu, 26 Mar 2026 17:07:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774544865; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P7lANbKM3g4gWkcXuxWHlfM6yAtC+tfeO+S+WqbphMc=;
-	b=zg37qVxvVtf/OJ7JX8OIaigjrNXHi29BPRjAYFARthZXUp5ZdSah9AdpSgQo6pkzCkj4cv
-	Ref2actOg80mQ/pvLdXoFvod6xY/vBnT/HAXMsFzke32EoR8Xt8QC6GtMYFyPYAgpxqyMb
-	ssbrNyOiVUH0UCWDEhHkjcv/83448Ww=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774544865;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P7lANbKM3g4gWkcXuxWHlfM6yAtC+tfeO+S+WqbphMc=;
-	b=9pi4ixHJIQLgyKwS3Ij0qKf3OuoYB2rPNP7dYX8e049lBw8FGUPdoWR1u73MnA+0y0HXsM
-	04is+Nj+IZmiJeBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774544865; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P7lANbKM3g4gWkcXuxWHlfM6yAtC+tfeO+S+WqbphMc=;
-	b=zg37qVxvVtf/OJ7JX8OIaigjrNXHi29BPRjAYFARthZXUp5ZdSah9AdpSgQo6pkzCkj4cv
-	Ref2actOg80mQ/pvLdXoFvod6xY/vBnT/HAXMsFzke32EoR8Xt8QC6GtMYFyPYAgpxqyMb
-	ssbrNyOiVUH0UCWDEhHkjcv/83448Ww=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774544865;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P7lANbKM3g4gWkcXuxWHlfM6yAtC+tfeO+S+WqbphMc=;
-	b=9pi4ixHJIQLgyKwS3Ij0qKf3OuoYB2rPNP7dYX8e049lBw8FGUPdoWR1u73MnA+0y0HXsM
-	04is+Nj+IZmiJeBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4C4BF4A0A3;
-	Thu, 26 Mar 2026 17:07:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qkxAD+BnxWkFUgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 26 Mar 2026 17:07:44 +0000
-Date: Thu, 26 Mar 2026 17:07:42 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hughd@google.com, 
-	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/shmem: use invalidate_lock to fix hole-punch race
-Message-ID: <jm5rmcwiauy2fn6fvj6cjowiu2dudjndhhlcd2tm275ibmos5i@dwxwchbs24ko>
-References: <20260326162611.693539-1-gourry@gourry.net>
+	bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
+	b=JJNiVFeIblAvZ0D63zUuLERcw0rnz1xJVNq6nposRFSajIoID7LJOSJ/QN8S4q9JBNwzuH
+	gXWjx0kjaG0ATEoTW6dAq8+LAS6tzf5LBh0tfviC8lG4nRfsy02yJLriQ3V4OuxW/EPLpC
+	UlySwM4Vzh6z5WXiskd7bwZKLp715Ug=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774545237; a=rsa-sha256;
+	cv=pass;
+	b=SScqPm0SeNDu+OfOqBh6dq3dB5T3pUoPDf9XmREX9VQ8vPMqYm9jargm/r+6yDJBOxo8W5
+	BEMExdcWbkoy5coNeZK65A7hAoK81rhqThnUbhbPpQvs6adzXyDSBccCxh1OZIdUC2WzAP
+	1zEM4pRgb+nMcvj2F1Aq/4Jaqxrkl+I=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rb7VeVjF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2c153272250so152314eec.2
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:13:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774545236; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Q9Heggem92PEKqjMkJXiB4Axuk11IMXyeVFHUUMySU1ZZaRypFA3NI2aGHSCxlgl55
+         IYdXmNeRTcgrVp5bwPDciosFXmyD0Ywd7n72gQy+FnBOpwe3gI/S4fUIr6iHkTIGRn8+
+         xTFFIYz1u/74wxgKowuRYxbrbaTmmpg6oknYKU1LjxlzZxZezm4iaSjt+8yEfl8s/oap
+         3zla/f7zXkksplSpKUR6hvmBeUkvQ2ijUSIJUhGZQotUb+A+8z3MsAVLXtA5gJVYdSYb
+         YMKdBAON/aesuE7CKwF5PecvoJ6QbQTetuJIWiD82bTJDE9rNL/XW+LzLKRygAJzEDjw
+         g16A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
+        fh=A+AElKoepSQ/XGnY1ItRbE7KT5mFBH55rPupOyvf2tE=;
+        b=NNw8/CfgrUzF4LibNzH5V7J6zheqGoLGtyEptRvjjJ2sypsSC/MeAkWd4lBbsbh1Rv
+         fmvNTpDrns7PlLYUf6H6M2dL6kI82VsBnDeJnqBd0C60cNZqVGOqnoXdGCzAJAHIbmHb
+         k/iuMG3XcBHjFte3kSqyMqA2+AKcGVMrRDj0Mp7OLWB589h69RsruYDI5gTz12YXgFhw
+         rFsTBc9obcfwGetUGh6Wq2bzDeW54ufCRSgg4hL8bDPsJh+51WCVmx0mLfme/m7yYFYh
+         3TDwAQ3GkWw7Y1Ypl8Ld84FRZdGatNKRtW1kUxv+29RYoYNRr1NXE2aucYNfjZuEt2n+
+         vA6g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774545236; x=1775150036; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
+        b=rb7VeVjFesxhp9uXz02xmyvbhmh3seQTed396PXj3Dp06Npe962mpmqkaa0F8Dg25+
+         tdqO6lcN6/6eDG4/MZFmHoPATHqZ2TNzScodKwoBfLpGekggsYDOmv1qJImQ7UX63kL6
+         2BJt3dB5w/OODF8GA8TVgtwx0dDJrCxXIHx1K/VNG4oFy/sifJFM/fHhT79+DSQtx5de
+         hnMLVDqR4zY+uzPUM8s4nV1lEwehQAXcPdmk2uDRpvZe/NiyfV0CCKbu3GFhm4uztKpb
+         cijUgqm2UaV+0d70uVmmF7mbsFP4+63fylAjusdRwzMJmvZO6eGdw5hFvhVpVgDQUHug
+         IYzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774545236; x=1775150036;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=q9olrJwKlMERMQc61vOT8vZB7QpsPZJixmRhhkJf9iI=;
+        b=evRSt26phFeaaQDBCmaLpCxXRdT2Ago6Lhmu3zARI/cbFkOMLAFiZTm63QKLmRXqMx
+         CN1BFbDDUcgcY5cyfQM0ecs00gfDySk/ShLmnMe6blwfUq0hJhl8xSH4ckrUuMG2V7V0
+         nlMrFeGn3snYR+ElRkfEP33fcm4Z3HOuJZ5LmF1pSLVLP160ydeT2X1XDn+is1QjSqI4
+         zN4x824kzaSqcXX3RSSGlfLALj1goJDgEPpcR7P1bWA4YPVzvTOCTlTACWXWO9X62Atb
+         LhXmvWxtVFHmPz22ZSqgf/3okc9GUgXstmhcKXMMNE9RdQxpde0Q9FZGtBMzcoLNiqCX
+         3eVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWxYyIBmfbctVpq9pbLkf3vcbYqk2OFOyl8hwsLDIPDsxsnKhlFA9Zg4bRYiig03GVSWgy3JFhSUA==@kvack.org
+X-Gm-Message-State: AOJu0YzHeU2Lra5UmMzmblHPUze43w3Kzkh2pNs227UEAIRarwvhctD1
+	eTJ0kb27eKHOgg2LBOZ5m5ZqufkwrNd9gzYG9Oid12I53lS195UVukfOea/SdWXXvrmhkCtz5Al
+	oV6rV4i3dG7ijav0wkk7K7RKjvQSBeHw=
+X-Gm-Gg: ATEYQzy8yiFVL6dH7+v3zNEVUYoydlk+sMJkuyBwAotZsU5+mltXT3PQ5PBsoy2wBE8
+	jCxMbSt7OFX1zTxn6cAUIBvSG3MLNHBSIwUtwfuOvpFcDfGJrOItauAdgT9LhiJnVyyVVJfsf98
+	U5fr8BqyNd1/1C5tmdDb5p2lLLiMRLd87PF5US6ySAohDMXFGGYKYmItp0qEfLn48wbSnTP4x86
+	Ewu88o4UDkwGD7/kkXcoS32tWB8ciCBslx2z7jJXvL5F3gaOu/Pctx/3phXzBQjTOZN0Mb8JPd4
+	Gh8WpS0tOIHZosRB/gOA3ljPx7gfjoZzjrdHmEQ32L/nw8TE3Smz4Q4EpyElzZ8WJgJiTwyT2GP
+	m3ukzReUyQKQS8j6ondCDPzE=
+X-Received: by 2002:a05:7301:5f8a:b0:2be:140c:bc2b with SMTP id
+ 5a478bee46e88-2c15d282067mr2407895eec.2.1774545235402; Thu, 26 Mar 2026
+ 10:13:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260326162611.693539-1-gourry@gourry.net>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 3mzk81efonhtchcur16ip33kcx5tcnro
-X-Rspamd-Queue-Id: C972040013
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+ <20260322192159.88138-1-ojeda@kernel.org> <20260326024226.GB2302780@ax162>
+In-Reply-To: <20260326024226.GB2302780@ax162>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Mar 2026 18:13:41 +0100
+X-Gm-Features: AQROBzCjsVmkmyxhYBQlcnjNfjk1drusXCGXl2NpoBVYAfyx4urVLgdrjE0kdQk
+Message-ID: <CANiq72kyFu4StTPbobkPBSMYxNa5T0uErkLj-6mRvwOquEsgSA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Linus Walleij <linusw@kernel.org>, Drew Fustini <fustini@kernel.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, soc@lists.linux.dev, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, David Gow <david@davidgow.net>, 
+	Russell King <linux@armlinux.org.uk>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	aliceryhl@google.com, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
+	linux-kbuild@vger.kernel.org, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	akpm@linux-foundation.org, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, gary@garyguo.net, linux-mm@kvack.org, lossin@kernel.org, 
+	mark.rutland@arm.com, mmaurer@google.com, nicolas.schier@linux.dev, 
+	peterz@infradead.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	urezki@gmail.com, will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 02C4914000B
+X-Stat-Signature: 97xzkqmbfk4pmkjos4tteybiigebp1q4
 X-Rspam-User: 
-X-HE-Tag: 1774544866-14355
-X-HE-Meta: U2FsdGVkX1836O5tKUEeu9RNiXoShPLdfLssX/W20g2sQlISBNKx7mXMSC6ThEblW9zNCeVC1NBa+y5clPzd77pa6J92F0OvbUQU+q0o9l36ulpXPdfpMMqu81yi5LrYjgpQsIoRWAzay9X3ID3g1tZDXqu6sObeyk/0RWI4IZnRcfAiTzYchJ6VCoPhN3P3A5ECZ2tSNGvrfTjqqYkTlKNcJcHqmNIY4KCbUmpwhGa8OnD0mwttLAAl/ANagcEmC6JySolEkfJz/7LACRUFWPm4nW/V8cvT/7b/OsuwdQmUaujAY2PhY5HWugHQrsmSgiYJNGMW4etqCw1QzdBuzqc2gmTXknScd0K/LOv+4VJ9RDKGHuH+5WhoQyKCEOzZp3Wpb15XbRot/94WoatldzPKLEgiVza3KNJt3tBoDbfqJt2taFToAB1HxM1iO8RbgD5oEGFdGVp5lMwiWgSbalnvyRurHV5tjgcHOPzJ37N/2Nmps7ks169v96LzFoLhqQk6xz4HqhfhfHow2RR2KpZO3XInr3XzYfW5IB26cBCjFoZwehZwGardfv4hzzTiGrYIHpmMHRiCf1vxODqGW5qJUdlX8ES0fituBsmwgHkfdIEteA+o+jkIN863trjPw1WNAlYMmnwlvD203i0etAIIfcZ1pzQ4kpQCyCu30fy/EDU4PkJw2tWlEeDRGa6N7OF4NWnAaUGXhIeTW7760uv6tmK3mNypBQeYMJXoX7uk42INOsL8WKRzBRCVSltu3Wa3t7IVkCQieURoXJmh7tit6E1dEiX3dbc54uAjNmFAkrrj1AXuamRS2eg/C3+hwpznFbZh5cKl7oaxG8zS33wuHRqGOM+oy+ydLwo5CyRfIypnZTrtGBISqAcWn7rP75za3nQFZZRCToM7sr6R+lpqtXUeDcWHgB6RJTXoGFQOJmH1UBcy1AwFtLLzyq2dvRCgbGeB7CoryuEbYDu
- J5kErrU8
- kUJRC83ZN3zdNVmPN+nSOTW5Iy1A8cIZvrxB3zUXPnvJaRv81uAn8dxErcxBQ/Qegkap+U5AkQXaGhE9hYhYQ/3t50s9VR14qhBBAnA4ylmBhStw35GwhIE7ZrKv+E9Q0KoI9MZ2pqbNj6R/9qoC5EsSMMzcysL3SojY0vImmudUH2lG9xMf7Y87k4hwqsjQhtE0ysYHMXUIkeiMqRbhFVozzk7wTyJKvYfISPMeATGeGpNeZi8Hir+K4yk7iOuJjy4fyG+LQ/Y2VwSCUPpPXwR8B6U4M2J5OgyhVh8PKdxA86wav7NeTNAMg6UYzeFM7oGwsmrB/z7SBC1+Dk1Gfq2yx1wK8UjjD04YUVFI4QLIczEz0zH045KfpHg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774545236-186104
+X-HE-Meta: U2FsdGVkX18+sN4xAH+N6pddFCwUbnZRkYGWfaoIyv9IsZp+oWwdmmEzq+726PA2oW2e32TdBks0wF152qWQaCYvUntJP0Dpakq8OdbYuPBn4nhf/wG5kAmORJ8rmCQKtSkJofVOk4zSZdyg3+WAckJj8rccjnU23f2J2+3wwFIAWxZPfxdywMO3Ow4CRrsRzOeWppOsepmW6OBuDBdNPNhhIWHMFJkJx1Ch5G+6G5/cEWsImshMQiLXiJfQQfhxXBcdzcIMmn456S6Dw4ZGU6dpKio/Vy84T1s6kK7/53ey3miVVGxQm7T3+VXcB9yUV/mjUQ+SY7FN0992xfhGklYIwEEgSa5z7QBnDY8iZg9OQcwA7+OuhruYe8isiW/qyqmpAbvBm1Q77QRd/1W6dblB2oD/KzI6Vo6YzQdM8IzXltW6jJxprD0OYPC3JhqZQsjKTQxr+C2arKKroAlgE0P3bfpaW5tIN+gYAY0Y8j2IgJvJ2tyrN80FEfgLl54Tmw1Q7o7L7UphsQ1VQcTRpBdQwNeRhhMjC/sXzuenW0tpwaId25E2VInmvJfOuyqnl81LlBLzVVab6x30eNO9mPeZOdOuRQGtqTd6VrRYAR6oEAE/LsmB/sIiOwFiqEXCbnHbOUTBmBLj/d6PRgI4gMBOuzzXhc/FVkGG9FVE3AAwHfaqLdnB+c9HdysbTPYDyxyNriqT7TauW3o/MV8BLjqyxwHUEWhva8MpBOErk3YFenonjo4ET2q3wvrlIuoKCi+tI1t9k+humgROLPDG+alW7675YobXFeKvQ1sfIf9bsJRi1vN0CHvGYZWxtJRLY3+RSlHEWCqm5fG3fzR6UyqV3moUyOZL7XmB5Co7GuC3DJFV0+h9wx7CTAjCpBm/qP+xa/D0gNzpc1WLmrnzFu/ENDucqXhkkPYtG+qil4arFKRplqbw3uijiLE4o4Lbmwaz7ipNm9OwAh+qj5e
+ WkeF/Bya
+ tYxDuTjrw9g+KPYXETymoz6PMdXzObRNCchC8+0OuaTMzO3wz20H5MZUhrK9gjAGrFMZbJbu3UIJTkMPdn1gCZ5c+zIQV7SbcBArVvIrEkh/sPk2xyMB9YySD6Io4OEbvHJPsSYsNCmyWg6Gy9aV5TLriqdrSxcliPVcnIKWO0Qb+8vPC+lqoB5FSrhs8pVRY7k/IXbNscu65355U1KtbXYT8rozGPdL7XQLKL0Le4wefCmV4eCLAZ8lkN7wpLAf7aBcaQYlVsp4pNskDlPD1C213PqypGriOxCpbbj7xCjB7cosRviDYzTxIhTeGdr6mhSfzacjID5CH5G4usakYjrYGRPsXclsIML/uWpc+fJGDtOYqxtePYgO+fBWaXTaIxnzG1580eTCUIIgRIsrfIajDGzY+4bqmzM2lufYeKqcMC9A8eaPn32D6NJWjwmWbZFeAow/5aPChhrL3wsGbIcpljQTkDI/P0J7IwN8TEQ3zjnf1AfMvC1XOTHeobDB8vzJY4mA01tUMKK6oEJUoOOOXoC8/zcj4aDtBi0Abuae6/iGeomtT3mTh57Jo7Jf6KXj8o9mvGSukArUg+8z6V3E3R33CdKtjS5MJJdEEIRcUGLk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,86 +157,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 11:26:11AM -0500, Gregory Price wrote:
-> Inflating a VM's balloon while vhost-user-net fork+exec's a helper
-> triggers "still mapped when deleted" on the memfd backing guest RAM:
-> 
->   BUG: Bad page cache in process __balloon  pfn:6520704
->   page dumped because: still mapped when deleted
->   ...
->   shmem_undo_range+0x3fa/0x570
->   shmem_fallocate+0x366/0x4d0
->   vfs_fallocate+0x13c/0x310
-> 
-> This BUG also resulted in guests seeing stale mappings backed by a
-> zeroed page, causing guest kernel panics.  I was unable to trace that
-> specific interaction, but it appears to be related to THP splitting.
-> 
-> Two races allow PTEs to be re-installed for a folio that fallocate
-> is about to remove from page cache:
+On Thu, Mar 26, 2026 at 3:42=E2=80=AFAM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
+> I do agree with some of the concerns that adding an architecure
+> dimension to this is a little complicated. I would rather try to flush
+> out those build problems with patches and keep it enabled for all
+> architectures. At the same time though, I understand that enabling it
+> for the "tier 1" architectures is a low barrier of entry for getting the
+> feature upstream, validated, and distributed to the majority of people
+> that would actually use and depend on it, so I ultimately leave that
+> call up to you.
 
-Hmm, I don't see how your patch fixes anything.
+Thanks! I agree that it would be ideal to get it clean everywhere, but
+given it is experimental and that arch maintainers should likely known
+about this, I think it is best to start simple first.
 
-> 
-> Race 1 — fault-around (filemap_map_pages):
-> 
->   fallocate              fault-around           fork
->   --------               ------------           ----
->   set i_private
->   unmap_mapping_range()
->   # zaps PTEs
->                        filemap_map_pages()
->                         # re-maps folio!
->                                               dup_mmap()
->                                               # child VMA
->                                               # in tree
->   shmem_undo_range()
->     lock folio
->     unmap_mapping_folio()
-	spin_lock(ptl);
->     # child VMA:
->     #   no PTE, skip
-	spin_unlock(ptl);
->                                             copy_page_range()
-                                               spin_lock(dst_ptl);
-					       spin_lock(src_ptl);
-						/* does not copy PTE. either
-						 * we find a zapped PTE, or unmap_mapping_folio()
-						 * finds two mappings instead of one. */
->						# copies PTE
->     # parent VMA:
->     #   zaps PTE
->   filemap_remove_folio()
->     # mapcount=1, BUG!
-> 
-> filemap_map_pages() is called directly as .map_pages, bypassing
-> shmem_fault()'s i_private synchronization.
-> 
-> Race 2 — shmem_fault TOCTOU:
-> 
->   fallocate                   shmem_fault
->   --------                    -----------
->                             check i_private → NULL
->   set i_private
->   unmap_mapping_range()
->   # zaps PTEs
->                             shmem_get_folio_gfp()
->                               # finds folio in cache
->                             finish_fault()
->                               # installs PTE
->   shmem_undo_range()
->     truncate_inode_folio()
-	truncate_inode_folio() zaps the PTEs, thus mapcount = 0.
-	shmem folio is locked by both truncate and shmem_fault().
->       # mapcount=1, BUG!
-> 
-> Fix both races with invalidate_lock.
-> 
+In fact, let me Cc the x86 and arm64 maintainers so that they are aware.
 
-I don't see what you're seeing? Note that both map_pages and fault()
-take the folio lock (map_pages does a trylock) to exclude against truncate
-as well.
+My current thinking is that I will add:
 
--- 
-Pedro
+  depends on ARM64 || X86_64
+
+and try to land it this cycle.
+
+My understanding is that this will be used at least by Google, mostly
+for Android (and mostly arm64, but possibly x86_64 too), so I think at
+least arm64 will see some actual users on an ongoing basis, i.e. apart
+from the "synthetic" testing I was doing.
+
+> No real concern on that front but .gitignore has a command to run when
+> modifying it, which will require a !timeconst.bc in a
+> kernel/time/.gitignore file.
+
+Yeah, that is the exception I mentioned. Initially I thought about
+putting it in a local `.gitignore`, because local is best. But another
+option, with a different kind of locality, is keeping the exception
+close to the rule, i.e. in the global one, which has the advantage of
+showing us all the exceptions easily (and being able to write a
+comment for all of them at once).
+
+I am not sure what is best clearer, but I am happy to do either:
+
+    diff --git a/.gitignore b/.gitignore
+    index 3a7241c941f5..3044b9590f05 100644
+    --- a/.gitignore
+    +++ b/.gitignore
+    @@ -13,6 +13,7 @@
+     .*
+     *.a
+     *.asn1.[ch]
+    +*.bc
+     *.bin
+     *.bz2
+     *.c.[012]*.*
+    @@ -184,3 +185,6 @@ sphinx_*/
+
+     # Rust analyzer configuration
+     /rust-project.json
+    +
+    +# bc language scripts (not LLVM bitcode)
+    +!kernel/time/timeconst.bc
+
+Thanks again!
+
+Cheers,
+Miguel
 
