@@ -4,109 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E21A10A88E0
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 16:14:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C90B010A88E3
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 16:21:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88B156B0088; Thu, 26 Mar 2026 12:14:08 -0400 (EDT)
+	id 16A046B0089; Thu, 26 Mar 2026 12:21:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83B7C6B008A; Thu, 26 Mar 2026 12:14:08 -0400 (EDT)
+	id 11B7A6B008C; Thu, 26 Mar 2026 12:21:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 752266B008C; Thu, 26 Mar 2026 12:14:08 -0400 (EDT)
+	id 0097E6B0092; Thu, 26 Mar 2026 12:21:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 639CC6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:14:08 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F1BAF1A0E47
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:14:07 +0000 (UTC)
-X-FDA: 84588710934.15.6ADADE9
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 36347140010
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:14:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r7Lb9CDT;
-	spf=pass (imf23.hostedemail.com: domain of 3TFvFaQgKCG0ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3TFvFaQgKCG0ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E716C6B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:21:47 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 604641A0C30
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:21:47 +0000 (UTC)
+X-FDA: 84588730254.21.5BE29BE
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 02A3F40015
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:21:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MZslg0LL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SB9KOpgW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IfUaDP01;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pqXukDQ9;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774541646;
+	s=arc-20220608; t=1774542105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vsZ2lsO4ZAgsDEyROGW20rTvF4IM6Z4sTJGYSb+tHv4=;
-	b=Baoxl5wwKmveeUz6OkkeZ//Cmb3fX4duJvXlgcqtw8s5WIkaClIupTYliCL8kExcXZsC4u
-	3T1W6zUZb6Pr3uaLP4lC9zs5rk/mUJBddXhIE5s1yejGWdW45Y3+8uX7hcdDn8S7Sl2hQR
-	MJpbpcnqQkGKi0ZzJfRBXLJGStuGFCw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774541646; a=rsa-sha256;
-	cv=none;
-	b=vKLGXedSiy1UQj9+tlEjYCjnj1SiQqvH+cXfl3C14m3jK62Ub7g9uVL/uMXM3/e/0Zu9R3
-	S7qxz6hY87IJYzF8lGkHlEsXx4fPhHo5mxFf1ief7KgKe3F4JNufLt5RTY681Z/nO8kteN
-	POupVP1RZdO7T/FLRStPbdHaqPTGd/I=
+	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
+	b=ico19pc0mdQvwLiANdkweix1TpynI2KXE7TiRX5XfJXhkMS+zDZvkLlxmZVGGKgt5djMRS
+	rKlXg0Y4aZ7w+peEg0iELKoJAyjUB0WRN257ia39mZcY8Zyv9qQpNf+3fTzTSRaRFPa1AC
+	SpmZp2PDuQ7+hwRH3l/DDks+gjHSpi0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r7Lb9CDT;
-	spf=pass (imf23.hostedemail.com: domain of 3TFvFaQgKCG0ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3TFvFaQgKCG0ULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-439b3011be7so695661f8f.1
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:14:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774541644; x=1775146444; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vsZ2lsO4ZAgsDEyROGW20rTvF4IM6Z4sTJGYSb+tHv4=;
-        b=r7Lb9CDTI1LhBs/0N0wLvrsThXf1Jy3pFQQe3swomsklCms7VFSN79JQ27Z3e3AGyN
-         PAOfpC8IrWHpUtymfyazOZJiaJbaN2uFIZkyCEP1sCM7u7qqxFGxd4KP6ENmxRfY87+F
-         TY9ct6sDXkGzNVSRDACNKxI6ZDYQF0Gizbjkjsm2XNGrx2DV8PSGvlW7wQr2aA7wybKm
-         oFnNmDpu5slSWG5QKbwZ/cWeSMM75rzTyy+4VQi++R6GCIaaScaX/vRjvn5AfzQWZaOy
-         Q324WdNc2YfXpLNeC3aGXonG0xSS0UxZFp77Fg+44Ff+tnm+Yqx8F9CKzDi3W98U9IeT
-         alsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774541644; x=1775146444;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vsZ2lsO4ZAgsDEyROGW20rTvF4IM6Z4sTJGYSb+tHv4=;
-        b=nbl5f9bb63NVXSzHSN2wpp0flFXObOZ1hXvMI4CkZsaJdvtzeXg30OCyAic3I41q5Z
-         AZ+OV5hazJD+qS/G0ru9z3WLibQnpNxnNl0BSGqBEAitENf6N+pyGBl1aZLT6im/xUDr
-         6ALBBEptO5uTassJSpJxUY/RAWD/W03i+meixk0FBQw8U9AokC6VWZboAPimKixUAdhe
-         rv+BFD6YoWDUBhYoeGRLdW8XxE1J+FydrNfq1EbE/RVsH3L0RT8QWdisR8Jmr8edYwJG
-         JvWetiMxfYQ4r8CfiBhtYNO2K1d7zrvJ4+H8KFfV9Djwoj1+FZo8lBCgR73UL93OZwJz
-         sVbg==
-X-Gm-Message-State: AOJu0YyryGtFQEC2SqzZxUbs8k3jI1lNL2DFmhp4xOC6rGJM4XRroQrt
-	ibwrnKKsA2KsZo3C6t0PnntbrYyhxLAE8bJibjOr7x8au+5qvgMgnDX6GqyXeRc8L1GFfYxzuKY
-	yt9uiordJVL91xw==
-X-Received: from wrus17.prod.google.com ([2002:a5d:6a91:0:b0:43b:86e0:73aa])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:18a8:b0:439:fe98:20f9 with SMTP id ffacd0b85a97d-43b88a0fb14mr12063113f8f.27.1774541644163;
- Thu, 26 Mar 2026 09:14:04 -0700 (PDT)
-Date: Thu, 26 Mar 2026 16:14:03 +0000
-In-Reply-To: <20260320-page_alloc-unmapped-v2-5-28bf1bd54f41@google.com>
-Mime-Version: 1.0
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com> <20260320-page_alloc-unmapped-v2-5-28bf1bd54f41@google.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DHCUIGX4URD0.1KCTEYDWLQWE0@google.com>
-Subject: Re: [PATCH v2 05/22] mm: Add more flags for __apply_to_page_range()
-From: Brendan Jackman <jackmanb@google.com>
-To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
-	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
-	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
-	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 36347140010
-X-Stat-Signature: k5kg716zcwrxg38aikdnjgfmeiwa1iwk
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MZslg0LL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SB9KOpgW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IfUaDP01;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pqXukDQ9;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774542105; a=rsa-sha256;
+	cv=none;
+	b=wh7UYolLBBV0G/YsFwzX1nv2tKV1+LDI10IGCOOV+3jQDmCkYYQAbmlBIEpch5XBfFSHNf
+	BLiNDSwu0j1kzSRsXtAq+K0U1lCGRn2hXNj7aFwEE+McecAwJiYh+n4PRRCVN8dFJRRleQ
+	iX0F5i8cI4cjO7t8yoKQQycejGm8m/I=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 77BF74D2D7;
+	Thu, 26 Mar 2026 16:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774542103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
+	b=MZslg0LLFo7myS2a/8LFdcUOwp+jbWjCjwYxjb9zD7CAq/CsJCSckh5Xhd8X0ONQovrXj6
+	vdAlf71ItuZNco3Wp+mTWGYSDIM00xcSc26QSkqIW7Q8Z/N9jkEqZcUhxkD804IZv4b6kP
+	vhz79YOxhk+Pd/nM4DAjZyOGb5aXR8w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774542103;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
+	b=SB9KOpgWgaY0QDbUOTSzS7AxJahXkQzMutR7lF7qmFvKiJO+qwek8ZZAroKdOzArdpMNXN
+	oT66Uf9hx7hz+8Cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774542102; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
+	b=IfUaDP01F3JH4tgDH5+jfnxK3m3G1zoqejuqCQE6yhtmA6oAwFrdi/+v7rMBKhS6zwD2hb
+	azZepBy5BjCsoZCiHZzXYnGoTaf20a+vIweRmXe7jwrEIZbhWhS//HOniOm7orEtE8IWzH
+	+C5hfYo6AI0q8FTz0XlPtVsQhoqtvDA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774542102;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
+	b=pqXukDQ9LEbKGqBXtMm7qdmWQVl24WRKq0mylAqbUWZzDjLBCa6wMLBXUUaeb9tpKtyeJx
+	LpIY+ySA7rp5lfCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6A3864A0A3;
+	Thu, 26 Mar 2026 16:21:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id eyLhGRZdxWlFIQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 16:21:42 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 1091BA0976; Thu, 26 Mar 2026 17:21:34 +0100 (CET)
+Date: Thu, 26 Mar 2026 17:21:34 +0100
+From: Jan Kara <jack@suse.cz>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Jan Kara <jack@suse.cz>, david@kernel.org, ryan.roberts@arm.com,
+	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
+	linux-mm@kvack.org, r@hev.cc, ajd@linux.ibm.com, apopple@nvidia.com,
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
+	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
+	kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com,
+	vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+	wilts.infradead.org@quack3.kvack.org, ziy@nvidia.com,
+	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/4] mm: replace exec_folio_order() with generic
+ preferred_exec_order()
+Message-ID: <4pzoddjdplps6wzf7hluwjg7jty7tmrwkq5jk7qzer4kur5o4q@7ge6uatpmkex>
+References: <20260320140315.979307-1-usama.arif@linux.dev>
+ <20260320140315.979307-3-usama.arif@linux.dev>
+ <k45xs6btmt62uerbglqe665jozrtkeoklu4rek6odgxjdj63ni@ftw6ef3ug33x>
+ <0ce07bc5-6365-4c54-90e2-4e56ad2b7465@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ce07bc5-6365-4c54-90e2-4e56ad2b7465@linux.dev>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774541645-966185
-X-HE-Meta: U2FsdGVkX19x5wtyEVDT3PFTcV0cinvrhOiyAu/TpeSTGN1kjCeVVZOofyiQYamwLYrasYDLHj7zG5J+P1KL1IREtWngOR2hGeEGMb3vvpP7ujuE68H38qcwKBspMc4VgiV0tTDau3bzVYT860xPO5kwYeRokzPj5Hzh8JsgapNHgtjVxdjbCnsozSQIN8PnGRdellLKtq/ByHDB82U9pLCpHgDvBD4mbnZMXdRxbcNtbrwiwALcXRBPI/tb/0bKx9R5D2na51mO/6Ifqzsun2gTdT0PNjCsigbHztpa8vPNZwSAClnIp/KSpsui/ISdXVzk/4dtFEL/xHvpkI0k26hq4FdCDHcUQBzSSdTIv9SGBWfZdwCcJTKVAcL05ahRgR2HgQUqmXE2f4/shGsiTNhLe4Q+wk2641flY4pDz5sffgxBHkqNLVIHLQglMWDPcTpnD+InWpo7jzl0tVmR8MHzTpKPOnOQrj6wn6QoZJp+2BA/96ioS6LtiTp2869SrNR+JeUy4Np3GBJj7V3B1dCLz2cufOTLx16cuRC0hRq9lDOke0wCRP7+GVfsaGgwviITkScXtLgVMYMh7zUs9qoDKOPosHhSgIxXOW5tZPQE6XFRCbyyW6V7AdBmVTgEVM6y3QTZVc4Igby7nJ8ZjTnz+9jj6Dq2lyInHE6hW6HKVTWUllVO8t0yjl8/ljQxg3B/fEIInxfVYM/iMVJiULgoEPD2MCksGzIO1kKhaL2dhHwBumpVF9EL/p9TVWpkdgc4yZFtgnJ27tZecWf6+1FXHdcCty9bY42EB6Vesvr/yfztkwdxwyspd5AgE+H3vjMnIDev4wQs02oJRbj64RbHxCmHkuXIOxAJahbsDI5uBmSXg3nw8KAp07ZnED4JagDRDxSHp456BpHdB7odn0T6OGV8T9lfXQ/332mSALaokGj4AstqT/MEqcuKwRYE9+MVBgOxp2b4DZKXHBd
- cTEVFRfi
- RX2sXrONtOJdRnYNQJXytD7c1he1AEWFSH4gkDVGUXKXmjRh+GEQbLiFscxap92Zp61QVzL3ETjYzwpcq/TKPvFmxQPycEGkiLJhLw1nTzk8uwJ0VqS8l6Crt39+AQvWcOdVns6xf0fzQjTwn0WIBH0k1j418cmFyo0aBOrXCtb7oF6b3HeyyKTl2OZMxb4x1dvN/s80vXgYaXjf6a4JCIgHjt7gLKBAJkNRtS8RTUBLh/IlqQeCYawq5sq9x833BfgpAdSviha6tgveHotPeF/6by/5FG9UcnJv5I6Rcx1Nv9a2hCCpnkQlNtlL1NvqFvPQYEu375b5g7CCzDv73rfnGmnoevTLW83jLIKSpvHuM3vej8oa7vwlLsVBCkboYntpLycr4JrDtFGgRYgp+1C7dCo/i+idlrZsJQ967iAH6e53U2smMRP+46SEAA3qkVLfqSVP8MOiYXhpEsL78RDEnucjwblw/miD5SHS6v6GN6m1d1RbXsGraNt1/fySvtrX897nbdT1JpxVY1SnBkJ/+H5apnr3DNACeVX81NmXh6RSv1n6uOwnaQ6ZnG4h9/KEc41qnF5iII6vIF7/r+sRB7alsXOGRMQoRLNphGMNJbDbnaVfXkGrk/Im1WU8qpR0yMIpKXhyGo+ekjzybmT9ZEEVUneOHaQZ566mbUTxGjSMjF4Y3N/JzywiujOTCw5naolnPJ0Yku62IUbuVbQyHhKMBjSzvYImwLc4ume/ZRXOQQexSf2alecQ40zA28POx+RBC6HaZwOsTJoiGRYe7Lg==
+X-Stat-Signature: 37b8pj546paqjzh6hnw454uyfym71uub
+X-Rspamd-Queue-Id: 02A3F40015
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774542104-144140
+X-HE-Meta: U2FsdGVkX19MhQJf0ODdIRhvGLCg6mF4nNIqKUXBaBJ1/l5ebjLG36clXxhcutdJVYnFxRIIhZShs3fitVflnyr9ISdyLZyKO1RdYE8Rb4EMv0eiAnATthX8rU6Y0xFI5LwqJJGPSaQYaVT37HIJQbSylgKet0cGKJ9/EiuYDkUjIkJHx5Eir9XlPqurQEE/79uCd+k6wha5HJKN+WRZk74kHTJhqZP6pmBUnnnalHV+xXkCNhxAv9WvhStFXXNARh3kDOsAH4eSAOfo2IRqqusf2nDFnBTLcnE7bv1zHfXCEGhrOAZtMkcPKueRDirP7ajANeUfk1ohyCX+N2LyPLaS68IuyIERQi2kyK9BtPIrxucsBFbdspRJvgoopuIU9ZoHOQLvx0F5uXLSE6RsZGrTRod0HDlPx2tDBoXehkYX8JHKF6aurFDcGpctKXUjqFFBolR+mHqqWNV11jHZVbcjG7IK/ZeSWHWVw//t5+5gy/Z2xei2sSGOeOtTR7LiXDi/QBGqh6VLwNU6gxJIv5YTQ28XTL5GOeOhxzzQQpAOxKDSquxicAUPdBqT6XjoOouhiU9XkBvK3d//hegkvGsKmaCBi9WO8/arQTgeX+N85RqUfptrS55dx+PSZ5ASB/JfIN7we3vtWrbUWCexVZ17/MAjptb14kD3AIe5oSvnVmWwh+Xt3NWe9vnwPUC2VJFTHD/v7EmOPlSa6SBrfH/iRAc8K4ioHDSIIqJZxPp9NyLBk7cTiFu5jD8MKOxHHeVJs4QYR/nTpp09sbgCohdhjIYrrsMnMif3YorkLOfEnASbujfjFEUw3XLexa6aNr/o/EvFLM2XCarJ5MdjeGJA8JM7q8Jzizi6UUoYSZSGDDgqkeAicg5XaGr95SXsTfXXEZ+ia0bawfkQpsFffdH8UQ3iAaXTRUAfFkxBTomfToDZxODgqwHZygYiFFBNanjwXqIcuMo/+9nWOGb
+ 6+LZZrVP
+ cHwl7p/gSrCfoTLZcvyDAux9ziGFXOkFSMXo0oKgfBNx8LISOj0Z2zz4S2HsjqiYpC0QXDG6UxWa/Psy6ajDYjp0A8199ZaVMMRWLX3XqJjmC94TyT46dKUa0jClbpM6BkGa7QMerNb0KIbspOh6ZjzjY8n4mlF8nekbO6Wt3biL9LlNDieXZpdpWIjmEylcXT+lhd9jp+Sj32bW/g4lG8zQbEKVwYvwCiLp1p4rHp6JmER3iXMceghPkXQ0s9ZzNr1aUUPFq/RweCkY7FNuAhfT2LeAvw37I1IGpa9+e/Ccj7QW7GwKOHFsqrj3aCNaPchdkSD3ub6buoGo7s+/kLjNWk8yhywiTKNWZSFAKybpoCKH2xgpwvvSnoLqzUfEuZBJg9cGASdyjdBU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,11 +148,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Looking at the next AI review from [0]...
+On Thu 26-03-26 08:40:21, Usama Arif wrote:
+> On 20/03/2026 17:42, Jan Kara wrote:
+> >> +	/* Step down under memory pressure */
+> >> +	gfp = mapping_gfp_mask(vma->vm_file->f_mapping);
+> >> +	zone = first_zones_zonelist(node_zonelist(numa_node_id(), gfp),
+> >> +				    gfp_zone(gfp), NULL)->zone;
+> >> +	if (zone) {
+> >> +		while (order > 0 &&
+> >> +		       !zone_watermark_ok(zone, order,
+> >> +					  high_wmark_pages(zone), 0, 0))
+> >> +			order--;
+> >> +	}
+> > 
+> > It looks wrong for this logic to be here. Trimming order based on memory
+> > pressure makes sense (and we've already got reports that on memory limited
+> > devices large order folios in the page cache have too big memory overhead
+> > so we'll likely need to handle that for page cache allocations in general)
+> > but IMHO it belongs to page_cache_ra_order() or some other common place
+> > like that.
+> > 
+> > 								Honza
+> 
+> So I have been thinking about this. readahead_gfp_mask() already sets
+> __GFP_NORETRY, so we wont try aggressive reclaim/compaction to satisfy
+> the allocation. page_cache_ra_order() falls through to the fallback path
+> faulting in order 0 page when allocation is not satsified.
+> 
+> So the allocator already naturally steps down under memory pressure,
+> the explicit zone_watermark_ok() loop might be redundant?
 
-[0] https://sashiko.dev/#/patchset/20260320-page_alloc-unmapped-v2-0-28bf1bd54f41%40google.com
+Probably yes. I still think we'll have to somehow better tweak the used
+order based on expected size of the page cache (2M folios seem unreasonably
+large for a machine that has e.g. 1G of memory in total, even if it has
+enough free memory at this point in time - we'll benefit from smaller
+folios and thus finer grained folio activity tracking for such cases). But
+that's not for this patch set.
 
-I'll keep it short this time: the patch is complete rubbish. In case
-anyone is reading this please skip it for now. The details of how this
-is implemented are orthogonal to the rest of the patchset anyway.
+> What are your thoughts on just setting
+> ra->order = min(HPAGE_PMD_ORDER, ilog2(SZ_2M >> PAGE_SHIFT))?
+> We can do the higher orlder allocation with gfp &= ~__GFP_RECLAIM
+> for the VM_EXEC case.
+
+Yes, it's simple and it makes sense to me so if others are fine with it...
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
