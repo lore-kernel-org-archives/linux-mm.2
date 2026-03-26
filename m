@@ -4,93 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB60106F2E7
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 07:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A14B2106F2EB
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 08:02:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63EF36B0088; Thu, 26 Mar 2026 03:56:31 -0400 (EDT)
+	id E5D836B0005; Thu, 26 Mar 2026 04:02:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C9706B0089; Thu, 26 Mar 2026 03:56:31 -0400 (EDT)
+	id E0F086B0088; Thu, 26 Mar 2026 04:02:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B74F6B008C; Thu, 26 Mar 2026 03:56:31 -0400 (EDT)
+	id D24546B0089; Thu, 26 Mar 2026 04:02:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 379366B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:56:31 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04B17BBF2E
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:56:30 +0000 (UTC)
-X-FDA: 84587456982.25.1A06117
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B4CB540005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:56:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=mh248hYp;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BF2766B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 04:02:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7458FE112E
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:02:23 +0000 (UTC)
+X-FDA: 84587471766.10.007C2C1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EA4F7160006
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:02:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AT5Q7FdA;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774511789;
+	s=arc-20220608; t=1774512141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+W5gqz+rPqP69gORr+nBXsRDDIcM/5iD8CnLmX0DLIU=;
-	b=5EcWfLO4c5bFaKbbf4Hvx3QR9sSv7pL5P8Bjx0ch55WxIA3mdBCjoIMBPu6tIGjXr4lVLM
-	x0JDoViaubeHuxHXr5H0jV81FF+e+wZt8DXarUXD6tKHbehVGNX226mdObcKnFujaNud/4
-	OyfuaEL+WltqfbthyHHgRtl8f0YzUqQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774511789; a=rsa-sha256;
-	cv=none;
-	b=2WA3hqKdQCc03SIwLpl7GrF2XuDkaxMh7ZgtM1W4pDSOCCcQ2hdYZDGzRMcPoBgF1QqFYP
-	AxaiojqCNRRyk0yg6B2iyKK8O5poY8IHKRWGut3uMDMbbBQ4Dr2R5fhGFqih6AYhf8FVw4
-	H5i27oWR41jDHiCV0AEqnhwL5NX2f7I=
+	bh=kb8dhfpjttQqeUBou/rHdhjeiNSx/oLXCj1by7qGXKc=;
+	b=YIQhuqU81n3bNzkJOhjximKTdcJVY1FJwtXMsvIFubSK/8KEU9J97sqL1X1g7i8exd/iSe
+	NlLY3qqIXutr6DTw8WqN2ssy3xO+7+PJYNK8hXrfXfi25g2v1fQMBAZgwarObccjjNC2In
+	KXNQUsAhKP6RzkT7Y3fmqPZFvkKL7KA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=mh248hYp;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774511783; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=+W5gqz+rPqP69gORr+nBXsRDDIcM/5iD8CnLmX0DLIU=;
-	b=mh248hYp69GJbzaHsKIV1ggLJOa+8W1ZbnQtJDA/cK1y0mXTtrB+lZwjSqduEulotHcbD0/5pFKjjyUPnAHK2baPeXw9JjK+fTuYUpr65jlU4GsKyEpoi0UMp358n3ouOZGxfFNsvlbBZZ/BePtTCc0/auVpXLMzLN85ue+Xs4s=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R991e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X.kcYdn_1774511780;
-Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.kcYdn_1774511780 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Mar 2026 15:56:21 +0800
-Message-ID: <6bce7af6-3c34-42d2-afa9-5ba8d63068be@linux.alibaba.com>
-Date: Thu, 26 Mar 2026 15:56:20 +0800
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AT5Q7FdA;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774512141; a=rsa-sha256;
+	cv=none;
+	b=Qz4bQxAIroXwqCSgy3463oyfPA0esumDRgUiAfhGNTIr/Y3WedqSzbDGHeD7WSM3gT3ZIU
+	RhDkXZ2Me2Nd7hq+niTt1njh1Vn+1rozP2Y+Ygak93BMqRZXIiFbk92ivZuY4Uj1ewpbFP
+	Bbfd9vYg1up2CSGg+nt+5N/qt+sxKiM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4388C60053;
+	Thu, 26 Mar 2026 08:02:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF66C116C6;
+	Thu, 26 Mar 2026 08:02:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774512141;
+	bh=A48kUkO1TtrycoKeHx6/YYvUwwXAqNBRegZ4mzWsWV4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AT5Q7FdAlt3PjmHZzDskG9ydXKEAAtzJIYmfbCnqz4kza5CM8AFrdE85fKpjjpwaL
+	 Fz9NS3JMR46gZG5WOmxUP+m5ol0ITjKrkBLpYaITOCWuvUtvlKoQEt2i1TmNgJ/5kT
+	 /vi2HHCpuLyAfLcrIv1VF8ZsQRsxuZfS9Hh5aAW7+I6XJHo62HxOFe2X3k7t2y+kbd
+	 anSt8hYP/MrBl7AOcj1nDnufgSjSZIu6bGXfQ9Q/f0ItuTNirDMGrO63KUZUNRjO2Z
+	 2LP7Gpg2SrePNK7jtESKiWS6TcJFkG1iMO13I1S/ZMPZJ4ikkWCDcS1pdefCZXu+R3
+	 SviBOW7FWSV/w==
+Date: Thu, 26 Mar 2026 08:02:12 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Kairui Song <ryncsn@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Gregory Price <gourry@gourry.net>, 
+	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, David Rientjes <rientjes@google.com>, 
+	Kalesh Singh <kaleshsingh@google.com>, wangzicheng <wangzicheng@honor.com>, 
+	"T . J . Mercier" <tjmercier@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
+ (reclaim_ext)
+Message-ID: <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
+References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+ <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
+ <acTaRgusrxfCoKqe@tiehlicka>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] mm/mglru: simplify and improve dirty writeback
- handling
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org
-References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
- <20260318-mglru-reclaim-v1-7-2c46f9eb0508@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260318-mglru-reclaim-v1-7-2c46f9eb0508@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 53mb8nuqygt74fxf46dmpymkm156bsns
-X-Rspamd-Queue-Id: B4CB540005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acTaRgusrxfCoKqe@tiehlicka>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EA4F7160006
+X-Stat-Signature: m1qdcbgqnqfwzfpc8e6jc5y9uwrawrfz
 X-Rspam-User: 
-X-HE-Tag: 1774511786-753123
-X-HE-Meta: U2FsdGVkX1+oMamQ5G+CsXbLQhtw+PNrEbHmP08Zv3jwW7gF0upCzPegVUhtHtiNgTnC+TMAqrySrQTv0XjVFBe7COkU7vsNrcYqU2d3Ml7xnzprzguw7PY0KSQTMcV5ymFrlmai0hzwXjHzni5M58LyV1NHYYc1j91PEIj/nTrmgUqB+Qq/lYCuYZYxljNsxKR/pXP1RH5LupgU9EzcPGAmBxflAJF8zSLPvlrSym50cFRXxhG9LpOkE59+AugJQ4T6CtSScEf8RnNIaJi+JTvXYYcp1GizkI/mW36PMVdbrj7zcHSuVqzLe7IiOylGjDOX51XaGe+OtQUTMXnolVvdsX1zHWFDuG/Yse5x6hxtZws0KwsnMsrcoHtyKF+v/oJjJsCc8YA225/G7MJahF/t5dR+/loAS/0DthniWk4/1IzXp9BffNBoRqyJTzkzAyTfM7xPnM0SK7LuIjFoDP1w4lnPAztz8KHifrqBjrcuzKHZ4ZugBrj9sChP0ypbwoQ/OdMHHfZ3ES/EiSD8tb1+S5wXDP1Dbqy3ma8kcsi29H7I8unzCr0f0teB3Aic152gWXVrHVfUvEf5lZ1E3KM/F9zZAbUzXuomtKYLfme3GoaBj5T4gt2SMqbLhBTuYUwXaDPULUU0nMva28goC5PbYb7CnPfglb3fPoLcOnoRzIXyPSZefVciSb1qds4UV6WoQtH6jAvnK9PqfxfX+fpJj5HAQazh6JYWg8Ijz2ljESHs5uvic4ImE1NOaPvYBwazVyfEK98j6Ek/neM4RrNLKVIV4PfRpAjScNKhBLjCZM3yHmUz9iRN3Sx3/7r+CiUCtSqOtCvfLMd/+uT31LcOcjmfbrMz2Wg6styVleJ7AfBNDKb3AvsJWrwEPpu5NIAF4dC+iDr849i7hycWEZXUybwzTCqzsCyJfxkrJcNDn7P+HOWmlEW3Xu5vLROLnZ31V12E0Sg9zA3wbIq
- TbhImRn3
- D5rYPujNxErvT63v7i4MfgH9H5WbTxyZI5OIJWrsUPa2IKAqXRhuyuflrsOdqx2TRgEmLNPC2fQFeJCM5H2ilDlmRUNw/NwPBaQygEw+d2+dl/tawJA4DkC1VrHD4eVyz3nNS0K04LSRayEs1AMSdg1F+bMfbHH8cyNEbVg/uMCLp2fgqP5E2UfhxvVvrCXp0sgI/ynINDkpPWAP8TEFCXlRoQAhTpkJMEihJLcTHyWS892K3cY2TuwtUIhbzHxyrxrI7rz+kNaTs/zutq74klkVoZ00Z7q5t1tLuuHj8qR3KxPdPCO4RHiceKwQLBt4i91Ty/ElA08aproWY7izf4H6BDMBRJo5BWbFr83kfs6bn8p/qesTjpulniUp7NV/bKsxjSB1RoV39O3Z9teIygM4TDQ==
+X-HE-Tag: 1774512141-428197
+X-HE-Meta: U2FsdGVkX1+JQuZzVmHN5nPINWGCtT1HgaPW5ApEF6iGvOlozCgEKfuXWDTJRCq8RqF9MIjIYoshFqbq5zA07wCz/Wr38d4vEeELQhjcTDozD9mJaKf0l3CEZEl44S9zo8tt4w7FrenkNRqOM9xOHSxNilFHf53/hd4xauBhwcuui38FlzV28Kvs7Comn1Q7kZKg3RFeVGuWYc6pRvqm2yRFFgl5od2ZqYcPcVzlWGT1oQS4rV8sx2+Y99yGyXWIkIA+GrECFDLYrVfQbL4Om3TklFuXggmMlVv0009hilwIRrLWefcPQtunLpl0ci0wDKxp+PzkehTo+L18oCuFtgGNVuAHQzUsb4EIm+PgXy4LbgmS1+QUsc0mEn4nl6BLBKZPSabOb8vdnthzZb5rm7eXlU8ld6LiByXQorMUVbJmzji6dYpmrCwMpS4sARTOrOlRLPhai0gCSPan0snherrAByY2eqvVdPhTSjSnj9pGtE3H9shKkOasge5pyQJZkiB/rbclGZvRq3pVwIOoUmfVg4MtO+a/QD3zQkxOhpTU/9fm3LWpZn0EPrHElCPoxSUvgflhIwPe34e8t2e1tHp5MSQqzPSkTycM/jALWMbtpm4PI7kk9wWopmXLJ/gzZZqP1gyQxwz9jzn1P5kneLzseooDpwnaJakKrMx5v5MRSOOmLaoWzhbSvhwojXrWiv3ck6Gdf4pc6I55K6CO4AJiFZKYxpJ7oTM8u0nY8EUzWNhBW0DRdH7yrqSJg2Jm/gpn6kwATX7Rju3rru3R3WdMOr2evxF8L4C5wlA3YI7Mvv2TdGiZPx2P9qEwkVCMW3blFNRvOytP3HiyCJTIELwktwA1s8j1Vzn357ZarTwPKBSmPKYtyV9Ao2JFJTs9VcyN2K0eGBgsY8/doiwksfuXlOJtaScGm61D+ZhOj+h2mG+ClFWv7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,35 +103,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Mar 26, 2026 at 08:03:34AM +0100, Michal Hocko wrote:
+> On Wed 25-03-26 19:05:47, Andrew Morton wrote:
+> > On Wed, 25 Mar 2026 14:06:37 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> >
+> > > We should unify both algorithms into a single code path.
+> >
+> > I'm here to ask the questions which others fear will sound dumb.
+>
+> Not dumb at all and recently discussed here https://lore.kernel.org/all/CAMgjq7AkYOtUL2HuZjBu5dJw=RTL7W2L1+zVv=SCOyHKYwc3AA@mail.gmail.com/T/#u
+>
+> > Is it indeed the plan to maintain both implementations?  I thought the
+> > long-term ambition was to knock MGLRU into shape and to drop the legacy LRU?
+>
+> Yes, but MGLRU is not there yet and with development pace last year or
+> so we are not much closer than at the time MGLRU has been merged
+> unfortunatelly.
 
+I'm quite concerned about maintainership, as it seems the MGLRU maintainers have
+not been all that active, and the MGLRU to me at least is currently a black box.
 
-On 3/18/26 3:09 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> The current handling of dirty writeback folios is not working well for
-> file page heavy workloads: Dirty folios are protected and move to next
-> gen upon isolation of getting throttled or reactivated upon pageout
-> (shrink_folio_list).
-> 
-> This might help to reduce the LRU lock contention slightly, but as a
-> result, the ping-pong effect of folios between head and tail of last two
-> gens is serious as the shrinker will run into protected dirty writeback
-> folios more frequently compared to activation. The dirty flush wakeup
-> condition is also much more passive compared to active/inactive LRU.
-> Active / inactve LRU wakes the flusher if one batch of folios passed to
-> shrink_folio_list is unevictable due to under writeback, but MGLRU
-> instead has to check this after the whole reclaim loop is done, and then
-> count the isolation protection number compared to the total reclaim
-> number.
-> 
-> And we previously saw OOM problems with it, too, which were fixed but
-> still not perfect [1].
-> 
-> So instead, just drop the special handling for dirty writeback, just
-> re-activate it like active / inactive LRU. And also move the dirty flush
-> wake up check right after shrink_folio_list. This should improve both
-> throttling and performance.
+I'm not the only one who's raised this (see [0]).
 
-Make sense to me. Additionally, I think there is still room to improve 
-the writeback-related logic in shrink_folio_list().
+That'd very much have to be resolved and the community reassured that MGLRU is
+_actively_ maintained before we could even contemplate it replacing the
+'classic' reclaim approach IMO.
+
+I hope that Kairu, Barry, Zicheng and others who are interested int it resolve
+this, however!
+
+Thanks, Lorenzo
+
+[0]:https://lore.kernel.org/linux-mm/aaBsrrmV25FTIkVX@casper.infradead.org/
+
+> --
+> Michal Hocko
+> SUSE Labs
 
