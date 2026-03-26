@@ -4,149 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81EA810A88ED
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 17:30:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04F0B10A88EC
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 17:31:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF0F16B0088; Thu, 26 Mar 2026 13:30:28 -0400 (EDT)
+	id 703306B0005; Thu, 26 Mar 2026 13:31:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDB536B008A; Thu, 26 Mar 2026 13:30:28 -0400 (EDT)
+	id 6DAD56B008C; Thu, 26 Mar 2026 13:31:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB71C6B008C; Thu, 26 Mar 2026 13:30:28 -0400 (EDT)
+	id 5F1B66B0092; Thu, 26 Mar 2026 13:31:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CA50C6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:30:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 848DD5D86D
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:30:28 +0000 (UTC)
-X-FDA: 84588903336.19.FE0A2BC
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 73A34160015
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:30:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=I8gs6lPV;
+	by kanga.kvack.org (Postfix) with ESMTP id 519A56B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:31:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 303251A0C72
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:31:35 +0000 (UTC)
+X-FDA: 84588906150.05.E274A58
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2EF5340009
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:31:32 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fdenlB1a;
+	spf=pass (imf04.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf08.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774546226; a=rsa-sha256;
-	cv=pass;
-	b=iw5oNOMq2T0oEDN++ShItHcXsk9xEJMyN0t15e/JWlY19VDUOXHgnTaTmeWhQanslTAkmY
-	IPplXpIqrk0CJByK0B0iLhLpZLBcbHoOmzuD4J8WZ4KmwpDlYmgwxK/G+0OsPV2zxP6bg3
-	6PQbuRxvpas5Soe/b6L5ccrs5np96z4=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=I8gs6lPV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf08.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774546226;
+	s=arc-20220608; t=1774546293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wEHEk0yDT5R/njghDq/hVwJN3s1AoJzI3r+2gD7Cnqg=;
-	b=8Z95ZxPz6CGdlNbfA7Dwjgog8h5QhPQ7UgbEoFyKcisRyjCX8M5pLVxYQ6ocFIfShD/GbF
-	l3UKvqnMPvLoD7ivd63W4rjzj0uVv+9zdB+eWD4tuWqtTgVlCBvU1lzptTwedE/yrfP092
-	mJUI8lLd8zOStbUofcSjtGNR116Fppk=
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-127148c2112so102812c88.3
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:30:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774546225; cv=none;
+	bh=ht1ydNu1umiMsWIVEKZmUkwLuvps5HNVkVlm/tB0atg=;
+	b=AnPqxxgZPVvoLoJGpVrji+yeSRxwi4+lYz3KUMGVFJygR5jsP5275I/R2t7beVAxOOvs3w
+	HxwZx7WIc6c6dcP6roJtFs7x0u7ZTMO1CLUCZVmbgeU1zBjqDLmVTr01d704AjwDIwfz6x
+	vx4vy1w3kHJyulViryWzu7tarVM+fH8=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fdenlB1a;
+	spf=pass (imf04.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774546293; a=rsa-sha256;
+	cv=pass;
+	b=tDbLxHR5toERg+9Hh2sWCQzWote81havOFmP/fweIl6e9izuSWhTEZFQmfqCcqFg82IYU0
+	FF3SbJaTjQQjuAnOn5woADoglL39uXAws/aoSdHSypMgtoMtzr9aoMed9mxRz/W0lJKY29
+	XMHjhTCknCXMw2tyzK1r2nj3EhAyoHw=
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-124a7216c9cso85181c88.0
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:31:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774546292; cv=none;
         d=google.com; s=arc-20240605;
-        b=kftbezNgbLRx16y7vq9FRrMhdsdsfHixNRsew2tjDyJIwps7+k2h7CDFFgEYd3Val4
-         RYesr9PMt70GziaK8vIjv9kRZJeDmY0UpN14ZDBuQGtRz5mz8KIVpinqKn26l6C6RG9G
-         i/YEHpRQx6recdrl7iYL2J6GSeyj0v3hjNPn89iC/tySBB2NMVuVTIDtu/p7hFIlqh7q
-         Keiw79z75yYM7fydzAFunovwoyimLIyJ3VqsHEJWFhDRhd6UYCWXlC/5oKOIsG7iACjU
-         ib68b4lr5C+XCzXPd0MPMjvdtmaFBxldfwaG4zV4JyZQHLz++3YteNwelGHhxxQaLupZ
-         +v7g==
+        b=EdG+g8dw1KdZY6ZPhRNH7RnaxWHr1x948OmOtb2tgokmZsyqrEKxwNhXbo4AWXxqoC
+         nIaZn07+FKL/kYja0pyp+heGHzKnVJ755EthWygaliRkxSeYUahNtQB181sZ9gGjNYLy
+         5w81lOIej+e2bncSlKmmZsVPFA+0wu3pJJMy+yCkvCCQokaBjumqj+NmZEk4ipQb0NJN
+         64GITC4CEjuIb7dKd+uv0KLUoVM24kftxjrU0QULocL1jNoe2leclNtVXl1t7WTPEf7o
+         ATCgGC+1Vz5oTLHWBd1bFRGI7sC7v6smsG3JMWdQGLg9n3P0j1JkIH+ZrfjCKdMoqupl
+         1igQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=wEHEk0yDT5R/njghDq/hVwJN3s1AoJzI3r+2gD7Cnqg=;
-        fh=HR+SFRS1lha3/LCTi++x11jShyjw0wX/s0186bgKUYQ=;
-        b=CbGd4i2q0UVZk7MCozcnxUzOLqgmi5FUWF1A7wxTKb/GLEbKPqdaRjAskyDODpOY3G
-         N+vRSFSX4QINTWhSeNmw8aAuWH0zGpJNQ7HEPV3PsMbhhJ3avrLsRV3OLOuPbo22dFgM
-         MUBQ6PlmVxOXP1/zA8E8rhDdC2oNcLwp+LrWo9J/mFBRoso71cGBjwR26Sv8GYrzZ7Ei
-         w1UIXH61yC/OfPvqhkeBJCnq/MtDte+7gPDKa9SDoCjjMKcIYwH6oeZdMM+P5SVGNS7w
-         6GcK1TISnSYG/gHk65FKOaIEDyGh1BIE+4lRzuIb9F9+kdT8/hPAgCHBKyMUqjj2Vxkc
-         KKsg==;
+        bh=ht1ydNu1umiMsWIVEKZmUkwLuvps5HNVkVlm/tB0atg=;
+        fh=tNsy+cjIz6rLPN2XmtZIXUegYJxuPCjPh45U4MQHGqA=;
+        b=VxQq3PtuXb/sKWehHSLeXbNParneNZUHos/MetDLg/IKMNMh8Dwsi7s2FogwP/8CiU
+         7T4A4vDrQyRXuyLtjqyaekfRtbjBgHtBC8Q57oiUcD1TMObfQA7tEvZJx9c5oVL7shiY
+         E37uHfvIX4abqJfE80XKGc20cBs/guEw1D2nGVbQZnptSgIN8d2X9u+G1N/ylw2z3kSN
+         k34GpwOF+Ipa3mitCYRXKEhPGacU/GCgbWHB66de0hIezpY+xbt/RlRudIH0Uwen5qmJ
+         +ZIeeK9LdPi5xkQBHJhEaqyehi5Vc2fJCBmoP1j8m+1F85Yc26Ixl4n+L4eipFf9INic
+         45CA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774546225; x=1775151025; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1774546292; x=1775151092; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wEHEk0yDT5R/njghDq/hVwJN3s1AoJzI3r+2gD7Cnqg=;
-        b=I8gs6lPViNiqqCRbV+rQ48ymymDIEiGnOgiriKkqtP9utc+8p+Ia003WOFUJBygapO
-         o995aLTlBMujPfXvGPycp3YHkx3/zu0rhu8f7YP3TDMU2fnKCm7nVirlf0ECUtleLsqB
-         LPg40NXAn13ZmI+N4fBF0VFvGdGkKhUAZ6jYo0rVlMj7S2hEQuXPKI7nvFlrKExQYnKo
-         d8Nzn42UxWmE47xmxDEX3Bm4L8ponO+iTioHPfL/KuhGQcnApFQQ1CiJlh3c4UeaAOI/
-         RI9u+NAcdAcQFLIP5rFMVqtKxDJ0dMVXYAwDSfO68LJ9RuD7Z6wmSr0bpTjGW/Vyxqyi
-         Fkkg==
+        bh=ht1ydNu1umiMsWIVEKZmUkwLuvps5HNVkVlm/tB0atg=;
+        b=fdenlB1aorKuV1+BXmtslJDTbBB+yb5Ho4vSHK80E+31//Ow8QbFEhJYJ3Qxs8g5rV
+         UwT9yxStvRmtYN2k1rC440nqdnPtbIroiUcnRgD5QNrU6rCXE+stTNRHB6upZl9067b0
+         p8n176rsmZ+h1qKLueEegUvnMq5RFLktwW2yPzxh+bZpdqexCHsnz+RDRVt5gwWVqafd
+         hYbh7f8EgZyutek/IAUA6g2T5khHykbVmNCLMi/uZwiKJsIf0psjP/oo5pbzcvZgzjmO
+         h/W/AnMQkT84NTxbhw5GKEn3OmfqIXEa2tUpfAAxuK+YfWAS3lLVyGGAHPCJwKjmIVdS
+         NHJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774546225; x=1775151025;
+        d=1e100.net; s=20251104; t=1774546292; x=1775151092;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wEHEk0yDT5R/njghDq/hVwJN3s1AoJzI3r+2gD7Cnqg=;
-        b=NHp0RLGiYK+4L3+6XEXVTCJj5jaRLOiXg8irdXub63ZlvSv9CJ2TAuoO97RboX58aj
-         +To1v/Gzq2gMyX2/Z8jsMzVGOInG97QJ7ZmKfleQAZC6RpHroke0882GFp3qdQUxnE/K
-         M7r5lbPdakqdt2wQAlM+ZBXc4JV1SaHznyyDcbdSZlY5/Kj7K3g+jp8p8BN+bbPB9fkt
-         cjUV/NecMsS0Nk3b3vsqDe2EdgQdQcGVPh2pNSgIjCevV32mpGi1qT+txPvcQ0WikHv3
-         19Hp596p264XiNv+MLAyTAa4dMhn4qaULaZ5l50zXRGTPXa7q7LLY1MxwB/HJWSMJKp+
-         gBZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXShs9H40xHCFWOHini4T2kwBaCy7rh0rn5XE17I5zbd6l2bZJctl/443LuhVVbGsIY7QDLetg+kg==@kvack.org
-X-Gm-Message-State: AOJu0Yz67WQJT2lF6L9UQMy4up0HQVg6uWdGx+fzzOhz1Y83W6ooqMPN
-	IuUUotb81lFi57Xdx/eSr2TpPnalbbStdpRGyp12Mc9aQb5vw7cby3UzWTDKfsCZPZ8lQAUaIue
-	lz+6q48rlXlCayEJd7ZMMUOddnGfJcus=
-X-Gm-Gg: ATEYQzx6fr0C0XCVyuHtR1WXt/vYQuPTiH3AgszUVLA7+utjgCpDRID1HzLsvdkGbsy
-	Xs3sG46lDMXEZw1te5pKfUrQVdDW40qL4P0SJvvCMTWzJB2fFaTAF9ogauqsuPMB2MAEnpXjTh0
-	v0S9GuyoRl9L4eu/XJnrn2FZgc5hYEOjuvGmNc9L3lrQ3NunpQRUx0nJmkJ5UHqnJRZkFC96pPO
-	fH5L8zH0AMKmeBtywGYTa4E4OAhqwkrQOI1It+JSeaM8ZI1J15mWfjfVs8k1O31Z8EMy0AEvzrO
-	qHBRh2CBep1ljiSIRIl/kU4FaC3KncTsCxqYNIW2ARV8G1/RRXVn3mmZKLfqF6x4frLKn5tslkS
-	u4kWhx0xV5EQPOKnZbgU9gBY=
-X-Received: by 2002:a05:7300:d50c:b0:2c1:6416:2a07 with SMTP id
- 5a478bee46e88-2c164162eaemr1927580eec.4.1774546224910; Thu, 26 Mar 2026
- 10:30:24 -0700 (PDT)
+        bh=ht1ydNu1umiMsWIVEKZmUkwLuvps5HNVkVlm/tB0atg=;
+        b=m0C7i+6+UOK3gT2n2ttmWtjxI2KpD9TmY2rBgijhUvbdO1IGfryfqQmbobSIiDa6xn
+         rNhpNAJyc5iSCNrA2GnDNy1NSzbdLP+ZFCUnGZ9cqy7zF/eZyq4i1P1doKPhlZLsl0Fw
+         jqhu3P9OnHKwvCja9ilTeiJ2pbdDMZXuXQ3UsY7oksLZ0ngQQYahxeLfAOGwt61vLPsp
+         nAczinsNPmWxZLWOQltUcZ5Bu0UAg0BKJZwMU8+lNHRLSfNUOiRBzswDgL+ipFR+v4SW
+         Mv6TY6qPtTPy67XzoOIyCHBuj/DhqhN634VwVCy+GrOuhM4M2qcuXzZj/eZF547ozvwK
+         JfeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWztuYVcASMNYpxYIpxL4eHY4fq8hEXdGyPpeElDjBJydyGMhNUtsN8mV9wvTVXBliKOi9O37WkuQ==@kvack.org
+X-Gm-Message-State: AOJu0YzNFrFbtNq1M/DWdkDdEvB161N8ISkJSkutmA/4iclYj/eyWX/L
+	xSdV18mK1FEAf9ydhQctLAcfLYZPXvT8qxqsqfgXwl6cKWoahGsOgjFNQWe70TToJk4TZBgV1CK
+	Wkup+krsiz16h8BWeD8XGmEkZ62AfKvo=
+X-Gm-Gg: ATEYQzxj5kLZxnxH9OimwUg/gi8lJAVwPpKgxmwglP4PNUuhKo21UswEJQXWB6OAvmG
+	b2W93RiD/POGM83aHkq+7whfg4N6OWHKrOsLA19kEyzihH8givePMvL5HEgAdBFifG1fMSX+xAD
+	Ty72zfDQryQ3M0AYt6QQzqoXShCUKaseBmqzotLS6ynnOFdkuU7nJOvW0UH/dHliqcjiHbIwkGD
+	aANqfm/IFT6WuSCrUcq0KpDUchHIGk5CetrH4DqnwmhL7Z+R1NNBCtpNwKcwZEK9zCCGfnmRGBg
+	MnVjDOaJzdo9DehY3ZWP2olScH8MXtt5vx8OPjKauGpjZP9H9wSNV9v2ROyLz6WLVXkBe6s5k4r
+	C7kx/lSYhLIrEcaomcMM8TqQ=
+X-Received: by 2002:a05:7300:cd8a:b0:2c0:fec3:fd2b with SMTP id
+ 5a478bee46e88-2c15d3eebdemr2110432eec.5.1774546291859; Thu, 26 Mar 2026
+ 10:31:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260322192159.88138-1-ojeda@kernel.org> <20260323000327.111235-1-ojeda@kernel.org>
  <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
- <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
- <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com> <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
-In-Reply-To: <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
+ <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com> <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
+In-Reply-To: <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Mar 2026 18:30:12 +0100
-X-Gm-Features: AQROBzD8mk75r53XPOqmRDfmWXx9t0jf0bYbL_Ww497XzqV4mLKwGQ6QIr12vEg
-Message-ID: <CANiq72=b+cr7Stxph_hXQTmD5crCvwWTqdaGKOJ7W1-66v4i_w@mail.gmail.com>
+Date: Thu, 26 Mar 2026 18:31:18 +0100
+X-Gm-Features: AQROBzAY2TUlph37K4tdyrXW3PnWDmlLF1E76Ca3evvsqWc92x8ByVyN4OKTlu0
+Message-ID: <CANiq72=fm7FnfM2iqOLvsgxxx7X4LBkr7XU8=LWYqSzQ7zjJ2A@mail.gmail.com>
 Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, 
-	acourbot@nvidia.com, akpm@linux-foundation.org, 
-	anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, gary@garyguo.net, 
-	johannes@sipsolutions.net, justinstitt@google.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-um@lists.infradead.org, llvm@lists.linux.dev, lossin@kernel.org, 
-	mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, nsc@kernel.org, 
-	peterz@infradead.org, richard@nod.at, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu, urezki@gmail.com
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Will Deacon <will@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, "Russell King (Oracle)" <linux@armlinux.org.uk>, 
+	Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	akpm@linux-foundation.org, anton.ivanov@cambridgegreys.com, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
+	david@davidgow.net, gary@garyguo.net, johannes@sipsolutions.net, 
+	justinstitt@google.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-um@lists.infradead.org, llvm@lists.linux.dev, 
+	lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com, morbo@google.com, 
+	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, nicolas.schier@linux.dev, 
+	nsc@kernel.org, peterz@infradead.org, richard@nod.at, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 73A34160015
-X-Stat-Signature: rs3saj5ibke7ht18a65zg1yi844q7wx8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774546226-827413
-X-HE-Meta: U2FsdGVkX19bTqmPwlv4IXXFJxePrjfhWcKpBQ9m67IGNmQi8a6T727IyP5dxXL8xoTxGTWbxP099Fu0Ua9VTAoENYn2Jw3ldRZqVSPWuxD/gIjnrxIKqD2ZVUwJdbNKwwM3rsPuq0PBp8KPOJeKRQr4mO3DpfWAKXJRhXSEiA9WK0udU2fNSq8Z9TY76IQRZSMGUP3bysf9lOAMHKJYfR/YSrUAB0Qjr7Vc6wvtLUQy5/CidksODMuwc6XIo1h+A5f2iv3686e4lpHmYe5iimesl1DcpOcLNsjeaNIsVH/AZwWRlCIzSTG+xX8NYE+L2IzoAPqZcDmVlodnfdYlfY+U2tuoJjiL3d+UBequNZNtkWLT1FfK5xLeozUnyeY3OcrvDRS/bdaQD3QmmEMapFbVjrdAJWDx2wAomyKSrWI03RFNSfOnh55vdaFL2jX5Rb9uVxOomc+dkoyZ5vB0ITF4CX5uHlo1pZ8qcQoFCho6NSAP1nqC5ct9MiuUz8gpxR3qUm0AXX0maQxnJBQo48asGMO/+MjYFZyw4Uki8S4YQ0q9a6h8uZebFjO0AjVHaOshGnFbo9DND5qWEyeTTiWmAWmsld3Be08TmmXIFoJBzjHOb/ZwUJj3USPe2otb7uq4ASJVc37W7yyHUKI7IjMbJpA6ATffU1YlWWv9AgBajJf7RX78q0eQSH2IjLXdHI78CWxWgDFpo315XQ5uQaBc3tE+54OQznqeQfxfhFP1kn5eTsdBZOGNU47FoTRPxR3GQeLAskfbfYB5r++FKCutzZd9FQrZCn4Lm3jcAtrc8hxAxrg9ga1h9Z9pVJk+L2TGNpc6z1dmEg9GQFfXvdmgbp0JcQUvVe2thL67FyNvXJzPTlu56tVDlA4LuqcFnkeZYjmsvC0xoQBZQPX/6vMIeAtwmXzLHtAJK93SdjEmcFw9y/YeFNHddNG9ajqE++xUB+QaqfWdLAAKxTG
- TbFam6VV
- gV6EJSJFp7FyFGwHr1VK5Ej93ZpxgHtXWYG7gdgEx2Gi+t7xsy6Ws1RGyKJSwp0j6bLpYtlgXcqVIYVmczA0ilbEJR2HOpd0Axffg8mxz1w4DJ2HV3m0IkIAKDOujs96OEam7h+xyDQXSrpP0vLmnEO/xxL3/aet9WklsAIMlWMsMyVP9qwbsPy/FaV/Cf+8vNohJzuKj/BiT8wn3WS1ppRRUYYBTBo+RqrBPMJ1RKbfMyrenCQNIKj9RVw5jMluDvFstqfIUkktc7ItXqpWYo6fJPJhS8o3OvkfwJco2+rcUw/fFJliUjLrFgOjm8CXf11M3FDZbHNgWqg6j6u7nQrfRYedIXTLLc7iIj6WX2PyZXBc87mUaRe2stMaa7jjOI1F/JMTkLRNkzg4z60KtRkBwX8WCPg4WQ43UElAiDuVIrTri0tEhevfW1St+4IXhvGeI3IIVp7hiQ6GHBwuyBJfyKC57/kpSYOFsCmA+WbrsE/UGpLiwFJ+d911o2QPWK/mOlznEQJ83jpUM70aHXlh4TNifE5rgPG7fEhsQn+4khlLx8aS0s2+kbcWR/i8DJBIfiMEAwOLpNWKU9MIda3qdVHkJ5dlXAPkurrSKY3P+iTaXqF2F+YWkI0ZPOpRonxxpgJEQRkgyg4A=
+X-Rspamd-Queue-Id: 2EF5340009
+X-Stat-Signature: naj6qg5e5qhmwzstqkdkft7g9jm6jq64
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774546292-994711
+X-HE-Meta: U2FsdGVkX1+xH9mVRwVfOrUuzvygbTzB2EqN3tZvpJmpBqUcCXtp0iLyn5P3Th1bhB1EQOOY3PwYI3xQK0VDyVleKuprWQKtlXMlxpypzO0gntRjBFWkJeEu7Mi5P4sngCqHG8PMJdjqfFRSxsT0EzLy6pmnl+OsyW1Mz/YQXthgfKXXOEGAawX7w/HbS9jtrNPPQwwZTYYkAE6mGEo0coOalkYR7jaw1xuyAID5CaSNoVgAb+UvDdIvela7DbEon6lNu+MwWAa7D5Cl3/kjkuR9o3RjRPrMVKUrydAeZat1PBIr0WA4zId85UT/rR5GykLPRA96RIK52dzRVMQFv1GooftrYJuCO9O5Zw9lPe/5Ihrscp2+SCAWv3Vq89sq/s2Uco9iLvGK3K7BBm9S6NOVYeXm7eyEgWz1aEZsHJcYjsUVr34XfzosCauIr6Ok8hbEk0gziLrV9l7U17jacBi0Qm1YGVyQ6R4zRZtQfmKq4xsVMZqLzJmS1NJ2EU7lkNxaqv4S+6diRQsv14C2J6/fRdIPmkb3xwMuCxiO6B7xIhWjJ9yrYu3p8kzpvEylcSLqlyLocdt/97Xn8uEXvimNZTOybUquR3hTswWgZ9CujZCq7GMn8VxlVVXyUnTPJGyzlCZnJeyEC0KKMmeVz+QRImXWXhP19Fd7wC2E/7JnboQ/ehQzAUExfZf+SVBhxaOCG/TTV5zPIFZN6TrgflsLG+iX3NGdeVdlEs7ypn6HCvh8+8l2knPjkaQ6K6Kfu+jWzJyIwPppdNOZwOJxRocUa3Qq7lHSZEHpi/2xTfoDC+PArC6img1wReN4LwrT4v4Ru6hoW6LIugS4IBWGWqsD3n9a9DuLR+DdN8zN+9Mr/Tuf7JsSx9MWi0rXwawXnKdRUrOrf7OezLSKNpaCF/ioRIjpbsSb9WrAX3QzPqGIqC05KHefeQvxWx5+0/kfYa7VUmLjJinK4bD1CHC
+ GbQaYb75
+ GqPSP+nP7fE+nWhbfZfDcAql8Y4QZZ9rdWLwAvgMU2mcxFmnnjPn2EianQSwNUmHkNXun7+IH+jPLIrqKXGUAJ2Y9nxzUNPFKqVyyH58LFwxPkbcj0VyjSOq/2SOD/o8105BoE08VF+SUEm5voaAZrCH2IgXB9of2g0rjHol3vpS5OQjG3WoPp7Gi+SFOJ1w44QrX3AxQT6IyzZvZTgYE8Ke0Yr8d8DXjDeIB7I09BIEg1ZnOd8hRWzTdHH4ugOz/zK226OUBv7fOeYYH3p9we/5qSf5zIm3JHRjOMuf65PUU2/+6M+CGhYic3/daWl6v0nFpi6wMCZrenUE0nVn7EbUxkOIZZ0A23fFRSOLLjeWO0uARQrIZmcsRGRsemb8aVA+AAe72CZxrh3Av1R5Oo2eOhbchCzYbTj0/5415akMHaAY2IRuCGGu4DKnRHRvWiBPLgGmRaj7/kuZbG1mPeCUW1di/UlBAB33se78ssMNj1fP4VKwXUIBzBqUBKvTMRJGQ/1KCKuA6H5COS8uhYCNO1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,34 +153,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 4:18=E2=80=AFPM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
+On Thu, Mar 26, 2026 at 3:31=E2=80=AFPM Christian Schrefl
+<chrisi.schrefl@gmail.com> wrote:
 >
-> I'm not sure if this is still true, but I believe it used to be the case
-> that the -linux-gnueabi target has one behaviour for enums (fixed size)
-> whereas -none-eabi, the size of the type depends on the range of values
-> included in the enum.
->
-> Certianly, when Arm Ltd were proposing EABI, EABI had the latter
-> behaviour, and I think there were cases where Linux used "enum" in
-> its UAPI.
+> It should probably be fine to use armv7a-none-eabi. I've mostly used
+> arm-unknown-linux-gnueabi since I though it needed to match the
+> bindgen-target (which is -linux-gnu for all architectures) and
+> because from what I understand clang also uses arm-linux-gnueabi [1].
+> Also when I selected the target I thought that we would also support
+> armv6, but since I had no v6 hardware to test on I disabled it.
 
-Short enums? I see `c-enum-min-bits` in the armv7a-none-eabi built-in
-`rustc` target, and indeed:
+I see, thanks for the quick reply!
 
-    #![no_std]
+My current thinking is to enable this only for x86_64 and arm64, so if
+you/arm decide to switch the target (and/or enable this experimental
+feature), then that can be done without a rush, independently.
 
-    #[repr(C)]
-    enum T {
-        A,
-        B,
-    }
-
-    pub static S: usize =3D core::mem::size_of::<T>();
-
-is 1 for that one, and 4 for the other.
-
-Thanks!
+(Please take a look at Russell's reply as well about the short enums thing.=
+)
 
 Cheers,
 Miguel
