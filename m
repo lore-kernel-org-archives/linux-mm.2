@@ -4,71 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F30D10A62D5
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 13:44:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5EA710A62D2
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 13:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53B3C6B0088; Thu, 26 Mar 2026 09:44:35 -0400 (EDT)
+	id 0A9436B008C; Thu, 26 Mar 2026 09:46:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5126C6B008C; Thu, 26 Mar 2026 09:44:35 -0400 (EDT)
+	id 05A716B0092; Thu, 26 Mar 2026 09:46:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44F7E6B0092; Thu, 26 Mar 2026 09:44:35 -0400 (EDT)
+	id ED9786B0093; Thu, 26 Mar 2026 09:46:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 36DD66B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:44:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C80D9C335B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:44:34 +0000 (UTC)
-X-FDA: 84588334068.10.936DFBC
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 205C2160003
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:44:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JKnh8UbE;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF04B6B008C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:46:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6408D140D02
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:46:05 +0000 (UTC)
+X-FDA: 84588337890.08.40D3443
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7F96A10000C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:46:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LSj5r7P6;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774532673;
+	s=arc-20220608; t=1774532763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FHs1nX261KI0Bcg1Nf//oeXdKIr+A9JzQ6d3yV5ghDQ=;
-	b=zU08OTfoJJMlXSx8VAj2aZKpZ7q8sX5qR7vfuF0EsO1pUyVuevtVmk1GPJnY5bKUaaDvsa
-	UhIpK+Bct8cN/n3NQYnW1+vIqKekMLE7u4xZ9mm+6ldMLanVLOtPy4iiXU/R278XrBmYjA
-	5Smjt8tNtdyTIbKFs+LxroZtQxicvzw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JKnh8UbE;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774532673; a=rsa-sha256;
+	bh=bHrp3vUnpEwFUn8/yG+N7nNGYyVFfUurBOcMqtrleHE=;
+	b=4+vt6wIBrizjrxahvmZyJr5qMK6vmiB9qiEl33Z4DMB/4qUm3fpNvcdTDy+TOw1MOGKiux
+	NfJ7A+Y61ym37i1k1jN026P3kAUd2XWL3TzjZiDmdBLik5V1PabQJEoTVFRF79Dohd78eb
+	nmg1lHK3m/C87+rMDy/HrmDgWDU+Nl0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774532763; a=rsa-sha256;
 	cv=none;
-	b=aHybDEkerkExvSBAPVIgHoxsf7au0yYwG2taJn3SZ1C0htCgismVcvDbqO3m1E+b2qOWqz
-	JdRcJgZfZ0zlrZOUHKa2vvuw4tmRBGZ1EqZnYEN4jbN2MqUlN18KeSrfmTWfV7bU5rs4Y6
-	ZBaHKqBIoVnGCti+Fs7kZMJkcbvOTu0=
-Date: Thu, 26 Mar 2026 06:44:07 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774532667;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FHs1nX261KI0Bcg1Nf//oeXdKIr+A9JzQ6d3yV5ghDQ=;
-	b=JKnh8UbE2TxNQo7XZDsJ3d18TsjVhK3/RocXZOnwJCCpGvOzWmX4GWO+GfqBWTHmHdWXKY
-	v5IQUm1sFyGvotbOTuYWFXW20cz5O5tTB2CG6XsZzB1SDtPaplNpmaa2A9eClfS4FF/P5Y
-	vvTcQVQy9uinU12Qeg9RpNfAlh29z/s=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Chen Ridong <chenridong@huaweicloud.com>, 
+	b=aksCnvBVlPJtypacqoP2YJvJDhc7kExXqZcOeE3qI00H3sfDM/2iMVdgrM50Fk29gb4CHB
+	Bjw3Ut9O5hJ9kcuESY+GKCDezjqRzit82twhGJuxxZy+N09LUs5YLjWEaGsv/hUj1VywUk
+	FeDFWJCMUN5blAeQmol0XECxl9pfrvg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LSj5r7P6;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 80C7D60103;
+	Thu, 26 Mar 2026 13:46:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29739C19423;
+	Thu, 26 Mar 2026 13:45:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774532762;
+	bh=RudqkoNqPBUX98fLz0+P5t9+ze0SEqpsNjTsusgfFDk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LSj5r7P6tvWg8RDoOKSFcjrp9BYauvtEROZVgJiSzZYIWSHC9NJzKB5elnZv2CQyD
+	 w5r7LNhlCSoxpMC8Y3sVod1Gzem24Hk4m1u6j5DeVLY52ME3LPfs0YUEmnxX6flBeE
+	 um8x1lyhyriKeZyyXOzLqhz3N2USlUZifloXHQ9ah2BNtaS1AiouYoX+1xPCQOoYmm
+	 tG0ifLHmyTSqhizKG/n8f/RdNJu79Gd9WjXG5VqHkTZS3iDJWL+MWYDVxyFZUvQz7r
+	 JxWs8pGnjifgIxDJIVYCps553/2g5VXg/h8VCAF2eiEhGbABeUZY0Vuce9P29BjXxS
+	 TtMaX7iqRZm9g==
+Date: Thu, 26 Mar 2026 13:45:54 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kairui Song <ryncsn@gmail.com>, Michal Hocko <mhocko@suse.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	lsf-pc@lists.linux-foundation.org, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Chen Ridong <chenridong@huaweicloud.com>, 
 	Emil Tsalapatis <emil@etsalapatis.com>, Alexei Starovoitov <ast@kernel.org>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Kairui Song <ryncsn@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Gregory Price <gourry@gourry.net>, 
+	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, Gregory Price <gourry@gourry.net>, 
 	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>, 
 	Vernon Yang <vernon2gm@gmail.com>, David Rientjes <rientjes@google.com>, 
 	Kalesh Singh <kaleshsingh@google.com>, wangzicheng <wangzicheng@honor.com>, 
@@ -77,22 +82,27 @@ Cc: lsf-pc@lists.linux-foundation.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
  (reclaim_ext)
-Message-ID: <acUzMdxCDfbuyv9J@linux.dev>
+Message-ID: <4eb3bd28-f9d1-46a4-b794-fdeabad92158@lucifer.local>
 References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <acTcStxrTCWAN6Dt@tiehlicka>
+ <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
+ <acTaRgusrxfCoKqe@tiehlicka>
+ <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
+ <CAMgjq7B_twv3xhd5VmMJxngAknf9YaLAiwGYpdi6H2n1cXD3-A@mail.gmail.com>
+ <67f1588e-a094-413c-9746-9c28bdf6cc56@lucifer.local>
+ <b340e43f-2e08-4a77-8176-e49667387e85@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <acTcStxrTCWAN6Dt@tiehlicka>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 205C2160003
-X-Stat-Signature: 8m6pg6owgtwfshpz19opwsqb9y4q3dtu
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b340e43f-2e08-4a77-8176-e49667387e85@kernel.org>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: gu7q8xbdt6mr7p7ijq9habb5b9idimgf
+X-Rspamd-Queue-Id: 7F96A10000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774532670-589614
-X-HE-Meta: U2FsdGVkX1/q3KZ6KsRR6w0lx4M2JVi1/o+xLOK81x/UPlsRTHtNM0kAEwI0BSJXf41I/5wDKFdCXbd1u9cjf81MR205EZQfbng8Lh6KOSANc3vKdlo3XxsD8TereW3xdz3ouvhygyTYA5ZFS8JSCos+M6Kc+MUVjOgEsFjfz6teXHf+65VbpzkCI8EV4b1l9c7IRomPLECZVcB1vup0KoO4iwj/ImbJvxlNKf7rTRDgXIMwugbfBc+pT5KRIz9272bzbHQ2vjTSePz6tTk/CfPeWvz2HMmkLxwqoXZ/izB9MWR+yQhJ+eNAGKtXBeEKTxxgAz30bZoWZoqJ2vukVuydjIrQdQrRpWNA8N7ju6brboBp2mFsLzs+e7K/wDKxEPjR9ePl9qvHqTSkLQtcZgIYiGYQZvjM2FMHhLx2xv6+aA3mt0mVVlGiskCr6fcEQu0Xalwr6MzJyc0GJf7qFTKgPTeo9qrVIMIqf7M74lgekl2j6vYjKCyMPS+7X92WAcGMyly9jZDicT3BuVWWx+oTUES5GA7vqS76RRppPaqI4akVioi4ufAm1z9A+ziRTj95XL7k2aldq9+zo/LWhaCj2ptx1nFUjVss0WbOYeOnR6iSCy2RIDDVGzz7ZUiClFUZbR4wW+pk00KlAsEqtrdtbQ9y+ffdYCJvmxOCUpJfxjA6pgqnnn4ccWtvJiWHN56NDuY+3Ccrhgw5Wu+cauTI1byP7F2FJ+YFKiXHJggHuUSgz+LFV3xLSG1mEs7BdoXkJ1mhLK+2mmw/hC/p6WhcaUXXVDnBeV0Q6kCrQYmp6ZLmteFM+l0S5WDeHyHC1ZySPBWxH0sZArIkMuK4RdAu3EDar54bwq5UzWC4zD2tn6jNpTES69X9R2iI2L2mAizgGe4Z6saNFxV37kYyOwSqhWrT7uP8VW7uo35NXJO6th5Pl/W9lsyD7BGevS9uF1lCM+I4N2T7VKdUvVy
- 5XMTtz+3
- gXDFUcq6IFYWhsuYMUrN+NDwVpx7LalfQJxAG5Y/7WKKECz5L5hZXH/IsSgEUBwivDLXgwiYadXt71Qh9Dj1nkKbi9FsiCm75mchYmQGQGkv3S/6jENJN7dJo1Pj+bxDUB0/iwBOYZRNmlCpfDvDOaDCsEJK515L/RUKQsSRoOdn4ToavoumUKcjI1wz00NCUaJNIkowadnacACQm6TsC/RQyBo1uM6s4IJx43YxBNJTGFuKi7Ix25GLT9qV9QSprcUhJ
+X-HE-Tag: 1774532763-944927
+X-HE-Meta: U2FsdGVkX1/E1CGv9ZbmlEpNnDH5U7xmqiVFyret3Afu+qg+lmf7gQj+TJe4u+gPZ4ttig4d1lRNkfGu7f7M8OKz3t8WVBDqiiLtSCpNe1DrPltpmdR4M6Pl3Nxb2gIi5vtSBJmdhYAaPelHrcav37nW+220Onr1ctz58/hJGAwU4qR/fKQ9VlPnbgHTmolgEG+6zXum1q0gIm5XtspHPqm3L580VWBDo4p1jxldU6AUgWvRhbxmn/Cxvs1YfNdcGU9PXFf3yZHawGyQBwM/i9YTb1N/t1x9bsEGYDfpJqRcZObeEnJ8LhZ2g/EOcwOGrZXwkKb2cElt6B572yhIJvNrymMWvDDnrWUXZqWemfgOhM8+D31r1Pctn21LZzjw5EZXqscTkt7z6V73IUdb2F3NMeG3McelUNXqiTd6qG4H1w8RpbjjUlQsk+d9hSXWZQ095Pp3vKMOkvAgwCzPRDEYp+N6RfWgz75w2GbD+JCRbi8/4OxuQbqCLcGmd4+rN5U+tGBLgWdy0wJX6cQzGGgFweqnlRsbeypWAsssFaz/pLHxVMLRt4fGUcNSK2KvyOFF1lXpKybU2Zd1upMkBWnjDtr7BzSDDnepiZGBv6JDr1DUTIxmqzeykqzYidqKcn8TCeqfYcaP5hGDf9j7FUWO9wxpqWBNCpCIdtlU29YTMnfuWhsoSb6OP8j2Ok1iiOFxtQ7epRXQX6x6sw4KI51Jvty1EFQBBOnU7fqzJn93MjNqWj37W+q0oTN1PTOqvFUuTWyUX67gr6Fih7NJkxurJDyl6/J748B+itSJewQKfvcNd3n9N1mfO6PQR6TPVJKrfJ6VYu2v/h+ZzdF/ERaup2gmCwaHOheqKagOXCNXBaL+VEs0B/8bYsMEWk1qKS34Mk0rtJNTi+M9BIatEmHU/WEDd6ZGl2/ePEz86QDas5qeNtcB6g54MwR3CEQJ6ftfnphZHMdUx1yb7q3
+ Xue7a8cN
+ jEhguC5kavcU5YOFyWeUF79/zXxWn/pxIo2RIU5OQYOUi55CFYflkE8INFE7W1gSKBseuP5omJxjaDlUHLyQI2M87l05mxFrF/fLSsPQ7+3QAz+kt4PRZiYbY00dKNtIv587AI4BX+yaszjD8i+wAAf7+/Q9gPpGdYYNLiaIy6QMX/yyyeoc6xbykzjXut8xrb/t0BqmJqTHiDCK3dF9zzXy6PJhCpeitstUMtxm0ty43YF9UFd/ne3Ykwb1LouTKK2ukPNPxnKDL8P1X647qO/tMf1/mvTWue8zu7PDTmrCsFEp+p4cHln24Nc2Ei3HR4k9zsVFS9uRM0Ck1PO7O/+CUEamvfuQozMwtIhostdWXfP2lIplZeSck9vY0g/ms+0EZLOODp/MEdZaJfh8RLRJf09Ye7FcM07skQ9cIssxItG5j3XY57hQq5OcROKAgKiPXJwxn7JUj2NsZHEoXMAEzrsWVogaQWZRjud69vKVvuEewXMbOwHFqfDeyTvJh0R0XyAtbb2nOm3UIgyqk4b2CAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,83 +110,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 08:12:10AM +0100, Michal Hocko wrote:
-> On Wed 25-03-26 14:06:37, Shakeel Butt wrote:
-> > The Problem
-> > -----------
-> > 
-> > Memory reclaim in the kernel is a mess. We ship two completely separate
-> > eviction algorithms -- traditional LRU and MGLRU -- in the same file.
-> > mm/vmscan.c is over 8,000 lines. 40% of it is MGLRU-specific code that
-> > duplicates functionality already present in the traditional path. Every
-> > bug fix, every optimization, every feature has to be done twice or it
-> > only works for half the users. This is not sustainable. It has to stop.
-> 
-> While I do agree that having 2 implementations available and to maintain
-> them is not long term sustainable I would disagree with your above line
-> of argumentation. We are not aiming to have the two in feature parity
-> nor they are overlapping in bug space all that much.
+On Thu, Mar 26, 2026 at 02:42:35PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/26/26 14:13, Lorenzo Stoakes (Oracle) wrote:
+> > On Thu, Mar 26, 2026 at 08:37:06PM +0800, Kairui Song wrote:
+> >> On Thu, Mar 26, 2026 at 4:02 PM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
+> >>>
+> >>>
+> >>> I'm quite concerned about maintainership, as it seems the MGLRU maintainers have
+> >>> not been all that active, and the MGLRU to me at least is currently a black box.
+> >>>
+> >>> I'm not the only one who's raised this (see [0]).
+> >>>
+> >>> That'd very much have to be resolved and the community reassured that MGLRU is
+> >>> _actively_ maintained before we could even contemplate it replacing the
+> >>> 'classic' reclaim approach IMO.
+> >>>
+> >>> I hope that Kairu, Barry, Zicheng and others who are interested int it resolve
+> >>> this, however!
+> >>
+> >> Hi everyone,
+> >>
+> >> Right, I think we are starting to make good progress on improving
+> >> MGLRU recently. For the last few years we already have some commits
+> >> stashed downstream to enable that on our fleet, most of my effort in
+> >> upstream is spent on other parts like SWAP, really looking forward to
+> >> making MGLRU better upstreamly.
+> >>
+> >> Yesterday I was still discussing with CachyOS folks about their usage
+> >> while working on that series for MGLRU cleanup and dirty flush
+> >> optimization, and got some nice feedback later from their chat server
+> >> that MGLRU's TTL resolved their thrashing issue very well. With
+> >> classic LRU they needed a le9 patch downtreamly.
+> >>
+> >> For many other typical workloads under stress, MGLRU performs
+> >> significantly better too (e.g. database, build kernel could be more
+> >> than twice as fast), it would be a huge loss to leave it unmaintained.
+> >>
+> >> Barry also provided some really helpful ideas about MGLRU like
+> >> readahead handling. We are also seeing other vendors and people
+> >> contributing to MGLRU like Leno and Baolin recently. Things are
+> >> looking promising.
+> >
+> > Guys, can I please make a plea then for you guys to AT LEAST become
+> > reviewers in MAINTAINERS please:
+> >
+> > MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+> > M:	Andrew Morton <akpm@linux-foundation.org>
+> >
+> > Well Andrew is Andrew :)
+> >
+> > M:	Axel Rasmussen <axelrasmussen@google.com>
+> >
+> > git log mm/vmscan.c has 0 results.
+> >
+> > Axel has however engaged in discussion on
+> > https://lore.kernel.org/linux-mm/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com/
+> > recently for example, but not much in 2025 afaict.
+> >
+> > M:	Yuanchu Xie <yuanchu@google.com>
+> >
+> > git log mm/vmscan.c shows 1 result from August 13th 2024.
+> >
+> > Yuanchu has engaged in some MGLRU discussion also recently, here and there.
+> >
+> > R:	Wei Xu <weixugc@google.com>
+> >
+> > git log mm/vmscan.c shows 2 results from October 2024.
+> >
+> > Wei doesn't look to have engaged in discussion on MGLRU recently.
+> >
+> > L:	linux-mm@kvack.org
+> > S:	Maintained
+> > W:	http://www.linux-mm.org
+> > T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > F:	Documentation/admin-guide/mm/multigen_lru.rst
+> > F:	Documentation/mm/multigen_lru.rst
+> > F:	include/linux/mm_inline.h
+> > F:	include/linux/mmzone.h
+> > F:	mm/swap.c
+> > F:	mm/vmscan.c
+> > F:	mm/workingset.c
+> >
+> > It doesn't really feel like MGLRU is currently maintained at all, quite
+> > honestly.
+> >
+> > So I think we need people to step up here.
+>
+>
+> Ans some serious cleanup of the entry to reflect who is actually
+> involved nowadays, if at all.
+>
+> Master of MAINTAINER updates, I assume you'll take care of that?
 
-There is definitely basic set of features which we want from a reclaim
-mechanism (e.g. writeback and writeback throttling which MGLRU lacked for a long
-time) and it does not mean we should aim for feature parity.
+Ack of course :)
 
-For the bugs/debugging, we always need to answer if it is impacting one or the
-other or both.
+I mean I can suggest a change and cc the various people and we can do it
+that way :)
 
-> 
-> > We should unify both algorithms into a single code path. In this path,
-> > both algorithms are a set of hooks called from that path.
-> 
-> Isn't this the case from a large part? MGRLU tends to have couple of
-> entry points in the shared code base (node/memcg scanning code).
+Obviously will want some Acked-by's from those invovled on that though! :)
 
-Most of the code is diverged at the reclaim entry point and from what I see the
-code at the lowest layer (shrink_folio_list) is shared.
+>
+> --
+> Cheers,
+>
+> David
 
-> 
-> > Everyone
-> > maintains, understands, and evolves a single codebase. Optimizations are
-> > now evaluated against -- and available to -- both algorithms. And the
-> > next time someone develops a new LRU algorithm, they can do so in a way
-> > that does not add churn to existing code.
-> 
-> I think we should focus to make a single canonical reclaim
-> implementation work well. I.e. we deal with most (or ideally all) known
-> regressions of MGLRU. 
-
-Here we disagree on the approach or steps to reach the single canonical reclaim
-implementation. MGLRU is a plethora of different mechanisms and policies and it
-never went through rigorous evaluation for each of those mechanisms and
-policies individually. To me that needs to be done to have one solution. 
-
-> In the initial presentation of the MGRLU framework
-> we were told that the implemenation should be extensible to provide more
-> creative aging algorithms etc.
-> 
-> > The Fix: One Reclaim, Pluggable and Extensible
-> > -----------------------------------------------
-> > 
-> > We need one reclaim system, not two. One code path that everyone
-> > maintains, everyone tests, and everyone benefits from. But it needs to
-> > be pluggable as there will always be cases where someone wants some
-> > customization for their specialized workload or wants to explore some
-> > new techniques/ideas, and we do not want to get into the current mess
-> > again.
-> 
-> I would go that way only if/after we are done with MGLRU unification and
-> after we will have depleted the potential of that approach and hit cases
-> where we cannot implement new extensions without going $foo_ext way. TBH
-> I am not convinced "make it pluginable to solve hard problems" is the
-> best way forward.
-
-The reason I have added pluggable/extensible part in this proposal is that I
-want to avoid the same scenario all over again in the future. There will always
-be some users with very specialized workloads needing some fancy/weird
-heuristic. Rather than polluting the core reclaim, letting such users to do
-fancy policies should be part of our long term strategy. In addition, we will
-want to explore different algorithms and techniques, providing a way to easily
-do that without changing the core is definitely needed for future proofing the
-reclaim.
-
+Cheers, Lorenzo
 
