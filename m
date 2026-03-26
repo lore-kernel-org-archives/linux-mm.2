@@ -4,110 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDE9B10AB82A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 22:19:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 836E910AB82A
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 22:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 299976B0005; Thu, 26 Mar 2026 18:19:57 -0400 (EDT)
+	id 7D0F46B0005; Thu, 26 Mar 2026 18:24:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24ABE6B0089; Thu, 26 Mar 2026 18:19:57 -0400 (EDT)
+	id 7820B6B0089; Thu, 26 Mar 2026 18:24:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 139C66B008A; Thu, 26 Mar 2026 18:19:57 -0400 (EDT)
+	id 6703C6B008A; Thu, 26 Mar 2026 18:24:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F02DE6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:19:56 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC6D5BDC1A
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:19:56 +0000 (UTC)
-X-FDA: 84589632792.08.5AEC796
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5BF50160003
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:19:53 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="A6/mP01n";
-	spf=pass (imf08.hostedemail.com: domain of dave.jiang@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="A6/mP01n";
-	spf=pass (imf08.hostedemail.com: domain of dave.jiang@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774563594; a=rsa-sha256;
-	cv=none;
-	b=Sy0t8ebSPjwPqzCe7zWF8q1iJRAkTZwEZQMok+UWWBnYOUFJHANI5qHype/Jn9eYRo6XPw
-	n0dsIBuTwyNY0joECQO4jVpvVsrNzLnwk+2m+eOQtLCr5PTl3JJd6BunRlrcXiYHLJcgYB
-	YC3MwVe1j50aEI0tUfSX6IkT0gk6KQg=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 534376B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:24:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8F5F13C2D8
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:24:26 +0000 (UTC)
+X-FDA: 84589644132.16.88AAC47
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E84AD180006
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:24:24 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=l4fnBsEH;
+	spf=pass (imf24.hostedemail.com: domain of 3F7LFaQsKCOYIKSMZTMgbVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--ackerleytng.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3F7LFaQsKCOYIKSMZTMgbVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774563594;
+	s=arc-20220608; t=1774563865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=llBE4DQfBfBpoyAaaaj/5Fh8IshN8PkZbxEFPZE+kXo=;
-	b=LWwbt9224upU0p0H1JEDgVP33oFuQcIRRh1O7zv5kfjrYoGnZ1UDgf8XYZTt7qfSLpNwWe
-	LQGxGqXJ/sU1+/qQlKjVobEAu0O3WrN3g2uTowmieSrIFLArzV70Mpab5yS97Kc9YFmzHq
-	eRo5OI8J3fYeotsGHc51XxN9F6GnnCk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774563594; x=1806099594;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=8B/tXMYm8hAUhCMR+YxCgI3aaCb+Or0dadbsaOVLgmI=;
-  b=A6/mP01nFpqiEMr3MrSjh01oiu/W/wIs6++8axb/ziwUxV9KxZ8iOsJ4
-   xiXE68Vw/8ZEhzs4UDt9f5DCuqAH8TaqN2iNAk7ELYGlQfrDv9cihyYKN
-   H6TflnscFQmhxaTwVFcnSULpdjLR6IfG/IMMl+NgwXxdYHNes3YYm6pu4
-   xjfKHs4+wPNDC14zAUn+hgbEKA7qWBseMeV2pOXXvHD7pZu1jVYH4ry0n
-   wqT/tX2jPr8bc+GeUTBe0yaktFvp8Qxr8QPrVf5Adtr8s6RJhm/VvQqto
-   Np8mR+ZK0kdqBuQHUiV0qm/3yn1H/phjc7my/IqJSTQN9tDvKITWmCGV/
-   A==;
-X-CSE-ConnectionGUID: lZD7uQTuTROSK1MivlubXg==
-X-CSE-MsgGUID: z26BLbl9TXuVydZxnO/Itw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75351484"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="75351484"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 15:19:52 -0700
-X-CSE-ConnectionGUID: Ko7MAvEgSz2TmyhlSJ4h6A==
-X-CSE-MsgGUID: SNSI9yd0Rd6Gw+Hl/lkW9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="263048103"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.122]) ([10.125.110.122])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 15:19:50 -0700
-Message-ID: <9d672ece-e67c-47ff-9978-db405c939f67@intel.com>
-Date: Thu, 26 Mar 2026 15:19:49 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce
- socket-aware weighted interleave
-From: Dave Jiang <dave.jiang@intel.com>
-To: Rakie Kim <rakie.kim@sk.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: akpm@linux-foundation.org, gourry@gourry.net, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, david@kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, dave@stgolabs.net,
- alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
- dan.j.williams@intel.com, kernel_team@skhynix.com, honggyu.kim@sk.com,
- yunjeong.mun@sk.com, Keith Busch <kbusch@kernel.org>
-References: <20260326085501.343-1-rakie.kim@sk.com>
- <67c5b4a4-fdee-425c-8383-5c9c2f32227c@intel.com>
-Content-Language: en-US
-In-Reply-To: <67c5b4a4-fdee-425c-8383-5c9c2f32227c@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5BF50160003
-X-Stat-Signature: c78re8gbsxjuqw9y3ixpg5bdg1oe6nm4
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BL72lrNf2QkltPBVeRaNAZDLGH/Oti/Xx+2x3+YF24k=;
+	b=CWe93UvItcWGyHR6i1GQ4S60YatgIhtoMQ5McC/tesEjihP1qPjc1TYRaWyZJr4GqjdeXf
+	EoxoDLRDljdvvPHVkOdLJFrrNHHeg/eM2exE9jfckU/AErwBfuqd2Q/7wGK7pqk5IsmLRs
+	V44Dw0TyCOAPbxBeY9dRmSJjvrqJn2w=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=l4fnBsEH;
+	spf=pass (imf24.hostedemail.com: domain of 3F7LFaQsKCOYIKSMZTMgbVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--ackerleytng.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3F7LFaQsKCOYIKSMZTMgbVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774563865; a=rsa-sha256;
+	cv=none;
+	b=zwMVjh5aNCrhJbwNtNpVXSIkDTRFnb8CHVx/JML5dsHErWWfCpqwlgMQ6THq0Hxds2I2qb
+	1BmrOLACJFJyJtD0wRDW8pOso2AgNMnOXGyq/Pz9e3+bv3k7Ee1ZuI6zE57zOafwB8Ff6o
+	h3QwLAMr7nR0YcOOLRqKsgpaQ1LJEWI=
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c741a9ef5f0so1035864a12.1
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774563864; x=1775168664; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BL72lrNf2QkltPBVeRaNAZDLGH/Oti/Xx+2x3+YF24k=;
+        b=l4fnBsEHNcz+odCg3hAkuGtrifeH4EbT9T28AYJN9G4KlWdocmQU6/gUUss+Pm1pVx
+         o9od6BR7TaLkIa9q2rWEWb1IQIvHj615lOBwb9yj20yRs/zoVITHbwtPF3yQM3ZS8TzX
+         iBkpPzPHEa0wEbRgj8I1rg8of700HHk8kQrURF+Y7tW0VU65H+GiqfcM2pNE+np8xVlI
+         MR3yupG6cZ6Emwhn+rL6yMNL6NK35BHxeOqk9kIqQmnZHgwbuoBuOL1DKeIU1nPWR+fy
+         t4eY/rt57oL+NSai1BJ01QCRcON2GIyJK/YL90TXyiOei5cjJzcndRVA5gIXpgP8chtU
+         HtUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774563864; x=1775168664;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BL72lrNf2QkltPBVeRaNAZDLGH/Oti/Xx+2x3+YF24k=;
+        b=ktiS9fT/gMUr3QvZFUVx2hWNzkjzDgMvlaQmz/QvZarXbI0Vaur/ebYNfdA60FwjOL
+         HYIZIx6ifZa6FywBNV434LToUG3y/3urYyRR68fKyO9RrIq4pnHEkKtL9ZFlIVzO5x48
+         f1DZ+08Z2XdRDvUywI+Bh/GXSTdPGpjjzPuOqtoXKbodhg/hfYm9phDI/weLyyOL0s/B
+         aIzD5UubNGSvOK0Qm+768n84ZteQU+8v14lPkZDuLXHfUEq3CsTu6S4c677cSLRfaWRu
+         VxNvU/JFrgMDq1BDC5Hr7Hcy0pAXVCzTCPmVL8Tjivetm86/dV73MS3wFxTqR6ITcTK/
+         tu0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWeMIiZZfnZlV5L1LLLCJPARUtquwaqAdZ/dSfAkz5fMb7Jsj4g5Kd+pRF1Zqqz7PyQ940KWmsNjw==@kvack.org
+X-Gm-Message-State: AOJu0YwLbV1ylffQqigOjQjZynuX7CMHPxPBlUR6DQXq/KTUWpZDqUkt
+	ECE2zUEIxXIwtQFxwh2vp/atJjGUK+yormEWiFxszmU2gFSybdOYycpfNWQGXy3N6hULIrQAS9x
+	pMSDDbyxG7ECD2i9mHxEuD9vzdA==
+X-Received: from pfch17.prod.google.com ([2002:a05:6a00:1711:b0:829:9111:d582])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:4507:b0:824:b03f:2f65 with SMTP id d2e1a72fcca58-82c86327803mr2542565b3a.7.1774563863167;
+ Thu, 26 Mar 2026 15:24:23 -0700 (PDT)
+Date: Thu, 26 Mar 2026 15:24:09 -0700
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAAmyxWkC/3WOTQ6CMBSEr0Le2mppRcSViYkHcGtY9OcBjbQlL
+ WkwhLsL7F3OZL6ZmSFiMBjhls0QMJlovFvF+ZCB6oRrkRi9amCUXShjBWktWmLc0AuFRHmXMGw
+ MkZpqqXlVFlzASg8BGzPtzW94PR9Qr6YUEYkMwqluK/0ke3I4jVu+M3H04bsfSXyn9k2e87+bi RNKikblTJQU1bW6t963PR6Vt1Avy/IDuIOvYt8AAAA=
+X-Change-Id: 20260225-gmem-inplace-conversion-bd0dbd39753a
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774563861; l=10415;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=hyHHU3KevU1bPZ0Pz3Z5wuGltsbom7bIL/N/qi4jWOo=; b=SDVWlzJcpxISVwqOVOCgwwa+YC0UDPLDcSLkwYAyQaCK6yKAR8SuXc9BrH/WMDNBwTtDusyIC
+ SdvlK3rvjp4BhmvKLQQSqUcLHSD9J2SVOM6/u8ZuDk7xkSMfAo0WgWK
+X-Mailer: b4 0.14.3
+Message-ID: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+Subject: [PATCH RFC v4 00/44] guest_memfd: In-place conversion support
+From: Ackerley Tng <ackerleytng@google.com>
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jroedel@suse.de, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-HE-Tag: 1774563593-137741
-X-HE-Meta: U2FsdGVkX19vimWQYuz/CtZoSn3IaTvBPSmrH2KQn2bn/Yv/jsIZk+ZeAsjyrr23euTj8FGk3A4lQBiLehbjdN7mJtxCa1X/fHWyQ4h3NRGpxfuNH/ZgEZDielBE7esCOzjEuPP/i/Fb3X3HEvJyWM9p8e0Q8xc81S3RXt5E6c7U5lRMRcjvmAT0782R6B6R218+e6MapxikVihYIvD6UEN0xqi8GIh9Xa55HjA3AOkMhnj+PEKXgIsSFO2SToxxwljI7f5qxYXNsHlK675/NYTIKpmRmV8PJ8sNZoILx5t32jxV1mzaIbdSwyro19eowkQgbjQOINSs3koQ4xAp2rnPptBlj/kZc+3UAWF8gFvMhuG76YbZnkboMc2hxqp/cyWIXr9Yj5fgi1nVAsZuJkVL8siLZjt5MRgOE3IxtX50b/laPx32o7PseTK8JcQAU6+woYEunkMmKDBFUdBfd02XBJEXvvUqCLd56j7Cev1KC4HhPQNJ7h1HYgHL26EHURUJfHVwr+Gb8pJwfNy9IuLynMyGbun9h21ozsULgxC/4Lz3xUpDP7hWTjRT4y/QXjvcZgTqNVgTkQ/5E4m/VMdomkzChZqpCnidQ47mUG0cM9B+jIdJPxKpF8Wotrt6KmkqbknxruzhcDCjD5ftrlAYR+JbxXO9dUcu3kHSYgiDDO16YkdXjHYsSEr3vBI1qWMEQCS8lnUV89PlVTLJselPB0zDuN/lAOO+MSZWwRojF1GOzv4Cbhy5dvLzEJPa1qwFq15a6JQNi09dYe9oupLl7xt7fEkjMU3jlOgqYSHGx6ed3kerDHfpPyS6sFAXXvO+lqUADQlO4eZy3shbNX/TcBfp9F862P3S54MNWaRrcU/onAe4JAPRHfQlPuHVGFNEjS8vMX2e5j51wou5+onwbUgedwLGxJEw7Vr8dtcq1F2mcKy0j74rnyWzspx1ln6suDUhWOdVZ3x+SMI
- WvGRfb6p
- Nk3mXdY1iIIvqZkV31B79kttlUrE3iv4gfCzb11DC4c/LNLrJK/p5gdHWfeieexy3Ob4LdlbssAJpDYgIjVpMKrXSRLx0HyGe7UGRX8ttRxrH680UvsvO0MuKuI4Eopr47AVRP7etynjpISQv2cmo7Tw7sj4T0QB5lYyscCLZ5SwaDKkMTUm+RxJi/HbMIj/dCwbY2Phyt2kE2sZlY38a5FOU6A1/xEi+7qcePjf23fB1dhcyi9jhgyJvSGREgvp4sLKYEsP5hnnCR+yaXjikOE8ZsOE9O/NLPNEdkrCJIA/XKjTUNtWNIKF/uvCcEO4ac5UsiREaxGFr0gfrm3oRa5paC9Lk8JAieYU5/wlGZgKt+l0=
+X-Stat-Signature: fc6hpto18w7zcphp1ie7wtwk4sc89wzj
+X-Rspamd-Queue-Id: E84AD180006
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774563864-608068
+X-HE-Meta: U2FsdGVkX1+x/X0jSeikF2Ue+jBnh3eP328R8BPFnjJHKImZyj+nX5mGM+Go4GY3Zh6WiU+jJIoC/py4Eew7Ie/plFRPonzU/Riyytwli4d9N0xBPJ//ss7j/ITc/KHgFO3K+abz/MEkqY2uirmzVHpEWCgloFaTpbasoQkA4Ng2w6E8p8W3nYIfq66+YqIqfV31fXtb8wNrGiclbih4dNVCjbXiH6X2gho3XdF1xP0b4rF58mEGedVP7a4J6fDlMr/GebVF5MHleNDAAnd+on3MJvcinC/Qbn1Dj4+dRTnuyhEniX/lRPsdBG63Shz6OB55aPagZ8YAYnTWYITVa3hlUO/wURmJP4qgkLx1+Zfdu8wCqw2kTxFYa/spuXdADFdE9UzKxqOV4psWhSWGIWYbagvyQHwprwhoDZgH+sajfkbmggaY8iCVn4oaNY1H1GIo3aXQ5+lB+rUL/ubFPqZ1s3Z4J5Zk96o2D6G5iWvzggRoCrPru2DqmVdOBFrIsDAt6lGPGlDk7zEy8R5b/WGvDpMCDa0pNGPg86mvSbI4CO7AL5gQwW+uQa8Cg7khHZRP9/2v7YFyQJ1W5uNWRzABYPgaMOw9wma78JQf1vOSq5Y4+TMBmlNNabnHs+Hnyd8FuwrwTGCzZMCwHSi4Qdh4ujBzzcq/OZpQPB5eg9cnfrUxQqNMynG0h1SikbvXuf78Vvv2CdDui7EFG6krAhvOpONVk2XGkPLSUy5+a8ydxcUpxwAcNCLlSd6pfzg6lXJ5NgrKtQd6ucEuJdDcOTGVPXSb7NhboIJonVxpyp5vd6i5T9IKdaDURuhEoqYCRkCF1OgaqcpAMv6DmRUnQKUCMo8KVFGnU10dIybTzCVbirXm3tVgFLEGliz2pZ8HsS2Rdqqt1+qcDcmfLsHJTVLkLhmGS2prILDPXQT+bW4p+yjG/hra23mk3fTgPOMgsEw1IzB65y1JWdG0Jb9
+ 05hRxklm
+ mNkG/Pmm4Bc31ojzF3/MmCMH7PNpZKagI9Jn0YLP4dKlZPm7s9HwbdA82jnqmR3k7ctWxcW6EgbiadnlYShrYYtI9+nwMRA7oJ9sVC0qrOGhQryEF2K5scYIemhrc2lzObVPtVCRUc6sFQSUkNYxtvwENksqwgEMK94LfD88nG2wXoxDQRtL9wJW8y/x1X1zMg01UrQ8tcpOmQgvvWbnE0+B0fhinAKdbNQrcLX26bCGDbzd5Xeqme+iA5SHfOc2Bx7Czf/roAPLLLjgni/6Hux6JvlaCiK42I6n6UBgYtVaglbx6xviE1pBSrZI5vKfNWitTjUKE3FR5oPIMQ3hALwVd+xcQOQIFQGEIqEzVVPDRw/cUgxx2QgkgtQqc+xr4iDDuIxwBTSXBlxeF/gxgfIMPqdFFz8DyXtM1L3HOZAH3za55QC7Qxr7u7m2R5aVo497gD9dA52X9fNHqa66NIf7tv7ufKZ/o0/sZlnNI3FVPZsU07RFrxW4nSYPZbu6u8zK2g3+ltW9tx+3ouY5UeRUDRyuqWHFMpvW3H3uOH/i2FcRLTAPItAnbE5/EEX9cVqS62zf54NrLEOpazBR5a/RsiX582QQgiPW8QV2kqxtGXWbi4NFsTfZY9GHbEjWnzwSK0btqePoFrfnW1E4jEmP8PIyzp4PK++QX1mhJ1LiFzoZzpg0mmCIjXwb+ba+b/mZyIEf+Pb84nzBUdcCwbjxdLijxWZwsokvsoK3etKH1kxIwyDUo6zAqA+ti/IE55x+N3UVFDtxn04h/4BOEh91QUmhnRq8b0zHkAlzTBYGbNwhncQlMSZOWi9drRM6iOD6E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,69 +134,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is RFC v4 of guest_memfd in-place conversion support.
 
+Up till now, guest_memfd supports the entire inode worth of memory being
+used as all-shared, or all-private. CoCo VMs may request guest memory to be
+converted between private and shared states, and the only way to support
+that currently would be to have the userspace VMM provide two sources of
+backing memory from completely different areas of physical memory.
 
-On 3/26/26 2:41 PM, Dave Jiang wrote:
-> 
-> 
-> On 3/26/26 1:54 AM, Rakie Kim wrote:
->> On Wed, 25 Mar 2026 12:33:50 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
->>> On Tue, 24 Mar 2026 14:35:45 +0900
->>> Rakie Kim <rakie.kim@sk.com> wrote:
->>>
->>>> On Fri, 20 Mar 2026 16:56:05 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
-> 
-> <--snip-->
-> 
->  
->> Hello Jonathan,
->>
->> Thank you for the deep insight into the HMAT parser code. As you
->> mentioned, considering the current state where node 1 is still
->> registered as the initiator in sysfs despite the flag being 0, it
->> seems highly likely that the kernel parser logic is not handling
->> this specific situation gracefully.
->>
->>>
->>>> Because both HMAT and sysfs are exposing abnormal values, it was
->>>> impossible for me to determine the true socket connections for CXL
->>>> using this data.
->>>>
->>>>>>
->>>>>> Even though the distance map shows node2 is physically closer to
->>>>>> Socket 0 and node3 to Socket 1, the HMAT incorrectly defines the
->>>>>> routing path strictly through Socket 1. Because the HMAT alone made it
->>>>>> difficult to determine the exact physical socket connections on these
->>>>>> systems, I ended up using the current CXL driver-based approach.  
->>>>>
->>>>> Are the HMAT latencies and bandwidths all there?  Or are some missing
->>>>> and you have to use SLIT (which generally is garbage for historical
->>>>> reasons of tuning SLIT to particular OS behaviour).
->>>>>   
->>>>
->>>> The HMAT latencies and bandwidths are present, but the values seem
->>>> broken. Here is the latency table:
->>>>
->>>> Init->Target | node0 | node1 | node2 | node3
->>>> node0        | 0x38B | 0x89F | 0x9C4 | 0x3AFC
->>>> node1        | 0x89F | 0x38B | 0x3AFC| 0x4268
->>>
->>> Yeah. That would do it...  Looks like that final value is garbage.
-> 
-> Hi Rakie,
-> So I talked to the Intel BIOS folks and apparently for devices that are not hot-plugged (with memory ranges provided in SRAT), those HMAT values are the value for end to end and not just CPU to Gen Port. That's why they look so much bigger. So there are couple things we'll have to consider:
-> 1. Make sure that Intel, AMD, and ARM HMATs are all created the same way and this is the agreed on way to do this. Hopefully someone from AMD and ARM vendors can comment. We all should get on the same page for the CXL kernel code to work properly.
-> 
-> 2. Add code in the CXL driver to detect whether the range is in SRAT and then skip the end to end perf calculation if that is the case. 
+pKVM has a use case for in-place sharing: the guest and host may be
+cooperating on given data, and pKVM doesn't protect data through
+encryption, so copying that given data between different areas of physical
+memory as part of conversions would be unnecessary work.
 
-After further talking to Jonathan, I don't think at least this part is an issue. The devices that are attached at boot do not have Generic Ports in the SRAT.
+This series also serves as a foundation for guest_memfd huge page
+support. Now, guest_memfd only supports PAGE_SIZE pages, so if two sources
+of backing memory are used, the userspace VMM could maintain a steady total
+memory utilized by punching out the pages that are not used. When huge
+pages are available in guest_memfd, even if the backing memory source
+supports hole punching within a huge page, punching out pages to maintain
+the total memory utilized by a VM would be introducing lots of
+fragmentation.
 
-> 
-> DJ
-> 
-> 
-> <--snip-->
-> 
-> 
+In-place conversion avoids fragmentation by allowing the same physical
+memory to be used for both shared and private memory, with guest_memfd
+tracks the shared/private status of all the pages at a per-page
+granularity.
+
+The central principle, which guest_memfd continues to uphold, is that any
+guest-private page will not be mappable to host userspace. All pages will
+be mmap()-able in host userspace, but accesses to guest-private pages (as
+tracked by guest_memfd) will result in a SIGBUS.
+
+This series introduces a guest_memfd ioctl (not kvm, vm or vcpu, but
+guest_memfd ioctl) that allows userspace to set memory
+attributes (shared/private) directly through the guest_memfd. This is the
+appropriate interface because shared/private-ness is a property of memory
+and hence the request should be sent directly to the memory provider -
+guest_memfd.
+
+RFC v4 integrates comments from RFC v3:
+
++ ZERO is not supported on shared to private conversions
++ Adds KVM_CAP_GUEST_MEMFD_SET_MEMORY_ATTRIBUTES2_FLAGS to enumerate
+  supported content modes for a given VM, or all supported content modes if
+  no VM is provided
++ Uses flags and not values to specify content modes for conversion
++ Allows architectures to override the content mode application for the
+  entire range rather than per-folio: so if actions can be skipped, folio
+  iteration can be skipped entirely.
++ Addresses comments from Sashiko [7]
+
+I would like feedback on:
+
++ Content modes: 0 (MODE_UNSPECIFIED), ZERO, and PRESERVE. Is that all
+  good, or does anyone think there is a use case for something else?
++ Should the content modes apply even if no attribute changes are required?
+    + See notes added in "KVM: guest_memfd: Apply content modes while
+      setting memory attributes"
+    + Possibly related: should setting attributes be allowed if some
+      sub-range requested already has the requested attribute?
++ Structure of how various content modes are checked for support or
+  applied? I used overridable weak functions for architectures that haven't
+  defined support, and defined overrides for x86 to show how I think it would
+  work. For CoCo platforms, I only implemented TDX for illustration purposes
+  and might need help with the other platforms. Should I have used
+  kvm_x86_ops? I tried and found myself defining lots of boilerplate.
++ The use of private_mem_conversions_test.sh to run different options in
+  private_mem_conversions_test. If this makes sense, I'll adjust the
+  Makefile to have private_mem_conversions_test tested only via the script.
+
+TODOs
+
++ Address locking issue when kvm_gmem_get_attribute() is called from
+  kvm_mmu_zap_collapsible_spte(). In this path, KVM's MMU lock is held
+  while guest_memfd tries to take filemap_invalidate_lock while looking up
+  the attributes xarray.
++ Move guest_memfd_conversions_test.c to only be compiled and tested for
+  x86, since it depends so heavily on KVM_X86_SW_PROTECTED_VM's as a
+  testing vehicle
+
+This series is based on kvm/next, and here's the tree for your convenience:
+
+https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v4
+
+Older series:
+
++ RFCv3 is at [6]
++ RFCv2 is at [5]
++ RFCv1 is at [4]
++ Previous versions of this feature, part of other series, are available at
+  [1][2][3].
+
+[1] https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
+[2] https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
+[3] https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
+[4] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
+[5] https://lore.kernel.org/all/cover.1770071243.git.ackerleytng@google.com/T/
+[6] https://lore.kernel.org/r/20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com
+[7] https://sashiko.dev/#/patchset/20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89%40google.com
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+Ackerley Tng (26):
+      KVM: guest_memfd: Update kvm_gmem_populate() to use gmem attributes
+      KVM: guest_memfd: Only prepare folios for private pages
+      KVM: Introduce KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety check
+      KVM: guest_memfd: Introduce default handlers for content modes
+      KVM: guest_memfd: Apply content modes while setting memory attributes
+      KVM: x86: Add support for applying content modes
+      KVM: Add CAP to enumerate supported SET_MEMORY_ATTRIBUTES2 flags
+      KVM: selftests: Update framework to use KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: selftests: Test using guest_memfd for guest private memory
+      KVM: selftests: Test basic single-page conversion flow
+      KVM: selftests: Test conversion flow when INIT_SHARED
+      KVM: selftests: Test conversion precision in guest_memfd
+      KVM: selftests: Test conversion before allocation
+      KVM: selftests: Convert with allocated folios in different layouts
+      KVM: selftests: Test that truncation does not change shared/private status
+      KVM: selftests: Test conversion with elevated page refcount
+      KVM: selftests: Test that conversion to private does not support ZERO
+      KVM: selftests: Support checking that data not equal expected
+      KVM: selftests: Test that not specifying a conversion flag scrambles memory contents
+      KVM: selftests: Reset shared memory after hole-punching
+      KVM: selftests: Provide function to look up guest_memfd details from gpa
+      KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+      KVM: selftests: Update private_mem_conversions_test to mmap() guest_memfd
+      KVM: selftests: Add script to exercise private_mem_conversions_test
+
+Sean Christopherson (18):
+      KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+      KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+      KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+      KVM: Stub in ability to disable per-VM memory attribute tracking
+      KVM: guest_memfd: Wire up kvm_get_memory_attributes() to per-gmem attributes
+      KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+      KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+      KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
+      KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+      KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+      KVM: selftests: Add support for mmap() on guest_memfd in core library
+      KVM: selftests: Add selftests global for guest memory attributes capability
+      KVM: selftests: Add helpers for calling ioctls on guest_memfd
+      KVM: selftests: Test that shared/private status is consistent across processes
+      KVM: selftests: Provide common function to set memory attributes
+      KVM: selftests: Check fd/flags provided to mmap() when setting up memslot
+      KVM: selftests: Update pre-fault test to work with per-guest_memfd attributes
+      KVM: selftests: Update private memory exits test to work with per-gmem attributes
+
+ Documentation/virt/kvm/api.rst                     | 136 ++++-
+ arch/x86/include/asm/kvm_host.h                    |   2 +-
+ arch/x86/kvm/Kconfig                               |  15 +-
+ arch/x86/kvm/mmu/mmu.c                             |   4 +-
+ arch/x86/kvm/x86.c                                 | 114 ++++-
+ include/linux/kvm_host.h                           |  77 ++-
+ include/trace/events/kvm.h                         |   4 +-
+ include/uapi/linux/kvm.h                           |  22 +
+ mm/swap.c                                          |   2 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   5 +
+ .../selftests/kvm/guest_memfd_conversions_test.c   | 552 ++++++++++++++++++++
+ tools/testing/selftests/kvm/guest_memfd_test.c     |  57 ++-
+ tools/testing/selftests/kvm/include/kvm_util.h     | 144 +++++-
+ tools/testing/selftests/kvm/include/test_util.h    |  34 +-
+ .../selftests/kvm/kvm_has_gmem_attributes.c        |  17 +
+ tools/testing/selftests/kvm/lib/kvm_util.c         | 130 +++--
+ tools/testing/selftests/kvm/lib/test_util.c        |   7 -
+ tools/testing/selftests/kvm/lib/x86/sev.c          |   2 +-
+ .../testing/selftests/kvm/pre_fault_memory_test.c  |   4 +-
+ .../kvm/x86/private_mem_conversions_test.c         |  55 +-
+ .../kvm/x86/private_mem_conversions_test.sh        | 128 +++++
+ .../selftests/kvm/x86/private_mem_kvm_exits_test.c |  38 +-
+ virt/kvm/Kconfig                                   |   3 +-
+ virt/kvm/guest_memfd.c                             | 562 ++++++++++++++++++++-
+ virt/kvm/kvm_main.c                                | 116 ++++-
+ 25 files changed, 2047 insertions(+), 183 deletions(-)
+---
+base-commit: d2ea4ff1ce50787a98a3900b3fb1636f3620b7cf
+change-id: 20260225-gmem-inplace-conversion-bd0dbd39753a
+
+Best regards,
+-- 
+Ackerley Tng <ackerleytng@google.com>
 
 
