@@ -4,69 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 610C9109E53D
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 02:44:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A1A6109E543
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 03:18:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCBA06B0088; Wed, 25 Mar 2026 22:44:19 -0400 (EDT)
+	id 81D096B0005; Wed, 25 Mar 2026 23:18:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7C746B0089; Wed, 25 Mar 2026 22:44:19 -0400 (EDT)
+	id 7CDC86B0088; Wed, 25 Mar 2026 23:18:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B924D6B008C; Wed, 25 Mar 2026 22:44:19 -0400 (EDT)
+	id 6E3856B0089; Wed, 25 Mar 2026 23:18:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A4BC16B0088
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 22:44:19 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35DA3BBDF2
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:44:19 +0000 (UTC)
-X-FDA: 84586670238.10.5EB97B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8B43B1A0002
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:44:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uA9xM8Tl;
-	spf=pass (imf19.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 5B1716B0005
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:18:16 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E30C7E101D
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:18:15 +0000 (UTC)
+X-FDA: 84586755750.14.5364DE5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 55999100008
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:18:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JsdMxFTu;
+	spf=pass (imf14.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774493057;
+	s=arc-20220608; t=1774495094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M142TV5/pcvb+3JInf5fP0CHCG1jMozjA6zC+4eV00E=;
-	b=OiDMjM0BjRNQASOg+e2ycGCam8P6gAdr6msQnxFT/6Gdj3L1Dnj+O6pHVN4BlN9hBF0kwj
-	aODYll7BfnLQjmXIQ2nnDhl7M7OMQis8bF9UaSiFeGrSyeHWx23ssNaZA2G21fvv9JtW0P
-	3zje8UnVc7sD4KWavahAF3w77AhJGqA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774493057; a=rsa-sha256;
-	cv=none;
-	b=ufSkPytW/If75YxulOjFM4MGbEpOUPfzFIUflzateFKn95VvUI5HTRE4SJXXEFyL5cN+/5
-	BYTO8jwOsnC+tGeLTel6m93yT18T9p9poHfnfZnz0H15jLQ+UxVctvQhVANNE2kXxjfFY7
-	Y+9km74GCTT1G8qQoun3CA2YARQVXLs=
+	bh=706IIdtMGRj4wehi3kZFIGnbfbXKAFH9WenrysNeEoI=;
+	b=jV0+UUj/bC1fJbI/TTPaWh3TxkPCvfjO7ZQ6uOaL8ebw/cvkScRzwPVzNZWxIhgVuKMbgW
+	YPvleoYs9YSaKHcJM14VuOSyuaRT7XVdvQ/XQ21B+awoHetVUJeZvQp+hpkvOWwpJLBSRC
+	3YadK4MEmx/jyHqGlDxQbayNsN8gfRg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uA9xM8Tl;
-	spf=pass (imf19.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JsdMxFTu;
+	spf=pass (imf14.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774495094; a=rsa-sha256;
+	cv=none;
+	b=rHggsBn2ieLvA5YcvaH5tSWr5j6VG68Rn306uMVde2hHdno7Bmid1eysDpf78Kk/llu/Dm
+	zglspYES6/KMSdEBP3CjrJgX1q8g/NizEPBF645VV/4dM4UyXNDvv9JS3bIbXa3iIU9EnJ
+	c/qq2xd4y6MpQ+8n2YmELfPrmn+rIVU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5633C4063D;
-	Thu, 26 Mar 2026 02:44:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1330C4CEF7;
-	Thu, 26 Mar 2026 02:44:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B8E6760103;
+	Thu, 26 Mar 2026 03:18:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80347C4CEF7;
+	Thu, 26 Mar 2026 03:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774493056;
-	bh=LrDa74kusD0Qs5ckOdznuE3nf+2ULrBRJxIuPhAify8=;
+	s=k20201202; t=1774495093;
+	bh=WB1dI10jKBmYn3rDn1h3wkonawXKDbWE18p8jVvczVM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uA9xM8TlDA8Ri8x9xtA0d+L2RRzbXKmjjjzhGNTc1Xmkp1rJJZvxU+MF5rSM4+e2V
-	 LyjN8vd5EhgmoQU54pxXJs5H39ssW6qbiajuGgeXnKnQjVWx9hGcvOS+CI0010hwhy
-	 RqcCkc2gFnywy+C38Md08UQ3eg1RgGoV+dyeC+S86RzrUYav/qJYTLzZZEE0ciByZa
-	 RBN80Boij9Tox2W52kPQxb7EWFazDbYgc3I4R+JQHVL/7EMIgzXIf4TgeUkpys/6XE
-	 Kqn1gOvDx87rM/a8YeY+Ka8fp83zg4DnvbrjWcvtKrztj+TPHLcp1Nw9hAFLWZPJ3s
-	 SKICNvt3skN/w==
-Date: Thu, 26 Mar 2026 13:44:03 +1100
+	b=JsdMxFTuyR2lT4rcDXcNZW9FLxM7pHrU6gBo1CtKgQJvtK1s9rnz7cqTOQZ9f1Zt/
+	 12kcNrKOSMaeY9nz3X3YpCOuPSQw9BhaFklX65OxtQtbMRsAgZrgMfSn261MgkUcfD
+	 06eztHg4egcVcSbjJW6KW7wHF0oWkEDZnhP1aZAIIywrYzCB/73xwbcVbtzV767nl5
+	 hp2eUodcSUNk5RQloSsvev7zGqkOHFnYvddGvm5i5eqyaR+O84biq0Tv2B0eO22QSo
+	 nD5JdU7vsNnrs1L9T2wkjXozBAiFIJGNxc4DE07NrG6EHd5r69iwU+BeqCCkz2bVHZ
+	 cReUmAvGwwgGw==
+Date: Thu, 26 Mar 2026 14:18:06 +1100
 From: Dave Chinner <dgc@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
+To: Bart Van Assche <bvanassche@acm.org>
 Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Christian Brauner <brauner@kernel.org>,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Carlos Maiolino <cem@kernel.org>,
@@ -76,23 +77,22 @@ Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [PATCH RFC v4 1/3] block: add BIO_COMPLETE_IN_TASK for
  task-context completion
-Message-ID: <acSdcwclPGXLGwBx@dread>
+Message-ID: <acSlbnQ23x224IGx@dread>
 References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
  <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
- <acRE8pp6HxjK7Z74@dread>
- <acRH-fWPKkFFXcLZ@casper.infradead.org>
+ <8f554173-4864-46fc-85e0-0a7f3ca70210@acm.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acRH-fWPKkFFXcLZ@casper.infradead.org>
-X-Rspamd-Queue-Id: 8B43B1A0002
-X-Stat-Signature: 1fm5eeb7kj1eoxr5eeun76h6niux3qi4
+In-Reply-To: <8f554173-4864-46fc-85e0-0a7f3ca70210@acm.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 55999100008
+X-Stat-Signature: 9mn8yznq6ch95c8h33f8yfuzaw75yw3n
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774493057-333736
-X-HE-Meta: U2FsdGVkX1/04rHILqZ0uhV2Lo5Ey1iCFcaOTHwlMPVFPX7ubAH4Zy/W5ujrSufzJvzUOaJWrnSw09bn8iyotkUDauXa3jj1pOwyrkv+HTWw54AUdUJuiKxoRP3FHeVj/3hSNSQ/Idygc8UUoQGaW9YkJEDoKj2IwQC8DNMVW6S5mGe+PuslDAMPEFSWrkjKgER40jQbWccrBX8PGTDoTbQHmu3afA5k415tgPMxHJno6ZHGlD7YT0uJZdtvMlBa/1AU63P4anWi8L4CDryCl3IPuLyRd8xsSVyEOLl+HCmJTUZYuUPxwS05b+ikC2ChUGNFye6juqFAep6+9jmA14rZs9O/rnHV5BT5BQOMm7ULHvn4Bwkc6FORGp1PQ5on+HefCiBSZvfhjhcEZrX9mnsWq1cqLfC0NoX3m/tOdGAKdI+OgfZPfx/ZdSDkBqdDDK4yRzfWlE48ib5dqvL+MSAvrlx3MCVlLtkEJuhxFQdvtI6MB+0O2pG4+zB/ZDKIpGs7DEMUWg4ImBteWGd4C6/z1+lKHKsmgqO32Lcxy0FjgXBPiX/E/jzsmb7Un5UCHhREcifvxTI2xg1RWZSSjWQahuZjfS5SnGr+PNbbF8UPo8W/qm2+xqZlCx9kiyT5G0BnKo+WtIG8PSR3WOm7pUR92AvIK5eYEinpqopKefrPuO9HSqxIyDkgsm3xrGVtqElLwx+2SSkQ2QOmajPSPqwSuXgBDplaJD30V2Z3Chm3j7UYhgZ0o74d2XKlU9WBMhBqludnVeiqHYUAIHcM1fHGn6UtIfeq4zFA4FHQkE7wzpxGeH1mycPOgsPvnv/Vgjn53xIU5ddUe0pcidbnUshLZPHGfNvIs5I6nNjTK7QXC7vJRhH1/qr7v8/UjmNV2BzOVRxqoVdvG/TDMKGm6/rjKRF4vPbNV67AN/IxwGudxNt50QJuQcJdeua3U+y1Cds/ZhK6HPr7/NfQV2n
- uzd8zlpP
- NSJZDbNl9ptMJTbH49mLHVy0eo3y3TTz3ZnJ5Ng4vCGU+f+l35TFPMJPkG5yjr3Ahr3prs/fUkyo/b8cjrVLrz4t9vgPEVLkZu4+JMuyK74EXBUzeAapkkpHXHKI2lcxWqjlVr6yBRGqx6VSg+OyESHWGnzFsKJJG7EySz0ghHjBG6ul6L13bbdIWivxRGHz+opwWHHNplUiJ+TArXGbytbGTffZEi0UEmLHriNW1Pryq1nRsbP7tDB9s23oKNK0MDJcxZaz7TyFnOPSbJMJLlOB6uKQinLoKwyJJ1wntobywbe7mg1ka0gb0xZVNxwy99kz/
+X-HE-Tag: 1774495094-144030
+X-HE-Meta: U2FsdGVkX1+qYHcY/3kY2dOZ+1pYwRAa60pzLpD03d7lUyx770jfJtRYNozyVt1CpSaYU1VlSzh1JLsqAc5P2B2DMUbt5NQ2frvFSEPZclkT7uxtP+cDUVR9uga9g3/Hu/ETyVS2MZ6P79ldD8yX6OqN0/IIQvpiU2fqbtuQRyhAID0Th5IgxT5L0ay+sR7c7A78ZTq2lZSm45i8so4TLsx1AYeW9zyoFCvptQPkPg+P40z1cLgAUgShfRa2MmdDM9ve8UPdFltaowLLwFXwo1cVLVrAv11+To2HwXZEaWKPazrw0nO1m1LXG2w2ud4n/cHdkEUy8Ht+MT8tHBB/JE5QG5Cg6Ah9ks0tEFdxI8AfmmiqPnmzocDbXxGxuhh11Ov8pvo8puXi6Ww9oSiSA6cIpDmoDNXYBvYUDCLuZIiLJcUApPgDjBKisZ3tdlVetzgQKvKNgvnHalgPFbs8EGXKvnot93Tl1ODYPGJHQdEzu38rR02pIGTkae4SNR55e+vYOtkyrUL4U4kVSRiNOo5jDg+rhivrUrvVsu36F+s9xmbGc6HKjn4URUphujN9qYxf3yAcfA267pVJ0oEZv6YA4eFejAhEifgLhhUo+9fOlAg3mUO3ZyFuyad/e9PDh8v9Dg+NFu+FmDtfS7jjxG8OVt1xdaGGDALjZRbteGEll4WvXJO94xDXLESyLn+/LSmXnyD7iRdf7SWkfMYUEOPzKEq9GUCQ2PFybKyVdjlyQ2QqU1lvH0ZuXfUCHKCNtzZ7AbLpWG2zVAkazJtXYsG60NDQ3E48lJLBtagT4uoxk/dmitXdoZvFmPHUxTazD8U0xwLvOSb1Jz1D+xg3tHk2rGB6dvZds7/alG13keWrXNLwq313jn7M37QyuY7Z1asdQmaGXO3TmwMTW0IhtICfhCe5//mA3rvpvXF8ACMwJ7Xyox61+c19AZGbwZrsirZaRKX7jvDILQfS5o9
+ J5WbHF8f
+ JompOEVOQoBg5c0VHSud8xqxZAZDcF7zaqD2jqcM3yzoM0uz0HbOgYwyCshK3Pz5TGIZ09K58W8NcU2hz53cBsm50k70gYjJrOh7mire2LXkvnqN+u5xzSmQvdcMxptahWnD0466P+NoRm9DEisV19BKiQ6aPbW9OzvA4cBNykx6q4OP83xEE37S5lllP/qMgDq47OKTU7dl5M+0ClLJqOpNqxH3L0cuqz6HaalkJbNvqYvkJtkuYqAeid5FtCo9c/0seVHrOlSvLLUGp4M8TPyVxY6sHhN6LPfNpuPRdtRR1lmfeDsdaUQbnpxbe2DU3Iu7R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,34 +100,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 08:39:21PM +0000, Matthew Wilcox wrote:
-> On Thu, Mar 26, 2026 at 07:26:26AM +1100, Dave Chinner wrote:
-> > > @@ -1988,6 +2060,16 @@ static int __init init_bio(void)
-> > >  				SLAB_HWCACHE_ALIGN | SLAB_PANIC, NULL);
-> > >  	}
-> > >  
-> > > +	for_each_possible_cpu(i) {
-> > > +		struct bio_complete_batch *batch =
-> > > +			per_cpu_ptr(&bio_complete_batch, i);
-> > > +
-> > > +		bio_list_init(&batch->list);
-> > > +		INIT_WORK(&batch->work, bio_complete_work_fn);
-> > > +	}
-> > > +
-> > > +	cpuhp_setup_state(CPUHP_BP_PREPARE_DYN, "block/bio:complete:dead",
-> > > +				NULL, bio_complete_batch_cpu_dead);
-> > 
-> > XFS inodegc tracks the CPUs with work queued via a cpumask and
-> > iterates the CPU mask for "all CPU" iteration scans. This avoids the
-> > need for CPU hotplug integration...
+On Wed, Mar 25, 2026 at 02:03:40PM -0700, Bart Van Assche wrote:
+> On 3/25/26 11:43 AM, Tal Zussman wrote:
+> > +	schedule_work_on(smp_processor_id(), &batch->work);
 > 
-> Can you elaborate a bit on how this would work in this context?
+> Since schedule_work_on() queues work on system_percpu_wq the above call
+> has the same effect as schedule_work(&batch->work), isn't it?
 
-It may not even be relevant. I was just mentioning it because if
-someone looks at the xfs_inodegc code (as I suggested) they might
-wonder why there aren't hotplug hooks for a per-cpu queuing
-algorithm and/or why it tracked CPUs with queued items via a CPU
-mask...
+No. Two words: Task preemption.
+
+And in saying this, I realise the originally proposed code is dodgy.
+It might work look ok because the common cases is that interrupt
+context processing can't be preempted. However, I don't think that
+is true for PREEMPT_RT kernels (IIRC interrupt processing runs as a
+task that can be preempted). Also, bio completion can naturally run
+from task context because the submitter can hold the last reference
+to the bio.
+
+Hence the queueing function can be preempted and scheduled to a
+different CPU like so:
+
+lock_lock_irq()
+queue on CPU 0
+local_lock_irq()
+<preempt>
+<run on CPU 1>
+schedule_work_on(smp_processor_id())
+
+That results in bio completion being queued on CPU 0, but the
+processing work is scheduled for CPU 1. Oops.
+
+> From the
+> workqueue implementation:
+> 
+> 	system_percpu_wq = alloc_workqueue("events", WQ_PERCPU, 0);
+> 
+> [ ... ]
+> 	if (req_cpu == WORK_CPU_UNBOUND) {
+> 		if (wq->flags & WQ_UNBOUND)
+> 			cpu = wq_select_unbound_cpu(raw_smp_processor_id());
+> 		else
+> 			cpu = raw_smp_processor_id();
+
+Same preemption problem as above.
+
 
 -Dave.
 -- 
