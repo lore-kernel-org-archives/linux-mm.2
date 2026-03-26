@@ -4,100 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B226B10A3D85
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:21:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8322310A3D89
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:29:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0DB16B0089; Thu, 26 Mar 2026 08:21:11 -0400 (EDT)
+	id CB9FD6B008C; Thu, 26 Mar 2026 08:29:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D97AE6B0092; Thu, 26 Mar 2026 08:21:11 -0400 (EDT)
+	id C6A8F6B0093; Thu, 26 Mar 2026 08:29:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5F526B0098; Thu, 26 Mar 2026 08:21:11 -0400 (EDT)
+	id B80DA6B0095; Thu, 26 Mar 2026 08:29:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B1B4D6B0089
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:21:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E7BE13C1F0
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:21:11 +0000 (UTC)
-X-FDA: 84588123942.19.860AD0B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A76A86B008C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:29:17 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3B2D18D016
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:29:17 +0000 (UTC)
+X-FDA: 84588144354.24.2106CF0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B7680100010
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:21:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DlZFydda;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id A29301C0017
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:29:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lViYXTLs;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lViYXTLs;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774528155; a=rsa-sha256;
+	cv=none;
+	b=eunbhjaP8Hht3zlsUl9HgRRCExtetpfakPzRyzxTI9ZJvuWnAFjqXMaRvGFXBtlEysHaLK
+	AUO4oDFQSZ8DpCKPicrRYW4hb2zzmCICPOS3x4UdoaSKvks5Kbc6QmlTqM6CxgkiGBiuS0
+	rzvyCvelMN0NRvNxB24yjs7EFttIB3U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774527669;
+	s=arc-20220608; t=1774528155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yeTKFSFJOWv+jUMLZH9EXEKrxiBZkbfEw9C8d3m6DLY=;
-	b=WUnJ1I3eqNAagM/gCb7ckezvOVtpGxpa2HILGgT4G/IFrtBtRUmz0FJl4li9gS/oW0IV40
-	bjjNlnvd95J//1Ago/goi9d3snYpjPQxana0Mb1O3qqqZnTYea6aiqV5oAptiHMzlEJHpD
-	7pyipo3e7tOnrDv8Nf8DnGasCvPKgKg=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DlZFydda;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774527669; a=rsa-sha256;
-	cv=none;
-	b=m2KhWe5BekEkRHS2bCw+RXzQPsoNdfa1ohSrfxEbjaXY/y4g2NyNOFWlbFqFMOdYVu0djM
-	S0fFWoXmOrpjBsmeKusTOSpdbL7FqBTOol0y3FXGADdQeMIR9eKhQSVPmTAi0hUvnP+mw2
-	qF7f2tSRchvzze0BI9ApAMoBNVSKnGE=
+	bh=MHQo2d6U6dnT2K4Z4sQ9LVYx+GRJP5LTDe0a0UuxG6A=;
+	b=7T/y0fUt6nrfMOOQ6omdbXYNToR7MB7E+3G1TEoN/KArySmn1nM8kc3dy+9vMBDMWNita+
+	VG/G0FNaksxbMrBPJyoQq38iH6vlWNeNmDg3HqGZSpYJoJkych573i9ktu3gCaULX2CFfj
+	aKBThlUAbTcHWdCLXeQ/Gyd7Lo8VQU4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 064876011F;
-	Thu, 26 Mar 2026 12:21:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54763C116C6;
-	Thu, 26 Mar 2026 12:21:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BD1160123;
+	Thu, 26 Mar 2026 12:29:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE70C116C6;
+	Thu, 26 Mar 2026 12:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774527668;
-	bh=9LLTIJ5RmSQfF+WpjdmZswjGncAvaFsJ4VCdRZA4Z2U=;
+	s=k20201202; t=1774528154;
+	bh=MHQo2d6U6dnT2K4Z4sQ9LVYx+GRJP5LTDe0a0UuxG6A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DlZFyddazkJNNpKXRChaUwVejKLEoXdMer7QNWJHeQLjhtSZXy1JPqYKYtBdOE+ZQ
-	 4kv5B3Ir6yhLJ39DwxdE6X3nYjTcbo57sfFVrQCqH8G8IglL51z3pnXsj9GfmB2gk8
-	 4gTn9EFlhjH/BYy0OKf+5l0aqbWwvaHBoj5EaYVuvzQXkycIS650YFtU+jJWRn/bms
-	 gMacOo8K156uNy+HkXJa9XG5VBZBnraqXO8dP+8fCaNlOiR4RQJTROZmB5IIT727MM
-	 j2wlg/id/LUkVYM0nfiHg2WPacB2+SpWn2QzEqJYKFFaQc+pKk2KrsAJp61NL2V+od
-	 hqPB3UKVTIwhw==
-Date: Thu, 26 Mar 2026 12:21:02 +0000
+	b=lViYXTLsqRu3Jc8wzyhmTZ5k5+60c0IW5OAeqZGUFl9nVp/UqWPsWrjb6SOm7dlrf
+	 o1bH6m4Jx4eRmA5S7/8WYIe+b5c2qYtfJHVo363ORZyOFvWok5PMxuOr+FvqacktfV
+	 MgvdX254htnWfi3MHldjJEGhp4ggMat6Qn7NfZrzFhAlSd8wmR/3fOclxOWDk5L4fA
+	 grW9HhZ0BCHG/xBw6eK2996LSpmv2VUj3h4+ulAvmcQmdkvnCKckIWK2XRg8Mx3FvT
+	 5I+zGjOJtjhqo15Mp9YP0l0kn0HtV4B0ttMlCYsi1ek1wQz/2J1G2xYKbYpKOBTUNT
+	 uho4lWZZCwnGA==
+Date: Thu, 26 Mar 2026 12:29:09 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org, catalin.marinas@arm.com, 
-	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
-	willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the
- references for large folios
-Message-ID: <5b1c0687-a4e4-4a95-8e8f-2d2ce171247c@lucifer.local>
-References: <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
- <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
- <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
- <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
- <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
- <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
- <e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
- <bfd282b1-523d-4945-97a0-ec30fe1df577@linux.alibaba.com>
- <a0181a7c-d191-483d-bbc9-678bc355a984@lucifer.local>
- <aef474b9-5286-46f4-99d2-43d0b85f7176@linux.alibaba.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Josh Law <objecting@objecting.org>, Josh Law <hlcj1234567@gmail.com>, 
+	SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
+ module
+Message-ID: <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
+References: <20260326072737.341964-1-objecting@objecting.org>
+ <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
+ <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aef474b9-5286-46f4-99d2-43d0b85f7176@linux.alibaba.com>
+In-Reply-To: <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A29301C0017
+X-Stat-Signature: 3upc49s8cnf6qbsrbqkayeuyydnogwsz
 X-Rspam-User: 
-X-Stat-Signature: 97gpnc61ye6oeug5qmm86fhb38acf3nw
-X-Rspamd-Queue-Id: B7680100010
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774527669-607761
-X-HE-Meta: U2FsdGVkX1+PrCS1Tu7fCzGBJhQJaxboBEwvYfOupBCuNXZhsUfM81kZm936Y2q2MtNhFW0jqD/yFMAHRLN7DVPRiR8yppQV6BM2YwzHxOP3CR8XIjEinu1vzlnkO726UaViLEHr7admI1XON+O19NgHFtNUEsob2SvCI3YGFMUGLxtSYyEKcA4qI8lz1EybN4+ruAFdZ9Pt5XjX1nxX76dZxWIN4eipoEJM1yZenv9RnOnxONhntFdl5wttDWCxtl3FurDAuHxPWH74Y6i8X7ZVPW1OZnAZqCQomj0jazSMcEf3FblPV0kcmDKDgfd3a934VjSM4dOEEpgWpc/qqx28QA2nMWeMZE35xHcg9/F3yWPyRvSwNbciGCuHl+dVXTUDtONoP/evkvdAwGRyvHsH3PQOyKup/G4Erb3As6NcBTMWwekUmQr61G8wldNM3zUOn37N4lfOGOmcxZ5VLhU6gYIsSw04WuPWKiu/fiKaWN3uuSNtL8ShmwbEFYbrgXVJKHx38w6tNJwLuJ/fReYA3qjHYnIgZ56hFTSEomeso0rcPAnQ0UBYaj6LBwjyDGw7j/0xX5K5dfgd0VG2vw6NSrNi6szGSJx4TBpAABZB9b5CeX2q0Nw8RDfUZQSVDdgjl5kz8aIYa8QDTQrHqby1KY88N39HjF3+ZBS/HlTJ6/EQTAnKrRKI03n9ifDnUc7MK6vHWZ/9bqxSkScZBFW8qdyTN2D96d6de/Egzo6wQJCODRSQXAhHJovcq7YsrClOpWGQLI5KDP69AEIyRmYam8GfqHnMk6Vhio/Bz9mHeh8TTFvn8wwiWz2Lif52didml0X+XGMnFywQRXc+2+ImQM+3cgUFomuOXi3b6z6edVZ6LEMZ+zF3yurwgDPUvVniUnluX3k=
+X-HE-Tag: 1774528155-396037
+X-HE-Meta: U2FsdGVkX1/IBhf2ydJ7YNXI3gtqiyWFVgSdo5xUT3hiHQj7/X+ZzpdaCCDQYEf+g3NgHmp1GFsOzqAMLJH0NfSMf09Mc6sp5icb9qIKZ1s8g/dQCJ7ydfRWwnBFX+AI4EHeM+rQVPbABNXKQwM5ue/GenSy8Hl2WMa9qWaPS4XL4gbiYFzU8sgcqKdhVPDUlK5iXbTZn4l5pLbEh586uanm5nfs1BBJtwCebSkg39B2IPdMFswmtmPjm1cyFUZtJa431ITm4ZVdb+FRf3dY+Ijtcj7oY28lGErjnox+2mFeORBx9E2x+4+z1fPq0eSt7/0yd7tTr2BBKjR1xjBJCJ0FhPFbGZLrrAtdtlxnFuNoKnDXVXuZSbFCohNtBSCxiFyVsYI8PuxfEknM/VL0E8DxCjsC8rKt6S5lTpq28l3mb6u3gMDp7YcsVMQGoXPXOrFo3rJQy3lDP13WUM4gnxJurTm9BaaLfzfmfUlObB24fe6l8Pa4JMN//RFDbHk89Otg2pHlT91Z8ZmUvCHLBZXx92uIBxhhh13Th2YC87H1WlMGs8ujgjuWrCiTo2MMGRoQ71b1/sdbdKGYFwJkMMJ6ZIVdibl05hpn3TsNaG2ba7X2ZMKCoG8SGUEAyGVC7eYiSc5/jWdpVrWtXM5yxB1HfjeK889/PhfiPnRbbRrfQCNdPmN4jjBofzOC7D0IFkRKFCQS9XLCG2pbFWt2ThDlN072Y+zvZXrIA2NZf2nPA0HYZy3IShO33d67qHjRvsIb6K7jmkrgW7NqKwX7FcEZJQ9yenePKUn50/sun5JligtY6ZOsU9czkZKq+G+xdQP7aVllbSYRMgoF5Uj3ItyWReqYGcdPNkPI+61RRpBSJfkKgB8UGDGZJfR99vqzt++56Lynq0+NrDeSjen46GC+kpHPKr6LW69ybEHMJkXmzZ+/Rlu95n+mZoWbfXMl++3sBDwfghibD6lLljF
+ Kbxs63Xe
+ J/jb89gvRLjIMGLNi2K2CmmcBbJoeFTPKgKHyXGXsBhTmcUB/X/HrnXtcbdVB6P/gfraTL3/AULLFOB3etk8zECs6WJPyQwgzzReJS4RBfH591SMowgneO3WiyNlJPaDX3MJQAmy5G9RatPO5mHtQomG0BvuoSQBabGrUO+SC61mLO8s9uhpqJEJlc8C2QKpRSvmJjMb4/+OHHVKUtdSveqNfm4cz4IXXGZf7tphENHYhIEEeYolgfEXbfO4bWyGgSk37QiKOyiKJC8Gz2hPmOVl7k2OWqnDbdVGuOT/Pna7Gd6IDRr6Wz3bEN0j0B54gkUJsdO92ReeVanZLzXVDJI93aA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,168 +97,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 08:04:10PM +0800, Baolin Wang wrote:
+(+cc Christian as referencing his post)
+
+On Thu, Mar 26, 2026 at 01:12:03PM +0100, Krzysztof Kozlowski wrote:
+> On 26/03/2026 11:34, Lorenzo Stoakes (Oracle) wrote:
 >
->
-> On 3/26/26 7:10 PM, Lorenzo Stoakes (Oracle) wrote:
-> > On Thu, Mar 26, 2026 at 09:47:51AM +0800, Baolin Wang wrote:
-> > >
-> > >
-> > > On 3/25/26 11:06 PM, Lorenzo Stoakes (Oracle) wrote:
-> > > > On Wed, Mar 25, 2026 at 03:58:36PM +0100, David Hildenbrand (Arm) wrote:
-> > > > > On 3/25/26 15:36, Lorenzo Stoakes (Oracle) wrote:
-> > > > > > On Mon, Mar 16, 2026 at 03:15:18PM +0100, David Hildenbrand (Arm) wrote:
-> > > > > > > On 3/16/26 07:25, Baolin Wang wrote:
-> > > > > > > >
-> > > > > > > >
-> > > > > > > >
-> > > > > > > > Sure. However, after investigating RISC‑V and x86, I found that
-> > > > > > > > ptep_clear_flush_young() does not flush the TLB on these architectures:
-> > > > > > > >
-> > > > > > > > int ptep_clear_flush_young(struct vm_area_struct *vma,
-> > > > > > > >                  unsigned long address, pte_t *ptep)
-> > > > > > > > {
-> > > > > > > >       /*
-> > > > > > > >        * On x86 CPUs, clearing the accessed bit without a TLB flush
-> > > > > > > >        * doesn't cause data corruption. [ It could cause incorrect
-> > > > > > > >        * page aging and the (mistaken) reclaim of hot pages, but the
-> > > > > > > >        * chance of that should be relatively low. ]
-> > > > > > > >        *
-> > > > > > > >        * So as a performance optimization don't flush the TLB when
-> > > > > > > >        * clearing the accessed bit, it will eventually be flushed by
-> > > > > > > >        * a context switch or a VM operation anyway. [ In the rare
-> > > > > > > >        * event of it not getting flushed for a long time the delay
-> > > > > > > >        * shouldn't really matter because there's no real memory
-> > > > > > > >        * pressure for swapout to react to. ]
-> > > > > > > >        */
-> > > > > > > >       return ptep_test_and_clear_young(vma, address, ptep);
-> > > > > > > > }
-> > > > > > >
-> > > > > > > You'd probably want an arch helper then, that tells you whether
-> > > > > > > a flush_tlb_range() after ptep_test_and_clear_young() is required.
-> > > > > > >
-> > > > > > > Or some special flush_tlb_range() helper.
-> > > > > > >
-> > > > > > > I agree that it requires more work.
-> > >
-> > > (Sorry, David. I forgot to reply to your email because I've had a lot to
-> > > sort out recently.)
-> > >
-> > > Rather than adding more arch helpers (we already have plenty for the young
-> > > flag check), I think we should try removing the TLB flush, as I mentioned to
-> > > Barry[1]. MGLRU reclaim already skips the TLB flush, and it seems to work
-> > > fine. What do you think?
-> > >
-> > > Here are our previous attempts to remove the TLB flush:
-> > >
-> > > My patch: https://lkml.org/lkml/2023/10/24/533
-> > > Barry's patch:
-> > > https://lore.kernel.org/lkml/20220617070555.344368-1-21cnbao@gmail.com/
-> > >
-> > > [1] https://lore.kernel.org/all/6bdc4b03-9631-4717-a3fa-2785a7930aba@linux.alibaba.com/
-> > >
-> > > > > > Sorry unclear here - does the series need more work or does a follow up patch
-> > > > > > need more work?
-> > > > >
-> > > > > Follow up!
-> > > >
-> > > > Ok good as in mm-stable now. Sadly means I don't get to review it but there we
-> > > > go.
-> > >
-> > > Actually this patchset has already been merged upstream:)
->
-> Let me try to make things clear.
->
-> > Err but this revision was sent _during_ the merge window...?
-> >
-> > Was sent on 9th Feb on Monday in merge window week 1, with a functional change
-> > listed:
-> >
-> > - Skip batched unmapping for uffd case, reported by Dev. Thanks.
-> >
-> > And then sent in 2nd batch on 18th Feb (see [0]).
-> >
-> > So we were ok with 1 week of 'testing' (does anybody actually test -next during
-> > the merge window? Was it even sent to -next?) for what appears to be a
-> > functional change?
->
-> I posted v5 on Dec 26th[0], and it collected quite a few Reviewed-by tags
-> and sat in mm-unstable for testing.
->
-> Later, Dev reported a uffd-related issue (I hope you recall that
-> discussion). I posted a fix[1] for it on Jan 16th, which Andrew accepted.
->
-> Since then, the v5 series (plus the fix) continued to be tested in
-> mm-unstable. We kept it there mainly because David mentioned he wanted to
-> review the series, so we were waiting for his time.
->
-> On Feb 9th, after returning from vacation, David reviewed the series
-> (thanks, David!). I replied to and addressed all his comments, then posted
-> v6 on the same day[2].
+> Trimming context, I agree with everything said by Lorenzo, very detailed
+> analysis.
 
-OK thanks, I see that now.
+Thanks!
 
-I still don't think we should have made any changes _during_ the merge window,
-even if they were simple code quality things.
-
-Changing patches then seems just crazy to me, as even code quality stuff can
-cause unexpected bugs, and now we're having upstream take it.
-
-Also this speaks to -fix patches just being broken in general.
-
-If you'd just respun with the fix as a v6, then we'd know 'v6 sent on 16th Jan
-addressed this' and there'd be no isssue.
-
-Now v5 isn't v5, there's v5 and something-not-v5 and to have a sense of the
-testing you have to go read a bunch of email chains.
-
-It also means change logs are now really inaccurate:
-
-Changes from v5:
- - Collect reviewed tags from Ryan, Harry and David. Thanks.
- - Fix some coding style issues (per David).
- - Skip batched unmapping for uffd case, reported by Dev. Thanks.
-
-And that to me means 'v5 didn't have this, v6 does'.
-
-And it's really hard to track timelines for testing.
+[snip]
 
 >
-> Additionally, v6 had no functional changes compared to v5 + the fix, and it
-> mainly addressed some coding style issues pointed out by David. I also
-> discussed this with David off-list, and since there were no functional
-> changes, my expectation was that it could still make it into the merge
-> window. That is why v6 was merged.
-
-Yeah, we still shouldn't have taken changes to a series DURING the merge window,
-it's just crazy.
-
+> This patch also targets NUMA which is quite unpopular setup for
+> hobbyist. I don't have any NUMA around me for years... Even my build
+> machines are not NUMA. How did you get one as a hobbyist?
 >
-> [0] https://lore.kernel.org/linux-mm/cover.1766631066.git.baolin.wang@linux.alibaba.com/#t
-> [1] https://lore.kernel.org/linux-mm/20260116162652.176054-1-baolin.wang@linux.alibaba.com/
-> [2] https://lore.kernel.org/all/cover.1770645603.git.baolin.wang@linux.alibaba.com/
+> Also after looking at the code style in this patch, after "reviews" [1]
+> and "acks" [2] (quotes on purpose) this account gave on various patches,
+> let's look what was admitted 3 weeks ago:
 >
-> > And there was ongoing feedback on this and the v5 series (at [1])?
+> https://lore.kernel.org/all/f8772114-a495-409b-a590-a9b1d8ed1d41@gmail.com/
 >
-> Regarding the feedback on v5, I believe everything has been addressed.
+> > I'm learning this Linux system day by day
 >
-> > This doesn't really feel sane?
-> >
-> > And now I'm confused as to whether mm-stable patches can collect tags, since
-> > presumably this was in mm-stable at the point this respin was done?
-> >
-> > Maybe I'm missing something here but this doesn't feel like a sane process?
+> So learning or adding serious code for MM for NUMA machines?
 >
-> Andrew, David, please correct me if I've missed anything. Also, please let
-> me know if there's anything in the process that needs to be improved.
-> Thanks.
+> > I own this device ...
+>
+> This is about Xilinx AXIS FIFO which is an FPGA IP core. No way you have
+> it. It's not popular, no easy way to get it in common embedded boards.
+>
+> Even assuming if you have embedded FPGA device and work on it, the jump
+> from embedded to NUMA is just stunning.
+>
+> Answering to reviewers with whatever confirmation they look for is also
+> a warning sign of non-trustworthy behavior. Or rather behavior trying to
+> get trust.
+>
+> [1]
+> https://lore.kernel.org/all/D47F8215-FD08-45ED-AB01-0A5C48CD41DD@objecting.org/
+>
+> [2]
+> https://lore.kernel.org/all/2F84DD09-2880-45E0-AA98-204F10848F85@objecting.org/
+>
+> Best regards,
+> Krzysztof
 
-This isn't on you, it's about the process as a whole. We need clear rules about
-when changes will be accepted and when not.
+Yeah this is really adding up to somebody abusing the kernel process. I think
+'Josh Law' or any other pseudonym that can be traced back to whoever's behind
+this should be banned from the mailing list altogether.
 
-And frankly I think we need to do away with fix patches as a whole based on
-this, or at least anything even vaguely non-trivial or that potentially impacts
-code.
+Also, as per Christian ([3]), it seems this guy was using the pseudonym
+"techyguyperplexable".
 
-Thanks, Lorenzo
+There's a github with the same name ([4]), and that same user made a comment on an
+openclaw issue relating to linking it to gemini ([5]).
+
+So it seems likely he/she is likely using openclaw to fully automate this 'Josh
+Law' user and we're speaking to a bot here.
+
+(Screenshots have been taken for the (possibly inevitable) deleting that will
+happen later.)
+
+[3]:https://lore.kernel.org/all/20260313-halskette-annahme-94e782eb4ae4@brauner/
+[4]:https://github.com/techyguyperplexable
+[5]:https://github.com/openclaw/openclaw/issues/44134#issuecomment-4106247302
+
+Cheers, Lorenzo
 
