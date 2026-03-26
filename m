@@ -4,145 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0D5D10A88FD
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 18:24:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0FEC10A88FD
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 18:26:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 138C26B0089; Thu, 26 Mar 2026 14:24:51 -0400 (EDT)
+	id 337926B008A; Thu, 26 Mar 2026 14:26:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 110AA6B008A; Thu, 26 Mar 2026 14:24:51 -0400 (EDT)
+	id 2E8796B008C; Thu, 26 Mar 2026 14:26:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 026776B008C; Thu, 26 Mar 2026 14:24:50 -0400 (EDT)
+	id 1FDFC6B0092; Thu, 26 Mar 2026 14:26:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E91B66B0089
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:24:50 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57FF4C3F18
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:24:50 +0000 (UTC)
-X-FDA: 84589040340.01.B3B9245
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 482A3C0012
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:24:48 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 0E72C6B008A
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:26:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CAF1A1B95AB
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:26:52 +0000 (UTC)
+X-FDA: 84589045464.16.9815DBC
+Received: from mail132-14.atl131.mandrillapp.com (mail132-14.atl131.mandrillapp.com [198.2.132.14])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5C69DC000F
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:26:50 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DgE1oDlm;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774549488;
+	dkim=pass header.d=mandrillapp.com header.s=mte1 header.b=vEsv4QQs;
+	dkim=pass header.d=vates.tech header.s=mte1 header.b="l8JHY/Te";
+	dmarc=pass (policy=none) header.from=vates.tech;
+	spf=pass (imf22.hostedemail.com: domain of bounce-md_30504962.69c57a69.v1-24dd957112574930804b1ad5f7d29c91@bounce.vates.tech designates 198.2.132.14 as permitted sender) smtp.mailfrom=bounce-md_30504962.69c57a69.v1-24dd957112574930804b1ad5f7d29c91@bounce.vates.tech
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774549610; a=rsa-sha256;
+	cv=none;
+	b=YU4za+5iU2shX1wZysfvYSpD/+kRPdWtMtbElZ264Xb65+ibVRLehJaU4zt2mmezkouV4x
+	KBEkjfUN3CBY4RjG04lv4PNtyKojTfj5Ycu/8bdrZQ7KCtCN9ogXDbOU0eMYZEdhA8xNAw
+	r4vKmlT0JO7lax2DiSQsxB3+S5CJI7Y=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=mandrillapp.com header.s=mte1 header.b=vEsv4QQs;
+	dkim=pass header.d=vates.tech header.s=mte1 header.b="l8JHY/Te";
+	dmarc=pass (policy=none) header.from=vates.tech;
+	spf=pass (imf22.hostedemail.com: domain of bounce-md_30504962.69c57a69.v1-24dd957112574930804b1ad5f7d29c91@bounce.vates.tech designates 198.2.132.14 as permitted sender) smtp.mailfrom=bounce-md_30504962.69c57a69.v1-24dd957112574930804b1ad5f7d29c91@bounce.vates.tech
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774549610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
-	b=qpd2ttQi0Qp6113qx7R/6Gy25TpFo7h4EsJ5AACNmGJi78uQuRdCppw4XV/ZDII9YmAVQq
-	pznVGh099/W1Nv8S1iuga/tSC5YQi0QmL/BsfhKZmtUUsReIm9Laae363op0bA7W7i2RhI
-	smKXLTDOmjPt4nyJuTa6xRRnwef9X6c=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DgE1oDlm;
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774549488; a=rsa-sha256;
-	cv=pass;
-	b=34nLB5XO2wp7Vt8ISb3u2fRfK31CRtIMw6MgbqAcrI9HiVAq3xTrnsggCdAfOkD3fGM3gh
-	LUb1SnjlJF52BKjhb0UseUeZfqUeXo2Tv1LSkWiQ7+5zr4O1JMg/Mbzl/hQhWFVSO9K4Nf
-	q3J9uJWizqIyXMuXaaJaTJPJrTbWfDk=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50b6c45781aso88351cf.0
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:24:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774549487; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cgAeXFtdZUg+M/4XggnvaTot0hltFaTw7mEnZ0sLMOps7FB3g3LneiXCa2wUY2MPmt
-         rL/BVKBwpkKSlAFiK4b9tgE0oWPdoe3TGEzokp0zbxW6kTcIHnOznim0fVLT0FcnAlIk
-         aYrJntdfoA/TMFpwotfWxq1OaXlGDH8DwTsZ/DzheOi/NRLw66K0VOwJ9/VrS8XcUSSh
-         lof9sPNJSV59ItH8nexEtG8840j5HyXwZo8GHCCP+QIScz0UoWNnJCzCAspFarrz0ghG
-         EA4hZgoODH7P6ZcJh53gdKnujT/Uo8RogXBJPjfvhIUFWupP++cp81GUqKxQBo9A6Uox
-         DCKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
-        fh=MtEFVqBzCkI0Cd4GX7aLBGTHs8JSQVvUoAPQ6MYtUPU=;
-        b=ksQS0MyjK4C9n7ds/2bKcrBSOcjXHiLQ5+i4db/kYdfVU/4q7nO8o59Y2h2DHWT44L
-         1achfSS2aBEuQi5ozxzwhnEBr6aNOyJ6vozmYPVRkBYaiw36JdyFVomdbygaboNRtQk4
-         K0WswQ0QIaooKcZ3Kp2Gqp6PrMJlCCkeMpFfhNDWjVOX4/fOttcI3+L38RGh0tyaxyEw
-         nk9MOrzBvGXRUOnVoEDJovxbdYcsyJYLmWHmtlz8XN+nySCRuo7p1zuNZxlMHdeY3IX9
-         2SdpYXp5AMgS06BiIxyKw2k30J1TRR3v2L6R+G0rbp1jgA/HN1lIsmxI7AWpxkID4e05
-         NmSw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774549487; x=1775154287; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
-        b=DgE1oDlmYRp+IM/xpY6kPfFStKsLhWVi1lytrG2rIy0IPHwMAxIMFAs4Dyfb26QsY+
-         p6NKhh2gNgFq/vQoeIr462lyhxwgqYCjvslCo23XIrtTDCcIhfxDzf4X35pEoKkHtijH
-         Y88im3g14D5Oqb/n3jEaCjOPll0HkedaMr3bSrKZ7AfpuyiKc3BKkQ/1VfUflJt2QVhi
-         YnVRmdJdPlrdVvgmsZq6C0a2RL7NTjrlLb7ssi6lR+XDqVA6sH9a+ecvRahQX/aLO0w5
-         SZ286r8aK0ODLLBCzbROukjYbmUj00IUJD7nzjwN98yP0x4fJJpReNHCcUAUIANpzQ4i
-         EU+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774549487; x=1775154287;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dQhGn+VUrLV0McNgTLWhQuOTcrsY+On/+03qmLT1CZw=;
-        b=f8ogVzyls+XZPyzjURbAqOrBmi9eEdDtkQ9LgWf/ZtTMIY63hlVXiuLU534voVQeXR
-         hbX2CrKpcCJj6QP+4LLh69UqDgsyWRfFTDSYmzLTThaha9IniFCQHq8+URNJmOXPqx2E
-         Wm7is4Pc9SDZzckR4MO0sKJCtifTg7g5W6rLScvWTMuBwvv7IZoPM5Kw7st+3W2kjsqm
-         zF/uvVyclz/rk4mDtwsg3meIbYU+15TAGHG61cnBNT7fY+UOQSz+Mo6vLaDDUm/prD1E
-         wQSLgW/h5jHf03rF7ZbPQJxx2soPzIyieFdn8KjP4mg0K0Wv6NB6ojdQgpcnDYQjJhln
-         QbWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXRHR/XkdfweCa1ldyouh87Nnpi5dWhyh2JHkjvn965E2YSl1FgeepmgKq1sTxsKV/bjI2eYn/8xQ==@kvack.org
-X-Gm-Message-State: AOJu0YxW81G6SMKb4HJEZFFuTnsZxOgQ9102Cny7VK9BY2sdwWPwbCOC
-	GhxVJc5p6R4PJvlE9JRUIXlp/s1gR8L5BFvy7+xC0iQ1EhNgSHDjN5Rt05kGvhyehk7KLOj2ZYa
-	J8C6bhBHASCkGLAvuqs5LmIwSYu99GaA6B4E3AoIU
-X-Gm-Gg: ATEYQzyqOSm4JCFuFuVsb5w3ckm6fPY/JJYFCA+584Uk+QgXjU7dL+sW6oZVUUbrSgd
-	G2wBBniMKt6wlA0wTtbh5IHF9Md3qTVkwYzrR6sfpGvVu80nBP5SFJqFZE9ZG5K2BpSgN8S08vJ
-	J8wUQnuDUP5UthFmbtda+eLqBxkI0wTShN9/pgSoTIbWPQoUv1T+T75pxK6Ym3Q9mYtDSwM8vd4
-	QPpovGB47wh5je7LuxjlRev9VDSat5QgvRcx3ykOAvbyiXnSUz4s45Tomm7hacA4/2uiq1pTixr
-	95AHeOYPxujhLdTLqZlCKXzJlZ28uhO8mg==
-X-Received: by 2002:a05:622a:93:b0:50b:71e4:878c with SMTP id
- d75a77b69052e-50ba1e41c39mr1037271cf.15.1774549486349; Thu, 26 Mar 2026
- 11:24:46 -0700 (PDT)
+	bh=1AD6XtpInmedqkHt3lklQZZmmP5HZmKfK2sFPcPiL8Q=;
+	b=dTTNMO3B8AYaQIDjSakX30G/jDOMO/oHTGpqV6Ca6ZBIiMQhVH2ziLUOWbuJCYWPHBssmV
+	jFIoOEKR8+lFAh5xebK99KP85Zt1FW3TSaW1/Fj5fPi4GHpPS5lRwpYNw++jknT+1f99Qh
+	dx3jmNAf+mHPcTA4pZcCyIF68cyl7As=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+	s=mte1; t=1774549609; x=1774819609;
+	bh=1AD6XtpInmedqkHt3lklQZZmmP5HZmKfK2sFPcPiL8Q=;
+	h=From:Subject:Message-Id:To:References:In-Reply-To:Feedback-ID:
+	 Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+	 Subject:From;
+	b=vEsv4QQsazjAHRM3hDgnHJS/DV6TE2qRjFuL1KhzeJEGCPdaWKlZPr6GPJY8sd6Lw
+	 DZbmBwgTTq5yuaPvSCCKPsOI6uX2VDeZ4cIxWKN2g8+e3cQnaHllnigRL447kxoEs6
+	 y/YoG1nYUFel6p0+ipkWJz8SeNBs8+HM9Stb+fk9Bog5M6eoUo5e4gPumDYRZbPDgy
+	 V1oIXg50UiDsBtspuPVmZwNkXymBPS2yKgqdIrNnE5dRjSFLPIilbAUGnUud8evcBP
+	 2kbvHboKx2habjDMpda3HioZuqiWVkllMSer9+izacIc6QWMyYD6orGVNHYpw7ipka
+	 /uw4MohVwXkLg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+	t=1774549609; x=1774810109; i=teddy.astie@vates.tech;
+	bh=1AD6XtpInmedqkHt3lklQZZmmP5HZmKfK2sFPcPiL8Q=;
+	h=From:Subject:Message-Id:To:References:In-Reply-To:Feedback-ID:
+	 Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+	 Subject:From;
+	b=l8JHY/Tea6yBGHD1sI4FsunVDPU7/Y++mbqvOpZSJoQBLtQfgCYHF2QDpq3fUF0G5
+	 ZOJNfuLl/mrRjHZIfkczqwaAAGxKopAkS+iAB/75GKxEACbuTACL7DEj4EFtSQa5fs
+	 0WuDayNMs/82LGffSVpuHGz91NrlfQSQlqakKSfNY86YFvMegVGZ+eQoOxjs5+X8q0
+	 lNWw2MZRVQPeQzjGf0eYFqALRkbag1S7yGwyvJmoO8ZkAbAxAoAA9itHVNLTgPWImw
+	 8lITpTTpOP3FDfQFiM6Xdaj0AZ12vLBF70kI7ILOUaOHnMuRl6/GC7/iB+ZlW+EcHc
+	 5urfVUKW3eWCg==
+Received: from pmta09.mandrill.prod.atl01.rsglab.com (localhost [127.0.0.1])
+	by mail132-14.atl131.mandrillapp.com (Mailchimp) with ESMTP id 4fhXL13Q6Yz8XRwk7
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:26:49 +0000 (GMT)
+From: "Teddy Astie" <teddy.astie@vates.tech>
+Subject: =?utf-8?Q?Re:=20Mapping=20non-pinned=20memory=20from=20one=20Xen=20domain=20into=20another?=
+Received: from [37.26.189.201] by mandrillapp.com id 24dd957112574930804b1ad5f7d29c91; Thu, 26 Mar 2026 18:26:49 +0000
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1774549607657
+Message-Id: <df6194cf-1fc4-4a20-ad46-6eeab1d920a2@vates.tech>
+To: "Demi Marie Obenour" <demiobenour@gmail.com>, "Xen developer discussion" <xen-devel@lists.xenproject.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, "Jan Beulich" <jbeulich@suse.com>, "Val Packett" <val@invisiblethingslab.com>, "Ariadne Conill" <ariadne@ariadne.space>, "Andrew Cooper" <andrew.cooper3@citrix.com>, "Juergen Gross" <jgross@suse.com>
+References: <84462c4b-7813-4ad1-aeb2-862ae4f3a627@gmail.com> <5123c11c-3b8a-4633-809f-16c24418a4ce@vates.tech> <4f201188-31ac-4dac-9cc6-79c4283486e5@gmail.com>
+In-Reply-To: <4f201188-31ac-4dac-9cc6-79c4283486e5@gmail.com>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.24dd957112574930804b1ad5f7d29c91?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20260326:md
+Date: Thu, 26 Mar 2026 18:26:49 +0000
 MIME-Version: 1.0
-References: <20260326080836.695207-1-surenb@google.com> <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
-In-Reply-To: <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 26 Mar 2026 11:24:35 -0700
-X-Gm-Features: AQROBzDeN__PRe-Y7mIO9LZxPL3s1KNrdWWWOsbo7He0DKFlde5Dab9lnrvUpiU
-Message-ID: <CAJuCfpG_xa5nxSRrvu4TnwhCrmocPkHpWEQbE_yeyN3L69Y6tQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/6] Use killable vma write locking in most places
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
-	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
-	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ge1s1q6ec6iyausertr5urcx4m6p4f6x
+X-Rspamd-Queue-Id: 5C69DC000F
 X-Rspam-User: 
-X-Stat-Signature: aopq4f3jjd1yrq18nbtpanrkjwxk37km
-X-Rspamd-Queue-Id: 482A3C0012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774549488-410177
-X-HE-Meta: U2FsdGVkX1/iRi47+VsGCzJE3NZP8+gxsy2avBWt6gNVvCDhC5MwT3jkO3D2E2HNEsaUW7yLP/++t1/tQzkaY80HhOQzFR86V8aKF/Kz6+LRVkJr5K+rMo22eIdiB3ouPdHFT20MLvEDiK0owZyfNrxOq0hIHBM3T2q13Dsr82IeeRvS3D8KYTcRA7mrd7WktMWJHjgcwNzc2i5xKT7VnIITJsPLVRIAl+e0DoibFJLyG1eEKtKZToD2N+IWhALexf7F+Y2Q9fl/3S0k67YBkJKcOH0FsOLRIl6mjzzUKKjVjAp7S/FYxhMFisgWRwl8oRl+X7U/65YltVhscfUlauL5mgwaGcWpGFF0Usbu8Lg2ddl+H2i5n6uRwe9lLLlR4NQL58x6rTuc/SNrCJrrT/+9lIbi3EQ3iR7qMEA1jxWmCHIoytknKx7PDUQRWPynh4fmrJd6jiwn6mwHNHN5i++OJt4oh2M4Je8GkJpHTZDQqtRAcILxxlc9fwX45Sgri5JmGQa6Ol7Wex2GGcwQDaeFG3jjL5KFITtN8IMvuSunLjGnf2hRGWc3vqYk5tFf9mReXbkShKQf1HMAFoszXiwmFayX/ems4MKwz4xWvm6MQdEtO/8/x8rh1zwRZKvQDxxbB3q0vQbxtw3k2jWoF+RC/oaMHbLn9r56glv8I7EP1l7XoGvyQRKHwrnkQURMFjYTVxRxze3Lz7WfbxFDCZnwSCoBJxAxrc+jkp7QHoXJh31mNnpyQ+vlonA8TMUT7aAVY8pgkeghvPKeS0InfpN6A4JwjBct2Ih6KGlqKo5D62X2a6yPvJP36MyrveTQL3Y49KcYL4rgBf/oQ7Bcmh7kQjhzqtsWJrHW2YDgFHMUwtUj18yFvO8adOQUrSWbsp2Ral24Bjtt+v/IvKAKPeTnmWDcDBA3Cn57b7nS/PgbdipgwXpa+BBNpuwmVosaGOlXnIca+mfalK3y1IW
- E08pHvhc
- iWoszgVx6BhHVS8apXYhV3kRiKNIkPc0KRtpWp2bNxlzK5M3TVQ3NXRY7Qo2hKGtsKHdH0Ih29drqMcJO03T2Nkz0gxjTmcV66vin7WR/daCXQZsXNw1FFM4Bns160IUpsfiO0YScAcv8HXRnapmG1E9qGpVhFe0R9gEiuHv2XyEx/bkvh3xSTkX0/OY2AD6D5jeWuwZTZGvuRWtIo1D7TLvaYBf2PUhbMc5S78pbAd7vWARXLZeiKUaD2lkVT4hgR0Gw64qtIcDc96f2UM5GbOc3RGDp6hEI04++ekhccuaQ4HX5Ft1LniLo4lJyX4zXIM0kdoikVtvDfpkYcdaayu42yr2q4vZ1UqkC6vir6uJxcuY2l4cru6U6zkdA50TBP6/PKDxEGRlq7jmSCrOam2i0pwBhYfCmhW0R
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774549610-179127
+X-HE-Meta: U2FsdGVkX18PigDgOaFf6v12efVnLZgMU677H5wkUV0+lgVovBNqdbi0RiqcZhj3PyLbqHhZ+eG54IMu8UpnAybRb/5DYDKhgVeCS23VOerkIdP37uLdgmhCo4oi+oqPNCK75AE9mdqLQfME4UsiaQu9ippofkrswwRJBuF9rvFkqKWpxXl8yTUuTKaeZs4S1YYGxfNaIsxpEE8DyOkpQGyLObXpTjgooHFC7dYbKvpuyFkQ/z0gtY1FhImDcn7QHY9+sapdtbdbXYjhEzToaMwfnnyxYuBxwXF+dN03oUF8oIPAr8QMM5Pg4QaZ1fs1klD0jynE4zfNML64xdamomABDLtdVkdip8SxqAn49ZxmAFu3/gvXgRsE8vsU8kvA3metQvJIy0K8ZGzTb8sODMSZJfVCRvzPJZukDn/lAxGjhN2kp5CTyMERD8/mi9NCWYkzwO89CBBVNyqCoyGtLGadC2B+mWrGs3omU4cth25ZpZM0ri8JKmOwg2qB4Pk4ocIocs0YNquUViRvr8i6MYsCYlCss4I4fRoxVTdyaxkvCueBTzWystnuAUzgP+elP6Vig7yJmYsy5EcDOuu2hiAaWuUjkuo2mdEziSoQv6KmuuEzrtm+0oMj3TMD+wyFGFaE0NtDo64jyYWndkoiYd9+nn8a4bzsTDjHPsR2A2eClzRZa0wcrJR/hYe2foj3la6TOZ9/XjEAzgn+fkxUGkhZv4q0AShohdlsGy+3X4vAmndY9FlD/Spv9h0UZRDu22epB9pmLkgwN0AZzYr3V3ZSLSuvZ1MMaBezPnm5ABjm1QAR8d7suEnWYYvonWLrxU3mU2yj4V2w3zyHitj3qkBxUnx3yV7WpuEBIO7Kr5GsXc/g0p7B0UUYg7EC6EhUys1jE9BUKJ+qL2SZB1cYjeQ+9Gen5RkuwDvgzTr7yX+HW9SY5jOsr4Az2jRmFmmkUmpQ0jrzOj+zVh/Q+fS
+ PYS66z7p
+ 7nebMQHYmHNt3XKMcz0F8UUXNIfjwhTQt+xpHgeL5vW2XFWlqHYJTK5dnX7mczAgRqWGhD3QFpj43EF0l3k4XW58Dpvcp7C4j9A/u1GfSkWuFTcrXk1fvkp4vDGv8KUT10ZvpOhcRkmqLpSmOUMGtecsY5wjIgfgx3SKQeg5Abe7S4fkvY8bImdRiDx4fhrttmyR1tV3uxNSsSpMYgENZbPuHVFcapl+jEPcEomCOU9YJMoF+atCYKQBNBSctRsIdC8hvQIH40itha+3BBLXA4klkjvQuhMxtK+81Auah0ye0B4LAfARXu4xDuRHxUUSirsmkmFi2i0wX9Xs9ZBdMfqrlCcapyiQ1h9DXwHUr6QDXvr8w+287sYmoQdeTEKveWAsD+7KKRC2euQg2+bvB0fNBQ5IbGn4gK0QX0tQbD/4Mhu83CDGBSom5IWsZSN+M3/o0uJqS6v9ITq9yLlNhHeRDsQt2fb1Pv3kIxJL1R9BbdCqIQipND+vmAYpsY+sSFgEZ9fDCo28XpJ6eIb6ay8MydTOPxi9cfUANHCyVNoTuwC4qFB3kWXhftnL3kFd0tFww/eEPE+RmKRSGYrZFSBnuGHleABSjF84cp9DbMqLN6NIosSFcb2yUqnrl4m5aZAxskiRz4QvABDVnia6T1Wja1LIOgYYO0wW+YPvY+OVSWFd9GAulty4eIAoyDWTCfnd8/NwYZ2zc4dRZWwpb6Ymr0kAlQ3tTVHze7HOZMU7XTadX78z+Sp1nHaOcwJSCGe6AMgYXyIB2hgdr+nXMlAcUytpqujme1dGpYqI5ahVTqKLMWWRpQPUNkZrLsj2XXCwyTdWczAm8wPSltOi80ofKpp8bw3iTxLAXJJms19wC/7afVeVik8xslLdeL7dRnWPmoOYLg9IQ13YGVIq1+WVIEYXKIN7cxtmGIGS4mvQKs/j3QXZg21IUHmT5kE2KmqV6MRmltKaln5Ge++G8Ys0fdXDF
+ C9QwYx66
+ gxD/m6fS9CzKPHqOtUXAX1ICKFpDeyK4yL5kere2uq4SzCvtWJ5uS5vbblDc6rM3hPV3FxDDFAE/BbDvvO8UUETMFy7EEKNIU9tcLilWQo7ZKiDeC77tR+Oe4A/HS0M6YMxphX4dTv/HWYGqGaE9EMx0TntENyPiYe+YbyISIvWhjT+33RO1c185CcZKeeZOWEBoPVKhs0AEiS8lsE4jC3LYM9r1LO0hvMQ/nNqLirLR0n2BdQKo1FBVsdjdEOVY/1t0NXg210U8mFct9aa7sQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,103 +113,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 2:18=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
-l.org> wrote:
->
-> -cc old email
->
-> (Gentle reminder to please send all new stuff to ljs@kernel.org - at some
-> point I'm going to set a rule to ignore kernel mail sent to the old addre=
-ss
-> so, if you need a response you should send to the new :)
+Le 26/03/2026 =C3=A0 18:18, Demi Marie Obenour a =C3=A9crit=C2=A0:
+> On 3/24/26 14:00, Teddy Astie wrote:
+>>> ## Restrictions on lent memory>>
+>>> Lent memory is still considered to belong to the lending domain.
+>>> The borrowing domain can only access it via its p2m.  Hypercalls made
+>>> by the borrowing domain act as if the borrowed memory was not present.
+>>> This includes, but is not limited to:
+>>>
+>>> - Using pointers to borrowed memory in hypercall arguments.
+>>> - Granting borrowed memory to other VMs.
+>>> - Any other operation that depends on whether a page is accessible
+>>>     by a domain.
+>>
+>> What about emulated instructions that refers to this memory ?
+> 
+> This would be allowed if (and only if) it can trigger paging as you
+> wrote above.
+> 
+>>> Furthermore:
+>>>
+>>> - Borrowed memory isn't mapped into the IOMMU of any PCIe devices
+>>>     the guest has attached, because IOTLB faults generally are not
+>>>     replayable.
+>>>
+>>
+>> Given that (as written bellow) Borrowed memory is a part of some form of
+>> emulated BAR or special region, there is no guarantee that DMA will work
+>> properly anyway (unless P2P DMA support is advertised).
+>>
+>> Splitting the IOMMU side from the P2M is not a good idea as it rules out
+>> the "IOMMU HAP PT Share" optimization.
+> 
+> If the pages are mapped in the IOMMU, paging them out requires an
+> IOTLB invalidation.  My understanding is that these are far too slow.
+> 
 
-Ack, sorry about that and thanks for all the reviews, Lorenzo!
+yes (aside specific cases like with paravirtualized IOMMU), but only if 
+you have a device in the guest.
 
-I noticed Sashiko's concerns at [1] and a number of them are false
-positives but I see at least one new claim which might be legit. I'll
-check if it holds water.
+The problem is that that would force us to modify the ABI to have 
+"non-DMA-able" memory in the guest, which doesn't exist yet aside 
+specific cases like grants in PV.
 
-[1] https://sashiko.dev/#/patchset/20260326080836.695207-1-surenb%40google.=
-com
+> How important is sharing the HAP and IOMMU page tables?
+> 
+>>> - Foreign mapping hypercalls that reference lent memory will fail.
+>>>     Otherwise, the domain making the foreign mapping hypercall could
+>>>     continue to access the borrowed memory after the lease had been
+>>>     revoked.  This is true even if the domain performing the foreign
+>>>     mapping is an all-powerful dom0.  Otherwise, an emulated device
+>>>     could access memory whose lease had been revoked.
+>>>
+>>> This also means that live migration of a domain that has borrowed
+>>> memory requires cooperation from the lending domain.  For now, it
+>>> will be considered out of scope.  Live migration is typically used
+>>> with server workloads, and accelerators for server hardware often
+>>> support SR-IOV.
+>>>
+>>> ## Where will lent memory appear in a guest's address space?
+>>>
+>>> Typically, lent memory will be an emulated PCI BAR.  It may be emulated
+>>> by dom0 or an alternate ioreq server.  However, it is not *required*
+>>> to be a PCI BAR.
+>>>
+>>
+>> ---
+>>
+>> While the design could work (albeit the implied complexity), I'm not a
+>> big fan of it, or at least, it needs to consider some constraints for
+>> having reasonable performance.
+>> One of the big issue is that a performance-sensitive system (virtualized
+>> GPU) is interlocking with several "hard to optimize" subsystem like P2M
+>> or Dom0 having to process a paging event.
+>>
+>> Modifying the P2M (especially removing entries) is a fairly expensive
+>> operation as it sometimes requires pausing all the vCPUs each time it's
+>> done.
+> 
+> Not every GPU supports recoverable page faults.  Even when they
+> are supported, they are extremely expensive.  Each of them involves
+> a round-trip from the GPU to the CPU and back, which means that a
+> potentially very large number of GPU cores are blocked until the
+> CPU can respond.  Therefore, GPU driver developers avoid relying on
+> GPU page faults whenever possible.  Instead, data is moved in large
+> chunks using a dedicated DMA engine in the GPU.
+> As a result, I'm not too concerned with the cost of P2M manipulation.
+> Anything that requires making a GPU buffer temporarily inaccessible
+> is already an expensive process, and driver developers have strong
+> incentives to keep the time the buffer is unmapped as short as
+> possible.
+> If performance turns out to be a problem, something like KVM's
+> asynchronous page faults might be a better solution.
+> 
 
->
->
-> On Thu, Mar 26, 2026 at 01:08:30AM -0700, Suren Baghdasaryan wrote:
-> > Now that we have vma_start_write_killable() we can replace most of the
-> > vma_start_write() calls with it, improving reaction time to the kill
-> > signal.
-> >
-> > There are several places which are left untouched by this patchset:
-> >
-> > 1. free_pgtables() because function should free page tables even if a
-> > fatal signal is pending.
-> >
-> > 2. userfaultd code, where some paths calling vma_start_write() can
-> > handle EINTR and some can't without a deeper code refactoring.
-> >
-> > 3. mpol_rebind_mm() which is used by cpusset controller for migrations
-> > and operates on a remote mm. Incomplete operations here would result
-> > in an inconsistent cgroup state.
-> >
-> > 4. vm_flags_{set|mod|clear} require refactoring that involves moving
-> > vma_start_write() out of these functions and replacing it with
-> > vma_assert_write_locked(), then callers of these functions should
-> > lock the vma themselves using vma_start_write_killable() whenever
-> > possible.
-> >
-> > Changes since v4 [1]:
-> > - added Reviewed-by, per Barry Song and Lorenzo Stoakes (wherever the c=
-ode
-> > stayed the same)
-> > - split patch 2 into 3 parts, per Lorenzo Stoakes
-> > - converted vma_start_write() in mseal_apply(), per Sashiko
-> > - changed vma_start_write_killable() error handling in
-> > set_mempolicy_home_node(), per Lorenzo Stoakes
-> > - added comment why mm->locked_vm is fine even when we exit early,
-> > per Sashiko
-> > - moved vma locking before vrm_calc_charge() in move_vma(), per Sashiko
-> > and Lorenzo Stoakes
-> > - set give_up_on_oom on error in vma_merge_existing_range() to propagat=
-e
-> > the error, per Lorenzo Stoakes
-> > - moved validate_mm() out of the error path in expand_upwards(),
-> > per Lorenzo Stoakes
-> > - dropped the patch changing S390 error handling, per Sashiko and
-> > Lorenzo Stoakes
-> > - reworked error handling in clear_refs_write(), per Lorenzo Stoakes
-> > - uninlined process_vma_walk_lock() while changing its return type,
-> > per Lorenzo Stoakes
-> >
-> > [1] https://lore.kernel.org/all/20260322054309.898214-1-surenb@google.c=
-om/
-> >
-> > Suren Baghdasaryan (6):
-> >   mm/vma: cleanup error handling path in vma_expand()
-> >   mm: use vma_start_write_killable() in mm syscalls
-> >   mm/khugepaged: use vma_start_write_killable() in collapse_huge_page()
-> >   mm/vma: use vma_start_write_killable() in vma operations
-> >   mm: use vma_start_write_killable() in process_vma_walk_lock()
-> >   KVM: PPC: use vma_start_write_killable() in
-> >     kvmppc_memslot_page_merge()
-> >
-> >  arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
-> >  fs/proc/task_mmu.c                 |  12 +--
-> >  mm/khugepaged.c                    |   5 +-
-> >  mm/madvise.c                       |   4 +-
-> >  mm/memory.c                        |   2 +
-> >  mm/mempolicy.c                     |  12 ++-
-> >  mm/mlock.c                         |  28 ++++--
-> >  mm/mprotect.c                      |   5 +-
-> >  mm/mremap.c                        |   8 +-
-> >  mm/mseal.c                         |   5 +-
-> >  mm/pagewalk.c                      |  22 +++--
-> >  mm/vma.c                           | 146 +++++++++++++++++++++--------
-> >  mm/vma_exec.c                      |   6 +-
-> >  13 files changed, 190 insertions(+), 70 deletions(-)
-> >
-> >
-> > base-commit: e53c9040ab1b738dd2c83b57558f141902caaf4f
-> > --
-> > 2.53.0.1018.g2bb0e51243-goog
-> >
+Asynchronous page fault looks like a interesting and potentially easier 
+to implement.
+
+IIUC, the idea is to make the pages disappears on the guest behalf, and 
+the guest would have to deal with the eventual page fault. Currently in 
+Xen, a unhandled #NPF is fatal, but that could be tuned down for 
+specific regions and transformed into a #PF or another exception for the 
+guest to handle.
+
+We have actually a similar need for SEV-ES MMIO handling, as we need to 
+distinguish "MMIO-related NPF" (to paravirtualize through GHCB) to the 
+other NPF; which needs to be configured in advance in page-tables (so 
+that the CPU choose between #VC and VMEXIT#NPF).
+
+It would also need some form of para-virtualization coming from virtio 
+or a new Xen PV driver for the guest to be made aware of this mechanism.
+I also assume that the guest handles properly that kind of event.
+
+>> If it's done at 4k granularity, it would also lack superpage support,
+>> which wouldn't help either. (doing things at the 2M+ scale would help,
+>> but I don't know enough how MMU notifier does things.
+>>
+>> While I agree that grants is not a adequate mechanism for this (for
+>> multiples reasons), I'm not fully convinced of the proposal.
+>> I would prefer a strategy where we map a fixed amount of RAM+VRAM as a
+>> blob, along with some form of cooperative hotplug mechanism to
+>> dynamically provision the amount.
+> 
+> I asked the GPU driver developers about pinning VRAM like this a couple
+> years ago or so.  The response I got was that it isn't supported.
+> I suspect that anyone needing VRAM pinning for graphics workloads is
+> using non-upstreamable hacks, most likely specific to a single driver.
+> 
+> More generally, the entire graphics stack receives essentially no
+> testing under Xen.  There have been bugs that have affected Qubes OS
+> users for months or more, and they went unfixed because they couldn't
+> be reproduced outside of Xen.  To the upstream graphics developers,
+> Xen might as well not exist.  This means that any solution that
+> requires changing the graphics stack is not a practical option,
+> and I do not expect this to change in the foreseeable future.
+
+
+--
+Teddy Astie | Vates XCP-ng Developer
+
+XCP-ng & Xen Orchestra - Vates solutions
+
+web: https://vates.tech
+
+
 
