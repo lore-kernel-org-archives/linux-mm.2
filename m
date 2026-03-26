@@ -4,135 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E605A10A62FF
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 14:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C43F4109C047
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 14:54:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A4686B0005; Thu, 26 Mar 2026 10:50:17 -0400 (EDT)
+	id 10DC26B0089; Thu, 26 Mar 2026 10:54:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1556B6B0089; Thu, 26 Mar 2026 10:50:17 -0400 (EDT)
+	id 0BF296B008A; Thu, 26 Mar 2026 10:54:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06B496B008A; Thu, 26 Mar 2026 10:50:17 -0400 (EDT)
+	id F17306B008C; Thu, 26 Mar 2026 10:54:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EB6656B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:50:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95C92BDE94
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:50:16 +0000 (UTC)
-X-FDA: 84588499632.02.003C7B2
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 492211C0012
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:50:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IdiFuC0f;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774536614;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E12706B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:54:02 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84EA41603EB
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:54:02 +0000 (UTC)
+X-FDA: 84588509124.23.0FD8546
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CBD6C140007
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:54:00 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z7Q6fhSe;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774536840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bgWenz2yfYiYc7q73jJe54zDtEsKEqUtLMnFcbZ2Nnw=;
-	b=6QYY25fiNLfSwMs4NE5rOAidfSmVj4tQr4W8YgNFONxpkuTVpTnPIQqluOqB/ni7lJmHVn
-	xODcl9qEcc4Q6hViV2Z+HeBvDmBjxS3Ff0d79XVmFaEqoErc335v2g1P4TC8i7CUO1MQ9c
-	t2HSL4CdwQDvwdnzaKiik2BsxxLHiX0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774536614; a=rsa-sha256;
-	cv=pass;
-	b=U5yHAM3EaKSal01FAQW8ROqp6c+yVVeFZ11Jjksdh6adiJ4VlXTKBfTBoish3TCbMpMV9/
-	oYgH+SMflz1PUeiIdTUOtf1LMTCvvnLJLg+ExzCFd4TD5lp1HC/e0EzFDQgjltCeUKstVB
-	ALcdatPZHsnFJVG2Qqb7QR9IhFegnvg=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IdiFuC0f;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-66132b22182so1418136a12.2
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:50:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774536613; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YH6yKfaXao1PjEZi5AZf++02SXDTBk+umE1DVKyhB5XqjOJDfYf6jtN/+vAnIqcgnq
-         k01buPQJzxOFyuVvdPDktiuyE0B/3HY6SJ350aasUPBH2Jdt04MqO6bBt8UuL9kPKU7x
-         x9WY8GhrMpn3KyWmJjJrg4ngiNWCCMlP3Qmag2r9QiPzSnfG1KXEw1nui33bXFXrUUaN
-         o3e8yP/zI6QfpVr5wWF8lqUVMff3v8RqFvFR04/zSdxQIfmUpOP/LDtOCC+fDlOlDphP
-         4gXxPuBJZe9nOfWaHDOfs4dNTf16VPnrLhq0f1SklFL+4tB++7kvew3VfTfAn1TtB2Tw
-         MI4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bgWenz2yfYiYc7q73jJe54zDtEsKEqUtLMnFcbZ2Nnw=;
-        fh=2LtFAi+FLyjcu5JUo9FE3x5uDHriuIXOruZSmPjSY5o=;
-        b=Waa67Ux9Sy+eTMrjXsjqfoolYn4y5qdLeKf83NZlyMLwimxQtnP600qfXa7TE1GC/q
-         c9OKVHORL2kLrztrrXfNw5Snuj8wCrzIb7wpqzacS9ZkUT6qHKaz5117cJVFiPXrOL3N
-         Kht6w/hGVXYr+PUxabyn9P2FOBciDCSDN/uZtEonaD7qdeltbrlOvxHcC0VUDsiMjQrC
-         M43DNTIWPVisPUP4Z32cvTWVWOoVYTx4DtR4aOEyIneRihJVdFIzwfyXvRt4CHgkUILA
-         xcU7+gGtrE73a+ZpOEj2qQ73YoIT4hZa1VzKUJw81HLcFomWnHRJ/3+B2xCEd9JC77YK
-         CdlQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774536613; x=1775141413; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bgWenz2yfYiYc7q73jJe54zDtEsKEqUtLMnFcbZ2Nnw=;
-        b=IdiFuC0foQzzlmiGLRbuMU8QkrJkjDC2N5oYUOXxqgMfXIw7Rdqh1ux32cwmLOTXRY
-         RmBCYXYgC3Ps3yXlJZ7pJowpRGLvdtSbdgyA1hPiahbBv9Z6WTu1O1A++YWvjGjhR02W
-         YsZ+MSJg+gmrHkE/ugbimeLRudW9m5G9AfNl5HNkRo7DNFJT4C8rXTztGeb+VaVS8poM
-         SV69hK93xGvnJa3babRwWn4CV4Uu3N0x74KbWZRXjadbu4g6BToJTQuEElJmE213p6Ff
-         Bx9u51k28R7eb04GgmbQqmOQY2613FWC3GEK10OANEIDHcSwdG4orZqFh+9V/YeWwyCU
-         1WyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774536613; x=1775141413;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bgWenz2yfYiYc7q73jJe54zDtEsKEqUtLMnFcbZ2Nnw=;
-        b=rFWjzl1l1s1GF57vzTjCqEPQhtqrIG4kBbm5XEfK1MSnwkZHu3fFQ8v6R7MwkKEF+m
-         mrnVx317gN8xQaVNMkMhNQxV1JrqfkzATdMPTvkEOOU2Kt/nttA0dxDAfYcem0jEtSmW
-         08vEC+/AaVmVIFu9a5BqC85ONTVQ4Uucs5K1BBUgKmoRugeZLHlXBdtWeOaNSQ2091Y2
-         zSl2hxfXZiH8jtRmTO4kHHjTIXPFJDkTWdsRwVBvguP8g4pMJNriKphcdwLiU3Eg/O2Q
-         iJDTDEMKxzbPJJYRUm7q5Fl7B7rosCA/N6IU7sBRUDWmZhu6tSU5rYYNMr8tXmK1015U
-         G5xQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXPsOWqOMAq7XfIBcxEDmJH7I5cExTOkHOR09HAqVWL1WtLpgqbbzIMwTMGJ36dlDLeNDCXcaotLQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw0SdLq8G1h13baG3VDyqGCONJhfvyMtvd5RSf20mujS5l2vEDQ
-	3WFwWUoJwxRhMjiLk0IxoO4TvSA33xIsFWFyu3AqPwzZ3372QbpUkLZtrBqVdn+/kDB9x6qYBJZ
-	Dbc94nsF1XUAhkAjqC+vKvdUJkdO4uLtenFQqWmf/kw==
-X-Gm-Gg: ATEYQzxZT17FLyEiSH+7i/8zNSsAS5GkA+0fVxN3XgdNS6qMz/bRXm3cEGUDDpVCVyl
-	dN6cHbpVhNc7UMyAAjVVbuv1mNZA88szwosRfud7DCT+xGMNywVZoeP/I95YLfBdR1neIBggtXw
-	pT9kH951+XrxxhufIGL5PvlhFchS8KucfQyAoqW4n4mufFhCg5oSzyC5wwfIldTuPR7bOsnxUrr
-	xlNtNu1/+OM7E22WKEr0+b9tvi+oasqk3jPMep1K/KqvFbpGq72GQrDUmnX9X5BMbyVAqG6JUbg
-	kcUOf9kTNyE0VGbSTJSu95/0wMZFlICJr0JLWQ==
-X-Received: by 2002:a05:6402:3593:b0:66a:53a7:8d35 with SMTP id
- 4fb4d7f45d1cf-66a826737camr5012088a12.14.1774536612600; Thu, 26 Mar 2026
- 07:50:12 -0700 (PDT)
+	bh=LuWTe8vWwsmTSTvd4U44lfUvQDHR9P8cpvmFE5Ouoj4=;
+	b=4WAqM+c2O5uvY1NKcFeXXzZ2AoDl7lQ9k91NpQOj0FuU5a60b88ZLuKCuOXaC5atRt/B2I
+	bbtIEWqca8Sr/j3EknbHibG6+qZoRRmbrEMB7UqKLrStNyD1gtgNOKN53PKZdnAa1ulP2V
+	H2qcqiP9toD9i++uwtwOw0/kSMQdyCM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z7Q6fhSe;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774536840; a=rsa-sha256;
+	cv=none;
+	b=D60y6v5tJ8vt/RcPu/zUzVkSq1eTSnkeF2b3rucqbbpGMKxF2uLjvYloqDO1PryFrrDA2g
+	GQmoVV+rK4nP8qmZ6Im7Z4lhz5/0J8OaGMuSu3uwaX/xZ1XimAOdrKsta9x/1+mipJTz7w
+	tr24uhdQoCaK8/z3eF6OFP+WgGb0Vq4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9DFF343B83;
+	Thu, 26 Mar 2026 14:53:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656B2C19424;
+	Thu, 26 Mar 2026 14:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774536839;
+	bh=BLR/RJhF/jZELhqDin2ZuSm044v9f2wMVcye1L7PlfM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Z7Q6fhSeG14zhc+CXBstEdP4CNpqQHZqzkK0i4Le3yB6kKm+tha4a1dgM0ckZUuGJ
+	 jGr8AgqQQH6BZ15/N8bxNVB75o/l171t7qNjMFKJXFVzCQ1CyVB4t2gWKmq757gpYK
+	 eXNZPhZFwFyrERS7KB2mn5abR2FL7EnWEkGYHQJ6NVHWx+jY5u8rgMTsnU8GxRdg3D
+	 D7FwODquU+jZ2iq20B+hAtLYrTeezP6A6UTHEmcFdf/TT32BQ3+cW27ucdgb1WlyUi
+	 kgZmxR67nCIjPF5qf/0+VX/0spUnKkwUzs1utSfQd3teaGJWlYSHgYcT57xwdlTdTy
+	 p/wjkgh01+YWA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 14 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko status) [RFC PATCH 0/2] mm/damon: fix damon_call()-related leak and deadlock
+Date: Thu, 26 Mar 2026 07:53:56 -0700
+Message-ID: <20260326145356.92319-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260326134209.90377-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-References: <20260324212730.65290-1-oskar@gerlicz.space> <CA+CK2bCiqCg1Tt0WgP3KszrK96Qahcgfyfige4eUQOkMVyLUqg@mail.gmail.com>
- <7628da0465cd09bfc16bf9353f37045c@gerlicz.space> <acT5354RhFpOm-qU@kernel.org>
-In-Reply-To: <acT5354RhFpOm-qU@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 26 Mar 2026 10:49:36 -0400
-X-Gm-Features: AQROBzBj96j8ceWb0wHsLG-3jOA1awdDgI5nY0_V7wYgIpsMauqCa-vPY7MS37g
-Message-ID: <CA+CK2bBvyKvv4=ptNp5iP-vo4txeuN=heA-6tNyu83nDFOPU_g@mail.gmail.com>
-Subject: Re: [PATCH v4 0/5] liveupdate: tighten handover cleanup and session lifetime
-To: Mike Rapoport <rppt@kernel.org>
-Cc: oskar@gerlicz.space, Baoquan He <bhe@redhat.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 6hfdkbc5hck56p9s169ndhkrwyynpusd
-X-Rspamd-Queue-Id: 492211C0012
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CBD6C140007
+X-Stat-Signature: gqgss3x98rzmw9uu6u6iht6xg5cqj1gg
 X-Rspam-User: 
-X-HE-Tag: 1774536614-870645
-X-HE-Meta: U2FsdGVkX1/41UlNfv4jqbFoSRmBX2m2MoR8ZpfRGp4/j58hvErFEXHrWHa3lMKS8YVfQGBZe1YpIw2A3Z0QciJzkOh3S0Pg0VrCsU11D8IW/NJr+fAEJWI6xRdjt3ZAIJws/IHg4Jyi5de+vlBOQM7Sm8gs2jQjx9Zcmq3pkBm2e4+ycJnZtsSf1haT2OiNtUwJClsQ1qUfO22Ig/KIj1II7uf/SYlbodnfah9OFoH2Ytv4UxdIFcEeWxxpUer7wDk7dvhuJFTzSHrJQDwL7eZzToBIps/GbY9Hi/1m4MeykI6U3aHm/gVSbXL4RvxFQ6clflr+G9CB2tG7nPImKFBRzZMLn/mZTrhUOkeW+JMGqvfBhOB3LIqmyziHEAzItyIONwr1gXE6euzp2aTOlNW7lH5c4rLs3pL++5ZrMCHD042jayWYnUZHLZg1YNpnS/2nSXYDxi4qtTcZTKg1LQSH9khUW1PZn5Gf53m4xtjSLyW92ygQZZPWFFHehFacgw1L4aHHmmi934adGelgGSSSokq7KdKFYGIzN594xRr4+9vn+Yni60/wb1V99iXxFfg+ZPKc5reka+YUtrEc+3nzhJKS+wjwXcUHtoIJ8YzF1gh1KS0E3NL0FmYIVqemymZdipBGjxuZ4jjCPYyp0gF4GlQO60ar4H1wDWH5+Dltl0YEccZPO6BYRX12tx86WzcV3xLRYlJzs4HGJn8R+3kBMz/v27FwA1V8jZ1FWLqUN4ObrRAIb5bmIgu+02CMDCVB467TVKQ7IuCMwq0e3HUX9oQWq5ypdubjSULStSRpUgvm238nlHcEivCYffQh1FJFIO2BVm1wskEyZZwbpK0VOCvWUrqiFMjZQWeBQhVXGa5dbjvj6Wr547alucZ1EHN4eHscWF3ebWBLXrBF9QgE0aTVTLyhH0Uiqc+mmN9/2/XA5922L8BNobRmYhibvqpeKDeqLCSFpqQQOfB
- dZzLudQb
- TZzDH4rKf7JULEwC5VUxE5ybsXEWtEZeuX60EGCM9YXBXxkjSpi+Kc4O1dXjvzAydu87BL0l/9TdnzprXrx6IlB35o7IS5EmG9vUvWPRrmbaUSrjgRfDXdBwiJxjyqj/jBrbkpHZADDntnYyCF52qhszYJtjuzAj68dkhybZSRl+gXPsbpqKFsEnrV0C96lSIogrPZLaqfCPstUTVLOmmBtU9LoyvZqridXI1wf6Kzqh3X4fjuzUrsy6A9Y0GJOEVUdbfChZ7YNA6c5RBU4zkXiCPeg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774536840-638738
+X-HE-Meta: U2FsdGVkX18gB+h8uIuD0bImFbZlIyn1jtGNUqUxy4I8j2jZvA5woCGx6KwlmTxbRlhClIijA3oB46ac4/S3V4VYz1IBj0WxJetfvT/QPXsxtIbiPyhNVckhTc77RFNqBAre7gVBA91XXApZKbc5ca1aQA87uh1KpMcfmdNXATf8ZGzDGYYOc/fHq4reUHXszYgY9eW0UuUZ90B9AWvMUqfvGdDwLFMRJcsEDvSirB5+2+9q3THNqkmTGqqshOzSi6z31PHLfXnHKzCFBqQp6X2lZy7j+utDIBU1uz1NTtRT50VvsQKis14TpNHJftj5y0axhk3nlzNfkm79QkjiCMjt97g3MHczmvGHsLDkJr2nAENCcPrZC/UxC8ekz6nHoaf5F2TjzjhXSydmrauhi2si8c26vPGHqBLpzgcPKeKwttwCQtUI7kmbjZopHeA4V+2ILN9o2p0ukUUQL5YOCEdHtePrq0nQE+bLs2ECdbxjkqYqSnBMgBbAbl+FPP7UQ3QnaLZsGJ4DNMtrhD68V3iD7dBuSvnCs9rKwzEHYC3xbCQtB3wjlAhyiTNRA1PRBJkx3vn+hLwi1xay1PBG7UezQqYIB8IbOIXsIcOL2H72UKtT38BBm18SfzhaOTKfLJGIdn4CzKhMb5M1Yx83tiy5VI9rhRK4Eb6hQ5cA0szrRefCcp2Ztt38zkz6s2DIn6152sjZIFDZwlPU3ag3Y7IO3SLzYqV6P3dbco5Qs3lybQ8bYuGKvx/9enyUvRmiJ1VG6bQpwUURprJER8qaq6GHDfhOnQVIsQUY0CO2782Ca88VoGVxVacjYG4/m2pn9fVMQHYPBNO4PxvAp8+mzBJHKHhN8ShFvBy2v1TGV9ut06b06HpkiULOw/V0Z0PU/zUgOdTIM6mjeiOLfUudQi/aWPaNReBn3BTBMNhYmY84OYMvpoSNYxkQGJwmGZWrMZ9Mbqct2KjG3/Z8eTZ
+ I9nCCoD7
+ vHdql
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,39 +93,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 5:18=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> Hi Oskar,
->
-> On Thu, Mar 26, 2026 at 07:47:03AM +0100, oskar@gerlicz.space wrote:
-> > On 2026-03-25 14:38, Pasha Tatashin wrote:
-> > > On Tue, Mar 24, 2026 at 5:29=E2=80=AFPM Oskar Gerlicz Kowalczuk
-> >
-> > Hi Pasha, thank you for the detailed feedback and for sharing your patc=
-hes.
-> > I understand that my previous version was overcomplicated. I will rewor=
-k the
-> > series to follow your approach and keep the changes minimal. I plan to =
-send
-> > an updated version later today.
+On Thu, 26 Mar 2026 06:42:08 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Please take a few days to manually review the patches before sending
-them out; no need to rush them out today. As I mentioned earlier, it
-is very unusual for a series to iterate to v4 within a week.
+> Forwarding sashiko.dev review status for this thread.
+> 
+> # review url: https://sashiko.dev/#/patchset/20260326062347.88569-1-sj@kernel.org
+> 
+> - [RFC PATCH 1/2] mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails
+>   - status: Reviewed
+>   - review: No issues found.
+> - [RFC PATCH 2/2] mm/damon/core: fix damon_call() vs kdamond_fn() exit race deadlock
+>   - status: Reviewed
+>   - review: ISSUES MAY FOUND
 
-> When you are resending please make sure to avoid deep threading of the
-> replies so that all patch emails would be In-Reply-To to the cover letter=
-.
+The patches are hotfixes, and have no reason to be one series.
 
-+1
+I will send the first patch as an individual one without RFC, soon.
 
->
-> > Thanks,
-> > Oskar Gerlicz-Kowalczuk
-> >
->
-> --
-> Sincerely yours,
-> Mike.
+For the second patch, I will go one more RFC round.
+
+
+Thanks,
+SJ
+
+[...]
 
