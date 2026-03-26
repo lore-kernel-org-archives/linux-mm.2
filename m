@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D1E4106F311
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:56:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B07C106F315
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:56:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D81536B00E9; Thu, 26 Mar 2026 05:56:33 -0400 (EDT)
+	id 1C1986B00E8; Thu, 26 Mar 2026 05:56:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D596B6B00EC; Thu, 26 Mar 2026 05:56:33 -0400 (EDT)
+	id 0B04D6B00EC; Thu, 26 Mar 2026 05:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B10C76B00EA; Thu, 26 Mar 2026 05:56:33 -0400 (EDT)
+	id E443A6B00EE; Thu, 26 Mar 2026 05:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ADE26B00E7
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AFE1C6B00E8
 	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:56:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68790160C6D
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 709F85CA17
 	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:33 +0000 (UTC)
-X-FDA: 84587759466.08.49D93FA
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 42F77180009
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1KFb45Lr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6xTkVKDh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1KFb45Lr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6xTkVKDh;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+X-FDA: 84587759466.05.7660780
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 238AC180008
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ASU5o0/Y";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pUfVOkmG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ASU5o0/Y";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pUfVOkmG;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518991; a=rsa-sha256;
+	cv=none;
+	b=XdvMu4Pvie8h2989LKGsFnTlPfZ4GgHvwO2byMdcjyZl9tYPpecIN/VfNGZShJlWcVHEjl
+	ssOHCm39mV3Sb1+NO26/wO6dQyNoVvenfCJWeSo54dLvWqisz8xHGDiJHlKzfZeY+JmOut
+	QNG74vjNzsNa7EqrA0NGEgXJMCPeLfw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ASU5o0/Y";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pUfVOkmG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ASU5o0/Y";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pUfVOkmG;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774518991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/jAwTJiih2qv21x1zDcNiAZklPoPTM0eb+px5UJF6lw=;
-	b=fl7A/4XyhxsYrwTRHIyxpmMVVDdazZQlrTM4X/XOgMIIYYD7r2b8aVyJwOo2LGsClHTZhC
-	PJa521DA2kHKJYUvRZj2gPYuuCEUDym009H7092zJS67IUh8DzYcfLxYGLF2klS3pnB5xV
-	CaiPFEwSrbYtxumxfU1NtxImAOaHBkc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1KFb45Lr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6xTkVKDh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1KFb45Lr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6xTkVKDh;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518991; a=rsa-sha256;
-	cv=none;
-	b=ngYwIYzqpwhDq0uaZ/Us9wMUFNEVnNTjeMJf1PImBUtJ8cGC1td+7MOV2qlYcJWwrrkW/3
-	t18ZMqlseLdH8YP2+ekymFqWVNxmvmiOKn+pBNT+p8+os/IbutyI0L3KF8nj95GQPWgJhU
-	svxWYEuEF+pGoNQ7CfG+0acnXTPXUK8=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	bh=byWU+6eyDTGDwPUjgaBLCOfLPFKdylFnJfWF0eWyWuE=;
+	b=pQH7vlPvCJa079Dr/simv3ydbbeo1Rv8oThbECJWmGhmpAzhQ2QVbW3PIQiI/7PSOidCWZ
+	KIUBILH9ctid8Wa5MqETXYAf65b0DS9Csdsxxhby6RoCaUP67mV24VJ+v4rmB7edqdU0oa
+	+vUmI8Q7lGHvYu//S70Kp3DINiFNiH8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 983144D2A8;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7E0485BDBB;
 	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/jAwTJiih2qv21x1zDcNiAZklPoPTM0eb+px5UJF6lw=;
-	b=1KFb45LrnT8VIPgsdivFPrty/BUxLgOlZo80pw3zDyw8z+OrkemNHV9xfBeXLg1clgznU4
-	bO4IaDPM53POGTPM0lq8h2sEEo+UN+DkjINj48GpX8KR5Dz4Q1nVNBBZKbMgbbFXbkh/rK
-	r9P3BU+qNd+IN4mfnLdbWLq/8cfa8OI=
+	bh=byWU+6eyDTGDwPUjgaBLCOfLPFKdylFnJfWF0eWyWuE=;
+	b=ASU5o0/YYWXbVR26pgaXFebCL3930P3+EUIlfiuWBRdfhgqtM2Qjg7UaRPJJzW4ZreAFxR
+	GT1Y6RIvQKE4QxCDaEVPmm1NH7AYvZWQJAD4VNO7SJye5TunzbhZMbuykOWifh1qSZCCcP
+	gZXucSGJrLv1j2Bf6MCLIIBAQUa8+gY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1774518901;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/jAwTJiih2qv21x1zDcNiAZklPoPTM0eb+px5UJF6lw=;
-	b=6xTkVKDhkLp/nrKzffvXSnrEWBZ3/Mu8iWnDAkMusNaL8hIA79mplmN/Q7do0mZcOM68Ep
-	2arG/PBdXwSFj8BQ==
+	bh=byWU+6eyDTGDwPUjgaBLCOfLPFKdylFnJfWF0eWyWuE=;
+	b=pUfVOkmG7lb1lIZtjgEhqeCJUz6PcAJezbQNUrhi0HJ2Cy6ieRhpb3OcVwB5qVh8RDLep3
+	mSsVjQWUchYWvQDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/jAwTJiih2qv21x1zDcNiAZklPoPTM0eb+px5UJF6lw=;
-	b=1KFb45LrnT8VIPgsdivFPrty/BUxLgOlZo80pw3zDyw8z+OrkemNHV9xfBeXLg1clgznU4
-	bO4IaDPM53POGTPM0lq8h2sEEo+UN+DkjINj48GpX8KR5Dz4Q1nVNBBZKbMgbbFXbkh/rK
-	r9P3BU+qNd+IN4mfnLdbWLq/8cfa8OI=
+	bh=byWU+6eyDTGDwPUjgaBLCOfLPFKdylFnJfWF0eWyWuE=;
+	b=ASU5o0/YYWXbVR26pgaXFebCL3930P3+EUIlfiuWBRdfhgqtM2Qjg7UaRPJJzW4ZreAFxR
+	GT1Y6RIvQKE4QxCDaEVPmm1NH7AYvZWQJAD4VNO7SJye5TunzbhZMbuykOWifh1qSZCCcP
+	gZXucSGJrLv1j2Bf6MCLIIBAQUa8+gY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1774518901;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/jAwTJiih2qv21x1zDcNiAZklPoPTM0eb+px5UJF6lw=;
-	b=6xTkVKDhkLp/nrKzffvXSnrEWBZ3/Mu8iWnDAkMusNaL8hIA79mplmN/Q7do0mZcOM68Ep
-	2arG/PBdXwSFj8BQ==
+	bh=byWU+6eyDTGDwPUjgaBLCOfLPFKdylFnJfWF0eWyWuE=;
+	b=pUfVOkmG7lb1lIZtjgEhqeCJUz6PcAJezbQNUrhi0HJ2Cy6ieRhpb3OcVwB5qVh8RDLep3
+	mSsVjQWUchYWvQDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8BC4E4A0A9;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 712924A0A6;
 	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wa0eInUCxWn6YAAAD6G6ig
+	id 8rSfG3UCxWntYAAAD6G6ig
 	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 09:55:01 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id B37DFA0C7A; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
+	id 7C650A0C73; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -124,25 +124,27 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-mm@kvack.org,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 35/42] affs: Track metadata bhs in fs-private inode part
-Date: Thu, 26 Mar 2026 10:54:29 +0100
-Message-ID: <20260326095354.16340-77-jack@suse.cz>
+	Jan Kara <jack@suse.cz>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 29/42] fs: Fold fsync_buffers_list() into sync_mapping_buffers()
+Date: Thu, 26 Mar 2026 10:54:23 +0100
+Message-ID: <20260326095354.16340-71-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260326082428.31660-1-jack@suse.cz>
 References: <20260326082428.31660-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10960; i=jack@suse.cz; h=from:subject; bh=bsmd8IOBMIFaPT0W+pgoe4ypivIyXU5noYASi9PAuxg=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJQlWRcYLVKxJbqE33CN0oN/AVB/vHClHwPo 9t6RsiJXgeJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCUAAKCRCcnaoHP2RA 2Vk4B/0TyH0Z5mLeLwjQ2zOsaG9TKLBjN6ujI1cPJkSKkDmtcJ115R8ReHxbaTsTk7AqSlwTRA7 ZZ3t1Q5nPOt6p+oEEhVOQGOkmuFNq7cHBoSswcJJ5D+BB+FY0oGxMEcdXzOihkK/lSu14SMVa4U YMgDZjVsT864+4SM5W6mD8S2YjU4o23ZAzNsS+QbMhZQbazSDYXlW6EYoUUlLRqtx0fW/ejb8u8 xYeEi7J0z+Sv1nguvWI9O4IWa9ZKWQOaCNiFhJwUty39WcNRAqJm3rH3KJK23nB3nfmGhb4+iSF BhON42bFO5TpaSheNcXZ/KXWs27jsWlKMOPdePUYQ1AaEfRU
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7567; i=jack@suse.cz; h=from:subject; bh=f6izt04fZCFJQSkSrf7dTi/3Cbur8ValvknA2hTJ8Bo=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJLlQqRFKEeG5RqvmZU02Tl0MdB1/bLQi5a0 XfukSttZ9yJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCSwAKCRCcnaoHP2RA 2UhsCADJWf4qvR904MZ1Xs38Xnpv48CssgT5ZAAeT7048r9JjF3XKdrMqvfzxCMuDzpsYW2/TVJ zvp1pyOmzdfjFtAe5JJOvE3lm1DbibJ092f9I6J3V2DHMf/0cggTc4flNIyaL4QuIepoKD0Upwu Ubpc3wJiKVNBzCmPZbFHlMJLvCwdfk14YCirMSwn22iEAXxQAwCVZz+i3VZRI+gA04oQCCmBEF0 SKC/ZcSUoPTPYuVp9YTQZEoAycs64RrnYdN2yy5HO1vW7mrjWFz1Mq6JVmFlWps30mM9tmCQcej XpVTUVLDxz1snBUc37I2ZAmOttVFWGkWJvzF2RHIb7gUJkgU
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Stat-Signature: 5s3jeenw36sq3zxn9ru4os9oxzfnj1kx
+X-Rspamd-Queue-Id: 238AC180008
 X-Rspam-User: 
-X-Stat-Signature: t19b7ep9hq4jipzsp3htbr6c3ktwe7ws
-X-Rspamd-Queue-Id: 42F77180009
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774518991-513523
-X-HE-Meta: U2FsdGVkX1/UT2z4lgahsBfctkgvhrJ35iODVuM0os9MBZzcBxQsy+Tv2JMX/WOC61TrcwZaZBPsyPLaPbKeth2nABJlD34l8y6+lQKnZHtY6JVONcP4MdXnGBxigTiCA3K9u1nDsCTFy9BpOk3VgnORFTb5/jhbozZLk/u56byExUx2gT92bbOK05PzL9+6j738B9HE1UeXYUSoUcMq5232X6soaT50RgwKhpK/Vlu3q0rnBriGTSrlRonbmn1ykcNi03/Fvrpfgm0hMpGRJcx5ODIE2OeLrJXqXUzh+FTwNye3XHyC8bgirw7DL8H+mmelctSgKDMi9qAgUBAey7xbyvVwOpRTEkC+nHotZgW9n7p/yv4sKZJxSVrO74sWnSq5r4kGyRmy2IODBHWACXAUiVfJTYA4ULgr13/RzE4sXddbGIxQ1mdd3vuZgKV8UCfTEbD+5YvoJcfpoogrHj1f+ugBr67/gTrtakp2FZRDA1t45ROZ+zGxK7iDxE4qsV2AYIOjjf+wpGvk4Y/uYeIbWrKxbQ9+4f0rouTJPqEowd+POVk6+wNlW0TcLZyyCs42Bl39AyWgw+SA3/f+gQF6mnvoK74X0lXr603yrA+p+SsRE1k6VPZhyl61cvVjTfinRrqGJeCse/mK2EB932uU130npmE7NcINfrj7Ufnt0jllL5p+6J/0NXKeJAFuvdCX/2iherEakXpK1SDc3EKQ03++fs6VokEbfCwAlNeTkH+34WsAaxKSwegHFMCyBsKfZqRGun+i2THjj2ViraVdhWkcEawS8PGyiz6VrsCkB/nihhCPDEVDpVU5MBMxMhVVlP1FkMN7LXlvdjtVZJKSEouVnkUasJ5RhgIsJZSFbKUHg3vfiCDO0jBOqfYfQ1RU+ChEoYFu8e0W0HEZdEvrEhuMhJG1llU20GvJebfm6ZEAWBZgHaxj5bO7nxgxg1J/zs8MUXh0esl2lyZ
- TgWzIpIz
- u2O7RHwaoc0tcHr7ohCg+n70lB7PJPz+B9kkZ
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774518990-54934
+X-HE-Meta: U2FsdGVkX1+Ndy4gn4FXIfngnQSeWa9hjM3VEhIkMup3CavAMm3pBmhawyzc0RyVKETmQn4tOplHRLAXpi2QlMCrfCwjVNCrFFUrtVJW2PpiIqvU/xQaQ7Uyv8SLK/eZQxIEaBl7AJH0r+erYJeay10rfQPrjzYjfYu9kGEQOD6g5nrb9raImlPEeY8UI2dWocS8vzrpXRFFBGTMjxB2lN3T0YDqHT18o0OmwNRPRTsXDNOtwgb4g1bPQ8/PF78aCnGCvhxCbZRSClay+vy+Hr9YGzB/2fiF4f+/oFIqxjgZEpmzXMR6paAxqeUeFKELPJ8tKc3JW6/1MlcW1d8GSxzxEOQbgAk/l2wPod43rnfKzec4JbTfIfyifEj1TfbwxgY3dW8WzEjJ4IrZg6Arpgt7fcxtgDu9AFQoHTJdaaLOwQFueFqskKS+R0pbNw/MyrurniSeLPCDmgbxDELL5IVAzV5C0/prAjcm78W/4xH2G7QtvdsStHfSCoHi1JlEJTbjUXkWVSwuSBwpqx8E4Kz66p9mVF3QaAPxVv7AP99Jnl1U9vOUCgDDRgqwV+LOMw6DGJDn2GuQ5sM6Aow5H2ByCJ79gwnGvI4e/nkS2PN5mLEUYa+qVC42p5dAixbfjAu6BRly7YNWT+nE/A8tuTZJ7OXLJ2WzKYyN2LaP6+r1an7MzOCKQI1XALJUnS+TrqX8GeN8N54fbT6D2nrXViuYe0Mc5JM46c1+pE88uU8ueRy/M198CveHCOpZpzP7D5PHXT8+vw4/kfYGQOVXQPVtNE9mPy9Z16DPFol9fB4LhCIzPpLlT3cdV+YJGlNF2y/q6ekhxFzFHaNnMZ97bhAmYaRSTPS9/RE9HQWJYmwSaE+nq+X2XA/BSFFzDVgdKUFMupJpiH09A03AsY/V7ZbNEOpKGhmkOY0LkKXdGqrWEbr0pIR7xwxVOi+Db3h91tl/B6wRUrLHZ5bRu4T
+ sY10jNJK
+ i0aGyXEzAUDhUfX4kvrIASbBokKI6D3B+gGY+qWXPAR/GNPjebTX7vX3j2FI5hVTY3BSEKRJtkxkxGrkFplIu0cxvEcbXuS5P6pXjxholj2I7TcndiPssq2vA0kujXUY1IXrZ+tGUl20qzIwd22Sr6DfHSF/MqwtPY8jqQbHS5/C3jmLgAxz4pc+AJxAomGFw8LSmmDQLXkAhlQv7vnH3TGPaj2s1TQOP71wsXuEJk8Q5hZhek0KchSGWHdAO2WiVNt1oGDm/+tdILBUjDA0WC/ACTdZ9WtGAMPA955G9jhyUadP6P28s2XiXzFwc2df01sktrK1qZS9Ev4Zi88+JCOO9JSQ8hkCQebF03ePWdj65YmE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,298 +152,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Track metadata bhs for an inode in fs-private part of the inode.
+There's only single caller of fsync_buffers_list() so untangle the code
+a bit by folding fsync_buffers_list() into sync_mapping_buffers(). Also
+merge the comments and update them to reflect current state of code.
 
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/affs/affs.h     |  2 ++
- fs/affs/amigaffs.c | 12 ++++++------
- fs/affs/file.c     | 25 ++++++++++++++-----------
- fs/affs/inode.c    | 14 +++++++-------
- fs/affs/namei.c    |  9 +++++----
- fs/affs/super.c    |  1 +
- 6 files changed, 35 insertions(+), 28 deletions(-)
+ fs/buffer.c | 180 +++++++++++++++++++++++-----------------------------
+ 1 file changed, 80 insertions(+), 100 deletions(-)
 
-diff --git a/fs/affs/affs.h b/fs/affs/affs.h
-index ac4e9a02910b..a1eb400e1018 100644
---- a/fs/affs/affs.h
-+++ b/fs/affs/affs.h
-@@ -44,6 +44,7 @@ struct affs_inode_info {
- 	struct mutex i_link_lock;		/* Protects internal inode access. */
- 	struct mutex i_ext_lock;		/* Protects internal inode access. */
- #define i_hash_lock i_ext_lock
-+	struct mapping_metadata_bhs i_metadata_bhs;
- 	u32	 i_blkcnt;			/* block count */
- 	u32	 i_extcnt;			/* extended block count */
- 	u32	*i_lc;				/* linear cache of extended blocks */
-@@ -151,6 +152,7 @@ extern bool	affs_nofilenametruncate(const struct dentry *dentry);
- extern int	affs_check_name(const unsigned char *name, int len,
- 				bool notruncate);
- extern int	affs_copy_name(unsigned char *bstr, struct dentry *dentry);
-+struct mapping_metadata_bhs *affs_get_metadata_bhs(struct inode *inode);
+diff --git a/fs/buffer.c b/fs/buffer.c
+index 1c0e7c81a38b..fa3d84084adf 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -54,7 +54,6 @@
  
- /* bitmap. c */
+ #include "internal.h"
  
-diff --git a/fs/affs/amigaffs.c b/fs/affs/amigaffs.c
-index fd669daa4e7b..13a914c1d8b7 100644
---- a/fs/affs/amigaffs.c
-+++ b/fs/affs/amigaffs.c
-@@ -57,7 +57,7 @@ affs_insert_hash(struct inode *dir, struct buffer_head *bh)
- 		AFFS_TAIL(sb, dir_bh)->hash_chain = cpu_to_be32(ino);
+-static int fsync_buffers_list(spinlock_t *lock, struct list_head *list);
+ static void submit_bh_wbc(blk_opf_t opf, struct buffer_head *bh,
+ 			  enum rw_hint hint, struct writeback_control *wbc);
  
- 	affs_adjust_checksum(dir_bh, ino);
--	mark_buffer_dirty_inode(dir_bh, dir);
-+	mmb_mark_buffer_dirty(dir_bh, &AFFS_I(dir)->i_metadata_bhs);
- 	affs_brelse(dir_bh);
+@@ -531,22 +530,96 @@ EXPORT_SYMBOL_GPL(inode_has_buffers);
+  * @mapping: the mapping which wants those buffers written
+  *
+  * Starts I/O against the buffers at mapping->i_private_list, and waits upon
+- * that I/O.
++ * that I/O. Basically, this is a convenience function for fsync().  @mapping
++ * is a file or directory which needs those buffers to be written for a
++ * successful fsync().
+  *
+- * Basically, this is a convenience function for fsync().
+- * @mapping is a file or directory which needs those buffers to be written for
+- * a successful fsync().
++ * We have conflicting pressures: we want to make sure that all
++ * initially dirty buffers get waited on, but that any subsequently
++ * dirtied buffers don't.  After all, we don't want fsync to last
++ * forever if somebody is actively writing to the file.
++ *
++ * Do this in two main stages: first we copy dirty buffers to a
++ * temporary inode list, queueing the writes as we go. Then we clean
++ * up, waiting for those writes to complete. mark_buffer_dirty_inode()
++ * doesn't touch b_assoc_buffers list if b_assoc_map is not NULL so we
++ * are sure the buffer stays on our list until IO completes (at which point
++ * it can be reaped).
+  */
+ int sync_mapping_buffers(struct address_space *mapping)
+ {
+ 	struct address_space *buffer_mapping =
+ 				mapping->host->i_sb->s_bdev->bd_mapping;
++	struct buffer_head *bh;
++	int err = 0;
++	struct blk_plug plug;
++	LIST_HEAD(tmp);
  
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
-@@ -100,7 +100,7 @@ affs_remove_hash(struct inode *dir, struct buffer_head *rem_bh)
- 			else
- 				AFFS_TAIL(sb, bh)->hash_chain = ino;
- 			affs_adjust_checksum(bh, be32_to_cpu(ino) - hash_ino);
--			mark_buffer_dirty_inode(bh, dir);
-+			mmb_mark_buffer_dirty(bh, &AFFS_I(dir)->i_metadata_bhs);
- 			AFFS_TAIL(sb, rem_bh)->parent = 0;
- 			retval = 0;
- 			break;
-@@ -180,7 +180,7 @@ affs_remove_link(struct dentry *dentry)
- 			affs_unlock_dir(dir);
- 			goto done;
- 		}
--		mark_buffer_dirty_inode(link_bh, inode);
-+		mmb_mark_buffer_dirty(link_bh, &AFFS_I(inode)->i_metadata_bhs);
+ 	if (list_empty(&mapping->i_private_list))
+ 		return 0;
  
- 		memcpy(AFFS_TAIL(sb, bh)->name, AFFS_TAIL(sb, link_bh)->name, 32);
- 		retval = affs_insert_hash(dir, bh);
-@@ -188,7 +188,7 @@ affs_remove_link(struct dentry *dentry)
- 			affs_unlock_dir(dir);
- 			goto done;
- 		}
--		mark_buffer_dirty_inode(bh, inode);
-+		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 
- 		affs_unlock_dir(dir);
- 		iput(dir);
-@@ -203,7 +203,7 @@ affs_remove_link(struct dentry *dentry)
- 			__be32 ino2 = AFFS_TAIL(sb, link_bh)->link_chain;
- 			AFFS_TAIL(sb, bh)->link_chain = ino2;
- 			affs_adjust_checksum(bh, be32_to_cpu(ino2) - link_ino);
--			mark_buffer_dirty_inode(bh, inode);
-+			mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 			retval = 0;
- 			/* Fix the link count, if bh is a normal header block without links */
- 			switch (be32_to_cpu(AFFS_TAIL(sb, bh)->stype)) {
-@@ -306,7 +306,7 @@ affs_remove_header(struct dentry *dentry)
- 	retval = affs_remove_hash(dir, bh);
- 	if (retval)
- 		goto done_unlock;
--	mark_buffer_dirty_inode(bh, inode);
-+	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 
- 	affs_unlock_dir(dir);
- 
-diff --git a/fs/affs/file.c b/fs/affs/file.c
-index 6c9258359ddb..606630d6f5f7 100644
---- a/fs/affs/file.c
-+++ b/fs/affs/file.c
-@@ -140,14 +140,14 @@ affs_alloc_extblock(struct inode *inode, struct buffer_head *bh, u32 ext)
- 	AFFS_TAIL(sb, new_bh)->parent = cpu_to_be32(inode->i_ino);
- 	affs_fix_checksum(sb, new_bh);
- 
--	mark_buffer_dirty_inode(new_bh, inode);
-+	mmb_mark_buffer_dirty(new_bh, &AFFS_I(inode)->i_metadata_bhs);
- 
- 	tmp = be32_to_cpu(AFFS_TAIL(sb, bh)->extension);
- 	if (tmp)
- 		affs_warning(sb, "alloc_ext", "previous extension set (%x)", tmp);
- 	AFFS_TAIL(sb, bh)->extension = cpu_to_be32(blocknr);
- 	affs_adjust_checksum(bh, blocknr - tmp);
--	mark_buffer_dirty_inode(bh, inode);
-+	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 
- 	AFFS_I(inode)->i_extcnt++;
- 	mark_inode_dirty(inode);
-@@ -581,7 +581,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
- 		memset(AFFS_DATA(bh) + boff, 0, tmp);
- 		be32_add_cpu(&AFFS_DATA_HEAD(bh)->size, tmp);
- 		affs_fix_checksum(sb, bh);
--		mark_buffer_dirty_inode(bh, inode);
-+		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 		size += tmp;
- 		bidx++;
- 	} else if (bidx) {
-@@ -603,7 +603,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
- 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
- 		affs_fix_checksum(sb, bh);
- 		bh->b_state &= ~(1UL << BH_New);
--		mark_buffer_dirty_inode(bh, inode);
-+		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 		if (prev_bh) {
- 			u32 tmp_next = be32_to_cpu(AFFS_DATA_HEAD(prev_bh)->next);
- 
-@@ -613,7 +613,8 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
- 					     bidx, tmp_next);
- 			AFFS_DATA_HEAD(prev_bh)->next = cpu_to_be32(bh->b_blocknr);
- 			affs_adjust_checksum(prev_bh, bh->b_blocknr - tmp_next);
--			mark_buffer_dirty_inode(prev_bh, inode);
-+			mmb_mark_buffer_dirty(prev_bh,
-+					      &AFFS_I(inode)->i_metadata_bhs);
- 			affs_brelse(prev_bh);
- 		}
- 		size += bsize;
-@@ -732,7 +733,7 @@ static int affs_write_end_ofs(const struct kiocb *iocb,
- 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(
- 			max(boff + tmp, be32_to_cpu(AFFS_DATA_HEAD(bh)->size)));
- 		affs_fix_checksum(sb, bh);
--		mark_buffer_dirty_inode(bh, inode);
-+		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 		written += tmp;
- 		from += tmp;
- 		bidx++;
-@@ -765,12 +766,13 @@ static int affs_write_end_ofs(const struct kiocb *iocb,
- 						     bidx, tmp_next);
- 				AFFS_DATA_HEAD(prev_bh)->next = cpu_to_be32(bh->b_blocknr);
- 				affs_adjust_checksum(prev_bh, bh->b_blocknr - tmp_next);
--				mark_buffer_dirty_inode(prev_bh, inode);
-+				mmb_mark_buffer_dirty(prev_bh,
-+					&AFFS_I(inode)->i_metadata_bhs);
- 			}
- 		}
- 		affs_brelse(prev_bh);
- 		affs_fix_checksum(sb, bh);
--		mark_buffer_dirty_inode(bh, inode);
-+		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 		written += bsize;
- 		from += bsize;
- 		bidx++;
-@@ -799,13 +801,14 @@ static int affs_write_end_ofs(const struct kiocb *iocb,
- 						     bidx, tmp_next);
- 				AFFS_DATA_HEAD(prev_bh)->next = cpu_to_be32(bh->b_blocknr);
- 				affs_adjust_checksum(prev_bh, bh->b_blocknr - tmp_next);
--				mark_buffer_dirty_inode(prev_bh, inode);
-+				mmb_mark_buffer_dirty(prev_bh,
-+						&AFFS_I(inode)->i_metadata_bhs);
- 			}
- 		} else if (be32_to_cpu(AFFS_DATA_HEAD(bh)->size) < tmp)
- 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
- 		affs_brelse(prev_bh);
- 		affs_fix_checksum(sb, bh);
--		mark_buffer_dirty_inode(bh, inode);
-+		mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 		written += tmp;
- 		from += tmp;
- 		bidx++;
-@@ -942,7 +945,7 @@ affs_truncate(struct inode *inode)
- 	}
- 	AFFS_TAIL(sb, ext_bh)->extension = 0;
- 	affs_fix_checksum(sb, ext_bh);
--	mark_buffer_dirty_inode(ext_bh, inode);
-+	mmb_mark_buffer_dirty(ext_bh, &AFFS_I(inode)->i_metadata_bhs);
- 	affs_brelse(ext_bh);
- 
- 	if (inode->i_size) {
-diff --git a/fs/affs/inode.c b/fs/affs/inode.c
-index 84afa862f220..51c71c7523a3 100644
---- a/fs/affs/inode.c
-+++ b/fs/affs/inode.c
-@@ -206,7 +206,7 @@ affs_write_inode(struct inode *inode, struct writeback_control *wbc)
- 		}
- 	}
- 	affs_fix_checksum(sb, bh);
--	mark_buffer_dirty_inode(bh, inode);
-+	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 	affs_brelse(bh);
- 	affs_free_prealloc(inode);
- 	return 0;
-@@ -268,10 +268,10 @@ affs_evict_inode(struct inode *inode)
- 		inode->i_size = 0;
- 		affs_truncate(inode);
- 	} else {
--		sync_mapping_buffers(&inode->i_data);
-+		mmb_sync(&AFFS_I(inode)->i_metadata_bhs);
- 	}
- 
--	invalidate_inode_buffers(inode);
-+	mmb_invalidate(&AFFS_I(inode)->i_metadata_bhs);
- 	clear_inode(inode);
- 	affs_free_prealloc(inode);
- 	cache_page = (unsigned long)AFFS_I(inode)->i_lc;
-@@ -306,7 +306,7 @@ affs_new_inode(struct inode *dir)
- 	bh = affs_getzeroblk(sb, block);
- 	if (!bh)
- 		goto err_bh;
--	mark_buffer_dirty_inode(bh, inode);
-+	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 	affs_brelse(bh);
- 
- 	inode->i_uid     = current_fsuid();
-@@ -394,17 +394,17 @@ affs_add_entry(struct inode *dir, struct inode *inode, struct dentry *dentry, s3
- 		AFFS_TAIL(sb, bh)->link_chain = chain;
- 		AFFS_TAIL(sb, inode_bh)->link_chain = cpu_to_be32(block);
- 		affs_adjust_checksum(inode_bh, block - be32_to_cpu(chain));
--		mark_buffer_dirty_inode(inode_bh, inode);
-+		mmb_mark_buffer_dirty(inode_bh, &AFFS_I(inode)->i_metadata_bhs);
- 		set_nlink(inode, 2);
- 		ihold(inode);
- 	}
- 	affs_fix_checksum(sb, bh);
--	mark_buffer_dirty_inode(bh, inode);
-+	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 	dentry->d_fsdata = (void *)(long)bh->b_blocknr;
- 
- 	affs_lock_dir(dir);
- 	retval = affs_insert_hash(dir, bh);
--	mark_buffer_dirty_inode(bh, inode);
-+	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 	affs_unlock_dir(dir);
- 	affs_unlock_link(inode);
- 
-diff --git a/fs/affs/namei.c b/fs/affs/namei.c
-index f883be50db12..23d00d85cf21 100644
---- a/fs/affs/namei.c
-+++ b/fs/affs/namei.c
-@@ -373,7 +373,7 @@ affs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 	}
- 	*p = 0;
- 	inode->i_size = i + 1;
--	mark_buffer_dirty_inode(bh, inode);
-+	mmb_mark_buffer_dirty(bh, &AFFS_I(inode)->i_metadata_bhs);
- 	affs_brelse(bh);
- 	mark_inode_dirty(inode);
- 
-@@ -443,7 +443,8 @@ affs_rename(struct inode *old_dir, struct dentry *old_dentry,
- 	/* TODO: move it back to old_dir, if error? */
- 
- done:
--	mark_buffer_dirty_inode(bh, retval ? old_dir : new_dir);
-+	mmb_mark_buffer_dirty(bh,
-+			&AFFS_I(retval ? old_dir : new_dir)->i_metadata_bhs);
- 	affs_brelse(bh);
- 	return retval;
+-	return fsync_buffers_list(&buffer_mapping->i_private_lock,
+-					&mapping->i_private_list);
++	blk_start_plug(&plug);
++
++	spin_lock(&buffer_mapping->i_private_lock);
++	while (!list_empty(&mapping->i_private_list)) {
++		bh = BH_ENTRY(mapping->i_private_list.next);
++		WARN_ON_ONCE(bh->b_assoc_map != mapping);
++		__remove_assoc_queue(bh);
++		/* Avoid race with mark_buffer_dirty_inode() which does
++		 * a lockless check and we rely on seeing the dirty bit */
++		smp_mb();
++		if (buffer_dirty(bh) || buffer_locked(bh)) {
++			list_add(&bh->b_assoc_buffers, &tmp);
++			bh->b_assoc_map = mapping;
++			if (buffer_dirty(bh)) {
++				get_bh(bh);
++				spin_unlock(&buffer_mapping->i_private_lock);
++				/*
++				 * Ensure any pending I/O completes so that
++				 * write_dirty_buffer() actually writes the
++				 * current contents - it is a noop if I/O is
++				 * still in flight on potentially older
++				 * contents.
++				 */
++				write_dirty_buffer(bh, REQ_SYNC);
++
++				/*
++				 * Kick off IO for the previous mapping. Note
++				 * that we will not run the very last mapping,
++				 * wait_on_buffer() will do that for us
++				 * through sync_buffer().
++				 */
++				brelse(bh);
++				spin_lock(&buffer_mapping->i_private_lock);
++			}
++		}
++	}
++
++	spin_unlock(&buffer_mapping->i_private_lock);
++	blk_finish_plug(&plug);
++	spin_lock(&buffer_mapping->i_private_lock);
++
++	while (!list_empty(&tmp)) {
++		bh = BH_ENTRY(tmp.prev);
++		get_bh(bh);
++		__remove_assoc_queue(bh);
++		/* Avoid race with mark_buffer_dirty_inode() which does
++		 * a lockless check and we rely on seeing the dirty bit */
++		smp_mb();
++		if (buffer_dirty(bh)) {
++			list_add(&bh->b_assoc_buffers,
++				 &mapping->i_private_list);
++			bh->b_assoc_map = mapping;
++		}
++		spin_unlock(&buffer_mapping->i_private_lock);
++		wait_on_buffer(bh);
++		if (!buffer_uptodate(bh))
++			err = -EIO;
++		brelse(bh);
++		spin_lock(&buffer_mapping->i_private_lock);
++	}
++	spin_unlock(&buffer_mapping->i_private_lock);
++	return err;
  }
-@@ -496,8 +497,8 @@ affs_xrename(struct inode *old_dir, struct dentry *old_dentry,
- 	retval = affs_insert_hash(old_dir, bh_new);
- 	affs_unlock_dir(old_dir);
- done:
--	mark_buffer_dirty_inode(bh_old, new_dir);
--	mark_buffer_dirty_inode(bh_new, old_dir);
-+	mmb_mark_buffer_dirty(bh_old, &AFFS_I(new_dir)->i_metadata_bhs);
-+	mmb_mark_buffer_dirty(bh_new, &AFFS_I(old_dir)->i_metadata_bhs);
- 	affs_brelse(bh_old);
- 	affs_brelse(bh_new);
- 	return retval;
-diff --git a/fs/affs/super.c b/fs/affs/super.c
-index 8451647f3fea..079f36e1ddec 100644
---- a/fs/affs/super.c
-+++ b/fs/affs/super.c
-@@ -108,6 +108,7 @@ static struct inode *affs_alloc_inode(struct super_block *sb)
- 	i->i_lc = NULL;
- 	i->i_ext_bh = NULL;
- 	i->i_pa_cnt = 0;
-+	mmb_init(&i->i_metadata_bhs, &i->vfs_inode.i_data);
+ EXPORT_SYMBOL(sync_mapping_buffers);
  
- 	return &i->vfs_inode;
+@@ -719,99 +792,6 @@ bool block_dirty_folio(struct address_space *mapping, struct folio *folio)
  }
+ EXPORT_SYMBOL(block_dirty_folio);
+ 
+-/*
+- * Write out and wait upon a list of buffers.
+- *
+- * We have conflicting pressures: we want to make sure that all
+- * initially dirty buffers get waited on, but that any subsequently
+- * dirtied buffers don't.  After all, we don't want fsync to last
+- * forever if somebody is actively writing to the file.
+- *
+- * Do this in two main stages: first we copy dirty buffers to a
+- * temporary inode list, queueing the writes as we go.  Then we clean
+- * up, waiting for those writes to complete.
+- * 
+- * During this second stage, any subsequent updates to the file may end
+- * up refiling the buffer on the original inode's dirty list again, so
+- * there is a chance we will end up with a buffer queued for write but
+- * not yet completed on that list.  So, as a final cleanup we go through
+- * the osync code to catch these locked, dirty buffers without requeuing
+- * any newly dirty buffers for write.
+- */
+-static int fsync_buffers_list(spinlock_t *lock, struct list_head *list)
+-{
+-	struct buffer_head *bh;
+-	struct address_space *mapping;
+-	int err = 0;
+-	struct blk_plug plug;
+-	LIST_HEAD(tmp);
+-
+-	blk_start_plug(&plug);
+-
+-	spin_lock(lock);
+-	while (!list_empty(list)) {
+-		bh = BH_ENTRY(list->next);
+-		mapping = bh->b_assoc_map;
+-		__remove_assoc_queue(bh);
+-		/* Avoid race with mark_buffer_dirty_inode() which does
+-		 * a lockless check and we rely on seeing the dirty bit */
+-		smp_mb();
+-		if (buffer_dirty(bh) || buffer_locked(bh)) {
+-			list_add(&bh->b_assoc_buffers, &tmp);
+-			bh->b_assoc_map = mapping;
+-			if (buffer_dirty(bh)) {
+-				get_bh(bh);
+-				spin_unlock(lock);
+-				/*
+-				 * Ensure any pending I/O completes so that
+-				 * write_dirty_buffer() actually writes the
+-				 * current contents - it is a noop if I/O is
+-				 * still in flight on potentially older
+-				 * contents.
+-				 */
+-				write_dirty_buffer(bh, REQ_SYNC);
+-
+-				/*
+-				 * Kick off IO for the previous mapping. Note
+-				 * that we will not run the very last mapping,
+-				 * wait_on_buffer() will do that for us
+-				 * through sync_buffer().
+-				 */
+-				brelse(bh);
+-				spin_lock(lock);
+-			}
+-		}
+-	}
+-
+-	spin_unlock(lock);
+-	blk_finish_plug(&plug);
+-	spin_lock(lock);
+-
+-	while (!list_empty(&tmp)) {
+-		bh = BH_ENTRY(tmp.prev);
+-		get_bh(bh);
+-		mapping = bh->b_assoc_map;
+-		__remove_assoc_queue(bh);
+-		/* Avoid race with mark_buffer_dirty_inode() which does
+-		 * a lockless check and we rely on seeing the dirty bit */
+-		smp_mb();
+-		if (buffer_dirty(bh)) {
+-			list_add(&bh->b_assoc_buffers,
+-				 &mapping->i_private_list);
+-			bh->b_assoc_map = mapping;
+-		}
+-		spin_unlock(lock);
+-		wait_on_buffer(bh);
+-		if (!buffer_uptodate(bh))
+-			err = -EIO;
+-		brelse(bh);
+-		spin_lock(lock);
+-	}
+-	
+-	spin_unlock(lock);
+-	return err;
+-}
+-
+ /*
+  * Invalidate any and all dirty buffers on a given inode.  We are
+  * probably unmounting the fs, but that doesn't mean we have already
 -- 
 2.51.0
 
