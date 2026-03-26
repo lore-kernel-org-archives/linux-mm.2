@@ -4,94 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF42510A3D8E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:50:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10EA710A62CB
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 13:13:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D28466B0099; Thu, 26 Mar 2026 08:50:48 -0400 (EDT)
+	id 2C27F6B0005; Thu, 26 Mar 2026 09:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD8786B00BE; Thu, 26 Mar 2026 08:50:48 -0400 (EDT)
+	id 24C9A6B0088; Thu, 26 Mar 2026 09:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEE106B00BF; Thu, 26 Mar 2026 08:50:48 -0400 (EDT)
+	id 114926B0089; Thu, 26 Mar 2026 09:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AEB3F6B0099
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:50:48 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2052EE1258
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:50:48 +0000 (UTC)
-X-FDA: 84588198576.12.F2AC5D1
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EF5516B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:13:44 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61C041B93E6
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:13:44 +0000 (UTC)
+X-FDA: 84588256368.29.8776E50
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 88DD640016
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:50:46 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tWlmJ3NV;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9A67740011
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:13:42 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tiC58gz+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774529446;
+	s=arc-20220608; t=1774530822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y0b2skFabs/4CtTsqIXgO/8OYtEkN0yf4qTcJPYv2xk=;
-	b=5/ifZ2r2UD6I9U/q2N7xDj3mbVViobsXpeEG7RA8Mj5a2f/r8e6EckO/7/MIB1L/3OrqgE
-	9fdvGswzLieN1eJKfGnCSMEWv449Y9KdqCXXgwld+i9pb7QpppRiXPRdx1csFnir81UIsJ
-	ssDMo0ITz3SYSypiIFrTNAShyu7Ati4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774529446; a=rsa-sha256;
+	bh=ryA8TK5XxONxK0fS+I8EXaf02G4wxIszdifpgZVGWTw=;
+	b=wuGEh0UBqafIcKxI433sGvF5VvXJ/WIFFAFwOgt1TysUuX4VMzX3/hS88kgEn06cAgGezP
+	SPlWQC5QGoInLNaT+4PCHiirdLx9er1HfW8immJ7gq78P94kYgM51Iai0LSeJ/1Cesiypo
+	v0hZs74vobCA0YOhvptkKColzM9llwA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774530822; a=rsa-sha256;
 	cv=none;
-	b=IH3/ftWcxOVvxj1lWD6F3QXVkOlJ6P9vKJbRp6jNhUvsaWkLdCqbKD+fJnR+/jXM9jqXGy
-	AsWSRVrUM5SJKBNCVup3qZ9m3Egzuyf9Pf2Bf/apa267WGlHY1TQTmo6kvbqiNZ6SqLrK2
-	yLlzaEQB1vxD4a1i+hSCbKXhukaoGnM=
+	b=O4WiApcqHJLy0SxIrLaYeAfYa60J9zippX4MEOGzV7cyhXgABbHdOjmtup+eQaXbwSZ30Q
+	L3gok3/IMITEt1/JeWE3jebRq2zo/UyaX+Y2GYSg8PQ74yY0kw8HBjOMZtE8uX+G/STaoC
+	TeD46oMvD5Igioh7nHeu9c94sWmwL9g=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tWlmJ3NV;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tiC58gz+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0818B60103;
-	Thu, 26 Mar 2026 12:50:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDAAC116C6;
-	Thu, 26 Mar 2026 12:50:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E1B460103;
+	Thu, 26 Mar 2026 13:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F88C19424;
+	Thu, 26 Mar 2026 13:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774529445;
-	bh=fwAwjr3dXkS6nTcvpSDPT+VLAsOlThgKRLjNtbS1y6k=;
+	s=k20201202; t=1774530821;
+	bh=RppesdMGtLvcCeXRbqBSvK537/hNj9FmRtkPlUC+DG0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tWlmJ3NVBYQN1DmR0SAmoowJKAPNPmktqBf6kIJYCdRCbtX3MfX1k7QXj22OQ/HJk
-	 vVzblWh/h3n7xlVJ6p2mbbKC6dbkQgGeF/DPTYul8tv7bktrv5NwzHH70T10OZr10a
-	 ub0W1yKFdXJN8JQKISAIsfVcZJQQ6rAiPDoglXx9qf9yUojaQbPifpPFTAKYKIKBfA
-	 W7NOzfqJKi15oT/HGhj+0vAVAuDwjg1Nm2EHiYLbfYqXh0mutwktoXyrN0TEIWzJ7m
-	 h354zUlFK2sVrxEzq/r2hmksfDzRBnQtKnb/nvb4cx0UMvHll7RdxI+JLMhr3pUbAH
-	 7/NSKUjmVmbHA==
-Date: Thu, 26 Mar 2026 12:50:40 +0000
+	b=tiC58gz+NaUzy0dkhSAVFvJ0rieCKXkEj83kW8t5GOW4pYIMWHPH/bmZB5udX3CDn
+	 dhNHc7sPEWPELCAcZy1WbT2gnXyr1kzwNHf9I/CbMHk3qgOXJGwstWU//+3XnxYg3l
+	 VX4MSeLsUl21Ek1NQkrcozZPsMaJyRjNuqXorN7nTATkCVnHTSaV+nJr7aHVKfimFt
+	 EYWCM01LbEN42OeWXfNTwNiuEFe7z3vUHuoP5Edf2tchpJ3wttooo15PIYMOPt76qE
+	 Cqp9YfoAzYyiMwB3+8jDtE84GbrC46FbS6WeRVSd1iOtjJTHjz6h8VG1pa2fXjujRT
+	 TZjhROjZ5reSA==
+Date: Thu, 26 Mar 2026 13:13:33 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Josh Law <objecting@objecting.org>, Josh Law <hlcj1234567@gmail.com>, 
-	SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>, 
-	Greg KH <gregkh@linuxfoundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
- module
-Message-ID: <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
-References: <20260326072737.341964-1-objecting@objecting.org>
- <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
- <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
- <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
- <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	lsf-pc@lists.linux-foundation.org, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, Gregory Price <gourry@gourry.net>, 
+	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, David Rientjes <rientjes@google.com>, 
+	Kalesh Singh <kaleshsingh@google.com>, wangzicheng <wangzicheng@honor.com>, 
+	"T . J . Mercier" <tjmercier@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
+ (reclaim_ext)
+Message-ID: <67f1588e-a094-413c-9746-9c28bdf6cc56@lucifer.local>
+References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+ <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
+ <acTaRgusrxfCoKqe@tiehlicka>
+ <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
+ <CAMgjq7B_twv3xhd5VmMJxngAknf9YaLAiwGYpdi6H2n1cXD3-A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: pjojg7ze6pjwj4fad9w68n8cukuh9c1p
-X-Rspamd-Queue-Id: 88DD640016
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7B_twv3xhd5VmMJxngAknf9YaLAiwGYpdi6H2n1cXD3-A@mail.gmail.com>
+X-Rspamd-Queue-Id: 9A67740011
+X-Stat-Signature: op5phmxomggmdd8gw79sr5kn7obmgkc1
 X-Rspam-User: 
-X-HE-Tag: 1774529446-513491
-X-HE-Meta: U2FsdGVkX18oSgUOZv/7ev6jlP4tfZSeoP3MIEwJJsxSwFeyN0cAVKkfAtBFGpAlxR4jZud2qYEqhF7AuxBAvDHByDMlFIIO/6hUtcLpcNedMGiIbslNLvSZ5QFJevwonJXvkhgFzM9+5joq5mbB/PDYQS2drsHdWsvEDxfsB8PhGOEDu1FWscFl6KaYDajsDO8Afyq049xFHyJ1+aggs+yoDBfy2AHmPDjobOu4GGUc9vtt5lRoVzv7DSTRlpYG15jDswy51cvixnh8rnxmrhQl+K0YfNMSSYokrxK+JJkC5xs92/zO79JFjwOpUXyTY18Y8PR1cZnUl3RWlyUAlfDvSObq9r+Q/efow+PdA8iJvOLsyROBNBTp0e/Gjh1T+/Qe0Q1Q0cU0lHQMfZp/DiQyypJnDNC4U77xrjEh8G3gXlerMOMrl3hwwHhUpWyvw0F0oRD1X90XKeAmn+ywhF/IKt9qeGxepewoR1pufX2qB9Ehb5VlVwPzR2DOeDxYAiDeUfEtyftr+r1SiwRzQ58KgRFIX0oaD0pa147Y13omO8hEmQ5JBLEsMkbobaVnCgaDXPCCMFLCkOE39x7/wK3iAwNKgyM8lR2vIM6BtD3XtjgKokEycryHz6rVtUuUd19heunS6s0hOsWhQxAXyGhypKnTlB8ml4k3d4igHDvRxOVKo8gNZyGllGH5z0lVLqmsNWHvDHEvQkTXdTro1TStKN7rHE9EzQMZ/XhG+wjpT7BnnxNsxh87wLBP6b5GTD1KkQOflc0tLZNu2SeVNbq9BmNE863G4haU7BhqNBnS7U7G9C2cgDE5/gjAw4bLshl6aLtOCFKuSqIV0v9KXf99ZuiNz7QSFhVOaLDiupe+juCUZ3R4rdQ56k/wDcA+mZvRY7JEnHAp2AXn397nzq3cdyPPJXfEB2sF1jQbtN0TxqEdggEwkGXARTQ1ThiMK9sej24uWMoKe5mW69s
- ygIbGKIu
- l56gzOqph51M3H6anJ9eh+2UIzRQfuKT0Tb8iBXZVETfn9tQzNsOBZ2VoDWPtVjYvZw+ef3R/YARky8/gdYmsEpnt8EVCR7jQdkkGkU6pcc8alvYPVc6cl29CYRYNKkPaa153npOTHUMK7rifZxrvl9yHUMl7r/QMlLhHz7ebUByp8xRdhU0Hlfnk7boCc+ib+u6jgHlR6Pzurpafi+Bfy+47Jeyk2Y76l6UfIajR02Q++6T7s/klFy4mPmlCeGxddgDpgzgIqHZjLCLjULK/fKKBZOcCOH0EHQLBs0FNEyeeKqha+bzwBUi37xpJwrDcSTS0
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774530822-587791
+X-HE-Meta: U2FsdGVkX1879iRq40UNetPEEEZunzTcyHTPLEC7BU+AWCYf0x2qioH86nJlgLnDtj1I5nMVtUh026yUZz46CD2xMqD7awqDjXKBuESPVt/MACwSX6yT6lriNtDsHo5E5KaPD80WcPljgULjWRXkhGD0Jse/VLzUVJvDtgTENpvBGijPQUfxqu9LD9h1BSv2XSfKrVZTzaZGxJmbErtNyb6YWu4FAV6IZsRauj2VxmaOsua9AO9PrBkeZCZGv1q/LR+VexFXqKlpAkiwlcPHdZ+432/niOyFECsoid1neaD2ITa/YObGb7C51m2/UttzTyvTdY4N+TUBWDtY973LM9Pox9u2X6HXkkeemH6ls/XaLI4+WKX1bfyDnU+/M2vo4Gkawp1j24js3hR2WXrWMB6NAZLbmnOZu6N0DCZKtArto5nCPMvIU2TuIzWjSSBmTkIWjo7Zyy4aPeZwMYhrIUIPc/kAOi9sX8SsLY6uQ9jkZX5RgoWf7KfxC/XzBwogTk3bFI3gLrOXifj973g1ljukab0TTHUO7Cvj7DAVxyMreX+KItcVsI54wOMcz/wMplZK+9prLKCRtK7NlHEvCdUEKd5E6SYd8Dl8ylye2/DS5VTbeHA/QAi+kG2rblM1E+t9KSDXv+bTjHnoFsZ9KZ9Akqw4+cILVO9SAKC87nLv452Un5mMnPMGRvT9Xl/ZidJz8xlVWcagXm+j1yd9FhwiXgmSBOdoYQvYr6UePNhkKn4s9tHDd/+FhzXVj5PoQvU6tSFINqPzUwV/hpoAOjrQcDnswKtdNW+jlXqNp3WtuUDzWA7+xQN27gEEHutOID6CNfZFdU9dnpmEpwpfqggLbQ8LkkTdXGLASy1Ew0IdBgNKxuXaYJa9p2h/17bPjF4m8k27Jw7TCXYuyNlFZ7ErwmrOWPEQ3GosaXp3P3T7pSsaAa4fsBcANKN3IkZP6oNRnQ9Yi3lfb5xh34P
+ EzWHxPTI
+ mFx+EFqnJrlQkCiymdfi6/9dRhVO8nmiuawFGIg/2J8m58hfDZPjmkNiVFXPOi18zAjk9ookptyb+VVSF5hA3jvcZG2A9FA82vpLYMcSGIfFXywGXalloW374cE2VpGyP3/j4hqS5/4LE5/1SRebvoHytuSeym1qX2vVFJyvZ/yJmgS8YN4oxGlw7DScR6Lb1gvW6ZK0Wai3Eapr2HeGE9MTtSsGtymTipsDocYsk7hmbepjasWffCLp3A/96Yqgx53jkwaz5Ibe5M9TlAmgNurro1/XW/OE0skr90AD8fK7OlRqSQeKXGOW5nB2Maugyji0gjCODk23Na5fMCnCnIdhZGsFsJGAJ+xt1b2GUoaPof8gX1IvnOcmcunmvaara0yVZVLuFbexx7iQjUjTKgEV3gvo0M0tD7Hs9clNaaAGYfIqCqe0UX+ApMUlUa2mA+B66jdKYV8eKvUiuP2ogZRLUGRtTyQ8YGHCkVOnwzAAE/Jho0JKv4pRmiBBPtniFKsv2sbxb+zDS7VkIrecTCU82Flp9bBEwu9bwmwv2XTUxzDr7risMMPc70Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,84 +109,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 01:40:19PM +0100, Krzysztof Kozlowski wrote:
-> On 26/03/2026 13:29, Lorenzo Stoakes (Oracle) wrote:
-> >>
-> >> Answering to reviewers with whatever confirmation they look for is also
-> >> a warning sign of non-trustworthy behavior. Or rather behavior trying to
-> >> get trust.
-> >>
-> >> [1]
-> >> https://lore.kernel.org/all/D47F8215-FD08-45ED-AB01-0A5C48CD41DD@objecting.org/
-> >>
-> >> [2]
-> >> https://lore.kernel.org/all/2F84DD09-2880-45E0-AA98-204F10848F85@objecting.org/
-> >>
-> >> Best regards,
-> >> Krzysztof
+On Thu, Mar 26, 2026 at 08:37:06PM +0800, Kairui Song wrote:
+> On Thu, Mar 26, 2026 at 4:02 PM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
 > >
-> > Yeah this is really adding up to somebody abusing the kernel process. I think
-> > 'Josh Law' or any other pseudonym that can be traced back to whoever's behind
-> > this should be banned from the mailing list altogether.
+> > On Thu, Mar 26, 2026 at 08:03:34AM +0100, Michal Hocko wrote:
+> > > On Wed 25-03-26 19:05:47, Andrew Morton wrote:
+> > > > On Wed, 25 Mar 2026 14:06:37 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > > >
+> > > > > We should unify both algorithms into a single code path.
+> > > >
+> > > > I'm here to ask the questions which others fear will sound dumb.
+> > >
+> > > Not dumb at all and recently discussed here https://lore.kernel.org/all/CAMgjq7AkYOtUL2HuZjBu5dJw=RTL7W2L1+zVv=SCOyHKYwc3AA@mail.gmail.com/T/#u
+> > >
+> > > > Is it indeed the plan to maintain both implementations?  I thought the
+> > > > long-term ambition was to knock MGLRU into shape and to drop the legacy LRU?
+> > >
+> > > Yes, but MGLRU is not there yet and with development pace last year or
+> > > so we are not much closer than at the time MGLRU has been merged
+> > > unfortunatelly.
 > >
-> > Also, as per Christian ([3]), it seems this guy was using the pseudonym
-> > "techyguyperplexable".
->
-> Yes, repos on that Github carry commits like:
->
-> commit c04af501bacbef54cf97cdfb904ddf295f8327c1
-> Author:     techyguyperplexable <objecting@objecting.org>
-> AuthorDate: Sun Jan 11 04:21:53 2026 +0530
-> Commit:     techyguyperplexable <objecting@objecting.org>
-> CommitDate: Sun Jan 11 04:21:53 2026 +0530
->
->     ANDROID: sched/rt: reduce lock hold time in update_curr_rt
->
->     Move resched_curr and do_start_rt_bandwidth outside the spinlock
->     critical section to reduce lock contention
->
->     Change-Id: I8dfb4e33460ae4eeb0bb854cc2cb084ab5edf7e4
->     Signed-off-by: techyguyperplexable <objecting@objecting.org>
->
-
-Thanks, it looks pretty clear cut then that 'Josh Law' is an openclaw bot.
-
-To think he was scheduled to be added as a reviewer for literally all of lib/
-recently (5) until various of us pushed back on it :/
-
-[5]: https://lore.kernel.org/all/20260308202425.C9EE4C116C6@smtp.kernel.org/
-
-Is it really that easy to game the system?...
-
-I hate the asymmetry of this - we have to jump on these every time and they can
-send WAY more mail than we can reasonably reply to.
-
-I think we need a clear 'yeeting' mechanism to block these people on everything
-once discovered.
-
-Sadly the kernel has been historically very poor on getting rid of problem
-people (The CoC is essentially a swear monitor at this stage).
-
-In the face of this new kind of threat we probably need to do a lot better.
-
+> > I'm quite concerned about maintainership, as it seems the MGLRU maintainers have
+> > not been all that active, and the MGLRU to me at least is currently a black box.
 > >
-> > There's a github with the same name ([4]), and that same user made a comment on an
-> > openclaw issue relating to linking it to gemini ([5]).
+> > I'm not the only one who's raised this (see [0]).
 > >
-> > So it seems likely he/she is likely using openclaw to fully automate this 'Josh
-> > Law' user and we're speaking to a bot here.
+> > That'd very much have to be resolved and the community reassured that MGLRU is
+> > _actively_ maintained before we could even contemplate it replacing the
+> > 'classic' reclaim approach IMO.
 > >
-> > (Screenshots have been taken for the (possibly inevitable) deleting that will
-> > happen later.)
-> >
-> > [3]:https://lore.kernel.org/all/20260313-halskette-annahme-94e782eb4ae4@brauner/
-> > [4]:https://github.com/techyguyperplexable
-> > [5]:https://github.com/openclaw/openclaw/issues/44134#issuecomment-4106247302
+> > I hope that Kairu, Barry, Zicheng and others who are interested int it resolve
+> > this, however!
 >
+> Hi everyone,
 >
+> Right, I think we are starting to make good progress on improving
+> MGLRU recently. For the last few years we already have some commits
+> stashed downstream to enable that on our fleet, most of my effort in
+> upstream is spent on other parts like SWAP, really looking forward to
+> making MGLRU better upstreamly.
 >
-> Best regards,
-> Krzysztof
+> Yesterday I was still discussing with CachyOS folks about their usage
+> while working on that series for MGLRU cleanup and dirty flush
+> optimization, and got some nice feedback later from their chat server
+> that MGLRU's TTL resolved their thrashing issue very well. With
+> classic LRU they needed a le9 patch downtreamly.
+>
+> For many other typical workloads under stress, MGLRU performs
+> significantly better too (e.g. database, build kernel could be more
+> than twice as fast), it would be a huge loss to leave it unmaintained.
+>
+> Barry also provided some really helpful ideas about MGLRU like
+> readahead handling. We are also seeing other vendors and people
+> contributing to MGLRU like Leno and Baolin recently. Things are
+> looking promising.
+
+Guys, can I please make a plea then for you guys to AT LEAST become
+reviewers in MAINTAINERS please:
+
+MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+M:	Andrew Morton <akpm@linux-foundation.org>
+
+Well Andrew is Andrew :)
+
+M:	Axel Rasmussen <axelrasmussen@google.com>
+
+git log mm/vmscan.c has 0 results.
+
+Axel has however engaged in discussion on
+https://lore.kernel.org/linux-mm/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com/
+recently for example, but not much in 2025 afaict.
+
+M:	Yuanchu Xie <yuanchu@google.com>
+
+git log mm/vmscan.c shows 1 result from August 13th 2024.
+
+Yuanchu has engaged in some MGLRU discussion also recently, here and there.
+
+R:	Wei Xu <weixugc@google.com>
+
+git log mm/vmscan.c shows 2 results from October 2024.
+
+Wei doesn't look to have engaged in discussion on MGLRU recently.
+
+L:	linux-mm@kvack.org
+S:	Maintained
+W:	http://www.linux-mm.org
+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+F:	Documentation/admin-guide/mm/multigen_lru.rst
+F:	Documentation/mm/multigen_lru.rst
+F:	include/linux/mm_inline.h
+F:	include/linux/mmzone.h
+F:	mm/swap.c
+F:	mm/vmscan.c
+F:	mm/workingset.c
+
+It doesn't really feel like MGLRU is currently maintained at all, quite
+honestly.
+
+So I think we need people to step up here.
 
 Thanks, Lorenzo
 
