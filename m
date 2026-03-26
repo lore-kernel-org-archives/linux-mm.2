@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CE8110A1E63
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 10:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A3E710A1E64
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 10:47:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF6AA6B013A; Thu, 26 Mar 2026 06:44:58 -0400 (EDT)
+	id 989126B013C; Thu, 26 Mar 2026 06:47:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCED66B013B; Thu, 26 Mar 2026 06:44:58 -0400 (EDT)
+	id 939806B013D; Thu, 26 Mar 2026 06:47:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0B0E6B013C; Thu, 26 Mar 2026 06:44:58 -0400 (EDT)
+	id 84F5C6B013E; Thu, 26 Mar 2026 06:47:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FE626B013A
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:44:58 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7669D6B013C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:47:01 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 537755C45D
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:44:58 +0000 (UTC)
-X-FDA: 84587881476.09.E7F0DB1
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13E441B9321
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:47:01 +0000 (UTC)
+X-FDA: 84587886642.09.B0881D8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AA1004000F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:44:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oZaElY+x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774521896; a=rsa-sha256;
-	cv=none;
-	b=Wh7AW4CUpX7w6tQorz4ddEBtewDrTx3KMb+wy/w6wx3Rg9fXEJVjNBHYQR4rOP9lzz1yjg
-	TDzkSHsWX5SuENTiv6MG1GZh6HR/xurOXjfGGGCPamR96w9uGGTzHvxEtODs8t6LdYk3ny
-	VbP62jQulwbFui4cMveX4oCvrDmuC9M=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oZaElY+x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5CA5418000B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:46:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uouhDF4Q;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774521896;
+	s=arc-20220608; t=1774522019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bo2WuRtmRS8Z86c0o/7IVvpIgFBSmwSYlo7KDlda+NI=;
-	b=YdqeuqabZtzMj2SANoBwCFWo4e5g1hpiPJtQeEl1ZUMMuriTNM9vuzg7W8G6pLqE/TECgm
-	UXAOD5nCg3tgCYA6iOCqLuKjT+vLIHIDn2dD2EC5oMkiG+HBvaqJh3bfqx11JzkInMF0qs
-	B+pVzW0ojHotkLhi8WoCkmzCzqIujpo=
+	bh=9KWyP7k8xCjeo6QZkYLluIOVg6pijIJ6pG+T5hYCQxs=;
+	b=h7yA5PFCDW7CuiJRc8kn3H6/Rf1d+A+jv2TzOl1h2VrByUwgc/TRxPOu0tWdipGs4Fm2+C
+	TSxEFdvvHNwBnVh7c8+FONNcpEOaZSu08ubdC3HswgidedMyqjilZx3zSW1C8BySDKwWR/
+	7w7+IUz5swo2u99jjm1M898ois5lhR4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774522019; a=rsa-sha256;
+	cv=none;
+	b=2YpKCp2Vs6W/+JGtS02iTAeMgC5fHQ7E49U8pfHsFclV8eKTlcH2SGmfML1IkrE4Z7spd8
+	vw8a4u/GrrLRZ4wZ7u2x/c+BTyi/z2WcZ1ncQsAbTfLUQ40ayvvD8z3f2KY/dPzQhY+vmQ
+	XqFCcTusks1yEEDQTGgbRaJhCgWyCAc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uouhDF4Q;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 21E9D60103;
-	Thu, 26 Mar 2026 10:44:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3B6C116C6;
-	Thu, 26 Mar 2026 10:44:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C369960053;
+	Thu, 26 Mar 2026 10:46:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E84C19423;
+	Thu, 26 Mar 2026 10:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774521895;
-	bh=RpHr2+xHkvht2/Kh3sSH7GYvx2wP6yqls3YE2NUO0rs=;
+	s=k20201202; t=1774522018;
+	bh=jz4QKqDvyuc0OVYL41YLkI+2R+GPNLQTDLA2i1KuuD8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oZaElY+xwfixyAcqHZhLjm1kzqhHtlPlUH7GKOTLKXANwHDqMaG1z6XwK+kEQeLOE
-	 SYtBHHg37QOb54eq+UD8GrKX9hQ+eyixSzkh57jRU/1t5ChhlFDoLNFrhlvAUfv7T6
-	 sZWCKLLb7jN89LctiPPnWlgN5y78Qjx+/QHgsyWC0CQN+IMFUPMFgtvHlpiyUt+V5w
-	 LeoibiKN4Zw4L9hawiOfwt1apacVFOXRxXyuXI0ZqDVTae+0tk1tn7+8FIAI0IkO+2
-	 USwrP2P6UszCTljgKzyfk42RQc6SWYWgX+jwYahwV6HqPPop4F/WNeF9Jm9BcDKhq/
-	 SWL3RmCPKNuZQ==
-Message-ID: <0b479256-1266-4c9c-a565-6e2a68573ddd@kernel.org>
-Date: Thu, 26 Mar 2026 11:44:45 +0100
+	b=uouhDF4Qa318/Z9nX9Ws4mHmW4Xj1lUe3ecVX69vddoTww6TykXBFcfxzgLsjsVUr
+	 uKEecElGaHwHYwRB5sfVpD/OA8X8sVBjVkid9cXNQoz/6KSifPhScJyeqBMrEDo8oX
+	 kXSsXRIlElj4UylHMzwh3I8/YWYRmOgzn/Fvk8BThWe7Ed5I2HEPkk2q0o6tM260d/
+	 VEgQAHNg8pmhJezXZ4OK7g48WOO1fuI9Upi7y7U9026H/AmdcAXA4lLqumD439oT/M
+	 Pzl4dym+ApN3Z6gmLabe7ExmLvPanhPpcuvksSt4QNF6HwEvXMWbKjIEqggYMGlpNw
+	 iwwZm3ig9pXBA==
+Message-ID: <171549fc-8d65-41d8-9343-7fcaeeda25b1@kernel.org>
+Date: Thu, 26 Mar 2026 11:46:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 20/21] mm: add mmap_action_map_kernel_pages[_full]()
+Subject: Re: [PATCH v4 21/21] mm: on remap assert that input range within the
+ proposed VMA
 Content-Language: en-US
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -101,19 +102,19 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Clemens Ladisch <clemens@ladisch.de>,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  Ryan Roberts <ryan.roberts@arm.com>
 References: <cover.1774045440.git.ljs@kernel.org>
- <926ac961690d856e67ec847bee2370ab3c6b9046.1774045440.git.ljs@kernel.org>
+ <0fc1092f4b74f3f673a58e4e3942dc83f336dd85.1774045440.git.ljs@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <926ac961690d856e67ec847bee2370ab3c6b9046.1774045440.git.ljs@kernel.org>
+In-Reply-To: <0fc1092f4b74f3f673a58e4e3942dc83f336dd85.1774045440.git.ljs@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AA1004000F
-X-Stat-Signature: oj5568sj5zj44rgws51mjdjp5gzftunc
+X-Rspamd-Server: rspam12
+X-Stat-Signature: m3do1md7w7f4h1mjbd5z1ixujab9pj6t
+X-Rspamd-Queue-Id: 5CA5418000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774521896-224869
-X-HE-Meta: U2FsdGVkX18eiHB9VbTd+kxb3p2PGXcTOWa5S83DHaQZcNG0XQ1iNnSfya8e8TzvMpN1wieQbYHSyftEjdYTxharvERqoSIyIxgvjyk5wjlEjoVzu4wjojgw/9LxoYxceTVi0iL6TOIxFAUrOxv7/b8jxWwiH3xOILxJlv9ef63MZ6zHcrjb/T6Tr/Tj8/XzyG1Yz2c2uj848OkDl5RPoCrffDZ6NdOmspWlFYKpZ/Q8FQIkIWpYqtQRARhP5XGQ0d6OF6MRkOtz/aI6dr27TP8SsOzNptR3qvLimfle0UeQqdXzxiohRlplRUf/hEtiuC15coay/MAWnHBfqhkG0gUzeAdNuO9osF3ZRzYITdAciT9el01BMt/y18KWEhKPlETYkbLZfPOy5pYB5a6C4HMnOojcA1HCG/gxauzP6mh/PJjojbHH70DylrwlhR62M9uoJ50XR6Tfx2rbzBQdBd/JwS4E1atdow9D85xtj5SmNatH3IpBKnLwsI0oNE7MxyhxLG4RFc5MWDlF6GQYFtH0tCMXb7EBkUKlDXG1p6U75wrgw7N2Xg/Qqv+QbzNbI2ooDR/tgkpZHp3f1OlWBk42MN7K5RkCcZzSPUXz3RxHrhr3NCu8ViVbU+4o0hWn9pcMHDSLNZlxrNrC7qLr+zvUpMrQWcRVJLvK+wxisLKFhQAAvWlj7TtMiFss0jabNzCI7/9iFSJv6EfWcH/JSaWC1nZayPWOIsqCG4BSkmpt8bVT+h1feqzzPDc7UCt8t+J036chGbFQ3/ktnFb2GnsBj+Vc+WuCc3gH2m6wagC4VdCiu8WGQiB+41gOtzzSYlmFDgb2rVhsiHiYLE3jKOpN9wDaqoGf35ly0C8+FJ/BFgV2Yenxc9sn77CufZHOvWQR7fpXWp3XSTzMQmx8IoswxMQdbz7yEPXxoQ1dJ2LVZtXYZoMgVgslQO1Fc4qbGZNIA7y7aiRKnxs7miw
- ek3wog/Z
- zm+Fqd5wPKq0BNUm6PH6uGnHi9RZ8XzFtouza7aMFaqP0KVISDtEHQtdRgfCf7SmVi/IwBbNSyEP1lqc3mwS6NmVxPuaH4dnhVNM8hiBZ1Zd8yU6j4HudEJXt9CbKUD+dhWEDuW8PRBBJubzXxl4tdFQlwq2Uc9U3k7ma3pfxC/Rxl1TgaWu7RtHi6ZhCeeqH9tOl3lnm5z9VYH2RX6gPFL0ZkZQUBejYalYd1EapXYmyT2DTi4q6Tr3Kk0svshiWKWgpH1g4B/equ1IVHtH6/I3oYRhLzQbGcaAOTqPGJl2tGzBVfrUeJsyYePk0XoOH58iP+daYhheJ12dz3oMXIZIwfhEzNDUqmsxIlUD/ZwcXVPUasjn8k+elFNNQsTBLfT4UVZlI84MVmbTjSmlXlZw8Q51E6pDWbQg5gakQIgUfiao=
+X-HE-Tag: 1774522019-955188
+X-HE-Meta: U2FsdGVkX19H2eKmAX77i1kLmsQ99jqadkIR6GkQghmdflOMXcdYMaOgfNeIv73E+TDT2Ah7zyHNzHwVgbhbtgbAk2hFYm1vqVBOt21tX0Ie4LscQxO/fqBrAJK0SPMRTLmd0Cs2ThUcbF1JnHhFxYlckGumlOWLgVkKrqY0gxfEd4dpvqRM4nNr5YSM6puiuKKosukKh1+ILQJ5giMad+bY3WI0qxRKS3N56vlei7M9DXs22uUX/kNo4I7BPv7C1mhYsqHE2H/qjWSUKVVV/GFbSzbsguNxKMhLws/AyNMLLiQ7cSfR39n0wp4PAdKUXbAFu+yT13ciFkyLHncPR05j59ng5HFJ73xdzq3l7WRpopAwWSIZ+UZV/T/bwEb7Kq43P20mqsfFFqHsf6vwzvoAobwhQLnqs5gkhh71+T67N9pN+XIQmCQmjOHlehOS1PnJcxHOsyBHXfjpaJjoxDNztiMOvbqYPIfS7gISCTSkMQSRf1BKN8Soxm9qsr9cHIbrMzUHi5ljvVGFFgjSeufKpWApycMI2I/IP/fTvKXNGXTGd0z1r8+h0jm388sOQqFcXJfiEJwOZq/0igyXbryTgbIVyhAzvtUN04mIJfRc3fGOLWinF85Qpfo+4vrQnujrnhqYcyESEfIR4ET/EtaYaD4qY/5FnOY6rE2jJkWBo6ue6i/vtmSUibK9Vc3NpFfiIWvBld2vDInY4wICsaBQs+8dOIHyFe+3e/uCVsdp3MZQVX8E84AA1izcGaoai7NJE2HdH7eaWW70qp0CZVb/Lg7mmB6IxpgV2j3BfVsVOPS8E+SE4gN9j/MQf0vf8p5z1bzchIqmakItRjjSyMPw2bLmvaok5LdZSeyeZN0+cTn0KQZXhyF9G1E441TxeCnf/TEftjzIhm2364hiaI8qa74GK/YKtwZsRLigS76dklsWyKHvZTQxwOkOXocj9AedWmrADmGRfUfQQMO
+ ViVn5zVI
+ tEJy3NkTixPBRJG/bJ9MA9Os+a3ja/zcOvzZarU4VAnxa4KdOIpPD/otVgeG16rNCBXST9tJuq+LA8X2ngh6uxAzLLky8PSlRiu7dqoU95SyVAu1l24IDUVsGS2IAI0XSNl0ppDXDtcqIO/dMttJYiPUIc5AH0Ewzhtzg5M1pf9G+uVkjHA+s+eORDw5qtlWp+lWSmJC44arN/EksEkS1GeA1ObOghsNGjFBEPutJjGGiyYWm+lOqQHmGqibRp04dn0q0ajC0Dv1v05yv4Rp8BKYS7GXuhD+VPpq+dyeueS7KL1hLeGJwvPZeFZe5MtkwBPsCbkRJ9dvhkPtzZl20vb7k4jYNHEi70iM3gwTdb1BZhnQTqrzGI4LSvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,31 +123,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/20/26 23:39, Lorenzo Stoakes (Oracle) wrote:
-> A user can invoke mmap_action_map_kernel_pages() to specify that the
-> mapping should map kernel pages starting from desc->start of a specified
-> number of pages specified in an array.
+> Now we have range_in_vma_desc(), update remap_pfn_range_prepare() to check
+> whether the input range in contained within the specified VMA, so we can
+> fail at prepare time if an invalid range is specified.
 > 
-> In order to implement this, adjust mmap_action_prepare() to be able to
-> return an error code, as it makes sense to assert that the specified
-> parameters are valid as quickly as possible as well as updating the VMA
-> flags to include VMA_MIXEDMAP_BIT as necessary.
-> 
-> This provides an mmap_prepare equivalent of vm_insert_pages().  We
-> additionally update the existing vm_insert_pages() code to use
-> range_in_vma() and add a new range_in_vma_desc() helper function for the
-> mmap_prepare case, sharing the code between the two in range_is_subset().
-> 
-> We add both mmap_action_map_kernel_pages() and
-> mmap_action_map_kernel_pages_full() to allow for both partial and full VMA
-> mappings.
-> 
-> We update the documentation to reflect the new features.
-> 
-> Finally, we update the VMA tests accordingly to reflect the changes.
+> This covers the I/O remap mmap actions also which ultimately call into
+> this function, and other mmap action types either already span the full
+> VMA or check this already.
 > 
 > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+> ---
+>  mm/memory.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 53ef8ef3d04a..68cc592ff0ba 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -3142,6 +3142,9 @@ int remap_pfn_range_prepare(struct vm_area_desc *desc)
+>  	const bool is_cow = vma_desc_is_cow_mapping(desc);
+>  	int err;
+>  
+> +	if (!range_in_vma_desc(desc, start, end))
+> +		return -EFAULT;
+> +
+>  	err = get_remap_pgoff(is_cow, start, end, desc->start, desc->end, pfn,
+>  			      &desc->pgoff);
+>  	if (err)
 
 
