@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D920106F315
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 712F8106F315
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:56:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 348306B0108; Thu, 26 Mar 2026 05:56:40 -0400 (EDT)
+	id 03C416B0114; Thu, 26 Mar 2026 05:56:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AB176B010C; Thu, 26 Mar 2026 05:56:40 -0400 (EDT)
+	id E1AE76B0112; Thu, 26 Mar 2026 05:56:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12AEE6B0108; Thu, 26 Mar 2026 05:56:40 -0400 (EDT)
+	id C70166B0115; Thu, 26 Mar 2026 05:56:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 01FEF6B0108
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:56:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4DF55CA1E
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:39 +0000 (UTC)
-X-FDA: 84587759718.20.AA17B0D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A456B6B0111
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:56:45 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 73A498CE25
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:45 +0000 (UTC)
+X-FDA: 84587759970.18.3BB1326
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9ACEB1A0002
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gdvbDLim;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PfdLa6dF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gdvbDLim;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PfdLa6dF;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2F14640002
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:56:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yjkZaXGO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XKCdYjPu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yjkZaXGO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XKCdYjPu;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gdvbDLim;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PfdLa6dF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gdvbDLim;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PfdLa6dF;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518997; a=rsa-sha256;
-	cv=none;
-	b=kSxkUvo4d4wzbXpF+vjWk7NHf0ktl81c8qOVa7Yhu9HQ7nGnAY57xFp7vZFirExGAKsDZd
-	MfiD9T+PI5QA0PpH2jXzaVBHnMLqdsjLxVSs2xfKn6Aw0E7I+MyDYn+YZvapQossJVZVzW
-	7CBxJVLRBg9HTPz8E1cR7Pb95uAiP0U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774518997;
+	s=arc-20220608; t=1774519003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ODd+/BQuyhT8bHEtYfURB336X+kzedB6XCVQ0zG+0Q=;
-	b=cWuuFE53H4AGXHY2Rhuq3AS8PufLMEdgw5tPFC4rLPZT728QC4cAl0vWT824mV92ZltPQw
-	5OZVc+SgnlFPPKDdgTOGg5kHZ08Ns5uqXrT6SW9tgsnDO8MvUJOe1C9Y5eYE3MAkenAYkh
-	Gm6OIq6OgYaD3/wCEYAEhXeeeReHgU8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=Cm90rdUlWxy4QnRmbQ6DrHQpjRNXGV5jhYymyeB6abI=;
+	b=z0NJux3a8WZWGYpobErGprRMvEpNvAtm6weiF08CvF2oo7jbrYBjjWPQ1E2A1EsiDcO+aM
+	w8AMv8gB1SNmJwWcA17p05/Z3PHCCepIoZdCcfw2FL/higK0ee1iFExkj9VENx52YkO/yx
+	vIMmkpNU5GhNhP6hMJ+0ljkgpLTr7kU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yjkZaXGO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XKCdYjPu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yjkZaXGO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XKCdYjPu;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774519003; a=rsa-sha256;
+	cv=none;
+	b=gmDmx4Xwt+txugxDNbedRLvnGVnncsiY/xgezMCcs887coaIaekA5zzHoEGWpw45a2Db2/
+	GZbpJTF8LQRVcv8dQAeN48ukFpkXokfbtdKR3IEToqPlSyI6uxqdgBRlW/OU7QfeR87Tfy
+	UDa69HEgOFjSWVOIMIeD43ZmaBuAxwI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8F7B84D297;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A79DB4D2AD;
 	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5ODd+/BQuyhT8bHEtYfURB336X+kzedB6XCVQ0zG+0Q=;
-	b=gdvbDLim8zmPCJ1qENdvp0MmM6r3GQi43VuEIXAfYLWSBgvUFl2/sxWXHIfBQ7BWi14CGR
-	mJynqjBzeNeH/1JI7XFwVet565K3IVUPnGV5gq28caXVt08myoUD7U5Q7mDZKKfAMq3e+i
-	BjMjFIYKIuhKLj2WolfG1CY6EkGZDp8=
+	bh=Cm90rdUlWxy4QnRmbQ6DrHQpjRNXGV5jhYymyeB6abI=;
+	b=yjkZaXGOf8YRShUXbyxUW7cbiFEoOK+76pi6ZrmpY0lnRn0QZQ/hgyHjpUcw1l7jrD2GqS
+	5qzct4bTvOfzLIydO+6bE0bx75qEmS8ylgIa0LgtP3M+o6/0MPgSWUpr1vgrHuf/BS6E+M
+	0xsKWDxYtCdZ1uISd/mhg1QBVEIwgK4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1774518901;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5ODd+/BQuyhT8bHEtYfURB336X+kzedB6XCVQ0zG+0Q=;
-	b=PfdLa6dFwou+oMgtLWiBAOy2A+qgmui/o6nAS046la0tD95roE5TALf8UT2o6YCLDnrRxF
-	QIoX5RoIyv4HjMDw==
+	bh=Cm90rdUlWxy4QnRmbQ6DrHQpjRNXGV5jhYymyeB6abI=;
+	b=XKCdYjPu1A+14grGsWLA549acStjCWsj38dAoJd3igr7p1zts8guCf6yPs21oSj4UnmPNV
+	2GY07oSk2Yx0nvBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5ODd+/BQuyhT8bHEtYfURB336X+kzedB6XCVQ0zG+0Q=;
-	b=gdvbDLim8zmPCJ1qENdvp0MmM6r3GQi43VuEIXAfYLWSBgvUFl2/sxWXHIfBQ7BWi14CGR
-	mJynqjBzeNeH/1JI7XFwVet565K3IVUPnGV5gq28caXVt08myoUD7U5Q7mDZKKfAMq3e+i
-	BjMjFIYKIuhKLj2WolfG1CY6EkGZDp8=
+	bh=Cm90rdUlWxy4QnRmbQ6DrHQpjRNXGV5jhYymyeB6abI=;
+	b=yjkZaXGOf8YRShUXbyxUW7cbiFEoOK+76pi6ZrmpY0lnRn0QZQ/hgyHjpUcw1l7jrD2GqS
+	5qzct4bTvOfzLIydO+6bE0bx75qEmS8ylgIa0LgtP3M+o6/0MPgSWUpr1vgrHuf/BS6E+M
+	0xsKWDxYtCdZ1uISd/mhg1QBVEIwgK4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1774518901;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5ODd+/BQuyhT8bHEtYfURB336X+kzedB6XCVQ0zG+0Q=;
-	b=PfdLa6dFwou+oMgtLWiBAOy2A+qgmui/o6nAS046la0tD95roE5TALf8UT2o6YCLDnrRxF
-	QIoX5RoIyv4HjMDw==
+	bh=Cm90rdUlWxy4QnRmbQ6DrHQpjRNXGV5jhYymyeB6abI=;
+	b=XKCdYjPu1A+14grGsWLA549acStjCWsj38dAoJd3igr7p1zts8guCf6yPs21oSj4UnmPNV
+	2GY07oSk2Yx0nvBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E0874A0B0;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D2B14A0A8;
 	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id h+K7HnUCxWn0YAAAD6G6ig
+	id zwBeJnUCxWkBYQAAD6G6ig
 	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 09:55:01 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 97080A0C76; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
+	id E0CECA0C80; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -124,27 +124,25 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-mm@kvack.org,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
-	Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 32/42] fs: Switch inode_has_buffers() to take mapping_metadata_bhs
-Date: Thu, 26 Mar 2026 10:54:26 +0100
-Message-ID: <20260326095354.16340-74-jack@suse.cz>
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 40/42] ext4: Track metadata bhs in fs-private inode part
+Date: Thu, 26 Mar 2026 10:54:34 +0100
+Message-ID: <20260326095354.16340-82-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260326082428.31660-1-jack@suse.cz>
 References: <20260326082428.31660-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3280; i=jack@suse.cz; h=from:subject; bh=yQzIvf4IB3KCZ27coMo8m+PRy4c1M06bgmEFrRfpbxc=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJNbu/pv8bkd4PZg8zqmg70c36DeVE2rB1// 9M/4qC8tfCJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCTQAKCRCcnaoHP2RA 2Z9QCADHHaVkGq0kXrFvkP8hslPwOUIRrl9p2Gkxk7M1eJyfkVbVHmtur5um1W9DvtWvPywIdd6 h1GwzQQJ19H7+B6eXVuMsKXKCSAz81iT6a+Gq8AFolFzURTztYi/+BeGLncyQisl2oFQ5h7LwqI ONlwwc5UX/bGGu5wP5bMgJwU7TDvTRV0Kcir+61ycd1DKemUsz6n+cGg3NsGnyM/sA4zhA1vTZ4 1j16uIlXMGBvWrk07JNgF/m1IfiMccUczNjkgQH/R1L6/JD4kw9zfoMEoFm8+VrpKE4ecsMLAwH IQMXrs+S1J7ZTbwWe9TdmEHQbg4m8AGU8l/glaaGCUw5MtTV
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3926; i=jack@suse.cz; h=from:subject; bh=9xBH/IqErKiIiNqWXJjy809lW/6/4LgxYE6Bk76CpFo=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJUDID/ZAUL5XAy2UizNNky/Yki15nrbCzj2 38rMkVQuT6JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCVAAKCRCcnaoHP2RA 2Q2WB/9Y928g9eFz58LRsc7RHaB+gGxibmuIx9F4zAB0qmKEX9gGTCMxnwDKNE/J7SLaANuTjQ+ wvjW0OF0ds2gDehs56OIrYWGMpaBdqvzevym1o7KzaxxETjrgxj30OVGsWktpoyVFa0LBkvi84q n0cJ7AOIx0+nhwv9zXYIdX4mzhNjaym5qZXiK6zx4+mHr0O5Zimy0L4O2BdnnXCRcVZZAMhDHc8 xnlbnSIgtS7bC1QYftSWEnHPj/futMxcn/hV0gk4ovjAi/4bUHeTn+xXzbAJk2k9GA4jJ+skwcN MZdLjqeBm6eOr8AIIdhljKhyPfNmFfyqCVnQxyj0YDx77YIF
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9ACEB1A0002
-X-Stat-Signature: geapaswa1qwnsag5oco8tmgt93cs5tbo
 X-Rspam-User: 
-X-HE-Tag: 1774518997-484207
-X-HE-Meta: U2FsdGVkX18Z7uWfsBSNyDV/nUwmZ3qLCcA3docwm8pLakGsOtL4I9Q7ot+iE8xBysLZlYdNEmbpOoz4HPmAx7laQiD1iHFeNmRqFRU3Ko/N+uRI3FOHPBpPL0gcYRMiYbLAZuw8mI4pGODicNHTCb9wjRHtr5e9XYE5zEdrc+X2A5ETt6yGQ6PFOmJUz19AJ+UnYx1oknDgZF5SpRtYUqL3/+t6fGuX66uqln6QZw1np8Cjdrhevvi1IHemC49TRLj5jU6S91z9r+JA7PG7hctIIdWO18M+KQORs7mawt1o+C8PZ1xrGLGzY2OfZi6QoS3Az33I4vqCTks5Quw3a5s4/IROSiC/XixhdIx++yigiFXzMzQIoK37WJ4YuaxdC5S4OWpE0hfOkxech98brf4+wKvGYzQ456sTnMD6gc375JkTeVR1e9m7F8Ayfehawu3hHvJB9XTgzVZcHA2Iwl/e29H+di8YKb+i9QKaQG1RwXHCmgXL9LSyN770tvcwvdYke/uUqDgZyYqqmKT1wVp1e9ZOU80X6CBF8QVJY7lKfomMYSBoRZu9LHAzisHYgV51dJIDUREY/A7CTwfbZUmA9gb6WxJPC1NYsnFRBx0xtJt9DM/C9YnnXXce+AKgm3AqA9sp2NIBtNPiERFA/+gee2i+/uphbQbKlUnlnx4IES6JnPYltHViYLG4RM6++QQqJ5a0Jnm3C1MvxRN/NSafwO4uFCqmQ3ysC4Pgj17zsw/jGktvQXm1f7c3d+HIPyDK6plYzp3V3jSTPQrorPA83dA7yY5CRvh6igimbUfNHx4gwGwhQnZlpp4HgL9RbjUuzykVF0Ac6pOcekRIYAKVP57DXw0pUVV6jTazJpzqLrGlGIwPIkmENz7YPF9R2RSVb8QVfo8LcSHhZFt8mEGOWF+abnl3d5+mOBteOJw4MPAsioI+c3m3qipORNBIxGVGm/x0hryPmg2Lnvj
- RXt5kw/I
- Al2BRJ87Vd1jlKb0sY+WAObhKGOlWA4ciifdhdXV8dbmhk3Q=
+X-Stat-Signature: sb7ctz1drab8iy58hwsaz41qucj5z7cg
+X-Rspamd-Queue-Id: 2F14640002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774519002-138003
+X-HE-Meta: U2FsdGVkX1/MbQeZtRiQviv+Gxy7IQd2XZCnOg7D/kc4oLfssloec7a+NLkQj+hHr/Cl9155WU3NV1LmeA16wrBFUNOAKF0/iTsAv6S0vb0YZ/TfpST6wfX0fZpAO3IGqw4jT+KH2iJ3JNk74o/d5KpA0NAoE242yurbRoj0/2Ry9t1s0uBXTIEQDB4XIlwB9Cy4+iUzYhbb96I25P3GPBFvRLFKIJcxbD8nJHMYrCQzlHaQis1B+ZeawyTihGtUXBJdqNhl3m7eMMLQJUuYu2Att8SZN1iyWJ3ujnsQ8a+JS180jyWpzvdsyrT1xJ3gwCbDeG85n/0mdPjLBnPCMX2DFHUIjafUNBqEHYYs53lK2AsL3ccWjvAUqVVJ+2m6H6+YAxDVejDK5Q/ImYAO+jDglMN73VyxAoIH3x2JrUMfqnSoB4Jh4mBgzhJR3XVIYpn3Zma0uQtZI9m/5epxRiZ6WHzaJnON1x0PUHHfIsEEfC8rTs61+Wkw6yBCDHh0LzR6IJPabOYD6buxw0vN19ACedSGMlln0+NOxapzQl6/BqhfkgxF2zQSlXcXwpwVsyGyjr/aApkmlDpFugw6bXIz+A6drvmMQ3dPWidkQCC4c09vOMXsx4TgNSdKB8Yg4rN9JNn6HlRGTDG2H3IqiSt9UBWBbGHfdZ8LrJHGFRvKGCqpPfYgU/NHSWFae5c+gLW/oTuRBbY9c8MUEvPLk2vXxmspkhvkrL3fLYoloLV+fAnUvn0bUTfxbLl6jA/wNwwe47Rc3XLFwsXYe5M0IQZ29MTcWlvyrW5GhR0bAxa2bETGG0L/3RP0FfWXg2sBDMTTksZicTLHdpOswThJtJgP7jjkdI1kU4IjoZ7lHYGgsXk1UKT16WZ+HqvQ1q1LgOPlF7qvOYea+42LM9wOEvetEtTfhA8cYxXn1Cu5aU6MAp9bwFdMYTCg5NNV3Y14R3xPcwN8dQiWvU/E8gk
+ QXZX6fJm
+ BLvJmQq/t4b7MJld1KNi4uQ1aX5RhTsRXn4gRGsRonzbDle8tTQ2WyOPTnZC+0WX77UAXTAk2Ns21GjK3bQGnKBZX5OayL23X2M8b3//LtZHbgsPROmGQNPR1uhbYEJpjH4E/dRHUpP6XdHNqJdZNfYs6AsrZK3818UxwuxXrwc76BNYQGABCx9xm2V83vxqqKSJBNnchIML4TzOX8jh2qqTZEWYpLq43o+KznhIsv+Fsd1q7ZH8WRryLYsDyAvDYdheIVPcAUmweB1OeIfK4Xmnc5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,93 +150,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As part of a move towards placing mapping_metadata_bhs in fs-private
-inode part, switch inode_has_buffers() to take mapping_metadata_bhs
-and rename the function to mmb_has_buffers().
+Track metadata bhs for an inode in fs-private part of the inode. We need
+the tracking only for nojournal mode so this is somewhat wasteful. We
+can relatively easily make the mapping_metadata_bhs struct dynamically
+allocated similarly to how we treat jbd2_inode but let's leave that for
+ext4 specific series once the dust settles a bit.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/buffer.c                 | 14 +++++++-------
- fs/ext4/inode.c             |  2 +-
- include/linux/buffer_head.h |  2 +-
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ fs/ext4/ext4.h      | 1 +
+ fs/ext4/ext4_jbd2.c | 3 ++-
+ fs/ext4/fsync.c     | 5 +++--
+ fs/ext4/inode.c     | 4 ++--
+ fs/ext4/super.c     | 3 ++-
+ 5 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 67b3d4624503..b0436481d0f1 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -468,7 +468,7 @@ EXPORT_SYMBOL(mark_buffer_async_write);
-  * written back and waited upon before fsync() returns.
-  *
-  * The functions mark_buffer_dirty_inode(), fsync_inode_buffers(),
-- * inode_has_buffers() and invalidate_inode_buffers() are provided for the
-+ * mmb_has_buffers() and invalidate_inode_buffers() are provided for the
-  * management of a list of dependent buffers in mapping_metadata_bhs struct.
-  *
-  * The locking is a little subtle: The list of buffer heads is protected by
-@@ -526,11 +526,11 @@ static void remove_assoc_queue(struct buffer_head *bh)
- 	}
- }
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 293f698b7042..8df3617fd0e7 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1121,6 +1121,7 @@ struct ext4_inode_info {
+ 	struct rw_semaphore i_data_sem;
+ 	struct inode vfs_inode;
+ 	struct jbd2_inode *jinode;
++	struct mapping_metadata_bhs i_metadata_bhs;
  
--int inode_has_buffers(struct inode *inode)
-+bool mmb_has_buffers(struct mapping_metadata_bhs *mmb)
- {
--	return !list_empty(&inode->i_data.i_metadata_bhs.list);
-+	return !list_empty(&mmb->list);
- }
--EXPORT_SYMBOL_GPL(inode_has_buffers);
-+EXPORT_SYMBOL_GPL(mmb_has_buffers);
+ 	/*
+ 	 * File creation time. Its function is same as that of
+diff --git a/fs/ext4/ext4_jbd2.c b/fs/ext4/ext4_jbd2.c
+index 05e5946ed9b3..9a8c225f2753 100644
+--- a/fs/ext4/ext4_jbd2.c
++++ b/fs/ext4/ext4_jbd2.c
+@@ -390,7 +390,8 @@ int __ext4_handle_dirty_metadata(const char *where, unsigned int line,
+ 		}
+ 	} else {
+ 		if (inode)
+-			mark_buffer_dirty_inode(bh, inode);
++			mmb_mark_buffer_dirty(bh,
++					      &EXT4_I(inode)->i_metadata_bhs);
+ 		else
+ 			mark_buffer_dirty(bh);
+ 		if (inode && inode_needs_sync(inode)) {
+diff --git a/fs/ext4/fsync.c b/fs/ext4/fsync.c
+index e476c6de3074..aa80af2b4eea 100644
+--- a/fs/ext4/fsync.c
++++ b/fs/ext4/fsync.c
+@@ -68,7 +68,7 @@ static int ext4_sync_parent(struct inode *inode)
+ 		 * through ext4_evict_inode()) and so we are safe to flush
+ 		 * metadata blocks and the inode.
+ 		 */
+-		ret = sync_mapping_buffers(inode->i_mapping);
++		ret = mmb_sync(&EXT4_I(inode)->i_metadata_bhs);
+ 		if (ret)
+ 			break;
+ 		ret = sync_inode_metadata(inode, 1);
+@@ -85,7 +85,8 @@ static int ext4_fsync_nojournal(struct file *file, loff_t start, loff_t end,
+ 	struct inode *inode = file->f_inode;
+ 	int ret;
  
- /**
-  * sync_mapping_buffers - write out & wait upon a mapping's "associated" buffers
-@@ -561,7 +561,7 @@ int sync_mapping_buffers(struct address_space *mapping)
- 	struct blk_plug plug;
- 	LIST_HEAD(tmp);
- 
--	if (list_empty(&mmb->list))
-+	if (!mmb_has_buffers(mmb))
- 		return 0;
- 
- 	blk_start_plug(&plug);
-@@ -803,9 +803,9 @@ EXPORT_SYMBOL(block_dirty_folio);
-  */
- void invalidate_inode_buffers(struct inode *inode)
- {
--	if (inode_has_buffers(inode)) {
--		struct mapping_metadata_bhs *mmb = &inode->i_data.i_metadata_bhs;
-+	struct mapping_metadata_bhs *mmb = &inode->i_data.i_metadata_bhs;
- 
-+	if (mmb_has_buffers(mmb)) {
- 		spin_lock(&mmb->lock);
- 		while (!list_empty(&mmb->list))
- 			__remove_assoc_queue(mmb, BH_ENTRY(mmb->list.next));
+-	ret = generic_buffers_fsync_noflush(file, start, end, datasync);
++	ret = mmb_fsync_noflush(file, &EXT4_I(inode)->i_metadata_bhs,
++				start, end, datasync);
+ 	if (!ret)
+ 		ret = ext4_sync_parent(inode);
+ 	if (test_opt(inode->i_sb, BARRIER))
 diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 6f892abef003..011cb2eb16a2 100644
+index 011cb2eb16a2..c9fd1d17b492 100644
 --- a/fs/ext4/inode.c
 +++ b/fs/ext4/inode.c
+@@ -187,7 +187,7 @@ void ext4_evict_inode(struct inode *inode)
+ 		truncate_inode_pages_final(&inode->i_data);
+ 		/* Avoid mballoc special inode which has no proper iops */
+ 		if (!EXT4_SB(inode->i_sb)->s_journal)
+-			sync_mapping_buffers(&inode->i_data);
++			mmb_sync(&EXT4_I(inode)->i_metadata_bhs);
+ 		goto no_delete;
+ 	}
+ 
 @@ -3436,7 +3436,7 @@ static bool ext4_inode_datasync_dirty(struct inode *inode)
  	}
  
  	/* Any metadata buffers to write? */
--	if (inode_has_buffers(inode))
-+	if (mmb_has_buffers(&inode->i_mapping->i_metadata_bhs))
+-	if (mmb_has_buffers(&inode->i_mapping->i_metadata_bhs))
++	if (mmb_has_buffers(&EXT4_I(inode)->i_metadata_bhs))
  		return true;
  	return inode_state_read_once(inode) & I_DIRTY_DATASYNC;
  }
-diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
-index 20636599d858..44094fd476f5 100644
---- a/include/linux/buffer_head.h
-+++ b/include/linux/buffer_head.h
-@@ -515,7 +515,7 @@ bool block_dirty_folio(struct address_space *mapping, struct folio *folio);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index ea827b0ecc8d..31f787a65fac 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1428,6 +1428,7 @@ static struct inode *ext4_alloc_inode(struct super_block *sb)
+ 	INIT_WORK(&ei->i_rsv_conversion_work, ext4_end_io_rsv_work);
+ 	ext4_fc_init_inode(&ei->vfs_inode);
+ 	spin_lock_init(&ei->i_fc_lock);
++	mmb_init(&ei->i_metadata_bhs, &ei->vfs_inode.i_data);
+ 	return &ei->vfs_inode;
+ }
  
- void buffer_init(void);
- bool try_to_free_buffers(struct folio *folio);
--int inode_has_buffers(struct inode *inode);
-+bool mmb_has_buffers(struct mapping_metadata_bhs *mmb);
- void invalidate_inode_buffers(struct inode *inode);
- int sync_mapping_buffers(struct address_space *mapping);
- void invalidate_bh_lrus(void);
+@@ -1525,7 +1526,7 @@ void ext4_clear_inode(struct inode *inode)
+ {
+ 	ext4_fc_del(inode);
+ 	if (!EXT4_SB(inode->i_sb)->s_journal)
+-		invalidate_inode_buffers(inode);
++		mmb_invalidate(&EXT4_I(inode)->i_metadata_bhs);
+ 	clear_inode(inode);
+ 	ext4_discard_preallocations(inode);
+ 	ext4_es_remove_extent(inode, 0, EXT_MAX_BLOCKS);
 -- 
 2.51.0
 
