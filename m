@@ -4,137 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B99410A3D80
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:12:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B226B10A3D85
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:21:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8F7B6B00AE; Thu, 26 Mar 2026 08:12:11 -0400 (EDT)
+	id E0DB16B0089; Thu, 26 Mar 2026 08:21:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B402B6B00B1; Thu, 26 Mar 2026 08:12:11 -0400 (EDT)
+	id D97AE6B0092; Thu, 26 Mar 2026 08:21:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2EDB6B00B3; Thu, 26 Mar 2026 08:12:11 -0400 (EDT)
+	id C5F526B0098; Thu, 26 Mar 2026 08:21:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E6B76B00AE
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:12:11 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 38C2B1A095F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:12:11 +0000 (UTC)
-X-FDA: 84588101262.24.4AA2CBE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5AA684000C
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:12:09 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f2NPtvnQ;
-	spf=pass (imf11.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B1B4D6B0089
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:21:11 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E7BE13C1F0
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:21:11 +0000 (UTC)
+X-FDA: 84588123942.19.860AD0B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B7680100010
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:21:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DlZFydda;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774527129;
+	s=arc-20220608; t=1774527669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zqGfbNl30NSapuxDl6F6achIWjPcAOkI3q+zHc+HotE=;
-	b=zI9zA00tGfe8URLjLu4IXF7+fksYXRI7ODd/sf5DzvsahLU98e0oUS5sZjKhXfOgEuYx5d
-	TtNVe5IWwoHI4xROR+skRhUnZC2DoVUXfvRnPSj/pqZnh1g79EI7oJ64axTA5U9OR54vRR
-	pSi04ZTWr2uYFueKYRCmsA1r/2s0Z8E=
+	bh=yeTKFSFJOWv+jUMLZH9EXEKrxiBZkbfEw9C8d3m6DLY=;
+	b=WUnJ1I3eqNAagM/gCb7ckezvOVtpGxpa2HILGgT4G/IFrtBtRUmz0FJl4li9gS/oW0IV40
+	bjjNlnvd95J//1Ago/goi9d3snYpjPQxana0Mb1O3qqqZnTYea6aiqV5oAptiHMzlEJHpD
+	7pyipo3e7tOnrDv8Nf8DnGasCvPKgKg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f2NPtvnQ;
-	spf=pass (imf11.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DlZFydda;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774527129; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774527669; a=rsa-sha256;
 	cv=none;
-	b=wPDiNz2V+giScX1RJaHa6kMM4yLmDHGZy8HrdywXtTfOFwLajb8SBFggJUHPjnpExwqGEV
-	d7upFX3Aii3+bbA83PdhgLfZ0UD6IWIKvnS1E84VOtDgqI+ZjbDQbylRYHx0Fqt37qPBgc
-	qSYi0O+FcsycMSKFq2B1sgB9beIxGvk=
+	b=m2KhWe5BekEkRHS2bCw+RXzQPsoNdfa1ohSrfxEbjaXY/y4g2NyNOFWlbFqFMOdYVu0djM
+	S0fFWoXmOrpjBsmeKusTOSpdbL7FqBTOol0y3FXGADdQeMIR9eKhQSVPmTAi0hUvnP+mw2
+	qF7f2tSRchvzze0BI9ApAMoBNVSKnGE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 739A544233;
-	Thu, 26 Mar 2026 12:12:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE17C116C6;
-	Thu, 26 Mar 2026 12:12:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 064876011F;
+	Thu, 26 Mar 2026 12:21:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54763C116C6;
+	Thu, 26 Mar 2026 12:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774527128;
-	bh=GaoPImR0X0ioFmaoaToA4myk9U0YdNsMsVeE2CapRSo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f2NPtvnQXFwqudU1WmHW2/RX98/e5740Zc3kpalBsO0rznuOvLs43E/vF/dsq1Hwp
-	 x82BfDnSCbVj/UE9JJeVqP/ORgTH4WU7w19kl4iWMX8DliLjdUxoYgfSnZf4XzxGnK
-	 wbKD/gF3aC7ajt54ErRFBCKRMqk4OzUAEY+bWR3WFFEztBF4pXXmI+DdTsiuaYt9oL
-	 JnHRoSpoMuAMpr+BtDwkeWwVSZwxlNeG8JQWHNeflLf3xGo2PIVJriGbu0QBGtD7uL
-	 8NertDYo5N3pZCYN/kwygA2m66N7wr5sBQdtAJ/3u1fWGvqAsm0i8SUdYa8J22+1SZ
-	 GKRh8BS2sOIRA==
-Message-ID: <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
-Date: Thu, 26 Mar 2026 13:12:03 +0100
+	s=k20201202; t=1774527668;
+	bh=9LLTIJ5RmSQfF+WpjdmZswjGncAvaFsJ4VCdRZA4Z2U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DlZFyddazkJNNpKXRChaUwVejKLEoXdMer7QNWJHeQLjhtSZXy1JPqYKYtBdOE+ZQ
+	 4kv5B3Ir6yhLJ39DwxdE6X3nYjTcbo57sfFVrQCqH8G8IglL51z3pnXsj9GfmB2gk8
+	 4gTn9EFlhjH/BYy0OKf+5l0aqbWwvaHBoj5EaYVuvzQXkycIS650YFtU+jJWRn/bms
+	 gMacOo8K156uNy+HkXJa9XG5VBZBnraqXO8dP+8fCaNlOiR4RQJTROZmB5IIT727MM
+	 j2wlg/id/LUkVYM0nfiHg2WPacB2+SpWn2QzEqJYKFFaQc+pKk2KrsAJp61NL2V+od
+	 hqPB3UKVTIwhw==
+Date: Thu, 26 Mar 2026 12:21:02 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org, catalin.marinas@arm.com, 
+	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
+	willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the
+ references for large folios
+Message-ID: <5b1c0687-a4e4-4a95-8e8f-2d2ce171247c@lucifer.local>
+References: <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
+ <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
+ <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
+ <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
+ <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
+ <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
+ <e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
+ <bfd282b1-523d-4945-97a0-ec30fe1df577@linux.alibaba.com>
+ <a0181a7c-d191-483d-bbc9-678bc355a984@lucifer.local>
+ <aef474b9-5286-46f4-99d2-43d0b85f7176@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
- module
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Josh Law <objecting@objecting.org>, Josh Law <hlcj1234567@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-References: <20260326072737.341964-1-objecting@objecting.org>
- <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aef474b9-5286-46f4-99d2-43d0b85f7176@linux.alibaba.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5AA684000C
-X-Stat-Signature: ntzsfwr3oz1s3xwcbjskwco599xw5fdx
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774527129-781707
-X-HE-Meta: U2FsdGVkX1/gLJj+uQ6FKUIro7NLqedJEC7IKQxGbWg1lP2W79qvCt4rcKd4Ry6uv6naqZAWzS8vTvVbhuNpJcamR0KDqhs03GXag302JbBjjFUwh39iIabJQhMma6CQAtCklh12hHyRtB+EdJyXtIygk7wmjgcafytH/45qQlGharbE69JgKW4EAv0tRM2xs0XluE+qBhvdy909BTRsZDW+Ih9NUTIPkBV1vgaCtgpoj2eSgK1q3S+7Y7Zqc4uqe+9M4zAJ7WIG7vgqA/sIlN/xGMSDId+hPIZ0fUAN4E+92WsyM4KC0Ol3VlTtz/wUuN0tasdLthNZJCCxsML0ewTqnyiwIv4U26c8PEDMaFctSpw8mUYkN6QXgJV+NRvfvDN/ewtC1/MgWNKmkHjgmeMP267N5DxYL+/+5x6ea5ZTLWfe8++muy0UUoKSwUNzuBpbsZZODoL9j8gdgWNIgGoU3r56+ADVQmvmLfvApaSCVNrUKvg2y6zr+oQZfBAywuRX3BzPedzY658teLFQ7U9kTPN7lbgv+v2XZH0s4CzthAZgfz+5FZSEiJPyYmib+LvQqpL9bgjV+VDTUnMVGGxXFdMje1ezzwBcb9UvqXCYvH4mGAi8vbInWYVdsCHZNMXgIrRAXOAJ/T6EIygBEE/Jq+UKI/GSL0hs12JojyC3POLZRoCglF5dX0RvSol8mlaXErPrvqwn/75wOeyDR7xcJDdmfllyzLYXQzocQ1p5SL9vEG4NYpapKkuruY+6Lznt0Qrivn2b5VB7br5xITwibi3sxb8UUMhkR5OJp3OXSKiDLpAgrHNDEFRcN1AtAcCJcx9EyqVVTBf4lBtLrThtLpf5OoRv8/RW+3756qpWC2jTSfBNc99JzIj7+aJnbd29bBf1BvEHj8eK3hhlkBXSFZ4qMcvl3JZ0YykQRenran8rKPVtLnWxc5BCCqG2nftv2ANpu8KFq6ARLpZ
- b239b09o
- Kpcf4Yy2kaTTyVk4tmDhN9RlZxHqdWHKBEcxRr9fwCkjFtTHOigE2i0wiU91EkSL8Ay3W9hlayuTTeIEjsfdnmEgrjJyoKI46UavLhhRYlCVI7vj60tilAm2uhTJcZqMAKDlwCnxDISMVRv2GtEqf4MleOjW7CGoqquHrm8Bb+41a7GxrTogpC4HJuxEeYyeCW+t8rC04s6QPwlO1ZD3sSnQXJO2Y4GUsXh197FdmRNMx3T4DPn67DxIt47MVWUEQlKOd2LWMuzmbp5mtqTcMcySz9M5yb1OJcLPLOiywFtvo/08y9pru9h3fD21V41QXwGxEEfGrobkOQKOHI8BQrArpDFEUKhoBvJe1HH/Lfb/ki2Xas7eC2o2+pinwZbnZo96nGKEMkLQ9TSooivpgzDBiSyfljw84eLk2ObXz8CSgZ+5UoilYjKDYaYaAHW779hO/
+X-Stat-Signature: 97gpnc61ye6oeug5qmm86fhb38acf3nw
+X-Rspamd-Queue-Id: B7680100010
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774527669-607761
+X-HE-Meta: U2FsdGVkX1+PrCS1Tu7fCzGBJhQJaxboBEwvYfOupBCuNXZhsUfM81kZm936Y2q2MtNhFW0jqD/yFMAHRLN7DVPRiR8yppQV6BM2YwzHxOP3CR8XIjEinu1vzlnkO726UaViLEHr7admI1XON+O19NgHFtNUEsob2SvCI3YGFMUGLxtSYyEKcA4qI8lz1EybN4+ruAFdZ9Pt5XjX1nxX76dZxWIN4eipoEJM1yZenv9RnOnxONhntFdl5wttDWCxtl3FurDAuHxPWH74Y6i8X7ZVPW1OZnAZqCQomj0jazSMcEf3FblPV0kcmDKDgfd3a934VjSM4dOEEpgWpc/qqx28QA2nMWeMZE35xHcg9/F3yWPyRvSwNbciGCuHl+dVXTUDtONoP/evkvdAwGRyvHsH3PQOyKup/G4Erb3As6NcBTMWwekUmQr61G8wldNM3zUOn37N4lfOGOmcxZ5VLhU6gYIsSw04WuPWKiu/fiKaWN3uuSNtL8ShmwbEFYbrgXVJKHx38w6tNJwLuJ/fReYA3qjHYnIgZ56hFTSEomeso0rcPAnQ0UBYaj6LBwjyDGw7j/0xX5K5dfgd0VG2vw6NSrNi6szGSJx4TBpAABZB9b5CeX2q0Nw8RDfUZQSVDdgjl5kz8aIYa8QDTQrHqby1KY88N39HjF3+ZBS/HlTJ6/EQTAnKrRKI03n9ifDnUc7MK6vHWZ/9bqxSkScZBFW8qdyTN2D96d6de/Egzo6wQJCODRSQXAhHJovcq7YsrClOpWGQLI5KDP69AEIyRmYam8GfqHnMk6Vhio/Bz9mHeh8TTFvn8wwiWz2Lif52didml0X+XGMnFywQRXc+2+ImQM+3cgUFomuOXi3b6z6edVZ6LEMZ+zF3yurwgDPUvVniUnluX3k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,115 +105,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/03/2026 11:34, Lorenzo Stoakes (Oracle) wrote:
+On Thu, Mar 26, 2026 at 08:04:10PM +0800, Baolin Wang wrote:
+>
+>
+> On 3/26/26 7:10 PM, Lorenzo Stoakes (Oracle) wrote:
+> > On Thu, Mar 26, 2026 at 09:47:51AM +0800, Baolin Wang wrote:
+> > >
+> > >
+> > > On 3/25/26 11:06 PM, Lorenzo Stoakes (Oracle) wrote:
+> > > > On Wed, Mar 25, 2026 at 03:58:36PM +0100, David Hildenbrand (Arm) wrote:
+> > > > > On 3/25/26 15:36, Lorenzo Stoakes (Oracle) wrote:
+> > > > > > On Mon, Mar 16, 2026 at 03:15:18PM +0100, David Hildenbrand (Arm) wrote:
+> > > > > > > On 3/16/26 07:25, Baolin Wang wrote:
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > Sure. However, after investigating RISC‑V and x86, I found that
+> > > > > > > > ptep_clear_flush_young() does not flush the TLB on these architectures:
+> > > > > > > >
+> > > > > > > > int ptep_clear_flush_young(struct vm_area_struct *vma,
+> > > > > > > >                  unsigned long address, pte_t *ptep)
+> > > > > > > > {
+> > > > > > > >       /*
+> > > > > > > >        * On x86 CPUs, clearing the accessed bit without a TLB flush
+> > > > > > > >        * doesn't cause data corruption. [ It could cause incorrect
+> > > > > > > >        * page aging and the (mistaken) reclaim of hot pages, but the
+> > > > > > > >        * chance of that should be relatively low. ]
+> > > > > > > >        *
+> > > > > > > >        * So as a performance optimization don't flush the TLB when
+> > > > > > > >        * clearing the accessed bit, it will eventually be flushed by
+> > > > > > > >        * a context switch or a VM operation anyway. [ In the rare
+> > > > > > > >        * event of it not getting flushed for a long time the delay
+> > > > > > > >        * shouldn't really matter because there's no real memory
+> > > > > > > >        * pressure for swapout to react to. ]
+> > > > > > > >        */
+> > > > > > > >       return ptep_test_and_clear_young(vma, address, ptep);
+> > > > > > > > }
+> > > > > > >
+> > > > > > > You'd probably want an arch helper then, that tells you whether
+> > > > > > > a flush_tlb_range() after ptep_test_and_clear_young() is required.
+> > > > > > >
+> > > > > > > Or some special flush_tlb_range() helper.
+> > > > > > >
+> > > > > > > I agree that it requires more work.
+> > >
+> > > (Sorry, David. I forgot to reply to your email because I've had a lot to
+> > > sort out recently.)
+> > >
+> > > Rather than adding more arch helpers (we already have plenty for the young
+> > > flag check), I think we should try removing the TLB flush, as I mentioned to
+> > > Barry[1]. MGLRU reclaim already skips the TLB flush, and it seems to work
+> > > fine. What do you think?
+> > >
+> > > Here are our previous attempts to remove the TLB flush:
+> > >
+> > > My patch: https://lkml.org/lkml/2023/10/24/533
+> > > Barry's patch:
+> > > https://lore.kernel.org/lkml/20220617070555.344368-1-21cnbao@gmail.com/
+> > >
+> > > [1] https://lore.kernel.org/all/6bdc4b03-9631-4717-a3fa-2785a7930aba@linux.alibaba.com/
+> > >
+> > > > > > Sorry unclear here - does the series need more work or does a follow up patch
+> > > > > > need more work?
+> > > > >
+> > > > > Follow up!
+> > > >
+> > > > Ok good as in mm-stable now. Sadly means I don't get to review it but there we
+> > > > go.
+> > >
+> > > Actually this patchset has already been merged upstream:)
+>
+> Let me try to make things clear.
+>
+> > Err but this revision was sent _during_ the merge window...?
+> >
+> > Was sent on 9th Feb on Monday in merge window week 1, with a functional change
+> > listed:
+> >
+> > - Skip batched unmapping for uffd case, reported by Dev. Thanks.
+> >
+> > And then sent in 2nd batch on 18th Feb (see [0]).
+> >
+> > So we were ok with 1 week of 'testing' (does anybody actually test -next during
+> > the merge window? Was it even sent to -next?) for what appears to be a
+> > functional change?
+>
+> I posted v5 on Dec 26th[0], and it collected quite a few Reviewed-by tags
+> and sat in mm-unstable for testing.
+>
+> Later, Dev reported a uffd-related issue (I hope you recall that
+> discussion). I posted a fix[1] for it on Jan 16th, which Andrew accepted.
+>
+> Since then, the v5 series (plus the fix) continued to be tested in
+> mm-unstable. We kept it there mainly because David mentioned he wanted to
+> review the series, so we were waiting for his time.
+>
+> On Feb 9th, after returning from vacation, David reviewed the series
+> (thanks, David!). I replied to and addressed all his comments, then posted
+> v6 on the same day[2].
 
-Trimming context, I agree with everything said by Lorenzo, very detailed
-analysis.
+OK thanks, I see that now.
 
-> ~~~
-> ● Looking at the headers specifically:
-> 
->   Infrastructure:
-> 
->   - Mail provider: Zoho EU (zohomail.eu) — a privacy-oriented
->     EU-jurisdiction mail provider. Easy to set up anonymously.
-> 
->   - Domain: objecting.org — custom domain, no organizational affiliation,
->     no accountability chain. Anyone can register this and point MX to Zoho.
-> 
->   - Authentication: DKIM, SPF, DMARC all pass — but this only proves the
->     email came from objecting.org's Zoho setup, not who's behind it.
-> 
->   - X-Mailer: git-send-email 2.34.1 — Ubuntu 22.04 LTS default. One reply
->     had @ubuntu in the Message-ID, confirming the platform.
-> 
->   What the headers DON'T provide:
->   - No corporate or institutional email that ties to a verifiable identity
->   - No PGP/GPG signature
->   - No Signed-off-by chain from a known developer vouching for this person
-> 
->   Supply chain attack assessment:
-> 
->   This matches the threat model of automated supply chain compromise:
-> 
->   1. Patches already landed in stable — the bootconfig fixes made it into
->   6.19.10. The pipeline is working. Whatever is in those patches is now in
->   production kernels.
-> 
->   2. Trust-building pattern — the mix of real bug fixes (fd leaks,
->   unchecked returns, type issues) alongside feature additions (DAMON
->   tiering module, glob features, debugfs interface) is textbook. The small
->   fixes build reviewer trust and merge history; the features add attack
->   surface.
-> 
->   3. Volume as a weapon — 328 emails in 11 days overwhelms maintainer
->   review capacity. Maintainers like SeongJae Park (DAMON) and Masami
->   Hiramatsu (bootconfig) are now spending review cycles on AI-generated
->   submissions. Even if every patch is rejected, the reviewer's attention is
->   being consumed.
-> 
->   4. The DAMON NUMA tiering module is the most concerning submission — 409
->   lines of new kernel code that runs with kernel privileges, monitors
->   physical memory access patterns, and migrates pages between NUMA
->   nodes. If accepted, it's a significant new attack surface delivered as a
->   single commit from an unverifiable identity.
-> 
->   5. The feature additions are the real risk — bug fixes are relatively
->   easy to review (small, focused, verifiable). But glob_validate(),
->   glob_match_nocase(), the debugfs
-> 
->   BUG/WARN site lister, and the DAMON tiering module all add new code paths
->   that are much harder to exhaustively verify.
-> 
->   Bottom line: Whether the intent is malicious or not, the pattern —
->   anonymous identity, AI-generated code, industrial volume, patches already
->   in stable, mixing trust-building fixes with attack-surface-expanding
->   features — is exactly what an automated supply chain attack on the kernel
->   looks like. The 2021 University of Minnesota "Hypocrite Commits" incident
->   was a manual version of this; this appears to be the automated version at
->   scale.
-> 
-> ~~~
-> 
-> I'm hoping this is some naive attempt to try to 'contribute' to the kernel
-> rather than something more nefarious, but the seemingly sophisticated
-> tooling used makes me wonder otherwise.
-> 
-> In any case I'm deeply concerned by this.
+I still don't think we should have made any changes _during_ the merge window,
+even if they were simple code quality things.
 
+Changing patches then seems just crazy to me, as even code quality stuff can
+cause unexpected bugs, and now we're having upstream take it.
 
-This patch also targets NUMA which is quite unpopular setup for
-hobbyist. I don't have any NUMA around me for years... Even my build
-machines are not NUMA. How did you get one as a hobbyist?
+Also this speaks to -fix patches just being broken in general.
 
-Also after looking at the code style in this patch, after "reviews" [1]
-and "acks" [2] (quotes on purpose) this account gave on various patches,
-let's look what was admitted 3 weeks ago:
+If you'd just respun with the fix as a v6, then we'd know 'v6 sent on 16th Jan
+addressed this' and there'd be no isssue.
 
-https://lore.kernel.org/all/f8772114-a495-409b-a590-a9b1d8ed1d41@gmail.com/
+Now v5 isn't v5, there's v5 and something-not-v5 and to have a sense of the
+testing you have to go read a bunch of email chains.
 
-> I'm learning this Linux system day by day
+It also means change logs are now really inaccurate:
 
-So learning or adding serious code for MM for NUMA machines?
+Changes from v5:
+ - Collect reviewed tags from Ryan, Harry and David. Thanks.
+ - Fix some coding style issues (per David).
+ - Skip batched unmapping for uffd case, reported by Dev. Thanks.
 
-> I own this device ...
+And that to me means 'v5 didn't have this, v6 does'.
 
-This is about Xilinx AXIS FIFO which is an FPGA IP core. No way you have
-it. It's not popular, no easy way to get it in common embedded boards.
+And it's really hard to track timelines for testing.
 
-Even assuming if you have embedded FPGA device and work on it, the jump
-from embedded to NUMA is just stunning.
+>
+> Additionally, v6 had no functional changes compared to v5 + the fix, and it
+> mainly addressed some coding style issues pointed out by David. I also
+> discussed this with David off-list, and since there were no functional
+> changes, my expectation was that it could still make it into the merge
+> window. That is why v6 was merged.
 
-Answering to reviewers with whatever confirmation they look for is also
-a warning sign of non-trustworthy behavior. Or rather behavior trying to
-get trust.
+Yeah, we still shouldn't have taken changes to a series DURING the merge window,
+it's just crazy.
 
-[1]
-https://lore.kernel.org/all/D47F8215-FD08-45ED-AB01-0A5C48CD41DD@objecting.org/
+>
+> [0] https://lore.kernel.org/linux-mm/cover.1766631066.git.baolin.wang@linux.alibaba.com/#t
+> [1] https://lore.kernel.org/linux-mm/20260116162652.176054-1-baolin.wang@linux.alibaba.com/
+> [2] https://lore.kernel.org/all/cover.1770645603.git.baolin.wang@linux.alibaba.com/
+>
+> > And there was ongoing feedback on this and the v5 series (at [1])?
+>
+> Regarding the feedback on v5, I believe everything has been addressed.
+>
+> > This doesn't really feel sane?
+> >
+> > And now I'm confused as to whether mm-stable patches can collect tags, since
+> > presumably this was in mm-stable at the point this respin was done?
+> >
+> > Maybe I'm missing something here but this doesn't feel like a sane process?
+>
+> Andrew, David, please correct me if I've missed anything. Also, please let
+> me know if there's anything in the process that needs to be improved.
+> Thanks.
 
-[2]
-https://lore.kernel.org/all/2F84DD09-2880-45E0-AA98-204F10848F85@objecting.org/
+This isn't on you, it's about the process as a whole. We need clear rules about
+when changes will be accepted and when not.
 
-Best regards,
-Krzysztof
+And frankly I think we need to do away with fix patches as a whole based on
+this, or at least anything even vaguely non-trivial or that potentially impacts
+code.
+
+Thanks, Lorenzo
 
