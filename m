@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35372109E532
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 00:35:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0A9D109E534
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 00:38:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 776316B0089; Wed, 25 Mar 2026 20:35:27 -0400 (EDT)
+	id 1133B6B0092; Wed, 25 Mar 2026 20:38:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 727516B008C; Wed, 25 Mar 2026 20:35:27 -0400 (EDT)
+	id 09D666B0093; Wed, 25 Mar 2026 20:38:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63D3E6B0092; Wed, 25 Mar 2026 20:35:27 -0400 (EDT)
+	id ECDD76B0095; Wed, 25 Mar 2026 20:38:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 56B6A6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:35:27 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD02B8CBA5
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:35:26 +0000 (UTC)
-X-FDA: 84586345452.27.2A31F6F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2D79B40003
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:35:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLnwvxPg;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D8E696B0092
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:38:55 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F0DD1B9050
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:38:55 +0000 (UTC)
+X-FDA: 84586354230.08.8D8D510
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D700B80014
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:38:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bh8YUanE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774485325;
+	s=arc-20220608; t=1774485533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rZDowMQkOhi6AObyx1RRxhZpFD+yjMtPDc29neBxVzA=;
-	b=V83kFzy7r+W0sTnBTgtpP0UtUJUayWf7xopX3EtLzfSWLovrTHz4y+/md4uToI9r8znjfb
-	2gUEJ/uEbytIoxQFOMRNucK+28Oxs5Ufq2VLbsCpPO1fcojn3/7C79uGB8aiCdLYyXJVg+
-	57HZGXhh+o2F3xDenUhqKswLO0EJjFE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLnwvxPg;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774485325; a=rsa-sha256;
+	bh=9un29tqdnu/MqZNffW74CS8OnpY09NQfQ4AsAwZUZ2E=;
+	b=fdXlN7vgcymZYBR+fEpg8qVxiBVNyVj9ntugylN13XqUwKiRD7uL2C2jUT6XrTZPm92ch2
+	FawK8EdtWh8oAeTrjgoXZ6S4fZVJHT5WKMx++xpNLZLvpSRGhsBwYABMMn80K8CoNrRuwj
+	JTh/9MpDydWqwtjml6K4kJfYZXXIAy4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774485533; a=rsa-sha256;
 	cv=none;
-	b=gB8NZQVD5+YYzDGtRbAPek5g9DaLxhUORDwmL4UenQ5aDQJa9gpPpjGl+EuCnJ8CLd3il+
-	nFXBbm23/PSo6gUxdJF+wSGO0FesZWpkmPyFJkcz7B+9dlK+FVRfUamH037H0cW9nC0z4k
-	pL3IBeKgBFXBwzy3ZTFmPvkYHXK1FCE=
+	b=nHNkioxzWQLCJbj3Ud7/gjQm+IC0Njw/JeJ4LKGsTh76pcN6Fn0aq0jX8R0qj81GM00W0S
+	kw9aNoU/jElbktyfUv9sH1xsagaFIbKIKnHY9SEp3PgnrqV4x2R41RN3v2/kwsyA8AHuNe
+	PLa6tH61Gq7gW2bSRI6Rkfs42jqngDQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bh8YUanE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 307AE43993;
-	Thu, 26 Mar 2026 00:35:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE76AC4CEF7;
-	Thu, 26 Mar 2026 00:35:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E2F960053;
+	Thu, 26 Mar 2026 00:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3133C4CEF7;
+	Thu, 26 Mar 2026 00:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774485324;
-	bh=JgRgmv19Ob1z5FWl2YmQ9MrKOZCFSCB4WRvOcKg/+90=;
+	s=k20201202; t=1774485532;
+	bh=FFUCjB4kqdoVSzQIVahoi0U9tLwThKz0ltut+AgLlCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLnwvxPgM6IFQbMezL9MtZrDzM1hsTBXxvfaI+sjUez3ue0H+ua8UG77/uPyY1Uf+
-	 iFRLS6lpqX2hRyDdvECbFSfCFbByNU3SAMqmzR493pyBhuR+RShpC0IGCSdiMW8LVE
-	 xiYytcRiQBY//nE6dA9uJ1o9RowTcM8AA3/sUFWEFeSH/q3fzSQntxW7fBVEO+3Yec
-	 g2pz0AiRXp5FHCkzoZ6nfOsFW+sYgwFAlxc9FQZ6j2r8r/iO/hTIrchcsWrN2jrfmW
-	 qrs/UuCYcNs9xARygbuqWqVVGLbccGLhkZMQ/KpunO5UKhTqEPm6Fqg801C87yyQS5
-	 HYeZ8qPSg6TvA==
+	b=Bh8YUanEvEHCeFdyPxQTDjAlpfJiy8k8klzB6eh1WQhmo0J6+5zqrcdTU3+O/z7O6
+	 7TDzgDCXWE2xsdhjLPpVJLEfrb0y3nj4xoTuf/HMS5TfXpUbTQ8hqYqRvnbhyaOvvW
+	 8fqyMtbWm5vpOPSSJyMgnbGSBsDKIWEsJx6KVWipLW2ciGnFAiX7+i0t5uI8eHOELV
+	 9XrgwL0x2sbo16h5+c1rmYhk2Ar1hK36hKgm6b1OmRQQA++BhrcsNKT7SNpFVUahPp
+	 rd+N+97jetE6mn5cY1uyqYFkKnSCDPVfSrcFFRDh31hvSS8yBF3GeGS2457HzIHX+l
+	 xPr6YhIRr6T6A==
 From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
-Cc: SeongJae Park <sj@kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: Josh Law <objecting@objecting.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/core: validate goal nid before accessing node data
-Date: Wed, 25 Mar 2026 17:35:14 -0700
-Message-ID: <20260326003515.77311-1-sj@kernel.org>
+Subject: Re: (sashiko review) [PATCH v2] mm/damon/core: validate goal nid before accessing node data
+Date: Wed, 25 Mar 2026 17:38:44 -0700
+Message-ID: <20260326003845.77426-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260325155221.202700-1-objecting@objecting.org>
+In-Reply-To: <20260326001051.76219-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D700B80014
+X-Stat-Signature: nkrxqjepuxx8kzx9745xmdg13hdaqh4u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D79B40003
-X-Stat-Signature: ii3t6sbhqqiy1xccze3jxznst8tcrw56
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774485324-869668
-X-HE-Meta: U2FsdGVkX1/7Lr9dlblskJF90h1zU60d1+KEa7kS8NC8+RRhmFosX6S+eKjQ0zbn9/7dR4G4HBebfdCUNAPVw5lJEnPbFewxYLrsc2ABmTogStCKvjWOW86k5d2z0y70GCzwlfCULjzwEREWjJwy1lgCtrrHTGVdSyOoAmfubGLPj8iL99jqgDSveujFMg85j9PvP2qvhdFGQn043ksf/LZI41Dj99fhkU7CB/h0Ygft0yZvVCzqKiLFb+tMnjEWCu098nWmataO2cq+jyiwVswGtSgRFnVwU/0XHasynARft59N2RNL/kCzMO0zJ18GSuwvpKcin0fhaL3IqbSUX8ZDacfcPVgL016HJgQXz5qQftIijcEe7M7+z7jPlsbNtgeYsQ10eTaLZ6AjwtlR9WLSrnC44wTa5azDys5xIQJyrixLYq/UAWsMNaAjD2f3wap0wMc0pW2AAtOSV0IxCTlApkCJnjpA90orWHpnh0mUfoimenotbcMc6NPs2Hwq5vjXmouDarYgZywJb5Ahh3QFfoVV2PZS3tpR6KgB+TX8/BgRr+eNyLcWVtXmxqEm1ULseXQZTI91pKVQEXoEFy+jO/G1Q0cSKs/AjUmwvX+2sJtEYaNlM9cudZxhWz16fo0Yn+/perMEBvrJEHvgn6vRxF1qkqoBPdPt4PUiFBHJP1rEfVpRo3k/m/hTb+LGqf+LOFv6m3CtzvibCRupc9kX9lmCr3m9HMdYcuPpZjVpa9uw3ZQiQVa81pDz5OSDslkwqxgMR819cY3DQp6IF1z47gpwO1xmgWdSAw2fRAQiJK6eDI0mYpMf26msuTAvTFGRHPn6QH+icKAcV+6c6xUvzMrxSHVfpaYMCqwmTy0pnYs5K4tEo0c5HrhEOJpUKe45YqGedwC6Gj7BXg6mXyAoBVicy7MWBthdAX23fC1rVLzozWNCmOANvmXQ3PqWHjt7muJ0i9ULRiHylrK
- antdmNyf
- 6i2l0LCsbYUP/5PyC4LGrug4hUClaBEAGwblYZihsjPn8vBHXdmwP8paw5yV57KVlvuGW7K/egaHRWqIP4MgLz5SLQHlRWVgtCspmb14xfIB1Ms7QGNLhgmwkA3gu5qlmtB4mF2n1YoZaen34EcEN4QY7V7WUR/tkQv2aYWAX+SPZTqGzGPs+vxxvti419vMLNx4UiawKrOgBbo/5z+XU2UOPpAg2Pm528m0JWgV8cuG/UIxujrwOljpXZjydJd4YAXYvFQvkVTC213d+Bevvpo/8TtxxHfSVj/dv
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774485533-901505
+X-HE-Meta: U2FsdGVkX1+3WW7wPhk+OuOQaQgLdR2lRfaPGKZqVZD3Uob5r6rH/j7i3J6T7aZbMdjhBBk1nXWKSNJ/W7yhTSLy1xFQcCck2qDjHDyiosw9XOR5s3ZaiEL2xZvPq8VoD50+e+BhfzsnXXN63hrX+ZHYlrc5BOijP65XWZfc96EqUkLv8ZmnIRMDxDzS8iyiHLCCK+B8v8UlHGouMc9jbVIyf9FOGpZSdI/pq2wUuCwtlk51HYBa782yPSx4yeD6YBYYTzSy7mza7mo0eJbcAyxi9naHmNk5nQavB0LdoEtRceDBkegc7rQQhd/iffeAnrezL4srTzdVfnfwtvqV161rhDsKtp8fxo3F6gHMQ8DaJvIlViAQiKQRY6t7pLufbasNmFqdKfgo6hH2wjI8qTWtFuwQ7YDgyqtlp8WjuKO9iYhjxUyz8SXsOt0lcTc+Hn9+DmTXgcu4eTU36hifMDjxi+UrFzk9OgxPS9vZfJlpK3p//pDCi76CwAwOlPPvxS/Ofv86OGMO1V/lZe/mp5SFQmQQbKgSa4njza0Fp7VNVy+A3iljuD4n3cGge7wrguDXEF7LdnOWTDEpNBTg8K0uywpMEEyJd5IWs/OLYP6pqw9/t1yEGlE3a5LjZesa7RoqqWjSs+weJuDQ4Finfvs7+XklhYigwnKwXKLyHRWQ1EVNJ/YBCLW3NfYaOam0lsLVGhR/0EF0GpYb5/2e7qP7Uus43CF/1AOjuBnf2s6L88Q7M9pgIsgptIp709xqYNMWWX5bKKoQTsOruU4Zxogx8JkWIcmxnc8xaNka+3aD5svTgBtbtRr85phHv2AaXeRPEHApFOYh/mGfBWNiCSDM9SI/N6x0wHWqv52BgmZ+pAoNrKDNx03z8zzJBEOtytUfblV5cO0sdmNjqDskvMEMn14Q5Yv6EFqmzEui1RQvqIs8R7Ktk5S+8mfPwNzLeDqrfj6Ei5jvLXk/IPk
+ +wgib+zw
+ wmwvst9Q5tFnRuwPGeIBwoSdM8purfCFwJ1KWnvZS9CO2DlQPSnnx0axKtlrHs/ESU+LxMxa0D+ZKzA+QIsOLRpBueSDtx+urcwHGs/kS5Vli6XnuaWc57qccrgYuh/6CiZu+WYvCWcoVzubK2d6R57Tpb6Mh3LK6gupMvajFA2M8qRwhyxTpFNbijzw3pjHEf4kHOZ8CExi1JuwaGr8wTFPxPBPL+TA8hEWHh+d5M2XFM9Z0K25OVUEypYsGbX8IDmc839iCPbjzhTCAyKq8lChu+uzaBeMQhRfPCANiVlVYkE02Ue5wJIMD+TVYydxZnPnusAj5bRomxUslGgKvPwWp8Niw5VA1G+2L
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,65 +94,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 15:52:21 +0000 Josh Law <objecting@objecting.org> wrote:
+On Wed, 25 Mar 2026 17:10:50 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-No rush, Josh.  As I mentioned before, please give about a day after the last
-comment on the previous version of the patch, before posting a new version.
-That could help giving enough time for others to add their important findings.
-
-> damos_get_node_mem_bp() and damos_get_node_memcg_used_bp() pass
-> goal->nid directly to si_meminfo_node() and NODE_DATA() without
-> checking that it refers to a valid, online NUMA node.  Since
-
-s/online/memory/ ?
-
-> goal->nid is set from userspace via sysfs with no validation, a
-> negative or out-of-range value causes an out-of-bounds access in
-> NODE_DATA(), and a valid but offline node gives undefined results.
+> Forwarding Sashiko review for doing discussions via mails.
 > 
-> Add bounds and node_state(N_MEMORY) checks before using the nid,
-> consistent with damon_migrate_pages().
+> # review url: https://sashiko.dev/#/patchset/20260325155221.202700-1-objecting@objecting.org
+> # start of sashiko.dev inline review
+> commit 24e25058b8f508495d0b3db33bed16564df7fed4
+> Author: Josh Law <objecting@objecting.org>
+> Subject: mm/damon/core: validate goal nid before accessing node data
 > 
-> Fixes: 0e1c773b501f ("mm/damon/core: introduce damos quota goal metrics for memory node utilization")
+> This patch adds bounds and node_state(N_MEMORY) checks before using
+> goal->nid from userspace to prevent out-of-bounds access in NODE_DATA().
+> 
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Josh Law <objecting@objecting.org>
-> ---
-
-As I also previously mentioned, please add changelog here.
-
->  mm/damon/core.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
 > 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 59b709f04975..112125b635d7 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2227,6 +2227,10 @@ static __kernel_ulong_t damos_get_node_mem_bp(
->  	struct sysinfo i;
->  	__kernel_ulong_t numerator;
->  
-> +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
-> +	    !node_state(goal->nid, N_MEMORY))
-> +		return 0;
-> +
->  	si_meminfo_node(&i, goal->nid);
->  	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
->  		numerator = i.totalram - i.freeram;
-> @@ -2243,6 +2247,10 @@ static unsigned long damos_get_node_memcg_used_bp(
->  	unsigned long used_pages, numerator;
->  	struct sysinfo i;
->  
-> +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
-> +	    !node_state(goal->nid, N_MEMORY))
-> +		return 0;
-> +
->  	memcg = mem_cgroup_get_from_id(goal->memcg_id);
->  	if (!memcg) {
->  		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
-> -- 
-> 2.34.1
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index db6c67e52d2b..ed45a7443abe 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2245,6 +2245,10 @@ static __kernel_ulong_t damos_get_node_mem_bp(
+> >  	struct sysinfo i;
+> >  	__kernel_ulong_t numerator;
+> >  
+> > +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
+> > +	    !node_state(goal->nid, N_MEMORY))
+> > +		return 0;
+> > +
+> 
+> When goal->nid is invalid or offline, this unconditionally returns 0.
+> For the DAMOS_QUOTA_NODE_MEM_FREE_BP metric, wouldn't returning 0 imply
+> 0% free memory?
+> 
+> Could this cause the DAMON feedback loop to interpret the goal as
+> severely under-achieved and drastically increase the scheme's
+> aggressiveness?
+> 
+> Should this fallback logic check the metric type and return 10000
+> (100% free) for FREE_BP metrics to fail gracefully, mirroring the
+> existing fallback logic used when a memory cgroup lookup fails?
 
-I will add more comments as a reply to sashiko comment.
+I am also thinking similar to sashiko.  Could you please make the change?
+
+> 
+> >  	si_meminfo_node(&i, goal->nid);
+> >  	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
+> >  		numerator = i.totalram - i.freeram;
+> >  	else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
+> >  		numerator = i.freeram;
+> >  	return mult_frac(numerator, 10000, i.totalram);
+> 
+> While not introduced by this patch, since this function is being
+> modified to handle node edge cases, is it possible for a node to have
+> N_MEMORY set, but have 0 managed pages? For example, if all of its
+> memory is reserved for hugetlb or unmanaged ZONE_DEVICE memory.
+
+I'm not very sure if this is really possible.  Josh, do you know?
+
+> 
+> If so, si_meminfo_node() would set i.totalram to 0. Would the call
+> to mult_frac() then cause a divide-by-zero panic when it evaluates
+> x_ / d_ ?
+
+If sashiko's theory is true, I think we should add a zero value check here?
+
+> 
+> > @@ -2261,6 +2265,10 @@ static unsigned long damos_get_node_memcg_used_bp(
+> >  	unsigned long used_pages, numerator;
+> >  	struct sysinfo i;
+> >  
+> > +	if (goal->nid < 0 || goal->nid >= MAX_NUMNODES ||
+> > +	    !node_state(goal->nid, N_MEMORY))
+> > +		return 0;
+> > +
+> 
+> Similar to the function above, returning 0 unconditionally here for
+> DAMOS_QUOTA_NODE_MEMCG_FREE_BP might artificially trigger maximum
+> reclaim aggressiveness.
+
+Similar to my above comment, I agree to sashiko.
 
 
 Thanks,
