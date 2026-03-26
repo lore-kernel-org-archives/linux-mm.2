@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6226F106F2FC
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 08:36:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA8A106F2FC
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 08:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 939476B0092; Thu, 26 Mar 2026 04:36:39 -0400 (EDT)
+	id 2350A6B0093; Thu, 26 Mar 2026 04:36:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 910F76B0093; Thu, 26 Mar 2026 04:36:39 -0400 (EDT)
+	id 20BCC6B0095; Thu, 26 Mar 2026 04:36:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 827016B0095; Thu, 26 Mar 2026 04:36:39 -0400 (EDT)
+	id 1225D6B0096; Thu, 26 Mar 2026 04:36:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F9676B0092
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 04:36:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 018DD5C74A
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:36:38 +0000 (UTC)
-X-FDA: 84587558118.23.042A47B
-Received: from outbound.ci.icloud.com (ci-2006i-snip4-11.eps.apple.com [57.103.90.221])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E88721C0015
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:36:36 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 017946B0093
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 04:36:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 978CA5C847
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:36:44 +0000 (UTC)
+X-FDA: 84587558328.26.25695B6
+Received: from outbound.ci.icloud.com (ci-2006k-snip4-7.eps.apple.com [57.103.90.238])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 892821C0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:36:42 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=hCdj+rgw;
-	spf=pass (imf18.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.90.221 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=xv0llZso;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf18.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.90.238 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774514197;
+	s=arc-20220608; t=1774514202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TnFacVqdLEOdPbeqUWCs+TzIAEb2KkAj5Z3+qb/+C44=;
-	b=admN6KbADANTXVjJA2qNYTREzKYa+O1Zj+JDqEsmo0mH2Hk3NCL5Q7t0evIFPiniHrWWzy
-	JrvSB38/2JnIc8Yx+/UYCSw2ZoayBjdsEwRalLB7YR8mAjJKT6KxBTzMJj49OLoUUmpyFI
-	2YH3TteOYCjQr28bLeo2H6NS8Xs5bUY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xnHQdlgcOL/4fk6OrbKqPiZnFKcP7FFawnir2OWjlBA=;
+	b=LJkvI8NKBeErURj50EqL6E4+7vm7F7z4cytgMr5qHLwIkZJLWPoDoHKRzPsHytTEb78HRm
+	U03eJ4FRIx1FdKx69yuoAEH1+DGu+HuC0C2OClFAJR9m46YWi/K374dEzVRu7F/ZjtqDTZ
+	GFYhzInXCDaVvgyc5MG5DYTMvbwWFaY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774514202; a=rsa-sha256;
+	cv=none;
+	b=P9Yaf8KL5q1PMrgz4jWT9CfS5ozpMbiFDUEhWwsFSyL8xjRHFVdJz/1kWUer7rVqKVUJpf
+	zDJLAJdf/9daUi33YLkLdy57blmCtxBdLD/69J8g7IO5SJj2f+/iSYWwlQ2RXBMYBvcBoO
+	8cUbJopkuEnuoNNsyDK3jhe2LT8mcmA=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=hCdj+rgw;
-	spf=pass (imf18.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.90.221 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774514197; a=rsa-sha256;
-	cv=none;
-	b=KMqRvIfGR+eiSuwH3mYGduafo3T4xf2NliyO5pzapYZbuDiK1MnKYTixTtNosqrZOOPEtW
-	chsNKAO9KU6Nvgz5nyptxhEpCITvRMXKYXTk414VzKC9L7WAc2+05Zz7QuxkK5kzQ9KHNX
-	eGL1P2FlY5q/NlXNBC6r8uKjE4J6pOE=
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=xv0llZso;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf18.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.90.238 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com
 Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-11 (Postfix) with ESMTPS id 6BD98180021B;
-	Thu, 26 Mar 2026 08:36:33 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1774514196; x=1777106196; bh=TnFacVqdLEOdPbeqUWCs+TzIAEb2KkAj5Z3+qb/+C44=; h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:x-icloud-hme; b=hCdj+rgwQRwFG/O9ElHxJWsAYWEyu22kZzSEVo0HdQ2nhXSsyBOr6SJRpsHcECLcHAKlY/t8XYhc+DRD/0ltZ+vRZN3MGrRaDVW+26V0zloQcw7uHbjsWfjil6cAmI/kfHBD3HUjKMQYWVdwMsDgg/kqFRINsqcNs1ba+Fee89eF7yZIlG/m5qxZQlE5vBv3GYOjkSSD+VtvezO4FyKsrh/jylv8DaZtqCyHkAu+rhv6GWSW40GRo+FCPK627j30RKgMjpn22K/znpX65XXHx/062ngr/HtdbQEHVx/4QwA8x+UVTHDgJrCi4S+R2qQoZPnPXugRFzvzi51OMG6vWw==
+	by p00-icloudmta-asmtp-us-central-1k-100-percent-11 (Postfix) with ESMTPS id 0B238180010E;
+	Thu, 26 Mar 2026 08:36:38 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1774514201; x=1777106201; bh=xnHQdlgcOL/4fk6OrbKqPiZnFKcP7FFawnir2OWjlBA=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=xv0llZso92roc6dajC0joL0IrCGYUWOmiaNYuBcCOkIvKjSgC4dRNIHAbkKorw2uVYG2agAW900AuFdKL06LXGTdMJRvpUn/CfNr2wuNVyxFvmKjclEg+F+K2NY/OndS62yUhg2E3q6mPTGs3Cr/ZHCffahLm1eq9HmerHgG+uznXg2jM31OW5pi2Y/PixWMnUTk+E3eP8cFcGf2TJpqz5jT/rCCnEFe+NKyjd2a/mykd9kHwT+DLsp4j7FGl8G9fgT96S60Vt/90xYKms/XpLLfY04yPzdNvw5HPu36x0afTMQgugERhhKzpq6GzkR0Y23Ia4TduBuxP4oVxheQGA==
 Received: from [21.6.122.162] (unknown [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-11 (Postfix) with ESMTPSA id 93D971800221;
-	Thu, 26 Mar 2026 08:36:27 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-central-1k-100-percent-11 (Postfix) with ESMTPSA id 4B565180020C;
+	Thu, 26 Mar 2026 08:36:33 +0000 (UTC)
 From: Zhang Peng <zippermonkey@icloud.com>
-Subject: [PATCH v2 0/5] mm: batch TLB flushing for dirty folios in vmscan
-Date: Thu, 26 Mar 2026 16:36:16 +0800
-Message-Id: <20260326-batch-tlb-flush-v2-0-403e523325c4@icloud.com>
+Date: Thu, 26 Mar 2026 16:36:17 +0800
+Subject: [PATCH v2 1/5] mm/vmscan: track reclaimed pages in reclaim_stat
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAADwxGkC/3WNQQ6CMBBFr0Jm7ZgCWqkr72FY0HZqJ0FqWmg0h
- Ltb2bt8L/nvr5AoMiW4VitEypw4TAWaQwXGD9ODkG1haEQjRSsU6mE2HudRoxuX5LFTrRN0lvq
- kJJTVK5Lj916894U9pznEz36Q65/938o1CiTdObIXWw+KbmzGsNijCU/ot237AjSbtcCvAAAA
-X-Change-ID: 20260309-batch-tlb-flush-893f0e56b496
+Message-Id: <20260326-batch-tlb-flush-v2-1-403e523325c4@icloud.com>
+References: <20260326-batch-tlb-flush-v2-0-403e523325c4@icloud.com>
+In-Reply-To: <20260326-batch-tlb-flush-v2-0-403e523325c4@icloud.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -78,43 +77,43 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774514187; l=3652;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774514187; l=4784;
  i=zippermonkey@icloud.com; s=20260309; h=from:subject:message-id;
- bh=1S4mtwiSgiEXK9RkHO0cUF3Km1aYqH6AUACfPgCXzzs=;
- b=KII/Mz4IcW3cMukofh+i+NVuXjEc0BO0JHhh5A1sDytP0Cf3RYIPWe0CLAY53vYquY3Rvrm3f
- CyS6TrAdROnCEbMdP2P8gbzLEHo39VJ4cyTKYFkwNnITM8mITHaXPN/
+ bh=L4RSnGOlWbx1ob39I2cW9qTJxKxYSjJYIPZI0IE6F+E=;
+ b=2UV1ap/2XGBFOjlcc27PyZc1fCg3+tnRXSu6BT6jv0K3cIvJ26xjERomAh6jkgpWLeAH1rLK0
+ ySUc5HwZkDZDb6cRQcK74iUfnSbKqi3c2pFBSt+jf4wYfmgY2Kn6VGi
 X-Developer-Key: i=zippermonkey@icloud.com; a=ed25519;
  pk=tPCLpFnBfIyHsp0k7eaUTUREEa36bQNW/69X+NS8wBU=
-X-Proofpoint-GUID: L7-WM3VWRO91kEFUKdWNbdySIh1JRmtt
-X-Authority-Info-Out: v=2.4 cv=acpsXBot c=1 sm=1 tr=0 ts=69c4f013
+X-Proofpoint-GUID: rKqbL-ccvg4837RxPW9bvsrkbaBUYOvm
+X-Authority-Info-Out: v=2.4 cv=SONPlevH c=1 sm=1 tr=0 ts=69c4f018
  cx=c_apl:c_pps:t_out a=2G65uMN5HjSv0sBfM2Yj2w==:117
  a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10
  a=x7bEGLp0ZPQA:10 a=YE32fvk_ji8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=v3ZZPjhaAAAA:8 a=GvQkQWPkAAAA:8 a=0nsp5VSLLG1NfpzbPScA:9
- a=QEXdDO2ut3YA:10 a=J82S1U87d15UFHHUFZS8:22 a=yLjSXO_LiVxs9JEHLWbQ:22
-X-Proofpoint-ORIG-GUID: L7-WM3VWRO91kEFUKdWNbdySIh1JRmtt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA2MiBTYWx0ZWRfX/FdBr0XUBu41
- S2ZG2gL9rXdB+umYDZHE+B0BX51f6m9xwVz8LAby84CmttAeWrm9wTTm4uJdQU8Vb3YwjOZ1sPY
- PlK48RjYy30dUY8gZMm9koj2Oihg9qpwMBmUu6Y3gCNQnOqxgFSXKAokxzcOMCinj6PrTNpf70x
- ktXMhhxoPtEzUOd6avg3UNEUhlhYfpn9IiZemU55dKorv05zKauSM+tx/8f0dKLdCHeHYR6UqsN
- v3zXhojUk39UiuyJTwpnGdquzElLpMuYPQph5HCqGPJMoboVauYPQFVgXILOAafiUgtV0k5f0uf
- SqdhzW5xJWyjYHrmoIaiLpzjHqFxXziSMCS2J7pV5ETSajYFF5kZUuhDGBrGLc=
+ a=GvQkQWPkAAAA:8 a=_Dbb_MnoW-ofl-KRMSEA:9 a=QEXdDO2ut3YA:10
+ a=J82S1U87d15UFHHUFZS8:22 a=R6HnoDE5lksTgPyyjrIf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA2MiBTYWx0ZWRfX9KnOKacCtdnj
+ kuHp4ES2ft9H0ny5hcWJTUqgzRxXQ4Hcud1TTC2qe5eenz0nK/vy4xtjtZUNxNoAsnK9Lybsj9y
+ UVexacLPeeuzFNen0DU+ZUMLnMzNpLXVk8yRejr3FDOnq2WfLdn7SRy1Te0GqNeFFbb3xa1krum
+ 0Xh3AZKgc24e6Zbo5QjRkvanSOWHWbiUx5h0cd/DV1L4abYbRmDZ3gw00rJSQBL9h4iue/XdglK
+ k4o5OHSpk6hrYgJcU1hSfj2LZi9YW1WlYRlmNm6A8NASMbAQ3L5wdVrj2rXrBhFI5IeCqDPwFOe
+ jamXbCYEUyefgQh6bMpWatOtP7+jpVe1joFoAkx32ePhe2DivtW24ih4RgRzCM=
+X-Proofpoint-ORIG-GUID: rKqbL-ccvg4837RxPW9bvsrkbaBUYOvm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-26_02,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- mlxlogscore=999 phishscore=0 spamscore=0 clxscore=1015 mlxscore=0
- malwarescore=0 suspectscore=0 adultscore=0 lowpriorityscore=0 classifier=spam
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0 adultscore=0
+ clxscore=1015 suspectscore=0 spamscore=0 malwarescore=0 classifier=spam
  authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
  definitions=main-2603260062
-X-Rspamd-Queue-Id: E88721C0015
-X-Stat-Signature: xpy9bq8qgoj3x95upuq6j8ojap9ddykm
+X-Rspamd-Queue-Id: 892821C0005
+X-Stat-Signature: dfxuca4zfkfn3wmxcpy6sexxre1frmgg
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774514196-854229
-X-HE-Meta: U2FsdGVkX1/S/recr/WcHBF6dc1NdDx6z4a918/AEpYN9yvCe4UC5wqdv70nQwLo2KAGGzYX/ikj0CsdGOWtv8ARW1tUMYIYOsG7jtr39I6THKrhhGfg26yc9qHnXticv0T75rjAxE8f1EqbvujmutKlfanvijsHYEGUKqHvM5vCnrBJT1rUtIgGAXUirFNFk2uYlrr2EkR5qkXCA+eFDTXowfj/A3n39+jxBGeC6py4pqz9gF8Y/PfETf+Wyg41oxBzBOkyMbbbwUNds3v/kXgv3q6+tp9yshYgQxLNN/FBEl9ggBSBtJBATEXAXSX9da4vbOo1+5Ujrp5/xIYSEnR4ZLa1HDfDLlZ2js+yb2c8/Psnmsfh1G9M6tTaMjfjhj4C/C+H9iceYraugzL9rSgdxO6n5OMP2NNrVU326IVCY+ZBcglinjRCpJNtphwkzX3OR4MekZ9Do1CuBE0jdJrypsUxXok4ONMuFsR1xnbiM4JMxnbdPbjmn4GaSWW237C5CXVSSpkI/xjQvMMo7XXZgmsgYErpJWQ8eCmwpTKV3doIkW5ar6c7JeToBM2uiXa9b2kzdiWSv5dN0bMjQrttLwFmw34X05ZiRMVP6m+zoetMh7PYCXS7QJqgPxqP4i0K5hOILvKm0+FPLZrWgkWMj2Y8F+aN+v3HMTdkh9L73N1ExLQkqrMdD63t4saWimdckmawqy8Te5TJnUjRPXZYwFvQRxI6gQSYC7nhs1l0U4MSuRMf8VguHhS3lB7MbUxDYdXZf2epaDjewpW0K18v9cxtuQotUJfnewAsUrSiVMktpqrqid0vviq2veE4/d46xunPnnOrH0gEsECrMd31DFwbeDsU8lNCR42qkERvhhREN9/dTgYiUwhgUH2PCfOW05UHOrvVaTrCPnjGFn88H/Wp+2kIJT19CfACmr6J5aLggG52LzpXTRcZAGwLXkOTSFOsrg8nQ3pftSQ
- 4tmBRdZg
- 2HzTxH/HIwaNPnoZ875WUMVEpsp9jSb84BlfhSQhrX+HNAK6tTRwhVN57hIafGwM1WFPhpN7VmM0mRafujloH7bfuEzxxHPKexiQ/M8huwp4OvDnaxlAjCYGnsYfC376a1mWmKsNts9ERvqZaKXIklRowPOmnzUiAi3zIh45zy9D/7eHlrFON8BXDsVIIF5GJR8ENoFtgrM75V8AY99eQIJrwLwW5LOuPXy6PsddeOIsUALMutmPLM1zqWZVSjfu1loreK3sc5swtJKhWSt2jm5tKRwMt9Ao52m+zc/9jsUTF8pd8H/RpVsHADOQYu2115M542h4UW5YZS4sDvJoBA3ZYY2353Kl75r8WvuJybgQRSCA005xXqGLZP6WERxjz5CfUmtGojBADXQTKbwEUD75Tl8DTdOKHBsDgFUyVkep0QcgAmQ48kxZZB42oPT09Sqr9
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774514202-916013
+X-HE-Meta: U2FsdGVkX193RjALN1jElkcv67wx240v3ND+LMLPEEt2ZTmCH9pSuH9hEU77STr0IR68B72zjVV6g4itOOAYJb7I/fAqqDStm/3YrupfPMuuebq0rh7akLDPaLdo/AqhWZDFHv2hp1nI8E7pdOJ/1Mnxd/XS+kZfYDniUvUlJaAgEdC54KKvTz5O+/5JLpcg3QVCogINz4JIlQdZvCWaVk9D26mE7YDbMLlcnJGrnKwZMLdHsOnD5JKSPV29ua9e9ReFtlk19+02bM1zZ8eADFMivrDFa4TNO5o5OlGlStjUkclQiB9zeDqvTzELpbG9+NBpAugK4GxKTWQzZRKa1U0zbpPkVKiz+5Ml4jP2QpQEsKPGJpEqkL6KvHI6TcqfNeEMqf/lWVsm25YDHLbojuuZKt811Eb1nsDvjBN4yJIhertxqGhuu5BxAlp+DYywbIxPA0hgMVKbYFq54H5nGit+6aPhd5P1+tCw4t0rPnsZeSp1A0llk0zCzXkjhfwwTyIo4ZVqPgrxhELSkW9g5bsn32foO0uhU96nGTmd73VyWCJ05eSqXOKja1zvoTAxtfXetOfpxp37W9ysxGDAa/F4UsnjCb98Jch2GU7DSnnBfB/yj5KFiQ7s3EBkL2JEzePTylIlRkYa5B7QFiJjoW4i1Yq6xhvrN27SeyOI2Ot5/esl/Q1v7mhI5CmyWfr3ryhdb6ZaRFW7O/OIBHXbyMk7jBbDg9JY5aKHreyU+CsPCbYglnN3gzUUX8SrMqysR2bqYairCcnbHw7M/edN7kpF/QFKdy7YYmL9U5hEqpTFhW+uNUy4PMN2vHwp1HQtHfO6JDhsaGb+727naABufS/gPv5JOSUhe/8D7EFZ/frAzQRUcPdjlBX9uHovmoNPYkGrRe3kOeCrPjuSpKRTcYH7DQ3R1hw693pTRPRLe8WezWESxBFHuzPsuQz4rsJ0+qTYTRNj5xEChLEIwxc
+ 66fUocQI
+ M/Y3zvTu/XRtbiisdlqCz/DP5yLyTOivAKtx4YkNUpglKiV6e/dcHaJM5oOIm89Y0OQGCuSg0mw/lck3svFFeoHJxKF5ThH5EOZ2jI01hhFdEaLZUpx00p5puXELUUgcc4rpHIajT3nORa4fXNMdIcJzD1Ug/GdZuhFF66LpVor8O8wAQrFe2g0Yry/ZTUaFC3VgME013DGrUUrNCiRytFdMAZwKPfrtmGhUDQ/9UYkfeWyFNFQv/7w44v+Wh6xEnXY0eBEkVyQsL8mWs8RFwLjDjvm3hBZXdPqyyuO0AZIuRn2IzNoF1sHjbW/S5PTgNHb7/vSYyFBnQyOR8rhzLPPKBNd+k7iDE+rJUfO6z6G7lkAkswurs9ufPYHx/QHakjUcMaPXMalOOu2BbgBGacpjWz8DUc1kNJ+j+KJDxD0n/FnLXUHUnPvUlkXSlz0IYdCLcUMybhf5cA71l1E+ku2IDrxgV41jxWxbo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,83 +121,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series introduces batch TLB flushing optimization for dirty folios
-during memory reclaim, aiming to reduce IPI overhead on multi-core systems.
+From: Zhang Peng <bruzzhang@tencent.com>
 
-Background
-----------
-Currently, when performing pageout in memory reclaim, try_to_unmap_flush_dirty()
-is called for each dirty folio individually. On multi-core systems, this causes
-frequent IPIs which can significantly impact performance.
+shrink_folio_list() returns nr_reclaimed while all other statistics are
+reported via reclaim_stat. Add nr_reclaimed to reclaim_stat and change
+the function to void for a consistent interface.
 
-Approach
---------
-This patch series accumulates dirty folios into batches and performs a single
-TLB flush for the entire batch, rather than flushing for each individual folio.
-
-Changes
--------
-Patch 1: Add nr_reclaimed to reclaim_stat so shrink_folio_list() can be changed
-         to void, giving a consistent interface where all per-pass statistics
-         are reported through reclaim_stat.
-Patch 2: Extract the folio activation block at activate_locked into
-         folio_active_bounce().
-Patch 3: Extract the pageout() dispatch state machine and the folio-freeing path
-         into pageout_one() and folio_free() respectively.
-Patch 4: Extract the TTU setup and try_to_unmap() block into folio_try_unmap().
-Patch 5: Implement batch TLB flushing logic. Dirty folios are accumulated in
-         batches and a single TLB flush is performed for each batch before
-         calling pageout.
-
-Testing
--------
-The benchmark script uses stress-ng to compare TLB shootdown behavior before and
-after this patch. It constrains a stress-ng workload via memcg to force reclaim
-through shrink_folio_list(), reporting TLB shootdowns and IPIs.
-
-Core benchmark command: stress-ng --vm 16 --vm-bytes 2G --vm-keep --timeout 60
-
-==========================================================================
-                 batch_dirty_tlb_flush Benchmark Results
-==========================================================================
-  Kernel: 7.0.0-rc1+   CPUs: 16
-  MemTotal: 31834M   SwapTotal: 8191M
-  memcg limit: 512M   alloc: 2G   workers: 16   duration: 60s
---------------------------------------------------------------------------
-Metric                 Before        After             Delta (abs / %)
---------------------------------------------------------------------------
-bogo ops/s             28238.63      35833.97          +7595.34 (+26.9%)
-TLB shootdowns         55428953      17621697          -37807256 (-68.2%)
-Function call IPIs     34073695      14498768          -19574927 (-57.4%)
-pgscan_anon (pages)    52856224      60252894          7396670 (+14.0%)
-pgsteal_anon (pages)   29004962      34054753          5049791 (+17.4%)
---------------------------------------------------------------------------
+No functional change.
 
 Suggested-by: Kairui Song <kasong@tencent.com>
 Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
 ---
-Changes in v2:
-- Fix incorrect comment about page_ref_freeze
-- Add folio_maybe_dma_pinned() check in pageout_batch()
-- Link to v1: https://lore.kernel.org/r/20260309-batch-tlb-flush-v1-0-eb8fed7d1a9e@icloud.com
+ include/linux/vmstat.h |  1 +
+ mm/vmscan.c            | 25 ++++++++++++++-----------
+ 2 files changed, 15 insertions(+), 11 deletions(-)
 
----
-Zhang Peng (5):
-      mm/vmscan: track reclaimed pages in reclaim_stat
-      mm/vmscan: extract folio activation into folio_active_bounce()
-      mm/vmscan: extract folio_free() and pageout_one()
-      mm/vmscan: extract folio unmap logic into folio_try_unmap()
-      mm/vmscan: flush TLB for every 31 folios evictions
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..f088c5641d99 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -26,6 +26,7 @@ struct reclaim_stat {
+ 	unsigned nr_unmap_fail;
+ 	unsigned nr_lazyfree_fail;
+ 	unsigned nr_demoted;
++	unsigned nr_reclaimed;
+ };
+ 
+ /* Stat data for system wide items */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 5ee64cf81378..f3f03a44042e 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1053,9 +1053,9 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
+ }
+ 
+ /*
+- * shrink_folio_list() returns the number of reclaimed pages
++ * Reclaimed folios are counted in stat->nr_reclaimed.
+  */
+-static unsigned int shrink_folio_list(struct list_head *folio_list,
++static void shrink_folio_list(struct list_head *folio_list,
+ 		struct pglist_data *pgdat, struct scan_control *sc,
+ 		struct reclaim_stat *stat, bool ignore_references,
+ 		struct mem_cgroup *memcg)
+@@ -1063,7 +1063,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 	struct folio_batch free_folios;
+ 	LIST_HEAD(ret_folios);
+ 	LIST_HEAD(demote_folios);
+-	unsigned int nr_reclaimed = 0, nr_demoted = 0;
++	unsigned int nr_demoted = 0;
+ 	unsigned int pgactivate = 0;
+ 	bool do_demote_pass;
+ 	struct swap_iocb *plug = NULL;
+@@ -1477,7 +1477,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 					 * increment nr_reclaimed here (and
+ 					 * leave it off the LRU).
+ 					 */
+-					nr_reclaimed += nr_pages;
++					stat->nr_reclaimed += nr_pages;
+ 					continue;
+ 				}
+ 			}
+@@ -1507,7 +1507,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		 * Folio may get swapped out as a whole, need to account
+ 		 * all pages in it.
+ 		 */
+-		nr_reclaimed += nr_pages;
++		stat->nr_reclaimed += nr_pages;
+ 
+ 		folio_unqueue_deferred_split(folio);
+ 		if (folio_batch_add(&free_folios, folio) == 0) {
+@@ -1549,7 +1549,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 
+ 	/* Migrate folios selected for demotion */
+ 	nr_demoted = demote_folio_list(&demote_folios, pgdat, memcg);
+-	nr_reclaimed += nr_demoted;
++	stat->nr_reclaimed += nr_demoted;
+ 	stat->nr_demoted += nr_demoted;
+ 	/* Folios that could not be demoted are still in @demote_folios */
+ 	if (!list_empty(&demote_folios)) {
+@@ -1589,7 +1589,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 
+ 	if (plug)
+ 		swap_write_unplug(plug);
+-	return nr_reclaimed;
+ }
+ 
+ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+@@ -1623,8 +1622,9 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ 	 * change in the future.
+ 	 */
+ 	noreclaim_flag = memalloc_noreclaim_save();
+-	nr_reclaimed = shrink_folio_list(&clean_folios, zone->zone_pgdat, &sc,
++	shrink_folio_list(&clean_folios, zone->zone_pgdat, &sc,
+ 					&stat, true, NULL);
++	nr_reclaimed = stat.nr_reclaimed;
+ 	memalloc_noreclaim_restore(noreclaim_flag);
+ 
+ 	list_splice(&clean_folios, folio_list);
+@@ -1992,8 +1992,9 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+ 	if (nr_taken == 0)
+ 		return 0;
+ 
+-	nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
++	shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
+ 					 lruvec_memcg(lruvec));
++	nr_reclaimed = stat.nr_reclaimed;
+ 
+ 	move_folios_to_lru(&folio_list);
+ 
+@@ -2168,7 +2169,8 @@ static unsigned int reclaim_folio_list(struct list_head *folio_list,
+ 		.no_demotion = 1,
+ 	};
+ 
+-	nr_reclaimed = shrink_folio_list(folio_list, pgdat, &sc, &stat, true, NULL);
++	shrink_folio_list(folio_list, pgdat, &sc, &stat, true, NULL);
++	nr_reclaimed = stat.nr_reclaimed;
+ 	while (!list_empty(folio_list)) {
+ 		folio = lru_to_folio(folio_list);
+ 		list_del(&folio->lru);
+@@ -4862,7 +4864,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	if (list_empty(&list))
+ 		return scanned;
+ retry:
+-	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
++	shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
++	reclaimed = stat.nr_reclaimed;
+ 	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
+ 	sc->nr_reclaimed += reclaimed;
+ 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
 
- include/linux/vmstat.h |   1 +
- mm/vmscan.c            | 456 +++++++++++++++++++++++++++++++------------------
- 2 files changed, 287 insertions(+), 170 deletions(-)
----
-base-commit: 7c5507fca017a80ece36f34e36c77e2bee267517
-change-id: 20260309-batch-tlb-flush-893f0e56b496
-
-Best regards,
 -- 
-Zhang Peng <zippermonkey@icloud.com>
+2.43.7
 
 
