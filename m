@@ -4,129 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 406AB10AB808
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 19:16:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C060E10AB808
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 19:18:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8157E6B0005; Thu, 26 Mar 2026 15:16:13 -0400 (EDT)
+	id 30F3D6B0005; Thu, 26 Mar 2026 15:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C67A6B0089; Thu, 26 Mar 2026 15:16:13 -0400 (EDT)
+	id 2C0526B0089; Thu, 26 Mar 2026 15:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B55B6B008A; Thu, 26 Mar 2026 15:16:13 -0400 (EDT)
+	id 1D5FB6B008A; Thu, 26 Mar 2026 15:18:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A60D6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:16:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A57B2BDEAA
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:16:12 +0000 (UTC)
-X-FDA: 84589169784.22.1208337
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4FD961C0004
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:16:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=heYFtTcT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0dGJKJTj;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=heYFtTcT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0dGJKJTj;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BB606B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:18:01 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B19A113C18C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:18:00 +0000 (UTC)
+X-FDA: 84589174320.16.83AFE89
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C5179180011
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:17:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GY3JXy0s;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774552570;
+	s=arc-20220608; t=1774552678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B0NbDm8sagJWivXfmEO6jIG8gF17/iZfDl2XnEm6e1I=;
-	b=PUHzqpie68+9EdCpaU85iGG/ZS+tbNX5YeYRnY5KpYd54d/DY893Urd+sw9biwzdFNARs7
-	Qm2pcRGmWQJQXA6BqOYnL0fQmm1RaG8V+qYmEzGRmsHs5aK7mw9PBQuycV4EStkcb4uBkj
-	qn43OmQWH5EDpJ9kcijk2PPgViY+qH0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774552570; a=rsa-sha256;
+	bh=X2fFFIOClRcBFpxa+ZhEGODvSXvSphmThtZt/NUmrw4=;
+	b=Bq8H/SZAutoMPb/bTMgI4G3C8IBoMmbmK6F3UDI0lmj650wmqXdNqXha6X1j2OYST1TQR/
+	M9W2sJYb1/PL+fs0KlfohK3TkpYh3kgLCfzq1704ce7jPJ9NO/wQFQ9T3qwHYpjm8+yEGz
+	CNf73z9Nv3yKBgoarTd/uCY0mei+/k4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774552678; a=rsa-sha256;
 	cv=none;
-	b=3lTzdFvBzaxKfshd2ZhIaa7JQuL5mSBxCYvln/1o5okNQgsz7Xwxn3KkWCRz7utvMFFc3D
-	ZXD9lQ5nvz6QTHDDUw2+29Puw7z/AyW0YRXjMgSwkeqRqZnKv6CQ95qxokL430MeeuaNPP
-	MZ7qjOjy2vgZtE+74iGrs2h3CFoHUvI=
+	b=FhG76yYofuDbJo1PyDaNdnFG3HXew7fPgMqg7Oj9gG2/p7PLMvEdQw6AMYsFtXdJDiWsG3
+	dTpafetyCrbGfTXVta+EyUyCZYejBp0B3d1R4mRFmmV/r/FBTdI3TJaMzf65gV/YssdR/c
+	8O8WFb3q+DPUJ/6COehEpkFFSxcRyAg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=heYFtTcT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0dGJKJTj;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=heYFtTcT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0dGJKJTj;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AA56A4D2E0;
-	Thu, 26 Mar 2026 19:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774552568; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B0NbDm8sagJWivXfmEO6jIG8gF17/iZfDl2XnEm6e1I=;
-	b=heYFtTcT6JppGXGa3o5gocTipUKt8/yAvzZ63BnHcvLNPZ+G50GPIdrndDeCfev63J2seZ
-	EUwHZ9Tyz3SL0ME2XwEaU1cUHhjrEWNNOjAeNrop+6s3B8XYSLZMcJ3z1fRL6RqMO4za4s
-	82zZCw+Yq+2Hq97xbteAuhMHxjsN8y4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774552568;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B0NbDm8sagJWivXfmEO6jIG8gF17/iZfDl2XnEm6e1I=;
-	b=0dGJKJTjS6j9TAbaFDxJIlSYwxPIgxZ8Zis7ILt8c7OJOv9zsWnmYpQ4/ffU/Fmsicw1Xo
-	Kl7tOFOE8PAjn4BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774552568; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B0NbDm8sagJWivXfmEO6jIG8gF17/iZfDl2XnEm6e1I=;
-	b=heYFtTcT6JppGXGa3o5gocTipUKt8/yAvzZ63BnHcvLNPZ+G50GPIdrndDeCfev63J2seZ
-	EUwHZ9Tyz3SL0ME2XwEaU1cUHhjrEWNNOjAeNrop+6s3B8XYSLZMcJ3z1fRL6RqMO4za4s
-	82zZCw+Yq+2Hq97xbteAuhMHxjsN8y4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774552568;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B0NbDm8sagJWivXfmEO6jIG8gF17/iZfDl2XnEm6e1I=;
-	b=0dGJKJTjS6j9TAbaFDxJIlSYwxPIgxZ8Zis7ILt8c7OJOv9zsWnmYpQ4/ffU/Fmsicw1Xo
-	Kl7tOFOE8PAjn4BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A14874A0A3;
-	Thu, 26 Mar 2026 19:16:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id erZ6I/eFxWl1UwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 26 Mar 2026 19:16:07 +0000
-Date: Thu, 26 Mar 2026 19:16:05 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hughd@google.com, 
-	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/shmem: use invalidate_lock to fix hole-punch race
-Message-ID: <bnukmnuxxuhdfeasjz33miemgr7w35c4aa6pqdmgupx7oxmeeb@gozgc3yxhcdd>
-References: <20260326162611.693539-1-gourry@gourry.net>
- <jm5rmcwiauy2fn6fvj6cjowiu2dudjndhhlcd2tm275ibmos5i@dwxwchbs24ko>
- <acV83cdc9ZfNk8Xh@gourry-fedora-PF4VCD3F>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GY3JXy0s;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 174E660054
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:17:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF96C19423
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:17:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774552677;
+	bh=MIPDAAbAiXqMvXBIOxEoTP500rJ337ZU7Yo9oo0ehx8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GY3JXy0sfIJdIm0SatxG0BC8n15a+5U7pKcDBxTkUZIG1jg9B5cr2KTikwQjAMblI
+	 4aYOyGPGIzkfvg2frCTWc8URL/tqwTN8j0f4wvLeW4D+0y4ZOQcPuLii+ojoJt0wgo
+	 /qU9F1CV31X67OmxQ7h/IemwDc2EfQMF11gfk0GX1I/+AAb8zWSf7HC4M6HV69ql2m
+	 MFq+KskoO4rnYqaN7PNliHfzEC0afcCfM9Pr7pRBj3AJsqAulLBX1o507F6L7cYikZ
+	 sILjk+ZJ4euEamphD7NNno0yAuNu34apLP/g1ykcPkdHqEHbWoyGoklTtMn93SXmnT
+	 ZUS9lGeOMmUSQ==
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6618bc129acso1999399a12.2
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:17:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVTobTsRFDBF6lbV9T43sNsFVGNO+Z99w6XJUITDR9El7cOdZEWsUVEc3mOFIg7OsG4LuTgPbSDAQ==@kvack.org
+X-Gm-Message-State: AOJu0YxZm5aR/Qm9cAoOzY0LbAT3/WkTgf10JrnmYWj4H3xt3u7NX7Ki
+	WTadsT2D4bKIkHgBbqstgVMprWJCUmw2TKO+rStR8VIRno2HfBWoxJ0mdYYudVPCK7Z12X/+661
+	jGwJCnfCMiQbJPjJd4NDK2e2JhbeZnA==
+X-Received: by 2002:a05:6402:51cf:b0:669:afeb:a6f3 with SMTP id
+ 4fb4d7f45d1cf-66a8270edbbmr5537445a12.27.1774552676256; Thu, 26 Mar 2026
+ 12:17:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acV83cdc9ZfNk8Xh@gourry-fedora-PF4VCD3F>
-X-Rspamd-Queue-Id: 4FD961C0004
-X-Stat-Signature: 363c37e3kqnwr4qm3mtzpfxbajsumirf
+References: <CGME20260325090029eucas1p1932917cc4839c3349932aeda37a7125d@eucas1p1.samsung.com>
+ <20260325090023.3175348-1-m.szyprowski@samsung.com> <20260325141648.GA2685599-robh@kernel.org>
+ <fe9359e0-1c9a-4113-82c3-0275c932a58a@samsung.com>
+In-Reply-To: <fe9359e0-1c9a-4113-82c3-0275c932a58a@samsung.com>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 26 Mar 2026 14:17:44 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqK9Gn4rZAzZ7HN88eeZWcbAvyNj1sCtn140XK83qDGuCA@mail.gmail.com>
+X-Gm-Features: AQROBzC6LkjDlFn6WnwHsN-rfeYOnWBi9c0g8XrRpCGf7exOQ4jNH_gHGfxdWqA
+Message-ID: <CAL_JsqK9Gn4rZAzZ7HN88eeZWcbAvyNj1sCtn140XK83qDGuCA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] Refactor reserved memory regions handling code
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-mm@kvack.org, iommu@lists.linux.dev, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>, 
+	Saravana Kannan <saravanak@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Robin Murphy <robin.murphy@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C5179180011
+X-Stat-Signature: 1aemm7yejutqfsrmbd4m3hpmk3poqgb8
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774552570-239113
-X-HE-Meta: U2FsdGVkX1+KzJOVAO9vPx2YFfp+JLWY/mqiFvcgeKbPAE1gEMSMuvppxIq0j9m0t3GB1FZW3eF6Yn8FueQzclZynm/C2O2N7BOEITJxEmt1/oLyOn5aiwN706WH/HLQW/u1K/GhJLMfxMVtSI0RGwSKd1BHyBk9FDjdnSlpdIp9pvHfALr8QGRu0HctR29J9CTHu5GqWUrRh7ljGT271LLUEHZHM2x1rPa/z+ldmn8evil3JQKlfIOFsZ6J1Skqq/V3bmbNjo27cIR4ODRopwRBA2NeYDwYpg+aIaj+HMgcJUFKBUqjlZtwflgnZmb+b2nXeMIj/W1gqstnD0nJs6zAanuA69dCEcQmkx/p82mbDBrcV6dktsrY9+5b0QT9M5gIqug23jlNpv9NO+vP6f+y7TLvyq95ec8IbNTM+YCnDcYYD4jx0Ekm2SzPcVypd2vmzhYss8wgeR2prksPe16pUzg/8vM2nF6TnPrDypnUxDeiXwcvwkz22hFy9pE2L1TebCt2kQtoV/2ADGaSuB5vMZ9or+2M4V8aFovInOelfdiJjPOUzpzXTajSbzXtxIrYcQK3VljN9Ol0u+kBTsUT3R9loNzUaK+XLffZx2X5rpX/uM70PSDeNxqHX57SvHmvyjxIl1W/V/v3ZNh3u6rFcTvi2v413mjksJ8X6xz46T1NjBAE9z1ID+yPgAoJdHoWS4f3nwXu3x8yKe9AqUQvI5prl6/LA3w9Bdp//fkNzAyYGveMJtPltKyMhg2gAlRcVDrHTgXtt9DJk3WUc02LSyewnXkmdnUh/7oPyBwczsmM2B8bjIN+dIrJKjLkXDnnDm2GNnmAa3E6eDZV5twTc9JVa/MacwbHx3hapy798+MHSl2KiukkB+XQr2KPaRFOG2QUyv+H1yrUo3p4D2iY130YufehhoeKc27Ky45o9QTrGEEymx7zoWA69xlTYH6yxR9wZcKidSSqMoK
- Y6Upgt3j
- sg2zAShfAZU5bunbirxt0zNCFM0t849qT155UQt3tbBN1++t8WZxVCzcguQoog50/T2xKmMEOgvc9WfoVFP4Q0EkEF1SADQdKvPYXfihP1Uj9kZZJUQqi/sSmfQGwir/KEG8xLeveQfpGPXoGnT6hBbOKHKpJexcAnRorr9pcp9AL2VTpriJn42I6lTcn3Z7Yu93RqiNDqmuptKuH69zj1FWH3ot/OafF2cAeV7pK9LqWrUfoiKSb0u/pggoUqtfC92jFZ5HuzOnzcbDzEqial/1j8YzMtRc4DhAPq9SG08UeylUgeb0nzhQnovdPj+zP560FPX4WiOnLP3PYx7/WPRJRamNqBE2tY8Tl
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774552678-755256
+X-HE-Meta: U2FsdGVkX19tmaoV+h4wfptqrcy4uGRwqR65RaPZDUh0Xi3fxNoIWAF9dnA272D02NWDfgHWsNEf3VM4jl7SaNuYu0ucPdsvTl9AlD3yot520hJ+RRt6LSKs+5IbyIncqvNKhuUvjFLXDE0x6wpPY/Th+16y9+GN6A8WoTBetXPoTdnM+gKdr4rOkeQZAJ5N7ah+vv5a/8IzMkCf20T9Goivq1fVN2yWsWv1c3En2OeB4N0KKEITX8u9fP19xwVJF79W4KekHBU9usizifX40EMbPnuGU7mO8DwL5sQ223AZWmLq1SCRuOiZG32EFctT8kNX4igowHgyDO2c+A4KruUrvTVMUt3V1NTq4ly2V1FzAxPHX+OP+EvKo0XiHe0GjzjllJVA+ItDHPzSAI3gdpBUZAaAebBXPfNTpCb9VMFeoRx/Si69RWCrdeYq6OxqYW7ysKM+aTc9by+sntutZuGdQu4m0MRYDHe18sLXZ7ao7Nqbd8GRI7s3NvDPBwV6Qx0AB3231KQvilD223SuuK3QQxbUrpXNpSrodhEWS9DTUHrhvK+7SiJCzdUXuHxlSQeJmVoQQfjfgSbPLhQz6PWfqRvW3vfxYpwO+xhYOJxKBQ5ixbDSRnnQAjPUlpLl6wDRbsq5ZW4OI7kzn3NFcq8tqbSvHGPQuCpfcm8u7+f9v/WvAeQQcDivkDVdRUmhBJl+TvuSxnNLhyRBCOiN3sqhSuz8WvPL7XMqHWyL4fjkyv4VDU2BGy2i6P+rNGdHaw9pIT+UOJDd2L/FeO3XeFVJR0YBq+7hT2EJaIaHFjU5k1m1qyZWzkSlSqtyTDb8bHK4LY0Ig7rjW2gl15PDFInglVtAnao47C58MrNP5hJGpNMkjfAtGnLKwmgza8bM8WzzVsj0s7LP7xv74+ecwkz4fNJbmN4+Inzwsm+pXiOyeqbQT86htbGSDsXXqixbmwBvEOqBNJXKbd4vicW
+ hLxg8M5U
+ qEhzv/iHWqCuHyR8pOxfJ88fOiB/q8K7SBP/auXj7UGonk3gkbC8oWLKzeCr5mXG5tAYLeUw5VPb22jMfyWJWzR6stL9yvsz+JQX+ewxdRU+jwKdlO9gHPPaOMA3nNFChmsaP3z7Eg3TWbcDOxSem6pXSvauJU9skCFm9apZkreDHYJqeqkzhqL3AZjqEFTjzJRz/F+U28RE12G8i0Ed3zqdF92V6DtVBxYCGMYmPyeQ5hjidv8wq5loCWaOHjG6uZGljuz7vyP2WrJ5BBaDSpf80L48TyO0d0kWchcSmy9+g0zZjP1h7qg7Fvs/G5AWsnb/p2L1ncj4/gOdBFC/aZ8oXwRdgEf1wIWRfgAkhmDcVU4akFW5XWSTdcHTCjnIYrdYeJexkDdbLrQ0P8zM1xdfbaClMZ3vCOSBB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,120 +107,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 01:37:17PM -0500, Gregory Price wrote:
-> On Thu, Mar 26, 2026 at 05:07:42PM +0000, Pedro Falcato wrote:
-> > > Two races allow PTEs to be re-installed for a folio that fallocate
-> > > is about to remove from page cache:
-> > 
-> > Hmm, I don't see how your patch fixes anything.
-> > 
-> 
-> after looking at your comments below i realized race 2 actually requires
-> the fork as well, which means they're both essentially variations of the
-> same race, so hopefully i can simplify the change log.
+On Thu, Mar 26, 2026 at 4:58=E2=80=AFAM Marek Szyprowski
+<m.szyprowski@samsung.com> wrote:
+>
+> Hi Rob
+>
+> On 25.03.2026 15:16, Rob Herring wrote:
+> > On Wed, Mar 25, 2026 at 10:00:16AM +0100, Marek Szyprowski wrote:
+> >> The reserved memory regions handling code was reworked to handle
+> >> unlimited so called "static" memory nodes in commit 00c9a452a235 ("of:
+> >> reserved_mem: Add code to dynamically allocate reserved_mem array").
+> >>
+> >> The side effect of this rework was a set of bugs fixed later by commit=
+s
+> >> 0fd17e598333 ("of: reserved_mem: Allow reserved_mem framework detect
+> >> "cma=3D" kernel param") and 2c223f7239f3 ("of: reserved_mem: Restructu=
+re
+> >> call site for dma_contiguous_early_fixup()"). As a result, the code in
+> >> drivers/of/of_reserved_mem.c became a mix of generic code and CMA
+> >> specific fixups.
+> >>
+> >> In this patchset I try to untangle this spaghetti and perform some cod=
+e
+> >> cleanup. I hope nothing breaks this time.
+> >>
+> >> Best regards
+> >> Marek Szyprowski, PhD
+> >> Samsung R&D Institute Poland
+> >>
+> >>
+> >> Changelog:
+> >>
+> >> v3:
+> >> - fixed more issues pointed by Sashiko in
+> >>    https://protect2.fireeye.com/v1/url?k=3Dc0975fdb-a11c4aed-c096d494-=
+74fe485cbff1-5d0a8d4ece172e7b&q=3D1&e=3Dabd3a151-11c5-430e-a6ac-b04cc3b34ab=
+7&u=3Dhttps%3A%2F%2Fsashiko.dev%2F%23%2Fpatchset%2F20260323100901.4079171-1=
+-m.szyprowski%40samsung.com
+> >>    (restored use of _OF_DECLARE macro, extended some comments and comm=
+it
+> >>    descriptions, the remaining items I consider not relevant)
+> >>
+> >> v2: https://lore.kernel.org/all/20260323100901.4079171-1-m.szyprowski@=
+samsung.com/
+> >> - added missing ops assignment removal in tegra210-emc-table and swiot=
+lb
+> >>    drivers
+> >> - fixed issues pointed by kernel test robot and Sashiko: removed typos=
+,
+> >>    improved comments
+> >> - fixed incorrect node passed to fdt_validate_reserved_mem_node() in
+> >>    fdt_scan_reserved_mem_reg_nodes()
+> >>
+> >> v1: https://lore.kernel.org/all/20260313150802.1121442-1-m.szyprowski@=
+samsung.com/
+> >> - initial version
+> >>
+> >>
+> >> Patch summary:
+> >>
+> >> Marek Szyprowski (7):
+> >>    of: reserved_mem: remove fdt node from the structure
+> >>    of: reserved_mem: use -ENODEV instead of -ENOENT
+> >>    of: reserved_mem: switch to ops based OF_DECLARE()
+> >>    of: reserved_mem: replace CMA quirks by generic methods
+> >>    of: reserved_mem: rearrange code a bit
+> >>    of: reserved_mem: clarify fdt_scan_reserved_mem*() functions
+> >>    of: reserved_mem: rework fdt_init_reserved_mem_node()
+> > I've applied the series, thanks!
+>
+> I forgot to mention this earlier. There are other pending changes
+> tokernel/dma/contiguous.c like
+> https://lore.kernel.org/all/20260303-dma-buf-heaps-as-modules-v3-0-243448=
+12c707@kernel.org/
+> which I would like to merge to -next. This conflicts with this patchset.
+> Could You provide a stable branch with those changes to let me resolve
+> conflicts in kernel/dma/contiguous.c on top of it?
 
-Well, then I don't see how changing shmem_fault() & map_mages() fixes fork.
+Here you go:
 
-> 
-> > >   fallocate              fault-around           fork
-> > >   --------               ------------           ----
-> > >   set i_private
-> > >   unmap_mapping_range()
-> > >   # zaps PTEs
-> > >                        filemap_map_pages()
-> > >                         # re-maps folio!
-> > >                                               dup_mmap()
-> > >                                               # child VMA
-> > >                                               # in tree
-> > >   shmem_undo_range()
-> > >     lock folio
-> > >     unmap_mapping_folio()
->                   ^^^ i_mmap_lock_read held, iterates VMAs
-> > 	spin_lock(ptl);
->                   ^^^ child VMA's PTL
-> > >     # child VMA:
-> > >     #   no PTE, skip
-> > 	spin_unlock(ptl);
->                     ^^^ child VMA done, iterator moves on
-> 		        it will not re-visit the child.
-> 
-> > >                                             copy_page_range()
-> >                                                spin_lock(dst_ptl);
->                                                    ^ Child PTL
-> > 					       spin_lock(src_ptl);
->                                                    ^ Parent PTL
-> > 						/* does not copy PTE. either
-> > 						 * we find a zapped PTE, or unmap_mapping_folio()
-> > 						 * finds two mappings instead of one. */
-> 
-> At this point, unmap_mapping_folio only processed the child VMA
-> (no PTE, skip). The parent PTE *has not* been zapped.
-> 
-> copy_page_range() acquires src_ptl (parent) and reads a present PTE,
-> and boom copies it to child.
+The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f=
+:
 
-Sure, but can child - parent happen when traversing the i_mmap tree? I don't
-think so? (in mm/mmap.c)
-	/* insert tmp into the share list, just after mpnt */
-	vma_interval_tree_insert_after(tmp, mpnt,
-			&mapping->i_mmap);
+  Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
 
-The function itself is somewhat straightforward - find the leftmost node at the
-right of 'prev' (our parent) and link ourselves. So an in-order traversal should
-always go parent - child. Unless there's some awful tree rotation that can
-happen and screw us in the meanwhile.
+are available in the Git repository at:
 
-> 
-> When it reaches the parent VMA next, it zaps the parent PTE,
-> but the child PTE (just installed) survives.  
-> 
-> > > 
-> > > Fix both races with invalidate_lock.
-> > > 
-> > 
-> > I don't see what you're seeing? Note that both map_pages and fault()
-> > take the folio lock (map_pages does a trylock) to exclude against truncate
-> > as well.
-> > 
-> 
-> The folio lock serializes map_pages/fault against truncate - but the
-> race isn't between those two. It's between truncate's unmap walk and
-> fork's copy_page_range - and copy_page_range doesn't take folio lock.
+  ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/robh/linux.git
+dt-reserved-mem-cleanups
 
-If we observe everything parent - child, there is no way this is broken - if
-fork observes the parent pte set, zap will have to observe parent *and* child,
-since they hold the corresponding pte locks, and traversal is done in order.
-If fork observes the parent pte as none, zap will have already traversed the
-parent, and as such there will be no additional mapping of the folio.
+for you to fetch changes up to 34e0e2a8ea9e9e4f4dceb33072103dffaa1366b3:
 
-If this is broken, then every filesystem out there using filemap_fault() and
-filemap_fault_around() has to be broken, and I hope that's not true :p
+  of: reserved_mem: rework fdt_init_reserved_mem_node() (2026-03-26
+14:12:02 -0500)
 
-_If_ there is indeed breakage here regarding tree rotations, I would suggest:
+----------------------------------------------------------------
+Marek Szyprowski (7):
+      of: reserved_mem: remove fdt node from the structure
+      of: reserved_mem: use -ENODEV instead of -ENOENT
+      of: reserved_mem: switch to ops based OF_DECLARE()
+      of: reserved_mem: replace CMA quirks by generic methods
+      of: reserved_mem: rearrange code a bit
+      of: reserved_mem: clarify fdt_scan_reserved_mem*() functions
+      of: reserved_mem: rework fdt_init_reserved_mem_node()
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 5754d1c36462..7b4e39063d67 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1833,12 +1833,12 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
-                        vma_interval_tree_insert_after(tmp, mpnt,
-                                        &mapping->i_mmap);
-                        flush_dcache_mmap_unlock(mapping);
--                       i_mmap_unlock_write(mapping);
-                }
- 
-                if (!(tmp->vm_flags & VM_WIPEONFORK))
-                        retval = copy_page_range(tmp, mpnt);
--
-+               if (file)
-+                       i_mmap_unlock_write(mapping);
-                if (retval) {
-                        mpnt = vma_next(&vmi);
-                        goto loop_out;
-
-
-which should protect against concurrent rmap.
-
--- 
-Pedro
+ drivers/memory/tegra/tegra210-emc-table.c |  19 +++++-----
+ drivers/of/fdt.c                          |   2 +-
+ drivers/of/of_private.h                   |   2 +-
+ drivers/of/of_reserved_mem.c              | 320
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
++++++++++++++++++++++------------------------------------------------------=
+---------------
+ include/linux/cma.h                       |  10 ------
+ include/linux/dma-map-ops.h               |   3 --
+ include/linux/of_reserved_mem.h           |  16 +++++----
+ kernel/dma/coherent.c                     |  19 +++++-----
+ kernel/dma/contiguous.c                   |  86
++++++++++++++++++++++++++++++++--------------
+ kernel/dma/swiotlb.c                      |  19 +++++-----
+ 10 files changed, 285 insertions(+), 211 deletions(-)
 
