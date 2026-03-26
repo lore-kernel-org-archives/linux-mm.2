@@ -4,138 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2712109E55C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 07:02:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0EFD109E55C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 07:03:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEDC96B0005; Thu, 26 Mar 2026 03:02:24 -0400 (EDT)
+	id 41BBA6B0005; Thu, 26 Mar 2026 03:03:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9F1C6B0088; Thu, 26 Mar 2026 03:02:24 -0400 (EDT)
+	id 3CC206B0088; Thu, 26 Mar 2026 03:03:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8DC96B0089; Thu, 26 Mar 2026 03:02:24 -0400 (EDT)
+	id 2BABA6B0089; Thu, 26 Mar 2026 03:03:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB9D36B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:02:24 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3AC675C65B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:02:24 +0000 (UTC)
-X-FDA: 84587320608.25.01AF60B
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D3E0B80003
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:02:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=NyZijGO2;
-	spf=pass (imf30.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=NyZijGO2;
-	spf=pass (imf30.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774508542; a=rsa-sha256;
-	cv=none;
-	b=fH7KR4zldt8jMZFNxt4TrEegcbSdKZQKBMu2poZwDMXr8m4rylwAynOYVr52kCsna7j+y2
-	V20X/QkFkN7Fppg8hzDLB32PI5+qWj8wJzuYILxwcUh3z+Ze/wvamqD1KhZyg3ZLk63f8Q
-	kHjKXHqikhhykF88jvq1G3oNYIiwPhI=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 157946B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:03:40 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0483160BE8
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:03:39 +0000 (UTC)
+X-FDA: 84587323758.04.EF903F9
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8B7EB10000B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:03:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=D6pXo0qq;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774508542;
+	s=arc-20220608; t=1774508617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=iwOs1prUtDH/XXF+qcPJFyqmEClbbuY8YtWyndnlklI=;
-	b=K4QNPDRVuPyVln3KNh8s+fd6YTbF18mhQlT13211E+q2BfEfjTqyv2Ka3zOljMJq6sCHMd
-	3Fy31NltgoTqaFmF8OkO89reflSyAvX5+7o+CuyGTXuhVcYzca93dF3B17W4MXm34TvtBb
-	vlei9dO52QRC6KqEKvF+VTpOPatIWAU=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62PITX5m3850414;
-	Thu, 26 Mar 2026 07:01:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=iwOs1prUtDH/XXF+qcPJFyqmEClbbuY8YtWyndnlk
-	lI=; b=NyZijGO2c2j3Kbddb/FXGSB8VopJyvTvvhC81oGNm325gJrBFMuyU6PnQ
-	ZyAUr88u9GqlbhB1oB4EweJdWac/G8Eq+VAGwpGMfiT0/sCWqIR0JiTvRFik0Pyw
-	5w4h27JDq+hL9ZRe2HunJSpAwsynxUcj16m6ePcO53FvyZBQa8vWpf3S7rtG8zsv
-	2pR3YCJW3ONBnH2UyOosGcbNdLm/HbUngyKmQ1BYN7kpeT5dyztOvb0bVjt4fJSN
-	9LO1E+rhrRz1xFiyDXLCrgTMjOpaXkxZf2WkZzXEjrp+u3PVZP5xbJP8oySR5KGZ
-	pYxN7wR4BCcW5VRHB6Ht4QmcCjvXQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxqm1q1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 07:01:46 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62Q1wAnW026771;
-	Thu, 26 Mar 2026 07:01:45 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d275m1s73-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Mar 2026 07:01:45 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62Q71hxL31588750
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Mar 2026 07:01:43 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 841762005A;
-	Thu, 26 Mar 2026 07:01:43 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D40D42004D;
-	Thu, 26 Mar 2026 07:01:40 +0000 (GMT)
-Received: from ltczz402-lp1.aus.stglabs.ibm.com (unknown [9.5.7.39])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Mar 2026 07:01:40 +0000 (GMT)
-From: Donet Tom <donettom@linux.ibm.com>
-To: David Hildenbrand <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Ying Huang <huang.ying.caritas@gmail.com>,
-        Juri Lelli <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Donet Tom <donettom@linux.ibm.com>
-Subject: [PATCH] sched/numa, mm: Skip page promotion if cpu pid is valid
-Date: Thu, 26 Mar 2026 02:12:16 -0500
-Message-ID: <20260326071216.11883-1-donettom@linux.ibm.com>
-X-Mailer: git-send-email 2.47.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lEkg49JXBlYRGRAlbz2ESpWLIMYJu5dEQ6CVQd0qq8c=;
+	b=jKou77OkdRtDjVhNkuIBNIEZ/UTfRm9IbmHTTUDxHSL+kMhTf6+TotnOTpVKttg86l9Qh5
+	mB1DqViBmkrnLZbcWRDvBZxbRiGIKGAMRlyPFc8m0JbflpXqVYWSndnodeUWhzY9iy1xyj
+	d+RCIcra+iXfifduFq7KzPaHspG+Qak=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=D6pXo0qq;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774508617; a=rsa-sha256;
+	cv=none;
+	b=cRv8ioyfuR0YMy6TBcHa7R79emTtY8NkJzx3h0jSgFjIlyRuV5OqllQguY1xwgMwp3Mbo3
+	Uj2WzP8xPm2MTyCf/4HXiYD9i+AP4XrKdFST6wohmcBgqnhh19YXotl6CdJSkslSVHhn5P
+	ggN0mCpF+csr6xPRKxn4dG3eGg5g2zQ=
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-439b7c2788dso333571f8f.1
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:03:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1774508616; x=1775113416; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lEkg49JXBlYRGRAlbz2ESpWLIMYJu5dEQ6CVQd0qq8c=;
+        b=D6pXo0qq+nyM8LmOZMd5C/WqDQ3SKXD7BemU93gz9BbsCNs7RJZ3CKtnQqQV4DDRyw
+         oxjzktVku1o9VpKx28/PfUOFAqIw8idCzThj/qublT6HEMbiipibRaXpXmQQsXxPLK+E
+         9/I3Eu78quoWppeP7xIOJm227O3zCo28+s+gZaDt1wUWAhHsiesTA8KWBJwnB0diD4iu
+         5yJAewQfDbIwq1yt+ZqWQtM4wGWzzFu5Ter2JkHIZO5ftFcvxgGV2Xfhvyfg57NZ/b0I
+         NrMOdi+/eDnmTL2S/gHUmnUkmgEWHUyXO+4je8HtKVN/fVAScUNqiFqMMQl8ji/vmd/I
+         gBSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774508616; x=1775113416;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lEkg49JXBlYRGRAlbz2ESpWLIMYJu5dEQ6CVQd0qq8c=;
+        b=T2kTbnReo8cl/ZdXbCrGzNWdoPfARiWhHSmA0WtfzmHr1sN/GAJz41Jmr1xlX8M1W+
+         3lNA/JEoWc3CxR1LBEejHQFeXEMLg4DQhuGSbe0FmTa371sl+Lamp53CGndM/Aq9qMH9
+         iVNQNifSv7LcVFysCyqnCmUHWU7pW17ZT8MlUoHXRts/MDH2a6gULxxUWNSEdagstzBr
+         2feTDP4LwtcPV5l601rymHaKPiwg3Xgpb0yZL5PyWu7ukKp2vbO/rfPICMDsW/Tr/rD+
+         xW8o+Ojvwm0EuaMR/urx1UDHANnwqfZUhIDyFG3sdCsvF42AW8bGVbJm+UB3JD9i0G4r
+         og2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUbebr33tOHVAPE0L3xX5wINFI5exPZ15zNtoKYGr3bJAOi6ofGWgOupOo48ae8XYJ69KZCuBNQtA==@kvack.org
+X-Gm-Message-State: AOJu0Yz6q6ZN94i/8sqsSCrRiOzxaAR2mM/TDss2ThlKUR4fvO6mFeeo
+	RSQGrE0h6/HydWKWmN7UK+FM8jgysqtaieimSIQx+IfGPZVLTgBqLPSHG5Hp2aKSGu0=
+X-Gm-Gg: ATEYQzxCRANMP7QgF/bczdXXOt025z/JptrOWXQa9EN61o5YX6yfd00j+tAacGlphi6
+	3qZzjnJu1gUHCRQSk58PUirsoQVITOqsnN19oiLqfmX7uabutHry0X+RO99BYTo1FKdb86FZvHy
+	PIBtO008vE+mOuOxPb+uxSVjXv5NleOHPh8ph5nwAP7cDj7MedcsOGZdK4i19UF1c7/AIeF10f0
+	m8Kw2V7r/qzeU5/UoCor3NAFn97RcawHEXi/PCUZQODht2WDW8ZvJtM/IVStwx9vWffPEO8Ch+f
+	HZQctjxf9ileytDqXPMUo9Mwrr1SAw3kTTXCRBuWt6yofCgB5UzKMv0bLHauHbCcpFElAUi1gAL
+	rvtmoidOg68b6gYBFVTBtaMNE3pWNa7WefVgIapVKixvL155ngzY+PnaHU8Tccu1S9dHvcvZXi7
+	NqRkqRU4M6N6gj9yUbZQuJjqC1SLXvcc7WHPqb
+X-Received: by 2002:a05:6000:400b:b0:43b:4ef0:e13 with SMTP id ffacd0b85a97d-43b889a49eemr9597969f8f.12.1774508615797;
+        Thu, 26 Mar 2026 00:03:35 -0700 (PDT)
+Received: from localhost (109-81-31-149.rct.o2.cz. [109.81.31.149])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919df903sm6070863f8f.30.2026.03.26.00.03.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 00:03:35 -0700 (PDT)
+Date: Thu, 26 Mar 2026 08:03:34 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	lsf-pc@lists.linux-foundation.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>,
+	Gregory Price <gourry@gourry.net>, Barry Song <21cnbao@gmail.com>,
+	David Stevens <stevensd@google.com>,
+	Vernon Yang <vernon2gm@gmail.com>,
+	David Rientjes <rientjes@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	wangzicheng <wangzicheng@honor.com>,
+	"T . J . Mercier" <tjmercier@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
+ (reclaim_ext)
+Message-ID: <acTaRgusrxfCoKqe@tiehlicka>
+References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+ <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: CiaSF-H1fnPPyV5xXc-MOYz_Qk5Hvnp8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA0OSBTYWx0ZWRfX4KLfaAC6v9T5
- PRpSrbBqH09ZlYLbFNG3BZ6ZBuoLbcHwrQrVnCIrVtpPdFjb0blSvwXRjcT6NtxbHSqGvZsQA5Y
- zhNPEUdV2i1fkRfSyr7QMiNMlenU3qjN92lBESP9Q6GfMuMA4Jt+iMvrcvK2mNR6pP3TfbLetbG
- U4pVtmFM+zAoLf/zLIxVmBXj0L+PLa17xYnSGWZvJzzvXMKuAagOIGeX/AVRyqHDQMyEAYWm8Bz
- M6C41n6axuXvqCGuOR5Ux9kitHlWmFBqQzhUMH1eLAjnMZpfhbaWqkV1Yz0XO38uDunhDjdCjnu
- Dt7d16reyiOaFFNoGMUewV1F50jYOtm6HJ/2zRgY6wdpV5zzMdQxlqTEnWr8he4keo8a7QXxsak
- r9hJTEWew0hOVVOdwrXweTNmRBGfF6QN1eeyUWnbVPdSZFShm+xQmeciL8KXbYB12/l4tNbYemC
- EF8L2fPYf9j26oWAx7A==
-X-Authority-Analysis: v=2.4 cv=bLEb4f+Z c=1 sm=1 tr=0 ts=69c4d9db cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=BU45FUZf6EOTpP1Kgp0A:9
-X-Proofpoint-GUID: MJCi38OmNnXbfplKA4HoCHDbAQwVLJJo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_02,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 clxscore=1011 phishscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603260049
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D3E0B80003
-X-Stat-Signature: fe5na7dj49n7rpahfn77cx3qej45fzkn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
+X-Rspamd-Queue-Id: 8B7EB10000B
+X-Stat-Signature: x7zqqnfjygsg3jis7yhty4sox8111ygx
 X-Rspam-User: 
-X-HE-Tag: 1774508541-695481
-X-HE-Meta: U2FsdGVkX1/2+AvpAQMwpNTvfYdxNKPyJdoWDZFyil2wAYiBbJiEVWDnPtVJYMlGJzfa4/yTcdQyqRY0hbsvnI1TI3fbhH/tFhny1RM8mZrp4CY8lbRGQZIeaBKLmAc1id415oS5GRY+HYwViarWdl1BGiTS7H3ut/yOuRr6NBuqSkiCEU5aSJmr7TgNdoKXLqOmSq4JTIXxWg7CVz7REtzTxNEXr90QVTm9/Xfw+EgvnnSSQofPZ0KOxEeFnf1zXoNkHhb29/poTRJ2WNNy9QgukUXjber/IxwvgaWhc1W81D3f43YHDcA7ne6kG+s97CLmSrH4qHye4lVm6sgN6jHTZI398vz1aKK2cg2twkD5AphavRNxbZfXVrSA6DO1Zpin072PiHBl3t6kgXXyw+chw7MMHIRTGItYyyamGYE2AQXz1OAUOEtE/CEpTfpuWPpcP+UOAzgK4pcWebiLD/nhcRMypBMF4TaXYM/QlVqeLPNJR/zKXIL65sRNL+2XkBTwIhoQ4Mj4e9CUzBnix4Oo7DvpWNJhkophESKTSK/QqFBG2GYYmieSjh1t+Jbp0o8L3KRQtodl7a5hSnVPfiB6t9ZbqWzPuAD8ImnGug2gG7a5czY/Gx9Zylg+X+t1E5MsBhwlwtQe834A14Nr+zd9uVD1VzU4w2ad35OfBTQzslABql9BTekrrY1QAoMhdownWvpwCBgrVQukmF4v7A4bbVmpLD0xw9X8ySskm1ubJRXpW5JLhD0rZnaHzehQDoBxDzCFpmBhuKJ8Vsqrz7akPMBK3C1Ykx1vMQQxII7QfF8axogKQps0Mkhun6fs+CdD2rVPp3WVzgWhHNw1Fj2XVepZxCx7bdmY1Am57lhWDp/JtVQFCem49PFsM7qNGCis4ulPL8XICfzuGZqbwxYHsqHB+V3o7Fv7OHQzUXflhHXecZ5OR5R+hlh54EcOcQ/76/6/1MBQyBadug0
- e2lqV7O/
- OI3iKpsNmuRZ7IRJ88KuUs4mZ+jH434MjrBbWluAhie54PVrF+YvuTDEhK18OvjdJCFJWRn67K/++ezAoVVV31ZnbNCEgituw26HNLkFxy809hZm06LiWIsH/Xx0C79wj0uIzu2QEqL2Z95wA89G8JKQvBhzbHpdWx75HGbxMV2+mcLU+SRamPqIbNmqb055NTNxQy8Ps+zD2LIQrP2GKFDnAdSUpnyI1JMmMwHbo6pyXOM4VS/3JmjK0jxKa9Dvz/mTLx/3N/LdXCPmbwT184vSQpw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774508617-755703
+X-HE-Meta: U2FsdGVkX1+lX4zeboiJqUfgwF0ZqXkFESWDCWxu4zD+SyllK+T/RjrESKHtJKhfeSpWXr/VWYK02yezu/ETqiF1Tt+j2TUYUmYVuI1omASwtNcr2NyoT6seT6mXxtot6YdH2BgebsXYG2RLCO3tZdvrGG6VJRa/ryTNHVrNPwuaCHBxwAlo8ZNvs50UsxXlYnOpdqC3wbKfVPPuna/mNlHLqVMU6QbSfKId0OxodxRE0lIXJn5ix+Bq6O3dZuImiAXRCS2N9ogD5dpBuOJ1wJu74OELLIEJi1mwIDiq3Za0CRQ4JCM6aICVc9bH4ezEuzgUaEIGZXLGJc9fzW8Wy0aGWZ0+5d/5DLvCBsOb5B2j2Otm0l1WENJZK/jd37vYtBQhrpFe9MyCpnwXFbr95YQDmQ/rpGwP4Gz9i67ER7/jbDHPhKdNsORm3m04GV9rwTzUFOGDD+YObUwFzIguU7OrI0gjbLtpg4HcpluKixBKHLTvOBTvdnC2YNGCT9AhVwQ/ypokkn5PKmld4Cz6yCjZ9mfr4SQZsnjdigZpB8I1y9H6fjNTMuWntoyEE+mZYzBvHBuVhUaVQlpu8/RyOTlrA0Zf/rjZWC9+TjV/Zbj9w5AnvEJ5CFhXWRFBEuf1wSsF1AqtzdqoJa8oTl0Q4Rts6k0LDiBLNB5743AUJVsaq+4J9J2hOiKr7SJCKRzWDO1RN0AmHNo56oijByzObWv5UzfIQEULHCl7WGs8phjAaNWmpUtvQkIpI8F63gqeil1KzNhPS0Pycoq4WQBpOhj5T7Km7eKcVdck5aALJeX4CiNyaq5qoHxuBmxhE+DU0B+TOq7jfjJqV/lNi4dNbbZDTQAI5wuJC7Q3TGwlCI3YMjwQ+j6KODQFp/s44nm9Ve7hqHFtEWr37zxvvI3OAwu20hQKPigbbPky4p6v6a/z7R8ONZenDcSdpVjk1HZjKfcAZUB6/5fZ2D5Myiy
+ OgrnRoP0
+ NzEJ8kytsBDIdKGt4Vzg39UpVFhzRZstqtvndrC/dPJKL4XC1vqLSYHo3jLrZK3W/Ddx7go8jhEi27ATdAXebIpn/06u01Nbt2sb2JuWfueY+LIORxcbsTYXXyNEC0/ZakXzvh6ScNznXz6VorPWwWBPah3LKA/mbhyqzdha2TB6TMYKV9tY7JaGzCD5vpHXtTLPN5gwTVqvmj4kWesLO6KFsiMWl0vt+PYhnOwd+TXkprEQbewnQuAuTW565EFVmanKLFH+4ANFxeR4XL1csXx3Ov9GkKREaCI0xL6IT+lPGCBBDGcyiI48MvWtv3lFknxEcQcrvtokPdPpaV25k9/pdj7htlU/cSqEprdmPMpx8xNYu749A337VH79vGHK05xev441TGOQOPJHFyW2wt6vP7q5pUP70YLw6RcQytyexZis4sv3jW8yEuQUlvB0hj61r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,38 +140,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If memory tiering is disabled, cpupid of slow memory pages may
-contain a valid CPU and PID. If tiering is enabled at runtime,
-there is a chance that in should_numa_migrate_memory(), this
-valid CPU/PID is treated as a last access timestamp, leading
-to unnecessary promotion.
+On Wed 25-03-26 19:05:47, Andrew Morton wrote:
+> On Wed, 25 Mar 2026 14:06:37 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> 
+> > We should unify both algorithms into a single code path. 
+> 
+> I'm here to ask the questions which others fear will sound dumb.
 
-Prevent this by skipping promotion when cpupid is valid.
+Not dumb at all and recently discussed here https://lore.kernel.org/all/CAMgjq7AkYOtUL2HuZjBu5dJw=RTL7W2L1+zVv=SCOyHKYwc3AA@mail.gmail.com/T/#u
 
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
----
- kernel/sched/fair.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+> Is it indeed the plan to maintain both implementations?  I thought the
+> long-term ambition was to knock MGLRU into shape and to drop the legacy LRU?
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 4b43809a3fb1..f5830a5a94d5 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -2001,6 +2001,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
- 		unsigned int latency, th, def_th;
- 		long nr = folio_nr_pages(folio);
- 
-+		/* When tiering is enabled at runtime, last_cpupid may
-+		 * hold a valid cpupid instead of an access timestamp.
-+		 * If so, skip page promotion.
-+		 */
-+		if (cpupid_valid(folio_last_cpupid(folio)))
-+			return false;
-+
- 		pgdat = NODE_DATA(dst_nid);
- 		if (pgdat_free_space_enough(pgdat)) {
- 			/* workload changed, reset hot threshold */
+Yes, but MGLRU is not there yet and with development pace last year or
+so we are not much closer than at the time MGLRU has been merged
+unfortunatelly.
 -- 
-2.47.1
-
+Michal Hocko
+SUSE Labs
 
