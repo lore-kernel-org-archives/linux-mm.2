@@ -4,109 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AAC110AB82A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 21:41:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B3A610AB82A
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 21:49:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBC916B0005; Thu, 26 Mar 2026 17:41:39 -0400 (EDT)
+	id 811ED6B0005; Thu, 26 Mar 2026 17:49:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E46A66B0089; Thu, 26 Mar 2026 17:41:39 -0400 (EDT)
+	id 7C2396B0089; Thu, 26 Mar 2026 17:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0DD06B008A; Thu, 26 Mar 2026 17:41:39 -0400 (EDT)
+	id 6D82A6B008A; Thu, 26 Mar 2026 17:49:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BD86D6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:41:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8FE09BE0C3
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 21:41:39 +0000 (UTC)
-X-FDA: 84589536318.28.8862AB3
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DA96E20003
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 21:41:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RNvw3ghs;
-	spf=pass (imf13.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C8886B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:49:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C974713C31B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 21:49:18 +0000 (UTC)
+X-FDA: 84589555596.24.E3BF1AD
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D85E8140002
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 21:49:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=SpnWd3th;
+	spf=pass (imf26.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.45 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774561297;
+	s=arc-20220608; t=1774561756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4LE4e78gsgkE8EYpJUa3F0beKgycV3+MjQ0A8QDP9rQ=;
-	b=5K8zcfRt4rqoa6KAQKLCA0cGAeGV5wy6jMAQVwlHb2N1HAvqJsRhg8SV4b2rD3HsGoe7mb
-	WE7unDInnR4+1DNT/TcRvNjN80MvhnkrHIPkztpep7P8rjjiuUDgg/VTjg008nGxc3WPd8
-	SABHpYr6dg4JU6qpvUpJ/9ULrQWq4d4=
+	bh=qX1NpSiXWyZWkTM0SqqSAJKsUKjmEEHU7OKtCuDkLTQ=;
+	b=GHMqSyivQQvlKyjG9VcXtJMhwMRy3dy0Sa8jO+rjP9u/MXZcx323tntGbhzxNknuNF5zSd
+	GW9+sl+43yMa+oFJt2I/0r1CR2/+SsJyT7TcCYz6075a5UwVy3R+iQyPl8OIWnvCt//6A/
+	iSTQssnGh5B77EKif/vMdQ14Fye42Yg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RNvw3ghs;
-	spf=pass (imf13.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774561297; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=SpnWd3th;
+	spf=pass (imf26.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.45 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774561756; a=rsa-sha256;
 	cv=none;
-	b=rlV6Jstg2R8mh69tFbINM5dVC0DsfapbKtm3wD/iQpYvZC68H8w3DR497e2hVGWOApwCjt
-	dg9fImi82CjM/mF23UUo/AlIWi1HOPx+s/GiDEoPHuJk/G/N5iua3zJt+eoBY5bEhDEoFY
-	IbrPOyJ1MgX+Y9Aeo0ltA4MlcL59kHU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774561297; x=1806097297;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=T0dtBj3s8LT0i/Bza0Vy9gcessZjN5wbfSYVN87qrFo=;
-  b=RNvw3ghs1xh+jMhhcfOKNxP2l2l6zCaw4G+g2yvavZZykuOL7zxbnWwf
-   siy3mjTOYJAPleqseiMuPeiAfYY1gVdluaKWQDiJJ7OscESMMA7dny9Qf
-   6iMUBjfryhYnMwJn5/5YVDuzQqEDP81kbkkUuJpJ6KGPzZlfUsZaHsOtg
-   64jKO07jy2MTV/AOaQezUjR3e+WrgEPS5YfaI0qDOkkpUesrRVUmupSwn
-   R+aDeUvey9pxglbtm0yapsyfad41JlLPEosRy1CzyeWDx5ei20atu2hJv
-   QI06YQP1ipD+wL+AMp0dKI79ljDWfMUDnf9NzoLNV4v0ZkyiiXrA0cgpA
-   Q==;
-X-CSE-ConnectionGUID: si4i27R5ShaQfarimOyQyQ==
-X-CSE-MsgGUID: co/JI6xbQ6KL+cZJWzPt2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="78229763"
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="78229763"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 14:41:35 -0700
-X-CSE-ConnectionGUID: VnuhCQUDSWeA2r5M7vYhQA==
-X-CSE-MsgGUID: kB3d1EHlSQiPEqxLWFmaRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,142,1770624000"; 
-   d="scan'208";a="255619182"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.122]) ([10.125.110.122])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 14:41:32 -0700
-Message-ID: <67c5b4a4-fdee-425c-8383-5c9c2f32227c@intel.com>
-Date: Thu, 26 Mar 2026 14:41:32 -0700
+	b=P/MqP7RXuJLk51IhgG25drG+qEDZ2ldNF1MzIUoX/HhN8Zx6lkH/AIlRU1OW/0hcaDLQaT
+	Tbyl87Ny9+EJY/sQ4e2dyH16jxOAR9/4pQT1HJ9MYypH8K02HwUdPcgky9URNcgO8uByxU
+	2Vb2GqoZBNy0EBWZcfR5xbbqyf+dxY4=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-89a07f66f4eso16305526d6.1
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:49:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1774561756; x=1775166556; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qX1NpSiXWyZWkTM0SqqSAJKsUKjmEEHU7OKtCuDkLTQ=;
+        b=SpnWd3thZtp1IAFNhRF872qpiFhS0VWNFqjHamLqTH8G+caCTjCz36Nkf24wIh3Gmv
+         t6+ontjH8j23UySHSW5eeIIR7fKNqvgHFHz6ZqwT70EA176mAeP784DXnw0TM4C7Unv+
+         KBEB6ZepZh3I3EmAA73ue+WIfM/BgOvbkVY12KUi+ZheYNSGAWOGFJm8anMgUJ8KXPHb
+         L8PpcmBMjgitZ0+866Cuu9+UwsSqcTfrmtkGQ9S108EVXUshXVnFixNNtZJn6Pk2uu5c
+         3KQgSiJ8zbQc5Bg2im/smm/roSD0utPeSdU+LaWl/H0GI9M8rf1vM/XlgKE+j9TABg6F
+         IBKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774561756; x=1775166556;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qX1NpSiXWyZWkTM0SqqSAJKsUKjmEEHU7OKtCuDkLTQ=;
+        b=MEEMQPMN1OU5NfAtnPbYKi7kRH9Vtbj+jhBHniDTjW86HQ07Iw7qyJHInHo7omGhLs
+         PJLJkPzOcCV3zASAoDH682j9vffif0t8DHeWnxwXIGpqQv1/PCHubq6AB5ND+Fcte62w
+         3ACnJEYN+zdw9b3yM8//EwR5b8UUpT6DucLd8EXN90WuS081SKre4X8PFEvxMtLYOO52
+         FHpkv6d6UqW4DEpCVrotutFUljdlBSx8XSTp9FIkO6AE5QF+xMCAW9Gy5RNDW2PSvXi3
+         DanI5zo1y3RpgZg3GEeLeA6sL36LdOORPhe6pio53garv5FzEFkgYLCaGptCcu6EalhV
+         sfHg==
+X-Forwarded-Encrypted: i=1; AJvYcCXaHv+fIJ3PxlJIlK6mDLyEmGpJjS1jkbcDFVk2YBUnTnXmjBuDvi7JG/ypPWSQbyEXivi996eX2w==@kvack.org
+X-Gm-Message-State: AOJu0YyHIUgf19l0VVOgQ4xwmyLeY0+wW8I4WIFSnQGvAb23jsLugzas
+	6lr8IHZJESlb51+CcUQZehhpqx2JTXb0NaG4X+4SGDt5JlxWWuyypjn4HhFn0owIY3tEPSJE8o8
+	u2XN3
+X-Gm-Gg: ATEYQzwID2YxZkXigi+v7GKhyMCjsLDFVbi0g7XsrmDQm8vykgSJD6ozl719+KAJNRA
+	5cz9Km0dXQmEUtMO+aDVrwC0xWnqlcwEJYhXkaHuEPQj4zj7w4Q3QK6oW1wB7b3tuUO4rLl5DZB
+	fwwDDZCzEz79uIKNk5pSqow4MywM0Nxa2XaqMr9axv6XW2DB3ciJm3nHJk1vaPCiYAyP0Hzh5DN
+	69vVSIh15fADPsa7zfsCzjmfuPBgXROqb8Xedon2CIO/WoJccDny86TiBNesIu6Dt4AEjjchT2S
+	tqz0QMq9VG3UmpFxcpBL16VW3mXHYoXPnPCiaG84CMH5by0+yCDITaIihTmVX4mktWO734RfFFy
+	UEOWPUkji5aOOYC2DdpgmeWJwr4vQKcKJXKyZ0/si9ofa90tc6GhcmdbduGZ7QfPloDrnJjHudB
+	l0/k4SuM5VvzstJa7ViaIvIHWpMoisI/rs7RKw/uAP+SymuoxD3oOM8tKTS3eYQamPoZnJYA==
+X-Received: by 2002:a05:6214:3d02:b0:89a:125f:37db with SMTP id 6a1803df08f44-89cc4a9f41fmr132847846d6.51.1774561755760;
+        Thu, 26 Mar 2026 14:49:15 -0700 (PDT)
+Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89cd58ad990sm32934696d6.18.2026.03.26.14.49.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 14:49:15 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w5sZm-000000011r9-29KT;
+	Thu, 26 Mar 2026 18:49:14 -0300
+Date: Thu, 26 Mar 2026 18:49:14 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, rppt@kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] A pagetable library for the kernel?
+Message-ID: <20260326214914.GJ8437@ziepe.ca>
+References: <20260219175113.618562-1-jackmanb@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce
- socket-aware weighted interleave
-To: Rakie Kim <rakie.kim@sk.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: akpm@linux-foundation.org, gourry@gourry.net, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, david@kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, dave@stgolabs.net,
- alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
- dan.j.williams@intel.com, kernel_team@skhynix.com, honggyu.kim@sk.com,
- yunjeong.mun@sk.com, Keith Busch <kbusch@kernel.org>
-References: <20260326085501.343-1-rakie.kim@sk.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260326085501.343-1-rakie.kim@sk.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DA96E20003
-X-Stat-Signature: sicdknwgw4ztzzw3stn6t7k5y1pfz77t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260219175113.618562-1-jackmanb@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774561296-384719
-X-HE-Meta: U2FsdGVkX184hRu5aoQYzcsa/Bb1IFXn2lAcLj4VQO9iCBuGmnQG+P3xXwHrCypem0TUchipYA1Q9uxufifTUzlXET7MXYzq0HbAGF6nNjUEN62oAgDLA1pqrqKGYETS66R90opvLLT4X1fu2esu6ANLTM4xki3diPXH6uNY0tqhR4WDkS9f2a1aeRHsrAhN4jTR+DXlFIVW2Se89inJv8oGbYpC4us7pk9ML5qOXnG5F2KbmJZy4qLk9Y7/zh/ZIbZa5vJPzPq/zsZtYsa1+YJ2rTwGdZ7aXmoR40ISfOjrFJYehBpTkEYKVw8dRiQiiDuAzG4+vq5ONcgwfNQwYjbBEsFelacsf4dshlBTmvLbbxCU1j4MGajRBNJkii8iG8miNLNMrCbTRKDyBrarsM5PPHHajmxsxSP3gfMR/7t6lnPbGpZpBI34jwsvS8rufAzbhjAG3hnyYVf9a1F1iF2b+oNiZFf07X8MPN2JSc21aDuOncWrw48yo5zeAjnbbobwzqk7ZaFjO+bLEXAm/LbxeOUy/4siGoio5CmSLD0eHqaQavBNIplAlBU8rS5EG8EoTn/ozl12dJnTIbqBV5CcQddN/s3ZJCpuxFGJCYW6j+oOwp4I24M+MCatnEgsYYbogkJFTuWbcWgldqTEBoaz4IjNA9Kwk/yo1hj3wcWPw+Drt8nWaMQA5jXI0rCE0oZd/LiSPYiJRCbgF0pANwN4wxJe1pUPxN+6xXlZC7LNLDh3Smj8ddrMux3Q61pI573ZVIkXgp6nFtZiyUNlsnh0biAFdmeVZ4C+URIn7f5yP8qhkkpDgMxPjQ93Rc2iZ1CGhBwZxSD8HBD2tLSBe9wPwzSQGvpITt1XKKpZSvCyAr4wwak+k75k/Cx9Jq9kQ79jk0fN0om9CfVxGWXF9gl38uX7xQyZ2XgJWIQODdnkzpY52Bod1O6TfK3IrgpNQQWSKuj2tFdDrH5wQb0
- EKTqZ+ej
- jTSU8bigPoSOAsb34PtSXEgOVT3U/ibEmpV9r176rhhDTAKnTtoZPTPvOWK6bPwOP35UBEOy4V7qA0DnpsUqeur2paqvyQNYA9JWGWqQcvxFasCvnW4ECJ6T2W4cxe5MSQ4dhurl1Z7av9xaJvzRFj+bPFBPRjQOA6rBIRbu+iEROEzo0BjyXcS4JEAvFWM3tV8bHNcLnNGFbeKsOzYNWVoWK1sLf1hb1MGLuBpK2MG8QgdOLNhixJfL2ncQd2BF4SCl3BhXj41X0af1FDzBpdxQw7rLfd0Ig7Scsu+j3rVlA1ikYpzOfEzQjMcj2ORUOFhr1+KcfegiX4VOb3FVWZBNJyREeze3sSBOaDDFJJWzaALQ=
+X-Rspamd-Queue-Id: D85E8140002
+X-Stat-Signature: paiw4c5dee97enmis6nf1xjxb365pob9
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774561756-173175
+X-HE-Meta: U2FsdGVkX19+UsRtbLKr0LIME8w1TI3d+YLMbOvvKyp4gEwCOsrlOZRkEDbKRknLC6ULo+7daCxkYFNGDc7yi6ebZpSMzYhv6xJD1Siv79WJnxHS8A6M+aA2z0qwg29Kd1YRw3qEmbF+t5cwKDBZMPqlJIvfgapBG76Uz8sknf5RNu4JpRIDaKoR70ke0fn71KvqTYTjZ162KeevR7cRilQST40dlK/mIB8Fa1Yx6QxLaEGeRxmwHFLasyx3CcgZdYy0n1S34S0ra4sVtFMm076y2sYJYpIuRzzQysE+ULrlqy4o3ETNiZWaQzwVc7KYO5HZxbfPxJfZGNETaQLCJZBIqqdVNrjQ/vHgfFTO9rFBUc2RlDaRseZ8k3UyG6bGbgL1Lfa0DkVAK72g80+/ImKIEsbbnXEJKlQp1dbsvVFBtXhlILmJiilGDYFXM3Xhs1FRxqqSCKxauLF3AQmGgPVVqacbSFj52fmLDYs75cbPzGPcPapYfU8WA71YosehvDJGxfKmUwAgK8QcLPqt70S2o4xE0aOn2Vf0Y4CnVUUPzYr8LnWNe9FVtkcXHLqBbtp+iYwh0n008c9F7BBmtLszqHgsxtBce+HwLPC9ASHW2YrUtcfXax75SCBKgw4DzPDW1csTKoRzs7K8mEn9vupj19Aq7yAPW6oVnxg5G/5BuoUy2ZMWibDT55pYdW/rR628JsIQFnBT70/8piSM2cJd82tmoBf6vVZEzK5v1OfuYDSpcA6h/4LZn/pHCC0PUDim4Y3ekfOP5I0CL6VubDXsqyMt4QCdbxixE8u8htVETdi+08LlNkpwr2+Q1m3eDRkBSUVhofRc74e5LQRkt8FCd8jbtFbZlRPHbjBA2pVsZYlxfyNDOTpGL+C8CWsU+EhGqQFyq2mdH1iFr2SOT1Z4eBqFWNi7p+MZijH2wzMKx3i1Z8COpBpLf6zNLqqnszXsvTpCsJmMlZ/Etyi
+ qsKholvg
+ pWYqggUW5/2YMK/HxZkGtOsyg/+0QvUuD/u14qfKKdwuGtt53BPI3WVuKb5cA6m4JW2x4oJNygeOzA0u5DOr7yl6Rc30HgHSYdG7KDNTWZweMVnlfg1FgqeduCtPRTfDS6+1RtIALfIsWnub9MOlqOaA25LNBAdzyxkP7T3m9Rn/M/ysuN9xDdnXD9scWgz6DQ8TAv+OvSyaabX/Cqqi71H3siDUWjSgiAZmbts1IwyD2qZdBuUDR3APJwVJ9ZnrhkUDptPtHa5nov8uGNRHZueHpdyn9ugpQEQXU7xy5b8hoJcinZdDtRwcWm69aIjNxt7thy3O3WLKn7LVkJfZCfM4UB2AOv+9T2o56o87qfwFNn6KSmH6MFO8bWIJ8wox/i4GdWZIcL6nzFxIGtoS4+qT4EZynQeAchvmuYEQ0dhGUqjRO8FVmCpfdgmXKwNiGMNfkRiPFaxf1tVPEh9x3pcB8G4EtpN4h+3HXYKW+HI+fR3AX1GNQSMh9D7LNVoju+PUp3emnkd0dh+U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,61 +120,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Feb 19, 2026 at 05:51:09PM +0000, Brendan Jackman wrote:
 
+> 1. The collection of APIs that are specific to userspace pagetables: mmu_gather,
+>    mm/pagewalk.c, some vm_fault logic, all that good stuff.
 
-On 3/26/26 1:54 AM, Rakie Kim wrote:
-> On Wed, 25 Mar 2026 12:33:50 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
->> On Tue, 24 Mar 2026 14:35:45 +0900
->> Rakie Kim <rakie.kim@sk.com> wrote:
->>
->>> On Fri, 20 Mar 2026 16:56:05 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+I have done something for iommu that has a very general part that may
+very well be a useful component of this:
 
-<--snip-->
+https://docs.kernel.org/driver-api/generic_pt.html
+https://github.com/torvalds/linux/tree/master/drivers/iommu/generic_pt
 
- 
-> Hello Jonathan,
-> 
-> Thank you for the deep insight into the HMAT parser code. As you
-> mentioned, considering the current state where node 1 is still
-> registered as the initiator in sysfs despite the flag being 0, it
-> seems highly likely that the kernel parser logic is not handling
-> this specific situation gracefully.
-> 
->>
->>> Because both HMAT and sysfs are exposing abnormal values, it was
->>> impossible for me to determine the true socket connections for CXL
->>> using this data.
->>>
->>>>>
->>>>> Even though the distance map shows node2 is physically closer to
->>>>> Socket 0 and node3 to Socket 1, the HMAT incorrectly defines the
->>>>> routing path strictly through Socket 1. Because the HMAT alone made it
->>>>> difficult to determine the exact physical socket connections on these
->>>>> systems, I ended up using the current CXL driver-based approach.  
->>>>
->>>> Are the HMAT latencies and bandwidths all there?  Or are some missing
->>>> and you have to use SLIT (which generally is garbage for historical
->>>> reasons of tuning SLIT to particular OS behaviour).
->>>>   
->>>
->>> The HMAT latencies and bandwidths are present, but the values seem
->>> broken. Here is the latency table:
->>>
->>> Init->Target | node0 | node1 | node2 | node3
->>> node0        | 0x38B | 0x89F | 0x9C4 | 0x3AFC
->>> node1        | 0x89F | 0x38B | 0x3AFC| 0x4268
->>
->> Yeah. That would do it...  Looks like that final value is garbage.
+There are lots of things that need various page table algorithms..
 
-Hi Rakie,
-So I talked to the Intel BIOS folks and apparently for devices that are not hot-plugged (with memory ranges provided in SRAT), those HMAT values are the value for end to end and not just CPU to Gen Port. That's why they look so much bigger. So there are couple things we'll have to consider:
-1. Make sure that Intel, AMD, and ARM HMATs are all created the same way and this is the agreed on way to do this. Hopefully someone from AMD and ARM vendors can comment. We all should get on the same page for the CXL kernel code to work properly.
-
-2. Add code in the CXL driver to detect whether the range is in SRAT and then skip the end to end perf calculation if that is the case. 
-
-DJ
-
-
-<--snip-->
-
+Jason
 
