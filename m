@@ -4,124 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E9F109E54B
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 06:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D09109E55B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 06:47:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20056B0005; Thu, 26 Mar 2026 02:29:29 -0400 (EDT)
+	id 8BD186B0005; Thu, 26 Mar 2026 02:47:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAB1C6B0088; Thu, 26 Mar 2026 02:29:29 -0400 (EDT)
+	id 846D96B0088; Thu, 26 Mar 2026 02:47:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C722C6B0089; Thu, 26 Mar 2026 02:29:29 -0400 (EDT)
+	id 73ABB6B0089; Thu, 26 Mar 2026 02:47:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B172F6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:29:29 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49594140BBF
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:29:29 +0000 (UTC)
-X-FDA: 84587237658.28.69E47DA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DEFEB140002
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:29:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bwT4yuvK;
-	spf=pass (imf09.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B85D6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:47:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D121A5C6DE
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:47:32 +0000 (UTC)
+X-FDA: 84587283144.11.0A8E8F9
+Received: from toronto-edge.smtp.mymangomail.com (toronto-edge.smtp.mymangomail.com [209.38.81.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B8D52180004
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:47:29 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=fapLmS1C;
+	spf=pass (imf16.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
+	dmarc=pass (policy=quarantine) header.from=gerlicz.space
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774506567;
+	s=arc-20220608; t=1774507650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MyI2EYNpZ7Awc0Gl+yjDD05joruwHdulIWYSU2VCVwc=;
-	b=CIM3o/laI3FO27Ivf5KLGZ3BRnqtwP0ZkddELPaLDAkYWMXlu+pxsJRDB51UP+OOcgRA//
-	iSmmuLXr3lDcGpQYDJ8W7I7Puhy/J7IteFC8TcPO2BhOnM5FDSA11JT95mUaAkR0RakNFo
-	wmiSuTrubzDTsD19SnKdU9j3PIvGDXg=
+	bh=n7isdfrqjLl4oRkGVkjigFFtWxBai5gXnoimO6gOWXE=;
+	b=h4LlX0ckAepI966beYqpwMTOSNsA/sX/Ei5S1GBAeT2rBJ9DDNfRJOKXyyxxpMIZ60A/hq
+	i/wj0eGi9/6pmdOxsOBz69HXN0YK9ohE6+BTQdQ/1W7kDl5Nf3UKhscR8nrLyQfbzcCSvh
+	ZQJwcmX9wwcthB90a5gNhUj+63zLpDo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bwT4yuvK;
-	spf=pass (imf09.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774506567; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gerlicz.space header.s=mango-1 header.b=fapLmS1C;
+	spf=pass (imf16.hostedemail.com: domain of oskar@gerlicz.space designates 209.38.81.170 as permitted sender) smtp.mailfrom=oskar@gerlicz.space;
+	dmarc=pass (policy=quarantine) header.from=gerlicz.space
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774507650; a=rsa-sha256;
 	cv=none;
-	b=TfF78BG7vaL2ipPKQQvykjWdBrrLWZjbUUT/VoPd3qhgQvP5mEvZmUFevvOnQNZxZ8Tk6w
-	w7hOpsO7U4JRu/A03+/SrzpCoYwqLHaKfgxnkV1c91V+UYnPTl9IbBFSbQC/tQPW6BWO3E
-	4l6YKf5fN7b/OcVkCTEdtPqIPXh3Yi8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774506566;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MyI2EYNpZ7Awc0Gl+yjDD05joruwHdulIWYSU2VCVwc=;
-	b=bwT4yuvKYeKwe95yJS62G/io9T7AhgqTKbtwSzR94pvuEm/YjKR/223A7DzFR+4QNNBEg3
-	1vkc8e0VjTV2zO4WkUVSq7J/UA6vviNckpc8SROZp8HFwIpzSfLZPkHa67jecVGNTtutqk
-	uL1SIFzdsOYzHa8zNIAS6t6BqC7pN+U=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-t1BZ_FivMOGiRzCOxKsv1w-1; Thu, 26 Mar 2026 02:29:24 -0400
-X-MC-Unique: t1BZ_FivMOGiRzCOxKsv1w-1
-X-Mimecast-MFC-AGG-ID: t1BZ_FivMOGiRzCOxKsv1w_1774506564
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8230d6d54a5so1791933b3a.1
-        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:29:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774506564; x=1775111364;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MyI2EYNpZ7Awc0Gl+yjDD05joruwHdulIWYSU2VCVwc=;
-        b=dFTkTTrVsxCSynYtB+xYbksjE2HLi1OS6KiPL+MtG8QaGz2mUW5OG+41NPw3PK6Q4v
-         VZ9IKg3wg/fV229qJlxmrjbe9j0XPkyHfU4sNrc7vrSCuEkiWF3OaoAxDLwhwV8VE2nK
-         AWhmWAHcTdqaw5uY6hLEFgT0AHs8gJy7RepCUn5A6zjngdoKbZf1P4Y/kBkCHneyXn/q
-         fRqitNl4w2TqWXy/Eb3pFFcMWdycizUS5ZOHH9g3DkqII+gsNt1pIpjw6YMWcgfWacvU
-         H9V/3R8uWTCgpMAqww0harPElZIxyCevTvOHe6VTHtA8E4BXzD4D78QqX16wZu+cqlvC
-         lp+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWXvTULsyFC4bwtThmpyZ60lVgcuUJ3YaUR4XgslqbSN9gj1LOtCFEbaVwL/9dvdkJ3gaLD66UKaw==@kvack.org
-X-Gm-Message-State: AOJu0Ywzzm8BuDohyi3w9HCluwi4G0FNslevUylahFXAnpqC8MSZgdry
-	/LYyNcs4YM6oKesLXFpWR0reAP+gZfQqTxAv25OxW00kEnaQNHFAw6jdEueAqMsZhjh8hS3bB9E
-	gPuSxINqqYZqcmT0/v9f6Nf6LpDFvpl0dn+DuIGgm52TuEibCrORq
-X-Gm-Gg: ATEYQzwDZhBq44iYdk9G5BEzMvOcE9uVbGqUXRSld8VZu1aSGrp0FQ+vzvFgrih+s+z
-	6dBvcvGFwiQgMRydRQRIpaUSCwX9p7zbGfjM0F6IQdx7Ie8eJpJ19veurQ7V+4mV92ebcCN2GUH
-	lO2kIx0q4v9gKDkDdxBZblNf1aPGuUiTZYFPrfq/yLuu9itCYKnwT3iSpLdZO6qGi3avP5Jp0R1
-	LpWUoS2SqWzO9jbXfyxD2MqLU28QxNcYTlYWDVNR/wE9ZpYlj603QvF3GwCvtgejbbVd0tRJb3n
-	ODBzmKZi8qs+L6YaMwT5dmkmC8Zl9gPCYhu4VgXOc/ff1R/nXun6UkmYcA4aB1G9oEGXqf7/P1e
-	K7hbno6TJ2W4uZ0wq7w==
-X-Received: by 2002:a05:6a00:cd4:b0:82c:6d2b:7c53 with SMTP id d2e1a72fcca58-82c869c2554mr386646b3a.19.1774506563575;
-        Wed, 25 Mar 2026 23:29:23 -0700 (PDT)
-X-Received: by 2002:a05:6a00:cd4:b0:82c:6d2b:7c53 with SMTP id d2e1a72fcca58-82c869c2554mr386611b3a.19.1774506562724;
-        Wed, 25 Mar 2026 23:29:22 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d38d7f5sm1553107b3a.29.2026.03.25.23.29.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 23:29:22 -0700 (PDT)
-Date: Thu, 26 Mar 2026 14:29:20 +0800
-From: Li Wang <liwang@redhat.com>
-To: akpm@linux-foundation.org, yosry@kernel.org, nphamcs@gmail.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com,
-	muchun.song@linux.dev, tj@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev
-Cc: longman@redhat.com, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 0/8] selftests/cgroup: improve zswap tests robustness
- and support large page sizes
-Message-ID: <acTSQFxTs4-t7P5t@redhat.com>
-References: <20260326032658.96819-1-liwang@redhat.com>
+	b=3kKtYNzeTA/CeRtKcLhlf07ya6esIliK63JtP136TwTvLi5l01X6JYecy8+9eAGm8dYt0p
+	HJV4Hnu+u4to3UiIptt5EYLcR+sYcDonz1qZGZkZbdeI8iGrurow4aeqwONkMSF6Vs42Tu
+	K/KtN8WXNKLx2fyQ1qfuVMXQ5jZLjbk=
+Received: from [127.0.1.1] (localhost [127.0.0.1])
+	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTP id 6F9455D9C1;
+	Thu, 26 Mar 2026 02:47:00 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gerlicz.space;
+	s=mango-1; t=1774507620;
+	bh=bAXOMshbJhQGZ5ZyyPvepWgn87EqYBruY6YlzgtvPQ0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fapLmS1C/M/jQxsPcnjq+DOgpFyxPADZ+rZCkITfFoqsxWN0TdSWfM3XbcelVvhnn
+	 QdbWUcRmr/PMwEPr7Px41Pcs0COZQioKBioSXWTPNjJNltU+YAWpfwQS5RLPlKYMCa
+	 samGEIWtFzvAtCkXCBkmK0T9jhTsKSyHpBSnIAvo=
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+X-Mango-Origin: 1
+Received: from authenticated-user (smtp.mymangomail.com [205.185.121.143])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest
+ SHA256)
+	(No client certificate requested)
+	by hillsboro.smtp.mymangomail.com (Mango Mail) with ESMTPSA id 6A03D5D9BD;
+	Thu, 26 Mar 2026 02:43:55 -0400 (EDT)
 MIME-Version: 1.0
-In-Reply-To: <20260326032658.96819-1-liwang@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: jz1wDgbSK0qgZVw1c-7HALOp6p657J9sVS_isvN1cwk_1774506564
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: DEFEB140002
-X-Stat-Signature: iqxi58wnh8bs3op3j3wtzdk3i89m4pf9
+Date: Thu, 26 Mar 2026 07:43:54 +0100
+From: oskar@gerlicz.space
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Baoquan He <bhe@redhat.com>, Pratyush
+ Yadav <pratyush@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/5] liveupdate: tighten handover cleanup and session
+ lifetime
+In-Reply-To: 
+ <CA+CK2bCiqCg1Tt0WgP3KszrK96Qahcgfyfige4eUQOkMVyLUqg@mail.gmail.com>
+References: <20260324212730.65290-1-oskar@gerlicz.space>
+ <CA+CK2bCiqCg1Tt0WgP3KszrK96Qahcgfyfige4eUQOkMVyLUqg@mail.gmail.com>
+Message-ID: <414949e275fcecf58cddaf422fed0b1a@gerlicz.space>
+X-Sender: oskar@gerlicz.space
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774506566-433573
-X-HE-Meta: U2FsdGVkX19abxf73iqsxtEOisCpICLIiK5/tXXCRdkIfT3ybOFQpIyx7AxUQTK/RKEXOzohVWK8DEH4l8IL23jVsLKoGmXEWeLMirXjfuJOFvfLywP7dg+fDiweP7BEqc4RxIBT3l48UNJYESep5rZQZbpb1lWmzgbaz0kuG19fhSQMxl7izFxTwii7aRl9hllcsLOSGd1wAmbU4Fq333pKDYrAZ6xfsSieC7sp5QMkFeYXBZFY7xpiziczH+zZVvN9Eh7PClwnw5oV9Vm/O17E2NSmMMGl3czo1d1w5u9/jCF281S4gBA4/0IUnGHXZs6KAIhtXFfDRP7NB1dUV1qwTfN/XcAoV6m5EaoJpESoimz9fvtPDCosaXf0i33odjRcwwL4j2Kxfltp7Fv307UEoxiXdSbg8cLJt0BveYPw34ffLwpdkPJTcg2SXRGp3HYc36yyMY16XWdpsc0we+BjZcpNM3PloXB4o+NRBh7xZIKLt9TufRWOXnxIyzQBLECKwak/4oSwT7ZdSOak1/uqORx8TTc605pi0aUCfWwTt4XGgsh29xancltcmnVPTTgRcuAKGEQxsUvvFbwYgHk55V3TzFvhCmaGz8MlprlSIonOk7ZaqwLkfJepX3j4mDjevoOuvAKNIxnMu0/skqnH93f8EKgEL80Js5Pk4zLahf50vVAVphVdOUxp8O8LpdfnYF6uTjWt4nKNkbH3GI8aFG1m+4W5SEjEaB0TpVkEqI7xkmQJy+j1l5rqtM/saRGToZp5YSOqRyVCMsonAUhR9Ydm0Bguse15boUKsQxjsrwZyUINXSnLDQXDlw5ynehhTlkjuAc/ACFoWluVYueeX6qELB/rAjzSMvZMQLtHqEcu87aaoJv++UUuazQ7vNnVp5keX3Vrsji3UH2EWd/M/L0NlgB/ADM4GyfAkVYUvoP76H1Ad/88+B5bB99ZCbVNcNFqypXD5mJP/c+
- fRiX8nFe
- DYqscH3/u8AAUtIti1n2xX2MeRGHjqNhekaEwZki8aMASr9iv++UBinJ04aK0FJeFRmM9XGcYIqngRnyYUJBEBkOnbymv60tPb3ebNBuyLW4UsuLMtulMsAiU7HJOxz9Ef/6ZUNlEl682LP/fTXlFMg2bm1HqiVoEQ1dyOIry0Ag+ZJaBpxAcKba+voKG4wo3lzSD7PS3ihtmDjy/wFKTTUuO4Xd22jdxhIR2jZURFqR/5IdRMR/dKZWUICM+/0KCJSmln6z2ksReKoEkeuRMCQSneRrvsuQgp4oc9u05BeJMdVZhOIvMhO5iJnU4oFPqlAgk2uOqdE9WsI1Jj1WjkfpMYZBqXyJEcUjgSjQ3ElFHqNRPS70VYDmMGW9K+xAzesSfUzUZSyUhXcFYv0pCzkBwOEqFWmpnFonXGFHkUC6GXW1R/ARgXhc1XSfqjoLl+0+20JZCsEMfhi+VzyL6cN+Hgnj0c5JizVi0av1dXrix0d7daMvBbJXdDTKM7KmMEbCC
+X-Stat-Signature: btsrq4goz41utbzwgqz7nez4kdcc975n
+X-Rspamd-Queue-Id: B8D52180004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774507649-821587
+X-HE-Meta: U2FsdGVkX1+LXUVBTFARZliLLZM/mpSCZpuaK4WR5fek4VJJLvgwtAU0+pZQ/NDtTqj0fH5HMzCzADCUhocteR0N7mlYnBzKx6VeUMrvh6DIk4TeZrrCyC/iyNg0U1yqP2s1JP5tn4CWkoQoizF+Y2mnZy8i4qlGLXic4BksaU9C1FFWx5WtfvTUlREualDckoljHetCPFsKIaDjE33m2BWRi8w4bomZfQBnRKpltg8x5oq7c4eZhPVseSNN8QzJ/Tix//Z/bTKWJx6tZvV0hSj9Cjeo/Q9j4RzQwAIo5p9O+mU1K5vUsGlxOvxqjX3E1c8V5kJAXnhMp1FQBx1jYC3tgAKlo1/PFytfPif7Qwr81T8OZPFysfKAqw3wNZd2gygzMYzgjafPzGIUYGq/c9jcP1H6pcoVUTvUYXLagriGMzjFVpPayRkjLIsVK6sBTo/jT11g4GzaVuGXSi2E7AoDXYHjWcDd9jctJVU4enZOLXYdJYnUYwV1EET4pnPhdOULMHpawQ5gxYtlsnpQK9C6Nps/MC7CI7LCGHnDZc/uxbVHDzdGVRGd6KTX9a1KDJ5X7foGYnpaC3o9qn6dn5p9/iina6n770mwNOwqvjVsknW6xg1HUE+dLjYCz6U3EUepSLkXJ1egKCjnjbLa5MMqm2wHlYpB83a+tgK7p/NJsqr3N0azIQHYzIyhCZadfbil8cZt7OHHdEUm8cAB7QkF384DVM6koi/iDSaWqq7LSIYc+8eeGSr4g37IAHlfumsGIdqRHwJJAehXINCVTxp/ZJDiFYE+rxzDmhco3pM5GlXSzN6fDGPqgq+tTVJ1uen1K9+j11U+eP2gTD+S3P2qJJFxNiCDZnuPta3OJBHEivwm0D3szX0vd3+kvWZq3SNS8d7APXP/K6HFdNQvFMlA93oZKl4/+X83DHKaW3U2T+hkIdYWT/QGoqDPL0rXDreXeCPPuYtbxt3+7Rc
+ Z5QBfKfg
+ AcSYBBrzL0FJmRnQ6UM8tx0IgCSXTmXIWazVvt8S8p7xcLD5edXUnlXqGuP+ijcoN3x9z1OXtucbPYy2/GjUC3dQteAr6sX07Ok0zCFXlrAGNEfeLOhLf0tWcTTr7ZJcxJYL0vfK8chk1WduMGO5wCi65Om6vJ051KlXSMBgjhHf1EeCeUn9tVdOIMKBpzcjdb8F3hkJCcVt3LRlD8Ac0ENYvGYjfMmt4Y1/uPoG0Gqzfhyv54OHbDd0M70yukUY6tYAu9QkWv+A3fxNvEheplPtKdCRzZSP6X3uC/vCxHmMuIzF5KQ+8WOKrcGYVhNGgxrVRAB+VaH3NIgKvdubD6o9FUNwI6EukBzHvciTo4F2dvF5/7wG+TLGVWARQhsznB2jpvhn3Fo9k3FiNHIE+CdWJP5UfT/YyiU5/w/k3apPuxG7HG1aizeePkQiaD0Aj87Vg2dd6JPihpTo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,45 +107,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 11:26:50AM +0800, Li Wang wrote:
-> This patchset aims to fix various spurious failures and improve the overall
-> robustness of the cgroup zswap selftests.
+On 2026-03-25 14:38, Pasha Tatashin wrote:
+> On Tue, Mar 24, 2026 at 5:29 PM Oskar Gerlicz Kowalczuk
+> <oskar@gerlicz.space> wrote:
+>> 
+>> Hi Pasha,
+>> 
+>> this v4 keeps the simpler direction from your mail: outgoing handover 
+>> is
+>> still driven by a boolean rebooting gate, refcount pinning of outgoing
+>> sessions during serialization, and session->mutex as the serialization
+>> point for in-flight mutations. There is no return to the earlier 
+>> closing
+>> counter or a larger session state machine.
+>> 
+>> The main changes in this respin are:
+>> 
+>> - reshape the series into five commits, each building and standing on 
+>> its
+>>   own
+>> - keep incoming session origin immutable and use retrieved only as the
+>>   checked-out bit
+>> - make FINISH and implicit close consume incoming sessions without
+>>   reopening races through retrieve-by-name
+>> - route deserialize failures through explicit rollback paths for
+>>   sessions, files, and serialized memfd state
+>> - validate KHO-preserved extents before walking serialized metadata
+>> - harden incoming FLB lifetime and remaining teardown paths
+>> 
+>> Patches 1-4 keep the core session, kexec, deserialize and validation 
+>> work
+>> separate. Patch 5 carries the remaining FLB and teardown fixes needed 
+>> to
+>> match the final tree.
+>> 
+>> Oskar Gerlicz Kowalczuk (5):
+>>   liveupdate: block outgoing session updates during reboot
+>>   kexec: abort liveupdate handover on kernel_kexec() unwind
+>>   liveupdate: fail session restore on file deserialization errors
+>>   liveupdate: validate handover metadata before using it
+>>   liveupdate: harden FLB lifetime and remaining teardown paths
+>> 
+>>  include/linux/kexec_handover.h     |  13 +
+>>  include/linux/liveupdate.h         |  17 +-
+>>  kernel/kexec_core.c                |   4 +
+>>  kernel/liveupdate/kexec_handover.c |  22 ++
+>>  kernel/liveupdate/luo_core.c       |  16 +-
+>>  kernel/liveupdate/luo_file.c       | 237 ++++++++++++--
+>>  kernel/liveupdate/luo_flb.c        | 116 +++++--
+>>  kernel/liveupdate/luo_internal.h   |  14 +-
+>>  kernel/liveupdate/luo_session.c    | 500 
+>> ++++++++++++++++++++++++-----
+>>  lib/tests/liveupdate.c             |   2 +
+>>  mm/memfd_luo.c                     | 160 +++++++--
+>>  11 files changed, 934 insertions(+), 167 deletions(-)
 > 
-> The primary motivation is to make the tests compatible with architectures
-> that use non-4K page sizes (such as 64K on ppc64le and arm64). Currently,
-> the tests rely heavily on hardcoded 4K page sizes and fixed memory limits.
-> On 64K page size systems, these hardcoded values lead to sub-page granularity
-> accesses, incorrect page count calculations, and insufficient memory pressure
-> to trigger zswap writeback, ultimately causing the tests to fail.
+> Hi Oskar,
 > 
-> Additionally, this series addresses OOM kills occurring in test_swapin_nozswap
-> by dynamically scaling memory limits, and prevents spurious test failures
-> when zswap is built into the kernel but globally disabled.
+> This is a NAK.
 > 
-> Changes in v5:
->   Patch 1/8: Defined PATH_ZSWAP and PATH_ZSWAP_ENABLED macros.
->   Patch 4/8: Merge Waiman's work into this patch (use page_size).
->   Patch 5/8: Change pagesize by the global page_size.
->   Patch 6/8: Swap data patterns: use getrandom() for wb_group and simple
->              memset for zw_group to fix the reversed allocation logic.
->   Patch 7/8: Setting zswap.max to zswap_usage/4 to increase writeback pressure.
->   Patch 8/8: New added. Just add loops for read zswpwb more times.
+> This patch series is still significantly over-engineering solutions to
+> straightforward problems, and the patches read as if they were
+> mechanically generated rather than thoughtfully designed. The sheer
+> volume of changes (nearly 1,000 lines) is unnecessary for what we are
+> trying to achieve.
 > 
-> Test all passed on:
->   x86_64(4k), aarch64(4K, 64K), ppc64le(64K).
-
-Hi Andrew, All,
-
-I see that Sashiko still points out minor issues in this patchset,
-That seems very tiny in selftest programming.
-
-I can correct all that in a new version if you'd like a perfect patchset.
-
-Sashiko comments:
-  https://sashiko.dev/#/patchset/20260326032658.96819-1-liwang%40redhat.com
-
--- 
-Regards,
-Li Wang
-
+> As I pointed out previously, we need to keep this simple. For example,
+> the problem of preventing a return to userspace after a successful
+> liveupdate_reboot() does not require inventing a new
+> liveupdate_reboot_abort() function. It just requires placing the call
+> where it's the last function allowed to return, with a simple
+> exception for context-preserved kexec jumps. That is a trivial change:
+> 
+> -       error = liveupdate_reboot();
+> -       if (error)
+> -               goto Unlock;
+> +       if (!kexec_image->preserve_context) {
+> +               error = liveupdate_reboot();
+> +               if (error)
+> +                       goto Unlock;
+> +       }
+> 
+> The same principle applies to the other issues. You are doing rewrites
+> when targeted fixes should be applied:
+> - Sessions mutating after entering the reboot() syscall?: This is a
+> 14-line fix [1].
+> - Destroyed serialization race during liveupdate_reboot()? This is a
+> 70-line fix [2].
+> 
+> I was hoping that v4 (BTW, why are we at v4 in just a week?) would
+> include the patches I already provided, along with similarly scoped,
+> minimal fixes for the deserialization path if needed. Instead, I am
+> seeing another over-complicated rewrite.
+> 
+> Looking at deserialization, I am seeing, you are deleting a comment
+> that explicitly explains our error-handling design:
+> -       /*
+> -        * Note on error handling:
+> -        *
+> -        * If deserialization fails (e.g., allocation failure or 
+> corrupt data),
+> -        * we intentionally skip cleanup of files that were already 
+> restored.
+> -        *
+> -        * A partial failure leaves the preserved state inconsistent.
+> -        * Implementing a safe "undo" to unwind complex dependencies 
+> (sessions,
+> -        * files, hardware state) is error-prone and provides little 
+> value, as
+> -        * the system is effectively in a broken state.
+> -        *
+> -        * We treat these resources as leaked. The expected recovery 
+> path is for
+> -        * userspace to detect the failure and trigger a reboot, which 
+> will
+> -        * reliably reset devices and reclaim memory.
+> -        */
+> 
+> You are adding a bunch of new functions to solve something we
+> intentionally chose not to solve. Attempting to cleanly unwind and
+> release incorrectly deserialized resources back to userspace is
+> dangerous. It risks security violations and, in the worst-case
+> scenario, customer data leaks. A failed deserialization means the
+> system is broken; we leak the resources (make them unavailable) and
+> rely on a reboot to reliably sanitize the state.
+> 
+> Please drop the over-engineered approaches. Use the patches provided,
+> keep the fixes minimal, and do not alter established security
+> boundaries like the deserialization error paths. Take your time to
+> manually self-review your work, do not rely on AI to do everything for
+> you.
+> 
+> [1] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/tatashin/linux.git/commit/?h=luo-reboot-sync/rfc/1&id=d47b76707c4f352c3f70384d3d6a818e2875439a
+> [2] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/tatashin/linux.git/commit/?h=luo-reboot-sync/rfc/1&id=f27a6a9364cd0a19067734eeb24ea4d290b72139
+> 
+> Pasha
+> 
+>> 
+>> --
+>> 2.53.0
+>> 
+Hi Pasha, thank you for the detailed feedback and for sharing your 
+patches. I understand that my previous version was overcomplicated. I 
+will rework the series to follow your approach and keep the changes 
+minimal. I plan to send an updated version later today. Thanks, Oskar 
+Gerlicz-Kowalczuk
 
