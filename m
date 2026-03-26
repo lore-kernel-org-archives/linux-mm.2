@@ -4,103 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F27110A88C2
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 15:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D48E10A88C4
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 15:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 831466B009D; Thu, 26 Mar 2026 11:14:29 -0400 (EDT)
+	id B687F6B009F; Thu, 26 Mar 2026 11:17:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E1B16B009E; Thu, 26 Mar 2026 11:14:29 -0400 (EDT)
+	id AF3146B00A0; Thu, 26 Mar 2026 11:17:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F8446B009F; Thu, 26 Mar 2026 11:14:29 -0400 (EDT)
+	id 9E1BA6B00A1; Thu, 26 Mar 2026 11:17:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 615D16B009D
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:14:29 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EED031B94DD
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:14:28 +0000 (UTC)
-X-FDA: 84588560616.20.9321D88
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EF49F4000B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:14:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b="S/BH4/xl";
-	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id 8DB1C6B009F
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:17:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5040BBBAEB
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:17:00 +0000 (UTC)
+X-FDA: 84588567000.03.FCCC5F1
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0018C80010
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:16:57 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Lt2mh4XM;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774538067;
+	s=arc-20220608; t=1774538218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i1zaRwQyLd+YNeZI98XQVtT7JyYsfiymY9H7SUMd4Ik=;
-	b=pURqfb/++Fsv+8dRWjTBzsQ0QrEeGMPk2g1wNQoEqhYe+44FZn/O9ot4HEsspgksRn3xhk
-	kOICMLT2h3BAmKEsFHGTXqVQp0VEafACl864G9zKVvSFO3wEcoIICvXmvAiDdUUi/rNe5U
-	a2M+7HJJRhtmrpx227tRuNiE57CMkVw=
+	bh=SQdnRxJuJ5yHGcAApglVRt5YekVdD3xOtgzSydlym/0=;
+	b=ZLRGTK0XhjrzqWQBXlnZl1uqxIn/gcEmJj2k+eL7mT3HbUhudrWdB9CxhVbO9XVhQQs8l2
+	pLW6bSd8q/gEwIGTYOC9urrS7Jzn8zGdxeI3LKZmVdMDaV8BKNsffBafzeXjJG6qxVruPm
+	wOSiK9dm1vAAamZSBlo0jNFivkXGc38=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b="S/BH4/xl";
-	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774538067; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Lt2mh4XM;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774538218; a=rsa-sha256;
 	cv=pass;
-	b=cAl2PIdX3OTHNclMg+uQzyQXWpjLTsq/r9GpXkJW3fyY2nrYq+nptpYMmc+UUt645O5CGo
-	TgX4c4nLVuQwrqnx5OZPMlAsbrvqL0IfD4q9bcFMdRpaO8g3gSEEZJzeu1qanVEzmF6ycw
-	f15WuTFyfvDa31VXiQfIGdgSq8GbOtU=
-ARC-Seal: i=1; a=rsa-sha256; t=1774538046; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=Y9XZZ4kKSmeSqiPZjpIenVmidlXU1e7erE+3Xg3n22nBtrgIG+8Yiq1Q/D62QNgjISHvhxsUfxBsE3Qa2X8HYJ9umRm8K2pV6qvuOswP28mY7nUlAP8NeURij9JTB6gTWCuqKU3nBHQa1nX75d94tmDT+gMM4fPfV3RTmsGO8Gk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774538046; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=i1zaRwQyLd+YNeZI98XQVtT7JyYsfiymY9H7SUMd4Ik=; 
-	b=d63rOhvKXo0D7mXUBNm4oC+0d2+BrkNJve2GqGQARZdz39Thei6gZAJ3ytTNVIwWg6n0XOv3vCCKSx4Ku0cczYFfY1KOq68NABrWuIuqkLI+Nc7zSev2eOFdxAyYhMOu9067FztYXha/NTVqQEWHhfQOqkwU07ETfw9GM8ihcns=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774538046;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=i1zaRwQyLd+YNeZI98XQVtT7JyYsfiymY9H7SUMd4Ik=;
-	b=S/BH4/xl9vXF7g44sHv/eUHDjHmOsdPOKAiCeXbiiqdQ/1SSJ5NqHAVw/CaJRfkm
-	xATniUG5/SyX12lH8ZN5ZCTFCdrEETv7UnL3/62rYNjgjgaC9vH3aGQ6Y2GpQM16oAN
-	HNJWi2HQxD1VxH8vX/v4AIFOgZDauY/UIRbQYK0I=
-Received: by mx.zoho.eu with SMTPS id 177453804433515.34994021699606;
-	Thu, 26 Mar 2026 16:14:04 +0100 (CET)
-Date: Thu, 26 Mar 2026 15:14:01 +0000
-From: Josh Law <objecting@objecting.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>
-CC: Josh Law <hlcj1234567@gmail.com>, SeongJae Park <sj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- Christian Brauner <brauner@kernel.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/damon=3A_introduce_DAM?=
- =?US-ASCII?Q?ON-based_NUMA_memory_tiering_module?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
-References: <20260326072737.341964-1-objecting@objecting.org> <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local> <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org> <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local> <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org> <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
-Message-ID: <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
+	b=tDOf9hS2UrCfz/M/5k+S0QZQDkZoP14n+RUsbqHC1Y1PA5y0FL8v6qg4icC6tRlhfOcj0w
+	zSbCAlQOxZbmMSTUqMTFZq1hQVrni3lGgndkS6XD+ItuITa6xDC6/MZKcezGfMFDS8Y4ls
+	4uvD/wKwVaZAbdOtHaVWh6rjihhcIL0=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6674cba2c50so3385226a12.0
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:16:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774538216; cv=none;
+        d=google.com; s=arc-20240605;
+        b=O0OaqzQee/VzX+Y/Y6CtkBg75crLojBOuoFd9YkGibIdpXDn/raJECjRlbsFRjt5Zk
+         4QZKjs2XP/I9bcAY88C1v/hr2k1/hN+AziToZrbemOrrSEPZx20NfaREwEblvGUfjW/j
+         mNN3XNVDlGnAMRsvbWAb7t9/6xrzKtwt2VnGSYM+5KeR/ecUPzliT4UX011/VGlhaC25
+         prKjw3P4Y29D96UXKJPJfOAXiwsBYPYKdbUUf1vM1sTdK7lqQ83WsWnIdDgocHnby4Dy
+         3kRSl2qlNTrQ8RBF4/mZOisQIBasDKCJnhCZqblQ78nvs+ZmHuaA9M1FdBVt4QaHlqoU
+         MJaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SQdnRxJuJ5yHGcAApglVRt5YekVdD3xOtgzSydlym/0=;
+        fh=pewte+rkhtd196mO3rZ6nB/FEEST1KYu+pl0vQ3J7OY=;
+        b=gxv8DKytapIMmkpD63wpfCrjO/uTLslQurGZ0+x2si4ymyt0cNHs0YZhsKVdCzSFzE
+         LkGcrmo9B+ALzdXiq4r5bz680EVPGTsvztIOw18ix/Iy0Lf6JWmRGNDy6kztRYM4aKP6
+         By/M2wymxxipI5saqhGr0jtB/scDQVRnlrGQlB96OA/CDmdN2MD/STD8K+9vttLkqbjb
+         xD99hqCU9h9vPev5GBl8geEh/sdiEUvwJe3uVI/jRfVm2NxgZlzH3lzQeX07QC1bXejS
+         iBmsiPNwgTO6DyuR3Cdv6C/xguIhRUkpuvk8jqRI1sT7TNUZcZM0y5189qrFOYNgP8XV
+         apQA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1774538216; x=1775143016; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SQdnRxJuJ5yHGcAApglVRt5YekVdD3xOtgzSydlym/0=;
+        b=Lt2mh4XMsCi1Ap0fAbUm6nLD4mteOEMLDWUKBScFIy56zZdptCyGS0yXnMrr4mfgB/
+         Fl/sNCv4AazH9+/Wz7sGLzN7KdDKa4CjULYItLdj4IVy93IDt94y/2+0A1njb09+x15k
+         b05UQvQ3V+wCkAR3f5Y6Q2cG0n+Vtj5Vh0sMKQ5ADgRt2q0A3Di7dLNU5DIT9o6n+4qB
+         QFbG6NxUyLp7mFNLoNZCT7SMYCti04AgheFMekUBAIc8mrqMTyVmbNwwbsto79keYFb7
+         J6+wi+/IEFeUG8nq7m4Qh+nv61WQorbZgSCTfruywlOeVSRc6oQ7mXSyLo0CbjTEB0m2
+         7i8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774538216; x=1775143016;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SQdnRxJuJ5yHGcAApglVRt5YekVdD3xOtgzSydlym/0=;
+        b=PURLksiYcWTUlEkmhRM9Oplvzd2Q6WRwdWFYh5s+nzB83ci+FkX9anL/8ck9rlVE4x
+         fBtrGkAUVLBcp1pEESQMJjSbXnRV50KXJxZXjOC63hLn24ayeorT/j78V42wjFeFNZC+
+         Dk2+iq+UexFR2AwOfQrqgDPBwmltr+j2RKFIrlpksbc16pBMDQgNkykCXNRwpedGty1T
+         NNViUjZkOtSI4WJj5IB/L0toy05K8vWcJ5aVd3DZckL0W/Gq3jyZpQ23ZpWCIrSzZbzO
+         qM6sUcHvMUp1qbm4r6J/jwPNOo/BD/tr6AF+LvybQ2uiS0ehsg4R5VdpPeWKRSs0mP9c
+         URRw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2HGV2n708yivwtYv6uKoaZJeKmJHLP7kTZKSi7ib/YS1oF3RG3a3uHyaI9ghSc3/s2I1D0Bx/6g==@kvack.org
+X-Gm-Message-State: AOJu0YzADlrcD5OMgDGvxf2sps7c1cF2omA5NsY3FIOhpMK1OzRTOtD9
+	U6ksRyNnap6oWItayHabQvRRQrf0H6i7oJ1QaIfCb2fkrgoiG7cacelyl+7LbZPLyZFS248PeW6
+	WsS7/trwsFr6lSrOPn1LmkN/8vefk1Ck7+Pb9jT5Ypw==
+X-Gm-Gg: ATEYQzzz2wutONdm5tF3nlpSuDC3jiLpkzEYtf1qC2/hBkoEcZgGG+eYWRQcMRnHSSL
+	iBSzw+n26G6fyZFxNBWwG3hCyW259nDCDWiLHVgrlshXmXUCAPmdX5SgBUJo9SBuBWPd78j7M05
+	8DaJnVHw/x7we7V2vMQbHG/8ivJiVTTTslyGqJHBOWYH4EPzzTGR6tsrqKz3lo0PZkYP+oaIoXi
+	lh77nH0s/nrIvkY2I+F1fdVivt4GRKC6zmCxMacbsVQ7+NjcFLgcTwAFdMzKq7/IgVfEco6jNG8
+	q5v6qMuRShXr8x6WBvIKuj9r90jNi8Mm0ETqGg==
+X-Received: by 2002:a17:907:1c1e:b0:b96:f02b:3d5a with SMTP id
+ a640c23a62f3a-b9b2e9b5216mr156822466b.16.1774538215766; Thu, 26 Mar 2026
+ 08:16:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20260325182026.467307-1-pasha.tatashin@soleen.com>
+ <20260325182026.467307-2-pasha.tatashin@soleen.com> <2vxzikajacgc.fsf@kernel.org>
+ <CALzav=eybgJwMQEtvSi2bUv8u7cic6d45r4wFZdZiKFFrrLJfQ@mail.gmail.com>
+ <CA+CK2bBpa8ZnxPdsPCRCAiPeHUbqQ3TNjHTGU2eN_BGqqX2Y1Q@mail.gmail.com> <acT2lYJKdyXXzNPZ@kernel.org>
+In-Reply-To: <acT2lYJKdyXXzNPZ@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 26 Mar 2026 11:16:18 -0400
+X-Gm-Features: AQROBzAaQwWi1mw7VLq4yJOSwB5PsmUGIPySwFNBSoNSp2gOncmmJQuI5qB8fRQ
+Message-ID: <CA+CK2bA7=XBFVy1iS6y50v_TUxQPFbL182DgprkxeAh4JHZRoQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] liveupdate: prevent double management of files
+To: Mike Rapoport <rppt@kernel.org>
+Cc: David Matlack <dmatlack@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EF49F4000B
-X-Stat-Signature: w7jp4wfwu81rjakcbfszzagydd3b11g7
 X-Rspam-User: 
-X-HE-Tag: 1774538066-587184
-X-HE-Meta: U2FsdGVkX1+lbR9ZANSWoZfiiDB/6DgJ7DT3/LzFk4YpN9RlcWzkRiNWerMWymRoR4NRk0SLArPv1sIJTUc+8v34fnvMxY6u9aT5u7RE8FHHwSlY1uoBiq6R1y9RmM22zIHZmPUczmV7M2dd1qoshnm11yZRSx9adUwZLE1RDruqEGZ8k1h1bFGcvsZge/WFVlZ/6nSVU8WCvbpGT7h3O0xTlbt6uVdWPzcyxnHvyhR8FTij/G5ngs0pVcwvHqpRiYtIfEO9aMvL8G7TKu3cwjCaJOi9kqkAA4iAEWh7d/P2y4vDlyyYtChtNC4bDfx3OMGvsH1fyEr/8WbN1cBY5SeGMAyM/WzzAeTqA1IxTIhUpIgjJ8qj4jvlMo+72F9hcboXb0GUz8HAb8kzLUtoSNAbY4+UQCGAQouR1DiegS3EiVASObPp+8JC8t43hI6AME2m72l9KCkmanuleu6kODfbZn49mEnXUto5aFUOiGo2O+mnPLJgNtSO144NRAj2Okl4fmieWBpUv/IYnYZEu6iZvvv6QA765yzWPVATH/e/bQrjgkexK+xQJONwIx6W2Z5mmcJemOEoOW+GBD74Y/a8rMM88aeDDv0L7LONXVE2Lz49MxMa+d3WFsDAc0wILS3s67MQ76v9TEp8qN1jVyjH5PPMxSdKNWSePtNpAwYq+uh+Wcvs7mjiK8L+joeSbNIRgEBAmRzBdTupXqOju2IArLDNl6O388RRHrRBW121a0Ae6irndiA7hCbZW9xvzlU9MVG9ELzzoT9PvNqQJiYhZO/JAyshCEuzHeKHrvdVxV4IJHHOSjFknJp67p4FM6TaAgTPZrv+5tN7h0Do5W825abqPHz/37N0vzME7jhzHKG1a8TueUp602SfH9byeXEXP/1da5BEcaVNh+rj7+96gF00V39JIqzxPrWmIGaysqjPUyndjVnd/oliu8SHqqy4yyyRzywaIhqFN8G
- qEKRyJyt
- YZes+HZ6TZvhr5AWUwrM7K/IEAeJqPJxQteigSQdVfb/uxae1aP86VMtcw/9EV3T3RdkmmsL8snsE3oC+ZegV37Y6VBz0WWM5H4Vw3l+qIu22v6UISVtdkaKMNfe1O8zk27AU1NhRdK5aHNS9fd3JaInLg1Uwi+23R6y7bBfxu51gMG4Iwt9JnQqF1XbNQqEMo1LXLXFfs+x3eDpM5V8IAsccyJQ6YoUxsAyMxu9/Oh/aqCrsXa1Hq48voNF4NjZjoqRu8Dcj0HfeckQ94e85iL21D750fkmgyaiVSCnbvL2a73110myoxnDqvnlQs/5aYtPkAetrIlwCxNrKKvvZP57+ICK+oh8GDzjFB0TUKo0xi7H4P4yoIG8AY2HsGuCGqncwfs7rW3Si4lEoKXPQpzOOdpIERmvqne7kpvC//v/RHa31UwSw1LrKLNgbOduDY8B/b0U7F8SAvNKm2QpMDPTPFpHYx3teL++dyWXG+1iPH8YYFpy4VwopCIY0BjXTJYliyWYJy5ZQwVffCYUtNBodYrjmZi3OlmmNiQZ6/I9db9G0nDJayyrPsa/it/1gTGaR
+X-Stat-Signature: 7awsptt3rhifeyd6d866dntthyzh17bz
+X-Rspamd-Queue-Id: 0018C80010
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774538217-690016
+X-HE-Meta: U2FsdGVkX1+G0LPrQoz2P+9kGtPIuvIjIbxFJnhwdJ1cPCpbhYhYA7+Xbtumi0JwvX8qLwCJ1H38wguarU1l/ftRFdkdbEMICZ7fWXlT46JnJFOl9YgE5/naBn7tgOWJhWTshl15YVwUku1+JUgOD3UImEyuESRiT5ZCAg8L8kh09Ko2GlxdrKh4hBsBJFWxoA8l2P8ag0ifki7eZfiIZRuQgFGJ3ucS+AmiU+oOqZV8IPMmXQXueGCSBVMYQhrKLenJvhlKSTB1hStZiFtp4fCwBgTsfWYnxikIZzs4CxaZ/3hw1vADpPz3JK1LIssHIS3cwb7V0D2YVCGcxE6+cE+Gn4+NuZtMc2B0nEaDC/TMT/ppA98umahwQWkTHdQX+I21hj73+YPNUUVXsVkgS6gurZmf1iqk1XYNqf3KKO7WN3HDRpESRwtcptcsSLoleQchSd5D93rG18XqkHfjl2cqapmcOOUH7xUMNDESY9l+lBN4y/wOzzjG6aXZmKg/SHn+eBpTsgF8IQ+Vy7CSg+M/wtY/zqgFD9w//aND2a20BJKtWVnqEms7P2xSmesHnsS7vtPAmAWmUcoenYrMvf6Nk/AIPUtLygjXSs0B49L4oC5hnaxrmebjH5sodlgLXyQdQAmf7l1sY6jHzaJCP/2oHU8Li7/JzsaKKrHf9WCyzjs0LjS02EQ05TqUdCWaH+B2989x/Cd+kp/657fxfYQzQO4/opg5z0I9R8L1pBFXsp5CGuHie8tmjYZamka8zrcspn/YPLtY3utzTKsCJ5CM/Tudsu1HAuV1909iQoyjhEUPnFjWim5Za1YcD5AMNa98KT0tjHEIeO9lgPjIc1MArs0tcy8Up2Sz8PqyiRlj3C72pMDNt9shA7t6BvaSWyQ7Ih6zn61d2vXVNevZqZseHDhWJMZHcxCHhK4Jal74D+/on3k0vXKcFM52hHCFVc+gz1gJsZjYuiQyLOb
+ ZmKEQYiF
+ wWymgIVbJFWPmYYORwD5mQSHUugyAt86dUoHm1YB88IOwWvVJlLziflyZPs6ZiKR+Nnz26zwXILoRyOA9mrUT1i/bnzsI/rYZfZ6YfG4YU5BNUEaoldIKEe+U88pvzEkF/3HNiaNMrtdqQt7NhZXFlVJigGJasKP9YDACkcIo949SumG+80Zk3Dh+OA1dXyONVutQ2L9Nhu75qHboPgKxEM1et5opbEPTrPmv91xfhvWec4sjXqJb0jAvn+jJakmDx92jy1pbM6xlQgEe8OU/wd5I9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,125 +142,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 26 March 2026 12:50:40 GMT, "Lorenzo Stoakes (Oracle)" <ljs@kernel=2Eor=
-g> wrote:
->On Thu, Mar 26, 2026 at 01:40:19PM +0100, Krzysztof Kozlowski wrote:
->> On 26/03/2026 13:29, Lorenzo Stoakes (Oracle) wrote:
->> >>
->> >> Answering to reviewers with whatever confirmation they look for is a=
-lso
->> >> a warning sign of non-trustworthy behavior=2E Or rather behavior try=
-ing to
->> >> get trust=2E
->> >>
->> >> [1]
->> >> https://lore=2Ekernel=2Eorg/all/D47F8215-FD08-45ED-AB01-0A5C48CD41DD=
-@objecting=2Eorg/
->> >>
->> >> [2]
->> >> https://lore=2Ekernel=2Eorg/all/2F84DD09-2880-45E0-AA98-204F10848F85=
-@objecting=2Eorg/
->> >>
->> >> Best regards,
->> >> Krzysztof
->> >
->> > Yeah this is really adding up to somebody abusing the kernel process=
-=2E I think
->> > 'Josh Law' or any other pseudonym that can be traced back to whoever'=
-s behind
->> > this should be banned from the mailing list altogether=2E
->> >
->> > Also, as per Christian ([3]), it seems this guy was using the pseudon=
-ym
->> > "techyguyperplexable"=2E
->>
->> Yes, repos on that Github carry commits like:
->>
->> commit c04af501bacbef54cf97cdfb904ddf295f8327c1
->> Author:     techyguyperplexable <objecting@objecting=2Eorg>
->> AuthorDate: Sun Jan 11 04:21:53 2026 +0530
->> Commit:     techyguyperplexable <objecting@objecting=2Eorg>
->> CommitDate: Sun Jan 11 04:21:53 2026 +0530
->>
->>     ANDROID: sched/rt: reduce lock hold time in update_curr_rt
->>
->>     Move resched_curr and do_start_rt_bandwidth outside the spinlock
->>     critical section to reduce lock contention
->>
->>     Change-Id: I8dfb4e33460ae4eeb0bb854cc2cb084ab5edf7e4
->>     Signed-off-by: techyguyperplexable <objecting@objecting=2Eorg>
->>
+On Thu, Mar 26, 2026 at 5:04=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
 >
->Thanks, it looks pretty clear cut then that 'Josh Law' is an openclaw bot=
-=2E
+> On Wed, Mar 25, 2026 at 05:08:57PM -0400, Pasha Tatashin wrote:
+> > On Wed, Mar 25, 2026 at 4:34=E2=80=AFPM David Matlack <dmatlack@google.=
+com> wrote:
+> > >
+> > > On Wed, Mar 25, 2026 at 1:20=E2=80=AFPM Pratyush Yadav <pratyush@kern=
+el.org> wrote:
+> > >
+> > > > For memfd and hugetlb at least, we serialize the _inode_ not the fi=
+le.
+> > > > The inode has the contents that we care to preserve.
+> > > >
+> > > > So if two FDs point to the same inode, this will break. You can do =
+this
+> > > > by first creating a memfd and then by opening "/proc/self/fd/<fd>".=
+ Then
+> > > > you would be able to trigger the preservation twice, causing all so=
+rts
+> > > > of problems. Same on the retrieve side.
+> >
+> > Hm.
+> >
+> > >
+> > > > So unless I am missing something, I don't think this approach will =
+work.
+> > > > As much as I hate to suggest it, I think we need to move this check=
+ to
+> > > > each caller so they can find out the object they need to serialize =
+and
+> > > > check if it already is.
+> > >
+> > > I think LUO can still enforce that the file is not preserved twice.
+> > > HugeTLB and memfd's preserve() functions just need to also check that
+> > > the associated inode has not already been preserved?
+> >
+> > For memfd/hugetlbs the true state is in inode
+> > For vfio/kvm the shared anonymous inode is just a dummy wrapper, and
+> > the true state is in file->private_data.
+> >
+> > I wonder if we could use the XArray to track inodes for standard
+> > files, but track the struct file itself for anonymous files (we would
+> > need a new function from FS that allows us to determine if "struct
+> > file" has anonymous inode or not).
 >
->To think he was scheduled to be added as a reviewer for literally all of =
-lib/
->recently (5) until various of us pushed back on it :/
+> Don't all files we preserve use anon inodes?
+
+No for memfd_create(), the inode allocation path depends on the
+presence of the MFD_HUGETLB flag:
+
+1. Regular memfd (shmem):
+memfd_alloc_file() calls shmem_file_setup(), which leads to:
+shmem_get_inode() -> __shmem_get_inode() -> new_inode().
+The allocated inode is a struct shmem_inode_info.
+
+2. HugeTLB memfd (hugetlbfs):
+memfd_alloc_file() calls hugetlb_file_setup(), which leads to:
+hugetlbfs_get_inode() -> new_inode().
+The allocated inode is a struct hugetlbfs_inode_info.
+
+> How about we extend the fh->ops with a method that will return "unique"
+> object?
+
+Yeap, this is exactly what I am proposing. Adding an optional
+get_id(struct file *file) to fh->ops allows each handler to define
+what constitutes a "unique" identity for its supported file types.
+
+luo_file.c will have a helper like this:
+
+static inline unsigned long luo_get_id(struct liveupdate_file_handler
+*fh, struct file *file)
+{
+     return (fh->ops->get_id) ? fh->ops->get_id(file) : (unsigned long)file=
+;
+}
+
+For memfd, the get_id implementation will return the inode pointer.
+
+Pasha
+
+
 >
->[5]: https://lore=2Ekernel=2Eorg/all/20260308202425=2EC9EE4C116C6@smtp=2E=
-kernel=2Eorg/
+>         list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+>                 if (fh->ops->can_preserve(fh, file)) {
+>                         unique_handle =3D fh->ops->unique_handle(fh, file=
+);
+>                         err =3D 0;
+>                         break;
+>                 }
+>         }
 >
->Is it really that easy to game the system?=2E=2E=2E
+>         xa_insert(&luo_preserved_objects, unique_handle,
+>                   (unsigned long)unique_handle, GFP_KERNEL);
 >
->I hate the asymmetry of this - we have to jump on these every time and th=
-ey can
->send WAY more mail than we can reasonably reply to=2E
+> > Pasha
 >
->I think we need a clear 'yeeting' mechanism to block these people on ever=
-ything
->once discovered=2E
+> --
+> Sincerely yours,
+> Mike.
 >
->Sadly the kernel has been historically very poor on getting rid of proble=
-m
->people (The CoC is essentially a swear monitor at this stage)=2E
->
->In the face of this new kind of threat we probably need to do a lot bette=
-r=2E
->
->> >
->> > There's a github with the same name ([4]), and that same user made a =
-comment on an
->> > openclaw issue relating to linking it to gemini ([5])=2E
->> >
->> > So it seems likely he/she is likely using openclaw to fully automate =
-this 'Josh
->> > Law' user and we're speaking to a bot here=2E
->> >
->> > (Screenshots have been taken for the (possibly inevitable) deleting t=
-hat will
->> > happen later=2E)
->> >
->> > [3]:https://lore=2Ekernel=2Eorg/all/20260313-halskette-annahme-94e782=
-eb4ae4@brauner/
->> > [4]:https://github=2Ecom/techyguyperplexable
->> > [5]:https://github=2Ecom/openclaw/openclaw/issues/44134#issuecomment-=
-4106247302
->>
->>
->>
->> Best regards,
->> Krzysztof
->
->Thanks, Lorenzo
-
-
-Hello! Wow i came back to a lot=2E
-
-
-I can promisw you now i am a human, hand on the bible, and i will improve!=
-=20
-
-
-So i will add assisted by to any commit descriptions written by AI, or any=
-thing even touching AI, i understand your apprehension and i apoligize very=
- deeply=2E
-
-
-V/R
-
-
-Josh Law
 
