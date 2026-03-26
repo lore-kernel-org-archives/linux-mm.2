@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C12EE10AB82B
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 22:25:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F019310AB82A
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 22:25:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BCD26B00C7; Thu, 26 Mar 2026 18:25:23 -0400 (EDT)
+	id B55426B00C9; Thu, 26 Mar 2026 18:25:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 847B16B00C9; Thu, 26 Mar 2026 18:25:23 -0400 (EDT)
+	id A91556B00CB; Thu, 26 Mar 2026 18:25:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75CD16B00CA; Thu, 26 Mar 2026 18:25:23 -0400 (EDT)
+	id 92EB16B00CC; Thu, 26 Mar 2026 18:25:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 63DDE6B00C7
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:25:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2FAB3160E38
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 68ACE6B00C9
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:25:25 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32D2D8C5CC
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:25 +0000 (UTC)
+X-FDA: 84589646610.24.612B39B
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5602E80004
 	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:23 +0000 (UTC)
-X-FDA: 84589646526.13.CA44798
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5605740008
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dlHzt00I;
-	spf=pass (imf12.hostedemail.com: domain of 3T7LFaQsKCCA68GANHAUPJCCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3T7LFaQsKCCA68GANHAUPJCCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="R8hv/M22";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3UbLFaQsKCCI8AICPJCWRLEEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3UbLFaQsKCCI8AICPJCWRLEEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774563921;
+	s=arc-20220608; t=1774563923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sIzVYLR/FSUWm85vLUs87YDAHw4Wlol7nmVi6FxJ/b0=;
-	b=mn/1njP2P5TZQrCK+aVn0fCCgv3LkdX3s/OWKyBHHLkmZKBJhl9JhZIqlmxATWSxGU6X+h
-	gnZlg5n7Ub3lrVYu0ZFODCx8HQRCIhy6TD38sW+t+ZGcmbULSfNjiPqLHnTbvnhfztTXky
-	CMbS5rQK5J75pKFZOznmgsuX1OvTjKU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774563921; a=rsa-sha256;
+	bh=OMzauqzu1N0T+RdZOJts60YeEjJTRcPELOzUqUrSMzA=;
+	b=FGE2bvGTrGTzUfTJ4XRCd3xsJvDbaylKDNCCgPIhudhlkzLsLgxP4Z2M93ZZrEdVLfqXWm
+	Sw1neRaecSfwu4dgg3HxBpy/aAC6wtpjWD/pbmjto+b9+v66+aJ8859I6v0LelTqN75TY7
+	tuotLKcvW1+gOXMR5qrUqtp2X8cjST4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774563923; a=rsa-sha256;
 	cv=none;
-	b=BdbXBFfqlYtrCie7UxrzOudL3XtruVfh6xGtCmaTrIjmelbEJ9WH1x857mANCY9Cnvm15p
-	AqhNGGNtMsbK+gkO0JaZYFVo04g4xGLKcdFNN4pl/H35/AGc70SzXJ4TlpG4pEwvqcUlRY
-	byZWt10F/aZCzaXsztkLe+/9VDeCxUI=
+	b=VqOCSvOu9+auHXG50YOmy/8ajn7hS+OVU3cbktzjL/YHgkLsN/Hbn6LTjBl8YbmNP9vwn+
+	bMioR42Borw/uxUG+fghiELlMw/GBzOyJgunVz3E6dMX5n0/pIh57xCK62AiceMhPPJPoQ
+	j0VzgIDm8tdxEIRf788INv6cBo3hP9I=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dlHzt00I;
-	spf=pass (imf12.hostedemail.com: domain of 3T7LFaQsKCCA68GANHAUPJCCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3T7LFaQsKCCA68GANHAUPJCCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c38b85c25so2734942b3a.3
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:25:21 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="R8hv/M22";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3UbLFaQsKCCI8AICPJCWRLEEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3UbLFaQsKCCI8AICPJCWRLEEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--ackerleytng.bounces.google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c7423ba5342so2999627a12.0
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:25:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774563920; x=1775168720; darn=kvack.org;
+        d=google.com; s=20251104; t=1774563922; x=1775168722; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sIzVYLR/FSUWm85vLUs87YDAHw4Wlol7nmVi6FxJ/b0=;
-        b=dlHzt00IhdOZXtSOFP3jdm6TbYbkShEGEDnbHKczbo23/owEd5fH3XexF8wD49SAEB
-         PYEhGR24vac70Q6pJvh4bdAyorOd2J882xuGwVhSfAIqEOLPZnJ1A6gPpfDP8lVf9Y9H
-         tLrIOE8P/fVl1eHGpflXJIhlhB7md9ZL+CwpFekevmO74Y7rHWW/3DV+SeDZhZuwIj1A
-         Z3bXOUGmekf9kbeHsViJ41j/EcVHc/OFA1BAA3pTtv7OP4qDj2M1AuvaM4xKrZ/XzfDc
-         fABLA1lqAPUSA3PB/cCLM6DWQTz8OcrxI9b7exfs5cY4lnDg16wZ/m14Reps+lld6f9G
-         nMAg==
+        bh=OMzauqzu1N0T+RdZOJts60YeEjJTRcPELOzUqUrSMzA=;
+        b=R8hv/M22abEUbtPAhJKX2sS8LEzWNxnKG9icgYYhQt2Udep2aZBOCHpOJTWWwMygE5
+         +IAvoRNAXH4ELiEi+KsFqUgyPvm2y/Wl/D3m+RUxWD/KEAMnC3sGD/hZCChlfcGVAFCV
+         5JL7aBFalGH9dcHXgjDTx/RrfSNTdcRN0djiBZVruzN0e5meDvT9ZM1m8FkjaNZNIBdx
+         tILzZQmtJ/JWG/hQb461KkACjN8vms0zTlW/H3N9Uukd/QGIwqpuo0grl9ZJwak5E3y5
+         Pr1SpOTKkIZAFu1/sdxVkzlmzn/6bWeSiu1EukzdcdzmAdjiBBtsC4a997eEWZjM/j4W
+         EY5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774563920; x=1775168720;
+        d=1e100.net; s=20251104; t=1774563922; x=1775168722;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sIzVYLR/FSUWm85vLUs87YDAHw4Wlol7nmVi6FxJ/b0=;
-        b=KKp+RISxUA5mZiPtgL5hVS8rw66RWzsiUSJ01P/lx8sI78HEPRCB5tnJYdLa12XPYw
-         h57+AJu4Zb3xC3XuygIECFfs1us5bBqNXRTVmZ5Jkttr/Y04Hh5SUc7TcJUjhPffIWlu
-         wPMWwn1nqgyxfkLs/DLVbmHtjzUX36z0ZPFvAkxWdujFAtYhItKAdP9ts+WHvkvVdgVY
-         iocKRz8325CvOIDpkVxNgOGzhDDi/mk0rrP+vpBQBtdAaSphrIEhgeOtnDGJKX+ujkP5
-         BAKYLmVdjVtUfMIP415kLr0YCwuKwVuQmK5O3akiO1Dh6ayxHVniGqPawCgIErvNGvoV
-         aKzg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/gUOv8W+qXWhtwXTESnE4DxlLNhOh1xai6L+sUWQXmJ0Hbsrr6uRNcN3msP8IxYhQGtiJFKjesg==@kvack.org
-X-Gm-Message-State: AOJu0YylIyfpJ/YCl2FpHCDuLWT6FLHGknABISfxYoZCbXNMnLR6Pxh/
-	ktAwswXey3brfvlJxf2GACn75bjMujGjUV1BYfTpcIk0pMfxz+lvSGPGojYaSU+IX/chM3WO765
-	WZdcOjXq8cFOFCu5MvQmT8dy/4g==
-X-Received: from pfjt19.prod.google.com ([2002:a05:6a00:21d3:b0:82c:6ae6:e5b])
+        bh=OMzauqzu1N0T+RdZOJts60YeEjJTRcPELOzUqUrSMzA=;
+        b=WG/tUf4d0TvpKHxzYTLxB9jbkEAwln+LejpD8plZCNsLUkGfzf+BF9iyslww7wHZ87
+         0P09EXTtLSgp6tuJ7FvW+RCmzoTO+HC7DTQsCsjlwmKWlf21kDQGxs70QBUZoGnBRqDP
+         KY8qDzKqRc2pM3q+iB6LgPMJh0RsR9TiSZtRbBhMB5Ej2b0zBW9o1j1U4dB2c3qc/2/h
+         Wat67sj7ug0M+z+jh3eYuxOIZGOuaekFpElESkrQUM/Lema7oS4jxgiwDY4oU9Ubstqb
+         iqOCYcugwtj2/tfn6lOzNUkoC6+LlCazZyuokFPs3xlUPaQbdAb3zrIxsAUePPSxRAfi
+         AXKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXdnzxbtrHQ5eOCfpCVq0B5hlcegr1Y1Gv83ZieHhNEqkLA3Z+4/oZ9wPMqBFypUku/PJKTAUq2rw==@kvack.org
+X-Gm-Message-State: AOJu0YwbKob7/wcnXLRlJAo8IRxCxP3OYOmrSoU/3rFYX09oCBsvcTDx
+	UIJXsijuWdrFLWWb7XaNGtjLIXvrbXKTsD6RWr8bvuk0WsyoPZBw+C3LO0BcvJY7ONMr+q7trEs
+	G35VgmfqeWv02XP4ihkMUGQYX4g==
+X-Received: from pfjf18.prod.google.com ([2002:a05:6a00:22d2:b0:82c:8530:819b])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:9a6:b0:82c:6d88:2a8e with SMTP id d2e1a72fcca58-82c95c1133emr168762b3a.20.1774563919656;
- Thu, 26 Mar 2026 15:25:19 -0700 (PDT)
-Date: Thu, 26 Mar 2026 15:24:36 -0700
+ 2002:a05:6a00:23c8:b0:82a:805a:7cc with SMTP id d2e1a72fcca58-82c959d4be3mr154865b3a.4.1774563921606;
+ Thu, 26 Mar 2026 15:25:21 -0700 (PDT)
+Date: Thu, 26 Mar 2026 15:24:37 -0700
 In-Reply-To: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
 Mime-Version: 1.0
 References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774563861; l=4465;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774563861; l=1702;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=wRfY1Jn+9IVOYoMa8jY758mvqEtTI8tV2HC+aaXp76s=; b=Iwk4pQNeckXclXoEM1Aas23TToytRGIPodJHXlnaUzRgEA3ZxoElFgD1mmgzcEoO9mzC7z3Sa
- MbCRq7O0sgoB82kC/gB6bsmiYm1TnEJqhIm2wTtU37WXhw2ymIQgiGS
+ bh=6GHfy5Gjl/zAQ6e2mdyS+8IkN1+t3F2076IrLeNAKh4=; b=c0+/tVHHCj0rRhXtP95bZmzyVS99cg5m742QeRGaOCMuqdCrbTR5SGdXnoc6pcKSp6OoBARjg
+ dKSpjzbhP3OC/hursTJC8G2V8dCdYgi2xvh0GxAAJepAlmCgB5i/jZU
 X-Mailer: b4 0.14.3
-Message-ID: <20260326-gmem-inplace-conversion-v4-27-e202fe950ffd@google.com>
-Subject: [PATCH RFC v4 27/44] KVM: selftests: Test conversion precision in guest_memfd
+Message-ID: <20260326-gmem-inplace-conversion-v4-28-e202fe950ffd@google.com>
+Subject: [PATCH RFC v4 28/44] KVM: selftests: Test conversion before allocation
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -118,14 +118,14 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
 	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 5605740008
-X-Stat-Signature: am3a681i99xqzen66xibu8p4rw7a3yex
+X-Rspamd-Queue-Id: 5602E80004
+X-Stat-Signature: 5yrirwhc4yer9t8mc41whfe7c13it4hn
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774563921-662830
-X-HE-Meta: U2FsdGVkX1/vtotMd+Wq5p3Z/uu4iRBgXekFM9J/b2FuOV1oeuVuzDZNq5MLk4oyGD5RsKIS0vldjO6vEYKwowKXm3HQ8cJz/a2hsi1tJd/UZLkP8SiSGnPNl3uizmbPyGyb1Cbm+KFkO3QWjDvPXww0SeTGY63zCQ5Wcff/AjpssOGONAQhHjkChX5XLVpx4ykKG3oGeipey0UGSCKedtpKW5eN11sHOoMXrKs51jSLplYBEj6Cyj8NBo6xlbprEeTFWoBMZq89X7f/ra5yv/VQ3mWYEnPXz73+a/KxcJcnv/gzCL75iv8jvZ3cdrB4G0o/7cUiqbOUXpLm/ws3zVjXHYpIaYTX1tWa6r9D48cLjbCM1COIsOelplES6/vWN56HEe3iKbKQiBO48fSPZ8lpyMxJDE/QJAAwrPWE0l25klPfSNATdL9yFMxVjS/vQ8WH1j+AB4xgi1wqLj+HApnLzZIGKKHwoC+Pj8DVVROdtFCHbAS+p7KKgMZaWf/+NHOHeZeP5k4L44dQ5Q2iY6kmpxH/L54uSVmrM/nfUGyPZxEmCIUPduyynktUI52crdgPFWise0RQR0q+hIxTJqWPVEP8ZdWMD7+o689rQ4H6AC4NGU4coG/3YqQ2c3JVkHRDPe7/+ptwFf/HxYkuB99cpADpjPCdpVvZ5wxVOJWoV204J6edV1HEKI3NnV03KiSf1sWZaQc/2ANB0gKi5U6G5g6UwPvqcXcWx0181R7t3Xtz7GvfZWVKsiDI6hwQ/h39mdsSl3kKR9uodwGmnyZEKvFJdbPE+8ZPV4G/gg2nVjdVqbPeASJrL1N/X/jdi0MCKPROXh9TEy0WZq8pBL/XQOeMKFzgIB6GXwel+fSteMyLWmCMmqY7bKCaf6wqT1JY5MTbqZgA1OyrYB7shOJpmUsTTdEcM3spNx4etlUcX9euU12flVS2PlwFGnOV+hg+QcBTn6lWNmfSFWG
- EvnSdaZp
- bOPLJaVVH96qx0wzEVpdpDxzs36FeFevbG63bJhpmKXUD+ln7lrx3xbLwShsWfsE0tUjl+uN0baO0kCw3FIaa5h3eyUNJFi+qRiLfyMbvIrhd9RfLU0wXQVLtLV40wIq3hvnyEp0yOcpYgLkAiWLiJ+N6oWdZ9iAfjP6qpPXLzZp9SH2lWeFBdhAo7pNWDa3wzAfXey+F1ZA7iBGuzBPK0BdV9GKjUM/saXedF3SAObKNNwqnXTcswQzJ9Pa4ns1jO7R9twj9kHSKRALMlr5NZ5mKHiKUAfukL/GOSzMCGxJDcgEPFPDpfH/gnzgIy2p338CtVSGsWLJhP1uYy47ddnsJp/yDROX0ocDzggIs7Kf/U7e6QuDJuBkwfXH2/g/15GhsAEYrAdVlHitVDd4MNIr5uRU3pptScmGf8GWoRTwYBc0mhYOxXGdrghRnQYVslUlRTVjCwm6eh5uauf3BD1GemDVQyRnwgciQf/G7AmsSxbhal0M4NDiz9ZrYfYjZywvlNW1g9UuGNx2NFdtutPHL/AjDDQvVqiqsffiTwxumxtkszHNNKbWSx/+yO+F9lk34gmKA6oddFEuIeB3Xozv0HuvET8czV73OOSIAnHDOhNfZQxaZs7tlQ1Z+hKCeWemU2By2jEubz2702wMLTo/WFbXSIe3mwOBv2vXAxs3NthF/L5GsCThEd+IvBzFWxgM5CA9P5qW0s/ke9UH8g/33kg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774563923-599826
+X-HE-Meta: U2FsdGVkX19blbAslOqWIcUG/kOihDGea2b0tSMb1AhjiUz+3n1Zy3DYpmJH7tiyW/woDXchmI+lDeTEQqp39oC3lmbqeS4oQJ8GfDhS3Ai3nTZItJqMKnuXCkY7R2KGk56UhxaU/yn26N6neEjxwUDtX28iKF017C82WvvTVZJhIUU8d2i4b9oDfx8ZquWR1jXEjaVJEsu0uRjX0CcmxRPKNrdM7po/I6bu3Nn8MKX6IJ+2RSaGPaiFnlCvQlBW1t1++BAvRp7O7GGKW6vOfbZnv1cbG2z3m57cG8iaEfe4musYqFSBW3wDwmKLk0HGKprjfS+7qeUYazCnHAmqUU1AQID41J+igZ0EtFtxCZM96CbGiwl9w1n8FmNYZfOxp/xOMPaWUDowfWc3jAN8cVwXqI6MJXrSI+zEosQSwZWjWuJUomQfFl3fXak7+cxULLdeBaJ+z5SS5O4AdvlLQr2OvrG/qxjLc3x0fmGoUHVgcYbzxRQUAwkvl0bh8MrhoH7bZwM5WzYYvNqNkIM7JzesvMxwjcsLVDTKaEN6VWtO41elsbupHuAfiDnZqkPBC2tRUGLOpb0eJHrsadpxidKJxtye/mAu3hcB7mF+Eo+BTBTpNc8F1OvRrSGJzJ7DXIjUG8cUyUGVcP1xHxIb7d3FirivLQdz3DnHKMScoIsefOjZ3/fbZRGIVtoou/IV5yWybk7cI8uHk7fL1vISAaK1UPw3J5CWP+shye0B1RTf2JZAVLlxBkjlPXWR73Xv/7zTlfBa2ZNK+y29AA8y94Fg72k65DU1jv7577jxWsUs8C4NjFFoAw1zKwla7ZCLwHMJ1lKGBGm6Ex2yF+VGw639nYdD94IoJk181sE0hEwWmJpTR+/Oj3uQgzW3aJf8UpY28BCoM7mZnyKtKlGezixwyI/M2T0zdoi0TsrGIzk2upr5A31c8xAnuOiYzWtw4x8RBL8vbnUn3GV4P3I
+ 0Cnw6rOb
+ 20vhORJHd41dUrsvw8qAwmKtgOzA4S8/grNbKxzHldFqXJOAU4uAbcK2PZf+PwcqZScpbuukjRObI1LPQcF3HkWEkxYDNn932czWqvtE0H3fZkYsvdNC/+6YbeaABzYienvjSOB5x1fmChE7eOfUkQbf+tk7hIAzmtKnlRhmaNOZVdtTAj9CEdGrIHToE58p7rEcCNQzTv90FwFGGLeAb/A4mf6G4Y3FEWCR6oN4C7/hXuaB6KIir0v4IItzwxAFQbZ5di7oH8BcKjr5WzXkDkNvgK5crh1bv4uqzGhDi1nA5bg4/ChB3Y7PbzezebsETBC5yPpSY+ByC10VuX0uki2s24o+TmjXAVzb0PSYS/nTMlrs6ewKjzDIWiZ/X8NWTrnT5B+LLW5Ym1m/I9VjqKRNpLR1LxEMkkUpFk3UggrFZw0ignrst6P3wdMSCfgBPY9yLN7dO1s0a/9I9WnvTndiCSOf6uX1dKrN+4a7IXLRLvVnyrZIqMPf8oN4NU7wDWxCUuWMFMmp+JwC6f8SuxD2uJYR0m2LGXYp6kUq9RI10v17d0cvH/T7BScVHsu7zHKkeNg9xah4zPf9TvVn8JEtImsWBsHOxZsQXcNz80Fam3pLiLiFz6aviFJzJ++esoWH3KQ9UneMECp7gQd95xsr4B1bM7bTC3/c6m8/YTuEIwjE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,123 +133,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The existing guest_memfd conversion tests only use single-page memory
-regions. This provides no coverage for multi-page guest_memfd objects,
-specifically whether KVM correctly handles the page index for conversion
-operations. An incorrect implementation could, for example, always operate
-on the first page regardless of the index provided.
+Add two test cases to the guest_memfd conversions selftest to cover
+the scenario where a conversion is requested before any memory has been
+allocated in the guest_memfd region.
 
-Add a new test case to verify that conversions between private and shared
-memory correctly target the specified page within a multi-page guest_memfd.
+The KVM_SET_MEMORY_ATTRIBUTES2 ioctl can be called on a memory region at
+any time. If the guest had not yet faulted in any pages for that region,
+the kernel must record the conversion request and apply the requested state
+when the pages are eventually allocated.
 
-This test also verifies the precision of memory conversions by converting a
-single page an then iterating through all other pages ensure they remain in
-their original state.
-
-To support this test, add a new GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED
-macro that handles setting up and tearing down the VM for each page
-iteration. The teardown logic is adjusted to prevent a double-free in this
-new scenario.
+The new tests cover both conversion directions.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/guest_memfd_conversions_test.c   | 70 ++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
+ tools/testing/selftests/kvm/guest_memfd_conversions_test.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-index 81cbdb5def565..3388f06bc51db 100644
+index 3388f06bc51db..1198c9c914318 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-@@ -65,8 +65,13 @@ static void gmem_conversions_do_setup(test_data_t *t, int nr_pages,
- 
- static void gmem_conversions_do_teardown(test_data_t *t)
- {
-+	/* Use NULL to avoid second free in FIXTURE_TEARDOWN (multipage tests). */
-+	if (!t->vcpu)
-+		return;
-+
- 	/* No need to close gmem_fd, it's owned by the VM structure. */
- 	kvm_vm_free(t->vcpu->vm);
-+	t->vcpu = NULL;
- }
- 
- FIXTURE_TEARDOWN(gmem_conversions)
-@@ -105,6 +110,29 @@ static void __gmem_conversions_##test(test_data_t *t, int nr_pages)		\
- #define GMEM_CONVERSION_TEST_INIT_SHARED(test)					\
- 	__GMEM_CONVERSION_TEST_INIT_SHARED(test, 1)
- 
-+/*
-+ * Repeats test over nr_pages in a guest_memfd of size nr_pages, providing each
-+ * test iteration with test_page, the index of the page under test in
-+ * guest_memfd. test_page takes values 0..(nr_pages - 1) inclusive.
-+ */
-+#define GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(test, __nr_pages)		\
-+static void __gmem_conversions_multipage_##test(test_data_t *t, int nr_pages,	\
-+						const int test_page);		\
-+										\
-+TEST_F(gmem_conversions, test)							\
-+{										\
-+	const uint64_t flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED; \
-+	int i;									\
-+										\
-+	for (i = 0; i < __nr_pages; ++i) {					\
-+		gmem_conversions_do_setup(self, __nr_pages, flags);		\
-+		__gmem_conversions_multipage_##test(self, __nr_pages, i);	\
-+		gmem_conversions_do_teardown(self);				\
-+	}									\
-+}										\
-+static void __gmem_conversions_multipage_##test(test_data_t *t, int nr_pages,	\
-+						const int test_page)
-+
- struct guest_check_data {
- 	void *mem;
- 	char expected_val;
-@@ -205,6 +233,48 @@ GMEM_CONVERSION_TEST_INIT_SHARED(init_shared)
- 	test_convert_to_shared(t, 0, 'C', 'D', 'E');
+@@ -275,6 +275,20 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4)
+ #undef f
  }
  
 +/*
-+ * Test indexing of pages within guest_memfd, using test data that is a multiple
-+ * of page index.
++ * Test that even if there are no folios yet, conversion requests are recorded
++ * in guest_memfd.
 + */
-+GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4)
++GMEM_CONVERSION_TEST_INIT_SHARED(before_allocation_shared)
 +{
-+	int i;
++	test_convert_to_private(t, 0, 0, 'A');
++}
 +
-+	/* Get a char that varies with both i and v. */
-+#define f(x, v) ((x << 4) + (v))
-+#define r(v) (f(i, v))
-+#define c(v) (f(test_page, v))
-+
-+	/*
-+	 * Start with the highest index, to catch any errors when, perhaps, the
-+	 * first page is returned even for the last index.
-+	 */
-+	for (i = nr_pages - 1; i >= 0; --i)
-+		test_shared(t, i, 0, r(0), r(2));
-+
-+	test_convert_to_private(t, test_page, c(2), c(3));
-+
-+	for (i = 0; i < nr_pages; ++i) {
-+		if (i == test_page)
-+			test_private(t, i, r(3), r(4));
-+		else
-+			test_shared(t, i, r(2), r(3), r(4));
-+	}
-+
-+	test_convert_to_shared(t, test_page, c(4), c(5), c(6));
-+
-+	for (i = 0; i < nr_pages; ++i) {
-+		char expected = i == test_page ? r(6) : r(4);
-+
-+		test_shared(t, i, expected, r(7), r(8));
-+	}
-+
-+#undef c
-+#undef r
-+#undef f
++GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
++{
++	test_convert_to_shared(t, 0, 0, 'A', 'B');
 +}
 +
  int main(int argc, char *argv[])
