@@ -4,159 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0E0E109E54B
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 05:50:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0197109E54B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 06:16:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 581AC6B0088; Thu, 26 Mar 2026 01:50:47 -0400 (EDT)
+	id E5A186B0005; Thu, 26 Mar 2026 02:16:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5573C6B0089; Thu, 26 Mar 2026 01:50:47 -0400 (EDT)
+	id E0A716B0088; Thu, 26 Mar 2026 02:16:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 446DA6B008C; Thu, 26 Mar 2026 01:50:47 -0400 (EDT)
+	id CF8FA6B0089; Thu, 26 Mar 2026 02:16:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 380B06B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:50:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1A401604D6
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:50:46 +0000 (UTC)
-X-FDA: 84587140092.24.00CE45F
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012004.outbound.protection.outlook.com [52.101.53.4])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9C189160004
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:50:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=b+qCJDFD;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf08.hostedemail.com: domain of bharata@amd.com designates 52.101.53.4 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774504243;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B9D9A6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:16:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C03D13C0C1
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:16:01 +0000 (UTC)
+X-FDA: 84587203722.07.6FBD343
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 68A042000B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:15:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="V0G/376b";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774505759; a=rsa-sha256;
+	cv=none;
+	b=ssyEudAKJMKSu7ci2BYESLfbyZXXm+Fn5M3GWCNvHSvrYC8edLxDJPhtBSqDxIIMnUT7bp
+	nsWJ0yBRwXigOWU6jl3zMYuygDfrZcTH2cb0i92qxLn7QkO6OReXPDkCkwP9cczT4WPxaU
+	zgqARZBbdBHSrcHbUBpynbgcA0JfJdc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="V0G/376b";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774505759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pNB5padoOWlvjYbphTaRwuf+94RYO5+C5D/RNAPni58=;
-	b=KsIFkzhY/tC380n1+Zv0b3Kt1kMWLnBWXoYaeGrJPXmogpQsSr15Kra7xvc+e+9XXDUJRM
-	0g2I9drPbRyDbXMsY4kjg2wrDABhRiCt0qteqUKoBDS9mJc/QZs0+ETvTNmLoc7N21OVcy
-	uGyeYtX1XeW5Hr8kWYk0Y65HlsuZlLE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774504243; a=rsa-sha256;
-	cv=pass;
-	b=bv/g5+kBHxFzRtnbo7pIMj6dKIHXApcZR00CEE/uLFrGs1xR7FWyPJrQfCq84akeXlJ2Im
-	/0xaPVeZvSjhbTMSq0k0FJFxNFDqmMjhb94FnlDQFGrUX1rvWPmZefFSfogTeTUR1uWgPP
-	8OLXkk8rkkODxur+eCloJ6pHhnCWVcA=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=b+qCJDFD;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf08.hostedemail.com: domain of bharata@amd.com designates 52.101.53.4 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NYMFbKMp8g2eGfcnQ/ISZgQhWEzAj6hiLGgB7Km0WijpqArpR6D7o//MjEdxYHwi9chcdXK4pUx8dlE5GPiJwGlTUjFNDLLZV7SI45vTyRqkua2SJQTnX63D7Y1GRDEbTDQxl6RQzc2PwYkMAVx3Fc4axQ7/R1ebiM82UIniOmP05YfhbbHLzyI4nfti7kOgZ5xqTYC6T8qXAGph74LuptIZtYv4UwUBlKQemTMs4+Pxaco+VwUwU+xs6bf7FIo6/GL0WYFa7xxqaFzquNWMBizWjov7ef+bFFlvh1NJzXjXprvxLN7mFCHmtZve3Q9L3xy/yOfG6VlKomvpC1bHDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pNB5padoOWlvjYbphTaRwuf+94RYO5+C5D/RNAPni58=;
- b=iXhVckKagsJnMRhj9+PPh2N5zAszJMf8N6PlxWFTpiAYLmglX3bp9L6b1ut+fTBqhND4CnI6vZuEuBEi2UG3JCksX5Dk7wEhBtvSVVGQf2K69DMNAhNPT6DcmsOFgVflJBIavwUReWa7QnUpP3y9sUfEMxtNNtqvUFf6Pv68rJ1CNZ4Vy6f7EVgub3w6nzjUp2tehlDVgK9n9ZsghnwJeBo24vY3SldU5hqPEiiV5j2tzzrgb28Utg4NXyYSgSrHaqQAQD76JXCXSZ89dUzpIUJe1kV4RN9QUiKGFMWFpXEZ067H/SJfO7ejabGPgl6aGDnDOCXGl4gvSOp8Pv4kog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pNB5padoOWlvjYbphTaRwuf+94RYO5+C5D/RNAPni58=;
- b=b+qCJDFDWGaBN1EBYpNdFtlFp/N26Sf8BpCEpJAj7Q6ee+B0Rya/sPZlBl2aBe5KcYnxi9vYVu+y6EfOT+LS/ARsKXyDq9hfy34l5x93ICCQs0G9b50cWa6AAZJ7/KxIH9RzMG0vnSqZ9NA8UTwkcSXZbZzDofUg/CBSHhvxnVk=
-Received: from SA9PR13CA0013.namprd13.prod.outlook.com (2603:10b6:806:21::18)
- by MW4PR12MB7166.namprd12.prod.outlook.com (2603:10b6:303:224::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.20; Thu, 26 Mar
- 2026 05:50:39 +0000
-Received: from SN1PEPF00026367.namprd02.prod.outlook.com
- (2603:10b6:806:21:cafe::e5) by SA9PR13CA0013.outlook.office365.com
- (2603:10b6:806:21::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.20 via Frontend Transport; Thu,
- 26 Mar 2026 05:50:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SN1PEPF00026367.mail.protection.outlook.com (10.167.241.132) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9745.21 via Frontend Transport; Thu, 26 Mar 2026 05:50:38 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Thu, 26 Mar
- 2026 00:50:38 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 26 Mar
- 2026 00:50:38 -0500
-Received: from [10.252.223.214] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 26 Mar 2026 00:50:30 -0500
-Message-ID: <df23458d-199a-476e-aa81-9aa2e40bafe9@amd.com>
-Date: Thu, 26 Mar 2026 11:20:25 +0530
+	bh=p21EOSSnCFy71Fyv5uK3rPcnOtTcDDpnl2bD5vJEsTA=;
+	b=OgMxPS0T1L3tdCKlaChREJv58ztbxB4LoMfSGuw4oU1R6R+3yqmtqtsdVUbaD/xxdplbm/
+	nxZ/7uIV2AjRso7P0ri3L0iWrAm4hXxF0t68/wtSlu2lMctNPdMKZsMjKtZZwsl/3TaGfc
+	eh2xgNjfBomnPTTjtKqsf6T6iyXlNuk=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-829781b2b01so374597b3a.2
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:15:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774505758; x=1775110558; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p21EOSSnCFy71Fyv5uK3rPcnOtTcDDpnl2bD5vJEsTA=;
+        b=V0G/376bxxw2D9fAMkto55Cj7bpODd1VY/yqXwRcSxScyp4+pHAC93c6PVAUcUQqni
+         tx4VvRcFkxj1P6inNUqvkXeYSPyS0IQYhth8iuuo28Ss+RohnhZJtF8uV1hPZxt0vPz2
+         2JlXPP9hKmwvSOwSSRuAoB+Q0IverDlIQ1IRdoWi1+l+aiTo/1SCUEds4sH3fRMKMEHb
+         /cjkAiAobbVOu4/JbjCt7Ysows/8ccr5guFjDq4fnqjrafQY6A/eJgfj3s/fcZuroDfF
+         aqWDc4vym8FH80qCxMG0cXyY5AYzFciMGvkYA7BLMtyfQwyJBatIraKzsbh4pNngOr4C
+         oH1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774505758; x=1775110558;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=p21EOSSnCFy71Fyv5uK3rPcnOtTcDDpnl2bD5vJEsTA=;
+        b=DhJj8hMyUtrKmxEu8AGRrcgCYNAaSAyZHVwLReLtnyYJgH788bOLYR4BtGXgm18Mde
+         OfUvb3gJ0T17xjRi7lLWxy4h8GDPfVLfsDSQuiFj/3dUaG0j1ei4DUMe0XWGV6aJFBtH
+         kuBHyo85+oe3Ghl1nG8t9vv0UzeltOxAt0vXNd/GVvUVu/lKPziBj9y5VxZjh6yO8XJZ
+         1tmczar5D2hexp8XQP051bs/OLAcCKjgLJMlpQh/TE//AqUT594qhsO+FIpL+BYNlEll
+         Q0fDF7pGbG7V5zG28GMTDOjSTS4AhNxmSx5KKhWUxKJbTy5FHIiwXlKaNSDAjGttPl02
+         PCzw==
+X-Forwarded-Encrypted: i=1; AJvYcCViRTiuz1Cu5lvFDvD3MymWc+VVl1g2dHTkd0umSJAV6bkKLjiKSYmrE3qdhtmcMzpU7Mjzy1oYYQ==@kvack.org
+X-Gm-Message-State: AOJu0YyKnoTlBfzg7Nj6Fm5/f5Bbt/YJQZlI5hShXwuDRNJuU2JmYpV8
+	w/5/Ms7tusmIZO4A/2G6JGs2ddl8F0DbVyArka7HxODvxpDoYJbH14Dl
+X-Gm-Gg: ATEYQzxmT/VdBcpH3x8qHotOVxmiWO/fHtyqj+T7+37R60HSHr/8fT2I+N74uy5wgyR
+	kI5/wSxq/sE1jOhGgdysmI5JagXpP2Rpjfuitg/Hd++CWctlnw7Pv7AfyEWMPnyo32Y90zxGqdh
+	V0e4HKkmFM7iyQGxczIO/xbSHJWTf2wQ+DSHfMswQzQMCWBV8msS5UgS3/KQg3LagywN8DA97oX
+	w1KSbWOofi3JOMcpCrxJBH7SZtZweqrEHQ9HvfRpsK9Mbhdkkc7fdhTVoERg/iwVlaUBaMMS9KY
+	ptEVlW29gpgg65U6y37DEo3Q5zcRbzmdgxLLyDR2X8vzOhTdJCQR9GmdQOW7gqP+hUgkq9YRr7a
+	QkWgwfEG5HlxNn6vf7R3xdZybonF7LTrV013arF8V1iE/raag+IySUoSMAc0SmCsdqoyV0rsG8d
+	KuMiXNAnHTejpyKhoivQs9nD6S0sm2pKJUKMNozxN4sxJw63cwE7s=
+X-Received: by 2002:a05:6a00:1408:b0:829:803e:6798 with SMTP id d2e1a72fcca58-82c6e11bbfamr6279168b3a.56.1774505758063;
+        Wed, 25 Mar 2026 23:15:58 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d3bedeesm1482240b3a.42.2026.03.25.23.15.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 23:15:57 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC v5] mm/damon: add synchronous commit for commit_inputs
+Date: Thu, 26 Mar 2026 14:15:54 +0800
+Message-ID: <20260326061554.20466-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260325141956.87144-1-sj@kernel.org>
+References: <20260325141956.87144-1-sj@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v6 2/5] mm: migrate: Add
- migrate_misplaced_folios_batch()
-To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
-	<gourry@gourry.net>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
-	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
-	<rientjes@google.com>, <sj@kernel.org>, <weixugc@google.com>,
-	<willy@infradead.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
-	<dave@stgolabs.net>, <nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>,
-	<yiannis@zptcorp.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
-	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
-	<shivankg@amd.com>
-References: <20260323095104.238982-1-bharata@amd.com>
- <20260323095104.238982-3-bharata@amd.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20260323095104.238982-3-bharata@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB04.amd.com: bharata@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00026367:EE_|MW4PR12MB7166:EE_
-X-MS-Office365-Filtering-Correlation-Id: fbd925df-5f31-4fbe-d687-08de8afb9bd1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|36860700016|376014|1800799024|13003099007|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	RcSV04LhffDHb0ext0PyFmHR9wgCr9HoG9teo+jtbC8bMNMqZXg91qLA3cnt+1ITLv0jQr5acq4Y8EgkS/NOPX16qiFaMnqEJL6jnGjCHiBHsjDgM9BuwgQrpkQ+ITHnI5ZN1knvSeZ44bQ3U1fijNuv7UivTIhjAGoyVcqx5Smn7kulqGeYlkp7cOCgXPnwhimF2NpidG5Zeg94bcflDU4YfE1jBzAo2IfVk+1OFl1xOdMOfdzlBOYZQXG+UfGaxzNmbNk684F3iDHUtwWsAv5c2cXlUjppd2B3JTAFFma75I6RCkeDKG9szqDnJu5GVNkTe/2by4VPHCHaGwkG+vlXDp8F8tgYHTzjhaqsNEhcb+wjHNkKXs9AXyP+DBbA/AmwsMFZOxezO0YJq5r/7UquFZjFCuTcjna/58Yasvy56mbw7JZvux20txVTdLTvAeExAROte9uo3BQf82++2AD1/vJPAchLNj3/eR6mHtk/Ha2eFayHNKGKABvkIcKI3OXrwkZ7q6wZRwVNrByPlbx5Xbg7HxW+YsDShO88b4ABm7ZqVSQMRvM3I0xVKrxf5CIjtFKpTCUyjVCjwTCAKbGOKr4RymBdzAHd/zEG4SIkcL2IiKJizRGuHQsWbQS0CJh7sVAQmZOFubftDqW6r2qaJyUki6dj95CUOGzQGcaCMtFzAnD9UVn80BDQ8gtEXrYa5Pwh3ztIqkSRCUbsJg==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(36860700016)(376014)(1800799024)(13003099007)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	dU1MuG4VAQaIrQNsh84IzmVS9o7UXzIQ8Di/rQXlW13Un4OiV3W0m+8U5jl0vVzWacWaAriCTNYG8kswyyn0Uapn1LCaYJBGQISRyVy0/VP3ZDuv5huwhGxLryh2BxxntI7fTizTmaIcG94nqcO4T3PyisnT1aQ/riVQxmtoIdJEEfW9wMhbUUEffLPCYXWLv9iPMRT45K/LaVXPhQkrj1/Qggpzi3TiMo80WNAFScuyVx/6Gimixmr3L8vVgSTMQ22oF9XvBtqgmJwseDYYIou16WsYdUqtLD2X5Vff6kefCXKli8pgsWPrTUrPjiEeoOJl+wUvx8404QbjQGSG1vND8plvztBWzrjUtE7Zh+j7RV77YKEWTDtzou/+JgMwnmSJJieFaljcSeAcvX+KbcXQ23wv27tU7oYYt8cW1A9ew+S7S8YqwKadPpW7WuV4
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2026 05:50:38.8218
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbd925df-5f31-4fbe-d687-08de8afb9bd1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00026367.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7166
-X-Rspamd-Queue-Id: 9C189160004
-X-Stat-Signature: hx85oisjanub5wpew1iq717y7r8adky9
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gcwd3u6mofj7jjd7uohswwm8hcxtnxrb
+X-Rspamd-Queue-Id: 68A042000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774504243-271941
-X-HE-Meta: U2FsdGVkX19dPpX1h3fNTuP5VAm6sRGVLjwrtxHIHtI7pccHf5nXc/MHH7ue1vnHwMcjQD8QzdUjlPKcTjtV7mvnkEOcLft7dtuDQPcl/8CCBu2B/apP0Z5e+smcfKzqQFCh+ZWIOyT8TW0xZCr1tb2xqNaKeUXCcM5dOiGvBAvlapRxPpdwdBf+bD3wla35KPWjnybiZvMPb9GqXR4r+2X4a8YoFPO4Tu4NcPVg6nJ8Yim4faE8JU0R98pRSzCo4HbZElpitm98VbyK1I7L4tOHcwheedEdWT8Gas6f7XqNWpLLanXTU9M4MBoWLcm/KDQb8s8/QvgwCyWmAID7jjlfKcKQTpHF6TlFfGqydfAzZiR82jchoS6p1mTJq93kDTonB3ydmrZkIskyaYtgVrUbd3O0REmf1XiX0/8inscF9WR78HBmRE0qbA7MY7z2fVnP6Au3ulCpdVYw0KcQcPv0tEftGVtVMmSkyvxK3snDkG2aTWtIYjWJ6tgwzWTmsigSR2+GgELRXEw0Jzjp/vMxACX7azMm4IwPPh1mnclihByug4XDDEqsl0m6A9MwqqBtsq8vShOwISj5t1SBdcnHC6X2t3booBmfMRx0gW+jLrekrtuTia/Bw3aXoqkHm/7+XyI19arGR5T/QhkYZ+DGswJRTLiTInxx47wm3/4y1eEVhBrmw+3TJZr3skij0ylMTovZ1kLBSWH9BwpG/WyCdCAZdcfjZQ2ORlPwhnvMygouUucUoXa/WSeB6/n9Eh39vymMY3+K0uW8XM3mybqAVZ+Wp0uI83LyhKIfoBwqj/yJEncRl0qpzHEXSI5K9grPyCMx8WothjTHiwaNfArWmjL5md2K3Bwonr8PLAKZe+SnHMP7Uvtklj8W0YMuoBLCufZyVlESshESTS7ac+CIEdh43RYRsKmLZrJ8Ys4wxOMX5CoCeV7st1gv1Ug3JpWUPMNKyeN2NZToAuf
- AFSYJgQS
- tZ97Tx3/QGbb+K0obW0bdbH/OqmoxONtObEJD5I9Kf/TEC/KNWky8e8KTjcEYwF9SV9bKpysrT/LJcMXqaK3vtaHo7cjhbvHkhyVC0Cn5knRDQn3J2PH22Z2qKGDnQS3154NDKUkXv4RcW3xwU4evfjY21n6ChO5qeeP9gTpbbY0lei/VXjjWbuUufP6w8uPcd7pUpuK8Qk1mSdpcOixWxOS2+KzDVr0ttOiHBc/Yn+2cDge/xufMONHBy30UBwuC9MzIIWTfoSYsnNdHz1UbMZWtdH0sACOYHL4dUad1XLVB7oTSiy+ARpISAjPu9HntJrTKowH4vKuV6+1rve+xt4uIMPTsBYsQDxfrFJ2OK68PbkS9keavcfhVQIA5GUeT7BvAga2ub+Ku+b2T2nZmsRC8AXucNAqZ9bMVyV+KV1cxKcQbcdb0PHiW3UoqtYWjx/3eOu+fmFVadCQl80n2mJviWkhMo6Uk7LMJe7VP5R/Qc75D0jvhbRP6Ss6CBqTaCkt6MLpeBPmYd+BMrYXc6MIGByNry/tmTNEf2PT9R8XChIYE5dysBofVThH8EDzGkFsoldNf4MPMtk0=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774505759-233187
+X-HE-Meta: U2FsdGVkX19pA7PMgVEY9NYG7ImaNM0Mkdqpyh4dr/IQc9vqqPt40fMeO74WzmVV3WgVK9rYqY7jb7TMGkBY5UmBwFBKoZKxr2h4tV5d3q8m56Oc4IAyF7YQAtR9fFqvzTG14T2lUoU1qZ+wSvk9dhDUsBIKbT6VwlACm9F4Wq4PL2LrZDHcsHhXT2vK98uWTwBMJquGxq3pmITvZQ7jsUa/kRduoTG19BVP4WxE/PcAt2qJN9DV6ufsaiAE81Nop19EbcGZ/sz3JFIjAaxY/skeWdtUBkLucLw62F8PwQt/xfrKu54BCm3jmD+4rgITvm/neb8epoZqiLWoqkLabGIdKkbCEoBjYFqfuz27jVMisflXE26b8NIb/JEf1KCpiYfxEOQvkSIkyeqf6YQMRzZj2PflHrMZ5SvdStAXii7MiOktTmO/46fYu4YO0ZA/8Es0013NmOmOjq3AR2fydHpOblyof/i9dAvPEZEh8eduvzOxhna2aAGruj/WRJ/3vGHYn1zVUdh0FqHIO4e7gUY/7GXQMNp8Txh4cn5sgeZDxrsDOaLpEjBgEfyHo0QrTfY064p/vRHg6hPxU3rTbPO93GQ/Ui3ivCimbgE4smk2h/F2iqoMuDwRQWCs2NHe9OM24sL4AM/H/8nS4RXJNe1qsfk50up4X21dZTIB/mC8gkxiEDpCBDtertCKYrPHR3cAfmQ0McWpjauvX1w/kvtd+jMp95PadU15+D0Sq9ljR7U0WbTqqMxOth9nyXq+lYASDcCWxlswSkTnUOdMfHToxdkFWKoWgAto7kTk8nTZ+KerQ0WFYk+UO+rEeOH9Hg1Fj6szSfRNwj9WM+juEh+vAEPUGoXjt5zSNsSu20cqytm8Dz4Lge9srENjj/pparAbTELp8dkBMjr1lVyYNJ/oW08U8RHWO1ax3JFtPMsqMWKdIYWSiY+ocfHmJbInHUnp6OIvnZaCDKdujVM
+ 09kKXGHT
+ raNwdniFLnYOsGG4z0YQc9Luhcke2blcKrUDpVJwNW6u71ArfKpZT/61tjI+y5xbG+ba9xksJLifRHt4ioPmAm66TRRoNdBkzJ6esOAlS0i9eY+gUjYvYQlvXwjasR+9ZHmVy7WOoTczV8Tflg+U48sOoc58wUP8Svdg5ghM+ZmxiWAbvFQAkpi4tfGawHruOUbY29eOZx/wOuIYstH4sIl52siPJBulB4kQwl3pzcqfuSnYLqdAUO5KP2uoovqOmEF/p7hv7Tkwn1QcKsXLetHnM83wXerpD68u+2l86Th5+11weSIetbb9jom2nOkVQVV5kRoO8sCsX3GX5KAATCu+v6gwMDc/ksvPP7vW7j44W889ojgt3WqvREHfo3/5GSyt3YyMaBdxyRCCZkeH7yteUAUCua1EIOik/5vDSfDSQewdI7Cm5+PFCto5jzqb20+65aX++0bnhSBAw6XPahSS3rmpG+OpBLLiHa2HPo5wCodNDa6CdlgcJiUFkLwJj/dPo3YQTW36xNyxt6L+DVMWWYBCqp4EwlSeGepSke6t92IQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,48 +118,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replies to review from Shashiko
-[https://sashiko.dev/#/patchset/20260323095104.238982-1-bharata%40amd.com]
+Hi SeongJae,
 
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->[ ... ]
->> @@ -2751,5 +2751,53 @@ int migrate_misplaced_folio(struct folio *folio, int node)
->[ ... ]
->> +	if (nr_remaining)
->> +		putback_movable_pages(folio_list);
->> +
->> +	if (nr_succeeded) {
->> +		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
->> +		mod_node_page_state(pgdat, PGPROMOTE_SUCCESS, nr_succeeded);
->
->Should this use mod_lruvec_state() instead of mod_node_page_state()?
->Using mod_node_page_state() updates the global NUMA node statistic but bypasses
->the memcg-specific lruvec statistic. This can cause the pgpromote_success
->metric in memory.stat to undercount for batched promotions.
+On Wed, 25 Mar 2026 07:19:56 -0700, SeongJae Park <sj@kernel.org> wrote:
 
-That's correct. Earlier, memcg wasn't available in this routine but that
-is no longer the case in v6. Hence I can get lruvec and should be able
-to use mod_lruvec_state() itself for PGPROMOTE_SUCCESS accounting. This will
-be part of next iteration.
+> Hi Liew,
+> 
+> On Wed, 25 Mar 2026 15:17:09 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> 
+> > Hi SeongJae,
+> > 
+> > > Forwarding Sashiko review for doing discussions via mails.
+> > > 
+> > > # review url: https://sashiko.dev/#/patchset/20260325013939.18167-1-aethernet65535@gmail.com
+> > > # start of sashiko.dev inline review
+> > > commit 60ccea4154b0c58741fae2323454a5a9496b67fa
+> > > Author: Liew Rui Yan <aethernet65535@gmail.com>
+> > > 
+> > > mm/damon: add synchronous commit for commit_inputs
+> > > 
+> > > Writing invalid parameters to sysfs followed by commit_inputs=Y previously
+> > > failed silently. This patch uses damon_call() to synchronously commit
+> > > parameters in the kdamond thread's safe context, returning validation errors
+> > > immediately to userspace.
+> > > 
+> > > Link: https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+> > > 
+> > > > diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> > > > index 554559d72976..a2410f648b51 100644
+> > > > --- a/mm/damon/lru_sort.c
+> > > > +++ b/mm/damon/lru_sort.c
+> > 
+> > Thank you for forwarding the review from Sashiko.dev!
+> 
+> Thank you for reviewing the review.
+> 
+> > 
+> > > > +static int damon_lru_sort_commit_inputs_store(const char *val,
+> > > > +		const struct kernel_param *kp)
+> > > > +{
+> > > > +	bool commit_inputs_request;
+> > > >  	int err;
+> > > > +	struct damon_call_control control = {
+> > > > +		.fn = damon_lru_sort_commit_inputs_fn,
+> > > > +		.data = ctx,
+> > > > +		.repeat = false,
+> > > > +	};
+> > > >  
+> > > > -	if (!commit_inputs)
+> > > > +	err = kstrtobool(val, &commit_inputs_request);
+> > > > +	if (err)
+> > > > +		return err;
+> > > > +
+> > > > +	if (!commit_inputs_request)
+> > > >  		return 0;
+> > > >  
+> > > > -	err = damon_lru_sort_apply_parameters();
+> > > > -	commit_inputs = false;
+> > > > -	return err;
+> > > > +	/*
+> > > > +	 * Skip damon_call() during early boot or when kdamond is
+> > > > +	 * not running to avoid NULL pointer dereference.
+> > > > +	 */
+> > > > +	if (!ctx)
+> > > > +		return -EBUSY;
+> > > > +
+> > > > +	err = damon_call(ctx, &control);
+> > > 
+> > > Can this sequence lead to a system-wide deadlock on kernel_param_lock?
+> > > 
+> > > Because damon_lru_sort_commit_inputs_store() is a sysfs .set callback, it
+> > > executes with the global kernel_param_lock held.
+> > > 
+> > > If kdamond_fn terminates (e.g., due to an invalid parameter like addr_unit=3
+> > > causing a non-power-of-2 min_region_sz), it processes its exit sequence by
+> > > calling kdamond_call(ctx, true) to flush pending requests. After flushing, it
+> > > eventually sets ctx->kdamond = NULL at the very end of the thread.
+> > > 
+> > > If a user writes to commit_inputs exactly in the window after
+> > > kdamond_call() finishes but before ctx->kdamond = NULL is set:
+> > > 
+> > > Thread 1 (kdamond_fn):
+> > >     kdamond_call(ctx, true);
+> > > 
+> > > Thread 2 (sysfs write):
+> > >     damon_call(ctx, &control);
+> > >         if (damon_is_running(ctx))
+> > >             wait_for_completion(&control.completion);
+> > > 
+> > > Thread 1 (kdamond_fn):
+> > >     ctx->kdamond = NULL;
+> > > 
+> > > Thread 2 will sleep indefinitely in wait_for_completion(). Because Thread 2
+> > > holds the global kernel_param_lock, this permanently freezes all module
+> > > parameter sysfs interfaces system-wide.
+> > 
+> > I have verified this behavior with the following test case:
+> > 
+> >     # cd /sys/module/damon_lru_sort/parameters/
+> >     # echo Y > enabled
+> >     # ps aux | grep "[k]damond"
+> >     root   70  0.0  0.0  0  0 ?  I  12:16  0:00 [kdamond.0]
+> 
+> FYI, you can read kdamond_pid parameter.
+> 
+> >     # echo 3 > addr_unit
+> >     # echo Y > commit_inputs
+> >     bash: echo: write error: Invalid argument
+> >     # ps aux | grep "[k]damond"
+> > 
+> >     ... kdamond has exited unexpectedly
+> > 
+> > I will add a patch in v6 to validate 'addr_unit' in addr_unit_store() to
+> > reject non-power-of-2 inputs immediately.
+> 
+> That's because kdamond_fn() has recently changed to exit the loop if
+> damon_commit_ctx() fails in the loop for any reason.  Refer to commit
+> 26f775a054c3 ("mm/damon/core: avoid use of half-online-committed context") for
+> more details.
+> 
+> Adding the validation in addr_unit_store() would work, but it could be a kind
+> of whack-a-mole game.  I'd prefer doing the validation of all inputs in one
+> place, just before the last damon_commit_ctx() call.  DAMON_SYSFS is doing so,
+> by making a test context and try committing user input to the test context
+> before doing that to the running context.  How about doing so here, too?
 
->
->Are there missing topology and sysctl checks before incrementing
->PGPROMOTE_SUCCESS here?
->
->In the single-folio variant, this statistic is only incremented when:
-> if ((sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
->	    && !node_is_toptier(folio_nid(folio))
->	    && node_is_toptier(node))
->		mod_lruvec_state(lruvec, PGPROMOTE_SUCCESS, nr_succeeded);
->Unconditionally recording the stat inside the migration helper could
->corrupt promotion statistics if the function is ever used for lateral NUMA
->migrations in the future.
+Thank you for the suggestion. I have now added the check
+'!src->addr_unit || ! is_power_of_2(src->addr_unit)' to
+damon_commit_ctx().
 
-This routine is called only for hot page promotion by pghot kmigrated thread
-and has been documented as such. So unconditional call should be fine.
+> > 
+> > > > +	if (err) {
+> > > > +		/*
+> > > > +		 * If kdamond is not running, damon_call() returns -EINVAL.
+> > > > +		 * Remap it to -EBUSY to better reflect that the operation
+> > > > +		 * failed due to the current state of the system.
+> > > > +		 */
+> > > > +		if (err == -EINVAL && !damon_is_running(ctx))
+> > > > +			return -EBUSY;
+> > > > +
+> > > > +		return err;
+> > > > +	}
+> > > > +
+> > > > +	return control.return_code;
+> > > >  }
+> > > 
+> > > > diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+> > > > index 86da14778658..4cbd67e08d56 100644
+> > > > --- a/mm/damon/reclaim.c
+> > > > +++ b/mm/damon/reclaim.c
+> > > 
+> > > [ ... ]
+> > > 
+> > > > +	/*
+> > > > +	 * Skip damon_call() during early boot or when kdamond is
+> > > > +	 * not running to avoid NULL pointer dereference.
+> > > > +	 */
+> > > > +	if (!ctx)
+> > > > +		return -EBUSY;
+> > > > +
+> > > > +	err = damon_call(ctx, &control);
+> > > 
+> > > Does this code share the same kernel_param_lock deadlock potential as
+> > > damon_lru_sort_commit_inputs_store() described above?
+> > 
+> > As we discussed in the RFC-v4 thread [1], this is a false positive.
+> > Since 'enabled=N' and 'commit_inputs=Y' are both serialized by the
+> > global 'kernel_param_lock', and kthreads cannot be forcibly terminated
+> > by userspace signals, the completion signal in damon_call() will always
+> > be reached in a controlled manner.
+> 
+> TL; DR: I think the deadlock can happen.  But that's a separate issue.
+> 
+> Let's suppose the user writes 'Y' to commit_inputs, and damon_commit_ctx()
+> fails due to an allocation failure.  The write to commit_inputs will complete,
+> and kdmond_fn() will start its exit sequence.
+> 
+> The user can write 'Y' to commit_inputs again, when kdamond_fn() finished the
+> last kdamond_call() with 'cancel=True', but before it unset the ->kdamond
+> field.
+> 
+> Then, the deadlock that sashiko pointed out could happen.
+> 
+> The deadlock is due to the incomplete design of damon_call() cleanup.  And I
+> think the same deadlock is already available with DAMON_SYSFS.  I will work on
+> fixing this.
 
-Regards,
-Bharata.
+I really appreciate your dedication to DAMON.
+
+> So the issue already exists.  But let's ensure the fix is merged before this
+> patch, since this patch adds another exploitable path that can consequence in
+> whole param_lock deadlock.
+
+Should I wait for your fix to be merged into damon/next before I post
+the next version?
+
+Best regards,
+Rui Yan
 
