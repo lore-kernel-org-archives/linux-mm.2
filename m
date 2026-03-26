@@ -4,134 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B35D9109E556
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 07:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4403B103A9A0
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 07:14:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E60CF6B0005; Thu, 26 Mar 2026 03:12:16 -0400 (EDT)
+	id 9822B6B0005; Thu, 26 Mar 2026 03:14:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E38C16B0088; Thu, 26 Mar 2026 03:12:16 -0400 (EDT)
+	id 9337D6B0088; Thu, 26 Mar 2026 03:14:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4EF96B0089; Thu, 26 Mar 2026 03:12:16 -0400 (EDT)
+	id 848E66B0089; Thu, 26 Mar 2026 03:14:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C1A856B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:12:16 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22BB3BCDEF
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:12:16 +0000 (UTC)
-X-FDA: 84587345472.05.04DBC1C
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2A9D3140003
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:12:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Zs3Dclls;
-	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 72D266B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:14:41 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3DD6B13C07C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:14:41 +0000 (UTC)
+X-FDA: 84587351562.07.B3DA83D
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5CF3E2000B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:14:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=VPGtndNf;
+	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=VPGtndNf;
+	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774509279; a=rsa-sha256;
+	cv=none;
+	b=2qm+Z64M01Jdakd+JEEh6sxLCPDqbZJHF/53yi53eIrToJM4OlDsoXG/pGriaasyP7pMXC
+	9Uz9s57N2n0m4D2iMtUNGnlDwF8xT6JdyYDMDGqj4CRKAslkMBV69+1oOfvOt3iCdOpbE7
+	15lG6TRoHddYUdnWyqp3+LOrvaR73hs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774509134;
+	s=arc-20220608; t=1774509279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eGB0D2sZA54TniG5EwCWeLwF5KVbzKrKiN8v1Y36amY=;
-	b=Nff2+LoSaXTW6p5F3xypgPnLJutjHGS+pVS+QyagSmlcfNKOcK8O4r1ZdbuNOrUcpLaKFD
-	jjXPLA+iJmglpndzs9n16czcpZKp76Brl4p88dKkCErDkX1yVRZ5DPnis7bEU+ofI0Eq4X
-	H1Csx/RYW/K9iJvQYQ/yaQ20F7q0Me8=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Zs3Dclls;
-	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774509134; a=rsa-sha256;
-	cv=none;
-	b=JX/6rFa3wSeOSqyvu1zBGv9F4htVGTUEWifWrbe5RtmwBlkEVHDycV8lX8iw3CeDVvzK0h
-	W7eyH1owOhvmH6Gj1s2wAs3qjkaxytEBp/juGIZOILBMeCWBFz2TbPOPX852AlejnbqY5q
-	9PHXiZ3Fusnj/gpEW+YUAat1V4zSW1E=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-486b96760easo6377575e9.2
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:12:13 -0700 (PDT)
+	bh=7GTqNCxZz+temTmIa0TXKM73KUwCVOSRtjD1pGUBU8k=;
+	b=Ixv51sYrXE3irHt87PBStbz4YXjN2gYe2s+1heNSzZwLXFQc2WfVqeiINYLA1koLAQLIn8
+	XwPaKYBRtZeEIrOdW/+iq2GjyziCNLKEdRaXmFdb+Pn+9u6O011566Lx29ysshM5DYnxvH
+	SQumMfiQSiGHOFVwlboF+k09ZyFeOG8=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-483487335c2so6631535e9.2
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:14:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774509132; x=1775113932; darn=kvack.org;
+        d=suse.com; s=google; t=1774509278; x=1775114078; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eGB0D2sZA54TniG5EwCWeLwF5KVbzKrKiN8v1Y36amY=;
-        b=Zs3DcllsnCyvIrIZdik/wXsUX+dtBYJfuGSQeD1PpczbRicgeG4jaop2sLSkFr3HT3
-         7ERKjUGo65PXIcdkOhUjfHfZH3SilnddYzYY/7nefIB0QZX2jN4H0IxZXKhkYdG+7/63
-         E+F2bbEqwJgzsK7zHO4JqSmfpsYeOGyHTWLWtpixklmbqZIBItxlZYrYtTuQxKTSBAta
-         Uyy5q4TY01NFaQujJ6UzCvFujA5Wvic/K1ScuQgabfm9ZbPDq5wi/LALFcaXHVsO+C1A
-         nwHQ9YLpZqTqi4ZV/Uon6UiT9C0e+e8CQhyhPCt05XC9IHC4ExSlEeXPLIT07GTe0LQQ
-         HrIA==
+        bh=7GTqNCxZz+temTmIa0TXKM73KUwCVOSRtjD1pGUBU8k=;
+        b=VPGtndNfbWupcr44aZLDJdTCKN3hJ+5rjC7VjUBwvJnINrMDI1GCIGeGTgQOFx1xHS
+         NocFz8fd+e5KhBvon0dNEXzOYMvBMAlzI9KokHv+M3gV9TlGGCdW4AD1MSgqGuUms5nv
+         79/93qEzt1ZF1bgScmN8TDCrVPMoLeSFJEBZ4Zlpbnlsa8FVzRvYdDGr72NOn9psahrW
+         aZ3jHdt+fEQC+Q/u3uMDsbUlgXArV4/GTPTGgX3Hy2g9itDVS4/rMs6/2WnIdO/YKO1e
+         Qb1xs6O/ignpwNRluRNOMhD/xt9dHfWAlUE+jO+X8adBsw96KhHVKUk2DsYvnj1dBzV9
+         Rfww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774509132; x=1775113932;
+        d=1e100.net; s=20251104; t=1774509278; x=1775114078;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eGB0D2sZA54TniG5EwCWeLwF5KVbzKrKiN8v1Y36amY=;
-        b=XkqKpU5WfmXpVPfTNH0RZLon7OCXjaZfZvFlQmwAQc2ted2h46npqMYJRWpqm+oIra
-         K0bwSgvWLunvJ8H8TZ3BfzsZMDto9UB67L8AOessqDLQ8ZaliO0Ct6TURTrSPqpGOqhH
-         8RiPzKVcbhO0Umlis1ReI+SPO9rGfC9m2LvTX89GmKwyFRi0RoB/hpZr0eKdvoa6vhaW
-         5zhgwlhqCjSjZmIVkHiRDUyp6ZZ/DYHhgMNoQZOOSYyH5UDQeKF2NvMKJiHw4YmA/ivQ
-         OE/e25aCispZmkK9eoj40dFC6zx49JfbO+tICn1jC42LLqakiqwjXssq55tGo78LySBH
-         S9uA==
-X-Forwarded-Encrypted: i=1; AJvYcCWL3mJS+FSHiIprS4W22/I4spdeU1Zgt3Q/glNxi9sSAKIz28JcCgDmH4Tf0xKmqEZEquMCzk4dSg==@kvack.org
-X-Gm-Message-State: AOJu0Yyad9VE9cAHGq4EVlBOoP2Trefoja9qTsPy0k9ZhF8UqPBOFUzS
-	2bghS445/z6OTGE0Fh9S5AMhyUnW0Rjf3HgKLmOPtbU2Giny2rqAGxXLeTJf67p1HLE=
-X-Gm-Gg: ATEYQzwTkSV0Lr8OoWcByobrIUoMbkndiuggIbOfg6JuEdm7u0QQlemG+NuvEeAU2Gy
-	t/OotLeaXdJD02/oQtrAzzNPMLTtoaG8sEsWBbq35ImZ6GCVxUylRQasPAFerI7x5UvPY55Be8a
-	iMRrZBwOIgYJmupphiyBdWnGpMSOvhWGRK3mv6qyogOfYINN00+L8gw2lhsFCXoUMkeeAeyC0Pm
-	RUVfaB7MRXcOZN6N/H6zwGEhn/LvWNmGfdSj6Py4Aew7/XCOMEhs0Ej92cG6o8ubkzSxkZ8O2cb
-	cEZwqriCD8c4rg7p8kOBrGTevMRXLMqSrly1y64wFyp4ukJlF4LNfCgh//kLEgWCoYEhmePazHx
-	n/WDhcajVAfO1/69euNHB9CPZPEU2b30uSmCWPsZkfd3i1axqOyMoA+MJCjxpAzHji9RU6A5v7h
-	/EcweONe0E0vMmNhuHg2FytTW1q5dpgikY81VfIfuJTOPpjBg=
-X-Received: by 2002:a05:600c:6308:b0:487:169:9f64 with SMTP id 5b1f17b1804b1-48715fea9afmr90965615e9.12.1774509132376;
-        Thu, 26 Mar 2026 00:12:12 -0700 (PDT)
+        bh=7GTqNCxZz+temTmIa0TXKM73KUwCVOSRtjD1pGUBU8k=;
+        b=bGdQEDj94/qjAalZgkdqIjymEPYKPUUIp/CM9UIfDKpWAhMY3/4L4ZVQ5sppCQdjai
+         eRSEZexuH2OQfgqbg1oGk7TNutHZqUHWt4lIROkei52Xpl7dLjKbEyLgHzfFxb58J1iQ
+         S+2lzu5QTc3IO3mI8BjS1beJAt8JzbmpCyW9zN66XmM+1ARue4Iw3rfvdBSr8qG+Iffi
+         K55FwZH9cDaDXgmKtJzAjawMw8iJSwVmr+t4zIDW9WAoKijNxLCg+T274U7nM7GOFpK0
+         wqQfFeOpCexw7H+1k1K4Y/dSSRmRQAnxCkjs4zJJqJi7ny5PMZJEXz7amW+KntiztMwK
+         yrtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGAOODRRJ1kWFxR3feOCb3oBOVNe+taFm1IK+igL3mJMrIne9+gnZ7LCOfecHZqQmRRA+aa1XD4g==@kvack.org
+X-Gm-Message-State: AOJu0YycZnmdpk3gY/iZQFob9pge04WHwtSXmh88xYCZm+rcGB86AcSt
+	ZWU9D3SEcBivRJh66n0lCFuSBQ+O0XevHC8w3Tm/krb5ZtcXgZtg5PTLpdufwDSftq0=
+X-Gm-Gg: ATEYQzxa0zqiL0O8pEW0c/KgF0ENbYfSI0sLsD7bfJndZ6UjDrU/YKHuW2LvcbakMfw
+	Dx29cgmhAKoqYA7Tl7ODPJrEliCzwRe2q74nyJq0ZPHkp0XR/xKp8QTmEjApfq7jucBhtThuLjD
+	PDbfsZMuXR42sycsubQAN2Pq6k6WCswPSJ2TmmWXdZeg4vWhDX4zdxZBC2KY6yjZSMn+8l1XAV5
+	HzZsbY13+GcHRHEzDvXPsWWiAytGVxA7K/sSbQ2HSjD/GV0EzUsot1uDl3o/GFW0zzpunYzBn6H
+	AZxLdS7osNMUGQrsUoRw5/QXMgnb8hGDAH0+MPYdo+Lx4bwclHRSCSa5JaFL5qjycgQs3lBArIF
+	c4RC4b+m0VQbx6feMOcgU85GLWJVkvEMQNf2oGdt8ulTxlHlMENYqVr4IuKKMDxb1R2/e1g2iNA
+	BG7HzcZi2exhnPqDr5NpNmwpJW+ziQ3qH4ROJU
+X-Received: by 2002:a05:600c:8489:b0:485:b6dd:5066 with SMTP id 5b1f17b1804b1-48715fc366cmr91509995e9.7.1774509277961;
+        Thu, 26 Mar 2026 00:14:37 -0700 (PDT)
 Received: from localhost (109-81-31-149.rct.o2.cz. [109.81.31.149])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871fb7f45fsm11137625e9.2.2026.03.26.00.12.11
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919e7372sm7234784f8f.34.2026.03.26.00.14.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 00:12:11 -0700 (PDT)
-Date: Thu, 26 Mar 2026 08:12:10 +0100
+        Thu, 26 Mar 2026 00:14:37 -0700 (PDT)
+Date: Thu, 26 Mar 2026 08:14:36 +0100
 From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: lsf-pc@lists.linux-foundation.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>,
-	Gregory Price <gourry@gourry.net>, Barry Song <21cnbao@gmail.com>,
-	David Stevens <stevensd@google.com>,
-	Vernon Yang <vernon2gm@gmail.com>,
-	David Rientjes <rientjes@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	wangzicheng <wangzicheng@honor.com>,
-	"T . J . Mercier" <tjmercier@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-Message-ID: <acTcStxrTCWAN6Dt@tiehlicka>
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
+	ljs@kernel.org, ziy@nvidia.com, harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com,
+	mkoutny@suse.com, akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 0/4] fix unexpected type conversions and potential
+ overflows
+Message-ID: <acTc3JugF71I9Eep@tiehlicka>
+References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+In-Reply-To: <cover.1774447069.git.zhengqi.arch@bytedance.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5CF3E2000B
+X-Stat-Signature: ob6s1qk3ikm1t6mch9cammy85spiei6s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2A9D3140003
-X-Stat-Signature: n7zj5obk5of8djw7jiiae1saz4dp8skn
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774509133-369045
-X-HE-Meta: U2FsdGVkX19iKH+YCqwDzo48rUbsWZo5d2ybtv74wJSviPNUvS8VETQMu5Gf7YQG+bzEaM4ak4/0osUhye6aykxy++4dFeE3M9eDraYRZXebt3dBfjiFKe5BwV8AQPEk6zdaZGeWlJuWA3dnGAAdcb/iW5EfY+DiClbMkdgRJ+S3J4mk+8Ir+gQvKtTqwUUCU0KUDPA9DTqeSvrsNR3veX41UUHuxfbfDZDUCpOgccUM0IZvPIBOKIyS9agfOfWRd8ZIx0im8rz+g1caywB2TkTNw3WBIQoFDW4Kz+OkfmaYji9YuWPdqmy+fDlS7rMkTH6zVf4fs5JYIMp7LcCqqpp789sbOEW30KdizLbyPfhL75MkVYipO0jBgrdx2dKceuAt2TcXOEQ/pRRijsMqGej5NvTyGPiLcrFH824vVRuZS162Z+JHCciYXfTHqQIuJKNsCu1M0qG+NV4IyfAcDYBHpPefM9AuOdpzQOSOGlwrFdRtBQeAGND2X3izOoS+87b9os3uzofGaXwVzen7wvktjUeBtpDbiTUZUAUHIGa3jGI7nir/+ymFZnkyD7HFjWC0pX1wV3LOriEom5oAXbYMEZvaRGqqh4Qb3liNFp9M4Yj1fgyxK14YWJVWrhqNbbLleYbnO3qY3YvedtJ34aQvhbOF/LYuRvD1a8RAbl25R95b5yJYptsgeHAOrUyKPxJUBNZ+CmEC5l1qm8IGvVIUIQdxQ0mcO9mttR5wgImPk5HKcDpWO0rWX5f0qPVRRFf7vPjNBtkomVPwCUYe0m93+jVSQs+93Fl8LeQS3Z5i77EG0WAWx1VnKhIOdCZXljowaylptQArIpFDdUq3qHyZyCba4LMai4Y7rjmMm0BFMkewC34EYDY9nQjkUTkkR1NF3sSE6ZqFiuUrKH9Z3CCCZdWxesxF75QGy9Cej4XJtdSR5Ax6SUPnxB1dm3vxV94i88nbu87QVk+mZbu
- sSwbxZYi
- MXAadQvpMZuNbdkfYNsVMj3MMlDWHOfrAmxjAhr56nWmclzW+JxJbTfIJ4cDsdz1F3eetWBjOREa1Q1lKhIYzZRPoQLVPOZ2CoFjqlyhWjY07g1dHKo2PxLAs31Fg/h+eIQ/SKQovllyyhz8zTrxMWV/7WVeQoU3vwpFN6KC/S3G34VNgmw2fGuLaeGzCsPyDsZNHRhN1p1r5ZAgrguoj43bAiRYhzH0ZKnBgmodIAuU1HjMcKnqKTtNeVnHnNpBD6gJ2fbx9ecR6UQ8qwlXZse9EX9vUCZbLLJSH4bPP5qhZMYkijF5nqqkn1+uEruqg+ZUKeU4Q3Yejw5CLf476L+CEWLY5siTiKJUeqxV8v0PwuJNpRnVwY/CSDcZ/UasgecCwSl054CI/uWSi6iuj1gLv5A==
+X-HE-Tag: 1774509279-98381
+X-HE-Meta: U2FsdGVkX19yea/4havUVKOf2AeOVb1JYiDYVEXf+srflzlbkUJUrDgwiiL9T7hnkTtm+daWvCiB/1stdjxiFaEDw6ONFCk5atmqFtObzUGaSVHzUumIgfx0BgGXJvyS8VzgxAd49qB/IffdHepdAIWfr5Ak7cjzRFyIdhq4faQg9s/RWlT85xKzoctkuVp+FXNS36/Im1jZhe381w9AYTrb6Srj3Fb1Nv512ZONHJm/lXkHLbxhv85bfkCfIpkxSYQ+AXvNjtgnD8jgbcderOixVjoitqBDG9SwynSrJGQy7Zl5pHvFBvzvWwEjy+eXLni0OhkvHMg4Pp8UDNy8Kl9MLSKWnsyDuJkPe9RhT58/+fL5zf7O7T+wyt45/YJLMtmWAYJoxhsjjda/fi1mZvCTI6mzlPQ/W0D6wKEv62sdNXOffJUIUqOUfn3NHHtMLbExvvEB6QteGG4WpCKjwvm13csYfsmllKCCZmKLtH3d/RpzQfLT3T1o+RPWJKjyg0pTIzqDo85Ik8xCqVm4/5LZe7uGfE6FMON/0XZigtEb/nALN30OnsjpJlwdLBGeLEpC8Q8SpmODiQ9a0DJUxO/optzwq0hvmH2T2TUiamyLR5D9m9lcDw6xQpB3SvGNepfyGF10q93eS3v8DaQUj/5eftuth/8/JwS+h8R8hWR0xmWxZ7FXuRql4V3JTKp8PuoMruIqknhP4m0gseYyTMOgnjqtCps4zE/vkakQTpQ8wz+/FyEPBgwwjbwte2E/hK2Y2+Y7ZBs60ulvvFsn6v09M+9loKowgtNejRr1OZZ2FCkAJ7npdPLOQPhEw8yhystIK5p7nSRwgRCPOUDvgSTWEkZkGDIsw7m1NIo4jqIe7NX0TnLxycfpQgCrR7zoYAs5V6igjoIqJf9ISQbEYeASCrZRyjQJxlgkDob2OfnQ5vLtCVw/t+O8tJtHf0O0K8kTBo686unQANCmpWs
+ yMybmQcg
+ GIrWp4Wj1ndh7Kn1vO30iyR0h3SPhtYNxECBsFIz+3UXKrqX+dcsmOHshdOAhdqoFap6TsZnWYjNLtVlFrWjCj/Zej3A8NHNu7Lb56gbI9nv4ERaFYCGDgZawoNvGWJNwygerQNlPrPcR6N1DLg26hqBMdPP++c4ZiKzDswBUioUQT7+8sNii7Iserz1wywEupeVKimYdThzHrzx/sdt+frIx8EEN02x4dZX+hXOwx+u0Ab7czPAOY2avAAqIArkROhZv4mHWmyjDwFLXMs9Fne+t582aKWvs2LIWTEMpFmFyXkiv6p+pH0VauhBfO0wExldClgBO7pRXolBA2QredYRlp3yc8CslnkN9GQF/gm7Qy2hgPTtun3Q1Fadi6et8B9TL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,56 +126,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 25-03-26 14:06:37, Shakeel Butt wrote:
-> The Problem
-> -----------
+On Wed 25-03-26 22:13:21, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Memory reclaim in the kernel is a mess. We ship two completely separate
-> eviction algorithms -- traditional LRU and MGLRU -- in the same file.
-> mm/vmscan.c is over 8,000 lines. 40% of it is MGLRU-specific code that
-> duplicates functionality already present in the traditional path. Every
-> bug fix, every optimization, every feature has to be done twice or it
-> only works for half the users. This is not sustainable. It has to stop.
-
-While I do agree that having 2 implementations available and to maintain
-them is not long term sustainable I would disagree with your above line
-of argumentation. We are not aiming to have the two in feature parity
-nor they are overlapping in bug space all that much.
-
-> We should unify both algorithms into a single code path. In this path,
-> both algorithms are a set of hooks called from that path.
-
-Isn't this the case from a large part? MGRLU tends to have couple of
-entry points in the shared code base (node/memcg scanning code).
-
-> Everyone
-> maintains, understands, and evolves a single codebase. Optimizations are
-> now evaluated against -- and available to -- both algorithms. And the
-> next time someone develops a new LRU algorithm, they can do so in a way
-> that does not add churn to existing code.
-
-I think we should focus to make a single canonical reclaim
-implementation work well. I.e. we deal with most (or ideally all) known
-regressions of MGLRU. In the initial presentation of the MGRLU framework
-we were told that the implemenation should be extensible to provide more
-creative aging algorithms etc.
-
-> The Fix: One Reclaim, Pluggable and Extensible
-> -----------------------------------------------
+> Hi all,
 > 
-> We need one reclaim system, not two. One code path that everyone
-> maintains, everyone tests, and everyone benefits from. But it needs to
-> be pluggable as there will always be cases where someone wants some
-> customization for their specialized workload or wants to explore some
-> new techniques/ideas, and we do not want to get into the current mess
-> again.
+> As Harry Yoo pointed out [1], in scenarios where massive state updates occur
+> (e.g., during the reparenting of LRU folios), the values passed to memcg stat
+> update functions can accumulate and exceed the upper limit of a 32-bit integer.
 
-I would go that way only if/after we are done with MGLRU unification and
-after we will have depleted the potential of that approach and hit cases
-where we cannot implement new extensions without going $foo_ext way. TBH
-I am not convinced "make it pluginable to solve hard problems" is the
-best way forward.
-
+Is this a real problem without reparenting? In other words is this a
+follow up for that work or something that we need on its own?
 -- 
 Michal Hocko
 SUSE Labs
