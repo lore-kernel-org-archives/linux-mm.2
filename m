@@ -4,93 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F3A2109E54B
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 06:25:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E9F109E54B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 06:29:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8270A6B0098; Thu, 26 Mar 2026 02:25:12 -0400 (EDT)
+	id E20056B0005; Thu, 26 Mar 2026 02:29:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FE566B0099; Thu, 26 Mar 2026 02:25:12 -0400 (EDT)
+	id DAB1C6B0088; Thu, 26 Mar 2026 02:29:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73C036B009B; Thu, 26 Mar 2026 02:25:12 -0400 (EDT)
+	id C722C6B0089; Thu, 26 Mar 2026 02:29:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A9B96B0098
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:25:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECC925A8D4
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:25:11 +0000 (UTC)
-X-FDA: 84587226822.21.8557DF8
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 28280140003
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:25:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rxhh7gRW;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B172F6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 02:29:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49594140BBF
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:29:29 +0000 (UTC)
+X-FDA: 84587237658.28.69E47DA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DEFEB140002
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 06:29:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bwT4yuvK;
+	spf=pass (imf09.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774506310;
+	s=arc-20220608; t=1774506567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mls2FtV7WMQu3mL9+qsVNKeDBCzGBy4ttWLxN4SfagQ=;
-	b=mp2ALkbRAkphnqAEorWwD6Rv0bxURsrosfA8A8GW7N97eV0Z+fAZUh9DWXVq6X7zwjjjqO
-	nrtsQauPkXEr3inMZRhdiiytOld0/x8Z7Lucvg2ILQmD7GcENIH8aZDj71Z7G6t31YhoXh
-	bbpEwROL5u66KN/pTKsoUbAF43UBgCA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774506310; a=rsa-sha256;
-	cv=none;
-	b=e5jiOOXT8D+xW+h19JwzuvNJuIAs7e0kLY0UiKov0Pq+JMwka4ze8EJaueDDzpArke20e9
-	Tch1LO2aOm1vik4NNDp9ZZ3aiXn0+rCy5q0uYwnYDR4OxDVj+udl+aoERIwSL7xh4uwB+I
-	2HWq5vHz8pirmyaTrCtEHsGfBXMLyJc=
+	bh=MyI2EYNpZ7Awc0Gl+yjDD05joruwHdulIWYSU2VCVwc=;
+	b=CIM3o/laI3FO27Ivf5KLGZ3BRnqtwP0ZkddELPaLDAkYWMXlu+pxsJRDB51UP+OOcgRA//
+	iSmmuLXr3lDcGpQYDJ8W7I7Puhy/J7IteFC8TcPO2BhOnM5FDSA11JT95mUaAkR0RakNFo
+	wmiSuTrubzDTsD19SnKdU9j3PIvGDXg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rxhh7gRW;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774506305; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=mls2FtV7WMQu3mL9+qsVNKeDBCzGBy4ttWLxN4SfagQ=;
-	b=rxhh7gRWIjtN9GGxjIgltpoRfzR2NArJP7/ADXVy6dIl4FKZd+SPR+oh7vWxOzb3p71Zn1dzqfJ92OAQ+45YNKR/64m6YrigKDbSoApL094IJU4bKteagi1eZKvIeaCdXJlTjH23ADjtAdJR7TpU2uOSV9NDDbcis3m7Vc1wMPA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R391e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X.kJBWV_1774506303;
-Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.kJBWV_1774506303 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Mar 2026 14:25:04 +0800
-Message-ID: <cec03e62-f7fc-435e-90ad-60be503487f8@linux.alibaba.com>
-Date: Thu, 26 Mar 2026 14:25:02 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bwT4yuvK;
+	spf=pass (imf09.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774506567; a=rsa-sha256;
+	cv=none;
+	b=TfF78BG7vaL2ipPKQQvykjWdBrrLWZjbUUT/VoPd3qhgQvP5mEvZmUFevvOnQNZxZ8Tk6w
+	w7hOpsO7U4JRu/A03+/SrzpCoYwqLHaKfgxnkV1c91V+UYnPTl9IbBFSbQC/tQPW6BWO3E
+	4l6YKf5fN7b/OcVkCTEdtPqIPXh3Yi8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774506566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MyI2EYNpZ7Awc0Gl+yjDD05joruwHdulIWYSU2VCVwc=;
+	b=bwT4yuvKYeKwe95yJS62G/io9T7AhgqTKbtwSzR94pvuEm/YjKR/223A7DzFR+4QNNBEg3
+	1vkc8e0VjTV2zO4WkUVSq7J/UA6vviNckpc8SROZp8HFwIpzSfLZPkHa67jecVGNTtutqk
+	uL1SIFzdsOYzHa8zNIAS6t6BqC7pN+U=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-t1BZ_FivMOGiRzCOxKsv1w-1; Thu, 26 Mar 2026 02:29:24 -0400
+X-MC-Unique: t1BZ_FivMOGiRzCOxKsv1w-1
+X-Mimecast-MFC-AGG-ID: t1BZ_FivMOGiRzCOxKsv1w_1774506564
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8230d6d54a5so1791933b3a.1
+        for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:29:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774506564; x=1775111364;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MyI2EYNpZ7Awc0Gl+yjDD05joruwHdulIWYSU2VCVwc=;
+        b=dFTkTTrVsxCSynYtB+xYbksjE2HLi1OS6KiPL+MtG8QaGz2mUW5OG+41NPw3PK6Q4v
+         VZ9IKg3wg/fV229qJlxmrjbe9j0XPkyHfU4sNrc7vrSCuEkiWF3OaoAxDLwhwV8VE2nK
+         AWhmWAHcTdqaw5uY6hLEFgT0AHs8gJy7RepCUn5A6zjngdoKbZf1P4Y/kBkCHneyXn/q
+         fRqitNl4w2TqWXy/Eb3pFFcMWdycizUS5ZOHH9g3DkqII+gsNt1pIpjw6YMWcgfWacvU
+         H9V/3R8uWTCgpMAqww0harPElZIxyCevTvOHe6VTHtA8E4BXzD4D78QqX16wZu+cqlvC
+         lp+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWXvTULsyFC4bwtThmpyZ60lVgcuUJ3YaUR4XgslqbSN9gj1LOtCFEbaVwL/9dvdkJ3gaLD66UKaw==@kvack.org
+X-Gm-Message-State: AOJu0Ywzzm8BuDohyi3w9HCluwi4G0FNslevUylahFXAnpqC8MSZgdry
+	/LYyNcs4YM6oKesLXFpWR0reAP+gZfQqTxAv25OxW00kEnaQNHFAw6jdEueAqMsZhjh8hS3bB9E
+	gPuSxINqqYZqcmT0/v9f6Nf6LpDFvpl0dn+DuIGgm52TuEibCrORq
+X-Gm-Gg: ATEYQzwDZhBq44iYdk9G5BEzMvOcE9uVbGqUXRSld8VZu1aSGrp0FQ+vzvFgrih+s+z
+	6dBvcvGFwiQgMRydRQRIpaUSCwX9p7zbGfjM0F6IQdx7Ie8eJpJ19veurQ7V+4mV92ebcCN2GUH
+	lO2kIx0q4v9gKDkDdxBZblNf1aPGuUiTZYFPrfq/yLuu9itCYKnwT3iSpLdZO6qGi3avP5Jp0R1
+	LpWUoS2SqWzO9jbXfyxD2MqLU28QxNcYTlYWDVNR/wE9ZpYlj603QvF3GwCvtgejbbVd0tRJb3n
+	ODBzmKZi8qs+L6YaMwT5dmkmC8Zl9gPCYhu4VgXOc/ff1R/nXun6UkmYcA4aB1G9oEGXqf7/P1e
+	K7hbno6TJ2W4uZ0wq7w==
+X-Received: by 2002:a05:6a00:cd4:b0:82c:6d2b:7c53 with SMTP id d2e1a72fcca58-82c869c2554mr386646b3a.19.1774506563575;
+        Wed, 25 Mar 2026 23:29:23 -0700 (PDT)
+X-Received: by 2002:a05:6a00:cd4:b0:82c:6d2b:7c53 with SMTP id d2e1a72fcca58-82c869c2554mr386611b3a.19.1774506562724;
+        Wed, 25 Mar 2026 23:29:22 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d38d7f5sm1553107b3a.29.2026.03.25.23.29.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Mar 2026 23:29:22 -0700 (PDT)
+Date: Thu, 26 Mar 2026 14:29:20 +0800
+From: Li Wang <liwang@redhat.com>
+To: akpm@linux-foundation.org, yosry@kernel.org, nphamcs@gmail.com,
+	hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com,
+	muchun.song@linux.dev, tj@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev
+Cc: longman@redhat.com, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 0/8] selftests/cgroup: improve zswap tests robustness
+ and support large page sizes
+Message-ID: <acTSQFxTs4-t7P5t@redhat.com>
+References: <20260326032658.96819-1-liwang@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] mm/mglru: consolidate common code for retrieving
- evitable size
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org
-References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
- <20260318-mglru-reclaim-v1-1-2c46f9eb0508@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260318-mglru-reclaim-v1-1-2c46f9eb0508@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: tij81bc5zzn7i74nm3nr8wzwr3k7sbkf
-X-Rspamd-Queue-Id: 28280140003
+In-Reply-To: <20260326032658.96819-1-liwang@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: jz1wDgbSK0qgZVw1c-7HALOp6p657J9sVS_isvN1cwk_1774506564
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: DEFEB140002
+X-Stat-Signature: iqxi58wnh8bs3op3j3wtzdk3i89m4pf9
 X-Rspam-User: 
-X-HE-Tag: 1774506308-369469
-X-HE-Meta: U2FsdGVkX19cyuH+mKFAGFjJhdEvRgVi4Y1vQg0IYwW7lmMbqo3sy7TOl5Y1xxcB0oIljRUOobae3VyVCEIuawBlfDANpx7xvU5EVn1ZThZ1ErClTMlT9452Y2/QCKCgMwB+cWTSN/7+TO5Acb8OdGxtzFPimxvPwIHVAtQRQ8/wRL8yEMGyi7hd/2Bpb+eDq6FQjE7/rlSS9HNR4p0jKPLYoQius4E+2W92UYquh3PPt2tJM5kGdBYuqMvaY6igVXOdICtm+vp2izHQcYyCsDrkIgs6/QNBtTtjRuqVhiTXxx0xgrXcLe26tAvVvflc1lKbMNuI3aD8obiQYMbatWbLFhNyuWiPaJeH3YqJrsHXjX9MVSbnp0KBUcZqOcaHg+E+1uCKYboVrkry8JVr3DdlFF6ZtKJ8b+D+b/MKh2ihM0TcohpV92Q591D5GUxoFXP+wry/P6cLdESvy748F3VnI6QNSNIESdG1wYaHZhGSgmmmukP5hhuo5HQGci+05hHE9NBk7PZ/zTnwhG+4IX9aIDD4LhC5+fgAsizgyrj7sJRNvGBwJKxGdvK7cXrkB1W+Vey2jhv4cmR9nhYCYdJFoLmE5A/FkiJiVvtLD5D/UmAg6UK75vUMvzPWAmRA4pXcBLKFPyrmVTP9r64dk0HSm69/CfnNuGnrOtZsMeyVW0BlwMs0dxADCFvvZAhUi8Pxat2CJcGwsMrwWzRhV+0msBS/y+9ukmu9QwUhXckFkF9TDE9gy6+ueJVKBNuucPr36p05l20y/wWOtOiZHtiaOgt0ADL+Jt4cpabFoJJ+chS6XVMxrSGCkDFWNecvRonUNMiSE8XghdHZzBCBP/DRTQk2F8SgJEEoL4M8PEcM3+m31ELYe3HOeLVqpD9pqVNGr2Fv1+KIWuqffse1D3OFZdIpy7D5kHBwj0XNARwOnvipq5C6OdFQpdu1io8F69zq4xdGygWx8ghieuG
- uo1y6xt8
- wJi222IT1xHuoqE704VfVYK0pORbFo5uDdKAS+1mSwh+8CR6eGlCo9/LEV+N6Onb8Sio7EHRuUk9D02YCswE60Wl2wbhTLOWDXCBbQgIh6cBOkM8gUbNzUlPGfvWxDyByNczGSN2BxWsohGeHKN/dzrLw+BH2MnCSGJ+xw04GVj+wntHzh/oRrisuIPAkGerG49HA/Kv5sbdDfmIIB55rlu+cXOlHXrmFjHJB0Iv1gt+ei246e2qenWCgWLYd80vokmMWcmirq7YrAsexmkdMiEuAXmNF3pLV/lFewnDVTv9Wyp8fVbfvTJa76QpwNGLu+DSC+PFKF9WYjywxr5aIlbn1YW/nZgLquNQxxcxAXVoajE4L3x/sfT6qGnv2TaEtJW707LMg2rjMV3o=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774506566-433573
+X-HE-Meta: U2FsdGVkX19abxf73iqsxtEOisCpICLIiK5/tXXCRdkIfT3ybOFQpIyx7AxUQTK/RKEXOzohVWK8DEH4l8IL23jVsLKoGmXEWeLMirXjfuJOFvfLywP7dg+fDiweP7BEqc4RxIBT3l48UNJYESep5rZQZbpb1lWmzgbaz0kuG19fhSQMxl7izFxTwii7aRl9hllcsLOSGd1wAmbU4Fq333pKDYrAZ6xfsSieC7sp5QMkFeYXBZFY7xpiziczH+zZVvN9Eh7PClwnw5oV9Vm/O17E2NSmMMGl3czo1d1w5u9/jCF281S4gBA4/0IUnGHXZs6KAIhtXFfDRP7NB1dUV1qwTfN/XcAoV6m5EaoJpESoimz9fvtPDCosaXf0i33odjRcwwL4j2Kxfltp7Fv307UEoxiXdSbg8cLJt0BveYPw34ffLwpdkPJTcg2SXRGp3HYc36yyMY16XWdpsc0we+BjZcpNM3PloXB4o+NRBh7xZIKLt9TufRWOXnxIyzQBLECKwak/4oSwT7ZdSOak1/uqORx8TTc605pi0aUCfWwTt4XGgsh29xancltcmnVPTTgRcuAKGEQxsUvvFbwYgHk55V3TzFvhCmaGz8MlprlSIonOk7ZaqwLkfJepX3j4mDjevoOuvAKNIxnMu0/skqnH93f8EKgEL80Js5Pk4zLahf50vVAVphVdOUxp8O8LpdfnYF6uTjWt4nKNkbH3GI8aFG1m+4W5SEjEaB0TpVkEqI7xkmQJy+j1l5rqtM/saRGToZp5YSOqRyVCMsonAUhR9Ydm0Bguse15boUKsQxjsrwZyUINXSnLDQXDlw5ynehhTlkjuAc/ACFoWluVYueeX6qELB/rAjzSMvZMQLtHqEcu87aaoJv++UUuazQ7vNnVp5keX3Vrsji3UH2EWd/M/L0NlgB/ADM4GyfAkVYUvoP76H1Ad/88+B5bB99ZCbVNcNFqypXD5mJP/c+
+ fRiX8nFe
+ DYqscH3/u8AAUtIti1n2xX2MeRGHjqNhekaEwZki8aMASr9iv++UBinJ04aK0FJeFRmM9XGcYIqngRnyYUJBEBkOnbymv60tPb3ebNBuyLW4UsuLMtulMsAiU7HJOxz9Ef/6ZUNlEl682LP/fTXlFMg2bm1HqiVoEQ1dyOIry0Ag+ZJaBpxAcKba+voKG4wo3lzSD7PS3ihtmDjy/wFKTTUuO4Xd22jdxhIR2jZURFqR/5IdRMR/dKZWUICM+/0KCJSmln6z2ksReKoEkeuRMCQSneRrvsuQgp4oc9u05BeJMdVZhOIvMhO5iJnU4oFPqlAgk2uOqdE9WsI1Jj1WjkfpMYZBqXyJEcUjgSjQ3ElFHqNRPS70VYDmMGW9K+xAzesSfUzUZSyUhXcFYv0pCzkBwOEqFWmpnFonXGFHkUC6GXW1R/ARgXhc1XSfqjoLl+0+20JZCsEMfhi+VzyL6cN+Hgnj0c5JizVi0av1dXrix0d7daMvBbJXdDTKM7KmMEbCC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,18 +129,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 3/18/26 3:08 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On Thu, Mar 26, 2026 at 11:26:50AM +0800, Li Wang wrote:
+> This patchset aims to fix various spurious failures and improve the overall
+> robustness of the cgroup zswap selftests.
 > 
-> Merge commonly used code for counting evictable folios in a lruvec.
+> The primary motivation is to make the tests compatible with architectures
+> that use non-4K page sizes (such as 64K on ppc64le and arm64). Currently,
+> the tests rely heavily on hardcoded 4K page sizes and fixed memory limits.
+> On 64K page size systems, these hardcoded values lead to sub-page granularity
+> accesses, incorrect page count calculations, and insufficient memory pressure
+> to trigger zswap writeback, ultimately causing the tests to fail.
 > 
-> No behavior change.
+> Additionally, this series addresses OOM kills occurring in test_swapin_nozswap
+> by dynamically scaling memory limits, and prevents spurious test failures
+> when zswap is built into the kernel but globally disabled.
 > 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+> Changes in v5:
+>   Patch 1/8: Defined PATH_ZSWAP and PATH_ZSWAP_ENABLED macros.
+>   Patch 4/8: Merge Waiman's work into this patch (use page_size).
+>   Patch 5/8: Change pagesize by the global page_size.
+>   Patch 6/8: Swap data patterns: use getrandom() for wb_group and simple
+>              memset for zw_group to fix the reversed allocation logic.
+>   Patch 7/8: Setting zswap.max to zswap_usage/4 to increase writeback pressure.
+>   Patch 8/8: New added. Just add loops for read zswpwb more times.
+> 
+> Test all passed on:
+>   x86_64(4k), aarch64(4K, 64K), ppc64le(64K).
 
-With lruvec_evictable_size() changed to return unsigned long, LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Hi Andrew, All,
+
+I see that Sashiko still points out minor issues in this patchset,
+That seems very tiny in selftest programming.
+
+I can correct all that in a new version if you'd like a perfect patchset.
+
+Sashiko comments:
+  https://sashiko.dev/#/patchset/20260326032658.96819-1-liwang%40redhat.com
+
+-- 
+Regards,
+Li Wang
+
 
