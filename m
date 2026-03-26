@@ -4,102 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C6510AB82F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C9FA10AB82F
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 642526B00BC; Thu, 26 Mar 2026 19:10:58 -0400 (EDT)
+	id CFB8D6B00BD; Thu, 26 Mar 2026 19:13:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CB676B00BD; Thu, 26 Mar 2026 19:10:58 -0400 (EDT)
+	id CAC356B00C2; Thu, 26 Mar 2026 19:13:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B9FA6B00C0; Thu, 26 Mar 2026 19:10:58 -0400 (EDT)
+	id B9AF96B00C3; Thu, 26 Mar 2026 19:13:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36A6E6B00BC
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:10:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8CB7C160DD8
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:10:57 +0000 (UTC)
-X-FDA: 84589761354.24.515EE5E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B59D710000C
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:10:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qnrICnDF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774566655;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A56FA6B00BD
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:13:03 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3667113C396
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:13:03 +0000 (UTC)
+X-FDA: 84589766646.29.7BB51DE
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4083DC0006
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:13:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ExLIWgtl;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774566781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NQNdt59Y0rQg1C/DWmXymlTQ84oO0Alz6JYf4JGU5p4=;
-	b=ujMihYGvpxlLCSCT/VMQ30ZwWfH3gnIC6vW9pVpN0lfbd/nMgUgtMYFKtCDtrdT/QGg2m0
-	dzo795MUYmch9vskLG7ITB4c12MjhfrB6LnX9kAc194ijYFuPvvdei46vAlaSElzRCzxjd
-	56r2wXNmf6FrQqnrBU58WNqRr61upRE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774566655; a=rsa-sha256;
-	cv=none;
-	b=qdPijhRmvbNTpMkXr3hZP5x/JNrERSO0JnL65SQhduNr5JzhvfNFJxogXm3y2UPQY8joWN
-	H/+IxiuUH528BJIEhzkaJNSeQzS1qixoGSS7HRIvNm3KV8fvulEjVeDPH81fDwHy48K2e8
-	E9R/8rmzFOUJjCd5TKUSWzrI2X2R7UA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qnrICnDF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06C6A6011F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:10:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D96C2BCB7
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774566654;
-	bh=HEabCAS3j7mMDHObZy/GRmEkWbvvgyE9mlPkTC/rKtw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qnrICnDF8v0HcsQijsGqRez19f5CS3Muzmxh1YWTHJKpxImprw1BtALFpZD0GAgft
-	 Sf5hOYxQzHAatwH2U32mus4XCVWRStfZN8hxrWctFJ7dCFW4Z1JN/DIcKb3hecevc+
-	 Ck6AFb2GSfYDIqeBXXYgTjMUir0EJ5u800H5BNP9PO3BbYgRn9Qqm4WnEfnergSv01
-	 AogoQFKvEI2cWQr07e6mdpvqTFRQGOotWV4AoOpYHaLdnUDKphGYfpBoRSHah3MPu8
-	 nmwjj8H2vWpTDcdc+BvFQWyhHYw1cofN5G/5aKBhfrdimRpxu58ATD/2RttoWCzmRb
-	 LUQF30CshAcsA==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b941762394aso210427066b.1
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:10:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWB0MkiTolPV4jTgskDyGxFKf+4q7KmDbpA16xd1+CpZ3a2SShWTnxReo3Pm5rOymjOkH8pdhitHA==@kvack.org
-X-Gm-Message-State: AOJu0YyZ6UiCfALT+zPAJvaHdjJhz3tYOmKA7Bu6DCa+DnSr+Fy56zDE
-	qVivl+CO2/s1Scu04nQWWoYuUhmltNLT7Bxhq4lWky1qpfJKMrUJUDd92E9+/aTgSVwuOFZ1rM0
-	g8c/lFj0buk1FUYVrBz4LGDBJ3K9z/q0=
-X-Received: by 2002:a17:907:a0d5:b0:b84:40d3:43e7 with SMTP id
- a640c23a62f3a-b9b502c082emr17431066b.6.1774566653369; Thu, 26 Mar 2026
- 16:10:53 -0700 (PDT)
+	bh=jQ71j0XJntFgJwNhav4Ldsylgfk15393wSbfyYOBmK8=;
+	b=v5bqvxK1dhFeX1krS68nFC4AmNOSRYfZnL+IyBuHMzCBU4ZlQcUQlNHSdfHs0NcSJF6VDv
+	ZPNt/x3T4VzsY5cwFGZcJv8QTTG3Ypnt5bTtwv/qssqSzGbwLTxBiE3Cpv35nm8GtnEeLu
+	PVeBmhqyS/VfOsOFIOB2DaIloeeLLjE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774566781; a=rsa-sha256;
+	cv=pass;
+	b=HzJtD6W0HgfH4RRcl00aJOZALEihyLtHEZ7RetWr8k0M9DCAH8iu9bSp7xF1pRsPSMT0Xs
+	PM19FbioJHzfyVnbK/Tct4yUaijGUOgL9Uy5RehTsghNH/RVo8l+PI4rhAMeLo71rlgKBG
+	o2CDokiikVNmR1gALAenG3XeP3lQufQ=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ExLIWgtl;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5094e1d17d3so14960921cf.3
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:13:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774566780; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UPySO7eFvpWvcYp/CkAmolw6GCKgpA6hVWb5CyQ8wclxibDa2zCQAyfTlw05gAIFUA
+         n52ovF1kcZsRVLfzWcB48TmNWD48qB0Qra4CePYKVmqy14OdyigQWA9YP70Mw74PTQnd
+         xrUGGX5y+WeTnxue+Czhg+EGksYpSmfl4BDBlfooplYxH+w5wpgo2dYIrEgN1HBcD43o
+         nCnwAcB4du9rhhNnCaK9BvQw+g01DiEZrEuUsci0p+b0mKZL5mKOjnEzSBrUpxkPdhjp
+         z1eDNV2AgEYunLs5mmfiisssT3o0xGVNDCTPFbvjqoVoQ5fb6ErjnVNUXB4k/yLNLCm4
+         S88A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jQ71j0XJntFgJwNhav4Ldsylgfk15393wSbfyYOBmK8=;
+        fh=17hY+THTCAOpsm7yYKHstgebtJgEur3VtwotAjHiVm8=;
+        b=eIZUFIbpJqUjIOvtNqwLsLdHuHXUhr1wjwYLfZIQtsMYu5I+kce4w4CEUhGYczGSNl
+         ofFexRNFD2c0NWYaA0fuVu3HC5vUNt3wJp3ErhuPR0xRxqwBLzqZkJUNDh1ZaGEBsjWB
+         X6Tj5IgE8kPKd89PygO9GjbK2lJ6oft+0EczOKDcvcioqXQXuAO4SY/4iGrj6j5I+wfQ
+         A9YfJJ4i0cYr2Xv/tzRdd+5gsCsANixZ14jrU7kXwsVbRYrRKiA0hM69yRPkLPR3x/HY
+         S4vpm1LNsuBq75j1J9dZ9LgNEAYPdWCCk45eTMYzFrclubw5Rc7t4ZepuH1CsMKg0Wod
+         gl9A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774566780; x=1775171580; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jQ71j0XJntFgJwNhav4Ldsylgfk15393wSbfyYOBmK8=;
+        b=ExLIWgtln1b6GJkjqFOiKoV5bqyX29k9n982fAB6hjpgMXvjiToWe1a7WwtLn464Lr
+         PHeIhnjmkzifOvBo/ZjKsK3CEFtdN2NwdWsLMyvLFxHyWZhg+K14Uea0vDZDJJIfV1hA
+         0nvWqzox8habZeSU8umOAg6VPilUFCtpapbn89U+QzET6V2rgoDv7OTdedC4vlxCep4A
+         G41cG70kBNGK6YpXdqnwcHkesKVBTxCJnw+Vlsgzo6lCMnCAdAeJJXr1EF27+aXf2mMI
+         2QGsJKcjWnihSQGOiS96ra0ybJlMPrv+uggJGOmfYR33MVKNJmWHeZG4TQwcl4eKUszA
+         BO6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774566780; x=1775171580;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jQ71j0XJntFgJwNhav4Ldsylgfk15393wSbfyYOBmK8=;
+        b=NCNKNVvnWIg+NtakwBMvhTb+SnmPL4t9VAwPM0Wl4QywHVxwJ2RSKJ0BdVWZxzbDGz
+         Q1SsfRYcWvX3gfsjR4YAstPwBw/HpZuVXlv+1Kp4ATE2ZUN9Q8ViXhKqhQ6/tw5q5w0d
+         IL0H614iisfkLkDJJI7IemvGDAi0QLB3AFXmC8OL29QZoDpZWkemZ9+/HBZlI/gJr1/l
+         V4HbU/S+3ADVvl4m0KPVxpGnLYvDjkMca2PO2JH+5uGHe1+vYBnDJxcwsXwR4iGFZVdN
+         dFoO6MR39eraoROjCbhqmgFOIxbEjmtz3rhKAewQz1ybd7SLz8o1XSsLNPgdANZmvt0c
+         dDdg==
+X-Forwarded-Encrypted: i=1; AJvYcCUoK1v5fqQ8KHmBjRiNM0m5EaSyCPeZu3oHLlA13Eagh8QdDhvsI+Br1vHcSd2OjEJJPLImQrqdXA==@kvack.org
+X-Gm-Message-State: AOJu0YwCfcMhsBzSTMM6nkGXEvV+DvcaYcaqhxakk/OQUSFhomsXT4Eg
+	IyQYvBw0eSpCIdQ470RPACGJ3YbIQpJn7KCU59hRxGh8QH5U+RYP1xgiS9rc5AcWsPLlzMMlDl/
+	3otXa1FpPcWvQqYObumpH2l9ACrBZR/0/nORE4Rc6AQ==
+X-Gm-Gg: ATEYQzx11FY9/T2alF7tbWXiOMx2wOZFJHT9DBOZbBX5WQf/296uQ3sT8GnjaAG0I1J
+	2DyyGUGC07JXrBGo+fIPDHlwMQCZICQ9gK54dQfuxJNdU0cRRLGUivhEEgiuL6vOIHKCWI4/ZS/
+	m5YDwbLiKgKZatvcENysM1eiVTWmFsverUeO2S37EIgHiUu31+TpqMUv6uCM3DXVSVtH7ShNKjf
+	hdHvJAy1cFAmQei7bwXzJLkiqFWapaUi1SWVDytz8xBZC2UIX6rDfpxzomd4XU1RpDwDr9aETul
+	osZ9QkZ4xiuF/0LxyDOE93oWFWzcFsLvQVBxbGw/uR+Y/TPcInSEtsVzm18HBU4xfISsezsUQA=
+	=
+X-Received: by 2002:a05:622a:4812:b0:509:31bd:3de4 with SMTP id
+ d75a77b69052e-50ba39780fbmr6194181cf.56.1774566779779; Thu, 26 Mar 2026
+ 16:12:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260326032658.96819-1-liwang@redhat.com> <acTSQFxTs4-t7P5t@redhat.com>
- <20260326160618.18a20227b606bc95f3c3cfa6@linux-foundation.org>
-In-Reply-To: <20260326160618.18a20227b606bc95f3c3cfa6@linux-foundation.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 26 Mar 2026 16:10:42 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPMtNaRuGSrHnfh6AX3DKVoR6d90X7O9UTjxbushssyuA@mail.gmail.com>
-X-Gm-Features: AQROBzBwjNh8DYJY5cdGsMAUqkIBhiDt_G1kN7qGVt8vQO-IEBhvuwlMiehhNfE
-Message-ID: <CAO9r8zPMtNaRuGSrHnfh6AX3DKVoR6d90X7O9UTjxbushssyuA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/8] selftests/cgroup: improve zswap tests robustness
- and support large page sizes
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Li Wang <liwang@redhat.com>, nphamcs@gmail.com, hannes@cmpxchg.org, 
-	mhocko@kernel.org, mkoutny@suse.com, muchun.song@linux.dev, tj@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, longman@redhat.com, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
+References: <20260326185629.355476-1-ljs@kernel.org>
+In-Reply-To: <20260326185629.355476-1-ljs@kernel.org>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 27 Mar 2026 07:12:48 +0800
+X-Gm-Features: AQROBzDWtmGuHyTAVLNjdgvosAE-X5FzIYF4Z1xpQcLS_XcNeBXNo16LCUjjHpA
+Message-ID: <CAGsJ_4zmveWi1XSr70XbcrjR-wVqwKKTAAES5Gpvo0wp2O=hGw@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>, 
+	Kalesh Singh <kaleshsingh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B59D710000C
-X-Stat-Signature: 1yf1b7r9qibdjmoscbo3yy47fjecp9qx
+X-Rspamd-Queue-Id: 4083DC0006
+X-Stat-Signature: erbjsdzgmgfcfayc9krcqjt9f6cy3mh1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774566655-664850
-X-HE-Meta: U2FsdGVkX1+JFbgzog4N3Zb0V/NqguEpZdFI/+WMReVZk3WKzsjLyxdWDNc2S8ShyxXAPMqCfB7ZLbyU6bPAd0jWyhtmNjeDIPYRs84wDUcz/TLN8Wttf7FCjJvrklS3/XnScclwjWtTJet3HNiWqVNPAXZMDP+HNHerN679g6dB5BL2SDuIJ0YY/8QTYLVnWwvJ3sBv00FWUubCwPIOFTSyyQ09xphgyEyKqH7I6tRO0tuY3ZtbQ/iLwEQbLCpn00sD8pP615e59ZiaNYt+zqvOm4ZlYrPzp2CpWrWmwgV4QhGUCpXzhU6R3hgEdGtylikER7Ii6xs49Dr1R6pl8+VeClp2GDmzvWy/W/zHG2uduWpIG10xTXzAJOtwHyG/uheOba0N8jTsomFRbv9mwcRTyDG3l4E5hcwxKwyeLuDeT3Pb33iUgkEHw9LZosk8lx3x2ACv5iYyKgnQOtBLeH27u9cDieiyMFWMit3q4aovVCrvfreYHKhBassxudZvNkebQz7lVW0df3AlMWuGkqcW8dYfSR3zWIkR0TPUVOD0G8Q+DTxXUhMCC4PgGLnOSO/aLLMb2+U8RCybtHR0P0QRSe5BapunfateO8I0NQQpOWiyGmxZtSlGvBNZ9FnCMdlw2K2aLVu2BTQLpPdbWGtL5JllG/vbJGJCG9OxL0ZO0I+maUFgp6lhUgdlLov1W2h8vIIlz+qTOomiXSJe0SB4zzTnnqMH6PUfxCf4S4Nd8hPbN8wxTOVl4lLFUfNNFsnCxs24h0lWp6WxDu1k8sNYjcMeFbBmZfyuxl2HgoIxycrCvbdGoiK6UbZwXJF6MpMjbJ/2Xtw0gcwKncsVSCd4I6C/oEwCGAhLBFBBdSjgYs2A72GvWY/1aepzMmyIm042erewec9MmguQiSmsn9sZl6cva0f/u4ZcbHtNf0oUhFCF+N24dtxdr0fpRdEo1wxCIgEHpDdEmw2+vl8
- KtSNRg18
- gwcrGbFiH+XUAxqgYh1+G4oDgefKbeXsZTGvXKEXjiBtbd3PGakz/698/sGRUcXN3PBQxGt4bKxKCJWbuaAH+MH1IcHTlELq6BJhPma4YuX6fKq2DLG35PHL3fPxES4KINj6DwR2iZ7Cy7t7yD5IRh/D55a4quT28Dhm0VVsbubuHlTW48KkH491+1EFvC98T3Q+ZqmSei4oh/uLsn6jEHIoam9l6S36EDGimT8sDL9LoWtLf9g8rzTc55nSk7FvW6UPI+s1F0WNfqs33ZLn3gNdzOutPW85ytX8pS+UQXnCQddBOv5EP+oYcfPX4fAuLSuI+7r2EWC++mj2HjOA0LtDFxmXR1KZi8OSvGR4UQVf7XLatoXngS85BeF0eqvg0ALZ0qw0Ib1fT2PQKmd0xnPvSNxY/oAHS8luX5DBp/91cDVQ=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774566781-938478
+X-HE-Meta: U2FsdGVkX19DEZuNTRk+WomBHGHhLhnkII4r71JbmDE1+CH1E48YZD28YMTUMsu+bWyCkxD/JGBoXyOsoaGRXobWiXip3yUiPnR5W/Wrjn8xzNYYwohndSXEX13RSFYLonzWuZvxQ18khQNzZxeYxe0HcKpPZR1uvA+w0MIA/jdlok6OTSUwT8afHHgHgq5KZH1d3R//m/gmcYkOAE6wNOgwEKYjxvCuSPTUHKHet9dlh0KkMJjA47EtGwEsv3Jlsvd6h5Y0WaOAcZ7Jtf7+pJtVBmJYg37oJpuYJ6jA8SkFEmRwniIVD82bgXzs/qPnfYj1vlTIGzzda/VwyGQq4ectWC8dqCjF5CM2wNK9ynsK9+pxtcHcQTu9zgXMeI8i9bqiM9FRxurwhDpnZaa7Z1Y92yxZ7P5Tav58toEkZlL1S/pdwZMosXJ+zrWCMp99PrTw88rp2HdXbvaitHi9eWSmTFNiPT1B+IhYVjS5od+19zzn8hR9PCXM1yIGI4mUwHRmXtsRzuq9CYco2BX3WSoJNiGELsRyqTRBHEI7D30EWu2dZaJi2LoO2fdbQ7AQsZjO6HS276wzyHP8ZBOt8yJWEjHErGGSGJB4P0HihnuYwLlcKkuUIOOxubaBtR0NRuwbr18myiIutcVeD4LrX1z/PF6cqBuEg6J1vlOf1LLNIHY8yGbIHy9l1RFvUBdZyyHfQuDDrHYfmFgb+edbhR+o3glF+jBCCTH8Gp3HtibeAPHFL7SIQ4rUZrMW9p64g4WeBIjuW36yUEkuOTnbSI0v2HF0a2hARsB/EVHP9XQuA9h/vIuk78FMAW/7/xCYtS51Pi1f+xdxXmbFHzD4pxof6bdv/YI1fgeh8+dJmxiToQeltkeRvk6qgMVnMymDQd1ew2RAkxU3RagXm3DYJ3P/7M21bKSQ9Y+5Z4S/A3MoSD0kbRHZOnBXrpu8m3hMMTPZ60POdc+j8Xbhq8s
+ /8Kvq466
+ 7/OrllzkhK+tAYuFLlh/7W++wXeXTS9XqAvJBLGhXFB0YuGLjPxeq4PBlLiEIWyyn+lTy+RVfHOp5INSSMOD1gOdpW+oy7x8nJGyzXdafiI1/3M26Nd+ruzRxTJRSCl0hK9HnDFBWKLrOMQaLyEVvkGLS2y7wWhs3i6/DEzM1l23LT7Lv7/VT7eKIk+GNl7RfHd0NaoaUhnKmUVudc2TEoglz8a++1u/5d4mjmbJKAQNQBi4daCWDAuh9NagkNblQkC946m/rPeOCcvuxBseHrsk0YvDIJJ6Vu8WZdhk4FqgoUnCCq2q2laq9/j1kTN45Bi+vTGizXEry2Zzk1UuHnqIpT0M3JSJRO5foQv0ULa3YL2SKytQa7NxMleGX9vmbS/iLvlef7aJJPx6FD2KO0AYZHBrH/8zFpgtX0FwvMT8UYEk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,44 +143,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 4:06=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
+On Fri, Mar 27, 2026 at 2:56=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
+l.org> wrote:
 >
-> On Thu, 26 Mar 2026 14:29:20 +0800 Li Wang <liwang@redhat.com> wrote:
+> We are moving to a far more proactive model of maintainership within mm a=
+nd
+> thus put a great deal of emphasis on sub-maintainers being active within
+> the community both in terms of code contributions and review.
 >
-> > > Test all passed on:
-> > >   x86_64(4k), aarch64(4K, 64K), ppc64le(64K).
-> >
-> > Hi Andrew, All,
-> >
-> > I see that Sashiko still points out minor issues in this patchset,
-> > That seems very tiny in selftest programming.
-> >
-> > I can correct all that in a new version if you'd like a perfect patchse=
-t.
-> >
-> > Sashiko comments:
-> >   https://sashiko.dev/#/patchset/20260326032658.96819-1-liwang%40redhat=
-.com
+> The MGLRU has not had much activity since being added to the kernel and t=
+he
+> current maintainers who kindly stepped up have unfortunately not been abl=
+e
+> to contribute a great deal to it for over a year, nor engage all that
+> heavily in review.
 >
-> Ah, OK, you already looked.
+> As a result, and within no negative connotations implied whatsoever, it
+> seems appropriate to downgrade the current maintainers to reviewers.
 >
-> If you say they're too minor then I'm OK with that.  If there are any
-> you feel you'd like to address then go for it.  That's my opinion,
-> others might differ!
+> At this time nobody is quite exercising the maintainer role in this area =
+of
+> the kernel, but there is encouraging activity from a number of people who
+> are trusted elsewhere in the kernel, and who have contributed relevant wo=
+rk
+> or review.
 >
-> I suggest you leave things as-is for a while (a week?), give the memcg
-> maintainers time to take a look (please).
+> Therefore add further reviewers, and at this stage - to reflect the reali=
+ty
+> on the ground - we will not have any sub-maintainers listed at all.
+>
+> Each of the files listed are shared with other sections in MAINTAINERS, s=
+o
+> this doesn't reduce sub-maintainer coverage.
+>
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-I think some of the comments are worth addressing, especially:
+Thanks so much for the trust!
+I=E2=80=99m glad to work on MGLRU and help drive progress.
 
-Patch 4:
-Using BUF_SIZE in the allocation helpers is wrong, we should use the
-actual page size.
-
-Patch 6:
-Zero initialization of zw_allocation.
-
-But yeah as Andrew said, it may be worth waiting for memcg maintainers
-to take a look before sending a new version.
+Acked-by: Barry Song <baohua@kernel.org>
 
