@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C33C210AB803
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 18:56:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C4110AB80A
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 19:09:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CC6D6B0088; Thu, 26 Mar 2026 14:56:42 -0400 (EDT)
+	id 91D0F6B0088; Thu, 26 Mar 2026 15:09:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07D966B0089; Thu, 26 Mar 2026 14:56:42 -0400 (EDT)
+	id 8F4666B0089; Thu, 26 Mar 2026 15:09:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED5356B008A; Thu, 26 Mar 2026 14:56:41 -0400 (EDT)
+	id 831DB6B008A; Thu, 26 Mar 2026 15:09:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DBC966B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 14:56:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8FEAB1A053B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:56:41 +0000 (UTC)
-X-FDA: 84589120602.25.D8A3D40
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 721E46B0088
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:09:20 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22277BC54F
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:09:20 +0000 (UTC)
+X-FDA: 84589152480.16.49A05E5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F132714000F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:56:39 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IVZY7kwE;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 642CC4000F
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:09:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PhQ0WnCS;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774551400;
+	s=arc-20220608; t=1774552158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=A0QGewojSw+aC1mVCllr7Z7HYxgWOQ3GJRv0xARyP2U=;
-	b=hy1h27CkU5UmT4/sUa3XwTftWXrR5ysQQbMzwwkSd6NUF9ybF8vjgSLCEWQR3meHI22VfS
-	G7Dk91vi1HMlbsXLw1NDAGVoLg8DpaHFTwgGXtGCtdP4iarUOrnCf1yEnqnoO1YzGwRyCZ
-	6ezeB9STW813JbvAmrqaMh/tzQ23RbA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TmxQFcoImenInxT8DdNugaeXqE3D3ZLGAf0vVKM86+Y=;
+	b=laNekBdqqyrj5rQq4rpT74rxT/4ADtIwjsbKoLygXb21GCtCSYEvkqIIznADTzeE96l1vT
+	tquVp5E31EZ+e2hOCCxhKxKP3iKVSw2TG49sZEfnDed0lFVXnKMpARFnTKF8ZCa3Jtiruk
+	PedJL7no3b/ANNP8cSkty+5/lhpf2o4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IVZY7kwE;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PhQ0WnCS;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774551400; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774552158; a=rsa-sha256;
 	cv=none;
-	b=4zc4xxTvbSWpu8zpfc4A1YWEsvQxDLLL6bqI8d6J+AymPKb7ZIgx4eh2SH3svdvM4OOO4c
-	qvl02c1fIj/xEH8SBQEJT6m76uExSS+eJYq0HuyTWtVYuUtgZsfZ7aSe3nIPw5PFFE0UvY
-	h9Cm6SOr/hiy0HFUjYeMWp6EGUyXZgQ=
+	b=Iy8GnRnohH8yJWT5yZkdEIId05RUiSrnRfYBHb4vZkyywF1P+jHRdYowfS2xrU7X0bc4YT
+	7/D8elki/3kpfP+9pHSW6Kj+rcIWhTaEuPTZrWVYCZAEh6fagL6NLQKP2ZhzT9SezCy9Sr
+	meOF65JvoAHaKbHncbY3ovyP0si+Pmw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4715D60123;
-	Thu, 26 Mar 2026 18:56:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBCAC116C6;
-	Thu, 26 Mar 2026 18:56:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B461E60128;
+	Thu, 26 Mar 2026 19:09:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144AFC116C6;
+	Thu, 26 Mar 2026 19:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774551399;
-	bh=+wQetKlGm/3IURdx1cczlVLWXCfYEZfNp6dSTf9FThw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IVZY7kwEb/MKgY6r01wlXb2O6ynTj0T2ANigW9dTrCedhkDuQOsQ4cOwR+wcfMqQS
-	 6GgKaM7G0Zwj6vPvYcKLRpgWiYqHp3QSyh+WbFuvFSdoVNOmdpU4ZjNGfslM/fSOBX
-	 yQt9aMTrQdyMOzVoNDpIarosqzKNa7NB/XwpzoogWsJhQZaaI5JbnElMPoG93NeDqN
-	 0iyQmAoMhHWhvXI9G+Q/7a4nwGV/ZsO6UL1aDRMWnToEaSkFMM4JM7EVTmbykj1ZNt
-	 gMxEADcShR9EDMs9uUpBqIXODCh3pBamLBaQjZ94M1nZjdDohWhCb2O5l86sa2EXCW
-	 g2cWw9sHzA6mA==
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
-Date: Thu, 26 Mar 2026 18:56:29 +0000
-Message-ID: <20260326185629.355476-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20201202; t=1774552157;
+	bh=23H9+hDeZzqOwppiqsrduagCe7Tuo7bMUK2xidg/Nsc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PhQ0WnCSvDjfyoIc2VXk4oGg3zhvcI3pL7Q9w4KBEfPfjhH79DS/Ktil/S94RK7Wz
+	 WNyJHOFCmXO0QYyeA/TCuzJOR9oq1D1BzvL31bmlcp5OIYvEjNFn/SSO4u6dNbwfOD
+	 SZXNT97fwNLqRHSkX0bAXs1BqudFYDp11DZpBTdmQtgSdXBKqTseUPYdM9aFSOUM6n
+	 3E8xfsnoLazoZo53Xxh3+iwzgCZcMMj6J4+XnZTXrdx/w1yFEg24e8PBboEqyV/xBY
+	 GgoeefnvRsuJmBz6uibF+Uh6gua2+XjSz/zY38/oA5QgPn1/KBnnU7GO5BvU6SqgaL
+	 GkzzefWXJT09Q==
+Message-ID: <0d4e27a2-e9ae-41ca-b327-82296cbb0cfb@kernel.org>
+Date: Thu, 26 Mar 2026 20:09:13 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F132714000F
-X-Stat-Signature: 1ftfkqn6kxegm8373zbgmp1ajtktnnma
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
+Content-Language: en-US
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>
+References: <20260326185629.355476-1-ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260326185629.355476-1-ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774551399-705600
-X-HE-Meta: U2FsdGVkX1/AE3Gq+KtX4/1b/rpGaBGMrXZq/9Gp/8B2Xp+uJ0Kc9gHi9WXrdrGBBk5WcBcTPyyPgdNGrIWuHMfeoKmsBz4knaEF9YUcZ/r8qVHMG4YehATz3ftWCrEXIYNmjEvWw0+un2HWq8ZOVSuB7Ae8pxph4L0EgOT/cAszS8N4k9bHsYqLnl1KWQ720xaNLh4yRzIRd779FqtorDPFhdAH1YPwHkjj9a3gW1D17tRJJUg1XmdX7zB67MqfF879YbBnSZNXA6JpGQ2/WeK6jSCEKZpKPxm1zmPmI9HDph44HbgKDV9nEBYsljaJOuPly2Ga4jjVBwJKpXqQV8k/Ic4SbochQdnLlY/QrIpWv2GxhaAb4tWMv1CwAg6ZEQK6t74oZMjeAXf3t+UYoA6C3Q9O/bv3mqLExVRkjWPNI6ITS9Gq4FBzQQ1bW5ifQmP6SYkiYbZodexZbgG7qSkRK65cq1JD9o5oGEXnbcvtGrldr50FY3hPKN66HmeNWYNo2xg9ec8m6fOeWvuyxp66d/RpoIjC51oFTqsK9f5V+sfR70GDgwNRYA0g8zoKXomVsK7Fg0kgKoc+xockaOSg7l5m2x0oid7HaO6VW1NTr15wZ51M0qmr9nvzwzkDhiDQI57CrPmPSK73m7BM4KjRb762l4QlGp4R541b/Tpvl9Z+P0eOR9TwZpvHDV8STVpWA+7/iPCevQ0k2KQZ3R6rv6nSqR5jn8EZjT+X0ESN58qr1XZBhpm/1Bya6m3+i3XURGTm5vIlwHu1uoY3CEBufNgK5EiaQzvwrlQGeQ9uUVUmJz9sPeDJC3d8P1HHZKFRjYu5Asx1SOKIIyWqQXTcL9VgQxjr46ql187497O7m/Unh+EraGW7soHTy/Lqu6+9egUvOre3ZTbR+WBKzFIECk3dtQzNV+1ay4u1NGJyOhoxW5+ErRog/XYgJwsLPmctD/ipzP5dO2DA5um
- 4MB7axL4
- axFfelGc8aAxXAGqZRJuozmHH2IkKCJ25p/Abnp4xiUbcS6aoUzSEppfcx+5faZEdhljovF6jNVYn+wBShpi5zhjpc3pGqwZPIFtRPO2O7G+zl6S5Z661QUTPNzXkBkxUP8nuztYdd50QaFsupYrfy//LxmeE42UFdQmtppiGxQqM0qiiEgbQlX0OrHM1hHSHLKnhI+W6/xDB2inT+3IVtJvfmrVIQj76iILvucr5yxZYTomcSdJN4Q0vbxQfPwMhsr7fJ7iksCMbLt0GCZ9rWg/rUOCU9+SbsdgBr/YOnCW9Y9KqnCdxpdzlZXCMfL0UXjRa/rhCdiWNBlnzEKtt02gcsQ+fSjYY58By6Q+VFyx0ruYiVADRVbvfTW40l2aOoedk8f0TxfNjLnw=
+X-Stat-Signature: x76gfiyw7e9zr7pfq91jjxtaa6gwjfb4
+X-Rspamd-Queue-Id: 642CC4000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774552158-540295
+X-HE-Meta: U2FsdGVkX1+Fi0ozGOV65GLeI5k3autG3MilH2+FiPVwTgDuC1wuI72IiZ1I7fC5Vc5kp1PLscv6YhyGSNlJjF7NV70aoEvFtI4K2KL1QsmmcwRrKRcK6hEfrLKjcgocurMfToIjPvymEEDnDQ80wP7i/RH8LOJbQBgfv2wizgHoscoKfjEk3D053sDXG35toqCGM44M8Nyj1x2RScLb3uoq/OvSGm9VXkpAMti1NVw3iVPF2JZG5InJHPT5dwvnWnuw9bZk+pQNVTEOCQm56BR06wgt7Xm0fHOfqT1W0m7X4WH4afm0iSYpN1nhOHDjtTLu/4lXuUe9b1LYwq8poRrTLrczApusYmRc/LtMzUWedK4lxDIGfc+VNSOfO+m1rm18gm2CJm/Hca+A4MQ8aGLBLQOKDcMwGgeFfOStNDGBjFhAxsk4khDNhUPMo2eu98Fo1prIjOZc2HQJJ/Lgz0lXKCbHabUNqdwpSAFooHUKyod5wxw3axP26bnElQq8h1c3K/HfiPHgGJpiUcsXEwEBygFbSNrwTerX3ZcgsCmUoBngQ6QQ/FkXNAVhbeWZzIHI70XsbBTjEQx1J/Zxn+6WcDpshUcvaqfsVBFjOYEZacLUnhWKHV7+QE8l+RS4nXZ/KUtVesLHvrHBz6Y7XXkSVEbXSWnhXZBjGcxwNvbBqGWpgOIUrCLkdBR+dO4IJLz0XBj+YH62P7jPAw/PO4ECa/3C7xLObeQq/7up3t9UTDOzYO7wo/KeLcPDj6sDl71OMFYkEZfxVzCYxxVRUw2gXJZpIEWcUcqXfvrtl+ZodYF28VPT3MErfu2h8zTOq6XHV1XjrNnyZMN6KkalAEEEULsz+TkmjgLFMkcQkVpae09zaMErsptSLOgorYvdehvKMVWUTxv+X8o15wj4D/1hNzhUiICIowMtQUg5/ezIG8DkEZdA7HuwAo1GikenPkr1JeNt3jCL7sbAMip
+ ZPZ9774D
+ uY0kEBBpnR8nEXG+Vi8dcpx7oB5EoAgbcWxqjbmfFaafgmpq4Nj6AzJyzD7K2SAszFySRH+nGH+LEDtR0TGR0o1DyzFNsPAaPKDeksCVgVe0F/0ORkAbBPLT66R+nlYfPxqYi/HtmjjSTJyj5vwAsS0Mc/CKBKXAKpsrdg4xMjlbIDw1h3xNmd7Uawj7+3PzVUs0SrMzE7BkxUrzNZFI8yZjbXJjv+aMwG1x5PK6w9korc1rEg1tzBSa+AlGI3z0XbNOhvXGyIALPEJCC50EZ13ppMIgkXh188rxtbCtDn0w2lYMG4Iq6/TKr3wyNZmc/td+0nHs7aEFxJhwqPweJ4fsSyXe0rUWaaryfi87fiUBg7k2Szxecr0ZapNvcAuXEfvVhz0k7lDJKWanD7Km4DoXr7Gk6bDL/5TUmH1pMlbGmtplNBnvo9jBi+STKE1vfKnbr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,55 +98,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We are moving to a far more proactive model of maintainership within mm and
-thus put a great deal of emphasis on sub-maintainers being active within
-the community both in terms of code contributions and review.
++Cc Suren as IIRC he mentioned some intent to look into this as well, in the
+mmap_lock call.
 
-The MGLRU has not had much activity since being added to the kernel and the
-current maintainers who kindly stepped up have unfortunately not been able
-to contribute a great deal to it for over a year, nor engage all that
-heavily in review.
+On 3/26/26 19:56, Lorenzo Stoakes (Oracle) wrote:
+> We are moving to a far more proactive model of maintainership within mm and
+> thus put a great deal of emphasis on sub-maintainers being active within
+> the community both in terms of code contributions and review.
+> 
+> The MGLRU has not had much activity since being added to the kernel and the
+> current maintainers who kindly stepped up have unfortunately not been able
+> to contribute a great deal to it for over a year, nor engage all that
+> heavily in review.
+> 
+> As a result, and within no negative connotations implied whatsoever, it
+> seems appropriate to downgrade the current maintainers to reviewers.
 
-As a result, and within no negative connotations implied whatsoever, it
-seems appropriate to downgrade the current maintainers to reviewers.
+Seems fair to me.
 
-At this time nobody is quite exercising the maintainer role in this area of
-the kernel, but there is encouraging activity from a number of people who
-are trusted elsewhere in the kernel, and who have contributed relevant work
-or review.
+> At this time nobody is quite exercising the maintainer role in this area of
+> the kernel, but there is encouraging activity from a number of people who
+> are trusted elsewhere in the kernel, and who have contributed relevant work
+> or review.
+> 
+> Therefore add further reviewers, and at this stage - to reflect the reality
+> on the ground - we will not have any sub-maintainers listed at all.
+> 
+> Each of the files listed are shared with other sections in MAINTAINERS, so
+> this doesn't reduce sub-maintainer coverage.
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Therefore add further reviewers, and at this stage - to reflect the reality
-on the ground - we will not have any sub-maintainers listed at all.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Each of the files listed are shared with other sections in MAINTAINERS, so
-this doesn't reduce sub-maintainer coverage.
+(I assume the newly added people will ack their additions)
 
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
-(Apologies sent first version of this without MLs attached :)
+> ---
+> (Apologies sent first version of this without MLs attached :)
+> 
+>  MAINTAINERS | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 76431aa5efbe..16874c32e288 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16757,8 +16757,12 @@ F:	mm/migrate_device.c
+> 
+>  MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+> -M:	Axel Rasmussen <axelrasmussen@google.com>
+> -M:	Yuanchu Xie <yuanchu@google.com>
+> +R:	Kairui Song <kasong@tencent.com>
+> +R:	Qi Zheng <qi.zheng@linux.dev>
+> +R:	Shakeel Butt <shakeel.butt@linux.dev>
+> +R:	Barry Song <baohua@kernel.org>
+> +R:	Axel Rasmussen <axelrasmussen@google.com>
+> +R:	Yuanchu Xie <yuanchu@google.com>
+>  R:	Wei Xu <weixugc@google.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> --
+> 2.53.0
+> 
 
- MAINTAINERS | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 76431aa5efbe..16874c32e288 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16757,8 +16757,12 @@ F:	mm/migrate_device.c
-
- MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
- M:	Andrew Morton <akpm@linux-foundation.org>
--M:	Axel Rasmussen <axelrasmussen@google.com>
--M:	Yuanchu Xie <yuanchu@google.com>
-+R:	Kairui Song <kasong@tencent.com>
-+R:	Qi Zheng <qi.zheng@linux.dev>
-+R:	Shakeel Butt <shakeel.butt@linux.dev>
-+R:	Barry Song <baohua@kernel.org>
-+R:	Axel Rasmussen <axelrasmussen@google.com>
-+R:	Yuanchu Xie <yuanchu@google.com>
- R:	Wei Xu <weixugc@google.com>
- L:	linux-mm@kvack.org
- S:	Maintained
---
-2.53.0
 
