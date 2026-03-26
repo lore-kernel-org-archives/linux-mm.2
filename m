@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42B4C106F315
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:57:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AD36106F315
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:57:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A755B6B0127; Thu, 26 Mar 2026 05:57:10 -0400 (EDT)
+	id D346E6B012B; Thu, 26 Mar 2026 05:57:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4CA76B0129; Thu, 26 Mar 2026 05:57:10 -0400 (EDT)
+	id D0BC66B012D; Thu, 26 Mar 2026 05:57:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93BD16B012A; Thu, 26 Mar 2026 05:57:10 -0400 (EDT)
+	id BD37C6B012F; Thu, 26 Mar 2026 05:57:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 832646B0127
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:57:10 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40B5C8CE4E
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:57:10 +0000 (UTC)
-X-FDA: 84587761020.09.9B92B41
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ACBF06B012B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:57:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80795BD026
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:57:17 +0000 (UTC)
+X-FDA: 84587761314.03.7D10376
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E69C340008
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:57:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zSP+paXw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vuXdFpKj;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zSP+paXw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vuXdFpKj;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2EF2D1C0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:57:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FVyp+ez+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nsTHCMg7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FVyp+ez+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nsTHCMg7;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774519028; a=rsa-sha256;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774519035; a=rsa-sha256;
 	cv=none;
-	b=QjGD5WYHO8nsX11BY70GrfS3BHkHEA0QazXIu4vTuiBbyY0TjNcDHLELpFXhpGDR1KpPVQ
-	ZQj+h1goi+Ll6NkWSndO4R1J7CkIlM8hJXQOCCg4PG9KwOdQqwDQKOllZj9Vx8iYevbWIC
-	kBcKskaz1X18sNCIUDoF3sheS4NZLgE=
+	b=TGMxQBNPRVovutWculnu2yvFuJFzYxnjvbn34aCh/L0jeOs6Iandx66z179sb79jVWJN/7
+	K1MGhk6ZsYRHjCHCY1bbvfTj7MatOsIuMMyRDb2b23i71IXcpY/DEAg9USm0ae+OKwos3e
+	JUMNj61BM1yLdv77uLrqjSk/yAxfSWs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zSP+paXw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vuXdFpKj;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zSP+paXw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vuXdFpKj;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FVyp+ez+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nsTHCMg7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FVyp+ez+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nsTHCMg7;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774519028;
+	s=arc-20220608; t=1774519035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/mWtwh20v8xZ3gLOb8YfzfttWRltZG2tHqVQmdVNSOw=;
-	b=re3ovs92+nyH8Y/XC11CO5NLE5dYDhL2zmR3qmU4o1w61fqXA1uHMLP10Zb7v4ZGKNaABV
-	Iy337CV9Ruzzqm4aAI+dIhnvT6Jn5Qqe0XyA2i520gKjlgqpTCFd/Uy6RuRUJd0uz6QHLa
-	EGbMFeoGpDh6MohcIX6CJcOCvu7jT6I=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	bh=AIODAvAbVGbN7KnQyYMdml5fqHvpJADDTZ0NvtyGN7Q=;
+	b=bUtYtU49tgM0ihf0i5gSeRsh1HHB5d0ZVuhxQk2Sg1cEylfSETO9gbmsJZcwahqQmSlNqd
+	11BXIY/Q17pen51vgpcHbIp8s3gxdc8UC5QLFf7YNECgfoKgwohYbpL/fd26/myxHXXtro
+	jH5gQmxKe8Hc4S5vyIFerwBEUtK710A=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B3F075BDCE;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B42865BDCF;
 	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/mWtwh20v8xZ3gLOb8YfzfttWRltZG2tHqVQmdVNSOw=;
-	b=zSP+paXwYwAcsf9TxzoyaEiWW1Krka5GS4Z/pbRIhNLXpbeZqt6wB5erabVO9KlHjE2DgM
-	aoZsqvK+PHSxCFujntgLK7GV0sEqiifE7EJQ12mYJlnFR5yZh0OWNVGrmhJ4+p0EBqa3vE
-	+nR69/Ggssr53TsWWnKqPl7dW3M84fc=
+	bh=AIODAvAbVGbN7KnQyYMdml5fqHvpJADDTZ0NvtyGN7Q=;
+	b=FVyp+ez+pMXnzdK8+F8utbKsqM5bcKxnRZkMYp55wzeBBTWuW7YpiqAgz6Zx4A7cqe8N7P
+	0uR1dGPHNKEr40u7REjNkC2j6+C4YUgCg0yvuDGj7mefYmIM0BME0USG4FZaD+EM7TND5T
+	DLBl+VWWKfSpFSjysEuAGdmo9zW1sQg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1774518901;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/mWtwh20v8xZ3gLOb8YfzfttWRltZG2tHqVQmdVNSOw=;
-	b=vuXdFpKjrt72htYVcph8w7j2TTI3PVvEDnmsh2992ubSFkc972D0efdLeJsGssTvBFDlFw
-	7XxCq+Jk4GRy79Dg==
+	bh=AIODAvAbVGbN7KnQyYMdml5fqHvpJADDTZ0NvtyGN7Q=;
+	b=nsTHCMg7rXVFSNZ2deRaR9Tm3u3K1LeEc43pVcZNaTSn3rfpRu5eYBzLvcyod+EC+57HtP
+	LyMsIYAlPh0m43BA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/mWtwh20v8xZ3gLOb8YfzfttWRltZG2tHqVQmdVNSOw=;
-	b=zSP+paXwYwAcsf9TxzoyaEiWW1Krka5GS4Z/pbRIhNLXpbeZqt6wB5erabVO9KlHjE2DgM
-	aoZsqvK+PHSxCFujntgLK7GV0sEqiifE7EJQ12mYJlnFR5yZh0OWNVGrmhJ4+p0EBqa3vE
-	+nR69/Ggssr53TsWWnKqPl7dW3M84fc=
+	bh=AIODAvAbVGbN7KnQyYMdml5fqHvpJADDTZ0NvtyGN7Q=;
+	b=FVyp+ez+pMXnzdK8+F8utbKsqM5bcKxnRZkMYp55wzeBBTWuW7YpiqAgz6Zx4A7cqe8N7P
+	0uR1dGPHNKEr40u7REjNkC2j6+C4YUgCg0yvuDGj7mefYmIM0BME0USG4FZaD+EM7TND5T
+	DLBl+VWWKfSpFSjysEuAGdmo9zW1sQg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1774518901;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/mWtwh20v8xZ3gLOb8YfzfttWRltZG2tHqVQmdVNSOw=;
-	b=vuXdFpKjrt72htYVcph8w7j2TTI3PVvEDnmsh2992ubSFkc972D0efdLeJsGssTvBFDlFw
-	7XxCq+Jk4GRy79Dg==
+	bh=AIODAvAbVGbN7KnQyYMdml5fqHvpJADDTZ0NvtyGN7Q=;
+	b=nsTHCMg7rXVFSNZ2deRaR9Tm3u3K1LeEc43pVcZNaTSn3rfpRu5eYBzLvcyod+EC+57HtP
+	LyMsIYAlPh0m43BA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A90484A0AC;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D6BC4A0AA;
 	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CwNCKXUCxWkHYQAAD6G6ig
+	id seVuJnUCxWkDYQAAD6G6ig
 	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 09:55:01 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id F3D92A0C82; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
+	id EA686A0C81; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -125,24 +125,25 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 42/42] fs: Drop i_private_list from address_space
-Date: Thu, 26 Mar 2026 10:54:36 +0100
-Message-ID: <20260326095354.16340-84-jack@suse.cz>
+Subject: [PATCH 41/42] fs: Drop mapping_metadata_bhs from address space
+Date: Thu, 26 Mar 2026 10:54:35 +0100
+Message-ID: <20260326095354.16340-83-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260326082428.31660-1-jack@suse.cz>
 References: <20260326082428.31660-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1755; i=jack@suse.cz; h=from:subject; bh=PNVVxb1C9U1PtR2RSzXX9wc57lK5fwMeMK3Vldbiae8=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJWOFtW5g5HcqcBN8D1+JdIPOkjg+6XGAmLb 2D2HdluOYSJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCVgAKCRCcnaoHP2RA 2QpuCACoMS7QR2pp4YSgollxC/sRjTSpyLNVupKMGWEUcYZSjBBpBAxJoy65jMMVsbVJzFkaj2J bDNsgYNvuZF4vnbNSU6s4znQVK0cUfz6aQs6Cfg7HvY/G1TPl0REgglH7nr5ImLCuR78pmLPml8 CNUihOX4S0fE6F2XHptn8AK/ECtT24BA7vdnjuQ7kF10dK/Lfi7C7LZ8B9gvISVSj5xeWLeFRZ7 ZNmbd5YPQzQoz2dPJkX8eWZqp0HuWVhVzUUoyrPnmH819Ftp/z5YEZ3rLMuYFo4MJQEFop9UJTc ZQnhhoGzEF2ibPNdJXDmBE9zgPKEhPRwZaHueLFPyXcKa+sP
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4216; i=jack@suse.cz; h=from:subject; bh=kczFWBDrNXD3v3KL6CDNGVgTbHR96KS6ROCKzE1gdWE=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJV5o6IhQrEyprnjrzgx9i6umdkI04WMsthz y6BQtWQz9SJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCVQAKCRCcnaoHP2RA 2V46CADd713L2KLLzIfEKJGU0LzA/74iOc36KYxJhqKKYXzlsKKTXpOfQNuiar3EQvQN92933lL 91llF3raE4SWXiQ0ztwuLxNJO3aJkozBQgIk+8I/NS5h+LeR+8uGDktdnc7JrOwMUvKaaJCi3Jy s6oTPbILGYX/5lFLSLFt3b3wKgYqfNFLrJioDL9aj5A0lS4QRdQLNhchN4OhsqjPsemR7V5ulB2 2LqBZXulu/PJhWwP2HD8HK9yAOnj+vrMcgUAWi4O7Yh3kgkVD+DSHRGgB2wnBlNPkIT004ngu50 H3cBfVW+JZzvZ5uYnBPBFyfjRjFI3HoBQSf1iJc6KHVt916g
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E69C340008
-X-Stat-Signature: ah4wxx3c13638d8eqi4de3q34d18pm4m
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 2EF2D1C0005
+X-Stat-Signature: 5oggjsh17iffiburs49tyas81ng3qm9f
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1774519027-703373
-X-HE-Meta: U2FsdGVkX1+eBghWBiJ/5MIue5EWzbohs1Au6xxw1ggpOl+Rz71p/gHcndg1DAJBSQP7wL0ssReDCD6josY/luKwWG4BKJzEouqS4rMO2XlNF0Tjfa/CmaJ1qHJ+npWWgNssXfRhqs57Mwz97dx46PHQLbuSiWQQ9xkPfhg5V3/d4pWFXZI7U3NDeLDdpE6bFT++h3u7wVtNb3TTleeQNyLmgD+0MEi/j09vWYq1rkMAkC1BHBjUe3oTtp3oZsWJvtNiDJvVOjW4pAKT0TlZuFAl+j3jB2ypXBIHpXc1xMAb77VNNuzX1iR33Sj1i4aykc9B8lOni05QB2fSNY+t1tu2rNCClAtjRuVFlNtUL39Im8mQXDL6yuixaETgCk+ON6GsQF5QTfB5eZrG00M3MCuJy+HGJ8esO4K4lR/k5Zsew9t8r+bIABdFL+ZAXU0/2hObRyJ5KW6j4CoNK3EW5AXKnghHRrjkkr3uIDbW76iLwQLnaC31uFUdAfg9YFs+zPgL+IFBT7o5crvOxQOZ0QFmBLnWoPO0VEaULX/iO50Oubcx3mWIwwQLl6WxQTaq+J866DAwbakGNRsYrd3XKmWAMc1Whi3j1LVrZhXK7t/hJWOTmZiWB++IbJvV4sfg9jKwrDAreggQ/r27ITOPhyypaf4wxZmOK1Ol/xD8bzmHV3QJPKGEBDaGizZ4jeXv9/KDqka9LCIuq61ojI+85/vPWjWC2R5Gm57VQFy9LM2eTgGqjDowi6TaqC2Tl+b68NHXVQnbwXD0FtbyaNbToXXYP/hOnbS3HmshjJ/a1S0Asy/RYRXyOlf4howgJg82wIeV944zDXUYIbG/dohJbadnriVGg+hoDTbQqtzawJKtA6YJ5SGymHIqnNRO3/l3CGze48LGYMUT2i5DeOLSCB1IvsOPxNUfTDhVG95bCsiqu9zQke49jpaxg4UYSchmEy+rmUY/RQPxA0OxSmi
- ZiVu+b8S
- HF/Ufdyb+b4PoJSga82v6AK1eMgmWAC4X2gl5qh+54CfRG7i6w5XaJZfmIKNz/UlN+0b0FymZEWWtmbUyXhrz9gXveNswRS28/cOag/K5xp6CkUhklrMQmLeb1wVHuPlX4COv/6xMNWHTLufri24x4pu5bYI6xpiXO+8Ss+NLj4KVDH/xA+1Vte9G+nLpmqN5+Emr39oA5Q1rF4Hm02YFMN74kEdfVrWSYwVYWzntwjS2HnmTKgDgRWFCd0zzo/b+fIXOt2wxHfC9TKEktU29yb36fQtGNovJru5JRt4ZIu2cljpIC/fJL1rPLwLn2M7SULS+fk6yUKgOtZn2GsZQClVMq50u8pQYJN4+370V+8KiChC0JoGdfhb1F5j9Cmau5dDEkp2a0VQrECY=
+X-HE-Tag: 1774519034-658532
+X-HE-Meta: U2FsdGVkX1/UtOc4dgDVEr+QEIaZETkekKECssci8hkly62kbCr5Q1aTAVsKudkCPqeQOvFyV4dHuRq4IyslfC0yq7CDMmxoImupoojF4CJppzQM9j/c/69venuGrhMMNM8DMBmqlwwiAwPcCiBPFG+eqMJzf72yptSWdD43MiBtB7ha1GTpHP1VrL9Z8qAFJJTBwtfOg5nqB7pqfNFC7T9j9py6/1b12QOjQF4K89+I9/bxqnT7TBbOExSVD2CzteNTC900DLFLcX6LZe3Gm3NXv0k25JBmOuF1Cl5KPUx2bZtjmL608+TzF7DF0ThwMYbt/oEpLme7GClaog5BehDn9Gejw6RVM9LvQkrdKLpaPWi8B9GGiR1ubYNC+grL8zGqi0nbs0FOzYmfwTSOHuJwg7FY3tFTmDUZNXyZwdNx6R5qPJsxQhGP+BzyvSVN3HJ2X6sopjIREgNe3j/vwKrcHF69jPMtT0DPW2FqwKhIn/8a6ow3Cr2ozLsFeGKStWqUHAIfQpVuMlmgWF1zjgZUlGaRLyvjEqUfkWu0kcDr2QvtktYs27g1jQoV8Pq84mtZVcWj9x78MEZQ98U2ki8euflhuN89DIPZPCw8KL476ULNgctk24GLQ5g6qSZh9Y3wkG8G5FPhtuz9ENurT5liEvP8U+zmFEHybNzglubFGoRwhzzeJeRTNNT5MjHNtsL+g5NslwRYg3gW0zj37CR7PeJD1p+yOIMCWquMSL/8pLDyK77BXKpfMQcUD9uPq6AX9ycbmradscQGqslfZIvDAYe1OzKNapaPUYcgiEsi1/UqhZmBwipFVI62EiPyPv6jvTXBbCaNshOxzDJ/NZgWrV7nu+9O3S/9Ldmm5lQZpM++04+s5DE9B8LVizPxdi6SXF3rLtq1ke36rAFbTWjqz4iwzZRgQwjAw0JzBxSAGWK0U5zgMIdz7lPg+aN2pTO2CxL03tSVxtLbL0h
+ nma5wEAU
+ gvV0VbhrvdqjyxMw8uuveo5mcN17tEAenq6tzxcyvBLbVx42+E1GIKVlXlmnAhLPT2WcRZylT9v1hxLMhEfA2peZ0h3qikf2uTrfjGs2cCfSlCbH0gZT7hD+8WN/Tyow/UuZyEMzjFKPeCPosAGok+ESqZvv3KgDoCB239jp9FHEpRjPDD7mxY7Gykk/sKoRHCNlCeH+DUFq551myKbCHUvqYhFwngRR3ebtyX/cNX0Pqe2mxqDfIO5BIpbEGpiCnKHWmVkZjUOFw9WdZjrAyDCylQO8Ix4m/KzBErBSBSapa76MiJEAYrtSog6iZUZVB0uFqsHRRbhjMBkscZtZNZQYSMkZ+EDtOCulXgVvdUBo+VqJ1OrCwNfkgzHxFhJSsioYSUmPRIBFw120=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,51 +151,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nobody is using i_private_list anymore. Remove it.
+Nobody uses mapping_metadata_bhs in struct address_space anymore. Just
+remove it and with it all helper functions using it.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/inode.c         | 2 --
- include/linux/fs.h | 2 --
- 2 files changed, 4 deletions(-)
+ fs/inode.c                  |  3 ---
+ include/linux/buffer_head.h | 28 ----------------------------
+ include/linux/fs.h          |  1 -
+ 3 files changed, 32 deletions(-)
 
 diff --git a/fs/inode.c b/fs/inode.c
-index d5774e627a9c..a8f019078fab 100644
+index 3874b933abdb..d5774e627a9c 100644
 --- a/fs/inode.c
 +++ b/fs/inode.c
-@@ -481,7 +481,6 @@ static void __address_space_init_once(struct address_space *mapping)
- {
- 	xa_init_flags(&mapping->i_pages, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ACCOUNT);
+@@ -276,7 +276,6 @@ int inode_init_always_gfp(struct super_block *sb, struct inode *inode, gfp_t gfp
+ 
+ 	mapping->a_ops = &empty_aops;
+ 	mapping->host = inode;
+-	mapping->i_metadata_bhs.mapping = mapping;
+ 	mapping->flags = 0;
+ 	mapping->wb_err = 0;
+ 	atomic_set(&mapping->i_mmap_writable, 0);
+@@ -484,8 +483,6 @@ static void __address_space_init_once(struct address_space *mapping)
  	init_rwsem(&mapping->i_mmap_rwsem);
--	INIT_LIST_HEAD(&mapping->i_private_list);
+ 	INIT_LIST_HEAD(&mapping->i_private_list);
  	spin_lock_init(&mapping->i_private_lock);
+-	spin_lock_init(&mapping->i_metadata_bhs.lock);
+-	INIT_LIST_HEAD(&mapping->i_metadata_bhs.list);
  	mapping->i_mmap = RB_ROOT_CACHED;
  }
-@@ -795,7 +794,6 @@ void clear_inode(struct inode *inode)
- 	 * nor even WARN_ON(!mapping_empty).
- 	 */
- 	xa_unlock_irq(&inode->i_data.i_pages);
--	BUG_ON(!list_empty(&inode->i_data.i_private_list));
- 	BUG_ON(!(inode_state_read_once(inode) & I_FREEING));
- 	BUG_ON(inode_state_read_once(inode) & I_CLEAR);
- 	BUG_ON(!list_empty(&inode->i_wb_list));
+ 
+diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
+index e207dcca7a25..e4939e33b4b5 100644
+--- a/include/linux/buffer_head.h
++++ b/include/linux/buffer_head.h
+@@ -207,28 +207,10 @@ void end_buffer_write_sync(struct buffer_head *bh, int uptodate);
+ 
+ /* Things to do with metadata buffers list */
+ void mmb_mark_buffer_dirty(struct buffer_head *bh, struct mapping_metadata_bhs *mmb);
+-static inline void mark_buffer_dirty_inode(struct buffer_head *bh,
+-					   struct inode *inode)
+-{
+-	mmb_mark_buffer_dirty(bh, &inode->i_data.i_metadata_bhs);
+-}
+ int mmb_fsync_noflush(struct file *file, struct mapping_metadata_bhs *mmb,
+ 		      loff_t start, loff_t end, bool datasync);
+-static inline int generic_buffers_fsync_noflush(struct file *file,
+-						loff_t start, loff_t end,
+-						bool datasync)
+-{
+-	return mmb_fsync_noflush(file, &file->f_mapping->i_metadata_bhs,
+-				 start, end, datasync);
+-}
+ int mmb_fsync(struct file *file, struct mapping_metadata_bhs *mmb,
+ 	      loff_t start, loff_t end, bool datasync);
+-static inline int generic_buffers_fsync(struct file *file,
+-					loff_t start, loff_t end, bool datasync)
+-{
+-	return mmb_fsync(file, &file->f_mapping->i_metadata_bhs,
+-			 start, end, datasync);
+-}
+ void clean_bdev_aliases(struct block_device *bdev, sector_t block,
+ 			sector_t len);
+ static inline void clean_bdev_bh_alias(struct buffer_head *bh)
+@@ -537,14 +519,6 @@ void mmb_init(struct mapping_metadata_bhs *mmb, struct address_space *mapping);
+ bool mmb_has_buffers(struct mapping_metadata_bhs *mmb);
+ void mmb_invalidate(struct mapping_metadata_bhs *mmb);
+ int mmb_sync(struct mapping_metadata_bhs *mmb);
+-static inline void invalidate_inode_buffers(struct inode *inode)
+-{
+-	mmb_invalidate(&inode->i_data.i_metadata_bhs);
+-}
+-static inline int sync_mapping_buffers(struct address_space *mapping)
+-{
+-	return mmb_sync(&mapping->i_metadata_bhs);
+-}
+ void invalidate_bh_lrus(void);
+ void invalidate_bh_lrus_cpu(void);
+ bool has_bh_in_lru(int cpu, void *dummy);
+@@ -555,8 +529,6 @@ extern int buffer_heads_over_limit;
+ static inline void buffer_init(void) {}
+ static inline bool try_to_free_buffers(struct folio *folio) { return true; }
+ static inline int mmb_sync(struct mapping_metadata_bhs *mmb) { return 0; }
+-static inline void invalidate_inode_buffers(struct inode *inode) {}
+-static inline int sync_mapping_buffers(struct address_space *mapping) { return 0; }
+ static inline void invalidate_bh_lrus(void) {}
+ static inline void invalidate_bh_lrus_cpu(void) {}
+ static inline bool has_bh_in_lru(int cpu, void *dummy) { return false; }
 diff --git a/include/linux/fs.h b/include/linux/fs.h
-index ccfa696253c8..a3bed26d066d 100644
+index fa2a812bd718..ccfa696253c8 100644
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -471,7 +471,6 @@ struct mapping_metadata_bhs {
-  * @flags: Error bits and flags (AS_*).
-  * @wb_err: The most recent error which has occurred.
-  * @i_private_lock: For use by the owner of the address_space.
-- * @i_private_list: For use by the owner of the address_space.
-  */
- struct address_space {
- 	struct inode		*host;
-@@ -490,7 +489,6 @@ struct address_space {
- 	unsigned long		flags;
+@@ -491,7 +491,6 @@ struct address_space {
  	errseq_t		wb_err;
  	spinlock_t		i_private_lock;
--	struct list_head	i_private_list;
+ 	struct list_head	i_private_list;
+-	struct mapping_metadata_bhs i_metadata_bhs;
  	struct rw_semaphore	i_mmap_rwsem;
  } __attribute__((aligned(sizeof(long)))) __randomize_layout;
  	/*
