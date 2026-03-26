@@ -4,98 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C40A210A88F5
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 17:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4CDD10A88F6
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 17:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1F976B0088; Thu, 26 Mar 2026 13:47:30 -0400 (EDT)
+	id EC6E26B0088; Thu, 26 Mar 2026 13:54:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1086B008A; Thu, 26 Mar 2026 13:47:30 -0400 (EDT)
+	id E77A56B0089; Thu, 26 Mar 2026 13:54:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0DC06B008C; Thu, 26 Mar 2026 13:47:30 -0400 (EDT)
+	id D66AB6B008A; Thu, 26 Mar 2026 13:54:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C127F6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:47:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8135A1A053B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:47:30 +0000 (UTC)
-X-FDA: 84588946260.26.D79D8E3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B62AEA0002
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:47:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WVhjgK8G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774547248; a=rsa-sha256;
-	cv=none;
-	b=mF5yF1ctH9BzG0UE0N487XGrwmVV6YU5Om1TbxRlczsatVYIj9lPdSW8PBAZYQc0gqFyh+
-	vz+a/eUO4upVKy034VWA9vocKv3T70jQ/WL77wp5qC+lxCegHq4pfNK/C0yn4pNymC8Bf8
-	Kh5Sp8ToGN8tkPKEmHElMKDEQ+pYT5o=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WVhjgK8G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774547248;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C5F3B6B0088
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:54:12 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8C1DEC207A
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:54:12 +0000 (UTC)
+X-FDA: 84588963144.05.7B15B1C
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7475C100011
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:54:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=tAuSQioc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf14.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774547650; a=rsa-sha256;
+	cv=pass;
+	b=b3X+RFAWCCadIbfJGGCNgkO2QjZatRiapAp9X4HD7mAzIDJkbWM/lEwCCVYtOEW94S0MMn
+	Q5Ei9JK9zx4YyS3dYlKabboT4mdpQPEroEfvyTEzSdFJtSJ9FjC32JVmV+X0Ny828ol7xi
+	M3SQvWU0Ms1+A2yKVoCj2VD1oMScgUE=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=tAuSQioc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf14.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774547650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ClNZmmt7/DuufbAG22btXQTihR3/iUKnZFS4OWdyu/M=;
-	b=4CP4MtjW6pdSKWpKrzd07Enykjy6gsrhJTq4kVve+zO3fohXV/2HOAditJHJ3TUwX7oXNN
-	48o0uo8k5e3NtlkWsm3Ow/LQgj8XrLagkvGqaaa/sZNjbnYatnsIMFKGRPEARr+CaLjKWo
-	vQfQIPLKxsd6FHz6HYUYVO4zXQynIJk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 381FD60054;
-	Thu, 26 Mar 2026 17:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB15C2BCB0;
-	Thu, 26 Mar 2026 17:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774547247;
-	bh=gjlcKSW1jg7hpudpA3j7TSDpTKC3ZH1jovemX67eUk8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WVhjgK8G+avnzkT9J4VCT5Ajwxv6Nw9lmhdBxKPu+G2YJKdOL14UdGqe50F4snrsC
-	 NVH+vSXSNf1HHbcFR/+f2x9y41eI3bC6CK5CO2EGCT6m+5FeNcEK93Duev8ok+9hLh
-	 rltr8Yn1nZgTgXAnHwz02Uom0SDFAYzzp8BUPSDFQcn/9p92NixbjGM6ByVbKiqJl9
-	 l7MArtg/eUk3khx3v5Lz27EaZh5r5yPNSHtay3vvbl5y+Z0qPwyHIEiRtKXYW17sAU
-	 6blLKMq7likwowCKZf94wRZoENiVNmvcVTbnzCe0GL/P4Ss4qa8lEN5FnbCpC1whtw
-	 1O9wc36/6bl2g==
-Date: Thu, 26 Mar 2026 17:47:25 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-s390@vger.kernel.org
-Subject: Re: [PATCH v5 5/6] mm: use vma_start_write_killable() in
- process_vma_walk_lock()
-Message-ID: <7d558eaa-99d5-4421-9dac-ba17441691f9@lucifer.local>
-References: <20260326080836.695207-1-surenb@google.com>
- <20260326080836.695207-6-surenb@google.com>
+	bh=2b1UX5269EiDhfq1pawQFex+1Y1S6Ex1txW/zzYwTBo=;
+	b=nAsAmRLr+He327rAJ7UfkMMFiiKnZGa2w+EYZSpgMpuVMWQKIh8sxdEeKd/sI8mn5p5tzp
+	qlRPBoNNzShalL/sOIpQ7rSJtN1hrBKog08m0PaS579cNdT3C3oKlJ1Vfwf/Ej+nHrUc1S
+	EtMgzJB7/ZYKEzMYmnV05xQXltmWmIQ=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-486ff3a0fc1so12689855e9.2
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 10:54:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774547649; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LSRDYYxRZpAMd/7KYgFcNAA+HwVrfWXvGtxElcyOXr24wfflTnfzauHyZB4y+K9H3W
+         pLzavDJei577gm0Z5LqZdnB7pqzUWtOA1Carp/HVieq0UdXR7t29GZqn1pNnfxVEc0fK
+         0RzjcKTIt2R+XGHa/kYvdTzEVK/n0WUzTXbpTDjqipNxT2ULOiMk9UkRWKPK917JwaB+
+         QTpm+zf1EkHdPKe+l5kjrn/GdzBZJnsFqwHHVrzjqwh+2wJyj5SgCKt0dCOqwcYOwJYH
+         mEbLWIfeNPmX50voI/3eTo5LY64vTsZnFOBPtUb8PgJzghKPKDWjArbzpPqNWPDbKLnU
+         mOMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2b1UX5269EiDhfq1pawQFex+1Y1S6Ex1txW/zzYwTBo=;
+        fh=DVNBMlRgYO1UeTMkIAJu+4bU9fN/8DGNfZbSl6ocPEw=;
+        b=jV7fJ5n6w0aY5RtO17Db1hOIHv/kyfsa82+MKNh8LG7wYmbJm0qDAuy0Ec21OJvLNm
+         XaaUdtjhvWWmQ4YKmuFr+jWZIHbxbzdiS5x4r9wCdkciHx1LcN8YUsER6+r0S4I8IWN7
+         j4Rf/rcY3O3+DfnxzbPKTwZpu0Wk7Wjy2a8S7KlFx3NH49n+PBKH9N9ArPEM1tAQtJiy
+         f2niiYkbVusj+NFiSqSUAQSqB0f7f9CjsZNbpXN2x4WK+z3hhfB2vTiamiL+yxstzXLL
+         wFiOHeMv8Wai2cyoYZkrlWBxG07eY7nGvvgVm8K+b3ay+uJ8w+0ygbNDUJ5tN5lRHa/G
+         QWCQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774547649; x=1775152449; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2b1UX5269EiDhfq1pawQFex+1Y1S6Ex1txW/zzYwTBo=;
+        b=tAuSQiocKfkApNy4RLuDfPg3YT79Op2RyVsknv7rsBok4N7CGMfWuIW7rswmVvh3Wn
+         IsiORgbEU4WC9rw26EFno5vYzUM+XY1bhl2PCVKYeXE1i3fOLTQxVtvNSVcNjfD8smVy
+         HBvn/06pyUUQcXiTUX96+p8ipTxDUNpOool91xEhDmYtEUZpd0H7L1bzkYph2ko+NJes
+         TH55BdB0GvyRb8RKuqEUgnYgFEQbTcQrWmtH+zzFkTiISARhMifQ2syFtEtYrdpJzFlJ
+         hLw7q9XO8GRRJTElrEKEo3MRnke9ajxtoeeWpNVcA85O3lVaGeETlXMn0iRtrfXy6SQG
+         vfDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774547649; x=1775152449;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2b1UX5269EiDhfq1pawQFex+1Y1S6Ex1txW/zzYwTBo=;
+        b=iiLC4R30xAyhhvfrlG8X8xKisrBywXnK857th8JoV77woeiFJvgfDmB/8/nhkE+tjP
+         wgxoKeYUK4Q22qF77rgtv+KdiYG+jHbY/ceHL+WTromYxWq8KB8ckzf1Lv2b086B3ojK
+         S+vyeo/3CchT4Za3+Yf9jbeI/h+/JJ3h//OWKIkJ6wlbdskpD5Yz+Qd7Fwy/ecigsnKq
+         25wFu935zj9Pk6SBZlyNHV3OlyPpiNMMuxOy5kosObEpvh/bcfkmTEOkKZ18Y6N7scI9
+         jcTUcXIDCWXY5QpBuPle6y8eBhPCGCakTG9gWQo4ng+lSdFesMT4ycwEtVJq8qYSsSjV
+         j2UA==
+X-Forwarded-Encrypted: i=1; AJvYcCUFkk+Brv7IB5EVTPui8Ub3hcLnBiPnuqxBr6uhXo7aE/JWN1lVvRqGOmmTIOVpZeuSCXeJmnyLfw==@kvack.org
+X-Gm-Message-State: AOJu0Yzszl26+3+8Qm4Sv+IGt2SN9JpHdcW5t6gnw82aXz9R2iWG3xY8
+	5JPNH0dI0BOTwvnmAq7WBN1xCfXb2jQFodQCw+pqYAmJGrSzsLhNGfqMJH5hxnnLujs1VzP4VDj
+	i3HWmdtVEJzep8Hd2MMTXPfbypqVlPobnrsdvRWc=
+X-Gm-Gg: ATEYQzwpbcT/+4zuDJ+mx+ld8QxBqXXjlfEuRMxA+OrH35pfxyPNKbcGaqxOYTXJR42
+	3NmgvmrXtfWvN6dy/G2WJhlu0WNI1zkBgLxOxR/65fMn7XZis9W13RHgfQORjkgA6g5Vc4LOox0
+	77AoJuVMhju6+Mp18WJi8iNxb1HLpTqkvzv/JEI+eQgUjBpN9u4J4Nnf5dcoftc+Wy76qL7skC9
+	HfmQsdSbd+KPCXMPIFQDwDHUdDu6iw74VrV8NC7Kn2n0NzICUdmy3dkL+5/WbWtXfyKem6iVhOq
+	aWC7AyA5haovG9r6
+X-Received: by 2002:a05:600c:528e:b0:485:3fc8:de9c with SMTP id
+ 5b1f17b1804b1-48715fd4dd8mr131671765e9.12.1774547648461; Thu, 26 Mar 2026
+ 10:54:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260326080836.695207-6-surenb@google.com>
-X-Stat-Signature: ud1t5m7jg4icry3n45i6c61rs8ff9o3m
-X-Rspamd-Queue-Id: B62AEA0002
+References: <20260326001337.828947-1-joannelkoong@gmail.com> <acTJLJdrd_T-cOAu@infradead.org>
+In-Reply-To: <acTJLJdrd_T-cOAu@infradead.org>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 26 Mar 2026 10:53:57 -0700
+X-Gm-Features: AQROBzBk1MK2sKpbF7oHxmG14dUDSRU0L6vuO6VBQC9M1qo-02BtGUnmY2CGWLQ
+Message-ID: <CAJnrk1ZTHphV9e=chJD5iHTMDm7F1qqHebn6+Li2cYaggyP6AA@mail.gmail.com>
+Subject: Re: [PATCH v1] mm: fix writeback regression for strictlimit BDIs
+To: Christoph Hellwig <hch@infradead.org>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, jack@suse.cz, 
+	willy@infradead.org, miklos@szeredi.hu, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: azhwwyycm7u588d1jg1ku3cqynxqxfja
+X-Rspamd-Queue-Id: 7475C100011
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1774547248-540903
-X-HE-Meta: U2FsdGVkX18qxHdXAitO4pROicM5KymOYNgIPMnm2nUH8+CMhriByLorPOW6pNyosvH2RN1ZkY4D/ZYthiVT1w4t1sHM36wUTHKONc87JTYfwZqJFtfpnPModPuuPeuNyeXVDi8Cj9iCRHTVV9JYDBU6xpbTtj2hTJt1dapnVbE1yVxAFkxNzbcqp0qHaSHVzapF+eCzx/W74RLvlIbcGCRlvZPb3g1Gi1zcbaNlf3ecGMICXcVbrUpMiTZedSNQU4ONykwziDUGYxyZWxWjYBlFKWHDtkjhH4vMjpkBG6SY2UhL13M+mcDFv8qUqYIMpOLxzVylOXe43GKOt8zL9iNPGlamE17h9epMvfOWw9B1LSeVwR3YRM4GdiA0zXkgbUScHQz1CFp9/1wNCT3MxeawK6ceVQAkhhj7ojyKeFsMAx8KSsd4YCCBnnNULMNbDPcigUfAd8o/Ypociv9nP/T/Mu+qc1idTwHAhEzUcyo9Q1h7s3EbZoY7/onMLsazSQQ+5BmefNjple2sL1f/iugZJhavmIhPxl6mb4BmmjCxRUlAu+sQ4exhCq0/kIZ32lJhsnn+dEe/XtqvzYP5hRRxL7OsYo5ZHVuZ4B+1lgOH0dAQCFkTTtMSk6+RHwaFb8cpu2P1TIRGptSB27HfSeo7Lhr5qpunVpyKTAQ8UbqxVzr2D466eM7cmC/9S4Vodr5dLXBuqF7YS1Hmx6xmdTOUamFyl8CHM+f48LtGIKhuLTpkRTK9grKj0nFUR18oMr05zLAqjVuUQCN4sx8gr0TOJwoE/e5SDvNgc4Jt3miVuIVLiFz2gpCQv5urcLz0VSBqVzD1tBTol/6e6VIn9yoazBm05wkOufKjxQL1xHYkpd7vWCKZL8TZvUzeA88xP4nnz6LJ0cSYuPi++asVrvntye5JrZpD5dIRaWErtMWP2LkuMywvQCA64nH4xxak/BklmjzStt4DLlCLU/8
- uWWrqOXC
- ZNrj1fCdqHCkuQ7LKzrea7fAE1WtEzoVY6f9p4WObc6R4zyg60iJTnwCZN178vl1MN/uuwGpgvxeVjqg4Tk5p4aPtBcW9soLR0MNNs9NMZdKaDGr/pgqSaXZa2X9t+wN/Klh00Kyu9QJblT9yd2QoMrM5hNqDuMWXEcAJgQ/mZMTXBnlFavTsI9a2Tzc2CPa+Tv94sO/NOo1uq6D1NRB9i7b4mwcY+nwhJDi3m+aG8CA6mGHSSBg/FUolyqYIJASy/7ZVjBEf4zsC8J7eV8c3wnF2yhLdrA9ylS0QrMWNmSoc8gsv6++/t4AACCQScQHvjCsMoXErOBHf7KlRnKyzU562fTEBa/4qftxPS9nhxDX44f9u0BfIY6fiSTh4F8n6iVSr88h4zHcLnriDsQdhETdxPpUG0ZmIovNBU+Vvb8MQ4Vge2kEAjhDbMw==
+X-HE-Tag: 1774547650-982928
+X-HE-Meta: U2FsdGVkX1/bDYY7yxQQ8cccIoD83OL1qr3INEcMaGzR0ppAWs5oGKD6C8aGoXpsAqSeefY2DiNxyEvtRHdIWbW8Ruu4PfRZ7KAR2mOlC2C2N+nOagMUzLxlH20kA84AHR2DVg+u2G0gVWxF0yNUJ0ZHy2P2T8yFs0kRlVJM6ET17TBLD4VqibunGEkjla7MTep3YLNcld4uf4TddB+adB+GbmK0ZYpp5asAzAqIbkTzO/LLwlCwsuWIOcZHisUC6XwB+4BGLDYhqFGNnemf6SfOLuezVv7iUVQC42zO1HWFk2itHigM3lETuxV2yh8hJgaSr7CqGh1YGEzSIQdceGNOW/4Q3FCYWV2+zG9YTAWjsdtuIvaiNik4okD24Mw10QYk4r15HQ/Kr1G/m/j4VfWdvPkGYTGFQ4XqFuBKmWJ+8235fXvR9mlBz+EyJKvZ3h3UAXW6B4u4qdg8Ok5hj1kS7MIQZF6PWD2bAAMzJHkK4GNjdSirFzAoJtVNX0PzWHgA++TClwwxx9/otkgncwS7T9tqQvOSd9vV+KP9Vx5lXmouqsjnXUarJCW3d4WStU9DV5VGRwsQz4c0taehH9Kt9F49CsmU7d6W0zb2lYP0flEui9oUC6tdd/ZeNLnI95JuPOx/psWwkgdmN93Fu2Zcjzn5YczyVzvMGFJh3v70c1gbCNHM49+CH5yOS6c2h9Y0Xg96n7b+OsFme7eCidl/ExbXIZdzTxI6ru2V7XDb/N6DKsuYZHn7CnfILziN8XJGxUyKHHXGBBHoQoJQ7QWYVIl2av/Pk0dvzFRXitbBYXkNSYsRXMEwinidoUGOuF66UxZ2BTgqU8/yqEMENUkoWCdtHskoGqOr+i9UhSCYYmCdaImy0ppkKCmAkv7a+7mZRsDewzxFbp2e7OzQH9/fvRWjkKs1diMpRSbZng0v/zz1aPFsF6vkDOEZMW2rUl+gAXqJWIvkiwPzKny
+ jBZaruJR
+ G15tVWPyUZojj+WsMhEfQPZVdJhiBMJoIIkEXIq1COH+eeO8zMMX8bHn5JZyANHjYbQl+HsXL+WmM7er1ecxK3kBWiF/P1ahEBdErz1GMgnCXD261KTbSJxx6+A44iWrViwd4yl2e1JSwvAcJnrPIcrqx47KRg2tlHsPe/+D4x0pMWmu3CvomWOJRu7NFTqfS3mqx9UHslNN0EehqzEV2roXTWzhB9G/m8MmJpLHLUBY6F8Cd7d26eKLTw5nhf1QxCs3u0OYBt4iFZteDMTPw093OAQZ/ov2pfzOZSRfqulqyyjbp8XhUIRV/PAIntgYkx3HOcYvKl+l8IpwB9HVaUZgo18zrdnbXhVtzoIsNCYej/x+w+Tkeu6jYwHJLfi2+3uzIcj05SvXYnMIFgpQeYXHSX4FpGAu9bNwEM8See7rKVMW2Vd6EwjnmOubSxgDxrne3A0RhgL/uwXg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,160 +139,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 01:08:35AM -0700, Suren Baghdasaryan wrote:
-> Replace vma_start_write() with vma_start_write_killable() when
-> process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-> Adjust its direct and indirect users to check for a possible error
-> and handle it. Ensure users handle EINTR correctly and do not ignore
-> it.
+On Wed, Mar 25, 2026 at 10:50=E2=80=AFPM Christoph Hellwig <hch@infradead.o=
+rg> wrote:
 >
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> On Wed, Mar 25, 2026 at 05:13:37PM -0700, Joanne Koong wrote:
+> > Commit 64dd89ae01f2 ("mm/block/fs: remove laptop_mode") removed this
+> > unconditional writeback kick from balance_dirty_pages():
+> >
+> >        if (unlikely(!writeback_in_progress(wb)))
+> >              wb_start_background_writeback(wb);
+>
+> Yes, that looks like a bug.
+>
+> > This fixes the issue by kicking off the flusher if wb_dirty exceeds
+> > wb_bg_thresh for strictlimit BDIs. This restores performance back to it=
+s
+> > original baseline.
+>
+> What speaks against just reinstating the old-code as-is minus the
+> misleading latop_mode comment?
+>
 
-LGTM, so:
+I thought those two lines were unnecessary for nonstrictlimited bdis
+but after reading Jan's feedback, you're right this should just
+reinstate the old code as is.
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
->  fs/proc/task_mmu.c | 12 ++++++------
->  mm/mempolicy.c     |  1 +
->  mm/pagewalk.c      | 22 +++++++++++++++-------
->  3 files changed, 22 insertions(+), 13 deletions(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index e091931d7ca1..33e5094a7842 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -1774,15 +1774,15 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
->  	struct vm_area_struct *vma;
->  	enum clear_refs_types type;
->  	int itype;
-> -	int rv;
-> +	int err;
->
->  	if (count > sizeof(buffer) - 1)
->  		count = sizeof(buffer) - 1;
->  	if (copy_from_user(buffer, buf, count))
->  		return -EFAULT;
-> -	rv = kstrtoint(strstrip(buffer), 10, &itype);
-> -	if (rv < 0)
-> -		return rv;
-> +	err = kstrtoint(strstrip(buffer), 10, &itype);
-> +	if (err)
-> +		return err;
->  	type = (enum clear_refs_types)itype;
->  	if (type < CLEAR_REFS_ALL || type >= CLEAR_REFS_LAST)
->  		return -EINVAL;
-> @@ -1824,7 +1824,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
->  						0, mm, 0, -1UL);
->  			mmu_notifier_invalidate_range_start(&range);
->  		}
-> -		walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-> +		err = walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
->  		if (type == CLEAR_REFS_SOFT_DIRTY) {
->  			mmu_notifier_invalidate_range_end(&range);
->  			flush_tlb_mm(mm);
-> @@ -1837,7 +1837,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
->  	}
->  	put_task_struct(task);
->
-> -	return count;
-> +	return err ? : count;
->  }
->
->  const struct file_operations proc_clear_refs_operations = {
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index c38a90487531..336753a4b2b2 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -969,6 +969,7 @@ static const struct mm_walk_ops queue_pages_lock_vma_walk_ops = {
->   *      (a hugetlbfs page or a transparent huge page being counted as 1).
->   * -EIO - a misplaced page found, when MPOL_MF_STRICT specified without MOVEs.
->   * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK unspecified.
-> + * -EINTR - walk got terminated due to pending fatal signal.
->   */
->  static long
->  queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index 3ae2586ff45b..eca7bc711617 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -443,14 +443,13 @@ static inline void process_mm_walk_lock(struct mm_struct *mm,
->  		mmap_assert_write_locked(mm);
->  }
->
-> -static inline void process_vma_walk_lock(struct vm_area_struct *vma,
-> -					 enum page_walk_lock walk_lock)
-> +static int process_vma_walk_lock(struct vm_area_struct *vma,
-> +				 enum page_walk_lock walk_lock)
->  {
->  #ifdef CONFIG_PER_VMA_LOCK
->  	switch (walk_lock) {
->  	case PGWALK_WRLOCK:
-> -		vma_start_write(vma);
-> -		break;
-> +		return vma_start_write_killable(vma);
->  	case PGWALK_WRLOCK_VERIFY:
->  		vma_assert_write_locked(vma);
->  		break;
-> @@ -462,6 +461,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
->  		break;
->  	}
->  #endif
-> +	return 0;
->  }
->
->  /*
-> @@ -505,7 +505,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
->  			if (ops->pte_hole)
->  				err = ops->pte_hole(start, next, -1, &walk);
->  		} else { /* inside vma */
-> -			process_vma_walk_lock(vma, ops->walk_lock);
-> +			err = process_vma_walk_lock(vma, ops->walk_lock);
-> +			if (err)
-> +				break;
->  			walk.vma = vma;
->  			next = min(end, vma->vm_end);
->  			vma = find_vma(mm, vma->vm_end);
-> @@ -722,6 +724,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
->  		.vma		= vma,
->  		.private	= private,
->  	};
-> +	int err;
->
->  	if (start >= end || !walk.mm)
->  		return -EINVAL;
-> @@ -729,7 +732,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
->  		return -EINVAL;
->
->  	process_mm_walk_lock(walk.mm, ops->walk_lock);
-> -	process_vma_walk_lock(vma, ops->walk_lock);
-> +	err = process_vma_walk_lock(vma, ops->walk_lock);
-> +	if (err)
-> +		return err;
->  	return __walk_page_range(start, end, &walk);
->  }
->
-> @@ -752,6 +757,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
->  		.vma		= vma,
->  		.private	= private,
->  	};
-> +	int err;
->
->  	if (!walk.mm)
->  		return -EINVAL;
-> @@ -759,7 +765,9 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
->  		return -EINVAL;
->
->  	process_mm_walk_lock(walk.mm, ops->walk_lock);
-> -	process_vma_walk_lock(vma, ops->walk_lock);
-> +	err = process_vma_walk_lock(vma, ops->walk_lock);
-> +	if (err)
-> +		return err;
->  	return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
->  }
->
-> --
-> 2.53.0.1018.g2bb0e51243-goog
->
+Thanks,
+Joanne
 
