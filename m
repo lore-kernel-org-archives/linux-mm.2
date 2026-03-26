@@ -4,108 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 870D310A3D9A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 15:10:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F27110A88C2
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 15:14:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A75616B0093; Thu, 26 Mar 2026 11:10:26 -0400 (EDT)
+	id 831466B009D; Thu, 26 Mar 2026 11:14:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4C7C6B0095; Thu, 26 Mar 2026 11:10:26 -0400 (EDT)
+	id 7E1B16B009E; Thu, 26 Mar 2026 11:14:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98C4C6B0096; Thu, 26 Mar 2026 11:10:26 -0400 (EDT)
+	id 6F8446B009F; Thu, 26 Mar 2026 11:14:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 810106B0093
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:10:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3992F1A0E3D
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:10:26 +0000 (UTC)
-X-FDA: 84588550452.07.7BC25B4
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 43A4180010
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:10:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=dLLqDI1p;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf30.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774537824;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 615D16B009D
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:14:29 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EED031B94DD
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:14:28 +0000 (UTC)
+X-FDA: 84588560616.20.9321D88
+Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EF49F4000B
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:14:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b="S/BH4/xl";
+	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774538067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vg6orVDTPecMi8OeXzXS8oUaQlC99nRHDPvEe4x4LeU=;
-	b=C8GEV1hD3qAjLN+d+zxlvR8gjtB0vnRrILL1mfHKT+zb86Bx/NlXLt5H76rsLV1f4e9FUK
-	fbdsrO+iD0CWHj83z4kbOt7Qj/xV15CpLT/9/hyt3c98DPJHpGZIHGxtqRSQdlCfykhfqN
-	Cui6wuZRx5jLYbSjuws6USp4RC31xyw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774537824; a=rsa-sha256;
-	cv=none;
-	b=VW/GQsXyhEuQk8MK6xrscOo96CDOBBVc1egiFMhd9zMRY6rhiXpxKCh7CD5JEMPDv/ADBo
-	mF1SDLnpHMpcLFvINJDNMzP21Uv5U3UhamaB+mZKvYL/T36CMNgxFsGga70rHew8fAaZ3c
-	kckHL7OtMRYt3Ij67T9eCJJiTzclEBc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=dLLqDI1p;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf30.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 9D059BDE1E;
-	Thu, 26 Mar 2026 15:10:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1774537822;
-	bh=vg6orVDTPecMi8OeXzXS8oUaQlC99nRHDPvEe4x4LeU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dLLqDI1p21R53wCA8eob+BVI6XwqXJpZuprXjmvBjW/iBsJ7cf+ADApcxOKpwSyya
-	 A+lKSNgUYnHa1L7n0SzHyd2w1GjjlxWJLI8NECaewbUXU7VVQTj7a3s0E5eKkMk38Z
-	 dNvaBjriNbIT5ix6kJ00hgEddssmRBYJMPY+afno=
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v4 5/5] locking: Add contended_release tracepoint to spinning locks
-Date: Thu, 26 Mar 2026 15:10:04 +0000
-Message-ID: <81eb8e0cd90b31e761e12721dbacb967281f840f.1774536681.git.d@ilvokhin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1774536681.git.d@ilvokhin.com>
-References: <cover.1774536681.git.d@ilvokhin.com>
+	bh=i1zaRwQyLd+YNeZI98XQVtT7JyYsfiymY9H7SUMd4Ik=;
+	b=pURqfb/++Fsv+8dRWjTBzsQ0QrEeGMPk2g1wNQoEqhYe+44FZn/O9ot4HEsspgksRn3xhk
+	kOICMLT2h3BAmKEsFHGTXqVQp0VEafACl864G9zKVvSFO3wEcoIICvXmvAiDdUUi/rNe5U
+	a2M+7HJJRhtmrpx227tRuNiE57CMkVw=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b="S/BH4/xl";
+	spf=pass (imf07.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774538067; a=rsa-sha256;
+	cv=pass;
+	b=cAl2PIdX3OTHNclMg+uQzyQXWpjLTsq/r9GpXkJW3fyY2nrYq+nptpYMmc+UUt645O5CGo
+	TgX4c4nLVuQwrqnx5OZPMlAsbrvqL0IfD4q9bcFMdRpaO8g3gSEEZJzeu1qanVEzmF6ycw
+	f15WuTFyfvDa31VXiQfIGdgSq8GbOtU=
+ARC-Seal: i=1; a=rsa-sha256; t=1774538046; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=Y9XZZ4kKSmeSqiPZjpIenVmidlXU1e7erE+3Xg3n22nBtrgIG+8Yiq1Q/D62QNgjISHvhxsUfxBsE3Qa2X8HYJ9umRm8K2pV6qvuOswP28mY7nUlAP8NeURij9JTB6gTWCuqKU3nBHQa1nX75d94tmDT+gMM4fPfV3RTmsGO8Gk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774538046; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=i1zaRwQyLd+YNeZI98XQVtT7JyYsfiymY9H7SUMd4Ik=; 
+	b=d63rOhvKXo0D7mXUBNm4oC+0d2+BrkNJve2GqGQARZdz39Thei6gZAJ3ytTNVIwWg6n0XOv3vCCKSx4Ku0cczYFfY1KOq68NABrWuIuqkLI+Nc7zSev2eOFdxAyYhMOu9067FztYXha/NTVqQEWHhfQOqkwU07ETfw9GM8ihcns=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774538046;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=i1zaRwQyLd+YNeZI98XQVtT7JyYsfiymY9H7SUMd4Ik=;
+	b=S/BH4/xl9vXF7g44sHv/eUHDjHmOsdPOKAiCeXbiiqdQ/1SSJ5NqHAVw/CaJRfkm
+	xATniUG5/SyX12lH8ZN5ZCTFCdrEETv7UnL3/62rYNjgjgaC9vH3aGQ6Y2GpQM16oAN
+	HNJWi2HQxD1VxH8vX/v4AIFOgZDauY/UIRbQYK0I=
+Received: by mx.zoho.eu with SMTPS id 177453804433515.34994021699606;
+	Thu, 26 Mar 2026 16:14:04 +0100 (CET)
+Date: Thu, 26 Mar 2026 15:14:01 +0000
+From: Josh Law <objecting@objecting.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+CC: Josh Law <hlcj1234567@gmail.com>, SeongJae Park <sj@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ Christian Brauner <brauner@kernel.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/damon=3A_introduce_DAM?=
+ =?US-ASCII?Q?ON-based_NUMA_memory_tiering_module?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
+References: <20260326072737.341964-1-objecting@objecting.org> <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local> <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org> <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local> <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org> <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
+Message-ID: <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 43A4180010
-X-Stat-Signature: ijdxcbdxxpnhjgrg3trd8xpghxcdcycg
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EF49F4000B
+X-Stat-Signature: w7jp4wfwu81rjakcbfszzagydd3b11g7
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774537824-888395
-X-HE-Meta: U2FsdGVkX1+V9NNEWk5ZpYNeoJP6kQQ6bnsW3wMLTnXv2YCMrgbCFl8e6vf7wHDs62IvDJVLLxtYb81/swL9bKzSxEN9jIpU735m0UvThGVVIXlP7TaGU99GiRvCVOPZIMf6cCsCbjA4Hf7sHeFHLmYkZjUts6MBFTaQWuul6OY7MGD0cCG1Vabp7avwbOyyk0OM7zsh0RgDuQfti0QxFf7jk8OI9Eq6DNGh5qxV6fsSy404bHmn1W9VMhM/RPiKICMDC3EKCEASvZFafeA6AN05BmGYw89y33eD6aK3xCNQS1twz/VhW/MgBPTn+zpeXdziY+ZQPpRqg+8KqysekHK5ap2CYja/2ZC+VF/Fz5BXkDYLrFwT50AXnjdpajOzYI1denE3QCE/SdhBosiL5r2DS24fCyCNz5agIb8sMwZnZW42W3qcAuRs2O4a2Lm5LKUeljlMU4IolS4nTZPFOsK+0hJD1PKJT/5SUzFMBuvgW4v28vIReoSGsX+zgGIlYuA2oWICdRHkUgFqLHiBvFWu7HjQgwRhD7qp8uCn5H2t/+b03K5zzxHOmebR9iERIjBEikXWbgbH6Zjv25FQSNqbcxOZktMkSPNnL1G8d9j+pHgoS1QrJWk6iSAvAVtxvBmSZO1YVVJq4G9fkrr/3i9S5b+Gc8W8kJL7Prer8y+vPNwg++fKZOcYs+EJPYO29+OftcvnIOh7b1LkEFPJTy4FoZ2C6rytBmy1WIw1xMNPP/Hno8Yl33z/a1+wlLxsRo1+mVvjD/jzO/uNCPoMkxhY19K1tC7Vyz8IRFkRxs5lq4j/46M1E3FXK6IPCha1yndPTq3dMZ8bGaRv6qabg7KpaJpjom06C3IQeSbhgk70dv2zN33VE/5lykLQmBW7Uc6Zy7xcQlDW/VK1+lh6EeP5fKw0DkVqMKyQvDy7NLkR9mBetl0Bhn26qD6GnUOp7XD41L9GnS21TIk9UJB
- HXvNQGcB
- 2uHHDiqqbrtm6W4y6lHXeF/S/m3tjtSOjZb48FmWzyy0Az3c9duHSh7aZXFUy7syIOXLZfOpQ2HH6uNhYbh4LiOVx61hVEyyMMgX6vR6ejJhD6IXr75IxiLXVBwv1c1CY1EHF96WG5+tY++ZAZuXen4SoAy/GAy9AuKNxmwXSNbFRZvt/OPHVg0u8rIS3XwuPpklQGtfmfW/LCpEcLu4K9XtUPbjHIyqXI7whrBg92dB7uRXgqb93OOtyuTGZucavKzuraq+oKU+FJsq+Gbot7QrgcBUzZeklKFXiShkJuvlqe/OxovZtroKE+oxAE5cPx1G+ACf1NJp8aXo=
+X-HE-Tag: 1774538066-587184
+X-HE-Meta: U2FsdGVkX1+lbR9ZANSWoZfiiDB/6DgJ7DT3/LzFk4YpN9RlcWzkRiNWerMWymRoR4NRk0SLArPv1sIJTUc+8v34fnvMxY6u9aT5u7RE8FHHwSlY1uoBiq6R1y9RmM22zIHZmPUczmV7M2dd1qoshnm11yZRSx9adUwZLE1RDruqEGZ8k1h1bFGcvsZge/WFVlZ/6nSVU8WCvbpGT7h3O0xTlbt6uVdWPzcyxnHvyhR8FTij/G5ngs0pVcwvHqpRiYtIfEO9aMvL8G7TKu3cwjCaJOi9kqkAA4iAEWh7d/P2y4vDlyyYtChtNC4bDfx3OMGvsH1fyEr/8WbN1cBY5SeGMAyM/WzzAeTqA1IxTIhUpIgjJ8qj4jvlMo+72F9hcboXb0GUz8HAb8kzLUtoSNAbY4+UQCGAQouR1DiegS3EiVASObPp+8JC8t43hI6AME2m72l9KCkmanuleu6kODfbZn49mEnXUto5aFUOiGo2O+mnPLJgNtSO144NRAj2Okl4fmieWBpUv/IYnYZEu6iZvvv6QA765yzWPVATH/e/bQrjgkexK+xQJONwIx6W2Z5mmcJemOEoOW+GBD74Y/a8rMM88aeDDv0L7LONXVE2Lz49MxMa+d3WFsDAc0wILS3s67MQ76v9TEp8qN1jVyjH5PPMxSdKNWSePtNpAwYq+uh+Wcvs7mjiK8L+joeSbNIRgEBAmRzBdTupXqOju2IArLDNl6O388RRHrRBW121a0Ae6irndiA7hCbZW9xvzlU9MVG9ELzzoT9PvNqQJiYhZO/JAyshCEuzHeKHrvdVxV4IJHHOSjFknJp67p4FM6TaAgTPZrv+5tN7h0Do5W825abqPHz/37N0vzME7jhzHKG1a8TueUp602SfH9byeXEXP/1da5BEcaVNh+rj7+96gF00V39JIqzxPrWmIGaysqjPUyndjVnd/oliu8SHqqy4yyyRzywaIhqFN8G
+ qEKRyJyt
+ YZes+HZ6TZvhr5AWUwrM7K/IEAeJqPJxQteigSQdVfb/uxae1aP86VMtcw/9EV3T3RdkmmsL8snsE3oC+ZegV37Y6VBz0WWM5H4Vw3l+qIu22v6UISVtdkaKMNfe1O8zk27AU1NhRdK5aHNS9fd3JaInLg1Uwi+23R6y7bBfxu51gMG4Iwt9JnQqF1XbNQqEMo1LXLXFfs+x3eDpM5V8IAsccyJQ6YoUxsAyMxu9/Oh/aqCrsXa1Hq48voNF4NjZjoqRu8Dcj0HfeckQ94e85iL21D750fkmgyaiVSCnbvL2a73110myoxnDqvnlQs/5aYtPkAetrIlwCxNrKKvvZP57+ICK+oh8GDzjFB0TUKo0xi7H4P4yoIG8AY2HsGuCGqncwfs7rW3Si4lEoKXPQpzOOdpIERmvqne7kpvC//v/RHa31UwSw1LrKLNgbOduDY8B/b0U7F8SAvNKm2QpMDPTPFpHYx3teL++dyWXG+1iPH8YYFpy4VwopCIY0BjXTJYliyWYJy5ZQwVffCYUtNBodYrjmZi3OlmmNiQZ6/I9db9G0nDJayyrPsa/it/1gTGaR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,218 +108,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend the contended_release tracepoint to queued spinlocks and queued
-rwlocks.
 
-Use the arch-overridable queued_spin_release(), introduced in the
-previous commit, to ensure the tracepoint works correctly across all
-architectures, including those with custom unlock implementations (e.g.
-x86 paravirt).
 
-When the tracepoint is disabled, the only addition to the hot path is a
-single NOP instruction (the static branch). When enabled, the contention
-check, trace call, and unlock are combined in an out-of-line function to
-minimize hot path impact, avoiding the compiler needing to preserve the
-lock pointer in a callee-saved register across the trace call.
+On 26 March 2026 12:50:40 GMT, "Lorenzo Stoakes (Oracle)" <ljs@kernel=2Eor=
+g> wrote:
+>On Thu, Mar 26, 2026 at 01:40:19PM +0100, Krzysztof Kozlowski wrote:
+>> On 26/03/2026 13:29, Lorenzo Stoakes (Oracle) wrote:
+>> >>
+>> >> Answering to reviewers with whatever confirmation they look for is a=
+lso
+>> >> a warning sign of non-trustworthy behavior=2E Or rather behavior try=
+ing to
+>> >> get trust=2E
+>> >>
+>> >> [1]
+>> >> https://lore=2Ekernel=2Eorg/all/D47F8215-FD08-45ED-AB01-0A5C48CD41DD=
+@objecting=2Eorg/
+>> >>
+>> >> [2]
+>> >> https://lore=2Ekernel=2Eorg/all/2F84DD09-2880-45E0-AA98-204F10848F85=
+@objecting=2Eorg/
+>> >>
+>> >> Best regards,
+>> >> Krzysztof
+>> >
+>> > Yeah this is really adding up to somebody abusing the kernel process=
+=2E I think
+>> > 'Josh Law' or any other pseudonym that can be traced back to whoever'=
+s behind
+>> > this should be banned from the mailing list altogether=2E
+>> >
+>> > Also, as per Christian ([3]), it seems this guy was using the pseudon=
+ym
+>> > "techyguyperplexable"=2E
+>>
+>> Yes, repos on that Github carry commits like:
+>>
+>> commit c04af501bacbef54cf97cdfb904ddf295f8327c1
+>> Author:     techyguyperplexable <objecting@objecting=2Eorg>
+>> AuthorDate: Sun Jan 11 04:21:53 2026 +0530
+>> Commit:     techyguyperplexable <objecting@objecting=2Eorg>
+>> CommitDate: Sun Jan 11 04:21:53 2026 +0530
+>>
+>>     ANDROID: sched/rt: reduce lock hold time in update_curr_rt
+>>
+>>     Move resched_curr and do_start_rt_bandwidth outside the spinlock
+>>     critical section to reduce lock contention
+>>
+>>     Change-Id: I8dfb4e33460ae4eeb0bb854cc2cb084ab5edf7e4
+>>     Signed-off-by: techyguyperplexable <objecting@objecting=2Eorg>
+>>
+>
+>Thanks, it looks pretty clear cut then that 'Josh Law' is an openclaw bot=
+=2E
+>
+>To think he was scheduled to be added as a reviewer for literally all of =
+lib/
+>recently (5) until various of us pushed back on it :/
+>
+>[5]: https://lore=2Ekernel=2Eorg/all/20260308202425=2EC9EE4C116C6@smtp=2E=
+kernel=2Eorg/
+>
+>Is it really that easy to game the system?=2E=2E=2E
+>
+>I hate the asymmetry of this - we have to jump on these every time and th=
+ey can
+>send WAY more mail than we can reasonably reply to=2E
+>
+>I think we need a clear 'yeeting' mechanism to block these people on ever=
+ything
+>once discovered=2E
+>
+>Sadly the kernel has been historically very poor on getting rid of proble=
+m
+>people (The CoC is essentially a swear monitor at this stage)=2E
+>
+>In the face of this new kind of threat we probably need to do a lot bette=
+r=2E
+>
+>> >
+>> > There's a github with the same name ([4]), and that same user made a =
+comment on an
+>> > openclaw issue relating to linking it to gemini ([5])=2E
+>> >
+>> > So it seems likely he/she is likely using openclaw to fully automate =
+this 'Josh
+>> > Law' user and we're speaking to a bot here=2E
+>> >
+>> > (Screenshots have been taken for the (possibly inevitable) deleting t=
+hat will
+>> > happen later=2E)
+>> >
+>> > [3]:https://lore=2Ekernel=2Eorg/all/20260313-halskette-annahme-94e782=
+eb4ae4@brauner/
+>> > [4]:https://github=2Ecom/techyguyperplexable
+>> > [5]:https://github=2Ecom/openclaw/openclaw/issues/44134#issuecomment-=
+4106247302
+>>
+>>
+>>
+>> Best regards,
+>> Krzysztof
+>
+>Thanks, Lorenzo
 
-Binary size impact (x86_64, defconfig):
-  uninlined unlock (common case): +983 bytes  (+0.00%)
-  inlined unlock (worst case):    +58165 bytes (+0.24%)
 
-The inlined unlock case could not be achieved through Kconfig options on
-x86_64 as PREEMPT_BUILD unconditionally selects UNINLINE_SPIN_UNLOCK on
-x86_64. The UNINLINE_SPIN_UNLOCK guards were manually inverted to force
-inline the unlock path and estimate the worst case binary size increase.
+Hello! Wow i came back to a lot=2E
 
-Architectures with fully custom qspinlock implementations (e.g.
-PowerPC) are not covered by this change.
 
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
----
- include/asm-generic/qrwlock.h   | 48 +++++++++++++++++++++++++++------
- include/asm-generic/qspinlock.h | 18 +++++++++++++
- kernel/locking/qrwlock.c        | 16 +++++++++++
- kernel/locking/qspinlock.c      |  8 ++++++
- 4 files changed, 82 insertions(+), 8 deletions(-)
+I can promisw you now i am a human, hand on the bible, and i will improve!=
+=20
 
-diff --git a/include/asm-generic/qrwlock.h b/include/asm-generic/qrwlock.h
-index 75b8f4601b28..e24dc537fd66 100644
---- a/include/asm-generic/qrwlock.h
-+++ b/include/asm-generic/qrwlock.h
-@@ -14,6 +14,7 @@
- #define __ASM_GENERIC_QRWLOCK_H
- 
- #include <linux/atomic.h>
-+#include <linux/tracepoint-defs.h>
- #include <asm/barrier.h>
- #include <asm/processor.h>
- 
-@@ -35,6 +36,10 @@
-  */
- extern void queued_read_lock_slowpath(struct qrwlock *lock);
- extern void queued_write_lock_slowpath(struct qrwlock *lock);
-+extern void queued_read_unlock_traced(struct qrwlock *lock);
-+extern void queued_write_unlock_traced(struct qrwlock *lock);
-+
-+DECLARE_TRACEPOINT(contended_release);
- 
- /**
-  * queued_read_trylock - try to acquire read lock of a queued rwlock
-@@ -102,10 +107,16 @@ static inline void queued_write_lock(struct qrwlock *lock)
- }
- 
- /**
-- * queued_read_unlock - release read lock of a queued rwlock
-+ * queued_rwlock_is_contended - check if the lock is contended
-  * @lock : Pointer to queued rwlock structure
-+ * Return: 1 if lock contended, 0 otherwise
-  */
--static inline void queued_read_unlock(struct qrwlock *lock)
-+static inline int queued_rwlock_is_contended(struct qrwlock *lock)
-+{
-+	return arch_spin_is_locked(&lock->wait_lock);
-+}
-+
-+static __always_inline void __queued_read_unlock(struct qrwlock *lock)
- {
- 	/*
- 	 * Atomically decrement the reader count
-@@ -114,22 +125,43 @@ static inline void queued_read_unlock(struct qrwlock *lock)
- }
- 
- /**
-- * queued_write_unlock - release write lock of a queued rwlock
-+ * queued_read_unlock - release read lock of a queued rwlock
-  * @lock : Pointer to queued rwlock structure
-  */
--static inline void queued_write_unlock(struct qrwlock *lock)
-+static inline void queued_read_unlock(struct qrwlock *lock)
-+{
-+	/*
-+	 * Trace and unlock are combined in the traced unlock variant so
-+	 * the compiler does not need to preserve the lock pointer across
-+	 * the function call, avoiding callee-saved register save/restore
-+	 * on the hot path.
-+	 */
-+	if (tracepoint_enabled(contended_release)) {
-+		queued_read_unlock_traced(lock);
-+		return;
-+	}
-+
-+	__queued_read_unlock(lock);
-+}
-+
-+static __always_inline void __queued_write_unlock(struct qrwlock *lock)
- {
- 	smp_store_release(&lock->wlocked, 0);
- }
- 
- /**
-- * queued_rwlock_is_contended - check if the lock is contended
-+ * queued_write_unlock - release write lock of a queued rwlock
-  * @lock : Pointer to queued rwlock structure
-- * Return: 1 if lock contended, 0 otherwise
-  */
--static inline int queued_rwlock_is_contended(struct qrwlock *lock)
-+static inline void queued_write_unlock(struct qrwlock *lock)
- {
--	return arch_spin_is_locked(&lock->wait_lock);
-+	/* See comment in queued_read_unlock(). */
-+	if (tracepoint_enabled(contended_release)) {
-+		queued_write_unlock_traced(lock);
-+		return;
-+	}
-+
-+	__queued_write_unlock(lock);
- }
- 
- /*
-diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-index df76f34645a0..915a4c2777f6 100644
---- a/include/asm-generic/qspinlock.h
-+++ b/include/asm-generic/qspinlock.h
-@@ -41,6 +41,7 @@
- 
- #include <asm-generic/qspinlock_types.h>
- #include <linux/atomic.h>
-+#include <linux/tracepoint-defs.h>
- 
- #ifndef queued_spin_is_locked
- /**
-@@ -129,12 +130,29 @@ static __always_inline void queued_spin_release(struct qspinlock *lock)
- }
- #endif
- 
-+DECLARE_TRACEPOINT(contended_release);
-+
-+extern void queued_spin_release_traced(struct qspinlock *lock);
-+
- /**
-  * queued_spin_unlock - unlock a queued spinlock
-  * @lock : Pointer to queued spinlock structure
-+ *
-+ * Generic tracing wrapper around the arch-overridable
-+ * queued_spin_release().
-  */
- static __always_inline void queued_spin_unlock(struct qspinlock *lock)
- {
-+	/*
-+	 * Trace and release are combined in queued_spin_release_traced() so
-+	 * the compiler does not need to preserve the lock pointer across the
-+	 * function call, avoiding callee-saved register save/restore on the
-+	 * hot path.
-+	 */
-+	if (tracepoint_enabled(contended_release)) {
-+		queued_spin_release_traced(lock);
-+		return;
-+	}
- 	queued_spin_release(lock);
- }
- 
-diff --git a/kernel/locking/qrwlock.c b/kernel/locking/qrwlock.c
-index d2ef312a8611..5f7a0fc2b27a 100644
---- a/kernel/locking/qrwlock.c
-+++ b/kernel/locking/qrwlock.c
-@@ -90,3 +90,19 @@ void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
- 	trace_contention_end(lock, 0);
- }
- EXPORT_SYMBOL(queued_write_lock_slowpath);
-+
-+void __lockfunc queued_read_unlock_traced(struct qrwlock *lock)
-+{
-+	if (queued_rwlock_is_contended(lock))
-+		trace_contended_release(lock);
-+	__queued_read_unlock(lock);
-+}
-+EXPORT_SYMBOL(queued_read_unlock_traced);
-+
-+void __lockfunc queued_write_unlock_traced(struct qrwlock *lock)
-+{
-+	if (queued_rwlock_is_contended(lock))
-+		trace_contended_release(lock);
-+	__queued_write_unlock(lock);
-+}
-+EXPORT_SYMBOL(queued_write_unlock_traced);
-diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
-index af8d122bb649..c72610980ec7 100644
---- a/kernel/locking/qspinlock.c
-+++ b/kernel/locking/qspinlock.c
-@@ -104,6 +104,14 @@ static __always_inline u32  __pv_wait_head_or_lock(struct qspinlock *lock,
- #define queued_spin_lock_slowpath	native_queued_spin_lock_slowpath
- #endif
- 
-+void __lockfunc queued_spin_release_traced(struct qspinlock *lock)
-+{
-+	if (queued_spin_is_contended(lock))
-+		trace_contended_release(lock);
-+	queued_spin_release(lock);
-+}
-+EXPORT_SYMBOL(queued_spin_release_traced);
-+
- #endif /* _GEN_PV_LOCK_SLOWPATH */
- 
- /**
--- 
-2.52.0
 
+So i will add assisted by to any commit descriptions written by AI, or any=
+thing even touching AI, i understand your apprehension and i apoligize very=
+ deeply=2E
+
+
+V/R
+
+
+Josh Law
 
