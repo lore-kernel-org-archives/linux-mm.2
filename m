@@ -4,147 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9E0510AB819
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 20:02:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D819310AB81D
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 20:09:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B64E6B0005; Thu, 26 Mar 2026 16:02:44 -0400 (EDT)
+	id 2728D6B0005; Thu, 26 Mar 2026 16:09:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 267B26B0089; Thu, 26 Mar 2026 16:02:44 -0400 (EDT)
+	id 249FF6B0089; Thu, 26 Mar 2026 16:09:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 155C56B008A; Thu, 26 Mar 2026 16:02:44 -0400 (EDT)
+	id 186DF6B008A; Thu, 26 Mar 2026 16:09:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 040796B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:02:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9DC3BDB4B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:02:43 +0000 (UTC)
-X-FDA: 84589287006.12.C7DD296
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 942F914000F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:02:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="WoJ/vdxI";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf23.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774555361;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AF0D6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:09:15 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 845975D0A4
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:09:14 +0000 (UTC)
+X-FDA: 84589303428.06.EE37AB0
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B3F031C0010
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:09:12 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hIFdrVbq;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774555752; a=rsa-sha256;
+	cv=none;
+	b=Irc3AkqsutexTRz2MdbT7cPcwkpCg2XTAAkfOUGmT8D5Zwc4cNeS0XG96NYkmORX6dJt/a
+	rDwPTS0E69Fl3C4+qLr911UpmJONi0Zh1t+FxPjnYMAjyrjLCdKJ7JBYZ6KfPDWTH/A9wZ
+	jF8wjxAYZWKghdEP1I+zEj8l7FkGnBY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hIFdrVbq;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774555752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YcCJsLGawkrffaMXgThFopnLf3sG41HR7iXKRErTNqU=;
-	b=dQHs2UZz7JNm44h9kVYShnRwmx88uUZu2fqmAhJlLaF1VcSXrqc/IuuYDSXCFmh4+Wk2tR
-	mWMElWd3HQQ+zuedkh1qgbsJY+rRSJgEXrUFFt4DO7HRCgBQiN0s2QT1KHXdA5QwBuFsfK
-	+Xa17LVknnxqn3eI4kgMEKDtc9YAmI0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774555361; a=rsa-sha256;
-	cv=pass;
-	b=V8rMrKYXmpMTqZDaeHHRLwxnftmvMaVAJCPvYH5hgWTcFetzCyzOgYaGEtyjwqBBb6SS31
-	cDv0l1iJdxpOwIwo0xIvuJfLPlujd8k4/5NK3Mi/jN3mTIeDDZXoPPCqHlAEOTttyAlva4
-	nWt7uD9T9b5gbokQ3bHmhme8AdzABQs=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="WoJ/vdxI";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf23.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6628cc1bd69so645a12.1
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:02:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774555360; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WT1UmjIl74VWdTkJ7hayOCVZ4oZ1/QOofZgl7A2IFffpV/9YDH+5UxDGwlBFUqMVzO
-         /Sw8b/nptnP2at8vNDBz9V+JWb26KusOVtnHm/oj2tS6m27d1pRzxuWqrSx4m1JUGZVO
-         TMRVDXbq7Rz6iuCiabcXANSqAL7BMr1SL7FXwcB2Jp/E1mS+m+JFXSDbAthLkTmBIxzP
-         dkYf+M8TMCsdqpVAXJf1RGQppH/+YoE5bcTaeRf8pat/W5tGRLCOsoKpFQd025dP7RU3
-         Y6MbwXW/ekgxyHzTkPUBS4NJzApFy26fN1v2ok1yfXS5rYEvdA2GuUasd8dStDspCnxT
-         M9VQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YcCJsLGawkrffaMXgThFopnLf3sG41HR7iXKRErTNqU=;
-        fh=W0dkw4FZb9J2N0mteCZGPNWZyQuCLATiW3J68UQTml8=;
-        b=EAWzDj8hb6TiYFxJymfa56SyH/BQ+jnJxrL37QkgLdtPt0IAlLk5ojfWpsyfRTQQuh
-         jaK4k6/E4R78UjOZjzWM7CytOFdbvAnrKTPFVLBdMQQV95KdUdrzyzbqoNf44IeF2gPj
-         JEyJOtRt/IEtE3bU9sxlxNZjlCnAVBiSJ/pGDvFRNXoxaAkti/YCcP9FS/wQdbBqOjmB
-         rMk9clbTlkNnVFz+8dU/rux8z/BUZqONceBJv/BArXzuJ97U2KFc/4CH5efm4vU3sFCL
-         /2VkQn5WV9u2DalWoGJgBAnvosTMLN0pgnOISGasZemA5ExalGTLTwgferA+8I0lL2TT
-         dg3w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=ayPORQNh1ZJY3KlTlGuZGlkLSPgnYGKfyoymf89E6/4=;
+	b=qLfD3Rq6Py6mLvnYaz5+vgQ0br+qSqNDLpsJaGGl+HTndn+KwvgZk+JkYdTeXrR4a/4vZH
+	GkyP5T6Fg8m8COFsgy0clUt/sSZAX1yMY52Vbo9tMmnNp1F8rAqc+DI11mV7l9brnZsqaW
+	XM7S8tCSFzmXhBM+nC69g9IMjKjMrTU=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-509061dab77so12839471cf.2
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 13:09:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774555360; x=1775160160; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YcCJsLGawkrffaMXgThFopnLf3sG41HR7iXKRErTNqU=;
-        b=WoJ/vdxInCFej3MT2IuLrQyC9525ehNH0BLLcrlgNjerFNQdNWctxw+cguGqOV223w
-         CsppJgWlygHpPRt1WV5aM9BmbndqWx0B/J1l8hbuG5PiEpRaN+vUheosLV8BwZ6J7c4x
-         KTTQSRQFMDqYOcKWGqt0pjFgOuII39sUeIb/IWr5EiKuEgwZOQhz50/As8/2ftLVrEgW
-         CNlcHEYN1L+uZN5N1kcskCGJ0nind8co616n8abFq9wWuRLJb/+LL3o/kYvXZZg+gB7V
-         S6V5BXFNIFjnPIFcUXZr0GpD6S6R0b2Mq8Nd2oVsGyJWHchzs3IUIrjX02ig11yF0aXc
-         ALvw==
+        d=gourry.net; s=google; t=1774555752; x=1775160552; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ayPORQNh1ZJY3KlTlGuZGlkLSPgnYGKfyoymf89E6/4=;
+        b=hIFdrVbqhmnYJ03R6tdHcJVk+HKOTVAzGAj6FJwxZlSf9muQ/vJoMFQ05UD0xXZSBL
+         t1a4ofdlb/apAg1wnQrgcfXwJYmt15NxlY9auk/bdtrBmxQJI4Fqenp5mBEZDWLN4Z/+
+         6sqO8+bu99LeuUCj4vrgugCpwGgacgA21bFkGWGlLxBVXPUGtTc9fOxZxVEXTAijg05C
+         CFqJsPqrEnrOns+oVXaLdw0UUFmApxU7fbz0VC9amHM4IdQbS2iPkhKTjWLVtpdwYbeV
+         anQuqNu3Jpd+cPxx0EKbLgPrGnPgNypCCc1e79S+Vqu4vCqjneBNlOURd+ayCDDKIImB
+         R+4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774555360; x=1775160160;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YcCJsLGawkrffaMXgThFopnLf3sG41HR7iXKRErTNqU=;
-        b=f392ABUTDQJ8dB8OfysWaTZ3m4RV7YR2mzPpY3r8p4Ro3GyKLRT4z9wNZ7aNitbT+3
-         bsqFaWSWCb0IxMWZbViRCzgCJHlwAXbljeWoxyghGzp47N3lXJMqGegNWGv08eshTz+r
-         hgYgelz/giabLLggkl4g0g47xLRaBrA3VqVZv2/jZgJ2n7oePL5sD+qSWcAgGqdp0knd
-         SPQtQA1AN/MVlHH8RV5qyES+b7940LeT/534fDBp1TmnBqj26N6xmjUdnVUadgy3YNrw
-         5sqpVymfElil+m/ihdo/zaD320jXfLVX1FJ3Q40wV+UozfYJlkPb787FQFK6zU7VxKPt
-         93cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXUnys4yrnHUFYul6rzV9tmY1ttJnbOFp13tUSaM5ims7hxkWh/KmKxb4REHLZrS+saZnOLbdXc3w==@kvack.org
-X-Gm-Message-State: AOJu0Yzgrk0uPH7v7FyFjAR4KYBZdjWvG/6QyWk88fm6ts5t/s9Bq8sC
-	ndXTsRqt5o3ewduqtnOI5PGBe4M4CLa9IjovZmeNDWlv2opu+3gDZ/DBxvC1Eta1y35SJ+stInt
-	E73ApQg9gQxer23MCtSsdKmpjzzwT6ZPcxt/S8STE
-X-Gm-Gg: ATEYQzzF7b7+CsqEgwixWf+2lhz+vQa40esC5vBDZUAl5uAtmH/crEV0ENiZ6sFrBqs
-	CEFNRPrOG1XHUb+xjaWrSHle8ZxAWDAdLZOiU4M+E5L2DXNO0shUMewlXtLmUpKs5NbJbV7eqa5
-	JKq1jZXGLtnoBa7tOtM/2cdI7FxHFA2WaKff0rkoSQnQLGW+KPJxlItYoiw68shaLTWDuzqca7b
-	Mrn7q/H4x6p7gy3I1U01qJR2gyQjiqRjgo8+bQ2d4Z7+Y8rY+QitL1jA02FGn2mKkftGJEeaZyI
-	vFZPKdZNOITFPdl3HBcfUeDl0f21cBMDupPUMedIBhDURp0=
-X-Received: by 2002:aa7:d51a:0:b0:660:b029:3d4c with SMTP id
- 4fb4d7f45d1cf-66b19d0164emr13748a12.2.1774555359373; Thu, 26 Mar 2026
- 13:02:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774555752; x=1775160552;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ayPORQNh1ZJY3KlTlGuZGlkLSPgnYGKfyoymf89E6/4=;
+        b=VIN8hovETzCRAtVQXKDkDMN5IrXJiEccNFjDpj/PrJDrpBRySH+mIf+LmfHWCkrvE/
+         YXvBwmMEa3iNstZcJhdz74a0Lhmf0KMxDfYmNbED+0KFbBzRwhpTcQYCYexc6usnSykV
+         E8qBPHLPWIYrlUKr8cFqujFPdXmDT/n1+0utEi7wOTyDorHjKQkHp44aSWbv2M3E0ZE3
+         cUWHvVxziokXewfyxVHKwvcrUHNuvji6MffuYxeEaB/vhQCa7nL9S3CgLVjg5QmGzDPs
+         AkNl47dKiQA2S3EDtNPqSqFXn3qijV5Lx197OhPwDQVXj7KvIfovxD9aqVffGeWPVilo
+         SYIA==
+X-Gm-Message-State: AOJu0YxmHW2o5ew42JHDvfknk7fXgWGzGTnL3XRxSL5GDboxLF7ITcb2
+	30nRl0CctQiEVojAMY9CaBvXa7PlEhPN7M0XEfShbEUx7cZM6ETF32HOkYyVDFoBNP0=
+X-Gm-Gg: ATEYQzwOW7pNZ87RT6He/IYx3JD6+MMYJLAy6LEp6aFaUsV6QFa2/aon2YdAfOqzllO
+	0G9ivDHEeivRpG8YoFutqzGUqtRnSrWgm2c14CN0p5zNiQrExB9RVcavmRgu0/eaPFwDmdemBMh
+	shVJfTSjyH2gAI3uh4El6L72Sjt+TXqDJSEfu9SUyZ7vvHgnCykGHnHbm0A8oZMvqjUMKXQ7wRu
+	9ejaBkrET3YJslRcTCbAPrnzhJC4eG1lv2UF+ieHV2xJWNmf+2IRqlhnC0bH/kan5IV27s1bzgs
+	u9H1c+ppzDG/QXi0gEl6B2B3w7uOFvGlE3B3L8IRNOTjf0Lmkjr4Dlvwx/sEcjl5+n4r6HojGyr
+	QIO1TnC7BsPMTdVy5Zm5ezlSL4lGO/wllF9AAN1WXl7npybJ9b1zGse6ASoD3k/Rwq2Zazl2HO3
+	2QwrOtoxT0AKddxnOu7WCAHjkaehh8RAY=
+X-Received: by 2002:a05:622a:20c:b0:50b:4778:ac60 with SMTP id d75a77b69052e-50b80cd380fmr124966951cf.10.1774555751762;
+        Thu, 26 Mar 2026 13:09:11 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([2620:10d:c091:500::2:e5e8])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b9237a40asm31637111cf.21.2026.03.26.13.09.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 13:09:11 -0700 (PDT)
+Date: Thu, 26 Mar 2026 15:09:09 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hughd@google.com,
+	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, baolin.wang@linux.alibaba.com,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/shmem: use invalidate_lock to fix hole-punch race
+Message-ID: <acWSZZ1MPGZi6PH8@gourry-fedora-PF4VCD3F>
+References: <20260326162611.693539-1-gourry@gourry.net>
+ <acWHMQ2MPFjOSq5T@casper.infradead.org>
 MIME-Version: 1.0
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
- <acTaRgusrxfCoKqe@tiehlicka> <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
-In-Reply-To: <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Thu, 26 Mar 2026 13:02:02 -0700
-X-Gm-Features: AQROBzDWo0U0wUaqkKSuyqmT4EN_BjNNpF8nBBEpcH6xGqdHAo0H0pRxhZHomSQ
-Message-ID: <CAJHvVchSfGDubPhir0SgZfr_BcpN5oq_7AY4AZ587_ucgY4Apw@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim (reclaim_ext)
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Alexei Starovoitov <ast@kernel.org>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Kairui Song <ryncsn@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Gregory Price <gourry@gourry.net>, Barry Song <21cnbao@gmail.com>, 
-	David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	wangzicheng <wangzicheng@honor.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 464f1r6douyanon8cdf38h8pxi9ybnmd
-X-Rspamd-Queue-Id: 942F914000F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acWHMQ2MPFjOSq5T@casper.infradead.org>
+X-Rspamd-Queue-Id: B3F031C0010
+X-Stat-Signature: 9bj1yus4qrbhujnwbbwkdqwickmemi88
 X-Rspam-User: 
-X-HE-Tag: 1774555361-675732
-X-HE-Meta: U2FsdGVkX1+9/VMBTCdDd3JVAqnKcFED9yqFY0JRo84anTKf8uKiGXTUMN/nZB1Br0nR0WcR8mcxRknaZYiT7FpDKCgcC6C1STvbeDp3anXmsqbpob/ictSB7OlWe8fPE8089mzqSJsMnZpEXiLUj21LE/c47CtGV+KYIErbSDXxIyEHuNQAtb6m9rXZ8JolkLPWH44HSo9npg8O+r8Va5tl1peV0NB7unEHGnp8gfrUZ3FVAW06ccND4CbXoWq8V7mf/cozCfWIEDv51kAnaSZO8zTZOeiww4wfGrxMYXYqiTbBoHD7LpdSMtbSssKNmHlkmNea6VbJDdzUk1HWYUQ7lnohhj6rOyIF+5uqDvQ9479rzNS4CRYYT4fVb5WXwifi0OV9Bwl6ja2khi2iflyeMUBUjhm4O0cWBF4+3kb9Nl08s8dclJJ/IHFMmJyx3DeWrG01G2e6xTrfJTFUeSar02wSuZvT2AJnp0tWryJw7YsJiR8rBnZbc8fggygbHDZzuWWoaJiFgN20UykW5Y6HUkLktlRzQnOMzUbyzYCYsJuTJfI3scQOkT8eaX0VP80gG4Ev7mU32wUiDTjJjvVcuqmofYzod4qfp0o2NmmbPovWApG5OPN6VWgW2BlaPNPUYwLuCABU9u3kpyQUZWwNuQCYKyXWN4S3NtMhANk0NOBVt+oam44lHxd5sQsiIj7nd1fLIvFnw1it4D9yS51fRl6l1gNaUgjhgSR7rsxW5IyxR4pQsT+BbO3QReGYfiDqSh8UuXAZbt8mMCPKKKowAwu52gConOdrBBH2RWa6DxZpfVfI/fCb9PyYYh5s+Q0vJsNZf9srK1jrs1aKgxyoqgk8+t+fie1bE2E+kMz0m2cGDlTVXhgVzfI8NIF7a77slMIEhPg71moaEzqCg/OoQhKjIPLSBn8gUlKx6Kn3DVgKOm1d6vvhnPBcN+5VqAVHfcwDDbM+Yc4wwZp
- ujNsECFJ
- lAvzcO7DYx/uRYgSylssfrKwHnDdMzDYCDJX1VM1Zmfe0fsRfvpe62HmzAJDSoJxLtShtrotMZ2GjF4hrisD+eLE/o0eDPdJ67lHItOfv+KC0cBPJdW/kYW0CKzm6VVU6yI8rvqrJo9cYpUzh32U/cVMJlSQ2a3n09vGFnTnOhQHrZGaIPNboyTCoY72+h4jghqhxmmUETIfdvnCByMXLvQuBTwRAnLTLERfW/bnXZPF4b1iSpqLK1CC9Jf21rWmON3HkTOjrnVgLBhhMKBsaJSr25TqErchKiJjtd7DpSeU+6BIfimwHWknkJ3MtBhIwcmUrPJLDtfkWAuvuLwcPbi2NI4Nlyu8QzbpY3f2isTvBa1gvJ9Fg7qvdXFatRuA5jR55BecwBHHUn4kkAAsgM0/xARusNYUG9ZIn/Yy6ftKm93kxBCXtA8gWGyYTU1/q04FqEGWAw5RYMAO33BXkBeqAAzEYdQsHrS06
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774555752-730555
+X-HE-Meta: U2FsdGVkX1/gcKh2pgd58MtnzdS0tN5wc++bZJ9E+fj65mRrS3LvSj31DEVyDiTsPciCHM056Aq/spJS7j94EmuzrThHxZMluKRk/xnMKNT0+S9AIXsxDCsBBVWK3WOADI2BVIXD528SeBlln8ahjv8pBLyxngQzAnf3ooq+22B/DbYYw00415iIiqL3pAp5jx2ZYVUo3l4u6e7RpeRFImYoxSxQrEts2eV5em2+tdm6AwncCla3I3kcuANkxxmyr3gpIcu9w0w5domO9QQYz0iREAl3P9efylij5JhV//lalO4KHT7O4r22IW85GpJP8LhfugKCJn5tSlVvCZPymvK98E9nSxB8DBLFjoaqbUp5p6W9167OISaKEpHoMWjw8bbS4IjhZ9Z0U9/I6fvFDUnUIubLNS1QzS0hmumsiAThIS4xiF2hS+7c6rfOnnIrxzbXHuKV4ycFAHIZIHXDeKTu0ZV2bXqiCE4W81A7acLPX3jEQLXIJ3hPXsJ2cHcvi4ajN+Q3J1ETzvW+wsv9kNMZxIvE5orn0KoPLa04SJDiyAuosoZbRnzM9U6YLvyzMYJY/Zgde0IFfuzeY5CfoTSatmnfxSZx78vzZnLfGtgJTydhogO7siYc6U75KpAmvWhgRoyPwLRMlAaC8hgMBa+veBMh5p7VuUVeCQEsFLZYTFmYpeMtIA3S0yNK4pA3ZFB7PWSsnzVT3hUikxiYOjijlmEO4fRzHA1o2hH+RLhtt0bjOU29DuhIhVhtVeJEoqo+T39NG0ZiHYiopysWRSYIaQfutE2HNl6ySo1tzGxIdgVUHaeKg/UQ7thPSPNOB4nJ/QkWxVGucGG8XE9Lth36hUnIrVDTB+axKz9vsFE0X+U0QW9Nl5j5jHsFrj/Re8ptCFS+doDA+d1UNB0uHSKAUCkinv4jU4ZH+L6rVdLHDhD+ECC7LrwLAhi/J8UozzdNB/1BblCHEcLAjPo
+ 8+tCvjAH
+ FZyqRnjqg39FEW5iM/3h6OO1/vMk5Z/ugJr2JmD5ywdcfUNi+kmf8624LgOsxm4j3Nm+VHtUhQT3K28p7a6Ez3keqdk07j2GscHjLqL+4qnt6crQzjxL9A8KlLKt4YWRl82bq8au2LIjTahzvgEQPpZ6mmKpEzhnDH7hb3ofDaJ/k/czlWQp4YsfRKHrONOK8F9GR1VEyDBVbZr7Ev6MZEM38GW1C/rLjYriWCumKC028zICfC+jO4+KbX+9ki0AjnlRrtFnEmDBALSIUznJgg+Y8R+nmhKFu+mpGZgDaRjEM3D1zzemGIOANSNyaLgMybivOjFjznAzpno2Xx4owmeErWBSMQuc77Ra9khHD1UJ5L6Zy2S/yXUHIjDGPxj5twOHxFiw+viYjA8gVBM0fDyDGR7W7uq1uMFAoxoXAWag1vAA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,102 +120,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 1:02=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
-l.org> wrote:
->
-> On Thu, Mar 26, 2026 at 08:03:34AM +0100, Michal Hocko wrote:
-> > On Wed 25-03-26 19:05:47, Andrew Morton wrote:
-> > > On Wed, 25 Mar 2026 14:06:37 -0700 Shakeel Butt <shakeel.butt@linux.d=
-ev> wrote:
-> > >
-> > > > We should unify both algorithms into a single code path.
-> > >
-> > > I'm here to ask the questions which others fear will sound dumb.
-> >
-> > Not dumb at all and recently discussed here https://lore.kernel.org/all=
-/CAMgjq7AkYOtUL2HuZjBu5dJw=3DRTL7W2L1+zVv=3DSCOyHKYwc3AA@mail.gmail.com/T/#=
-u
-> >
-> > > Is it indeed the plan to maintain both implementations?  I thought th=
-e
-> > > long-term ambition was to knock MGLRU into shape and to drop the lega=
-cy LRU?
+On Thu, Mar 26, 2026 at 07:21:21PM +0000, Matthew Wilcox wrote:
+> On Thu, Mar 26, 2026 at 11:26:11AM -0500, Gregory Price wrote:
+> > This also requires removing the rcu_read_lock() from
+> > do_fault_around() so that .map_pages may use sleeping locks.
+> 
+> NACK.
+> 
+> ->map_pages() is called when VM asks to map easy accessible pages.
+> Filesystem should find and map pages associated with offsets from "start_pgoff"
+> till "end_pgoff". ->map_pages() is called with the RCU lock held and must
+> not block.  If it's not possible to reach a page without blocking,
+> filesystem should skip it. Filesystem should use set_pte_range() to setup
+> page table entry. Pointer to entry associated with the page is passed in
+> "pte" field in vm_fault structure. Pointers to entries for other offsets
+> should be calculated relative to "pte".
+> 
 
-I think one thing we all agree on at least is, long term, there isn't
-really a good argument for having > 1 LRU implementation. E.g., we
-don't believe there are just irreconcilable differences, where one
-impl is better for some workloads, and another is better for others,
-and there is no way the two can be converged.
+Hm, I follow. I was originally thinking this was scoping issue given
+we take the rcu_read_lock shortly after the call anyway, but I see.
 
-On that basis, I would be hesitant to add some complex abstraction
-layer / reclaim_ops to facilitate having two. It seems ilke it may
-make things a bit cleaner in the short term, but long term might make
-that end goal harder (because we'd add the task of cleaning up this
-abstraction at some point).
+If the invalidate lock ends up being needed then i could leave rcu
+and just use trylock/fallback to fault.
 
-My preferred way would be more like:
+But I need to test a few things, nothing else protects filemap_map_pages
+with the invalidate lock at the moment but only shmem appears broken.
 
-- Look for opportunities where we can deduplicate code, but without
-adding abstraction (e.g., factor out common operations into common
-functions both impls can call).
-- Identify gaps where MGLRU performs worse than classic LRU, and close them=
-.
-
-We could go the other direction, where we identify places classic LRU
-can be improved, and port particular MGLRU features over to it. I
-prefer the other way for a couple of reasons;
-
-- My sense is MGLRU is "close", meaning as Kairui said in "average"
-cases it is substantially better, and the gaps are both fairly narrow
-/ edge-casey, and very solveable.
-
-- Leaving classic LRU alone leaves the option for existing users to
-maintain the status quo. If we start porting MGLRU features over to
-classic LRU, we may introduce new regressions and break existing
-users. Using MGLRU as our working base means we can iterate on it
-without as much risk.
-
-> >
-> > Yes, but MGLRU is not there yet and with development pace last year or
-> > so we are not much closer than at the time MGLRU has been merged
-> > unfortunatelly.
->
-> I'm quite concerned about maintainership, as it seems the MGLRU maintaine=
-rs have
-> not been all that active, and the MGLRU to me at least is currently a bla=
-ck box.
->
-> I'm not the only one who's raised this (see [0]).
->
-> That'd very much have to be resolved and the community reassured that MGL=
-RU is
-> _actively_ maintained before we could even contemplate it replacing the
-> 'classic' reclaim approach IMO.
-
-Very fair concern. Time will tell but I think things are on a much
-better trajectory now.
-
-Barry's and Kairui's work here has been great. Suren's team (Android)
-is dedicating a full time engineer to MGLRU this year, as I understand
-it. I'm planning to do the same myself. I started by spending some
-time reviewing some patches last week, and I'm hoping to send some
-patches of my own in the next month or two.
-
-I realize just talking about it doesn't mean much, action is needed.
-I'm hoping in a few months' time everyone feels much better about the
-state of things. :)
-
->
-> I hope that Kairu, Barry, Zicheng and others who are interested int it re=
-solve
-> this, however!
->
-> Thanks, Lorenzo
->
-> [0]:https://lore.kernel.org/linux-mm/aaBsrrmV25FTIkVX@casper.infradead.or=
-g/
->
-> > --
-> > Michal Hocko
-> > SUSE Labs
+~Gregory
 
