@@ -4,137 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B309210A88E5
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 16:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4003310A88E0
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 16:33:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFF486B0005; Thu, 26 Mar 2026 12:32:58 -0400 (EDT)
+	id AA3CD6B008A; Thu, 26 Mar 2026 12:33:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD6AC6B0088; Thu, 26 Mar 2026 12:32:58 -0400 (EDT)
+	id A54776B008C; Thu, 26 Mar 2026 12:33:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CECC96B008A; Thu, 26 Mar 2026 12:32:58 -0400 (EDT)
+	id 9923D6B0092; Thu, 26 Mar 2026 12:33:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BFE546B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:32:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C514C41CD
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:32:58 +0000 (UTC)
-X-FDA: 84588758436.23.2C7CB17
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 848C3A0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:32:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=FBw1YKlt;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 87FC46B008A
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:33:38 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2195E1A0EA6
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:33:38 +0000 (UTC)
+X-FDA: 84588760116.22.3DFACCD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3480610000C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:33:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gneYv0EJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774542776;
+	s=arc-20220608; t=1774542816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0kHkYNyleapDFkY2bZJbLnQJPE0yLAnN1/4w7u+RW8Y=;
-	b=UQ/7Y6h+4VHC8bteZoFuqlFfovJl4HW+RPouY4NnH0YE5DU6848WrCGBj0kgtOfCnVdyhB
-	dWfFVjXHhlJsUAUK9Ko0BiFaNtB50DpdMMChXsTk9CWyaV6yH4CDK4M/jecDxE3bLa2Vpt
-	YSWr0fJmj4/oLT1V1TCud+sdygCRubU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=FBw1YKlt;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774542776; a=rsa-sha256;
+	bh=FNket4EOdliOGdylJYNlXot+sXodfv3o6xrobZqEsZM=;
+	b=dvcscP94HNc3cCvBK92ZUmsjidl8vpk/FOeRENCqy+GOI8d93EqDygaBuQurgLwandz+Xp
+	m8EEljaPojddeKGQeZ071tYDS+7APnMZBZzV9d+QjQ65E69Q2Hb9cB3l+NMzHDdE5kawWE
+	fl6QJFpiYWtmsR5ddFNgkdYF08tWZnk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774542816; a=rsa-sha256;
 	cv=none;
-	b=YXPfjzRXpVQynIp6i4oTUruuNqjCE41vy7rrxhaJYJT5dH6sAksEmJ9jRKElxHI3iXuYo7
-	+LLz3R+HJOEDyhXCvebWluGbITSVZtX2WH+lzC854ZOe2lkTohudythtqx8bqdP9me6o3s
-	NmthPfDiMZV8pLbUQG1HUY8dKyi8+QA=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-50b2b289925so11363721cf.2
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:32:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1774542775; x=1775147575; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0kHkYNyleapDFkY2bZJbLnQJPE0yLAnN1/4w7u+RW8Y=;
-        b=FBw1YKltTSeA6CQ8IGSnTFlwi9HPZhQnz9getw3GB6bjAgSe4tS8KcupbJHfiTRsnv
-         RpKmWWoK7RJY+xLpkCEx+6TSg0jVh3mJoHPrOmu9MOI7uVGTds0WhvR/EipWuvukKAWm
-         J8Bsv9I+NyplYAYfhZ7e7GEO80PGEQ43HOSEQPTzL8RvGXlN6wDsUR2ZQKrKVllwGXrX
-         xTnvsffjai6AtnJu2Tps0RURz0wdk5mcAaDQTZ0Ikc+beNO/YUCdVWCTsIyz/n691nEw
-         yIFwNelpeUqQ5nD1PGlX7vsFurp3LbILqlsiqSzaT499paFOXSYzhMCOghDQv3rw/U7J
-         /A3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774542775; x=1775147575;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0kHkYNyleapDFkY2bZJbLnQJPE0yLAnN1/4w7u+RW8Y=;
-        b=UD9MJzATSCYV5JPhQ1mPZkY547V49jIcNbA8dVqaGXjlvZhP9kH8/T3ofRM3x0Eqar
-         L7mvAh++anbr4KQFHe4uAhFwbFXbPsrr41uLGsuWyT8+KOcfai0L8GT8l9WmmHz8cBTN
-         4+UvqbxXZKJWa+HAdMjpLkciHAFmc7jktGNO9Tum56D3A5nHA6/Qpg0BWw04MIquFmS0
-         Vwtpb4tD+evvMSQgLuqzSeuNEGJUnr7TvNRyctJjgMByphnn3G9YJuIMYR4zs783+JsM
-         rdztlLedIKCQveijZE/SxvgdkaO1ohc4i2c3bjGW7NerC3Qime6nydxSRwkf8aydUTb+
-         q25Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXuOjO/udL96sGhYT+RMfeAhKHK7WBC+6bAgfxclWUhdeDpzdVlWzaL+mmkZ4Ueatt7SNg+E8RV3w==@kvack.org
-X-Gm-Message-State: AOJu0Yw/HUzrojUyX4q81kYUreczJM69LqHafIp6lXlH9nqLAnvpROSs
-	PJBS4HAoOh11Bfv80NWfqMobIxIAdcOM9FhnslJtW6qsBkXvibXVEmGEtEHbIrAtpsM=
-X-Gm-Gg: ATEYQzxOBPHnrB3U2/7A0kmzpKszXGnU9Xt8USPLPoBPr8UgE26dH9NKoZYNaQJJ6Xd
-	tUoomEFfRG15m4lNgvfsLS2RImT01WgkciiYuBpWAoa7RkJg8jM44OMPA3OurOJNk0gvNI6hgOK
-	n/KPrRkq9vfKEjwCL0LQ0FLsmsq/8OZfHMHsp/jTdjn5acA802ekk0v8pqEg/Inc3D2LoyV6Asy
-	/0IFuGNFnESe4xDPnYK/LeIZ1U6MmLhEJe3R2cdkEbRLjqp5SFx37/GXYwTXxBBQonigqENDFvc
-	uqtFk5xgAaRpug6vAHAaeqTnil6cgU7gp5qqcKDBSV1k+QlvXzLjVC5d4+7i/dR1fU0WZCWkZ2p
-	M4kgHGU/5WXIS1GnfC9VnszewjWV48j8hW4vN1WzVTXRXTufeRk+sGXzLVYw65h8TTQhAadsHwG
-	xUmpHdlPvXCWq0ep18Z/Q1
-X-Received: by 2002:a05:622a:5c89:b0:4f1:b714:5864 with SMTP id d75a77b69052e-50b80acc65emr118120631cf.0.1774542775296;
-        Thu, 26 Mar 2026 09:32:55 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c091:500::2:e5e8])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b9216e5dasm28216811cf.12.2026.03.26.09.32.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 09:32:54 -0700 (PDT)
-Date: Thu, 26 Mar 2026 11:32:52 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	lsf-pc@lists.linux-foundation.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>,
-	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>,
-	Vernon Yang <vernon2gm@gmail.com>,
-	David Rientjes <rientjes@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	wangzicheng <wangzicheng@honor.com>,
-	"T . J . Mercier" <tjmercier@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-Message-ID: <acVftLYT301ITlsO@gourry-fedora-PF4VCD3F>
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
- <acVPrEyfcE4Naz5b@gourry-fedora-PF4VCD3F>
- <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
+	b=CzuGKHLIfl1OipPk60S9iBXl5QtE/fOFCLuU2Z77AyLfL0CIGXLjtH08R/fXFxP3X+uadI
+	f36tIYhfy9XtGEGqZQnNP1sTnEd2Qa0kb9WvPNuaWdX118KPWzn24buyQxu50u4ltY8VwV
+	axT284Za2f6GDQyc10HufC8hK6+oqag=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gneYv0EJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 07ED540B1F;
+	Thu, 26 Mar 2026 16:33:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF6CC116C6;
+	Thu, 26 Mar 2026 16:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774542814;
+	bh=URbp2t3NRtBFo93UD7u8pHbvrDeRMl30UmZHjDS47Nc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gneYv0EJAskmTkLQA79XtB007irpVr7UE0SNXmyK1HArCGt2lFChdhcuEHozea2Cl
+	 aQWscRrFAyWiosyGNvqWsbhWOHVrasZVR5XWX1GgdfeTUrr1JP7rutza3Ka6PbelS8
+	 2DA4uwxRg5LJSqKtVtg02y3StHUPKzb4VgYGujyNkWQulsF5tFzkHY8Q9w0vIBjArF
+	 jlCni+m/g9w1Swv1MDpuU8bwGpd+tjDfXHnHRS6P3KoaHUPSruMMQrqkJaL3ZqdIq3
+	 Q9vQDT/xC/ljOXBIeLhqhuwgJsVY4Dk7KIUebLbG7hsoyhJ0xAMzmzTcxZQ43OwzHQ
+	 Tpn+iSDkJg66A==
+Date: Thu, 26 Mar 2026 16:33:30 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
+	Josh Law <hlcj1234567@gmail.com>, SeongJae Park <sj@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kees Cook <kees@kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
+ module
+Message-ID: <cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local>
+References: <20260326072737.341964-1-objecting@objecting.org>
+ <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
+ <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
+ <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
+ <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
+ <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
+ <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
+ <b263a722-e9b8-4a43-a075-46e4a753871d@kernel.org>
+ <043CED5F-7014-4776-824E-07E027B7BDC3@objecting.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <043CED5F-7014-4776-824E-07E027B7BDC3@objecting.org>
+X-Rspamd-Queue-Id: 3480610000C
+X-Stat-Signature: zkt6aeyj6riq9ofcp66q61o9jz4fgzzs
 X-Rspam-User: 
-X-Stat-Signature: tfpyqeyr7h4gjewbnxes9nuhx8agcska
-X-Rspamd-Queue-Id: 848C3A0005
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774542776-517003
-X-HE-Meta: U2FsdGVkX18zbzVtZ0OPQ0mJmsuYur+9AbsNRpbSHKD7n/55j8FsnrJXEzA0sKQVP7z3rCoZhiP++ikkFythJLnt/LpDtAhLgklURuehFzUVYitW/3ePuaMjGkTVy4QR9oiLvHRplXP/OL4tjzamY5D9lgSPkuI2KBuluEdDl1Iwcqg1JFGcvzGREtcO2fQxUWeaURqSdJ9Ew/ZTf8c/669MDe4PxUQ5fb3R9pBEgY/oO96QnbLEIVgYJOZWrOoNfWUA1vZ/949Mg8/nbMRl4lahki4jQJtnT5/+VK/+k7qEvD9GG7ggJn8b5qljK274betY8PDVOXZvvLZff1TW1sWYU7ZvM2lRQ0eww0Pe/Spal1g434yyhtQA45DgxjTODIALuRrbIOblwLVKpiMTQg3SiBZXDSJYoRLz8LuOyAwuKKSMWQejLLpdVjiIygU6JhFrJVjWYpk+Ql8JEiRMGCgomhWdHNnvh3K37U2HSrGWFUsigpW4F3su5A1ACVhsNALow79O0yI9Bx65R5cvWfwJ79LeIU9bzRHtSofWccaIGe34j7Z8jklVWA1Pg2rnXdJ5TL7KBMht83ftRKjxxY96LzvBAr7KbVYZiM2BDn4nw7ZamI5JBwcZD1thw0tyT82SnWAdF4HleZpw7c7owad2fqzyywSBkENKtFce/Sk3MpR9pv1x1Nld+fT35lfceiVzg9jE5drCMg7dxJbadhNC3C4EUHLW7cjsMw2aaQpUhbMdfymNdS4HVl8Tf8dThLBXvjmDyka/hpB8pi9ChUVKIc+OvHY4EMOEmWpLcoq3iebq6IW2pcmZ+0Jo03MxaYsYdkGXGwJqLUae2vuCifIF3PhTzL9gILwCLF7v0VmdMv08Po3L9JNGL6z7b/uI9EecSdfbF2H/mAGxHb/6hjiEa95vXJa0RmEFINRJ6DDRE1HLLShvkUfjjxfNAzTRQxjdGgfKoX1JEwipb2l
- IajjFG8x
- wZAzX6Q9Bs6zU+3wK635K2WWXVFsHmPbRO/dfcMd7T/4DgGjKqG35fyvFKNOjNbFBls2Y/TmAk+9ba96oY2hbW2dDOvfh+9Sz68s45fYuIgElUmW5cwExYEA/AW/0UjnResn77LhxRGuCN/kVz6tLm8UnTRomgKQk9wOfJ4WImpe8Xku7+l1P4L+vNwsj2thBJAkxtd5PjGSGL5U/eudCbMVkfqRz9k3IJl87OVnuztwUEfCkf2tSrrUsqhHX9mENxVkzXSnBbWP5WZ+nJFxWDOVK2iPva3mM8cbpukvv1MKF/ZTFdSftAP+0xM4anNlYwhKcbL8m66hbCZUqzRqwMr/iYRzA5STQC3RTfgt5HVZLX/Xc2KBCcLuVE+C89HuRbqfvYUis4hMIdlF5YfwbdDaz0yEyiZt1/hsW
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774542816-913047
+X-HE-Meta: U2FsdGVkX1/Z0XWtDsTkfmb+mvVvleXFITT+noWMBt5bEeHqnV9YX1XkHttlQFacWOmKc2xAV8pfMU67cpzziz3MkJP09pyoLjNA68mqcAaRGyFaEq1NqeNPRMklIurJTr5cja/OvsIzyHqBnnW71lgmunWGgps58zMDUCgzsT02YhH1T/MFDZKeIrKaqkva9WVoXxW1XdDLRcsmKlEkW050M4pOYByEO9wjkgSpGt8pV2MA40bkpbrpq8k3SnmKdvhtq9Hldw+o8908RBvA5ZjcpzbVnUBs1PTDCdXjFrGrnYBndDwa6emvz2mvyqmsD49eyby3mY7G0Ugb25Sl3Cj5k4fNPL80L+xgQ00z6PsaTZzs6Ir4MEV6NKteiTpv37s1mAaddGmmqeLQPKWexi5nNkOYwLhXbcxD4cDv45hgK6a16e9W+VO8WZ0KRNv4GbO0a5ZDByjbVsbJLDozVktHm0IiE4gM6qwZEFVm+gZ9eY9gS62ortXC+/RKNSj61t+V8uWvabIsnMi5FbeZHkr0eYzzSVNVvtIya42F1jZpiBCe6Rs9abgZhhqtkfCNcny6Wb+3gO9TUIAJ1CWz8qsOMwtU6ymsRxboICNGqSNPUt30QRhILSnBvoJRx0tWAI/NPlDodlO7ZMVAjB+Iew3ls0jpVRgqmd9mSmphsOeUdqdTaet7Yaj6WGd+etX/I3Zh4RENCS9vC1EQ740upUL7upnhbnizgOlQZCjmjotn1osXT+5FX0+KEeDUn7MQG/JbL1HBLEcOwfbc3/UuK2plTPf5JAROcYOnK3tr94WolZM4k5fWpSaFvFGQTDUO1Fv8rKp0F2wRue6TsfW+NpoBjHqxDxB8IP3ipW2nrkSleVcNsbyM1TQf+QDuGxdapnCuEKNxQToeASAWXGGu/NpP4uGGi/7OPOGeKChv/I3rGqxVhEafblyZgMC5HU+xOQmej3l4NEl/++e9lRi
+ +46f4t+z
+ KnBMQUYxy0E96X82uhZs5LfsnitfRoRKk3p9m0uFyk/MXEyukhjDEVERJO5vZn0VCJAEjMLy6T+TvU3gBI9AhfLfmioELjnXaIvfOz5k4h6648nDMPcJNXoSO9CYCMRAcw/srv8iBI1nquY9s16mGxr9FZEYxSluUGoMS3mynQ8VrEfXQfu7Si2ct4YKdCzFTbr2ELgj0MTAMBJ66LXaCHNpodmxvK8cO4Rq2zw4wxEvMaCE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,17 +105,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 03:35:28PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> 
-> Maybe a stage 1 can be to separate stuff into another file, because that'd
-> actually be pretty easy to do for a fair bit of it, surely?
-> 
-> Can use mm/internal.h to handle stuff that has to link one with other?
+On Thu, Mar 26, 2026 at 04:10:42PM +0000, Josh Law wrote:
 >
+> I will be absolutely transparent with all of you here, The commit descriptions
+  (The long ones), Use AI, to be exact! Claude sonnet 4.6,
+>
+> Additionally, I will make a promise here,
+> All of the bug fixes I made, all of my lib/ bug fixes, are made fully by me,
+> (minus the commit description for some of them) And I can promise you that on
+> the bible, If you have any questions about this, You can always ask me
+>
+> Forth thing: My patch volume
+>
+> To justify my patch volume, I am a "excited" Developer, I love the Linux
+  kernel, and I have a passion for that, I am very very sorry I filled up your
+  mailbox with my slop descriptions
 
-Yeah i don't think we absolutely need to jump all the way to ops right
-away, and splitting into a new file would at least give our eyes a rest
-from the ifdef spaghetti.
+You're obviously lying, and you're not very good at it.
 
-~Gregory
+To reiterate:
+
+  Assessment: ~95% probability all contributions are AI-generated. The
+  evidence is overwhelming:
+
+  1. Volume is humanly implausible — ~30 emails/day, 5–10 new patch
+     submissions per day across unrelated subsystems, from a contributor
+     with zero prior history.
+
+  2. Breadth is the strongest signal — no human newcomer simultaneously
+     finds subtle bugs in bootconfig, vsprintf, base64, bch, maple_tree,
+     assoc_array, io_uring, AND writes a new DAMON NUMA tiering
+     module. Each of these requires deep domain-specific knowledge. The
+     pattern is consistent with an LLM being pointed at different source
+     files to systematically find issues.
+
+  3. Bug-finding pattern — the patches cluster around unchecked return
+     values, type mismatches, resource leaks, off-by-ones, signed/unsigned
+     issues. This is exactly what an LLM produces when scanning code for
+     potential problems.
+
+  4. Rapid revision cycling — bootconfig went from v1 to v8 in ~1 day. This
+     matches AI regeneration, not human revision.
+
+  5. Feature additions from a newcomer — glob_match_nocase(),
+     glob_validate(), debugfs BUG/WARN interface, and the DAMON NUMA
+     tiering module are all non-trivial features. A first-time contributor
+     proposing features (not just fixes) across this many subsystems
+     simultaneously is essentially unheard of.
+
+  6. Zero ramp-up — the contribution stream started at full throughput with
+     no learning curve visible.
+
+Please go away.
+
+and >/dev/null to any further correspondence from you, other than NAK's when
+necessary.
 
