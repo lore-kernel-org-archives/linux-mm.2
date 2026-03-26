@@ -4,145 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1047E10A3D80
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B99410A3D80
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:12:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45B736B0005; Thu, 26 Mar 2026 08:06:54 -0400 (EDT)
+	id B8F7B6B00AE; Thu, 26 Mar 2026 08:12:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40C226B0089; Thu, 26 Mar 2026 08:06:54 -0400 (EDT)
+	id B402B6B00B1; Thu, 26 Mar 2026 08:12:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FAB36B0092; Thu, 26 Mar 2026 08:06:54 -0400 (EDT)
+	id A2EDB6B00B3; Thu, 26 Mar 2026 08:12:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B0A66B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:06:54 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8E995160D16
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:06:53 +0000 (UTC)
-X-FDA: 84588087906.22.27DA58A
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8EB511C000B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:06:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sPmDsN4B;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774526811;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E6B76B00AE
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:12:11 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 38C2B1A095F
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:12:11 +0000 (UTC)
+X-FDA: 84588101262.24.4AA2CBE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5AA684000C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:12:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f2NPtvnQ;
+	spf=pass (imf11.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774527129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UCPMWIti4WpvFBx+uoiLacb08LQC6AbfsXQqCnT6+V4=;
-	b=34zLFPYoW+939HQdDFZiByol4I957gUHJKW6rTJvv6EIOV57fRaMymQuFDP2efpdtiT1RC
-	zHrxOxxZOrGw6Qf3cA6ZvuhTZiB/80uer+zBwmS15aOmk88iZFFYKNJSxYbQvCZwoQQso2
-	yPGebaEwqAYYbAUUwlAhY7Z+IE5eabY=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sPmDsN4B;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774526811; a=rsa-sha256;
-	cv=pass;
-	b=j0PWMui9POmSDxktYqsUvJEabBRT3ZPtUaZ31S1wr07vCDw+T4p1KUT1tLJ6XnNI52PJWb
-	ixoogI66iooaNo+lQS/bKj0JrlPa0869DJoZ9EypDF7PKTm39WzYGeBUMmJJeS81d416fl
-	wkoXwmhic25AME9MOXV8b34z/n8wcEE=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-66970715adbso1722117a12.3
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:06:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774526810; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GVvb1PNYutxhzWnvAGIvoPk2dNayNW4n0fachINMme05pB94kq43WxKX8kYgg8z6UR
-         26kxcdXu/QxhA5rhxNtF4MHpXIqXseTItAU12EbPl2hOZekkoiUNPYXPgSK5yNYAtXB6
-         O8FEH7SGbi9nal9zjB/2VBItpPz9ZWQod/sdsNO0Ivjcrjnr1lmiIftOqBckxbpEptSe
-         oOi1o7JGrW3tp/jngFVwQ4rRmQYqgJ6i2IEQeeq16VU95W3n8emcNvr6spXMtDBQmViV
-         OJ/dOOYCwoEaOPPlfIgCv06Xk8UHS4cfq9LQAKeqSm4NM3uxcuY37O6ec9P7Ogqt13Ia
-         q15g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UCPMWIti4WpvFBx+uoiLacb08LQC6AbfsXQqCnT6+V4=;
-        fh=8W9K4V1ibD8QHntMYBsiJ6a5VjLn73KS/JnwMcKkYQ4=;
-        b=gzquLtE4JVvUnlPHgu5vrK2QJ0K0N3MqBm9sVAdr9FIt4h1fATSl4Wd9VzX9HrTqNY
-         pqFFUKN4QSRrvt7hUIx+SbDQYG90sax4Iuy3V1y7BaivLk2/VuYpl9vLyIvg9BMtBShW
-         7dnDL1dHz2dtclI4B05qKFouCC7EFbCbE/AnnpbfbAhXXtBuWXBfdx1jueOxD4S9fhqZ
-         8X0VeoND0GlKHZHyspcT2vumQuxvrAFwtCzdgZTxOoILhvwvlS0gXa6YN3O+oayVeicV
-         A37TPpe23ZbTH5dNtu/FztfjtZotO0ZAf4EKnlTSNElp+AKrqFbvTJOnkNdGPCx1rto3
-         NkkQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774526810; x=1775131610; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UCPMWIti4WpvFBx+uoiLacb08LQC6AbfsXQqCnT6+V4=;
-        b=sPmDsN4BICzz29X+l2CG26BxuFAjyiz5IGJwMBrzbLAwoHNCJ3rXqWOtRErLWiwhjo
-         +N+wSgxibtnyU6iRGTdwYs9wTxDgA1pnvy8R/a3F5/6d/TOpydgrCszcVGX6CaN9l4tB
-         xKoIrEURW1EFYAetlb9zoVJ7ApSjz8CZE0Fw54f7hLQ97MzH51oLbp6Z6GEbQy9AMQ1i
-         FeVWWxVAf819TbyqO3TVxBPjevSM/WfxokUrQ74jmoOPnpkp03PiAtij7/H8VkQNBpnS
-         1z/UxYH/kVJy/JaYGPx5RAbDQw1cGFeZ65A6cqDWUncuNngrCDBB8M2sWeOWwGJFqCQI
-         rRRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774526810; x=1775131610;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UCPMWIti4WpvFBx+uoiLacb08LQC6AbfsXQqCnT6+V4=;
-        b=hdcGg5C3l08PhjuEZ4ZSMq9WYOQCpHKxEUAkIQPHdotfznucnquYfgIAvXWrXLpgqc
-         U8WoxSvGFLZuxnCYfnG/aTk1mNKMKJQDLDS9UfbfraTxocMxmihqGOhGe+VmwDKNQTzO
-         +lcQc6l1BuyTVBWIE7PR3axplLxx7M8263M24DVlL0DhnnrzrJEK3xJGGEzfh0CfUVx6
-         BGnIDNnKJEdcoiYly61TzkEQw8nIBbV7WarGnHlS+GAUo09MjnGlUR6RMW2A+PQ7dlIj
-         /8hfFn9BsNsNLX6mkU7ui/9hRXaynj40AIf4RlCkfxdaJ1i6lH8gcQ+7RW+G0TCpJqCJ
-         +0WA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWVdJXNDz/ZAk5kjvz/slSkia97B3BX7+ZWPdIUA42yAo39s2Ukny45jcmQfbZi2CP62MApPzG6g==@kvack.org
-X-Gm-Message-State: AOJu0YxRnHVhELnCFcHUvztuS6Qg3C5CN1OtbNyqr3ogDatNvtsrGFaI
-	Gcscm3cZIg4z54jnfTNsorLwGzp6sE434QfhmMSmqvtvOn8lNMcDnW3LOlyO4Se0IuJmbf19lI8
-	gFgkCX9eCpCvtUPHf6txI2ek85H09TnQ=
-X-Gm-Gg: ATEYQzyG0OWdJxZPVQElkOc64WDpKJPXE+xRQTuEgcKIqqDgFI2K/vmbUGWZqoS1fyb
-	XV/2odXMOGlqcU/Nv/qncSUZhXhMQmH7XbwbAk8UX2UAkF1J7kiUZw54djGkHKy973sSJdRQCmf
-	+ET3Ya7POUMeayPFPPAdZhK6JrQ/2JVBcqhoUEuF75nnMErHeclw+4YtjwPtUmqFTvBr9hwpzZh
-	4ZwJJZPchsz3xJdQ7vZ0sAkRP8o1WAcN5YciRXExT1LMsfnj5y9oGK4pek1FI2y3bMcR9dogLtP
-	NJjVolY1/ca/KCLgltaNhj4rpMNfmtaa0h8JEdGO
-X-Received: by 2002:a05:6402:400f:b0:665:33eb:22fe with SMTP id
- 4fb4d7f45d1cf-66a82622bc2mr5320318a12.9.1774526809603; Thu, 26 Mar 2026
- 05:06:49 -0700 (PDT)
+	bh=zqGfbNl30NSapuxDl6F6achIWjPcAOkI3q+zHc+HotE=;
+	b=zI9zA00tGfe8URLjLu4IXF7+fksYXRI7ODd/sf5DzvsahLU98e0oUS5sZjKhXfOgEuYx5d
+	TtNVe5IWwoHI4xROR+skRhUnZC2DoVUXfvRnPSj/pqZnh1g79EI7oJ64axTA5U9OR54vRR
+	pSi04ZTWr2uYFueKYRCmsA1r/2s0Z8E=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f2NPtvnQ;
+	spf=pass (imf11.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774527129; a=rsa-sha256;
+	cv=none;
+	b=wPDiNz2V+giScX1RJaHa6kMM4yLmDHGZy8HrdywXtTfOFwLajb8SBFggJUHPjnpExwqGEV
+	d7upFX3Aii3+bbA83PdhgLfZ0UD6IWIKvnS1E84VOtDgqI+ZjbDQbylRYHx0Fqt37qPBgc
+	qSYi0O+FcsycMSKFq2B1sgB9beIxGvk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 739A544233;
+	Thu, 26 Mar 2026 12:12:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE17C116C6;
+	Thu, 26 Mar 2026 12:12:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774527128;
+	bh=GaoPImR0X0ioFmaoaToA4myk9U0YdNsMsVeE2CapRSo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f2NPtvnQXFwqudU1WmHW2/RX98/e5740Zc3kpalBsO0rznuOvLs43E/vF/dsq1Hwp
+	 x82BfDnSCbVj/UE9JJeVqP/ORgTH4WU7w19kl4iWMX8DliLjdUxoYgfSnZf4XzxGnK
+	 wbKD/gF3aC7ajt54ErRFBCKRMqk4OzUAEY+bWR3WFFEztBF4pXXmI+DdTsiuaYt9oL
+	 JnHRoSpoMuAMpr+BtDwkeWwVSZwxlNeG8JQWHNeflLf3xGo2PIVJriGbu0QBGtD7uL
+	 8NertDYo5N3pZCYN/kwygA2m66N7wr5sBQdtAJ/3u1fWGvqAsm0i8SUdYa8J22+1SZ
+	 GKRh8BS2sOIRA==
+Message-ID: <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
+Date: Thu, 26 Mar 2026 13:12:03 +0100
 MIME-Version: 1.0
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev> <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
-In-Reply-To: <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 26 Mar 2026 20:06:13 +0800
-X-Gm-Features: AQROBzCNij5ZIZYiccbOybvn12nUAvCYLf33aTbpussW3sa2ckcJHvGDC3YLdQo
-Message-ID: <CAMgjq7A01C+wyHxytZfVFVvaJ+gUNqkKvYN61_Peo911YaBHOw@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim (reclaim_ext)
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, lsf-pc@lists.linux-foundation.org, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Gregory Price <gourry@gourry.net>, Barry Song <21cnbao@gmail.com>, 
-	David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	wangzicheng <wangzicheng@honor.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8EB511C000B
-X-Stat-Signature: 65asrwo5pie8dhjw4jfkpnkoepfbgyeo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
+ module
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Josh Law <objecting@objecting.org>, Josh Law <hlcj1234567@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+References: <20260326072737.341964-1-objecting@objecting.org>
+ <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1774526811-768694
-X-HE-Meta: U2FsdGVkX1+T3Cam7/XT7zK9AFQ5PGf530s3ePHQWs+4iTcp2sVkoSN9DiwdAVkgaMgn+OUcdqOn9ne47OUl6OFNsxrgoNRN4F3xEva+8gvyprzvK3gCvJ0+w9k1fVhPKSdFYzlITg0akdCl2jGnttC/pDGrpXhuG179s8Y4gXmhpqGOdOQ2Al/FSrLW2bwRcn00m+LD/IwsNP/O4yhxfVQtOAg8tQ4pLvqTx6hhXnXUOvrhQ8LuEKXqvtVX8OlG35ij76iXX25e0nqL/yweh0X6wqytzrr37JvBeVf+R1YIjC3PnG6LO1xhsdvCa4EUCQLiH4FECN6Mp9CLKbaKGSO2PQ0LQktccNgQOHIACB0+XPXcT5hzHtUmgz0ErffaAN67GtEarJQO3DJNwQEq611RzN7aJJrf/0njqbKwgYrfq56iq+/Mo5Ac0BiqKrKH9Gdo/fxS8ZJRGgWeW+0bt8/lQZGfU83hiSS+W+EaeR8BJRSDDDEq8qHtxSbFGkNop5B2D1TXNWsek7aqyAqzvMg1pUrw4J3B89QBrbZndHtGgFqkskrzxeyTnsuxxn04gqa5xJjRVUaLbilTcsNdSJQyqM+Eb8Q36XW5kJ1X7CG/H5OEkAJj3OeUj4BaDP9QK1SeUbc2c1I5jCwN56x6qCNDlMu5Pnpwi2aR+O5Rb3q0ahXT0YXweocS53vAdJB8gAdoi/0UtVhMjHGbgKlyUP6sg9O6xCrVC0LI5kCYiFrKRZcqNvGzRVYwTKnVbmMUVaHQirTGlFcQpiKby9i7pJJ2MmK4soNoG1oKMmaBGJkbPHpif61bNgfG/jCiJEqYJ9lFNd3b5JIEIBBdE1z0umnozVssu2O2YCVn+VKSfrjtMIuJC06CXiMfUzBN93Le4w0HvJ+x3gtlupiTvLmuyBWSEHrq+sB9AO/XetQfKI5/AwR703p34M3/URPa1ika5ow3ZPyoy+px9iQaYsA
- Cq95Up0v
- wDIwg8IXdk1I9R9PCPNm8JM7jE1pdaJZE+tzSdm0K26TMLHWVn0tN4xkeyrOtnZvBXjHUlS2pGBwDgq5SKGRhM+1fmcgzlrF9Wy5Zd+KEAjcE4P/KrOl6u5jSQ5UIxcNfYGVBzJAQ9B3ImZ2MmH6vlNx9V1f049GrlGHj+Gdx8xMxaq0LrOdzyAyZYrkahP5ubVtYMsm3TMWkR5SHJRWUJgq6ktWChw18l63asbuX61JQqRInaCEgGD8SStLaDyHCxVtw6XPQmcoFLhW5GWK9gFoVzjyQJU64kBidk/DxBPeiDQQhqdH5XjtcXcVhXrO/cSnJCPX4/HJAxR6v7Abldcmfcez5XSUcDmV8QkJqgvE7bt/CCxMFwJrcMEdDbv/OIUMHrH6wb78GpLrJ+aIkz9fyGUpyKKozB2QGfktbaRzkv0MFBTAPlIqj1NETfQlu0gn43hMZrLhy65e4H7tnaR4hHP3VaLQ7n16FSpdzIiXba6BulrK3FJwq9GTTLELPCkz/
+X-Rspamd-Queue-Id: 5AA684000C
+X-Stat-Signature: ntzsfwr3oz1s3xwcbjskwco599xw5fdx
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774527129-781707
+X-HE-Meta: U2FsdGVkX1/gLJj+uQ6FKUIro7NLqedJEC7IKQxGbWg1lP2W79qvCt4rcKd4Ry6uv6naqZAWzS8vTvVbhuNpJcamR0KDqhs03GXag302JbBjjFUwh39iIabJQhMma6CQAtCklh12hHyRtB+EdJyXtIygk7wmjgcafytH/45qQlGharbE69JgKW4EAv0tRM2xs0XluE+qBhvdy909BTRsZDW+Ih9NUTIPkBV1vgaCtgpoj2eSgK1q3S+7Y7Zqc4uqe+9M4zAJ7WIG7vgqA/sIlN/xGMSDId+hPIZ0fUAN4E+92WsyM4KC0Ol3VlTtz/wUuN0tasdLthNZJCCxsML0ewTqnyiwIv4U26c8PEDMaFctSpw8mUYkN6QXgJV+NRvfvDN/ewtC1/MgWNKmkHjgmeMP267N5DxYL+/+5x6ea5ZTLWfe8++muy0UUoKSwUNzuBpbsZZODoL9j8gdgWNIgGoU3r56+ADVQmvmLfvApaSCVNrUKvg2y6zr+oQZfBAywuRX3BzPedzY658teLFQ7U9kTPN7lbgv+v2XZH0s4CzthAZgfz+5FZSEiJPyYmib+LvQqpL9bgjV+VDTUnMVGGxXFdMje1ezzwBcb9UvqXCYvH4mGAi8vbInWYVdsCHZNMXgIrRAXOAJ/T6EIygBEE/Jq+UKI/GSL0hs12JojyC3POLZRoCglF5dX0RvSol8mlaXErPrvqwn/75wOeyDR7xcJDdmfllyzLYXQzocQ1p5SL9vEG4NYpapKkuruY+6Lznt0Qrivn2b5VB7br5xITwibi3sxb8UUMhkR5OJp3OXSKiDLpAgrHNDEFRcN1AtAcCJcx9EyqVVTBf4lBtLrThtLpf5OoRv8/RW+3756qpWC2jTSfBNc99JzIj7+aJnbd29bBf1BvEHj8eK3hhlkBXSFZ4qMcvl3JZ0YykQRenran8rKPVtLnWxc5BCCqG2nftv2ANpu8KFq6ARLpZ
+ b239b09o
+ Kpcf4Yy2kaTTyVk4tmDhN9RlZxHqdWHKBEcxRr9fwCkjFtTHOigE2i0wiU91EkSL8Ay3W9hlayuTTeIEjsfdnmEgrjJyoKI46UavLhhRYlCVI7vj60tilAm2uhTJcZqMAKDlwCnxDISMVRv2GtEqf4MleOjW7CGoqquHrm8Bb+41a7GxrTogpC4HJuxEeYyeCW+t8rC04s6QPwlO1ZD3sSnQXJO2Y4GUsXh197FdmRNMx3T4DPn67DxIt47MVWUEQlKOd2LWMuzmbp5mtqTcMcySz9M5yb1OJcLPLOiywFtvo/08y9pru9h3fD21V41QXwGxEEfGrobkOQKOHI8BQrArpDFEUKhoBvJe1HH/Lfb/ki2Xas7eC2o2+pinwZbnZo96nGKEMkLQ9TSooivpgzDBiSyfljw84eLk2ObXz8CSgZ+5UoilYjKDYaYaAHW779hO/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,24 +142,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 10:05=E2=80=AFAM Andrew Morton
-<akpm@linux-foundation.org> wrote:
->
-> On Wed, 25 Mar 2026 14:06:37 -0700 Shakeel Butt <shakeel.butt@linux.dev> =
-wrote:
->
-> > We should unify both algorithms into a single code path.
->
-> I'm here to ask the questions which others fear will sound dumb.
->
-> Is it indeed the plan to maintain both implementations?  I thought the
-> long-term ambition was to knock MGLRU into shape and to drop the legacy L=
-RU?
+On 26/03/2026 11:34, Lorenzo Stoakes (Oracle) wrote:
 
-I personally also agree on that, so far I'm not aware of any major
-issues with MGLRU except some corner cases that are not hard to fix.
-Once these are done, I don't see the need for more complexity.
+Trimming context, I agree with everything said by Lorenzo, very detailed
+analysis.
+
+> ~~~
+> ● Looking at the headers specifically:
+> 
+>   Infrastructure:
+> 
+>   - Mail provider: Zoho EU (zohomail.eu) — a privacy-oriented
+>     EU-jurisdiction mail provider. Easy to set up anonymously.
+> 
+>   - Domain: objecting.org — custom domain, no organizational affiliation,
+>     no accountability chain. Anyone can register this and point MX to Zoho.
+> 
+>   - Authentication: DKIM, SPF, DMARC all pass — but this only proves the
+>     email came from objecting.org's Zoho setup, not who's behind it.
+> 
+>   - X-Mailer: git-send-email 2.34.1 — Ubuntu 22.04 LTS default. One reply
+>     had @ubuntu in the Message-ID, confirming the platform.
+> 
+>   What the headers DON'T provide:
+>   - No corporate or institutional email that ties to a verifiable identity
+>   - No PGP/GPG signature
+>   - No Signed-off-by chain from a known developer vouching for this person
+> 
+>   Supply chain attack assessment:
+> 
+>   This matches the threat model of automated supply chain compromise:
+> 
+>   1. Patches already landed in stable — the bootconfig fixes made it into
+>   6.19.10. The pipeline is working. Whatever is in those patches is now in
+>   production kernels.
+> 
+>   2. Trust-building pattern — the mix of real bug fixes (fd leaks,
+>   unchecked returns, type issues) alongside feature additions (DAMON
+>   tiering module, glob features, debugfs interface) is textbook. The small
+>   fixes build reviewer trust and merge history; the features add attack
+>   surface.
+> 
+>   3. Volume as a weapon — 328 emails in 11 days overwhelms maintainer
+>   review capacity. Maintainers like SeongJae Park (DAMON) and Masami
+>   Hiramatsu (bootconfig) are now spending review cycles on AI-generated
+>   submissions. Even if every patch is rejected, the reviewer's attention is
+>   being consumed.
+> 
+>   4. The DAMON NUMA tiering module is the most concerning submission — 409
+>   lines of new kernel code that runs with kernel privileges, monitors
+>   physical memory access patterns, and migrates pages between NUMA
+>   nodes. If accepted, it's a significant new attack surface delivered as a
+>   single commit from an unverifiable identity.
+> 
+>   5. The feature additions are the real risk — bug fixes are relatively
+>   easy to review (small, focused, verifiable). But glob_validate(),
+>   glob_match_nocase(), the debugfs
+> 
+>   BUG/WARN site lister, and the DAMON tiering module all add new code paths
+>   that are much harder to exhaustively verify.
+> 
+>   Bottom line: Whether the intent is malicious or not, the pattern —
+>   anonymous identity, AI-generated code, industrial volume, patches already
+>   in stable, mixing trust-building fixes with attack-surface-expanding
+>   features — is exactly what an automated supply chain attack on the kernel
+>   looks like. The 2021 University of Minnesota "Hypocrite Commits" incident
+>   was a manual version of this; this appears to be the automated version at
+>   scale.
+> 
+> ~~~
+> 
+> I'm hoping this is some naive attempt to try to 'contribute' to the kernel
+> rather than something more nefarious, but the seemingly sophisticated
+> tooling used makes me wonder otherwise.
+> 
+> In any case I'm deeply concerned by this.
 
 
-> And that Linus has expressed such a desire, but my googling fails me.
+This patch also targets NUMA which is quite unpopular setup for
+hobbyist. I don't have any NUMA around me for years... Even my build
+machines are not NUMA. How did you get one as a hobbyist?
+
+Also after looking at the code style in this patch, after "reviews" [1]
+and "acks" [2] (quotes on purpose) this account gave on various patches,
+let's look what was admitted 3 weeks ago:
+
+https://lore.kernel.org/all/f8772114-a495-409b-a590-a9b1d8ed1d41@gmail.com/
+
+> I'm learning this Linux system day by day
+
+So learning or adding serious code for MM for NUMA machines?
+
+> I own this device ...
+
+This is about Xilinx AXIS FIFO which is an FPGA IP core. No way you have
+it. It's not popular, no easy way to get it in common embedded boards.
+
+Even assuming if you have embedded FPGA device and work on it, the jump
+from embedded to NUMA is just stunning.
+
+Answering to reviewers with whatever confirmation they look for is also
+a warning sign of non-trustworthy behavior. Or rather behavior trying to
+get trust.
+
+[1]
+https://lore.kernel.org/all/D47F8215-FD08-45ED-AB01-0A5C48CD41DD@objecting.org/
+
+[2]
+https://lore.kernel.org/all/2F84DD09-2880-45E0-AA98-204F10848F85@objecting.org/
+
+Best regards,
+Krzysztof
 
