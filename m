@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A2BC106F315
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA0BF106F315
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F1026B00C0; Thu, 26 Mar 2026 05:55:51 -0400 (EDT)
+	id 650E26B00C7; Thu, 26 Mar 2026 05:55:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C86A6B00C3; Thu, 26 Mar 2026 05:55:51 -0400 (EDT)
+	id 5B4E06B00C3; Thu, 26 Mar 2026 05:55:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F3B26B00C5; Thu, 26 Mar 2026 05:55:51 -0400 (EDT)
+	id 3BBFE6B00C7; Thu, 26 Mar 2026 05:55:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 37B566B00C0
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:55:51 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06A0FC3A33
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:55:51 +0000 (UTC)
-X-FDA: 84587757702.14.EA4FBAE
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9C2D240013
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:55:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0TRfXFFV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PrKmUYBT;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0TRfXFFV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PrKmUYBT;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	by kanga.kvack.org (Postfix) with ESMTP id 232316B00C3
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:55:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E34411B92DC
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:55:56 +0000 (UTC)
+X-FDA: 84587757912.22.674D019
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 93727180005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:55:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="g/uLEo7r";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1pa9WfLm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="g/uLEo7r";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1pa9WfLm;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774518948;
+	s=arc-20220608; t=1774518954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pz/dKtOmFCfJ/SjA/GWn8rRYuhiNasxWQhID+bg8soY=;
-	b=1rtyoQ+fvPw8dQMSP7JxmjEEhoD77vHxMmlXFVtaQfbfTNgDW2JMTFyRlRV85m64nBXC6N
-	iJxywojj/tAFheTobRmBSHdcLKLTL3IE7ufXKLKU5ohiQyWaZ3uByGg/MilR8oEk83Lz+G
-	1s4YXuc3B0Q+/+44/ThBg5rkwBgS5jM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518948; a=rsa-sha256;
+	bh=nRtMeDaKzjnSe50bC9u1YlJqD3vALyRYeKO0i9ViSTQ=;
+	b=bpRfapNwShskaBHa2iW1wJlEEZL8CjDuwL5mIA3P6vzQ+1MXGTIdRHFFr1/2VbS1Ex+enB
+	vGZx/vYWU3uXFoZsQjanUNAEx0FsdaRlRU48MGLWkpG69Ryolm1DfEQjCfbLP8N+Z7712o
+	17D/GCDeZNjQGq41Ykd1tiWt8LBD2N0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518954; a=rsa-sha256;
 	cv=none;
-	b=JdS9FdKQcoXINf8L3wz2JjgizDEnps84rAKKgXENzbXIkS9UJEr2Z2jM2x3pRahsYo6xxq
-	p/3lXHMXNECRp1TAhgGryecYXYzP30JrQS7lC2N88o7IJwattV0K9hxt0ya47uJsYIAWuf
-	/9zgfHAZ1ra7/qgg6ydfYnCl7/EiPVg=
+	b=46wESFOVt9dEgtqBOjeB1L973kIz0oTjg52K1uz1YtlYjrt1gzH2iDLK7GtcsrRK1yalQR
+	xnTpbAmE9Ug+onGoBc8v7agbe66aSCI9IuvGbLkkLiQAJkbWMWk5238WJCrI130oafmQMm
+	SqCiZQsMVKCOAUl8NekAAGnFmSlxrTw=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0TRfXFFV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PrKmUYBT;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0TRfXFFV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PrKmUYBT;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="g/uLEo7r";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1pa9WfLm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="g/uLEo7r";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1pa9WfLm;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4BFBD5BDA5;
-	Thu, 26 Mar 2026 09:54:57 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6953D4D283;
+	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774518897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pz/dKtOmFCfJ/SjA/GWn8rRYuhiNasxWQhID+bg8soY=;
-	b=0TRfXFFViPXUkITOQz2GM0pGLNQqx2D5zKOiDGVE03I+NNSKkhRlTraClHIJiDR2DBMfz1
-	k6dbjaROOamix8Dn8HPhiLAJ0DKb2zpzx0S5++G3Z36JsP3jqXSf6Hs7BlvmzRx7DjdEIR
-	Y1eicNGp/yR75COyyspHqz0JGvniWvE=
+	bh=nRtMeDaKzjnSe50bC9u1YlJqD3vALyRYeKO0i9ViSTQ=;
+	b=g/uLEo7rXGrXHjkOzxqornYwO8D55hnybzSnvHf833t+3wYkpRy9Xo8XKdJahdOSvFwIWD
+	VXeCcf7JE6FctkRkxZ53+CkZumAI5qtGdkniM/WZKLrjx2csNiHapmKERHPcNyV6svYgZK
+	YuZYsIW+LgxeZTS7+JqMXWFI9n0278I=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774518897;
+	s=susede2_ed25519; t=1774518901;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pz/dKtOmFCfJ/SjA/GWn8rRYuhiNasxWQhID+bg8soY=;
-	b=PrKmUYBTCWL2TCFcC2JIpDwkiDan7V+OZK8QM5HGBoPNJ+//GiVfh+qG+OQZm2MHX9b/FK
-	ddQNdpiGdVH2QHBw==
+	bh=nRtMeDaKzjnSe50bC9u1YlJqD3vALyRYeKO0i9ViSTQ=;
+	b=1pa9WfLmFomg1L5oozQ22D1QK+lBooEk1mMezvcCzeBd+FqvWHJk0BeIWAc8GYsqDJyxa/
+	vSfxw7SImiU1PYAw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774518897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1774518901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pz/dKtOmFCfJ/SjA/GWn8rRYuhiNasxWQhID+bg8soY=;
-	b=0TRfXFFViPXUkITOQz2GM0pGLNQqx2D5zKOiDGVE03I+NNSKkhRlTraClHIJiDR2DBMfz1
-	k6dbjaROOamix8Dn8HPhiLAJ0DKb2zpzx0S5++G3Z36JsP3jqXSf6Hs7BlvmzRx7DjdEIR
-	Y1eicNGp/yR75COyyspHqz0JGvniWvE=
+	bh=nRtMeDaKzjnSe50bC9u1YlJqD3vALyRYeKO0i9ViSTQ=;
+	b=g/uLEo7rXGrXHjkOzxqornYwO8D55hnybzSnvHf833t+3wYkpRy9Xo8XKdJahdOSvFwIWD
+	VXeCcf7JE6FctkRkxZ53+CkZumAI5qtGdkniM/WZKLrjx2csNiHapmKERHPcNyV6svYgZK
+	YuZYsIW+LgxeZTS7+JqMXWFI9n0278I=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774518897;
+	s=susede2_ed25519; t=1774518901;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pz/dKtOmFCfJ/SjA/GWn8rRYuhiNasxWQhID+bg8soY=;
-	b=PrKmUYBTCWL2TCFcC2JIpDwkiDan7V+OZK8QM5HGBoPNJ+//GiVfh+qG+OQZm2MHX9b/FK
-	ddQNdpiGdVH2QHBw==
+	bh=nRtMeDaKzjnSe50bC9u1YlJqD3vALyRYeKO0i9ViSTQ=;
+	b=1pa9WfLmFomg1L5oozQ22D1QK+lBooEk1mMezvcCzeBd+FqvWHJk0BeIWAc8GYsqDJyxa/
+	vSfxw7SImiU1PYAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 402524A0A6;
-	Thu, 26 Mar 2026 09:54:57 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5F3AC4A0AC;
+	Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4OKhD3ECxWnLYAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 09:54:57 +0000
+	id Sng+F3UCxWniYAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 09:55:01 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 046B2A0C59; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
+	id 4C273A0C6B; Thu, 26 Mar 2026 10:54:49 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-block@vger.kernel.org>,
@@ -124,26 +124,27 @@ Cc: <linux-block@vger.kernel.org>,
 	linux-mm@kvack.org,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 16/42] udf: Sync and invalidate metadata buffers from udf_evict_inode()
-Date: Thu, 26 Mar 2026 10:54:10 +0100
-Message-ID: <20260326095354.16340-58-jack@suse.cz>
+	Jan Kara <jack@suse.cz>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 24/42] hugetlbfs: Stop using i_private_data
+Date: Thu, 26 Mar 2026 10:54:18 +0100
+Message-ID: <20260326095354.16340-66-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260326082428.31660-1-jack@suse.cz>
 References: <20260326082428.31660-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=790; i=jack@suse.cz; h=from:subject; bh=MUD4hvw0kKK4/k9ZuBglb9Pnr5A53izwByukHuzgvfg=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQI/iH1edR4ShwUvYoFKD7qhhaBFBhSp0KWEX 3MdhTPWkEKJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCPwAKCRCcnaoHP2RA 2a4GB/sEoTazVYsOod3P+7Q7cHcOJ8li09u2SmfS9NMDOgvd7GUUyee0Amz/FogU2ivaPxMvJlz 8KjCnG+Vrw6P0Q5iWMfl9uT4DUjnYsiAZ9qT0otWDuNXi44425x4VvBWBqu25LLh1edJ1eOHAxZ EN8YuyEgOnmgDxNuFXCkfxaOwrFCsP5PgFykiZGe3ijNXDZ9YfJrUBs0oRpmvQ6EBvFEKPJPujv T8ZpmxS0YMIdFy+LdBFE7EF0JNNv6Ao1wT1qbk/WgAyQwT6RYcstoYle3mN8hjLFpvJ128g1Zdh B4irlh9r5tyPwpuDGEmY636MNurozBK/gF2amwNyKZa/BOQ/
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3180; i=jack@suse.cz; h=from:subject; bh=TBJAp1vgW97AnNsMKdc/36W2ae98JPtniWixMTAK+B0=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQJGM589kUVC1RTs2x8EL+jKz9oU8EvkUQbFu rSC+eSRsTWJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCRgAKCRCcnaoHP2RA 2WjUCADE/11pgV1euunYPZejUo+EZ2IERerdr6bsaog5c+u38VVLzeV0BYVat0T9gAevVwwCkqM 1CqsKuiU9mK1rhYsqnlUI/NuF1zX0AGuGuf2HCnG+VqAE3GzgVDfEISrOpTWIxuIKCaWNwhytTi 3LP+HW/e4zs+18qAZnQvCvQdbGS1TxzqOJowuX3nmePKSxNsUnNZ9ty2jzeIWsJ5FuF0tWFoFVc 9/vV2Z3SUGFzejWTV1tl9PrTz4Itm4p5gOex4oO0EHOKi/fN25s4s0bsGV1JPYeJ+Jcw3CGD964 GiXNOqg6RfLB9u0KfhHYVum8ltGUKOwfWHLwbxpn8vvN79Lz
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 9C2D240013
-X-Stat-Signature: kfpif6a7wyk1yzkurq1kabo61jrfajqa
+X-Rspamd-Server: rspam12
+X-Stat-Signature: g7yzb31yqu48d15arwjqewbgrgnkdo8h
+X-Rspamd-Queue-Id: 93727180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774518948-217554
-X-HE-Meta: U2FsdGVkX19vSdNmDJ1zmnqOQLQw237YSLsWmcI2IhYIFF9WKF4DWq1CLwZMJUjRyp7QFgrmJ5bzm/HHrCMrKFAZ/QBnMvuBW+gjZx+ETH+ZV9EPTpNcmbobm/GNgkojRFQ9OabvLBZ/oessZAs66Tmney5++Xp1GWszTewV2tXrBGQ5LMah/7Iz61iAFcgpk8Z3v9WvqT40xQ/ZwGMRWDSQd3zCMFJh16WXohKZGcAHgf6jq1VWa21BjkGEI50AlFp0YpEiRnaq5d2LCBmxqzDGsOU7Z4b/i98t1qHdZRJ/qGa6tFtPIkhxQ90dftnKfj7HhAnFgHkjlQ8OV98GfyTv13NzRbV4TsFTVSTldyZwY+aecOCLHhif7P2wvVBGeQVrs6+tmeGFJRluR5mY6VB3rwnW95xCkFHo+Brhia2yM2Zd4hUKbeqGkLV6n34Gpa1RwdS8OnVL86CtKWraGssmmkIXjGgVaD2q6c6ho8HUsI5sqye09d9f8uixHCaYXciRXM1i98cMM/1RRgoXTEv1maKLtqVeSJO9RYZrSjd2ThxXQOx0soGdLatsGmmCo5bSRxaugIBB9ScvuA8SInF1HvgzGG1HDU0FotPjaUq4YEzVVXjBXXWGsFEr8iGUB7HJOB9oVPSX1XABVxeAEnKkyjox/FxguY/0CSxpEBXVcqtjTVzP7M/fa8o9F3Dv1DDP1BDx8UeYiIbWPdVSPGv14bDbF9wBoLpVifVWSkkN4O8KUCJTaR0fz1EDyXFcPvIDa4LZ5E12MYK5MCxtS8XeRBPNfULJLAF0sBOKHya9pBSqgEU1Gqefa/g0Hzl21qOPiWRbW5Zr2HFFj2Ri2CLzzq6Z5qAkqOPiUTNVi5nxfu9EEzGL5sGmPpo6t5tqGBvgyDMCc3NRYfK2xolmozmUYJsrUc7cUMw1OB6jdNsaCVXWE4WvuhIrA7CoQ6DFMDEZIdJZNEPy7l5tnKI
- Np397Tgk
- jj91f/x2SG0XSfF6RrVK2YK4ZDtwFcYGY6SuxO3fKaoOXDnS5SozqEVRO9OqHe2AAhkzId4SpKQUErpnR9yAKTDoJgZcy606CI83PlU9kJuRa5Kp5i3MV2Hm3I/Ty/IriulAZpnXaRBOwu13WCfIKjJ1r6Qjegg/YvLVZunCZh0V8GdkItOErZ5OF7YXY6rrr3oqQ0xzyxooqQ5PGGIuuP8k3rMJTH3MngK2qJo8uU+N+WZDv9wXK+TEZz4vRRqTgxzFsd/WYEYwa0jjQ0K/MZEkhmT5USDnD6blDygPHOqQn9R5fELCYlXLjnn+bXbzc8Eiy1J75GokWNEtjDuCRa4Uw6SM34R4rAqhTnRrSCIDUyGw=
+X-HE-Tag: 1774518954-747196
+X-HE-Meta: U2FsdGVkX1+l/yHpUbeXyW1zQbhTJvGghvzpKEPwZtbWEUuAlYQMiom5YfXiVVC0tomBQP1F/888RfrpVJ0ibU/xfoz6C+KdkqJloQBnEjUp91R2ZSL8x4VWUquAIVeKBKR65nnklSvGb02Xebb8wZE6JvNaYRNrQLdG8/zurkgIC085lTP2Z5OQEoz5my/W7QOQJsxLRP7R/Hmjvq3vZNVTrJkRK6ic1T2jSACEztEhz3l2DyHjlB8IR16C1TDHBox24SB+RwkEJ4pgmNDXo9cUw//UF1B5/z4h5iwyvM6QtK8RVYl5jU5WoFVxtyoejvhRADvkk4TeEZrE1hJDqakSEmX/LRMlmLsrbDgwxe++BnLkLQ4uFHdVsvMvt8qlBlJyiFXJVw/eIQTpT1XhcGJyAPsPI1aC6b4H8scu45q0kIwDcCBSBEaOaKHFAXh9pgPFOSLtyzgc5fMDu9Be+8z5GpCdKP5E1EQVX/ve8dJq7kJI/j0t0zisS5/CPcMKtwL/pvHZfRe5XMqQOnGaxAM3lH/vgMNPkm11xlzKHhJwRxvGBwk0fTNxCVoJFh2jv/qrn5U73eYWwP74EY94m8UT+BSL+xca7ivcqKL6TvP1bBKV95Btb851yTFZ65nmLbu/dYgA+LX5GlIiSpEUIX1P19pX4KotQ5z1VuToFOAENfQponWQ7uurTUA+zl3Xk1QmIbP2DMWRXpImcLOv0V0fANPARN5B+FJNNmU+F6S6xW8e1VHDZTeC26xPW2Fvf4UMRSbm7fZspyiTud2c/1qqUS8YCN9xWROIsuWp5cNRE+hgXu+Ar9CifKzUQ71IXZrto1vEnONDDISVrX99jyipWnT/8UYL8XJMrN3g6hSgc/33sX8NnZkGOAorwwB6dGSvNEBiX+SK/AjC94SZ45BZi3FbV5q4l8NGk0G0nv9NSP/aOLXSwZWu8OjXL/21vlmJJcNtaEyGDhSdegR
+ xNpZsLHN
+ 75debV1/q2txan8C4Vfa+7T1KtCXx5NErjzOywfM8L2/MN7YLSJ3cBXpFVk1+316MllxsXJ7Xpm6i8DvH2xmRQ33pdSoFjimFKXaoNKC0VEiGS9ZooZFbSjvwl7+uS4Sguh5MjYgmgx1En1bongmIPOT1vxDBLDMi4O5Bects6qiv8Zy0eh/vLQwJiRBUlnmMA+oMUOggL8OIQqwp4LxnX9kEhBMdWUAI6/2efKxM0TnxKh8LqeqjN1AuJMrhfujAtolj/xdXswEqhlUMAksOQ0Zjc9/b60TyWTC96UFaQITwRPFh6o+OMr9dsKBaPy81hQFu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,29 +152,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are only very few filesystems using generic metadata buffer head
-tracking and everybody is paying the overhead. When we remove this
-tracking for inode reclaim code .evict will start to see inodes with
-metadata buffers attached so write them out and prune them.
+Instead of using i_private_data for resv_map pointer add the pointer
+into hugetlbfs private part of the inode.
 
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/udf/inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/hugetlbfs/inode.c    | 11 +++--------
+ include/linux/hugetlb.h |  1 +
+ mm/hugetlb.c            | 10 +---------
+ 3 files changed, 5 insertions(+), 17 deletions(-)
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 7fae8002344a..739b190ca4e9 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -154,6 +154,8 @@ void udf_evict_inode(struct inode *inode)
- 		}
- 	}
- 	truncate_inode_pages_final(&inode->i_data);
-+	if (!want_delete)
-+		sync_mapping_buffers(&inode->i_data);
- 	invalidate_inode_buffers(inode);
- 	clear_inode(inode);
- 	kfree(iinfo->i_data);
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 3f70c47981de..6ad02493adfd 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -622,13 +622,7 @@ static void hugetlbfs_evict_inode(struct inode *inode)
+ 	trace_hugetlbfs_evict_inode(inode);
+ 	remove_inode_hugepages(inode, 0, LLONG_MAX);
+ 
+-	/*
+-	 * Get the resv_map from the address space embedded in the inode.
+-	 * This is the address space which points to any resv_map allocated
+-	 * at inode creation time.  If this is a device special inode,
+-	 * i_mapping may not point to the original address space.
+-	 */
+-	resv_map = (struct resv_map *)(&inode->i_data)->i_private_data;
++	resv_map = HUGETLBFS_I(inode)->resv_map;
+ 	/* Only regular and link inodes have associated reserve maps */
+ 	if (resv_map)
+ 		resv_map_release(&resv_map->refs);
+@@ -907,6 +901,7 @@ static struct inode *hugetlbfs_get_root(struct super_block *sb,
+ 		simple_inode_init_ts(inode);
+ 		inode->i_op = &hugetlbfs_dir_inode_operations;
+ 		inode->i_fop = &simple_dir_operations;
++		HUGETLBFS_I(inode)->resv_map = NULL;
+ 		/* directory inodes start off with i_nlink == 2 (for "." entry) */
+ 		inc_nlink(inode);
+ 		lockdep_annotate_inode_mutex_key(inode);
+@@ -950,7 +945,7 @@ static struct inode *hugetlbfs_get_inode(struct super_block *sb,
+ 				&hugetlbfs_i_mmap_rwsem_key);
+ 		inode->i_mapping->a_ops = &hugetlbfs_aops;
+ 		simple_inode_init_ts(inode);
+-		inode->i_mapping->i_private_data = resv_map;
++		info->resv_map = resv_map;
+ 		info->seals = F_SEAL_SEAL;
+ 		switch (mode & S_IFMT) {
+ 		default:
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 65910437be1c..fc5462fe943f 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -518,6 +518,7 @@ static inline struct hugetlbfs_sb_info *HUGETLBFS_SB(struct super_block *sb)
+ 
+ struct hugetlbfs_inode_info {
+ 	struct inode vfs_inode;
++	struct resv_map *resv_map;
+ 	unsigned int seals;
+ };
+ 
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 327eaa4074d3..2ced2c8633d8 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1157,15 +1157,7 @@ void resv_map_release(struct kref *ref)
+ 
+ static inline struct resv_map *inode_resv_map(struct inode *inode)
+ {
+-	/*
+-	 * At inode evict time, i_mapping may not point to the original
+-	 * address space within the inode.  This original address space
+-	 * contains the pointer to the resv_map.  So, always use the
+-	 * address space embedded within the inode.
+-	 * The VERY common case is inode->mapping == &inode->i_data but,
+-	 * this may not be true for device special inodes.
+-	 */
+-	return (struct resv_map *)(&inode->i_data)->i_private_data;
++	return HUGETLBFS_I(inode)->resv_map;
+ }
+ 
+ static struct resv_map *vma_resv_map(struct vm_area_struct *vma)
 -- 
 2.51.0
 
