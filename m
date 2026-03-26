@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0EFD109E55C
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 07:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B35D9109E556
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 07:12:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41BBA6B0005; Thu, 26 Mar 2026 03:03:40 -0400 (EDT)
+	id E60CF6B0005; Thu, 26 Mar 2026 03:12:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CC206B0088; Thu, 26 Mar 2026 03:03:40 -0400 (EDT)
+	id E38C16B0088; Thu, 26 Mar 2026 03:12:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BABA6B0089; Thu, 26 Mar 2026 03:03:40 -0400 (EDT)
+	id D4EF96B0089; Thu, 26 Mar 2026 03:12:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 157946B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:03:40 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0483160BE8
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:03:39 +0000 (UTC)
-X-FDA: 84587323758.04.EF903F9
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8B7EB10000B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:03:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=D6pXo0qq;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C1A856B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:12:16 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22BB3BCDEF
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:12:16 +0000 (UTC)
+X-FDA: 84587345472.05.04DBC1C
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2A9D3140003
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:12:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Zs3Dclls;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774508617;
+	s=arc-20220608; t=1774509134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lEkg49JXBlYRGRAlbz2ESpWLIMYJu5dEQ6CVQd0qq8c=;
-	b=jKou77OkdRtDjVhNkuIBNIEZ/UTfRm9IbmHTTUDxHSL+kMhTf6+TotnOTpVKttg86l9Qh5
-	mB1DqViBmkrnLZbcWRDvBZxbRiGIKGAMRlyPFc8m0JbflpXqVYWSndnodeUWhzY9iy1xyj
-	d+RCIcra+iXfifduFq7KzPaHspG+Qak=
+	bh=eGB0D2sZA54TniG5EwCWeLwF5KVbzKrKiN8v1Y36amY=;
+	b=Nff2+LoSaXTW6p5F3xypgPnLJutjHGS+pVS+QyagSmlcfNKOcK8O4r1ZdbuNOrUcpLaKFD
+	jjXPLA+iJmglpndzs9n16czcpZKp76Brl4p88dKkCErDkX1yVRZ5DPnis7bEU+ofI0Eq4X
+	H1Csx/RYW/K9iJvQYQ/yaQ20F7q0Me8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=D6pXo0qq;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Zs3Dclls;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774508617; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774509134; a=rsa-sha256;
 	cv=none;
-	b=cRv8ioyfuR0YMy6TBcHa7R79emTtY8NkJzx3h0jSgFjIlyRuV5OqllQguY1xwgMwp3Mbo3
-	Uj2WzP8xPm2MTyCf/4HXiYD9i+AP4XrKdFST6wohmcBgqnhh19YXotl6CdJSkslSVHhn5P
-	ggN0mCpF+csr6xPRKxn4dG3eGg5g2zQ=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-439b7c2788dso333571f8f.1
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:03:37 -0700 (PDT)
+	b=JX/6rFa3wSeOSqyvu1zBGv9F4htVGTUEWifWrbe5RtmwBlkEVHDycV8lX8iw3CeDVvzK0h
+	W7eyH1owOhvmH6Gj1s2wAs3qjkaxytEBp/juGIZOILBMeCWBFz2TbPOPX852AlejnbqY5q
+	9PHXiZ3Fusnj/gpEW+YUAat1V4zSW1E=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-486b96760easo6377575e9.2
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:12:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774508616; x=1775113416; darn=kvack.org;
+        d=suse.com; s=google; t=1774509132; x=1775113932; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lEkg49JXBlYRGRAlbz2ESpWLIMYJu5dEQ6CVQd0qq8c=;
-        b=D6pXo0qq+nyM8LmOZMd5C/WqDQ3SKXD7BemU93gz9BbsCNs7RJZ3CKtnQqQV4DDRyw
-         oxjzktVku1o9VpKx28/PfUOFAqIw8idCzThj/qublT6HEMbiipibRaXpXmQQsXxPLK+E
-         9/I3Eu78quoWppeP7xIOJm227O3zCo28+s+gZaDt1wUWAhHsiesTA8KWBJwnB0diD4iu
-         5yJAewQfDbIwq1yt+ZqWQtM4wGWzzFu5Ter2JkHIZO5ftFcvxgGV2Xfhvyfg57NZ/b0I
-         NrMOdi+/eDnmTL2S/gHUmnUkmgEWHUyXO+4je8HtKVN/fVAScUNqiFqMMQl8ji/vmd/I
-         gBSg==
+        bh=eGB0D2sZA54TniG5EwCWeLwF5KVbzKrKiN8v1Y36amY=;
+        b=Zs3DcllsnCyvIrIZdik/wXsUX+dtBYJfuGSQeD1PpczbRicgeG4jaop2sLSkFr3HT3
+         7ERKjUGo65PXIcdkOhUjfHfZH3SilnddYzYY/7nefIB0QZX2jN4H0IxZXKhkYdG+7/63
+         E+F2bbEqwJgzsK7zHO4JqSmfpsYeOGyHTWLWtpixklmbqZIBItxlZYrYtTuQxKTSBAta
+         Uyy5q4TY01NFaQujJ6UzCvFujA5Wvic/K1ScuQgabfm9ZbPDq5wi/LALFcaXHVsO+C1A
+         nwHQ9YLpZqTqi4ZV/Uon6UiT9C0e+e8CQhyhPCt05XC9IHC4ExSlEeXPLIT07GTe0LQQ
+         HrIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774508616; x=1775113416;
+        d=1e100.net; s=20251104; t=1774509132; x=1775113932;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lEkg49JXBlYRGRAlbz2ESpWLIMYJu5dEQ6CVQd0qq8c=;
-        b=T2kTbnReo8cl/ZdXbCrGzNWdoPfARiWhHSmA0WtfzmHr1sN/GAJz41Jmr1xlX8M1W+
-         3lNA/JEoWc3CxR1LBEejHQFeXEMLg4DQhuGSbe0FmTa371sl+Lamp53CGndM/Aq9qMH9
-         iVNQNifSv7LcVFysCyqnCmUHWU7pW17ZT8MlUoHXRts/MDH2a6gULxxUWNSEdagstzBr
-         2feTDP4LwtcPV5l601rymHaKPiwg3Xgpb0yZL5PyWu7ukKp2vbO/rfPICMDsW/Tr/rD+
-         xW8o+Ojvwm0EuaMR/urx1UDHANnwqfZUhIDyFG3sdCsvF42AW8bGVbJm+UB3JD9i0G4r
-         og2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUbebr33tOHVAPE0L3xX5wINFI5exPZ15zNtoKYGr3bJAOi6ofGWgOupOo48ae8XYJ69KZCuBNQtA==@kvack.org
-X-Gm-Message-State: AOJu0Yz6q6ZN94i/8sqsSCrRiOzxaAR2mM/TDss2ThlKUR4fvO6mFeeo
-	RSQGrE0h6/HydWKWmN7UK+FM8jgysqtaieimSIQx+IfGPZVLTgBqLPSHG5Hp2aKSGu0=
-X-Gm-Gg: ATEYQzxCRANMP7QgF/bczdXXOt025z/JptrOWXQa9EN61o5YX6yfd00j+tAacGlphi6
-	3qZzjnJu1gUHCRQSk58PUirsoQVITOqsnN19oiLqfmX7uabutHry0X+RO99BYTo1FKdb86FZvHy
-	PIBtO008vE+mOuOxPb+uxSVjXv5NleOHPh8ph5nwAP7cDj7MedcsOGZdK4i19UF1c7/AIeF10f0
-	m8Kw2V7r/qzeU5/UoCor3NAFn97RcawHEXi/PCUZQODht2WDW8ZvJtM/IVStwx9vWffPEO8Ch+f
-	HZQctjxf9ileytDqXPMUo9Mwrr1SAw3kTTXCRBuWt6yofCgB5UzKMv0bLHauHbCcpFElAUi1gAL
-	rvtmoidOg68b6gYBFVTBtaMNE3pWNa7WefVgIapVKixvL155ngzY+PnaHU8Tccu1S9dHvcvZXi7
-	NqRkqRU4M6N6gj9yUbZQuJjqC1SLXvcc7WHPqb
-X-Received: by 2002:a05:6000:400b:b0:43b:4ef0:e13 with SMTP id ffacd0b85a97d-43b889a49eemr9597969f8f.12.1774508615797;
-        Thu, 26 Mar 2026 00:03:35 -0700 (PDT)
+        bh=eGB0D2sZA54TniG5EwCWeLwF5KVbzKrKiN8v1Y36amY=;
+        b=XkqKpU5WfmXpVPfTNH0RZLon7OCXjaZfZvFlQmwAQc2ted2h46npqMYJRWpqm+oIra
+         K0bwSgvWLunvJ8H8TZ3BfzsZMDto9UB67L8AOessqDLQ8ZaliO0Ct6TURTrSPqpGOqhH
+         8RiPzKVcbhO0Umlis1ReI+SPO9rGfC9m2LvTX89GmKwyFRi0RoB/hpZr0eKdvoa6vhaW
+         5zhgwlhqCjSjZmIVkHiRDUyp6ZZ/DYHhgMNoQZOOSYyH5UDQeKF2NvMKJiHw4YmA/ivQ
+         OE/e25aCispZmkK9eoj40dFC6zx49JfbO+tICn1jC42LLqakiqwjXssq55tGo78LySBH
+         S9uA==
+X-Forwarded-Encrypted: i=1; AJvYcCWL3mJS+FSHiIprS4W22/I4spdeU1Zgt3Q/glNxi9sSAKIz28JcCgDmH4Tf0xKmqEZEquMCzk4dSg==@kvack.org
+X-Gm-Message-State: AOJu0Yyad9VE9cAHGq4EVlBOoP2Trefoja9qTsPy0k9ZhF8UqPBOFUzS
+	2bghS445/z6OTGE0Fh9S5AMhyUnW0Rjf3HgKLmOPtbU2Giny2rqAGxXLeTJf67p1HLE=
+X-Gm-Gg: ATEYQzwTkSV0Lr8OoWcByobrIUoMbkndiuggIbOfg6JuEdm7u0QQlemG+NuvEeAU2Gy
+	t/OotLeaXdJD02/oQtrAzzNPMLTtoaG8sEsWBbq35ImZ6GCVxUylRQasPAFerI7x5UvPY55Be8a
+	iMRrZBwOIgYJmupphiyBdWnGpMSOvhWGRK3mv6qyogOfYINN00+L8gw2lhsFCXoUMkeeAeyC0Pm
+	RUVfaB7MRXcOZN6N/H6zwGEhn/LvWNmGfdSj6Py4Aew7/XCOMEhs0Ej92cG6o8ubkzSxkZ8O2cb
+	cEZwqriCD8c4rg7p8kOBrGTevMRXLMqSrly1y64wFyp4ukJlF4LNfCgh//kLEgWCoYEhmePazHx
+	n/WDhcajVAfO1/69euNHB9CPZPEU2b30uSmCWPsZkfd3i1axqOyMoA+MJCjxpAzHji9RU6A5v7h
+	/EcweONe0E0vMmNhuHg2FytTW1q5dpgikY81VfIfuJTOPpjBg=
+X-Received: by 2002:a05:600c:6308:b0:487:169:9f64 with SMTP id 5b1f17b1804b1-48715fea9afmr90965615e9.12.1774509132376;
+        Thu, 26 Mar 2026 00:12:12 -0700 (PDT)
 Received: from localhost (109-81-31-149.rct.o2.cz. [109.81.31.149])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b919df903sm6070863f8f.30.2026.03.26.00.03.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4871fb7f45fsm11137625e9.2.2026.03.26.00.12.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 00:03:35 -0700 (PDT)
-Date: Thu, 26 Mar 2026 08:03:34 +0100
+        Thu, 26 Mar 2026 00:12:11 -0700 (PDT)
+Date: Thu, 26 Mar 2026 08:12:10 +0100
 From: Michal Hocko <mhocko@suse.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	lsf-pc@lists.linux-foundation.org,
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: lsf-pc@lists.linux-foundation.org,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	David Hildenbrand <david@kernel.org>,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
@@ -118,21 +118,20 @@ Cc: Shakeel Butt <shakeel.butt@linux.dev>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
  (reclaim_ext)
-Message-ID: <acTaRgusrxfCoKqe@tiehlicka>
+Message-ID: <acTcStxrTCWAN6Dt@tiehlicka>
 References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
-X-Rspamd-Queue-Id: 8B7EB10000B
-X-Stat-Signature: x7zqqnfjygsg3jis7yhty4sox8111ygx
+In-Reply-To: <20260325210637.3704220-1-shakeel.butt@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774508617-755703
-X-HE-Meta: U2FsdGVkX1+lX4zeboiJqUfgwF0ZqXkFESWDCWxu4zD+SyllK+T/RjrESKHtJKhfeSpWXr/VWYK02yezu/ETqiF1Tt+j2TUYUmYVuI1omASwtNcr2NyoT6seT6mXxtot6YdH2BgebsXYG2RLCO3tZdvrGG6VJRa/ryTNHVrNPwuaCHBxwAlo8ZNvs50UsxXlYnOpdqC3wbKfVPPuna/mNlHLqVMU6QbSfKId0OxodxRE0lIXJn5ix+Bq6O3dZuImiAXRCS2N9ogD5dpBuOJ1wJu74OELLIEJi1mwIDiq3Za0CRQ4JCM6aICVc9bH4ezEuzgUaEIGZXLGJc9fzW8Wy0aGWZ0+5d/5DLvCBsOb5B2j2Otm0l1WENJZK/jd37vYtBQhrpFe9MyCpnwXFbr95YQDmQ/rpGwP4Gz9i67ER7/jbDHPhKdNsORm3m04GV9rwTzUFOGDD+YObUwFzIguU7OrI0gjbLtpg4HcpluKixBKHLTvOBTvdnC2YNGCT9AhVwQ/ypokkn5PKmld4Cz6yCjZ9mfr4SQZsnjdigZpB8I1y9H6fjNTMuWntoyEE+mZYzBvHBuVhUaVQlpu8/RyOTlrA0Zf/rjZWC9+TjV/Zbj9w5AnvEJ5CFhXWRFBEuf1wSsF1AqtzdqoJa8oTl0Q4Rts6k0LDiBLNB5743AUJVsaq+4J9J2hOiKr7SJCKRzWDO1RN0AmHNo56oijByzObWv5UzfIQEULHCl7WGs8phjAaNWmpUtvQkIpI8F63gqeil1KzNhPS0Pycoq4WQBpOhj5T7Km7eKcVdck5aALJeX4CiNyaq5qoHxuBmxhE+DU0B+TOq7jfjJqV/lNi4dNbbZDTQAI5wuJC7Q3TGwlCI3YMjwQ+j6KODQFp/s44nm9Ve7hqHFtEWr37zxvvI3OAwu20hQKPigbbPky4p6v6a/z7R8ONZenDcSdpVjk1HZjKfcAZUB6/5fZ2D5Myiy
- OgrnRoP0
- NzEJ8kytsBDIdKGt4Vzg39UpVFhzRZstqtvndrC/dPJKL4XC1vqLSYHo3jLrZK3W/Ddx7go8jhEi27ATdAXebIpn/06u01Nbt2sb2JuWfueY+LIORxcbsTYXXyNEC0/ZakXzvh6ScNznXz6VorPWwWBPah3LKA/mbhyqzdha2TB6TMYKV9tY7JaGzCD5vpHXtTLPN5gwTVqvmj4kWesLO6KFsiMWl0vt+PYhnOwd+TXkprEQbewnQuAuTW565EFVmanKLFH+4ANFxeR4XL1csXx3Ov9GkKREaCI0xL6IT+lPGCBBDGcyiI48MvWtv3lFknxEcQcrvtokPdPpaV25k9/pdj7htlU/cSqEprdmPMpx8xNYu749A337VH79vGHK05xev441TGOQOPJHFyW2wt6vP7q5pUP70YLw6RcQytyexZis4sv3jW8yEuQUlvB0hj61r
+X-Rspamd-Queue-Id: 2A9D3140003
+X-Stat-Signature: n7zj5obk5of8djw7jiiae1saz4dp8skn
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774509133-369045
+X-HE-Meta: U2FsdGVkX19iKH+YCqwDzo48rUbsWZo5d2ybtv74wJSviPNUvS8VETQMu5Gf7YQG+bzEaM4ak4/0osUhye6aykxy++4dFeE3M9eDraYRZXebt3dBfjiFKe5BwV8AQPEk6zdaZGeWlJuWA3dnGAAdcb/iW5EfY+DiClbMkdgRJ+S3J4mk+8Ir+gQvKtTqwUUCU0KUDPA9DTqeSvrsNR3veX41UUHuxfbfDZDUCpOgccUM0IZvPIBOKIyS9agfOfWRd8ZIx0im8rz+g1caywB2TkTNw3WBIQoFDW4Kz+OkfmaYji9YuWPdqmy+fDlS7rMkTH6zVf4fs5JYIMp7LcCqqpp789sbOEW30KdizLbyPfhL75MkVYipO0jBgrdx2dKceuAt2TcXOEQ/pRRijsMqGej5NvTyGPiLcrFH824vVRuZS162Z+JHCciYXfTHqQIuJKNsCu1M0qG+NV4IyfAcDYBHpPefM9AuOdpzQOSOGlwrFdRtBQeAGND2X3izOoS+87b9os3uzofGaXwVzen7wvktjUeBtpDbiTUZUAUHIGa3jGI7nir/+ymFZnkyD7HFjWC0pX1wV3LOriEom5oAXbYMEZvaRGqqh4Qb3liNFp9M4Yj1fgyxK14YWJVWrhqNbbLleYbnO3qY3YvedtJ34aQvhbOF/LYuRvD1a8RAbl25R95b5yJYptsgeHAOrUyKPxJUBNZ+CmEC5l1qm8IGvVIUIQdxQ0mcO9mttR5wgImPk5HKcDpWO0rWX5f0qPVRRFf7vPjNBtkomVPwCUYe0m93+jVSQs+93Fl8LeQS3Z5i77EG0WAWx1VnKhIOdCZXljowaylptQArIpFDdUq3qHyZyCba4LMai4Y7rjmMm0BFMkewC34EYDY9nQjkUTkkR1NF3sSE6ZqFiuUrKH9Z3CCCZdWxesxF75QGy9Cej4XJtdSR5Ax6SUPnxB1dm3vxV94i88nbu87QVk+mZbu
+ sSwbxZYi
+ MXAadQvpMZuNbdkfYNsVMj3MMlDWHOfrAmxjAhr56nWmclzW+JxJbTfIJ4cDsdz1F3eetWBjOREa1Q1lKhIYzZRPoQLVPOZ2CoFjqlyhWjY07g1dHKo2PxLAs31Fg/h+eIQ/SKQovllyyhz8zTrxMWV/7WVeQoU3vwpFN6KC/S3G34VNgmw2fGuLaeGzCsPyDsZNHRhN1p1r5ZAgrguoj43bAiRYhzH0ZKnBgmodIAuU1HjMcKnqKTtNeVnHnNpBD6gJ2fbx9ecR6UQ8qwlXZse9EX9vUCZbLLJSH4bPP5qhZMYkijF5nqqkn1+uEruqg+ZUKeU4Q3Yejw5CLf476L+CEWLY5siTiKJUeqxV8v0PwuJNpRnVwY/CSDcZ/UasgecCwSl054CI/uWSi6iuj1gLv5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,21 +139,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 25-03-26 19:05:47, Andrew Morton wrote:
-> On Wed, 25 Mar 2026 14:06:37 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+On Wed 25-03-26 14:06:37, Shakeel Butt wrote:
+> The Problem
+> -----------
 > 
-> > We should unify both algorithms into a single code path. 
+> Memory reclaim in the kernel is a mess. We ship two completely separate
+> eviction algorithms -- traditional LRU and MGLRU -- in the same file.
+> mm/vmscan.c is over 8,000 lines. 40% of it is MGLRU-specific code that
+> duplicates functionality already present in the traditional path. Every
+> bug fix, every optimization, every feature has to be done twice or it
+> only works for half the users. This is not sustainable. It has to stop.
+
+While I do agree that having 2 implementations available and to maintain
+them is not long term sustainable I would disagree with your above line
+of argumentation. We are not aiming to have the two in feature parity
+nor they are overlapping in bug space all that much.
+
+> We should unify both algorithms into a single code path. In this path,
+> both algorithms are a set of hooks called from that path.
+
+Isn't this the case from a large part? MGRLU tends to have couple of
+entry points in the shared code base (node/memcg scanning code).
+
+> Everyone
+> maintains, understands, and evolves a single codebase. Optimizations are
+> now evaluated against -- and available to -- both algorithms. And the
+> next time someone develops a new LRU algorithm, they can do so in a way
+> that does not add churn to existing code.
+
+I think we should focus to make a single canonical reclaim
+implementation work well. I.e. we deal with most (or ideally all) known
+regressions of MGLRU. In the initial presentation of the MGRLU framework
+we were told that the implemenation should be extensible to provide more
+creative aging algorithms etc.
+
+> The Fix: One Reclaim, Pluggable and Extensible
+> -----------------------------------------------
 > 
-> I'm here to ask the questions which others fear will sound dumb.
+> We need one reclaim system, not two. One code path that everyone
+> maintains, everyone tests, and everyone benefits from. But it needs to
+> be pluggable as there will always be cases where someone wants some
+> customization for their specialized workload or wants to explore some
+> new techniques/ideas, and we do not want to get into the current mess
+> again.
 
-Not dumb at all and recently discussed here https://lore.kernel.org/all/CAMgjq7AkYOtUL2HuZjBu5dJw=RTL7W2L1+zVv=SCOyHKYwc3AA@mail.gmail.com/T/#u
+I would go that way only if/after we are done with MGLRU unification and
+after we will have depleted the potential of that approach and hit cases
+where we cannot implement new extensions without going $foo_ext way. TBH
+I am not convinced "make it pluginable to solve hard problems" is the
+best way forward.
 
-> Is it indeed the plan to maintain both implementations?  I thought the
-> long-term ambition was to knock MGLRU into shape and to drop the legacy LRU?
-
-Yes, but MGLRU is not there yet and with development pace last year or
-so we are not much closer than at the time MGLRU has been merged
-unfortunatelly.
 -- 
 Michal Hocko
 SUSE Labs
