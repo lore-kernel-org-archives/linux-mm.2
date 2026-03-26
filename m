@@ -4,95 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D50710AB82E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84C8B10AB832
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:36:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47FAF6B00B5; Thu, 26 Mar 2026 19:23:47 -0400 (EDT)
+	id 703EF6B00B1; Thu, 26 Mar 2026 19:36:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4309E6B00B6; Thu, 26 Mar 2026 19:23:47 -0400 (EDT)
+	id 6B4E66B00B2; Thu, 26 Mar 2026 19:36:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3469C6B00B9; Thu, 26 Mar 2026 19:23:47 -0400 (EDT)
+	id 5CAA86B00B3; Thu, 26 Mar 2026 19:36:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 234CD6B00B5
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:23:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9AD1140B96
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:23:46 +0000 (UTC)
-X-FDA: 84589793652.04.0A1C2D0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 14FB0100016
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:23:44 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bXZehikS;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 42EFD6B00B1
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:36:18 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DAF731B956C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:36:17 +0000 (UTC)
+X-FDA: 84589825194.03.83F6948
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4CCF9140002
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:36:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="VEyVHYf/";
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774567425;
+	s=arc-20220608; t=1774568176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OQ+9vnYotY3DONXzWRCmVazKV9uZH+sc1uEoa5gi3KA=;
-	b=7iSXr9PlPep3jDtbiu3T2h4Zzxs0Anh3mg3YGXP2cVWXKXNm0dzacNXgJAgHU2cSGLaXVM
-	wVfs4GP/uH6+XbeQxERBylKg3XyBHqkWrnpsKq/V/M+b7bJmcts4rBM+yrOMjK2FULN431
-	WZYmu4gvcFa0o8TkLQVZKZDt54VYBG0=
+	bh=oD88tQA75aSQdyhn7YDxb/7iWMOiVMP1LEXrQC6xNkU=;
+	b=0ierz6EnPL0oLQx4mD7Wj+bL0Ae7BuAESju12yIbueYlbpqVX81/zCKuR2BD+6e1k8LNDB
+	3SyZhX4sxckNrcRs3xCNS2toUMo/Z8GnQ6Ccnk2qeeliSWAs+tPUk/6zToI247ay7c6EvO
+	AAI68yIUdufkiWEudULoj5vSEGs193E=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bXZehikS;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="VEyVHYf/";
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774567425; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774568176; a=rsa-sha256;
 	cv=none;
-	b=yN5s4J5J7bg7qTEvnaFz9MuqGRMSsA8/7L9pYqsKkfoH19PXH2qRdhP+jkr3+WUnhZF9pC
-	x8gJIBzOAe0c3ki+ItyhK1XWy290EZEnh6AEW3PUyubHiD8M6a3XkpU3lr4PUd+H7hC8es
-	ZpUacbp6cf55d546XJ2ULUPzu2j+W3g=
+	b=f/9M16YmMnmPOVJfiloKXhlPdprVbVtLsY5ual6JOgnNk4UNQSR0SROgKPoP6gTB7Wf3fu
+	bGHDzEyzePHMMuVLKGOZvjB4AqXuQVDjOvogglokppepeJafUcHGXx8YPulKaGLthU/hHO
+	IkL7AlBAujC2IQ7W5Xm3mGaaq0PBHj4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C0C5A44511;
-	Thu, 26 Mar 2026 23:23:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57D4C19424;
-	Thu, 26 Mar 2026 23:23:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A46BB60054;
+	Thu, 26 Mar 2026 23:36:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AABC116C6;
+	Thu, 26 Mar 2026 23:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774567423;
-	bh=ywefAlrhCimBtUrBIPGiIi039tfFwchTq617Tcwm5Zg=;
+	s=korg; t=1774568175;
+	bh=tjvJvzzYSuoLzuMiETcihqcIulqakEMU4f7rMggLbiY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bXZehikSOnzJCjqTWi0vMkzNfGuZk/eIT/VwIhjH+YfQJA7FfwufOkVdraXZLMtit
-	 UFempOXqyIbWdgsdvIhVsdje87SqXt0LakogZA+AVEscO5nxcNvZivw0Js6Ko2SmCv
-	 WXz3MnsabMlyPLfXxSQ4Yi2IA2HAJPnOJ22/LWqk=
-Date: Thu, 26 Mar 2026 16:23:42 -0700
+	b=VEyVHYf/05z4fci2WU8QAGNTm9bSJJ/g7Wxwi3iQjXSxMCcf2c8VHyT+qwFYsbCpF
+	 Q3HyqqAAU3dwnTKQafc1fnpGCEO0IdYmXJIgG1RuvAa5JXXdTW9YZAZB19puAltlT+
+	 cxddpgcY4YyY69SHbvMm3H0ZeTnZPqAxGxpXjdug=
+Date: Thu, 26 Mar 2026 16:36:13 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
- James Houghton <jthoughton@google.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin
- <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/15]  mm, kvm: allow uffd support in guest_memfd
-Message-Id: <20260326162342.b8178cb8940123324c1c9211@linux-foundation.org>
-In-Reply-To: <20260306171815.3160826-1-rppt@kernel.org>
-References: <20260306171815.3160826-1-rppt@kernel.org>
+To: Chenghao Duan <duanchenghao@kylinos.cn>
+Cc: pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, jianghaoran@kylinos.cn
+Subject: Re: [PATCH v3 0/7] Modify memfd_luo code
+Message-Id: <20260326163613.4f63a9ae5af7f3d294f3aef9@linux-foundation.org>
+In-Reply-To: <20260326084727.118437-1-duanchenghao@kylinos.cn>
+References: <20260326084727.118437-1-duanchenghao@kylinos.cn>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: eo9dyqni153ir4t6p1ofz15ceht54q1c
-X-Rspamd-Queue-Id: 14FB0100016
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774567424-822385
-X-HE-Meta: U2FsdGVkX18k9TkvEVnajSOntb5186koKn8EsveLXIGdRDeJu12mqNsOpmxwp6y8HiWSJCHSavzArL8dNEEpcJIfP5zOTmZ52pa/w2s3gvtfLdam48QXCHxoJ5Z1+Yrofrw5Fe6MqnkyYGOZHngLViXOEaOUs4w/nCNb4rl+d2HeXDDwuTxBaE5XI7S0WDVirZQkJPiLqVB2jvprXtV6aQKl+vP98pD8PP/iBb3S7OwzFn3Bgk7sZwE8HAb6dfE7O0x7NguJWG4aXYi9xV9AzLTH/RMl2ORvUjhFd2RXkDAEP0Uv/RLJbXjYwrKQ5PudG9zYR5FBDVHtNNT5ji4C0t7DCapzSwC9rq8mCezwTrxQIMFLX5OPVYv1NNeyUgKSp96aBGwIW+FvpySyZeugSNPTDHibpVao0TgE+UY20KvvGEeHMrf40o9wF7lv58plX5wGqEbDQLHn4AoJfkHWKkopJipmNBgUTG42/0jqarwkMf/R8GneF5AGW/QLG3H6qVHoipJ1MM4+fDCsCVg03vhWYKjTXEUtmJq29FM+ozAGicjvA6cG49ei4tX/Lj1SIwbAuwAQK/2mpKIwYj2/arX9d4x/bQEtXJsVjLf/KPPbUr9rPAAvKjE+ZOgvhECM1xKG6BtxStAnE2tglyFUB4I8az5ZSdE6a6jZ3piEK6+yhdtLf3MEZN82fv74jdhd59gzxMvd0/FX6l8a3XlaT7AX/J/NxaEQf5t2pNrhz8wsBIgvgv4aF7iFneGssi712dKnAHnuOoOSBXjJYOyAYUj3wfnnN3haEwSnM0zWoisU3nKzoY6VAR7MGyqGPKkC2b1jI9XQVV18biNFHmGVQe69yXnDNhNN/sNyj3ksTdJj9+U0Ys9Rvhzbj7G3XcD+zFQ4UT9WXga2V5bMAA3qsysOrnylRx9A9+jnM5aF536ogoT/lK5tfvdGdZ5bNzKJrFz+gf1KXAP8CXviLDe
- jSIs+glA
- +2Y2ohtz2cTqWz2cVGJx7gQwy345QuR2taAvS83lUsYPb5d40UyCyGBND3RTN0TRCEPKw9WbKaQq5veenFp+Yryh3f0ZcMcmmO5k7+zj8nVCYLLtdencI45zCYlh3iqep4NnMx3cjZ6WPWew0BcZcrkhJN2XtSIWj/nNJf6fRCXY7tNJ1d/GbaAxpV6Xfg7XvTdeBgCdVOgoMHylLL/pPO1DwxE19WnFMEcYAldbFp+zo12dtjGOGoLBM2YNymzLeZjOfqJLAtjaN4fx72YgqDcgmnFwaEE2N6rEPN269ehz9mxjmSFKuY1qdKwI9PVQdYMGB
+X-Rspamd-Queue-Id: 4CCF9140002
+X-Stat-Signature: u9z41u4kziacff4hy5z99wwpybpg59cr
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774568176-5534
+X-HE-Meta: U2FsdGVkX1+TOODQHZIUlIF2doGqE57nhCn9kyZ8eBAeAachn0xPG9XbrEk9JuUmm/q3oXO01KDBt7h816LEvunof46R+HmjsNgchW5WrNu/VEYkCa2oj16d7jjehD5F1I2rHJPzkp4u5f8qO205M9XrPxMCQvkROkJRvRe2zOYH0nORhYkfb67YV8qz6Ai1qMRxVHULuREvgQhnPWxesW9wgM37kUseeo+ZjkEEpdoRl7lECrYiLjPfkd8Yv8XBVHxnvfh7mbXuvwIgje2i5RNmj8zm/8Tso+aUZB7rwc4BAYjS5Ovk2XKda509WyMNSxU81Uxmba+ZMIgG2uVUGNGuAv2noKYnOkx3psqMpJlIODW3kf+yFy4/W93adRAjs8VhEXfwLQTY8Ftx0OfasN94so1eakZIoDI1RG984lmLrGKY+AAcLJrjjNaMkxs53VEZX/y2Ze1EV1P6luR88RTllZySjPo/lJDrCq2AytTx5bQHOmYl8GGb2g/10svbXZqERVuHkSsKWuGBDwvL65vJ45XMa8cc5oL9fDA7TDEbhk4MJhNXdJVOn9XVpY79rT5c90D2ny9Dp/PBF+/j8KatY4fqLR8e4apV5/1gbJ2+kzfSk1Dkcbjx7QFlcJuHf2Z6ilhGTnRjWlMYHNJF6qGPuLF4f4vItne8rZ4eV975o3p2+Qu5a0I3VuWnA6pu16mxWaG4KKS+Nwunp0HgB+b9spvhNeBtyVgP6dhnS4jbEf+DfoSRez2Jj/MmazbsOk1Ee/eIuhAz71V2WjQ6g5Xk4K1xbaFjI8Fl0V1KaAc7V088/5pmlMf0AAvBI55sODz+JmoVpeWgNZMCB8cRYz7whxS+CFMZK/Q2d0cdfARG60StVlqgYHBtm16N/C6D7lzLYPkLmVlFKUnHr645uIIWzZvkilXK8pOV8fI1y/hciN+Oo+5RO4dfxC61x7LNm2dzX/XMK67apZ8nPmB
+ +xH8Y0sK
+ gAqUDhLXOYUwgs1jZa8fYslCzJQ19ngsN9PTbZPkNNOVXgE/M3HJjLYooCr94KrCP3Ix1saPFLH+BipgJ0bp7ZUgFpJBvEtZVOQww++7cjNZV3ohhc653Ga0wiVlL7o3vU/DwZ/MAPNq+G0waAGjKfkadasTDOdu2eT+xSV3QVsd7v+hBe5cCuuGv6zfB7g7TZBuxhdd3MzYnMHJdfvDv7u3u1IY4UC9jNx4uFjczh4jrG8BlRzpQrsyhyyaaqYvlB9Y7Qypyu6rv9BBy+mxwWZEWHh3dC2Rw6NwPelg0csSX4oc6SO9unShtCbykytK/5f1amE04cF4AhwAViyLlE51sRcQYycuB6KAF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,17 +89,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  6 Mar 2026 19:18:00 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+On Thu, 26 Mar 2026 16:47:20 +0800 Chenghao Duan <duanchenghao@kylinos.cn> wrote:
 
-> These patches enable support for userfaultfd in guest_memfd.
+> Subject: [PATCH v3 0/7] Modify memfd_luo code
 
-Review of this series is very thin at this time so can I please ask
-potential reviewers to spend some time with it?
+I'd like to see a more desriptive title than this.  Maybe "memfd_luo:
+various fixes and cleanups".  This isn't a big deal and "Modify
+memfd_luo code" is good enough ;)
 
-To create additional time for review I have relocated this series to
-the tail of the mm-unstable queue.  That probably means that movement
-into the mm-stable branch and upstreaming will occur in the second week
-of the upcoming (7.1-rc1) merge window.
+> Date: Thu, 26 Mar 2026 16:47:20 +0800
+> X-Mailer: git-send-email 2.25.1
+> 
+> I found several modifiable points while reading the code. Please review.
+> 
+> v3:
+> v2 patches remain unchanged, and v3 adds 3 additional patches.
+> <mm/memfd_luo: fix physical address conversion in put_folios cleanup>
+> <mm/memfd_luo: remove folio from page cache when accounting fails>
+> <mm/memfd_luo: fix integer overflow in memfd_luo_preserve_folios>
+> 
+> These three patches address issues identified by the AI review,
+> with the review link as follows:
+> https://sashiko.dev/#/patchset/20260323110747.193569-1-duanchenghao@kylinos.cn
+
+OK, I'll add this.  I'm trying to seriously slow things down now but
+this series does address a bunch of issues.
+
+Maintainers, there are a few more patches here than were in v2, so
+please take a look?
 
 Thanks.
 
