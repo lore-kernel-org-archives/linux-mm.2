@@ -4,89 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC266109E52F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 00:50:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80271109E52B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 01:28:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 061E76B0089; Wed, 25 Mar 2026 20:50:12 -0400 (EDT)
+	id 5A4F76B0089; Wed, 25 Mar 2026 21:28:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 012746B008C; Wed, 25 Mar 2026 20:50:11 -0400 (EDT)
+	id 555E46B008C; Wed, 25 Mar 2026 21:28:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6A666B0092; Wed, 25 Mar 2026 20:50:11 -0400 (EDT)
+	id 46BDC6B0092; Wed, 25 Mar 2026 21:28:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D924A6B0089
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 20:50:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 974D21A0909
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:50:10 +0000 (UTC)
-X-FDA: 84586382580.13.0D20C7C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 36C146B0089
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 21:28:54 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7F60C18A4
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:28:53 +0000 (UTC)
+X-FDA: 84586480146.10.0DE5E2E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EC1398000E
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 00:50:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qLYHKKHR;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0D6AF40005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:28:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MLfhqhkz;
+	spf=pass (imf01.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774486209;
+	s=arc-20220608; t=1774488532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=otYwA3BnCH/XwFj3pN3+hU1O9SMzTXyP6YrLAf+Hby4=;
-	b=1OnIA3hI66kOLN1DsetJsCxuEdkEkAwGSJnPFU8U9Mlj0kCnaOxdzlL+1XTbzufpGYpAyA
-	LaHHJSTdZKNGqmQq7eaE6Z1DK09/UYuuoCAMkzPL/Z9Xpl2jCWl79vJ0x2rV9u1oo2dG3R
-	373GAme0zxopxgRIHaFZSuW5ts7q30E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774486209; a=rsa-sha256;
-	cv=none;
-	b=TEPNCu7VNIj+0zZLrAWgQZ2bm2LNaEj7HE5GiNu72zT2qwVddTwSw9mS1MrPgVnUi8CmPK
-	WT1+0XrsAikNXexPCZl3dCH9HKzmmvLoCkENO1ZcUrBu2O7XHTSGAE6ZEnhA3uMJAVsQRI
-	uvqSDLMl04EShHAsKoP4sN8vhbc8mHs=
+	bh=sJUyYOE4gNy9nIbHmGhUMsC/EZizc05mxfyrzumWyhc=;
+	b=pydHbjz7g8osGTdQy/h/7usx7Qu20OVGrbytKSteTLwqeFNaehSDOmbNASSjwXMi4S0M+a
+	If3fNgnBWmloq3r5/a36md6tbSjl3INMDMqgdot5J3mXTzlKp9ntb/4LSKSUq748rrrnHG
+	/XO7h08bCOCDJJHQ63m/IgT+de4OSto=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qLYHKKHR;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MLfhqhkz;
+	spf=pass (imf01.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774488532; a=rsa-sha256;
+	cv=none;
+	b=GqPqLLTqxgDrgxE8cqENCizHVQjAWj9e+rocUqRsaaOO14zPCLu/k0P2Bo5UKxdklgAWiI
+	NcWDDz1AWRl2ugR3kHugnbrDoFeMv+QPYdrOcjRnQQfWhVyM6wuPbnPEgPN+gC2H9tN3o8
+	YeX7UBnRH/3KcihwsGbMC1SoYMcVdDY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 33D6B60121;
-	Thu, 26 Mar 2026 00:50:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C45C4CEF7;
-	Thu, 26 Mar 2026 00:50:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774486207;
-	bh=+OmHiraGimH70ANOJHEaNBOgGdEAVeQc/N+5UwHJRrI=;
+	by tor.source.kernel.org (Postfix) with ESMTP id 6626160103;
+	Thu, 26 Mar 2026 01:28:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3592AC4CEF7;
+	Thu, 26 Mar 2026 01:28:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774488531;
+	bh=0Cq7OMqDyz29Hy/YQIvOOTgh39yp/jjxAwDycnlq/O0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qLYHKKHR6Wr/lquOKS2e/gEJJlRCj2LkxHzXE+VSA+b9vcX1sBFN+VhGUIbbS1B0E
-	 pfNWOqg44Q/rEv1fsm5GOq7oSiOvKM8kosWkN/RoJ99g03Jlxz+oObUNh/sNR1qV3W
-	 5UStY24RY7/E/KZtqBsl2tV7uepJcm/67JlG4Wto=
-Date: Wed, 25 Mar 2026 17:50:06 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: mboone@akamai.com
-Cc: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/pagewalk: fix race between concurrent split and
- refault
-Message-Id: <20260325175006.1c3cae2ee50dd491a153226e@linux-foundation.org>
-In-Reply-To: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
-References: <20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=MLfhqhkzsxa7tc0jHzhytzV6qchl81dHU9KAPgpYRYmOHYLzk4wblKHPtqEHyv28p
+	 Q/b1ZGVBAKVMA2DtsWIH4xs0i1VJ2p7crVWlc/njQGIq3j2rxJcz4zZlqQtGtXSKGY
+	 qE7kmn3skAAmdHpynUh6G1IcDYzRBpRJQJ2v9dHtuEYl1SHM9u79m3ODxDTtFbRHwF
+	 TrXVRIXikjQcC748T/h8YzRRuj5Is74hno4IqadGPqhCATzpJM+vXtHmT1645lImlw
+	 xbcKSEnaeY6vjDCFgor9rDZ7RPAf5TB+nN0PUncVs3G3ToCrGTMxxDR5q52eHlIdvK
+	 yL93d9yknBOTA==
+Date: Thu, 26 Mar 2026 10:28:40 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Peter Zijlstra
+ <peterz@infradead.org>, Dmitry Ilvokhin <d@ilvokhin.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+ io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Marcelo Ricardo Leitner
+ <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Jon Maloy
+ <jmaloy@redhat.com>, Aaron Conole <aconole@redhat.com>, Eelco Chaudron
+ <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, dev@openvswitch.org, Jiri Pirko
+ <jiri@resnulli.us>, Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz
+ <koby.elbaz@intel.com>, dri-devel@lists.freedesktop.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar
+ <viresh.kumar@linaro.org>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+ Huang Rui <ray.huang@amd.com>, Mario Limonciello
+ <mario.limonciello@amd.com>, Len Brown <lenb@kernel.org>, Srinivas
+ Pandruvada <srinivas.pandruvada@linux.intel.com>, linux-pm@vger.kernel.org,
+ MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park
+ <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Sumit Semwal
+ <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, Eddie James
+ <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alex Deucher
+ <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, Matthew
+ Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, Harry
+ Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+ amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, Benjamin
+ Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, Mark Brown
+ <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ linux-scsi@vger.kernel.org, Chris Mason <clm@fb.com>, David Sterba
+ <dsterba@suse.com>, linux-btrfs@vger.kernel.org, Thomas Gleixner
+ <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, SeongJae
+ Park <sj@kernel.org>, linux-mm@kvack.org, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 01/19] tracepoint: Add trace_call__##name() API
+Message-Id: <20260326102840.80a270ec818fea7e000aeef4@kernel.org>
+In-Reply-To: <20260323160052.17528-2-vineeth@bitbyteword.org>
+References: <20260323160052.17528-1-vineeth@bitbyteword.org>
+	<20260323160052.17528-2-vineeth@bitbyteword.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: EC1398000E
-X-Stat-Signature: rwhb8d6ppxpq697pxge7kcxosioqehwn
+X-Rspamd-Queue-Id: 0D6AF40005
+X-Stat-Signature: d1s6nmyyqacg73g4ppu6o4moa7y9xg6z
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774486208-425139
-X-HE-Meta: U2FsdGVkX18DYNUxwWr8T69U0FqcVkHZ+ZeH7nbEZSV8rLfq+S4P3lgPZZqFSiXWcvDZIM83AnPjpHic7ubYyIt4YO8D1L1wQ7b+QUxseMCCZJlmP/Nw5VFocYrcM0mhiXZdf/Qi+RMjt9LqYoRkjSHYNGTvY1YNZfFCUhlavTNhzo687pIyck7//6wNWj3PlVjawhhrTHe2k6ainw567kGBU7RRIf3gxIuDl88TzYfm3ZG9ZeonX/mmKTsGhTnvNspaHZotr1JUCMON/X6xeWfUY0slDwnfFsfmL/mu7iKLg2wnHVbHwlRy6t8JIC+l6b2LKRJR+2PXZa97qMEkOu0eAxKWm29TZVcfZWUacrKGDf0eVxJuShpNIvj2F/aSsNr+ri5FIZKx5x7YWg8F7gnvVT/991sAuVdY8iu5+Kl1XqwdT5S823PL2eWcPtCHIdzHkKvj5KQCzteGr6Omn22a+d4c436KyS6aJSTRSjjufBjarg1jXD8Dlp5wbnpKsYDaXQv+tVTDd6J8CUdUoZaN1mXEK9zbvCBSlxxFF6FnU6h9dsrtg5wg1JHylldNTPKYf7A4Mrbgkefh3tSLOgd4GtknsegMLjWa2xGwGsOHVDOuH5UiJKdDYaHxHuoxn74dYhU68vVm7FPDHheccB1okNWeShQS36q6XasexajAzTRcu7JLH3xH3q87cuZ2SdzB3XjsRPxFCNCzlQTEM5OrSgT07+8IZErs49Y9GrQCfBH2bychK56PrEpckepGAxb8xxhMw0JBk3mgKWEBR1L0PMnzT3o6YLsuHoPsW2s0JIpKypjg6rjIVluPJVvi36WLUBLyU3Lhn9P9q6ZHE6a8z7fyMvOswmvif0K1t+ePmWIp1xJUNF5ri1Lem2B/6nh8rYCvrC9YWIHk0cpl/enb6GzTnN/uOhXaTVPHE9SgVc3NSvt8LZyeNOv28i9zsCXaTahL2L66Lm5+0Tc
- 7EmCweMS
- 8iFp1vcablzFshmBwmW1lh2UJIQ6T5+Hzdb5MlqjWVSMUj/I/MSgFuw2rNd/QSb362P86qK5eyNDW3OQ8hcMffGW4mVrcwzvU10jL57Tnqm+k4brYHS9HukDBIW2u1TU7KRw6SSlcz/10Aj2vWhN7H3r6Dk+x2NeOVg7eIJt02oPOV4Hbko/flIBWat1EbLqxEIf/xvLR9HAq7u9xwy6XhfSg0H+ivDoD2CQgotLvC3q166taVntfzE7PzHi5RcoBFsvW7Jo0oyP60rBCx/sggEYWc7OsMu4PZZSpL/XEIrzvnaces/hrPIDBbmD1jWv/IlE5ZoACUheDp5Y/ka+XW+UTCNh4gsBvj3UNNK5nKwNlxqnouCmFmLWFyzdIyXKrnVN961uf1QtaRMipjoDd3b1PWHO0o/n+5h3FU+Vp7RSMvfEJicHv60wyR8dQsGrTpkMl
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774488531-426713
+X-HE-Meta: U2FsdGVkX19yf4D2WiceWcLln25TauRFgpTB65jX/6JX1NnBU6GNGnqrTsnWZr91FFk88MW2ydM7jRnzZCHESt5l61LgtHx0m4je/6BSguCEUu0RYvzfyTdC9BQfbI0hwsk1jB+6K5C0FXe4tM2ptgkwEq3TPB8xVOGvUThqPBcDiIBQ42ErY8Vw/C0ti2+UzViZ0QveLU/D1XFrCD0pzAmSBQQ7sIE/kN8cY3IjACxIcwqURFaVerk5m8lQKDibeDDe7W23iuj24srMtvYzBMpmaPcflyN6yw3TisBdSsjLYLQONdGZjb6NRLWeNOv1vd/IRPj+0p1zj+ikFrok8HOSZy6H9WQRrKQj191QWktNGQhNejKAuj0JAZSjYKZyyprrD0Ezrbr5yiGUa0C5V30fH5M/UOeFv9S/otaahDCYbmk6ziEFR+eYeqjZkvvuHIIek/VWubVC1Kd4C+RzqiU4dUD888Qy7b5rWUPT1ASfk+MYaapT7lAAq80Ys2Y0YNQPb3pPczJ5JiyKlRCWhmsk8i6ODysHxZtrXHVUZNWHbBir55S967AvNIgLN4t1XsQ5exWDR24BsST9UNHRZyD3LWX7h7x2fNJK+MiPYkX09gCRuEgxG6jOiXjPuNUfx2z79/Qz0gUhPF3McD91QXelvrBia6xGv5LE1/YjhN26OmrCPL3a7pOxnjte5E/pxG0VcA9CVtdyxU8MuzNWzimmiZuTrlXc9i/p6RjFCtczgwKAGUYppJ4SL/LYuC/pvzY7WNIOwtfUVvNHtUheuPC7kvVAXKmlU3fuhiG0/Hfgv+2EJl44ZieWY5Z8jmCqXiiy83u7f+RtcTiPO1ZVXN34FxrEDu28lIKphttyouNxckbDTYSPtYqASESW7ZnkcpReUqOeMJwKKR8y7BvuHdHTgOHwt5h8C1+E1cZ2EwtkMIu5iI+vrk8ocpQ50MECh/7JVJOWqfrX+J/bROC
+ MwGezuTC
+ T5rmdEkqTzMIIsPN1AdqQGEnTEhmgnabsFSaxmqKlYjHuLmRBx3KHT1SJeV5+/V2ZT2rExZIuSoz1cZgqkyra1RTuntFl5OFmCyAjMjzKNVQsKOC1qmndUv2SR2fk8b65CNMR7CTuS/DNHkQU5+0YhmrbnfGDOXQpg7YjLaI62w35kFp7mdOw+UccoIBJN4OxjpPCYOurHPxqt7pjgMnStIbpbO+Pyrbb535+wJWNKR+DGTbjQkk4DUKfYXzFOZjLrEMWUMIwgPTgGU1/lpUnqIQFgl0e5l2V6n2XCxZXE6ZGRAf3YI5rDLcbcTj7TcqIt7Iatkwz4+bpDZDAYo64Io4jLGN/k7Uhv44H1DG0Sp3MTQKgCIiwBhGrDuKanBBtjb8ryO3iXlyD92wgMi5dVLmRjyk/jkfRJrDvwsBkTB1k/qjZ4gDoDNTuwMze8hBdmgViwWd6/BdDhjAYWBwb5gNhb0HHAS/dMCEupEMwzvHXFpeMoM8W/CHctRn+iC4mVd/S7f+RE2aArOpuu1HJTyZW2ObTMSzzS6fAzbDailZ/PvxHvAj/i/DQAkEP4jMjMUHwX5cV9iLs0RGpwl9vKSzWGj3/xw9PujqV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,27 +134,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Mar 2026 10:59:16 +0100 Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org> wrote:
+On Mon, 23 Mar 2026 12:00:20 -0400
+"Vineeth Pillai (Google)" <vineeth@bitbyteword.org> wrote:
 
-> The splitting of a PUD entry in walk_pud_range() can race with
-> a concurrent thread refaulting the PUD leaf entry causing it to
-> try walking a PMD range that has disappeared.
+> Add trace_call__##name() as a companion to trace_##name().  When a
+> caller already guards a tracepoint with an explicit enabled check:
 > 
-> An example and reproduction of this is to try reading numa_maps of
-> a process while VFIO-PCI is setting up DMA (specifically the
-> vfio_pin_pages_remote call) on a large BAR for that process.
+>   if (trace_foo_enabled() && cond)
+>       trace_foo(args);
 > 
-> This will trigger a kernel BUG:
-> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-> BUG: unable to handle page fault for address: ffffa23980000000
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP NOPTI
+> trace_foo() internally repeats the static_branch_unlikely() test, which
+> the compiler cannot fold since static branches are patched binary
+> instructions.  This results in two static-branch evaluations for every
+> guarded call site.
+> 
+> trace_call__##name() calls __do_trace_##name() directly, skipping the
+> redundant static-branch re-check.  This avoids leaking the internal
+> __do_trace_##name() symbol into call sites while still eliminating the
+> double evaluation:
+> 
+>   if (trace_foo_enabled() && cond)
+>       trace_invoke_foo(args);   /* calls __do_trace_foo() directly */
 
-Thanks, updated.
+nit: trace_call_foo() instead of trace_invoke_foo()?
 
-AI review has a couple of questions:
-	https://sashiko.dev/#/patchset/20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3%40akamai.com
+Anyway looks good to me.
 
-It flagged the same things against the v1 patch - maybe nobody checked?
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
+
+> 
+> Three locations are updated:
+> - __DECLARE_TRACE: invoke form omits static_branch_unlikely, retains
+>   the LOCKDEP RCU-watching assertion.
+> - __DECLARE_TRACE_SYSCALL: same, plus retains might_fault().
+> - !TRACEPOINTS_ENABLED stub: empty no-op so callers compile cleanly
+>   when tracepoints are compiled out.
+> 
+> Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+> Suggested-by: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
+> Assisted-by: Claude:claude-sonnet-4-6
+> ---
+>  include/linux/tracepoint.h | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
+> index 22ca1c8b54f32..ed969705341f1 100644
+> --- a/include/linux/tracepoint.h
+> +++ b/include/linux/tracepoint.h
+> @@ -294,6 +294,10 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+>  			WARN_ONCE(!rcu_is_watching(),			\
+>  				  "RCU not watching for tracepoint");	\
+>  		}							\
+> +	}								\
+> +	static inline void trace_call__##name(proto)			\
+> +	{								\
+> +		__do_trace_##name(args);				\
+>  	}
+>  
+>  #define __DECLARE_TRACE_SYSCALL(name, proto, args, data_proto)		\
+> @@ -313,6 +317,11 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+>  			WARN_ONCE(!rcu_is_watching(),			\
+>  				  "RCU not watching for tracepoint");	\
+>  		}							\
+> +	}								\
+> +	static inline void trace_call__##name(proto)			\
+> +	{								\
+> +		might_fault();						\
+> +		__do_trace_##name(args);				\
+>  	}
+>  
+>  /*
+> @@ -398,6 +407,8 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+>  #define __DECLARE_TRACE_COMMON(name, proto, args, data_proto)		\
+>  	static inline void trace_##name(proto)				\
+>  	{ }								\
+> +	static inline void trace_call__##name(proto)			\
+> +	{ }								\
+>  	static inline int						\
+>  	register_trace_##name(void (*probe)(data_proto),		\
+>  			      void *data)				\
+> -- 
+> 2.53.0
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
