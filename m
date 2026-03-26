@@ -4,143 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 209DD106F315
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:54:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC60A106F315
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4557D6B0005; Thu, 26 Mar 2026 05:54:00 -0400 (EDT)
+	id 40B766B0092; Thu, 26 Mar 2026 05:55:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 406376B0088; Thu, 26 Mar 2026 05:54:00 -0400 (EDT)
+	id 393936B0005; Thu, 26 Mar 2026 05:55:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F5446B0089; Thu, 26 Mar 2026 05:54:00 -0400 (EDT)
+	id 234256B0095; Thu, 26 Mar 2026 05:55:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D5806B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:54:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BFD513C07A
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:53:59 +0000 (UTC)
-X-FDA: 84587752998.06.5EFDF45
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 178A4180005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:53:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eWem/Bwm";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 118DC6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:55:01 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2753BD16D
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:55:00 +0000 (UTC)
+X-FDA: 84587755560.08.96DF90F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5B06E120002
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:54:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=j1W3Lwj+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zLp9BDkb;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=j1W3Lwj+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zLp9BDkb;
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774518838;
+	s=arc-20220608; t=1774518898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dsNRFi1J+mpq8rgpOJnYCIIR3xkLcQVrzfDMhAr+p+w=;
-	b=uojMyJFPUZ5eef/jaaMljSIo3hU0331/vlvR2WipyHOTB6wbGrMMQ9NNlj6ZNAVdXQJTJS
-	cqMjcMb4IprQKmWhLY5Ig0xx8+9+GRwXDsSNsZ3IdxYggicYOmV8HyJ6hWkGgjlKgnjVxZ
-	azZI2CXX/LASfOpXDe6amqGEgKK6nM0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eWem/Bwm";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518838; a=rsa-sha256;
+	bh=qLbxD02dHUb8m8m5bbUbo7PwrJ0F2rU6l0JoHr7uT18=;
+	b=rctIN3uYEC7dn+4DkXZBeBKTAQX1w0WKUSt55oyXpNzuQBre57k+Oaw1awEY9NZORi3akq
+	ea8FnTG7WJDZDf9FDvO3Gylf4SVdt7g2MkVHQad8b5eDNRNu4OitDM94BXrjGT/Casfuwp
+	7SHf2mK0vq9NSJRgkzIIF8X8aUUKVbo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774518898; a=rsa-sha256;
 	cv=none;
-	b=H2Ms17qaI9Nb0bqF5Uht0oEB1G5ASeQDOaoO8iOlxrkDqL7RLsjEPMQDw65ZTgFzIkDHhm
-	91s1i5CWtYYkzvHmTJa/qzjEKdTXYA8GBWojD25uissOnbpjb5xKK0rtgxHaNGmYYaZ5On
-	5Hv9ZjvJlBIYkWuNXf/WCtY3RGu59Uk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 80B2E60053;
-	Thu, 26 Mar 2026 09:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1191CC19423;
-	Thu, 26 Mar 2026 09:53:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774518837;
-	bh=3JST1h1w+4+F1RTqYqedp0xzauMee97MVTq/QWistMo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eWem/Bwmp1XCRrRsQXwUGDy4l94/ozbhmpiaCTcmkpXW1/L7mpVOUJ9gi90xWqitq
-	 JCRUj+O4pLBG5KCdDfTFIw5A6nBYFs2LWMTk5RqA+G/RbMFaGmqDzHLX+RDR+JEwTm
-	 szptenKBVF5Spv1fs634JKY5qWzjEpekC963DxJD9tVt6o8pdnbJ7Laj0ulHelQQo3
-	 M49q38ec8DXsRKWEm13Ei/J9976cdst9nAiQjXwHETdqxcGhljvyqb+QlbDFhewoMU
-	 hoPij3qwAgmFIUO75xzIgWMug7OuyBG8wt1kM9/3bc0LDPGcy7rKL58ORJ9X6jftFJ
-	 QKLLsv61kexGA==
-Message-ID: <72934683-0409-4e6a-9d34-daabade131eb@kernel.org>
-Date: Thu, 26 Mar 2026 10:53:49 +0100
+	b=Qw5w42/aRIn5kHkR9lnnrBelgGmbfzlGEKCrc2wrVkbh8qUfXX1Iuv9g4Abcpigwd91/Df
+	FfKrFBKUlMIBIjkil/Ggf3OhuU+zk43XE66q/LBjXkCwEETjql+EZTWNb7KPkbsxpfCbnJ
+	8L67U9C6s+USrTjpVVdDMBbeO2fH8fs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=j1W3Lwj+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zLp9BDkb;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=j1W3Lwj+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zLp9BDkb;
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B7C2B4D262;
+	Thu, 26 Mar 2026 09:54:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774518896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLbxD02dHUb8m8m5bbUbo7PwrJ0F2rU6l0JoHr7uT18=;
+	b=j1W3Lwj+uEoS8aFrKeTVDJPYW72hkRf2vJn5hP1v8DJRKXyPA/DGKSQZrgq2NvkdbVTbbD
+	5ESD2AguXcKfvWXc6T2v7RPcyUeA2G8aILDWcIG16IsgVJ6cJNfnUXUKj9b+pvb004Npix
+	1gd48bfXQKWcaGY5bBI+fIK0Ia5XO6s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774518896;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLbxD02dHUb8m8m5bbUbo7PwrJ0F2rU6l0JoHr7uT18=;
+	b=zLp9BDkby0P/CPnv8vfM0qp2HOKlcED2HspXzwmc+GSh3oHLojR5MxCbnA76CXYJ4IoDUx
+	IX8LGkCjL1D7tDBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774518896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLbxD02dHUb8m8m5bbUbo7PwrJ0F2rU6l0JoHr7uT18=;
+	b=j1W3Lwj+uEoS8aFrKeTVDJPYW72hkRf2vJn5hP1v8DJRKXyPA/DGKSQZrgq2NvkdbVTbbD
+	5ESD2AguXcKfvWXc6T2v7RPcyUeA2G8aILDWcIG16IsgVJ6cJNfnUXUKj9b+pvb004Npix
+	1gd48bfXQKWcaGY5bBI+fIK0Ia5XO6s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774518896;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLbxD02dHUb8m8m5bbUbo7PwrJ0F2rU6l0JoHr7uT18=;
+	b=zLp9BDkby0P/CPnv8vfM0qp2HOKlcED2HspXzwmc+GSh3oHLojR5MxCbnA76CXYJ4IoDUx
+	IX8LGkCjL1D7tDBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD5A94A0A3;
+	Thu, 26 Mar 2026 09:54:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id khhIKnACxWmbYAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 09:54:56 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 70AB7A07B2; Thu, 26 Mar 2026 10:54:48 +0100 (CET)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: <linux-block@vger.kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	<linux-ext4@vger.kernel.org>,
+	Ted Tso <tytso@mit.edu>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org,
+	linux-aio@kvack.org,
+	Benjamin LaHaise <bcrl@kvack.org>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 01/42] ext4: Use inode_has_buffers()
+Date: Thu, 26 Mar 2026 10:53:55 +0100
+Message-ID: <20260326095354.16340-43-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260326082428.31660-1-jack@suse.cz>
+References: <20260326082428.31660-1-jack@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory hotplug/unplug: Optimize zone contiguous check
- when changing pfn range
-To: "Chen, Yu C" <yu.c.chen@intel.com>, "Liu, Yuan1" <yuan1.liu@intel.com>,
- Mike Rapoport <rppt@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "Hu, Yong" <yong.hu@intel.com>,
- "Zou, Nanhai" <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
- "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>, "Deng, Pan" <pan.deng@intel.com>,
- "Li, Tianyou" <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260319095622.1130380-1-yuan1.liu@intel.com>
- <48b497e5-1545-4376-a898-f3813a6ef989@kernel.org>
- <acEkfaycrJI-kWjk@kernel.org>
- <168ab3c0-c44f-4d48-b7dc-33196b7ba6a5@kernel.org>
- <IA4PR11MB90092536DE2D9DF404E3B3EDA356A@IA4PR11MB9009.namprd11.prod.outlook.com>
- <cc8ee2c6-a169-4cb1-9c16-e76ae08fcc58@intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <cc8ee2c6-a169-4cb1-9c16-e76ae08fcc58@intel.com>
-Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1573; i=jack@suse.cz; h=from:subject; bh=7NK1Luw5u3sFPoI2MABzxVh/UFbS1BdfliomKZSEhSc=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpxQIy322tQJD1bTpLOCCusW8JNc9TXDdWifJtU FNx1ADgBgGJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCacUCMgAKCRCcnaoHP2RA 2RT/CACYvdN3lGJhBVD/JiAhbPkyZucipsmsOLf44AneuLqHJM4Wl9XFzG8f1KtIvt7/zHgTG98 jIQ0mVhMwcYPk5SQcdl996xUwcEQ+rZJKPfdEJRMc4HH7f6bdWAgR2Se8xf3QUDFyhtk7JH5RIf A+B70fDJuJyEaiV2N88PDM9uHrLgSSEAJY0L6wcsvHzU1l35Pwe4guAYJwFsVf8R08qnVDIG5CZ FwxT6/WqAu9WbIUcZlhTIfsY+yrFEXAqnuQE31XgPg4eARSbVsNvjHRLZtwbrOAAxvqwXvtHsKc YYkM0KkUHCXLhiSfNL08tOis9FxZg3jUQrhCCUqSQayiAdxo
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 178A4180005
-X-Stat-Signature: d93g33q7fatgbmd5gwanxds9mjs5oohn
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 9ybdi4nuk165sd7nynrqii5j6tf9x46q
+X-Rspamd-Queue-Id: 5B06E120002
 X-Rspam-User: 
-X-HE-Tag: 1774518837-606442
-X-HE-Meta: U2FsdGVkX1+uxoNggS/XQsZx/2j1QvcMn1qlSmpWzV4KNc7sfHUJenhUBHjihiMukX07FWoAuMjWCXfNS1claD/n2w0xnqfJosJCbAol46yGPAV4R7D9TB5wFsO8TImvp1ujbld9YpMDbsa0uG16RkNSb7WxSlxlBw+0QnsiMom78ySpHVXkpmbYYFs97BSL/5EeccXp4Jyw4l3FeycKu1QFuwcpMNKyHq+mbCmUxjhO8BcDkDLLnFXQ/iO40m7lMPuHsl5jtu+X+xpHT4HX4LIRjGHGGmVasSVqtKoohLSuFfprlSDqkFW4DhJKilev9Lz7uzApePSmq4dB5DIZEpw2qYPBtiq5NxJEJJMXBlLbzuAG1gEC/zqOeOSe0IbwFM57K/QIgBeJ/PpptZGwbev53WmutPAYmv6zCtNlmpGhrK/HEYrIvtL8RGbBPYR6nFMDGVptER3uvAAPL/iaT2BboyASi1Tgt4d/gctw9j9PpJuzMKX2/P6P9X9bTEWIo4HifbDwFi1Z39ZyJnfogp+B0UohNNK+yahRypSjwgi2vsGdAPsdvx1LxglqBPWzzDBJYKGM9DfWLCFFkIpauTo4bF17/LgPkBMp1e7zsDMrEIq8YUphn2yrnt8ICByDYSVqbgwzkNUiYpJCaBV0RNQmqq5yJDYkRVBWw9qBvgDB7Dy7h2pjGllL8sXuJkWbVSYyluh8pc6j3jJerMqoKPRfeTGlYtXRhFDa/8dAAv0osv+1uDYxCTWNt2CGUaOTewkML05w/+L9rTL5iJW6tQy/qpO1ECMK1c2NvNPKkyc81dYb1m1CcuUxxZyp2uZS3Oh/acmELQxUbPxZwIQYq0bEgGZsyAqejtzYEUJ8GwIj7G3BVZQqvf13IJjAU/C5nTSJXw59uGL235k7HiBb4zj2ICyPOlPOzNWOAzldWj/iGfozJEYAj7+CxUmqyq7RCgRjleuLHkxL2TLacW4
- vCUOV8r7
- BxmIoZtyEtcrdt4J/Jyth/Gsgenv3p+EInwwZabrZRhAWlDpxcGfZtGFAcY45Nm4qGizl+ontPmWrqmY=
+X-HE-Tag: 1774518898-730590
+X-HE-Meta: U2FsdGVkX1+7BeQTgIwPCt1j2mZc5igiNNKbWf3iRpM/4BMoFHgw92AJc0qIos5NBPIHnzj6iJzJggITk17syY9B4iVWbkTNokDihvAF3wlu/jLDpXq/wlO2mGImB0vyjA8/u3XQNWrV9aiLEBh87klZ48Jr6BeaYu075W1fj6hapSxQ+mYe0I3gDTxJFq4Gcsi0QuY+SdzC3595NefRMfa3dQU/CaDx2XZxLVxGHAPtm0pqXYBuMGOI1mM28OzwQ/iz0cIVDAMkr9CLVih2XVh++cYcQWPOvqSRbAUaCaK5HRpU/GVzmzfprDF/RDOc1O/EnM/AkHWli9+IaK41/Hp5PNEDHTtvAoEQbJFeERIE0EQ/2ziK13VEaBsCnbFmCTx9Rfrnw8VIYG7Chzigy/+wlcZK6bw7Qf1yiHSVfrOPtFkGU0LBXiBQzQbv5pPHVdOOm3k8Y7X7QaDxCW6ajP4T6/JMpOj4XpjP5l9Gs82VIwE6xm1dWZvlD82tVZVat6OB1fnwM6oPYMhHTlBKh1T1hnEmEn2MEaS/+0tdmhQMfp4KBLncqSBboqQlNZA9GV2wnzNkvNqbOBizzfBHz0cmt467DJ6aCJDTfBpNVtp1t+qF8T7bPFKSgWfW5B2r5E3u7uvLf0XX1gd8c4rcEdgs51unXdfymoVdezCekRYndi8MN6Jrg39sILlJ7sjo+9BW3xsivgo6f8P2rQZ0iDlsZ9/cc1m6yYvLD2K5hD/n0awOcKylJ/UBuyQ3/dUqs82i7X7APCiqe1ghnNlSq4/V3FAkcI48DUcV5kYz2avZmWUa/JGvWFFURy1NIg54yfiXyN0DFkEOxYQHpete0UMCtLzVb7iMAfL9r11atULY4qHkWPcn/SUbqqL41YYX3pv21+hppgHYZfqUtOXC3Uo740uhN2zwuhIg/WsGuIJVFj5z0rSzW4VUzIPc4Vgx46Z1ji09cMzfirPlz13
+ h3s2RMBM
+ s/PxCUCRj9AMGQDCPnDbwk0oaTRqJ2hRSXdDt7tYFFIUq5SQ5kiLgTBbhxr/iy+XF8Qx/S4fnAx6y3OJJ2CdD7yW/8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,68 +150,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/26/26 08:38, Chen, Yu C wrote:
-> On 3/26/2026 3:30 PM, Liu, Yuan1 wrote:
->>> -----Original Message-----
-> 
-> [ .... ]
-> 
->>
->> Btw, can we introduce a new kernel command-line parameter to allow
->> users to select
->> the memory block size? This could also address the current issue.
->>
->> Test Results as below, memory block size 128MB Vs. 2GB
->> +----------------+------+---------------+--------------+----------------+
->> |                | Size |    128MG      |    2GB       | Time Reduction |
->> |                +------+---------------+--------------+----------------+
->> | Plug Memory    | 256G |      10s      |       3s     |       70%      |
->> |                +------+---------------+--------------+----------------+
->> |                | 512G |      36s      |       7s     |       81%      |
->> +----------------+------+---------------+--------------+----------------+
->>   +----------------+------+---------------+--------------
->> +----------------+
->> |                | Size |    128MG      |    2GB       | Time Reduction |
->> |                +------+---------------+--------------+----------------+
->> | Unplug Memory  | 256G |      11s      |      3s      |       72%      |
->> |                +------+---------------+--------------+----------------+
->> |                | 512G |      36s      |      7s      |       81%      |
->> +----------------+------+---------------+--------------+----------------+
->>
->> And I see the UV system has already this (Kernel parameter is
->> uv_memblksize).
->> I think if we can introduce a common kernel parameter for memory block
->> size configuration?
->>
-> 
-> Is it possible to turn uv_memblksize into a generic commandline
-> memblksize without
-> introducing extra parameter?
+Instead of checking i_private_list directly use appropriate wrapper
+inode_has_buffers(). Also delete stale comment.
 
-We don't want that, and it's kind of a workaround for the problem. :)
+Acked-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/buffer.c     | 1 +
+ fs/ext4/inode.c | 5 +----
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-I think we would want to only account pages towards
-pages_with_online_memmap that fall within the zone span.
-
-We will not account pages initialized that are outside the zone span.
-
-Growing the zone and later trying to shrink them will only possibly see
-a "too small"  pages_with_online_memmap value. That is fine, it simply
-prevents detecting "contiguous" so it's safe.
-
-We can document that, and in the future we could handle it a bit nicer
-(e.g., indicate these pages as being just fill material).
-
-So indeed, I guess we want to teach init_unavailable_range() to only
-account towards zone->pages_with_online_memmap whatever falls into the
-zone span.
-
-That could be done internally, or from the callers by calling
-init_unavailable_range() once for the out-of-zone range and once for the
-in-zone-range.
-
+diff --git a/fs/buffer.c b/fs/buffer.c
+index 22b43642ba57..1bc0f22f3cc2 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -524,6 +524,7 @@ int inode_has_buffers(struct inode *inode)
+ {
+ 	return !list_empty(&inode->i_data.i_private_list);
+ }
++EXPORT_SYMBOL_GPL(inode_has_buffers);
+ 
+ /*
+  * osync is designed to support O_SYNC io.  It waits synchronously for
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 396dc3a5d16b..d18d94acddcc 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1420,9 +1420,6 @@ static int write_end_fn(handle_t *handle, struct inode *inode,
+ /*
+  * We need to pick up the new inode size which generic_commit_write gave us
+  * `iocb` can be NULL - eg, when called from page_symlink().
+- *
+- * ext4 never places buffers on inode->i_mapping->i_private_list.  metadata
+- * buffers are managed internally.
+  */
+ static int ext4_write_end(const struct kiocb *iocb,
+ 			  struct address_space *mapping,
+@@ -3437,7 +3434,7 @@ static bool ext4_inode_datasync_dirty(struct inode *inode)
+ 	}
+ 
+ 	/* Any metadata buffers to write? */
+-	if (!list_empty(&inode->i_mapping->i_private_list))
++	if (inode_has_buffers(inode))
+ 		return true;
+ 	return inode_state_read_once(inode) & I_DIRTY_DATASYNC;
+ }
 -- 
-Cheers,
+2.51.0
 
-David
 
