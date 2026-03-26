@@ -4,143 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C90B010A88E3
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 16:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E4910A88D4
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 16:26:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16A046B0089; Thu, 26 Mar 2026 12:21:48 -0400 (EDT)
+	id 2353C6B0088; Thu, 26 Mar 2026 12:26:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11B7A6B008C; Thu, 26 Mar 2026 12:21:48 -0400 (EDT)
+	id 1E5276B0089; Thu, 26 Mar 2026 12:26:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0097E6B0092; Thu, 26 Mar 2026 12:21:47 -0400 (EDT)
+	id 0D49C6B008A; Thu, 26 Mar 2026 12:26:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E716C6B0089
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:21:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 604641A0C30
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:21:47 +0000 (UTC)
-X-FDA: 84588730254.21.5BE29BE
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 02A3F40015
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:21:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MZslg0LL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SB9KOpgW;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IfUaDP01;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pqXukDQ9;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by kanga.kvack.org (Postfix) with ESMTP id EBB696B0088
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:26:21 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B2B1FE14B0
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:26:21 +0000 (UTC)
+X-FDA: 84588741762.20.F1869E2
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F2EFF80010
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:26:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=IWgKZpSl;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774542105;
+	s=arc-20220608; t=1774542380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
-	b=ico19pc0mdQvwLiANdkweix1TpynI2KXE7TiRX5XfJXhkMS+zDZvkLlxmZVGGKgt5djMRS
-	rKlXg0Y4aZ7w+peEg0iELKoJAyjUB0WRN257ia39mZcY8Zyv9qQpNf+3fTzTSRaRFPa1AC
-	SpmZp2PDuQ7+hwRH3l/DDks+gjHSpi0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/cqQrfIeVRKhirbOTonOVGcajNoS4JNy4y1RyCuZwpE=;
+	b=8Oovp2DI7KlKojAeLrotXEMhn/83c6OrdeMD8Jhg2l64DremMz7i57ngjsbtdSR6p4TqKS
+	QppOKvBc23wosMkqoqEljp13JdWBYXJz8ezIWi6emoDjFlL6yhf0ObSF6nxP+Rbk22J5qa
+	o1v+Z0/DXXAhnUkcoxEeIlLWnkb4xUU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MZslg0LL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SB9KOpgW;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IfUaDP01;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pqXukDQ9;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=IWgKZpSl;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774542105; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774542380; a=rsa-sha256;
 	cv=none;
-	b=wh7UYolLBBV0G/YsFwzX1nv2tKV1+LDI10IGCOOV+3jQDmCkYYQAbmlBIEpch5XBfFSHNf
-	BLiNDSwu0j1kzSRsXtAq+K0U1lCGRn2hXNj7aFwEE+McecAwJiYh+n4PRRCVN8dFJRRleQ
-	iX0F5i8cI4cjO7t8yoKQQycejGm8m/I=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 77BF74D2D7;
-	Thu, 26 Mar 2026 16:21:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774542103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
-	b=MZslg0LLFo7myS2a/8LFdcUOwp+jbWjCjwYxjb9zD7CAq/CsJCSckh5Xhd8X0ONQovrXj6
-	vdAlf71ItuZNco3Wp+mTWGYSDIM00xcSc26QSkqIW7Q8Z/N9jkEqZcUhxkD804IZv4b6kP
-	vhz79YOxhk+Pd/nM4DAjZyOGb5aXR8w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774542103;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
-	b=SB9KOpgWgaY0QDbUOTSzS7AxJahXkQzMutR7lF7qmFvKiJO+qwek8ZZAroKdOzArdpMNXN
-	oT66Uf9hx7hz+8Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774542102; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
-	b=IfUaDP01F3JH4tgDH5+jfnxK3m3G1zoqejuqCQE6yhtmA6oAwFrdi/+v7rMBKhS6zwD2hb
-	azZepBy5BjCsoZCiHZzXYnGoTaf20a+vIweRmXe7jwrEIZbhWhS//HOniOm7orEtE8IWzH
-	+C5hfYo6AI0q8FTz0XlPtVsQhoqtvDA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774542102;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3lDg9Qo7P0Jt4agnX1ynDtZ4eMvLfAya4JWT6zRJSo=;
-	b=pqXukDQ9LEbKGqBXtMm7qdmWQVl24WRKq0mylAqbUWZzDjLBCa6wMLBXUUaeb9tpKtyeJx
-	LpIY+ySA7rp5lfCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6A3864A0A3;
-	Thu, 26 Mar 2026 16:21:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eyLhGRZdxWlFIQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 26 Mar 2026 16:21:42 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 1091BA0976; Thu, 26 Mar 2026 17:21:34 +0100 (CET)
-Date: Thu, 26 Mar 2026 17:21:34 +0100
-From: Jan Kara <jack@suse.cz>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Jan Kara <jack@suse.cz>, david@kernel.org, ryan.roberts@arm.com,
-	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
-	linux-mm@kvack.org, r@hev.cc, ajd@linux.ibm.com, apopple@nvidia.com,
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, brauner@kernel.org,
-	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
-	kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
-	mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com,
-	vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-	wilts.infradead.org@quack3.kvack.org, ziy@nvidia.com,
-	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 2/4] mm: replace exec_folio_order() with generic
- preferred_exec_order()
-Message-ID: <4pzoddjdplps6wzf7hluwjg7jty7tmrwkq5jk7qzer4kur5o4q@7ge6uatpmkex>
-References: <20260320140315.979307-1-usama.arif@linux.dev>
- <20260320140315.979307-3-usama.arif@linux.dev>
- <k45xs6btmt62uerbglqe665jozrtkeoklu4rek6odgxjdj63ni@ftw6ef3ug33x>
- <0ce07bc5-6365-4c54-90e2-4e56ad2b7465@linux.dev>
+	b=Au0HD6/6gaQbaGDraKBIVQQZuD3CEf8+YLYYvzo3j/DRCcZeauAuzFJVb8eqXV6E/+1LJ9
+	pN138A+3Uvc89t7oNr72GKJtd5XlRP5Z4GnZerBEuQc889xUB2+Tcx00hx4jV7KP4T6MLx
+	QsxUt2ejfW9Ym/BxN2PBaXwZBYEiwcw=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8cb40149037so137455785a.2
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:26:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1774542379; x=1775147179; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/cqQrfIeVRKhirbOTonOVGcajNoS4JNy4y1RyCuZwpE=;
+        b=IWgKZpSlxaRxAchHyDIejhZE6iwGLNd5OoiKqCfeCmQRXv6mvDtSc72tYl3qV6qmKe
+         /mZZd03sRkQhxqEBJRGhD7N2sABQvXv2/pxwyOfrPLs/0MZN51vcBooA3BE05ONsXS5r
+         qxZ+P5+T4bXHhMp+5Qs2JCTCH0GMJBkFrd32sY1kplsnKz6LPz9QUQp+bP/kO0zFlDsX
+         u6p6uNKVWI3wtsvq4zDW7+8VU+rVpJRo5tMPzUEgSAya53VT7OC3uxV2px812dClqSDW
+         z2WWx9M8xgUXMMjdmQXI6s9urXHaASC3OHqufe8mv8IjVQAGbdhJ+DTj1WwLwq47fCE9
+         2RJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774542379; x=1775147179;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/cqQrfIeVRKhirbOTonOVGcajNoS4JNy4y1RyCuZwpE=;
+        b=Z4WNjrInnFjfmc1BHR1ph46T6BdlHGCYVxdZ1gjoz4t815qPqKHilnTnoIOblu9gT/
+         G6BlxK7LmrD8eBYDPrx7PWfKk/k/LmpVyB38B0GQOJ4jDyQGP2MMrUU4fPUF3VzOO4XI
+         AcDNEYxpgUJwMToS6bgLiKrdTAExS/tqZ4Sde/+P8q22Uxi0zAdFPDA3nOaLp453zJTt
+         4qWFwckQbGF+cOLBlCoRKDqjWBUf7KOU8Hx1aCFGPGKCG8k8dRAcBJQ1hXnlYFWnk4r9
+         VsF+xhPDeXhKuX7ENM1wlxZCCQNf94E/h9whl2uxlCgW949zlBPzJn87nNgEPkLHScGH
+         Fm9w==
+X-Gm-Message-State: AOJu0Yx57JG1seA6a8Ac/817pmcDxHCn4tyImU9Q9GpPnRLf+vcOjuXs
+	2a9AvC4qda3cQNEdww00tI6Ev9Rbuyw7I1WTfUHtQK9kUJdaQ2gqpnb2msW/imP5nBZBWlLa4yE
+	+Zxs5
+X-Gm-Gg: ATEYQzwVbtcWq6nRtkeh35VhZIF2FSFiJU4BZPigGWZp600WxIfNP/SGtGRvzmsTLzh
+	Tazw+YRk2w5MBGhSzOIkw9D5P+j1j7prkPTCPp0/oRq0wkBhzziWlLkZeQgMwRP1GVzDMeAx63v
+	FdqJ0BwQ7U5P2QD4WnzO9A3h+9OVGFvzfoiaytpO4vAgBwPpwoJ+0U1lAs6A0KvL3xfq5NjeEvX
+	y5ioOubrQ/8OE5mIaDFVRDWVEl20PTzZbgGOPfDHU5IfKqLk5FlXEYu9aXv1X/pxvI6hmvxYyzW
+	SK7WS/CuZkEJRQ5ywNWPwd7PTfLw1DI/IA4hK9yzVqhf4LyJeWH0JKEre6QBC4VTFD0RwCeLog9
+	h4Cq+YtoHFYo4h0jqpocd5XNQgwLJkSzWeW+nFxRHAukxEO4pHP2XtmSBHQMH6J9OlDDlbqbuSx
+	x4auddcN5m4FaFAQTKFGo1OySkLvV2ztOPnCaH7GgRhQ==
+X-Received: by 2002:a05:620a:700b:b0:8cf:da76:58ea with SMTP id af79cd13be357-8d001003c8amr1290364085a.25.1774542378652;
+        Thu, 26 Mar 2026 09:26:18 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.thefacebook.com ([2620:10d:c091:500::2:e5e8])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8d00e3c3a18sm297378885a.12.2026.03.26.09.26.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 09:26:18 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	hughd@google.com
+Cc: david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	baolin.wang@linux.alibaba.com,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/shmem: use invalidate_lock to fix hole-punch race
+Date: Thu, 26 Mar 2026 11:26:11 -0500
+Message-ID: <20260326162611.693539-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ce07bc5-6365-4c54-90e2-4e56ad2b7465@linux.dev>
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F2EFF80010
+X-Stat-Signature: gre4rns34eycz6pdo9yxhzmeibm9tkzm
 X-Rspam-User: 
-X-Stat-Signature: 37b8pj546paqjzh6hnw454uyfym71uub
-X-Rspamd-Queue-Id: 02A3F40015
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774542104-144140
-X-HE-Meta: U2FsdGVkX19MhQJf0ODdIRhvGLCg6mF4nNIqKUXBaBJ1/l5ebjLG36clXxhcutdJVYnFxRIIhZShs3fitVflnyr9ISdyLZyKO1RdYE8Rb4EMv0eiAnATthX8rU6Y0xFI5LwqJJGPSaQYaVT37HIJQbSylgKet0cGKJ9/EiuYDkUjIkJHx5Eir9XlPqurQEE/79uCd+k6wha5HJKN+WRZk74kHTJhqZP6pmBUnnnalHV+xXkCNhxAv9WvhStFXXNARh3kDOsAH4eSAOfo2IRqqusf2nDFnBTLcnE7bv1zHfXCEGhrOAZtMkcPKueRDirP7ajANeUfk1ohyCX+N2LyPLaS68IuyIERQi2kyK9BtPIrxucsBFbdspRJvgoopuIU9ZoHOQLvx0F5uXLSE6RsZGrTRod0HDlPx2tDBoXehkYX8JHKF6aurFDcGpctKXUjqFFBolR+mHqqWNV11jHZVbcjG7IK/ZeSWHWVw//t5+5gy/Z2xei2sSGOeOtTR7LiXDi/QBGqh6VLwNU6gxJIv5YTQ28XTL5GOeOhxzzQQpAOxKDSquxicAUPdBqT6XjoOouhiU9XkBvK3d//hegkvGsKmaCBi9WO8/arQTgeX+N85RqUfptrS55dx+PSZ5ASB/JfIN7we3vtWrbUWCexVZ17/MAjptb14kD3AIe5oSvnVmWwh+Xt3NWe9vnwPUC2VJFTHD/v7EmOPlSa6SBrfH/iRAc8K4ioHDSIIqJZxPp9NyLBk7cTiFu5jD8MKOxHHeVJs4QYR/nTpp09sbgCohdhjIYrrsMnMif3YorkLOfEnASbujfjFEUw3XLexa6aNr/o/EvFLM2XCarJ5MdjeGJA8JM7q8Jzizi6UUoYSZSGDDgqkeAicg5XaGr95SXsTfXXEZ+ia0bawfkQpsFffdH8UQ3iAaXTRUAfFkxBTomfToDZxODgqwHZygYiFFBNanjwXqIcuMo/+9nWOGb
- 6+LZZrVP
- cHwl7p/gSrCfoTLZcvyDAux9ziGFXOkFSMXo0oKgfBNx8LISOj0Z2zz4S2HsjqiYpC0QXDG6UxWa/Psy6ajDYjp0A8199ZaVMMRWLX3XqJjmC94TyT46dKUa0jClbpM6BkGa7QMerNb0KIbspOh6ZjzjY8n4mlF8nekbO6Wt3biL9LlNDieXZpdpWIjmEylcXT+lhd9jp+Sj32bW/g4lG8zQbEKVwYvwCiLp1p4rHp6JmER3iXMceghPkXQ0s9ZzNr1aUUPFq/RweCkY7FNuAhfT2LeAvw37I1IGpa9+e/Ccj7QW7GwKOHFsqrj3aCNaPchdkSD3ub6buoGo7s+/kLjNWk8yhywiTKNWZSFAKybpoCKH2xgpwvvSnoLqzUfEuZBJg9cGASdyjdBU=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774542379-792832
+X-HE-Meta: U2FsdGVkX19F6uCbCpLiejaDVWpxZgUfxOycVFsFQ37O6fzfzFQii4pWxUtcu7bd5clt2ZjuS0pD2x/y0zPTuB7+ycCd9TnY+p3GhrwzWlpbkrI5+8/EpZCHGee7qzTufxDE1CNJTBb2aE+GksMLNDsYVwUe74BigpxI8sj40oNmUovLbg26zV93ZOdJZC/ac5sr3JkkI4Ukl9D+ii1RNZHVPpiFo8d0zthgYuYi4WRiBoK9ohrdxLEczVK4834ySIVaTAujg+m6/EyB38E/F6B0vegCHvRltNX+J9Owbwskmu0igLVqyjN+RVTXcH/dd6QSaJtcrQdOaQTWy9h0ESzkPI4h8NDYPDympoLUotIiuwpwR4RjBuu/2FXpujZo2IPJ8agwMmv1dZf9VSN2HWKMwTLyqF2eqanKl7rkjFzhE3KU1QgsDWkJ1i3rLakbsvJmQ7Osxt4NQtFX7HzWLg6GOyBWILDj/Wq78zgGDtVuRjCa8mAEeIUHxT30TvQ1HCF+oIclrl1ouuFdI9NVKmDZn7OqcX20yBvCj7NX6Ixu3mD1QNVkMEsXsUkZf2wLX+uBrO3/Au1x3Sb+kCBW6fkeiobvZRPSQgxm7Dpyz/BuGFiFUBAN3/IFJPIeoIoROg0LxeqoEm5CV8tfAUgLfpdsrIO0qQ6Ft49ncalhxjxIGdBwmOMnw1Po5qjHKJmfjnc+ox4RlbCQ4n6BYKpW7b0C30n1uhxqNuWJ18qy6/hlF6dz+2qMg4UC/D4rv8OXLa9BJjHzWUGx74hhCX9/g2DQLCPJ0+ZmxPYnARQSc6z0va44Wf/sCTyCiehRvl0ff35MY3otXN3XT6xwsFaxz1bAk+Cl8YIVa112i0exU/ARZeSxaZpFTWjAcxKNH2SAGQK4ymYtbcReKdB77/yiwTwWebzNrrVKy4JXltmkMlRW1X/KrZNRu++YfojsqC8IwijD6jiRpvXst+AR134
+ xMFWSuug
+ LKr6Rp5H5+4Wqgv9F+eakWdcMk6xusGBvNGNFuXVGcoxTgcQuV8+Widc4HlEslg5wH5G5D/y31ElJVOTGdstv//TE3CEKwB6CKgjQm2WpdOx5HxSnmyTEgMrtPgNCIF/fXRvyywCZP+0F7oYmG/4j6wjmHMhmEhEH8axpVu4jqGP7ye4lRS/eoOG3cKDzL7ig8UHLu4cWSM2AY3DQefIyuPgj+NbO/IhGS7uX3nqxWLOLZoir01x252oORiFHEhfpxbBxLaFJhp2kwxj50jW1LR/tzR3Q4kb6hjvVr5BgRh+e34owAxlF3Tzbwr1dv2fVvQVf7QRWWNnDIUZN+DbEYU1b2vIoKcur6OzM0ICtrIx7Dc/K84wHLGkEXbsAVsMDtc9xB188/ix3uAa2FVd7doAhBwI+2dUKWIZN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,52 +126,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 26-03-26 08:40:21, Usama Arif wrote:
-> On 20/03/2026 17:42, Jan Kara wrote:
-> >> +	/* Step down under memory pressure */
-> >> +	gfp = mapping_gfp_mask(vma->vm_file->f_mapping);
-> >> +	zone = first_zones_zonelist(node_zonelist(numa_node_id(), gfp),
-> >> +				    gfp_zone(gfp), NULL)->zone;
-> >> +	if (zone) {
-> >> +		while (order > 0 &&
-> >> +		       !zone_watermark_ok(zone, order,
-> >> +					  high_wmark_pages(zone), 0, 0))
-> >> +			order--;
-> >> +	}
-> > 
-> > It looks wrong for this logic to be here. Trimming order based on memory
-> > pressure makes sense (and we've already got reports that on memory limited
-> > devices large order folios in the page cache have too big memory overhead
-> > so we'll likely need to handle that for page cache allocations in general)
-> > but IMHO it belongs to page_cache_ra_order() or some other common place
-> > like that.
-> > 
-> > 								Honza
-> 
-> So I have been thinking about this. readahead_gfp_mask() already sets
-> __GFP_NORETRY, so we wont try aggressive reclaim/compaction to satisfy
-> the allocation. page_cache_ra_order() falls through to the fallback path
-> faulting in order 0 page when allocation is not satsified.
-> 
-> So the allocator already naturally steps down under memory pressure,
-> the explicit zone_watermark_ok() loop might be redundant?
+Inflating a VM's balloon while vhost-user-net fork+exec's a helper
+triggers "still mapped when deleted" on the memfd backing guest RAM:
 
-Probably yes. I still think we'll have to somehow better tweak the used
-order based on expected size of the page cache (2M folios seem unreasonably
-large for a machine that has e.g. 1G of memory in total, even if it has
-enough free memory at this point in time - we'll benefit from smaller
-folios and thus finer grained folio activity tracking for such cases). But
-that's not for this patch set.
+  BUG: Bad page cache in process __balloon  pfn:6520704
+  page dumped because: still mapped when deleted
+  ...
+  shmem_undo_range+0x3fa/0x570
+  shmem_fallocate+0x366/0x4d0
+  vfs_fallocate+0x13c/0x310
 
-> What are your thoughts on just setting
-> ra->order = min(HPAGE_PMD_ORDER, ilog2(SZ_2M >> PAGE_SHIFT))?
-> We can do the higher orlder allocation with gfp &= ~__GFP_RECLAIM
-> for the VM_EXEC case.
+This BUG also resulted in guests seeing stale mappings backed by a
+zeroed page, causing guest kernel panics.  I was unable to trace that
+specific interaction, but it appears to be related to THP splitting.
 
-Yes, it's simple and it makes sense to me so if others are fine with it...
+Two races allow PTEs to be re-installed for a folio that fallocate
+is about to remove from page cache:
 
-								Honza
+Race 1 — fault-around (filemap_map_pages):
+
+  fallocate              fault-around           fork
+  --------               ------------           ----
+  set i_private
+  unmap_mapping_range()
+  # zaps PTEs
+                       filemap_map_pages()
+                        # re-maps folio!
+                                              dup_mmap()
+                                              # child VMA
+                                              # in tree
+  shmem_undo_range()
+    lock folio
+    unmap_mapping_folio()
+    # child VMA:
+    #   no PTE, skip
+                                            copy_page_range()
+                                              # copies PTE
+    # parent VMA:
+    #   zaps PTE
+  filemap_remove_folio()
+    # mapcount=1, BUG!
+
+filemap_map_pages() is called directly as .map_pages, bypassing
+shmem_fault()'s i_private synchronization.
+
+Race 2 — shmem_fault TOCTOU:
+
+  fallocate                   shmem_fault
+  --------                    -----------
+                            check i_private → NULL
+  set i_private
+  unmap_mapping_range()
+  # zaps PTEs
+                            shmem_get_folio_gfp()
+                              # finds folio in cache
+                            finish_fault()
+                              # installs PTE
+  shmem_undo_range()
+    truncate_inode_folio()
+      # mapcount=1, BUG!
+
+Fix both races with invalidate_lock.
+
+This matches the existing pattern used by secretmem_fault(),
+udf_page_mkwrite(), and zonefs_filemap_page_mkwrite(), all of
+which take invalidate_lock shared under mmap_lock in their
+fault handlers.
+
+This also requires removing the rcu_read_lock() from
+do_fault_around() so that .map_pages may use sleeping locks.
+
+The outer rcu_read_lock is redundant for all in-tree .map_pages
+implementations: every one either IS filemap_map_pages (which
+takes rcu_read_lock) or is a thin wrapper around it.
+
+Fixes: d7c1755179b8 ("mm: implement ->map_pages for shmem/tmpfs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gregory Price <gourry@gourry.net>
+---
+ mm/memory.c |  2 --
+ mm/shmem.c  | 33 ++++++++++++++++++++++++++++++---
+ 2 files changed, 30 insertions(+), 5 deletions(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index e44469f9cf65..838583591fdf 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5900,11 +5900,9 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
+ 			return VM_FAULT_OOM;
+ 	}
+ 
+-	rcu_read_lock();
+ 	ret = vmf->vma->vm_ops->map_pages(vmf,
+ 			vmf->pgoff + from_pte - pte_off,
+ 			vmf->pgoff + to_pte - pte_off);
+-	rcu_read_unlock();
+ 
+ 	return ret;
+ }
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 4ecefe02881d..5c654b86f3cf 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2731,7 +2731,8 @@ static vm_fault_t shmem_falloc_wait(struct vm_fault *vmf, struct inode *inode)
+ static vm_fault_t shmem_fault(struct vm_fault *vmf)
+ {
+ 	struct inode *inode = file_inode(vmf->vma->vm_file);
+-	gfp_t gfp = mapping_gfp_mask(inode->i_mapping);
++	struct address_space *mapping = inode->i_mapping;
++	gfp_t gfp = mapping_gfp_mask(mapping);
+ 	struct folio *folio = NULL;
+ 	vm_fault_t ret = 0;
+ 	int err;
+@@ -2747,8 +2748,15 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
+ 	}
+ 
+ 	WARN_ON_ONCE(vmf->page != NULL);
++	/*
++	 * shmem_fallocate(PUNCH_HOLE) holds invalidate_lock exclusive across
++	 * unmap+truncate.  Take it shared here so shmem_fault cannot obtain
++	 * a folio in the process of being punched.
++	 */
++	filemap_invalidate_lock_shared(mapping);
+ 	err = shmem_get_folio_gfp(inode, vmf->pgoff, 0, &folio, SGP_CACHE,
+ 				  gfp, vmf, &ret);
++	filemap_invalidate_unlock_shared(mapping);
+ 	if (err)
+ 		return vmf_error(err);
+ 	if (folio) {
+@@ -3683,11 +3691,13 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 		inode->i_private = &shmem_falloc;
+ 		spin_unlock(&inode->i_lock);
+ 
++		filemap_invalidate_lock(mapping);
+ 		if ((u64)unmap_end > (u64)unmap_start)
+ 			unmap_mapping_range(mapping, unmap_start,
+ 					    1 + unmap_end - unmap_start, 0);
+ 		shmem_truncate_range(inode, offset, offset + len - 1);
+ 		/* No need to unmap again: hole-punching leaves COWed pages */
++		filemap_invalidate_unlock(mapping);
+ 
+ 		spin_lock(&inode->i_lock);
+ 		inode->i_private = NULL;
+@@ -5268,9 +5278,26 @@ static const struct super_operations shmem_ops = {
+ #endif
+ };
+ 
++/*
++ * shmem_fallocate(PUNCH_HOLE) holds invalidate_lock for write across
++ * unmap+truncate.  Take it for read here so fault-around cannot re-map
++ * pages being punched.
++ */
++static vm_fault_t shmem_map_pages(struct vm_fault *vmf,
++				  pgoff_t start_pgoff, pgoff_t end_pgoff)
++{
++	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
++	vm_fault_t ret;
++
++	filemap_invalidate_lock_shared(mapping);
++	ret = filemap_map_pages(vmf, start_pgoff, end_pgoff);
++	filemap_invalidate_unlock_shared(mapping);
++	return ret;
++}
++
+ static const struct vm_operations_struct shmem_vm_ops = {
+ 	.fault		= shmem_fault,
+-	.map_pages	= filemap_map_pages,
++	.map_pages	= shmem_map_pages,
+ #ifdef CONFIG_NUMA
+ 	.set_policy     = shmem_set_policy,
+ 	.get_policy     = shmem_get_policy,
+@@ -5282,7 +5309,7 @@ static const struct vm_operations_struct shmem_vm_ops = {
+ 
+ static const struct vm_operations_struct shmem_anon_vm_ops = {
+ 	.fault		= shmem_fault,
+-	.map_pages	= filemap_map_pages,
++	.map_pages	= shmem_map_pages,
+ #ifdef CONFIG_NUMA
+ 	.set_policy     = shmem_set_policy,
+ 	.get_policy     = shmem_get_policy,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.53.0
+
 
