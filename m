@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56C7A106F30F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F752106F311
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 09:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A626E6B0005; Thu, 26 Mar 2026 05:18:58 -0400 (EDT)
+	id CADF26B008C; Thu, 26 Mar 2026 05:19:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A13096B0089; Thu, 26 Mar 2026 05:18:58 -0400 (EDT)
+	id C854C6B0092; Thu, 26 Mar 2026 05:19:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94FFD6B008C; Thu, 26 Mar 2026 05:18:58 -0400 (EDT)
+	id BC2646B0093; Thu, 26 Mar 2026 05:19:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 856AE6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:18:58 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 60FC31B7F8A
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:18:58 +0000 (UTC)
-X-FDA: 84587664756.18.1CF6825
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A6ED610000C
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:18:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EGEvX/Tz";
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A978D6B008C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:19:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45C748CDE3
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:19:40 +0000 (UTC)
+X-FDA: 84587666520.13.A27096F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AC2C440006
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 09:19:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ER9HF96A;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EGEvX/Tz";
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ER9HF96A;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774516736; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774516778; a=rsa-sha256;
 	cv=none;
-	b=tfYHKQsB/gJunASOKCmmLu0vuq+GnRLd562kizPVD2iFDAK6w0WmmhqBOnN1w4OoEaVKxx
-	chcV97EdlAoIt/cxVmo08jRxsXCgjFcUG2N3p/6Rvapl2Z/4BnBbYHRxxpPYcfy4RnQbFV
-	3u/PfpqrUR6bY1Iy1iawrTRZ/rHZN0Q=
+	b=sUe1Ojh1+efqYmtPgza1M2eq8/pEw2FO8+p+G8aFhWuGhZg/m+m9FZa3fKl7mzqOdDNFHc
+	c5ObSCk0o15rAXTgcRXL3H7SlkbwGGbXdCQqLs6YokbjxWdo/gcQT2QD+3uQtzNSIB4fGs
+	ItRbbXgvUMx3XTK/opkbJdi7KmvFpqI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774516736;
+	s=arc-20220608; t=1774516778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=17UQkAQxmaKfoR8W2GntqiMQ4KoFR3kHaBUv9RbbRUQ=;
-	b=J9b9FYwkRdjqWnVV7DvMOYSRuPZtgAjMU6raMmSrZK/8Fnz17KRD8U0vfag3iWgnlP2+50
-	ecBpNmn9vE9tgI3/fCdiijkqljmgpEQRVaP4vW1dTjy5JtNlmY7fKB8+wDhnD11JYtglwp
-	OG50/JnxtkE67Ul/kt3XbprzWDElNHc=
+	bh=fykiYZDC7iPWvpjWf1+IyUJ12dbaUPthEbc/16Rt8Kk=;
+	b=zG+4OKe8GpeaXBnrEgQFswP4iAqY33foGRnbz4C8n6mnGDrY5oxbnkbzhVUMdxNpFpHUpV
+	H6BnKgUSOfFYFOjjGs/f6Fj91wGF/Ob+cKor1AjIfQ7McEpkdghE2GdrLMMcJltAPhPXHm
+	xjB9erc5oAPebhqYBpe+taF3+SrF/Pk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C835C418F7;
-	Thu, 26 Mar 2026 09:18:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FB6C116C6;
-	Thu, 26 Mar 2026 09:18:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C02460103;
+	Thu, 26 Mar 2026 09:19:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A0DC116C6;
+	Thu, 26 Mar 2026 09:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774516735;
-	bh=yUWBxeEHyviOPKRneK6j/gfx/J/uc8pAHvShiPb46kA=;
+	s=k20201202; t=1774516777;
+	bh=yfs11smsIZq3UwfvmiNxz7T6cNBk0gtg0FCG2iKFu4I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EGEvX/Tza/tjOvP+jwHZtAfsQ9i3c7zrE71IAVXMEBQFuXXBY8J8Q7ke9WuRoZPaA
-	 Y+chvo99aGdYyVr/Ej6q7FyBK8u7WGGWRA7w0fOlldEtOkdpL64+VWh9BMNsNv3AvP
-	 C24e0feiTo3fMQgLeEi0DEnVobzVj0a1HCmGQBIDe89k5m+My6w495OfsTJWLoTXTk
-	 rW1jm4hUGy40vO8TEOhFBYjcPcB74lkZHpC2O6WO0jV8h/eZB2c+l21RdUfU2k8Ah1
-	 Rs4/PMwca7YEl/l752V++FgB8s2oggoqcfw9t8psB+h6tVJgd7Iz5Q8Myq1/LinSjR
-	 TSfqa9opHxHVg==
-Date: Thu, 26 Mar 2026 09:18:53 +0000
+	b=ER9HF96A7VDTgHU9B+tGpO8h4S1ABwBaTxloVPzHLeGQJ/97Himkw8Z0QSeeUYYIr
+	 b959i81Toxc4fqIr8ACodW/C6xCuCNFCFSmp9QIYjimotcGXPd5cTEOrxuw3x6lYg6
+	 jrOI5lfaeogvKpBkBkJnN5LXVECayqpvlJW+9Fr9C4RYdgnibXa/w5K8KTae0uH0oL
+	 ++L5ZW1R9+6HKZG3NngBNUvyi+FyaadzguHcOXsv7j9JzVD6dc9vck3QEhVII/2PlI
+	 XQyaIP1K779uAZJ9d93nbcuc29km6b5FYirS55NKIGnAR4gi4oODZAFCBkNfxVojCX
+	 Ws0UpvJGyXXgQ==
+Date: Thu, 26 Mar 2026 09:19:29 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, 
-	rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, 
-	maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, hca@linux.ibm.com, 
-	gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com, 
-	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v5 0/6] Use killable vma write locking in most places
-Message-ID: <44216135-ce6e-4c06-acf9-af09e224ddd8@lucifer.local>
-References: <20260326080836.695207-1-surenb@google.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 2/4] mm: memcontrol: change val type to long in
+ __mod_memcg_{lruvec_}state()
+Message-ID: <ac9c3d78-6244-424f-82b0-d5501145484c@lucifer.local>
+References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
+ <5c42058df0e52a4698da005e502deb2fae7bf819.1774447069.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260326080836.695207-1-surenb@google.com>
+In-Reply-To: <5c42058df0e52a4698da005e502deb2fae7bf819.1774447069.git.zhengqi.arch@bytedance.com>
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A6ED610000C
-X-Stat-Signature: qrc3rtiniq6ujpifrh9646iwh15obt3n
+X-Rspamd-Queue-Id: AC2C440006
+X-Stat-Signature: yasepjn78mfbcuykuyk74aa6w63wj585
 X-Rspam-User: 
-X-HE-Tag: 1774516736-241952
-X-HE-Meta: U2FsdGVkX1/IaIhVIhU3mDnfXsavCaGcnazewKaj1RkrVS3Bfvt4UdGqW+75A6azOsNMqiQ2FgiMD7ieqDWyGOx0TXGyMqUbtJmqVCMlMzJGwoEWQr4+if8FuT6JQxmEdi9cZsBeGM6o0hpZouafThxc+A3vZCpDA0ZnSJEK7sdedYGIKqZHZ6uoj7aF2JJU8wcpdskLLVTscl+ZpCAFqpLR/8hW5F1GAWXnQrIySL2cVeim7odZeuF7fQVbRLy0ntl3RH9vJEVei0pJuD/u0ti6jo1Z44FJx09SxyBGsp1BRpcRpjfNfnJMr9d3kAyupxIEVOaG3di8PStjT/ORCWeuwQxqfxP01evhARtlRNILrKFLtswlezLhChjgd86VIVxDTOMLMMmGD/HpqeIM2tBzqOJFN2SqMt4XaZ4vQqkYAqTYzZdcfiTkxMnm6qTkU7VqpWOmTE7947Qc554Z2NNBXYvAwgAIXEJpCOnAiEGAzWb+HCocMgzv1i1spF4dbKPqT+IRWdSvmvpFQifB2B+h4rygfot6oweUouuUamDg0IyJEdMiUa6saFFk5MIu2CUGwjXHMjUhkDbAocx1dWzR3NnkgyeMBISEmeI85vISacjffdDFC0eiE7N9y6vXaX75ZlnFhwjSYLhJVjxFRUjqubUPxPo/IEcjjLam3m6K09QRpJbqyFcD9MeyfZ65Xv4VQ7KwlZYT7uDXCp/64GwEc3/hrxYfx+qF9TjYHyQZaDUjPLf6vG7ajBUdv0Woa4NI8m6xhaCPokT3HQmqG4dxP75IhwEjSfl2FJgSwZcPeUR8b0Llgq24qEubKKLlwtwwO0zHH7VY217vSRMiMxIXiKFJOx0UWSx2qRxQRYSYrZXPKrpDGL1vhH4exlQkkbKWwjfMKZ3SIoOFQ4T+M1X3PagFp/IOFYvn1Pz4CFh4Wavg25HarAt7J9BnYziBgz9WA1QvRJksFRzXuOH
- 14ewixnk
- nxxDWIq90jhMP3ujREhqBWn6+y3g5tTvOxdSd73BGNa2PQ65d9mwxaALG/IGjvwUZsog7gAxz1WqGuFAakxhfr7db5p5mWv7JhszFEE/VUka6N0yrApKT7uVOGP1akJcwZLb2cAsJnraDA0cQ3jNyPn+sYkqkfGY/ftJ5ItdNMFGJ/6unEbwgIPVOthW1fYAgSLftWO7JEkvPf2eXVAtljXMZGMhJPBiMJFG8IViPiVM3WAqNwAper1g0kEueGGUImQQq3zId6fRX0ieJQyxYeQpMhdIMbyrh9BRlZYWYsdtrvsxrLfAcdRmkQ2FrEd47KKnzIbvMYKBV0hM=
+X-HE-Tag: 1774516778-505608
+X-HE-Meta: U2FsdGVkX1+3Vb95eD3Fi2c9oE91B624DYlMq+uZ/Mwye0iKkAh7+yfVtVUfy2nOjhNzwxMfhQmZsRFJ0Zsd4AF51nK4gP04t4M7LXWsfVJk8N+1rlSeXLMtjXp3Ftv+pE9oF0medbAj1Wp3Pas6WhGFZTQjD4KgD3YcFgMMC0rZdYizPVwpB/FerYSwmqmz15U3QgVtCqTP0K9SNtXs7lE4bqi1Gxt8Hdih0LJoY4ZhuZXWs+QgU3+EGUqlNVrixu/epax4EpPoxMi+3fPXTE1JE7+W9XGoto78aiGf8VY9pVQ2xh+/Nu53/hI08M7mX7RB/nrxmWvzmDqkOlMWyV2UEf6OJ9T7Bnn8NgnyIn4BOleSBVyiMOY4igH/Yy6GolbWhszbJ+MErLpW8scpTMT/PMXRcKPZuPKeWpiCNucxGa9HPiHBWKussNK+RLEnYfUCgnMffz7rtWSfjQ6nMMmdC/kZr9aQU8+Z6Cgb0iVIqW/15xOj0Qg79GOvyu6iwabWWoF2j6ryEdwnkdABm4SgftVHNg2btt7h2hSH8NYgxrEaLTUlAw5WYaKX4m2xAyYn/HvVXMarRMGVgsn/yrd+XLj5NI0Zf4Zo8XnlcM8+9SXTYTNFKsP/dCZzBmJWvA7RsM2aNo+Xqp5mC/S8Xtn7eU4Gvl67owpNDpmG853sJesAc3j4ealXVblapATQ/69LTevOJL4LsVnbwIJI54KQEDrh6dMl0b9+oF8k8RrZjmUrG4e7pjaEmhNZd1+j5YOrQESNZ0TJ7DkwUUb5GShKm39SRtSk3pGHPgb1MXYQPuXAn26xfD+5p0MNF/WxOEfVhfqNvnatiWoAUytFO3Cayt+1iLo7Rl0TWmd6DXorvlWdVHpqA5BGjHnj8SMi11TjCJSfqs8pTQnqpqSILzZWiSFmIFz5UzsSU5sRO/CwAlCLKC50KQoO3aLRPMnjnw0348w+Ma5AANjJIrP
+ 0g0NdkHR
+ CBvx/SB5CeASInFGOk1dLugeigTQxj2b+fQRD0b2o8RT6vyVuXSLui9tmMQ7xdA6wRqos/tm5PyBu3kbQpfXTHBVvRT7gfSdc/F1cdxsBYPOwIvMPQGK13MrYY64/gzIeWotE+1uQ2r7hUT8myeVofsWG+XiMxifwHdC1nEFJ7KelVUWxj/PQy0s19e0HSsjGbDHyGJ48hMyufi3YcVvtYHR80r8Pdl8S/a3dkkfyrUjR2f+pGi2mnUda0G3gNqTXCKcvwyrWTff0kHZ2/OsrGU0SnOL1VvLVosI5g+OdgDOBlsd87RLZzeVnhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,86 +98,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
--cc old email
+On Wed, Mar 25, 2026 at 10:13:23PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>
+> The __mod_memcg_state() and __mod_memcg_lruvec_state() functions are also
+> used to reparent non-hierarchical stats. In this scenario, the values
+> passed to them are accumulated statistics that might be extremely large
+> and exceed the upper limit of a 32-bit integer.
+>
+> Change the val parameter type from int to long in these functions and
+> their corresponding tracepoints (memcg_rstat_stats) to prevent potential
+> overflow issues.
+>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-(Gentle reminder to please send all new stuff to ljs@kernel.org - at some
-point I'm going to set a rule to ignore kernel mail sent to the old address
-so, if you need a response you should send to the new :)
+LGTM, so:
 
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-On Thu, Mar 26, 2026 at 01:08:30AM -0700, Suren Baghdasaryan wrote:
-> Now that we have vma_start_write_killable() we can replace most of the
-> vma_start_write() calls with it, improving reaction time to the kill
-> signal.
+> ---
+>  include/trace/events/memcg.h | 10 +++++-----
+>  mm/memcontrol.c              |  8 ++++----
+>  2 files changed, 9 insertions(+), 9 deletions(-)
 >
-> There are several places which are left untouched by this patchset:
+> diff --git a/include/trace/events/memcg.h b/include/trace/events/memcg.h
+> index dfe2f51019b4c..51b62c5931fc2 100644
+> --- a/include/trace/events/memcg.h
+> +++ b/include/trace/events/memcg.h
+> @@ -11,14 +11,14 @@
 >
-> 1. free_pgtables() because function should free page tables even if a
-> fatal signal is pending.
+>  DECLARE_EVENT_CLASS(memcg_rstat_stats,
 >
-> 2. userfaultd code, where some paths calling vma_start_write() can
-> handle EINTR and some can't without a deeper code refactoring.
+> -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
+> +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
 >
-> 3. mpol_rebind_mm() which is used by cpusset controller for migrations
-> and operates on a remote mm. Incomplete operations here would result
-> in an inconsistent cgroup state.
+>  	TP_ARGS(memcg, item, val),
 >
-> 4. vm_flags_{set|mod|clear} require refactoring that involves moving
-> vma_start_write() out of these functions and replacing it with
-> vma_assert_write_locked(), then callers of these functions should
-> lock the vma themselves using vma_start_write_killable() whenever
-> possible.
+>  	TP_STRUCT__entry(
+>  		__field(u64, id)
+>  		__field(int, item)
+> -		__field(int, val)
+> +		__field(long, val)
+>  	),
 >
-> Changes since v4 [1]:
-> - added Reviewed-by, per Barry Song and Lorenzo Stoakes (wherever the code
-> stayed the same)
-> - split patch 2 into 3 parts, per Lorenzo Stoakes
-> - converted vma_start_write() in mseal_apply(), per Sashiko
-> - changed vma_start_write_killable() error handling in
-> set_mempolicy_home_node(), per Lorenzo Stoakes
-> - added comment why mm->locked_vm is fine even when we exit early,
-> per Sashiko
-> - moved vma locking before vrm_calc_charge() in move_vma(), per Sashiko
-> and Lorenzo Stoakes
-> - set give_up_on_oom on error in vma_merge_existing_range() to propagate
-> the error, per Lorenzo Stoakes
-> - moved validate_mm() out of the error path in expand_upwards(),
-> per Lorenzo Stoakes
-> - dropped the patch changing S390 error handling, per Sashiko and
-> Lorenzo Stoakes
-> - reworked error handling in clear_refs_write(), per Lorenzo Stoakes
-> - uninlined process_vma_walk_lock() while changing its return type,
-> per Lorenzo Stoakes
+>  	TP_fast_assign(
+> @@ -27,20 +27,20 @@ DECLARE_EVENT_CLASS(memcg_rstat_stats,
+>  		__entry->val = val;
+>  	),
 >
-> [1] https://lore.kernel.org/all/20260322054309.898214-1-surenb@google.com/
+> -	TP_printk("memcg_id=%llu item=%d val=%d",
+> +	TP_printk("memcg_id=%llu item=%d val=%ld",
+>  		  __entry->id, __entry->item, __entry->val)
+>  );
 >
-> Suren Baghdasaryan (6):
->   mm/vma: cleanup error handling path in vma_expand()
->   mm: use vma_start_write_killable() in mm syscalls
->   mm/khugepaged: use vma_start_write_killable() in collapse_huge_page()
->   mm/vma: use vma_start_write_killable() in vma operations
->   mm: use vma_start_write_killable() in process_vma_walk_lock()
->   KVM: PPC: use vma_start_write_killable() in
->     kvmppc_memslot_page_merge()
+>  DEFINE_EVENT(memcg_rstat_stats, mod_memcg_state,
 >
->  arch/powerpc/kvm/book3s_hv_uvmem.c |   5 +-
->  fs/proc/task_mmu.c                 |  12 +--
->  mm/khugepaged.c                    |   5 +-
->  mm/madvise.c                       |   4 +-
->  mm/memory.c                        |   2 +
->  mm/mempolicy.c                     |  12 ++-
->  mm/mlock.c                         |  28 ++++--
->  mm/mprotect.c                      |   5 +-
->  mm/mremap.c                        |   8 +-
->  mm/mseal.c                         |   5 +-
->  mm/pagewalk.c                      |  22 +++--
->  mm/vma.c                           | 146 +++++++++++++++++++++--------
->  mm/vma_exec.c                      |   6 +-
->  13 files changed, 190 insertions(+), 70 deletions(-)
+> -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
+> +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
 >
+>  	TP_ARGS(memcg, item, val)
+>  );
 >
-> base-commit: e53c9040ab1b738dd2c83b57558f141902caaf4f
+>  DEFINE_EVENT(memcg_rstat_stats, mod_memcg_lruvec_state,
+>
+> -	TP_PROTO(struct mem_cgroup *memcg, int item, int val),
+> +	TP_PROTO(struct mem_cgroup *memcg, int item, long val),
+>
+>  	TP_ARGS(memcg, item, val)
+>  );
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 7fb9cbc10dfbb..4a78550f6174e 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+>
+>  #ifdef CONFIG_MEMCG_V1
+>  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> -				     enum node_stat_item idx, int val);
+> +				     enum node_stat_item idx, long val);
+>
+>  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+>  				       struct mem_cgroup *parent, int idx)
+> @@ -784,7 +784,7 @@ static int memcg_page_state_unit(int item);
+>   * Normalize the value passed into memcg_rstat_updated() to be in pages. Round
+>   * up non-zero sub-page updates to 1 page as zero page updates are ignored.
+>   */
+> -static int memcg_state_val_in_pages(int idx, int val)
+> +static long memcg_state_val_in_pages(int idx, long val)
+>  {
+>  	int unit = memcg_page_state_unit(idx);
+>
+> @@ -831,7 +831,7 @@ static inline void get_non_dying_memcg_end(void)
+>  #endif
+>
+>  static void __mod_memcg_state(struct mem_cgroup *memcg,
+> -			      enum memcg_stat_item idx, int val)
+> +			      enum memcg_stat_item idx, long val)
+>  {
+>  	int i = memcg_stats_index(idx);
+>  	int cpu;
+> @@ -896,7 +896,7 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
+>  #endif
+>
+>  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> -				     enum node_stat_item idx, int val)
+> +				     enum node_stat_item idx, long val)
+>  {
+>  	struct mem_cgroup *memcg = pn->memcg;
+>  	int i = memcg_stats_index(idx);
 > --
-> 2.53.0.1018.g2bb0e51243-goog
+> 2.20.1
 >
 
