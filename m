@@ -4,144 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7A7D10A88E0
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 15:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A5910A88D4
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 15:55:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BC7D6B0088; Thu, 26 Mar 2026 11:43:45 -0400 (EDT)
+	id 7D30F6B0088; Thu, 26 Mar 2026 11:55:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 094836B0089; Thu, 26 Mar 2026 11:43:45 -0400 (EDT)
+	id 7840C6B0089; Thu, 26 Mar 2026 11:55:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEBB66B008A; Thu, 26 Mar 2026 11:43:44 -0400 (EDT)
+	id 6723F6B008A; Thu, 26 Mar 2026 11:55:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DFDAC6B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:43:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 91F3FE1384
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:43:44 +0000 (UTC)
-X-FDA: 84588634368.06.C103120
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 96BC540013
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:43:42 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AflVWE7S;
-	spf=pass (imf11.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 54C9E6B0088
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:55:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 054E98B34D
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:55:44 +0000 (UTC)
+X-FDA: 84588664650.17.5CB0E8F
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3836D4000C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:55:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=UiudyLeX;
+	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774540543; a=rsa-sha256;
+	cv=none;
+	b=36HZv/EkHS76IlfYpyucLy73Yx9Yc+1AWxSDXkeoHds/4EgJI5/OqUkVKJZ+a+SG4WtzlV
+	wqCaq77lCRosMkxn8bSDpzsHwnHKtlwpSEFnCzANjUgRgK431lJBq92QhlGMZxgtrrDY9t
+	jukmBtGFwM0rPEbwUr88bPem7TQlOd0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774539822;
+	s=arc-20220608; t=1774540543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eJ8uyLAGPsYlzOxecTxE0rgHoqWq0oDDfV/0YCH68Nk=;
-	b=Igqub9Jzoe6VRiwlquOZy5kMcjgVmBi6nRvER02B6WccV+LtnYzlzwC+3sCB6EFyx3VP5v
-	ci2faSk5rSPw9tHQX57bPah8LwSNKIaxzHbiVjkYLJvblok0EE4yF/fFM58AOUSkbvsGKD
-	fkcIa78q+mjEpadG/PwyJsrFMRYL6Qs=
+	bh=HRMNAvoI8/jKpG3++5LCwSufZK5n9g0ksfmeuh3S+yc=;
+	b=dx/9siGlTw1uuKiILjFvCD4iujN7GT/Mn3IJCripCPs+hftpIF9b0vNzyk2/ZLtbbUVtfs
+	Vogd8cwIwRgm/l1GprZEaV2M0QhsEfYMF+s/rAMpnkHhpuywLoRj5iGuJ+roGC0fvFfIvg
+	v4umgxgJxc5NrmV7bkv6xcfT1iUNb8s=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AflVWE7S;
-	spf=pass (imf11.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774539822; a=rsa-sha256;
-	cv=none;
-	b=1komkneQSZt7c5TsHE7HxYL/5hNYdbstaee4zZxYJO7RsD0rGk0m8tfTxGigdVdHAsucRH
-	Tmn1nvIQo3I874qX751twzHKJVnKMiV4AduP3jGdOhN7QjUqJp3EdvFrZwM/MttO3L1b6E
-	emR7kNe7X7mpuZyrOrcYO/gxqOW+Wcg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9487A417B9;
-	Thu, 26 Mar 2026 15:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA6CC116C6;
-	Thu, 26 Mar 2026 15:43:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774539821;
-	bh=MBxi1eZ9X5Z7HPjFf5pEA+SACwJJgd5iW3TQLdtDzS4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AflVWE7SfTCDyHibg02fD7eoSk5xdCZeClBFBihknqgQ5CbkT7B7L1fw0BdP0BeA4
-	 2jF/GPgoA9S0w278304Vs1xJI+VgWU9ZHjkaVVkK9fwHnDXem4AReFWoVRNMN+JGkR
-	 PhNBDrAOgVPeWhlvAGkf/vO/+gp1mtrEHbOBz4vkRcKn1Qzs8I75fC7+/fO5mUTSSJ
-	 PEu6xeNB2VzDddVLSYeCle/ZLHZHUaPFXY0NrK7LuCGf0i9vCGzlRyGeExegwFEe40
-	 fIKttBPPYE/GgnC17ndrrbqJsIpNLahWYpX/gitiLnruOOD8p1PcxXCHVIuZfzbJmU
-	 lOU2oTCfUY5iA==
-Message-ID: <b263a722-e9b8-4a43-a075-46e4a753871d@kernel.org>
-Date: Thu, 26 Mar 2026 16:43:36 +0100
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=UiudyLeX;
+	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HRMNAvoI8/jKpG3++5LCwSufZK5n9g0ksfmeuh3S+yc=; b=UiudyLeXKQzMSbmKfuP/Zq+N8l
+	IJDs6wTduVJKqHnN/f0afsAgOf4cS3xdwL0PxL8RL0k30hz/63Kd87bxVbI800dmZwSpgXXLgzcdL
+	mZR23rCOkayBzyq0F3GOwGI33G02XOgl6IxdMOJpMPmWjEJ1g9uOP9VrQhQ7vg8QHlnKw0NrQ5Pxw
+	epgi4PS1GTbZ3rWTK/n76XLji3ba4JKjQiI5cCMfxp2zEjjtcNaAfb5+0y/W4v+mzzYFViT7Me/KH
+	7H+iItNqVxtGm261E4WxJwf6Sxa4AVIWPLGHUtVHnDmM5EIixAKmj/bzZ6hfNTbbbCLSRJ9laMPxC
+	eIrBO/zA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w5n3K-00000000G5w-0Ka1;
+	Thu, 26 Mar 2026 15:55:22 +0000
+Date: Thu, 26 Mar 2026 15:55:21 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 0/5] locking: contended_release tracepoint
+ instrumentation
+Message-ID: <acVW6eFGwqACD91Y@casper.infradead.org>
+References: <cover.1774536681.git.d@ilvokhin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
- module
-To: Josh Law <objecting@objecting.org>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Josh Law <hlcj1234567@gmail.com>, SeongJae Park <sj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- Christian Brauner <brauner@kernel.org>
-References: <20260326072737.341964-1-objecting@objecting.org>
- <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
- <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
- <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
- <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
- <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
- <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1774536681.git.d@ilvokhin.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96BC540013
-X-Stat-Signature: y4ewwa9qgx7u5j17roiihiahjpcf6tug
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774539822-708109
-X-HE-Meta: U2FsdGVkX19AxZ21OhI4/LuPr0cf65Hb3EMW3yHBmXK/LBjWKuZ9IPGq7e5y9sMzq2OEUZ4klZGJODyW7DmC4YqVlW03j9nespjOsCs6vaMQ4aMatPpZLwBKA+FBTTPwaaYDr1sX0D6HnOY2QHSxavEOYitcaFKCppXF2GxBuyxrRkfXB2g801P4hPO4qMdeNLbMmex+ulyXgiKSyqkP1JfbO1fxhjHLYZGjOfTilrfgyttXBiby3haRNiVfGXA08QT+ZjIKh+X31E3EvnfuBRaIgedj3cmfwOY62WcBjh/Pa2ZdEl5ZUD8AP9aVgqqW/IIn0ctiSzZxpoLJpEVk+vnKsipL5X0y35UjADIV0J5dp5c81SCzFU+cBE7z61ERCysyyB4kCVgN47WyuCwrkz6h2jgBp8C/095m1gj0a6+DNUjzlEXOJJaDqEfWLWnt5SmUNEjkvK5+afhPxBkWY5OFm0f9tf69mgndDkitNAfw28JxnOBfxbDVhwAeayaIH9mVrZ944ZkMubHXbfCT/02pHSngXUmJgq0roqjJ0Afq+qkZGcBNmAoK/LiaxfowC14AgOLSAqHJKE2Ah+al4kC3OVWmfg8IBaRaVf9ampkAngQz43iFTkCwJ/q9igI7lH8y3YpDEzAwJIdmk94l9+/PfDnJHTQOJ0h4K6eHVgNNJFHQtWLMYXqcBZ7QSSnOEnQLhIT/OmaQHhl7LSsEpkQfKaWM72kutBpG9us60on0w2vHETxtQfNwXJ373DZpCF+yHiEVNOdjFYX6KPTL9n5w3AHyUtUDq3Amfx9s4eSWqWHBxmKKTbF1wXLNJbT0ev3Q/to82mb2VbDY4Tg5812DpYfpSL1VhVoxZEYU3BLRFzBWxVZxufmEH6L8QONUh3s7LI6P+Fpl/CJCdMKxs1zWbZ//KP8YDndyjR8wbmnMw0SzURNuxc3aBUS3kTw3Jw57OXNPFnpoPpAxfKl
- NGD4tkb0
- 1lWuk0r85s1tR6Jl3KHUPiuQWP9jd3/004ZNcPizjqJMUgWg8XtD4ev0cPEwihzhye4ITIeyAZyVaiitEKzDk6W6E4QzD+sczTNXcK4NSF+3p1tuo2enk0aXSbKnae1AgZp40V655FBc7e8SsNxSFZEaJv76hT03lG4H48XlEOTS85/ZmqU+92UePRkJrWt7rxv4sFEILi9We+zBqia31l0sCGH5WwTAFeGn9hSEq/UGnW2m6bx39FN1B8Dzp2RSlzaEPee+jHML1KVIa6oSFQIYk/e3SER7oIBbwCyGQr8BJTWPqW2M+qGnXMYwWdHQCyjWpKsG9OecqsnWEhieiION9CsLGWvRISreBMMRevOEoF6M=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3836D4000C
+X-Stat-Signature: saiuh7r9e8zfd1it7p4uckiskfq9fzg4
+X-HE-Tag: 1774540541-458526
+X-HE-Meta: U2FsdGVkX180LJeuiDIKe5HqQ41YyScI5Z3nX0pIM8MFhOPk1cozM2Z2LLc5C3HcvzjtRjilflL3VC0TFj4TE9iho7KKuGoPJjImrJk09GFZaERfCit1HJOp4A1fnkmE/Kf+jGeQUQWAtuesFQlU5T7Hls3W3HMMlgJYYu7A2hTY+zRy2i/GE0tDyt8BSCuD0kJn8i2g/17riyHsxbuKsRJN03H8WYX1cBHYJjW1d2lZBNrxS93fAxbW5eF/ndsi616tWE+QTT/DOJviO+YCHaU2FJ3qL6A4FZcmjYNqDCSPHc7mMDZW4pBcUmppEKkkHJQLf5b//muHz6ns+oLQr+rblNyx2kBMgMeyLhhZACIV3dSYrPEI5V21F9E2FMnt3sV/bxZZCP112yFSVJ++AIAgZ+OnIIjhkdPR7DId2X1SWR8LbSVSRsaogkNDw7lKOSxpCEhJoOmv62l24C+jcGK7joLX3hBa9A4pLPbQ8PXdFK1Zjp09tQb6GXsVWLtlSJWO7weylJ/skVEU8Jns/QkhKXijbcsuR/8b4WAMvT34o5DN4A57Nj71DAO0/hyarVjWAcumetZq272kbn4DBeEwpvkxsYcIYUt6sIheU7Nrims+yB7X5mRxOkzX6mXi9Sg/tkYG1CVBEEAKvwNzhMmUHEtOc8ld3PiYkR8GfQSVtNHo37RVGranr17uQEp9I4OiCIuJcm2omTG+JBtrju6xmUINMO13zm5UbzPTjPoDvfYbYsL8tQTtxFnbe+5gVZiW6t2UeNxia0+J0sdPiCAD8+LxGWHL5ulXYqO7DOG9jOFwHMZM67ltKmEsdAHpy1hRR/BlWvru0ZI5QugJ1D0HoOSKUfyh2ceXgoY3Ajo4D2QePWDdG2ic75Hejj+aQT48rlo+C+DyfUs+5NKT7dyTI/emFTZ7r0q3iYCZyX90FZgzwOMVXwTzDuPEsy58254kxmdERAcSbpT+pNK
+ f65K3goP
+ OQnkKOVPW0r8KdqDJDGBPlQIVHylM+rrZyCSNogNHNEmptJ5HlrcA8tz8cXqbo8uBkMMkdEngJgyuSahaAzgT/spz58cuXeHD8H/idF/UejzA21Ve0KpRobs1sMnAGhtASNLMXEm1AKzlz1jIJYH/y26MMl0+alWVuSdsqWHnmO4KXtZQGfokzr7xr0AmuuaXBamzhDVnx9cZpl9kyR0PG+6BpEvyMwIUD3kzupFaeROuU1obQAo+WKOsaQ/4eV3cUq+iymF5zSestaN01J03Eqq8IxwdBsjUgIOGimEmQZlb0EE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,106 +107,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/03/2026 16:14, Josh Law wrote:
+On Thu, Mar 26, 2026 at 03:09:59PM +0000, Dmitry Ilvokhin wrote:
+> The existing contention_begin/contention_end tracepoints fire on the
+> waiter side. The lock holder's identity and stack can be captured at
+> contention_begin time (e.g. perf lock contention --lock-owner), but
+> this reflects the holder's state when a waiter arrives, not when the
+> lock is actually released.
 > 
+> This series adds a contended_release tracepoint that fires on the
+> holder side when a lock with waiters is released. This provides:
 > 
-> On 26 March 2026 12:50:40 GMT, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
->> On Thu, Mar 26, 2026 at 01:40:19PM +0100, Krzysztof Kozlowski wrote:
->>> On 26/03/2026 13:29, Lorenzo Stoakes (Oracle) wrote:
->>>>>
->>>>> Answering to reviewers with whatever confirmation they look for is also
->>>>> a warning sign of non-trustworthy behavior. Or rather behavior trying to
->>>>> get trust.
->>>>>
->>>>> [1]
->>>>> https://lore.kernel.org/all/D47F8215-FD08-45ED-AB01-0A5C48CD41DD@objecting.org/
->>>>>
->>>>> [2]
->>>>> https://lore.kernel.org/all/2F84DD09-2880-45E0-AA98-204F10848F85@objecting.org/
->>>>>
->>>>> Best regards,
->>>>> Krzysztof
->>>>
->>>> Yeah this is really adding up to somebody abusing the kernel process. I think
->>>> 'Josh Law' or any other pseudonym that can be traced back to whoever's behind
->>>> this should be banned from the mailing list altogether.
->>>>
->>>> Also, as per Christian ([3]), it seems this guy was using the pseudonym
->>>> "techyguyperplexable".
->>>
->>> Yes, repos on that Github carry commits like:
->>>
->>> commit c04af501bacbef54cf97cdfb904ddf295f8327c1
->>> Author:     techyguyperplexable <objecting@objecting.org>
->>> AuthorDate: Sun Jan 11 04:21:53 2026 +0530
->>> Commit:     techyguyperplexable <objecting@objecting.org>
->>> CommitDate: Sun Jan 11 04:21:53 2026 +0530
->>>
->>>     ANDROID: sched/rt: reduce lock hold time in update_curr_rt
->>>
->>>     Move resched_curr and do_start_rt_bandwidth outside the spinlock
->>>     critical section to reduce lock contention
->>>
->>>     Change-Id: I8dfb4e33460ae4eeb0bb854cc2cb084ab5edf7e4
->>>     Signed-off-by: techyguyperplexable <objecting@objecting.org>
->>>
->>
->> Thanks, it looks pretty clear cut then that 'Josh Law' is an openclaw bot.
->>
->> To think he was scheduled to be added as a reviewer for literally all of lib/
->> recently (5) until various of us pushed back on it :/
->>
->> [5]: https://lore.kernel.org/all/20260308202425.C9EE4C116C6@smtp.kernel.org/
->>
->> Is it really that easy to game the system?...
->>
->> I hate the asymmetry of this - we have to jump on these every time and they can
->> send WAY more mail than we can reasonably reply to.
->>
->> I think we need a clear 'yeeting' mechanism to block these people on everything
->> once discovered.
->>
->> Sadly the kernel has been historically very poor on getting rid of problem
->> people (The CoC is essentially a swear monitor at this stage).
->>
->> In the face of this new kind of threat we probably need to do a lot better.
->>
->>>>
->>>> There's a github with the same name ([4]), and that same user made a comment on an
->>>> openclaw issue relating to linking it to gemini ([5]).
->>>>
->>>> So it seems likely he/she is likely using openclaw to fully automate this 'Josh
->>>> Law' user and we're speaking to a bot here.
->>>>
->>>> (Screenshots have been taken for the (possibly inevitable) deleting that will
->>>> happen later.)
->>>>
->>>> [3]:https://lore.kernel.org/all/20260313-halskette-annahme-94e782eb4ae4@brauner/
->>>> [4]:https://github.com/techyguyperplexable
->>>> [5]:https://github.com/openclaw/openclaw/issues/44134#issuecomment-4106247302
->>>
->>>
->>>
->>> Best regards,
->>> Krzysztof
->>
->> Thanks, Lorenzo
+> - Hold time estimation: when the holder's own acquisition was
+>   contended, its contention_end (acquisition) and contended_release
+>   can be correlated to measure how long the lock was held under
+>   contention.
 > 
-> 
-> Hello! Wow i came back to a lot.
-> 
-> 
-> I can promisw you now i am a human, hand on the bible, and i will improve! 
-> 
-> 
-> So i will add assisted by to any commit descriptions written by AI, or anything even touching AI, i understand your apprehension and i apoligize very deeply.
->
+> - The holder's stack at release time, which may differ from what perf lock
+>   contention --lock-owner captures if the holder does significant work between
+>   the waiter's arrival and the unlock.
 
-If 20 times you were asked for something already on the list - to wrap
-replies - and you still ignore it, then I don't trust you are meaning this.
+As someone who's not an expert in this area (so please use short words
+to explain it to me), why do we want to know how long this holder took
+to release the lock from when it became contended?
 
-Anyway, you did not address the actual problems here.
+I understand why we want to know how long any given waiter had to wait
+to gain the lock (but we already have tracepoints which show that).
 
-Best regards,
-Krzysztof
+I also don't understand why we want to know the holder's stack at
+release time.  The stack at contention-begin time will include
+the point at which the lock was acquired which should be correlated
+with where the lock was released.
+
+Perhaps examples might help me understand why we want this?
 
