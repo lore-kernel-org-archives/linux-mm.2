@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0698D10AB82F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:37:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1563410AB833
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 23:37:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 705516B00B2; Thu, 26 Mar 2026 19:37:04 -0400 (EDT)
+	id 7A1E26B0005; Thu, 26 Mar 2026 19:37:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DC976B00B3; Thu, 26 Mar 2026 19:37:04 -0400 (EDT)
+	id 778DC6B0089; Thu, 26 Mar 2026 19:37:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F2C26B00B4; Thu, 26 Mar 2026 19:37:04 -0400 (EDT)
+	id 5F3686B0092; Thu, 26 Mar 2026 19:37:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E1496B00B2
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:37:04 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1AD3C5DA2B
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:37:04 +0000 (UTC)
-X-FDA: 84589827168.29.A7F880D
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 53397C0002
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:37:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GSADn2fN;
-	spf=pass (imf10.hostedemail.com: domain of 3HMPFaQsKCA8przt60tD82vv33v0t.r310x29C-11zAprz.36v@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3HMPFaQsKCA8przt60tD82vv33v0t.r310x29C-11zAprz.36v@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 48B8B6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 19:37:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D16098D2CE
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:37:05 +0000 (UTC)
+X-FDA: 84589827210.28.135FFEA
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0FCF3180006
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:37:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TpCKsRDZ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3HsPFaQsKCBErt1v82vFA4xx55x2v.t532z4BE-331Crt1.58x@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3HsPFaQsKCBErt1v82vFA4xx55x2v.t532z4BE-331Crt1.58x@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774568222;
+	s=arc-20220608; t=1774568224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aDbojp2aZv00FIsDRORjdXTSkhyjR06hadNHaz3T5HI=;
-	b=42GmUzZGxRqCHh0taMGc/Vkw61z4hj9OaqjmHEgPNHiami545Jt7ZY+hTIHDey3wmO5+eG
-	NtA5I08oOipUWVm4MoBNrugbSs+Z3SgNMLYl4boT/2+r4SL0JB9OQhRn8wPcyt5tGxNznc
-	+6eBexZvVS6xDg3d3AJbLgzVOQaTifE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GSADn2fN;
-	spf=pass (imf10.hostedemail.com: domain of 3HMPFaQsKCA8przt60tD82vv33v0t.r310x29C-11zAprz.36v@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3HMPFaQsKCA8przt60tD82vv33v0t.r310x29C-11zAprz.36v@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774568222; a=rsa-sha256;
+	bh=anFkcCozf8v6Cel8diSJv50ROa2IxgRDEcI6Q1pEpvA=;
+	b=uKI85Ab4Ma0XuLCxXQuedY3CCvjhMK7xK3n60+sG70OIZ0Dn0/bneckrvAugBTRx43RAnH
+	J1bjvn5LlPjEFShJuu+Pc6HtOpe9fODjvwF0FfsTHn/bOLjCs0v5yCilfxCqfRb6ZAbqfI
+	YIoY/bWrbIg6ZeM7VIQBKn3qRcTBYao=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774568224; a=rsa-sha256;
 	cv=none;
-	b=6JJMX2HeUwptMEq7txUtZrF+W/e5KyVaJ6tAe3ulS5uaFx7M/dvV8yqyKeQEsIXNej6jmr
-	vT5bfnGO5aoPWo5Mia+e7IPkViXguwCw4xU/WaruPsR+qLSDtcDXl9QTu+nLc2YFl6demR
-	CEopO4Vmt67AQdBksADZnVn8E8uPYPk=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82c714cb65eso1240041b3a.1
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:37:02 -0700 (PDT)
+	b=Ho2bHx3sA0XaXLYjuQejySGq08MDF9qAgOPiCNdajS+9KFFg/DAi/lm4EwWS5JRdwTrZE4
+	sSPWAqybzTY7sAK8OVp050DOVAFkx1C7LZ/+tWJh693ISY81sLXPzaH77AE0RY8fbIz0d1
+	7dC4pi8ndEqWO5RsuW6cpXkPD1vxmQI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TpCKsRDZ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of 3HsPFaQsKCBErt1v82vFA4xx55x2v.t532z4BE-331Crt1.58x@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3HsPFaQsKCBErt1v82vFA4xx55x2v.t532z4BE-331Crt1.58x@flex--ackerleytng.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82c7a84a43eso3207505b3a.0
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 16:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774568221; x=1775173021; darn=kvack.org;
+        d=google.com; s=20251104; t=1774568223; x=1775173023; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDbojp2aZv00FIsDRORjdXTSkhyjR06hadNHaz3T5HI=;
-        b=GSADn2fN+tGOJTFRkQYDyX4z1IWBTUShB5SrvL1yPrYWSFuP8BiemTdkBWtFZwJvw7
-         CBMMBeaXO7bN4yeBGpoeJvILnlwqyDx+DOYq6FWbJazTaqT/RKaJnWH2fThTheBH4V46
-         TLHA+o/7/iBx9gRo2lQuX1z2avuc756tewakChQVGk+0X0Qw7EBNcxyULXFtWwvKUc8o
-         4rA+UIJmviG5mXd5dL/W62tQIpD8gZqkHzGLV73p0qM1eNHf6Ca7fq1835lLNLXG8i6B
-         kpTA9e8TEDUyTFyk3XMufQ+20fswBiJ7q+hN/Ck8ef9GtoOSIW20XzYNPne2TVKWDfZt
-         Qn8A==
+        bh=anFkcCozf8v6Cel8diSJv50ROa2IxgRDEcI6Q1pEpvA=;
+        b=TpCKsRDZSVij/OdPkkLGwbcr3LS3KhyNYwqCtVcju7mUHvWgcaGOpG+kSgPAVEKzzp
+         sawA9TO3xzY2ZOfmgvwFSKfeE3GlhTXWKMga6upsurGz6Kt39zhx0ny1fgaosUKUv7wl
+         eFcAmAWc7TOCJHxGce1h2SzG1tXFtaYfokPiET2ETejQsYJ6he6+b9jpOutogCpR8g9P
+         /yw7oAWZszQRAHBJHheKA1ZfXpDYYC+OgWkSBf6xqJ/V/D5BTG0X8ZCtA7/wGabNBOgU
+         ifKB1AbjGQ2/Nyw+ZVKKlMgky75kiHC4PNW2MVnpuuydF9hQpPBRzqodJ3VHaSE3oF3g
+         c0NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774568221; x=1775173021;
+        d=1e100.net; s=20251104; t=1774568223; x=1775173023;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDbojp2aZv00FIsDRORjdXTSkhyjR06hadNHaz3T5HI=;
-        b=Udl+N8KLW7UDNJIDD6SfMhj28B/Ta46mqflvvZsgqKLUv87JnYIJI5o0oQefaHKS57
-         x3Pw1cM6BLZH4KM205c+o9yelHeKwXka+1UptdZqwCfd88d4JbyPg26RqJnae06V3U+f
-         QGldVKpYP3WuQOBP6hNrS4JyZzS0LKftQ1jt4nqTI+NwrFz/0XTEd7KCwMSAcpez+jkZ
-         vKArTwLNlFWJjd46APDcZgnzUrHvAMDHypcexiFRrONgDX66gpDOeX80SuOgAvORVD7I
-         vc1dFOA/GTbEbTUvxsIUiNosDZwy0bQjuCjxB5MN9X+yf5aCq4BunAGumh+V9yI8sW3U
-         w0ng==
-X-Forwarded-Encrypted: i=1; AJvYcCXJSSRlG33COW2OOdxWzdhYV0nKINjB4Q0njdfKtCWkQbvroQcB3+5NYMiazarxxGfMJdVvMbmLGw==@kvack.org
-X-Gm-Message-State: AOJu0YzRwWHKs531dMPiAiccHncBzVjFQalD9Ynh8s8znJy2tz8QjxFO
-	wakY09m9UspjN4uHnvfnhgr5u4URqTcX3XOPd8DB38zmvgVwUcDQk7NXDPUBiw0ZnFnexrk/3W7
-	nm5pKFhkmj7hgoQYYpDKEWKMzPA==
-X-Received: from pfnj5.prod.google.com ([2002:aa7:83c5:0:b0:82c:649d:baf4])
+        bh=anFkcCozf8v6Cel8diSJv50ROa2IxgRDEcI6Q1pEpvA=;
+        b=YBJzD6hMmFxxggsuxM2VGXs/UeTBHxoxpBss1tyqoYvRRlbYTQAeex4wzTxEckepj0
+         oK2biANImMMhVN4VOCdMYVAsSqNThnMGX6ByGFJpaO9dAepe/yinUg4Uskg7wBwtcW08
+         qAmgv3GKAVFWXEdHUMiNU4xokO/uV9j1cza84CvPRL+k/7ZPfflJPX18vxlICtdw4SaM
+         aH/bES+yKWNOo1u95/UrwCKNEy6B8gxoR1Ry3afGLkKOv6Sz1ardsy/rsjn1GDRd7r8v
+         YPAoOWXs+kvUvYcz7CWlJtSLLuYjPphn37SSMbPfZS6bcuNgnLestHJjT9khz9cYUryz
+         enbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFRYNMfO6bS6YVsAClKU75Rh8at772jPd1g1NIgtDiEjVh1NgA/8sdZTvD/3vIk1nDGS0oVkdtJQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw6rmI+qI0PW+XWk2K0qZiudRk02mSEYU/Gij5/Bxp3Oo6WbVKl
+	k5OKASiJCKTwerQbtTKX4yIXbV+5Z0X/BS1hwH1aAY8EauSoCt+mUjReUJcrHkCIh8EO39gQq33
+	Am0yMzUefNVsBQPuMB86jODuQwA==
+X-Received: from pfbbe3.prod.google.com ([2002:a05:6a00:1f03:b0:82c:70d1:f303])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:9090:b0:82c:6cbe:7935 with SMTP id d2e1a72fcca58-82c95ee4b93mr291131b3a.28.1774568220675;
- Thu, 26 Mar 2026 16:37:00 -0700 (PDT)
-Date: Thu, 26 Mar 2026 16:36:39 -0700
+ 2002:a05:6a00:2d86:b0:823:1212:8e87 with SMTP id d2e1a72fcca58-82c95ebf212mr318666b3a.32.1774568222396;
+ Thu, 26 Mar 2026 16:37:02 -0700 (PDT)
+Date: Thu, 26 Mar 2026 16:36:40 -0700
 In-Reply-To: <cover.1774568083.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com> <cover.1774568083.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <5f3dc762b9f08c1c398027e2ff4863ab46c3c04d.1774568083.git.ackerleytng@google.com>
-Subject: [POC PATCH 1/6] KVM: selftests: Initialize guest_memfd with INIT_SHARED
+Message-ID: <a31bee8e57f464078672a95b638724e1cad423ba.1774568083.git.ackerleytng@google.com>
+Subject: [POC PATCH 2/6] KVM: selftests: Call snp_launch_update_data()
+ providing copy of memory
 From: Ackerley Tng <ackerleytng@google.com>
 To: ackerleytng@google.com
 Cc: aik@amd.com, akpm@linux-foundation.org, andrew.jones@linux.dev, 
@@ -108,16 +109,16 @@ Cc: aik@amd.com, akpm@linux-foundation.org, andrew.jones@linux.dev,
 	suzuki.poulose@arm.com, tabba@google.com, tglx@kernel.org, 
 	vannapurve@google.com, vbabka@kernel.org, weixugc@google.com, 
 	willy@infradead.org, wyihan@google.com, x86@kernel.org, yan.y.zhao@intel.com, 
-	yuanchu@google.com, Sagi Shahar <sagis@google.com>
+	yuanchu@google.com
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 0FCF3180006
+X-Stat-Signature: sw7868ihb5tgd5z4smmgp8q6hqetes56
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 53397C0002
-X-Stat-Signature: u6d8pp793gqqyk3ggxibm1z6fnqrxkbt
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774568222-773975
-X-HE-Meta: U2FsdGVkX1/ud3KMLx+zz17cmvtjLalVrkhspy4rfVK0P5+Anz+E3Ic7Or0PnE0W0KwJVyWIoTevgTiPt2I/C4AcSvAN1pv72Ijsa7rTuTfYRd5eWt2Axid/YkpepZXuZ+iDoc4TOv+HnwnbaMPnAA9zi/0uFcQprilNGdxZKwfzMLN80IhP4vLL2A1hww7Nku1dHZtzXjnvAAuZ5+OHuBi3+Poo+UhuHTWRcOw+Inwt1IqUpNmpocAPDEkwsql3GaawdGxxV9eScOIV7PZM8cvipm0Sts9vx18P6slEGE6kVNjWSdULJlq+eQ7z/vwSzdC6+xXj6KU1YDUc1MFdXPNPwRJmvGILuQ9ZI3CqJzJyiZNpah1fiMZnwuHitUIKJ9KUxH4cS/M8EDuBvTqYd/xK6STUzkJvM09ntPPiS36S0fpEKXd3wiRjiuGqNfqnsfC1+Kg/6WyoeYp6l6eGOUr4qiqRaPXVsoi+GnZBcUwiUrOWde10SOe551Pa6Qx7e1gcYRAsdBSnNXW+iek4WIFYtLys3hTJI19eBbGdhVdzybvibm7aLEkc0mWJXXxCpUKTrgysi9l/gd7pj14A+RDvsfpFbr/MVXVrcbJc3zHOCvw7vJz7fj+1i/9hCh/r8uEnpnxglAvHOdSjqQZDhyiBO7kdRrqzX50mKEhbp/HWFt4vMD1MTw6wYPE5O2mxkm3mKKfN+RD1Sssxon4X1OrXM0fHRGAgG8ubN1QsInQbIDSnMBPuNSF5D+PUc72YRs9F8vHEeNR8EI8Sxiroit7ndGZGVmOl3/xMh+yIKoG5IG6seway8xum0sX7ulPY4yv+cHcWhrjaZiREwo7+0Fn3Won1mt94ldcNDRmFLgO4xKEbu706P+zfBQ1mH3RHbMMlHSsmT1T3rstwk0b29fZ5PP1gwODclWGtpPoOs4tU5/B2tZpFRWxP6Ie8cfIhJS9SNBvF88f1dthwgx0
- EAq4mMUK
- 6l0Z2g56+8nFMbOs3ys3Fd2tzzsSzx3NVgGlWYYdd1mYOFdlh8vDb1uK3enpN684nhgkkt/SvBC/5ESXHtehCtM9U5GfVqBc/hdfQBy42huEcWtrYr9gAk0LS0cW76IkCZfLzG4Cg9PuRz+LkS2PnjmM6axJCMkPpDxJdq2DWlON/dKJdUdTunP8R/A7JpBMs7sqkweZsZoTzPWmzrzmsAs6nmn32G61Lz7uZzkntf99EVn0pYXIi3ejAmETU4Gs2RaHsknqkCwi6Vh7B3kAu0mn7Ufp44SMwjm6giqO345SmJvBvSutSheIVCDwkc8Y58TfNo0s0qH+CrksL/WXpoW6L6g4qAFpqgo+PC1mJZQlBzLYneyRz9Clq9E9P00ghqbGRmeKy4Io4z9/5DKd8idWVDckjWMWU0G6PvJKEqh/FsPzVs9dUrTCoLr0TR5IDRPAsLFORvnoH1DwcaQUjWGUT0fZ/FN9/BNxvPOspuijt7ANNSEoicO42mXRoScbQJshg4iEW6wkJgDNJDF56jEEVchtksBHJ3DJpMRk6iHwltNOEEa0UpMCTnyptan8KIVQiIfmSg5i5ZA+jfLLpiuUJ5Mz0LIca4dqcZQFXF5pn6gFtYgCT0UVNRr32xce09blD1fvy9RSlSm94LVYaYOsVX8OC798sfTw/Mim8eJSN53n4oIUObN3OQEw5R+8ghd9D2j2eeAjBbfIjl1ji+rxNow==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774568223-51386
+X-HE-Meta: U2FsdGVkX1/qicErqAHFjWMCJbYJXP3peapDgsRzMJu2L79HYTU3VQrAUZ7DdSI20yoCrOveV/cqE3ejoXza14SfE09XoETWuxBHVf/055+ngWAYk0sc9Du72u9iIctdLU/DmGxLI1/d3yCXh0so2573evDDGehohXYDEsBEdnwChMS4479WL4XGBVMuuGcRKCwe8e91z94JaHkyXHoe8wOhzG7fdzY2VIOBt6TizFAJ3cRkqu68jcXYAWDTW2EwBnqHvtbH4VAc+LJsRDRT1XLxgWx33u9aCpK64ayhV3jOLwVhdanlbGFnyDUPraskg7I0Ugm25/t9ZPvIsifJDq2m3eZYCZZx0PfwY4PZA1oALmK9bEC3fZJFIXarsFekO+U5DQsO4/q4juL2Oyx14ea3FBPd0wl/pFFw0KwK31Od2zVH/g2d54u184XFQBI27EbxAy3QKgs2qr1Y1tIr83ZU3ZHgTHg0SLA50ohGOnCHn8Pp9WGtJKoF0GTRO5yWsJZsCl3ZXRlkehsZDRD89Pd9QunZABomBFrAKjII9bSBUR7kb5toHDhHVm6bLb2eQlZpUJTC5BytPUXYy+IMy5ZYkJVocfSoOhJTHJ74UGR7QUmXaziVH5VNnfaae5sF8zPwme6a4cKBOwwVUlvzZI/EgE6ZsvZiXN647+gXyiGPqps9S/G9qdcWLa2UEKUc+qIpoKrgbKygnhVErHLllEW89nabIQk0C4PVnWhvgp4WRDPvB0o+PuRqdo3nMpQV7Vm7DEaT1goI0vw5mRbDx7CVs8ykgCwqJ2x3uB7PhiSrYG+H5+5cpU5um1Wem6fZ5baTlpdaYc3ZsKSI7dbXLVEdntm5Qx5ltrIP1c77+RVnCUivMyuXsvEyJkLOIbSyZ2zU0OxC9vuNiRarCszLhPti840gH1yYYnAGlKI7oe1c2Dozy0jTaJMYZK9azyeT8EYSLoqgqg+vyU4DCZ7
+ Q8KF9gAj
+ DAVJpHiKdRuvkhy2sofTkBIEb2uhfSjDNREDpnGLayrbdKDiHVIShfMPJuWh1ZVZZHr89AdWL0itMeVF1476atJMMBY6FVU4HlhreX2gXVlncYAsN+edEC1mAodcYFg1sw1+10ar9zOt8TVrZaIKEKhA2gIfWriPZHs4rIga8oLKmewm1KO+xCGrIkkeMQ39iS80LeRM8+ZXRd3m01O/JeE9YTnCPp5SMNEjvfXEaxJHtxkHDAVtMVnllDf3BcIYr1LyKm+s7kSBEZFLYLo61PSxgCYExxilzW6Y+Cz5L9MJyq49sV7lMibyWRyvlAPsB/29mZmxIEzDCyUGUrxPQ34RPq3Pm7So9L0z1IEEFkFi9vaW+9acH+6OknG8TielLv82yEU1UmKzh2rQZW6bMgX1Pk3RRqEQX4y6L2C6uZmsywC3ScG6QufmO502u9y9e0rxCzi0If6OQC6fGS7450Jrq2nlL94qfoDW3YJSPBnci5awVihA0OwuMLkLRetliZ5QanAZ++pBFBIn/IP4gEfByYg9pOpU/USQTCh/U/wdzMqJKVV6PV/JRA35At4LSELSEkzAGTgGfJ5/UMEy0GLDlgB5ziNkzW6KZuDS4zqKtwAFIHCB+D4FePKOHs+HBMbQ6AsFntwp9Ff8p++fdu5ebnhKyy01hDfRyHKi73YKjlsPf8T2elCJQzlwTC2PLBExt41Fw12otL8P/1PCub4e3IA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,56 +126,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Initialize guest_memfd with INIT_SHARED for VM types that require
-guest_memfd.
+Call snp_launch_update_data() providing a copy of the memory to be
+loaded. KVM_SEV_SNP_LAUNCH_UPDATE populates memory into private memory by
+first GUP-ing the source memory, then encrypting it into private memory.
 
-Memory in the first memslot is used by the selftest framework to load
-code, page tables, interrupt descriptor tables, and basically everything
-the selftest needs to run. The selftest framework sets all of these up
-assuming that the memory in the memslot can be written to from the
-host. Align with that behavior by initializing guest_memfd as shared so
-that all the writes from the host are permitted.
+The hva that was specified as the source is in this case also the
+destination where the private memory will be placed after encryption.
 
-guest_memfd memory can later be marked private if necessary by CoCo
-platform-specific initialization functions.
+KVM_SEV_SNP_LAUNCH_UPDATE requires the destination to be private memory,
+but private memory cannot be accessed by the host and hence cannot be
+GUP-ed. Hence, make a copy of the memory to be loaded, and use that as the
+source, so that the source can be GUP-ed, and the destination is still
+private.
 
-Suggested-by: Sagi Shahar <sagis@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/lib/x86/sev.c | 35 +++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index eaa5a1afa1d9b..68241e458807a 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -483,8 +483,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, uint32_t nr_runnable_vcpus,
- {
- 	uint64_t nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
- 						 nr_extra_pages);
-+	enum vm_mem_backing_src_type src_type;
- 	struct userspace_mem_region *slot0;
- 	struct kvm_vm *vm;
-+	u64 gmem_flags;
- 	int i, flags;
+diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
+index d3a7241e5fc13..1b937034a5c11 100644
+--- a/tools/testing/selftests/kvm/lib/x86/sev.c
++++ b/tools/testing/selftests/kvm/lib/x86/sev.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include <stdint.h>
+ #include <stdbool.h>
++#include <sys/mman.h>
  
- 	kvm_set_files_rlimit(nr_runnable_vcpus);
-@@ -502,7 +504,15 @@ struct kvm_vm *__vm_create(struct vm_shape shape, uint32_t nr_runnable_vcpus,
- 	if (is_guest_memfd_required(shape))
- 		flags |= KVM_MEM_GUEST_MEMFD;
+ #include "sev.h"
  
--	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
-+	gmem_flags = 0;
-+	src_type = VM_MEM_SRC_ANONYMOUS;
-+	if (is_guest_memfd_required(shape) && kvm_has_gmem_attributes) {
-+		src_type = VM_MEM_SRC_SHMEM;
-+		gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-+	}
+@@ -31,17 +32,39 @@ static void encrypt_region(struct kvm_vm *vm, struct userspace_mem_region *regio
+ 	sparsebit_for_each_set_range(protected_phy_pages, i, j) {
+ 		const uint64_t size = (j - i + 1) * vm->page_size;
+ 		const uint64_t offset = (i - lowest_page_in_region) * vm->page_size;
++		void *source;
 +
-+	vm_mem_add(vm, src_type, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
++		/*
++		 * Is SNP the only place where private=true? If yes,
++		 * then we don't need the private parameter, we can
++		 * just check if the vm is SNP. Or maybe it depends on
++		 * whether TDX, etc use the private parameter.
++		 */
++		if (private) {
++			const void *hva = addr_gpa2hva(vm, gpa_base + offset);
 +
- 	for (i = 0; i < NR_MEM_REGIONS; i++)
- 		vm->memslots[i] = 0;
++			source = kvm_mmap(size, PROT_READ | PROT_WRITE,
++					  MAP_ANONYMOUS | MAP_PRIVATE, -1);
++			/*
++			 * Make a copy before setting private, because
++			 * snp_launch_update_data() needs to GUP the
++			 * source, and private memory cannot be
++			 * GUP-ed.
++			 */
++			memcpy(source, hva, size);
+ 
+-		if (private)
+ 			vm_mem_set_private(vm, gpa_base + offset, size, 0);
++		}
+ 
+-		if (is_sev_snp_vm(vm))
++		if (is_sev_snp_vm(vm)) {
+ 			snp_launch_update_data(vm, gpa_base + offset,
+-					       (uint64_t)addr_gpa2hva(vm, gpa_base + offset),
+-					       size, page_type);
+-		else
+-			sev_launch_update_data(vm, gpa_base + offset, size);
++					       (uint64_t)source, size,
++					       page_type);
+ 
++			kvm_munmap(source, size);
++		} else {
++			sev_launch_update_data(vm, gpa_base + offset, size);
++		}
+ 	}
+ }
  
 -- 
 2.53.0.1018.g2bb0e51243-goog
