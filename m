@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86B3310AB82B
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 22:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A215810AB82C
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 22:25:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F9786B00D3; Thu, 26 Mar 2026 18:25:35 -0400 (EDT)
+	id C408D6B00D5; Thu, 26 Mar 2026 18:25:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AAAB6B00D5; Thu, 26 Mar 2026 18:25:35 -0400 (EDT)
+	id C18476B00D7; Thu, 26 Mar 2026 18:25:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 672E36B00D6; Thu, 26 Mar 2026 18:25:35 -0400 (EDT)
+	id A90E16B00D8; Thu, 26 Mar 2026 18:25:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 516D86B00D3
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:25:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25186C4626
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 95C096B00D5
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 18:25:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 611F51405B2
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:37 +0000 (UTC)
+X-FDA: 84589647114.15.F360CAD
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 830CE1A0002
 	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:35 +0000 (UTC)
-X-FDA: 84589647030.17.561E90D
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 53DAAA000F
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:25:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Fw2P5sG7;
-	spf=pass (imf15.hostedemail.com: domain of 3W7LFaQsKCCwIKSMZTMgbVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3W7LFaQsKCCwIKSMZTMgbVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GWxjK267;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of 3XbLFaQsKCC4KMUObVOidXQQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3XbLFaQsKCC4KMUObVOidXQQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--ackerleytng.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774563935; a=rsa-sha256;
+	cv=none;
+	b=Q40qVmCpBqCgs0zb30aTFT3RWqi7Uo/XLfePfxZxj983jHddRrhd1xvqmpO5+Hd0xIo+qy
+	c3oEZ3kSwp3Tu+BXf5ywV51s7fIH++A1oILN2eiMZvkrXixtp2eq55nI2SKKm8u0m46ZVC
+	48i0zqVAstIvOq8ip3jZ+bNcIAZuGYw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GWxjK267;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of 3XbLFaQsKCC4KMUObVOidXQQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3XbLFaQsKCC4KMUObVOidXQQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774563933;
+	s=arc-20220608; t=1774563935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OM6bcucdXi/Ue6i8Gkw8+ejbHTWQvbY6+osZOGX6pUs=;
-	b=oN2sWa4Hp6wPg2L5T4cCORiLFtC2cBU7VviZ4mwrpdfOILYYC00ORUFWQ53WZ8SCV1254e
-	YQLDpg9/DlaaijYn8lMdDGaGHjaSGhIMPfLF+h7JmX83oER+YLAKLRkDj/WgD/AaGgs2zT
-	GipC4eMazl19QhWo5FSfXnsBoC14idg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Fw2P5sG7;
-	spf=pass (imf15.hostedemail.com: domain of 3W7LFaQsKCCwIKSMZTMgbVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3W7LFaQsKCCwIKSMZTMgbVOOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774563933; a=rsa-sha256;
-	cv=none;
-	b=lINSuNtdg5rTm8rk42vyAY3QYc6RwkHlOGb4aNQ9n/r4sZDkGu3Zo4uVCANG20ibdd8h3A
-	9V/wWOOlfEGtQ7PTtBuAmLfUXj4BAr1I3QVYEBX0CMXgsGlOXlRBCfTYp9w5o+vtxd3Ts4
-	HOjBuRPJUT/yMGmHbgj7Yk2JAW5Q0eQ=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso1827380a91.2
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:25:33 -0700 (PDT)
+	bh=qQv/c3jRIYhBhzt6KigDfrqgdsyHsqIxf08hCghwjGs=;
+	b=w9hOx+ASyEZv7j7yloIRSpcaxdcdF/dlLBm1s+2pgQyKTDHKwCeKNZL5W4SHqdwaXI/S6Z
+	3HRNQtimE5MvSuU71sbKzHEquYkEd3uC5UM98HnLCFRYw+7mjT1kIJBlMe/1k5pFGT8sR8
+	q0RzsmIf/bcVT7pWJboJkBovSSNNhRI=
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82a6c70f1f8so1278588b3a.0
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 15:25:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774563932; x=1775168732; darn=kvack.org;
+        d=google.com; s=20251104; t=1774563934; x=1775168734; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OM6bcucdXi/Ue6i8Gkw8+ejbHTWQvbY6+osZOGX6pUs=;
-        b=Fw2P5sG7ctC5dWiZs+OBCoyWb11bTs+Z5cmEAXDwyPSCLWXzl2hFIuQJ26AWn5lEej
-         D+XqoMr9yN6rioKNyDzh1dAMuvtOfw3lTL+EXNCKP23RjUxHJjwjeYlkAvF8oU9yjlW9
-         GQJFoG+27oXlxruLggWHe+lyFci/biMc8AXyTTKFChwGOUF3Rpf7BiNe9qV49YlgfKVA
-         qZvLo11lq7FtI2CCp+oxvKv4PpjpERr7MwTP+6cS4lx2i7caziOc6+KDFRnxbo59krH8
-         olv4wA4rbIFKiOgDzScALUgR7GjL8whLLP54TgCfYbkwltY1bbkh7RRmYARqivi/ZesZ
-         7XIw==
+        bh=qQv/c3jRIYhBhzt6KigDfrqgdsyHsqIxf08hCghwjGs=;
+        b=GWxjK267hwE7gnqtKxODUxwLQDP6B4+b62f5u6IL2kTSZMxh82FGGphiU9RWSe8E7M
+         /eDQD1ljGh0g7Hp2pfkqOj7IgRBjUGD3giBocwSnenIEcf7WGgCK3NaV5FmffT8jySTY
+         J6i9tOhjB5c+VuhgEx3VRreElLxQSgh6qAQQtWyBrJrGo9CwDmoqLqst2LKh3rpLCRIP
+         ZXZQP+J3zPj1bE16aQa/lSgJyLnnm5DXjOCKgIM3aj9a0QizIxYmwh8L18OR18gE/MXF
+         2GD21bItG9ZNSj4ocD4kteGx80HsjaeZ5ESt5dkwaHHPI3UyBCssRw9KVb+QAfE3kQQ3
+         ztRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774563932; x=1775168732;
+        d=1e100.net; s=20251104; t=1774563934; x=1775168734;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OM6bcucdXi/Ue6i8Gkw8+ejbHTWQvbY6+osZOGX6pUs=;
-        b=YanQUAbSvDVDqEFZRGba33WfObQ3yuYpDm+DoYC+iPMADs5Uy88lER4Goou/THVzik
-         KVgkmjRkhEI5oO6WR+A9CTdFGVGt8T2SZBuWMyd6MWaeCEH2RxmTWpcGWMXyFiw+hLJq
-         SnK+Np2uC2uTU/v3/S2I6hIEUAJkcwJIy6hAdbsKTrfRDzpd5J9U8G57RGKlV2xntlpr
-         0MYGQR1IFAgwTffj8d/z5S+6q+04Fz7FGxbehV46iHuW0Wjm0SgA97WFAir12O3B+79w
-         6e0FsPopFq0gVFeWh4K8V0IdKUzkrmk2VzRqm7nwg3/OeexC40A7mSS1e5WOLSIcozL6
-         UjTw==
-X-Forwarded-Encrypted: i=1; AJvYcCWPJ+2U9sX4z4yWPXj5C8XdoFhLaSZWz4PddiJVRHN1ZoAfvWQVOhtXJmgTzk5gk9zHVVTgiK3nbg==@kvack.org
-X-Gm-Message-State: AOJu0YyIXwCUMYRa2RtXdIT84jmeIwxuuStybrahHH/iX2oq2O/Op4pr
-	x5TTm8oCXSGzfSFZ6ShaX9O1M9sgXJDXCwv0xUe+1QP6YnyIDW6R9vebva58tSV0QrkPXUYVgLg
-	Pm32Aukghq3nj6VZbKB6mdaruLQ==
-X-Received: from pjvg12.prod.google.com ([2002:a17:90a:db0c:b0:35b:963b:d15c])
+        bh=qQv/c3jRIYhBhzt6KigDfrqgdsyHsqIxf08hCghwjGs=;
+        b=kaSJ0O0AuyQlIs/9uzFE7y/AcSuzbY8XwV/5zvTfEoV9bmqrckDKVqieFWOLGi2usq
+         fO0Xm3DCcjl+Y3HQ4dFQkl53wKwqQbCuZJBnJ+H9vwtmFzqPWUGOkD6fUqM/5W7lDBz0
+         uRdUVqoS3vjawKYmH1xC4L/hNKcbhxv97FiO4BTB2H2Z3ubXkBMg1btxij3QUDpWPOAi
+         vDHl2BShUnZRZM/65mQjeGsuhT8bhM3/teCo8ojnfrHXKdcyD9J066MKZUCC1I6Pb07U
+         iwR90gxNc59PhunS5lKRzvyx8u6soOsiuutiVWSigTY8Bj3k7xJ1IJ2H3uExPhpL4ad1
+         wwUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2/ZLjW1Hgb+MAUK0/2O23G3sv7kVr70tTmmMLYAejGn/iyQ0aNaPJK8hRR6A67IpsM3AJDd+8LA==@kvack.org
+X-Gm-Message-State: AOJu0YyqQ8OOhvOqHFhK7OrG0cZPZo9oxoqYERYj6PHOOukOtAxsFXdT
+	JYL1BCzapCfo73rqIXMV5PM0VHEQBbxETGtlfpNj4zCOFrn1bR0f1QtAjh+0cwq2D+rNCy80mqS
+	Q3OSa/2vodmxKbuxqkBeflwzoMQ==
+X-Received: from pfbfb41.prod.google.com ([2002:a05:6a00:2da9:b0:829:7d34:ff99])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:164a:b0:359:f2e1:5906 with SMTP id 98e67ed59e1d1-35c2ffb6610mr255604a91.4.1774563931699;
- Thu, 26 Mar 2026 15:25:31 -0700 (PDT)
-Date: Thu, 26 Mar 2026 15:24:42 -0700
+ 2002:a05:6a00:13a9:b0:824:36f8:346f with SMTP id d2e1a72fcca58-82c95e7986bmr157171b3a.25.1774563933827;
+ Thu, 26 Mar 2026 15:25:33 -0700 (PDT)
+Date: Thu, 26 Mar 2026 15:24:43 -0700
 In-Reply-To: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
 Mime-Version: 1.0
 References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774563861; l=1295;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774563861; l=2836;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=2ZYGthoKRbcvONZFk1cPKbY2ke749z4V+HjyMMraW/E=; b=VuHoCdb1cXqd/SymNBIuKfRDMf7jBA8kvor2Rc5njfBTsWjLGscdR6iz+qugvp9JbPMpMjCNe
- rHxLUQdCHQNAA95+Me/U0IMElwV2qBwPhOOGr5EKNAKqarJ2Dw0SRzt
+ bh=mbmnyh+Paq6B3nFHJjVqfDuPSLNxTEBywi3jrm5yLoM=; b=ayjE20AS++xWp9N9WMziD80Oj2fnaF8+fEzlR1NValnRS6nVfyJUGa/eCX/UeeAKeN4u7/8Jy
+ xLD/R+OSUjsBKl4tO0uelwfjOm2q3N6Bn3lz/wkKJsC7TbYULR2LjZv
 X-Mailer: b4 0.14.3
-Message-ID: <20260326-gmem-inplace-conversion-v4-33-e202fe950ffd@google.com>
-Subject: [PATCH RFC v4 33/44] KVM: selftests: Test that conversion to private
- does not support ZERO
+Message-ID: <20260326-gmem-inplace-conversion-v4-34-e202fe950ffd@google.com>
+Subject: [PATCH RFC v4 34/44] KVM: selftests: Support checking that data not
+ equal expected
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -119,14 +119,14 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
 	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 53DAAA000F
-X-Stat-Signature: 8uw9jxoi81jb359methbg8o7igfp9ti6
+X-Stat-Signature: tjdygfnu5cah6oaommra49jkfg9arnap
+X-Rspamd-Queue-Id: 830CE1A0002
 X-Rspam-User: 
-X-HE-Tag: 1774563933-24467
-X-HE-Meta: U2FsdGVkX19AOQMabdryI1Hphpdk3479DzxNwYSJkpQlzmO5cPXEjwaSMP4Q39W1dqyTGxc+PkilYBY3FWA8XPbinyIyBwWVk0vwSYMttHb0jOF7f8SzcrPJ6joQ4ZVGPVwvjNdeXVZtNIgfRA8zpH2mP4TPtO5RgVjgdIqx2r/Wn7ESBdb4bfVunBFo/6qrqaWU0tIRv9w1GCLYaVJznB9gRsvshDGyGjrv+o1y5coXtzbFfOivylTccVDE32BCBwH+NAjU120MqFAXeSaMeq3SJ7bcAX1RVX9fi7q2mPybP4MXevP7F5RoJyhQh3Co8oYkJOzN0zJm7BX5Z9BM2pWcwd8h4VrISJ7Ld35THvlQj3yI9weI4FFkOsKhGQ2Syd3BbECVswVcXatCVA23iKVGuJ7LKk/iAE1LCcCfzu2EuSHOVhFNj05VHgxk1ntTGTNHsyQ3kFZY7WqOyGKcL5K4NjGNv2HLysH/i6//jc4MkdNbrbAm0Ygi/j1hlO0wq1lVggJdruN4x6E5n6dAzLC0LS5RGVlxr16sW0jqPz0BmJO/b0iGkwvm3qSxQBlGjNI2GecyxCgEyVJEfk3JqFbKHX3znCqGrN7KESIps5F0clfJBCugmyyaVRs4AfvkoETtZcOOkhXOaMVQmVswLi/RgLbtHtLQdvu7BahMfnKmwRxdgcGYuCZC/mWKmzimoTjY7buegT6IglarfsDemGPPjxxQTG9OouIrPz7c9HVhKEBlUEPxuFvQKxJStIIzGEeyKHGjVXRj3gijSfVcjA/gi5my0JzRkWXEOaZMBsC0m4qsL7Xy3sSOU7+Svg0yui2C0fYvWa9NjvuIM7pA49ZDpt4MozTErzfjfzcM7vz0504RUswod6e2CT5uih9I5yYG0Spm5GAmBufF+QKx42r0471QutI8z6jHZgDwofDiyTMHqGCNtdCCKzcphGQgXDJP7lddpLexqHcwrhy
- S0v/3WP/
- tpp4PlANx4uOnLj6f+NksqUNCykRv6DEpWdllNUz33WeQTejfvbxS03X52A497NMrs1BwhZLhyikTjdS48eE1fKpsr2O8XeaCwwQO2Uwgykx9QWbNgLC6Xw+xk6hDelBd55J0T2HgZEKy5FVHIw6OBffNnYJzwSUBMJxglxQpMlbzLl+TJPZ345YNW2Xlrxw74D2PuKuV0c7g2N4bnl7q72d2sy1wnb3ccRLMwuA50x00nSCe8tBRviJMMXBDMd03C6E63lmWowfn2XZAJD2P+9j1svxkqWeQNPTW4CsbDJ0m+Tw1fQX2dOvX42R85EbAKWyjhrArit2I8niaJwefn/+m+1Unv0AAryx9R7wdKfc0Mm6g+j8q7QJo0q2Rd4Glp5JwbTSBdluCM2a8oLfjqymGaRbDQK4i/F0n51G50GNMCs8Xw0i3U895xCDIAqSa3pORNxRHOijrJnkTkDzI69OJlYSV2cxBCwfyF+q20Z0YK4ewiXml5Qfdet37sjSGYsiU6amLQzPn48g2Fq2BPJoGytH2XS54WCNX/gp+2X+3nIoQLE9SQSLf18c43xSRcLLi8mqBkVahXtsMJwVU+J6ZNCvNLVwpi5nMouhhijABWhCe7odGg2tDONLp1wuZ1QfQWFfu51r6pjjs9VMsER0O8x8+ic8tW5bt/1Cg/RMHyiOJsNLuc3cgvamOgrM1p/le
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774563935-272721
+X-HE-Meta: U2FsdGVkX19O281KsqBpuocruCJgYewOfOmblcr5PrAb6+o3RjbW1/PZJqRFRLmIh91MlA+7ux+4+ILF7r21tZ2l8FdTUmb2WkMmiSzi3Y6K1riNnNKvVx4oiqT2KiyALMzwwR0/r1P9CAPInNivvtaK5YS/KIotPbyT6dRfknGISLbkNAXBDLEon+Kk6c3GFd3fP9kxad4qANm9p1/qtaHVNfsP2o9HRnQSCXuK1VVuLr3oZu/r+2XVVVlfL7A7BaUDflueahyo4QoORHy60VCPkIukN7g0j8Vb5ST3URoQMG7WOF2ZxF9BT9dPEeauMnQKM3cEoOS4q+YrrTFaohjpKzz1qdGh2AqKbnNpgrst7X2pIE4e+p3cITQrbRjbP8HFAGDGzd/Nlubgk1olMJrKsXV5Ky2QEjs8owHAEQ8JLdNIF0onrIy6F6mSktcNTTXgx+xqtxetnfg7uWXuXuFp6S+6QoSJcxdYLgxjTteDyNAQvmoKyfXfswKf+GXMiXnNJLXN5X50/dGMf2RQuYhofFRAX8qGGwMr8uXnbet3G+pDcaHNczyGSqANeghy0qM6v6JpXas1tv/YPKDepO/jI/UoeDHDrlYbI+ZhiuSOwTV+I4q7k8QrjzWvi6nJRQpFr1+PINZZ/TLn/WW9/upHSTSlZMeIragfEfmUExLf3OzldxbRPulvsYyS46L2vZrO79fOudr64lKoSjTAFAAjIJoYeGv/MIXykRgvUQ8IDc70379zngIzhJB0vsuHp0Rf5V+tz7i3t6OWbfNtTNNEj2bvXzVuZsHzLnOTcq+qxgx8l4ehb/8BP3WBzZFx5J+Sj3nMi54D9KxuASCIAzu5FpvWOofSI6ELMpNOSGF0ZBY1G6AI06wTgUBr+y/hlplEe0XlXVfintQ//HOEYA97z4uzc+8LbMn6fRVvmFdwHA5XrAWlHWDDtFhsaFb8tY8CTzEVUF6sBHKYYHr
+ JiKPLDgV
+ 5qyxy1KN62WOY+hRV32qM3f5YNbK9R/DJnRVAnikHd3ua1+reSEQS7X2cjABpG4xVPRbqBNkXi3seXBZxV94sESplVDGmGC6VMfS4cdnXCakzDEolHOIWG2FcUeEELRv8KQMOsOvvPL/ZO0dQ4ilpxzcThzyIxQ/9TcoxCQkoQFfreQrNhHigzOCy/U7OVJ3wmbYiIvoX5Vby9KsJlj3Iv/biMnm+1FUFKCdZq4rDaiNlMyawp6Lpo1HoFZ6fjnqe+LBD1WaylSRqFibuSm1bf+SQfSZCuIgoywk7hgws6icfxNzSCr9rvVrHNvRTU1PJKAL9m5VCOFCr6K8179jSxoFCg3UvqU2f1tpCrSux/T7vnwYfl420Y0VjQvwupBRf6nUXMNmNfIkiNJZCI2LDxztpreE3rXdmULsYmYygDWRLqbtTi9lLiMOUr9GvH6SRimtFuSlsiRpa12WTRjwyAjmUJ2mIlkUE+82w27xSdDL/ho7cpk1an8N0to1B2Fmdpn2Q7n/nivaJ7MN2ikWIOgCFWlT8NI2ZsPI8Oq+Zi0Z2TC5DIyGUW8/Zm+BpseActqe/tgLMOKDhIJlBZ0mzRF8aM0cOZc94UvnUuE09M0MKf9b10ELUviKPMqwU4oNeQa1jF+bfCbfg26Nm1aJfzY2rtqD87LqsIBhkUMseOd304JI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,41 +134,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Test that conversion to private specifying the
-KVM_SET_MEMORY_ATTRIBUTES2_ZERO flag returns -1 and sets errno to
-EOPNOTSUPP.
+Expand run_guest_do_rmw() to support checking that data at given pgoff is
+not equal to expected_val. This will be used in a later patch that tests
+that memory contents are scrambled.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../testing/selftests/kvm/guest_memfd_conversions_test.c  | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ .../selftests/kvm/guest_memfd_conversions_test.c        | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-index 4ccd3d515bb26..c0abc69f15332 100644
+index c0abc69f15332..277b122ec294c 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-@@ -488,6 +488,21 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(elevated_refcount, 4)
- 	}
+@@ -137,6 +137,7 @@ static void __gmem_conversions_multipage_##test(test_data_t *t, int nr_pages,	\
+ struct guest_check_data {
+ 	void *mem;
+ 	char expected_val;
++	bool assert_not_equal;
+ 	char write_val;
+ };
+ static struct guest_check_data guest_data;
+@@ -146,7 +147,13 @@ static void guest_do_rmw(void)
+ 	for (;;) {
+ 		char *mem = READ_ONCE(guest_data.mem);
+ 
+-		GUEST_ASSERT_EQ(READ_ONCE(*mem), READ_ONCE(guest_data.expected_val));
++		if (READ_ONCE(guest_data.assert_not_equal)) {
++			GUEST_ASSERT_NE(READ_ONCE(*mem),
++					READ_ONCE(guest_data.expected_val));
++		} else {
++			GUEST_ASSERT_EQ(READ_ONCE(*mem),
++					READ_ONCE(guest_data.expected_val));
++		}
+ 		WRITE_ONCE(*mem, READ_ONCE(guest_data.write_val));
+ 
+ 		GUEST_SYNC(0);
+@@ -154,13 +161,15 @@ static void guest_do_rmw(void)
  }
  
-+GMEM_CONVERSION_TEST_INIT_SHARED(convert_to_private_does_not_support_zero)
-+{
-+	const loff_t start_offset = 0;
-+	loff_t error_offset = -1ul;
-+	int ret;
-+
-+	ret = __gmem_set_private(t->gmem_fd, start_offset, nr_pages * page_size,
-+				 &error_offset,
-+				 KVM_SET_MEMORY_ATTRIBUTES2_ZERO);
-+
-+	TEST_ASSERT_EQ(ret, -1);
-+	TEST_ASSERT_EQ(errno, EOPNOTSUPP);
-+	TEST_ASSERT_EQ(error_offset, start_offset);
-+}
-+
- int main(int argc, char *argv[])
+ static void run_guest_do_rmw(struct kvm_vcpu *vcpu, loff_t pgoff,
+-			     char expected_val, char write_val)
++			     char expected_val, char write_val,
++			     bool assert_not_equal)
  {
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
+ 	struct ucall uc;
+ 	int r;
+ 
+ 	guest_data.mem = (void *)GUEST_MEMFD_SHARING_TEST_GVA + pgoff * page_size;
+ 	guest_data.expected_val = expected_val;
++	guest_data.assert_not_equal = assert_not_equal;
+ 	guest_data.write_val = write_val;
+ 	sync_global_to_guest(vcpu->vm, guest_data);
+ 
+@@ -191,7 +200,7 @@ static void test_private(test_data_t *t, loff_t pgoff, char starting_val,
+ 			 char write_val)
+ {
+ 	TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[pgoff * page_size], write_val));
+-	run_guest_do_rmw(t->vcpu, pgoff, starting_val, write_val);
++	run_guest_do_rmw(t->vcpu, pgoff, starting_val, write_val, false);
+ 	TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[pgoff * page_size]));
+ }
+ 
+@@ -207,7 +216,7 @@ static void test_shared(test_data_t *t, loff_t pgoff, char starting_val,
+ 			char host_write_val, char write_val)
+ {
+ 	host_do_rmw(t->mem, pgoff, starting_val, host_write_val);
+-	run_guest_do_rmw(t->vcpu, pgoff, host_write_val, write_val);
++	run_guest_do_rmw(t->vcpu, pgoff, host_write_val, write_val, false);
+ 	TEST_ASSERT_EQ(READ_ONCE(t->mem[pgoff * page_size]), write_val);
+ }
+ 
 
 -- 
 2.53.0.1018.g2bb0e51243-goog
