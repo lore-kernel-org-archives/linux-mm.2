@@ -4,124 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04BE1109E550
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 05:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86939109E54B
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 05:50:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EE6F6B0089; Thu, 26 Mar 2026 01:34:57 -0400 (EDT)
+	id 6E6206B0005; Thu, 26 Mar 2026 01:50:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69E9F6B008C; Thu, 26 Mar 2026 01:34:57 -0400 (EDT)
+	id 68FFA6B0088; Thu, 26 Mar 2026 01:50:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DC7A6B0092; Thu, 26 Mar 2026 01:34:57 -0400 (EDT)
+	id 5A6436B0089; Thu, 26 Mar 2026 01:50:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F1686B0089
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:34:57 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BDA71A0BC7
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:34:57 +0000 (UTC)
-X-FDA: 84587100234.23.AC16A28
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6530340008
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:34:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=davidgow.net header.s=201606 header.b=kdO9GYCT;
-	dkim=pass header.d=davidgow.net header.s=201606 header.b=ldcLAgFv;
-	spf=pass (imf11.hostedemail.com: domain of david@davidgow.net designates 203.29.242.92 as permitted sender) smtp.mailfrom=david@davidgow.net;
-	dmarc=pass (policy=none) header.from=davidgow.net
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BE3E6B0005
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 01:50:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EB4955B39E
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:50:42 +0000 (UTC)
+X-FDA: 84587139924.04.399CA8C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 574F140006
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 05:50:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=jESuCKXI;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf04.hostedemail.com: domain of BATV+847b3fc614e19ce422f2+8250+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+847b3fc614e19ce422f2+8250+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774503295;
+	s=arc-20220608; t=1774504241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GAsmk2Bxir/aEOlCq/1mI6TxB8tMf98VYj7NlGYlXuE=;
-	b=iEV0Q4Jb+AIU79329fqIpIIwIdpHN0sp2bcVLbNj/LjDswNDBAUQY827KJsXIuTYfd9UdD
-	gASW6aPIzlHI/S+u9UVoBK3g76uPFHeojqcajf8auLLp1g/m68R+QHbfN7yOW6f6/o1/Aw
-	gNxQ6ICTp39q9iAStzh+nO7nxy7h7UM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774503295; a=rsa-sha256;
+	bh=vCYIMgw31hZoV2qq5ERN/QG4vp4AeM8BHPz7QOX0MIE=;
+	b=aeHqdmPYbNoQpIuLBfvJxPh81zxUP8Yg1AzKqHKk/3cSBBMpt0Dr/SUifHaSxB4HsKLTWv
+	+9a/G0Nk3NQdVCqmGdQHJ+RpzKBCGa0UbStK+Nb8BExWCyoPTB4vEPtto3ic+72hUzRPn+
+	tq4pz7s4lHAxoMXuEdN1M4avhEQPEro=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774504241; a=rsa-sha256;
 	cv=none;
-	b=MKndyjWvWmYH+T7+vgYgs41e02EXd9EVbHbuppwZ/vcmFV6xPe8WfjDMb9A8KSsSq5Ivbc
-	PyfEgMHETfTmldyoYAoJbA9rCgQEYAmON78BRCdbChNpexUcvctVwsuJzPm5woo15MwuIu
-	mU3zsC87X3s3ZlRHCPocWg+9Nf1yiEg=
+	b=ZFyEo7jq+0zZwWQ1P1NQGaP+gW0l2Ol/pjKQOy/AqYpsxjA2ActvujyfmMes+Wv659szw6
+	t2BVwR6hoqa+MrTz4uyROsKvZiyA3pqmPF4OqypzxHNH6AhdNmq18Fq3oJ/NPA2a7ApSKh
+	zxcskqbCiIO7VMgmZSMbn3yFgIf4aIU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=davidgow.net header.s=201606 header.b=kdO9GYCT;
-	dkim=pass header.d=davidgow.net header.s=201606 header.b=ldcLAgFv;
-	spf=pass (imf11.hostedemail.com: domain of david@davidgow.net designates 203.29.242.92 as permitted sender) smtp.mailfrom=david@davidgow.net;
-	dmarc=pass (policy=none) header.from=davidgow.net
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1774503289;
-	bh=n9xjHtpRhSH9ix3QmcQLv0kr4+Yq4N4rwcbqb/HE28g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kdO9GYCTmR/URnRV278niTXYWYSXlloFdxpmJG8gn+mzQJ7eY5xi8q93YDEvCakkw
-	 LGVrgmiyUELbV+OfC+WEmqWEKQw1bjtzew5Jid7cHmWYouv1JG1fFeteMpc3dGPk6B
-	 QKqp0QmVrwx4oOBKQOiny4JIQnP/rh1I/gmFxW+i+IKhgHE/FmU/9BS6rBWcPRG6E5
-	 dgSuNkdvdG7Ybg/N1WOILtkTGpbgvlZQ6ITJR83HqI6OiDUtNDUrT5ewtoVOa5wEN/
-	 KCBlugYfO+Hh9n3EsEdOj8dBV+5lzUzzmwTzok6zrZx8Bp5FX6pOI+QvMkLznKh7jm
-	 /nIwhHed2lBB9zQtvfRukEWlBFCfntqDJ2iLfjOWS3XSmC1tT2HjV8JNBBlfkUgnNk
-	 cwCu1eqH8DTTyTeKLYr9n7uvG4B3eNEV+MB13iIM/mt/xGleF3TxpAgj+TBFXTmSs/
-	 +BQpILA8QLWcMg5xEY1/ZQyuDT0XZK+BEA84GkybYKQa+vaCGbeEfEKELvLq1JPznm
-	 URT+YCI/mkIVA0DyBDpAjmdEUFvvFeJBfBspTXAlFjIF8uWcER1vSK0xmShQtVgiDW
-	 7avkG2qQk7uQdUOBlf6VFAV5r3cqzZXjtXtF6vejKHpdbZPtjasY+Dpcm16rk8uhyv
-	 1eYf9uGMl+tZIdmT0XZ6jWYo=
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id E495E1E8333; Thu, 26 Mar 2026 13:34:49 +0800 (AWST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1774503287;
-	bh=n9xjHtpRhSH9ix3QmcQLv0kr4+Yq4N4rwcbqb/HE28g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ldcLAgFv276uo5NW6LPy7yICCVgujhSzmWWh6jq+0as7zdXji4UzHT6jmt4Pz/+33
-	 S3izhb/lP9G6bwJL2/2H1qTs2LUaVuCj/ABRbszrZp4q62JjEXq55nTfRp2SvLuI9R
-	 fm906bBysocD7LOT3MwsI7/Yswz4Tiu7PEgJoKZ1suCr2uP3hzygBpq9Y/uHrCvnlV
-	 hL320KohBE1/nJw3XzMRLlA2C6A8q7IH7kiC+wl1eGgKbZUpqeffPGP1oYo0M96OJC
-	 b7+eOTWzv4JyqwtBOF8ElsXU3R7ytXb6QQaJ6JxxljEQwj2nIYkCAf94e9nYx5u4JE
-	 4903DdFW1gSuzq8xO+jxBKsA7ZEGlu1on8XW++IES/3QjXnfMvh/tT99aAmzDk70mK
-	 Q12zsoXnahHRQZEKsNXsV7IS8i6e64DETF7+FG/6LFPOLnJzdxuyTYZMWVs6YLIIDG
-	 aFSeffc9zYPYLL5KHnYpKyLYtJTLbeBA1SbKt6JO1LkMj8NOUC7hfwUzjxN/oHDv2z
-	 3/L5hJqEG8WzvGUCwLtLeVT2cCVUWYkRhKzxdIUzYLENGP4vUxvX5aCNKe1wTm38eG
-	 Uoepqbm42xqept2Sy0Ah2AWCkqIRpUM2alnyL+hUrW0AW3Nejd9c4XWG434jAvhFQB
-	 SI3cbpjzbw15rKzFZT3TjCdA=
-Received: from [IPV6:2001:8003:8824:9e00:6d16:7ef9:c827:387c] (unknown [IPv6:2001:8003:8824:9e00:6d16:7ef9:c827:387c])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id DC56A1E737C;
-	Thu, 26 Mar 2026 13:34:46 +0800 (AWST)
-Message-ID: <e6bcf016-4739-4ba4-a46c-c0416c07400f@davidgow.net>
-Date: Thu, 26 Mar 2026 13:34:42 +0800
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=jESuCKXI;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf04.hostedemail.com: domain of BATV+847b3fc614e19ce422f2+8250+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+847b3fc614e19ce422f2+8250+infradead.org+hch@bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=vCYIMgw31hZoV2qq5ERN/QG4vp4AeM8BHPz7QOX0MIE=; b=jESuCKXIRU6xrbGqN1bg5HqDQF
+	Yg5KSrNdxFdu+X4fDizUM7Tax4NAtCqgpjaa5PdGsIhHfQsanwnAt0OxMbZC6ygGk0CTcSYAI2dgH
+	gGYLslMyzOaPXI7L3Y+AF1/hREquoQYcs+Eo9XqfqLP8HQ8ToLDe2ceK4KI/Ml57+Q6UG4lkc5HJa
+	zwqeORvDraz9EdQEPrvzJmhyGpsvJZiEPXSiGmR2H9ZBdyNycLWKwMvgFCWKO42GZRbjcv3vWJTqA
+	UM4x39vSdZQr0DFls4F/kJyvSc/2EuzUXoQKZc4JQbKA3KD+XrEgLNbrzQqMNEAfwkt7TT3UmVPUR
+	k0igtWXw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w5dc4-00000004lF2-07Px;
+	Thu, 26 Mar 2026 05:50:36 +0000
+Date: Wed, 25 Mar 2026 22:50:36 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, jack@suse.cz,
+	willy@infradead.org, miklos@szeredi.hu, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v1] mm: fix writeback regression for strictlimit BDIs
+Message-ID: <acTJLJdrd_T-cOAu@infradead.org>
+References: <20260326001337.828947-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nsc@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Russell King <linux@armlinux.org.uk>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>, aliceryhl@google.com
-Cc: linux-um@lists.infradead.org, llvm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
- a.hindborg@kernel.org, acourbot@nvidia.com, akpm@linux-foundation.org,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
- gary@garyguo.net, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lossin@kernel.org, mark.rutland@arm.com, mmaurer@google.com,
- nicolas.schier@linux.dev, peterz@infradead.org,
- rust-for-linux@vger.kernel.org, tmgross@umich.edu, urezki@gmail.com,
- will@kernel.org
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260322192159.88138-1-ojeda@kernel.org>
-Content-Language: fr
-From: David Gow <david@davidgow.net>
-In-Reply-To: <20260322192159.88138-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6530340008
-X-Stat-Signature: cgpsommqp7iw6dm8um9gpjb4zipxmabe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326001337.828947-1-joannelkoong@gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: 574F140006
+X-Stat-Signature: 4fi5qg7fpcun68wtft88nspmioxk8rmr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774503294-731554
-X-HE-Meta: U2FsdGVkX1/CQw2Cbe/ew6cDPKxgj164y9KaPjNUtbDD2BMzUe+fX4qMvxVqhSEOL1Dc2zDFKUmeNV9iI+Db+Px1Hc7sNoxRtcO3ShOzsHMER3TMRl8nZWdGN4TJQQECHfz94bB0iCQAEGUQBPXgt2OI2ON9FXxuO1MU2UFQSGdp1/tG42rOguSKxsMnkmVQRWs1Oya7KrO0A0odKFeVqSWUu5EszUoVrUS2s3pJZlw5PRb818KcaBIOu9gd7f6aZUou8sS2rxLnKP+02U4fy8DT6d/NYl/ahNV9lNCi0fHyYtVqUE/GMMaN18TQ403qfjMcisC6QHh11YDvCexv9kkRdXchDd1DWkabROqbFHluQeNjaMcTc6QyRyv8SwzP+D4/yXYxHVgIc9+/fKdt7+mMUQy48sGzGb9/5Gz4QhbTrKA/3tYilL9/ltwJTTNh/viczMUs9oLMqD9ZeoopWZURrBerzHhkIrZG6XFLntPOSWUevWiIs+YlcO7v4S9AyZCRG3LAH9gQahFu34xsgsHhYli4PDWzQM5mSHr3KGodYRndNYXfvWjUQTNtLaWPYZJVUM5GlUgJCeIJsi40SmpRQwgeY7hHlU/o59tjMonxVYLJwjotbSwpZG5HWRdF1hgwrAZzoBL6yMnUiySXNAm6INIIvt4QT0n4Ysht03vL+Rbdpq1oe7diqyQD8jPiSUMb75AJaMNqbwgYlLqw4FQvXC8JnNzzLHCex7FYpB/+xaTS5l7W+1Ffr2HkQ1Lvu28/soop5P1Gm5Of/l2Fh5D1FkI7dH4Lcl4R1fe2l2fYkT+7JXrZDKUUSY6fjCirJzeIDzblRrrjBFfKkrn08NZ9T2vrYZ2er5CKgmukhFIh4rXcgGUUfh9m0Uya/P2FdvSFN70W9Ylz0NGPVY0ARLgXcyFQMjzThfGnXqWiSTlZdf4WIyMF50VyN8spzEvF782emKvecHElsWg7jDt
- BAY9eb/l
- PTJTyoHKzKExjT1k=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774504240-802058
+X-HE-Meta: U2FsdGVkX1+sRDxIBVSdtRnTSe47WPN0UIA6FAkS245sQXaCeP8SFC0ecwGu0DZbZ35IhayHcktMUEhwViPlnfskm9XIx2yyIo+azn4ZezxVopfYQkNRd2QKV4a4KRsk57QJm3YKQ/yXEkmfgylTUkECY+mJ/k9GX40Fhz3tHqQVqwJbg+kWQU7TSk0sfQbtXG5wdclvU3dIwjCrT6XtAacZejAal6CZ3VJ8cGtknpE1NzubGLn9Q6Pac6FmyXkGJnwSali7B7tPfkFwANjbTqIimgGuuE+yivUp+gtzIKcURiqoZW72e4N2ZvSCSeoC4yKanYuXajbQTR+PCxztX63nmrLg3UzS/71jM+gs4zjC2jLB1EHjOUPvmvAtuwV7Vs1gmuufszyDfmzs2He5W7d4CFKlIHHQls5q3m8feHBS73dUTFKX26K10CZq75BwCUOplrdSyEH6fwD/jYdHbaFIzY7uzRV7RQmfQ0beBLz/jV9Nflxh6UkaJuWui6Uogj8OXksNIOLyrmVHDF6yfISiEuHhSTZ1U8HTWP3YXe3Np/3l4zLMOfeVy+IXRk4/lBqFTz1WstUfn+VP+nwZuIkmiFQSOOLFd8VEPJKFSCYlOTOFYZDIGecLyJQiVHe8fJK306gX1VtFeCOpIfM9qfDaSJt2obeepjcKlKmo4gy47OZfbZRwBLdQ++z0lxqQyI3swLUySu1wxyA9vgVDSciq6G6keMmO1fzkbxMI/zXm4RAPS7t9iWweWwu775ynCQSy5cVq15G67WCmU3LKpKqU7OkoIlCUNsZVtOzIiVsdtKji0WmfSF3hS6u+zTvVd5LmgO5zT5PphPdFz/J+HvHE++4D1EfHGeEudQOZfaw0k1ET3sdyCpAVqALdaMFD7DliF34b3GDkxWGe1GMREzU9zXq60oc309JkZQGYNZRV/pSV5OIcHZknuf9dh2iee0Jx9f5QbbKkQWzCEDI
+ 84TEeIDQ
+ s0bp6nkxPzAmIS7GC+x3xqR3RdgQpAMPe5BBrftB7qZUtgN3uM2uW5JCXdFgIm61J8byeFoE+hf3e70NgYMvqExZo7XWFYS1m3T6A8Hiy4JVCKlf9ypzmspFlBvgZ/yNtG6y4GeTU65wGGl7LuAARzVXiKWF79mMt228sSiixExYmMtqXFWnUM2nSoEMTb/7dk6LbCUQQnxyGlrbKN0sRVli9PyPVKDEEvlRQ9ketVYc3tKzqnOkp/mCxhAnDC5g1W4x2ip4ScckVj7tQIdxzJQ2FuwwfiFl6gwdhg2DfXRXBBVkT1pMrZjYla+3Si45SldMRU0t1u4qejxAFfRL/lKWRC/RsGFCiAXPoyrSUPf5qxHXPIPYEqbin6jYBq3BkS4zU8k7anTwY1dSUwt32wB7+pINeBgQswvu01U3XFjnYfNqamLzvm4mE5NeUOlXM02ZiRWeVAXPT4OiVO9Cvj6NPtcxyRVuN3zg9MzoLDjn7JlKKWIDHhRN6XA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,53 +90,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le 23/03/2026 à 3:21 AM, Miguel Ojeda a écrit :
-> On Tue, 03 Feb 2026 11:34:07 +0000 Alice Ryhl <aliceryhl@google.com> wrote:
->>
->> To get rid of these helper symbols, provide functionality to inline
->> helpers into Rust using llvm-link. This option complements full LTO, by
->> being much cheaper and avoiding incompatibility with BTF.
+On Wed, Mar 25, 2026 at 05:13:37PM -0700, Joanne Koong wrote:
+> Commit 64dd89ae01f2 ("mm/block/fs: remove laptop_mode") removed this
+> unconditional writeback kick from balance_dirty_pages():
 > 
-> I have been testing this. I think we can go ahead with it, with a few
-> notes.
-> 
-> I will reply to a couple other bindings in separate emails to avoid
-> spamming people too much.
-> 
->    - I will mark the Kconfig option as "(EXPERIMENTAL)", since that is
->      what the commit message says and it allows us to be a bit
->      conservative.
-> 
-> 
->    - Clang passes `-Werror=unused-command-line-argument`, which means
->      under arm (i.e. 32-bit) we get:
-> 
->        clang: error: argument unused during compilation: '-U arm' [-Werror,-Wunused-command-line-argument]
-> 
->      And under UML I see:
-> 
->        clang: error: argument unused during compilation: '-I ./arch/um/include/shared' [-Werror,-Wunused-command-line-argument]
->        clang: error: argument unused during compilation: '-I ./arch/x86/um/shared' [-Werror,-Wunused-command-line-argument]
->        clang: error: argument unused during compilation: '-I ./arch/um/include/shared/skas' [-Werror,-Wunused-command-line-argument]
-> 
->      So we would need e.g. `-Wno-unused-command-line-argument` there
->      close to the `-Wno-override-module` one, unless Kbuild or
->      ClangBuiltLinux thinks it is important to keep it for this case.
-> 
->      On the other hand, regardless of whether we fix this (and another
->      issue in a separate email found thanks to the UML build), we could
->      instead add `depends on` listing explicitly the architectures where
->      this is going to be actually tested. That way maintainers can decide
->      whether they want to support it when they are ready. Thoughts?
-> 
->      Cc'ing Nathan, Nicolas, Nick, Bill, Justin, David, UML, ARM.
-I'm quite happy personally to just have 
--Wno-unused-command-line-argument here, given that it otherwise is 
-working pretty well on UML and 32-bit UML.
+>        if (unlikely(!writeback_in_progress(wb)))
+> 	       wb_start_background_writeback(wb);
 
-That being said, I expect it won't get a lot of testing (regardless of 
-architecture) while it's hidden behind CONFIG_EXPERT.
+Yes, that looks like a bug.
 
-Cheers,
--- David
+> This fixes the issue by kicking off the flusher if wb_dirty exceeds
+> wb_bg_thresh for strictlimit BDIs. This restores performance back to its
+> original baseline.
+
+What speaks against just reinstating the old-code as-is minus the
+misleading latop_mode comment?
+
 
