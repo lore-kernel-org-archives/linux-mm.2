@@ -4,113 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD6A8109E546
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 03:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47122109E543
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 03:37:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56CC76B00A2; Wed, 25 Mar 2026 23:28:14 -0400 (EDT)
+	id 294326B009B; Wed, 25 Mar 2026 23:36:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 544DD6B00A3; Wed, 25 Mar 2026 23:28:14 -0400 (EDT)
+	id 26B676B009D; Wed, 25 Mar 2026 23:36:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 481FA6B00A4; Wed, 25 Mar 2026 23:28:14 -0400 (EDT)
+	id 1A8456B009E; Wed, 25 Mar 2026 23:36:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 382076B00A2
-	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:28:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6B50BCAC5
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:28:13 +0000 (UTC)
-X-FDA: 84586780866.09.1AAB3EC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0BAEB100011
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:28:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SKmSXBNa;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0547F6B009B
+	for <linux-mm@kvack.org>; Wed, 25 Mar 2026 23:36:59 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4DCC9140B1C
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:36:58 +0000 (UTC)
+X-FDA: 84586802916.18.D0DE2E1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8160E100004
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 03:36:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bMgcC3g1;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774496216; a=rsa-sha256;
+	cv=none;
+	b=m2h9m1tc6YVhoZ2jnrSDIWmOrpQADVOsZqJNW8y6TVGuSOHCYXpm2kcrJqSTFtIFEwq7F7
+	XW4Egmu1tJEmmy0hIOvsk9gf1c9LIR4URzYwB6Afb4lnnHmfXXdOnBS01M07jRpvFKUnbY
+	yp/GCdNHhVJ3V/LyQGDzd7UKRoy0PTs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774495692;
+	s=arc-20220608; t=1774496216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z7qTVQy4P3P+tWAwnSkI8eaROMeV/uij3L4ybuXlnco=;
-	b=4wKpIRruBy6Ry6ipT5Eit4Oe+TG34I74ekUkxocXydbv3Nq+0NzIttscsKnYnG86b3O9aG
-	g0WxRqx7z+xLRQIkVQerlmFtpCZbPG1N0SkC6AaO5si6l7HORtzQg+6qsxCwcmn03rc1qZ
-	GImPgKo/uE3867zIfu5SudWKoyqfYGI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774495692; a=rsa-sha256;
-	cv=none;
-	b=LU72+RgWnejYMaQiH5XczbMB5qqGk7spKF50MKbvvfToL2QCDUp0XoMonLTvnGeF47SHpy
-	E9saMw+HusDXgU7bBhKyiU88jXJsecAE2MFjsxAiU8C9s/LzrCJ4rG0p94Rsqgg59Bl7/s
-	5/6aGWubFecgjWMb1QoZuF8gHPgetHo=
+	bh=m1qEbgbIH4A/QHtufRtuw1NB8qq4VD/DpDwv3FOjnA0=;
+	b=rQEPE3ypNhKSSs7nnVFJIOly0P+n0pLpquG3R6zVExVuYoTozbSWBWif04c03sS7g7DalS
+	oNgsSmxJt8up7sAq9bbQACPkgUDR6qMPOq+xwfv8mpC2jDYUmybjbr4pxArnP7CxzVB4jz
+	iMLVmkWQe3IUhOMk5ttuU8HNOw1n0FE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SKmSXBNa;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774495691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z7qTVQy4P3P+tWAwnSkI8eaROMeV/uij3L4ybuXlnco=;
-	b=SKmSXBNa5/DkiCkXywq3PEUE2tzKxsHPgWw9lZ0n49eX0g1ynCXwc4QNNA1O5DGPlKrkfm
-	88mg5vrGcrny1RRpz9+GM0+DDD+C87F3maj3vFdgE9zIBSQqErtEYEZdjJLxhxytLzSDIr
-	vPdAfKspCbZCMtzLU44LNx2Py6w9Dsc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-g6BzXI2gPqOlcblx0mevOA-1; Wed,
- 25 Mar 2026 23:28:08 -0400
-X-MC-Unique: g6BzXI2gPqOlcblx0mevOA-1
-X-Mimecast-MFC-AGG-ID: g6BzXI2gPqOlcblx0mevOA_1774495685
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C8BD819560A7;
-	Thu, 26 Mar 2026 03:28:05 +0000 (UTC)
-Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.83])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7C0731955D84;
-	Thu, 26 Mar 2026 03:27:59 +0000 (UTC)
-From: Li Wang <liwang@redhat.com>
-To: akpm@linux-foundation.org,
-	yosry@kernel.org,
-	nphamcs@gmail.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	mkoutny@suse.com,
-	muchun.song@linux.dev,
-	tj@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev
-Cc: longman@redhat.com,
-	liwang@redhat.com,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Yosry Ahmed <yosryahmed@google.com>
-Subject: [PATCH v5 8/8] selftests/cgroup: test_zswap: wait for asynchronous writeback
-Date: Thu, 26 Mar 2026 11:26:58 +0800
-Message-ID: <20260326032658.96819-9-liwang@redhat.com>
-In-Reply-To: <20260326032658.96819-1-liwang@redhat.com>
-References: <20260326032658.96819-1-liwang@redhat.com>
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: xIE6gX7xlSfP3_epMpEwpKQfQczyMY92zlcxPp1fn0c_1774495685
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0BAEB100011
-X-Stat-Signature: 1hgk5uc5cjhcys4x4qu7ie4qqbupc9qe
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bMgcC3g1;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 739DE441FF;
+	Thu, 26 Mar 2026 03:36:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419D3C4CEF7;
+	Thu, 26 Mar 2026 03:36:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774496215;
+	bh=CqQntqxnCRIB6D4N7KvDeKcg74YX7cXVaqW8OLCN0lo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bMgcC3g15oxLe2s+2mgU5KIVNpzgBLbCCrlKLe7f61tbsM/5kGTaLmcJqSVMimfFd
+	 hmbt1dsDCBq6u1CEaoBWZUontraFkC40SqxpxoShK66/95UQBU5N2tMPAYdzJBbQmn
+	 zmJtlpz0SJY3T8jkmOeGFmYYAGyKjl44NNZxfZK4=
+Date: Wed, 25 Mar 2026 20:36:53 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
+ mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev,
+ imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chenridong@huaweicloud.com, mkoutny@suse.com,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
+ oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH 3/3] mm: memcontrol: correct the nr_pages parameter type
+ of mem_cgroup_update_lru_size()
+Message-Id: <20260325203653.5abdac45e7d22ca648fe23b4@linux-foundation.org>
+In-Reply-To: <202603260338.GfCrsaVO-lkp@intel.com>
+References: <2cf06f9faf51900ce6acbb4740fc60355a2842ed.1774342371.git.zhengqi.arch@bytedance.com>
+	<202603260338.GfCrsaVO-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774495691-360344
-X-HE-Meta: U2FsdGVkX18BerEzVq6hdmlhGCSQECYxsq1DyQ3vwcZWZlGGS1O7QKGaPJsonNOb8n/DshzcTm4bBOgNTP0xXb+pALMNuiaovF2J3J2gd8BZvjWyPlb6lTy+vZ2l0ZFM4tprFeMqRXblCd+Xs8jVL/EixI650scqHkmpUCfvsNWIwAZ7BceZ5pd6pNuBA1uOGvKypUhaMT4PYk431QUnl9Zs3L3ChZ4I7CxsOKIAa2NIt2FqwjqLVV9tk0am16mRXDvsdekWNNOpjdbEJMWFSUvr259htjYjXq8qZEC4Sb+YGH3+yI/Uo/bQmsUY4ohua2MqwOFRhTmR2QwiJnnJ41EXVb3S428l91QPib8pykZtQHOzg53ZbHcvWS6ZxiTy9YcEm3PcVo4FId5Kpk0lH6fuqP4W8aVetIBSQz9MGbqhdnGiFtjowKUGM1BH0GDx6uOMgSMvRSTNawoo/TVC99gc2trgvyZ/JP8N1u9wkW5GZPUYnIh37N2eVZ+6x9hlqK4eGd5z6r/qhczpfVMVNizwEk1i1p8XHz/mU0Eqb0ENSepyjud+QgFpOcN+2UQAOguOGGdTLIsyCBuc/oGU05V2r28K68NPYqDRuxSpaWurYSSjwhPkCXKmhQQcQ5jh/TdMVDhDCueD4pSKLqvTNAN//WWPRnw48bD+17e8cjFSXInst7a94nSN6zVBqRKXYmfjSwawDnMpvh8JJ9Og7F5OYj/zv83iV53cZJXByEVzJDqCyPA2q+dPAu5K8ry5t01qv2WacWqn0YWtYf0WP0Pv3QBwoOnC3wVd46X3yNf6rLU3KmBDYoEgIARthbu7yS1Vlx+yzYSZfzR8nmICyKIAYoouGMxn3JTxLo/9486+RJBaVQY8zwx5erce/BZeRivLSvQNOePtw5NI9pX6lpoOlFtGgCzBrfVWvdlF0fx0SOkjesDYrELkeDGghZChPxK1JlvOqSRZGId4CYL
- g7Zb5vvC
- S83zyfjJtEpu6Jmy/ACgfdKwuCpT2+qVVMKcKiTOuh3Xdxn5NqThn5GEC6jILNUQu/L3KtUta5vwpsse5e4hkHSDUs82M1jpn/TseVZegRP6FOlzQTER1BeVR4dwjnawUPR4SlMWeTzTEFCcu3qM7vMQswVSEdpqC5Pf6iWTVoDWRQeUa5Lhl4KSDqTsUN2hYUehnTWtlgdAn6OTjMKFKNCckiPGeuidsmv15EVM1DzgAB3r7MQ0p6FO2HEp2mgVxayeBo04I6Na2VXSHMpYgOU5ah/+RiXDgIfZsopoHczMLwRYfbzEz0X38F0sRzLLM0Rk5/+sAn+Xj/0lTrndhUMg/+fVJW/LHFra03QxzDfVnMV9SjJA4/4TZsdKY5pqpzYEZpp4ymMJHYyqINzmPQHex7OhIt96382kXNeV1p+IVuCRmOpBI+216JS6G0TNs0NxtxaevkJ5EBJBMO6zKKpO5/ks++LV0WpxdJiRnWXxyxgjia7+0lH0DTQ4RcE5Ay1PE56SSaC7FEFIKnsQKC1W+pq2R/si6Xf0mus5QZJEH9cMPWAZIQSZQewQSiJSjG0rkq91ALWSFqp/29QF121DdBTu/AJb1AV5s
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8160E100004
+X-Stat-Signature: haxih49h553espgc68drmf45dj568153
+X-HE-Tag: 1774496216-909967
+X-HE-Meta: U2FsdGVkX18bqF4V7RJykT+Bz4EX+57b3ckKKsb4W8OnVBaAy6bJsdYXzlKHxSmOi4IavhUQ4CBcSaBgLK2dMsQSn63uvXVbK8s7aWkTydOmwk1HT/Z6yUNMSJgdEcpCOYR2rZFNAPCDL7WG3pxEMl1XCbuvyFUmv/wsiV/Gn1qsT4kP7ZN+eeFD5QL59n3Ax3AXyAcNk0sUURi6uysSqEbyWrkUkqOEtT13dmKiLf2cqBgUSR0ImlMltJ4HSkYUqzjydzCbD4V8DgkdPiFjBNABHLrojrjF5+Q4W9BXVE2uAP4nr4sfC8U/rDZ4jjOYh77/CQuFBmnRP/Kn2U0yV40K64RlMFbfftqF2fkbJGLIZmvXv8WD9ZCjrcyl4m5qTJwOit9usgSBU8DcPGw8wSMz+26d4i6Bs128lOCUd6SukhruwG+MJOD8BTf7yN6nR9QK+JPvOhW2YGI+yQj8iZQtI9aPowNOP+ZPcva5ly7VH4BSTtaWkREyTFLt7hodqq9onBl5R2bPsiJD0x4UeinGOFXF2rAQMLS83DhoBCLoFoxa+4I2rmBQN04K33VKYlWHCiqbf3kVxMRL6wVv6SWanM/X3e9wX0P5rq0XAl04TkeMQZjGLI7L8a1qM0hTtMISSDWUhf4ZuyfWQz9HoI8fHSpMxhyGAzckJvTpXbFXZkib6ApQmFzf14tihCuavTn9TYmUowzvMSDnVnNS+QDd7DvnEvkoqA4sDGKqgBBcsLT4ParenBcQbE540fMAQovx2YPb6Hn/BQadtzfWtx+YarMQkb9eNAqc8g0jDTLbRycNHEJ42fxd5o5/tWz4jLXj+E/qJplepHkHjLB0L5N2YEMdKZYpDGdc6qyIJTum4Gd5PYhpYWN0FinqfTo3qWM259Ii2DUUXKL3juNU280FXHLnuCxEUOwrIueg15icUO5dGoZZgoRMStc6YuaX6CDObCN3fky2rk1GKbD
+ +4P6RaT7
+ fpzhu3xUXZ0Y4z3NqRVroPm4Snob5HcMINv59rC/nvjC0X+GPEAb6pImvQNHMGq3izJe+v1Vy1VwUA88VAzRzO29yv5JO81R+aiZJr9oeg5k7q0tARZK+vUNDKYmvOnh8HdNMW+mWN2CaPetXOWcvKsPKvDZ2voR87d1h+L9upsIRu/6/VKGwnPv2smRm8lN9oDaCE42SAnuVmEkFAiq54/s0G+r3k3jthLCN93+9Mvkyk0knEszqZSRwGB6oeLs1bzouUZ69F14AYXv533PreMcwoGmVtYgh+G8n5C2k3eQJKn7Y7FMOLGLEH88mWqDONyU22ETCbntJyKfkM0b26WGC2FmN8/GLleNiaejP7o3xgAZ6ZxuH87kSoivHAJ3ZlogFbGVn4GPM5H7xgXJjwQ0plssMgzBXx2SP8zFnLkKzhZRqA6jYq7qAYwb+8jyZvJToV4M2f1vf81HimVMsqUEmS99SD/10AIWk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,90 +100,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap writeback is asynchronous, but test_zswap.c checks writeback
-counters immediately after reclaim/trigger paths. On some platforms
-(e.g. ppc64le), this can race with background writeback and cause
-spurious failures even when behavior is correct.
+On Thu, 26 Mar 2026 03:35:39 +0100 kernel test robot <lkp@intel.com> wrote:
 
-Add wait_for_writeback() to poll get_cg_wb_count() with a bounded
-timeout, and use it in:
+> Hi Qi,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on akpm-mm/mm-everything]
+> [also build test WARNING on next-20260325]
+> [cannot apply to trace/for-next linus/master v7.0-rc5]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/mm-memcontrol-correct-the-type-of-stats_updates-to-unsigned-long/20260325-230337
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/2cf06f9faf51900ce6acbb4740fc60355a2842ed.1774342371.git.zhengqi.arch%40bytedance.com
+> patch subject: [PATCH 3/3] mm: memcontrol: correct the nr_pages parameter type of mem_cgroup_update_lru_size()
+> config: riscv-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260326/202603260338.GfCrsaVO-lkp@intel.com/config)
+> compiler: riscv64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260326/202603260338.GfCrsaVO-lkp@intel.com/reproduce)
 
-  test_zswap_writeback_one() when writeback is expected
-  test_no_invasive_cgroup_shrink() for the wb_group check
+Thanks.  Can't reproduce. (there are meds for this!)
 
-This keeps the original before/after assertion style while making the
-tests robust against writeback completion latency.
+> b4536f0c829c858 Michal Hocko       2017-01-10 @1486  		"%s(%p, %d, %d): lru_size %ld\n",
 
-No test behavior change, selftest stability improvement only.
+We presently have
 
-Signed-off-by: Li Wang <liwang@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Koutný <mkoutny@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Yosry Ahmed <yosryahmed@google.com>
----
- tools/testing/selftests/cgroup/test_zswap.c | 28 +++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+		"%s(%p, %d, %ld): lru_size %ld\n",
 
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index e96e316f7c47..e7d5dbc1ef7f 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -118,6 +118,27 @@ static char *setup_test_group_1M(const char *root, const char *name)
- 	return NULL;
- }
- 
-+/*
-+ * Writeback is asynchronous; poll until at least one writeback has
-+ * been recorded for @cg, or until @timeout_ms has elapsed.
-+ */
-+static long wait_for_writeback(const char *cg, int timeout_ms)
-+{
-+	int elapsed, count;
-+	for (elapsed = 0; elapsed < timeout_ms; elapsed += 100) {
-+		count = get_cg_wb_count(cg);
-+
-+		if (count < 0)
-+			return -1;
-+		if (count > 0)
-+			return count;
-+
-+		usleep(100000);
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Sanity test to check that pages are written into zswap.
-  */
-@@ -343,7 +364,10 @@ static int test_zswap_writeback_one(const char *cgroup, bool wb)
- 		return -1;
- 
- 	/* Verify that zswap writeback occurred only if writeback was enabled */
--	zswpwb_after = get_cg_wb_count(cgroup);
-+	if (wb)
-+		zswpwb_after = wait_for_writeback(cgroup, 5000);
-+	else
-+		zswpwb_after = get_cg_wb_count(cgroup);
- 	if (zswpwb_after < 0)
- 		return -1;
- 
-@@ -473,7 +497,7 @@ static int test_no_invasive_cgroup_shrink(const char *root)
- 	}
- 
- 	/* Verify that only zswapped memory from gwb_group has been written back */
--	if (get_cg_wb_count(wb_group) > 0 && get_cg_wb_count(zw_group) == 0)
-+	if (wait_for_writeback(wb_group, 5000) > 0 && get_cg_wb_count(zw_group) == 0)
- 		ret = KSFT_PASS;
- out:
- 	cg_enter_current(root);
--- 
-2.53.0
-
+so it appears we fixed this recently.
 
