@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCCC010A1E7E
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 11:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0172A10A3D78
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Mar 2026 12:04:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C296E6B0088; Thu, 26 Mar 2026 07:43:57 -0400 (EDT)
+	id 345F46B00B0; Thu, 26 Mar 2026 08:04:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C011A6B0089; Thu, 26 Mar 2026 07:43:57 -0400 (EDT)
+	id 2CFE06B00B1; Thu, 26 Mar 2026 08:04:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3DD76B008C; Thu, 26 Mar 2026 07:43:57 -0400 (EDT)
+	id 197936B00B2; Thu, 26 Mar 2026 08:04:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A31236B0088
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 07:43:57 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62D221B9149
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:43:57 +0000 (UTC)
-X-FDA: 84588030114.19.90CB7CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 997BD140005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 11:43:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JA6ACA81;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 03B456B00B0
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 08:04:22 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7AEC85CDA4
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:04:21 +0000 (UTC)
+X-FDA: 84588081522.08.3874B8D
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5C1BF80015
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 12:04:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oaKtZJBA;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774525435;
+	s=arc-20220608; t=1774526659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SHgl1jqC1OOHtfkPHWAutDHX5Y+GkXVVzRGYKgkhj3E=;
-	b=HiT/nRDXausRXpdsyJJ6tfb2viZ+DYIP+bwqVnBl5zyBkLH+QAq3Qz+OdXXP0fjzJqbFFL
-	HIpayWT7xXv68r7l5yrCeB9rAF4shXgzpRGI7pwchuaIZjVKRQ9EwDKjiC3D3i3uZC6+gC
-	hj4tk1bYHKTguXnfIxD1zOigDuFKp1M=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JA6ACA81;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774525435; a=rsa-sha256;
+	bh=LWQfC+vkVg6s6Aluh+qkk7w2aQ6dzgjp3pNFuJDRRHM=;
+	b=W6J7Br2eCd5Zqj3yFi5fKrkIpamhjtIkOLYhjzAoOAi+rVWkRP2A8t3ojTqSUxhnVEKKZD
+	JDpBbNPa2KE5DNtAH2f3BAO3hr2YiZaQS9XMiPE4gWWnvtG3pEx5ht2/vNgdi4DTgkNOr3
+	QM3k9p1ZFm6paZF1xLJilVTJwDc7aSE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774526659; a=rsa-sha256;
 	cv=none;
-	b=XUe1cr31L8n9+ugYy3viUl5xzB49DZ6/yERxuPR9ZLMO8JW5ZOQRjII0aLsBJ/b7I9q5aZ
-	BU9S8y6/SdE6Q/tTADNNnnsjy6v2ybAFLW4jTwxLXrc8P8vEx+8EsGesBLebdO4nrQcEu3
-	YCkYQ2U2n3g0B5dhC/0XeGsMwRoGksg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B13142DC7;
-	Thu, 26 Mar 2026 11:43:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303A4C2BC87;
-	Thu, 26 Mar 2026 11:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774525434;
-	bh=YL97lFy5kQhwfmoYidad7USKzO67YzuUg7btoOK2/BM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JA6ACA81RfmbrWjxio4e7C5FDjZFNALezl7n8aWESFgc2wY0MUQTcyrwSVrXFKhWX
-	 CBn7G7K3lo61REFN7C7JdBcn10jfbVgFJ3b08Y0oRk3h0Bx8qjhlQvs6jTaTFsK9yS
-	 f9k58uCkZYoo+Ra/EJYuyrt5MIO9w6xrxoyIi2NSs5NnLuM2xwDqfUNsb/CdvjZM/d
-	 JETtlI3gh27thQHPdxaq1KcPhH5AltUEmbbN0xWXyDJlmH9wlogPe1kl50cb7gVy+t
-	 jGq2rizVUdwqDG6eCfK9wfQvvIv1dDX/LWe2Q8vlJtso7M/wUcjnDO2c4IHIAUeg+m
-	 GvOfNuKqrbf+g==
-Date: Thu, 26 Mar 2026 11:43:46 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Chen Ridong <chenridong@huaweicloud.com>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Kairui Song <ryncsn@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Gregory Price <gourry@gourry.net>, 
-	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, David Rientjes <rientjes@google.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, wangzicheng <wangzicheng@honor.com>, 
-	"T . J . Mercier" <tjmercier@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-Message-ID: <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+	b=KORT8pOoXfS1NI1SrGJD8Jzd0FWA67i0GcAvFJ4AXrYn1XaJyDqbiXwzIQkyS+KcPtTCkc
+	PxdnfWTZy7y0E5iK1J0r9mHClko3vCgTGn1UZca5EVrgjrhD/8ZdLPvH/Bmqw+1JfBqoZN
+	C7QP6w7C+fx95ayc8hZGjX2wL5DjMK8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oaKtZJBA;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774526654; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=LWQfC+vkVg6s6Aluh+qkk7w2aQ6dzgjp3pNFuJDRRHM=;
+	b=oaKtZJBAwGp77tY10qxy/IUg+WMuIzZGDohF65UMj7Y5fPfXgogbfOl1PcDgVUz+ILDQADUSy9gvBlxw0+4HfImatrLa6QXpSZwYcBde7WbFo+GVdWUXhTYH+c9PUL62L1FKEsuktpkJXRJzVjHO7Hi8xpymjm6FROVTpzYQFkI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R701e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X.lAXzx_1774526650;
+Received: from 30.42.98.36(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.lAXzx_1774526650 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 26 Mar 2026 20:04:12 +0800
+Message-ID: <aef474b9-5286-46f4-99d2-43d0b85f7176@linux.alibaba.com>
+Date: Thu, 26 Mar 2026 20:04:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325210637.3704220-1-shakeel.butt@linux.dev>
-X-Rspamd-Queue-Id: 997BD140005
-X-Stat-Signature: 37ukkgcm7a4thittxd5w81dp9jmzqibs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the references
+ for large folios
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ dev.jain@arm.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
+ <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
+ <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
+ <43831628-a00f-4292-9797-cb96a029bb00@kernel.org>
+ <e54e0ec1-b968-4e12-84a3-4e3d331b1c36@linux.alibaba.com>
+ <86f611cb-1292-44e4-b629-6503135d33ca@kernel.org>
+ <e5cb474a-a84d-4edc-8289-d68378feee7d@lucifer.local>
+ <e3e374cc-ddf2-4112-b063-6cb1839ea566@kernel.org>
+ <e227a7f7-0186-4d10-b7b4-c84ca8424bdd@lucifer.local>
+ <bfd282b1-523d-4945-97a0-ec30fe1df577@linux.alibaba.com>
+ <a0181a7c-d191-483d-bbc9-678bc355a984@lucifer.local>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <a0181a7c-d191-483d-bbc9-678bc355a984@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5C1BF80015
+X-Stat-Signature: 9cwx1mizmb4yquzu5t7xwozkoktc6s51
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774525435-533588
-X-HE-Meta: U2FsdGVkX1/z+hnqDMelLahUf7moowIauLO6FQHfoZeMsgkSbdxPLdePINWcvSUCTfWswrptlDWLemxQpnKnJ0KBMfwU3U4FDpo6Ckbbqqse8kJkXTXhN9HR51x2Lr2LUVbEG4W7ybl5PowBXSkN+IUsYH6FxX8ngvPjc1fJ2I6hi4exmUiW9XvDyafBFPOw+xDGzr8m0jc1YqyBPhI5B96rIuGOeAHDZKRkDoHPjEtSVM2JPxn4zTFnPKeihtOOnVl4oCcnpsZW1UwTm0BSr5NXQbJpSrzrtawL0uP6FqCaBlUO92ZsfJJCD59qGntu6+u4K+F8KFiCL8i8h7ukTG7ZyCj5aOUkDxcf6KqJwFcXtXPv4OruxreVFeNnvLtyrJqivR9WPrND/bnJjko8cMDBHCEd9FcL1GlQj3OXjL08js3aITlRJZEfoxRps9jJ8VwJxESye6sHFcnSD8M8fjl65zQ40pI5srlu2bDvbvuPAd2M2tNGwBq2j6PIp48Sp96ReCnmkvkyQMiKOOeYPHY+t+HoTvoAIorPyngvWKD7WFrLaZwMi2Kz1x3eWucInKc+ce9yBKQz4c6v6NZtwwe5X8W5xWqgrrwlIbr6Ktw1wMr7bQVkPk/o4QkuK5xVmFuKiF8Xb9UMyMliQbT1cAIucXZ/1kJgs8REwHojuE4RilXd/tYBu59kUk2QpXL1TuXY0GNGWf5za/AM2N7NL0gARBBEbLqJ8lbC9dcHsXKuTZ6+/7nuNEVYf/U9KYxobKJNmtvvwpcRPiUt/NQXN2ZVKVUNuMmlAjDgC5Bg4AKTPDt8KHKVd9Sohqc2sRq7l1fQ3v8ALN6ic0+Pp0WZ7ZYcq4qXxAteUL/PjCgeF/SxpBdnE8jguwh9/Qxz4O3CGeG/UbmktKqyTlOPdoqN9nfPd/c5IRFBkvndbknC9kX1OQcbchrN5rhWa3zmJUCJ94b1OcBjnMpZ214Nics
- /EyRHX+y
- WEhHAh201TVPwQaKsJ9dxduax56mVP1GbjD+0KN6i3Hs4NFpDaPjXLRd7r0+IGmKJMG/AkZ42Zgogtj4FEJEQzjSw5kNLSz6EaY9fWyWu/GgLS2B3VAb5lSVZxxW5470cDm2Mrp3rV/DZOTV4RfGQrTZx0F7Mo8lxp3U6RIgYhEOO+EOoXxubeenG2z4UrZ/hPiGgIifn54kNohKb3v74kC7UZWqoMQeKH4sHlUgiYyRhaodSPWwpBviWGTwPQ/M767W0pckSnCeetuaWSE06ID0RyUiDoOgJmXHGLLDAf6zc5Uxu2zGAb/3uSQUD1vUc6OvohGKXJ2MoA1vq1a1CCo+YRq291MQ0x0gDIzuxp7WiR1U27v86ubJFyg==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774526658-191302
+X-HE-Meta: U2FsdGVkX19LPv8SCcYhv81UldnooVm938L0qS0708qkUzwrbWD8b7mNkIgKidCKcwm4v3s19Q6OjFm9I+8k6xDBvENdb6CWcaQJiiJjFE176CJ6LDP411Ap/m73Gy8km7U14ghKx+BQEiE81kdXwTVZz2Ls6chy7rImYTsX39W6P3jQk6P5+ZV74tPKhr74SmOTBF/zmk5B8frVuztABJOtSjtDVL8wWnGykATLnuEaZq2QNOlKGy5RsRia8gOl+2RUw0vihS9obz+XxZ4O5FF2XQyMzIYpiqZx6tT4wu1RaRdQltJ6yjyWnvCe8vOING8svEzOICsS41DjcdJmOikhGsmjG6B6PQ+JShKlYdaOoteK55v3W9tZ/xyc2oo+TkqE0NcqLOFc7cp/Tru/JAicnr9PVD+l5oTjPn2QK5lPlqKJOSBB0PNry5hwnJlo0XE+mq0xSGkBzSxi4QQwXHl9biYriZlBmIm4B/yab0d3uwBj8I9u1m90uykO3x83EwFTOn2Kid4WNikqH2ii3eX/qb14zSF3n8Yzl5FrfqJ1y+B29C2nf8QP08guLPeR6QWQykZlbt6Vh1fHHtxHmxH1L6p5KMmHNPmAUbJZI6CjsJAYMqwH4zYkbWlwS7N0PGeS1n05SwqDh0NduMeqDEHTl2+DEGbhwV+S8KS5+ZjbtUfM33wVeLAH+4peuil7DEnYJRPujWWREo2JtBqyczf9Qh8vsW+mNkWe3UUu20+/jogdt2jXuD6f1pvTWRoa4X6Dd0hCW3qoURRtIL7QMvOdOklY4cQ5swvCP0uqC4KvpSV8LJYKd/dvdUSEFt/7GGQZpIYNlcDc6gALYVBjXL0UWSAeI2Q16T2FPXbmJFJ004aqp266EoejBGAcT76K9T//35u6bbat+5ibhLG9A5DDWoRycGXRghUxABnfTNy9E53rJTqUiB20XEZrDmxdYJYPB0G7Bv8c6ahzreS
+ 7sE0mWSl
+ /mFVYBp/kImwAFiOwS6RZsGkoEeiPvvimd8wCoCQ+PA2c26Dw6Ehvd1a/J6n8AtVf8Fwdxb+kIUuxQXfzilPiiadwH1U+AIRuZMqObWjcjtTjcF9b6GR9hO5BsR+1mdBLCNgfBN30+9SqG9yqjkf4cc8J1EvkBBt1NGZNZQ0uSzwbdFIskerBODj7uFmnDzZBja/QXi7slCT0JxNV8FdiMq5gcN+/c2QRW88XJhCsLk9yMynsw1A5RuvOMSg2NMIyvh7gJTRab1QxsnE5BVSaYl1aY9EuOK9bCwb5Pfal2cawPFVS20ChxQzcXEwb7rHb21xk/25OX2D/FJ2y7bwtoqkxRuGbp7zdM3O634xNhx5tfNOgbq58H12nInlubAZhGsKJ+sKRNJUnXx9RQY6TYxzxL8euAFtcOTWYWIykpof6aV90nverscZcnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,317 +103,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 02:06:37PM -0700, Shakeel Butt wrote:
-> The Problem
-> -----------
->
-> Memory reclaim in the kernel is a mess. We ship two completely separate
-> eviction algorithms -- traditional LRU and MGLRU -- in the same file.
 
-Agreed :)
 
-> mm/vmscan.c is over 8,000 lines. 40% of it is MGLRU-specific code that
-> duplicates functionality already present in the traditional path. Every
-> bug fix, every optimization, every feature has to be done twice or it
-> only works for half the users. This is not sustainable. It has to stop.
+On 3/26/26 7:10 PM, Lorenzo Stoakes (Oracle) wrote:
+> On Thu, Mar 26, 2026 at 09:47:51AM +0800, Baolin Wang wrote:
+>>
+>>
+>> On 3/25/26 11:06 PM, Lorenzo Stoakes (Oracle) wrote:
+>>> On Wed, Mar 25, 2026 at 03:58:36PM +0100, David Hildenbrand (Arm) wrote:
+>>>> On 3/25/26 15:36, Lorenzo Stoakes (Oracle) wrote:
+>>>>> On Mon, Mar 16, 2026 at 03:15:18PM +0100, David Hildenbrand (Arm) wrote:
+>>>>>> On 3/16/26 07:25, Baolin Wang wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> Sure. However, after investigating RISC‑V and x86, I found that
+>>>>>>> ptep_clear_flush_young() does not flush the TLB on these architectures:
+>>>>>>>
+>>>>>>> int ptep_clear_flush_young(struct vm_area_struct *vma,
+>>>>>>>                  unsigned long address, pte_t *ptep)
+>>>>>>> {
+>>>>>>>       /*
+>>>>>>>        * On x86 CPUs, clearing the accessed bit without a TLB flush
+>>>>>>>        * doesn't cause data corruption. [ It could cause incorrect
+>>>>>>>        * page aging and the (mistaken) reclaim of hot pages, but the
+>>>>>>>        * chance of that should be relatively low. ]
+>>>>>>>        *
+>>>>>>>        * So as a performance optimization don't flush the TLB when
+>>>>>>>        * clearing the accessed bit, it will eventually be flushed by
+>>>>>>>        * a context switch or a VM operation anyway. [ In the rare
+>>>>>>>        * event of it not getting flushed for a long time the delay
+>>>>>>>        * shouldn't really matter because there's no real memory
+>>>>>>>        * pressure for swapout to react to. ]
+>>>>>>>        */
+>>>>>>>       return ptep_test_and_clear_young(vma, address, ptep);
+>>>>>>> }
+>>>>>>
+>>>>>> You'd probably want an arch helper then, that tells you whether
+>>>>>> a flush_tlb_range() after ptep_test_and_clear_young() is required.
+>>>>>>
+>>>>>> Or some special flush_tlb_range() helper.
+>>>>>>
+>>>>>> I agree that it requires more work.
+>>
+>> (Sorry, David. I forgot to reply to your email because I've had a lot to
+>> sort out recently.)
+>>
+>> Rather than adding more arch helpers (we already have plenty for the young
+>> flag check), I think we should try removing the TLB flush, as I mentioned to
+>> Barry[1]. MGLRU reclaim already skips the TLB flush, and it seems to work
+>> fine. What do you think?
+>>
+>> Here are our previous attempts to remove the TLB flush:
+>>
+>> My patch: https://lkml.org/lkml/2023/10/24/533
+>> Barry's patch:
+>> https://lore.kernel.org/lkml/20220617070555.344368-1-21cnbao@gmail.com/
+>>
+>> [1] https://lore.kernel.org/all/6bdc4b03-9631-4717-a3fa-2785a7930aba@linux.alibaba.com/
+>>
+>>>>> Sorry unclear here - does the series need more work or does a follow up patch
+>>>>> need more work?
+>>>>
+>>>> Follow up!
+>>>
+>>> Ok good as in mm-stable now. Sadly means I don't get to review it but there we
+>>> go.
+>>
+>> Actually this patchset has already been merged upstream:)
 
-Yup.
+Let me try to make things clear.
 
->
-> We should unify both algorithms into a single code path. In this path,
-> both algorithms are a set of hooks called from that path. Everyone
-> maintains, understands, and evolves a single codebase. Optimizations are
-> now evaluated against -- and available to -- both algorithms. And the
-> next time someone develops a new LRU algorithm, they can do so in a way
-> that does not add churn to existing code.
+> Err but this revision was sent _during_ the merge window...?
+> 
+> Was sent on 9th Feb on Monday in merge window week 1, with a functional change
+> listed:
+> 
+> - Skip batched unmapping for uffd case, reported by Dev. Thanks.
+> 
+> And then sent in 2nd batch on 18th Feb (see [0]).
+> 
+> So we were ok with 1 week of 'testing' (does anybody actually test -next during
+> the merge window? Was it even sent to -next?) for what appears to be a
+> functional change?
 
-Yup. I mean it's less churn more duplication which is a lot worse.
+I posted v5 on Dec 26th[0], and it collected quite a few Reviewed-by 
+tags and sat in mm-unstable for testing.
 
->
-> How We Got Here
-> ---------------
->
-> MGLRU brought interesting ideas -- multi-generation aging, page table
-> scanning, Bloom filters, spatial lookaround. But we never tried to
-> refactor the existing reclaim code or integrate these mechanisms into the
-> traditional path. 3,300 lines of code were dumped as a completely
-> parallel implementation with a runtime toggle to switch between the two.
-> No attempt to evolve the existing code or share mechanisms between the
-> two paths -- just a second reclaim system bolted on next to the first.
+Later, Dev reported a uffd-related issue (I hope you recall that 
+discussion). I posted a fix[1] for it on Jan 16th, which Andrew accepted.
 
-Yeah, I don't love that we accepted it in this form.
+Since then, the v5 series (plus the fix) continued to be tested in 
+mm-unstable. We kept it there mainly because David mentioned he wanted 
+to review the series, so we were waiting for his time.
 
-With review far sharper now I would hope in future there'd be pushback in at
-least having better separation in future.
+On Feb 9th, after returning from vacation, David reviewed the series 
+(thanks, David!). I replied to and addressed all his comments, then 
+posted v6 on the same day[2].
 
->
-> To be fair, traditional reclaim is not easy to refactor. It has
-> accumulated decades of heuristics trying to work for every workload, and
-> touching any of it risks regressions. But difficulty is not an excuse.
-> There was no justification for not even trying -- not attempting to
-> generalize the existing scanning path, not proposing shared
-> abstractions, not offering the new mechanisms as improvements to the code
-> that was already there. Hard does not mean impossible, and the cost of
-> not trying is what we are living with now.
+Additionally, v6 had no functional changes compared to v5 + the fix, and 
+it mainly addressed some coding style issues pointed out by David. I 
+also discussed this with David off-list, and since there were no 
+functional changes, my expectation was that it could still make it into 
+the merge window. That is why v6 was merged.
 
-Yes. Agreed very much so.
+[0] 
+https://lore.kernel.org/linux-mm/cover.1766631066.git.baolin.wang@linux.alibaba.com/#t
+[1] 
+https://lore.kernel.org/linux-mm/20260116162652.176054-1-baolin.wang@linux.alibaba.com/
+[2] 
+https://lore.kernel.org/all/cover.1770645603.git.baolin.wang@linux.alibaba.com/
 
->
-> The Differences That Matter
-> ---------------------------
->
-> The two algorithms differ in how they classify pages, detect access, and
-> decide what to evict. But most of these differences are not fundamental
-> -- they are mechanisms that got trapped inside one implementation when
-> they could benefit both. Not making those mechanisms shareable leaves
-> potential free performance gains on the table.
->
-> Access detection: Traditional LRU walks reverse mappings (RMAP) from the
-> page back to its page table entries. MGLRU walks page tables forward,
-> scanning process address spaces directly. Neither approach is inherently
-> tied to its eviction policy. Page table scanning would benefit
-> traditional LRU just as much -- it is cache-friendly, batches updates
-> without the LRU lock, and naturally exploits spatial locality. There is
-> no reason this should be MGLRU-only.
+> And there was ongoing feedback on this and the v5 series (at [1])?
 
-Right.
+Regarding the feedback on v5, I believe everything has been addressed.
 
->
-> Bloom filters and lookaround: MGLRU uses Bloom filters to skip cold
-> page table regions and a lookaround optimization to scan adjacent PTEs
-> during eviction. These are general-purpose optimizations for any
-> scanning path. They are locked inside MGLRU today for no good reason.
->
-> Lock-free age updates: MGLRU updates folio age using atomic flag
-> operations, avoiding the LRU lock during scanning. Traditional reclaim
-> can use the same technique to reduce lock contention.
->
-> Page classification: Traditional LRU uses two buckets
-> (active/inactive). MGLRU uses four generations with timestamps and
-> reference frequency tiers. This is the policy difference --
-> how many age buckets and how pages move between them. Every other
-> mechanism is shareable.
->
-> Both systems already share the core reclaim mechanics -- writeback,
-> unmapping, swap, NUMA demotion, and working set tracking. The shareable
-> mechanisms listed above should join that common core. What remains after
-> that is a thin policy layer -- and that is all that should differ between
-> algorithms.
+> This doesn't really feel sane?
+> 
+> And now I'm confused as to whether mm-stable patches can collect tags, since
+> presumably this was in mm-stable at the point this respin was done?
+> 
+> Maybe I'm missing something here but this doesn't feel like a sane process?
 
-Yeah, this all really speaks to the review simply not being sufficient at
-the time.
-
-Given the data given by Mike at [0], it suggests the recent sub-M changes
-have made a really big difference to this (I'm genuinely pleasantly
-surprised by that!) so hopefully this is something we'll avoid in future.
-
-[0]:https://lore.kernel.org/linux-mm/acJEFArj6uw2Z_2e@kernel.org/
-
->
-> The Fix: One Reclaim, Pluggable and Extensible
-> -----------------------------------------------
->
-> We need one reclaim system, not two. One code path that everyone
-> maintains, everyone tests, and everyone benefits from. But it needs to
-> be pluggable as there will always be cases where someone wants some
-> customization for their specialized workload or wants to explore some
-> new techniques/ideas, and we do not want to get into the current mess
-> again.
-
-OK so I was with you up until the pluggable bit :) it's like you're
-combining two things here, obviously - unification and pluggability.
-
-I think we should consider both separately.
-
-I also hope that as a result of this those who are involved in unification
-gain understanding and some at least are able to perhaps become _active_
-co-maintainers/reviewers? As this is a major concern see [1].
-
-[1]:https://lore.kernel.org/linux-mm/aaBsrrmV25FTIkVX@casper.infradead.org/
-
->
-> The unified reclaim must separate mechanism from policy. The mechanisms
-> -- writeback, unmapping, swap, NUMA demotion, workingset tracking -- are
-> shared today and should stay shared. The policy decisions -- how to
-> detect access, how to classify pages, which pages to evict, when to
-> protect a page -- are where the two algorithms differ, and where future
-> algorithms will differ too. Make those pluggable.
-
-Again you're saying sane things than adding on 'pluggable' :)
-
-Let me address pluggability concerns further down I guess.
-
->
-> This gives us one maintained code path with the flexibility to evolve.
-
-I like 'maintained' here :)
-
-> New ideas get implemented as new policies, not as 3,000-line forks. Good
-> mechanisms from MGLRU (page table scanning, Bloom filters, lookaround)
-> become shared infrastructure available to any policy. And if someone
-> comes up with a better eviction algorithm tomorrow, they plug it in
-> without touching the core.
->
-> Making reclaim pluggable implies we define it as a set of function
-> methods (let's call them reclaim_ops) hooking into a stable codebase we
-> rarely modify. We then have two big questions to answer: how do these
-> reclaim ops look, and how do we move the existing code to the new model?
-
-Hmm, I'm not so sure about that. But it depends really on who has access to
-these operations.
-
-The issue with operations in general is that they eliminate the possibility
-of the general code being able to make assumptions about what's happening.
-
-For instance, the .mmap f_op callback meant that we had to account for any
-possible thing being done by a driver. You couldn't make assumptions about
-vma state, page table state, etc. and of course things happened that we
-didn't anticipate, leading to bugs.
-
-So I guess it's less 'no ops' more so 'what do we actually expose to the
-ops', 'what assumptions do we bake in about how the ops are used' and very
-importantly - 'who gets to populate them'.
-
-If they're _exclusively_ mm-internal then that's fine.
-
-Reclaim is a _very_ _very_ sensitive part of mm. At the point it's being
-activated you may be under extreme memory pressure, so a hook even
-allocating at all may either fail or enter infinite loops.
-
-We are also very sensitive on things like rmap locks and also, of course, -
-timing.
-
-It's not just a perf concern, if we are too slow, we might end up thrashing
-when we could otherwise not have.
-
-Also there ends up being a question of how much now-internal functionality
-we end up exposing to users.
-
-So we really need a good definition of who we intend should use this stuff,
-and how any such interface should be designed.
-
-I mean, if sufficiently abstracted, and with very carefully restricted
-constrainst perhaps we could work around a lot of this but we have to tread
-_very_ carefully here.
-
->
-> How Do We Get There
-> -------------------
->
-> Do we merge the two mechanisms feature by feature, or do we prioritize
-> moving MGLRU to the pluggable model then follow with LRU once we are
-> happy with the result?
-
-Absolutely by a distance the first is preferable. The pluggability is
-controversial here and needs careful consideration.
-
-Eliminating redundancy and ensuring broader community maintainership is
-easily more important.
-
->
-> Whichever option we choose, we do the work in small, self-contained
-> phases. Each phase ships independently, each phase makes the code
-> better, each phase is bisectable. No big bang. No disruption. No
-> excuses.
->
-> Option A: Factor and Merge
->
-> MGLRU is already pretty modular. However, we do not know which
-> optimizations are actually generic and which ones are only useful for
-> MGLRU itself.
->
-> Phase 1 -- Factor out just MGLRU into reclaim_ops. We make no functional
-> changes to MGLRU. Traditional LRU code is left completely untouched at
-> this stage.
->
-> Phase 2 -- Merge the two paths one method at a time. Right now the code
-> diverts control to MGLRU from the very top of the high-level hooks. We
-> instead unify the algorithms starting from the very beginning of LRU and
-> deciding what to keep in common code and what to move into a traditional
-> LRU path.
->
-> Advantages:
-> - We do not touch LRU until Phase 2, avoiding churn.
-> - Makes it easy to experiment with combining MGLRU features into
->   traditional LRU. We do not actually know which optimizations are
->   useful and which should stay in MGLRU hooks.
->
-> Disadvantages:
-> - We will not find out whether reclaim_ops exposes the right methods
->   until we merge the paths at the end. We will have to change the ops
->   if it turns out we need a different split. The reclaim_ops API will
->   be private and have a single user so it is not that bad, but it may
->   require additional changes.
-
-Yup this to me renders this totally not an option.
-
->
-> Option B: Merge and Factor
->
-> Phase 1 -- Extract MGLRU mechanisms into shared infrastructure. Page
-> table scanning, Bloom filter PMD skipping, lookaround, lock-free folio
-> age updates. These are independently useful. Make them available to both
-> algorithms. Stop hoarding good ideas inside one code path.
->
-> Phase 2 -- Collapse the remaining differences. Generalize list
-> infrastructure to N classifications (trad=2, MGLRU=4). Unify eviction
-> entry points. Common classification/promotion interface. At this point
-> the two "algorithms" are thin wrappers over shared code.
->
-> Phase 3 -- Define the hook interface. Define reclaim_ops around the
-> remaining policy differences. Layer BPF on top (reclaim_ext).
-> Traditional LRU and MGLRU become two instances of the same interface.
-> Adding a third algorithm means writing a new set of hooks, not forking
-> 3,000 lines.
->
-> Advantages:
-> - We get signals on what should be shared earlier. We know every shared
->   method to be useful because we use it for both algorithms.
-> - Can test LRU optimizations on MGLRU early.
->
-> Disadvantages:
-> - Slower, as we factor out both algorithms and expand reclaim_ops all
->   at once.
-
-Much preferable thanks. I'd rather we deferred the pluggability stuff.
-
->
-> Open Questions
-> --------------
->
-> - Policy granularity: system-wide, per-node, or per-cgroup?
-
-Well, we have varying levers to pull at least per-cgroup/system-wide.
-
-I wonder if we could add improved documentation on this overall by the way
-:) just a thought.
-
-A general reclaim page that mentions cgroup stuff also (can link back to
-cgroup pages) so a 'one stop shop' for reclaim/(perhaps also)
-reclaim-adjacent writeback, etc. controls could be useful.
-
-> - Mechanism/policy boundary: needs iteration; get it wrong and we
->   either constrain policies or duplicate code.
-
-> - Validation: reclaim quality is hard to measure; we need agreed-upon
->   benchmarks.
-
-Yes, it'd be great to get some standardised set of tests to ensure correct
-behaviour, though how we set those up might be tricky.
-
-Perhaps somehow some qemu/libvirt configurations with very tightly
-specified environments intended to trigger various reclaim behaviours, with
-some specific measurements (bpf, ftrace, procfs, etc.?) to correctly
-observe the behaviours in place?
-
-> - Simplicity: the end result must be simpler than what we have today,
->   not more complex. If it is not simpler, we failed.
-
-Yeah that's a nice aim :)
-
-> --
-> 2.52.0
->
-
-Thanks, Lorenzo
+Andrew, David, please correct me if I've missed anything. Also, please 
+let me know if there's anything in the process that needs to be 
+improved. Thanks.
 
