@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D1E610BA432
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19F7610BA426
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:22:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7419B6B0095; Fri, 27 Mar 2026 02:21:35 -0400 (EDT)
+	id 286E46B009B; Fri, 27 Mar 2026 02:22:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F20B6B0099; Fri, 27 Mar 2026 02:21:35 -0400 (EDT)
+	id 237E06B009D; Fri, 27 Mar 2026 02:22:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62EDA6B009B; Fri, 27 Mar 2026 02:21:35 -0400 (EDT)
+	id 14DA66B009E; Fri, 27 Mar 2026 02:22:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 54B696B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:21:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A5311B9691
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:21:35 +0000 (UTC)
-X-FDA: 84590846550.16.1A69669
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DCD61120011;
-	Fri, 27 Mar 2026 06:21:32 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rZMZxQZV;
-	spf=none (imf29.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rZMZxQZV;
-	spf=none (imf29.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774592493; a=rsa-sha256;
-	cv=none;
-	b=38mRUEW6peWFxVFk+KE9m5sju/P3vUKSzQjz/kwRBKttZsfp0WNZYMMebgFFxzj36DvOTM
-	cLBirmSAhbU4fIkESJLMQt06KO7oZNAylnycFqiNAGfDdiqliX504vTXIJZHRg7wZQiOf4
-	iX3Q5DF5WJAKv2OYPha50XEB+wGLFQQ=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F2F3A6B009B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:22:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 982751A0F41
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:22:09 +0000 (UTC)
+X-FDA: 84590847978.07.B0C8A7F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F07AB80004
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:22:07 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HuKG1FNm;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774592493;
+	s=arc-20220608; t=1774592528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	b=Cd+DTClLKM81aKdipmdxsRIpf8rIV/CgLy/aPoktRoiCXo25XgqQez+hLRacJLA2u3b0ci
-	EKqzjS23gklZgCUGrvhFHMSU8OpntzYJN/YisptqzsJBWpX2THiAKQug3PTANkN9e49mXo
-	sC857NegKNDoZcFmSYD9JeuCW7fZFPw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=rZMZxQZVt2Gy5NHLy87XGHPb2O
-	t8UOhJLwShM3bxa+9/Y0ys6+zNjUdl6L2L45KVBQWdQNh0Q/qcylHCVQ5j0hgaUJgGzV82YSOGMAt
-	4WeERQEYkPNjgAB56G3fOu3V3aIeZENSWgNNRIPa9uFjyjCZJTDt53zSycK3nCq7VjWmv0TxgZ4sB
-	maWSmnRmAgymI4B7pvFhxQw98Z+04BH3DVt6xBJhgHkvo+a3DMoL8mVlDDSGrvy0Hdw2YeUJniC6T
-	pzU8UoSJyzHYQDCfQM0r4PI71sGTlzaCbp+Y72JH+Jh7k2+XjXGRfbmHQzios9gqPx88CJNPd13po
-	/rNwIiOQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w60ZU-00000006mxw-2THp;
-	Fri, 27 Mar 2026 06:21:28 +0000
-Date: Thu, 26 Mar 2026 23:21:28 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 13/42] fs: Drop sync_mapping_buffers() from
- __generic_file_fsync()
-Message-ID: <acYh6LSOPzia4N03@infradead.org>
-References: <20260326082428.31660-1-jack@suse.cz>
- <20260326095354.16340-55-jack@suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260326095354.16340-55-jack@suse.cz>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DCD61120011
-X-Stat-Signature: gbuycxufiorc555sf4htqthtgq8ob5w4
+	bh=AUdjINZoNVch6+sOeqy8LWhXDr3ouTjLkLcmKzPKSb8=;
+	b=l7DDug3eUCG8MdwnP988r3GkyZ9Ye5xjrTEfcpGsW35tJcfy58ce3AZRO8m2ypkEbErHwe
+	1yo9dHiOL8Nz0u2NrNNNPuwnBYImDkuADe0Zg4FSBdgCZtYu+PO/lu7+NFlplQt/XvkTyC
+	SN0p9jlPZwqe1jehcq24HIWAmWfG+kE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HuKG1FNm;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774592528; a=rsa-sha256;
+	cv=none;
+	b=tnB1szIRz8HuuPFc1n1SvB0k33JpRKhTcoHECB8F3i7q5lYUoln9VJ/4nNH7yHq9bik77J
+	T6kisCl+K+LJMJ8igTt8D3jtpsWRbTe6QJWSxmMDVyUt1nXVYiFswexYXloh9Ze2sPUQQZ
+	KgWihaewFIWzWPeUTzoGpU11wu0dHd0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6226861843;
+	Fri, 27 Mar 2026 06:22:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52B8C19423;
+	Fri, 27 Mar 2026 06:22:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774592527;
+	bh=aeNmQfb/c67hDWg4rtLcLfHH+y4dTvZgyPlO0jG+7ZE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HuKG1FNmfcGzUE3o6IaHiNv0KbKQCxTODzf5MuiGNIIPwVwUBUWIsr24i4gr9Vqmi
+	 tzDviZvVuLQN75ror3J5dROFKbHzbND3QRc78tr+09+oiIna2RMZFuFfK+LJlZ4xi/
+	 6oCxcLVz10zVeGX1RAxhfYWs3VG/0RbAgN+9N3ek=
+Date: Thu, 26 Mar 2026 23:22:06 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ teawater <zhuhui@kylinos.cn>
+Subject: Re: [PATCH mm-unstable v2] mm/memcontrol: batch memcg charging in
+ __memcg_slab_post_alloc_hook
+Message-Id: <20260326232206.4a8a16461527d16ef8c2e8a5@linux-foundation.org>
+In-Reply-To: <20260320020745.833792-1-hui.zhu@linux.dev>
+References: <20260320020745.833792-1-hui.zhu@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1774592492-478841
-X-HE-Meta: U2FsdGVkX18926Y8OU7/K94H0k06iKk589vqCJEdy7yAETQKKhNr6dqdDIXgu4e/4pZeQfifPCg7cHg1eZxic9cSr8pAfaXOcCf3k8w620HYiV8OXnA160G3slo6r1E8NK5aRp9i6chyqYe60UE8bsmgKfTkL3Qn0Vy/ijDTbp1av007MI8DlsT0mPvwkWvWo9pa00KayUTnbwuLqaWZJvsY1KJghMMLDzYVCgTQUl0PIgKpOw7S6pWNm/bH2152iz/oNCpqVyMc5yhJFTPpf6XktmkqeREdrunlVygoF6oTqm8U37hd4YTJ72dw+x28Qr5hupKYN8FIf6Nz97k1+NpZG8gGj3mwN6ycKGtW4e0R7XUA1PnNf+HQQW9xfSwlJvc3eBDoLD9XVWl6RMRK2p7AuyneqPVAGgGAciHiJIDXH8p9CN02xED7eGsdE47QjTLNLiT88Ji2iMkOOdw6uyYOI6LW4JskGwljwirpzXMw8ZLbO8CXb5K1zOHCsvd3W5WvMLL4XczCoYI9qVXkRK4jCXU8Dzlrmj9ffl6VNpsaYGFEey+9SfYhIbzwkMXTdeEpk4PIGYHsEi80m+QlmObxvPBP/XJBG9HNh8jDOrjAj2u0XYK8bGY/rn441HYlHvsVFjG7JioMeJZvNT26qocBm8cJOoft0DkhObMX2KayNJbHodXb0ap6ehDUAfuuMbO79UOEE3KviswCAvSbQ73OPaXqaQFn2x43gDMMxG/MFz0Oj/t7/GctlClZ8enn0ITUUHlk62HBzRYLiVUdQbucjMkpTsFLA1ttN7LlK8lHkAmZSYx3UZTt/FEA0sTP5wav7Tr0S3nJaWvyS0a1tnu+zyCuXKejGMv8NposyyRxIgBJ89ssFDIsghstZz3LwBbbtl4VaVan6XAu+BSGXhYsqgiqb98j/pdWN6dxRrn7+XSInYKzN7eT4Gr9lKsZ3Rz24M0rrpvtK2qwQJZ
- uMw/kEYG
- /rrRCIqBtLIZ3bIu3mrdrcA/hiPsxKBqZJpCo3ndV38hZzUcT2t5hYETLR3mP6PUQmL3ewTej1OVbZsWYKJBqWfeODPIpWoHOOVpGjNFYS9bv3ARSpP1I+a9yvOHykIDf7Zu6Yx0Qc2kbD5b4CTKTfUPdRmgdWmWxn0sT2KdMYZUzPbj0bpIoH6kSu6CiOG7cwx0bHGJ5g4+YOW1YW2DPyAZUrL99J2sY+NoHaeSkjU1QYWeU6BCFVQ0gg0ywbVyhw1MZBOh9TtrNLuYNeKTAckIHbTr1TY/awOArLVitN4wDXgS4nvhqdvHXWOrgDX6N7rz7UuNvOB1/jehdtTtcx3EdFE9xVaJudhzC3UKKXCePMZi8IyjWBK3RalyTIiBsI/Y+XUxfVcmNbarb71sDUrmoHz8x7B57dmOmwE3eVhKAo+gXEmuKEOqvfzyHoqDDsAGfANpWVnh66/0/EiGOr4+f6UZHZ9Cwt/wFUI5kH7rq6Q7X7+woloNniYNZwllrnqLBA9ISRUObtwXWB0C/n5IPuo3HgYysLAMFouru8TNAHSBJkKyeh59g+rGG5bwdPRHeYYSt4RLvvd+n83Iw8qzx5OKAwkarBZcMAw2jFnKb553ugYnJdzhw/A8yiPkkEaqkSkZoNp8CPNmvZ9xg6GI1JT9vTLzFn+lGsUfpiN2SMSxAxRfRiNYZL9IQWs4nvOLRNR4iLuzKjq0qxCdNLVPSI6kgRU5cgRhEU+XZtUqF24BcEFGBAEingJ79la7PseRrI3sEzdRcEQXDYSHWFVcAyPqIFcw8/8xaDY2Knv4nks0aG+PmDRburfabw4mR+YqoD/JfMIM9Ud8=
+X-Stat-Signature: q9jtk35ijj1ofmyrq9etfrneg9s86nrk
+X-Rspamd-Queue-Id: F07AB80004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774592527-845492
+X-HE-Meta: U2FsdGVkX19INLQbicV+pwiBWhIG6U8K8H1nv9aPYkFBwdGS93cuLMhL/KqcJvBDGnvUR8P1+acY8fHhcSCZbN0Zk0eO3UdyXycq4lhc/bRkZ7JUqpGBjPmaf/i6CVNdPN91P10dnPBGdmcj1X6cLVztyn229/0+QV3iwfnfneJioCCOtKuvjxDt2VJ3hgVUUWsmflMmo5lwPfUXWvEgobfZ6Kl2MMiHdtwdfCTD575+T6uHHBsnPzz42m9jcVm1H2SIKVI6emonVBav10bcttGB8NibR01B7C8MWsn+6O9Kc4WbZjzHM/QGuIoLQH8jU3FSrzPq6ykrg9A6h7Y3q2A1tlZztioJQKMAL1HdrHKxdAEw/ku5Vkwo0+E8G2SyJ7W/2l59jaH73LD/vcZL+qtddbbPVS566I9ASG6NtrpCVq0lUu3qwEec4GJ7eROhHTkRQ+GaxhARy+tpG5dpN6j0egJ/6q8SZv6cmiddcZRiXQpjtHln5H6M4rRXFkMNY8IGbzMC4GisNX6d8KyCzLK66G9aUj/x5+5cznmwsQ1JQLcDSJFard6j1yuB81P4IOj74aVs8/thZe/mdXQDkgTWobKcxX6YIRuIPb4QoZHh+QL3/l6nK2FKvqEb9ucic6jdWCa6vRwBH0mkHiUbSsKomy95PyqoZUtN3/Yci2EO40f6OhS+Oh7wlxifBBluGyHm1kYS95mxT/zuGFUuuChtExyvzqHT+FJGl5aahLPcmALPKgLVRojidXf12ioU1skY+KMoriQMP0dqdbkphC3qfnToN8UtAOSgULszCWKUlv8sPibwS9cV+xUD4DiYoy8edB1ovhvj8LOYcAy/G+wH5mT4nyDnuAFCGG/qXNXNOZyj6Wq+Oq2ZzZ3bpQxiOBTMRpdx7luGSzafTXqN7vmMHLAj8RfIeh74FCFEywVWjkbAOQKcBGz6g6N+DAXkOKwN0N4AV+JAZGCxUQG
+ IIFjZNJA
+ Q8UIBtMn9gm3TeGYDrCYvouULjiSqhRxpdFq8pO/4jq9r4G1vCooC673AQOkehOZqCV6N5pDi9Sc/0/X3T3+YZKS3zTWCxeeUD9EazSODLTQ9PMWa+hIjELYDNpRW/Z+1xm8/593z7TS+TYVyTa76SH+8b0Sj+bbJHOJuQ3xPmzrnxYg3jEIshiv6BaQ8uLRyd+cN2jdZ5DO+LqmksQ3QOT/Fns3rrfNMLaCAxvPFcVB5WNkZDrG7Peb+7vuyKVu9PrlLp72jMkfTtk4+BI1HGAF63B+rcgDVHgQA//KC4552PpU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,7 +93,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Looks good:
+On Fri, 20 Mar 2026 10:07:45 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+> From: teawater <zhuhui@kylinos.cn>
+
+We do prefer real names in Linux commits, please.  Can I rewrite this
+patch as From: Hui Zhu <hui.zhu@linux.dev>?
+
+> When kmem_cache_alloc_bulk() allocates multiple objects, the post-alloc
+> hook __memcg_slab_post_alloc_hook() previously charged memcg one object
+> at a time, even though consecutive objects may reside on slabs backed by
+> the same pgdat node.
+> 
+> Batch the memcg charging by scanning ahead from the current position to
+> find a contiguous run of objects whose slabs share the same pgdat, then
+> issue a single __obj_cgroup_charge() / __consume_obj_stock() call for
+> the entire run. The per-object obj_ext assignment loop is preserved as-is
+> since it cannot be further collapsed.
+> 
+> This implements the TODO comment left in commit bc730030f956 ("memcg:
+> combine slab obj stock charging and accounting").
+> 
+> The existing error-recovery contract is unchanged: if size == 1 then
+> memcg_alloc_abort_single() will free the sole object, and for larger
+> bulk allocations kmem_cache_free_bulk() will uncharge any objects that
+> were already charged before the failure.
+> 
+> Benchmark using kmem_cache_alloc_bulk() with SLAB_ACCOUNT
+> (iters=100000):
+> 
+>   bulk=32  before: 215 ns/object   after: 174 ns/object  (-19%)
+>   bulk=1   before: 344 ns/object   after: 335 ns/object  (  ~)
+> 
+> No measurable regression for bulk=1, as expected.
+
+Could memcg maintainers please review this?
+
+Thanks.
 
