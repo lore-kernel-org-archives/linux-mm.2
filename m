@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B424510F285E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 17:23:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 040DE10F285F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 17:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F41236B008C; Fri, 27 Mar 2026 13:23:42 -0400 (EDT)
+	id 494FB6B0095; Fri, 27 Mar 2026 13:25:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF2236B0095; Fri, 27 Mar 2026 13:23:42 -0400 (EDT)
+	id 4454F6B0096; Fri, 27 Mar 2026 13:25:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2EB36B0096; Fri, 27 Mar 2026 13:23:42 -0400 (EDT)
+	id 382C36B0098; Fri, 27 Mar 2026 13:25:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CD0586B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:23:42 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 271636B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:25:00 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D9641B8EE6
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:23:42 +0000 (UTC)
-X-FDA: 84592515084.26.FDD3BDF
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5FD51611FD
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:24:59 +0000 (UTC)
+X-FDA: 84592518318.26.8083262
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9CB20140003
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:23:40 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNCHYGGP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id BBF284000C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:24:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mqx9zlSM;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774632297; a=rsa-sha256;
+	cv=none;
+	b=zqTr09T1Q8d3S2OwuYvDlMbMz5A9K30ADjFJ//+1Kow+YskJ0FbB+aTVqpVYqHEQ3juRP0
+	b2ITGM/ITXloynkfDDY38RbjgTPNP6TH8EiQQQcx6MveiVUUm8QIT8bCstDRl1r6XBQToC
+	8zrYnGDOpbwH6cQRk9jiCCLZZ9mz2Bk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mqx9zlSM;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774632220;
+	s=arc-20220608; t=1774632297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9NhTrkJRGClkqgsHXF+ZM+tLvbQyZWxF6uN08SIPt8k=;
-	b=JGncj9t2vO/6O2caNAQW7YO0FribgjVZsczc6ZUqmmMfxGteaaO31hGdJGfx4bIEWHqcSg
-	yjVLvWU5OrdYrZMtVZaV4RbEeD/0GUfuwrYaPTBzB3nAQZz09eIHI9/ptKYQQfQWluEP9k
-	Iq9FG+sKiUJzbTcmQiL3Cmuv597lYKg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774632220; a=rsa-sha256;
-	cv=none;
-	b=XcxDk4u94IWO5R41jHbOLmZooGYxtDDdRwOhuV9PkNupIJJnve8Fj4YLFceI8uLGw03itl
-	gW7oAPY2uKav08FcMAwwop0hefSNbOSlwqiMnM1FVYPUGR3lS2Y7ZOt4B+l3NYAXdeajkN
-	D0sxqt6pSYEfg5cHauT+mAadmFaGGxU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNCHYGGP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=J+GsgnYrCr8JIra/iFHKtfY42RH2kUGUJClXVK2ntF8=;
+	b=AxoE5EkcolPc8WXsCZcKoAAAn/6GYGU7VgC9cODxtWLNHXqpw3if/ZsAOGqF5iu1mXvfOM
+	UyFzfpL6VkZ/pk2YdH5CeNB7O2gPMCe7sHWfFoJQF/4Quohsywdwit27u5W+eTNnpI2j3M
+	+ATWRtv+moaPeYvfVkiqQIiCd+qaOE0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 89C8544524;
-	Fri, 27 Mar 2026 17:23:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA4DC19423;
-	Fri, 27 Mar 2026 17:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774632219;
-	bh=LoOchEM2GvaQU0UW3QW6MbbvCC9O/qqhrAJClJpoxu4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HNCHYGGPgWiQAgkcynJCD/IJaQuDDouTkXWQZInqCQNdpvJRtJ/6j/MKJVojDfQaY
-	 zbelBuWulqNyUmZXmCyq0NNF3GriNaxWMyLyf/EMEx7kJgcjcfBmMvCh/um/RoxyVA
-	 MNJN8WL5rNgGkRkNCelbxtJFDnuyHLGkooTsqbHUSiV4EJylYAtGtEoBgAG5uPlC/D
-	 GsJzkvcIMs2BE5pKbjw6EYCHhddZnbGBKmn7LX9wrrVAYx8bS2fuEBcPESbX6oyolB
-	 yKUOCZcyw5S6FNAnsZCXWyZ6mFNgOB//n8v8gVdQdoOUNI8sLylXjmXvlghctxG/x7
-	 SBr4OKna1kNTw==
-Date: Fri, 27 Mar 2026 17:23:34 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Jeff Xu <jeffxu@chromium.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	antonius <bluedragonsec2023@gmail.com>
-Subject: Re: [PATCH mm-hotfixes] mm/mseal: update VMA end correctly on merge
-Message-ID: <5739bab8-d75f-404d-a3c8-a67f91e072a5@lucifer.local>
-References: <20260327090640.146308-1-ljs@kernel.org>
- <d82c61ed-32ba-47ed-bb85-9facdee7c26f@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d82c61ed-32ba-47ed-bb85-9facdee7c26f@kernel.org>
-X-Rspamd-Queue-Id: 9CB20140003
-X-Stat-Signature: wxxow6kx9akwoc87ohp36imn6eyu4mpq
+	by sea.source.kernel.org (Postfix) with ESMTP id AFDCB44572;
+	Fri, 27 Mar 2026 17:24:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5501FC2BC9E;
+	Fri, 27 Mar 2026 17:24:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774632296;
+	bh=TZPF7VCGq1cEH5Fyac3Q1gSjm+Tnh5sqNrORWnAT/yc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mqx9zlSMPDSfyL2WOB2lP5TeYHilV/uqm69D4FD7sQzrEFEYMhKIs07aNmrHiXUs9
+	 DWj04NRvLR4o8t7gGL9nW16DkEpfTZ7BhaCucfey9dCf0niy98rqq355PmybhQ8JWy
+	 5csHTt0P9Hg2hqTL+WCNPcGXN/AaawCvkH7lQYyk=
+Date: Fri, 27 Mar 2026 10:24:55 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: rppt@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ dmatlack@google.com, pratyush@kernel.org, skhawaja@google.com
+Subject: Re: [PATCH v3 00/10] liveupdate: Fix module unloading and
+ unregister API
+Message-Id: <20260327102455.05d36a1f5682a2a70df05b7c@linux-foundation.org>
+In-Reply-To: <20260327033335.696621-1-pasha.tatashin@soleen.com>
+References: <20260327033335.696621-1-pasha.tatashin@soleen.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zjg64egujno5pkamazaecorp4r9fcg9z
+X-Rspamd-Queue-Id: BBF284000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774632220-373924
-X-HE-Meta: U2FsdGVkX1/IhVylo5HEkIeNoLLBoAMKPBwfyM2Iagyro9XYBg6BN6Ls6w5fPHavzM8mdoGuOIflRqLcfPlNwshNeX7LRxgLv1kfSH0WoUGTGqcRJQOkPL5HMRbwW+sui7JBx6YTtl2iK8+oxu+2m6ANCyXyPfFH/WFdzcKFuQEBnOnJeA669IUscQ2ONjN7ZNRh2opn02w6lHj4WyxpyvywI/7rPyuB7S3nc1O54/IniFQUj44vuq06OTNZu2mgzmQrMffaF2Fbwr63iMLRGwm69uDie2D0cUGw9eP2r8/sd3U3tY2Z0yciPKtJf+tg0nyEdH1Izf3HUYS474/PO/ZF+DjvdHUKW+PjqFCXL1Onk4wlOtDvvYb9vcTE/JpP8Vu/7PpD3c+PwdZJ9WUo6DLxKPHLVuCo6/Hs5fHh8NXWH+NWRFiGglBrkzpxrhspcWQZr2cPNIWiRN0J1Gpr7ntO4yEjvFAMNQA0/NusiQCkmBlGp66clvmfWcyxgGlGQHwfYcr+c8DMG0a7qUSU5CgmEzStu5AkjS0qkHFGVP6tREcWV/yQd0J0GFwZoXKd9wIP5OxwAhDfHhxKeSe0PrcfLv9g8DqV/rIi3QMSMUOAvznROn39MNZD7CS5olsWLQTPAuSqkHZC4tuM1hCMh2Zeozz9ev9zpSR6L/V+Y0l9Pj5GCfDdPtiwP6gAwB5jsL5cFJ3Bt1ZZvKah1foageTmLjmg9pi5asZ2DpB9FD+O2Q8TLPQA6XOp9RsYsGiQXRiYU9SlBw7y+zTilm9G/GmaRRqEBv499LWCrX1sDW8xgZ/1ztTgzNzfFz1ASLw7oMMPR8kP//gcBOT8jN0JrTvbkQWp4/thfQVQ4D9ENor2yFg0CFB/nG0tc/tGTj4+wAoYqF+SeVzwIqmJlAs22374tx9UBChdbcFDMBXh85e/EkIhDA7NVuZYLG6xFz1PbsrgJUsDLire1rrptK4
- OH1VAMKI
- hNn9y0ZAuV2v1jUIXuSSTzRrp9uUY/0SGmVIg7pjhc612VHvPxQNaa69PC7Uh0/6ty1FI5XxGB6hMJGCeMVf8rFIvO/2nEOjCPDzqiseVzNBAJw8sGoJBshwJo/0S6xKY+q5Qb5Lg8Sig28U0Gxu+dEZU6i+Am7UXfgNTskpe/BPGZmQtvJdka8KaSHNP4A//ArCuC8vu+Z2ZkW2yAWeOuyKuzrYI2A8YlPu6Z2ggPiA8h6/ooChpz82WTlIDhIxQjtAlv7/SKmt9TPUa1godlJOTSwlJN+uB4OT0dCj95mxe8QFACUT9ZmtKbpgE6nxvCCZh
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774632297-870104
+X-HE-Meta: U2FsdGVkX1+TmuY2ipCcASA52S47j8isgAiJpnfQZnVFngbxNr1y4hvcnguzUvWePNKtFgcj3zRbLRG2tPHHDAGEzeti05ViDvEBnUJoWTdIB7TpkLCECSbOU3EdOFte4pcaZG3XK9oBPAtlJ757K2XmZfID3dO05ShJaAikao9tle7QmaATl2Z+6AAYwsaKwcGc5M7xsAiiOrmgUVBSlHnLFZ8QJYMWyK1DWLCtPhmbKUpcdSvdfuUyoFhtSkf85FPQoWS4rt1gsNt8MAUK9U9P9zEDp3ZNFScZAEWy3ZJ55QYLDq87+YgRlcdXZNg+5CzUbuAByG7WbVP6I7JcRJ3h4Ob/phLQgo5JXTjasf0lmtcrlGk+RA+6JUyKC7I252AfqcdweB9xzfhV9ap0kHflZXwq4YhRBBruC/UB/S3vLZLVANWbC49YOu05n5JlI5bjWaktOoe5G/7swiMgDFAwjdhd4jJ1sEc/G0+sbHUkAfFpgnqVEPPzYD3XLhhykwJz6FvjUQHhaf+Sxu0KUyZq+azHNGM3yo+Zy00qfDpK1FyKtIPBpiJ0Rdc7qL0lwawpF7I0uxA9sZN54nVcbasgE0qQ+C0tCLi33V2KkW22rUe6CA+VJ/gHxYhVJH5PrsLn/T3FxqHTRySyooNhuxmE12dQD0AvigGagPg5N/6iITYJ4v2DJpz5fnSP/ThpXT3WE7/Dt1f01YpnNWWr1u/jhQAMRuKIzX0bATdARyLuhpsW1p1WWBXUa4InQZuOHvtF5oYb3kFPbg7X5K3eMbAWnQE73gHbglfy5wKzvX9P10pFgliB812ndWdsyY0Wg60o7qiA6aGD6IIu8X4PgC6kIhJN8HbV/UQLuSmEysFV1Uagd3jYtrUCMelveodeKzPjdgWqGd/iQy7Fplr+rytd0lG2X5Yj8n4x2B2Ngx2Z1JN5T8womBrQ7jRJrwXJZI8dwgogpzsjQ5J7z0g
+ XtSwRBiN
+ KcrwbBaRTNWuJhgFBH9UlXtOKaYwKFaP8feO9ZrcMIdPQhFast/dH2oUuQdEplNIaW0ho0p420nDQtQEtg0Gt8ialzJSza/D+NWSb1F3DW5io8fHVJwlR1yXorkzVnDiAOlBXQQRtv3ZKPBA9DtpRwqWOWdGqV7b2QXtOg21+aU6+aEQVCMpmOJahJOuWhaoAdbrI/06hyyNDOg+agjicYOo1cSSUx0kS0BGIABWWC9RY8vty/WKtbTCzhmZZ35nCx+8qjSseAhNolRxtWeElebf+ahdi2YEDLKW5tzy1hB/qa9dT5HMET3TNaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,106 +90,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 05:57:06PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/27/26 10:06, Lorenzo Stoakes (Oracle) wrote:
-> > Previously we stored the end of the current VMA in curr_end, and then upon
-> > iterating to the next VMA updated curr_start to curr_end to advance to the
-> > next VMA.
-> >
-> > However, this doesn't take into account the fact that a VMA might be
-> > updated due to a merge by vma_modify_flags(), which can result in curr_end
-> > being stale and thus, upon setting curr_start to curr_end, ending up with
-> > an incorrect curr_start on the next iteration.
-> >
-> > Resolve the issue by setting curr_end to vma->vm_end unconditionally to
-> > ensure this value remains updated should this occur.
-> >
-> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> > Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
-> > Cc: <stable@vger.kernel.org>
-> > Reported-by: Antonius <antonius@bluedragonsec.com>
-> > Closes: https://lore.kernel.org/linux-mm/CAK8a0jyHXqBpt8Xe8v9SNDbnRiwz7OthA8SKY=NLRY7smPEP3Q@mail.gmail.com/
-> > ---
-> >  mm/mseal.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/mseal.c b/mm/mseal.c
-> > index 316b5e1dec78..2d72a15d8ea1 100644
-> > --- a/mm/mseal.c
-> > +++ b/mm/mseal.c
-> > @@ -66,7 +66,7 @@ static int mseal_apply(struct mm_struct *mm,
-> >  		prev = vma;
-> >
-> >  	for_each_vma_range(vmi, vma, end) {
-> > -		const unsigned long curr_end = MIN(vma->vm_end, end);
-> > +		unsigned long curr_end = MIN(vma->vm_end, end);
-> >
-> >  		if (!(vma->vm_flags & VM_SEALED)) {
-> >  			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
-> > @@ -76,6 +76,7 @@ static int mseal_apply(struct mm_struct *mm,
-> >  			if (IS_ERR(vma))
-> >  				return PTR_ERR(vma);
-> >  			vm_flags_set(vma, VM_SEALED);
-> > +			curr_end = vma->vm_end; /* Merge may have updated. */
-> >  		}
->
->
-> I was a bit confused why curr_start is allowed to not start within the VMA,
-> but before it. Then I recalled that range_contains_unmapped() checks for no holes.
->
->
-> Would the following also sort out the problem and even simplify the code?
->
-> diff --git a/mm/mseal.c b/mm/mseal.c
-> index 603df53ad267..e2093ae3d25c 100644
-> --- a/mm/mseal.c
-> +++ b/mm/mseal.c
-> @@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct *mm,
->                 unsigned long start, unsigned long end)
->  {
->         struct vm_area_struct *vma, *prev;
-> -       unsigned long curr_start = start;
->         VMA_ITERATOR(vmi, mm, start);
->
->         /* We know there are no gaps so this will be non-NULL. */
-> @@ -66,6 +65,7 @@ static int mseal_apply(struct mm_struct *mm,
->                 prev = vma;
->
->         for_each_vma_range(vmi, vma, end) {
-> +               const unsigned long curr_start = MAX(vma->vm_start, start);
+On Fri, 27 Mar 2026 03:33:24 +0000 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
 
-Yeah that's nice :)
+> This patch series addresses an issue with how LUO handles module
+> reference counting and unregistration during a module unload (e.g.,
+> via rmmod).
 
+Thanks.  I've added this to mm.git's mm-new branch.
 
->                 const unsigned long curr_end = MIN(vma->vm_end, end);
->
->                 if (!vma_test(vma, VMA_SEALED_BIT)) {
-> @@ -82,7 +82,6 @@ static int mseal_apply(struct mm_struct *mm,
->                 }
->
->                 prev = vma;
-> -               curr_start = curr_end;
->         }
->
->         return 0;
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->
->
-> I might be wrong about that, I've been staring at the screen for too long today.
-
-No this is better, I've mulled this over, this is much better :)
-
-Sorry to be a pain Andrew - let me respin this right now.
-
-I will retain tags as this is functionally equivalent, I have checked it
-locally, confirmed repro solved, checked against AI review also.
-
->
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
+It's getting late, but the series fixes things and LUO is still under
+heavy development and is a bit experimental (yes?).  External testing
+and prompt review (please) will help things along.
 
