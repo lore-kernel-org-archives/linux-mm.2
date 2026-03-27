@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EBA210AB830
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:23:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 653EE10AB830
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:26:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DC0D6B0092; Fri, 27 Mar 2026 10:23:20 -0400 (EDT)
+	id CB0B66B0096; Fri, 27 Mar 2026 10:26:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88C0C6B0095; Fri, 27 Mar 2026 10:23:20 -0400 (EDT)
+	id C88186B0098; Fri, 27 Mar 2026 10:26:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77B376B0098; Fri, 27 Mar 2026 10:23:20 -0400 (EDT)
+	id BC5996B0099; Fri, 27 Mar 2026 10:26:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 638926B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:23:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AB1266B0096
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:26:11 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ADF0816111B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:23:19 +0000 (UTC)
-X-FDA: 84592060518.10.76EAA17
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 025CD4000A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:23:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kGZyDgNi;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61FADE171E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:26:11 +0000 (UTC)
+X-FDA: 84592067742.10.2AA747C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D55908000E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:26:09 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=is4rSzNP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774621398;
+	s=arc-20220608; t=1774621569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VaYRE3Q+xjrM6H7KB6ewa5te4zfd+FW4Yu7avUUrtIc=;
-	b=beWlxp03HqP6Bb/+dQ0sA738JgMHhgVONhzbwEct0hswbPvP76GDF1tTi2Uqr0iQmyfe6J
-	Vuj9TYjYydNmvIvWT+RHIT1HtiesO83AsMbGIgD+jDw1qnLWzVtt8ZOE9CynGe87ObZAai
-	BtdrDV6gXborA42RoOGAqITUQWh7BFc=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kGZyDgNi;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774621398; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PephsX9SldnlnYssErliPg/ZZ5YZ6g7SdOx89RD3gHQ=;
+	b=SFykIu8moFk4Zq8/ogizBJ5wWzUyvnH6X1k1D/V4jOHDOILzYWB2/aO92x1BPVgBtX2CcD
+	kZ2g2rtmfdNBKFXklsqbkT9HEPgNWcuIrBQP+Ndt/zezg/c94wpZ+wJko7np3NlXL6ZX/9
+	MHq9VeMSej2Eq4ND71tXq342YcIY9e4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774621569; a=rsa-sha256;
 	cv=none;
-	b=naO+cqXHp2itcXyogYpmccqwngfwHOBO2n9fvmlVHAJDTNK5kiQXgxwl2jIuokxnZewWpk
-	d9ZZ5vcZDlQHPdGoaLOQJjc4vsTbHWJ2vWLQZApQxYsTHCTdaPdEonP7W8l4JV3/8PJr7X
-	fvSyyH1cIzaT+pCeMeQ+TSCDJsequOo=
+	b=ph0Z8XrGvPk0tEB2ugOzxxYdT6sQp+F197z7jq7lrcVdf3A4U378SZiMBe1K7FTZGHgKN0
+	NQ1iBj1efyl1/WT44nyGF+hdKVift99x0f6HazY5cNUcLw5ZGt0mqtUinxYKUfMrEfaxLK
+	m6d9KUuRCjDJbfdHzUFJYewY1eaBSic=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=is4rSzNP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0286841762;
-	Fri, 27 Mar 2026 14:23:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CFEC19423;
-	Fri, 27 Mar 2026 14:23:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1026E60054;
+	Fri, 27 Mar 2026 14:26:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99ABDC19423;
+	Fri, 27 Mar 2026 14:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774621396;
-	bh=r7LKDcC5C+R3TFKnw7hncNSlu/84qsRHglhM4Cn1oA4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kGZyDgNiexyUER/ZwAIJM0HynG/fCoHSrze6Ap9k93b+3jZ8G1j1JC0no7VH+tjWO
-	 oDS/GWWKDWhCMDASGMyvyhBevKFLFQ8Lwgl3Lnz6NEndz+T/8MpbPkjmgbbEPutIPj
-	 Qw8C4IF9MmEn7Knlcz12mJpiJvJYttmR6asGO9QFnCGtxcZoZ0CLgg6lasPMtnItFZ
-	 773BHK7KlucGhygy3WB7sUNV7Hgq3+FfUPTDD0l3xBFToHousrSNtBNwNQxCDU5Zk1
-	 b7gHujNH5RxA2UswwH5lW7XFqkY82vn8O13zvxIwWaelEqtjGbwswTwWZSHBd2qEPf
-	 sfiXeTOCPn5Vg==
-Date: Fri, 27 Mar 2026 14:23:09 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, 
-	David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 03/10] mm: fs: remove filemap_nr_thps*() functions and
- their users
-Message-ID: <53cf6157-58b1-4539-a276-2486e8796c57@lucifer.local>
-References: <20260327014255.2058916-1-ziy@nvidia.com>
- <20260327014255.2058916-4-ziy@nvidia.com>
- <aaea8ce1-eac6-49d6-8c85-7361977b9a9f@lucifer.local>
- <b098fce7-be16-479e-b9a4-36f0ad71d242@kernel.org>
+	s=k20201202; t=1774621568;
+	bh=d66lxQH+dgjLSvHH2YVQ1SE5I6mwDEHa8Tb0MRJAXn0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=is4rSzNPi7o9FVMxVUPZZTobzL57fC6GgLlnwJga61pjmm9tCr5h8Jyfy83rArlzT
+	 EwclD4muTv8KgQf8YeKv1o5/9kYyCIgwCGscfn0CXsXZLQoOyC5Kzzcnx8dZcMaREy
+	 EClRnJs+qonm8x/cOAJvwED53utcN/ZPoyhI+D33YEitCPtDVNFcwkGE/Ll3yP+pFA
+	 caGVR7ly0Y7m9XJfAkWtIwwo1Z/PCtRaJ21ZySYV1SQex4pZK0K02mgdKst8sZSrBy
+	 PB5i42QuZAboo52Yc2TlaLemNNHsl9cIQPTUrU/7JVSivKYWl32+8Sykaa9tbgk30q
+	 hZHVERs3PZmqQ==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 14 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v3 0/2] mm/damon/core: fix damon_call()/damos_walk() vs kdmond exit race
+Date: Fri, 27 Mar 2026 07:26:02 -0700
+Message-ID: <20260327142605.4834-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b098fce7-be16-479e-b9a4-36f0ad71d242@kernel.org>
-X-Rspamd-Queue-Id: 025CD4000A
-X-Stat-Signature: fxhadbyyg8sy4knmds3gqo8x7z5obs4k
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D55908000E
+X-Stat-Signature: 7ft38z6rhnqpze9zuhtdf76zbmx55zjr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774621397-948891
-X-HE-Meta: U2FsdGVkX1/IMY9wgYF/RibqVNXYTVVMVp2YLxqEPPvyNvvmSN/ulOH4s8XXSv1rpn13BSNbol1tUMKdSFkEuSMMTuXrvaA6xs3ACA5rj/fyi4yykLpcTTx6F3NvQLIkccxgwyC9vs3AbzWXyLKluYYU+0U9sSNELu5KBfQ+vCQn4wBd+pW9YNVv5ZmxwXRIFiGWQcOVV1tps295kKW2RJ+SriiFsXv3tnYek/50t0pBwfEeqKv03MuOvJ8jmM2GRGVc0DII7bY11bcqAQ24WBP77pw+NJW9NnJsSepd4eWQUZMwGGXVvuikTmk2HlbjEIus2oCXu0k1XQxlRbJUz0DuL1L9FNS6LRKQTLzrkshCTpHy9wsXkxuMQY5l49bpOJy0E1nVWUt54RLqhAp4pMp846POdPa1zWzdJEEDLlXReZFvNV512CgWNvotFsKAa4+/PKVLs+Vkg/qOzadp+fkunt5Z0ySMPRBfhz4hdf4wADtj+K3Lssvgz42ha0ICe5YUoS7tsnu8OUDj+r3uFXUv34h3p+lolFpzkKd5h0+eG/LxXtB85ROIKEpTEvLuCrsQ4yQCDHNCtn1kZ00arrV8youUsesgpCaCcHQPLkESYqKeUYtNXgpBs7oMTJSJtDWmanqJmO268ETg0JjBjxAdUGHhvZvmBFfRw/L1If6/Sna7ogHx8WpUnSZvIfoz9wfT3U17WRBlgWSUkbnzJh5KjMEfOj/4qEF5VoUsFz74+gtY3vYQH5kOJp0R9JBsMK0sGP6/0iswrPjWN/AoVs8lUPUXNLCr1nYNVWlcxFdJsaRmcTvErFbrRsHuWBTvOgXwLR0u3T3d8cGYMFEtBBXRS06EIejSGvgrjLNuJs19Iql4dRHqjqYONpsh7IQHDVY+FK9AhZWgAbtysY5oIBF9aFXnFOFjfTxyV/ltCkEoTBoJANx3tQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774621569-376748
+X-HE-Meta: U2FsdGVkX18kN9UfhovT5gEUV9AJ5M3Cu5RVW/oF18EFFpgeq8EIOdJFBGP+mxdX7vcZl2/hGBF23NLn7LtHemM2hw6Gz0MGSWrNiuYAf6/8024vps7A9/DdCNmahPFjxOtc8FluycRZ9nUANKyG8n6AsCj/fDdkjGNeHHAWkLJtvCEc7nKd4sP8T2N+5rSoCSJTrQMHArzcdl/XrHDecabrVhCxXPmlmN+GEEdEzqwJmjHrNNEZByvgvNz6krp9i3AQlP6SK9HV2nN+4dlMjZ9X3p/G/txNY9kYRX5WkmAfw09u+P5xcT6qpUagouRmRy/ZyubNBz/vu/wrMfR6lKMSMR1/AukLHZ4WlznaeNgZLnqJpvPlPn1/XR8Sqj6vfX5KQtG5oIdmFpl6E08a1FCpGYP5PJQ022mnQhuW+jX89wBdSPv2ImFpg7GQxrqjl+ZmeF6a2R89a/GmpdEA6XGj6o8Fuzz2mdJHfN982pASHZw9BzyCxdRLQIMor7j8w6l+6dD4bQ9nraFDYLkPBV1qJKlVf2Lm8OCYfAFk7Cj4LR31Qf4jsL8YdFKiR4R9h31f066EFM9NrhPwyQcfZwcAplFQ/SKLMSHWn3RQbEVdwSdxax8RyaEGJtnKzk2U7d6uj9toi1sB9KbLDMOXEUAMXGjXoCCAeJ+ZnEKbRJcBvUBcK3mzW+HnPxtfiOpj/br36zJeNgs5cLDlkSdqsDgXSyWQMAWtpk3snA4px9AowetnSg1QETz5xMleAQ1+mZaKsS2f/wApJNVaXXbAUj/0ht5BU60WUwOFZY+RXyrPWTrDt6NMkwWsazbYuj2wL0TiALQOQezl5EL2Y/Rzk9ThVskUivyQbcyD10zrLiFJftmwkKDjqEBH3inuUGU6zMd1yFcd6QvGXu+hPAnBsRmQPWtVAyJisHqR76QomGFZKtZIQN2LYhdLDUKYrD+uxRKfdhtJ0A2B2MYs+dx
+ /vVRkInm
+ PlohHkHCiUJaMwk5SDaalxXTe8dgZt9f1nS9uXO8N99nvBlHkIoDFhDJyipLnBBnZ4YAREAkNTyshpvs2MKkW+qZ3FSSVweSC1RBXJy51jn7Jofq8VUW5wrNyOGZpbXXpxbc79NxbM0t2woCHV/Xc5JozJwgmPZj/Nl13CTk1HuY6hy91kcjLJIX9lRJ8HenPPkqwpTG9BufHfWiRvu8J1U51biCtx0nOsbR82GYShsdl0B+c9/6Qzmuub9VAN82AI0lQUjzDV8Fm2AavRjKjZ+5I1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,97 +92,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 02:58:12PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/27/26 13:23, Lorenzo Stoakes (Oracle) wrote:
-> > On Thu, Mar 26, 2026 at 09:42:48PM -0400, Zi Yan wrote:
-> >> They are used by READ_ONLY_THP_FOR_FS to handle writes to FSes without
-> >> large folio support, so that read-only THPs created in these FSes are not
-> >> seen by the FSes when the underlying fd becomes writable. Now read-only PMD
-> >> THPs only appear in a FS with large folio support and the supported orders
-> >> include PMD_ORDRE.
-> >
-> > Typo: PMD_ORDRE -> PMD_ORDER
-> >
-> >>
-> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> >
-> > This looks obviously-correct since this stuff wouldn't have been invoked for
-> > large folio file systems before + they already had to handle it separately, and
-> > this function is only tied to CONFIG_READ_ONLY_THP_FOR_FS (+ a quick grep
-> > suggests you didn't miss anything), so:
->
-> There could now be a race between collapsing and the file getting opened
-> r/w.
->
-> Are we sure that all code can really deal with that?
->
-> IOW, "they already had to handle it separately" -- is that true?
-> khugepaged would have never collapse in writable files, so I wonder if
-> all code paths are prepared for that.
+damon_call() and damos_walk() can leak memory and/or deadlock when they
+are called while the kdamond is terminating.  Fix those.
 
-OK I guess I overlooked a part of this code... :) see below.
+Changes from RFC v2
+(https://lore.kernel.org/20260327004952.58266-1-sj@kernel.org)
+- Update and wordsmith commit message.
+- Add damos_walk() race fix.
+Changes from RFC v1
+(https://lore.kernel.org/20260326062347.88569-3-sj@kernel.org)
+- Clarify damon_call() call condition.
+- Init call_controls_obsolete before kdamond_started completion.
+- Wordsmith commit message.
+- Split out repeat_call_control leak fix from the series.
 
-This is fine and would be a no-op anyway
+SeongJae Park (2):
+  mm/damon/core: fix damon_call() vs kdamond_fn() exit race deadlock
+  mm/damon/core: fix damos_walk() vs kdamond_fn() exit race deadlock
 
--       if (f->f_mode & FMODE_WRITE) {
--               /*
--                * Depends on full fence from get_write_access() to synchronize
--                * against collapse_file() regarding i_writecount and nr_thps
--                * updates. Ensures subsequent insertion of THPs into the page
--                * cache will fail.
--                */
--               if (filemap_nr_thps(inode->i_mapping)) {
+ include/linux/damon.h |  2 ++
+ mm/damon/core.c       | 66 ++++++++++++++++++-------------------------
+ 2 files changed, 30 insertions(+), 38 deletions(-)
 
-But this:
 
--       if (!is_shmem) {
--               filemap_nr_thps_inc(mapping);
--               /*
--                * Paired with the fence in do_dentry_open() -> get_write_access()
--                * to ensure i_writecount is up to date and the update to nr_thps
--                * is visible. Ensures the page cache will be truncated if the
--                * file is opened writable.
--                */
--               smp_mb();
-
-We can drop barrier
-
--               if (inode_is_open_for_write(mapping->host)) {
--                       result = SCAN_FAIL;
-
-But this is a functional change!
-
-Yup missed this.
-
--                       filemap_nr_thps_dec(mapping);
--               }
--       }
-
-For below:
-
--       /*
--        * Undo the updates of filemap_nr_thps_inc for non-SHMEM
--        * file only. This undo is not needed unless failure is
--        * due to SCAN_COPY_MC.
--        */
--       if (!is_shmem && result == SCAN_COPY_MC) {
--               filemap_nr_thps_dec(mapping);
--               /*
--                * Paired with the fence in do_dentry_open() -> get_write_access()
--                * to ensure the update to nr_thps is visible.
--                */
--               smp_mb();
--       }
-
-Here is probably fine to remove if barrier _only_ for nr_thps.
-
->
-> --
-> Cheers,
->
-> David
-
-Sorry Zi, R-b tag withdrawn... :( I missed that 1 functional change there.
-
-Cheers, Lorenzo
+base-commit: 1f03f2e753209de7ef14a675a55453d74c9df5d2
+-- 
+2.47.3
 
