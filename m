@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB17B10BA426
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:27:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 019C710BA430
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:32:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48AD06B0005; Fri, 27 Mar 2026 02:27:26 -0400 (EDT)
+	id 445336B0099; Fri, 27 Mar 2026 02:32:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 414C26B00A9; Fri, 27 Mar 2026 02:27:26 -0400 (EDT)
+	id 41C336B009E; Fri, 27 Mar 2026 02:32:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DD316B00AE; Fri, 27 Mar 2026 02:27:26 -0400 (EDT)
+	id 359ED6B00A9; Fri, 27 Mar 2026 02:32:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 155D66B0005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:27:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8579E15F8
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:27:25 +0000 (UTC)
-X-FDA: 84590861250.22.C9BF59C
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1B270160003
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:27:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3ozzZMNI;
-	spf=none (imf08.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 223446B0099
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:32:27 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C45B21A0C39
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:32:26 +0000 (UTC)
+X-FDA: 84590873892.23.620D3E8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0195C4000B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:32:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oRXHaPXT;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774592844;
+	s=arc-20220608; t=1774593145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G7w/DjtHh6UU1dKA9LsKeKfhy2A9T6huT5mWVhBMMqQ=;
-	b=S1xDXsspeVvT1Fo109urrfF3OjSHYmR3lBShc5cd5NL7+eI3ls/35ZVRMkybYM1pz8knkR
-	WmqfjxNtU973LdGCbfAZIdvmNP6b2vkkLgGK/JF7dbSrIPs8KycEso3OHPCRFgn4EF2XWS
-	nwGVFDw36VH4r/2+cTqjWMCIMRAR6rM=
+	bh=QyEDSVIyQw5y9GaalGpB85YJe3/Er5fMMmqjUd0rZOc=;
+	b=jEDnr5qdCcZriB2cAw3Z5UaWMJVj+q4mUe0RJKoF/DWLRDYoI3cR6vSniqz16UepJsqTm4
+	4dER6gCEzVQgrAw7vRunLNvmKDGK+yfsOWOWbpebk4VcR1Ti3zUaiU+mPcbaOw7S8J7ljZ
+	w76mE8JndPQafIxQZeVhlI8v4CfAF0A=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3ozzZMNI;
-	spf=none (imf08.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774592844; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oRXHaPXT;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774593145; a=rsa-sha256;
 	cv=none;
-	b=aSfyf7uQdEAMWaKsks6JJQTRtpoq88yTm0+5VZXw2yYz7QeZSkccGJYsf88VxhYW47Mxgt
-	W1HrmEYQJXcT2Y5/Aqf4Kr6legzaa4rGVGJrrw72vZPGGCDHuEaFSihDHPyNsVzWkXeBLE
-	NBjgTOIhQnbO2nPM1G6+FaF5zJswCF0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=G7w/DjtHh6UU1dKA9LsKeKfhy2A9T6huT5mWVhBMMqQ=; b=3ozzZMNIwG7iBmBHIggRh8/DLu
-	8x+FlaRDvryUNTt7u7s70BsPfBhzLzqJcly52Sj8EZXyBrLhdpCOCL8iuerychQUTJuHQGPkibYdX
-	GS2ScIm0cdDILYGgjoitivuR6YBcB0QRpTlt6rYa7PHKjqDsmyqNbCO0YC3wdURLu5RXaTEPQc5c1
-	Gk+hNp2DXUh+QSndqK8RULVt5f1o2qqnQA2d73cN673EvDHwModjWdMqCjgfM4BPlkCcKKq5jhfRz
-	4gGaPd7jnOf2B9gVXAEIbxNgQMKIY9VTlhJmAk3gYl/596taDXr+MU4G1eZOZijYf73mgUF8AiCC8
-	1lq7qTxw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w60fA-00000006p8d-1NCq;
-	Fri, 27 Mar 2026 06:27:20 +0000
-Date: Thu, 26 Mar 2026 23:27:20 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Gao Xiang <hsiangkao@linux.alibaba.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Dave Chinner <dgc@kernel.org>,
-	Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH RFC v4 2/3] iomap: use BIO_COMPLETE_IN_TASK for
- dropbehind writeback
-Message-ID: <acYjSMkz9MdWQKoJ@infradead.org>
-References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
- <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
- <acRG5f9QjdEKg2JB@dread>
- <acYe1oCInkDLWGGu@infradead.org>
- <9e8061a5-980e-4e6a-a349-8a89f9eb1ba6@linux.alibaba.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9e8061a5-980e-4e6a-a349-8a89f9eb1ba6@linux.alibaba.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+	b=t5RhzQ2VKkzwp+XOrBYFVILv3dLXHFXzWfAJvK39Akg2VR0l7cc9t9AXcSFpepGTU3lfEK
+	JhxiH/8DiOQhwXeDhrZE9YXikc+ctKHAHCfpkDxJZJnl+8kRKVJUjdSNnq/fRlTz3rMO0o
+	lOKAFp/GLNvMILykTNPjrqVkCYDLaRg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CA14143B09;
+	Fri, 27 Mar 2026 06:32:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CC0C19423;
+	Fri, 27 Mar 2026 06:32:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774593143;
+	bh=21/vliRDRKtbFZz03Jxj2YlSHmox3eBSlnY147e2h5s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oRXHaPXTDhFLdjDKwU8xl/jVRjlXkD6B/nI5CfERmQmdJ7iU34b4+GNfnpB/TRqUf
+	 7W1r+VCvm/7HVOjpblotFi886eXGEt4lhXE2E3y+xKiDMT0CkZhf20XYaX5yxHjvs2
+	 TnehIRFVeIHAFF7AwUFKsntNDkE6ryI5kzxteKi0=
+Date: Thu, 26 Mar 2026 23:32:22 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kexin Sun <kexinsun@smail.nju.edu.cn>
+Cc: kees@kernel.org, tony.luck@intel.com, gpiccoli@igalia.com,
+ urezki@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ julia.lawall@inria.fr, xutong.ma@inria.fr, yunbolyu@smu.edu.sg,
+ ratnadiraw@smu.edu.sg
+Subject: Re: [PATCH] mm: vmalloc: update outdated comment for renamed
+ vread()
+Message-Id: <20260326233222.a74ea3c13fce2acfa1d37e37@linux-foundation.org>
+In-Reply-To: <20260321105820.7134-1-kexinsun@smail.nju.edu.cn>
+References: <20260321105820.7134-1-kexinsun@smail.nju.edu.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: rsfepqw865xwo3ke77brf1b8jdrahz6g
-X-Rspamd-Queue-Id: 1B270160003
+X-Stat-Signature: 1kdummc7468aik4kwebe53dmtngae4fd
+X-Rspamd-Queue-Id: 0195C4000B
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1774592843-904228
-X-HE-Meta: U2FsdGVkX19SoACD4w+7bDfh6+9jRxBa+/Jn/7/hQ/iMaVXIBStdFLy1cqeUzU4aVRGoBf7FwfqyfG/tvrK6Pw46PvlBXl5emBJNa0D4sOXeZMoKssvWhTZmTcyH5Z7ljR1R2DV1dAdfGir40+PRNYS53flflIZCbBMVneOc50G8T8xhAljdF2sNz218FRBz+5vIoU+SjU9rQaM5fPa3NZI8jmJ5YodXmGvIMzNSvizVsKfXZPDK0PdoKozpa/4FrFmOudv5nQfn/EvEEZi0PMuULn5Ui25+bEqoytkCx8QZvsAsc2TgLUkDyyoiteH6U1W5SH5KObsak46FVb6EcO42CQEXDTVJb5tDiTxSKAKlOQ22nM94SYC+0754p2Xsdhn0jykCkNYZS9LTjyNU3Eoharqg+o9l5edLgC7jBbiWhYPbntWshe/u8Wq7aSOWh9wGti5ZL2dr4JmYbDoLc15V/+5iTJIDi3pMYbOlIxlZQXXh3X2JdhgTHkdkHej3Ts2DoB7gF+tkKy7Zclhe84vvP6roCmBtgdKrm7RSjUVP8ON+/DTqe8+24pDzaa+ARfJsdfe2GPaQ8waDojAYa+3R5QlWlQ+VFFfbVgE1bGrRjiGFsdXqFHpibyM1evckKXasVT1q2NBoRrnvWUNHPOh7eM2tRFtchIHvb8YS4vSlszjiqYTf6UxDo8F9qV9XFLm/wLH16P7yeHxQ+Nq9ruxAouI61gQyZIeSfby6A8dwxfs7iqf8/gs5rDTAw0s1az4uAGZMJnC3J3DJBmsg0aDiTXLOqUO3c6u/aKsLa9+ptuaF/ilFEkVO2FFLvage/dZDCQxphfP0Eg0MPyaDykF85gzx65qFJQeOTNy2uBo9HYVlSTYL2g9bI6gQA9zvQZFRaXuCiEjJRM32Dvy+yiyvi2jnR9VGj1+wdCGqEw81ie8gMEtMFvpe0RdGcLaa8sZ/oqDfmGBM4/jctWA
- ta8ito5T
- oPCRaKkw92Dny7U2gAHLS9irrJbkrCGcXkG+DBBfcIJpgOD5KtFskP094J5PpBj83WKuzUX0WU7m/6YfLzjBFeexp5KX+BPKJr7h0oYM4P5GQpQ2yDhz3sPU4yxEeO7PnqouuKnrWG3VMQXSIiyZwJanyEgC38uzI5TahmodUllhk5z7rCYSuTwRlN1Ixq9u353kIEr/KBCZ+zXpETXqNentYLlKS+83nyfFvjn7n4x3AhsRzCjaofo/SKKR17ziRI1JowBPI5aVXrNGYjM6aOp6fwuBH1IWm9LfkANN6dRHuUnV4wT6EyRk1mRPRmVOXgIZJkxlT9HtYgGYM1JMwhDhO5aKAlvmjvvahCCApBtXi8Itz27ZWnUPMEQyOgVApYAtzdgUKokBisTLxhKJ9j/6b3qtoCz7F1aIomXFD6d92vkboU6gcFjjtp0H4DtaSYSCB361d2fXlC9NsYgyLUT5vTcS7nXzkjegq5ZdrrAjiqJ4rHL8FXQVdKEcYpMo/woTP/12cEgtgbGIE69LgUV5tBTVJNlaIFdGdN5yvdzm6XL8=
+X-HE-Tag: 1774593144-347093
+X-HE-Meta: U2FsdGVkX1/1OdG+Q0xLugJxo+1Sv368XVatB7uBDl4B6+ZE5i1/LFDjoGfLz0ZrYhWv2hJnBznui1dGEkoEZSmC/md5Evo+otLXO8DFbyvULQeDFb7GhXFOZwMI4OIVnJzs9Q999n5X7UBELkb9NqItic/vwcSzkDHfmukkPOWGj9bBW9OFVcLWdEmGOKOju/fX3y/r0IeEE21N5oj76x6TEtswSznb8jD/wNfhCLpPjKBYAtU6wOveIBu7AZP2/brnon6V6LtIEzm/dB5IHVDqMV5xBk9phrTIVzRbDYtFWLqgsn5UftoTEokSK3SD6fR/cBfDQmZHyu2HkHvkVUACsbJjkMAHIvOCUoJp2IUmyqewjC5rYAKK3E3u4Ua0eDnWu2MkHwl5Niu9ce9cmZRsxTk/GX5Sg5t2X/ArDQ2c51qegQV4I6MzWl7CkPU8Nil1X8D7rQFifv6xUssk2ghmOn8QEp4ecfj4cB4zIiM5qiq0J4qhJHz8usrq/hjlFHm/tebQ4rFrj0+VBWcq9ZSU+WPJivAZjp92/GzcXMp/NKT10Yb+yolEfiSwaD8Ir8NgOUh4fj8PtgiUN0EwzmpvEEOxYmqdlxrvCmBQPTo94O+ENYEtM1f7xnwgNRm7nvVR4ZOGqduysrGBjM6skDkn9hYHOOwB50cQ6Q4CYbMdNyw2ezMExlt+TdhOgO+o0+4cTDegZyPvXa9SMcQZuQiAzo+XuDi7y7BXd+xJBfdsSHx3ilErTujn2wVevt2kRKFkCHpDG44V6+y+UosGKl+wrE52RtMcoE7oVMwmfKUN3HMMeYHxY4jNJmB8YIKWAKMhOkwJIKES5l2mEko1Tj54W8RR5LUeTwQXdTzST3x2AFMrJOUrjPNw8HjFLQAN71Myx7fquGH66kjVSB0Bn6VWnSEQ0QXhp5GxGcYeycCw/KJRF73BDYEEDVKjJ41WG5OPStVmU4+iRfdeI6g
+ Hx7ZdrQt
+ FP+Q3P8Fg+E9OWt2gp35Pj/F9QliQcz1Wt587ZRCrztwNP2iijVWlKSelALctVzkrvMVNmmKAujHmZzuWPjMj+EqBQwj1KP7utJrxo6/fxytXE5QD7UzjVB2BU167SYxqBRy1o57ZYqMnNHkS9Bv28Gnl3R6ncBoN5+90/G0WvRJNQvojKGRzVRLjUB73ydmr7gAwJXuqgWtKRY1n7L9aQ7OVuy2dxeXczOJ3Jwg5ZTCVkjxKJhNozRKVMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,17 +92,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 02:24:02PM +0800, Gao Xiang wrote:
->  - use EROFS directly, in that case, we still need process
->    contexts to decompress, but due to Android latency
->    requirements, they really need per-cpu RT threads instead,
->    otherwise it will cause serious regression too; but I'm not
->    sure that case can be replaced by this work since workqueues
->    don't support RT threads and I guess generic block layer
->    won't be bothered with that too.
+On Sat, 21 Mar 2026 18:58:20 +0800 Kexin Sun <kexinsun@smail.nju.edu.cn> wrote:
 
-All of the I/O completions should be latency sensitive.  So I think it
-would be great if you could help out here with the requirements and
-implementation.
+> The function vread() was renamed to vread_iter() in commit
+> 4c91c07c93bb ("mm: vmalloc: convert vread() to vread_iter()"),
+> converting from a buffer-based to an iterator-based interface.
+> 
+> Update the kdoc of vread_iter() to reflect the new interface:
+> replace references to @buf with @iter, drop the stale "kernel's
+> buffer" requirement, and update the self-reference from vread()
+> to vread_iter().
+> 
+> Also update the stale vread() reference in pstore's ram_core.c.
+> 
+
+LGTM, thanks.
+
+> 
+> diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+> index ed97494abf60..738283a85ea2 100644
+> --- a/fs/pstore/ram_core.c
+> +++ b/fs/pstore/ram_core.c
+> @@ -450,7 +450,7 @@ static void *persistent_ram_vmap(phys_addr_t start, size_t size,
+>  		pages[i] = pfn_to_page(addr >> PAGE_SHIFT);
+>  	}
+>  	/*
+> -	 * VM_IOREMAP used here to bypass this region during vread()
+> +	 * VM_IOREMAP used here to bypass this region during vread_iter()
+>  	 * and kmap_atomic() (i.e. kcore) to avoid __va() failures.
+>  	 */
+>  	vaddr = vmap(pages, page_count, VM_MAP | VM_IOREMAP, prot);
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 61caa55a4402..9ee256884f78 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4575,20 +4575,20 @@ static size_t vmap_ram_vread_iter(struct iov_iter *iter, const char *addr,
+>   * @count:        number of bytes to be read.
+>   *
+>   * This function checks that addr is a valid vmalloc'ed area, and
+> - * copy data from that area to a given buffer. If the given memory range
+> + * copy data from that area to a given iterator. If the given memory range
+
+I'll sneak-edit this to read "copies data".
+
+>   * of [addr...addr+count) includes some valid address, data is copied to
+> - * proper area of @buf. If there are memory holes, they'll be zero-filled.
+> + * proper area of @iter. If there are memory holes, they'll be zero-filled.
+>   * IOREMAP area is treated as memory hole and no copy is done.
+>   *
+>   * If [addr...addr+count) doesn't includes any intersects with alive
+> - * vm_struct area, returns 0. @buf should be kernel's buffer.
+> + * vm_struct area, returns 0.
+>   *
+> - * Note: In usual ops, vread() is never necessary because the caller
+> + * Note: In usual ops, vread_iter() is never necessary because the caller
+>   * should know vmalloc() area is valid and can use memcpy().
+>   * This is for routines which have to access vmalloc area without
+>   * any information, as /proc/kcore.
+>   *
+> - * Return: number of bytes for which addr and buf should be increased
+> + * Return: number of bytes for which addr and iter should be advanced
+>   * (same number as @count) or %0 if [addr...addr+count) doesn't
+>   * include any intersection with valid vmalloc area
+>   */
+
+Things like `addr' and `count' should be `@addr' and `@count', but
+that's a differnt patch.  And we probably make this mistake in a
+zillion other places.
 
 
