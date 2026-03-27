@@ -4,105 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A649C10A88E5
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B71010ED67F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:12:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C49F56B0092; Fri, 27 Mar 2026 10:09:20 -0400 (EDT)
+	id 5E5036B0095; Fri, 27 Mar 2026 10:12:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C21156B0095; Fri, 27 Mar 2026 10:09:20 -0400 (EDT)
+	id 596156B0096; Fri, 27 Mar 2026 10:12:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B37216B0096; Fri, 27 Mar 2026 10:09:20 -0400 (EDT)
+	id 4D25F6B0098; Fri, 27 Mar 2026 10:12:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A2B846B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:09:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 42D21161199
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:09:20 +0000 (UTC)
-X-FDA: 84592025280.24.8F6F96D
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 61B52120013
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:09:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=IEtwusiy;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf29.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3BB076B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:12:14 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 061F68D796
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:12:14 +0000 (UTC)
+X-FDA: 84592032588.03.8B65D1F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 49EDC1C0009
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:12:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FZfPFmxA;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774620557;
+	s=arc-20220608; t=1774620732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FllaRuqz/ndrQdv/IFjTF2PMiXOCm/8g8JGqiCXRtZ8=;
-	b=maMXBt6oRHwGfbAyWyt0j9qFED4YSzw1NUV9PtFagx3z9F6JdeKsiBvoObguN8M+OwBOVv
-	Uxd60TB4QFiSk6PNhbpB3iwWG0+OEgF7mLnLxdg9JZ+DAzxvLsrumhr5OeZ4cOmBFWX8R4
-	P5+11/h6BRyaN8axiVRRAF5slm0Qpa8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774620557; a=rsa-sha256;
+	bh=Jebn+5I6JMXRFlCC1NKK3OymOoHMCzAxmACgdoPH2Sg=;
+	b=yOjB4qRLkVgia5kMQW48bZYPTAR76aVHPGGFdrva1j0Z0SCPmAarteqWBCM7s5d0oiyLZa
+	ZWgGCsR03//VGr0J4eKYdJXCXEm1Uwi5JR32hpvhB2gLRBydWJztZ9PpIXBat9kxYyeLxo
+	PJ+Mrdxx5wTCfBuqI6D6gupvqM0cZrM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774620732; a=rsa-sha256;
 	cv=none;
-	b=fdUNlvp4wG+iYHNzFdKz7jHuJnVLs8JpIGGPpcPxYw0Za0xK2EPIwUdp4wyuTeqsePIwq+
-	hCzy74OccqfthtOMHtmggYDm/Guqnf7sQh15IY9bam4dy5HrRNqlR2hIGj/zIWxXJh+V4F
-	S1z6cuQcBv4AoKCww6R/RCEf78NUyLA=
+	b=vmwB0sZnwQLqHIq2jiKjniNkqePFOuosUhMazv81XarzfCqxEnFUWi1ufx6E/dbj8GpNqm
+	M8siLNBKFmI6rlBTCEIViIPdqDPPEUePpakGQSz/MZ5dcmM1ZO22MbDQs+Jr/Yo5gb9i9g
+	AxkpVTyn0sbqnbNPdtYdVASlrd66LII=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=IEtwusiy;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf29.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260327140914euoutp01e76e201c9d1970e5dc3f3dc61c49ef44~gt-4Du4fC2064320643euoutp01M
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:09:14 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260327140914euoutp01e76e201c9d1970e5dc3f3dc61c49ef44~gt-4Du4fC2064320643euoutp01M
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1774620554;
-	bh=FllaRuqz/ndrQdv/IFjTF2PMiXOCm/8g8JGqiCXRtZ8=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=IEtwusiyymGgXTgefN5F2+tP3oGnBaysfmc5wcK8nupPsfZqjORP7h7wCyeegICe9
-	 lxu1CtjuM/x3dsuNHEsfeRVcwk6iBQtdRUwKy5JNgDFiBPeccnY9nyx+ifDhLdzJgq
-	 KCEhEkk/1Pqg1xKElvtpyCRYF77aefPTpmANE3Ok=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260327140914eucas1p19677ff7152b3f9bb8751546cf127d41b~gt-3sPh0s3007330073eucas1p1M;
-	Fri, 27 Mar 2026 14:09:14 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260327140913eusmtip18997f7f0a8f811699c2317b9909b495b~gt-2n1yFW1792317923eusmtip1e;
-	Fri, 27 Mar 2026 14:09:13 +0000 (GMT)
-Message-ID: <d2ed7315-72ff-43f3-bfaa-995025cb9419@samsung.com>
-Date: Fri, 27 Mar 2026 15:09:12 +0100
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FZfPFmxA;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7DEDC60054;
+	Fri, 27 Mar 2026 14:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896DBC19423;
+	Fri, 27 Mar 2026 14:12:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774620731;
+	bh=10d/bauSZZwUaWeqxAp5AEl72kx44Zuct76qpMiWslM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FZfPFmxAuVBhLAkxJIgmHiPwI+Nesyrc086MBBCRNDFpEh3oTv1sjwFdmZ0AuaLPa
+	 2DW/s9CaITCvU31XQKpY0QCn4MdCBJzpR2+h0aDrkIGdbhSu36GSw+ztSv2s839Rxa
+	 oplhpvpdvKkReCNa0Nq2KZ6RNMLk1ctntQjuU2L4PJvjQTonb4xBAIiDqwXio+T+Ip
+	 YT5sIdJtu4nlXcAkeW5rVMVdI3GK1zNsBY+51DSoN7785lZs73UnLXaiD7vDPKxoLV
+	 tumNAiNeyQnpj0tqr0Q2JlowB2lo9qylylLn9K8SuCspmKR+dmHlXGZF2QoOsPRVm0
+	 jtt0OXTV5qzCg==
+Date: Fri, 27 Mar 2026 14:12:03 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, 
+	David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 02/10] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Message-ID: <89c8b93c-f6dd-4d8e-bcee-3c1ff1c04295@lucifer.local>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-3-ziy@nvidia.com>
+ <7fd90f5e-65b5-4734-abb2-77b22c733af5@linux.alibaba.com>
+ <8f5119a1-9aa9-4a39-ac94-ca1631db26e1@lucifer.local>
+ <ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH] mm/slab: align kmalloc to cacheline when DMA API
- debugging is active
-To: Catalin Marinas <catalin.marinas@arm.com>, Mikhail Gavrilov
-	<mikhail.v.gavrilov@gmail.com>
-Cc: vbabka@kernel.org, harry.yoo@oracle.com, akpm@linux-foundation.org,
-	hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, stern@rowland.harvard.edu, linux@roeck-us.net,
-	andy.shevchenko@gmail.com, hch@lst.de, Jeff.kirsher@gmail.com, Robin Murphy
-	<robin.murphy@arm.com>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <acZ3ZUXhFHpSXzYS@arm.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260327140914eucas1p19677ff7152b3f9bb8751546cf127d41b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39
-X-EPHeader: CA
-X-CMS-RootMailID: 20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39
-References: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com>
-	<CGME20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39@eucas1p1.samsung.com>
-	<acZ3ZUXhFHpSXzYS@arm.com>
-X-Rspamd-Queue-Id: 61B52120013
-X-Stat-Signature: cwmztwstnj9futyczrzu83wk6xjstfup
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ugyjmgnbuxzgtgte3w59pmkr4ymyhgpu
+X-Rspamd-Queue-Id: 49EDC1C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774620557-924669
-X-HE-Meta: U2FsdGVkX1/luYfFLAW9KCJVkgCKb6M3SLDjK0RYOziL2A3/UOERjGN9Wr6Qgo6+FLyHhbQRqUT+Zv6GHiF/GEv7bMWnU6Q/1DfO0Yb2IOe8f26hEd8HNnr8Phz9/GvZLVj3bIYl6OIOQ+WNvSBfIOHQbc96Xkwv7GnWJ64SqT410V0ooF3Y5TNts9GOgLJhMdE9ZOUztSVXKTWy2NVIDJjetwQP+VUA76JY5S/D1XV68ozIZeqjbwxLJK4UGZhSfdotNO+daCrbQ760ZsmWChAHsoXvCyo8AIhvjzaRk6NvQMklNBZguIZbUjG4ktmbHNF6NDA2H3Ud/XlxT8yH2K/fvnUe5LQlf8zcZwkIpZmp6K5st22UM5SFGN84SXN5Tv1prIrxew1eYIiImatqLlhWIBU4lIeQ5JLkxOXdtbPkp2ihzgMcgQXpu7gKj0bjSXVGBnXTCNokj3ERM0ZFNaLCd8DkzNBM81vqMTsY5ECyD2ehgCIb2k5PtJZhmc0wQYmy659vUPoJDG6FRGT6SHdy6B2mrl5poSyG3pjHApZpXLRh6p+KVyGUfNeT8Nn4lE2g7mexubzCYtnOiCz3IsM0Wjieq9FmbSBx2btRUhNUUFMjt5OXkj0OrTSmwH2d7Tfs4M7eFtIE+QMGjIx/9Glo7ktKjFsfmqqyKsqL/IGKIQgUMymC8Q9JTBiObSsW24RJI7zqiPC79G8Hb5OcKEzKABy82VWGw902KFaFk1lPb6WPh4r9OR860JwTn4CzWfFCUbBxcteSXXkaA/ZGCt3K+QgSP4ZgfnGtrANIoESAgN0SQV463WorDvPxXSrvACUmnYivgCSTQ++ZDdAm3T6LTBpZ2hjjwy41kGQTxsYCaqyGshB87/0ZGX3uYCLUC9Zx/HZy1O45fQZ3BSxbQ0JBhvdBNmzl6EDfTpS/++r1EeZk0pgC9dPQtiBpo/K2hbk7L6sCTyurYSceYUy
- 1GeQkpAX
- 0oc9uxXAXppSSrgxGTIEfZJ0UBdFR6mpBB2/T0/Xr+DR5951xae8HvU2TQHlgbOLSoTjvEJFiFkXXsYtnpM6+vF9zYYNyHmWfDJ1A1kjR/zuQYY8h0XmH79ywMrRnUp5uJTExNBio4Az1Bd9IcpVqrb7TOddnmL+93hBzZijQtHDk9PVIisnEoAco66qVOOn/SCmK6fee2sabWR0=
+X-HE-Tag: 1774620732-350130
+X-HE-Meta: U2FsdGVkX18EACYErxnITANl7aRp7XuPvuH6nFafs5p4Cf07Y+dF4AftINVJZ7NgyiIcBFMn3iEcti/ew0maIWYb/pIEg1ZZYo0MmkTZ64Rhutn9+T94GTDjckniwAq5Su44cIQyTHBp47DO6liTbcIkTAY0jphfCuB18iBdamyn5VJmPMPBlElaBsYOIATPgUq5A+oRQqydizsqZ7LxhYlEKOB8CFd/smnJw/TzHei/rnOeRftiF7/RE+jFac2MikNW3W/TZxpKhinDjTXbo+u078ty5J+VGWMooOC0eCQ13Gc4caLrtB4z6Ug1C5sQy+1+ZJpkvZm2OWSKvCn/DCbMtsGmXlmqCRr3GxyAbdzWai65WLStjE7Y2dqd5kA51ERxnRpqcrM5g5GdB1nWCTC9EIX1IwC0GKGF7WKakIqAB+6Ehxe74JWRJNcby9q6ipqC3jRvkXXdqvhqwEpgjFWIv49w1pMmM9xmC9PRA3fbo3tQlTjYQLR9AO9GOLi1pfnsBHrRXFdpV4jetOfum0oDnbK0vJ3NP9hL7T/Me2inCy5X1WzxkTmfzvXw+DzuefvvtLzUB4DdcAcy+ggVQfIR0JgH5js9eO8kcKs2cTbiRO4349DZFSo2Ub/EwSj/in1YXs2Raklg/AqZ21op3NtjsiGP6o1H3+8zC6qasGlWLUVRbfJi8xBMHhfq57Fdg01JmFFZzG1RPC28aQtIbZpYo+hfXNEyWQbhM7RJ1AdTJZAdUUSG1WZt1TjK5gk+OWWC5Z+nIpSYS9amEZxEr3N+dHzfhHL2EY+R6LwORveBaQiwFq4ac1pq/7/c6h38wzTdj5ZEOS967JQYyxs19pzPc8rub2kICj5pTYdXeJY7Pqf3u6JfG18EU8e27DYrKMamK62kJuPqau+a3IKxfObvx0jnroQ/ec7r0lAz/1mlEkNBAYao8Ba1neUFrOBsiti+uVfGplfZIbT9gYz
+ htnvFZ4P
+ ggK6hoHL5/H1jc2EnPj0997n1PDH3R3MuBXootPdg0JKvhsUFP7wA68hMTPfpUi3FxYZpeNy4IZzIXzL5MZK0bYqXEIEE3uZT1I0oZWSVzIYLQZ04vCMs9f4nzHASUGwe6bpy+UQVDNbx+tgGPghoKvsx2bc8IXDKlBT2hqTvibfOxwxDdafEreR+MqISG/n7kyYJRSBmHyQQg7LM2MYXzEr3ug8W0aKB7w7YqIv949OVv1J+4F0wA1Y6RPyk9x4Ac8vxNyjNQj36iD1qa2JFvzIIfxOQfSLnPHyV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,136 +104,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
+On Fri, Mar 27, 2026 at 09:45:03PM +0800, Baolin Wang wrote:
+>
+>
+> On 3/27/26 8:02 PM, Lorenzo Stoakes (Oracle) wrote:
+> > On Fri, Mar 27, 2026 at 05:44:49PM +0800, Baolin Wang wrote:
+> > >
+> > >
+> > > On 3/27/26 9:42 AM, Zi Yan wrote:
+> > > > collapse_file() requires FSes supporting large folio with at least
+> > > > PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that. shmem with
+> > > > huge option turned on also sets large folio order on mapping, so the check
+> > > > also applies to shmem.
+> > > >
+> > > > While at it, replace VM_BUG_ON with returning failure values.
+> > > >
+> > > > Signed-off-by: Zi Yan <ziy@nvidia.com>
+> > > > ---
+> > > >    mm/khugepaged.c | 7 +++++--
+> > > >    1 file changed, 5 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > > > index d06d84219e1b..45b12ffb1550 100644
+> > > > --- a/mm/khugepaged.c
+> > > > +++ b/mm/khugepaged.c
+> > > > @@ -1899,8 +1899,11 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+> > > >    	int nr_none = 0;
+> > > >    	bool is_shmem = shmem_file(file);
+> > > > -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+> > > > -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+> > > > +	/* "huge" shmem sets mapping folio order and passes the check below */
+> > > > +	if (mapping_max_folio_order(mapping) < PMD_ORDER)
+> > > > +		return SCAN_FAIL;
+> > >
+> > > This is not true for anonymous shmem, since its large order allocation logic
+> > > is similar to anonymous memory. That means it will not call
+> > > mapping_set_large_folios() for anonymous shmem.
+> > >
+> > > So I think the check should be:
+> > >
+> > > if (!is_shmem && mapping_max_folio_order(mapping) < PMD_ORDER)
+> > >       return SCAN_FAIL;
+> >
+> > Hmm but in shmem_init() we have:
+> >
+> > #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > 	if (has_transparent_hugepage() && shmem_huge > SHMEM_HUGE_DENY)
+> > 		SHMEM_SB(shm_mnt->mnt_sb)->huge = shmem_huge;
+> > 	else
+> > 		shmem_huge = SHMEM_HUGE_NEVER; /* just in case it was patched */
+> >
+> > 	/*
+> > 	 * Default to setting PMD-sized THP to inherit the global setting and
+> > 	 * disable all other multi-size THPs.
+> > 	 */
+> > 	if (!shmem_orders_configured)
+> > 		huge_shmem_orders_inherit = BIT(HPAGE_PMD_ORDER);
+> > #endif
+> >
+> > And shm_mnt->mnt_sb is the superblock used for anon shmem. Also
+> > shmem_enabled_store() updates that if necessary.
+> >
+> > So we're still fine right?
+> >
+> > __shmem_file_setup() (used for anon shmem) calls shmem_get_inode() ->
+> > __shmem_get_inode() which has:
+> >
+> > 	if (sbinfo->huge)
+> > 		mapping_set_large_folios(inode->i_mapping);
+> >
+> > Shared for both anon shmem and tmpfs-style shmem.
+> >
+> > So I think it's fine as-is.
+>
+> I'm afraid not. Sorry, I should have been clearer.
+>
+> First, anonymous shmem large order allocation is dynamically controlled via
+> the global interface (/sys/kernel/mm/transparent_hugepage/shmem_enabled) and
+> the mTHP interfaces
+> (/sys/kernel/mm/transparent_hugepage/hugepages-*kB/shmem_enabled).
+>
+> This means that during anonymous shmem initialization, these interfaces
+> might be set to 'never'. so it will not call mapping_set_large_folios()
+> because sbinfo->huge is 'SHMEM_HUGE_NEVER'.
+>
+> Even if shmem large order allocation is subsequently enabled via the
+> interfaces, __shmem_file_setup -> mapping_set_large_folios() is not called
+> again.
 
-On 27.03.2026 13:26, Catalin Marinas wrote:
-> + Marek, Robin
+I see your point, oh this is all a bit of a mess...
 
-Thanks for adding me to the loop.
+It feels like entirely the wrong abstraction anyway, since at best you're
+getting a global 'is enabled'.
 
-> On Fri, Mar 27, 2026 at 10:58:46AM +0500, Mikhail Gavrilov wrote:
->> When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
->> tracks active mappings per cacheline and warns if two different DMA
->> mappings share the same cacheline ("cacheline tracking EEXIST,
->> overlapping mappings aren't supported").
->>
->> On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
->> allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
->> hub driver) frequently land in the same 64-byte cacheline.  When both
->> are DMA-mapped, this triggers a false positive warning.
->>
->> This has been reported repeatedly since v5.14 (when the EEXIST check
->> was added) across various USB host controllers and devices including
->> xhci_hcd with USB hubs, USB audio devices, and USB ethernet adapters.
-> This indeed has come up regularly in the past years.
->
->> +/*
->> + * Align memory allocations to cache lines if DMA API debugging is active
->> + * to avoid false positive DMA overlapping error messages.
->> + */
->> +#ifdef CONFIG_DMA_API_DEBUG
->> +#ifndef ARCH_KMALLOC_MINALIGN
->> +#define ARCH_KMALLOC_MINALIGN  L1_CACHE_BYTES
->> +#elif ARCH_KMALLOC_MINALIGN < L1_CACHE_BYTES
->> +#undef ARCH_KMALLOC_MINALIGN
->> +#define ARCH_KMALLOC_MINALIGN  L1_CACHE_BYTES
->> +#endif
->> +#endif
-> TL;DR: I think this is fine:
->
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
->
-> I'm not sure that's the best way to hide the warning but there
-> are no great solutions either. On one hand, we want the DMA debug to
-> capture potential problems on architectures it's not running on. OTOH,
-> we also want to avoid false positives on coherent architectures/devices.
-> I don't think reconciling the two requirements is easy.
->
-> When DMA_API_DEBUG is enabled, the above will change the x86 behaviour
-> that could have implications beyond DMA (e.g. may not catch some buffer
-> overflow because it's within L1_CACHE_BYTES). Similarly for non-coherent
-> architectures that select DMA_BOUNCE_UNALIGNED_KMALLOC (arm64 and riscv
-> currently). arm64 defines ARCH_DMA_MINALIGN to 128 but
-> ARCH_KMALLOC_MINALIGN to 8 (why 128 is larger than L1_CACHE_BYTES is
-> another matter but let's ignore it for now).
+I guess what happened before was we'd never call into this with ! r/o thp for fs
+&& ! is_shmem.
 
-IMHO enabling DMA_API_DEBUG should not change the kernel behavior, so I 
-would prefer fixing this in DMA-debug code somehow.
+But now we are allowing it, but should STILL be gating on !is_shmem so yeah your
+suggestion is correct I think actualyl.
 
-> More of a thinking out loud, we have:
->
-> 1. Coherent architectures - alignment doesn't matter
->
-> 2. Non-coherent architectures with:
->     a) Sufficiently large ARCH_KMALLOC_MINALIGN
->     b) Small ARCH_KMALLOC_MINALIGN but DMA_BOUNCE_UNALIGNED_KMALLOC
->     c) Broken config - forgot to set ARCH_DMA_MINALIGN or bouncing
->
-> We can ignore (2.c), the aim of the DMA debug is to catch wrong uses in
-> drivers. If drivers is the only goal, the above change will do when
-> running on (1) or (2.a) hardware - it will catch sub-L1_CACHE_BYTES
-> buffers from drivers while assuming kmalloc() machinery is safe.
-> However, if running on (2.b) it won't catch anything that may be
-> problematic on (2.a) since the DMA debug ignores the overlap.
->
-> We could make DMA_BOUNCE_UNALIGNED_KMALLOC dependent on !DMA_API_DEBUG
-> but it would be nice to be able to sanity-check the bouncing logic.
-> Well, it wasn't checking it before and with commit 03521c892bb8
-> ("dma-debug: don't report false positives with
-> DMA_BOUNCE_UNALIGNED_KMALLOC"), we made this clear that overlapping will
-> be ignored.
->
-> Irrespective of whether we disable bouncing with DMA_API_DEBUG, maybe we
-> could replace the above commit with:
->
-> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-> index 3928a509c44c..488045ef6245 100644
-> --- a/kernel/dma/mapping.c
-> +++ b/kernel/dma/mapping.c
-> @@ -175,7 +175,7 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
->   	if (!is_mmio)
->   		kmsan_handle_dma(phys, size, dir);
->   	trace_dma_map_phys(dev, phys, addr, size, dir, attrs);
-> -	debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
-> +	debug_dma_map_phys(dev, dma_to_phys(addr), size, dir, addr, attrs);
->
->   	return addr;
->   }
->
-> Anyway, this I think is unrelated to the proposed change affecting x86,
-> more of a how to make the DMA API debugging more useful when running on
-> arm64 or riscv.
+I do hate:
 
-This is not enough, there is also a dma_map_sg_attrs() path.
+	if (!is_shmem && mapping_max_folio_order(mapping) < PMD_ORDER)
 
-I've reverted 03521c892bb8 and added the following change:
+As a bit of code though. It's horrible.
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c index 
-55e7ca8ceb86..bbada41143ea 100644 --- a/kernel/dma/debug.c +++ 
-b/kernel/dma/debug.c @@ -18,6 +18,7 @@ #include <linux/uaccess.h> 
-#include <linux/export.h> #include <linux/device.h> +#include 
-<linux/dma-direct.h> #include <linux/types.h> #include <linux/sched.h> 
-#include <linux/ctype.h> @@ -1241,7 +1242,8 @@ void 
-debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size, 
-entry->dev = dev; entry->type = dma_debug_phy; - entry->paddr = phys; + 
-entry->paddr = IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) ? + 
-dma_to_phys(dev, dma_addr) : phys; entry->dev_addr = dma_addr; 
-entry->size = size; entry->direction = direction; @@ -1335,7 +1337,9 @@ 
-void debug_dma_map_sg(struct device *dev, struct scatterlist *sg, 
-entry->type = dma_debug_sg; entry->dev = dev; - entry->paddr = 
-sg_phys(s); + entry->paddr = + 
-IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) ? + dma_to_phys(dev, 
-sg_dma_address(s)) : sg_phys(s); entry->size = sg_dma_len(s); 
-entry->dev_addr = sg_dma_address(s); entry->direction = direction;
+Let's abstract that...
 
-thenran my tests on ARM64 and RV64 boards. Only one new warning has been 
-reported (I didn't analyze it yet), so this might be indeed a better 
-solution than skipping overlapping cache lines warnings when 
-DMA_BOUNCE_UNALIGNED_KMALLOC is set.
+It'd be nice if we could find a way to clean things up in the lead up to changes
+in series like this instead of sticking with the mess, but I guess since it
+mostly removes stuff that's ok for now.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+>
+> Anonymous shmem behaves similarly to anonymous pages: it is controlled by
+> the 'shmem_enabled' interfaces and uses shmem_allowable_huge_orders() to
+> check for allowed large orders, rather than relying on
+> mapping_max_folio_order().
+>
+> The mapping_max_folio_order() is intended to control large page allocation
+> only for tmpfs mounts. Therefore, I find the current code confusing and
+> think it needs to be fixed:
+>
+> /* Don't consider 'deny' for emergencies and 'force' for testing */
+> if (sb != shm_mnt->mnt_sb && sbinfo->huge)
+>        mapping_set_large_folios(inode->i_mapping);
 
+Cheers, Lorenzo
 
