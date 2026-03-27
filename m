@@ -4,87 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D839C10F2865
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:13:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 850D210F2865
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BED66B008C; Fri, 27 Mar 2026 15:13:54 -0400 (EDT)
+	id B30026B008C; Fri, 27 Mar 2026 15:19:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46F836B0095; Fri, 27 Mar 2026 15:13:54 -0400 (EDT)
+	id AE0F16B0095; Fri, 27 Mar 2026 15:19:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AC676B0096; Fri, 27 Mar 2026 15:13:54 -0400 (EDT)
+	id 9CF6F6B0096; Fri, 27 Mar 2026 15:19:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2990E6B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:13:54 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C5FE18DFAE
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:13:53 +0000 (UTC)
-X-FDA: 84592792746.25.0894FBA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EC3821A0016
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:13:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="vGpRQ/jj";
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 877C66B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:19:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 227128DECA
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:19:40 +0000 (UTC)
+X-FDA: 84592807320.29.AC07666
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 595FD80005
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:19:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ir41fQmQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.172 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774639178; a=rsa-sha256;
+	cv=none;
+	b=yvScelMwZQ5gQHcTzKXVii8sTFdObMFmuvsQlWXpcwcmalVGtDD1VGiDS1wx3hTy+IOpDZ
+	20Sqoa4S7GC7nTvOKLxVCbr8r1PKHKkmNf73MOHDzb7oo8hkolEH8bCO2cri1iqrASxFUI
+	eWCwJRrSik2Q19ueqwAM2Ozr+nFziYs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ir41fQmQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.172 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774638832;
+	s=arc-20220608; t=1774639178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=igejSyxkWEwhQfSyQuEiimB2zShEMuDhph/zXZNiP30=;
-	b=WjYLscqW8IMQlc0Nb1xoB6IUqidTyaT5WRSWJFus5VfczcHSjW6AM4pwAuZUMJ+JHJ8uS5
-	F8Qjy+H+T/QXt6JHxt5NUi1As9kDOiyQNJIRFwBM508hvL3ZAhAMVxS97Z11fkHjq77xSa
-	q83fqLR+HQ2TEtWMaRdNOeJRRH8wrds=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="vGpRQ/jj";
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774638832; a=rsa-sha256;
-	cv=none;
-	b=HVstg8WeOCfm4ajVB9TKD6xK2bXBekZbvbvnZoeTXBfW/M6/G/ZNb5ZQHK5yjXz3EuvN+X
-	DqBPboPwKX1z4y+3Cp786W/bJn2kBj8k6Cg3Imzm5hzYBc4bOGfpH2vTleL+HCl6X2sRn8
-	GGdPLYPce1z2+r1dUUjqu9fdE3Xfx9U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55DD0600AE;
-	Fri, 27 Mar 2026 19:13:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9309DC19423;
-	Fri, 27 Mar 2026 19:13:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774638831;
-	bh=sCKExA/z6SpVqvB2m7zmhBRO1VOP9oHSCV8P4PPj9WA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vGpRQ/jjF7b3+LW+FI8glJV8BAJe7wiffXZkP1Z4Cu9fqA1GfG9lezqF1dgOYyLhC
-	 sb+op9gCZrllOQ/MMdt43lxR9KtqLTAreszvVZDsxajvKgCR+1IfwddKpcxrThqY24
-	 yh1kwk46NIs6HdmaPWfTzuf0scUW1U9G5+BaGIo4=
-Date: Fri, 27 Mar 2026 12:13:50 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Li Wang <liwang@redhat.com>
-Cc: rppt@kernel.org, david@kernel.org, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org, aubaker@redhat.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/mm: skip hugetlb_dio tests when DIO
- alignment is incompatible
-Message-Id: <20260327121350.858a127fa49ed6e1eb4a40a7@linux-foundation.org>
-In-Reply-To: <20260327120305.58653-1-liwang@redhat.com>
-References: <20260327120305.58653-1-liwang@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EC3821A0016
-X-Stat-Signature: nd4xan8s8hq9kdbm3m14u5jtx1jghy7y
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=g36eDtHxaYoJojvs9L9tY/Cu0/ANeoyQ3rXoQcxOHvE=;
+	b=gkBTl3ReAgLk07g82Yjyi6G0rxtbK4vdKSFrFrUYYh5QhNOIvQc4IWa0OaXTDT8+UC16m4
+	fY5lzYCpG2BjlhjgAyIKjxusT3RkhPZLKPubaesSlcqHCw+bbhtdLA6SUNSXacXD03Nunh
+	H1l//OoqyX3Ytv6xMHueV33yLpn4au8=
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-467161c4a1cso859181b6e.3
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:19:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774639177; x=1775243977; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=g36eDtHxaYoJojvs9L9tY/Cu0/ANeoyQ3rXoQcxOHvE=;
+        b=ir41fQmQuIa0ceWqros/IJy/XOh0RCc4GyUwRpVzsrOo2SR7CAhkLIhiJ6rMzsPYnn
+         +kMbpr+HftoYrTvuQF5ros9rl+qLwKKmIY9fAEhPtcM9goFKbcqZenFoQcntVw/Z6Cih
+         6HVdgQ8sXFPCDN6oR6L2ExzXuOjEpDvL94Q4gTETz0gjZLjohOsZEmoZzkpm+pAjdKMR
+         97bJpFrJTNxhnaTilA+KY3JoacGV8kA2+hHqqygvWnOSCHvRuAj9no8BZ+OKoIjQcmTh
+         GULE8YkaAMtBK4If5c2If3YxmAmrAJNjyNEjAgg2W5iPqxyEbCsA/SeEJ6/n8Eg2GtbM
+         AW5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774639177; x=1775243977;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g36eDtHxaYoJojvs9L9tY/Cu0/ANeoyQ3rXoQcxOHvE=;
+        b=Fe9zw8DJKVG07qSDQ5n8tNogOc5ZRNVrgQf/iuxBy+BeRdYffhZmH6hM+r30T0N5Kt
+         2nZ2dKNrwCD/uIOAhxxsS7XR7XzZWjX5zTVs9VXdznIm48JJmqNVYnrMjSZKykDILh40
+         tjMJvwVWI7+Dj08sehn4SFJKAM4NLrxtA4eeJResynMBqNyvqc99kecEZZ+TTaUc/Smy
+         oNnFghZ5a+t7U4lu8gBT2EX7OK6lIsiJiuHO2RTc0QEWXycmTsAUmjE2JJxfbB+aWFAN
+         vh3o1m/d+K1uwe5lkaZaOyTVGGs7d+K4LVqrrZdKQaNW3Znv0B1RI7yqpUOnk9afHrK8
+         2OTA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2+sYsqPm3n+2OZkgTQL+qAqkmX7xY9GJVoCLHFOO5IRHjYA66g+MQ3rjUqTnWTxarXHq2diB0+A==@kvack.org
+X-Gm-Message-State: AOJu0Yy/KjUz547LhjlhFZiCfQE5tRj1UyQzXaCH94kC+XczTnfnyLn5
+	9NL+aL+bS5bjz4Ift8y/nwsMkdjm6NLDwv8DMwXpyODKBlbBqyMuCW24
+X-Gm-Gg: ATEYQzyw9nwiEenl7dRFZBZax9rN2Ie09aJ41QE2OZQnWeI2/ANfys++T6BXiZELw6y
+	Xd8VzchlLky0Ui4luHZxEL3bO1cAmNN0hniJQKlwQ1AaCEmb6zT7E6rrG04U6nf8CPVMuUnR0pK
+	mp4xuG1Lz+BoHFHBdNU/7g+A6QVakgVnGC3nmCH2KjaVvXmWUuCKXHgy96Sa46dqpZpi3A8TVf+
+	6yIuahSZfauahBo5001EjQzESNAPQqM1omSoI6rxJxSBSZPKxXT9yNx9WCDhRZmvIzJXDK+R6D+
+	JufD7gXYkOIumhMVNUW5Hk/kDjTncf/mtUoy5AUAwDZe0I595TUTsKybN6DVx7xZ2Q8PgEyG2qH
+	ZGYfE83rmPFESG4Tdi8Ts3COO9rEhwhcfzm5OWGP71TEtYKvaRyRkP04Zf2O0WX+Y5qsug9mTxG
+	svzauHuq2Ljt+bCceb4Q==
+X-Received: by 2002:a05:6808:894c:b0:467:2be4:9e39 with SMTP id 5614622812f47-46a8a5a37a8mr1494347b6e.39.1774639177209;
+        Fri, 27 Mar 2026 12:19:37 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41d04cf9ceesm138877fac.15.2026.03.27.12.19.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 12:19:36 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
+Date: Fri, 27 Mar 2026 12:19:35 -0700
+Message-ID: <20260327191936.1980054-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: nyfffbrfgrym5c6p7s1rzfstyf5e4kue
+X-Rspamd-Queue-Id: 595FD80005
 X-Rspam-User: 
-X-HE-Tag: 1774638831-531875
-X-HE-Meta: U2FsdGVkX1/Tl/FlCNpwXHq6z6yGFnrcXYN+qqT/+YVBtmN5QsDrIdFIr3DBIwqa2ddw1T0vYGHsNsPgkBsIlrPPq9frrWCArUriDvJODPAeoqBddPKyKDDO1X8WM/fWv8o+gJyzU2ryntenfXEvGbRG93Tsue7wJ2OYTrSx7UKU+wblmHjx5V8ZIe3Ef1IjCgtRfFcZ8wOl12lBZpTYEDj0OAV+I+5hefu0WgHbiB1ckdObxhoafOb7/CZKbHUyRu81uCV5y+41dAuZvAvt/OYVkX+l18P/CBWAZWiuZTT6+3c4pdvjIq9dkjN7daX54BFBnuOTaQUgSNOscGvHyFTMhzMYx63ibW5KS0XkzZnlz1Im3YteTK2LluIsxZHDSCik+ZgBzT/t4mGwvoRqqZ4rPe+odLOea0Aq6VAE5AOAwt6Ke4ruUkgoQayZb8gGGzbvvZAuyIkonWucnYxGowiNIZZ/Vox8URaywcIyNblr+xX4YXB6ya97zhNafLWPUePd17Bvp1b77FkD5G81ALxJuRo6kOWkvT4hy0r5pi44wRSMjcKZ/ZYpvU9YUArK995uSmF7D+AxHJKMEJORY9avAn3eoUgfuaGufocgToOpNfgYozF1sqxHOnYzx79baeb9dUxy1LKanmsD/OI75hTfZ0sZ0vCiE2uU/ZvduA2aCw1iK05wAjOy8d52YnfM59bNck6glP6y0L+eOC9MTRN2vVtUmATjpNWY8uxSwIkG5AwL2X+7rC/2+AxoL38hoSIunhMq4+NzhqZeSzxWfCJs23IwpalVNGyXpzYly18x+g4Lx8FSPQ5lCmF4atKZg9iVBpkCzV+qUogWF4VEjxKIPr39a0/kdIOSePC638Bz8cV7ZIJxVDZ/6AcWbdw1BsjmPT7tyDJE8XZhNJSdnJi76zjCVxnjy4hREl8DoVdhX3Vdvv8/iQLkv9llxozaWs6B4MjQ/Jtit9Hw5uJ
- SAPBnN8i
- 1a6GknBYgdVNx3FzWl3enzlgHIqDv2GCb/03Lf++CV+KCZaT8r0ym1nA2FsU7tc7Wfa9aH1KIyHU0XVCJMwHhPpLHtcQzCF8ImDiZvcPFRBHRkaT8uWY61SpmmRLke99cAkYgPtgUw5RwxmhiiiFbx3vlCTpJ5FvM91UKCagO7cYaexCdTZH9GxJI+znhpFpoMNOdjoBubEdZ79PAOVyGA+li4OvUe4/NtD+L5yRU+a00iT3+aEYzLivQois4/G1YrjTputphUWiyWh4cgmocKjeP365OTPvMMUySSI2qwUrJSuWE67mtIYEyXFU1jSGZrCISjFZAjR8AHOuSQu0vtsv/p+lqMigiRcg2pkVbSHEqP/UDwFHP9hUg/QFhtKfKh4Sq
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774639178-735698
+X-HE-Meta: U2FsdGVkX19De8vYIH01jqMFmZi8Ec4vPvnOSu5Xi86CA2MBUSmf1aFU8ERdmwUjzCbl+j/hKzBZ03msmka9CVCEze0frBJgMfw55ayp03sSUp/07XuUcIOqSttnN61dgauONa1I2dwz94YRg7LJeL5uBfuMi5U4/WIiXddR+/B+EQNDtsFzgX0Wbkht20QyKDImICkNhfbOU51gPXZH38n03RWNowXOVNfglyPedDCjKP4tJneJxkhKHzJbDTomGPxKzjg5or8PPk7f4aoVSTQ80df+fSE5pijZqg0ic4PwMM/aDEURuGItXM92U/UOxZP8zHCpDbODl8bka++bCGGaRwoDmFMA5V8bkAPrqByaXQXFAZGFHDr6zK0Et+0I+V4wPzVIXzCX8s9Yyg+sM3v0P2wTlHQcu90bkHlpdZgjHzwHEYSR6HPggKta9mEMG4+JlXFwf8EWfDYKTAwE0e3nNW6XXJyd8UlUu5v70YJcu+uJhPNMPhxlIuc79+RIkfoUxVpxbvRyfduc9Wi1ZH0H291z3hqqzX6E0dLyx10bkU5lJ3TFgskAUVPkBWKrZm9609+woMn0JAXeJqqtG8++dpyF9IFA78+WbLz0OBuBH/V4V5GmQoducL5DzFo66wiZfhHLgJHKxfGacUNqu6S6qS4S2DNgHwC7EzAEDXhkDp8iFF3EKn9L7s5x4ZLI3CgaoTOcGRLDOESo6/X/VmzVrdn643MWkkI6C523/A/g/dLH1qepDCD+eX5k/La0HHDkSzEIxBuVP8g93zA/JcQ0CnL1VewkbR/X5WpKAOLsOoi52+0p49jX2KRsJdryso/sUXebLCiQToQ0H6YDjzADkN3BZySkpW8DC7DVf/caYpb83GoT9jPDWbhX7GNksbluT97zc28/obX3PlO9ofVBpEp1wipdY7W9CuXc0DhGdPqWPKPpFmJs88BcPvROqWp61wGlCX3I9Bbls7s
+ zt2sMV6d
+ Bxhcivb3glFy7UNCVKt9/E7Np+JqUBwcz0Ta5CA/vo70SYXDa4m6qSbIR0LV6zfB2Yehd/mbf3iEOXEWoDq1UBjQ5m9Xb7kqn1zk+eSAinjpM3SpnfzgS1y+FTlpbT3xIAA3UxPfJ6r+DniJaddbeOAjx44wms8VlYzGAH8W+L+TNbGWkIWyXIFL5t5F2JKj3fQ4w5gkwk9lbRAM1GY3RKN4jRUJEO0oW9I/rxaHDPhKZT8YWs4vCk+Nn9M6H+2yUhXPyYPRWua7yNhN/kSwU1GOUC5OXJnQaXTMKP0PDyGwL6+JjiJXT+c2fhZB63xUJLE8TdUYBmpsz7p7zmFkohu7VtvLb4sB2LUskhXbF8gz5jxe0Y2xMGMYns52L+KRX18/EX+2KHvs07GBZdJP+jLZc8bMqUe3IU3hQQXhH2A3RixO3PE+YNvLwRD1o1HaFDKWyqN9PT8hTAXocnLP5G2Q7JdmDUQS7osPg7MnKdX41gyyioqChQlqGjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,62 +127,248 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 27 Mar 2026 20:03:05 +0800 Li Wang <liwang@redhat.com> wrote:
+Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
+to give visibility into per-node breakdowns for percpu allocations and
+turn it into NR_PERCPU_B.
 
-> hugetlb_dio test uses sub-page offsets (pagesize / 2) to verify that
-> hugepages used as DIO user buffers are correctly unpinned at completion.
-> 
-> However, on filesystems with a logical block size larger than half the
-> page size (e.g., 4K-sector block devices), these unaligned DIO writes
-> are rejected with -EINVAL, causing the test to fail unexpectedly.
-> 
-> Add get_dio_alignment() to query the filesystem's required DIO alignment
-> via statx(STATX_DIOALIGN) and pass it to run_dio_using_hugetlb(). Skip
-> individual test cases whose write length is not a multiple of the
-> alignment, so that aligned cases are still tested.
-> 
-> === Reproduce Steps ===
-> 
->   # dd if=/dev/zero of=/tmp/test.img bs=1M count=512
->   # losetup --sector-size 4096 /dev/loop0 /tmp/test.img
->   # mkfs.xfs /dev/loop0
->   # mkdir -p /mnt/dio_test
->   # mount /dev/loop0 /mnt/dio_test
-> 
->   // Modify test to open /mnt/dio_test and rebuild it:
->   -       fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
->   +       fd = open("/mnt/dio_test", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-> 
->   # getconf PAGESIZE
->   4096
-> 
->   # echo 100 >/proc/sys/vm/nr_hugepages
-> 
->   # ./hugetlb_dio
->   TAP version 13
->   1..4
->   # No. Free pages before allocation : 100
->   # No. Free pages after munmap : 100
->   ok 1 free huge pages from 0-12288
->   Bail out! Error writing to file
->   : Invalid argument (22)
->   # Planned tests != run tests (4 != 1)
->   # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
-> ...
->
->     v2:
->     	- Pass dio_align as a parameter to run_dio_using_hugetlb()
->     	  instead of generally page_size/2 alignment check.
-> 
+Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
+account node level statistics (accounted in PAGE_SIZE units) and
+memcg-lruvec statistics separately. Account node statistics when the pcpu
+pages are allocated, and account memcg-lruvec statistics when pcpu
+objects are handed out.
 
-Whee, AI review has decided that pre glibc-2.36 is a problem (last time
-it was pre-2.37).
+To do account these separately, expose mod_memcg_lruvec_state to be
+used outside of memcontrol.
 
-And it's forgotten the previous fs-doesnt-support-DIO issues.  Did you
-alter that?
+One functional change is that we do not account the 8 byte objcg
+pointer per-memcg-lruvec. Since the objcg membership is tracked
+per-memcg and not percpu, there is no appropriate lruvec to charge this
+memory to (see pcpu_obj_full_size). Instead of adding additional
+mechanisms to detect which lruvec the 8 byte pointer belongs to, let's
+just simplify and account the pcpu objects' size.
 
-The get_dio_alignment-before-ksft_print_header thing seems legit.
+Limit-checking is still done with the additional 8 bytes.
 
-https://sashiko.dev/#/patchset/20260327120305.58653-1-liwang@redhat.com
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+ include/linux/memcontrol.h |  4 +++-
+ include/linux/mmzone.h     |  4 +++-
+ mm/memcontrol.c            | 12 ++++++------
+ mm/percpu-vm.c             | 14 ++++++++++++--
+ mm/percpu.c                | 24 ++++++++++++++++++++----
+ mm/vmstat.c                |  1 +
+ 6 files changed, 45 insertions(+), 14 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 086158969529..96dae769c60d 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -34,7 +34,6 @@ struct kmem_cache;
+ enum memcg_stat_item {
+ 	MEMCG_SWAP = NR_VM_NODE_STAT_ITEMS,
+ 	MEMCG_SOCK,
+-	MEMCG_PERCPU_B,
+ 	MEMCG_KMEM,
+ 	MEMCG_ZSWAP_B,
+ 	MEMCG_ZSWAPPED,
+@@ -909,6 +908,9 @@ struct mem_cgroup *mem_cgroup_get_oom_group(struct task_struct *victim,
+ 					    struct mem_cgroup *oom_domain);
+ void mem_cgroup_print_oom_group(struct mem_cgroup *memcg);
+ 
++void mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
++			    int val);
++
+ /* idx can be of type enum memcg_stat_item or node_stat_item */
+ void mod_memcg_state(struct mem_cgroup *memcg,
+ 		     enum memcg_stat_item idx, int val);
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7bd0134c241c..e38d8fe8552b 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -328,6 +328,7 @@ enum node_stat_item {
+ #endif
+ 	NR_BALLOON_PAGES,
+ 	NR_KERNEL_FILE_PAGES,
++	NR_PERCPU_B,
+ 	NR_VM_NODE_STAT_ITEMS
+ };
+ 
+@@ -365,7 +366,8 @@ static __always_inline bool vmstat_item_in_bytes(int idx)
+ 	 * byte-precise.
+ 	 */
+ 	return (idx == NR_SLAB_RECLAIMABLE_B ||
+-		idx == NR_SLAB_UNRECLAIMABLE_B);
++		idx == NR_SLAB_UNRECLAIMABLE_B ||
++		idx == NR_PERCPU_B);
+ }
+ 
+ /*
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index a47fb68dd65f..b320b6a42696 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -377,6 +377,7 @@ static const unsigned int memcg_node_stat_items[] = {
+ 	NR_UNEVICTABLE,
+ 	NR_SLAB_RECLAIMABLE_B,
+ 	NR_SLAB_UNRECLAIMABLE_B,
++	NR_PERCPU_B,
+ 	WORKINGSET_REFAULT_ANON,
+ 	WORKINGSET_REFAULT_FILE,
+ 	WORKINGSET_ACTIVATE_ANON,
+@@ -428,7 +429,6 @@ static const unsigned int memcg_node_stat_items[] = {
+ static const unsigned int memcg_stat_items[] = {
+ 	MEMCG_SWAP,
+ 	MEMCG_SOCK,
+-	MEMCG_PERCPU_B,
+ 	MEMCG_KMEM,
+ 	MEMCG_ZSWAP_B,
+ 	MEMCG_ZSWAPPED,
+@@ -920,9 +920,8 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+ 	put_cpu();
+ }
+ 
+-static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+-				     enum node_stat_item idx,
+-				     int val)
++void mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
++			    int val)
+ {
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 	struct mem_cgroup_per_node *pn;
+@@ -936,6 +935,7 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+ 
+ 	get_non_dying_memcg_end();
+ }
++EXPORT_SYMBOL(mod_memcg_lruvec_state);
+ 
+ /**
+  * mod_lruvec_state - update lruvec memory statistics
+@@ -1535,7 +1535,7 @@ static const struct memory_stat memory_stats[] = {
+ 	{ "kernel_stack",		NR_KERNEL_STACK_KB		},
+ 	{ "pagetables",			NR_PAGETABLE			},
+ 	{ "sec_pagetables",		NR_SECONDARY_PAGETABLE		},
+-	{ "percpu",			MEMCG_PERCPU_B			},
++	{ "percpu",			NR_PERCPU_B			},
+ 	{ "sock",			MEMCG_SOCK			},
+ 	{ "vmalloc",			NR_VMALLOC			},
+ 	{ "shmem",			NR_SHMEM			},
+@@ -1597,7 +1597,7 @@ static const struct memory_stat memory_stats[] = {
+ static int memcg_page_state_unit(int item)
+ {
+ 	switch (item) {
+-	case MEMCG_PERCPU_B:
++	case NR_PERCPU_B:
+ 	case MEMCG_ZSWAP_B:
+ 	case NR_SLAB_RECLAIMABLE_B:
+ 	case NR_SLAB_UNRECLAIMABLE_B:
+diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
+index 4f5937090590..e36b639f521d 100644
+--- a/mm/percpu-vm.c
++++ b/mm/percpu-vm.c
+@@ -55,7 +55,8 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
+ 			    struct page **pages, int page_start, int page_end)
+ {
+ 	unsigned int cpu;
+-	int i;
++	int nr_pages = page_end - page_start;
++	int i, nid;
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		for (i = page_start; i < page_end; i++) {
+@@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
+ 				__free_page(page);
+ 		}
+ 	}
++
++	for_each_node(nid)
++		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
++				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
+ }
+ 
+ /**
+@@ -84,7 +89,8 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
+ 			    gfp_t gfp)
+ {
+ 	unsigned int cpu, tcpu;
+-	int i;
++	int nr_pages = page_end - page_start;
++	int i, nid;
+ 
+ 	gfp |= __GFP_HIGHMEM;
+ 
+@@ -97,6 +103,10 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
+ 				goto err;
+ 		}
+ 	}
++
++	for_each_node(nid)
++		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
++				    nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
+ 	return 0;
+ 
+ err:
+diff --git a/mm/percpu.c b/mm/percpu.c
+index b0676b8054ed..4ad3b9739eb9 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1632,6 +1632,24 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
+ 	return true;
+ }
+ 
++static void pcpu_mod_memcg_lruvec(struct obj_cgroup *objcg, int charge)
++{
++	struct mem_cgroup *memcg;
++	int nid;
++
++	memcg = obj_cgroup_memcg(objcg);
++	for_each_node(nid) {
++		struct lruvec *lruvec;
++		unsigned int nr_cpus = nr_cpus_node(nid);
++
++		if (!nr_cpus)
++			continue;
++
++		lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
++		mod_memcg_lruvec_state(lruvec, NR_PERCPU_B, nr_cpus * charge);
++	}
++}
++
+ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
+ 				       struct pcpu_chunk *chunk, int off,
+ 				       size_t size)
+@@ -1644,8 +1662,7 @@ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
+ 		chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = objcg;
+ 
+ 		rcu_read_lock();
+-		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
+-				pcpu_obj_full_size(size));
++		pcpu_mod_memcg_lruvec(objcg, size);
+ 		rcu_read_unlock();
+ 	} else {
+ 		obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
+@@ -1667,8 +1684,7 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
+ 	obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
+ 
+ 	rcu_read_lock();
+-	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
+-			-pcpu_obj_full_size(size));
++	pcpu_mod_memcg_lruvec(objcg, -size);
+ 	rcu_read_unlock();
+ 
+ 	obj_cgroup_put(objcg);
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index b33097ab9bc8..d73c3355be71 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1296,6 +1296,7 @@ const char * const vmstat_text[] = {
+ #endif
+ 	[I(NR_BALLOON_PAGES)]			= "nr_balloon_pages",
+ 	[I(NR_KERNEL_FILE_PAGES)]		= "nr_kernel_file_pages",
++	[I(NR_PERCPU_B)]			= "nr_percpu",
+ #undef I
+ 
+ 	/* system-wide enum vm_stat_item counters */
+-- 
+2.52.0
+
 
