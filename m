@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4007810F286F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 20:55:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C99DF10F2865
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 20:55:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 493EB6B009B; Fri, 27 Mar 2026 16:55:16 -0400 (EDT)
+	id 30E8B6B009D; Fri, 27 Mar 2026 16:55:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4441C6B009D; Fri, 27 Mar 2026 16:55:16 -0400 (EDT)
+	id 2E2356B009E; Fri, 27 Mar 2026 16:55:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 333386B009E; Fri, 27 Mar 2026 16:55:16 -0400 (EDT)
+	id 074376B009F; Fri, 27 Mar 2026 16:55:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 21DE56B009B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:55:16 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C377013C7F4
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 20:55:15 +0000 (UTC)
-X-FDA: 84593048190.01.A257A66
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E75016B009D
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:55:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AADC5160E36
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 20:55:17 +0000 (UTC)
+X-FDA: 84593048274.30.9549C17
 Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0EF9720003
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 20:55:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rSxQs09h;
-	spf=pass (imf03.hostedemail.com: domain of 3sO7GaQYKCP0xzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3sO7GaQYKCP0xzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1084B1A0002
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 20:55:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Vf2Ylclt;
+	spf=pass (imf19.hostedemail.com: domain of 3su7GaQYKCAEtvsfochpphmf.dpnmjovy-nnlwbdl.psh@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3su7GaQYKCAEtvsfochpphmf.dpnmjovy-nnlwbdl.psh@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774644914;
+	s=arc-20220608; t=1774644916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gEJVuDKnjdgqU8zwIL3/sLmobVk+HSWnDM5ddTiDQu8=;
-	b=qIWmUzbh2Wnp2B9Ua/IW32S7dj/7yEi2h2Laj37u3eU7d1rJCSx3dnqxtkPltmiyDgjjst
-	YOBnqo+7JbeLIYOmZHlhhZX3Nf8e+Hqqb18c0ZtJcuBQVIzS0WSwUbLcJ5shnRs8LFw7Vy
-	sWA9ZRQp2O5JhGKJgF/At1fjCLcqn7Y=
+	bh=5NgLz5FVqf/NV7m9qbKXaNWE4w/1GDJf1IUGYhV4ad8=;
+	b=Dxk3tSn5cynW3S+vHioqSpGyhFcdxBwoUIARwlYBkiNaAKldInzF1i3jyx5WZ6mnJUgeph
+	l2NRyjolR2Hq/W0TVSjZ+Y01OGFmDWZkIjAECYhK804weC+wFWif0FDLn56hqY51+iypfG
+	IRmnhIuNAUpjM/Ettj2Monie36cgeqw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rSxQs09h;
-	spf=pass (imf03.hostedemail.com: domain of 3sO7GaQYKCP0xzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3sO7GaQYKCP0xzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Vf2Ylclt;
+	spf=pass (imf19.hostedemail.com: domain of 3su7GaQYKCAEtvsfochpphmf.dpnmjovy-nnlwbdl.psh@flex--surenb.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3su7GaQYKCAEtvsfochpphmf.dpnmjovy-nnlwbdl.psh@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774644914; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774644916; a=rsa-sha256;
 	cv=none;
-	b=pvQ4qLNYVAq/HrPQkPiyb03zt6VeAyGIRimyvYreLm2GVB3ocFPG5azh5FGn6q/Ntow152
-	CFWVgudK8NHOYvBSi8mzn6e4S90vH5gR7QsYxhjJ5dBDSU42VWPRRqrVwAl2hzSSuXaYGN
-	MplccA9pXIl/FfrDMUDUN9PPSseCAq0=
-Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-127876be621so1606525c88.1
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:55:13 -0700 (PDT)
+	b=5Bhd4dsJpYUo/EvaZvGd/tV5eulocG2J1kv43DDCuYEaDZqnCL/naOsxC88efF0vjuS+To
+	a9zSz7IZCQPYi+1D/cpVUAe/cL4EGM6U5PnspsbiMIsMI2AziW429k3BfVPFRrrE/DL3OD
+	t4CeTln/Lo0ua9rCTlu1ksVSlrGVo6U=
+Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-12711ec96fbso1768948c88.0
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:55:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774644913; x=1775249713; darn=kvack.org;
+        d=google.com; s=20251104; t=1774644915; x=1775249715; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gEJVuDKnjdgqU8zwIL3/sLmobVk+HSWnDM5ddTiDQu8=;
-        b=rSxQs09hH/bzzZE3T5MvkbKek0szhoZet390E9GHT+AH14afqpo9DRboiLOCMp7EdU
-         V76kpyunOsY8QuTca4rkBfXxt6ijxX20FVVQc/Yy9Bmx0rrrjYbutg2gKaO2CPNcmYFl
-         lVtx/efBQGE2qr8jEwV+SBi8RocRmO2VMH8eWYlPlctzFIJxQaVi4CS26emJ7EZ9NLOH
-         wuz1bXSL9vuVSJbNIv7u/mxWOQalCp2N9VjAbXDk1IjRIjxcOdUWaYx0reOmbNvOaReO
-         PrsECPcJ62ML80BqYwW0YuOA7fFnj3OJ3llDE1+aHPqA/hjwI1E51GUbjASQMYErgWGG
-         /dEg==
+        bh=5NgLz5FVqf/NV7m9qbKXaNWE4w/1GDJf1IUGYhV4ad8=;
+        b=Vf2Ylcltmp0A2OvVpPHzdNmPrbTi0lBEOV8q6QR/h//RxuvKc289NWott6tyFj0kqZ
+         qqsU4PjHvSJQ8PBF+YgJ1bzsejzPGZpCf5/GLTIdIxpfKeLq97J2mXiVNt3qp1A8XmPz
+         uLNKEs8m7cu1Lw4wbr61sZPwrpkE+NlaR996IzqoNXtaKdGbPwiRyWHmsv3WN+vk0eep
+         /XItOAdRkeeDzEBKg4xvGOSA8df1ph8VpOdqvRjZgyLWHX6H9Kg+ilO31sPIupi9pFuQ
+         LgCTKR5diafKiuoIvYSTaR2DiGbA7R/IR293w0b1g+E9GGgv0qlkxes65JcSxfRaWCFF
+         1Xqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774644913; x=1775249713;
+        d=1e100.net; s=20251104; t=1774644915; x=1775249715;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gEJVuDKnjdgqU8zwIL3/sLmobVk+HSWnDM5ddTiDQu8=;
-        b=ZMZzmel3pos6blT4KWCHpGZI8hke4FKdHWs2Wy6la0Lr6tcV4BHxuTqus7jiJcaLqp
-         NoM8RAEzrgI4A4hFaqDk6McShCkWcXxnsLcd24w4Kiu2kIFUkzmCkFyVtj0qHvjDUKnc
-         SwBL/ZS5WCjaqfCmR3saQFbzSfoqemHK+ebzcxQ6H6CMFSwTLM0Q+tAvOIECQBvLLq1G
-         ogR1RyzIoM7O6HNwN4rqF05+fPLFpzRBA7Ceh5F+LW/YjjN4XGMFW0W0Dsl17zDiKxaT
-         V22R16P4o50p6Gyx850udSB+0AUjSoZG3FUvUtmViWH6x/n//behs6bVthKONG88PQqx
-         zvlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURZ+vejvFLD7Lb11de8iRZ34FzjPPudjD+tlN6feLiAI5h1r/RbyTsZzQas9WxpbcrdbOJExGS7Q==@kvack.org
-X-Gm-Message-State: AOJu0YwSsM51qE05/b19uxsAXYVxm8gFkJzhbTZ4if/o1vLBFWBUNhBd
-	+urINLCvOaAguybGq3wcGGzj/GJeuMYkkGRruTJm4rH9fD301ZoNPI6g6k0sQ0PUkH80N4tj2l1
-	6dXTk2A==
-X-Received: from dly16-n1.prod.google.com ([2002:a05:701b:2050:10b0:12a:7f27:56f7])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:6099:b0:119:e569:f874
- with SMTP id a92af1059eb24-12ab3045876mr1405563c88.17.1774644912438; Fri, 27
- Mar 2026 13:55:12 -0700 (PDT)
-Date: Fri, 27 Mar 2026 13:54:56 -0700
+        bh=5NgLz5FVqf/NV7m9qbKXaNWE4w/1GDJf1IUGYhV4ad8=;
+        b=q2ziaddMAACvPRvAsnP26d8gFr5y1yMaHnAkKUS1BetGf/hHKcUNp/he6lXtIrvuhj
+         /gAXUsmz/pG4xrQzamHymaeD380dI6RxJMOJcgHqoVTqs+l8prb0YUcoNV5V52ratSPE
+         79e4n+qZ1WkpyJkRLtpIctXYu2PLQYwKcn0lbkWzlSfyIRWOs5gG/3lMxSI3x+ojhl9Q
+         WSSDog8BaGuQsbVcZOMXzlrNN6ahFH0T6u/ED6fEDLfibwe8oPhT4f0Lu6KcECRdnaEH
+         8uyV0Rle24ONayn2FDzXyLqJC1h3Vfi9QJtd2q1zXmiqIdAF3Eoc1RCP6k+KWz6et887
+         ff6g==
+X-Forwarded-Encrypted: i=1; AJvYcCXtU02DywvZRlD/dUglT0Lz8lf1RKjdYY/ghTWvOEVCNMOdcTihzNKapoJZLPJ0T4NxC9neYXJZJg==@kvack.org
+X-Gm-Message-State: AOJu0Yw5vFJ9hOJTY2ko+pKNqsNDNw4csWUJy9hjzO1bspJyKo7QWHj7
+	e1P+E1gv7hhS+ZoC6cSIYScFfpGK61/IDKDcFhuLyw5NBE8Uz4+47GTqD5zWv9yCIz2HY6IaN9i
+	/BT+yfw==
+X-Received: from dybml5.prod.google.com ([2002:a05:7301:1505:b0:2c1:5ad0:b659])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:ea30:b0:128:d7a7:5261
+ with SMTP id a92af1059eb24-12ab28eba7bmr2796910c88.30.1774644914544; Fri, 27
+ Mar 2026 13:55:14 -0700 (PDT)
+Date: Fri, 27 Mar 2026 13:54:57 -0700
 In-Reply-To: <20260327205457.604224-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20260327205457.604224-1-surenb@google.com>
 X-Mailer: git-send-email 2.53.0.1018.g2bb0e51243-goog
-Message-ID: <20260327205457.604224-6-surenb@google.com>
-Subject: [PATCH v6 5/6] mm: use vma_start_write_killable() in process_vma_walk_lock()
+Message-ID: <20260327205457.604224-7-surenb@google.com>
+Subject: [PATCH v6 6/6] KVM: PPC: use vma_start_write_killable() in kvmppc_memslot_page_merge()
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
@@ -101,16 +101,17 @@ Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com,
 	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
 	agordeev@linux.ibm.com, svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
 	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, surenb@google.com, 
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 1084B1A0002
+X-Stat-Signature: tdydw91e8bnr934n8x4weffbuzk3mu89
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0EF9720003
-X-Stat-Signature: bof9byiicgnyrmaotqcxei8ampezode9
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774644913-855675
-X-HE-Meta: U2FsdGVkX18AKsrngSYWiDxNoNr11V131Q8sAu8mFsHyNHT8tp5muFtYwcBMlR0bXjDae4ybiuAO+eur1O2H1FvJNME6K1BuRvYWH2sxJ/vfwAWvWoy/sA0yKRHeTPdT8r1htD9ATrelDoRIb6QDmpwe/IYUbbceCfyo7sNQdU9j7FEMloXRBv7vZj6+I5D4MZYWj8tmzZh00A8iwr/bmHkYjwCC2pTLpWsvEv4Jh9bBHsqw5JLAgIzw540Barw99jLNrkwc4+aW8Pnl6OVRZtybwXZRWivn+V71Do4utXzXMr0GmujNtESHPs0iwd2/BqRTwQSfXiEzq+Y/V5xyUJYzMU/BIs+2BI2S9laJYfr8PiwyqXNfX8HN2I3egsbKFaOB671NmPUvEx/3nJzjjdkA7oTJH9IsvJOQX5VFWnr0TEKOjw/Wn806VzCtaOQrTqVgIkOwQ91C4qEBLVY/9SXXxrbW612AffR6xvaMMYSOmeLJFFasm/SVKTlrzRV3M2osvSEdiBYVxNTSNs6h7MZbfa4K+wHFlMwHi7BmBiiGuVwClyQaBGqT48/tvGHMuhfXnS9bOFGjThsMDKII0MYDQShfTpd6ovr0QQ53ONsAmrnxwWs4n3lLvSia0LVSZFy47v3a6BSRW0kcc/aKPwZmPlVjn2Tu77dy9pdr3BuIoxdDJ9bcQZvjQRIJuzQ/f3BIpAiIRBxtTBJaNR25iR8ms1ZbYlU6bGi/2g06Ivd977K4cdyrI4Q85+Y+pIgL+6ikGAiBZfRG+ko+VeQQQ9drunuG00N+DLwjzs5tmcnsCFrsDTmgTGahn7D1sYNID4aO3ADHkghOW8uesXT52WoktvevS2IKjiBhNWpEP4h2AgufnSsN0JPlwmFlx2Xp/Y7KaAldQO9TAD3hbf2YqkAk/MN/QfNtHPB4kAt3uc9cpmqJTyF25InR64MHWMeJbVgKAH2hNCdBGwxKY3u
- LnUVNrmw
- 4AFqk5Plt56nxcW1KV6Nt0Wy9osC8/JW9PTBHKX8Q3Xp1eK66O8NNH72NyJF/cQbXrzhHVsfuyynTcIKBDVXiQmDHZZXRPpHh4rOQ0lqM6VjhtV59MnmtXIDHdw6OSz/88Ht8T0AI/NhO6ekmPsKY3CkbK81VEuloGxTjto+XcgTtEUUy/FUA0AmBaUnQ9jL4dNvRi6BtwNcRNoCs8yZTCGP6MOsHylsENqECHWV1shRZLYgmciEz6y702S0nyu2g8Le8Ymuqg/aolpIJ9G5dl941BKdtzFL/02JlZ8wtw0M8Df41f8+bDzcY+2OZx1kVDNIfqm1SD9O/VBBSDoVQaLHLFPhJ9qNVqBNWkanHoCMxe6/qxHe1Wtbi+8o5i3SiHok623Xmk1bF4nYOmL5pazf0wEsiVQZE7+ZcIhL0iuAcC/GDh9zZHidHuaM0sFikiUDCecMQ+Gu6orZNTCrVLA3WYjS4+TOM1Kk+HTCkuo9QUYr3zUYbr61aqiNAkVZPgolfUVan+rhhFvAzHb0zuZXUmn182REgk3aJwrdhmpsA5JdMRMEqXyY6TmOux4iMRAq/03y60QyNEqn8JWKfcEuhJt36MwfKHkmJJsN9lgVEoiOcxcq7HmVaE7rzHX861iiglVcixcndIZJ9lVFrRzK1//NW3XJWu1UpnmNRAL63EbsBKM9XO6hLT5K5guHadxuRsQqjYJYBJmoqF5ntAMF3+aVGuPEOoQ4b+f6B8d7i3pwkYpZMwqP4oHCmng81SyeSzzJ/PfqXSR1abLCj1sgntlsGjHbWI0Y9R+dJf8j+yKo=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774644915-296126
+X-HE-Meta: U2FsdGVkX1+hup9hN79BgK8BPmRw724laQNldEGWJ/C7v9H/PpQW9KA+A/Hk3U7y/bw5HpoDAExgPjHtuWSLGxOOLZI0aLYN2odac0/q/ZsWK1DXoaQn/WdiM94f7bEBGCp/GdldB13sV5uNiKpSU2d9Zik1QJ6JroSzXmQc6nDHr4rBCOrU8ASaE9CVjwMZKWE6CrNMJl6PK5ki6ywKCABSQ9/G5czmoqRAB4/2xb5mk6m4mURqIPYmD5ZpgpYqbP00GRXSp2rGseQ65RHSEEoM82/3Gpv1i30DRu4+ZwonH0FX+zecF/nHB0qEXuNM75AQvC22BurZHo+h8/LZLUOOo/KcSIIZOaobERYhrZmBSQ++3YgNTXh2eJoPJ04IlQdNmljTLRctrkff/JEK2UAVNaCfE0RmW6wf2oM9DVN+1ddgcra4E4N7fnocQ1Zqx4XykeY/0xS/3gi2RLvK6tYHYP7gvlvhUEdcMo0ebmkm5vRzA88vrtMfS/Xgj9fra4L0ZJjQv/g4wPle4xSqOr3f6xhuh2IWt/w5P0hqD0EE3N4Y608StaqtG3YBQL81OfjxeMDD1J0tOGDj7U4feI5+BW91vYClSzgBOdRmAZC/dL7hxcwG+u5NJLekRMP1J7RKUeNXnAQZvr54b/lJJ2/rAdGg9hMM3/2/JWbA298B7POYeriaHFPcee5k0W1NINITYx3sK+JjiIZnsuCaSVwCryKxNf6itDuANJ+lNUFOG1/T4bXXZggdcGjhBAYoFWk1whq8h8p6hIHEQHSracONd67Pzk7hXUtbLvAFjGwBKTITdgWNuMHhrRwjo8fnnNr12yEF0zBmyc7M+/2pl/oFFE4tZrM3HKhaaPaZyQrkse0FY9azB1RIUBEaGkkbnanlzm667jgn2QZOafuHfazwwTQHMLxaSM9wGBn/nSnrkeImCEKLJjO7SrrAdzVS/rnMJEfF3jEK59TkbtO
+ hQ9yUgGF
+ OOX5WUiwPyr/E61wx0GjnzRlKkl/SfIixKZoyrgMuIxCoGfnIH5aHWyR0SDRThEQveV5pt6TIsmmoPqphl2azqPdEeh5TrQasztC7AH1NUAl8A4AwvP8SkmiFm+NIfpnv0T52vBdBvXhMOpchaY1FYeNOBh/219woZk4CaPkVubs6mLNVLq/Q65/33F9HqspuV7EJYXhPFDrYx3YlW4SCVaLf5TNs86btD+fNOK2Ts2UV3qKh+c376DIOqhLQXwTNURxWgg0L3QKbUHvKWj+yfbaOjwc2vrSLC28G4OYBzY+2Am0NlpZgk2QtFKa3nFl/TD7Q9TS4ePD5cXDv6zpWedbCN238IVSxQcJLjfPvYfo49dS7LbHEp4NyKz61YeGV3Bl5PtKIIx1gZwOW5vvDllQ7ill0snph3xzTPigL0Io0FDgMa/UEvC0Bv51Zv06J7SIq9U8yfgVXhm0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,170 +119,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace vma_start_write() with vma_start_write_killable() when
-process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-Adjust its direct and indirect users to check for a possible error
-and handle it. Ensure users handle EINTR correctly and do not ignore
-it. When queue_pages_range() fails, check whether it failed due to
-a fatal signal or some other reason and return appropriate error.
+Replace vma_start_write() with vma_start_write_killable(), improving
+reaction time to the kill signal.
+Replace vma_start_write() in kvmppc_memslot_page_merge().
 
-Suggested-by: Matthew Wilcox <willy@infradead.org>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- fs/proc/task_mmu.c | 12 ++++++------
- mm/mempolicy.c     | 10 +++++++++-
- mm/pagewalk.c      | 22 +++++++++++++++-------
- 3 files changed, 30 insertions(+), 14 deletions(-)
+ arch/powerpc/kvm/book3s_hv_uvmem.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index e091931d7ca1..33e5094a7842 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1774,15 +1774,15 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 	struct vm_area_struct *vma;
- 	enum clear_refs_types type;
- 	int itype;
--	int rv;
-+	int err;
- 
- 	if (count > sizeof(buffer) - 1)
- 		count = sizeof(buffer) - 1;
- 	if (copy_from_user(buffer, buf, count))
- 		return -EFAULT;
--	rv = kstrtoint(strstrip(buffer), 10, &itype);
--	if (rv < 0)
--		return rv;
-+	err = kstrtoint(strstrip(buffer), 10, &itype);
-+	if (err)
-+		return err;
- 	type = (enum clear_refs_types)itype;
- 	if (type < CLEAR_REFS_ALL || type >= CLEAR_REFS_LAST)
- 		return -EINVAL;
-@@ -1824,7 +1824,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 						0, mm, 0, -1UL);
- 			mmu_notifier_invalidate_range_start(&range);
+diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+index 5fbb95d90e99..0a28b48a46b8 100644
+--- a/arch/powerpc/kvm/book3s_hv_uvmem.c
++++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+@@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
+ 			ret = H_STATE;
+ 			break;
  		}
--		walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-+		err = walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
- 		if (type == CLEAR_REFS_SOFT_DIRTY) {
- 			mmu_notifier_invalidate_range_end(&range);
- 			flush_tlb_mm(mm);
-@@ -1837,7 +1837,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
- 	}
- 	put_task_struct(task);
- 
--	return count;
-+	return err ? : count;
- }
- 
- const struct file_operations proc_clear_refs_operations = {
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index c38a90487531..51f298cfc33b 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -969,6 +969,7 @@ static const struct mm_walk_ops queue_pages_lock_vma_walk_ops = {
-  *      (a hugetlbfs page or a transparent huge page being counted as 1).
-  * -EIO - a misplaced page found, when MPOL_MF_STRICT specified without MOVEs.
-  * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK unspecified.
-+ * -EINTR - walk got terminated due to pending fatal signal.
-  */
- static long
- queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
-@@ -1545,7 +1546,14 @@ static long do_mbind(unsigned long start, unsigned long len,
- 			flags | MPOL_MF_INVERT | MPOL_MF_WRLOCK, &pagelist);
- 
- 	if (nr_failed < 0) {
--		err = nr_failed;
-+		/*
-+		 * queue_pages_range() might override the original error with -EFAULT.
-+		 * Confirm that fatal signals are still treated correctly.
-+		 */
-+		if (fatal_signal_pending(current))
-+			err = -EINTR;
-+		else
-+			err = nr_failed;
- 		nr_failed = 0;
- 	} else {
- 		vma_iter_init(&vmi, mm, start);
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 3ae2586ff45b..eca7bc711617 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -443,14 +443,13 @@ static inline void process_mm_walk_lock(struct mm_struct *mm,
- 		mmap_assert_write_locked(mm);
- }
- 
--static inline void process_vma_walk_lock(struct vm_area_struct *vma,
--					 enum page_walk_lock walk_lock)
-+static int process_vma_walk_lock(struct vm_area_struct *vma,
-+				 enum page_walk_lock walk_lock)
- {
- #ifdef CONFIG_PER_VMA_LOCK
- 	switch (walk_lock) {
- 	case PGWALK_WRLOCK:
 -		vma_start_write(vma);
--		break;
-+		return vma_start_write_killable(vma);
- 	case PGWALK_WRLOCK_VERIFY:
- 		vma_assert_write_locked(vma);
- 		break;
-@@ -462,6 +461,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
- 		break;
- 	}
- #endif
-+	return 0;
- }
- 
- /*
-@@ -505,7 +505,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
- 			if (ops->pte_hole)
- 				err = ops->pte_hole(start, next, -1, &walk);
- 		} else { /* inside vma */
--			process_vma_walk_lock(vma, ops->walk_lock);
-+			err = process_vma_walk_lock(vma, ops->walk_lock);
-+			if (err)
-+				break;
- 			walk.vma = vma;
- 			next = min(end, vma->vm_end);
- 			vma = find_vma(mm, vma->vm_end);
-@@ -722,6 +724,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
- 		.vma		= vma,
- 		.private	= private,
- 	};
-+	int err;
- 
- 	if (start >= end || !walk.mm)
- 		return -EINVAL;
-@@ -729,7 +732,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
- 		return -EINVAL;
- 
- 	process_mm_walk_lock(walk.mm, ops->walk_lock);
--	process_vma_walk_lock(vma, ops->walk_lock);
-+	err = process_vma_walk_lock(vma, ops->walk_lock);
-+	if (err)
-+		return err;
- 	return __walk_page_range(start, end, &walk);
- }
- 
-@@ -752,6 +757,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
- 		.vma		= vma,
- 		.private	= private,
- 	};
-+	int err;
- 
- 	if (!walk.mm)
- 		return -EINVAL;
-@@ -759,7 +765,9 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
- 		return -EINVAL;
- 
- 	process_mm_walk_lock(walk.mm, ops->walk_lock);
--	process_vma_walk_lock(vma, ops->walk_lock);
-+	err = process_vma_walk_lock(vma, ops->walk_lock);
-+	if (err)
-+		return err;
- 	return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
- }
- 
++		if (vma_start_write_killable(vma)) {
++			ret = H_STATE;
++			break;
++		}
+ 		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
+ 		vm_flags = vma->vm_flags;
+ 		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
 -- 
 2.53.0.1018.g2bb0e51243-goog
 
