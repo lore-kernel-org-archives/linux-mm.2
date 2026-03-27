@@ -4,110 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEDE910BA422
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A26A10BA422
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:13:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C5E76B00AA; Thu, 26 Mar 2026 23:01:03 -0400 (EDT)
+	id D9B956B00A5; Thu, 26 Mar 2026 23:13:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39DBE6B00AB; Thu, 26 Mar 2026 23:01:03 -0400 (EDT)
+	id D72C96B00A8; Thu, 26 Mar 2026 23:13:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28C1D6B00AC; Thu, 26 Mar 2026 23:01:03 -0400 (EDT)
+	id CAF5F6B00A9; Thu, 26 Mar 2026 23:13:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1405A6B00AA
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:01:03 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AC34713BFE5
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:01:02 +0000 (UTC)
-X-FDA: 84590341164.15.9F8B9DF
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BE4956B00A5
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:13:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A2F05DB0A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:13:02 +0000 (UTC)
+X-FDA: 84590371404.22.E8F11AD
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 76A9A180011
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:01:00 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JPQBBhYS;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 427D54000A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:13:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M9J2kgQ8;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of junzhao@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=junzhao@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774580460; a=rsa-sha256;
-	cv=none;
-	b=c2AcKttXDzrv1jCuLn5v1awjPLKHU0KpUhBrX1zjLgH62WmOH/Sfh2qzhNiSixguYrlTAF
-	SHnUSmGU219nOhewAWnuahj8SyAwFScETFFE8NwYgFQq7DGxwMUtiVhIONhjZKeyt19Pq3
-	Y2w+IlTCsUjBy/y+/8gYJJDtFCr1TaY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JPQBBhYS;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of junzhao@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=junzhao@redhat.com
+	spf=pass (imf12.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774580460;
+	s=arc-20220608; t=1774581180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=KxXsUliqYzfkqIh03PXfVwMjyp8lPMaw2T3hQcpy0bM=;
-	b=DIfVbmNqvfqBKCYne5Fh2tbklRTeOluGcJqxbPNfQDoI6YboEIA7q+TZap84T4qNnIqeBr
-	kHjcKDGVMtzQ+/XQm+50maMLzfdiZkh36Zz9C3sdupwI2Rw5CJijE4ow0ndPpm1E6fqz8t
-	uW5oV1X52B1Zq/4GLRaXSo+N2Uo1xIA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=2gMVERs5nD4fs9GE1Z+JDM+DqMotyc35OUdJ51PD49o=;
+	b=2lSVlIZUa4hK6U9Rg3ulp8DiaOXw2nU/6LBJUI6kglnKhxOOyADTCHG8Po+VCIqgNEj8o2
+	iYW6D+ZFJDglT6NnkBZCF+Uqt4gwxv+jSEZP946pWslhC7bFHYqQy6RT1cCDBm9WjZPpF/
+	ZTGcTk7q2yMWQ8BKWOlbMlkovBvveMg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774581180; a=rsa-sha256;
+	cv=none;
+	b=W7JYiG33cGFw+sdp4BLSOm5xRV6xd2+RyzRehT+efgCsHfh9n13SFcOnbaIpJ8QyZ+tOaG
+	pJ7f70qjrm9thkZL+Ap3a7tVqbIetfolxotg1ddr4fhKNhLned0zTkhanVfHdv3OqtdcMf
+	RaK3GjmoDsKH818GhT7uRhw+AQ6jCsA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M9J2kgQ8;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774580459;
+	s=mimecast20190719; t=1774581179;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=KxXsUliqYzfkqIh03PXfVwMjyp8lPMaw2T3hQcpy0bM=;
-	b=JPQBBhYSA24KgR4b5OQcqCXLqx09hjs43LXlDNw/TXgajSCp/2lPrz+QQy1BvYFTZWmalo
-	FUMKqqN5sUdt2xXI03KQDDYELvQw9CkV3nqnW9xzUQZqKd3VY1dG6Vm6lLO01ujt69ZrFE
-	YtrFLOqKWJuT5Tk+GVUTvOcTSdtUVYQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14-KOb2S1KIMqaYQOlgQgEZpA-1; Thu, 26 Mar 2026 23:00:58 -0400
-X-MC-Unique: KOb2S1KIMqaYQOlgQgEZpA-1
-X-Mimecast-MFC-AGG-ID: KOb2S1KIMqaYQOlgQgEZpA_1774580457
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b983ca42edfso225580766b.1
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:00:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774580456; x=1775185256;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KxXsUliqYzfkqIh03PXfVwMjyp8lPMaw2T3hQcpy0bM=;
-        b=NMU1vqimyiAPc1st6lBAsYrPEX6nH4d0KBRATPti52pOCtfcVE5wevAgpmwqCFG3Pj
-         Rl+5S39w848Ps1l2Y66uJnkurHmq5C7f9uPmY66h+gG4vNMiT10gHeotpnIbe/CPEVXG
-         xBb+4G1jOTpuE5uF1IOcjcNC05mu/fCkQjiTXv8Yot10hILSZXQBpcBVf6evqph6yK4b
-         peVSJJlUVsfUdMiY4cdCyMNNtwRdCCvYO5ElK3ZQ9bgtMLBb2VTIFqe6FKk2GSmbEyZd
-         C7I28Wy0f4YHrth33yxuo6gkwskw4Lv3p5QtaEoqGMx2jDQEx01lKLcVcvPp+Y5p4sjc
-         hA2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUrxKCEqa02VWt9bjpznGBoXJMwGYnmrTCweNIw0yhrIxLeoMkMdWmvngh/ruhLVFFm1sPdfwT5aw==@kvack.org
-X-Gm-Message-State: AOJu0Yxv42uMamKMyKlSwJeOpEHdo995VaZ4IFTJxrXSW4WDo4Gu3yHa
-	Ls7DvMMaPtja6YnvB3MNUpnz4DJEb0HmwN80mrV4osJH3B8WlO7Yyw5HB7dNS3RKMT3C1WCkPUm
-	5Kgn4ipZhvDdJN7g86LgNXcP0ECzoh4TL/FO+Sch8NOvhYODOuloXxantRfvocAoN696MgI8kL5
-	wOtplLboLCqvAOkDxEgV+jli+Z+4M2vCklZi1WHA==
-X-Gm-Gg: ATEYQzwQWJjF0zSEAP8jMd/GusTSFxtmnu9NCYPY+6ZUqhLaCiVmj8TJMci+SxhxCg2
-	Edw3lhEcx8DdZd2KlDNsW79vOQTSPkW3VRXIBQDhqLG2/LFQHMUYwcjSNNbcJ0RHsA7ur4flj9H
-	iUHtAAvzJFonDWX9PH/D7FZ2qo4TkYMK9rJbJ1vyJZ7wza884EWfrcI0cN09UiWOohojspzZ9cv
-	lmfLDY=
-X-Received: by 2002:a17:906:b0a:b0:b9b:54ac:68b9 with SMTP id a640c23a62f3a-b9b54ac9144mr14233066b.12.1774580456396;
-        Thu, 26 Mar 2026 20:00:56 -0700 (PDT)
-X-Received: by 2002:a17:906:b0a:b0:b9b:54ac:68b9 with SMTP id
- a640c23a62f3a-b9b54ac9144mr14231966b.12.1774580455842; Thu, 26 Mar 2026
- 20:00:55 -0700 (PDT)
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2gMVERs5nD4fs9GE1Z+JDM+DqMotyc35OUdJ51PD49o=;
+	b=M9J2kgQ8x1+L4m3p4yY3IdrgB5u5bg2spXvdkwJTg5Efr5C+LWYDrDdxX/1EBH5ljm7OB0
+	P6/rhN4R9uyVrAtX8MuDBq4kNQSYHSYhd/8VA74uPhvaHvE60niekwxSb4smrUbZejrGl8
+	U2Y8q7H7BKzcWyklQ60SwZS3JyK46nQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-280-Of6-ZzLLOnOsTZgr9Cn7ew-1; Thu,
+ 26 Mar 2026 23:12:55 -0400
+X-MC-Unique: Of6-ZzLLOnOsTZgr9Cn7ew-1
+X-Mimecast-MFC-AGG-ID: Of6-ZzLLOnOsTZgr9Cn7ew_1774581173
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A5C6C18005B9;
+	Fri, 27 Mar 2026 03:12:53 +0000 (UTC)
+Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.150])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D7A1D30001A1;
+	Fri, 27 Mar 2026 03:12:47 +0000 (UTC)
+From: Li Wang <liwang@redhat.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: aubaker@redhat.com,
+	liwang@redhat.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests/mm: skip hugetlb_dio tests when DIO alignment is incompatible
+Date: Fri, 27 Mar 2026 11:12:43 +0800
+Message-ID: <20260327031243.15903-1-liwang@redhat.com>
 MIME-Version: 1.0
-From: Junyao Zhao <junzhao@redhat.com>
-Date: Fri, 27 Mar 2026 11:00:19 +0800
-X-Gm-Features: AQROBzDaezXtEDNsCvayTZ5wEuhmDYFnTwT5H280-OnTH2ns8HlrQwTzV0iYz2I
-Message-ID: <CAMZL0nYFrtfQbVs2F63S3y1kDnLGeQpURxd+OqGE3YkZ7Ad9Tg@mail.gmail.com>
-Subject: [PATCH] mm/page_alloc: fix indentation for VM_WARN_ONCE
-To: akpm@linux-foundation.org
-Cc: vbabka@kernel.org, linux-mm@kvack.org, Junyao Zhao <junzhao@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: o1PCdx9vFwXgNuNMJ1xIXdnUUc2XVExFC_fMvtBwZ6I_1774580457
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: J1LWn18xSGv-sHbMAtxLHzwj3MCGjXb9mBqrK4WevbE_1774581173
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: hq8snw9tib98bw71teo3cqahsysg6wj3
-X-Rspamd-Queue-Id: 76A9A180011
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Queue-Id: 427D54000A
+X-Stat-Signature: ixdpamg8c553quo9cwmkgjd416gcbmrm
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774580460-119726
-X-HE-Meta: U2FsdGVkX1/R4+Fa95ArtY19u8/tQePe4ypXzaRAD77gvp7i6MGQQrvMd+e/mFScKvJB1pdafg5xBX2t2P+7t+Cfn9TtcRGGdiTqGdknFgP5m+6ocJhhlO00/LpkaBhDTueGIZfVTeEXT6cs6Kw+MARVrnBaAwJBfi3G6BxUiLh4XqKe3ENe/IdQFi659E1GVHACT6je3PNxeD6aRs0cSuWRlvRIJeRvKYAnlKI5BmPWLMuVBf6Gv6pHQy7/4DSqFoJssqjVQybzKeDA7Lf1MbdxQWjGnEQZ2vR9Y9Kq4KgUiZBfzEqENQCjyxzmaBnRHox/rQQRGiQAd/dElWFO20TZX9ZrH+8lY64iYFtQFrdat8/t/9kQZOtb7JtIssEtTCC3XaEIcgzFkPTwAe7sdz8c/PnTRe/nzxvdrSI/ADIQBOc9PNz97ZmqJfsko49gf8cRTsaC9+/Dlr6pfswJJRWfjYg6Ko/X0aTuYhXEAMrq1UsnFEvcaAAblm8UvLi7UzOuT0kPk8MTe3PM2hEpzpa0WZQl8Cjnq7Pv2Af7HPw+cPrE5KUFktcb8OuLmbPNSlp+qDxok0G40gvriSiNxUnljNIb1sdfzsOC6/Pxn5hx3rusfwoLrTk6V7q/KWOkXJHvSYCiO4zR9x4gBP55fBvVXIIldp3ey1t1GQchiV6SpX4okXuRkYw9T/KwsFd7VURI8BoPbDnGrN8GUaHGVtxelA3ZBiDDWWEJGbem8Vnklzd8Zbo8r6bLSfaDrPI/bmV/0Wt2RYi13V1suKW3pE+SO2HZPqgOUL62OqFvmGbJInIoXGrvTryffVDBU6ZmY4jx9eOpE+Hb9JGiBu22fMbmRzC8xk4sDECDZN7EwbPVdz9A5Lcs2TWdgf0uhafe1/NctSmXFG8xz9xllMBi+kTgQR6brRQCGvMVWXf0yqnGbrkPZWMCpQPwUd7dp1ziB0jXps2giSgMVOOxxWv
- vK10+Y0l
- /baVrOThYhqEBU9mVkBPIBhieyesF6euPO4/lI2BOqk6+ma300vNxQ40/gtbb03tfFQ2ggl3JunwFF8rTc+NONEi5YfveuTxq2GbGzVJbi9Dri4MICi9lcU7LIekNYMnSNHqDVfqXZ8NXIod3hIW2Z5CLibYw97IPj6sd8VUt5/u4Vk02fhQUS3hGwmCmX6OI14XLo5cu0gt7LIumrkcLmFrfbIGNQHNpgovwYSfwDUD+ceVGdAU48TPMC6SNlEE14LMgU39+jUjbdM99CWWtA+nVxMsscRcOPk1F1BpOIXYu36SYFxI3kGET6HPD3KDebbfzVk5lwr+SiPNIL1n0pabSOozY5xNOs89pZKduudcitcSn+CV3BtLr5Q==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774581180-3069
+X-HE-Meta: U2FsdGVkX18IDLQilTIyCbs1Q3FxEDB5qYWJ85Vpi+HenwgaeTyPC2efEb23/rH+DefXBYhW41JgK3mgnb+KgrtI7pSBzYJW/mkyg7atsIIoAeSW3BcryWLX6TPV0n1mrR+CqIdFpTaA/z1uExs/FJjzHSxXbl8eoQHqdDC5yBnh0lWk7XRcF/86XXRToa0fUv+SLmT1uUSL0EHN9YoSylhat++7xhZDsAri0q5mKTT+GcQEF4jFsujXagkobbRjzSIiTkCX2tHFJjn+6hoRgoYsggLz19j86GMDzKIcPZXTgN9Z4BA4TqTtdWuD4W4AGr8TemOC+io6vYyOJa4vDpGX8hkRtv0viQR+WIWb2v8KkDWSycqUt3ZA8uCAxoW2kCRxssG1m/edGx3yiXZTf3nSWujWUxpn+Xy3TIv+YXYJBZSluFtjTQAZmqjNxd2XMG8sehoSqDhLXMoW6QUSjvH0/lhGxm7hjdfnHcAAIQ+RXDDOx6wPq967naENyHKqPfHEgK+5DsdZ5QpjSBFrMq23tYVYvyq8m3NdAVO+KO7KVArHREjczF+wjS815KT6Ty2I91tEO2eGXMf5ECvlqN7ivEWn79FASebMxbQ0ySRo+S73BcE8fmBHI2xt74Nr57Xs4SzMUr1IGijJ2e0tl7IwMIahgXypUS798MrUESe04dpcs11Wl6Axp1jCoa/lwi9459nD9N8Umbz9pIWklBpOBb1hDgaHdtCoKNdOOoU5uX4IHmeMj89RoUkdTs8d28pcSLtb9tXSMENAWOrqGmpH5/6fQOVXsQA+T9hKDVg+gfA5IS2rJ0hnXBeT/r4MHGwBAtYZ5B+rQX7cA5nZ/4e2JujtuFjw8XK2tyQ+nyBzm0EOgE+ZmqBZSeO2rA8HLP6YIZ0IHjet9+tWFjGPftoJbBQOMjfhC5zNgX5nWcFEsfHWfkr29CLMErBePnUyYhFrW7OIqBqu5pjtiXl
+ BjauJjiv
+ oRu9u21pSWQAqAvstE/5wOyZFH+bLqePehiKdL2NS883/IHEK6/j5C491ah7w3hoQ28uJd9ro4+skLJWX36nSl5M09/5sRRgn5c2FbVPkLkPjlRHIRZdunHt14895pxt7Bo4oeYm81nc5u6fOuaGXj4I2Vf0TqMWu8FUFxRz64cslh5OUocC2V905Dv2ME2QVtdF3yIzap0dKq9fpPcZKqqxvMzSVq6i6t08ohjuq9+2DdirBQCmQ1/yQ3wLAXd07dFhnjWYL1j2GVg/7ZnoWGly5TDIqUsahMTi2mbyFm5Ag0EREwmKHK/ZY/RdP05GDjK99X82H1+fqyvCCHzGCelckSzcfQWa3TymURBSZcJ6pud7lU2vgRW8Dr5TQSf5Ft9c0k8G4qtSPlIs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,35 +112,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From d7442d455218ffff67f890bb39d273d7555bed1c Mon Sep 17 00:00:00 2001
-From: Junyao Zhao <junzhao@redhat.com>
-Date: Thu, 26 Mar 2026 04:58:14 -0400
-Subject: [PATCH] mm/page_alloc: fix indentation for VM_WARN_ONCE
+hugetlb_dio test uses sub-page offsets (pagesize / 2) to verify that
+hugepages used as DIO user buffers are correctly unpinned at completion.
 
-Replace leading spaces with a tab to follow kernel coding style.
+However, on filesystems with a logical block size larger than half the
+page size (e.g., 4K-sector block devices), these unaligned DIO writes
+are rejected with -EINVAL, causing the test to fail unexpectedly.
 
-Reported by checkpatch.pl
+Add check_dio_alignment() which queries the filesystem's DIO alignment
+requirement via statx(STATX_DIOALIGN) and skips the test early if the
+sub-page offset used by the test is not compatible with the alignment
+constraint.
 
-Signed-off-by: Junyao Zhao <junzhao@redhat.com>
+=== Reproduce Steps ===
+
+  # dd if=/dev/zero of=/tmp/test.img bs=1M count=512
+  # losetup --sector-size 4096 /dev/loop0 /tmp/test.img
+  # mkfs.xfs /dev/loop0
+  # mkdir -p /mnt/dio_test
+  # mount /dev/loop0 /mnt/dio_test
+
+  // Modify test to open /mnt/dio_test and rebuild it:
+  -       fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+  +       fd = open("/mnt/dio_test", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+
+  # getconf PAGESIZE
+  4096
+
+  # echo 100 >/proc/sys/vm/nr_hugepages
+
+  # ./hugetlb_dio
+  TAP version 13
+  1..4
+  # No. Free pages before allocation : 100
+  # No. Free pages after munmap : 100
+  ok 1 free huge pages from 0-12288
+  Bail out! Error writing to file
+  : Invalid argument (22)
+  # Planned tests != run tests (4 != 1)
+  # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+Signed-off-by: Li Wang <liwang@redhat.com>
 ---
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mm/hugetlb_dio.c | 37 +++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 10 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2d4b6f1a554e..d2e04ecddb8b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -884,7 +884,7 @@ static inline void
-__del_page_from_free_list(struct page *page, struct zone *zon
+diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
+index 9ac62eb4c97d..afcca50d190e 100644
+--- a/tools/testing/selftests/mm/hugetlb_dio.c
++++ b/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -20,6 +20,31 @@
+ #include "vm_util.h"
+ #include "kselftest.h"
+ 
++#ifndef STATX_DIOALIGN
++#define STATX_DIOALIGN		0x00002000U
++#endif
++
++void check_dio_alignment(size_t pagesize)
++{
++	int fd;
++	struct statx stx;
++	unsigned int dio_align = 1;
++
++	fd = open("/tmp", O_TMPFILE | O_RDWR, 0664);
++	if (fd < 0)
++		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
++
++	if (statx(fd, "", AT_EMPTY_PATH, STATX_DIOALIGN, &stx) == 0 &&
++				(stx.stx_mask & STATX_DIOALIGN))
++		dio_align = stx.stx_dio_offset_align;
++
++	close(fd);
++
++	if ((pagesize / 2) % dio_align != 0)
++		ksft_exit_skip("DIO alignment (%u) incompatible with sub-page offset %lu\n",
++				dio_align, pagesize / 2);
++}
++
+ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
  {
-  int nr_pages = 1 << order;
-
--        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
-+ VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
-       "page type is %d, passed migratetype is %d (nr=%d)\n",
-       get_pageblock_migratetype(page), migratetype, nr_pages);
-
+ 	int fd;
+@@ -89,16 +114,11 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+ 
+ int main(void)
+ {
+-	size_t pagesize = 0;
+-	int fd;
++	size_t pagesize = psize();
+ 
+ 	ksft_print_header();
+ 
+-	/* Open the file to DIO */
+-	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+-	if (fd < 0)
+-		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
+-	close(fd);
++	check_dio_alignment(pagesize);
+ 
+ 	/* Check if huge pages are free */
+ 	if (!get_free_hugepages())
+@@ -106,9 +126,6 @@ int main(void)
+ 
+ 	ksft_set_plan(4);
+ 
+-	/* Get base page size */
+-	pagesize  = psize();
+-
+ 	/* start and end is aligned to pagesize */
+ 	run_dio_using_hugetlb(0, (pagesize * 3));
+ 
 -- 
-2.52.0
+2.53.0
 
 
