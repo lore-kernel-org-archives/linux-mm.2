@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCC0A10A1E63
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:15:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 811E610A1E63
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:15:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C1556B00AF; Thu, 26 Mar 2026 22:15:21 -0400 (EDT)
+	id ECF5C6B00B1; Thu, 26 Mar 2026 22:15:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299396B00B1; Thu, 26 Mar 2026 22:15:21 -0400 (EDT)
+	id EA7556B00B3; Thu, 26 Mar 2026 22:15:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D6896B00B2; Thu, 26 Mar 2026 22:15:21 -0400 (EDT)
+	id DE4E46B00B4; Thu, 26 Mar 2026 22:15:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DC156B00AF
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:15:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A073D8D656
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:20 +0000 (UTC)
-X-FDA: 84590226000.17.D030190
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DD6B740007
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NTJcN7VC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577719; a=rsa-sha256;
-	cv=none;
-	b=NnckWVQmtv17yF+0J6xbjmR/GKad7Z7/+2o6oz+es/MgGOGiP2DEnozrUtsBfiz3yyosou
-	I2fbKPcC6GKtNF9Ti8HbCqDMw8zdl1CqtHtEAluT0Bumxx8h5UHtwczLrUIyRlIVBA236Y
-	GI1JSPEF6hU2Wf5gQKXR0OK+Op/jrcQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NTJcN7VC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CCDBA6B00B1
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:15:26 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DB638D1F3
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:26 +0000 (UTC)
+X-FDA: 84590226252.24.4F40B47
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B8E6980004
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZIxjF05t;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774577719;
+	s=arc-20220608; t=1774577724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5OmEvrhLT+taWsJJPLmmWMkCHrhCtqMj0PAwSXwnE8E=;
-	b=s1CYnEiFmfspsHWtwr4jGaC88rLqU5D9iICBb+VdUXXtfmxujwxvQxjaRB0uujps8+CDuU
-	guFmktG0oj66CTnIFIs2daTOLZ8ofZxPjfjWsR8MWVr//uzEtJ8EaF5Coxb/H4Xt+m1Sgw
-	RI/lMmNKDaFxq2rTxHrflFwQILAoptQ=
+	bh=MnIHRq/fqfQAry7CsjH3C0Gk1Kzxzc2ZoqIQPSTrMd8=;
+	b=7l43qoclKbXUgbGsXQWIln9kMrE+VL6rW0Exal2aZci90vVEPeHv8diw6x+guf9NdiYLc5
+	op6EEqZzRZDolnjYWUf7BXJwul4L7H8IxVOvdkqYeYDPDSdC0KGsfSl0n6myYE0g7RmpYf
+	x70LdZTtwM9uLdcLq2TFs1iWh00ETdY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZIxjF05t;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577724; a=rsa-sha256;
+	cv=none;
+	b=vrnu7UWQNd53raToYLQPUaY0yHP+/3xUtlnr3XIdPdUXvNew4qcMnHamT5y8DdAkSwBGhA
+	dgsPvBx/NaiabIDg+9pxDVdwQBaiTr4yRpRf08ObR9VKcwuQEC6rBL7KeaZsMdujKUTxJq
+	lglSGCysRt3Yu3/wmFTl2FzcZFVL7WQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774577717;
+	t=1774577723;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5OmEvrhLT+taWsJJPLmmWMkCHrhCtqMj0PAwSXwnE8E=;
-	b=NTJcN7VCFrbbYw8QV6DmQtslK9s9YNMNuM3BLeJdPk9ev+oaHPxhCblvvx8mF+jryQcQ/A
-	wg7YpJu4lEnBQjk0VtVknCzS7c33o5merk9llHuNz4qXtYAm5HOn3BSwWdYd/7vyZ/q4XM
-	aKuuq0sNgUbjhFWLQf7XvGWk7bo3EeE=
+	bh=MnIHRq/fqfQAry7CsjH3C0Gk1Kzxzc2ZoqIQPSTrMd8=;
+	b=ZIxjF05tNow9dzUHFs4hqWlnAIWjdc/ZiKkgAVcRdwnfvfmpyyBGO5uiLBm/6z5QMsmkqr
+	ztEHZPBtu0iiXBGTFC271TxvM49AQMco70eXk+ARnt2wNg+T9bIFsUICK9N4z8qczvq+p2
+	or1an7NL4GSoQ5bKiLd41MfIKi+EWcU=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -90,22 +90,22 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [v3 10/24] mm: thp: handle split failure in mremap move_page_tables()
-Date: Thu, 26 Mar 2026 19:08:52 -0700
-Message-ID: <20260327021403.214713-11-usama.arif@linux.dev>
+Subject: [v3 11/24] mm: thp: handle split failure in userfaultfd move_pages()
+Date: Thu, 26 Mar 2026 19:08:53 -0700
+Message-ID: <20260327021403.214713-12-usama.arif@linux.dev>
 In-Reply-To: <20260327021403.214713-1-usama.arif@linux.dev>
 References: <20260327021403.214713-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: zyi33g8wwbq3qcgd7zzyoo6i3bi4chu9
-X-Rspamd-Queue-Id: DD6B740007
+X-Rspamd-Queue-Id: B8E6980004
+X-Stat-Signature: nzoib3z1x5fu474threitx733sffetyi
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774577718-171061
-X-HE-Meta: U2FsdGVkX18KRHXMCPxQ1sxU0JKCNXTp0ppXFKsTk9xnIkp8f5xJ1ZPXHpqnKgBa2kAzvTx5nQfvRxvkYHCSl/kjH48ND8+qTsQkZ/JvwmQTgWHw6MnuOsDUfZMG8PSPbKcrO2Av6JE94wXVHGvbxUlPNIBe87G1+IWDoLbXaoIyJ+d9Q9R6VAHpjiansXmW9oaGNHQ6q6Z3FXOr2zQU/24sL82em7P2ZZjDHM9Wb3IoOwpK4nSLMWwNkmZlWGRh2eH+pEqSA3FN86lvEiTrjtj5oIxUW/qF06rA++5qW+b5b8bF7Ot4oNGsoCqI3mcDqLh5YKgnxER3es6yOi4anBLwhK/Opt9c60/ESeGVngY7uS9osEkzh5184+3Yuk9E+mk+hjpRahHWCmtbuVF9SzLZAsAaIwg8VWNeropAZpthGnfdGXI1EuK9qr0FQckJjxTyJnwtAJABXhMEcuQhvOmZE6YO9Mc5IfPAkp0yHrhfXkbfF51FoOk0IQNcF//cn7QbSYS4doHIpqFG9rLgGZmHxV0I/2v523lQjX6yCajQ1D6TPwF9x28Xflt6OZjWBBpmAMgOGXL7xipK3SdnY4nnkoCn2/sxtF3rrOGGtdfkMKvaasDIG+6yuyG70y10lp63HwxVlUAwf4YYhrpQV9EVYaX1/1GXS0PLM5PdCWO51cg0ceqUUAfaN6wOAeZ8euZ48jVp1lZM2JjHkENSWk9RI60ZzFLnp58agi+NZPEW7hm8pybl4Y63onvdkBnLfw5Ngje/Z+h/dXCReuwDGLJGq7FGM9/8DbpCHoZpt6q4lDdBinOBSlwCGS4JDDhKCcrEG01PNNyxuE0b+DnbhW90MM0hSCs9rRLUD6BmlgBZW/XpNJVGwXrneJfiRpfbeXQLh15KYuQOU2uy5t4gnuomwXt96RxpNKVqZzWoTXZ/z6Y0AFbH43h8tjJnGA2C8mKQtz+El0lOpQaY8mY
- cqnwunAN
- kbmwmv3fBObk2HAToR/OMTejV+gh+FAyIak64l2ukSVo531Rj6TVUE2VoA2B8KAt2VTg3SOruCHg0RjixZlEF2vjvHO69x4Jwt6+Q6W1t1h5Vj0r2zcYaqfxfU9aAxrCMFah6Ov8zC+Jn39BMrFS3+I32IB0RR3PEVLamgpKrr4edPO59JZbKUi2FiCC8b5QN0a9PvuYTSa72zBRUsA9RA0o0Kur+FoINMLvus/IRAQG5c0D7gcilMOWrRw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774577724-296237
+X-HE-Meta: U2FsdGVkX1/q8S6rubCh8zN6cUUToW81kp57IRqGwxGeWNRMdOo8NF5eziTd9CrEUW++9iFg4dFAmVsGsC2ii9e0ZtqdwTOQDEJGfKSvu9ERTjvMSR0RtnKkrDCcBCEaG0UeoUXHsTXseGBUIaFAMU8iKKK77WqPT1Ln7ZFwneS91dRvGbsCAzEt5be17nQwam3/0fKzfUO7vF6ZoQYiAFSN+/hSbZuA+pgto+U0BQUAbPKKL+CE4JPhC6Mr9CHEVFKMZemcv737QI5p3Dhzp1ygVl1nhqdZ6aPGGmQah7VuEYNkVy3CmncF5E4gw4sBs51zgcU1tVFZeG+n1Zl1sIGHViMUbBp1Abr8pdssOIKBhCo5O9rR6ykM+S6b0b92EAQ2iP1pFM2kdmRo6s+fJ/B2noDXZ83lNLKb6jxVXKsXC/mDcuJrVitOjK0FeaSjTmHGKHjGd55RiQ5NhKAPxiwqFybe3niPkFx3kVenV7HDLdTxYW9qQHA63kv6d8vtPaxIznkpaUoL3MP+YxdOpH1uIlKInjnKf0KueN/jam67ICa/8+e/6Ndn7uFVxiCkcgMlwSUUITAXiwSkGsKIQNopGeVY8YetQUSmLbKQa3CBE+f8VM0XAHHmNgJqwrqLUXhTGcQSQPXiGuSG6lGZ5ZENX2+TOk9GYO3W4GzMLl+8PCRFD0KLe4ZfVpqLDM1qlQ8wDkDOhZdvDR1bOv5gv3tEgPLc/Fn/dmUSGZBarNyukX3OPg7cfN1sOP82Z1/KQ+1zqtYqyHchwoqhoxYndIiUk2lrF4Kh0O2ocWVXfrnIJsJnXyvRKm8KTm8U2DHB2l6iWQ0EndwnTtw5+AL5JiFb+c8xErp/uDor8j5xRgGRgB1SlHGrRJ84MQAzrilk3VhiPtbI+R1jlByyiPbWwqnpJpPbK5FU08Ey/eFmPvMCdod/sxuqr9Y8ZJTc8ReGyEn9k1G/tDYVbK3TR7z
+ LePmA4or
+ 5JuReMjo/LYGLCNFfvr6c2aZnSCLdH1sA7CXRGYyy++NgFQySr+Cl0OeelbTG21g08lNWkofbssAJW8IQ5hRw7b/AXZ6VbSid/9oPGUl5ZGAbQNHCTZnSIDgnt7hVu6HhlTsfqK3oLsosMn8eNotvmvpCLSAkLmkHf0X7lTTejdgrU3YBOgTnOskIerOiFAqjD/t7558MXJYxQSo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,41 +113,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-move_page_tables() splits a huge PMD when the extent is smaller than
-HPAGE_PMD_SIZE and the PMD can't be moved at PMD granularity.
+The UFFDIO_MOVE ioctl's move_pages() loop splits a huge PMD when the
+folio is pinned and can't be moved at PMD granularity.
 
-If the split fails, the PMD stays huge and move_ptes() can't operate on
-individual PTEs.
-
-Break out of the loop on split failure, which causes mremap() to return
-however much was moved so far (partial move).  This is consistent with
-other allocation failures in the same loop (e.g., alloc_new_pmd(),
-pte_alloc()).
+If the split fails, the PMD stays huge and move_pages_pte() can't
+process individual pages. Break out of the loop on split failure
+and return -ENOMEM to the caller. This is similar to how other
+allocation failures (__pte_alloc, mm_alloc_pmd) are handled in
+move_pages().
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/mremap.c | 8 +++++++-
+ mm/userfaultfd.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e9c8b1d05832b..2f70cb48f6061 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -855,7 +855,13 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc)
- 			if (extent == HPAGE_PMD_SIZE &&
- 			    move_pgt_entry(pmc, HPAGE_PMD, old_pmd, new_pmd))
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 481ec7eb44420..a04d62dd1e065 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1946,7 +1946,13 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 				}
+ 
+ 				spin_unlock(ptl);
+-				split_huge_pmd(src_vma, src_pmd, src_addr);
++				/*
++				 * If split fails, the PMD stays huge and
++				 * move_pages_pte can't process it.
++				 */
++				err = split_huge_pmd(src_vma, src_pmd, src_addr);
++				if (err)
++					break;
+ 				/* The folio will be split by move_pages_pte() */
  				continue;
--			split_huge_pmd(pmc->old, old_pmd, pmc->old_addr);
-+			/*
-+			 * If split fails, the PMD stays huge and move_ptes
-+			 * can't operate on it.  Break out so the caller
-+			 * can handle the partial move.
-+			 */
-+			if (split_huge_pmd(pmc->old, old_pmd, pmc->old_addr))
-+				break;
- 		} else if (IS_ENABLED(CONFIG_HAVE_MOVE_PMD) &&
- 			   extent == PMD_SIZE) {
- 			/*
+ 			}
 -- 
 2.52.0
 
