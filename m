@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 707ED10BA431
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAFCB10BA431
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:24:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D87346B00A3; Fri, 27 Mar 2026 02:24:07 -0400 (EDT)
+	id 410D06B00A5; Fri, 27 Mar 2026 02:24:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5E936B00A5; Fri, 27 Mar 2026 02:24:07 -0400 (EDT)
+	id 3E8E96B00A7; Fri, 27 Mar 2026 02:24:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C56FF6B00A7; Fri, 27 Mar 2026 02:24:07 -0400 (EDT)
+	id 3262C6B00A8; Fri, 27 Mar 2026 02:24:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B62046B00A0
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:24:07 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CC81140CDE
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:24:07 +0000 (UTC)
-X-FDA: 84590852934.11.E87F980
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8336840006;
-	Fri, 27 Mar 2026 06:24:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Akq7hqCe;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf12.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774592646; a=rsa-sha256;
-	cv=none;
-	b=6ebEZ97vdvmcqGc0+LYLsCUN+6+ItEpc0RI2XWVgpIjICnFKQZyX2takFz78mUqI36nuVC
-	psdoDksmjM1UdlZ8KmzwpIxqSWsbboLkNp0BwU6SpMlDnzSGUsX4oMXy+O4yR3fYcFQG46
-	T5/z1EtD9w6pxOYCGRr5yb9F+YSkzsk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Akq7hqCe;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf12.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 20E426B00A5
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:24:12 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D7C2713C14D
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:24:11 +0000 (UTC)
+X-FDA: 84590853102.30.A199EAE
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1608AC0007
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:24:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JheQI6eA;
+	spf=pass (imf28.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774592646;
+	s=arc-20220608; t=1774592650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	b=0cnLvaj3bOJhlCTspvrd1d0XeHQjYjnJ5rt8dn/1BDKtX1NeNdV8aAqWDbA967o9QIK7pp
-	EGEOzADHs8MMelyniVbaSvGtb0U93/hsSsbMstedqwWVEVqxdJXHCTkFz/hkUhZ/LjRgst
-	5DRTB1IRvksp6zmVH7JIRPE99Fu/8cQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=Akq7hqCeq3L7qJY8xekif/H1IL
-	10s/6mD8TowYHAs0Mh0fmyrkIZ0peWfvGTGNTCF+cErSPOUsAkNtmgFnPyV6AnW6wmjGUAZ4L66KL
-	8JYNKgvXqMwpNaBCB0eNNjaEqkZvVKgOSpHYo0QSvmGp2pCEgBE8m8yaThFWOMuq2S3o9WujStozx
-	rMN/mT7p4HMrslSDJLbee31EP2jPZkFb+Nb/laVv9ipJT0izhceDcAYP9BJhQPT7qzXo1gyOlNjPu
-	tZ1u+hIcVpbYpbgdaHfORapU7b03WBQk+uKrxgZbFkKyQxKW1OzDeTjnvACv3vtnLkrzihA5Jj58F
-	jv7H8M5g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w60bx-00000006ogq-2aDS;
-	Fri, 27 Mar 2026 06:24:01 +0000
-Date: Thu, 26 Mar 2026 23:24:01 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 41/42] fs: Drop mapping_metadata_bhs from address space
-Message-ID: <acYigQf8HR6oRD9q@infradead.org>
-References: <20260326082428.31660-1-jack@suse.cz>
- <20260326095354.16340-83-jack@suse.cz>
+	bh=bwsWFume+MLm8nKXxe8GdLtIJNkuXsJh6IlDV/J4bdg=;
+	b=fOnAKvirFeQEyiEEwAC40asgNSH+UgCyuz16DJn86SbHYDFRu33CugJCRSeHRe1TyNqN2c
+	CqvoxBhp1TRB+1v6tToTkKRsnM1EDJHrJ4y2CEnxfDsUmBENcMmh5pMcVB3cX4QJkeCWGz
+	n8CJ3mo18HWbIHv7Hkpos6CTuXuG+AQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JheQI6eA;
+	spf=pass (imf28.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774592650; a=rsa-sha256;
+	cv=none;
+	b=nsF8QvCob4ZPWJNKB0irNU0h32YCARc0xR0JFi7YipCiNKZ8UfJeMhV+6cTQKyqsjtPf7E
+	kBlNmEIu48REooZwKil7v5CtpWqiYpMHtUnXF+2D8+GWgkxeJwJbSqXd1zB2zSMCwCtVa0
+	89h/vGsev1XJmBOqTrpN56Pw1nIbiE0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774592645; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=bwsWFume+MLm8nKXxe8GdLtIJNkuXsJh6IlDV/J4bdg=;
+	b=JheQI6eA2AkkyepIdYK1fh8Px+Jos/OfGawDflVMJJcbH0lKE2DfR7fttbVeOXtinvyA7Bs4VZtyuMEKe9vuyDlsJYOZ5vvB/iKwm24gVtL3U6Xfm7JhjvzeT8/q74PivLpJr4xgX85T7g8YYvVivty0en3k58pTj/f7k72sdyI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X.nK-A0_1774592642;
+Received: from 30.221.131.128(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X.nK-A0_1774592642 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 27 Mar 2026 14:24:03 +0800
+Message-ID: <9e8061a5-980e-4e6a-a349-8a89f9eb1ba6@linux.alibaba.com>
+Date: Fri, 27 Mar 2026 14:24:02 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260326095354.16340-83-jack@suse.cz>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: naey37mb4bguhje3xs8b697uwjoruqm9
-X-Rspamd-Queue-Id: 8336840006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v4 2/3] iomap: use BIO_COMPLETE_IN_TASK for dropbehind
+ writeback
+To: Christoph Hellwig <hch@infradead.org>, Dave Chinner <dgc@kernel.org>
+Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Christian Brauner <brauner@kernel.org>, "Darrick J. Wong"
+ <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
+ <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
+ <acRG5f9QjdEKg2JB@dread> <acYe1oCInkDLWGGu@infradead.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <acYe1oCInkDLWGGu@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774592645-349912
-X-HE-Meta: U2FsdGVkX1/ms5Wf71ziDsy9k312lbkRSz0IsppSUYkKL2NNCjAjdegYyITsRm8lRcNEE0zponlXxhpYAtBICmBERGty5czxbaUFBjuSvsliTM55iUtqBW7kCIfTwHBVOC7q8yVeP5EdUwjC7G4s5vZUmCBa8ihjiKjSHRkE0LbdW6DvP1bWrfnInTz3uK5BmJ4mhVlHkqQxGGYJIiMFizC4jrYd0dc1T2DWIqDgALdiHwhzhBXhHoxCKXH2ijL9wvnbPUCUZTRWcSPgoCalLE1pcnuWAE6grpS1rtforh7DGmaJ1srG6dMNzwcuv80eGzLcKp+WmJyJv8WqowZgg+VzXUDLpaAsmRH74OcVXGpjENNWeCNfyPj4s2HOQBOnk890qoCCA40oF15UzmdM3oUykk0kUCfV6rUdie6Si6Qh7ud4oPQATAlFOXZMJiU+mY1ejVqs9XcCEw/njmzJYue7Fh3TP6vyHixC40qjUMbx+suFGlqVECLXUkZ/2yjQERa3DTGHWjjgRgcU1i5VTN+S8Ge6WoNrfOxPCeQ2kBQXlib+TUL84JQmgW0tEW04pqi7nH26VHTaOozOj8ZST1/m4Zh2RBP6jwhMc/FWcnmkVblid3i8cz2b4LoTWbMjJT6LxKRbT4v9X4i4c5DMpLIVWkovaBMdggz8f9yNJoJ7mQg98wtozr/Sx8m+Py5NaFewyDdU5MVmIpt3Z7Pdye0ELxgJfMqKrErTJq7CIasaG7//yfwQIHixJBc0kSCIZnqLQAgeAN512qhIEArRP95LOuiEqKNmGJ4j4S9LAV6qaoQAJq7qVmcmUxyBHreFHYFmM4AhoctCsq4yLbSzMlEDLU45Widhq2LFA4KyZsd1iRDUNXeCXXxGVuUW7lLX2CW7d3aGfn9TI4iLKi6w32CRNEtPV66Y/+QlxiI+GwMzQW/jiR3DPTBn52PXwY3xxEkegGmpky238s23HDZ
- DfKDtw0B
- GuOaPMkrWPIEl9ZDInwprtL2C+Ep7KGLd43b0WLgr09ATRrm3+PwEm+5/4iTP7agL1bTsDKyhjy1axAgn98/aN5WNVwO+JfHRRpyrbDfCvfVHiRf2kyFoQ95d2XfLhcc/66RsQQsMz5d/NSnVt9LWNLmnb1RKqbuKbXMqLGmCFfEI/hV9gvW4lZB6Cuqz8Hx6JP4H6Zryba95Jjj5RsOP7mLrHU2Tu0627dV49C+feiLdK5c1C2ekcO42YNOwbDqBpEEwSOWtMOvo2lLlvn0B7dhCaby00PjtcTRtXx5DvavCLCYz1Fs6vGifIgm4qAlcTe7CWXwlP1s0JYBIdTh6asJpjMw4Vs/t//DLAB1e6fczKfYFSXZl6/bBoJboqSLWSN3I6XKvijZlw6DhlDP8Iojbbl+u69177obXZyrCa1g6C7/m5yREQmkQC2p5Uxg9/83qjopRiT6eNb2FtRyoKObJsWZ1eOiEoCMS
+X-Stat-Signature: 6jdp6tk8xwcatz4654do6k7je6sed5hk
+X-Rspamd-Queue-Id: 1608AC0007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774592648-159902
+X-HE-Meta: U2FsdGVkX190YksBCShuh5hkYHmMY5Gy9mKsjQDXmDxcAj+DDSI14oUU1FtLagg7u3AV7XZFJsPNf64AmEaPwl7yNs9TaV8sXqJBhexMhixLq0CFaTZSKmf3JBBwoEN7gi9jiHZYpph2p8wAP9/6cJvtlX1S6F4k4WZMIL4zYKnAd/rJNUjcSbLJJ8OkvxpHxQcsFopou1kbHn5G3LoH1TQg9Viu0Ufxp7UQ/SALLvN4qFh81fwi71GT6whPh/iURB5khqmDf1hcZOAxf5xkIkMRebENLjEjXVBRrhiYz1QM4bzeBr9jRgx5bocF1m6LrlDheqbF7e3uyZ6ks7rX6zU5tk+kXjxI5O2IOAgqJy1Y6+WGUryrkDSgE0xcTvx0IQTt898ZEDqhw1Pig7L0pn8QzjEIq9PcBv1aq+XG1Gv7LFi1gZbxTo879K3mJTL9iYicD/dOE5n2TApeQenMOAuzofQ+jq/Cg8k6mWLztqMcneOnN0lVZEe/pHzfJ5JteM1ogoAl5whJYYLZ6kPHUPrq/npcLSbI7FS49R/2au/CQclkAX63nPG6Z2v6gzwLtfd8ttyEhzi9TV8ghYclmWOKnJVcSmrRRkFfa0d4uqyz7NCDdYW/nMZIu4Z0fq8T88O8kifgOidEBO0znb3py4MZAg2kUGmv5Gl52UNF0HPV916aHDpFYr4wO3ZBAEJOKx6iewoSKGOQRwF6+S4pQMPx6Mm1/xq4VHa7VjJ9l/57FtRGkdj8k2q6sJ8UeWlukReCPo6Ga34vbdISkSHmW0IdDn+cD8z3EGwS6dycZnUKnL2kP3UcO4wTVcSrm4nZVs/AajX/CyH5QZi8g4sU9XaEPtPMVQmIkZkRgyyr4MsPrQuHPTn1ni/nTuu+j/vuLhEUbgEgn7w9VJkVkTfc62tXGHtcurzl1jSNLr7DcBRfE4PKsZ+U7FBZMctw/klwTESwShJPA6WfhzX7WIu
+ AQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,8 +93,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Looks good:
+Hi Christiph,
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+On 2026/3/27 14:08, Christoph Hellwig wrote:
+> On Thu, Mar 26, 2026 at 07:34:45AM +1100, Dave Chinner wrote:
+>> At this point, I'd suggest that we should not be making random
+>> one-off changes to the iomap and filesystem layers like this just
+>> for one operation that needs deferred IO completion work. This needs
+>> to considered from the overall perspective of how we defer
+>> completion work -  there are lots of different paths through
+>> filesystems and/or iomap that require/use task deferal for IO
+>> completion. We want them all to use the same mechanism - splitting
+>> deferal between multiple layers depending on IO type is not a
+>> particularly nice thing to be doing...
+> 
+> Yes and no.  The XFS/iomap write completions needs special handling
+> for merging operation, using different workqueues, and also the
+> serialization provided by the per-inode list.
+> 
+> Everything that just needs a dumb user context should be the same,
+> though.  And this mechanism should work just fine for the T10 PI
+> checksums.  It does not currently work for the defer to user on error
+> used by the fserror reporting, but should be adaptable to that by
+> allowing to also defer an I/O completion from an already running
+> end_io handler, although that might get ugly.
+> 
+> It should work really well for other places that defer bio completions
+> like the erofs decompression handler that recently came up, and it will
+
+I noticed this work, but typically the current EROFS
+decompression has two latency-sensitive cases:
+
+  - dm-verity calls EROFS completion, yes, in that case, this
+    work can work well since dm-verity already takes some
+    merkle tree latencies, and we just don't want to add more
+    scheduling latencies with another workqueue;
+
+  - use EROFS directly, in that case, we still need process
+    contexts to decompress, but due to Android latency
+    requirements, they really need per-cpu RT threads instead,
+    otherwise it will cause serious regression too; but I'm not
+    sure that case can be replaced by this work since workqueues
+    don't support RT threads and I guess generic block layer
+    won't be bothered with that too.
+
+Thanks,
+Gao Xiang
+
+> be very useful to implement actually working REQ_NOWAIT support for
+> file system writes.  So yes, I think we need to look more at the whole
+> picture, and I think this is a good building block considering the
+> whole picture.  I don't think we can coverge on just a single mechanism,
+> but having few and generic ones is good.
+> 
+> 
 
 
