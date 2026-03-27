@@ -4,104 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56C6A10F284B
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EE4810F284A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:27:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2B2A6B0096; Fri, 27 Mar 2026 12:25:14 -0400 (EDT)
+	id 705566B009E; Fri, 27 Mar 2026 12:27:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDB356B00A0; Fri, 27 Mar 2026 12:25:14 -0400 (EDT)
+	id 5EA286B00A0; Fri, 27 Mar 2026 12:27:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACB436B00A3; Fri, 27 Mar 2026 12:25:14 -0400 (EDT)
+	id 4D93B6B00A3; Fri, 27 Mar 2026 12:27:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C9BA6B0096
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:25:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 49E8F1B7120
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:25:14 +0000 (UTC)
-X-FDA: 84592367748.29.2E4BC77
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5BCA2140010
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:25:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YiI6Npr6;
-	spf=pass (imf09.hostedemail.com: domain of aishwarya.rambhadran@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=aishwarya.rambhadran@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 386356B009E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:27:06 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F3465B7A9B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:27:05 +0000 (UTC)
+X-FDA: 84592372452.27.1B7EA88
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9DF5620008
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:27:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PWIRwc8r;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="aHy7/HrQ";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JdZTa2nF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4tn+bHEd;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774628824; a=rsa-sha256;
+	cv=none;
+	b=uukHUNpcLav/oVpCSpvFjeCjXcJPoW75SQWKbMLtQ1J0NTAFB+umU6McHqwMW0oQaNwrmR
+	OGDa+3BRU5rTiNli4fmjOV+9s5T4PfVqioU+ZszZCAs9oK3vvEmTS6O0d8Lt1xz3HNTApF
+	CrLDyYVmis/hAUnyPoz2BugIBq4kIeU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PWIRwc8r;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="aHy7/HrQ";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JdZTa2nF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4tn+bHEd;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774628712;
+	s=arc-20220608; t=1774628824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7HZCCG8+XA3oTSuTyTt9BxxABsUMwIETk9fp94vf3ws=;
-	b=pa/wDcii1GujLUx+Sy30u3xOregj4ssZuSLO1tQwLmkRPKqyKRFw6KPE2ZB/IC5u/v6kMm
-	KLSGxpBPIIrweP8uaYbYPXgAG7++z529ZlISKt5uF3D0CGDXOn8ptuJpotXy2WNHMoWIGl
-	Yn8OiGl7lK1k98NG5uqo/cWTTDcABIU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YiI6Npr6;
-	spf=pass (imf09.hostedemail.com: domain of aishwarya.rambhadran@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=aishwarya.rambhadran@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774628712; a=rsa-sha256;
-	cv=none;
-	b=z25tyL1ihdaoFlShuKXgVGHMcCwsiC3sIjwhJLqZSIE0Fv65A4E3dVWGcwTP7rj8EvaGZx
-	SHKij5emMUzQDLwrnjvuyXEeXoFTO515XMJd8yUwyX0IZHcHisPzwTSirv8ma4AMgHsG6p
-	RLp0iMewvjgPiBzyl9eWTe5txxKfSz8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 24FC935DA;
-	Fri, 27 Mar 2026 09:25:05 -0700 (PDT)
-Received: from [10.163.180.175] (unknown [10.163.180.175])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB3E73F905;
-	Fri, 27 Mar 2026 09:25:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774628711; bh=o37e/u2s3ApNY3T2Mivm5sQi2e7lLw78zt9EIlgSSfo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YiI6Npr6YyJq4PlBLVpfqiUTOOL161bptBTF8MU82La2TI82X2RO4XSVDq+AGrDXt
-	 LHhV9Pdl3j6OF27Npzjr4tIAziCsnEIupAbkdCevLtRBxf4jTYQjxcj+BAnG3ri7lV
-	 w2AICP2O5dCu263VnHUEwfdWQqetcjrXRZ2nJ/Wg=
-Message-ID: <346eeb8c-616b-4f4e-b811-ad1a3ae4a58f@arm.com>
-Date: Fri, 27 Mar 2026 21:54:43 +0530
+	bh=GFjcJQasStRPcNI6PQK9qh0uIXtRvK1Btt+CTwCqo3A=;
+	b=OfCL3DwiuNADcr7dgzABANp8/hM+Xk0OhsmGdvxKMu+dLBH5FxWHS+bS02chUwNReSmYdU
+	peCu/bRIhYdU8HYY+A9zPOVZCsuAedPihjJIrc+opB6Eh38MkbyDFdTmDkBF17ZQsUeDcL
+	UB/E/V989chW4IdgIcEfUPMx6Wod1po=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E83785BDED;
+	Fri, 27 Mar 2026 16:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774628822; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GFjcJQasStRPcNI6PQK9qh0uIXtRvK1Btt+CTwCqo3A=;
+	b=PWIRwc8rOn9Nb4fu2FlwjtSXS1qkXG0tjm/SzAXF8JeibADY9YCwpulSakhZ9HEai4VzWq
+	RcLicvOGKKXUgTc+/f7Ly1MITdhSOlfzYOsT4udpnbmj+3ESJx75D9CmE9de75tAao8tLu
+	0iojcawi6Be59m8CiJSr+pgwVrdYaxE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774628822;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GFjcJQasStRPcNI6PQK9qh0uIXtRvK1Btt+CTwCqo3A=;
+	b=aHy7/HrQ2QdAR4JQb/JErLh8xEBvQrwFvXxGaRsi+mCfX+f8aK+cDqc/cqOxstbbH/5D9u
+	VP7Z3RP2uGuw0wAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774628821; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GFjcJQasStRPcNI6PQK9qh0uIXtRvK1Btt+CTwCqo3A=;
+	b=JdZTa2nFwYlx7Yz4v0Z1m4tXCmDoIzNzOJNW+8xEWeP8KwfAwRmuW6eBPI9Y4cuUjeAX/l
+	tCv7i6kBMRuIOSP+jljGRT7CpbaFnd37x0zUwqg81DbBCJLnjPD9dXPI6iYvqnzSCXv4HD
+	z7iMh9qWp9Db6GOOlplSxiGIi58kq90=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774628821;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GFjcJQasStRPcNI6PQK9qh0uIXtRvK1Btt+CTwCqo3A=;
+	b=4tn+bHEdrwopjN6Dk8ZMfXdEshhQTlIfghPu9FONoDvawdc8IUbttoyLrGr2hyy1XwXLDI
+	+SyoNvyVCOyLf9DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DAEAD4A0A2;
+	Fri, 27 Mar 2026 16:27:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 3v5vNdWvxml5SgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 27 Mar 2026 16:27:01 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 9A9C2A0976; Fri, 27 Mar 2026 17:26:57 +0100 (CET)
+Date: Fri, 27 Mar 2026 17:26:57 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-block@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
+	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 14/42] fs: Rename generic_file_fsync() to simple_fsync()
+Message-ID: <szke56tw43bq2wyv3rai3akrewxbpclbj3finajrwtubkzbgbz@zgj7cc7h2sr2>
+References: <20260326082428.31660-1-jack@suse.cz>
+ <20260326095354.16340-56-jack@suse.cz>
+ <acYiH4ByDc1-nPqD@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- "Harry Yoo (Oracle)" <harry@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.cz>,
- Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
- "Paul E. McKenney" <paulmck@kernel.org>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
- <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org> <acV36oPNFMgL4puz@milan>
- <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
- <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
- <0f441d8f-d84c-470a-a4cb-0249b15220a2@kernel.org>
- <f100305b-6c56-4499-98a4-6a22f8c49443@arm.com> <acZVS-ehXCtvcA9s@hyeyoo>
- <d120d8d3-f785-47ec-9c6b-b28d42ebb1f7@kernel.org>
-Content-Language: en-US
-From: Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>
-In-Reply-To: <d120d8d3-f785-47ec-9c6b-b28d42ebb1f7@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acYiH4ByDc1-nPqD@infradead.org>
+X-Stat-Signature: 7bdp8ajytgsbgbraz3jqag3srseia41a
+X-Rspamd-Queue-Id: 9DF5620008
 X-Rspam-User: 
-X-Stat-Signature: 1kjesh3btjqrwu6zsajy3ft45kzmiu41
-X-Rspamd-Queue-Id: 5BCA2140010
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774628712-383616
-X-HE-Meta: U2FsdGVkX19cvSUp3FBfK5J9zPW36IRqtsevTAXQjuZ06M6r9EXBTXiDBbKRe3znzl1yGshJ7Sm1sQq/uKGFdWWLQ07QzyeGrc9w++1qxa/rzAj/16mM339XqsGCZD63CHX8T5GTSIqKIPHKGR3UbSUPLA83thKuEz+7obvn4fpNBt0rZa6/mXkcvnraNJlFjYSuIaD2Iwm8+p5yqBTEyM/SvBoXZOwZ7GjpONEUZ6m8ZrwYD7QevFxF4IW27/Z5nNV7tisMz0Ffw7fx9Kxb4KpFb6hyZiL4NnR2gPytzaJ9mUAlhVhS6SkoRYydbruxo6dg48OQ3V1afno6FFyjpsyepyPG1nDwBrLxPgVMhOvSxdbCKbIG8UCVN0r7D8tkS7geMM0zm7gMCdsIFTHxlVsQzuMNv8H0y7ZHc/llT7ddQlA6Y3cY0Bw4dZXxm/l1K1aI/ZQBMIl11YWI0WXnDTq+cJJ1h3bxq1wZCowsqkd3p7yHHyN3RruwSjglZTGc2GIY+xUFVB8XxxrQ1vS5tjPlUbPA2tz0hmeR2MDdiUcH/WRyIeUjZuhlJXMxIuUijdurDn0wH92X7zqoZ4UYqk2CLPsM+PFeYpovj91BdsWFpD3fCq/rlm/EebhwHkhfD0DibD1zWyRmUn9+IkBtKCgNUCue4YSUOuSQ134UgkkUBN+d4sna7/sTNk8rf0PvD/r3wwsQoAVQftklAIOUEu9GzE4h4XQlvl4oMnyxHWawS5nBVFd3zQ5gBs1rk4r3uiRH7hNFqai3pjePuRfMmdaXnGqsW9EIhklimzU6FURpfy/De9QSWJKyy5vB66xG+9xPBKylXk5BiEk16HHAo0Pj2fdsR39td8eyBOA1BHcgiLo6c9169bptOaEtIRQZ+NpAe+D3JcbC9fYrxshHMhte1kh9H5CRS1LZMydcZIVTkdit4jUcxJE1O4AME1hKlcDXU5Oy0JPI23NmWSf
- aOjG5CZO
- 8ai7E7IrzNhduPVcN5QOYwVkU2fM/7OXZNMP9u76PCK51iBgZ7FZO2dS97JFIcAVIqi/MfeT0aGyjwyXW+SEr406B2OlrW62zsrtxZTbpVsvZDlRgHliylZ2o4Mh0WhZr4C+KjSSMVD4vLYlEcr9vfkpYS739b3TV5ww6QvafW+/1DIHoFcR1xqOBUvN1I7qgK59D8mUrgOt7gUp8y2/VYfl+rcCbwCzm/8sFpNa9e1yZeZtmeibBjTB0vQfCeUNPCLt9
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774628823-397412
+X-HE-Meta: U2FsdGVkX181W5aYXZoXpS047EulUT8EVFLZGGnJlSoGfQw0Fw+iwH3W1xrd2UedWefPLXRs258fishnfROtolDQ2MnUMvcVjxJflbWNvdQ6oWPai+R0UFp68d4ChTXpJ6x6PzpkGLShi2eSVBXT6RmqzTXtEr0mKlrtx+EIplGGCc/4tnElYAL8wsuN41ZXdk0nOnMGY/eD1aw7bHIpPOnqji2VHUczvM5YaJ1Y0Fn4cXikbYg1IJlGDULfPNaiwhf8UpcnJR3+xHPtj8OkNOqp+bXlz1OEFxfXf/vWNTZaQW+3JXcENCUPYqqVYmkRq4YxE13Dwazlc/IVzjLXYClhmO91SRDusU1Iu7rewaDrtD/I317MKOZtunrCBX+IFicDqVhkS0cGccJU3erl3qe8y11iFUfQoVsPO8jSBH2x4rfB9wojCkS9SFKO+86WTQ6AxMZictquk+q3uKyt5nJOlY/SBuG0metNc/wrhLYvieVOvQzFM7rUpbgN0GoNPq3sZNBTj7xRSjlNk5WgMsjBwOy8zmkrpghPrkpnjkPqVuoiI0rq8N7lIbxYZaEqWdNWyTQS6vLG0vFi3RjBCmWnyYO3jxN2pPF+yOUC79oxlg9fpBx/KY+Ld3eZCVvvm1eglbJLEBZq2Ho3ArO8mne3TmyZDu67v8obMJG6dnbn/3EZxEp2O6QSEBz971E2ddWd/WTvZY+95Vrm0IQr8DTeB5DKzHVI4qx7T1Zxt+7h0AC5j8TEuh4gc7yizja39vKQl0cBaEN2D61erAiRmbqvpdoVQL/5VN2/Xtw2gUY49WsN/GT6g0xITMMjt7XoxeuH+PFBgVw4nr9AodSOGk4Ri+sji8xzdcMHSPXFpdxCsPS/cfY9QH65DXi1WfZ+poYOzNA+ILDDxUvGGSTj5MRs1zVE9VYlJ3L4veCyOeUP6GKYUtHL5fTUtRPmZO9OtHPS9Tjk6M8DPpeyAx+
+ 6NQQPh99
+ AbMn+k8BEz04FUAUNy8aA4B4sjUckAChphENolFo9gsEVwRXekq9BUGrknWaNWAKVUF8mwLkb22yKzRWlQFSJhX/GrGAW3aallibpWF3OsffIk8WpKtmL5K4bYUpejK1byubrFKeMXjicgoTbKgoyUKUMWlL5TzyFiW//6DlcPmXccQqxVwPiYgRR8IoAFB5Tt/calv1w+IUIrep2tBlN4Fl2EURnGFdLRIXuhrQAl4E+tw4Evn396CD342/KVEXzNnYs5qb2Nt9WaSbnAnEVR3HmE/vS8wJzgLz7eqNjnXBTt/Q35mTlAPZd3l55w/oVbq6pqtzUf64X5wrTSI17hzK/52v9P5JHTXPAbNsxLgzGhZezrPvG+94uWmWmM4FcP0H3is1pV50lmVznUfu/qDO+r1BZeEJGKv5Q2iGhFNgfGbnlFAec2zlv2CXfzksFXU8vO832OfcGip0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,74 +138,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On Thu 26-03-26 23:22:23, Christoph Hellwig wrote:
+> > -extern int __generic_file_fsync(struct file *, loff_t, loff_t, int);
+> > -extern int generic_file_fsync(struct file *, loff_t, loff_t, int);
+> > +extern int simple_fsync_noflush(struct file *, loff_t, loff_t, int);
+> > +extern int simple_fsync(struct file *, loff_t, loff_t, int);
+> 
+> Please drop the pointless externs, and maybe also add the parameter names
+> when you touch it.
+> 
+> Otherwise looks good.
 
-Thanks for the discussion and the insights.
+I believe Christian has a patch from Jeff in his tree cleaning up the whole
+fs.h header in this way. Not sure how Christian ended up resolving the
+conflict but we can clean this up after the merge window if some externs
+are still left there.
 
-For completeness, the SUTs used are single NUMA node:
-$ numactl -H
-available: 1 nodes (0)
-node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
-43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
-node 0 size: 257218 MB
-node 0 free: 255376 MB
-node distances:
-node   0
-   0:  10
-
-As suggested by Ryan, I re-ran and compared the perf benchmarks
-across 6.17, 6.18, and later kernels. The behavior is consistent
-with what has been discussed in this thread and aligns with our
-observations.
-
-Thanks again for the clarifications and apologies for the table
-rendering issues in the initial email.
-
-Regards,
-Aishwarya Rambhadran
-
-On 27/03/26 4:51 PM, Vlastimil Babka (SUSE) wrote:
-> On 3/27/26 11:00, Harry Yoo (Oracle) wrote:
->> On Fri, Mar 27, 2026 at 08:58:36AM +0000, Ryan Roberts wrote:
->>>>>>>> On 3/26/26 13:43, Aishwarya Rambhadran wrote: 
->>>>>> Right so there should be just the overhead of the extra 
->>>>>> is_vmalloc_addr() test. Possibly also the call of 
->>>>>> kfree_rcu_sheaf() if it's not inlined. I'd say it's something we 
->>>>>> can just accept? It seems this is a unit test being used as a 
->>>>>> microbenchmark, so it can be very sensitive even to such details, 
->>>>>> but it should be negligible in practice. 
->>>>> The perf/syscall cases might be a bit more concerning though? 
->>>>> (those tests are from "perf bench syscall fork|execve"). Yes they 
->>>>> are microbenchmarks, but a 7% increased cost for fork seems like 
->>>>> something we'd want to avoid if we can. 
->>>> Sure, I tried to explain those in my first reply. Harry then linked 
->>>> to how that explanation can be verified. Hopefully it's really the 
->>>> same reason. 
->>> Ahh sorry I missed your first email. We only added that benchmark 
->>> from 6.19 so don't have results for earlier kernels, but I'll ask 
->>> Aishu to run it for 6.17 and 6.18 to see if the results correlate 
->>> with your expectation. But from a high level perspective, a 7% 
->>> regression on fork is not ideal even if there was a 7% improvement 
->>> in 6.18. 
-> In retrospect it was an oversight not to disable the pre-existing cpu 
-> caching layer immediately for sheaf-enabled caches in 6.18. Can't undo 
-> that mistake now, unfortunately.
->> If that improvement comes from the number of objects cached per CPU, 
->> I'm not sure if determining the default value (# of cached objs) 
->> based on "a point when microbenchmarks stop improving" is a 
->> reasonable measure because the default value affects all slab caches 
->> and will inevitably increase overall memory usage. 
-> Yeah that's the thing, some workloads might just keep improving as you 
-> throw more caching at them, but there's a memory usage cost to that. A 
-> case of stress test doing nothing but forks might also not be 
-> representative of performance of forks under normal workload where 
-> other operations also happen, returning the related slab objects, so 
-> in the end it doesn't expose the batch size that much.
->> Hopefully we could discuss what a reasonable heuristic that "works 
->> for most situations" looks like, and allow users to tune it further 
->> based on their needs. As a side note, changing sheaf capacity at 
->> runtime is not supported yet (I'm working on it) and targeting at 
->> least before the next LTS. 
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
