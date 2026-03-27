@@ -4,103 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31AD610ED647
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:48:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2932A10ED64D
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:58:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6082F6B009E; Fri, 27 Mar 2026 05:48:44 -0400 (EDT)
+	id 52C176B0092; Fri, 27 Mar 2026 05:58:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DCE26B0099; Fri, 27 Mar 2026 05:48:44 -0400 (EDT)
+	id 4DCC76B0095; Fri, 27 Mar 2026 05:58:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25E926B0099; Fri, 27 Mar 2026 05:48:44 -0400 (EDT)
+	id 3CB526B0096; Fri, 27 Mar 2026 05:58:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 05E6F6B00A1
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:48:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6F52E16D9
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:48:43 +0000 (UTC)
-X-FDA: 84591368526.01.143380C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26FBE6B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:58:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C56B21A0841
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:58:34 +0000 (UTC)
+X-FDA: 84591393348.29.60DA6BA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A4D1512000A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:48:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N4p0vxGv;
-	spf=pass (imf29.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 234CEA0008
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:58:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LkpO8NzI;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774604921;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1774605513;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BvkkOWWRtbNRnIhkuJ7S8/auI8roWxjsEcP7iqhAdU8=;
-	b=Xdp3MxWrygyq//nxIVNmIee9/3sPeOT36leOmtzIti//TVy6iwYNMUENhuAdPtbd5YKkCC
-	cHvrB4gh+jEv1U6dmBpZCGV7idVEBbbZmO3LGaujQ/TL4KQ+k79uukZlsZPQM/8kOmRrzU
-	wOwE+HHK+qi6gsAOMngCUnFX6bwdw10=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774604921; a=rsa-sha256;
+	bh=/9mPuyTXDwTsHSL/sxVGogba/6L/7eDESLwZ5y+KIZM=;
+	b=2IZJob5O/d6qZ4pRBY2mDaOKTnQ0iJ+O2UFtF9/+9vQuTboqxJraoKipHl/7GYsS6GmEI7
+	24hrQDhw7ACanYMHBiWm0WNUtO9xo4xdQ8ZqzBhJ4QEzE7Ew8yTyB5/SIyUNIWf+9iM/ts
+	3TPkZYV967ICWZJFilDt0u16z1yk6fM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774605513; a=rsa-sha256;
 	cv=none;
-	b=gvfpc73Rcaiov6EnY4CfnH9HYc1fsxFFvsyr4kfui+N2Hn/ATv5nEIZYxkfgbhM+d15LHb
-	GZkvKUd+bY4Q+187AHIqKfWNv4PndPs2PcmE9gxYEr7bVNA8RazVibKUd+WVBEY9iVZDt9
-	c6XI+ectMldDK3j4hd3EQhuSTKeFjm0=
+	b=tV9KxN6ZNn6s2fsk80hlhrnonLGPmmMV6FtJ8DqX/eJbJ73k9wRmqU9LV+U7U5gtV8VtUn
+	wZRzTRWmbM73jza4W7Ka3Q36QurIL5ItscZuyRon4soIMM1TRm4lKQaU126SSkXDU+KA/k
+	6huW7aR0JvR0kbGZo2QmYgCMO9+NEpk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N4p0vxGv;
-	spf=pass (imf29.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LkpO8NzI;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC68F44514;
-	Fri, 27 Mar 2026 09:48:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8DF0DC2BCB5;
-	Fri, 27 Mar 2026 09:48:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 16EED4188D;
+	Fri, 27 Mar 2026 09:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29406C2BC87;
+	Fri, 27 Mar 2026 09:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774604920;
-	bh=6f7TOEvk+v4ej1arN46RE3RzMBqAOnaX4qdIPzrc6Wc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=N4p0vxGvACzu6SJQ693+B0nTysqHWVCI3HVkGtz9AVMl7McDIWinDaCbqK9zHr3nX
-	 uutu3RHr5+jf7Q5GsfKDg3O2AvwW/gJS1QSUVJQWQYn1cq+MQcFWWzQCj5byCqO9vf
-	 SqXu0Od8pfI9w6Ew7NMQtpGd1B694ovtD1myrHX1ED7YYJQbRg9zpKrXTPYRQW1kjF
-	 WsYTGo/mzqZKWmtsT6scaRzLIbs9d7PM6lXBRjkbb5HuuEuDtp0U86frpAUmMAUT5K
-	 xHn87GNeeKh4WQpR/3zYY3yBJ8ePUlDXM4ADJ8UG+V3orFRmsNnskXXylV6K5UOrZY
-	 dg0l2PxjpO5+A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8431110ED643;
-	Fri, 27 Mar 2026 09:48:40 +0000 (UTC)
-From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Date: Fri, 27 Mar 2026 15:18:42 +0530
-Subject: [PATCH v8 6/6] lib/test_vmalloc: add vrealloc test case
+	s=k20201202; t=1774605512;
+	bh=HMlp22KSsDl9iDYrEn5hV0V+6EovIfXqxc9qo3yaFgc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LkpO8NzIzvHArC+61lHOwtelx3cT4v0Uh2Kn8MKcNjFVo85oMHScIXqB89WBePL54
+	 J8pbjyVIVRZHXOYRXsTzWd7cipnrb7rNe5kwednYon8n6yoh5iJTIDt84Iof8BVzt9
+	 pqbTtoXlkTXBt+7eitowNW6WAeRZAj0X6+yMypxrFdhx2eSAMacJIS130VCTGXUOGj
+	 DtPu12np3VHtx7FEF518j4fZC13b+sOA6cJXIb2nW+gpqKTPff8XwltxUowywNpF1X
+	 4QQFK9TpWENwfZ8opj9hWD+8UZKHjTY08qZJABAOPEhQp4ysfRTjvecrvESt0VA5Nt
+	 3yKuvUnnT2EJA==
+Date: Fri, 27 Mar 2026 09:58:26 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Jianzhou Zhao <luckd0g@163.com>, 
+	Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH 3/3] mm/mremap: check map count under mmap write lock and
+ abstract
+Message-ID: <7727aad8-f5c1-479a-9036-3702d34f8cef@lucifer.local>
+References: <cover.1773249037.git.ljs@kernel.org>
+ <18be0b48eaa8e8804eb745974ee729c3ade0c687.1773249037.git.ljs@kernel.org>
+ <fsifgilp2ra7cagtlp3x4jmm32plow7wgwfytmvtw7kq5veocp@xvcqplpyw3ia>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260327-vmalloc-shrink-v8-6-cc6b57059ed7@zohomail.in>
-References: <20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in>
-In-Reply-To: <20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- Shivam Kalra <shivamkalra98@zohomail.in>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774604917; l=2848;
- i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
- bh=q1HLhsQQ92caXQ9Tt0laK39H3cv2PUzBofvprsTi44k=;
- b=R0zROdvr8i0XX6srRKvEs7y5ZcvavZ3hzjKSDrUemQuMhSzNz/REZ8S6xHmVM5osq+FaQvBjq
- MEDVIjWXfGOBialWV0d7t7bHDRlk+HhpqGGPILoVSn1BG4qWkK198OY
-X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
- pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
-X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
- with auth_id=633
-X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
-Reply-To: shivamkalra98@zohomail.in
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 7s9r1h6wmm96wj9xas5iwucq96iety94
-X-Rspamd-Queue-Id: A4D1512000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fsifgilp2ra7cagtlp3x4jmm32plow7wgwfytmvtw7kq5veocp@xvcqplpyw3ia>
+X-Rspamd-Queue-Id: 234CEA0008
+X-Stat-Signature: wzrxqxjd9qdyanzrj9jua4xrsnaqaw9w
 X-Rspam-User: 
-X-HE-Tag: 1774604921-27537
-X-HE-Meta: U2FsdGVkX1+DV7wsxGPX1P912AePwb69rqmTul44xVe9WfUaqMPLfU1P+Es5AILc8ih0/RSREENbAeUeUQbh+nn3Rm5vAP+jthWaGI6aW0NJcMqY+mvTQCRhpXs6nhb1zcKvawI9S4d5WVT+0zKqOmpGDWf/IU6BZeG4M667nCYtsk3Uoi9eBUnZnzT9XywQC8Qnw0r58iADm/+eZ3h8agvUpkDNSR0D932FD/YbqdfzO+SWGs3SfcM4JWenuhSMcgdAOE4KXOpx2MH36wo9DYOabR8G2PbRkLN8PAneAqcI9TRl61apu95Imzhiza5GO9XYxKq8S70Ni/+El6mlNGazhn9ODpDj8JNpJZPNn70433CDZ3+JLgTNiHPLk8Z9zhWawISegbjhgh8+tR0cOBGgbcSSyoASvdRXokykkdL0+yKigFaZRie9esDarjW75g55WIas0Zu7+O0IIFAQO+108XxLd6wLPGTk8hGzt+kSNdDYtsKq9u+uWuea78fPUlBtfzGBYAyI6Dh1m3BDMHPOdqkOgLyGLNmnKgQmvhaLoIcFivNUImlhOb9hZMb4jR9yq05ghmgVmnP6TwbfO1KexDAPHe3D78SXlagzDk3qfxmLsYFnL2eEQ64fI6g56mTmMrCk8vYrpDGp2Fexa5ydtYo/ioH9k3PLjPCk+u1RbHI8ODRbBWnihcD2mmfHaU/hOQHGCmk71hnpCONHa2cbAgMfHOtB3dgMS3DH3cphzAl7hepPgf9Eel0ucwChSYcQXVR1aI6tmC7ANld+R7h7z2FmwM2uzDqtPl+MOr37+0CctmP86YMfDcI8A7EZaA/eZABucuFwJ1o8PzVd+bmhhQ1zDaJNsJkCrZ+rO0JT7sG8Yr9UgBxtJ7l8YhnWgK9UJJDrpRsG9Fi1GXZoTY19bSTP6010t4jgutTFxPODpRhDKKsw5v3f2kLiIN8Pl1JjScGeADveBfa3vMb
- qHnkK11O
- PPHAGsI3RsSCbjwAcjBnaeSwH8iZvvwRr35cToYSG0rbvX+PUPj0CxVHGUBZfw0fTq53pgQNQwwSowTETiRSCwQtKjNtcjGyl9B7C28OQ4JPq9MSi6yHmRCRGAQ/UPORKON8ipeozJSpNTvUIG1bIFaFzjC18/0Xo/Jym+PlBZB7BnG84oPgiqANaz5c89Vd67Mr55B72F1GNC3Mi3037SRgWJBfAxDq8oeyoQcfOPGQllpGLExdBIVJI+z73Q1gkeliBkKvVnPOzHHOnQy7jHALhTP1JEK0CFiFHVn1trt0bBvLwhUqVskRHxSrQ/wuBYqp18WMDal7SZQsQB6lYoLYAKONUTPMKQPniJqEEPAq0YrO3D7dQp11VfYF0yf4VTmRfvZ3h1ES/4G12F8esoPsahHoX96Tl2kC4
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774605512-991386
+X-HE-Meta: U2FsdGVkX19DQWHtBf3STXFxNB1CJFJw4eXKVFJU7NCYMCZPN4rbp/7NJdys/G7xQGJyp5/U4SS+304HbIhkQomsUaD19LqOSwivf1baeg1j8IS19NtYLFrOHrtgCkb7hLULfQfxyd1yRWMXGhiN1962v57tzGA7Z2OtazbSnDUKeB+a5bjd+R/BIX0UmCkj0VAYdlpFkPgx7/bNMmL0DnASo1z3a/O0Tfx1YFySfVtjOyHBDw4PohnAgcI13LsXaLqK+TdQth38JQW5O3P7hHBI1BYCyVlRGYVFQCWOHR8thjB300+OR2dg+lmpnPVtOZcpq0yiurezEIopXcxip9U7j+BqcbyZuArYLztpu5RnnC130/ZD8FylX/0IjpTco+iZmMJGCAlmldkmni3cqkYyU7NvxSS1AMJByppicl4evS78X+/5mrm+aYDWPGn1xB98kn4z+yOh7jtV6G4CqU+riCN9IJUFRrsaJn/ifvwz+y20J+hEGQG3f9ZMCNA6NcYKkTdllK5PSx6csDGR4eJCcHnbkq9JLieHktdnRIoEPHA91Tz77Ie4XENkI9PUbkmwo4QmeA5BAhSAQuJmMes1IDwKXVDpZQvXgJVeQdv3J7qhdttyRJBi0AaRlOkVKi50z2op79DHSGmKosudIZk1hVkAvuRZCb35sWr6iYNGD2+9pOjT5/8yZFnA8JhuoR3cr/Xz4Y0kwhaeHPA6w5utTdhdzTzoxJuj0WWaS3iL2I6rsIv/R8o4xZoX3UzPjWaOtKEgTgdEGSVHzA1elrrJCS/7pOjGjmACeYETLbKSetR4fPgq4TCkakWvn2GUuqo/8CoNYPr1zVk56AEKJmNQQOzGUcf+cH+6Ll26+iPJeqhyw4Uvxug7bcRraEhlPpmbKL7TEmax1liya2OkKpf8DB0XRUPz6+QDxVJjfVj8IgzDowfd4aE+iqSxUM3Ug4umcNiEirGprNl2zxD
+ D8Up3aoA
+ 9/UBpD9h/eCJoF8rdEOEGIAFDYyD9xrbwtctPCbrWLMi3yoEPfC1VPdTTIpYx52lryhWZ3oIf0vARXdw9Fng9SN/DptuvtMtJVUQBuiUORKEIj5//PWhHNTMDNeX+xovcOcRsZrxHQm+bmjX0rUrBJiQ2KOooWrRRQmyGmgb8+y05lQbHD9R448g/3Iv5nQhSw02gk2yq6hTL/MKuE+w2GhrkVE+AoWoqocWLLuPwFw334sAzf4hMeYfsczFd9u2DCG8p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,116 +97,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+On Fri, Mar 27, 2026 at 09:22:31AM +0000, Pedro Falcato wrote:
+> On Wed, Mar 11, 2026 at 05:24:38PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > We are checking the mmap count in check_mremap_params(), prior to obtaining
+> > an mmap write lock, which means that accesses to current->mm->map_count
+> > might race with this field being updated.
+> >
+> > Resolve this by only checking this field after the mmap write lock is held.
+> >
+> > Additionally, abstract this check into a helper function with extensive
+> > ASCII documentation of what's going on.
+> >
+> > Reported-by: Jianzhou Zhao <luckd0g@163.com>
+> > Closes: https://lore.kernel.org/all/1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com/
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Introduce a new test case "vrealloc_test" that exercises the vrealloc()
-shrink and in-place grow paths:
+Thanks!
 
-  - Grow beyond allocated pages (triggers full reallocation).
-  - Shrink crossing a page boundary (frees tail pages).
-  - Shrink within the same page (no page freeing).
-  - Grow within the already allocated page count (in-place).
+>
+> Shouldn't this have a Fixes: and go to stable?
 
-Data integrity is validated after each realloc step by checking that
-the first byte of the original allocation is preserved.
+Nah this is really hard to hit and doing the check is just making it so mremap
+can bail out early, so it's not worth it.
 
-The test is gated behind run_test_mask bit 12 (id 4096).
+>
+> > ---
+> >  mm/mremap.c | 88 +++++++++++++++++++++++++++++++++++++++++++++--------
+> >  1 file changed, 75 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/mm/mremap.c b/mm/mremap.c
+> > index ba6c690f6c1b..ee46bbb031e6 100644
+> > --- a/mm/mremap.c
+> > +++ b/mm/mremap.c
+> > @@ -1028,6 +1028,75 @@ static void vrm_stat_account(struct vma_remap_struct *vrm,
+> >  		mm->locked_vm += pages;
+> >  }
+> >
+> > +static bool __check_map_count_against_split(struct mm_struct *mm,
+> > +					    bool before_unmaps)
+> > +{
+> > +	const int sys_map_count = get_sysctl_max_map_count();
+> > +	int map_count = mm->map_count;
+> > +
+> > +	mmap_assert_write_locked(mm);
+> > +
+> > +	/*
+> > +	 * At the point of shrinking the VMA, if new_len < old_len, we unmap
+> > +	 * thusly in the worst case:
+> > +	 *
+> > +	 *              old_addr+old_len                    old_addr+old_len
+> > +	 * |---------------.----.---------|    |---------------|    |---------|
+> > +	 * |               .    .         | -> |      +1       | -1 |   +1    |
+> > +	 * |---------------.----.---------|    |---------------|    |---------|
+> > +	 *        old_addr+new_len                     old_addr+new_len
+> > +	 *
+> > +	 * At the point of removing the portion of an existing VMA to make space
+> > +	 * for the moved VMA if MREMAP_FIXED, we unmap thusly in the worst case:
+> > +	 *
+> > +	 *   new_addr   new_addr+new_len         new_addr   new_addr+new_len
+> > +	 * |----.---------------.---------|    |----|               |---------|
+> > +	 * |    .               .         | -> | +1 |      -1       |   +1    |
+> > +	 * |----.---------------.---------|    |----|               |---------|
+> > +	 *
+> > +	 * Therefore, before we consider the move anything, we have to account
+> > +	 * for 2 additional VMAs possibly being created upon these unmappings.
+> > +	 */
+> > +	if (before_unmaps)
+> > +		map_count += 2;
+>
+> oooh, shiny shiny diagrams.
 
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
----
- lib/test_vmalloc.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+:)
 
-diff --git a/lib/test_vmalloc.c b/lib/test_vmalloc.c
-index 876c72c18a0c..b23f85e8f8ca 100644
---- a/lib/test_vmalloc.c
-+++ b/lib/test_vmalloc.c
-@@ -55,6 +55,7 @@ __param(int, run_test_mask, 7,
- 		"\t\tid: 512,  name: kvfree_rcu_2_arg_vmalloc_test\n"
- 		"\t\tid: 1024, name: vm_map_ram_test\n"
- 		"\t\tid: 2048, name: no_block_alloc_test\n"
-+		"\t\tid: 4096, name: vrealloc_test\n"
- 		/* Add a new test case description here. */
- );
- 
-@@ -421,6 +422,66 @@ vm_map_ram_test(void)
- 	return nr_allocated != map_nr_pages;
- }
- 
-+static int vrealloc_test(void)
-+{
-+	void *ptr, *tmp;
-+	int i;
-+
-+	for (i = 0; i < test_loop_count; i++) {
-+		int err = -1;
-+
-+		ptr = vrealloc(NULL, PAGE_SIZE, GFP_KERNEL);
-+		if (!ptr)
-+			return -1;
-+
-+		*((__u8 *)ptr) = 'a';
-+
-+		/* Grow: beyond allocated pages, triggers full realloc. */
-+		tmp = vrealloc(ptr, 4 * PAGE_SIZE, GFP_KERNEL);
-+		if (!tmp)
-+			goto error;
-+		ptr = tmp;
-+
-+		if (*((__u8 *)ptr) != 'a')
-+			goto error;
-+
-+		/* Shrink: crosses page boundary, frees tail pages. */
-+		tmp = vrealloc(ptr, PAGE_SIZE, GFP_KERNEL);
-+		if (!tmp)
-+			goto error;
-+		ptr = tmp;
-+
-+		if (*((__u8 *)ptr) != 'a')
-+			goto error;
-+
-+		/* Shrink: within same page, no page freeing. */
-+		tmp = vrealloc(ptr, PAGE_SIZE / 2, GFP_KERNEL);
-+		if (!tmp)
-+			goto error;
-+		ptr = tmp;
-+
-+		if (*((__u8 *)ptr) != 'a')
-+			goto error;
-+
-+		/* Grow: within allocated page, in-place, no realloc. */
-+		tmp = vrealloc(ptr, PAGE_SIZE, GFP_KERNEL);
-+		if (!tmp)
-+			goto error;
-+		ptr = tmp;
-+
-+		if (*((__u8 *)ptr) != 'a')
-+			goto error;
-+
-+		err = 0;
-+error:
-+		vfree(ptr);
-+		if (err)
-+			return err;
-+	}
-+
-+	return 0;
-+}
-+
- struct test_case_desc {
- 	const char *test_name;
- 	int (*test_func)(void);
-@@ -440,6 +501,7 @@ static struct test_case_desc test_case_array[] = {
- 	{ "kvfree_rcu_2_arg_vmalloc_test", kvfree_rcu_2_arg_vmalloc_test, },
- 	{ "vm_map_ram_test", vm_map_ram_test, },
- 	{ "no_block_alloc_test", no_block_alloc_test, true },
-+	{ "vrealloc_test", vrealloc_test, },
- 	/* Add a new test case here. */
- };
- 
+>
+> --
+> Pedro
 
--- 
-2.43.0
-
-
+Cheers, Lorenzo
 
