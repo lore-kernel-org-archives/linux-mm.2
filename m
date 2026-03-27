@@ -4,95 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C816C10ED64A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:07:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B40810ED660
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 159A46B0092; Fri, 27 Mar 2026 08:07:28 -0400 (EDT)
+	id 57CE16B0095; Fri, 27 Mar 2026 08:10:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131E76B0095; Fri, 27 Mar 2026 08:07:28 -0400 (EDT)
+	id 554576B0096; Fri, 27 Mar 2026 08:10:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0470D6B0098; Fri, 27 Mar 2026 08:07:27 -0400 (EDT)
+	id 491206B0098; Fri, 27 Mar 2026 08:10:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E66216B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:07:27 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9B417E0FC5
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:07:27 +0000 (UTC)
-X-FDA: 84591718134.19.73D67C4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DF04140009
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:07:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GV/OuxUv";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774613246; a=rsa-sha256;
-	cv=none;
-	b=VX9z/8P+empxP1eJhEz7QxFpphViNi+nzvW1IZCiP9UvJjqbTpIZ/lJkIONus/I9HF0cGR
-	xg9RiBBPrE6pmaYkuuAMMrf0jy+XJaaE8OboEN5Gl9T9I2KCrqKZvv/q5Uu9Qb/gyW8IhH
-	pi4XM7beGBGEZv7gdojcMpDrzCdVsS8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GV/OuxUv";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 36A2F6B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:10:16 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA82B8D972
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:10:15 +0000 (UTC)
+X-FDA: 84591725190.27.C8201FA
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E41961C000E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:10:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eQoDcGme;
+	spf=pass (imf18.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774613246;
+	s=arc-20220608; t=1774613413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pmqgFpm73FDUUHz6djr/tPqUzEHt4kZKcDr9Hf18iQU=;
-	b=1FsK52mj8Xx3om95DpNjN+BBHsuK8Ha4EXzqfgtLhWvJJ0wrfbcViigWIvSuPTWQj+VpqW
-	0GIVgFTkdLbVnfH7Vw2H8jBLcmm8GJx93/WFZF+/7eV412mr/2/6ihdAVenmwx9uj1yTnP
-	WKPHytJ/9md7uQA7u6vUCSWc3fkOSkE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B1F2340DAC;
-	Fri, 27 Mar 2026 12:07:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000F7C19423;
-	Fri, 27 Mar 2026 12:07:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774613244;
-	bh=2nB5DCPY0+8yCmvF7X6fCAPWRpuyi5kzCg7/hMaBpWM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GV/OuxUvODHLD58X/NXS2HIl2fDAtcrOkYl1usoY5dT3mhOCLFz+yYGOP1vLLqYOU
-	 15w99o49viWVLThwMVhKQQ4mpejWHKm/7mtnHk603YlQMPyZeiGUpI1aYuUMTC1qoK
-	 KP9QBrIxE8qH4usannUbPyhHkjf13t9L/naWuMmlMqpNeQm5IoyhpmO87gPoLqBf38
-	 FLBh1X6kvQW7NNnskhElLwD+CVW0SDGiuK3j+25mlnqfgSphcqJQtpx/983A9czRbG
-	 4lwP0/0dPbdKzGiM8hrNqbD6znlN6oHLzNcQqRNhGxdV9U8tI0Q7kPFORW+bOdT5XM
-	 WrZvcbArOiAzg==
-Date: Fri, 27 Mar 2026 12:07:22 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 02/10] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
-Message-ID: <31d9d5c1-02af-42b3-bc3e-aea151d3552b@lucifer.local>
-References: <20260327014255.2058916-1-ziy@nvidia.com>
- <20260327014255.2058916-3-ziy@nvidia.com>
+	bh=P5V/1Wbu9XfRyN3Day1/4i0275Wd9nGLuW+cphxmC8E=;
+	b=wk2+pyviaT2QvAYD3p82XQ5gci/ype4VXYgYKFLmX/yj9ElLOQOPFtCFtJ7FqQvZxiejhi
+	hxt8GOFJqwENX4txkAbq05yXOFo+gTrrKiGyU84Ola/610RCaIoDzceLCcPeU4WbieROeA
+	nPZuBEUGnJQzNQ3y+yYoSvbiMHb53Pg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774613414; a=rsa-sha256;
+	cv=none;
+	b=Jr/4tthYnVHgis2qK57+5jKVRpfY0dUmNeayfSiY0P9SZCF1NlUkNjhAH+608xZMKjc3Kx
+	oFgPe3NdC7C48NPPfRVZLihkKW9MDwzTGNZ6Ywx3j1z9H1a5QJgwNtQyIYEdk9mrQZhsmY
+	UmXNAChnQaY8OkrdqES+KwEhGtEOoxQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eQoDcGme;
+	spf=pass (imf18.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c763c294cccso1413963a12.1
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:10:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774613413; x=1775218213; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P5V/1Wbu9XfRyN3Day1/4i0275Wd9nGLuW+cphxmC8E=;
+        b=eQoDcGmeGSk6XV+DGL8/CKdmps8lK05BbwIlODhYrrXF2b+xxi9jV9zOlDZ/Y8TSeF
+         uGE+H+5D6p6hVbAWjtJOlATxPah+Ja9+/Wb66bk5ECoNza8oA0buoWZ7gJvy63WoOXmt
+         xPZ5uwPc5uToi8ttPBIdlvdwp7BihUvtLCw7mFVepVobW0wZuU7SSMM0VZ9RgJCY+sK7
+         Dd8fmaHTrglg8bSjukzThMqA1miR0qpuSHBT67vYfL2XnbIiCXVWFDFr10Sq4XNfaJwT
+         5hXGpJqTBbQRI+cz9Qrm340vK2j5KmG0vIZdxYCtYLFv3571xxoeOIh7Vtr8TF9cJCdW
+         RhUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774613413; x=1775218213;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=P5V/1Wbu9XfRyN3Day1/4i0275Wd9nGLuW+cphxmC8E=;
+        b=PPzkZ+zTVYkJBUn9ljmYY/u3uM/bcNT00Fx3N/86SetodLr3B+effhxJzQwYUw/9ST
+         HOIk5oQ4afjCekePhdfA3Fsnc0v0a8fChAXzwnvQ6Z7ZwGoB/y9A/2QutAVB5AWAZ+Y7
+         j0wiJsoLjyARM4eJ5OujptejB5YsfYkIf/7byQMdkQIXsdzdUy+3hXjepVWT9/ionbrW
+         /XMgMZB8sikiatZRn2BOBkzAsUK6UPCTC+Lj+yQX7cUg8tc3xBzh756VBcvGpwchqn+D
+         O+Hd3nNmBJM7jstS1jEggAn5x0nAHVklNQk5IOGdex9TuTXtxDnu2Wa8/t4sZij5m0+s
+         wKxA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVnEwD5yinfUlVwYIyF+Sirw1h/RqA0VvtYDWR7RXtizUVgpmAkzKRNxGDNBBfPRHZYlusvjIlIQ==@kvack.org
+X-Gm-Message-State: AOJu0YxD8Mg7Ro4ghHvChWx3oxMXxv/VucfH8djtL9ienMkWxBjkaV65
+	piGHguriOQ8WHHENqkO73U7Agl53ZiUeImEeJgqihDLQhXR0Oy1l/Gf7
+X-Gm-Gg: ATEYQzzRT4T/rsqu6G2GBfVFeOHA9WyNQ5SrhH0hHFiCdWEBD13vSA4X7F3vs4qbdG+
+	qurwDVXzEiSgwup0RkPMiFRkAFnu9DEDUcxkzm/op0+PDkL5qkDYuss2HiP/GzOQhsV/tDy7NKU
+	p2qWZUSyBItgBdlfEItEqLdlmFkTCmeK2Wy4rR8yY1BmgJxF2tc+8SBN0wY9nNFJdCMos08HFiS
+	cxkJJ5gzL0wzUPnifzPWhZlow4P3T1Gnxj2z600+gI4e4G7NObrrsI1kMtBxDb19TLmCvYBOtmT
+	0gnPi9eO26w2+GUMXxK8U+YnZ1rgsKpmcQocyfIUH5/gf2p82zn5EuTbkfrrtlD8PLH5ekcO4u4
+	f1D8Q+hOd0EuufrikUcJ1kIBbia3qWEDlCqCfm5335FJK+YtjU5PkItTR5uFbAYgXIrgYox/nnB
+	pkufAMpSOTYfmo91GCSVbYUP3okqIovxpE/RjnlAjf4Hb2RVVobJ0=
+X-Received: by 2002:a17:902:f607:b0:2b0:6829:9414 with SMTP id d9443c01a7336-2b0cdbe9dddmr27888725ad.8.1774613412558;
+        Fri, 27 Mar 2026 05:10:12 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc786b7fsm80852155ad.20.2026.03.27.05.10.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 05:10:12 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org
+Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
+Date: Fri, 27 Mar 2026 20:10:08 +0800
+Message-ID: <20260327121009.38374-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260327064517.68131-1-aethernet65535@gmail.com>
+References: <20260327064517.68131-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327014255.2058916-3-ziy@nvidia.com>
-X-Stat-Signature: uakqxj1bsqgtpk5wbzmm6uf6yb1crea3
-X-Rspamd-Queue-Id: DF04140009
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E41961C000E
+X-Stat-Signature: m56f56ybrpbs7oq8t1yjwh9wgdzsrmg5
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774613245-252499
-X-HE-Meta: U2FsdGVkX19WIUdflDmD8j5jau17eE1uv6rsF2Y2/E3h7UOttP3am2pc6nzaZHRoqMQWViZ5XUA99vMwquyWldQqDHL0NcpPBO6BxUPxKOE9h2doGtAdjndJVVa1I05xiseBhrXvUXWmFhu26IUsMa4L5r5dJ5oYNwKXyCs/TERmwajL6aPeVcMGDbOhfVioSwLXFekjFnWv7WkysL2y+DIWnhu9mM5DNxM9ZfCfP8oVqDu/icQiE+OOe2ge0ErLvzgTUxWTGA14vFon4wz9YeJIr4RJfk2q2iUxx1J68dj1/8/QThdYR8KMhp97fXLt/xho9mxmpRealgaI/KWY8KhR1kzz/nM2DyVpWJVHKNZec0KT+vBDCIBg7rxuN7C7fcIB41WiTV/g8aooaBk74Uz+KIajusR+843ur9Ww6GPmaMocaStlUC/IPyLNR1PawyR2jHytBXIkmuRoY6WMn1pWjCH/Iwh20tY8fEGSvItN8hayRs+1I/+3Db4V2H64MkXc/60/LfZftBmfO3Na3/zW2yLQl7pP2hQS8FXJLswirm9YgiGtRy3mMSrV50NpE79MpF8yYGRptV9lnum2kzQXkHNEqEOLW9l8va8PVsiPnQhOpUDWar79oV6lNEGnhRK0jgGEqQ1dBYuM3v6bJvSKExdVy3ro95kaFtrmsESonxqVxWeg65XGkiPo48lCw1KeteVld007aOlzKoaUpX6+zXIyNxQ2BhVzm/kFLYPc7lzq/dUhvRXedpPTWJjg0BesPFOrOri+So/jHWUcfwO7v7+Wg9OFCg8irdGVUn5tstXoL0cVSVI8n11hX8LSjFgkJu6v13ix4DJLfbhZNEOq51e7XclsNRpdbUMBOpnwu6kxcaYRfBP+/THC2bzc0f6ZNPc+TjhJlqmSg3b4FD6H8FKcfjLdoV+pFrj3mZUviGoP+Mz93Ih7HfGL8LjduP8W8bdsHpQf4OWQxKf
- nTIiNzc2
- ctCwFyCRbmuWcYUIYSjQTKbosbquae+tw+cFUidvdQyL/tbyt5ZSvmhZjE3K83qu8ISEvkDtlTrHhOMMbHVkprHp+wwS8xq7uyAhCOQNy6LCJ3uawp2p+7gOmwPsvdHUHwBBaLr2BmGPEvHSvcM+nSU2ASd9JaVNZLdcnoJCzn8z0j0zx0udCoR/vk+Z2xD1u3WNghKmk4Z7mRhZtWphtB4vZbgyCa15sBQaX10tXG2OkiZeSNtR+w7V1MfkFGVNQzDSIKtT7LHrWiV972ico/gIDIPFH3utqnF+6
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774613413-561985
+X-HE-Meta: U2FsdGVkX1/6ZtEqsOfIrX4yM2tDMFQiPNwjfrOS/7gj1FPPgGzRUfMbV88Ow1G8jB33Md498Sm/5eVoZW/A08od9GYXpgdWoHRqJCK6bL/jyx7Q6pm6Gyrdy5XwmmndnH4SULhTLb/6obJ83YXjLIMf/E92UUy82jW8YI5ssTB3djAQbxWXlEu58dkbFZwMXFK4zx5Q6mf8s4SRKDTX+XRchZk5U5YVsUANcwsFUxy6K6uYnMXfYX7geC7yQqM9UHanuTjPCQS2MzEtrug91HscXnWaCYSqQrIuC+LFCWG7OxL6+znaFuJeMQkowmStmU8T8FYbCictjzw9OZzPuDjeTCAHDSeZPghAQliahG8QO/ARmLKgOZlNfdJJzv5zzo62rk2Q+xaZG0XcmvjhCS8O1aOCjmtnKrFGGqlwuqTRB49l/NNuf+92ezP9cFsPZKzmXMOF8n+87tS9ud+visUg5XEUtxDsYiFfwecfEVzvbk0YT2ArgZKeDD2YwBNvksbRJxyqblKkLOE45IlEWboNZX7uwU5EhNdsG+4/Ef6eL0FZqlGhZ3fUzgw2Ik4eEajsC3HucZ8bTeMY79pwFblXACZ59wdFStGPF4SQn3pWxYfQiG9MpUMWY48NKaCpIZPLTVa3LNkWl35XVgmVJgA54m5JHbt4erzvE9QYoylr+Dqpad7ERrP4KIBdjPjVqumbNsoePQDLkJDOo/PColsU3SN3DrMWK0v0Bw8O9YqH38EYwwHPfpGfmBqsNjzEhxChBcHthlTK8mU496IbnmtunwtjynztaZNabh9OnJXhN0urYlu1zJ5v2tHWWygYdQ41EZEpriEzoZvyX7fwi6YWoP+9GddjC8awI4dY6E75iWfxHi5AF4BDWLuILXDGk4WOcFEpWDE8IdMyvETz4OqsV+dLSlgGMPYzAARJLOfJCIk6TxxFa0P+1Ek6zRVt+ITD6eiikBf98aUXSAN
+ fO0GsND3
+ SjMbV4OMGtq8v9wFQ8ZyEuTIYJh0/AppbacX/bwOdWRpYTZIw6WGSSsKf8pU9CC9KOJmqVAoOpn5IstGM7Sxviej+gmu+9IjCKwuLJ9IShg3lOB4I8VSVvXJpy8JQY1BB7CSPhUI9vcediWQORgsP7DvmsMquW+BOSW80MftYPv8E71QNm6H4iuv7fRgAA6SEtnZ2QSmoHR/3c5jOqTH2uAUg/+mWFK/7kSUBBsssNtc6hVfQ1oRp/xvXk7BJwiKXMas7jDGjuBoOee9zc2EeEKy8H1m8KulDk1ykscFou6eMugcV5rJzm7yb20lsNSeSzIYew84GdCAcQXWIEKqyc0nYoL3Ncy7Zhw0SA+WSn4DGp5a5v2D5sTfW4zfVpSjdZPVY4evS7HathuE8243EKgAOmWJemnNQFuk+ydOWHfyi1kL7Nz75/hqCsR8kGvz29HrJ8M3fvfxM8jM+9tqAlbH9UCrHm0bOXCrFvkQpuJvAOjoP1aSB5vB9TKDXJT5f/dZN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,68 +118,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 09:42:47PM -0400, Zi Yan wrote:
-> collapse_file() requires FSes supporting large folio with at least
-> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that. shmem with
-> huge option turned on also sets large folio order on mapping, so the check
-> also applies to shmem.
->
-> While at it, replace VM_BUG_ON with returning failure values.
->
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+Hi SeongJae,
 
+Regarding the kdamond termination, I have an idea:
+Should we avoid terminating kdamond just because of invalid parameters
+from user input (e.g., non-power-of-2 'min_region_sz' or 'addr_unit')?
 
+Since a terminated kdamond cannot be easily restarted currently (if it
+is not terminated by 'echo N > enabled'), we should probably try to
+reduce the probability of such unexpected exits caused by user input.
 
-> ---
->  mm/khugepaged.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index d06d84219e1b..45b12ffb1550 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1899,8 +1899,11 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  	int nr_none = 0;
->  	bool is_shmem = shmem_file(file);
->
-> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
-> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
-> +	/* "huge" shmem sets mapping folio order and passes the check below */
+I'm thinking of validating these parameters early in damon_commit_ctx().
+If they are invalid, we could reset 'dst->maybe_corrupted' to 'false'
+and return -EINVAL.
 
-I think this isn't quite clear and could be improved to e.g.:
+This way, since no actual modifications to 'dst' were made before the
+check, we can safely clear the 'maybe_corrupted' flag. User will then
+receive the error but kdamond should be able to keep running with its
+existing configuration instead of exiting.
 
-	/*
-	 * Either anon shmem supports huge pages as set by shmem_enabled sysfs,
-	 * or a shmem file system mounted with the "huge" option.
-	 */
+Does this approach make sense to you?
 
-> +	if (mapping_max_folio_order(mapping) < PMD_ORDER)
-> +		return SCAN_FAIL;
-
-As per rest of thread, this looks correct.
-
-> +	if (start & (HPAGE_PMD_NR - 1))
-> +		return SCAN_ADDRESS_RANGE;
-
-Hmm, we're kinda making this - presumably buggy situation - into a valid input
-that just fails the scan.
-
-Maybe just make it a VM_WARN_ON_ONCE()? Or if we want to avoid propagating the
-bug that'd cause it any further:
-
-	if (start & (HPAGE_PMD_NR - 1)) {
-		VM_WARN_ON_ONCE(true);
-		return SCAN_ADDRESS_RANGE;
-	}
-
-Or similar.
-
->
->  	result = alloc_charge_folio(&new_folio, mm, cc);
->  	if (result != SCAN_SUCCEED)
-> --
-> 2.43.0
->
-
-Cheers, Lorenzo
+Best regards,
+Rui Yan
 
