@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D1A10AB838
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 00:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12C310AB839
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 00:54:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7D3F6B00A3; Thu, 26 Mar 2026 20:50:56 -0400 (EDT)
+	id 3F6976B00A1; Thu, 26 Mar 2026 20:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2D296B00A4; Thu, 26 Mar 2026 20:50:56 -0400 (EDT)
+	id 380706B00A2; Thu, 26 Mar 2026 20:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6AB46B00A5; Thu, 26 Mar 2026 20:50:56 -0400 (EDT)
+	id 26F356B00A4; Thu, 26 Mar 2026 20:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A848E6B00A3
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:50:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3DBF0E11B2
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:50:56 +0000 (UTC)
-X-FDA: 84590013312.19.C2182A6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 85FF620002
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:50:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Dsd3gqOS;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 128CA6B00A1
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:54:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B23B4140F37
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:54:36 +0000 (UTC)
+X-FDA: 84590022552.16.D6860A7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2C9DC1A0002
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:54:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RCUN1u2P;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774572875; a=rsa-sha256;
+	cv=none;
+	b=vQOpo+pbRDcp3lk8DPuUtAt2KE22xAt+prxQffEd8EgCcUX4B6WxC8mIgte+flVj+Wlekj
+	34bcEcrfIFXjlmLU4LRLNq9Zz6DBwm+oIiVf/daWp0xSIyE0J7nYiYVogNSpA8sSuX+ZbC
+	whr0NYqhcGUwICnX8TvfrgCMBuRFjT8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RCUN1u2P;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774572654;
+	s=arc-20220608; t=1774572875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xyu5go0hoonNipiox2cEMMKKVMnTXInaSisBq+zkiXY=;
-	b=MMFyUGQMBFdbEJMVGXI4fDp6sUeXcHgtRwiZ6M9TE7f+sZRRBiBU2xAsX/mPnDQLMTLtZ9
-	Z2Z0tFtJE4SEKCMZJ+F2a3EPHpZgovXLPByrFF0/KipqaAVh0pHiGwuXuVBuS/AUBTtQj4
-	tYskJITlrW7BRctCCVIGwbtO4+jTw0g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774572654; a=rsa-sha256;
-	cv=none;
-	b=ig3r1NI6QwaHujkUoWYB8vhbFk6gt4torptHR324GJ70jpf6Rs0dwnCrl93x2Gv3PRiq7v
-	5u5Tt/NOD8xEAsxCbWpK5YdU4Sm9Ho9+Ysrw55n2WMhBKUad0P4bbiDOJklZaKwmYzyKkc
-	wSXNVcKLu0VVQExQZgbD5JsA7JrKfGk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Dsd3gqOS;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=BsG4Oif5fMkrCdA5x9h3xggC6X7ShoZolUiiN+zQ8vg=;
+	b=Ve/tEeIBmBw+hwLjHjORRYBQ9eCDg+tZCAnmdwjQJSw1G6c/6kgbQPbYx8/9K+mwxJJiAH
+	KIzDuZzXbnM6krZSIA2g7aNAVNor8a5UfYUBrbWgrYZiZ65uvBDJ53D86ZikZdCFph9ixI
+	LL865mrxpVP3yQ4mRQfAP+dbfSqPDf0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9A77434DF;
-	Fri, 27 Mar 2026 00:50:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54271C2BC87;
-	Fri, 27 Mar 2026 00:50:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D33B60054;
+	Fri, 27 Mar 2026 00:54:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB864C116C6;
+	Fri, 27 Mar 2026 00:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774572653;
-	bh=KkXQvPzPwbE2ulwwTtCgJ705N/C/D+U1v1MM1+vxmYc=;
-	h=Date:From:To:Subject:In-Reply-To:References:From;
-	b=Dsd3gqOSRXZ5UsSv8d3py1AIUe+z3FVQfH0fFjtGWfXn6vhRptl+6Vl8d4aLxzr97
-	 4MV9awn5Lk+G+Zpja7/4+grOQ2pMIBw1JS4QCpT9Ap4jUBjRA4j2GV3PCmpnFpo3C6
-	 r0vMaUGt/Lwb4F40XPw19lgEkJ13Fxg2BA+GotHk=
-Date: Thu, 26 Mar 2026 17:50:52 -0700
+	s=korg; t=1774572874;
+	bh=A1uSR7ZMVXc9+x0Vd/fZJiBYrJDicq9K19jaALu3MLM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RCUN1u2PKz2KarhxjiCebWq0+7ynRrjL4dRmllJbwPV8Bl1Bm627qws56257wmWR2
+	 YyNI0a8eWA/rq73gbyfbyYqaIAtsxeMiOl2OfLerfmDvIkZgTJc3yf70qCuXivqY09
+	 Klmpoj6Wr98tH177GxCRsghsIEU7p5sbMV+89YzU=
+Date: Thu, 26 Mar 2026 17:54:33 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Joanne Koong <joannelkoong@gmail.com>, jack@suse.cz,
- willy@infradead.org, miklos@szeredi.hu, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] mm: start background writeback based on per-wb
- threshold for strictlimit BDIs
-Message-Id: <20260326175052.06871e1fe76af965a114bb3d@linux-foundation.org>
-In-Reply-To: <20260326174237.0ad75b578219aad36f137e4b@linux-foundation.org>
-References: <20260326234629.840938-1-joannelkoong@gmail.com>
-	<20260326234629.840938-2-joannelkoong@gmail.com>
-	<20260326174237.0ad75b578219aad36f137e4b@linux-foundation.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: jack@suse.cz, hch@infradead.org, hannes@cmpxchg.org,
+ willy@infradead.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] mm: reinstate unconditional writeback start in
+ balance_dirty_pages()
+Message-Id: <20260326175433.5cddde03a0eb201042a1ed55@linux-foundation.org>
+In-Reply-To: <20260326215127.3857682-2-joannelkoong@gmail.com>
+References: <20260326215127.3857682-1-joannelkoong@gmail.com>
+	<20260326215127.3857682-2-joannelkoong@gmail.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: rm15q4o63qaexe1yefqdr8r8ws31mqop
-X-Rspamd-Queue-Id: 85FF620002
+X-Stat-Signature: 3bjqzhe835acdewgz1pkyyop8pmb5s4z
+X-Rspamd-Queue-Id: 2C9DC1A0002
 X-Rspam-User: 
-X-HE-Tag: 1774572654-579753
-X-HE-Meta: U2FsdGVkX18mEsuBIJ0ugZmpwIRK71jyb3HBfcMQKVLtbt2uMgbT4eqXkRJrOYn6beBdgdE24X5N+Jz8GRff1HF3V5hqA6B/SmoqwdvvzGmo1jnk67EHTLi/rJPLUZex8qgEK3LvnX6zm0x7jre9UhEuYpKcuM473SsK1lCKfze0ObKJH21FCixWyW8fG1G1WM+N4qwlqqtRQg5RdFqPPl03zzuD6izAWZnVbIoqvY4dFl8ZlZtvlfYm5AXPEU4/ndvlS9JbTQvG3xI6Hp1HLQgOpQAd1Shuz0UhBS9uNyqWYVkl+LJVegMl1JBry3DerW8JKfGe8RIpoTxadjuUVw7RdIsvjPckQ57DjOmRD5BjaMW0tALnoPf7pe4SxzCXH+2ogsCsdySYxJ2718AllGOd4xIJsTqERGuf+1ty83U3Iy53giKolUTfMeQc+A3Nz0vunmTBlZU821KuNIrhw+GjqB9erHbwQmW9LzmI5SL8ndinpomFsi9UEkYodBYTWhzlDTKybKXsXbuW1J/HmglUEptXNXB9UdER3XuJmNhdUFBi72jQ41mtcbl8vye+hnL4NCLZ+a4MrtvZj0bcKGBchLO3yO237+2MZnOaIgvg6hcaz1eOUn8y0ymuyTjei/OStcdbWP9LxWIHWRdW8F4ULyD3MWO9vhGUvYz4K+Gzz8Vv7A5/GH6iIy4NLzetvXkNqbwvR/nWkCj5PtSLsDvNUWzgh2U3G0UglebKf54w0z8KcG3CZhA8slgya79d3GQeoRmqb5MRc2a4O18TJ30Nd9LRALV/1WRwF7b9XdmC2uPh1U92gMCtIY+BwcO66JkJjCmycyqArK+ipAdJm7lNf1G/UqtX6TNosnkWIDy2pjEZgeLpCrz38scmLDyVooqfLb2O0lfGbWLhQnqItM0uYkfbLVML6a/Avrgb5/baw5wWwoa/Z/k6akhck00epHC9EkMBhe9Z309PZpR
- 8uYSyRkZ
- 1vu3KUqPGQJka+yZCnO2mz39mqEsbkoYivrdXZMOqlkPpGoDg2J8VveOO4i2xKWh9/V7ZjDBj6G1saC/W1bAvVVNUYwIyrHBRNej6AniFNG/FVIpSnIaYomauww9CQZvqJ094C4heDsfsWmaWZuEzx1YPlRTEFle7dF8sqk7C4dDTfWU6vaiUAUm+w6QQjem8Q7shxyxMXFLR0NNPSOlb8DV4dc5sb8chvHXzaKNo8S8pOdMXFKerfDm11YXJg0ofVI6KEobkfALeyw5raLkUc5IbJxUhY23HrJYoCUMHnDgXMmETOQNCAT0wVA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774572875-570809
+X-HE-Meta: U2FsdGVkX18AuLYoWIretEarnn2bmAMVeNUxInk6W3ijvEXwDzrGEZhQN5IoNhks8RxkLNbMg7qsx3Ple5EfxCm11w7gWiVbyKKhr0EPSlDM6oTNX9H4DouU40/1+PF4NTKDcTV8ZkE1GDezt2nxe7zhivU0eFAZ+SreZGaIaSdE1pspTCB5gwVq8K5AQt/oC8N1ugbFZ6f/ICQIK46dgEQouN8MfuXO4PjyNmCoL83P5vUNDageqMKKFZKT3SirC4b0MM4g17XUeX/MJw0KQDpcLBn2y8TmpYv7Q4InAaWkb3Rzvgljfsl+AJIE3hxuFsxG/3B15R3V5oeDrHQ3gzkLDfD3TJMfiOgZqZ8lqG1GsynBVsMmlDf90AOsd/F/uDB6/qV3BMNF7ftn5DvN9+mPjpERIKrq04Pa+Et5pIURXOP42zQDtEfibyWlnk13RrxXPZGRy5MeL896AImiSmkhckgC43fHe74xoPXTf71aWB190F+u/ppF+u34RftnFKKJGRO86w8sHtAEb+HRZZAI+27PtddSkptG1uxBNR+ALc5xT5bd55u0NJzhylP/oI1YQf5YN5g6C2WbJSK2tc/83J1Yq1RKsW/S9TLkZrYL4zbMepmqMCOUM+Tlneno8H1O9Dr9dwv93qFRQ8teAs1iMFnHkz/xLHH+xJXPFAJLAg+7lzY6L5Ypr/PK0CPOs4vKXCgdMKphvZZagVlB72sk37/AyY7LtCn0DT0KJ4unMN4KIneJH29Di/Rpx4PFX6UY+sCgQmzDNEJc5qdyYGLhpr3XoyWoSF+SHiqXYWbdljRCkEe3q2GHGU8Pyte+qbNERnfUSzNqdayUQiT9Zr/a3FCIoPUTlTqyAFr4QpN80mAEeKmkOnSzSxraSKEdwngVefDzDO8gO9C/zOsTPVA1oXuaSk8iloq5yXt6zqwNbzR1q8/Sgj9oLbHA/uVHD+bGa8wM+sNvw8kbmVq
+ uFnD5TYZ
+ 7H8g5n4+h1J/9Qs6RzSosa+fNcN2kW9KdhIQ2XiHlJ6gfekm+bMJA9EJHOr+7N9IdLKZjtsNny28/D+TXLqOgMln0g7k66xX7fXD8ihfEiC+4MnzBkBKKWV+DE3+ozogJhNvTAS5Y6rU9JEMvJmhxE4BY5nuKbcNctoBmwRj65qoeLU6JH48cf0V26MLS2rvp4xwZe9dnfoFdgsemZdBBuLJbGsfTKfr4hVYEe2Gj9ImVQ48d7WSMIo8pB25QGQMAJ/8EhoMy071sWV93SuDRdxyP+XjxaNQVhrXRv9LNkgNedRZhwHSRWVFvC7avOOq1v0m9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,25 +91,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Mar 2026 17:42:37 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Thu, 26 Mar 2026 14:51:27 -0700 Joanne Koong <joannelkoong@gmail.com> wrote:
 
-> > fio runs on fuse show about a 3-4% improvement in perf for buffered
-> > writes:
-> > fio --name=writeback_test --ioengine=psync --rw=write --bs=128k \
-> >     --size=2G --numjobs=4 --ramp_time=10 --runtime=20 \
-> >     --time_based --group_reporting=1 --direct=0
-> > 
+> Commit 64dd89ae01f2 ("mm/block/fs: remove laptop_mode") removed this
+> unconditional writeback start from balance_dirty_pages():
 > 
-> Thanks.
->
-> [bunch of nonsense]
->
+>        if (unlikely(!writeback_in_progress(wb)))
+> 	       wb_start_background_writeback(wb);
+> 
+> This logic needs to be reinstated to prevent performance regressions for
+> strictlimited BDIs and memcg setups. The problem occurs because:
+> 
+> a) For strictlimited BDIs, throttling is calculated using per-wb
+> thresholds. The per-wb threshold can be exceeded even when the global
+> dirty threshold was not exceeded (nr_dirty < gdtc->bg_thresh)
+> 
+> b) For memcg-based throttling, memcg uses its own dirty count /
+> thresholds and can trigger throttling even when the global threshold
+> isn't exceeded
+> 
+> Without the unconditional writeback start, IO is throttled as it waits
+> for dirty pages to be written back but there is no writeback running.
+> This leads to severe stalls. On fuse, buffered write performance
+> dropped from 1400 MiB/s to 2000 KiB/s.
+> 
+> Reinstate the unconditional writeback start so that writeback is
+> guaranteed to be running whenever IO needs to be throttled.
 
-argh, sorry, I didn't read your [0/N].  Ignore.
+Thanks, I queued this in mm.git's mm-hotfixes-unstable branch for test
+and review.  This starts it on the track to mainline before the 7.0
+release.
 
-btw, a [0/N] isn't really needed for a singleton patch - best to just
-put everything into the patch's changelog.
-
-Transient info such as "this depends on my other patch" can be placed
-below the singleton patch's "---" separator.
+I assume we want to be prompt with this because the fuse regression
+sounds pretty horrid.
 
