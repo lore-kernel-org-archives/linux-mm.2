@@ -4,88 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E562510BA420
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:58:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEDE910BA422
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:01:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 066726B00AC; Thu, 26 Mar 2026 22:58:21 -0400 (EDT)
+	id 3C5E76B00AA; Thu, 26 Mar 2026 23:01:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 017766B00B0; Thu, 26 Mar 2026 22:58:20 -0400 (EDT)
+	id 39DBE6B00AB; Thu, 26 Mar 2026 23:01:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6EF26B00B1; Thu, 26 Mar 2026 22:58:20 -0400 (EDT)
+	id 28C1D6B00AC; Thu, 26 Mar 2026 23:01:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D1CEA6B00AC
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:58:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3FBFA1A0F73
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:58:20 +0000 (UTC)
-X-FDA: 84590334360.24.B073D47
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9F8091C0010
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:58:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="j/Vo3ys2";
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="j/Vo3ys2";
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774580298; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1405A6B00AA
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:01:03 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AC34713BFE5
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:01:02 +0000 (UTC)
+X-FDA: 84590341164.15.9F8B9DF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 76A9A180011
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:01:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JPQBBhYS;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of junzhao@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=junzhao@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774580460; a=rsa-sha256;
 	cv=none;
-	b=4Pf7Fks+3WUFcsU1+rMui9EIZtwKLIpNHAmKkrE0DXhXVXfhuy8+FkP8k0GRFd8U9bSVGV
-	WG2snKfdSeXwFd8lVc0itMR1JGhHc1eVxruzegmBMNQ7/WbNixbMSruUNrtu1W3XJSeE+W
-	U6cGsX1ML34yiX+uWCRbH0YxfYfuDHA=
+	b=c2AcKttXDzrv1jCuLn5v1awjPLKHU0KpUhBrX1zjLgH62WmOH/Sfh2qzhNiSixguYrlTAF
+	SHnUSmGU219nOhewAWnuahj8SyAwFScETFFE8NwYgFQq7DGxwMUtiVhIONhjZKeyt19Pq3
+	Y2w+IlTCsUjBy/y+/8gYJJDtFCr1TaY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JPQBBhYS;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of junzhao@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=junzhao@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774580298;
+	s=arc-20220608; t=1774580460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k2CzznVn4CkfBZu0OBgZKKeMtJqZv0p/LPx59pidWQs=;
-	b=8nXmaUy1ZjrrQ61RVaN1OmCa+T/TmBSnVdVvr8I4ykSS9A0hlvHyWB0Ehwfraxdi9laanM
-	7q9u92069mmFoWP2/2tbQf0cW+DnkgmyDWVVcezcLRwnuIDa5S6vCX4nancTkcyR940ivv
-	JkWQnOQxjA+kwbOEHAl5we/cP0uDLTQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A14E4029E;
-	Fri, 27 Mar 2026 02:58:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30C0C116C6;
-	Fri, 27 Mar 2026 02:58:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774580297;
-	bh=ZpNIEcUffsRq1bL9mSuUjHcLakM3o1+hxG4crvmOh68=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=j/Vo3ys2nroHY54igrcUEcoYgsxYsT3vxeiCyy/aOfXJa1yRgskAMVRG73QbfSFFf
-	 JM5nLEh474y06NHY6UPYTi/omXySC/awZK0BmobSkQgM8axUdCr4bD26qAKb/5n4XZ
-	 I6MCP8QNv6Ig+O/3PIioVHSyf2KK920H2p86r6uA=
-Date: Thu, 26 Mar 2026 19:58:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Oscar Salvador <osalvador@suse.de>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
- Xu <weixugc@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Sidhartha Kumar
- <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v2 00/15] mm: memory hot(un)plug and SPARSEMEM cleanups
-Message-Id: <20260326195816.60110f50cd464d0076aad0ff@linux-foundation.org>
-In-Reply-To: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
-References: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9F8091C0010
-X-Stat-Signature: wfwpa1xt1n3wuwtiaf7qebsiyoz9zw4y
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KxXsUliqYzfkqIh03PXfVwMjyp8lPMaw2T3hQcpy0bM=;
+	b=DIfVbmNqvfqBKCYne5Fh2tbklRTeOluGcJqxbPNfQDoI6YboEIA7q+TZap84T4qNnIqeBr
+	kHjcKDGVMtzQ+/XQm+50maMLzfdiZkh36Zz9C3sdupwI2Rw5CJijE4ow0ndPpm1E6fqz8t
+	uW5oV1X52B1Zq/4GLRaXSo+N2Uo1xIA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774580459;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=KxXsUliqYzfkqIh03PXfVwMjyp8lPMaw2T3hQcpy0bM=;
+	b=JPQBBhYSA24KgR4b5OQcqCXLqx09hjs43LXlDNw/TXgajSCp/2lPrz+QQy1BvYFTZWmalo
+	FUMKqqN5sUdt2xXI03KQDDYELvQw9CkV3nqnW9xzUQZqKd3VY1dG6Vm6lLO01ujt69ZrFE
+	YtrFLOqKWJuT5Tk+GVUTvOcTSdtUVYQ=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-KOb2S1KIMqaYQOlgQgEZpA-1; Thu, 26 Mar 2026 23:00:58 -0400
+X-MC-Unique: KOb2S1KIMqaYQOlgQgEZpA-1
+X-Mimecast-MFC-AGG-ID: KOb2S1KIMqaYQOlgQgEZpA_1774580457
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b983ca42edfso225580766b.1
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:00:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774580456; x=1775185256;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KxXsUliqYzfkqIh03PXfVwMjyp8lPMaw2T3hQcpy0bM=;
+        b=NMU1vqimyiAPc1st6lBAsYrPEX6nH4d0KBRATPti52pOCtfcVE5wevAgpmwqCFG3Pj
+         Rl+5S39w848Ps1l2Y66uJnkurHmq5C7f9uPmY66h+gG4vNMiT10gHeotpnIbe/CPEVXG
+         xBb+4G1jOTpuE5uF1IOcjcNC05mu/fCkQjiTXv8Yot10hILSZXQBpcBVf6evqph6yK4b
+         peVSJJlUVsfUdMiY4cdCyMNNtwRdCCvYO5ElK3ZQ9bgtMLBb2VTIFqe6FKk2GSmbEyZd
+         C7I28Wy0f4YHrth33yxuo6gkwskw4Lv3p5QtaEoqGMx2jDQEx01lKLcVcvPp+Y5p4sjc
+         hA2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUrxKCEqa02VWt9bjpznGBoXJMwGYnmrTCweNIw0yhrIxLeoMkMdWmvngh/ruhLVFFm1sPdfwT5aw==@kvack.org
+X-Gm-Message-State: AOJu0Yxv42uMamKMyKlSwJeOpEHdo995VaZ4IFTJxrXSW4WDo4Gu3yHa
+	Ls7DvMMaPtja6YnvB3MNUpnz4DJEb0HmwN80mrV4osJH3B8WlO7Yyw5HB7dNS3RKMT3C1WCkPUm
+	5Kgn4ipZhvDdJN7g86LgNXcP0ECzoh4TL/FO+Sch8NOvhYODOuloXxantRfvocAoN696MgI8kL5
+	wOtplLboLCqvAOkDxEgV+jli+Z+4M2vCklZi1WHA==
+X-Gm-Gg: ATEYQzwQWJjF0zSEAP8jMd/GusTSFxtmnu9NCYPY+6ZUqhLaCiVmj8TJMci+SxhxCg2
+	Edw3lhEcx8DdZd2KlDNsW79vOQTSPkW3VRXIBQDhqLG2/LFQHMUYwcjSNNbcJ0RHsA7ur4flj9H
+	iUHtAAvzJFonDWX9PH/D7FZ2qo4TkYMK9rJbJ1vyJZ7wza884EWfrcI0cN09UiWOohojspzZ9cv
+	lmfLDY=
+X-Received: by 2002:a17:906:b0a:b0:b9b:54ac:68b9 with SMTP id a640c23a62f3a-b9b54ac9144mr14233066b.12.1774580456396;
+        Thu, 26 Mar 2026 20:00:56 -0700 (PDT)
+X-Received: by 2002:a17:906:b0a:b0:b9b:54ac:68b9 with SMTP id
+ a640c23a62f3a-b9b54ac9144mr14231966b.12.1774580455842; Thu, 26 Mar 2026
+ 20:00:55 -0700 (PDT)
+MIME-Version: 1.0
+From: Junyao Zhao <junzhao@redhat.com>
+Date: Fri, 27 Mar 2026 11:00:19 +0800
+X-Gm-Features: AQROBzDaezXtEDNsCvayTZ5wEuhmDYFnTwT5H280-OnTH2ns8HlrQwTzV0iYz2I
+Message-ID: <CAMZL0nYFrtfQbVs2F63S3y1kDnLGeQpURxd+OqGE3YkZ7Ad9Tg@mail.gmail.com>
+Subject: [PATCH] mm/page_alloc: fix indentation for VM_WARN_ONCE
+To: akpm@linux-foundation.org
+Cc: vbabka@kernel.org, linux-mm@kvack.org, Junyao Zhao <junzhao@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: o1PCdx9vFwXgNuNMJ1xIXdnUUc2XVExFC_fMvtBwZ6I_1774580457
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: hq8snw9tib98bw71teo3cqahsysg6wj3
+X-Rspamd-Queue-Id: 76A9A180011
 X-Rspam-User: 
-X-HE-Tag: 1774580298-607947
-X-HE-Meta: U2FsdGVkX18PCnYI+d5mSLsLRmk+71Wu043lYnzJ37Kr4V3T7kkYevQxmhYYJw+u3QcK18rGBCvpxcGFEjsq4Uh7RiymCGrU6TXWNdt0JKeadO1eXjNl9TUmwhgjTzbULVFrlVRU15XkYN/MB47B8sWpGEFmLi+AhiFOmABdqztpv85GSLZgQB4S90dGeEXch9GTx7PgotTIkFZv7wP4iZs08dEY5hc8vKI1sfxU09nhqCJNyrzmQNgLLTADLi/UwqK2R76yXVTwx7+HgHN8pl0CcPQBScc44j9n/wlYSydlVOeGPh4X3kvCK2YV4H0kihefYueNw828AAgQAt3GYr4EhFxXCCj6UXB+o0EONKCWvOp/Zm3dar88un3GpcPno1KwUFd9YplkhyhYJwZxwYv2qwGaUAYhxa7L4UcXrwEocGiSYJTQOeDxcZyV50kIEqLDMV63EVvFQz8sesXeWwzcpvNtuS6G+O4nq44bZ7nVhJh/xsf+IcQIPyX0Oxj3ivw+qnDQnORqVJ8LMq5f1aaKdZy5FHgqLBvrJOe8aD1OGvj4/rcq0hKBLTT99te/31KCzar+TCuazZ4cAUbVmfAqWj9Ekul1ew37GCMaqV3CFpv2kEJFBwHgg3dpBudFFKC18+/wgZ84V3kcaDXzrxO3206VrUL77sknHelXEvg1XHJ16cbSU9g1kdXBppkYTQbeUqc3KJiFEFwvz+VAjG2IXbGA1LWZOmfIGtyMirJNUcNdl7dn7BoAf/vh1yklgMdyfYDAQq5B/Bo/wkvQk2u2LMpDVBZPVY9G2VS5/qGD0xW+tSOIHr2CN8QG7Ff2n9OCGGw+I+u2R2Zr55qPQbZXyfeMwwrhybxM8htN1phg/wmqNIWe/K671bOmFbNEp0B3CBBazmD5WGfIDMy87elK+iMTA3R0kAw6k/7JJv8=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774580460-119726
+X-HE-Meta: U2FsdGVkX1/R4+Fa95ArtY19u8/tQePe4ypXzaRAD77gvp7i6MGQQrvMd+e/mFScKvJB1pdafg5xBX2t2P+7t+Cfn9TtcRGGdiTqGdknFgP5m+6ocJhhlO00/LpkaBhDTueGIZfVTeEXT6cs6Kw+MARVrnBaAwJBfi3G6BxUiLh4XqKe3ENe/IdQFi659E1GVHACT6je3PNxeD6aRs0cSuWRlvRIJeRvKYAnlKI5BmPWLMuVBf6Gv6pHQy7/4DSqFoJssqjVQybzKeDA7Lf1MbdxQWjGnEQZ2vR9Y9Kq4KgUiZBfzEqENQCjyxzmaBnRHox/rQQRGiQAd/dElWFO20TZX9ZrH+8lY64iYFtQFrdat8/t/9kQZOtb7JtIssEtTCC3XaEIcgzFkPTwAe7sdz8c/PnTRe/nzxvdrSI/ADIQBOc9PNz97ZmqJfsko49gf8cRTsaC9+/Dlr6pfswJJRWfjYg6Ko/X0aTuYhXEAMrq1UsnFEvcaAAblm8UvLi7UzOuT0kPk8MTe3PM2hEpzpa0WZQl8Cjnq7Pv2Af7HPw+cPrE5KUFktcb8OuLmbPNSlp+qDxok0G40gvriSiNxUnljNIb1sdfzsOC6/Pxn5hx3rusfwoLrTk6V7q/KWOkXJHvSYCiO4zR9x4gBP55fBvVXIIldp3ey1t1GQchiV6SpX4okXuRkYw9T/KwsFd7VURI8BoPbDnGrN8GUaHGVtxelA3ZBiDDWWEJGbem8Vnklzd8Zbo8r6bLSfaDrPI/bmV/0Wt2RYi13V1suKW3pE+SO2HZPqgOUL62OqFvmGbJInIoXGrvTryffVDBU6ZmY4jx9eOpE+Hb9JGiBu22fMbmRzC8xk4sDECDZN7EwbPVdz9A5Lcs2TWdgf0uhafe1/NctSmXFG8xz9xllMBi+kTgQR6brRQCGvMVWXf0yqnGbrkPZWMCpQPwUd7dp1ziB0jXps2giSgMVOOxxWv
+ vK10+Y0l
+ /baVrOThYhqEBU9mVkBPIBhieyesF6euPO4/lI2BOqk6+ma300vNxQ40/gtbb03tfFQ2ggl3JunwFF8rTc+NONEi5YfveuTxq2GbGzVJbi9Dri4MICi9lcU7LIekNYMnSNHqDVfqXZ8NXIod3hIW2Z5CLibYw97IPj6sd8VUt5/u4Vk02fhQUS3hGwmCmX6OI14XLo5cu0gt7LIumrkcLmFrfbIGNQHNpgovwYSfwDUD+ceVGdAU48TPMC6SNlEE14LMgU39+jUjbdM99CWWtA+nVxMsscRcOPk1F1BpOIXYu36SYFxI3kGET6HPD3KDebbfzVk5lwr+SiPNIL1n0pabSOozY5xNOs89pZKduudcitcSn+CV3BtLr5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,109 +115,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 23:13:32 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+From d7442d455218ffff67f890bb39d273d7555bed1c Mon Sep 17 00:00:00 2001
+From: Junyao Zhao <junzhao@redhat.com>
+Date: Thu, 26 Mar 2026 04:58:14 -0400
+Subject: [PATCH] mm/page_alloc: fix indentation for VM_WARN_ONCE
 
-> Some cleanups around memory hot(un)plug and SPARSEMEM. In essence,
-> we can limit CONFIG_MEMORY_HOTPLUG to CONFIG_SPARSEMEM_VMEMMAP,
-> remove some dead code, and move all the hotplug bits over to
-> mm/sparse-vmemmap.c.
-> 
-> Some further/related cleanups around other unnecessary code
-> (memory hole handling and complicated usemap allocation).
+Replace leading spaces with a tab to follow kernel coding style.
 
-Sorry, for some (age-related) reason I've been sitting on v1 for nearly
-a week.
+Reported by checkpatch.pl
 
-Thanks, I've updated mm-unstable to this version.
+Signed-off-by: Junyao Zhao <junzhao@redhat.com>
+---
+ mm/page_alloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Lorenzo, I've assumed that your conditional R-b on [01/15] is now
-unconditional.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2d4b6f1a554e..d2e04ecddb8b 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -884,7 +884,7 @@ static inline void
+__del_page_from_free_list(struct page *page, struct zone *zon
+ {
+  int nr_pages = 1 << order;
 
-> v1 -> v2:
-> * Added "mm/memory_hotplug: fix possible race in scan_movable_pages()"
-> * Update the comment above section_deactivate()
-> * Reordered the flags in sparse_init_one_section()
-> * Patch description improvements
+-        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
++ VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
+       "page type is %d, passed migratetype is %d (nr=%d)\n",
+       get_pageblock_migratetype(page), migratetype, nr_pages);
 
-Here's how v2 altered mm.git:
-
-
- mm/internal.h       |    2 +-
- mm/memory_hotplug.c |   11 ++++++++---
- mm/sparse-vmemmap.c |    8 ++------
- 3 files changed, 11 insertions(+), 10 deletions(-)
-
---- a/mm/internal.h~b
-+++ a/mm/internal.h
-@@ -985,7 +985,7 @@ static inline void sparse_init_one_secti
- 
- 	ms->section_mem_map &= ~SECTION_MAP_MASK;
- 	ms->section_mem_map |= coded_mem_map;
--	ms->section_mem_map |= SECTION_HAS_MEM_MAP | flags;
-+	ms->section_mem_map |= flags | SECTION_HAS_MEM_MAP;
- 	ms->usage = usage;
- }
- 
---- a/mm/memory_hotplug.c~b
-+++ a/mm/memory_hotplug.c
-@@ -1738,6 +1738,7 @@ static int scan_movable_pages(unsigned l
- 	unsigned long pfn;
- 
- 	for (pfn = start; pfn < end; pfn++) {
-+		unsigned long nr_pages;
- 		struct page *page;
- 		struct folio *folio;
- 
-@@ -1754,9 +1755,9 @@ static int scan_movable_pages(unsigned l
- 		if (PageOffline(page) && page_count(page))
- 			return -EBUSY;
- 
--		if (!PageHuge(page))
--			continue;
- 		folio = page_folio(page);
-+		if (!folio_test_hugetlb(folio))
-+			continue;
- 		/*
- 		 * This test is racy as we hold no reference or lock.  The
- 		 * hugetlb page could have been free'ed and head is no longer
-@@ -1766,7 +1767,11 @@ static int scan_movable_pages(unsigned l
- 		 */
- 		if (folio_test_hugetlb_migratable(folio))
- 			goto found;
--		pfn |= folio_nr_pages(folio) - 1;
-+		nr_pages = folio_nr_pages(folio);
-+		if (unlikely(nr_pages < 1 || nr_pages > MAX_FOLIO_NR_PAGES ||
-+			     !is_power_of_2(nr_pages)))
-+			continue;
-+		pfn |= nr_pages - 1;
- 	}
- 	return -ENOENT;
- found:
---- a/mm/sparse-vmemmap.c~b
-+++ a/mm/sparse-vmemmap.c
-@@ -725,11 +725,9 @@ static int fill_subsection_map(unsigned
- }
- 
- /*
-- * To deactivate a memory region, there are 3 cases to handle across
-- * two configurations (SPARSEMEM_VMEMMAP={y,n}):
-+ * To deactivate a memory region, there are 3 cases to handle:
-  *
-- * 1. deactivation of a partial hot-added section (only possible in
-- *    the SPARSEMEM_VMEMMAP=y case).
-+ * 1. deactivation of a partial hot-added section:
-  *      a) section was present at memory init.
-  *      b) section was hot-added post memory init.
-  * 2. deactivation of a complete hot-added section.
-@@ -737,8 +735,6 @@ static int fill_subsection_map(unsigned
-  *
-  * For 1, when subsection_map does not empty we will not be freeing the
-  * usage map, but still need to free the vmemmap range.
-- *
-- * For 2 and 3, the SPARSEMEM_VMEMMAP={y,n} cases are unified
-  */
- static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
- 		struct vmem_altmap *altmap)
-_
+-- 
+2.52.0
 
 
