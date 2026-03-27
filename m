@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6885310ED64A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 11:14:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52E6B10ED65C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 11:15:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A31166B0092; Fri, 27 Mar 2026 07:14:12 -0400 (EDT)
+	id BE0D76B0095; Fri, 27 Mar 2026 07:15:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E1EF6B0095; Fri, 27 Mar 2026 07:14:12 -0400 (EDT)
+	id B92686B0096; Fri, 27 Mar 2026 07:15:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F8026B0096; Fri, 27 Mar 2026 07:14:12 -0400 (EDT)
+	id ACE346B0098; Fri, 27 Mar 2026 07:15:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E2D76B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:14:12 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3437E13C592
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:14:12 +0000 (UTC)
-X-FDA: 84591583944.05.6BC9288
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C4086B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:15:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 417251B9789
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:15:26 +0000 (UTC)
+X-FDA: 84591587052.19.6C34BB3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9D8181C0005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:14:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRn6p8Fo;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 99985140006
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:15:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DvJAYh7j;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774610050;
+	s=arc-20220608; t=1774610124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x3wd5VwuijjrciyZY7oyUSjts3ozR9+8YEGkP7ZIwkg=;
-	b=3UVV2s6YSUvpsxIZqwae83+fTq0dKOK/kaKtKzgFNXPGD3ZhysIc0ro4NV1PbQ2TIBgKSd
-	4yaZGP60SjIT3JqGUHgp2wLxDul9WOBfjoAiY4rKBuKKJo2ZuEi7K9wwEicgk9vIw0Mp2w
-	LQwyK8Jd6DIVq32nbXqdbr34KAJEOfM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774610050; a=rsa-sha256;
-	cv=none;
-	b=g9n313v1DypQL+zvkit0O5H2NHscXvspxzXFh4zAwHqxiId2VpURdiIuDaAq2sR+M1bj4d
-	7v1rZwH4g413/hF0BH9uVdMIM34o8z8eL/HC2zBwJ5RxD189+jRvWIyJ37egOUcbnyW1Pd
-	T2AIxFnHsrj2ZmenhFZ2d2SHSmQWiUg=
+	bh=/7djG6P2tm4I3MZ3kUwor6OV+5m6kTdnBQ74DdYTxV4=;
+	b=JDfjfo/8bboSQk8Z151u3Ke4hL+/rYEggL10uFxSYDxTZBy+K68e+BJLXS1KxzU9X5J1YW
+	W37HeN7SdPd2UozcNhiU9PHFTuvsgQYwPWiFmpWNt+GLEAB7SMsTRIcAsKlC0yZ2D4p+8E
+	xZvbYN/N8oWcnilRbMGBfMWu2TNMffQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRn6p8Fo;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DvJAYh7j;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774610124; a=rsa-sha256;
+	cv=none;
+	b=affhsTi0MsoiRER8diCmW22+rHKTEReEndyPKtlu1Q8X38imuSundS6G7D4ii1GhM55w8g
+	JDZKPYsQwx3+y0V1EV8wu7IDTE0bmHxpntl69ehIjhwHNB7gXO4Uz0gkii9RcPDgIbWNC3
+	dcgDEMowOUTOE9+M/SbbZdLg0FDKjxY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E57F761871;
-	Fri, 27 Mar 2026 11:14:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB01C19423;
-	Fri, 27 Mar 2026 11:14:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CFF2E61878;
+	Fri, 27 Mar 2026 11:15:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAE2C19423;
+	Fri, 27 Mar 2026 11:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774610049;
-	bh=jELwswd/uYPzAV137eapCnhCT1uBdil42D5dYvNpMG4=;
+	s=k20201202; t=1774610123;
+	bh=/7djG6P2tm4I3MZ3kUwor6OV+5m6kTdnBQ74DdYTxV4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QRn6p8FomfT9UzD59UdjGNoxWNuzRXV7BnOv2YdTuU+sGkaCWNeVMS+suez3EXmrm
-	 oZOGH8VuEtYcUQn7BfGZLC6ffTuFe7Uq+MaDCx4Jhv2oeO0p1M2jUN4RNepaRZDSZB
-	 kxM+uERaI26l9aMvrAlxYFhikfghtZRmmiV5uNoAqyEQq8VTGjs9L4EqI50lRcjyuf
-	 pr/Qdwbp0ld6W7Vvn0mhR7H+G8HBsgp6gLjqvOXJj3QV7TapWUAmpGdlLys1nT8Kb9
-	 OkL4lGiC5KdRKYX7iHv4AxLuVxxQNtdTZTgZghQo0/q6dVw2efMzOVS+JnFMO2yQ/S
-	 mbRmcrthcrcMQ==
-Date: Fri, 27 Mar 2026 11:14:04 +0000
+	b=DvJAYh7jU6rXzb4YVe/K5X4s419/RuEnx7cCu1w1k7C4j52CibNRtOYmTchNamPoC
+	 FvvXj90UvIP3VUoVKN1xC1OXHY9x2YirPEVwOSDtVvecix0GVLGIciM0DM/NNj1PhN
+	 AETz5/aec57lc2DgjzYjoUyk4TwDJ/GBZvlMgqa/ZrRItiZtw+AQKEJ5EbqPl/ko82
+	 yBhnC+jkwdjMJY94QuM+0EdEuDPJJ370Y5B2b7RJMoOfCcyvhrhH5Ti8UthBFFKFxG
+	 m/xPVnSg7eflyxZbWrUYghSq5k8FQSH2LNfil5LZ/VqabdzA6x2bq5/KYBWNKiMHsI
+	 nME8Ol1Hka5rw==
+Date: Fri, 27 Mar 2026 11:15:18 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: akpm@linux-foundation.org
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
@@ -72,24 +72,25 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
 	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
-Message-ID: <f00dce3f-d6dd-477e-bac5-b9b8253b03ba@lucifer.local>
+Message-ID: <7794ccf9-3a18-46f1-aca6-a61eab77bd70@lucifer.local>
 References: <20260218184210.206466-1-audra@redhat.com>
  <c1b6f8eb-602b-4306-ad60-7a181fd94a45@kernel.org>
  <abludfGu4upPcyRI@fedora>
  <f635585f-7488-4bfe-8566-1c19f493c6a3@kernel.org>
  <815b2fc9-cee7-4bfa-8036-4b93d1b47b4e@lucifer.local>
+ <237317fd-d2e6-4e9c-840d-fc60b7d8883f@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <815b2fc9-cee7-4bfa-8036-4b93d1b47b4e@lucifer.local>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: w5617ufdyesh1pd6p8qpceqdcckd86rt
-X-Rspamd-Queue-Id: 9D8181C0005
+In-Reply-To: <237317fd-d2e6-4e9c-840d-fc60b7d8883f@lucifer.local>
 X-Rspam-User: 
-X-HE-Tag: 1774610050-723624
-X-HE-Meta: U2FsdGVkX1+ddptWZM4Ww0H4iXyrLyqRaGLZ1+mYwm/eRlyc/71rzsJDGb0M+QVHuwNtSl2l7FwDoCCdyvxs4A7yirAdPCWbo9RR4khgi8pa1BWTBv9eo29ppxg3fG4SZ+1BAUhnthiWIXDC9Afiosc2nxz9v0v417bmYyPz5IoCjNiSm38KgG1lYRNx9Ee1BrPqkETibemthjGoFulJiifTDI3uNmbD4pOYjpYHqH0kPluI+1ddF5BSwLEuzXxHA1V3UVNwtRTJFiuBRq44eXazZO+r74aJizeYqNGfcM3oAMt7WXVZbmiCsUw+rlqOhMZYVJLvKDryXSlnkdRDc/uD6C04JUPzMJvzPzwH85SbcGJYs5PlyYv25SiUN5t0gx4LvemVARBiLBowxo6m5pPZbyvtV69hGpNiA9P1ndd+F85vxGlHJc8oi255VW67+7gq+YDmgMh3Dd2G7br9r/UaiUTPlLHC8c8KkM+MonjjreEVCwdt/dS2r/iZbSS81oeJllzCOEusYbwKtUpNxIawrtqWXzytYABmebopAbV0zpLgNm0NaOOWm1hd3+/TkKS3CBSY/InNKR4zFjoB9pm+SXcI1rIn2xQ0YJ+UdmRl4u+x4wKUqlVcQGplc1dedyhWjR8hOqHHQJC/yQG1ZHT7D7H+HqYHxEfdA2euNk6TJjx6kXRM4kIc3rmegW1Tq5cJizvFkk1Vlk1ccjNjbmX6FwfIQAp+7csoNQ0apK3X49KuDcr0Z91+1pErQxnMIvcB7fveVRAo28kVUnSq0RJTWXDf4jxkUB8PV1wHwrzyJG0obyM95+Rxlb709AwCiZXKQE8B4W0dYqQPEZvSTgyAsJFHxseWRTwxmP/k+5ki0zlDMe/G8R6utZ/X9BU9f8tr/cPnzh8Bmz9TgbUt1gyrsIPSrYZNSNSb1FlM4NolPDv81Z0zgs1oo19TBIGZ+INEaWySm+ThDKxSs7/
- wL6m3IRy
- ZfVdxvQo2ZGGF5L/NH+/l4ZORsv01TSYM27C/VMhBv9UVB+DDnvu3bS0lUKdKtau6DceMbSv6fJraDuX/BU2OQpZxF64tNrM1jdyz6zlIx/6vsg14uU0RnBu8/IzyRJjCcs1z04xUzm0k4lbdHKQcM5GxxpHZxEW38KjpulMrX0MKC308j2CiePe0IsPEDm6mDfspKh22XVGydVfY+DDEmiaO9Q==
+X-Stat-Signature: huzzcmf1cotki5pg5z98334xfftquieq
+X-Rspamd-Queue-Id: 99985140006
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774610124-915182
+X-HE-Meta: U2FsdGVkX18fPDLJqegrMXxP+V30vwZJOrlBaAmnGjEheylSVIeVSskNjXuq1ngH17dlCBNDmsEvPxT4GiMzhkq5HsCpZBfoR9LegyNb3mP7x+DkQ1VWZ1Po7tAY0iUtM0qxkaMdiMO4s9xYSMmGzyQwIuaUW8c4I7uS/9+7fZaruQxsl+4YdoUbXDYYM2e/B5FlHiXvZCzJXiR/4mkNAZ7QBg0fh2Zh3pe1JVhrVCfUxndd7YrpLsj7cb4YKMZIlIzXPEb4ZeVFXCI13O/f3wbA8wuDGga3QCYdPs8z6xh2JfLeu65UTiqpayGNmhTh6yzH+yR1mS0warXOmS0KRuMcTx+QgsauJCDjaEIIvmqMWC+XadBdqh4JOe3OfU5N898lZiLU6qDXBr0Dsgj0nyEixrKFW0H06MnaV2oQ5jqQFuZdhpaqP0o9i4E49UHBmTyuV5A7Idz6uNJTDepFudRO1W1yDghly8W7+jmKNrwgt1H6pPMB0Wgc5idCzM4ZO+P5Kc43eGNIwYmwqDF7cgibgAhuzDQDgmfTSwuKBQKYLhkQYo9k+cg3WQ8Pvi8NtAQvRP7+xwu+pE8XtR/9OIuZa5EeXPFmEQdScMK+M6eRf+SMqaRRS/iY/gWzsJ+MT6jPIUC7zgIakzAc/yZZxARYBAoJRNNOM8JgxVmXMfptmggih+Nd9232SHfREhvCf9zwlmJrGxVTuKgDS3mocPZ35NkHfV04nY+lIttzOa+B+20J7yihEIiLeWKADRvpNezDILgloeHbPf3f9RG34X1NRQZMvHkwSeiNVT8HIA28EJ7TSoqlr254GtgZd5lbeFGbvi49CZfOy+QBQ0rXaWEn/mjFrTlUM9djrsL/b479QUrVhbztK6PbEPSbw1k42Yzif/9FFV9t6Cqbs0qUF9WPSbDlGuamegDr08z4YEj7jg5Xz5oUav8/wvCsrQuhl/9ITENQHjGPjsfHVop
+ XT8+SZuI
+ kQ70fwK0u9eOGx8GwwdrDtQQpDKOBnTeIn1VdfIaIIswiHYYj5YROrZPrtyCqXvQj5RKN3Ylwiq8hZ/zml0rMG3nAaPSsb8KeZBRbAQaRDsMANzIW+BaZkrdYmBGHaF47SR5H0co9YfTXWTnrUtLnpk+YgAag3cCT7N4jiS12I2EpGeSbKeFtjizuRUZPVGwqfbQP4LJ1MO8nSjhXcLU83G3CDX9bGkBst0yb1XHtGeYLBSI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,63 +98,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 10:52:24AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> OK again I'm starting to think we just shouldn't support fix-patches at all any
-> more.
->
-> This is an example  of a change being done in a fix-patch that's _really_
-> causing issues.
+On Fri, Mar 27, 2026 at 10:58:30AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> BTW, even _at_ the fix-patch commit hash (28edd9c5a25c) the test builds fail.
 
-I didn't see there was a v2 in-reply-to here sorry.
-
-So in this case less fix patch more:
-
-1. We shouldn't automatically take stuff to mm-unstable until it's settled
-
-2. We should have clear separate branches for stuff-for-7.1 and stuff-for-7.2
-
-3. We should build test stuff (!)
-
-4. We should root cause the source of problems and update the thing that cause.
-
-Part of the problem here is that mm-unstable is a totally unreliable base. Not
-as bad as mm-new, but it's forgiveable that Audra didn't see Chris Down's patch
-there because who knows when that went in etc.
-
-if we had a for-7.1 git branch that only got stuff that had settled we'd not
-have this issue.
-
-And we could have a for-7.2 git branch for stuff that's arrived late.
-
-We could have:
-
-mm-untested (was mm-new)
-mm-under-review (was mm-unstable) -> THIS doesn't go to -next
-mm-for-7.1 (was mm-stable)        -> THIS goes to -next
-mm-for-7.2 (fresh and new!)       -> THIS only goes to -next next cycle
-
-And workflow could be:
-
--> patch comes in
-go straight to mm-untested - we are undiscerning
-[ make sure series gets build tested + self tests + etc ]
-goes to mm-under-review
-WEEKLY:
-Stuff that has sub-M signoff and seen no further issues -> for-7.1 (i.e. next release)
-if it's <= rc4 and no other reasons to hold off
-
-OR for stuff that doesn't fit the rc4/no other reason criteria
--> for-7.2 if signoff and no issues
-
-If things get reviewed and respun
-
--> back to mm-untested until tests pass no matter tags
--> (if stable) can jump right to for-7.1/for-7.2 if signed off already. if not then mm-under-review
-
-This way we reduce chance of late yank, give reasonable rebase target of
-for-[release you are interested in], documents and simplifies the process.
-
-Thoughts?...
-
-Cheers, Lorenzo
+Ugh sorry wrong commit :) should be 9652b82ca9632.
 
