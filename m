@@ -4,113 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26D4410BA430
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A7A210BA431
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EFA86B00C7; Fri, 27 Mar 2026 03:14:17 -0400 (EDT)
+	id 7BCA36B00CA; Fri, 27 Mar 2026 03:17:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0C66B00C9; Fri, 27 Mar 2026 03:14:17 -0400 (EDT)
+	id 7945F6B00CB; Fri, 27 Mar 2026 03:17:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B6A66B00CA; Fri, 27 Mar 2026 03:14:17 -0400 (EDT)
+	id 6D0C86B00CC; Fri, 27 Mar 2026 03:17:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6790A6B00C7
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:14:17 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 070C58D771
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:14:17 +0000 (UTC)
-X-FDA: 84590979354.10.3A61BFC
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1FF03140009
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:14:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AOgMqHKh;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FB9C6B00CA
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:17:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08047C4DBB
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:17:17 +0000 (UTC)
+X-FDA: 84590986914.16.094F5A2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 431CC1C000A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:17:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BrApkn7g;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774595655;
+	s=arc-20220608; t=1774595835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZzuSLhFEjANxlJ2fyZwwyQQ1OfEXmu8TUE3Vg6THPg=;
-	b=Wntj2ryc4dK0quC7XdazhoKwJImH/F7jgwacLdYLwRXUS4rCJzWNJ2qrW+Vf8AON66U8+b
-	MicDmZAWpsyY9++YLvrfpbQ2Po1cWcIIaHZIBQx8rEPUBE3cTpdiTOLm0lM/MXtrlI7fK0
-	FedzVKU1Lnpf8ikvg4UwesvYrJmXSX8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774595655; a=rsa-sha256;
-	cv=none;
-	b=4ge3jXG/4V7zSo+UhCgYzOurgLHdlYAJeQWhubz4RkCLXrItbOcWQK2Spjpz/4MAWGEj0e
-	5ONi0b+ACk0ovwDtAnUrehdl2wLOuy3s2ceMcJG81n7tiNpfdZPMx2ZbdAzqeFPibKQOUj
-	9sso1TfN66mcB/OjOSFsAyc0gvDG2U8=
+	bh=lZ73fpSYKpOcirQ+yph9ZJjmEIybj5myG7WrnuVKOBk=;
+	b=LTZ2HopjWm7LfhCLcsoXfe50An37svScBwCC6D7ynsLCdVRd9mEdQlXSqga62S6Bl3nJle
+	a/eNBZiMXkgG7Mr0aet0hn0436aqp+/XupW8UHW/qgZglnhvtGJzMNcu+Ql/dZ0gUB0129
+	q2pMnDIGfCXV9V69RlJ4k5T4yM3mwvE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AOgMqHKh;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-823c56765fdso982349b3a.1
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774595654; x=1775200454; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OZzuSLhFEjANxlJ2fyZwwyQQ1OfEXmu8TUE3Vg6THPg=;
-        b=AOgMqHKhddmLzdOG2P2rcqTGkS0AqN6zhDPaeS9bOuaLx9S6uvpW6v50+IldvoQtcb
-         tmc48KnampNFciYAEWptrNOb1TX1yEssh+OOQArA/xoWherb0cjY7rNLSA2VrdBxKQuW
-         /BTR2E/CsrlsVg1HV15dENny6B4u38vny5FqqEtFl9uC8R4G6l61J6JtO70PYfVSpEWe
-         IwCDXrqjy8Zncabw7F3seTfW8p9nLLF2dPFJJd43IkuNrJcMXefMnHgMBaUly/0iYJrm
-         4IKxo1f119LjBBKPsBLjR/5TB9W96CNlO5V47/K5UtDcKMUXMgbC0AL/9cBk7npDy86f
-         tejA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774595654; x=1775200454;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OZzuSLhFEjANxlJ2fyZwwyQQ1OfEXmu8TUE3Vg6THPg=;
-        b=M1qvGhG88501IS0qPD3WVlkLPYlDEQ4j2wxhe6kzeRy2Ds+Mq9PBf6CKnw5kanLiBC
-         UqUdoVekH+SVMKryfBSnelRlJu8GJ2vuybMMbyollkMjQ2KM0xqMFNc2/bKD5bd8NZTh
-         NbHTSp+TugLxYjZWezQp/FLLZWm9aylbXbk4XFt7njB6beQyUUkUZ1IVGLQDJfSbXwiT
-         3c4EqOK1Uqq9z71uG5/LaK/8gifXwiK/C6zpfDUhgA6jyfObxYcv0E9Hj3/yUUOOJr/P
-         X1Wmu9/lihGCbLpacVbhKf0oAyf8j5fO7Z3DH9rNfPoyp0dXq3Tu6erE9piX9pBwft9B
-         BcAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXeZY5H5STkgwWdUrXAN5027wSTGq53YWBMTFJrmkfandJjb2IQPMr32FPNRdvyVWH6S2FgHLstJw==@kvack.org
-X-Gm-Message-State: AOJu0Yx1NOgbGzPU5GceipsNQKOIvf93eMdl42V09rQpFqV30/Td/9JA
-	2cqbCGiOdXVZL+hNTuz9SuLlbPs5QkaQwq7gZXmP91G49PUgsxPmNPupGPplng==
-X-Gm-Gg: ATEYQzwSQi46u28YTLltB/AcQ+GWLbI0tLgkCpLLb+LTVTwC67i66whbTujuZODfiMc
-	mo/zAlkP+B72jd+8uWwmWJEnPaNYotWhI+c42qlrhKPXaMDMC9AwGkS7lv7MmuuGDfSpPlh8oll
-	P4SGndr4/FG+6hXH8bWadxIIQkRriDX5WMIHELyQNwjBDVvsD27y1BsefdPTd/2jLnK0iUaW5hK
-	v4jFbaUohCDk1dyuhGO4I/Y8/vmDS5W4lF7/XoAbmoIcgHdqmIRX58tCSY/XA5r5+vv+6IkVqNW
-	HHjVLxoPyf+8R64MPD55yS9161Jzzn4j2XS/I6b0VttxQEOmHD4wJ+5Pe2H7TrJIl+JPS6f4vza
-	5b0Cme1jiXSnPgdpPh8sM/rT2U2XExDvZhucHD2xhslTWO8oHoeBm1+VZvEG+V12KtOu1j8jABx
-	2Q3qVwsfmQ2QwTmx9BTQmO1Z88WR8=
-X-Received: by 2002:a05:6a00:9084:b0:82a:8aa:cbb6 with SMTP id d2e1a72fcca58-82c9607f50amr1358487b3a.55.1774595653812;
-        Fri, 27 Mar 2026 00:14:13 -0700 (PDT)
-Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c7d3c1374sm5208488b3a.44.2026.03.27.00.14.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 00:14:13 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org
-Subject: Re: (sashiko review) [RFC PATCH v6] mm/damon: add synchronous commit for commit_inputs
-Date: Fri, 27 Mar 2026 15:14:10 +0800
-Message-ID: <20260327071410.73642-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260327070400.71707-1-aethernet65535@gmail.com>
-References: <20260327070400.71707-1-aethernet65535@gmail.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BrApkn7g;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774595835; a=rsa-sha256;
+	cv=none;
+	b=OHiBtHfa/4PYJbx7bFR76LxdY0DGaokfPtl7i7efiXq1T/xRnpTnRbdA/2PzntG99wTbZm
+	NuXrJ1WSJxCFO4i7i4uC0/+07OWaFzLub6RLDoExv1amIa8p1p7zdhOM3FZXVhFA8zbjMT
+	Tg7mXX14lVVYwCm6RwDcWtilkAM9DE8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C27543FBC;
+	Fri, 27 Mar 2026 07:17:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AE0C19423;
+	Fri, 27 Mar 2026 07:17:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774595834;
+	bh=IUYSIF0KW3Qy7E/Goib0L6h6MkvUQflSfro+xi0ix5E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BrApkn7gG8vBjF+SCfFHdfy/8oIgFR+Akh5d7BCU1Hohx54Is9QxXoNfoa9uGQ4xo
+	 eflLiTJzu+tR8+wLJNWrOtLgcHXWatjoA5kp3SnT35BEGfuDE7YgLi90cne6xcF67U
+	 2h6tesGWXERiMxErSowF0IgsS+5sAD+EmQRXp24N+AFOSgHCAv6Mw2EHM274kKi7Hb
+	 qTEAVBhSF8GjVmtd1bfwyrtH+sRaAWotyofj4MN8LIlyhA+3yvRsT/SlQzEJT5PiSZ
+	 EXe0zx0WhTbGdPXf/iCs4Pbju/YkGV9cunDQD4qzBUts4ESi1PJ6H2eHxZs+uZOUAi
+	 xeuaWZkdh54lQ==
+Date: Fri, 27 Mar 2026 10:17:03 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: James Houghton <jthoughton@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 09/15] userfaultfd: introduce
+ vm_uffd_ops->alloc_folio()
+Message-ID: <acYu77eY_brO1blK@kernel.org>
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-10-rppt@kernel.org>
+ <CADrL8HUE1iBSPPDQZ3e-1gxN0Ts9kHAzb4o5X_XqSmQy2y9dRA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1FF03140009
-X-Stat-Signature: nn453j3zhxuku87qjr1tss6grww6wuas
+In-Reply-To: <CADrL8HUE1iBSPPDQZ3e-1gxN0Ts9kHAzb4o5X_XqSmQy2y9dRA@mail.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 431CC1C000A
+X-Stat-Signature: orxdcmr66z597kbtxyz3kac3aqyrwyod
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774595654-903943
-X-HE-Meta: U2FsdGVkX1/w9N6T206Q6a+f0fagwVSVrM8gvQ713nD7H6KdDOhN3q/S7kqllrTSA3Ro7QjlX8QUFBfZLadc0qnAlEJxBBv03ltkhE0sKO+EP8zZ4C66OybiUT+mkPUJs6IB2jCkYVc+/+x1CsnnvD4+D31+g/DLk6y8SLeu/TUBflC8D3ekeslKlOeQL5vliPLESGPh19IniV9jTu5jfi/2x51FI9AMNcU7Vm1oErNmg/zeyHuCzd10uajie5LtP1K7xglAdT0NDr49vXkKtSmEPlacIVDjW+UBtmzIOW/N7XzFRXQ5798pybEunCheGSufYy2K4Q/Wf8G7hYzwIbh6mwbchLvSAJSDkuu2uvff/DDrqNTmS5NYKgN4wLwWMS2P7kUk00EG6QLbjUuC/+hF0ba+oWPecdo2KWuk1Ws04SLuDcQPCgFvnENJwD4DK9dh8VsvCNPck4uP/xy8UBWFaTo7rLvzjTZ0dSuNSxqTQOWng/EUT3Hc+oAIE6qJrLEPSNWGsLwODyRHd3/vEmIKUajcfOkP2OoE0x6YK6a2BCZaeoFGAnalQxx6zka9f3CFi+uMmYt0M1Di82JKAjHtDevanVd+7AhGNCf0x47gDZZ2j5t4rHcidokyhWbf+RhAzrODEJ+n+Z4jR6KFVZGVmuwBGtfp2Cl1TTapMRAXpq1TxLbPN3wzBR0urCwatM1PJ8l3/rbsOX9N7uLLMcfvjuD09woBEBFlKNf29AQv7Wfw7IbzhotbaYGiMK93umsyuo80gV1Ecy9aJ6gLRS46oip5F54okR3aBYYMPKn/NC7lLJ/+f5Kc8rz39SsYfYNUkHszjB1ghJUezGGykDyPlGEZc6K8dHSYZZKhPgrELpb226WQ3zqafJDeDXnSS5iNz996nmAKCyJiuuRwqJ53iuhGwfjN4LYaokZA7gLtxZTTWwRQNi4ubAD0QDYIX7riTBPElrvLZm8IbxX
- EZRvuG+p
- Yo9OiV8CMIHjU1qsGpg43uE0l8zNTclWcc0F84L1gjbYQ7z/JCM03bckHqGleg6tSvjvy/Td1WtU1PlEphyhU/6wIETdYzGm+W1BB2qE4yQoY7sRTmKjAcLrQ7lOMlzxN3zqsJRvJzwTQTaWdekZsa2zI+pyXgEPOFDiAg8g7+dZDRK4lLsZISXk8cV1MYFgD+Sa6e5y15/Yyae17BlhwSJL0GYlX6IZg7/nV8O9pT3ONtrzRbOD0WpHUbiBfvXANUqk65Sk2Xe0ppfjvKnQK/JUvxX/zNZW5uIAYe+gfhUgbPzp/8PtUKBJR0m8zzcTKtGEjC02ToJYkRM0pN8xaW1ALDj7aeUyFHxn+cUnKtXkoxwXLeMKgPX2NhDiPBUF0zNpXplGu5lVZqJBMBtclSdtVGZk8L36H6cerpVQ8lQViB6ikeN8vNONIP2zZS0CWn5eAprd/RrysekEHq+aRgOPpygLku3yAKoEaGVpy56DlkeTYIjk2evDPIyG/W8X5+L5qJxNIeO4AIBASZyUIt0lDPdIA+261FRdXDrK4YkH06N8=
+X-HE-Tag: 1774595835-278891
+X-HE-Meta: U2FsdGVkX18QbIr6+9yXBBBq6YlBOQk7blXfN9UCJy9xskeqmazLWFtiXYgXoU5Hokd80lIddAZpcSFCvsVuhCYr+CueEt3sPU3O2HXlcImjUCk00Dexer3iHP5WW5xXZFE0x9XCIItNyb4GrhPzkmGaOQdnl0VUQM5gwfOmIWflEEjtE/qg2x+imhhjojm0zZgdJxo9nfeZ8dyoiUUhnJlP5ck+2eWPUft3L1XDTmbZXFfMe98rhvjSiOhVrwKasSC880kE5F6j+BnhYs4VVUO87wQnc/EQnP8PgIRbKrWFg+6v0frbtK9zMvXN/PWVx50jqV2J142hbgjvEV44+vd2CuYucqPdp0Xs/gbOI30U7Gc/hWCkDjQAEZHsYmOcIxQk760DVZMLLjcbrzICg6KyQeXoNRZrNskxcoTF7l4hnfXi2qaQstlVdQ3CjH+obWD6P3kmEj2Z/JmnxaGys5NHjgE4y+se47US8jS+lNdanA6aeuOj4Vy5FrCCxOErwwSvnIEOQX0W5gAyHwGlQVegpvpxxWgnFAOH69uH+tr7Gwkq7sWG0QT0KC7hMtHc072hQyBJ3/MmkolzOqRkVz15hxPpORAaBJ3jz7rVgvaKVTBXbO1S0OPh3YqaE3SvdgzZ1NlUc5qbqHH2qUAznCs3PuHjJTP0pb2YZGYxFZlhMpLwFG1UAWUcEjWAndAqLWSLbnkrodssbIfOkMlscyulRZP9lU1IUljfLJ/HTNOoeoi19qKN3qZiBClpOKMf51eMheSyw+Lpho/udTf8YRy7AIb9yyJgQ7T10bJfuvzVyJMkoysrHIMhR3QdRrX/bcgb71YZYRUWcm/VvCj6KScKiE8yw2w/ifg2IvePMTco5tR4xHjbqAyuO2hqEfHVs8VP0yiRcOxR3B2/+qOzaITJUB7YOyjmCyw6XjHd3qo+Dw+RP85Mm0FCs+cHhAN1vsGlT7PqMEKNSA0aJrP
+ hiX+wO9a
+ FbRnkhk5NZ3L4O0XTWmUTZ0quyJt/BiaHgImfSYde0aw8R7KFj/UDRbuWfxpv7hoIL3tmMq6j+Kg1Kq4NMtvlQ+cEjifGznnSJaKPeV1/1sOy0bglCzP8REbKq8Y+AKaXGe4MKBJqBZVUG+yD4KcG7m6z5Jx09+3+yfJzfxgMLJky+57YItNtkErQgBK4f/GpfR1U5hY6Uz6TL7l/uelmD7cfCx06YK9g0g0Qbz4bqXu5BV7Pce0HfySlu2qPrMixZAci3vPMIf0h6AOua80QfWJBLriDYT7bhWP7f4HLOQw2oWE3zUjp1KZIztOsAuH0psHVE1A/12WJ++C0CyMKl52wukicV2qyVQVPk4jkVMLm7odv9KZpsdiiLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,97 +112,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Forwarding Sashiko review for doing discussions via mails.
+On Thu, Mar 26, 2026 at 05:07:08PM -0700, James Houghton wrote:
+> On Fri, Mar 6, 2026 at 9:19 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> > and use it to refactor mfill_atomic_pte_zeroed_folio() and
+> > mfill_atomic_pte_copy().
+> >
+> > mfill_atomic_pte_zeroed_folio() and mfill_atomic_pte_copy() perform
+> > almost identical actions:
+> > * allocate a folio
+> > * update folio contents (either copy from userspace of fill with zeros)
+> > * update page tables with the new folio
+> >
+> > Split a __mfill_atomic_pte() helper that handles both cases and uses
+> > newly introduced vm_uffd_ops->alloc_folio() to allocate the folio.
+> >
+> > Pass the ops structure from the callers to __mfill_atomic_pte() to later
+> > allow using anon_uffd_ops for MAP_PRIVATE mappings of file-backed VMAs.
+> >
+> > Note, that the new ops method is called alloc_folio() rather than
+> > folio_alloc() to avoid clash with alloc_tag macro folio_alloc().
+> >
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> # review url: https://sashiko.dev/#/patchset/20260327062558.66392-1-aethernet65535@gmail.com
-> # start of sashiko.dev inline review
-> commit 405545126e8bb145d7fb1fbb4f36016bc1f6c42c
-> Author: Liew Rui Yan <aethernet65535@gmail.com>
-> Date:   Fri Mar 27 06:25:58 2026 +0000
+> Feel free to add:
 > 
-> mm/damon: add synchronous commit for commit_inputs
-> 
-> This commit modifies the commit_inputs_store() callback to use damon_call()
-> for synchronously committing parameters in the kdamond thread's context.
-> This change aims to ensure validation errors are returned immediately to
-> userspace.
-> 
-> Link: https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
-> 
-> > diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-> > index 554559d72976..453033f3cb3e 100644
-> > --- a/mm/damon/lru_sort.c
-> > +++ b/mm/damon/lru_sort.c
-> 
-> [ ... ]
-> 
-> > @@ -349,18 +348,47 @@ static int damon_lru_sort_apply_parameters(void)
-> >  	return err;
-> >  }
-> >  
-> > -static int damon_lru_sort_handle_commit_inputs(void)
-> > +static int damon_lru_sort_commit_inputs_fn(void *arg)
-> > +{
-> > +	return damon_lru_sort_apply_parameters();
-> > +}
-> > +
-> > +static int damon_lru_sort_commit_inputs_store(const char *val,
-> > +		const struct kernel_param *kp)
-> > +{
-> > +	bool commit_inputs_request;
-> >  	int err;
-> > +	struct damon_call_control control = {
-> > +		.fn = damon_lru_sort_commit_inputs_fn,
-> > +		.repeat = false,
-> > +	};
-> 
-> [ ... ]
-> 
-> > +	err = damon_call(ctx, &control);
-> > +
-> > +	return control.return_code;
-> >  }
-> 
-> If damon_call() fails, for example returning -EINVAL when kdamond is not
-> running, err is set but the error code is never returned or checked.
-> 
-> Will this cause the sysfs write to incorrectly succeed by returning the
-> default control.return_code of 0?
-> 
-> Should it return err if err is non-zero, or control.return_code otherwise?
+> Reviewed-by: James Houghton <jthoughton@google.com>
 
-Thank you for reminder. I will add
-'return err ? err : control.return_code' back in next patch.
+Thanks!
+ 
+> > ---
+> >  include/linux/userfaultfd_k.h |  6 +++
+> >  mm/userfaultfd.c              | 92 ++++++++++++++++++-----------------
+> >  2 files changed, 54 insertions(+), 44 deletions(-)
+> >
+> > diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> > index 66dfc3c164e6..4d8b879eed91 100644
+> > --- a/include/linux/userfaultfd_k.h
+> > +++ b/include/linux/userfaultfd_k.h
+> > @@ -91,6 +91,12 @@ struct vm_uffd_ops {
+> >          * The returned folio is locked and with reference held.
+> >          */
+> >         struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t pgoff);
+> > +       /*
+> > +        * Called during resolution of UFFDIO_COPY request.
+> > +        * Should return allocate a and return folio or NULL if allocation fails.
+> 
+> "Should allocate and return a folio or NULL if allocation fails."
+> 
+> I see this mistake is fixed in the next patch. :)
 
-> > diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> > index 86da14778658..03e3300ce607 100644
-> > --- a/mm/damon/reclaim.c
-> > +++ b/mm/damon/reclaim.c
+Endless rebases :)
+Will try to sort it out this time :)
+ 
+> > @@ -483,9 +498,15 @@ static int mfill_atomic_pte_copy(struct mfill_state *state)
+> >                  * If there was an error, we must mfill_put_vma() anyway and it
+> >                  * will take care of unlocking if needed.
+> >                  */
+> > -               ret = mfill_copy_folio_retry(state, folio);
+> > -               if (ret)
+> > -                       goto out_release;
+> > +               if (unlikely(ret)) {
+> > +                       ret = mfill_copy_folio_retry(state, folio);
+> > +                       if (ret)
+> > +                               goto err_folio_put;
+> > +               }
+> > +       } else if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE)) {
+> > +               clear_user_highpage(&folio->page, state->dst_addr);
+> > +       } else {
+> > +               VM_WARN_ONCE(1, "unknown UFFDIO operation");
 > 
-> [ ... ]
+> "Unknown UFFDIO operation. flags=%x", flags
 > 
-> > +static int damon_reclaim_commit_inputs_store(const char *val,
-> > +		const struct kernel_param *kp)
-> > +{
-> > +	bool commit_inputs_request;
-> >  	int err;
-> > +	struct damon_call_control control = {
-> > +		.fn = damon_reclaim_commit_inputs_fn,
-> > +		.repeat = false,
-> > +	};
-> 
-> [ ... ]
-> 
-> > +	err = damon_call(ctx, &control);
-> > +
-> > +	return control.return_code;
-> >  }
-> 
-> Does this function have the same issue where the return value of
-> damon_call() is ignored?
+> seems a little better to me.
 
-Yes, it have the same issue. Thank you for reminder. :>
+Yeah, why not.
+ 
 
-Best regards,
-Rui Yan
+-- 
+Sincerely yours,
+Mike.
 
