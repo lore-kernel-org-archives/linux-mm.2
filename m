@@ -4,120 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD55610BA435
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:17:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DCC010BA43C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:26:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26FFA6B00BC; Fri, 27 Mar 2026 04:17:02 -0400 (EDT)
+	id 873F66B00CA; Fri, 27 Mar 2026 04:26:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2202F6B00C3; Fri, 27 Mar 2026 04:17:02 -0400 (EDT)
+	id 84A656B00CB; Fri, 27 Mar 2026 04:26:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10F896B00C8; Fri, 27 Mar 2026 04:17:02 -0400 (EDT)
+	id 760396B00CC; Fri, 27 Mar 2026 04:26:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F04BA6B00BC
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:17:01 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB9AA8D7A5
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:17:01 +0000 (UTC)
-X-FDA: 84591137442.10.0955200
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0EA6B4000A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:16:58 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=hYym+IrJ;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf01.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 677CD6B00CA
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:26:46 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1478AC5739
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:26:46 +0000 (UTC)
+X-FDA: 84591162012.14.5C3EC75
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A8C031C0005
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:26:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=ImmF2l1r;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf18.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774599419;
+	s=arc-20220608; t=1774600003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OzrpGpkHqWUx/eMcJ1jKlsZ1lwKvENOYTWoZ0OfZ1qw=;
-	b=ThSVJFditZj6glI7frcQhIR9K8i/+1dVZLDitV//zqE7iBQzjvuuJY0TNCa4ofOOUNHRdw
-	bMDJN6oKGchGRqfVyP06ZI7iEXx65ewXunBsMEez2DyG1wHxf9L0Xlvx2DblRRP+rQGxq3
-	1PwItyZLXfYSQ0pxI+BqZLEp4E8oqpY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774599419; a=rsa-sha256;
+	bh=fJXEwsRSQCNQK1VLY40W+I6XlWOwNH/ZLywm9nkr5l4=;
+	b=MI5FHwtXRdiYFJ5ejxlAtuwnwv1/neY1mkZyDovYRZXsDPcC4qF7zyHFzlyEqVDmEd8ZO0
+	Trk/nMP+Ko1mwpIQkIT/sFeL3htmUdS9EVkAH7FjL8QP9/0wU6mn/P49uz8cDNraaPnOPe
+	6ZJrz/XnwfLJFJrJbQ3tqhqitdOZjRE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774600003; a=rsa-sha256;
 	cv=none;
-	b=S+UVJHhXyfXjnPlISJ8DOLQEkdU7mwC+kw9JiO7peyPr50SMSLG0Sm092qye5hTQ0bcArM
-	I7k6LypbIsa6169NktDUO2+nTG5+Wry5v2aLFrK4ydnoMUMM1xla1aUT2odflgpPzeOVo2
-	0DqzKEpXR+lJzl/KXWUtOKAYdzzJHQM=
+	b=6vYgIlYk0n5aubwTdeuSp9IVBOAVpIqkb7ir3nX+k15RlI4jX2nCiQfl7k4dJqmHMgXcZ8
+	eBtRbyGEqi1IfJr94t8yF9ROrJveePynR7r9EGAW4dg8RNQcPK6OgZchiBpCRDp72POV3/
+	q5scBu4Tof74pEMmOHUFKI1CiptxB0o=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=hYym+IrJ;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf01.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260327081656euoutp0159ffbf0a635c1b7e11620b7d0f98b0d3~gpMRSEAKq0448704487euoutp010;
-	Fri, 27 Mar 2026 08:16:56 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260327081656euoutp0159ffbf0a635c1b7e11620b7d0f98b0d3~gpMRSEAKq0448704487euoutp010
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1774599416;
-	bh=OzrpGpkHqWUx/eMcJ1jKlsZ1lwKvENOYTWoZ0OfZ1qw=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=hYym+IrJIbRVHQG1K2UWuA0h9Vy29fYkdvIs8yKDeB0yJ5xCqXBaCsZmHZBarhjQg
-	 OCISHCnKlHEu/bJerBpD0vdOwTGPrgXPwT20DQxx9+LqEwPiyD9mT1YPKzcY4kn8L2
-	 Iz4H4PewEUdxdr5cQTnZYxMoNHTZIAFMZduYpLGg=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260327081656eucas1p2369161b823605f46f83f110ed6d23a01~gpMRDRogp1270412704eucas1p2M;
-	Fri, 27 Mar 2026 08:16:56 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260327081653eusmtip255f1b4030f7274a851dfc4787d135774~gpMOrILMZ2779627796eusmtip2C;
-	Fri, 27 Mar 2026 08:16:53 +0000 (GMT)
-Message-ID: <9a19ccac-f7ce-4780-a251-f69a1fa45757@samsung.com>
-Date: Fri, 27 Mar 2026 09:16:52 +0100
+	imf18.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=ImmF2l1r;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf18.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62R0Ql9n3430662;
+	Fri, 27 Mar 2026 07:17:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=fJXEwsRSQCNQK1VLY
+	40W+I6XlWOwNH/ZLywm9nkr5l4=; b=ImmF2l1rTm+2qfn67EKymylI8OvpE3Glg
+	77j8i5gx5DKrqYfcWGUeYJoJlcsoD7W0cQfJmWqhxuRynxccA292ZY6gk0NmVPVv
+	2oERSC3fEL10bKNRnlgZIGRqlN0tBa2ZzKdVcepQUFSO4ngUOfg76MVsNjV8TyjD
+	aT+4pnI4FcDQUGkOCs2zm0hMYhLTX+kLWlMxjtyuITGRacBtLLZvnARxeDO3pPlR
+	VGVAnSNNCRkTFXBQbQ7tpzEPcloEOO5NVPexgET0CXt7csKjlPr53DP02IChtoSm
+	QbrfOkBdzmCbmLpllkenag8RG8V6tPg/GXu00blfH+a3QATS/S5LA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kty8xa2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Mar 2026 07:17:27 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62R60MmD031605;
+	Fri, 27 Mar 2026 07:17:26 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d25nt6mby-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Mar 2026 07:17:26 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62R7HNwS48103898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 27 Mar 2026 07:17:23 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD8442004D;
+	Fri, 27 Mar 2026 07:17:22 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A47520043;
+	Fri, 27 Mar 2026 07:17:19 +0000 (GMT)
+Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.ibm.com.com (unknown [9.124.208.5])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 27 Mar 2026 07:17:18 +0000 (GMT)
+From: Sayali Patil <sayalip@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org, Sayali Patil <sayalip@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [PATCH v3 02/13] selftests/mm: fix hugetlb pathname construction in charge_reserved_hugetlb.sh
+Date: Fri, 27 Mar 2026 12:45:56 +0530
+Message-ID: <705e68507c9a0d20de835d53dd332eeda7dee772.1774591179.git.sayalip@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1774591179.git.sayalip@linux.ibm.com>
+References: <cover.1774591179.git.sayalip@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Robin
-	Murphy <robin.murphy@arm.com>, Danilo Krummrich <dakr@kernel.org>, Abdiel
-	Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida
-	<daniel.almeida@collabora.com>, Andreas Hindborg <a.hindborg@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Cc: iommu@lists.linux.dev, driver-core@lists.linux.dev, acourbot@nvidia.com,
-	Andrew Morton <akpm@linux-foundation.org>, Alice Ryhl
-	<aliceryhl@google.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, David Gow <david@davidgow.net>, Gary Guo
-	<gary@garyguo.net>, Johannes Berg <johannes@sipsolutions.net>, Justin Stitt
-	<justinstitt@google.com>, linux-arm-kernel@lists.infradead.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-um@lists.infradead.org, Russell King
-	<linux@armlinux.org.uk>, llvm@lists.linux.dev, Benno Lossin
-	<lossin@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	mmaurer@google.com, Bill Wendling <morbo@google.com>, Nathan Chancellor
-	<nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>, Nicolas Schier <nsc@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, Richard Weinberger <richard@nod.at>,
-	rust-for-linux@vger.kernel.org, Trevor Gross <tmgross@umich.edu>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>, Will Deacon <will@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <7ad8bdf9-5eff-4443-ad15-c05355d793d1@app.fastmail.com>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260327081656eucas1p2369161b823605f46f83f110ed6d23a01
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260326211326eucas1p28e4e09d74d0798124d3dd5943b5b4c83
-X-EPHeader: CA
-X-CMS-RootMailID: 20260326211326eucas1p28e4e09d74d0798124d3dd5943b5b4c83
-References: <20260322192159.88138-1-ojeda@kernel.org>
-	<20260322194616.89847-1-ojeda@kernel.org>
-	<CGME20260326211326eucas1p28e4e09d74d0798124d3dd5943b5b4c83@eucas1p2.samsung.com>
-	<7ad8bdf9-5eff-4443-ad15-c05355d793d1@app.fastmail.com>
-X-Rspamd-Queue-Id: 0EA6B4000A
-X-Stat-Signature: cit7bf54xgjgpw3jyhg849ryg45b3e9i
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=IqITsb/g c=1 sm=1 tr=0 ts=69c62f07 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=Ikd4Dj_1AAAA:8 a=VnNF1IyMAAAA:8
+ a=oz-P9AN4QEfTUXci77EA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDA1MyBTYWx0ZWRfX7229uMID7rsD
+ xK3ySMGDgQsPLysUXUjc+PwAdyy9zTLkQ4IS0J1ZGNIbi+u6Ygo1w3jmuZNpgv4ZQdBGVXI9WP7
+ ozCT0bWPegx/TibkBM4XoCkwyqu6YgfcYghdQ9uHjWv3YSldeOKf8zYEofVfNxzGvkrrfAAbidw
+ Hx7SbzXDCtt1sLNn2/r9bLoYIKlpFhHFsGslStH+25usXKoIj5KZ6LmiQLSE3eed+m0a3KdJ/AU
+ ++91SL5ioxsO4bg70BghC0+0F0j4zIzazZD6JvA75j3FoK5EE1aAC6+jgRAdp83thPj5S9vsDLA
+ zAv8Y/2ktwhlm2xNfAXRqTO73zrk5+H/L0pOLjXefHMEZnBpxN3wB2Yt43YgFiuWxPN5VJ8BW+l
+ 8OpF4XLw9k5KyHIjpJtsQ35tqK5Pz47kvP3m4tJ2HJJtL40yZuDEs1xun74qDXco/0a1h5hQrwT
+ JnpHboQ6IYQlWmtOuGA==
+X-Proofpoint-GUID: DQyqYMenVBNw9l3d5jFQchyRFqiv8lKe
+X-Proofpoint-ORIG-GUID: DQyqYMenVBNw9l3d5jFQchyRFqiv8lKe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-26_04,2026-03-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603270053
+X-Rspamd-Queue-Id: A8C031C0005
+X-Stat-Signature: cg3yaiqokgqngu8a3in49pdpab3dukju
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774599418-556735
-X-HE-Meta: U2FsdGVkX18OApFdykNQ6i8e3SjNZizh4XxvKlraLj1hRtkVX9EeqUQM/VbemQSvtvDoPbDMyOAs1oyFLG3zU/iqE3xniwjSpjq5g/scQTfmp9e1JSAGBEFNRnz9mKIihPirtTHy1MDh5+TzOIsxhYpiummQH6X4PHo/9db5QeGqz9OCelgwuE4eX6LorgSwt/vYg21WUS3NxhJDIzNd0KWWsR4BS8ntwJ+Qcc7TN3bSRMUgo/sdOVhh7IzYkzDGY4pla5EtF1LGjt3qx/0UKfOkSJ5dlO6U+7Y2gCwHelHpAhXv09IzLwvPWlUYMGNQITwxmom7yTkKWcY1HNpu94VGC5z7rGjH275a9lau1vbSTDHXY/xl84xNdkZNBN+Gd8IkQcNF1oZxoo5jzjSeIrhPIIUj+HvJ14sYmDQEbi3wcmQ7PjbBH6biCW1+35fJtiUkiJ0G42lOdXDAKuelPWTdPL4vyGuH/Kcyo5v0ZShJbtyBECKJchVa7d9DXgi8OWSRui/7XYta5/ivhBXu/31Ur8u4NpERUWm3eMBu8uCatgA5B3jjEKVL5hXKXC/iDjhVZtFF9IkxLt+O5ptck4ds93ZPXEP8z+lozxsDbbRjajZiof2IZfbBxoMpyw+Pjm1loUrXQ1mloqU+7eiZVQFpBE1AixPj2FamaPXq9XGOJoT7rvUMHjmaKpzn6OhWpxvC/Sx2t+q39Rv2tDtFV6iqAmuMrFdBIWtJAEna1QkdORW4wdM5RH3dV6z9jbdQXexSJL4oGv2AY5wO5wQByvdOkZEVs1Hb1zqjYPmgoXaWjAo5FGa698qbw7ExCC+lV0wSWURVs+m/zT3RzQHAtAjg8KPkVJ6TVBzjl0PFsIBKwRfXyoAkdmQ2y9diebeS4iCi3qvvoo/14Irw/0GmLyU+Ha9c3agMFViuRJz8ZBN/fsSiV6kVZFQZ16BaN6JYdCR3HO9n9WVdCKvJ6bl
- hnJ5Ukw6
- dFNO+e+c2OLKRMRHp6qDEHz4yBYnH07TyUHFiHIs1Yw5Kgrg68xYZL4N1PUkyDN7HbRVFQaiUp8rnZckw7aC4jqREODrXTD6YJXq+NzFQJHZEJV/0hL4+C1+Hv5TIpo5/gaWMAK93KcQ8Z7M=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774600003-924132
+X-HE-Meta: U2FsdGVkX1+mABoEoBLyRepoo6TvaicurX43jEd86zAtr1ymhLK+vbvEYu+B5VhFKig0iRbJNRc5U8fHRWBeIjuvB056ztIFtcaZ/sKcVVeWbD2WKLP3kMs+vo3HsrfsmbJOUBaTrAu9ghrG8YsfNvGWwvzViZP7sdaUzly2rCcnN02yKiIKyet3GPxqtJqTsP/dq3mrTp3WJjf7vPPhmz+6KMRXGczzK38k8JEQuf8voShPjVKgnLUp/UvJXCtMmYMHfdYE5QHJJguRmYg/j7669pqcvBZuavfCfOJOaFNvrH46ZLcp88rZV65m9PuFnW3Cupqab3NcQIb7gxJStDGnBVzvXCoX6T0ZPICiQWcc1gWVQg/VNneDjCwQlk2kki2nAx8x/5ml8lSidt4WTu5gENpD7Fh+U2fYhS3LHfRyP2qslXLXvDXjbxTR/PcSBjOfonM4oqGXgD92vdJuvaUg3tWTGlOC3vPDk1eh3o7fwNv4pgitW5jnATZYGfEAHk5uA48FeJYTrUohc79mGN7xleXLO22H5peSZ89QsrK12cKcfsyEieV65YmjjQ/hHatZs954Ya6FkcMDl/1bH8uVzLPyNhqqGQKwbUdaKFsTcB7Ny67g5mS3hH7RwszitRu8ZLyBocs/yG8++z8YvmYckVIKW6HvQDUhp5e4LP2/K+JW+UERNUG/HPyQrL3N1tTVisrlC5fuL3Gbr2CMm7j640ShK63jgO4ZfpyKaHkR1JV/0shBUjeFmaQbgFU2ECj/S7MF/3zadH2fE8+C2lVDuVQhC57PIHU/75QJADZmv43oEyKgA80tFCHRat9pKYM7P+1j2LGInXHPTb2eSmpJ284I9eF75ICbbnMAAOxSpVW6TEaz9qIUyyz+8d1MepOqhxB/bfFVGIXbCJgSAapMSEb8QQc3/9U5Oho4zmSjFPZtYHHIx5v4+LkkK9ehXbFSTvA2tTpB6rMMkNT
+ DQ6I1oBI
+ Z0NaTDIseJUA5Hh8sXJfoRk54jV4Vv4DzvnkRs8hPvxMCjnFq/oxGZXFIjbqFYrCt4U+sWZR7KO2tyZI7u0Cc1fpSZe6tqpmcjosVifLTOMvS3j4tP/vgNhAiEeWFv1icifiSELkK0DhKkKcoHL6aE8WLNosh8dzyUv24LLD7XS8GyaXN42uMLU4k/XWqJYFZDKYTjMug8MUJ8+KSEXtqaZZz/SXjQDqrKThcMN4BbF3Yo0KHZUCdfMCha2AHYe4fkx2D65hREcbMuJ8hvdz3WrLIMABKzUbo/dzE6BnNJz64n2oqzlceiRAbtwbWmZR1WKMSz01ydKtIEBKqahaTGwQil2d6rkdZJMTch2IN2NFxII4LIEQ2swhJuXmI6Ug2aOUO1YIJGp251WkUFGonjeoJYlOslCg1xnXU9KgvdSNCBRBylX2474iHtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,324 +142,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26.03.2026 22:12, Arnd Bergmann wrote:
-> On Sun, Mar 22, 2026, at 20:46, Miguel Ojeda wrote:
->> On Sun, 22 Mar 2026 20:21:59 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
->>        BINDGEN rust/bindings/bindings_generated.rs - due to target
->> missing
->>      In file included from rust/helpers/helpers.c:59:
->>      rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs'
->> is used in an inline function with external linkage [-Wstatic-in-inline]
->>         17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle,
->> attrs);
->>            |         ^
->>      rust/helpers/dma.c:12:1: note: use 'static' to give inline function
->> 'rust_helper_dma_free_attrs' internal linkage
->>         12 | __rust_helper void rust_helper_dma_free_attrs(struct device
->> *dev, size_t size,
->>            | ^
->>            | static
->>
->> For some reason, `dma_free_attrs` is not marked `inline` in
->> `include/linux/dma-mapping.h` to begin with, unlike the rest.
->>
->> Unless I am missing something and there is a reason for that, it looks
->> like it has just been missing since it was added in commit ed6ccf10f24b
->> ("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA").
->>
->> Do you want a patch?
-> I have an older patch to drop CONFIG_NO_DMA entirely, which
-> may be better here, since we know that nobody cares about the
-> empty stubs.
+The charge_reserved_hugetlb.sh script assumes hugetlb cgroup memory
+interface file names use the "<size>MB" format
+(e.g. hugetlb.1024MB.current).
+This assumption breaks on systems with larger huge pages such as 1GB,
+where the kernel exposes normalized units:
+    hugetlb.1GB.current
+    hugetlb.1GB.max
+    hugetlb.1GB.rsvd.max
+    ...
 
-The inline fix is already merged to v7.0-rc, but I'm fine with stubs 
-removal and I can queue them to -next. Could You send a proper patch 
-separately so I can easily apply it?
+As a result, the script attempts to access files like
+hugetlb.1024MB.current, which do not exist when the kernel reports the
+size in GB.
 
+Normalize the huge page size and construct the pathname using the
+appropriate unit (MB or GB), matching the hugetlb controller naming.
 
-> The only targets that 'select NO_DMA' today are m68k (sun3
-> and dragonball), sh2 and um, which are some of the targets
-> that don't have any DMA masters, but there is little downside
-> of enabling the DMA mapping interfaces on those as well.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-> index 11835eb59d94..19fb556357fc 100644
-> --- a/arch/m68k/Kconfig
-> +++ b/arch/m68k/Kconfig
-> @@ -38,7 +38,6 @@ config M68K
->   	select MMU_GATHER_NO_RANGE if MMU
->   	select MODULES_USE_ELF_REL
->   	select MODULES_USE_ELF_RELA
-> -	select NO_DMA if !MMU && !COLDFIRE
->   	select OLD_SIGACTION
->   	select OLD_SIGSUSPEND3
->   	select UACCESS_MEMCPY if !MMU
-> diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
-> index c9a7e602d8a4..adc50396b87d 100644
-> --- a/arch/m68k/Kconfig.cpu
-> +++ b/arch/m68k/Kconfig.cpu
-> @@ -38,7 +38,6 @@ config SUN3
->   	depends on MMU
->   	select HAVE_ARCH_PFN_VALID
->   	select LEGACY_TIMER_TICK
-> -	select NO_DMA
->   	select M68020
->   	help
->   	  This option enables support for the Sun 3 series of workstations
-> @@ -558,4 +557,4 @@ config COLDFIRE_COHERENT_DMA
->   config M68K_NONCOHERENT_DMA
->   	bool
->   	default y
-> -	depends on HAS_DMA && !COLDFIRE_COHERENT_DMA
-> +	depends on HAS_DMA && !COLDFIRE_COHERENT_DMA && !SUN3
-> diff --git a/arch/m68k/include/asm/pgtable_mm.h b/arch/m68k/include/asm/pgtable_mm.h
-> index 7501ff030c63..d095ae6c19f9 100644
-> --- a/arch/m68k/include/asm/pgtable_mm.h
-> +++ b/arch/m68k/include/asm/pgtable_mm.h
-> @@ -159,8 +159,10 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
->   	    ? (__pgprot((pgprot_val(prot) & _CACHEMASK040) | _PAGE_NOCACHE_S))	\
->   	    : (prot)))
->   
-> +#ifndef CONFIG_SUN3
->   pgprot_t pgprot_dmacoherent(pgprot_t prot);
->   #define pgprot_dmacoherent(prot)	pgprot_dmacoherent(prot)
-> +#endif
->   
->   #endif /* CONFIG_COLDFIRE */
->   #endif /* !__ASSEMBLER__ */
-> diff --git a/arch/m68k/kernel/dma.c b/arch/m68k/kernel/dma.c
-> index 16063783aa80..c52584e024af 100644
-> --- a/arch/m68k/kernel/dma.c
-> +++ b/arch/m68k/kernel/dma.c
-> @@ -8,7 +8,7 @@
->   #include <linux/kernel.h>
->   #include <asm/cacheflush.h>
->   
-> -#ifndef CONFIG_COLDFIRE
-> +#if !defined(CONFIG_COLDFIRE) && !defined(CONFIG_SUN3)
->   void arch_dma_prep_coherent(struct page *page, size_t size)
->   {
->   	cache_push(page_to_phys(page), size);
-> diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-> index d5795067befa..e246f295ec48 100644
-> --- a/arch/sh/Kconfig
-> +++ b/arch/sh/Kconfig
-> @@ -63,7 +63,6 @@ config SUPERH
->   	select LOCK_MM_AND_FIND_VMA
->   	select MODULES_USE_ELF_RELA
->   	select NEED_SG_DMA_LENGTH
-> -	select NO_DMA if !MMU && !DMA_COHERENT
->   	select NO_GENERIC_PCI_IOPORT_MAP if PCI
->   	select OLD_SIGACTION
->   	select OLD_SIGSUSPEND
-> @@ -133,10 +132,10 @@ config SWAP_IO_SPACE
->   	bool
->   
->   config DMA_COHERENT
-> -	bool
-> +	def_bool !MMU
->   
->   config DMA_NONCOHERENT
-> -	def_bool !NO_DMA && !DMA_COHERENT
-> +	def_bool !DMA_COHERENT
->   	select ARCH_HAS_DMA_PREP_COHERENT
->   	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
->   	select DMA_DIRECT_REMAP
-> diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-> index 098cda44db22..dd3428a49614 100644
-> --- a/arch/um/Kconfig
-> +++ b/arch/um/Kconfig
-> @@ -25,7 +25,6 @@ config UML
->   	select HAVE_DEBUG_KMEMLEAK
->   	select HAVE_DEBUG_BUGVERBOSE
->   	select HAVE_PAGE_SIZE_4KB
-> -	select NO_DMA if !UML_DMA_EMULATION
->   	select OF_EARLY_FLATTREE if OF
->   	select GENERIC_IRQ_SHOW
->   	select GENERIC_CPU_DEVICES
-> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-> index 677c51ab7510..a96a22f857f1 100644
-> --- a/include/linux/dma-mapping.h
-> +++ b/include/linux/dma-mapping.h
-> @@ -138,7 +138,6 @@ static inline void debug_dma_map_single(struct device *dev, const void *addr,
->   }
->   #endif /* CONFIG_DMA_API_DEBUG */
->   
-> -#ifdef CONFIG_HAS_DMA
->   static inline int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
->   {
->   	debug_dma_mapping_error(dev, dma_addr);
-> @@ -200,146 +199,6 @@ void *dma_vmap_noncontiguous(struct device *dev, size_t size,
->   void dma_vunmap_noncontiguous(struct device *dev, void *vaddr);
->   int dma_mmap_noncontiguous(struct device *dev, struct vm_area_struct *vma,
->   		size_t size, struct sg_table *sgt);
-> -#else /* CONFIG_HAS_DMA */
-> -static inline dma_addr_t dma_map_page_attrs(struct device *dev,
-> -		struct page *page, size_t offset, size_t size,
-> -		enum dma_data_direction dir, unsigned long attrs)
-> -{
-> -	return DMA_MAPPING_ERROR;
-> -}
-> -static inline void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr,
-> -		size_t size, enum dma_data_direction dir, unsigned long attrs)
-> -{
-> -}
-> -static inline dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys,
-> -		size_t size, enum dma_data_direction dir, unsigned long attrs)
-> -{
-> -	return DMA_MAPPING_ERROR;
-> -}
-> -static inline void dma_unmap_phys(struct device *dev, dma_addr_t addr,
-> -		size_t size, enum dma_data_direction dir, unsigned long attrs)
-> -{
-> -}
-> -static inline unsigned int dma_map_sg_attrs(struct device *dev,
-> -		struct scatterlist *sg, int nents, enum dma_data_direction dir,
-> -		unsigned long attrs)
-> -{
-> -	return 0;
-> -}
-> -static inline void dma_unmap_sg_attrs(struct device *dev,
-> -		struct scatterlist *sg, int nents, enum dma_data_direction dir,
-> -		unsigned long attrs)
-> -{
-> -}
-> -static inline int dma_map_sgtable(struct device *dev, struct sg_table *sgt,
-> -		enum dma_data_direction dir, unsigned long attrs)
-> -{
-> -	return -EOPNOTSUPP;
-> -}
-> -static inline dma_addr_t dma_map_resource(struct device *dev,
-> -		phys_addr_t phys_addr, size_t size, enum dma_data_direction dir,
-> -		unsigned long attrs)
-> -{
-> -	return DMA_MAPPING_ERROR;
-> -}
-> -static inline void dma_unmap_resource(struct device *dev, dma_addr_t addr,
-> -		size_t size, enum dma_data_direction dir, unsigned long attrs)
-> -{
-> -}
-> -static inline int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
-> -{
-> -	return -ENOMEM;
-> -}
-> -static inline void *dma_alloc_attrs(struct device *dev, size_t size,
-> -		dma_addr_t *dma_handle, gfp_t flag, unsigned long attrs)
-> -{
-> -	return NULL;
-> -}
-> -static inline void dma_free_attrs(struct device *dev, size_t size,
-> -		void *cpu_addr, dma_addr_t dma_handle, unsigned long attrs)
-> -{
-> -}
-> -static inline void *dmam_alloc_attrs(struct device *dev, size_t size,
-> -		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
-> -{
-> -	return NULL;
-> -}
-> -static inline void dmam_free_coherent(struct device *dev, size_t size,
-> -		void *vaddr, dma_addr_t dma_handle)
-> -{
-> -}
-> -static inline int dma_get_sgtable_attrs(struct device *dev,
-> -		struct sg_table *sgt, void *cpu_addr, dma_addr_t dma_addr,
-> -		size_t size, unsigned long attrs)
-> -{
-> -	return -ENXIO;
-> -}
-> -static inline int dma_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
-> -		void *cpu_addr, dma_addr_t dma_addr, size_t size,
-> -		unsigned long attrs)
-> -{
-> -	return -ENXIO;
-> -}
-> -static inline bool dma_can_mmap(struct device *dev)
-> -{
-> -	return false;
-> -}
-> -static inline bool dma_pci_p2pdma_supported(struct device *dev)
-> -{
-> -	return false;
-> -}
-> -static inline int dma_set_mask(struct device *dev, u64 mask)
-> -{
-> -	return -EIO;
-> -}
-> -static inline int dma_set_coherent_mask(struct device *dev, u64 mask)
-> -{
-> -	return -EIO;
-> -}
-> -static inline u64 dma_get_required_mask(struct device *dev)
-> -{
-> -	return 0;
-> -}
-> -static inline bool dma_addressing_limited(struct device *dev)
-> -{
-> -	return false;
-> -}
-> -static inline size_t dma_max_mapping_size(struct device *dev)
-> -{
-> -	return 0;
-> -}
-> -static inline size_t dma_opt_mapping_size(struct device *dev)
-> -{
-> -	return 0;
-> -}
-> -static inline unsigned long dma_get_merge_boundary(struct device *dev)
-> -{
-> -	return 0;
-> -}
-> -static inline struct sg_table *dma_alloc_noncontiguous(struct device *dev,
-> -		size_t size, enum dma_data_direction dir, gfp_t gfp,
-> -		unsigned long attrs)
-> -{
-> -	return NULL;
-> -}
-> -static inline void dma_free_noncontiguous(struct device *dev, size_t size,
-> -		struct sg_table *sgt, enum dma_data_direction dir)
-> -{
-> -}
-> -static inline void *dma_vmap_noncontiguous(struct device *dev, size_t size,
-> -		struct sg_table *sgt)
-> -{
-> -	return NULL;
-> -}
-> -static inline void dma_vunmap_noncontiguous(struct device *dev, void *vaddr)
-> -{
-> -}
-> -static inline int dma_mmap_noncontiguous(struct device *dev,
-> -		struct vm_area_struct *vma, size_t size, struct sg_table *sgt)
-> -{
-> -	return -EINVAL;
-> -}
-> -#endif /* CONFIG_HAS_DMA */
->   
->   #ifdef CONFIG_IOMMU_DMA
->   /**
-> diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
-> index 0748091339f7..228a3566d344 100644
-> --- a/kernel/dma/Kconfig
-> +++ b/kernel/dma/Kconfig
-> @@ -1,12 +1,7 @@
->   # SPDX-License-Identifier: GPL-2.0-only
->   
-> -config NO_DMA
-> -	bool
-> -
->   config HAS_DMA
-> -	bool
-> -	depends on !NO_DMA
-> -	default y
-> +	def_bool y
->   
->   config DMA_OPS_HELPERS
->   	bool
->
-Best regards
+Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
+Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+---
+ .../selftests/mm/charge_reserved_hugetlb.sh   | 42 +++++++++++++------
+ 1 file changed, 29 insertions(+), 13 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index c9fe68b6fcf9..6bec53e16e05 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -89,6 +89,15 @@ function get_machine_hugepage_size() {
+ }
+ 
+ MB=$(get_machine_hugepage_size)
++if (( MB >= 1024 )); then
++        # For 1GB hugepages
++        UNIT="GB"
++        MB_DISPLAY=$((MB / 1024))
++else
++        # For 2MB hugepages
++        UNIT="MB"
++        MB_DISPLAY=$MB
++fi
+ 
+ function setup_cgroup() {
+   local name="$1"
+@@ -98,11 +107,12 @@ function setup_cgroup() {
+   mkdir $cgroup_path/$name
+ 
+   echo writing cgroup limit: "$cgroup_limit"
+-  echo "$cgroup_limit" >$cgroup_path/$name/hugetlb.${MB}MB.$fault_limit_file
++  echo "$cgroup_limit" > \
++	  $cgroup_path/$name/hugetlb.${MB_DISPLAY}${UNIT}.$fault_limit_file
+ 
+   echo writing reservation limit: "$reservation_limit"
+   echo "$reservation_limit" > \
+-    $cgroup_path/$name/hugetlb.${MB}MB.$reservation_limit_file
++    $cgroup_path/$name/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_limit_file
+ 
+   if [ -e "$cgroup_path/$name/cpuset.cpus" ]; then
+     echo 0 >$cgroup_path/$name/cpuset.cpus
+@@ -137,7 +147,7 @@ function wait_for_file_value() {
+ 
+ function wait_for_hugetlb_memory_to_get_depleted() {
+   local cgroup="$1"
+-  local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file"
++  local path="$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file"
+ 
+   wait_for_file_value "$path" "0"
+ }
+@@ -145,7 +155,7 @@ function wait_for_hugetlb_memory_to_get_depleted() {
+ function wait_for_hugetlb_memory_to_get_reserved() {
+   local cgroup="$1"
+   local size="$2"
+-  local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file"
++  local path="$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file"
+ 
+   wait_for_file_value "$path" "$size"
+ }
+@@ -153,7 +163,7 @@ function wait_for_hugetlb_memory_to_get_reserved() {
+ function wait_for_hugetlb_memory_to_get_written() {
+   local cgroup="$1"
+   local size="$2"
+-  local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$fault_usage_file"
++  local path="$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file"
+ 
+   wait_for_file_value "$path" "$size"
+ }
+@@ -175,8 +185,8 @@ function write_hugetlbfs_and_get_usage() {
+   hugetlb_difference=0
+   reserved_difference=0
+ 
+-  local hugetlb_usage=$cgroup_path/$cgroup/hugetlb.${MB}MB.$fault_usage_file
+-  local reserved_usage=$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file
++  local hugetlb_usage=$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file
++  local reserved_usage=$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file
+ 
+   local hugetlb_before=$(cat $hugetlb_usage)
+   local reserved_before=$(cat $reserved_usage)
+@@ -307,8 +317,10 @@ function run_test() {
+ 
+   cleanup_hugetlb_memory "hugetlb_cgroup_test"
+ 
+-  local final_hugetlb=$(cat $cgroup_path/hugetlb_cgroup_test/hugetlb.${MB}MB.$fault_usage_file)
+-  local final_reservation=$(cat $cgroup_path/hugetlb_cgroup_test/hugetlb.${MB}MB.$reservation_usage_file)
++  local final_hugetlb=$(cat \
++	 $cgroup_path/hugetlb_cgroup_test/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file)
++  local final_reservation=$(cat \
++	  $cgroup_path/hugetlb_cgroup_test/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file)
+ 
+   echo $hugetlb_difference
+   echo $reserved_difference
+@@ -364,10 +376,14 @@ function run_multiple_cgroup_test() {
+   reservation_failed1=$reservation_failed
+   oom_killed1=$oom_killed
+ 
+-  local cgroup1_hugetlb_usage=$cgroup_path/hugetlb_cgroup_test1/hugetlb.${MB}MB.$fault_usage_file
+-  local cgroup1_reservation_usage=$cgroup_path/hugetlb_cgroup_test1/hugetlb.${MB}MB.$reservation_usage_file
+-  local cgroup2_hugetlb_usage=$cgroup_path/hugetlb_cgroup_test2/hugetlb.${MB}MB.$fault_usage_file
+-  local cgroup2_reservation_usage=$cgroup_path/hugetlb_cgroup_test2/hugetlb.${MB}MB.$reservation_usage_file
++  local cgroup1_hugetlb_usage=\
++	  $cgroup_path/hugetlb_cgroup_test1/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file
++  local cgroup1_reservation_usage=\
++	  $cgroup_path/hugetlb_cgroup_test1/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file
++  local cgroup2_hugetlb_usage=\
++	  $cgroup_path/hugetlb_cgroup_test2/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file
++  local cgroup2_reservation_usage=\
++	  $cgroup_path/hugetlb_cgroup_test2/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file
+ 
+   local usage_before_second_write=$(cat $cgroup1_hugetlb_usage)
+   local reservation_usage_before_second_write=$(cat $cgroup1_reservation_usage)
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.52.0
 
 
