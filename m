@@ -4,93 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52E6B10ED65C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 11:15:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7997D10ED65C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 11:21:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE0D76B0095; Fri, 27 Mar 2026 07:15:26 -0400 (EDT)
+	id 77D336B0092; Fri, 27 Mar 2026 07:21:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B92686B0096; Fri, 27 Mar 2026 07:15:26 -0400 (EDT)
+	id 72E126B0095; Fri, 27 Mar 2026 07:21:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACE346B0098; Fri, 27 Mar 2026 07:15:26 -0400 (EDT)
+	id 643706B0096; Fri, 27 Mar 2026 07:21:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4086B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:15:26 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 417251B9789
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:15:26 +0000 (UTC)
-X-FDA: 84591587052.19.6C34BB3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 550D06B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:21:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA35DBE658
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:21:32 +0000 (UTC)
+X-FDA: 84591602424.29.9CE1784
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 99985140006
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:15:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DvJAYh7j;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id E9E1E40010
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:21:30 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IS0dUb2l;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774610124;
+	s=arc-20220608; t=1774610490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/7djG6P2tm4I3MZ3kUwor6OV+5m6kTdnBQ74DdYTxV4=;
-	b=JDfjfo/8bboSQk8Z151u3Ke4hL+/rYEggL10uFxSYDxTZBy+K68e+BJLXS1KxzU9X5J1YW
-	W37HeN7SdPd2UozcNhiU9PHFTuvsgQYwPWiFmpWNt+GLEAB7SMsTRIcAsKlC0yZ2D4p+8E
-	xZvbYN/N8oWcnilRbMGBfMWu2TNMffQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DvJAYh7j;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774610124; a=rsa-sha256;
+	bh=dgJxLx+Wc7WUvIujWetvfOTZIsmR+JzqVdzurESLhFA=;
+	b=0hWlCELiCd/auMQmMN2OXPBuE7aFKajzJJVji/wDve0ImZkZkrbapJjq/g0rsxl2qPTDJR
+	DYLnc8YEbAYo7+t1/PMW8cjTO7FKw4Hfka8kr15tWIumEWwTYOccyT9Pq622sEQqdBXdmP
+	J1L1nKFm39WIgsmzl/dTMxIRxp3Ikho=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774610490; a=rsa-sha256;
 	cv=none;
-	b=affhsTi0MsoiRER8diCmW22+rHKTEReEndyPKtlu1Q8X38imuSundS6G7D4ii1GhM55w8g
-	JDZKPYsQwx3+y0V1EV8wu7IDTE0bmHxpntl69ehIjhwHNB7gXO4Uz0gkii9RcPDgIbWNC3
-	dcgDEMowOUTOE9+M/SbbZdLg0FDKjxY=
+	b=1yF0IJsxiJRasTB/e2dBQoNILozMO87vQ9hl+CjtlikS2ryrPumHP/5FNiO39OQig7Zi+N
+	PpFzOALXRNuYym03CntNBnxPTkMZ1oH/7Y8uIDQW9hvPqwh89SuT1BlNPoojRbOB0BErT5
+	8LeCqyHGJ1ecRkOG/3rvp8W0PdwXuG4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IS0dUb2l;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CFF2E61878;
-	Fri, 27 Mar 2026 11:15:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAE2C19423;
-	Fri, 27 Mar 2026 11:15:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6703D6186F;
+	Fri, 27 Mar 2026 11:21:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD33C19423;
+	Fri, 27 Mar 2026 11:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774610123;
-	bh=/7djG6P2tm4I3MZ3kUwor6OV+5m6kTdnBQ74DdYTxV4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DvJAYh7jU6rXzb4YVe/K5X4s419/RuEnx7cCu1w1k7C4j52CibNRtOYmTchNamPoC
-	 FvvXj90UvIP3VUoVKN1xC1OXHY9x2YirPEVwOSDtVvecix0GVLGIciM0DM/NNj1PhN
-	 AETz5/aec57lc2DgjzYjoUyk4TwDJ/GBZvlMgqa/ZrRItiZtw+AQKEJ5EbqPl/ko82
-	 yBhnC+jkwdjMJY94QuM+0EdEuDPJJ370Y5B2b7RJMoOfCcyvhrhH5Ti8UthBFFKFxG
-	 m/xPVnSg7eflyxZbWrUYghSq5k8FQSH2LNfil5LZ/VqabdzA6x2bq5/KYBWNKiMHsI
-	 nME8Ol1Hka5rw==
-Date: Fri, 27 Mar 2026 11:15:18 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: akpm@linux-foundation.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Audra Mitchell <audra@redhat.com>, linux-kselftest@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
-Message-ID: <7794ccf9-3a18-46f1-aca6-a61eab77bd70@lucifer.local>
-References: <20260218184210.206466-1-audra@redhat.com>
- <c1b6f8eb-602b-4306-ad60-7a181fd94a45@kernel.org>
- <abludfGu4upPcyRI@fedora>
- <f635585f-7488-4bfe-8566-1c19f493c6a3@kernel.org>
- <815b2fc9-cee7-4bfa-8036-4b93d1b47b4e@lucifer.local>
- <237317fd-d2e6-4e9c-840d-fc60b7d8883f@lucifer.local>
+	s=k20201202; t=1774610490;
+	bh=swcohrFbsQ9OatkiOSOTSr2Oxhk0CH56KvYFD2WN+Ys=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IS0dUb2l6dq/UKuQvOxjZqoanLCXjZM37R1bc4wCScoCJe4XW8j2TvJ+wLupL5zn4
+	 /5+ULZLFGH97Bb84dwDA6SaV6wum4iCZYiVl7bAMK5c9/zGxj1Pcpqx6qj4m1ELKw7
+	 tTo5wVnT//ihfdMz19PopHmuv+Wtie7OyKTk8UCqowLlxFHq6C7dH/6DgA+NI4XW0s
+	 MqGDbpHnUvkRsy9SlPdgGLyxftYSB5tdhn7ou2al0Bu7ezYiGcyMWJ5AtgSEarW4Q+
+	 1z2fKkkmgqsYj1iQ0dDmcE/+ChBUdBwUSGZeTlyt4g/w0pBwbutvb8OsV1/oWSEZQk
+	 uQ4PspkZSd0hg==
+Message-ID: <d120d8d3-f785-47ec-9c6b-b28d42ebb1f7@kernel.org>
+Date: Fri, 27 Mar 2026 12:21:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <237317fd-d2e6-4e9c-840d-fc60b7d8883f@lucifer.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+ Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
+ "Paul E. McKenney" <paulmck@kernel.org>
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
+ <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org> <acV36oPNFMgL4puz@milan>
+ <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
+ <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
+ <0f441d8f-d84c-470a-a4cb-0249b15220a2@kernel.org>
+ <f100305b-6c56-4499-98a4-6a22f8c49443@arm.com> <acZVS-ehXCtvcA9s@hyeyoo>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <acZVS-ehXCtvcA9s@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E9E1E40010
+X-Stat-Signature: 7auk3aaxtsdxibmjyqbhrsbcjgjs393o
 X-Rspam-User: 
-X-Stat-Signature: huzzcmf1cotki5pg5z98334xfftquieq
-X-Rspamd-Queue-Id: 99985140006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774610124-915182
-X-HE-Meta: U2FsdGVkX18fPDLJqegrMXxP+V30vwZJOrlBaAmnGjEheylSVIeVSskNjXuq1ngH17dlCBNDmsEvPxT4GiMzhkq5HsCpZBfoR9LegyNb3mP7x+DkQ1VWZ1Po7tAY0iUtM0qxkaMdiMO4s9xYSMmGzyQwIuaUW8c4I7uS/9+7fZaruQxsl+4YdoUbXDYYM2e/B5FlHiXvZCzJXiR/4mkNAZ7QBg0fh2Zh3pe1JVhrVCfUxndd7YrpLsj7cb4YKMZIlIzXPEb4ZeVFXCI13O/f3wbA8wuDGga3QCYdPs8z6xh2JfLeu65UTiqpayGNmhTh6yzH+yR1mS0warXOmS0KRuMcTx+QgsauJCDjaEIIvmqMWC+XadBdqh4JOe3OfU5N898lZiLU6qDXBr0Dsgj0nyEixrKFW0H06MnaV2oQ5jqQFuZdhpaqP0o9i4E49UHBmTyuV5A7Idz6uNJTDepFudRO1W1yDghly8W7+jmKNrwgt1H6pPMB0Wgc5idCzM4ZO+P5Kc43eGNIwYmwqDF7cgibgAhuzDQDgmfTSwuKBQKYLhkQYo9k+cg3WQ8Pvi8NtAQvRP7+xwu+pE8XtR/9OIuZa5EeXPFmEQdScMK+M6eRf+SMqaRRS/iY/gWzsJ+MT6jPIUC7zgIakzAc/yZZxARYBAoJRNNOM8JgxVmXMfptmggih+Nd9232SHfREhvCf9zwlmJrGxVTuKgDS3mocPZ35NkHfV04nY+lIttzOa+B+20J7yihEIiLeWKADRvpNezDILgloeHbPf3f9RG34X1NRQZMvHkwSeiNVT8HIA28EJ7TSoqlr254GtgZd5lbeFGbvi49CZfOy+QBQ0rXaWEn/mjFrTlUM9djrsL/b479QUrVhbztK6PbEPSbw1k42Yzif/9FFV9t6Cqbs0qUF9WPSbDlGuamegDr08z4YEj7jg5Xz5oUav8/wvCsrQuhl/9ITENQHjGPjsfHVop
- XT8+SZuI
- kQ70fwK0u9eOGx8GwwdrDtQQpDKOBnTeIn1VdfIaIIswiHYYj5YROrZPrtyCqXvQj5RKN3Ylwiq8hZ/zml0rMG3nAaPSsb8KeZBRbAQaRDsMANzIW+BaZkrdYmBGHaF47SR5H0co9YfTXWTnrUtLnpk+YgAag3cCT7N4jiS12I2EpGeSbKeFtjizuRUZPVGwqfbQP4LJ1MO8nSjhXcLU83G3CDX9bGkBst0yb1XHtGeYLBSI=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774610490-113909
+X-HE-Meta: U2FsdGVkX18PyAy0VukQgwCyV7UgJVPMInrSPCHhtqstzfn7hFYiPaz2ORD6cBjmSZOcMpQmKe/9MxWSpB4Z6qJoEJnakKRIhLnCbXG37JC/PG2c8Q3VLGvKr6GqXU+gZY9NSQzmdBeLaD4C4dA/EvJrx8pwbVdrETI2ZU3rCxcuKDmkAj3MEkZx6XPwi1PSYaV0e1fUODmhZj04aY28fEUdCyASa52zNkjm0RfJuQy6YEp/xzmcxTGmOwfvo72SHGBoTEvFv1UapSI5ti2hRDmOXzxoE34eSSbDjqyrAfrgwzgqX6pl5Hb8z5fJZ/WouNn6ot75JxGIfumpkjXCVI+LKjfo1m/cyRdCXA2dWTBpyqhj8p3E/2lgLbB4lu1lSsisQXvAEtr6WrFQHP05bOceVP7Gm9E09Xa0cX+l6Q9+QVytTPXC0avYnJ5pkDW7uMldTnr7gMqvXz6Yxxnbv5zNt5pxLUD2zs3VO+b2bUwgDWFx41uehA+NtYLM6JdaJ+F26PhrxHYVIgrDg5DjOMj5XCmhbisfFzwZJRVwrOH854kB/A1jE5/fBy/KRgjvNbRTvej4FDeaHnCTaYuGAGA2zn3vkQpKHh1cnfmfcEOxxgrjn6Sry9JY9dcuRb3fI7GLdOkWd43N9CLXayGCSzzKX5YZo0CrXZzNmhDJoLmEsEa5hKZPE4funghDU605v/qKnFrjJ2DYLpjDKq4ki7Rw7m6BYcoNPEVbtcGb0Wn1uaJfHQ34YSbiSrYzGh7S1Jc/VuxVUAjB1bdqquBSAwMYVUszK3n6S7+60bNU1xzqySDBAnX2waqtv7HmQZRrr+Xriu0FtjDhVt/UttLFiXb3ynROZvjAyWHBW+mpbXfAjJonBAAb1ydxUGGp+Zngzo+gCoARJTaz83vesCEe7O5MBVMNaPgaU27ZvIYZSsCJ50eZtUfTjQLQT848tKrVFfBEGGbaI+CFM1jiSNW
+ H5N1Ie1I
+ pHOIvLOWCIksq0U+Q1O4INxw5F3WuFwPijKzhWx8r+wwUIWjY3eZb09nQwkx0yJsfvIOs3xlwHy5P1YyhTKa7+jrt5Kia0bXdXxyLyN2NSlkHR4x5UUy56AJO/4F8lXwpde7MMfCJPItJvm++vQnbKuoIMZQOO0w8eD+ShlhUHK1uiFO6/b3OVwawOMa7YxWRXZWTv6uTw/TX4VWY8LyLWClOzKFXbS4DWfEZapbbkJbVuyy6pRXR2fvBmqLrO17bKAWV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,8 +112,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 10:58:30AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> BTW, even _at_ the fix-patch commit hash (28edd9c5a25c) the test builds fail.
+On 3/27/26 11:00, Harry Yoo (Oracle) wrote:
+> On Fri, Mar 27, 2026 at 08:58:36AM +0000, Ryan Roberts wrote:
+>> >>>>> On 3/26/26 13:43, Aishwarya Rambhadran wrote:
+>> >>> Right so there should be just the overhead of the extra is_vmalloc_addr()
+>> >>> test. Possibly also the call of kfree_rcu_sheaf() if it's not inlined.
+>> >>> I'd say it's something we can just accept? It seems this is a unit test
+>> >>> being used as a microbenchmark, so it can be very sensitive even to such
+>> >>> details, but it should be negligible in practice.
+>> >>
+>> >> The perf/syscall cases might be a bit more concerning though? (those tests are
+>> >> from "perf bench syscall fork|execve"). Yes they are microbenchmarks, but a 7%
+>> >> increased cost for fork seems like something we'd want to avoid if we can.
+>> > 
+>> > Sure, I tried to explain those in my first reply. Harry then linked to how
+>> > that explanation can be verified. Hopefully it's really the same reason.
+>> 
+>> Ahh sorry I missed your first email. We only added that benchmark from 6.19 so
+>> don't have results for earlier kernels, but I'll ask Aishu to run it for 6.17
+>> and 6.18 to see if the results correlate with your expectation.
+>> 
+>> But from a high level perspective, a 7% regression on fork is not ideal even if
+>> there was a 7% improvement in 6.18.
 
-Ugh sorry wrong commit :) should be 9652b82ca9632.
+In retrospect it was an oversight not to disable the pre-existing cpu
+caching layer immediately for sheaf-enabled caches in 6.18. Can't undo that
+mistake now, unfortunately.
+
+> If that improvement comes from the number of objects cached per CPU,
+> I'm not sure if determining the default value (# of cached objs) based on
+> "a point when microbenchmarks stop improving" is a reasonable measure
+> because the default value affects all slab caches and will inevitably
+> increase overall memory usage.
+
+Yeah that's the thing, some workloads might just keep improving as you throw
+more caching at them, but there's a memory usage cost to that.
+A case of stress test doing nothing but forks might also not be
+representative of performance of forks under normal workload where other
+operations also happen, returning the related slab objects, so in the end it
+doesn't expose the batch size that much.
+
+> Hopefully we could discuss what a reasonable heuristic that
+> "works for most situations" looks like, and allow users to tune it further
+> based on their needs.
+> 
+> As a side note, changing sheaf capacity at runtime is not supported yet
+> (I'm working on it) and targeting at least before the next LTS.
+> 
+
 
