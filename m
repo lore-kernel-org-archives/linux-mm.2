@@ -4,137 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3F2E10BA432
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08C2210BA431
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:04:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 263A76B00B2; Fri, 27 Mar 2026 02:50:23 -0400 (EDT)
+	id 49B6A6B00BE; Fri, 27 Mar 2026 03:04:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2146A6B00B3; Fri, 27 Mar 2026 02:50:23 -0400 (EDT)
+	id 44C196B00BF; Fri, 27 Mar 2026 03:04:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A486B00B5; Fri, 27 Mar 2026 02:50:23 -0400 (EDT)
+	id 33A476B00C0; Fri, 27 Mar 2026 03:04:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 018C76B00B2
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:50:22 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B0AF8CA76
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:50:22 +0000 (UTC)
-X-FDA: 84590919084.02.0370ACA
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5F3E1140008
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:50:20 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RhJ1oZIl;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf23.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774594220;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DC3E6B00BE
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:04:07 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C267F1B96C7
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:04:06 +0000 (UTC)
+X-FDA: 84590953692.04.9901652
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DC3681C0003
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:04:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BmzG14Rx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774595044; a=rsa-sha256;
+	cv=none;
+	b=6YtOjvM0kkyNcAVg4aWZ3cZAsbM6FO24umzGzbUmg8o5qICyhndP0S9z5/ZLwr2zkA/fsl
+	zX/uocW2z3qDXA8jjhHP6JxDBLa4XfeeCgIu73FBBkAQZumWMsqAUriuEnl+rwSKsQ2bnT
+	mjXKttLkwP3qrIU7OZYjP7GcE23AEYs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BmzG14Rx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774595044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iXjFFBcD3SJF8SimrCdKf4tkm13+ZSGuVlzsZ43PuGk=;
-	b=SVjdCIMKgJ9WQAG2DDdJO4Q9Y8MaJz86RCNTjLwXeYrwPWxfFTTx4gAVCPjSCepVnOsKMc
-	n6IIwQdLJSJEjtN68MG8MfAeoRkKdddJakNlKmseMfmBG00wESdcgJccIeK+FIZjN3nqXq
-	lmS/lo0baX8kK56iNLk2KUj5GDVfvQo=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774594220; a=rsa-sha256;
-	cv=pass;
-	b=IhbJhT6WMdHylQD0ZEtFcdKlqmJE7W5nOMBkhp1y02JEbc2pTT/oI99EeIJFOOId7obNki
-	M7smksYnCRCqzX/TMa06XgfM9byoGW+79foXLBQcIpEEVQqdDAbdLsnDbkNc90ye+y1suR
-	RUUz5qPlWw0v67WQiVQdr7IkW4qxNgI=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RhJ1oZIl;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf23.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7d7e5e8c907so1128193a34.0
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:50:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774594219; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bmtJlvq96dpM2C6RjKcXARQ78LdFyu7zWa1zjc1o9P6eCTcKhtRJlyya9CqmMHPf9g
-         hKsPCyBlL59ucgROvh6QtrzWYZXlWeYjeAtBBEER0K8tiBp84XIoJviiDgU43eZouyl0
-         PDAIFVmpz7gSuMITPmJ6TwOO49mt0Z5ib/I/t3rjoEvFgWvHaeWN3Gb8FolbDTLOYsz5
-         UkQNt/ROoO5MNsmsOtBGY9R++NnZsCod+BvTeszG7FauS9mrM4fBPL0jdrcJRIEjJDj7
-         v5EUkhbbxiJLHrPPid9v/aXi1PtOGe9hqxXucQgvDzjG3IEh374K2oE1NP+y0cyBJNOh
-         ANag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iXjFFBcD3SJF8SimrCdKf4tkm13+ZSGuVlzsZ43PuGk=;
-        fh=y40tgJppABM9rUFUSDjA8zc9NwmhLzodEUsNqPDV7pI=;
-        b=EOFFxSa3k3kr65U84MIAOjJ1IBoBicrDTPnqzre97lYMFUNAtlyA4NmZtJcz6TDAYJ
-         pwkDZmy1Wur6VA9elkQblxddaI+O6tp6C6MNQeyc95vftBjcdDP/+V47jobJnYKpIUSd
-         KeY6eA54czilNSGTwpe3Hc+h1VeI6IsW2gIDUD6FDKzCPJHeNqVAUy3fQZh8sH+NcvXl
-         dWlDh0VBt3E5LVjTT2TTRw39f/Aeng6SohPRTpoA+yhI4knZBkdpVZNVbH7REr31wx3a
-         c0817oOXPMRSEVZSI9MW8V9sPJwB7bVWL/zkg9I3iAjv72qusLLjqag+Dss2CxyrSZY7
-         aSYQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=EJl7pDB0zfAjMt3lYRTDqHzTHNLB8U/7DHfn4W8ruLQ=;
+	b=ii0V4Vxx0H+CuXfdqMcIQLXnqS1yp3+XZu8OHrKrkEFhjLaX5ZDJIIlhMYLeMlUonjSl4C
+	qvgBjkNeHSDq4aEUt52NWjUlOqy7o9FE9RcSAqeYPqE2XU2dkW+o/rfQTB+eq4+LtiDwn2
+	UxchWOU1/XjDY5KYJVP6hfAEOT3NShM=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b0c8362d93so7608045ad.3
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:04:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774594219; x=1775199019; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774595043; x=1775199843; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iXjFFBcD3SJF8SimrCdKf4tkm13+ZSGuVlzsZ43PuGk=;
-        b=RhJ1oZIlOZfpWkYP7DUSPgSH56vngZLXkPSvv0N5hzJpLKa5NQTe1e5Ymj7j8kAEDx
-         ixLHmsd9Bp+4tEzPmBES31hwqv5KF/o28c9XD52mSzR6qVSttt5T0zMZFxMpvozV5jOE
-         qVIJVOU44uKE1q7ElFYkk+AQfhmb97oxerHs0Rn4bdoR9mHpSikqwBo0PIAudgN4IheP
-         0fzRbtM2mssaslT7Axq7/KlG/sRgi9YBTs17bc+5Fh2V23EXEEBLVboJqIYNvVA1e1WM
-         FCvrl56b/IKnWGv4+DCZonrYD02dO4QfZIQCfHEUuIyzgnknIRNpfizmnyNXDH78xHeU
-         RJjQ==
+        bh=EJl7pDB0zfAjMt3lYRTDqHzTHNLB8U/7DHfn4W8ruLQ=;
+        b=BmzG14RxP5A253z72JeuxShcGMI0Aw3F6TOYIO9YzDg7y+gMoro5WIH+LfOb0ucgqZ
+         yUSaLgC+atycpL/Zgr3Kw5kd0LQPRjlR0TFqXxB/hc29nHekzutA0S7GbExNxiVhEpVu
+         7O3Toa3Z9tXORx6d/Wl5KWAUDQgTzUE4TofIfN5u11mCo4hqiNOghIjyxWc9RyOV9z2l
+         kDHfdP0K0H8y7nTAQI2MvnR+VreurWyVA3fCCP3rtdnveaCnruI50PF/q0DJEC6dn4b1
+         IbLHrthqaxXfLe77Ge21mUIeGhamDpKIWTjjNGJIRNE2hcEUzGvPppYNU29eIltomuOp
+         6IJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774594219; x=1775199019;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1774595043; x=1775199843;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iXjFFBcD3SJF8SimrCdKf4tkm13+ZSGuVlzsZ43PuGk=;
-        b=ZypGwu164SF9XOuz/1DJlZ+Gu3IIhx5hxHQ/n5NG8HoYuEeUbcvg3D1zDDtuvU7Pcn
-         GvaEPXaCZi4ZHX4GoBnhsp3GAnAXxbEWMPhnHzMIMzVAxxKS0l7kFrlV3d4WLIY3ZNr8
-         9wZFYPPhHXnXAANmuV22ymm4JExURTeMsQiM+HDXvDUShR+wwFgFPeqtQf1s6bS5pC6r
-         VcwSNTC6QQenrh2SjlDjQLtEfNZnbhGVY9puTLmzlVhFt9TtbM0rCs8BHcxpsPB9Sn+9
-         00IB5B0KKfwmwlgXlutjsZ5xm4UbT+Rc5dGIsYaOI81TAPDSProPYdZjonbqhmqPfFkg
-         NItg==
-X-Forwarded-Encrypted: i=1; AJvYcCWf4/zcFojBC1IgppP8GRiinaWM31zlk8cJ562CJqt0+RuJYarM2vYxJz707jr08N8o0RZVoBTO/w==@kvack.org
-X-Gm-Message-State: AOJu0Yy0AiskKeCLf7yHMywGW/aLyAn6Y3z7dqUKOHKc8x8EzHJ5UpYp
-	27fpCIOnuoeXv47zZD8NtCH4tQxJ71pTyE0zZszXe7ta79jJ2jQZJgHcPPHjSOxlWgxPpyNeekx
-	RIxIjU1o2sOiAtIoidNq45iiWseLZNbQ=
-X-Gm-Gg: ATEYQzyrHope38tMy6RsBhAs7LloorTTFe8BfK0yJKdXWVsmnel2HKn0ImF59vTGXG6
-	bT4DwxuG6bfs1rs7faSqcMIBCjKsuS36qC+ojSsozN+ikDuwz7fs23I0CAKsAEkIaUUtQ8uKlXQ
-	6ZNzrYCwYHXOy7ZKNBMKxGskQvOSyC6kAjc3W0vly3Jk5tlF2XvbPt+E97FcnuN7eXTs9IlE/ps
-	qJLysMux+xIetfnzo+JQyx8IDwr07Pganr63E3nuaidNdPdth7ZdNtQ6BC9/VrBf7NGjnVhyXCE
-	E15bCVCI2QwDxHbJHvBj
-X-Received: by 2002:a05:6830:82d1:b0:7d7:419a:7ac8 with SMTP id
- 46e09a7af769-7d9fae3e615mr593879a34.15.1774594219320; Thu, 26 Mar 2026
- 23:50:19 -0700 (PDT)
+        bh=EJl7pDB0zfAjMt3lYRTDqHzTHNLB8U/7DHfn4W8ruLQ=;
+        b=aDvSNiPmWZulJllbaJYMr8W6ieNdFzzerBD5uwTC6gugddsAMOTJDrt6jfB5SAmCnA
+         kh2bJDvfJYCOI11U6E2TxsHscXY9m6Drl6m+aCfLM4Dn/ziuA0FGabQ6D6if8c7lcQWg
+         SAdmQCS2sNc9HA3Vk6lRElLcyL6NiaXyqmarkacwIcadkH0PpExa7547USLSuBnfXt/Y
+         sOPq6UeU/m/t+tsxj73nrz1gb4kV7YqHQRweUrJIgDuOXfinP2IyPcVXCnFwv8JjP7n5
+         kMNd4Aq0FZnjhjTexhJQIuedvx2O6IJoNNR1eABQGr456KpdMuZxDE8k5x5M2U6NYhNT
+         balA==
+X-Forwarded-Encrypted: i=1; AJvYcCUrDfTg9tFnEi8MWGUgFKw/KnhY1mK2oWvVmHlrAFmw7NRwTk9PRjUTpDUwT/XXj3bHZkmbICPwbQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw4Z1bkZMcXjdefvLoWL8LksSeoTBLnn5esJ1ko5flqgD2aS5jj
+	01yyh4gAQ4nF6v1nsp+9Yv45GWuENvz0rl79mYrlAH99A1JqcSAJH1VB
+X-Gm-Gg: ATEYQzwbsSUnh9pSxDio7h4ap9pqZlJ/Hu8rQAoTe+HrU42lwCwJk84vdmT6nPSKNmj
+	oAxvsQ0+cPFB+C+qx+x8qnDHca0F3rSCF/eqjWAjxjqzh0bno2jRapf8VQ2Xs6KN+oQwwHJRIJ0
+	0V/Z16c5v6UBC3LT3S0Kz/cBousc2KJN1E7Oli04YwY2PvOj05IMOMhAi2Nvkn8G+Kc+U1hkRbT
+	6sa25w4eCHdbzyLGJz0kV1stJuB0uhd9eV4v8M60zNOLuSAyXySKlInnp25TCvAb3XoRBwBKAkV
+	AX60XQaEEPlF5p7w/zlaEe7YhEeNMyvUCOffg2G8kHQAW6FRRijkqxYekLaXalR1YqkHf7ouCO+
+	und1+9BpufwXeGDDV0yoIQCf8IC6RKp1cbzNFxDGAU57o0jrbKjg3pPi5+BBmExEcKvdazh370l
+	DTNdI4Z/lbefKwHKzxFG7NI1hIVXgooy6UB0gkFQ==
+X-Received: by 2002:a17:903:19d0:b0:2b0:afb4:7d41 with SMTP id d9443c01a7336-2b0cdc02e54mr17965755ad.10.1774595043512;
+        Fri, 27 Mar 2026 00:04:03 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc883c0asm53376215ad.45.2026.03.27.00.04.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 00:04:03 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org
+Subject: Re: (sashiko review) [RFC PATCH v6] mm/damon: add synchronous commit for commit_inputs
+Date: Fri, 27 Mar 2026 15:04:00 +0800
+Message-ID: <20260327070400.71707-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260327062558.66392-1-aethernet65535@gmail.com>
+References: <20260327062558.66392-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
-References: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com> <acYlxRBhSMcwBnja@hyeyoo>
-In-Reply-To: <acYlxRBhSMcwBnja@hyeyoo>
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Date: Fri, 27 Mar 2026 11:50:07 +0500
-X-Gm-Features: AQROBzCSJ9XrV9me08FJoe9N5FsTCYU6wreGwMbyYjqv4H9TotPPKCpBSj6ZRjM
-Message-ID: <CABXGCsMTk6kDuJxsTAUKP6npTvp4X6Ryng+P4xjMUsPbTA43+Q@mail.gmail.com>
-Subject: Re: [PATCH] mm/slab: align kmalloc to cacheline when DMA API
- debugging is active
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	stern@rowland.harvard.edu, linux@roeck-us.net, andy.shevchenko@gmail.com, 
-	hch@lst.de, Jeff.kirsher@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5F3E1140008
-X-Stat-Signature: gcyhcx8ogs46yoa466cbrmmx7cx9kr85
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DC3681C0003
+X-Stat-Signature: hj8hg7c6rtg5cw1319hnwi9c9m9wybpx
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774594220-64340
-X-HE-Meta: U2FsdGVkX1/f0LUt83YVjKL0TMUjfEr4SAhlOwBzn8692qagv/ZXIG6gb8jsSjYreTRWVJIuLI4eXIIovAmC6kdJ37efDyvvGVRxsV1ZCqN031BCtyXlbtFSqaeGBd2yYOC5cGVaWs3Nb32HquizbEqzfufmqLi0Z1jfzC2Z2HyWgfFA87CGtPS0He/Z5djDlEa4gHNhWzAyzZPS5jWIwATmB/sldiwHLH37Zp6RtyMc+LbH7CUgqk6VRxurdbXiF3vCG/aRrZTiJglCYQ+gNoawxqXlVvp6FHi88G/vCxdyQcl4NT9DlJ84GyHX+h62zGCYJwlLi0R+DNGxRpoLdSn/LInPy53pdm1HTiLHm+IKzCvH6Fupbxwceq8i/5UENhIYPCBVRRoSa7ZpQBbD0EHTQyRzQX7D6qKJ10BZmqFnIbNS21R3X6ph9hjGaTj8E4A5VnSBbhBLsGH6oCsSh7FiqFU/SOv+qIR5OC0u9uuxPSUOEnYmi5LdevWi3X0ZrESUZyogd2brH4bOv3Op6TU436yWtaV/KqI3VMeXRDkkabR5b36FOUBiCvbb4J40AYNSNdijsy0kSh/6ZiFHJ6u31voc+MyEkVanHxAuwX+SXvWSawHcm9D16y9sHNzdkCrg6wtk7F9WGr2v6LWtEeLhb/rEtORfEvAC5cyabUuGUt7G7jQJ+MCLPaobwk9Bg0Sbd3I+xOPUhyjfNP+ItRgFVe61GqFpEvUR/HeP43SJVkpYU2fozw34Z+5VHoQEC0FRNAl4QftKdVz586I4/6UqZMloQtSiTU6bKdUJLELY/r0RupMPr0w7e+qHcVzATk2wryWbp6VgUOJus5t8uZktgzJbM5fx0p3Ju35V3wREu5WjvCQo11B2i9WEDhZDcoihyJ/mNmbOvJJp7eYr6fUt3wVJSf7/dQN5kKFtol4kCRMr6BPUFcYSxEbgG4wqLq2JHwvtAJPtuRSwBOp
- hgt45GX7
- 7CKjUsK/CWMvqupWAjNHs0dPImMoXQmLoMOpDm6csPXjUVWbPbJh6FRxaDdZFoGCGGvtBQTIJ5q+h2NXMitbsZXrbsvtaTlGHbzjq3qENxtJnkNdTQs0HmBG+S86LGRPKBk0atlceSdnaR7PtoiGOlWyAOA4bDaHggOwz071X0Hl3DWlcUZbTtSkZF2nnPEteGhsJay57Nt32kYIPmYYEEJRCkmPi9kzdTV1zdYGT44djJ0QPC+msZt0hlESMusbiUDUaqLZz8vsWkGnYD8PPF9CYA2i+lQG4SY7UJWnHIhzBP5YXxrPuwzwUzTj7rDfz/XoJGBbAu2dCFto2ejnj4Y02shYVQa5KDSgTONLjV1nIEVRKfK9rL8L+e6BHWuJ1UM7zbTV2uj8ptq6JClpji2P9/xwVckjT63MmnaGLf6a92iQfPSLW1BXaif/+IahyHAHETHHyyPPQRbRArB+qkqSR0GQg0a5DRpQW+ezZqlohwH8=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774595044-104914
+X-HE-Meta: U2FsdGVkX1/3nvh7Vm4wkv+NcparaLEi6qB8OivmlwzDOdC+WWiCYUstx0UaJx8ydB9bobVWEURXLzmwrmf371/UJE3NKfuKTjLzdKpnS8MtmjB5iSpuZBnmEk1Pj8766vFW4z9G3DRFeZg1dNH8OZGJcQg6Ocwb8L2c1zBWBYoRHEFANT8o4T80SJ5oEes+KaDU07dZEThybK19Zme/eyc6UWt8HbyZ7OIV03jeM7th4EI9HmlwkS81sjYLVZQhYDZCyjoIx27ka30Z7llx2ciP2pIgf38PnAQt+8uGvpw4DIM9zMxVstVW5X/KBmGatLWs4RuWytQj06jCsgNLrbJ8tV1HrHvsE4kc9VNjWMre2KOvWi5kbZWhAu4lI6SOIg1A0HYohUQjJFbC9M7kOGzzD2CCa7aPDzZ3gxz9mHIfegWQKKToU8TQn9CAo3cCL5uaMOz0ZeE6H+1PGucHkwmAIiMFxpl9vp3EHLuJ1BP9g29taamlUYRGjyaR2/aYHqEbuF2vdLX3JgJJvq5F9HanFHLrxELmhmsDW/NypE3zbSA3GbiwlnJoWtcPg6GPhnPdsG33UeLOmyHBfMBA/pMwy7vML+0jcTh9yDOj6U+UvPbwc/rxXqwV8IVDyWe+YuBukIK77jZBdTArzDYrsHYRhX4bu9lcpxeHFL9pS9xN5PdVCBZjOLFzNrqj6mTlFmIUxDVXwUEnZsDDpaGattG8XlV9tfkGI9rcocUP5cKC8CYMp8Jreg+Yuq+7vsEoJ4DVGpieUM9Q/S9Y/z4rE2QrRxsWesqj7oBvQhBrhU3hSIhCQQtWvm6iifWBldYKMyth66nPL5oTk6sUAIKQhM3BwV4VHuMP8FuaDSXI5zCQ4jvPEM5sUPS5CIOgFD8gfCTUG5KhURI3r+vczE7W5iZX3Aku3ZpopbtiKXYtASTM9TFdLwZ4bc8eaNifKU6d1oZlPiDhJbXPDK6KkS5
+ iqf9bQ1e
+ kUqqoYNg+Rzz7JIqH9ODZQYgK9YsaWWulbApnkdNiXL2Jzr9aWsI3ozIO/taJApMDlLIfuZQtMVbXbvCuw8EIi0UYINDBBGrXFlpq4+gGrlhOzP8yHSiNUHNv/RdBu+mpcWgL+E9CO68lmuIzWB5b5c4b4SqVx6aiWhjeCibYbKLMxeVtWFBWrzaWKhPeTG1xaBLp6IY3VaiW2XLq25/HyGmaiky+2WDXsfeFjRBfXI1PzXcHyiDiIWFkLripVu0JnsHf7gfov6EOpfTMC+oL/xWOh/Mct4Mfo9OHsovpTu+QWsDgTCTnqY/gyHHK0lUCUdj9DntnPYd8TfXYYCLxGuWSif1tKGlAjcMKbE4qO4a0MZIM254A41A0LmwWsqXk4tCjqFuIXmb/YnDyk4/v5pSDo/4ugJ78zjis+OPNFAhshKTGd5Y160p/i3tx9AbvxgprCgksWnCs0PSOTbAgCOn5t58Zn9KTo8nWrQwCGoBx6lqPs+6N8qF0hjB8vlpRqiOBfIUbW8bugsHByJkirTDt9+MQt+azM2aKMbQEcx1IjyXhVQ7vrgmuzxfjuP7+n1iw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,54 +118,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 11:38=E2=80=AFAM Harry Yoo (Oracle) <harry@kernel.o=
-rg> wrote:
->
-> On Fri, Mar 27, 2026 at 10:58:46AM +0500, Mikhail Gavrilov wrote:
-> > When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
-> > tracks active mappings per cacheline and warns if two different DMA
-> > mappings share the same cacheline ("cacheline tracking EEXIST,
-> > overlapping mappings aren't supported").
-> >
-> > On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
-> > allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
-> > hub driver) frequently land in the same 64-byte cacheline.  When both
-> > are DMA-mapped, this triggers a false positive warning.
->
-> Is it feasible to suppress the warning if dma_get_cache_alignment() is
-> smaller than L1_CACHE_BYTES?
+Forwarding Sashiko review for doing discussions via mails.
+
+# review url: https://sashiko.dev/#/patchset/20260327062558.66392-1-aethernet65535@gmail.com
+# start of sashiko.dev inline review
+commit 405545126e8bb145d7fb1fbb4f36016bc1f6c42c
+Author: Liew Rui Yan <aethernet65535@gmail.com>
+Date:   Fri Mar 27 06:25:58 2026 +0000
+
+mm/damon: add synchronous commit for commit_inputs
+
+This commit modifies the commit_inputs_store() callback to use damon_call()
+for synchronously committing parameters in the kdamond thread's context.
+This change aims to ensure validation errors are returned immediately to
+userspace.
+
+Link: https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+
+> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> index 554559d72976..453033f3cb3e 100644
+> --- a/mm/damon/lru_sort.c
+> +++ b/mm/damon/lru_sort.c
+
+[ ... ]
+
+> @@ -349,18 +348,47 @@ static int damon_lru_sort_apply_parameters(void)
+>  	return err;
+>  }
+>  
+> -static int damon_lru_sort_handle_commit_inputs(void)
+> +static int damon_lru_sort_commit_inputs_fn(void *arg)
+> +{
+> +	return damon_lru_sort_apply_parameters();
+> +}
+> +
+> +static int damon_lru_sort_commit_inputs_store(const char *val,
+> +		const struct kernel_param *kp)
+> +{
+> +	bool commit_inputs_request;
+>  	int err;
+> +	struct damon_call_control control = {
+> +		.fn = damon_lru_sort_commit_inputs_fn,
+> +		.repeat = false,
+> +	};
+
+[ ... ]
+
+> +	err = damon_call(ctx, &control);
+> +
+> +	return control.return_code;
+>  }
+
+If damon_call() fails, for example returning -EINVAL when kdamond is not
+running, err is set but the error code is never returned or checked.
+
+Will this cause the sysfs write to incorrectly succeed by returning the
+default control.return_code of 0?
+
+Should it return err if err is non-zero, or control.return_code otherwise?
+
+> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+> index 86da14778658..03e3300ce607 100644
+> --- a/mm/damon/reclaim.c
+> +++ b/mm/damon/reclaim.c
+
+[ ... ]
+
+> +static int damon_reclaim_commit_inputs_store(const char *val,
+> +		const struct kernel_param *kp)
+> +{
+> +	bool commit_inputs_request;
+>  	int err;
+> +	struct damon_call_control control = {
+> +		.fn = damon_reclaim_commit_inputs_fn,
+> +		.repeat = false,
+> +	};
+
+[ ... ]
+
+> +	err = damon_call(ctx, &control);
+> +
+> +	return control.return_code;
+>  }
+
+Does this function have the same issue where the return value of
+damon_call() is ignored?
 
 
-Hi Harry,
-
-Good question. I considered the dma-debug side, but the issue is
-that the cacheline overlap check in add_dma_entry() is intentionally
-strict -- it catches real bugs on non-coherent architectures where
-two DMA buffers sharing a cacheline can corrupt data.
-
-The check already has suppressions for DMA_ATTR_SKIP_CPU_SYNC,
-DMA_ATTR_CPU_CACHE_CLEAN, and CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC +
-swiotlb.  Adding another special case (e.g. dev_is_dma_coherent())
-would weaken the check for all coherent platforms, potentially
-hiding real bugs on devices behind non-coherent IOMMUs.
-
-Alan Stern discussed this in the bugzilla [1] and concluded that
-the slab alignment approach "seems reasonable" [2], noting that
-"turning on debugging should not affect the way the kernel behaves --
-otherwise what you're debugging isn't the same as what normally
-happens. But given the way the DMA API debugging is set up, I don't
-see any alternative."
-
-The memory overhead is only present when CONFIG_DMA_API_DEBUG is
-enabled, which is a debug-only option not used in production.
-
-That said, if you'd prefer a dma-debug side fix, I'm happy to
-explore that direction instead.
-
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=3D215740#c31
-[2] https://bugzilla.kernel.org/show_bug.cgi?id=3D215740#c44
-
---=20
-Best Regards,
-Mike Gavrilov.
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260327062558.66392-1-aethernet65535@gmail.com
+#
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260327062558.66392-1-aethernet65535@gmail.com
+#
+# [1] https://github.com/sjp38/hackermail
 
