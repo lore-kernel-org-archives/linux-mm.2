@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3498910A62D1
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:15:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD8F110AB83C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EE256B00B7; Thu, 26 Mar 2026 22:15:42 -0400 (EDT)
+	id 532F36B00B9; Thu, 26 Mar 2026 22:15:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C5426B00B9; Thu, 26 Mar 2026 22:15:42 -0400 (EDT)
+	id 50A246B00BB; Thu, 26 Mar 2026 22:15:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 902736B00BA; Thu, 26 Mar 2026 22:15:42 -0400 (EDT)
+	id 447726B00BC; Thu, 26 Mar 2026 22:15:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F97B6B00B7
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:15:42 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 488AF13BFE5
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:42 +0000 (UTC)
-X-FDA: 84590226924.24.D19D397
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8E71840002
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w7b0PFKI;
-	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3545F6B00B9
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:15:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01B8C13C2B7
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:46 +0000 (UTC)
+X-FDA: 84590227134.03.1EE051D
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5870F18000C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Hnot0p5K;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577745; a=rsa-sha256;
+	cv=none;
+	b=tuvcj1mK36jMIyr3wI0N8yiGczRlqjeki4AP+titdu5iNxGNuS04MMH1YvdYTgbuTwGDx5
+	/rReg6ODqGd72pHGPi9bUgtNPN2nSB76n3kssnw4Bt980hjUU9wkKXO3pFYgAavyZ5RdKu
+	zUeZf2CtmUNI/qEJbghRN05Me+IH5sk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774577740;
+	s=arc-20220608; t=1774577745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DA9DXWIy9I9hYoDDZ6d9idv8WvO7k2GsFa78UasupfU=;
-	b=Osodq10rTgf6STdy1tSgZU7fghFWt+uauWvancsloxpu+1308xDt2rlooRfORkItsA+Xzz
-	Odf2BEppP+Yd1HfygFBw7VyhKa6bWzJI2jtV0pbU0BRPeUqMTpMKf1aeNCjP++MrYIRpOn
-	N4qgJ35aN9g0J1V4tNvUEL5cBWD+I6Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577740; a=rsa-sha256;
-	cv=none;
-	b=S42BSi3opuZAxsq0pzZdlTdgUHI1UaQtGchK7VRKrUuQLthGELdGupH/azS51TWAtsP0k7
-	RE1zcYIYWU1zsDw6fKXZ0BwV362c40iwVYFxp21m19XF7FIUv6Hzq1gt/2/uFCRNu3Vvlc
-	l/XXJz3luRe7UVQ4KOcsGA672FY2v70=
+	bh=8tx/Qjve1iVx/sjsNymGDpKKmMZv1TUyDs/EfcYY5GE=;
+	b=Rg302JzgrlplHou1tNHLCYrwRkHPdOMWBC3Zk/8fcwLTKNDJmQF4LgxovghA5KiVR/MeWw
+	TUKjizYN3E30f4+aVr2+zR/wpSp8DcPwjb3fwKflRGrIf23hDGcbrOLCzO5cByRq+dwEM5
+	fTdWSD4OBhL+aAjDhbOViguy88txRTc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w7b0PFKI;
-	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Hnot0p5K;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774577738;
+	t=1774577743;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DA9DXWIy9I9hYoDDZ6d9idv8WvO7k2GsFa78UasupfU=;
-	b=w7b0PFKIYHL5VzgfVOmJaU8mndUe+9d3TAczYvwOPmlWZPC+YdbN4753/gZVXBv6rf/e2p
-	hhxdxl4rOelbJ74Wb6vwZdxneuTlP5Mo2CuIkJfQOwBMurDfXHMHtfo4IP9DtIrgPBP2Dl
-	uZc/JaknYWmWWlMxr4qMjjDLSrv/rhw=
+	bh=8tx/Qjve1iVx/sjsNymGDpKKmMZv1TUyDs/EfcYY5GE=;
+	b=Hnot0p5K89CAv1AQSFPCVNypjXRfAocNMIZyWJnznY4gpq+GWy2CVy+0V7yyIEu0F+HuLG
+	VCDbIV/SqybnVZSHtV9JQkcdTWMzMp9IQ8Hs+qWemVt0yevh5Dk4OIgO/2Wqfo3fp+W2Sb
+	aJvabR1V9LfLrBzcx+XgaoHKYXMXuJs=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -90,22 +90,22 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [v3 14/24] powerpc/mm: handle split_huge_pmd failure in subpage_prot
-Date: Thu, 26 Mar 2026 19:08:56 -0700
-Message-ID: <20260327021403.214713-15-usama.arif@linux.dev>
+Subject: [v3 15/24] fs/dax: handle split_huge_pmd failure in dax_iomap_pmd_fault
+Date: Thu, 26 Mar 2026 19:08:57 -0700
+Message-ID: <20260327021403.214713-16-usama.arif@linux.dev>
 In-Reply-To: <20260327021403.214713-1-usama.arif@linux.dev>
 References: <20260327021403.214713-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 8E71840002
-X-Stat-Signature: 4ck47hep9s9r4fg4w1aswqdg7xnqmgkj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774577740-213324
-X-HE-Meta: U2FsdGVkX18pkWbCGMJxnaytkuGz6MImYIPsE9ApWSMPQM8Bol0lU0Wrva5EhQX/izNrqpKIG+w5CQDR1gqqJNS9C0nuXds2I8bPIrZqbqELWbR2WmP6sIxZlZVPDsP4Dc6KNUidy3xP5p5ty594g0UrMYLWZVkBQaMb/cgI+dmwPoUJr4tmSsbBFYpL5dg49BeQcwg2Pkg4/LpKc9f9obv+am8TJCbIqKlfo43xJx2x40JRYMnnJzg5vQVDcMloo/y17SbTF45KgnZLaaoarGADpkPMbtNnPO8RAZmSamEjqNxRvxbV1dWfX2XR6dlQKEuWukKyD7dWWBgkrpun4VwQ+Hg4pzLO8trgQOn+u9Xt8LLvEDOtxKHoBO/yXIhfoD0B+UkuTn8/L4RIltV9WvTlfU2fvnr3Pa0Xq7XtpRmWCWXupZP6axnDApo/ycfGwHVTGD+HWwdJ+PllUHuA/Hb1o9LuIhdH7d4B+dbGiHqabkiRi6Em4vsgNM6zC3GEPCp3xMzan3GazLYdege6ZQFLCpFP0lGNCTJ6M4WG8d8UNSDg4Lx7YM7fpByTfOdyZRpfK9e6/stwlaetltjC3cnAFmGzgTfjyFapRWsLpdf5i8da2EKYD8+alkBzpFvnFLUckGOIFgTg9ZqdcGuG6aD3Uhp5ILYTIviyYfcnTuTs9yNipHG1/BYg7uNZm76F2GuLQ+GUlqODHbsPhib07vOT8qI1cCnYw52gKk6dhJcnyltGO0yz+Q7+WisL+PKTlWaaNV6N5smi4JSgAEfeO4rDgpEySDRfkf7ukuDvfN7a+6hAiSRH5C5PJB92qQdB/ii4uB8oqTETy1CZTU6BNhaCV2MpocaMiTsi3CCyftae0KvO56O7zTqPLvby7rZRE8Ql0CzDhUjhycba2+S1Am2YpjOyjMtZGnGB6CYQE8rXFc9vumdornsKF2PjnwrbYBQIBw80uufpVGTdz83
- vlD9PIN/
- 59xOl5qOFaHQ/qV2wl/VxbypoUyf/xKP8A8Fr4nRWCw0nFcA0zDnOl6cvr16jFRGmjlFdF/aGBUJPlhJHuoNbpBGoBKsWySrlDrkSG/QOxbpO1lciJ/gO8ST4ZKa9+7IHx0rVlzcfCiEq9bi5nuC+KAfK6i+OlGsGYv+yVToXrRcLkXy34gvFl+wKm+O8lG7QSDoS7Pi4M+OaeRSsPqUluoNpelffX2Z4jPhgXDkA81hRzgs6++31f2ayNg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5870F18000C
+X-Stat-Signature: jtzixah4ikmagqur9f8i5y365zjm8o4c
+X-HE-Tag: 1774577745-766645
+X-HE-Meta: U2FsdGVkX18G4UAD0W51ZccfHsokDEecyw25rqu/b3yRJwbg6/Af48+/vJZfBRBpyePMF4/su9IaCiq9tAgDWASH2Ff4FoQJeWjfEplmg/mfz5WChQM59VK87bVTmn2W5L5AX6JUU5Ti6dK88hYcidUIbaYtO21FJrlAYZj1KgITwVUQCSyq2QEUpDNzfjU410Q0471BCVFdYIvasOfdhDZp1oBHXneBkurHpTULm1LBYGX1HbNOp1QUG1Blha97vSrWU0LbIM94NBFEQpNTdjAxAnALRd+ohIWo9cOwjpvBJHGD+hTMjRXkoj/us1dxgtwwX0yRY39KpMnsRPf5SlZlfxjBqtZM8ZfG5jqp3tZia1WhA6N7MtkYeMVtQyJ8I0TduI9ZPJyeUqls/Ui6FrmxT3djezo9KR0NLlQghePCAYeZFGM7y9I7AXWbv7ytAXgwiOLtoIKrd7jrLgqyNI0fIoSKwEIIKCCYs2KeE88kBQ5HdSz6+UYyzWqiqXgn9L/KMyEHnh871d+LGtN2FQ9SmeeeaPXutDWGFJCnVJMxTXp6rNPHYsCs73FSA4APJDIK3GFcri6X8bwnXPJ5mO6QQCbXt/3/PLK+O2qA8R7883q7N9WXytl7kffMUQflTXL9y7jWmjMwGeTs40BRtt/4t6G8HVJ9W4oUskfWTGR3IP0ni3EU7qYZBBp/fTd+D9gH0FwtAe6y9bwwli1rbNoXyCC6va0KcdzVlTXkxB1P/uDFP0nKtgLOINgOnnyAiJKG4JSVOEHPAxERBD96jdganDg0/IPzo6HigVhegpVkHXLSKGpg8kZaECiZZDhEQhV6qAANaFvKpf2SIZTTTsvllcM1K3Q61z4za1x+Uf05Ax+MaMJJS2GSnYyKW+oKZO5BRMCgq6GMO7vdS2rcGv9LniZoT5Z+8RIVkpshrxlVjYGt9eeMnbK6i4dKaMF3h6T5vwAo1udgy3r6sPY
+ nnMUg4Bf
+ SEBDnnfl26th0hi+DinbnglZqXXmQUbZInjX02Svj3CA7eOFAnSg9kJxXKrHsx2NE2p/BGfp20Hyd33QSjL/eo5kQoevj5cdJ7tB65N8IOGcqO9/f4FpnWM4Dtl3mNgmkU1uWA9v8UnFv2hghs/DX9rzwFfGwcwhjpgUi6ZCFlXWIfzM0/q/n+E5AvkLYCYUYARcw3tObnUH8DFlHq5n80O/tVkPbJa23bPsK04oZDUjgLunnb2l7KQT0dQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,88 +113,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-subpage_walk_pmd_entry() splits huge PMDs when the subpage_prot
-syscall controls the access permissions on individual 4 kB.
+dax_iomap_pmd_fault() splits a huge PMD when the PMD fault falls back
+to PTE-level handling. The split is necessary so that the subsequent
+PTE fault does not misinterpret the huge PMD entry as a page table
+pointer.
 
-In practice this cannot fail today: sys_subpage_prot() returns -ENOENT
-early when radix is enabled, and on hash powerpc
-arch_needs_pgtable_deposit() is true so split uses the pre-deposited
-page table and always succeeds. The change is for __must_check
-compliance introduced in a later patch and correctness if the call
-chain ever becomes reachable on architectures with lazy PTE allocation.
+In practice this cannot fail today: DAX VMAs are always file-backed,
+and __split_huge_pmd() only allocates a PTE page table (the operation
+that can return -ENOMEM) for anonymous VMAs. For file-backed VMAs the
+split path simply zaps the PMD and returns 0.
 
-Propagate the error through the full call chain up to the syscall.
-The syscall already returns -ENOMEM in other places when it runs out
-of memory.
+Use WARN_ON_ONCE to document this invariant and check the return value
+for __must_check compliance introduced in the next patch.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- arch/powerpc/mm/book3s64/subpage_prot.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ fs/dax.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/subpage_prot.c b/arch/powerpc/mm/book3s64/subpage_prot.c
-index 37d47282c3686..b3635a11ff433 100644
---- a/arch/powerpc/mm/book3s64/subpage_prot.c
-+++ b/arch/powerpc/mm/book3s64/subpage_prot.c
-@@ -139,8 +139,8 @@ static int subpage_walk_pmd_entry(pmd_t *pmd, unsigned long addr,
- 				  unsigned long end, struct mm_walk *walk)
- {
- 	struct vm_area_struct *vma = walk->vma;
--	split_huge_pmd(vma, pmd, addr);
--	return 0;
-+
-+	return split_huge_pmd(vma, pmd, addr);
- }
- 
- static const struct mm_walk_ops subpage_walk_ops = {
-@@ -148,11 +148,12 @@ static const struct mm_walk_ops subpage_walk_ops = {
- 	.walk_lock	= PGWALK_WRLOCK_VERIFY,
- };
- 
--static void subpage_mark_vma_nohuge(struct mm_struct *mm, unsigned long addr,
--				    unsigned long len)
-+static int subpage_mark_vma_nohuge(struct mm_struct *mm, unsigned long addr,
-+				   unsigned long len)
- {
- 	struct vm_area_struct *vma;
- 	VMA_ITERATOR(vmi, mm, addr);
-+	int err;
- 
- 	/*
- 	 * We don't try too hard, we just mark all the vma in that range
-@@ -160,14 +161,17 @@ static void subpage_mark_vma_nohuge(struct mm_struct *mm, unsigned long addr,
- 	 */
- 	for_each_vma_range(vmi, vma, addr + len) {
- 		vm_flags_set(vma, VM_NOHUGEPAGE);
--		walk_page_vma(vma, &subpage_walk_ops, NULL);
-+		err = walk_page_vma(vma, &subpage_walk_ops, NULL);
-+		if (err)
-+			return err;
+diff --git a/fs/dax.c b/fs/dax.c
+index a5237169b4679..ed1859e8a916f 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -2039,7 +2039,14 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, unsigned long *pfnp,
+ 	dax_unlock_entry(&xas, entry);
+ fallback:
+ 	if (ret == VM_FAULT_FALLBACK) {
+-		split_huge_pmd(vmf->vma, vmf->pmd, vmf->address);
++		/*
++		 * split_huge_pmd() cannot fail for file-backed (DAX) VMAs
++		 * since splitting only zaps the PMD without allocating a
++		 * PTE page table.
++		 */
++		if (WARN_ON_ONCE(split_huge_pmd(vmf->vma, vmf->pmd,
++						vmf->address)))
++			ret = VM_FAULT_OOM;
+ 		count_vm_event(THP_FAULT_FALLBACK);
  	}
-+	return 0;
- }
- #else
--static void subpage_mark_vma_nohuge(struct mm_struct *mm, unsigned long addr,
--				    unsigned long len)
-+static int subpage_mark_vma_nohuge(struct mm_struct *mm, unsigned long addr,
-+				   unsigned long len)
- {
--	return;
-+	return 0;
- }
- #endif
- 
-@@ -229,7 +233,9 @@ SYSCALL_DEFINE3(subpage_prot, unsigned long, addr,
- 		mm->context.hash_context->spt = spt;
- 	}
- 
--	subpage_mark_vma_nohuge(mm, addr, len);
-+	err = subpage_mark_vma_nohuge(mm, addr, len);
-+	if (err)
-+		goto out;
- 	for (limit = addr + len; addr < limit; addr = next) {
- 		next = pmd_addr_end(addr, limit);
- 		err = -ENOMEM;
+ out:
 -- 
 2.52.0
 
