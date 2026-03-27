@@ -4,92 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60B710ED678
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E27510ED675
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:24:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1554A6B0096; Fri, 27 Mar 2026 09:22:47 -0400 (EDT)
+	id DB3DB6B008C; Fri, 27 Mar 2026 09:24:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12D096B0098; Fri, 27 Mar 2026 09:22:47 -0400 (EDT)
+	id D8B1D6B0098; Fri, 27 Mar 2026 09:24:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06A806B0099; Fri, 27 Mar 2026 09:22:47 -0400 (EDT)
+	id CC86B6B0099; Fri, 27 Mar 2026 09:24:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EBBA66B0096
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:22:46 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C5071A0AA7
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:22:46 +0000 (UTC)
-X-FDA: 84591907932.02.FAFC927
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E615F2000C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:22:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Ex/9UeCU";
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BB4836B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:24:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 786E31A1045
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:24:04 +0000 (UTC)
+X-FDA: 84591911208.17.DD93A47
+Received: from forward103d.mail.yandex.net (forward103d.mail.yandex.net [178.154.239.214])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 56E2D40014
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:24:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=yandex.ru header.s=mail header.b=O3Jr5Fya;
+	spf=pass (imf01.hostedemail.com: domain of dmantipov@yandex.ru designates 178.154.239.214 as permitted sender) smtp.mailfrom=dmantipov@yandex.ru;
+	dmarc=pass (policy=none) header.from=yandex.ru
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=yandex.ru header.s=mail header.b=O3Jr5Fya;
+	spf=pass (imf01.hostedemail.com: domain of dmantipov@yandex.ru designates 178.154.239.214 as permitted sender) smtp.mailfrom=dmantipov@yandex.ru;
+	dmarc=pass (policy=none) header.from=yandex.ru
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774617843; a=rsa-sha256;
+	cv=none;
+	b=J8A0D8ZrnjhgKotJwIYzsA4kexE1E2PyGyq8broL9juvqnnQuUsN9CRmX+vo+IfOeHUNAm
+	h0B70elCME67MrOdZWc/nwf7ui54c3OtzAz6ndYbcma94v7AWLDsB3PcCM4vnMki3NBwQY
+	25WVfrmjAC2xpEPaBhzZp85OWP6Cw0M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774617764;
+	s=arc-20220608; t=1774617843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vsjYVMqb5g+nmWqlJUqESf0hXzZUYFP3gQ3eri/+E84=;
-	b=zr597g/xrSmKDHUajPiLHivsIrustCgOuCjErDBPdDaaCnIxVUlM3LNgBiXzij149iXl8V
-	H6zwkSVtGrhhRahjOJ5W7TTtA8T9zPdFv2kAkqVRoY5LkCkZnRPPa093grIVQxlh0U1UYM
-	sU2ULFUvJOYSw9y7cnDY+mq5hoH5rQw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774617764; a=rsa-sha256;
-	cv=none;
-	b=yR0wyYDl2xV/d6IvoigJES1t3IrM3H9YPfRVm+3DpBw7XR8muGHEzdT0FwHtvqqf2tERXG
-	nI4k8drFhFFMl0rcwVxWfXAJ5Ob8RG1IZdlATq1wZRayP/IzBLHaKdRIcEh7FEXinoE7k1
-	cbLSpggL3WB97boxjXsCbOiJX/76bsQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Ex/9UeCU";
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2170460134;
-	Fri, 27 Mar 2026 13:22:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0ABC19423;
-	Fri, 27 Mar 2026 13:22:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774617763;
-	bh=tv/lTBUdqefxHqpzY+3tzMiQfVgyoSc1pxMuer+8knE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ex/9UeCUI5A4vHqDeaj7WE4aTtoQ44HxUcfQ3tNiith9MHs1L3QiN+Hjv9gjJ24vh
-	 noYiJjDkCb4SZZ7Sbz8ivKYX2s3woo4drq4CT8zZJa3zmfBcB5BXnqE+udbUIEgHiT
-	 o3zvpDFSkiuJA+N65GiGsx98CCmTjpb8pa2nw734m1b6XZAi4T0qNSQPSGT1vyZf2o
-	 qKlMtChFR5OL5qUkxy8Lo9DbUHxZTuOmrxTJ/GVcWxZS/5lWly9ngnM3K/pGUbAAo3
-	 +NR1bbukSNIL6u/NtzoDKuozdVz6cG3DujCx8T6s+w3/5Un4jZc0jo/5bCNYROYQmA
-	 9vRBEabfzWk/Q==
-Message-ID: <4d2d94c7-68f1-4f9f-93d7-9002c05ba6e3@kernel.org>
-Date: Fri, 27 Mar 2026 14:22:40 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0CwSYhkBgGiuGEbyJhnvf326GHQvt0d27IOFTpLoYY8=;
+	b=UJ6wPeOZM52bFLTqUePVJa6suG4VLBXuYAkD0Kw9Ci7E/RCQhTAWxCHgfwOV3mzb5zu8R3
+	dHBQODsCqSyvB3jApRL61s6RJADyovsL77T5zeUWYhuRJyh+THvWxobYi/kT0d92smzYE9
+	41EgIehs/Jvp8KXd7i+BCJK8ArwBq7M=
+Received: from mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:494f:0:640:ed81:0])
+	by forward103d.mail.yandex.net (Yandex) with ESMTPS id 42C99C46FA;
+	Fri, 27 Mar 2026 16:24:00 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-57.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id VNWFBvIGsqM0-gCm9Q4UP;
+	Fri, 27 Mar 2026 16:23:59 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1774617839; bh=0CwSYhkBgGiuGEbyJhnvf326GHQvt0d27IOFTpLoYY8=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=O3Jr5Fya7RBtj7KPYzeU+KfDKBUx/RBtEHK7WJc+aSGbT0BYh3rbSxhrJMQLE/qH2
+	 yUer01GGcSEKeaDZ9qKEiojJkPJQTM2MpnvoADartD9zF3fKgtPaz/TEcXQKDXmG4F
+	 NxY/aXtgITNLJKq1BI7k/66go12xIg6y2HOjIunY=
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>
+Cc: linux-modules@vger.kernel.org,
+	linux-mm@kvack.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [RFC PATCH] modules: extend {kstrdup,kfree}_const() to handle per-module .rodata
+Date: Fri, 27 Mar 2026 16:22:47 +0300
+Message-ID: <20260327132247.861984-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes] mm/mseal: update VMA end correctly on merge
-Content-Language: en-US
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Jeff Xu <jeffxu@chromium.org>, David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- antonius <bluedragonsec2023@gmail.com>
-References: <20260327090640.146308-1-ljs@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260327090640.146308-1-ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 1uxoqo91cowzdxc7djrkfmy19msqjndg
-X-Rspamd-Queue-Id: E615F2000C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 56E2D40014
+X-Stat-Signature: 61k9zhggquuqaundy6i9n91nm66q95qy
 X-Rspam-User: 
-X-HE-Tag: 1774617764-940235
-X-HE-Meta: U2FsdGVkX1/GEwdwPPNxJmLHF35N58WeyoIvxiI7aDzJ3YrF10+orlTFYAeuq4fjgechUNqXu382yd9WDj8/M/x74vQ2u9oFTQlXx59pLsFGnDkAA2hqovw6sXpdTRqbw85irmRgE24pMxg96wE6bU+tTpPXi78nm8VWcWdvNwiYGpwtvxYKtTocqNps1sC4L05Mbp3U1ST0hUEIblwD4IJQpn8Ty8GiRoE9ocJRpdIc0reNofm2k/6sOLprU7wEWTqWjExPOS6uJ+g8xsF66fkKoHqYoqZMhlJqNDez50j12/LhIP+P+sYkLkR7UHSve7Ck1NPSBYvN37rxNAls779RtvmmcujDnj0jzmlM0KY2uEBGcsT7WpKnqAYe35RIOJlxlcj/6pTRldtiWRjaFiA0vT1uc1dJ7As4aglLCe0b6cWLTmXJNjJviKjM1XPm4+d9VR3SM4RdJU1YuXZKwDcip4bh7jWBchgWsUb2SzqyGANWJ1/V2md5zMEH3pXMX4/+wmquDEELCzp/8R99eHJNa4GpOiZWyS1GzOLTR6mrLHHB8e7AybQFKpM+uHa8Nl3MoQqlei30it0YPABo7pqzTyr2rdERxMcTgcXSvsTvd9ZWSWZqh6s41RKE3D1LQnQtaohDzv6mEH5nMnaxlRhmx2FqP5EuqFlmPIhfEyAtmUd5rbGOSUnYPcv5k4shi4B1f5tjVHiWAPy/nzVnStEHQTpo7Xeb+DaF9MMMkWLPQyCXz74/rNc0dG5NWu5DmMvmR/AsYMyo7Wzz42j99VJk1bQ7zBe0ROJCTVZBuux3WyeO8zTJFv30Sll66epvtZlxyaIMAnjxTrZmpbA3vqXz1pXsbP0vS7QhB/ChE4jHqPoqJEvfILjUVscmYGWEqqW0bUjaPXZ/D4fjat6QI6o3nXzBG32Z2JLZthVgVMnEjJp+R4X8+rvH5M+fWg9wiaOQG4NmAjV/0SXr61t
- x5m6zNwv
- MMh9MQfhsDHSTVFPhkfGLA/U2Y1loA7/H1hXk2W1RhNHv4ewhm3a/N064h/Ec/GuUQuojMhhmBZ2vAC59pDr9/QQJAKklW58ycs2lAMvlDQ+AK0liCQCE2Ozm+WiPmgthbqS6H8Crk0XKEo2PHChvTJSXCSEoM2x5x9CABRgyAcR2J+JItI8p1shW+4J1byyEfeomVhsd6X/5+JRnFismqEW+iPMAmKoyJ7qisALRLw/QOf1XxMY1U2pRTYXAN4z/TeLBumSh3et8+b/P3jY07/48FuSbyOznCCVf3jIssAyzyrMYTD7KYXfaHUJPLuAOPNSx9vYCAB+D2XvfSYq1NFTccdlsQTNcA9i/WwJIExt13so=
+X-HE-Tag: 1774617842-895058
+X-HE-Meta: U2FsdGVkX1++Veqn7xyU8XtV+lWF6jFNg2QE2IfcW7ezkWe1jZfkFr4EcwR6WQb0GqGwAuEMhR55u6smLo8GPgJf6ndIAmAC0nBNvoGKdhalkNStrz+5RT9yXSsnsOIIrs+trcNhE2NJSi5PyR++TxgknzFfqUg1pL8xNGEKHpPhT9DJRbW3pgUQq7DT7zCvLSHK8zuFcSz/GHYEbZGPuy+v990IPyseetCFgZ+8C5I7RcY41275HK/375JcNjqwvRBwXn5TRncadJxbPQ7hJ8CDuptrUYLx2k55axDKFECoVQ8O/rBVQqAaLOmNwemrAZwg/8cVLAJfwhlRVu/bn3nxnAVs3NHzWIttBbHuQ24cWKtWj4NhrdA99UCoDdUljUHfxNY3Cxk4YxQqOrJMQcj0/n8cam3/Jp6rzzHb0KzzPq8cUeR1NJUaZKlgJLHiiJ/GemBI4YMgRPKAcu+Za+DXtSNRLXg7CSSJxVk5dmjzI7mLyT20ikfrkj3iHgrM5pLaEXsA404BUsrY0gZd3+xIfKIJoQVjvUNMUq1o1jp9yEP5JKTJgBnAE9LM/hlQVE37cmyrMQ1aTBx2LMF/DMxe6jn163+ZBDHriEJmZZhnLO5Q+MbX1h9iKxl0GZd9kkmHi0bGzn845dZ+eraglqO3Cp7xhmip/1ZNV86GJz6zSUR4SkyFHzGnhTgPg6IrC4su1DWLqrSAswnzqC5QKxbacGou9H8HBiT4MtjkkO/eKWbj1mU+uyrt+nkImT9f6fTpK7IzwNy7JMK6qKSAhOaZWmONresfWSYfQQr+1XTqrsLpiGxyvwpQpGwdEZNXq6CIYfi7PG2XqF05/p89Iui69MLKZP0wASMQz0Po0DZPZ/rtThn6FfKdvHQke9KGNWq32LGAa+l6vqC1u3Lgz1otJ8s1P0YJETBHl9DnMwkWs67Qufb2/46MZcKLqPUGuIY+/1PECAS07C2fjmq
+ A2I/fAGe
+ fQYlcrSGE7GlL2dZB87I92kXYi+PSHbU0wLk1bJKTxIYPfI0RAOx2Taw+lhzAou7tnNSfaiW1Ps79MIwf4Van01xcaxyZ+sngx7j5VYzTb52icfTFus4aYmwO4xbCE+uIVpYjeg144yf7vZXWqvqzqE2rMosb3vntgTtgNmW9qU1CxYn/7hIcqAlycLGYqAFhro/OCyegBSiqKh0XXKYbDhFaLkoZkhwFCmNQp8j9C2GhWS4UGVjk2tV8Ar7NAmsQS2J2xROij21AJmkB9hyLb4DrKYoE6hlZZRyyUtL3LIdfAQZzGHrQeIbqApwm6N40LPakAEJ0GhPfRXzmtc9uKlNQktPuLHB4E7kNgLWrDJFj4voDUDxASZYgqKjTdxFfoGVx2DBDJyVGXx+TnyE9Vj4oLxkAwUqVLjRTJ6gqEk4D8wE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,55 +89,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/27/26 10:06, Lorenzo Stoakes (Oracle) wrote:
-> Previously we stored the end of the current VMA in curr_end, and then upon
-> iterating to the next VMA updated curr_start to curr_end to advance to the
-> next VMA.
-> 
-> However, this doesn't take into account the fact that a VMA might be
-> updated due to a merge by vma_modify_flags(), which can result in curr_end
-> being stale and thus, upon setting curr_start to curr_end, ending up with
-> an incorrect curr_start on the next iteration.
-> 
-> Resolve the issue by setting curr_end to vma->vm_end unconditionally to
-> ensure this value remains updated should this occur.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Antonius <antonius@bluedragonsec.com>
-> Closes: https://lore.kernel.org/linux-mm/CAK8a0jyHXqBpt8Xe8v9SNDbnRiwz7OthA8SKY=NLRY7smPEP3Q@mail.gmail.com/
+Since kernel modules has their own .rodata sections, functions like
+'kstrdup_const()' called from the module context are not required to
+copy string constants from these sections. Likewise, 'kfree_const()'
+in such a context becomes a no-op also because the whole module's
+.rodata is freed at module unloading. OTOH this proof-of-concept
+implementation introduces substantial overhead due to calls to
+'__module_address()' from 'is_module_rodata()', which is much slower
+than 'is_kernel_rodata()'. Anyway, comments are highly appreciated.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ include/linux/module.h | 6 ++++++
+ kernel/module/main.c   | 9 +++++++++
+ mm/util.c              | 7 +++++--
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
-Thanks!
-
-> ---
->  mm/mseal.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/mseal.c b/mm/mseal.c
-> index 316b5e1dec78..2d72a15d8ea1 100644
-> --- a/mm/mseal.c
-> +++ b/mm/mseal.c
-> @@ -66,7 +66,7 @@ static int mseal_apply(struct mm_struct *mm,
->  		prev = vma;
-> 
->  	for_each_vma_range(vmi, vma, end) {
-> -		const unsigned long curr_end = MIN(vma->vm_end, end);
-> +		unsigned long curr_end = MIN(vma->vm_end, end);
-> 
->  		if (!(vma->vm_flags & VM_SEALED)) {
->  			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
-> @@ -76,6 +76,7 @@ static int mseal_apply(struct mm_struct *mm,
->  			if (IS_ERR(vma))
->  				return PTR_ERR(vma);
->  			vm_flags_set(vma, VM_SEALED);
-> +			curr_end = vma->vm_end; /* Merge may have updated. */
->  		}
-> 
->  		prev = vma;
-> --
-> 2.53.0
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 14f391b186c6..7edaf2b730ce 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -623,6 +623,7 @@ bool is_module_address(unsigned long addr);
+ bool __is_module_percpu_address(unsigned long addr, unsigned long *can_addr);
+ bool is_module_percpu_address(unsigned long addr);
+ bool is_module_text_address(unsigned long addr);
++bool is_module_rodata(unsigned long addr);
+ 
+ static inline bool within_module_mem_type(unsigned long addr,
+ 					  const struct module *mod,
+@@ -807,6 +808,11 @@ static inline bool is_module_text_address(unsigned long addr)
+ 	return false;
+ }
+ 
++static inline bool is_module_rodata(unsigned long addr)
++{
++	return false;
++}
++
+ static inline bool within_module_core(unsigned long addr,
+ 				      const struct module *mod)
+ {
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index c3ce106c70af..5003cacd0786 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -3858,6 +3858,15 @@ bool is_module_text_address(unsigned long addr)
+ 	return __module_text_address(addr) != NULL;
+ }
+ 
++bool is_module_rodata(unsigned long addr)
++{
++	struct module *mod;
++
++	guard(rcu)();
++	mod = __module_address(addr);
++	return mod && within_module_mem_type(addr, mod, MOD_RODATA);
++}
++
+ void module_for_each_mod(int(*func)(struct module *mod, void *data), void *data)
+ {
+ 	struct module *mod;
+diff --git a/mm/util.c b/mm/util.c
+index b05ab6f97e11..8dd1f1e95554 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -26,6 +26,7 @@
+ #include <linux/compat.h>
+ #include <linux/fsnotify.h>
+ #include <linux/page_idle.h>
++#include <linux/module.h>
+ 
+ #include <linux/uaccess.h>
+ 
+@@ -42,7 +43,8 @@
+  */
+ void kfree_const(const void *x)
+ {
+-	if (!is_kernel_rodata((unsigned long)x))
++	if (!is_kernel_rodata((unsigned long)x) &&
++	    !is_module_rodata((unsigned long)x))
+ 		kfree(x);
+ }
+ EXPORT_SYMBOL(kfree_const);
+@@ -98,7 +100,8 @@ EXPORT_SYMBOL(kstrdup);
+  */
+ const char *kstrdup_const(const char *s, gfp_t gfp)
+ {
+-	if (is_kernel_rodata((unsigned long)s))
++	if (is_kernel_rodata((unsigned long)s) ||
++	    is_module_rodata((unsigned long)s))
+ 		return s;
+ 
+ 	return kstrdup(s, gfp);
+-- 
+2.53.0
 
 
