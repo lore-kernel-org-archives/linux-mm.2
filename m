@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47FCC10A62D1
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:15:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE3610A62E8
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:15:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFE846B00A9; Thu, 26 Mar 2026 22:15:06 -0400 (EDT)
+	id 818DE6B00AD; Thu, 26 Mar 2026 22:15:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD61B6B00AB; Thu, 26 Mar 2026 22:15:06 -0400 (EDT)
+	id 779476B00AF; Thu, 26 Mar 2026 22:15:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A13926B00AC; Thu, 26 Mar 2026 22:15:06 -0400 (EDT)
+	id 5F4926B00B0; Thu, 26 Mar 2026 22:15:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F9BE6B00A9
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:15:06 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 470096B00AD
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:15:15 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5D40813C472
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:06 +0000 (UTC)
-X-FDA: 84590225412.20.48B52F7
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A789120003
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c+UwEtgW;
-	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F07A513C3D1
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:14 +0000 (UTC)
+X-FDA: 84590225748.20.B0A7504
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 47FF9C0008
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qUprQn+Y;
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c+UwEtgW;
-	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577704; a=rsa-sha256;
-	cv=none;
-	b=B2zNsUTl8FZEFNdXydV4yZpkigJdHhswhDJuTRPCzj8j3ic25ZswQG176dGFUrtLsdYE8e
-	UwapbLM7+PxxIl7nlT6ojTnuBfNZvn6I5cU4kkIjA/CnMVZO2C/H+PIwMaVVeINdCAqbwE
-	D7bdsKBleDuVk+l66md5IgQHQ7b81kY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774577704;
+	s=arc-20220608; t=1774577713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=giSfT9S4Y3Fs6MBCHHOkpgsjb4flU8mTLfNnlsB/wxU=;
-	b=dxBokh7qDr1iqF3vLzNQ99OxNMIXSBURxI+QJ2ZD0O5FiBhlRJvIl/refkYaSkDh0hu4Sy
-	FIlwH4UCeMOHUk94eLOPCkcNotJjCp5UtM6zfe8fXjvErFye+8KPN2Tkt464MHBEzfC4KJ
-	orOWkFh04zztwmvCLJPGM36qUN1zRzw=
+	bh=dfNWz2MwM4ZY6bFGmoYrNTnpJRQZnNwj/uOrRkiYL5M=;
+	b=VRozbKrFNKNxsexocexC8Hd5cPZ+f/S85gofOOMQM2ZjxWylLPdywE13RmRbTda8s7MqQD
+	23+9JjrHlXqxZBP6M0MjVnKSQKphr12pBzitDyTgSMQN8GJIh+YyscoAwQ9XagWU3y3Lg6
+	4Q4W5m1MG+atOqRUbr9/G7UJHKrgPys=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qUprQn+Y;
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577713; a=rsa-sha256;
+	cv=none;
+	b=VbcIQCdc5GPekQJje1CpcQNZ9dGe/9mpvHDaC/Wbn81c4E3jWJTwqXQ2XctTO68PiTOQhq
+	sKNfT764WCtdBASbv2+3sFnfYEmUqpb8cCOU7tBSrJ1RGPrNB7dH9UCb1iffUGGf4G2G+J
+	TeCNaao/lLzCyg5Fih+sDhCUVT9W+fw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774577702;
+	t=1774577711;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=giSfT9S4Y3Fs6MBCHHOkpgsjb4flU8mTLfNnlsB/wxU=;
-	b=c+UwEtgWwyc5ExZqiso+pcfyt+iKbZ1QmoTTRB8NhGDZKpUwyzQzLx5Oi6hXFvtdq5ago3
-	ODRA0nas4eR1mjjEDHyY5MY9At3yhrqG1QJr6rpr5PRO3un578DMuu2R03YOspCxOxZ+jD
-	EPix5NId6vnIBtCHcU6MJtVrfHvraLA=
+	bh=dfNWz2MwM4ZY6bFGmoYrNTnpJRQZnNwj/uOrRkiYL5M=;
+	b=qUprQn+YADvN/9XX6sWYfNa/kg5jNuE3cirjiQ/YhUk5tRCUEKizV7YGDnhu+O6mL2/RmH
+	oTF5aOueObHp18z9I+INhJ7C79JF930GoJirPSOE8DqOuuEiuDjMjZKFEcq6mi9dt+yWRn
+	geRfame3sIEEpbw6/P4+nyJYGxERCHk=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -90,22 +90,22 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [v3 08/24] mm: thp: handle split failure in follow_pmd_mask()
-Date: Thu, 26 Mar 2026 19:08:50 -0700
-Message-ID: <20260327021403.214713-9-usama.arif@linux.dev>
+Subject: [v3 09/24] mm: handle walk_page_range() failure from THP split
+Date: Thu, 26 Mar 2026 19:08:51 -0700
+Message-ID: <20260327021403.214713-10-usama.arif@linux.dev>
 In-Reply-To: <20260327021403.214713-1-usama.arif@linux.dev>
 References: <20260327021403.214713-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A789120003
-X-Stat-Signature: ypdzgfyqj9omuwejizkcuhjr4dpatiin
 X-Rspam-User: 
-X-HE-Tag: 1774577704-304169
-X-HE-Meta: U2FsdGVkX19HJijJSO8HxY8L4C+zjcCjw9sFAyVSTB1qMZc5iCQemkFvVWuAIH7k4PXdUQFhKUWm0muVGGtNfpyvOqOaNQ2NJYdGbLeB3J9ps4NZlGZzZ0lnIHZqm36vsrDYOcbWnc6mZp54RPfivb/M2WOrp6ABUEYmh4InUJjDb9NOhjAk8nbf6FFzi4INYCQ73gbfKyck6dP7YFFDwcIHKgSsO3GZN+gTiygtmaUmb5colVOYzryaXeWF7YfdRfoyBxRXmduflFAbb2+zzztWVBUVHLQuliPFyhtdLj80UGIMx9qTUEWSlHwtKr/FoivRI4kfktPDZMF1+mO8q/y1lN2HBD1JmnkT1Uvmep00XvXycac12us9Ukg8BRvXGo/ajoKwDgOEz0W8h2vwocU7Uf6KGMYe0tMhfv686iQsAmqy8O4TH0hJ15Nh0ifEk1nXVCnBiyVHxE2XAfIfdEaVpvWuWXIyebftkawiXnvqseu3z06gjClDNT4LAw9OgQRBw1ZQFa0fJG1X1oDUGWOrjHoANrHf5F5QoytJWOZi9W0Hj6GH0XwmNWB4GcKcyMsGF0r+Wy3heUZL3hFdof/0l4/pWWTPhRWsBNokUEoinkcAFHqJgI4LTcuPygV4C8U7uafBxep1unR5VXkO8P+/N3oLWVOJZsFl9/3/pTNfPN8bdFFg0qq23IYduFoYCzZfXx1SQ02tT36LUj5HipS1HIXqJvDS6/WQTxiVk8OWrvFEb1h702FQYvBgspzk5s6qQo8cOq9R5Ws6xuUnHgKiqO9gFbO/P0zOlalRNr2ZW4MBjMC4xZvStuCukmUABZ5BoE0JRspBA5jr7jCTEM9W5NdkoIzS64Sla5rMa2alT5pdQ5XFqd7ox1ac35UGCPKlO/xvHDnyfOqXgMMH/1WvEzoO0ZbyXovV2W6b6UQxWobteO8faF3Ege0HJeMGRcmI8UJeedBNTUeFNm0
- YwbnaA6h
- 26TtrcQkYwI3AdIKMkt58indM6rHdhJ+1DYRnDmH/9Y6Op7MtOV6QXudNFm93dE2mo6nU69HKDAPTAF1i/Z1EciV9WuuLMwT6G75dhtShVoxf4uXsfoOlNdpuN9cyEtNgoYyrEQZmUBkiXEXh4xGPggPdDzMOOySG+am8CT0vMIRewRCDKJXuQOuXQE4/uTRPp7K4qPh9GONPebNDkaljMz/3L0bm58BFc7EEv59OL2xZoFWxX+aXV2Ahjg==
+X-Rspamd-Queue-Id: 47FF9C0008
+X-Stat-Signature: sbbbp8z6cp9eb8s7gfxwzk5csgdo7q6y
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774577713-290143
+X-HE-Meta: U2FsdGVkX1+c/AOjLflTbYpkU8Zn/9c1Brb4g4CTrBeC9A06qzsuMbLkqIPoZmPT5ynusG/p6mTGFi9IlJ2qdS8qO8e+hiZaypE2gAPAjUWGwMZ6WS9Dj7FkOTt20wsrMR+kSAazEHDluVYDaDD0XIcvn0XHslguxLnbQluMmpuNTG9CbGo1nCK/BGHSYBCa0WZQz2ufDnQjyKXrVl80XInD7FUSCMXyBHIIVvcEZlyRMKi4PiFFzynTu139K+DLfGEiaQAdrljhjhocjx3hMnHIkMyRpZ31bZ0t8UfbMP9trIffsWHjHal5sraaEAci3k5vtuiYNBMSdJGDTafAq+cnIOw8dw3vbH6rEIcRCfQj9gHb/R5Icq5869XHexMcz63YOZiHsl2odcRe63ckqZvFXGeLMOQiB2O+jGwaJJ6dDkqRir5mSqKQSD6xDI6T08VeUHgnqxB52G0LGdp0TD44ZOBoJw95CUWFCQCD63DMLzD05nPU8V5SWjN8kIa1R2fm3R4CzxfRYPbMCv8pGJsXs6BtyaFVP/YYpDmbcpu12/oIwh+XeUyDDLgGn7k4pk5sqP6QMqrxqNeEgz6QBc/MMm0Pb6RPXE5wGOX3tyaxxaAoSq+XHv0DMkx4qMZfIx/VVAKIxLdGY/G1HbI7gGTr1k3g0suXUaxR6xkwqdtzNz9zEefCMZ6+Rl8fgy7UpQ3cG7fD+vBbbVkdiqwIOZhMJghFOvjOQq+C2oJcMgz+KTsL96ajsDEsFRGzJjwNcESgMUtw+UT50rVTwzQDrDEfN5xr3QswnWa7CJvFTk33EKnVW44yGzS6CKfi/jl4kOlpdoOc/xcb/wvx7JwuUYWtk43V7OqylYQVilhCANt33CwqV84YkvS8sClid0OGQwV8RXHPfIARMwWHJXHFz2Qf2PxpG1sOKA98ubtyJLLvSBR27Xmgbo+0UX5fGnbcCgZBwFUMyC6vqdzOE1O
+ L8nh8LjP
+ qfHj3KQGhq7L7ASoDaMSjabXLCUnh5J748JZnXVS7nf+WtGfLS48HpRKwWY8ftImywQB9gvSnJohOi1tmXJJd00N6ptAHerLROhlghWAyuzl2Qn2Nl0h4t8SjXNdvLU3herBpm8qWmBK0iOmgiaWZXW6h7HSzTuaEYjFFR+QuJpBufC8sDp1TQIe8PvIPJ4vAwKWvgd55F8yIjLpMrkQQkIq23Sjw4dWio4p5YZfyGFjevHxWFIPCYK+aqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,42 +113,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-follow_pmd_mask() splits a huge PMD when FOLL_SPLIT_PMD is set, so GUP
-can pin individual pages at PTE granularity.
+walk_pmd_range() splits a huge PMD when a page table walker with
+pte_entry or install_pte callbacks needs PTE-level granularity. If
+the split fails due to memory allocation failure in pte_alloc_one(),
+walk_pte_range() would encounter a huge PMD instead of a PTE page
+table.
 
-If the split fails, the PMD is still huge and follow_page_pte() cannot
-process it. Return ERR_PTR(-ENOMEM) on split failure, which causes the
-GUP caller to get -ENOMEM. -ENOMEM is already returned in follow_pmd_mask
-if pte_alloc_one fails (which is the reason why split_huge_pmd could
-fail), hence this is a safe change.
+Break out of the loop on split failure and return -ENOMEM to the
+walker's caller. Callers that reach this path (those with pte_entry
+or install_pte set) such as mincore, hmm_range_fault and
+queue_pages_range already handle negative return values from
+walk_page_range(). Similar approach is taken when __pte_alloc()
+fails in walk_pmd_range().
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/gup.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ mm/pagewalk.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index ad9ded39609cb..07c6b0483c322 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -928,8 +928,16 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
- 		return follow_page_pte(vma, address, pmd, flags);
- 	}
- 	if (pmd_trans_huge(pmdval) && (flags & FOLL_SPLIT_PMD)) {
-+		int ret;
-+
- 		spin_unlock(ptl);
--		split_huge_pmd(vma, pmd, address);
-+		/*
-+		 * If split fails, the PMD is still huge and
-+		 * we cannot proceed to follow_page_pte.
-+		 */
-+		ret = split_huge_pmd(vma, pmd, address);
-+		if (ret)
-+			return ERR_PTR(ret);
- 		/* If pmd was left empty, stuff a page table in there quickly */
- 		return pte_alloc(mm, pmd) ? ERR_PTR(-ENOMEM) :
- 			follow_page_pte(vma, address, pmd, flags);
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index 3ae2586ff45b4..c5850de71b8cb 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -165,9 +165,11 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 				continue;
+ 		}
+ 
+-		if (walk->vma)
+-			split_huge_pmd(walk->vma, pmd, addr);
+-		else if (pmd_leaf(*pmd) || !pmd_present(*pmd))
++		if (walk->vma) {
++			err = split_huge_pmd(walk->vma, pmd, addr);
++			if (err)
++				break;
++		} else if (pmd_leaf(*pmd) || !pmd_present(*pmd))
+ 			continue; /* Nothing to do. */
+ 
+ 		err = walk_pte_range(pmd, addr, next, walk);
 -- 
 2.52.0
 
