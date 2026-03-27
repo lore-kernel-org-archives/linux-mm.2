@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8156710BA42D
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 05:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 693CC10BA426
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 05:42:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A05CE6B0092; Fri, 27 Mar 2026 01:34:24 -0400 (EDT)
+	id 99DC26B0092; Fri, 27 Mar 2026 01:42:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6D66B0093; Fri, 27 Mar 2026 01:34:24 -0400 (EDT)
+	id 94E916B0093; Fri, 27 Mar 2026 01:42:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CC946B0095; Fri, 27 Mar 2026 01:34:24 -0400 (EDT)
+	id 863D16B0095; Fri, 27 Mar 2026 01:42:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 78F906B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:34:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB4951B9336
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:34:23 +0000 (UTC)
-X-FDA: 84590727606.18.D4B6C73
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 75C8B6B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:42:43 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18C1F13BCCE
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:42:43 +0000 (UTC)
+X-FDA: 84590748606.23.0D36DEE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 363B51C0003
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:34:22 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aZkAHLEA;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7BD3C180004
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:42:41 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="nMVg/aQs";
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774589662;
+	s=arc-20220608; t=1774590161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aA6GA7UjCVCWzBJVbX7fygc0hyf3brfw7iTfig1L+ig=;
-	b=O8ACvIg3tUBy6mqk+TEmV+w5Iuw31PBLmvNjenP4wuleFE/ddDiTWxMBrMJMSDzfSKhYXu
-	nCOzs/BeRN3DRMdmFwpkjX1fLHuP3blRC36j2nQSkmBlP0mrpCImGt27KZ7VxxPqeNLbob
-	9bwmyFaYwPmHm3Kv63rzsqnabzMS2CY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aZkAHLEA;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774589662; a=rsa-sha256;
+	bh=CtK+sFH498A814cvgnYEXK5V5g0aekmcqwvNriMthug=;
+	b=gf+/Ob5JyGjaEMjwIl6oz9TNt3WAmrDz5zTJ1afJwf3M23mNKrtOJ8Wjnd/iZi+fH03Eph
+	n2RsgSoaNHpXPMVY3UfhIzdHD6ER6uNAJgqI11sXeeE+Lf9h22kr8jEQ1jAhZti2GlXLOb
+	w/+yVYVpjpmTL0BjVrsTkOp/F457UzE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774590161; a=rsa-sha256;
 	cv=none;
-	b=5QZuAYoel4yOPlwA8UB71NKZt4wNWc6ytl05QWiE6KpCWjkxhNpA4Ce805cETo/n9iGAsk
-	x4zVa91HJjl0vfRLHWa25o68ApFu90R/2d/tErTmehYZjnZTzEFh7cMnLiF0GrnH2Dfqxk
-	3lyoYvyIS8Unmc0DXXjPg5y6XU/DCdI=
+	b=uRipE78ygv0M+YbY017V7i29GyUPIAx3d2wjYTgKMw7PP72f3lZ8SdPckXicQBPwMobR5H
+	a4O5r/noTqvYEIc2uIX8k/AzBOb8lp+PFkEyO8K8BX1UqdalMQ9LYPg4dLVBtDIH9572j5
+	ASnlzUvq6vsRROnGixNyojzahRCyKL0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="nMVg/aQs";
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F2C26011F;
-	Fri, 27 Mar 2026 05:34:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A4FC19423;
-	Fri, 27 Mar 2026 05:34:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E3FE76011F;
+	Fri, 27 Mar 2026 05:42:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144EAC19423;
+	Fri, 27 Mar 2026 05:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774589661;
-	bh=weCefxiBjTGq2PwSMe71qissOFHl66eLJ4DpNp4Zd1w=;
+	s=korg; t=1774590160;
+	bh=M3yhklj1LSgjvqFVJOXiEJ8tXr8x4LCP2Dv44XWj7Ms=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aZkAHLEAux8dadNSGOey0wxkDpcPcAptJleH9NyEM/0a5D35/DK22ls6cR/Z8yoeS
-	 yByYdpP0YmsbDMxfKeVmAva1lHdgkP4Dak9HFF27QPqwjwNdYVCe/FkpKUZfrqRZW8
-	 khTUxjU60ZFLqfiW+wihj8uTKlMgDvWmDc2E+nxM=
-Date: Thu, 26 Mar 2026 22:34:20 -0700
+	b=nMVg/aQsknpt/6YD0Ec352VbThWsH3IQnRZ35TCjfoIL+crnXVhK1f+QBHw9lcn3y
+	 /cHhc3MoNXa/z+/tB+d4yJtmHM4kwsvbNsMnhZi9hl7E9avTgc/6KdvzJLIdX5Nyjm
+	 52VhB0qs1ecpt/nYaaFFbktocvqtS/Va+Ot6cOlQ=
+Date: Thu, 26 Mar 2026 22:42:39 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Xie Yuanbin
- <qq570070308@gmail.com>, willy@infradead.org, Liam.Howlett@oracle.com,
- david@kernel.org, justinstitt@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, llvm@lists.linux.dev, mhocko@suse.com,
- morbo@google.com, nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
- rppt@kernel.org, surenb@google.com
-Subject: Re: [PATCH] mm: optimize the implementation of WARN_ON_ONCE_GFP()
-Message-Id: <20260326223420.cf92ff1d55d078390cb10cb9@linux-foundation.org>
-In-Reply-To: <20260310145231.1680db9b@pumpkin>
-References: <aa7p3eQfEuh2wObQ@casper.infradead.org>
-	<20260309155933.41179-1-qq570070308@gmail.com>
-	<be647d6b-9bcb-41c8-bfcf-7fa03d2b942f@kernel.org>
-	<20260310145231.1680db9b@pumpkin>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jianzhou Zhao <luckd0g@163.com>, Oscar
+ Salvador <osalvador@suse.de>
+Subject: Re: [PATCH 0/3] mm: improve map count checks
+Message-Id: <20260326224239.9052f8be3ddb9cac600f59f5@linux-foundation.org>
+In-Reply-To: <cover.1773249037.git.ljs@kernel.org>
+References: <cover.1773249037.git.ljs@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7BD3C180004
+X-Stat-Signature: qo71ga6yc3me1up8hdwkmo1ubnc7n5c7
 X-Rspam-User: 
-X-Stat-Signature: gf3n1gb8msqjzqkz5anctoywa934qopu
-X-Rspamd-Queue-Id: 363B51C0003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774589662-455043
-X-HE-Meta: U2FsdGVkX19iO5JgI2usGZSbFWx7YjwAE1WI70KGOcTnTnBMG8v1PkrLfAxR5eHSo84mP2gwDFPsxYBZJij0QQCQuOY2k4l1yxUZ/IJBdIo/AC8o0cbFIaZ8phMd/ZhQtbStYCDd7HdbUi1yDmrFFOGLyfyHtRDUV/2uAz2Dooj04HZwR6wHFBEZy/L2YqtK0rMDcy9c8Jjnt5dd8j6p27PO/YhNAbbcA2dsBKjZf58Wo4otgXe2zZn/YtVQHSwDyTepLfYiCTF6v1rLFSpaAqQRQEg+NtZFvjTdvecO8ceB5MO+pWyJoTVGFQfLUN4yARA8WmvpcKAqS56xNLWYiXC+Dctyo+m1GmE8vCL8bch8VvdBHAcQGd8TpQSa0QhuXpsuVF2Wl5MG8eAidukjaJlcI+9lnwLG4hScQ0dCzuo9ONGq6RYty0kIdyaPZ5pVY9tqFIdcjxhPPmAR6k6TsDOVASluFAoq90QhtHfxzBBFP1M6CvIgsKuL26265oWIK0gwpB1zTJcPi6k4rebty8RoZP8ViYccd46bkxonIjBFhxv1TuOCtjFCG10UI2egjyCA7iXPZzNBs/EqVEYRFg9EfhfOzb5WXfBozgYQdKsctmDxeZpAG3tL8pb+ZdAw0sjzxT+5/jtx8XLM3ZYH/Ggepn94f7ygoPPVNkadbmmCNFN9r1a/AABkh/EuHdIc0xvpO/HQ9WgdPLS+Z+wWjHSMKpHTOw6smqt647USFpyDBJxhaiahFqwa7Of75VStHvXO6EhHb9ytXajSc/37CIrdV9GS4ckYFLNQ3Utky6+t7TFkC3duoRYEb+ctcQES9HFRTklbDL84WXkwH6VdhmXzTVA4dfclNKg7JU0qsvLILVMO3qyo0y8u6lPla0XsMjIcU6CGBihn4I6EyDCCTRmji2NKeUMHWhYhOWnPbpO0leb55qE95Zcct2IHv5uUSRdWn79qsQZu3VwICfj
- hp6/As4Y
- fVli1aHzDbk2EubQjE3OJqwDFDF4Sst2NKcQYVoEiUFacIfakQu0mTrJ7EqfA07GLF/wxXoU/l8gWTtEtFQ/YsFaUZBHBMoF2pXH4lfvxF1k0p50596+MpnON/i0qfGaAfAwPOl+LeClAsbzhgzGoVrvWbPDqcV7jobf8dll8JZaCUvjHSBdeo1eBblgZmT+Pphl91dfzikoAgdBKH33AXHgvjFqybwww9i52bkyA9WWdj5NhyMnKx/YJ73VDGgHMI9QUew2BuLuMBbhvD+o04Ej0fBz6gb8GR5cZF2vs1y393sLxLjFfNXygzvdwKTCuTyN68Z6foMvIbxap+jKXq/KcBDqYYBuf5MHyxCrmw236AqX+IGzkR/3n9a2eJ2lDAEeWgFL4R4FVioM=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774590161-533870
+X-HE-Meta: U2FsdGVkX1+iT23TWLYnSYi0XiZO2KwrTfSvNsD4ml5d6ITaxnClynOqQSH4z2ocV5ckm9SnazYZfPCL9ht61TRzOaLZV8xOCCTKv3e+6JkziCHiPZTKiEc82DL8iLfGn0IbQbcUUY3DoMUk2bXnD6TjzZfxJ78/rINzy3QvnJbFYPeF9dEbfDLxddD/BuF2akT36ooqy7CcOrhA6+2G2rItQK8IaOQrSjGl0TYfVf/w4CbzNWps8idgz1YsVDnCaYqxFgpMc8dTrZbbXWC3VF82/66Vn40uueJSDNWFClTGLXr/7mJnb47anmzn6Ax/EWoqycRLf3Cpm0IIJTkXYMjGshocAQ4RliZ16rp/g9DSbeGM7FwmYkX6ti/Z+3PqY7rzz5V/VGj29NMgHbZbR6o1bhmRcOHxyizTYePtuWShlmewE4ziNk6TopX0H53cabHxdeO1ynyJoLPli6hKT3HV3OGT3m644YiUOJwfrMQDNFzp2wxB/M1dAMNY6yMiPJNQ4DTajcDRsDYMdwX7YpApkvQJQlFZoYAq62n/bBGb5VgSxMBuZeAnVM63agPkDvr7I+b1VwW5POIp8fH5IBFMTbt+bIb5OHvIbwz/JdSePkAHTzE3qRVAdlDYUJdl4ydW9WAdjaUsIfcE6dzuP7o2K5Xk+QiPbZa1RWqMC6ujtB46hF7QRb5mktxT67sM0vWj11jJ1pIJ4SRo73JUZcGB/gTp6pECsbSSn+Zft7wag71WUS0mBGCxniFQx78NCeNXESZ6SLAvdMCTnhIj+HExXzBPNag+jOPIRBZ1ti7drW9bOC1c8+BNO5aGjWYFXCVkZhfosF7TBfZyC+1snUK5M0+hdmrtEuWVfzYzKw9O24ibwbwmEKjglH37RYuyLuEe3EddZ0pB7FdnmhzsL4LNPkSUazEmgpiv1NnKZMyUHCGokTFsuxKKsjDoHGxZQj9Gn4yVezk1FJ+ndX2
+ +OfSsNLh
+ HFe17ji1eFxKMSo4Es4ROiX09ReMLIf4N0xPx8zymBI3ghnp+QJbg6S7BIH2vBMSsP58rVAGsXp/fQQuN9XRTycCfqYK5BS7s9O9SrH8iCCIlXaXyQPgI8/7WQD18UQ056TJwSWG/k7ZdYHRvX5BucLEUdszX9QzE3u9D/Fp4GZNr7Mge73W01pfmjJcx3e40AuDh3zFLqg39PFiqusGBuV58JOfMkvmdLnXv/sTaUJi/2sG9j3/csWbFHzWMqfswgF+/ppIXO2klz4wSTypCJ2DAFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,41 +93,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 10 Mar 2026 14:52:31 +0000 David Laight <david.laight.linux@gmail.com> wrote:
+On Wed, 11 Mar 2026 17:24:35 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-> > > If a and b is both unlikely, then "unlikely(a) && unlikely(b)" will
-> > > generate better code than "unlikely(a && b)". This is also true for gcc.  
-> > 
-> > What are the details of how it's better for gcc?
+> Firstly, in mremap(), it appears that our map count checks have been overly
+> conservative - there is simply no reason to require that we have headroom
+> of 4 mappings prior to moving the VMA, we only need headroom of 2 VMAs
+> since commit 659ace584e7a ("mmap: don't return ENOMEM when mapcount is
+> temporarily exceeded in munmap()").
 > 
-> I'm not sure about that specific case, but I've definitely seen gcc
-> generate sub-optimal code for some un/likely() of compound expressions.
-> The underlying cause is that the code is (probably) first transformed to:
-> 	bool tmp = expression;
-> 	if (unlikely(tmp)) ...
-> this means that you lose some of the short-circuiting that happens
-> early in the code generation of 'if (expression)'.
+> Likely the original headroom of 4 mappings was a mistake, and 3 was
+> actually intended.
 > 
-> It is also not at all clear what you want the compiler to generate.
-> For 'unlikely(a || b)' you want 'if (a) goto x; if (b) goto x' so that
-> the 'likely' path is the no-branch one.
-> But for 'unlikely(a && b)' you still want 'if (a) goto x; y:' which means
-> that the 'b' test is out-of-line and has to be 'x: if (!b) goto y' to
-> avoid a branch when a is false - but that means you have a 'normally
-> taken' branch after the test of b.
-> That pretty much means the compiler has to decide which unlikely()
-> to ignore.
-> So it only makes sense to do 'if (unlikely(a) && b)'.
-> Indeed even 'if (unlikely(a) && likely(b))' may be better!
+> Next, we access sysctl_max_map_count in a number of places without being
+> all that careful about how we do so.
+> 
+> We introduces a simple helper that READ_ONCE()'s the field
+> (get_sysctl_max_map_count()) to ensure that the field is accessed
+> correctly. The WRITE_ONCE() side is already handled by the sysctl procfs
+> code in proc_int_conv().
+> 
+> We also move this field to internal.h as there's no reason for anybody else
+> to access it outside of mm. Unfortunately we have to maintain the extern
+> variable, as mmap.c implements the procfs code.
+> 
+> Finally, we are accessing current->mm->map_count without holding the mmap
+> write lock, which is also not correct, so this series ensures the lock is
+> head before we access it.
+> 
+> We also abstract the check to a helper function, and add ASCII diagrams to
+> explain why we're doing what we're doing.
 
-fwiw, this change makes no change to `size mm/page_alloc.o' for x86_64
-gcc defconfig.
+This little series has no reviews, if anyone is wanting to boost our
+R-b stats.
 
-Given the expressed objections and that WARN_ON_ONCE_GFP() is used only
-twice in the whole kernel, I think I'll remove this patch.
-
-Xie, if you disagree with this then please resubmit the patch with a
-more convincing justification and hopefully people will reconsider it.
-
-Thanks.
+Or not.  I plan to upstream it unless someone stops me.
 
