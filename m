@@ -4,142 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F006D10AB82D
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 00:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F59710AB82D
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 00:26:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2782A6B00AF; Thu, 26 Mar 2026 20:07:50 -0400 (EDT)
+	id 7C4116B00A9; Thu, 26 Mar 2026 20:26:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 250356B00B0; Thu, 26 Mar 2026 20:07:50 -0400 (EDT)
+	id 774CE6B00AA; Thu, 26 Mar 2026 20:26:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 165E66B00B1; Thu, 26 Mar 2026 20:07:50 -0400 (EDT)
+	id 6639E6B00AB; Thu, 26 Mar 2026 20:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 039136B00AF
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:07:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 542086B00A9
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:26:26 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 99F985DAB0
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:07:49 +0000 (UTC)
-X-FDA: 84589904658.05.D81AB13
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7DD8F80011
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:07:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="qxoQkM/X";
-	spf=pass (imf30.hostedemail.com: domain of jthoughton@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B2824E1583
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:26:25 +0000 (UTC)
+X-FDA: 84589951530.05.008CED2
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B8AF9C0004
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:26:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="CtclD/p5";
+	spf=pass (imf10.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774570067;
+	s=arc-20220608; t=1774571183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l6bohw50RBT0u5gW1o6sQ8ESS0bizoR3I3eC4aqE/wA=;
-	b=j7P+SKgH1jiXEZsoN4+HxN8wM9lt3xx5B97nttNyoA9kzngi2P+HaMSv1+l3DCXypt0EYS
-	qN5R4NpBU5HmHWpIi01N1edlYp+doPRVckzqDw8E+NtI0km60KDIPCW3gL9cmWi5USRrA4
-	p4ydP2gu8xuH2b0JgiBROihSKHgBdeA=
+	bh=X9rjmjgxuv6M5iq71wlttSNR553X4GPDWyfLJKbyYVg=;
+	b=6gcZ3R2MHpdMtfStDwE0WGS6SLD9TvlkqEopvf7Ww79lmeVmOyz07Jxb7H4EmOzNOIDRtB
+	9+WwuZN1Gk6MogOU7b2WQM3tZf9ao+HHtQyF7hoei4f7izopWPPVK5HnaVRFSXjJ1PhlmL
+	2dy9EMZjTjC+9QlgnLEXWKVDvt2YFxk=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="qxoQkM/X";
-	spf=pass (imf30.hostedemail.com: domain of jthoughton@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="CtclD/p5";
+	spf=pass (imf10.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774570067; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774571183; a=rsa-sha256;
 	cv=pass;
-	b=JkboP1vbfLnPfCALPcRxWtV8FTz8VldS8hTNs6+2mOLjUaqIO0cxeLL3VcvD+6Xb4qJPc/
-	M2op+VIAehhgVtNgKwZ/S2g1YorcmlvHQRGug2NiRHZMNQM7OHo3IMhD2mzQuGN5OSG4FO
-	OAgknMaJQphTT9c7GaBC3Jomy+Xzp9k=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6674cba2c50so4054767a12.0
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:07:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774570066; cv=none;
+	b=HyfJLsYoxyqQ1fqt3LJy/BUwwsKJp7LfD/wYrfalB6ueHDC1vKJL2llE47up1XW74EFGaq
+	0Tmz6szIdK0eGFtH3m8WSN71eCz54rYYSOpCWJlkf1P8nX/1RsCY9vcZSXjjfZioFpdxSx
+	3NpIHNOBQ1pdduxZVMbmB0mGnBZCASo=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b052562254so44935ad.0
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 17:26:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774571182; cv=none;
         d=google.com; s=arc-20240605;
-        b=H+8koNh9Ze0VgMdpw7ynzRETQ9IC0OgEEgNNczvbqOzDTdJ9bYkKD5Ianl2vDCuKer
-         7VgmGI+4EQA88XWo32HacttpnTg/OOt2jlTHakF2fx9WRoHJ/ow6p88T+eNmQPY4zjwi
-         IU0VZqYVmqHIIZL0hLJtk/e6COv/t6dgYtYiRkNqShChFgIh2kginuCVsWo1yNWl+x+C
-         eSVX+VVJMT+xoTmAajCR1vlPfSMzuZbLl1vlwcwYVGGyNegiEnOivJNLEWK/AdbK1vnL
-         eY9svekxNFLJBOW3Vevrzfh7pTQJl9GffAV2rTJe/jue/dSwkN+XsBQ3v5jtgj4eu0WE
-         2fIQ==
+        b=FCi0xvwsYxOAxbgG7R8/AeNTcichQnLhk+uhFwxphiuFTM1dJ1TaUQbCIYf17/NDyK
+         QiSbtabTv/fviXe6AnNIhavk/BHmE4SGqeWEG5X1ZVDY8S1JiGJ7ryuyCIIEWyEnSoUx
+         z7I1dAF+h/NHx3jiUfXuflnlCr5VnNqRZsDu/PvDbr2WztVE5riWTOzJ9uTdsAKJOrVM
+         gzT7C022p9nk2x5HFaNElv/iqDWZXzLkglI/bjfkaEd5I67VJrE4D4Cr8vG0l+tnP83U
+         maKraKKwE9i4NME6hS/E4Duuf0RvFZumPYmIw64VCK6UC3UZX3UlkpLwfq79rxk4Y8Jr
+         h/0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=l6bohw50RBT0u5gW1o6sQ8ESS0bizoR3I3eC4aqE/wA=;
-        fh=1pEl9Wm5yfAdIRgtew+aKr2wG1sPARWww3B3kqqQ5fo=;
-        b=TFsBKl/ZMEmVjp9dDEDEXEE3IOIdFaNArQizukKr7gp3z2kC3OyhMFLagY01HxypKI
-         NpirBmXXdB6iShEwxCtEotSPXuVlFXdF93S8WjrJXxGU+9sZnC4bXx1gWrXk/Mc+plIa
-         NjyB0equt1Htky4qj/D00CyZ9svSQwsUhZ6/D7wg1KDL9NesDe6L0CfNfaNqNuc635ws
-         /4YYq64Z56HwjSJ/28+A9QDJNmMvIsDAB2pVmfh1sSvMD6GUcsCFRY+2zccg5LSAIT2G
-         eJpmwtRHiCwkzosxIgTUrIa7lOxKWXlpAfxr8V487gPYp9Gi5mEAL3hrkAP4GGosB/xG
-         brDQ==;
+        bh=X9rjmjgxuv6M5iq71wlttSNR553X4GPDWyfLJKbyYVg=;
+        fh=1vQR6+q2+hp3JMILz571UMUBFiZrz5AqDWuaO0rTktI=;
+        b=fQFLjzZe7JJ1qZ3FRdIwCbnSCIuYK3tBYip+m8OuIsaS9hIl1OQrzVl7ciyDJx5SV/
+         ZV4/2N6b6qu2WOs+7F0aX44A/TUwb576BEbwSvdUiZt7hTsAJtmAFBjMoSr9iJoTmgoY
+         K5Wlc/LznCIUUBddh1hB4GVJ2Lg7WHXI76agCdownHaoYT8nkOR/0peZWiJ2Am7skPri
+         ZOe9YAQHsYXyOvff0fAoufJzw6+msG1C1bRWram8Jc5kqxSJrBfCTBEkAE15br5onC4D
+         7RS9uCaGyBPVq0NVY7T0H4P8i6jFszKKIPRionQ8zRQP7i2DAdn3hZbScSgWsktVqAg2
+         o7Uw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774570066; x=1775174866; darn=kvack.org;
+        d=google.com; s=20251104; t=1774571182; x=1775175982; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l6bohw50RBT0u5gW1o6sQ8ESS0bizoR3I3eC4aqE/wA=;
-        b=qxoQkM/XqVjf53w0rG0MSQIB8PkTZ63xEAq7Ck0JZJ+z8/GAKWXTWDeRguvuwsCXZN
-         efKJYpVcY7+A2eOqHMzRvlyI9+SMqUl6GcjExH+7QZegn7a2aZkp4BPCtjTzKjlHwybk
-         1w8Ow1CMICiN7yyboHkXPRrTE8xr+tvdkgqSS70CIZ1yiYTygaxOl39oM32nbjnnN8se
-         TPtCzH1D17qI5EaW3fZZ9LAKnf6paT+13g6zj9CRs+thXAVx9lJrH01CDc4yn25QPKCB
-         A/eIw76vB7t3rl/GFj/W7I6CZc4kued8BOi/24+rJYGbYSD1jY7ClEz+lPaM4sWwFOEU
-         6FAQ==
+        bh=X9rjmjgxuv6M5iq71wlttSNR553X4GPDWyfLJKbyYVg=;
+        b=CtclD/p5KjyyUjtQizGNYx+vgWKw4NIYjmIlKjohNl8j9v4BEMAY5o9LHmCfX46lXA
+         X+hTpzEIpP3A6ikyKorqtXOQVjLyXqsCmu0Fe1OWOpuavlOacHaFefRbtau+tLBYOpUy
+         JLe2T3y+bFO2T0/e2SvwpzdzRYdVYeubZgnwxS5T1k219MegCeqqXnD2VMg5LLNC6Che
+         uEnRKOf6trQ59pTYri8PKmvqIAqH/VtKO8C2FpH8Do6BMacrbjT9vZzoiPgCd1V1h2Ek
+         MSm1l32gq5D/ur7+qLIj3nE+2c5T+jbt4g3F2t20Kq//10tEO62R6ZuXZlrIP6EWkzrb
+         J2Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774570066; x=1775174866;
+        d=1e100.net; s=20251104; t=1774571182; x=1775175982;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=l6bohw50RBT0u5gW1o6sQ8ESS0bizoR3I3eC4aqE/wA=;
-        b=YuHC7+S/+5hOs5nB6uuaaXNLKUPJmhWcGXMCdeUgFTjD07HvW2DD9GqTU/xrfdS3Ym
-         fGl6/1yMxdJt54wlOsH9OkTiDxnOutN2f18McKO4U9uhT99vK4icbtoRP+aSmYMkP4Tn
-         bOLOZ3UxTk68++22gu1FnC4le/4Gin8JPOsAVk2i21cHrL282S/4G6uv7BNQjp9EW8vy
-         Tyow8dV72DETDP87RtJ1y51RpSgTcNO8YelzoZaCnRSHWlADiNMl/puNeKjeL07HqPx3
-         6amIi/ODeKypTBQ5rOUpW3q/j5j0ZICLEHhAQ1MZOCJ456JNU+6T1I8yhZbAlANxvbtr
-         G9Ig==
-X-Forwarded-Encrypted: i=1; AJvYcCU3mucuM40QIk7vQGjomJUaq+XaXc7q5BoRXV6YSqKu+6UDauLG86a7Zgtbs6nwo6ugW+bPdsJEAw==@kvack.org
-X-Gm-Message-State: AOJu0YzqqjkX6mLTbxWGg+ww+3JEFcvviWHvQzx428LcI8vhLjRIpNEL
-	3oXYEKhTcIsK5uAqskhvgD4q+NoQ2k3E3G5PQkAAiGx9dD/4mYcfI6SOlS8w02Kh0CgCDtCCAcO
-	qKEfyrG38pzpbzy12HwqZa3k2P+Vr6TIcWo5dB8Hg
-X-Gm-Gg: ATEYQzygg3loTWxFeNp7iuLT26smsujzIgVYOsXRHfpKOPVnuWIeP0tj+rmorXO08Fl
-	DRL1fF4KPeNcClehCAlMIvxHZzDJsUdP4CRUNcFA4WQQXAGAPJdve0Je580nq3H9kNe4zvOtFER
-	ZyxRpQ72htrmNEpFbJQaFV22+ra2wpJH47dtx9qjKLCwwvAsBYpzo4DmWVk26CRVDl6UodziAJR
-	DrVJYMIe2Dl7vTfWhtoNX75PrZJ0uIl7YMrGaaXyjsDGsMtisV65CDwpBdmzNH2RlcE+0VaXW0V
-	K5Rhc4GmIzfB/h/fRhKMwpXqs3TLw1mQYa+48G8UvsF+MWLy4B4RCfLnsXZWU6ug027v0Q==
-X-Received: by 2002:a17:907:7b9f:b0:b97:b0ee:34ed with SMTP id
- a640c23a62f3a-b9b5226a311mr13471466b.22.1774570065298; Thu, 26 Mar 2026
- 17:07:45 -0700 (PDT)
+        bh=X9rjmjgxuv6M5iq71wlttSNR553X4GPDWyfLJKbyYVg=;
+        b=rJNbhH61fhXUQ1oRFxw6wd6k3VWe0I/ICN9ceEe0tVrvT/VnKoMBj3hEMvvj5fo4H+
+         1GBHAjl5F/+rUMCynwwTjGEvB9gg3iFQMI7k7i8J3UwxsxoZts2rnOW4F6Wqp1WXP0rN
+         l8GQEc52iuuqIDb3W5tKb6RNbdyOce4Bf3CTCRAjbTMHxD2mNtcFYF7hA/6Hu44YJzoC
+         wUM0OnHmCvm6YXB3IVmqrKStE1YA2MLCPrX1isC81cGE4p/v7cOLO4FyuWjqFmhM0dM7
+         I/oflJ1XhCGijJH1tlkNJlJ4/LTaxgMjBOdNF+30DxkCur5SvsM+OZXbE/NHCbetq3s8
+         OWmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUYt1ZRIolkw9dvGe/M/DjvnXu+wypcY7rHDyvx/jsLW/zR67F/+AuyE1erPDyIS0baPWccL3vxNA==@kvack.org
+X-Gm-Message-State: AOJu0YxLIATJyiVKfG7Y9hxF9Sz4x32MaVVFD9wBv+cExoX2x1Xv41Vl
+	bGVq+pcvWCHZdhGetxnEKu1fuvGSF3d2GN55LV+NZtMkzX4Bvx4vCzlt7RYmPCjhEdlZXDE7Ago
+	6srqcDee/fjEHvtt1NMiQ3cnWvm8nr+ytPjH7dwdp
+X-Gm-Gg: ATEYQzzzkatgW97RTfAZ/HgkjOPEQCb6/nfIdCizCIT6jTXRSYjtWEebBMoeymzASj6
+	EK0CK1FLctMNaBhI3UoznSOy79ZiWe9AamfT7dk31lhBP+20o3dW9tHY8rlOjY+AmZ+REyGDSRn
+	eqJAAEERCfYiSV35SzAWtgc+kNPY4b6lQvpuf8Hw0pGN1azM2UPXzqe1sRTyZ7UiCIHFG2sy+4b
+	Tv+SZ1SSXxZXu09P0pJ2BdeWLjIXiRM5lqj2u+NNadZchwqSC+yx42RvN4ShgLsA39PpAm8f2cP
+	O88ivfMSQf+CAmkPsRU+QgYHvF8bIMcC04WDlw==
+X-Received: by 2002:a17:902:e5d1:b0:2b0:be7d:a25e with SMTP id
+ d9443c01a7336-2b0cc2f4dc7mr1248615ad.18.1774571181854; Thu, 26 Mar 2026
+ 17:26:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260306171815.3160826-1-rppt@kernel.org> <20260306171815.3160826-10-rppt@kernel.org>
-In-Reply-To: <20260306171815.3160826-10-rppt@kernel.org>
-From: James Houghton <jthoughton@google.com>
-Date: Thu, 26 Mar 2026 17:07:08 -0700
-X-Gm-Features: AQROBzAFCjzaDdbadwVNMyg-TBL1aRLjN2g4Sfb-4vpKogbGWYvxURBEW8LNmxM
-Message-ID: <CADrL8HUE1iBSPPDQZ3e-1gxN0Ts9kHAzb4o5X_XqSmQy2y9dRA@mail.gmail.com>
-Subject: Re: [PATCH v2 09/15] userfaultfd: introduce vm_uffd_ops->alloc_folio()
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Andrea Arcangeli <aarcange@redhat.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>, 
-	Oscar Salvador <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+References: <20260326185629.355476-1-ljs@kernel.org> <0d4e27a2-e9ae-41ca-b327-82296cbb0cfb@kernel.org>
+ <CAJuCfpFY311807PpEP==UKBLqXXDENA3WjXuNnXMpKaOE2JQtA@mail.gmail.com>
+In-Reply-To: <CAJuCfpFY311807PpEP==UKBLqXXDENA3WjXuNnXMpKaOE2JQtA@mail.gmail.com>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Thu, 26 Mar 2026 17:26:10 -0700
+X-Gm-Features: AQROBzBPr9qT6dszlnftEAGpP8GFY6wdLTU21ZD8ZX0bfOFAEdwJwbiKKcaIQaE
+Message-ID: <CAC_TJveJLkp8MJhphXA-xhyXCpC17p36Gf1OtKLT+oA8LwD0zA@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7DD8F80011
-X-Stat-Signature: qfj79f5fcq3k1yu573f3zri7eb3sfigj
 X-Rspam-User: 
-X-HE-Tag: 1774570067-528521
-X-HE-Meta: U2FsdGVkX1/hiqdVEU3sMOhsQ/snygU/KlziEAuel6n2Pvh+sxUMQ0ix3PgbW8GKedbzobUU4RqeJJPJYSfd0I1A4CuY99/d+Q0LGmgmWHV1ie4lrzTSNGf2VdIwLZSdGpFXutxVHE8hEewAEweOk2e088pGSb7ZFZuGyEuMwUsqZ3jBOyJTUcZRJRfmPDfeRKLVkdqABhtbXOibycxkbdvQTjxX/kX06h3PkVZDOO8ycoUIAfi/788730PX1O4GBEZhydTzJfeYF3qNhqsBbHw0mXsNOYSySe5p9IEFJZCiAmOX6rFCpupH0Yp92SikhiOM06U5OBnwCPBuYYENEJGouxSAk/Uq7hQM2q0SBylN/kQk7LXItvJZ9ARprw79w+9X9j4TRNyR6xxcXQL0JdCTuxH+u+FkjyVs8MUqnMOLEkiX5VoS/XhffDdgxrHTmJNM2V8RCAGScND0Y2mc5eRbdv4/NnMP0IcL1TgqTFKPqpya8DZxyzJ8kPpyr79LCoMuQjzgOSNNeyzJgt4leKQPgjyEOxiEWMSz+qwqnnxfpnaLKOf0FR69vMLq2TO8cOrnznX4FmbQZCG1A3IMcWcZKir4VoliHCz3d7+BNyM2kabT0+9Pae7oHKN+5cQ0/NVx5KBj6f8vRHnjgLRF4h9Jeit64Ln/G0ph8gH+KSnsjQ4b9/mZCImPy5PEU0xt//0PCeIf1/X73YkHRFeMilFKEM+V1YrDBjySz1ehBd46d5d5hgTyjqXAaKMc/IL8Jcte16LtN9qrcgfthqZCDNyJj/rIwoBIJzNcXGaeFcr+zzYH8UvRZuvfZz8owK8kRR3tHT+WSteBr3meqYVKcpstfYDYPQeWmw3vrLmkD1DwKc3MQNAMrqumo3kbRlRDewORLh7pOTJk4GHTQTA4B8Z5qCpu56zH69liMhFfQekYFQHV1LvokM4juY9OySFoaKf4qMiZtCuF0kES0g2
- 7CLasJHR
- S1Vn74urSrgM4KfFS5Y3YpKlBI1CY00qc4G4r/mphhTbhw2rylaIp0gCezzdHQ71zRWc4DT99pcbr85zgSBpU6KlkzCWf0RYW8+r+1P/5n2slomLtTt0EPt3cimRaFh8ajVtDMKq4m4F/x0klkCKukZLrJc6Aj7sRCJF6o0ByDkRdQNTVPTZKzLgWuGghRBwGf4N5NS+984rDr7KWNUSjMLOO6sA/yA8foumMHI4e/muvjlw0KxgpEM4JXzS1+Ef7xp8RTsPq4Q62smL9mRARphLv384XCuhSuTzvEqaNmI21e3vWL19V7aYcjEsvsjkVCNX1IvkWS57Jcco=
+X-Stat-Signature: uysjthj6efukhoqk49o648bwhc59i1hk
+X-Rspamd-Queue-Id: B8AF9C0004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774571183-385133
+X-HE-Meta: U2FsdGVkX1+LUWbHxW7rbtE2PO6Gj6wVlJmx6f5RuugrkO+B+0UieL91ataU499WEEJKIaGiiX+Bj7V0kMiBHvD9EqiDxI9aUAczB3AsNLekITNvtiPGrzhZaQLW8aqzVQ1Ng66axEBwPX5gjb1tg7kAkM7NYd1c7a41l+v0h0ovg0sU+3sufE1jBwAH7z38U3p6jKpYS4Lmtwl1w4PaGjA+LE7mduVJ+SJbm37h9eUAYBnJZD7nyQrWkP63vbENd4Gbarh1QvUmPwWpJmactfdKhXuTqg4LH0y4Cr8wlGn/LVhFfBFg11N5LA+TRBMGkyCsGv2codNM5+nMQaLMJ736sEZ+nG2LwMr/3IZIg8dltr6gHDHtK4yzL4ixiCY7Lsd/KdXcncQFqbRD/nYjYUEB3o+fUJlNIjHvHpXUl3hMW1innRv7QbP+fPdAXQgwW8fbbzYkWe3nzO0oHbF04MjsTIU6JDlVIbOxwFmzA3owzhU4p1Fu8QsXqYpNgN+A90hNJIPmV9YHAysWecBRzsy2CJei58rChWMhheCe1EuYrkekrE4s/o7/3hDM5zX0eZFB5u64m4GDs0iIJoaQKzqkbbOYSgY9HMVpsrQMMRgZk3UmTMq7oFzgK3BbSUofvpOdtorF4CGvE7f/ebSzaxLRmewtCPtZ03zudbpw6iPWOpXZuEyO+F9R6s21XeGCO9icLZzJdd2xE1YMpNiSF29A35+evCOiJFFgrpql1nSD85qai95eFuwvEStcBYXPCFcLbQm46g+mdUq57TsM/x1FlhZKgnAnpfE73p9bNYozLZ4wQqvpJZyQOxeZT6w7BzobRx2vmKhAtaCL6SAsIUi2RtJvDxTxl5t4/qMBl0zfGb5ImMlBM3o4w6cLJUOEA6PzG7AWSvb+RhVMqa6elEuGnW/P81Yn2l74IlyNyfhprQ8rduMmPAWclU3caQs1EZFG2lG7NFBpwrCc7e/
+ Nd++tBco
+ 84MYONPjobWnb7uoYwXDMf8xFlQkNtNYYTRdy7LahWd/1+xYAL0wg6/TWsUK9LOMnHtaJV1QdjLxwl+060o+IIpXsbpYSKbl3SvHl/gPlzhh9VrWRFcIUhDPSL5Q+IHzwZ06Ma8tgzl0tWyCuBMIwLK8epiLOBQFoR4kbhbQnAnhuZO7n9zX8NdhJA00+ihhE5OkffCim/elytYG6vBACvHdix2LXR4r5WzjzQqNT+3+lIU9L5tyFdF7Etekmp0QDX/8boihgNbdOLLkn3uI473FZ0v/B3Gh+D6bCLnGdP+UOrYTOU6LUaVFaZfxUxWV2KZAspYWj30YxVREZNLT3khiTxSvjreBVnBDKd29upi32E5c65tTeuw+fyHDEySICq9ssWmWtvRC41+6lngl/ks1afvaKTsSgFdGb46ddngLMZaw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,237 +143,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 6, 2026 at 9:19=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wrot=
-e:
+On Thu, Mar 26, 2026 at 4:47=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
 >
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> On Thu, Mar 26, 2026 at 12:09=E2=80=AFPM Vlastimil Babka (SUSE)
+> <vbabka@kernel.org> wrote:
+> >
+> > +Cc Suren as IIRC he mentioned some intent to look into this as well, i=
+n the
+> > mmap_lock call.
 >
-> and use it to refactor mfill_atomic_pte_zeroed_folio() and
-> mfill_atomic_pte_copy().
->
-> mfill_atomic_pte_zeroed_folio() and mfill_atomic_pte_copy() perform
-> almost identical actions:
-> * allocate a folio
-> * update folio contents (either copy from userspace of fill with zeros)
-> * update page tables with the new folio
->
-> Split a __mfill_atomic_pte() helper that handles both cases and uses
-> newly introduced vm_uffd_ops->alloc_folio() to allocate the folio.
->
-> Pass the ops structure from the callers to __mfill_atomic_pte() to later
-> allow using anon_uffd_ops for MAP_PRIVATE mappings of file-backed VMAs.
->
-> Note, that the new ops method is called alloc_folio() rather than
-> folio_alloc() to avoid clash with alloc_tag macro folio_alloc().
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Not myself but I asked Kalesh (CC'ed here) to get involved in upstream
+> reviews. Kalesh are you ready to be added as a Reviewer?
 
-Feel free to add:
+Hi Suren,
 
-Reviewed-by: James Houghton <jthoughton@google.com>
+Thanks for looping me in. I plan to try my best to dedicate time MGLRU
+reviewss. Let's see how that goes practically, and we can look at
+updating the MAINTAINERS file later on if it makes sense.
 
-> ---
->  include/linux/userfaultfd_k.h |  6 +++
->  mm/userfaultfd.c              | 92 ++++++++++++++++++-----------------
->  2 files changed, 54 insertions(+), 44 deletions(-)
->
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.=
-h
-> index 66dfc3c164e6..4d8b879eed91 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -91,6 +91,12 @@ struct vm_uffd_ops {
->          * The returned folio is locked and with reference held.
->          */
->         struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t p=
-goff);
-> +       /*
-> +        * Called during resolution of UFFDIO_COPY request.
-> +        * Should return allocate a and return folio or NULL if allocatio=
-n fails.
+Thanks,
+Kalesh
 
-"Should allocate and return a folio or NULL if allocation fails."
-
-I see this mistake is fixed in the next patch. :)
-
-> +        */
-> +       struct folio *(*alloc_folio)(struct vm_area_struct *vma,
-> +                                    unsigned long addr);
->  };
 >
->  /* A combined operation mode + behavior flags. */
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 98ade14eaa5b..31f3ab6a73e2 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -42,8 +42,26 @@ static bool anon_can_userfault(struct vm_area_struct *=
-vma, vm_flags_t vm_flags)
->         return true;
->  }
->
-> +static struct folio *anon_alloc_folio(struct vm_area_struct *vma,
-> +                                     unsigned long addr)
-> +{
-> +       struct folio *folio =3D vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, =
-vma,
-> +                                             addr);
-> +
-> +       if (!folio)
-> +               return NULL;
-> +
-> +       if (mem_cgroup_charge(folio, vma->vm_mm, GFP_KERNEL)) {
-> +               folio_put(folio);
-> +               return NULL;
-> +       }
-> +
-> +       return folio;
-> +}
-> +
->  static const struct vm_uffd_ops anon_uffd_ops =3D {
->         .can_userfault  =3D anon_can_userfault,
-> +       .alloc_folio    =3D anon_alloc_folio,
->  };
->
->  static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma=
-)
-> @@ -458,7 +476,8 @@ static int mfill_copy_folio_retry(struct mfill_state =
-*state, struct folio *folio
->         return 0;
->  }
->
-> -static int mfill_atomic_pte_copy(struct mfill_state *state)
-> +static int __mfill_atomic_pte(struct mfill_state *state,
-> +                             const struct vm_uffd_ops *ops)
->  {
->         unsigned long dst_addr =3D state->dst_addr;
->         unsigned long src_addr =3D state->src_addr;
-> @@ -466,16 +485,12 @@ static int mfill_atomic_pte_copy(struct mfill_state=
- *state)
->         struct folio *folio;
->         int ret;
->
-> -       folio =3D vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, state->vma, ds=
-t_addr);
-> +       folio =3D ops->alloc_folio(state->vma, state->dst_addr);
->         if (!folio)
->                 return -ENOMEM;
->
-> -       ret =3D -ENOMEM;
-> -       if (mem_cgroup_charge(folio, state->vma->vm_mm, GFP_KERNEL))
-> -               goto out_release;
-> -
-> -       ret =3D mfill_copy_folio_locked(folio, src_addr);
-> -       if (unlikely(ret)) {
-> +       if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY)) {
-> +               ret =3D mfill_copy_folio_locked(folio, src_addr);
->                 /*
->                  * Fallback to copy_from_user outside mmap_lock.
->                  * If retry is successful, mfill_copy_folio_locked() retu=
-rns
-> @@ -483,9 +498,15 @@ static int mfill_atomic_pte_copy(struct mfill_state =
-*state)
->                  * If there was an error, we must mfill_put_vma() anyway =
-and it
->                  * will take care of unlocking if needed.
->                  */
-> -               ret =3D mfill_copy_folio_retry(state, folio);
-> -               if (ret)
-> -                       goto out_release;
-> +               if (unlikely(ret)) {
-> +                       ret =3D mfill_copy_folio_retry(state, folio);
-> +                       if (ret)
-> +                               goto err_folio_put;
-> +               }
-> +       } else if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE)) {
-> +               clear_user_highpage(&folio->page, state->dst_addr);
-> +       } else {
-> +               VM_WARN_ONCE(1, "unknown UFFDIO operation");
-
-"Unknown UFFDIO operation. flags=3D%x", flags
-
-seems a little better to me.
-
->         }
->
->         /*
-> @@ -498,47 +519,30 @@ static int mfill_atomic_pte_copy(struct mfill_state=
- *state)
->         ret =3D mfill_atomic_install_pte(state->pmd, state->vma, dst_addr=
-,
->                                        &folio->page, true, flags);
->         if (ret)
-> -               goto out_release;
-> -out:
-> -       return ret;
-> -out_release:
-> +               goto err_folio_put;
-> +
-> +       return 0;
-> +
-> +err_folio_put:
-> +       folio_put(folio);
->         /* Don't return -ENOENT so that our caller won't retry */
->         if (ret =3D=3D -ENOENT)
->                 ret =3D -EFAULT;
-> -       folio_put(folio);
-> -       goto out;
-> +       return ret;
->  }
->
-> -static int mfill_atomic_pte_zeroed_folio(pmd_t *dst_pmd,
-> -                                        struct vm_area_struct *dst_vma,
-> -                                        unsigned long dst_addr)
-> +static int mfill_atomic_pte_copy(struct mfill_state *state)
->  {
-> -       struct folio *folio;
-> -       int ret =3D -ENOMEM;
-> -
-> -       folio =3D vma_alloc_zeroed_movable_folio(dst_vma, dst_addr);
-> -       if (!folio)
-> -               return ret;
-> -
-> -       if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
-> -               goto out_put;
-> +       const struct vm_uffd_ops *ops =3D vma_uffd_ops(state->vma);
->
-> -       /*
-> -        * The memory barrier inside __folio_mark_uptodate makes sure tha=
-t
-> -        * zeroing out the folio become visible before mapping the page
-> -        * using set_pte_at(). See do_anonymous_page().
-> -        */
-> -       __folio_mark_uptodate(folio);
-> +       return __mfill_atomic_pte(state, ops);
-> +}
->
-> -       ret =3D mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
-> -                                      &folio->page, true, 0);
-> -       if (ret)
-> -               goto out_put;
-> +static int mfill_atomic_pte_zeroed_folio(struct mfill_state *state)
-> +{
-> +       const struct vm_uffd_ops *ops =3D vma_uffd_ops(state->vma);
->
-> -       return 0;
-> -out_put:
-> -       folio_put(folio);
-> -       return ret;
-> +       return __mfill_atomic_pte(state, ops);
->  }
->
->  static int mfill_atomic_pte_zeropage(struct mfill_state *state)
-> @@ -551,7 +555,7 @@ static int mfill_atomic_pte_zeropage(struct mfill_sta=
-te *state)
->         int ret;
->
->         if (mm_forbids_zeropage(dst_vma->vm_mm))
-> -               return mfill_atomic_pte_zeroed_folio(dst_pmd, dst_vma, ds=
-t_addr);
-> +               return mfill_atomic_pte_zeroed_folio(state);
->
->         _dst_pte =3D pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
->                                          dst_vma->vm_page_prot));
-> --
-> 2.51.0
->
+> >
+> > On 3/26/26 19:56, Lorenzo Stoakes (Oracle) wrote:
+> > > We are moving to a far more proactive model of maintainership within =
+mm and
+> > > thus put a great deal of emphasis on sub-maintainers being active wit=
+hin
+> > > the community both in terms of code contributions and review.
+> > >
+> > > The MGLRU has not had much activity since being added to the kernel a=
+nd the
+> > > current maintainers who kindly stepped up have unfortunately not been=
+ able
+> > > to contribute a great deal to it for over a year, nor engage all that
+> > > heavily in review.
+> > >
+> > > As a result, and within no negative connotations implied whatsoever, =
+it
+> > > seems appropriate to downgrade the current maintainers to reviewers.
+> >
+> > Seems fair to me.
+> >
+> > > At this time nobody is quite exercising the maintainer role in this a=
+rea of
+> > > the kernel, but there is encouraging activity from a number of people=
+ who
+> > > are trusted elsewhere in the kernel, and who have contributed relevan=
+t work
+> > > or review.
+> > >
+> > > Therefore add further reviewers, and at this stage - to reflect the r=
+eality
+> > > on the ground - we will not have any sub-maintainers listed at all.
+> > >
+> > > Each of the files listed are shared with other sections in MAINTAINER=
+S, so
+> > > this doesn't reduce sub-maintainer coverage.
+> > >
+> > > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> >
+> > Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> >
+> > (I assume the newly added people will ack their additions)
+> >
+> > > ---
+> > > (Apologies sent first version of this without MLs attached :)
+> > >
+> > >  MAINTAINERS | 8 ++++++--
+> > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 76431aa5efbe..16874c32e288 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -16757,8 +16757,12 @@ F:   mm/migrate_device.c
+> > >
+> > >  MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+> > >  M:   Andrew Morton <akpm@linux-foundation.org>
+> > > -M:   Axel Rasmussen <axelrasmussen@google.com>
+> > > -M:   Yuanchu Xie <yuanchu@google.com>
+> > > +R:   Kairui Song <kasong@tencent.com>
+> > > +R:   Qi Zheng <qi.zheng@linux.dev>
+> > > +R:   Shakeel Butt <shakeel.butt@linux.dev>
+> > > +R:   Barry Song <baohua@kernel.org>
+> > > +R:   Axel Rasmussen <axelrasmussen@google.com>
+> > > +R:   Yuanchu Xie <yuanchu@google.com>
+> > >  R:   Wei Xu <weixugc@google.com>
+> > >  L:   linux-mm@kvack.org
+> > >  S:   Maintained
+> > > --
+> > > 2.53.0
+> > >
+> >
 
