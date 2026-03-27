@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F144810BA422
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5482E10BA422
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:34:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41B876B00A8; Thu, 26 Mar 2026 23:33:48 -0400 (EDT)
+	id E06A96B00AA; Thu, 26 Mar 2026 23:33:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3805E6B00A9; Thu, 26 Mar 2026 23:33:48 -0400 (EDT)
+	id CF67F6B00AB; Thu, 26 Mar 2026 23:33:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D2536B00AA; Thu, 26 Mar 2026 23:33:48 -0400 (EDT)
+	id BE7506B00AC; Thu, 26 Mar 2026 23:33:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 002506B00A8
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:33:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C82A85D6D1
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:33:47 +0000 (UTC)
-X-FDA: 84590423694.27.57A6A7B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A3EBF6B00AA
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:33:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 760261A0BB8
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:33:49 +0000 (UTC)
+X-FDA: 84590423778.20.4B4F38E
 Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0C3754000A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:33:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=AdEYgOrv;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id B1DB214000F
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:33:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WY5ApQYt;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774582426; a=rsa-sha256;
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WY5ApQYt;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774582427; a=rsa-sha256;
 	cv=none;
-	b=thO8EOiAgUCoKxVwWtQ9KIHfI9ruPRi5IWFg0h5gzyp4z0m9D6y4sILnfqzvPbkTVKmPDH
-	sLDAbe8cqh6whFsS/XBAx6g6F8hL6mKcyOz3aBd2BI9aJT9dpUdqIR4z0MVVuVEPPBGrkj
-	T67v6DgAVAPVO7KZKb27DCDtZQoR2+M=
+	b=kPWAbFhXbpvsjGgOpVRoHYuuidiqiGfa+zqrxQ7v3p+GlvDQgJMPIe80wcw1rJHDcTrXrm
+	xXm90vkeo6++YykBJECIYkF2XcLYoPX8/jIFJoYW22Gkns/rOnrI606D1zdKA3NT6/OKEU
+	76ZfUGvmi/6+vidxva46FFiZhY7h8jI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774582426;
+	s=arc-20220608; t=1774582427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fJqonmTTst2Q8Xhofg58ZntO/52vNNR445BtBTCxCrY=;
-	b=6jWz8X9zpfmnKFtDjTlA6uHJq6IrY8VP3v04QAUD2P0LgEiyFsgFNyOwYmmp7/pV5jUrEh
-	t24GZB3KRkshwf/XuIouvnKA3h1lrLF5EOLQklTPpUf1SltJ05es4fNfadgVo+zPfLCI+4
-	GxY+ziNhyfH7QMPV8z2ONmehOMT+Wuk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=AdEYgOrv;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-89a0ecbc713so19512636d6.1
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:33:45 -0700 (PDT)
+	bh=niK9b97p+Uodq6B81NUl3qD7iaGbf0m6LGlP3YYxUso=;
+	b=09vAs7kzKizY8XMWLkQyUGuxDxv0JoNPou9zwoN+Kju4uDCgyNJcYRwMfd8wncYedan5ni
+	ZMcuAg8B3BP1pbV53T2EbdEGUCeTaT0q24Y7kcCncy/UwhRRx03c80dOjIErNCPdr8ieNN
+	JOo6HIKVRa6l/zVZ+s0ZGKzNxWUv3jY=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-89c43c4c383so20467576d6.1
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:33:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774582425; x=1775187225; darn=kvack.org;
+        d=soleen.com; s=google; t=1774582427; x=1775187227; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fJqonmTTst2Q8Xhofg58ZntO/52vNNR445BtBTCxCrY=;
-        b=AdEYgOrvjJmLGpzOCHbFvuDF8IanBDU9vE/2023aHepx6T+28v/VBtTGZSkPmOkak9
-         F6JaqKcLJQpcdywvI6cUERyH8Rmh7qjrpjZui93JYI+ranYMqXfyrHYyzBHy0ieRKbyz
-         GwqeeOXuPo/YVrbFtGv6Axn51XSxsZwKmYfPLaVOzgbd/RmXti8s5euZm2SrWs0Jl8DC
-         03kMNUIU3bV5AyHtz91EcU+6e7ulSZDbgmDLwOz+fpFzB3skBRMRWBlMNGrqqyaUy2aK
-         MJL0pbGFKjTRUizyIvTL8xVPOA9dsUATjiYAH2FNM3u7E/RRhRoxc5Y61gtzhAUv1VOl
-         0D1A==
+        bh=niK9b97p+Uodq6B81NUl3qD7iaGbf0m6LGlP3YYxUso=;
+        b=WY5ApQYtqbt+VIos7oCxRgZXp+kkwJvXns8nhi/GaAGSK/Dd/LOSboJipO9LVSp0Ce
+         sloKGv5PUeQSEUKkO4P7B2ux0uY3eb9UKami4+Y970uT9HmCetAkm8iSpKCy1AldyO+B
+         imW57fgfOkNKQZ86KquJjwMp+IIcan1oGF5v71wH/hKTtOuKte8lSQtzKSVO0Ea6XODQ
+         RDlY55LkULCPIyfAXrItKIdGh8AUfU8gVJrlOZgOvF31TfVnLNYoIdFcsy3yrqGhNZ0G
+         C+3c2PeMRAPbJuvKkIATe4zJLyNkuI6lfIhfrHJw9ggXFO3psnkwvZmVlPs1onmPbCFh
+         gwuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774582425; x=1775187225;
+        d=1e100.net; s=20251104; t=1774582427; x=1775187227;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=fJqonmTTst2Q8Xhofg58ZntO/52vNNR445BtBTCxCrY=;
-        b=dq09QD1Ei5HCa1iOcLitfPpBlheYn8UoCDUCYqwhjUunZIN9jJwRf5my2R+uBKEkty
-         M+x7eIHaFquKZTc/5ic9a13Yoi/4RQFoLfZXbbisTc4VhKQXcvdH8bRLiVK8FB0EBAjS
-         EVoitoEchGkJyKFIqxG/2e7cLJLc9KhRxRJzlHbbnNt5enCCBmMeP+7YKfs+MWgdmVCk
-         tto5wGU/gFtOuQjtFVt1kGFQAGBDeSRhqT+IzUaTs0cg6ByxLaqEcyNCTJJ3Rcs+wKfz
-         HRaZCEIvBbHepsL/P3FVFfj+Ggc+nKOf89Lc+lipeK8X73fb4e3jLCU1Lf5dcF4CMrPa
-         jVbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6sDFio8jBTFXHI825z6mARkBV4NAnDAYq8uI94ncqLQlOiR/4EV5aeVhJbN0MR8kqvFmvyzLYJA==@kvack.org
-X-Gm-Message-State: AOJu0YyHEMEfG/EY5hYVpwwZHDtX/S1zMEOUAyoNn+Wy2IgpUSWdBJ32
-	Lt2b395RgiKfPd5SKq4BJiL01D6lr8uHymrjnsOcmR9mG9G8jwGS1o7WbW2Cv/5F/co=
-X-Gm-Gg: ATEYQzwfnKOYhudVEFhrrNSgKsN5B076efep/pr5mAKECMq+UVclT8XkHIv3nMM1UdP
-	Mg96+slXtTJCQUrIs2GilcaT5kTbmVg4Xth3FmXF6vziAoFp8+Wg0EbVwgkst+d1ZBWvjipED7N
-	/SFJ5vE52dtIYwXMDQYuhUvM0hMiu0+IaaOSBYfAktzpemq7lNDyw3RHfsVOCvBfs7xER0hChbX
-	Sc8tLF00T28FnDUSOPAtYp5LMnkuWYes7UJhPDraz/buprwjrpJWbHbPLBcrb4JK0GWtzAe+sXQ
-	XRDo5GwVJ4mOgwBHVo6LaJxSYvyaCgvy17c/tMSdtzTAcqvFh+/+M7YW/NinNGfvIepdMm41gdR
-	PeUoQ1B7yHbiadqkqt9+Eg10B0qEYqYzdIrRVy/fDARhOdeQGLVkqSe6VBLj4uNt0MWM7Ha44Cz
-	VYRTzj5AdXYOwrvk4dsWDEdn/JqOI76+LA6OlSibq/NzOrxPZC2CEjW0kLMaETUte+sw==
-X-Received: by 2002:a05:6214:3d9a:b0:89c:7ba7:c081 with SMTP id 6a1803df08f44-89ce925f8c5mr8627426d6.25.1774582425218;
-        Thu, 26 Mar 2026 20:33:45 -0700 (PDT)
+        bh=niK9b97p+Uodq6B81NUl3qD7iaGbf0m6LGlP3YYxUso=;
+        b=Gl5oDA0ccsx3Flx/rHC/EtuQ/DOtG//oWlq07ASFc6StMulNp04ko1qzSIu4npj1kF
+         Z1chNYH/jGlmJjEgxKxCnE+raJdiai4JrdCD8dc3X08YFeX5q1/XafcemHlEdDbQ0Ve0
+         pocZwR7NKMmwHhrp2JSSlJ2sUImB1pn2U4cbXQ87HXp5Bg/3kDa5S/680mJuLwlvnKRk
+         egR28uiMGnUHQCqUN+laFWCsjdKYDhz7tMEnou45cfMjUCCiFQfn4nwQ9O1tc35fRWGG
+         ZzkL/T9aqOF6HM3ZMLRrccXfCUdr48aj4T+zmlWqoPeLUq4m/p3RymONSKfPkIm95zF9
+         DC1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVDCn1T7ot12cNwtsk3JMATKc853owEcxuhh0Kt3AqnIfrPhKfqPosrcIDOgSRCiC/nTG7krE5bDA==@kvack.org
+X-Gm-Message-State: AOJu0YxwOiXwjU067OJP4gTUNpCiENKr7K4L+zZmmJypLkdUvJEsz6rK
+	od6DchBko4Hb3fgIYq6MGNOpvsUSDPEe8/cJi9URV62CuhaNmiaTZN4EWgOTvxCjSSg=
+X-Gm-Gg: ATEYQzwTBm25i44Htzv/52RAgILdBUsAbcnW6O/j8k6VyaEJCix3pisn1QahQXMC2RI
+	6n4jxREW9Fx0UNecKB0FOVGz8PyPL3VTTO7KeMFXBBAiSBp/Gy2NNZWMgjszHXf8TJRMq6QKxnW
+	wt9fD+eXJfIi9YTW8J03vkEgeFIsAC0AAisWBnuRfyv71/fmMWsgK2pAVK3qMzsSTUsPtX5FQAV
+	Iwfxeu9h0zagtIS7rxeEA+onpN5fwx3I/Oa17CPQEgl1mdN+j180oqgQg9fkgl5A/ijqsYnYz0H
+	JVQ7MBnl49xfwN9TL4SZwUvA7hlmGg1Eks2QdOVaeBMVKiQG4hfcI1NGG0r6oSHz+mx8JxrxFX3
+	3mJsesxha2KNG2eWSKqURIBx2cLyINNOviteL7LaON1WhISqchTaccOt9HMxp3zOoqiEpf956oI
+	oIoIpwuIDu07BiUZgZLZDrF3AUREQDeXaiM8seoV0A89xW8HqsiUSyOcsVKoOlnPvrIw==
+X-Received: by 2002:a05:6214:2b0b:b0:89c:d592:3a97 with SMTP id 6a1803df08f44-89ce8ee0c69mr11196086d6.30.1774582426820;
+        Thu, 26 Mar 2026 20:33:46 -0700 (PDT)
 Received: from plex.localdomain ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89cd5a22711sm46519186d6.27.2026.03.26.20.33.44
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89cd5a22711sm46519186d6.27.2026.03.26.20.33.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 20:33:44 -0700 (PDT)
+        Thu, 26 Mar 2026 20:33:46 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: rppt@kernel.org,
 	akpm@linux-foundation.org,
@@ -99,22 +99,22 @@ To: rppt@kernel.org,
 	dmatlack@google.com,
 	pratyush@kernel.org,
 	skhawaja@google.com
-Subject: [PATCH v3 08/10] liveupdate: Remove liveupdate_test_unregister()
-Date: Fri, 27 Mar 2026 03:33:32 +0000
-Message-ID: <20260327033335.696621-9-pasha.tatashin@soleen.com>
+Subject: [PATCH v3 09/10] liveupdate: Make unregister functions return void
+Date: Fri, 27 Mar 2026 03:33:33 +0000
+Message-ID: <20260327033335.696621-10-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260327033335.696621-1-pasha.tatashin@soleen.com>
 References: <20260327033335.696621-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B1DB214000F
+X-Stat-Signature: 9ee3pazfmnycse6dcmi5oq8pxgj4pa35
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0C3754000A
-X-Stat-Signature: kie6o144y7ca8ikti3c1bortqi1irq5u
-X-HE-Tag: 1774582425-650955
-X-HE-Meta: U2FsdGVkX18fI/Xv5QomloBjLZ7qcsOLHByAcdlZJ1VPdoiCjyxtZc63gHn9+nkNTxwmcp1tDEn+z98QVjoIsms++M4eTnCoKrhHylrnWBiSCJsIQzrT1UjznO6ER2E92Fl518OMmXNc81SM+wrfJJsHP9D6hbjD6ObXvWw9AhQpKQMb9gH//qbdrQjBKVFSbjpO4697CVzxj2UqlXzZ+7r3vqiDEBBbqM+kBeM3T+wivQgzwUc9QBgH+KSmF5/DmW4zu9Un518sF6H5SjCAgIjdlNqnRLU0cDCO+MVYDjJI3Oei80X7LvJcUmVSmEZ4yOT8TTGyXBjG/r/50JMAX7QqTXofPzUTCUkMo2AeDEG2Hi7B65FA5sNHVMgiinclPX6zezjJJE6g+erqL+maURAPlKXbE0Oc0SPTbA7yukmaHKc1jAl8y47Ybwn21ytMoWNJUA9yMPFA36OhnIwcYcM+Mcxv7J8/JTzSHOE68TtLdhYSWdx86r+Y4PL2G4TA5sRizpLjJWuBEFT1d0lKrKaLVnkwuhdGOjwTRvZWwUj3VsiGivORKR0Lo7z1QDy6u9YZXlMIsrXKKXG8M+ouRhMJ9bO9q7R0D/DTWuYjGVpQvr92aqCeSK7FsNev60StXOKqrd52RpCf7cVSFU/tD3jAETs2MvSmVgUjOmiBxxYoC8V10BwfDapdYwG9JvH+XSotDO10clQwoYOkWi9FgOj0aDO0pa+HtYIrqnMSGiiQLaMhvO//X/5FLvJ6fK720tFlDrEYghyEb+Umyc2wwPjpLr2l2Ks3KVkyN6DXN9A2B0Zj/GNYWqX5V1K2qXbAz18FjBbS/aI2cIKUiCHU8uKv1f13YI4Ir/cWlgP+tSdjcbVFyC3uWIGDSfFWHEvjYWsQUHMK6z7xsEEgksCm+JaJJpaYIoGGT6AQ9FV35kA76vmXg+rKaSRXeC8tVegxwIcgIPPQI0UchK0xauq
- EfTPKpDK
- DpUMTZQZLNZ+2EYXZfPA2MndbpZS2qy1cSZ+c7QanzzL0QS46a26aK0kRsW3e7rYBd2W3lYc+0CnK5ROQVGL5i2q4BCmVXqbWZcomH87LqLrbO5H8v0IPxX9NlxEuAWWjazZiGZQsYnQiCU+5YIY0RwjTPrfG9jVs1bXTh5j0COP8fX/9NCYgaweJz2ZXTM2XyXnSxi12HSRQByYbPay+5oSrAduvCi9PgI2B++VRNp4J1lkMctkyT8L0c39tVcgPIoOvkGO1WTmYgicIoU0bL7lI8atFfCD+/nGQA8MA3Ov14/akAAj7ZusCy73JrgLGsVXtNCT7Oy2ZZmxeejWq5Iuhc5uBOtjurjH7Dd2p/G1RCcZC0Aca3j6jGHVoj9LDGSln8Jfni8Ij3XRVoUK52QfldUmDAHpir4PM
+X-HE-Tag: 1774582427-264020
+X-HE-Meta: U2FsdGVkX1/DvhQEc3r/5W0FKS5XRHkdx9UdlirARs6ysvyg1JcDrWc0usk8q7Vy0TNTNi1yxb7nDpWgmS+M5GPgAc5dOPfHuhdI1qGejsjXb7XYB6UGfbH+JneMlKAcC+WtlVBCFP+N66gGAQsTeaitUHJrShP+dTEDnBcp39d11m+vn75Aq7jM1Gtel56hmm/hV+rC5zWHnRjKxULXLeQ+Di7vPIGwnT4HBmXpj5P7j3SLIlmBNzY+UG1O9lc9CWbuTEctzol3kUzEA+zn6D56AVBQ7vt6i8YAPiAMGYakXA3K0tw0Se33+gRLpXr86sEj98ggPvl7gBA7KFbzczCgTvMRQikmakcF+U5i1s1t8uPr8hhbMlRwiwQtGcoRvrkjidGeAToHSyWCBtvE46ONXKe8G/H1SEKqYt82RoA0YshWobe2x3xs8twSiTyQolPyDYQ1+6Am1X3MmHwLwSXh1W+DnfL+VpQWJ6eKvY3JNNuU5OH2ATDgSsjukel64kvEeQ6QYpAHzMPDqCfNorwrzHfdNNMsBYaF5ZaI6qhCvYdy8LSCFHj10uNZ9O7UNfohd3q8nC11ahbyuvw0kvwtG2BXGIqlg+UjK0HaBbpkzhEvxI+OXiOGU0jMAWovMOksdrPJvFGtRrn7MueDrycAnwuN7g9sXf2DxGaPYu4laMM9tfxum0CdD3dWKXBDhIKwmGu8ukGNBOiknf6+SKu9NmtKfjxPlVyp1DZ7oGzF7D3ZfM0Htnvwp+ZIgAOuGsRebgwnWo6VwH+TbzNvTAR1bijwxsVQDFnAoH2AVWOS/wFX9X7Zzphws8MfnCu435Iq7MpPBhLDRm7WotZ10MFcfV7iK9VyYUDb6hhLawb0seK9WDQg3mObFxcoIQs02YqUz1kF8rCY9f3aQLVchxCfZKoDIohugmX69TPHz9uR4SrKBcy4iTs6Gj3E4mehsKsR8lz4N2jlVrBrlGo
+ HvTYTaGU
+ kXWxlBoKMq0zaVL1QuO+PwUChJ1t6KnIGlrHM+toxxnwR54KK/7RYE9umjH3W8qU/CNUF13NHSJZiv5RLvnRLrfoNtjdyMlt/F4kpwbbjclJp1g5bF2wWid7OFP8uxdyiuH3wGthEKbBKixrU2Zr87T0YdYBn1xm3j93GjBjZtZdFeP6jBvwPOxeW7MGFdIyzFHgj0Pc6e2QQoDVNW/luFPgP4VDY9zoJvgRqcGH5ALUSi6TS5C+EFcLi3KCiO9v7whk5X1yLYW8Nu+YOVr8HCUiyGixbfs5xlOIOUUu8Vk991/wcd/of+i75rqnxq6N5/gOynEmMLGfH6Uhv7k4kph0d7uTZWxXbQXFn8zjJnowQVwgXnM4WEV1UkX36W6wRKKTH+ipswWAlKha3VsOprBRBxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,75 +122,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that file handler unregistration automatically unregisters all
-associated file handlers (FLBs), the liveupdate_test_unregister()
-function is no longer needed. Remove it along with its usages
-and declarations.
+Change liveupdate_unregister_file_handler and liveupdate_unregister_flb
+to return void instead of an error code. This follows the design
+principle that unregistration during module unload should not fail,
+as the unload cannot be stopped at that point.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/luo_file.c     |  2 --
- kernel/liveupdate/luo_internal.h |  2 --
- lib/tests/liveupdate.c           | 18 ------------------
- 3 files changed, 22 deletions(-)
+ include/linux/liveupdate.h   | 14 ++++++--------
+ kernel/liveupdate/luo_file.c | 14 ++------------
+ kernel/liveupdate/luo_flb.c  | 11 +++--------
+ 3 files changed, 11 insertions(+), 28 deletions(-)
 
+diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+index 73ca84de3eae..2ae27711ac41 100644
+--- a/include/linux/liveupdate.h
++++ b/include/linux/liveupdate.h
+@@ -229,12 +229,12 @@ bool liveupdate_enabled(void);
+ int liveupdate_reboot(void);
+ 
+ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh);
+-int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh);
++void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh);
+ 
+ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
+ 			    struct liveupdate_flb *flb);
+-int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
+-			      struct liveupdate_flb *flb);
++void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
++			       struct liveupdate_flb *flb);
+ 
+ int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp);
+ int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp);
+@@ -256,9 +256,8 @@ static inline int liveupdate_register_file_handler(struct liveupdate_file_handle
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static inline int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
++static inline void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+ {
+-	return -EOPNOTSUPP;
+ }
+ 
+ static inline int liveupdate_register_flb(struct liveupdate_file_handler *fh,
+@@ -267,10 +266,9 @@ static inline int liveupdate_register_flb(struct liveupdate_file_handler *fh,
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static inline int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
+-					    struct liveupdate_flb *flb)
++static inline void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
++					     struct liveupdate_flb *flb)
+ {
+-	return -EOPNOTSUPP;
+ }
+ 
+ static inline int liveupdate_flb_get_incoming(struct liveupdate_flb *flb,
 diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index 80f4e3b796a6..dd55e5e74d69 100644
+index dd55e5e74d69..761e8f7cfc82 100644
 --- a/kernel/liveupdate/luo_file.c
 +++ b/kernel/liveupdate/luo_file.c
-@@ -898,8 +898,6 @@ int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+@@ -884,25 +884,15 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+  *
+  * Unregisters the file handler from the liveupdate core. This function
+  * reverses the operations of liveupdate_register_file_handler().
+- *
+- * It ensures safe removal by checking that:
+- * No FLB registered with this file handler.
+- *
+- * If the unregistration fails, the internal test state is reverted.
+- *
+- * Return: 0 Success. -EOPNOTSUPP when live update is not enabled. -EBUSY A live
+- * update is in progress, FLB is registred with this file handler.
+  */
+-int liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
++void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+ {
  	if (!liveupdate_enabled())
- 		return -EOPNOTSUPP;
+-		return -EOPNOTSUPP;
++		return;
  
--	liveupdate_test_unregister(fh);
--
  	guard(rwsem_write)(&luo_register_rwlock);
  	luo_flb_unregister_all(fh);
  	list_del(&ACCESS_PRIVATE(fh, list));
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index 22f6901f89ed..875844d7a41d 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -110,10 +110,8 @@ void luo_flb_serialize(void);
  
- #ifdef CONFIG_LIVEUPDATE_TEST
- void liveupdate_test_register(struct liveupdate_file_handler *fh);
--void liveupdate_test_unregister(struct liveupdate_file_handler *fh);
- #else
- static inline void liveupdate_test_register(struct liveupdate_file_handler *fh) { }
--static inline void liveupdate_test_unregister(struct liveupdate_file_handler *fh) { }
- #endif
+ 	module_put(fh->ops->owner);
+-
+-	return 0;
+ }
+diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+index f8348138de70..8f3c9c63e320 100644
+--- a/kernel/liveupdate/luo_flb.c
++++ b/kernel/liveupdate/luo_flb.c
+@@ -492,21 +492,16 @@ int liveupdate_register_flb(struct liveupdate_file_handler *fh,
+  * owner module (acquired during registration) is released.
+  *
+  * Context: It is typically called from a subsystem's module exit function.
+- * Return: 0 on success.
+- *         -EOPNOTSUPP if live update is disabled.
+- *         -ENOENT if the FLB was not found in the file handler's list.
+  */
+-int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
+-			      struct liveupdate_flb *flb)
++void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
++			       struct liveupdate_flb *flb)
+ {
+ 	if (!liveupdate_enabled())
+-		return -EOPNOTSUPP;
++		return;
  
- #endif /* _LINUX_LUO_INTERNAL_H */
-diff --git a/lib/tests/liveupdate.c b/lib/tests/liveupdate.c
-index 496d6ef91a30..e4b0ecbee32f 100644
---- a/lib/tests/liveupdate.c
-+++ b/lib/tests/liveupdate.c
-@@ -135,24 +135,6 @@ void liveupdate_test_register(struct liveupdate_file_handler *fh)
- 		TEST_NFLBS, fh->compatible);
+ 	guard(rwsem_write)(&luo_register_rwlock);
+ 
+ 	luo_flb_unregister_one(fh, flb);
+-
+-	return 0;
  }
  
--void liveupdate_test_unregister(struct liveupdate_file_handler *fh)
--{
--	int err, i;
--
--	for (i = 0; i < TEST_NFLBS; i++) {
--		struct liveupdate_flb *flb = &test_flbs[i];
--
--		err = liveupdate_unregister_flb(fh, flb);
--		if (err) {
--			pr_err("Failed to unregister %s %pe\n",
--			       flb->compatible, ERR_PTR(err));
--		}
--	}
--
--	pr_info("Unregistered %d FLBs from file handler: [%s]\n",
--		TEST_NFLBS, fh->compatible);
--}
--
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Pasha Tatashin <pasha.tatashin@soleen.com>");
- MODULE_DESCRIPTION("In-kernel test for LUO mechanism");
+ /**
 -- 
 2.43.0
 
