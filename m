@@ -4,122 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA6810ED66D
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C45510ED664
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:42:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED4106B0092; Fri, 27 Mar 2026 08:42:09 -0400 (EDT)
+	id 5FB886B0095; Fri, 27 Mar 2026 08:42:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E85246B0095; Fri, 27 Mar 2026 08:42:09 -0400 (EDT)
+	id 5D2E16B0096; Fri, 27 Mar 2026 08:42:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9ABA6B0096; Fri, 27 Mar 2026 08:42:09 -0400 (EDT)
+	id 510176B0098; Fri, 27 Mar 2026 08:42:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C626F6B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:42:09 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 653E98D9E4
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:42:09 +0000 (UTC)
-X-FDA: 84591805578.14.F1A8571
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BD09240008
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:42:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WHUjynaS;
-	spf=pass (imf11.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EDF96B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:42:34 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CBB871B965F
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:42:33 +0000 (UTC)
+X-FDA: 84591806586.23.329B021
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0C834160004
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:42:31 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NgS84UX4;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774615327;
+	s=arc-20220608; t=1774615352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vnEhmrhTPA7Nd81/VP3XZfiniWMenGZwrrUyIBlvmYM=;
-	b=sfypFYvhheoQWnFfA8SLMZGeUKGXNWBLGL7S8dL1TLsnHH4a3O1qHUFeqnwZ9ktsAzmAOV
-	flxSuQRg+8Y0ttAg4hD6CgVyTg0dvSuPtCMc2xWuEZafhrCuReVNfgWBOW/oCNwRBIX8Dz
-	TBQYKZmmlzo+mRtX23ihEtF0H5yT/4o=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cYxJqnvRzuzxG7x8NM/L44QVG/0/ZaPq0h/TQQYNn58=;
+	b=Xs00aTjoWlJa9fqIknnmXyeXdH3Kw/p1RniGFTS5XO8qU2QFIXPpREOxfAazNGyvv8Dj7p
+	iwqZ+BPnKu6tSvezEEYte6yQBCmE6IaE4eX4TQ+Qf14duGKFusoqTqjNN9DU/NW3tCLuq8
+	fYB2ypBFLrfgEDXq/pj2Yk4qnKRsu4g=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WHUjynaS;
-	spf=pass (imf11.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774615327; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NgS84UX4;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774615352; a=rsa-sha256;
 	cv=none;
-	b=DQO3NTLOu7H4bz014oas19aPAHIkxNdwH16p8DyX0NOD3JqydmoJmFZ6fl8D/Vz+2gyWjN
-	YcLlVUvDqotiFfWbwDPZSeDi2xtp/2ZoimOPY5T/epIiLFa2gCJP+9eGccnFsO4srkLSTC
-	/aHJ17D4k1WSiKJVUgm8op/FCtUeJQI=
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a0ff30b240so2394989e87.0
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:42:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774615326; x=1775220126; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vnEhmrhTPA7Nd81/VP3XZfiniWMenGZwrrUyIBlvmYM=;
-        b=WHUjynaSp9QsUsjpNmxLGlhPaPw8qZa2W2dWffL4QsK1vPnmiN0RDgPgvBJ3BH7ZNp
-         LRayS/Ddc5aO2w0pf36A/1KDFmyfI7TZ/7L6LOl4l306Qtci634LwxJI5Lh/u69P7XXW
-         Ee9OlMHdqMeFY3nc1gLytKOrg5RUV+/YtH2s3+qywwr4ca9ABn+IWpSXiazNx9gJhr81
-         cSjfHJyhSw/Dahe3lFYRXXO88lc8OUtHvMEmS7cxNzvBSRLs6M0VV4gcv8ZQHvV8uauX
-         wwCx/8gIS1FUWo/Z57tS09zuVpfYYJWs0UMtFPq1+tJ3gIAYJSvaJ321nGNovrUOdsns
-         KmvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774615326; x=1775220126;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vnEhmrhTPA7Nd81/VP3XZfiniWMenGZwrrUyIBlvmYM=;
-        b=mQo8dCYwcS7nq4B+5o5LwFnx+PORzNmdNSDsJfsiNp9u+6lcj36bmKXirOHzIv+4bS
-         z3L+AfsQ5d7PHEVey0Ri6RxqbPw5ZWZikGqjUikCO/AEAW64Ftl10sbF82PmRycpCSBn
-         Ap9533uIloES7aogRCZ71pgVXb5PcWSLZs97NnG89B6QXQwES5DQqzyHsgm7zyrSRYL7
-         KIhpf3C2TjUqjRvg07udJi4bxOZ1WwaOSrkv/bLGEoY6HbU1Xx/X3ijktpdmggBsQcwl
-         GcToXOPYNJX5qj/UtcvrpqadyQKydHpkZ/i0CXVnRXEkvK0pifohrPPTcZKx1cDCt90B
-         PBGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVN+QrtLnZZbjWDnX5hF5nKMYm9mGai3VxYgqgulM5XDXMKqgmRV7r5ZCh+UCj5gy/1ipmvqulxgA==@kvack.org
-X-Gm-Message-State: AOJu0Yw/KpZkUWOIr10gfR1lQeu3OMtIvNCt3hiVt2JxrscVdZU7I+Yk
-	ILn5P04XAXcLDGv/Ikj0TfwNrHda+fPusU1i8iAQxg0+rkKaC7LTSHhP
-X-Gm-Gg: ATEYQzxaKIY4XSlJp4p94TIutE+/FWX3QBm/o4tsWdvGBn0H450p/uwuZfcvY1ozVAO
-	XVmTD9PwXLeUT9cjA7JlifOKjpFcs9SD5waoWSdCqapQlvvBRIiLlPJijf9EcYGy6gAH8fM+SFt
-	BSUEwwVh6wu0UQQ75797POO8/hwIqbiaT01u1uR3qUawdOWLBi/VvA5EOxk1D+w+8oboYyjLSGk
-	aQpNegHCnG06kqE4G+yIUqH8a1OTsLIU9xXOWwqsB6o6dcd/+9DnFmxmwxmwSva9ni/sv0JqNKy
-	zdQP3P30pjgyBUb6jgTo+i633Ca+YvKEyN5Xx5MSMRb1FclL9HOYeEcvoCw6wDqLrfSpcjswUlG
-	s6XEVZGQ+zddYBmzPO4IwkndyGKgiAVEIZRJtVY1+hNhM3fNZeDBuNkAWug+u6I41fHVfBHuKg4
-	wFON/o9jYqvxxKm3juO/Fs46/KjQnHhOGOgw==
-X-Received: by 2002:a05:6512:6c8:b0:5a2:5b88:a8a3 with SMTP id 2adb3069b0e04-5a2ab92854fmr1015552e87.31.1774615325628;
-        Fri, 27 Mar 2026 05:42:05 -0700 (PDT)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a2a063efbasm1336127e87.14.2026.03.27.05.42.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 05:42:04 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: m.szyprowski@samsung.com,
-	robin.murphy@arm.com
-Cc: iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-mm@kvack.org,
-	harry@kernel.org,
-	vbabka@kernel.org,
-	akpm@linux-foundation.org,
-	stern@rowland.harvard.edu,
-	linux@roeck-us.net,
-	andy.shevchenko@gmail.com,
-	hch@lst.de,
-	Jeff.kirsher@gmail.com,
-	catalin.marinas@arm.com,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH v2] dma-debug: suppress cacheline overlap warning when arch has no DMA alignment requirement
-Date: Fri, 27 Mar 2026 17:41:56 +0500
-Message-ID: <20260327124156.24820-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	b=SgYmBphfID6MkoozY+bAl1oyW0BULKWc9KV9IWh6Vv9R+qKZVpFUgaUMDUzCLK/AK3xy8H
+	jJW7+QNjNbn/Tj5YmiOMS6xvXaP9YtqTgGxPCDIbRwDQWuogWbCxYz4oToTpW6VOkVEdzw
+	yX7fUiFYW9K+twwSYq1V7MpmNnSSD9A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1D51043FFF;
+	Fri, 27 Mar 2026 12:42:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580B1C19423;
+	Fri, 27 Mar 2026 12:42:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774615351;
+	bh=ScnDchtxz3nbi7fNStj38W0DlgF4uUAXNKsNM9UtlG0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NgS84UX4fepMHIzVRMxlxt8c4PNx4Lya0rELlZuOIREISup3fXx7EAl/yssL53GMb
+	 yJpn8LwbkGfuY9kIrhEJ5WFKEah4afqMIhdg/2OA9WdokrehMn2KzghmJQfTKF3dUc
+	 2V6+fVywGgUmW2nFrij7A/0/JeHrqFABHPQLWZU6y98OppmfAKkmGajb6/zgIkc1PY
+	 MroVcDBhYiaIMJDq1rOBLAZWfmTKkVg/mpiLKcri/Ob8guDAdcLLeOs0WBCARqqTup
+	 cQJNiAtzEDQoz9oqFkIhcXz07ceXau3Qh6h4xDc8KUC7T4oVZAegzO1fltxzZnDIKA
+	 EEoIHwWVH8GLg==
+Date: Fri, 27 Mar 2026 12:42:28 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
+ from file_thp_enabled()
+Message-ID: <5ac47338-1954-43ce-9984-56d70f7c392f@lucifer.local>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-6-ziy@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327014255.2058916-6-ziy@nvidia.com>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BD09240008
-X-Stat-Signature: i4mnp7zhnx1eu99qqsym3846bopfcxan
+X-Rspamd-Queue-Id: 0C834160004
+X-Stat-Signature: 5xta7h5owffwk9xec9y8a7qksyh3eoy3
 X-Rspam-User: 
-X-HE-Tag: 1774615327-306586
-X-HE-Meta: U2FsdGVkX1+bv5Q0JxmyqQRyYbehwAwgfhzck3MntuM4d2P/bLWuVNViGT8fo4gS9TJ+2fx/68VrtWLbGkvydGye8t86wU/oYEQGUDlBszylOsfhUHEQbX8d1EzCcjVEEJfAadIbkpGVTg+adBg+C62318MO2o3TsltFUfCgExyo4/pa22Nf8JAW4Ba5PMZmBfVYseKhMriB8qkauYKMTZifobSC/EBqs3Yrvp9ys7PtAqlKyEc6ycQXAfF4bi7RC8uKvrdpJCKi+0Ud7D9lp/jG1hkZVsHSvEt6VpgAXhmSj4LkzoBD4jvhfODKJTfph7x53beG+XJRNsKa21f+6PenqEsveaCfzNfLt+75M7JrCNPHp+z3QPFswoL5PD1BGnve1UH7dfjiim9Z88KVLVpM7y/nTauC6f3t3471qTASXeE4Om3SPqA9mYmJG8kKrEZXLLA3tZER9gNOCTxvV/9DCqgeZxTWxA71f9yhu3MOlDhG2UuVLPi9x76jXHR0is+Pw2G5pxydWBZM0dApBcSrmEbYt0PZsZATHql0DrJRIFNs5NHu7fSaRsIf1z/8jo4+oL72s3eHjyhQnhTphZyNXTHZYmWHJQiqgNL5bW8rmxm2santOW3cQCsng1ZG4V9yTVZQDeu8PDCQ7neseoeYozhQyZgR/nOXhExdY9JBfvnfhgGooM9xhsOQ7gsC6qoFna3hPK/GQKk25Xl+17w+P0kr6H00tsrMLSpqliBLH+3NVXNaaVLLk7n7CsVcJg4qV7fCQXldRGFie6asx/lMdYSsC7RxoJ4P4uImGMkDTPSah2EtI9UGhDI2SpiZW1cgmREDGxDgFwxhE4U77gpIq+Cw3rMUJIzRZ377Tkb3IiZYmqAYxZ7qOTEYV0PgFB5kUotVo+m8l6eC8/yKmhP4tvAiBQNCWxqPyrK4momFXKI9uxs2tClikDJkmvnvI6hI7FWWIm8SiJgCJkp
- GM6SMHgt
- akTYOtznEpVCAfv2dx5ESo9lyxLgUH09jR+vc+UCU0RSiXfbXoE98BvabYL7pOuR6Sq9UYsENCTdSQwjIOWzb3389fOUNnmnTwlDDqrOHmUQwXtq6zqVTsh7ZpGusxwChzkTmvPW9VSi9He8tLVZLL3nMlerAJV+2N84kglHdt8nRSZkB0I3R+3pkripUJJFQBtNHbmSZoKi1cYme884qVnTQ/qLT3wrQ3RW9n764h6YGHoulAjxm5yuPCfw+dOQyGJUn4XNobxl29ufnHs6rvlbsIHXeuDnPxYXV8/v+IDGYqz6VgX7y7gx8Og==
+X-HE-Tag: 1774615351-819066
+X-HE-Meta: U2FsdGVkX19tkYS5XAhqBS/BGC+Lu48AlTnP0ZrcJkgfSYJpJdSMEWql8kLLt86OZSZWnSSxfywx5LDsBWjIaOkkdXPHWrG+e8B890v9+vXarTRf47DhJ0asZtbO4UAcK5mje0Fxf+57Vm4XZp1XjUBa9bdrD2mo7v8ITDkaLg93qYnAjw7znUzONSkh+qWcm84s3pMkrvIxdKS/SqERzDwfPGnUZLUMfuEF8RhXx146kkqRNsp9p2k+f6+5qts4wlMtkJUHGK4+bRi86OGsBZkiBfuse4Mc6UeOxl0c9w89shFO3E8vyBqfbu7QZMaDuIf+vF+LpXpYUuYjQErTvqI3Mbvs82NBGiSGu6rHYaSWYNHCPaDLT+tP6yPwzQnTwk90S/t6Bsaf3vZbGD48bWy5s+6A5XJeZQ5OYxBZTQoGjXRpX5+wsXbY9XOMj54W5sj2iOP2+uB3okNZx3s5AY849Xndy+RHmxSiYt8Fs8FEDj2z1JzhOYIjy7lg/dK5Z1sJwTdx3byvZ/B+zS+nP+QAU/L+AtYNtGOwSTQcqdDQ59Big0yNJKkOJn2kDha2+gX/l1MRd5g+E04qZ0ScT5gzOHr97qaoVGUPDQ2DPBdu6LO0nReL+FA8ojkJNt5DGCaI0sMuYazMcVUj29IsLCrUfqMAcX34V9C61FtG2qwa39kv9mW1dFl08DC04W1k0ikoT2WCjUbZI6lKooA3xo6HigT6waD5wtx5wsQvXIkgKn9Ajrsa8pbIUvz2KMUV6Tq5aXYXqrY6u6SeA+whLiu+jTkJ8hWP7unirxAYXzWly2B08J+hSHUmtALx/aW9cmZ4UaaZLHUaqMFw7UMPEBFdpPZourq6fVqVhtEQEsFMxLpVda2WuNdlTBK42B5NlBl0xGGVhuChyk449pkakqWUFUp89j2dCsEdz+WZYBXsYBhMoDRRavtctnotBNgX5ruwgYZeMlOF0YRkTq2
+ vAP3pGkw
+ FZG5wR72TO3FQ4Th9Kqd6RWEprjixf0ZafTEf9RFqrtE7uQUH00mjGtTVC31rE2E9j13JidJIkpncVzto1v4uHY181YlYIShiTBhOIjL57wqvpNXEZQTfetpLH4PhgEoi3LEBMgfhys73mEwdQG6aYSTH/jKBoi4OldDVK6tiOGzRXbBVYj3wCtZkOj4YDwvyMnO9M69M/SyUaNyi38gvv5tY6M/VdDQrp88f79SYrZ1Mwc6BJoyUu23Wxf+KE+tgKuT91G8K+rHF+CmPcgA7qezTMWuxP58Xs6VEeQx0tNAWX7c6+U6S0MDhj6WcmHYnNMSj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,71 +101,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
-tracks active mappings per cacheline and warns if two different DMA
-mappings share the same cacheline ("cacheline tracking EEXIST,
-overlapping mappings aren't supported").
+On Thu, Mar 26, 2026 at 09:42:50PM -0400, Zi Yan wrote:
+> Replace it with a check on the max folio order of the file's address space
+> mapping, making sure PMD_ORDER is supported.
+>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>  mm/huge_memory.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index c7873dbdc470..1da1467328a3 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -89,9 +89,6 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+>  {
+>  	struct inode *inode;
+>
+> -	if (!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS))
+> -		return false;
+> -
+>  	if (!vma->vm_file)
+>  		return false;
+>
+> @@ -100,6 +97,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+>  	if (IS_ANON_FILE(inode))
+>  		return false;
+>
+> +	if (mapping_max_folio_order(inode->i_mapping) < PMD_ORDER)
+> +		return false;
+> +
 
-On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
-allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
-hub driver) frequently land in the same 64-byte cacheline.  When both
-are DMA-mapped, this triggers a false positive warning.
+At this point I think this should be a separate function quite honestly and
+share it with 2/10's use, and then you can put the comment in here re: anon
+shmem etc.
 
-This has been reported repeatedly since v5.14 (when the EEXIST check
-was added) across various USB host controllers and devices including
-xhci_hcd with USB hubs, USB audio devices, and USB ethernet adapters.
+Though that won't apply here of course as shmem_allowable_huge_orders() would
+have been invoked :)
 
-The cacheline overlap is only a real concern on architectures that
-require DMA buffer alignment to cacheline boundaries (i.e. where
-ARCH_DMA_MINALIGN >= L1_CACHE_BYTES).  On architectures like x86_64
-where dma_get_cache_alignment() returns 1, the hardware is
-cache-coherent and overlapping cacheline mappings are harmless.
+But no harm in refactoring it anyway, and the repetitive < PMD_ORDER stuff is
+unfortunate.
 
-Suppress the EEXIST warning when dma_get_cache_alignment() is less
-than L1_CACHE_BYTES, indicating the architecture does not require
-cacheline-aligned DMA buffers.
+Buuut having said that is this right actually?
 
-Verified with a kernel module reproducer that performs two kmalloc(8)
-allocations back-to-back and DMA-maps both:
+Because we have:
 
-  Before: allocations share a cacheline, EEXIST fires within ~50 pairs
-  After:  same cacheline pair found, but no warning emitted
+		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
+			return orders;
 
-Fixes: 2b4bbc6231d7 ("dma-debug: report -EEXIST errors in add_dma_entry")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215740
-Suggested-by: Harry Yoo <harry@kernel.org>
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
----
+Above it, and now you're enabling huge folio file systems to do non-page fault
+THP and that's err... isn't that quite a big change?
 
-v1 -> v2:
-  - Moved fix from include/linux/slab.h (ARCH_KMALLOC_MINALIGN)
-    to kernel/dma/debug.c per Harry Yoo's suggestion.
-  - Instead of forcing cacheline-aligned allocations, suppress
-    the warning when the architecture has no DMA alignment
-    requirement (dma_get_cache_alignment() < L1_CACHE_BYTES).
+So yeah probably no to this patch as is :) we should just drop
+file_thp_enabled()?
 
-v1: https://lore.kernel.org/all/20260327055846.248829-1-mikhail.v.gavrilov@gmail.com/
-
-Reproducer module that triggers the bug reliably:
-  https://bugzilla.kernel.org/attachment.cgi?id=309769
-
- kernel/dma/debug.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 0677918f06a8..1a725edbbbf6 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -615,6 +615,7 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
- 	} else if (rc == -EEXIST &&
- 		   !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
- 		   !(entry->is_cache_clean && overlap_cache_clean) &&
-+		   dma_get_cache_alignment() >= L1_CACHE_BYTES &&
- 		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
- 		     is_swiotlb_active(entry->dev))) {
- 		err_printk(entry->dev, entry,
--- 
-2.53.0
-
+>  	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
+>  }
+>
+> --
+> 2.43.0
+>
 
