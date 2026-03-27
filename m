@@ -4,100 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0839510F2840
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 15:29:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 915E710F2843
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 15:30:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71BED6B0095; Fri, 27 Mar 2026 11:29:27 -0400 (EDT)
+	id 0673C6B0096; Fri, 27 Mar 2026 11:30:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CCA46B0096; Fri, 27 Mar 2026 11:29:27 -0400 (EDT)
+	id 03F526B0098; Fri, 27 Mar 2026 11:30:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 609E86B0098; Fri, 27 Mar 2026 11:29:27 -0400 (EDT)
+	id EE62A6B0099; Fri, 27 Mar 2026 11:30:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 505F66B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:29:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E18235EA77
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:29:24 +0000 (UTC)
-X-FDA: 84592227048.06.4664C2D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DFB85A001A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:29:22 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E06C26B0096
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:30:46 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8C3A38DC14
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:30:46 +0000 (UTC)
+X-FDA: 84592230492.25.BB00FBD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6646DA001A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:30:44 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phmTDdlX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dUTxbmCz;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774625444; a=rsa-sha256;
+	cv=none;
+	b=bJy24o0P4Omy6jd56ANU7GHlXFFY2Dya0dK6X3co/l2L4zQMeBYjrUlwSH6TsfMnG8/rYp
+	YfLRqDUneq2WaD+VKTVFDfBffFMgsnqr8iBW06cNP5MUqd/C+ikyMrallCMrIA5i/0Addt
+	r+btR1DmvOIetG5tvtOeHSgB2Bspa4o=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dUTxbmCz;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774625363;
+	s=arc-20220608; t=1774625444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EhXspjBHxfeZFqrRhiCAb4i9nbkdFUD51DGckXR/OiM=;
-	b=6e9E+KW1ZRigUPnp10Xq1/MJpXk8RVkpTqkTL5itCxYBigudDL06CCmJeh/xe2Yx+yrITU
-	zs3VVQ1WQso9cPxp41p9t5s0B4dWqLJDBjq80KFfqq8QHbA/PmBu0eRKI2HUeQUDFvaOnJ
-	+Rcr0tKz/QV5AkirSTZtosIx4k+pCqc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774625363; a=rsa-sha256;
-	cv=none;
-	b=dqsUtz1v3iqD6hL68ETqXNxf63/A1qhopoW38baexhMZeaFkTLIupYdXGd5S6k4a6ky6Po
-	RS4zvj/Z40Kph9MsgrTzkamRRz+cVHyZnZxsdO/vo0DKMZhHR0zP0W4nchjN1OMePl4UGy
-	NzntVntyM2GNNzDVXRp4EQqlvBlqrd0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phmTDdlX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=P/1X9sSGpYdtWgWWiiK9TbMjy4q3Ekq7uDFjF9dt0Xs=;
+	b=O1kkUMg0wFzLGvxoitSmPxSaPk/hVBdb99EZ/9B4PDPhQYwIulI3YT/WVyMHpuwZjqvXxJ
+	xK+Mib1xuNx8S6W9+tGZQKHGT9D2HZgJicB+nhH+ySAtXJ194jlRZNNgC+sqtubOSGBeAr
+	Y1ISAap/96kUuWG9NrktF36zBKhmoyE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D1CC40B82;
-	Fri, 27 Mar 2026 15:29:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645C9C19423;
-	Fri, 27 Mar 2026 15:29:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774625361;
-	bh=K17mO2X2gcCCie6mfJBhNmej8KECCk67Y0OzVkKTvEo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=phmTDdlXpdADxRipFRSQchkiH/vZUQAIB/E0MmNMCEKJWne/A1mfRLLILkxcuqbio
-	 BqayNnAmTA3drvH1TWDrJWiaC1pzSWItgwlrNrULkmEX1jqgZFcJS4KhGgp3UFeilN
-	 WeJjfJHMFHHRQRy2mHnFNnraa0NYP2XkOCfUCAZj5qs2akqb9oPqRG5hKR/2LYAmk+
-	 MJabkvCwOgaxmzpYOdxlPxRqY3/piSgVTblTdZwn2wKwqz1kDmrrPzPpH+jnhMPY/6
-	 ugpY6sBhZUjYH2ZUAlJZT6t5uL5fOA4YjesryvxV87ewLUfvCyXQW5J67qMj3jlBP4
-	 wW1uc4nLlvF/A==
-Date: Fri, 27 Mar 2026 15:29:13 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
- from file_thp_enabled()
-Message-ID: <14af57ba-09bc-40ff-812a-b41dfb78a03c@lucifer.local>
-References: <20260327014255.2058916-1-ziy@nvidia.com>
- <20260327014255.2058916-6-ziy@nvidia.com>
- <5ac47338-1954-43ce-9984-56d70f7c392f@lucifer.local>
- <075A4C69-B386-4557-BDAA-4038EB36370D@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <075A4C69-B386-4557-BDAA-4038EB36370D@nvidia.com>
-X-Rspamd-Queue-Id: DFB85A001A
-X-Stat-Signature: 4nku5gts3p7c5abw4acr5knoawzqn1ee
+	by tor.source.kernel.org (Postfix) with ESMTP id 78E2760054;
+	Fri, 27 Mar 2026 15:30:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87F0C19423;
+	Fri, 27 Mar 2026 15:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774625443;
+	bh=SMebY9ZTaWWRA7SmqcieTLSkL0fd4WuEFVirgLwpLao=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dUTxbmCzVq3tVCuof0pebARQfRtn9eu+rKkqBqJ2Pk/19CZ9Bpmgd2B53lToz9Lr/
+	 QaPM2vA1Ckq/bfCT2794y442mvocn3tQ5jvhRj68jBvOrOdS2HFF38yTznkS+Tv4Q+
+	 QL+9GgwdMOjrwqt3TMu0ZQbqpZMoqn6S0PKeBzIc=
+Date: Fri, 27 Mar 2026 08:30:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ ljs@kernel.org, baohua@kernel.org, kasong@tencent.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: vmscan: fix dirty folios throttling on cgroup v1
+ for MGLRU
+Message-Id: <20260327083042.da4fd1586ab8aa2f639393b0@linux-foundation.org>
+In-Reply-To: <3445af0f09e8ca945492e052e82594f8c4f2e2f6.1774606060.git.baolin.wang@linux.alibaba.com>
+References: <3445af0f09e8ca945492e052e82594f8c4f2e2f6.1774606060.git.baolin.wang@linux.alibaba.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nycr3isa4xow7w1n933qk5tsrf6yqo77
+X-Rspamd-Queue-Id: 6646DA001A
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774625362-928195
-X-HE-Meta: U2FsdGVkX18po6qnGzvklmLSwdWJKGOX0VpbwnhP60s15wPHGfbHl4kAsdxs1ZVKwgk/l0Y3AhwL4dQMJv5djiKaQH5JsH5Vuc70S/gJ466V+EjW8j3QLJTvlpDaFgJxKMqLw09cwgg5xoCyCU2VCPBZxVtRzAbzrUkwAUlKJ8Fe0vhwua0taflJDDfgYVz3da6Cm3QKKY2eD/JQsHIiBjWaCuzJwFn1jmvVgcoVEDqdpuYIPzmcIlL6brI1qtI3opDtcfZ1gQAoLd1UozXbwkcUy0vwLyBaxn7uDNVuVU3h+pY5srBrAf9WcTw3oAI+lIqEvjeWMnq5IVEdtrFOcZ5IZi2zJfk4OLLnJ623ZKo4X8xkuMr3n5lbd6F99/nUe3uFZcSy4hgy7KRVQSNYBt4HNYkns8AYT8+CjL85kmDVx0PR2xHv0APNDfyiW8ii63xRCILc/xapGEDha4v+RFDdWwXRNgd7Dh22aGlP0crZI7WpdmarNq5hhm9EBTGIfroJOtzCIFPyh4sjwlgSEAv1pVp2zYgkOm5ErZMs69MGxiltB8NE51gbYTaJVTyMoZFv6Rvc7DsNOggZa9XmpGVvmeXkFvF9GWy/kMS7UCwx3/UGRUI73hlI/xNL7pAdNPFwXW7XAiCu8j1CPsfALmSXd16pXw9bwrj8NxA2QEMJbS2qD0caGMRKVEqKgfvpE+Vj3zfAcmHeOBAYGNWNyJ4GC/wmnnev8P2BkKWq5sNnUU7bX6OhWhB/gHpis8uGfqMVYZ3YgFf0TPwDyLKAid+ztthNVpz2vmeNiUZwLCa/p9TXk0qjXcXeDn8ZTBHoUyjClGXqnvHAOSidPjZQEVvpBc9DLO2zSue5lRoAYEVg7SzxxVYpfAVtIaVS6GTs/cpY7CyBUhSKc71ZVzAxWxb//6Ov0Lz7EkwOPgtDBr2WvlczqBpRqqCPu1qPFK2qQ1IERfSG+L5TkR8GgSa
- TJ2uXAeQ
- 1ANiQaVQJ0VlRxqISGaqvOfOkYaYw/tV02PAvh8H7bI8VQoniUkKorQPllDgu4ZBDKbqoZFCshn7B4jQnkw9HTM10saI0Jw8G+s/3EgaJ5H/XX9zsDG8J+YYysGZA25TPciIo6SUcf3qQDYlqrWAvIRB366lZzFUxAWhygHQgSbey4glg2PrSjriVFG0nZih1BBQdXfDkGjg1Ob0qruErKrw4UJhSpEaa4ljg5cMgDNriL7E2VEYoR25QB1gnFrMgndRO09vfeVe9tAqpOho91ZivZ+Lz7j/FmvF3YNlSno1rjvBv3/oXvacntA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774625444-689043
+X-HE-Meta: U2FsdGVkX1/lnqrpncM9FzkgpthFEweWwCcYtIrReT+nVhxVJWigD7rsytxNr2RZ5P7sG8emoSOLEYc7Bj/UajwG1Fml/MtQaEFQJP/Nqz0VWXyjCoDqeUA73ZtBse2yONYAR23i/6k4CiJmtpotR1WLRqCfMIAeiMp+7k6gH7tTMXBFBSM8wBz03hpyR6brv+1Tiy8bxV/Wp0vevWxinlliUTv09J6A400lg3Pxj9pmb5Tu3iY+gaSorGVwWsaIY41CZ6szDSqL7NXk6OM5Q2ZIPw0oRLZ+9rO1EXSIIk3x0oxkrt5SustcB4lR/g2q0UeuEAbcsmKm71F9dxURrhXaMChwDa79lmwnut9ZV6SCxFk5E+0BufHPlE10lX537V9RGx1ze4hJPxmHQb+cBB9MVZ08yHXLn2dIQG5OnogGF8w1hJ78ajSwGGIluhCoKexmi8+hjIu8jGBqcjIKS392Vy/5exp2pUudltswndsTKzLhodProuE4As38SolVe03/Uj/Dw+LfbDmvl2DCVPYZ/FHWTl7ESOubBLNmTnRwiz+fxGn8aDs7U+mqZ/u/4e1PvkIjux04IpJM6D3W0pDadd81mUp5YOR8gIzaNvUjdubn6Jacmbvkq/5lMuOYKyqDc4rhgtQpDVSEf17mhex1Ur/yhh4D0eGyfOzYRmtLJG4oKJDEVnx1HmVqN3ZV5U1rcKUtuGK2V4H7goAGu8w0pmAWaTJ47qeCPRZL4zgSrsS2CZ5vsY/siabs38gU+qVmIgIgQ4d65aAnoTG2+rVBHRvCtrSzsci02KAcsGTeu0amptv0cm5wLsLNLSoR1guu23b6vEnjwTMOD9vqlQ4zUcJqYELv57NpCc7ZLo2UvoRmSU1N8raQuR+8UD68L1rJH9EtWgHAbI/n8g/q1nwvcDE/hz4jv/5WJv1D6+W19wZNjGbSC+LwkDcMKxE3HtYTsMJEJ/Z7N/1N0Ff
+ hWea1Lp6
+ JGXeezwKjLpF7KnDdGr2PC739PvqLGd3e3HA0Cv1XeQ1IkSmZ55o89Ro4y7CrO/P72j7GcoJCIEMsLnSZC54aAkATaEW+vGqi/nv4F9e1xu0y+97ewxBUWCE9tQL7M97A51ggsUZcmYqU0pu/sYhptAo8Zn42KUG75hq9/hOavSRQ8UZWFgr7zQ18pU1Y7iHerMDGFQnEfaVTmzFXkradcdp3GAuBQzH2I4akeNsdrr0qtpEXYbKvBbnbQO1BZp+QoJu8LJ/G5fE6GcXB5qtC3ixzpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,133 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 11:12:46AM -0400, Zi Yan wrote:
-> On 27 Mar 2026, at 8:42, Lorenzo Stoakes (Oracle) wrote:
->
-> > On Thu, Mar 26, 2026 at 09:42:50PM -0400, Zi Yan wrote:
-> >> Replace it with a check on the max folio order of the file's address space
-> >> mapping, making sure PMD_ORDER is supported.
-> >>
-> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> >> ---
-> >>  mm/huge_memory.c | 6 +++---
-> >>  1 file changed, 3 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index c7873dbdc470..1da1467328a3 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-> >> @@ -89,9 +89,6 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
-> >>  {
-> >>  	struct inode *inode;
-> >>
-> >> -	if (!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS))
-> >> -		return false;
-> >> -
-> >>  	if (!vma->vm_file)
-> >>  		return false;
-> >>
-> >> @@ -100,6 +97,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
-> >>  	if (IS_ANON_FILE(inode))
-> >>  		return false;
-> >>
-> >> +	if (mapping_max_folio_order(inode->i_mapping) < PMD_ORDER)
-> >> +		return false;
-> >> +
-> >
-> > At this point I think this should be a separate function quite honestly and
-> > share it with 2/10's use, and then you can put the comment in here re: anon
-> > shmem etc.
-> >
-> > Though that won't apply here of course as shmem_allowable_huge_orders() would
-> > have been invoked :)
-> >
-> > But no harm in refactoring it anyway, and the repetitive < PMD_ORDER stuff is
-> > unfortunate.
-> >
-> > Buuut having said that is this right actually?
-> >
-> > Because we have:
-> >
-> > 		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
-> > 			return orders;
-> >
-> > Above it, and now you're enabling huge folio file systems to do non-page fault
-> > THP and that's err... isn't that quite a big change?
->
-> That is what READ_ONLY_THP_FOR_FS does, creating THPs after page faults, right?
-> This patchset changes the condition from all FSes to FSes with large folio
-> support.
+On Fri, 27 Mar 2026 18:21:08 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 
-No, READ_ONLY_THP_FOR_FS operates differently.
+> The balance_dirty_pages() won't do the dirty folios throttling on cgroupv1.
+> See commit 9badce000e2c ("cgroup, writeback: don't enable cgroup writeback
+> on traditional hierarchies").
+> 
+> Moreover, after commit 6b0dfabb3555 ("fs: Remove aops->writepage"), we no
+> longer attempt to write back filesystem folios through reclaim.
+> 
+> On large memory systems, the flusher may not be able to write back quickly
+> enough. Consequently, MGLRU will encounter many folios that are already
+> under writeback. Since we cannot reclaim these dirty folios, the system
+> may run out of memory and trigger the OOM killer.
+> 
+> Hence, for cgroup v1, let's throttle reclaim after waking up the flusher,
+> which is similar to commit 81a70c21d917 ("mm/cgroup/reclaim: fix dirty
+> pages throttling on cgroup v1"), to avoid unnecessary OOM.
+> 
+> The following test program can easily reproduce the OOM issue. With this patch
+> applied, the test passes successfully.
+> 
+> $mkdir /sys/fs/cgroup/memory/test
+> $echo 256M > /sys/fs/cgroup/memory/test/memory.limit_in_bytes
+> $echo $$ > /sys/fs/cgroup/memory/test/cgroup.procs
+> $dd if=/dev/zero of=/mnt/data.bin bs=1M count=800
+> 
+> Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
 
-It explicitly _only_ is allowed for MADV_COLLAPSE and only if the file is
-mounted read-only.
+3+ years ago, I don't see a need to rush this into 7.0.
 
-So due to:
+But should we cc:stable?
 
-		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
-			return orders;
 
-		if (((!in_pf || smaps)) && file_thp_enabled(vma))
-			return orders;
-
-                      |    PF     | MADV_COLLAPSE | khugepaged |
-		      |-----------|---------------|------------|
-large folio fs        |     ✓     |       x       |      x     |
-READ_ONLY_THP_FOR_FS  |     x     |       ✓       |      ✓     |
-
-After this change:
-
-                      |    PF     | MADV_COLLAPSE | khugepaged |
-		      |-----------|---------------|------------|
-large folio fs        |     ✓     |       ✓       |      ?     |
-
-(I hope we're not enabling khugepaged for large folio fs - which shouldn't
-be necessary anyway as we try to give them folios on page fault and they
-use thp-friendly get_unused_area etc. :)
-
-We shouldn't be doing this.
-
-It should remain:
-
-                      |    PF     | MADV_COLLAPSE | khugepaged |
-		      |-----------|---------------|------------|
-large folio fs        |     ✓     |       x       |      x     |
-
-If we're going to remove it, we should first _just remove it_, not
-simultaneously increase the scope of what all the MADV_COLLAPSE code is
-doing without any confidence in any of it working properly.
-
-And it makes the whole series misleading - you're actually _enabling_ a
-feature not (only) _removing_ one.
-
-So let's focus as David suggested on one thing at a time, incrementally.
-
-And let's please try and sort some of this confusing mess out in the code
-if at all possible...
-
->
-> Will add a helper, mapping_support_pmd_folio(), for
-> mapping_max_folio_order(inode->i_mapping) < PMD_ORDER.
->
-> >
-> > So yeah probably no to this patch as is :) we should just drop
-> > file_thp_enabled()?
->
->
->
-> >
-> >>  	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
-> >>  }
-> >>
-> >> --
-> >> 2.43.0
-> >>
->
->
-> Best Regards,
-> Yan, Zi
-
-Cheers, Lorenzo
 
