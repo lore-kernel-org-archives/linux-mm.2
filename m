@@ -4,122 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CE2D10BA42E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 05:58:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 054C210BA426
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:01:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD5496B0095; Fri, 27 Mar 2026 01:58:58 -0400 (EDT)
+	id 6AF0D6B0098; Fri, 27 Mar 2026 02:01:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DACE96B0096; Fri, 27 Mar 2026 01:58:58 -0400 (EDT)
+	id 685FE6B0099; Fri, 27 Mar 2026 02:01:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC35E6B0098; Fri, 27 Mar 2026 01:58:58 -0400 (EDT)
+	id 5C1956B009B; Fri, 27 Mar 2026 02:01:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9A616B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:58:58 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 59BEF1A0F2F
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:58:58 +0000 (UTC)
-X-FDA: 84590789556.25.ED37A98
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 89A1F20007
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:58:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sBhOodkE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AD0F6B0098
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:01:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E1FEA5DD7F
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:01:36 +0000 (UTC)
+X-FDA: 84590796192.26.61B0828
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3477C1C0015
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:01:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Gv0tKMSx;
+	spf=none (imf18.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774591295; a=rsa-sha256;
+	cv=none;
+	b=kTwGA+cYBggNP75MZJVjYdF4+G10Fwj48DTw+ZaSP4IhBL48HJ8IB/aeClV0+K2beH2ILn
+	R5zicW/glwlDhC7XR41mbvYNf2HLTulQUMlMt4xGi12v6Sb0sdjZV678YxSl2kYfMqKKj+
+	5HaZodl+8h7pILpFuVRn40hvJxkOs8w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774591136;
+	s=arc-20220608; t=1774591295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kPvwNT2+pm09/nglousARL1BK0XMbSM7sYGP9rdShSQ=;
-	b=fSuan5OkzvpZBwxODqxQk9gH0kplpLdDXAvDaAIDIU8IyRurnDUkTM0DbSWkkhFluhGEfn
-	IdZPJisV9KLiE2CLfZsuunxahW7JyPA1LHWsmhKrEFg6lqvBQVu5all3RFt/WfVUvbyggf
-	xNijfFfCEQNULYgH4AKMvngxz+K4PlI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774591136; a=rsa-sha256;
-	cv=none;
-	b=7Lusd5A+Q/m4smXnURy+cY2r624rt4K43AWLK2DZtSmtBlGiSoxEJ/P46lWpWKhuCCe3Qd
-	ElkBMzDzdp2G3+PE0qqcj9skthiHWDuBKyoW10UMGunavl05dPech4DcbKY4VLfyhoDVdI
-	9jSEDTVNtiZRakH27g1kfjJg2+TWjac=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZiR2I8sUxZ8yfDLJLzYQlzBVwCrZzKrXAduqCfpJ0ms=;
+	b=C+5rB1zrhhEVaHFWAWAssCcqXy1p7hGncQszQyp63cDOgM9GD3rkKrhuXSXvHh38SXxz25
+	10LDj9oJeKRfiPCE0bU7eLz4BeyiL3Xo0QCWQ5VFPRl9vIFVcO76bdAM8DkFdcRGzo1Hlv
+	3FNr4mRu56RBRfCWXhgskNZ1zMvEC2o=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sBhOodkE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66b2f6e983bso261993a12.0
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:58:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774591135; x=1775195935; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kPvwNT2+pm09/nglousARL1BK0XMbSM7sYGP9rdShSQ=;
-        b=sBhOodkEnXwu/UvbJIWw1nn8EzSeCyqubddUJqXP/GcAAuy3wNdjj8xtu3eo4T0yQ9
-         QTxxocLa3aJvjDyjfMEIPN66ITc0yhUd3HoXEa+CJ2WiUzT9/sAhZYGGKGmvKTbMYQLr
-         PO/IyXiwbGv3DI8woY7Z5Bp//LYcAViUUta65d7oRACVImwa26KnecUFNXHpqMzkeRiN
-         P6ORUI+0D0YliFVEwID6xs6rQCvGN1/8DGjVfE/CiSzDxbm+sMssK8kSxy4N36e9EqEp
-         c/rvw/l2eoU9liULl4a0mlX118YrRyhpLa2Bw8NheNnmeUsCahgKWVre2Tdx0YzvX7iV
-         lUeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774591135; x=1775195935;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kPvwNT2+pm09/nglousARL1BK0XMbSM7sYGP9rdShSQ=;
-        b=DW1rzy5xiwyzB74HTN1Fht9IRn7nt47jUwacCRUOOBxJpoYPfXGUkEbPlptJfRhc+a
-         +q2K+Hs88Pwdk1/mMJQZrGlwo2oApP/G/n07gu2jZYPcoGAKnCVHxbaAHqpY77k44PjF
-         xy3nmjSXK4WhurVKb4Qp4gOGwqq4yEoiQ7nGgWgOu3lUTwU0ZmN/XvSopcg3mCoAj8Kc
-         paTBxzACv8lIM/HxOA2SJpxsf8zQ03FmnRcAg+2UstUnv8YzXSNAnu3laWkzBbtTjK8v
-         ZHQIM3SXTihKNNi0/MPBniphgk8lB17ZwzgqOYsLbQ1Jvre1qm+fu3oOHtG1ctofRv7N
-         l3rA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3Ndg9hCCyyAqOrXr3M2NOkXufpoLve9zb8XW6kE2n2kYmrohWIgjAVVSAGqo6hIeHlG3tl4uRVA==@kvack.org
-X-Gm-Message-State: AOJu0YyRsD4mQs+ps0l8UVC4uE7dt9fCBfK+94zgdFMoetBG0BZKAipx
-	lcHarOuXhotJPlr39v7KJZm4c8Pqf1vSVKDZChYyQ6nyjyyBTPQjR5s7
-X-Gm-Gg: ATEYQzyQNnQ/eX0BXrdO5mgpVuvwUXtCGBHcuU4GOCR5z8GFYd65WPx5b+XQ788vO1z
-	giYlfQfFCoKALxtH7Ej3Fo2t7otyjoq/PUCcVcLfGo2ciHU5KrJJG/eQQJGS7q0VkbY6St7CmEC
-	K1mF12QiKBTqeR292XgffuAX21lUgwqHicj0/BX3p/STJvmfvYV0o/ozl9wRSFbxLORJ04LMcAG
-	Z3cLMFMAoaMngUjaei9DbNokDy1QXm6eEaLL71XsASio2v+nBlHrWxYlrC9xhqZpdURxIOVhYEl
-	DOdjAKaBsmKJO7fXwvDNgc72HXDafrrgLrwOEOS7cvM8u15DESDWgcrhOQMXuTTD/RPQ1oBOJ7H
-	HAxTup9NKzxq7Rk5JjKkRWrAfc3fW3+erJmmFrqw5T+N7pNIMrLxjHu93RSNo6hM+uLS94604hc
-	/Ev8G4BbbdYSM/dsm9dJAQDXDg8QLV/3h95bKgjhS1KLQ=
-X-Received: by 2002:a17:907:944b:b0:b9b:3a4f:ee86 with SMTP id a640c23a62f3a-b9b507a4c11mr61540566b.26.1774591134473;
-        Thu, 26 Mar 2026 22:58:54 -0700 (PDT)
-Received: from localhost ([178.214.243.78])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9b20265cc0sm208461466b.15.2026.03.26.22.58.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 22:58:53 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: vbabka@kernel.org,
-	harry.yoo@oracle.com,
-	akpm@linux-foundation.org
-Cc: hao.li@linux.dev,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	stern@rowland.harvard.edu,
-	linux@roeck-us.net,
-	andy.shevchenko@gmail.com,
-	hch@lst.de,
-	Jeff.kirsher@gmail.com,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH] mm/slab: align kmalloc to cacheline when DMA API debugging is active
-Date: Fri, 27 Mar 2026 10:58:46 +0500
-Message-ID: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Gv0tKMSx;
+	spf=none (imf18.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ZiR2I8sUxZ8yfDLJLzYQlzBVwCrZzKrXAduqCfpJ0ms=; b=Gv0tKMSxUjyVhdxob889CYtLIC
+	F1PlKPVaDqHDZmXCEPT6cdBFQxa8xJadENkhnrMzOaLQRQwIVcnW3bZIKGFNpWhrUp13cEFpceEsp
+	Dq/l0msSvVZ+JtdJBCK+CHes78MKj6YEf1wLxe6dsFDll3tYJ9lZAaFGcBEYS5UR/Bz+WXgjF6//A
+	wZndvR73vmqGGrGpkh8ojVuO9rUm/e9jPM94wTRC2QIIc18fSk7vBHZ9MFdj9mvCFwvoTWlkzoGkn
+	SWn/9XWy0l87nYejZfww4Oz3Bi/weU+Yzf3Bra1iCsBhQYGgOUozY/vAun5MyjvwWLdgdZ7D5NptO
+	uFAhwOvg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w60G8-00000006jdX-4BfV;
+	Fri, 27 Mar 2026 06:01:29 +0000
+Date: Thu, 26 Mar 2026 23:01:28 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH RFC v4 1/3] block: add BIO_COMPLETE_IN_TASK for
+ task-context completion
+Message-ID: <acYdOOpo51xrzNBg@infradead.org>
+References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
+ <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 89A1F20007
-X-Stat-Signature: 39acp5uxoezy3ab4j115gcgtmw1hns3u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325-blk-dontcache-v4-1-c4b56db43f64@columbia.edu>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774591136-394536
-X-HE-Meta: U2FsdGVkX1+5FRpZFyOc7aYAsRwNC72Wc6WaveJWehZ4szx3mi80lnj3Kg5sxvpWf2+N+yxfZ2rqNz7TTtIt+IoO1BHaUgfq8g4e/JPw80fnjS5ELc8lAnpBN55LAPTX6huDY3E+QMALVaiv8OGDJJUIjx/pyfaBztbpvbmjDzroShsKwD61XmRIUyo5cVH3+IoNeY31S8oSw6J4rZEfXkIwUMaUlwfMDXR1/D6isEkLe5UQsCV1LocMhQ4cNdoIbX1UZ2K7dhEWb/6+2BmyvLyrcno4kAfMo9WI90biF55oi8Q27r4jKJ+ciAXwmE7ObnGw36c65HOifx5gFdhUgpPW4woZyFgiM0yidCZ01okZEvxvFo6YgyaBeHC97kFJMDLJMooW8Fj/6XnEv3/ntzpWOjewZl2TpJCXF34E6yYgwu5DCCcTNG8pgNNaIZJ0QH2DgQjkZeOJfbzJ9uIgeOMnNmH5i1TnXgRH2UPhwP1j5qBWEK0zymyyU4MosvGAVituA+w3/LqUHKYYm1S9nIu8tllXL2PEbW2IGaCw/kWBURp8ESrFckTnRfG/ojkK0yOPyrQgOvPrCQbY+dCZsPR8HdBd3QEev33VSiq0gPZEMQlcEVLulx3cxG2GKdiLAFwTDFNQfER4+BX+pqySObpYl6/2d1QTXFHDuXXnsXSbsMsoJ6yWg+nPihmeDlWFb2W1l1XGJ3vqFzGJwNa7pIyJaZ00fIJ4IU9pglTagflemZN5vEek9EBcPpoIAGj43aI/cZYtx90PHgi6zrJ3JAbhQ8GiZaq5ouFbzMSlxRIRIJcuzGYzccTOeckIW4qixq0WtG0Jpr2v0uWppI/C/Eb8KJJsXfrJ4OxYcR3ALDrhetOkM6NNOXeL1UaXcAXFTJaPVprWNYKQpCXMvZ2wfsh955XPO/5teGi92TA4w+YJueP8f5B+JJC5gjRcvQcgKZ0Csc8jEjYM+yVWOpp
- +HYSoPhL
- yRnXrlqaeLh8cWgZ3nTPU/DEaqWus9BDti5o3IqNhtbgZJ2HjHKO+nARPWrpfLoAExYbK58Gnl8H8Gs0Zyn5DaLtC2/Ag9kTyg2iz18rpZGEozvaS+1Hfki0QlnNtb7gmK47ZAji4mNaVLPbvUvmoD22WBhspTX/RF17c7kp3709RejSJAX7JkjPIcJbvs+ekWs+kxIrB1kUbOkBRpU2rar5+V9vrgFUI8SjMILFOO6argIadxPokgGbZK2+ee8xuaRZQ63252f6nahEsnG9+CqrNG0JJChRu9zKvRh+7PUmcdLyju3w4D4vpwPcu/EGPuNrOAImZBTk4R5nmqdPJK+E4NRkfBMYz0UmAjxaLkIRuEB7by13cbXDsGMzsQOdrd9RHsr53LqhrwoNVSjoqAi0C5bsxz/mpZhcUPT6s5QqsEJsFpgd1tX3Xu3DtHkLStGNkxWoh3w3aQwDmxUZ91K6q6LQitfgrbJCvwEhJbhLwGU2v2p3fR7NINkklzcXlE2Ap1t2NQDDAGhy3qgeHfA5YjW6rKXljGJsf4wQ99dHhCDriKUT+uT7MV0U9vx38LsC94usisvFyfXO0tpb03w85Gd0TumD5TMFRmpt0R3ShEUNVbASaKNnXsHY+xdYwSb3MvtHqHOnaFWuSm9VPuSYIeAE7MIxcrUYtw9r/XNexRY4ra0h0Cicw70ErDeNd9NuvKj2Nk0eNOhL4eL3J5Uhrftpdqdz/S7oQFhN66OEhUAu1TN2M29frEOvZpYNOmFtT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3477C1C0015
+X-Stat-Signature: k9px38n1asi5zfcdm76zdhdqxogkenug
+X-HE-Tag: 1774591294-766060
+X-HE-Meta: U2FsdGVkX19dSjhijL+NU4vc8DgD5YMaVzk2av4z4ltxsu4KDygQUeP1ReGzX5rYGfK7AP9CkO9mH+YPkITP5DegeXY7o35AyHlRwFnXvu0XWoxH8oOhpGl61qBDoThbUslxOzBSeESiRmmXz0YhuZF61hZHsXhA0wqebbMDRaxnGXNT6IylSom8/YAhuzFVMfmOrYkZEdLRoUeytwg22fmdsjI6GPOCpenBu4sjkPjfgQKexxzzIagrKCouabRdPPQUX5yGSmkQymOAcs9E4yE2VZ8gc9VnWjsuByC/ioF2m7jRIVZ3EwK/WYyMHu5NNDOgsmqYFUvlBdzp53QiU9gjzO3di9CHba+1dHN7FRxLRFequC3w3t9rF0oXWhWBpwJ7RXls/25+elmwiT54hXN3c14TNsDHl8SP6xeLWpXjAg6DIv7MRqbKDDP7ieW6QcbCMH69TEAamZx4FdsGYBfTzMqxmwMGs6RJfEWnD1WqaJbXJioYrbrQir8mMWi9MytkR1onM1AWxZA3p1j4C/xUHAjSzIUYP12w33DoovwTjrIYdyXu6kh6fGl5AzR1wM9OMz2A7yTUSEpNWm1v88jMw7T7ol/A4qT9/0M89XW4OxtehBMZbpGltLWdnd3OSZNmMnzzHjtTEUmK/gaA3DERTAxnV2t5rfZ5j0o7xCuyTHiOnRuX/wIokWW7FtnTUsjQkxogLuMzQDT50h1g3/jSstUcH1+VjDMK6cikhBgmdufsbhCeiL08w6wLrNI2/Yng1rJ2Q0mXRA7JHCtzuuMBnzWrqpTiRcVzANzXCoXCMcUJ66+APKCzi8gZl904h9TuULVXrCKX3mkVmCihYKhDXdHVtcbn6jRKU0mR2zCYEokr2aOOTzwia0PfWT0jk0mZH/UwAVvTm+XmTLrjwiDi/FpEcb0bOZL1jqOuTH/b9UucAiWWzIepIX8cowRG9ooXOYBG7mnJ+OvCsrI
+ HH4xjsPi
+ yv7J6r/aC4wvLuCm9+eXZ9BHNP/ry5RT9+ZvlifnD56Us39BmrFsNScKpbBqNzUCrPw4sWOvqnngtBEogMod2drLVDBrZD68L2j26JNdZsT4CTKkCI70tiF8Zc8/CMXtBzAIbxHWVU9Zp9RgPby/tr9Xfl4t6TAkeyTSWGGcxAMU01l5KHT9qzj0G7iuHPaq/DxvBCj0/EYP+L3o6/cvZ7zxTZHQO0zGlWaIwITYz66n5sfy3u3mQFCIciDOErZUgIJqUWWJMcvFJ8swPi53HgmwauN4/U9ibzHZpFvn4rjrqhTf/IbCiqYSRez1qrqSNgWCGSr/G0ZQ5y3JzArGa+31+QlqT2K4boKBQv9Y+CZ+sehN2ShJdw48TpFLpHt0zxR2fRJzVB/OD18mIU/tSynkOxb2zmatABgpvFMvz30jbCStMy1PaSp+aTmumkZ/Ta+0BbYkNswHejkyJZxayeirF/vVSNuOd4CxVEEZGAoBvDfvIsaC5ZUoObY4EOOfnf5rR25DBlZF2IzmBIKqUYQT/7AgX2OaH8frsGoCJk4pWWpJU4y1tdKpbp4h0/fQG+C0H8SFxCx2lvV6c5H9TswjPWv/kcmZVuBF8ouekhO4EEzVZeG346mk92BP8s6BQKR8D8LNbpd8hNMg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,70 +98,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
-tracks active mappings per cacheline and warns if two different DMA
-mappings share the same cacheline ("cacheline tracking EEXIST,
-overlapping mappings aren't supported").
+On Wed, Mar 25, 2026 at 02:43:00PM -0400, Tal Zussman wrote:
+> Some bio completion handlers need to run in task context but bio_endio()
+> can be called from IRQ context (e.g. buffer_head writeback). Add a
+> BIO_COMPLETE_IN_TASK flag that bio submitters can set to request
+> task-context completion of their bi_end_io callback.
+> 
+> When bio_endio() sees this flag and is running in non-task context, it
+> queues the bio to a per-cpu list and schedules a work item to call
+> bi_end_io() from task context. A CPU hotplug dead callback drains any
+> remaining bios from the departing CPU's batch.
+> 
+> This will be used to enable RWF_DONTCACHE for block devices, and could
+> be used for other subsystems like fscrypt that need task-context bio
+> completion.
+> 
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  block/bio.c               | 84 ++++++++++++++++++++++++++++++++++++++++++++++-
+>  include/linux/blk_types.h |  1 +
+>  2 files changed, 84 insertions(+), 1 deletion(-)
+> 
+> diff --git a/block/bio.c b/block/bio.c
+> index 8203bb7455a9..69ee0d93041f 100644
+> --- a/block/bio.c
+> +++ b/block/bio.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/highmem.h>
+>  #include <linux/blk-crypto.h>
+>  #include <linux/xarray.h>
+> +#include <linux/local_lock.h>
+>  
+>  #include <trace/events/block.h>
+>  #include "blk.h"
+> @@ -1714,6 +1715,60 @@ void bio_check_pages_dirty(struct bio *bio)
+>  }
+>  EXPORT_SYMBOL_GPL(bio_check_pages_dirty);
+>  
+> +struct bio_complete_batch {
+> +	local_lock_t lock;
+> +	struct bio_list list;
+> +	struct work_struct work;
+> +};
+> +
+> +static DEFINE_PER_CPU(struct bio_complete_batch, bio_complete_batch) = {
+> +	.lock = INIT_LOCAL_LOCK(lock),
+> +};
+> +
+> +static void bio_complete_work_fn(struct work_struct *w)
+> +{
+> +	struct bio_complete_batch *batch;
+> +	struct bio_list list;
+> +
+> +again:
+> +	local_lock_irq(&bio_complete_batch.lock);
+> +	batch = this_cpu_ptr(&bio_complete_batch);
+> +	list = batch->list;
+> +	bio_list_init(&batch->list);
+> +	local_unlock_irq(&bio_complete_batch.lock);
+> +
+> +	while (!bio_list_empty(&list)) {
+> +		struct bio *bio = bio_list_pop(&list);
+> +		bio->bi_end_io(bio);
+> +	}
 
-On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
-allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
-hub driver) frequently land in the same 64-byte cacheline.  When both
-are DMA-mapped, this triggers a false positive warning.
+bio_list_pop already does a NULL check, so this could be:
 
-This has been reported repeatedly since v5.14 (when the EEXIST check
-was added) across various USB host controllers and devices including
-xhci_hcd with USB hubs, USB audio devices, and USB ethernet adapters.
+	while ((bio = bio_list_pop(&batch->list)))
+		bio->bi_end_io(bio);
 
-Raise ARCH_KMALLOC_MINALIGN to L1_CACHE_BYTES when CONFIG_DMA_API_DEBUG
-is enabled, ensuring each kmalloc allocation occupies its own cacheline
-and eliminating the false positive.
+In fact that same pattern is repeated later, so maybe just add a helper
+for it?  But I think Dave's idea of just using a llist (and adding a
+new llist member to the bio for this) seems sensible.  Just don't forget
+the llist_reverse_order call to avoid reordering.
 
-Verified with a kernel module reproducer that performs two kmalloc(8)
-allocations back-to-back and DMA-maps both:
+> +
+> +	local_lock_irq(&bio_complete_batch.lock);
+> +	batch = this_cpu_ptr(&bio_complete_batch);
+> +	if (!bio_list_empty(&batch->list)) {
+> +		local_unlock_irq(&bio_complete_batch.lock);
+> +
+> +		if (!need_resched())
+> +			goto again;
+> +
+> +		schedule_work_on(smp_processor_id(), &batch->work);
+> +		return;
+> +	}
+> +	local_unlock_irq(&bio_complete_batch.lock);
 
-  Before: allocations share a cacheline, EEXIST fires within ~50 pairs
-  After:  64 pairs allocated, all in separate cachelines, no warning
+I don't really understand this requeue logic.  Can you explain it?
 
-Fixes: 2b4bbc6231d7 ("dma-debug: report -EEXIST errors in add_dma_entry")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215740
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Jeff Kirsher <Jeff.kirsher@gmail.com>
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
----
+> +	schedule_work_on(smp_processor_id(), &batch->work);
 
-Reproducer module that triggers the bug reliably:
-  https://bugzilla.kernel.org/attachment.cgi?id=309769
+We'll probably want a dedicated workqueue here to avoid deadlocks
+vs other system wq uses.
 
- include/linux/slab.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+> +static int bio_complete_batch_cpu_dead(unsigned int cpu)
+> +{
+> +	struct bio_complete_batch *batch = per_cpu_ptr(&bio_complete_batch, cpu);
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 15a60b501b95..f044956e17c1 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -536,6 +536,19 @@ static inline bool kmem_dump_obj(void *object) { return false; }
- #endif
- #endif
- 
-+/*
-+ * Align memory allocations to cache lines if DMA API debugging is active
-+ * to avoid false positive DMA overlapping error messages.
-+ */
-+#ifdef CONFIG_DMA_API_DEBUG
-+#ifndef ARCH_KMALLOC_MINALIGN
-+#define ARCH_KMALLOC_MINALIGN  L1_CACHE_BYTES
-+#elif ARCH_KMALLOC_MINALIGN < L1_CACHE_BYTES
-+#undef ARCH_KMALLOC_MINALIGN
-+#define ARCH_KMALLOC_MINALIGN  L1_CACHE_BYTES
-+#endif
-+#endif
-+
- #ifndef ARCH_KMALLOC_MINALIGN
- #define ARCH_KMALLOC_MINALIGN __alignof__(unsigned long long)
- #elif ARCH_KMALLOC_MINALIGN > 8
--- 
-2.53.0
+Overly long line.
 
 
