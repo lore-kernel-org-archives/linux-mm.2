@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 019C710BA430
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:32:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399EB10BA430
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:38:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 445336B0099; Fri, 27 Mar 2026 02:32:27 -0400 (EDT)
+	id 5ACE26B00B4; Fri, 27 Mar 2026 02:38:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C336B009E; Fri, 27 Mar 2026 02:32:27 -0400 (EDT)
+	id 5847E6B00B5; Fri, 27 Mar 2026 02:38:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 359ED6B00A9; Fri, 27 Mar 2026 02:32:27 -0400 (EDT)
+	id 4C1356B00B6; Fri, 27 Mar 2026 02:38:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 223446B0099
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:32:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C45B21A0C39
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:32:26 +0000 (UTC)
-X-FDA: 84590873892.23.620D3E8
+	by kanga.kvack.org (Postfix) with ESMTP id 3A8916B00B4
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:38:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C7C7B1403F8
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:38:02 +0000 (UTC)
+X-FDA: 84590888004.09.71E9AF6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0195C4000B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:32:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oRXHaPXT;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1EA2AA0007
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:38:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Twq5MyQS;
+	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774593145;
+	s=arc-20220608; t=1774593481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QyEDSVIyQw5y9GaalGpB85YJe3/Er5fMMmqjUd0rZOc=;
-	b=jEDnr5qdCcZriB2cAw3Z5UaWMJVj+q4mUe0RJKoF/DWLRDYoI3cR6vSniqz16UepJsqTm4
-	4dER6gCEzVQgrAw7vRunLNvmKDGK+yfsOWOWbpebk4VcR1Ti3zUaiU+mPcbaOw7S8J7ljZ
-	w76mE8JndPQafIxQZeVhlI8v4CfAF0A=
+	bh=3C0BskMdb6QU7c2Fzq/WYU03nVIksMh1AjYePrppYnA=;
+	b=sNBBlv9LRh5sgC/1RrBbut8HeH/7IW7soTZuCAX3oN05RHXUKLBpXySj+on+dJu0XRMZYO
+	p6xb3TbAB5PTnzTta8i5vghm4BlPPnVvW7qnZlI2V0GIpT5q0uCcNNfIRhYd9sEynK/9aX
+	LQreVKzWNGJqfeQ5EIyBv8ShlJ7SSDs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oRXHaPXT;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774593145; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Twq5MyQS;
+	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774593481; a=rsa-sha256;
 	cv=none;
-	b=t5RhzQ2VKkzwp+XOrBYFVILv3dLXHFXzWfAJvK39Akg2VR0l7cc9t9AXcSFpepGTU3lfEK
-	JhxiH/8DiOQhwXeDhrZE9YXikc+ctKHAHCfpkDxJZJnl+8kRKVJUjdSNnq/fRlTz3rMO0o
-	lOKAFp/GLNvMILykTNPjrqVkCYDLaRg=
+	b=xi2aqjCrfCWVFngqNpPegh5eTBql0QrNTzslycxKGabvY5AiojgBDhe8UCgYDUJAdSx0P6
+	RXUL//jXpHVdWNb3MrC1PWeMxRFT+SZqIV6CKfTLKmS5O1/IEGHBLfs5eWn0qbPVa1PyAl
+	RRmttttMZqa2m78zcZX7m10CO/vVKRk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA14143B09;
-	Fri, 27 Mar 2026 06:32:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CC0C19423;
-	Fri, 27 Mar 2026 06:32:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774593143;
-	bh=21/vliRDRKtbFZz03Jxj2YlSHmox3eBSlnY147e2h5s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oRXHaPXTDhFLdjDKwU8xl/jVRjlXkD6B/nI5CfERmQmdJ7iU34b4+GNfnpB/TRqUf
-	 7W1r+VCvm/7HVOjpblotFi886eXGEt4lhXE2E3y+xKiDMT0CkZhf20XYaX5yxHjvs2
-	 TnehIRFVeIHAFF7AwUFKsntNDkE6ryI5kzxteKi0=
-Date: Thu, 26 Mar 2026 23:32:22 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kexin Sun <kexinsun@smail.nju.edu.cn>
-Cc: kees@kernel.org, tony.luck@intel.com, gpiccoli@igalia.com,
- urezki@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- julia.lawall@inria.fr, xutong.ma@inria.fr, yunbolyu@smu.edu.sg,
- ratnadiraw@smu.edu.sg
-Subject: Re: [PATCH] mm: vmalloc: update outdated comment for renamed
- vread()
-Message-Id: <20260326233222.a74ea3c13fce2acfa1d37e37@linux-foundation.org>
-In-Reply-To: <20260321105820.7134-1-kexinsun@smail.nju.edu.cn>
-References: <20260321105820.7134-1-kexinsun@smail.nju.edu.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 2572D4054D;
+	Fri, 27 Mar 2026 06:38:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE55C19423;
+	Fri, 27 Mar 2026 06:37:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774593480;
+	bh=HrnmeLkD5wmpSf6twO0rfiroXmNXU6y77468epKlJM8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Twq5MyQSg58Egx5BZr0+ls7uvN84oPSehGSSuE46oaLtK6++g3ZwUTDbAWifQ2nhI
+	 T0nNCPjQv9YHvL7DPx5j7x/EZt0sWxlkIZYMMlAp+LOUh0ItzOQw+izPoZZaXQVTf1
+	 eFeu6hWYJStwAzWoRWfoXr7jXAPHaqv8FCIzMKRyGh8x3huVr4rjPvmIg2qXzWREua
+	 oTiRVKin9vO1RSpt8Fn3F/BWKxaYHEsvKGcL+sa9Jvoh7IMbk8Z5IvACVidC9qR9Xc
+	 uh1Jz7g4P0rnvKOBPzenGEDoAjJq6cWrTspuTVxyBkj3J/p1BA8n7pAUdnLCej1qJ0
+	 21z2oGIdTbSlg==
+Date: Fri, 27 Mar 2026 15:37:57 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev,
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
+	linux@roeck-us.net, andy.shevchenko@gmail.com, hch@lst.de,
+	Jeff.kirsher@gmail.com
+Subject: Re: [PATCH] mm/slab: align kmalloc to cacheline when DMA API
+ debugging is active
+Message-ID: <acYlxRBhSMcwBnja@hyeyoo>
+References: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com>
+X-Rspamd-Queue-Id: 1EA2AA0007
+X-Stat-Signature: 6113ob848pd5t8j4bah1piruajs3rud6
 X-Rspam-User: 
-X-Stat-Signature: 1kdummc7468aik4kwebe53dmtngae4fd
-X-Rspamd-Queue-Id: 0195C4000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774593144-347093
-X-HE-Meta: U2FsdGVkX1/1OdG+Q0xLugJxo+1Sv368XVatB7uBDl4B6+ZE5i1/LFDjoGfLz0ZrYhWv2hJnBznui1dGEkoEZSmC/md5Evo+otLXO8DFbyvULQeDFb7GhXFOZwMI4OIVnJzs9Q999n5X7UBELkb9NqItic/vwcSzkDHfmukkPOWGj9bBW9OFVcLWdEmGOKOju/fX3y/r0IeEE21N5oj76x6TEtswSznb8jD/wNfhCLpPjKBYAtU6wOveIBu7AZP2/brnon6V6LtIEzm/dB5IHVDqMV5xBk9phrTIVzRbDYtFWLqgsn5UftoTEokSK3SD6fR/cBfDQmZHyu2HkHvkVUACsbJjkMAHIvOCUoJp2IUmyqewjC5rYAKK3E3u4Ua0eDnWu2MkHwl5Niu9ce9cmZRsxTk/GX5Sg5t2X/ArDQ2c51qegQV4I6MzWl7CkPU8Nil1X8D7rQFifv6xUssk2ghmOn8QEp4ecfj4cB4zIiM5qiq0J4qhJHz8usrq/hjlFHm/tebQ4rFrj0+VBWcq9ZSU+WPJivAZjp92/GzcXMp/NKT10Yb+yolEfiSwaD8Ir8NgOUh4fj8PtgiUN0EwzmpvEEOxYmqdlxrvCmBQPTo94O+ENYEtM1f7xnwgNRm7nvVR4ZOGqduysrGBjM6skDkn9hYHOOwB50cQ6Q4CYbMdNyw2ezMExlt+TdhOgO+o0+4cTDegZyPvXa9SMcQZuQiAzo+XuDi7y7BXd+xJBfdsSHx3ilErTujn2wVevt2kRKFkCHpDG44V6+y+UosGKl+wrE52RtMcoE7oVMwmfKUN3HMMeYHxY4jNJmB8YIKWAKMhOkwJIKES5l2mEko1Tj54W8RR5LUeTwQXdTzST3x2AFMrJOUrjPNw8HjFLQAN71Myx7fquGH66kjVSB0Bn6VWnSEQ0QXhp5GxGcYeycCw/KJRF73BDYEEDVKjJ41WG5OPStVmU4+iRfdeI6g
- Hx7ZdrQt
- FP+Q3P8Fg+E9OWt2gp35Pj/F9QliQcz1Wt587ZRCrztwNP2iijVWlKSelALctVzkrvMVNmmKAujHmZzuWPjMj+EqBQwj1KP7utJrxo6/fxytXE5QD7UzjVB2BU167SYxqBRy1o57ZYqMnNHkS9Bv28Gnl3R6ncBoN5+90/G0WvRJNQvojKGRzVRLjUB73ydmr7gAwJXuqgWtKRY1n7L9aQ7OVuy2dxeXczOJ3Jwg5ZTCVkjxKJhNozRKVMA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774593480-833984
+X-HE-Meta: U2FsdGVkX1+2mn/uxy7HCJCFc2Z68EzkQW25UNOMWSWNRz3TQ7O7IpnwTvSJ9dSYUZzvT+Glhqm1c4lZ2oiZk6D0oILBfO8BP0O+9sslCAur3G65m7OGPrUm0O8DbZ/P15Wsfkgk+bGzDqYTNMtPAzVFW8YMYAxUlfRo0K+zrcYO3VC/kjCFr2lP7H8eA1UQavXpIt7qhApqQOjigUUwXq3hG4+s5Yq5NUMq0lRPoEHkJoQW3+18g23z3y+afa6zp6zYrLYRsuN94fFun9BEFhwHVcbPDZjl+v18HX+2eku5i8/bxxyfZURZBDJrdLcrmt0Hn05RAiOy/oA0SAkjNMlCTbKc9XFuOrG3FruPanG1a/YLx4Ia+r/Olzo5D6zsFQBm6muqqebNq38//ZzsxSprj0eb+yc7G5avhtsSlAGsNTKaiVyFxUpgw4w0Cd39p5ub/MRPzUiXrUOeS44yrcTYNATwix5zsVDZk/sxipugDtVp3lvie0ggoXEbHCs3WZTAPrdRIpVA1sECbPLAvHwX8TEtv/qxc6yCbU7YeDZOFR+mCFI/Qe0C2xZwHWKVoLzlXesISD28maUBJKL+qOcambI4L5Hls7jHsf1YfqQMUXK3kUXQHHZSqUfGZlts1nDoheesDWyY55gsQgtfQ2BY4rREfhb248V01TAMxrM3LicM4V0rNcObMto0D0LUAjYl9KsUDtH7td8uV/GPhuRnrNgfLnatftIs7kjfu9pU0MY3PvQpWXiQduuUwPV/iUC+UmyYpy9Vh2Agk0hToSbgUSkcnnxZTN5udY3ySTfNw8Y8AyGRqp1qi1ZdCMtVcdt4JmMunuHEpPR2yvCqi5zTvPDX48lDczTf+JesRQuXyUrYoHYboVbIB5/Zwz40mR81dDmvIKXs5IJMHSxQV/vZb/8hDITifdlbe+UpaPBUkOMinXDhaaovv8kvPWLjd4cSCIJ4KYx71Pg+69T
+ Ak5WMFkl
+ SzNZbEKUzm0KpavoHeKS9ONBu9KnYBahotTbj1IXnw/THUbCOt4oLXTglIluh9n4inBeYBMSsUk+79CxFCwJbO4+gg6p90Zqxj4E6b+Pe9T3jiz6c57sSS73KbCkE13M6vHvg4hNpOvimMVcGKtcjOTnmtRBA0Ka/unvUArIkIV/pqOLaSzxzluo0GU/QmiZBJ1b53TXFOrj2GCcGNxgiNXXShvOHrB6SGAEQvNpHY606RPfA5MqDeOtqpDB4YQtFwfAs0BgYGmVDC85rgLaEjKt0vNiZTlDh+YqaDreWdmBz6g2a2Lsr+bCQj9eJjPokC1DZsFkR9/un2KUDFwm9x2PmmCLQCURNE7enwjVXpG/tj8Qps+7MAoL0hgYMlKLd30OYTMhb0aWa+2Euv6b5WUuMDzZceTilRWK+djMkzwbtuEU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,72 +95,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 21 Mar 2026 18:58:20 +0800 Kexin Sun <kexinsun@smail.nju.edu.cn> wrote:
+On Fri, Mar 27, 2026 at 10:58:46AM +0500, Mikhail Gavrilov wrote:
+> When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
+> tracks active mappings per cacheline and warns if two different DMA
+> mappings share the same cacheline ("cacheline tracking EEXIST,
+> overlapping mappings aren't supported").
+>
+> On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
+> allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
+> hub driver) frequently land in the same 64-byte cacheline.  When both
+> are DMA-mapped, this triggers a false positive warning.
 
-> The function vread() was renamed to vread_iter() in commit
-> 4c91c07c93bb ("mm: vmalloc: convert vread() to vread_iter()"),
-> converting from a buffer-based to an iterator-based interface.
+Is it feasible to suppress the warning if dma_get_cache_alignment() is
+smaller than L1_CACHE_BYTES?
+ 
+> This has been reported repeatedly since v5.14 (when the EEXIST check
+> was added) across various USB host controllers and devices including
+> xhci_hcd with USB hubs, USB audio devices, and USB ethernet adapters.
 > 
-> Update the kdoc of vread_iter() to reflect the new interface:
-> replace references to @buf with @iter, drop the stale "kernel's
-> buffer" requirement, and update the self-reference from vread()
-> to vread_iter().
+> Raise ARCH_KMALLOC_MINALIGN to L1_CACHE_BYTES when CONFIG_DMA_API_DEBUG
+> is enabled, ensuring each kmalloc allocation occupies its own cacheline
+> and eliminating the false positive.
 > 
-> Also update the stale vread() reference in pstore's ram_core.c.
+> Verified with a kernel module reproducer that performs two kmalloc(8)
+> allocations back-to-back and DMA-maps both:
 > 
-
-LGTM, thanks.
-
+>   Before: allocations share a cacheline, EEXIST fires within ~50 pairs
+>   After:  64 pairs allocated, all in separate cachelines, no warning
 > 
-> diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
-> index ed97494abf60..738283a85ea2 100644
-> --- a/fs/pstore/ram_core.c
-> +++ b/fs/pstore/ram_core.c
-> @@ -450,7 +450,7 @@ static void *persistent_ram_vmap(phys_addr_t start, size_t size,
->  		pages[i] = pfn_to_page(addr >> PAGE_SHIFT);
->  	}
->  	/*
-> -	 * VM_IOREMAP used here to bypass this region during vread()
-> +	 * VM_IOREMAP used here to bypass this region during vread_iter()
->  	 * and kmap_atomic() (i.e. kcore) to avoid __va() failures.
->  	 */
->  	vaddr = vmap(pages, page_count, VM_MAP | VM_IOREMAP, prot);
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 61caa55a4402..9ee256884f78 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4575,20 +4575,20 @@ static size_t vmap_ram_vread_iter(struct iov_iter *iter, const char *addr,
->   * @count:        number of bytes to be read.
->   *
->   * This function checks that addr is a valid vmalloc'ed area, and
-> - * copy data from that area to a given buffer. If the given memory range
-> + * copy data from that area to a given iterator. If the given memory range
+> Fixes: 2b4bbc6231d7 ("dma-debug: report -EEXIST errors in add_dma_entry")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215740
+> Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+> Suggested-by: Guenter Roeck <linux@roeck-us.net>
+> Tested-by: Jeff Kirsher <Jeff.kirsher@gmail.com>
+> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 
-I'll sneak-edit this to read "copies data".
-
->   * of [addr...addr+count) includes some valid address, data is copied to
-> - * proper area of @buf. If there are memory holes, they'll be zero-filled.
-> + * proper area of @iter. If there are memory holes, they'll be zero-filled.
->   * IOREMAP area is treated as memory hole and no copy is done.
->   *
->   * If [addr...addr+count) doesn't includes any intersects with alive
-> - * vm_struct area, returns 0. @buf should be kernel's buffer.
-> + * vm_struct area, returns 0.
->   *
-> - * Note: In usual ops, vread() is never necessary because the caller
-> + * Note: In usual ops, vread_iter() is never necessary because the caller
->   * should know vmalloc() area is valid and can use memcpy().
->   * This is for routines which have to access vmalloc area without
->   * any information, as /proc/kcore.
->   *
-> - * Return: number of bytes for which addr and buf should be increased
-> + * Return: number of bytes for which addr and iter should be advanced
->   * (same number as @count) or %0 if [addr...addr+count) doesn't
->   * include any intersection with valid vmalloc area
->   */
-
-Things like `addr' and `count' should be `@addr' and `@count', but
-that's a differnt patch.  And we probably make this mistake in a
-zillion other places.
-
+-- 
+Cheers,
+Harry / Hyeonggon
 
