@@ -4,170 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3170E10BA456
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:02:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C55810BA455
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:06:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7386B00A3; Fri, 27 Mar 2026 05:02:42 -0400 (EDT)
+	id 9723D6B00A5; Fri, 27 Mar 2026 05:06:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CEFE6B00A4; Fri, 27 Mar 2026 05:02:42 -0400 (EDT)
+	id 922AD6B00A6; Fri, 27 Mar 2026 05:06:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E5156B00A5; Fri, 27 Mar 2026 05:02:42 -0400 (EDT)
+	id 838696B00A7; Fri, 27 Mar 2026 05:06:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E2466B00A3
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:02:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CB12E16FC
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:02:42 +0000 (UTC)
-X-FDA: 84591252564.21.77896C5
-Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 173754000A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:02:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=GVzqQY5n;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="i Exk1Qn";
-	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.136 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EB1D6B00A5
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:06:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 108B413BFF6
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:06:54 +0000 (UTC)
+X-FDA: 84591263148.14.F774C5D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 966F2C000C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:06:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UaQ7wuq2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774602160;
+	s=arc-20220608; t=1774602412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XlE8K29BcOci/GJeK99hdrRjgIObqUNFNRdsO2zBvLY=;
-	b=wpOlWSS4D6xHgz2CQaPOlLkd8vHHNARfDwhg+EGCEusBZ0uyXSrq2xo0OS7GOoPhcS4EAS
-	7yqFwwBHsWVzTfXz/jDeheqNd/2VytT6cHH4YMNxM4Zjy7OSj7xe1AYr2LVwOpXl+CjWgE
-	TfDMmpSbWYdIOv5WAkVG0IQ8HRQDjUM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774602160; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kh+jfeZakTdDR7kLQWAKSzB2/oy+VfaI2uyYIv+5Eak=;
+	b=Uim2SK6dYGtn1r5rycpKd7XHD406MAHUbATxuvrTctoYhoQ4DTG+c3Chiiys5/vvUFcfi9
+	my764iDRsk56SQD9HX5msbOT2FG2WX4yezXXsmRcvOl3cM49z4P6KyADl0xlU7GcB4pUlP
+	vY1hnHI/daZLh3EQtVMAHqgtZxi/7Bs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774602412; a=rsa-sha256;
 	cv=none;
-	b=FHDCgzJZwNEAb9oF/+7rc9BQ08eRF42IEpL5kPiUlks5N3TzHZPECAgRTzLjBgLDpidQ0e
-	43q8PTHFV4JuOKUJvHDF0acVt3ln/vAfPKKvDSUzUWRmG9wvrwGSIBIreivLYlXxPBTQrX
-	xwaAyy4IynliH6gCz+6+zmoB0cdBzNs=
+	b=xjt4HOsIJrQYGThcilvo+6ST6hXNsXu/pZYFSpxxsPcVnm3TK7ZcHqEd7f9oa8gD1kREhR
+	/fHGuLvRiDSbtWtxDou0JS7ug7+NbNUZLRoroD9lAMMbn6L/LOOed6E5ie02eY3jvGrMw7
+	V86qrXbzuNHOczqvi/dPa4R2aw8vANI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=GVzqQY5n;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="i Exk1Qn";
-	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.136 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 4A6471380181;
-	Fri, 27 Mar 2026 05:02:39 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Fri, 27 Mar 2026 05:02:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1774602159;
-	 x=1774609359; bh=XlE8K29BcOci/GJeK99hdrRjgIObqUNFNRdsO2zBvLY=; b=
-	GVzqQY5nceojm37M1XZpOPq3WUecXUQj9WVf3CfutP3dTobqmGMQjzRLgNhoVby6
-	46aeZZINaK1f7YVuydM5TqNUI4j8vyRQzPpJA34i7ACZR1RSV4TO+hIb/Y1wlQAV
-	e4naVPRom36f6nfcFXr2OjE1mhktO/8tDetlgDKx/ERP6X26MCzVLKwpghPIlA9u
-	FgAZLJCBgZpz0FbarT4w54TicAqCn2qTr0Z2ZfdL6DznrwvGSdcVVRrirxDEue/H
-	5fVwFvlMX5ysAAT1/mtv1Dd/8FtVIaDqWDOOvUgWKJ3vwJ4vCQKKNs+/aj1E6yt+
-	+mz/Xbi/v8lcnLVbeJxZpA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774602159; x=
-	1774609359; bh=XlE8K29BcOci/GJeK99hdrRjgIObqUNFNRdsO2zBvLY=; b=i
-	Exk1Qnjsvq2JnZ1+yT0ebsDIbgY2gqeRl0z1YUchEz9YmFAT5XKQHCu5+ZzfUzMA
-	KUBEKUA267I42sL6kTGiC0o6muCrmy6qX1nLFaMFkw6x8TBMIldQ20mR85lgu/Dz
-	dB2EG1eKMb571eSkAhGeN6NfTkTpx4Lu0/tgLzlYoDT4OZDwCv6fEL37252eYC4+
-	1qR+fAEfE/kjUNCAyy4Q+SMie5NYypjDP+zkoB40j+zYPYlVZgSiYG+KFdyvrW7G
-	OWPfc7ZhuIizFLxUKMgVQKKjnJY5rCQ68EF4nMVgcJw97GM4yWWv2nTfrHXCbuKd
-	K8t0sfV8n6x5lC5qiobPQ==
-X-ME-Sender: <xms:rUfGaePC1BrMnmTf9_OY6lvLvc1mUKp6M_A0RyuXLyRS-NOn6VKFDg>
-    <xme:rUfGaXzAgfItBbTl9XynqmOmljqUaNK22QfAcW8j65Y-hka2CDyCF6HlPX-DBmYss
-    eoR8l0vie_-ZAfZlP2omID4VIFPPLAESbv9Vf23rJ3uQmLsZXfiKPw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdelkeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhepuefhhedvjedtudeiiefgvdeuuefhueehfefffeeutdeiudegleevleeivdefgfei
-    necuffhomhgrihhnpehgihhthhhusgdrtghomhdpghhnuhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdr
-    uggvpdhnsggprhgtphhtthhopeeguddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epjhgrmhhivgdrtghunhhlihhffhgvsegrrhhmrdgtohhmpdhrtghpthhtoheptggrthgr
-    lhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehmrghrkhdrrhhuth
-    hlrghnugesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidr
-    ohhrghdruhhkpdhrtghpthhtoheprghnthhonhdrihhvrghnohhvsegtrghmsghrihgugh
-    gvghhrvgihshdrtghomhdprhgtphhtthhopegurghvihgusegurghvihgughhofidrnhgv
-    thdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsoh
-    hquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopegthhhrihhsihdrshgt
-    hhhrvghflhesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:rUfGaRCaBcqc7KdntZl0FsBnvOqvRVfnzmfBbmotVoydnvBrFXOcMg>
-    <xmx:rUfGaZyWyK0ItY1fAukXgGQMxYnCWlJ_ttZ9LwB67jfvcP3jcgDiJg>
-    <xmx:rUfGaeUWikKeRd3kQ5HcVz8AqFZRkLvV9rX5NscA0USMCL-N4mVGIQ>
-    <xmx:rUfGaQXDnwGyrD4fd56NTxM2Fq_dVcdlQpFE1HUUfNw_jSb36M81IQ>
-    <xmx:r0fGaasdsr7hoeyfiet3dxQz1PzdqR0Oy-FDo6Fl_eW5_GQ_HIxB6CTf>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 95B2C700069; Fri, 27 Mar 2026 05:02:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UaQ7wuq2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 03A966132B;
+	Fri, 27 Mar 2026 09:06:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25144C19423;
+	Fri, 27 Mar 2026 09:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774602411;
+	bh=zCUe+10pc9NzniBg+3H/fjkn66/IAuhTCiP2Sjn9XC8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UaQ7wuq2LAVDVorSRlR0v5oN+8l1EEzicAlpp5W4EDxXAK5kRe8atolhh4sMDtikF
+	 3mTTtK3OCvoA4Rm1nxfitvZTBUQt2rjQjG6P337FZlyKL5jLrNemJ9S7nuVORSJKvj
+	 BH3ROLdHgu12qlZvVYwXiGOeQnKO+F09fYDRGKr0vdTuhcSZpKm16qbuMvfyuPpdhh
+	 TQs1+wMN1T1InPplQ3whdLM/FxnK8uF5Vxkx8G66Pb/oHem1/jMVYGY0YxvNijyhhy
+	 3uzDNAnjDM3hZ1b/hZVkB5dPgh4rKuLJ77L0AspVA4So2lkk3aW2xUJvFQH6oNB371
+	 oS64tR6eMLAQg==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Jeff Xu <jeffxu@chromium.org>,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	antonius <bluedragonsec2023@gmail.com>
+Subject: [PATCH mm-hotfixes] mm/mseal: update VMA end correctly on merge
+Date: Fri, 27 Mar 2026 09:06:40 +0000
+Message-ID: <20260327090640.146308-1-ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-X-ThreadId: AUJnWW6OA6Vc
-Date: Fri, 27 Mar 2026 10:02:17 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Geert Uytterhoeven" <geert@linux-m68k.org>
-Cc: "Russell King" <linux@armlinux.org.uk>,
- "Christian Schrefl" <chrisi.schrefl@gmail.com>,
- "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "Ard Biesheuvel" <ardb@kernel.org>,
- "Jamie Cunliffe" <Jamie.Cunliffe@arm.com>,
- "Will Deacon" <will@kernel.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Miguel Ojeda" <ojeda@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, acourbot@nvidia.com,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "David Gow" <david@davidgow.net>,
- "Gary Guo" <gary@garyguo.net>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Justin Stitt" <justinstitt@google.com>,
- linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-um@lists.infradead.org, llvm@lists.linux.dev,
- "Benno Lossin" <lossin@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>, mmaurer@google.com,
- "Bill Wendling" <morbo@google.com>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Nicolas Schier" <nicolas.schier@linux.dev>,
- "Nicolas Schier" <nsc@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Richard Weinberger" <richard@nod.at>, rust-for-linux@vger.kernel.org,
- "Trevor Gross" <tmgross@umich.edu>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>
-Message-Id: <93439e91-cf81-477b-b880-a813bb01ad7c@app.fastmail.com>
-In-Reply-To: 
- <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
-References: <20260322192159.88138-1-ojeda@kernel.org>
- <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
- <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
- <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
- <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
- <641592e3-2354-4238-9eb8-a1f5c2a13126@app.fastmail.com>
- <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 1q8z6jaoqmobdth6kzsktj16rputg7u5
-X-Rspamd-Queue-Id: 173754000A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 966F2C000C
+X-Stat-Signature: gzf7uq4tkmhddofakih5o4we58fgygjq
 X-Rspam-User: 
-X-HE-Tag: 1774602159-853786
-X-HE-Meta: U2FsdGVkX187Elh2f05sNPKdaKswyIEMecphDL1YJLJ0omHrDkTuOItS1/zWJSdhskDcSCBLzBqM6QWz7edM2iGKv+wFxVzW0Xbp+uqiz1CSX7LcMZm8J4raKkfVnY+YKOrBG7JYIFUSCPUctya8vObpyxdxgL75LDF6jOTBEYifrZ6vHZLySkWceUI91+rAJn0yAIupcZI3gSWF2vP2qCSk3EO2W9M7MB4SZ2BfFYiv6+9Oywz2AmU/PzL0hTc2VbQQNErawgxae+4hqO+Z+bEXp2BvK67OXeis+VZIxE45QuocJ0afgPH9aIY+JnDLLg6IQ3RPN2Ov/8Ue96zgXU7fDf4eQUs0/UhwHORN0YzSAhDCJySbyNf6qOuLFkG+X/lhSH/HiEMxqZtkfvkPZtqsqKYqA4z+JIvL3cV38+rmjYHPbmNOWULzdITskLF8sJxAmm86NTlN9XhhaYagnRP5uGp59OOT9rTziEXurPCgrVuto+rdlmvtQtf0v5zZBJ5JwfJB97heLBpoP1Ot9RG4GdVKA3NoUpKA4YsoFc+zb1oOc4EWc1dfR/HJXHYsOgdRayLespByhFMnXFZ5jgdrKNMKPLvmpDYxkcBkL6Qvp/JLVRghkAFBtfpawoKaDXQffgr1326n3Ceq0FtU+cAxx0jJ9ZWEAQ7dNqmmz6gqwHG5gydykYErSJZRWVXA/4oEORhw3qmq/CHX0KQwi4mvam4XmqNUSfv9X4e9OP9tNBphLNzoICxKoX1ZIBS6/bdv/1XtdTflklG7IoMGKettQKiW9IlWonQAvI09xMafRbHtkigiPtBBX0lUpiVwHYp3Ur4oL4KCI4y6iBovSg6R9RVGb91L7bf+EGxeltjWco1os2HnZdUd4Lzqapb++x1ogHfiUeeAK4Z3fYnX1+mz/rSkcxRzkULE+Qrntxnv0aZdsGOgAkNc15rkKE3oOIN1n3MkRVfwqHak8Qx
- B3bPgy7F
- Nm2y8vIy+r8IVnLD5l1x98dvQAe3DIyjjOT3RsAub+M19/NnWjpHg4mUFLbdbm9sgMnwgN7ETIEUP16NCqwFhfkM7uOm1uPt2CEmT/LLTPij+79i4zbUc52X884CI05OY3BqiH5nta7lZHMSJvU+vdqETgQoOrdPAZCgH+oeaoNNqdub+/rOq+XcYcrcgXwyRFgvnd5Z4yO8DTXWS2+0/k1swJqMHx4nEOhTA5j69Cg/P2m036Lry4Aft83iacyZ+Ou2Psxazx/XbZHCQgRQ49OzT0eKFKR+Nt18/Y2COAnw1RL187Bx41Y57qx76lI3wZM4R4VVhLzMcHB4ouq0sMDLPLaHOvUAsTgGx
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774602412-988186
+X-HE-Meta: U2FsdGVkX1+EDqILsxz3PTIe5wEoWUXhucyJUlYivYBblPegVF6X00UGc5T4P6Y9Cw/O1wTwPvNRMjVR70sygVvQm/+FIcBTsCZ94h1EZ/aH/R8mQm5quZIkwH1hnTTKkZXSvIj0bTnPw8KbGPMu1gts19GKhT8xYZZqXRHDeF4PJlo/DqFET+gEr5Mqn0PvmBcuTgg5u3Ey8gjtUdrJQRj4lIdNmlxTVFp4cLT2cwLWmY59PzDHts+7o/V1K62khpIgdkl0zOVyltHWJibiO8y1eH7tdXeZYu7L82CwVrXdcchbXSJ8PWkdPHzZFUTkb/8qdAOp58GkLFfdzb5cENnckXUdjUNoMu9oImOLw454nUGeI4yELoXL3OuApEkKn4Jmzln/ernMRKwOVF9402Gn8S6Cup/qt7NKGrpm1zztRdKdyUNRCXECBeEApIzabK/nZ7bJGNP+0sxEfJtWd+DIhvYvJaU5j7/hUiJj4Igg7HvKEkHg1Gb7zwQBAvOLQHusS23RAHFRPUhRP9iPOrlvH88rNnbCPbsz2yKpc0fT4tJRnroTOA8n/164uWbH2ZMhU1TJqnKEoGSxHw8NI7w+8Fsz/Sx2L5XeIe3TJnjj8Ycjrn7aCSf4RQhbsgSwQFWWqlnFE6hxZ+XoAUdUvYDvwCAo0lSk69u4YV5W6hCBhtlH8vluEO9jvzFX4UqIs27l11vBHQ4DsNiyXh3jydelTzuKB7ZZW6RVEFaYY0org2nYPyh8bYi+krNkHEyDs2HJ8w/cWHgaM6wvVsfEXBbebDraCF2W2dEORWBV8JqyO7QzyaCbeXb3Ii3RNzMSt2YkdpfA+73pYCrk+a3P6Dyys3JaFXOruX/tg2ftfkCLZa3UInjQDP0axyCch1tYHmQjGrbvEqM1F6UJXV7ztjCYaaTUlHFMBcbNTLsDgpth/TKZOT/ASQYtx21x+mrziar2QifeTxcpNn4Id7Y
+ WglwOHDJ
+ v//kWEdhPpdUT8cU8rtaQiKdfevLCyVYGfuN+/scEee0EuIS+zqy96hZIpso9VQE8QGF52jOpwPNf6t0UhIyvU84wm4FofZkkNe4sQh3hyN8crBIToOF4126N2+1BTvDoyzZ4YicSB2ea4teeiepSNk2FkJepF5pIwABSmGqDF/TkaMm0BwHVh8OlbZrB6JZiEEnmP5Tqdtb3/rWE6QBQ6jE/MOvwgRff1rrzQPDQ5ln2r96cV5fH2c45Heiyagh5mzOz6MKhnZHdxZYGFkuo9EYiF21gQMJN4cf09Hn3jo91vr8vr11qtNtKdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,29 +95,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026, at 08:56, Geert Uytterhoeven wrote:
->>
->> I noticed a similar issue with m68k-linux, which has a bitfield
->> alignment different from anything else on gcc, but uses the normal
->> behavior on clang.
->
-> Ugh, I wasn't aware of that. Adrian, did you know?
+Previously we stored the end of the current VMA in curr_end, and then upon
+iterating to the next VMA updated curr_start to curr_end to advance to the
+next VMA.
 
-To clarify, this illustrates what I mean here:
+However, this doesn't take into account the fact that a VMA might be
+updated due to a merge by vma_modify_flags(), which can result in curr_end
+being stale and thus, upon setting curr_start to curr_end, ending up with
+an incorrect curr_start on the next iteration.
 
-echo 'struct { short a : 3; short b :15; short c :14; } x; int y = sizeof(x);' | m68k-linux-gcc -xc - -S -o-
+Resolve the issue by setting curr_end to vma->vm_end unconditionally to
+ensure this value remains updated should this occur.
 
-this produces '4' on m68k-linux-gcc, but '6' everywhere else. I originally
-thought this was related to this 2009 change in both compilers
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
+Cc: <stable@vger.kernel.org>
+Reported-by: Antonius <antonius@bluedragonsec.com>
+Closes: https://lore.kernel.org/linux-mm/CAK8a0jyHXqBpt8Xe8v9SNDbnRiwz7OthA8SKY=NLRY7smPEP3Q@mail.gmail.com/
+---
+ mm/mseal.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-https://github.com/llvm/llvm-project/commit/830dfccfb2c06a1749938ce8cb78a1d6a295b942
-https://gcc.gnu.org/cgit/gcc/commit/?id=2cd36c22d3d16e24f342829a989ac35f2f442656
+diff --git a/mm/mseal.c b/mm/mseal.c
+index 316b5e1dec78..2d72a15d8ea1 100644
+--- a/mm/mseal.c
++++ b/mm/mseal.c
+@@ -66,7 +66,7 @@ static int mseal_apply(struct mm_struct *mm,
+ 		prev = vma;
 
-but that only allowed bitfields to be marked as __attribute__((packed))
-in order to get tightly packed fields and return '4' on all architectures,
-while m68k-linux-gcc apparently has all bitfields implicitly packed unless they
-are explicitly marked __attribute__((aligned(x))). This behavior is
-independent of the -malign-int flag.
+ 	for_each_vma_range(vmi, vma, end) {
+-		const unsigned long curr_end = MIN(vma->vm_end, end);
++		unsigned long curr_end = MIN(vma->vm_end, end);
 
-     Arnd
+ 		if (!(vma->vm_flags & VM_SEALED)) {
+ 			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
+@@ -76,6 +76,7 @@ static int mseal_apply(struct mm_struct *mm,
+ 			if (IS_ERR(vma))
+ 				return PTR_ERR(vma);
+ 			vm_flags_set(vma, VM_SEALED);
++			curr_end = vma->vm_end; /* Merge may have updated. */
+ 		}
+
+ 		prev = vma;
+--
+2.53.0
 
