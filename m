@@ -4,124 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BD810BA43F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:27:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44C6B10BA445
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:34:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 232046B009F; Fri, 27 Mar 2026 04:27:34 -0400 (EDT)
+	id 6F7106B00CD; Fri, 27 Mar 2026 04:34:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 209436B00A7; Fri, 27 Mar 2026 04:27:34 -0400 (EDT)
+	id 6CE3A6B00CE; Fri, 27 Mar 2026 04:34:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 146666B00A9; Fri, 27 Mar 2026 04:27:34 -0400 (EDT)
+	id 5E4096B00D0; Fri, 27 Mar 2026 04:34:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0815E6B009F
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:27:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A90EA5E135
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:27:33 +0000 (UTC)
-X-FDA: 84591163986.18.BA687DF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2BCE840006
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:27:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R1FdErCm;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A4086B00CD
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:34:03 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E08591A1014
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:34:02 +0000 (UTC)
+X-FDA: 84591180324.16.150B4AA
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1EE4420009
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:33:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=G7p00Q18;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774600052;
+	s=arc-20220608; t=1774600437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DoxlJLpzOFREqNzYvxXK+7Wyu48MgzL3nY3gxnlOqXc=;
-	b=qagfMecU/kL2Y/QVY+xGJm1Z/94Pew+mVv+YNnJkifmAjeI98g2ZA7pBee0LUA1EDboWMh
-	ec9PbAxIE65gXu4yATfB7KvSO6Acfty6LyfI1vRaGXeGTN9wUzumI9+DLUswa8XExrVX4A
-	a4kg7o+bZw42T5e6AwOsEIwLoq2z1pQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R1FdErCm;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774600052; a=rsa-sha256;
+	bh=pWW1Ogs/ZdOFg15O/X78oW0BF6OEjLh6WF/GCRVR2Fw=;
+	b=3id99kxC5JqrXcVL244mHxkb3y8HUm+hRyfAmLqiVqofQ/DgI6F2SepGTGz+Yz9rVuuCOq
+	9+mLQi2M2BV5u2812lcf0rypdeW+Ls/iCkBanqFudOOq0kcHwl2vLsZ2kZPfU0FEX8lz4Z
+	F+i5pgGKo0aRBMyy44tJdHqWtHtMDHE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774600437; a=rsa-sha256;
 	cv=none;
-	b=pXhG8Y8kzWrXBdYA4TH6/KhpitS92ZJdOMa5fMTRoBQ7oZN9hCMCwTOZ+bQKza+GIOqn4j
-	OhCkHBPfG3ofbMvJWWaBL/gzgarjnIKvf7oPUM655ZxVWn79PfPhwEEUJN9lLJ3iC4LVRW
-	3vuObomPdbbI2pSa6ht1oI7axyEYq8U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DE7C6132B;
-	Fri, 27 Mar 2026 08:27:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE27CC2BC87;
-	Fri, 27 Mar 2026 08:27:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774600050;
-	bh=rkUuEott97cRG5EOSGam/2vURy0iz3AdOFQvnDvFuRk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R1FdErCmpRUfW0Lp5ZacGDOniuT0AwJlAxVfVuljmrw2wCU7cAUPkqPI98IpTty16
-	 NBIRt4fVUPiLgcyTUvdyX/EfQJaP/Fn+rUGOf8JpxGhClHrnG7f8KRPoQz2OYh1WaJ
-	 H5o9DZM6WUru2OjwRibUTWgPS0u+3sPFUJBa/UzXV6LBqi+UjomHjJiBFcJiETq+MT
-	 87z1mRd67LAk1ZwXpjMe9nbD7JZY1/qttMJlLYp/x5WS7qVfoyPw2boeixrn5xIQMI
-	 FsKHOJV0ipEd+DPBQwi0B3HVifAvbXhgvRqUcdTuwlnZX1A9XjKSccTw9hYhAHIm+3
-	 pgbO2wr7F/yFQ==
-Message-ID: <c9bec45c-3312-46a7-a7bc-a7dba95bcda7@kernel.org>
-Date: Fri, 27 Mar 2026 09:27:16 +0100
+	b=J/f4Elp6n5iKmMHRk++Si7XheeKWJWYii87AUAqpY+y8A3liMmNfKVcbboFnWUGGTnch+v
+	rVCf9A4Wv63+r884C+Uo8f9BxPisuYn+EcAwiWozt2ELRF8K23OdIA7dtSzBNHczX+SmeY
+	NCIBQLhUniAJFNoPV1wTT1BzyZotQ2g=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=G7p00Q18;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260327083354euoutp02f03a8e38ac09c18735253cfd49aff1d9~gpbFs7omH3150431504euoutp02X
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:33:54 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260327083354euoutp02f03a8e38ac09c18735253cfd49aff1d9~gpbFs7omH3150431504euoutp02X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1774600434;
+	bh=pWW1Ogs/ZdOFg15O/X78oW0BF6OEjLh6WF/GCRVR2Fw=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=G7p00Q18xvenjeqyltH6mDGbmCjnbLmz2xt4xjc/0A15A2MNdYsE6qRtkqkjdJgEE
+	 gWLsqVg5bPrhnWqa+Hz2FaO3aXds6+sd5qyVYDllRfVqvjnvDbjdP5yqsbpaHYcsUZ
+	 6jzaUAxPti8cVzpoBKsCBq/O+Zm/0wll3crPN9rM=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260327083354eucas1p2e649b550ecb5424fabb9ad899e26277a~gpbFbCkiN0771907719eucas1p2w;
+	Fri, 27 Mar 2026 08:33:54 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260327083352eusmtip241284ad9eaeb3b7cf68e4df2189c2fd0~gpbD2FF0k0181601816eusmtip2K;
+	Fri, 27 Mar 2026 08:33:52 +0000 (GMT)
+Message-ID: <2cffa109-5b88-488f-9dfb-8709164dd9f8@samsung.com>
+Date: Fri, 27 Mar 2026 09:33:51 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/25] mm/vma: convert vm_flags_t to vma_flags_t in vma
- code
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v3 0/8] dma-buf: heaps: Turn heaps into modules
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard
+	<benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>,
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, Robin Murphy
+	<robin.murphy@arm.com>, Andrew Morton <akpm@linux-foundation.org>, David
+	Hildenbrand <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
+	Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Albert
+	Esteve <aesteve@redhat.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
 Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Dinh Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Michal Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, selinux@vger.kernel.org
-References: <cover.1774034900.git.ljs@kernel.org>
- <20260326225031.87e04d2c652923bc10aef0ee@linux-foundation.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260326225031.87e04d2c652923bc10aef0ee@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2BCE840006
-X-Stat-Signature: oakmiz1edgg61ip78tnbf6u3dcrh4z3s
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260320-cryptic-industrious-otter-5b696a@houat>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260327083354eucas1p2e649b550ecb5424fabb9ad899e26277a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260303101320eucas1p2eb4fea499364ef20825d0d73585a2555
+X-EPHeader: CA
+X-CMS-RootMailID: 20260303101320eucas1p2eb4fea499364ef20825d0d73585a2555
+References: <CGME20260303101320eucas1p2eb4fea499364ef20825d0d73585a2555@eucas1p2.samsung.com>
+	<20260303-dma-buf-heaps-as-modules-v3-0-24344812c707@kernel.org>
+	<c60a3f30-6fc3-41ab-835a-2fdd887e18fd@samsung.com>
+	<20260320-cryptic-industrious-otter-5b696a@houat>
+X-Rspamd-Queue-Id: 1EE4420009
+X-Stat-Signature: qmmbrre1z6p5964o4i3u3kxtw1fgq4nj
 X-Rspam-User: 
-X-HE-Tag: 1774600051-387999
-X-HE-Meta: U2FsdGVkX1/z3Nw7jw8+n2nXm1WFvtUFBseTCn5Aik53SUJQgcpgRtPpX6zqOGaM8ufD9xTJG1oc0pmMDKRvRS/ne0p2gOIgqIQIb8mIcm5xV/Dpkfr853vzppN6uky8BlEMieMcer3NSIBpMTBvgZwYl3iyAELYB2v0DVmFaFT1kTx9vIm2GwboSJpfOCid305TC3ZmCp4VUt2wkomXMIY37uMftlEYbFDfcFl51SGg/Y2MDU8/vZw7mIoSy2qxxM+JyTCGsJ5QLkCzj6he0lMdm1t+v5JRBOzVnpPUBo6+EOH0w5kkpPhiOpWENrZMskYLBnBfDBy7EiYzu+7qLqHKTA81Xb4DofnlNnf2ogiSoVt8Xyt2TAw1XR7sz2IGu9ZwSt0wioIdhasg2BdwXuVbGinFrEgAODI2ThrKcngMxFkvqqX9fU3rnpgvOo9Ii/kCVSMg8xUR7WxRVteOsdyYNkP3PAVHiz1HLDtZMzj3B8gbzLqMQzOkG2GjhMvuaU9y4oit39r6pUHxzQRyZJPGVy7V4pQ4zzePekIy7ffNKU+iVA8EHKPhuz3+gvOG3fv0nI2ZPKTakMQYaaPaP70pQLO47XgYoJBDpNb8euSt3R5TTmTguRwRSsEGEqwqjwt8/Gl5UiCEkmS76gDx/mgA7X6wiovfsQL/HfSOHKyBLiy5I+Wyn5FbEEfCueJCop7gI7d8JY7HpOiLILfKRy0U1iswXFiVYwWynw6o6OzMYFQUD1eZX6nns4SYnk+nqnkQT5JsDyazst36aqD9uZyN5cqnZPwdHmf6hpT82vJ38WmyZzb7J+Wct6QOsxFJMssl94OCTT9ehvgWlDnxk20z/ltGb2KXdi+HDrsPN0N7hCPv+WSq5QMmEQjPBcBUVxJ2XtIIWuU0lpsB9EYE3E+w+YcBDMxKmqrnDhlQM/xhDkfessBWgewDFHlIWPw5NM+GLnEr+Lvd5h7orys
- 5RiyaHrZ
- OP6aDWRMmYrU5xvzCIGJA2gc1yumKHCX2icwjtAPoginAND/LIZYjOd47t9hLkHOA4pi2ER8tZaBmMy4=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774600436-266288
+X-HE-Meta: U2FsdGVkX1+7M3YG5ZeLEcX4Y6WBYBAnVxgPauvx5C7cAPBoWLr+qNosCXkrxUxmDqU0eraveMWzmbH453r/8o59PgT06DO37sqFdnEzYo4EtJskSG9q14LqYFWTD8RUZeGPHrgus7dhPV96WEUE+mp9ueLHPiL9poBZRYvmqKfXvkR2WO86uw1ZFQ67g8SIFnDhoycWksxKXp5mf+wl5n8/S2ieD3gux+0bMcYDhP+zD7RUSJHe961fLVcmhMreXSG0TyBvzkKOHkMavTf/Rwk69XnP5WP+PvCMHrAIS0IxL47CQgVxgC+wJ+42t7ej1wroHqILQZnq39Sdh7s9Os3S2FwkhmRDBWJknYTFqtgDbzbvw00ba/0+k1EPP9trcpltn4975p/iQIEOzVK/hSkZvQFedJLPeMSTiWFXo+Z5vwUw8sjcAznVhM2Dlf5wH8/PVSQXaZfSEAj92f9svXhkU38Nx7bw5np2zCnmVwq+1oNCMw6vgHvjUg0nxsh7QasSbpFAWBe8BQwnL/OTF1EELQoGCIwkVtsua9R0T36ZPhQbmX98UdAfF2telX0JnDL/9lYDKx/Keg9bggrV4+OvsZPDEdXOhTpsfBxRNfNcKBQGiQysCxiIXgY2VoppkFivH5W9+458RboC+XmL9/8aHRyP2k9mOs5ciMmm4JlvTUaR9gILMS5UzTvD+WgfoUqpJZco/sLfW9Y1tLvlJxPtRzHUmh4MXdWCPGoD3qrYDmyeeI79tvaVvSflvhXLlu7Wfc4xlH3HAI3nC/c99iSlYGqw7dIU6BxE5FDAAJrzEEOcpPruzV3cV4dxBhxoEPhOUs+Xemz63UVNaOijn2plvZX/cPGMYDCJGyJWeBnarT1i+0JtiqGVUmm1ygHvQt/hvbkR8cHnY/eEZ8RlaCT9elxSUegvFe1l7TmJZ8UPS480nZP6JsDV2RA/wH5vxUlILRkr2VZiA2DsBXe
+ bh40Es1i
+ MfuOhaiHptKIn80ZZoEz33d+cToO6CKMmgnYBltt0MVSsUVYG/j46a9pY+10sob5r1LyX8Hwc2X2RJGId613jLfLpG1fIea3/X2DJbdqXkw+/nGsKyKNqzETW/l2DvKzHF2QY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,19 +115,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/27/26 06:50, Andrew Morton wrote:
-> On Fri, 20 Mar 2026 19:38:17 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-> 
->> This series converts a lot of the existing use of the legacy vm_flags_t
->> data type to the new vma_flags_t type which replaces it.
-> 
-> Series has nine unreviewed patches.
+On 20.03.2026 14:09, Maxime Ripard wrote:
+> On Fri, Mar 20, 2026 at 01:24:18PM +0100, Marek Szyprowski wrote:
+>> On 03.03.2026 11:13, Maxime Ripard wrote:
+>>> The recent introduction of heaps in the optee driver [1] made possible
+>>> the creation of heaps as modules.
+>>>
+>>> It's generally a good idea if possible, including for the already
+>>> existing system and CMA heaps.
+>>>
+>>> The system one is pretty trivial, the CMA one is a bit more involved,
+>>> especially since we have a call from kernel/dma/contiguous.c to the CMA
+>>> heap code. This was solved by turning the logic around and making the
+>>> CMA heap call into the contiguous DMA code.
+>>>
+>>> Let me know what you think,
+>>> Maxime
+>>>
+>>> 1: https://lore.kernel.org/dri-devel/20250911135007.1275833-4-jens.wiklander@linaro.org/
+>>>
+>>> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+>> I'm okay with the kernel/dma/contiguous.c changes. I only wonder how to
+>> properly merge them. There are other pending changes to
+>> kernel/dma/contiguous.c file [1] and if they finally get reviewed, I
+>> would like to merge both via dma-mapping-for-next tree. Then I can
+>> provide a stable branch for merging the remaining dma-buf pathes. Is it
+>> okay for You?
+> That sounds reasonable to me
 
-I think I only skipped those that were tools/testing only, because I'm lazy.
-In case a tag is missing in a non-test patch, let me know please.
+I've applied patches 1-5 to my dma-mapping-for-next branch and resolved 
+conflicts in the mentioned kernel/dma/contiguous.c file.
 
-> Again, I plan to upstream this as-is - lots of Lorenzopatches remain
-> unreviewed and I'm OK with that.
+Here is a stable branch to apply remaining dma-buf heaps patches:
 
-Ack, thanks!
+https://web.git.kernel.org/pub/scm/linux/kernel/git/mszyprowski/linux.git/log/?h=dma-contig-for-7.1-modules-prep
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
