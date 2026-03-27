@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B76810F284B
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:15:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A37F10F284E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:15:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 712306B0096; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
+	id DF7586B0098; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EA8B6B0098; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
+	id D7F9D6B009B; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FFEB6B0099; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
+	id BA5206B009B; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F7766B0096
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A8D236B0098
 	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 29B3C1A0A59
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 74AA21A0F07
 	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:15:09 +0000 (UTC)
-X-FDA: 84592342338.04.6206EA4
+X-FDA: 84592342338.05.663DFD3
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9B18D40014
+	by imf10.hostedemail.com (Postfix) with ESMTP id B2E81C0006
 	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:15:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Jy3sN4o5;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=wyYmjHEH;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf11.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774628107; a=rsa-sha256;
-	cv=none;
-	b=2eZ3SCe6gldPKc769FNKJYzVt2WscOj2ZS7KDsVUjhYrhh3pDJyYlxqTHERPJR3mNGJ337
-	RVYbYxB4Xpb63uzIaI58rapcFNhH6dJD9ru6325E94gwaUuXja9YHs1njJMYgmOJdfOfmC
-	ISChdVVEULxrlzVXzLYUXdyrS681zRM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Jy3sN4o5;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf11.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+	spf=pass (imf10.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774628107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8xIH/bLFhgsX9Xukaml3GhxkGzwhy8uKInPK3LEkRJI=;
-	b=8YUD/ba4w4tN3cPhUOOKvrLapWEPh/U27ZEizYk0N0YWPm6v72z0NDWgJ2t1bGNGCeaBqf
-	RIVtRgtH9Q7cNjrHMVCPBnmIp1tYJEC9bK+BjmZpO6vX73N1OYR4z/PwKkCMjbdeVfIQ/f
-	OfypKoSUc3W4PZi+/8wSYNfMl54Bkms=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YEgctjadaPC6e1ht8UPND33GBVnpMY+JzCTIORsmJW0=;
+	b=2uWk+ZGIKehx6oeokK2MUofWZgAGt+aK6jFye8nYumaBOq+vaAWMXlRaDJgHUE5lSjPauG
+	QZLlnx7YNdwov97Hr3d55S49iaspMov/RiesVTIt9XbEdOCMG1sqRA/57kj30c3PSFYz+H
+	/Qe4lPPr8zmXghuS7yhjB16yj7JSK0w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774628107; a=rsa-sha256;
+	cv=none;
+	b=dqH21hCKBBTQCyG1SlH675/OMQ/H6BBNUHOmVcXg0ysxoM+1uacvNGI5Jotbd7s6puKDi3
+	Ac5mJa+X9OrcAz4TJkkMlG1QL04O1b8ev96bEub8E3/YBsgjJM/MoErckBARtWGocDkAoe
+	2RXB0MYCuZ8QF7kBK9XordrE36NrY24=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=wyYmjHEH;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf10.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id A3669BDFEF;
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id E14CFBDFF0;
 	Fri, 27 Mar 2026 16:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1774628105;
-	bh=8xIH/bLFhgsX9Xukaml3GhxkGzwhy8uKInPK3LEkRJI=;
-	h=From:To:Cc:Subject:Date;
-	b=Jy3sN4o5JTt/lp3RF525qilKkgZ3mjrIsZeMDOsqPvoKly6lLxKMrQBT7QQN3D8zf
-	 HLKqPqSRlY21uGChc95OFIkq0p8gv7Fva9n2UOzD3MskSoSq3CvW5KcbFLldxRXDsX
-	 aCZy1XftEM6xrxzN2ZcKq8cfBp4KDSI6Dn29QwOg=
+	s=mail; t=1774628106;
+	bh=YEgctjadaPC6e1ht8UPND33GBVnpMY+JzCTIORsmJW0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=wyYmjHEHeoLQV080hjixwgktMwryHxpYFkRCh2fkkH8E0djeIfdN8d/BPOEbFwwOn
+	 IkobkraGWdidDzVni9+VfV1Om7zCe/jcHo4dF68x3hXOdlMeWr//qwWNbgayNjJh+O
+	 XRv5p5gqJti/XTbKxBFkA5/76AR7WrKmGVTdKxTI=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -72,18 +72,22 @@ Cc: linux-mm@kvack.org,
 	kernel-team@meta.com,
 	Dmitry Ilvokhin <d@ilvokhin.com>,
 	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH v2 0/8] mm: use spinlock guards for zone lock
-Date: Fri, 27 Mar 2026 16:14:40 +0000
-Message-ID: <cover.1774627568.git.d@ilvokhin.com>
+Subject: [PATCH v2 1/8] mm: use zone lock guard in reserve_highatomic_pageblock()
+Date: Fri, 27 Mar 2026 16:14:41 +0000
+Message-ID: <a66962d540f16065100cc9bab5b2ed294c43c1c9.1774627568.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1774627568.git.d@ilvokhin.com>
+References: <cover.1774627568.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9B18D40014
-X-Stat-Signature: sx3oksmfymyjrpfp66yn65pkwekih7x7
+X-Rspamd-Queue-Id: B2E81C0006
+X-Stat-Signature: re8tzq9a8p8c99in685ucqs16qzqpgiw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774628107-572188
-X-HE-Meta: U2FsdGVkX18s+alTWaOvoXJ9uuB/h+jwRnq/Ha+JUZVxGm4fzVZNFPqds9L2UsveNPQHMLe0SGc/OTt7nnIsU/SutvFBIf4MQtQF6xj9zZM7jgTbv60a+nOMOVhNpK2gsUoYxL9JltZdPvMhLrFSG5xM6649tZQ8QEPZ//B/bGq836Dc+p1O2GJXYqK87j+jA6S0vZLF93XkDTWqqPjR9v/taSA3V1iM2CeX3IwXnOc4gpoUFg76jkCtmnIncIEtBqWcbL1sgyENQdpgxBwsV+wzBqQoAHK+iqOhFrP5PZRL071gHWfkkug5KCKCmrKQharccW2Wu4hj7UauzrqXWkJEs2KZ6MvTeKNwgnejJRacTL+s02KlS6npy/OQhJNbFJwd8RG78Ct5WPtRSicqhBsYEvx94bbYNyu0Sc4Ph5y+prfQbg+zfO/wlrPdbzSJ3/a3FfVztiFNG0C1GctHnpfYHHN34ovVEBiBO6ZkP2JYDrPn7bTVWa65IFBLcyLmDA88MdImPZdEER8K5W62MMhzUUDF4oSb/hFcjiJqjc73GRacpAXsiDjSm6VhZSfnbr4JTPYq9m8+Mj4F2UPg55j2pe6yJAK0Y6yyw3Qq2/dSGbkdLnhlKRAfWt6WH+lhWG+MtAEOaCTTke2joaDptyU0O6q+PQDrupwvZzK0o9YiQUoNEuCLIeo1IG6DqNDf27emxSs9bXeTTc4JhtGMHmVsh0fwZKhGqxvui+2/vNmyLKL3tEAAWGxvXtp4QMAlmybFFmsWJGv3MMPsHqJSxLsTuYpW41cSbFkPfbsh5MjfdLbKXEnClGc6bV8Xes+QdU0orUdeJ8fB8LbFF7yCW/sSB+pj6SaaNy0ZYK3lMrPzvTsvq0qxYOj2Vqfmpxkd2CKrKcVT5t/mrMAC6pFUIj/2Smzy58OT
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774628107-944885
+X-HE-Meta: U2FsdGVkX1+or0r38KxAtHqXktR6bIKMQ+vkQKDgk0Qh4/Bi2WsDjJVFyycjtT0lke3vuKwHdjHFBWa9JuNpTJfB/iv35IObXfb2SasJEksHs/Fh2AwZSqCZPiHneGh7roRYyadMrDOyoJPRxiBmE9yUGZyaJpMGH1ALH93n7rI6VaFom61qvQ7v7S5NC2ljGR97Hf/qdsQP1gQglgzV9QMT6oRAwet/TnwsyAEfE1SWHvGES2S05X2YLoHwYHjgs6rul0Pibxi+r/SDPV5MJrgQgKbHl9lSpGdeGTKBEPIvkSThULmHmcjplQ/sBM24S4SAIL37BGhtlpzX07NwRopZ2Iy9M+XdLfu+MN+wsqD0YGQSRnJtK3mBOTrNNUrpxeliX5kMtcfugOTXFOcQBvBgs4eC0yL72o4nhFNZkyr2GjxtFDySFvs7F5j3/r/VctT2gaxscKiBzkdST7JNoymhjqSiy8VD+bAI5y858b4uua3xdpf40YjhpX6NhCfaojU5bNYbV+pDv8f6t25+piynNj8ogGXsEAO6pIkIQ7edvN9fSs5lm+SGZXV9eH/c9wuR+bicQXrkw+wisK8WqMDsRmsxFWcVXbJDsBvdWGCVvhqHqdCubOfS1QpHmlHXGeX7y6iMgAj7dipBjt01wFhsVqPhTLxK3B1+vdtF09J30ouN5XJgzM3v6HPEP5f+I+1pBZ5k6ccBtlmfPBoCJZty0xbP2ixM+3IDf7fqEB7Cy1pbbgciaV1pb8+0mvyg67D3F6dsgxzX4SsSeCXhgR9kexUyk5BsV5TaGMMyAaSVJ5D1s+4ErVr90DN45TMl5j/PsqWOCi/pDXSuV2WLujq0qG5+Y3RRxxkW86pqQEMccT/Qs7Ocbo781VIBYbEIixA2gZZ2IIBgzRMb/DxJtq2v/RXoVuMn58hFTqVr+wSQW5I8MfiKc9BpVKLVpbcPN9D2CCl0g8SAAO0Px88
+ MrjeH/6k
+ 5IF70serb/qkUR4HNKVgF/7Jf79S+MUjEInQnaXAGsJ82sOkhHY36/6e71U1atWRDgoMfy8Jq7T+9FNN916Ega4W+1SoELvkVTE06Smyw4ctvmaHg7FsjLvhudtb6UsDo3xMwlv0coor3MwLhfUVuTnyWMJsQ+pzK8AFaMk8gDH4qrg9levY9X7e1APJviYsWGGsBxbj4RuMjnv1VjGb5wSoFuLTQYM/7G0Ss6ql1zdgrkZe6CFlCmjw0YKbFajNpZ9a5/Erl5mNVWNpWk9vTyEVUF1KuPe2E+Cy8SwlLN0Kz581xHcXnM6qunGBX+nfALzdNnvtsAkTf0I2E8GD6asU6st9H8v+9xNyc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,55 +95,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series uses spinlock guard for zone lock across several mm
-functions to replace explicit lock/unlock patterns with automatic
-scope-based cleanup.
-
-This simplifies the control flow by removing 'flags' variables, goto
-labels, and redundant unlock calls.
-
-Patches are ordered by decreasing value. The first six patches simplify
-the control flow by removing gotos, multiple unlock paths, or 'ret'
-variables. The last two are simpler lock/unlock pair conversions that
-only remove 'flags' and can be dropped if considered unnecessary churn.
-
-Based on mm-stable.
+Use the spinlock_irqsave zone lock guard in
+reserve_highatomic_pageblock() to replace the explicit lock/unlock and
+goto out_unlock pattern with automatic scope-based cleanup.
 
 Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+---
+ mm/page_alloc.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-v1 -> v2:
-
-- Andrew Morton raised concerns about binary size increase in v1.
-  Peter Zijlstra has since fixed the underlying issue in the guards
-  infrastructure in tip [1]. Note: the fix is not yet in mm-stable, so
-  it needs to be applied first to reproduce these results. With that
-  fix, bloat-o-meter on x86 defconfig shows a net decrease of 49 bytes
-  (-0.12%) for page_alloc.o.
-- Rebased on mm-stable, since the patch this series depended on was
-  dropped from mm-new.
-- Converted guard(zone_lock_irqsave)(zone) to
-  guard(spinlock_irqsave)(&zone->lock).
-- Dropped redundant braces in unreserve_highatomic_pageblock()
-  (Steven Rostedt)
-
-v1: https://lore.kernel.org/all/cover.1772811429.git.d@ilvokhin.com/
-
-[1]: https://lore.kernel.org/all/20260309164516.GE606826@noisy.programming.kicks-ass.net/
-
-Dmitry Ilvokhin (8):
-  mm: use zone lock guard in reserve_highatomic_pageblock()
-  mm: use zone lock guard in unset_migratetype_isolate()
-  mm: use zone lock guard in unreserve_highatomic_pageblock()
-  mm: use zone lock guard in set_migratetype_isolate()
-  mm: use zone lock guard in take_page_off_buddy()
-  mm: use zone lock guard in put_page_back_buddy()
-  mm: use zone lock guard in free_pcppages_bulk()
-  mm: use zone lock guard in __offline_isolated_pages()
-
- mm/page_alloc.c     | 53 ++++++++++++-----------------------
- mm/page_isolation.c | 67 +++++++++++++++++++--------------------------
- 2 files changed, 45 insertions(+), 75 deletions(-)
-
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index f11f38ba2e12..c7b9b82b5956 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3403,7 +3403,7 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
+ 					 struct zone *zone)
+ {
+ 	int mt;
+-	unsigned long max_managed, flags;
++	unsigned long max_managed;
+ 
+ 	/*
+ 	 * The number reserved as: minimum is 1 pageblock, maximum is
+@@ -3417,29 +3417,26 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
+ 	if (zone->nr_reserved_highatomic >= max_managed)
+ 		return;
+ 
+-	spin_lock_irqsave(&zone->lock, flags);
++	guard(spinlock_irqsave)(&zone->lock);
+ 
+ 	/* Recheck the nr_reserved_highatomic limit under the lock */
+ 	if (zone->nr_reserved_highatomic >= max_managed)
+-		goto out_unlock;
++		return;
+ 
+ 	/* Yoink! */
+ 	mt = get_pageblock_migratetype(page);
+ 	/* Only reserve normal pageblocks (i.e., they can merge with others) */
+ 	if (!migratetype_is_mergeable(mt))
+-		goto out_unlock;
++		return;
+ 
+ 	if (order < pageblock_order) {
+ 		if (move_freepages_block(zone, page, mt, MIGRATE_HIGHATOMIC) == -1)
+-			goto out_unlock;
++			return;
+ 		zone->nr_reserved_highatomic += pageblock_nr_pages;
+ 	} else {
+ 		change_pageblock_range(page, order, MIGRATE_HIGHATOMIC);
+ 		zone->nr_reserved_highatomic += 1 << order;
+ 	}
+-
+-out_unlock:
+-	spin_unlock_irqrestore(&zone->lock, flags);
+ }
+ 
+ /*
 -- 
 2.52.0
 
