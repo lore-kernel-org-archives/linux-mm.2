@@ -4,134 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF8B710F287C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 23:40:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7124F10F287A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 23:51:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2332C6B008C; Fri, 27 Mar 2026 19:40:02 -0400 (EDT)
+	id 970336B0092; Fri, 27 Mar 2026 19:51:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20AC66B0095; Fri, 27 Mar 2026 19:40:02 -0400 (EDT)
+	id 9476B6B0095; Fri, 27 Mar 2026 19:51:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 120E66B0096; Fri, 27 Mar 2026 19:40:02 -0400 (EDT)
+	id 85CBE6B0096; Fri, 27 Mar 2026 19:51:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F1D756B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:40:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 906111413CA
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 23:40:01 +0000 (UTC)
-X-FDA: 84593463402.25.E80AA12
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A8BD510000B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 23:39:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=deYm0Ete;
-	spf=pass (imf05.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 722136B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:51:08 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16A73BAC99
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 23:51:08 +0000 (UTC)
+X-FDA: 84593491416.22.9499207
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4A799140008
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 23:51:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ort+8lt0;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774655466; a=rsa-sha256;
+	cv=none;
+	b=LKQkYzcLQFfuXFzzRfgPeGkSuJjKGko2RRru47meiDneNn8rv4VHEUSCaQ8Sd7ikrce2Sb
+	Syo+uz4VvZzyp1jVe22BxXZBMkg8JfM/nJPAOiqOdS+5SkWOftE7Ua6GlGdYx2hj2ZnEdH
+	dFuTZOcyhD5a+5mZT0J2mWGfUr+0/OA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774654799;
+	s=arc-20220608; t=1774655466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KJh+fSdSH5NQ/gboRRLrSOUWnglDImWXDS4hyVsChMM=;
-	b=kpBa+e6e6ZQ7hPbdKYcVPb7SFNxzU+JpPIjUmpybPbd+L1bf473eVkLuT0AGzVOXs3jq9b
-	cAruW5yoKzOnhKPaR2nNlrKm/KICtILoccdRejjKA11GhS7neeS3gvB9hBu0xUG2UFMhB/
-	wdJDRp4pigikcYwWeGNe9GBe7u1TiQo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774654799; a=rsa-sha256;
-	cv=none;
-	b=gliU03mok1WoaKmZ4vEMWz/CrlsmCCprU9L1Brs/XCCNl0K3nzy+w+nnT9GMZxz58e6Cbo
-	TB9RzvEtBCkEzWGcKtTgbjhLCgldXYEGmayRKOTwSyuRJZfIvwqW8KHLIh+K64CP4S+1gO
-	UhEMSavDmUcAsfpArYo8/0IYHLKbxLo=
+	bh=lpK30bsLEF1pC4tIxzHPLQWmS7sf9l70F1YvF71eUuA=;
+	b=a2BfkEVlc3AqfIhZKIwaClDN1NII+Mtj/V+BsJAYGQGtPjfBaCf3eSxCZskgxXeFKsHMyL
+	TGx3UdUSuyEtBwF0TT3qHGcfxvYo8821FwSzAzjIq6A9RekUpXl3qM9Yq5vB5J6F9q8HjY
+	Njg1c/XS+U93fZgwCbp5CNh/7xoJQFM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=deYm0Ete;
-	spf=pass (imf05.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b0c12be0ecso36695ad.0
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:39:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774654798; x=1775259598; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KJh+fSdSH5NQ/gboRRLrSOUWnglDImWXDS4hyVsChMM=;
-        b=deYm0EtexfFoTsjsGqgm4xgksjfMxlIvBgq8+o75nce/t+rR8scyV06Afb6TH0rUiu
-         FGpH05ddw1qAzz0+2cRUFvSAacqWwyBwHedCn1UsvMVWHXemvjSQn4lkGIw2O3CeA8Lb
-         T7FmgZoitA3uELO7Xb13JOebLKsy+r1EN8iBedTQqwTrtnmkCAVkwPihIlf2YL4msAZe
-         feEK6wnKEVpv1TThgBuPpc1PbVOPfD7/dzTFj58+hoIq4MQXgTi4w2ZoJ7FXX/nxBiRE
-         kQPpUo4V6kCVwmbl67NYzbesQptHE6czUaRrfUrC20swRCkclqWNv8+koO3ecG5wuRSe
-         yCaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774654798; x=1775259598;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KJh+fSdSH5NQ/gboRRLrSOUWnglDImWXDS4hyVsChMM=;
-        b=Y7ErA+it2vb1RzOEsAHsiFYDhW7cr4VHCXqXJvnfoVrBnlhI2yfc7S/qLLebCj5r2g
-         9HjvvobQtbMz6KXTSdyzjdmPhJpmcVHXj9bUPxt7/aT8+ltkGSSmVXWkw/i3n431i5O8
-         zPCASY0KI3RcpzsmVsQRFOLEH4/ERnzjwipfXXEJapaP6mPk5K3oMofguDp8KHgl/X73
-         OKZOgvJCkF8F6s8hRqZ6cY7wxVXrtutRgc0NSkNnvukf7Cr33WgAMdszm0q+nF9aQsdL
-         wpT5A9HaGLMy4pxe3MGe6e0sTAU8Bg7K/klxwikr10LSUPZCliMPyM8ea8gRaRuGzZi9
-         //Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1bKQSJzY1cd8oz61abtB5bFOd2VQ1+7ECvQTc9bu1kj8qpp4Z9JF45UHi5DoyG+pfs+9j2YMpSw==@kvack.org
-X-Gm-Message-State: AOJu0Yw33ejCEvT/8HWaDRkn0Xbt/mWTp5IhksArhBP6HkL6ajwv1fiL
-	d81+fboq4EXGRls87CampYeAgT6/CeehrbgqKFY/pNxiinBAU9zLlvxgfCHTlmc3Jg==
-X-Gm-Gg: ATEYQzwamyc9ndxY1L7ZTydD0f9HTwD2ey/HEUCVPOdrFvrL//Jl/Vk344LF75/aZu0
-	9jlE6rsq+j1IE1nBqIoWIvW6yqZ6ThTx1kRFxgE3n2M0IPl7dktlnid3koNygykI90ljrqfsUG0
-	JpvitM1MrZXKHNMx84p6zK3g07kdOIp+BGamnAZ9e35ZwZI51nBVw2GoE8Jz8FLOlO/cl72dwcL
-	OC4b+8WcwJQIfj6hbOJxtMFEyYAQonpZOzI1m3XYwwbMD0rRhJpdOW8eRGWZvDzDo4kQy6mTjCv
-	LgoeuJnTNVAvjKwEUHVtk/xxZ+oCN0Cct7fFSKv7Yj4LFNI9bit63DMObhkhpZYLcAWT87/uY+E
-	UK06Wjeb4zcdy3ZV6bz1ks67S1Oy0xPRPsL5XxaqcFWNqp7TLz7QIilG3FCU0jPL6ezOL05+Unw
-	wDWdnw+JU5SgNJ50RsAnfcEi0Yg4Jubj4Ucx2HjMvUpPXUVUYgHP+u/7P6IYWY/g==
-X-Received: by 2002:a17:902:e84c:b0:2ae:6755:a24f with SMTP id d9443c01a7336-2b241ba1a2amr1512495ad.0.1774654797569;
-        Fri, 27 Mar 2026 16:39:57 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242642b43sm5138615ad.9.2026.03.27.16.39.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 16:39:56 -0700 (PDT)
-Date: Fri, 27 Mar 2026 23:39:53 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Askar Safin <safinaskar@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, 
-	Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kees Cook <kees@kernel.org>, 
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>, 
-	Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Raghavendra Rao Ananta <rananta@google.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v3 07/24] vfio/pci: Preserve vfio-pci device files across
- Live Update
-Message-ID: <accS5UUyP8Qw1bUW@google.com>
-References: <20260323235817.1960573-1-dmatlack@google.com>
- <20260323235817.1960573-8-dmatlack@google.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ort+8lt0;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774655465; x=1806191465;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NB4q5F2SF22dSk2xnw9zNIIRimCK64imyAh0EWDk5DA=;
+  b=Ort+8lt0n0fo05A48nX6wrvdkMApmT02QpVsOufvKNBeuLnF1XnXterY
+   kgkQA4OW20nsnjyQeUSdO9egE5xsf1Ps9rTBwFazXA3IwEY453DZn91Jr
+   zyqQ26VsLdvjYAMWrknUi/sfsAm/SRohCNfKGLbEodck7VEYQhsQmUHXv
+   813WUfblhphXCCvDIBqf6NnLlPTOe6ew2nokFKN3vI8/X2ZLV18B87NZ8
+   7Gty0ZKugpL5oGH1RmnaRFQ9udcwArRLiEcs9oW0C/Z+Q33S/QEHjcMgh
+   7rRr53GRhcfS4q4H3vlGLrHVc085xFQ56kmBNjfrBSZ8qLMuxkKGZxjdl
+   A==;
+X-CSE-ConnectionGUID: lGzfjAEeRPqgR5bIhKl3vQ==
+X-CSE-MsgGUID: QVU0RDosQiexvcAWvoHo4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="86426367"
+X-IronPort-AV: E=Sophos;i="6.23,145,1770624000"; 
+   d="scan'208";a="86426367"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 16:51:03 -0700
+X-CSE-ConnectionGUID: jaNo6+CZQD6tkhFOLRi7vg==
+X-CSE-MsgGUID: DWMpbL8rRxK7ojvbAQEJCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,145,1770624000"; 
+   d="scan'208";a="224491953"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa006.jf.intel.com with ESMTP; 27 Mar 2026 16:50:59 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w6Gx5-000000007a9-3uLA;
+	Fri, 27 Mar 2026 23:50:55 +0000
+Date: Sat, 28 Mar 2026 00:50:44 +0100
+From: kernel test robot <lkp@intel.com>
+To: Youngjun Park <youngjun.park@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Chris Li <chrisl@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com
+Subject: Re: [PATCH v5 3/4] mm: memcontrol: add interfaces for swap tier
+ selection
+Message-ID: <202603280046.d4u6S8W9-lkp@intel.com>
+References: <20260325175453.2523280-4-youngjun.park@lge.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323235817.1960573-8-dmatlack@google.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: m6b5xockgbjgcj55tntpo4pdek8m5fww
-X-Rspamd-Queue-Id: A8BD510000B
+In-Reply-To: <20260325175453.2523280-4-youngjun.park@lge.com>
 X-Rspam-User: 
-X-HE-Tag: 1774654799-163734
-X-HE-Meta: U2FsdGVkX1/Zht5IeKq2F9KZkE5Yl+J0b6V2YmGTbQouX8q/X/0ejXzZo6SO9nn53/vS8snAZrA+O1wUBKO1sT7thPzFTi0oKOh+97YA9GvFnCFw2ae3OEf159eSv3ZZs4GQRRuBF0Ib5MSDFYXTzr9iyfr93AnCFy+pzcj9xIxjdyI7KjIFuya5p1UFeFlLqMj6tmxxQ0c0OsjacLefgvw2sRoExCpfvaPkrbn3abN228goshTdK6sPoAr6A3dbQRV4WQEzNXx28Tne1GtUVCgfXiEPYc+opmf6/zp9EGQeT2SV2Hd7BheNbdc9abKQZyxN99cxc/TdG23oPcxoQbjnRBBV2QuFMaDZUPcGLadc3NU6SyJ3Ei6Jtwx1t80u14wmiSydcuGVra/S+NXUSk0XQN2pE2YzkRXiIeAG/kcPtPBdqyp5IWFalBRsr2NL9CzP8j1HIHwp52W0t26UuvIQe1SehsjtJUFKB9foRyLSsVVgpw0XH3pAID8LHlDmx55yqIhNX/WR8k7aPYU0FDgYy/BtCm1pWi1vbWXasejSZK80fv9eM7+ZROuQ0VV/u3D5obhAww3umAj9yOlGIKjq46qrrREerSVRM9t7w6/6tBeoj0Sb68ZETe7EVbAkt0lm639IOhlqbq31cx/427CwssVN6n6uqYJk51Kjd7Y+XJ/InD4CYDcInoPpr/HgGzyDuXsz0/XphJ3taDo2idq8jl8ZHT3nc4CTDC/hyo5v/MND5oUoUb2SuzYA7OARMIm4QRNOg56aCSI8cNnI7mf7RMc5wdHFNfOVXfNDbZP1dgJ6QdEW+hxPFxzznxNtnxuVn87t8B8PypmF2CLcq88ONpPn0wxqcfHukizZKZOphgrOMIMz9ULyc3Ngr/a+NJD5OaERv11NqpDU2ZhYs/mRneR6GV7M7FMdN3nXVNdTxOZhE1Fk+k8A9kIuu9xpUQ1rm/IcbPHsX2cdoxg
- g2nWBOcx
- EoiY+ubfAk4Wf+mwzXhuaT8NwgMjtCxnHWgkJ/jXY3Chh8k7A1sXbQI3OTkvLJtab4GP0QVpWI5Tqdf4VS8/F0ThK1HiG8vJ+2Cjlw3/HJFpJKpUtOyWMdZ+Vy/wXoh+Hyq6FLvdHwXlsjXkowzizoAfPnzrAUdJUWYKdLBqWwfG30FpJ3e2KILQNhC8R79xIjappmaykhRj3TlcyFdaVLuggMjJ1/n/WhFPWblLNeN+XbbuRME+ACq4RssiJ77Mng9GSkiRjNYkUaAbDjJQS5txeN3cyut2koDF4eTNJkif6Z6nfpRJorga8duecg0HVfu99ChkL/K/GufmmYrB93uPppFIV8wAA+7Gb
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4A799140008
+X-Stat-Signature: yjdnbt5zus9q9dbwcddbd3tomgghdisn
+X-HE-Tag: 1774655465-474916
+X-HE-Meta: U2FsdGVkX18qxIplfMNRjVkfmsqqmU2IS5uMGDE5udCIl7am2ftG2/GG6lMq+eZD+z0uYYVlnCq0IlNq0ftkRv9RD79f+Q9hBchT0AEb4HzkyktU+VTUq1oAlapGV9WZnpHkTcYz5wC9keLHUsG1mzctZXrykRiLrVZqlRNr7nf7uAWHfArfFNhaZylkPAQB+HfZKnfZhBbfbB2XT5shrL5PWwVHHUi1Xlx7jd42YCERKyCIyPrdwDgC6gjVuTMo2/E87dzvSYMzLwXF3STsaW7sLxErgQsVxmXjf2PGP5xtsQVOyGYpkSuoEE+ScBo3NGcD420jhXC+ZxEUAoE7Z5/v4hxDMZryqM8FIDL58pBtHrWtTKzE37ode9Ls/tqF3VtFib8X+cs7IQXiqRL+2tjNFfHvg2UKuAdaegGQu0Vq5uFcVkkuifAf/yTO53YH3wj+dGTIje+Gg6O8iNQFElkaJEHwmVCSSTGtLQXJ9kkka8FSFJ8eoEgoS+TsorOAJXyxYTiY3mlBcAWd4zWOapJhkPGUG40wHMQ5c5Vzb53Ckbh9xcInXhFnMndjH3qjeDekeaPn0AwuFy8zAQZ/lL34tDO7DetjP50j1qZfxr/Ca6eISB4kHejNubnswFRAz2ubo5M3IZdrtlUf5gZVQQyNcz7cS6c8QFZ/qXv4M4BWMcBTh6CxqjOYRFRDubxAcR9FJlNvgvWPrP5rBlSXmhdkbGdgub/V69Mka5P7tJ/DB69fu3eNwlSgUnZJqYjR1aOW/q8Ht50vMYydYURL6GVf1N8vgsJglnPaVgNFV4c7Gw3Qdsc0B7wPn++XPbyj1xM1UVxfPpizFyltqBo1ugvEjRMGkzKhE6TkEeJOafZ+uQ8lsgY6HTWHa6u0M0lGBEYL2B72zjFUKg/UCxRby4xlN/rZwPn9RbUuhnOzn0Y/q/amPV8aVDSVVxHd8w9ylq81R9CsmKYTLL3GeAL
+ IICKqfLw
+ M4SQxYoy2NISRrQsGoB8cz943M+60DX15b/Ww92LHu2g6RAjayATCFr9CJ4vzSdpDMBo/KSb3XR380gtM0jprlj592r6YSgzGSQwOfHAYlykBj/bY7MHNvEvZZ8R4cphk4Se19Xu4IczV8Cm6nskOF87Ou1Z860jxPocOgGlkXQ5mcLiYCoOwosjfAh17q3dq4p23SumkvcouSNCLfra5g//dNx0Ma03HpOaXDZcEEnhExjFJDgMN7Bm8M3hox8cSBPSkfHF3ZxVUM3u/3jyttv9SgwpcqMqqsX820HrAWKBS7/O8EWk6WwjGHF/fqBwszXJ2in3U8fJ0ZvBHASPAs1m0S5n/bUXozVmh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,431 +115,563 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 11:57:59PM +0000, David Matlack wrote:
->From: Vipin Sharma <vipinsh@google.com>
->
->Implement the live update file handler callbacks to preserve a vfio-pci
->device across a Live Update. Subsequent commits will enable userspace to
->then retrieve this file after the Live Update.
->
->Live Update support is scoped only to cdev files (i.e. not
->VFIO_GROUP_GET_DEVICE_FD files).
->
->State about each device is serialized into a new ABI struct
->vfio_pci_core_device_ser. The contents of this struct are preserved
->across the Live Update to the next kernel using a combination of
->Kexec-Handover (KHO) to preserve the page(s) holding the struct and the
->Live Update Orchestrator (LUO) to preserve the physical address of the
->struct.
->
->For now the only contents of struct vfio_pci_core_device_ser the
->device's PCI segment number and BDF, so that the device can be uniquely
->identified after the Live Update.
->
->Require that userspace disables interrupts on the device prior to
->freeze() so that the device does not send any interrupts until new
->interrupt handlers have been set up by the next kernel.
->
->Reset the device and restore its state in the freeze() callback. This
->ensures the device can be received by the next kernel in a consistent
->state. Eventually this will be dropped and the device can be preserved
->across in a running state, but that requires further work in VFIO and
->the core PCI layer.
->
->Note that LUO holds a reference to this file when it is preserved. So
->VFIO is guaranteed that vfio_df_device_last_close() will not be called
->on this device no matter what userspace does.
+Hi Youngjun,
 
-LUO session holding the reference is also in userspace. Just to be
-accurate, maybe say something like that the LUO will hold a reference
-until the FD is preserved and vfio_df_device_last_close() will not be
-called until file is unpreserved.
->
->Signed-off-by: Vipin Sharma <vipinsh@google.com>
->Co-developed-by: David Matlack <dmatlack@google.com>
->Signed-off-by: David Matlack <dmatlack@google.com>
->---
-> drivers/vfio/pci/vfio_pci.c            |   2 +-
-> drivers/vfio/pci/vfio_pci_core.c       |  57 +++++----
-> drivers/vfio/pci/vfio_pci_liveupdate.c | 156 ++++++++++++++++++++++++-
-> drivers/vfio/pci/vfio_pci_priv.h       |   4 +
-> drivers/vfio/vfio_main.c               |   3 +-
-> include/linux/kho/abi/vfio_pci.h       |  15 +++
-> include/linux/vfio.h                   |   2 +
-> 7 files changed, 213 insertions(+), 26 deletions(-)
->
->diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
->index 41dcbe4ace67..351480d13f6e 100644
->--- a/drivers/vfio/pci/vfio_pci.c
->+++ b/drivers/vfio/pci/vfio_pci.c
->@@ -125,7 +125,7 @@ static int vfio_pci_open_device(struct vfio_device *core_vdev)
-> 	return 0;
-> }
->
->-static const struct vfio_device_ops vfio_pci_ops = {
->+const struct vfio_device_ops vfio_pci_ops = {
-> 	.name		= "vfio-pci",
-> 	.init		= vfio_pci_core_init_dev,
-> 	.release	= vfio_pci_core_release_dev,
->diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->index d43745fe4c84..81f941323641 100644
->--- a/drivers/vfio/pci/vfio_pci_core.c
->+++ b/drivers/vfio/pci/vfio_pci_core.c
->@@ -585,9 +585,42 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
-> }
-> EXPORT_SYMBOL_GPL(vfio_pci_core_enable);
->
->+void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
->+{
->+	struct pci_dev *pdev = vdev->pdev;
->+	struct pci_dev *bridge = pci_upstream_bridge(pdev);
->+
->+	lockdep_assert_held(&vdev->vdev.dev_set->lock);
->+
->+	if (!vdev->reset_works)
->+		return;
->+
->+	/*
->+	 * Try to get the locks ourselves to prevent a deadlock. The
->+	 * success of this is dependent on being able to lock the device,
->+	 * which is not always possible.
->+	 *
->+	 * We cannot use the "try" reset interface here, since that will
->+	 * overwrite the previously restored configuration information.
->+	 */
->+	if (bridge && !pci_dev_trylock(bridge))
->+		return;
->+
->+	if (!pci_dev_trylock(pdev))
->+		goto out;
->+
->+	if (!__pci_reset_function_locked(pdev))
->+		vdev->needs_reset = false;
->+
->+	pci_dev_unlock(pdev);
->+out:
->+	if (bridge)
->+		pci_dev_unlock(bridge);
->+}
->+EXPORT_SYMBOL_GPL(vfio_pci_core_try_reset);
->+
-> void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
-> {
->-	struct pci_dev *bridge;
-> 	struct pci_dev *pdev = vdev->pdev;
-> 	struct vfio_pci_dummy_resource *dummy_res, *tmp;
-> 	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
->@@ -687,27 +720,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
-> 	 */
-> 	pci_write_config_word(pdev, PCI_COMMAND, PCI_COMMAND_INTX_DISABLE);
->
->-	/*
->-	 * Try to get the locks ourselves to prevent a deadlock. The
->-	 * success of this is dependent on being able to lock the device,
->-	 * which is not always possible.
->-	 * We can not use the "try" reset interface here, which will
->-	 * overwrite the previously restored configuration information.
->-	 */
->-	if (vdev->reset_works) {
->-		bridge = pci_upstream_bridge(pdev);
->-		if (bridge && !pci_dev_trylock(bridge))
->-			goto out_restore_state;
->-		if (pci_dev_trylock(pdev)) {
->-			if (!__pci_reset_function_locked(pdev))
->-				vdev->needs_reset = false;
->-			pci_dev_unlock(pdev);
->-		}
->-		if (bridge)
->-			pci_dev_unlock(bridge);
->-	}
->-
->-out_restore_state:
->+	vfio_pci_core_try_reset(vdev);
-> 	pci_restore_state(pdev);
-> out:
-> 	pci_disable_device(pdev);
->diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
->index 5ea5af46b159..c4ebc7c486e5 100644
->--- a/drivers/vfio/pci/vfio_pci_liveupdate.c
->+++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
->@@ -6,27 +6,178 @@
->  * David Matlack <dmatlack@google.com>
->  */
->
->+/**
->+ * DOC: VFIO PCI Preservation via LUO
->+ *
->+ * VFIO PCI devices can be preserved over a kexec using the Live Update
->+ * Orchestrator (LUO) file preservation. This allows userspace (such as a VMM)
->+ * to transfer an in-use device to the next kernel.
->+ *
->+ * .. note::
->+ *    The support for preserving VFIO PCI devices is currently *partial* and
->+ *    should be considered *experimental*. It should only be used by developers
->+ *    working on expanding the support for the time being.
->+ *
->+ *    To avoid accidental usage while the support is still experimental, this
->+ *    support is hidden behind a default-disable config option
->+ *    ``CONFIG_VFIO_PCI_LIVEUPDATE``. Once the kernel support has stabilized and
->+ *    become complete, this option will be enabled by default when
->+ *    ``CONFIG_VFIO_PCI`` and ``CONFIG_LIVEUPDATE`` are enabled.
->+ *
->+ * Usage Example
->+ * =============
->+ *
->+ * VFIO PCI devices can be preserved across a kexec by preserving the file
->+ * associated with the device in a LUO session::
->+ *
->+ *   device_fd = open("/dev/vfio/devices/X");
->+ *   ...
->+ *   ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, { ..., device_fd, ...});
->+ *
->+ * .. note::
->+ *    LUO will hold an extra reference to the device file for as long as it is
->+ *    preserved, so there is no way for the file to be destroyed or the device
->+ *    to be unbound from the vfio-pci driver while it is preserved.
->+ *
->+ * Retrieving the file after kexec is not yet supported.
->+ *
->+ * Restrictions
->+ * ============
->+ *
->+ * The kernel imposes the following restrictions when preserving VFIO devices:
->+ *
->+ *  * The device must be bound to the ``vfio-pci`` driver.
->+ *
->+ *  * ``CONFIG_VFIO_PCI_ZDEV_KVM`` must not be enabled. This may be relaxed in
->+ *    the future.
->+ *
->+ *  * The device not be an Intel display device. This may be relaxed in the
->+ *    future.
+kernel test robot noticed the following build warnings:
 
-Seems there is a typo. The device "may"/"must" not be?
->+ *
->+ *  * The device file must have been acquired from the VFIO character device,
->+ *    not ``VFIO_GROUP_GET_DEVICE_FD``.
->+ *
->+ *  * The device must have interrupt disable prior to kexec. Failure to disable
->+ *    interrupts on the device will cause the ``reboot(LINUX_REBOOT_CMD_KEXEC)``
->+ *    syscall (to initiate the kexec) to fail.
->+ *
->+ * Preservation Behavior
->+ * =====================
->+ *
->+ * The eventual goal of this support is to avoid disrupting the workload, state,
->+ * or configuration of each preserved device during a Live Update. This would
->+ * include allowing the device to perform DMA to preserved memory buffers and
->+ * perform P2P DMA to other preserved devices. However, there are many pieces
->+ * that still need to land in the kernel.
->+ *
->+ * For now, VFIO only preserves the following state for for devices:
->+ *
->+ *  * The PCI Segment, Bus, Device, and Function numbers of the device. The
->+ *    kernel guarantees the these will not change across a kexec when a device
->+ *    is preserved.
->+ *
->+ * Since the kernel is not yet prepared to preserve all parts of the device and
->+ * its dependencies (such as DMA mappings), VFIO currently resets and restores
->+ * preserved devices back into an idle state during kexec, before handing off
->+ * control to the next kernel. This will be relaxed in future versions of the
->+ * kernel once it is safe to allow the device to keep running across kexec.
->+ */
->+
-> #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->
->+#include <linux/kexec_handover.h>
-> #include <linux/kho/abi/vfio_pci.h>
-> #include <linux/liveupdate.h>
-> #include <linux/errno.h>
->+#include <linux/vfio.h>
->
-> #include "vfio_pci_priv.h"
->
-> static bool vfio_pci_liveupdate_can_preserve(struct liveupdate_file_handler *handler,
-> 					     struct file *file)
-> {
->-	return false;
->+	struct vfio_device *device = vfio_device_from_file(file);
->+	struct vfio_pci_core_device *vdev;
->+	struct pci_dev *pdev;
->+
->+	if (!device)
->+		return false;
->+
->+	/* Live Update support is limited to cdev files. */
->+	if (!vfio_device_cdev_opened(device))
->+		return false;
->+
->+	if (device->ops != &vfio_pci_ops)
->+		return false;
->+
->+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
->+	pdev = vdev->pdev;
->+
->+	/*
->+	 * Don't support specialized vfio-pci devices for now since they haven't
->+	 * been tested.
->+	 */
->+	if (IS_ENABLED(CONFIG_VFIO_PCI_ZDEV_KVM) || vfio_pci_is_intel_display(pdev))
->+		return false;
->+
->+	return true;
-> }
->
-> static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
-> {
->-	return -EOPNOTSUPP;
->+	struct vfio_device *device = vfio_device_from_file(args->file);
->+	struct vfio_pci_core_device_ser *ser;
->+	struct vfio_pci_core_device *vdev;
->+	struct pci_dev *pdev;
->+
->+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
->+	pdev = vdev->pdev;
->+
->+	ser = kho_alloc_preserve(sizeof(*ser));
->+	if (IS_ERR(ser))
->+		return PTR_ERR(ser);
->+
->+	ser->bdf = pci_dev_id(pdev);
->+	ser->domain = pci_domain_nr(pdev->bus);
->+
->+	args->serialized_data = virt_to_phys(ser);
->+	return 0;
-> }
->
-> static void vfio_pci_liveupdate_unpreserve(struct liveupdate_file_op_args *args)
-> {
->+	kho_unpreserve_free(phys_to_virt(args->serialized_data));
->+}
->+
->+static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
->+{
->+	struct vfio_device *device = vfio_device_from_file(args->file);
->+	struct vfio_pci_core_device *vdev;
->+	struct pci_dev *pdev;
->+	int ret;
->+
->+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
->+	pdev = vdev->pdev;
->+
->+	guard(mutex)(&device->dev_set->lock);
->+
->+	/*
->+	 * Userspace must disable interrupts on the device prior to freeze so
->+	 * that the device does not send any interrupts until new interrupt
->+	 * handlers have been established by the next kernel.
->+	 */
->+	if (vdev->irq_type != VFIO_PCI_NUM_IRQS) {
->+		pci_err(pdev, "Freeze failed! Interrupts are still enabled.\n");
->+		return -EINVAL;
->+	}
->+
->+	ret = pci_load_saved_state(pdev, vdev->pci_saved_state);
->+	if (ret)
->+		return ret;
->+
->+	vfio_pci_core_try_reset(vdev);
+[auto build test WARNING on 6381a729fa7dda43574d93ab9c61cec516dd885b]
 
-nit: I see you have already added a comment earlier saying that device will
-be reset to a clean state as all the of the dependencies to preserve the
-state for continous DMA are not there. Maybe we can add a comment here
-to specify that this will go away once we have full preservation
-support.
->+	pci_restore_state(pdev);
->+	return 0;
-> }
->
-> static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
->@@ -42,6 +193,7 @@ static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
-> 	.can_preserve = vfio_pci_liveupdate_can_preserve,
-> 	.preserve = vfio_pci_liveupdate_preserve,
-> 	.unpreserve = vfio_pci_liveupdate_unpreserve,
->+	.freeze = vfio_pci_liveupdate_freeze,
-> 	.retrieve = vfio_pci_liveupdate_retrieve,
-> 	.finish = vfio_pci_liveupdate_finish,
-> 	.owner = THIS_MODULE,
->diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
->index cbf46e09da30..fa5c7f544f8a 100644
->--- a/drivers/vfio/pci/vfio_pci_priv.h
->+++ b/drivers/vfio/pci/vfio_pci_priv.h
->@@ -11,6 +11,10 @@
-> /* Cap maximum number of ioeventfds per device (arbitrary) */
-> #define VFIO_PCI_IOEVENTFD_MAX		1000
->
->+extern const struct vfio_device_ops vfio_pci_ops;
->+
->+void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev);
->+
-> struct vfio_pci_ioeventfd {
-> 	struct list_head	next;
-> 	struct vfio_pci_core_device	*vdev;
->diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
->index 742477546b15..8b222f71bbab 100644
->--- a/drivers/vfio/vfio_main.c
->+++ b/drivers/vfio/vfio_main.c
->@@ -1436,7 +1436,7 @@ const struct file_operations vfio_device_fops = {
-> #endif
-> };
->
->-static struct vfio_device *vfio_device_from_file(struct file *file)
->+struct vfio_device *vfio_device_from_file(struct file *file)
-> {
-> 	struct vfio_device_file *df = file->private_data;
->
->@@ -1444,6 +1444,7 @@ static struct vfio_device *vfio_device_from_file(struct file *file)
-> 		return NULL;
-> 	return df->device;
-> }
->+EXPORT_SYMBOL_GPL(vfio_device_from_file);
->
-> /**
->  * vfio_file_is_valid - True if the file is valid vfio file
->diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
->index e2412b455e61..876aaf81dd92 100644
->--- a/include/linux/kho/abi/vfio_pci.h
->+++ b/include/linux/kho/abi/vfio_pci.h
->@@ -9,6 +9,9 @@
-> #ifndef _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
-> #define _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
->
->+#include <linux/compiler.h>
->+#include <linux/types.h>
->+
-> /**
->  * DOC: VFIO PCI Live Update ABI
->  *
->@@ -25,4 +28,16 @@
->
-> #define VFIO_PCI_LUO_FH_COMPATIBLE "vfio-pci-v1"
->
->+/**
->+ * struct vfio_pci_core_device_ser - Serialized state of a single VFIO PCI
->+ * device.
->+ *
->+ * @domain: The device's PCI domain number (segment).
->+ * @bdf: The device's PCI bus, device, and function number.
->+ */
->+struct vfio_pci_core_device_ser {
->+	u32 domain;
->+	u16 bdf;
->+} __packed;
->+
-> #endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
->diff --git a/include/linux/vfio.h b/include/linux/vfio.h
->index e90859956514..e9d3ddb715c5 100644
->--- a/include/linux/vfio.h
->+++ b/include/linux/vfio.h
->@@ -81,6 +81,8 @@ struct vfio_device {
-> #endif
-> };
->
->+struct vfio_device *vfio_device_from_file(struct file *file);
->+
-> /**
->  * struct vfio_device_ops - VFIO bus driver device callbacks
->  *
->-- 
->2.53.0.983.g0bb29b3bc5-goog
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20260327-203639
+base:   6381a729fa7dda43574d93ab9c61cec516dd885b
+patch link:    https://lore.kernel.org/r/20260325175453.2523280-4-youngjun.park%40lge.com
+patch subject: [PATCH v5 3/4] mm: memcontrol: add interfaces for swap tier selection
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
+reproduce: (https://download.01.org/0day-ci/archive/20260328/202603280046.d4u6S8W9-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603280046.d4u6S8W9-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   Warning: tools/docs/documentation-file-ref-check references a file that doesn't exist: m,\b(\S*)(Documentation/[A-Za-z0-9
+   Warning: tools/docs/documentation-file-ref-check references a file that doesn't exist: Documentation/devicetree/dt-object-internal.txt
+   Warning: tools/docs/documentation-file-ref-check references a file that doesn't exist: m,^Documentation/scheduler/sched-pelt
+   Warning: tools/docs/documentation-file-ref-check references a file that doesn't exist: m,(Documentation/translations/[
+   Using alabaster theme
+>> Documentation/admin-guide/cgroup-v2.rst:1860: WARNING: Inline substitution_reference start-string without end-string. [docutils]
+>> Documentation/admin-guide/cgroup-v2.rst:1860: WARNING: Inline substitution_reference start-string without end-string. [docutils]
+   Documentation/core-api/kref:328: ./include/linux/kref.h:72: WARNING: Invalid C declaration: Expected end of definition. [error at 96]
+   int kref_put_mutex (struct kref *kref, void (*release)(struct kref *kref), struct mutex *mutex) __cond_acquires(true# mutex)
+   ------------------------------------------------------------------------------------------------^
+   Documentation/core-api/kref:328: ./include/linux/kref.h:94: WARNING: Invalid C declaration: Expected end of definition. [error at 92]
+   int kref_put_lock (struct kref *kref, void (*release)(struct kref *kref), spinlock_t *lock) __cond_acquires(true# lock)
+
+
+vim +1860 Documentation/admin-guide/cgroup-v2.rst
+
+  1427	
+  1428		  ==========            ================================
+  1429		  swappiness            Swappiness value to reclaim with
+  1430		  ==========            ================================
+  1431	
+  1432		Specifying a swappiness value instructs the kernel to perform
+  1433		the reclaim with that swappiness value. Note that this has the
+  1434		same semantics as vm.swappiness applied to memcg reclaim with
+  1435		all the existing limitations and potential future extensions.
+  1436	
+  1437		The valid range for swappiness is [0-200, max], setting
+  1438		swappiness=max exclusively reclaims anonymous memory.
+  1439	
+  1440	  memory.peak
+  1441		A read-write single value file which exists on non-root cgroups.
+  1442	
+  1443		The max memory usage recorded for the cgroup and its descendants since
+  1444		either the creation of the cgroup or the most recent reset for that FD.
+  1445	
+  1446		A write of any non-empty string to this file resets it to the
+  1447		current memory usage for subsequent reads through the same
+  1448		file descriptor.
+  1449	
+  1450	  memory.oom.group
+  1451		A read-write single value file which exists on non-root
+  1452		cgroups.  The default value is "0".
+  1453	
+  1454		Determines whether the cgroup should be treated as
+  1455		an indivisible workload by the OOM killer. If set,
+  1456		all tasks belonging to the cgroup or to its descendants
+  1457		(if the memory cgroup is not a leaf cgroup) are killed
+  1458		together or not at all. This can be used to avoid
+  1459		partial kills to guarantee workload integrity.
+  1460	
+  1461		Tasks with the OOM protection (oom_score_adj set to -1000)
+  1462		are treated as an exception and are never killed.
+  1463	
+  1464		If the OOM killer is invoked in a cgroup, it's not going
+  1465		to kill any tasks outside of this cgroup, regardless
+  1466		memory.oom.group values of ancestor cgroups.
+  1467	
+  1468	  memory.events
+  1469		A read-only flat-keyed file which exists on non-root cgroups.
+  1470		The following entries are defined.  Unless specified
+  1471		otherwise, a value change in this file generates a file
+  1472		modified event.
+  1473	
+  1474		Note that all fields in this file are hierarchical and the
+  1475		file modified event can be generated due to an event down the
+  1476		hierarchy. For the local events at the cgroup level see
+  1477		memory.events.local.
+  1478	
+  1479		  low
+  1480			The number of times the cgroup is reclaimed due to
+  1481			high memory pressure even though its usage is under
+  1482			the low boundary.  This usually indicates that the low
+  1483			boundary is over-committed.
+  1484	
+  1485		  high
+  1486			The number of times processes of the cgroup are
+  1487			throttled and routed to perform direct memory reclaim
+  1488			because the high memory boundary was exceeded.  For a
+  1489			cgroup whose memory usage is capped by the high limit
+  1490			rather than global memory pressure, this event's
+  1491			occurrences are expected.
+  1492	
+  1493		  max
+  1494			The number of times the cgroup's memory usage was
+  1495			about to go over the max boundary.  If direct reclaim
+  1496			fails to bring it down, the cgroup goes to OOM state.
+  1497	
+  1498		  oom
+  1499			The number of time the cgroup's memory usage was
+  1500			reached the limit and allocation was about to fail.
+  1501	
+  1502			This event is not raised if the OOM killer is not
+  1503			considered as an option, e.g. for failed high-order
+  1504			allocations or if caller asked to not retry attempts.
+  1505	
+  1506		  oom_kill
+  1507			The number of processes belonging to this cgroup
+  1508			killed by any kind of OOM killer.
+  1509	
+  1510	          oom_group_kill
+  1511	                The number of times a group OOM has occurred.
+  1512	
+  1513	          sock_throttled
+  1514	                The number of times network sockets associated with
+  1515	                this cgroup are throttled.
+  1516	
+  1517	  memory.events.local
+  1518		Similar to memory.events but the fields in the file are local
+  1519		to the cgroup i.e. not hierarchical. The file modified event
+  1520		generated on this file reflects only the local events.
+  1521	
+  1522	  memory.stat
+  1523		A read-only flat-keyed file which exists on non-root cgroups.
+  1524	
+  1525		This breaks down the cgroup's memory footprint into different
+  1526		types of memory, type-specific details, and other information
+  1527		on the state and past events of the memory management system.
+  1528	
+  1529		All memory amounts are in bytes.
+  1530	
+  1531		The entries are ordered to be human readable, and new entries
+  1532		can show up in the middle. Don't rely on items remaining in a
+  1533		fixed position; use the keys to look up specific values!
+  1534	
+  1535		If the entry has no per-node counter (or not show in the
+  1536		memory.numa_stat). We use 'npn' (non-per-node) as the tag
+  1537		to indicate that it will not show in the memory.numa_stat.
+  1538	
+  1539		  anon
+  1540			Amount of memory used in anonymous mappings such as
+  1541			brk(), sbrk(), and mmap(MAP_ANONYMOUS). Note that
+  1542			some kernel configurations might account complete larger
+  1543			allocations (e.g., THP) if only some, but not all the
+  1544			memory of such an allocation is mapped anymore.
+  1545	
+  1546		  file
+  1547			Amount of memory used to cache filesystem data,
+  1548			including tmpfs and shared memory.
+  1549	
+  1550		  kernel (npn)
+  1551			Amount of total kernel memory, including
+  1552			(kernel_stack, pagetables, percpu, vmalloc, slab) in
+  1553			addition to other kernel memory use cases.
+  1554	
+  1555		  kernel_stack
+  1556			Amount of memory allocated to kernel stacks.
+  1557	
+  1558		  pagetables
+  1559	                Amount of memory allocated for page tables.
+  1560	
+  1561		  sec_pagetables
+  1562			Amount of memory allocated for secondary page tables,
+  1563			this currently includes KVM mmu allocations on x86
+  1564			and arm64 and IOMMU page tables.
+  1565	
+  1566		  percpu (npn)
+  1567			Amount of memory used for storing per-cpu kernel
+  1568			data structures.
+  1569	
+  1570		  sock (npn)
+  1571			Amount of memory used in network transmission buffers
+  1572	
+  1573		  vmalloc (npn)
+  1574			Amount of memory used for vmap backed memory.
+  1575	
+  1576		  shmem
+  1577			Amount of cached filesystem data that is swap-backed,
+  1578			such as tmpfs, shm segments, shared anonymous mmap()s
+  1579	
+  1580		  zswap
+  1581			Amount of memory consumed by the zswap compression backend.
+  1582	
+  1583		  zswapped
+  1584			Amount of application memory swapped out to zswap.
+  1585	
+  1586		  file_mapped
+  1587			Amount of cached filesystem data mapped with mmap(). Note
+  1588			that some kernel configurations might account complete
+  1589			larger allocations (e.g., THP) if only some, but not
+  1590			not all the memory of such an allocation is mapped.
+  1591	
+  1592		  file_dirty
+  1593			Amount of cached filesystem data that was modified but
+  1594			not yet written back to disk
+  1595	
+  1596		  file_writeback
+  1597			Amount of cached filesystem data that was modified and
+  1598			is currently being written back to disk
+  1599	
+  1600		  swapcached
+  1601			Amount of swap cached in memory. The swapcache is accounted
+  1602			against both memory and swap usage.
+  1603	
+  1604		  anon_thp
+  1605			Amount of memory used in anonymous mappings backed by
+  1606			transparent hugepages
+  1607	
+  1608		  file_thp
+  1609			Amount of cached filesystem data backed by transparent
+  1610			hugepages
+  1611	
+  1612		  shmem_thp
+  1613			Amount of shm, tmpfs, shared anonymous mmap()s backed by
+  1614			transparent hugepages
+  1615	
+  1616		  inactive_anon, active_anon, inactive_file, active_file, unevictable
+  1617			Amount of memory, swap-backed and filesystem-backed,
+  1618			on the internal memory management lists used by the
+  1619			page reclaim algorithm.
+  1620	
+  1621			As these represent internal list state (eg. shmem pages are on anon
+  1622			memory management lists), inactive_foo + active_foo may not be equal to
+  1623			the value for the foo counter, since the foo counter is type-based, not
+  1624			list-based.
+  1625	
+  1626		  slab_reclaimable
+  1627			Part of "slab" that might be reclaimed, such as
+  1628			dentries and inodes.
+  1629	
+  1630		  slab_unreclaimable
+  1631			Part of "slab" that cannot be reclaimed on memory
+  1632			pressure.
+  1633	
+  1634		  slab (npn)
+  1635			Amount of memory used for storing in-kernel data
+  1636			structures.
+  1637	
+  1638		  workingset_refault_anon
+  1639			Number of refaults of previously evicted anonymous pages.
+  1640	
+  1641		  workingset_refault_file
+  1642			Number of refaults of previously evicted file pages.
+  1643	
+  1644		  workingset_activate_anon
+  1645			Number of refaulted anonymous pages that were immediately
+  1646			activated.
+  1647	
+  1648		  workingset_activate_file
+  1649			Number of refaulted file pages that were immediately activated.
+  1650	
+  1651		  workingset_restore_anon
+  1652			Number of restored anonymous pages which have been detected as
+  1653			an active workingset before they got reclaimed.
+  1654	
+  1655		  workingset_restore_file
+  1656			Number of restored file pages which have been detected as an
+  1657			active workingset before they got reclaimed.
+  1658	
+  1659		  workingset_nodereclaim
+  1660			Number of times a shadow node has been reclaimed
+  1661	
+  1662		  pswpin (npn)
+  1663			Number of pages swapped into memory
+  1664	
+  1665		  pswpout (npn)
+  1666			Number of pages swapped out of memory
+  1667	
+  1668		  pgscan (npn)
+  1669			Amount of scanned pages (in an inactive LRU list)
+  1670	
+  1671		  pgsteal (npn)
+  1672			Amount of reclaimed pages
+  1673	
+  1674		  pgscan_kswapd (npn)
+  1675			Amount of scanned pages by kswapd (in an inactive LRU list)
+  1676	
+  1677		  pgscan_direct (npn)
+  1678			Amount of scanned pages directly  (in an inactive LRU list)
+  1679	
+  1680		  pgscan_khugepaged (npn)
+  1681			Amount of scanned pages by khugepaged  (in an inactive LRU list)
+  1682	
+  1683		  pgscan_proactive (npn)
+  1684			Amount of scanned pages proactively (in an inactive LRU list)
+  1685	
+  1686		  pgsteal_kswapd (npn)
+  1687			Amount of reclaimed pages by kswapd
+  1688	
+  1689		  pgsteal_direct (npn)
+  1690			Amount of reclaimed pages directly
+  1691	
+  1692		  pgsteal_khugepaged (npn)
+  1693			Amount of reclaimed pages by khugepaged
+  1694	
+  1695		  pgsteal_proactive (npn)
+  1696			Amount of reclaimed pages proactively
+  1697	
+  1698		  pgfault (npn)
+  1699			Total number of page faults incurred
+  1700	
+  1701		  pgmajfault (npn)
+  1702			Number of major page faults incurred
+  1703	
+  1704		  pgrefill (npn)
+  1705			Amount of scanned pages (in an active LRU list)
+  1706	
+  1707		  pgactivate (npn)
+  1708			Amount of pages moved to the active LRU list
+  1709	
+  1710		  pgdeactivate (npn)
+  1711			Amount of pages moved to the inactive LRU list
+  1712	
+  1713		  pglazyfree (npn)
+  1714			Amount of pages postponed to be freed under memory pressure
+  1715	
+  1716		  pglazyfreed (npn)
+  1717			Amount of reclaimed lazyfree pages
+  1718	
+  1719		  swpin_zero
+  1720			Number of pages swapped into memory and filled with zero, where I/O
+  1721			was optimized out because the page content was detected to be zero
+  1722			during swapout.
+  1723	
+  1724		  swpout_zero
+  1725			Number of zero-filled pages swapped out with I/O skipped due to the
+  1726			content being detected as zero.
+  1727	
+  1728		  zswpin
+  1729			Number of pages moved in to memory from zswap.
+  1730	
+  1731		  zswpout
+  1732			Number of pages moved out of memory to zswap.
+  1733	
+  1734		  zswpwb
+  1735			Number of pages written from zswap to swap.
+  1736	
+  1737		  zswap_incomp
+  1738			Number of incompressible pages currently stored in zswap
+  1739			without compression. These pages could not be compressed to
+  1740			a size smaller than PAGE_SIZE, so they are stored as-is.
+  1741	
+  1742		  thp_fault_alloc (npn)
+  1743			Number of transparent hugepages which were allocated to satisfy
+  1744			a page fault. This counter is not present when CONFIG_TRANSPARENT_HUGEPAGE
+  1745	                is not set.
+  1746	
+  1747		  thp_collapse_alloc (npn)
+  1748			Number of transparent hugepages which were allocated to allow
+  1749			collapsing an existing range of pages. This counter is not
+  1750			present when CONFIG_TRANSPARENT_HUGEPAGE is not set.
+  1751	
+  1752		  thp_swpout (npn)
+  1753			Number of transparent hugepages which are swapout in one piece
+  1754			without splitting.
+  1755	
+  1756		  thp_swpout_fallback (npn)
+  1757			Number of transparent hugepages which were split before swapout.
+  1758			Usually because failed to allocate some continuous swap space
+  1759			for the huge page.
+  1760	
+  1761		  numa_pages_migrated (npn)
+  1762			Number of pages migrated by NUMA balancing.
+  1763	
+  1764		  numa_pte_updates (npn)
+  1765			Number of pages whose page table entries are modified by
+  1766			NUMA balancing to produce NUMA hinting faults on access.
+  1767	
+  1768		  numa_hint_faults (npn)
+  1769			Number of NUMA hinting faults.
+  1770	
+  1771		  pgdemote_kswapd
+  1772			Number of pages demoted by kswapd.
+  1773	
+  1774		  pgdemote_direct
+  1775			Number of pages demoted directly.
+  1776	
+  1777		  pgdemote_khugepaged
+  1778			Number of pages demoted by khugepaged.
+  1779	
+  1780		  pgdemote_proactive
+  1781			Number of pages demoted by proactively.
+  1782	
+  1783		  hugetlb
+  1784			Amount of memory used by hugetlb pages. This metric only shows
+  1785			up if hugetlb usage is accounted for in memory.current (i.e.
+  1786			cgroup is mounted with the memory_hugetlb_accounting option).
+  1787	
+  1788	  memory.numa_stat
+  1789		A read-only nested-keyed file which exists on non-root cgroups.
+  1790	
+  1791		This breaks down the cgroup's memory footprint into different
+  1792		types of memory, type-specific details, and other information
+  1793		per node on the state of the memory management system.
+  1794	
+  1795		This is useful for providing visibility into the NUMA locality
+  1796		information within an memcg since the pages are allowed to be
+  1797		allocated from any physical node. One of the use case is evaluating
+  1798		application performance by combining this information with the
+  1799		application's CPU allocation.
+  1800	
+  1801		All memory amounts are in bytes.
+  1802	
+  1803		The output format of memory.numa_stat is::
+  1804	
+  1805		  type N0=<bytes in node 0> N1=<bytes in node 1> ...
+  1806	
+  1807		The entries are ordered to be human readable, and new entries
+  1808		can show up in the middle. Don't rely on items remaining in a
+  1809		fixed position; use the keys to look up specific values!
+  1810	
+  1811		The entries can refer to the memory.stat.
+  1812	
+  1813	  memory.swap.current
+  1814		A read-only single value file which exists on non-root
+  1815		cgroups.
+  1816	
+  1817		The total amount of swap currently being used by the cgroup
+  1818		and its descendants.
+  1819	
+  1820	  memory.swap.high
+  1821		A read-write single value file which exists on non-root
+  1822		cgroups.  The default is "max".
+  1823	
+  1824		Swap usage throttle limit.  If a cgroup's swap usage exceeds
+  1825		this limit, all its further allocations will be throttled to
+  1826		allow userspace to implement custom out-of-memory procedures.
+  1827	
+  1828		This limit marks a point of no return for the cgroup. It is NOT
+  1829		designed to manage the amount of swapping a workload does
+  1830		during regular operation. Compare to memory.swap.max, which
+  1831		prohibits swapping past a set amount, but lets the cgroup
+  1832		continue unimpeded as long as other memory can be reclaimed.
+  1833	
+  1834		Healthy workloads are not expected to reach this limit.
+  1835	
+  1836	  memory.swap.peak
+  1837		A read-write single value file which exists on non-root cgroups.
+  1838	
+  1839		The max swap usage recorded for the cgroup and its descendants since
+  1840		the creation of the cgroup or the most recent reset for that FD.
+  1841	
+  1842		A write of any non-empty string to this file resets it to the
+  1843		current memory usage for subsequent reads through the same
+  1844		file descriptor.
+  1845	
+  1846	  memory.swap.max
+  1847		A read-write single value file which exists on non-root
+  1848		cgroups.  The default is "max".
+  1849	
+  1850		Swap usage hard limit.  If a cgroup's swap usage reaches this
+  1851		limit, anonymous memory of the cgroup will not be swapped out.
+  1852	
+  1853	  memory.swap.tiers
+  1854	        A read-write file which exists on non-root cgroups.
+  1855	        Format is similar to cgroup.subtree_control.
+  1856	
+  1857	        Controls which swap tiers this cgroup is allowed to swap
+  1858	        out to. All tiers are enabled by default.
+  1859	
+> 1860	          (-|+)TIER [(-|+)TIER ...]
+  1861	
+  1862	        "-" disables a tier, "+" re-enables it.
+  1863	        Entries are whitespace-delimited.
+  1864	
+  1865	        Changes here are combined with parent restrictions to
+  1866	        compute memory.swap.tiers.effective.
+  1867	
+  1868	        If a tier is removed from /sys/kernel/mm/swap/tiers,
+  1869	        any prior disable for that tier is invalidated.
+  1870	
+  1871	  memory.swap.tiers.effective
+  1872	        A read-only file which exists on non-root cgroups.
+  1873	
+  1874	        Shows the tiers this cgroup can actually swap out to.
+  1875	        This is the intersection of the parent's effective tiers
+  1876	        and this cgroup's own memory.swap.tiers configuration.
+  1877	        A child cannot enable a tier that is disabled in its
+  1878	        parent.
+  1879	
+  1880	  memory.swap.events
+  1881		A read-only flat-keyed file which exists on non-root cgroups.
+  1882		The following entries are defined.  Unless specified
+  1883		otherwise, a value change in this file generates a file
+  1884		modified event.
+  1885	
+  1886		  high
+  1887			The number of times the cgroup's swap usage was over
+  1888			the high threshold.
+  1889	
+  1890		  max
+  1891			The number of times the cgroup's swap usage was about
+  1892			to go over the max boundary and swap allocation
+  1893			failed.
+  1894	
+  1895		  fail
+  1896			The number of times swap allocation failed either
+  1897			because of running out of swap system-wide or max
+  1898			limit.
+  1899	
+  1900		When reduced under the current usage, the existing swap
+  1901		entries are reclaimed gradually and the swap usage may stay
+  1902		higher than the limit for an extended period of time.  This
+  1903		reduces the impact on the workload and memory management.
+  1904	
+  1905	  memory.zswap.current
+  1906		A read-only single value file which exists on non-root
+  1907		cgroups.
+  1908	
+  1909		The total amount of memory consumed by the zswap compression
+  1910		backend.
+  1911	
+  1912	  memory.zswap.max
+  1913		A read-write single value file which exists on non-root
+  1914		cgroups.  The default is "max".
+  1915	
+  1916		Zswap usage hard limit. If a cgroup's zswap pool reaches this
+  1917		limit, it will refuse to take any more stores before existing
+  1918		entries fault back in or are written out to disk.
+  1919	
+  1920	  memory.zswap.writeback
+  1921		A read-write single value file. The default value is "1".
+  1922		Note that this setting is hierarchical, i.e. the writeback would be
+  1923		implicitly disabled for child cgroups if the upper hierarchy
+  1924		does so.
+  1925	
+  1926		When this is set to 0, all swapping attempts to swapping devices
+  1927		are disabled. This included both zswap writebacks, and swapping due
+  1928		to zswap store failures. If the zswap store failures are recurring
+  1929		(for e.g if the pages are incompressible), users can observe
+  1930		reclaim inefficiency after disabling writeback (because the same
+  1931		pages might be rejected again and again).
+  1932	
+  1933		Note that this is subtly different from setting memory.swap.max to
+  1934		0, as it still allows for pages to be written to the zswap pool.
+  1935		This setting has no effect if zswap is disabled, and swapping
+  1936		is allowed unless memory.swap.max is set to 0.
+  1937	
+  1938	  memory.pressure
+  1939		A read-only nested-keyed file.
+  1940	
+  1941		Shows pressure stall information for memory. See
+  1942		:ref:`Documentation/accounting/psi.rst <psi>` for details.
+  1943	
+  1944	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
