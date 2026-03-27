@@ -4,146 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E47110F2865
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 18:54:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F8010F2865
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:07:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D7136B008C; Fri, 27 Mar 2026 14:54:40 -0400 (EDT)
+	id 837B16B008C; Fri, 27 Mar 2026 15:07:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AEFA6B0095; Fri, 27 Mar 2026 14:54:40 -0400 (EDT)
+	id 80EE36B0095; Fri, 27 Mar 2026 15:07:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69D2F6B0096; Fri, 27 Mar 2026 14:54:40 -0400 (EDT)
+	id 724D56B0096; Fri, 27 Mar 2026 15:07:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5887E6B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:54:40 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E0EA6B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:07:05 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5B1D14126F
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 18:54:39 +0000 (UTC)
-X-FDA: 84592744278.25.F35ABC2
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5767C4000B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 18:54:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=VlwS5Xz1;
-	spf=pass (imf07.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E64513AB68
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:07:04 +0000 (UTC)
+X-FDA: 84592775568.25.A25C645
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5CC1D40011
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:07:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UfXZG6rj;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774637677;
+	s=arc-20220608; t=1774638422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TlW9BNNRrexZjfCFbEEazoVNUBAQydVdjXTuEnMtgLs=;
-	b=HCwSNFclDSXWR1cdgmftK/ua9oBQyOoRX+TYIfAAODg6DUU3F83+3Xi3Ck1sYhpTlNGGjD
-	ClJkvIBqxmGQtUFpVKnKCUpFpiWUuU06fprym/npafo2AX9rLvppmLRUIsow5RZTXNtvIs
-	dGaLtcGg20xApaTEGxOy3YSUtbtSeFg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=VlwS5Xz1;
-	spf=pass (imf07.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774637677; a=rsa-sha256;
+	bh=zmS+edh1qp65YWTEvc6IhgJSZLlTCjrxwgs6O8yvkVI=;
+	b=3dKqYDmo/WBxHwdNgVZKf9lUN5lgSatRu5787cExJqWe3TtE7gIDnnTUJIXy4NL80J1m/8
+	Z/9Ih1NQVpObQj9y7hmewejrDFS3LfCNua/vWQCTBRNYWJiq9rYKNt0YqIUc6S2yQd2+d9
+	7inB78OD0n+Vn0ESkiI7ylCTonsYpx8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774638422; a=rsa-sha256;
 	cv=none;
-	b=uiRYhp1QXlOMYYwwbzx+I6712aaO1nW/NRwHTE23mMsTP5yA1l1N1lmpBDLXV7eygjDKBY
-	qiIYZQaKTAlLXAngWrS/mPv4n8hys95CgrwlA6YauNuGLOROD4KIEQ2NLlZiStwbj8xZoG
-	xMOXvhvgoXw960woJsi7jsP/V3kbXiw=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62RAKCmi3275715;
-	Fri, 27 Mar 2026 18:54:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=TlW9BN
-	NRrexZjfCFbEEazoVNUBAQydVdjXTuEnMtgLs=; b=VlwS5Xz1eb1XJB5F1ypZ0J
-	9A1jl/b8Q23mq/zP467Sgxa8SYnVxeS6EGGYVDhD4ne0KjjGBft3ZwxQiCsosjUp
-	jkWCuRDEdBEqgs+F/9O5Zn6WUzXTrP6Lf70weMyzXLKR070e1WLkRejgtDl1vwGF
-	RgFqiOJ/lBksQWBkFKYywInxaq+yKv+nl2IeS5/bfiEcnriAY4y1aZRVroQrKm+Y
-	tUQvW4/uO7AsZZyYYTBC9SkOCvXcq9W0S5gP5RcpGinPpz1yZwuF9odd/KyS3uQu
-	YdU+WYZkb+S46HMDLIkUcbUVqiaMAfBAVMwCB4nbwS9WHRWZ+12NbBoUIAwJRYbg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kxqus7f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 18:54:22 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62RGAsfU012203;
-	Fri, 27 Mar 2026 18:54:21 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d27vkgmen-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 18:54:21 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62RIsKpS22479412
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 18:54:20 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C49B58059;
-	Fri, 27 Mar 2026 18:54:20 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C94358043;
-	Fri, 27 Mar 2026 18:54:15 +0000 (GMT)
-Received: from [9.39.31.223] (unknown [9.39.31.223])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 27 Mar 2026 18:54:15 +0000 (GMT)
-Message-ID: <2b8f30a6-a8d1-4ea5-8078-5eec399c8609@linux.ibm.com>
-Date: Sat, 28 Mar 2026 00:24:13 +0530
+	b=34HHIh5a7Dw7EPcjbQ1xatMgIqHWZz1KM4yvbgNp7jCDnvkTfFzYBvVfgVvxrhMpJyeggu
+	WIc0wmFul/UJ25K4dVKPnrukORgn9LBEPBsgtLb2FqH6gF1JpdlLH0K8DGvCFt5J5VFhNC
+	v9CttPOO8E08ad/Hrnzsq9BTWjhYobU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UfXZG6rj;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774638421; x=1806174421;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8LZlpASHsA/Y6GOiRodaZwiHzKtI3/rlF/snT/eGlms=;
+  b=UfXZG6rjLc4BQCFFkRyN7hr35kU+dgsgO3d5M0ot9Lsl/HD2mjluqamH
+   5+akA8dRqDNbDt3orTQDOJBgXCC35lHpeZUpKU29KFK0/+Y+MYj7tQCrR
+   hXKYPGDqJzC/qUtBhVTB+TcaAa++sf2tKiwre3YOScRzMVZNAzNuvaiYn
+   gXF2w/BBwNcUKqj5MHRmXZFZUDYpSwrpzVFd7LqeCkU1uyjXVjMP7UbOz
+   NgelPEAS2GiHx4QruwSIV8DHnREi24DdZzdKnonJs5lMNhtoeeUu9ibym
+   j8SW6nvaat5Ja4bEbiXxfyIjYto/FvS/aimwDgd9Az0wNfTdlLpwToQZj
+   A==;
+X-CSE-ConnectionGUID: SToCm7ihTyCC/DTWD2FgsA==
+X-CSE-MsgGUID: sm6lhLGrTqCKpnuf4Dk8kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="87106858"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="87106858"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 12:07:00 -0700
+X-CSE-ConnectionGUID: Z5niJQO1RvmVh1ZvWMioiw==
+X-CSE-MsgGUID: 9x50k4KTT0Ox7iyJ5PzXxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="222529332"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by fmviesa008.fm.intel.com with ESMTP; 27 Mar 2026 12:06:56 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w6CWD-000000007Xh-48qU;
+	Fri, 27 Mar 2026 19:06:53 +0000
+Date: Fri, 27 Mar 2026 20:06:53 +0100
+From: kernel test robot <lkp@intel.com>
+To: Youngjun Park <youngjun.park@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Chris Li <chrisl@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com
+Subject: Re: [PATCH v5 2/4] mm: swap: associate swap devices with tiers
+Message-ID: <202603271922.UNxxB12b-lkp@intel.com>
+References: <20260325175453.2523280-3-youngjun.park@lge.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] sched/numa, mm: Skip page promotion if cpu pid is valid
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Ying Huang <huang.ying.caritas@gmail.com>,
-        Juri Lelli
- <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>
-References: <20260326071216.11883-1-donettom@linux.ibm.com>
- <f41ab7cb-4430-4338-8812-eb6aa98e9bf9@kernel.org>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <f41ab7cb-4430-4338-8812-eb6aa98e9bf9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: pdv13f44JNz3stscr6j05sOF31-2DWb9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDEzMSBTYWx0ZWRfX2/IxKQ9ywZxb
- 6o8XoOI0Z83QeKc4khNcjLT2lRbR0EUv9ahso6ncL388JkD/vfqbM3NPD050/A188WTWRw1+egW
- 0RS/eQa6vwOMYS16v2Ob5cO7sK0THeBY0EwUjMHVlz3eYCJusGWg6MUTPdsCdYxAPbu9h8wCxCw
- ZaxrzRK8WspjmnptyPWR571pfocGgCFUOgZGcYMc2NVxO+FkFIimFQRq+8wRw0emfRD8ZPFn8x8
- QpSgP8Fx4kWv3qLl92gTAU+smFGqlhtB/vmVIUbUV0G5v9ur4gCgclUv9EzeU3yxb23JcY93w87
- QOer/ZEaqwh1XS8qnwyERZD9WkRH/6RiYnBIFLupzaLwkgjYPUmnav9rZMkTggJILaHGXQdTZLB
- 5+z6x9oeJU5X+qOoaxG/YZ5uoyf/4Tipe1tOnHrJmW/2HFWjZt4RS65K9PxfQfIZMPpB39Nh19W
- pS75i5gHk3elfQqo5WQ==
-X-Authority-Analysis: v=2.4 cv=bLEb4f+Z c=1 sm=1 tr=0 ts=69c6d25e cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=ZNc9nmATnA53SlO39hEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: ccn_TVv-MI4uN9Z2uHN8TvsWLjm1Z48f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-27_01,2026-03-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 clxscore=1015 phishscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603270131
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325175453.2523280-3-youngjun.park@lge.com>
+X-Rspamd-Queue-Id: 5CC1D40011
+X-Stat-Signature: zj4e6nz9xossuu16ud554o3gjt3wgm93
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5767C4000B
-X-Stat-Signature: 4o4rmimgidgj6w1r1ajgpioqjtndyqji
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774637677-792625
-X-HE-Meta: U2FsdGVkX18i/Efm1cqxCUV4m15/28tMM3MuZKGdtDoqv6l5yBHe7KP4kXpDjtAAxUlaUzZ9KA6MgtvC41ClhUxVQwHuDrlSCknPhA3z9EG+bWhXL4HyKk+h3Ztlxj+j1BDyZmUylN5Yig0j1j3UHyjjTDFEkZi8V57tIMZXWX6Zip2/VBxSy4TGVrVotoRHixm2uNOmc2k6PDoFPmJ2bp/NuyfBJdqEpDJOabX+3Xt34rxT0x++5bnW7JFGNB2zeRZmUhyOAomoZTxzhOg7JFbciCxvdCULWtr210F5Typ5SY4EWDrGQwxsJLzWMb8ekQTyoSx5Qykp3nKeefKQcKZNm+1HQqDIiAzOvfQEp9ZhpBqJdJB6rqKAX4F5lC8HolNYIAm7CELyAmIoZbg3WxmRHw6KdxQJBCIq5+5y5j/xZC/WLNM6atzkB5fX2PKmFGaTbTeA+jPtWnhI0nzKZJhZ63fIAXt/yLAlbIiZjZFMCYUTMiMtJYU0tw6CehSnBlM3nIg2m9cOnEd5JZ10OM7mKHOGQhp+Jj6xP66hUZyXHy8mxeTxzs8KgkVKs1hdWc28i7O0B+KG93Y1zEThPeKpd4bc2UrFbNO5sExxW0eEziw3JJ2Ybmp+H1NRdaMSMjIYFPxdHxdVHC4Pvyd+Ow5NfnoPK0TNOKyYsxrxGb3u/Ae6qaGb1EaOMRua1EDR1VikaUkO6dsWq64utmYH0aWpIpqczVeEtkVyctv8fvl5higxDNo95GN7HRnaCn4Y6irD/ohbdd+wK3AF1AZU0P69hIQ5eYGOzV8FuPvfbgt0AOsNwGb+3y0c/R+cHtsznz2Lf6XM5nGmGKO+R3rrJgCi1OjEvN9D5+FobxjcYOqycvhCvWjPtTeDqRSEktq7iKmxsokWwhEZkubHJ7G5hfBfKxWkJPWKJlxw/8AVrFrRM9b52hRHDA5fYUyxM1pxWDDw2eegNKLWFqinUUu
- N//5ENGh
- KdaN8msdHqQUegjOzNw558/sn5O2SluB/8L35cYtS7ANWDX28ZkNro8xSo+fWbo9TbEt+Nih9fulXZzQK4jHhhPlOJQBZGpnLj7/WR9WzrSwnD52AFGF5t5XWNLX6wgpu/DjyO7eBMTNt6qQuqOE1GsrF6MCVu3R3dkWkYSQ5CBvG49J0O0EWDgUq9ss9IX6AJTW64ICdWog/AWmKB+NcsNgaIoRPTRtoZGGOCDZoDCMZd6phDS6pF3OvgdV562MHxc3G7kdKr3WToTB8o03bpZwtW8vwbaavSbnXHwa/11h6wCC8CzoZPaFSj6vGk7z2420EHvA9x02ybtmytFkxqSH+m72YcJnrbHN/itv0nBbbTTW8+a4MtxQ2qImMuTPwk0SGFW8N9BeWrYCST9p7L2O6HgrckAfdfootlLFurM84+Lk3oACQpc9FKQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774638421-779275
+X-HE-Meta: U2FsdGVkX1+IyjqBSSE3aKGgvU5FbCn+HscXhE4siCJGOrnTh98aN9AHYjdoCDJBEAbGlu9DZeg05ZnF7nyic57CxahDxZiup6LnfmY2mewaCx3uugtC9KXJ8xReHLf7Nl2Mcqo6WTbyYyZxgC9q7KNThtygvawfORUQRJFj+c0+msY0AVC7v3YrYT7+OV+D+rio968ln3QM8mjBsCBCFJ7zfqrwYciN9aB4aIb7aloAQL71cw7UUUfpLvlzlJ1rt6yoa9w0keM84OzUSLRSuMBFea+KSXcTH5GaFnN70PT59Os9NP+RTdc2uA6N4rintpYaoaPY2TAKxgRp2CxW92xwNUAawjqb3nJrmpjaF+KbAlTAsXhe4ANih23p4LRoGRntc9Tui3FjURo/jN2G++cAI54QFOTC2ZvEJfiPvWN9OJej0i1LTbK8IGxd4BxEIf9XuaGc0Pq7B5/cvMc73WJPFesBIuVUqvpUwQPDecTlJIEW+jOMs49D2tHJm7cAcjsmNU/BStu51ifBrb8oTYqa8GZyfrpf/awzJ0n/X7r9A13omDSnyySI9qMvb5hyIVvktp8MaZf+6mD+TSkzqEDaK0YEOY1/r6Mn9uUVrekwt8NR3XNo888g9N0rf/PTRx5H1lBABwSPZ6e+is7U86oyjR8riRE7kanxaT6y+r4qOybYM/wpKBTmBuYDPmFLCO/kumV5GHBoQ6qOEVgvCVv44QRaNEeSZX2Appq9HJb5kPinY4rjfxvNvi9KybXaeWOD6bzIqeJCChqW/20ZhKFSnMWckJer6ytyxwwzZWpFQk1qumHNQvjMraG213hkvHMYjpmG4gLRZYJ+O+7NwZjBPetUht0osKtWBtHoIugmGX+3CX06AQSmqUF157/DzO9uTP2iBrbk1F8zPkjY/S2S1I6RssDyvaYhdcLoWZBD4KZi2tnOuX4UOMucIa72JW7FAUOMqs472EHrrEE
+ b3PDdyJ5
+ ot/RMjKwEzy71fSP9vkv1xE5dARAB+xcAGHmsZA262Jm+hTh81VjSbrfPK3uI2MxCxoMxdCJIE3QWgvi0JrWp07UnlHW5rjl3q0SXqit6Drw6OgI3HNbtU8hdyxYXB2nQJCwZgIDRvH0V3aWk2zwfdIYaIFOWjhQQakUojAFoJVBEN7XlED7RKeAbRo+5b5/w53Us2xSY7w5XLEO/REvbo4FwCnbTLvAGM5N7GqEmJBGNSKO1utnGj+OgTY1zXeeSphygyq8mtuCfUvtD3qrCbhFNofY+FIWtFlp/zIotuBzNw6vC0Sjj+DHy75b6+q8uTafO8OGbL1ZOqC92iBBQRnlTjHOrUSgz8rc8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,95 +114,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Youngjun,
 
-On 3/26/26 3:59 PM, David Hildenbrand (Arm) wrote:
-> On 3/26/26 08:12, Donet Tom wrote:
->> If memory tiering is disabled, cpupid of slow memory pages may
->> contain a valid CPU and PID. If tiering is enabled at runtime,
->> there is a chance that in should_numa_migrate_memory(), this
->> valid CPU/PID is treated as a last access timestamp, leading
->> to unnecessary promotion.
-> Is that measurable? Should we at least have a Fixes: ?
->
->> Prevent this by skipping promotion when cpupid is valid.
->>
->> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->> ---
->>   kernel/sched/fair.c | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->> index 4b43809a3fb1..f5830a5a94d5 100644
->> --- a/kernel/sched/fair.c
->> +++ b/kernel/sched/fair.c
->> @@ -2001,6 +2001,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->>   		unsigned int latency, th, def_th;
->>   		long nr = folio_nr_pages(folio);
->>   
-> /*
->   * When ...
->
->> +		/* When tiering is enabled at runtime, last_cpupid may
->> +		 * hold a valid cpupid instead of an access timestamp.
->> +		 * If so, skip page promotion.
->> +		 */
->> +		if (cpupid_valid(folio_last_cpupid(folio)))
->> +			return false;
->> +
-> IIUC, as timestamp we use jiffies_to_msecs(). So, soon after bootup,
-> we would no longer get false positives for cpupid_valid().
-> I suppose overflows are not a problem, correct?
+kernel test robot noticed the following build warnings:
 
-Thank you, David, for guiding me in the right direction.
+[auto build test WARNING on 6381a729fa7dda43574d93ab9c61cec516dd885b]
 
-I initially thought that overflows would not occur, and therefore
-cpupid_valid() would not produce false positives. However,
-after looking into it further, it appears that overflow can
-happen when storing the access time.
+url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20260327-203639
+base:   6381a729fa7dda43574d93ab9c61cec516dd885b
+patch link:    https://lore.kernel.org/r/20260325175453.2523280-3-youngjun.park%40lge.com
+patch subject: [PATCH v5 2/4] mm: swap: associate swap devices with tiers
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
+reproduce: (https://download.01.org/0day-ci/archive/20260327/202603271922.UNxxB12b-lkp@intel.com/reproduce)
 
-The last_cpupid field is used to store the last access time.
- From the code, it appears that 21 bits are used for this
-(#define LAST_CPUPID_SHIFT (LAST__PID_SHIFT + LAST__CPU_SHIFT)).
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603271922.UNxxB12b-lkp@intel.com/
 
-With 21 bits, the maximum value that can be stored is
-2097151ms (35Hrs) . If the access time exceeds this
-range, it can overflow, which may lead to cpupid_valid()
-returning false positives.
+All warnings (new ones prefixed by >>):
 
-I think we need a reliable way to determine cpupid_valid() that
-does not produce false positives.
-
--Donet
+   Non-Preserved Properties
+   ======================== [docutils]
+>> Documentation/mm/swap-tier.rst:19: WARNING: Title underline too short.
+--
+   Documentation/userspace-api/landlock:526: ./include/uapi/linux/landlock.h:45: ERROR: Unknown target name: "network flags". [docutils]
+   Documentation/userspace-api/landlock:526: ./include/uapi/linux/landlock.h:50: ERROR: Unknown target name: "scope flags". [docutils]
+   Documentation/userspace-api/landlock:526: ./include/uapi/linux/landlock.h:24: ERROR: Unknown target name: "filesystem flags". [docutils]
+   Documentation/userspace-api/landlock:535: ./include/uapi/linux/landlock.h:166: ERROR: Unknown target name: "filesystem flags". [docutils]
+   Documentation/userspace-api/landlock:535: ./include/uapi/linux/landlock.h:189: ERROR: Unknown target name: "network flags". [docutils]
+>> Documentation/mm/swap-tier.rst: WARNING: document isn't included in any toctree [toc.not_included]
+   Documentation/networking/skbuff:36: ./include/linux/skbuff.h:181: WARNING: Failed to create a cross reference. A title or caption not found: 'crc' [ref.ref]
 
 
->
-> So what we're saying is that folio_use_access_time()==true does not
-> imply that there is actually a valid time in there.
->
-> In numa_migrate_check() we could still use the valid cpuid I guess and
-> make that code a bit clearer?
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 631205a384e1..ba68933a9e4a 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -6119,10 +6119,9 @@ int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
->           * For memory tiering mode, cpupid of slow memory page is used
->           * to record page access time.  So use default value.
->           */
-> -       if (folio_use_access_time(folio))
-> +       *last_cpupid = folio_last_cpupid(folio);
-> +       if (!cpupid_valid(*last_cpupid))
->                  *last_cpupid = (-1 & LAST_CPUPID_MASK);
-> -       else
-> -               *last_cpupid = folio_last_cpupid(folio);
->   
->          /* Record the current PID accessing VMA */
->          vma_set_access_pid_bit(vma);
->
->
-> The change itself here looks reasonable to me.
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->
+vim +19 Documentation/mm/swap-tier.rst
+
+    17	
+    18	Use case
+  > 19	-------
+    20	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
