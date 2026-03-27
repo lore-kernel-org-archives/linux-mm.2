@@ -4,103 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A3D210F284B
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391F910F284C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:07:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE3F56B008C; Fri, 27 Mar 2026 12:06:38 -0400 (EDT)
+	id 8199E6B008C; Fri, 27 Mar 2026 12:07:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6D3D6B0096; Fri, 27 Mar 2026 12:06:38 -0400 (EDT)
+	id 7C97D6B0096; Fri, 27 Mar 2026 12:07:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5CE46B0098; Fri, 27 Mar 2026 12:06:38 -0400 (EDT)
+	id 6B8D16B0098; Fri, 27 Mar 2026 12:07:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AB70E6B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:06:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 562B25EA11
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:06:38 +0000 (UTC)
-X-FDA: 84592320876.08.2EA216A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 30E8C100016
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:06:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=euB7uvj6;
-	spf=pass (imf05.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 560AE6B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:07:54 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FA7B1408C2
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:07:54 +0000 (UTC)
+X-FDA: 84592324068.25.B38044E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D967240014
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:07:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ja3Gn/8X";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6ey6zWAX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ja3Gn/8X";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6ey6zWAX;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774627672; a=rsa-sha256;
+	cv=none;
+	b=NMhYhmqERfmEzGvxJSIxO46MzJG0lCugqQ6HaFr889N+wY9XLJNx7qlVXbsTKiW76ItAGd
+	W6m9wvepIXD62zhw9D/UWn0cLYBXecazvKKtPQQj8lDZsfv2Km58Q9ptSoXbZ6SKP3ef1o
+	tr1dc6H2Pj2341GQkLOJSVbmPdgk4NQ=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ja3Gn/8X";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6ey6zWAX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ja3Gn/8X";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6ey6zWAX;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774627596;
+	s=arc-20220608; t=1774627672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c2KhTUAjw0jRKl8iCMNRp2pUaoEv3AvLCHL0xg/y+1U=;
-	b=R2qax0OE77Ms5cJUoHD0SlrsKqLh8LRh862VbkRjXMH2P9OpE6I1SufZY43Cpx4eGUile2
-	gOy/p2FqJQ147Ea4/f0Ovy1aHP46ieI0336mGn7ezvGe5awDKh0IDx2eNMeLKOVhM28EI0
-	Rfx1WN3ZaIX7mlrgLMRPQcy0T9KyQAs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774627596; a=rsa-sha256;
-	cv=none;
-	b=4woFTxZDu2xjhfRfYHKGd9tSr7Ng0N4HXhkHdTlkO1YmXfh+1XHoOZym09a1UMLv6DKgqV
-	4xafw767+j22ovMfN2iHQAbOakHVy4O6DYASc8F/SQ53MWs56NciEJSMfqEKpA/1Gu+UAf
-	WOwlTOS9D33+jFozL4IL/pmvCVBzkeU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=euB7uvj6;
-	spf=pass (imf05.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0380635DA;
-	Fri, 27 Mar 2026 09:06:29 -0700 (PDT)
-Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 501B53F905;
-	Fri, 27 Mar 2026 09:06:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774627594; bh=rP5Us1gXdwPg7GyTIgDBgSFYYiyK72XcZqUZNsRJd7o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=euB7uvj6sPvllCzscsJiWjfu2yQKubt0UwiyzR70XCV7OQY28kY7MGRijQb7Rj/ww
-	 g5Jnk+yKB7WIdQKX0sZMjkOG8Lh6yX18HV9LbxuG0Qx9gTebYXJ4nvfTqJnMBxiUjW
-	 Tep1yK+UIiWrTDxl7aHcASnUCM2R72F1NxjKzw+g=
-Date: Fri, 27 Mar 2026 16:06:27 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Andrei Vagin <avagin@google.com>
-Cc: Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, criu@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Chen Ridong <chenridong@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Koutny <mkoutny@suse.com>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-Subject: Re: [PATCH 1/4] exec: inherit HWCAPs from the parent process
-Message-ID: <acarA3sGKY4Acozw@J2N7QTR9R3.cambridge.arm.com>
-References: <20260323175340.3361311-1-avagin@google.com>
- <20260323175340.3361311-2-avagin@google.com>
- <acGEonF9I6sPA42B@J2N7QTR9R3.cambridge.arm.com>
- <acJnOB-rlyt-3jU4@willie-the-truck>
- <CAEWA0a7iR8YHooqXJfhersV6YhAXGMZDUhib3QQH5XGn=KNowA@mail.gmail.com>
+	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
+	b=GpnE79bnpnaY0U3d2qe9WbbQTBIIs0KPuW/o9cV1jzouTpW5nKqFQx7FDf3FiKTmS2Qv/f
+	RTXo10z/1+7thJp/SjnvTwzHYltz4Q0bXxSL4QS12WCUXMgoo2t8ccLFY4gv9klzfDl6oi
+	+gpspLiQMyVRRoW6btT+moiemDu/2O8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 48AA05BEE5;
+	Fri, 27 Mar 2026 16:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774627670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
+	b=ja3Gn/8XuXTXwihUUdv/cNCmN7MtssZoejPOEB4PHAphVKwmoUC6Vq/PBFI2iqjZ6da52m
+	CTuOg4cfctf1M6mSKiqiCutpFTQUglGOoUOblqKVKHdKzCSzYA07x/4N9kVH7EhlSTtMRR
+	hDJrQZCA8Wb1B9w9DtTH8o8iDTISoOk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774627670;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
+	b=6ey6zWAXJfAxJDq+xvcXMq4+Sin9q63+W6u2wa9o/QOVai0NqglMX55Q2aFD5u0NUylHGM
+	E+2XIKCFwuWTIfDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1774627670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
+	b=ja3Gn/8XuXTXwihUUdv/cNCmN7MtssZoejPOEB4PHAphVKwmoUC6Vq/PBFI2iqjZ6da52m
+	CTuOg4cfctf1M6mSKiqiCutpFTQUglGOoUOblqKVKHdKzCSzYA07x/4N9kVH7EhlSTtMRR
+	hDJrQZCA8Wb1B9w9DtTH8o8iDTISoOk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1774627670;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
+	b=6ey6zWAXJfAxJDq+xvcXMq4+Sin9q63+W6u2wa9o/QOVai0NqglMX55Q2aFD5u0NUylHGM
+	E+2XIKCFwuWTIfDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F95B4A0A2;
+	Fri, 27 Mar 2026 16:07:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NuaCD1arxmmuNwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 27 Mar 2026 16:07:50 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id EE9B8A0976; Fri, 27 Mar 2026 17:07:34 +0100 (CET)
+Date: Fri, 27 Mar 2026 17:07:34 +0100
+From: Jan Kara <jack@suse.cz>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, jack@suse.cz, willy@infradead.org, 
+	miklos@szeredi.hu, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] mm: start background writeback based on per-wb
+ threshold for strictlimit BDIs
+Message-ID: <pkmsqdxopfvphud4qvionkl45qnz64xiuo4gnhd3m2mvy4m3xm@fcrenmksutyh>
+References: <20260326234629.840938-1-joannelkoong@gmail.com>
+ <20260326234629.840938-2-joannelkoong@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEWA0a7iR8YHooqXJfhersV6YhAXGMZDUhib3QQH5XGn=KNowA@mail.gmail.com>
-X-Rspamd-Queue-Id: 30E8C100016
-X-Stat-Signature: sybwep5z9bte9y434om71tjyef5ibbhz
+In-Reply-To: <20260326234629.840938-2-joannelkoong@gmail.com>
+X-Rspamd-Queue-Id: D967240014
+X-Stat-Signature: y1gf5g7p9h3x6t6cdm64g1wxr9ukohi7
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774627595-549080
-X-HE-Meta: U2FsdGVkX1+nGX6xbImk17eWders9pFtFM2kSp+fM4I03rVMSI3twFfoI6BFrAxNyR8j31oN8WCboYAkBXYsc7caktCH/UsU6Hsu/Aj7p4cl/dv7obTc6eXRdkgsu+oJ1F3IPVnfSQGIULJLET92KJOcNpamQy3PCznKAUUf1vK+LFBfgDKcLAo6YEh4etwK6aHOadkxk37zrBkz2XrapQ3gqaAFoW+xN+fsvxLDr9IiyC8go5Knxmd5YUFqJ2EWdAOuHZB6JcV98MBDgnv6D5B5LHBbkXsiS/FHgYx6PvezJMJpu38FjfD3p/L9jlW2aJToeTeGAUyVoHwDQOy9JIAy/u7Ss6YU88WqGy9efRNqmhw57z544MBPHiZhf9T8s69XYVq459MzcZX5H5lZI4zNCuIHzm79+NcDKNNEsYf8qHUQvxqj9qxM9x7pBGvG1qaCwO6Ox0RMFkw58VDosRJHVYuLk+LQD/MrSUanaYRS5IqSYhjp3dOPsi90o8JxdQUaRjY75wSryGyChoelGhZ1HaI3cjkr+FGG6lBJIzml1fMYDwyxRbnBusisSjXwV91fIuZanqGaSsT+Qh1Gc8eO2cz+m2V0o+tKqqTUPtt1BzIijLNjMC+QXtxeiFx5JUPHTA7dyrraamZjLPOTpUiIy2cpsfH2A7AdFvxVyTZv5mKv9T5EMiz1RcMKcNOBB9vzqyw2tXB077ZXWMH/fxxg9CQeFlR7DdNLKWfgOVYoG1mzPRLf6rCGJnZQw2FcbuZmYwAwdlCwabbc7AKYsT2TaPwiBGThHt0xu/SMju3rZS2VOgowRJgdECb+nWW3cwgj1oocWvzGXuqVtIdXgxpKKIHE4SkZSiBsWj0zTNs6auV7cnF9n/g0e88+scqXpKGk7en+9tSZqHAR/xvof8IzBDYLaGfKYFNKisaX62HrPdhIIeORo6HbD2/jEi8nlPvLvpjWX6dIkaSD761
- GTzfbDBF
- pGRmMcM42hFaEgVTb9gbH9XfF5Q==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774627671-300624
+X-HE-Meta: U2FsdGVkX1/m7pA8bD97h6K7glaohgeQNQ08DyerRWzKqNwjtR5y6CWxqRkDQ8PdEACQLQCYK1ZA7DLn74rVj5YqORC8u/+6PteOxathIYdVxHxMFa9pv1zE6zx3GbBft6CgEc49zHqnPxMf8MIkgqN9cC9JBZV+Xa97YEIqUTA7IUbNu4KS0s2W/3l8QvAHFfBYL/6/7VT+XeE/IVxvMNsM2jQk+M+/VPSgJ8HRsZM0JNg7Y7nJpgPI5o0VVxY80Fg7kTtJ9I++Oz9lceXhVuWjFDRyTzN4EQRfcOgHnc2L+Zn1ZR1kYh8IbXYCFEcsRVO//NlPPxQO5fhXm/3uUQMGhP1Db4D0j118x+AwuGDvQ7Iti/7GRcv+we8b+eF2sGNXo68g83p7F1Zl1kzPMFEMma3gumF6R+dnMDJp72A6LVjQ+yPyv3F7Fl0mOPbuYESZ20/KTSemASSFApb4sUSsJrNCs3ugmNiJq0jmIZdH7TtfWNNz93fVUIQaTowaWcLSKb77s8fhF2se56cPRUubZSjNIiUc9vaobyxtu+UW0MchDgQFw+jdJa3N+/jnO4XpnM8Yg63c9JoJEE30jwArSyeL6T1vz/7M9G8yoYQC3nFWmM7NbpT3qSPvaMVfkfseo5wkG+X9572XR/H9NcpefyXp90JlqdLNdRiSxRjpWYY+ZshxM81sVYXkdDTodQi+DNX5Exq8yLjG3Jx3GnsVwHZvzB3QZ7mShxwBNjYurmRq4CPyPnTgznzCnfqzYExPLC3JnHM2/Mw2S1/R5CUZ+sLHKCy18mjHGim1blpVclPPMlfuz3sZNhbEjZqIqL/cHSGGIsn5F08eEfBvkYXXCvSZRGd8/03BRiD+rRpV8B1AvsUIl2T1HFzz/OgZSEji+Vct/0uUthPpD3tno9QGObdQkl8RmFGB+v6YEv0W4JzJG4Xvdyf3ut87sYgjg9PKhHChThWmCHpkYij
+ wVOTEVbx
+ LKF/uLwr424tTOSqdPH5fmIJbKe8QgUfHsX6h7k1oYvh/23oLYP72PTrxSpMBxCJmdkv/2yanG4brKqa9Q7EvoUa4kjLO6oTfAuAGab7Yg5uJmJlNTZhSWZZbreVH2rRsBctbrHh+1bz5fRRYqisdD8/Funjig9fqV2AUDQcvw/N5SUuVp0AxJeG1G/gE98oAjI8mvKB+tD8KB9X2Ntdka8YVGfVa9VbTzFkBF+3X/HqIwm4jhZOWYzQ30jKhmJfNnk3wsOq0aowBTJwtna+wrWXAMCFXpF58SL/a5SxK2ZHLoz1UZDpsiYH2YvftDJIIv8SDrx3E/PnCb334oHWHWU8VNMVstiu3fX49iOgYRg2y/1I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,145 +133,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 24, 2026 at 03:19:49PM -0700, Andrei Vagin wrote:
-> Hi Mark and Will,
+On Thu 26-03-26 16:46:29, Joanne Koong wrote:
+> The proactive nr_dirty > gdtc->bg_thresh check in balance_dirty_pages()
+> only checks the global dirty threshold to start background writeback
+> while the writer is still free-running, but for strictlimit BDIs (eg
+> fuse), the per-wb dirty count can exceed the per-wb background threshold
+> while the global threshold is not yet exceeded, so background writeback
+> for this case never gets proactively started.
 > 
-> Thanks for the feedback. Please read the inline comments.
+> Add a per-wb threshold check for strictlimit BDIs so that background
+> writeback is started when wb_dirty exceeds wb_bg_thresh, which drains
+> dirty pages before the writer hits the throttle wall, matching the
+> proactive behavior that the global check provides for non-strictlimit
+> BDIs.
 > 
-> On Tue, Mar 24, 2026 at 3:28 AM Will Deacon <will@kernel.org> wrote:
-> >
-> > On Mon, Mar 23, 2026 at 06:21:22PM +0000, Mark Rutland wrote:
-> > > On Mon, Mar 23, 2026 at 05:53:37PM +0000, Andrei Vagin wrote:
-> > > > Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
-> > > > AT_HWCAP2, etc.) from a parent process when they have been modified via
-> > > > prctl.
-> > > >
-> > > > To support C/R operations (snapshots, live migration) in heterogeneous
-> > > > clusters, we must ensure that processes utilize CPU features available
-> > > > on all potential target nodes. To solve this, we need to advertise a
-> > > > common feature set across the cluster.
-> > > >
-> > > > This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
-> > > > auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  When
-> > > > execve() is called, if the current process has MMF_USER_HWCAP set, the
-> > > > HWCAP values are extracted from the current auxiliary vector and stored
-> > > > in the linux_binprm structure. These values are then used to populate
-> > > > the auxiliary vector of the new process, effectively inheriting the
-> > > > hardware capabilities.
-> > > >
-> > > > The inherited HWCAPs are masked with the hardware capabilities supported
-> > > > by the current kernel to ensure that we don't report more features than
-> > > > actually supported. This is important to avoid unexpected behavior,
-> > > > especially for processes with additional privileges.
-> > >
-> > > At a high level, I don't think that's going to be sufficient:
-> > >
-> > > * On an architecture with other userspace accessible feature
-> > >   identification mechanism registers (e.g. ID registers), userspace
-> > >   might read those. So you might need to hide stuff there too, and
-> > >   that's going to require architecture-specific interfaces to manage.
-> > >
-> > >   It's possible that some code checks HWCAPs and others check ID
-> > >   registers, and mismatch between the two could be problematic.
-> > >
-> > > * If the HWCAPs can be inherited by a more privileged task, then a
-> > >   malicious user could use this to hide security features (e.g. shadow
-> > >   stack or pointer authentication on arm64), and make it easier to
-> > >   attack that task. While not a direct attack, it would undermine those
-> > >   features.
+> fio runs on fuse show about a 3-4% improvement in perf for buffered
+> writes:
+> fio --name=writeback_test --ioengine=psync --rw=write --bs=128k \
+>     --size=2G --numjobs=4 --ramp_time=10 --runtime=20 \
+>     --time_based --group_reporting=1 --direct=0
 > 
-> I agree with Mark that only a privileged process have to be able to mask
-> certain hardware features. Currently, PR_SET_MM_AUXV is guarded by
-> CAP_SYS_RESOURCE, but PR_SET_MM_MAP allows changing the auxiliary vector
-> without specific capabilities. This is definitely the issue. To address
-> this, I think we can consider to introduce a new prctl command to enable
-> HWCAP inheritance explicitly.
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+
+Looks good. Thanks for improving these! Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  mm/page-writeback.c | 16 ++++++----------
+>  1 file changed, 6 insertions(+), 10 deletions(-)
 > 
-> > Yeah, this looks like a non-starter to me on arm64. Even if it was
-> > extended to apply the same treatment to the idregs, many of the hwcap
-> > features can't actually be disabled by the kernel and so you still run
-> > the risk of a task that probes for the presence of a feature using
-> > something like a SIGILL handler or, perhaps more likely, assumes that
-> > the presence of one hwcap implies the presence of another. And then
-> > there are the applications that just base everything off the MIDR...
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index c1a4b32af1a7..30f3d5a6270f 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -1835,7 +1835,9 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+>  			balance_domain_limits(mdtc, strictlimit);
+>  		}
+>  
+> -		if (nr_dirty > gdtc->bg_thresh && !writeback_in_progress(wb))
+> +		if (!writeback_in_progress(wb) &&
+> +		    (nr_dirty > gdtc->bg_thresh ||
+> +		     (strictlimit && gdtc->wb_dirty > gdtc->wb_bg_thresh)))
+>  			wb_start_background_writeback(wb);
+>  
+>  		/*
+> @@ -1862,15 +1864,9 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+>  		 * Unconditionally start background writeback if it's not
+>  		 * already in progress. We need to do this because the global
+>  		 * dirty threshold check above (nr_dirty > gdtc->bg_thresh)
+> -		 * doesn't account for these cases:
+> -		 *
+> -		 * a) strictlimit BDIs: throttling is calculated using per-wb
+> -		 * thresholds. The per-wb threshold can be exceeded even when
+> -		 * nr_dirty < gdtc->bg_thresh
+> -		 *
+> -		 * b) memcg-based throttling: memcg uses its own dirty count and
+> -		 * thresholds and can trigger throttling even when global
+> -		 * nr_dirty < gdtc->bg_thresh
+> +		 * doesn't account for the memcg-based throttling case. memcg
+> +		 * uses its own dirty count and thresholds and can trigger
+> +		 * throttling even when global nr_dirty < gdtc->bg_thresh
+>  		 *
+>  		 * Writeback needs to be started else the writer stalls in the
+>  		 * throttle loop waiting for dirty pages to be written back
+> -- 
+> 2.52.0
 > 
-> The goal of this mechanism is not to provide strict architectural
-> enforcement or to trap the use of hardware features; rather, it is to
-> provide a consistent discovery interface for applications. I chose the
-> HWCAP vector because it mirrors the existing behavior of running an
-> older kernel on newer hardware: while ID registers might report a
-> feature as physically present, the HWCAPs will omit it if the kernel
-> lacks support. 
-
-On arm64, the view of the ID registers that userspace gets *only*
-exposes features that the kernel knows about, as userspace reads of
-those registers are trapped+emulated by the kernel. On arm64 it's 
-not true to say that something appears in those but not the HWCAPs.
-
-I understand that might be different on other architectures, and so
-maybe this approach is sufficient on other architectures, but it is not
-sufficient on arm64.
-
-> Applications are generally expected to treat HWCAPs as
-> the source of truth for which features are safe to use, even if the
-> underlying hardware is technically capable of more.
-
-I'm fairly certain that there are arm64 applications (and libraries)
-which check only the ID register values, and not the HWCAPs.
-
-Architecturally, there are features which are detected via other
-mechanisms (e.g. CHKFEAT), for which HWCAPs are also irrelevant. Even if
-that happens to be ok today, there are almost certainly future uses that
-will not be compatible with the scheme you propose.
-
-I don't think we can say "applications must check the HWCAPs", when we
-know that applications and libraries legitimately don't always do that.
-
-> Another significant advantage of using HWCAPs is that many
-> applications already rely on them for feature detection. This interface
-> allows these applications to work correctly "out-of-the-box" in a
-> migrated environment without requiring any userspace modifications.  I
-> understand that some apps may use other detection methods; however, there
-> it no gurantee that these applications will work correctly after
-> migration to another machine.
-
-I think the existince of applications that detect features by other
-(legitimate!) means implies that there's no guarantee that this feature
-is useful and will remain useful going forwards.
-
-For example, what do you plan to do if an application or library starts
-doing something legitimate that causes it to become incompatible with
-this scheme?
-
-I don't want to be in a position where userspace is asked to steer clear
-of legitimate mechanisms, or where architecture code suddently has to
-pick up a lot of complexity to make this work.
-
-> > There's also kvm, which provides a roundabout way to query some features
-> > of the underlying hardware.
-> >
-> > You're probably better off using/extending the idreg overrides we have
-> > in arch/arm64/kernel/pi/idreg-override.c so that you can make your
-> > cluster of heterogeneous machines look alike.
-> 
-> IIRC, idreg-override/cpuid-masking usually works for an entire machine.
-> We actually need to have a mechanism that will work on a per-container
-> basis. Workloads inside one cluster can have different
-> migration/snapshot requirements. Some are pinned to a specific node,
-> others are never migrated, while others need to be migratable across a
-> cluster or even between clusters. We need a mechanism that can be
-> tunable on a per-container/per-process basis.
-
-I think that's theoretically possible, BUT it will require substantially
-more complexity, to address the issues that Will and I have mentioned. I
-don't think people are very happy to pick up that complexity.
-
-There are many other aspects that are going to be problematic for
-heterogeneous migration. Even if you hide the HWCAP for a stateful
-feature (e.g. SME), it might appear in one machine's signal frames (and
-be mandatory there), but might not appear in anothers, and so migration
-might not work either way. Likewise, that state can appear via ptrace.
-
-Thanks,
-Mark.
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
