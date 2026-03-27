@@ -4,170 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ADEF10AB830
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:46:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B9E10ED67F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:55:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88A4A6B00A4; Fri, 27 Mar 2026 10:46:55 -0400 (EDT)
+	id 95B246B0095; Fri, 27 Mar 2026 10:55:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 861E46B00A5; Fri, 27 Mar 2026 10:46:55 -0400 (EDT)
+	id 9326F6B0096; Fri, 27 Mar 2026 10:55:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 750796B00A6; Fri, 27 Mar 2026 10:46:55 -0400 (EDT)
+	id 86F396B0098; Fri, 27 Mar 2026 10:55:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 60CD36B00A4
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:46:55 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1643E1B988D
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:46:55 +0000 (UTC)
-X-FDA: 84592119990.12.E7791C4
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012004.outbound.protection.outlook.com [40.93.195.4])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3B53C140005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:46:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CMaZHwyX;
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CMaZHwyX;
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774622812; a=rsa-sha256;
-	cv=pass;
-	b=xogfegG5CqMwN/IL6yp3dB4RuIRwixhf2HZbzccHVCSqNYuQ+a/ZPWFqG27oKBykVaYtqF
-	IHr+ivSIyVEPMugx3zoneSLt9JwHt4H02JM+INN9grTVis2NIgXmKEtRKLmu1OHRECUlw0
-	ametRdtjoGDv6QcfqRtqfKXUc/rDkDM=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774622812;
+	by kanga.kvack.org (Postfix) with ESMTP id 783666B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:55:49 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B4021A0FFC
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:55:49 +0000 (UTC)
+X-FDA: 84592142418.22.D71073D
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B322B1C0002
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:55:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="bnojqI/e";
+	spf=pass (imf20.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774623347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UO2ps3LsBuTSzyvMpsObW/Yrh5p2jVNefN7acX0Y9Lo=;
-	b=KSGoURas2shVmcR2hxzda6+XS91y7WiYpB/T0o0ZOYbekyPOOlqUzUXBGrN6ZJEL82S35H
-	lthFep6EY/Xs1s/yO9amcUKR6vmrJEToJT1k68Id33dC4gsA65gFRAAtWb2Ib9UjAq2gvs
-	YlwD5ji196UXsDOTG0NWddR79phwrdI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ekRU4zuuVicUeZhdxKhmtk+YdX6lv5qAft7i5VMgkEsBLdqzqaoUZ273HGjWewNpvJNZzI6qasWMNr781WRiovU/qdlLh6pX21wWc5k/d7hdXDpwv2Cov0l0aRFXK/nZlfP+TE054Ok2+cp9uXXKD7iZSnIMUrG0osxYmCpNMSme9y5/M4KGFrEm9RZLMgVbNyHYtz82jDzcg/CIhAq1OwV1Oh6n05BwpegxUhMqXUX8fWBnxf9I92syhtId6c9AjeCKiJL9si6F/+AFLzEZML2GBwiVs98BpS5QeWu1T4Yvenj4X4ZmNBRQFIWgJNOlCChnT/B97lzhrnaRobkqmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UO2ps3LsBuTSzyvMpsObW/Yrh5p2jVNefN7acX0Y9Lo=;
- b=LDLFTJTruDdDaFO432Cyy4YimIQt3tq02SyRfN0Z7Di3uPsuFVUxHQOVPWXtNTqhfTyIBLfQaDtgD5rSlmRenvNM+YMEsq8d0OuiOstFYGBm9JhztviwrRKFK3Hl0B1u1v9bE7HuOU6Rpx4TozdXtwjb6q6xUgK6NeQVUE6vgNJWMUr04tJnGyFSQIYqDks3li79B3mlStJnv0NM55UjHrjlkZXUTw+9d6Id3rAnIRggA9JCp0tUl3bMXy/QxJ6d+5tQwlQh6WEu8/KOvW8rO8L0Xm+38tDkQLqZOGQ2NfZ67eVwzYkdyOAQbAjD/pq0fPYSxilRzHCoYT4fMrOYUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UO2ps3LsBuTSzyvMpsObW/Yrh5p2jVNefN7acX0Y9Lo=;
- b=CMaZHwyXCtbiXNP4O4ag0AlhjDjJzMO6QplgCBuvoUS/6xeOrUyEHklxfAgTwXQigeK3xoHXRvSUigOK8EF4kHALIYWccZHdR7sX4EDCx8o6OxsqawIeAijONKQLNG8NBsm/aiHF0SkTUYb8dDi9Ja490MdYEcDhrHrZZ0797Xj4cC5N1+bJfgYOv3r5e7vuDnf6wcN8TW6r2OCF0efC/nkd/G8SlBkWx3FMPkxpEHlkL6Lve05qKGXGqbdjlvkVQMBMvdJAH1Ra8EospmWnJBLOlifnBqYz2a0OXXnGaZlHrEIXrGaz1ReL9l5hBqUjGON2QabKgeOXINr9JPOpFQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SA1PR12MB999109.namprd12.prod.outlook.com (2603:10b6:806:4a1::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Fri, 27 Mar
- 2026 14:46:46 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9745.007; Fri, 27 Mar 2026
- 14:46:46 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 02/10] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
-Date: Fri, 27 Mar 2026 10:46:43 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <ECEB0ACF-73B4-4F0F-B355-FFC209B3BE6E@nvidia.com>
-In-Reply-To: <31d9d5c1-02af-42b3-bc3e-aea151d3552b@lucifer.local>
-References: <20260327014255.2058916-1-ziy@nvidia.com>
- <20260327014255.2058916-3-ziy@nvidia.com>
- <31d9d5c1-02af-42b3-bc3e-aea151d3552b@lucifer.local>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1PR13CA0410.namprd13.prod.outlook.com
- (2603:10b6:208:2c2::25) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=REUXe8UYNGwRNwOSyc6qufXzTOCwF72bk0Eo6/3HEGg=;
+	b=Njletog+6uEABw/mKtE9i0P716iWzt57f+HBmEOZa1WwCiw1Va5dJPvhhri98iJKQins3h
+	mePbOdJC1BcO3BOkc8ez7pYlYvd8uItOVP5qTw3QY8SKkNTH46lEk99AgUKlkKjvXLOAze
+	KvrE27bIYXubQUlTkGdzSnFOm0hNSbU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="bnojqI/e";
+	spf=pass (imf20.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774623347; a=rsa-sha256;
+	cv=none;
+	b=cUdcQf5KfWHavdwjC58YSks8fxRozNQmSuPnfvXHBKgzhkJHpN4DOSn7RQGUXNkpFvWmts
+	bSUS4pZ2Ogi/ZAD3usc2IPH9Q927nJ9+YizjJK1bEyd+anDYEpywE5mmEK/lnfh8MTmJs3
+	DvsZy/1BVURZaTXjEsuwdiMowz/lZVE=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260327145544euoutp01e16521b47734f0353ccc73f8e98b8ba3~guoeCwyAZ0599805998euoutp01f
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:55:44 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260327145544euoutp01e16521b47734f0353ccc73f8e98b8ba3~guoeCwyAZ0599805998euoutp01f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1774623344;
+	bh=REUXe8UYNGwRNwOSyc6qufXzTOCwF72bk0Eo6/3HEGg=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=bnojqI/epEcuYRMSJKdrOewMzsAS5gYfTSJMyQ1OcYuVh307Kt4WAIJMCGhAImqNf
+	 9p2XMXpUpPL2PjUBO+/6m7Z/mP5L2K5Munla/d0RozFaufulx1xdLKXIbwzSwLcrp9
+	 /mrRbQDD84OjTjj5u3kdV0CRDd0tt8YcAsqqn1no=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260327145543eucas1p1ff8162bebd6e11976bf7be95ab3a2658~guodnd7MR2635526355eucas1p13;
+	Fri, 27 Mar 2026 14:55:43 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260327145541eusmtip1ce5407db7b38952ac949b9394b6c8bdd~guobpmBSi0746707467eusmtip1G;
+	Fri, 27 Mar 2026 14:55:41 +0000 (GMT)
+Message-ID: <336a20f9-408e-49d1-9d56-60315bd01881@samsung.com>
+Date: Fri, 27 Mar 2026 15:55:41 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA1PR12MB999109:EE_
-X-MS-Office365-Filtering-Correlation-Id: dcfde492-96e3-44f7-6ea9-08de8c0faba5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	LjXB+tPAAGCH8Pih+INIZSHghrBAcblv8w4WQimvUOwPSEV6MkeNVxmkphWrTwC3bSJKQ448lJZ1O0WuTlIp1QwcooDH+3Oa4aav8BGkdhyApco7e7Lf495bNdgS6mE/1Z7dDSFf1xvL2aep7gTpVs487/UijPLidFSLWrsC67JyDRM9kYBElb5pOMeLeubp57fitQM2NZFTt/KfKEZs5JWJ9SHoZ1ZpROxODPsggO3UnH27pBDE7Pmj1JsZS0gJ5rPvR+fTlrxmG4cymiDEuMJD8jeCplO0jTQHxOg4rBPwdOAZxxdtpNF957Bh253PCjNTf22yFJyjmAcFcISL+qwp4MNNuqW/KustUrSui0jDYfZVQ8fJBL/PGfnjelv0QZJVZACuKLLd8V47ZxdPjoRMXfWSySCMI1u64eoeSC5Znn8Wmzhw0+OnpqBLqWU2SGnA3sX1RRYHTDM+kJarg3fWLGIP50z8RgsTQIJzcGJdQWdAMB5uvLvIpQZniHYqfEfBRNv3+mftUaSacLYq9LhqrrYf5aBWYOKVjt4nhiaeSPofgKySEulGJz6h05FIOsyNuit+Qrb6UJUw8d7VyVuttbhkmFODjnP1XsMYAOVaCASPnzmYeoh2eBFw3TTWrIPgrtvTFupv4/buOrrQiyVZNGoQDHJT7MtiIPd3mlpPq1NDla9MBgXN5MlHvGQnK/2HnnZPbBQactwhYsWgBYFTLo+YbIpAVY2/H47zaGs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lPE1BIdaW7YhVJ34JlDJomizC49lRSF65ThZOGYCw/jmvHHAr3hePdoLSkJw?=
- =?us-ascii?Q?cYFsN+vTVoSEGoMYjTz1uOnxonZ/hclwztq8F69Ur2SXdo4Hkua2TXbI6gdh?=
- =?us-ascii?Q?6s1BlHZfZ9vs5KQ/uHbblfSSOPxg6AwATmtjpOas+/V3ssQsejZgbnHv/LBv?=
- =?us-ascii?Q?XYWYQpFx8BCl+uBCS1H8k5LUuB4qyqkm9lhVkyLreS9zue7k13RCjkwwboYm?=
- =?us-ascii?Q?R5Fb8q07/7lD5Y7agNSkchjFeV89xiuL0FzExIr/55M/MTcStkogYzA7WvzL?=
- =?us-ascii?Q?xruMHoKReXcjRwsRZ27oF/CjhLYmpTQ5Mjf/U/lv+3djuGRPJyKfYBHwDNyO?=
- =?us-ascii?Q?3uQLcEJvsdo2SGQVv5ec3CCyPc7lIj24LHJ+IDGIVEXCUYP45fqd+T1KfvyV?=
- =?us-ascii?Q?0BA0R2TPsEV1EN5XPzS8Fo2ixHineLQ2r6XH49xYtEoMqYDEeTsmGcvwHjZO?=
- =?us-ascii?Q?8AUGTKWO1mgwf4sYiTPN5luZQ+Z++NojvHwN9ylJ4EBudKBfseLoLPwEjvwZ?=
- =?us-ascii?Q?cWnFa/PNCInZoUOMHm1eXMsnzufHLzciZpIdDIjnQDg+HPt/Pjfx6VIcIIiF?=
- =?us-ascii?Q?lg4opCzpH3QmbEsFSlm3Iz3YRotmRy5RktOXkHAFQ7nhUkggT77wfFFNiWQ6?=
- =?us-ascii?Q?Gs9AqHzDO0hu0tfjkkC8Spum5Dw2A9jrCpCdrkbNho5ushwMQVXzAkJ2Kdbk?=
- =?us-ascii?Q?gqQmUYc+CmKq9/d3cAIDbDAEuPBuffU7AGUiQhV+R6wZa19ObFFGCBlP/lLS?=
- =?us-ascii?Q?Oo5tDa1qp+tHeoqu1iwRI3z34ABrEZ0T9l3nUa1Pjqu+yl/WLCu1JJRgJHOX?=
- =?us-ascii?Q?GteU4YQEgLFLYvZEZLZP2FzoFABy6noT8+/jzK4JckPCM4bPqY58OWcyYdU3?=
- =?us-ascii?Q?IEfXPlCTGZlJO3Sb9YH2w92bYXI7iXm2N7yq3NuYv8c9MBTc5FphPDp56RnP?=
- =?us-ascii?Q?aTechgJMg9wiYeT0AqzItwsQDD4BEL/5ziKSDg1LH+ctyg/rlP8OiyekFzZh?=
- =?us-ascii?Q?3ajzbZnezv0nYD2RvnpXLU1XQ8NvM/NFFbr0FQge3amUcpeh7VZnWgk7aLIq?=
- =?us-ascii?Q?R4ILNLC8p7SYEsjBxKYNKL2gUys9lGwdVvFtHOkrgfIVUemp1Rd2ec0dHmRx?=
- =?us-ascii?Q?DLsVDhRGa409somk+37rILr/dGmzqn/ShTLuOluA94qf3ZAwGuMaGhjF163S?=
- =?us-ascii?Q?JErjoj54aqGB136vQbIcuddC3JIm4WGrfe3CYT2+CNVSrSfeVzh6m6AMG9xM?=
- =?us-ascii?Q?tvJEBrXh41o4CjDResu65wkqhDoZWkHGzFGHRhP8rW1QYkEwv0iA2NXvnTCQ?=
- =?us-ascii?Q?sToUKpg8k90s61WAJLmm7KTc9lc4C8xkcnp83PlLCuiROx0nyzDGeB3mbmTU?=
- =?us-ascii?Q?E26M4veoRJyYE86+Arrc2beHmN3bPza+sJx4DCvR4MJBV7JPsicwQ7act0wB?=
- =?us-ascii?Q?3eTIjhvpU5Hn43VaNmADO3A3MzTRx7VyDCSkejRBhbX7pr1H/4Lwq8gZCdQe?=
- =?us-ascii?Q?yMXZp2jxr/GFj1m0cbl8C1D5Tr4x7k3P84xiUOxh5G9iyGykUGcqW/P2xFTR?=
- =?us-ascii?Q?vt6LJSBOPwdVKiDzNwAo2KZUKPzjivASdmLDbkh3023pihMdrOqi20/KqK/d?=
- =?us-ascii?Q?tm5ZOb3I6P15JddiZsbrRxx0dhCXMFgDtm2XJ1CASjDx1Cr4LvQMjAOV9LKG?=
- =?us-ascii?Q?smiC4AoncCpm6UkKxITnoLWHg3Ocza66ei3u9a+iGiiZ78l52ufuUM9TC0hT?=
- =?us-ascii?Q?+WEmdRukfQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dcfde492-96e3-44f7-6ea9-08de8c0faba5
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 14:46:46.6829
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d51+8oRiA7fRza6Y5tRNKxqvXngQECFaaRi9s8jf4ge3c7tOmwcZ/hcejIfh7+2X
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB999109
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3B53C140005
-X-Stat-Signature: tdeib4nyb3mc196fg9bismmpd3nik4x1
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] mm/slab: align kmalloc to cacheline when DMA API
+ debugging is active
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Mikhail Gavrilov
+	<mikhail.v.gavrilov@gmail.com>
+Cc: vbabka@kernel.org, harry.yoo@oracle.com, akpm@linux-foundation.org,
+	hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, stern@rowland.harvard.edu, linux@roeck-us.net,
+	andy.shevchenko@gmail.com, hch@lst.de, Jeff.kirsher@gmail.com, Robin Murphy
+	<robin.murphy@arm.com>
+Content-Language: en-US
+In-Reply-To: <d2ed7315-72ff-43f3-bfaa-995025cb9419@samsung.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260327145543eucas1p1ff8162bebd6e11976bf7be95ab3a2658
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39
+X-EPHeader: CA
+X-CMS-RootMailID: 20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39
+References: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com>
+	<CGME20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39@eucas1p1.samsung.com>
+	<acZ3ZUXhFHpSXzYS@arm.com>
+	<d2ed7315-72ff-43f3-bfaa-995025cb9419@samsung.com>
 X-Rspam-User: 
-X-HE-Tag: 1774622811-287748
-X-HE-Meta: U2FsdGVkX18LYRtRmTLX+FopPMxn+7gxok3XayXl7KKyxMXZq77wbwvs45v8MJt0VPooEo17vnOZzIEMh4lawV5ZHJV4ZGMe9pHBq8ctujwNHInbLK4Ukbi2VhNYJGnMz+dLMVPavbCLErwisOXfgDh1edb3L8pif6K22WLmI4KyMWstT8fokLwpCBzHPyfK+LVpIFL4ti28wwWFJhO5IJ2OllF7WjTro5z3NgzaHPeEbsZpdiOn9JTpQTj/hWW8KAvECseZgB3yh7JB1fCHDTZVUQzGdzNpE5RFxADqb4NHjcanlqWlVCXi5m09EjJ/rjYeVww/Poo8Gcatg/wSxe2/nPKcg9RCypI9K4p6X4jcUsawJDZBdh6fGrZGhNfLJ1h5JQOPDDVrQvYZb3R5Id49C7rDfprRcy5m6HPSHmh3xd/bEg1Hrp0EDZl9EzcI7nP/tPNKH4bmbH85MNgXmbPbksM2qkmL8GzOF5SkW3hHY/LbnQxGpwddr6bTnEvga34J33fco5IpboDZV8Hu6PrTbXQGBzmt3QH/EeldBA5+UhNyYSPP6G7GeO2AIVqbtngY7x49tSwC648gC0px1q8NRwxbZepUS/C9LkzkAB0q/yA4vnZTtkslQp69Rf9dV9W0HUSLPnMJ7hCgnkbwVg5AVA9wRqmansjqZD36g4GmmtC3u41qlz5Ayvse5oQEiaxhDTuA504CGNeJUsl2f0tkKP8L4kB8P53vFXTb1/QbJLgLqfij7DG3s7V9NxTxHFp47IM0MpX5F1e/Y2xRDQsGCPsHBYjMbhnaAL+5YKTfHKf+qvFXJ+VoGhGqh2j/WaACFa4ksyzkBAgHTimvC/Otya+U0AL9LFaK/S1jhwnXxKhokIFdUhVyhvzxL6sMr1bPjgFNOejlazjLBZN9VCbRhv1YZkl7zBN+BzXzFRMgctbw8Dtr18Bl12cyB+pbmswh1bWELPkCjidSnGl
- nckQRGsa
- n90bN4gewJru8OiHV1E8hVS9mtspA6KRh8rprtRgHKEZPW2S9jIjkWzxypXqHlAuzlFvWKDBK8irUbEiINywn/uSCzIH1hVE/P6AlXEWYSMK9AxJ20rXDM9l4Qv2IKR3hU9CZxZyCh07tIc6YAflJ7onDMvOlmQ1vxtbonKHkmR1yOSI9LGKHUDy1Bqx0TOxGnTuhfmm8j0U4j6KvMmQIr5npqX1hyF6PgfV8NzOWvuKNoD3+igbdSziFceZkAKuXjRtK3NuK5EWUIqxy3IPrIIiz5uwCT5z7k2QZNkreBv6ie0HhOFKE72NxKpAMQ7kOWjZCIaFCvAW+oOaOQnsau9wDnEEfWabyaZlX1mDrpM9wqb9iWrhyTzHAoIYWlyLYmzS1jGRVYK6MCcxuVn14C6q69jimX2fVxzX/soHaUVw75iqlGrhDNH8v1w==
+X-Rspamd-Queue-Id: B322B1C0002
+X-Stat-Signature: uhximinij49sm7i6kxcg8ymi4xyn88im
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774623346-813294
+X-HE-Meta: U2FsdGVkX19m5LNQyvTIe+44qVDbMakUl8FUMINs8KG11tOEw6mz4w30nMLMeJ51ihMAUHH70Hz8ahdt60fkFyWXeQCAjQvzOPunpQnDfZ9afICaX2k+1Y1JMZrUkbxhenm+p13B3ASQxaqyCVy66PZ09/MGikMadcPjZDcv2VxVVaXfwwZJgFrxgQTlz9MmaBNf6HAbOFpwgqIT244iBvKClfZOAJWs9c0wroaItBnz8XVpmsLmO+CuXbhSyettoDBi/QLRBDbtFSfNx9jFrJHxyN6t0nmRfowoYwjMzQDEPn/29B0vaKKby7S6gButqogCC0iPK/rU0r8usNFAzO3n/TuJsL2svfeVUbdsrpe552GsyoJe2PKk3dYAJD44m0aC8wpHZTZ7KyqkZLeMF/ukoCu8wRnf0jZ3kcq2VW1JdZ+MH+0D9zwExa5nIHrOQJ4UuE/xP8g+xitjp7TTWQdpbO0GGKoSmikoNyI4WyKA5am5ekv/VfXAaFiorom2ZkrvxB57Im3q4NwK2OfG7uk2ciAY3q9aRaF6m4Ej7gznOVYQqvMXYd/6lEZP3tnYRELNKkQfWIXowtZ8mP583swb3HYWe0BOXnudfiA3Hya8Bg64fVc834STjlpnrdqMdDjEDE0Y06lNF6vDiSCJKaCG4CwEdJjosoPnUxkEqpFxzyn0yXFWAFg8SvfhhdzE97pyz+GhU4gOJCl5J4xsYemOCoDXQRWyJb4ey8XZ7to5fcRulcLnWJkfagyjtcjLcLu+LEbnqbAPpdKoZNHpuKbBTbIHVUkbB05RQr5xVSNaR+59KXp4q1njj9m7HdYrzxeSgT1HpSPovcawfXqLW9sTKvrKX29T+L/SK9Yf9W1X+djoS3lh0mOLQLXzeW47ngSmLeXsDrzN2m+67mbqGis+djUFAXqEhqb11zE6Iw6DGKp9i2i65dlq9q8rV15lkRnjbxr3Tp7GN4+Dllo
+ FYe5nJSr
+ VPkF0T2QbigjxAPduu9CjfCOyVNxQ6J90EDVaHEwBmg+xk7CPSCRiDSjWguhFzsTbyeBJ6pirykB3UXyQVSfuBb4onjx9POK7Wb/3uaY7Leq5/LiM/BJLM0EJsRTGdex8F8iU/aFOjVzI/xS5hvZ49WLJLYqR5dk8wDQ2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,87 +111,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27 Mar 2026, at 8:07, Lorenzo Stoakes (Oracle) wrote:
-
-> On Thu, Mar 26, 2026 at 09:42:47PM -0400, Zi Yan wrote:
->> collapse_file() requires FSes supporting large folio with at least
->> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that. shmem =
-with
->> huge option turned on also sets large folio order on mapping, so the c=
-heck
->> also applies to shmem.
+On 27.03.2026 15:09, Marek Szyprowski wrote:
+> On 27.03.2026 13:26, Catalin Marinas wrote:
+>> + Marek, Robin
+>
+> Thanks for adding me to the loop.
+>
+>> On Fri, Mar 27, 2026 at 10:58:46AM +0500, Mikhail Gavrilov wrote:
+>>> When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
+>>> tracks active mappings per cacheline and warns if two different DMA
+>>> mappings share the same cacheline ("cacheline tracking EEXIST,
+>>> overlapping mappings aren't supported").
+>>>
+>>> On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
+>>> allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
+>>> hub driver) frequently land in the same 64-byte cacheline.  When both
+>>> are DMA-mapped, this triggers a false positive warning.
+>>>
+>>> This has been reported repeatedly since v5.14 (when the EEXIST check
+>>> was added) across various USB host controllers and devices including
+>>> xhci_hcd with USB hubs, USB audio devices, and USB ethernet adapters.
+>> This indeed has come up regularly in the past years.
 >>
->> While at it, replace VM_BUG_ON with returning failure values.
+>>> +/*
+>>> + * Align memory allocations to cache lines if DMA API debugging is active
+>>> + * to avoid false positive DMA overlapping error messages.
+>>> + */
+>>> +#ifdef CONFIG_DMA_API_DEBUG
+>>> +#ifndef ARCH_KMALLOC_MINALIGN
+>>> +#define ARCH_KMALLOC_MINALIGN  L1_CACHE_BYTES
+>>> +#elif ARCH_KMALLOC_MINALIGN < L1_CACHE_BYTES
+>>> +#undef ARCH_KMALLOC_MINALIGN
+>>> +#define ARCH_KMALLOC_MINALIGN  L1_CACHE_BYTES
+>>> +#endif
+>>> +#endif
+>> TL;DR: I think this is fine:
 >>
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->
->
->
->> ---
->>  mm/khugepaged.c | 7 +++++--
->>  1 file changed, 5 insertions(+), 2 deletions(-)
+>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 >>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index d06d84219e1b..45b12ffb1550 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -1899,8 +1899,11 @@ static enum scan_result collapse_file(struct mm=
-_struct *mm, unsigned long addr,
->>  	int nr_none =3D 0;
->>  	bool is_shmem =3D shmem_file(file);
+>> I'm not sure that's the best way to hide the warning but there
+>> are no great solutions either. On one hand, we want the DMA debug to
+>> capture potential problems on architectures it's not running on. OTOH,
+>> we also want to avoid false positives on coherent architectures/devices.
+>> I don't think reconciling the two requirements is easy.
 >>
->> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
->> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
->> +	/* "huge" shmem sets mapping folio order and passes the check below =
-*/
+>> When DMA_API_DEBUG is enabled, the above will change the x86 behaviour
+>> that could have implications beyond DMA (e.g. may not catch some buffer
+>> overflow because it's within L1_CACHE_BYTES). Similarly for non-coherent
+>> architectures that select DMA_BOUNCE_UNALIGNED_KMALLOC (arm64 and riscv
+>> currently). arm64 defines ARCH_DMA_MINALIGN to 128 but
+>> ARCH_KMALLOC_MINALIGN to 8 (why 128 is larger than L1_CACHE_BYTES is
+>> another matter but let's ignore it for now).
 >
-> I think this isn't quite clear and could be improved to e.g.:
+> IMHO enabling DMA_API_DEBUG should not change the kernel behavior, so I would prefer fixing this in DMA-debug code somehow.
 >
-> 	/*
-> 	 * Either anon shmem supports huge pages as set by shmem_enabled sysfs=
-,
-> 	 * or a shmem file system mounted with the "huge" option.
-> 	 */
->
->> +	if (mapping_max_folio_order(mapping) < PMD_ORDER)
->> +		return SCAN_FAIL;
->
-> As per rest of thread, this looks correct.
-
-Will respond to that thread.
-
->
->> +	if (start & (HPAGE_PMD_NR - 1))
->> +		return SCAN_ADDRESS_RANGE;
->
-> Hmm, we're kinda making this - presumably buggy situation - into a vali=
-d input
-> that just fails the scan.
->
-> Maybe just make it a VM_WARN_ON_ONCE()? Or if we want to avoid propagat=
-ing the
-> bug that'd cause it any further:
->
-> 	if (start & (HPAGE_PMD_NR - 1)) {
-> 		VM_WARN_ON_ONCE(true);
-> 		return SCAN_ADDRESS_RANGE;
-> 	}
->
-> Or similar.
-
-As I responded to David, will change it to VM_WARN_ON_ONCE().
-
->
+>> More of a thinking out loud, we have:
 >>
->>  	result =3D alloc_charge_folio(&new_folio, mm, cc);
->>  	if (result !=3D SCAN_SUCCEED)
->> --
->> 2.43.0
+>> 1. Coherent architectures - alignment doesn't matter
 >>
+>> 2. Non-coherent architectures with:
+>>     a) Sufficiently large ARCH_KMALLOC_MINALIGN
+>>     b) Small ARCH_KMALLOC_MINALIGN but DMA_BOUNCE_UNALIGNED_KMALLOC
+>>     c) Broken config - forgot to set ARCH_DMA_MINALIGN or bouncing
+>>
+>> We can ignore (2.c), the aim of the DMA debug is to catch wrong uses in
+>> drivers. If drivers is the only goal, the above change will do when
+>> running on (1) or (2.a) hardware - it will catch sub-L1_CACHE_BYTES
+>> buffers from drivers while assuming kmalloc() machinery is safe.
+>> However, if running on (2.b) it won't catch anything that may be
+>> problematic on (2.a) since the DMA debug ignores the overlap.
+>>
+>> We could make DMA_BOUNCE_UNALIGNED_KMALLOC dependent on !DMA_API_DEBUG
+>> but it would be nice to be able to sanity-check the bouncing logic.
+>> Well, it wasn't checking it before and with commit 03521c892bb8
+>> ("dma-debug: don't report false positives with
+>> DMA_BOUNCE_UNALIGNED_KMALLOC"), we made this clear that overlapping will
+>> be ignored.
+>>
+>> Irrespective of whether we disable bouncing with DMA_API_DEBUG, maybe we
+>> could replace the above commit with:
+>>
+>> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+>> index 3928a509c44c..488045ef6245 100644
+>> --- a/kernel/dma/mapping.c
+>> +++ b/kernel/dma/mapping.c
+>> @@ -175,7 +175,7 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+>>       if (!is_mmio)
+>>           kmsan_handle_dma(phys, size, dir);
+>>       trace_dma_map_phys(dev, phys, addr, size, dir, attrs);
+>> -    debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
+>> +    debug_dma_map_phys(dev, dma_to_phys(addr), size, dir, addr, attrs);
+>>
+>>       return addr;
+>>   }
+>>
+>> Anyway, this I think is unrelated to the proposed change affecting x86,
+>> more of a how to make the DMA API debugging more useful when running on
+>> arm64 or riscv.
 >
-> Cheers, Lorenzo
+> This is not enough, there is also a dma_map_sg_attrs() path.
+>
+> I've reverted 03521c892bb8 and added the following change:
+>
+> diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c index 55e7ca8ceb86..bbada41143ea 100644 --- a/kernel/dma/debug.c +++ b/kernel/dma/debug.c @@ -18,6 +18,7 @@ #include <linux/uaccess.h> #include <linux/export.h> #include <linux/device.h> +#include <linux/dma-direct.h> #include <linux/types.h> #include <linux/sched.h> #include <linux/ctype.h> @@ -1241,7 +1242,8 @@ void debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size, entry->dev = dev; entry->type = dma_debug_phy; - entry->paddr = phys; + entry->paddr = IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) ? + dma_to_phys(dev, dma_addr) : phys; entry->dev_addr = dma_addr; entry->size = size; entry->direction = direction; @@ -1335,7 +1337,9 @@ void debug_dma_map_sg(struct device *dev, struct scatterlist *sg, entry->type = dma_debug_sg; entry->dev = dev; - entry->paddr = sg_phys(s); + entry->paddr = + IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) ? + dma_to_phys(dev, sg_dma_address(s)) : sg_phys(s);
+> entry->size = sg_dma_len(s); entry->dev_addr = sg_dma_address(s); entry->direction = direction;
+>
+> thenran my tests on ARM64 and RV64 boards. Only one new warning has been reported (I didn't analyze it yet), so this might be indeed a better solution than skipping overlapping cache lines warnings when DMA_BOUNCE_UNALIGNED_KMALLOC is set.
+>
+Huh, the diff has been malformed by my mail client. Let's try again:
+
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index 55e7ca8ceb86..bbada41143ea 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -18,6 +18,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/export.h>
+ #include <linux/device.h>
++#include <linux/dma-direct.h>
+ #include <linux/types.h>
+ #include <linux/sched.h>
+ #include <linux/ctype.h>
+@@ -1241,7 +1242,8 @@ void debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+
+        entry->dev       = dev;
+        entry->type      = dma_debug_phy;
+-       entry->paddr     = phys;
++       entry->paddr     = IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) ?
++                          dma_to_phys(dev, dma_addr) : phys;
+        entry->dev_addr  = dma_addr;
+        entry->size      = size;
+        entry->direction = direction;
+@@ -1335,7 +1337,9 @@ void debug_dma_map_sg(struct device *dev, struct scatterlist *sg,
+
+                entry->type           = dma_debug_sg;
+                entry->dev            = dev;
+-               entry->paddr          = sg_phys(s);
++               entry->paddr          =
++                       IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) ?
++                       dma_to_phys(dev, sg_dma_address(s)) : sg_phys(s);
+                entry->size           = sg_dma_len(s);
+                entry->dev_addr       = sg_dma_address(s);
+                entry->direction      = direction;
 
 
-Best Regards,
-Yan, Zi
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
