@@ -4,94 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3F1010BA435
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:00:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EFF310BA436
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:02:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F28F16B00B6; Fri, 27 Mar 2026 04:00:32 -0400 (EDT)
+	id C936F6B009B; Fri, 27 Mar 2026 04:02:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F00726B00B7; Fri, 27 Mar 2026 04:00:32 -0400 (EDT)
+	id C6A9F6B00B7; Fri, 27 Mar 2026 04:02:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D076B00B8; Fri, 27 Mar 2026 04:00:32 -0400 (EDT)
+	id B81046B00B9; Fri, 27 Mar 2026 04:02:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D257A6B00B6
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:00:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99C46C51D0
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:00:32 +0000 (UTC)
-X-FDA: 84591095904.24.F398B9E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D5C424000D
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:00:30 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="AMzp/MVP";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774598430;
+	by kanga.kvack.org (Postfix) with ESMTP id A25EB6B009B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:02:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FE42B8E8C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:02:20 +0000 (UTC)
+X-FDA: 84591100440.01.ECBB3CA
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7FDAC1C000C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:02:18 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BxQ3CdCZ;
+	spf=pass (imf20.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774598538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MCvKiGQQGgNb+W8jpSb1OQfHQ6uPzFJnDIdt+xnmXLA=;
-	b=qep/Mc1GFvEf3RZ7qUnAoww+KnHpIiXBlYsi+S8gu0/rAZ03hMNIIDpSGrdaBekmNZLF7L
-	mCDfMVzOD31W8AHKIw9RTgJ4N3CzSKcYSM41l4BFcVgXHM/rj1WRaSvci3+Q0ek8YyNH8L
-	z3NbJErVOY5t4O5j/mgOiA3zNDeY9Uw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774598430; a=rsa-sha256;
-	cv=none;
-	b=eUDsMvLiLfFOeQlXoGXQGHFQ3Vhi+1d7z0+eHtOW3btbJRzF5KhMmJh/W1M0SaSfN+LoBB
-	YYyGrSOa/X1yJQpdBU+Vxb7e9C3Zidxn8NPW3+xK9EX0qlByu8O2P8Yo7lY7fLzUoatVdM
-	2BvbPEI/BgV2sSUEnJWCPgZppKpYf7A=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="AMzp/MVP";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 37B1760133;
-	Fri, 27 Mar 2026 08:00:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817F2C19423;
-	Fri, 27 Mar 2026 08:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774598429;
-	bh=UwiT4eozaNGhaqFAauKAmgowg7gYec1LshvaOOfoH98=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AMzp/MVPmPrMezJQOn1mDo5LbPa0YLeYE9UEXhRtDjY761/eB6HLSdUWo0k4iudr2
-	 THtMHRLbROmmOI9KZrwzdmsJ6gh7yTMDPscEk/RomiGW8sOv93Er7o6APa6N/E0DRq
-	 t2i/tWzBCaBv/NGniY6Wi5Lh13A3njCwJIxTSvU3bMFDQtinLe9H3pIUbOuoEGYrsw
-	 l/o5a82T9A1KUIklrp6f2umrcYamik9UYi6skrdYy0rfIH2LR0QH3EbqgR1Ryqx3ib
-	 RBfCEdSdBhnzq0K4STJ1DRkIn67MSohEnbSIOigrsd53k4/yf2+jKNKrEfrLBL2yiE
-	 N0m1ObfRtkHWA==
-Date: Fri, 27 Mar 2026 17:00:27 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev,
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
-	linux@roeck-us.net, andy.shevchenko@gmail.com, hch@lst.de,
-	Jeff.kirsher@gmail.com, Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH] mm/slab: align kmalloc to cacheline when DMA API
- debugging is active
-Message-ID: <acY5G-lKZQEsUbRw@hyeyoo>
-References: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com>
- <acYlxRBhSMcwBnja@hyeyoo>
- <CABXGCsMTk6kDuJxsTAUKP6npTvp4X6Ryng+P4xjMUsPbTA43+Q@mail.gmail.com>
+	bh=5ep9g2m9wnZ/qw5uP60q9XJwKT04QFSPHpz8SR3TFGU=;
+	b=Yb6CG6/tySnpaspUI8F0ehSo1UTFugm2bW4ZG5TS4cTpKON0IndzeeCQTSrh/c1UTGyYn4
+	aGHLPH9xPB/GCIWH3Ihcif1QzqJ1s8QiGwrPB3HW6DLn+bpa3Lfja+HVBJASTnt+IxRVYr
+	ln8Tx0cjaLOkF85XT2alktKPTA0Vos4=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BxQ3CdCZ;
+	spf=pass (imf20.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774598538; a=rsa-sha256;
+	cv=pass;
+	b=h4zEkZUr+0DWDqKjEDVVldgSyExzwAiMac9Cimk7C7Zze5Mhsg7XgT4nU7HoSV7RH3K4Hk
+	0NoGtLLvZUA1O5tUx1T+3qmcc5c6x6R7TYfdC1shDy3+zN0v9oIvDbpU2xDYUvi1qTp9WK
+	lePyC8seEmmpmH7al+Duw1/EutRI6XY=
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-124713e4244so125119c88.2
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:02:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774598537; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Edt4JDXNJwWrti72+nmHPTn3SjcsyW3XfBrhEn1WdQDjxEGtP2a1QIxsjqrSeRbcSr
+         zG+kkwfzoXdGCXTa9Ad6j4u3o9tM9gF4Caj4JOuhoSCBh3mpbOb+4nlK21nvBje0WzQg
+         RUlUXV/NUAPzhG3WtBmMIs4xbEeFSWS+FeVm5L2aMr/q26/pfdKfr5OtL4cd21Ei/doP
+         Ow0fO1y7xN2q1eliEesPsCZH+GfPQKx+SYwJkIXurnGWoG7wVjscCksORow1Yrpy3xlS
+         dxrcHtgYIzVetKY9YNLQ8VBG01b8PxqTs/xZN66ibKIZankUgM23DCZikiZB5wSaY2U2
+         doZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5ep9g2m9wnZ/qw5uP60q9XJwKT04QFSPHpz8SR3TFGU=;
+        fh=KRjnemEq5fktKLBP67beoiTEvWcpEFAGoQd4vDOIuEc=;
+        b=aT6oy+Fnw0TcmDSauCwKJTYFPCHFxiJrNnekBlT11JMeNulYnEVVed3Y5QbJp5sAAX
+         HUKC9Y5zIxMdT09Yj8dTVDq3Jny78Jr7DhEMggc5loKQxUi0MQnSLWK+8TbqBDx/3zGC
+         YEwYjJlGw6cIdPw0A7eTRf/Qa/ILq8JyJNuwiDWKHdFPx76QxuFQD7ntqjF1x2xgSAHp
+         NngHO0cQRt7dXfdB7qMI8p+pMLTwfufLASn08brLLw0IW6AjHdNZeRscArP8GVeALi2x
+         TU69qufAEZUMas808cXao2Smhryv/iNYfX+CIVzPElLr5X8CG9QluhCfQN0jDh9fJfqH
+         8H9w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774598537; x=1775203337; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5ep9g2m9wnZ/qw5uP60q9XJwKT04QFSPHpz8SR3TFGU=;
+        b=BxQ3CdCZWrjn5FSpP82cvY4YfMcnq01CKQ/KSEILAsQQeQF+jBYVyqrjbjNB6Sj3iH
+         O+LfqQ1o+/ykomgOeFGT70wd6uUyVGtZcq9deKnZIYOeRlkIiIeSN4Emm1OdXdEfJOSG
+         bM/xSu/M86xYCNCNjPVhAx1/mfryRRG5Ejwwg1PfSQTB8Fu9Htf3t2rSwEhIN2Cw5iv7
+         eHRAL+3fTiJpzbdZ4Bd7XVZ1DM4wt7GNM9sD3j0oT05NobD5wb/15aJXs69YHTPFIVcE
+         /sdhjMD9GcIdZPNlvE3jvJn1DQ+SZOt/e2vGzaTUjyPQiK+EVQO2lacwvNcKqH3/rzAW
+         VAOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774598537; x=1775203337;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5ep9g2m9wnZ/qw5uP60q9XJwKT04QFSPHpz8SR3TFGU=;
+        b=caoXVOk7/ogS1jEmczegF8MmtLJgkUmYmwitUY7Q83SZJbx3wC9B9MXbOsZfGJ3FEf
+         j2C9flDdJ7FNWvEmtck3cAYmtNkLJmrYRPZfmwDv1f3YqeAbCY7xXiI3w0GsOBWFxpSR
+         efkq92Nw36nW/Yo9LeZUIjSyGaAdQNUmm91OXY4RdZlxYm/VMeltAvXkuBvHgGyXkGHQ
+         y17rto6I8SsyO27UTI8Fd1AyiJ2ObAzozMO3+a8k5dCSBSypJ89kFVwlFvH6dckyfRmj
+         zhbJSQirgepaGEm9ZeXNyyA5BJtp7z6VxHij3yDxHH6nYNM3PYGes3RMCFPPdJBNAead
+         LUAg==
+X-Forwarded-Encrypted: i=1; AJvYcCXEIq5AzLcVKB2aXYv1sHX3xfwjU8w1SOaAd3aFNFL/rPcNJuztq3CYCFwZdQ7ftGMREVPMMbQ8vA==@kvack.org
+X-Gm-Message-State: AOJu0YxG8oK+eMEilvIiKpHJ6A3VduJldInEohZzp0qCDrphP26BZ4EF
+	c6hmgNRQs1yrl62fmXiaiebgOXrysD/EtBthTS6VUCTprIGXe3hKAlQ21xoWoDwJ19rZfOSEm+L
+	mRbinxAQbEPBXjjHPcdLqUpg5meWrZJc=
+X-Gm-Gg: ATEYQzz2nJ/F8Je8JUIu95fr+h+q+zVxlK1cYmXdZY7Ib36Vw/XdmHolE8euPR6LQhP
+	/sw3LFSfTUS92lISFnz8j2LaPPGT6k8fw7pAxD6d2vA5K/QIkTQqXeqIpwrXrbCcFwFQxRKc107
+	Y9KvjbuBmDiOnWfeB+MdkxEtSUravxlbGef77OxlRQs+y8UEuTiDUscW8fylxWmDPi1Wcw9NB+E
+	9i2aPkVKssk5TKYWKGSncb8ahNP1Jar/KVO6wSPGHUPNyPwAcC5ABToURhmUf/tiKXlVu0hApIp
+	XtqOMOukSzFwaAHuRJmvBn8P072KmSFef1ePdz7gizvk03x4u9eaJiTsAWUCOOuHB7hdxcIIu12
+	nSpv8/h3hbk4kv8lWQcmh3ho=
+X-Received: by 2002:a05:7022:618a:b0:12a:6cde:fd0c with SMTP id
+ a92af1059eb24-12ab2906c98mr371178c88.7.1774598537022; Fri, 27 Mar 2026
+ 01:02:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABXGCsMTk6kDuJxsTAUKP6npTvp4X6Ryng+P4xjMUsPbTA43+Q@mail.gmail.com>
-X-Rspamd-Queue-Id: D5C424000D
-X-Stat-Signature: 668gh7pe4zfedob79gs848npdthpkxzk
+References: <20260322192159.88138-1-ojeda@kernel.org> <20260322194616.89847-1-ojeda@kernel.org>
+ <7ad8bdf9-5eff-4443-ad15-c05355d793d1@app.fastmail.com>
+In-Reply-To: <7ad8bdf9-5eff-4443-ad15-c05355d793d1@app.fastmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 27 Mar 2026 09:02:04 +0100
+X-Gm-Features: AQROBzCrGdIlIe2CkDWKMkYFmP8XiqVc047zlhYRt_gjOqAGZtEWFJuOGnDO47I
+Message-ID: <CANiq72nz6zB0jGahw4Eh-i-Rew1kQ0g_qcZ68Whw==MyjhYaJw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Christoph Hellwig <hch@lst.de>, iommu@lists.linux.dev, 
+	driver-core@lists.linux.dev, acourbot@nvidia.com, 
+	Andrew Morton <akpm@linux-foundation.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, David Gow <david@davidgow.net>, Gary Guo <gary@garyguo.net>, 
+	Johannes Berg <johannes@sipsolutions.net>, Justin Stitt <justinstitt@google.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, Russell King <linux@armlinux.org.uk>, llvm@lists.linux.dev, 
+	Benno Lossin <lossin@kernel.org>, Mark Rutland <mark.rutland@arm.com>, mmaurer@google.com, 
+	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Nicolas Schier <nsc@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Weinberger <richard@nod.at>, rust-for-linux@vger.kernel.org, 
+	Trevor Gross <tmgross@umich.edu>, "Uladzislau Rezki (Sony)" <urezki@gmail.com>, Will Deacon <will@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774598430-890742
-X-HE-Meta: U2FsdGVkX1/mmVB0jV2dC49IFSD5E0KJVAyGJT9B5GJDvMzTKyoIaLJRFl49djpTb54lFex/zuikqheFXhLtK1b5sszLsTgNgFio9P5qWxwtlzD4Rh9WhzqiM8A7W+jj7DlE29q3BJAsj1Ga+dyH6zUfH5cUUn50AbyMRnvL1uX/7p6R33w223DQTvWXzlOW1U7B6ZEWsaXcTxQGnqXbq4uKeFGUD5iuwfW9R6iLcWpM2bvrrMFBDgkl3IHJwqdJn1tRDzx8KAhRCHS5B/lbPc3/XjewqMQ5fGGu56XUnCx/fa6KRz5EKSuh/gexs6V+dQqG50JSUZIDkFT96ubjoJbkMPrFcp100zhmfuuYv9HlAvW+3iIJa3Xrulg71ZcftJXixOLhqsDT9aYbvgY2Cp44GMnlFaZW80jhjr7u6qdMMRlIaYOhyqjsNb6jusgOEbyAdw0WUVAt8YO3Aw5NLD1mOM9BvznV5gWpohGlY8OE1ZHtlsNJOOviXRzC/CiQ2iiJ6olbMQ4qAZ6bfQ3MfpRP7Of9gPssEM5zW2hNgsjCTp9INfU5n9Xwl57DoZWNsn5oSkBsk5c2nFlkmrurMfRp3gcvsYSwlOrDhZOYBdqnNP9/m5RfR3Z031yQ/U1mm7sOu3wJJ88Fgf9ZZrWsiqKOIkllRHunGHno1V+ygz6sKT1p/0f/LsLeYh7yzmE7ojUzIK66mFMsXmc5Tkn96XF8UmGKUCfpassBUrh/X8yqiUm8rDa9moYHCO7MvnrVHGPkRyJnTgiMZKfZoDGHanlSUpKq4hfNsVYSnWeWcKGpCVXklTB0BuR9Aa/Bo2Wogy20jiZg6kxUcHSk2strWE6OyNuVykpBRlGwovz6hklVF6X+c+jGn7e4BUz27U/io7Knzb1uuSJdJohQ8ODEWm+Yb8/4MP4wJXACM/g6epvufIPfXFGXO+rY/h3FbnPdtTEf0oZ+IQuuQG6PdKz
- Z4z0xdsS
- z0bH0dr6ybBPYRQRPAPoECddpK9WXM2HRoX2GrqM+H9zz39+hRRUYtCNwMdmVQGXElm1n87XQLUiMhtcTnJ11iYz1AqJI/ay4Axe/FeLRiYEIFIatqPYep+y/iBddMy2xEF9uoCSmELqyrIGHpQweumTkDwrCTiXXKL7GqupzCkZkhKZDDP8iFiyKwuz1gp8U7DEXSIEfOG/76N0OyVLyGfFyqIro3+kTRnviKe6uJpVlE1YkX6xl+FPnJbx69lA/GMJhYXsQ9+BkKL8sdTPtFtuRnyvxymhJFDayKdg6PDFrd+6Typ4CEzgbF4LAPQzdbSqKxNKo8LSuD8mhjR5Uop2045ggCdOnBufNO0bQ1QgAS9pqh9x4vUXo4g==
+X-Stat-Signature: oo1ptgba6k8kx4iw741413z95jkw5fju
+X-Rspamd-Queue-Id: 7FDAC1C000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774598538-836282
+X-HE-Meta: U2FsdGVkX1+Lat1cwdfsntubRM5sZ7BCtDGGgNosi9uiZIcFNifIU1b/TmUV8wXO6gvA2yTAfhgHJbaoTwb2vDvlI6BP5nKQNrt5nMLm4HqLYAZAzVufXcHfdcOMHfRJG+EftLpAlj98Gwgd7EeXKmQTNz1l7LA+gs8IcqDeNyASCKLYYbpl7WYn8hyvGP+UqOwY+dmBylE99h34Jq/EJsRrSVS6sriXyxPj/sX2kvhcsYJoqCp6Vpml3euwEu1tjgru3tcjX0utu1fsUncNVoczxUwVE5yRoYxwxADwkKz/QTTFvwmU/v8CdJJ3GZNeSahpwk7CuUsZEL09W8025JsTpPm1+yaDn+SRycoldbXI0BiizQgG34lHGEAUZQ8UrKmcI/cpeIiY4MOGTXQIyrWdPRzrdEErXSaWfDSAmMwKYXJPvJT5EKNfTT5WORcVBXCS2+jZYn3POCBtuL68z4v1iA3zG0fMT/tRRQhv4/1y514YMiJVkql8SULisHxkrgmHr5TDQFixT5qtngzmUeGkL1+GcQvEamknnKehSpKkVt5Xf6ZtOh5WEsg+5K+GS/8BDZ/yYKov61/h5fi1ONcKoHv/G7RRg6ejIclUdNEqykU0eEEknwRR4tpJ5oi2hbPZ5g0NcWbPyNAM5Fb64bDft2jQxYDwVQZDlkbJWEFwOu18i9Q4DQ9tGcP3rpn5IrH+Wrnq6QgeohR5NZnCaNq+Sk475vjX7KQbPDUNap3SQMQ3TrbFJvXLz4O32uXZIpTaXKbZ+daGqQpRXaD80ZmSoGhpIUSsDMLAXYBvMbrpaEqCHfDbnYdyQRVlMKvG+3ZJ/6x785ZPpdq1UH9Q9jeG94PW/ytuMGEAN0U/bE8zXijSl0xTb4TWF5LMgiPgt9PkySQ2nL8SiUxRLMmqU7x7jurkgumOKfLnEohkY+VK6tqqaf9xkqAeiuP1kP3iNdrocmhh+2xczeJ8ZMS
+ 2j9TU5dO
+ IfkVV+xC5datObYZGag2PO+uscUTmcvPEbwkUV3XjUiS1xdawwxgQl2Ld9jeLuftkJXJOJ3QBoVOV3oUvX/3+00uE2tdfrG+qxalsn6Na8ST0RarKMAr2M5SC/Lf8nL7Ot6Yad5XmfODXQOoGtxvVSCf3ZKgzideeeArhFiyDR5RS65XkuddfnzaIf5ik3rj1RdhJAsN3aVbtz3OqZ9YUxBdkO8nTc1aEKN1jhxhAoHF8hVXhXJi7kHhPXpUx0iT5IyU/dp2Jr7Uj8/MN+gZTvJrTHGRhvvQOTDXqePDuo6iS5TzQ3QklE+5+Z5JnzNWQOU6j5NnzgSFGWcMxevwaLrnrd/1Uq84fU5+XwG65//D3k4eJNVCESBmTEIKN4HVnU1QLhJIPaClXkq6s9ZncbVNM57rM8KcG9ozaIrGg2N0PtAJOCO0tlv0h28TEQ2jmrek0r6ojuBjSGID7gz6GBJxB9xQmhaRcoozytQccNpey/A0rMIDOrXJpF/G1jOJk0m+T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,67 +158,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 11:50:07AM +0500, Mikhail Gavrilov wrote:
-> On Fri, Mar 27, 2026 at 11:38 AM Harry Yoo (Oracle) <harry@kernel.org> wrote:
-> >
-> > On Fri, Mar 27, 2026 at 10:58:46AM +0500, Mikhail Gavrilov wrote:
-> > > When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
-> > > tracks active mappings per cacheline and warns if two different DMA
-> > > mappings share the same cacheline ("cacheline tracking EEXIST,
-> > > overlapping mappings aren't supported").
-> > >
-> > > On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
-> > > allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
-> > > hub driver) frequently land in the same 64-byte cacheline.  When both
-> > > are DMA-mapped, this triggers a false positive warning.
-> >
-> > Is it feasible to suppress the warning if dma_get_cache_alignment() is
-> > smaller than L1_CACHE_BYTES?
-> 
-> Hi Harry,
+On Thu, Mar 26, 2026 at 10:13=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrot=
+e:
+>
+> I have an older patch to drop CONFIG_NO_DMA entirely, which
+> may be better here, since we know that nobody cares about the
+> empty stubs.
 
-Hi Mikhail,
+In case it helps / for future reference: the patch I sent to Marek is
+already in mainline: commit 2cdaff22ed26 ("dma-mapping: add missing
+`inline` for `dma_free_attrs`").
 
-Please keep in mind that I have limited understanding of DMA API,
-but just wanted to double check if there is (or isn't) a sane way to
-fix it on dma-debug side.
-
-> Good question. I considered the dma-debug side, but the issue is
-> that the cacheline overlap check in add_dma_entry() is intentionally
-> strict -- it catches real bugs on non-coherent architectures where
-> two DMA buffers sharing a cacheline can corrupt data.
-
-But dma_get_cache_alignment() < L1_CACHE_BYTES means the architecture
-actually allows overlapping cachelines, no?
-
-A non-coherent architecture where two DMA buffers sharing a cacheline
-could corrupt data should define ARCH_DMA_MINALIGN >= L1_CACHE_BYTES.
-
-I'm not sure what kind of a real bug this will hide,
-or am I missing something?
-
-> Alan Stern discussed this in the bugzilla [1] and concluded that
-> the slab alignment approach "seems reasonable" [2],
-
-As long as there's no good alternative way to fix, yeah.
-
-> noting that turning on debugging should not affect the way the kernel
-> behaves -- otherwise what you're debugging isn't the same as what normally
-> happens.
-
-Yeah, this is why I'm trying to double check if there's no feasible
-alternative.
-
-> But given the way the DMA API debugging is set up, I don't
-> see any alternative."
-
-I'm trying to say adding the (dma_get_cache_alignment() <
-L1_CACHE_BYTES) check might be considered as an alternative ;)
- 
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=215740#c31
-> [2] https://bugzilla.kernel.org/show_bug.cgi?id=215740#c44
-
--- 
 Cheers,
-Harry / Hyeonggon
+Miguel
 
