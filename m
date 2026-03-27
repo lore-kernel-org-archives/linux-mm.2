@@ -4,113 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B40810ED660
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:10:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1DF410ED665
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57CE16B0095; Fri, 27 Mar 2026 08:10:16 -0400 (EDT)
+	id C20E66B0092; Fri, 27 Mar 2026 08:23:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 554576B0096; Fri, 27 Mar 2026 08:10:16 -0400 (EDT)
+	id BF8F56B0095; Fri, 27 Mar 2026 08:23:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 491206B0098; Fri, 27 Mar 2026 08:10:16 -0400 (EDT)
+	id B359D6B0096; Fri, 27 Mar 2026 08:23:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 36A2F6B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:10:16 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA82B8D972
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:10:15 +0000 (UTC)
-X-FDA: 84591725190.27.C8201FA
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E41961C000E
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:10:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eQoDcGme;
-	spf=pass (imf18.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FD726B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:23:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE146E16AE
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:23:50 +0000 (UTC)
+X-FDA: 84591759420.07.E04A704
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 87F5CA000E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:23:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F8g4lx3T;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774613413;
+	s=arc-20220608; t=1774614229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P5V/1Wbu9XfRyN3Day1/4i0275Wd9nGLuW+cphxmC8E=;
-	b=wk2+pyviaT2QvAYD3p82XQ5gci/ype4VXYgYKFLmX/yj9ElLOQOPFtCFtJ7FqQvZxiejhi
-	hxt8GOFJqwENX4txkAbq05yXOFo+gTrrKiGyU84Ola/610RCaIoDzceLCcPeU4WbieROeA
-	nPZuBEUGnJQzNQ3y+yYoSvbiMHb53Pg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774613414; a=rsa-sha256;
+	bh=x18/5Wyzdm/GZMICwYr/NVdnbQ5iOX9RD5EC5IJ5KpM=;
+	b=7RTliHZ/uZUvGMZE5g5CK8TjgOZNlz4T+9Wa4xtIDunOaHE7shHdwGzHpd4fj4lOD4HQ3j
+	qF+I0wNshJZhK6fDO4LSzeMscQlyTVWM8hRBh75i8rjpclwGxKRkzvX/c7Vw3nGk2mTGVq
+	YtqtvN4LJpHcSQKDz+4jW6vUkne7X6w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774614229; a=rsa-sha256;
 	cv=none;
-	b=Jr/4tthYnVHgis2qK57+5jKVRpfY0dUmNeayfSiY0P9SZCF1NlUkNjhAH+608xZMKjc3Kx
-	oFgPe3NdC7C48NPPfRVZLihkKW9MDwzTGNZ6Ywx3j1z9H1a5QJgwNtQyIYEdk9mrQZhsmY
-	UmXNAChnQaY8OkrdqES+KwEhGtEOoxQ=
+	b=Kogj+sT1pSFAX0RbpMLd84hliufBckzIIaKcUXvovGSOAfLYvhi9LaD2Z7QTP7xfMUodDz
+	gkH9+2InB+n5VakOLaDCLi3i9+fHKL/Lbv2dyIAy/gLDUGAZRPyWD1q8x3XaPgbXP23Mag
+	+Jle2Sd+ue/ymC1EXTdUAEzrOJ59ARU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eQoDcGme;
-	spf=pass (imf18.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c763c294cccso1413963a12.1
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:10:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774613413; x=1775218213; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P5V/1Wbu9XfRyN3Day1/4i0275Wd9nGLuW+cphxmC8E=;
-        b=eQoDcGmeGSk6XV+DGL8/CKdmps8lK05BbwIlODhYrrXF2b+xxi9jV9zOlDZ/Y8TSeF
-         uGE+H+5D6p6hVbAWjtJOlATxPah+Ja9+/Wb66bk5ECoNza8oA0buoWZ7gJvy63WoOXmt
-         xPZ5uwPc5uToi8ttPBIdlvdwp7BihUvtLCw7mFVepVobW0wZuU7SSMM0VZ9RgJCY+sK7
-         Dd8fmaHTrglg8bSjukzThMqA1miR0qpuSHBT67vYfL2XnbIiCXVWFDFr10Sq4XNfaJwT
-         5hXGpJqTBbQRI+cz9Qrm340vK2j5KmG0vIZdxYCtYLFv3571xxoeOIh7Vtr8TF9cJCdW
-         RhUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774613413; x=1775218213;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P5V/1Wbu9XfRyN3Day1/4i0275Wd9nGLuW+cphxmC8E=;
-        b=PPzkZ+zTVYkJBUn9ljmYY/u3uM/bcNT00Fx3N/86SetodLr3B+effhxJzQwYUw/9ST
-         HOIk5oQ4afjCekePhdfA3Fsnc0v0a8fChAXzwnvQ6Z7ZwGoB/y9A/2QutAVB5AWAZ+Y7
-         j0wiJsoLjyARM4eJ5OujptejB5YsfYkIf/7byQMdkQIXsdzdUy+3hXjepVWT9/ionbrW
-         /XMgMZB8sikiatZRn2BOBkzAsUK6UPCTC+Lj+yQX7cUg8tc3xBzh756VBcvGpwchqn+D
-         O+Hd3nNmBJM7jstS1jEggAn5x0nAHVklNQk5IOGdex9TuTXtxDnu2Wa8/t4sZij5m0+s
-         wKxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVnEwD5yinfUlVwYIyF+Sirw1h/RqA0VvtYDWR7RXtizUVgpmAkzKRNxGDNBBfPRHZYlusvjIlIQ==@kvack.org
-X-Gm-Message-State: AOJu0YxD8Mg7Ro4ghHvChWx3oxMXxv/VucfH8djtL9ienMkWxBjkaV65
-	piGHguriOQ8WHHENqkO73U7Agl53ZiUeImEeJgqihDLQhXR0Oy1l/Gf7
-X-Gm-Gg: ATEYQzzRT4T/rsqu6G2GBfVFeOHA9WyNQ5SrhH0hHFiCdWEBD13vSA4X7F3vs4qbdG+
-	qurwDVXzEiSgwup0RkPMiFRkAFnu9DEDUcxkzm/op0+PDkL5qkDYuss2HiP/GzOQhsV/tDy7NKU
-	p2qWZUSyBItgBdlfEItEqLdlmFkTCmeK2Wy4rR8yY1BmgJxF2tc+8SBN0wY9nNFJdCMos08HFiS
-	cxkJJ5gzL0wzUPnifzPWhZlow4P3T1Gnxj2z600+gI4e4G7NObrrsI1kMtBxDb19TLmCvYBOtmT
-	0gnPi9eO26w2+GUMXxK8U+YnZ1rgsKpmcQocyfIUH5/gf2p82zn5EuTbkfrrtlD8PLH5ekcO4u4
-	f1D8Q+hOd0EuufrikUcJ1kIBbia3qWEDlCqCfm5335FJK+YtjU5PkItTR5uFbAYgXIrgYox/nnB
-	pkufAMpSOTYfmo91GCSVbYUP3okqIovxpE/RjnlAjf4Hb2RVVobJ0=
-X-Received: by 2002:a17:902:f607:b0:2b0:6829:9414 with SMTP id d9443c01a7336-2b0cdbe9dddmr27888725ad.8.1774613412558;
-        Fri, 27 Mar 2026 05:10:12 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc786b7fsm80852155ad.20.2026.03.27.05.10.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 05:10:12 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org
-Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
-Date: Fri, 27 Mar 2026 20:10:08 +0800
-Message-ID: <20260327121009.38374-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260327064517.68131-1-aethernet65535@gmail.com>
-References: <20260327064517.68131-1-aethernet65535@gmail.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F8g4lx3T;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B2A461344;
+	Fri, 27 Mar 2026 12:23:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B8CC2BC87;
+	Fri, 27 Mar 2026 12:23:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774614228;
+	bh=V8sGUJvbBSQZ15CzkQaKkEa1Er8HddnCsDI3BKLTvtU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F8g4lx3TiflLWf5tCAz6PYcHqfwkdC2OZT6fbVgng80WiGZeUSPvNUYNoJG8K5b1k
+	 ctE+Y9mi2tJbXfyDuDYpL+MLulBxdZdLTJ7hf9Gv3NjsRIyv2n3D02pKsxew980YrY
+	 4+aAgDeHNXTwUC9zVA8rD9RTvSfLv0b6MeQipBsM5cx/SVt0thD2DT5zRNOUOiBohx
+	 XMc2WXmuFzojQexEc+KdEdDUrkHdVKh24ktJCp5ilaCqdqttDpFSYHjHh2i73tnbQz
+	 gfZfOymgqxXaJrXm1saxMePV2fv6gwfSo+frkerGCyGdg58aV7PsrIPFpK3l/AGZwr
+	 7gLG979b4EszA==
+Date: Fri, 27 Mar 2026 12:23:46 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 03/10] mm: fs: remove filemap_nr_thps*() functions and
+ their users
+Message-ID: <aaea8ce1-eac6-49d6-8c85-7361977b9a9f@lucifer.local>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-4-ziy@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E41961C000E
-X-Stat-Signature: m56f56ybrpbs7oq8t1yjwh9wgdzsrmg5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327014255.2058916-4-ziy@nvidia.com>
+X-Rspamd-Queue-Id: 87F5CA000E
+X-Stat-Signature: tb4qazrydusmw6mdofik7ytsduwxh1qe
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1774613413-561985
-X-HE-Meta: U2FsdGVkX1/6ZtEqsOfIrX4yM2tDMFQiPNwjfrOS/7gj1FPPgGzRUfMbV88Ow1G8jB33Md498Sm/5eVoZW/A08od9GYXpgdWoHRqJCK6bL/jyx7Q6pm6Gyrdy5XwmmndnH4SULhTLb/6obJ83YXjLIMf/E92UUy82jW8YI5ssTB3djAQbxWXlEu58dkbFZwMXFK4zx5Q6mf8s4SRKDTX+XRchZk5U5YVsUANcwsFUxy6K6uYnMXfYX7geC7yQqM9UHanuTjPCQS2MzEtrug91HscXnWaCYSqQrIuC+LFCWG7OxL6+znaFuJeMQkowmStmU8T8FYbCictjzw9OZzPuDjeTCAHDSeZPghAQliahG8QO/ARmLKgOZlNfdJJzv5zzo62rk2Q+xaZG0XcmvjhCS8O1aOCjmtnKrFGGqlwuqTRB49l/NNuf+92ezP9cFsPZKzmXMOF8n+87tS9ud+visUg5XEUtxDsYiFfwecfEVzvbk0YT2ArgZKeDD2YwBNvksbRJxyqblKkLOE45IlEWboNZX7uwU5EhNdsG+4/Ef6eL0FZqlGhZ3fUzgw2Ik4eEajsC3HucZ8bTeMY79pwFblXACZ59wdFStGPF4SQn3pWxYfQiG9MpUMWY48NKaCpIZPLTVa3LNkWl35XVgmVJgA54m5JHbt4erzvE9QYoylr+Dqpad7ERrP4KIBdjPjVqumbNsoePQDLkJDOo/PColsU3SN3DrMWK0v0Bw8O9YqH38EYwwHPfpGfmBqsNjzEhxChBcHthlTK8mU496IbnmtunwtjynztaZNabh9OnJXhN0urYlu1zJ5v2tHWWygYdQ41EZEpriEzoZvyX7fwi6YWoP+9GddjC8awI4dY6E75iWfxHi5AF4BDWLuILXDGk4WOcFEpWDE8IdMyvETz4OqsV+dLSlgGMPYzAARJLOfJCIk6TxxFa0P+1Ek6zRVt+ITD6eiikBf98aUXSAN
- fO0GsND3
- SjMbV4OMGtq8v9wFQ8ZyEuTIYJh0/AppbacX/bwOdWRpYTZIw6WGSSsKf8pU9CC9KOJmqVAoOpn5IstGM7Sxviej+gmu+9IjCKwuLJ9IShg3lOB4I8VSVvXJpy8JQY1BB7CSPhUI9vcediWQORgsP7DvmsMquW+BOSW80MftYPv8E71QNm6H4iuv7fRgAA6SEtnZ2QSmoHR/3c5jOqTH2uAUg/+mWFK/7kSUBBsssNtc6hVfQ1oRp/xvXk7BJwiKXMas7jDGjuBoOee9zc2EeEKy8H1m8KulDk1ykscFou6eMugcV5rJzm7yb20lsNSeSzIYew84GdCAcQXWIEKqyc0nYoL3Ncy7Zhw0SA+WSn4DGp5a5v2D5sTfW4zfVpSjdZPVY4evS7HathuE8243EKgAOmWJemnNQFuk+ydOWHfyi1kL7Nz75/hqCsR8kGvz29HrJ8M3fvfxM8jM+9tqAlbH9UCrHm0bOXCrFvkQpuJvAOjoP1aSB5vB9TKDXJT5f/dZN
+X-HE-Tag: 1774614229-747099
+X-HE-Meta: U2FsdGVkX1+8vYqV5njRvM+1OppnCXQLOUIwWI8W4Okk/2HkQ/NJ/MnW/0fKobduIJWdVniwCW5/X22dBqVCKKyzFjqCq7dqW5Qih+eFZERTb3SF7JEoZUfFY72wLDY/Hr+5Xx7mf8h5zezBu1q1ToLuFj8Y0eTOeEAACWHwUjQGDfMpA2e741k97MiY4oqPB7frY02tkhwFWiczUFOj1G6iCmVaKlZhjcnKtYK+NpNF7FeZfyYGGs1z5IxM4/pXCeQw+RCT/0DIBd9/2vPP1Le9m0/dLvvGIBhi/8sIPqw9Z7oIzpjmZ9LhEV9Wr+uh7HsFyRZ0npGmGljT7+//LuG58M27jRUizx39iluEsjtCMXr1q+j2OJOUpvcp5u7kdHCv6tTkwM9/mV3a70xiF1Sus/xZ0V/G5KJ8xajJHp9udgHfHe2CFZhrRLLPHI3rbWW4LB4nMFtU4CQybAe5eIq/yay+HyivMl9/FHTw9sJiLH1BWesuFINVylxfXGv0NCV9ZYQgLUocqan1qw8aCzFt1xgQKLLeZrrrFdNqeqDMuWGgveXOTDAZt0wZxTyIoyFaRFwpTzXKzDoGnNdXaMLHn1rj8vh2qwKZ1goQSM73IKJXvg/SodfLslTa02cc6rB4fvsJkxuJyeroAznxHS12lJET/vn01P2b3rw+yG7zW3BrzoymG57GCakFDIIyk2FbqNgLAIA75csjK7Dbwb4ojAliy/C/iaGZHHYuT44H1JhgHwIY3qjQm0ryR0u2SSFep7kx1LGh5bwamQyjmMM/zP2vu3INAducjbWqnFHJCTe4Qed9ZnHxvOzn5LKS2Yy1D0qsBQRH5lVcanzvSJYYUu8vZw09lY4m6F0ibfyECYr/RHNatAGX9NYEMTrOlaZZOWVL2uHrUWkdB27E+Cq0DuX5TTbSdjKpsQGsAezOEeMjIp3cvZTuccNaqVJe0lQA4oGwdryfSDYw6wU
+ pQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,27 +100,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae,
+On Thu, Mar 26, 2026 at 09:42:48PM -0400, Zi Yan wrote:
+> They are used by READ_ONLY_THP_FOR_FS to handle writes to FSes without
+> large folio support, so that read-only THPs created in these FSes are not
+> seen by the FSes when the underlying fd becomes writable. Now read-only PMD
+> THPs only appear in a FS with large folio support and the supported orders
+> include PMD_ORDRE.
 
-Regarding the kdamond termination, I have an idea:
-Should we avoid terminating kdamond just because of invalid parameters
-from user input (e.g., non-power-of-2 'min_region_sz' or 'addr_unit')?
+Typo: PMD_ORDRE -> PMD_ORDER
 
-Since a terminated kdamond cannot be easily restarted currently (if it
-is not terminated by 'echo N > enabled'), we should probably try to
-reduce the probability of such unexpected exits caused by user input.
+>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 
-I'm thinking of validating these parameters early in damon_commit_ctx().
-If they are invalid, we could reset 'dst->maybe_corrupted' to 'false'
-and return -EINVAL.
+This looks obviously-correct since this stuff wouldn't have been invoked for
+large folio file systems before + they already had to handle it separately, and
+this function is only tied to CONFIG_READ_ONLY_THP_FOR_FS (+ a quick grep
+suggests you didn't miss anything), so:
 
-This way, since no actual modifications to 'dst' were made before the
-check, we can safely clear the 'maybe_corrupted' flag. User will then
-receive the error but kdamond should be able to keep running with its
-existing configuration instead of exiting.
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Does this approach make sense to you?
+> ---
+>  fs/open.c               | 27 ---------------------------
+>  include/linux/pagemap.h | 29 -----------------------------
+>  mm/filemap.c            |  1 -
+>  mm/huge_memory.c        |  1 -
+>  mm/khugepaged.c         | 29 ++---------------------------
+>  5 files changed, 2 insertions(+), 85 deletions(-)
+>
+> diff --git a/fs/open.c b/fs/open.c
+> index 91f1139591ab..cef382d9d8b8 100644
+> --- a/fs/open.c
+> +++ b/fs/open.c
+> @@ -970,33 +970,6 @@ static int do_dentry_open(struct file *f,
+>  	if ((f->f_flags & O_DIRECT) && !(f->f_mode & FMODE_CAN_ODIRECT))
+>  		return -EINVAL;
+>
+> -	/*
+> -	 * XXX: Huge page cache doesn't support writing yet. Drop all page
+> -	 * cache for this file before processing writes.
+> -	 */
+> -	if (f->f_mode & FMODE_WRITE) {
+> -		/*
+> -		 * Depends on full fence from get_write_access() to synchronize
+> -		 * against collapse_file() regarding i_writecount and nr_thps
+> -		 * updates. Ensures subsequent insertion of THPs into the page
+> -		 * cache will fail.
+> -		 */
+> -		if (filemap_nr_thps(inode->i_mapping)) {
+> -			struct address_space *mapping = inode->i_mapping;
+> -
+> -			filemap_invalidate_lock(inode->i_mapping);
+> -			/*
+> -			 * unmap_mapping_range just need to be called once
+> -			 * here, because the private pages is not need to be
+> -			 * unmapped mapping (e.g. data segment of dynamic
+> -			 * shared libraries here).
+> -			 */
+> -			unmap_mapping_range(mapping, 0, 0, 0);
+> -			truncate_inode_pages(mapping, 0);
+> -			filemap_invalidate_unlock(inode->i_mapping);
+> -		}
+> -	}
+> -
+>  	return 0;
+>
+>  cleanup_all:
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index ec442af3f886..dad3f8846cdc 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -530,35 +530,6 @@ static inline size_t mapping_max_folio_size(const struct address_space *mapping)
+>  	return PAGE_SIZE << mapping_max_folio_order(mapping);
+>  }
+>
+> -static inline int filemap_nr_thps(const struct address_space *mapping)
+> -{
+> -#ifdef CONFIG_READ_ONLY_THP_FOR_FS
+> -	return atomic_read(&mapping->nr_thps);
+> -#else
+> -	return 0;
+> -#endif
+> -}
+> -
+> -static inline void filemap_nr_thps_inc(struct address_space *mapping)
+> -{
+> -#ifdef CONFIG_READ_ONLY_THP_FOR_FS
+> -	if (!mapping_large_folio_support(mapping))
+> -		atomic_inc(&mapping->nr_thps);
+> -#else
+> -	WARN_ON_ONCE(mapping_large_folio_support(mapping) == 0);
+> -#endif
+> -}
+> -
+> -static inline void filemap_nr_thps_dec(struct address_space *mapping)
+> -{
+> -#ifdef CONFIG_READ_ONLY_THP_FOR_FS
+> -	if (!mapping_large_folio_support(mapping))
+> -		atomic_dec(&mapping->nr_thps);
+> -#else
+> -	WARN_ON_ONCE(mapping_large_folio_support(mapping) == 0);
+> -#endif
+> -}
+> -
+>  struct address_space *folio_mapping(const struct folio *folio);
+>
+>  /**
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 2b933a1da9bd..4248e7cdecf3 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -189,7 +189,6 @@ static void filemap_unaccount_folio(struct address_space *mapping,
+>  			lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, -nr);
+>  	} else if (folio_test_pmd_mappable(folio)) {
+>  		lruvec_stat_mod_folio(folio, NR_FILE_THPS, -nr);
+> -		filemap_nr_thps_dec(mapping);
+>  	}
+>  	if (test_bit(AS_KERNEL_FILE, &folio->mapping->flags))
+>  		mod_node_page_state(folio_pgdat(folio),
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index b2a6060b3c20..c7873dbdc470 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3833,7 +3833,6 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+>  				} else {
+>  					lruvec_stat_mod_folio(folio,
+>  							NR_FILE_THPS, -nr);
+> -					filemap_nr_thps_dec(mapping);
+>  				}
+>  			}
+>  		}
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 45b12ffb1550..8004ab8de6d2 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2104,20 +2104,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  		goto xa_unlocked;
+>  	}
+>
+> -	if (!is_shmem) {
+> -		filemap_nr_thps_inc(mapping);
+> -		/*
+> -		 * Paired with the fence in do_dentry_open() -> get_write_access()
+> -		 * to ensure i_writecount is up to date and the update to nr_thps
+> -		 * is visible. Ensures the page cache will be truncated if the
+> -		 * file is opened writable.
+> -		 */
+> -		smp_mb();
+> -		if (inode_is_open_for_write(mapping->host)) {
+> -			result = SCAN_FAIL;
+> -			filemap_nr_thps_dec(mapping);
+> -		}
+> -	}
+> +	if (!is_shmem && inode_is_open_for_write(mapping->host))
+> +		result = SCAN_FAIL;
+>
+>  xa_locked:
+>  	xas_unlock_irq(&xas);
+> @@ -2296,19 +2284,6 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  		folio_putback_lru(folio);
+>  		folio_put(folio);
+>  	}
+> -	/*
+> -	 * Undo the updates of filemap_nr_thps_inc for non-SHMEM
+> -	 * file only. This undo is not needed unless failure is
+> -	 * due to SCAN_COPY_MC.
+> -	 */
+> -	if (!is_shmem && result == SCAN_COPY_MC) {
+> -		filemap_nr_thps_dec(mapping);
+> -		/*
+> -		 * Paired with the fence in do_dentry_open() -> get_write_access()
+> -		 * to ensure the update to nr_thps is visible.
+> -		 */
+> -		smp_mb();
+> -	}
+>
+>  	new_folio->mapping = NULL;
+>
+> --
+> 2.43.0
+>
 
-Best regards,
-Rui Yan
+Cheers, Lorenzo
 
