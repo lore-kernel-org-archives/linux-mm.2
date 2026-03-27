@@ -4,91 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C773E10ED640
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 10:00:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49B8210ED64F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 10:04:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BE3D6B0098; Fri, 27 Mar 2026 06:00:53 -0400 (EDT)
+	id 9061E6B0096; Fri, 27 Mar 2026 06:04:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2483F6B0099; Fri, 27 Mar 2026 06:00:53 -0400 (EDT)
+	id 8DDD06B0098; Fri, 27 Mar 2026 06:04:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 136AC6B009B; Fri, 27 Mar 2026 06:00:53 -0400 (EDT)
+	id 81A806B0099; Fri, 27 Mar 2026 06:04:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 025956B0098
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:00:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B745C13C57A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:00:52 +0000 (UTC)
-X-FDA: 84591399144.24.33FDEEE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0ADD08001D
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:00:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SHEWFF4D;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774605651; a=rsa-sha256;
-	cv=none;
-	b=EJ5eSgB50aB0zyHNhMZDbDxLNRp7QbTt0HfWYBM/gcNKtZikxrHmWFmFMs438RApgUiSWw
-	HVkmqZ5b6WYjbFOZBJGnhuJhZP4qYngVqWZAenCe+on7GeYWjiF5Jh4SkXv0E2wTRpJ2XA
-	RJ+X8L+uTUvRf+zsvUQwqH9jP9PHxXU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SHEWFF4D;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FF2E6B0096
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:04:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1288214107E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:04:54 +0000 (UTC)
+X-FDA: 84591409308.13.245B893
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 46D8940009
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:04:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=N2myqbd3;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774605651;
+	s=arc-20220608; t=1774605891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o+56grdb7ac39ib9dNl2LtTcrr4nD402U9sEfODjWW0=;
-	b=1rrgWlLRvmrVlgUxdo/SUNN/YaXN0QO9KKOkEbBdaZV1xdI5ot6hAAawE+8d7B8IaNX90h
-	kOaGMxdDURnUYggnWubM1Gp0dO622zpBxfenuG9IsKrIx1lfZwvhe4gb2rWEHhp3Vzbqzh
-	BX2qntuZISb2k712YHLoFYFD1GlhZik=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 61DAF60133;
-	Fri, 27 Mar 2026 10:00:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16E5C2BC87;
-	Fri, 27 Mar 2026 10:00:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774605650;
-	bh=o+56grdb7ac39ib9dNl2LtTcrr4nD402U9sEfODjWW0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SHEWFF4DGzAUakw0NqO9GKKRmb+hHKJcxiJIGhVRQzTY7M4bta6YERD/kiroO6Pr0
-	 omcNn9ffxRkOkUo0LJIAMQRgmJe+tVO5KlaHYsQ8WlBLduUHKd4UoX17+E35lrRjH8
-	 4qcl0+8DqCnKOykRq5jTA8ShIhz+WY+NDIPJlOco+S4BovRxMNxlLCKMlCGMNmOACh
-	 8pZIEJp6s8rymij3r5asHb0aS/0MVlC66+pBoMb2rz+1LCeaB9OJfPYIRzVWHZ6cT1
-	 xYm5M+WsWB0+fDtrmgfFja5SZncbFWzRtKUDXiE38PdWZBY3wJ8KTK4udTmR1oOqQT
-	 wJ8DHYsIKy7fw==
-Date: Fri, 27 Mar 2026 10:00:44 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	linux-kernel@vger.kernel.org, Oscar Salvador <osalvador@suse.de>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
-	linux-cxl@vger.kernel.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v2 00/15] mm: memory hot(un)plug and SPARSEMEM cleanups
-Message-ID: <5a7ad1c5-6e06-4829-9971-05d3c599e581@lucifer.local>
-References: <20260320-sparsemem_cleanups-v2-0-096addc8800d@kernel.org>
- <20260326195816.60110f50cd464d0076aad0ff@linux-foundation.org>
+	bh=3pcclGAw2n0ERSdgcxRd/f1n8hL4Vj2lV1ZnDYVVzEg=;
+	b=ZYJ+HqsyUVnsVSVZsnytvTuUR2axefBY+HfZrgTMtu3Klq+ZP1F9bI5chn9TOqErLjs0qw
+	GzXfASUPInw4h6ciGJZhRPutmThHvEfZcp6PBgnm8ZwedmtRiroeawPLwB9bgiGrncrvLY
+	jJiclW/uaXlkTnQGQkfrswQXis8ob2M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774605891; a=rsa-sha256;
+	cv=none;
+	b=8QqSJyNEFaxi47gLESggUWVb8jvxf075JuEZF8xCctbVu9v9/VcwNUzN9lOnpIfNgi1LRY
+	Co6I9s5rz9VfUCv0WM1GkTc1mn+R17C5h738ivizvi6zI2+RNEG1h8P7FOjjaC1HaxHrAR
+	mlNARAOo7+C0Hn11o7g2N/PP0jlG4ac=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=N2myqbd3;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774605887; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=3pcclGAw2n0ERSdgcxRd/f1n8hL4Vj2lV1ZnDYVVzEg=;
+	b=N2myqbd3ZbGn93c4GULI/7XKZuo6BZoiyoyTH65mLlz//yXFNcYbMFXX8j7fds/DR0+/xsfSJlVF1lSUoNqj72r2ov3RrVPF3HFc4wwtS7G2Xw3lFLz83AV51pjSf8+jmVnambmVHWr0RckgVI8OkATCy0NORpTqD4QlnM9nQAo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X.nyg9A_1774605885;
+Received: from 30.74.146.57(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.nyg9A_1774605885 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 27 Mar 2026 18:04:46 +0800
+Message-ID: <1ff07ca1-8a64-43dd-85e3-9aa963c24b55@linux.alibaba.com>
+Date: Fri, 27 Mar 2026 18:04:45 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260326195816.60110f50cd464d0076aad0ff@linux-foundation.org>
-X-Rspamd-Queue-Id: 0ADD08001D
-X-Stat-Signature: cb9whobbgrnsur78h3fb3nfirmpn6u6n
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm: vmscan: fix dirty folios throttling on cgroup v1
+ for MGLRU
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org,
+ mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <bf40a20cd93b6c21f10db95657928fdae185e843.1774438978.git.baolin.wang@linux.alibaba.com>
+ <CAMgjq7BmZYEp_3bHVCWD696Tx3qAoN8mafKE6M2Z-fTf1hTWAg@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAMgjq7BmZYEp_3bHVCWD696Tx3qAoN8mafKE6M2Z-fTf1hTWAg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 46D8940009
+X-Stat-Signature: eprjjodud4cytax6azbxpaadwmqgoy4q
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774605650-124192
-X-HE-Meta: U2FsdGVkX1+DkjeuDAfHLCUH8UYvmFwZem4pN4Mq830GRzOm8gkdeE+QLhslIRcmAB+4UmGlEEg9gVhloCFM9PplITWHUsohYDy83M6CJfvuJpJ8OV92LPs+5sRVCieJUfE3aR9jCUytMKq9/rsd84SHz7ISC3clSv8UJxv9N6ozuEGFRHwE6EEMHucEvkA7UennX8FYUbgkMDLA2MXndKUYi1ieLZKvdra56r/4mjeg1Nbx1K/KBU3t0+Brosj8j3FGdh9D0dUjk2CHS6GMQfBthmlnn0Vjrx+vEMfh2ZrNGAgNbMRHEIHcWsASMgju/f7ETyBtcPRqs/zbC5HRYlICXeXD9UGoH6muJBwWRBPnT1RuknvU4oirvFBvcHlfDONqcqWMo1pAN++I25a+gl1MjoypZiVaSPLDC//UIx3rQtYOwXH0Dsv2JVbZmSj0AOyaTFzY2rofSFxC5xaU+Fu2xo2jgTbUOuJxMDmSYY+Ein5EzQiU8Z/QaS50smEp8KTrXwayg5fixlFE+ayr2suqL+K+9WARWEgJZi8qQwxiCb79e47H8dIZgNEqBRrzWdJg6kFFyyarWmZ97/TMNpiTGePldIUb8mIWetYFNAaQlaCIk24c57m5c+stmsdCf5UZ40pughYLXKHeBye/pwsVkiHA7DZ3rJnatC6uaApIMZoUY0dp21GtoYD5wo0s42eg49fIgyxKCs/jxnGWtJr7aYiyEGe9oO8rWwLS+Vfc8ZRL34v1gWWNsIv1xcoT0NMXTKyi2tBhR0b0rHZAw4OAKtkOUP1h6NQHcd9lU7ZKQ7onzg+MYgj4JJnmny4beqrV+mwqAZHrCxxnKVEUcZBu4m0Wd/Z0/Egtr6DzmRmPUXM0IK/rlwUy2jfGBntWTq/0X/epFI6AyjkXkK7Lj6Xi1sj3pORKH2PQM2hEhn/+/OiUPI/YErOstqLSRcAqlTpt56ingq2uwBIV1Lt
- rUKoZnSc
- n+HUTIpxRWlt9DjSj0ESEAPJuKMNPyYubHHogDLOabvMea05NMC6lL6H1X0fMic9t6l5GdLMuL1/R8QOFXix67cLuc4Be/cO+WXlb5zuqyr5ddaM6fZob35S+ZOCMPnf8NpAEZCQB0BX9zQauFt9Nlbjrt7pF+U1qW+znwFlUERsZkOeCwoFZJ2x7tEePHH0mwrzuWep0xpo8X48xDgLQ+QNh1Q==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774605889-321277
+X-HE-Meta: U2FsdGVkX18pk+leARzA20qyFQii5L1qofMYPdMRTpDEH8N4//2uuyuHkT0tkb6T2HzSKl/oIPBf8EG5iZVNUZnVLbPetPKROp0UD13FOA0I2TtBtKk7Z+4HilhKyXuIEGb6fjvuxDZHbrwhWW0v0hczXbjXWTCPGooqCAHqkzaWH6Ji23ZyoCHG6nbBPX7p9Wi+TWAeVWVuqlSITJy1kgrzKqG7LOIP0uXrho1JSg2elZeDNAQJcoSLXs0B8nuEjLIAYJ3cr1XwI0ApU4nCE9SLeEhpTWWh1ppVv+2CsptG8+z1UacyoXuzUR2yMS3eKd0CUte/1SjdvT9s5DfMF3I9OmDvPeO1cL21T1KktapE/lFsnbx9YO4JOPYOJgoqlPOiOrjrccswf0E1QpGM2gGFWbw8i5MKRYpeDV14nSik1/5K1yOeffS6TGKm/D8oq3+wXWbFgs05XDaniO2A95ftbNY3QFfiizxCi+9Xmu2E+OnJx1Xootqd6kzXkgTMvZCppJNjr9rRbrZCOKNK0vQTIGvx/7Ot2sGuHXh04cE78fnytLMGTECdPUMj8YiU0EV0O5B4TP/ki7ayXaLxQDBGHcF1WDD1gY0zn4E6OM/swTedREuMEL18RGwIn1lAIaeqlR93DG8YpjP5nwi4wioyMiCyiDeqixzMjlyeo/zICaH3d/Cb0ktQucbgdyZi1kpxYJeoWunFGx7xUgHlufPzLQLO0eqU29AL2wq4UL8fY8qX5AjfvInMTkdYyt04ICQyyjOaqesZk0Po/26aAr3bOBllgQgXaWoQ10durloc654Et1gYq1n0+72e9An1nqsLkzsI3qApPU+lwCpJjGQ446uRmsApUz3Fn6C4m/O8uB4Y/XmetJhINrJXj60vINtaLJMoMrDyiQ3/D9COcksF3oBA66Kf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,11 +88,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 07:58:16PM -0700, Andrew Morton wrote:
-> Lorenzo, I've assumed that your conditional R-b on [01/15] is now
-> unconditional.
 
-Yeah that's fine.
 
-Cheers, Lorenzo
+On 3/27/26 5:45 PM, Kairui Song wrote:
+> On Wed, Mar 25, 2026 at 8:06 PM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
+>>
+>> The balance_dirty_pages() won't do the dirty folios throttling on cgroupv1.
+>> See commit 9badce000e2c ("cgroup, writeback: don't enable cgroup writeback
+>> on traditional hierarchies").
+>>
+>> Moreover, after commit 6b0dfabb3555 ("fs: Remove aops->writepage"), we no
+>> longer attempt to write back filesystem folios through reclaim.
+>>
+>> On large memory systems, the flusher may not be able to write back quickly
+>> enough. Consequently, MGLRU will encounter many folios that are already
+>> under writeback. Since we cannot reclaim these dirty folios, the system
+>> may run out of memory and trigger the OOM killer.
+>>
+>> Hence, for cgroup v1, let's throttle reclaim after waking up the flusher,
+>> which is similar to commit 81a70c21d917 ("mm/cgroup/reclaim: fix dirty
+>> pages throttling on cgroup v1"), to avoid unnecessary OOM.
+>>
+>> The following test program can easily reproduce the OOM issue. With this patch
+>> applied, the test passes successfully.
+>>
+>> $mkdir /sys/fs/cgroup/memory/test
+>> $echo 256M > /sys/fs/cgroup/memory/test/memory.limit_in_bytes
+>> $echo $$ > /sys/fs/cgroup/memory/test/cgroup.procs
+>> $dd if=/dev/zero of=/mnt/data.bin bs=1M count=800
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> 
+> I've been testing and based a few patches based on this and it looks
+> good enough as a bug fix:
+> 
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+
+Thanks.
+
 
