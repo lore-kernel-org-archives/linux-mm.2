@@ -4,86 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE3B110ED67F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC0D10ED674
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C5EF6B0092; Fri, 27 Mar 2026 10:14:56 -0400 (EDT)
+	id 6398A6B0095; Fri, 27 Mar 2026 10:16:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3770E6B0095; Fri, 27 Mar 2026 10:14:56 -0400 (EDT)
+	id 610D86B0096; Fri, 27 Mar 2026 10:16:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B4306B0096; Fri, 27 Mar 2026 10:14:56 -0400 (EDT)
+	id 54E366B0098; Fri, 27 Mar 2026 10:16:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B4856B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:14:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8AC7BE7E8
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:14:55 +0000 (UTC)
-X-FDA: 84592039350.10.DD44FA4
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 471B86B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:16:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E93C1161177
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:16:10 +0000 (UTC)
+X-FDA: 84592042500.12.75E27AB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AE9D64000C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:14:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ma3mjiH6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 86D3E2000C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:16:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NWG5gky0;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774620893;
+	s=arc-20220608; t=1774620968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J0QMj3ElIoI1HpdCI7HOYIFKOPnFr+zs5JHCns2ebgM=;
-	b=Ho37QPux2axN48HXd8DmIeXrnXVCHu1q7tDmZWy110PL6SV+mrYmTaGOAmTNmbe/GL904V
-	ibRTPcCX/DvANM4mmaaDJdTvzyb+FA0lanKp8e6YgRSOAlX4GFdqdxJxUR2ZuSE3Jjn+9q
-	Yv1h+oaiORCmRNBJk1ADPjsz0HhWKGo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774620893; a=rsa-sha256;
-	cv=none;
-	b=MwcltxeieftpFbDGHR4F6Ce7MDIbAUAV/CUKsbFP7BXVK95v9GOhqzGUHbVZ9JwLne+ISO
-	pFBOLD+i3DQ5mur/8XJusMfAL0yBVdG45SGdUDty6GsW+wMe+TF6VIMzwm8lA6jcvaxy1E
-	WKCmtzWp+Wvu7CizrTSOIDG/ZaKYB80=
+	bh=2/c1KthjkOxHwKaeueld+RT/gif/5yMl0yCaJX9OL3c=;
+	b=4RqKH/3VohHZZvLkyEmYCXG/Ng6fxbMftdUHLPrZLa5vwjHR1bqyTsliZ2uj/9WW+pqhz6
+	dRr1NLx5116RpULT6KkTe0qBnu5z1NO9VmQS7BpnV/vxT8CWPtz3WGUqySlBywGbQSmQKJ
+	aQ6aTwsxWFuy7EPgyx5Km9ZpGWWjtgo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ma3mjiH6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NWG5gky0;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774620968; a=rsa-sha256;
+	cv=none;
+	b=1KE0lSf4y6rCHB4Tk1uMEHKfyBns1fvzqXr/H2NtRL6zPlxBlr3/+vATlztxx7Wd3FSIla
+	YwZMuzDCsIa1lLJJN9DA4zfROK1ubxdCx/VpKMW0XwY5qSW87W5z1011S8AHsGRDnujSlo
+	YX3ejTXRsEsUM9BWT604aWUc4K3Tx+A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BFC944054E;
-	Fri, 27 Mar 2026 14:14:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89550C2BC87;
-	Fri, 27 Mar 2026 14:14:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 787D843DE7;
+	Fri, 27 Mar 2026 14:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82D6C19423;
+	Fri, 27 Mar 2026 14:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774620892;
-	bh=yXQlyWWnYNtbPdCh0r4vV5036zoOZh+s+XBcJkWFfmI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ma3mjiH61nNEDh7izYui/7QrjOoglBmcXne6eWRWUIOBZbe9IXEBoxr5zSTBqD38/
-	 cVcljtJIDfSNx6eWcpo4cEr+GQZWgC/F4nvDySDRmO74Cy/aNG2JSQqgBGPkO91vEC
-	 bkpaVZ79YQMRunRGZn67AN2xLyVdrg3YT77DcCn7G4gecRK6rMbGl3mFF2K1Nl3T5P
-	 jPAwbKOf1tx8Pz2/HOlhirMDv1ZU2sbMv3ZVD4c2w9c7+V44BioJ/r4bALZ+1CT9zt
-	 DM6Lo9X15WqpBJX4jNWXva4efUd62euN7TiAhsgeXXFJb7dg8OG3vq2h17fXvcNfb7
-	 c67rM4czVINnw==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
-Date: Fri, 27 Mar 2026 07:14:49 -0700
-Message-ID: <20260327141450.4345-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260327062627.66426-1-aethernet65535@gmail.com>
-References: 
+	s=k20201202; t=1774620967;
+	bh=cth6dxxe3aanFcyw5202phYvX47q1y5QBdQQTr+zt60=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NWG5gky0F9g85HFcO+1A//0rEzZc653ybEusycz7wMImYbsVsFcPdrmOIErCla/rf
+	 ghRjG9HM6qdzEvTR1fr/I2HfTHlP56UmFPjs81tCGP7HTKwzNINWgql4XeP4vxLMRX
+	 ndOsWYJzmmkF33kXKMMOgdIczrsZT1dbP+/z7lzIUVoOTL1Hl28nW+99olIEf3/iU7
+	 TuFq5hbtduFU5wLCr7qTUwB3kyDoXGMpL8MKkKT/1Dg4xoXz6EsC1lT0WmolXapBWu
+	 diqC+zh9otnP5sw8OS1/QTgNFmOaQi084gPmjeel071Tu6D2jmZUBPaIHtIrcf/GSB
+	 kSkbgZDcSjB4Q==
+Date: Fri, 27 Mar 2026 14:15:59 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 02/10] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Message-ID: <83506fe3-3b38-4053-9173-bccd46b4a297@lucifer.local>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-3-ziy@nvidia.com>
+ <31d9d5c1-02af-42b3-bc3e-aea151d3552b@lucifer.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AE9D64000C
-X-Stat-Signature: enfgcs8qxqmhuogbbs8z68ddt5x8pwuf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <31d9d5c1-02af-42b3-bc3e-aea151d3552b@lucifer.local>
+X-Rspamd-Queue-Id: 86D3E2000C
+X-Stat-Signature: kcz1ht66zwgqz1aruxsw3ysuqc8c61yc
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774620893-804342
-X-HE-Meta: U2FsdGVkX1+TxVRZO29nE/G7DTagI2jjEfvQvruIaXp7IhuOvyTRM89xcTQLt7iJN6mhI6lPQUr1iAynphX59MVrBnlUFTD/EHIFgIVPrAIpIj/X5MDPO5QO27R2CZ1XzViqHfxsh8yOvqaWlFSOsOhYBA8I+n4Fa46V27mvvOJkkhKewhCgh24irqkdd7l1YzbqRMMZqLBMWL48ifiA3H1D5YpA0zA2rjJZzI2GLTrGfIiM1QM/6kE+d5VfFtcCsheTAlnwL6woIVA1g0wCnRu/kccSbw777hM0+uPtWKGUAb7FCfTQnKukPhqp95bD0yhJD5BCob7ECbU6jqEj0w+2pMVRUWmwNAgBd587L1ExznM1DAnlzcCf2P4zN8WGoNc5BGAqij5BEL/KuQ9NYT+Ko02pcPTRbD8E6h3APbKoZwyQggZaG0U154WCyLaC+cg0ZWJFycQ540+PtQ++6QMHcHhHuDGXzFTc+lL6HsIpgxk9AHgpO3s0UoLqh4aFduRlWPFg4hS5bwiq0AfquSI8gU49RAA4RU+M10MQxsWfW2WDKwYpOtwgbX13hCFTu/d+yP5tEpnXhlz4cFj0p7SEzp9MqWi+WXxYUhSC77Nami6p7MSs4O0du5AkctkL/4mMabO9OWDAvBgrCPdZHYdZGLZoBCLoumsEVGK0/PFd2ZBYjXIWK3U3ksO4ST7MaHMAIYkszpQRebUJyomh+M0HJd7zsESdx4JaeTzTUOd7h3S0DHmEbnZFa8ZGb4OsIzdV0n6ZUAeYqo/wiPl78dgjKU5F96BEw6S7vz1dn29LvDO7hb5iZdQ8Z7YVymTJy2meoGGajflH4a/ONGa37sLj+rrFh9pnbUQHykOQBfTfuccLBugBAjcCbJHq2q/pZD/BYaYlgjvcQNgtzekdBok5EuyhBPTOG/Xt0Fi6iCh50Z1XSiA5dQBWPPqd0fJvTMR4xjCXBShvBUsINqv
- 6SE0gz1T
- Nd0Tkr7cONpIbErdI6EbfNlr1eVQtDhQMxPL3GxlAd0K7aFkPinIjlGG+gXQFshdfz+f6wdtpUY4VtdHx+5+s9bfmRAx8BQnkWLDZjXyIinVTqevKLHV0w0kgrTZVn0upXvyJfD9gcFvBuLmcSvxmg1DHVRg/p6UZ5LgXdv5diQG0LICKZBuxzpsl69TcQwYYvsymjjkJsLBL/nF1nzexrW8lu1Udv22i3nPJoUaqhHBjoOW1pqtaWSgUp/U5XxUK5IKWYB6qVUIEJc5kR/mL7CwDPQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774620968-49808
+X-HE-Meta: U2FsdGVkX19jiP6dpjzykRXMDIysPsDR1nsrCXwyt3WTDD9kHj3WQJCN7gEaNIhEG+JHcHk6cV4ufXXLO0bOKzgYVWSVHuFW4jjI5rpJt21nAY1q3/zOAglNofTKhTi3LRNybbz/J8JYbZFjxdIS54Y6F8ymcw5Rt978psCDSypXAfofhGx3Eb8xY55pwvRIbdxWlZBCByQ49KAkA1SuMrUL1AumFQQR6+rjmbQ5pKGc0iF6bjzM/nd4/eAxXKPVr1dsIdWA+NO1nZ8zvwOTRsxwth8QW8DnRanxtHafgOZ5CvgHsMmTcU6KxcCZeRjERkEQG2oKxFREfl/ANU9vfIM1xEyVTBsXYyGqXfPbyvyCYc9ZJMEDBJB9eDJHPl3pgIqb88yyySTuyjOVIiXGQDCCaFu7AYR8r91t3r7u4uEDbIrkSJUd8u8CZC1wAgmvYB8IroYKqU1P0fF7PC3e/VGyayNWEww9Fy8NPR6TrVdlWh2NWtjxUIkrAt29+Or+sZSrQb8bWdN3n5Mowl10xFFqM9JMexSeFV0WPcjOBjOT9D+U5n8aN87oAvfLErOw/EKXqw/NAkeJFfCQ0GxH8xo2oMQVp8SUL7/UUpZfIP4mD570BewjmG4WC0G9+rCey/QXnKvuNVessFIE3krFDjE9C0GEDpqtjA1nVJUJazBupHGD0nrMFtjjlK/6xIy3dooHdgthSTLuIQvGU/3JU9jL0KksW7hbjjO+UheFR8Tn41RaDhC3CK6ch5TQcOOKHnSoRXQJoNsS/a6z8yPP+UT4sr7/RvnQylZHPJOtOIb4bkZpsjKC4ze1361wJnbxCKar/nNHWnieMRiz20RogAsdYPTzwHQj0mMAIiP9t9YYPcXaHwf4ivHCVkPGdGwG9Oba/do8nvv8YkIDf2fPOiv6Vtp8JFM8ykrtJ/9ps9tg0cNT6MmYtDZZfJmLuL+EhEmLRrt36oHDRCIuWAI
+ /xilC5vt
+ Mjs6YUnaMJJkqAwkvWDoUpIPHWyimSuZ48e/bcD7pZ/lyYW4mI5VDk+Vo6EYkMNxe1HlAvYzAlOA9ifTCDc3nrLufZaWVh4a/qWsn/7B8dCkW50eBWKLQk2BhdfEJdGSt42YwZhWEXAQgoiYOoH4D9HhcLu9HtW6JwOPXMsaQqN2YS5q9Py1/xhqx8AkkrujlkyEDTexhqdGnpWn7GjIdLwVKZ1v7vzEJC/wk3rWfNwkbbbWJWUp6mUoM4hpAUen5ckq5z8b6B5alDbk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,55 +101,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Liew,
+On Fri, Mar 27, 2026 at 12:07:22PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > +	if (mapping_max_folio_order(mapping) < PMD_ORDER)
+> > +		return SCAN_FAIL;
+>
+> As per rest of thread, this looks correct.
 
-
-Unfortunately I'm bit confused about this patch.  Please answer below
-questions.
-
-On Fri, 27 Mar 2026 14:26:27 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-
-> Problem
-> =======
-> The 'addr_unit' must be a power of 2 for correct address alignment
-> calculations.
-
-It is required to be a power of 2 only if it is smaller than PAGE_SIZE.  Refer
-to commit d8fe5d2a3379 ("Docs/mm/damon/design: document the power-of-two
-limitation for addr_unit") for more details.
-
-> Previously,
-
-Can we make the timing more explicitly?  I'm confusing when is the time you are
-mentioning, since a behavioral change was made recently, by commit c80f46ac228b
-("mm/damon/core: disallow non-power of two min_region_sz").
-
-> writing a non-power-of-2 value
-> (e.g., addr_unit=3) would be accepted by the sysfs store callback, but
-> cause kdamond to exit unexpectedly during parameter application, failing
-> silently without returning an error to userspace.
-
-I'm being more confused.  DAMON_SYSFS handles commits synchronously, and return
-error to user space when it failed, iirc.  Am I missing something?
-
-> 
-> Solution
-> ========
-> Add an is_power_of_2() check in damon_commit_ctx() to reject invalid
-> inputs immediately with -EINVAL. 
-
-If invalid addr_unit already makes damon_commit_ctx() fails and therefore
-kdamond exit, why we need more check?
-
-> 
-> When damon_commit_ctx() fails, the kdamond thread terminates as
-> designed.
-
-Again, I don't get it...
-
-
-Thanks,
-SJ
-
-[...]
+Actually, no :)
 
