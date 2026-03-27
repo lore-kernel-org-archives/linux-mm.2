@@ -4,96 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C4410ED669
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:50:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5D0110ED669
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:51:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB9C96B0092; Fri, 27 Mar 2026 08:50:38 -0400 (EDT)
+	id 3E63A6B0095; Fri, 27 Mar 2026 08:51:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6ACF6B0095; Fri, 27 Mar 2026 08:50:38 -0400 (EDT)
+	id 3BD866B0096; Fri, 27 Mar 2026 08:51:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA77D6B0096; Fri, 27 Mar 2026 08:50:38 -0400 (EDT)
+	id 2D37E6B0098; Fri, 27 Mar 2026 08:51:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CB4736B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:50:38 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48FAC13C5E8
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:50:38 +0000 (UTC)
-X-FDA: 84591826956.24.C9045C8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B49AAA0010
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:50:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dbrt/V4U";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774615836; a=rsa-sha256;
-	cv=none;
-	b=LvXGrzi5nTDLKO+05y+MP8axxtTczkiADppLXu8UKOJxg46q6wSl7SJFMiFBVL/wayD3LK
-	jsOXSeBRO/JZVlHUiPlx1fXmbOcVyBX+4I1woGbSMvIoEpWlYN1HI7k+piKyBIDTaIHD7/
-	WTw2L2GEy8mcYy67eek6DKGXxm6qbBQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dbrt/V4U";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EC6B6B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:51:44 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CA389160FC4
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:51:43 +0000 (UTC)
+X-FDA: 84591829686.01.F2A8C6B
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E64902000A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:51:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=C9y2ghuu;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774615836;
+	s=arc-20220608; t=1774615901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lG7lJ8SC5y2bD5PdrMyCiBGSGmh2FdhrE9qDzzdMagg=;
-	b=BJ2hM2E0LFHYerPxH8b25lNMdu9QcyXofYe98pGU2YPi5ZLcw4yRORi4fyFo65Ris33K/S
-	6dLcmnip6ajLTa54714Jj3NFEx2oocesmeQbXAPeosE5BjDdFqb91PBBa0RgQ6b3cFhzN+
-	CWEDhp/W0Oa2hYwOswxLfC50nZaWZA0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1708860133;
-	Fri, 27 Mar 2026 12:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3774DC19423;
-	Fri, 27 Mar 2026 12:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774615835;
-	bh=7TtvxfvBKonF+oVtDcunkjFuZJVVhgHI8FyFmO9gAyY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dbrt/V4U3RhDsEEVQice4TAK4sJiHyb4Calj2k3bm3O2B2llHOuxX9IC0SP/Ooufj
-	 JKx+gTxPfFON6p/vKpJsGfUm7cJLFZFJf5/wmGK4M5PmC+rL0K2N5sSwFvcU/9lYRe
-	 nfsyXZ91doAm0vVLg3oO3pP0FG6a21YhfdVKVCh5Iy9pYCpPb8QbfeD40nECYwrfuZ
-	 EGmtmUxAUOUPOOdjKLVDzABtHSkbofi91uoQUVuMOarXnIoyaZ6g1qxjdzE8d6/APx
-	 t3jBYudMko9aT53uZlcaIA+tqoETqvMZsu/56Nwx56rIg6ijstSfa6CPmDX0mnlhHP
-	 tQouBAQ0ri3rQ==
-Date: Fri, 27 Mar 2026 12:50:33 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 06/10] mm/huge_memory: remove folio split check for
- READ_ONLY_THP_FOR_FS
-Message-ID: <e5eed307-c0da-4de8-8be8-eb52e2af413e@lucifer.local>
-References: <20260327014255.2058916-1-ziy@nvidia.com>
- <20260327014255.2058916-7-ziy@nvidia.com>
+	bh=7eJlsYWA6W8YXtEfvCqWmwAgt7xOZLcbwrCQkHMj4oM=;
+	b=E139n5NcjaHJjqkZ3kmep17ekLDI4UZFKKhfsb1NQnpb98iqL6k717jcaisCwSkhDI7Vn+
+	VcMyAd1hyJADcrkxMqm7g2umxgm9w16B8r7d/bigHpA6c/DfaXh5Tux6MhD7LCZCrvfr70
+	PpF81h73nTCsInOFCdOS2Hv/LbEl67E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=C9y2ghuu;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774615901; a=rsa-sha256;
+	cv=none;
+	b=KcKbbCKdazEX9Ak7VgvpRU4etwJmfV4+SxwdgdF87o+mdKACUKZUq4T1heJmGhpyZXlDdY
+	eonLvBKiBoF8TA3l3vQk3fpOc8ft3sAfWFu6AtiBAJu17RaT7eisxC6AXjxlAPvrWulmj7
+	6D6WKoIpLjkjx/PwnoHNEVaZNrAvv4E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774615900; x=1806151900;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=igR2uwWnIP1vFte7MCw7gFeiS0hftkmp0XPSK5xd0BI=;
+  b=C9y2ghuu6+KHNvJslhJF33/NqF074FAFMrGPvg9GyRU0NN6cDQPzza9t
+   K6MmlP6dnArOJkmOb/HeAwPnZ75Z1WL300W3iQAnVYZ4ZpUOylgzfm4gm
+   RmAHKz/8JDsNb9GFmklGBHsQZRCE/0/MlJusP0ZpFk36INooD9qx8BHbG
+   jW0M2s1LPSfEF75LGNL0EVmyw3zNOaYx33NscQAyQRz4g7x6CDs2IsYBy
+   xBYXqIfxPVhdMiegZ+f0qxgo8x4pOWkNZNZ6WQb+VtjgS+V96AgBXAG1P
+   kn6L2zGsA8gvF5heRNLaDpBETDpo742GBBe23/ydC67jBT6G8WYoRLIWs
+   w==;
+X-CSE-ConnectionGUID: qHnYEo7kQ72NbfSGfu69Bw==
+X-CSE-MsgGUID: 4lm/337+QECZaxtzlx4xFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="75568907"
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="75568907"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 05:51:38 -0700
+X-CSE-ConnectionGUID: nq3KOzv7TLGgC553Odh24w==
+X-CSE-MsgGUID: Uc94TcatTb2g+eOOvM9m6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,144,1770624000"; 
+   d="scan'208";a="221981797"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 27 Mar 2026 05:51:36 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w66f0-00000000AIn-07pQ;
+	Fri, 27 Mar 2026 12:51:34 +0000
+Date: Fri, 27 Mar 2026 20:50:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Josh Law <objecting@objecting.org>, SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	damon@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Josh Law <objecting@objecting.org>
+Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
+ module
+Message-ID: <202603272022.tcaGCvSO-lkp@intel.com>
+References: <20260326072737.341964-1-objecting@objecting.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260327014255.2058916-7-ziy@nvidia.com>
-X-Stat-Signature: emoxh19ggysn3aemyp6f9eqb9t1mder3
-X-Rspamd-Queue-Id: B49AAA0010
+In-Reply-To: <20260326072737.341964-1-objecting@objecting.org>
+X-Rspamd-Queue-Id: E64902000A
+X-Stat-Signature: 56pgegztt99i4hhpx5ctc5s66rqyrsqb
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774615836-470601
-X-HE-Meta: U2FsdGVkX1+KR2Q/7SCm62OGV0yr5WEcFaG9yseC1IO04pVHb+of4buf5DnjtDKofPkAeihrzSxgy+HkBGbPEsobgenHinfk9rXAVYPNI4ss81LMrPDU5bKx1VNSekMLFoKwPc/ymHn+y0RCURjlAXOlIAOGX+7PbiYce41VLticNW+MGxue6OCDC0KYgCe40733MPP9izvtAGgl53iIaUi13lNf7bQohLI30acSvn7kpc0LHc+/rEfVg6tHwCIqk4bu3G9xK942QHGpqIUIINaWzthfCPuvjeX2yMLomue6HpuET9z6VAg7Z5k+ZDmjl+LSJVt/ATicaGBaYiI4l6zC4NT/9UEEhC33sa6x2EwsqeNM5umfZ/WyBPAfHU7xf5Hy8zEXLDObJJ0jRaVHdqKKSyASWaN9qQ2om5RDKHVm0z2tNAz/CB85HiFrDCdDeORF5cq+bz1d/m4eN7wCK4MgnvVTLLrJ/V/SZvZzEBf1GA9HY+2i5nWDFfSQkCqotTZ6SEMrpSW1XzNuXiJM36oKQjIUFtgeMsvAVJPBspRWzujelv4+XkJxrpnHEVqy6XYygoB93ffaUNjTO+Ije9sgS4BogVmSgnjGJEYnPeZ77H9XmCw1sQFkcScQikeldLPwv0GZqgWoPsdEYL/bVjo30zrI8FWBpDXK0L0Klll4zw9G3s1yeC369lb1oOzgItMUAYNfDCIatBp+aJFqYCxwf527C55FiB+VwUxoqU097WmEomj8b/b17lz5o4ZjUuY0lNXQhHI5MZx7FimJSU1Riy2+Q1Ygi2Tmp2mIqxksAaiLYJt0ntYhYA4h0fOOdr0ZssBLDXlRgDIN0UVYg5sojHT3qR4R5JiCfpxEtv48IR+YtZF07XWWqntVx6GL2rj7sqa/W064dTe6al2gXNzPkSACToGSuYJ0/dcbZVJVGHnhCT9B0wAW7bEnPkkCtwHaRS3Jw7hw54PffQz
- wMgdXPwG
- 3E6F1B8vAcXgWKvueYtNsqfrrzQoEhNQh/6VI0D3rQLaiPbU1bPNoytUGBEmeWP1HajP/47U3nFFKocHOcaO32quWFPj/ffcaBZ8p7SgyRBbQcsuyNoir769EUuX4BvQlVG+4GbaK4798Y1tL6xhvYK8CNpCXSFxpQcwd6/d9My52adFEXto/U+CL0J4M/qUOc6RPiGsjj1BVZoBq62HzQRndCBD84EXxtTYkLevXzOZlrl37l3TEtBMr9QU08zpC17ZEB1gVyVqFLj2iS8IL9hKKKnX1T6zpMW4HWfqnb+St/ubL7OLpTh68PQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774615899-404523
+X-HE-Meta: U2FsdGVkX1/Iq9Fb7X/NAyEne3jSQKxVo1CK6J8QS/P7K3RfPS0JH5447VAkl3pMN1NPMBYRSGCPxPRaOzcPKClZK6o5bVEIkGb4lVLzMlUI3UoBoKUK988nJRRpHFzGV21X1ySGv4FsUr5SVySmBQZRj/H7KfbmOK6Mf+FZH64WLrL43S7zUFVKhO4qzx0lpaQjiwmwlB17m/5ZwVz5+5CWcgO14fVJ28dVtDhqtqNmtdueLTrgT0Lb5uAgBsdDzO0pRKkywLgGm0sfed3lZWxs0vg52f0cUtGPOgEmVweOY0A8gUbiSZlEAf3KaqKAoqUBWRxCskW7pHGFvVO2alWfBp7FeFLCJLb/bRff1IQCz0d8ktgX+F873B2JpwwVVIJm3kTTSgHAXPlDCOU7806hf0JW3F1GNMsRJ00PkfamVMH9alQmYmkVoT3KIMKJog3AxoTFbPo5G18axr9Sr+SMF2dpixfZHDd8nR+U0opqR784v9tSg9oWwOrgw8HWBKEqin+vsJIyaWeMmOe+DTXye2g9f3IqshB/+GAe339v+hrUG3dA1pxtfqTad8YmKW8XtWMt0QjbVqKfJVolftUdxUjLB97D/FeXKDgvEPdFNVX1ZM171OHWNEfPDWGPOCxXYv9mrOUdoIgNcAiFoJtprdu9DNdwZub5MOILev2YzYfYTa/xb8u0keo59cQZn3gZpZJTYbRIzWBlCW/W5ahSmkxHlb9aZSX1H2vcVVkS9q4IZY3KA9rUeC9A8CsZtK7hhJoLZx34MyWA135PAsayH5s5efssKIZQa2popDl1AVX8DmvOuzfUBf2bn8N6DImDgkqwU6GsXzhxRUovZZGrKVHWETQ3J3YJI5M3UfDxRQx8nMQ+gKaWzli4g0VtwROJH2q9DxGvTrKOK2dyU2cWxKzZ95ERjU5/RNH1/Z87uoKObfgAhy5kQrb6Y+yIAmQF3wd4vv2JROcQLi+
+ /cIzz3If
+ vVlrVserU2TI/KH/ktLviRD0qCD3d9cIGlenQJWETwoiHWKj4dL4qmQksgu0jL/OdyVQF+jlNZwNHRSltj+1Ks+FJpTaR6N+rOURo1iyHF8lJzf4E1d6fKrmcMzXtHHlRANY+YImRkfqqxrSeq+j1ybjaRkS8fO33pD5dCAAvtkWjmJJnOaptNBRP/CDwaD7F9y6GdIBYlUjXWlQzV0mYhAsdmuNIVXSAYMo/o84fG3pfkJEd+zKq8jBLokDeEZ4xq1s/cC6WmOhjNatvXJ1uKLk0yXm2ZdJw23CXZJZlb85UnLxwhRmLtE9Z3S1QSyLIzzm9x6sISSqs2qP8aFiYZgLdeAErAxxyo9i/rcLK44cZTrgeLM/iBTEgDLsC988Lve3r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,54 +110,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 09:42:51PM -0400, Zi Yan wrote:
-> Without READ_ONLY_THP_FOR_FS, large file-backed folios cannot be created by
-> a FS without large folio support. The check is no longer needed.
->
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+Hi Josh,
 
-Seems legitimate, so:
+kernel test robot noticed the following build errors:
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+[auto build test ERROR on akpm-mm/mm-everything]
 
-> ---
->  mm/huge_memory.c | 22 ----------------------
->  1 file changed, 22 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1da1467328a3..30eddcbf86f1 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3732,28 +3732,6 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
->  		/* order-1 is not supported for anonymous THP. */
->  		if (new_order == 1)
->  			return -EINVAL;
-> -	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
-> -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> -		    !mapping_large_folio_support(folio->mapping)) {
-> -			/*
-> -			 * We can always split a folio down to a single page
-> -			 * (new_order == 0) uniformly.
-> -			 *
-> -			 * For any other scenario
-> -			 *   a) uniform split targeting a large folio
-> -			 *      (new_order > 0)
-> -			 *   b) any non-uniform split
-> -			 * we must confirm that the file system supports large
-> -			 * folios.
-> -			 *
-> -			 * Note that we might still have THPs in such
-> -			 * mappings, which is created from khugepaged when
-> -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
-> -			 * case, the mapping does not actually support large
-> -			 * folios properly.
-> -			 */
-> -			return -EINVAL;
-> -		}
->  	}
->
->  	/*
-> --
-> 2.43.0
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Josh-Law/mm-damon-introduce-DAMON-based-NUMA-memory-tiering-module/20260327-033827
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260326072737.341964-1-objecting%40objecting.org
+patch subject: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering module
+config: riscv-allyesconfig (https://download.01.org/0day-ci/archive/20260327/202603272022.tcaGCvSO-lkp@intel.com/config)
+compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260327/202603272022.tcaGCvSO-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603272022.tcaGCvSO-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/damon/tier.c:283:30: error: too few arguments to function call, expected 5, have 4
+                                           param_ctx->min_region_sz);
+                                                                   ^
+   include/linux/damon.h:995:5: note: 'damon_set_region_biggest_system_ram_default' declared here
+   int damon_set_region_biggest_system_ram_default(struct damon_target *t,
+       ^
+   1 error generated.
+
+
+vim +283 mm/damon/tier.c
+
+   243	
+   244	static int damon_tier_apply_parameters(void)
+   245	{
+   246		struct damon_ctx *param_ctx;
+   247		struct damon_target *param_target;
+   248		struct damos *promote_scheme, *demote_scheme;
+   249		int err;
+   250	
+   251		err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target);
+   252		if (err)
+   253			return err;
+   254	
+   255		err = damon_set_attrs(param_ctx, &damon_tier_mon_attrs);
+   256		if (err)
+   257			goto out;
+   258	
+   259		err = -ENOMEM;
+   260		promote_scheme = damon_tier_new_promote_scheme();
+   261		if (!promote_scheme)
+   262			goto out;
+   263	
+   264		demote_scheme = damon_tier_new_demote_scheme();
+   265		if (!demote_scheme) {
+   266			damon_destroy_scheme(promote_scheme);
+   267			goto out;
+   268		}
+   269	
+   270		damon_set_schemes(param_ctx, &promote_scheme, 1);
+   271		damon_add_scheme(param_ctx, demote_scheme);
+   272	
+   273		err = damon_tier_add_quota_goals(promote_scheme, demote_scheme);
+   274		if (err)
+   275			goto out;
+   276		err = damon_tier_add_filters(promote_scheme, demote_scheme);
+   277		if (err)
+   278			goto out;
+   279	
+   280		err = damon_set_region_biggest_system_ram_default(param_target,
+   281						&monitor_region_start,
+   282						&monitor_region_end,
+ > 283						param_ctx->min_region_sz);
+   284		if (err)
+   285			goto out;
+   286		err = damon_commit_ctx(ctx, param_ctx);
+   287	out:
+   288		damon_destroy_ctx(param_ctx);
+   289		return err;
+   290	}
+   291	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
