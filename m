@@ -4,91 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03F9B10F2867
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F77F10F2867
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4277F6B008C; Fri, 27 Mar 2026 15:42:54 -0400 (EDT)
+	id 6C0EF6B008C; Fri, 27 Mar 2026 15:43:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FEF66B0095; Fri, 27 Mar 2026 15:42:54 -0400 (EDT)
+	id 6982C6B0095; Fri, 27 Mar 2026 15:43:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33C106B0096; Fri, 27 Mar 2026 15:42:54 -0400 (EDT)
+	id 5AE6A6B0096; Fri, 27 Mar 2026 15:43:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 21AA06B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:42:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C971FE1A27
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:42:53 +0000 (UTC)
-X-FDA: 84592865826.27.4854FB3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 14B95A0013
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:42:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PkOvVF7w;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 46A826B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:43:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E9659E19AC
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:43:41 +0000 (UTC)
+X-FDA: 84592867842.06.19F7DAC
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 12A3220008
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:43:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DBC2+xN9;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DBC2+xN9;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774640620; a=rsa-sha256;
+	cv=none;
+	b=RH49pUsfs1hGq4+tQ3UcATAIL1lQ9Q/Ci7zn6Jv1r8P8ubngVQD1RvOULZYIwFqXy5v0Zf
+	NkBIAPGdmnhmp7nypotlP7S/x2ztqmT+g788RzYH1yC+6y+SGafeV8R0oNpN9MoMRVlGAJ
+	HmQe+ETDszwN6DBeGG8gm7j+d5WKemc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774640572;
+	s=arc-20220608; t=1774640620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XreVp1Kv2r82/Qyc1/OwNMOukhJLk7YYdp+mTT+rmN8=;
-	b=4mN2HrArPSiXYS36JfkCRlmpD7xqONbjgqzlzsgZdCBN0J1D7TkV5IqXHyUPPEtOeLwN2w
-	camZynpluLYNZJP39T06j+777cq/jf6PB5FgqTzeIQ+v01g9VlC6gWz45LGpX/iVPFkEK5
-	+kr39cUf3B7muoJYMb8fr+i29MT1mb8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774640572; a=rsa-sha256;
-	cv=none;
-	b=Os+YEoPs5QIKC5c6SfZuY0PzGbJ5VsjhHHKnmTMD13ejUHEc7Kr6D0Izuxu1vmosFA2GQl
-	tzYkQbGLKUOnb+UTPEnXfGXI9MM+4zHaPs2PTAYHbSiBQdmiV4W5dA+XldNT1M4aSmoxb8
-	FOKMiGBZX6r7vyVUGaGNU7oMZvxMOeU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PkOvVF7w;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02B3B43C8F;
-	Fri, 27 Mar 2026 19:42:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46674C19423;
-	Fri, 27 Mar 2026 19:42:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774640570;
-	bh=5Cf1j8Aqd21BWFIFt8KcYU6fNdKQMFl4Tg4msm+5b/Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PkOvVF7wyyUsOQ5zORNmVnU1qLxV5bvgMiidF4v6v0Wan5C7/xVcA2MjFxe3NJwjv
-	 +PDurgOV0/+KiA9o74QEjfFlO9+AHvlRGp4N0f3CWFkJ+uqBPS9TdfSSXs+zbVzvXz
-	 QKsjEGu30vz1DQHRt9ciUC9Yoq7VYSRIfNbBCkJ8=
-Date: Fri, 27 Mar 2026 12:42:49 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, Uladzislau Rezki <urezki@gmail.com>, Nick Terrell
- <terrelln@fb.com>, David Sterba <dsterba@suse.com>, Vishal Moola
- <vishal.moola@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, Ryan.Roberts@arm.com, david.hildenbrand@arm.com
-Subject: Re: [PATCH v4 0/3] mm: Free contiguous order-0 pages efficiently
-Message-Id: <20260327124249.a8de2259cf3438c5f4216894@linux-foundation.org>
-In-Reply-To: <20260327125720.2270651-1-usama.anjum@arm.com>
-References: <20260327125720.2270651-1-usama.anjum@arm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 14B95A0013
-X-Stat-Signature: yyx7kwrm6i6b3j8wcam4b7abikajdb5d
+	bh=5ycsjbas8cC1Onl2FsApYb1y1z6bcYUHR+E+PGpMszI=;
+	b=TL1RN95UiEFdNvIrLwwmWRSvLBhLCNYjdwgr9eliWR/a0y+WtvIZPPxf+piuyaHcQrydfV
+	ffrvxG+2A8U4vZiT0Ny8SM5/gcZpgFy9qC9fkQBp9jGenxI6/ZlQSz9Uj7Rdpl8pdibtOy
+	W3ietLrqsb+yPX2iDlHIn/mNEIgNk4Q=
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-89a05955720so29378426d6.2
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:43:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1774640619; x=1775245419; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ycsjbas8cC1Onl2FsApYb1y1z6bcYUHR+E+PGpMszI=;
+        b=DBC2+xN9p3AcE0AsXrEv9qRmtLx0Zr13+iNmopSwvbpZGjyP3t3vTEXveLDQsAKnOk
+         ms+dWXSM6FtzHYfpKZI4iUVsJdaEfyCI+ATFW7JNiYR0ylCwuSwN7AjCePWd1N17Y0IX
+         b8TUXQtvYsWLk6HgYfaCkLj0scoBNttVr9Biu0twpsaGAydUl0WlgfVv2g05BO9HDWgr
+         oWzjHvv1rPKMll248JD6Zf563DlSn9qNwvs3W5+lh2ValXja+HGQ0zvFy94wRmDEyI+J
+         rCJOAnZmFI8zJGmjd1HQEqnfKIhX/gQIfsnUcpocpgTVLqvbGywHxYbVMwVw6qyhb9Se
+         iMCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774640619; x=1775245419;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5ycsjbas8cC1Onl2FsApYb1y1z6bcYUHR+E+PGpMszI=;
+        b=BlJ3uWHYKABv/pMj4RheRCupMrg8/5kWhM7QTWEmjE1dzCELmWmmg03NdYudGqq/Md
+         +SQ3MxkvxqTlvSw9IL2GuMWx2dZsrxjYsWshtvLhEu/kfk8xs2QBGKxg+WQ68zUF9m/Z
+         2GOON+0IFKaP4efs1puNcJrl54DbpYuX6GJKMQHPy08UiKnOTNT7UJ2eyfwN5zkT37JO
+         Q2X7Q0np/ZU+dCx02kJEjHfFK09nIlnJldhToEMNWEzaLa74hosrrw++YccJ5102FX8h
+         +gIFGCCD49JalneBciAzProhZrwVbLp1n2mpJQC6WtbnNdFM3kcOaVKdUinD3nCuqJh8
+         nJ4w==
+X-Forwarded-Encrypted: i=1; AJvYcCU+uWYkESyAvhjmk7BcnsXQV7aVKocEZKVhJFKote/+LYAEip5mQeYYOr1DM7ZLOYr+/+nD/1eHHw==@kvack.org
+X-Gm-Message-State: AOJu0YwW4tF5BOaNmYJL36S9enr+Q2HLIUg9BUtNseMXaK6d7I6HjNl4
+	qrZ1HVZxN7gmz6r4O/8uDKVsqn7rgWjO9vyT0u5ys/Nu376No6kX7k0Vy36dxC6oDlM=
+X-Gm-Gg: ATEYQzyceb/CWLo4+w7DYC7AiFOHAAwHji4g+Npg9xoUqJUwS3XNpPVqRE6igEEsKJT
+	/vhdGHOmPm8J+gbaMcTAiYmsTglRLeeMmC7YBQwXJhB/UU8pLk13hoE2HnRVtA0gBcyxZeSP4cX
+	+qPYP3prNiTfjVLSWvvupMdpcIpT/cR/iqZFmN0Sgx/+8Cwsk/nKLVazv2ChoGsb4XkbdYnO1w1
+	hDuF1KhHSfBV/PBI/TDqZNtQpDYhtqp1NelXn9U7e4QjxlMzTVDbprlHcitG+txZOQgpyJ4+bmL
+	BnKt0TXR8eKGd4bORc/3bDavbJo9Omlpy07f8EOyB9aD0Yxhf2Q4rtHEI76XsyBaz7c0fkLowkV
+	sjH2i2KW33MVHwdcNz6zWVD6+QX9P8Su/16MNAkagxrNNyGi9sWvI1MAxsdxm4FbQhQ5zwx/BiS
+	23LUhU6XyNpstAhQbsUNOZ9lInO/58GMdOK9AHQXtoSxlfW39gsr9OwwMYvNrX8fBw74UzoK6Kl
+	l6f
+X-Received: by 2002:a05:6214:4901:b0:89e:a170:6af2 with SMTP id 6a1803df08f44-89ea170721bmr11920846d6.41.1774640618959;
+        Fri, 27 Mar 2026 12:43:38 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (158-94-182-130.mclarenap.oninferno.net. [158.94.182.130])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecbba4bd0sm797206d6.11.2026.03.27.12.43.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 12:43:38 -0700 (PDT)
+Date: Fri, 27 Mar 2026 14:43:34 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	lsf-pc@lists.linux-foundation.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
+	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>,
+	Vernon Yang <vernon2gm@gmail.com>,
+	David Rientjes <rientjes@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	wangzicheng <wangzicheng@honor.com>,
+	"T . J . Mercier" <tjmercier@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
+ (reclaim_ext)
+Message-ID: <acbd5lKEh8xa1IQk@gourry-fedora-PF4VCD3F>
+References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
+ <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
+ <acTaRgusrxfCoKqe@tiehlicka>
+ <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
+ <CAJHvVchSfGDubPhir0SgZfr_BcpN5oq_7AY4AZ587_ucgY4Apw@mail.gmail.com>
+ <acWXdvHx9mYqvT2w@gourry-fedora-PF4VCD3F>
+ <CAJHvVciAmX9OFLBSahwvXL=E+3xnDsL2aE4WKfDBFqaT1Gu+Qg@mail.gmail.com>
+ <acX8_XMQYA0-NGUW@casper.infradead.org>
+ <6f40c513-af3e-45b6-9000-c61494a23bd3@columbia.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f40c513-af3e-45b6-9000-c61494a23bd3@columbia.edu>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 12A3220008
+X-Stat-Signature: xrim7bhz3qtx1gtdzoxx7ifgbe5j176d
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774640571-917549
-X-HE-Meta: U2FsdGVkX1+s6ED5oLrQbEsMwlP68fXDvs928GQIMTd6ksBxpvqvA5hzl5WDs5laQpqc2e0cVfZovh/gTexa2nxnx85QZWTP8VZ16Sk/bjXWzULnezHC4pLVX3UJHwrj1wCpWrCnuBzrUDw5XvP8TplloucVlXUhs48QhKsY2v6G4pZVu/s99FTgUPtd61X0gdUzAq3bHt0gxYBYjnc81lg1ewWQnqgvB6M5wJEGE+f6NGD8dT4oAZQsnDBp1A1SBIJ2BgxL5LORv8gCpaCrbL12ErP317mftyiX2Hx9hnTBJA2wuLV0bhPqKlwyMqvvBAYXvKsrqGhM7whmcZy6vrNM5NFOAC/86qGp9ZN09Kp9OhxiJH9/40j1Lj1pM7FYUFj/qm3ySRr1SckAdOb1LXJUWvSRI6v4pbwZ985fYyW/JOnlxzIg2Q3M0nYf8paKIjjaR7rWWGM0yeAMs3/O6MjzyO/rti8AnB8Isx1P7m4XZdv8DAFETW9Cr4sB75FsE0V2wEuIyARyQvGX6GaF58FbGnLSS1CxG+/fezVsokPZ8ee1dojjPSvn5V38ecqFAuusGSk2KAhMX1w1FtugCqhVxPVbUz/V40Un7JMy1jhUTIOMxOQfOtYb0EtRwie4Psr6d7MyrVPEXhGJsFLu9NqnOLXm0moPLspUJlQred38sP30E6OtrMC3x1CNcTwEgYnYaZ3dJZSz/TKXeCJtMF5lsnYb52NJySVj/g7VqLwp9RSahyv+MM4MzUf0FzzFlwWYWDNEWzE5wBeZOI0r3kwQCziqZCkDCMwsTckybqAqMFpDgGFO13wQ9JaF58OT6U4MRhPmrqCOVASwD8i8AqKqliPNB+oZvISC4VP0XcYckHL62srcI+Eey0jDHtl/qZSrPcdhp0oaF4iWkOXDZE+9woukrcC8w8ABNXIk5Dlbm5o2wPLl6c6hJg5NA040khjBPaMN5qiz7uqKt/S
- 2fJ6ofvF
- oXwiamoN2P1OAKQ/cPAOJCyj+k4sO+usjBUcYH2zxfoL3rBLo8/FokyyLp47HIAVBpf2Aq4cEuWr+0kzKOnDUx/DNRCBQIDlnWEH2rleYhKad1LLnFyAPo3Wl0p2S60oas+d7raJqdS0M3h6Q1AKcV+dl7Egx9a+ZWkmp6YBLeWKMppoimtvxuJscMBpB9435ZQsuRr0Ssg8xUr3lgIrZrZi6CUTOFQOzdWpNC7bHv0jSFh7Zzs4Ra9Y8zpRyaSJZP8gJ0JdiIUuiNuWjqPepskQwhXMAofk2PsKeyaFv2mXICkxLMSzA3PKum0XBqpP5IBVEWntBB0WwPNVJxgqF9h5P6IWH42+ygTAu3VW/vWAepczV3Q1205BsxTLFf0cHDQqjJ0F2RSjSxsfr1UteyMK39XwMCuSaRBBlnU4I8sjFGsc7OXPj8dqBdg==
+X-HE-Tag: 1774640619-199883
+X-HE-Meta: U2FsdGVkX1/pnQoo8XdLzXg7t8R2DxWUGGI/hil/QMPeIZU87SmjxsaWP67uqZr1kktRNk/UMsGjRoczHmmy88ueNE22w4Lgt4o4wFvdH0K1XXouOKawadpk62+83OftvzG3fAO9uYsxwmE16IW0/dj0OskUbiDAO8nwnppmEekph8v7wBHAkm0RufOOOvvUgPMnmnw0E3lLvTKLuhAo6zGWgCRanjZvE14N/1goiD3vBQjtEzTXg1gz5OYqD7pUh85Jwen7HREufmcJHCR7bhfWUAA0LmsOEgJdRHVaI87qkytP+FsvATBcy6ny6h+1r/JJJ4GgqKbKIUKDj4puL0wa1tfIdhsVzwscszZsjqqfULv5X9uNIA5AnnFkwuNsarFMY6JRp4waKF1G/dj/dWfvEudSwxynQivuCSrNGoOL0nWYx4Q//mxB/Qm0oZzMvaQzjiiLQHgLqu/DofpDQGV/1vFp8LiOSHbLsIRjQbHYHJ8JUBOzX6eRXS+cjOO3AT8+a6Uvv/ERK6LIBBbEL/Z9Z1wcN9dTrBbUyB0nplB/zg2ObZ0b3IuchczFId7S2/oWCfqA+5xQpIEvoSleYjeabD2XkaJFgT/Z+9ZzjC2pVquTa+tqjG47bKoKPGVs0Z2WDXtHHXybSocq1pILi9GjBH00GxFSv5PuRZ3JKmcNum1qZaWWknLhwWhMLbAG1FO8rVoOunWtaEeDORb3IiAORXo/0pyKgnBfDosgD0u8khdJvQUpe30sxTsYMEbkpq+qBJdqeVWOORiUsqHE7cDkbbQOk7eS29lJ9n4P0aXlTcmhc7smH7NOnQ1Yq6Kx+ya8iN/Iw2JK1f3wTGVFQ/uXSEVTDTiVsYPyIp+1OzKBtpbhKiUketb5LgNJttO+C7wjFdWrjbVKAK1dIsvi3d39teZ0ZHaVz0bxWrnLBR5lDgkwOb6rVuBYTrp4D84WGCzGB8UInq00dODnltc
+ PI0nGgim
+ 0fxPralhO0opF+K5OhN4rebeuZZz8egJv8XNRj7IFho9mDqz7z3LVt1Ak5Sp0X4ylubE8+ruor5AwGud24CF02EpZxkhSYo3McVzR2q/7lOLSAlyRtWzKqNIrUeW2G0wHQrcyPWMgmvTSjQdwBS7VXC+rZCLmJBqotjPB0DIrqsZi4eRv0KVN2XkyDmWVG+NJoGkHWxk/5p8mEItUuTdW9WhcYSojnQvuEE1NJBQnXTgOkHy5YRC8d4j4x/MkEYonMpyHSJ9SEx5yH+iNSAEpRbZlWHKLjWz1cljCcMNQ2DtC3zduNyVsr+tIrrvcGrHeq0W7qDHUUgW+CjJiOtk1HuXNyxxdfoAAgLxTqhxYUGBSEXvgVvAlu8VDJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,29 +149,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 27 Mar 2026 12:57:12 +0000 Muhammad Usama Anjum <usama.anjum@arm.com> wrote:
-
-> A recent change to vmalloc caused some performance benchmark regressions (see
-> [1]). I'm attempting to fix that (and at the same time significantly improve
-> beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
+On Fri, Mar 27, 2026 at 03:12:16PM -0400, Tal Zussman wrote:
 > 
-> At the same time I observed that free_contig_range() was essentially doing the
-> same thing as vfree() so I've fixed it there too. While at it, optimize the
-> __free_contig_frozen_range() as well.
-> 
-> Check that the contiguous range falls in the same section. If they aren't enabled,
-> the if conditions get optimized out by the compiler as memdesc_section() returns 0.
-> See num_pages_contiguous() for more details about it.
+> It's been well-known in the academic realm for a while that there isn't
+> really a "one-size-fits-all" policy that works *best* for all workloads.
+> Yes, you can make a general policy that works *well*, but if you really care
+> about a workload's performance and want to squeeze out the last 10-20% (or
+> more) of performance, you need to be able to (1) experiment and (2) take
+> advantage of application-level insights. Being able to extend reclaim (in
+> our case with eBPF) enables that.
+>
 
-Thanks.  I'm seeing impressive speedups for microbenchmarks.  The
-speedup in [3/3] may be a bit more real-worldy.
+This just makes me think going all the way to reclaim_ext and re-writing
+MGLRU as an eBPF extension in an effort to simplify the code/maintenance
+and keep what works working is the least-worst option.
 
-Do you have a feeling for how much difference these changes will make
-for any real-world workload?
+But this is a naive take, i'm sure making that interface stable would be
+even worse than just maintaining both LRU/MGLRU.
 
-Also, AI review said things:
-	https://sashiko.dev/#/patchset/20260327125720.2270651-1-usama.anjum@arm.com
-
-The can_free one (at least) seems legit.  I suggest that can_free be
-made local to that for() loop - this would clear things up a bit.
+~Gregory
 
