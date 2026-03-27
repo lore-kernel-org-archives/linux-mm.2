@@ -4,94 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1AB510BA435
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:48:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A249410BA435
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:51:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 244F66B00B1; Fri, 27 Mar 2026 03:48:06 -0400 (EDT)
+	id DE2A86B0005; Fri, 27 Mar 2026 03:51:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21C566B00B3; Fri, 27 Mar 2026 03:48:06 -0400 (EDT)
+	id DBA526B00A9; Fri, 27 Mar 2026 03:51:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1597C6B00B4; Fri, 27 Mar 2026 03:48:06 -0400 (EDT)
+	id CF7176B00AC; Fri, 27 Mar 2026 03:51:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 03C4C6B00B1
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:48:06 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C0766E16A3
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:48:05 +0000 (UTC)
-X-FDA: 84591064530.24.2E8CE9F
+	by kanga.kvack.org (Postfix) with ESMTP id BCF7F6B0005
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:51:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 684881A101D
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:51:33 +0000 (UTC)
+X-FDA: 84591073266.05.4C9F736
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2D94A180006
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:48:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cwoVLdzC;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id DAAA2C0002
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:51:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kXxPCsMm;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cwoVLdzC;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774597684; a=rsa-sha256;
-	cv=none;
-	b=AUjRjcZmm2xfRakSNIYOEfV0oXN/t7i5SwX8oOSX8vhuhQZ95wLa9nuFKov1wOF8x0Tst1
-	xMqymtCAKJAA5o0/4kjd7xtNEy+34NOf97JITT9lJMszXYXiBGCxov+nzR8YhA8jFGRnOg
-	oMAxbEtw6Z8DYVLkSQQtwvb5BHm0Jbw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774597684;
+	s=arc-20220608; t=1774597891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zWoRYwP86jyji7hwmSchLuM87mveeaS/EOBeUUAIEkc=;
-	b=tysEIEks9blSv+MdvPI6s141ODui3SVbNqKhLTeewnRc9gE8fGwF9gyS2sLxhxlofkvdaq
-	tK/CJ9NN0p0K6u2pmknsBA0JVy3zRwpowiC/V4qXBbcMqqF/6IGIAfCJlYGy7wPYCSAr2a
-	vkWNITxjtKmIW7+yP9qlWf3rmKGmr3A=
+	bh=KPdVi31yYMgkdOGdMwmDGCPoWqEBQPdLwRzwUBvVOKs=;
+	b=wEg3qFz05M2LiSkDE6uch+YnNToZ2s1piMdpbBUDJR+rU0hPZ6ZY+RmRfOlU2UCett0Z/f
+	shY/Yc/Pe2on7Ks8po4RmsbdnNNCLpXRxuNoeTZ+/P1pUp9peswfGMCzxiMrvol4rcJw61
+	DInB/qrTR7C9Mh60ifnWhTQni4IklNI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kXxPCsMm;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774597891; a=rsa-sha256;
+	cv=none;
+	b=wQRJTfD7BEmvfb3A83+scI6qXVjOj9iit3a0vZQ7ivu8CVf4ROIIMLKQBjgALzIWGnllB6
+	z4agOrgRlACNsNApqVEtcl0YsIVnM7OzoIFz+VqFVdfcGcMHope6bkWXLswlxHl8DOaR6f
+	aMHtfdNxZmB4b6nK77azy/ZUiR5G+jY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 95E9261338;
-	Fri, 27 Mar 2026 07:48:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ECFC2BC9E;
-	Fri, 27 Mar 2026 07:48:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 22AD660133;
+	Fri, 27 Mar 2026 07:51:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA66C19423;
+	Fri, 27 Mar 2026 07:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774597683;
-	bh=zWoRYwP86jyji7hwmSchLuM87mveeaS/EOBeUUAIEkc=;
+	s=k20201202; t=1774597890;
+	bh=bQQlwZ4SeBxVMr54+IT9zGQQHRyh4SojeHmnIsWX4Vo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cwoVLdzCPT4pgBbS/UbME9pnxTNo/1fVlXw6ein4lFBN0RekDnCSnuJ9sq7qoHaM1
-	 Z39G2BQUvlQEAzVuJw3A6IHd1WmyzEYI6g0vqAcPZZ/1EyKwP4sAyGxqPmb4gAlDly
-	 p2NhaX29HwzinJODk/j1tI3kdqp6Nuh5Hu6FryLbm+9Dsdp/3iKjlVN6IzppB7xHgi
-	 P62ecYtg/x9DfOfQs2+4564sAQ4+4NNL2pSWYdrcz9Aht6wua1I/CG8oqrUIuQF6Q3
-	 //XuXY3gnkEjIY+rR3oiiBGwKwKP3dit1Iyc2J3xbdXrlD+9Ptlsb2h8Sgs+BCQIob
-	 O1ZgH4kKK4Pjg==
-Date: Fri, 27 Mar 2026 07:47:57 +0000
+	b=kXxPCsMmsglasjUC56YN66BuUwkCXnonxDBVLcZlbpxknQvkF3ucezBc240psEPeq
+	 aJi1TkZiKgApAaz6haTHQOtDpDifLpsFoERji2pyYLL83lLBzlu5lRUznjExBycEr1
+	 daoR1DBcB8FVEG7g4C3SzMX8ZLbImaYPvIOzZo5ujEDBJH+mhpGx5grshS1ldmOb+R
+	 3KExS2+cK3btkg7d05CdQFlHDT2dRaGxBxDUwhpO6rRnXcFC7NywHf2idJIyAQNugo
+	 UjQX8iJLjPfL2RD+9EsG8LbLfUZU30NrUhmsfCBYc1O3wuAczR/9tlg5CoOYtShj+A
+	 RIPml0qVQOSyA==
+Date: Fri, 27 Mar 2026 07:51:22 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
-Message-ID: <ddb0f340-ede9-46cd-b10d-2a77ac4d6dd2@lucifer.local>
-References: <20260326185629.355476-1-ljs@kernel.org>
- <0d4e27a2-e9ae-41ca-b327-82296cbb0cfb@kernel.org>
- <CAJuCfpFY311807PpEP==UKBLqXXDENA3WjXuNnXMpKaOE2JQtA@mail.gmail.com>
- <CAC_TJveJLkp8MJhphXA-xhyXCpC17p36Gf1OtKLT+oA8LwD0zA@mail.gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com, 
+	mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	muchun.song@linux.dev, david@kernel.org, ziy@nvidia.com, harry.yoo@oracle.com, 
+	yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	chenridong@huaweicloud.com, mkoutny@suse.com, hamzamahfooz@linux.microsoft.com, 
+	apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	"Harry Yoo (Oracle)" <harry@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v2 4/4] mm: memcontrol: fix unexpected massive positive
+ number in memcg_state_val_in_pages()
+Message-ID: <c826e6de-3ffb-484f-9abe-fe1f440e71e6@lucifer.local>
+References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
+ <e19052a28a7b604c012bfdfc900fd09543976284.1774447069.git.zhengqi.arch@bytedance.com>
+ <54c2b09c-84f8-4118-96a6-acc13ca2f245@lucifer.local>
+ <b6462703-9744-409e-a770-b9a7ca5fa198@linux.dev>
+ <9ee51ac2-c87c-44f6-b983-44ac9007cb35@lucifer.local>
+ <20260326170622.8fa7ca34d1425c241525bd41@linux-foundation.org>
+ <0cf08b3f-6fed-41c4-8728-c925e8a55f29@linux.dev>
+ <20260326201349.f63af08fb120b2ecb1623211@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAC_TJveJLkp8MJhphXA-xhyXCpC17p36Gf1OtKLT+oA8LwD0zA@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2D94A180006
-X-Stat-Signature: 6pnm4b1f47hwoqs63cszpzstn9cmetfu
+In-Reply-To: <20260326201349.f63af08fb120b2ecb1623211@linux-foundation.org>
+X-Rspamd-Queue-Id: DAAA2C0002
+X-Stat-Signature: zqyqahop8ztmo9nmpaoy6mn6jogb418h
 X-Rspam-User: 
-X-HE-Tag: 1774597684-337717
-X-HE-Meta: U2FsdGVkX1/cF4jtcQ7x6+3yF7MSL5bgpNIcwJoZV/2n/4S3hrISXLFhrGxuD57PNq+2D3aDqnFrd3eJ9UJBBnOmCgIlMfMA7kqdj/0roRLQz0307c3sjzMrlGWkq5GRnencbQE918HOC9gSzBr2hiZK6X5X3n4aJ6hozmFFHzmCUDVBUp0cTAEFw24P6JMNGP7dorObYUndRTGRWCQEVxCALd+XQDmj3cFPUVG1LsLotp871FUvhcZNN/9aHIaB2HmUF86itr4BonsQWeNQqVYc6HJ9xw8NzIIegWYRz0BBNt6Xhg4WyBvxUEn456X4/ytPdbokXfgjRqxs/3eDJ3uebDN0ENKmkZX18eYZSO5Wyp9mDf09eM1Nl42ErcB4egw4RrBmZzYsrJ87CWbjCD9QToxOkEAvakJj2x4bVLqjJ2TmABb/k6u2V8QtNP9GgGi3iqmLvTsqUaElHL/i+9k+duElZoQo0YmIY59vTQJsDVFSU/13EZV+TOXgsitooi8/0RjWZiVYh8x5iZ9csKNpF8oBX06lKQtrQJhHi8+HDYuK5zYwM9T9Hjt0FBmc7ziIBXAU5Cbj8W2LYIccTygOje9UvRtlQRLJ67vefjVFaymQ0NmIdWHeOuQzipgf2k/rbJVgf89kv3cnMrtsyKCFMtxXnPHibNIP+w9XY9Yy2O2N1GEhhisz6HvhfivpAabdhMZX/A2NvUyQyCNvFdG/qKSPMAoUBg0dWude9Tq1zGskOkg53KITHDWTyBEbY5xJa4BmP4IkTMkl6XmW+i+ooE8ooNBxxYKRnrEeXg+Dgi8tyGj3azUpezV3ID+kBfEIoxLgv7MA9xD7fsk67AgnSBEF+ZU2xW/YI3a7oReGKLjB2zcUVSanluIiaLcXPCCnqc635pr0lahvdmROX/6QnhBDykLAy79sa30mCIuQb0ouFL7QdcHTK9klA/zjRM9/G2Q2w7YkC/ZZzR7
- 5K5/ycge
- 0erWTFBstA2FYgYm8nXpx7LNzQ03ikPTIuN5KbEenpvRRGSIoWWnq+m3lpk+Iw/2dYcJqOZH2GLYUXKCoiEYiual3IRtQ36xyeB/4GSaWTCZ7vPQaE+fIRtC+uscnG3MSJ1EcOhw2W7UiGouozmd9kw/sagOc7RYjICZ/+R2gQAGPuDzyqQw5eej9K4ih/C6+bo1oMsG4NUQPM/A3dwCX9hx/lojCIvvSxBUTz8SE0Ryl3V1eS3ZJ6/RKrPJJveAGJ31HEo8d2cZ3c7ayfT24NBv1mAULtQqipCVR
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774597891-298487
+X-HE-Meta: U2FsdGVkX1/KbHYhDf/q/7e9bF66PVMzvB0M9l0+RLhZKY3QkXbXsY1euJEMeZYa2QynJeWfP87FDOCAlNgAh/zjr9NC2bU0ENmv+V3zpwbtnNy/dJUht61CevNcYtdW5ODctMNI+gi6/R8b+bG7n9nWYx0tyhq3/zle5rsx7E84vIg51B1Qf0hO0TWIRRBKCa9AUd1uL0PFAzaxxgXtue0sBy40oRPtAyKdql56Qbq+t7/lZtR+mfV5YF73UdieZVzPlAbGwNt0cAh2dqPKiGmHBVr+2qi7/HIPtyStnAx3fZT994pPlVbO34zoBkwWvIRIaRGSt1zeWxkCHTAFkksrqRPybBY091hZaY+zkb1yJsu3J4BpPGof2qSd+BNXBqXu73ZkO6yZUgYxUIFGr7bKCcQVN9MYjJA/g6RjxP/rBcE7POIH+gK4uHtqNBcoEBCb25ipZMXXl6LRdfkcLl+bzEqamxgIlIFV0YvpFb5rIhj+ycoiCZay240JS7AJfwHgGViAKPromy/OgXz0eS07XXYTT0ef0Uu3B6cQXp4tmVf44Fgg8xcyEuA43ITP91mpB6PsTF222BimTjSnsFmqLwdf3G2HYnZ1zJXMpWa6zZg6fW8QtYxx2E+BBRqucSRUrVkid2kLk4HONIVf0Ol1oy4s5R/jgevqtVJyqjQ9+q9xpcO+n1PyDqULHar7Zfbtiej9hTncAz6W5AvmpNga2LdwOyc7+WUeih9eBNEQR/V7M03M2D6cFD6PLQuCIRlvw9GqMJ3DJM2DfmP9duMrZlXQW5XxL2g2C92LexibHCuWEdyKbpBACpNal7nFYL4cgkclHmrI3qDWKtOGVaVsfFnky+8hfL2a6QBjsheXkCjtgtv5/7TztkWsPcM85iS+vteXWHqIZWMCjDYJPOh9901glflKi+DLdY22TbFq9sLxWlu3/jaROJ+k5TKzzPoBnpFOHKWxkuU8Ibq
+ bPZCHWHI
+ Lfqjaj90QreX7Cqz7fAKL4pngAAqcUVTQjc0Lkku6bBY0hrVs/dgRqWmH8V1t0NmpkLw1jY62jy90M3bgYo6AFpJFE/PwOhDjWsgZm/ltli8cL+vXIvzfdCsSnVZN+fwFnJm0fxePtvpDb+vfIwkmzUbA5FSDatZQGkDkfJLD8AwJnGO4BTdHotX0EVCn4Oo1hiRGl9yWH8K0m9pchVNf+5Hy2ugvVZCvGdlt9wF4Mi5nXGj+Oupfx2Fwu+j6RPNO2wWUEpE9YCVJtT0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,29 +105,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 05:26:10PM -0700, Kalesh Singh wrote:
-> On Thu, Mar 26, 2026 at 4:47 PM Suren Baghdasaryan <surenb@google.com> wrote:
+On Thu, Mar 26, 2026 at 08:13:49PM -0700, Andrew Morton wrote:
+> On Fri, 27 Mar 2026 10:42:52 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+>
+> > > a) Redo this "fix unexpected ..." series on top of "Eliminate ..."
+> > >     and tolerate the bisection hole (easiest).
 > >
-> > On Thu, Mar 26, 2026 at 12:09 PM Vlastimil Babka (SUSE)
-> > <vbabka@kernel.org> wrote:
-> > >
-> > > +Cc Suren as IIRC he mentioned some intent to look into this as well, in the
-> > > mmap_lock call.
-> >
-> > Not myself but I asked Kalesh (CC'ed here) to get involved in upstream
-> > reviews. Kalesh are you ready to be added as a Reviewer?
+> >  From my personal perspective, I prefer this approach. The issues fixed
+> > by this patchset aren't too critical; it's just that the counter might
+> > overflow (and only with CONFIG_MEMCG_V1). If it can be included in
+> > v7.1-rcX along with "Eliminate ...", I think it's acceptable.
 >
-> Hi Suren,
+> Cool, thanks.
 >
-> Thanks for looping me in. I plan to try my best to dedicate time MGLRU
-> reviewss. Let's see how that goes practically, and we can look at
-> updating the MAINTAINERS file later on if it makes sense.
+> I've dropped "fix unexpected type conversions and potential overflows
+> v2" from mm.git to give you a clean mm-unstable to work against.  I
+> expect to be pushing this a couple of hours from now.
 >
-> Thanks,
-> Kalesh
 
-I think let's wait for you to get involved first, then the road to R: should be
-pretty quick. And we can see how things go from there :>)
-
-Cheers, Lorenzo
+Yeah this works for me too, I think given low chance of hitting we can tolerate
+a small bisection hole!
 
