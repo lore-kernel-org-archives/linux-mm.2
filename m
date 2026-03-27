@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C50C910AB83C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 961A410AB83C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:16:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 385F46B00C3; Thu, 26 Mar 2026 22:16:07 -0400 (EDT)
+	id 078D96B00C5; Thu, 26 Mar 2026 22:16:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 336566B00C5; Thu, 26 Mar 2026 22:16:07 -0400 (EDT)
+	id 050736B00C7; Thu, 26 Mar 2026 22:16:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 225A46B00C6; Thu, 26 Mar 2026 22:16:07 -0400 (EDT)
+	id ED0E76B00C8; Thu, 26 Mar 2026 22:16:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 126166B00C3
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:16:07 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C99838D672
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:16:06 +0000 (UTC)
-X-FDA: 84590227932.26.700CBB3
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 185F140007
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:16:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DjzOCy7C;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC3406B00C5
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:16:11 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A34A013C475
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:16:11 +0000 (UTC)
+X-FDA: 84590228142.16.CC55F23
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf03.hostedemail.com (Postfix) with ESMTP id ECB0D20005
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:16:09 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BagS9qBG;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774577765;
+	s=arc-20220608; t=1774577770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sRAVBAAGLIHNuPxenAu6Zv4mVQpIwOINutBDBMSDYBI=;
-	b=Sha3NELjIT3S8j2o8Z6LFuBHFQGD8p0+/VF4zcHT6ln4U/C7kQ7m1lQlOMae1jNsgSIIOz
-	HBBwP6AuO0N0o+qBiH0H4MYmcinWOkCGoO80cGLTMZ82jBF0lQgc0MVMDAKr+gvxyxfN8/
-	4jZxbcKNldtOaBZ0HYMwxb34t9O22w4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577765; a=rsa-sha256;
-	cv=none;
-	b=AV+uUlnOgBbHpJujoIDjxQfyYLRrZVLmMGDBg5dsN5a6OVvNtBw8Y3xwPRStJ7Zzx1pG5d
-	PXhe7+pWzFb9K1ZH1ltYiPx40YR2Vx9pwxof2647h6G+SasBxszhqOvmC9/7A5D2wk5HyA
-	LNG3uZpobaYy171RwPRjILR66CC4wWQ=
+	bh=/WGDRJcAglr5vqEySbz/Q1Ok3+d9N6t6n4ui+xS3iNE=;
+	b=eDvYatYy9FHw/7xoCT1Ahv1Zbi3u7NBP3MfukiuhgKSInnvcujpUY6B0FnsxCosjHm8IFf
+	2Z/U/KF5tIYOmUhTXZKUmE/DKQXxJoTWcDXkGLDyFGRB2lHc1IEO/qH5PjmhEMKe4wG6nf
+	rnYe7foMHbhptFKPG3YHT8P21YJCdZ8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DjzOCy7C;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BagS9qBG;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577770; a=rsa-sha256;
+	cv=none;
+	b=jLQ7LfbDTHzjdU/7C+nv/DTMXrO5+o7rJOalxom01JU8+w1TT7IxulTvSkKO7UeIruVn5O
+	03NguhtA4neXOMrA+9SIx6rNSOWy2+tn+WTRp8PdYnDv9yCy4acZdLA4HjvB2+3lczUcvw
+	/FypseJldzVshdcAiPFn1uFtN7oNP5U=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774577763;
+	t=1774577768;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sRAVBAAGLIHNuPxenAu6Zv4mVQpIwOINutBDBMSDYBI=;
-	b=DjzOCy7CYYN46My00Xi1fs3rAUMoskKmV/KpehE3GWn6mX4MPqoLYrTNgfZYBGEzLR8iqX
-	SjzK869MdpGpt78ig/FnB50pdDMBRhVufNL3A3S6FY7A6Fna4cqbAKf1pwbFNITcjpiouQ
-	IsF7YtJduydG7B8wGDwJ7Ww4Rl22lmg=
+	bh=/WGDRJcAglr5vqEySbz/Q1Ok3+d9N6t6n4ui+xS3iNE=;
+	b=BagS9qBGxnoN00/4kt2N0AtuZZ0wHRFPSolgBLBK2CrXSufkJDyuYyYuIvQyVjVaCsdhJK
+	wMV0Y9lJGKZkNTSKhtRR7ZUnol1AuKxUSsHZsq9u78XkEixDlTJT5maiQxf53+lpNUY7rn
+	n0Eq0GZTwR6gzj24aFATrdiHFUVLBU0=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -90,22 +90,22 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [v3 19/24] mm: thp: add THP_SPLIT_PMD_FAILED counter
-Date: Thu, 26 Mar 2026 19:09:01 -0700
-Message-ID: <20260327021403.214713-20-usama.arif@linux.dev>
+Subject: [v3 20/24] selftests/mm: add THP PMD split test infrastructure
+Date: Thu, 26 Mar 2026 19:09:02 -0700
+Message-ID: <20260327021403.214713-21-usama.arif@linux.dev>
 In-Reply-To: <20260327021403.214713-1-usama.arif@linux.dev>
 References: <20260327021403.214713-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 185F140007
-X-Stat-Signature: x7roeztxfya64q9ugckpuqyh6xfr7k9i
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774577764-515927
-X-HE-Meta: U2FsdGVkX1+SVFL4I4gfalgCFn4jWhYyRK2Mux+Z4jXQGDhE+cuT+EBoQT8zxvnTLYMlsmd6pNZWiEFXdQlv1U3ko8uLXAu3BpdnRV6zDcos54Ua5uZJnYqszB8Tt1epx/2R3h3y8W1UgX4Cri6MIis+bdk6ndWytxIRkrGBOIo4FwmQrd+57OPRk+IIS+c3kjRIv1Aof0lfit2A6K9dh1WrXcu2vBOBA8xyQVPzVMR4shOAXQcSkYF5xo5NbBwbuOPy4VgjrU7OTPj4wOLMy0aTMWLI7ydYckzIoKALwjoyDwmaC/PoBEtPJ/4nzeFZJi+5ngLA6cK4l9njKZf8xKLYMabBMp3nFT6EUuWduSvRuW88c9Z0X3Y48vRGO5zV86wDNaNloN6PmKiHcUkzua9bbYidMeNKskOFSnh8O1ALJdokVz2NMuwdLy17nnYUZc1gfgvdJCrNbcfKCRKP4eVtyUKFkwHVrIGcCfn9QZ7g1qSde9CaioijlTqlwwIFAnsFO9qLRg0nfMhCiJfU5YtY2ou7OFgmbbrOhYAw62CtErMCXuc/USwqwDE3d1T3yzhwnsTRlt9iWOSillt4aNEcTDtXBiBS8SeelGAGhTdIedSoOXwC72Ybd6zzid0LhbFZZYV+VXLtwM46e9kfHwg6xdD4AIfshEQPGGtSaCQGBsdupEmzGsWFkRYmdrd38K9NQRYvnNdGKsY3O4oVLX6qlTbQXjBFqs7UAiN+hhgOP1kW5Mz7RxLlEE8Q27d460DstgyoeUy/i1DtnzhwASGA2niWbiWD+Sfj0/d5+qI2GY05is2HWA9LgFBl7HdxgsODWUZO24KI3uR7CrDqPJun/UpiBcBAkNdfpR1tTQHNfphyQam0Q56gJKRCB+a8TwV5J4lU/XsLcn66MeDUEkC1OS7Qkg0bTVlz3ixtozMmSZVFCuqCj3q/rAt3zsN3vUv+NicQoBMzygflRTg
- 1A9V33Pi
- VoBzNij66beTozfJR6HKByPvA5joTMqhGWPJXe7y6J4vYVC0G5Q1CkU2WsdNQXufej0HwLkEMbINSD/PFZVjkOiHVDxryomTV0bl9DvPtE4NulId/Gh1vt+smHX7O0A8XFSgHN//PDX8YvdadY1HGBjr/FFlteMytqdaHcT1CE0qqjoP6Qqq4Ds2WuZ8bU43xGuV9vLwky/EL41hj1UVp8QB7sPodX6fGCnuh5yKEgETLcIuBW8QBiwAgCLomlS/PYTVmuQeaLDddO/G4/cGgOQ5q/A==
+X-Stat-Signature: kjt1m7tzrtbyrw68sfygdrrydzirks96
+X-Rspamd-Queue-Id: ECB0D20005
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774577769-405221
+X-HE-Meta: U2FsdGVkX1+IHHKVjfBGdYVvIomYdx0UktTYNylJ30a9YnUChGlVL+UQ0hLQQYBaQAozztEwZY9h6d/CKTtf1clMnz/l+2BjkgDpLqhnJ0qcyCt1a8LLWyfRxlpvEZJ88I1Afgh1yKTDo1D+hsCxlGFgiw2sCoS9dsgqgvMLieD47EzAX95+Q9Rwk5aJXjpDBJPLB5w2D6E/mwpC+dpOKIQsF0VxrOdz+KZtD1n5s9fOTdNCoy8mKbbjHR06XJ2Gp3Ytc3amvcrTsZ+EZwrtMEVYy9U2UAA0eJyE2Rx8ZdbijsYl5oDo7HJkvG/CFAwAQfslfnNMMjEZC3AqsaMtQ4Wdye7ZkaLlGwB7rra9KDJThx647M14EfVg4tuG1mxHqR1YBeF13fm0JDdzSuTqn3Vz4Z6JY6Dx71sLLMglGRA/7SMsTL41Ea3GbeoFjfaXQsRCwA14l4OZQl+vqk58J7eWEdQ3eZK5ayAWtMBbDRfUFHgoguv779ZCgtUr0ITvWUzewso2SGicqBd2alAA6M3n7l6+ctrr8YgRU/Hgem90n6HytFdljPr+udVBsp0P+eNp3fdT7oVTzKcc+xptsFrNLhU+ImqIamMzFYP5Ly2M0DAV7V8qwIJuYdWBjXDeV1b7G16tD0PCW2oo7vo96c4id5CB0cHqGlwBnmcnNqnXEkiXX0LimY0V+qXGiK0dyWCsPtRmALYtTwr91DnDEVsFtuLZoJPOvKZP0Bk7j9HXl9fsnuajuYLd8UR7lY4wH39apoejI9r/P+rWdqIxeRKzQqnxASGUMOYLf3E95bMsS/kxVapqS9U+yWmd2XLTp/9a0fkp0TASsxnuJ5ad31oYyvo44aW7Kp2UasXWtLwWTJy6IzlCoWv0DQiBvfvN771ohspHmsY44qSIpZ6Q3vyOi3vCd8yD7s6wZcgcXR04/udZIsGOhVTYAM+MwdaaUGwL5Am3LcfNjeCFp8n
+ 57cCqE+z
+ REt8fM+OHJsSLl7Rc3Kd51hqqOU2E/bLPlufvr7nfqdu2a7rvZAjUZuuXO9EFbuhgDryi1r4eiHmRhpVumtP/SNZAwZ6V225FQKuJu6jHJ+M0NwQ3XcDU5ajnm3Q/9x+xy/2q/AcwS+RH89Cva98W+g1av/059g2C0k6QlmTJW1LPFalZMZr63f8Do5aN80ZndP6q6c9rdNceso8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,86 +113,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a vmstat counter to track PTE allocation failures during PMD split.
-This enables monitoring of split failures due to memory pressure after
-the lazy PTE page table allocation change.
+Add test infrastructure for verifying THP PMD split behavior with lazy
+PTE allocation. This includes:
 
-The counter is incremented in three places:
-- __split_huge_pmd(): Main entry point for splitting a PMD
-- try_to_unmap_one(): When reclaim needs to split a PMD-mapped THP
-- try_to_migrate_one(): When migration needs to split a PMD-mapped THP
+- Test fixture with PMD-aligned memory allocation
+- Helper functions for reading vmstat counters
+- log_and_check_pmd_split() macro for logging counters and checking
+  if thp_split_pmd has incremented and thp_split_pmd_failed hasn't.
+- THP allocation helper with verification
+
+Also add a test to check if partial unmap of a THP splits the PMD.
+This exercises zap_pmd_range part of split.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- include/linux/vm_event_item.h | 1 +
- mm/huge_memory.c              | 1 +
- mm/rmap.c                     | 7 +++++++
- mm/vmstat.c                   | 1 +
- 4 files changed, 10 insertions(+)
+ tools/testing/selftests/mm/Makefile           |   1 +
+ .../testing/selftests/mm/thp_pmd_split_test.c | 149 ++++++++++++++++++
+ 2 files changed, 150 insertions(+)
+ create mode 100644 tools/testing/selftests/mm/thp_pmd_split_test.c
 
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 03fe95f5a0201..ce696cf7d6321 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -98,6 +98,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- 		THP_DEFERRED_SPLIT_PAGE,
- 		THP_UNDERUSED_SPLIT_PAGE,
- 		THP_SPLIT_PMD,
-+		THP_SPLIT_PMD_FAILED,
- 		THP_SCAN_EXCEED_NONE_PTE,
- 		THP_SCAN_EXCEED_SWAP_PTE,
- 		THP_SCAN_EXCEED_SHARED_PTE,
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 48c4884a6f386..b93718931e729 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3347,6 +3347,7 @@ int __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- 	if (vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()) {
- 		pgtable = pte_alloc_one(vma->vm_mm);
- 		if (!pgtable) {
-+			count_vm_event(THP_SPLIT_PMD_FAILED);
- 			mmu_notifier_invalidate_range_end(&range);
- 			return -ENOMEM;
- 		}
-diff --git a/mm/rmap.c b/mm/rmap.c
-index efbcdd3b32632..a0180f62d9f69 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2087,8 +2087,12 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 				pgtable_t pgtable = prealloc_pte;
- 
- 				prealloc_pte = NULL;
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index cd24596cdd27e..4b4610c9b693d 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -95,6 +95,7 @@ TEST_GEN_FILES += uffd-stress
+ TEST_GEN_FILES += uffd-unit-tests
+ TEST_GEN_FILES += uffd-wp-mremap
+ TEST_GEN_FILES += split_huge_page_test
++TEST_GEN_FILES += thp_pmd_split_test
+ TEST_GEN_FILES += ksm_tests
+ TEST_GEN_FILES += ksm_functional_tests
+ TEST_GEN_FILES += mdwe_test
+diff --git a/tools/testing/selftests/mm/thp_pmd_split_test.c b/tools/testing/selftests/mm/thp_pmd_split_test.c
+new file mode 100644
+index 0000000000000..0f54ac04760d5
+--- /dev/null
++++ b/tools/testing/selftests/mm/thp_pmd_split_test.c
+@@ -0,0 +1,149 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Tests various kernel code paths that handle THP PMD splitting.
++ *
++ * Prerequisites:
++ * - THP enabled (always or madvise mode):
++ *   echo always > /sys/kernel/mm/transparent_hugepage/enabled
++ *   or
++ *   echo madvise > /sys/kernel/mm/transparent_hugepage/enabled
++ */
 +
- 				if (!arch_needs_pgtable_deposit() && !pgtable &&
- 				    vma_is_anonymous(vma)) {
-+#if defined(CONFIG_TRANSPARENT_HUGEPAGE)
-+					count_vm_event(THP_SPLIT_PMD_FAILED);
-+#endif
- 					page_vma_mapped_walk_done(&pvmw);
- 					ret = false;
- 					break;
-@@ -2491,6 +2495,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 				prealloc_pte = NULL;
- 				if (!arch_needs_pgtable_deposit() && !pgtable &&
- 				    vma_is_anonymous(vma)) {
-+#if defined(CONFIG_TRANSPARENT_HUGEPAGE)
-+					count_vm_event(THP_SPLIT_PMD_FAILED);
-+#endif
- 					page_vma_mapped_walk_done(&pvmw);
- 					ret = false;
- 					break;
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 2370c6fb1fcd6..b8df9c7296d8a 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1409,6 +1409,7 @@ const char * const vmstat_text[] = {
- 	[I(THP_DEFERRED_SPLIT_PAGE)]		= "thp_deferred_split_page",
- 	[I(THP_UNDERUSED_SPLIT_PAGE)]		= "thp_underused_split_page",
- 	[I(THP_SPLIT_PMD)]			= "thp_split_pmd",
-+	[I(THP_SPLIT_PMD_FAILED)]		= "thp_split_pmd_failed",
- 	[I(THP_SCAN_EXCEED_NONE_PTE)]		= "thp_scan_exceed_none_pte",
- 	[I(THP_SCAN_EXCEED_SWAP_PTE)]		= "thp_scan_exceed_swap_pte",
- 	[I(THP_SCAN_EXCEED_SHARED_PTE)]		= "thp_scan_exceed_share_pte",
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <sys/mman.h>
++#include <sys/wait.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <stdint.h>
++
++#include "kselftest_harness.h"
++#include "thp_settings.h"
++#include "vm_util.h"
++
++/* Read vmstat counter */
++static unsigned long read_vmstat(const char *name)
++{
++	FILE *fp;
++	char line[256];
++	unsigned long value = 0;
++
++	fp = fopen("/proc/vmstat", "r");
++	if (!fp)
++		return 0;
++
++	while (fgets(line, sizeof(line), fp)) {
++		if (strncmp(line, name, strlen(name)) == 0 &&
++		    line[strlen(name)] == ' ') {
++			sscanf(line + strlen(name), " %lu", &value);
++			break;
++		}
++	}
++	fclose(fp);
++	return value;
++}
++
++/*
++ * Log vmstat counters for split_pmd_after/split_pmd_failed_after,
++ * check if split_pmd_after is greater than before and split_pmd_failed_after
++ * hasn't incremented.
++ */
++static void log_and_check_pmd_split(struct __test_metadata *const _metadata,
++	unsigned long split_pmd_before, unsigned long split_pmd_failed_before)
++{
++	unsigned long split_pmd_after = read_vmstat("thp_split_pmd");
++	unsigned long split_pmd_failed_after = read_vmstat("thp_split_pmd_failed");
++
++	TH_LOG("thp_split_pmd: %lu -> %lu", \
++	       split_pmd_before, split_pmd_after);
++	TH_LOG("thp_split_pmd_failed: %lu -> %lu", \
++	       split_pmd_failed_before, split_pmd_failed_after);
++	ASSERT_GT(split_pmd_after, split_pmd_before);
++	ASSERT_EQ(split_pmd_failed_after, split_pmd_failed_before);
++}
++
++/* Allocate a THP at the given aligned address */
++static int allocate_thp(void *aligned, size_t pmdsize)
++{
++	int ret;
++
++	ret = madvise(aligned, pmdsize, MADV_HUGEPAGE);
++	if (ret)
++		return -1;
++
++	/* Touch all pages to allocate the THP */
++	memset(aligned, 0xAA, pmdsize);
++
++	/* Verify we got a THP */
++	if (!check_huge_anon(aligned, 1, pmdsize))
++		return -1;
++
++	return 0;
++}
++
++FIXTURE(thp_pmd_split)
++{
++	void *mem;		/* Base mmap allocation */
++	void *aligned;		/* PMD-aligned pointer within mem */
++	size_t pmdsize;		/* PMD size from sysfs */
++	size_t pagesize;	/* Base page size */
++	size_t mmap_size;	/* Total mmap size for alignment */
++	unsigned long split_pmd_before;
++	unsigned long split_pmd_failed_before;
++};
++
++FIXTURE_SETUP(thp_pmd_split)
++{
++	if (!thp_available())
++		SKIP(return, "THP not available");
++
++	self->pmdsize = read_pmd_pagesize();
++	if (!self->pmdsize)
++		SKIP(return, "Unable to read PMD size");
++
++	self->pagesize = getpagesize();
++	self->mmap_size = 4 * self->pmdsize;
++
++	self->split_pmd_before = read_vmstat("thp_split_pmd");
++	self->split_pmd_failed_before = read_vmstat("thp_split_pmd_failed");
++
++	self->mem = mmap(NULL, self->mmap_size, PROT_READ | PROT_WRITE,
++			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	ASSERT_NE(self->mem, MAP_FAILED);
++
++	/* Align to PMD boundary */
++	self->aligned = (void *)(((unsigned long)self->mem + self->pmdsize - 1) &
++				 ~(self->pmdsize - 1));
++}
++
++FIXTURE_TEARDOWN(thp_pmd_split)
++{
++	if (self->mem && self->mem != MAP_FAILED)
++		munmap(self->mem, self->mmap_size);
++}
++
++/*
++ * Partial munmap on THP (zap_pmd_range)
++ *
++ * Tests that partial munmap of a THP correctly splits the PMD.
++ * This exercises zap_pmd_range part of split.
++ */
++TEST_F(thp_pmd_split, partial_munmap)
++{
++	int ret;
++
++	ret = allocate_thp(self->aligned, self->pmdsize);
++	if (ret)
++		SKIP(return, "Failed to allocate THP");
++
++	ret = munmap((char *)self->aligned + self->pagesize, self->pagesize);
++	ASSERT_EQ(ret, 0);
++
++	log_and_check_pmd_split(_metadata, self->split_pmd_before,
++		self->split_pmd_failed_before);
++}
++
++TEST_HARNESS_MAIN
 -- 
 2.52.0
 
