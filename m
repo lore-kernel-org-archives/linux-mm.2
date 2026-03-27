@@ -4,89 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4FA10BA451
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:00:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3170E10BA456
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:02:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4EE06B0092; Fri, 27 Mar 2026 05:00:31 -0400 (EDT)
+	id 8F7386B00A3; Fri, 27 Mar 2026 05:02:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C269F6B00A1; Fri, 27 Mar 2026 05:00:31 -0400 (EDT)
+	id 8CEFE6B00A4; Fri, 27 Mar 2026 05:02:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B63B86B00A2; Fri, 27 Mar 2026 05:00:31 -0400 (EDT)
+	id 7E5156B00A5; Fri, 27 Mar 2026 05:02:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A836B6B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:00:31 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48927160F9D
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:00:31 +0000 (UTC)
-X-FDA: 84591247062.08.157ED69
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D167CC000E
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:00:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 6E2466B00A3
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:02:42 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CB12E16FC
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:02:42 +0000 (UTC)
+X-FDA: 84591252564.21.77896C5
+Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 173754000A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:02:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=GVzqQY5n;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="i Exk1Qn";
+	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.136 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774602029;
+	s=arc-20220608; t=1774602160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=Dlwa3+gBi+ejDZwGMaYoZyXndw5cA8xzyAwUoRSy4y4=;
-	b=0rzflOhbLBqjLXa4KCwsuSQMGc6293gF9+ESMr8K23e6Ov8DG/m4nzrYNT4pANGlyUDUYi
-	1ECe7yW7/H4r+vhpsPG/sY8lm6I2GfTiGIbQAQrKiq40UudZeLzBWG92wjZEhTE5IGW87m
-	Sp6a18DwyxXE70bMhW22sPHnwqC3Ccc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774602029; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XlE8K29BcOci/GJeK99hdrRjgIObqUNFNRdsO2zBvLY=;
+	b=wpOlWSS4D6xHgz2CQaPOlLkd8vHHNARfDwhg+EGCEusBZ0uyXSrq2xo0OS7GOoPhcS4EAS
+	7yqFwwBHsWVzTfXz/jDeheqNd/2VytT6cHH4YMNxM4Zjy7OSj7xe1AYr2LVwOpXl+CjWgE
+	TfDMmpSbWYdIOv5WAkVG0IQ8HRQDjUM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774602160; a=rsa-sha256;
 	cv=none;
-	b=xQ/y4hfNXMhDTQ9TA8c2WA22BDAYja9N+9rTqaWPJa/ohMskLuw8pSvwoWZoe8B0bYoLDD
-	Qmehdfpl/XOzN9q7Xs2DgpDZhiv86/mi1MNrmGER6ieDV3pYaRczC94GWUkYy5iYi6s4RE
-	lBVvPI4nACp/e7ewluj7ipJt22zM9TY=
+	b=FHDCgzJZwNEAb9oF/+7rc9BQ08eRF42IEpL5kPiUlks5N3TzHZPECAgRTzLjBgLDpidQ0e
+	43q8PTHFV4JuOKUJvHDF0acVt3ln/vAfPKKvDSUzUWRmG9wvrwGSIBIreivLYlXxPBTQrX
+	xwaAyy4IynliH6gCz+6+zmoB0cdBzNs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
-X-UUID: 60b1341e29bb11f1a21c59e7364eecb8-20260327
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:9dd417ec-2cf5-435d-ad91-c8f5439c006a,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:20
-X-CID-META: VersionHash:89c9d04,CLOUDID:5e8302e75c77d1f93fcf8fc6eac4642b,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:5
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 60b1341e29bb11f1a21c59e7364eecb8-20260327
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1799876405; Fri, 27 Mar 2026 17:00:18 +0800
-From: zenghongling <zenghongling@kylinos.cn>
-To: dennis@kernel.org,
-	tj@kernel.org,
-	cl@gentwo.org,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	zenghongling <zenghongling@kylinos.cn>
-Subject: [PATCH v1] mm/percpu-internal.h: optimise pcpu_chunk struct to save  memory
-Date: Fri, 27 Mar 2026 17:00:13 +0800
-Message-Id: <20260327090013.38042-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	imf27.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=GVzqQY5n;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="i Exk1Qn";
+	spf=pass (imf27.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.136 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.phl.internal (Postfix) with ESMTP id 4A6471380181;
+	Fri, 27 Mar 2026 05:02:39 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Fri, 27 Mar 2026 05:02:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1774602159;
+	 x=1774609359; bh=XlE8K29BcOci/GJeK99hdrRjgIObqUNFNRdsO2zBvLY=; b=
+	GVzqQY5nceojm37M1XZpOPq3WUecXUQj9WVf3CfutP3dTobqmGMQjzRLgNhoVby6
+	46aeZZINaK1f7YVuydM5TqNUI4j8vyRQzPpJA34i7ACZR1RSV4TO+hIb/Y1wlQAV
+	e4naVPRom36f6nfcFXr2OjE1mhktO/8tDetlgDKx/ERP6X26MCzVLKwpghPIlA9u
+	FgAZLJCBgZpz0FbarT4w54TicAqCn2qTr0Z2ZfdL6DznrwvGSdcVVRrirxDEue/H
+	5fVwFvlMX5ysAAT1/mtv1Dd/8FtVIaDqWDOOvUgWKJ3vwJ4vCQKKNs+/aj1E6yt+
+	+mz/Xbi/v8lcnLVbeJxZpA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774602159; x=
+	1774609359; bh=XlE8K29BcOci/GJeK99hdrRjgIObqUNFNRdsO2zBvLY=; b=i
+	Exk1Qnjsvq2JnZ1+yT0ebsDIbgY2gqeRl0z1YUchEz9YmFAT5XKQHCu5+ZzfUzMA
+	KUBEKUA267I42sL6kTGiC0o6muCrmy6qX1nLFaMFkw6x8TBMIldQ20mR85lgu/Dz
+	dB2EG1eKMb571eSkAhGeN6NfTkTpx4Lu0/tgLzlYoDT4OZDwCv6fEL37252eYC4+
+	1qR+fAEfE/kjUNCAyy4Q+SMie5NYypjDP+zkoB40j+zYPYlVZgSiYG+KFdyvrW7G
+	OWPfc7ZhuIizFLxUKMgVQKKjnJY5rCQ68EF4nMVgcJw97GM4yWWv2nTfrHXCbuKd
+	K8t0sfV8n6x5lC5qiobPQ==
+X-ME-Sender: <xms:rUfGaePC1BrMnmTf9_OY6lvLvc1mUKp6M_A0RyuXLyRS-NOn6VKFDg>
+    <xme:rUfGaXzAgfItBbTl9XynqmOmljqUaNK22QfAcW8j65Y-hka2CDyCF6HlPX-DBmYss
+    eoR8l0vie_-ZAfZlP2omID4VIFPPLAESbv9Vf23rJ3uQmLsZXfiKPw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdelkeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhepuefhhedvjedtudeiiefgvdeuuefhueehfefffeeutdeiudegleevleeivdefgfei
+    necuffhomhgrihhnpehgihhthhhusgdrtghomhdpghhnuhdrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdr
+    uggvpdhnsggprhgtphhtthhopeeguddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epjhgrmhhivgdrtghunhhlihhffhgvsegrrhhmrdgtohhmpdhrtghpthhtoheptggrthgr
+    lhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopehmrghrkhdrrhhuth
+    hlrghnugesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidr
+    ohhrghdruhhkpdhrtghpthhtoheprghnthhonhdrihhvrghnohhvsegtrghmsghrihgugh
+    gvghhrvgihshdrtghomhdprhgtphhtthhopegurghvihgusegurghvihgughhofidrnhgv
+    thdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsoh
+    hquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopegthhhrihhsihdrshgt
+    hhhrvghflhesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:rUfGaRCaBcqc7KdntZl0FsBnvOqvRVfnzmfBbmotVoydnvBrFXOcMg>
+    <xmx:rUfGaZyWyK0ItY1fAukXgGQMxYnCWlJ_ttZ9LwB67jfvcP3jcgDiJg>
+    <xmx:rUfGaeUWikKeRd3kQ5HcVz8AqFZRkLvV9rX5NscA0USMCL-N4mVGIQ>
+    <xmx:rUfGaQXDnwGyrD4fd56NTxM2Fq_dVcdlQpFE1HUUfNw_jSb36M81IQ>
+    <xmx:r0fGaasdsr7hoeyfiet3dxQz1PzdqR0Oy-FDo6Fl_eW5_GQ_HIxB6CTf>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 95B2C700069; Fri, 27 Mar 2026 05:02:37 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D167CC000E
-X-Stat-Signature: gjdjy54xmf9qt954q35gd9bi39dtijfd
+X-ThreadId: AUJnWW6OA6Vc
+Date: Fri, 27 Mar 2026 10:02:17 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Geert Uytterhoeven" <geert@linux-m68k.org>
+Cc: "Russell King" <linux@armlinux.org.uk>,
+ "Christian Schrefl" <chrisi.schrefl@gmail.com>,
+ "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Ard Biesheuvel" <ardb@kernel.org>,
+ "Jamie Cunliffe" <Jamie.Cunliffe@arm.com>,
+ "Will Deacon" <will@kernel.org>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, acourbot@nvidia.com,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, "David Gow" <david@davidgow.net>,
+ "Gary Guo" <gary@garyguo.net>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Justin Stitt" <justinstitt@google.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-um@lists.infradead.org, llvm@lists.linux.dev,
+ "Benno Lossin" <lossin@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, mmaurer@google.com,
+ "Bill Wendling" <morbo@google.com>,
+ "Nathan Chancellor" <nathan@kernel.org>,
+ "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
+ "Nicolas Schier" <nicolas.schier@linux.dev>,
+ "Nicolas Schier" <nsc@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>, rust-for-linux@vger.kernel.org,
+ "Trevor Gross" <tmgross@umich.edu>,
+ "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>
+Message-Id: <93439e91-cf81-477b-b880-a813bb01ad7c@app.fastmail.com>
+In-Reply-To: 
+ <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
+References: <20260322192159.88138-1-ojeda@kernel.org>
+ <20260323000327.111235-1-ojeda@kernel.org>
+ <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
+ <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
+ <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
+ <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
+ <641592e3-2354-4238-9eb8-a1f5c2a13126@app.fastmail.com>
+ <CAMuHMdUUfVCBZFi2WoOYibJLVnyPY-joRDJDowgHwjN_DGeEzw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 1q8z6jaoqmobdth6kzsktj16rputg7u5
+X-Rspamd-Queue-Id: 173754000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774602025-519516
-X-HE-Meta: U2FsdGVkX19uLgAJStkmYzO6Th6wvNOR/HNrjblV0/nDwphd2vd8TyKploioskV0KBQHrDc3pmcms7GC6XzoTx2dkfFkNs46v5DVsLVtrlbEyYJctt83VhBcABH3HqzpvOEFdTzAj06XfCsAxzPf6/+hbGVmO1Jd3bSkJv8yVbHlpayNB+yQObDJfipQT1GXGEj+iK4JCQcI1bXc0pgFj5yxrqwrmdS41vHXvHOvR16R7VXkBNutWkk7EZUvEwotlNCtBz83IF9c2U/cHhxz32hIt0oE9TkVeQN+UFRZ423vBh0ZDGZI+sSrZBoRBDMSKNmwg+GYoUqPgG2QgbuLF6jRIZum6k931udIpVwgCK7lHz3O3EK92f/CWlE0AwX7sRe6n5/P5TWTHnvtm7nh36eNV8BV0hy7uznyk/xYC+OBzHspMF/sIv7+Jcm68jFQk2o1Ckj5JWyV10SnJEgeHXKV1qGIa849cMLBDdU0tt+k0h8mTb/BjEeT+jtMONCtCD/wWB6QTQyFKwnmkpQLYULXsvYZaAWhr/7morQpGZjekCpPsvVSiUivu+IZKS9CMeXXM/SYO3gEvpxHTCKYaExiIRU1sbcskOpfy8M0mpbv2BqScHdFXpypnkdZhIs8n6CB4x+o1rrLV6vT0gyK+uzyAMwrxfufTW3Fn1tWb1oIVeFjbf8x13MVCHXsDWvfEEJTsNx50EYVIph0jOBL4cTtfATdC5hI/cKRaq7L5spBW7j73Vv8s3+bZZFgiY6fx8nybqfo4kqGwmLPoIGEeI9jdxM2tURJ1doYDL3JnLyj7GuzHInYD2yf+x/YbYJDlj7A9ia5zYtMrD2u+Z+Kvk9zWazycabvyzpts1k2SiI3AUqZcECbgAyepLdeBvM4gf4mkRW999q1ok9RYDp4ADVZHrKcENnOR10GGdHj8bbKaIoMPIEKa7hsI5LUsAi5uQlimtSTG5adedufGQV
- X9YB8uS5
- E9VlB5Zj++ufO2yZ+zjiQIP7DO0V9b76K2FIuCqtDTCyl9MQ=
+X-HE-Tag: 1774602159-853786
+X-HE-Meta: U2FsdGVkX187Elh2f05sNPKdaKswyIEMecphDL1YJLJ0omHrDkTuOItS1/zWJSdhskDcSCBLzBqM6QWz7edM2iGKv+wFxVzW0Xbp+uqiz1CSX7LcMZm8J4raKkfVnY+YKOrBG7JYIFUSCPUctya8vObpyxdxgL75LDF6jOTBEYifrZ6vHZLySkWceUI91+rAJn0yAIupcZI3gSWF2vP2qCSk3EO2W9M7MB4SZ2BfFYiv6+9Oywz2AmU/PzL0hTc2VbQQNErawgxae+4hqO+Z+bEXp2BvK67OXeis+VZIxE45QuocJ0afgPH9aIY+JnDLLg6IQ3RPN2Ov/8Ue96zgXU7fDf4eQUs0/UhwHORN0YzSAhDCJySbyNf6qOuLFkG+X/lhSH/HiEMxqZtkfvkPZtqsqKYqA4z+JIvL3cV38+rmjYHPbmNOWULzdITskLF8sJxAmm86NTlN9XhhaYagnRP5uGp59OOT9rTziEXurPCgrVuto+rdlmvtQtf0v5zZBJ5JwfJB97heLBpoP1Ot9RG4GdVKA3NoUpKA4YsoFc+zb1oOc4EWc1dfR/HJXHYsOgdRayLespByhFMnXFZ5jgdrKNMKPLvmpDYxkcBkL6Qvp/JLVRghkAFBtfpawoKaDXQffgr1326n3Ceq0FtU+cAxx0jJ9ZWEAQ7dNqmmz6gqwHG5gydykYErSJZRWVXA/4oEORhw3qmq/CHX0KQwi4mvam4XmqNUSfv9X4e9OP9tNBphLNzoICxKoX1ZIBS6/bdv/1XtdTflklG7IoMGKettQKiW9IlWonQAvI09xMafRbHtkigiPtBBX0lUpiVwHYp3Ur4oL4KCI4y6iBovSg6R9RVGb91L7bf+EGxeltjWco1os2HnZdUd4Lzqapb++x1ogHfiUeeAK4Z3fYnX1+mz/rSkcxRzkULE+Qrntxnv0aZdsGOgAkNc15rkKE3oOIN1n3MkRVfwqHak8Qx
+ B3bPgy7F
+ Nm2y8vIy+r8IVnLD5l1x98dvQAe3DIyjjOT3RsAub+M19/NnWjpHg4mUFLbdbm9sgMnwgN7ETIEUP16NCqwFhfkM7uOm1uPt2CEmT/LLTPij+79i4zbUc52X884CI05OY3BqiH5nta7lZHMSJvU+vdqETgQoOrdPAZCgH+oeaoNNqdub+/rOq+XcYcrcgXwyRFgvnd5Z4yO8DTXWS2+0/k1swJqMHx4nEOhTA5j69Cg/P2m036Lry4Aft83iacyZ+Ou2Psxazx/XbZHCQgRQ49OzT0eKFKR+Nt18/Y2COAnw1RL187Bx41Y57qx76lI3wZM4R4VVhLzMcHB4ouq0sMDLPLaHOvUAsTgGx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,117 +175,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Using pahole, we can see that there are some padding holes
-in the current pcpu_chunk structure,Adjusting the layout of pcpu_chunk
-can reduce these holes,decreasing its size from 192 bytes to 128 bytes
-and eliminating a wasted cache line.
+On Fri, Mar 27, 2026, at 08:56, Geert Uytterhoeven wrote:
+>>
+>> I noticed a similar issue with m68k-linux, which has a bitfield
+>> alignment different from anything else on gcc, but uses the normal
+>> behavior on clang.
+>
+> Ugh, I wasn't aware of that. Adrian, did you know?
 
-Before:
-struct pcpu_chunk {
-        struct list_head           list;                 /*     0    16 */
-        int                        free_bytes;           /*    16     4 */
-        struct pcpu_block_md       chunk_md;             /*    20    32 */
+To clarify, this illustrates what I mean here:
 
-        /* XXX 4 bytes hole, try to pack */
+echo 'struct { short a : 3; short b :15; short c :14; } x; int y = sizeof(x);' | m68k-linux-gcc -xc - -S -o-
 
-        long unsigned int *        bound_map;            /*    56     8 */
-        /* --- cacheline 1 boundary (64 bytes) --- */
-        void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
-        long unsigned int *        alloc_map;            /*    72     8 */
-        struct pcpu_block_md *     md_blocks;            /*    80     8 */
-        void *                     data;                 /*    88     8 */
-        bool                       immutable;            /*    96     1 */
-        bool                       isolated;             /*    97     1 */
+this produces '4' on m68k-linux-gcc, but '6' everywhere else. I originally
+thought this was related to this 2009 change in both compilers
 
-        /* XXX 2 bytes hole, try to pack */
+https://github.com/llvm/llvm-project/commit/830dfccfb2c06a1749938ce8cb78a1d6a295b942
+https://gcc.gnu.org/cgit/gcc/commit/?id=2cd36c22d3d16e24f342829a989ac35f2f442656
 
-        int                        start_offset;         /*   100     4 */
-        int                        end_offset;           /*   104     4 */
+but that only allowed bitfields to be marked as __attribute__((packed))
+in order to get tightly packed fields and return '4' on all architectures,
+while m68k-linux-gcc apparently has all bitfields implicitly packed unless they
+are explicitly marked __attribute__((aligned(x))). This behavior is
+independent of the -malign-int flag.
 
-        /* XXX 4 bytes hole, try to pack */
-
-        struct obj_cgroup * *      obj_cgroups;          /*   112     8 */
-        int                        nr_pages;             /*   120     4 */
-        int                        nr_populated;         /*   124     4 */
-        /* --- cacheline 2 boundary (128 bytes) --- */
-        int                        nr_empty_pop_pages;   /*   128     4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        long unsigned int          populated[];          /*   136     0 */
-
-        /* size: 192, cachelines: 3, members: 17 */
-        /* sum members: 122, holes: 4, sum holes: 14 */
-        /* padding: 56 */
-        /* forced alignments: 1 */
-} __attribute__((__aligned__(64)));
-
-After:
-struct pcpu_chunk {
-	struct list_head           list;                 /*     0    16 */
-	int                        free_bytes;           /*    16     4 */
-	struct pcpu_block_md       chunk_md;             /*    20    32 */
-
-	/* XXX 4 bytes hole, try to pack */
-
-	long unsigned int *        bound_map;            /*    56     8 */
-	/* --- cacheline 1 boundary (64 bytes) --- */
-	void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
-	long unsigned int *        alloc_map;            /*    72     8 */
-	struct pcpu_block_md *     md_blocks;            /*    80     8 */
-	void *                     data;                 /*    88     8 */
-	bool                       immutable;            /*    96     1 */
-	bool                       isolated;             /*    97     1 */
-
-	/* XXX 2 bytes hole, try to pack */
-
-	int                        start_offset;         /*   100     4 */
-	int                        end_offset;           /*   104     4 */
-	int                        nr_pages;             /*   108     4 */
-	int                        nr_populated;         /*   112     4 */
-	int                        nr_empty_pop_pages;   /*   116     4 */
-	struct obj_cgroup * *      obj_cgroups;          /*   120     8 */
-	/* --- cacheline 2 boundary (128 bytes) --- */
-	long unsigned int          populated[];          /*   128     0 */
-
-	/* size: 128, cachelines: 2, members: 17 */
-	/* sum members: 122, holes: 2, sum holes: 6 */
-	/* forced alignments: 1 */
-} __attribute__((__aligned__(64)));
-
-Signed-off-by: zenghongling <zenghongling@kylinos.cn>
-
----
-Changes in  v1:
-  - Fix the error commit message.
-  - Move nr_pages over nr_empty_pop_pages.
----
----
- mm/percpu-internal.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/mm/percpu-internal.h b/mm/percpu-internal.h
-index 4b3d6ec43703..8cbe039bf847 100644
---- a/mm/percpu-internal.h
-+++ b/mm/percpu-internal.h
-@@ -77,13 +77,13 @@ struct pcpu_chunk {
- 	int			end_offset;	/* additional area required to
- 						   have the region end page
- 						   aligned */
-+	int			nr_pages;	/* # of pages served by this chunk */
-+	int			nr_populated;	/* # of populated pages */
-+	int                     nr_empty_pop_pages; /* # of empty populated pages */
- #ifdef NEED_PCPUOBJ_EXT
- 	struct pcpuobj_ext	*obj_exts;	/* vector of object cgroups */
- #endif
- 
--	int			nr_pages;	/* # of pages served by this chunk */
--	int			nr_populated;	/* # of populated pages */
--	int                     nr_empty_pop_pages; /* # of empty populated pages */
- 	unsigned long		populated[];	/* populated bitmap */
- };
- 
--- 
-2.25.1
-
+     Arnd
 
