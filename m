@@ -4,90 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C70610ED67F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:44:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ADEF10AB830
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:46:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7E0C6B0099; Fri, 27 Mar 2026 10:44:27 -0400 (EDT)
+	id 88A4A6B00A4; Fri, 27 Mar 2026 10:46:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2E676B009B; Fri, 27 Mar 2026 10:44:27 -0400 (EDT)
+	id 861E46B00A5; Fri, 27 Mar 2026 10:46:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6BD56B00A0; Fri, 27 Mar 2026 10:44:27 -0400 (EDT)
+	id 750796B00A6; Fri, 27 Mar 2026 10:46:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A4DB66B0099
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:44:27 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 510145E9A5
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:44:27 +0000 (UTC)
-X-FDA: 84592113774.20.E270294
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 820ADC0012
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:44:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a8E2wyNd;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a8E2wyNd;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774622665; a=rsa-sha256;
-	cv=none;
-	b=0d+eXb73hE9wLBiDZo4nxftFk1/HfHLZPyzpwZX/miTyy9SI6/TfszohhbEDtKE7yp6fv7
-	Siz9u1gxUlc0asSVLRoVlZSkIH92H6VXDGB5fyWb6ED6cZINqk4UxonhtAYftHl+zNuQ7N
-	fiEp6Fy9xJmo/61qfgwe5VbpNLpCCzk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774622665;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 60CD36B00A4
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:46:55 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1643E1B988D
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:46:55 +0000 (UTC)
+X-FDA: 84592119990.12.E7791C4
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012004.outbound.protection.outlook.com [40.93.195.4])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3B53C140005
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:46:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CMaZHwyX;
+	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CMaZHwyX;
+	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.4 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774622812; a=rsa-sha256;
+	cv=pass;
+	b=xogfegG5CqMwN/IL6yp3dB4RuIRwixhf2HZbzccHVCSqNYuQ+a/ZPWFqG27oKBykVaYtqF
+	IHr+ivSIyVEPMugx3zoneSLt9JwHt4H02JM+INN9grTVis2NIgXmKEtRKLmu1OHRECUlw0
+	ametRdtjoGDv6QcfqRtqfKXUc/rDkDM=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774622812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4bL1ZdD0sFQhLxNDlIYt/xGNsmzBE3WuCYZOOCOtpJY=;
-	b=FjApKOwAam5Wxp9IPYPoNACyuEYE4XqW3oNu+VdX6QMWHzTBxLP/A5co8iWPlDOguMfR1M
-	4nqJ2BsTOkq0+YFxrLa6IUL78mVXS6mVwtYl+lNRZcCZ3ZIqRR9nk9b3/lgQH/9WY/q7AI
-	q32iyaUx4l/+HEN1Yx8O/wbt7cRIUMU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A48EF444C8;
-	Fri, 27 Mar 2026 14:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9445CC19423;
-	Fri, 27 Mar 2026 14:44:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774622662;
-	bh=VzHqT1HLWRjCt76mqRElErCGJJ63FvELKETApdvgTtc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a8E2wyNdJdSDZm0OE8JfiS0ZOuXavyS8W+f3sH3lFuwsiRPNFKHKQuJ37M5mjZ7gP
-	 vk/NEMG//USy10sqpVztsM6u/7B5EcEerEDDx/SvI6+nSnMCyWxFCvPddhJNJJ3SNC
-	 wJfUkzB0oy27IjdARRblG64Ei4E8V40vR2iDoCrZwXVq0MVnCKyYRrDNPkei+YHZAy
-	 dV5obcBpIRU5PUZ+4Et8Ob37LyIf5R6YwF//O8oBlXJHN5TtEZqcrPCii0sRI5a5fx
-	 5NnHYhh1ehALiW8ZME4bu9f3vV1L/kQUmpg2mXDKGKH9D8BZO/ZyWpkQd+phdl0AuR
-	 9riX2874GFefw==
-Message-ID: <2356614e-d9b8-4639-8e2a-96c5e4eaef61@kernel.org>
-Date: Fri, 27 Mar 2026 15:44:18 +0100
+	bh=UO2ps3LsBuTSzyvMpsObW/Yrh5p2jVNefN7acX0Y9Lo=;
+	b=KSGoURas2shVmcR2hxzda6+XS91y7WiYpB/T0o0ZOYbekyPOOlqUzUXBGrN6ZJEL82S35H
+	lthFep6EY/Xs1s/yO9amcUKR6vmrJEToJT1k68Id33dC4gsA65gFRAAtWb2Ib9UjAq2gvs
+	YlwD5ji196UXsDOTG0NWddR79phwrdI=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ekRU4zuuVicUeZhdxKhmtk+YdX6lv5qAft7i5VMgkEsBLdqzqaoUZ273HGjWewNpvJNZzI6qasWMNr781WRiovU/qdlLh6pX21wWc5k/d7hdXDpwv2Cov0l0aRFXK/nZlfP+TE054Ok2+cp9uXXKD7iZSnIMUrG0osxYmCpNMSme9y5/M4KGFrEm9RZLMgVbNyHYtz82jDzcg/CIhAq1OwV1Oh6n05BwpegxUhMqXUX8fWBnxf9I92syhtId6c9AjeCKiJL9si6F/+AFLzEZML2GBwiVs98BpS5QeWu1T4Yvenj4X4ZmNBRQFIWgJNOlCChnT/B97lzhrnaRobkqmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UO2ps3LsBuTSzyvMpsObW/Yrh5p2jVNefN7acX0Y9Lo=;
+ b=LDLFTJTruDdDaFO432Cyy4YimIQt3tq02SyRfN0Z7Di3uPsuFVUxHQOVPWXtNTqhfTyIBLfQaDtgD5rSlmRenvNM+YMEsq8d0OuiOstFYGBm9JhztviwrRKFK3Hl0B1u1v9bE7HuOU6Rpx4TozdXtwjb6q6xUgK6NeQVUE6vgNJWMUr04tJnGyFSQIYqDks3li79B3mlStJnv0NM55UjHrjlkZXUTw+9d6Id3rAnIRggA9JCp0tUl3bMXy/QxJ6d+5tQwlQh6WEu8/KOvW8rO8L0Xm+38tDkQLqZOGQ2NfZ67eVwzYkdyOAQbAjD/pq0fPYSxilRzHCoYT4fMrOYUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UO2ps3LsBuTSzyvMpsObW/Yrh5p2jVNefN7acX0Y9Lo=;
+ b=CMaZHwyXCtbiXNP4O4ag0AlhjDjJzMO6QplgCBuvoUS/6xeOrUyEHklxfAgTwXQigeK3xoHXRvSUigOK8EF4kHALIYWccZHdR7sX4EDCx8o6OxsqawIeAijONKQLNG8NBsm/aiHF0SkTUYb8dDi9Ja490MdYEcDhrHrZZ0797Xj4cC5N1+bJfgYOv3r5e7vuDnf6wcN8TW6r2OCF0efC/nkd/G8SlBkWx3FMPkxpEHlkL6Lve05qKGXGqbdjlvkVQMBMvdJAH1Ra8EospmWnJBLOlifnBqYz2a0OXXnGaZlHrEIXrGaz1ReL9l5hBqUjGON2QabKgeOXINr9JPOpFQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ SA1PR12MB999109.namprd12.prod.outlook.com (2603:10b6:806:4a1::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.8; Fri, 27 Mar
+ 2026 14:46:46 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9745.007; Fri, 27 Mar 2026
+ 14:46:46 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 02/10] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Date: Fri, 27 Mar 2026 10:46:43 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <ECEB0ACF-73B4-4F0F-B355-FFC209B3BE6E@nvidia.com>
+In-Reply-To: <31d9d5c1-02af-42b3-bc3e-aea151d3552b@lucifer.local>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-3-ziy@nvidia.com>
+ <31d9d5c1-02af-42b3-bc3e-aea151d3552b@lucifer.local>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BL1PR13CA0410.namprd13.prod.outlook.com
+ (2603:10b6:208:2c2::25) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
- hotplug
-Content-Language: en-US
-To: Joshua Hahn <joshua.hahnjy@gmail.com>, Hao Li <hao.li@linux.dev>
-Cc: david@kernel.org, osalvador@suse.de, akpm@linux-foundation.org,
- vbabka@suse.cz, harry.yoo@oracle.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
-References: <20260327143823.3063541-1-joshua.hahnjy@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260327143823.3063541-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA1PR12MB999109:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcfde492-96e3-44f7-6ea9-08de8c0faba5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	LjXB+tPAAGCH8Pih+INIZSHghrBAcblv8w4WQimvUOwPSEV6MkeNVxmkphWrTwC3bSJKQ448lJZ1O0WuTlIp1QwcooDH+3Oa4aav8BGkdhyApco7e7Lf495bNdgS6mE/1Z7dDSFf1xvL2aep7gTpVs487/UijPLidFSLWrsC67JyDRM9kYBElb5pOMeLeubp57fitQM2NZFTt/KfKEZs5JWJ9SHoZ1ZpROxODPsggO3UnH27pBDE7Pmj1JsZS0gJ5rPvR+fTlrxmG4cymiDEuMJD8jeCplO0jTQHxOg4rBPwdOAZxxdtpNF957Bh253PCjNTf22yFJyjmAcFcISL+qwp4MNNuqW/KustUrSui0jDYfZVQ8fJBL/PGfnjelv0QZJVZACuKLLd8V47ZxdPjoRMXfWSySCMI1u64eoeSC5Znn8Wmzhw0+OnpqBLqWU2SGnA3sX1RRYHTDM+kJarg3fWLGIP50z8RgsTQIJzcGJdQWdAMB5uvLvIpQZniHYqfEfBRNv3+mftUaSacLYq9LhqrrYf5aBWYOKVjt4nhiaeSPofgKySEulGJz6h05FIOsyNuit+Qrb6UJUw8d7VyVuttbhkmFODjnP1XsMYAOVaCASPnzmYeoh2eBFw3TTWrIPgrtvTFupv4/buOrrQiyVZNGoQDHJT7MtiIPd3mlpPq1NDla9MBgXN5MlHvGQnK/2HnnZPbBQactwhYsWgBYFTLo+YbIpAVY2/H47zaGs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lPE1BIdaW7YhVJ34JlDJomizC49lRSF65ThZOGYCw/jmvHHAr3hePdoLSkJw?=
+ =?us-ascii?Q?cYFsN+vTVoSEGoMYjTz1uOnxonZ/hclwztq8F69Ur2SXdo4Hkua2TXbI6gdh?=
+ =?us-ascii?Q?6s1BlHZfZ9vs5KQ/uHbblfSSOPxg6AwATmtjpOas+/V3ssQsejZgbnHv/LBv?=
+ =?us-ascii?Q?XYWYQpFx8BCl+uBCS1H8k5LUuB4qyqkm9lhVkyLreS9zue7k13RCjkwwboYm?=
+ =?us-ascii?Q?R5Fb8q07/7lD5Y7agNSkchjFeV89xiuL0FzExIr/55M/MTcStkogYzA7WvzL?=
+ =?us-ascii?Q?xruMHoKReXcjRwsRZ27oF/CjhLYmpTQ5Mjf/U/lv+3djuGRPJyKfYBHwDNyO?=
+ =?us-ascii?Q?3uQLcEJvsdo2SGQVv5ec3CCyPc7lIj24LHJ+IDGIVEXCUYP45fqd+T1KfvyV?=
+ =?us-ascii?Q?0BA0R2TPsEV1EN5XPzS8Fo2ixHineLQ2r6XH49xYtEoMqYDEeTsmGcvwHjZO?=
+ =?us-ascii?Q?8AUGTKWO1mgwf4sYiTPN5luZQ+Z++NojvHwN9ylJ4EBudKBfseLoLPwEjvwZ?=
+ =?us-ascii?Q?cWnFa/PNCInZoUOMHm1eXMsnzufHLzciZpIdDIjnQDg+HPt/Pjfx6VIcIIiF?=
+ =?us-ascii?Q?lg4opCzpH3QmbEsFSlm3Iz3YRotmRy5RktOXkHAFQ7nhUkggT77wfFFNiWQ6?=
+ =?us-ascii?Q?Gs9AqHzDO0hu0tfjkkC8Spum5Dw2A9jrCpCdrkbNho5ushwMQVXzAkJ2Kdbk?=
+ =?us-ascii?Q?gqQmUYc+CmKq9/d3cAIDbDAEuPBuffU7AGUiQhV+R6wZa19ObFFGCBlP/lLS?=
+ =?us-ascii?Q?Oo5tDa1qp+tHeoqu1iwRI3z34ABrEZ0T9l3nUa1Pjqu+yl/WLCu1JJRgJHOX?=
+ =?us-ascii?Q?GteU4YQEgLFLYvZEZLZP2FzoFABy6noT8+/jzK4JckPCM4bPqY58OWcyYdU3?=
+ =?us-ascii?Q?IEfXPlCTGZlJO3Sb9YH2w92bYXI7iXm2N7yq3NuYv8c9MBTc5FphPDp56RnP?=
+ =?us-ascii?Q?aTechgJMg9wiYeT0AqzItwsQDD4BEL/5ziKSDg1LH+ctyg/rlP8OiyekFzZh?=
+ =?us-ascii?Q?3ajzbZnezv0nYD2RvnpXLU1XQ8NvM/NFFbr0FQge3amUcpeh7VZnWgk7aLIq?=
+ =?us-ascii?Q?R4ILNLC8p7SYEsjBxKYNKL2gUys9lGwdVvFtHOkrgfIVUemp1Rd2ec0dHmRx?=
+ =?us-ascii?Q?DLsVDhRGa409somk+37rILr/dGmzqn/ShTLuOluA94qf3ZAwGuMaGhjF163S?=
+ =?us-ascii?Q?JErjoj54aqGB136vQbIcuddC3JIm4WGrfe3CYT2+CNVSrSfeVzh6m6AMG9xM?=
+ =?us-ascii?Q?tvJEBrXh41o4CjDResu65wkqhDoZWkHGzFGHRhP8rW1QYkEwv0iA2NXvnTCQ?=
+ =?us-ascii?Q?sToUKpg8k90s61WAJLmm7KTc9lc4C8xkcnp83PlLCuiROx0nyzDGeB3mbmTU?=
+ =?us-ascii?Q?E26M4veoRJyYE86+Arrc2beHmN3bPza+sJx4DCvR4MJBV7JPsicwQ7act0wB?=
+ =?us-ascii?Q?3eTIjhvpU5Hn43VaNmADO3A3MzTRx7VyDCSkejRBhbX7pr1H/4Lwq8gZCdQe?=
+ =?us-ascii?Q?yMXZp2jxr/GFj1m0cbl8C1D5Tr4x7k3P84xiUOxh5G9iyGykUGcqW/P2xFTR?=
+ =?us-ascii?Q?vt6LJSBOPwdVKiDzNwAo2KZUKPzjivASdmLDbkh3023pihMdrOqi20/KqK/d?=
+ =?us-ascii?Q?tm5ZOb3I6P15JddiZsbrRxx0dhCXMFgDtm2XJ1CASjDx1Cr4LvQMjAOV9LKG?=
+ =?us-ascii?Q?smiC4AoncCpm6UkKxITnoLWHg3Ocza66ei3u9a+iGiiZ78l52ufuUM9TC0hT?=
+ =?us-ascii?Q?+WEmdRukfQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcfde492-96e3-44f7-6ea9-08de8c0faba5
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 14:46:46.6829
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: d51+8oRiA7fRza6Y5tRNKxqvXngQECFaaRi9s8jf4ge3c7tOmwcZ/hcejIfh7+2X
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB999109
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 820ADC0012
-X-Stat-Signature: kzfj9y4waripcisw7j8gmw7oizys73ad
+X-Rspamd-Queue-Id: 3B53C140005
+X-Stat-Signature: tdeib4nyb3mc196fg9bismmpd3nik4x1
 X-Rspam-User: 
-X-HE-Tag: 1774622665-415200
-X-HE-Meta: U2FsdGVkX1+km0zu8WmHKv72f/KHEESmo2xCVpLl2J165Va1Cxo/TtgAS+Zos8ElBFpV/f4iUkOAUrYheMcjPSwN5ogYwszL6OcW98acLx0o8igEurFMhOzPk2O9sVWInbilsR4QDkAz7mC2fe206FveUFslSfhu5OEokfex7dmEELfov7GrXA9/cntRjsxjJHfgw/JmeeeEHWZJExXaPOh5YWeiZ+qC+BiJ6ET+FLG8aTFNk1COT90MKDtWw4xkGCcYvlW3SLzuDomQ52Q2zmuoS9adw8YDT+FEEZS/OXbQTUn0KJI8HweeSixADul9z4iPtoxv951k2YDBDzs6YzJ5XXUEfVuKfhfWu3GuBFMonJ9HBinDNKM4fUWKP8Z1KRbZIDiUIhKi9F7johywjQKn/Q7Dil4XW/J38GGHCvSUe15ndwKMoCr27B2YjPni7zy0ImjJ/WmNclqpbPH56T46fbNTd1NfBDJJELCf06ypvXwjLx/zN+K0961A4T77SILWOcuzjs+vUKOhWuTnStOddeUwocASX8KNmpnIw8RCgU+beKel6GM3fJetnn8SRvtCWD0Kl46RzdfIAM5haUeo3bbVuclY0KpPHpenWPwD4BWpIUjUau8DzWB5LQav/V8qq65B6f48Gw9aHkFE1UhT3iJgGRhonYazDnDGNz633j25stJUlsF0QQTtRzARtY0EfPYA2v7N8XETq0xY0Q+AxwFvZARsYeEsGiD6q8jkjEdB5nSnChQqT7FTPr+b3YorVCKemV2eGFhDo5TryGoWP+fqfg0TjeN7pJScWxXUKBN3wTOmEEu4A8dIynsGQ+B/PvLqKdJE4M5B12AtO8HqQxjR/5EJ2YfQNmvjIYSUlGCMoctWaZnyJY3JQ1YSIiOkAYqgPiO292jntbZ1G3/TgMKlnDb0Zm+yLoWbwFjIuuOAdSiLvn/EqCMlyw14vd8qN4h0FXpzdeRALKD
- 5F5sYXVI
- JlNC5flJbb2/HrYNrr4jwF31lNo2KkTZ87E1qvI6+DspcvnYE3nw5MY33eIcFlMAMozqBQX+VGj3MY2yzCTVfAP4Ft38UMWZxv5vfkpWvb/VbMTGH3cviS7b2vub3kkQxXnVCwyppawjZ2JQlOB46kcjiGWewuv81L8j3e//0jSkxyPpftIcD5FkT/IhHfsaDYwZfsw457AQO+un07GnR6c/sw0fwpQ4TKlZEopypp8CslogILqE5Bs7cYofM/n4KTvJ6ENKzYMazH7icR4w61OmuVAl94ktbS6cmyFKkGMnfkbmTeTUYGkQtlXLaOfbG5s+Y5XAfQnd4fp8Wrszv3D40LNZjFo/eepcziWqLCSHFPaujPqRncRduZA==
+X-HE-Tag: 1774622811-287748
+X-HE-Meta: U2FsdGVkX18LYRtRmTLX+FopPMxn+7gxok3XayXl7KKyxMXZq77wbwvs45v8MJt0VPooEo17vnOZzIEMh4lawV5ZHJV4ZGMe9pHBq8ctujwNHInbLK4Ukbi2VhNYJGnMz+dLMVPavbCLErwisOXfgDh1edb3L8pif6K22WLmI4KyMWstT8fokLwpCBzHPyfK+LVpIFL4ti28wwWFJhO5IJ2OllF7WjTro5z3NgzaHPeEbsZpdiOn9JTpQTj/hWW8KAvECseZgB3yh7JB1fCHDTZVUQzGdzNpE5RFxADqb4NHjcanlqWlVCXi5m09EjJ/rjYeVww/Poo8Gcatg/wSxe2/nPKcg9RCypI9K4p6X4jcUsawJDZBdh6fGrZGhNfLJ1h5JQOPDDVrQvYZb3R5Id49C7rDfprRcy5m6HPSHmh3xd/bEg1Hrp0EDZl9EzcI7nP/tPNKH4bmbH85MNgXmbPbksM2qkmL8GzOF5SkW3hHY/LbnQxGpwddr6bTnEvga34J33fco5IpboDZV8Hu6PrTbXQGBzmt3QH/EeldBA5+UhNyYSPP6G7GeO2AIVqbtngY7x49tSwC648gC0px1q8NRwxbZepUS/C9LkzkAB0q/yA4vnZTtkslQp69Rf9dV9W0HUSLPnMJ7hCgnkbwVg5AVA9wRqmansjqZD36g4GmmtC3u41qlz5Ayvse5oQEiaxhDTuA504CGNeJUsl2f0tkKP8L4kB8P53vFXTb1/QbJLgLqfij7DG3s7V9NxTxHFp47IM0MpX5F1e/Y2xRDQsGCPsHBYjMbhnaAL+5YKTfHKf+qvFXJ+VoGhGqh2j/WaACFa4ksyzkBAgHTimvC/Otya+U0AL9LFaK/S1jhwnXxKhokIFdUhVyhvzxL6sMr1bPjgFNOejlazjLBZN9VCbRhv1YZkl7zBN+BzXzFRMgctbw8Dtr18Bl12cyB+pbmswh1bWELPkCjidSnGl
+ nckQRGsa
+ n90bN4gewJru8OiHV1E8hVS9mtspA6KRh8rprtRgHKEZPW2S9jIjkWzxypXqHlAuzlFvWKDBK8irUbEiINywn/uSCzIH1hVE/P6AlXEWYSMK9AxJ20rXDM9l4Qv2IKR3hU9CZxZyCh07tIc6YAflJ7onDMvOlmQ1vxtbonKHkmR1yOSI9LGKHUDy1Bqx0TOxGnTuhfmm8j0U4j6KvMmQIr5npqX1hyF6PgfV8NzOWvuKNoD3+igbdSziFceZkAKuXjRtK3NuK5EWUIqxy3IPrIIiz5uwCT5z7k2QZNkreBv6ie0HhOFKE72NxKpAMQ7kOWjZCIaFCvAW+oOaOQnsau9wDnEEfWabyaZlX1mDrpM9wqb9iWrhyTzHAoIYWlyLYmzS1jGRVYK6MCcxuVn14C6q69jimX2fVxzX/soHaUVw75iqlGrhDNH8v1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,142 +175,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/27/26 15:38, Joshua Hahn wrote:
-> On Fri, 27 Mar 2026 20:42:47 +0800 Hao Li <hao.li@linux.dev> wrote:
-> 
-> Hello Hao,
-> 
-> I hope you are doing well, thank you for the patch!
-> 
->> N_NORMAL_MEMORY is initialized from zone population at boot, but memory
->> hotplug currently only updates N_MEMORY. As a result, a node that gains
->> normal memory via hotplug can remain invisible to users iterating over
->> N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
->> incorrectly marked as such.
-> 
-> The second part feels more important than the second part, doing a quick
-> glance through the code I can see a few N_NORMAL_MEMORY iterators that
+On 27 Mar 2026, at 8:07, Lorenzo Stoakes (Oracle) wrote:
 
-Note in practice it's unlikely that a node would hotplug normal memory,
-start using it, and then manage to successfully hotremove it, due to
-unmovable allocations. Most likely only ZONE_MOVABLE memory can get hotremoved.
-
-> are in some hot paths like shrink_memcg. Iterating over nodes that don't
-> contain any NORMAL memory seems like an inefficiency rather than a bug
-> though. 
-
-Ignoring nodes that have normal memory, just because it was hotplugged, will
-result also just in some form of inefficiency, or can the consequences be worse?
-
->> Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
->> offline_pages(). Set the bit when a node that currently lacks normal
->> memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
->> offlining removes the last present pages from zones <= ZONE_NORMAL.
->> 
->> This restores the intended semantics without bringing back the old
->> status_change_nid_normal notifier plumbing which was removed in
->> 8d2882a8edb8.
-
-But commit 8d2882a8edb8 didn't introduce the current state, or did it?
-
->> Current users that benefit include list_lru, zswap, nfsd filecache,
->> hugetlb_cgroup, and has_normal_memory sysfs reporting.
->> 
->> Signed-off-by: Hao Li <hao.li@linux.dev>
+> On Thu, Mar 26, 2026 at 09:42:47PM -0400, Zi Yan wrote:
+>> collapse_file() requires FSes supporting large folio with at least
+>> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that. shmem =
+with
+>> huge option turned on also sets large folio order on mapping, so the c=
+heck
+>> also applies to shmem.
+>>
+>> While at it, replace VM_BUG_ON with returning failure values.
+>>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>
+>
+>
 >> ---
->> 
->> This patch also prepares for a subsequent SLUB change that makes
->> can_free_to_pcs() rely on N_NORMAL_MEMORY to decide whether an object can be
->> freed to the sheaf.
->> 
->> ---
->>  mm/memory_hotplug.c | 22 ++++++++++++++++++++++
->>  1 file changed, 22 insertions(+)
->> 
->> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->> index bc805029da51..5498744aa1f1 100644
->> --- a/mm/memory_hotplug.c
->> +++ b/mm/memory_hotplug.c
->> @@ -1155,6 +1155,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
->>  	int need_zonelists_rebuild = 0;
->>  	unsigned long flags;
->>  	int ret;
->> +	bool need_set_normal_memory = false;
->>  
->>  	/*
->>  	 * {on,off}lining is constrained to full memory sections (or more
->> @@ -1180,6 +1181,9 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
->>  		if (ret)
->>  			goto failed_addition;
->>  	}
->> +	/* Adding normal memory to the node for the first time */
->> +	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
->> +		need_set_normal_memory = true;
->>  
->>  	ret = memory_notify(MEM_GOING_ONLINE, &mem_arg);
->>  	ret = notifier_to_errno(ret);
->> @@ -1209,6 +1213,8 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
->>  
->>  	if (node_arg.nid >= 0)
->>  		node_set_state(nid, N_MEMORY);
->> +	if (need_set_normal_memory)
->> +		node_set_state(nid, N_NORMAL_MEMORY);
->>  	if (need_zonelists_rebuild)
->>  		build_all_zonelists(NULL);
-> 
-> Do we need the flag here? As far as I can tell, we can just skip this and just
-> directly check whether this is the first normal memory we are adding to the
-> node here and set the bit. Then we can remove the flag and the extraneous
-> check. We won't do any notifier work so I think it should be OK.
-> 
->> @@ -1908,6 +1914,9 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->>  	unsigned long flags;
->>  	char *reason;
->>  	int ret;
->> +	bool need_clear_normal_memory = false;
->> +	unsigned long node_normal_pages = 0;
->> +	enum zone_type zt;
->>  
->>  	/*
->>  	 * {on,off}lining is constrained to full memory sections (or more
->> @@ -1977,6 +1986,13 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->>  			goto failed_removal_isolated;
->>  		}
->>  	}
->> +	/*
->> +	 * Check whether this operation removes the node's last normal memory.
->> +	 */
->> +	for (zt = 0; zt <= ZONE_NORMAL; zt++)
->> +		node_normal_pages += pgdat->node_zones[zt].present_pages;
->> +	if (nr_pages >= node_normal_pages && zone_idx(zone) <= ZONE_NORMAL)
->> +		need_clear_normal_memory = true;
->>  
->>  	ret = memory_notify(MEM_GOING_OFFLINE, &mem_arg);
->>  	ret = notifier_to_errno(ret);
->> @@ -2055,6 +2071,12 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->>  	/* reinitialise watermarks and update pcp limits */
->>  	init_per_zone_wmark_min();
-> 
-> Same here, couldn't we just iterate through the paegs here and accumulate
-> node_normal_pages and clear the memory here? We can get rid of the bool and
-> also keep node_normal_pages defined inside an if (zone_idx(zone) <= ZONE_NORMAL)
-> check as well. 
-> 
->> +	/*
->> +	 * Clear N_NORMAL_MEMORY first to avoid the transient state
->> +	 * "!N_MEMORY && N_NORMAL_MEMORY".
->> +	 */
->> +	if (need_clear_normal_memory)
->> +		node_clear_state(node, N_NORMAL_MEMORY);
->>  	/*
->>  	 * Make sure to mark the node as memory-less before rebuilding the zone
->>  	 * list. Otherwise this node would still appear in the fallback lists.
->> -- 
->> 2.50.1
->> 
->> 
-> 
-> Thank you for the patch. The rest looks good to me! Have a great day : -)
-> Joshua
+>>  mm/khugepaged.c | 7 +++++--
+>>  1 file changed, 5 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index d06d84219e1b..45b12ffb1550 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1899,8 +1899,11 @@ static enum scan_result collapse_file(struct mm=
+_struct *mm, unsigned long addr,
+>>  	int nr_none =3D 0;
+>>  	bool is_shmem =3D shmem_file(file);
+>>
+>> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+>> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+>> +	/* "huge" shmem sets mapping folio order and passes the check below =
+*/
+>
+> I think this isn't quite clear and could be improved to e.g.:
+>
+> 	/*
+> 	 * Either anon shmem supports huge pages as set by shmem_enabled sysfs=
+,
+> 	 * or a shmem file system mounted with the "huge" option.
+> 	 */
+>
+>> +	if (mapping_max_folio_order(mapping) < PMD_ORDER)
+>> +		return SCAN_FAIL;
+>
+> As per rest of thread, this looks correct.
 
+Will respond to that thread.
+
+>
+>> +	if (start & (HPAGE_PMD_NR - 1))
+>> +		return SCAN_ADDRESS_RANGE;
+>
+> Hmm, we're kinda making this - presumably buggy situation - into a vali=
+d input
+> that just fails the scan.
+>
+> Maybe just make it a VM_WARN_ON_ONCE()? Or if we want to avoid propagat=
+ing the
+> bug that'd cause it any further:
+>
+> 	if (start & (HPAGE_PMD_NR - 1)) {
+> 		VM_WARN_ON_ONCE(true);
+> 		return SCAN_ADDRESS_RANGE;
+> 	}
+>
+> Or similar.
+
+As I responded to David, will change it to VM_WARN_ON_ONCE().
+
+>
+>>
+>>  	result =3D alloc_charge_folio(&new_folio, mm, cc);
+>>  	if (result !=3D SCAN_SUCCEED)
+>> --
+>> 2.43.0
+>>
+>
+> Cheers, Lorenzo
+
+
+Best Regards,
+Yan, Zi
 
