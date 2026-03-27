@@ -4,96 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8190B10BA445
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:43:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B60F610BA44F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:51:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A12436B00A0; Fri, 27 Mar 2026 04:43:25 -0400 (EDT)
+	id E3E236B0099; Fri, 27 Mar 2026 04:51:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C2E06B00A1; Fri, 27 Mar 2026 04:43:25 -0400 (EDT)
+	id E15116B009B; Fri, 27 Mar 2026 04:51:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FFB46B00A3; Fri, 27 Mar 2026 04:43:25 -0400 (EDT)
+	id D04106B009D; Fri, 27 Mar 2026 04:51:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8283E6B00A0
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:43:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28E101B96EB
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:43:25 +0000 (UTC)
-X-FDA: 84591203970.26.02FE0F3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF6F56B0099
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:51:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6C8CB1B92F2
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:51:44 +0000 (UTC)
+X-FDA: 84591224928.20.EA0436D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 62BB310000B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:43:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CdwmAEK9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 760254000A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:51:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iugcoP8/";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774601502; a=rsa-sha256;
+	cv=none;
+	b=GoG6dZM27u7G1wpAkWlobSU8xLtSuzp/156pYg97/g4pNt8isBOep70yrGi43uZk1RyPDy
+	YJmS2R7GmQzgMhFf9G0rPbX+oihDGwGF2Ve1WZ3egpZnjL0mcqtaQp9mXZ3w+FdSY3Au4v
+	qCmrhkG+WCTRug/GacvxLDKRW+lJW6Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774601003;
+	s=arc-20220608; t=1774601502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWv3283qDDaH0F9gL1ambYuPHPHnEYdrJUAhVXf9o1k=;
-	b=sNIEYbcDrloEkpGSUuirGik1icwltROIbQE2splYEZ0QrW4cfeMI+hzBChGVPn28rxjVt0
-	6MRUDoF/aRYOhbSRoOCEsQHPdHXdIF6l6QsCTUf7vPFC/9LfCw/NLwUnpiysvUj7RzyD5Z
-	TL9DB8yGontLw1e5ZW0h8WeVv5ywmyI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774601003; a=rsa-sha256;
-	cv=none;
-	b=1Y6CZW7s7Gq1D6qy/B2ib0j+V5kWOl3maaw+zxpGWWyeg0KF+AzZgRT3Xqfg5QDnzXhs+F
-	KR6MEDDece2QA7xCMbf9kusbNmQU/5H69zVgGwRSOD1ZLYEJsev7X9sDhnokVDoTwdpu5a
-	Bqj3wr+hWaXYEYSHV7dcn/Jn7r8IEyc=
+	bh=Vpl27CXWyNw1E5p0qpSeNH5VtgWIFNQYsIGABb+zQ7M=;
+	b=LOD/edtl/xmH0qBYpujIhDfyE8nt0O5T37kTYKhGMKAvtXuShEQIpZRTFBmx2KgPiUjqcJ
+	+OGWFQR3T+KKp/PT1lq86vwDF0oxFWPR0hfG4SQhD3hOjtD8UMHPRDqQLGb5PeiJZeql7D
+	NtH4ITGhgJqBQAp3tnJcn/q2msX9ZMo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CdwmAEK9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iugcoP8/";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 26C0D40A6E;
-	Fri, 27 Mar 2026 08:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECFFC19423;
-	Fri, 27 Mar 2026 08:43:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 49972403F4;
+	Fri, 27 Mar 2026 08:51:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98038C19423;
+	Fri, 27 Mar 2026 08:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774601002;
-	bh=uSAEwv+P0NWX+V8A9QMICb6Q1yjjMb/K72DG65M/P6s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CdwmAEK9/IFM+EMSgv+GZ9ZiT76lRLLB86oWqQrq7C2uu9OiZLoSUXMc5BIsA0J00
-	 IBMD0wPdVdFw4GyPS2ZKEvPE4iHbRUP/T2GgfjNh+seLgDT2o54Z6zZWTUt/k8nRlc
-	 BF8aTp5KdnIH2qwAsAPnfy3OeORNSRCOj8UuzNJ+5UziM0BxVWkPCGEK2SvUxmVv+o
-	 D+Xpgtx/RoNNYEJ29wK0jydMrqjUvCT1kCUWo+KywHkKhxUy2T2al3sO5Lqb6NVilB
-	 f1dFDPvgKgA1A7bA2qCxhjUqluqXr+Ds1KHhO57uUaEkxyDQJekZ1WZrn67Izo3csm
-	 JuATilun0kMpQ==
-Date: Fri, 27 Mar 2026 17:43:19 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev,
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
-	linux@roeck-us.net, andy.shevchenko@gmail.com, hch@lst.de,
-	Jeff.kirsher@gmail.com, Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH] mm/slab: align kmalloc to cacheline when DMA API
- debugging is active
-Message-ID: <acZDJ4Nfw4x7HCSr@hyeyoo>
-References: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com>
- <acYlxRBhSMcwBnja@hyeyoo>
- <CABXGCsMTk6kDuJxsTAUKP6npTvp4X6Ryng+P4xjMUsPbTA43+Q@mail.gmail.com>
- <acY5G-lKZQEsUbRw@hyeyoo>
- <CABXGCsPQo=Npum2aHet3QkZWkWEnEVMAw0KQ1AHPrNjMn=9bmA@mail.gmail.com>
+	s=k20201202; t=1774601501;
+	bh=eRE737VkH0m4yUEmKC0eyuQyryfv48ciiTpcgZ2tUoc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iugcoP8/1cKAEUYF4bMLyAPrdeYNSdV5JHyyBJw9hxFHOheqNs5SgUbQkgYbC0f+Y
+	 I6cojohGRLgw4KkRGfCVlZiKY9LptTF1IQ/elRwh3jjigFDtgTw5fJAdMZqESarMwG
+	 H35wsUQ4yHt47O6lDz7SZV9KJ0fDKHEg7q5f+rbISwJKHPpoMgtvfnbCWarZZMaeug
+	 fJXn1r+qEbm8j0NQJ40AP68M19ZxhLSGF8yQVq8zvYnYOF285qfzu2GGbF4pUvQS/Q
+	 z80B80Sc1McwwE3j/nwWprmtB3xlk4y3ipMSnJz/32/37mawf2OZ9g8Eg3F5xxkqif
+	 tpF2dcp/ZgxWQ==
+Message-ID: <48d7c810-d219-4346-9e8b-d70243445a91@kernel.org>
+Date: Fri, 27 Mar 2026 09:51:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v3 00/24] mm: thp: lazy PTE page table allocation at PMD split
+ time
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ willy@infradead.org, linux-mm@kvack.org
+Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org
+References: <20260327021403.214713-1-usama.arif@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260327021403.214713-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABXGCsPQo=Npum2aHet3QkZWkWEnEVMAw0KQ1AHPrNjMn=9bmA@mail.gmail.com>
-X-Rspamd-Queue-Id: 62BB310000B
-X-Stat-Signature: t1djpb4dfgdkkqunquya78do14fpo371
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774601003-865167
-X-HE-Meta: U2FsdGVkX18ZkXwVne9fsz9xAptK/kCk+n4SeL35QpBZjZaNachUR5FcA9RjUJ1uQnzTj86fP8onleLL5UgyJxuoNUaUAv4ar3YDdJ3APiKl7UL+AkziDfYbxVeaUJNHjExR7o37NNH9DOtR6DoRFCjw3AGTYMHdEZLRK9r3l4bmxPKqTJ37y0nzEYB5EpQi4bW6UMlkPXYYf40lhsUVf6lmeDvEwuWc/ceqUFTuR8x1oB0ehCqZXltOMcfrTvqPwo5xI1i8dKYp0WS/67yfzg7Gamm73BA7OBFJTkS4f+sH6u3K8yxVQNqqOGGqVyBRvAybKjHpqQdbitexDxCSdqKdUX3JNj7C0n680/fFMgnxDjkC6q74mPiB8Apl4RAA/8kvbLRystfqCef/1UVkjngX7AyDcjnfpeBzdKEOeOUVnCf72ZldOXXA023R4daor2lfk7JWYzwkoXRz93I9Cl+Mp0cWC7FGvh6OX+In/+P01mNG45bKZbN9O5l9mJljBA+z2j7JqB+6/3worATfcYB9K0QM3gC2CyJZAGyDKDjIAakFZvqeyaN94uan2x2CARH/X+QsSw+uR85ysSkQGSjKaMOED1Z41FdLuE3tPFuVqTppRWfd1TxS9OG8KN1E00c1RCIEi8Emrp+EnfDtZ8VvVTiR1mtt7dhBysbyjeUCsM3/vznyj+2UuvKhVgUugJenLaQ+FsPIyI0DHtMh0/JgZpvj18zfwk3Iw74PP7XUCQm6Mn4MNkK6qOczcSaEtxAYXBGdVT4RYKiWQdwj/igotq1sVL/5yVvg5aQPpNat8uJ+SP/OlVehiMPHRK9Z3/Wa0QnL9ZYjbf2cIS+CfayOwE8AeIvr0WnBWJrEIDQmR3MM6gSC2sbifLA7kx9Z9/xSxx/c1bSq4D9iSUwKXsHf1Scp/FBZqyWkVf4sn4FSWjkueoOA7M6S+xKd3/pqOo2om3v6cOkttJ1vPGE
- 6yorsS7t
- bLDsXn1L6I1AmVONSSdE3jdZTRsteRgsynBfkRkjqf6XJQNBCwQ8Vf4HowieNrFaaByImwNxPYKKoZmNwG0mTcp1vFNcXTtncxXchO7QTaZDVhUgDuaa+oFtUnoLy4DUjBqBj0M4dGKdtbZY4GoehkM9izIivAa3Zb9TPSVGSf9clJ0FZ+GzfVnPVtm1WQ5RF17jmvJoKuuSMUeadp17uQoa3bC2olJ7w8uSqOMO1Njlr6xYypuipbMRWPEpSdieuM+6hs5Ph1bSpu0pSPSRHBXOcX99Lzymu4A2Y/2Qym15+bgZLiaqvvTql9neGMZM1uoCPaQxw99qwWPDjKAg+1dkD3dwbD/aRNb8g/U9FpOekBlpDRO/tn4stcA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 760254000A
+X-Stat-Signature: tap333ihn9yi6dpib9chozta5qjbz6k9
+X-HE-Tag: 1774601502-21022
+X-HE-Meta: U2FsdGVkX1/12ShB4Owy8Qmn4iQb2DKxEpBRqyFSvAiDFX2Kzbh8A7QUH8VlWQBCQzlNPleAdwur2XPdnXo9RtYXrcEe5hnWqyu4yE1mUvfpC9UaFfr3JRNQUfdFbF2BkxkLSICEfOVeVFimAhcNm6Il2Mq/vwMBUDT9IgfOWx3slRfC0vPRAxTHqjH2J3i5D30kgiXM5i9vy7ub5MMfsX3fVer3evHN9MprbrrTgBt5w7daWH9iBfQkJOJFoJauWhDDpLYMrKGXLvrlT7Lmd7Pl4mqr7a61YA1TIJ61GZRweUC+Hmw1HRjvobww60hT20d7jk5rP7X0ByTUSOPqBWNfo+DJoDGzjBCasvzlA4Rzlw+rxaiEnh5AozvXR25Rn2N+EHHbQcKnRuROY+Y+ZxJiaCvj601mXJxRoyL9x90Ai3txAEntQ+XexpOLkyHRbVgM0XeQiGtZCR0oTkTQ5T3lkYB6ZAryuCYFXCdMco9sMrxO73EVczRsE/zgpHxxYpoZvSUQQ/VoExalIlM4MwK+u152Gai5l7lGICyY2O/207o5RIc9fAEccsn1g/5sVCXUbu88fbjFN+6tvBSr47VY7F82xl8lTuxZAugJ3/aD6eDOagw3Q7T7mIMkXK1T1qLA1FiCrMOFP26vP9zLYoVcq8rZtDH/rBCvm8s5GpcnT5EvW1xKlQ8yufqHTdGKsH0UfAo1KvOrQ25GX4jHbRpxRDYxLw6Px/QTNc8dblKVXxZxPvRJQHWMqDQi3v47vYzk6USPhJHAyCjzahmr1ImNjz3uaxmsxziYr38Rk5o+Tny75GO0OIUOeoXjHGbx8Axp7RwXfHpMqeOGm8FtX3FtuDQsUqLb5mxGlOmyRq5qxHUoma8cIPdDrcVnre+3ya5avV8m61+ntMjCPXYax86v8BgyU9Kj10A1Qqoz3R+mED1OSmOC6XJSQ3idzbbnizROo4XY4DD+9GzzWxa
+ Z4evAm52
+ QoLxEmajwc6WwnF7verHdKqwg4+YpwrNNmiFWs6uRuz6i/dru4NCig0HYMRkZCVeLGE6y1esQNIyRTe3EfvlMDiOUScdjiB+9rZzt/5Z9lrsvifn4thQ9RsDrEUuNCId9t2WUDu5fMiOp+S1cx8d+PqzEx8Rx5RXDCHyoRg+e3Kh68XRPVfw1BWF0pZQhVGHH78GOPTAgvuR6bTDRn5W7lFwCdtMA6Htuty9BYcrwyn450B6Y+GDDf+HAZ7PHImoAB1ac+T8ZWT1ExpXrqXGwyWWFzWax0abjMcacqPhOwwDvar/u2KMvJzoAMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,50 +146,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 01:07:21PM +0500, Mikhail Gavrilov wrote:
-> On Fri, Mar 27, 2026 at 1:00 PM Harry Yoo (Oracle) <harry@kernel.org> wrote:
-> >
-> > But dma_get_cache_alignment() < L1_CACHE_BYTES means the architecture
-> > actually allows overlapping cachelines, no?
+On 3/27/26 03:08, Usama Arif wrote:
+> When the kernel creates a PMD-level THP mapping for anonymous pages, it
+> pre-allocates a PTE page table via pgtable_trans_huge_deposit(). This
+> page table sits unused in a deposit list for the lifetime of the THP
+> mapping, only to be withdrawn when the PMD is split or zapped. Every
+> anonymous THP therefore wastes 4KB of memory unconditionally. On large
+> servers where hundreds of gigabytes of memory are mapped as THPs, this
+> adds up: roughly 200MB wasted per 100GB of THP memory. This memory
+> could otherwise satisfy other allocations, including the very PTE page
+> table allocations needed when splits eventually occur.
 > 
-> Hi Harry,
+> This series removes the pre-deposit and allocates the PTE page table
+> lazily — only when a PMD split actually happens. Since a large number
+> of THPs are never split (they are zapped wholesale when processes exit or
+> munmap the full range), the allocation is avoided entirely in the common
+> case.
 > 
-> On x86_64, dma_get_cache_alignment() returns L1_CACHE_BYTES (both
-> are 64). The condition (dma_get_cache_alignment() < L1_CACHE_BYTES)
-> would be false, so the check wouldn't suppress the warning.
+> The pre-deposit pattern exists because split_huge_pmd was designed as an
+> operation that must never fail: if the kernel decides to split, it needs
+> a PTE page table, so one is deposited in advance. But "must never fail"
+> is an unnecessarily strong requirement. A PMD split is typically triggered
+> by a partial operation on a sub-PMD range — partial munmap, partial
+> mprotect, COW on a pinned folio, GUP with FOLL_SPLIT_PMD, and similar.
+> All of these operations already have well-defined error handling for
+> allocation failures (e.g., -ENOMEM, VM_FAULT_OOM). Allowing split to
+> fail and propagating the error through these existing paths is the natural
+> thing to do. Furthermore, if the system cannot satisfy a single order-0
+> allocation for a page table, it is under extreme memory pressure and
+> failing the operation is the correct response.
+> 
+> Designing functions like split_huge_pmd as operations that cannot fail
+> has a subtle but real cost to code quality. It forces a pre-allocation
+> pattern - every THP creation path must deposit a page table, and every
+> split or zap path must withdraw one, creating a hidden coupling between
+> widely separated code paths.
+> 
+> This also serves as a code cleanup. On every architecture except powerpc
+> with hash MMU, the deposit/withdraw machinery becomes dead code. The
+> series removes the generic implementations in pgtable-generic.c and the
+> s390/sparc overrides, replacing them with no-op stubs guarded by
+> arch_needs_pgtable_deposit(), which evaluates to false at compile time
+> on all non-powerpc architectures.
+> 
+> The series is structured as follows:
+> 
+> Patches 1-2:    Infrastructure — make split functions return int and
+>                 propagate errors from vma_adjust_trans_huge() through
+>                 __split_vma, vma_shrink, and commit_merge.
+> 
+> Patches 3-15:   Handle split failure at every call site — copy_huge_pmd,
+>                 do_huge_pmd_wp_page, zap_pmd_range, wp_huge_pmd,
+>                 change_pmd_range (mprotect), follow_pmd_mask (GUP),
+>                 walk_pmd_range (pagewalk), move_page_tables (mremap),
+>                 move_pages (userfaultfd), device migration,
+>                 pagemap_scan_thp_entry (proc), powerpc subpage_prot,
+>                 and dax_iomap_pmd_fault (DAX). The code will become
+>                 effective in Patch 17 when split functions start
+>                 returning -ENOMEM.
+> 
+> Patch 16:       Add __must_check to __split_huge_pmd(), split_huge_pmd()
+>                 and split_huge_pmd_address() so the compiler warns on
+>                 unchecked return values.
+> 
+> Patch 17:       The actual change — allocate PTE page tables lazily at
+>                 split time instead of pre-depositing at THP creation.
+>                 This is when split functions will actually start returning
+>                 -ENOMEM.
+> 
+> Patch 18:       Remove the now-dead deposit/withdraw code on
+>                 non-powerpc architectures.
+> 
+> Patch 19:       Add THP_SPLIT_PMD_FAILED vmstat counter for monitoring
+>                 split failures.
+> 
+> Patches 20-24:  Selftests covering partial munmap, mprotect, mlock,
+>                 mremap, and MADV_DONTNEED on THPs to exercise the
+>                 split paths.
+> 
+> The error handling patches are placed before the lazy allocation patch so
+> that every call site is already prepared to handle split failures before
+> the failure mode is introduced. This makes each patch independently safe
+> to apply and bisect through.
+> 
+> The patches were tested with CONFIG_DEBUG_ATOMIC_SLEEP and CONFIG_DEBUG_VM
+> enabled. The test results are below:
+> 
+> TAP version 13
+> 1..5
+> # Starting 5 tests from 1 test cases.
+> #  RUN           thp_pmd_split.partial_munmap ...
+> # thp_pmd_split_test.c:60:partial_munmap:thp_split_pmd: 0 -> 1
+> # thp_pmd_split_test.c:62:partial_munmap:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_munmap
+> ok 1 thp_pmd_split.partial_munmap
+> #  RUN           thp_pmd_split.partial_mprotect ...
+> # thp_pmd_split_test.c:60:partial_mprotect:thp_split_pmd: 1 -> 2
+> # thp_pmd_split_test.c:62:partial_mprotect:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_mprotect
+> ok 2 thp_pmd_split.partial_mprotect
+> #  RUN           thp_pmd_split.partial_mlock ...
+> # thp_pmd_split_test.c:60:partial_mlock:thp_split_pmd: 2 -> 3
+> # thp_pmd_split_test.c:62:partial_mlock:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_mlock
+> ok 3 thp_pmd_split.partial_mlock
+> #  RUN           thp_pmd_split.partial_mremap ...
+> # thp_pmd_split_test.c:60:partial_mremap:thp_split_pmd: 3 -> 4
+> # thp_pmd_split_test.c:62:partial_mremap:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_mremap
+> ok 4 thp_pmd_split.partial_mremap
+> #  RUN           thp_pmd_split.partial_madv_dontneed ...
+> # thp_pmd_split_test.c:60:partial_madv_dontneed:thp_split_pmd: 4 -> 5
+> # thp_pmd_split_test.c:62:partial_madv_dontneed:thp_split_pmd_failed: 0 -> 0
+> #            OK  thp_pmd_split.partial_madv_dontneed
+> ok 5 thp_pmd_split.partial_madv_dontneed
+> # PASSED: 5 / 5 tests passed.
+> # Totals: pass:5 fail:0 xfail:0 xpass:0 skip:0 error:0
+> 
+> The patches are based off of mm-unstable as of 25 Mar
+> git hash: d6f51e38433489eb22cb65d1bf72ac7993c5bdec
+> 
+> RFC v2 -> v3: https://lore.kernel.org/all/de0dc7ec-7a8d-4b1a-a419-1d97d2e4d510@linux.dev/
 
-How does dma_get_cache_alignment() return L1_CACHE_BYTES when
-x86_64 doesn't define ARCH_HAS_DMA_MINALIGN?
+Note that we usually go from RFC to v1.
 
-> The problem isn't that the architecture allows overlapping --
-
-Probably what I said was misleading...
-
-I didn't mean "the architecture is fine with overlapping cacheline".
-
-I meant "not defining ARCH_DMA_MINALIGN or defining it as smaller than
-L1_CACHE_BYTES is how architectures tell kmalloc subsystem that
-kmalloc objects don't have to be aligned with cacheline size."
-
-> it's that kmalloc returns 8-byte aligned buffers that happen to land in
-> the same 64-byte cacheline.
-> The DMA debug code correctly identifies that two DMA mappings share
-> a cacheline, but on coherent platforms this is harmless.
-
-That happens only when the architecture can live with that.
-
-> Adding a dev_is_dma_coherent() check in dma-debug would fix x86
-> but would also silence the warning for any coherent device, including
-> ones behind IOMMUs that might have non-coherent paths.
-
-Sorry, I don't understand where the idea of adding a
-dma_is_dma_coherent() check comes from ...
-
-> That's why Alan's conclusion was that fixing the allocator side is safer --
-> it doesn't weaken any debug checks, it just ensures the situation
-> never arises.
+I'll put this series on my review backlog, but it will take some time
+until I get to it (it won't make the next release either way :) ).
 
 -- 
 Cheers,
-Harry / Hyeonggon
+
+David
 
