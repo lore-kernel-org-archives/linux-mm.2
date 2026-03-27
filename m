@@ -4,62 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3669E10A62D1
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:15:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47FCC10A62D1
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 02:15:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9779D6B00A6; Thu, 26 Mar 2026 22:15:01 -0400 (EDT)
+	id AFE846B00A9; Thu, 26 Mar 2026 22:15:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 928026B00A9; Thu, 26 Mar 2026 22:15:01 -0400 (EDT)
+	id AD61B6B00AB; Thu, 26 Mar 2026 22:15:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83E5F6B00AA; Thu, 26 Mar 2026 22:15:01 -0400 (EDT)
+	id A13926B00AC; Thu, 26 Mar 2026 22:15:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FC6D6B00A6
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:15:01 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 445D3BE4D6
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:01 +0000 (UTC)
-X-FDA: 84590225202.14.536DD8F
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 75783180005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:14:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="u0/m9ASD";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577699; a=rsa-sha256;
-	cv=none;
-	b=tglLGBxTovBNb1lxz8RwsJRqNixX2Agh6uwtlinVI3zMcBcnrruMKM5ZAXkuUt7QK64U40
-	HddzplFuzloKJjB4mrTKeqHUz94YuzseuDqq0dVHLvvqjpYaJCq3/TwJseX+cV+2Rg6ABy
-	t7cHU/IBemwe3E39YgvQJdfAcr3DtjY=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F9BE6B00A9
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:15:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5D40813C472
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:06 +0000 (UTC)
+X-FDA: 84590225412.20.48B52F7
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A789120003
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:15:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c+UwEtgW;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="u0/m9ASD";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c+UwEtgW;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774577704; a=rsa-sha256;
+	cv=none;
+	b=B2zNsUTl8FZEFNdXydV4yZpkigJdHhswhDJuTRPCzj8j3ic25ZswQG176dGFUrtLsdYE8e
+	UwapbLM7+PxxIl7nlT6ojTnuBfNZvn6I5cU4kkIjA/CnMVZO2C/H+PIwMaVVeINdCAqbwE
+	D7bdsKBleDuVk+l66md5IgQHQ7b81kY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774577699;
+	s=arc-20220608; t=1774577704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YEV2JraEcWrcU0ZBvWVbflxwtxhTRk4GT952CPZuA50=;
-	b=U1uQB7PIRLR1YCBl1/472FsjLGh0Rqbckl0pbw9DS4T4R+S90+7q/swcopQ73ndaZG5d6E
-	vOLhND13HETAx9uUsFlR/FSuXZDWXpcmqt3XwcUef63CTE0e+/0Vt+MM1Oa4TlxMzpaiHM
-	zsowO0zc4eUziErOrELT0QX5Ezc6MMo=
+	bh=giSfT9S4Y3Fs6MBCHHOkpgsjb4flU8mTLfNnlsB/wxU=;
+	b=dxBokh7qDr1iqF3vLzNQ99OxNMIXSBURxI+QJ2ZD0O5FiBhlRJvIl/refkYaSkDh0hu4Sy
+	FIlwH4UCeMOHUk94eLOPCkcNotJjCp5UtM6zfe8fXjvErFye+8KPN2Tkt464MHBEzfC4KJ
+	orOWkFh04zztwmvCLJPGM36qUN1zRzw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774577697;
+	t=1774577702;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YEV2JraEcWrcU0ZBvWVbflxwtxhTRk4GT952CPZuA50=;
-	b=u0/m9ASDIyRTjYzRS9sw7YydNLKfppOx0RMOs35/i/y5Ni21Cb1jtxqZNy/yP+Kqi/QxXC
-	k6dOK7+inks9R2SF5uInEMSGMi6RkUSEsV/nxpnQv+EtYjG/nOmRguIxK19Cw1btj+1eHv
-	O/E1Nq01pdgTuk7/bByUiSP3Dm/a2Jo=
+	bh=giSfT9S4Y3Fs6MBCHHOkpgsjb4flU8mTLfNnlsB/wxU=;
+	b=c+UwEtgWwyc5ExZqiso+pcfyt+iKbZ1QmoTTRB8NhGDZKpUwyzQzLx5Oi6hXFvtdq5ago3
+	ODRA0nas4eR1mjjEDHyY5MY9At3yhrqG1QJr6rpr5PRO3un578DMuu2R03YOspCxOxZ+jD
+	EPix5NId6vnIBtCHcU6MJtVrfHvraLA=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -91,23 +90,22 @@ Cc: fvdl@google.com,
 	svens@linux.ibm.com,
 	linux-s390@vger.kernel.org,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [v3 07/24] mm: thp: retry on split failure in change_pmd_range()
-Date: Thu, 26 Mar 2026 19:08:49 -0700
-Message-ID: <20260327021403.214713-8-usama.arif@linux.dev>
+Subject: [v3 08/24] mm: thp: handle split failure in follow_pmd_mask()
+Date: Thu, 26 Mar 2026 19:08:50 -0700
+Message-ID: <20260327021403.214713-9-usama.arif@linux.dev>
 In-Reply-To: <20260327021403.214713-1-usama.arif@linux.dev>
 References: <20260327021403.214713-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 75783180005
-X-Stat-Signature: fecjhdhm7j6adg4a6a5fgzstbr1dt485
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A789120003
+X-Stat-Signature: ypdzgfyqj9omuwejizkcuhjr4dpatiin
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774577699-134858
-X-HE-Meta: U2FsdGVkX1/QZ/qdnakKQgIapbmwWDNhJFbxHA82ICi3rCw00J6uTddUqGoEtbE1dDCRiwaUw9lkFQuarcPk4ALv1QeIruSBjvKiK0gAeVsCxrJp+ggOOlGGGGj7fjwYhlWW4uHoeSMJz4dkoocmkyT+DvB3trXYTBiQNwyKD7cV/7OTvkLDPGOqk0UT6+GRnMC5yiSihapTHWpb2Ts2e+kebWKYZZ1Gdc0SMONVo1S29p5V1dfYAmHiq57bkIbxgleTDta6nj0uchlxaEwR1IsHVZpuhtxAnXfsDOBo5rm86TZvdDZ96PJ84VxMjLUHRt0bui2NpKTXL6YOArQjY/d9x86VCO1mjInAUbui66b8CTd4kX3wC5g1H2UYDL9qH66ymL8HEe1pBvjJ54BRL+UEAqPVvDTfoHRHWFlFLaS6d48S9/rvg3RwAC5vXgLAblfEQhItafRkAWfv1mLyCns7o/GN0OSDh9BFBd4meA+5AaIGKjVDrSizsAcE/KCvxCG6COtZWqWduxKWbfffDdfUe9FzqZD4p86Dd5gwFF10Ol5/TWoQErFolVT2yIPhL4YfWu7hJ1Drv5OEUjgtkgVJku77hANECxWCoEfyLWlRStF1dISW7SrCpSuP7rXXhPkTqBHHhEH3myeSD5MOovBVSLQVUup2Tu/O7FXtL6Q2UIZtrcCHrHOibmzfWDrkoQJ8qFHCpbU5MWP2UgmGtLo4Y5uhXmwJvH2Fc/Rj6U02F/SBjONcLMTXL0sg/WT59nC0vtog2L7A5xp1iI8Sa2NuEoiqmoqvmxAV6kXpiI3EH6edqShcofG74BVs4ahRUkyG83FBtw5xq+0O1J4L7G0OODyJBHP1pG+gSoekOITfYnjj9kpY3Tb6D5td4u5CRuXeo6+CgOYychRXU0u4Nk1dJI+c0OeWN31UsFrylroaimTx/3yqDYsFTkSOna9ZrPNmc8ROApGttijYOQ5
- waMctRqY
- o2A+Ho96KyOTBciVB9HYXik373APmjTCpuPcR7KJOU48fe9PAbYnk2MMf/0R9ZDsvpcSMZJVSKc79za3s0id3pmEu3EA/jnTchageGld1OLlM09WzGoN/x3doQMzCY0R4bNeqxhw97BrjjaOUjRrHrGJJxyXS/muoTLNgaNZM6xWqfhMHjYahiCbSbQUcbbbJZRZNK3ggm7gVCJZe7jJDWG7dTEHvMPlsyPApvqimpuPIv3ota8/+6bU7gK70xxc0akXkZ58JsawJhNWElRX8M/FfLg==
+X-HE-Tag: 1774577704-304169
+X-HE-Meta: U2FsdGVkX19HJijJSO8HxY8L4C+zjcCjw9sFAyVSTB1qMZc5iCQemkFvVWuAIH7k4PXdUQFhKUWm0muVGGtNfpyvOqOaNQ2NJYdGbLeB3J9ps4NZlGZzZ0lnIHZqm36vsrDYOcbWnc6mZp54RPfivb/M2WOrp6ABUEYmh4InUJjDb9NOhjAk8nbf6FFzi4INYCQ73gbfKyck6dP7YFFDwcIHKgSsO3GZN+gTiygtmaUmb5colVOYzryaXeWF7YfdRfoyBxRXmduflFAbb2+zzztWVBUVHLQuliPFyhtdLj80UGIMx9qTUEWSlHwtKr/FoivRI4kfktPDZMF1+mO8q/y1lN2HBD1JmnkT1Uvmep00XvXycac12us9Ukg8BRvXGo/ajoKwDgOEz0W8h2vwocU7Uf6KGMYe0tMhfv686iQsAmqy8O4TH0hJ15Nh0ifEk1nXVCnBiyVHxE2XAfIfdEaVpvWuWXIyebftkawiXnvqseu3z06gjClDNT4LAw9OgQRBw1ZQFa0fJG1X1oDUGWOrjHoANrHf5F5QoytJWOZi9W0Hj6GH0XwmNWB4GcKcyMsGF0r+Wy3heUZL3hFdof/0l4/pWWTPhRWsBNokUEoinkcAFHqJgI4LTcuPygV4C8U7uafBxep1unR5VXkO8P+/N3oLWVOJZsFl9/3/pTNfPN8bdFFg0qq23IYduFoYCzZfXx1SQ02tT36LUj5HipS1HIXqJvDS6/WQTxiVk8OWrvFEb1h702FQYvBgspzk5s6qQo8cOq9R5Ws6xuUnHgKiqO9gFbO/P0zOlalRNr2ZW4MBjMC4xZvStuCukmUABZ5BoE0JRspBA5jr7jCTEM9W5NdkoIzS64Sla5rMa2alT5pdQ5XFqd7ox1ac35UGCPKlO/xvHDnyfOqXgMMH/1WvEzoO0ZbyXovV2W6b6UQxWobteO8faF3Ege0HJeMGRcmI8UJeedBNTUeFNm0
+ YwbnaA6h
+ 26TtrcQkYwI3AdIKMkt58indM6rHdhJ+1DYRnDmH/9Y6Op7MtOV6QXudNFm93dE2mo6nU69HKDAPTAF1i/Z1EciV9WuuLMwT6G75dhtShVoxf4uXsfoOlNdpuN9cyEtNgoYyrEQZmUBkiXEXh4xGPggPdDzMOOySG+am8CT0vMIRewRCDKJXuQOuXQE4/uTRPp7K4qPh9GONPebNDkaljMz/3L0bm58BFc7EEv59OL2xZoFWxX+aXV2Ahjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,53 +113,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-change_pmd_range() splits a huge PMD when mprotect() targets a sub-PMD
-range or when VMA flags require per-PTE protection bits that can't be
-represented at PMD granularity.
+follow_pmd_mask() splits a huge PMD when FOLL_SPLIT_PMD is set, so GUP
+can pin individual pages at PTE granularity.
 
-If pte_alloc_one() fails inside __split_huge_pmd(), the huge PMD remains
-intact. Without this change, change_pte_range() would return -EAGAIN
-because pte_offset_map_lock() returns NULL for a huge PMD, sending the
-code back to the 'again' label to retry the split—without ever calling
-cond_resched().
-
-Now that __split_huge_pmd() returns an error code, handle it explicitly:
-yield the CPU with cond_resched() and retry via goto again, giving other
-tasks a chance to free memory.
-
-Trying to return an error all the way to change_protection_range would
-not work as it would leave a memory range with new protections, and
-others unchanged, with no easy way to roll back the already modified
-entries (and previous splits). __split_huge_pmd only requires an
-order-0 allocation and is extremely unlikely to fail.
+If the split fails, the PMD is still huge and follow_page_pte() cannot
+process it. Return ERR_PTR(-ENOMEM) on split failure, which causes the
+GUP caller to get -ENOMEM. -ENOMEM is already returned in follow_pmd_mask
+if pte_alloc_one fails (which is the reason why split_huge_pmd could
+fail), hence this is a safe change.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/mprotect.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ mm/gup.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 110d47a36d4bb..e39e96963da8b 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -477,7 +477,16 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
- 		if (pmd_is_huge(_pmd)) {
- 			if ((next - addr != HPAGE_PMD_SIZE) ||
- 			    pgtable_split_needed(vma, cp_flags)) {
--				__split_huge_pmd(vma, pmd, addr, false);
-+				ret = __split_huge_pmd(vma, pmd, addr, false);
-+				if (ret) {
-+					/*
-+					 * Yield and retry. Other tasks
-+					 * may free memory while we
-+					 * reschedule.
-+					 */
-+					cond_resched();
-+					goto again;
-+				}
- 				/*
- 				 * For file-backed, the pmd could have been
- 				 * cleared; make sure pmd populated if
+diff --git a/mm/gup.c b/mm/gup.c
+index ad9ded39609cb..07c6b0483c322 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -928,8 +928,16 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+ 		return follow_page_pte(vma, address, pmd, flags);
+ 	}
+ 	if (pmd_trans_huge(pmdval) && (flags & FOLL_SPLIT_PMD)) {
++		int ret;
++
+ 		spin_unlock(ptl);
+-		split_huge_pmd(vma, pmd, address);
++		/*
++		 * If split fails, the PMD is still huge and
++		 * we cannot proceed to follow_page_pte.
++		 */
++		ret = split_huge_pmd(vma, pmd, address);
++		if (ret)
++			return ERR_PTR(ret);
+ 		/* If pmd was left empty, stuff a page table in there quickly */
+ 		return pte_alloc(mm, pmd) ? ERR_PTR(-ENOMEM) :
+ 			follow_page_pte(vma, address, pmd, flags);
 -- 
 2.52.0
 
