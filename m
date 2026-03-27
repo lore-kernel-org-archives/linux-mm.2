@@ -4,100 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B32A010ED674
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 12:57:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F195010ED676
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28F926B0098; Fri, 27 Mar 2026 08:57:48 -0400 (EDT)
+	id 1B0B26B0092; Fri, 27 Mar 2026 09:05:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2675F6B0099; Fri, 27 Mar 2026 08:57:48 -0400 (EDT)
+	id 188236B0095; Fri, 27 Mar 2026 09:05:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17CCF6B009B; Fri, 27 Mar 2026 08:57:48 -0400 (EDT)
+	id 0C6416B0098; Fri, 27 Mar 2026 09:05:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 062246B0098
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:57:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C86A21410D1
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:57:47 +0000 (UTC)
-X-FDA: 84591844974.01.A6A54EA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id F19AC100005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:57:45 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vedtCy6d;
-	spf=pass (imf05.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EF9DC6B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:05:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A15F1B9816
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:05:17 +0000 (UTC)
+X-FDA: 84591863874.03.B9E47F7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6CE281C000C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:05:15 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c3NOQ76A;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774616266;
+	s=arc-20220608; t=1774616715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sJMvUTaWi9bVQJRwL5OtdkaFOJWuBYYFxLts5x007Qg=;
-	b=qAHIZBP8d934fRdP+CY14eu3iiDiGPLSOukOmJtftiRWGP1JngXHrIw7pI63PVuJwNYlyu
-	riJxDEn/ki6kM4PwKBlgKjgm+0/Siw04SI+0wRR7SJt+IlU1OWWOfYMfzmhUVZsx6dUGff
-	evQ1Np+QVDI0naCEI4c7AwvXMemLla8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vedtCy6d;
-	spf=pass (imf05.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774616266; a=rsa-sha256;
+	bh=DbMLigS7rNOSB4UVUbRbimolJTt5nvPig3DNLZ71BI0=;
+	b=MTWLB0Cw2WNxksUR+kktaqYvZ6hVa7aWWROJdJ9rSVPpcQUw2Q8+K6ie472e5vZMBE3V69
+	F8uzF6oKr97pyifC/3vJQpSg3b4QAWKGquGbWxYF/G8IDln2lVeEsXRwmoWs5wwvrqJ94t
+	0BJhyub0eWbIn9c8zrfDKaD9PbdJNeU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774616715; a=rsa-sha256;
 	cv=none;
-	b=kjUdSYXd3rm1juxbYd7K9A+3szCNukzOARNn9t/YAea+Oj1MtR5KtFgmfcc1VFHa2PKIML
-	0JPEGruVxiQtrqnh/iQgRU67ThVBizqfo4eBDScgyohaNPVeGmB8bTafpZt2es4Q6qD8vf
-	lIGBSA6tNKW1/ZNRH0VFBDgiQS4VkmI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 01E8F35A1;
-	Fri, 27 Mar 2026 05:57:39 -0700 (PDT)
-Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.1.194.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 08DFE3F905;
-	Fri, 27 Mar 2026 05:57:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1774616264; bh=U/ncK0j4auSiim1AZ43YtKYV2rZY6C5VfPkBzb2+7f4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vedtCy6da8VZEeX8xyArTIgFESd5s5gSC/l6pJhebIgd3O1RsVXPKni2xxSF/3Rv+
-	 e/rYCKBI9mBgj8potQ+WL49SMMJY8ze0IWosgHrW1RejrNCZ5C75edd9PMm8/GS3+l
-	 PQ8jUVvD5rWEzPjORH1Zze0549hyupEBzJrt7VIw=
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Nick Terrell <terrelln@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Ryan.Roberts@arm.com,
-	david.hildenbrand@arm.com
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH v4 3/3] mm/page_alloc: Optimize __free_contig_frozen_range()
-Date: Fri, 27 Mar 2026 12:57:15 +0000
-Message-ID: <20260327125720.2270651-4-usama.anjum@arm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260327125720.2270651-1-usama.anjum@arm.com>
-References: <20260327125720.2270651-1-usama.anjum@arm.com>
+	b=YevTx/0f888Y3hit7XypGDRYyPSbJqOCGfu6cAT4nT8ZJHQvq9feqRNswod40Thq1cWl6A
+	b7xwO63sLWItd4+HjA/0Ba3FwjuDeIeUkCJfNt5vST0PzqipH4uyB9a1FESexy8K/MWDYD
+	hWJ/JlpkEn/5Wc5C7qvQtPFeJP3OMv0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c3NOQ76A;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D35B60145;
+	Fri, 27 Mar 2026 13:05:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AE5C19423;
+	Fri, 27 Mar 2026 13:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774616714;
+	bh=PqXcV4WSvyMk8Vn+F2Kg1MQdaYAo4KXzJ8hAAWSm71g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c3NOQ76Ap+l+WZMg5rcl/obGqdtuXxtub6mu8Y6VCc7sPEedeVy2XMY7SGnFFtNoI
+	 R9DN7RUE7167yC/+yjCqg2cN3gwubzdq8Z+Jo9+zZUc2Bl2cfARoATervXLZUexU8d
+	 rWtlp9mulM+FNdsjE7IudqxHHwSpbSTfbY7epuZAbU804rQxk0ObhZwV0sz1pVQGiU
+	 Iam59sv+UJxg0RMpKgIMo+JDSoDFE/WDvas0x4OcI9bKKdK9EmEaOz8oitQbWqWZ9g
+	 D9wOW2+0iO5Z+ZJzRUJfxGu0608LwTeFBAn6+INnpsPy4jCkzkB8dbkQGoZTTNLtmc
+	 vAQbCu8Jx6gFw==
+Date: Fri, 27 Mar 2026 13:05:11 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 07/10] mm/truncate: use folio_split() in
+ truncate_inode_partial_folio()
+Message-ID: <e23792e4-3331-45b6-b709-cd0896146a3f@lucifer.local>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-8-ziy@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327014255.2058916-8-ziy@nvidia.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fetayn4obdkajxttxur35r9sxdi3qbf5
+X-Rspamd-Queue-Id: 6CE281C000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F19AC100005
-X-Stat-Signature: ck4hjzre7rb4o1pf9is4jjrwxyqnuhod
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774616265-814176
-X-HE-Meta: U2FsdGVkX18C5UMPUtM9c3a4g5yHatoZC2lp7CkPRR8p3pgNbaGxCHd1KL6NiChHGC7TdyNt9h6XI/iIQAYpuAzx62j0hOb9uYqDYxrh5bT9ALGpIPM3kL3cB4wj5f5WS1rbC8rgvV7YnZ16+tX7AT8Yra0vICo7hyWrMn5JVLUXLvz8lXE63JtwXQSGtdNsEv4m6mlhIp3VtHLfHhh3Nynv+/hpIjx97GtimzFz3tD4Fmtb8wzmHPYuy5AbXHiMVWJJ6AewGfMPE8Q3ikvf1PjR5AfKKTBaQtomoZY+m3kjOSWh4CsVtHFwkWRWMrkUTA/Q9N1rd2TllX8qLytPOevgvkDkaq5klIdDT060ghXWdio6FXuaYdIwSCTYPjvcpipvmN7KNKGwdOzxhpOb7ymbzlSw0WfnREoltNDdj/bqVyffMXJi2HwqN6E6+Hr3iLA5k7m1In15m78ojRGgb/7sfaRcCyfBK3MiNpypUu4yBFmNdE61v7Rc7COTtynbH3DMFyitEU6ZSCHo323fLoASPrHQEnHqvUq49lFGiwCA9GtLoWbRut0JVZnt71X+lHXkZiayljhXEflIuMbdwHeI7LKKaZBefoeQyGq/XALBSuqLMgF5DdaviguIavEIhWcmmpDeVhvkeWygp9QHrEsPOixM4X/90Ne9cCw3t1Hkf13+Oc0ZPIpcTKRZOjNRAoxWLGNxgYQ3Xy5dow8vfshSaVt+4Z7tInl/bEW3cqOHb1Fsi3T+JCCgkX+silQEhHOIAc0mrrk+A3EqMszxb0OxktA+XbkKQjPkhfUmW393l9QYIgzYxRK17DAzVHhqcCGm118WoV+aPMMl+C+xwN13JIL3NiQ8PscjqGKsMWWt1Gkv2lCPfM/Umu31ouvrM/fSgtRoY35HhcMPRXzZKxbSyYZiov4n95smn+SUpvLzxYf5w0G1dSRTX92mcbUKMYa8AZe5SfqHi0WHEh9
- AbjizWqC
- O9ctemq0TrJTHkOYzmAnJy6wNVvZRtq0lNFyQtTqVsl8GZ4pb9v3BcwsIMIZJyVx3lnCc28NcRqYPP5aRdomVtDcp8WdE4vnaMtxiP4TXOIVhYV6GyvmtxpF2vd7jR9Xn2y1g8zJKExlXVw0taaZpXHVGw7+xXMu6sHsE8O4X1iinjBLMY68t9Vb+sPCDeL/95NEBlAUn/49aApmcYt1BXIyuLV5+iXv+zas6EtWxgFuW5o+1JFOEaY9W6kfVqbhCv7he2mr0CxflkGLAHiHG41zLhWrAf73kqZrkyK0/avkoQxu33kPoNtfyzjVFrmwWWRRtBt6tbgHiIXB7O/8JyiVGY9Z0He7UN+LeQyx7ffA1gl3gJUjJ4gf9s9L7yAv6ccst
+X-HE-Tag: 1774616715-723063
+X-HE-Meta: U2FsdGVkX1+mFI1prmktjPks+d76LqsFqeMDPf0rM0lkabZk0GlrqUKTIZPmQRgbV2mAuU4h6I3pa7khEbm15usjsPevwpu67ox2CUcV61Q8ZnOASLNTuhtIp56+x7Tb07dK0giZhg+Iqftqu5pm1LRbyyM26SQrn6CrKIlw8iQLqJSJ2r1oYCBieyyWqmAtKVMfuslZRTSaJHjYnCTLRNZMiYEmlfcGlZacThkcdbOl6z33zTFnURGNJ5Lr7FQAo+eiSPQF+ga1RSRnzZ6fiv3/ECj9rEiV4yqVkAjqQELqt0aB73hT5dZk5OHsTOBYG1XviaIxZ8AiCRvM+EGr1xlKuTETKQVIFOrdU0Tm+6kwyULG1astf9B7yLV1E3asQQ2bR1SZJ5k8TIYKPU1ZwwEcLOWTnbmZ4uQspJP/SIfWle+P/ckAS3s7y+MO7L/theY8lmRHxiPtixcfsRDL1dJ4h+SNfv0zZcNzb7ewucZdPmfLdgNADdIPjcvxnlMkNZxTMQcUP/cO2DRlN4PSKPBjWGSVV+MJcyouihcPitxkZCF4Jh7C8yDTnx26MlF+cYib6SzBnpiOWT6u4vOGG2CQWKdalpSwX0zZlTKbI4zKWGyCz8kmqYZnFWQLgbh6Ih2eilsHqBuu7ohb6pvayMpyVrThmg6QsXq3zQs9FNh6GmrGXRjPScK2zTWpK1/JXQmMWQ6e+1AUS0UNfSMGEd3d4FHbryDT1pubY5KRYhXFcKrbnDM0iDwebvDmhXayiTecpSkwdzsO/6bzJQE3IuWWzPAXkd1AYHOIUQiRdj7tQSwxgNmsBWxWZPeCfhQd2sOA7+seA0Bt12yxXSvLMeBEDBXC71dRYAP5SVwbB+1wGHPaLf2lRpuGaq3juPGD1tZftMCmFc09AzfLZswb2PmLldY8v69HQuBvTtOaGlImI3fQDx+0rekzO1xlafNo45u/bVqdlBK4F0NepEa
+ 8/neE+Vs
+ NCOQ/Nn/l2/GlqGotY20b/EVp2kAGbX/SRgr/aC/8khWTYyvz64Zq0xBoUHwobZUaLcnqpg3STlFBY7qdt7QnJ9NTeQQCho7rAT9ic8GT75dAt2LnDUSEmrSrHKuDfnryRuLyRJcSTSjDQCBX//H07By4F7zS9rLMItG0SfreqthWJth5YGKhhaw8p5YMnp9e98xvy1uui75IbARxYxfEiz5Nt9YHorXfL/kq+esvR0AXwI11edi2Bg0ztpbS5UKagzhqNIoFa8B4kZpHc4rEikQWzD8kI9gKhSSe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,93 +101,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Apply the same batch-freeing optimization from free_contig_range() to the
-frozen page path. The previous __free_contig_frozen_range() freed each
-order-0 page individually via free_frozen_pages(), which is slow for the
-same reason the old free_contig_range() was: each page goes to the
-order-0 pcp list rather than being coalesced into higher-order blocks.
+On Thu, Mar 26, 2026 at 09:42:52PM -0400, Zi Yan wrote:
+> After READ_ONLY_THP_FOR_FS is removed, FS either supports large folio or
+> not. folio_split() can be used on a FS with large folio support without
+> worrying about getting a THP on a FS without large folio support.
+>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>  include/linux/huge_mm.h | 25 ++-----------------------
+>  mm/truncate.c           |  8 ++++----
+>  2 files changed, 6 insertions(+), 27 deletions(-)
+>
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 1258fa37e85b..171de8138e98 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -389,27 +389,6 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
+>  	return split_huge_page_to_list_to_order(page, NULL, new_order);
+>  }
+>
+> -/**
+> - * try_folio_split_to_order() - try to split a @folio at @page to @new_order
+> - * using non uniform split.
+> - * @folio: folio to be split
+> - * @page: split to @new_order at the given page
+> - * @new_order: the target split order
+> - *
+> - * Try to split a @folio at @page using non uniform split to @new_order, if
+> - * non uniform split is not supported, fall back to uniform split. After-split
+> - * folios are put back to LRU list. Use min_order_for_split() to get the lower
+> - * bound of @new_order.
+> - *
+> - * Return: 0 - split is successful, otherwise split failed.
+> - */
+> -static inline int try_folio_split_to_order(struct folio *folio,
+> -		struct page *page, unsigned int new_order)
+> -{
+> -	if (folio_check_splittable(folio, new_order, SPLIT_TYPE_NON_UNIFORM))
+> -		return split_huge_page_to_order(&folio->page, new_order);
+> -	return folio_split(folio, new_order, page, NULL);
+> -}
+>  static inline int split_huge_page(struct page *page)
+>  {
+>  	return split_huge_page_to_list_to_order(page, NULL, 0);
+> @@ -641,8 +620,8 @@ static inline int split_folio_to_list(struct folio *folio, struct list_head *lis
+>  	return -EINVAL;
+>  }
 
-Rewrite __free_contig_frozen_range() to call free_pages_prepare() for
-each order-0 page, then batch the prepared pages into the largest
-possible power-of-2 aligned chunks via free_prepared_contig_range().
-If free_pages_prepare() fails (e.g. HWPoison, bad page) the page is
-deliberately not freed; it should not be returned to the allocator.
+Hmm there's nothing in the comment or obvious jumping out at me to explain why
+this is R/O thp file-backed only?
 
-I've tested CMA through debugfs. The test allocates 16384 pages per
-allocation for several iterations. There is 3.5x improvement.
+This seems like an arbitrary helper that just figures out whether it can split
+using the non-uniform approach.
 
-Before: 1406 usec per iteration
-After:   402 usec per iteration
+I think you need to explain more in the commit message why this was R/O thp
+file-backed only, maybe mention some commits that added it etc., I had a quick
+glance and even that didn't indicate why.
 
-Before:
+I look at folio_check_splittable() for instance and see:
 
-    70.89%     0.69%  cma              [kernel.kallsyms]      [.] free_contig_frozen_range
-            |
-            |--70.20%--free_contig_frozen_range
-            |          |
-            |          |--46.41%--__free_frozen_pages
-            |          |          |
-            |          |           --36.18%--free_frozen_page_commit
-            |          |                     |
-            |          |                      --29.63%--_raw_spin_unlock_irqrestore
-            |          |
-            |          |--8.76%--_raw_spin_trylock
-            |          |
-            |          |--7.03%--__preempt_count_dec_and_test
-            |          |
-            |          |--4.57%--_raw_spin_unlock
-            |          |
-            |          |--1.96%--__get_pfnblock_flags_mask.isra.0
-            |          |
-            |           --1.15%--free_frozen_page_commit
-            |
-             --0.69%--el0t_64_sync
+	...
 
-After:
+	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
+		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+		    !mapping_large_folio_support(folio->mapping)) {
+			...
+			return -EINVAL;
+		}
+	}
 
-    23.57%     0.00%  cma              [kernel.kallsyms]      [.] free_contig_frozen_range
-            |
-            ---free_contig_frozen_range
-               |
-               |--20.45%--__free_contig_frozen_range
-               |          |
-               |          |--17.77%--free_pages_prepare
-               |          |
-               |           --0.72%--free_prepared_contig_range
-               |                     |
-               |                      --0.55%--__free_frozen_pages
-               |
-                --3.12%--free_pages_prepare
+	...
 
-Suggested-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
----
-Changes since v3:
-- Use newly introduced __free_contig_range_common() as the pattern was
-  very similar to __free_contig_range()
+	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio)) {
+		return -EINVAL;
+	}
 
-Changes since v2:
-- Rework the loop to check for memory sections just like __free_contig_range()
-- Didn't add reviewed-by tags because of rework
----
- mm/page_alloc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+	if (is_huge_zero_folio(folio))
+		return -EINVAL;
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 64be8a9019dca..110e912fa785e 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7059,8 +7059,7 @@ static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
- 
- static void __free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages)
- {
--	for (; nr_pages--; pfn++)
--		free_frozen_pages(pfn_to_page(pfn), 0);
-+	__free_contig_range_common(pfn, nr_pages, true);
- }
- 
- /**
--- 
-2.47.3
+	if (folio_test_writeback(folio))
+		return -EBUSY;
 
+	return 0;
+}
+
+None of which suggest that you couldn't have non-uniform splits for other
+cases? This at least needs some more explanation/justification in the
+commit msg.
+
+>
+> -static inline int try_folio_split_to_order(struct folio *folio,
+> -		struct page *page, unsigned int new_order)
+> +static inline int folio_split(struct folio *folio, unsigned int new_order,
+> +		struct page *page, struct list_head *list);
+
+Yeah as Lance pointed out that ; probably shouldn't be there :)
+
+>  {
+>  	VM_WARN_ON_ONCE_FOLIO(1, folio);
+>  	return -EINVAL;
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index 2931d66c16d0..6973b05ec4b8 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -177,7 +177,7 @@ int truncate_inode_folio(struct address_space *mapping, struct folio *folio)
+>  	return 0;
+>  }
+>
+> -static int try_folio_split_or_unmap(struct folio *folio, struct page *split_at,
+> +static int folio_split_or_unmap(struct folio *folio, struct page *split_at,
+>  				    unsigned long min_order)
+
+I'm not sure the removal of 'try_' is warranted in general in this patch,
+as it seems like it's not guaranteed any of these will succeed? Or am I
+wrong?
+
+>  {
+>  	enum ttu_flags ttu_flags =
+> @@ -186,7 +186,7 @@ static int try_folio_split_or_unmap(struct folio *folio, struct page *split_at,
+>  		TTU_IGNORE_MLOCK;
+>  	int ret;
+>
+> -	ret = try_folio_split_to_order(folio, split_at, min_order);
+> +	ret = folio_split(folio, min_order, split_at, NULL);
+>
+>  	/*
+>  	 * If the split fails, unmap the folio, so it will be refaulted
+> @@ -252,7 +252,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>
+>  	min_order = mapping_min_folio_order(folio->mapping);
+>  	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+> -	if (!try_folio_split_or_unmap(folio, split_at, min_order)) {
+> +	if (!folio_split_or_unmap(folio, split_at, min_order)) {
+>  		/*
+>  		 * try to split at offset + length to make sure folios within
+>  		 * the range can be dropped, especially to avoid memory waste
+> @@ -279,7 +279,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>  		/* make sure folio2 is large and does not change its mapping */
+>  		if (folio_test_large(folio2) &&
+>  		    folio2->mapping == folio->mapping)
+> -			try_folio_split_or_unmap(folio2, split_at2, min_order);
+> +			folio_split_or_unmap(folio2, split_at2, min_order);
+>
+>  		folio_unlock(folio2);
+>  out:
+> --
+> 2.43.0
+>
+
+Cheers, Lorenzo
 
