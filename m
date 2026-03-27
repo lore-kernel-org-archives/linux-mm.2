@@ -4,88 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 693CC10BA426
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 05:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5F5610BA42B
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 05:50:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99DC26B0092; Fri, 27 Mar 2026 01:42:43 -0400 (EDT)
+	id F00BE6B0095; Fri, 27 Mar 2026 01:50:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94E916B0093; Fri, 27 Mar 2026 01:42:43 -0400 (EDT)
+	id ED8956B0096; Fri, 27 Mar 2026 01:50:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 863D16B0095; Fri, 27 Mar 2026 01:42:43 -0400 (EDT)
+	id E16046B0098; Fri, 27 Mar 2026 01:50:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 75C8B6B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:42:43 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18C1F13BCCE
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:42:43 +0000 (UTC)
-X-FDA: 84590748606.23.0D36DEE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D421C6B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:50:36 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9BF451B93AB
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:50:36 +0000 (UTC)
+X-FDA: 84590768472.26.6A3EE58
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7BD3C180004
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:42:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="nMVg/aQs";
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id B6AC9140002
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:50:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z1oPSHRy;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774590161;
+	s=arc-20220608; t=1774590634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CtK+sFH498A814cvgnYEXK5V5g0aekmcqwvNriMthug=;
-	b=gf+/Ob5JyGjaEMjwIl6oz9TNt3WAmrDz5zTJ1afJwf3M23mNKrtOJ8Wjnd/iZi+fH03Eph
-	n2RsgSoaNHpXPMVY3UfhIzdHD6ER6uNAJgqI11sXeeE+Lf9h22kr8jEQ1jAhZti2GlXLOb
-	w/+yVYVpjpmTL0BjVrsTkOp/F457UzE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774590161; a=rsa-sha256;
+	bh=dlWPsRZ5eg4ebr0CP6MSk8XH8PhzWTV6BknR665dbRI=;
+	b=CjcaPW1MzTXj0u2QfkOPLvtHyCpao7e6EL0OTptIIEUx4D3OlspOx0x/7ZlZ/RDLKgkZPA
+	yeOIO4TcwP4i3/Uy+2EwKOxg2oH84loTZGQoDImyeJs8aqjoCDe7vWwOvcsHsOThcskrJV
+	k3+Wn2towP6SfNdmQjL9n0gO0YoLj6A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774590634; a=rsa-sha256;
 	cv=none;
-	b=uRipE78ygv0M+YbY017V7i29GyUPIAx3d2wjYTgKMw7PP72f3lZ8SdPckXicQBPwMobR5H
-	a4O5r/noTqvYEIc2uIX8k/AzBOb8lp+PFkEyO8K8BX1UqdalMQ9LYPg4dLVBtDIH9572j5
-	ASnlzUvq6vsRROnGixNyojzahRCyKL0=
+	b=v8tulLi333RUOXl4sMk6SE9dYhUDbH5wsdyad/Mhs2WKDklFpj5CR3qb0b+z3tukRtQ1Ni
+	yhgJlnaL0QDrJDNfv+vzgCql/jJYMrC1YrI2Vz8GoeQ2WjInImeBqfm/bxZwdD5uS57PJI
+	aUUEHSFWYEyvoJjZFzBcKCfKLjySbNM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="nMVg/aQs";
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z1oPSHRy;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E3FE76011F;
-	Fri, 27 Mar 2026 05:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144EAC19423;
-	Fri, 27 Mar 2026 05:42:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B84FC60134;
+	Fri, 27 Mar 2026 05:50:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF49C2BCB1;
+	Fri, 27 Mar 2026 05:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774590160;
-	bh=M3yhklj1LSgjvqFVJOXiEJ8tXr8x4LCP2Dv44XWj7Ms=;
+	s=korg; t=1774590633;
+	bh=dlWPsRZ5eg4ebr0CP6MSk8XH8PhzWTV6BknR665dbRI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nMVg/aQsknpt/6YD0Ec352VbThWsH3IQnRZ35TCjfoIL+crnXVhK1f+QBHw9lcn3y
-	 /cHhc3MoNXa/z+/tB+d4yJtmHM4kwsvbNsMnhZi9hl7E9avTgc/6KdvzJLIdX5Nyjm
-	 52VhB0qs1ecpt/nYaaFFbktocvqtS/Va+Ot6cOlQ=
-Date: Thu, 26 Mar 2026 22:42:39 -0700
+	b=Z1oPSHRysMy+6wXBJFXG9mFzlDuQc+AG+9J9n6b3eqNtsV8pZVMQ81vG2zjJgE3r9
+	 Vwk8DGJTLM5wMJYNlTCMV3P4HxBM5Fzh2kN4K4FctjtR5IEakY8OgdYhQKEYI2Hecn
+	 asywffkE1Ac9oHnjQ0d+0ALgtZqNzZ21R6Hlrgko=
+Date: Thu, 26 Mar 2026 22:50:31 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jianzhou Zhao <luckd0g@163.com>, Oscar
- Salvador <osalvador@suse.de>
-Subject: Re: [PATCH 0/3] mm: improve map count checks
-Message-Id: <20260326224239.9052f8be3ddb9cac600f59f5@linux-foundation.org>
-In-Reply-To: <cover.1773249037.git.ljs@kernel.org>
-References: <cover.1773249037.git.ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Kees Cook
+ <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Vineet
+ Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian
+ Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+ <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh
+ Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"
+ <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Michal
+ Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>, Stephen Smalley
+ <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ selinux@vger.kernel.org
+Subject: Re: [PATCH v4 00/25] mm/vma: convert vm_flags_t to vma_flags_t in
+ vma code
+Message-Id: <20260326225031.87e04d2c652923bc10aef0ee@linux-foundation.org>
+In-Reply-To: <cover.1774034900.git.ljs@kernel.org>
+References: <cover.1774034900.git.ljs@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7BD3C180004
-X-Stat-Signature: qo71ga6yc3me1up8hdwkmo1ubnc7n5c7
+X-Rspamd-Queue-Id: B6AC9140002
+X-Stat-Signature: 4qcc1zcsb5dz7pygctaneqsbwso6g3ns
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774590161-533870
-X-HE-Meta: U2FsdGVkX1+iT23TWLYnSYi0XiZO2KwrTfSvNsD4ml5d6ITaxnClynOqQSH4z2ocV5ckm9SnazYZfPCL9ht61TRzOaLZV8xOCCTKv3e+6JkziCHiPZTKiEc82DL8iLfGn0IbQbcUUY3DoMUk2bXnD6TjzZfxJ78/rINzy3QvnJbFYPeF9dEbfDLxddD/BuF2akT36ooqy7CcOrhA6+2G2rItQK8IaOQrSjGl0TYfVf/w4CbzNWps8idgz1YsVDnCaYqxFgpMc8dTrZbbXWC3VF82/66Vn40uueJSDNWFClTGLXr/7mJnb47anmzn6Ax/EWoqycRLf3Cpm0IIJTkXYMjGshocAQ4RliZ16rp/g9DSbeGM7FwmYkX6ti/Z+3PqY7rzz5V/VGj29NMgHbZbR6o1bhmRcOHxyizTYePtuWShlmewE4ziNk6TopX0H53cabHxdeO1ynyJoLPli6hKT3HV3OGT3m644YiUOJwfrMQDNFzp2wxB/M1dAMNY6yMiPJNQ4DTajcDRsDYMdwX7YpApkvQJQlFZoYAq62n/bBGb5VgSxMBuZeAnVM63agPkDvr7I+b1VwW5POIp8fH5IBFMTbt+bIb5OHvIbwz/JdSePkAHTzE3qRVAdlDYUJdl4ydW9WAdjaUsIfcE6dzuP7o2K5Xk+QiPbZa1RWqMC6ujtB46hF7QRb5mktxT67sM0vWj11jJ1pIJ4SRo73JUZcGB/gTp6pECsbSSn+Zft7wag71WUS0mBGCxniFQx78NCeNXESZ6SLAvdMCTnhIj+HExXzBPNag+jOPIRBZ1ti7drW9bOC1c8+BNO5aGjWYFXCVkZhfosF7TBfZyC+1snUK5M0+hdmrtEuWVfzYzKw9O24ibwbwmEKjglH37RYuyLuEe3EddZ0pB7FdnmhzsL4LNPkSUazEmgpiv1NnKZMyUHCGokTFsuxKKsjDoHGxZQj9Gn4yVezk1FJ+ndX2
- +OfSsNLh
- HFe17ji1eFxKMSo4Es4ROiX09ReMLIf4N0xPx8zymBI3ghnp+QJbg6S7BIH2vBMSsP58rVAGsXp/fQQuN9XRTycCfqYK5BS7s9O9SrH8iCCIlXaXyQPgI8/7WQD18UQ056TJwSWG/k7ZdYHRvX5BucLEUdszX9QzE3u9D/Fp4GZNr7Mge73W01pfmjJcx3e40AuDh3zFLqg39PFiqusGBuV58JOfMkvmdLnXv/sTaUJi/2sG9j3/csWbFHzWMqfswgF+/ppIXO2klz4wSTypCJ2DAFA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774590634-973381
+X-HE-Meta: U2FsdGVkX1++onl7woA+71sXui0ihXOhzBTn7nBA3w/Nz/AUsiWnZR2NEFYzhoNMYDVM/GdBz+zabILRuAg6jOM0pxNm98zyGaLRvEgvgv5Jfrea1kjxJdb9V6AFyE+usDeg5DIOYhiwUuI8plJG5dSCPyCvaVFBUTvFS5sxYuTAE4eW4ozakU02LEoIyD3XRhAqwheJIomUBmc6tkIowRXDjTNoJ/JCjM/Lp6q47si2xTR9AtcqQd84LmAvmgda+0mgJZulqKAJZk5lOE8ph8SY7uwWEpACBdccqBJtjbRUjf3zGW68xWo3e2MuLf7JZst4Imi6CnICiuepUtPsDp+nxZv1I2/YJeH+njY5UdD5dXj1yF3Mfrv50zP457AAsu7aUiklx/+F3m1u2UY9jLqC66Yf71/IVXR7hr8SPDkx2YzmmyCcE/qb5ZhgYx9QH+tsYuh5fXmB5+ULFvWP4bD/Xl/OkjBto/kw2JllyD/9EOT2DjBVmYaobMGt7tmOc5mp5QC8cAlGMhtDHKFmcYex7e0ARFxzD8Ny8G2c9aAXbKkZP4cPnaMQ10R6ajsGX3Z/AdGJofBRmwCBhxCirkDE3+wwcFPphMVzQ604gexJX53tHo3/eR3ByHstc1CIHsmtVQT4F/iPJrnzmQwb9dyPhhyFU7sjL3vEEkNGiimucwXyUWvYdHBJIWSEHs0olHx1bIOR5j/tN9vkFMyNIG1ZzXr0OWWoVnRB8VlEB5fwKTPeS4+LtLv2W69c4yUYiEL+V/Euf83Lm1HdmQb72uEihKOEHzamU1hfMVyeHkEV0llgLsZU5+1p9dXTmBsQpJAtfY5YrN+ouXmAI7Cj95DRDkLq0mOwK+jme07tydKaIJS/LzYBF+uxGDtTgK17/XDowkCj9bhEfNfc6Oj6r7exUiHFzGcbAfDI2HeU5901miAOAJTifmV2+bfm1uwLG/W0z74jxUIxtlW7dqS
+ F0RHUESW
+ IPkyc3I51m+dHhTokZD392bbSX3w3muM5sz4V/uhrdKpV/70TtwKzDFwRk7gYnqJyw/LhUhGi4chGjiucHVYswHwn2sbJNuZjohu4aiEDQG30SsaRHneaYIXSUYV6Y42G7Hd5fiwu7MLDJhL+S1KODPP/nFItHQJo1dlRiEOxfcrd5pNOCqMDaUYnCRXvivbAGZwYGOj318s0lCa9O9hvop8v1YdP5MC2SDIi4ob2WKM1EsrBWK544nkA2p7as8IrBvalRfX4tN48304Kb5UPG23UbNa//IK7MFiTSiXReeRJ2994DImQL1/hCsocLeIeZsi2dZV3dQBTJreOvClkXe8RFEIVA77o1Jk6vViACKpJDnz+JEBM2cQ/+x50TMZYx+aJMJOPOW7Dl48=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,38 +120,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Mar 2026 17:24:35 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+On Fri, 20 Mar 2026 19:38:17 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-> Firstly, in mremap(), it appears that our map count checks have been overly
-> conservative - there is simply no reason to require that we have headroom
-> of 4 mappings prior to moving the VMA, we only need headroom of 2 VMAs
-> since commit 659ace584e7a ("mmap: don't return ENOMEM when mapcount is
-> temporarily exceeded in munmap()").
-> 
-> Likely the original headroom of 4 mappings was a mistake, and 3 was
-> actually intended.
-> 
-> Next, we access sysctl_max_map_count in a number of places without being
-> all that careful about how we do so.
-> 
-> We introduces a simple helper that READ_ONCE()'s the field
-> (get_sysctl_max_map_count()) to ensure that the field is accessed
-> correctly. The WRITE_ONCE() side is already handled by the sysctl procfs
-> code in proc_int_conv().
-> 
-> We also move this field to internal.h as there's no reason for anybody else
-> to access it outside of mm. Unfortunately we have to maintain the extern
-> variable, as mmap.c implements the procfs code.
-> 
-> Finally, we are accessing current->mm->map_count without holding the mmap
-> write lock, which is also not correct, so this series ensures the lock is
-> head before we access it.
-> 
-> We also abstract the check to a helper function, and add ASCII diagrams to
-> explain why we're doing what we're doing.
+> This series converts a lot of the existing use of the legacy vm_flags_t
+> data type to the new vma_flags_t type which replaces it.
 
-This little series has no reviews, if anyone is wanting to boost our
-R-b stats.
+Series has nine unreviewed patches.
 
-Or not.  I plan to upstream it unless someone stops me.
+Again, I plan to upstream this as-is - lots of Lorenzopatches remain
+unreviewed and I'm OK with that.
 
