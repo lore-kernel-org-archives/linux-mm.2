@@ -4,117 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2D2E10BA421
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:34:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A89D710BA421
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:34:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E303E6B00AB; Thu, 26 Mar 2026 23:33:50 -0400 (EDT)
+	id 1AE0B6B00B6; Thu, 26 Mar 2026 23:34:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D91F46B00AC; Thu, 26 Mar 2026 23:33:50 -0400 (EDT)
+	id 15E6B6B00B7; Thu, 26 Mar 2026 23:34:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBF296B00AF; Thu, 26 Mar 2026 23:33:50 -0400 (EDT)
+	id 04EEE6B00B8; Thu, 26 Mar 2026 23:34:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A162F6B00AB
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:33:50 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B6BC13C338
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:33:50 +0000 (UTC)
-X-FDA: 84590423820.22.8B8410F
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf13.hostedemail.com (Postfix) with ESMTP id ABFDD20003
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:33:48 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BT7hkm9T;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774582428; a=rsa-sha256;
-	cv=none;
-	b=IeRKhgv0T5hoRkdVs5tcBqw4EikfbxQB9UXBgJWBcJt2zN7hsT5R35NVIdIb8uT1lp2pfE
-	fUep85qXLdwfipTotBNUzq7Z9jxN8zqtc+JvlrY27ij7+hgJKYigVrNvSF36YOYDvfTsU8
-	mMepqXsx+PRG30zw12q4Wv2Y+S19+P4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BT7hkm9T;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id E533F6B00B6
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:34:51 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B364D1B960A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:34:51 +0000 (UTC)
+X-FDA: 84590426382.03.339B55C
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A3FF314000E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:34:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="I/gT1eEe";
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774582428;
+	s=arc-20220608; t=1774582490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aADyeHO5XJu6ZrJPxM1LwlVH9QhmzTzIomzhTiemGHY=;
-	b=ZH3wGiJOR8REiLe1JmeegOoE9erBY71kGdnKlfykEVdX9EzKXLs9OLqtqiohUqFOSKdapP
-	yjqzPKRuexOdLGReCEPug0LNTGgRL00SxdWTxnNthEw2tmndaJKNopYZKOoa2XxGP2gwHt
-	7PY4C0uxjsihNKKpx23PCO4SGLusvdk=
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89c4f7f8650so28458796d6.0
-        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:33:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774582428; x=1775187228; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aADyeHO5XJu6ZrJPxM1LwlVH9QhmzTzIomzhTiemGHY=;
-        b=BT7hkm9TMpTJtJ4lZyGUsjvB2HcyLYUNql+rQrm1NF1tMQmqwxn+vfLQVyz7vUzULl
-         TImiqIS5mAvqqhIDNrTzT5xkMN2bQgCLf1UmvBVrFBYMNv3qUE7PRKWcHEr4rmBf2j5S
-         VAc9EsBawgnBsk5Ydt3iQC472hoInTKgsCC3aQVrh+mfEJG05K3PMZQng5CZLmSD+o5d
-         9TcvqONxsONZKTCLiVPBdoj5DlvX9d4IiDFDx9wT6yNzOVBQ6kbx3N5JfV+DUsX+4Gyq
-         jEgf61sobuA8DjSAtsvryMOirET0wI2KfdbleCOF7AjrceBBaxxI3fjucZvpXQAZa/Y0
-         YyGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774582428; x=1775187228;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aADyeHO5XJu6ZrJPxM1LwlVH9QhmzTzIomzhTiemGHY=;
-        b=ReHbA1YldxCHVUyXg+KeqGeFmMD5KfX6zIeEvm/oSd7DNtK90GBYMPZPyrpBJTYzi0
-         sAFble1nI8q011AbqdJtodgNy/n6n0cyYN+TJj+l8YEf9Bcpr+lA90cWuwB0yujtfvCn
-         HTQ/NM2vEUcihDZ1w6jL2w0yYz8kuDlYwWEmxxxy1YExkW+YKpBsRGiXB7SAIofuybwx
-         IJVq3Pwr37xafJOY/YdRl2xTC5zPUHcjlxV8WnJAJJRUkFAnq+4Vok27O7YZ3cjKWtyW
-         o7KAMuUq7iFJsl/r3lZyNIkupBUoIEzoRp1M3bi6l39P18wtZPBVaisKD5IQiMo4WOeY
-         aKnA==
-X-Forwarded-Encrypted: i=1; AJvYcCUfE4U9N7rp/lySZk8m7XOszTBxFIVHXaCD8haqMTjAS42THV+3Qt3se0evEgF61YLH6WY/1Xtobg==@kvack.org
-X-Gm-Message-State: AOJu0YxYWBFuoIEm2X1SH+n9DS7Y7/Mk34V5RjcxDmIl+IXSHOqmmETX
-	oKTIkDy9kK/rnMZKHMpNmGo6QzHEFBM1xt+DCrXfEShz9UxfsTkF+pS0kcUphYhB6fw=
-X-Gm-Gg: ATEYQzx8S9NsEzJBW5dNl6rkv5MAuwWAxpOBApNkgCqwU2nDpn8nYhVAUEUVk70gY3L
-	DT7x/Y0kWYh45FAYKhRW7n6M+x4dPhaTq78aDECHNFb6y3qZZ/aHIx+hhibQ7Gt9KiKtW92z/V0
-	dGtTh7xlRHPoREAWm+qAy/1KydknrkBqja7NnNGg29LDxoo1ZOge1tbVTL0BdIpIwGYQsD438N0
-	QTwuvU6wIHaONKIMomDv73MbJXi62sJrGTzMKbzq7xWbN+saVjxNjEFguzIr+z0H9rUXcSCZpa2
-	hPllTmofp0T3Fshb4kO4sPr+JUZBzqUx+owajXQ0UR6CQUD/YOBCTZjTFaCOcIu+cIdRbMBsEtU
-	XeKhlqj69gdONT7WikifBCp4qZBXZOiggOvrYNeXivyIJKdqfLQTQmtMgp4oJ/4W10qVopls9xw
-	9NAGR6BDv3Z2kSRnXFfzA1N1SGFKGFpJ3tGjN7TjkhWZiIBPx8S5xKLs41tWqSl/in4w==
-X-Received: by 2002:a05:6214:4842:b0:89c:c685:f52d with SMTP id 6a1803df08f44-89ce8d2fb33mr10795416d6.15.1774582427783;
-        Thu, 26 Mar 2026 20:33:47 -0700 (PDT)
-Received: from plex.localdomain ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89cd5a22711sm46519186d6.27.2026.03.26.20.33.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2026 20:33:47 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: rppt@kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	pasha.tatashin@soleen.com,
-	dmatlack@google.com,
-	pratyush@kernel.org,
-	skhawaja@google.com
-Subject: [PATCH v3 10/10] liveupdate: Defer file handler module refcounting to active sessions
-Date: Fri, 27 Mar 2026 03:33:34 +0000
-Message-ID: <20260327033335.696621-11-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260327033335.696621-1-pasha.tatashin@soleen.com>
-References: <20260327033335.696621-1-pasha.tatashin@soleen.com>
+	bh=6TWDsxV9lU7FBIa32CWnztZa9knkN9tMw44cGL5HLts=;
+	b=iXFeHpJOMZ1iMtB6X8p8gh20JjCid/WTqcy80XXOgeYCh8rRjRDQvdx4B56wR5K30TvYmd
+	zi7lUCGpwxssAPg9uWozv2p2UdTGbBjw9FXdcHkViY8wyH6HppkPjNr7mFspJybW2jS09+
+	b6B6Fz4kAcPISE9yPyhTkguwPM0Y2Mw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774582490; a=rsa-sha256;
+	cv=none;
+	b=ld3AJ0WCAjwGmOIxrhPQssNbzcBEbzHGjStRfY2Gt3SBnDNd0mDp2KdiAZqKh73CAv0GAo
+	qBn7PEEIkMEKvsZk0qDcAq2DRjvw+YoKM72vgiq76GqLZP8ERjtPyG2B9Eh8OkfgLUQbDw
+	os/3h4N2nWI8qViwx9d0Qf7z2IixwIs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="I/gT1eEe";
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <1dcba0ef-372a-474b-8d70-23459f0f6511@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774582487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6TWDsxV9lU7FBIa32CWnztZa9knkN9tMw44cGL5HLts=;
+	b=I/gT1eEeSyEToxNlVnMH/CCJCSe05HzFNgWKQFUlGhY6scwL4X6yf7paHgq/7XyJO3SNPM
+	295kl4/TYQ1HT/bNr5evjmY0CbL2ZHx3LQvJ1UqEEUBKvShJ8GXELPnoHl9VJkxfs9m3WN
+	p1t7HX2dffY2d9jJKwB6QxSFpOXagm8=
+Date: Fri, 27 Mar 2026 11:33:43 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: grn3xgbetfxq81394k8uieksegmyd1qn
-X-Rspamd-Queue-Id: ABFDD20003
+Subject: Re: [PATCH v1 07/10] mm/truncate: use folio_split() in
+ truncate_inode_partial_folio()
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Song Liu <songliubraving@fb.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-8-ziy@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260327014255.2058916-8-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: A3FF314000E
+X-Stat-Signature: nkqp9z4f9d66ihspb6hck9dzpq971uxj
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774582428-866661
-X-HE-Meta: U2FsdGVkX1/0UiWwIC7Ax1lWivGmbKHcMmQEruo/n/Hx2UXSEa0GRF97ZF0wnkr2d2WKFr6eXi6T81YXBMyEGmSpUkI62gKOEOoJRge9MYaW6LBwdLGnSPwmMolo/wn8hPl9huUCwBDgizjR0gkW+dIBjv2VtupqhrWlPXghh5O2ChMOOVS6txLLfZDwI1JD67sQFULCaKh9ZCVJVS4ZBsXL8hOjvpkcRSbnznaqws5miCdCm7LrVUIpEM41eCp+Nvr/7Jj2iqjkLLfWeXg7k625zQhyb1liqOxwWFt+Aw7Rr12eWCfr1tp0/tHDGEbZtJfkZ3PCst/z2HL132NMJEgNofkC73YTotJOAZfWkEJj414f+hkqw73VjkfJ3u8UvPcUCWa99kj+/tu1HyRs9Y2LbBubJpqlRCiuRc2o/MsUMpJdDl/PcQ05YQVp5RIK6CubJGI67yTVfIt1hxe2AXUS84+HozIuu4pKlHWN0Tndib7lknNq55wGotrYOeRoIrvsPIKFbLYN45dAhDwIgtBjUI9c1PL1SZMOqzMdIJk4XdbvELmjkJ1NWJSYKUdUW+k4LDholxTQ6FNICYlfCL7cuGgPu7MXTwJsB7RwlsuBWplu6ktE+PY2dFfvZVKzoCDTm5SfQdiJO65BHYkfxWhyoanngl/yrW60nP3nrZQRb20UwKp1/33jJnObECuiw5jEpPgm0WnIsIdAYH4ZHH+8bwtUJuYpX/0aW+r3cmq4WhKAqkp0WUHRBfd4dXxaUfgUWYujYqx0JG24z/GEcuLsFuRLJydpOXQeMGvU4HM3nUVCywP8VlEPOfcAMExBWFXTV/ZGKylGgToyLDAwnstuOiAbSPZ75OK1kwF6jC4scwIvHq2XL4CI6ZVjnCClCN0WEnQRIK4ws/AhQquD0qAnK0BX9ulfuNoQGH61XnCdwc9BoFZCPv0B8r4EY4ULB+a+mObvczdvqMeP+ZA
- A/jF5iib
- QRYhafZdfj/s6j04CbbMf/ffeve/0dq5GPqzLMZCuGuq//YEGkqpMzgPN6ex1LX2CiUCDsO9tofUNCjRsNKkxsPiyqzf82uUQ4aWQXPd/K3yI6UvLrLD4i9cybKM74dpGJ6OFo0CN5TBG4CKJCwlAwYHn9Wdutxgvn+SjD3tQ0BvXo8O/fel34Zng7eA7lyxji3EttYPUfW8LdZ50c8R04fIZ0EXL4OxfNB5xnX8ZcjHSTrCvmKDOND+FUpwAxN8hlBom+zJWUMKXvQCLL5e+CLfIVL7vV58m1NiC9lv75O106jTdnjSCOZtVPoj2PZSSBI1xqGw8hSl78kE=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774582489-779907
+X-HE-Meta: U2FsdGVkX1+8fWqtw/H7EFm3BQJUtjjFdySB6Xb5G1wTDyFUMViL5Vw2lOoG9MHUB1UoAQdaZY1Tl65GsAhI1d+B0/zcfigfNZZWvORjVMv78I7GnTIJ5inT/Uum0pOsV36bTKWG0ue5UpzH1LHYzjmP7KuCIldWu0UAtyuPfyaN58AkF7NykqysGGI36g2eOHqFJTlNaijU+ot9qHYlcKPpPwEqdQcEB2Edf066nesCN/D+Xvk3O4W5M7n0v+OB0J1s7I3FJoJajMLvXwNmSO3c7o65q7uufMRYUixdc3GcUs0z+fdh1S1lblFQ71K4cNwz/asVG/IQ8rB5N3OYRNree6Bx+8cybMzidvVQfwaZE+AcX3mBeU0DUzb+PkeIcm7Zx9aLt4LTHlGjNFfGzhId7BhlzZwRk8+oNU3DHpMHwx6kwVea9qG+03brR3O3coWOCxseuQvGylBV94dQfQe41WxGjD2Vd2sBpbGoyFyr/A4pKks9yKHFpNRNduyPx3LawdrcZIY+M/lMUDqL7w+45vugEvfVLADZQn0dZXdqoVDuA6a2l4daP6ojooCkHJMDy4BO4KgV4SFtdtlfDHuMVtviq7O9S6m7Yt0eysX6oyKi0hpSyC3ftBnt7772jPZEg85XpYIEfEyNSSP0w1hCeyHopo9p/YCM9T09EZWhp5askEUR0LSPSbVEHDwf89LYLL1xSMljupbRamX/nTTHq3L/rE5xtiKtRTtAb8Z+UKb+NSMDHw7nWwztwJUtu8fSRPxfIFOq5FYVo9ayZeadfWk2jiKH/4PxybJqrUc1VfndOJe3AgyN9lywsXsYqcDvba3Z5zprJ8MvEsupi34W3Ho/0Q9TXrlRhlcbTWoArTwfDAmPG6xBgA/dvldHU0KL/SkNXq0iAlt4oPm87XKbIepOMgxN/2vuGQjED58IHyf9zhLxhbeqLF+KOyuLSc91H8i+m0lv4Xw/aAI
+ FGIwoNrv
+ bw6C6pEdrF3igWg7S8vXjvQ4TKbPLV5jI5S7aSKHcU2Fp3fUAts+ChhFWHTZ21xSK8xKYkXuKDmq2JhIOudwNJT1Fwxw/Vo3rkDSVx6Jyi8CXFdXolNcs6Wc7Fpu8XZKwI33aHVrOxUy59flexSXiM+F4huapSRgo1ZmoYIfXW1FIzKdvXSYGW80V+1jHI8x/aSymbruvLZUUttMQ8mDVXFQGrtToF5PmaAhbayJM0waPPxJ5gbu5Vf0e+cjRH2FrtUY0GozcHgFKyRfrMExlSoUnAFXG1rP81G+Vfe07qk6/cnPSTaqyTkovtZKbYtmp3Tqo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,110 +104,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Stop pinning modules indefinitely upon file handler registration.
-Instead, dynamically increment the module reference count only when a
-live update session actively uses the file handler (e.g., during
-preservation or deserialization), and release it when the session ends.
 
-This allows modules providing live update handlers to be gracefully
-unloaded when no live update is in progress.
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- kernel/liveupdate/luo_file.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+On 2026/3/27 09:42, Zi Yan wrote:
+> After READ_ONLY_THP_FOR_FS is removed, FS either supports large folio or
+> not. folio_split() can be used on a FS with large folio support without
+> worrying about getting a THP on a FS without large folio support.
+> 
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>   include/linux/huge_mm.h | 25 ++-----------------------
+>   mm/truncate.c           |  8 ++++----
+>   2 files changed, 6 insertions(+), 27 deletions(-)
+> 
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 1258fa37e85b..171de8138e98 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -389,27 +389,6 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
+>   	return split_huge_page_to_list_to_order(page, NULL, new_order);
+>   }
+>   
+> -/**
+> - * try_folio_split_to_order() - try to split a @folio at @page to @new_order
+> - * using non uniform split.
+> - * @folio: folio to be split
+> - * @page: split to @new_order at the given page
+> - * @new_order: the target split order
+> - *
+> - * Try to split a @folio at @page using non uniform split to @new_order, if
+> - * non uniform split is not supported, fall back to uniform split. After-split
+> - * folios are put back to LRU list. Use min_order_for_split() to get the lower
+> - * bound of @new_order.
+> - *
+> - * Return: 0 - split is successful, otherwise split failed.
+> - */
+> -static inline int try_folio_split_to_order(struct folio *folio,
+> -		struct page *page, unsigned int new_order)
+> -{
+> -	if (folio_check_splittable(folio, new_order, SPLIT_TYPE_NON_UNIFORM))
+> -		return split_huge_page_to_order(&folio->page, new_order);
+> -	return folio_split(folio, new_order, page, NULL);
+> -}
+>   static inline int split_huge_page(struct page *page)
+>   {
+>   	return split_huge_page_to_list_to_order(page, NULL, 0);
+> @@ -641,8 +620,8 @@ static inline int split_folio_to_list(struct folio *folio, struct list_head *lis
+>   	return -EINVAL;
+>   }
+>   
+> -static inline int try_folio_split_to_order(struct folio *folio,
+> -		struct page *page, unsigned int new_order)
+> +static inline int folio_split(struct folio *folio, unsigned int new_order,
+> +		struct page *page, struct list_head *list);
 
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index 761e8f7cfc82..619465358798 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -280,7 +280,8 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
- 	down_read(&luo_register_rwlock);
- 	list_private_for_each_entry(fh, &luo_file_handler_list, list) {
- 		if (fh->ops->can_preserve(fh, file)) {
--			err = 0;
-+			if (try_module_get(fh->ops->owner))
-+				err = 0;
- 			break;
- 		}
- 	}
-@@ -292,7 +293,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
- 
- 	err = luo_flb_file_preserve(fh);
- 	if (err)
--		goto err_free_files_mem;
-+		goto err_module_put;
- 
- 	luo_file = kzalloc_obj(*luo_file);
- 	if (!luo_file) {
-@@ -322,6 +323,8 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
- 	kfree(luo_file);
- err_flb_unpreserve:
- 	luo_flb_file_unpreserve(fh);
-+err_module_put:
-+	module_put(fh->ops->owner);
- err_free_files_mem:
- 	luo_free_files_mem(file_set);
- err_fput:
-@@ -364,6 +367,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
- 		args.private_data = luo_file->private_data;
- 		luo_file->fh->ops->unpreserve(&args);
- 		luo_flb_file_unpreserve(luo_file->fh);
-+		module_put(luo_file->fh->ops->owner);
- 
- 		list_del(&luo_file->list);
- 		file_set->count--;
-@@ -648,6 +652,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
- 
- 	luo_file->fh->ops->finish(&args);
- 	luo_flb_file_finish(luo_file->fh);
-+	module_put(luo_file->fh->ops->owner);
- }
- 
- /**
-@@ -782,7 +787,8 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- 		down_read(&luo_register_rwlock);
- 		list_private_for_each_entry(fh, &luo_file_handler_list, list) {
- 			if (!strcmp(fh->compatible, file_ser[i].compatible)) {
--				handler_found = true;
-+				if (try_module_get(fh->ops->owner))
-+					handler_found = true;
- 				break;
- 			}
- 		}
-@@ -796,8 +802,10 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- 		}
- 
- 		luo_file = kzalloc_obj(*luo_file);
--		if (!luo_file)
-+		if (!luo_file) {
-+			module_put(fh->ops->owner);
- 			return -ENOMEM;
-+		}
- 
- 		luo_file->fh = fh;
- 		luo_file->file = NULL;
-@@ -858,12 +866,6 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
- 		}
- 	}
- 
--	/* Pin the module implementing the handler */
--	if (!try_module_get(fh->ops->owner)) {
--		err = -EAGAIN;
--		goto err_unlock;
--	}
--
- 	INIT_LIST_HEAD(&ACCESS_PRIVATE(fh, flb_list));
- 	INIT_LIST_HEAD(&ACCESS_PRIVATE(fh, list));
- 	list_add_tail(&ACCESS_PRIVATE(fh, list), &luo_file_handler_list);
-@@ -893,6 +895,4 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
- 	guard(rwsem_write)(&luo_register_rwlock);
- 	luo_flb_unregister_all(fh);
- 	list_del(&ACCESS_PRIVATE(fh, list));
--
--	module_put(fh->ops->owner);
- }
--- 
-2.43.0
-
+Ouch, that ';' wasn't supposed to be there, right?
 
