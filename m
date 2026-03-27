@@ -4,136 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CB4A10F2840
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 15:23:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC6D510F2842
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 15:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 146016B0096; Fri, 27 Mar 2026 11:23:03 -0400 (EDT)
+	id 3E0BA6B0099; Fri, 27 Mar 2026 11:24:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11DE76B0098; Fri, 27 Mar 2026 11:23:03 -0400 (EDT)
+	id 3B8686B009B; Fri, 27 Mar 2026 11:24:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 034056B0099; Fri, 27 Mar 2026 11:23:02 -0400 (EDT)
+	id 2F52B6B009D; Fri, 27 Mar 2026 11:24:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E8AF96B0096
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:23:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 990D013C1EC
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:23:02 +0000 (UTC)
-X-FDA: 84592211004.09.D2BF2F0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D9983C0012
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:23:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c82kjq0W;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B0E36B0099
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:24:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68210161127
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:24:51 +0000 (UTC)
+X-FDA: 84592215582.13.2C13681
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5C6F780013
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:24:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NnJa6XL+;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NnJa6XL+;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774625089; a=rsa-sha256;
+	cv=none;
+	b=3rSDMB/DnVfTYy3JLttJIhGiB3RrBHUHeNx1uLIUYCzivEzcjVmlDgIvHH2ouaU+CVB6SS
+	Y3WuZilDJaQ1MsZ2R6lxs8ZwF022+HAKvFeFjHkNq/mZ/Go/6UO+6j9NVHXAFgmKVr4M3p
+	CrMKPylvDDIbxzXRxCwlmFgGv1g6ZXE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774624980;
+	s=arc-20220608; t=1774625089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zt2Dstr+xsEVbaAIgi/vZv3q5x/EwYAxCvUg+mW4jWE=;
-	b=UwYnfckdUACOVkeitZ4M+QbHq/W8OrfN2xQh/iqx/7Wxf6UtpqjVeIZwcO7H1O4kdi+zYL
-	HPj7LPzMRAbibdBBiqFhaz1gBdju/YiKisMvybL1jgerjSqUxBEmBFd2G74+4Yd4Zb4A77
-	t2y8aiy3a+Bjmg64krhgsfNbK3yzYuY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c82kjq0W;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774624980; a=rsa-sha256;
-	cv=none;
-	b=1+INho7pk29EMw7SwrdhxwB1fcDkRYUmNjCj1sIBISUrN1gidxM4JPx/SQ7sevRleUcxGo
-	mr7NIkgQ0Ik2z4pK0T5U4MfREaj2hKU8wZNI32hU2y83+W4mYxJOEiSuXEZX/1cFPVdEN8
-	Dw+IaLQVfL/1xstUcpz1SHK2FmU3XWs=
+	bh=8Q2PffA6YYifiKcf2EiUk3uszb0ZXVQPuQyxIcvhv7I=;
+	b=XWL9bVYI02qtxFgYviwskrcRaalXc7psSE6XrI1pTbxcDrxZsB4izfC8RvWmRozJZxrEa/
+	JGYwpPSxhvgyJyFVEDCVwBAdIsV1pGxkt2tkFAH37CukIQp0lWZSVngqM9mUdqW9Iyy0cX
+	76SQzSB8ixhXy36064uZEp+FjhRRVxw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5080D60054;
-	Fri, 27 Mar 2026 15:22:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0185BC19423;
-	Fri, 27 Mar 2026 15:22:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774624978;
-	bh=NY5mjVUXPp8rAfv61Siy0xKRstYqehmAtDi/Yry4Ass=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c82kjq0W39pptBHRiBS4ArSRK6/Fh/0s2rmqjCc9WlbqLGE75f6ygPHNtm4qaButl
-	 0tqYtmDERj0U778/Bf1Nv4fv6QNGup9boc/EtF5hR6AWa8aYdaUlw36792pmYjaC6B
-	 YY0h9uttKA4vHNbtz66eFXFdo7Tlow1i0N9cosx6axD29kFid7nuU/Z0vmbZ5dkaEE
-	 AJjLBrk3V1X1dHg1MQd99ZAZ+q0QhiE6a7D004X40vcKNf02ETMxyU9xpu3Qr1lnaH
-	 U+42K7HpnwVkS1cZs+bkd2mK4lcgSymsOBCLk/sx8TrIRDX/+hSkZR1wFslA+wNUVZ
-	 DwXE7pU/Qvs7Q==
-Message-ID: <c3b10a9b-d3a8-4e5a-8cf9-3ddb172d2c0e@kernel.org>
-Date: Fri, 27 Mar 2026 16:22:52 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
- hotplug
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Hao Li <hao.li@linux.dev>
-Cc: osalvador@suse.de, akpm@linux-foundation.org, vbabka@suse.cz,
- harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org
-References: <20260327143823.3063541-1-joshua.hahnjy@gmail.com>
- <2356614e-d9b8-4639-8e2a-96c5e4eaef61@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2356614e-d9b8-4639-8e2a-96c5e4eaef61@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+	by sea.source.kernel.org (Postfix) with ESMTP id 5618B4411E;
+	Fri, 27 Mar 2026 15:24:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D571DC19423;
+	Fri, 27 Mar 2026 15:24:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774625087;
+	bh=VYDOdE7sgW/03DVpEUGPbLiRjdDvx9n0cfqzfv8tiI4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NnJa6XL+xT3kLl1ceyl2OHKf2JXNWdFzP8N/4v2qXjqc58mkc0qI8n+IJXyNgUlWp
+	 feAmBo7aXumOAtOcxV+qUCcBiZvgm3fFAuHLsHoMsWJ/mIDDbI82t5GgzendgIhivU
+	 EhRVW/VC5s5CcDjMgKwnOxuCz/w53MhA41RrAXvA=
+Date: Fri, 27 Mar 2026 08:24:46 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, Jeff Xu <jeffxu@chromium.org>, David Hildenbrand
+ <david@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ antonius <bluedragonsec2023@gmail.com>
+Subject: Re: [PATCH mm-hotfixes] mm/mseal: update VMA end correctly on merge
+Message-Id: <20260327082446.4e7fd5398043d56cebb35a54@linux-foundation.org>
+In-Reply-To: <20260327090640.146308-1-ljs@kernel.org>
+References: <20260327090640.146308-1-ljs@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5C6F780013
+X-Stat-Signature: 7eemge57gam5yka3aec5fy7q1ewydyrq
 X-Rspam-User: 
-X-Stat-Signature: z9pc7tmac73qm538g78pq3oue5k8ui3o
-X-Rspamd-Queue-Id: D9983C0012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774624980-645922
-X-HE-Meta: U2FsdGVkX1+QlAe3ekfjVK4piO+FCSK4tVNl1Uq4yw3F3TEStTYhnxNPrXaD5RQ7TMBVzQzcK8UL0qN63DWrS64cjrquNnQydKojsWLWlUmpK/VZKzvd8ruXwz3SMBv6DYKR8TRfbDaWFsm9bTOqV7vKMwK4ygvPylh6MO68/o9FalcMCmE4g1lfF00KDeVx2+3cMEGHZ7gZZF2lf1sel7A+DhVbo1ru2gJJ+de4b+A6aBzqNfitH5YzeWUVMuM1W5UIBOdQDkoZJY3Nh5TRMsS1jMVggobD2P1Rj8hmzD6rW/R3eYoHRi/jeIc5QIeRYqGd2JmuFmqF1wArLpfLOJEtBSePBbEa6D4QrPZm0yLWoqNFAgCycqEH+teSOhCiSCidb7nMN8zPKiHwANj7wgBbUzH0GKuXvtkpUwcPdgBZDPaB3TbQACDLzOgxKqJdjVFQQ5Nq7gMz8CF+eWekwTzZP9Ia2eD6PkMIpX7XdoVL4FjJt0HOExS2kkBv5EGz4LLRKb8xMe9q6qLo7PwcD2UEXZmmY5LyI3e7NOkNHoiGtqNLXpoZPiCk0hcCw9jzzWGVw8Eq2WuUwT8rDu7GQMQxyxrwYRQIYNr8jL+d5YaMWxd+mA1wBfSfs89Jy8ebHgsUiGOrVMw+QaC67lyV39pDAKcznDy3uJ5mqS6Gz+xkWAa5JPLCR823E8PGkE/7OTH5UINUvdrL+QlgbSaJOewivvpPyGYkB1DNLbuvIOSsDwFxvTJHf4Oo3CSKyBaGN8lK+PbIHZ9LDyZ1oR2bfnhELX4nVagQchzNqeUQtahQX04sEk9nF7q0ipThVMbTZLPSt8pdqicP/i+F12+m7rTUpN5w1UwIoV8WQTcwoN91CHp18I/UiGwdPR8xj8xs/SUY28wttUad8i2md4dAoIgkxrbFqfXX/7o739ahmf4wE1qZFd7Au8aNUO4/T20g6VDMPWcn2zesWFfciAY
- Fh13pQxL
- soKfw/Mu8qoQtaymZSq3Utmu26Ncxf51MPK1X7xKz+NqLOKL/F8HbefBv7P3QXl7hLYAyLGeBoyz3RwnvTMekOqhzWJVoYvWNOj2YKAjQ3HUqGrDzp9zd0R9lLz8nvxdoaom8o/qNxiMlFull3Noez7tFOR6BPAE4RR/KgcidSu1EjbBlq8vCrimT5mW57/Pmmzj9RS7d2MS8wLaOa+b5VFromUsX2ha7mN0L5CRXj9nxZpoB2LCKLW0ye9PQjB9QE1C3EFQEFtLVr/WHhVr3ngF30kyXVvbTKQR6Vuzei17PJp7bDFYJHkvynQC9ip+S92JHIdsgTwVHnzFYrt/1MQEVw2vLEGLJ/4SWYVjMeBqggEcjN2WGZN4w6g==
+X-HE-Tag: 1774625089-945442
+X-HE-Meta: U2FsdGVkX19K801PDXKEBEEctbE7imyi0wgy2aFm3seca/6HrSBenIN+hBRjwZn2pAkX5AcivHIVYUyAQyrtoWylDS7YZd49oDizDwIfcFXU6qHbIZu2oRTaOslK2iYvl3NNA2nsqkVC+HRed6ouc/x8Yo+xXWPFBBfswdfuYvbk4CfiRFYVGqqfF8sbZyNzr8lcegMDi7wxEan17JyMGSPfuqNhYLDvXkgu8MfnEivHKiqOhjJhShOga4yMqB3NdUAHWJAO1W4nfo7tzaJ37nuGqgQD8dZ0pcofSDqQT3EGF4EfGXWz0E+NVNw+rcxiuKHGYktIERX4l2Qdg7N8iwBM8uxRwgl51gkpMrf+j998gGpFISTR0vAz5co4i46u0uF81XYMVWncbvO+sqI3nhXGc4tFfch46EOMOox5G9DIR0r5cd3mxR1IGwn8LJW6jNICM491haiou/o7h7c1l82I4K1mjx4mGHADmgW0DgO+o2+/4pZG7GhCV8s5CwCT15biYc1zFZcA7fv8I7toeok+HrChfhcq4zsTvPekO8DEBm3JysGo44pye5oi96V6o57qfEHlSIaPvqJPmg0Cm0ZWkeydNm39v47V/9jC/WlpIJdIrIlEPmz+SnSNZjLX/UfdZ+JtmdD9nJcrQZnF2vOWv3o+c5Zhzc9/uBR9UcalJ7FL2EsP1CXwgeKBq6LjnH4nzW1NT/s1hZRsDH2OmizljHDVI+P5GZVyy/aePyxR4aRpyHrggmk4iW3VDSWbGeQ8M671cCfvdr5Cdiyxns7KfifgVCQoineaFVhCXyS2wTKeaLuXVRmyVtmOhqL3GNnQ22rPA3MtNGJZjhcf7iwQKVl/oKyHuDzvruSnJobrON4SitVx/bAWmoHzisPrFZobwXkPNvrPRdFcTK0mIgtCIGmROTuw+vI1SyNBPrbwadO+nbhpgQ2LrxAVCL1MMNwiL7zspl2yb1RlkZd
+ 4IYszqpi
+ cyiLsVJnSIbvs5YbkoYUubBblBeo4s+gleKv4gP9mZu74a7sAHSLkj4T2bB+6L8g43YaTJxb4AweSwqZdyWvureOEntUJPi9nCQDEDRuHymLRL8kfkjAtxi0Fj1ElIVdfWP7WoNENitOxnJ3GivYZ/BWhm9JBAxmDQdiy/8XWWOHxANfkuDx/h/QyGT7/Ndg/XmDEW4x3VaSU/wjoVflEzE0ugqVYsr+VgEJCbNfR8jAWnM+vEiVl72myPvsy3irYkJcSohYFjwhLtw4Er16kvaVsxKHxu6em+qoBuzovRZHWjfwPoXLmI74NDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,32 +92,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/27/26 15:44, Vlastimil Babka (SUSE) wrote:
-> On 3/27/26 15:38, Joshua Hahn wrote:
->> On Fri, 27 Mar 2026 20:42:47 +0800 Hao Li <hao.li@linux.dev> wrote:
->>
->> Hello Hao,
->>
->> I hope you are doing well, thank you for the patch!
->>
->>> N_NORMAL_MEMORY is initialized from zone population at boot, but memory
->>> hotplug currently only updates N_MEMORY. As a result, a node that gains
->>> normal memory via hotplug can remain invisible to users iterating over
->>> N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
->>> incorrectly marked as such.
->>
->> The second part feels more important than the second part, doing a quick
->> glance through the code I can see a few N_NORMAL_MEMORY iterators that
+On Fri, 27 Mar 2026 09:06:40 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+
+> --- a/mm/mseal.c
+> +++ b/mm/mseal.c
+> @@ -66,7 +66,7 @@ static int mseal_apply(struct mm_struct *mm,
+>  		prev = vma;
 > 
-> Note in practice it's unlikely that a node would hotplug normal memory,
-> start using it, and then manage to successfully hotremove it, due to
-> unmovable allocations. Most likely only ZONE_MOVABLE memory can get hotremoved.
+>  	for_each_vma_range(vmi, vma, end) {
+> -		const unsigned long curr_end = MIN(vma->vm_end, end);
+> +		unsigned long curr_end = MIN(vma->vm_end, end);
+> 
+>  		if (!(vma->vm_flags & VM_SEALED)) {
+>  			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
+> @@ -76,6 +76,7 @@ static int mseal_apply(struct mm_struct *mm,
+>  			if (IS_ERR(vma))
+>  				return PTR_ERR(vma);
+>  			vm_flags_set(vma, VM_SEALED);
+> +			curr_end = vma->vm_end; /* Merge may have updated. */
+>  		}
+> 
+>  		prev = vma;
 
-Yes, hotunplug of all normal memory of a node is unlikely. Possible, but
-nothing to optimize for.
+This led to some rework in your "mm/vma: convert
+vma_modify_flags[_uffd]() to use vma_flags_t".  Please check my
+handiwork.
 
--- 
-Cheers,
+reject:
 
-David
+--- mm/mseal.c~mm-vma-convert-vma_modify_flags-to-use-vma_flags_t
++++ mm/mseal.c
+@@ -68,14 +68,17 @@ static int mseal_apply(struct mm_struct
+ 	for_each_vma_range(vmi, vma, end) {
+ 		const unsigned long curr_end = MIN(vma->vm_end, end);
+ 
+-		if (!(vma->vm_flags & VM_SEALED)) {
+-			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
++		if (!vma_test(vma, VMA_SEALED_BIT)) {
++			vma_flags_t vma_flags = vma->flags;
++
++			vma_flags_set(&vma_flags, VMA_SEALED_BIT);
+ 
+ 			vma = vma_modify_flags(&vmi, prev, vma, curr_start,
+-					       curr_end, &vm_flags);
++					       curr_end, &vma_flags);
+ 			if (IS_ERR(vma))
+ 				return PTR_ERR(vma);
+-			vm_flags_set(vma, VM_SEALED);
++			vma_start_write(vma);
++			vma_set_flags(vma, VMA_SEALED_BIT);
+ 		}
+ 
+ 		prev = vma;
+
+resolution:
+
+static int mseal_apply(struct mm_struct *mm,
+		unsigned long start, unsigned long end)
+{
+	struct vm_area_struct *vma, *prev;
+	unsigned long curr_start = start;
+	VMA_ITERATOR(vmi, mm, start);
+
+	/* We know there are no gaps so this will be non-NULL. */
+	vma = vma_iter_load(&vmi);
+	prev = vma_prev(&vmi);
+	if (start > vma->vm_start)
+		prev = vma;
+
+	for_each_vma_range(vmi, vma, end) {
+		unsigned long curr_end = MIN(vma->vm_end, end);
+
+		if (!vma_test(vma, VMA_SEALED_BIT)) {
+			vma_flags_t vma_flags = vma->flags;
+
+			vma_flags_set(&vma_flags, VMA_SEALED_BIT);
+
+			vma = vma_modify_flags(&vmi, prev, vma, curr_start,
+					       curr_end, &vma_flags);
+			if (IS_ERR(vma))
+				return PTR_ERR(vma);
+			vma_start_write(vma);
+			vma_set_flags(vma, VMA_SEALED_BIT);
+			curr_end = vma->vm_end; /* Merge may have updated. */
+		}
+
+		prev = vma;
+		curr_start = curr_end;
+	}
+
+	return 0;
+}
+
 
