@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8748010BA430
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AF7F10BA431
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:35:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D777C6B00A7; Fri, 27 Mar 2026 03:32:09 -0400 (EDT)
+	id 5DBFE6B00A5; Fri, 27 Mar 2026 03:35:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D28716B00A9; Fri, 27 Mar 2026 03:32:09 -0400 (EDT)
+	id 5B3706B00A8; Fri, 27 Mar 2026 03:35:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C65006B00AB; Fri, 27 Mar 2026 03:32:09 -0400 (EDT)
+	id 4F0476B00A9; Fri, 27 Mar 2026 03:35:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B6B1D6B00A7
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:32:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7FC27BE57B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:32:09 +0000 (UTC)
-X-FDA: 84591024378.11.E42FACB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C8BB01C000A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:32:07 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m8NLGuLB;
-	spf=pass (imf20.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m8NLGuLB;
-	spf=pass (imf20.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774596728; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4001D6B00A5
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:35:45 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 084D1BE57B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:35:45 +0000 (UTC)
+X-FDA: 84591033450.28.0438EFF
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2D297C0004
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:35:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=au5Ukkkl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774596943; a=rsa-sha256;
 	cv=none;
-	b=yZi4JJhBcb37l3+Eo7kLvriF0Lv+9HlWizHAXMUxxVtPQ43xfrjHgclfF50kJVBK37UKyK
-	pbhgn17/SPaT+oOqj1LTQdFdy0AIMjCVrJ4ixiAW7MAnRVJqAlsqomiYct3nN55FrFMmvw
-	0+t8hjbJWGEktuRCjFCUURIIFOrP7E0=
+	b=LYH5thUlYdKQsnscrSjJf4XUlR10tELHJLa648bNbZjqDErYVYEOHNJt0F/HTjF6zv1H9z
+	TwYgcKC9rIhnALo1f3LU6SektlcxYgqiTkGy5RYFM+FhBjxF28tCXhgsTZahA2G3xOiUQT
+	FsZZWKpJ7pvCEnig7P268GgK0sWvGRA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=au5Ukkkl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774596727;
+	s=arc-20220608; t=1774596943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UBgQV30ioA8TQS8PNdlo1Xiq1sv/HScUJH597prdRwA=;
-	b=kcWsv6nsNgBEn+/ITBrCS8ib8GcaSqjg3m0bMjbNCm2OT37jZSZiAI3h3RUIp4m9zJ0wRl
-	qNZ+dBH8rHz7Ret6Lf+u49lXKBgU4ZIcsrBbXuZkYAboWw9zejw2OzM+HyEmYPw/0QqTiG
-	Kf0rEKWjyGWRqamjZgWIifkqHlAwc+8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9BADE43791;
-	Fri, 27 Mar 2026 07:32:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202C2C19424;
-	Fri, 27 Mar 2026 07:32:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774596726;
-	bh=vEjbAvSvvxunsltEpHCuMGhaMjxhbb7YGvO/XpsR8a4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m8NLGuLBtG8Ow2o7/3Ran4Vah/VVIcLaxJ+USwy/N9t+QRh+sdSTJdt5XbcNvyXfm
-	 5g2ABxnx4l+nLsaswGiF418fqoy93qwXc8gOkAtHh9JYpwyt/1KWAaA4oQG8YWbRGp
-	 +YKMQPXI20dfP3fz95vTig68mOUEgByrxGQOnYRHrTAiz/HAlHfpIqBLXFRIlMI5IF
-	 NG3o56yKEgSybC6vTrA+Wnk9qBqMh73/zvfWbJwWD3Xgoznm7W4FRIRltVIatxBrW3
-	 FrscSAb1kM6tjYCMhQE9IkLfOPDotOBqQyi6j4sEb+ncrnjn8uC4+fAa9G4/kWXbuj
-	 c0/dTwxDUGs5Q==
-Date: Fri, 27 Mar 2026 00:32:04 -0700
-From: Dennis Zhou <dennis@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: zenghongling <zenghongling@kylinos.cn>, dennis@kernel.org,
-	tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org,
-	zhongling0719@126.com
-Subject: Re: [PATCH] mm/percpu-internal.h: optimise pcpu_chunk_struct to save
- memory
-Message-ID: <acYydEjiVVnHSgzT@palisades.local>
-References: <20260305073043.571691-1-zenghongling@kylinos.cn>
- <20260326221641.7a2edff04ebb51561c8818e4@linux-foundation.org>
+	bh=CLtU4cYf5f4ETgIAG+QOLy27idZtqxL/V9it4mlnfGA=;
+	b=ZwO4sjp51EGeRJflsCyc82xXQvrvhQFedaNNIeIt7GTYkuBCL3PW8bwo5ea3QhqLrEnJGm
+	BdBTuJAjzf3oboeGqw10lw4EdwsrlgRpVkSV87cjl/h9D8jnYxjYb7zLvU5gc3Qwv7g2Ak
+	pA3U8cSNXzrCB4mxcjhjuY4bw+OAxlw=
+Message-ID: <5d7c5690-eb85-454c-ac82-b4cefb4a37f8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774596941;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CLtU4cYf5f4ETgIAG+QOLy27idZtqxL/V9it4mlnfGA=;
+	b=au5UkkklscMhF8BiLUMaSWklas9uysoBQuuD5MOuqCv/qB8+OgduNHqgh+UFXezl/6xv8e
+	nrmScX5uN68uU0+H2Lp8zA9iJXEHXLVXwfjo4Q/qfYQiWvb3lD4Jhn7CrTudxykmtmWUCR
+	GGaKymYb+rmaEcH7ZaELVBlUH1Cafpo=
+Date: Fri, 27 Mar 2026 15:35:16 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260326221641.7a2edff04ebb51561c8818e4@linux-foundation.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C8BB01C000A
-X-Stat-Signature: jdwcuw11wyn16btqkx41q6ojuaqehjy3
+Subject: Re: [PATCH v1 02/10] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Content-Language: en-US
+To: ziy@nvidia.com
+Cc: willy@infradead.org, songliubraving@fb.com, clm@fb.com, dsterba@suse.com,
+ viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ shuah@kernel.org, linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+References: <20260327014255.2058916-3-ziy@nvidia.com>
+ <20260327072917.68630-1-lance.yang@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260327072917.68630-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: xpnbtqbec1p1i7njkcn8d7zqy34oabta
+X-Rspamd-Queue-Id: 2D297C0004
 X-Rspam-User: 
-X-HE-Tag: 1774596727-639937
-X-HE-Meta: U2FsdGVkX1+RRDg6u16c+SdlNW7/PSEigg2QrnFdpBvXuSF//4xCvqwFTBldwkt5wb0QDf8wTSiTsvL0bmp6Xov1koE+7OgDAKWiUCi0QthCfVQ0cggJq4w0pHHZfLdI17mj5t+IL0hNuSvImFiSj4apLRr68xzZeoa2WJJELaOEkDK3gp03v8pk5YWnr+n6GlUauTm9Tg2T/Q5kPCJxBJXWueuETgO/54RqwjH/JBHdLsmcXD4xQroZjs/yre0sHJlgOHNBs2/c5Hv88CDF8mUusJpFbMOTPaC5ocZ44dochAkc+g50cQw+zCmmdCrU5Op3V7tmo4317BQZYSHj8CR8KwT8KCUw6E3sczky75l1eIu2RcAo8ZhVsnwI2ZdycOvmL7xfxM9w4NR23qZ7AW1XatIMeRD7+P6dVMjJIQy1vHeHIbLCvZlaRo0LwhPHf3mOohee7X7yO5pt0ntpuohZgYJYy5dEf1MRcfaSHTpKCp9VOpK9qjxvrp0eOOcpC3K/7KuTCkjxvrg9Zjpxn16Ow7U1vvGdAz3Dqr+2L/EzlRPQ0FN+q3QEk19FImm4KF99GBkzJ7D4fZ8/J4PmlVNoHum0Zmf3Yqa4XPSX5knJ4Jnt9cAIyXYFWwme3WHhKrIR9XWsbwnApoDmha6Pb2huh0JI8NuXh0mxhJer2fCT18Y4qtgTNYTp8tFKNwxFdgHiynjzgRMHJdbLiIlC2ENMcyTnvmGIbUaIbQPjQaKYDnjvIvtr3rHEcX6appqKciS4UdW4cS8QViKaLLAHPqk1et1TBNaytpNz2pHoGhI1ki7Wv+LZPEPCTTrrIvatBnpY+LFXLSm48sPJ0qMpt6HSHTeH90xiUJXqTWE8KG5vZNu3yFnnBQRnIW0dEWoKlV3Rm1TwDzNhF/1tfqF5pAuH38tJ1duGoi72lrjUPTS5RRup4TQIRJIf4E7dDJ7aiu1lpgmuB/Dk4jKh1MB
- Tyzab/Gw
- rUccXfy2SC+DeFocY4XhtxZQ91mSkOtjBzkiO/VzeEdgWgiBENuG+iiFfl9FOArhH7tDxEKAMBGIbycbSBrX1WaioitHNnAVaYP0AQzerEQaQCgmN4yMYbg1kZjSKed47Kd6z41MckWFO8FQ2Gx9uD3ZZejPjpCt++QewswgkWbjzHByrmgGS/o9uxhGqntvxkxFkAi8KmCSGUhR+nY8Lp0FCPYnVqjQ9lkzS/3W/o8ewaUb6wvKVbWKgDZqGgaVnjmvIOd03Pi9zYyipk+ZlZh2S14Fv3ErvVp8x48Nifsh/Cbe1FfQCjxgUGxHRiSfjhQvQ
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774596942-826629
+X-HE-Meta: U2FsdGVkX18/oyV5ol/OETVJ40MKV2hXHw7UUES33FZdvUYLdBG7dPPVhYpsnfjZk93zutDxHu6BHnoU3yPZ6dwlnVU2wUhCmDLmxHBb2FMkjyE84dg2BrBG3/XROGsWf9it7v0TKkWBDBv8px02k42I/7oOEE7dI2bCw+0cTLaxorY4J4ZSGif5UcIb4jWkWwFsUc9LkQGVXsNlcmat77Q9i+nYcTP7wzFO5zYsWHSfJGEqM4KYRP7+FSpHyOZYFgYudWsZjP0BoJgzhJwVqQxTZzN2RPYYuZkDh0py9Xb01h6kQd0N2dRNkVELpDVinHI3W0M8rcF5Flj1xtFOYWK7fHn4aReYpBH4iXpagIsfO/Abtq+bXozHfpxG8wixkYIFHC1SKLaG703W2yg9fkJClDvD1NPtKCPlOyXREygtk5PkW2G5Gu5I3jI198dRMi0BHEJhpJZT+24K3ekkiqwRx7yC1akdThIczcS1+WOrs0RUDpUg0NCzl1uWIuCjFTnJNHfEMwEzqL74BPP9Wo/h0Q2Gw0dH06YczIzmZin+c+4ZPG95Ih7Xndrvm5U6YkFDoCzM9ifs5l7IMUWZvgBv3j2VnV9cvVvYR4Ti0DVZClpT8wETkag64smEKaHKbdWIMQ9SeeWNB8/7M4bx9e+iROj7yOn3Rcs2a7jNTFUVDfm6KkWJGXUvW+Qngrq5egujsl+I84M130Zc+G6azTyFTlC/rVG6dEPXHALmLGqRcSMnsSgavziQ+oo8s/NLgWoIMfdBgNtuEyOlf7bld7lp+4pUFMB7bK7Ra+J4yvaXLw/TtFKIDikAcL6/0GI0TJ6Ov1zVGqxd9ccowrgveNAUwZRcvHh3Zni2SdikDt8UE8ku9NjlNJz5icNyuKOp0A7455CI4onF/BEGtQ/3YVUvtK2ls+qDq1DZOMt4D2SiSJgPBlaX2Wk3pXiO+6fEkdEwJi1qI5GlO5Cv+eq
+ 5inf0yWA
+ dXkTFkW4jZS9z8XOGNPVnFtlQYedaESZy9q3iTFOP2+ucr6SIxgzsCcR+WvRh2lXnDkWNKRgxH8XtBNRC6fMHscn6PMvx4Q9kikWPadJ13WBOl0X7KHgL2beowUXjiEmjI8BiuO/Skqi8P1VroaygLLz1DFCthkXA/3f6H93Fr05Q4yJHkBFiZKDGdmimrTWfVF42gMu1CWFNyhwD3MLb2lEGFn3y0S6iPUReDWlqA3IdoY6QFqm5LKZ/cmc5Qs5rZQxQNw/GigJVy1QkQsLqx+O+FQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,71 +97,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
 
-On Thu, Mar 26, 2026 at 10:16:41PM -0700, Andrew Morton wrote:
-> On Thu,  5 Mar 2026 15:30:43 +0800 zenghongling <zenghongling@kylinos.cn> wrote:
-> 
-> > Subject: [PATCH] mm/percpu-internal.h: optimise pcpu_chunk_struct to save memory
-> 
-> There is no pcpu_chunk_struct,  I'll change this to "struct pcpu_chunk".
-> 
-> > Date: Thu,  5 Mar 2026 15:30:43 +0800
-> > Sender: owner-linux-mm@kvack.org
-> > X-Mailer: git-send-email 2.25.1
-> > 
-> > The pcpu_chunk_struct has a hole of 4 bytes and pushes the struct to three
-> > cachelines.  Relocating the three booleans upwards allows for the struct
-> > to only use two cachelines.
-> 
 
-Wait, this patch moves `int nr_empty_pop_pages` not 3 booleans?
+On 2026/3/27 15:29, Lance Yang wrote:
+> 
+> On Thu, Mar 26, 2026 at 09:42:47PM -0400, Zi Yan wrote:
+>> collapse_file() requires FSes supporting large folio with at least
+>> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that. shmem with
+>> huge option turned on also sets large folio order on mapping, so the check
+>> also applies to shmem.
+>>
+>> While at it, replace VM_BUG_ON with returning failure values.
+>>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> ---
+>> mm/khugepaged.c | 7 +++++--
+>> 1 file changed, 5 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index d06d84219e1b..45b12ffb1550 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1899,8 +1899,11 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>> 	int nr_none = 0;
+>> 	bool is_shmem = shmem_file(file);
+>>
+>> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+>> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+>> +	/* "huge" shmem sets mapping folio order and passes the check below */
+>> +	if (mapping_max_folio_order(mapping) < PMD_ORDER)
+>> +		return SCAN_FAIL;
+> 
+> Yep, for shmem inodes, if the mount has huge= enabled, inode creation
+> marks the mapping are large-folio capable:
 
-> before:
-> 
-> (gdb) p sizeof(struct pcpu_chunk)
-> $2 = 256
-> 
-> after:
-> 
-> (gdb) p sizeof(struct pcpu_chunk)
-> $1 = 192
-> 
-> That's remarkable.  It was an allmodconfig build which tends to add
-> bloat, but the only source-level alteration was this patch.
-> 
-
-There is also still PERCPU_STATS at the beginning of the chunk depending
-on config, defaults no.
-
-struct pcpu_chunk {
-#ifdef CONFIG_PERCPU_STATS
-        int                     nr_alloc;       /* # of allocations */
-        size_t                  max_alloc_size; /* largest allocation size */
-#endif
-
-In my experience this is an order 10s - 100 # of chunks. So this would
-save give or take like 4k.
+Oops, s/are/as/
 
 > 
-> Another consideration here is that moving members around can have a
-> performance impact - it can cause more (or less) cacheline
-> invalidations.  I worry that because someone has carefully commented
-> all the member offsets, this might have been a consideration.
+> 	/* Don't consider 'deny' for emergencies and 'force' for testing */
+> 	if (sbinfo->huge)
+> 		mapping_set_large_folios(inode->i_mapping);
 > 
-
-I'd probably move nr_pages over nr_empty_pop_pages as if you're touching
-the populated[] array, you're more likely to touch nr_empty_pop_pages.
-
-> Also I think your patch may have made those comments incorrect?
+> LGTM!
 > 
-> 
-> Dennis, Tejun, Christoph: I think we want this space saving.  Can
-> you please advise?
-> 
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-I don't think it hurts. I'd move nr_pages over nr_empty_pop_pages.
-
-Thanks,
-Dennis
 
