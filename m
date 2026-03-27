@@ -4,166 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E85CF10F2862
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 17:18:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B424510F285E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 17:23:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 352FC6B0095; Fri, 27 Mar 2026 13:18:47 -0400 (EDT)
+	id F41236B008C; Fri, 27 Mar 2026 13:23:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD506B0096; Fri, 27 Mar 2026 13:18:47 -0400 (EDT)
+	id EF2236B0095; Fri, 27 Mar 2026 13:23:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156686B0098; Fri, 27 Mar 2026 13:18:47 -0400 (EDT)
+	id E2EB36B0096; Fri, 27 Mar 2026 13:23:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EFCAC6B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:18:46 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA1A816118E
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:18:46 +0000 (UTC)
-X-FDA: 84592502652.01.08E1EB2
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 965D91C000C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:18:44 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SCLFapoj;
-	spf=pass (imf18.hostedemail.com: domain of demiobenour@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=demiobenour@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CD0586B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:23:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D9641B8EE6
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:23:42 +0000 (UTC)
+X-FDA: 84592515084.26.FDD3BDF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9CB20140003
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:23:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNCHYGGP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774631924;
+	s=arc-20220608; t=1774632220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=owyRg+e0creHUiFeSqqqdHeQvtQkCIkfG6HG1AOe1C0=;
-	b=uVSt/tJr8stqDZgKZP0ijPd06wpzDI+QVvuZYPjOQHAk5pwy7vi/IYEGfXEyIgVYLApS2p
-	e4Fyk3VosCWL2RuidrVJqXmN+EZSPf2Fnf9xxsLdbqYawUDmr2sgH2PagFSmwTaWP5sxAB
-	fNLSpiHTmMQouy8egZacSqaLGXEdRwE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774631924; a=rsa-sha256;
+	bh=9NhTrkJRGClkqgsHXF+ZM+tLvbQyZWxF6uN08SIPt8k=;
+	b=JGncj9t2vO/6O2caNAQW7YO0FribgjVZsczc6ZUqmmMfxGteaaO31hGdJGfx4bIEWHqcSg
+	yjVLvWU5OrdYrZMtVZaV4RbEeD/0GUfuwrYaPTBzB3nAQZz09eIHI9/ptKYQQfQWluEP9k
+	Iq9FG+sKiUJzbTcmQiL3Cmuv597lYKg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774632220; a=rsa-sha256;
 	cv=none;
-	b=Rotw2xqTPoL+hvCAffJfxMxkCQcgP2jY435bESCgQW4aSolD0THjMkCcIbg/j/OthHK7k+
-	/F4w+thpqAN3YrQUifFVyjdXuJPWhleSU+YFk90YQrEk2EIRgWdjbkTd9cpiv7sP3v7DiH
-	5vFLLkX7qpkz8uPvk3VKnhLxWaHdlJ0=
+	b=XcxDk4u94IWO5R41jHbOLmZooGYxtDDdRwOhuV9PkNupIJJnve8Fj4YLFceI8uLGw03itl
+	gW7oAPY2uKav08FcMAwwop0hefSNbOSlwqiMnM1FVYPUGR3lS2Y7ZOt4B+l3NYAXdeajkN
+	D0sxqt6pSYEfg5cHauT+mAadmFaGGxU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SCLFapoj;
-	spf=pass (imf18.hostedemail.com: domain of demiobenour@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=demiobenour@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-64ae222d978so2428451d50.1
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:18:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774631923; x=1775236723; darn=kvack.org;
-        h=in-reply-to:autocrypt:from:content-language:references:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=owyRg+e0creHUiFeSqqqdHeQvtQkCIkfG6HG1AOe1C0=;
-        b=SCLFapojZrACb5scL0cE7l0k2txLV/MuNpacmdZEfP8AOJgc+zVp2FRN6wuDhHIjLy
-         5NJWQosA3rRDevQEUOqDjuepAR1ujPwKwIQOaOJHcwtktdUkBZNRHI76bK9zKnm7ndun
-         kL1QB9xei1PA6LcpGgrpJ2jaFUDhbZdGeGTti+FUwQ3Dkc9ymYsrpZSjzd7LTQTK/9wK
-         hLcUTb6XplVQHhHk1hPf2wGWcND+SODlVgfbhT2rkATU0gKIT2c5tgz1iOj34vUtlNs6
-         OIYeqf9t1B+ewSOtVtSbRbq86ZeE3hSgrs5O93Ho0C/Biqrr3PCr/KIVVP6kxLN7XKUl
-         5a3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774631923; x=1775236723;
-        h=in-reply-to:autocrypt:from:content-language:references:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=owyRg+e0creHUiFeSqqqdHeQvtQkCIkfG6HG1AOe1C0=;
-        b=IQn4Afn6tl9JVepSEB0Itj84tDB8f76lkEGwMv2OdLu+Mxd27rhzaFy0jWRA4qcOJU
-         UFo72n1Ld+fp0rhGzoDbmJJcyUKQSxNIWUn0tQhuD+a+0gyLeWtalCiLzMfwOzg9wdL7
-         XiL2MeVeu8xUgWNRsXIPVTB5hUwUHU5xqlecDeb5bOdLnxaxmwPnWPKOVgzzFd0i1aSg
-         9P+/uyTrED9R4jgFFAn9UaRFeo7bKBiSzk+Iu/bQ6m/duXwbb3GakccN+3fdF1bWJY9V
-         nVQ9VmAPCKoJ1qBQP6PWl41GM7WXTjVvptKwppysRGvCke7ySAwDmYUCU0A1TPHhOMuy
-         OnrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX3fdyZTxI+yqf3SMm9MDLK8MIKx6SbJv+2/uvz1f/F5l84DrSHjM5cINYd5GRZo4S0CtDSXioycw==@kvack.org
-X-Gm-Message-State: AOJu0Yxgg5eFhMmBEXPFuFN8dtTiRcyZuH0iDfzp6cGGJfw6ex1uVv0z
-	RVt6GuQtEYUBlRp5A5WZ+h6okJZKbKw5PdrrcIPGPw9TC9hBmTO9lQrd
-X-Gm-Gg: ATEYQzzJYgrqxj2GjCDWWufhEZHe6OPyc9r/ckVmq0YkQIU0TLY+X4c1xH2rsfTCa11
-	9ZZHfiHdCmsMyy1u4ISLpuzUZXlzpy+4bdPGcdm44OpUJhwaUB2JqadGqSmYmhv4Uz+wSj560R0
-	ncNf5108TnHvl2mhsitckzgeG7V/HcW0bT0slVPxnha5B1b8mhXsjql7b42IlrBEr6lTMWSB8O0
-	74az0TuNNQXEvKrnl5a936MUIDNJrr+ciFIJC7uNsP4sA8XBFdRP29jGiVl1JHuquTnhuIzKxju
-	UBquOA1UD6eh8E3o2Wlyo3WNTiM9pmNEaPdliFQPw/KwisyYNdo9xFdzcKb4knmqs62Vq5xoPV3
-	1vYZC7uNLlyDO2vX8R+w6X+T4zNp9WzQUXB1aOfXbL1xOON0rjhs7IsA1rQ0RswPur8kBPuMWNP
-	3sHaJ9ZmvR1bgv87mo6QnKTh7cylU8ODSQN9V+9MwwvBR/QhHrTZoPf2sYSTaJgRU+zVhoROkQi
-	KhgDSiPpPIfTbmZBjDBiqkMrMtYEfRPCeXMVGc=
-X-Received: by 2002:a05:690e:1c08:b0:64c:a894:f723 with SMTP id 956f58d0204a3-64ff7027e97mr3571173d50.0.1774631923248;
-        Fri, 27 Mar 2026 10:18:43 -0700 (PDT)
-Received: from [10.138.34.110] (h69-131-148-49.cncrtn.broadband.dynamic.tds.net. [69.131.148.49])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64ef5cb5b6fsm3209109d50.9.2026.03.27.10.18.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Mar 2026 10:18:42 -0700 (PDT)
-Message-ID: <d96c3e5d-2302-43cc-9eee-926ff4954678@gmail.com>
-Date: Fri, 27 Mar 2026 13:18:27 -0400
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNCHYGGP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 89C8544524;
+	Fri, 27 Mar 2026 17:23:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA4DC19423;
+	Fri, 27 Mar 2026 17:23:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774632219;
+	bh=LoOchEM2GvaQU0UW3QW6MbbvCC9O/qqhrAJClJpoxu4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HNCHYGGPgWiQAgkcynJCD/IJaQuDDouTkXWQZInqCQNdpvJRtJ/6j/MKJVojDfQaY
+	 zbelBuWulqNyUmZXmCyq0NNF3GriNaxWMyLyf/EMEx7kJgcjcfBmMvCh/um/RoxyVA
+	 MNJN8WL5rNgGkRkNCelbxtJFDnuyHLGkooTsqbHUSiV4EJylYAtGtEoBgAG5uPlC/D
+	 GsJzkvcIMs2BE5pKbjw6EYCHhddZnbGBKmn7LX9wrrVAYx8bS2fuEBcPESbX6oyolB
+	 yKUOCZcyw5S6FNAnsZCXWyZ6mFNgOB//n8v8gVdQdoOUNI8sLylXjmXvlghctxG/x7
+	 SBr4OKna1kNTw==
+Date: Fri, 27 Mar 2026 17:23:34 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Jeff Xu <jeffxu@chromium.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	antonius <bluedragonsec2023@gmail.com>
+Subject: Re: [PATCH mm-hotfixes] mm/mseal: update VMA end correctly on merge
+Message-ID: <5739bab8-d75f-404d-a3c8-a67f91e072a5@lucifer.local>
+References: <20260327090640.146308-1-ljs@kernel.org>
+ <d82c61ed-32ba-47ed-bb85-9facdee7c26f@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Mapping non-pinned memory from one Xen domain into another
-To: Teddy Astie <teddy.astie@vates.tech>,
- Xen developer discussion <xen-devel@lists.xenproject.org>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- Jan Beulich <jbeulich@suse.com>, Val Packett <val@invisiblethingslab.com>,
- Ariadne Conill <ariadne@ariadne.space>,
- Andrew Cooper <andrew.cooper3@citrix.com>, Juergen Gross <jgross@suse.com>,
- =?UTF-8?Q?Marek_Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-References: <84462c4b-7813-4ad1-aeb2-862ae4f3a627@gmail.com>
- <5123c11c-3b8a-4633-809f-16c24418a4ce@vates.tech>
- <4f201188-31ac-4dac-9cc6-79c4283486e5@gmail.com>
- <df6194cf-1fc4-4a20-ad46-6eeab1d920a2@vates.tech>
-Content-Language: en-US
-From: Demi Marie Obenour <demiobenour@gmail.com>
-Autocrypt: addr=demiobenour@gmail.com; keydata=
- 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
- +MYSfkEjBz0E8CLOcAw7JIwAaeBT
-In-Reply-To: <df6194cf-1fc4-4a20-ad46-6eeab1d920a2@vates.tech>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------LW2qA8kgQi2s0bOYdBcsPyxu"
-X-Rspamd-Queue-Id: 965D91C000C
-X-Stat-Signature: id9cst1zdyoy6n6xpo1dmu3o8b1rjzqz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d82c61ed-32ba-47ed-bb85-9facdee7c26f@kernel.org>
+X-Rspamd-Queue-Id: 9CB20140003
+X-Stat-Signature: wxxow6kx9akwoc87ohp36imn6eyu4mpq
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774631924-149334
-X-HE-Meta: U2FsdGVkX1+lfpvd14s+RXsC+n2Sok7ZIvlMbbMKgILR7nQb3pU1qu8/SctHUUYS5W9qeV2BPgw8ohV+yowc0ZoZ6XZ0pB4xIMvveJEJm529YXv7E6/rcX3FvuyBfgAosNBXDQ80h6O3oGXH4RegjAaq9Umem7BsEIvehOHqPxNK6lkgKOmvXaGFGp+jU5IFU2W34bBAu7HFjK4Os3WS0HIUmKGNnuWLyxEbnLuXQ/EnlOfK+pjf0mtWXxAahZ0fE1SxhRCKJ3xgw0ZQn9omANQmLO5d/X6FIlA7opOYWk3Q13+WQPcs6ExXFnwP9KTz7eoQymA/3Djr+NzxdTqa+TxvVepu+KjRHzE4hNXZWUeDNYZIdjImeh44oPabwO6dK6OmrQxFv1SAX4SaeDF/GfBCyPo6e011xhx1+23Swc/NOhSoVh5O35aYxGPYDAscrVDeMl1pEW4Vn7ejfin8THA8NnTatbp2zA138r6QlDS8nx47z0o+PBB0rJQzMbBx/fVlXuxUhRXfzKctY0TiKIHO4kSYqam5a/kaOOVcPialRwbyT5sxwxhNlhmCMMMEz7qywiOZOsJ6c/ebvI/Me0DLahAgcF0ExeL1exBMOzDyLp1GtMyADcg+R0V2HHt+dzqqNazjY/VHVEOxgedkBRkXCRunokMUm3eVDksZoBLg014NA20FFitr7GSP8TBGy3tP4yumhPLidwQhrqhVJXaehpSelTXa3F9Fx3h5IQBYAezXcyYO4VbBdIEZjay4pUFnNr2cV3/wxyvYKQ8Mgx9XhD7D+wgQ4LtwZYCQ8gYA9rBA4MJnUnX4TdqZ2bwj9EO6BPDDmtH8elCY0UIPZkTUQMb1ljxhiLHoREVDG3uk/OMsprQrTIXjRsUq8qWDhpcWPf2cZQvYAeLVOzReKd1GbU6zBpgvRfaAc9Zp/eMShh1xkYir+iqRrSWYjJkEyChI8NaJeppinD1Aec3
- vZLYynIY
- QIV0CnSpVSDlGH+QsGHmFH5jX0BhceITjuEHwD5HMuHPI13ghNiTyefoAvZP4gFGDdQyyTRsaU9p2cCab8QzaB6nHctl1QZPZizTqH4ouIMJiDyffPJkVop7i9EhxqnCDZrfGok0OAoyfXBYRmxOxav9MqSnX5d1KM8Enb4cWrdkj2Y9Syub0q+pOyjeSMTA29pZzrIWd4lIHk56Bj08P4bf50dx8xId5Z/DQe/kijoDd8ion99E7O8+Fw+EfXMH9iu2e9t0vtGZ1Y0NiH1rsa4UlxE9hEyaHKY05ZKsdFDnJpEHcE1dSbcQCpjJqTJbxzXePJjbADMSAzw4ptLF8k9PRnv5lKWW4zOlM5k/hqPvtjJyIrlya9adZrolMpF9Sm5LTPjJkyYUN8FTPUSEb2LtB47jhKNw9/sf5+Ex5INH/03yh1qYdfa/6A+XrtsaLS/g2KsWP23ogQCq47DbAVqZtw2ZnfV9t/aiDiskk80qjNI7D8j2abUHLGxz9W/jMVQ7LEORkUW6N8euSn0LhI/AyF2Tcn+fVLinpyxn33CYCvlu2oc0opGfEtI/AAOmKxci9Yx70O+/NwlVN3Um3JIvlbinozlNWU+zRbV0Hw4uzkWmlk7PwHrhcpUCb8QSKy7pSnbMkVW/nj0XrHHdFSm17gWF23GVNrETogUmFQgjtA1soVtY2TbP7rpgKfD3vmKk7c9prldomHY2kLnBdqzFsBi/M3K+E1sxRHCiwhrpRWv8=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774632220-373924
+X-HE-Meta: U2FsdGVkX1/IhVylo5HEkIeNoLLBoAMKPBwfyM2Iagyro9XYBg6BN6Ls6w5fPHavzM8mdoGuOIflRqLcfPlNwshNeX7LRxgLv1kfSH0WoUGTGqcRJQOkPL5HMRbwW+sui7JBx6YTtl2iK8+oxu+2m6ANCyXyPfFH/WFdzcKFuQEBnOnJeA669IUscQ2ONjN7ZNRh2opn02w6lHj4WyxpyvywI/7rPyuB7S3nc1O54/IniFQUj44vuq06OTNZu2mgzmQrMffaF2Fbwr63iMLRGwm69uDie2D0cUGw9eP2r8/sd3U3tY2Z0yciPKtJf+tg0nyEdH1Izf3HUYS474/PO/ZF+DjvdHUKW+PjqFCXL1Onk4wlOtDvvYb9vcTE/JpP8Vu/7PpD3c+PwdZJ9WUo6DLxKPHLVuCo6/Hs5fHh8NXWH+NWRFiGglBrkzpxrhspcWQZr2cPNIWiRN0J1Gpr7ntO4yEjvFAMNQA0/NusiQCkmBlGp66clvmfWcyxgGlGQHwfYcr+c8DMG0a7qUSU5CgmEzStu5AkjS0qkHFGVP6tREcWV/yQd0J0GFwZoXKd9wIP5OxwAhDfHhxKeSe0PrcfLv9g8DqV/rIi3QMSMUOAvznROn39MNZD7CS5olsWLQTPAuSqkHZC4tuM1hCMh2Zeozz9ev9zpSR6L/V+Y0l9Pj5GCfDdPtiwP6gAwB5jsL5cFJ3Bt1ZZvKah1foageTmLjmg9pi5asZ2DpB9FD+O2Q8TLPQA6XOp9RsYsGiQXRiYU9SlBw7y+zTilm9G/GmaRRqEBv499LWCrX1sDW8xgZ/1ztTgzNzfFz1ASLw7oMMPR8kP//gcBOT8jN0JrTvbkQWp4/thfQVQ4D9ENor2yFg0CFB/nG0tc/tGTj4+wAoYqF+SeVzwIqmJlAs22374tx9UBChdbcFDMBXh85e/EkIhDA7NVuZYLG6xFz1PbsrgJUsDLire1rrptK4
+ OH1VAMKI
+ hNn9y0ZAuV2v1jUIXuSSTzRrp9uUY/0SGmVIg7pjhc612VHvPxQNaa69PC7Uh0/6ty1FI5XxGB6hMJGCeMVf8rFIvO/2nEOjCPDzqiseVzNBAJw8sGoJBshwJo/0S6xKY+q5Qb5Lg8Sig28U0Gxu+dEZU6i+Am7UXfgNTskpe/BPGZmQtvJdka8KaSHNP4A//ArCuC8vu+Z2ZkW2yAWeOuyKuzrYI2A8YlPu6Z2ggPiA8h6/ooChpz82WTlIDhIxQjtAlv7/SKmt9TPUa1godlJOTSwlJN+uB4OT0dCj95mxe8QFACUT9ZmtKbpgE6nxvCCZh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,469 +94,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------LW2qA8kgQi2s0bOYdBcsPyxu
-Content-Type: multipart/mixed; boundary="------------QJMzZWGisNC6YWRFRRXAw0I8";
- protected-headers="v1"
-Message-ID: <d96c3e5d-2302-43cc-9eee-926ff4954678@gmail.com>
-Date: Fri, 27 Mar 2026 13:18:27 -0400
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Mapping non-pinned memory from one Xen domain into another
-To: Teddy Astie <teddy.astie@vates.tech>,
- Xen developer discussion <xen-devel@lists.xenproject.org>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- Jan Beulich <jbeulich@suse.com>, Val Packett <val@invisiblethingslab.com>,
- Ariadne Conill <ariadne@ariadne.space>,
- Andrew Cooper <andrew.cooper3@citrix.com>, Juergen Gross <jgross@suse.com>,
- =?UTF-8?Q?Marek_Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-References: <84462c4b-7813-4ad1-aeb2-862ae4f3a627@gmail.com>
- <5123c11c-3b8a-4633-809f-16c24418a4ce@vates.tech>
- <4f201188-31ac-4dac-9cc6-79c4283486e5@gmail.com>
- <df6194cf-1fc4-4a20-ad46-6eeab1d920a2@vates.tech>
-Content-Language: en-US
-From: Demi Marie Obenour <demiobenour@gmail.com>
-Autocrypt: addr=demiobenour@gmail.com; keydata=
- xsFNBFp+A0oBEADffj6anl9/BHhUSxGTICeVl2tob7hPDdhHNgPR4C8xlYt5q49yB+l2nipd
- aq+4Gk6FZfqC825TKl7eRpUjMriwle4r3R0ydSIGcy4M6eb0IcxmuPYfbWpr/si88QKgyGSV
- Z7GeNW1UnzTdhYHuFlk8dBSmB1fzhEYEk0RcJqg4AKoq6/3/UorR+FaSuVwT7rqzGrTlscnT
- DlPWgRzrQ3jssesI7sZLm82E3pJSgaUoCdCOlL7MMPCJwI8JpPlBedRpe9tfVyfu3euTPLPx
- wcV3L/cfWPGSL4PofBtB8NUU6QwYiQ9Hzx4xOyn67zW73/G0Q2vPPRst8LBDqlxLjbtx/WLR
- 6h3nBc3eyuZ+q62HS1pJ5EvUT1vjyJ1ySrqtUXWQ4XlZyoEFUfpJxJoN0A9HCxmHGVckzTRl
- 5FMWo8TCniHynNXsBtDQbabt7aNEOaAJdE7to0AH3T/Bvwzcp0ZJtBk0EM6YeMLtotUut7h2
- Bkg1b//r6bTBswMBXVJ5H44Qf0+eKeUg7whSC9qpYOzzrm7+0r9F5u3qF8ZTx55TJc2g656C
- 9a1P1MYVysLvkLvS4H+crmxA/i08Tc1h+x9RRvqba4lSzZ6/Tmt60DPM5Sc4R0nSm9BBff0N
- m0bSNRS8InXdO1Aq3362QKX2NOwcL5YaStwODNyZUqF7izjK4QARAQABzTxEZW1pIE1hcmll
- IE9iZW5vdXIgKGxvdmVyIG9mIGNvZGluZykgPGRlbWlvYmVub3VyQGdtYWlsLmNvbT7CwXgE
- EwECACIFAlp+A0oCGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJELKItV//nCLBhr8Q
- AK/xrb4wyi71xII2hkFBpT59ObLN+32FQT7R3lbZRjVFjc6yMUjOb1H/hJVxx+yo5gsSj5LS
- 9AwggioUSrcUKldfA/PKKai2mzTlUDxTcF3vKx6iMXKA6AqwAw4B57ZEJoMM6egm57TV19kz
- PMc879NV2nc6+elaKl+/kbVeD3qvBuEwsTe2Do3HAAdrfUG/j9erwIk6gha/Hp9yZlCnPTX+
- VK+xifQqt8RtMqS5R/S8z0msJMI/ajNU03kFjOpqrYziv6OZLJ5cuKb3bZU5aoaRQRDzkFIR
- 6aqtFLTohTo20QywXwRa39uFaOT/0YMpNyel0kdOszFOykTEGI2u+kja35g9TkH90kkBTG+a
- EWttIht0Hy6YFmwjcAxisSakBuHnHuMSOiyRQLu43ej2+mDWgItLZ48Mu0C3IG1seeQDjEYP
- tqvyZ6bGkf2Vj+L6wLoLLIhRZxQOedqArIk/Sb2SzQYuxN44IDRt+3ZcDqsPppoKcxSyd1Ny
- 2tpvjYJXlfKmOYLhTWs8nwlAlSHX/c/jz/ywwf7eSvGknToo1Y0VpRtoxMaKW1nvH0OeCSVJ
- itfRP7YbiRVc2aNqWPCSgtqHAuVraBRbAFLKh9d2rKFB3BmynTUpc1BQLJP8+D5oNyb8Ts4x
- Xd3iV/uD8JLGJfYZIR7oGWFLP4uZ3tkneDfYzsFNBFp+A0oBEAC9ynZI9LU+uJkMeEJeJyQ/
- 8VFkCJQPQZEsIGzOTlPnwvVna0AS86n2Z+rK7R/usYs5iJCZ55/JISWd8xD57ue0eB47bcJv
- VqGlObI2DEG8TwaW0O0duRhDgzMEL4t1KdRAepIESBEA/iPpI4gfUbVEIEQuqdqQyO4GAe+M
- kD0Hy5JH/0qgFmbaSegNTdQg5iqYjRZ3ttiswalql1/iSyv1WYeC1OAs+2BLOAT2NEggSiVO
- txEfgewsQtCWi8H1SoirakIfo45Hz0tk/Ad9ZWh2PvOGt97Ka85o4TLJxgJJqGEnqcFUZnJJ
- riwoaRIS8N2C8/nEM53jb1sH0gYddMU3QxY7dYNLIUrRKQeNkF30dK7V6JRH7pleRlf+wQcN
- fRAIUrNlatj9TxwivQrKnC9aIFFHEy/0mAgtrQShcMRmMgVlRoOA5B8RTulRLCmkafvwuhs6
- dCxN0GNAORIVVFxjx9Vn7OqYPgwiofZ6SbEl0hgPyWBQvE85klFLZLoj7p+joDY1XNQztmfA
- rnJ9x+YV4igjWImINAZSlmEcYtd+xy3Li/8oeYDAqrsnrOjb+WvGhCykJk4urBog2LNtcyCj
- kTs7F+WeXGUo0NDhbd3Z6AyFfqeF7uJ3D5hlpX2nI9no/ugPrrTVoVZAgrrnNz0iZG2DVx46
- x913pVKHl5mlYQARAQABwsFfBBgBAgAJBQJafgNKAhsMAAoJELKItV//nCLBwNIP/AiIHE8b
- oIqReFQyaMzxq6lE4YZCZNj65B/nkDOvodSiwfwjjVVE2V3iEzxMHbgyTCGA67+Bo/d5aQGj
- gn0TPtsGzelyQHipaUzEyrsceUGWYoKXYyVWKEfyh0cDfnd9diAm3VeNqchtcMpoehETH8fr
- RHnJdBcjf112PzQSdKC6kqU0Q196c4Vp5HDOQfNiDnTf7gZSj0BraHOByy9LEDCLhQiCmr+2
- E0rW4tBtDAn2HkT9uf32ZGqJCn1O+2uVfFhGu6vPE5qkqrbSE8TG+03H8ecU2q50zgHWPdHM
- OBvy3EhzfAh2VmOSTcRK+tSUe/u3wdLRDPwv/DTzGI36Kgky9MsDC5gpIwNbOJP2G/q1wT1o
- Gkw4IXfWv2ufWiXqJ+k7HEi2N1sree7Dy9KBCqb+ca1vFhYPDJfhP75I/VnzHVssZ/rYZ9+5
- 1yDoUABoNdJNSGUYl+Yh9Pw9pE3Kt4EFzUlFZWbE4xKL/NPno+z4J9aWemLLszcYz/u3XnbO
- vUSQHSrmfOzX3cV4yfmjM5lewgSstoxGyTx2M8enslgdXhPthZlDnTnOT+C+OTsh8+m5tos8
- HQjaPM01MKBiAqdPgksm1wu2DrrwUi6ChRVTUBcj6+/9IJ81H2P2gJk3Ls3AVIxIffLoY34E
- +MYSfkEjBz0E8CLOcAw7JIwAaeBT
-In-Reply-To: <df6194cf-1fc4-4a20-ad46-6eeab1d920a2@vates.tech>
-Autocrypt-Gossip: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-Autocrypt-Gossip: addr=marmarek@invisiblethingslab.com; keydata=
- xsBNBE5j9EwBCACbYHjxDrxFAY3n1x9KBFvjzkG1qFSTVBnH4vpD/5Na4sZq4uDDMUCjivrm
- MzbWYaivYj96BygdOiw7PWxYrhuW0b2WYOeGudZyApgFz42g458s78EciuhgfuWBlxr8dOEN
- /9ueVFHcvtZmDbHhMVPcQ0O7gwh0JmwkOsf7P7WAfYXsQlhO/EBRrNXR0Je+GEpYADhRktxX
- h1d3Iz+oKYuwHioLX8ovoAT4+peOuecWUSpUWebpDbTR5i7NRP3PIblB4KzWJa2kh/f3mx4v
- SRGnHn+BfX42xSe0X7Ktl4Xf+KNq9Wkcjk2CZP57hV2v4pO0ZUOXD7IhlZtnfNj67WjdABEB
- AAHNPU1hcmVrIE1hcmN6eWtvd3NraS1Hw7NyZWNraSA8bWFybWFyZWtAaW52aXNpYmxldGhp
- bmdzbGFiLmNvbT7CwHoEEwEIACQCGwMFCwkIBwMFFQoJCAsFFgIDAQACHgECF4AFAll+l7cC
- GQEACgkQ24/THMrX1yw6kAgAiKiUhzAPXZj5ndqiQDl8u8PUK34SupLzYNMJOCBw5Wh+CPHe
- XYlQUwfULWxmzjiWCzzWDx2X/ONsYdRGKDKMqG5srOSWe1IYXv00MEutGsK+m/hmC5mqi/97
- DVNZ1VtKj5WW79IsI0/7ueHsQYNNrXyOfZvKsRE8VIUJ0tNfLFDFlNpq9jONuF+GviMWxrA5
- FoVaGmjh63xC0fOQYqhP2v8dbYS4B6bO5NZKI2cTHb9Li2iY0e7wIoNgvqgtR3Iv2U2Ry0yL
- D3mNQhwyxcWChexlymjfqLEZwKqaIOo57HOpt7OA+bMg6MvkdUTjNWf2GE6fqCcALjcToJ3L
- NDc1KM7ATQROY/RMAQgAtRWgUZ5mOy+c/qzmiVnxqDkiOJjmnIh3Pn+OqCtjcrTyPI9eVc06
- uH30Jkco0soLiG/UgwVw4XwBlm95j9n6TSUms4mPBh1YiR1hBjsjYwn8zp/Ue9xWk1N6E14H
- aj55GxmS2H3YIlOXfQLr0X3RHsmKixTOKyisrYlJu71FmettDFV7CgMXy1Bc1LbAE08asvAS
- ShHFdRiRRtkuVHvY/Ebq9L54kOxtlI6ahrflMcT0YCMON5oe4GgQRh3p2uy+d/LS2bgRcQST
- IebErj8x0lM271f97GvxV/ypHo7XVIDI5FX1u31Agzx3HQr035GHt4HV4/GVCz+V4xt4BonB
- tQARAQABwsBfBBgBAgAJBQJOY/RMAhsMAAoJENuP0xzK19cs5MgH/jWLXil2Ud4TdtWnBxc+
- 2/QZZk2JCssc1PgWNzvH5wH7U+8lGSlUK8ZMOqrrF8C5rX0+xEn7deSrsZChIOnUFo8rhCZK
- y/mBV+FhkMj24FZZ0n8w3eF4KF2t68Pt+AvMjxQHwxAMdf3QftgQhD0qYkt/28eedUQ+jwz6
- kipc4qUQmqTEViQRPa3WAnKgNDQUDUwNruzthfGvHUjllf7zbPI8gkbARM0KlTkLikc9u+Ni
- VMbJTiGPB7YHyw2MIPq1n+mhSPAyXE6CVBnYkonQ7P3SLZssxC3PIarV+DTU68umQB3pfrfF
- 7hMcAY5csWrK9/x/Zz4RUfgN6Q3HLrSp9UQ=
+On Fri, Mar 27, 2026 at 05:57:06PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/27/26 10:06, Lorenzo Stoakes (Oracle) wrote:
+> > Previously we stored the end of the current VMA in curr_end, and then upon
+> > iterating to the next VMA updated curr_start to curr_end to advance to the
+> > next VMA.
+> >
+> > However, this doesn't take into account the fact that a VMA might be
+> > updated due to a merge by vma_modify_flags(), which can result in curr_end
+> > being stale and thus, upon setting curr_start to curr_end, ending up with
+> > an incorrect curr_start on the next iteration.
+> >
+> > Resolve the issue by setting curr_end to vma->vm_end unconditionally to
+> > ensure this value remains updated should this occur.
+> >
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> > Fixes: 6c2da14ae1e0 ("mm/mseal: rework mseal apply logic")
+> > Cc: <stable@vger.kernel.org>
+> > Reported-by: Antonius <antonius@bluedragonsec.com>
+> > Closes: https://lore.kernel.org/linux-mm/CAK8a0jyHXqBpt8Xe8v9SNDbnRiwz7OthA8SKY=NLRY7smPEP3Q@mail.gmail.com/
+> > ---
+> >  mm/mseal.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/mseal.c b/mm/mseal.c
+> > index 316b5e1dec78..2d72a15d8ea1 100644
+> > --- a/mm/mseal.c
+> > +++ b/mm/mseal.c
+> > @@ -66,7 +66,7 @@ static int mseal_apply(struct mm_struct *mm,
+> >  		prev = vma;
+> >
+> >  	for_each_vma_range(vmi, vma, end) {
+> > -		const unsigned long curr_end = MIN(vma->vm_end, end);
+> > +		unsigned long curr_end = MIN(vma->vm_end, end);
+> >
+> >  		if (!(vma->vm_flags & VM_SEALED)) {
+> >  			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
+> > @@ -76,6 +76,7 @@ static int mseal_apply(struct mm_struct *mm,
+> >  			if (IS_ERR(vma))
+> >  				return PTR_ERR(vma);
+> >  			vm_flags_set(vma, VM_SEALED);
+> > +			curr_end = vma->vm_end; /* Merge may have updated. */
+> >  		}
+>
+>
+> I was a bit confused why curr_start is allowed to not start within the VMA,
+> but before it. Then I recalled that range_contains_unmapped() checks for no holes.
+>
+>
+> Would the following also sort out the problem and even simplify the code?
+>
+> diff --git a/mm/mseal.c b/mm/mseal.c
+> index 603df53ad267..e2093ae3d25c 100644
+> --- a/mm/mseal.c
+> +++ b/mm/mseal.c
+> @@ -56,7 +56,6 @@ static int mseal_apply(struct mm_struct *mm,
+>                 unsigned long start, unsigned long end)
+>  {
+>         struct vm_area_struct *vma, *prev;
+> -       unsigned long curr_start = start;
+>         VMA_ITERATOR(vmi, mm, start);
+>
+>         /* We know there are no gaps so this will be non-NULL. */
+> @@ -66,6 +65,7 @@ static int mseal_apply(struct mm_struct *mm,
+>                 prev = vma;
+>
+>         for_each_vma_range(vmi, vma, end) {
+> +               const unsigned long curr_start = MAX(vma->vm_start, start);
 
---------------QJMzZWGisNC6YWRFRRXAw0I8
-Content-Type: multipart/mixed; boundary="------------SSAIK0gF4zCfjDAjARSXUev3"
+Yeah that's nice :)
 
---------------SSAIK0gF4zCfjDAjARSXUev3
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
-On 3/26/26 14:26, Teddy Astie wrote:
-> Le 26/03/2026 =C3=A0 18:18, Demi Marie Obenour a =C3=A9crit=C2=A0:
->> On 3/24/26 14:00, Teddy Astie wrote:
->>>> ## Restrictions on lent memory>>
->>>> Lent memory is still considered to belong to the lending domain.
->>>> The borrowing domain can only access it via its p2m.  Hypercalls mad=
-e
->>>> by the borrowing domain act as if the borrowed memory was not presen=
-t.
->>>> This includes, but is not limited to:
->>>>
->>>> - Using pointers to borrowed memory in hypercall arguments.
->>>> - Granting borrowed memory to other VMs.
->>>> - Any other operation that depends on whether a page is accessible
->>>>     by a domain.
->>>
->>> What about emulated instructions that refers to this memory ?
->>
->> This would be allowed if (and only if) it can trigger paging as you
->> wrote above.
->>
->>>> Furthermore:
->>>>
->>>> - Borrowed memory isn't mapped into the IOMMU of any PCIe devices
->>>>     the guest has attached, because IOTLB faults generally are not
->>>>     replayable.
->>>>
->>>
->>> Given that (as written bellow) Borrowed memory is a part of some form=
- of
->>> emulated BAR or special region, there is no guarantee that DMA will w=
-ork
->>> properly anyway (unless P2P DMA support is advertised).
->>>
->>> Splitting the IOMMU side from the P2M is not a good idea as it rules =
-out
->>> the "IOMMU HAP PT Share" optimization.
->>
->> If the pages are mapped in the IOMMU, paging them out requires an
->> IOTLB invalidation.  My understanding is that these are far too slow.
->>
->=20
-> yes (aside specific cases like with paravirtualized IOMMU), but only if=
-=20
-> you have a device in the guest.
->=20
-> The problem is that that would force us to modify the ABI to have=20
-> "non-DMA-able" memory in the guest, which doesn't exist yet aside=20
-> specific cases like grants in PV.
+>                 const unsigned long curr_end = MIN(vma->vm_end, end);
+>
+>                 if (!vma_test(vma, VMA_SEALED_BIT)) {
+> @@ -82,7 +82,6 @@ static int mseal_apply(struct mm_struct *mm,
+>                 }
+>
+>                 prev = vma;
+> -               curr_start = curr_end;
+>         }
+>
+>         return 0;
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>
+>
+> I might be wrong about that, I've been staring at the screen for too long today.
 
-This would make the mechanism *de facto* incompatible with PCI
-passthrough.  That is unfortunate but not a dealbreaker for most
-applications.  It's quite annoying, though, because of dual-GPU setups
-where one GPU is paravirtualized and the other is passed through.
+No this is better, I've mulled this over, this is much better :)
 
-I don't think it necessarily needs any new guest ABI changes.
-As you pointed out, guests are not allowed to assume that P2PDMA
-works, so if the guest tries to DMA to these pages it's a guest bug.
-This means that whether the pages can be DMA'd to or not is not a
-guest-facing ABI.
+Sorry to be a pain Andrew - let me respin this right now.
 
-That said, this should not block getting this feature implemented.
+I will retain tags as this is functionally equivalent, I have checked it
+locally, confirmed repro solved, checked against AI review also.
 
->> How important is sharing the HAP and IOMMU page tables?
->>
->>>> - Foreign mapping hypercalls that reference lent memory will fail.
->>>>     Otherwise, the domain making the foreign mapping hypercall could=
+>
+>
+> --
+> Cheers,
+>
+> David
 
->>>>     continue to access the borrowed memory after the lease had been
->>>>     revoked.  This is true even if the domain performing the foreign=
-
->>>>     mapping is an all-powerful dom0.  Otherwise, an emulated device
->>>>     could access memory whose lease had been revoked.
->>>>
->>>> This also means that live migration of a domain that has borrowed
->>>> memory requires cooperation from the lending domain.  For now, it
->>>> will be considered out of scope.  Live migration is typically used
->>>> with server workloads, and accelerators for server hardware often
->>>> support SR-IOV.
->>>>
->>>> ## Where will lent memory appear in a guest's address space?
->>>>
->>>> Typically, lent memory will be an emulated PCI BAR.  It may be emula=
-ted
->>>> by dom0 or an alternate ioreq server.  However, it is not *required*=
-
->>>> to be a PCI BAR.
->>>>
->>>
->>> ---
->>>
->>> While the design could work (albeit the implied complexity), I'm not =
-a
->>> big fan of it, or at least, it needs to consider some constraints for=
-
->>> having reasonable performance.
->>> One of the big issue is that a performance-sensitive system (virtuali=
-zed
->>> GPU) is interlocking with several "hard to optimize" subsystem like P=
-2M
->>> or Dom0 having to process a paging event.
->>>
->>> Modifying the P2M (especially removing entries) is a fairly expensive=
-
->>> operation as it sometimes requires pausing all the vCPUs each time it=
-'s
->>> done.
->>
->> Not every GPU supports recoverable page faults.  Even when they
->> are supported, they are extremely expensive.  Each of them involves
->> a round-trip from the GPU to the CPU and back, which means that a
->> potentially very large number of GPU cores are blocked until the
->> CPU can respond.  Therefore, GPU driver developers avoid relying on
->> GPU page faults whenever possible.  Instead, data is moved in large
->> chunks using a dedicated DMA engine in the GPU.
->> As a result, I'm not too concerned with the cost of P2M manipulation.
->> Anything that requires making a GPU buffer temporarily inaccessible
->> is already an expensive process, and driver developers have strong
->> incentives to keep the time the buffer is unmapped as short as
->> possible.
->> If performance turns out to be a problem, something like KVM's
->> asynchronous page faults might be a better solution.
->>
->=20
-> Asynchronous page fault looks like a interesting and potentially easier=
-=20
-> to implement.
->=20
-> IIUC, the idea is to make the pages disappears on the guest behalf, and=
-=20
-> the guest would have to deal with the eventual page fault. Currently in=
-=20
-> Xen, a unhandled #NPF is fatal, but that could be tuned down for=20
-> specific regions and transformed into a #PF or another exception for th=
-e=20
-> guest to handle.
-
-Yup!
-
-> We have actually a similar need for SEV-ES MMIO handling, as we need to=
-=20
-> distinguish "MMIO-related NPF" (to paravirtualize through GHCB) to the =
-
-> other NPF; which needs to be configured in advance in page-tables (so=20
-> that the CPU choose between #VC and VMEXIT#NPF).
->=20
-> It would also need some form of para-virtualization coming from virtio =
-
-> or a new Xen PV driver for the guest to be made aware of this mechanism=
-=2E
-> I also assume that the guest handles properly that kind of event.
-
-On KVM, asynchronous page faults are purely an optimization.  I have
-a few concerns with relying entirely on them:
-
-1. Can guest userspace use this to crash the guest kernel?  What
-   happens if the guest kernel takes a fault in copy_{to,from}_user()?
-
-2. Can this be made to work with Windows guests?
-
-3. Could this run into a livelock problem?  Xen could tell the guest
-   that the page is ready, but by the time the guest gets around to
-   scheduling the userspace program, the page has been paged out again.
-
->>> If it's done at 4k granularity, it would also lack superpage support,=
-
->>> which wouldn't help either. (doing things at the 2M+ scale would help=
-,
->>> but I don't know enough how MMU notifier does things.
-
-As an aside, graphics very much needs huge pages.  On AMD, using 4K
-pages means a 30% performance hit.
-
->>> While I agree that grants is not a adequate mechanism for this (for
->>> multiples reasons), I'm not fully convinced of the proposal.
->>> I would prefer a strategy where we map a fixed amount of RAM+VRAM as =
-a
->>> blob, along with some form of cooperative hotplug mechanism to
->>> dynamically provision the amount.
->>
->> I asked the GPU driver developers about pinning VRAM like this a coupl=
-e
->> years ago or so.  The response I got was that it isn't supported.
->> I suspect that anyone needing VRAM pinning for graphics workloads is
->> using non-upstreamable hacks, most likely specific to a single driver.=
-
->>
->> More generally, the entire graphics stack receives essentially no
->> testing under Xen.  There have been bugs that have affected Qubes OS
->> users for months or more, and they went unfixed because they couldn't
->> be reproduced outside of Xen.  To the upstream graphics developers,
->> Xen might as well not exist.  This means that any solution that
->> requires changing the graphics stack is not a practical option,
->> and I do not expect this to change in the foreseeable future.
---=20
-Sincerely,
-Demi Marie Obenour (she/her/hers)
---------------SSAIK0gF4zCfjDAjARSXUev3
-Content-Type: application/pgp-keys; name="OpenPGP_0xB288B55FFF9C22C1.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB288B55FFF9C22C1.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
-
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-xsFNBFp+A0oBEADffj6anl9/BHhUSxGTICeVl2tob7hPDdhHNgPR4C8xlYt5q49y
-B+l2nipdaq+4Gk6FZfqC825TKl7eRpUjMriwle4r3R0ydSIGcy4M6eb0IcxmuPYf
-bWpr/si88QKgyGSVZ7GeNW1UnzTdhYHuFlk8dBSmB1fzhEYEk0RcJqg4AKoq6/3/
-UorR+FaSuVwT7rqzGrTlscnTDlPWgRzrQ3jssesI7sZLm82E3pJSgaUoCdCOlL7M
-MPCJwI8JpPlBedRpe9tfVyfu3euTPLPxwcV3L/cfWPGSL4PofBtB8NUU6QwYiQ9H
-zx4xOyn67zW73/G0Q2vPPRst8LBDqlxLjbtx/WLR6h3nBc3eyuZ+q62HS1pJ5EvU
-T1vjyJ1ySrqtUXWQ4XlZyoEFUfpJxJoN0A9HCxmHGVckzTRl5FMWo8TCniHynNXs
-BtDQbabt7aNEOaAJdE7to0AH3T/Bvwzcp0ZJtBk0EM6YeMLtotUut7h2Bkg1b//r
-6bTBswMBXVJ5H44Qf0+eKeUg7whSC9qpYOzzrm7+0r9F5u3qF8ZTx55TJc2g656C
-9a1P1MYVysLvkLvS4H+crmxA/i08Tc1h+x9RRvqba4lSzZ6/Tmt60DPM5Sc4R0nS
-m9BBff0Nm0bSNRS8InXdO1Aq3362QKX2NOwcL5YaStwODNyZUqF7izjK4QARAQAB
-zTxEZW1pIE9iZW5vdXIgKElUTCBFbWFpbCBLZXkpIDxhdGhlbmFAaW52aXNpYmxl
-dGhpbmdzbGFiLmNvbT7CwY4EEwEIADgWIQR2h02fEza6IlkHHHGyiLVf/5wiwQUC
-X6YJvQIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRCyiLVf/5wiwWRhD/0Y
-R+YYC5Kduv/2LBgQJIygMsFiRHbR4+tWXuTFqgrxxFSlMktZ6gQrQCWe38WnOXkB
-oY6n/5lSJdfnuGd2UagZ/9dkaGMUkqt+5WshLFly4BnP7pSsWReKgMP7etRTwn3S
-zk1OwFx2lzY1EnnconPLfPBc6rWG2moA6l0WX+3WNR1B1ndqpl2hPSjT2jUCBWDV
-rGOUSX7r5f1WgtBeNYnEXPBCUUM51pFGESmfHIXQrqFDA7nBNiIVFDJTmQzuEqIy
-Jl67pKNgooij5mKzRhFKHfjLRAH4mmWZlB9UjDStAfFBAoDFHwd1HL5VQCNQdqEc
-/9lZDApqWuCPadZN+pGouqLysesIYsNxUhJ7dtWOWHl0vs7/3qkWmWun/2uOJMQh
-ra2u8nA9g91FbOobWqjrDd6x3ZJoGQf4zLqjmn/P514gb697788e573WN/MpQ5XI
-Fl7aM2d6/GJiq6LC9T2gSUW4rbPBiqOCeiUx7Kd/sVm41p9TOA7fEG4bYddCfDsN
-xaQJH6VRK3NOuBUGeL+iQEVF5Xs6Yp+U+jwvv2M5Lel3EqAYo5xXTx4ls0xaxDCu
-fudcAh8CMMqx3fguSb7Mi31WlnZpk0fDuWQVNKyDP7lYpwc4nCCGNKCj622ZSocH
-AcQmX28L8pJdLYacv9pU3jPy4fHcQYvmTavTqowGnM08RGVtaSBNYXJpZSBPYmVu
-b3VyIChsb3ZlciBvZiBjb2RpbmcpIDxkZW1pb2Jlbm91ckBnbWFpbC5jb20+wsF4
-BBMBAgAiBQJafgNKAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRCyiLVf
-/5wiwYa/EACv8a2+MMou9cSCNoZBQaU+fTmyzft9hUE+0d5W2UY1RY3OsjFIzm9R
-/4SVccfsqOYLEo+S0vQMIIIqFEq3FCpXXwPzyimotps05VA8U3Bd7yseojFygOgK
-sAMOAee2RCaDDOnoJue01dfZMzzHPO/TVdp3OvnpWipfv5G1Xg96rwbhMLE3tg6N
-xwAHa31Bv4/Xq8CJOoIWvx6fcmZQpz01/lSvsYn0KrfEbTKkuUf0vM9JrCTCP2oz
-VNN5BYzqaq2M4r+jmSyeXLim922VOWqGkUEQ85BSEemqrRS06IU6NtEMsF8EWt/b
-hWjk/9GDKTcnpdJHTrMxTspExBiNrvpI2t+YPU5B/dJJAUxvmhFrbSIbdB8umBZs
-I3AMYrEmpAbh5x7jEjoskUC7uN3o9vpg1oCLS2ePDLtAtyBtbHnkA4xGD7ar8mem
-xpH9lY/i+sC6CyyIUWcUDnnagKyJP0m9ks0GLsTeOCA0bft2XA6rD6aaCnMUsndT
-ctrab42CV5XypjmC4U1rPJ8JQJUh1/3P48/8sMH+3krxpJ06KNWNFaUbaMTGiltZ
-7x9DngklSYrX0T+2G4kVXNmjaljwkoLahwLla2gUWwBSyofXdqyhQdwZsp01KXNQ
-UCyT/Pg+aDcm/E7OMV3d4lf7g/CSxiX2GSEe6BlhSz+Lmd7ZJ3g32M1ARGVtaSBN
-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
-EtJuZYM5blWncBOJCoWMnBEcTEo/viU3GgcVRw=3D=3D
-=3Dx94R
------END PGP PUBLIC KEY BLOCK-----
-
---------------SSAIK0gF4zCfjDAjARSXUev3--
-
---------------QJMzZWGisNC6YWRFRRXAw0I8--
-
---------------LW2qA8kgQi2s0bOYdBcsPyxu
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEopQtqVJW1aeuo9/sszaHOrMp8lMFAmnGu+4ACgkQszaHOrMp
-8lMWBBAApQAKUwrPoabseGgGZQvRglxrTdtnUiwwashJl45tK5+3m6pgmgDdSgl3
-0Mw94H0/evlKh15WpmmarOLijGBJoiseu5R/jOG7ijtP9e1yCEicYiYB/mut3D7H
-DHXMEWgYBQML/bC2uBaXlHMr/vZX6Y8U16V3jds28/EBDwGjZVWOHXebjAZxAY+S
-z7AyQajugoBxcRVnFBhnr4I0fs+2Od3zJ2QViQ0lf8/OYim1mGut/OqRVb3lHuPh
-oCrMOTAe9UzF8DkmpKZB9lnWQi4Qfeptv1caZm0BieWNilhWEvYs/Jth4MN3tN3K
-Uf6OjcTzL/xXPypJANnj65r9jAc7KVrKHEkjxfD5gCUjsuDb5tX/9+DFMq5RESRu
-mKNkC5kWaYWK7K9eGTnQKSpx6eQGc2NywsIP8OjV2nqctWNG7rdW5Xeo4gB54F7L
-efNFDDkAUrHRAZCitupMabjvxHJzWqlMbYg1trOVyMpzqJYgu1hWzHGbSdppS1vZ
-CMiBM1tIs2XV4Xj1sUHOL/WXh8OvZnzHZPW4d4/mwSNUPh4+ns6lBH952WVlj6OR
-m3bTlOyIibym4+S834s5y1wWg8fT00sAsbpK3FBlozBZd2d3c2NErf5hXwYyNZag
-9tWHCFxDEAuYvqRez6CDFAD7ZnpaxebUKvZ8LM/5FT+L1dvsuVI=
-=7b0G
------END PGP SIGNATURE-----
-
---------------LW2qA8kgQi2s0bOYdBcsPyxu--
+Cheers, Lorenzo
 
