@@ -4,133 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91F2910ED674
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:42:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E587010ED674
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:42:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06C756B009D; Fri, 27 Mar 2026 10:42:01 -0400 (EDT)
+	id 5C3BA6B009E; Fri, 27 Mar 2026 10:42:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 044576B009E; Fri, 27 Mar 2026 10:42:00 -0400 (EDT)
+	id 574346B00A2; Fri, 27 Mar 2026 10:42:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9C766B009F; Fri, 27 Mar 2026 10:42:00 -0400 (EDT)
+	id 48A956B00A3; Fri, 27 Mar 2026 10:42:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D855B6B009D
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:42:00 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 37FFD6B009E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:42:09 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63AD61B8C9E
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:42:00 +0000 (UTC)
-X-FDA: 84592107600.18.042CB1F
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 528D412000D
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:41:58 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=DO3QFfLj;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774622518;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E2B11B9830
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:42:07 +0000 (UTC)
+X-FDA: 84592107894.18.EB95A80
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 79CBF40010
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:42:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=f9GADw8e;
+	spf=pass (imf04.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774622525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nugzbSmXYxH79Cp7ObFsyTKICHKOQ5VI8ykZIBcaifc=;
-	b=s69uIxjHg9b8U4qsjskxfufoEKa6E435jfkOSnoiBjsyu6LL4j6mWKA1vLBSRsx5WPnIAb
-	SYTgOz9O9nkcXw3y6GeNDmGAPaDABuiS/MYblMMGhPsPHp3X79lEJUlQHxpJKxm/m+QarK
-	kRjyACkQax5/+VWg0NSY+3YEt06uE0g=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=DO3QFfLj;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774622518; a=rsa-sha256;
-	cv=pass;
-	b=tZRwL0WCTEyxymQAQcM+ym9PC3xjR7nBEEB0YiVBEi1LC2kuDaA+x895bwqHbCXa6CYK1r
-	pPsbAD0xcTee0s8jUIFqFDCD/pUMEx3+fVCNDX4Lc+zePeUm9KV1PXuK/bdyJeByu86B5G
-	jy41C5hSuShJQwwxB9B7hpY89y5T6as=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-66b582b72aaso296075a12.1
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:41:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774622512; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZkgStoXi0VEt/V/Tmd2Mvd5XL5JJoK5HzPl9cczNJrpWEt5TMitYv1VaZ6qnfUmcKt
-         MpneZgsNl3vMfXZd6DCAQRTHLPeWr3jA8QXGlJfe0gdk5CiztPEsPdnaJcM+d/+pl6sS
-         gDWRZ2VbG2sx92KmZ5szpbHsbwKBEpybSpTuVNn9R8SFEW6jX49YiLJe22EQ6Rl7raK5
-         SQ4IPQAB3Ry80XaLcN8zYQunxq9pd1vPneLbYwobpvKN4xU1RbBp/Dd54BGJKoyCh7mD
-         ahzd+A+d5ePvRy1V+zOwD3HPo11K9i2JmUwrOygG0WpeGJYs6IeDbzqrunKuFROtdK7j
-         kz9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nugzbSmXYxH79Cp7ObFsyTKICHKOQ5VI8ykZIBcaifc=;
-        fh=NpKKDTLU+eoG/VpR6y7s7+eX1dB41jMbE4uCg7LZz8k=;
-        b=Q7EaPO00HWX6pduEpKVxt8Cu+Imnigu5iyp0Jm1VhTewsCUmSBlJV3O4RahRqKrHzr
-         vWGjoYJpPLhIkf8/zs/04oha7iTc+1I+ySb4746pPHUd8iups9bFtizfbIA5TTafKwEH
-         j8NHEa2L1jjneXFLc0orbJwa+QJibQfeQoSvBym8DaITw+T/PpXvhNRC53Vacz6WYgn6
-         SIbr+izBr/gDPPvQr919oIJ4PnXcuX0VS2FWko+JRSrRnSTCd0sZhWa9Vujzi3BohpJv
-         MIyFoP89MdT+rDV0flfaJHE7fOBdFWre1aIGEGtTfoKaqjr3NUti5yQWIVxhTZp9gGRG
-         ynxw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1774622512; x=1775227312; darn=kvack.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nugzbSmXYxH79Cp7ObFsyTKICHKOQ5VI8ykZIBcaifc=;
-        b=DO3QFfLj3Mnk3zPKRduXvCypFKV7v5bSdFrFy+8My+Kyx+eWwGRZceQNc8JBdTiCMr
-         hrloCjRWmpyG52Z0wQsedq6Gr4fp0gclsRvA9N9rBX2WP0pOLPQTa/Th/8r9SGFO0GUS
-         mwB9ZgAMtAk39ZHYi56tDe0Gws/I2LdJsRNhUxLPZQ0NdPlqxGvIihlASV1SID0NJ9ti
-         rLtga7qrAgGpdJUcNg4Y+cpdXbd6UdixiDa8myPvsR9oMNcKptkXztwoUEhptYXdZUjt
-         P5JX5OwmLRIMwg4KtAOU4nUo+/N837QJu9kxy/YxLeJeWXnpKaev/x6mVdHjfmh2M+Qx
-         dUPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774622512; x=1775227312;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nugzbSmXYxH79Cp7ObFsyTKICHKOQ5VI8ykZIBcaifc=;
-        b=fngmel6nYz3R5roRkb5InwYYktHHgatd+AXGw+rApLPtqpRSZfyUHJzxxi5YCruc4G
-         yPKuHBMDcfgv84mdpTvNl4JNVSSwKF+xmSN3GzHr+87lehKUTMSdGxpUPYtefeYwxX6v
-         7wzaJcwSyk7EL5zXBKf8A0DTRKbzSiy5nb1L6nmqp6AvMpggwQBQcd+xS/TS5HjIB6JS
-         WzZ597zHAeH7WV22WcRCc87E8WHl09o2kCFMeMeWvKFjAX3pi4gfYREDQ3Q86kmTvXCl
-         AK5CuWGxfGa7ZLt1Qv0wzoYKfj0fP0u25MG5l4RE6aZCBVY0XGM8E4tK2/mSZ9xTKKPd
-         Kr1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUtlRl5rTTQ6GwK4QxO5ww3+ShbPyu60o/Kv2SWx7yfJkAl6gcimjxeUPnbUzIJzhgR4C10tFKLUg==@kvack.org
-X-Gm-Message-State: AOJu0YxWY/zN+7GRdXQWncf8/DxsCp4POg4F4hEo8AY3oh2qAmKMc8Nz
-	QyLsLcHNwUfyAdDC2JXWimtbisOy1SBomfi6fyOcGxdysS89m8hrpMw4Awis5XaTJFHxi9gZ9ST
-	TAqPrh0ppIZWGeLMO1JL4fMrzRxZ0g6WJ2Fxf43Edyw==
-X-Gm-Gg: ATEYQzxqp8ZrSGpeEgDxhybv3zWgyzK1Cdzrwa1TXXLa+o3w7Y0yp4pEsdE76KzKLOf
-	TP036quEdleo3K9P3Z9lxqBAP3+H5WmuPK0RTQx0wWsB+VAylPozaTBFGoaz5Q0T4MZ2BPOUDqB
-	NRdPjYnKXAzDgpKdmkEJ8l4kmU6r+/qcQ9EE4ytKSmm7c8+wA1I3N8KdU9j9E2kdjEOnuTpBZSr
-	JsEyNtcd6o53wjYZDjvdhGLCIqNoMgiD8bVeuMUwg6a85vpQHW0vcwvYSvvVo2sEygncQuyjbeD
-	5wkyMWvorxaNX6izRSD4atYAscrd5/54H3jonw==
-X-Received: by 2002:a05:6402:354b:b0:66a:50c2:6bd6 with SMTP id
- 4fb4d7f45d1cf-66b28e7293cmr1686849a12.23.1774622511672; Fri, 27 Mar 2026
- 07:41:51 -0700 (PDT)
+	bh=7bk0dNR0zbUSNuzz8HU1AITn/eIsQuxRxjKTkb9qTHA=;
+	b=SFCPTyRIxBsFTLsjwE5Hko6b1GZukCEcOrz+ZolpnV+7swBx+JqA7cP5AUiP+STek+Qzjk
+	SL/DJZWU1dxI+eP0Htynq2VeZpPXasYUNffn+aY8ukbKFzhba6wKLci8YqJwAMwJreaCoh
+	uybOgrLwrOfwhPw+1dKhdm+cr3v3/iM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=f9GADw8e;
+	spf=pass (imf04.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774622525; a=rsa-sha256;
+	cv=none;
+	b=vdmY+ZLS17/B4EpbV0szYZoXYPN7pvux9EP6WHpc1yMZ/IvG1fT+TGs4ihx6b4qETdKfJI
+	LXoRh2uA9oqy6hcb9RRc0mhONeRpyGLGC8tc59DCBILDXrTlkhVVpGZXhO29h7asoy6yRg
+	noNc5bExKEKmI+ITsmeEb52TXFYu7+o=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260327144202euoutp025973e1604532a7483810d2e0ee441af3~gucgZM9Fy3002730027euoutp02H
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:42:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260327144202euoutp025973e1604532a7483810d2e0ee441af3~gucgZM9Fy3002730027euoutp02H
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1774622522;
+	bh=7bk0dNR0zbUSNuzz8HU1AITn/eIsQuxRxjKTkb9qTHA=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=f9GADw8exPA2pVqpc0qboQT+Sy/jnB8ErnC5Qxv0djC6GCim3q4etY2PpzH24UY8O
+	 7Qep4pkrHEwLMs1ACeuzsMQ+fh0iZ+IbqDSH3iKHqqqJLg/2MCUB/uj6DQCJzOZpm3
+	 rD07b3C5yrAHKWmF8/mfyXaa3FgFSCYIyPSQnJ8E=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260327144201eucas1p2fba2f0b4d62780ba545ca81d1e42397f~gucgC2W412070520705eucas1p2u;
+	Fri, 27 Mar 2026 14:42:01 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260327144159eusmtip22ec2e6c7eb865005539396807c731900~guceHbtB72669926699eusmtip2n;
+	Fri, 27 Mar 2026 14:41:59 +0000 (GMT)
+Message-ID: <455f1419-77ed-419d-b53e-e787dbd638a8@samsung.com>
+Date: Fri, 27 Mar 2026 15:41:59 +0100
 MIME-Version: 1.0
-References: <20260327033335.696621-1-pasha.tatashin@soleen.com> <20260327033335.696621-10-pasha.tatashin@soleen.com>
-In-Reply-To: <20260327033335.696621-10-pasha.tatashin@soleen.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 27 Mar 2026 10:41:15 -0400
-X-Gm-Features: AQROBzDQzt0n5uJUWlk0xXXs0sfRPTiMoyJTGbGyDBSSRc0CqylzPeBQcXHKLw0
-Message-ID: <CA+CK2bCcrqvMVvqfzh4Mxctwi+Z1qGX52x3mQ0vCSrLvf808-g@mail.gmail.com>
-Subject: Re: [PATCH v3 09/10] liveupdate: Make unregister functions return void
-To: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com, dmatlack@google.com, 
-	pratyush@kernel.org, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 528D412000D
-X-Stat-Signature: qnf3zd1saespbaxeszqjeg41rsa66e9x
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] mm/slab: align kmalloc to cacheline when DMA API
+ debugging is active
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, "Vlastimil Babka
+	(SUSE)" <vbabka@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, harry.yoo@oracle.com,
+	akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	stern@rowland.harvard.edu, linux@roeck-us.net, andy.shevchenko@gmail.com,
+	hch@lst.de, Jeff.kirsher@gmail.com, Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <CABXGCsNDfuLQ64r=sMyJ0UYbzZT_j8xsH5h0gpAGTPwV64Qp2g@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260327144201eucas1p2fba2f0b4d62780ba545ca81d1e42397f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39
+X-EPHeader: CA
+X-CMS-RootMailID: 20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39
+References: <20260327055846.248829-1-mikhail.v.gavrilov@gmail.com>
+	<CGME20260327122625eucas1p10eabcb31aada4e11b5c2ebcff4cb3c39@eucas1p1.samsung.com>
+	<acZ3ZUXhFHpSXzYS@arm.com>
+	<d2ed7315-72ff-43f3-bfaa-995025cb9419@samsung.com>
+	<bfa5ff0a-8ef9-46cb-8881-396f71ed5be0@kernel.org>
+	<CABXGCsNDfuLQ64r=sMyJ0UYbzZT_j8xsH5h0gpAGTPwV64Qp2g@mail.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 79CBF40010
+X-Stat-Signature: u786rmf3dg5petgni4mccxtax63kfoqw
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774622518-905895
-X-HE-Meta: U2FsdGVkX19FsNK+7Myu4FI+/FiwKnKvDzKYjV8fTBE0O9KT5dXuC+UkGzgx7M8tA8V0OfVwheuyOxN/UPkNifdlhJWGnhX577+onyfarMP5gWck4O+bwF/8M/0DqGUXaa9axWtSACuRGMEM+inSAqr7+G07BxaEpBtZ8Q1e6TY+rXDZn3Y6Jt5gswBiYyR+z/RfXvfN4nCuHMDI5AMoKZcT+cwTINCEJvjDRfgi1hil3ufvsDgx0ZlFBzGZpjmC6iBc81W9KCXcu3LG/WvTI/V1ZmCvsbPbchVEGqAeHRdCnA5efF0Aw7Pixcv0aUWqq6EYhcbw2p3ptHUxCq1H+L5vuvCiYavrK6Yy28NP3jB+VVHQ0dB/p/UEQ41insfTL1q/KA4myIc8LVP+PXzXcrUQxmWVchF7rmr7OtbqZQ6dOSB4pXPDj2b9XDk6Ne3cp6LXRtjQjwdiqnBYk8zSt0OC/kwVhqJa615CQqr4fLsY2B+zeFUUSjVMXFvRQT6STVgdldZ7rCk8sASnsun21XkVSc2NHbdZrZVijGYDIxwhI4A0LeecmnHuEGY3t5/Iv1Fq2uytV6fDpaD1r/Ie5GWQwndJXEFH9TyZ/qx4od6RCiiITx+pCVU0pwe0mfDKsOFY1+2lWmzFhpjOZHk8bBwW+FtbToUBlnl75YRpE/Gby73oIpt36Sp0nbTu1bcIN63jlnm526jW8qUVIrNM6XXjBQLPYKLPhhVX5uGdHXIxhCkdqNIo40qQAYz4X3rPna+f3rO/I+ZvP/7ojxVkvdQb5V1EnQceBcrC0jtdadhDq+eyuzxDBvpeK6JrA5wculU+PMg1qIjWnjc9giEBOskxG9c3xJzalsuufsdMxGCey52oRdDIhJEVgAiSCDyKNVJ/rEQ38qf1Lt7HxGBK9f2nRnb6WVgPjtjGSUR3IxgE8F6GRFV8Ra5br6YUVGnXFSraeKcrB8NqlavaBmt
- mNMpTgUm
- zCWfCmk6hFkrnCs97y2R4rwrrLdTEMj+pixYavzr8lp8wuEoJVC3Y2ihiXOCxVyvbz/DC29H9uGxseru2GToCTSD9efCmVjyOrPDyKVbmPN5Gg9XkkMtOotvG7dGFhtMpr9jilK5INY9FlAtcOsaWyPb909YtX83c7A1hHJpVvoXD3cGRLHFTumv+MjhF5AZqtnzGi2P5GSMFdMbKJzYoYT2pgN7Q1WxxBa70z3QVLXhglCN4PevnFxhLmsDDp1E06UnIJcrEGo4BSV3QEPVQWNK4clcqPUPBS2lQ4+Ujxy2kyVYHrYcKGP6NxdJ848RyuDlSUBJuwK4VeiqJKtqldMpA+g==
+X-HE-Tag: 1774622524-14554
+X-HE-Meta: U2FsdGVkX1/10ieHgASWrdpuN5ijn6PFfUMzUlxYzv2ap3WFxbuwpRq/Bn+RadPpm79Fj7dhDTNbYa2o0yztqYk4QbUj8n690/mH87CvUfq5QfX6Zd+71QFus9Jc1kvqMTC4jCQ1GBVmHTonBSzZqfZHgurAUH4eCDsDM9bYo7GFGWjYghlNVyAo5YySRJw2AjZdieqcFaNV0nPF1qM93+kO+wsfU6Ps5ztDLRn+k8goWTZS1IfecuRjPI01q8RK9EeEdpcmB/u2UI26rg8hRh72HHUrbwGJBT4gCvZyuPe8qR7rfy3TtiXmJSuUZ8bmBr1WAPAW4w+kvrWYOy8Mj25ssyvre/f7LyQURvkd3UrvLZY3ZYAyGHA/68Av2jaQaiX5uO0X70p49qDjj5C3ehDQSWQ/lLuarAkuuwq82buZ3OvL0RM3jvv3mVazE8sgwOkjIcPLtjd+rA9sUBb4ji7IJwENjO7VFMxAADGBUyzTy5OTM8aPeJvfO5bQbtz51UOONDf3L+rz3T25T6g6cUM6V+4IsW1QFSWMy8T1WbkO53nzZ4Hd6iuV4UK2G1oh0DItq7u6mhTSMGF1X8QNWnyEHjOiiaSxVBmmRteQoPun+IyT4X2OtC6PKUmKP/lQgC66/qKhxsmM/oYjb+Pwohuieh6fSm2DCsxuKzkNN/8dTX5/MFYzX7g0VrYysdxYLMxi4D6QwQkwIAzHwIioG+j+sot6CKHawvJH0RvlhBjJ2FCGCnBsM8kHubhzvIdr99l0vUkOJZ5UMqHKX+ZctmJIC657XyUk9jv4UtY4TIK0SSmSepk2exLrKUVXYYjZoyJGcfpxdgVRHFpAd3JPBRrfI9H9VVc0oXOjdlEa4x6781ZiOH3rTpNAL75zTYiIrpx/YYehHz9uc6EJo3fQ9Tb70/4G11+rSgQ8Mk0DAI2TJfm1nScKU/D1+40INcAADkNp1/fUMkPAZYgr83k
+ Pu0QwBnf
+ tPNoo4KUJFWA4aESO9zukLMgPA5MgUl5KvE3ZQvH2lW8iAsowoUrkYFzOSc3NgpjdMqYRX1UdG0TawQ5kzFrR5RaFzbDLVz0nWe5F2yQIsvtC7kllTMop4alZQBnKAdKftbwaAgPdL623dMf25I2K4pprIvIy4SV7dxLw6ORh5qgV+oXQpelLHA7eloQkF6t1E6JFfvPoWsDhrz8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,173 +113,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 11:33=E2=80=AFPM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
+On 27.03.2026 15:37, Mikhail Gavrilov wrote:
+> On Fri, Mar 27, 2026 at 7:30 PM Vlastimil Babka (SUSE)
+> <vbabka@kernel.org> wrote:
+>> So what about Harry's proposal [1]? Mikhail seems to be on board? [2]
+>>
+>> It seems it would achieve the goal that enabling DMA_API_DEBUG doesn't
+>> change the kernel behavior? But I don't know this area too well so
+>> maybe there's a catch.
+>>
+>> [1] https://lore.kernel.org/all/acYlxRBhSMcwBnja@hyeyoo/
+>> [2] https://lore.kernel.org/all/CABXGCsO_C8%2B%2B4%2BoPfZ%2BbQyrBnEGy5JFpXHkGNpfy%2B8%3D5BvVNfg@mail.gmail.com/
+> Hi Vlastimil,
 >
-> Change liveupdate_unregister_file_handler and liveupdate_unregister_flb
-> to return void instead of an error code. This follows the design
-> principle that unregistration during module unload should not fail,
-> as the unload cannot be stopped at that point.
+> Yes, I've already sent v2 based on Harry's suggestion:
+> https://lore.kernel.org/all/20260327124156.24820-1-mikhail.v.gavrilov@gmail.com/
 >
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  include/linux/liveupdate.h   | 14 ++++++--------
->  kernel/liveupdate/luo_file.c | 14 ++------------
->  kernel/liveupdate/luo_flb.c  | 11 +++--------
->  3 files changed, 11 insertions(+), 28 deletions(-)
->
-> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-> index 73ca84de3eae..2ae27711ac41 100644
-> --- a/include/linux/liveupdate.h
-> +++ b/include/linux/liveupdate.h
-> @@ -229,12 +229,12 @@ bool liveupdate_enabled(void);
->  int liveupdate_reboot(void);
->
->  int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)=
-;
-> -int liveupdate_unregister_file_handler(struct liveupdate_file_handler *f=
-h);
-> +void liveupdate_unregister_file_handler(struct liveupdate_file_handler *=
-fh);
->
->  int liveupdate_register_flb(struct liveupdate_file_handler *fh,
->                             struct liveupdate_flb *flb);
-> -int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-> -                             struct liveupdate_flb *flb);
-> +void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-> +                              struct liveupdate_flb *flb);
->
->  int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp)=
-;
->  int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp)=
-;
-> @@ -256,9 +256,8 @@ static inline int liveupdate_register_file_handler(st=
-ruct liveupdate_file_handle
->         return -EOPNOTSUPP;
->  }
->
-> -static inline int liveupdate_unregister_file_handler(struct liveupdate_f=
-ile_handler *fh)
-> +static inline void liveupdate_unregister_file_handler(struct liveupdate_=
-file_handler *fh)
->  {
-> -       return -EOPNOTSUPP;
->  }
->
->  static inline int liveupdate_register_flb(struct liveupdate_file_handler=
- *fh,
-> @@ -267,10 +266,9 @@ static inline int liveupdate_register_flb(struct liv=
-eupdate_file_handler *fh,
->         return -EOPNOTSUPP;
->  }
->
-> -static inline int liveupdate_unregister_flb(struct liveupdate_file_handl=
-er *fh,
-> -                                           struct liveupdate_flb *flb)
-> +static inline void liveupdate_unregister_flb(struct liveupdate_file_hand=
-ler *fh,
-> +                                            struct liveupdate_flb *flb)
->  {
-> -       return -EOPNOTSUPP;
->  }
->
->  static inline int liveupdate_flb_get_incoming(struct liveupdate_flb *flb=
-,
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index dd55e5e74d69..761e8f7cfc82 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -884,25 +884,15 @@ int liveupdate_register_file_handler(struct liveupd=
-ate_file_handler *fh)
->   *
->   * Unregisters the file handler from the liveupdate core. This function
->   * reverses the operations of liveupdate_register_file_handler().
-> - *
-> - * It ensures safe removal by checking that:
-> - * No FLB registered with this file handler.
-> - *
-> - * If the unregistration fails, the internal test state is reverted.
-> - *
-> - * Return: 0 Success. -EOPNOTSUPP when live update is not enabled. -EBUS=
-Y A live
-> - * update is in progress, FLB is registred with this file handler.
->   */
-> -int liveupdate_unregister_file_handler(struct liveupdate_file_handler *f=
-h)
-> +void liveupdate_unregister_file_handler(struct liveupdate_file_handler *=
-fh)
->  {
->         if (!liveupdate_enabled())
-> -               return -EOPNOTSUPP;
-> +               return;
->
->         guard(rwsem_write)(&luo_register_rwlock);
->         luo_flb_unregister_all(fh);
->         list_del(&ACCESS_PRIVATE(fh, list));
->
->         module_put(fh->ops->owner);
-> -
-> -       return 0;
->  }
-> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-> index f8348138de70..8f3c9c63e320 100644
-> --- a/kernel/liveupdate/luo_flb.c
-> +++ b/kernel/liveupdate/luo_flb.c
-> @@ -492,21 +492,16 @@ int liveupdate_register_flb(struct liveupdate_file_=
-handler *fh,
->   * owner module (acquired during registration) is released.
->   *
->   * Context: It is typically called from a subsystem's module exit functi=
-on.
-> - * Return: 0 on success.
-> - *         -EOPNOTSUPP if live update is disabled.
-> - *         -ENOENT if the FLB was not found in the file handler's list.
->   */
-> -int liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-> -                             struct liveupdate_flb *flb)
-> +void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
-> +                              struct liveupdate_flb *flb)
->  {
->         if (!liveupdate_enabled())
-> -               return -EOPNOTSUPP;
-> +               return;
->
->         guard(rwsem_write)(&luo_register_rwlock);
->
->         luo_flb_unregister_one(fh, flb);
-> -
-> -       return 0;
->  }
+> It adds a dma_get_cache_alignment() >= L1_CACHE_BYTES check in
+> add_dma_entry() instead of changing ARCH_KMALLOC_MINALIGN, so
+> enabling DMA_API_DEBUG no longer affects allocator behavior.
 
-A question from Sashiko:
-If the file handler is unregistered and freed by its owner, its dependent
-FLBs might still retain a stale pointer to it. When an FLB is later
-unregistered and calls liveupdate_unregister_flb() with this stale fh
-pointer, could luo_flb_unregister_one() dereference the freed memory and
-cause a use-after-free?
+This looks like a good fix, but let me think a bit more about all 
+possible cases.
 
-No, there is no UAF possability here.
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-1. FLBs do not keep pointers to file handlers.
-The relationship between file handlers and FLBs is asymmetric. A
-struct liveupdate_file_handler maintains a list of its dependent FLBs
-in its flb_list. And, the struct liveupdate_flb only tracks the number
-of handlers using it and its position in a global list. It does not
-store pointers back to the file handlers.
-
-2. Manual FLB unregistration: When a subsystem calls
-liveupdate_unregister_flb, it is responsible for providing a valid fh
-pointer. Since the subsystem typically owns the lifetime of the fh (a
-static structure in the module), it is the caller's responsibility not
-to pass a stale pointer.
-
-3. Atomatic FLB unregistration during
-liveupdate_unregister_file_handler function, explicitly calls
-luo_flb_unregister_all(fh): luo_flb_unregister_all(fh) iterates
-through the handler's flb_list, calls luo_flb_unregister_one for each,
-which removes the luo_flb_link from the handler and frees it. This
-ensures that when the handler is gone, all its associations with FLBs
-are already destroyed.
-
-Pasha
 
