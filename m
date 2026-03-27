@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F306010BA45E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:20:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CAF110BA45E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:22:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 456316B009D; Fri, 27 Mar 2026 05:20:24 -0400 (EDT)
+	id E1E876B00B2; Fri, 27 Mar 2026 05:22:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42DF16B00A1; Fri, 27 Mar 2026 05:20:24 -0400 (EDT)
+	id DCE8C6B00B3; Fri, 27 Mar 2026 05:22:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36BA96B00A2; Fri, 27 Mar 2026 05:20:24 -0400 (EDT)
+	id CBD7C6B00B4; Fri, 27 Mar 2026 05:22:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 28E336B009D
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:20:24 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BEC97BE4A2
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:20:23 +0000 (UTC)
-X-FDA: 84591297126.29.D8A8C59
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 700A920003
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:20:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GrmxH8jv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="KS03rM/9";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PPV76cpg;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aPnrj2AD;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B99E96B00B2
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:22:37 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 606DBB62B6
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:22:37 +0000 (UTC)
+X-FDA: 84591302754.20.E518E53
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 378D840007
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:22:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ShipSKBm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YKqR9eHG;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ShipSKBm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YKqR9eHG;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774603221;
+	s=arc-20220608; t=1774603355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V8BMCUzJxEw4enY0q6sxGqyucLFct5YuV2nEkJy/Wlg=;
-	b=MnmDdypKkuf6SUOMMCWKcLQ1g1uhWEN1vSa+DR/gPvvxXfZQj/pYhnAyADCcUmLKbchb9R
-	JIBcP30zmlvTE3qlKoPy3KdNcJndiRoIocGTcIQjb+iUHEH9O8RCKoqjGNUB85c8Lm6jDX
-	MApyom0phGC2IEfZcmmNeLNnHvrMV60=
+	bh=ygC73CNH/CmmzewfyfacproPElG15wSQnaobdyquY2w=;
+	b=UGPFyopAYOgQLbCqkU3iZSMo8k2sDjSqkv8S7+IsNyz/2vRF8xVmeJz23sBQ+Jczlenrj6
+	so1NM27wx0Pkh5ZsAFGE99BxPyTuDxbOt2OgfsBD6AqPQYBbtwpXDi6zyLb63KeWr0rh5Z
+	CLwMc7+7Q7kCb7whPv3aoDR3zS0uyv4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GrmxH8jv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="KS03rM/9";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PPV76cpg;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aPnrj2AD;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ShipSKBm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YKqR9eHG;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ShipSKBm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YKqR9eHG;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774603221; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774603355; a=rsa-sha256;
 	cv=none;
-	b=ZcWg97Lj8Y5ZiVzVS9ML9gtgwmFv0vZgfBqsEUYWUFY4f9WOZK0YtvHwFrBFREFaXMasov
-	4qx8V5RTa6VhLt1jgbqSaa8RSi/amuwSsQRxb926R9t/QfLjYnKTWdPLlLQQvCelv8twrr
-	Mn2hcjIQEsbr52yVo3UO1eD5Q7J7cNM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=yBvH+Fk+zfbjXdv/4Vpd91HijGV6MYoMiQ4QAVEqwD9zQbeuhXQK9N8q3gx4JyILXwHkXT
+	jBgvcMpHWz9cPa5Ktr0n6iQfYVAJVwwXEO4gNASnT6t+o0LVerAWp3XAVdpJfsdYrDPSGf
+	VMlsMt5lOFuKOHPdj+DtsOzAxwc/Ga4=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EA8EC5BCD1;
-	Fri, 27 Mar 2026 09:20:19 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B09684D1C7;
+	Fri, 27 Mar 2026 09:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774603220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1774603353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V8BMCUzJxEw4enY0q6sxGqyucLFct5YuV2nEkJy/Wlg=;
-	b=GrmxH8jvI5Dl/g9vZ8ywd9Rd1xB9Ml8unfQrHgoBnENTJvxfev1UIPNSG5lEcOm53sSOqa
-	TngjHodPi2TNsy4vDSobgxkzf3ZKV1tl/WR98vVWxWw///pjEJmCfOUneKJIU74l1J9F+8
-	ZYU62stgAEUOht+DRz5RtZfW0g8pJo4=
+	bh=ygC73CNH/CmmzewfyfacproPElG15wSQnaobdyquY2w=;
+	b=ShipSKBmtXEHT0h3k+lvUF39jBsEEmEH01pddgt+250FVSiJpZwYhHoiJUaJ+ZjMk/m+fM
+	pWyptCFlDOJFaw4BqHVTrcPA1Bu65MFaH3LoOkQPW3pWEGwxQVjz7G3UroPkKXA8zLIYWX
+	oB8m6aNaNnZlXuV/OsIYsHf7uaiFiZ8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774603220;
+	s=susede2_ed25519; t=1774603353;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V8BMCUzJxEw4enY0q6sxGqyucLFct5YuV2nEkJy/Wlg=;
-	b=KS03rM/9/xmpgvlQzeRsTtMSzr3DQ0N278jP82kwrYDCSbypzkC+EcLpaO5iAqcV251DOU
-	2x41mJ3R2IhEOjAA==
+	bh=ygC73CNH/CmmzewfyfacproPElG15wSQnaobdyquY2w=;
+	b=YKqR9eHGoyemf7oCkPL4jPwUYfQo+rwYXwLblHlIeShIoMgY/o8bGQ/Nm5fpiA2aZPGaj0
+	kUDlmDRYuYvc18DQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774603219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1774603353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V8BMCUzJxEw4enY0q6sxGqyucLFct5YuV2nEkJy/Wlg=;
-	b=PPV76cpgvLHlgb00TPtC+bK/qeu0+6dYlFWyXQwkE9Z9LAH2PMK13UQIDLU1WYPoN6h41o
-	Z3TVd+cgaLQKTBicrjKP6FwKaVpE4h3kBLeed2T3CWvtF2wTyEVBcnW6QfMj5OqwjGieN2
-	QIp56fxMSeWT8n7oDBBf+CRKHortd9k=
+	bh=ygC73CNH/CmmzewfyfacproPElG15wSQnaobdyquY2w=;
+	b=ShipSKBmtXEHT0h3k+lvUF39jBsEEmEH01pddgt+250FVSiJpZwYhHoiJUaJ+ZjMk/m+fM
+	pWyptCFlDOJFaw4BqHVTrcPA1Bu65MFaH3LoOkQPW3pWEGwxQVjz7G3UroPkKXA8zLIYWX
+	oB8m6aNaNnZlXuV/OsIYsHf7uaiFiZ8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774603219;
+	s=susede2_ed25519; t=1774603353;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V8BMCUzJxEw4enY0q6sxGqyucLFct5YuV2nEkJy/Wlg=;
-	b=aPnrj2ADkyBHtcFhud0BLMEr/TY7XjVo7TGptxQJnnOzGE/C7L8fyKDi4b1e9d8ZDD9aK+
-	Ymq8ki4JAqvAz5AA==
+	bh=ygC73CNH/CmmzewfyfacproPElG15wSQnaobdyquY2w=;
+	b=YKqR9eHGoyemf7oCkPL4jPwUYfQo+rwYXwLblHlIeShIoMgY/o8bGQ/Nm5fpiA2aZPGaj0
+	kUDlmDRYuYvc18DQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 25F0E4A0A2;
-	Fri, 27 Mar 2026 09:20:19 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E13E84A0A2;
+	Fri, 27 Mar 2026 09:22:32 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id L7TvBdNLxmkhFgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 27 Mar 2026 09:20:19 +0000
-Date: Fri, 27 Mar 2026 09:20:17 +0000
+	id RwW2M1hMxmlgGAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 27 Mar 2026 09:22:32 +0000
+Date: Fri, 27 Mar 2026 09:22:31 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -111,24 +111,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, Jianzhou Zhao <luckd0g@163.com>, 
 	Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH 2/3] mm: abstract reading sysctl_max_map_count, and
- READ_ONCE()
-Message-ID: <357u5es4z7jjnpkyefubvlygpkcinqomnyg233ra6geeamq35y@fuor6y4es3cp>
+Subject: Re: [PATCH 3/3] mm/mremap: check map count under mmap write lock and
+ abstract
+Message-ID: <fsifgilp2ra7cagtlp3x4jmm32plow7wgwfytmvtw7kq5veocp@xvcqplpyw3ia>
 References: <cover.1773249037.git.ljs@kernel.org>
- <0715259eb37cbdfde4f9e5db92a20ec7110a1ce5.1773249037.git.ljs@kernel.org>
+ <18be0b48eaa8e8804eb745974ee729c3ade0c687.1773249037.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0715259eb37cbdfde4f9e5db92a20ec7110a1ce5.1773249037.git.ljs@kernel.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 700A920003
-X-Stat-Signature: do55tn9o71nqb8uueuf6roimgisq368n
+In-Reply-To: <18be0b48eaa8e8804eb745974ee729c3ade0c687.1773249037.git.ljs@kernel.org>
+X-Rspamd-Queue-Id: 378D840007
+X-Stat-Signature: 5mfx7xqcp1s6z1wnf7rb6jud1e6jcxeq
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1774603221-239707
-X-HE-Meta: U2FsdGVkX19a9YiVJ8GaFngwS0HZP7bbdqt8jWgXCOUF1M1OSdg2wFg5UnMS8m0x4C+LfXNnb/0pu2H8Js+IjaavBqjgorUL1wiS5WmLtP9qnLi8PnltZD0jo2gaW90KOYfa9aG8hbw6+6OVull1+OYadsCI3/k73jfrZWLKI5HFsK7KkXhMKfutsGXkYO7EcNmfnthl/gnmm2uQbTcG7wznU4vDCXJG462iG4HmfQBiJgtzrygThG1rPkqAzM/rOZih7VgQ22vXm0/JYLyi6o0Xpq4qra1G7Yc85RNX+SfV9Sq8Li5BoXdkqwyhLnu5h+vBiUYzSb3lz9oOnqxu5by1k4l9fCQ5IqYmVGJi5YZD3LNC7NRJztlBPMzAi+9Yq3b8pDEc0+Yx53Gpmp/9pfmyoOSrw0G/7CQ95uYMovASZodsKIDjM2APDD0z2Z+RAtDzNHyPfZRAadoKcAwTu4n4g//bHm3Vu12BrviSEKFsGCH1vKBhH7K8Lgxe4G5qClclku0j9AWTX27r5AltTwGdBaDcVzY5bReZOI8PO/YFSX4K3C9p+hyMBKdDYjmoLIrzDNj5lldYtFbygzWApk2i/e4YN6qlSnCryaW3dFaW23hDj6mDbt9G0hG709PAyy++M1PnPWoKoKVVzp3+GGOe2nn/4Q9GSGdLMic9ah1BjOEm9swQR7PfZtUq9WfkA2ZZliJjWo/xWjfcpST31FneQ6ha77R3umRtelnKsNfmZab1/3Wo2lmqIkDdIMLGqEgeLfMgtIabbcqAYVd+MR9HksJf8bRBeV9apVH6/7P0SyA6QFUzBQJeqQgJ+U6XmdUmAfQxhhaICKKBCHXykcwqn/vEO+A4fdJmt+WFeGryvaOdWh0TJPMVW+jdcHiB7AWUnk4naTrb+LNo7kOjza6bcMIReFpxso5G2rEjjRZH1eAV6IXWHMbITHPCsEohgcM9jD0NgQaMhbB9DqF
- RORz6LDY
- OXyz0wVZpkeS9O1JB5xxs8Jxm01c8lhWTIKL1L7E1oyIQejMUl7RXRL0O6HereUJl38Ad0+FcXBlK/a2JEYSW/40Md6qKoc8Gt3myNUEVbKexg9pvmszHqqNr5yab+HUsaBKB08UMIJdHkE2aYJQV9F1UkQBPi0LRQZKNzSGGlLSrPjtjhaEuJg8F0wzISsofEQXq+XvzfFRmmEk0pRgNqhNU74EwoS7UAheH0kWui0M5Ll8tTZtqEkj18ddF/ksl1FqSGU+AjqW7kUmfP74lo/9BP/aFZNyuBPsLz9Xyr7sggqJhas9S/Yl26hCnDiMBLNpqHB0ZNQjREYbuSlZB3kPBevn4ueVwgBQskW68FJTJxiK3QUbJcf8fmodcNK/UTEvWvl4D0x6U/1GnWDLsBiHdHg==
+X-HE-Tag: 1774603354-277173
+X-HE-Meta: U2FsdGVkX19vefpBncO22TK0MJiM392rIjID6DkK69/h/WQ/Jj3mLsNqqOQH5TDxQdzhF3980vGLCdY6yP8bYm2LfGpxGshBgYG4AsvCbSKR/pQa0AHPk6AMl8Xkxfb2qK7+HBooLvhe+7T6sgm83ua0npq8a255lZBGLL1NiAYdrArmO3PAs1tDqXhOwKO6bXJn6s3yW5exayCladB8I37TG3NRAqSe31AnYbZVV2TwRBJLuElAWswixIKvyUI0K4jdEBsGzJClnu0v1VKYS8IAEaKMnVcC5jXnpzymlf5e0YfubKgpo4ZR30rMvd4og7FsozS6mntWr4w2dNV2Vm7hfm9k6fsGOeiyPh715FFC7E2RV4icqKovvXyFTddbgABAtiNL1ieDXbkChBEbpbzB6LmfG7bxtmL37xBStnHuWkUy9G61yz7LVVSliVuF6sxjp0Bn+MZbhcef6UhToVbeJiHvzihOjOT1chMpibw5iF4ePRCUCLMqDJjau7yVg+8XSiLj9brteq61AK3/8Jp6MoZqlr0w3M5kiyLgY5VD+hXAYnDaSnMHsEXaPrRPtI3F72RSB9P/Q6yVNv8ODGWbvmJKjOsrtkEnhnqHltH5P8XDqDL9T2+2Lw2D3k9Q2tMZ1O3t0gzli3/7ig6QwK0PvrT7WyCnShz4XlPXGhnAZJDPLxVSpcAyrT4edVNyEf8uD16nAovmYMcaFWbHFiP898xJNVDrGt/6TsvOYuXY8wJpoAA/Cpd2xgeLnvjL4FSzdgCU2Ng0LqyRSSC8oaJbTLnf91dwI0iWZ1cLsNiECJKcxl8W2H38227hutCQDlRpxdXLcYOgtpbAhdmNSU6yeIbTbK/z9l5DoNJpZrgoG/FMM/jSmQpSTgXyNIP7qWP/OPrp+WnhewbqgfvQ6/L2wkhiCikOt+lyqdljaN1hfVNYMlU19JnMGuSyTZ48+rNdxiX6xgJo8jf77d6
+ OANOESUj
+ PjtQKuweJ1XC9GU7THc4BUUoaUk/LJN5HbFrVDCmSyXh9WbJoYNCrX2OGGgLqpMbMFrApy41pVFvancaywkKGrxDDksjeU0TmrEJk85QRFvc2yL6pECPWOJHG9G7HBQak9yOmMRFQwRjFyIudO8RcLUSfM9jn/FFeigZ5acwNAvL8QLNt0H+vwAo5EmesRK2aJUn1IGvH0vrJKV7K1brV+7TQVbKYREtnhQwZGip6fZwovXnvGzD6ot5QIE0qcTeEuIharRT0nh+erRP+qCO5TjS0AwuKJAovC8EvS+elF8bNAkN3tTJfsNVh24JmnVmuzaxXRWC4kpXR44H8uxDE5Miyx9t+xxkJ57kZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,22 +135,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 05:24:37PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> Concurrent reads and writes of sysctl_max_map_count are possible, so we
-> should READ_ONCE() and WRITE_ONCE().
+On Wed, Mar 11, 2026 at 05:24:38PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> We are checking the mmap count in check_mremap_params(), prior to obtaining
+> an mmap write lock, which means that accesses to current->mm->map_count
+> might race with this field being updated.
 > 
-> The sysctl procfs logic already enforces WRITE_ONCE(), so abstract the read
-> side with get_sysctl_max_map_count().
+> Resolve this by only checking this field after the mmap write lock is held.
 > 
-> While we're here, also move the field to mm/internal.h and add the getter
-> there since only mm interacts with it, there's no need for anybody else to
-> have access.
+> Additionally, abstract this check into a helper function with extensive
+> ASCII documentation of what's going on.
 > 
-> Finally, update the VMA userland tests to reflect the change.
-> 
+> Reported-by: Jianzhou Zhao <luckd0g@163.com>
+> Closes: https://lore.kernel.org/all/1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com/
 > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+Shouldn't this have a Fixes: and go to stable?
+
+> ---
+>  mm/mremap.c | 88 +++++++++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 75 insertions(+), 13 deletions(-)
+> 
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index ba6c690f6c1b..ee46bbb031e6 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1028,6 +1028,75 @@ static void vrm_stat_account(struct vma_remap_struct *vrm,
+>  		mm->locked_vm += pages;
+>  }
+>  
+> +static bool __check_map_count_against_split(struct mm_struct *mm,
+> +					    bool before_unmaps)
+> +{
+> +	const int sys_map_count = get_sysctl_max_map_count();
+> +	int map_count = mm->map_count;
+> +
+> +	mmap_assert_write_locked(mm);
+> +
+> +	/*
+> +	 * At the point of shrinking the VMA, if new_len < old_len, we unmap
+> +	 * thusly in the worst case:
+> +	 *
+> +	 *              old_addr+old_len                    old_addr+old_len
+> +	 * |---------------.----.---------|    |---------------|    |---------|
+> +	 * |               .    .         | -> |      +1       | -1 |   +1    |
+> +	 * |---------------.----.---------|    |---------------|    |---------|
+> +	 *        old_addr+new_len                     old_addr+new_len
+> +	 *
+> +	 * At the point of removing the portion of an existing VMA to make space
+> +	 * for the moved VMA if MREMAP_FIXED, we unmap thusly in the worst case:
+> +	 *
+> +	 *   new_addr   new_addr+new_len         new_addr   new_addr+new_len
+> +	 * |----.---------------.---------|    |----|               |---------|
+> +	 * |    .               .         | -> | +1 |      -1       |   +1    |
+> +	 * |----.---------------.---------|    |----|               |---------|
+> +	 *
+> +	 * Therefore, before we consider the move anything, we have to account
+> +	 * for 2 additional VMAs possibly being created upon these unmappings.
+> +	 */
+> +	if (before_unmaps)
+> +		map_count += 2;
+
+oooh, shiny shiny diagrams.
 
 -- 
 Pedro
