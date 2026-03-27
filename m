@@ -4,129 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E66A10BA45E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:23:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F288010BA45F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 09:25:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA9FA6B00B1; Fri, 27 Mar 2026 05:23:18 -0400 (EDT)
+	id 3C2F96B00B6; Fri, 27 Mar 2026 05:25:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5A306B00B3; Fri, 27 Mar 2026 05:23:18 -0400 (EDT)
+	id 3770C6B00B7; Fri, 27 Mar 2026 05:25:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C49E56B00B4; Fri, 27 Mar 2026 05:23:18 -0400 (EDT)
+	id 288E86B00B8; Fri, 27 Mar 2026 05:25:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AF6ED6B00B1
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:23:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68DC41A0A88
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:23:18 +0000 (UTC)
-X-FDA: 84591304476.07.7AD00B2
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3723514000E
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:23:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PzfRGWoT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=npb1ZL5v;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PzfRGWoT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=npb1ZL5v;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 107076B00B6
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:25:33 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1CAD8D8EC
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:25:32 +0000 (UTC)
+X-FDA: 84591310104.22.607D074
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2729D80004
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:25:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WmaF744H;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PzfRGWoT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=npb1ZL5v;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PzfRGWoT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=npb1ZL5v;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774603396; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WmaF744H;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774603531; a=rsa-sha256;
 	cv=none;
-	b=ZqWARhFTDML5kWVyT9E4oJUt0JKVIjM4uhNHBnKzs3LDH8WG74k5iVSnu9SgNM7tX758SC
-	9trgAayGQvQBHjFMcF4HwFKNM6Pi1uMS5FW2UXxixT9+LH0zJTVKCwOjASwgj0LdU69kc2
-	XQ9V49bA5lr3cHgOJvN9Q25x3qy2Hug=
+	b=QoTATzX3bIPyecCkBR2Z6mZyIWAbhBuevanC9Bi4qKKXyK/oYROEiSu5ZKujBoIwTeHB6W
+	vAgcJ2LHaDABc0CGI4VyHyut5gtqR1GcVkU/2LCUIeQZlKuXkRmP9P7V567ON9iaHYPIUa
+	i1AhAzht7QKdT+us7yzfqVWDJFlAHHQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774603396;
+	s=arc-20220608; t=1774603531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9b+Ql60PETfSYcon0dTMeZvn6zaheEMIwSSaNSyoZd4=;
-	b=SNqGFq9Ycvnmt+qWDt+sq+f3xsnsDYP6/xUfCHgphixaxXJbdTGXAbW/IjFU6wqpy5a/f1
-	WWrhJ9AxYRfl+h+AC4TV2RBevqf6LUv7BIqy/clFGydqcgLAdC9xVqLgdH4dZ1CLR0GvCq
-	B0rHOwgQ+xApKK+2+Aqt2i1ONq2aYDM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BA6E05BCD1;
-	Fri, 27 Mar 2026 09:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774603394; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9b+Ql60PETfSYcon0dTMeZvn6zaheEMIwSSaNSyoZd4=;
-	b=PzfRGWoT1toQKwjW5zwasLdWo9TRQ28chiMd2D8xvl3bbb1AVvpL8EY1a3+oV/E/poU/rT
-	vUe1/+uyrhfxddDFHfAPHeDVW0yok8B+X2+fw2WmghnhA0Af1EFjgWYJoF2tN87eEeI6aV
-	eRI162iyE3yjLez8vsCWuCUw99oZD5M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774603394;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9b+Ql60PETfSYcon0dTMeZvn6zaheEMIwSSaNSyoZd4=;
-	b=npb1ZL5vK9xaEB43drAlKbqRjZqP/qy0auIKM0fTCYVIrQ385s5Ksf8MJ+5ISr7k8BomeZ
-	fk0iLT2t8fo/q8Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1774603394; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9b+Ql60PETfSYcon0dTMeZvn6zaheEMIwSSaNSyoZd4=;
-	b=PzfRGWoT1toQKwjW5zwasLdWo9TRQ28chiMd2D8xvl3bbb1AVvpL8EY1a3+oV/E/poU/rT
-	vUe1/+uyrhfxddDFHfAPHeDVW0yok8B+X2+fw2WmghnhA0Af1EFjgWYJoF2tN87eEeI6aV
-	eRI162iyE3yjLez8vsCWuCUw99oZD5M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1774603394;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9b+Ql60PETfSYcon0dTMeZvn6zaheEMIwSSaNSyoZd4=;
-	b=npb1ZL5vK9xaEB43drAlKbqRjZqP/qy0auIKM0fTCYVIrQ385s5Ksf8MJ+5ISr7k8BomeZ
-	fk0iLT2t8fo/q8Bw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E413B4A0A2;
-	Fri, 27 Mar 2026 09:23:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pbhvNIFMxmlkGQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 27 Mar 2026 09:23:13 +0000
-Date: Fri, 27 Mar 2026 09:23:12 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jianzhou Zhao <luckd0g@163.com>, 
-	Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH 0/3] mm: improve map count checks
-Message-ID: <2bkj3z4mgwmobscv4huqu26cwykn57juljqf46ljwagghzh2kx@lycizofaukl7>
-References: <cover.1773249037.git.ljs@kernel.org>
- <20260326224239.9052f8be3ddb9cac600f59f5@linux-foundation.org>
+	bh=q1ism79nJfn/cEtGypwqofF2VKU2iXSfP9bNn9U8VUM=;
+	b=cJHBQaQaJxiAcxoRg+L3sckbjvxfwJWTdPpdyLF23ZHI2FVG9V9Ieaau7SX2Pz9KV/yBR8
+	XV8EmhGyRQ6JtxvaPyNic7i87HoEx7x7OClEKWp1/Xh7/KxWz5p+OL77EX+WkubWytcTMy
+	KtmdLey4jdg0mOkFvYcjoIlvMOmM1Ns=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7B9F96133B;
+	Fri, 27 Mar 2026 09:25:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7BEC19423;
+	Fri, 27 Mar 2026 09:25:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774603530;
+	bh=q1ism79nJfn/cEtGypwqofF2VKU2iXSfP9bNn9U8VUM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WmaF744HVRFoUZuE9WelikX7CssORJvCcgjqvHAlHItCZonH1f5u3pjVqPu2pmNwp
+	 0sOJELio9ATZHzGY1mVGObw+Tj+ohu4ZlzfgUHHShjnGHOR4dUZH1xacEXI3dnxcCp
+	 EPLuQMpDGTQFJ6BT1KDFfyUJZB6B2Qsux4f40zQaPLLMtx14hJ4SV9M9QHDzNZ1Hmg
+	 qS/wTO148ZrNsrmGjIVpE0dqOE0Hznelj+tzTWUKV8e/iMqwYv814Ef3aQMBHHZ8F+
+	 WqEr18L/sAwg5B4z4KKGy9OErz7dmEjltoJtuBoYAp8fZcOBM+JhLzwbWduY4hEBwv
+	 PVr5K0M6Wu7Wg==
+Date: Fri, 27 Mar 2026 09:25:21 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org, linux-mm@kvack.org, fvdl@google.com, 
+	hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, 
+	baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com, 
+	npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com, 
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org
+Subject: Re: [v3 00/24] mm: thp: lazy PTE page table allocation at PMD split
+ time
+Message-ID: <cf36f821-8285-4b9f-b1fd-e080292f4204@lucifer.local>
+References: <20260327021403.214713-1-usama.arif@linux.dev>
+ <48d7c810-d219-4346-9e8b-d70243445a91@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260326224239.9052f8be3ddb9cac600f59f5@linux-foundation.org>
+In-Reply-To: <48d7c810-d219-4346-9e8b-d70243445a91@kernel.org>
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3723514000E
-X-Stat-Signature: wt1etq17bp6zk9hfbwph379b6pq851zh
+X-Rspamd-Queue-Id: 2729D80004
+X-Stat-Signature: 9sdyytxmgbd7rwtuxaquggbmmetkwuxw
 X-Rspam-User: 
-X-HE-Tag: 1774603395-837830
-X-HE-Meta: U2FsdGVkX1+459rAxHzGrUFxrsh1BAbk+gdLiXQarNPvwZ1NhLZOAdrht5IQTvw86jTrAPtZnXvBg7vAWugoxhcxLuCfr3cVTsgTaZIrraEdsq5rT/7IuPGsg9pLyaQb3/Y03M+kaNhwXmijkPmuzIXbEgGJDimcqPg2NlfeG8KMgMpTC4thm7WJf1Go2X76g9woOMr7y5Xhfzevpo6iZa1n5dCeGvVHFJdVmDWrPS52I8EonUpWypqLi0zKOIjHiTlOCyEn2UKYA2cv1iNqPcjDvuUKR8GjvkvFRGtvkWxHUWDRHKr1EPiJoffPFUVxqMXAD3oxHaY8GrcXpYnsuk4zSNFSxlx5/60IxNrubgtZg8t6QheYmxX54lucly2KbJHXQQ6hNjdVcqRK+4fPNnUgTR62mmJQhd+bygucYmnu9lhMisHJGw/DYPto9fCXzyYSmntovtfiB8eCYI0UWPiYd8RkWf/N2hgQRosBFCYX+sXEtTrkukLkEO9bT3t6SOl+uhGLNaX+hUjy0YW9+aTj+yjLPzfbdCKX4JYNj+oDxdcbVkWCy9DVlDEukL1EoZ9c6Q5Cvji8nLwmLiRC7icMFyjO2RHN4V5l80VdU/4NhJILziCPDTe2FkDyVvgMAvj4b+a76zeelMOCTmBrvVxYUy3YSm4dFrA4SWigN8eBt54o1aRS1n+D/Ccajlgeozhhsgbukb8KvDwqTRGbBFPX8ip0dEC9exGARLL+x/kDIKida8V8yJXmWDce7RAXdKsNYE+Ce32I0REb4p6B1/8C8An26F35/nv9PpRDJvnvCDeaifjADa2G4VN7MpsqWPR77AB9J2otToJwnG5HBseGmpWsCAoDjH7RmvNs5Bm5aopNz9VaPpGIYyGfqAC3ogBEwRX61xISx5O9pH3qfiacaH9TJO8cZCli9Z7MwUwet6+jZruGjVSuBEEdPV9XAtZtbDpWmEPwqsjqhiH
- fbERKbYy
- CA7MxpffHAtDuLsrsYVelQe/b02ecpooozk86+JvcOfQt79JcGdKhNd9PNJR3mm6dsk6boOqoXR3mPDDo2dXzvRZ8VDMdD0rGnAqb4LMmw2ruotXUvRcj34znnAbO9TzKyURqNZ85+6ryKYGvdOjBgZUKLlQcjq5Cidx3/2up+TyEgC+ytH2yrxM0xkvvn4m3SV0ACxWzmbHNUCb0zZeia5tbRK/DwtvXi/HKoY7kvMS4t4bBd9rKaEatogYvywzwq9qDcCkzOEcR5FggBGbxO/ArR+GNWheyi4ZCF7P96nkWCCE955Z3xBt7wwnYp1c/0lJw+JydJ7KjFb4=
+X-HE-Tag: 1774603530-883324
+X-HE-Meta: U2FsdGVkX19ZpQW4BxZ3u+EJmQb3knEQcYpTNxoouNPMfBaI/P3Lt3EqbIwdZB2P3tSu8fKxoy8oPeSiWweRAB+3Vy7tVx9+ThQcidkAGrQK5qJgoKpu6GdTCyuHYwh0FbsjIgPAdud8b/I1XrElmFKPi6wpTQOamPZWPBFPuWhyU8ZDjvLttjqDCmnqpx3kr0USiUtpQMT2UqbxqCx1F3pbXCoLE6iccQYCHx8Flk9WiSihFbn9C0f7OOvXjYIvdqzcbxYmJGmkB1AQsmw0oTqYntSm4kpPyH3snFcj32jrH1DALbO0hVR8wHlc+078aR9J4oHKPScNtOFhvpgbYHxTamFLHPs59sN7uQY9rnPdHCfRF4wo5ut3GNBkTrVmgt2kIS8fg8ARSkRmC5q/5SOkl25Nu0sJ4kRu5CQx3C4q6YTyCI1p7i7aIE9qDzmSa4r5DXU5kaZ1MKN4YzHcMcsrOTfe49yuXso1i/QAvNcmmHcmM8Y+EExsxp1JXTx8IuHPAPzLA0d71Mt+85asxICE+XixIka0DZYRPEK1e4rTX0Cl7HMzj6Vs1RmZKefRQ7BvnrDiA+WrpWQ6CmYeRTfxKQqagITbPZGuF2sYYTxzDZApc4LLYJW5+9MySI9sQd7KTB2gDwWTrcFTnMujyplI8iHEjXRK6YiLflf56O8adj8VrGbUa2R63y+NBNzGZhkahQyLKBo+zLHXG/6IeDesF7gO3ZoNtKGTNWpYWCJdO+q7IXEI1iWEuTEkgBnD+EiCjk7veiK05frh6uE10s9Lhxh+q5RhcJlwEuRc8tLThewoxD4kP1epYfKUR7wVAEmasVdWLaK/kIDSh4XN1kVnxt3gHWGIF99PuEJrSCwE8lnff/8W2upt063/m4FHepM6YpUxCsh00IPx4f+xuiZ9xRXeZQVj36gNwC2vq2/iFI7y40gm6rj/DzUqFa4ddeSyl3GipDe0m9024lH
+ 7fooszOE
+ +xmR8vqw8/AdoeT2n9tOhuhNtodK8TEHYionrLghKxQbGNAKLpE8Nx+jNZUTV1hvbvnn81A64UFmtiu8Ix4WOxm4EwY1Vbrt0KleLnh96f2bMfehdP3y1zMiq3xBEUCqaC9X5UqnjgzYbUOYzi+bAx/WkLjaF92FafgBgliux/IW+domTxmdowkkoXpdLyv44q+xFAr+KNbHsQWVVD1jylwQzkTL66UL+aAJOhGVZKvDppzo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,42 +99,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 10:42:39PM -0700, Andrew Morton wrote:
-> On Wed, 11 Mar 2026 17:24:35 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
-> 
-> > Firstly, in mremap(), it appears that our map count checks have been overly
-> > conservative - there is simply no reason to require that we have headroom
-> > of 4 mappings prior to moving the VMA, we only need headroom of 2 VMAs
-> > since commit 659ace584e7a ("mmap: don't return ENOMEM when mapcount is
-> > temporarily exceeded in munmap()").
-> > 
-> > Likely the original headroom of 4 mappings was a mistake, and 3 was
-> > actually intended.
-> > 
-> > Next, we access sysctl_max_map_count in a number of places without being
-> > all that careful about how we do so.
-> > 
-> > We introduces a simple helper that READ_ONCE()'s the field
-> > (get_sysctl_max_map_count()) to ensure that the field is accessed
-> > correctly. The WRITE_ONCE() side is already handled by the sysctl procfs
-> > code in proc_int_conv().
-> > 
-> > We also move this field to internal.h as there's no reason for anybody else
-> > to access it outside of mm. Unfortunately we have to maintain the extern
-> > variable, as mmap.c implements the procfs code.
-> > 
-> > Finally, we are accessing current->mm->map_count without holding the mmap
-> > write lock, which is also not correct, so this series ensures the lock is
-> > head before we access it.
-> > 
-> > We also abstract the check to a helper function, and add ASCII diagrams to
-> > explain why we're doing what we're doing.
-> 
-> This little series has no reviews, if anyone is wanting to boost our
-> R-b stats.
+On Fri, Mar 27, 2026 at 09:51:31AM +0100, David Hildenbrand (Arm) wrote:
+> >
+> > RFC v2 -> v3: https://lore.kernel.org/all/de0dc7ec-7a8d-4b1a-a419-1d97d2e4d510@linux.dev/
+>
+> Note that we usually go from RFC to v1.
+>
+> I'll put this series on my review backlog, but it will take some time
+> until I get to it (it won't make the next release either way :) ).
 
-Thanks for the heads up! This was too stale for too long :)
+Yeah, please update to v1 from RFC because I'm looking at this and wondering
+where v1, v2 was and why I didn't see them...
 
--- 
-Pedro
+Generally I'd also advise un-RFC'ing a biiiig series IDEALLY be done early in a
+merge window :)
+
+We've pretty much shut the door to new series this cycle, but being so late in
+the window at -rc5 would mean no way for this one anyway.
+
+But in general it's going to be a rebase pain this, and I'd rather not see it
+land in mm-unstable at this point, because that's supposed to be 'what's in the
+next release' and it's stuff like this that leads to 'I am not sure what
+mm-unstable represents any more' being a thing.
+
+I think in an ideal world we'd ONLY see this in mm-new.
+
+I wonder if we need some process for un-RFC'ing really, where somebody kinda
+asks rather than it being a vibes thing as it is now (or a 'people don't reply
+to my RFC' which yes I'm guilty of :)
+
+Anyway this is more general points and not about you Usama, because - hey - all
+this stuff is pretty unclear generally.
+
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
