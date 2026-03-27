@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19F7610BA426
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:22:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AAF410BA431
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:22:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 286E46B009B; Fri, 27 Mar 2026 02:22:10 -0400 (EDT)
+	id B13B66B009E; Fri, 27 Mar 2026 02:22:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 237E06B009D; Fri, 27 Mar 2026 02:22:10 -0400 (EDT)
+	id AEBC56B009F; Fri, 27 Mar 2026 02:22:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14DA66B009E; Fri, 27 Mar 2026 02:22:10 -0400 (EDT)
+	id A288B6B00A1; Fri, 27 Mar 2026 02:22:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F2F3A6B009B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:22:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 982751A0F41
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:22:09 +0000 (UTC)
-X-FDA: 84590847978.07.B0C8A7F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F07AB80004
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:22:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HuKG1FNm;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E3EB6B009E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:22:30 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E42F8D768
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:22:30 +0000 (UTC)
+X-FDA: 84590848860.23.D2C4747
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DEB86C0004;
+	Fri, 27 Mar 2026 06:22:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=IkRI44qb;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf10.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774592548; a=rsa-sha256;
+	cv=none;
+	b=REuenZGC6XwwUplDDnhN7aOfRPJy93dSdmA0bXI1gjoEFWX6KZR4oT1UtQSlXhrIm/RJ9h
+	hjcVUVc1NaRt0aXg90QJ5ggrJRTobMiHUOlBQZvr/XixkM24AeEx19aWiofBdtHs0DMaHL
+	y3zY6Wbtj2ttMLP3uWWG4nShxsYz3Gs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=IkRI44qb;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf10.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774592528;
+	s=arc-20220608; t=1774592548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUdjINZoNVch6+sOeqy8LWhXDr3ouTjLkLcmKzPKSb8=;
-	b=l7DDug3eUCG8MdwnP988r3GkyZ9Ye5xjrTEfcpGsW35tJcfy58ce3AZRO8m2ypkEbErHwe
-	1yo9dHiOL8Nz0u2NrNNNPuwnBYImDkuADe0Zg4FSBdgCZtYu+PO/lu7+NFlplQt/XvkTyC
-	SN0p9jlPZwqe1jehcq24HIWAmWfG+kE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HuKG1FNm;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774592528; a=rsa-sha256;
-	cv=none;
-	b=tnB1szIRz8HuuPFc1n1SvB0k33JpRKhTcoHECB8F3i7q5lYUoln9VJ/4nNH7yHq9bik77J
-	T6kisCl+K+LJMJ8igTt8D3jtpsWRbTe6QJWSxmMDVyUt1nXVYiFswexYXloh9Ze2sPUQQZ
-	KgWihaewFIWzWPeUTzoGpU11wu0dHd0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6226861843;
-	Fri, 27 Mar 2026 06:22:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52B8C19423;
-	Fri, 27 Mar 2026 06:22:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774592527;
-	bh=aeNmQfb/c67hDWg4rtLcLfHH+y4dTvZgyPlO0jG+7ZE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HuKG1FNmfcGzUE3o6IaHiNv0KbKQCxTODzf5MuiGNIIPwVwUBUWIsr24i4gr9Vqmi
-	 tzDviZvVuLQN75ror3J5dROFKbHzbND3QRc78tr+09+oiIna2RMZFuFfK+LJlZ4xi/
-	 6oCxcLVz10zVeGX1RAxhfYWs3VG/0RbAgN+9N3ek=
-Date: Thu, 26 Mar 2026 23:22:06 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- teawater <zhuhui@kylinos.cn>
-Subject: Re: [PATCH mm-unstable v2] mm/memcontrol: batch memcg charging in
- __memcg_slab_post_alloc_hook
-Message-Id: <20260326232206.4a8a16461527d16ef8c2e8a5@linux-foundation.org>
-In-Reply-To: <20260320020745.833792-1-hui.zhu@linux.dev>
-References: <20260320020745.833792-1-hui.zhu@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=r7HCTHYUFfQwB1AnmmoNDM1xdUIQR6x6PxBReIWtx+E=;
+	b=hL7w0XcR+2xUeTNPsSMe5fQo/zrJmQW++Wu+91noF8eoKQBpg9pVJVMPYsiFuFg5y1GKZ0
+	eCZx/FIFWdj/1KSrmR6u5xmdQ27XvY1dDZZqGCX9Xj2nAme/cKNNnuvvq6Vw2UdA7VtPFC
+	f1duEdpnKf2YP3idCaHF+FoKDK11o9g=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=r7HCTHYUFfQwB1AnmmoNDM1xdUIQR6x6PxBReIWtx+E=; b=IkRI44qbd3PTpzO3/QVrtkxOIa
+	UdkRK1WNceu1VkN2FAz2VYZTY87vmdmh5ycJw00nJFxbqsWpQwUJVovSF4eqtmMCtypEy3l6EO5FE
+	zFbGNcEpK3QWUjXgdsJaytuVTkh8sI/mW8q7W9SQs2ugKWHEHYP+owYjVJkDN8x/vbT7ztUkfe1CN
+	BqtCHxS6B6DgLfmgZK7ubM4z0ZcVEEsoVg2ocnFUxUgS3ly0wMRCzhMRL/ZKklGPlhhHSCX4GSE3r
+	SsDmtdDTGNoQ9JMhikWjQB9Tsgz3lFsT9/imwdmCQO5u7SXUOhokx5Jiw9ApUVDU8bH7mwmsE/q/x
+	2JorWLSA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w60aN-00000006nbg-3hZ1;
+	Fri, 27 Mar 2026 06:22:23 +0000
+Date: Thu, 26 Mar 2026 23:22:23 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
+	Ted Tso <tytso@mit.edu>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 14/42] fs: Rename generic_file_fsync() to simple_fsync()
+Message-ID: <acYiH4ByDc1-nPqD@infradead.org>
+References: <20260326082428.31660-1-jack@suse.cz>
+ <20260326095354.16340-56-jack@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260326095354.16340-56-jack@suse.cz>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: DEB86C0004
+X-Stat-Signature: 33ioptkn3ahh47cwfojfi4iogxmeaaks
 X-Rspam-User: 
-X-Stat-Signature: q9jtk35ijj1ofmyrq9etfrneg9s86nrk
-X-Rspamd-Queue-Id: F07AB80004
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774592527-845492
-X-HE-Meta: U2FsdGVkX19INLQbicV+pwiBWhIG6U8K8H1nv9aPYkFBwdGS93cuLMhL/KqcJvBDGnvUR8P1+acY8fHhcSCZbN0Zk0eO3UdyXycq4lhc/bRkZ7JUqpGBjPmaf/i6CVNdPN91P10dnPBGdmcj1X6cLVztyn229/0+QV3iwfnfneJioCCOtKuvjxDt2VJ3hgVUUWsmflMmo5lwPfUXWvEgobfZ6Kl2MMiHdtwdfCTD575+T6uHHBsnPzz42m9jcVm1H2SIKVI6emonVBav10bcttGB8NibR01B7C8MWsn+6O9Kc4WbZjzHM/QGuIoLQH8jU3FSrzPq6ykrg9A6h7Y3q2A1tlZztioJQKMAL1HdrHKxdAEw/ku5Vkwo0+E8G2SyJ7W/2l59jaH73LD/vcZL+qtddbbPVS566I9ASG6NtrpCVq0lUu3qwEec4GJ7eROhHTkRQ+GaxhARy+tpG5dpN6j0egJ/6q8SZv6cmiddcZRiXQpjtHln5H6M4rRXFkMNY8IGbzMC4GisNX6d8KyCzLK66G9aUj/x5+5cznmwsQ1JQLcDSJFard6j1yuB81P4IOj74aVs8/thZe/mdXQDkgTWobKcxX6YIRuIPb4QoZHh+QL3/l6nK2FKvqEb9ucic6jdWCa6vRwBH0mkHiUbSsKomy95PyqoZUtN3/Yci2EO40f6OhS+Oh7wlxifBBluGyHm1kYS95mxT/zuGFUuuChtExyvzqHT+FJGl5aahLPcmALPKgLVRojidXf12ioU1skY+KMoriQMP0dqdbkphC3qfnToN8UtAOSgULszCWKUlv8sPibwS9cV+xUD4DiYoy8edB1ovhvj8LOYcAy/G+wH5mT4nyDnuAFCGG/qXNXNOZyj6Wq+Oq2ZzZ3bpQxiOBTMRpdx7luGSzafTXqN7vmMHLAj8RfIeh74FCFEywVWjkbAOQKcBGz6g6N+DAXkOKwN0N4AV+JAZGCxUQG
- IIFjZNJA
- Q8UIBtMn9gm3TeGYDrCYvouULjiSqhRxpdFq8pO/4jq9r4G1vCooC673AQOkehOZqCV6N5pDi9Sc/0/X3T3+YZKS3zTWCxeeUD9EazSODLTQ9PMWa+hIjELYDNpRW/Z+1xm8/593z7TS+TYVyTa76SH+8b0Sj+bbJHOJuQ3xPmzrnxYg3jEIshiv6BaQ8uLRyd+cN2jdZ5DO+LqmksQ3QOT/Fns3rrfNMLaCAxvPFcVB5WNkZDrG7Peb+7vuyKVu9PrlLp72jMkfTtk4+BI1HGAF63B+rcgDVHgQA//KC4552PpU=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774592547-907131
+X-HE-Meta: U2FsdGVkX19s8iHxfGqyF2MiIdwRkAfgQJ+dixF8p8SLIFMVbaX+JRKrtLBr78TXrkpFTnel3Pp362SEr6m+h+sN/m9/3A2s/s4dzSgqjTxJpmmWu1nL7ql85K8LHsqpBFViuVFqlA3CO8hL2raBkqr2EL0XaFGW4um/X400SXKY8yeb8Ak9LX7bHXBXQ0XBv/8WoA2FhXhMdrbLQ9zlrQMiwUq0Y3e+/70SZ4vymo9hHUvEfhAyonYpSf/guMztz/Wi8OzdVDx/7zAbPhvRvwf4KRYqDIqqxQdHHvZJXCv6nqWPAHzKKgpfmC1yd6ybLKOICwp4txz/Dj8z85RRZ8pJd2fYvJZ1h3KMvjDv1RUIZ6b2jbEUkvDrkgaOxVo7mPdSisroRtFrJiHsWKjN07es5xVHmtQG2yEnqU8Sa2FYUnDJeErkgjHwkinxxU15ijD68yYeLqzpLFDmkWO3X78uOFyKNm5Gt8voWoQ7pxPwBOEYtKmcFC6q9ZHAAXLb728vfnCyznGckdzZzvFCzn9Ys5Jgv4RZX3p/bKAe9+BBLUCckH2ubt+x64bDuNr5sMBj8H5Iep8wlqRCT3Hi0wXz3oTG9SYZDKbN5OS6HzYTTZdgpybrGQbPNkNR65qr5rKLfedLW3FWtc6x/ak+NTxyEmWRn1FzoMo6wxZg4ffWjkh0wW+KtaYjode8VP/7XbS9RPRxMH+OZ+pz7iattwdvNusG9HS3i24qyJbzn1ER8+oys5wNRTGQoiRPZ3Di1vD2Uzo/Aw1Mt1bnK5/rsHOL7TnnawiZ2QBBtLrG/jBtCWjCETTgiRiW+9qCqtV4K9iWNam6GDYgWvF51CmNKqrn9Ip9LHGOkGjYTFhvCYqY4ZF8v0SWbL6BL/LGcA+LyBn2zDDgTYShSlHoKq4LQfPLxYze92vcq+M5evN/eP4AiMNgZxx9FgJzIh0MXeLV+taflKaD7fOaWqeFjXW
+ L+nODGC9
+ qvX1X2HhLW0O1fhX8N8yMhXPDMoHGGenWL4RitZ+AkjttpO7i/Ym3K6THgsTBY6IBSYDaZvVrMZC+M4HFofmLffF/KkudKnIxa6VzGrTFy2CMo6AgCLqaUstHiQsPs/G4u1BfrrTlkkSNOUogM8zNwhcYPj3dM1fDswbGUA3Ou4ZoRDMbBNlzJ2v02kGIBrL6iQJNuqNd2WVEbwcz1ZMgvmnvu/eoMAY5kgYtg9+AO+GIQz0yN8RkVct0EbuVooltK/9EWyBG/q4ZE89OVqq3SBBVG6oylEnzLnAcoLW0SiSjlH6GKJajIYD9HakFWlDNHmAbjD3j0/LBg/YzlFCgRPl/zdSXJi5s+AM0WHR8XVXRZZdh5MdJGS81HIUhjDuw5BQpjfsuK+FaCclSk6eGmCjAPKClhb7pO/5rx5+Lc3n1TZQgLwrmFY3+TJ3s+HX7v8xMEVvzNxwltEDwA+vRmsc5veczsNb201fV1OX2Y9hQWjCOe2OTbb0Y22DnwaYSGKN4Grz8J8CB+NdHyQY1Akn+u30wikOI33jDtsraMvPoTn770RywuG/mxaloL8LAKOXyeQ52UQhAhM1d0Rh8cLeoSf2IRLEl7mw2GQoS+wpasc2N/2LOJ+eb/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,41 +99,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 10:07:45 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+> -extern int __generic_file_fsync(struct file *, loff_t, loff_t, int);
+> -extern int generic_file_fsync(struct file *, loff_t, loff_t, int);
+> +extern int simple_fsync_noflush(struct file *, loff_t, loff_t, int);
+> +extern int simple_fsync(struct file *, loff_t, loff_t, int);
 
-> From: teawater <zhuhui@kylinos.cn>
+Please drop the pointless externs, and maybe also add the parameter names
+when you touch it.
 
-We do prefer real names in Linux commits, please.  Can I rewrite this
-patch as From: Hui Zhu <hui.zhu@linux.dev>?
+Otherwise looks good.
 
-> When kmem_cache_alloc_bulk() allocates multiple objects, the post-alloc
-> hook __memcg_slab_post_alloc_hook() previously charged memcg one object
-> at a time, even though consecutive objects may reside on slabs backed by
-> the same pgdat node.
-> 
-> Batch the memcg charging by scanning ahead from the current position to
-> find a contiguous run of objects whose slabs share the same pgdat, then
-> issue a single __obj_cgroup_charge() / __consume_obj_stock() call for
-> the entire run. The per-object obj_ext assignment loop is preserved as-is
-> since it cannot be further collapsed.
-> 
-> This implements the TODO comment left in commit bc730030f956 ("memcg:
-> combine slab obj stock charging and accounting").
-> 
-> The existing error-recovery contract is unchanged: if size == 1 then
-> memcg_alloc_abort_single() will free the sole object, and for larger
-> bulk allocations kmem_cache_free_bulk() will uncharge any objects that
-> were already charged before the failure.
-> 
-> Benchmark using kmem_cache_alloc_bulk() with SLAB_ACCOUNT
-> (iters=100000):
-> 
->   bulk=32  before: 215 ns/object   after: 174 ns/object  (-19%)
->   bulk=1   before: 344 ns/object   after: 335 ns/object  (  ~)
-> 
-> No measurable regression for bulk=1, as expected.
-
-Could memcg maintainers please review this?
-
-Thanks.
 
