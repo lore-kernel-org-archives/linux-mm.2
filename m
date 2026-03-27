@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA5DD10BA426
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:03:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C48A510BA42F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 06:03:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48D546B0099; Fri, 27 Mar 2026 02:03:27 -0400 (EDT)
+	id 3A3AF6B009B; Fri, 27 Mar 2026 02:03:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 465626B009B; Fri, 27 Mar 2026 02:03:27 -0400 (EDT)
+	id 37B2F6B009D; Fri, 27 Mar 2026 02:03:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A3206B009D; Fri, 27 Mar 2026 02:03:27 -0400 (EDT)
+	id 2B9086B009E; Fri, 27 Mar 2026 02:03:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 28EF26B0099
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:03:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB4A91B969B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:03:26 +0000 (UTC)
-X-FDA: 84590800812.15.E89256C
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 49722140004
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:03:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=nNqIJz5O;
-	spf=none (imf09.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D99B6B009B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 02:03:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C072D140FEE
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:03:53 +0000 (UTC)
+X-FDA: 84590801946.12.1FE6C7B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0B0B340014
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:03:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lx6yiDrV;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774591432; a=rsa-sha256;
+	cv=none;
+	b=QY+il6oPl+fVQaP6XYktyjRBEL70jF7RszTapnSY9pUmqlzyqIgaI2W4iuoa6C3wB2KPif
+	zTRH+z17EZdAviD2GxSxaqA+uS1g2ndsV/wxl52dhghFICaKS8eEjnKZm6lVBK4XdwaF/z
+	iECzlspDSHPgjATAF+LuIrbWCcaa3LM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lx6yiDrV;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774591405;
+	s=arc-20220608; t=1774591432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iv7k7jt4dplLesyfY+epqBGiPQNj+XYY7x/5mn5IrXQ=;
-	b=hcijjGb0EWM2rPDKeI4LUh6e9PB7XDKOOu1Y/8WqLs3yM7wXANYyXG8Nfy1RXJKNPcm7gB
-	Jw3PfooxjJYr1IHXNPs0+vQetk50qOc9vKzIS8DdtRCtWLZd12yVny02batsqaZ6uCtizy
-	EGsqngcsHdUcXyFpv2MT27jWQkeru6M=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=nNqIJz5O;
-	spf=none (imf09.hostedemail.com: domain of BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+7b1de7ca9b09bfe890a7+8251+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774591405; a=rsa-sha256;
-	cv=none;
-	b=YDJXb8/cJ3u0qANe5xEYhBX63UzDDRWZGp7hkXvfrZkc3rMi/eke2UjRh1RxPDNtYlyVVO
-	jD8HB09qd8D/+cczT7sxfklat2yD5UMdqkk5ZnLXeVeBDJO4HgJXzmo4S09f59gOUhanSg
-	d7G3wfqdzg2OnK9R3B43Ee/dPofYsmQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=iv7k7jt4dplLesyfY+epqBGiPQNj+XYY7x/5mn5IrXQ=; b=nNqIJz5O/4su2NhB0ci8ATVbf9
-	+UVEnolYQZjthdz8NSR3EzFfHpYMYcvH+/D8WrVJIa4xUIE8S5JaNXceG5QndLnnVDmKtwdI5hZ8i
-	IbfB75jHd/wRHS3PVwSsol68iPinA0TqyNDduPvldYRkkh7qNt2+EzHCCr1KbyuLnKZKe/eJbY+OA
-	s99wGstoT+wV+qMJemG1NHwJb5A/JMIlqqofcocgYUWce5eAVQLx8L7n0tRtSiK9ztC0SyOTQBpOa
-	trM7SQqt5kuiGw3bRRPct79zkmgbXXfOOlfrgKUq0DM0PoTS1OTTBHHnsrG5FABCIecLdDRVImFh9
-	uDRKOi5w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w60Hy-00000006jhq-0TXU;
-	Fri, 27 Mar 2026 06:03:22 +0000
-Date: Thu, 26 Mar 2026 23:03:22 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH RFC v4 2/3] iomap: use BIO_COMPLETE_IN_TASK for
- dropbehind writeback
-Message-ID: <acYdqqe6sahnfH7c@infradead.org>
-References: <20260325-blk-dontcache-v4-0-c4b56db43f64@columbia.edu>
- <20260325-blk-dontcache-v4-2-c4b56db43f64@columbia.edu>
- <acRDyJrkJhnHHMSe@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <acRDyJrkJhnHHMSe@casper.infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 49722140004
-X-Stat-Signature: 54mzujeniz6yc8a4yzypuxwd36qqrihn
+	bh=IqVxmQrOAsD5LZYw7jicTvpMPXCRspRG4atk3SEmTBU=;
+	b=To+gPvMu8/5dzQyhqz3dWQdc9TqfH+7HQ8qt+/2yY001mh/Zf54UUD2IcJwi7spDFA7Y3z
+	DFvBWw6Y3pys47DlHS1TSV/SF01nyFK5M2DjMy+9SSGQgPuT6mqZ1zJCdZFeAqDhRPRYyG
+	6UbQ681W3a2et0BlxcoEtRjoFq7IUdg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0BC5B442C7;
+	Fri, 27 Mar 2026 06:03:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E31C19423;
+	Fri, 27 Mar 2026 06:03:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774591430;
+	bh=dIJgpW3rgNNkTB5QrRD+G5rTSR8uZZDY8VpAkWA7Li4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lx6yiDrV8sD2/KIpF7evwAgIzinKOstx6sQXxuKbm8EsgqO4aWCaVBBIzUbRtchFQ
+	 d/fW9dt5XmoaoFDD986TadMhjdCQoJAACrVFbgEX/mcMCw5sj8LBi44NhGs0VzNhrN
+	 kuw0XlIB3CKBg00bN2IKT9jdYon6yFveuep4wGCw=
+Date: Thu, 26 Mar 2026 23:03:49 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Chunyu Hu <chuhu@redhat.com>
+Cc: david@kernel.org, shuah@kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+Subject: Re: [PATCH v6 4/6] selftests/mm/vm_util: robust write_file()
+Message-Id: <20260326230349.dcd0b30030c7d460e8b0f319@linux-foundation.org>
+In-Reply-To: <20260324013316.2590422-5-chuhu@redhat.com>
+References: <20260324013316.2590422-1-chuhu@redhat.com>
+	<20260324013316.2590422-5-chuhu@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: dpjsnxpkh9ebfey4dijih3y4c88s1jj4
+X-Rspamd-Queue-Id: 0B0B340014
 X-Rspam-User: 
-X-HE-Tag: 1774591405-380865
-X-HE-Meta: U2FsdGVkX1/bPre5KYf/agWt+RVZiDvKUi5w491Uj5ONS4XAxCSLkXdjRgCr+sYrPm1KhPGPeWLpVewTw5i1cc9supHahjYpykoeOWjorempv0KAHzvfw+bUS75DTpWaA01OFQsqwvpbmldWVMY0oYvJuy+p5u8LdeoCnXjE7rs8Gn9b/PDHi6/WGi8K6HdvDY898fI3z43/tT4WL+B0rJMoUzC/zTqC1l7erlf/+neGwRHMJAgWvSSnuLr6HuntnY/6wShWeuZeXAv6hc9fKyZz5ECHDZpr8f3bPKfIoAKnGhkgrxyppUnUtQdx/qODRpTRzI25dDQndC6xnYuD4Xf9z9n+ytBVk+qL4VRstXhUfxEOWC+T+gNvERksmcRBZtPJ9gSIl0QdWyFvZ0QtgGx726VdnFBpHSbKy0GUusJhledrMA96rZ6hBuXFJHMZoFOUUtqXrmzoUwbb8ADy++xaEbdCjKW4LMIkfHQZdLsvHHB8lhWL4Edj5HIH4EUBXYFiumlopjaEOScr/L62lQsbS2gquBUNNSGWig1cW9y4WffQ2yffqSkPG2LK5WtVCBdj8dnQic9YcfR9dp4CjR/atYEkGROjsFhFyGdrWtbohIpr/+wJMw5ExIThhP4m8vyMuC06RIoWILWnKYamJu6Q1l07U3hGY+LGDQpyLETquki6VIuhyffuZjNKfEbrx71BnwgDfJ3qkSpJg5LP1F4txLU3xDpwpnrx6aXwb85rYSZMJjm3V1MOwBlVMGQnqxzcTK0dXzfxj8ePv9Y4IqmQ56pHZZPkUQQCegD6bpdv+kI4j3Cmise7qv0Hva/3xXZoF4V2uhUQcqX6564PUIqwxV9x/aJqqJCjqt4jbQIA52zrtgs/eqxDf/Md2+pqKZp9s6VYpbwi5xAQIEVnXLm3l6G4H5v5Cw66UmunTx8g5jjVl3zZU1wx5t9pAdaWt/BAnEbs+k5UhjIQ/Vh
- QERjWYPT
- c2UImkMhTsvi/hlnX8YI34wIOFIhoN/j3zJ+6bH0J9gCkNQw64rg7WSofBCsvGwPaNghBsve0+g7MccWYA8UFz/D7x5L7D4kWTLfGFtPOb8d2N6S5PkfJO9Nd93PBcrjuE6SBW+IWThzqSbkUxGtKzC+wPhfHDwN+rGonoZdQlZrAMfWpeVy+H8+4oFHH8iUpxOS5Uom5iiS2FvtnfDaC56uhc59AqgwcNX3i5SBOWVHakluuQhyY1rINnM4dlSaE8LgBFcP080yZL4B+QhyIOVriFsPwtZ1LbVwlvHabhEl9IWOhO4vNQYOOisWsc2WIMBSYoYUaI90Wm51PpgJtj6KfPnbaYEBXJZiuIhlkpbUhhHOuBXSqep6ZHvOE2qdyZg7DwM6Jvauo5r77mziivi/7oOB35lEeocyqm0jmpyHPF9uDuetUM4jT8GiF0Qi7Vh6Vexdr0dp0UorUgS9AilZNGxldkJlwenNeX+aAypICgWk81qmLyLAtnCuq3S3sajbrPnvmO87H7CrK0ZRoTiciL43fYn6Xq2mJD1FnRQl5WN4=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774591431-337576
+X-HE-Meta: U2FsdGVkX1/Pkj5W9PkY2zSQoqD3MFNECXF1Zq5QIxwij7xV90qFQxt6+ksNhIFiR8YAv+/G52Fw93gh9I/ZTL5Oe8+M1VuoMbd8Mv0FOprvyhNpqM2wL7BoEjL72HmUc3MewNppnCrlN2TJbiLMkT+ibqLERVZcJUOvmTZYFUclwN0iSTiRW0lTQoowPS+qrzrU5f2clXGO+8Z3797ntGgx9JdGNOszj2Pfr5ydxyZROPCY0TOJr+2hqZTZKYmWNtvPe/zsmxPphYVtCTZYrPsb5DX6mUtYF7FItjLZPQfDfWAEHTn4u/6S7smIrKkHlFl5Dq0N9PZMrgW+GAG9kkvxHqR5pdLDzhECHf929639qe0W6hv7ATibzSGP+dC28TGdyBqLsrKB/+1BP0mnzEhiYVpaA3mrOzfqoH8OTqmD+emE0phn2zNH285TLgGwkUECLSGOK8ErJRMD8ptVCHIZmYMHzdeON0GF21KjdPwvaETcyLqoaRSQwYKUAjxJZczP0+/IzBnf3wfVN40GevwN/jqdtWb8ZO6lt33pQhg4olLXaLU/UBkHrhSCT6snANDSAv2V8BTtwMEwqmrnkv8F48qZtIrM0JFgBs1DWabLlzaIlIECdYLVJEx7SqM8l9Dz1OCQi4T74Z6MSHh56iii7C7vCvlsewSAxCTnJCPA5GtZZkeKfeNz/j/Dt/9Lfc0XZPKrfmnS0WmePY43t188iWwV7dMKOPKQhXie/VaSEtKDg922e0K0Jyh8QoAi80/jUcZ3eaH2HaRHDBmdZuIGu2P8BLOwy19bVBabGthFtHD2qrlf5nnFVuXRUUXX0E7N8OwljmzJfmYa4JCO+DLv9ofDGB3pBcDHmeOFbP8lkYtP5KHW0Am9GDE+eybGys+yM6b98+CCQPLqlBntR6WdxZ9v8JJvPTl5wWeEtnKd+1FQpEIYpakYVfRz7YIAWhoBG33gCe+80kJaQU9
+ Dy7d9KZL
+ T/yPmx6YaV5yo2Ywe8mqxLl70oIowRG+m/RDKpUNOb8Qw/WrQCr+OTcY9XmJWJq5Ydx78hLKACnoIHVhkxblpQK8Zvl01Jxxr8D0LAbuCp0dm2plisgteFe9dFWvw5Rp6I/DVZlCquuK1DCc7z10I0SB567TjkNQ/9VuRmzQmXGvbmllW0wOkhpddv5eBFwqCBZGAoU6Rafp58kLnqyBgwBlQ5pbNZ4BNX7+p0ck2dggcKD+PTGnH6qsSxmFnRXOIaGi2FGeQKnudHaRwiZ98HZkaFCKR2yriCFoQEXKwqXdowUPgnT+ikxNP33tkri7Iv3oZZl5X+IGWipBqaIU6udVjcEcAtyYDKcFxv3EgPYSPzV6jYZJdDZ3GGmk2NazwD4Zk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,21 +94,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 08:21:28PM +0000, Matthew Wilcox wrote:
-> > +	if (ioend_flags & IOMAP_IOEND_DONTCACHE)
-> > +		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
-> >  	wbc_init_bio(wpc->wbc, bio);
-> >  	wpc->nr_folios = 0;
-> >  	return iomap_init_ioend(wpc->inode, bio, pos, ioend_flags);
-> 
-> Can't we delete IOMAP_IOEND_DONTCACHE, and just do:
-> 
-> 	if (folio_test_dropbehind(folio))
-> 		bio_set_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
-> 
-> It'd need to move down a few lines in iomap_add_to_ioend() to after
-> bio_add_folio() succeeds.
+On Tue, 24 Mar 2026 09:33:14 +0800 Chunyu Hu <chuhu@redhat.com> wrote:
 
-Yes, that sounds sensible.
+> Add two more checks for buflen and numwritten. The buflen should be at
+> least one, otherwise the 'buflen - 1' could underflow and cause trouble.
+> The numwritten should be equal to 'buflen - 1'. The test will exit if
+> any of these conditions aren't met.
+> 
+> Additionally, add more print information when a write failure occurs or
+> a truncated write happens, providing clearer diagnostics.
 
+This one has no review and AI review did identify a kinda-bug.  Maybe
+nobody calls write_file() with buflen==1, but still worth addressing I
+think.
+
+https://sashiko.dev/#/patchset/20260324013316.2590422-1-chuhu%40redhat.com
+
+Chunyu, could you please take a look?
+
+Thanks.
 
