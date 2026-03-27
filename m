@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1526D10AB834
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 00:32:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F44A10AB832
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 00:42:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5830C6B00A8; Thu, 26 Mar 2026 20:32:30 -0400 (EDT)
+	id 89FAF6B00A4; Thu, 26 Mar 2026 20:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 534126B00A9; Thu, 26 Mar 2026 20:32:30 -0400 (EDT)
+	id 850A56B00A5; Thu, 26 Mar 2026 20:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 449F86B00AA; Thu, 26 Mar 2026 20:32:30 -0400 (EDT)
+	id 7669B6B00A6; Thu, 26 Mar 2026 20:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 376886B00A8
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:32:30 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D1036140FA5
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:32:29 +0000 (UTC)
-X-FDA: 84589966818.25.2F71509
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6414C6B00A4
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:42:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E9E10140BA1
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:42:40 +0000 (UTC)
+X-FDA: 84589992480.05.C7A09E6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3A4492000D
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:32:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VNRNrlnn;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774571548; a=rsa-sha256;
-	cv=none;
-	b=yOmm8hsYdZ7EcUgGuVjnp3x+jCsrrfVjhTk9lzu3QPANY92OkTQs/dOB4QpxWdkZ/o0ugL
-	cZngse9XtJ4aIHmDu/80Je+oAZafECZ9X/VWQ2Y08YDRFsU57SwRoqGl9c+ydJses3Fluy
-	4a+pbn1sZ3pJiTAh3DD/LFq3d/QWDfE=
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2F6648000F
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:42:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uPiIgOz2;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774571548;
+	s=arc-20220608; t=1774572159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=n+oOQwivQ17Bg3lYMCVhGVPIEaLQ62gTjxWiJ0Mbask=;
-	b=5PEawVK1lhPanxtV/mwpjQ7P8C8PwEBOjNUs4YNbfSgWPrTSe76SNQosCP+EqEaU97VRs2
-	Q5jvFMLygYR7SlhNBq1VSv7HamwTv3Wfr7cXvZeV4fyKk7m1oihyqfMcAGNnb3Sn1w/02w
-	8Ab5rHbxyTFy1RAxvu2c1Hh1DNRGHyw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GLI2uhuYGxrpVgfmT8QS3P8Dfe8cDcnx4cSdQ7UOh4U=;
+	b=CO0fUkLXu3SYf3onVn0o+3ziSsTGmu8uJYJ0zqHH4+XSWBi0YTUDSL1DkvpqjVEMIyK+em
+	lgM+I6a+Wck9/fuW3DAjPt6+V1GzZ4BgAp8W5Hh19UF1lP/cToEmsPBuGm+YUMYyZcGZtG
+	dilgGnDGs/5V6+d7nHUqflnwMP4N6ME=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774572159; a=rsa-sha256;
+	cv=none;
+	b=VWgWoMYOZOQ2nQQWCM0uWWSPVrN+F2zkf+pN26tTEqhrs6h5XIvrb7w+VegCRwjPM9ne2h
+	u3aWJ0h06CG0lXC1aBvBfTP6H8ic7Emxc/Owimz1i5zIIMtNPMPNNxykKJn1l8Yf+tDyiu
+	JKPXCr2tldM0L1oVlp39lZ0z272X2tI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VNRNrlnn;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uPiIgOz2;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0088E42E2F;
-	Fri, 27 Mar 2026 00:32:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BA6C116C6;
-	Fri, 27 Mar 2026 00:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774571546;
-	bh=477C8/cGg78aynYBDYa7PrZfozFomytf/sPOXH4AIRQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VNRNrlnndzxNHwOR3H1P0LyEaSzC3fKlp9bvoAeQkgrbwDSrawZ4MQkHylGTEEu2U
-	 QBbB2PNMZdbpNGVoFrbc/3d2L/K+IKXmRc91AtWvqFsSlvqSLdQejHRLE+RFXQ9F0t
-	 U61RAX23zAH4AbAk00tdOUv5kSLg0y7SLSd/VUjRukFBarHMbw5Tal48SSE/eGqqI7
-	 Latq5hJEOWLZOAbOd/djTMFhKn83suMfR0eoAqbDBLLMWuLErFja/Luhf7fL7bfsIz
-	 vQIiJplsCZfeCPdcakTUF/u6BMrTigjSs2yd4/ogxT01t6dERfBDfOn5s8W46HJ3ff
-	 GsVDiATzoWyBA==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails
-Date: Thu, 26 Mar 2026 17:32:22 -0700
-Message-ID: <20260327003224.55752-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 38D9942DFF;
+	Fri, 27 Mar 2026 00:42:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEE1C116C6;
+	Fri, 27 Mar 2026 00:42:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774572158;
+	bh=1oTRYaaDGtL88x3nFZWM19mGdEaN35XXt49N44uFQhk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uPiIgOz2EKjU20I92IZN1kKK3Tu84i391v+qGEZo3cNDi430ZInilKOPBX+90XFFs
+	 oBkIixFaIIoSXX8vHNqCMvxTlJ3Nvp2jCtp7rIchdtb+kRg3I/luit48SLiQNzgkHg
+	 1WHSYOt1FSeiBXzq/CMDM/77MUwsUWFhao3FwCS8=
+Date: Thu, 26 Mar 2026 17:42:37 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: jack@suse.cz, willy@infradead.org, miklos@szeredi.hu,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] mm: start background writeback based on per-wb
+ threshold for strictlimit BDIs
+Message-Id: <20260326174237.0ad75b578219aad36f137e4b@linux-foundation.org>
+In-Reply-To: <20260326234629.840938-2-joannelkoong@gmail.com>
+References: <20260326234629.840938-1-joannelkoong@gmail.com>
+	<20260326234629.840938-2-joannelkoong@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2F6648000F
+X-Stat-Signature: p3sfw4p5oxzy6ntp3ey31gkffi3p4y4k
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3A4492000D
-X-Stat-Signature: zteer3bw4accp4a44tu77qeeu51f4fom
-X-HE-Tag: 1774571547-595242
-X-HE-Meta: U2FsdGVkX196JhSVCIPibuLVXqrL29TsAtJca+mFS9hPjm/F0KZRngJpr+uNFSuTrfS4KMbpZ8jub0bCyRAxxKJ0PBQXekISw7Oz2xRuPk9D0ESOTLAYw23R6UVcD1NiiqsCMf66dFehRzuxweblE0dApWODhARGvIvN9IgL9dhlcjWC9D758jUGISvgrtuSaNoouqlasJbORaoV7I/aB0bKzQcPMESK4Nuw8v8O6/9L6lLS90GnQnkh089N5Can+FATiNLl39htFmMxJpTqr81PbqA6lRlNYP4k10x8rSYDe/01FPVg3f5uhP8gEe65M97IXsSXffnWrK1YAXB9G8MpF/x8IaUCFWK7ZLlJAJcw1MmmUn0en++nL5LsUKBUmoCDnj+CbHwqJ3f2MFZTFPfLibaYYAdWp1Uq3UMHZWjydzkDuuUFvG3Y0OEtmq8eDlRNzqkTTC+qmzKs/a0WQd6b/vvaOiZtOC+Xl1ICrKuPGSP6nIWMLDGZgXp8NE9cHGsgariFqsnNWKUf0xee70O53V9U5My/PjA85/LadUuhJcvSg/xQUyYhcUuGZ5oHGhkkBx8AIC/ZrCDMmzSMuTmebp1Pgka7psoes1m0kSzgqY844cTAfKI597Sx3oE+0YpPH7brhEQaRTDnbTKGa44+Fxs+d6zwL8sFhGk4QnfQtzp8RVXqJNpBuanB/jT4BLubMthecfyY+Vty+dCOY/p4Od5+lDyJWLqPF2i++uQ6wJ4gy0wsSAelPWPo9DjAMkeuUh4s7yy+mPP+eKRi79bMj85Kw/MzTUKnteSOJYFs3H2auwpBAWPCwIrXPjDAVSqZ06iN2yTXSiDjrVLnuy8wWgAmQfODkycEPI9UryD64yX0WymR1fzBW2RaVQr3QLkg0BMFYcpAOjTHFynrlNDLqcm656LwzIbp/s8eImt0TUA1Qrw7X8SVzJOdl48XgLyRyHAREUm2RH/ufeZ
- H9ILXtwz
- h47R04BF5zghE+ZUfBTq4OaILIHwL4wlniPMz/ECooXRfAHFon7wOzNws9aNcvIS06trJhzQn0PhV+pZ2FrSIU0Jdrkku6XaMxQQRk0dyL6oX1Y5TR2Y9QECSCUieysfDHLrI4naMPGiLkOh/6YpKim/SVpl8iV6vUsvdYk10Up+XogzMHvaU96eWrHdLNlwaPsE2HbU92sE1uqH2ygjBwb+g+i2lvlNg5RPkRBa9i6zI2MX/Ds8gGqiYMYKsF4KArC/j10eJsZ3yGsN7ONVXSFfDfw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774572159-435262
+X-HE-Meta: U2FsdGVkX1+U/R13qVu+mIIdqQ6WZMcn9GaJimO5K7SwJ4CBAA6nqjfsPB1xmjSRpLA992lQXBLcbfD3EP0+o4/ikKHEzTR6tlpJksfFXn+YX8N3oQAFBWrSfK4QuLnG7bmc3udI31J/cQiREz4XmtynoirU13dmzpdnv/tCoTSd9ZBrD+oz5nfnZS+WXR3HgsKy3nzDGygx2xr+FWEgwB4oSoqnN5MBbTlMAVAZPVzovH2Pa3KefjVyAwfabh3+aImJS0FMDpFB/22akQALvhuYPufmdcI+azzE3GjUf4KVs7wy1Dmf8UpQuUrsan4E+TxUoc1wvB/DZWHU7SwI6gCyznuWSY9a3BFnCUoQmTzz9HETKEOCT2SFjCPujfpvuMDBVlGSMNDN0n75S6LNlTFYxoEDFZDxz41yjNRhd214vd9aqzIroUwIdLwx0TbqWtr2Wl2qqAJf5TU/pv+LaePyID9NG2tUubJqIv8luf6aNr1XzDdavst6d4oDapmKGPmVDvOP6IZqlKrfiTUoC4QPqXu0yrRUtvTaTFUS5sXFfCs5GFGGE0FSl+2uEUX7t1st5OCHjs+9vmNgjwC24BE8ttp8elbTHegjFVVZi5ExC2Mq8nll8XTSIfWSzDapo+tsbpMFKA7VCcO8noP2p4X2LnGTm/xpg/MT5VpFgOdC7iiTT2Vzpx1n6+kSGkWUGpnioZtjKRQZYEy2L8Wr5gUvP4bKEFRc1ZjOCPSqssrl1A6gwsLHneEfihm6cPj/4FrfMdMV81xC7cmP4ft+XEHQkMuocWD+a7EWEMXNUb8sTGhLEoepWyjYr4ZQTkWispncd+YEQAuD1xhdx4sLLF1zDHa395aabQGeXbv4daktAOm4Afu4QPALM3aK0JzMM3+ed0atZpkWnYTuYVtNO1exyF2xLDY3jT9PJTd4wFa7JpI4+bGWJxhFHPKzIqHhVwJqrK+6qxstcksiS+y
+ 0tvRwvz+
+ Ndzukq40LR90UVgw/B3f1KRgm6xk9OqIrVye3AW4ys651G0XlZr0kmo1+akDo7JFTtzlI5JX/8uJsnpyIPDTjXcQnIipEwZcnmj/PiBd5AxJrDgm0+0IFJYbeJmJEXWMerQhadOU8XhqChhS7DGO2F4HXL9fOalmtyu0ojRluRWw+NY1BwNWWe3bR762tfhAGs7gZeJvgzfjDtqHduPac8TMTFRAGqS2A8zSPhp3w4CQIc3n7wqPUvxOIy+t6zfcFdwJt2sxRyrVz+bCXv00Vig42zthdBaBmQmGh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,49 +91,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_call() for repeat_call_control of DAMON_SYSFS could fail if
-somehow the kdamond is stopped before the damon_call().  It could
-happen, for example, when te damon context was made for monitroing of a
-virtual address processes, and the process is terminated immediately,
-before the damon_call() invocation.  In the case, the dyanmically
-allocated repeat_call_control is not deallocated and leaked.
+On Thu, 26 Mar 2026 16:46:29 -0700 Joanne Koong <joannelkoong@gmail.com> wrote:
 
-Fix the leak by deallocating the repeat_call_control under the
-damon_call() failure.
+> The proactive nr_dirty > gdtc->bg_thresh check in balance_dirty_pages()
+> only checks the global dirty threshold to start background writeback
+> while the writer is still free-running, but for strictlimit BDIs (eg
+> fuse), the per-wb dirty count can exceed the per-wb background threshold
+> while the global threshold is not yet exceeded, so background writeback
+> for this case never gets proactively started.
+> 
+> Add a per-wb threshold check for strictlimit BDIs so that background
+> writeback is started when wb_dirty exceeds wb_bg_thresh, which drains
+> dirty pages before the writer hits the throttle wall, matching the
+> proactive behavior that the global check provides for non-strictlimit
+> BDIs.
+> 
+> fio runs on fuse show about a 3-4% improvement in perf for buffered
+> writes:
+> fio --name=writeback_test --ioengine=psync --rw=write --bs=128k \
+>     --size=2G --numjobs=4 --ramp_time=10 --runtime=20 \
+>     --time_based --group_reporting=1 --direct=0
+> 
 
-This issue is discovered by sashiko [1].
+Thanks.
 
-[1] https://lore.kernel.org/20260320020630.962-1-sj@kernel.org
+Your v1 patch's changelog had useful information showing the
+performance impact on fuse.  I've pasted one sentence from that
+changelog into my copy of this changelog, but please don't be sparing
+in describing the importance of a fix.
 
-Fixes: 04a06b139ec0 ("mm/damon/sysfs: use dynamically allocated repeat mode damon_call_control")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from RFC
-(https://lore.kernel.org/20260326062347.88569-2-sj@kernel.org)
-- Split out from the series.
-- Drop RFC tag.
-- Add Fixes: and Cc: stable.
+Also, we lost the Fixes tag.  I've added
 
- mm/damon/sysfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Fixes: 64dd89ae01f2 ("mm/block/fs: remove laptop_mode") 
+Cc: <stable@vger.kernel.org>
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 6a44a2f3d8fc..eefa959aa30a 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1670,7 +1670,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
- 	repeat_call_control->data = kdamond;
- 	repeat_call_control->repeat = true;
- 	repeat_call_control->dealloc_on_cancel = true;
--	damon_call(ctx, repeat_call_control);
-+	if (damon_call(ctx, repeat_call_control))
-+		kfree(repeat_call_control);
- 	return err;
- }
- 
+to my copy of this v2 patch.  Please confirm that this is appropriate.
 
-base-commit: dd478b2be41492a9f7be5abbdbd4dceddc46818f
--- 
-2.47.3
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -1862,15 +1864,9 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+>  		 * Unconditionally start background writeback if it's not
+>  		 * already in progress. We need to do this because the global
+>  		 * dirty threshold check above (nr_dirty > gdtc->bg_thresh)
+> -		 * doesn't account for these cases:
+> -		 *
+> -		 * a) strictlimit BDIs: throttling is calculated using per-wb
+> -		 * thresholds. The per-wb threshold can be exceeded even when
+> -		 * nr_dirty < gdtc->bg_thresh
+> -		 *
+> -		 * b) memcg-based throttling: memcg uses its own dirty count and
+> -		 * thresholds and can trigger throttling even when global
+> -		 * nr_dirty < gdtc->bg_thresh
+> +		 * doesn't account for the memcg-based throttling case. memcg
+> +		 * uses its own dirty count and thresholds and can trigger
+> +		 * throttling even when global nr_dirty < gdtc->bg_thresh
+>  		 *
+>  		 * Writeback needs to be started else the writer stalls in the
+>  		 * throttle loop waiting for dirty pages to be written back
+
+My copy of balance_dirty_pages() doesn't have this comment block.  I
+assume you're patching a different kernel version.  I dropped this
+hunk.  Please check current Linus mainline and see if there's somewhere
+else where you'd like to add this information.
+
+
+
 
