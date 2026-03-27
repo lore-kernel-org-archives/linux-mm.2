@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7997D10ED65C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 11:21:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85BD210ED65C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 11:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77D336B0092; Fri, 27 Mar 2026 07:21:33 -0400 (EDT)
+	id B0E6A6B0092; Fri, 27 Mar 2026 07:31:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72E126B0095; Fri, 27 Mar 2026 07:21:33 -0400 (EDT)
+	id AE63E6B0095; Fri, 27 Mar 2026 07:31:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 643706B0096; Fri, 27 Mar 2026 07:21:33 -0400 (EDT)
+	id 9FC7C6B0096; Fri, 27 Mar 2026 07:31:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 550D06B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:21:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA35DBE658
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:21:32 +0000 (UTC)
-X-FDA: 84591602424.29.9CE1784
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E9E1E40010
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:21:30 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IS0dUb2l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BB8A6B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:31:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 171E313C5BF
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:31:21 +0000 (UTC)
+X-FDA: 84591627162.15.874153A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 458241C0016
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 11:31:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4MjpK69;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774610490;
+	s=arc-20220608; t=1774611079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dgJxLx+Wc7WUvIujWetvfOTZIsmR+JzqVdzurESLhFA=;
-	b=0hWlCELiCd/auMQmMN2OXPBuE7aFKajzJJVji/wDve0ImZkZkrbapJjq/g0rsxl2qPTDJR
-	DYLnc8YEbAYo7+t1/PMW8cjTO7FKw4Hfka8kr15tWIumEWwTYOccyT9Pq622sEQqdBXdmP
-	J1L1nKFm39WIgsmzl/dTMxIRxp3Ikho=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774610490; a=rsa-sha256;
+	bh=b1htkOFK/bcP73glmAvHkeGBgOA0jelxijWwoDWPzV4=;
+	b=jHuu75ORU5jKKDKZ0dc+UDyMLFPpzhqMlDEB09LKL0ZbKcgYEzG6prhiJ0J7hHimixVv7V
+	CEGvtMhUC66bKO/5D5yk0ysLfWa4W1YHSIGWTIniaGs2RfEkxZIeeaKBn4MdpgfRhClWTR
+	FxZIJae+rtGxNsItbfeZQdWsK8UI5mE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774611079; a=rsa-sha256;
 	cv=none;
-	b=1yF0IJsxiJRasTB/e2dBQoNILozMO87vQ9hl+CjtlikS2ryrPumHP/5FNiO39OQig7Zi+N
-	PpFzOALXRNuYym03CntNBnxPTkMZ1oH/7Y8uIDQW9hvPqwh89SuT1BlNPoojRbOB0BErT5
-	8LeCqyHGJ1ecRkOG/3rvp8W0PdwXuG4=
+	b=5AUwd+pJZuudOt+c2FIbhPp2BemFbHAvco9RrHIu4gs5JPEUVbv/umvnuVhw8ZzP/R6BoC
+	asV/fEL1/uvgH01Gf2rb7c2JTT0L69F/Zw3LRLWUWcGyq36Etnz4xQqKz2eLKhOrdgZffL
+	SfDpYI6z7zEiC4Dgqe/RdL1YWXrdm7I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IS0dUb2l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4MjpK69;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6703D6186F;
-	Fri, 27 Mar 2026 11:21:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD33C19423;
-	Fri, 27 Mar 2026 11:21:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3414F44400;
+	Fri, 27 Mar 2026 11:31:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C54C19423;
+	Fri, 27 Mar 2026 11:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774610490;
-	bh=swcohrFbsQ9OatkiOSOTSr2Oxhk0CH56KvYFD2WN+Ys=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IS0dUb2l6dq/UKuQvOxjZqoanLCXjZM37R1bc4wCScoCJe4XW8j2TvJ+wLupL5zn4
-	 /5+ULZLFGH97Bb84dwDA6SaV6wum4iCZYiVl7bAMK5c9/zGxj1Pcpqx6qj4m1ELKw7
-	 tTo5wVnT//ihfdMz19PopHmuv+Wtie7OyKTk8UCqowLlxFHq6C7dH/6DgA+NI4XW0s
-	 MqGDbpHnUvkRsy9SlPdgGLyxftYSB5tdhn7ou2al0Bu7ezYiGcyMWJ5AtgSEarW4Q+
-	 1z2fKkkmgqsYj1iQ0dDmcE/+ChBUdBwUSGZeTlyt4g/w0pBwbutvb8OsV1/oWSEZQk
-	 uQ4PspkZSd0hg==
-Message-ID: <d120d8d3-f785-47ec-9c6b-b28d42ebb1f7@kernel.org>
-Date: Fri, 27 Mar 2026 12:21:23 +0100
+	s=k20201202; t=1774611078;
+	bh=mOs+f1u+WyiqSYt3GiUnjwCnkAFMVSxmeQkggvC2jHw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p4MjpK69mTjB/d2r6HzwMtnkpMhj2cskZeq51ftIyHennIa4UuCYvWAsK8iGF7qq7
+	 X4C8uDhyAVOa3c3YnkWLnQ/y52VQT4mIc4BId9LWlE2RE3UWPY+4RT/i56F36rg2n1
+	 F5/yPnkFF9H3F0t35IBJsXhAoitFF4aBJzdqpeVbnchRKAVB7/IfIkX0EzslHgbymv
+	 XLNXYmoqkKQL0dSkCjBjcRJPNokENji14QZKgVc2q/1YzqZssKYyoHVfxEWQp9vZyQ
+	 22A97Yrhcii0R9h3fZ9vztdAWUGJcu8Za9rfEvFS11k9EqOJG3JFV+bAMvC44Xxmj3
+	 y32xynP6g2Alg==
+Date: Fri, 27 Mar 2026 14:31:06 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: James Houghton <jthoughton@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 12/15] mm: generalize handling of userfaults in
+ __do_fault()
+Message-ID: <acZqemRy3ltBWGL2@kernel.org>
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-13-rppt@kernel.org>
+ <CADrL8HVUJ5FL97d9ytxp2WXos6HS+U+ycpsi5VxffsW9vacr9Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] slab: replace cpu (partial) slabs with sheaves
-Content-Language: en-US
-To: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
- Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>,
- Vlastimil Babka <vbabka@suse.cz>, Petr Tesarik <ptesarik@suse.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org,
- "Paul E. McKenney" <paulmck@kernel.org>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <afe9ba0a-1924-42a8-a9c5-34eec709f883@arm.com>
- <ed58493b-0369-4729-bcf7-bc89f72a7913@kernel.org> <acV36oPNFMgL4puz@milan>
- <ea1cb2a1-b674-4d69-bbf6-00051a0e11df@kernel.org>
- <eafefe7a-a33b-4102-93cf-fecc33ddf49e@arm.com>
- <0f441d8f-d84c-470a-a4cb-0249b15220a2@kernel.org>
- <f100305b-6c56-4499-98a4-6a22f8c49443@arm.com> <acZVS-ehXCtvcA9s@hyeyoo>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <acZVS-ehXCtvcA9s@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E9E1E40010
-X-Stat-Signature: 7auk3aaxtsdxibmjyqbhrsbcjgjs393o
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADrL8HVUJ5FL97d9ytxp2WXos6HS+U+ycpsi5VxffsW9vacr9Q@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: z6kfpcch7o3duaik99tqoba6k9kpiwy8
+X-Rspamd-Queue-Id: 458241C0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774610490-113909
-X-HE-Meta: U2FsdGVkX18PyAy0VukQgwCyV7UgJVPMInrSPCHhtqstzfn7hFYiPaz2ORD6cBjmSZOcMpQmKe/9MxWSpB4Z6qJoEJnakKRIhLnCbXG37JC/PG2c8Q3VLGvKr6GqXU+gZY9NSQzmdBeLaD4C4dA/EvJrx8pwbVdrETI2ZU3rCxcuKDmkAj3MEkZx6XPwi1PSYaV0e1fUODmhZj04aY28fEUdCyASa52zNkjm0RfJuQy6YEp/xzmcxTGmOwfvo72SHGBoTEvFv1UapSI5ti2hRDmOXzxoE34eSSbDjqyrAfrgwzgqX6pl5Hb8z5fJZ/WouNn6ot75JxGIfumpkjXCVI+LKjfo1m/cyRdCXA2dWTBpyqhj8p3E/2lgLbB4lu1lSsisQXvAEtr6WrFQHP05bOceVP7Gm9E09Xa0cX+l6Q9+QVytTPXC0avYnJ5pkDW7uMldTnr7gMqvXz6Yxxnbv5zNt5pxLUD2zs3VO+b2bUwgDWFx41uehA+NtYLM6JdaJ+F26PhrxHYVIgrDg5DjOMj5XCmhbisfFzwZJRVwrOH854kB/A1jE5/fBy/KRgjvNbRTvej4FDeaHnCTaYuGAGA2zn3vkQpKHh1cnfmfcEOxxgrjn6Sry9JY9dcuRb3fI7GLdOkWd43N9CLXayGCSzzKX5YZo0CrXZzNmhDJoLmEsEa5hKZPE4funghDU605v/qKnFrjJ2DYLpjDKq4ki7Rw7m6BYcoNPEVbtcGb0Wn1uaJfHQ34YSbiSrYzGh7S1Jc/VuxVUAjB1bdqquBSAwMYVUszK3n6S7+60bNU1xzqySDBAnX2waqtv7HmQZRrr+Xriu0FtjDhVt/UttLFiXb3ynROZvjAyWHBW+mpbXfAjJonBAAb1ydxUGGp+Zngzo+gCoARJTaz83vesCEe7O5MBVMNaPgaU27ZvIYZSsCJ50eZtUfTjQLQT848tKrVFfBEGGbaI+CFM1jiSNW
- H5N1Ie1I
- pHOIvLOWCIksq0U+Q1O4INxw5F3WuFwPijKzhWx8r+wwUIWjY3eZb09nQwkx0yJsfvIOs3xlwHy5P1YyhTKa7+jrt5Kia0bXdXxyLyN2NSlkHR4x5UUy56AJO/4F8lXwpde7MMfCJPItJvm++vQnbKuoIMZQOO0w8eD+ShlhUHK1uiFO6/b3OVwawOMa7YxWRXZWTv6uTw/TX4VWY8LyLWClOzKFXbS4DWfEZapbbkJbVuyy6pRXR2fvBmqLrO17bKAWV
+X-HE-Tag: 1774611079-844546
+X-HE-Meta: U2FsdGVkX18FfYjGr9Rk3Dm1xmZ7Zi0IP0k3yLyz2WyzQf+D9LOPAe0JQxSLFO/ESdkBfMkV9MWjr+hPAzSAbrmkWmBMN8z5GU4ZINHHEKIZJ+FuK7nDy6H4fX+ZhnCROrhzAbTqK50/cuCvoV9qx4BJT5DMmHFBzx7IUrAkg5pB6ePcMNeXkeYz2kihLkWwEETHXTmwdNtDHQyLnwSoMWBu0oSr73k6AscTQvCR8HZ3ZB6hX6Carh32ydOrQp/xWJjevmk4ExNDDPWGGprv16oUwkAp5HuFTdPn4CM9ocVN0RhOeOuFDdnyTUwyM0/18KBx9VMulIjAnytrTMJaCbPLby6FBRgDqT2cL8SvPLB1L1u/wG+01Emy12Bj6m06IgsAX+3E+KqRme1KhLOP5ZOmuXbHJRELBCT9RooIlvHz7PbEcHWKXCGE6FajS96Xjc44rrDGhoUBkHEEl0AimzZNJolq3Rhz6OZCq5yuUUXlJgoZnLMlu3wVMyt6p9smaZ8VoR3vEecTbNFXuGIOG6MDOyGool4rcgMExXcaGx/Brg61scthe0q7DfsSkR8tcUqTa7LgYZiRVuppU0ZEzJbL+3S5Sv/78+GU4GtwNEK2FKexzSBGd6oJE5vNaZ74MeE1aqGKmL3mmHxkSg3RmxyNVfjrVJFwve0JOIXoRg3zU0KV4sVsv90q67EmsHmiewI7pUoBU63OkJOhilWFK+GOP+HWbEYir6YMAu+3j5EJQ5jpLUSqAkbL+65mDMYqDaurIvB7/5yQu3VuyfmTcadmm5cdFM48WefG1pOnaunMsb9jiGzu0LsRaeldYuHA9PRrlOZPcBYpCi2pCvzQhINj43dsT3ZjaXxWnM+aCn2DuDCvL/EdgjqEk9ypDj+aI21AJGGCP81ITghnGcinuoknompVhY9r46Dbv/YexVSJqyF8C3Incbrymtq9cBozjDAQE/mS0benV/4oQJ7
+ mwhyweyg
+ xwJ30ak73Xc9tvlb06t6pkBuMIXAIpH9ImF2zhbmBQ+++2PmQlJQBgVOd7hpOpRjp35GCjNZwCCAgvSuSjI77oBT4NTiEmQEHCz9XHTp5HioPWTiicLtHL8PmIe952H9xuOhjMuStEsypuq1CCVhJ/8pQXvPa+3eepbr1k7cwp6UTJF9BKlh3wQ7Tci8xnsXjLjSnGTQyWSNjP2rTRj1itwdCY8CveCP4lruhhQ5yX83CRatp9nIIH8VCAr7dlHxJwKjDL5dZoG4l7Nk/VEReUije41CEaIWI8/eksN8BOJLthl088dJytYMU3qoMAJJTOzQyTsgX2k5JPnx1pCOg6EbWZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,52 +112,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/27/26 11:00, Harry Yoo (Oracle) wrote:
-> On Fri, Mar 27, 2026 at 08:58:36AM +0000, Ryan Roberts wrote:
->> >>>>> On 3/26/26 13:43, Aishwarya Rambhadran wrote:
->> >>> Right so there should be just the overhead of the extra is_vmalloc_addr()
->> >>> test. Possibly also the call of kfree_rcu_sheaf() if it's not inlined.
->> >>> I'd say it's something we can just accept? It seems this is a unit test
->> >>> being used as a microbenchmark, so it can be very sensitive even to such
->> >>> details, but it should be negligible in practice.
->> >>
->> >> The perf/syscall cases might be a bit more concerning though? (those tests are
->> >> from "perf bench syscall fork|execve"). Yes they are microbenchmarks, but a 7%
->> >> increased cost for fork seems like something we'd want to avoid if we can.
->> > 
->> > Sure, I tried to explain those in my first reply. Harry then linked to how
->> > that explanation can be verified. Hopefully it's really the same reason.
->> 
->> Ahh sorry I missed your first email. We only added that benchmark from 6.19 so
->> don't have results for earlier kernels, but I'll ask Aishu to run it for 6.17
->> and 6.18 to see if the results correlate with your expectation.
->> 
->> But from a high level perspective, a 7% regression on fork is not ideal even if
->> there was a 7% improvement in 6.18.
-
-In retrospect it was an oversight not to disable the pre-existing cpu
-caching layer immediately for sheaf-enabled caches in 6.18. Can't undo that
-mistake now, unfortunately.
-
-> If that improvement comes from the number of objects cached per CPU,
-> I'm not sure if determining the default value (# of cached objs) based on
-> "a point when microbenchmarks stop improving" is a reasonable measure
-> because the default value affects all slab caches and will inevitably
-> increase overall memory usage.
-
-Yeah that's the thing, some workloads might just keep improving as you throw
-more caching at them, but there's a memory usage cost to that.
-A case of stress test doing nothing but forks might also not be
-representative of performance of forks under normal workload where other
-operations also happen, returning the related slab objects, so in the end it
-doesn't expose the batch size that much.
-
-> Hopefully we could discuss what a reasonable heuristic that
-> "works for most situations" looks like, and allow users to tune it further
-> based on their needs.
+On Thu, Mar 26, 2026 at 06:55:15PM -0700, James Houghton wrote:
+> On Fri, Mar 6, 2026 at 9:19 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > From: Peter Xu <peterx@redhat.com>
+> >
+> > When a VMA is registered with userfaulfd, its ->fault()
+> > method should check if a folio exists in the page cache and call
+> > handle_userfault() with appropriate mode:
+> >
+> > - VM_UFFD_MINOR if VMA is registered in minor mode and the folio exists
+> > - VM_UFFD_MISSING if VMA is registered in missing mode and the folio
+> >   does not exist
+> >
+> > Instead of calling handle_userfault() directly from a specific ->fault()
+> > handler, call __do_userfault() helper from the generic __do_fault().
+> >
+> > For VMAs registered with userfaultfd the new __do_userfault() helper
+> > will check if the folio is found in the page cache using
+> > vm_uffd_ops->get_folio_noalloc() and call handle_userfault() with the
+> > appropriate mode.
+> >
+> > Make vm_uffd_ops->get_folio_noalloc() required method for non-anonymous
+> > VMAs mapped at PTE level.
+> >
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  mm/memory.c      | 43 +++++++++++++++++++++++++++++++++++++++++++
+> >  mm/shmem.c       | 12 ------------
+> >  mm/userfaultfd.c |  8 ++++++++
+> >  3 files changed, 51 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 07778814b4a8..e2183c44d70b 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -5328,6 +5328,41 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+> >         return VM_FAULT_OOM;
+> >  }
+> >
+> > +#ifdef CONFIG_USERFAULTFD
+> > +static vm_fault_t __do_userfault(struct vm_fault *vmf)
+> > +{
+> > +       struct vm_area_struct *vma = vmf->vma;
+> > +       struct inode *inode;
+> > +       struct folio *folio;
+> > +
+> > +       if (!(userfaultfd_missing(vma) || userfaultfd_minor(vma)))
+> > +               return 0;
+> > +
+> > +       inode = file_inode(vma->vm_file);
+> > +       folio = vma->vm_ops->uffd_ops->get_folio_noalloc(inode, vmf->pgoff);
 > 
-> As a side note, changing sheaf capacity at runtime is not supported yet
-> (I'm working on it) and targeting at least before the next LTS.
+> If you do away with the change you made to vma_can_userfault(), please
+> add a WARN_ON_ONCE() here if uffd_ops or uffd_ops->get_folio_noalloc
+> are not present.
 > 
+> > +       if (!IS_ERR_OR_NULL(folio)) {
+> > +               /*
+> > +                * TODO: provide a flag for get_folio_noalloc() to avoid
+> > +                * locking (or even the extra reference?)
+> > +                */
+> 
+> I think a whole new op is better than adding a flag. Something like
+> uffd_ops->folio_present().
 
+Right now it follows what shmem does, let's keep it as TODO for future
+optimizations.
+ 
+> > +               folio_unlock(folio);
+> > +               folio_put(folio);
+> > +               if (userfaultfd_minor(vma))
+> > +                       return handle_userfault(vmf, VM_UFFD_MINOR);
+> > +       } else {
+> > +               if (userfaultfd_missing(vma))
+> > +                       return handle_userfault(vmf, VM_UFFD_MISSING);
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+> > +#else
+> > +static inline vm_fault_t __do_userfault(struct vm_fault *vmf)
+> > +{
+> > +       return 0;
+> > +}
+> > +#endif
+> > +
+> >  /*
+> >   * The mmap_lock must have been held on entry, and may have been
+> >   * released depending on flags and vma->vm_ops->fault() return value.
+> > @@ -5360,6 +5395,14 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
+> >                         return VM_FAULT_OOM;
+> >         }
+> >
+> > +       /*
+> > +        * If this is an userfaultfd trap, process it in advance before
+> 
+> "If this is a userfault"
+
+Indeed :)
+ 
+> > +        * triggering the genuine fault handler.
+> > +        */
+> > +       ret = __do_userfault(vmf);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> >         ret = vma->vm_ops->fault(vmf);
+> >         if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
+> >                             VM_FAULT_DONE_COW)))
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index 68620caaf75f..239545352cd2 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -2489,13 +2489,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+> >         fault_mm = vma ? vma->vm_mm : NULL;
+> >
+> >         folio = filemap_get_entry(inode->i_mapping, index);
+> > -       if (folio && vma && userfaultfd_minor(vma)) {
+> > -               if (!xa_is_value(folio))
+> > -                       folio_put(folio);
+> > -               *fault_type = handle_userfault(vmf, VM_UFFD_MINOR);
+> > -               return 0;
+> > -       }
+> > -
+> >         if (xa_is_value(folio)) {
+> >                 error = shmem_swapin_folio(inode, index, &folio,
+> >                                            sgp, gfp, vma, fault_type);
+> > @@ -2540,11 +2533,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+> >          * Fast cache lookup and swap lookup did not find it: allocate.
+> >          */
+> >
+> > -       if (vma && userfaultfd_missing(vma)) {
+> > -               *fault_type = handle_userfault(vmf, VM_UFFD_MISSING);
+> > -               return 0;
+> > -       }
+> > -
+> >         /* Find hugepage orders that are allowed for anonymous shmem and tmpfs. */
+> >         orders = shmem_allowable_huge_orders(inode, vma, index, write_end, false);
+> >         if (orders > 0) {
+> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > index 7cd7c5d1ce84..2ac5fad0ed6c 100644
+> > --- a/mm/userfaultfd.c
+> > +++ b/mm/userfaultfd.c
+> > @@ -2045,6 +2045,14 @@ bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+> >             !vma_is_anonymous(vma))
+> >                 return false;
+> >
+> > +       /*
+> > +        * File backed memory with PTE level mappigns must implement
+> 
+> "File-backed VMAs (except HugeTLB VMAs) must implement
+> ops->get_folio_alloc() to support userfaults, as all userfaults in
+> file-backed VMAs wlll call ops->get_folio_alloc() to determine the
+> userfault type."
+
+I like (except HugeTLB) more than "PTE ...", but it's not here to determine
+the userfaulfd type, it's here to ensure we can __do_userfault() for a
+memory type. 
+
+	/*
+	 * File backed VMAs (except HugeTLB) must implement
+	 * ops->get_folio_noalloc() because it's required by
+	 * __do_userfault() in page fault handling.
+	 */
+ 
+> > +        * ops->get_folio_noalloc()
+> > +        */
+> > +       if (!vma_is_anonymous(vma) && !is_vm_hugetlb_page(vma) &&
+> > +           !ops->get_folio_noalloc)
+> 
+> With the separate folio_present() (or whatever) op, this check becomes
+> more obvious. (Looking at this right now, it looks like we're checking
+> for UFFDIO_CONTINUE/minor fault support here, but that's not really
+> what's going on.)
+> 
+> Honestly I'm not 100% sure if this check should be here. If it's going
+> to be here, then we should probably also have checks like these here:
+>
+> if (vm_flags & VM_UFFD_MINOR && !ops->get_folio_noalloc)
+> 
+> and
+> 
+> if (vm_flags & VM_UFFD_MISSING && !ops->alloc_folio)
+> 
+> So, maybe we should just leave it up to ops->can_userfault() to make
+> sure we're doing the right thing?
+
+This must be in the core so it can reject VMAs that can't be used in
+__do_userfault() without complicating hot path in the page fault handler
+with extra conditions.
+
+> 
+> > +               return false;
+> > +
+> >         return ops->can_userfault(vma, vm_flags);
+> >  }
+> >
+> > --
+> > 2.51.0
+> >
+
+-- 
+Sincerely yours,
+Mike.
 
