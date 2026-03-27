@@ -4,128 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391F910F284C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5109010F284C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:08:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8199E6B008C; Fri, 27 Mar 2026 12:07:54 -0400 (EDT)
+	id B75466B0098; Fri, 27 Mar 2026 12:08:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C97D6B0096; Fri, 27 Mar 2026 12:07:54 -0400 (EDT)
+	id AFEDC6B009B; Fri, 27 Mar 2026 12:08:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B8D16B0098; Fri, 27 Mar 2026 12:07:54 -0400 (EDT)
+	id 9EF896B0099; Fri, 27 Mar 2026 12:08:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 560AE6B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:07:54 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FA7B1408C2
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:07:54 +0000 (UTC)
-X-FDA: 84592324068.25.B38044E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D967240014
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:07:51 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ja3Gn/8X";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6ey6zWAX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ja3Gn/8X";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6ey6zWAX;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774627672; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 865506B0098
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:08:25 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 35F2D8CC2E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:08:25 +0000 (UTC)
+X-FDA: 84592325370.02.B9FEB98
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 635CC1C000F
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:08:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rMAx7SyZ;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774627703; a=rsa-sha256;
 	cv=none;
-	b=NMhYhmqERfmEzGvxJSIxO46MzJG0lCugqQ6HaFr889N+wY9XLJNx7qlVXbsTKiW76ItAGd
-	W6m9wvepIXD62zhw9D/UWn0cLYBXecazvKKtPQQj8lDZsfv2Km58Q9ptSoXbZ6SKP3ef1o
-	tr1dc6H2Pj2341GQkLOJSVbmPdgk4NQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ja3Gn/8X";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6ey6zWAX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="ja3Gn/8X";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6ey6zWAX;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	b=gCFFwynBbazSu9wZ08tC9ZlQWijcxb9xtNkphqLGs3TJUSKJAfZRzlhRh8VBkgHksGv9BH
+	chNU7b1mGVbATaYpyRhBQMydLXnbWB3MZuE+Pswh/Tz0kcxmz1pU6PueJMXIf9ITEgLg6o
+	tcLFtegkaFM0coF6lA+QXCmkByUMEm4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774627672;
+	s=arc-20220608; t=1774627703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
-	b=GpnE79bnpnaY0U3d2qe9WbbQTBIIs0KPuW/o9cV1jzouTpW5nKqFQx7FDf3FiKTmS2Qv/f
-	RTXo10z/1+7thJp/SjnvTwzHYltz4Q0bXxSL4QS12WCUXMgoo2t8ccLFY4gv9klzfDl6oi
-	+gpspLiQMyVRRoW6btT+moiemDu/2O8=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 48AA05BEE5;
-	Fri, 27 Mar 2026 16:07:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774627670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
-	b=ja3Gn/8XuXTXwihUUdv/cNCmN7MtssZoejPOEB4PHAphVKwmoUC6Vq/PBFI2iqjZ6da52m
-	CTuOg4cfctf1M6mSKiqiCutpFTQUglGOoUOblqKVKHdKzCSzYA07x/4N9kVH7EhlSTtMRR
-	hDJrQZCA8Wb1B9w9DtTH8o8iDTISoOk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774627670;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
-	b=6ey6zWAXJfAxJDq+xvcXMq4+Sin9q63+W6u2wa9o/QOVai0NqglMX55Q2aFD5u0NUylHGM
-	E+2XIKCFwuWTIfDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1774627670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
-	b=ja3Gn/8XuXTXwihUUdv/cNCmN7MtssZoejPOEB4PHAphVKwmoUC6Vq/PBFI2iqjZ6da52m
-	CTuOg4cfctf1M6mSKiqiCutpFTQUglGOoUOblqKVKHdKzCSzYA07x/4N9kVH7EhlSTtMRR
-	hDJrQZCA8Wb1B9w9DtTH8o8iDTISoOk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1774627670;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rqt7sqz+Z/AOlrj075O/J83vs51Td6xl2fSsWyleBdc=;
-	b=6ey6zWAXJfAxJDq+xvcXMq4+Sin9q63+W6u2wa9o/QOVai0NqglMX55Q2aFD5u0NUylHGM
-	E+2XIKCFwuWTIfDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F95B4A0A2;
-	Fri, 27 Mar 2026 16:07:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NuaCD1arxmmuNwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Mar 2026 16:07:50 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id EE9B8A0976; Fri, 27 Mar 2026 17:07:34 +0100 (CET)
-Date: Fri, 27 Mar 2026 17:07:34 +0100
-From: Jan Kara <jack@suse.cz>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, jack@suse.cz, willy@infradead.org, 
-	miklos@szeredi.hu, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] mm: start background writeback based on per-wb
- threshold for strictlimit BDIs
-Message-ID: <pkmsqdxopfvphud4qvionkl45qnz64xiuo4gnhd3m2mvy4m3xm@fcrenmksutyh>
-References: <20260326234629.840938-1-joannelkoong@gmail.com>
- <20260326234629.840938-2-joannelkoong@gmail.com>
+	bh=lnO9fprKBsx/1X4jOQjM+OCTDLNkzZ/OIBa8N2AjjBg=;
+	b=xDYTHERFpYsfNdLHffZS0Xhl9PhkkEw99Jbxmc4JdrQIgMVX5aRw33Hhh7rhIJeeFDsZys
+	io593vaFKLHhXLLCrsCWIKqWJqLaI7VCKFZl02P3xt+MT7+sEauASAw2Lf2qL4Z4DU3k0G
+	fOamTpRzGExLGxLont7xFRRXukF6JVo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rMAx7SyZ;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 54CEB437AE;
+	Fri, 27 Mar 2026 16:08:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEB1C19423;
+	Fri, 27 Mar 2026 16:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774627702;
+	bh=Y5Pd/gbqGEKvddIcFhZ5V8JfJMsZGodNYjSQLfzxngo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rMAx7SyZ59sVnwpX2nQDt9UXL44MMBRBHqTRZlQHbacBLtN/aM6d+nxwUxopCyzFY
+	 404+v5iCL/0mcPGV/j6+GVooGUNTIxakPVHRrh+DLrnHKrbbBZYyjuQ1/7DRus6AmA
+	 itfAQ94fgY2+OOZPz7PKtC5OAfZd6ZfWqieMqdXzcUSntzhU0bwlU+3JcI/2tlU1+t
+	 et899fz5Zrxd+VBYlUQZlh6dZRyn+vSvhslG8H/eM5T5XSyGc5FdqRWympWhbuwfgP
+	 3dfBDxyhIvxnDheY858lbGkW3NdQxKkMS+/kzr+HU/Z+1xPiveQoLPQds6mhzfMSim
+	 rn3OME/5q3Xtg==
+Date: Fri, 27 Mar 2026 16:08:14 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
+ from file_thp_enabled()
+Message-ID: <10b04dc8-e155-4a31-84b6-17b302e65c7c@lucifer.local>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-6-ziy@nvidia.com>
+ <5ac47338-1954-43ce-9984-56d70f7c392f@lucifer.local>
+ <075A4C69-B386-4557-BDAA-4038EB36370D@nvidia.com>
+ <14af57ba-09bc-40ff-812a-b41dfb78a03c@lucifer.local>
+ <59A91369-9BCB-4545-AEF8-083B52998CC3@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260326234629.840938-2-joannelkoong@gmail.com>
-X-Rspamd-Queue-Id: D967240014
-X-Stat-Signature: y1gf5g7p9h3x6t6cdm64g1wxr9ukohi7
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <59A91369-9BCB-4545-AEF8-083B52998CC3@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774627671-300624
-X-HE-Meta: U2FsdGVkX1/m7pA8bD97h6K7glaohgeQNQ08DyerRWzKqNwjtR5y6CWxqRkDQ8PdEACQLQCYK1ZA7DLn74rVj5YqORC8u/+6PteOxathIYdVxHxMFa9pv1zE6zx3GbBft6CgEc49zHqnPxMf8MIkgqN9cC9JBZV+Xa97YEIqUTA7IUbNu4KS0s2W/3l8QvAHFfBYL/6/7VT+XeE/IVxvMNsM2jQk+M+/VPSgJ8HRsZM0JNg7Y7nJpgPI5o0VVxY80Fg7kTtJ9I++Oz9lceXhVuWjFDRyTzN4EQRfcOgHnc2L+Zn1ZR1kYh8IbXYCFEcsRVO//NlPPxQO5fhXm/3uUQMGhP1Db4D0j118x+AwuGDvQ7Iti/7GRcv+we8b+eF2sGNXo68g83p7F1Zl1kzPMFEMma3gumF6R+dnMDJp72A6LVjQ+yPyv3F7Fl0mOPbuYESZ20/KTSemASSFApb4sUSsJrNCs3ugmNiJq0jmIZdH7TtfWNNz93fVUIQaTowaWcLSKb77s8fhF2se56cPRUubZSjNIiUc9vaobyxtu+UW0MchDgQFw+jdJa3N+/jnO4XpnM8Yg63c9JoJEE30jwArSyeL6T1vz/7M9G8yoYQC3nFWmM7NbpT3qSPvaMVfkfseo5wkG+X9572XR/H9NcpefyXp90JlqdLNdRiSxRjpWYY+ZshxM81sVYXkdDTodQi+DNX5Exq8yLjG3Jx3GnsVwHZvzB3QZ7mShxwBNjYurmRq4CPyPnTgznzCnfqzYExPLC3JnHM2/Mw2S1/R5CUZ+sLHKCy18mjHGim1blpVclPPMlfuz3sZNhbEjZqIqL/cHSGGIsn5F08eEfBvkYXXCvSZRGd8/03BRiD+rRpV8B1AvsUIl2T1HFzz/OgZSEji+Vct/0uUthPpD3tno9QGObdQkl8RmFGB+v6YEv0W4JzJG4Xvdyf3ut87sYgjg9PKhHChThWmCHpkYij
- wVOTEVbx
- LKF/uLwr424tTOSqdPH5fmIJbKe8QgUfHsX6h7k1oYvh/23oLYP72PTrxSpMBxCJmdkv/2yanG4brKqa9Q7EvoUa4kjLO6oTfAuAGab7Yg5uJmJlNTZhSWZZbreVH2rRsBctbrHh+1bz5fRRYqisdD8/Funjig9fqV2AUDQcvw/N5SUuVp0AxJeG1G/gE98oAjI8mvKB+tD8KB9X2Ntdka8YVGfVa9VbTzFkBF+3X/HqIwm4jhZOWYzQ30jKhmJfNnk3wsOq0aowBTJwtna+wrWXAMCFXpF58SL/a5SxK2ZHLoz1UZDpsiYH2YvftDJIIv8SDrx3E/PnCb334oHWHWU8VNMVstiu3fX49iOgYRg2y/1I=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 635CC1C000F
+X-Stat-Signature: weh3977wfjm3fgnm4f6uu4qkcgasieof
+X-HE-Tag: 1774627703-142479
+X-HE-Meta: U2FsdGVkX1+Dlj9GOLrY5/at3WXmJKQJkzUyiQPXWkD+71z5j2NwMwqq4hUxsSc8PDGhNUQH6RxqfeYrAjhQo1UUVTdPYY1FalRvtilM0ckWQKc6eWKN56U2lxaGTuoAg3NB4MDlOLr1r34I6LJzaxCOmNBCaWQdQ3frMKSvj6MoAqgqeUvFP9UUexwqg6JbKp3HRZebvOp82Bx97aUj128wODSs8//+spdXc1pWvR0/2+aQI5ebQvVeMk2nZ5Ryacqgj9eKma44wa16Z52eui6wapRSPR8WuCLuOJd7z2iU5k9ruXhEVsC+KR8yMhfZ7ArLbeALeui/4GNdmZBhOUpUZPjJCyPaYarzgPpJVgkyCU3Z1/tEoYYTZsCbwtzi4aKIPPvgrmA30M2woK4xGepOU/UJm3OAK6UQWhqzOXGrmp0rT3EUJodlS9+2TkVZ8Fj8ny33qMNoEgyuOSbcA/YG+7fYaEKGtQ3btPqMYYDiVCX8TrGc3wsH5FkMQL0C6PFoVUnDWDAF1/qMTdjrhOHaICmhVi2bix55dTyXGT7eeOs+E47MkpsQEjWeD/iJrl6EKddIcuR4+9iL7QPALWIzRRnP1ZsSKreIYUrEa1wQGcIHO/NNLJ4Y+r5/obZJVikf7Ij+zawwqkDXisrui1tH8KzAyN+W7fZAzxWENYBpVNxJGw8ngQyhDC8f/EKhCOHiHA2Y7SFmSwHR6D/4BFkLJPkJO/vsmN50KQjhBDTE7EfTMitNdcTPfgI7wMvoxwJeECufXtkURGBJhWNaOOjSfM20U1fRL01c0aYLuglJ7vwymbnGr4oZ0UiNcjLlNjxGyeKfHoQ36tCcTRb6uGuEwOSMZyUCR6NHnVUH3G2+Qci8xWxWbqRIJ+/uZ3n4UYP2kMB/yuH588ju2mXAU3pwyydYdZYKh2D9RnlPFayEXxTH6cKXklvDm95di+77RlLsnPT8iiBO4/lE0q0
+ O0pNlAY9
+ Sq05Wq0vykE5p8zIC2aaxcT7JOv0Lzg7mpjVX0mcMosf/QX4Jw3j5coo71dQqXAvn5GXTQY6eyAhfBLLXuXcMzauZD+F4HbTj3aw5Na4siXU+vs5NE2Re+jqWRkhJm9LqsNsIMj5S2pLtbFHKr7CNGbq1zYS7iGrgTi7hxrKyA7c5m6C1udT1llFe9jvLgcDNJRV3Ublm/BflEszqEvFFqxTGo4pyfaCnczrhTuC8yzPWgiyQbu/7qjOT5XMBBA4Qy8ylcmqFVvJRWe5SwWJNttpnIuZEUGMHv2Bf0aX7aeWLbtzfBwz67Nk/l06WkvJCslEyRwk85xYJFdZ60ZFYooB6fg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,76 +107,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 26-03-26 16:46:29, Joanne Koong wrote:
-> The proactive nr_dirty > gdtc->bg_thresh check in balance_dirty_pages()
-> only checks the global dirty threshold to start background writeback
-> while the writer is still free-running, but for strictlimit BDIs (eg
-> fuse), the per-wb dirty count can exceed the per-wb background threshold
-> while the global threshold is not yet exceeded, so background writeback
-> for this case never gets proactively started.
-> 
-> Add a per-wb threshold check for strictlimit BDIs so that background
-> writeback is started when wb_dirty exceeds wb_bg_thresh, which drains
-> dirty pages before the writer hits the throttle wall, matching the
-> proactive behavior that the global check provides for non-strictlimit
-> BDIs.
-> 
-> fio runs on fuse show about a 3-4% improvement in perf for buffered
-> writes:
-> fio --name=writeback_test --ioengine=psync --rw=write --bs=128k \
->     --size=2G --numjobs=4 --ramp_time=10 --runtime=20 \
->     --time_based --group_reporting=1 --direct=0
-> 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+On Fri, Mar 27, 2026 at 11:43:57AM -0400, Zi Yan wrote:
+> On 27 Mar 2026, at 11:29, Lorenzo Stoakes (Oracle) wrote:
+>
+> > On Fri, Mar 27, 2026 at 11:12:46AM -0400, Zi Yan wrote:
+> >> On 27 Mar 2026, at 8:42, Lorenzo Stoakes (Oracle) wrote:
+> >>
+> >>> On Thu, Mar 26, 2026 at 09:42:50PM -0400, Zi Yan wrote:
+> >>>> Replace it with a check on the max folio order of the file's address space
+> >>>> mapping, making sure PMD_ORDER is supported.
+> >>>>
+> >>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> >>>> ---
+> >>>>  mm/huge_memory.c | 6 +++---
+> >>>>  1 file changed, 3 insertions(+), 3 deletions(-)
+> >>>>
+> >>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >>>> index c7873dbdc470..1da1467328a3 100644
+> >>>> --- a/mm/huge_memory.c
+> >>>> +++ b/mm/huge_memory.c
+> >>>> @@ -89,9 +89,6 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+> >>>>  {
+> >>>>  	struct inode *inode;
+> >>>>
+> >>>> -	if (!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS))
+> >>>> -		return false;
+> >>>> -
+> >>>>  	if (!vma->vm_file)
+> >>>>  		return false;
+> >>>>
+> >>>> @@ -100,6 +97,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+> >>>>  	if (IS_ANON_FILE(inode))
+> >>>>  		return false;
+> >>>>
+> >>>> +	if (mapping_max_folio_order(inode->i_mapping) < PMD_ORDER)
+> >>>> +		return false;
+> >>>> +
+> >>>
+> >>> At this point I think this should be a separate function quite honestly and
+> >>> share it with 2/10's use, and then you can put the comment in here re: anon
+> >>> shmem etc.
+> >>>
+> >>> Though that won't apply here of course as shmem_allowable_huge_orders() would
+> >>> have been invoked :)
+> >>>
+> >>> But no harm in refactoring it anyway, and the repetitive < PMD_ORDER stuff is
+> >>> unfortunate.
+> >>>
+> >>> Buuut having said that is this right actually?
+> >>>
+> >>> Because we have:
+> >>>
+> >>> 		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
+> >>> 			return orders;
+> >>>
+> >>> Above it, and now you're enabling huge folio file systems to do non-page fault
+> >>> THP and that's err... isn't that quite a big change?
+> >>
+> >> That is what READ_ONLY_THP_FOR_FS does, creating THPs after page faults, right?
+> >> This patchset changes the condition from all FSes to FSes with large folio
+> >> support.
+> >
+> > No, READ_ONLY_THP_FOR_FS operates differently.
+> >
+> > It explicitly _only_ is allowed for MADV_COLLAPSE and only if the file is
+> > mounted read-only.
+> >
+> > So due to:
+> >
+> > 		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
+> > 			return orders;
+> >
+> > 		if (((!in_pf || smaps)) && file_thp_enabled(vma))
+> > 			return orders;
+> >
+> >                       |    PF     | MADV_COLLAPSE | khugepaged |
+> > 		      |-----------|---------------|------------|
+> > large folio fs        |     ✓     |       x       |      x     |
+> > READ_ONLY_THP_FOR_FS  |     x     |       ✓       |      ✓     |
+> >
+> > After this change:
+> >
+> >                       |    PF     | MADV_COLLAPSE | khugepaged |
+> > 		      |-----------|---------------|------------|
+> > large folio fs        |     ✓     |       ✓       |      ?     |
+> >
+> > (I hope we're not enabling khugepaged for large folio fs - which shouldn't
+> > be necessary anyway as we try to give them folios on page fault and they
+> > use thp-friendly get_unused_area etc. :)
+> >
+> > We shouldn't be doing this.
+> >
+> > It should remain:
+> >
+> >                       |    PF     | MADV_COLLAPSE | khugepaged |
+> > 		      |-----------|---------------|------------|
+> > large folio fs        |     ✓     |       x       |      x     |
+> >
+> > If we're going to remove it, we should first _just remove it_, not
+> > simultaneously increase the scope of what all the MADV_COLLAPSE code is
+> > doing without any confidence in any of it working properly.
+> >
+> > And it makes the whole series misleading - you're actually _enabling_ a
+> > feature not (only) _removing_ one.
+>
+> That is what my RFC patch does, but David and willy told me to do this. :)
+> IIUC, with READ_ONLY_THP_FOR_FS, FSes with large folio support will
+> get THP via MADV_COLLAPSE or khugepaged. So removing the code like I
+> did in RFC would cause regressions.
 
-Looks good. Thanks for improving these! Feel free to add:
+OK I think we're dealing with a union of the two states here.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+READ_ONLY_THP_FOR_FS is separate from large folio support, as checked by
+file_thp_enabled():
 
-								Honza
+static inline bool file_thp_enabled(struct vm_area_struct *vma)
+{
+	struct inode *inode;
 
-> ---
->  mm/page-writeback.c | 16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index c1a4b32af1a7..30f3d5a6270f 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -1835,7 +1835,9 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
->  			balance_domain_limits(mdtc, strictlimit);
->  		}
->  
-> -		if (nr_dirty > gdtc->bg_thresh && !writeback_in_progress(wb))
-> +		if (!writeback_in_progress(wb) &&
-> +		    (nr_dirty > gdtc->bg_thresh ||
-> +		     (strictlimit && gdtc->wb_dirty > gdtc->wb_bg_thresh)))
->  			wb_start_background_writeback(wb);
->  
->  		/*
-> @@ -1862,15 +1864,9 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
->  		 * Unconditionally start background writeback if it's not
->  		 * already in progress. We need to do this because the global
->  		 * dirty threshold check above (nr_dirty > gdtc->bg_thresh)
-> -		 * doesn't account for these cases:
-> -		 *
-> -		 * a) strictlimit BDIs: throttling is calculated using per-wb
-> -		 * thresholds. The per-wb threshold can be exceeded even when
-> -		 * nr_dirty < gdtc->bg_thresh
-> -		 *
-> -		 * b) memcg-based throttling: memcg uses its own dirty count and
-> -		 * thresholds and can trigger throttling even when global
-> -		 * nr_dirty < gdtc->bg_thresh
-> +		 * doesn't account for the memcg-based throttling case. memcg
-> +		 * uses its own dirty count and thresholds and can trigger
-> +		 * throttling even when global nr_dirty < gdtc->bg_thresh
->  		 *
->  		 * Writeback needs to be started else the writer stalls in the
->  		 * throttle loop waiting for dirty pages to be written back
-> -- 
-> 2.52.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+	if (!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS))
+		return false;
+
+	if (!vma->vm_file)
+		return false;
+
+	inode = file_inode(vma->vm_file);
+
+	if (IS_ANON_FILE(inode))
+		return false;
+
+	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
+}
+
+So actually:
+
+                       |    PF     | MADV_COLLAPSE | khugepaged |
+		       |-----------|---------------|------------|
+ large folio fs        |     ✓     |       x       |      x     |
+ READ_ONLY_THP_FOR_FS  |     x     |       ✓       |      ✓     |
+ both!                 |     ✓     |       ✓       |      ✓     |
+
+(Where it's impllied it's a read-only mapping obviously for the later two
+cases.)
+
+Now without READ_ONLY_THP_FOR_FS you're going to:
+
+                       |    PF     | MADV_COLLAPSE | khugepaged |
+		       |-----------|---------------|------------|
+ large folio fs        |     ✓     |       x       |      x     |
+ large folio + r/o     |     ✓     |       ✓       |      ✓     |
+
+And intentionally leaving behind the 'not large folio fs, r/o' case because
+those file systems need to implement large folio support.
+
+I guess we'll regress those users but we don't care?
+
+I do think all this needs to be spelled out in the commit message though as it's
+subtle.
+
+Turns out this PitA config option is going to kick and scream a bit first before
+it goes...
+
+>
+> I guess I need to rename the series to avoid confusion. How about?
+>
+> Remove read-only THP support for FSes without large folio support.
+
+Yup that'd be better :)
+
+Cheers, Lorenzo
+
+>
+> [1] https://lore.kernel.org/all/7382046f-7c58-4a3e-ab34-b2704355b7d5@kernel.org/
+>
+> >
+> > So let's focus as David suggested on one thing at a time, incrementally.
+> >
+> > And let's please try and sort some of this confusing mess out in the code
+> > if at all possible...
+> >
+> >>
+> >> Will add a helper, mapping_support_pmd_folio(), for
+> >> mapping_max_folio_order(inode->i_mapping) < PMD_ORDER.
+> >>
+> >>>
+> >>> So yeah probably no to this patch as is :) we should just drop
+> >>> file_thp_enabled()?
+> >>
+> >>
+> >>
+> >>>
+> >>>>  	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
+> >>>>  }
+> >>>>
+> >>>> --
+> >>>> 2.43.0
+> >>>>
+> >>
+> >>
+> >> Best Regards,
+> >> Yan, Zi
+> >
+> > Cheers, Lorenzo
+>
+>
+> Best Regards,
+> Yan, Zi
 
