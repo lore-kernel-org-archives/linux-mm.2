@@ -4,89 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB4110ED674
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC2FE10AB830
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 14:26:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A413A6B0099; Fri, 27 Mar 2026 10:26:12 -0400 (EDT)
+	id 29E9A6B009B; Fri, 27 Mar 2026 10:26:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92CE66B009B; Fri, 27 Mar 2026 10:26:12 -0400 (EDT)
+	id 277476B009D; Fri, 27 Mar 2026 10:26:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6473A6B009D; Fri, 27 Mar 2026 10:26:12 -0400 (EDT)
+	id 0A1CD6B009E; Fri, 27 Mar 2026 10:26:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 517E36B0099
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:26:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A79C1A1112
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:26:12 +0000 (UTC)
-X-FDA: 84592067784.11.C27D619
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 78807140013
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:26:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NMthvpE8;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774621570;
+	by kanga.kvack.org (Postfix) with ESMTP id EA6B66B009B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:26:14 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B63C75C2A4
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:26:14 +0000 (UTC)
+X-FDA: 84592067868.29.D564B01
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012037.outbound.protection.outlook.com [52.101.53.37])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E4061C0011
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 14:26:11 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="t27/y3xa";
+	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.37 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774621572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TZrmY305Pk5Vh/286D0jZvfzIvFBws6zKkCIIruRWYI=;
-	b=Jt4yAl3Im4i6XNmGz6aYiSSysPuX404ylpWeSw+XmFw3Z7RMBLPhNAXoEN+f1OWP5BVZI+
-	uSDf64hyQnkRp0Ll3grYMa2ljpTt90UbPCON4fb4H02RTW1Mlu+rKOFRpsPu95wSYojYq5
-	gxgpJV/6CtwNKUf3ai20E7WkaONcAYY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774621570; a=rsa-sha256;
-	cv=none;
-	b=Jxf4mWdadp/3dlj+i8bMf75CuUOhGeZuY0UevDKI9SyF6+4JIxMRb+lsdu0QggrcJWeW1t
-	vkF5QsvfoCGo5XBX8VL6AN1M66SzzeitV0X/qMgszxHpmI1J7pMDF7QS6yT7Sza5g+ytwg
-	98zQjGhMht7uVUS2rEyDdZfYdW8Bp9E=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NMthvpE8;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20D19433E3;
-	Fri, 27 Mar 2026 14:26:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8905C2BC87;
-	Fri, 27 Mar 2026 14:26:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774621569;
-	bh=fLYAA+7Gdn0tj+igffgyllVKYLdoyYaeXXtFfb6nSaI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMthvpE85U9ktoGypO5aXgVOvsiNnQJg6BI9xr8TjMrL4ZuOIQTDaAf4iEJeC8VaK
-	 0HHSl+CT3tltOR8TSbcX0OhUQodvndaalZDPLP7PckFy1dHsIU3jUG/wMgBdcWA+bn
-	 oBJiRV2jCeRmFCL7xMqo/Rjq0cJGtS7b8H+ydOWSUfEN6/Rr/WwUmjSvwqoVigVjUE
-	 OUS8o8eZS50uvpGHQZIng7zUIk7o2ZDVHShxrZr/04q47nPVcVCA+ooLJ89c9PXqvl
-	 Nm9xZZ6bcjcfxKdGuAgu9DxcJc8t+sB6VGnt7kR0qtjzpgEOERS9KyA08EG0YERP5/
-	 amwTIbJxOsY7A==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 14 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v3 1/2] mm/damon/core: fix damon_call() vs kdamond_fn() exit race deadlock
-Date: Fri, 27 Mar 2026 07:26:03 -0700
-Message-ID: <20260327142605.4834-2-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260327142605.4834-1-sj@kernel.org>
-References: <20260327142605.4834-1-sj@kernel.org>
+	bh=tUXchkDmn3HsqYD3n5OUj+ds5FuM2RUIJVYh5INDPvM=;
+	b=66ywNpCAl2mMYo3YqWL43MZk1W4c1lPJI4+Bhzdao6qK1KDEGDjFHE3dHS2KLYyqfJdW58
+	mZNjOzO5IWlH5ZrfHmSptyDFOO6IC9xrxm0h5yz+FzJXJ03r/riktO2KYO3KcJcbiYpaiW
+	kGx5L7Z3vR7MhtIS70FKGiZbb1vhsgY=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="t27/y3xa";
+	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.37 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774621572; a=rsa-sha256;
+	cv=pass;
+	b=FiZwMoi96B6cIT65bpFjr8Ih3OVvypTrGZFLstOT4XmX1B9FnjYn7poXgQ+lMerDn2GgJG
+	vA4PbhPlJnD7sxIWKW8TgVVQO00VWwWNxSE21xU/+KvDq3q9mkwQ99FBm/e6+QhX6REGg0
+	ufWCVThywoLWZouPcuxu5ub5sHVm/TQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xz4juyUXhuawr9BlRZKqY65p/2RPjSYc6M8RZ9Et4WRQ32XaTPOYzjANkpnYosZvN7GQaVQ/FawRR8XPW9Ccky1IfncMmasihiwZjlb65FydY8tIIBOj/OwpzjHFZUK3gxRx3PXO3CfLff7pT3x5jfMmqkh2V3kijf57Mm4eK1cWE2GQvYopODp5B6vSbDDv/C9YtSRPoRQ0eePjNEzKA1ykoWvTE6UpQ6vPxOcOOK2cwRcrIMeRRRGFVGqAeiux7qy2Ape8vhL34IMjFib98RNYVgkT3EKSaUW+qELQ0fyuwShznuz3+eQ/WqZMLt5rXCEiZqFwoYt5aC06CZCMsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tUXchkDmn3HsqYD3n5OUj+ds5FuM2RUIJVYh5INDPvM=;
+ b=L4gXH9v50h+QGxcK+PiLjhrj/8iTwca6sSk22srSCdaWZmJMFzlcSC1biMZDBfqKG3YxqaWOBwkeDbkrmMfsszkd+INvaSHXRbNO269RAdLS2zP2hwFpnOxu+INjCsS5I7vdRgrlVIoGfzd4TRCP9Si/Vt1JS6wG1zvFNdMhap170eZIx4ru8d74+7k6kJ46pruPwp7rcxrTP9y5wKzkh/C2KSaAIXtRv9d8vNT19l1Z5YOkiHjumHDRU7Sua0DgNPQtFqT7ays51xIsklEe+7Qx2BOE8xEmWpJtSpGPtOEas9XGeiF+lUZmGYytlKHmAYFfyylG2ntYreEPoFQx9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tUXchkDmn3HsqYD3n5OUj+ds5FuM2RUIJVYh5INDPvM=;
+ b=t27/y3xahkIVZU+GYXuHIhECWrmq5DiLxlyNuVcHUVVULJseSE6zGK7ZeR9aYALxnYlWYOu/2Ezu+zbcZkQ2++/XF6jPrpA4LeEuXw2mz4+BwOu2ZOhBp4/tQLiuQFrF0v4yCNCE7MX6GMusxbpq9jAJ7vOax8cCTKkHDTBpfaKb3k/2CSNRHEekdI0gzVPhLJbXG7OZRq7YHixV5547jAD640dM+kVjigyvG5muO1RxW8aQaEGtasxmci5Bo6/77fuS5D7XeY5EC6QgRjcPyVnTMEGZqp8Sq5EIplz8iZpqZsq66qxbr4aIBa9mtkSDkNfwmKvEnibPGk9oLLKdtQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CY5PR12MB6478.namprd12.prod.outlook.com (2603:10b6:930:35::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9769.6; Fri, 27 Mar 2026 14:26:05 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9745.007; Fri, 27 Mar 2026
+ 14:26:05 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v1 00/10] Remove READ_ONLY_THP_FOR_FS Kconfig
+Date: Fri, 27 Mar 2026 10:26:01 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <6800F1A0-7ABE-4CF6-B9E4-81126D59B43D@nvidia.com>
+In-Reply-To: <10748785-08a9-41c7-bacd-88f05fdf1a88@kernel.org>
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <10748785-08a9-41c7-bacd-88f05fdf1a88@kernel.org>
+Content-Type: text/plain
+X-ClientProxiedBy: IA4P221CA0002.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:559::8) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wo8rphzgr5gcnwfyxrmj1z7pc9mc83gk
-X-Rspamd-Queue-Id: 78807140013
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CY5PR12MB6478:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5741292a-2735-4c59-c191-08de8c0cc7a3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	RIw6bLZUTQslwZcC6TW06OksoksGGMI3i1BfUQdLEpZEAPOuiMy+Zv68F142w5O7rIpvZDLOrSZ+3C1ZBYwjP7tAmzCd9lxEuovsDeggg2DB2zD9+pRO57a/JIG8rItOklO8+HscDbzVjxbBQKTkVNBgGgZ6s+KGxe2ayqUH8l9KHLjBs4D3ga4kYdL5M4/OJjujaSW6+93XVGHfnlBYzfL3WUxP/M+DisLzzqO/jZmdXeTIp7yyYacqHgO/os6VzzfN20ayKoh+mVwFirahbYyDSyHvMQFk+vEBLLOPIiiyCEzDixms1iGb8j+jqI3aORxln6sSrtoHWxI6PMgO9wJC5dfbEcHJBsnNX8T8ifSyx1EBc2gTo/FBnPLSazFhhkLQ6TyhUw/CGOqkUPCi1ZFSJl6NUl0N24FpUVMc66w8uVyvWcVkIeeICuIFjTLtM9gAgwadvjqKhpn5aqlrnKB+nHABfPvTg6WUrP8HDKRuix5Yq9cYWrJC57w2aWtjM6YTgWX35vCOdzsmTM2WHo4+cU/Ln0OL1CbE1q8aU9PBZ+Gn4lA/CkK5A2pP6TuDE9CBKHMiwyzNLiC+27PnG3jO0YHs2fDx8wKANTEKcIoGI/+7bCNnvIlqChwtU36HxFtq3HhQFLvRkjWUmhpP58Mr5cgSC9Ql3H8L9ri2KyDQAADM99kkATRfwIeaWPFSQ9omDlcnBzI/8LMouGZqUGnga+oM44ghTjZHJw5gDJ4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?59LTIkdZ+ARRVRHxX69SbMiR92nOr3c+anIAkoj8PhCGSZhSMpWQYr3inJ7w?=
+ =?us-ascii?Q?gffjnQg1AjyZtNEuPnVFosw4ZJwU5BraSM8TcA8dp/jsw9cVDXCpq+he1UeJ?=
+ =?us-ascii?Q?jzqgH8iyb4/HpNXVlg8tHGcjhmkA83KEEYfy83w7kCSxg3BZLArLDhwCZTrm?=
+ =?us-ascii?Q?0q2dwzQSnu+ZoKGaJctjh2CW0sc952NFAB7A9KpE3enpNPYNC4A1Cycd4PBq?=
+ =?us-ascii?Q?6Et2MqcV+/6d1xcT6xCODYOZHIzPPZnanT9drlDXdyRzFUywEFjJOko8k8ic?=
+ =?us-ascii?Q?Q1P1LIe1rPsO/HgJSrehxrJgQep9hhplMaTLBie617EyVMjA4hyxZqEgLoq4?=
+ =?us-ascii?Q?N8WMkagS8NiT+Yx+5LekBIZrOlUFSecD3EUqZe5AUmEuX9fP4Jv7tWz3eByC?=
+ =?us-ascii?Q?O/ZReGgLWFdB/t5PqMI0lRH8wNjsKIB8JT+tTzVhaJLpkE+yg1hOU7DSmQ3E?=
+ =?us-ascii?Q?2Dd8GtTp6hZ7/qBXfg0zSBqOzBySxFbCE8gu2qJvJcXpTuNuP66Nn+hQlieP?=
+ =?us-ascii?Q?rGcY5EXsX9hXNoRlO+ijwvCR3oF5JOULmyucMY8RVfLIPwmKpy3I+G/u61VU?=
+ =?us-ascii?Q?GGq5jHCFI94DgEQ3b6RzqcV4DbLxSW43MhBmH9kguSbaA+2hP5hP73yG9Q+y?=
+ =?us-ascii?Q?M0+df/Y8c6qapmMouRkZ5zTh3OCCqmstfMTwvFGQuquGBu67pYIXV5mxuXTE?=
+ =?us-ascii?Q?gO78hQDHiDcvyJGAQ7oN3oyMbhUumOUlJk1eGNtYlPhbq805Q6qWDKv8BI6v?=
+ =?us-ascii?Q?hJS5RUrGdGEZDlsSFteWRRjzcvNCOElBJuppU2WvTxqgT3wKf6Uptmocujve?=
+ =?us-ascii?Q?Su7c7AwATxo95TH9wpgbp6UZhNdJlB8gmIhy7kmK5o7Ckbhw4ZvhF1dpym1G?=
+ =?us-ascii?Q?gfK6V2N9HMVbn8AFU1QbYMMtnvqhFZahhenPUDDL3a0MlF4qxK9bV/Ke72xy?=
+ =?us-ascii?Q?uMRKPiJr1aXRe5nYXdx7baSWQRBdOXQJz/DvQi7G2pQDPmaqUPARW/nOkYc6?=
+ =?us-ascii?Q?cPlVgmb7nI26/sUNjSbx2UhwyK5jSxVwMrmp13lxbB88fkmTyZ+Fb/6S4sEv?=
+ =?us-ascii?Q?WoGYdCyVEy8VKkC8x0Ul/0LmNoyWEL0/TVoTFnyfA2dJ8/gKb86Ksam5u2aG?=
+ =?us-ascii?Q?WEuqhWKu53D7NxKNulKjA/fwAX4qTlkV5vyb20Pl+oEzULSrT4W0sviDExxo?=
+ =?us-ascii?Q?s5UikV9r5ljuyQG/kHJABaE6YoF2zvyEJa29H/Eh3gEkFNvP+Iy+U0iw1O4A?=
+ =?us-ascii?Q?nitAYyqEMrpsaEWxAtZwQuoi8mNbATY6Xh8wl+Tz9AVCxTWEKDuruSd56BQE?=
+ =?us-ascii?Q?HFqpNLy83Hh8xGgA15OI/CcUwObAKgdXEKtqP0U8egLCXNIIs30KjJI0Fsor?=
+ =?us-ascii?Q?Z24Df2BJM7+memtZ+OtRps/g/I9UkFS0UgfJ8EKJNyG4sMgkCjFzrWm5Vks2?=
+ =?us-ascii?Q?NN3VovfWPr2d1TOjIbUcCcBLNyenmE+DqfYsGXSQkAMAgU/c852gS7Y54ap2?=
+ =?us-ascii?Q?/UnzBCqJ//X+DY9fWEu4BUxeFNWF90++VjuiujSsATughO9DMOGvSzHXtjzx?=
+ =?us-ascii?Q?uOkt03sbxnjGcafAE7lRm1uqqZ6130RBpj8lEuseJJRyDxbmBjwDCObFrVDn?=
+ =?us-ascii?Q?2FL4i1ZC/RuF0ixe3k1UslakLrXPQNP5d4xGW0EW2AvEU73RDm6gpOhuixlA?=
+ =?us-ascii?Q?a2rssbbc9D15q++ro3oeu9OTadyv9B74QrDhfLa7+16HI1PDRime7Skvbdnd?=
+ =?us-ascii?Q?ib44yX1X5Q=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5741292a-2735-4c59-c191-08de8c0cc7a3
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2026 14:26:05.5456
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +MtdRenwI01UMOy81jT7rrXAkQsbnQN88YagZNjSFypp6PQcYCiiDZHEMYbhhR9i
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6478
 X-Rspam-User: 
-X-HE-Tag: 1774621570-211040
-X-HE-Meta: U2FsdGVkX19RACRd7lzRpO82EN7Y5n8LUbEarh4CfBJ6X8YAaR7wZBJU9kM+tpnVxHlW3/8O2onQ9WDyI4KXRKA3FIAyhjIUfeNgVuTGJp+EgC5VbzXsFbX3/vCB7lcvaZ8PSG+j5b6KAso/HlXlUgUhoPXWuIiUffjEqTO98bFxODu1T7ptNqFGObqoqAs9McXQOAiF+rQFtxfjiFok7WTcN1OfBg+y73O9xCum65IDDzzGXpeSZf51PN5jrrqkz58SX99ozQOZou/l+60b4E7oh5HfF6rz+F35j4o/Q9pBZoH5QHc1ZrMsSw9ZfJNhNsupmfk6BcgS1kzNQYnITOibQXj3UoUXx5JcUPGVszbCiTOBpq0v0zGIjgwrr76AqQYIbj/Ce2b/J4tiwGzk5cxrR1HTLpBX+C1xZfydYFibEMKbvq+W4hAC7iToKRXBdCur+umMBxaCUwi2VNyXarLvkl8RjuIuJTkASxJJHRigpj0sPCs4F8M1yo6CAuf+fDevE6SvRXOqW+ZoCXqNBsnOMcVUJP1Nq+LLTRqnJ2YAccZU8e3zDrlLJlk3kV4CbAItv2GZ+3rlYJs54sN8HBghk3w42yJsSzTbJTXTbV6rD4trljnRjC3jOyCe9RdewCeecoZF1XBHgq7Opt1aVaQco3rUAlzeyNgCbxYMReofPsSzX3Tvxwjxip6m49WA9Rva8nJ1UeT+kJcwbmkPLma+KWU+n81JrYS5vn5LBCd5cse+kY/o3X4+EFBTTiy6/pcjC37wYF/4XCCdqZk8+CMpMJT2jPtFfXO68naVRv7Fjl+ZX3yJ9TLz+CeVeGmkubvXEEpcrymH0bMV6JsN4l1lMS2NGWpIHsYjUM8QxSv0eZYsjAM/2YIASh/Po7K5SIlrwoH9KFnRAJUpqmNvhJBFBMIN0CPG2MF4taEuK7GWOQ81FzJeXpJanYjGDIhM+uVOSUhlXbqsnQNSONC
- Yi94i32c
- GKB42
+X-Rspamd-Queue-Id: E4061C0011
+X-Stat-Signature: kp5gfmh75cg9wet3fdwpn4jeh4ut8xhy
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774621571-837948
+X-HE-Meta: U2FsdGVkX189YydAuQm3g8sKx7WgOCem9hHcQ3nCSuPu14rszFa03IWiF/HGACzY6CWtUYo+lHP/HrpPT58V0LGXdkFX0uyUH8nMjF/ZqPfqysMkPLzDlvvlTsbTOzX8ZCHbmhHIvVNA92t3wT/iTbvBbO50IcFvo2qhL1q61jEjZIFCGxdCUL55N4GGB+JNoxPjhzG89MFt8FyRVUZg/VUUUZztfi6zQqPiObNqjvCFjV22NSYuh120rwJXpbv/h0bleWh9gF1+jkVmsKQ72nfxL340JNT1Nqyp2nmakk3+G2ZzddsT9MxQ/TeLI8w6RNh0AhDayyEr4mmvKLCER05q++aOou8eoYUCXgSgWSaNqKVzE2U5yvEO/bF0cF+U6b9krxSQfACgWP4MvAq6MOnP9BEujwr4njYt2q3T9MLrVcZDaxy9xBNi+Zrepu5o7HImvEhHbWhKO6Scy+duBfUv+y52FvT8SewlxiPhDWixMOjOYSDBrXNLDiNSeuGIGfekNTt+PdK8PvNf8CA86vr27H8jmFaBCWCyYvEQbCe0t0pN4Icl3zn1cJ9G+umYQOCEVvj/PBw5TUEoSU5OK2YxaWJ8KBGenMJVFtEPIKPcdQFrxhFBfox0xfrfsjnTEBe7Pfj0fIaQz76wgD8FmZrr+n/Tv4+vj5daZxW88DQg6D9zp16AMDSYaTVKwlgFzsRmy+aYUHBMkmw93+P7BGAA7J5wHBnMesJtcRfx4kSeQKFjjKSRAjn4OsT07b8IdIpeP7lBhA2uAk8B5Q3zq1GZUmbiJTwFmrgggAhCcoehGlLZBw/XmJr9xeN40W4pZGUiIH6eXYhCraQKim6Lgk/6ppg41Yiv50vqs7fCF1RuFC+H5PY1kbm6H0GC+XYLTqR9pst+oIFeRoj8owFNEKdqb6nmnivuyn2LXTlq3BQB1dsgsrBZrzFlpIkIvq4+DDT4t2YCyOLXGF0VNK8
+ wqVwSa/i
+ KThb9UwQmxY/f1J4CHyPq78w+lRUIycHBeASS2u51wkh651WfzZt9ZkwJECLB/Jb+MMjKEcIANeuJUM/mLZnW1+B1eLHhHZ6ON7Z/0RekKga2bls+aNDEAXYn1BA9AwY8l2gMhQq7P5xZ7wJmPsRgAjox3MzMurNx7ceQaJeMdlWXg1UNri0NS/QAWL/dfzRc+jXO+OJxPyLZOaTlL/6zVmVRcNpWgGShdHFwdM3kJ6aqd/AiRH/tGz1wPP11N2gup0d2C2Z5FLAmgiQcN50jrCY6nzDffk21LxGfRRbNNEM2rKeYHJ3LUkvJUNlJlCmYM6zhW4nEXn+8K1suYYNqyhHddP79LX7cWg/zWdheVzRAsxZOOOXBER/uqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,155 +170,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When kdamond_fn() main loop is finished, the function cancels all
-remaining damon_call() requests and unset the damon_ctx->kdamond so that
-API callers can show the context is terminated.  damon_call() adds the
-caller's request to the queue first.  After that, it shows if the
-kdamond of the damon_ctx is still running (damon_ctx->kdamond is set).
-Only if the kdamond is running, damon_call() starts waiting for the
-kdamond's handling of the newly added request.
+On 27 Mar 2026, at 9:46, David Hildenbrand (Arm) wrote:
 
-The damon_call() requests registration and damon_ctx->kdamond unset are
-protected by different mutexes, though.  Hence, damon_call() could race
-with damon_ctx->kdamond unset, and result in deadlocks.
+> On 3/27/26 02:42, Zi Yan wrote:
+>> Hi all,
+>>
+>> This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creating
+>> read-only THPs for FSes with large folio support (the supported orders
+>> need to include PMD_ORDER) by default.
+>>
+>> The changes are:
+>> 1. collapse_file() from mm/khugepaged.c, instead of checking
+>>    CONFIG_READ_ONLY_THP_FOR_FS, makes sure the mapping_max_folio_order()
+>>    of struct address_space of the file is at least PMD_ORDER.
+>> 2. file_thp_enabled() also checks mapping_max_folio_order() instead.
+>> 3. truncate_inode_partial_folio() calls folio_split() directly instead
+>>    of the removed try_folio_split_to_order(), since large folios can
+>>    only show up on a FS with large folio support.
+>> 4. nr_thps is removed from struct address_space, since it is no longer
+>>    needed to drop all read-only THPs from a FS without large folio
+>>    support when the fd becomes writable. Its related filemap_nr_thps*()
+>>    are removed too.
+>> 5. folio_check_splittable() no longer checks READ_ONLY_THP_FOR_FS.
+>> 6. Updated comments in various places.
+>>
+>> Changelog
+>> ===
+>> From RFC[1]:
+>> 1. instead of removing READ_ONLY_THP_FOR_FS function entirely, turn it
+>>    on by default for all FSes with large folio support and the supported
+>>    orders includes PMD_ORDER.
+>>
+>> Suggestions and comments are welcome.
+>
+> Hi! :)
+>
+> The patch set might be better structured by
+>
+> 1) Teaching code paths to not only respect READ_ONLY_THP_FOR_FS but also
+> filesystems with large folios. At that point, READ_ONLY_THP_FOR_FS would
+> have no effect.
+>
+> 2) Removing READ_ONLY_THP_FOR_FS along with all the old cruft that is no
+> longer required
+>
+> MADV_COLLAPSE will keep working the whole time.
 
-For example, let's suppose kdamond successfully finished the
-damon_call() requests cancelling.  Right after that, damon_call() is
-called for the context.  It registers the new request, and shows the
-context is still running, because damon_ctx->kdamond unset is not yet
-done.  Hence the damon_call() caller starts waiting for the handling of
-the request.  However, the kdamond is already on the termination steps,
-so it never handles the new request.  As a result, the damon_call()
-caller threads infinitely waits.
+OK. I will give this a try.
 
-Fix this by introducing another damon_ctx field, namely
-call_controls_obsolete.  It is protected by the
-damon_ctx->call_controls_lock, which protects damon_call() requests
-registration.  Initialize (unset) it in kdamond_fn() before letting
-damon_start() returns and set it just before the cancelling of remaining
-damon_call() requests is executed.  damon_call() reads the obsolete
-field under the lock and avoids adding a new request.
-
-After this change, only requests that are guaranteed to be handled or
-cancelled are registered.  Hence the after-registration DAMON context
-termination check is no longer needed.  Remove it together.
-
-Note that the deadlock will not happen when damon_call() is called for
-repeat mode request.  In tis case, damon_call() returns instead of
-waiting for the handling when the request registration succeeds and it
-shows the kdamond is running.  However, if the request also has
-dealloc_on_cancel, the request memory would be leaked.
-
-The issue is found by sashiko [1].
-
-[1] https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org
-
-Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
-Cc: <stable@vger.kernel.org> # 6.14.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- include/linux/damon.h |  1 +
- mm/damon/core.c       | 45 ++++++++++++++-----------------------------
- 2 files changed, 15 insertions(+), 31 deletions(-)
-
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index d9a3babbafc1..5129de70e7b7 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -818,6 +818,7 @@ struct damon_ctx {
- 
- 	/* lists of &struct damon_call_control */
- 	struct list_head call_controls;
-+	bool call_controls_obsolete;
- 	struct mutex call_controls_lock;
- 
- 	struct damos_walk_control *walk_control;
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index db6c67e52d2b..9bcda2765ac9 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1573,35 +1573,6 @@ int damon_kdamond_pid(struct damon_ctx *ctx)
- 	return pid;
- }
- 
--/*
-- * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
-- *				      an inactive context.
-- * @ctx:	The inactive DAMON context.
-- * @control:	Control variable of the call request.
-- *
-- * This function is called in a case that @control is added to @ctx but @ctx is
-- * not running (inactive).  See if @ctx handled @control or not, and cleanup
-- * @control if it was not handled.
-- *
-- * Returns 0 if @control was handled by @ctx, negative error code otherwise.
-- */
--static int damon_call_handle_inactive_ctx(
--		struct damon_ctx *ctx, struct damon_call_control *control)
--{
--	struct damon_call_control *c;
--
--	mutex_lock(&ctx->call_controls_lock);
--	list_for_each_entry(c, &ctx->call_controls, list) {
--		if (c == control) {
--			list_del(&control->list);
--			mutex_unlock(&ctx->call_controls_lock);
--			return -EINVAL;
--		}
--	}
--	mutex_unlock(&ctx->call_controls_lock);
--	return 0;
--}
--
- /**
-  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-  * @ctx:	DAMON context to call the function for.
-@@ -1619,6 +1590,10 @@ static int damon_call_handle_inactive_ctx(
-  * synchronization.  The return value of the function will be saved in
-  * &damon_call_control->return_code.
-  *
-+ * Note that this function should be called only after damon_start() with the
-+ * @ctx has succeeded.  Otherwise, this function could fall into an indefinite
-+ * wait.
-+ *
-  * Return: 0 on success, negative error code otherwise.
-  */
- int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
-@@ -1629,10 +1604,12 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
- 	INIT_LIST_HEAD(&control->list);
- 
- 	mutex_lock(&ctx->call_controls_lock);
-+	if (ctx->call_controls_obsolete) {
-+		mutex_unlock(&ctx->call_controls_lock);
-+		return -ECANCELED;
-+	}
- 	list_add_tail(&control->list, &ctx->call_controls);
- 	mutex_unlock(&ctx->call_controls_lock);
--	if (!damon_is_running(ctx))
--		return damon_call_handle_inactive_ctx(ctx, control);
- 	if (control->repeat)
- 		return 0;
- 	wait_for_completion(&control->completion);
-@@ -2952,6 +2929,9 @@ static int kdamond_fn(void *data)
- 
- 	pr_debug("kdamond (%d) starts\n", current->pid);
- 
-+	mutex_lock(&ctx->call_controls_lock);
-+	ctx->call_controls_obsolete = false;
-+	mutex_unlock(&ctx->call_controls_lock);
- 	complete(&ctx->kdamond_started);
- 	kdamond_init_ctx(ctx);
- 
-@@ -3062,6 +3042,9 @@ static int kdamond_fn(void *data)
- 	damon_destroy_targets(ctx);
- 
- 	kfree(ctx->regions_score_histogram);
-+	mutex_lock(&ctx->call_controls_lock);
-+	ctx->call_controls_obsolete = true;
-+	mutex_unlock(&ctx->call_controls_lock);
- 	kdamond_call(ctx, true);
- 	damos_walk_cancel(ctx);
- 
--- 
-2.47.3
+Best Regards,
+Yan, Zi
 
