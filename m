@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AA5010ED676
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EE4810ED676
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:06:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3C736B0092; Fri, 27 Mar 2026 09:05:46 -0400 (EDT)
+	id CAE206B0095; Fri, 27 Mar 2026 09:06:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A142C6B0095; Fri, 27 Mar 2026 09:05:46 -0400 (EDT)
+	id C85A56B0098; Fri, 27 Mar 2026 09:06:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 950C66B0098; Fri, 27 Mar 2026 09:05:46 -0400 (EDT)
+	id BC2D06B0099; Fri, 27 Mar 2026 09:06:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 89C5A6B0092
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:05:46 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 986365E9D5
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:05:41 +0000 (UTC)
-X-FDA: 84591864882.14.921C7F8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D1BFB40014
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:05:39 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r3MyAhxJ;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE5366B0095
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:06:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5BA9A1A1145
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:06:03 +0000 (UTC)
+X-FDA: 84591865806.17.7B6245A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 88F4E18001D
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:06:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jzLXndaw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774616761; a=rsa-sha256;
+	cv=none;
+	b=PL/duJZ+tSsp+uFWR52u+b0FMAYLCgH9ZxY7Ea/JCIY1L0xUgCCuTieGrXd7gKs6WR3aE5
+	cQV4wjRlQnI/0xpyBO1CT7aDeErws6++d7ZQu31sTQkifWXNUyFoPVNIejGVjDkdrvscfB
+	QrM8ABvUMHjdJdBFa525l2s2zP14/V8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jzLXndaw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774616739;
+	s=arc-20220608; t=1774616761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zpia0tbRLSbb/6PfKMmdnmi2ZNpu87IQqJrkSr3zp4M=;
-	b=Pulvh9XgHnmC+wQNVrewp1iEaPywFYHUfznQ9PUcRs+e39NxThajJTFoBr4CFYbzLfcB7m
-	dNNMpJjRzHdmWi1EYVFYWx/fmb201o/K40jbuze2LxKvnti1vjvcUB/cVT8R0SJ+fzqn/c
-	pz7RuPuZw3PUmPxdRYZHJnz6s6wqUH4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774616739; a=rsa-sha256;
-	cv=none;
-	b=Cl4KSw1FTHrDkiTv0t9ut14woVZbkSVGdXMNxGVZZ3fMIA2fSA/MJZwsCbpVEPF1EW3yRc
-	p5WkQjc1MczE7zHGg/TdmKFrxRIDiy+VDFOK26WUOc/oVHOYrpIUs9f+9TtUkiF2un2ez+
-	dz8GXIY/+v2lYHqkSp7cs1OgEelYN28=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r3MyAhxJ;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=TcZNd9n7ZpcJRS4dpaPz6P06uazlZ9mvModFiNYWbK8=;
+	b=T7JTm87A9zqANfkMlL5aeUy2UYZVlr7LWxexktmXJ+WbePGd0usS3yrjmc43j6iickz/wK
+	ntwQ6fzvC1Wnnxxh7vc80/bOYQHBg9o9hbEvuG8/N8bLXYEPmYmfCiGgs/4Szy032vYvC5
+	8it5sPuiPHp5M+tqEo3obDkHaHqEgeY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D32BA42B75;
-	Fri, 27 Mar 2026 13:05:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1F2C19423;
-	Fri, 27 Mar 2026 13:05:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E30960103;
+	Fri, 27 Mar 2026 13:06:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E173AC19423;
+	Fri, 27 Mar 2026 13:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774616738;
-	bh=ESd8XmCxuShsE/KtPdm5tiY/5sKpCpx8qvZ4REVh3I8=;
+	s=k20201202; t=1774616760;
+	bh=d9Up/u6razcCkBI/74+4G1ND2cTaNh5pT3UQX+rht0Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r3MyAhxJLKeSjQ+ral4sSIkopkB1pfJzJjj6TP8/N/Bv2YFjtGQR/CiMmUMEVB1MC
-	 XhSN7XVUDHJfQ3tFHCL+kfGnqrpGG3a+iqixzPmFVlT7lQZ2nMJnXYeXWUp9+MDjzw
-	 RQ1bU/74oszj4mKKm158d5PNzIYQ3kKiIUPxcSrLEmoXNJb0Tmr+71J38cT0W52qz8
-	 cfKSnbPx5brs5xBW+gzd8tW8clkK55F0GnPWCWB0CeKS1QwMuqpbKnOkY/mQPmi3+E
-	 X3Cf1PUT7d5gBY+t/dzAUGFrVySbQquU1v5s47EgDEnKKGPepTA1peQHscmN9JCDFq
-	 Lf20YgBuxs+FQ==
-Date: Fri, 27 Mar 2026 13:05:36 +0000
+	b=jzLXndawfLJkQValNjTETBv475Kvw4SFYaKpEkaMfFtUyVIlUSL5BSb/j9M9KpFWU
+	 kjzXid+okYLCGy2z8DBdKrN5AMamZUBP50gFVKG5jQsVlqU5koXyq4I8NabJL4PLyw
+	 rbdCO1qdXp8wI4u4Dh1BML9zKWaMXm3iJtEAZlGlGn6pp+8BbtIj0M4TcKI8QJVDRA
+	 ZssEKV+HUeH94mXoiDdXXkyOQbiMaIlK8oEd+6VuqJ3m4sSWUV2E93R4H1GBfXdKAM
+	 KhMvbaTDEVERPTAnYC0osbzS1sOTOVB4/64w2SYUhRIOC3iFGZjvQvj1tZF0i9x6q3
+	 z7H3ivtU1VeVA==
+Date: Fri, 27 Mar 2026 13:05:58 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Zi Yan <ziy@nvidia.com>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
@@ -77,23 +77,23 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
 	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 08/10] fs/btrfs: remove a comment referring to
- READ_ONLY_THP_FOR_FS
-Message-ID: <5a77eb28-cf8a-4e6d-ac5e-a059198a676f@lucifer.local>
+Subject: Re: [PATCH v1 09/10] selftests/mm: remove READ_ONLY_THP_FOR_FS in
+ khugepaged
+Message-ID: <4e00d7a8-0504-44aa-ac8a-6a2269228525@lucifer.local>
 References: <20260327014255.2058916-1-ziy@nvidia.com>
- <20260327014255.2058916-9-ziy@nvidia.com>
+ <20260327014255.2058916-10-ziy@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260327014255.2058916-9-ziy@nvidia.com>
-X-Rspamd-Queue-Id: D1BFB40014
-X-Stat-Signature: poya8kj5py76ycfdc7nrdtt5q9wg3jj3
+In-Reply-To: <20260327014255.2058916-10-ziy@nvidia.com>
+X-Rspamd-Queue-Id: 88F4E18001D
+X-Stat-Signature: 1cptp9sriw56qqhts44ypi3yqnn8exae
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774616739-393681
-X-HE-Meta: U2FsdGVkX1/a+/fSCFu4q3tpYJ2n0IABvK24rlHHYYl0XhZOfMwMN4RRRj6jpMshQUsHB+y7yP+EVei9ot4eqD7FFlihL1om/92hP0AEdTBnCJG3ypHEFRX+oP0ClhRF2YJbPgVNZqWlbSSk4UopLtrIGyPZoKuUzqJ/BG/+mxQg6gqxifLwr4T1rXUWwC2+2ZifP/61ZJWy/+0NefFUENxdn9R3mmoNSvhJKuBCn+OvLOjJFFzIEhxaATuCmrk/YVl971OJCA1UW5cc9Ns6+rZccenFikjU3Jt+L3CTqu8lDYiheIDe0mSdsAGrr5/jcTAV3X6AH9dhoHGYXpfSUfOSuE2j7Ea/GYreqkbRUvMERkDqT+vRITTqwN7Ee6YW4yiBDkQ95/R3lU7TpIGYK4Gq9Z37GryCWjX1QO2X3jqy4C8g2iwO+uFenRVdSATzlLgAinr0dSIr51Jbcc9p49dExcwjQbRT0IrSpUzm/NrDDL+Yr3MUo/Vu9O+bJlWnEOb1QZemSZQi/dGXFhNOpGxOFGc24c5tQP+EzWdjMuEZBFs6P7p0I0gTWP7hl4v2NfM3O3EU/gVNDkHgCafA5vrHHe5JMewayRZW9s3d8RRb+QY94KHT2pRvq4AfFY+4eevcEZ6ieFLroJdVaXw3sRbHm3EXoV7bfs1AZsI7CvSjOOryzvAJYm2KmIR5JoUyc1TZxyERVjASVlcbfJ7JhsAdEuOoJlEZ7EOyOwO5nAseRehs0yOZCtVX3MsjMc/f+1R1HCVDvvS6UmXsPZRI+piwFcKTKmye4DKPzTZKgBbKCs+gRhsDuQVqYQ5S2SK2kz6n2eDOYJNWq5ezUuORHcxhVPvVJu3kgbHG8/O0N+npvQcaChs0cE1EfXln4I6FaEhxrNFh3aCpvmQNzB7mgXd4c/k0itv/mYhu/0SWBu3b5tB5IkZdntpmlq+umOEFszyFpqb5BxzuRC6N/JW
- sLzg4/Aj
- q8qLZ0IH4FLkE0X9TYdVjEMiT9j8uIhlX8+UJd61x/fvcNWIlqOKZowggzO+8iyiW3d9NasTZp36G0Gki7mCOZ+c/XkRswAfpA/BaT+qt/4oFjRras8tasjCXYKsQ+IuMxh+R6+It4eWjrPvV4eANeykdHOnBABfkV+PIaZJHbcCnEt+aS2+7wx+psY7nu0eEZxlJ2rBF+MDTTMJ3DMA44GQTmqAN2AJpbAZUePpl4r4wLZgDJetuQQFaOdxQ8Ia7q8urfnqrx4LdPZXcldK5OY6SvGSbyuaOvHcfPvL0wT8BXqToQs84w3fmAXoLh5qfvKV6hdm1q4cVmxVqFrgXl7e9lEszd/wpQX1LnRGALkJb9P7TTPHr59d+4w==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774616761-8891
+X-HE-Meta: U2FsdGVkX1/wxLWk06fy8+n5ivrSnSa0wXHfHnMI4PPW5B7Hm8xxA38f+6jjIKt0ihodaNeAzqHHpL741RfQowojLXnSfLEMFtSJbbVZ8Ln+8dcfydoZUuOc9mkP4hfeTaoNq/M0Uo7kyT6kZr6MUlEF6Sl8Yjwu+T5osuSWdXk+X80vWAJGN5vxMvMGZbSnN0wRRenLpkPwhsEDuaNGemwLQb8HsE8334/lbD+L2PgmFDJloPNGRT75WIpPkCqMlwRbzU5buLRTmLsvseTSLYUxmqinwkIWzzMGWEB9VC1EHY2q9sUyuBQ/dswVJQtjSDA9ASY/q+mcyGaysltiySr0ViIoL4nqdCuEK3qJyy1+HrNbI+xm/rjxVp06pcXQ3kYh6C9iHnRsPzmRGFSM74v8eRLll13IERS9gIJfx51d+DT3LGuP9qFJr4R4YLM5REFMQZVf93/+NiKz2iw73BTaZ7NG3Op8P+dPhfZOMn18TQKn5rhpL1KR4AIC+0Bxo6MDz9P9hsVOJYg33cBD7hSb8oNZ0mirSehTKYKcw7TKAvi0fUaPzbTJKnD3hviXTfyJUKqXRrXlm+A5uJ8btEXeU77TgPxsCOBr6WeUBbdmDSnc/9g8N67hIWkfl/tM/RdNdMGU80ZBBuMn80RsKeDw7tyjOeRteH01ck33LsHVAfIMhL2CXcsIdB0vkVi2teUhCIQOMkf5UWumHhouRbbQICjt0wIH5xt1qgsTPMpDd4mkCIBIUavwoF5/McXVx0GXos3Q5Ih8yodfKhL3f1Rxp6EDAPF1LDf0PzbB0acxp35GUrhC0I6oo4EcQuK8CW40+z8fB2gtTAJ5qSYYPVqETTaM3tq7q1/f8mkRiCAPLvPJvySGGtpK7I/TiHQ8WzrSMTI7DCFQ9ZMxeOOXPy+40p6rWjT9dpCvMYpYEsN7vHbNIYxcuubDtsdusMRAuzK83SomxR0yTZF0Sbu
+ yimkkLBL
+ fbJ4QyByr2aewSOzUsYeFy35bjuYRwLQgGLmctycknWN5p2iezJsl6QJMkDE0hhypk5q76RxKyPFEr8RgWO0+y0em3DphDBFCjtDqXE5kUf/UCzjLEC/QsmWU9uUHxn/jGUsP15ny/SePa7zStw4uAlrT0IaEvOtwthAoyNWi86JEG0vWKtzdBMqb+ka+8E2rLjbd8BNY3ZY2BliD6I6hXKSqeX5wfo21s32ca4F24ThMqxXntkPWisf+G+k9V4qvNRNboiEAxXuTKMgQpJsUWfrWQ7snSAUB46hoXgbDQDnShXKfedVB3RTz7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,34 +101,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 09:42:53PM -0400, Zi Yan wrote:
-> READ_ONLY_THP_FOR_FS is no longer present, remove related comment.
+On Thu, Mar 26, 2026 at 09:42:54PM -0400, Zi Yan wrote:
+> Change the requirement to a file system with large folio support and the
+> supported order needs to include PMD_ORDER.
 >
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Sterba <dsterba@suse.com>
 
-LGTM so:
+LGTM, so:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  fs/btrfs/defrag.c | 3 ---
->  1 file changed, 3 deletions(-)
+>  tools/testing/selftests/mm/khugepaged.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/fs/btrfs/defrag.c b/fs/btrfs/defrag.c
-> index 7e2db5d3a4d4..a8d49d9ca981 100644
-> --- a/fs/btrfs/defrag.c
-> +++ b/fs/btrfs/defrag.c
-> @@ -860,9 +860,6 @@ static struct folio *defrag_prepare_one_folio(struct btrfs_inode *inode, pgoff_t
->  		return folio;
->
->  	/*
-> -	 * Since we can defragment files opened read-only, we can encounter
-> -	 * transparent huge pages here (see CONFIG_READ_ONLY_THP_FOR_FS).
-> -	 *
->  	 * The IO for such large folios is not fully tested, thus return
->  	 * an error to reject such folios unless it's an experimental build.
->  	 *
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index 3fe7ef04ac62..bdcdd31beb1e 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -1086,8 +1086,8 @@ static void usage(void)
+>  	fprintf(stderr, "\t<context>\t: [all|khugepaged|madvise]\n");
+>  	fprintf(stderr, "\t<mem_type>\t: [all|anon|file|shmem]\n");
+>  	fprintf(stderr, "\n\t\"file,all\" mem_type requires [dir] argument\n");
+> -	fprintf(stderr, "\n\t\"file,all\" mem_type requires kernel built with\n");
+> -	fprintf(stderr,	"\tCONFIG_READ_ONLY_THP_FOR_FS=y\n");
+> +	fprintf(stderr, "\n\t\"file,all\" mem_type requires a file system\n");
+> +	fprintf(stderr,	"\twith large folio support (order >= PMD order)\n");
+>  	fprintf(stderr, "\n\tif [dir] is a (sub)directory of a tmpfs mount, tmpfs must be\n");
+>  	fprintf(stderr,	"\tmounted with huge=advise option for khugepaged tests to work\n");
+>  	fprintf(stderr,	"\n\tSupported Options:\n");
 > --
 > 2.43.0
 >
