@@ -4,137 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DCC010BA43C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E422410BA43D
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:27:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 873F66B00CA; Fri, 27 Mar 2026 04:26:46 -0400 (EDT)
+	id 4CA056B009E; Fri, 27 Mar 2026 04:27:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84A656B00CB; Fri, 27 Mar 2026 04:26:46 -0400 (EDT)
+	id 47A656B009F; Fri, 27 Mar 2026 04:27:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 760396B00CC; Fri, 27 Mar 2026 04:26:46 -0400 (EDT)
+	id 3B7326B00A7; Fri, 27 Mar 2026 04:27:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 677CD6B00CA
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:26:46 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1478AC5739
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:26:46 +0000 (UTC)
-X-FDA: 84591162012.14.5C3EC75
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A8C031C0005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:26:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ImmF2l1r;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf18.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DDBD6B009E
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:27:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE5CDE1686
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:27:21 +0000 (UTC)
+X-FDA: 84591163482.22.FC77B69
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E6BFA14000D
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:27:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OJjWBVqX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774600040; a=rsa-sha256;
+	cv=none;
+	b=ijlPtFMUiPuP8z2Iuh8EwwxvcZtzSceg3nKHHYsjsQCFs0whGr6WKlBg5foNKseslJTub+
+	BpLSjWTkMIavX06RkhP8sDESugZ+MignC7lruyX1o5X5aMHKxc+3G0E0lkFEimuxwms9Au
+	XjdG16XLT4CTXRksXIdX+MoJxP4TSoY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OJjWBVqX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774600003;
+	s=arc-20220608; t=1774600039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fJXEwsRSQCNQK1VLY40W+I6XlWOwNH/ZLywm9nkr5l4=;
-	b=MI5FHwtXRdiYFJ5ejxlAtuwnwv1/neY1mkZyDovYRZXsDPcC4qF7zyHFzlyEqVDmEd8ZO0
-	Trk/nMP+Ko1mwpIQkIT/sFeL3htmUdS9EVkAH7FjL8QP9/0wU6mn/P49uz8cDNraaPnOPe
-	6ZJrz/XnwfLJFJrJbQ3tqhqitdOZjRE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774600003; a=rsa-sha256;
-	cv=none;
-	b=6vYgIlYk0n5aubwTdeuSp9IVBOAVpIqkb7ir3nX+k15RlI4jX2nCiQfl7k4dJqmHMgXcZ8
-	eBtRbyGEqi1IfJr94t8yF9ROrJveePynR7r9EGAW4dg8RNQcPK6OgZchiBpCRDp72POV3/
-	q5scBu4Tof74pEMmOHUFKI1CiptxB0o=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ImmF2l1r;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf18.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62R0Ql9n3430662;
-	Fri, 27 Mar 2026 07:17:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=fJXEwsRSQCNQK1VLY
-	40W+I6XlWOwNH/ZLywm9nkr5l4=; b=ImmF2l1rTm+2qfn67EKymylI8OvpE3Glg
-	77j8i5gx5DKrqYfcWGUeYJoJlcsoD7W0cQfJmWqhxuRynxccA292ZY6gk0NmVPVv
-	2oERSC3fEL10bKNRnlgZIGRqlN0tBa2ZzKdVcepQUFSO4ngUOfg76MVsNjV8TyjD
-	aT+4pnI4FcDQUGkOCs2zm0hMYhLTX+kLWlMxjtyuITGRacBtLLZvnARxeDO3pPlR
-	VGVAnSNNCRkTFXBQbQ7tpzEPcloEOO5NVPexgET0CXt7csKjlPr53DP02IChtoSm
-	QbrfOkBdzmCbmLpllkenag8RG8V6tPg/GXu00blfH+a3QATS/S5LA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1kty8xa2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 07:17:27 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62R60MmD031605;
-	Fri, 27 Mar 2026 07:17:26 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d25nt6mby-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 07:17:26 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62R7HNwS48103898
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 07:17:23 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD8442004D;
-	Fri, 27 Mar 2026 07:17:22 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1A47520043;
-	Fri, 27 Mar 2026 07:17:19 +0000 (GMT)
-Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.ibm.com.com (unknown [9.124.208.5])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 27 Mar 2026 07:17:18 +0000 (GMT)
-From: Sayali Patil <sayalip@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org, Sayali Patil <sayalip@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: [PATCH v3 02/13] selftests/mm: fix hugetlb pathname construction in charge_reserved_hugetlb.sh
-Date: Fri, 27 Mar 2026 12:45:56 +0530
-Message-ID: <705e68507c9a0d20de835d53dd332eeda7dee772.1774591179.git.sayalip@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1774591179.git.sayalip@linux.ibm.com>
-References: <cover.1774591179.git.sayalip@linux.ibm.com>
+	bh=5zFEQbGpayE+Pr5tEfSyFKldUTAWitnPQ4DLSjCOmEc=;
+	b=DyJTlwjTIM1cl2zhcvPwmNDGTB9VRd3jmFHPuaLviaj2PQ3U+mhaMP8/X8I/hkKjE1a7eI
+	WK2T/p2sVRk7LH4mzwhfWJ0Q7+q466y0m6lpXSgdESmAJimrqmi8KmFvggrGx/YjwW4DvD
+	n1/+2vzYNyvCkzCX64AD/pZ2cZvm8SU=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b04e6a989eso11732085ad.3
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:27:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774600039; x=1775204839; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5zFEQbGpayE+Pr5tEfSyFKldUTAWitnPQ4DLSjCOmEc=;
+        b=OJjWBVqXzf6ZWzcD74kvMS2rqQZ9GbOQeuSB9AR8P8+9i5mL1tpFigZzyJttJ+WBLH
+         7yLEgJN6AcX0ESDYBb0YvtrNAeUJ6japm4YTZhhdVfPepNY52iI3No4OxrZvipcZ9LDD
+         Aqvy1t7stuVfbb6gLxQzd5f8illosctffG7g0XH6jdvV60MRe49QWIh6wjzdDVClWIzs
+         McHoeWxJOENEAJW5tpPwYI8U3WMw5uc2eLBR89b9MH5OZ7VYKM3+GIMdqubMNyXsVUWZ
+         klX/zk8nZ6d5iYV2QoEJI3jGbvX9YloYr/HcRdlA6MNXg30yhW1wc0iVk/GVqU7qx7Id
+         ZoAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774600039; x=1775204839;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5zFEQbGpayE+Pr5tEfSyFKldUTAWitnPQ4DLSjCOmEc=;
+        b=bOHKgs7HDC+dYoHjl4/wgKCzIOBOx7BcrfG7Mcl3RTLZdpjUpnHLjt2uX93wC17TEL
+         uiZ0+s8rdo4UyK+z1QyDnEat5HP7UpZhjAiKvxcY2yDLskDz9x1PgoCCPmuI8gr6iKfh
+         APKNa2IWRUh2jXdLxU1TOauLkmdLaR8O9cbJTzM6qM7GTyhI2I+RUK1/U3olMfSFuAxD
+         OnUrZOxdSE4QlplEEClI6Y1nj517ckr6z9aDb+lTh+OifgOO4yZeoKYKpx43uA0nBJry
+         8z1Ow9Omkl2I+DlTDd069/3xYNAu+5bzv55iLrXOanzyQIqfhX3lXIAXIE06Qm9/m/9X
+         KeOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXuR/X65SKyNa4z+gCPDHWzlHPgNr1YNoSWb/Sm9LhJd2chKvMRWAhWiC5kl8fj7cIhyuY5xerfOw==@kvack.org
+X-Gm-Message-State: AOJu0YyD7hUuT++MEtPIYXWzaGqSuFL8Nx0sgoHltnN8d1fVDpWs3cD0
+	V5JPae/fGtyTNW7AiFvr67zji3d1ak/OSTXReCOevDZaIYYxucGOWBw3
+X-Gm-Gg: ATEYQzwvq19AaCtTrUw5Hs5QSiDiYJiQnw/v0GbQbsnBwYVEsxjEYTc4vGamDVF8jny
+	ReUpVQN0WqiXusjqr5nk5Zd1KTOlz+jZyADaBQGMYao0FbUaTO9eKJfeQNrb5GqQQjCL6aThi2y
+	Sa49WOTpwiQn4xP1KMR3g5z83h1s0mvn3wcV0/jiTahoktnhvL0Kjkxq+Ktqe+l383AIWuJcU6p
+	bB2qf6Uyt58UCMGEuglzTysRB6w/SBkfBUZW3rtglhSnR3M9CvnIC/YQOpkHjwiowdbkcj6d8Ky
+	+HjH8MT6vn43rY11cYhXNJphwVvJSm2FmZQuesvh+asiWYYga3E5Ldmqk9XjkFR3I7yATGcwuaF
+	DIeYnqPHWlvE4jvD8LbI8tnac5AW6HiG0KnZR0aEJe/vw6Jyhgkoyk6dqv0374xikrV5/qKRHym
+	agkdWOlUEb5G1sjcX4Tobbuj30pZuIZnCn2RFutA==
+X-Received: by 2002:a17:903:46cd:b0:2ae:8253:1452 with SMTP id d9443c01a7336-2b0cdc1f89bmr19842335ad.11.1774600038586;
+        Fri, 27 Mar 2026 01:27:18 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc8a89basm53150415ad.56.2026.03.27.01.27.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 01:27:17 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org
+Subject: Re: (sashiko review) [PATCH] mm/damon: validate addr_unit to be power of 2
+Date: Fri, 27 Mar 2026 16:27:14 +0800
+Message-ID: <20260327082714.83540-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260327081131.80608-1-aethernet65535@gmail.com>
+References: <20260327081131.80608-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=IqITsb/g c=1 sm=1 tr=0 ts=69c62f07 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=Ikd4Dj_1AAAA:8 a=VnNF1IyMAAAA:8
- a=oz-P9AN4QEfTUXci77EA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDA1MyBTYWx0ZWRfX7229uMID7rsD
- xK3ySMGDgQsPLysUXUjc+PwAdyy9zTLkQ4IS0J1ZGNIbi+u6Ygo1w3jmuZNpgv4ZQdBGVXI9WP7
- ozCT0bWPegx/TibkBM4XoCkwyqu6YgfcYghdQ9uHjWv3YSldeOKf8zYEofVfNxzGvkrrfAAbidw
- Hx7SbzXDCtt1sLNn2/r9bLoYIKlpFhHFsGslStH+25usXKoIj5KZ6LmiQLSE3eed+m0a3KdJ/AU
- ++91SL5ioxsO4bg70BghC0+0F0j4zIzazZD6JvA75j3FoK5EE1aAC6+jgRAdp83thPj5S9vsDLA
- zAv8Y/2ktwhlm2xNfAXRqTO73zrk5+H/L0pOLjXefHMEZnBpxN3wB2Yt43YgFiuWxPN5VJ8BW+l
- 8OpF4XLw9k5KyHIjpJtsQ35tqK5Pz47kvP3m4tJ2HJJtL40yZuDEs1xun74qDXco/0a1h5hQrwT
- JnpHboQ6IYQlWmtOuGA==
-X-Proofpoint-GUID: DQyqYMenVBNw9l3d5jFQchyRFqiv8lKe
-X-Proofpoint-ORIG-GUID: DQyqYMenVBNw9l3d5jFQchyRFqiv8lKe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_04,2026-03-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0 suspectscore=0
- phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603270053
-X-Rspamd-Queue-Id: A8C031C0005
-X-Stat-Signature: cg3yaiqokgqngu8a3in49pdpab3dukju
+X-Rspamd-Queue-Id: E6BFA14000D
+X-Stat-Signature: wjjs33iw95cy3drgb4fkbkz89xqhc17k
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774600003-924132
-X-HE-Meta: U2FsdGVkX1+mABoEoBLyRepoo6TvaicurX43jEd86zAtr1ymhLK+vbvEYu+B5VhFKig0iRbJNRc5U8fHRWBeIjuvB056ztIFtcaZ/sKcVVeWbD2WKLP3kMs+vo3HsrfsmbJOUBaTrAu9ghrG8YsfNvGWwvzViZP7sdaUzly2rCcnN02yKiIKyet3GPxqtJqTsP/dq3mrTp3WJjf7vPPhmz+6KMRXGczzK38k8JEQuf8voShPjVKgnLUp/UvJXCtMmYMHfdYE5QHJJguRmYg/j7669pqcvBZuavfCfOJOaFNvrH46ZLcp88rZV65m9PuFnW3Cupqab3NcQIb7gxJStDGnBVzvXCoX6T0ZPICiQWcc1gWVQg/VNneDjCwQlk2kki2nAx8x/5ml8lSidt4WTu5gENpD7Fh+U2fYhS3LHfRyP2qslXLXvDXjbxTR/PcSBjOfonM4oqGXgD92vdJuvaUg3tWTGlOC3vPDk1eh3o7fwNv4pgitW5jnATZYGfEAHk5uA48FeJYTrUohc79mGN7xleXLO22H5peSZ89QsrK12cKcfsyEieV65YmjjQ/hHatZs954Ya6FkcMDl/1bH8uVzLPyNhqqGQKwbUdaKFsTcB7Ny67g5mS3hH7RwszitRu8ZLyBocs/yG8++z8YvmYckVIKW6HvQDUhp5e4LP2/K+JW+UERNUG/HPyQrL3N1tTVisrlC5fuL3Gbr2CMm7j640ShK63jgO4ZfpyKaHkR1JV/0shBUjeFmaQbgFU2ECj/S7MF/3zadH2fE8+C2lVDuVQhC57PIHU/75QJADZmv43oEyKgA80tFCHRat9pKYM7P+1j2LGInXHPTb2eSmpJ284I9eF75ICbbnMAAOxSpVW6TEaz9qIUyyz+8d1MepOqhxB/bfFVGIXbCJgSAapMSEb8QQc3/9U5Oho4zmSjFPZtYHHIx5v4+LkkK9ehXbFSTvA2tTpB6rMMkNT
- DQ6I1oBI
- Z0NaTDIseJUA5Hh8sXJfoRk54jV4Vv4DzvnkRs8hPvxMCjnFq/oxGZXFIjbqFYrCt4U+sWZR7KO2tyZI7u0Cc1fpSZe6tqpmcjosVifLTOMvS3j4tP/vgNhAiEeWFv1icifiSELkK0DhKkKcoHL6aE8WLNosh8dzyUv24LLD7XS8GyaXN42uMLU4k/XWqJYFZDKYTjMug8MUJ8+KSEXtqaZZz/SXjQDqrKThcMN4BbF3Yo0KHZUCdfMCha2AHYe4fkx2D65hREcbMuJ8hvdz3WrLIMABKzUbo/dzE6BnNJz64n2oqzlceiRAbtwbWmZR1WKMSz01ydKtIEBKqahaTGwQil2d6rkdZJMTch2IN2NFxII4LIEQ2swhJuXmI6Ug2aOUO1YIJGp251WkUFGonjeoJYlOslCg1xnXU9KgvdSNCBRBylX2474iHtw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774600039-927712
+X-HE-Meta: U2FsdGVkX1/lc83yqGeVtY06hg0ijl1u0AvGPeYUmJb9hBjk7YczsKj46Yx4VgSbMRMKRXoTWwITbwurukfSk8YTpbV7s3gjaIePk9r5904wzSfIOIRv0GQFfUHliCwjWJx3q8Y2sQBQ+DWX2HfTrpyf0yuV8EF4M0KNH9H+iGssIstTaMLIhu1A0VVX1LBuK/9iQbFPbdTZJ0KkrtHWNaHxfsaxOFv8pYiCR8a193Xu/DFwPc3xp98WWcdAp32SzcipSUcV+en11EwE8KuECxREBPb0yj1O2U+1AD7m8g7Iwq1w26w3g0pB0/5Qe+4W4+DEC5b1nKEdIM6/RIp97FZmPHn2MMu3L0ZYMVWswRMT9KycFQsEQpyrdhVHA3PPNM48I2zCCru/STxh/te43UocdGis09xOh1WxRf+cqYDNiDt0mw2Jd7W3V/Q470d4LfBTjtJinn/guxx96hJiJWHjhBNxfKQrZeTLFOl5/ilmKrn9lWbIEzR1l6dklS/G+M+kgTyTvmzYIwpJsWKYRUAGiINt8awdU8UzKyIbau1atNThoY5/UorzWSk1tijZL/1qAQHHpnbIRSbVF0pJag/oeqRaB7VNQBOhStSCoqoDHuGyev3RB3dbJHruDy12l62LVlvVHvhec9x802CG6vrqJzGsP/5j83M7Uxn6ojoVfdf0ezJA6ZGsflIzSG0yQRAYje7VOd1M32no4+yM+d729RLAkonkuMg4hBtgcwyY+K52Nub8WlCJg+xCVRifeeUI0Up9Tsc4l2kiMxyTMrx2+PUNN69WxkhBNV5nHMNm/6EJuAFWKINUlbshc7KJUhxYMq2o9/IbTZ7GpKt37yhejtd2GIJ11w2unX+QIwIKnZU860N0QUAoYESFL5PdJsskAC8HSXkReVQZTmKI8u7Rw0Dq6+MzstDkoK7U6AymvA+JnXxEFbn8lr2f74w6JqYNAFlI44LNchbS73n
+ lc1FIQOJ
+ fb6mIucPjW43r1y+1kxx14sVldru489nl86F/2dfwT4Z6O/iTXGNd6+XLOqrzFBP3tZQmg+aIjmbymncAgeUDNp6VSBtGa6bPO8SCjb3PXAM1yHUwraIKSaQ8JEL/Z/ZTTV0pOA96ttKm8pGOmAchsmH6elix51zFhd6qmoBlNDxNBFA+RbBjkSh9jalgpV7BYq6TYMFk3QDEHccHafQR9CVYmikXX4Yf86lN2heF1+2e/vvSaBinbnE6RKzbTt4CTF0LHANLbrCKAlkVb93miaSGl/UfgPX3mkYXUfm6V036sEo7VWxNlGCbKd4gB/qEstBlDzQqHKzBuZkU1lUM8k9wbWH3W8XBmEns4xnXxVPJjfSz0XJwSNlThW98xzUhKO5+pQeoANCjSN4rJHorqZddAQ/MM+/9O5w/7k73y0sdmUKNh+FsoEWpl/KKe10nPYfSwtrndmfGpRnuVkPTUxZSqBYSg9nc40eJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,138 +118,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The charge_reserved_hugetlb.sh script assumes hugetlb cgroup memory
-interface file names use the "<size>MB" format
-(e.g. hugetlb.1024MB.current).
-This assumption breaks on systems with larger huge pages such as 1GB,
-where the kernel exposes normalized units:
-    hugetlb.1GB.current
-    hugetlb.1GB.max
-    hugetlb.1GB.rsvd.max
-    ...
+> [...]
+> > @@ -1330,6 +1330,8 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+> >  	dst->maybe_corrupted = true;
+> >  	if (!is_power_of_2(src->min_region_sz))
+> >  		return -EINVAL;
+> > +	if (!src->addr_unit || !is_power_of_2(src->addr_unit))
+> 
+> This isn't a bug, but is the !src->addr_unit check needed here?
+> 
+> Looking at is_power_of_2(), it already evaluates to false for an input
+> of zero, so the compound condition could perhaps be simplified to just
+> !is_power_of_2(src->addr_unit).
 
-As a result, the script attempts to access files like
-hugetlb.1024MB.current, which do not exist when the kernel reports the
-size in GB.
+You are right. Futhermore, addr_unit_store() also prevents 'addr_unit'
+from being 0.
 
-Normalize the huge page size and construct the pathname using the
-appropriate unit (MB or GB), matching the hugetlb controller naming.
-
-Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
----
- .../selftests/mm/charge_reserved_hugetlb.sh   | 42 +++++++++++++------
- 1 file changed, 29 insertions(+), 13 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index c9fe68b6fcf9..6bec53e16e05 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -89,6 +89,15 @@ function get_machine_hugepage_size() {
- }
- 
- MB=$(get_machine_hugepage_size)
-+if (( MB >= 1024 )); then
-+        # For 1GB hugepages
-+        UNIT="GB"
-+        MB_DISPLAY=$((MB / 1024))
-+else
-+        # For 2MB hugepages
-+        UNIT="MB"
-+        MB_DISPLAY=$MB
-+fi
- 
- function setup_cgroup() {
-   local name="$1"
-@@ -98,11 +107,12 @@ function setup_cgroup() {
-   mkdir $cgroup_path/$name
- 
-   echo writing cgroup limit: "$cgroup_limit"
--  echo "$cgroup_limit" >$cgroup_path/$name/hugetlb.${MB}MB.$fault_limit_file
-+  echo "$cgroup_limit" > \
-+	  $cgroup_path/$name/hugetlb.${MB_DISPLAY}${UNIT}.$fault_limit_file
- 
-   echo writing reservation limit: "$reservation_limit"
-   echo "$reservation_limit" > \
--    $cgroup_path/$name/hugetlb.${MB}MB.$reservation_limit_file
-+    $cgroup_path/$name/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_limit_file
- 
-   if [ -e "$cgroup_path/$name/cpuset.cpus" ]; then
-     echo 0 >$cgroup_path/$name/cpuset.cpus
-@@ -137,7 +147,7 @@ function wait_for_file_value() {
- 
- function wait_for_hugetlb_memory_to_get_depleted() {
-   local cgroup="$1"
--  local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file"
-+  local path="$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file"
- 
-   wait_for_file_value "$path" "0"
- }
-@@ -145,7 +155,7 @@ function wait_for_hugetlb_memory_to_get_depleted() {
- function wait_for_hugetlb_memory_to_get_reserved() {
-   local cgroup="$1"
-   local size="$2"
--  local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file"
-+  local path="$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file"
- 
-   wait_for_file_value "$path" "$size"
- }
-@@ -153,7 +163,7 @@ function wait_for_hugetlb_memory_to_get_reserved() {
- function wait_for_hugetlb_memory_to_get_written() {
-   local cgroup="$1"
-   local size="$2"
--  local path="$cgroup_path/$cgroup/hugetlb.${MB}MB.$fault_usage_file"
-+  local path="$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file"
- 
-   wait_for_file_value "$path" "$size"
- }
-@@ -175,8 +185,8 @@ function write_hugetlbfs_and_get_usage() {
-   hugetlb_difference=0
-   reserved_difference=0
- 
--  local hugetlb_usage=$cgroup_path/$cgroup/hugetlb.${MB}MB.$fault_usage_file
--  local reserved_usage=$cgroup_path/$cgroup/hugetlb.${MB}MB.$reservation_usage_file
-+  local hugetlb_usage=$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file
-+  local reserved_usage=$cgroup_path/$cgroup/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file
- 
-   local hugetlb_before=$(cat $hugetlb_usage)
-   local reserved_before=$(cat $reserved_usage)
-@@ -307,8 +317,10 @@ function run_test() {
- 
-   cleanup_hugetlb_memory "hugetlb_cgroup_test"
- 
--  local final_hugetlb=$(cat $cgroup_path/hugetlb_cgroup_test/hugetlb.${MB}MB.$fault_usage_file)
--  local final_reservation=$(cat $cgroup_path/hugetlb_cgroup_test/hugetlb.${MB}MB.$reservation_usage_file)
-+  local final_hugetlb=$(cat \
-+	 $cgroup_path/hugetlb_cgroup_test/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file)
-+  local final_reservation=$(cat \
-+	  $cgroup_path/hugetlb_cgroup_test/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file)
- 
-   echo $hugetlb_difference
-   echo $reserved_difference
-@@ -364,10 +376,14 @@ function run_multiple_cgroup_test() {
-   reservation_failed1=$reservation_failed
-   oom_killed1=$oom_killed
- 
--  local cgroup1_hugetlb_usage=$cgroup_path/hugetlb_cgroup_test1/hugetlb.${MB}MB.$fault_usage_file
--  local cgroup1_reservation_usage=$cgroup_path/hugetlb_cgroup_test1/hugetlb.${MB}MB.$reservation_usage_file
--  local cgroup2_hugetlb_usage=$cgroup_path/hugetlb_cgroup_test2/hugetlb.${MB}MB.$fault_usage_file
--  local cgroup2_reservation_usage=$cgroup_path/hugetlb_cgroup_test2/hugetlb.${MB}MB.$reservation_usage_file
-+  local cgroup1_hugetlb_usage=\
-+	  $cgroup_path/hugetlb_cgroup_test1/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file
-+  local cgroup1_reservation_usage=\
-+	  $cgroup_path/hugetlb_cgroup_test1/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file
-+  local cgroup2_hugetlb_usage=\
-+	  $cgroup_path/hugetlb_cgroup_test2/hugetlb.${MB_DISPLAY}${UNIT}.$fault_usage_file
-+  local cgroup2_reservation_usage=\
-+	  $cgroup_path/hugetlb_cgroup_test2/hugetlb.${MB_DISPLAY}${UNIT}.$reservation_usage_file
- 
-   local usage_before_second_write=$(cat $cgroup1_hugetlb_usage)
-   local reservation_usage_before_second_write=$(cat $cgroup1_reservation_usage)
--- 
-2.52.0
-
+Best regards,
+Rui Yan
 
