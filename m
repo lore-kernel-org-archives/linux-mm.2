@@ -4,138 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C30C310BA432
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:47:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1AB510BA435
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 07:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0215A6B00AE; Fri, 27 Mar 2026 03:47:58 -0400 (EDT)
+	id 244F66B00B1; Fri, 27 Mar 2026 03:48:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F13E66B00B1; Fri, 27 Mar 2026 03:47:57 -0400 (EDT)
+	id 21C566B00B3; Fri, 27 Mar 2026 03:48:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E03406B00B2; Fri, 27 Mar 2026 03:47:57 -0400 (EDT)
+	id 1597C6B00B4; Fri, 27 Mar 2026 03:48:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEB6C6B00AE
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:47:57 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9751E140FC9
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:47:57 +0000 (UTC)
-X-FDA: 84591064194.28.1F027EF
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4B5E41C0003
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:47:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=V1K4qbXS;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf21.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774597675; a=rsa-sha256;
-	cv=none;
-	b=q4MHirbkWQynkZ67LWwOYKhUworFDeFApbj+haRKwBgTJpZUG8Np1R/cxBznzZhC+0AT2p
-	gLuzykwPWYu29yDC8gsb7Idv4ndCAYhdQT+Dd+laQUVTGxIV76sjQzGgPJ6aHn8fJUkR93
-	vqu2CoZ+Gmzg7xQSwQQ1qorV2aHwbNM=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03C4C6B00B1
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:48:06 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C0766E16A3
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:48:05 +0000 (UTC)
+X-FDA: 84591064530.24.2E8CE9F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2D94A180006
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 07:48:04 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cwoVLdzC;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=V1K4qbXS;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf21.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cwoVLdzC;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774597684; a=rsa-sha256;
+	cv=none;
+	b=AUjRjcZmm2xfRakSNIYOEfV0oXN/t7i5SwX8oOSX8vhuhQZ95wLa9nuFKov1wOF8x0Tst1
+	xMqymtCAKJAA5o0/4kjd7xtNEy+34NOf97JITT9lJMszXYXiBGCxov+nzR8YhA8jFGRnOg
+	oMAxbEtw6Z8DYVLkSQQtwvb5BHm0Jbw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774597675;
+	s=arc-20220608; t=1774597684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QW9PlId4/hTy4XCvWaXgJ549gjJqmRI2LMC+p2oKhag=;
-	b=Zy1aWtUm6IKt4tSPgju7g/aYrMbhVw+4/N+d8E9K3FtyN4o9l2bBY0MoEmSKAgxuh8RUG+
-	CVaqRpYQFj52uaPk0sbXUFyfSF7lhTw2J/rc/W4M1c2aZukVoWw25zbc/h6MTrCmX73I20
-	7NaxhQObZceCAAy2JRn5MfAGzK3ZY9s=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62QFRomM1566113;
-	Fri, 27 Mar 2026 07:17:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=QW9PlId4/hTy4XCvW
-	aXgJ549gjJqmRI2LMC+p2oKhag=; b=V1K4qbXStCzafT3nrCz8e9yGqCH6CjayA
-	9FEe640fmCahqsP9zn6TEs/iSkVdRPo0l3EocEdgOyd9lUz3WdS8D5uv0tRhCZ3G
-	dODQDQvVKfeepaJkSB6TM15KF7YmkoWAD+KDtrej713mm2arPjFI5zXbCQwSsadY
-	6ONr64kvdZ6pMfonQwiiDPjkMAwi+YGypzZURbZ2pAwEZjlVc3Rr/lRxNFH09J14
-	lGj7drWFLNK+86kiX+8Bxv1udKCZONKiZDnKqil50xpqoHqXRtjLU7plvXvlB+OP
-	RVcUUE5GDn0LMHalAOrU9GPtVVfGm2do5UlTrGjeKgR8QD/if9skQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d1ktv7usp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 07:17:39 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62R6Y9e5011788;
-	Fri, 27 Mar 2026 07:17:38 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d27vkeaat-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Mar 2026 07:17:38 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62R7HYDc25101004
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Mar 2026 07:17:34 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 581E420043;
-	Fri, 27 Mar 2026 07:17:34 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D158C2004D;
-	Fri, 27 Mar 2026 07:17:30 +0000 (GMT)
-Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.ibm.com.com (unknown [9.124.208.5])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 27 Mar 2026 07:17:30 +0000 (GMT)
-From: Sayali Patil <sayalip@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org, Sayali Patil <sayalip@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: [PATCH v3 05/13] selftests/mm: size tmpfs according to PMD page size in split_huge_page_test
-Date: Fri, 27 Mar 2026 12:45:59 +0530
-Message-ID: <2fd965ce641d32a759984943a427fde47d7c3b13.1774591179.git.sayalip@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1774591179.git.sayalip@linux.ibm.com>
-References: <cover.1774591179.git.sayalip@linux.ibm.com>
+	bh=zWoRYwP86jyji7hwmSchLuM87mveeaS/EOBeUUAIEkc=;
+	b=tysEIEks9blSv+MdvPI6s141ODui3SVbNqKhLTeewnRc9gE8fGwF9gyS2sLxhxlofkvdaq
+	tK/CJ9NN0p0K6u2pmknsBA0JVy3zRwpowiC/V4qXBbcMqqF/6IGIAfCJlYGy7wPYCSAr2a
+	vkWNITxjtKmIW7+yP9qlWf3rmKGmr3A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 95E9261338;
+	Fri, 27 Mar 2026 07:48:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ECFC2BC9E;
+	Fri, 27 Mar 2026 07:48:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774597683;
+	bh=zWoRYwP86jyji7hwmSchLuM87mveeaS/EOBeUUAIEkc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cwoVLdzCPT4pgBbS/UbME9pnxTNo/1fVlXw6ein4lFBN0RekDnCSnuJ9sq7qoHaM1
+	 Z39G2BQUvlQEAzVuJw3A6IHd1WmyzEYI6g0vqAcPZZ/1EyKwP4sAyGxqPmb4gAlDly
+	 p2NhaX29HwzinJODk/j1tI3kdqp6Nuh5Hu6FryLbm+9Dsdp/3iKjlVN6IzppB7xHgi
+	 P62ecYtg/x9DfOfQs2+4564sAQ4+4NNL2pSWYdrcz9Aht6wua1I/CG8oqrUIuQF6Q3
+	 //XuXY3gnkEjIY+rR3oiiBGwKwKP3dit1Iyc2J3xbdXrlD+9Ptlsb2h8Sgs+BCQIob
+	 O1ZgH4kKK4Pjg==
+Date: Fri, 27 Mar 2026 07:47:57 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
+Message-ID: <ddb0f340-ede9-46cd-b10d-2a77ac4d6dd2@lucifer.local>
+References: <20260326185629.355476-1-ljs@kernel.org>
+ <0d4e27a2-e9ae-41ca-b327-82296cbb0cfb@kernel.org>
+ <CAJuCfpFY311807PpEP==UKBLqXXDENA3WjXuNnXMpKaOE2JQtA@mail.gmail.com>
+ <CAC_TJveJLkp8MJhphXA-xhyXCpC17p36Gf1OtKLT+oA8LwD0zA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: CAjcffWirCDW10sWSpn9b-OgwYt6-wME
-X-Authority-Analysis: v=2.4 cv=aMr9aL9m c=1 sm=1 tr=0 ts=69c62f13 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=Ikd4Dj_1AAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=Q3urm4FTTvKoMhOPgnYA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI3MDA1MyBTYWx0ZWRfXz3npW2ykWglj
- GV4D9XvB/SylIfBfFw8aeSo41t8a00wnDlYm+DRM+Q+O0tWD8S3f7iMfB9mb5Gf2ZHI7O0QcY2N
- 8QlEYKKWAHobCGZNIO6dhinl/g+niYgMwoB2H3y0aLWET2P1xRKW1sNe25TfST43Bq5RR9Gjii0
- IElD5cHwaIXRMKXyRx5VFfY1FFxapYsv9sYXF3DJY1rMA4eHFyD9JO+305OVRRI5GSyqSrXpKkc
- g0JXENZj3rqIjWtXIkzCddgzD1a5ajt9vX/xlNGNTwT191FNpsqAQ/w6x+Q7joM80rvfBKx/dSn
- dCT4Oqx5dtzh6lYRzVhOOmF+93AUicrktuDxH0jbNxFWcQ0IedDQnM6bVYppTawSkGqmK1N3KqW
- X5/DqoSoAk2UlnZhZ2FaLslvLqhWH/mXFRJ0jb1TANjD3ZK960fHsXPtoH+I51B4WYiEoelInAl
- XBtlQ/OVN8nCWbaujgA==
-X-Proofpoint-GUID: vfxFyI9pYF041gxLRAg-P1g5dxDPRABz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-26_04,2026-03-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603270053
-X-Stat-Signature: pntze93e81eikxgnbjpwir8ftwyk7x7k
-X-Rspamd-Queue-Id: 4B5E41C0003
+In-Reply-To: <CAC_TJveJLkp8MJhphXA-xhyXCpC17p36Gf1OtKLT+oA8LwD0zA@mail.gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2D94A180006
+X-Stat-Signature: 6pnm4b1f47hwoqs63cszpzstn9cmetfu
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774597675-205105
-X-HE-Meta: U2FsdGVkX185YPEJ7SnbEVzcR4fQOZswoX5j9xpuKIO7DuEjdM4FwO4COLqj8qv+EIDfeyDPpsL2riUGfIQ2UgfN0Kb+8ZsCTXqkCzMdrW3znTfIAyLzhVlXnL4rBRW31WsSayYsHEoM8DbYxIk8Gs2Cc7A8rKTC4iyF5Jb5Zj9105dzJzA6ZxH6htfWyflthGGX4DAYfyWWyJV/X1Qh6Ql6o/eSCYVRVYchIbp4wiv2O4zvvuxO2xPoY4Yq/sGUMK83wHvhtAbVhlk1/bKYECdZ8IVhCW7Rtn5cE9dkDS/JOdA344QVhxNj5Nq1dYnZhCK86VrR9Tl3pSOVQkocu622shvOz57felym3WcKEQMUr7hrkYLum5PNuxjTsg3l8xiNSlySRWlCWNJQsjCCv/gvSJCc2RjZYNNA+l0SRaMT1YlCZZNnQJd88A3KM3Og93M46STNYD6Ug6yEDvbAL5vcmLoGIdRKJ1+Npe1ABmcxW8WgbR9fzqzl1+5dOsrU6afYLZidmRPJiFLNFXcaBR+/3Pbu9B89x3EVp/RFBZHPOhWm/diQHg0T5hIv8n5DtkfLXd6ARAHXsYVSg4afe7n7yhEPdKXrdwEYsKq94lnU0LtjaJjGTUnPC0VEAN6JSOjGtItsriRDjfL4uDQRlA8szc0yBKIncMK4qcAgJ8Dia4V1VDoa9oD4/KdbSORnTkmtbl1jdntYYTpVOKLzMHTraOs6UwAIVyNsdVWKMjMNEgml7eojmA0K/ZfyZz4bnJmj5fsPAVnORKc7o/BXbNQjNCK6asnWdMaaoEi7IO+xpVJd/pZbtrFkbGC8VEPFVOI9ev/R6hA73GeRjs8r9FjJCJmT+is2A9Pot/BpTWErXR8Bp43EX1xkoc0wtQe4rCJAi+8NzEVLAJbIBJdI/yl/4HpGMCLpbuNnMlzddGPZS3GHd3swmT6ab70/qSqnkMI+VBJGtJIOnomLX0R
- 6t4PjAuc
- Q5Sb75cRdMD2gBcDGEPsUB4EX6eY9O+V05E+LIsP0n1SMf1HRzR5gyD+9DdsHLMA9/TkgcgTCEEnlB1VNtSgYy+d7mjmvIT7fxGSZxp3lpkjYkcNxx2Z+ODc2nDgKbwloPUcR3sgT5bDKNrGtnEH528bupDgzG3VyepGQzgwXzHIMEw+E6b0IAtI2/Vi/SsQ7c5+obm/FVxsEofIdR5Zut8i7J9cRDWt1DLc/kvF5sPn3ZIt8B2hL4shKEdf9/U2R0etkm+g5FzUAXi+l6XIcmnpHJuq9f/RhE1UKNPi90NmVfE+W4xleGm9m5NV7u3qfmonTEcr3nGcEgyARtfACXG4Zj8bY64pkqnRWbnPLgup4Acklwxv1blYZ+1Fk4q4szB7kHQxrQJwqD6b0pz60iSNZ4Y+9XLhXYFejyZt8HoHmDxKWLlcnoi5iJpASbZOMzsUIOFfdi0Af2HE=
+X-HE-Tag: 1774597684-337717
+X-HE-Meta: U2FsdGVkX1/cF4jtcQ7x6+3yF7MSL5bgpNIcwJoZV/2n/4S3hrISXLFhrGxuD57PNq+2D3aDqnFrd3eJ9UJBBnOmCgIlMfMA7kqdj/0roRLQz0307c3sjzMrlGWkq5GRnencbQE918HOC9gSzBr2hiZK6X5X3n4aJ6hozmFFHzmCUDVBUp0cTAEFw24P6JMNGP7dorObYUndRTGRWCQEVxCALd+XQDmj3cFPUVG1LsLotp871FUvhcZNN/9aHIaB2HmUF86itr4BonsQWeNQqVYc6HJ9xw8NzIIegWYRz0BBNt6Xhg4WyBvxUEn456X4/ytPdbokXfgjRqxs/3eDJ3uebDN0ENKmkZX18eYZSO5Wyp9mDf09eM1Nl42ErcB4egw4RrBmZzYsrJ87CWbjCD9QToxOkEAvakJj2x4bVLqjJ2TmABb/k6u2V8QtNP9GgGi3iqmLvTsqUaElHL/i+9k+duElZoQo0YmIY59vTQJsDVFSU/13EZV+TOXgsitooi8/0RjWZiVYh8x5iZ9csKNpF8oBX06lKQtrQJhHi8+HDYuK5zYwM9T9Hjt0FBmc7ziIBXAU5Cbj8W2LYIccTygOje9UvRtlQRLJ67vefjVFaymQ0NmIdWHeOuQzipgf2k/rbJVgf89kv3cnMrtsyKCFMtxXnPHibNIP+w9XY9Yy2O2N1GEhhisz6HvhfivpAabdhMZX/A2NvUyQyCNvFdG/qKSPMAoUBg0dWude9Tq1zGskOkg53KITHDWTyBEbY5xJa4BmP4IkTMkl6XmW+i+ooE8ooNBxxYKRnrEeXg+Dgi8tyGj3azUpezV3ID+kBfEIoxLgv7MA9xD7fsk67AgnSBEF+ZU2xW/YI3a7oReGKLjB2zcUVSanluIiaLcXPCCnqc635pr0lahvdmROX/6QnhBDykLAy79sa30mCIuQb0ouFL7QdcHTK9klA/zjRM9/G2Q2w7YkC/ZZzR7
+ 5K5/ycge
+ 0erWTFBstA2FYgYm8nXpx7LNzQ03ikPTIuN5KbEenpvRRGSIoWWnq+m3lpk+Iw/2dYcJqOZH2GLYUXKCoiEYiual3IRtQ36xyeB/4GSaWTCZ7vPQaE+fIRtC+uscnG3MSJ1EcOhw2W7UiGouozmd9kw/sagOc7RYjICZ/+R2gQAGPuDzyqQw5eej9K4ih/C6+bo1oMsG4NUQPM/A3dwCX9hx/lojCIvvSxBUTz8SE0Ryl3V1eS3ZJ6/RKrPJJveAGJ31HEo8d2cZ3c7ayfT24NBv1mAULtQqipCVR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,102 +99,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The split_file_backed_thp() test mounts a tmpfs with a fixed size of
-"4m". This works on systems with smaller PMD page sizes,
-but fails on configurations where the PMD huge page size is
-larger (e.g. 16MB).
+On Thu, Mar 26, 2026 at 05:26:10PM -0700, Kalesh Singh wrote:
+> On Thu, Mar 26, 2026 at 4:47 PM Suren Baghdasaryan <surenb@google.com> wrote:
+> >
+> > On Thu, Mar 26, 2026 at 12:09 PM Vlastimil Babka (SUSE)
+> > <vbabka@kernel.org> wrote:
+> > >
+> > > +Cc Suren as IIRC he mentioned some intent to look into this as well, in the
+> > > mmap_lock call.
+> >
+> > Not myself but I asked Kalesh (CC'ed here) to get involved in upstream
+> > reviews. Kalesh are you ready to be added as a Reviewer?
+>
+> Hi Suren,
+>
+> Thanks for looping me in. I plan to try my best to dedicate time MGLRU
+> reviewss. Let's see how that goes practically, and we can look at
+> updating the MAINTAINERS file later on if it makes sense.
+>
+> Thanks,
+> Kalesh
 
-On such systems, the fixed 4MB tmpfs is insufficient to allocate even
-a single PMD-sized THP, causing the test to fail.
+I think let's wait for you to get involved first, then the road to R: should be
+pretty quick. And we can see how things go from there :>)
 
-Fix this by sizing the tmpfs dynamically based on the runtime
-pmd_pagesize, allocating space for two PMD-sized pages.
-
-Before patch:
-  running ./split_huge_page_test /tmp/xfs_dir_YTrI5E
-  --------------------------------------------------
-  TAP version 13
-  1..55
-  ok 1 Split zero filled huge pages successful
-  ok 2 Split huge pages to order 0 successful
-  ok 3 Split huge pages to order 2 successful
-  ok 4 Split huge pages to order 3 successful
-  ok 5 Split huge pages to order 4 successful
-  ok 6 Split huge pages to order 5 successful
-  ok 7 Split huge pages to order 6 successful
-  ok 8 Split huge pages to order 7 successful
-  ok 9 Split PTE-mapped huge pages successful
-   Please enable pr_debug in split_huge_pages_in_file() for more info.
-   Failed to write data to testing file: Success (0)
-  Bail out! Error occurred
-   Planned tests != run tests (55 != 9)
-   Totals: pass:9 fail:0 xfail:0 xpass:0 skip:0 error:0
- [FAIL]
-
-After patch:
-  --------------------------------------------------
-  running ./split_huge_page_test /tmp/xfs_dir_bMvj6o
-  --------------------------------------------------
-  TAP version 13
-  1..55
-  ok 1 Split zero filled huge pages successful
-  ok 2 Split huge pages to order 0 successful
-  ok 3 Split huge pages to order 2 successful
-  ok 4 Split huge pages to order 3 successful
-  ok 5 Split huge pages to order 4 successful
-  ok 6 Split huge pages to order 5 successful
-  ok 7 Split huge pages to order 6 successful
-  ok 8 Split huge pages to order 7 successful
-  ok 9 Split PTE-mapped huge pages successful
-   Please enable pr_debug in split_huge_pages_in_file() for more info.
-   Please check dmesg for more information
-  ok 10 File-backed THP split to order 0 test done
-   Please enable pr_debug in split_huge_pages_in_file() for more info.
-   Please check dmesg for more information
-  ok 11 File-backed THP split to order 1 test done
-   Please enable pr_debug in split_huge_pages_in_file() for more info.
-   Please check dmesg for more information
-  ok 12 File-backed THP split to order 2 test done
-...
-  ok 55 Split PMD-mapped pagecache folio to order 7 at
-    in-folio offset 128 passed
-   Totals: pass:55 fail:0 xfail:0 xpass:0 skip:0 error:0
-   [PASS]
-ok 1 split_huge_page_test /tmp/xfs_dir_bMvj6o
-
-Fixes: fbe37501b252 ("mm: huge_memory: debugfs for file-backed THP split")
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
----
- tools/testing/selftests/mm/split_huge_page_test.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index e0167111bdd1..57e8a1c9647a 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -484,6 +484,8 @@ static void split_file_backed_thp(int order)
- 	char tmpfs_template[] = "/tmp/thp_split_XXXXXX";
- 	const char *tmpfs_loc = mkdtemp(tmpfs_template);
- 	char testfile[INPUT_MAX];
-+	unsigned long size = 2 * pmd_pagesize;
-+	char opts[64];
- 	ssize_t num_written, num_read;
- 	char *file_buf1, *file_buf2;
- 	uint64_t pgoff_start = 0, pgoff_end = 1024;
-@@ -503,7 +505,8 @@ static void split_file_backed_thp(int order)
- 		file_buf1[i] = (char)i;
- 	memset(file_buf2, 0, pmd_pagesize);
- 
--	status = mount("tmpfs", tmpfs_loc, "tmpfs", 0, "huge=always,size=4m");
-+	snprintf(opts, sizeof(opts), "huge=always,size=%lu", size);
-+	status = mount("tmpfs", tmpfs_loc, "tmpfs", 0, opts);
- 
- 	if (status)
- 		ksft_exit_fail_msg("Unable to create a tmpfs for testing\n");
--- 
-2.52.0
-
+Cheers, Lorenzo
 
