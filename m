@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F77F10F2867
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C414310F286A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:53:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C0EF6B008C; Fri, 27 Mar 2026 15:43:42 -0400 (EDT)
+	id 102396B008C; Fri, 27 Mar 2026 15:53:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6982C6B0095; Fri, 27 Mar 2026 15:43:42 -0400 (EDT)
+	id 0DA186B0095; Fri, 27 Mar 2026 15:53:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AE6A6B0096; Fri, 27 Mar 2026 15:43:42 -0400 (EDT)
+	id F322B6B0096; Fri, 27 Mar 2026 15:53:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 46A826B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:43:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E9659E19AC
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:43:41 +0000 (UTC)
-X-FDA: 84592867842.06.19F7DAC
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 12A3220008
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:43:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=DBC2+xN9;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=DBC2+xN9;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774640620; a=rsa-sha256;
-	cv=none;
-	b=RH49pUsfs1hGq4+tQ3UcATAIL1lQ9Q/Ci7zn6Jv1r8P8ubngVQD1RvOULZYIwFqXy5v0Zf
-	NkBIAPGdmnhmp7nypotlP7S/x2ztqmT+g788RzYH1yC+6y+SGafeV8R0oNpN9MoMRVlGAJ
-	HmQe+ETDszwN6DBeGG8gm7j+d5WKemc=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E38526B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:53:11 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85771BE964
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:53:11 +0000 (UTC)
+X-FDA: 84592891782.18.7305314
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5EFFBA0005
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:53:09 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=V5GwXcRN;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.46 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774640620;
+	s=arc-20220608; t=1774641189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ycsjbas8cC1Onl2FsApYb1y1z6bcYUHR+E+PGpMszI=;
-	b=TL1RN95UiEFdNvIrLwwmWRSvLBhLCNYjdwgr9eliWR/a0y+WtvIZPPxf+piuyaHcQrydfV
-	ffrvxG+2A8U4vZiT0Ny8SM5/gcZpgFy9qC9fkQBp9jGenxI6/ZlQSz9Uj7Rdpl8pdibtOy
-	W3ietLrqsb+yPX2iDlHIn/mNEIgNk4Q=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-89a05955720so29378426d6.2
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:43:39 -0700 (PDT)
+	bh=sprVlPGXU/l7BB3P7Z9OXglgjV345FzoAVG09a2hhrs=;
+	b=ScC8nANd/bIRFeQR5X6gZ/g+Hf0hTH7hy9+STWvP2Koq27xD2/SeYPD5+QcPBgM9wLlvQh
+	/3FkhbhtTpgvD5y/kgvTZ+i9sZj8P1C9Iuy8g7ClluhUvvOkqIErcCaBOEYbfxNYyuiXrR
+	tloCGdRZZuTFD5rsPGkGLUoXlQNd6ZQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774641189; a=rsa-sha256;
+	cv=none;
+	b=w9qi3p9YhBe/OnX3ZcrtVUD0c3z4dcII4POefv2Sx5DkI0SqQIMRC8wHUJOUYJR9EXUQBw
+	6JUEYFtE2LydBqlLzEqCTz8NSo2cnV9goz2jlUKe63suD36hRkcbydZXoHeyG61tXhnSwD
+	tTt3mhDlwnC61ePKuEOaZlKQjSGioF4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=V5GwXcRN;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.46 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-89cdd75e424so23135246d6.2
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:53:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1774640619; x=1775245419; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ycsjbas8cC1Onl2FsApYb1y1z6bcYUHR+E+PGpMszI=;
-        b=DBC2+xN9p3AcE0AsXrEv9qRmtLx0Zr13+iNmopSwvbpZGjyP3t3vTEXveLDQsAKnOk
-         ms+dWXSM6FtzHYfpKZI4iUVsJdaEfyCI+ATFW7JNiYR0ylCwuSwN7AjCePWd1N17Y0IX
-         b8TUXQtvYsWLk6HgYfaCkLj0scoBNttVr9Biu0twpsaGAydUl0WlgfVv2g05BO9HDWgr
-         oWzjHvv1rPKMll248JD6Zf563DlSn9qNwvs3W5+lh2ValXja+HGQ0zvFy94wRmDEyI+J
-         rCJOAnZmFI8zJGmjd1HQEqnfKIhX/gQIfsnUcpocpgTVLqvbGywHxYbVMwVw6qyhb9Se
-         iMCQ==
+        d=cmpxchg.org; s=google; t=1774641188; x=1775245988; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sprVlPGXU/l7BB3P7Z9OXglgjV345FzoAVG09a2hhrs=;
+        b=V5GwXcRNGZLf+d08Mu8ppFE2Ul//a9ZSMxCAJCn5dtLLStlfB4Jb6h7P+hrcAtLSaO
+         yOF2CLj6jXSf7deAF277xuGXRoCjQmSMVvM4FnYN0gdWk+Zha3atdO7z0BNaxTYNb45Y
+         nVyDE1tFQW+9slqtTDF3V/Skq/GyFlmsTnd+NPvMP65JD7AcjVS7UaXDHe7vJrnP0AMF
+         tzhcb+tb0Sk8ICXdh4yDcqOMfJMPBubJr1iiMGQGLqD2x1A76I20WPLdNkmrPJDJ5QID
+         Qe0K4MzEiI9syOjgD3iHMWGrAiw/Lvj6KQzN+B1ccXbKOJmrfq3Lxp4BdZuY1ugN/PpY
+         fe8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774640619; x=1775245419;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5ycsjbas8cC1Onl2FsApYb1y1z6bcYUHR+E+PGpMszI=;
-        b=BlJ3uWHYKABv/pMj4RheRCupMrg8/5kWhM7QTWEmjE1dzCELmWmmg03NdYudGqq/Md
-         +SQ3MxkvxqTlvSw9IL2GuMWx2dZsrxjYsWshtvLhEu/kfk8xs2QBGKxg+WQ68zUF9m/Z
-         2GOON+0IFKaP4efs1puNcJrl54DbpYuX6GJKMQHPy08UiKnOTNT7UJ2eyfwN5zkT37JO
-         Q2X7Q0np/ZU+dCx02kJEjHfFK09nIlnJldhToEMNWEzaLa74hosrrw++YccJ5102FX8h
-         +gIFGCCD49JalneBciAzProhZrwVbLp1n2mpJQC6WtbnNdFM3kcOaVKdUinD3nCuqJh8
-         nJ4w==
-X-Forwarded-Encrypted: i=1; AJvYcCU+uWYkESyAvhjmk7BcnsXQV7aVKocEZKVhJFKote/+LYAEip5mQeYYOr1DM7ZLOYr+/+nD/1eHHw==@kvack.org
-X-Gm-Message-State: AOJu0YwW4tF5BOaNmYJL36S9enr+Q2HLIUg9BUtNseMXaK6d7I6HjNl4
-	qrZ1HVZxN7gmz6r4O/8uDKVsqn7rgWjO9vyT0u5ys/Nu376No6kX7k0Vy36dxC6oDlM=
-X-Gm-Gg: ATEYQzyceb/CWLo4+w7DYC7AiFOHAAwHji4g+Npg9xoUqJUwS3XNpPVqRE6igEEsKJT
-	/vhdGHOmPm8J+gbaMcTAiYmsTglRLeeMmC7YBQwXJhB/UU8pLk13hoE2HnRVtA0gBcyxZeSP4cX
-	+qPYP3prNiTfjVLSWvvupMdpcIpT/cR/iqZFmN0Sgx/+8Cwsk/nKLVazv2ChoGsb4XkbdYnO1w1
-	hDuF1KhHSfBV/PBI/TDqZNtQpDYhtqp1NelXn9U7e4QjxlMzTVDbprlHcitG+txZOQgpyJ4+bmL
-	BnKt0TXR8eKGd4bORc/3bDavbJo9Omlpy07f8EOyB9aD0Yxhf2Q4rtHEI76XsyBaz7c0fkLowkV
-	sjH2i2KW33MVHwdcNz6zWVD6+QX9P8Su/16MNAkagxrNNyGi9sWvI1MAxsdxm4FbQhQ5zwx/BiS
-	23LUhU6XyNpstAhQbsUNOZ9lInO/58GMdOK9AHQXtoSxlfW39gsr9OwwMYvNrX8fBw74UzoK6Kl
-	l6f
-X-Received: by 2002:a05:6214:4901:b0:89e:a170:6af2 with SMTP id 6a1803df08f44-89ea170721bmr11920846d6.41.1774640618959;
-        Fri, 27 Mar 2026 12:43:38 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (158-94-182-130.mclarenap.oninferno.net. [158.94.182.130])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecbba4bd0sm797206d6.11.2026.03.27.12.43.36
+        d=1e100.net; s=20251104; t=1774641188; x=1775245988;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sprVlPGXU/l7BB3P7Z9OXglgjV345FzoAVG09a2hhrs=;
+        b=FHWJ8Y2xzS3dG5UuEj2AsOvoHe65coLEgJ5gO+calHGABplVNmJ/WVEKIeo6nNps1u
+         +II4piWktr7b5uksYF8reBYI1hCWNaOefpJOERb1EhiwD0igzWCNMIr5k7CWFLmeN+7n
+         DGQ8U3f+NkkFt1fK4tUgDIDusRFcKbEzN6LaC19pIcDTxvwTsyq7ECoT5vGrBGa4cJVl
+         nCEvrLCnfqm07meXsq4S3ufEsFoEb9MGGhoI8q5KtBhoFH13IGqHWEFfJxdgpe6AdB27
+         R7O3MIVq3XBl4P2mrsyOydE7Y8MAw8kVnoRLwDkb+Fam8zE3dxBqeeDrJDy/aWYNZtyy
+         6wZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXBN/ZmJjXcHda4tO3lipETC40VPkhpJEJlVkuNHXYLIQYmxruPcQdEDJneo7g+l0AxjIkgcSvrBw==@kvack.org
+X-Gm-Message-State: AOJu0YwgkfYuQOAtwIBrwjTJDlWuDxAqXi+mGyqS9Qn2fCz9fzHf0xvb
+	QR3UZq4wepAdQ6/z2r6fdzEnS4KszSl/GKnVoprZAz2Su6lm2S8Rsrsc0vt5lL7F2DQ=
+X-Gm-Gg: ATEYQzwA6SmSreyBZDRudoM5ujFecd7M4NN77z6XPrvduJIVsxweOQ15iPzL8DDanP6
+	Fb2a4Klcl65IHN4mBe1EarIAorIo8K7c8DQHBhPY3uCV91TMIN92DRImUT3zKlVcWvJVKXigTjN
+	RQgPCGLp69NV3Mb7ZhLy3SvfIObAsWv9TfTpDmsPo65eh8KjoFGhXHc6vYWfPvLAfJViz1msIUN
+	rypOQNt6KY2Wp9KBu/YCgjSqfVcFopVAWexOBps7lRoIPb+AhLF7rSGhTnwxKcwPE3FUbiKRMwG
+	e+Qm29TABfmSJIwSlRkqvBDgPraU3WwoCLjE6wQX60p/9LSpUs1kgeuCZhVvarg/K8LibkWlpoe
+	3vcmyaFH1F5kMcGhANcqV33ASIVmXpKd1gevrSeweIdI7Xg+hJe+UVk9+qvPFhN39eLU7u3tJar
+	zGOj+Qwjv7WTDPoonDMLOF01/copmTSpFx
+X-Received: by 2002:ad4:5deb:0:b0:899:ea9e:31c2 with SMTP id 6a1803df08f44-89ce8fab7d7mr48646526d6.58.1774641188243;
+        Fri, 27 Mar 2026 12:53:08 -0700 (PDT)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89ecf866653sm553286d6.35.2026.03.27.12.53.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 12:43:38 -0700 (PDT)
-Date: Fri, 27 Mar 2026 14:43:34 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+        Fri, 27 Mar 2026 12:53:07 -0700 (PDT)
+Date: Fri, 27 Mar 2026 15:53:04 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Gregory Price <gourry@gourry.net>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	lsf-pc@lists.linux-foundation.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
 	Chen Ridong <chenridong@huaweicloud.com>,
 	Emil Tsalapatis <emil@etsalapatis.com>,
 	Alexei Starovoitov <ast@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>,
 	Barry Song <21cnbao@gmail.com>, David Stevens <stevensd@google.com>,
 	Vernon Yang <vernon2gm@gmail.com>,
 	David Rientjes <rientjes@google.com>,
@@ -120,28 +120,24 @@ Cc: Matthew Wilcox <willy@infradead.org>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
  (reclaim_ext)
-Message-ID: <acbd5lKEh8xa1IQk@gourry-fedora-PF4VCD3F>
+Message-ID: <acbgIKuwDsPvPjdF@cmpxchg.org>
 References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
- <acTaRgusrxfCoKqe@tiehlicka>
- <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
- <CAJHvVchSfGDubPhir0SgZfr_BcpN5oq_7AY4AZ587_ucgY4Apw@mail.gmail.com>
- <acWXdvHx9mYqvT2w@gourry-fedora-PF4VCD3F>
- <CAJHvVciAmX9OFLBSahwvXL=E+3xnDsL2aE4WKfDBFqaT1Gu+Qg@mail.gmail.com>
- <acX8_XMQYA0-NGUW@casper.infradead.org>
- <6f40c513-af3e-45b6-9000-c61494a23bd3@columbia.edu>
+ <42e26dbb-0180-4408-b8a8-be0cafb75ad9@lucifer.local>
+ <acVPrEyfcE4Naz5b@gourry-fedora-PF4VCD3F>
+ <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6f40c513-af3e-45b6-9000-c61494a23bd3@columbia.edu>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 12A3220008
-X-Stat-Signature: xrim7bhz3qtx1gtdzoxx7ifgbe5j176d
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <248a126c-43e7-4320-b4bb-282e0b6da9c4@lucifer.local>
+X-Rspamd-Queue-Id: 5EFFBA0005
+X-Stat-Signature: k1z7ksz11ibyhsgrwxsq5eid9gjjrxut
 X-Rspam-User: 
-X-HE-Tag: 1774640619-199883
-X-HE-Meta: U2FsdGVkX1/pnQoo8XdLzXg7t8R2DxWUGGI/hil/QMPeIZU87SmjxsaWP67uqZr1kktRNk/UMsGjRoczHmmy88ueNE22w4Lgt4o4wFvdH0K1XXouOKawadpk62+83OftvzG3fAO9uYsxwmE16IW0/dj0OskUbiDAO8nwnppmEekph8v7wBHAkm0RufOOOvvUgPMnmnw0E3lLvTKLuhAo6zGWgCRanjZvE14N/1goiD3vBQjtEzTXg1gz5OYqD7pUh85Jwen7HREufmcJHCR7bhfWUAA0LmsOEgJdRHVaI87qkytP+FsvATBcy6ny6h+1r/JJJ4GgqKbKIUKDj4puL0wa1tfIdhsVzwscszZsjqqfULv5X9uNIA5AnnFkwuNsarFMY6JRp4waKF1G/dj/dWfvEudSwxynQivuCSrNGoOL0nWYx4Q//mxB/Qm0oZzMvaQzjiiLQHgLqu/DofpDQGV/1vFp8LiOSHbLsIRjQbHYHJ8JUBOzX6eRXS+cjOO3AT8+a6Uvv/ERK6LIBBbEL/Z9Z1wcN9dTrBbUyB0nplB/zg2ObZ0b3IuchczFId7S2/oWCfqA+5xQpIEvoSleYjeabD2XkaJFgT/Z+9ZzjC2pVquTa+tqjG47bKoKPGVs0Z2WDXtHHXybSocq1pILi9GjBH00GxFSv5PuRZ3JKmcNum1qZaWWknLhwWhMLbAG1FO8rVoOunWtaEeDORb3IiAORXo/0pyKgnBfDosgD0u8khdJvQUpe30sxTsYMEbkpq+qBJdqeVWOORiUsqHE7cDkbbQOk7eS29lJ9n4P0aXlTcmhc7smH7NOnQ1Yq6Kx+ya8iN/Iw2JK1f3wTGVFQ/uXSEVTDTiVsYPyIp+1OzKBtpbhKiUketb5LgNJttO+C7wjFdWrjbVKAK1dIsvi3d39teZ0ZHaVz0bxWrnLBR5lDgkwOb6rVuBYTrp4D84WGCzGB8UInq00dODnltc
- PI0nGgim
- 0fxPralhO0opF+K5OhN4rebeuZZz8egJv8XNRj7IFho9mDqz7z3LVt1Ak5Sp0X4ylubE8+ruor5AwGud24CF02EpZxkhSYo3McVzR2q/7lOLSAlyRtWzKqNIrUeW2G0wHQrcyPWMgmvTSjQdwBS7VXC+rZCLmJBqotjPB0DIrqsZi4eRv0KVN2XkyDmWVG+NJoGkHWxk/5p8mEItUuTdW9WhcYSojnQvuEE1NJBQnXTgOkHy5YRC8d4j4x/MkEYonMpyHSJ9SEx5yH+iNSAEpRbZlWHKLjWz1cljCcMNQ2DtC3zduNyVsr+tIrrvcGrHeq0W7qDHUUgW+CjJiOtk1HuXNyxxdfoAAgLxTqhxYUGBSEXvgVvAlu8VDJQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774641189-677309
+X-HE-Meta: U2FsdGVkX1+UiFFAcTwHe5EfocfsWNZ/u1tQFf1KJ1nl03RNWJrhrLUOPJL+Hh4vt2sMwGCmSDlhXBhXwtKjQrhrLqfTB48EgG4OHf5TxamlftzEwW4a/zuflVLIAcgNTHf1yQQodjSPEAaOyjiKJhsnHuQDrcPCyPAVgENG34FgArzZ6oL+dt549kYrLMG91EpYaWUkHPBKS0oAIRbgtP9o5JGm4P0KvOowdrAUfWwBVi1dN2QvoWOgfpC3abyiHONLWV4Uu5hPueHq9uF/+vhzjjWzfbKb1EABX8qdFjCTuEM1jVy5s6NYH2fxkDCzkTDK1MAocpO6yNytIyXXmARRY+oCz13o7FZEEdC5LxfVQTov7r6R/iRr6R60md1QcrSQVGcNhTWzfiRiI5y2zFhchgeaBLkkPTWIRFKO93JfHB2ojhkYZParysc/Z+W8kR0rLnrW4WVnLwWi1/doWNQqLDb7hXSAQ1uYjYRTf9Ytf1NzNkIoiUSSH0msELuWoDBTPDHiSTi2aqx3g187df3o6y1qljntveC6mQGOaLg345l+Pp72Obhp+D8GjqMC6Hu70ogL+uk/iac2XA0b0q+nT4WSR4XVbppW+5YXUHjw/O3eh1Gw+pMUH5SdO+2es2z113Ql4MJZlmOTrn8BLcEwMfwx4KU2zTt2RAeQa0tK8ipqewOCTG4oT2YIlO4LMfmHiI9SNnYELrdXaf66eTV6SBkmckhRb6KE0VY/oUl5igG/oSX+XGcu+zfvQ+zEwAFgq/6RonuMXbUKkE068TvKV3z7bak+JeGmyXZknvcel6wjO6bqYq8Ldw1n8Jzj+aF8Rt5aRHnAy7DeAeP5d2iTeI6a9TC6/EJWHbMsT5prDbyF6PbSEXDEzUfKx7BjRz0iSnRrLBadJt4UIMBwg2VoEuhdIDr7ZQL43pQhQfa2pe+lnQjcYjvxFMPkKtHzjyJI8pcAc3NOcbICwZk
+ 5HJwLLL0
+ NPBlfRszhRsN240l/6bACrjaOmp3fHdchn13cSKMeerojZ9SzZec8Rfz9n3knCB6JIzRhTm4yUuyQ3D1Id0L83K48JU1qp5A+YWOrR+t2naSQ2xQPdc61YiUP1vgoxotLT20tBw1jzb21ppF3DG14lwekesnXJNyO+SJfnpU6zxT2xFLN0N6FtpywniVGzVSIBGzNpcJI8ar5Wlm1AjeWIPfJqCjJDPQsXWWOjuuYCGAg/2bVDsy7MUSMZc8AvvYiCxWnGYr0duwG7QIqvP8UnaQ3LoZ/q3XUdAFWuYBXHBnlNzTXuuAOiB3wOoLz/HoNg5EQyisdV81vtKRcrf0Q5goN1LlILdrDddYeYpbQ7iTOhjaa81Wo2aDWIY3hYM1Z7wAAtf3myqMRkKC7WejYjuFPYt8IKir0vQxF0DOtqmUKbM00f8ewOWDSIpF/Z6aTaURslH3AWq22Y92i4naQjRNutlODJovnwLEI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,23 +145,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 03:12:16PM -0400, Tal Zussman wrote:
+On Thu, Mar 26, 2026 at 03:35:28PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On Thu, Mar 26, 2026 at 10:24:28AM -0500, Gregory Price wrote:
+> > ... snip snip snip ...
+> >
+> > > >
+> > > > How Do We Get There
+> > > > -------------------
+> > > >
+> > > > Do we merge the two mechanisms feature by feature, or do we prioritize
+> > > > moving MGLRU to the pluggable model then follow with LRU once we are
+> > > > happy with the result?
+> > >
+> > > Absolutely by a distance the first is preferable. The pluggability is
+> > > controversial here and needs careful consideration.
+> > >
+> >
+> > Pluggability asside - I do not think merging these two things "feature
+> > by feature" is actually feasible (I would be delighted to be wrong).
+> >
+> > Many MGLRU "features" solve problems that MGLRU invents for itself.
+> >
+> > Take MGLRU's PID controller - its entire purpose is to try to smooth out
+> > refault rates and "learn" from prior mistakes - but it's fundamentally
+> > tied to MGLRU's aging system, and the aging systems differ greatly.
+> >
+> >   - LRU:   actual lists - active/inactive - that maintain ordering
+> >   - MGLRU: "generations", "inter-generation tiers", aging-in-place
+> >
+> > "Merging" this is essentially inventing something completely new - or
+> > more reasonably just migrating everyone to MGLRU.
+> >
+> > In terms of managing risk, it seems far more reasonable to either split
+> > MGLRU off into its own file and formalize the interface (ops), or simply
+> > rip it out and let each individual feature fight its way back in.
 > 
-> It's been well-known in the academic realm for a while that there isn't
-> really a "one-size-fits-all" policy that works *best* for all workloads.
-> Yes, you can make a general policy that works *well*, but if you really care
-> about a workload's performance and want to squeeze out the last 10-20% (or
-> more) of performance, you need to be able to (1) experiment and (2) take
-> advantage of application-level insights. Being able to extend reclaim (in
-> our case with eBPF) enables that.
->
+> But _surely_ (and Shakeel can come back on this I guess) there are things that
+> are commonalities.
 
-This just makes me think going all the way to reclaim_ext and re-writing
-MGLRU as an eBPF extension in an effort to simplify the code/maintenance
-and keep what works working is the least-worst option.
+There are some commonalities, but MGLRU was almost maximalist in its
+approach to finding parallel solutions and reinventing various wheels
+with little commentary, explanations or isolated testing.
 
-But this is a naive take, i'm sure making that interface stable would be
-even worse than just maintaining both LRU/MGLRU.
+For example, MGLRU took a totally different, ad-hoc approach to
+dealing with dirty and writeback pages. It's been converging on the
+LRU mechanism. This process has been stretching out for years, with
+users eventually running into all the same problems that shaped the
+LRU implementation to begin with. Yes, you need to wake flushers from
+reclaim. Yes, you will OOM if you don't throttle on writeback.
 
-~Gregory
+There are many other divergences like this that complicate the picture:
+- Cgroup tree iteration, per-zone lists to implement node reclaim.
+- Divergent anon/file balancing policies.
+- A notably different approach to scan resistance.
+
+Many of these were not part of the main pitch at the time, but they’ve
+created sizable technical debt that we’re now forced to reconcile.
+
+I think MGLRU's NIH-attitude towards the problem space set it up for
+running into past lessons again and learning the hard way, just like
+with writeback.
+
+The good thing is that there are some integration efforts now, even if
+they don't come from the people that promised them. And some of them
+do exactly the targeted, rigorous tests on a per-component basis that
+is needed to sort it out (and was asked for back then).
+
+But there are many workloads, many hardware configurations, and many
+cornercases to cover, so this will take time. The end result doesn't
+just need to be fast for some workloads, it also needs to be
+universal, robust, easy to reason about and predictable.
+
+Based on the current differences and how unification has been going so
+far, I think it's premature to claim that we're close to deleting one.
+
+And the current code structure makes it difficult to whittle down the
+differences methodically.
+
+IMO modularization is the best path forward. Giving people the ability
+to experiment with a la carte combinations of features would make it
+much easier to actually production test and prove individual ideas.
+
+A nice side effect of this is that entirely new ideas would also be
+easier to try out.
+
+I think a good start would be to keep the common bits - "library" code
+like shrink_folio_list() list and shared facilities like kswapd - in
+vmscan.c. Move LRU and MGLRU specifics to their own files.
+
+Then as much as possible extract and generalize functionality into the
+common code so it can plug into both. For example, collecting accessed
+bits from page tables instead of rmap chains should really not have to
+be specific to one. Nor how the cgroup tree is iterated.
+
+It might be possible to make N lists a natural extension of 2 lists,
+so that the tracking datastructures themselves can be shared. With
+minimal parameterization from the policy engines.
+
+If we can get to a place where the only difference is how reference
+data is interpreted and causes the lists to be sorted - you know, the
+actual replacement policy - that is a much more manageable gap to
+evaluate and argue about. Or swap out to try entirely new ones.
 
