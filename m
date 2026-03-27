@@ -4,88 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7742410F287C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 23:33:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF8B710F287C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 23:40:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED3EB6B0096; Fri, 27 Mar 2026 19:33:26 -0400 (EDT)
+	id 2332C6B008C; Fri, 27 Mar 2026 19:40:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E86346B0098; Fri, 27 Mar 2026 19:33:26 -0400 (EDT)
+	id 20AC66B0095; Fri, 27 Mar 2026 19:40:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D72DC6B0099; Fri, 27 Mar 2026 19:33:26 -0400 (EDT)
+	id 120E66B0096; Fri, 27 Mar 2026 19:40:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BD2AA6B0096
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:33:26 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4E0A816053C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 23:33:26 +0000 (UTC)
-X-FDA: 84593446812.12.6D077A1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9513580008
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 23:33:24 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S+JFfCfT;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F1D756B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:40:01 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 906111413CA
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 23:40:01 +0000 (UTC)
+X-FDA: 84593463402.25.E80AA12
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A8BD510000B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 23:39:59 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=deYm0Ete;
+	spf=pass (imf05.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774654404;
+	s=arc-20220608; t=1774654799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bxVsiPS0xP1dceAU8EIPPNayC32A3kunb1RlapBhuj8=;
-	b=SXKRnhXuJW7N4V5nIBpFfJxzz/eNETPwtlM26VtF24I4lzF33TF2Jyz+HS2+U3akLsOC7C
-	WGrEj8n9O/CmWRvhEIbs+dl90vslycJSXJmVMvCto4riUjUrc4O8v64owZkb/OyRMSJaj2
-	FbpSqpWUcGiKQeIlO/R5G4xcqeVlkwg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S+JFfCfT;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774654404; a=rsa-sha256;
+	bh=KJh+fSdSH5NQ/gboRRLrSOUWnglDImWXDS4hyVsChMM=;
+	b=kpBa+e6e6ZQ7hPbdKYcVPb7SFNxzU+JpPIjUmpybPbd+L1bf473eVkLuT0AGzVOXs3jq9b
+	cAruW5yoKzOnhKPaR2nNlrKm/KICtILoccdRejjKA11GhS7neeS3gvB9hBu0xUG2UFMhB/
+	wdJDRp4pigikcYwWeGNe9GBe7u1TiQo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774654799; a=rsa-sha256;
 	cv=none;
-	b=IOlzhpN+uUHetLXHSA2Hl6MYsMYv3OCr4qNSFkIuHs9EkeACbeGnpE5siG7LxUtkfBbo9J
-	fyHLS45SoYzWaUa/j1Ype/m5tL0YYqsIg5LNyBj5TTOaGJ4LH8hPDipi8hy1NYrjNlBzhx
-	ZrxcVvQzgpzfQiN8FgxeNZyMyPNDoQg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E2D04376A;
-	Fri, 27 Mar 2026 23:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6012FC2BCB2;
-	Fri, 27 Mar 2026 23:33:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774654403;
-	bh=VSUrozLJroKMWrM7KxSMyE5+mSLHT7kOcYr4qKbQQJ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+JFfCfT8CQ1EDMB6mu7gzb95mcb7qRbck02Q3vj3/Lh68f4nC1bboFOG+E9lhZIv
-	 qq6L/zMDCxZPvKxQazRGe37Fir+fOObkSDqQ0hD7LHG3jRfYkGQ3M+2t6l4tkLWlnw
-	 RruNY4xhMhTe8pu6GSBALQbqs468VASuNIbkKxs1AzLPLcBR5EEuf5ly6OmmDbApsu
-	 /s7V/LaQt+aCH/GGpB5p+1lzYp3Guq4Sz8kV25XgjcqYRlrRvfVKrJnmNuyzMr8HXk
-	 rcVQ6wvCvlfKXilvPLPW+oZNCrAjzY+qUPu7u1m9HwaA30L3dg8fXMXRdxBR7SvoOP
-	 7YrcBI2upyjkg==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 14 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 2/2] mm/damon/core: fix damos_walk() vs kdamond_fn() exit race
-Date: Fri, 27 Mar 2026 16:33:15 -0700
-Message-ID: <20260327233319.3528-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260327233319.3528-1-sj@kernel.org>
-References: <20260327233319.3528-1-sj@kernel.org>
+	b=gliU03mok1WoaKmZ4vEMWz/CrlsmCCprU9L1Brs/XCCNl0K3nzy+w+nnT9GMZxz58e6Cbo
+	TB9RzvEtBCkEzWGcKtTgbjhLCgldXYEGmayRKOTwSyuRJZfIvwqW8KHLIh+K64CP4S+1gO
+	UhEMSavDmUcAsfpArYo8/0IYHLKbxLo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=deYm0Ete;
+	spf=pass (imf05.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b0c12be0ecso36695ad.0
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:39:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774654798; x=1775259598; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KJh+fSdSH5NQ/gboRRLrSOUWnglDImWXDS4hyVsChMM=;
+        b=deYm0EtexfFoTsjsGqgm4xgksjfMxlIvBgq8+o75nce/t+rR8scyV06Afb6TH0rUiu
+         FGpH05ddw1qAzz0+2cRUFvSAacqWwyBwHedCn1UsvMVWHXemvjSQn4lkGIw2O3CeA8Lb
+         T7FmgZoitA3uELO7Xb13JOebLKsy+r1EN8iBedTQqwTrtnmkCAVkwPihIlf2YL4msAZe
+         feEK6wnKEVpv1TThgBuPpc1PbVOPfD7/dzTFj58+hoIq4MQXgTi4w2ZoJ7FXX/nxBiRE
+         kQPpUo4V6kCVwmbl67NYzbesQptHE6czUaRrfUrC20swRCkclqWNv8+koO3ecG5wuRSe
+         yCaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774654798; x=1775259598;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KJh+fSdSH5NQ/gboRRLrSOUWnglDImWXDS4hyVsChMM=;
+        b=Y7ErA+it2vb1RzOEsAHsiFYDhW7cr4VHCXqXJvnfoVrBnlhI2yfc7S/qLLebCj5r2g
+         9HjvvobQtbMz6KXTSdyzjdmPhJpmcVHXj9bUPxt7/aT8+ltkGSSmVXWkw/i3n431i5O8
+         zPCASY0KI3RcpzsmVsQRFOLEH4/ERnzjwipfXXEJapaP6mPk5K3oMofguDp8KHgl/X73
+         OKZOgvJCkF8F6s8hRqZ6cY7wxVXrtutRgc0NSkNnvukf7Cr33WgAMdszm0q+nF9aQsdL
+         wpT5A9HaGLMy4pxe3MGe6e0sTAU8Bg7K/klxwikr10LSUPZCliMPyM8ea8gRaRuGzZi9
+         //Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCV1bKQSJzY1cd8oz61abtB5bFOd2VQ1+7ECvQTc9bu1kj8qpp4Z9JF45UHi5DoyG+pfs+9j2YMpSw==@kvack.org
+X-Gm-Message-State: AOJu0Yw33ejCEvT/8HWaDRkn0Xbt/mWTp5IhksArhBP6HkL6ajwv1fiL
+	d81+fboq4EXGRls87CampYeAgT6/CeehrbgqKFY/pNxiinBAU9zLlvxgfCHTlmc3Jg==
+X-Gm-Gg: ATEYQzwamyc9ndxY1L7ZTydD0f9HTwD2ey/HEUCVPOdrFvrL//Jl/Vk344LF75/aZu0
+	9jlE6rsq+j1IE1nBqIoWIvW6yqZ6ThTx1kRFxgE3n2M0IPl7dktlnid3koNygykI90ljrqfsUG0
+	JpvitM1MrZXKHNMx84p6zK3g07kdOIp+BGamnAZ9e35ZwZI51nBVw2GoE8Jz8FLOlO/cl72dwcL
+	OC4b+8WcwJQIfj6hbOJxtMFEyYAQonpZOzI1m3XYwwbMD0rRhJpdOW8eRGWZvDzDo4kQy6mTjCv
+	LgoeuJnTNVAvjKwEUHVtk/xxZ+oCN0Cct7fFSKv7Yj4LFNI9bit63DMObhkhpZYLcAWT87/uY+E
+	UK06Wjeb4zcdy3ZV6bz1ks67S1Oy0xPRPsL5XxaqcFWNqp7TLz7QIilG3FCU0jPL6ezOL05+Unw
+	wDWdnw+JU5SgNJ50RsAnfcEi0Yg4Jubj4Ucx2HjMvUpPXUVUYgHP+u/7P6IYWY/g==
+X-Received: by 2002:a17:902:e84c:b0:2ae:6755:a24f with SMTP id d9443c01a7336-2b241ba1a2amr1512495ad.0.1774654797569;
+        Fri, 27 Mar 2026 16:39:57 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242642b43sm5138615ad.9.2026.03.27.16.39.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Mar 2026 16:39:56 -0700 (PDT)
+Date: Fri, 27 Mar 2026 23:39:53 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Askar Safin <safinaskar@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, 
+	Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Kees Cook <kees@kernel.org>, 
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>, 
+	Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Raghavendra Rao Ananta <rananta@google.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v3 07/24] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <accS5UUyP8Qw1bUW@google.com>
+References: <20260323235817.1960573-1-dmatlack@google.com>
+ <20260323235817.1960573-8-dmatlack@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260323235817.1960573-8-dmatlack@google.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: m6b5xockgbjgcj55tntpo4pdek8m5fww
+X-Rspamd-Queue-Id: A8BD510000B
 X-Rspam-User: 
-X-Stat-Signature: efqh6pn54ccuasxohddje93gu5x9hcr8
-X-Rspamd-Queue-Id: 9513580008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774654404-578824
-X-HE-Meta: U2FsdGVkX19AaIsS7FlDUSgpmWv+Q3nH0oyu/AQxLbUtQ7hL3JjKEfyyV/zBby+KPocI67Z/dnhU5X22nIgTWqwKdovs6fCMDbuOsu/2ATAg1D1OnZ+KMRF4L0y1O/qiQ3YHXv5YjiqdXNhplq0uzJiGsN/lQWAIb0HFxUFBdVVtE/P5B6xnylG6pvnrSk7n64pgaLZjQH+DpnoDs7fvKCM4JNtFq+g32V7hk5wYcyeTHGEeDSbjfb5DVqFgHXigDZG0uAtl5bUXdAZKBx34Aw+Xar2ymtUCQ8XLX3q5cpuTtQs6bhLfKK9NPpBxVQAlYEFFUTyw8Z9DCGg334DXjjkFmjFsRPTcaO4lxGbJcL+AXPlcxcfsj+kpbug3ieXWmxY6h+0lNEULvk2kWxqUNigd0VvZ8Ztq56PJMCoY5Z9wBdP837XvM85gnKyxOimVJ94ICGaS/5XGJBjTt1hmvgM3FZIaHu5oaSbYikrejNwKVqcYe+LMxUzdxzV84UiQg9k9FTCa4lJHGPb/HZCwV7C9tsPZ/EZkBiKTB5ypiKkXNfHi+WOFNhHm8mvFoP70NaunmxIDuDCoxnPMe1X7C92jPdQuT6IsUOfrlO5479AE7QGd5i20YV5vrUs6DNgQcXhka33FUoYylKTnNXL62rrqUVM8hl8LxwsbeFBiAHFz9XnTDXwSnpsvl/2jB9MKyR6UeUaxgrFYg2gtQgsXwhGTjKHfrrIsTls8r2VwfZAbpCIZoLYKvnez+UL4GRSsNZhY0eoGPt4+NAZ51G+XTTmaUwrKPqup9b9UakhC1YyhnRYDYhY8O5K6BIFRmMKtN7XZMj/LCCtkD+4XBtwJD5/MrzXySlXeE1U9H42c2eHTWQFyiFG2+N/habTdG5QP32jOthXxCG7S/sIp9UJ7+hkUlqyxPs+WR41E5FBd2BBmpXpsTzzaCvN9Ho4bzfoPdbR0ctABpV6yfj2BrZq
- kqp7jL9s
- dnkWpqoJXCF17xVogUmS9fHbnjNPmSJPc+4/vky12VN/NtupzEwvP0SLN+w/Wsgdau/nt20Lx9CuifGXvwS/+uIV43Ge+mK/IcN+VGCQ2SH2lpGwmtTRvDYl5iSvQskOOtNj9yst7I3PK09oNKOoM0imrA2IoMxIRRkLvLMWfIm00GQdqH47fQLuhUFgBTRnA/4y/OEpN1e3njgAi7NpD+YbuxyjtF6IZCl5VT7MGKdfUKuz+M29uUlAyFNXM+2BmSyeUpXZAMQQjbAIu4y+6feuqFw==
+X-HE-Tag: 1774654799-163734
+X-HE-Meta: U2FsdGVkX1/Zht5IeKq2F9KZkE5Yl+J0b6V2YmGTbQouX8q/X/0ejXzZo6SO9nn53/vS8snAZrA+O1wUBKO1sT7thPzFTi0oKOh+97YA9GvFnCFw2ae3OEf159eSv3ZZs4GQRRuBF0Ib5MSDFYXTzr9iyfr93AnCFy+pzcj9xIxjdyI7KjIFuya5p1UFeFlLqMj6tmxxQ0c0OsjacLefgvw2sRoExCpfvaPkrbn3abN228goshTdK6sPoAr6A3dbQRV4WQEzNXx28Tne1GtUVCgfXiEPYc+opmf6/zp9EGQeT2SV2Hd7BheNbdc9abKQZyxN99cxc/TdG23oPcxoQbjnRBBV2QuFMaDZUPcGLadc3NU6SyJ3Ei6Jtwx1t80u14wmiSydcuGVra/S+NXUSk0XQN2pE2YzkRXiIeAG/kcPtPBdqyp5IWFalBRsr2NL9CzP8j1HIHwp52W0t26UuvIQe1SehsjtJUFKB9foRyLSsVVgpw0XH3pAID8LHlDmx55yqIhNX/WR8k7aPYU0FDgYy/BtCm1pWi1vbWXasejSZK80fv9eM7+ZROuQ0VV/u3D5obhAww3umAj9yOlGIKjq46qrrREerSVRM9t7w6/6tBeoj0Sb68ZETe7EVbAkt0lm639IOhlqbq31cx/427CwssVN6n6uqYJk51Kjd7Y+XJ/InD4CYDcInoPpr/HgGzyDuXsz0/XphJ3taDo2idq8jl8ZHT3nc4CTDC/hyo5v/MND5oUoUb2SuzYA7OARMIm4QRNOg56aCSI8cNnI7mf7RMc5wdHFNfOVXfNDbZP1dgJ6QdEW+hxPFxzznxNtnxuVn87t8B8PypmF2CLcq88ONpPn0wxqcfHukizZKZOphgrOMIMz9ULyc3Ngr/a+NJD5OaERv11NqpDU2ZhYs/mRneR6GV7M7FMdN3nXVNdTxOZhE1Fk+k8A9kIuu9xpUQ1rm/IcbPHsX2cdoxg
+ g2nWBOcx
+ EoiY+ubfAk4Wf+mwzXhuaT8NwgMjtCxnHWgkJ/jXY3Chh8k7A1sXbQI3OTkvLJtab4GP0QVpWI5Tqdf4VS8/F0ThK1HiG8vJ+2Cjlw3/HJFpJKpUtOyWMdZ+Vy/wXoh+Hyq6FLvdHwXlsjXkowzizoAfPnzrAUdJUWYKdLBqWwfG30FpJ3e2KILQNhC8R79xIjappmaykhRj3TlcyFdaVLuggMjJ1/n/WhFPWblLNeN+XbbuRME+ACq4RssiJ77Mng9GSkiRjNYkUaAbDjJQS5txeN3cyut2koDF4eTNJkif6Z6nfpRJorga8duecg0HVfu99ChkL/K/GufmmYrB93uPppFIV8wAA+7Gb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,123 +139,431 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When kdamond_fn() main loop is finished, the function cancels remaining
-damos_walk() request and unset the damon_ctx->kdamond so that API
-callers and API functions themselves can show the context is terminated.
-damos_walk() adds the caller's request to the queue first.  After that,
-it shows if the kdamond of the damon_ctx is still running
-(damon_ctx->kdamond is set).  Only if the kdamond is running,
-damos_walk() starts waiting for the kdamond's handling of the newly
-added request.
+On Mon, Mar 23, 2026 at 11:57:59PM +0000, David Matlack wrote:
+>From: Vipin Sharma <vipinsh@google.com>
+>
+>Implement the live update file handler callbacks to preserve a vfio-pci
+>device across a Live Update. Subsequent commits will enable userspace to
+>then retrieve this file after the Live Update.
+>
+>Live Update support is scoped only to cdev files (i.e. not
+>VFIO_GROUP_GET_DEVICE_FD files).
+>
+>State about each device is serialized into a new ABI struct
+>vfio_pci_core_device_ser. The contents of this struct are preserved
+>across the Live Update to the next kernel using a combination of
+>Kexec-Handover (KHO) to preserve the page(s) holding the struct and the
+>Live Update Orchestrator (LUO) to preserve the physical address of the
+>struct.
+>
+>For now the only contents of struct vfio_pci_core_device_ser the
+>device's PCI segment number and BDF, so that the device can be uniquely
+>identified after the Live Update.
+>
+>Require that userspace disables interrupts on the device prior to
+>freeze() so that the device does not send any interrupts until new
+>interrupt handlers have been set up by the next kernel.
+>
+>Reset the device and restore its state in the freeze() callback. This
+>ensures the device can be received by the next kernel in a consistent
+>state. Eventually this will be dropped and the device can be preserved
+>across in a running state, but that requires further work in VFIO and
+>the core PCI layer.
+>
+>Note that LUO holds a reference to this file when it is preserved. So
+>VFIO is guaranteed that vfio_df_device_last_close() will not be called
+>on this device no matter what userspace does.
 
-The damos_walk() requests registration and damon_ctx->kdamond unset are
-protected by different mutexes, though.  Hence, damos_walk() could race
-with damon_ctx->kdamond unset, and result in deadlocks.
+LUO session holding the reference is also in userspace. Just to be
+accurate, maybe say something like that the LUO will hold a reference
+until the FD is preserved and vfio_df_device_last_close() will not be
+called until file is unpreserved.
+>
+>Signed-off-by: Vipin Sharma <vipinsh@google.com>
+>Co-developed-by: David Matlack <dmatlack@google.com>
+>Signed-off-by: David Matlack <dmatlack@google.com>
+>---
+> drivers/vfio/pci/vfio_pci.c            |   2 +-
+> drivers/vfio/pci/vfio_pci_core.c       |  57 +++++----
+> drivers/vfio/pci/vfio_pci_liveupdate.c | 156 ++++++++++++++++++++++++-
+> drivers/vfio/pci/vfio_pci_priv.h       |   4 +
+> drivers/vfio/vfio_main.c               |   3 +-
+> include/linux/kho/abi/vfio_pci.h       |  15 +++
+> include/linux/vfio.h                   |   2 +
+> 7 files changed, 213 insertions(+), 26 deletions(-)
+>
+>diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+>index 41dcbe4ace67..351480d13f6e 100644
+>--- a/drivers/vfio/pci/vfio_pci.c
+>+++ b/drivers/vfio/pci/vfio_pci.c
+>@@ -125,7 +125,7 @@ static int vfio_pci_open_device(struct vfio_device *core_vdev)
+> 	return 0;
+> }
+>
+>-static const struct vfio_device_ops vfio_pci_ops = {
+>+const struct vfio_device_ops vfio_pci_ops = {
+> 	.name		= "vfio-pci",
+> 	.init		= vfio_pci_core_init_dev,
+> 	.release	= vfio_pci_core_release_dev,
+>diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>index d43745fe4c84..81f941323641 100644
+>--- a/drivers/vfio/pci/vfio_pci_core.c
+>+++ b/drivers/vfio/pci/vfio_pci_core.c
+>@@ -585,9 +585,42 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+> }
+> EXPORT_SYMBOL_GPL(vfio_pci_core_enable);
+>
+>+void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
+>+{
+>+	struct pci_dev *pdev = vdev->pdev;
+>+	struct pci_dev *bridge = pci_upstream_bridge(pdev);
+>+
+>+	lockdep_assert_held(&vdev->vdev.dev_set->lock);
+>+
+>+	if (!vdev->reset_works)
+>+		return;
+>+
+>+	/*
+>+	 * Try to get the locks ourselves to prevent a deadlock. The
+>+	 * success of this is dependent on being able to lock the device,
+>+	 * which is not always possible.
+>+	 *
+>+	 * We cannot use the "try" reset interface here, since that will
+>+	 * overwrite the previously restored configuration information.
+>+	 */
+>+	if (bridge && !pci_dev_trylock(bridge))
+>+		return;
+>+
+>+	if (!pci_dev_trylock(pdev))
+>+		goto out;
+>+
+>+	if (!__pci_reset_function_locked(pdev))
+>+		vdev->needs_reset = false;
+>+
+>+	pci_dev_unlock(pdev);
+>+out:
+>+	if (bridge)
+>+		pci_dev_unlock(bridge);
+>+}
+>+EXPORT_SYMBOL_GPL(vfio_pci_core_try_reset);
+>+
+> void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+> {
+>-	struct pci_dev *bridge;
+> 	struct pci_dev *pdev = vdev->pdev;
+> 	struct vfio_pci_dummy_resource *dummy_res, *tmp;
+> 	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
+>@@ -687,27 +720,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+> 	 */
+> 	pci_write_config_word(pdev, PCI_COMMAND, PCI_COMMAND_INTX_DISABLE);
+>
+>-	/*
+>-	 * Try to get the locks ourselves to prevent a deadlock. The
+>-	 * success of this is dependent on being able to lock the device,
+>-	 * which is not always possible.
+>-	 * We can not use the "try" reset interface here, which will
+>-	 * overwrite the previously restored configuration information.
+>-	 */
+>-	if (vdev->reset_works) {
+>-		bridge = pci_upstream_bridge(pdev);
+>-		if (bridge && !pci_dev_trylock(bridge))
+>-			goto out_restore_state;
+>-		if (pci_dev_trylock(pdev)) {
+>-			if (!__pci_reset_function_locked(pdev))
+>-				vdev->needs_reset = false;
+>-			pci_dev_unlock(pdev);
+>-		}
+>-		if (bridge)
+>-			pci_dev_unlock(bridge);
+>-	}
+>-
+>-out_restore_state:
+>+	vfio_pci_core_try_reset(vdev);
+> 	pci_restore_state(pdev);
+> out:
+> 	pci_disable_device(pdev);
+>diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+>index 5ea5af46b159..c4ebc7c486e5 100644
+>--- a/drivers/vfio/pci/vfio_pci_liveupdate.c
+>+++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
+>@@ -6,27 +6,178 @@
+>  * David Matlack <dmatlack@google.com>
+>  */
+>
+>+/**
+>+ * DOC: VFIO PCI Preservation via LUO
+>+ *
+>+ * VFIO PCI devices can be preserved over a kexec using the Live Update
+>+ * Orchestrator (LUO) file preservation. This allows userspace (such as a VMM)
+>+ * to transfer an in-use device to the next kernel.
+>+ *
+>+ * .. note::
+>+ *    The support for preserving VFIO PCI devices is currently *partial* and
+>+ *    should be considered *experimental*. It should only be used by developers
+>+ *    working on expanding the support for the time being.
+>+ *
+>+ *    To avoid accidental usage while the support is still experimental, this
+>+ *    support is hidden behind a default-disable config option
+>+ *    ``CONFIG_VFIO_PCI_LIVEUPDATE``. Once the kernel support has stabilized and
+>+ *    become complete, this option will be enabled by default when
+>+ *    ``CONFIG_VFIO_PCI`` and ``CONFIG_LIVEUPDATE`` are enabled.
+>+ *
+>+ * Usage Example
+>+ * =============
+>+ *
+>+ * VFIO PCI devices can be preserved across a kexec by preserving the file
+>+ * associated with the device in a LUO session::
+>+ *
+>+ *   device_fd = open("/dev/vfio/devices/X");
+>+ *   ...
+>+ *   ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, { ..., device_fd, ...});
+>+ *
+>+ * .. note::
+>+ *    LUO will hold an extra reference to the device file for as long as it is
+>+ *    preserved, so there is no way for the file to be destroyed or the device
+>+ *    to be unbound from the vfio-pci driver while it is preserved.
+>+ *
+>+ * Retrieving the file after kexec is not yet supported.
+>+ *
+>+ * Restrictions
+>+ * ============
+>+ *
+>+ * The kernel imposes the following restrictions when preserving VFIO devices:
+>+ *
+>+ *  * The device must be bound to the ``vfio-pci`` driver.
+>+ *
+>+ *  * ``CONFIG_VFIO_PCI_ZDEV_KVM`` must not be enabled. This may be relaxed in
+>+ *    the future.
+>+ *
+>+ *  * The device not be an Intel display device. This may be relaxed in the
+>+ *    future.
 
-For example, let's suppose kdamond successfully finished the
-damow_walk() request cancelling.  Right after that, damos_walk() is
-called for the context.  It registers the new request, and shows the
-context is still running, because damon_ctx->kdamond unset is not yet
-done.  Hence the damos_walk() caller starts waiting for the handling of
-the request.  However, the kdamond is already on the termination steps,
-so it never handles the new request.  As a result, the damos_walk()
-caller thread infinitely waits.
+Seems there is a typo. The device "may"/"must" not be?
+>+ *
+>+ *  * The device file must have been acquired from the VFIO character device,
+>+ *    not ``VFIO_GROUP_GET_DEVICE_FD``.
+>+ *
+>+ *  * The device must have interrupt disable prior to kexec. Failure to disable
+>+ *    interrupts on the device will cause the ``reboot(LINUX_REBOOT_CMD_KEXEC)``
+>+ *    syscall (to initiate the kexec) to fail.
+>+ *
+>+ * Preservation Behavior
+>+ * =====================
+>+ *
+>+ * The eventual goal of this support is to avoid disrupting the workload, state,
+>+ * or configuration of each preserved device during a Live Update. This would
+>+ * include allowing the device to perform DMA to preserved memory buffers and
+>+ * perform P2P DMA to other preserved devices. However, there are many pieces
+>+ * that still need to land in the kernel.
+>+ *
+>+ * For now, VFIO only preserves the following state for for devices:
+>+ *
+>+ *  * The PCI Segment, Bus, Device, and Function numbers of the device. The
+>+ *    kernel guarantees the these will not change across a kexec when a device
+>+ *    is preserved.
+>+ *
+>+ * Since the kernel is not yet prepared to preserve all parts of the device and
+>+ * its dependencies (such as DMA mappings), VFIO currently resets and restores
+>+ * preserved devices back into an idle state during kexec, before handing off
+>+ * control to the next kernel. This will be relaxed in future versions of the
+>+ * kernel once it is safe to allow the device to keep running across kexec.
+>+ */
+>+
+> #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>
+>+#include <linux/kexec_handover.h>
+> #include <linux/kho/abi/vfio_pci.h>
+> #include <linux/liveupdate.h>
+> #include <linux/errno.h>
+>+#include <linux/vfio.h>
+>
+> #include "vfio_pci_priv.h"
+>
+> static bool vfio_pci_liveupdate_can_preserve(struct liveupdate_file_handler *handler,
+> 					     struct file *file)
+> {
+>-	return false;
+>+	struct vfio_device *device = vfio_device_from_file(file);
+>+	struct vfio_pci_core_device *vdev;
+>+	struct pci_dev *pdev;
+>+
+>+	if (!device)
+>+		return false;
+>+
+>+	/* Live Update support is limited to cdev files. */
+>+	if (!vfio_device_cdev_opened(device))
+>+		return false;
+>+
+>+	if (device->ops != &vfio_pci_ops)
+>+		return false;
+>+
+>+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+>+	pdev = vdev->pdev;
+>+
+>+	/*
+>+	 * Don't support specialized vfio-pci devices for now since they haven't
+>+	 * been tested.
+>+	 */
+>+	if (IS_ENABLED(CONFIG_VFIO_PCI_ZDEV_KVM) || vfio_pci_is_intel_display(pdev))
+>+		return false;
+>+
+>+	return true;
+> }
+>
+> static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
+> {
+>-	return -EOPNOTSUPP;
+>+	struct vfio_device *device = vfio_device_from_file(args->file);
+>+	struct vfio_pci_core_device_ser *ser;
+>+	struct vfio_pci_core_device *vdev;
+>+	struct pci_dev *pdev;
+>+
+>+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+>+	pdev = vdev->pdev;
+>+
+>+	ser = kho_alloc_preserve(sizeof(*ser));
+>+	if (IS_ERR(ser))
+>+		return PTR_ERR(ser);
+>+
+>+	ser->bdf = pci_dev_id(pdev);
+>+	ser->domain = pci_domain_nr(pdev->bus);
+>+
+>+	args->serialized_data = virt_to_phys(ser);
+>+	return 0;
+> }
+>
+> static void vfio_pci_liveupdate_unpreserve(struct liveupdate_file_op_args *args)
+> {
+>+	kho_unpreserve_free(phys_to_virt(args->serialized_data));
+>+}
+>+
+>+static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
+>+{
+>+	struct vfio_device *device = vfio_device_from_file(args->file);
+>+	struct vfio_pci_core_device *vdev;
+>+	struct pci_dev *pdev;
+>+	int ret;
+>+
+>+	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+>+	pdev = vdev->pdev;
+>+
+>+	guard(mutex)(&device->dev_set->lock);
+>+
+>+	/*
+>+	 * Userspace must disable interrupts on the device prior to freeze so
+>+	 * that the device does not send any interrupts until new interrupt
+>+	 * handlers have been established by the next kernel.
+>+	 */
+>+	if (vdev->irq_type != VFIO_PCI_NUM_IRQS) {
+>+		pci_err(pdev, "Freeze failed! Interrupts are still enabled.\n");
+>+		return -EINVAL;
+>+	}
+>+
+>+	ret = pci_load_saved_state(pdev, vdev->pci_saved_state);
+>+	if (ret)
+>+		return ret;
+>+
+>+	vfio_pci_core_try_reset(vdev);
 
-Fix this by introducing another damon_ctx field, namely
-walk_control_obsolete.  It is protected by the
-damon_ctx->walk_control_lock, which protects damos_walk() request
-registration.  Initialize (unset) it in kdamond_fn() before letting
-damon_start() returns and set it just before the cancelling of the
-remaining damos_walk() request is executed.  damos_walk() reads the
-obsolete field under the lock and avoids adding a new request.
-
-After this change, only requests that are guaranteed to be handled or
-cancelled are registered.  Hence the after-registration DAMON context
-termination check is no longer needed.  Remove it together.
-
-The issue is found by sashiko [1].
-
-[1] https://lore.kernel.org/20260325141956.87144-1-sj@kernel.org
-
-Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
-Cc: <stable@vger.kernel.org> # 6.14.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- include/linux/damon.h |  1 +
- mm/damon/core.c       | 21 ++++++++++++++-------
- 2 files changed, 15 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 5129de70e7b7..f2cdb7c3f5e6 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -822,6 +822,7 @@ struct damon_ctx {
- 	struct mutex call_controls_lock;
- 
- 	struct damos_walk_control *walk_control;
-+	bool walk_control_obsolete;
- 	struct mutex walk_control_lock;
- 
- 	/*
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 9bcda2765ac9..ddabb93f2377 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1637,6 +1637,10 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
-  * passed at least one &damos->apply_interval_us, kdamond marks the request as
-  * completed so that damos_walk() can wakeup and return.
-  *
-+ * Note that this function should be called only after damon_start() with the
-+ * @ctx has succeeded.  Otherwise, this function could fall into an indefinite
-+ * wait.
-+ *
-  * Return: 0 on success, negative error code otherwise.
-  */
- int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
-@@ -1644,19 +1648,16 @@ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
- 	init_completion(&control->completion);
- 	control->canceled = false;
- 	mutex_lock(&ctx->walk_control_lock);
-+	if (ctx->walk_control_obsolete) {
-+		mutex_unlock(&ctx->walk_control_lock);
-+		return -ECANCELED;
-+	}
- 	if (ctx->walk_control) {
- 		mutex_unlock(&ctx->walk_control_lock);
- 		return -EBUSY;
- 	}
- 	ctx->walk_control = control;
- 	mutex_unlock(&ctx->walk_control_lock);
--	if (!damon_is_running(ctx)) {
--		mutex_lock(&ctx->walk_control_lock);
--		if (ctx->walk_control == control)
--			ctx->walk_control = NULL;
--		mutex_unlock(&ctx->walk_control_lock);
--		return -EINVAL;
--	}
- 	wait_for_completion(&control->completion);
- 	if (control->canceled)
- 		return -ECANCELED;
-@@ -2932,6 +2933,9 @@ static int kdamond_fn(void *data)
- 	mutex_lock(&ctx->call_controls_lock);
- 	ctx->call_controls_obsolete = false;
- 	mutex_unlock(&ctx->call_controls_lock);
-+	mutex_lock(&ctx->walk_control_lock);
-+	ctx->walk_control_obsolete = false;
-+	mutex_unlock(&ctx->walk_control_lock);
- 	complete(&ctx->kdamond_started);
- 	kdamond_init_ctx(ctx);
- 
-@@ -3046,6 +3050,9 @@ static int kdamond_fn(void *data)
- 	ctx->call_controls_obsolete = true;
- 	mutex_unlock(&ctx->call_controls_lock);
- 	kdamond_call(ctx, true);
-+	mutex_lock(&ctx->walk_control_lock);
-+	ctx->walk_control_obsolete = true;
-+	mutex_unlock(&ctx->walk_control_lock);
- 	damos_walk_cancel(ctx);
- 
- 	pr_debug("kdamond (%d) finishes\n", current->pid);
--- 
-2.47.3
+nit: I see you have already added a comment earlier saying that device will
+be reset to a clean state as all the of the dependencies to preserve the
+state for continous DMA are not there. Maybe we can add a comment here
+to specify that this will go away once we have full preservation
+support.
+>+	pci_restore_state(pdev);
+>+	return 0;
+> }
+>
+> static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
+>@@ -42,6 +193,7 @@ static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
+> 	.can_preserve = vfio_pci_liveupdate_can_preserve,
+> 	.preserve = vfio_pci_liveupdate_preserve,
+> 	.unpreserve = vfio_pci_liveupdate_unpreserve,
+>+	.freeze = vfio_pci_liveupdate_freeze,
+> 	.retrieve = vfio_pci_liveupdate_retrieve,
+> 	.finish = vfio_pci_liveupdate_finish,
+> 	.owner = THIS_MODULE,
+>diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+>index cbf46e09da30..fa5c7f544f8a 100644
+>--- a/drivers/vfio/pci/vfio_pci_priv.h
+>+++ b/drivers/vfio/pci/vfio_pci_priv.h
+>@@ -11,6 +11,10 @@
+> /* Cap maximum number of ioeventfds per device (arbitrary) */
+> #define VFIO_PCI_IOEVENTFD_MAX		1000
+>
+>+extern const struct vfio_device_ops vfio_pci_ops;
+>+
+>+void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev);
+>+
+> struct vfio_pci_ioeventfd {
+> 	struct list_head	next;
+> 	struct vfio_pci_core_device	*vdev;
+>diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+>index 742477546b15..8b222f71bbab 100644
+>--- a/drivers/vfio/vfio_main.c
+>+++ b/drivers/vfio/vfio_main.c
+>@@ -1436,7 +1436,7 @@ const struct file_operations vfio_device_fops = {
+> #endif
+> };
+>
+>-static struct vfio_device *vfio_device_from_file(struct file *file)
+>+struct vfio_device *vfio_device_from_file(struct file *file)
+> {
+> 	struct vfio_device_file *df = file->private_data;
+>
+>@@ -1444,6 +1444,7 @@ static struct vfio_device *vfio_device_from_file(struct file *file)
+> 		return NULL;
+> 	return df->device;
+> }
+>+EXPORT_SYMBOL_GPL(vfio_device_from_file);
+>
+> /**
+>  * vfio_file_is_valid - True if the file is valid vfio file
+>diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
+>index e2412b455e61..876aaf81dd92 100644
+>--- a/include/linux/kho/abi/vfio_pci.h
+>+++ b/include/linux/kho/abi/vfio_pci.h
+>@@ -9,6 +9,9 @@
+> #ifndef _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
+> #define _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
+>
+>+#include <linux/compiler.h>
+>+#include <linux/types.h>
+>+
+> /**
+>  * DOC: VFIO PCI Live Update ABI
+>  *
+>@@ -25,4 +28,16 @@
+>
+> #define VFIO_PCI_LUO_FH_COMPATIBLE "vfio-pci-v1"
+>
+>+/**
+>+ * struct vfio_pci_core_device_ser - Serialized state of a single VFIO PCI
+>+ * device.
+>+ *
+>+ * @domain: The device's PCI domain number (segment).
+>+ * @bdf: The device's PCI bus, device, and function number.
+>+ */
+>+struct vfio_pci_core_device_ser {
+>+	u32 domain;
+>+	u16 bdf;
+>+} __packed;
+>+
+> #endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
+>diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+>index e90859956514..e9d3ddb715c5 100644
+>--- a/include/linux/vfio.h
+>+++ b/include/linux/vfio.h
+>@@ -81,6 +81,8 @@ struct vfio_device {
+> #endif
+> };
+>
+>+struct vfio_device *vfio_device_from_file(struct file *file);
+>+
+> /**
+>  * struct vfio_device_ops - VFIO bus driver device callbacks
+>  *
+>-- 
+>2.53.0.983.g0bb29b3bc5-goog
+>
 
