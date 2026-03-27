@@ -4,98 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CA5310AB82F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 00:26:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1526D10AB834
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 00:32:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D42606B0005; Thu, 26 Mar 2026 20:26:38 -0400 (EDT)
+	id 5830C6B00A8; Thu, 26 Mar 2026 20:32:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF32B6B0089; Thu, 26 Mar 2026 20:26:38 -0400 (EDT)
+	id 534126B00A9; Thu, 26 Mar 2026 20:32:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C313A6B008C; Thu, 26 Mar 2026 20:26:38 -0400 (EDT)
+	id 449F86B00AA; Thu, 26 Mar 2026 20:32:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B4CDF6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:26:38 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53873160F42
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:26:38 +0000 (UTC)
-X-FDA: 84589952076.01.06B1FB6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9C6FD10000F
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:26:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uweo7ewx;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 376886B00A8
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 20:32:30 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D1036140FA5
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:32:29 +0000 (UTC)
+X-FDA: 84589966818.25.2F71509
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3A4492000D
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 00:32:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VNRNrlnn;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774571548; a=rsa-sha256;
+	cv=none;
+	b=yOmm8hsYdZ7EcUgGuVjnp3x+jCsrrfVjhTk9lzu3QPANY92OkTQs/dOB4QpxWdkZ/o0ugL
+	cZngse9XtJ4aIHmDu/80Je+oAZafECZ9X/VWQ2Y08YDRFsU57SwRoqGl9c+ydJses3Fluy
+	4a+pbn1sZ3pJiTAh3DD/LFq3d/QWDfE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774571196;
+	s=arc-20220608; t=1774571548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O0LFL5nbj1gz/4bB/JnJYRG52JeozrpUF1rmRUFRiCQ=;
-	b=kZLKxY+3M7yTqP7aPdQde/2jit8UPZpRD+6CrfMg/QV7vIfQKzOZYOzQb0HpKauh7Mn54x
-	IW6aO55sCvhjK1OViaXkG7gyGBRI/gRDB8a7ukTIg6CdMqvU8BCnlpyHe6LiS2svWz8SMY
-	+Dn4TjxihdefFZuPo9au95/GMqSf28Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774571196; a=rsa-sha256;
-	cv=none;
-	b=Tua1mw9m0PeKFwrkPxjRBX4nsYLoH7DXUDfu3xLVWsBU0zWc4EVRh1GLLag2rK4S28J7NV
-	owe1lh4rY6OgVgR3AsryK3Qu0X6gjXhx2X3skJnNlGiOGt2KLlaIc4+zx1akhGjF9TOJHU
-	gG3tosoxyyiCRuIsAgn3Z466LKA9MKo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=n+oOQwivQ17Bg3lYMCVhGVPIEaLQ62gTjxWiJ0Mbask=;
+	b=5PEawVK1lhPanxtV/mwpjQ7P8C8PwEBOjNUs4YNbfSgWPrTSe76SNQosCP+EqEaU97VRs2
+	Q5jvFMLygYR7SlhNBq1VSv7HamwTv3Wfr7cXvZeV4fyKk7m1oihyqfMcAGNnb3Sn1w/02w
+	8Ab5rHbxyTFy1RAxvu2c1Hh1DNRGHyw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uweo7ewx;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VNRNrlnn;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E196F60054;
-	Fri, 27 Mar 2026 00:26:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0709C116C6;
-	Fri, 27 Mar 2026 00:26:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774571195;
-	bh=DmnxU7Wn50/b1W1iUaXZMK/22QeVR6KQ3xAre+v1FVk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uweo7ewxvIAb/XfhHkku7Y7z/JEQW5F3fnuxI2Y360uEmlAgFOL7e/1MTNPXbqSZ0
-	 rHl32t2/ymETPBIh2E4oSHsrneCeq1kkB8GmzBiAY1s5mtbrTJa2QyD/Wyr/s7V4q2
-	 dO4xQck9r2/UJxjzihuCa5x44nLmo8+vEotrCMyY=
-Date: Thu, 26 Mar 2026 17:26:34 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: James Houghton <jthoughton@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrea Arcangeli <aarcange@redhat.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, Hugh
- Dickins <hughd@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, Muchun Song
- <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>, Oscar
- Salvador <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu
- <peterx@redhat.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan
- <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
- <vbabka@suse.cz>, kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v2 08/15] shmem, userfaultfd: use a VMA callback to
- handle UFFDIO_CONTINUE
-Message-Id: <20260326172634.11ee1b67cedfc5984bc9db6c@linux-foundation.org>
-In-Reply-To: <CADrL8HWLnuQHEPFN9SZbAd_Lq1USJDV=Di4fsQuztwp4v5oXOg@mail.gmail.com>
-References: <20260306171815.3160826-1-rppt@kernel.org>
-	<20260306171815.3160826-9-rppt@kernel.org>
-	<CADrL8HWLnuQHEPFN9SZbAd_Lq1USJDV=Di4fsQuztwp4v5oXOg@mail.gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+	by sea.source.kernel.org (Postfix) with ESMTP id 0088E42E2F;
+	Fri, 27 Mar 2026 00:32:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BA6C116C6;
+	Fri, 27 Mar 2026 00:32:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774571546;
+	bh=477C8/cGg78aynYBDYa7PrZfozFomytf/sPOXH4AIRQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VNRNrlnndzxNHwOR3H1P0LyEaSzC3fKlp9bvoAeQkgrbwDSrawZ4MQkHylGTEEu2U
+	 QBbB2PNMZdbpNGVoFrbc/3d2L/K+IKXmRc91AtWvqFsSlvqSLdQejHRLE+RFXQ9F0t
+	 U61RAX23zAH4AbAk00tdOUv5kSLg0y7SLSd/VUjRukFBarHMbw5Tal48SSE/eGqqI7
+	 Latq5hJEOWLZOAbOd/djTMFhKn83suMfR0eoAqbDBLLMWuLErFja/Luhf7fL7bfsIz
+	 vQIiJplsCZfeCPdcakTUF/u6BMrTigjSs2yd4/ogxT01t6dERfBDfOn5s8W46HJ3ff
+	 GsVDiATzoWyBA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/sysfs: dealloc repeat_call_control if damon_call() fails
+Date: Thu, 26 Mar 2026 17:32:22 -0700
+Message-ID: <20260327003224.55752-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ofwu8khuwe3re4ah3yw4g9k68h366gx8
-X-Rspamd-Queue-Id: 9C6FD10000F
 X-Rspam-User: 
-X-HE-Tag: 1774571196-457497
-X-HE-Meta: U2FsdGVkX180WJN49EDRtPlDzPnouqCuWfAjhosnwlAN3uhgPq//ZaHxy1Mp3Yl8ktqDgZ9o6dZLcEMxbhdgcrmxDnBW3OdnbzhJIECsT4MI5AL4SN+4qCGfFyP0wXYs28haiI82MXISYqMgWvS3g+JrzjfQpw0p+UV09D9NpGvi9goAImNODAab/EcobkER4bUELW42IN7hGppUoYHRVmvYR3ovrHgRJl16mZ4gA9yJ+fTOeyHNdEjL5sHnbrPYS/mArJrdXs7vhbN0K67yoWx7h28ZdEqo2TH5+AZwsiYG5xVnHBljNEy7bUMxfgzgiXpQHvuM196nIkXYFYMh5CPDC/lHdde/LFcweoZJLyZ7yy62/fHztUnmNORZpD29B3bZFI9HA8lpvq+TrXVMhJBXuaLIC5aVHs7qqfFSzXyHe2jtwm6b4E3gvV3GuWqHlLtkBNAOQWKRzjdYFadHTWxlj6TF9CGVJ0pVLPe3EZWlj95sL+CoV8Ye9ilgmehp4Ix6Ap/g2ps7RsWOOHsPXqYA5M599OgyQBfeBdjlFHLeIv/lfUw8g6Tnw/gL15JbTs7bkHhGkOUoexUbOmwV3t/XHTpemRMhNxQAYu6qUGLbItnDt/b+H6q4kuSLbr9sbr92Y1LDAm60+NWtFsJV4jKxj+bGsHQ1CtGS9ccJes90JYPqaU5g9IlLjIZkAS5+kIeixacZRraWkhlOyOosuCzwFzmeIgaIFga2VpgZJJVp1Pig99ov7VOwFiz47AdABIuYF1R0cJOfkWCpqIOgccQq7ciqohfIPgQ/IiJUextgRUW3fyZlihlomcNqEuTa3s7DZoQdRDZxByXkDBQBE6I8J3/T6S89TqmlnFX8JZ5tw1+c/4UK0hDdNvnWX9Caz2guBZTGy4g5nhPHmy9IMzfGc0UapIJeMDS9tOD2FgsIIky/+GAdL3V7g4gLJFP4Hxk+i4Ml/BRiMQaoOJd
- tM/MwLBi
- Oi1lnK1f8gsmhK8+y7fGavODMla0yV6MwhWDHoG1Nu2PWB4Q67ZrAzmBq3r9hE6Rzt19dAaJkEBt/xK/1ffdB+ysSB+Wq5ekJtBQqJITvANtNRigFWrDlJ75IDBf33gR9HJ5fuycDBNmt3XsTxgK97sQR+QGkmoFe+mi29qz6oJ1evyVwG4ZdcWh6JF0c3+6w4/4NYPOcTcR3DiVNDrBJAGfrSvuof+cXJWLB3s4QI0VBFxbdlcnnQu+c6OR0sFefs5Qo2p134LZmuaEeZ0v24EZdEKEtlrpDEsyQ+ByJpMmDDL+GQp9pfjNQ8UcfdmBQs3ogDc4q7SiXjAkzQE/B+hjZIqadltWg9dTruRsvOlGGHQLWoz8zz+ZNgw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3A4492000D
+X-Stat-Signature: zteer3bw4accp4a44tu77qeeu51f4fom
+X-HE-Tag: 1774571547-595242
+X-HE-Meta: U2FsdGVkX196JhSVCIPibuLVXqrL29TsAtJca+mFS9hPjm/F0KZRngJpr+uNFSuTrfS4KMbpZ8jub0bCyRAxxKJ0PBQXekISw7Oz2xRuPk9D0ESOTLAYw23R6UVcD1NiiqsCMf66dFehRzuxweblE0dApWODhARGvIvN9IgL9dhlcjWC9D758jUGISvgrtuSaNoouqlasJbORaoV7I/aB0bKzQcPMESK4Nuw8v8O6/9L6lLS90GnQnkh089N5Can+FATiNLl39htFmMxJpTqr81PbqA6lRlNYP4k10x8rSYDe/01FPVg3f5uhP8gEe65M97IXsSXffnWrK1YAXB9G8MpF/x8IaUCFWK7ZLlJAJcw1MmmUn0en++nL5LsUKBUmoCDnj+CbHwqJ3f2MFZTFPfLibaYYAdWp1Uq3UMHZWjydzkDuuUFvG3Y0OEtmq8eDlRNzqkTTC+qmzKs/a0WQd6b/vvaOiZtOC+Xl1ICrKuPGSP6nIWMLDGZgXp8NE9cHGsgariFqsnNWKUf0xee70O53V9U5My/PjA85/LadUuhJcvSg/xQUyYhcUuGZ5oHGhkkBx8AIC/ZrCDMmzSMuTmebp1Pgka7psoes1m0kSzgqY844cTAfKI597Sx3oE+0YpPH7brhEQaRTDnbTKGa44+Fxs+d6zwL8sFhGk4QnfQtzp8RVXqJNpBuanB/jT4BLubMthecfyY+Vty+dCOY/p4Od5+lDyJWLqPF2i++uQ6wJ4gy0wsSAelPWPo9DjAMkeuUh4s7yy+mPP+eKRi79bMj85Kw/MzTUKnteSOJYFs3H2auwpBAWPCwIrXPjDAVSqZ06iN2yTXSiDjrVLnuy8wWgAmQfODkycEPI9UryD64yX0WymR1fzBW2RaVQr3QLkg0BMFYcpAOjTHFynrlNDLqcm656LwzIbp/s8eImt0TUA1Qrw7X8SVzJOdl48XgLyRyHAREUm2RH/ufeZ
+ H9ILXtwz
+ h47R04BF5zghE+ZUfBTq4OaILIHwL4wlniPMz/ECooXRfAHFon7wOzNws9aNcvIS06trJhzQn0PhV+pZ2FrSIU0Jdrkku6XaMxQQRk0dyL6oX1Y5TR2Y9QECSCUieysfDHLrI4naMPGiLkOh/6YpKim/SVpl8iV6vUsvdYk10Up+XogzMHvaU96eWrHdLNlwaPsE2HbU92sE1uqH2ygjBwb+g+i2lvlNg5RPkRBa9i6zI2MX/Ds8gGqiYMYKsF4KArC/j10eJsZ3yGsN7ONVXSFfDfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,59 +91,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Mar 2026 16:43:27 -0700 James Houghton <jthoughton@google.com> wrote:
+damon_call() for repeat_call_control of DAMON_SYSFS could fail if
+somehow the kdamond is stopped before the damon_call().  It could
+happen, for example, when te damon context was made for monitroing of a
+virtual address processes, and the process is terminated immediately,
+before the damon_call() invocation.  In the case, the dyanmically
+allocated repeat_call_control is not deallocated and leaked.
 
-> On Fri, Mar 6, 2026 at 9:19 AM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> >
-> > When userspace resolves a page fault in a shmem VMA with UFFDIO_CONTINUE
-> > it needs to get a folio that already exists in the pagecache backing
-> > that VMA.
-> >
-> > Instead of using shmem_get_folio() for that, add a get_folio_noalloc()
-> > method to 'struct vm_uffd_ops' that will return a folio if it exists in
-> > the VMA's pagecache at given pgoff.
-> >
-> > Implement get_folio_noalloc() method for shmem and slightly refactor
-> > userfaultfd's mfill_get_vma() and mfill_atomic_pte_continue() to support
-> > this new API.
-> >
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> I found myself asking why HugeTLB wasn't included here; it's because
-> we call into hugetlb_mfill_atomic_pte() pretty early. It would be nice
-> to have HugeTLB implement get_folio_noalloc() and use the same path as
-> shmem, but we don't have to do that now.
-> 
-> Feel free to add:
-> 
-> Reviewed-by: James Houghton <jthoughton@google.com>
+Fix the leak by deallocating the repeat_call_control under the
+damon_call() failure.
 
-Thanks.
+This issue is discovered by sashiko [1].
 
-> >  static int mfill_atomic_pte_continue(struct mfill_state *state)
-> >  {
-> >         struct vm_area_struct *dst_vma = state->vma;
-> > +       const struct vm_uffd_ops *ops = vma_uffd_ops(dst_vma);
-> >         unsigned long dst_addr = state->dst_addr;
-> >         pgoff_t pgoff = linear_page_index(dst_vma, dst_addr);
-> >         struct inode *inode = file_inode(dst_vma->vm_file);
-> > @@ -586,16 +590,13 @@ static int mfill_atomic_pte_continue(struct mfill_state *state)
-> >         struct page *page;
-> >         int ret;
-> >
-> > -       ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
-> > +       if (!ops)
-> > +               return -EOPNOTSUPP;
-> 
-> Perhaps WARN_ON_ONCE(!ops)?
-> 
+[1] https://lore.kernel.org/20260320020630.962-1-sj@kernel.org
 
-fyi, I (and I expect many others) tend to consider a "Reviewed-by:" as
-end-of-message, So if you have additional comments then add something
-like "comments below" so we know to keep scrolling!
+Fixes: 04a06b139ec0 ("mm/damon/sysfs: use dynamically allocated repeat mode damon_call_control")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from RFC
+(https://lore.kernel.org/20260326062347.88569-2-sj@kernel.org)
+- Split out from the series.
+- Drop RFC tag.
+- Add Fixes: and Cc: stable.
 
-If there are no additional comments, simply zap all quoted material after the
-R-b to remove all doubt.
+ mm/damon/sysfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 6a44a2f3d8fc..eefa959aa30a 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1670,7 +1670,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
+ 	repeat_call_control->data = kdamond;
+ 	repeat_call_control->repeat = true;
+ 	repeat_call_control->dealloc_on_cancel = true;
+-	damon_call(ctx, repeat_call_control);
++	if (damon_call(ctx, repeat_call_control))
++		kfree(repeat_call_control);
+ 	return err;
+ }
+ 
+
+base-commit: dd478b2be41492a9f7be5abbdbd4dceddc46818f
+-- 
+2.47.3
 
