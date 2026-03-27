@@ -4,115 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5F5610BA42B
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 05:50:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B9DD10BA42D
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 05:50:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F00BE6B0095; Fri, 27 Mar 2026 01:50:36 -0400 (EDT)
+	id BF4826B0098; Fri, 27 Mar 2026 01:50:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED8956B0096; Fri, 27 Mar 2026 01:50:36 -0400 (EDT)
+	id BCBEE6B0099; Fri, 27 Mar 2026 01:50:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E16046B0098; Fri, 27 Mar 2026 01:50:36 -0400 (EDT)
+	id B09986B009B; Fri, 27 Mar 2026 01:50:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D421C6B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:50:36 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9BF451B93AB
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:50:36 +0000 (UTC)
-X-FDA: 84590768472.26.6A3EE58
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B6AC9140002
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:50:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z1oPSHRy;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A2A7D6B0098
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 01:50:58 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60F1C140F95
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:50:58 +0000 (UTC)
+X-FDA: 84590769396.07.BB973E9
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 82422160006
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 05:50:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LrIPO8ry;
+	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774590656; a=rsa-sha256;
+	cv=none;
+	b=cb3i4TQkuaZET2buf4O531HL25OvfViStjGcGEG3Cr44HecMY6qyXwKv1LbgqWl083LT8B
+	nx/5KCCpQsk9/REu8cdGISHWbSN7vOucnZuDYOT278FmxsFU3ABe9srVaMLuyDyQ+3SstU
+	a5QUk1ISAmlb51ELYh36LIi6xbrHBtA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774590634;
+	s=arc-20220608; t=1774590656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dlWPsRZ5eg4ebr0CP6MSk8XH8PhzWTV6BknR665dbRI=;
-	b=CjcaPW1MzTXj0u2QfkOPLvtHyCpao7e6EL0OTptIIEUx4D3OlspOx0x/7ZlZ/RDLKgkZPA
-	yeOIO4TcwP4i3/Uy+2EwKOxg2oH84loTZGQoDImyeJs8aqjoCDe7vWwOvcsHsOThcskrJV
-	k3+Wn2towP6SfNdmQjL9n0gO0YoLj6A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774590634; a=rsa-sha256;
-	cv=none;
-	b=v8tulLi333RUOXl4sMk6SE9dYhUDbH5wsdyad/Mhs2WKDklFpj5CR3qb0b+z3tukRtQ1Ni
-	yhgJlnaL0QDrJDNfv+vzgCql/jJYMrC1YrI2Vz8GoeQ2WjInImeBqfm/bxZwdD5uS57PJI
-	aUUEHSFWYEyvoJjZFzBcKCfKLjySbNM=
+	bh=/QKYZHcQVRzoD3H+dvFRXjD92ZagIwWgZbCKAQDMQpc=;
+	b=j1vt2ENLJffg8VF+7iKnHo5F0B4FtbWYc9L/SN7ohrx0Y0QGNnGp0NhUz6bw57wfN2Y9bX
+	WjPlBnI9l+wo0j6mgoMC73bx1TJXqXWaWoMPJCgyed/LZBmnxVsNZbdzY3PLMEWf1YAC2Y
+	m1cELlEH8ZUV65w8UZkmItdoOAu4piY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z1oPSHRy;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B84FC60134;
-	Fri, 27 Mar 2026 05:50:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF49C2BCB1;
-	Fri, 27 Mar 2026 05:50:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774590633;
-	bh=dlWPsRZ5eg4ebr0CP6MSk8XH8PhzWTV6BknR665dbRI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Z1oPSHRysMy+6wXBJFXG9mFzlDuQc+AG+9J9n6b3eqNtsV8pZVMQ81vG2zjJgE3r9
-	 Vwk8DGJTLM5wMJYNlTCMV3P4HxBM5Fzh2kN4K4FctjtR5IEakY8OgdYhQKEYI2Hecn
-	 asywffkE1Ac9oHnjQ0d+0ALgtZqNzZ21R6Hlrgko=
-Date: Thu, 26 Mar 2026 22:50:31 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Kees Cook
- <kees@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Vineet
- Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Catalin
- Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian
- Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh
- Nguyen <dinguyen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
- <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"
- <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Xu Xin
- <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Michal
- Hocko <mhocko@suse.com>, Paul Moore <paul@paul-moore.com>, Stephen Smalley
- <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- selinux@vger.kernel.org
-Subject: Re: [PATCH v4 00/25] mm/vma: convert vm_flags_t to vma_flags_t in
- vma code
-Message-Id: <20260326225031.87e04d2c652923bc10aef0ee@linux-foundation.org>
-In-Reply-To: <cover.1774034900.git.ljs@kernel.org>
-References: <cover.1774034900.git.ljs@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B6AC9140002
-X-Stat-Signature: 4qcc1zcsb5dz7pygctaneqsbwso6g3ns
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LrIPO8ry;
+	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b0ba3bfe16so15419265ad.1
+        for <linux-mm@kvack.org>; Thu, 26 Mar 2026 22:50:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774590655; x=1775195455; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/QKYZHcQVRzoD3H+dvFRXjD92ZagIwWgZbCKAQDMQpc=;
+        b=LrIPO8rypuMVOBEocCMYbXakxMgQh7jo/VhgC5FvedluGDyP5nPrd3kbmDRtsUj6g/
+         ZrMMdzNlnXGoovR1CWMtpToJtjnyR+Y0WtlA1bVyoRMTUjOy57adCZHkrsjIeflHA2ib
+         eqDDGvo2M0Wttj9s13oOQ8D5DqS3BmL/rEv61TNpgnL0hJEEQcFFYZ43gyPjPc3U4dED
+         KtEuhLj3PKF2FM/nzCWt6hsYAsHfbXFsiYUzBwjBMzPkh74URlFv30ombRa5k09Y9oM1
+         oOTVtNx8GLcAcb4Ju1klub9CcnUyfMeoZy1K1Hxb+qPFIHV8hX/E1xjT/Oa38YaIQiPD
+         boNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774590655; x=1775195455;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/QKYZHcQVRzoD3H+dvFRXjD92ZagIwWgZbCKAQDMQpc=;
+        b=K97FluHWsJGWxIWOXaG/QCJ20qbtUoJbtM9k1OEwlqO94uRNRz1bMFl3j7jELC6vze
+         TXG+IvLcuf2SY7zRVwUd8tsxFlirF4YJ8McgKTvyXLrxgTogCh7O8zPk9M+X9D1YbYGI
+         /F6HPNvkE9O2dTef8sRwK9uSx9mIas6K+LmW8V0h75ns6ZHz8VYcbo3HkNWRdCUtRaVK
+         K71R+JM1jbozs8FfWWfAsOF6F2onP4PaYCi5RhDwRt21ftLqZ3QNpwh4wc+AlPFx6iV8
+         OjabuqaslxRLKrDrgLUkIi3k7XdPCE6413PMXmURW0ko5r1RTt6wsZwESGeZx6PRXfLd
+         RtJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDjk3Yfp7tDG2wESz4M4rFdgUqJtzeowABRyy9laW39+tRvvSVYtjL2+1JLNk0ZZQgdrcJi/n70w==@kvack.org
+X-Gm-Message-State: AOJu0YzsEyq6J8dYH1OmrYl103DbAlfmxGfE4/bzINdli8nmblxF0tip
+	taNy75/7kptoLQ7R4QL5lCpApc0pV2Ee2UqG2R9eRAmy7jV7d3hPUY0n
+X-Gm-Gg: ATEYQzywhKO0cOyJQ49v6S9aXHZ0cLwN/1iKI4D9dk2FQtkgsk426ljd4tbEuzxXHYC
+	zg3ZYZY5xCoaw1S2xHGT396UokH7cMcmpUYRVilqAzYoIBt2jtw20jQK/O/lZII9PBET5LStLVR
+	Wo2nT3r4ca6EyhrssjDFIw5hmIVzoRP0/ZHUAZYEiWXwdbc21CXc3Y/5Bl2uMrOLddSSa0fdk0I
+	93Ny9AHUawEpIKAzh7dZo8Swcn/7/0ASjhbKg6INKbQ/Y8zCP8IjYRGEq7hHW8b+1QXJWhReNS+
+	SMyDxV+d5YVEJTIy0Q3IIvUSNqJcRBAcIemY21RDaKur3R31HRhUwevlcG3BW85FD9Tg81rCKmt
+	5LAwNz4UJrvnvuocJpq3Pdmbw//yh9XIKEDL+UCVj00XaGS2shM88e1Bn+49flbR5gl+Z7PlloE
+	DKCBhq4lZczsLJ3i9FpCTid6eezxA=
+X-Received: by 2002:a17:902:cf03:b0:2ae:4d6b:b2c7 with SMTP id d9443c01a7336-2b0ce4ee4c8mr10673135ad.9.1774590655239;
+        Thu, 26 Mar 2026 22:50:55 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0bc916b73sm59918045ad.83.2026.03.26.22.50.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2026 22:50:54 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC v5] mm/damon: add synchronous commit for commit_inputs
+Date: Fri, 27 Mar 2026 13:50:51 +0800
+Message-ID: <20260327055051.61731-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260327050823.43382-1-sj@kernel.org>
+References: <20260327050823.43382-1-sj@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774590634-973381
-X-HE-Meta: U2FsdGVkX1++onl7woA+71sXui0ihXOhzBTn7nBA3w/Nz/AUsiWnZR2NEFYzhoNMYDVM/GdBz+zabILRuAg6jOM0pxNm98zyGaLRvEgvgv5Jfrea1kjxJdb9V6AFyE+usDeg5DIOYhiwUuI8plJG5dSCPyCvaVFBUTvFS5sxYuTAE4eW4ozakU02LEoIyD3XRhAqwheJIomUBmc6tkIowRXDjTNoJ/JCjM/Lp6q47si2xTR9AtcqQd84LmAvmgda+0mgJZulqKAJZk5lOE8ph8SY7uwWEpACBdccqBJtjbRUjf3zGW68xWo3e2MuLf7JZst4Imi6CnICiuepUtPsDp+nxZv1I2/YJeH+njY5UdD5dXj1yF3Mfrv50zP457AAsu7aUiklx/+F3m1u2UY9jLqC66Yf71/IVXR7hr8SPDkx2YzmmyCcE/qb5ZhgYx9QH+tsYuh5fXmB5+ULFvWP4bD/Xl/OkjBto/kw2JllyD/9EOT2DjBVmYaobMGt7tmOc5mp5QC8cAlGMhtDHKFmcYex7e0ARFxzD8Ny8G2c9aAXbKkZP4cPnaMQ10R6ajsGX3Z/AdGJofBRmwCBhxCirkDE3+wwcFPphMVzQ604gexJX53tHo3/eR3ByHstc1CIHsmtVQT4F/iPJrnzmQwb9dyPhhyFU7sjL3vEEkNGiimucwXyUWvYdHBJIWSEHs0olHx1bIOR5j/tN9vkFMyNIG1ZzXr0OWWoVnRB8VlEB5fwKTPeS4+LtLv2W69c4yUYiEL+V/Euf83Lm1HdmQb72uEihKOEHzamU1hfMVyeHkEV0llgLsZU5+1p9dXTmBsQpJAtfY5YrN+ouXmAI7Cj95DRDkLq0mOwK+jme07tydKaIJS/LzYBF+uxGDtTgK17/XDowkCj9bhEfNfc6Oj6r7exUiHFzGcbAfDI2HeU5901miAOAJTifmV2+bfm1uwLG/W0z74jxUIxtlW7dqS
- F0RHUESW
- IPkyc3I51m+dHhTokZD392bbSX3w3muM5sz4V/uhrdKpV/70TtwKzDFwRk7gYnqJyw/LhUhGi4chGjiucHVYswHwn2sbJNuZjohu4aiEDQG30SsaRHneaYIXSUYV6Y42G7Hd5fiwu7MLDJhL+S1KODPP/nFItHQJo1dlRiEOxfcrd5pNOCqMDaUYnCRXvivbAGZwYGOj318s0lCa9O9hvop8v1YdP5MC2SDIi4ob2WKM1EsrBWK544nkA2p7as8IrBvalRfX4tN48304Kb5UPG23UbNa//IK7MFiTSiXReeRJ2994DImQL1/hCsocLeIeZsi2dZV3dQBTJreOvClkXe8RFEIVA77o1Jk6vViACKpJDnz+JEBM2cQ/+x50TMZYx+aJMJOPOW7Dl48=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 82422160006
+X-Stat-Signature: nnm531ak7hnbmhd8inadzz7fxtnsibxk
+X-HE-Tag: 1774590656-372125
+X-HE-Meta: U2FsdGVkX1+bdOLRuDTjUbEz5AOtL57GhzaxuTsEI+zlKV0qGVTxRPxqvnIK+0jR3GFgbkpd9pqKM/wTBxO35WSC5PB7vMwbPsnRCMelLNyConwWtrmYs5aGdZeYNIlNfIwCJT2+v9iPuFsv13uSyFRNgl63p7DkMZJcotrUy+hACtlDwxs2xmy7c07/dE3sPOj29/C6oNJeoRgDPMMZ+r/OW5/JI1sSrbQNoGeSgoQKHK2GQBVKcnm5+aZcrcap8/IGFhyWcWOd9NyTBc1PZ29ch3rd3cmQPkY27kaieaSI5oFwNUtj3eE0XxO7dglLJanP0YCkgUNz826cAqinBs6d9f+wMKP/+t4K6HJtFRaBiBTpPgcUmY9KonmR3hoh9gPT5lc9S3/BjXwdc9bu7jt8LxKksT67IVdf4tkQjF0DP4ZcrGnT42FVq6JdhheWr4AxzowE55ElwlCJHZuGW6b70pZOYHZv1CyvMbMXu02DnHf/t/7p+HsGcmLrvo3Fn9sP2uJ8P6AVkNhogGLB5nSGVv1vD8j52Rzz6rQcJBQ8oe40loVq2ZMBfL81BJm+mrroMBR4/O3VOz2YdixlHVdiWcSVeffV7gd+42+Ls82rFywmQ9dAT96XTETJ9LZUzIV8bl516mi8JFNyr5YwCZYgr5rLufCG7aUaHFodY+h3VQBZjY1bK2UHQ2h4rel3Y7Svdm3sirX487dA1DJpzPpCsJrNvysxhNzjIzCccPjyuEOf9yEgBn1FZ8dAb7tpKGqlexf4k0EbtFURRBJami8q2CAY04mQqTqkysS4Kzn1/flcFFb1xMCEgMvGBPEcfK4eTZvkWDZgKAbP0Vg/KYLjKtj82cOcnen1XtvdxxqSc1eOzAKX0KKco7PxGVHTMpElNFOrXjQZuDtxkhLavEyETgIrYMp9Q8toFzdaTnxZbZslKoUN5CfMHIjr4a6ChzmhaM0g9sFkj42P1q/
+ kyMXw/kS
+ Fa1vzpF0T7iQsjCB4lV+u9aI3EmURLXcnra+FvzJgTmKmm97gR401eXjNFUKjdaV7LI4hg3myGLVBQjPcdMEpwqq239D0uBcBa/oaRkeicstsKVYn4Y803BjF1VBVNdxWKoTxTCI8e7g/jUH7zESuQH341bcxpvXn8CIvgxsfdOGMgBJi9Au19I8yX7D94TziBeYMctVoHLvgXpbIgl5SOZ+TujfUX1CHDqLSUN9UqnALHOxp7GxaPsTnK2BrSZytSHq50YfAhjRD25Kr5Tczzdl70quWtv4jRsatTAo2HX/yzjnn8smSH1TVENMNuZyluXGilMme1rP1824efkXJXU7U/r9tnoebsdbmZCl6HGCFRCzVX39g18cpj564fxAedratReHdOjHKjSMBn1jeD+VePaNbmrZNxzbmkkpaXJOt0Lg8LHiFGVd1jUuTDENH6InO7jPuJ/IsDtQ0ByI/vFXPrEQbXLbdmCjNNC/+Aba2rt9gzlJFnwLRwQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,13 +118,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Mar 2026 19:38:17 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
+Hi SeongJae,
 
-> This series converts a lot of the existing use of the legacy vm_flags_t
-> data type to the new vma_flags_t type which replaces it.
+On Thu, 26 Mar 2026 22:08:22 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Series has nine unreviewed patches.
+> [...]
+> > > > I will add a patch in v6 to validate 'addr_unit' in addr_unit_store() to
+> > > > reject non-power-of-2 inputs immediately.
+> > > 
+> > > That's because kdamond_fn() has recently changed to exit the loop if
+> > > damon_commit_ctx() fails in the loop for any reason.  Refer to commit
+> > > 26f775a054c3 ("mm/damon/core: avoid use of half-online-committed context") for
+> > > more details.
+> > > 
+> > > Adding the validation in addr_unit_store() would work, but it could be a kind
+> > > of whack-a-mole game.  I'd prefer doing the validation of all inputs in one
+> > > place, just before the last damon_commit_ctx() call.  DAMON_SYSFS is doing so,
+> > > by making a test context and try committing user input to the test context
+> > > before doing that to the running context.  How about doing so here, too?
+> > 
+> > Thank you for the suggestion. I have now added the check
+> > '!src->addr_unit || ! is_power_of_2(src->addr_unit)' to
+> > damon_commit_ctx().
+> 
+> No, what I'm suggesting is not adding more checks, but reusing the existing
+> checks in damon_commit_ctx().
 
-Again, I plan to upstream this as-is - lots of Lorenzopatches remain
-unreviewed and I'm OK with that.
+I just realized my previous reply might have caused a small
+misunderstanding. My intention was not to _add_ a new check, but to
+_move_ the validation to damon_commit_ctx(). So that patch will only
+modify damon_commit_ctx().
+
+> 
+> And, now I think bit differently.  Given the purpose of this patch is making
+> commit_inputs synchronous, I think making more complete validation check is
+> somewhat that can be done separately.  So my suggestion now is just keeping
+> this part just as is.
+
+Understood. I will keep this series focused on making 'commit_inputs'
+synchronous, and prepare the validation for 'addr_unit' as a separate
+patch later. Thanks for helping me scope this properly.
+
+> [...]
+> > > So the issue already exists.  But let's ensure the fix is merged before this
+> > > patch, since this patch adds another exploitable path that can consequence in
+> > > whole param_lock deadlock.
+> > 
+> > Should I wait for your fix to be merged into damon/next before I post
+> > the next version?
+> 
+> As long as you agree about the mainline merge order, I think you don't need to
+> wait for my fix.  Please feel free to post next version.
+> 
+> FYI, the latest version of my fix is available [1] on the mailing list.
+> 
+> [1] https://lore.kernel.org/20260327004952.58266-1-sj@kernel.org
+
+Thank you for your confirmation, and your fix. :>
+
+Best regards,
+Rui Yan
+
+[...]
 
