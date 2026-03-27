@@ -4,122 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 850D210F2865
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:19:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD2A010F2869
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 19:30:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B30026B008C; Fri, 27 Mar 2026 15:19:40 -0400 (EDT)
+	id E005B6B008C; Fri, 27 Mar 2026 15:30:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE0F16B0095; Fri, 27 Mar 2026 15:19:40 -0400 (EDT)
+	id DD7C56B0095; Fri, 27 Mar 2026 15:30:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CF6F6B0096; Fri, 27 Mar 2026 15:19:40 -0400 (EDT)
+	id CEDBD6B0096; Fri, 27 Mar 2026 15:30:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 877C66B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:19:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 227128DECA
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:19:40 +0000 (UTC)
-X-FDA: 84592807320.29.AC07666
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 595FD80005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:19:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ir41fQmQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.172 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774639178; a=rsa-sha256;
-	cv=none;
-	b=yvScelMwZQ5gQHcTzKXVii8sTFdObMFmuvsQlWXpcwcmalVGtDD1VGiDS1wx3hTy+IOpDZ
-	20Sqoa4S7GC7nTvOKLxVCbr8r1PKHKkmNf73MOHDzb7oo8hkolEH8bCO2cri1iqrASxFUI
-	eWCwJRrSik2Q19ueqwAM2Ozr+nFziYs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ir41fQmQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.172 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774639178;
+	by kanga.kvack.org (Postfix) with ESMTP id BDB9F6B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 15:30:47 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A4538E04F
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:30:47 +0000 (UTC)
+X-FDA: 84592835334.19.C3CB68F
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 25CD91C0010
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 19:30:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="rf7Pja/h";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774639845; a=rsa-sha256;
+	cv=pass;
+	b=XzueFYCQhEwTEeUS9trR3tO1GHgrWK+mFsBlNc77Sz2DjqkdSFhDhCTyUqI/NZtdSvKxGI
+	3wa6hQbPDDRyQko6bj6ys/sDVJvGYUDm7VLRG+dtcBaOHbRgtlj9X5PL+GFaOWWJZofxjR
+	TM3/iTAyNhtvfSGrzxoO+tXBvGT7yTg=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774639845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=g36eDtHxaYoJojvs9L9tY/Cu0/ANeoyQ3rXoQcxOHvE=;
-	b=gkBTl3ReAgLk07g82Yjyi6G0rxtbK4vdKSFrFrUYYh5QhNOIvQc4IWa0OaXTDT8+UC16m4
-	fY5lzYCpG2BjlhjgAyIKjxusT3RkhPZLKPubaesSlcqHCw+bbhtdLA6SUNSXacXD03Nunh
-	H1l//OoqyX3Ytv6xMHueV33yLpn4au8=
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-467161c4a1cso859181b6e.3
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:19:38 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ML+ucyszSDrSmSjKc8RyIiw+Io0bDGehQw1OsackIDw=;
+	b=vhgL+00jmCg4Huy3beFEEdzJFmbdcj8mq6o8cxenlshTqo2ZjXKzgjlvIyC9YpUwYBgVsS
+	twF6y97/y3yFnyGC0D0f8zLpHk8zsLydLStnMBproWNGmMHJIuIiy6LsO5UoA61fPL6Lw+
+	5ZdC5v7RdnED/KYb2VbMxXhTDk4dd6w=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="rf7Pja/h";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b6b0500e06so3504682eec.1
+        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:30:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774639844; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AAn0ZczFk2rdL5K2iUVfJHL4J86Fa3kvUNHTWViSKmscqwhlYUJfJSpvPm9Seto2AA
+         2yBeyek6zkMN49PKlIu0A3CC4nuqbVYwM4OhIUV0JgvaLGiJLYMX/gSv9Q6+PbK6TtlU
+         6YFPEdFc6qXZfMhu5SyKxyxzP6x9EpLN7ThYTr5AUoBFuGu12j2QZp+iIh7Gl+h4V9no
+         WWv8FoqmLOGLkN5AFKbxoXz/4M0Hvvyy7CrwTvYfQ+t5inEmBNYaqD0c7mmKuwU2aCLe
+         pO8VLnNk0flcjs33p0N7E5/FEpbxySR94fe0c3Ru5/hY+wgCxnWfVmeznlyamRLTg1X0
+         dmow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ML+ucyszSDrSmSjKc8RyIiw+Io0bDGehQw1OsackIDw=;
+        fh=JTpeIRqLgrI3V+e4DSwk7uJf0ZmfIiXHVla//tKcg/o=;
+        b=DkSeAXSUMH+2Y6ti0rIXun9V4gy971xxZzGPenwYSRy6k+AVTF9Rj6gru1EUdkvXTB
+         YihP7UEq+CoaADyPgSFRK2LMpTW9roCIraWol+L3Ao+vq7NJL8wTAoOtjsY1jkk34L97
+         NjxG0wXePQhP41JodL7lOqwa3iBeWPy7Ho15jQL/kTCnoLo8LRbdYq7rSgWo8/Vh9AO9
+         v0qGg1xLcDWU5DUrfXJ80h8PgmUeKHDtp17xGjp3xed4dQJc8d60uZoqrxVLpFwKifkN
+         uYjm5jQYwkmNCQEUNkmWwo6EyV7tyyF5uUoktY5hEv0Y1822Vvy4KJkGSantl6MJyoHI
+         LqSQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774639177; x=1775243977; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g36eDtHxaYoJojvs9L9tY/Cu0/ANeoyQ3rXoQcxOHvE=;
-        b=ir41fQmQuIa0ceWqros/IJy/XOh0RCc4GyUwRpVzsrOo2SR7CAhkLIhiJ6rMzsPYnn
-         +kMbpr+HftoYrTvuQF5ros9rl+qLwKKmIY9fAEhPtcM9goFKbcqZenFoQcntVw/Z6Cih
-         6HVdgQ8sXFPCDN6oR6L2ExzXuOjEpDvL94Q4gTETz0gjZLjohOsZEmoZzkpm+pAjdKMR
-         97bJpFrJTNxhnaTilA+KY3JoacGV8kA2+hHqqygvWnOSCHvRuAj9no8BZ+OKoIjQcmTh
-         GULE8YkaAMtBK4If5c2If3YxmAmrAJNjyNEjAgg2W5iPqxyEbCsA/SeEJ6/n8Eg2GtbM
-         AW5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774639177; x=1775243977;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774639844; x=1775244644; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g36eDtHxaYoJojvs9L9tY/Cu0/ANeoyQ3rXoQcxOHvE=;
-        b=Fe9zw8DJKVG07qSDQ5n8tNogOc5ZRNVrgQf/iuxBy+BeRdYffhZmH6hM+r30T0N5Kt
-         2nZ2dKNrwCD/uIOAhxxsS7XR7XzZWjX5zTVs9VXdznIm48JJmqNVYnrMjSZKykDILh40
-         tjMJvwVWI7+Dj08sehn4SFJKAM4NLrxtA4eeJResynMBqNyvqc99kecEZZ+TTaUc/Smy
-         oNnFghZ5a+t7U4lu8gBT2EX7OK6lIsiJiuHO2RTc0QEWXycmTsAUmjE2JJxfbB+aWFAN
-         vh3o1m/d+K1uwe5lkaZaOyTVGGs7d+K4LVqrrZdKQaNW3Znv0B1RI7yqpUOnk9afHrK8
-         2OTA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2+sYsqPm3n+2OZkgTQL+qAqkmX7xY9GJVoCLHFOO5IRHjYA66g+MQ3rjUqTnWTxarXHq2diB0+A==@kvack.org
-X-Gm-Message-State: AOJu0Yy/KjUz547LhjlhFZiCfQE5tRj1UyQzXaCH94kC+XczTnfnyLn5
-	9NL+aL+bS5bjz4Ift8y/nwsMkdjm6NLDwv8DMwXpyODKBlbBqyMuCW24
-X-Gm-Gg: ATEYQzyw9nwiEenl7dRFZBZax9rN2Ie09aJ41QE2OZQnWeI2/ANfys++T6BXiZELw6y
-	Xd8VzchlLky0Ui4luHZxEL3bO1cAmNN0hniJQKlwQ1AaCEmb6zT7E6rrG04U6nf8CPVMuUnR0pK
-	mp4xuG1Lz+BoHFHBdNU/7g+A6QVakgVnGC3nmCH2KjaVvXmWUuCKXHgy96Sa46dqpZpi3A8TVf+
-	6yIuahSZfauahBo5001EjQzESNAPQqM1omSoI6rxJxSBSZPKxXT9yNx9WCDhRZmvIzJXDK+R6D+
-	JufD7gXYkOIumhMVNUW5Hk/kDjTncf/mtUoy5AUAwDZe0I595TUTsKybN6DVx7xZ2Q8PgEyG2qH
-	ZGYfE83rmPFESG4Tdi8Ts3COO9rEhwhcfzm5OWGP71TEtYKvaRyRkP04Zf2O0WX+Y5qsug9mTxG
-	svzauHuq2Ljt+bCceb4Q==
-X-Received: by 2002:a05:6808:894c:b0:467:2be4:9e39 with SMTP id 5614622812f47-46a8a5a37a8mr1494347b6e.39.1774639177209;
-        Fri, 27 Mar 2026 12:19:37 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41d04cf9ceesm138877fac.15.2026.03.27.12.19.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 12:19:36 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-Date: Fri, 27 Mar 2026 12:19:35 -0700
-Message-ID: <20260327191936.1980054-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        bh=ML+ucyszSDrSmSjKc8RyIiw+Io0bDGehQw1OsackIDw=;
+        b=rf7Pja/hbwcCp30JpjBzebwAg0cuYP1sdHuWaFYybmBDzL1l9RuD7YvqNksWK/Fgvx
+         CFhb1kn0oDFftCXhncuuhdWJsvsaKRb+CKixkRSphFWE60t9rzwNQHYAWAAuvnghXoyz
+         vKwpnmvgE+Dk74T7DEzYG5FdNzwmj1M2gyUpkCuFA0jRaZ7XWFm1TJGAmerfCf2A2Y9n
+         95LVr3JcHEmpeAiQte8UFUJomelzZ4JCmppymX3/W0Y/wDYMNMfna2CimfRZ3OOMMWrs
+         QwtXq3aXztF4iP25ylZmgLaBo6k7i7vlADviCMAIqDSYy2o08JKlgPI3dCHsB4Gik36Q
+         B7tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774639844; x=1775244644;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ML+ucyszSDrSmSjKc8RyIiw+Io0bDGehQw1OsackIDw=;
+        b=az4Qm47V5pDCjhKrDO32giGt601evhHeUVs6ELC1PURz0Gv81mYmDaMUYQq7XToOuy
+         TUJsNOGQzZ93HjFv1S1q8nKXtzi7wNiQTCRlQGlh6+mmyctw1Dtd+yBeOrwNRza4itoi
+         zgBa4qnmwiMyf70qxzZ+8M40T1FYLviKZGyxrbXKJwzYz9L7UleK3ugiS/tBlrfvtPk2
+         4hhzVNxxZN+fxY8yR0Zn05MnEyXIb5WxnWKI3iMTjQDkYoisopCZunD7wqyq0XP6ej7S
+         mEqaOeAaMyoUeMbHD2ZTcrpBxvXVwAmuKNRtiVCfWY8xHjdkxkj8/aOO/bnvjbnk8Ool
+         eLCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWXYaLa8Qd8D2HGEtE7rH9jXZimsXmipn86HLoGYqvLeuktUmTegc519QDLN4awMekvdMyISLxpYg==@kvack.org
+X-Gm-Message-State: AOJu0Yw0I67P/GsjgZ/zRTdBmfKQbqwhz1amiCty1jqsmmDwT4E6ehag
+	ijpUtX1bmHsk1YOoBLI0dkCUFNvwA3V9+2hB1s92ru09L2bZu1yCm2UNAMqhrT3lqiYQhDPsWkO
+	rKHAwneLCFtpeYq7e2D+8WO89gK4QI08=
+X-Gm-Gg: ATEYQzy3JXUWi/qqctNvBAJgpOsL9eBvet1jd7QqZoqSDelhplarSCZiya5wGYXC9c6
+	N1uNPptszmM1mX6HPMV5ULjmPxLLiOkyd/tE39PUWMsBMv4WgvgYgL43qwXicDo6/3FVOBLAFS7
+	iVkm558OJyg6rzjabMpugx++2JRIY+KkEVQf27WzGGBg10GqUXAK9tCeLBOzDQBNnYSteQ0/eeQ
+	pL7b0jPx9n7jc3CehVZ/TGwPNefkSmz2MR0CmDKtV2oRwQAIu6qwcBlNM0aDYIEaUVYRweqArSN
+	Y+8EETlfFChzCqTBDMR+U3Pcwn+tBp3Agf7pQ4lR
+X-Received: by 2002:a05:7300:d512:b0:2c1:7afc:df06 with SMTP id
+ 5a478bee46e88-2c185cdc5ffmr1963092eec.5.1774639843583; Fri, 27 Mar 2026
+ 12:30:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nyfffbrfgrym5c6p7s1rzfstyf5e4kue
-X-Rspamd-Queue-Id: 595FD80005
+References: <20260317014802.27591-1-kanchanapsridhar2026@gmail.com>
+ <20260317014802.27591-3-kanchanapsridhar2026@gmail.com> <20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
+In-Reply-To: <20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Fri, 27 Mar 2026 12:30:32 -0700
+X-Gm-Features: AQROBzBcnch79r5a73Jis55XnZyghXcCJW_BGvI9d4XF2Z6lh4r_RGIC_4MvugY
+Message-ID: <CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774639178-735698
-X-HE-Meta: U2FsdGVkX19De8vYIH01jqMFmZi8Ec4vPvnOSu5Xi86CA2MBUSmf1aFU8ERdmwUjzCbl+j/hKzBZ03msmka9CVCEze0frBJgMfw55ayp03sSUp/07XuUcIOqSttnN61dgauONa1I2dwz94YRg7LJeL5uBfuMi5U4/WIiXddR+/B+EQNDtsFzgX0Wbkht20QyKDImICkNhfbOU51gPXZH38n03RWNowXOVNfglyPedDCjKP4tJneJxkhKHzJbDTomGPxKzjg5or8PPk7f4aoVSTQ80df+fSE5pijZqg0ic4PwMM/aDEURuGItXM92U/UOxZP8zHCpDbODl8bka++bCGGaRwoDmFMA5V8bkAPrqByaXQXFAZGFHDr6zK0Et+0I+V4wPzVIXzCX8s9Yyg+sM3v0P2wTlHQcu90bkHlpdZgjHzwHEYSR6HPggKta9mEMG4+JlXFwf8EWfDYKTAwE0e3nNW6XXJyd8UlUu5v70YJcu+uJhPNMPhxlIuc79+RIkfoUxVpxbvRyfduc9Wi1ZH0H291z3hqqzX6E0dLyx10bkU5lJ3TFgskAUVPkBWKrZm9609+woMn0JAXeJqqtG8++dpyF9IFA78+WbLz0OBuBH/V4V5GmQoducL5DzFo66wiZfhHLgJHKxfGacUNqu6S6qS4S2DNgHwC7EzAEDXhkDp8iFF3EKn9L7s5x4ZLI3CgaoTOcGRLDOESo6/X/VmzVrdn643MWkkI6C523/A/g/dLH1qepDCD+eX5k/La0HHDkSzEIxBuVP8g93zA/JcQ0CnL1VewkbR/X5WpKAOLsOoi52+0p49jX2KRsJdryso/sUXebLCiQToQ0H6YDjzADkN3BZySkpW8DC7DVf/caYpb83GoT9jPDWbhX7GNksbluT97zc28/obX3PlO9ofVBpEp1wipdY7W9CuXc0DhGdPqWPKPpFmJs88BcPvROqWp61wGlCX3I9Bbls7s
- zt2sMV6d
- Bxhcivb3glFy7UNCVKt9/E7Np+JqUBwcz0Ta5CA/vo70SYXDa4m6qSbIR0LV6zfB2Yehd/mbf3iEOXEWoDq1UBjQ5m9Xb7kqn1zk+eSAinjpM3SpnfzgS1y+FTlpbT3xIAA3UxPfJ6r+DniJaddbeOAjx44wms8VlYzGAH8W+L+TNbGWkIWyXIFL5t5F2JKj3fQ4w5gkwk9lbRAM1GY3RKN4jRUJEO0oW9I/rxaHDPhKZT8YWs4vCk+Nn9M6H+2yUhXPyYPRWua7yNhN/kSwU1GOUC5OXJnQaXTMKP0PDyGwL6+JjiJXT+c2fhZB63xUJLE8TdUYBmpsz7p7zmFkohu7VtvLb4sB2LUskhXbF8gz5jxe0Y2xMGMYns52L+KRX18/EX+2KHvs07GBZdJP+jLZc8bMqUe3IU3hQQXhH2A3RixO3PE+YNvLwRD1o1HaFDKWyqN9PT8hTAXocnLP5G2Q7JdmDUQS7osPg7MnKdX41gyyioqChQlqGjA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 25CD91C0010
+X-Stat-Signature: rj46ch8u4tnzms5hj9da5mkmtidz61bt
+X-HE-Tag: 1774639844-691984
+X-HE-Meta: U2FsdGVkX19TERcmZD7L9wNhW98OkmRT/3/Oh1nKJ5DkpFrO5dzwdjRUtjrekPVBkrL8JQLhqOOnXXtuyIy/ypYB5H4/Apx2gEIXGjPSGdeENZuqywJUyWHuu+FLMVpxfzn1w2ptUhHzyw962GK96+o1vL3A0nMvJZOkS9/78YcgeDjpYSDl5fXnlmpCEwltrg1M3ahZQ8RCeFhA/oUf/8f4642Y6XL9NM2VXaXTNzXnOFY8Ry4HUSlsakVonqzcdCC9EmLLUe1OIOqxmOYji4ue1AodKYYwLouoFMVUOsrIQul6FPZMw9Ti7O0rrl19fsdxrQBvgSESURtNb5xZrAY1bz+Q27czJW+IuzRlN2tnJwX/92WfVHDD+W0NWCoqFKYA8tLW682Jr3wRNIvF5sqMNIQSHZF76F701zoC8kBReZ+FDyJxCXP4yKuFJo4ygecuoOEX1eyVpuoN1SmcqUd8eWTr8MN+r79ZNMS+8DlfULyy1S5y2eEKc7xd9aIIOA2drUb3QVv4J50Z1QG+ohR3fcgqBzIB8bDHVCKI4VqVew3jP2NaIsm0UBGwwAt6T+z2a+7gWH9SzsLQzw8KOmrkfkJfFSiP8OdyaF0VCGXUrUFbP64nE4kVrO8OWku3cgnGDvaZz/Cj1ztx4DUfcMPgFEvxAksD2eRVXon7GD6FIOLgtGoLcFwbw9xNdBpdWa7sMON1gljWqtOHPP5u5NzUCz//upuEfsus+2JwJ5Ecpp107sTVugVsxWG/DvPN2neWZ6Q6CyuNt3fAKyHa9b92kiI0gV+vA5tqCwGsQCGISUpAssHb2MkIuYP2VhswLfK1bJkzJsDpkz83vNcaUuzGPMswioLW2PFLIpzE6V4yXtywyG0YrKtq5aYYDzC9cMHGp2kz/meLeJBZfwQ+Tl7RQJBf6RxCXL/IMeHlL79kl5+mt52uCpToCJY3iyodMUIqHf6qmoMd5lV+DRQ
+ KUgz/vAU
+ 6fZh0XmKUbnex0wRhE5NGw2DKKEbDQkap89nKI2+lWy7Gb/xPwUVwlyXcrvArAhQ1BT20HzJD7lt83GTjC8qrEhNEV3TKosuFhvDXuIB9QGjB7PrFrot5fxD1RQ6BGYGEhsjprkmxTOiv15sSw4pKyz7KiUnHd3Z4SWz9LmK1xWoo42DmI0q7u4kdrdnQgrBGfUgY495cMEI1TT37hu98JhdbezoJIU+mPt7/23o/JuKMAE3zrFUNCHt+vlxqxVynKGxORMcqgjZOeU6RKj0hFvnuRojiUNyWBzLxQ/QHe6+zOEIZdKbDex/MHkCAf9fo/nn+VV7VlgdnV7TxsXIrDMUq7jNs+Q9iaCwyphhcmXb1RfQLjiHxcr4tRmOddMvZ9EqsblayWRkSTrl9Ttp5droYKC2ZR+PuvI5kn+YlvPQ3iGHtcTOI9yMnzzQrTBCFPNxJZhaOquGTw2dsXo167hQJgE/jWtYEgbmeI0ji3f90c+vbW8w2cdmydHlEeWm9MvPuzDpvo2Tz9kX1eZimRuTpQq6xcz2n9hJmiGwSD4EsJHVsGwFhp8xg8hoMMgFbrTJjziSrmiuFX5dq2RSFCEjEV84ucQfnhyF8895mYMDo7xBms8RSGdjhgg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,248 +141,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-to give visibility into per-node breakdowns for percpu allocations and
-turn it into NR_PERCPU_B.
+On Thu, Mar 26, 2026 at 7:23=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 16 Mar 2026 18:48:02 -0700 "Kanchana P. Sridhar" <kanchanapsridha=
+r2026@gmail.com> wrote:
+>
+> > Currently, per-CPU acomp_ctx are allocated on pool creation and/or CPU
+> > hotplug, and destroyed on pool destruction or CPU hotunplug. This
+> > complicates the lifetime management to save memory while a CPU is
+> > offlined, which is not very common.
+> >
+> > Simplify lifetime management by allocating per-CPU acomp_ctx once on
+> > pool creation (or CPU hotplug for CPUs onlined later), and keeping them
+> > allocated until the pool is destroyed.
+> >
+> > ...
+> >
+>
+> This is a tricky-looking patch and I haven't yet recorded any reviews,
+> so could someone please dig in?
 
-Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
-account node level statistics (accounted in PAGE_SIZE units) and
-memcg-lruvec statistics separately. Account node statistics when the pcpu
-pages are allocated, and account memcg-lruvec statistics when pcpu
-objects are handed out.
+Hi Andrew, Yosry,
 
-To do account these separately, expose mod_memcg_lruvec_state to be
-used outside of memcontrol.
+To provide some background, this patch [1] in my v14 patch-series was
+Acked-by Yosry, with a minor change requested [2] that is addressed by
+the current patch.
 
-One functional change is that we do not account the 8 byte objcg
-pointer per-memcg-lruvec. Since the objcg membership is tracked
-per-memcg and not percpu, there is no appropriate lruvec to charge this
-memory to (see pcpu_obj_full_size). Instead of adding additional
-mechanisms to detect which lruvec the 8 byte pointer belongs to, let's
-just simplify and account the pcpu objects' size.
+Since Sashiko flagged the same issue as [2], I did not automatically
+carry forward the Acked-by.
+Yosry, can you please confirm if your Acked-by and comments in [2] are
+addressed in this current patch?
 
-Limit-checking is still done with the additional 8 bytes.
+[1]: https://patchwork.kernel.org/project/linux-mm/patch/20260125033537.334=
+628-24-kanchana.p.sridhar@intel.com/
+[2]: https://patchwork.kernel.org/comment/26773986/
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- include/linux/memcontrol.h |  4 +++-
- include/linux/mmzone.h     |  4 +++-
- mm/memcontrol.c            | 12 ++++++------
- mm/percpu-vm.c             | 14 ++++++++++++--
- mm/percpu.c                | 24 ++++++++++++++++++++----
- mm/vmstat.c                |  1 +
- 6 files changed, 45 insertions(+), 14 deletions(-)
+Thanks,
+Kanchana
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 086158969529..96dae769c60d 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -34,7 +34,6 @@ struct kmem_cache;
- enum memcg_stat_item {
- 	MEMCG_SWAP = NR_VM_NODE_STAT_ITEMS,
- 	MEMCG_SOCK,
--	MEMCG_PERCPU_B,
- 	MEMCG_KMEM,
- 	MEMCG_ZSWAP_B,
- 	MEMCG_ZSWAPPED,
-@@ -909,6 +908,9 @@ struct mem_cgroup *mem_cgroup_get_oom_group(struct task_struct *victim,
- 					    struct mem_cgroup *oom_domain);
- void mem_cgroup_print_oom_group(struct mem_cgroup *memcg);
- 
-+void mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
-+			    int val);
-+
- /* idx can be of type enum memcg_stat_item or node_stat_item */
- void mod_memcg_state(struct mem_cgroup *memcg,
- 		     enum memcg_stat_item idx, int val);
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 7bd0134c241c..e38d8fe8552b 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -328,6 +328,7 @@ enum node_stat_item {
- #endif
- 	NR_BALLOON_PAGES,
- 	NR_KERNEL_FILE_PAGES,
-+	NR_PERCPU_B,
- 	NR_VM_NODE_STAT_ITEMS
- };
- 
-@@ -365,7 +366,8 @@ static __always_inline bool vmstat_item_in_bytes(int idx)
- 	 * byte-precise.
- 	 */
- 	return (idx == NR_SLAB_RECLAIMABLE_B ||
--		idx == NR_SLAB_UNRECLAIMABLE_B);
-+		idx == NR_SLAB_UNRECLAIMABLE_B ||
-+		idx == NR_PERCPU_B);
- }
- 
- /*
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a47fb68dd65f..b320b6a42696 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -377,6 +377,7 @@ static const unsigned int memcg_node_stat_items[] = {
- 	NR_UNEVICTABLE,
- 	NR_SLAB_RECLAIMABLE_B,
- 	NR_SLAB_UNRECLAIMABLE_B,
-+	NR_PERCPU_B,
- 	WORKINGSET_REFAULT_ANON,
- 	WORKINGSET_REFAULT_FILE,
- 	WORKINGSET_ACTIVATE_ANON,
-@@ -428,7 +429,6 @@ static const unsigned int memcg_node_stat_items[] = {
- static const unsigned int memcg_stat_items[] = {
- 	MEMCG_SWAP,
- 	MEMCG_SOCK,
--	MEMCG_PERCPU_B,
- 	MEMCG_KMEM,
- 	MEMCG_ZSWAP_B,
- 	MEMCG_ZSWAPPED,
-@@ -920,9 +920,8 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
- 	put_cpu();
- }
- 
--static void mod_memcg_lruvec_state(struct lruvec *lruvec,
--				     enum node_stat_item idx,
--				     int val)
-+void mod_memcg_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
-+			    int val)
- {
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 	struct mem_cgroup_per_node *pn;
-@@ -936,6 +935,7 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
- 
- 	get_non_dying_memcg_end();
- }
-+EXPORT_SYMBOL(mod_memcg_lruvec_state);
- 
- /**
-  * mod_lruvec_state - update lruvec memory statistics
-@@ -1535,7 +1535,7 @@ static const struct memory_stat memory_stats[] = {
- 	{ "kernel_stack",		NR_KERNEL_STACK_KB		},
- 	{ "pagetables",			NR_PAGETABLE			},
- 	{ "sec_pagetables",		NR_SECONDARY_PAGETABLE		},
--	{ "percpu",			MEMCG_PERCPU_B			},
-+	{ "percpu",			NR_PERCPU_B			},
- 	{ "sock",			MEMCG_SOCK			},
- 	{ "vmalloc",			NR_VMALLOC			},
- 	{ "shmem",			NR_SHMEM			},
-@@ -1597,7 +1597,7 @@ static const struct memory_stat memory_stats[] = {
- static int memcg_page_state_unit(int item)
- {
- 	switch (item) {
--	case MEMCG_PERCPU_B:
-+	case NR_PERCPU_B:
- 	case MEMCG_ZSWAP_B:
- 	case NR_SLAB_RECLAIMABLE_B:
- 	case NR_SLAB_UNRECLAIMABLE_B:
-diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
-index 4f5937090590..e36b639f521d 100644
---- a/mm/percpu-vm.c
-+++ b/mm/percpu-vm.c
-@@ -55,7 +55,8 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
- 			    struct page **pages, int page_start, int page_end)
- {
- 	unsigned int cpu;
--	int i;
-+	int nr_pages = page_end - page_start;
-+	int i, nid;
- 
- 	for_each_possible_cpu(cpu) {
- 		for (i = page_start; i < page_end; i++) {
-@@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
- 				__free_page(page);
- 		}
- 	}
-+
-+	for_each_node(nid)
-+		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
-+				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
- }
- 
- /**
-@@ -84,7 +89,8 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
- 			    gfp_t gfp)
- {
- 	unsigned int cpu, tcpu;
--	int i;
-+	int nr_pages = page_end - page_start;
-+	int i, nid;
- 
- 	gfp |= __GFP_HIGHMEM;
- 
-@@ -97,6 +103,10 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
- 				goto err;
- 		}
- 	}
-+
-+	for_each_node(nid)
-+		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
-+				    nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
- 	return 0;
- 
- err:
-diff --git a/mm/percpu.c b/mm/percpu.c
-index b0676b8054ed..4ad3b9739eb9 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1632,6 +1632,24 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
- 	return true;
- }
- 
-+static void pcpu_mod_memcg_lruvec(struct obj_cgroup *objcg, int charge)
-+{
-+	struct mem_cgroup *memcg;
-+	int nid;
-+
-+	memcg = obj_cgroup_memcg(objcg);
-+	for_each_node(nid) {
-+		struct lruvec *lruvec;
-+		unsigned int nr_cpus = nr_cpus_node(nid);
-+
-+		if (!nr_cpus)
-+			continue;
-+
-+		lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
-+		mod_memcg_lruvec_state(lruvec, NR_PERCPU_B, nr_cpus * charge);
-+	}
-+}
-+
- static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
- 				       struct pcpu_chunk *chunk, int off,
- 				       size_t size)
-@@ -1644,8 +1662,7 @@ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
- 		chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = objcg;
- 
- 		rcu_read_lock();
--		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
--				pcpu_obj_full_size(size));
-+		pcpu_mod_memcg_lruvec(objcg, size);
- 		rcu_read_unlock();
- 	} else {
- 		obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
-@@ -1667,8 +1684,7 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
- 	obj_cgroup_uncharge(objcg, pcpu_obj_full_size(size));
- 
- 	rcu_read_lock();
--	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
--			-pcpu_obj_full_size(size));
-+	pcpu_mod_memcg_lruvec(objcg, -size);
- 	rcu_read_unlock();
- 
- 	obj_cgroup_put(objcg);
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index b33097ab9bc8..d73c3355be71 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1296,6 +1296,7 @@ const char * const vmstat_text[] = {
- #endif
- 	[I(NR_BALLOON_PAGES)]			= "nr_balloon_pages",
- 	[I(NR_KERNEL_FILE_PAGES)]		= "nr_kernel_file_pages",
-+	[I(NR_PERCPU_B)]			= "nr_percpu",
- #undef I
- 
- 	/* system-wide enum vm_stat_item counters */
--- 
-2.52.0
-
+>
+> Sashiko wasn't apply to apply this patch for either the v1 or v2
+> series, so no help there.
+>
+> Thanks.
 
