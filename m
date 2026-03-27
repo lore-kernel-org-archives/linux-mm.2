@@ -4,79 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EE2810ED679
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F2C710ED674
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:33:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A4196B0096; Fri, 27 Mar 2026 09:28:15 -0400 (EDT)
+	id BC58F6B0092; Fri, 27 Mar 2026 09:33:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5544C6B0098; Fri, 27 Mar 2026 09:28:15 -0400 (EDT)
+	id B765B6B0095; Fri, 27 Mar 2026 09:33:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 442CD6B0099; Fri, 27 Mar 2026 09:28:15 -0400 (EDT)
+	id A64BD6B0096; Fri, 27 Mar 2026 09:33:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 303ED6B0096
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:28:15 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 94E386B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:33:31 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD078BD691
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:28:14 +0000 (UTC)
-X-FDA: 84591921708.24.1561B73
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 472E8BE64B
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:33:31 +0000 (UTC)
+X-FDA: 84591935022.24.CC3B814
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 13BABC0005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:28:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tgrKpze0;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8B5DB40008
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:33:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cc5BiYnK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774618093;
+	s=arc-20220608; t=1774618409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9E2RIt8Jwl2ayOiSZdyQkptXGhUYEZZl1BldzCpWPog=;
-	b=Qd9si/0dbuBO0lZd5UEEmB4/3xW7s17zsYhsalK0EDB24Yv8/KY6eiSexGztZleCdz9oTi
-	ByDBIndt14aYwkSuRisn0DJZCHVr0byje0zQySTK3M2ipgbVY7i8iCIlKlYK8Ld2L8RufN
-	dcc8yb4CFSmsVgPoaRcFhCu5BOkHO+Y=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tgrKpze0;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774618093; a=rsa-sha256;
+	bh=+CRt4vLpf3XwqNdUUK9Gf7zDVAdD75C3Fcq4XRF9cSw=;
+	b=0BG6L5nDuu6e5c5WWZ5QYZfrLd7H02WcOQj2aVfs0mGgzyTc8RR466AGtVRPAfDGTqRw2V
+	KRziSn06kNVLbcQIl75W+uzcMTIY8CmOlCV7kR2dWzpWfBopzU1kwi8AVTufTeWV3ksm/0
+	kcgqkHvg0FJoXhVDuYFOwsKXXaFbnGM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774618409; a=rsa-sha256;
 	cv=none;
-	b=MXejCphpizEnyfNSLupz8rq2l3NeKT3ltSc+imC52N3mxiyGHvP9F43MazybYlY5JqSeK5
-	M3b/Ppesbljd7/ACVzy/3iRR9HnqX/QlVT02ChNC8UF/OSbRr1gDYw0Ex4rXRvyJigihUg
-	Dmm9Ef+1/pHD83uERYCog/Y+qP/gTEc=
+	b=46NL7u3tKS+6bMy6ju6dhy65ptsdrNMKtrZsa+fXOGni4cEItlSugqhXoD0HpqyQDWQ3ZP
+	XHesc5q6Bgtf0o3cmgQ5jO5vDsZsFE455N8PJhyqCdlMxB3K9hAJdsH5F0N/ApQAcPhrbp
+	jHU7/iSSeyWCfkQXXmYpspWGSq+JkD0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cc5BiYnK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3ED7E60132;
-	Fri, 27 Mar 2026 13:28:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE8BC2BCB1;
-	Fri, 27 Mar 2026 13:28:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ECF3E60103;
+	Fri, 27 Mar 2026 13:33:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100ACC19423;
+	Fri, 27 Mar 2026 13:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774618091;
-	bh=r/tUcr+DkmKRuSoOmSbqzMlOOVTDeN+O6HtHU+Chplw=;
+	s=k20201202; t=1774618408;
+	bh=xu8W7lqyzSXrcwxaklJNqkyZBDCnCyf4Es5zMCd5B2g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tgrKpze0AXBEQbD7udKzYR1/j6AEhWlQrKBma1DiYfButx4464/hyCJcpP+ANo9Ap
-	 by/AS0qYxcLqBUSypREH+SHXOKATURaX0us8v4dfKQqXxPoButyOG+KhsuWNRvIeUu
-	 OT9CiE1BJhUnl6+SEPyLb7rKdCHDRBxPXMjA0DrJamezzubk415mrPedbFHfjZqGzC
-	 WAikLjxtn6QB+XzNf1gAfc3zcEHDvFYphLENXO0NWxG/whC/a3SsCFy4iU7xdizwV+
-	 Fd9Nkb17vBj+XSEUZMAIgu5KYakuf0xy9AC3zv8wEWxsEuZC8T/dDcIgvobE8Ac+JG
-	 PHIaX9JpLlSeA==
-Message-ID: <2266e9af-ce5b-401a-8364-0fe2fc3d68a6@kernel.org>
-Date: Fri, 27 Mar 2026 14:28:06 +0100
+	b=cc5BiYnKpzNO+MmAjurOqx/BIjaAxwwZH1CtxzXm7CpdboYZ7p1vv2AviJru2aiec
+	 2UBGwR4xERHRPSmHj4bbk0/t6qj1vJ42SsY0W3Q7mQho1A3CC2lo7G7ipEwuXw2iGB
+	 V8AXG9/X+1VNdsTSxorfle9MKc5u+58u0T71iWb8DvDJpbSImbVKilgG+0wgElMhBn
+	 cBzqK1+Lf8O9tfPM1IXa8jXwreMhNhVFRX/b5narvt7xRqCnSe34/PhWB4aH9MpOGY
+	 q8wuo83smG57Pmjw+13lB4SbakPAjCQhSgJ9iGrd+o2LBknQKIp8mlmSlINSLx+c6G
+	 8Letxru1FSJCA==
+Message-ID: <a7976968-3598-47d5-99bd-a144783c72f2@kernel.org>
+Date: Fri, 27 Mar 2026 14:33:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] change young flag check functions to return bool
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-arm-kernel@lists.infradead.org, x86@kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- kvm@vger.kernel.org, open <linux-mm@kvack.org>, linux-kernel@vger.kernel.org
-References: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v1 01/10] mm: remove READ_ONLY_THP_FOR_FS Kconfig option
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-2-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <cover.1774075004.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260327014255.2058916-2-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 13BABC0005
-X-Stat-Signature: usg8qha6ga8jyiumtunf5km8ht83ik8k
+X-Rspamd-Queue-Id: 8B5DB40008
+X-Stat-Signature: 8x3pzpnhpky7wg7mfbqc5kc6erey4sdb
 X-Rspam-User: 
-X-HE-Tag: 1774618092-643014
-X-HE-Meta: U2FsdGVkX1/5Kxtkqri9id6Ne6SQnkA0SAJZCLIORiAwJBHpfMXv/XMFHyroeiV131xXnbdBiqb4/fSoVes26mj6HE6ui3iLhq6TH8Aht/ghV4cHb1qt971b84aT5XqtKuhYC6r93BXERUkPjH0ld8dL2PeBOiB0JbGRJrj7QfX8h3bCnzcBeu5FpHGgyFLtnhcRwarUMsqrxa31JrUQ0nQp1jTliEJawWBTbgBTnDLf6kIE5sUUh+t+T7DiYj5Mo1lpcAhXLSrV8vKGZGotg5lh4AYDFLs6ru4+9pcvcHJKP7QCdzcv5ulm/HRXUVZjRZOYLEQul8k6ylXjZRfUXODJb7yvduNuMdoVv6IS/GGtFoph1nAgynNTnHNQ9hGd3DVb7lA8ny63n/hzwOTOUnWtFJXEOZEhhDuZM4dCZjDuRFdBy/XVcX9If3cJjSOMOWfXicriDSAWozMIdM+uYhQQ6HI8XLboqPhZuOixn1HcbGko57EYRNgkJhUWo8plsm52GMkeoGmcLWCmJOaCuuIM8kEeonMFdJjgOnJo+V3+QTH0LmICG1/oEvkWm4ZqVPhHp4kfoSbBMYYb+Kw4MOcnIhXGMGkvJU9koC84XaSmg6RvwVW2ubx2PnmqTVHmVXK+fXlYWGQncembZUGKYUdUcXUv6xL2sqoNl7hL5Fds88vz8q4tcHiXdHOn59ptJIXR5MIfWT99AIoXhEKB0exHJwEnDGC/LuCAqugAiZjPlEdxafQbFnqSjHJ1hGew7sxC8HRDAOUAMSUT592IKpLU/LNAi4p1aQX6xMr1GgixfXuPEk0tm1f8WTao5PYJFTwIsdlPU38kHCWeEYySXheoENNDvgrJtypN89nbpzz6/W0gDWwvl6tzGtt3Ao5Fx0WOcnOlESmeh0lGgHyTLBtot1kP57El2KVXnoF5m2ClhbkTcMeAguvTr8lxQUsZuAvdK1XQ1l35QPDZo3m
- 8cvdXk39
- 9bfnAB1O9csE3XcD+FxWBCe62HluEO4CD9mnGQg+mV4MMlpL8Lt/Fg2ZAVc+8DMzcy2k1VNtFxN57Hji0N41our7Ldc4I4fkOxvbmmZLGIsNPAipSZpvhjDXbofDrzoi9+MEVxz9mbjRCFAX6udjb/ltpOJ+iYNxgN5sa0nAB5aqu2uKZp/Rsq9B6sqWvM3DP3UAYyvi5f6b57TdJA/5gDR2Qi7tSewPTtwygKEc8dS8BioPI6rEyr9Rml00tQ74uL4mapfvA3lPIpcZ3mUldUZZzaA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774618409-494150
+X-HE-Meta: U2FsdGVkX1+tg+0VhsIuGeJAwiEAgYidXqsU0BydyfkWqBAZUtTFD914boJiQsUrng6z2EVtcSU9jdJ+3eJY3hjl4HE5YLRhUaqZSaCmm7GeM5JWMbQVwqG0AUUUNWFw8l6zDyVsGWZ9PhU0YYodkwJ0LI0f0ii7rVE3sH9QS5MtR5UZxp2tCxCBKOIuXTl6JQ6C/ksdxyqpF8CUBV0OUB4WQ8s1eSGQBoCXVbLFqZ1yS/QtnieV+EJU/7+XfNd6AKTldModhgRHyy+LG34UEB4JVeMywYrcG9RlUbm3JcivnSdgjpL5X4ur51SN6m7+fe5CWQvMNiNNwvVEL4S+OQpY7PdV4Ti+mi9GM88OJv/Dprag/PVc7bn+1VXJ8kBC8RMHr8xkaRnh9YwmpSulDz62TAVaRr583BysMnV8zsfv9Dt0HwxUdjXFE9mwb/22vKkL1t7RW8rP+VtGXNuYBikYO86WXkizOH91NofJhsbTKhQ978bl0d/qdEg2hGqWzm1kTP6HG5PQS3esyTnromYiwjrehTzZYpf1znkanrFcissvalFnLNspEOBEoM8SKRbl+lbPddfKrthyZszgYAAMh8BibCPW8AjT9o3+z+8HtJj2FS+sh8f04GSFZ4uoo6KzilNuRREDyo8fCTZzTwDE9uZMqlM0MXFjOOeIH/WwvCm5lQIYPZBCztk6zu1FSze3yuV6wiMysd61MKPDUtu0lJH7KzJEpvwL2MvDjc9YQ+3jajLZSj6Hz61PelBTUrWB5zrNyRYzOHA+TIebnYGcaOQlW2bPltxMcPfQcn0ZSdfHWEymyYFoZViA3dotCPgF4xqFLTWFU0H0WPGeTBr2PVi6h4Z/7bwqWmnqhJkQfSMLgoJkovMFgFyh9UY58ZYPsyFC945QNwSMeCPEJIyYYwAsSs3R0/dao+BYBcET4cGBhmVTkvxBUZFyDgMondmUO7l+khxOApGFX/j
+ ut3DQML4
+ 7+Jx1ouahGLULe+prZCA9JqwQtP1heRD+U9I8yvieX/0xRwSqJ6MySPZ4wkD3wQsfvp0qkgWGUzZd/ZgicE8saQWBxRW1yFOwKWML8Xvmk4GgyxCG+Dw23Q2iTgpZR7izts+32CZNgjNlmszFPztjVqcMYfz4/Me75n1Bs25rA4dnyv1e2yDdwPN++fgpNt7Oix5Y3f8koiU78KagzniV14Mni5OEqTksz9tMyemPmtuyVLjpzBDDEsZHyj5pvFanjVNcVm/u9tPvxgP1ibcuNs8Qa/cd8laAH8q+mnCjDh+duAA5iF+aUWqigB0UziWII8fRBlld/k+1/zg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,19 +150,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/21/26 07:42, Baolin Wang wrote:
-> This is a cleanup patchset to change all young flag check functions to
-> return bool, as discussed with David in the previous thread[1]. Since
-> callers only care about whether the young flag was set, returning bool
-> makes the intention clearer. No functional changes intended.
+On 3/27/26 02:42, Zi Yan wrote:
+> No one will be able to use it, so the related code can be removed in the
+> coming commits.
 > 
-> Ran mm selftests on Arm64 and x86 machines, and no issues were found.
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>  mm/Kconfig | 11 -----------
+>  1 file changed, 11 deletions(-)
+> 
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index bd283958d675..408fc7b82233 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -937,17 +937,6 @@ config THP_SWAP
+>  
+>  	  For selection by architectures with reasonable THP sizes.
+>  
+> -config READ_ONLY_THP_FOR_FS
+> -	bool "Read-only THP for filesystems (EXPERIMENTAL)"
+> -	depends on TRANSPARENT_HUGEPAGE
+> -
+> -	help
+> -	  Allow khugepaged to put read-only file-backed pages in THP.
+> -
+> -	  This is marked experimental because it is a new feature. Write
+> -	  support of file THPs will be developed in the next few release
+> -	  cycles.
+> -
+>  config NO_PAGE_MAPCOUNT
+>  	bool "No per-page mapcount (EXPERIMENTAL)"
+>  	help
 
-Thanks!
-
-For the whole series:
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Isn't that usually what we do at the very end when we converted all the
+code?
 
 -- 
 Cheers,
