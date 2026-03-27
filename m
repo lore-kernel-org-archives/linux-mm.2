@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94ADD10ED656
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 10:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21D4910ED659
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 10:58:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA9FB6B0096; Fri, 27 Mar 2026 06:55:48 -0400 (EDT)
+	id 4EA206B0098; Fri, 27 Mar 2026 06:58:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E80F86B0098; Fri, 27 Mar 2026 06:55:48 -0400 (EDT)
+	id 4C1456B0099; Fri, 27 Mar 2026 06:58:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBE6C6B0099; Fri, 27 Mar 2026 06:55:48 -0400 (EDT)
+	id 3FDFE6B009B; Fri, 27 Mar 2026 06:58:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C76D86B0096
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:55:48 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C14C161088
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:55:48 +0000 (UTC)
-X-FDA: 84591537576.11.9A4A119
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DB686B0098
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 06:58:34 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3C3C1B9738
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:58:33 +0000 (UTC)
+X-FDA: 84591544506.30.79EC0FB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 99F71100005
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:55:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fV0km1q7;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0DB35A0005
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 10:58:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=piymFor6;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fV0km1q7;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774608946; a=rsa-sha256;
-	cv=none;
-	b=vevuFmeiW0/RACMcDhh+CfCYNeycuqrYPCt5c3hOEQqMEuXwyQ0FHAAJ8h89OFf8ZGgscb
-	Ztg5tThqRlIvNf0yg1rjTqoclTyNBda8adGDkpY47vhNgZfbLncDPTz6RPbs7NgCjI5z0+
-	7yGOu7FP5INGx9TqGYwIxVYbq93iaQc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774608946;
+	s=arc-20220608; t=1774609112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wqOxX014rr7/4EOQiI7npt7k72qZHgRBDLEpuc+UrsQ=;
-	b=I8UgiGk99zI3ylauqXJrNHZkehUBOtUEjXJNDOshy+/SZB0aratTnBiClTa7qsYSi1/R9P
-	ZR2BYnQlXgdRciSNuFDrQahYMQCSJpgIklc+Swhz9sccUhE6wma7hfd38dZeQJqV7/iUy8
-	0dDwSQ3h2F3vNboMt+djwObKzhZUGs0=
+	bh=25AaeqQl5ik4DE2qY7hwKe48F3Qntmq7fZjEkTsZCW4=;
+	b=rj4JcgFGkZhvDZFg0Pj4qkWWOQweXS4Pn9OVpTtL0rQUV4tWxeTblhWT361OhxCdZNiEQl
+	HVPfsioT1LV6C4MIPYN+YvwVOnPzhM0hhPuIPNFkj58G49x4Z81TUrSZvxN18DYdyHRphi
+	IA/9UnO9JQ4Dl9DkcbjsLMu230fFPNE=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=piymFor6;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774609112; a=rsa-sha256;
+	cv=none;
+	b=6v1FzjAGPm8npfMjmuldJ1TjTdJnsQidGO3nDOYOX/Fs8xEMnV8YCwHZDpgKbjHAzd3Q1f
+	7o7ev5WYouNqmr+2HpRUvtjrYxNA+WVw4pguTz0nXeWXEJgQtl8w+f9LbrAn6jfXbJCSjh
+	xZrGGiqHq6W7p8ksJK/Ddlbmws/TPIw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7FD91441A8;
-	Fri, 27 Mar 2026 10:55:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D2EC19423;
-	Fri, 27 Mar 2026 10:55:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D715543F2F;
+	Fri, 27 Mar 2026 10:58:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C027AC19423;
+	Fri, 27 Mar 2026 10:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774608945;
-	bh=OnNZiU3/2JpKPliKEYeVbD7OBy40yJs15/jP7cJER64=;
+	s=k20201202; t=1774609110;
+	bh=s8xXfl1mX3u33WiFFWFbrh4M9MzMd9HN8QFhbwAkBKc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fV0km1q7L/8x60xynQ3CoZH0kgAWkgwF7yWKaD4IULVH30RF3gEnspxV31EsHRkSc
-	 xNFKruMCKBR6P5YBqTaKdA+I/XrD1HtzXvs76vQglGg0GqOY0ws9cFveGJlv+eh5uq
-	 cav0c91sLFKChj/bJMgRu4z4eN5zU8fQs7NjoFvYsV720rL460ckXsNw5OXh1ghcle
-	 /7lKwWng2C6VCn/AoRSBzimyA2MEroigRat4FzYfxUIosr35SfL5wEUkloeiWZ0V1m
-	 CMDba15ct+hJCvoI66VEqCLkugjZeV+TLxMiz5lJb4uAKKy6Nsy8nijLmX5pmINyYb
-	 GGc/P8aIztC0g==
-Date: Fri, 27 Mar 2026 10:55:42 +0000
+	b=piymFor6hHlsvu9d0DWBf3VCgej6vCBt81opao/rdhdloTXa9bDwIuOUodkNDt+dc
+	 i32ykfa+tFgp9CY+M/HWEF6ylntguVHVLSzUoT1r2ca4SYmrOege5IQaWIdfrJW2d7
+	 upJXV8yLy0oX71v5FJrqmOMCB6+yx4YSbNk7jKGT8O6Xs7QTMjC6seOMWAozj7rIWR
+	 OTAv/kLr5E2p1d6+HEEr6d5oxF70VAW9GjiPSVaP6rjoWo/sToPv+HIuL4Wo3CNBO2
+	 5zJOzaqXk3+gvUcy3oPuUsg2PQ2OUukv2zLXyjL2Y0BDnWl9ffKFH7K5iZSRsHnthQ
+	 9hNhdyhUNzzfA==
+Date: Fri, 27 Mar 2026 10:58:25 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, Chris Down <chris@chrisdown.name>
-Subject: Re: [akpm-mm:mm-unstable 199/330] vm_util.c:127:14: error: too few
- arguments to function 'pagemap_scan_supported'
-Message-ID: <ea001104-8f08-4175-90cf-f667f703b5bf@lucifer.local>
-References: <202603271115.uE9vpppi-lkp@intel.com>
+To: akpm@linux-foundation.org
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Audra Mitchell <audra@redhat.com>, linux-kselftest@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: Fix soft-dirty kselftest supported check
+Message-ID: <237317fd-d2e6-4e9c-840d-fc60b7d8883f@lucifer.local>
+References: <20260218184210.206466-1-audra@redhat.com>
+ <c1b6f8eb-602b-4306-ad60-7a181fd94a45@kernel.org>
+ <abludfGu4upPcyRI@fedora>
+ <f635585f-7488-4bfe-8566-1c19f493c6a3@kernel.org>
+ <815b2fc9-cee7-4bfa-8036-4b93d1b47b4e@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202603271115.uE9vpppi-lkp@intel.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 99F71100005
-X-Stat-Signature: 3kz851ga9dkw81thoq64dm8kbhtto5bp
+In-Reply-To: <815b2fc9-cee7-4bfa-8036-4b93d1b47b4e@lucifer.local>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0DB35A0005
+X-Stat-Signature: hnrqzf9hwmot8fkc5o6a8qb4dihbgadx
 X-Rspam-User: 
-X-HE-Tag: 1774608946-881112
-X-HE-Meta: U2FsdGVkX1/dBZw8vXJNhDntqUYDvqYUAHWs6FiTHmg/bodcEs4/kjH6Tyvmeu4O1LIOz9zJtvmqFXGclb3og/Yz/8HVl6ewEUBaVpfN12wuYJCCKIqkf8pL8hpk90UNeH5zLoPWI91XKhh/26SQvW9PS0KVY8LuXAN+9UFvlRH0vxU5uD95CR9DtfhIAY3UUd5l7njKTPxJhfENz3RcmXuiFVi/iqHZwLVvEO9ah6VgusQvCTr/NY4+VacD9Q+hA6nk3TNVQg8n3yIQKV3ipm/NrWRNWd1Cod15pxKg3oaLaNAFl6AUz0jkcuDgAdQcplgHwB2tREJ5/qq8dCibtSuGWFtSUJ1aNTAPxrkdCO7w7nitnbgBSF/V9jLG59pQjU/4Qo3+YBFf2EevmaJcTfkMtlZ6AlSY6284JTR9YmJDEOGN4KGxoRneIrqmXu0sQQZ/UT/tPwnwpPBw9Q7qh4IinQ3LM8a3OxQbt7df9TrYEMauf251X6Kpko3eTMa5xEZuJ6jTa/dp4aKMFZWMKM65aVr3RRKBP5cTv0F77mh3Ashym2EJ3qY+dEr2vhRPZIB5fIndqxua7oVlggBCjuA0zZPSp/GkfprNTpCrZVbStWwGe2XO5vcuI9+TULl9HJVTprA6m2keqL8iHnt92EAhEtZiOyRJVyBw81zGtzH0pulHNkRcjyxEuVt7+AzOGHMxr1YbLMDgImkOn6MgX5SDUpJM38WvcK5CiYcKucVuo4/HB2jRWqZUkE4If/PVNHmmR4zAnagMlE6o4BZ3DRLaaSt/2+OQIJTSCRzCPMeupxi+KHs50kDskGREiL8bYKw4SPCsVaJeUhsMCy21UY3AyWdrG+1W6NNlEklbYTHKvBfgcP62ZtHyESmzU/5TEinD7QZ8uteOunxkL0YotrsdjYwAeGGO9KXHQFpME9jxgwZ4LLItwwCY5JRA7CztYp+Pc0sEK4x3yTqRSCp
- vqh1t/36
- Wi+8mLR0ahCslHvQtmxTGNgkpuyZVzTa/CdyOYHmFFVfK8A3g8SnYcBhvGaiFC1XMbPZYP0RIeJWdEM/9Clhiy4PEqYmB4ayomCYcR/GPAiAJusj0nFu0vITxuKq3bJMik7hw2WGWt58RZVqrg3+I86VERBzAbEjnGOfGIP1YYVFFmht7D5/pOSIMlstLNFQ9r24Vi26D43tbN+lGd2bsdJGgLXUd/IL8mLd23BGj9uyHSi4+eXr2vJFaOFq8kMI9gAXgloZRUUiw6b28IJkkmmoHDGVUKOHbAXqyBlO+Z7oVz202yn7ze6I1+cbb86q5IA2sLLi5PGO/t6Cj6l0j4B9Kkqm/aNfkMZSzBo45Ms9aN6hWF/8P7e+dERWLAzjyP2kI
+X-HE-Tag: 1774609111-934844
+X-HE-Meta: U2FsdGVkX19Qz08i894hTbNuYzIuZK5I9JtaFN1Gm9BtA3e7C3rjsQO+UjJxsOBmbC8imzwaaECasg0iKpvXasfP3bRn3RelRaCv3i3S05bek/1xxjIhF20sC5YjeZ6ua6nKnoxNMOlOgMPvp3oDhHgk056S7qHNX1ScldBcGhJTuwrzeicyTPwWmzc6aLD+qUo0YM369X3oRYAP8ooZrV62P4Ql0XDdOgSqwu9fcFnp49WAYoqfiGeNL8pUWCKUfgSgHoPEhtbRxa+DqFMb6JofFnPTjfhF+9HOHGUuPR2nxwkOnxA8coOzcCj8bnU5IuJlWosy50np0zkUFD8+QrMt7fL79UT6EOGRSzl4jsCCW06ErEFJoh6oJyEVTOsfUQWPr6Osm9svRTDslNGNB9LLcZRcz/QF6Rtswd+EuWP6A9Gfh7Fyr70goLm5PCtwB7/xvSuwxybhDMnc6h2wzmfuoa+UTXswU2NKFsFB73YqTlLtMAOR1Pl+xrcnqN/xOF+r/8i37zpAM6UOxT5wFHefUO53dT7/esHoZ597mJMKyNZJEFmaIqnhks2/Uca6vg34yjoxkPncPFEE5lW0uFBdhWAJqiJTPTgQKc/nuSvt3+4mOwq7ZvkXIGsKuOQHo/cBWCOX1dthWAP+oE4wmqhhAUi7yAxQzUhJQVyz/vposMUvUvfuodu748zFpYNtLDQU1IFvT81KcvYknfzV4aGcyLpK6vQWooLP7Zs62+1CnlOBYE1oKqcLjgmNaHQwClvxljIfBVLaKgyGxc2TFWz9piQ+BGBhaG3JXybbtBjtj82rKKAmHyq48teVi6Xg48MNIcbj+11rnanYrkCq3l1kvDYrFmYr61lSbKAKbdkFP1ro/Or5XsuRV7XUpvDvGg92i7aeeFVjN2nu9yfklQpLcPGIgs9DZEbpao1HJCEbKPVT8DjAHXI+u62Kh/WNZvdIyLZNznEneNUXaA4
+ b6oIjh2n
+ JdXNrouSf6qYvNcxwW1tkpumF/ElYmiM1eZ+mI6d5n+z109EhGrRsBMvKsMy5kSXoeUWUYif77iyNvQnaBhfdHEiMGiaXxao4VSLR90pCwx2C8eEPSnMbgTqi7UZ3vCwxtJuUCTzmxLtw7X4Dt069toSrRCJNsOau5VkfoCqoyoTbefSDjXfAr7goI9a4FN/WJ3SSIDIGUypgxgykrObqUbyd0fqM7DQ++NGLnhnKqOB5aKaWVTJ3cxyI4lPrl6e/RgnupPQA730n60vIgzV0IehQj4br6Puwo3Hcut7hW6dckNJmtzgQgqkYD8ryCjEXdreVib9OyrZywAZ61QkUSnVgUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,41 +97,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 11:20:28AM +0100, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> head:   74dc4627271e6e367176b519565e901ed72d6e4c
-> commit: 9652b82ca963243fb80e645319d473a7dc65ee79 [199/330] selftests-mm-add-uffdio_move-huge-zeropage-pmd-regression-test-fix
-> config: s390-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260327/202603271115.uE9vpppi-lkp@intel.com/config)
-> compiler: s390x-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260327/202603271115.uE9vpppi-lkp@intel.com/reproduce)
+On Fri, Mar 27, 2026 at 10:52:24AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> Audra - to be clear this is discussion about mm process not your patch
+> specifically.
 >
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202603271115.uE9vpppi-lkp@intel.com/
+> OK again I'm starting to think we just shouldn't support fix-patches at all any
+> more.
 >
-> Note: the akpm-mm/mm-unstable HEAD 74dc4627271e6e367176b519565e901ed72d6e4c builds fine.
->       It only hurts bisectability.
+> This is an example  of a change being done in a fix-patch that's _really_
+> causing issues.
 >
-> All errors (new ones prefixed by >>):
+> Because this has now caused mayhem in mm-unstable and the 'kinda stable-ish'
+> branch now won't compile any self tests.
 >
->    vm_util.c: In function 'pagemap_is_huge_zero':
-> >> vm_util.c:127:14: error: too few arguments to function 'pagemap_scan_supported'
->      127 |         if (!pagemap_scan_supported(fd))
->          |              ^~~~~~~~~~~~~~~~~~~~~~
->    vm_util.c:70:13: note: declared here
->       70 | static bool pagemap_scan_supported(int fd, char *start)
->          |             ^~~~~~~~~~~~~~~~~~~~~~
+> The fix in [0] on Chris Down's test series was for too many args to this
+> function (the patch changing this should have been rebased on mm-unstable and
+> changed Chris's caller there).
 >
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+> But now since this patch above ^ got yanked, that 'fix' has stayed in place and
+> now no mm self tests compile.
 >
+> And now we see [1], hilariously.
 >
+> [0]:https://lore.kernel.org/linux-mm/20260320195751.5b08b3e32ca835c3451d7bcd@linux-foundation.org/
+> [1]:https://lore.kernel.org/linux-mm/202603271115.uE9vpppi-lkp@intel.com/
+>
+> This kind of massive levels of confusion and 'I am just trying to run some self
+> tests on what-should-be-for-next' is just not helpful...
+>
+> I think we need a for-next branch that actually consists of stuff we genuinely
+> mean to take (i.e. review has settled) instead of 'literally everything because
+> we move stuff from mm-new unconditionally'.
+>
+> Anyway we should revert the fix in [0] because it's broken now.
+>
+> Cheers, Lorenzo
 
-See https://lore.kernel.org/linux-mm/815b2fc9-cee7-4bfa-8036-4b93d1b47b4e@lucifer.local/
+BTW, even _at_ the fix-patch commit hash (28edd9c5a25c) the test builds fail.
 
-This is because of a broken fix-patch that stuck around after something else got yanked.
+So I wonder if it might be good to at least do build checks of the kernel and
+also tests (tools/testing/selftests/mm and tools/testing/vma) before applying a
+patch?
+
+As that would have caught this right away. Breaking the build should be
+considered a no-no.
 
 Cheers, Lorenzo
 
