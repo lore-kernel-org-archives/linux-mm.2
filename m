@@ -4,104 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 664D810F284C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:14:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B76810F284B
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 16:15:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6D956B0095; Fri, 27 Mar 2026 12:14:58 -0400 (EDT)
+	id 712306B0096; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A44DC6B0096; Fri, 27 Mar 2026 12:14:58 -0400 (EDT)
+	id 6EA8B6B0098; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 982846B0098; Fri, 27 Mar 2026 12:14:58 -0400 (EDT)
+	id 5FFEB6B0099; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 867976B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:14:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D1F116090E
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:14:58 +0000 (UTC)
-X-FDA: 84592341876.30.10884D7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6850C1A0008
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:14:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZYqHZHqo;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F7766B0096
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 12:15:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 29B3C1A0A59
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:15:09 +0000 (UTC)
+X-FDA: 84592342338.04.6206EA4
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9B18D40014
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 16:15:07 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Jy3sN4o5;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf11.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774628107; a=rsa-sha256;
+	cv=none;
+	b=2eZ3SCe6gldPKc769FNKJYzVt2WscOj2ZS7KDsVUjhYrhh3pDJyYlxqTHERPJR3mNGJ337
+	RVYbYxB4Xpb63uzIaI58rapcFNhH6dJD9ru6325E94gwaUuXja9YHs1njJMYgmOJdfOfmC
+	ISChdVVEULxrlzVXzLYUXdyrS681zRM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Jy3sN4o5;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf11.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774628096;
+	s=arc-20220608; t=1774628107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d12OfPYOY1zhSu6WUZypvyObYOsxUhXXyZg3eNDRHd0=;
-	b=chIw5nHaXIsP1zeMvJRZNxvB2xTmEDv52VcqeBebDcADlYnW1LYgQhhWoV3mmdaDtm1WqD
-	JbR5sqKkAUxmYBwk7rrZ1h1j5YiCTluWvoq4pgANk9aJd2bz2sDSqMbL7qNdMErJM8MvSi
-	7/68jZbbaUf2Yu/dSV4fWdpc0AC7iLU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZYqHZHqo;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774628096; a=rsa-sha256;
-	cv=none;
-	b=eUBaq333pjxX90zvaPKsvMsHqf8B0IxIamOTYKKF/a+X06kAcHe/eTOTRnDYRIEAfqfMCj
-	Eg6bxU8HAGQ46rQbIhEl303TcgwNH+UY8chET4JTgUiGFAgq6uvBSv6fin0LboOICSPbOZ
-	prEAYPN8tu/RFB2aVrsl6fPP8NzC1M8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7E90F42A12;
-	Fri, 27 Mar 2026 16:14:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C0FC2BCB0;
-	Fri, 27 Mar 2026 16:14:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774628095;
-	bh=zXNUom4JcbcJe5P17bW0VcYg3BF2y3vbuxuAyWXA2Yk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZYqHZHqoR6y2KHbwdL3I4ZDGCUvKQVvkCNilvo9VFfK+sdEwwTjvdXUng8CkB7/R0
-	 y2A0V03w7X6WjHqqd/kgfuhGJBSA3J/q3PjhoVwq2zkB98Ka8b6A5oXju/bsSPygDJ
-	 PKUxVg2T7fMjcYFKT6FpqBH5sNByY0nEl3Z5ay7vWhaILcHJEXiefoudbSUOHxvR3A
-	 T0ovJe0NHcSU3WmsVuhpWMI9QpGMOnSw7wFCAKv87aJ4oQX4wzMlN60Bslfs6nVHHC
-	 DqLMrUA6eTo1ei9iwueDiBgHjCJE9VKB30Fz4xqvTB8jm0kztjIvo6g8oQxdV5olSM
-	 t6qw8eZhk8WPg==
-Date: Fri, 27 Mar 2026 16:14:47 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
- from file_thp_enabled()
-Message-ID: <be4edc58-d343-4db1-b861-31c98089b3dd@lucifer.local>
-References: <20260327014255.2058916-1-ziy@nvidia.com>
- <20260327014255.2058916-6-ziy@nvidia.com>
- <5ac47338-1954-43ce-9984-56d70f7c392f@lucifer.local>
- <075A4C69-B386-4557-BDAA-4038EB36370D@nvidia.com>
- <14af57ba-09bc-40ff-812a-b41dfb78a03c@lucifer.local>
- <59A91369-9BCB-4545-AEF8-083B52998CC3@nvidia.com>
- <10b04dc8-e155-4a31-84b6-17b302e65c7c@lucifer.local>
- <52CACB9A-A782-4D11-8B6F-66DA8D345C78@nvidia.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=8xIH/bLFhgsX9Xukaml3GhxkGzwhy8uKInPK3LEkRJI=;
+	b=8YUD/ba4w4tN3cPhUOOKvrLapWEPh/U27ZEizYk0N0YWPm6v72z0NDWgJ2t1bGNGCeaBqf
+	RIVtRgtH9Q7cNjrHMVCPBnmIp1tYJEC9bK+BjmZpO6vX73N1OYR4z/PwKkCMjbdeVfIQ/f
+	OfypKoSUc3W4PZi+/8wSYNfMl54Bkms=
+Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id A3669BDFEF;
+	Fri, 27 Mar 2026 16:15:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1774628105;
+	bh=8xIH/bLFhgsX9Xukaml3GhxkGzwhy8uKInPK3LEkRJI=;
+	h=From:To:Cc:Subject:Date;
+	b=Jy3sN4o5JTt/lp3RF525qilKkgZ3mjrIsZeMDOsqPvoKly6lLxKMrQBT7QQN3D8zf
+	 HLKqPqSRlY21uGChc95OFIkq0p8gv7Fva9n2UOzD3MskSoSq3CvW5KcbFLldxRXDsX
+	 aCZy1XftEM6xrxzN2ZcKq8cfBp4KDSI6Dn29QwOg=
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	Dmitry Ilvokhin <d@ilvokhin.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH v2 0/8] mm: use spinlock guards for zone lock
+Date: Fri, 27 Mar 2026 16:14:40 +0000
+Message-ID: <cover.1774627568.git.d@ilvokhin.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <52CACB9A-A782-4D11-8B6F-66DA8D345C78@nvidia.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6850C1A0008
-X-Stat-Signature: 1agn18kmsn7drz97nwyqpwyh5rwysj1r
+X-Rspamd-Queue-Id: 9B18D40014
+X-Stat-Signature: sx3oksmfymyjrpfp66yn65pkwekih7x7
 X-Rspam-User: 
-X-HE-Tag: 1774628096-118869
-X-HE-Meta: U2FsdGVkX19jlimPgGXZTkefsWMsrOyghKK3Oq5mXq92vI6G7VtRxkqPIwfM1iM7GiGPNyDyYhWuN06VYsCM5jgLE/oEGoVB+Wjv4Z64w+t08qwOgljAZzKXJYUIK/PmrbrNgk9vyFaLb58g+DRr5tH0guPfSaBjIe6/3SMgz0MTXf7cIBV3iHDCU3sLKEJn+kaKUBvdsfBWsRpkVZZ6seX8q8xAdxBQZRQ1DLLW+opcm9QTkaKGiqizbhJsw99vlgcQNJ75aurK+pUGjjeUAEfacG3jwn2fnDa4yYASIbut8mQzFOsFdF5biQmrR4PYI73zkwzq1WOiExozs5LekP7qgCvOL26GnBHn4sLxMECQdENo/K+JY6ZTUYhhTAZU0n61sfNI3UhSPPJHjEArt36NHypVRzSZzz4dYcLLE7UDkAaxJCAdITqjickSfdZGQ0M7Pppe+71Oem8Zt3qCIVFl9xXJHD/mP3kfKjkKgpG/fcM0mCCTV2WLI/baHNpyWy0qf+3uMPYEWCKdB0cQlQfd8hq+j5tO830cjagZeCYW3eaCcD6dcJMlgT3Tn2FJsp9iQSNObB8UDZc9ukLXq1PpoYMOcFy+pc8lmxEIXNcDtD78S5o2FvqXpo0CJ4WBwYQYmyXbylQ0DjVGyUbIgffS+ie155jR4+EmDwMyJxzZamh3rQ1QC5m5etr+EyV4ZLEwILKdochoC6OuwSGNo7sb1FKrXlzNh/3mOmfAbuxhW9rxX5S09oU8fZj9t9Z7UqG3GY0XlMMeWZ7PtBVhOaMr9+hW3OpfT246fP8MkmHnbsdo+QJRG0fHysXvXo5BmulNBwp9FXvLVtuALIku7YTiGSnadPjd60K5mPoDEt5l9R046oEGR8fzSEe1EXmg//POkIok0R2ibyxQfUyQNzKMhISRkzBlH+Yh7O0WQcF0NrkHmdrbxtA5q5eW/g1KVV+5qDKB9qcgF/LmuR1
- wwgYcnl/
- jpendH48jviHT2fRp4h6BdAfZnBgWjh17g9ENcPH7wB5VXF5OttstgRw7qtmq2bkMtR64/VBhR5ASkZoPZjzGsSH6EjcxQwWdeSBSgD2+oPKFqcM3Aibq2ebn0wkGMdajuUrLUqEEssLEV2q4rJq92l/VkEPO4Nk1+iLIdDbRX9mEPye+3fRyvz7hLyGxV0m7r+wPfbDy5fTNUM/0TOnx+fLl7rYsoreSH+pUTDsuw6aBEQ7Ax27HHTHpPr/VdALsNHwmcs1rQXBPCLR/M1PtE1Lshdh9WOlI0jtZ
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774628107-572188
+X-HE-Meta: U2FsdGVkX18s+alTWaOvoXJ9uuB/h+jwRnq/Ha+JUZVxGm4fzVZNFPqds9L2UsveNPQHMLe0SGc/OTt7nnIsU/SutvFBIf4MQtQF6xj9zZM7jgTbv60a+nOMOVhNpK2gsUoYxL9JltZdPvMhLrFSG5xM6649tZQ8QEPZ//B/bGq836Dc+p1O2GJXYqK87j+jA6S0vZLF93XkDTWqqPjR9v/taSA3V1iM2CeX3IwXnOc4gpoUFg76jkCtmnIncIEtBqWcbL1sgyENQdpgxBwsV+wzBqQoAHK+iqOhFrP5PZRL071gHWfkkug5KCKCmrKQharccW2Wu4hj7UauzrqXWkJEs2KZ6MvTeKNwgnejJRacTL+s02KlS6npy/OQhJNbFJwd8RG78Ct5WPtRSicqhBsYEvx94bbYNyu0Sc4Ph5y+prfQbg+zfO/wlrPdbzSJ3/a3FfVztiFNG0C1GctHnpfYHHN34ovVEBiBO6ZkP2JYDrPn7bTVWa65IFBLcyLmDA88MdImPZdEER8K5W62MMhzUUDF4oSb/hFcjiJqjc73GRacpAXsiDjSm6VhZSfnbr4JTPYq9m8+Mj4F2UPg55j2pe6yJAK0Y6yyw3Qq2/dSGbkdLnhlKRAfWt6WH+lhWG+MtAEOaCTTke2joaDptyU0O6q+PQDrupwvZzK0o9YiQUoNEuCLIeo1IG6DqNDf27emxSs9bXeTTc4JhtGMHmVsh0fwZKhGqxvui+2/vNmyLKL3tEAAWGxvXtp4QMAlmybFFmsWJGv3MMPsHqJSxLsTuYpW41cSbFkPfbsh5MjfdLbKXEnClGc6bV8Xes+QdU0orUdeJ8fB8LbFF7yCW/sSB+pj6SaaNy0ZYK3lMrPzvTsvq0qxYOj2Vqfmpxkd2CKrKcVT5t/mrMAC6pFUIj/2Smzy58OT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,48 +91,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 12:12:04PM -0400, Zi Yan wrote:
-> On 27 Mar 2026, at 12:08, Lorenzo Stoakes (Oracle) wrote:
-> > So actually:
-> >
-> >                        |    PF     | MADV_COLLAPSE | khugepaged |
-> > 		       |-----------|---------------|------------|
-> >  large folio fs        |     ✓     |       x       |      x     |
-> >  READ_ONLY_THP_FOR_FS  |     x     |       ✓       |      ✓     |
-> >  both!                 |     ✓     |       ✓       |      ✓     |
-> >
-> > (Where it's impllied it's a read-only mapping obviously for the later two
-> > cases.)
-> >
-> > Now without READ_ONLY_THP_FOR_FS you're going to:
-> >
-> >                        |    PF     | MADV_COLLAPSE | khugepaged |
-> > 		       |-----------|---------------|------------|
-> >  large folio fs        |     ✓     |       x       |      x     |
-> >  large folio + r/o     |     ✓     |       ✓       |      ✓     |
-> >
-> > And intentionally leaving behind the 'not large folio fs, r/o' case because
-> > those file systems need to implement large folio support.
-> >
-> > I guess we'll regress those users but we don't care?
->
-> Yes. This also motivates FSes without large folio support to add large folio
-> support instead of relying on READ_ONLY_THP_FOR_FS hack.
+This series uses spinlock guard for zone lock across several mm
+functions to replace explicit lock/unlock patterns with automatic
+scope-based cleanup.
 
-Ack that's something I can back :)
+This simplifies the control flow by removing 'flags' variables, goto
+labels, and redundant unlock calls.
 
->
-> >
-> > I do think all this needs to be spelled out in the commit message though as it's
-> > subtle.
-> >
-> > Turns out this PitA config option is going to kick and scream a bit first before
-> > it goes...
->
-> Sure. I will shameless steal your tables. Thank you for the contribution. ;)
->
+Patches are ordered by decreasing value. The first six patches simplify
+the control flow by removing gotos, multiple unlock paths, or 'ret'
+variables. The last two are simpler lock/unlock pair conversions that
+only remove 'flags' and can be dropped if considered unnecessary churn.
 
-Haha good I love to spread ASCII art :)
+Based on mm-stable.
 
-Cheers, Lorenzo
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+
+v1 -> v2:
+
+- Andrew Morton raised concerns about binary size increase in v1.
+  Peter Zijlstra has since fixed the underlying issue in the guards
+  infrastructure in tip [1]. Note: the fix is not yet in mm-stable, so
+  it needs to be applied first to reproduce these results. With that
+  fix, bloat-o-meter on x86 defconfig shows a net decrease of 49 bytes
+  (-0.12%) for page_alloc.o.
+- Rebased on mm-stable, since the patch this series depended on was
+  dropped from mm-new.
+- Converted guard(zone_lock_irqsave)(zone) to
+  guard(spinlock_irqsave)(&zone->lock).
+- Dropped redundant braces in unreserve_highatomic_pageblock()
+  (Steven Rostedt)
+
+v1: https://lore.kernel.org/all/cover.1772811429.git.d@ilvokhin.com/
+
+[1]: https://lore.kernel.org/all/20260309164516.GE606826@noisy.programming.kicks-ass.net/
+
+Dmitry Ilvokhin (8):
+  mm: use zone lock guard in reserve_highatomic_pageblock()
+  mm: use zone lock guard in unset_migratetype_isolate()
+  mm: use zone lock guard in unreserve_highatomic_pageblock()
+  mm: use zone lock guard in set_migratetype_isolate()
+  mm: use zone lock guard in take_page_off_buddy()
+  mm: use zone lock guard in put_page_back_buddy()
+  mm: use zone lock guard in free_pcppages_bulk()
+  mm: use zone lock guard in __offline_isolated_pages()
+
+ mm/page_alloc.c     | 53 ++++++++++++-----------------------
+ mm/page_isolation.c | 67 +++++++++++++++++++--------------------------
+ 2 files changed, 45 insertions(+), 75 deletions(-)
+
+-- 
+2.52.0
+
 
