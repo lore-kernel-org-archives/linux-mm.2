@@ -4,100 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C671910BA422
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:13:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4078010BA420
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 03:20:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B1696B00A8; Thu, 26 Mar 2026 23:13:54 -0400 (EDT)
+	id 58F786B00A3; Thu, 26 Mar 2026 23:20:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 388986B00AA; Thu, 26 Mar 2026 23:13:54 -0400 (EDT)
+	id 53FCF6B00A4; Thu, 26 Mar 2026 23:20:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C5A86B00AB; Thu, 26 Mar 2026 23:13:54 -0400 (EDT)
+	id 47CB76B00A6; Thu, 26 Mar 2026 23:20:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F8B56B00A8
-	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:13:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DFDBA5D3B5
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:13:53 +0000 (UTC)
-X-FDA: 84590373546.20.4D18536
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 35D996B00A3
+	for <linux-mm@kvack.org>; Thu, 26 Mar 2026 23:20:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD0FE160F45
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:20:01 +0000 (UTC)
+X-FDA: 84590389002.08.9694688
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EBC5612000A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:13:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="hve84N/X";
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id E3AFC40003
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 03:19:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Nm8XaPoE;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774581232;
+	s=arc-20220608; t=1774581600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YAAeXEJRRnV/Ol9N+nMmfYnWVNnFls6CCMpespeleZQ=;
-	b=Vq2SvOHEU9bRQcQAq9vPU13caI0RlTV13JquV7Zfpa4G9x02KWbqYCwD4rp7Ede6//SXgB
-	Gb4kL7hrI+3Y8bPjKNPzI9GDHx0dMvdYkMfzZ6ni56/Ky211Uf2mvdI5zbOpS+qfrrh3yi
-	NKE1qoK15nolprjm5Cf2ePY7F4bt4Ow=
+	bh=byG0/GC1tLCnqfQOH2VXIvflcSzdYAjehV1sM5sjbmA=;
+	b=GnWNXrjOQxfre2KhYAUYkXY16bk3k7AyB+fznqNPxjnG6nbt8wZDAf7CXnY1upJ3M4X4xs
+	VPK+hBBHbSi710qFeVtWhsJZCcYPDS+kpb8N1UgxATsTcwBCKEEEsRYBIlXBw0M0FZrUMt
+	bNJlWpv87v5Yw7a0qn7BTs8qpFDsb+0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="hve84N/X";
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Nm8XaPoE;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774581232; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774581600; a=rsa-sha256;
 	cv=none;
-	b=JDWTeyIHPAJjjV8VBf/EvN//1b8Y/EqpKZ6CgDGzKvXOgBilYX68j6tySJ2yNucVizFwCc
-	CHrVcozC/YlmUAVEK9Ged66LENMvNYdGUzI7b7uJzlcvklAr/ys7SDSYYnBppGOL4SOjMi
-	65EdG0xzmlCxOeSRjxyvRKjTxygrnGk=
+	b=Dj7Dz/bGZNkpsRGJTzyfbNblhCVTthKbjHzpsIS6j41bPYPTM1X9mEbdous+5l3SMz4Ydj
+	adxSTAEQZTZJqMgnh62zlGZ4t31YIr9gN842aDw+DlVPtg9w47dfFA8SrgHLbpI2Wqi7W7
+	23+5Wt4BYrRhoXqjcPScXdVcvtyVe1Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DFBF0443AF;
-	Fri, 27 Mar 2026 03:13:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B09C116C6;
-	Fri, 27 Mar 2026 03:13:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DCB44416F8;
+	Fri, 27 Mar 2026 03:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90605C116C6;
+	Fri, 27 Mar 2026 03:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774581230;
-	bh=/nbxgnztPKPE/Y/AAz6k5DR9LwMDKIKYxOf7gLsZnmM=;
+	s=korg; t=1774581598;
+	bh=uslss0Q2m2BhB3EMWw1UIGYfQnXC0XxVkAweZzqzFsU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hve84N/XvEGzKL7J7swNcjpi8EC4JPnVRpzI5XIFmdJ0LXiUZT7tfsR97V1HYVXZl
-	 Z8pV+ytUh+9GbWpENY9HxbE/0KxCYlCBqIgSd+h6FILFn9UE4fiaHV3Gaq9aRG3L4D
-	 JBb6HtrUBpkJcJXYH4j1ebNZgBdKoBH81ERSWKSE=
-Date: Thu, 26 Mar 2026 20:13:49 -0700
+	b=Nm8XaPoEl8Lns7kP8c3g7ltMfa0eg6WKI7mu9DBSycHgh9UaRKmhK1J3E53pTVQbP
+	 aEy/wxWTL//5S0VWVv33bgE9VLcUk65nh/IFZ9UBtdVor39nfRFsgVKdPdT79Kp5JY
+	 9r1tHgAbzRcuH8DW80ZBSjcT9KWj2aJlIeCr0Nas=
+Date: Thu, 26 Mar 2026 20:19:57 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, hannes@cmpxchg.org,
- hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org,
- ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, "Harry Yoo (Oracle)"
- <harry@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v2 4/4] mm: memcontrol: fix unexpected massive positive
- number in memcg_state_val_in_pages()
-Message-Id: <20260326201349.f63af08fb120b2ecb1623211@linux-foundation.org>
-In-Reply-To: <0cf08b3f-6fed-41c4-8728-c925e8a55f29@linux.dev>
-References: <cover.1774447069.git.zhengqi.arch@bytedance.com>
-	<e19052a28a7b604c012bfdfc900fd09543976284.1774447069.git.zhengqi.arch@bytedance.com>
-	<54c2b09c-84f8-4118-96a6-acc13ca2f245@lucifer.local>
-	<b6462703-9744-409e-a770-b9a7ca5fa198@linux.dev>
-	<9ee51ac2-c87c-44f6-b983-44ac9007cb35@lucifer.local>
-	<20260326170622.8fa7ca34d1425c241525bd41@linux-foundation.org>
-	<0cf08b3f-6fed-41c4-8728-c925e8a55f29@linux.dev>
+To: Junyao Zhao <junzhao@redhat.com>
+Cc: vbabka@kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/page_alloc: fix indentation for VM_WARN_ONCE
+Message-Id: <20260326201957.d064134395f3b832de29d048@linux-foundation.org>
+In-Reply-To: <CAMZL0nYFrtfQbVs2F63S3y1kDnLGeQpURxd+OqGE3YkZ7Ad9Tg@mail.gmail.com>
+References: <CAMZL0nYFrtfQbVs2F63S3y1kDnLGeQpURxd+OqGE3YkZ7Ad9Tg@mail.gmail.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EBC5612000A
-X-Stat-Signature: pk5bpftri1g69ymm387taimgc4tf9ggn
+X-Rspamd-Queue-Id: E3AFC40003
+X-Stat-Signature: jgeg6j3ijtpq7j8b6rxmi3urkoohb7y7
 X-Rspam-User: 
-X-HE-Tag: 1774581231-119626
-X-HE-Meta: U2FsdGVkX18cPcfiIxM0BwMvD2PliPLvFQNv0jKiF9L3nvnVS09NTyR74BgPvf7QYFnsW2YE0ug6e5Af5NgtabLUMhtP4hatfDCop+2aP8hF/ee4WnzTok7EyyxveM6GsC04wqM/Qr1MXDDJxoK2kN31jiofCr9WKzneB7CNVmyRnbnLehXLeg+19GS+T7C945PJxPRY8P+1xKeqiYGcZK5AW98MAnGnF8x5LlAH746Vy9IAUUfE1DXwLThZo0Qj/MHIvjIxTRUXZVgZbFQREMFOBm0O+NoEwAXVDc/1k7YfdfFJ7xx6xddMiDLu+Q8HQ3HftCY8GUc0QwZYMHn2CxmcwOKDUxgQ6R3NVbQoCV585NPzXM12sZpRsQLtOAMEsRYLo+sbxuX+7dQ2QO8RdHWYlCniHQUUhqtf4LQ9OBId2lrcZvhZcxekeOrw8BX+4mwrZVZecE0DJo9bCyKCOMS+K2J2gshV4s6qWK5NwsDOtCbb3h6+jARWA+u1rm7qqCJ2OxRRtDYjj00VV1WJTGGRydOaCrUa9YBfMhZbhxOP7CinQMjpLTUXmfrHujTTE9evtlZftFQi8nvoBbLGbN0XjSbHa2jv/RGz2B6GtoOZeXbjRruV3MdlahAefm6HMYrMop9YVVzpIrJpfCwCINaUg80IxXF1IZwi2th37uvnzNIVJHaja14raVcir6FExyCzr0PsJFeYJrnVFr9QVSvzEjySXiiLNy8T1G8zS0AHWwhqrrU3FGAImZgPI+fbvmu93aiH5/GSpWDAxZX0c0uTAac8SO6DZW+ESLImySjxwmazsJ4vqzzBMfQAV2hcZTo8QAeo8OR7PXQuOvzxRvmJBUXRIRJ29GAPPyeu/jghUXRH4Oz3Bne0eDYKA3tNaIEquZdiRg4zqOpi9vRfXXED3b08pjIhbHc6aubBZUIDIU/1lOc7/TK3n86zfBLpqk/P6f44RKCytARE4wh
- oX3Xa3kf
- 8oGtle+1HpdumEy4byudcPd2IVBGuuM/7GeY+66NlVn1zM8S28EnjC9nr4fq13he1TKm+C3OjdaDBP9U0vm1etIYYXJsTWKLwo9/2lZcjqWroAtxTtBW7CUpJrRLgusHU3UqkNkIVPiqUev6JbhFJLcEkI2W5R7Yol0J6zRumLIJdKNyuVtlcvRKXXp4NZ2MCsrFKioK4bMkDInI4tjr0bF0C9IF8D3/3myyCmv3dU4rOIWDT+37kurSFXvglt3hPGDH8qK8uLYI/Aa0vPSOCYAWrsNVCfsGcypAuCcwqqugr158=
+X-HE-Tag: 1774581599-111029
+X-HE-Meta: U2FsdGVkX1+9PjsLTBCbWkL7qz2+D5t8m/GCOxRBCzPu/vuKeBiycr70algTpM9UurKNLY3RRCIHOWcDJpW+es8F1iBWaEJInIav/xdA1/xjDML8sFqJztjvT9CUvHSej1BMkKRAru1rH4WHeMCBqaEL0+mX6jT37S6QRAH0T4p2opLz1B1SueJljp3TA/6a5bVON/FlC4t7FRD2seDjAMdIytKkyJTZ4euRyP0wggSw5VT4SnXVikrEpiKI5j73waLjoW/BO58iihEVprHLnnIFOw3ZsznyOuaGbIIzhjsHEMSzKj9x0kqJNshWzQmxNEF6VETfK9CjRCOcpKt4xIETXR0VNuItzn3kHjCTz0zXNMwdHV3vpNHU3FSGMDrCfGHIuGelADyQB2Ge6mDitwIO8LwxrULRIPBTI0OldZj6U0PKZGuPLc1yznhp7RchvvY4sZ+rweEH/a7D/c13MGaa9H3c9LW8MXRvqZhhZbRO4Ic4JT5BjtfftiG04hVcZc5VvvNk7S4rPGN6cDUlKAbyHF/IGUFnTOkmmkPbsM0rIuFe0cJXbdpdT0rvryFowGA29VMjKvDf5hmhIVvs9A6rkMi0DUdazNn2xYIeeYG0P4P9OjFmQifiubligDwHApML8Lpi8vhQPY5bxBfVKnJ7/e/hglDPN0kBShVpa3SnHzcjheyJFMgbvhSDpm/j2YOS3yBv1tgJH7IVA4XuVYkbxz3Zbb5R6xqLG+zqUzlKEjAMaUSLWaZ2/6K6GR1gS4IyNL/4ghGm4hnx+we51zdV7LVO3gYECpfvX/8GbV5q8l33Np2KlhcJGuAkxU01r/rxcc7xBCSIBKr4LEXUc7niy6r2LJhQ/CgT1RpwbM+mCbKlAj50vNzTqS+zFghiDehhpQOsiPbd6Q3pid+qRJOfbStXHJH7lslQZ9oWlf0bkoHlYNiszy2Koed6g61g0FISXgehKz125hMAsQz
+ VIF17gF/
+ 1TeoOHWOZE2l6rp/MBn/GoBNnC62XBVXnkvrDLj2qQaLLgNxwThqYHx4NjBwcGNM02qfPE9r2aLNsm7191O9LMYgFED6JKDpo/G0giiYsuLISNwU9mlVWe4lbqc2Tb69poEhKmiBBKJZ/cJ9XiKlI65UW68ormlLNJc/A35XSGneFa+i8UzrVHXlWlHQHE4CRCAbFYMyIHAMrYIqy6anQO6Tf5BEhABnJ5CgTcvbF6nebPAYwsUBBrXQCBf9DC0rJdeaCTag7n7K+XOVgyU06fDDSkV+uuxqrTn+kEGlrh0XNId2ni8UOsoYhHwS9SbO74h54
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,20 +88,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 27 Mar 2026 10:42:52 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+On Fri, 27 Mar 2026 11:00:19 +0800 Junyao Zhao <junzhao@redhat.com> wrote:
 
-> > a) Redo this "fix unexpected ..." series on top of "Eliminate ..."
-> >     and tolerate the bisection hole (easiest).
+> >From d7442d455218ffff67f890bb39d273d7555bed1c Mon Sep 17 00:00:00 2001
+> From: Junyao Zhao <junzhao@redhat.com>
+> Date: Thu, 26 Mar 2026 04:58:14 -0400
+> Subject: [PATCH] mm/page_alloc: fix indentation for VM_WARN_ONCE
 > 
->  From my personal perspective, I prefer this approach. The issues fixed
-> by this patchset aren't too critical; it's just that the counter might
-> overflow (and only with CONFIG_MEMCG_V1). If it can be included in
-> v7.1-rcX along with "Eliminate ...", I think it's acceptable.
+> Replace leading spaces with a tab to follow kernel coding style.
+> 
+> Reported by checkpatch.pl
 
-Cool, thanks.
+Thanks.
 
-I've dropped "fix unexpected type conversions and potential overflows
-v2" from mm.git to give you a clean mm-unstable to work against.  I
-expect to be pushing this a couple of hours from now.
+This is rather too minor to add, sorry.  If it was modifying a whoops
+which was added in the current development tree then OK.
 
+Also, the current development tree's __del_page_from_free_list() looks
+nothing like yours, so maybe you're developing against an older kernel?
+
+And your email suffers wordwrapping and tabs-to-spaces issues.  Please
+fix that email client configuration next time.
+
+> Signed-off-by: Junyao Zhao <junzhao@redhat.com>
+> ---
+>  mm/page_alloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 2d4b6f1a554e..d2e04ecddb8b 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -884,7 +884,7 @@ static inline void
+> __del_page_from_free_list(struct page *page, struct zone *zon
+>  {
+>   int nr_pages = 1 << order;
+> 
+> -        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
+> + VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
+>        "page type is %d, passed migratetype is %d (nr=%d)\n",
+>        get_pageblock_migratetype(page), migratetype, nr_pages);
+> 
+> -- 
+> 2.52.0
 
