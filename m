@@ -4,88 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F86410BA435
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:15:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD55610BA435
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 08:17:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 023206B0095; Fri, 27 Mar 2026 04:15:00 -0400 (EDT)
+	id 26FFA6B00BC; Fri, 27 Mar 2026 04:17:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F160B6B009F; Fri, 27 Mar 2026 04:14:59 -0400 (EDT)
+	id 2202F6B00C3; Fri, 27 Mar 2026 04:17:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E04DE6B00A3; Fri, 27 Mar 2026 04:14:59 -0400 (EDT)
+	id 10F896B00C8; Fri, 27 Mar 2026 04:17:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C96CE6B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:14:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E78228D15A
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:14:58 +0000 (UTC)
-X-FDA: 84591132276.30.36065A4
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0F6CC4000B
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:14:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qUqcA5RC;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qUqcA5RC;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774599297; a=rsa-sha256;
-	cv=none;
-	b=XrSW9ud8CugWNm/v2AsyO3Cc68Td1hNXhVC+khVC70v/8kVLyutAEVL8VzIgRkF/FQwSW3
-	BchT8H4EH4d1EpSNqOGa3PadN9NAtSWLU8z8MRqfpaWTO28wR5lVstFomewwZ++s0fUK9l
-	SsFiVdvNn2lIr2Bx66KRAJuC8A4X6PA=
+	by kanga.kvack.org (Postfix) with ESMTP id F04BA6B00BC
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 04:17:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB9AA8D7A5
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:17:01 +0000 (UTC)
+X-FDA: 84591137442.10.0955200
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0EA6B4000A
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 08:16:58 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=hYym+IrJ;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf01.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774599297;
+	s=arc-20220608; t=1774599419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kdX9mVgGs0Nkzsg6oIXtp9RiOtkTaiCl0p3MKd6jISU=;
-	b=594/YXVxxtXR5IK+CXu55fxTV+kY0YLo+aT0IcGr8nZnHjsSnwhpqf63+Q4VOmtWkLC44q
-	A3kAUBGK1Bv/rummr5pDsg0eDl3UqXnkxhkNJZi1SsHu4PNdMw8ApQszt+K4K4Ghipm/Ij
-	zklC8J91kcaDLY8f/djpceq4+09YYE8=
-Message-ID: <772e1ce6-6dda-4b73-9c9d-ff04a383f07e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774599295;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kdX9mVgGs0Nkzsg6oIXtp9RiOtkTaiCl0p3MKd6jISU=;
-	b=qUqcA5RCMiYHU72GZ7xO63U6oCVbMuxwt8m+xIoh4kjnZ5JcgTPax8dNmzJv5GtweiTbMy
-	jSKdRWs4kqQyitlPr+sUELIrCo69EwJfUNo1ZDgs8E6eq05cFpKX2Edfz26sI89h1yIn32
-	UlGCRR0e3Apzw5oEaMf594g8EygTscU=
-Date: Fri, 27 Mar 2026 16:14:00 +0800
+	bh=OzrpGpkHqWUx/eMcJ1jKlsZ1lwKvENOYTWoZ0OfZ1qw=;
+	b=ThSVJFditZj6glI7frcQhIR9K8i/+1dVZLDitV//zqE7iBQzjvuuJY0TNCa4ofOOUNHRdw
+	bMDJN6oKGchGRqfVyP06ZI7iEXx65ewXunBsMEez2DyG1wHxf9L0Xlvx2DblRRP+rQGxq3
+	1PwItyZLXfYSQ0pxI+BqZLEp4E8oqpY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774599419; a=rsa-sha256;
+	cv=none;
+	b=S+UVJHhXyfXjnPlISJ8DOLQEkdU7mwC+kw9JiO7peyPr50SMSLG0Sm092qye5hTQ0bcArM
+	I7k6LypbIsa6169NktDUO2+nTG5+Wry5v2aLFrK4ydnoMUMM1xla1aUT2odflgpPzeOVo2
+	0DqzKEpXR+lJzl/KXWUtOKAYdzzJHQM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=hYym+IrJ;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf01.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260327081656euoutp0159ffbf0a635c1b7e11620b7d0f98b0d3~gpMRSEAKq0448704487euoutp010;
+	Fri, 27 Mar 2026 08:16:56 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260327081656euoutp0159ffbf0a635c1b7e11620b7d0f98b0d3~gpMRSEAKq0448704487euoutp010
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1774599416;
+	bh=OzrpGpkHqWUx/eMcJ1jKlsZ1lwKvENOYTWoZ0OfZ1qw=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=hYym+IrJIbRVHQG1K2UWuA0h9Vy29fYkdvIs8yKDeB0yJ5xCqXBaCsZmHZBarhjQg
+	 OCISHCnKlHEu/bJerBpD0vdOwTGPrgXPwT20DQxx9+LqEwPiyD9mT1YPKzcY4kn8L2
+	 Iz4H4PewEUdxdr5cQTnZYxMoNHTZIAFMZduYpLGg=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260327081656eucas1p2369161b823605f46f83f110ed6d23a01~gpMRDRogp1270412704eucas1p2M;
+	Fri, 27 Mar 2026 08:16:56 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260327081653eusmtip255f1b4030f7274a851dfc4787d135774~gpMOrILMZ2779627796eusmtip2C;
+	Fri, 27 Mar 2026 08:16:53 +0000 (GMT)
+Message-ID: <9a19ccac-f7ce-4780-a251-f69a1fa45757@samsung.com>
+Date: Fri, 27 Mar 2026 09:16:52 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm/alloc_tag: clear codetag for pages allocated before
- page_ext initialization
-To: Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260326140554.191996-1-hao.ge@linux.dev>
- <20260326181145.35b559956a45b0efdc9c0450@linux-foundation.org>
- <CAJuCfpHddCffwF6uid_nW8sMAMpJcOiB62BCeGEtoiDYY6rP4g@mail.gmail.com>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
+To: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Robin
+	Murphy <robin.murphy@arm.com>, Danilo Krummrich <dakr@kernel.org>, Abdiel
+	Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida
+	<daniel.almeida@collabora.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Cc: iommu@lists.linux.dev, driver-core@lists.linux.dev, acourbot@nvidia.com,
+	Andrew Morton <akpm@linux-foundation.org>, Alice Ryhl
+	<aliceryhl@google.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, David Gow <david@davidgow.net>, Gary Guo
+	<gary@garyguo.net>, Johannes Berg <johannes@sipsolutions.net>, Justin Stitt
+	<justinstitt@google.com>, linux-arm-kernel@lists.infradead.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-um@lists.infradead.org, Russell King
+	<linux@armlinux.org.uk>, llvm@lists.linux.dev, Benno Lossin
+	<lossin@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	mmaurer@google.com, Bill Wendling <morbo@google.com>, Nathan Chancellor
+	<nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>, Nicolas Schier <nsc@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, Richard Weinberger <richard@nod.at>,
+	rust-for-linux@vger.kernel.org, Trevor Gross <tmgross@umich.edu>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>, Will Deacon <will@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpHddCffwF6uid_nW8sMAMpJcOiB62BCeGEtoiDYY6rP4g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0F6CC4000B
-X-Stat-Signature: oygcud44df3uzu1pxnedebjnoaafjjx9
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <7ad8bdf9-5eff-4443-ad15-c05355d793d1@app.fastmail.com>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260327081656eucas1p2369161b823605f46f83f110ed6d23a01
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260326211326eucas1p28e4e09d74d0798124d3dd5943b5b4c83
+X-EPHeader: CA
+X-CMS-RootMailID: 20260326211326eucas1p28e4e09d74d0798124d3dd5943b5b4c83
+References: <20260322192159.88138-1-ojeda@kernel.org>
+	<20260322194616.89847-1-ojeda@kernel.org>
+	<CGME20260326211326eucas1p28e4e09d74d0798124d3dd5943b5b4c83@eucas1p2.samsung.com>
+	<7ad8bdf9-5eff-4443-ad15-c05355d793d1@app.fastmail.com>
+X-Rspamd-Queue-Id: 0EA6B4000A
+X-Stat-Signature: cit7bf54xgjgpw3jyhg849ryg45b3e9i
 X-Rspam-User: 
-X-HE-Tag: 1774599296-463011
-X-HE-Meta: U2FsdGVkX1+Mx/O/rPC9btOgOsEY9Nn0Pr+aCBuLuTmmTURP1YNCuDFkLmpS1pwP4KjPjGT5YzCNNqBG22/E9hiXJ6SBcXrhNC5RESjHhwUSh5jd0mFAUp+mBoa2Mc5l1LxE9+fJ7/suD3n2zsOCA3gu0hfCHdYmqapi4wp4DYAkp6RdxlG+7lZPlWXPBMgD6ksa54mSyJ5mCGmKhOCnWnloPRHDFdXSdcQxQ2S0hWCyHNViSlAiFJRp9REo6Kb5V4Pz1UKmLdHESD7BicBIH0ovbZAAd11Q6Qpkez3mQQRyI+xtnszdR3MWfN1la/UZU7i1B5o+SU59y3OhKYOgAzUDXQXmOVdyjB0BNaZIgXqAbCn9qF/kuHPM95U3jU+e9gnKV3QLPo/R6KMqZJzvhryWUy9R65Ob/X5AP+BDHMyEIpzq3P89IIPKteWik9iidlz8bDBwbmeJdzconh2OpchVvmoJEbXOo+i4/k/IoKXROdOvzMbGpc7dWdATSvkEjC89nqYe7wH8D2f9Ktq6vMzqFgPlIFOsy5ZU9iGZnWhdzwYZJvRKNE7rp7hj88CM/lmJk+j0QMGPAa8MbH3cA9VZXnj2fa+MnDEJWLnpqPSCAA1xw+P9MUVtbXrlasRTJTK3nU5Nu8IhpzSKXDEqF3IS5LsTPdBt+CQ50tKSMpzvW5TSLwXbz7v2i0tAQVRiq8mzt58X8pcS3+0PhKtguOBiOHL23dWvMQQ8K7JRJKw6mADh+dFgxHnpoQ2PwPigxb3QVHN9OyRDq1DPBikgi6UudfIufkSbQOWTSimAogfv8X2+q4h3dYQef5Uc5ujT0CEqkOkSElyXdMxKAbIsMO6vA6ZFtRBNIbl0KS2Hf1BUS3gEIt9Jxib+f/Zk9WmAvaQKbiDmVef4jjpwv78KxOwHKBzKZrfYWdNxNP7hYG7bI77XXHjuEWaU0E7hOYj0fVZ2b2UkVBr1ckljfY1
- QjecE9UU
- zb34uhIyg0VxNJ4rTGvsQjm/8yXfTCJGAUfzmVX7etmg60yE0Ny58fqlLYlWPvgPAEOoyB/0/3dPwRkk2c+s+mY02QteqXXYzeH4CwsvH/KN4rqjCIt8jIbjYAZT9WmpJ2216hESQm28lQoGoap8C4tdEJyW4NDpgw+tMF0IijMKjz16wEnM02X3kSKM2WpeTCVwWWD1lKvmDwJYMyFT1yA1OPNUq38lejus8JfVXFCpru7A/ZyTnk0YTNqiJS4cH/82RlHsXUwipl880tqLOi7m5EWbV4nNRdeS86yU6nnI5wAAP4zDFBRPCdRbBAXGiLF7yxv1jlAJqmgo8tR9a0DenEQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774599418-556735
+X-HE-Meta: U2FsdGVkX18OApFdykNQ6i8e3SjNZizh4XxvKlraLj1hRtkVX9EeqUQM/VbemQSvtvDoPbDMyOAs1oyFLG3zU/iqE3xniwjSpjq5g/scQTfmp9e1JSAGBEFNRnz9mKIihPirtTHy1MDh5+TzOIsxhYpiummQH6X4PHo/9db5QeGqz9OCelgwuE4eX6LorgSwt/vYg21WUS3NxhJDIzNd0KWWsR4BS8ntwJ+Qcc7TN3bSRMUgo/sdOVhh7IzYkzDGY4pla5EtF1LGjt3qx/0UKfOkSJ5dlO6U+7Y2gCwHelHpAhXv09IzLwvPWlUYMGNQITwxmom7yTkKWcY1HNpu94VGC5z7rGjH275a9lau1vbSTDHXY/xl84xNdkZNBN+Gd8IkQcNF1oZxoo5jzjSeIrhPIIUj+HvJ14sYmDQEbi3wcmQ7PjbBH6biCW1+35fJtiUkiJ0G42lOdXDAKuelPWTdPL4vyGuH/Kcyo5v0ZShJbtyBECKJchVa7d9DXgi8OWSRui/7XYta5/ivhBXu/31Ur8u4NpERUWm3eMBu8uCatgA5B3jjEKVL5hXKXC/iDjhVZtFF9IkxLt+O5ptck4ds93ZPXEP8z+lozxsDbbRjajZiof2IZfbBxoMpyw+Pjm1loUrXQ1mloqU+7eiZVQFpBE1AixPj2FamaPXq9XGOJoT7rvUMHjmaKpzn6OhWpxvC/Sx2t+q39Rv2tDtFV6iqAmuMrFdBIWtJAEna1QkdORW4wdM5RH3dV6z9jbdQXexSJL4oGv2AY5wO5wQByvdOkZEVs1Hb1zqjYPmgoXaWjAo5FGa698qbw7ExCC+lV0wSWURVs+m/zT3RzQHAtAjg8KPkVJ6TVBzjl0PFsIBKwRfXyoAkdmQ2y9diebeS4iCi3qvvoo/14Irw/0GmLyU+Ha9c3agMFViuRJz8ZBN/fsSiV6kVZFQZ16BaN6JYdCR3HO9n9WVdCKvJ6bl
+ hnJ5Ukw6
+ dFNO+e+c2OLKRMRHp6qDEHz4yBYnH07TyUHFiHIs1Yw5Kgrg68xYZL4N1PUkyDN7HbRVFQaiUp8rnZckw7aC4jqREODrXTD6YJXq+NzFQJHZEJV/0hL4+C1+Hv5TIpo5/gaWMAK93KcQ8Z7M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,76 +125,324 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren
+On 26.03.2026 22:12, Arnd Bergmann wrote:
+> On Sun, Mar 22, 2026, at 20:46, Miguel Ojeda wrote:
+>> On Sun, 22 Mar 2026 20:21:59 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
+>>        BINDGEN rust/bindings/bindings_generated.rs - due to target
+>> missing
+>>      In file included from rust/helpers/helpers.c:59:
+>>      rust/helpers/dma.c:17:2: warning: static function 'dma_free_attrs'
+>> is used in an inline function with external linkage [-Wstatic-in-inline]
+>>         17 |         dma_free_attrs(dev, size, cpu_addr, dma_handle,
+>> attrs);
+>>            |         ^
+>>      rust/helpers/dma.c:12:1: note: use 'static' to give inline function
+>> 'rust_helper_dma_free_attrs' internal linkage
+>>         12 | __rust_helper void rust_helper_dma_free_attrs(struct device
+>> *dev, size_t size,
+>>            | ^
+>>            | static
+>>
+>> For some reason, `dma_free_attrs` is not marked `inline` in
+>> `include/linux/dma-mapping.h` to begin with, unlike the rest.
+>>
+>> Unless I am missing something and there is a reason for that, it looks
+>> like it has just been missing since it was added in commit ed6ccf10f24b
+>> ("dma-mapping: properly stub out the DMA API for !CONFIG_HAS_DMA").
+>>
+>> Do you want a patch?
+> I have an older patch to drop CONFIG_NO_DMA entirely, which
+> may be better here, since we know that nobody cares about the
+> empty stubs.
+
+The inline fix is already merged to v7.0-rc, but I'm fine with stubs 
+removal and I can queue them to -next. Could You send a proper patch 
+separately so I can easily apply it?
 
 
-On 2026/3/27 09:19, Suren Baghdasaryan wrote:
-> On Thu, Mar 26, 2026 at 6:11 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->> On Thu, 26 Mar 2026 22:05:54 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>
->>> Due to initialization ordering, page_ext is allocated and initialized
->>> relatively late during boot. Some pages have already been allocated
->>> and freed before page_ext becomes available, leaving their codetag
->>> uninitialized.
->>>
->>> A clear example is in init_section_page_ext(): alloc_page_ext() calls
->>> kmemleak_alloc(). If the slab cache has no free objects, it falls back
->>> to the buddy allocator to allocate memory. However, at this point page_ext
->>> is not yet fully initialized, so these newly allocated pages have no
->>> codetag set. These pages may later be reclaimed by KASAN, which causes
->>> the warning to trigger when they are freed because their codetag ref is
->>> still empty.
->>>
->>> Use a global array to track pages allocated before page_ext is fully
->>> initialized. The array size is fixed at 8192 entries, and will emit
->>> a warning if this limit is exceeded. When page_ext initialization
->>> completes, set their codetag to empty to avoid warnings when they
->>> are freed later.
->>>
->> Thanks.  I'll queue this for review and test.
->>
->> But where will I queue it?
-> I don't think it's extra urgent. It is visible only when debugging
-> with CONFIG_MEM_ALLOC_PROFILING_DEBUG.
+> The only targets that 'select NO_DMA' today are m68k (sun3
+> and dragonball), sh2 and um, which are some of the targets
+> that don't have any DMA masters, but there is little downside
+> of enabling the DMA mapping interfaces on those as well.
 >
->>> Fixes: 93d5440ece3c ("alloc_tag: uninline code gated by mem_alloc_profiling_key in page allocator")
-> Hmm. I'm not sure that's the right patch. Technically the problem
-> exists once we introduced CONFIG_MEM_ALLOC_PROFILING_DEBUG. I'll
-> double-check.
-
-
-I believe this should be Fixes: dcfe378c81f72 ("lib: introduce support 
-for page allocation tagging").
-
-Earlier I thought backporting this commit here would be quite involved,
-
-but after further consideration, this is indeed the commit being fixed.
-
-
->> A year ago, so a cc:stable might be needed.
->>
->>> +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
->> otoh, it appears that the bug only hits with
->> CONFIG_MEM_ALLOC_PROFILING_DEBUG=y?  If so, I'll add that (important)
->> info to the changelog.
-> Correct, it affects only CONFIG_MEM_ALLOC_PROFILING_DEBUG=y and only
-> if !mem_profiling_compressed.
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 >
->> Do people use CONFIG_MEM_ALLOC_PROFILING_DEBUG much?  Is a backport
->> really needed?
-> IMO backport would be good.
+> diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+> index 11835eb59d94..19fb556357fc 100644
+> --- a/arch/m68k/Kconfig
+> +++ b/arch/m68k/Kconfig
+> @@ -38,7 +38,6 @@ config M68K
+>   	select MMU_GATHER_NO_RANGE if MMU
+>   	select MODULES_USE_ELF_REL
+>   	select MODULES_USE_ELF_RELA
+> -	select NO_DMA if !MMU && !COLDFIRE
+>   	select OLD_SIGACTION
+>   	select OLD_SIGSUSPEND3
+>   	select UACCESS_MEMCPY if !MMU
+> diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
+> index c9a7e602d8a4..adc50396b87d 100644
+> --- a/arch/m68k/Kconfig.cpu
+> +++ b/arch/m68k/Kconfig.cpu
+> @@ -38,7 +38,6 @@ config SUN3
+>   	depends on MMU
+>   	select HAVE_ARCH_PFN_VALID
+>   	select LEGACY_TIMER_TICK
+> -	select NO_DMA
+>   	select M68020
+>   	help
+>   	  This option enables support for the Sun 3 series of workstations
+> @@ -558,4 +557,4 @@ config COLDFIRE_COHERENT_DMA
+>   config M68K_NONCOHERENT_DMA
+>   	bool
+>   	default y
+> -	depends on HAS_DMA && !COLDFIRE_COHERENT_DMA
+> +	depends on HAS_DMA && !COLDFIRE_COHERENT_DMA && !SUN3
+> diff --git a/arch/m68k/include/asm/pgtable_mm.h b/arch/m68k/include/asm/pgtable_mm.h
+> index 7501ff030c63..d095ae6c19f9 100644
+> --- a/arch/m68k/include/asm/pgtable_mm.h
+> +++ b/arch/m68k/include/asm/pgtable_mm.h
+> @@ -159,8 +159,10 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
+>   	    ? (__pgprot((pgprot_val(prot) & _CACHEMASK040) | _PAGE_NOCACHE_S))	\
+>   	    : (prot)))
+>   
+> +#ifndef CONFIG_SUN3
+>   pgprot_t pgprot_dmacoherent(pgprot_t prot);
+>   #define pgprot_dmacoherent(prot)	pgprot_dmacoherent(prot)
+> +#endif
+>   
+>   #endif /* CONFIG_COLDFIRE */
+>   #endif /* !__ASSEMBLER__ */
+> diff --git a/arch/m68k/kernel/dma.c b/arch/m68k/kernel/dma.c
+> index 16063783aa80..c52584e024af 100644
+> --- a/arch/m68k/kernel/dma.c
+> +++ b/arch/m68k/kernel/dma.c
+> @@ -8,7 +8,7 @@
+>   #include <linux/kernel.h>
+>   #include <asm/cacheflush.h>
+>   
+> -#ifndef CONFIG_COLDFIRE
+> +#if !defined(CONFIG_COLDFIRE) && !defined(CONFIG_SUN3)
+>   void arch_dma_prep_coherent(struct page *page, size_t size)
+>   {
+>   	cache_push(page_to_phys(page), size);
+> diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+> index d5795067befa..e246f295ec48 100644
+> --- a/arch/sh/Kconfig
+> +++ b/arch/sh/Kconfig
+> @@ -63,7 +63,6 @@ config SUPERH
+>   	select LOCK_MM_AND_FIND_VMA
+>   	select MODULES_USE_ELF_RELA
+>   	select NEED_SG_DMA_LENGTH
+> -	select NO_DMA if !MMU && !DMA_COHERENT
+>   	select NO_GENERIC_PCI_IOPORT_MAP if PCI
+>   	select OLD_SIGACTION
+>   	select OLD_SIGSUSPEND
+> @@ -133,10 +132,10 @@ config SWAP_IO_SPACE
+>   	bool
+>   
+>   config DMA_COHERENT
+> -	bool
+> +	def_bool !MMU
+>   
+>   config DMA_NONCOHERENT
+> -	def_bool !NO_DMA && !DMA_COHERENT
+> +	def_bool !DMA_COHERENT
+>   	select ARCH_HAS_DMA_PREP_COHERENT
+>   	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+>   	select DMA_DIRECT_REMAP
+> diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+> index 098cda44db22..dd3428a49614 100644
+> --- a/arch/um/Kconfig
+> +++ b/arch/um/Kconfig
+> @@ -25,7 +25,6 @@ config UML
+>   	select HAVE_DEBUG_KMEMLEAK
+>   	select HAVE_DEBUG_BUGVERBOSE
+>   	select HAVE_PAGE_SIZE_4KB
+> -	select NO_DMA if !UML_DMA_EMULATION
+>   	select OF_EARLY_FLATTREE if OF
+>   	select GENERIC_IRQ_SHOW
+>   	select GENERIC_CPU_DEVICES
+> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+> index 677c51ab7510..a96a22f857f1 100644
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -138,7 +138,6 @@ static inline void debug_dma_map_single(struct device *dev, const void *addr,
+>   }
+>   #endif /* CONFIG_DMA_API_DEBUG */
+>   
+> -#ifdef CONFIG_HAS_DMA
+>   static inline int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+>   {
+>   	debug_dma_mapping_error(dev, dma_addr);
+> @@ -200,146 +199,6 @@ void *dma_vmap_noncontiguous(struct device *dev, size_t size,
+>   void dma_vunmap_noncontiguous(struct device *dev, void *vaddr);
+>   int dma_mmap_noncontiguous(struct device *dev, struct vm_area_struct *vma,
+>   		size_t size, struct sg_table *sgt);
+> -#else /* CONFIG_HAS_DMA */
+> -static inline dma_addr_t dma_map_page_attrs(struct device *dev,
+> -		struct page *page, size_t offset, size_t size,
+> -		enum dma_data_direction dir, unsigned long attrs)
+> -{
+> -	return DMA_MAPPING_ERROR;
+> -}
+> -static inline void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr,
+> -		size_t size, enum dma_data_direction dir, unsigned long attrs)
+> -{
+> -}
+> -static inline dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys,
+> -		size_t size, enum dma_data_direction dir, unsigned long attrs)
+> -{
+> -	return DMA_MAPPING_ERROR;
+> -}
+> -static inline void dma_unmap_phys(struct device *dev, dma_addr_t addr,
+> -		size_t size, enum dma_data_direction dir, unsigned long attrs)
+> -{
+> -}
+> -static inline unsigned int dma_map_sg_attrs(struct device *dev,
+> -		struct scatterlist *sg, int nents, enum dma_data_direction dir,
+> -		unsigned long attrs)
+> -{
+> -	return 0;
+> -}
+> -static inline void dma_unmap_sg_attrs(struct device *dev,
+> -		struct scatterlist *sg, int nents, enum dma_data_direction dir,
+> -		unsigned long attrs)
+> -{
+> -}
+> -static inline int dma_map_sgtable(struct device *dev, struct sg_table *sgt,
+> -		enum dma_data_direction dir, unsigned long attrs)
+> -{
+> -	return -EOPNOTSUPP;
+> -}
+> -static inline dma_addr_t dma_map_resource(struct device *dev,
+> -		phys_addr_t phys_addr, size_t size, enum dma_data_direction dir,
+> -		unsigned long attrs)
+> -{
+> -	return DMA_MAPPING_ERROR;
+> -}
+> -static inline void dma_unmap_resource(struct device *dev, dma_addr_t addr,
+> -		size_t size, enum dma_data_direction dir, unsigned long attrs)
+> -{
+> -}
+> -static inline int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+> -{
+> -	return -ENOMEM;
+> -}
+> -static inline void *dma_alloc_attrs(struct device *dev, size_t size,
+> -		dma_addr_t *dma_handle, gfp_t flag, unsigned long attrs)
+> -{
+> -	return NULL;
+> -}
+> -static inline void dma_free_attrs(struct device *dev, size_t size,
+> -		void *cpu_addr, dma_addr_t dma_handle, unsigned long attrs)
+> -{
+> -}
+> -static inline void *dmam_alloc_attrs(struct device *dev, size_t size,
+> -		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+> -{
+> -	return NULL;
+> -}
+> -static inline void dmam_free_coherent(struct device *dev, size_t size,
+> -		void *vaddr, dma_addr_t dma_handle)
+> -{
+> -}
+> -static inline int dma_get_sgtable_attrs(struct device *dev,
+> -		struct sg_table *sgt, void *cpu_addr, dma_addr_t dma_addr,
+> -		size_t size, unsigned long attrs)
+> -{
+> -	return -ENXIO;
+> -}
+> -static inline int dma_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
+> -		void *cpu_addr, dma_addr_t dma_addr, size_t size,
+> -		unsigned long attrs)
+> -{
+> -	return -ENXIO;
+> -}
+> -static inline bool dma_can_mmap(struct device *dev)
+> -{
+> -	return false;
+> -}
+> -static inline bool dma_pci_p2pdma_supported(struct device *dev)
+> -{
+> -	return false;
+> -}
+> -static inline int dma_set_mask(struct device *dev, u64 mask)
+> -{
+> -	return -EIO;
+> -}
+> -static inline int dma_set_coherent_mask(struct device *dev, u64 mask)
+> -{
+> -	return -EIO;
+> -}
+> -static inline u64 dma_get_required_mask(struct device *dev)
+> -{
+> -	return 0;
+> -}
+> -static inline bool dma_addressing_limited(struct device *dev)
+> -{
+> -	return false;
+> -}
+> -static inline size_t dma_max_mapping_size(struct device *dev)
+> -{
+> -	return 0;
+> -}
+> -static inline size_t dma_opt_mapping_size(struct device *dev)
+> -{
+> -	return 0;
+> -}
+> -static inline unsigned long dma_get_merge_boundary(struct device *dev)
+> -{
+> -	return 0;
+> -}
+> -static inline struct sg_table *dma_alloc_noncontiguous(struct device *dev,
+> -		size_t size, enum dma_data_direction dir, gfp_t gfp,
+> -		unsigned long attrs)
+> -{
+> -	return NULL;
+> -}
+> -static inline void dma_free_noncontiguous(struct device *dev, size_t size,
+> -		struct sg_table *sgt, enum dma_data_direction dir)
+> -{
+> -}
+> -static inline void *dma_vmap_noncontiguous(struct device *dev, size_t size,
+> -		struct sg_table *sgt)
+> -{
+> -	return NULL;
+> -}
+> -static inline void dma_vunmap_noncontiguous(struct device *dev, void *vaddr)
+> -{
+> -}
+> -static inline int dma_mmap_noncontiguous(struct device *dev,
+> -		struct vm_area_struct *vma, size_t size, struct sg_table *sgt)
+> -{
+> -	return -EINVAL;
+> -}
+> -#endif /* CONFIG_HAS_DMA */
+>   
+>   #ifdef CONFIG_IOMMU_DMA
+>   /**
+> diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+> index 0748091339f7..228a3566d344 100644
+> --- a/kernel/dma/Kconfig
+> +++ b/kernel/dma/Kconfig
+> @@ -1,12 +1,7 @@
+>   # SPDX-License-Identifier: GPL-2.0-only
+>   
+> -config NO_DMA
+> -	bool
+> -
+>   config HAS_DMA
+> -	bool
+> -	depends on !NO_DMA
+> -	default y
+> +	def_bool y
+>   
+>   config DMA_OPS_HELPERS
+>   	bool
 >
->> Either way, it seems that this isn't a very urgent issue so I'm
->> inclined to add it to the 7.1-rc1 pile, perhaps with a cc:stable.
->>
->> Please all share your thoughts with me, thanks.
-> I'm reviewing and testing the patch and there is a race and a couple
-> of smaller issues. I'll post a reply later today.
-
-Thank you so much for your kind help! I really appreciate it.
-
-Thanks
-
-Hao
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
