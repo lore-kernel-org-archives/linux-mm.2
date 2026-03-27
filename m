@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0862310ED661
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:46:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09D5310ED679
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Mar 2026 13:58:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76CD66B0095; Fri, 27 Mar 2026 09:46:55 -0400 (EDT)
+	id 2EA4B6B0092; Fri, 27 Mar 2026 09:58:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71DFB6B0098; Fri, 27 Mar 2026 09:46:55 -0400 (EDT)
+	id 2C22F6B0095; Fri, 27 Mar 2026 09:58:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60C906B0099; Fri, 27 Mar 2026 09:46:55 -0400 (EDT)
+	id 1D8156B0096; Fri, 27 Mar 2026 09:58:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C18B6B0095
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:46:55 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6B0C1610C9
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:46:54 +0000 (UTC)
-X-FDA: 84591968748.10.2D719F2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D4A3D80014
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:46:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Skms378B;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B5076B0092
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 09:58:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46849E1801
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:58:22 +0000 (UTC)
+X-FDA: 84591997644.12.00051A9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 91A191C0018
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 13:58:20 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SWvmhHE9;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774619213;
+	s=arc-20220608; t=1774619900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yWAw0CsHYqSDWe4efm4Eod3arXmDkUR/GwfpXxf4AHM=;
-	b=UaWLruZ2t945fWnukZOn5zRe8OXW0CjuRexhkHmDEwSXQlMulEXxSbAS9v2qAylrFXuJ5x
-	tfLH5OyzoyeB9By5s5KC/FN1WB1P5ZtJ+Q09to4aOJftNt9Auo0+G5v4lEwbTtoEwagYf3
-	y9qfmrSFEtANI0l3AKM268s5mTMw098=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774619213; a=rsa-sha256;
+	bh=rV7qUqCmt9pMEfSsapby4O1NuRc/CuDUYfIgjrOR9R4=;
+	b=n4qWi+xoQqbXlLC8/94RhuX9i0QHqobHvDiGfKbv3cgDyucTl5zZyVXhqfLcLg9cTVM2Xr
+	OVW5eK6dUttO2q0do5lm98RVX3rTJC5XvcvHMBujc4lE2wH/VG4fc1F1QDFg+8CKn9vcK0
+	VAfPUPVp9UBLJiB8WH3O6T1nR3MRsuA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774619900; a=rsa-sha256;
 	cv=none;
-	b=Ry/JrRowZVVKlF5PAGUYXhmr8FUOLWLBfLvebaVGm6m7Gvda2xkdXzUOy+LmvVRHyexF0v
-	J2h+o7N7AFRSwqpvrvKDftGGv8fHkLEjAFKaUIVpzK9Tqc2RfCe1vAY3i/WH2BTnfMF3rY
-	sPslrTRpw469ilZ/UcrNLg8HqDkPVNQ=
+	b=O69SovubQaJi9Q6FNYdRsYuPFWKDOMvvqccLzTTibvuarnPT9yB0Q5pXke0ALq0BqUHFd0
+	LLOMbahu/pp/ig+d/hCMEGA8etrq96hXCMi9AjFTAjH1A0p8nYZe5+C0cGXEXsX3n6MZYi
+	Asr5o6hLBdxS0Ciu8DQJrrTPAcDSBhc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Skms378B;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SWvmhHE9;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B542C43D69;
-	Fri, 27 Mar 2026 13:46:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF860C19423;
-	Fri, 27 Mar 2026 13:46:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0AFC360132;
+	Fri, 27 Mar 2026 13:58:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D735C19423;
+	Fri, 27 Mar 2026 13:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774619211;
-	bh=89JE0t0W4FzLVyP23bqYBnuh2CwNsQQKIZIl2xYaLfE=;
+	s=k20201202; t=1774619899;
+	bh=VqACtXhfTYZCQGZ04hZLNOj+ApxLBRqLokDeDdIuV6Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Skms378BzmiA/D6UoHZMqFCDd/CdHEEeQBcQchaLRjwdim+s1GgnWl+5JBVLnpAMm
-	 cbKPDmx9DTssIsoBKVJeAC7+kNgElYmmVK7JgRDodZkwSptrE86un0zAtc0bTn6jOc
-	 vcaZ98vrotoVY3/Zl0SAML8PJUSqBwzszdZ5kRSvUf6dBPVT8n6TUUG2IB6BYpVc5S
-	 B5wEhPs1jJHndVr/z3zFczH1US1IiU1N49vPmISYYMajrebZEUy/9IdXqOWnrdvy7x
-	 aLXGcR/Jc+/laB6lvrpF6TKPPOYQPc154t7HIr7SI+Ewc4XgEgCOwUu/9QnAztP6AY
-	 YAv8isoHSvaOA==
-Message-ID: <10748785-08a9-41c7-bacd-88f05fdf1a88@kernel.org>
-Date: Fri, 27 Mar 2026 14:46:43 +0100
+	b=SWvmhHE9QgoG7BeeIXiy8S/MxDrH6bLIFaNzJG3Tn0p2MnG/Io5/CWnOCyGrz2aLW
+	 geze3jKXXes3f/fa44jBQySmHCda1h0nV0OAoKNw+OX3CWBVdREOK48PnFPgHvmTVf
+	 qBqFCuR9AczmRrJNvdALxpqkDpfH7ZqC1oGWWP+3omn+BFX0U/I15Q7KJqWFWEbUIX
+	 9qaiy1dpsnmCWXcdijGqoWkc2BrZqIK5PcpUi2Jrdb4NvRLGVkrEueTpTnzLJIUSlV
+	 4uQpwJcszdyqiYrXKTT+BtUEbjtX6/zW00+pcfgM6YcYoQvk+eofuhty6uZaim/ZfS
+	 GTx/hySbDFbCA==
+Message-ID: <b098fce7-be16-479e-b9a4-36f0ad71d242@kernel.org>
+Date: Fri, 27 Mar 2026 14:58:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 00/10] Remove READ_ONLY_THP_FOR_FS Kconfig
-To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
+Subject: Re: [PATCH v1 03/10] mm: fs: remove filemap_nr_thps*() functions and
+ their users
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
  Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
@@ -85,6 +86,8 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 References: <20260327014255.2058916-1-ziy@nvidia.com>
+ <20260327014255.2058916-4-ziy@nvidia.com>
+ <aaea8ce1-eac6-49d6-8c85-7361977b9a9f@lucifer.local>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260327014255.2058916-1-ziy@nvidia.com>
+In-Reply-To: <aaea8ce1-eac6-49d6-8c85-7361977b9a9f@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D4A3D80014
-X-Stat-Signature: azfur9e8cdihydih6dj8crakutnr7m1p
+X-Rspamd-Queue-Id: 91A191C0018
+X-Stat-Signature: pzbzh84osm45ufsx99iocpfzmog56grb
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1774619212-517873
-X-HE-Meta: U2FsdGVkX18xECD3cZ+xz7g+sKIEg+AjxNHYFxKa1Bmxj6txb6H0TL1ASH4rdIk9RwevVM6V/IZeovRzFNE4eczzxxTt5xeD4t1WzOF2a+QhDnZPccUJJ5V2ahvgal4zO/LurTSo3lZOsbHL9uSZCynyFPCbkddH25LoOZcH0pxU6IYqeDew0yS3rTbqMfpjMpRubByoyA/S7m59d+QO50oqgmYeIl6zJsVfSdq6WXTGBJ5V4lzI4cogx9SeXYxEKWrg4D1nALhbIXHRAMNQcWwd8SJdVEXf9WqWecx0EZ+XRMN0WGPTa7Ikui5XbVwM6vCmGCRs7P+IMq7+CsWnHvsBmc5x5j4kZx+IKeW8YOLXD/kjNRmHtzlQ1VA5T8hMhqZt+9WCnPXLaZ+pfGWlmjAAi9weU4ptQFMHBoQN0160GJlnGKgQXWaeajcQZbLPE9IZiLFXZQ/2GJBMnvXrXD/EXbCPFCh7auxEFlLWK4uAuGUowDo5H5rWp5WwQlby3CKanH4XNGeFef5E8B11be3c7N5Nd5BvjjIH4LjWTxqL0DgEP/ayYKuWOCGGqa9IAV3TCTWjx8lOBopVsobnbEoZ1zX3WJ2yUKw9gm8uNUmn2+y85JVmLTYtTgFy+S0XdH23AFKdgpmJcBzSS5+frQ04NTFil77bv8UaBStjIC4bDrMiA+h5CnCnsG1GEA5aMVtHKJUPFDLOxnyzWna4hBbesJEPJQUX4XMVdC5DR1LfVW2ZfLU8tzqvGS8//q6lH/P99+Pu17FiQVrxVfkY+FzKDm8ac77qlnCop9wqLedfw3O5xWw6szR3bCvdc04Muw7rqy2fHoGIGtfHOOTyEyrLvzBgq7M1AMhyWkE3azqeOrgrX/s221rblr9SwF1PcOFrJ2vsLx0wskDGEErl1U14j3P9bGHpdKA3ZXTZGK5hhmIyYsFjYyJWrNlh0ZNBdWV8d2c+R3l1cvcfJnl
- ZGTM0gos
- HdcngMlH/PwHzCE9QykIo+Wyk5CZFqPeq5N4/EvThSMrDcNH62ccaq2wW31yoR4M6eIHayZBxi3IRZ5e7h88/MtQ7PEc63ML2qax4/NyX3jaBr9bxngB/80lLIrOgPD1c/tNJFCwyP4esmf8Fx6hULckkS2lNZWOaoFH55d+WhlRwNRlqGbjQMJ4w4Kfni8d/hd0tPXJYeMo3wKgz/VEpuXsll/VSn1DM1H5mPgfc7kkUsPMFal+qZWRVuZHVtP56n2zogrjXx23h1OA=
+X-HE-Tag: 1774619900-826415
+X-HE-Meta: U2FsdGVkX18154e69N042Bg/gq6kT/bm4ZTtUdpdqdT0TaUXrO+XRpRUu1l2yN33PgUrYj635B+cL+5pTCYH++9QMdSynLCs0kRMDUloj2M87wB9jqD1lzmf9PH85WNJSNtaqHUKaX7m01hCKopJl98gh9x2u8XZfZRnb2m0+duhCQGZvbtr3dHp7XBnZnGGyTb/yU/Zf8bCfLNqPKrEYoAw0fxp8DOOgt5rfep8Sb64ZEhdk25tUhKP7k8IYBq0O25osV2w55UND1SFxnxUjUxVTTzo5J4IPcAy5vfpNHecIXZtSCBBk1N6zTc2ef4KA+c0Z22OC09zO6H4k3Mwcd66Mpaf4wC0zRlCmMio5fsSv1zjP4ZfaThgS/HmfRTlRMgFt2NBkR50hPq1+9Na10FRefXGhGirEO9qjVaspctVkODPZFBKZCBfjxJKSoPIe8iz1DHbPf+CBFhVCV+MpQU0MXr7QXeP+EX/o3UKwTLl7Y8AWFFb96gAjuDtqvLhEbHONGO6UUU3v1VIcrw05NSD+Z4Ly0xJK7AKp/KUkk6T0N4dZAzv/MmezTOHz05+kDl2aVdufTl6GxUN8zPCjB31oyimEFyoz4Erw9cJRfNNvO0sW9fKTBo9Z4U3ReVRnA8tXgx/D5D5n2Q/jiXFXPHHdUrb9xorKdjfJHe+z6Fk8WDubecmx8Eto/Gzwvk898ee79fCUrSH3/44ey1WxpgsSQcGBs8hrgNGkfdaUSOQdwpRflY+4M5djvE0uXtWqsf5mEKQThWW2imquizsp34hysaYOXJ17Am8hcdFIYeNjYduL3AZMmYPj8znpeLjLQ9z1JVzSpFXnRzcQpJv56KyRU+tl8Ros2COrmPcXaUB5Pea41P/5iYzWFHt59bclBo8DMxdyw4bFTZPd40h5W1NQgxk9zM8daW+fkWCCnfu8JT4t9XAkhNQ+reP+ir/EQQrqOQl57ez0HGu2Yj
+ XSzYywYr
+ EaSb0kQxLUUNsgJoATiG7AIQbQUlFD1JR0CTBK97THZxdklaZ3zIxgYMwUDIvN8n4xglpx9NOoU2iyn/j1jdQ464+9OKJ9nWVtme70M4nlKrspdvmSFhgmw0aHzWh4TrdHseXvr1fxzDC4+Y59oJzjOUdOMPGk5YfQqdD87NTvbtRSBlnK0KCffJjQxgEv+Y+JdyH9SxmkMb4v6sPsKNjI9SAo2AhIKyBtSPWS9dIKWt9Re6cn2sr4S9BBNOm19olWIDuEqG0BOtnVKS2YbRPjs3GUocHv1xte9W/MBPIB3ZmClyv3RtYJTgOvehdq9M7TAJ1hjVcToRuE7g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,49 +152,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/27/26 02:42, Zi Yan wrote:
-> Hi all,
+On 3/27/26 13:23, Lorenzo Stoakes (Oracle) wrote:
+> On Thu, Mar 26, 2026 at 09:42:48PM -0400, Zi Yan wrote:
+>> They are used by READ_ONLY_THP_FOR_FS to handle writes to FSes without
+>> large folio support, so that read-only THPs created in these FSes are not
+>> seen by the FSes when the underlying fd becomes writable. Now read-only PMD
+>> THPs only appear in a FS with large folio support and the supported orders
+>> include PMD_ORDRE.
 > 
-> This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creating
-> read-only THPs for FSes with large folio support (the supported orders
-> need to include PMD_ORDER) by default.
+> Typo: PMD_ORDRE -> PMD_ORDER
 > 
-> The changes are:
-> 1. collapse_file() from mm/khugepaged.c, instead of checking
->    CONFIG_READ_ONLY_THP_FOR_FS, makes sure the mapping_max_folio_order()
->    of struct address_space of the file is at least PMD_ORDER.
-> 2. file_thp_enabled() also checks mapping_max_folio_order() instead.
-> 3. truncate_inode_partial_folio() calls folio_split() directly instead
->    of the removed try_folio_split_to_order(), since large folios can
->    only show up on a FS with large folio support.
-> 4. nr_thps is removed from struct address_space, since it is no longer
->    needed to drop all read-only THPs from a FS without large folio
->    support when the fd becomes writable. Its related filemap_nr_thps*()
->    are removed too.
-> 5. folio_check_splittable() no longer checks READ_ONLY_THP_FOR_FS.
-> 6. Updated comments in various places.
+>>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
 > 
-> Changelog
-> ===
-> From RFC[1]:
-> 1. instead of removing READ_ONLY_THP_FOR_FS function entirely, turn it
->    on by default for all FSes with large folio support and the supported
->    orders includes PMD_ORDER.
-> 
-> Suggestions and comments are welcome.
+> This looks obviously-correct since this stuff wouldn't have been invoked for
+> large folio file systems before + they already had to handle it separately, and
+> this function is only tied to CONFIG_READ_ONLY_THP_FOR_FS (+ a quick grep
+> suggests you didn't miss anything), so:
 
-Hi! :)
+There could now be a race between collapsing and the file getting opened
+r/w.
 
-The patch set might be better structured by
+Are we sure that all code can really deal with that?
 
-1) Teaching code paths to not only respect READ_ONLY_THP_FOR_FS but also
-filesystems with large folios. At that point, READ_ONLY_THP_FOR_FS would
-have no effect.
-
-2) Removing READ_ONLY_THP_FOR_FS along with all the old cruft that is no
-longer required
-
-MADV_COLLAPSE will keep working the whole time.
+IOW, "they already had to handle it separately" -- is that true?
+khugepaged would have never collapse in writable files, so I wonder if
+all code paths are prepared for that.
 
 -- 
 Cheers,
