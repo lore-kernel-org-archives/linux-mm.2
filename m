@@ -4,86 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F3E010F3DED
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 17:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B23E210F3DEE
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 17:44:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09A6B6B008C; Sat, 28 Mar 2026 13:40:03 -0400 (EDT)
+	id 2279E6B008C; Sat, 28 Mar 2026 13:44:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04BA36B0096; Sat, 28 Mar 2026 13:40:02 -0400 (EDT)
+	id 1D8586B0095; Sat, 28 Mar 2026 13:44:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA39D6B0095; Sat, 28 Mar 2026 13:40:02 -0400 (EDT)
+	id 1154C6B0096; Sat, 28 Mar 2026 13:44:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D980A6B0088
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:40:02 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 896A21B6F02
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:40:02 +0000 (UTC)
-X-FDA: 84596185044.04.232A407
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D8648140009
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:40:00 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aBEk0qOU;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F3F5B6B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:44:15 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C1CF570BC
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:44:14 +0000 (UTC)
+X-FDA: 84596195628.06.8914C07
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf20.hostedemail.com (Postfix) with ESMTP id AEFA11C0003
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:44:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fbU+1qai;
+	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774719600;
+	s=arc-20220608; t=1774719852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MLSCl35bqtz4h7EqhNPdlTxnR7jxUbQI+9QVTH+dae8=;
-	b=mJkizEATdBOxyKV88Ch8pIP+0XaPaxIJgSSFytag94kmE9s0g+jDYKexorqwfOQTghNBQ0
-	9FMdpl8UfcGa16y1gFPf/YwFJY+2M2U680pMDFAQhVQvnqaP60LlG6m8zV0MtKlgNWb6tk
-	f2FFX4fjD+X3nobwC7N++RNVCQCsSHs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774719600; a=rsa-sha256;
+	bh=bf6/8DHJq7rfodeWx/m51AbxPYvL+rrJXvXUW3u7bJo=;
+	b=59HMy8aIrAne/70Ej7rPsvZWsnE5IZNZ3VKAF4vvOjCvApyvsT/B76bkoueLMln4S8IsmL
+	f+b653uat1aghSYVOTMVrV232WhD27RqO6ZVOxxYYmY4pm7SMhrzE8tlaS3oiHuwyjuzjg
+	1sJyAXp59iTucujOo1gZ+SRajWCU0VM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774719852; a=rsa-sha256;
 	cv=none;
-	b=CWsp8kS2zU9fwBbuFnDknVQvv/wK3DZeLRUonjt3xgp/Jsl9HghLww2ceN2kgsbEUQ7YWm
-	a8dl/pbe4/KmAC84+5oQtOL//kGf5JH31gf314/Wd+X0vILjeh/DegFD+MN5OBAzyFqBo+
-	xmRJMdx5b/WHofJ2SEdiLu6hbFPkYrk=
+	b=h0hzdx+3G9l3MYetkpWYM7VxcTby6WEgfPEnZcDN6vwOZ52RggssmO3Xs7Iy6c1e92HFnh
+	eDbn8U4QNIDj5pI2mRHMS1JKUGoQqmjUcGg/8znlagzFqz2W6nFMof1p8uIPENK7J9+YB2
+	rWUjreVn1lE/2Iihu5x/OUEzpsFeklk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aBEk0qOU;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D84960018;
-	Sat, 28 Mar 2026 17:40:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5FCC4CEF7;
-	Sat, 28 Mar 2026 17:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774719599;
-	bh=CvGqcc593VzG23ikPjsoJXo4HOiKi2mitRDUYqcfKF0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aBEk0qOUrYIHyyQ7WnA9ixpbUNxja1hUtWp0/OwMhuR25aZbJbVQtLto1DwKSbFZN
-	 ABRbuAG809O600Mom8UZ/FdHxBg8pIH6fe0826r2Rhsl+KQRrXGNJo2aR1Mf33c8ic
-	 XhLNVmP5GEiJ0nV/w++qVcYYQkpLxXTAO8fDVJZ8=
-Date: Sat, 28 Mar 2026 10:39:59 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot ci <syzbot+ci9dceb132e443f5a7@syzkaller.appspotmail.com>
-Cc: linux-mm@kvack.org, ljykernel@163.com, syzbot@lists.linux.dev,
- syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot ci] Re: mm/page_owner: warn when stack trace depth hits
- PAGE_OWNER_STACK_DEPTH limit
-Message-Id: <20260328103959.a4739ffff3c8d7a6f4d60732@linux-foundation.org>
-In-Reply-To: <69c80fa8.a70a0220.97f31.0002.GAE@google.com>
-References: <20260328214408.2990597-1-ljykernel@163.com>
-	<69c80fa8.a70a0220.97f31.0002.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D8648140009
-X-Stat-Signature: pkz76khcwygfz1oawkzoz45cs1pttuhy
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fbU+1qai;
+	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82c20b9fb15so1474043b3a.3
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774719851; x=1775324651; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bf6/8DHJq7rfodeWx/m51AbxPYvL+rrJXvXUW3u7bJo=;
+        b=fbU+1qaiWUubcdEyGcSPQpeSXVcMCIuyBgIHQEWkyplsYTycvalUr7Kd+lyL2cVWVI
+         c3T0zg78HQ0C+9dHfG4puQtcEmYZ9CI+GkU9xeJx2FjbMw04jPgnBPWrntiH6XEtSSoq
+         adUMhF0AEHCxOaKCQtrt5O6G+wGbD6TLASsa3iBkdyobO2cDhlJI05DKnWnS19CAM6qh
+         o4CdWwMacgjFd8nmJEVnjwDRj9z2oE3r3PHoHAXVPtazP4tvFw9aDBqsr7/ne1oPBexa
+         Vv+l/cjo41Uq4/uXVq1tqFoCKxtg30e006xWt/0avMZhhSQr3qN8ACq+pcIxhB35iYRH
+         khCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774719851; x=1775324651;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bf6/8DHJq7rfodeWx/m51AbxPYvL+rrJXvXUW3u7bJo=;
+        b=OOD2UrOvUIwndQm2b+yEpbRMFAv6zchBugJQ5dyRAsTDaOROgyWgsWgSgp/Lo4Suwd
+         1DuSMBwGFXVLaxNvtLfz++0n0gekfZgGLnK7BKoMkFxkao0mjDbXtRG9D1VGRX2QJxL4
+         BpdQNAFoLRSHAICW+cazJsuzIOt02xWe74cEjszP04NvtOIMkUKBMQalKg5iW12Gl6ac
+         9lFimIwU+9TM7xHZGlhT+z0OINX1TxGDW9avJsFOH6G3kOQ5DMFuRJdS4R78GKa0F1a6
+         ZxdiCWzP50+EKURnx7Y6WftCoe+FPM7R/gWrmWi5CvdOBXVFaBpZwzm8jEPKpEUzELLi
+         trqw==
+X-Forwarded-Encrypted: i=1; AJvYcCULFbRNRHRfYY5wViP6vqlTflx7/NZJ2BQ+8GTiJeipyngaBklWecRu+AATwrUMeSBcgI3q41s3Yg==@kvack.org
+X-Gm-Message-State: AOJu0YwHUbYq++MEkTGfSsK4GeZZWQLYU5+IPwkmEIxNcGVaVQlOx9rY
+	hw5w4IlNFjKcK93jg51EQzNh/xgTYEE+SyMct9QxsZlQaLkJYzl4ACRc
+X-Gm-Gg: ATEYQzzvweTEfoCMeWDSKEdTXfJdBeU7c+DmhIg67ZrzRocpThBBVFcSfd5paK14K4l
+	3Q1njkN0UZLi1nOB3bXy0bkGvvahwYmYARqQmmmc62ogXw3KIfPIeTQ8fBJ8ya4+zp4YjhgP5Iq
+	BWq7NgGUYXgXBFyrIcRNsc1OFF5Z9yCpfwPpViDeC/uP1lRbYaRdbWEkk1poDkE0B1iEWDk/NnU
+	+Th7L/kTXNfxr+N4FELP12ddUx59iVDELEDp6NV8f8iHequ3W0LgEgIyKnSs7D4IVpisIFrG25v
+	/Jx6gZHMSs6OSU0RAditfGOekkwb73a4Sty3xAYjZo8DT9GK9ZsHpgqVUNSUWVex5ypVgQsrQ1P
+	uZ+sLKhvxTC8kr4VKlISBfYOxCzbhXjr5GV7Eb4G9vAUNIjD6fFk6wjMwyFd65YfxOf4jVGN+7S
+	mcs5Mk12wYrGMSnZJ+TSNKaE01Bee98zs4T8o0kfJ1C/VHGPDGpdE=
+X-Received: by 2002:a05:6a00:21cb:b0:82c:651f:3385 with SMTP id d2e1a72fcca58-82c9605d217mr6721194b3a.34.1774719851366;
+        Sat, 28 Mar 2026 10:44:11 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca8464b75sm2726877b3a.16.2026.03.28.10.44.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2026 10:44:11 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
+Date: Sun, 29 Mar 2026 01:44:09 +0800
+Message-ID: <20260328174409.6786-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260328141323.10540-1-sj@kernel.org>
+References: <20260328141323.10540-1-sj@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AEFA11C0003
+X-Stat-Signature: w9gctqmdkmjozsx45cjakt4pftgsx54q
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1774719600-65495
-X-HE-Meta: U2FsdGVkX1+vUarGNi49AL+Kcfc2THunHB1I84VHdG5dZn1EaYhelhxd4YDVB+ANmSa2zLbTGurInha8O1H0xSW0+L+yXS5r87ZYMTFRygtOywvgTqbpc2wChKCOMvHlTSYGnflP7WB1xyt7wlOO4s3PLQC/V+kwm/C/ey7TVkVr/gj3HHBdI6J8vJezS/+EmG+HsZf4mDE/y+2J5nL6EKGngqF89cFG8xpZ7Kup5SYztcZV0ApqhL6OEc/gdbu1ENNHZFJZPYVYsP3Ey+6JGVn4g/pwhwrEAxvXstoU/GTkJNaFfADVA/tqdiAJ4keWnrw+kcFr7uyFh0iI165pgtOIVls/WjrZY1Mnt+c1qXxOcmPqrmjKEIeEgVQHaGsSaS9jQojDCQjEJ9m9hY0dSiBJ2NyPzmLtyIza7XEIT51NrX3UCbOXbYwtxtxwU3SZt79DTfm5cr52pH62qSybrSrrb02NvtT7jhu29wk92cYdZHWOMQGzMkw+cOpkT4cgCV6CB9b2fI6sdckxe7cUagEN7sqbo4GdGwAFX9cnfvVti8jyvWpqLuTUlSDWJyvWz9D7gLtYAsY11BHcfAmiIIZiCw5OZqYhrCBYaPaXNoBunHXUV/5GIqiJil2bsuX8vQdICXOCwjccBDF3DjiC7dI5mVj0yKbJuueA+UiWD7MzOv8fzqBiaEeSbpbZJo8aNkndgYy5mCVPj4OOd6UhOC/iGd+PpdkL/Cuo2QM5zAewY48Twv8fkJC1BWCaXRT6TVq9KylUaoVqVhf5bD5VtWYpcALHut2nia/4TFsMbEpgfRAjiYW8INQJCHra8EEKceMfI+7afTGnNtjlZa5QVCgH6ky0Tu+rnLDapB0psf/hiWfObhszbmiZR6siPOUys9qTvsficxt28nOJXEcFQh4bsY+IVQ+XaQeyvQUMbhQcJeEFADVBu/q5SnsXbZdjdDZuM9xcF6yLotvvc5f
- QH+pep9S
- iQqMB7AnxEPb/wXeKaNAUvkK8kfGX0JmBVC+6Z+G7cLQyYXryWwMru+IOznnXjEV0cwotwgDuelHBviLboLwSioJ5fMrEjVKnj8AfgRepeOri9++gAG/hxnXttBzddH7SQqeepafB+9y1HrDghckIHwrquZtueChv8YLyIrOvAAvBP0L/MLcMW0DblWJVOEap2eWE6pNiwSZ6v6IvF594stsvgyvG8yE2xAve3bxrunZHu6Nvtl4I/HgvyzyFlkcu1ElzVeFi9s/IUG3754bC9JtBzWIjEjNhHMYwyHkngzMGCwMACcO2BFytrQ4bqrMg/yP6vwmi0MS/kGBcJj/kcvESTt2FB3U8RXgz6WdJIzZjyO0gafQ/LbyciLZPdRP1Ukff3l2U6bILeB9hYtukbtXH9WjWvHljg7rVIPmv9X1w5WTur+mEK5dKHUr+zLPpOG7g+m0PrA5d+K/QYT+jati4ibgZNZEMmh+CZIaMsHUZ6uhRJUpOH+ZcM5OjGX2vG/qOBu4jB/2D7RrZYPla/gs8YkVGppxuFia+uHPuX9Ug1GK0jIag9EMpN+kAvDgYvg056Gcqlxe4w0dws+U13BebZaPsShcHI7tRt2lJPhieX6RLdT5lk4prou/oOMu0qmtdboS+Posi9nk=
+X-HE-Tag: 1774719852-59014
+X-HE-Meta: U2FsdGVkX195aYwSFmh3+xwYb3HpI+DjO21o/f4OTdVfemsZE46anAXb11+WuQizfaBJAlnySqAwAzvFNuZ1NVmS2wF0gyjr5D3bZ/ExXkK6/Amd+kR/GIdHI7mzM38KQ2OSAAOqYpDtgNJzz9RQb7z581qRzHr7S4Fdrko/TmL/Iq8FThXg+q360iFfE2Tm0twkCCgHo6QAXNQ881OHCVmM37sR5u5+QpDlhmiHHYVRtAeSAOvH1pRu4yoCmrm5lKhZSLjkPhkpaLuH7bztoWsA5q8sXAhzS7hUzUh4hzPGcPLk9eivlbjX0I0eGpQa1kmhGmhTaVduKSN2lRuOj2mJQjxlTp/PoWgq5VVE15pcZRdQCdEAeBTbe+sIS5KjitCaO9W6a4aGeOqR8mK57m7stoOBi7KlW8YNWbmz1govJjI76PnO85gRhcRK/PoYfC8F0rKACTXJWK/l7cd+Xe61LKDm7LvDTbCMLFguQxBo7Gd/rPpBREs12kJCF80Hf59He5Y52ypo4v+V8+37owZmBFscGrmlecZtqTHMfu9jGVRyLo7O3Ery6eepCJr3JmPfYxFh2pCAG2GYJ0k4gqigUpwMjWQrtFssX2Xw389RJO2SwEEm8jMTVZlwkEbgZ8syG0x40qrO5zS++K5hbmbsnj8yhVJ9MR9et+z3AzpUnsouCM4IsyGRXX3aeVS/HHb4x481JwiBsSFcYH3fYeCjy0mCP0XU9pqykfEU9xFASruWx7oHN0xmTxGWN9XCh+mAA237uFFzneVCT+2Q2mnCOdY91LKCn3+NUjRuxMRVdLXG0fNIXNWeWrUt5dctREHcY3QdzQzUuuP/v6ZQehxIPu6DNk1vzlDcORAAApzN5EhNnT4P9iRkcR7W5ZHeTPCWXjhHJ92jTlPcCXnLFS3UxrecWIaDJQ4k4V/p3ZIeGYE5NfzSax2Q90b/AUoNp9/B1B/IbmBMwXzZ6yC
+ LjZIV0aW
+ xtfiHBZNUsCgFbSkpkbZYcgnpmawVATTGT45Ds1u8mn4Q70S1fZRN4Vno3iTipDYw6JV1KN1v19KnLZkDLDfi216x0gUjr5nBd9s9gg/nxJvjxwddPcOl7umHVvrTjMcGz5JPgm01tqRW4cKBH0FuHWW+PTYOj06RLNxCTv01KhfCKSfSyFp3+cvk5MDVOnD8kXEysK16TbrJ+6u10MwwaidRFLFKRyKyzSlHqAeaGGLZgHpHrNsypLh5AxEWmuRr7SRlnJQsufT/RyY9qhqAvl++neehJACCX3pn4PvNS7t/xEuKk/t3DIOELvgsUdis5h27V+56GwXAKx7yVsFXvu+hRkuSPBKSse7kZqimDbEbfboA59NqtY/eFxZnVDKPcpSKp8Zem2Q36EqqhKaBlxAk6+5bbxPYfjL1zWqreFIrbx5sdMr6qNU2O4CJkEYiOzd9oZ/Aa1rIdDhiaOQeFPBlQapg3KVMDcORXJ3lZC0SK6E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,28 +118,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 28 Mar 2026 10:28:08 -0700 syzbot ci <syzbot+ci9dceb132e443f5a7@syzkaller.appspotmail.com> wrote:
+On Sat, 28 Mar 2026 07:13:23 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> syzbot ci has tested the following series
+> > On Sat, 28 Mar 2026 10:26:51 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> >
+> > > [...]
+> > > - Would a lightweight fix be acceptable? For example, performing
+> > >   validation at the very beginning of damon_commit_ctx(), and returning
+> > >   -EINVAL before setting 'maybe_corrupted' to true. Since no
+> > >   modifications to 'dst' would have occurred, kdamond could safely
+> > >   continue with its old configuration.
+> > 
+> > I suggested you to try something similar to what DAMON_SYSFS is doing.  But I
+> > didn't get your response to the idea yet.  Could you please let me know what do
+> > you think about the approach?
 > 
-> [v2] mm/page_owner: warn when stack trace depth hits PAGE_OWNER_STACK_DEPTH limit
-> https://lore.kernel.org/all/20260328214408.2990597-1-ljykernel@163.com
-> * [PATCH v2] mm/page_owner: warn when stack trace depth hits PAGE_OWNER_STACK_DEPTH limit
-> 
-> and found the following issue:
-> possible deadlock in hrtimer_start_range_ns
-> 
-> Full report is available here:
-> https://ci.syzbot.org/series/aa38ba8f-44db-4d01-8965-ed5a27174f71
-> 
-> ***
-> 
-> possible deadlock in hrtimer_start_range_ns
+> I was thinking this one more time.  So you want to ensure DAMON_RECLAIM and
+> DAMON_LRU_SORT not passing wrong addr_unit to damon_commit_ctx(), right?  And
+> that's required because exisitng inputs validations of DAMON_RECLAIM and
+> DAMON_LRU_SORT are not checking that.  Why don't you add the just one more
+> check there?
 
-Thanks.  Sashiko reported a couple of things, one of which is a deadlock,
-probably the same one:
+Apologize for the confusion in my previous explanation. To clarify, my
+proposal was indeed focused on implementing a lightweight fix directly
+within damon_commit_ctx(), rather than adding separate checks in
+DAMON_RECLAIM and DAMON_LRU_SORT.
 
-	https://sashiko.dev/#/patchset/20260328214408.2990597-1-ljykernel@163.com
+The goal is to safely handle the context state transition. Specifically,
+I want to validate inputs before marking the context as potentially
+corrupted. Here are two approaches to achieve this:
 
+Option 1 - Using a label for cleanup:
 
+    damon_commit_ctx(...)
+    {
+        err = 0;
+
+        dst->maybe_corrupted = true;
+        if (...) {
+            err = -EINVAL;
+            goto out_reset;
+        }
+
+        ... other code ...
+
+    out_reset:
+        dst->maybe_corrupted = false;
+        return err;
+    }
+
+Option 2 - Deferring the 'maybe_corrupted' assignment:
+
+    damon_commit_ctx(...)
+    {
+        err = 0;
+
+        if (...)
+            return -EINVAL;
+
+        /*
+         * Only mark as pontentially corrupted once
+         * we start modifying dst.
+         */
+        dst->maybe_corrupted = true;
+
+        ... other code ...
+    }
+
+I think Option 2 is cleaner as it avoids unnecessary state flipping.
+
+> 
+> I remember I was saying this kind of change would be a kind of whack-a-mole and
+> therefore prefer DAMON_SYSFS type damon_commit_ctx() based checking.  But
+> that's not a small change.  Just adding yet another simple check on existing
+> validation logic should be fine and small.
+>
+> [...]
+
+Best regards,
+Rui Yan
 
