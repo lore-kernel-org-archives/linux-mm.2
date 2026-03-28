@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4806B10F3DE9
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 17:24:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C49DA10F3DEE
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 17:24:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2EC6B0095; Sat, 28 Mar 2026 13:24:20 -0400 (EDT)
+	id 42DAB6B0096; Sat, 28 Mar 2026 13:24:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D046D6B0096; Sat, 28 Mar 2026 13:24:20 -0400 (EDT)
+	id 340AE6B0099; Sat, 28 Mar 2026 13:24:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7E366B0098; Sat, 28 Mar 2026 13:24:20 -0400 (EDT)
+	id 190F36B0096; Sat, 28 Mar 2026 13:24:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A793F6B0095
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EEC036B0096
 	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:24:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 600FF140173
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BEDA313940F
 	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:24:20 +0000 (UTC)
-X-FDA: 84596145480.17.41E950D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B32B88000B
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:24:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DnA3KcWP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+X-FDA: 84596145480.26.65BCE2B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2D6DD40007
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:24:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YxMa1z7J;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774718658;
+	s=arc-20220608; t=1774718659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IN1By4zvmqMXfNmBHp6ceMatewCQQATyI3eenMQjSOQ=;
-	b=7w4KGyZoAu7htqZbkrekp6ERcvqUHrT2D0XyEBCM+yzrPD611viRN/NZg0wHMC7z1+ip9A
-	nniGnIqvqjVMDm4ucGrVVLnntUTHsfmcpHKQHEliK9tKlMwY9P5V9hXExhz+rfQ5PqzvjC
-	yy5yVLqsGBz+NGwHO53Mw8PLTgZ/Rhk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774718658; a=rsa-sha256;
-	cv=none;
-	b=hEFT2VbAiqsQhrqZ34in6YkKf8IIXUaHhNydPFC5f4vlsuDFxA5iiCHmTjRz+hn052rwBl
-	1eYrDYeRPVrnvx1ni6Lchdb8/K7zBMKNXBr3Kj5Ec59RcKVP+FqRx54O9AWaH+lI1xJRcH
-	pry18yo4sdhLILs0+zuWSrFH8CX6v0g=
+	bh=Sawf5JLRXPJRVc803CnjVnC+C7yB938LFNFaizi7UbQ=;
+	b=7M56xcodzHsDupoQ+AP1z4ai7wmGaxAnZu71CXmu6UKDYuHDxS5nanUMC/JZh6ialCQ0m/
+	sGfgzxR/6lL+u2tqjRx5zfbQsZYd+tTFdASgUfPM0MsUui0rsEghEMNd33ITB9KA7+GRum
+	3FX9f6+NYc3jPsMhxcAfBIHZWHlNl1I=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DnA3KcWP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YxMa1z7J;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774718659; a=rsa-sha256;
+	cv=none;
+	b=wEeUwl1M8wBr1E+f3SQQuoDTQlCilUxWgI4F3ijB6IGAOAezTyC3fqYJ/lP4XlxpU3B9VR
+	TCtUJG17r1gVcP3gEux1czUtoZ+JAJbrv2Btouppcy8hZfbXQq4qMonrZ7Sa7o9fgXzz8F
+	ATLAsXLnIRqli82NXiRUoEkzQFODEKQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D545844227;
-	Sat, 28 Mar 2026 17:24:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66494C2BC87;
+	by tor.source.kernel.org (Postfix) with ESMTP id 7B90A6012A;
+	Sat, 28 Mar 2026 17:24:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6980C2BCB0;
 	Sat, 28 Mar 2026 17:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774718657;
-	bh=rxZ5v+493qUKNyvAIRBys9sdJcZoxizzLtuheu+9T1E=;
+	s=k20201202; t=1774718658;
+	bh=xJrrCtoEJEbKyudyQ6eBIwNiMqyIA+gXrBCwV3hcjTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DnA3KcWPS2Bihi+ez56+vQVjO3g96g14BfLqXUaKMprA0MagaepT0khcCUenin5Bb
-	 ileS6tYCQj9LR6L/wBYGYHMX33gOGLXWwOI32iJEWdvmQPDGA5M6+l+3l0nb3n1M+f
-	 taxUVKCByiyACRcZPDM8dhbXfhB05M89YfY6Tfd1CJqZwUA3GUsSxfh07Q6vdDyfWf
-	 UDK5YpuduGp4EfWSpyhQhSbFa+7a763kIpBFKLDMEJ9A05ctuVMZY+dqoopPFBQg+3
-	 sWevR88YEQXWqb3EwywQPfpIIPkwGDHI+m5rbP0mJ8aPFZklbpIYqHKPBkCuo+GMpT
-	 APHc/QSGANZfQ==
+	b=YxMa1z7JQD1bg7ZdA5XktEe5juSvFFUGjvuOpb+1vEpUwNSe/RqC5XanXNQU4Xf61
+	 NWhC4Y/q/Oy01fj6SE1qOjAUkjutZOUUksV5826Q6h7O5SVZaxUh0CEEmF100G+2Vr
+	 7HjOqpmMv/2fVNVB4tKczWGugz8g3SptlGsXcyGit49UXXR9lZFN7pMZ9d4igcokx0
+	 f4qiVub4MjZhlBAoQJ2PBiNmyZFl2lkSyE9uZIFhk8rwv9lgGmPEtcQHhrxFWI+TEg
+	 4PyNBAYsrUbFym6Ah2qCg/xJlQoEYhoB/RSRaeguxRAfnBsxJ4et9elpNXdX3m+40A
+	 7Qjy/lO27ZSlA==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	"# 6 . 0 . x" <stable@vger.kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -81,22 +81,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/2] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
-Date: Sat, 28 Mar 2026 10:24:12 -0700
-Message-ID: <20260328172415.49940-2-sj@kernel.org>
+Subject: [RFC PATCH 2/2] Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
+Date: Sat, 28 Mar 2026 10:24:13 -0700
+Message-ID: <20260328172415.49940-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260328172415.49940-1-sj@kernel.org>
 References: <20260328172415.49940-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B32B88000B
-X-Stat-Signature: c3uwoxgyzddrzshegn35886yt9k4ptw5
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774718658-117320
-X-HE-Meta: U2FsdGVkX18Cns5XiwQC1S/b5Pa/jZezTnf8YlvXX3yokogF+33xfwVa/p1OvIuIChqfhLwXE3e8GSTSyqkVESBWHEo4wAM6mysQs7qq3CVoMt5J5f1EctHmNmHKsmBn1G8Sd5iu9+ANSkpV0Wq1C2nac9iD71dlUVs0p8E4ZGSI7sj1YIscEgvl1SxOHaRHdVAFO4QsVCBcX/H9aIJDMP05ZUv0kBTnvqefUkADglYkYqqOBB3FKL6XU1zWwUuLf8z0UkVK1b6Vc3EO9gS6UNNONsgGDK0N7fjP8QYo6uCRwDvi29K8EywAGiLzFzX867D2ZYhlcPWSjqj4TLEH8U2RiyUUzpX4344o8DEb8Jvyb2k3hAbTTF4ugCSYAvDkazpWGXpPCjaUt3eO2duHkhztN5U1upQoCeuIlXQ2H5uxLHBVPmqFEssgumrcAlRaPdUUgY51Y1R5KDmbpRyc9g/1BebcBy5cCwXErk8IBOEOsEmT58oZrwe1HPx52jw6ji/QA9IwhBscztouT3Rhy61SZRIVCsgXoNSeijrPoCLpLTWLmJcfzg3A9wIL1dRWS1XyLOx1QZQ4eSpazsMcHIcbaItVn/zaUWp3/byLqc/4jBsY8E4L7xm/VDG8oXT3GmOehWE1lWGI5ignih59nNjtfIEFk2UIJXUeG9uSoR6YDy7GNmLUWWKadtSLFhTBRU9N6zCF6AOGU46THga2kBlePCVJWxT9HRzf0NsIKEga2AE2RuzRW7H/nLrRJrbksRzu2RONxxQajn56FZQxqG/zi7XpUvH/XBWCTev436IzMbq5KdBegAbsEnbuYGPq7AMwsuZiWTvfkfSVjxcQql+FTYMdD61LKL5B22q8te94yXvb41r7sDhvqDT3B1QBEhWKEX9LLnTqg4U3lbyysNkiEpMc10W+bbHm+pfm5s2/6bY6b8TFMVSZktSbcJhCRVp9ip3qkGmYnI+d/M7
- hm6S+SZl
- BS0gMZejDiYxd51LJIlvP477bOH8P3tml0s7gHjcICDbZH3OF6Lf4FXQEUpFAXvyGBuPZvnnw0HBDAcQTDvqNysxVEpRqs8Z3rag8yZPQY0yEIoU4Pyf5vo1NbbhDzcE9okNQEjDnjZEwnNsAhQ19zfh1iH9RUxL/Fag23iOs098hbOEVFpneDdC/UpxCv656+ZS4vyizYZPiic0WncRa8iiWpMZdDze+qP/8B3ZDqnMcawSuSy9dAWKP6I9SsOBRmeURBJtv20kv9bPvZkfIsmhpv6vWLQq30kFmCUXhmYHLlCH0ks8vBb56HUQBcSO3+a27ps0pKlMZP2Z8O1BU9ubLGg==
+X-Stat-Signature: isfnyreyp8imz5tqwwshgr3k3e7rf7gt
+X-Rspamd-Queue-Id: 2D6DD40007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774718659-665782
+X-HE-Meta: U2FsdGVkX19U6oezO2ADznqyzrIf35vSS+kwGLUfVAUCmf6UahhK8pMEOWXuUkqkVzL77kDEUwWRHQze4pdHBeEVkWjXNKucrvsyctPLy9DkAw3Fp7khq8uab0h/roTVpdFYdXux/uNHSo7zq/qn+rtYvyMx0CFAlPM7CBRY866aE5Rss0Jn+p9GUfXkC9+CtzqGsUW0GFzEhpCNT2Bal2SqmdRV4tzf3cNT2uXS86oiBE4LBK9r1lAMzJJ2DCqYPKqoHwlPpmU8/87ZRPmZHwJl82Udls7yv1d5TKlnpVYKcXWdGAk3MiDnsFHzoeE5anwsfOk6RC570U0PNXWNdlmtlNMZanhLT59M/gjo1dsFTCUnEqcrDswf75pYUX0L/UdQa33hyy2ANSAGDZQYMrhKR7Cn0ELjHfZPB39/VeuB/gekPK2L01axdbi/rySXPbRYr8vyRL8R6R9Td9rM6kzQiG+sn2gX63SVnV27B4aLPnORWpiJfhVA6zP81Gc8TQEg0KL77T8HKJW04URZfm1RjaYrDMUIrHjvfynwjJKCG7RBcyV4Jukidu8YtA7F2mSKomVDaFW7N59irHlwcjpZWXm6OWWgdn+nxCZh2qXXVnjyic8E+oiYiutRuzxY2N+4XVwYCOscJEazXO0vjL04NLMeK7jumClu0KLtZvV8Y9mpBpQcv4ab3kS13ZREA5R4XxU5FqJWGhWsSDPvnrV5rg2oKk/lQQhNqLPj+25m6qv3lwNOINSc89aJPz8hoazMhTxSJPzfdKIWNkFmUv0s4J/lw4Los/SfARR2RPjik8ibxaGeN651bv7+AdXb6xZ0PI+d5Wywlwk/7KDzlAyvKJKk+PsRoVZ1jXfDWbLDE0ysYMrFzCdSkY8qpXZBt28QjZTNQA/hncgxK+j57otzsF/q9XCArxomVy67IK1RMNUL11N3hYOoTzFnsFbB6DSNEG2yTaoThDFc+xT
+ tkVZwFlM
+ 6lwvk2tKNclo9MH0lpq4gBrRs1nSbUV82xjUjWA6R2+93zfFx1xb1ymLVFD+hR1R6aV0tKmFOO9E3m7K9ZHIScRrpFXuP3ptFvVUS47O5iQnFRFXvtgSBKDguwzLiEnO8KNsDT/0N67oWK0Ou/nBS9Uxp/QXMAhu48cbxQylXAUAxIGnn4wdEa2G1hAy/iqo8I1WyffVer4bLK0cv/20T+gQtW67MWBI3NBFt8sHzBN74hy0Rox0JjiUpNSAjETsKp0gS4YrAtlAYxa4BIUWC2dnco4yspRMG//O5tPUZ9tPThITP/Q1MGFqYbjoCHi3UPnMWLPQpdJ6a5lFBJCi2b3gsbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,7 +104,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_RECLAIM handles commit_inputs request inside kdamond thread,
+DAMON_LRU_SORT handles commit_inputs request inside kdamond thread,
 reading the module parameters.  If the user updates the module
 parameters while the kdamond thread is reading those, races can happen.
 To avoid this, the commit_inputs parameter shows whether it is still in
@@ -114,29 +114,29 @@ behavior.
 
 The issue was discovered [1] by sashiko.
 
-[1] https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org
+[1] https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org
 
-Fixes: 81a84182c343 ("Docs/admin-guide/mm/damon/reclaim: document 'commit_inputs' parameter")
-Cc: <stable@vger.kernel.org> # 5.19.x
+Fixes: 6acfcd0d7524 ("Docs/admin-guide/damon: add a document for DAMON_LRU_SORT")
+Cc: <stable@vger.kernel.org> # 6.0.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/reclaim.rst | 4 ++++
+ Documentation/admin-guide/mm/damon/lru_sort.rst | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index a100216f3a72..7e22cdfd277a 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -71,6 +71,10 @@ of parameters except ``enabled`` again.  Once the re-reading is done, this
+diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+index 797962a459e6..5b8e16394228 100644
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -79,6 +79,10 @@ of parameters except ``enabled`` again.  Once the re-reading is done, this
  parameter is set as ``N``.  If invalid parameters are found while the
- re-reading, DAMON_RECLAIM will be disabled.
+ re-reading, DAMON_LRU_SORT will be disabled.
  
 +Once ``Y`` is written to this parametr, the user must not write to any
 +parameters until reading ``commit_inputs`` again returns ``N``.  If users
 +violate this rule, the kernel can do undefined behaviors.
 +
- min_age
- -------
+ active_mem_bp
+ -------------
  
 -- 
 2.47.3
