@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0EE110BA423
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 18:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD0B810F3DEE
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 18:52:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BF946B008C; Sat, 28 Mar 2026 14:49:32 -0400 (EDT)
+	id 4D5EF6B008C; Sat, 28 Mar 2026 14:52:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 397E36B0095; Sat, 28 Mar 2026 14:49:32 -0400 (EDT)
+	id 4ADC76B0095; Sat, 28 Mar 2026 14:52:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AD536B0096; Sat, 28 Mar 2026 14:49:32 -0400 (EDT)
+	id 3C3356B0096; Sat, 28 Mar 2026 14:52:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19A626B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 14:49:32 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 92A191A01E3
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:49:31 +0000 (UTC)
-X-FDA: 84596360142.04.DFCDB3E
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 926B04000D
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:49:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qZttoJjT;
-	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AE776B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 14:52:48 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BBB13139A4F
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:52:47 +0000 (UTC)
+X-FDA: 84596368374.03.C4A0945
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C05F940003
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:52:45 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PjIFt2Jm;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774723769;
+	s=arc-20220608; t=1774723965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hvBwZe6OAmUwW/qKvOnQ/88d+Y9b6bSQtv++afhsia0=;
-	b=7m4+jLMP6BBiNcTFdJ6Q4xUVT5jPGg/uqr/SsI3I+l2NUpDu/1rsdCroVWQaCIOUCQR3UP
-	Pu2DOX+F7SHA9KsTdbeP8jKYgq/BDXqgNR4XPkRQlV41hT0lIt5tTCJSIu8Zi6a/H+KMvh
-	ZtCkYrYazoKt1UABmMW8dzvrOndtL6Q=
+	bh=T+SbHaxLmzeFeoT6x/zm21mPwwR0CFdnn7mBNCs6Cuw=;
+	b=hLqsbpA90IOIRHEAPc1x2oVATO1+IvYRlPMTTP5EYhaANnMwXHXnAzBPi65qm5REEkFsj4
+	9zETlWQqAnTUHxGp2KdyCQIvu7YtCrJBj69qDnmVAJFUKoABdbleR7WkEZ2q0Tq4TAkEFr
+	z7LBQ8eAAQUXzJwtRboclawqw7WWio4=
 ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qZttoJjT;
-	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PjIFt2Jm;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774723769; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774723965; a=rsa-sha256;
 	cv=pass;
-	b=zkOO9c6EeOyEk6J0D9k1crPK0HibCYm3/A8yW7h0jGmR4kbxEYYjNTJMnn7dTuBfVvw2vr
-	YOtqaFaQ/KSHGoe9q81uyqOIstnsqqrCQGbRZ69SR4tLOz89ESycQss1xYZwzriohcAaR2
-	347hgD4XDth1/ElKTKt6VwCWr42hPQ0=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50b6c45781aso493171cf.0
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 11:49:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774723768; cv=none;
+	b=Fmdye3D5NbOW1QvVfFA1GRQO6nMXmiQvKxuQ2ucVxyqsuaCsVp6r4llRubdi576m+xvrcK
+	SfERme8zLt6Wq0lN/q60W9OxLLTnr0pQ0Sc52zmQA9hCVrd3ZGaJpOCwkFbJsFA56wK/Ax
+	Iptfxdupbj921fMJxvhUq0hjOjSDCag=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-509062d829dso429651cf.1
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 11:52:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774723965; cv=none;
         d=google.com; s=arc-20240605;
-        b=iHLyCV8qFCOEEaHJ8nYs3FEfzYtykhE3xXL75M3TlNsgOYX5rBIOcPtaWbNXRYXTo5
-         h3x2WHKeVrNPiloC01kBCIL/h8WEOfl9X0XgVE265LxUU1DugcWI6nMPRYZMqwMmBDi9
-         A1fF833VX+gZMdGAjVGtmhiii3nHuEzbuz+Tn882BIyehUEP+9icmGbuDML8s60y1a8F
-         W50C1Eo1/yfSP4hIj64UH6L1ntFNTMg4NNG3IKUEQPaF5L8s6XgX5x5WN98CHT5XOJVK
-         jS0RpS3q9K+G4KbCj7lMMqQX+5t2GdKB79n8flVgtkZvo8p6GrcMh/BhiCvcOxOxq3Uo
-         v3eA==
+        b=I0Di4ztNxc8nNQqcfRmEuHiYKYJ146qFrXE75k8fpAWmSi5PQsRYp/MCXY7X3Jg/77
+         s588NC7jM8kOUz4G61bhEhP9ERKRx7lqt66TLBFFT6kvY/E/g5rk0vYK8vj9y+0Tvufk
+         h1AkX9c7XFxpfrz84Aj/fsYwwAixiU/5v8sc1k/EuoMR1fB2UszZ/jXpXN9+KUCMsTOt
+         luSB0GSS9BJlfAPgkC2ale5I2gT0IPLZtRzTo1ks1KUL2Q/z8qgfPwQfMBZz4KQi6UZl
+         60o2DaN/HvXvr17wybxK5PkMPqtWsux9s8wq9WGIo94JWnMCZckgaUC2Pq9lODn9swIZ
+         FGKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=hvBwZe6OAmUwW/qKvOnQ/88d+Y9b6bSQtv++afhsia0=;
-        fh=9hjU2MVFtE4baMsbKE8Mwt/pPJt4420SC+pYdCqrs2Y=;
-        b=WgsmrDN+oG0yUGOczLESWCa+Pdadd+17+vVOshRZbKminsYx3XXjTt1SZS3CbMM/IM
-         SJXjvs6L/B1dygkt6P4r9qz2vqm7tMdfJD3wKiCb9zlIycnM3yqsG/bcsY6QET0YpyD2
-         +2HbLmSDOgXF3R8PJlW7iZyDcoPDgxRL3iLzOx4sy1qGWW4um/LR7m1PW+m/pMZSaT7L
-         nIE/nhgNbONpXEo+zgR7vh6g6lDMeSQwEi1naTHiwS3XIAt1DjldrS+TT3eoC4WUFuJ1
-         jUWXAJLHDVqp1Dcswak79Xwej+0ECOespeToZgCIeq2pB6QjrXNtd4BsLczfc/FHJrss
-         KKzA==;
+        bh=T+SbHaxLmzeFeoT6x/zm21mPwwR0CFdnn7mBNCs6Cuw=;
+        fh=uNU+6jk0KDBjd5P2lOfuB8hjVB0jlpQ/zoNzJ6YiA3c=;
+        b=W9upylzumKEfpQO6RrcgVTR9YiXFJXa9GR+jubVOfyhi51lFQumpTmUM+2k+R0cRfQ
+         0tD4r9hOkCgjiOK7n5eBmiiCbY+98FJYDQKFKRd8o77pQ3RAmR7VnUeMw2T6b70uires
+         atNWPNlUtZAU26qEISopgqfbEYmGS9KQKAa4xJCDR/0kHeXG/tDnQiTSiQ3Dys+PCFGO
+         Sth+xr9BfjogmUFvctkM1xARWf2K3jf1IRGyhOyOZASx0OibpohlEihcAIoDOQFWeqO2
+         wGsmHn6rGape4snXmsHf4kAgXmaCr1BWhSKH8/W5VlJn4vUPX0J5tJaQWEmOyKbRLJ7N
+         djiw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774723768; x=1775328568; darn=kvack.org;
+        d=google.com; s=20251104; t=1774723965; x=1775328765; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hvBwZe6OAmUwW/qKvOnQ/88d+Y9b6bSQtv++afhsia0=;
-        b=qZttoJjTZa9hCJ2dQvDIuyp7PNm9VHUpmOzYhl47B1YSxWhbI6aDviQhauL47EP+h0
-         u+BC3qmtwmc8ZOJVsNyvwY5Xm/BnZX10O1Xmx+0xhUiiEEIrMYOXQZhpcwZHLojUlao/
-         zjzDSiDd/+JEybJ0gJlTyZ4xNFxaIpICFpVCBZQ8VzUMRYaJgLSoZ9deKiKxwfEgdfsn
-         4wuyKg3jwamXxexJUVknyVeKQHkmbW2SJqt6JIyVTVVRnyOkEHdVHbrdGBI/i05W3pB6
-         UZHBtE5aiqppgoHzSTxvag70+6Hhs03vqpPpLD7A3tXNhNq2jhFi+69XkP1ELbjyvfDf
-         YVGw==
+        bh=T+SbHaxLmzeFeoT6x/zm21mPwwR0CFdnn7mBNCs6Cuw=;
+        b=PjIFt2JmFzpuJMAabh71vy5rTT0PhlON+byzT/P3rXh5Lxv8W9lz9znYuz8qupNGt6
+         GB/WlmbT9zWVPQwdoRIChz8anCpA4rFeA9TyCyItqN1r2GBGB/OTsAhvApnEzBL9gMT4
+         hPPXxmN9fRq1cqAxLIkaQRVlq748hnK7W5CFHZ4KcXuVsCdrKPI38IYsRpyxaATB7zbS
+         kYhy3waqlaMhFsK7oP1TLVqopEmv9gxiv/6tXl6lf00ry7EozEM+Mqi84lNO5YGs4P11
+         P/ZE2Uif9lmUbQFNLku+BAQj3Mdt634YsF5LEgMoSqwJHC6cfvsfnhSIt2C9tlrOcSmd
+         BzKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774723768; x=1775328568;
+        d=1e100.net; s=20251104; t=1774723965; x=1775328765;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hvBwZe6OAmUwW/qKvOnQ/88d+Y9b6bSQtv++afhsia0=;
-        b=G2wYIRhPXnlQGVb9fP3u1A3CndCuuvdJK0vgtP8yLX/aJxeN9NsA+exNQ4ybH7orW8
-         PZtp/1624XYEkZsAGA4kmkPoCJ+fSWFbFn2JZmxkujhLX6q79zYBe/vhUMZy2PvpSWlL
-         GiXL0AGgqmSuvK3P2nYs3HppHUh3qaQjeSLywm9JvKOA3iqEfZHkRoiy5rSEkFuSVmqi
-         nXa2qnpeg0mYnnshUt6rzvmWFDwsg2625B4RBszDu1JOvVRPkm9+4DAonQ4PlTqq/F9A
-         2vMPaJotd8YZuGGk7JMgGNcvRiFiUSZYi+pDzmV3KJG6DPenUDOua3K+mcVe5YsmhH2k
-         aoag==
-X-Forwarded-Encrypted: i=1; AJvYcCW/rLKQIYv8S+z6N2GGFKVqgbish88bOyRvyIB75PTMX3psbvlrZawPA7TQxmX9QFT6Wa8I0b5b+g==@kvack.org
-X-Gm-Message-State: AOJu0Yx2R9btfe293hhYDW7HiPdUfyYod0M7OUpKj2RF+Sr43RF9gpot
-	PqQjAceTOA2BIVTJQWrOOATwnCR10eDFJgJkcOpGAqwk2+VHGxFc7X9QGWeXRg59NqRW9mX274C
-	2gYFSo06MHGWcNRfjUJBPyGBq5NwIzEJo1FRZFHRK
-X-Gm-Gg: ATEYQzyB0ubsIGUkbbQMjxNOq+Euxc8GR8EmGdRh8GR9y8mE+vdYzUyJPcHEZxP/Wn2
-	yvrZ5o0eCq39GHm7yYhGi0M0tiFq13LA6iOcRn4+k2kxzctaMnauOiQ4LuuYCQeWh6x5Mf4ItBX
-	fbZZKXtbGtCKz5N7qykN0VT2y+oRoBtD6Wpu//O+QK3dDhVAoimoNmpmOlgGTOnm7V2oQMmwkvI
-	F0jmP2Ttkw6BYL4oCzxnM/pL8sWg0yEY8858fVHxCkvf3veN6a/UHplTIduwngsIrvt9gj0hZqy
-	uerA2Q==
-X-Received: by 2002:a05:622a:247:b0:50b:6c6f:9ba6 with SMTP id
- d75a77b69052e-50bb3d608f1mr10143251cf.0.1774723767910; Sat, 28 Mar 2026
- 11:49:27 -0700 (PDT)
+        bh=T+SbHaxLmzeFeoT6x/zm21mPwwR0CFdnn7mBNCs6Cuw=;
+        b=K7Rxr67PnnAR6zik/ehdG1a1LPDBaHX4XR3NtMhfowN2nSDiiPBOD9lTWvTK71Hyuj
+         cKbmh3kL0fQLZTLCuyom9K/f49dHnV0pCV4/ntNZaEE/kegLXJDmsovchCeZxG7yGqDk
+         aw6d1pPO9D6gw00mpHrK8/tN3Xl8sILspxfX1nYTpQTBuhZB7QrN+Efuf8mTk0A8cyQE
+         IQTNDnSGH/Nxnyj/JZ8DGTWtJdfmbajYRAHjHMStcFsB0UnqHRU+b5xvKL5P+DLD5o+L
+         mYHXkMIkvBAUIMQjWOjLNxNE1ROdmepv7jDO79d98Qma85oJwAyG+gie3QPHh8ar+ttx
+         mmtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXsAXJNF2GCy5bI3hB8ceFFuwuJNBWLokuYu5Unwecvg7VFWfyoBq9/2e0hrftUva4jzmCP+dnLHw==@kvack.org
+X-Gm-Message-State: AOJu0YyZudb9056roG93lZnsp2OsE9zShE5QzyDyRmaXIrlkpDyycDcl
+	PrU/mtnXCQfkIVf72o67ykNWQvQBZXaRRAs5q9K0h4RQ//lrqIxqJDPwpEtO8OhC98qAgJvnBmw
+	XpxlHA6htEVEJxJbGmd6DlQGbopWZSP7DoDmRo/eP
+X-Gm-Gg: ATEYQzwwMdsUYYP6phnq/q2/Ye6AARgpswiPrgXc8IUusflf9vJvxwFxB0TrEbbmYK+
+	T5BPGR6LVSlAqzj8ZQXcMGweCB+Xve/9k5xtILTxv7gDPAaTpVRPKQSBo+eOfTIRiWLdT+k+ELH
+	DKr4OS5O3Up/iy6ukir6H49fhuVb/YyRpba0Ennt2liDy/pX7sXAq9uFEvXRUyoGu7IIQaF6Osi
+	HI/gg1mKYIMx0faDxnsBuQtqiHbuPbyv6cry10QG8g70sAF5PIX3kWmiifqvGbN+xKVvqtI0nR1
+	nprC7A==
+X-Received: by 2002:a05:622a:2285:b0:509:15b6:f69f with SMTP id
+ d75a77b69052e-50bb263780fmr13296091cf.2.1774723964279; Sat, 28 Mar 2026
+ 11:52:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1774029655.git.ljs@kernel.org> <d2b65883dc4895f197c4b4a69fbf27a063463412.1774029655.git.ljs@kernel.org>
-In-Reply-To: <d2b65883dc4895f197c4b4a69fbf27a063463412.1774029655.git.ljs@kernel.org>
+References: <cover.1774029655.git.ljs@kernel.org> <6b4d5efdbf5554b8fe788f677d0b50f355eec999.1774029655.git.ljs@kernel.org>
+In-Reply-To: <6b4d5efdbf5554b8fe788f677d0b50f355eec999.1774029655.git.ljs@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 28 Mar 2026 11:49:17 -0700
-X-Gm-Features: AQROBzBdEWDwxPGuda-gZ28S-EX-AfB6_NSRFDtvf06b-OFXIblYAI4TAW9Gjg8
-Message-ID: <CAJuCfpEOwe7uYJFPt-R52u5+vRSaXADK9XktXDrGGtL1DTd9Zw@mail.gmail.com>
-Subject: Re: [PATCH v3 01/13] mm/huge_memory: simplify vma_is_specal_huge()
+Date: Sat, 28 Mar 2026 11:52:33 -0700
+X-Gm-Features: AQROBzAygtVkNPnpzpDdX4RiDr789lglTD-2OhppKjADrwkoIhM16eBDQH8mylg
+Message-ID: <CAJuCfpGKrBdhL=puid6SqrmKNrOdnk7ezwbWSD9djJPOC4ySgg@mail.gmail.com>
+Subject: Re: [PATCH v3 02/13] mm/huge: avoid big else branch in zap_huge_pmd()
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
 	Baolin Wang <baolin.wang@linux.alibaba.com>, 
@@ -128,14 +128,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C05F940003
+X-Stat-Signature: gxs6q8k3irtc1tfuwn585g1jhqjokxzj
 X-Rspam-User: 
-X-Stat-Signature: e6muhwwc37dhffko1cwpqnugjarbc9qg
-X-Rspamd-Queue-Id: 926B04000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774723769-920099
-X-HE-Meta: U2FsdGVkX1/jcPLNDGSmA3ZxVaJ7YBCtuBUOO7X5d0jVuWle8zaIvB6vhBhYKak0+HFdaCe1axKXf6IoAW3K4jBa0G3dTJd5f3+w5eG3Sloq8kTjxoM54iUzbkKO/ot8VwrrgbHEy3zlQANpN7lB5fVbcBkSBwFOygJSrCg/WRPaXh5ZOH9sM4MiD/isvvmjtSxy2u6/q+LfEHOk5o10XRtlijAfhWcFtAzqAE43NRJQmaPZMtaSPDNkD0MxpK6//qf55uXzV+yjpfEjnbY5GIge3kpSbkB0bFU1NY6lcW/HhTYmdZoGMQdthxzohwQNv6Zx/notjSQILDE9ETTlbdWCghkI0wA3ABqneEz00HU4NCz7hZKdTt9rPfHo1H4sHXT/k7+gNQcTolRByzeaSnX4i11w6N9zcwVi04KJCUJRqYDL0WU3G2vZNPotynz2VFBjlXpkguQdLyWtW8ut2laKsBnfeMrMtNTmMzVljNTCzazMa+WqjQ5TXubb2lWTa2J0vMOU60JRJcPlBQJlYO30SXGgLPbODEvorZ22F6xAcFVV9btj8Uf0yYd+UqHHoANRdRsB/sc6/aWVdrtnWpw5gjsdM4LLWS/+jx8neulqv1l2HyxpcfRxPvEUvEk1ejS9SbGTlk8Khd0ZQ4ACqsUrG3aQwg4teXFnd2Okf0VdrjXuPIqt5OKyQxjFRSUujMdYHdmRr8XXeo8+W1BavDtNuIRVoNqXlzEWe/Kg135PPwBVm5R+mUFUJptaMHL90FmYCcBQ1O+dCk4P8pebJY5gsaqFQyvRpf5T76El07WHXbUhpsJKtq8sftlchKR6YJuMYkE+Bw6I7BVX3gfF4BOOEk442BYDVkBgJDSRaAQtgpjyba81z6U15cK7Sz/QQpQauAOsEQxTCwVHOxJ0AJIx1+IOp/4WuEQaGqTlDDseMmuHTx5tBVeGIjY2DLECkfLX2NrmG977xJzyaSV
- 5pBIZ6Hk
- zcGnPQiQEFoiIRErLMtGYZJcvtjDDqcQhxpnRK11jmKlCvhbtW7ZrTKMgesVVUnN4dvapEWEJ01fGSm3e7M4JRfBUAYGqYnXRp8rBIXlk/azzmbEoxhUwsbXpUzU704TDQgMSukMoYkCwN+tonm/ciPGG8KJkoVcoH6Rx3GO7S4nNGJjFpFIrdEeInO3kW5dB4YGuUOWYduvZOg6iKJvyZSKvnm87bp4906mzspqYPsew/a/+MiX/vu6mlGd8dmNclbKnS4giYjA8BPFXDIdlrFeIGVN09bd8eDQYTUX5Jpr7sx8=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774723965-345340
+X-HE-Meta: U2FsdGVkX1/I7KqFgY5mxVdQAhyYTu/+SEXfdoa6fan9Eo9fRTlfjkZYUoVAUKM+yj5lEVKMpt8OQQm23an4M7UswsR7Tcy0H40LWCU/M7W6RNINdDzICUnIVq97xG2BuU5F9Qzf62HygZ/iKVNUF3CH3Bm4jwrsmdeA7SxbySSiTLqcTQfM2mLQSUspWFIVVwSjDBxJ42JzR9BnKDFN2KeX4Rp+nZVZgtKJsE8hHJlcnPQxNJXFf6EqqLZHU0NZL0W51pop5F4xU7tduGJ9fEOOMX6bjD3rJC6Cv4VFs2Bh/SR03Pt4I27MwY85YY6yOBLIaUwJLnobShnb7xWBzM4kMQaPZfuJaV8KKVb+AXP6tg0Pb1y0M2jIT63OEZ/XBDuAdUvPlZQSlp31tDIHhqWtm4fm5s1qtzWRnTTIBVkZCX/U8dRmeupcsH+smQEwoxSWMCqARkZ9Iq4v4m+dMwNEEl+1wdt+jk6exENMDPT0dP214X+llxlkcK5xD67O0FNdCRcze+8GPsPoFAlFk+DD3grh7bmVdnioU8DYdkudHlVE7EwkzaVwEnpCPNfzmct3RtjxtnBTmFJ7dVXV8kW1IMNaMvi/N9QhM0wrWJjijxrUTu+lGLbmGEQbN/oVwqK+c/UBQCT7YAuYSM3paKJ8xA9z8YnMDmZhkKdEhB89GBUyGieF1yWE7vLJbNvbN7/zqndgnbkpy4XUhZk6lkvmd5jholBlUp9zhwnUIbB6imDeDE2/bJEJwCoUYJ2WdI+XBc9aCocTjgd2zlf2qnc9xmf/sAFcvAzauR6zPc5sF9bo1Ll0pELq1dqdmYLcRrLTG16IPKykGuepnMo+VZug6FS8mvHOz23zDRzMUTNMieJziblaToyn3bKSiu8ORNwq0QjbRxX17KN/2kZXKvnCbxNK/9K6kqjcCQ5khGfhUoLGyYGR2qHrW/5cWRCvfc8L8XAf0rQKD7DmDVF
+ 1mL7LZTW
+ 6facmZxyfv5eaXrABzI/dIXAKCaAAJYdAw64haNAN7eURuCSGOs6x3defLj8et/SCEZDi+3E2TQtO/z7zqzsUD2KLqKsuz4Ibldj7kj91IMr6Fv/I6eDr0+9ps7X+6iHBp7cQfnxwSBwJd+pDxZCRIQBYHFvwsOJC6tZw6MXaoML+2zBj5+k27BJm4AJARjNvdbmpH8b/JaUWCeA8+UN1REZj4zXBK6nKHAMF1pXcU4DhrhAJ+Ui5rpsDeGGALY+z6PyXTf1dqY6IRuS4glTwrEjVVtIoRJb2hl1OixCYR+2R3zfnD33PhJ4ZDji8kTwIEwCypXICgfCMpGegL6C9f55R5AG8ucCRj1g46cPzlDFNSSTJEYQCO9kJBPxhXxNQZaTv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,177 +146,148 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Fri, Mar 20, 2026 at 11:07=E2=80=AFAM Lorenzo Stoakes (Oracle)
 <ljs@kernel.org> wrote:
 >
-> This function is confused - it overloads the term 'special' yet again,
-> checks for DAX but in many cases the code explicitly excludes DAX before
-> invoking the predicate.
->
-> It also unnecessarily checks for vma->vm_file - this has to be present fo=
-r
-> a driver to have set VMA_MIXEDMAP_BIT or VMA_PFNMAP_BIT.
->
-> In fact, a far simpler form of this is to reverse the DAX predicate and
-> return false if DAX is set.
->
-> This makes sense from the point of view of 'special' as in
-> vm_normal_page(), as DAX actually does potentially have retrievable
-> folios.
->
-> Also there's no need to have this in mm.h so move it to huge_memory.c.
+> We don't need to have an extra level of indentation, we can simply exit
+> early in the first two branches.
 >
 > No functional change intended.
 >
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 > ---
->  include/linux/huge_mm.h |  4 ++--
->  include/linux/mm.h      | 16 ----------------
->  mm/huge_memory.c        | 30 +++++++++++++++++++++++-------
->  3 files changed, 25 insertions(+), 25 deletions(-)
+>  mm/huge_memory.c | 87 +++++++++++++++++++++++++-----------------------
+>  1 file changed, 45 insertions(+), 42 deletions(-)
 >
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 8d801ed378db..af726f0aa30d 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -83,7 +83,7 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr=
-;
->   * file is never split and the MAX_PAGECACHE_ORDER limit does not apply =
-to
->   * it.  Same to PFNMAPs where there's neither page* nor pagecache.
->   */
-> -#define THP_ORDERS_ALL_SPECIAL         \
-> +#define THP_ORDERS_ALL_SPECIAL_DAX     \
->         (BIT(PMD_ORDER) | BIT(PUD_ORDER))
->  #define THP_ORDERS_ALL_FILE_DEFAULT    \
->         ((BIT(MAX_PAGECACHE_ORDER + 1) - 1) & ~BIT(0))
-> @@ -92,7 +92,7 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr=
-;
->   * Mask of all large folio orders supported for THP.
->   */
->  #define THP_ORDERS_ALL \
-> -       (THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_SPECIAL | THP_ORDERS_ALL_FI=
-LE_DEFAULT)
-> +       (THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_SPECIAL_DAX | THP_ORDERS_AL=
-L_FILE_DEFAULT)
->
->  enum tva_type {
->         TVA_SMAPS,              /* Exposing "THPeligible:" in smaps. */
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 8aadf115278e..6b07ee99b38b 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5078,22 +5078,6 @@ long copy_folio_from_user(struct folio *dst_folio,
->                            const void __user *usr_src,
->                            bool allow_pagefault);
->
-> -/**
-> - * vma_is_special_huge - Are transhuge page-table entries considered spe=
-cial?
-> - * @vma: Pointer to the struct vm_area_struct to consider
-> - *
-> - * Whether transhuge page-table entries are considered "special" followi=
-ng
-> - * the definition in vm_normal_page().
-> - *
-> - * Return: true if transhuge page-table entries should be considered spe=
-cial,
-> - * false otherwise.
-> - */
-> -static inline bool vma_is_special_huge(const struct vm_area_struct *vma)
-> -{
-> -       return vma_is_dax(vma) || (vma->vm_file &&
-> -                                  (vma->vm_flags & (VM_PFNMAP | VM_MIXED=
-MAP)));
-> -}
-> -
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_HUGETLBFS */
->
->  #if MAX_NUMNODES > 1
 > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index e90d08db219d..2775309b317a 100644
+> index 2775309b317a..4e8df3a35cab 100644
 > --- a/mm/huge_memory.c
 > +++ b/mm/huge_memory.c
-> @@ -103,6 +103,14 @@ static inline bool file_thp_enabled(struct vm_area_s=
-truct *vma)
->         return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
->  }
+> @@ -2328,8 +2328,10 @@ static inline void zap_deposited_table(struct mm_s=
+truct *mm, pmd_t *pmd)
+>  int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>                  pmd_t *pmd, unsigned long addr)
+>  {
+> -       pmd_t orig_pmd;
+> +       struct folio *folio =3D NULL;
+> +       int flush_needed =3D 1;
+>         spinlock_t *ptl;
+> +       pmd_t orig_pmd;
 >
-> +/* If returns true, we are unable to access the VMA's folios. */
-> +static bool vma_is_special_huge(const struct vm_area_struct *vma)
-> +{
-> +       if (vma_is_dax(vma))
-> +               return false;
-> +       return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
-> +}
-> +
->  unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->                                          vm_flags_t vm_flags,
->                                          enum tva_type type,
-> @@ -116,8 +124,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_ar=
-ea_struct *vma,
->         /* Check the intersection of requested and supported orders. */
->         if (vma_is_anonymous(vma))
->                 supported_orders =3D THP_ORDERS_ALL_ANON;
-> -       else if (vma_is_special_huge(vma))
-> -               supported_orders =3D THP_ORDERS_ALL_SPECIAL;
-> +       else if (vma_is_dax(vma) || vma_is_special_huge(vma))
-> +               supported_orders =3D THP_ORDERS_ALL_SPECIAL_DAX;
->         else
->                 supported_orders =3D THP_ORDERS_ALL_FILE_DEFAULT;
+>         tlb_change_page_size(tlb, HPAGE_PMD_SIZE);
 >
-> @@ -2338,7 +2346,7 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_=
-area_struct *vma,
->                                                 tlb->fullmm);
->         arch_check_zapped_pmd(vma, orig_pmd);
->         tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
-> -       if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
-> +       if (vma_is_special_huge(vma)) {
+> @@ -2350,59 +2352,60 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct v=
+m_area_struct *vma,
 >                 if (arch_needs_pgtable_deposit())
 >                         zap_deposited_table(tlb->mm, pmd);
 >                 spin_unlock(ptl);
-> @@ -2840,7 +2848,7 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_=
-area_struct *vma,
->         orig_pud =3D pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fu=
-llmm);
->         arch_check_zapped_pud(vma, orig_pud);
->         tlb_remove_pud_tlb_entry(tlb, pud, addr);
-> -       if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
-> +       if (vma_is_special_huge(vma)) {
+> -       } else if (is_huge_zero_pmd(orig_pmd)) {
+> +               return 1;
+> +       }
+> +       if (is_huge_zero_pmd(orig_pmd)) {
+>                 if (!vma_is_dax(vma) || arch_needs_pgtable_deposit())
+>                         zap_deposited_table(tlb->mm, pmd);
 >                 spin_unlock(ptl);
->                 /* No zero page support yet */
->         } else {
-> @@ -2991,7 +2999,7 @@ static void __split_huge_pmd_locked(struct vm_area_=
-struct *vma, pmd_t *pmd,
->                  */
->                 if (arch_needs_pgtable_deposit())
->                         zap_deposited_table(mm, pmd);
-> -               if (!vma_is_dax(vma) && vma_is_special_huge(vma))
-> +               if (vma_is_special_huge(vma))
->                         return;
->                 if (unlikely(pmd_is_migration_entry(old_pmd))) {
->                         const softleaf_t old_entry =3D softleaf_from_pmd(=
-old_pmd);
-> @@ -4517,8 +4525,16 @@ static void split_huge_pages_all(void)
+> -       } else {
+> -               struct folio *folio =3D NULL;
+> -               int flush_needed =3D 1;
+> +               return 1;
+> +       }
 >
->  static inline bool vma_not_suitable_for_thp_split(struct vm_area_struct =
-*vma)
->  {
-> -       return vma_is_special_huge(vma) || (vma->vm_flags & VM_IO) ||
-> -                   is_vm_hugetlb_page(vma);
-> +       if (vma_is_dax(vma))
-> +               return true;
-> +       if (vma_is_special_huge(vma))
-> +               return true;
-> +       if (vma_test(vma, VMA_IO_BIT))
-> +               return true;
-> +       if (is_vm_hugetlb_page(vma))
-> +               return true;
+> -               if (pmd_present(orig_pmd)) {
+> -                       struct page *page =3D pmd_page(orig_pmd);
+> +       if (pmd_present(orig_pmd)) {
+> +               struct page *page =3D pmd_page(orig_pmd);
+>
+> -                       folio =3D page_folio(page);
+> -                       folio_remove_rmap_pmd(folio, page, vma);
+> -                       WARN_ON_ONCE(folio_mapcount(folio) < 0);
+> -                       VM_BUG_ON_PAGE(!PageHead(page), page);
+> -               } else if (pmd_is_valid_softleaf(orig_pmd)) {
+> -                       const softleaf_t entry =3D softleaf_from_pmd(orig=
+_pmd);
+> +               folio =3D page_folio(page);
+> +               folio_remove_rmap_pmd(folio, page, vma);
+> +               WARN_ON_ONCE(folio_mapcount(folio) < 0);
+> +               VM_BUG_ON_PAGE(!PageHead(page), page);
+> +       } else if (pmd_is_valid_softleaf(orig_pmd)) {
+> +               const softleaf_t entry =3D softleaf_from_pmd(orig_pmd);
+>
+> -                       folio =3D softleaf_to_folio(entry);
+> -                       flush_needed =3D 0;
+> +               folio =3D softleaf_to_folio(entry);
+> +               flush_needed =3D 0;
+>
+> -                       if (!thp_migration_supported())
+> -                               WARN_ONCE(1, "Non present huge pmd withou=
+t pmd migration enabled!");
+> -               }
+> +               if (!thp_migration_supported())
+> +                       WARN_ONCE(1, "Non present huge pmd without pmd mi=
+gration enabled!");
+> +       }
+>
+> -               if (folio_test_anon(folio)) {
+> +       if (folio_test_anon(folio)) {
+> +               zap_deposited_table(tlb->mm, pmd);
+> +               add_mm_counter(tlb->mm, MM_ANONPAGES, -HPAGE_PMD_NR);
+> +       } else {
+> +               if (arch_needs_pgtable_deposit())
+>                         zap_deposited_table(tlb->mm, pmd);
+> -                       add_mm_counter(tlb->mm, MM_ANONPAGES, -HPAGE_PMD_=
+NR);
+> -               } else {
+> -                       if (arch_needs_pgtable_deposit())
+> -                               zap_deposited_table(tlb->mm, pmd);
+> -                       add_mm_counter(tlb->mm, mm_counter_file(folio),
+> -                                      -HPAGE_PMD_NR);
+> -
+> -                       /*
+> -                        * Use flush_needed to indicate whether the PMD e=
+ntry
+> -                        * is present, instead of checking pmd_present() =
+again.
+> -                        */
+> -                       if (flush_needed && pmd_young(orig_pmd) &&
+> -                           likely(vma_has_recency(vma)))
+> -                               folio_mark_accessed(folio);
+> -               }
+> +               add_mm_counter(tlb->mm, mm_counter_file(folio),
+> +                              -HPAGE_PMD_NR);
+>
+> -               if (folio_is_device_private(folio)) {
+> -                       folio_remove_rmap_pmd(folio, &folio->page, vma);
+> -                       WARN_ON_ONCE(folio_mapcount(folio) < 0);
+> -                       folio_put(folio);
+> -               }
+> +               /*
+> +                * Use flush_needed to indicate whether the PMD entry
+> +                * is present, instead of checking pmd_present() again.
+> +                */
+> +               if (flush_needed && pmd_young(orig_pmd) &&
+> +                   likely(vma_has_recency(vma)))
+> +                       folio_mark_accessed(folio);
+> +       }
+>
+> -               spin_unlock(ptl);
+> -               if (flush_needed)
+> -                       tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD=
+_SIZE);
+> +       if (folio_is_device_private(folio)) {
+> +               folio_remove_rmap_pmd(folio, &folio->page, vma);
+> +               WARN_ON_ONCE(folio_mapcount(folio) < 0);
+> +               folio_put(folio);
+>         }
 > +
-> +       return false;
+> +       spin_unlock(ptl);
+> +       if (flush_needed)
+> +               tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
+> +
+>         return 1;
 >  }
 >
->  static int split_huge_pages_pid(int pid, unsigned long vaddr_start,
 > --
 > 2.53.0
 >
