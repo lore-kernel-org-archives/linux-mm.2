@@ -4,125 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5145510BA45E
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 00:29:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7E8B10BA434
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 00:36:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90CFF6B008C; Fri, 27 Mar 2026 20:29:05 -0400 (EDT)
+	id 19C856B008C; Fri, 27 Mar 2026 20:36:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BD886B0095; Fri, 27 Mar 2026 20:29:05 -0400 (EDT)
+	id 1272D6B0095; Fri, 27 Mar 2026 20:36:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AC8E6B0096; Fri, 27 Mar 2026 20:29:05 -0400 (EDT)
+	id 014DE6B0096; Fri, 27 Mar 2026 20:36:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 68D286B008C
-	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 20:29:05 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 025BB5F509
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:29:04 +0000 (UTC)
-X-FDA: 84593587050.08.04146FC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AA5B2C0005
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:29:02 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FnVncGxj;
-	spf=pass (imf22.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E1CD16B008C
+	for <linux-mm@kvack.org>; Fri, 27 Mar 2026 20:36:00 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2BD398EC4C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:36:00 +0000 (UTC)
+X-FDA: 84593604480.12.ADB5CB1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9F67514000F
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:35:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Y9qLy03L;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774657742;
+	s=arc-20220608; t=1774658158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pVak1OQdFi+KSbDm2i0b5emN8NsmFfdL0DbczgHqixQ=;
-	b=R2HpdUgFsCPar+//q9/YbsIPkSRH7Ke6x3F0WBSIrToHp6prcgQmGo1qRwGOdeYf8UUn5g
-	M6KzN0sL3dhB+jpYw/roI4KXInoCkyXkZu5YRL03OHsFMrnlPW9LRKjrjy1jQMHGBlcKmo
-	pstxorLHaMAlkzHEmxIgK7b3lgIZvxg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774657742; a=rsa-sha256;
-	cv=none;
-	b=obhvnq2Ey2rQvW4Y9stbRitksronFiH42zGytMBFos/+dfdScQolElPZ4KvFF5dLLFkbNn
-	NnxLklj4UxvbNIbns1PqaMvr8X7afmjv0PaL4K8SvN3IDHsVjVM4fZ02NOdiiQuG+LxAtZ
-	7qiMsjRTZegoqpzpEwS9DSBXjJhYjP8=
+	bh=lBrT2ULZpMuSVHKl+0A+w7fpA4GdJsgINzXYejhUBGY=;
+	b=B7eIvHbW82bt8/dU4F6fbVCUXeIF8SskaMue2QAMgrhN+ANTf8DcxalPy1LmNQ4bnnBDO9
+	UlRsLwQVMxt+dhfI7V6p4e+BMdjZ1etUuF581Y8VG/rOp8AMKegjs/7U0APLGXeoVaabPs
+	BDKcmV0FYTiJxa3gRrBqM99fa5eAY94=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FnVncGxj;
-	spf=pass (imf22.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774657742;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pVak1OQdFi+KSbDm2i0b5emN8NsmFfdL0DbczgHqixQ=;
-	b=FnVncGxjmlP/K9CEoi9U8iePkpgFbzrE5U4WmqmZmWzse2GdPA1Rv2v8nY7yQwJ0dntVII
-	pMfBwk1wnfzTC1m0wcphY2gxg7FCbFHLF9LGxEDpbkSHSSHoYY2YmKSCjhqsMmwUEgjym4
-	oDm9zlv+C7FR4+QA8JorzmhEsBSn+DI=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-360-8FSlQ1YbNA2sK--rvM-B-Q-1; Fri, 27 Mar 2026 20:29:00 -0400
-X-MC-Unique: 8FSlQ1YbNA2sK--rvM-B-Q-1
-X-Mimecast-MFC-AGG-ID: 8FSlQ1YbNA2sK--rvM-B-Q_1774657740
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2b23c909256so8168975ad.0
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 17:29:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774657739; x=1775262539;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pVak1OQdFi+KSbDm2i0b5emN8NsmFfdL0DbczgHqixQ=;
-        b=nm/0pXtKl7s31U4Dc34YvJaHk9mM75GCO+oWI3TJ9sO9sXD7QiQFQY/sjO2Rg2r4X+
-         DORaAK4ilVNL4eU9XOODRKe+M4W2Myij23boiOHs3V9j7ebNocW7stni+5DJ+7WRYj1Q
-         awlu//Ny/S2i1ZKgpV88ewpclS760aHtnXVAHyNhULN2XwJvBimAZA4zO+MMpARUCLT/
-         rzpC3NULDe3GajahMcZwrOyAaN2EEzWteLP4A9hZQmWXgWb+RJWSOF+JgoVY6/jEzfiP
-         m1JBMNS2ek6by8rZ0ut9oMNTCCqqiJ3pnEMTGs28unvbth6fE1Ox2zLL4OMyaCmG4lnG
-         WxYA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9KlKl83Ls+woTTRzHLzTkk7ocLOnXradGUMJ/JTfc0YLQ9TQIfva7F0rAfZ1qbYle2DPVspjjJw==@kvack.org
-X-Gm-Message-State: AOJu0YzJnQ4TAvV40yryJZvf1GpVU3jWihYsBagJc8pGFPLaMP+AKGoJ
-	TsDILp5W4+ts1QaY0auEqJGtJQDLUcVgpv4MN5RnwQSEkBaCgRm6Zq55RnJ88F7O0U+PaJ13bpr
-	q5zsaSG6hmNQI5v2oeenf9HDst3TM5/xhkJ5bRAqaIqY2r9uYzFrI
-X-Gm-Gg: ATEYQzwH4x+H/1k202bagFKTqip2nwBk4ZtnymrSBXvn1CLZnHOylmrrsP4XH1LWQc6
-	rkKohcaBcrGuEv7uF3t3hfzHZifyB0D4Lfaok49CnuKyATdeNns2yN4as9m+5ooWP5s9vdMgznO
-	mPyvILZ5wqF1dwmzGuQEyZ4iUadu+vlGu5x0XqWLaqJEiSVkq1hXO4F1qVcp8/3FQ7XWx24DOae
-	LqXf2ceDN9yNwYCSJ2YPWGoEfLNtX1W6itDn9c1onHAumukYzhjoN0O1dOCMwVRVjVJG4HcC3iM
-	TKDMV/th3SsiQRCLJbbdEQvZYO01yfSzGSqrkUKuDC0OEdPySN6Wy60SLAD2Gj2lTy7sPsGvWy4
-	oCpvs4t3sQVXQq3ETeg==
-X-Received: by 2002:a17:903:3c30:b0:2b2:43ca:3486 with SMTP id d9443c01a7336-2b243ca38b7mr2412965ad.46.1774657739500;
-        Fri, 27 Mar 2026 17:28:59 -0700 (PDT)
-X-Received: by 2002:a17:903:3c30:b0:2b2:43ca:3486 with SMTP id d9443c01a7336-2b243ca38b7mr2412725ad.46.1774657739017;
-        Fri, 27 Mar 2026 17:28:59 -0700 (PDT)
-Received: from redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242642956sm5490615ad.6.2026.03.27.17.28.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 17:28:57 -0700 (PDT)
-Date: Sat, 28 Mar 2026 08:28:55 +0800
-From: Li Wang <liwang@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: rppt@kernel.org, david@kernel.org, ljs@kernel.org,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, aubaker@redhat.com,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/mm: skip hugetlb_dio tests when DIO
- alignment is incompatible
-Message-ID: <accgxwDzIyk3_fEL@redhat.com>
-References: <20260327120305.58653-1-liwang@redhat.com>
- <20260327121350.858a127fa49ed6e1eb4a40a7@linux-foundation.org>
-MIME-Version: 1.0
-In-Reply-To: <20260327121350.858a127fa49ed6e1eb4a40a7@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KBRrM7N1wEAFeikdNbBPHsJGrj8ELGoQI4-G-ifsyTg_1774657740
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: AA5B2C0005
-X-Stat-Signature: gyty5cnxp1d1zmtqfzu38sd5s3ybw7tz
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Y9qLy03L;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774658158; a=rsa-sha256;
+	cv=none;
+	b=t/bMzic2pXPNoBctO/DRtQTdnYQUV+XlIqt7bvkifAc7JqCY62G/OHZMHjblopUV64ZmOJ
+	ZYOqP9IsL0mNvd//L7SmRFI+qxyHTdyL2+F0qriuuIHskzWE4YmPL48+2mByWCEEvWM9qb
+	YFYXLimZHosVfTkQzkwkvEemo3/OH3M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D831E60054;
+	Sat, 28 Mar 2026 00:35:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43897C19423;
+	Sat, 28 Mar 2026 00:35:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774658157;
+	bh=h6Tk7IjG9yZpu1BCQvPI6noMo2JTbvhpbbfGx73+Odo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Y9qLy03LKdAX10P3aoEQWYcqF6NlkNuAQpyt1wsdHQWKl+BVtHruV+Nzy90HZ9J6x
+	 qiXx3d+thuu+aBnzGrAASn9DRzDzP2Vih0F8qWq9MlbES6avDEX3+4oEJIl9UbTAeE
+	 w0Op9wanwiAuB/InG28i3FAH9II8LhoOFkhJ5DZ0=
+Date: Fri, 27 Mar 2026 17:35:56 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
+ Mina Almasry <almasrymina@google.com>, linux-mm@kvack.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/hugetlb: restore reservation on error in
+ hugetlb_mfill_atomic_pte() resubmission path
+Message-Id: <20260327173556.8feb91aa8b40d2510a20de09@linux-foundation.org>
+In-Reply-To: <20260322052120.14021-1-devnexen@gmail.com>
+References: <20260322052120.14021-1-devnexen@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774657742-849629
-X-HE-Meta: U2FsdGVkX1+ixzpNJ5Lw/6m+p85agf7zvnWlP0OTt/ix/cT+SMwkXriJr0+CKxBg6sNlOhgWSoYRkYjhMrDshsUWfQO++s1T89NQxlhgKEo6bE8bi1P3POE8eCes2/W4GSOdg3CWAyRsuqq/P16QwOKHO+qhR6Fl1uAXa/msvXjARtsRB7AIkV/z4Rxn7IGlw/SPb5ELxflvVPArSrxJzr381m8d+w7aaor1UmJdgjdQZdjMEtiCPWGWgt80i1E5Y/HZpvdm31K/Fh/E+3XuyeSzauzbC6pRw2fX9InWz5w75xdCP3+Kc7IZnqDNgAjzcwrzon2rBHjFCY58VF2Cf+z6Q/KpUq8iXZmLh0eDIxHHGuI6xm6Zfk72ewLV5zNJKhW/sf1GmKFplOKQDFcruwSlKEjgqt+/qM9YumhIa5S7feu71dwUfTW6Eh3C8kjvS8KsMx70i7kwn0TYE6ckRngmGHf7mPGMZk3Xr1KPHBAqYoxi1kgMoxUl7RfB9K2I5d+0uNbA7wbGoSjofU3cY54CLMvAp7f+vpsingbHAhT9FP/Vb3oNsBjW/hfYOFpfG/79IdbO3VR0St1zeGVKbeRivAJ3kVikXhlwj0hvv2382s25f+xo3ua9qmjiR/dlByKe5Lg65jSvLXLregyqYdWGpXvn6fl++EVhFctE2/5/DRGIWXVNUQlD6e7nhhyjMuywXw15Ad8DRYQhdIaTp1ilAfReDtcWsk2NpGuTNG4pvCRb03JcVUtUQtHhGoAPu3yZZhJRTN4RlyhJJ6FFyrLIc3ca7OohhjGZpiivvkmWWyWfRJBV7me2vUOvX6tJs0azbBOHi1i6mVQZwWErfYFr4Sp7qGWaHJGvu/HM24xoZurG+6g96QIBg8Do3gHdU5NV8SlD2s2lX+TtKdRLdFhI+ghzhT4X/5DWmqhF0EMFNAzBcghCAY9e8dwr1zuLazRuHENIi3+B2seIum1
- eWwja8Hb
- j850JY7JSQVmWI30SkTp1BpGf1vvoeSx0Y3pziS6naKmUJwaKg7YTOJux3tKR4Ljkl7Pj5ti8CfgCDKj6RI+NCFg9isJekXrwJLStLhVnc3ngj1G2L34nHnZwxLKLR7Uvla6jzBmpS+Ev6ciWgUBg6eA8+w82qhoZddYPBh45PODoC4Z/WEkYftNkYjGfycD6tSZE4vOPbwdn38A90ZIFvtKEz5GIdRLjshjaXMXZyXZ6ig5FceYPXYVPWbtcUrGz1Hqt/YkGbzAUOOEX3yNvHaS661gd1zKzK4cv5OGoUJUgh2fuvFMgEZ1/wTZYz60VHDgEU9ZAmGNHTX8WVjk5PAl1mHp9UQPV1vz6GfTYcajNhpl7kWoPP3vS8FkYiyawBtQ+0IkGW7cJMVglEpfj2ExjgGqeHV7QwNSt0NFKDCoz/9Ilm97GouecJghKLpBXECPPRe0UcdeWsYWoXE7v+Mbq89UNJ5EVdGsHvhod9FQYHPi5p9wiIhdiIQ==
+X-Rspamd-Queue-Id: 9F67514000F
+X-Stat-Signature: e7upn3c8qhqdoxuy99i7zqhg6otq6abn
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774658158-829612
+X-HE-Meta: U2FsdGVkX19u95Nw+MZZMb74uuiKURu0975Oc8P6Xl1Qo6C3scHZmWg1VT9Apx82bwx2+MZPgOREvwWvqKQ5LWqi3B7K6Fh60nlxR69+G0H2i1XYJuEOm4ooRRdrPVp0h+l189QtGNYTMKs20za+4oCm2muLgg8Ckb+/9NciDqOE73sTBZ0VsrgiddHAHmx+tqCS01ZaeitaYW0fuvdZd4XQsWSQXWHbcMC9+l15uoWuw7kumj81yLL/4j35gbd6MJPfKiKq6czCMyvPOqobu4j83UCKR6+3BGliYim/C4CaElUyU1KDaquex9Lq3HvNp9fjIYYjVaGcyG803P5+c06Q9F0yUk9JzgrKUqVqP2dpGDYgh4auB/WMIbiRx130h/qToFxjypwXRtKUKrfB/H8FcwponmLUAU2ZH98HNzGwZiu8SbDLoxjKpBwktxFfB3IfbAoDfYerQeONQBaegADKRhPmKvemtPvFfl6sYwtSecMw4TMy57MO7MRBs9sSEWu1XhCfY9JeEXTXtRHpbeuU/nK0UACrKULuUQCap3Z6/oqCauAdvp+525VKvTLaYOPjfFiFe+lrScNhdOyPS2jTkAmBJaZ2hSUV0u5LR7itzzLbPceRozzS8pA+1lgxC756NxTf0PwG+RZxTyKGl3z3tn9xQttBNQcQTktE4FN0DgPjqgdosY0G6c6pQIYR7mt3UwunhiZW7hgTVL0DOrxaPhfY+hAvqJOwYfBi2V8DKrGgkHlP3vnkI59Ao1j7+z0Y06yqfWe+Jhb6RjR1IbtizoPDywFmzoI5gGrl924aJCEXAsgmoTa1stXei7tv0/nHEANZGhpWt+w7IztVS20mmJL/f2TXm5/VNVZThRbLdHJs/RuwnYaJqkkZDomCKYw8Uubqgf7rU3gDB6TiBFLOK+XzJVCH8uEXefDRpwJOmqdCDkOMXKYTGK5ztg0DCXTQ+QSyNCq+CbNRVaJ
+ M+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,85 +91,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 12:13:50PM -0700, Andrew Morton wrote:
-> On Fri, 27 Mar 2026 20:03:05 +0800 Li Wang <liwang@redhat.com> wrote:
+On Sun, 22 Mar 2026 05:21:20 +0000 David Carlier <devnexen@gmail.com> wrote:
+
+> When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
+> hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. If
+> copy_user_large_folio() subsequently fails, folio_put() restores the global
+> hugetlb pool count through free_huge_folio(), but the per-VMA reservation
+> map entry is left in an inconsistent state.
 > 
-> > hugetlb_dio test uses sub-page offsets (pagesize / 2) to verify that
-> > hugepages used as DIO user buffers are correctly unpinned at completion.
-> > 
-> > However, on filesystems with a logical block size larger than half the
-> > page size (e.g., 4K-sector block devices), these unaligned DIO writes
-> > are rejected with -EINVAL, causing the test to fail unexpectedly.
-> > 
-> > Add get_dio_alignment() to query the filesystem's required DIO alignment
-> > via statx(STATX_DIOALIGN) and pass it to run_dio_using_hugetlb(). Skip
-> > individual test cases whose write length is not a multiple of the
-> > alignment, so that aligned cases are still tested.
-> > 
-> > === Reproduce Steps ===
-> > 
-> >   # dd if=/dev/zero of=/tmp/test.img bs=1M count=512
-> >   # losetup --sector-size 4096 /dev/loop0 /tmp/test.img
-> >   # mkfs.xfs /dev/loop0
-> >   # mkdir -p /mnt/dio_test
-> >   # mount /dev/loop0 /mnt/dio_test
-> > 
-> >   // Modify test to open /mnt/dio_test and rebuild it:
-> >   -       fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-> >   +       fd = open("/mnt/dio_test", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-> > 
-> >   # getconf PAGESIZE
-> >   4096
-> > 
-> >   # echo 100 >/proc/sys/vm/nr_hugepages
-> > 
-> >   # ./hugetlb_dio
-> >   TAP version 13
-> >   1..4
-> >   # No. Free pages before allocation : 100
-> >   # No. Free pages after munmap : 100
-> >   ok 1 free huge pages from 0-12288
-> >   Bail out! Error writing to file
-> >   : Invalid argument (22)
-> >   # Planned tests != run tests (4 != 1)
-> >   # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > 
-> > ...
-> >
-> >     v2:
-> >     	- Pass dio_align as a parameter to run_dio_using_hugetlb()
-> >     	  instead of generally page_size/2 alignment check.
-> > 
+> Add the missing restore_reserve_on_error() call before folio_put(), matching
+> the first-attempt error path which already handles this correctly.
+
+Could we please have some review here?
+
+> Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
+> Cc: stable@vger.kernel.org
+
+And agreement that this is desirable.
+
+Thanks.
+
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 88009cd2a846..d6ea11113f1d 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6295,6 +6295,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+>  		folio_put(*foliop);
+>  		*foliop = NULL;
+>  		if (ret) {
+> +			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+>  			folio_put(folio);
+>  			goto out;
+>  		}
+> -- 
+> 2.53.0
 > 
-> Whee, AI review has decided that pre glibc-2.36 is a problem (last time
-> it was pre-2.37).
-
-Ok, will handle this build issue with old glibc.
-
-> And it's forgotten the previous fs-doesnt-support-DIO issues.  Did you
-> alter that?
-
-[Sorry, forgot to mention in change logs]
-
-Yes, I added O_DIRECT flag back to the first open(). Then it'd skip into
-a failure on filesystems that doesn't support O_DIRECT.
-
-Also, statx on FS doesn't support DIO will set stx_dio_offset_align to 0,
-which may led a division by zero issue, I added a zero check.
-
-	} else if ((stx.stx_mask & STATX_DIOALIGN) &&
-			stx.stx_dio_offset_align) {
-
-
-> The get_dio_alignment-before-ksft_print_header thing seems legit.
-
-+1
-
-And, before sending v3, I would leave this patch for more days to
-see if others comment.
-
--- 
-Regards,
-Li Wang
-
 
