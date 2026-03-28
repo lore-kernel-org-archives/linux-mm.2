@@ -4,86 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E426310F3DCB
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 04:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1380F10F3DCE
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 04:12:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32D2F6B0005; Sat, 28 Mar 2026 00:09:39 -0400 (EDT)
+	id 72AAA6B008C; Sat, 28 Mar 2026 00:12:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DE146B0095; Sat, 28 Mar 2026 00:09:39 -0400 (EDT)
+	id 701B86B0096; Sat, 28 Mar 2026 00:12:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21ACC6B0098; Sat, 28 Mar 2026 00:09:39 -0400 (EDT)
+	id 63E6E6B0098; Sat, 28 Mar 2026 00:12:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DA296B0095
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:09:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0C721B8CBA
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:09:38 +0000 (UTC)
-X-FDA: 84594142836.11.56DA8D8
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F2632A0006
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:09:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cZHIRaKd;
+	by kanga.kvack.org (Postfix) with ESMTP id 519A96B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:12:58 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BFE5C48F6
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:12:58 +0000 (UTC)
+X-FDA: 84594151236.13.C56BF00
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 96EEE40006
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:12:54 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q5e5vjdl;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774670977;
+	s=arc-20220608; t=1774671174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tYR1gJ6M/Z6ak/fzYuriJiVP1fqhOV2XtXnkDDYeAFI=;
-	b=S+kkSA5ROw5dkANExChcP/u3v5kMc3AkuvciJac4Yqx5sHvrfVcN8xI/DG9QKUgcQ8OWV7
-	Yshapym2AaSJpfEHFT/+4O4DYdL5jLUxsFND2goANAKJqk7K83VGqA/Rx5JOiEt5K4BRUa
-	El199+Ls+2Rpn7sqAwVRv+DrAGIIuKQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774670977; a=rsa-sha256;
+	bh=jwH9djlM7EeldEvmT12J+amit/qHM19CLj9Hfcbnv6A=;
+	b=B3G1DZV6VYWx9H4IfiwoL2Yh9dWJY4qfP8CRYgLjFahvrxpctyERuTuR/XeG4Sw5rfiEG6
+	Bx4ClHWPg9leA3OYF8jaN9ZYWvY21HZWvqq0QhbdA8zhohzM5E/46Dy/0No8JqPsakjLS7
+	aUTbXNKfFZHig2BXc1fxiR6Yr0RYdI0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774671174; a=rsa-sha256;
 	cv=none;
-	b=NPeh4OFOq1IZk7f06flgPjKd7OSGX65McOlY74sVIgHoYc0xCUgMrZQE+Y40pG/oW3iTgx
-	SjuEprge7shHVdVxU+P3Wkqk71lYQmfVMW4rmHu5+7CRJwmsXZNj1fUwGI6MYkIhGSGyq2
-	8eylgzNyudx+oir+7h1iIP3xfworrGQ=
+	b=g6k8dX/iwg4354HjIIMrsqCtwJ1oGpKBGOZTnu5ClNuOHhtf0VF1aX7iF+BPDjWmeeInNL
+	Ry+FRrmLXzFTuD41QcRUIuhXi3iCla5VPSZlGTOg8sWZihMtsOY/lY0qkZ00MmZNbLlttg
+	Ck5345odX/vfnqKbJQ6HjSLmjz4+dO8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cZHIRaKd;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q5e5vjdl;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-Date: Sat, 28 Mar 2026 12:09:24 +0800
+	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Date: Sat, 28 Mar 2026 12:12:42 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774670975;
+	t=1774671173;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tYR1gJ6M/Z6ak/fzYuriJiVP1fqhOV2XtXnkDDYeAFI=;
-	b=cZHIRaKdYHylWzqRzuEVjgXCIT34HtCUlx16WpIdv9ZQ7ZHGq+GByTN6sAO55DZI5pCmv2
-	Qa31Rs/b+mTyU8BN3sUi2ZgFnIq3y35Ju/kczSm0e5ScYB5mMT3C3jHNJqhluni060tuiw
-	HEHugFthSEkmOatsPcOGxqOpdD2Bh3M=
+	bh=jwH9djlM7EeldEvmT12J+amit/qHM19CLj9Hfcbnv6A=;
+	b=q5e5vjdlc+es4dIZkNqfTSQAgfkrqcruuQ7cX7MIYdTRgEU/AatvbRrFWGM4+yyb8rrFDD
+	9cA+t2kcLFKyRQ+fgcLAyDvOf3rhUNtOjUkPl1m5UpfJA/sR9dJJz3Ln70Ey3hlAVSR7LL
+	nje6uALOeF3MkyLtDwYv5dDAbUyxm4o=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, osalvador@suse.de, akpm@linux-foundation.org, vbabka@suse.cz, 
-	harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-cxl@vger.kernel.org
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, osalvador@suse.de, 
+	akpm@linux-foundation.org, vbabka@suse.cz, harry.yoo@oracle.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
 Subject: Re: [PATCH] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
  hotplug
-Message-ID: <5omwfganlhwbmllrmab6f2v473rrgirvbtqrcouj6tz4karzjb@xiheplfxwap5>
+Message-ID: <2rzg3awmws2odvgysb4ty73nf4nrqfvpzosdlexttn7hsvyfkd@x7lkzb2y3ugs>
 References: <20260327143823.3063541-1-joshua.hahnjy@gmail.com>
- <2356614e-d9b8-4639-8e2a-96c5e4eaef61@kernel.org>
- <c3b10a9b-d3a8-4e5a-8cf9-3ddb172d2c0e@kernel.org>
+ <c8d9fba0-a001-42b0-b0e3-323235cb652b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c3b10a9b-d3a8-4e5a-8cf9-3ddb172d2c0e@kernel.org>
+In-Reply-To: <c8d9fba0-a001-42b0-b0e3-323235cb652b@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: F2632A0006
-X-Stat-Signature: wb7ocfbpku5ddmfsoecox8tg4d4atpmc
+X-Rspamd-Queue-Id: 96EEE40006
+X-Stat-Signature: 65rgcao1tc7ozyt3zjx19q1duxjktw6f
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774670976-417387
-X-HE-Meta: U2FsdGVkX19ul+Iu+/tGrNNxeznNVFKNXM0c4VdXQjpPwJXBddRpOMAhVSkhKy2lqV10wNv82I6e3yojOw4Upqd6dqTNUDZKklwlq6Yl0oma8dxVkGjVGRqvQbvPU0ixyL5auuRGm/l4C/5GJaG3B3cLYB9rpyu7pu/53QSZ4XdFazCArr2Svgsp6nF6AF4zlKZ10dN4Ro94VTRd9JDQS1ghQRzTXFfDurn2JV+1PmMo8p2+UBx0FxE3iH+9dbihmm+mp8Pid6GuEYmlGPGNSf9WFfosgLdAJV6CcxgJxoaF1uzEaegXG9mga2K+eyL6h91FF4n9apAOqkqmPuWe4REG71lLKoT3wn0gFDdxetpqW1WyxoPH0C5MwlrdH49xUj7Z1mbjOJmPek0kRyFkXXr4NNpf7+4/x/i/Wpa8F67RDKEpQSq4ZD7dt+cddhDXiO+UVqhJnWh7YaasMQj4nBb0WUKmkBMnq49YBHdDsSh4/RZ/I3RLmr1MsoNfeFZHPBTmq9aGzj0LvPbwF+8hWl1+zJ1/Df4GH6tg4/y8iJ7W4v3swEtEU0mIyscTCVIJNx0PmjMOB76jvVvTR3h39AvLfKXaciF79qsoGgkulebxwFls7xLhqWbOIW/hn7QrwwcrvkBrGamUl2fijH/7T/1zih2SamHZ/FKfMNS4x2+eQYV3yfTKUdGAnAECmyippOdO+Vim2vlBUifxUKys6uRhi8BnvExVfyoZScFTXQupEobXbfK6/3bG2GjPlDXUo9F7TGbKxhR2UA77TyFUTpcjD9Kj0P8Y7QnknLfpDMgdmlVFEBX/gP1jErKWFmJkoCLGOelta9dk46WegUm4MFZEpIoHhiFXWIsViDpJlobudcc98tRlj3OZ12Cgfm/Nzp5GBgiFqnvXwCoa60MuvqMLu0VeuzbOwj9IA/kjdIFeiBiB/oe9W7CjzWtq3tKzxVZyf5JWIzwq1s0rh3A
- ElTQFp/F
- 0nx6kL46AlR9UlnBGB/0GL412V+EOGoCMae2Zz4VwBAEsxNGLLvx5fbtwixP1ObooRd5tMF1Gk5cYS+8pactl2z6yLvoA5wQtkXjTzcJ8hOTrFymP2/0AvYDY5N8wJlfAtIeWvjubtcuwlC90Bjbv8LOzk6uasyc7oc3PSPfl+fk3jozLCpuyxj5CVyjeBl8krv3M3eYJ68JsSPq/92BR5EWsYjmYHiK1dw7GrwPSXdPdNnJorlT+wpRz1h4QFpo1Hn6XURX58V8SrvIKLAYmk3IyeYpUlF+rLz2n
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774671174-745741
+X-HE-Meta: U2FsdGVkX19aFYj3lBLf1ZHirCJVnA72hvIQxzRd3N9/5Laq/rDJXrGH9piQi1aI1dkxdS8ogXUQi8ULwqsnaJbm/iYFZo0rpuZdGo43N+A0vZ9SR0u+0mEdW08ilqQTplF+kWy0iTRCY2HbMLuwtzDmovtrK+K6XmiSPShJfiQx2H/5ia5BVZ5iNteZkHKZ31Y8eh7kbMQ+lLzn8Y88UZA9SXG88V9pGrLMdodY1qr/ym+EFGczqnwP2MSRLaYNq3Kx5c4b9hOeqY2BvDjGdfcL0HsZ6Jd8NSc9U2f9xwxRHV3cBCXb2LhbkiNIcjIf8UFudx1MRb77G5GS+VRwKICDliOT6r+9lWrOjZqsZKAIMd1GZAHeOY2OqLOC99Ww6UeMcY9MuO50pH35wQVVuSgQCq3xRfjeIQW/ufyfVGLYjdCmtqztAygdbKt3dQhrTwLhs/dZDzhb2WYqkp9XFd6H4NoXm2texvMMsWXTphdKnwwFlISSl2NV38BmaM0mPPGmjtU5VANvyD+PN8Tw+pUASIJltPrNcuxo8yTDBW9JCODcDrq1audLP70mw/l2TvRhfZIpO971Yj52U2l9fjcegKJyhzsCJN/a31aaqMwoyeq/Kz9pFdIABzjUkcdu7SWfGetH7+F4aBsdB/SGgoLrqP5JaJHf0vzw4qYLcBvkmQhYJpNazs1+tPB5Cx46OgqEfvIm1Ohg3sLZp/+4rwPa+XUkIvdOzMhHJOFEfN1wq+tGE29wRX4vXTe39BOh0ZctfLj2g1a02ghro8qavmTSjrChSLlbhCCZMKQkAULXaW+Exns+wsFTLae2HbA2E69r4y+FbMUlvMmb/Phv7e0jexDsj9ETd09aA50P5ediAFrerfKChtnNu1QS92oUBQVYZigLleiqYUoPY/h2rgTnVlBFJAew8U+o+GEJKF/JXA66icdn78XWCBm9nzPEKn5i62X+Uu9c9OQTcJ8
+ o+mg3evE
+ cCYFKcp5xrUD5r9ZADAZpVEExYfSiuKjopalPGAMIbJX1RM5mN1KUii62zpWnUiM/xk+ooUDeivLpD7/xOMtblx1Da6egYChG0HSGUVy266DwR+zYAU/h1TmgpcFgbLVDWe3IJFwYWePu/jRKD4ruOPumDdaAmjql+5YnJu7+AKyuEXNBkPhka21B2VCPLvCu8M5TxLXugFeiZJZdofYruECZjlzS1UX+riMzzDVYf1lDKECfZms+i2oZdYAfLEIfJ2oxnKj/07ULzj8sAcE9Bhe8FuxHcD93ptoz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,37 +89,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 04:22:52PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/27/26 15:44, Vlastimil Babka (SUSE) wrote:
-> > On 3/27/26 15:38, Joshua Hahn wrote:
-> >> On Fri, 27 Mar 2026 20:42:47 +0800 Hao Li <hao.li@linux.dev> wrote:
-> >>
-> >> Hello Hao,
-> >>
-> >> I hope you are doing well, thank you for the patch!
-> >>
-> >>> N_NORMAL_MEMORY is initialized from zone population at boot, but memory
-> >>> hotplug currently only updates N_MEMORY. As a result, a node that gains
-> >>> normal memory via hotplug can remain invisible to users iterating over
-> >>> N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
-> >>> incorrectly marked as such.
-> >>
-> >> The second part feels more important than the second part, doing a quick
-> >> glance through the code I can see a few N_NORMAL_MEMORY iterators that
+On Fri, Mar 27, 2026 at 04:28:53PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/27/26 15:38, Joshua Hahn wrote:
+> > On Fri, 27 Mar 2026 20:42:47 +0800 Hao Li <hao.li@linux.dev> wrote:
 > > 
-> > Note in practice it's unlikely that a node would hotplug normal memory,
-> > start using it, and then manage to successfully hotremove it, due to
-> > unmovable allocations. Most likely only ZONE_MOVABLE memory can get hotremoved.
+> > Hello Hao,
+> > 
+> > I hope you are doing well, thank you for the patch!
+> > 
+> >> N_NORMAL_MEMORY is initialized from zone population at boot, but memory
+> >> hotplug currently only updates N_MEMORY. As a result, a node that gains
+> >> normal memory via hotplug can remain invisible to users iterating over
+> >> N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
+> >> incorrectly marked as such.
+> > 
+> > The second part feels more important than the second part, doing a quick
+> > glance through the code I can see a few N_NORMAL_MEMORY iterators that
+> > are in some hot paths like shrink_memcg. Iterating over nodes that don't
+> > contain any NORMAL memory seems like an inefficiency rather than a bug
+> > though. 
+> > 
+> >> Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
+> >> offline_pages(). Set the bit when a node that currently lacks normal
+> >> memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
+> >> offlining removes the last present pages from zones <= ZONE_NORMAL.
+> >>
+> >> This restores the intended semantics without bringing back the old
+> >> status_change_nid_normal notifier plumbing which was removed in
+> >> 8d2882a8edb8.
+> >>
+> >> Current users that benefit include list_lru, zswap, nfsd filecache,
+> >> hugetlb_cgroup, and has_normal_memory sysfs reporting.
+> >>
+> >> Signed-off-by: Hao Li <hao.li@linux.dev>
+> >> ---
+> >>
+> >> This patch also prepares for a subsequent SLUB change that makes
+> >> can_free_to_pcs() rely on N_NORMAL_MEMORY to decide whether an object can be
+> >> freed to the sheaf.
+> >>
+> >> ---
+> >>  mm/memory_hotplug.c | 22 ++++++++++++++++++++++
+> >>  1 file changed, 22 insertions(+)
+> >>
+> >> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> >> index bc805029da51..5498744aa1f1 100644
+> >> --- a/mm/memory_hotplug.c
+> >> +++ b/mm/memory_hotplug.c
+> >> @@ -1155,6 +1155,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+> >>  	int need_zonelists_rebuild = 0;
+> >>  	unsigned long flags;
+> >>  	int ret;
+> >> +	bool need_set_normal_memory = false;
+> >>  
+> >>  	/*
+> >>  	 * {on,off}lining is constrained to full memory sections (or more
+> >> @@ -1180,6 +1181,9 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+> >>  		if (ret)
+> >>  			goto failed_addition;
+> >>  	}
+> >> +	/* Adding normal memory to the node for the first time */
+> >> +	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
+> >> +		need_set_normal_memory = true;
+> >>  
+> >>  	ret = memory_notify(MEM_GOING_ONLINE, &mem_arg);
+> >>  	ret = notifier_to_errno(ret);
+> >> @@ -1209,6 +1213,8 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+> >>  
+> >>  	if (node_arg.nid >= 0)
+> >>  		node_set_state(nid, N_MEMORY);
+> >> +	if (need_set_normal_memory)
+> >> +		node_set_state(nid, N_NORMAL_MEMORY);
+> >>  	if (need_zonelists_rebuild)
+> >>  		build_all_zonelists(NULL);
+> > 
+> > Do we need the flag here? As far as I can tell, we can just skip this and just
+> > directly check whether this is the first normal memory we are adding to the
+> > node here and set the bit. Then we can remove the flag and the extraneous
+> > check. We won't do any notifier work so I think it should be OK.
 > 
-> Yes, hotunplug of all normal memory of a node is unlikely. Possible, but
-> nothing to optimize for.
+> I assume you simply mean:
+> 
+> 
+> if (zone_idx(zone) <= ZONE_NORMAL && !node_state(nid, N_NORMAL_MEMORY))
+> 	node_set_state(nid, N_NORMAL_MEMORY);
+> 
+> That looks m uch better!
 
-Yes, I agree that fully hot-unplugging the last normal-memory node is probably
-uncommon.
+Yes, this approach is elegant! Thanks.
 
-That said, once we restore the set side, clearing it feels like the symmetric
-counterpart as well. If we leave the clear side as-is, it seems like it could
-be a bit confusing for others later on.
+> 
+> > 
+> >> @@ -1908,6 +1914,9 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
+> >>  	unsigned long flags;
+> >>  	char *reason;
+> >>  	int ret;
+> >> +	bool need_clear_normal_memory = false;
+> >> +	unsigned long node_normal_pages = 0;
+> >> +	enum zone_type zt;
+> >>  
+> >>  	/*
+> >>  	 * {on,off}lining is constrained to full memory sections (or more
+> >> @@ -1977,6 +1986,13 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
+> >>  			goto failed_removal_isolated;
+> >>  		}
+> >>  	}
+> >> +	/*
+> >> +	 * Check whether this operation removes the node's last normal memory.
+> >> +	 */
+> >> +	for (zt = 0; zt <= ZONE_NORMAL; zt++)
+> >> +		node_normal_pages += pgdat->node_zones[zt].present_pages;
+> >> +	if (nr_pages >= node_normal_pages && zone_idx(zone) <= ZONE_NORMAL)
+> >> +		need_clear_normal_memory = true;
+> >>  
+> >>  	ret = memory_notify(MEM_GOING_OFFLINE, &mem_arg);
+> >>  	ret = notifier_to_errno(ret);
+> >> @@ -2055,6 +2071,12 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
+> >>  	/* reinitialise watermarks and update pcp limits */
+> >>  	init_per_zone_wmark_min();
+> > 
+> > Same here, couldn't we just iterate through the paegs here and accumulate
+> > node_normal_pages and clear the memory here? We can get rid of the bool and
+> > also keep node_normal_pages defined inside an if (zone_idx(zone) <= ZONE_NORMAL)
+> > check as well.
+> 
+> Right, all we have to do is check for remaining present_pages in one of
+> the nodes IIUC.
+
+Yes, we can simply sum up the remaining present_pages and check whether it
+comes out to 0. That feels more straightforward and direct.
 
 -- 
 Thanks,
