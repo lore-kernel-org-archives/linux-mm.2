@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1651C10F3DE2
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 13:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD02910F3DE2
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 14:09:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CACF6B008C; Sat, 28 Mar 2026 09:43:00 -0400 (EDT)
+	id C55C26B008C; Sat, 28 Mar 2026 10:09:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37A8D6B0095; Sat, 28 Mar 2026 09:43:00 -0400 (EDT)
+	id C06C66B0095; Sat, 28 Mar 2026 10:09:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B7EB6B0096; Sat, 28 Mar 2026 09:43:00 -0400 (EDT)
+	id B1C9C6B0096; Sat, 28 Mar 2026 10:09:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EADF6B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 09:43:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A4FCE01CF
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:42:59 +0000 (UTC)
-X-FDA: 84595587678.04.763C35D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DBEE44000B
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:42:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qu56AoyU;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A108B6B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:09:11 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42BDEB704F
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 14:09:11 +0000 (UTC)
+X-FDA: 84595653702.21.E42E240
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7FE154000B
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 14:09:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QxtFOkmy;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774705377;
+	s=arc-20220608; t=1774706949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OBgAxo8MAdTuoPZYMoe6//g+eUK1iGFgJsFh+kFcDSE=;
-	b=YzCjtdiDFq0lFkJIpb7O2Wi2bWm8BeHCdcr5P0bUnb5VaN4umC3CxkVaiEtiZrFtpP0s0E
-	3LBBkWcKtsAKd8yIuLQKtxpf/i1vsh0JawtbvmoZRJJGYM+W3jsd5ww8wzxy1Q9BsH3DaS
-	2q3mDBiFDCV0NjvkyMI4Ezw/FyUPh4c=
+	bh=JUPyR6FGKdaNFtDwXKMgSP6tvkRH5SqZ0KfVbyzx970=;
+	b=qY9Y5RIPYxh5hUSZqTkhdpCharBLxcHU/N+h0esO8SRQqWfXGfKN+w+smztaIFOHopdGwG
+	sQrLIs1VLr0DN9CdIQQJU/S3ewnKa7ioxeK62+GVpBBueHNDGxwamwVS9/Tezr+T7RgAED
+	be3hVU39mW8Le4lJ+g/6wdU5XjnIBqE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qu56AoyU;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QxtFOkmy;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774705377; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774706949; a=rsa-sha256;
 	cv=none;
-	b=uNJ0PghP1w5wPlablePnAM8QbdZQWQZaNR10iJc9ywseT4je/x+IQHo6aVS/NOpVVDNk5s
-	YFF40zvGtEhl7eAlkYCZzZiLwLMk/nBIBsiFfGHqelJt4WmoF4c9n5hbVq5sAZUy7EJI89
-	pheeX4Jr4JnHY5S7VHjTCHAIncwY8P4=
+	b=Jz53dnHcq1haXOsbtQT7MFJwYi3FE7hHCkLRU6rJj5sTJqTtL6KVaHO3GIK8VVSBlSJY9d
+	QO6jzN5Oa/ZVedg8tzGFciAKK5dSOawCQh1Au/BVOOWBJoLpmVKdzaGZEkXTCS0aoof70W
+	JaDveufLxh5WHDrhGSP+Y6dkie6S+5U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6596B60018;
-	Sat, 28 Mar 2026 13:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B8FC4CEF7;
-	Sat, 28 Mar 2026 13:42:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8131643F16;
+	Sat, 28 Mar 2026 14:09:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C2FC4CEF7;
+	Sat, 28 Mar 2026 14:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774705377;
-	bh=Zo0xwBlS33TnuFJgADBysYFie+bkoCRf9H3CXGjWLKA=;
+	s=k20201202; t=1774706948;
+	bh=RH/HWSCiN4u2TczIYbCULCcVSw97zuiwD8lfgVnonpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qu56AoyUrs0g1RWp65nRpAVjFwcSwH649dYJA4JKVdNyldJkRP7P9ZPOZXs1O9Yat
-	 rNQ/TDkHGI1Ts9t3nW9tlhLlAFsnnzjFXsYMzXHiUfpbec+mn6PbCFjaRWwXvRZn+P
-	 3XrIPDhDIbRkeGPoJgAimGrZ39in7mXCp07X/2hPr7MqT3r5kx5YC63ThL7mhoGAxp
-	 /KF436VCamFOd8N8t1M7OXNZW/EAcAbJypBaxrvUqU0nUelUhPenDU8vwRwmCCRJcp
-	 ggXEqXpq2BwQEJIS+DNK9bUkIBs8ZS26EjzHcgCIbeaAZ3R5kIRswiXEakZ1EM/QOb
-	 7vmamGwjOjLmA==
+	b=QxtFOkmy5xzW92dCoMV1zhUG+Hn5lF3wg9JH90VQ58i5P64hkhu+NGVq6GSJ7Uavm
+	 eD5cLmkbCh6ohHPIjHJxpOH20iwRPr5P5Ucv53R9loQ6hZyERumgk76R0+zoalg95P
+	 wHZfyonQ3vMJ6xsw6RMs1As//X/oxfz8jzevb8D5lhkH74KAB1KIqd8w4UL02m4rMi
+	 2+k+sAc8pdNw4uEdMYiKxb54wcsNKgfke4BoGxMfQwWD46JRjBsVxaLgYtthd9tlJV
+	 eylRCwHXV5b4J5aZ2bpT0H5fWek3cdzJ19uNHwHIDWEKSVxcIQrGMmMaTl1tnHFlu3
+	 ZoA0KSaq2Bi6A==
 From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "# 6 . 19 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH 2/2] mm/damon/core: validate damos_quota_goal->nid for node_memcg_{used,free}_bp
-Date: Sat, 28 Mar 2026 06:42:55 -0700
-Message-ID: <20260328134255.9884-1-sj@kernel.org>
+Subject: Re: (sashiko review) [PATCH] mm/damon: add synchronous commit for commit_inputs
+Date: Sat, 28 Mar 2026 07:09:06 -0700
+Message-ID: <20260328140907.10389-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260328023020.8525-1-sj@kernel.org>
+In-Reply-To: <20260328104450.14719-1-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7FE154000B
+X-Stat-Signature: 3krsebbhb6zf9bjxi4g5qmwm37fp16i4
 X-Rspam-User: 
-X-Stat-Signature: 5kpti9admjq8emin4pkmm7sz999odnxx
-X-Rspamd-Queue-Id: DBEE44000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774705377-106257
-X-HE-Meta: U2FsdGVkX19iNB/iD3NRjk7nLqSqQP9hl5dw5BTjO/S3PIFg2Cn8mIFVITLjC9ZvbN+lOyylcVNSMyWLseuEPyQ8jlflpHe4I1E7AdOzgvtbFHWAOIYirI7QENxpew1GClNeGG+1mvzOc6GrU/80/dL2aeqaIYG1VkaIeuGbKwIiKGsugHC79XygOW6eyHQXsr3RNm5IPOYs7OUB4o7W1doBR148DpVtwxDBNzX7xu19Cn+s0ClGC9cZkj6sESeRPcOWeF9RwKKBz6cMKi315OSUO2oh5O6x+8T+BqK6NwCC1oEPFCoLOZliGGVWMxMHuMp36IsO8DbIMoNLVMkr4b4QvpPpQ8Y0Z5gp+wUm7m/UWyP54DRBYmUAeTdziz/zA20gP4761wyWGRfWXvSBgX2y7hn+WplBaag01MsFP03nyIgWTSucvLv4VY51piVfGxr2l60/Jwpjcf4GmAQRfv3L8YcF2GpnC4IjETrdWaneB2ji+9UvoAV00oxt8CtXDaCh9uzADPs3cdaEYF6iD5aqCWzOK7lO+m1DauddH8M0bSLt3jcOryIaiV16x6XLvthSIMCQw3JXE5gLQwTFlOWZcod9ORr2GgxrrpZdiilKP9UQ5DJPc93HCVmX0iJDYZj7pQwRkeOMSTcdZJyH56fVUbV/1g5dPNm3XX6kHxOK1E4nFTEGTdfrvx87h/ux5CVlWEJBgjjoIEW26LRJcErN0Gn+O8GY9aZeXWFXDbkPx85Ql9blOKfe3QkfMkoMw9msNxYfCNm4hQkqt5gF7wlCFYmJCN/7N08H1kWVOkjaXruf+4C8Zv6SAPDRF9syXNLbTYMw5kCDEyZxXZemNHofw7Y/zUH5FFHKdqf6iagS0AaHGOiUkw7864QUCTD/2S3//OQKOo0WNGLCVDvmu+WES5TMJcxGo5C+g3gJMpKfxH1wnw7urzK00rPEERZuWczIdL6pXVulnAdeoNN
- 2yHyA6YZ
- vSWwdGHHc+4Gg51k5doDCc1hcv+WE6vyMighAUWbcanSLLp/8h3z9TJF4VCm3dIVo2IQttD01dBp5uYd4357WDmpS2wO5EgLV0AQJSvk6r15cw/7EVrU+VX1X2NgkqtGGm4pHGZJZLckuz27EXG6R/jIbJjB5sVqx/2/BUP0ZDR/AdD7id9ANEL5aqiuaB7pdr6K/YoFeO7Xb6uj6rL49ZN6iH27yU/cLQ2rLi1XiZLu1e0jLEr4K8t3S2WGn5X1v8KCJy36/aFVyka1y5W7nJRIz+gSqyGmljVO8FP958xv/6vbPJNiiH/UtEC0aNyZgxbphgJJ76LoFebA=
+X-HE-Tag: 1774706949-721343
+X-HE-Meta: U2FsdGVkX1/hZxRhUhDpsPeN89OU4bJ2EapNWJ1GnXNsgGsGx7j9JAhFPAbVfDheSa+fVMqbJ2EKD0jDrcpGjNlj6kzyNBcXkiWm/EwsP0AICEWoxCWe/bmWECoVfy04u/g/zQoyKjkDP/CzzI4H+EBRR7vsvIz1vdNslzuTWijI88V1moHbO45E7M6Htb5sMFG5ZQhx08ABFED0m4Kg48UhDYjF1joyXSWXQGMnwOZQr3k1IyCOIwzW4ug/9wsybNYqIcpCJxLFn37tur2KxRaOtUsthQgpE0GtclifeSXjXIxryYNx2tiqc9HdCD+U/iIIciinQWs29hxXpkXG7KVEKCuJ/4MIYpHjP4epuE3IghMUT8bsfRQ4Xj4bCsj8C9WbfXwYWHVDod/Kvj8+jdz5bxvrj/WD98M4xpyddAdX11COByZ45DOimYGSMD7XhVj6EMim2sl6yzuvnAye4OtseAH45/KSO3PvzdgaYb9QUaAAZhynZWlpsYRha+mLOxFGzezzXc2xpoNNnkSwvg5rWkSCEjRYaMyPo2nBK+/1JU/aziYOCYCFhLBxsVp7aiGL9AH/9SUT1JSiIi6S4zVFSyGN2r3NE4XVcQIKgsbyWn4Oc0QL4j/WEtKnNsfko8uHS7XGhc4p7HpGY+ewUqGnpIj3MLbwhfNE+IKnYqp8Z4TIIQyJ+QaleWSNY6VUtFOIFdSv9wAkcoyaLhlBWm/7DQKQ8zTjMoOcQKjCutBArVTIS8aB0IZ3WBlZhN+KNFydFGGdkckA0Qh/wwPtC2sfzODuCtvJlfH6VFtqT3tbmIHQgi2/gTp4wfL2QbxKv0B+d5rFP6i8wTLwjhXDoy2ZlVKiKxuML68szZBM6f4n+NVjk0IlwgIZDTJ+AkoNv3JlVpGIkLaEMMyUn6ryx0dXkWOjDRT2Kk0Cmpz5BFeyyGm744TuWlc6wWAoqQpsFyOtNt6uKzfP1LrlykF
+ Fv342mPb
+ yoEGH8qz85oOhtq1bn8RZO02ESKWWgeFMZ4M7cJkFZpTdnSQBNfFzWRQpA8pdZBEwuRKvQLaltgNUNAFzWDRYMn8NjM3iDv9nZIE9YzLBMMTPg6hAJtNbQPyZ3vb37IjPy6/c5gVaTDDLjRh9+M4ApnYNlfuVVdTk304zmdjhvLE59RKe4eqK6NU2JCWHb7TrmTTIlD9lTFZkiV8w4cperO+BQTHA4VcReIxegVK0dWG03GgeZXNfQz1S6pN8jrv7DydFOJ38RrtuHnyeyyzoaH6MD9/PEXJ8sg2MZTUYrry//Is=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,76 +91,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 27 Mar 2026 19:30:20 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Sat, 28 Mar 2026 18:44:50 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+[...]
+> > > +static const struct kernel_param_ops commit_inputs_param_ops = {
+> > 
+> > The previous module_param(..., bool) macro used param_ops_bool, which
+> > includes the KERNEL_PARAM_OPS_FL_NOARG flag. This allows parameters to be
+> > provided as a standalone flag without an explicit value.
+> > 
+> > By omitting this flag here, does providing the parameter without an explicit
+> > value now produce a parsing error?
+> 
+> To be honest, I was not aware of the implications of omitting the NOARG
+> flag. It was not a deliberate choice on my part.
+> 
+> SeongJae, what are your thoughts on this? SHould we stick with the
+> explicit 'commit_inputs=Y' requirement for the new synchronous behavior,
+> or should we restore the NOARG compatibility?
 
-> Forwarding Sashiko review for doing discussions via mails.
-> 
-> # review url: https://sashiko.dev/#/patchset/20260328005412.7606-3-sj@kernel.org
-> # start of sashiko.dev inline review
-> commit d10719045bbbd92307cf40ef0886ce0e81cb9caa
-> Author: SeongJae Park <sj@kernel.org>
-> 
-> mm/damon/core: validate damos_quota_goal->nid for node_memcg_{used,free}_bp
-> 
-> This commit adds validation for the damos_quota_goal->nid when calculating
-> node memory cgroup usage ratios. If an invalid node ID is provided, it
-> returns 0% for used memory and 100% for free memory to prevent out-of-bounds
-> memory access during NODE_DATA() lookups.
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> > @@ -2273,6 +2273,13 @@ static unsigned long damos_get_node_memcg_used_bp(
-> >  	unsigned long used_pages, numerator;
-> >  	struct sysinfo i;
-> >  
-> > +	if (invalid_mem_node(goal->nid)) {
-> > +		if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
-> > +			return 0;
-> > +		else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
-> 
-> This isn't a bug, but there is a typo in the comment here. It says
-> DAMOS_QUOTA_NODE_MEM_FREE_BP instead of DAMOS_QUOTA_NODE_MEMCG_FREE_BP.
-
-Good catch, I will fix this in the next spin.
+Should be a no big deal.  But it would better to keep the compatibility unless
+it makes things too difficult.  And it seems simple to do.  Could you please do
+that?
 
 > 
-> > +			return 10000;
-> > +	}
-> > +
+> > > +	.set = damon_lru_sort_commit_inputs_store,
+> > > +	.get = param_get_bool,
+> > > +};
+> > 
+> > The commit_inputs_store function parses the input into a local variable
+> > commit_inputs_request but never writes to the global commit_inputs variable.
+> > 
+> > Because param_get_bool reads the unmodified global commit_inputs variable,
+> > will sysfs reads of commit_inputs unconditionally return 'N'?
 > 
-> [ ... ]
-> 
-> >  	si_meminfo_node(&i, goal->nid);
-> >  	if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
-> >  		numerator = used_pages;
-> >  	else	/* DAMOS_QUOTA_NODE_MEMCG_FREE_BP */
-> >  		numerator = i.totalram - used_pages;
-> >  	return mult_frac(numerator, 10000, i.totalram);
-> >  }
-> 
-> Does this code safely handle nodes with zero managed pages?
-> 
-> While the new invalid_mem_node() check ensures the node has N_MEMORY set, a
-> node could still have zero managed pages if all its memory is reserved, or
-> if a concurrent hot-remove event drops the pages to zero just before
-> si_meminfo_node() runs. If i.totalram evaluates to 0, mult_frac() will
-> cause a divide-by-zero kernel panic.
-> 
-> Can this calculation also silently overflow on 32-bit architectures?
-> 
-> Both used_pages and i.totalram are unsigned long. Since numerator <=
-> i.totalram, mult_frac() bypasses the initial integer division and computes
-> numerator * 10000 directly.
+> This is actually a design choice we discussed [2]. Since 'commit_inputs'
+> is now a synchronous trigger (or a "button") rather than a persistent
+> state, it doesn't necessarily need to store the 'Y' value.
 
-To my understanding, mult_frac() doesn't do such bypass.  Correct me if I'm
-wrong.
+I agree to all Liew's opinions.
 
-> If the memory cgroup uses more than ~1.7GB
-> (about 429,496 4KB pages), numerator * 10000 will exceed the maximum
-> 32-bit unsigned long value, resulting in an incorrect ratio.
+> 
+> > [ ... ]
+> > 
+> > (Note: The same regressions appear to exist in mm/damon/reclaim.c)
+> 
+> Thank you for your review. :>
 
-So this concern from sashiko is wrong.
+Thank you for reviewing the review.
+
+> 
+> [1] https://lore.kernel.org/20260327233319.3528-1-sj@kernel.org (Lastest
+> but may not the last fix)
+> [2] https://lore.kernel.org/20260323150544.81042-1-sj@kernel.org
 
 
 Thanks,
