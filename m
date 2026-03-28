@@ -4,35 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35D8C10F3DFA
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA5D10F3DF9
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:53:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59FB96B00A2; Sat, 28 Mar 2026 15:52:38 -0400 (EDT)
+	id 6914D6B00A0; Sat, 28 Mar 2026 15:52:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 550916B00A4; Sat, 28 Mar 2026 15:52:38 -0400 (EDT)
+	id 6619C6B00A6; Sat, 28 Mar 2026 15:52:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26C2C6B00A2; Sat, 28 Mar 2026 15:52:38 -0400 (EDT)
+	id 32E366B00A0; Sat, 28 Mar 2026 15:52:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F12B16B00A5
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:52:37 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C56B31B714C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A6576B00A3
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:52:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C73B9E0403
 	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:52:37 +0000 (UTC)
-X-FDA: 84596519154.12.5EB402E
+X-FDA: 84596519154.13.61255EC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B6FF7180003
+	by imf17.hostedemail.com (Postfix) with ESMTP id D256640003
 	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:52:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lzNngJ+m;
-	spf=pass (imf06.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774727555; a=rsa-sha256;
-	cv=none;
-	b=GKsIokyH65VuYKpPIoKB6gVi3oqy+T3x1n/mPF3obHa65df+iv2J2yLifUQzFsJMnw/6q7
-	DF+KEHeRBr/rfcTuO5vHqZzLB+tmJVDHgbiUV6kELVAZxefrrPpgq/NZpRjrMP3vKPcJ7E
-	S50hfn0gLOaaSMQpl6DDRNeW6zh3vmo=
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P4Ebp3Kj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1774727555;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -40,40 +35,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FwzsuXE3iVEarkIDKcs8hSgbNwKO/tYW21nfZl/gHd8=;
-	b=mvz0BvwZ0z3DYuBDsv2OPRF6RfEuABmHHEmKhHm4RpgDMFAAX76lISXr3DiwwUNg3waZSY
-	te7QqEE9LocY19zMtlMQMLzC39TMb8GHf2g24ya55JCN9M8erj4rO3q5YQtJwmByZC+Udh
-	IWuqOA76YTetWIeCIF/qk1yu5UbAKrs=
+	bh=4JeOJ1lrjC1EFtmQbLbsPFRrUYC85CNNtrIPcwqg334=;
+	b=FroeLlJOjT7DWJK9Wm94S//lz6A2emx/xmIWpq9rDV6grXOQSwoqeikZimFUxE5MAeO8DH
+	zg6Ho19+kfqXcPEuxYw4h6GUlxVtNWJBo2LKrE5MzkMAcdiGBUFSFvZqHxkEisXxUZtNOR
+	Y5Q39Kw0iq9K5+qviWtbDGUePfITkHw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774727555; a=rsa-sha256;
+	cv=none;
+	b=a2Q0BkNSNIsD5Qj1XetyKSTYtXv/+Y7u0McyLKwMEZ44fQXyVZVBenqsIGvEeOeQSq0zEk
+	+7Hlme02iQEBGQIzww60o/SVjmJXhRaj85BRUYJ5pi5pUHcu01zfFbOAMo+/nhVkjbNiCc
+	cbpdlawYzD3qzu5C671LIPdLCY+DQS0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lzNngJ+m;
-	spf=pass (imf06.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P4Ebp3Kj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0267446C7;
-	Sat, 28 Mar 2026 19:52:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CE78EC2BCB3;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1056144703;
+	Sat, 28 Mar 2026 19:52:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E1339C2BCB1;
 	Sat, 28 Mar 2026 19:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774727551;
-	bh=z6gS7rKOYjVzbEw8wf/lZ7iZ7DzeY0whFy2eh0BxXLY=;
+	bh=GEmZonv36+Qup1ubevJ6ZlRq/DuzmmPuCUY205VEyyw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lzNngJ+mDis5EgPE/V5eP/miv/V7mNPBQSSESlPTAy3PKl4z2L/ZGY59yTmir9FgH
-	 CO/NaCZQf0sLFMmCHcS9hDNc45z6H2LFohdQKIZ0+iDiHs06qVcQetXeRFLv5Cvh/A
-	 XsKnOWfRABVD6nBGvvf4MbpJq2huI/s9nK17ZGFJESfk3gfsCH4BHaOZ+gimTgp2Yf
-	 ZI1MADuKRGEOT/dZDP/t6L536dOJdv1fDQDuL43ZPTo4HkRCOc6yNoF9RpT07kTEnE
-	 dnUveYbZt5H7ELcaVe0AfgtiZggOuzII//erAE9hVKpr/5BFOPGADmW1aPcRvrYuUJ
-	 SsTxuF+KPy/3A==
+	b=P4Ebp3KjPFXrAb2qxb9JmL/MPOFdaswcuwIgEuT82iZqx54CAfgC5QMX1RSZagfrK
+	 O4coN0GTuIRj+l9QCrKVTTFBRzfBjeGl9Wra42dNfA2Ly4cKgnaTS0dwokFL7HLru6
+	 xIs1/NCHyXg1lU41UexqftQcgYTtKsDZL6841Q4gNJkMThNjnvnWivXgBYCeRkByqd
+	 bPb2TjhmKSQ4+wGGlGuUnpJTY4m5dOu8FG3EHBTZ377Szgw2CF7jFtBzSHomhjqhYj
+	 X4nMgJGfltS/Gjvzn/F1KzcnUK025KQVjb0F4DNOnvwDewpx85hI9DALmCDYEGN1Xj
+	 2xROk4D/3ofLQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C628710F3DFA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8BD410F3DF8;
 	Sat, 28 Mar 2026 19:52:31 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Sun, 29 Mar 2026 03:52:36 +0800
-Subject: [PATCH v2 10/12] mm/vmscan: remove sc->file_taken
+Date: Sun, 29 Mar 2026 03:52:37 +0800
+Subject: [PATCH v2 11/12] mm/vmscan: remove sc->unqueued_dirty
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260329-mglru-reclaim-v2-10-b53a3678513c@tencent.com>
+Message-Id: <20260329-mglru-reclaim-v2-11-b53a3678513c@tencent.com>
 References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
 In-Reply-To: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
 To: linux-mm@kvack.org
@@ -92,25 +92,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774727549; l=905;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774727549; l=878;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=aelGzWH2zsHZbTrxyqLN4+nv11pcaWeLxFVtgV+ftPo=;
- b=GvaKf9oyuKhc9X4//LD/1G6jd+FGtlDR546f8id2d4VM/aBpTHzNIPHKhR5I1S+6UggcSsLOX
- ze2lI36K4nBAWGetOofPr3IVsiY9IPmHyYl4eb+cgsQxPyV/VKmWt+3
+ bh=1kSyn/NqM3RpP1g8xDeKI3xdQvt+WcrXpJEY2B2ekAo=;
+ b=pbHhbdpkvvczwQ5CESey5xOFg1O3oJ3xHcw35gtP/OVyrgupgxyhl/28WVkmMpYTUjW19AL91
+ d8jSmspgQXvDKVixNgocxeclptPx0D7LmkzT6Lh8rGckdL4+7Hj85in
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Rspamd-Queue-Id: D256640003
+X-Stat-Signature: j4oajsyhfu33bcdrm1hfeomfkpifc9g7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B6FF7180003
-X-Stat-Signature: yemh86z4g3e114xcagbffu1cynicp7wb
-X-HE-Tag: 1774727555-289535
-X-HE-Meta: U2FsdGVkX19CiWm+I2uGpSitQV3617xkdaCpcoAz4VEQYrZa7fzdI5b0THBdgPdOu2tfOmOt9EAy9/IXZ8AWvCkTSkNDDr4NXaYOHVGYo1htg0/YLF4UN3IzaYpHXYkHl1ixGrR1bnaEZyQB1fVgxUARwP7dmmcSu31Y1++WKbvTULjl7mjsEPZeoZXFop8OB70ZFiN8+ezpVoMmjx5UodXdUU2uWHsGVL7XLPKo3LPbN9e8h6om+RzXvKJWu1ZRadtvXdbt9Cx3DXyk7eJ9BkY0C+fzJKsDAo4tjjROlhmSBh0yHfYGMnZD0Wpx4WOSpotLVJPHBYXnOCVKDP1t66OYgNhdSXEagu8nIcDa7ZZow6/nT6L8E8isK79e3wUBBXi+UiUtQELqnWjVoCHW+tB4lVJzc76srUS+jEFpAwSvutLST9b26lwaPmfikHMntCCNVsP7f2fU3a1pD/q1z7x3pqtwNwTEMbq32Ptvh3UCauqbIOg5u7ESoUueHuTEnwkz804JX4hNCsIU+aNpoiPGWBY5o5NVewuuj3vUQkZZa7AeeEg+V9QCTKFx6SBRZMrnFpk+3RrNGV+uag969Cysn4xYYBQAmszafml6fQkd5U/bNloBjH02PTi4jFK6Ozh0gm4OOUYp6MWo6766UV8SMXgCLrLR1AhRMXsY2+ZPbnIWxosIoBu7EduDUcGXSHhgHLNCa1U8HFUptSLGbb07c3NLLlYqzV0OM8X5dR4Vl4InCa/xzioyr71qvpP+7O2Ryc6QNy0zJJY+0rn3U5w/AioxMn9rL9dtrwuruI6VSvJWWiT+k5dHatlupJcHdsjWeOQ8/JX66dZ9zWJdE2998Z7R2nm+Vp4oMrqUpW4D9cdTyhadVXrVBfreD22K6BpmmAbRI5qUWwnICCLJI2BWT9SsbanEQgnXIlP7X9BfNG7l3C+nZZFYf2DK+c4hN3xBeq04S9QimYopKjn
- YOjDg+E7
- j0bfoMROgnHq2mJCIuv3NzzALEfeq43qVEtwMuzplcuYmxTLQBgfMt0hQJwCg9JUJNeg3x9etD+0mrRQdX3iS5/AY9pckDGtfrHuhMK5EkyWm3AdEIH1j3y8m8mb+TOFpvx0YAH1z3nouIDEQJaLqWJ9Smd5k8+kjqpUHeJ13ILH1OIbIN/GiBLZQBq+3645wSan8QNjP/VtHe3FhdyqwgBpnHuU30u9ZFLWcI8O+cLKdKGhfCor2jiINUiMvSSYJg6Zo30qd5qbt+R6FHpve5CrW2FWiAP6hiZ3rc2RkYfu4tNGBpQTbvZznX/Ws3A7YBNW8RlvxnAUdyFFokY8bSznbhEX0xcPFF+l4faxivfAgvw6tTndSFPC395IsVAvL/yzPhSuy9QnmShdWv3yPWs9Orw8v5Emg6IJcbQEYIEROI5oIw7xmpFX3fT2eZTTd0Av+knhatxYRuqlfPSWscFuAskmBRiqdBFt8HhcNmGyvyIH0sl9BOnzryuP7wVdRhnqvd9R01XomKk8asbDkGg+XU7Rdh9o0gnli
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774727555-330733
+X-HE-Meta: U2FsdGVkX1++Ja/d3vmu/BXYUfaNZpAABagpys0sCjZ+8riicwGxtPVJlB0Zt3UxjcejogiX4VbwEdYdJzUVFWy2TwDcGaISOpotuhsZI7rBv5faBUQZ1hftVNhMzAgadEmXrI2hvfcAvVS20SyN/TjL2h8mSmn/BG0JxiHTghr/ERsP+gPx+vNs9J3FKGPslljJOo4vq0g9L5GyHHNWAhP0IQXCT2W/vDnufL3Mctrn3EaEqb09u16I1njfZvskQA8G2aBkH1wUl0LEtbkR97RFQ4PLQXxaQ/7If1ww4Nc1hZOCmOgbwqW2w5yNmrZoMtDWsCE1BeJzh+DIzv0x6++iKCewr2CeF/NmJf47I116b1OyQ0Hut9ry28wG7IPt+A1xT1YBSWXzeGc14toeiCKQPyArK1Bx/Y3Ls8Wv/LfISizvOxNNu9e2vf9o8DGNfY9spCyQwXkeSkGlhmnUQ4E4qZJ6oJqbe2hBTMjivZRsflgrCRgRfckcZzxRvyY9bTtx5G6BKtAPQG+5UfLZtYBQi+JWmVVGftYSF9XIyj1c/zQZK3CgAyHsGDsU6rx+loizO9FI3uom9Dsdy8BgXNceKRU/oWFHnfcPlgOXAw9Se78epkrC6Drl6WQCSJXKyD5uoobLiyVIgFRbrjeVsWGg88P+xi+28LoHNVvF/jc8WBm2ym218yNabtPE8uC3Dcpa3VO6XfMp8lKytSQWxw3guwRhk9aEQ9QsNEbbS9is8Y/4qA99k+h/fsOoKlliMJA3NWAfhIuHeqe4qcYR6Y75OqwJHtmE+JMgTKNdqsnmBFVuJWPffvWeWbwR093YhaEPoeHRf5yRdo3dJhrc5nTXzYy7pZfK0KF4ZUl7dHDJiWgr2RNyjwnAXtELYIsDHpdj6Hfilb4eM7/M7IJwYPLQHLFfDD9Cf8mAXy9v+h2oUFh8nrLlXyliMCHlWOjB4PiPRyJ9BPIroCj+P6n
+ t1fujUqZ
+ /fNK9XwTdcHOVNJmyRbHZJPiakcINoPieMi8vHKGOQqa3/Z/1SVuCsHbmAqyDwFEAM9SaljbGKwvlNSN5KGyiNA5XloYr9epNLLOmoFKvXxIQFM747Ugriu+RbwQmgaN8ldM9FvWVArzyCYQheCZQZNKWBCKMcTyj9pc8UapiFc/LlSNzRlHAbIMp47+etxFOCQjrguBvAUmp1bCCS164FxcGjpUVCasdputZuSC3dg24QrHeq285XDP3NYRFe8qiNokI9ZjDyOqdKWZuj7y3mPcarTJDsj3p939i/FKeos2hQSsjClVnFKlcVSeN4rBB5bUqVwukAdGmu5kJ7OUOynW2WrNDGyljAUYpPfg+cZ3ZGqZ7qsavNApOx+/xdR+FPyLu5wttkjMTQnLFrWjS62nSmqdpVfRS4h2PLdVBX6XEuzMGnSSpoJfE4T0H++F5O/QsMbMZwwRrIoi6QsotRHYscKbPgmMkBv+Er8ysRHogiRlRRbXPIFcHEIWIs9cbzFsXk0j6gUKx1GZhoqmx7n7PbA1aaDtzmun3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,33 +122,32 @@ From: Kairui Song <kasong@tencent.com>
 
 No one is using it now, just remove it.
 
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Suggested-by: Axel Rasmussen <axelrasmussen@google.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/vmscan.c | 3 ---
- 1 file changed, 3 deletions(-)
+ mm/vmscan.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 07667649c5e2..603be5ef3ef2 100644
+index 603be5ef3ef2..1783da54ada1 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -173,7 +173,6 @@ struct scan_control {
+@@ -169,7 +169,6 @@ struct scan_control {
+ 
+ 	struct {
+ 		unsigned int dirty;
+-		unsigned int unqueued_dirty;
  		unsigned int congested;
  		unsigned int writeback;
  		unsigned int immediate;
--		unsigned int file_taken;
- 		unsigned int taken;
- 	} nr;
+@@ -2035,7 +2034,6 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
  
-@@ -2040,8 +2039,6 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+ 	sc->nr.dirty += stat.nr_dirty;
+ 	sc->nr.congested += stat.nr_congested;
+-	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
  	sc->nr.writeback += stat.nr_writeback;
  	sc->nr.immediate += stat.nr_immediate;
  	sc->nr.taken += nr_taken;
--	if (file)
--		sc->nr.file_taken += nr_taken;
- 
- 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
- 			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
 
 -- 
 2.53.0
