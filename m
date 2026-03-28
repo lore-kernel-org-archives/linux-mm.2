@@ -4,116 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D36B10F3DEC
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 17:01:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA2B710F3DEC
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 17:03:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A72146B0096; Sat, 28 Mar 2026 13:01:10 -0400 (EDT)
+	id 175426B008C; Sat, 28 Mar 2026 13:03:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FC9B6B0098; Sat, 28 Mar 2026 13:01:10 -0400 (EDT)
+	id 14CA56B0095; Sat, 28 Mar 2026 13:03:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 912336B0099; Sat, 28 Mar 2026 13:01:10 -0400 (EDT)
+	id 089C86B0099; Sat, 28 Mar 2026 13:03:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B9C06B0096
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:01:10 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CA4DE0327
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:01:10 +0000 (UTC)
-X-FDA: 84596087100.15.B67C480
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3CDB4140004
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:01:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NcFzEM+L;
-	spf=pass (imf09.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id EBC4B6B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:03:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1B1954EC0
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:03:25 +0000 (UTC)
+X-FDA: 84596092770.12.7DC592F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 148B540016
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:03:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YLKbqTlU;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YLKbqTlU;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774717404; a=rsa-sha256;
+	cv=none;
+	b=hV0IIPAzhv9hEn0A+NxsvyjQFu0o7sDkhLtcRvMy6C6FoEuTXxl1abzxQaaPgs2hfVOqLQ
+	/OZQhaIQzqKlJPFk8iX1NrzY+jMbz4gKpdOtfFxEziEaD1duuvn5YM8UHwmNWvP/WjZ5eT
+	IvUmEyi19M9nEmGPagEVvL3VSEDbLEM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774717268;
+	s=arc-20220608; t=1774717404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PRK24Y27B4JY/rNOIbNDjWmyhoHVodZP2NDr8eGkwx0=;
-	b=z5mSo/vb0tB9S6IuLy5tXwkLj2617NtNtBoqa/Dv0UFEzWMxZf3oFxi4kZsFWdaRr3xOXr
-	AxhKU71lcuu658dtpFZgcj9F4jrJ/f1vogXG3SnhmSWFdUde8aQOC8/TIIICI07i/wtyRY
-	Smdyko71fSxJyXFkHSFw8rd6Mf0fQ40=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774717268; a=rsa-sha256;
-	cv=none;
-	b=V9bIW1uYWGMbm/pDldFJI1ykOPpqzXIZ2JpK6vbBzgLWIabMKImTzlFaa6Y40eEHrU27es
-	3LzFoCmkbHmo0jrx+stwXvlYgPVNdgdtH0kIAmXsQQeSBKOBboSlJc6h31oonis9vbQpQ+
-	8SWItHJEdtcTwAGV0eAO6dzk7rTnt5Y=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NcFzEM+L;
-	spf=pass (imf09.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48702d51cd0so36203265e9.2
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:01:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774717267; x=1775322067; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PRK24Y27B4JY/rNOIbNDjWmyhoHVodZP2NDr8eGkwx0=;
-        b=NcFzEM+Lxn42IDXbGKhyHpeo5tvL9DZLQYJxy5eTUWEKEenvrnOBYfJXHOhXPgxOXo
-         BWY5lWM1N02LanSJcoQ6MrSVAIjrr0NJ9Q0qCMXtTWX32Run/rQcKhA9lKYq+ry+Nbg/
-         kgmIpdtNsZGfXQEPXUdwLVMI27Sq9+/f128uP9JCvoHELqs3g0aiBH+8LGU5P9+qhlbx
-         zx9zzo1NhzW5VqL5nbSPt76lSjckumlYhju/T/xV5BkOnGs5HZ4E+rIsIMFhiDF73gnK
-         GbdHsdfBHVhy5FSFAmvB2JiRdMylkaS/W9B/cvMafkslbFr2j+Cn427gYaNxk4kD1ak9
-         W2Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774717267; x=1775322067;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PRK24Y27B4JY/rNOIbNDjWmyhoHVodZP2NDr8eGkwx0=;
-        b=eAjPD4guaFyO1KQ0mrTSyJCzHqZUhi/yf40W+xa/7gZ7g0w54e6HTx7cMH2PEbEIKQ
-         i3ygpe91U4i5CQjFBUjCGX+BiXUOJJrxtEJ6Hb8t4kZOM7N+L1W0zd/EnZDKwkoOEfvD
-         B3X0YaWsdualjD/mgjR+xtjAuai4A+mkX1DVU9EQL/9wmlyq1h8j6yt8o4+F1Mw7upBj
-         TuxSJQK+dA7jr0/HP76fV6RC9W0jOrP3CoUiMoCDKVAG1LftRDPhipGe9MOroGXUKIPp
-         2I/NoVSftngbPPsM+FuMLn9d1gGsEjHgb10vq+Kx1O3lEBJX8fbh8DsZTHhR7frFjuSH
-         1uLA==
-X-Forwarded-Encrypted: i=1; AJvYcCXimUj9P8Tlz6843Yaof5Ln6wCfTHupklHWWbm99GqpDnS/YSCO1ZCVCPIIpioqJYZw7ZBTmsT2Nw==@kvack.org
-X-Gm-Message-State: AOJu0Yz2gGCe/pO+PBqspLFZZqtZ/deP2FbPqvnD3qMCi3T/HSNPvV0Z
-	z5tdb4fZg6OuM/qfMbcyvd3R/GWQd6tqfUciVq59BlZkUEZ3IZChgKd6
-X-Gm-Gg: ATEYQzx8x4Fcnt5+eoYVget8gNNIxD0D+PvdLPeiJnEr94eCgulJAUNWUE/khfuEZKO
-	BbKO85yPqC+tFpXtrE6jZ/L49NZxnFbi72dZ1p6K0XCmJ1zTFESmutH/2shcoiqQgk07GxQkOc8
-	m5RGjdDj6dnmteTGKlRjI2IafLobvFBwrAYaoHQXKjmZkvYPuVf5nICa1f/6XTVe0H5863PRHO6
-	4MVWdQbrJOmgDGa6VHAbvVvqd9BxqjNeSSuJUxrS+ZIeZjQafsUmis7sZYDfmEcgzsyznuj95Sm
-	sW92dWI7gzRYJyAKf6kdcX3pvy0s89w70asXM2KJDUwYfPmd6Rd2o1IYtE6UXuhrb6nJTm7PCDm
-	wC5dell308XHs1VjBlF1epodYNvxlqbXJu5yj/H9G3ER+7UXyPVTXwOTM/KSQILxoN+Yn6XkmnX
-	bZOio8DTYLh1qONKyxfjSQbPcIbYoJw45rDvn/roLB0nX8XmfUf1H8m2r9fkEJl6dT8SUMzd3Of
-	kjwfWG0bKoGHSyT6sNHd34=
-X-Received: by 2002:a05:600c:a10a:b0:485:3f72:324d with SMTP id 5b1f17b1804b1-48727e9ea73mr103096045e9.14.1774717266642;
-        Sat, 28 Mar 2026 10:01:06 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4872718dfdfsm38161075e9.30.2026.03.28.10.01.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 10:01:06 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Peter Xu <peterx@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	linux-mm@kvack.org,
+	bh=2fYiWJHvryL//zD9zpITBlB+rls7YIL9e2CVU6nEuy8=;
+	b=H5L+d2H4CzmG9qznusZjb9foFhM3zHjdNcsUdIB8KGhyCTB655PsFIwW4ksNoXAdrnbKrC
+	/OyICcTEOXP0sf6VCAHPw+oJfajJehTfBcmeLIjE/56AXGsbVAxQEf22u/tTbDgdo4o510
+	sYsZ7JiWJnTcyL4gqadgIWuGxr0gv1U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5382D60018;
+	Sat, 28 Mar 2026 17:03:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BBDC4CEF7;
+	Sat, 28 Mar 2026 17:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774717402;
+	bh=Xib3LmBk+cvkQ71h/XBToCzox4WC/I5GEE+W0GLBvag=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YLKbqTlUiEIfPSLrLbDmry7Ju7Qr4sAg0DG1Tvb5SxxdYt9lh3pqVwUKCaWeGvWNq
+	 mS88ZoRJgGz1LICYjIJ1N2gpwU5syglw76yA+qErf8zngGv5NLKjCAxcBO3PdU0Xi1
+	 l/cG+nADFoA9BNGm4ZXfSvaP8YdSAV9SIvSZ51/fJO7yyQq6ryAmqhgt6eWLrcqa2v
+	 vLvci7U50uALn1JP+JwYfzv1zOzFp0JRPxgUSXuyUszPgNFn8a17g4v5YlA+ujRP9g
+	 xglV3RkBI+ns5CixXMLbMbnBHm6Gn2fpi2OlSYI/+jDDtjD0E+7pRpe4nIp8lJsAtT
+	 WqGF/OKsucx6w==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 5 . 16 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH 2/2] mm/userfaultfd: fix wrong likely() hint on mmap_changing check in move_pages()
-Date: Sat, 28 Mar 2026 17:01:01 +0000
-Message-ID: <20260328170101.184163-2-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260328170101.184163-1-devnexen@gmail.com>
-References: <20260328170101.184163-1-devnexen@gmail.com>
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH] mm/damon/core: use time_in_range() for damos quota window start
+Date: Sat, 28 Mar 2026 10:03:21 -0700
+Message-ID: <20260328170321.48340-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260328170008.48144-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 6xsfj55561rw3kzz4hmkt835pma3ddcp
-X-Rspamd-Queue-Id: 3CDB4140004
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 148B540016
+X-Stat-Signature: b4q5173ct78imy4zy75dn6yc79t8gj99
 X-Rspam-User: 
-X-HE-Tag: 1774717267-829882
-X-HE-Meta: U2FsdGVkX1944g1U3j3zlcVaScA5lfHKb/l4Kbxs6bpJ5LUulYLwmRc8tSwFpyg2IdvRhEbDy9jVXd0L6YQfOXHr0iNAAdcEY35Dytl0qZFcudoCwT4sy92dEEtahPFh6LgXTk/wwMfxNbRJBHjd4ZfsLPgxfQn0aJbaB42DOHm6Y/S+EwxsHHOqj9MFACFoqbysLwp86b5VJt4ZARDnyDZUaWqPbUE8pFkdmnsxXPLSB07iUnIgZVsj8fjSbXQYq2dRVjOMeCrsenxS/DMdm1N3l2EdnlfZHieOmaKaHN4Z97Nr67i/BeHmb6chLLKzbUloeWc9g8TDJZOBUufFLGAi3CSGa+gHQ7pAkQhzqE3Q1bExGB7/tWlW2jjh0OaVolSSq/lyMqh+BhpBOrtg1iZB5/ZqoDMjoxuiW7mG1rp5UsOlkDmLDDVt4OXflBUXP2kNkKNySpopC7yfKwloXvagpSy/1JqhM5khn6Si9EWVSao22NeM5uIOizYTY+2EJwz9lNpt1r7gqpTNaRlTPQrOo3q/R2+oM/dizpjKxYk8wEVZaANFs1CEFy3HrDRqxcjWDSWyxcad0s0OHWbUwojCwHZs7lJ1g9xX2tHI213700O8LyOE5ixkTolGDDce09cqvmgbZRYMS7drJ4lWD5eiOrtP20RdDqPX56Esnrzf2CS/QBluOEy842EMbmBMQOeZGu3Yjca4dUsSOXoz/iUMscLupS4mkSFI3F6OfhGczRLf8jS6aZPN/HfgUqtpF8BM3sAMVR/Fdk47MrZDWCdx/1RPKuNoeCs3PJi192GF7uWHqdjm/Xx2L07V5mce3Ni39KxFX5r7iaGjMQeVZ91vqy9+3UxREJDfHuE6hdmjjtdo6oxef91BxMLNHfLBVt9J+cTRDjwNVOdNUFADmHLGLfdVceHf0Jg2BOAWgHhMSstQPcdjeLV969TBBsyL1I7BxO76c/w61mxAR2G
- prR5OjdW
- X/ojoGuNoj3WGUCgr7UxXXcEKmEuWyUOSuxKEdUS5baKJ/QETlEVj17oGEOUXu9EhgHE2jhJD/wdstXe1of6Jx0Ktsow6SeJTDt+cfP9ww5oUerT762Sd6DQcFe+kAUn/S9Ty2gcbXI8+k3IqTbt8POreZD9w84nNenZh/gF9cnrFHwzWkQfJO05dMa+HAJXBLyV1tDr8IvhdxA4TmHvmC9fh3dw6A5cDWosY7sqqFmEMrKWpg2Fq+LPazc/zXuZffnxv2nc6SenuK7CSipI03EzMR4NSIdL7INTV6W7py7HawWxXyP30S20r28FUSd4iDxQLTSFPRYU8Wdo+bvapVZ7xNWliY5wyE8ENMsbgvpVtH6hpJP/YuTCSwLoRR3Y+cltz/Il6cuKkri3MGjH3SygHh4rQKzA/pG6KV+bAjWcpU0CuqkYmJJ9GoK1owGkykrZS8bONeRuSDiO1R1AHgpeknzZ+vLyOV0n7b3EbHVNXvMtLMtN7nqkWAMMgCLUqoVzc/yfxt937dV7HUPM17XvHFLmW2L2tsucE
+X-HE-Tag: 1774717403-961389
+X-HE-Meta: U2FsdGVkX1/MgVwYj/9SJxl0+HPU7J9ZHz36mFhjWUCr8Q2c9gjrn1pByux5xR5cSeGVwZSb9csjp0g5a9+ZvSxKWABWfhnNRx3dLtb0RnWPGOG3P4bFERQvuevw5ErqcXNcHuY+ti+c9OOohlVKstDlcrSrRQZf74le7CuoBj7GHGwYC3aDw6aEgXVwl+xthyMTd9GIQ/AZGmX5f6kc/VK+YdeJYWKdAQ5oaQZKd8r2b3/pVISzOuOaQsJVn9VKWRDKSXcVN7QPCyNaU/SVhxL3qlBGrkpNhtif+U9XiglmG42uFUFT/ibu3zBEyRk9R0z7Zw+Xxx9O9Oj30r+we4ZKYj1Z0k/m0OhM6QleQhZnCdpL/+stYjKEXNUXJscyN8rUIbcf3P48lbP3oITRWlxZXWzuBMizb61Reoct9ljDL9RJ0r1vaNUYRlUoWRSc7m6UUyx/j/P+JXUOon8C7VbWKoPulHaSm7ISOsU4SMt0IAC1XweZSidI6aem1JOYbfRGHATTxgTkLl6rLMu4aFAmBmz3EeGU1ZEbSMBQKYbgM4eh7kjBxqFRmMdTvpnuVH5C5XgsCXQWr0bbr046k8iDC7bjs7Ji0VcyblDBZ7iPuF2yswbXp7RiC4mcMr7r1ttRzd+tfDecndH9htR7r4E6rTqasgLQFlJ21B8/sDJteIAFmYiqpqR6MHjqTyNNDZ9yVS7gA49aStX4pLq0UF16+qbqFccA29+MrEu58d/IWfNTjoM62eS9Ny2lhJ7izIHWYZui2EJs/ZmOnLlqK94/m16+jpskzAlQbQMUNolmqvcvzhc/HZBWKGdvbIsoi98dJta7+iIITGoGGcP3/8cKu6ub1Wt9i0qkZbbpxApCvhGRL0uPnH/PnY9Vdg9CKd4Q0z8IiGpzaHin3RV0zYFGApPi6yW+BbFK37nPx0kzw8GKiNMLcKwBQMI94aP22NsqoOdRtxRzbBQBqhK
+ k/0QzSfm
+ d7oB5qWy548eU75gvEBhPqBVik1ABEfT4HLq9HXAOdhtBUnPKgHXX58lSaHFU8Niczzk5XVmxYwTt6CL9AIWzEN+aR/g4dGEVrvwyG4K6Ho6xCeO+XK6zrLRW5kiKjJFGpPGylrJYpetauBEoo64RpWVyBFbxixP4KmcaiQfFzGx2zivKd4TKDdrcJhUZvEd8yfIvGEb/OLNROR3lDlFGZ2wVk+nmvhEPH6WXDFX4OfjZ+v6Hhqp9DjpeLbRcGQxqLDR4RH4Cb+kf9cuRq5Mgno30cTJDNdKFVkrVPa2I8UUkA0Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,32 +93,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mmap_changing check in move_pages() uses likely() but the condition
-being true (concurrent mapping changes during UFFDIO_MOVE) is the
-exceptional case, not the common one. All other mmap_changing checks in
-the same file correctly use no branch hint or use unlikely().
+On Sat, 28 Mar 2026 10:00:08 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Replace likely() with unlikely() to match the expected branch behavior.
+> Forwarding Sashiko review for doing discussions via mails.
+> 
+> # review url: https://sashiko.dev/#/patchset/20260328163930.47096-1-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit 2ee07f5a4fcf25b39aeac61c6b88fe3fdfd0c9b6
+> Author: SeongJae Park <sj@kernel.org>
+> 
+> mm/damon/core: use time_in_range() for damos quota window start
+> 
+> This commit attempts to fix a stall in DAMOS quota charge windows when
+> a scheme is deactivated for more than LONG_MAX jiffies. It replaces
+> time_after_eq() with !time_in_range() to properly handle the extended
+> time wrap-around.
+> 
+> Link: https://lore.kernel.org/20260324040722.57944-1-sj@kernel.org
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index db6c67e52d2b..8e47183473d3 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2452,7 +2452,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+> >  	}
+> >  
+> >  	/* New charge window starts */
+> > -	if (time_after_eq(jiffies, quota->charged_from +
+> > +	if (!time_in_range(jiffies, quota->charged_from, quota->charged_from +
+> >  				msecs_to_jiffies(quota->reset_interval))) {
+> 
+> Does this introduce an off-by-one regression that extends every quota charge
+> window by 1 jiffy?
+> 
+> time_in_range(a, b, c) evaluates the inclusive interval [b, c], which means
+> it returns true when jiffies exactly equals the end of the interval. The
+> original code used time_after_eq(), which correctly triggered the new
+> charge window exactly on that jiffy.
+> 
+> By replacing it with !time_in_range(), the reset evaluates to false on that
+> exact jiffy and is delayed until the next jiffy. For small reset_interval
+> configurations or low CONFIG_HZ values, this 1-jiffy delay might alter the
+> effective quota replenishment rate.
 
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/userfaultfd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The effect should be negligible, but good finding.
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 2a6e034b15aa..dc1b3dd1aece 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1872,7 +1872,7 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
- 	/* Re-check after taking map_changing_lock */
- 	err = -EAGAIN;
- 	down_read(&ctx->map_changing_lock);
--	if (likely(atomic_read(&ctx->mmap_changing)))
-+	if (unlikely(atomic_read(&ctx->mmap_changing)))
- 		goto out_unlock;
- 	/*
- 	 * Make sure the vma is not shared, that the src and dst remap
--- 
-2.53.0
+> 
+> Would using !time_in_range_open() preserve the exact original timing
+> semantics while still fixing the wrap-around stall issue?
 
+Good suggestion, I will do so in the next revision.
+
+
+Thanks,
+SJ
+
+[...]
 
