@@ -4,123 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E82710F3DE0
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 09:55:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D660010F3DD9
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 10:51:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88CE36B0095; Sat, 28 Mar 2026 05:55:27 -0400 (EDT)
+	id 8E0F66B008C; Sat, 28 Mar 2026 06:51:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83E0E6B0096; Sat, 28 Mar 2026 05:55:27 -0400 (EDT)
+	id 8927C6B0095; Sat, 28 Mar 2026 06:51:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72DC66B0098; Sat, 28 Mar 2026 05:55:27 -0400 (EDT)
+	id 7A84B6B0096; Sat, 28 Mar 2026 06:51:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 63E0F6B0095
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 05:55:27 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C48138FD96
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 09:55:26 +0000 (UTC)
-X-FDA: 84595014252.03.BFCEC4C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9782F180008
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 09:55:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=P5wOHDeH;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6621F6B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 06:51:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E74E4E1EA7
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:51:28 +0000 (UTC)
+X-FDA: 84595155456.29.5CD4425
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 272EEC0007
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:51:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="XxDEF/Tl";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774691724;
+	s=arc-20220608; t=1774695087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P/IQhpBIUdvnO+K29qERVMLBYlywQoustWg83ZRnyBA=;
-	b=FE62nGrwCm4HzR2NVOsLnvRAbs4QluToc7aayJR89VN8+w8YchpLejYhf1zk9F0BJmo/7D
-	L/h4hSmOkiqFFUScxLl86Jk4jdRKaw/uOWVDeyVITDwqfI9mICzDONxT1/GukJaZIlc5yX
-	vbubbewgr9AND9H506DSvX0JmDTFKMQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=P5wOHDeH;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774691724; a=rsa-sha256;
+	bh=v6mIvddxM5IjpL3Qx7QZ8ftx4Ml3402nVTogMhOqdes=;
+	b=jkQS2VvrbKeCfeWpP4/xQCxu1606hncLNy1mec2uvahZYxgRFCpVQm3JrLuoagu/DaTshG
+	gXzPihUESP87mHMC/ZGLLwjtxduVq7YaekFrBh4RiAfAm270oCjSobkvZmMMUop7HgPKRx
+	LJn/lMRiLSSXSmoDk4UbTOkIl3cAYVs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774695087; a=rsa-sha256;
 	cv=none;
-	b=qhmkTpYYsSQkwluFqFb46dxlK/Vweuf30+apHh3N6bVcpciSJLgAu8AfJUsaJuuhxQBcxf
-	CelSUsl+TGcRRVX2OvQg8qtW4SBZpvtjOFDItTWSQTp6KBobh4fWT4z5rc/Xio+BWf9Jlg
-	kprggcjexityvho545Fnr12E5YZnHhU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774691725; x=1806227725;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GAqpCsRCdatJLMn/LB4VPXAG5/+DxNvNB1DDK+7U/SA=;
-  b=P5wOHDeHRp4Y66GA2KWu7x+/JXMAz/bDWQghr/AGejDrtUmABprJI2gk
-   FAuqBzBQDGgOqUhKha19PwENkQFOtFObymk9lR0d0GMmHQbCW2HTmQ7T8
-   MkxVlKYFHIi919wTWOA/DmgBinAxjr/ropKKWt07Xrai/69slvekeXExu
-   4udq553lUe21k1q3ivXMC9RFcGcbY5wmAT3qpzAs+7b5y4lJYTAjEIlbB
-   +UY5jHvXC9kuVqfmNBwNTg9p9w90kAWJMRw8/O6XCtK4X1anZ1kHU7vrR
-   ++wJUetmIMa23JfHvpl+YbnxoEV8VBcswnVnVwMPIjME5erajILsssQL/
-   w==;
-X-CSE-ConnectionGUID: +jgp05pwQ9OF//OGsv8Cpw==
-X-CSE-MsgGUID: NhRKG1qfT72nN54C+xtt2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="75633837"
-X-IronPort-AV: E=Sophos;i="6.23,145,1770624000"; 
-   d="scan'208";a="75633837"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2026 02:55:19 -0700
-X-CSE-ConnectionGUID: mkBLqmVQQa+7lsX1dF1hXw==
-X-CSE-MsgGUID: nMNCMgLgQ7q8oZG85wWGBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,145,1770624000"; 
-   d="scan'208";a="248786209"
-Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 28 Mar 2026 02:55:13 -0700
-Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w6QNp-00000000BI3-3sXI;
-	Sat, 28 Mar 2026 09:55:09 +0000
-Date: Sat, 28 Mar 2026 17:54:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zi Yan <ziy@nvidia.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Song Liu <songliubraving@fb.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Chris Mason <chris.mason@fusionio.com>,
-	David Sterba <dsterba@suse.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v1 07/10] mm/truncate: use folio_split() in
- truncate_inode_partial_folio()
-Message-ID: <202603281736.bi9GWnsF-lkp@intel.com>
-References: <20260327014255.2058916-8-ziy@nvidia.com>
+	b=NvmPfDuPmbkfrCTtljjtDSHNJeZB8B03mWLGNnR61AkIHINUi85BiY8hFaBdVvRNoJBsMR
+	1GMesKnIrcE94l548NA9CB8bxXQnZxb4GrGMQpUSg6dMV24agsgxIWtXzeOmLwdIYfKPHZ
+	6tJ+wzUp8HVnS/TT3niztUCh97MsomU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="XxDEF/Tl";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cbc593a67aso320376085a.2
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 03:51:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774695086; x=1775299886; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v6mIvddxM5IjpL3Qx7QZ8ftx4Ml3402nVTogMhOqdes=;
+        b=XxDEF/Tl1OxXkRS39KxzuyFmmLYPup/k0DOivjS6VgCCUwnibRr3w/dcSCkQnRek0u
+         1Njo8PERqBhu1UCykMVhbKWkNEYd3mq3t1/X8Jg0USAKzGa2X7NMIdqr01mdbSI6QFah
+         freML/eBW0fFaNSDDicdAn/iLbI1UpX/SsjupEcpk+ABBAbNa1zTQ56rebnBf28xE486
+         sN7WwxxmruBay/0061CMlvcPKGIey8PamDqSDWIYQSfE+bQu7to4zX6EdJdvYnge87Uk
+         mXA/jbdWh1xFBtN96ILpRZrbXXIIMHqfYPn5CNbC3TMsZ0h9MZ82G3KTOI/WmKbpYpme
+         oZsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774695086; x=1775299886;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=v6mIvddxM5IjpL3Qx7QZ8ftx4Ml3402nVTogMhOqdes=;
+        b=dFaSD23b3dr6sftHK93y+VPQbE4QJEvHoBa9nAePPPGWSwhOVymUnmBoPlZW4BeZ1a
+         y1gUVlX7YsXNntZOarC6BaOJLotUJFtFjwcVhToPWuwOzw9k0fBS9mQzzzkXP2Nuh7X/
+         7ndSZxC1ZKq0FZPuM0vEFAIAszmtpRpnW2SpNnUiPkzbfdOKibzYVgJZ//bTbFjxVYm/
+         6KMdtBbKUzSLbo0K5vU3zbXKEn+1/VqBxAMK1YieBYowvtWPxtQ3vyBkSyec7LJV9i8e
+         Doi5vQ4SDSwdbi6uqXjaRn2BnFvOIXgmed8X2YZMKf/5hWOBuTq6ksT6fnd4Vj6nUGCh
+         sZSw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFGvX84/1+WAMJaCkRwvGbOJBhRz37oM1dDX6CHNXlT6QKzCWh0MSqPXCQdZhW8jplP7fngRcrVg==@kvack.org
+X-Gm-Message-State: AOJu0YyDJnS68BtRDt/PeIrct+glKLXJK2acqkUiGk60YrCy4vx7LbT3
+	G30vylaiE4Pm0yes2vj2dtjWEIR9mC7Cyyq0XUsJZTsKGRHVKdvbU0l3cGpz9Q==
+X-Gm-Gg: ATEYQzyQw7hPqfyMlMEXcaecKBxiG02yb7aQZLaTzH1ti6P9cZ2zhAcbfBNliK3QkIu
+	9pOxUSKGg8e6mOK/pKLGMplgNiT6mhFsxcbHhgyzAWSMqCXIgUwLqcSzrLgCDX0MsKKgVH9aEm6
+	QdFrFrQntFrZwv+4CqR/abdzeJRGpPESbDjBefIOy9VK9ugApCL5Fl6xr7VHRiKaSGQVSWB6Sur
+	B6Rljod1EEogDL+WWpM8ZryugndGDqnvHFYu2huwauABp+E7tb2u+g88b6TLM6YE5EVcVp6UbR2
+	ka/u5L1QpMcBrkY/g3mbwlW54Y3siRrl2NUjyl2L0ExSp7XknjGCWbVV9RPyhqFIXjokRztVAc8
+	tup/sM/hNaokxxB+oEKZIu6wD5Ku4x7KDC7ua5zOQC+t6Y/HLMn3dMe1scZNAkyDrxNwdyCBi3g
+	ZCSLaTmrTw/i8A6WZ5uv9pPKY5O0c=
+X-Received: by 2002:a17:90b:1850:b0:35b:b52d:f34d with SMTP id 98e67ed59e1d1-35c2ffaffdcmr6074190a91.5.1774694693018;
+        Sat, 28 Mar 2026 03:44:53 -0700 (PDT)
+Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c22a82231sm10415940a91.6.2026.03.28.03.44.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2026 03:44:52 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com,
+	sj@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [PATCH] mm/damon: add synchronous commit for commit_inputs
+Date: Sat, 28 Mar 2026 18:44:50 +0800
+Message-ID: <20260328104450.14719-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260328093603.10052-1-aethernet65535@gmail.com>
+References: <20260328093603.10052-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327014255.2058916-8-ziy@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 272EEC0007
+X-Stat-Signature: jjtpwmxaa84y1qfudxabotsjnh18egt7
 X-Rspam-User: 
-X-Stat-Signature: bpagnrorqo3xwizbiosqoatw7zt3puhm
-X-Rspamd-Queue-Id: 9782F180008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774691724-543801
-X-HE-Meta: U2FsdGVkX1+teoCeryPKZqvM4QUlTBSHs9LNVdKc07S2kows2tnDs22dfO+af2CKEIP5G0XD2guI1CahIegi1RSvtHU1z/hFEWbKu9pAQTUe4vXDnoH7pP8W8UWuA+p5FHkQUMZz5QcA7DBbwbyFClJ912DmYNULD9O6fqKgM/v8sRCBuTp2R2DBmo8iHmqZHdEIHTqohYGRQKZPd8638rs+XxQBDGkjEcevr9eUzdHzFZjRE5s+2DKDXsthssiQaTcrhDbX+02+Yw0NekaABkyStDg6ILsxvcakJGQg6iOoq95NKgQ8vDHvVWebATuPIG6aAdSJoYPlszDlLdqbl3ZmokFVMcascrLAXcr2Pgi8Dbkyhd8P65oOwhaInH0Zx3VN2Zku7A/kqpcy+Mfo7wIpqGBshIe1UyvdicbKZAqFmZGK4xJCSAuzhsk2OpFwzJYw5KutgkdBK/mMI7TWeFdHu9cdF4evIBCQgDkxUo/k8/8rKSoU5fQVi5lMbAeg0DasjyFtLCjBl0+I9XXAMkEOVeIyrHMGiKS1ZjFled7jorgqrhFojmGRfy3g8rMPd6ebYmgg18U7/ElAgY8JKvp+T0U7HahW5igKX7P0eanMKvnvmUGZdlSlWt4k2I7DBl3rnjibc61m0LvMo6t0wh9eXFp/kRwk8AOQZ6HX4BOYUGYaGxmuDmRlJAczbgUcpxxBVUdR21e7K3G3Iux7Mnux7erI+lFyj6ACrVatPu4oh7eGGi+/cwRRDvLDwxsWz8IMAhtaKl7TJohoIIrM3Cw/LicOCDsVSBVOVs4RQo968FFZg+nDf3hBrO+qi08mLCC7Q+vH6xkGJnG5GcIYck7Z0g2lL/2yXybYbnnFCzJ/MMnV9krCo7chW3FCM86CjrBTAEBPYCPwT9OQCXYTyrzBERQ/tFSGyrbPNywyDjo9SBCg5KOfILNEBNRkwd0NcBjnbCKiCaXXi+RnW5t
- AysYSec2
- 7SWL7fNl0hT6/f7o5+cmcUz7Z2jPoACm/mEbM4aKSJrzYT9PUVBCKTu6NzMWjcltoEHbxa+m047DpehdA+aMH0wq5cLQGMmfB0WPR69NBQ1GM3lAzdLVxVCN7S3ibE031qx2cY3eBU2+TGmZcys8XfTaeq5UE1MaUh3qxrTWCyAB9iX2MdRQZFkQM5y2yQTwmegz7F22Gp/jaiPWyuu8wQLGbw4dic7MNqD3qIxql4mDjPvOVQl+wX9ntroFzuT8KSpyL5xoj+m+1CQ0LdyTfL3n2VAehYQmKDvnoGMubO28RT/JpuWZaPbUMZlqsK10EwkKG6NbYOUOll5keDBPPtvQ9Bc+gJhg/P9W1rqKmVRrP6eI7bkBGqFLwtqWpNmjCC59B7phuL5hNiFk9Ha+cHITo+JKJkGWO5cF6R0hyFWuFVfYRi2tMuhq1NImYRUyuc/0cY/uNU3WLbAs=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774695086-955793
+X-HE-Meta: U2FsdGVkX19xMfEXm5UFYNK0wfNND9U4OirZ+wM4mk+OlwHFy47SokOnLj/RQoM5jBfRADClbL2Sh9Zspsz9CS0sDrQWij934xuRSoefDfqFiUwld4WxdH4uXMf5HNZvwrjABSPWyJhZJ8IFLmmHpQGwZS4Tbnro9HtV8PwZAnY+NieWtXIV7trFLegsS1uWurXMad6WMJnG35kVaEe8KiFTzjKZXnUZEqVolws5MM/V6IxIFRIgEM0pAVzAuY2Sr2JOhbw/2k6Cto2T1bnvEyA+rI6XUtymZeNbNDSJTNXD1G2IBCgzbEGrYNjMUfNJ8Zv7zrvNAW6R+qwAutml0lS0InMLg2erIBMCxfLyMG4f6AGl9cb9eM4G6kQ385onR1f52hffORo8CMvbahi1XtE0ebjXOuQG1IxQlKfztVKqyyXGxtCmKPhNFhWk2O7LEW7QUavPhLkVziy0Nm8QLPpF2w75OwiYD91OdTBruCtdDHyPzqQtW1P1d+hk/aHreFdlsvXZRXM4mLhqoguD4b60Lx7z53aQZpERCOpEeyO8TFTNX4TO47wufNZ5sdskz7OqXqMPiVCdkxxUo5YKIiPtWxC8A1pPR3LbLBN5a/g8LjN9p8+o00EkOTVoV+0r67P5tReHZnZEI92lHm0fQRq/sNSoPt0/KoHnWxotcjYmuLg8GxAL8r4U6cmj8Nj9mq2Ircwv6JVdw7KvH1Ypx2wHvVea7S2MQJu5Tkgdlof1tVFuW2D1uMM6g6CWQSSblfi16y3FcY16tP+/n3RYGK+HPeJTvxbOJs6fVuoXIj7MnkItSi9HbfkigGqmaDAbiPHqFHHLkp/I4Ko1PBgHeiUzRQ1OWq8nOoufBgOmEbUPZ/uFIkGIqOVYVMDa8Gf8ZtN2NNXQRPlgyBzayVoA5Tkng8jmu9ei8a1rEQ/dT45yK7hWu3KMrBGFuRMgE6NcSb6+BTJYCj3vLp9JgQg
+ 1v6+zuc5
+ 65dU8mTEn8j7ddpq9WFE15hJdkpo9AW4PBlVAFAuaetgOnhXZyQdji4JttKCfcvp64ElBwKX+qWNfmQqabZ8Nrkru04t3kpXH2mlzL+8Ye7jYMdVi0XihYADY3MwlEPPw/RUoGhDFu1XfMsKcjok0FhgJ0NHBBpWIhitfmnbxtGAJl29QMH78gTTXupqB/9QvHmL1+vR2G1by4DKhDRQihXwoiCU0kvGVA67KCGJRDbqALcDjMb9MTNgBklfEWCRgLYhiVdZFvMZUcH0FWmQO2Yd+qp6axsoCHzKgJQFhm2kd6tn2M2zYRy/AL/4suq+2sNVkYUaY8JUhlLwe/PQOVjz/BzK6SuTLhv67Uz8+f09WSmmE0wdDeeXjv0xNwwALnmI6GvUg7+wvkqL7Ug/F1bwIH+LJgB7o7iOY+quzffk819UImyMVK87Ho6LpeEq4jQKezd/syOjQ9GZ7CweWZ80Lr2CaOiCPWhz4Y+rmXrK7h7Fz7TbkjLtcXS0tNCHYka1cd4Ih/sqCuGmB9VH8fsLK3EXu3fB3q5mQT29Ls6vXyOE0qerDUejeYIfwkE/ugLBfQwig/jVqBMTxszjN4BtkSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,62 +118,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zi,
+> > +	/*
+> > +	* Skip damon_call() if ctx is not initialized to avoid
+> > +	* NULL pointer dereference.
+> > +	*/
+> > +	if (!ctx)
+> > +		return -EINVAL;
+> 
+> During kernel boot, start_kernel() uses parse_args() to evaluate the kernel
+> command line. If damon_lru_sort.commit_inputs=Y is passed, parse_args()
+> invokes this callback before the module init function runs, so ctx is NULL.
+> 
+> Since returning an error from parse_args() during boot causes it to skip
+> parsing remaining arguments, does this regression break the system boot
+> process by dropping after_dashes arguments intended for the init process?
 
-kernel test robot noticed the following build errors:
+This is a deliberate design choice. The 'commit_inputs' parameter is
+intended to function as a synchronous trigger (like a button) while the
+kdamond is running.
 
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on brauner-vfs/vfs.all kdave/for-next linus/master v7.0-rc5 next-20260327]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Regarding the concerns about setting 'commit_inputs=Y' when 'enabled=N'
+(or during boot), I believe this is non-issue in practice. I plan to
+provide an update to the admin-guide after this patch is merged to
+clarify the proper usage sequence for users.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zi-Yan/mm-remove-READ_ONLY_THP_FOR_FS-Kconfig-option/20260327-142622
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260327014255.2058916-8-ziy%40nvidia.com
-patch subject: [PATCH v1 07/10] mm/truncate: use folio_split() in truncate_inode_partial_folio()
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260328/202603281736.bi9GWnsF-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260328/202603281736.bi9GWnsF-lkp@intel.com/reproduce)
+> > +
+> > +	err = damon_call(ctx, &control);
+> 
+> Since this function acts as a module parameter .set callback, it is invoked
+> by param_attr_store() with the global param_lock held.
+> 
+> Could this cause a system-wide deadlock of module operations? If a sysfs
+> write occurs exactly during kdamond thread termination (when kdamond_fn()
+> cancels pending calls but before ctx->kdamond is set to NULL under
+> kdamond_lock), damon_is_running() can falsely return true. This would leave
+> the sysfs thread waiting forever on wait_for_completion() while holding
+> param_lock.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603281736.bi9GWnsF-lkp@intel.com/
+You are correct regarding the potential deadlock. But this is a known
+issue, and SeongJae Park is already working on a fix [1].
 
-All errors (new ones prefixed by >>):
+> Additionally, prior to this patch, user scripts could configure parameters
+> and write 'Y' to commit_inputs even if the monitor was disabled, and they
+> would be applied when started.
+> 
+> Because damon_call() immediately returns -EINVAL if the kdamond thread is
+> not currently running, will this regression break existing userspace
+> configuration scripts that trigger a commit before enabling the monitor?
 
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:21:
-   In file included from include/linux/mm.h:1746:
->> include/linux/huge_mm.h:625:1: error: expected identifier or '('
-     625 | {
-         | ^
-   1 error generated.
-   make[3]: *** [scripts/Makefile.build:184: arch/x86/kernel/asm-offsets.s] Error 1
-   make[3]: Target 'prepare' not remade because of errors.
-   make[2]: *** [Makefile:1337: prepare0] Error 2
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
+I understand your concern about backward compatibility. But providing a
+'commit_inputs' request while the kdamond is not running, is technically
+redundant. Since parameters are applied automatically at the next
+'enabled=Y', the new -EINVAL response serves as clearer feedback for
+userspace, ensuring that synchronous commits are only invoked when the
+kdamond is actually running.
 
+> > +
+> > +	return err ? err : control.return_code;
+> >  }
+> >  
+> > +static const struct kernel_param_ops commit_inputs_param_ops = {
+> 
+> The previous module_param(..., bool) macro used param_ops_bool, which
+> includes the KERNEL_PARAM_OPS_FL_NOARG flag. This allows parameters to be
+> provided as a standalone flag without an explicit value.
+> 
+> By omitting this flag here, does providing the parameter without an explicit
+> value now produce a parsing error?
 
-vim +625 include/linux/huge_mm.h
+To be honest, I was not aware of the implications of omitting the NOARG
+flag. It was not a deliberate choice on my part.
 
-e220917fa50774f Luis Chamberlain 2024-08-22  622  
-9ee18d22957981f Zi Yan           2026-03-26  623  static inline int folio_split(struct folio *folio, unsigned int new_order,
-9ee18d22957981f Zi Yan           2026-03-26  624  		struct page *page, struct list_head *list);
-7460b470a131f98 Zi Yan           2025-03-07 @625  {
-a488ba3124c82d7 Pankaj Raghav    2025-09-05  626  	VM_WARN_ON_ONCE_FOLIO(1, folio);
-a488ba3124c82d7 Pankaj Raghav    2025-09-05  627  	return -EINVAL;
-7460b470a131f98 Zi Yan           2025-03-07  628  }
-7460b470a131f98 Zi Yan           2025-03-07  629  
+SeongJae, what are your thoughts on this? SHould we stick with the
+explicit 'commit_inputs=Y' requirement for the new synchronous behavior,
+or should we restore the NOARG compatibility?
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > +	.set = damon_lru_sort_commit_inputs_store,
+> > +	.get = param_get_bool,
+> > +};
+> 
+> The commit_inputs_store function parses the input into a local variable
+> commit_inputs_request but never writes to the global commit_inputs variable.
+> 
+> Because param_get_bool reads the unmodified global commit_inputs variable,
+> will sysfs reads of commit_inputs unconditionally return 'N'?
+
+This is actually a design choice we discussed [2]. Since 'commit_inputs'
+is now a synchronous trigger (or a "button") rather than a persistent
+state, it doesn't necessarily need to store the 'Y' value.
+
+> [ ... ]
+> 
+> (Note: The same regressions appear to exist in mm/damon/reclaim.c)
+
+Thank you for your review. :>
+
+[1] https://lore.kernel.org/20260327233319.3528-1-sj@kernel.org (Lastest
+but may not the last fix)
+[2] https://lore.kernel.org/20260323150544.81042-1-sj@kernel.org
+
+Best regards,
+Rui Yan
 
