@@ -4,144 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 949CF10F3DE9
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 17:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A874110F3DED
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 17:30:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D7486B0099; Sat, 28 Mar 2026 13:28:29 -0400 (EDT)
+	id EBDC96B008C; Sat, 28 Mar 2026 13:30:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AF316B009B; Sat, 28 Mar 2026 13:28:29 -0400 (EDT)
+	id E6EC86B009E; Sat, 28 Mar 2026 13:30:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F070E6B009D; Sat, 28 Mar 2026 13:28:28 -0400 (EDT)
+	id DAB966B009F; Sat, 28 Mar 2026 13:30:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E44406B0099
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:28:28 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C71652F2D
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:28:28 +0000 (UTC)
-X-FDA: 84596155896.01.781963B
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 29FB5100010
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:28:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lvXQAmPO;
-	spf=pass (imf05.hostedemail.com: domain of tahernady45@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=tahernady45@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774718906;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C8D1C6B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 13:30:50 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6D8C31393BD
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:30:50 +0000 (UTC)
+X-FDA: 84596161860.28.FAF0D31
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7FAF44000D
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 17:30:48 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mBBzlKkE;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774719048; a=rsa-sha256;
+	cv=none;
+	b=gIIw62MuFFppZ0QOl/p32LkmqqYtdkQd96gXRf+cDYznx9jLd0909680VLLsmePGIgfxdR
+	6x+QufO/AZkFaYV8HRhBtRmHuCPhz5iMH3wfEnI3ISQx1VHnipV930J29Cu6Qes5IFMLhh
+	IDKBzCB4amP+CsiRHrnEK6PTpuol/Ps=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774719048;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uYNVxfVGNsLgLennTDMjb30NhhHtNkWhAdWfB22BHEo=;
-	b=hGtVVNbC51yRDjN30KCLYWY39u2xfLLfj9ap5xwULqK/WJ5zEvz5i5mv+OpP8boHmpJf4t
-	nbp2SPHlLpCavx4uy62KPXxRZ0E2Jju8XzJvah6coPhHOQWzXyPQCJkDOV1sfy8qGb6s0O
-	QL5xxnjyeq9TKxsOYtA2/5BSyCnpvsU=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lvXQAmPO;
-	spf=pass (imf05.hostedemail.com: domain of tahernady45@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=tahernady45@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774718906; a=rsa-sha256;
-	cv=pass;
-	b=zmz/3C2Wayob+70WvA1otOq9ixpSHkwaIMorZJ8+Iw0xDmDpEfaHi8qeGC+dVP8kluNDmy
-	7LsotKNUP1MyNHI5N0bSeDFxParqkeR34eyL93n2oA/gZGwcq9Y7V/+ABwasASTJ/KwcGR
-	v+qK6sJEYhUwTTq1YJ5BS370qbSEXTU=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-439cd6b0aedso2046104f8f.1
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:28:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774718904; cv=none;
-        d=google.com; s=arc-20240605;
-        b=j1neF9xFq7ZCYRqK0a9sP4VSSoZRWxOO8XPNGkvUEyhCw2TZ+I57Q+x+9SH10SPi13
-         YBRwGCg83lcuG9uONt9DQCXwgFVSkUukLysUi6lLNmhZ+J7ep7gJM4quVLJE0FyKlTDM
-         MN5Jim40IlC+Eb96wUG4ziHAgj5cEEISlxrtbAZzUJgEBIBtjDJf621VGeonTAjNG+il
-         WHQ/LlXYg/Bgoga/kCXGtLAiFO9DmSm/cPGPAJXTYkI39ezJ3OGydRwAVsMdec2PO/9B
-         1yPtt2jIv8+uK4vLI8WQa0YpHoRORRKerfSklBet4PCzkL5OFAxYT3KFzO8H5yazdZiX
-         aC4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:auto-submitted:mime-version
-         :references:in-reply-to:reply-to:from:dkim-signature;
-        bh=uYNVxfVGNsLgLennTDMjb30NhhHtNkWhAdWfB22BHEo=;
-        fh=yoCxblIr7MyoSQWSnthdFltHaUuQSKkBURO1Yq41Ex4=;
-        b=CRaGdNTgx0ioqPzBMc9pbianHNeKRwfMiVNUiNCkGApIlvMeQYEWvme0aef3cyhqdM
-         26mReoXjcptUJnpKTmKlUdFCnu5b4qUH9WOz1SmZvbcClSc1Mh3+XyW8BcggThwPb3fW
-         OQ6CAWSCXzs4FVEb6g/lqU0IwuvxlVJZgMfWa1nLqsHG0yaresh0HAUpMkX7dQiUbW59
-         cQSVaERqGQnM8mOKbSqegCeL5/jZabnR/IoqdYhRxyxDL++Cv0M7H16likAsiOTKimFg
-         vqD2KhlG+I/iD1ATFVlL9NU42CTjIDEWBET/2Uc8gTtFI/EBX6TxO3MoLiKOw1P0Gy6n
-         RdPw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=U6wpH0E/1pqdSBKibo+awwee7+Dq2N19KcOYS5YYS6Q=;
+	b=WofZ8PyjdDQmEFsCwNT7RBIlSF3pbcFZikDwhTvzNyybTpctdl3nfSidpv3A6n5g6RLckt
+	vsF2Lqz9T7OqSVovz5CSe+gvsnhqo6xaor0gf1utytrtQHWqlQ7C2DhVqBbkMSMfNU1OMT
+	wVK1EvKWHc1MKTlMuRa87bV6sYByZFY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mBBzlKkE;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8297e0b27e5so1709542b3a.1
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:30:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774718904; x=1775323704; darn=kvack.org;
-        h=cc:to:subject:message-id:date:auto-submitted:mime-version
-         :references:in-reply-to:reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uYNVxfVGNsLgLennTDMjb30NhhHtNkWhAdWfB22BHEo=;
-        b=lvXQAmPOCf3bnYN65vj/Lqq+FpTNymJJLrGce3J1NJSeQPQ0oD+vMQPVjqIxAMmfs2
-         0+vN3Q6ZuHYFBoomFkoRNQ6wAfm2GwhmL+Bfif5/8ErewlZwIOEblVTWvHNdPeyeDX9l
-         9QWD9KkFFykDUI82vGY7D2dME+fLYM47neqyECZ3fLeituL+U/TUhQjhWxtTQD3uL6mX
-         WS0mbPLvLBCylOispvkf6BoKA2FU1HKuXYlrz3LaGQr8Lc7Afw5gH3MoBKMrf8QV+xOl
-         52QhEnTigEAFD+cU8Bh4ocQpv/yWm/sjvr9IimphIVWzPRT9FikjA/pe7VMMyOpV1PQ0
-         ly5w==
+        d=gmail.com; s=20251104; t=1774719047; x=1775323847; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=U6wpH0E/1pqdSBKibo+awwee7+Dq2N19KcOYS5YYS6Q=;
+        b=mBBzlKkE8Je+XZ1FRnyFGiHwfiZFTMSjJWsN+5wQ2GKaa7Aui+PLBYydyGFXP7QT4t
+         0a77V0h4Wzv6wgKHb3zEdIz7KHRzNPF91KF3d/JQ4McV3yOuUqQ+VrsJ14eXj3HErvsc
+         AjRXoqCi/WNvFkfCfSnWGX1/dflYBVLmVLR5ccpCS4sBR5B/cL+PuZMbhqriFoUdNaIz
+         gvMLqqHhyOTAUkBfn7dktRFldaB/d35zzXrR/EhDTblTNlZDrAIyhDfpi4YL3+kQgVOz
+         8geQ914sz8JdwBeg0xxFJ2TMeV1WELsKR6hgPgX1AiFkcPaiD24Z/xaV39y4bUJa/iAQ
+         +7dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774718904; x=1775323704;
-        h=cc:to:subject:message-id:date:auto-submitted:mime-version
-         :references:in-reply-to:reply-to:from:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uYNVxfVGNsLgLennTDMjb30NhhHtNkWhAdWfB22BHEo=;
-        b=qReQS3QcDbcEp+jUfzyPD8DowmQ5ELghug8AKDdUGpJNyNmNEGII6fRyB6gp+gCP0v
-         SecmdayE6vc+e9+WDfzPH7lI0DICVwNmx0Swm8CbNSPlfG/fmd4O32SvDrgjuG/MUXqu
-         OFBFgKDzOrewe89gbr/ZnCGo5En/HqDx0xvSC+DrrnATRq/srwz7M5BrB/aPA9hWtTHB
-         F8p8AG0wqSR/eKoab6Uzdjyo5tVgmVJ7VhGv4oWHCbglPO8OFLWjbMJV8O9jd2RRL5bo
-         0GiCbdttmALEKNgz9zHxHs6PkdAfjQflxHgLi7SZPNPDMgbfwDzh4wt1QGdxaBoufMEj
-         UqFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUrXuzLRB0uP4fnpQoTfyOOemZGb25htrHI0mC0OcIi8XZivA3IkpTDQuA/PHIHGjnI9pEGoX+ecg==@kvack.org
-X-Gm-Message-State: AOJu0YwEWe5V8hRgGSCNNHm3AbQo28mNHyefVnYoMG8er913Yroo40P4
-	Z0A8h/nd2XeveuvY0YS4VJTg3yxPCerb8aVqZ1yYmerTGFOarnYOHvAy5vttAk7nuAQeXgcunCY
-	QsKSbqEUCa73aLUT79pYYYyWwPZAvXPM=
-X-Gm-Gg: ATEYQzzu/qtrY7Mg3dHfgEF/IFP6w1e2X9n1hB32ngAR9Ij1xZATBVJCJ5ac+e6Vdkg
-	6WnwK6dtFynjxYtoL9UYISzEuE79mYyhSlT6Y2ubujjAiVnlTRZEG1AHW9VxkVEtQflDGHK9WmE
-	IvPHY5Gyff+SbKynXaa4Mik6KPPSBZ4c6QiXh9a8iIxeJPyXPgY0tliaSYE3VYJ6mMJhR8GvGjn
-	gSyhOI63mvyo6fasMNtQ7VETyEABGoBJO8gERPNB/QOrMZZmGb9sc9ezZ+yNRcTXa9dLqNsfq1A
-	1ll7BMOP
-X-Received: by 2002:a05:6000:2406:b0:439:c550:d920 with SMTP id
- ffacd0b85a97d-43b9ea77410mr12043167f8f.47.1774718904539; Sat, 28 Mar 2026
- 10:28:24 -0700 (PDT)
-Received: from 382830561574 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 28 Mar 2026 13:28:24 -0400
-Received: from 382830561574 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 28 Mar 2026 13:28:24 -0400
-From: Yail <tahernady45@gmail.com>
-Reply-To: Yail <tahernady45@gmail.com>
-In-Reply-To: <69c80fa8.a70a0220.97f31.0002.GAE@google.com>
-References: <JR421L42D7V@zendesk.com> <20260328214408.2990597-1-ljykernel@163.com>
- <69c80fa8.a70a0220.97f31.0002.GAE@google.com>
-Mime-Version: 1.0
-X-Delivery-Context: automatic-answer-34388709931410
-X-Zendesk-From-Account-Id: eff5728
-Auto-Submitted: auto-generated
-X-Auto-Response-Suppress: All
-X-Mailer: Zendesk Mailer
-Date: Sat, 28 Mar 2026 13:28:24 -0400
-X-Gm-Features: AQROBzCYjyvrIr4SDu7nO9Rij5-6ruwZMb2QyCUW-30IZdqlZgBJ2GNPJQEVMEg
-Message-ID: <CAApBg0Hete2ozsQ+X3Cykq2d8OytQMvAsTW8gDSHa97B+gnixg@mail.gmail.com>
-Subject: Request received
-To: syzbot ci <syzbot+ci9dceb132e443f5a7@syzkaller.appspotmail.com>
-Cc: Akpm <akpm@linux-foundation.org>, Linux-mm <linux-mm@kvack.org>, 
-	Ljykernel <ljykernel@163.com>, Syzbot <syzbot@lists.linux.dev>
-Content-Type: multipart/alternative; boundary="000000000000e19e2d064e18f16f"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 29FB5100010
-X-Stat-Signature: 5gju8rdq5e4bu1cryur47dr8m5ggwes4
+        d=1e100.net; s=20251104; t=1774719047; x=1775323847;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U6wpH0E/1pqdSBKibo+awwee7+Dq2N19KcOYS5YYS6Q=;
+        b=BeTsuHgrcYzghoRDDUyWJKtUQy3haQlzfF1DoIrgIYO3nBb4xRs/UZiuqrJzjIeFzd
+         OPl/4ZIKRiJ+kbN1XidZtEUSZzpI+VmF16oeXxoH3CwSfBC7K4G/KndfXD4smqUMOsHO
+         Eq7MR6UeFci6z51Eu332p01G8SXhyN05PJCS7KaL01xVyuxxSd7oZqCR+FYWeTTNgvlK
+         +AQDNTFfX9NBAVRzKLA4hASHKmT0NX3FAh7z7CL+V1FcSR75DK2QMx4TwtGEnfXb8NV1
+         yYNHxfOx+ewfJjaaYWq2u2jRqq9H4CbXoKUxn6qNfmE8p8RQ7BHqKUcNgWqz6v67DiCm
+         RGxw==
+X-Gm-Message-State: AOJu0Yx9kemPqKvV+TbARJgsEft+OA5lU4ucYJT1o7VscDfODUXYmu5Y
+	HyQWEJ9vf0IyilU1D24xcFs13Boi3oPYT19dk9GXW9qq4bWpzBun5Sj2o7D97LbPgUeXuw==
+X-Gm-Gg: ATEYQzx4KVQRMtImyvaEtHMFWYKYcvLepD8SsiJckQfoYqfgoqbGB3wG5zAcFTHcfXS
+	9f/d+nbcfMf/BOlrLQiOef5pKOz83QGl0V9hSPGFl/l0P6atnsxJyUyaXvD+g014mUwDj7bcoVJ
+	GabbyskH9arOMu4cDsDK8ayLFN/sRq4v9N6E4+Erh8QOTj3UrNsZ/jGbe5IsPlaGdigj38HsTY6
+	8ooNeXhejx2IKWnSpsXMrQn51BKO3lRnB8GfViQkkghKmoRTXEfurvYKvr7qzoyVDnfbHpXHtmE
+	cu/0jtbDt9ygXXLDf6sH21BMp+lx1kC7hGuMTqpoL5e92tQjDE7HyAL/OxQwB7+sv7xU8S1SECZ
+	GPe8KNEWIPR/Mif3mfAAvGtKtrS0Y6/x1et9DhAOHBrqn7O5nbDAE3IVCkHPsC1km6Wg+7hf3Xt
+	W3j6vh+fGFiv3WB3tMBfivTslIEIQ6tl3j4PoZfhCq3uxqRNE6JCEbYwwXAP8=
+X-Received: by 2002:a05:6a00:1c91:b0:82a:ea3:c172 with SMTP id d2e1a72fcca58-82c960a3070mr6069835b3a.46.1774719046762;
+        Sat, 28 Mar 2026 10:30:46 -0700 (PDT)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85ef1bfsm2388218b3a.44.2026.03.28.10.30.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2026 10:30:45 -0700 (PDT)
+Date: Sun, 29 Mar 2026 01:30:38 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: linux-mm@kvack.org
+Cc: Eric Naim <dnaim@cachyos.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] mm/mglru: improve reclaim loop and dirty folio
+ handling
+Message-ID: <acgNCzRDVmSbXrOE@KASONG-MC4>
+References: <20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com>
+ <7ab8edd7-381f-4db2-9560-b58718669208@cachyos.org>
+ <CAMgjq7CuEYAzZFmS2T7N6je6VHffVkH1hh64YUuShFBnrJJvqA@mail.gmail.com>
+ <85b4be3c-09a3-4a28-924d-71a20db3fd62@cachyos.org>
+ <CAMgjq7AQeP8maeMWNun=60oyq_KDu18MwXfGEyK4bwj_k92NgQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7AQeP8maeMWNun=60oyq_KDu18MwXfGEyK4bwj_k92NgQ@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1774718905-534709
-X-HE-Meta: U2FsdGVkX1/wHF4kbzJhsZ2CSRiH/dZm6x/1bSKAY4QsGyBEyqh8QhSRXulT7bUkoxMI8PyNjThKcc3fOA4OIBppU5AnFvshLLSB4+pAj1uGfpZv+t1VJVWfFvV+DITDw0BRRu+Hw02BaNteExurM1rWnQoJ9Rmw35yrmqhEu7eDGhG7SbZIPVdmniCa7M9i2XkSGNuzXKExs9fz8V+mdS/NRofMDI0rXFgCPw5FVmrmG8hcj5QKMFvOCqoKKj0RDzpCzkOMbDeWRB4wgOhE+wum2dtwhBhSBrt17B+HtDXt9qv1dIfHFvVfhYLiMat1fK/WsvL1SerB577+yWDuWin2H/z45Qf84GC/i6xXKPUI+4iDfaqXDgmWcdru97Br8axgdeYkitG8XOypWpjik3iT00hBqZyx70UFy6GC2oJ963/rjk2sgteDQMlnlaRvpMOMe6kC4ooX0PyTq/wYYe2+ayLkxFWn2a+jhUpC6tLZJ716EbnB1mCpplPbI2H652GpgBeH+GDG3XGUnQYGP4z5TcCUIoOsTvoYeyd16XrZksSpwU9lrQazylX8qfxtzQjg7oDPQn3xfr4eERmEJoTbhag56X9rJYd15VwTOVdWQ2e/YSFhcjjZGCoujXSp+VV5nz150C0GGAppfcaWDu18IAxjo6D0OEmAc/mG6iuC6wmETta0UgDu+cfsaTTr8xyrG3HYarv6wl37sWm6Ugs5ysot1qRRwF00FhP1jv1cNTBtyq/BCKt513iMAK9gg9ckYVeRahRbJdK+8jVoYBDJPtk4HMP48aI2iq+dswq6xUY9e8mfe8jwMqntdfm3Tcfqh1tnmOXBg103VX4nlhA02oNVaXAUhVsmDqs/JasmEjvzlUQPG0rxtK8ZeFZd/AmW8DMi5FWufZKyPblsC11O7onrDMLdpH6ZG5o4BWs7an2Z4cIYfYDeyFQ4yhTQaUq+JRjPimUzUVY2lq1
- PNa0groP
- u6cDHvQkXP+AbXaDehCCZF7Sbd5Q6bMYSvfUoScKA+FjQ1Osu/3Y3vpWCIhxuRxLtPp1KJXWQwrlH0mEGhjZPth0/2/+D6CV6HDLiihPGmyJjiewzKWRQ9YVYkkReBsNBKmvkkApWcOpGIHXQRQ2K2/rHmy1A4N0sJ4lQnrXDG69bJIkK2i7AgcKIBcvIP8o1APu+o3gEpTFfMra7vUXm6PpsFLO0k3nT6aInhQzpsoZkJRwAOBWfXPBv3EB8lX2ECuOMhLvy3dGqklbT3qyI8xJInSDzSN2X02fmxl9qzlGHdqarXhEgbKGLw2OfE6E6Hi2u50xT2z/7+kojwkStrTZyLwhLwWWQi4BUjCNqE9nY23oYNAts1LzyLE/mB45vA9g4zQk361vq155AhzkugXeLkY8fAPV99sreQpUlR62uuYAm/CYkYD1ZMNy2Tr52LXpJEmZWA88lnOpeBd8WuiGV3jzhgs8wozsFkkLK1pcwBPdXSpLJI8E+9u1/sYVA/vKc3hPkon+tG/p8thiU0The0Kk0Bk9THy2rZMqH1R0TAChEL46W18mVeXO0ELKDMP0xW3S/yQY+JeBWOCj4oPfaDaIICX2W5acpqAD8pGPnSy3q9uiUmIY4M2dUbh2sWrSUKbsPtodLotiEjexHgaL7fxXUY4x2JPIqvwwV4kOLLEXIu7c2PIOcaFSm0kIgiLZI/09Vl0nxf8u93VopLO/b1jpq01OzpaHa3xqzaL2FO42I9ez35JKXRCA9LL+qkpZHSMm+R/HKg0H4oJQMqseEstfDPySsiPMCGzLVKeVgHkREH4jYJT7qPlkcfixlJanDTjqlcabCy46uFmXg/8DbWZxZ1PFOsDlOXuO3EcZodgPmf6/VF/MFezI5UPLGFcKuS4hRD/4gqSEDvAzyeq+LzbeAhh0UZryXgIV4n+X4qfB5mezs5+rgY1kSKKlq5NiaDsPuHeQ2uKKXDvcAzVSVYK0p
- +ZZYa+SW
- KpeEcI+1EcCMdqJxlPhmDhpKdwe20YANdhKaMg+R0FsFsI2yPnL/3UMX+6W6GRl/xOpmOrqav35a3A46cvAovXWQ66hbaHzmQfm6P09L+ee7UUnNGcw6LbuF6l61jn2YFS3Ex8KKMUeqRDGlLvYyLRXOr2yH2IL9QpZ6ROL6aro=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7FAF44000D
+X-Stat-Signature: 9edhrq8b5c7cm5pen5qn5qm3px53u8md
+X-HE-Tag: 1774719048-133072
+X-HE-Meta: U2FsdGVkX19ws1EDgQqAEVfd5H9cUyAoiXIUoWIR1kc1wQdZjV1P1LI+BNMFu81bhNpqRVr+Qd4uB7yq7N9CWHBhn/2KlrbzQ1QqVvT4Xy9Kx7pLc+byW9uBalmw1wqFTPLr02BSzSmC3YkKrLicwxf+SaIaZNKvH4cN5jW9N+wVdPF7osQAVTAiqUE0PteoQ4TMdp3nrWhkJyNoBOyGJKX3JqfyVpCeYG7I8XR45n4U9hgVaccLP83Vc1ZAlKXs+mM6Z64MdyL+PqPQYCstlzApjk7b7w69/KHxNMXPpd3RW3V0xyDxdlv/7nf8uP9LjJgz9ikutBafcX7BfL6KBDPxB1uPidSHFkDLmFG49n6ZFFmUzTPuYjoe8s/pSq1gGT5bO5qunDu2uhIThFLK0fzyuiG+c5/pq9gqUJj9unbFWMoIYT6W2Al65lZ3/AorWiYacVbbJ/ZJhsBXZtm5VoiasfaOS/MtmHB2iBq5F3X0dHE8qaH6XBwE5ju/aH9cTnMWxEfsWOWfF1MCHpXO9fKtxZZN99nrLB6hNnBR/YB43TvQncZZ3IaaSLRV6tLTn0kog/hrNriyIGplXCWL88/tejHnSWuh9GT3AQrPnVrZgyWnfnqgPiW9EJ6b8xA2cM6YoAfjyqyS6Uy76L4C/iDCix1m75k6FtCTLIgYrVfGuUN77aBbbzWvjLLCqjiBogNyVTpby2lLg216GrFAOaFoAW9xRDzJQjKYb0/zveKUUinVm41raxuWh3x+QL4piRFZTEWtwxoFqooBuUfqYAmeEcahU9oqnDKHOWtdCs3ZVyCduEbKnuS3amb89gRRqQU+WtRT2gKIEIHpAON/688AB8/NIy75+FtDSYlNtAEoZfHOBaxg1X1Wzoyw9nSpYw0nPeIV7yn0PQHVhXZJFItiX4NaemEtC5Gn/QH6IlSk+2zubLK1Oa09QkIGzIdlllgdyim3kVH0MhgU217
+ xdXrkfjI
+ GF+ZLbz2bEwEUTY211psx2Suuip5sLsh4RSqtiLU9FudJ3lGBuKwGCUObPLHIIRmtlC5zDmIHsdLyxDs0jFbLAAGbykL4ZFFfKYrXO0HUvsEZqoNGxiXsIumwYgpXXAp0AedsjCiJye+Z8pU6loFj/tM/wq0XJlF+jfz0oEcDy+CZaRQQzTfhttO9d0Ajqm4Avgfnbv241JPfGLTDz0/cV5Nmq9L+Q4GaAv6LqlNivfVCNlRn0Lwwh0OB1pmLZY8epY9nHZ+JtHyrg35xncedGgU0/rklrMKQKi8GOvULWiawLcmoBAikAfx5TEZsueBYK4mUDNWjRLVLq0hKdvEWta3QO0SKIS1r1WbVPYDVcRUFMNcbgCQJwEG6Y6LlIFq1W0XDyFM3cY8iCYb8MuTy8wCICz6c7bKTOo4agoLkx6iu0V1oRz7kAufVEkr+YIorXyS1Bkf+C7eY+02AHLiKUJW2ka41Q+Y+S0lRzMKn0alBHLESrXA6molfNQs9YptAodm+lQu54pCEcVdlUeUnsHHHJFXIKhSsJKxHaW1W3Oc/XeZaGF21oMFPxBPHixLYGYRQxd231683cNxwvDDcTp0ceA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,67 +132,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000e19e2d064e18f16f
-Content-Type: text/plain; charset="UTF-8"
+On Wed, Mar 25, 2026 at 05:47:41PM +0800, Kairui Song wrote:
+> On Wed, Mar 25, 2026 at 5:27 PM Eric Naim <dnaim@cachyos.org> wrote:
+> >
+> > On 3/25/26 1:47 PM, Kairui Song wrote:
+> > > On Wed, Mar 25, 2026 at 1:04 PM Eric Naim <dnaim@cachyos.org> wrote:
+> > >>
+> > >> Hi Kairui,
+> > >>
+> > >> On 3/18/26 3:08 AM, Kairui Song via B4 Relay wrote:
+> > >>> This series cleans up and slightly improves MGLRU's reclaim loop and
+> > >>> dirty flush logic. As a result, we can see an up to ~50% reduce of file
+> > >>> faults and 30% increase in MongoDB throughput with YCSB and no swap
+> > >>> involved, other common benchmarks have no regression, and LOC is
+> > >>> reduced, with less unexpected OOM in our production environment.
+> > >>>
+> > >
+> > > ...
+> > >
+> > >>
+> > >> I applied this patch set to 7.0-rc5 and noticed the system locking up when performing the below test.
+> > >>
+> > >> fallocate -l 5G 5G
+> > >> while true; do tail /dev/zero; done
+> > >> while true; do time cat 5G > /dev/null; sleep $(($(cat /sys/kernel/mm/lru_gen/min_ttl_ms)/1000+1)); done
+> > >>
+> > >> After reading [1], I suspect that this was because the system was using zram as swap, and yes if zram is disabled then the lock up does not occur.
+> > >
+> > > Hi Eric,
+> > >
+> > > Thanks for the report, I was about to send V2 but noticing your report
+> > > I'll try to reproduce your issue first.
+> > >
+> > > So far I didn't notice any regression, is this an issue caused by this
+> > > patch or is it an existing issue? I don't have any context about how
+> > > you are doing the test. BTW the calculation in patch "mm/mglru:
+> > > restructure the reclaim loop" needs to have a lowest bar
+> > > "max(nr_to_scan, SWAP_CLUSTER_MAX)" for small machines, not sure if
+> > > related but will add to V2.
+> > >
+> >
+> > As of writing this, I got some new information that makes this a bit more confusing. The kernel that doesn't have the issue was patched with [1] as a means of protecting the working set (similar to lru_gen_min_ttl_ms).
+> >
+> > So this time on an unpatched kernel, the system still freezes but quickly recovers itself after about 2 seconds. With this patchset applied, the system freezes but it doesn't quickly recover (if at all).
+> >
+> > Curiously, I had the user test again but this time with lru_gen_min_ttl_ms = 100. With this set, the system doesn't freeze at all with or without this patchset.
+> 
+> Ah thanks, that makes sense now, the downstream patch you mentioned
+> limits the reclaim of file pages to avoid thrashing, and your test
+> cases exhaust the memory on purpose which forces the kernel to reclaim
+> all reclaimable folios including page cache.
+> 
+> A thrashing page cache causes desktop hangs easily, using TTL is an
+> effective way to avoid thrashing and trigger OOM early. That's why the
+> problem is gone with lru_gen_min_ttl_ms = 100 or le9.
+> 
+> > > And about the test you posted:
+> > > while true; do tail /dev/zero; done
+> > >
+> > > I believe this will just consume all memory with zero pages and then
+> > > get OOM killed, that's exactly what the test is meant to do. By lockup
+> > > I'm not sure you mean since you mentioned OOM kill. The system
+> > > actually hung or the desktop is dead?
+> >
+> > The system actually hung. They needed a hard reset to recover the system. (pure speculation: given a few minutes the system would likely recover itself as this seems to be a common scenario)
+> 
+> Yeah I believe so.
+> 
+> Thrashing prevention is why MGLRU's TTL is introduced, so I do suggest
+> using that. It can be further improved too.
+> 
+> Will keep that in mind and try to make some test cases to cover your
+> case too and make some adjustments.
+> 
+> BTW how does the kernel behave with MGLRU disabled for your case?
 
-Your request (67) has been received and is being reviewed by our support
-staff.
-To add additional comments, reply to this email.
+Hi all,
 
-This email is a service from Yail. Delivered by Zendesk
-<https://www.zendesk.com/support/?utm_campaign=text&utm_content=Yail&utm_medium=poweredbyzendesk&utm_source=email-notification>
+I tested it multiple times on my Fedora, comparing MGLRU to classic LRU
+(using v2 of this series also also includes some minor improvements).
 
---000000000000e19e2d064e18f16f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I modified the reproduce a bit just to test the OOM behavior:
 
+- Running following command in console A:
+fallocate -l 5G 5G
+while true; do time cat 5G > /dev/null; done
 
-<html dir=3D"auto" lang=3D"en-US-x-1">
-<head>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
-  <style type=3D"text/css">
-    table td {
-      border-collapse: collapse;
-    }
-    body[dir=3Drtl] .directional_text_wrapper { direction: rtl; unicode-bid=
-i: embed; }
+- Then run following command in console B:
+while true; do tail /dev/zero; done
 
-  </style>
+The console A output is below:
 
-          <style type=3D"text/css">
-            @media only screen and (max-width: 768px) {
-              .simplified-email-footer .namecard {
-                display: block;
-                min-width: 100%;
-                padding: 0 0 16px 0; }
+With MGLRU disabled:
+...
+real    0m4.925s user    0m0.016s sys     0m4.904s # Under pressure
+real    0m5.544s user    0m0.015s sys     0m5.521s
+real    0m5.444s user    0m0.012s sys     0m5.425s
+real    0m7.607s user    0m0.016s sys     0m7.561s
+real    0m7.268s user    0m0.017s sys     0m7.240s
+real    0m6.686s user    0m0.016s sys     0m6.656s
+real    0m9.919s user    0m0.014s sys     0m9.831s # <- OOM in B triggers
+real    0m4.559s user    0m0.012s sys     0m4.539s
+real    0m1.381s user    0m0.009s sys     0m1.362s
+real    0m11.816s user    0m0.010s sys     0m11.795s
+real    0m6.797s user    0m0.021s sys     0m6.753s
+real    0m0.944s user    0m0.013s sys     0m0.931s # <- OOM kill in B ends
+real    0m0.285s user    0m0.013s sys     0m0.272s
 
-              .simplified-email-footer .content {
-                padding: 16px; }
-            }
-          </style>
-        </head>
-<body style=3D"width:100%!important;margin:0;padding:0">
-  <div style=3D"font-family:&#39;system-ui&#39;,&#39;-apple-system&#39;,&#3=
-9;BlinkMacSystemFont&#39;,&#39;Segoe UI&#39;,&#39;Roboto&#39;,&#39;Oxygen-S=
-ans&#39;,&#39;Ubuntu&#39;,&#39;Cantarell&#39;,&#39;Helvetica Neue&#39;,&#39=
-;Arial&#39;,&#39;sans-serif&#39;;font-size:14px;line-height:1.5;color:#4444=
-44">
-    <p>Your request (67) has been received and is being reviewed by our sup=
-port staff.<br> To add additional comments, reply to this email.</p>
-  </div><br>
-  <div style=3D"font-family:&#39;system-ui&#39;,&#39;-apple-system&#39;,&#3=
-9;BlinkMacSystemFont&#39;,&#39;Segoe UI&#39;,&#39;Roboto&#39;,&#39;Oxygen-S=
-ans&#39;,&#39;Ubuntu&#39;,&#39;Cantarell&#39;,&#39;Helvetica Neue&#39;,&#39=
-;Arial&#39;,&#39;sans-serif&#39;;font-size:12px;line-height:1.5;color:#4954=
-5c;margin:10px 0 14px 0;padding-top:10px">
-    This email is a service from Yail. Delivered by <a href=3D"https://www.=
-zendesk.com/support/?utm_campaign=3Dtext&amp;utm_content=3DYail&amp;utm_med=
-ium=3Dpoweredbyzendesk&amp;utm_source=3Demail-notification" style=3D"color:=
-black" target=3D"_blank">Zendesk</a>
-  </div><br>
- =20
-</body>
-</html>
+MGLRU enabled, before this series:
+...
+real    0m0.355s user    0m0.009s sys     0m0.346s # Under pressure
+real    0m0.352s user    0m0.008s sys     0m0.344s
+real    0m0.549s user    0m0.014s sys     0m0.535s
+real    0m0.628s user    0m0.009s sys     0m0.619s
+real    0m0.651s user    0m0.009s sys     0m0.642s
+real    0m5.294s user    0m0.010s sys     0m5.280s # <- OOM in B triggers
+real    0m1.041s user    0m0.014s sys     0m1.026s
+real    0m0.837s user    0m0.011s sys     0m0.826s
+real    0m2.450s user    0m0.013s sys     0m2.435s
+real    0m2.499s user    0m0.012s sys     0m2.485s
+real    0m1.857s user    0m0.015s sys     0m1.841s
+real    0m0.512s user    0m0.015s sys     0m0.497s
+real    0m0.418s user    0m0.011s sys     0m0.407s # <- OOM kill in B ends
+real    0m0.282s user    0m0.010s sys     0m0.272s
 
---000000000000e19e2d064e18f16f--
+MGLRU enabled, after this series:
+...
+real    0m0.280s user    0m0.015s sys     0m0.265s # Under pressure
+real    0m0.283s user    0m0.010s sys     0m0.273s
+real    0m0.278s user    0m0.012s sys     0m0.266s
+real    0m0.315s user    0m0.018s sys     0m0.297s
+real    0m0.679s user    0m0.014s sys     0m0.663s
+real    0m0.716s user    0m0.011s sys     0m0.705s
+real    0m0.657s user    0m0.009s sys     0m0.648s
+real    0m6.615s user    0m0.007s sys     0m6.453s # <- OOM in B triggers
+real    0m1.244s user    0m0.018s sys     0m1.226s
+real    0m1.290s user    0m0.014s sys     0m1.276s
+real    0m1.119s user    0m0.011s sys     0m1.108s
+real    0m0.882s user    0m0.010s sys     0m0.872s
+real    0m0.855s user    0m0.007s sys     0m0.848s
+real    0m0.933s user    0m0.005s sys     0m0.928s
+real    0m0.833s user    0m0.009s sys     0m0.823s
+real    0m0.279s user    0m0.012s sys     0m0.267s # <- OOM killed in B
+real    0m0.273s user    0m0.010s sys     0m0.263s
+
+It seems with MGLRU enabled, both performance and OOM jitter
+seem better.
+
+As for this series, it now has no significant effect or slightly
+changed the jitter pattern, which I can't say is better or worse.
+The peak latency seems slightly higher, but the system seems to
+recover faster. Or maybe that's just noise.
+
+The OOM behavior is not really perfect in any case, but with
+MGLRU's TTL enabled, I got confirmation that the jitter is
+gone completely (only a few frames).
 
