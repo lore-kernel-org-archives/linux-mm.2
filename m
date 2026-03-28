@@ -4,113 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56A7E10F3DCB
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 04:03:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E426310F3DCB
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 04:09:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFE596B0096; Sat, 28 Mar 2026 00:03:46 -0400 (EDT)
+	id 32D2F6B0005; Sat, 28 Mar 2026 00:09:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD5FD6B0098; Sat, 28 Mar 2026 00:03:46 -0400 (EDT)
+	id 2DE146B0095; Sat, 28 Mar 2026 00:09:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEBCA6B0099; Sat, 28 Mar 2026 00:03:46 -0400 (EDT)
+	id 21ACC6B0098; Sat, 28 Mar 2026 00:09:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A1DD46B0096
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:03:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D3DD8EAF1
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:03:46 +0000 (UTC)
-X-FDA: 84594128052.19.2ABEB5A
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4846E1C0004
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:03:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nw3OPZgZ;
-	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0DA296B0095
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:09:39 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0C721B8CBA
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:09:38 +0000 (UTC)
+X-FDA: 84594142836.11.56DA8D8
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf15.hostedemail.com (Postfix) with ESMTP id F2632A0006
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:09:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cZHIRaKd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774670624;
+	s=arc-20220608; t=1774670977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B3Zdm9QRebXAcvnQwXWCkI4HeWD2IUP+mu0t1G2C/Dw=;
-	b=G/fJDBYOygVPLQO3UInrfvUoIRP71Fu2zMVxmWfETEUsGG8Kx2FKap5DfUEPkbcFZkPmAQ
-	JyiWvg1kD0ZoDirElMQczZ7TsQc3a3JNBc1qDQ/rPB0LFbfssLXK2wYcjiNUkBPdR2LRzL
-	+P6hK+QHEBEhUh+CIsxAPgNJXD4YWgc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nw3OPZgZ;
-	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774670624; a=rsa-sha256;
+	bh=tYR1gJ6M/Z6ak/fzYuriJiVP1fqhOV2XtXnkDDYeAFI=;
+	b=S+kkSA5ROw5dkANExChcP/u3v5kMc3AkuvciJac4Yqx5sHvrfVcN8xI/DG9QKUgcQ8OWV7
+	Yshapym2AaSJpfEHFT/+4O4DYdL5jLUxsFND2goANAKJqk7K83VGqA/Rx5JOiEt5K4BRUa
+	El199+Ls+2Rpn7sqAwVRv+DrAGIIuKQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774670977; a=rsa-sha256;
 	cv=none;
-	b=z5C5TsPZcK+3tmUjPersPNMRf31Dq/A5DQIVJ19v92NpoWi37OBuhnShXbTyc+qvSXF9hh
-	/bWU+6+vgXBM5MeArzeGi+EYI8UioUXDtQiJq0QVxS8hORaPFq/IX9ugKOwjauslijcgqP
-	08rnuDqf2xMIQ8wlReJdVl/RbBZ+3o8=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35c16db1b53so1545258a91.1
-        for <linux-mm@kvack.org>; Fri, 27 Mar 2026 21:03:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774670623; x=1775275423; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B3Zdm9QRebXAcvnQwXWCkI4HeWD2IUP+mu0t1G2C/Dw=;
-        b=nw3OPZgZLKqBDWvQpQukwA1nM02H/rJnQkO+/Ppi6Z16Qu+hVGH3w9vo76hfOsGhn1
-         DGXCQT1kKx3BD5Wiil4yPqr5NUjedSV4YiBpPHmkOn/UpDPNIbmbCVjYii/8o1z/KJ7f
-         BZiA2NOg7JmyuRBQdRvrzhOyQYayFiu/19j+6tHBtF0a11nYsObFuQVJDfAjMJPBmW0l
-         oxNPo/LaRm0qZtdFoeg9iugAVXnBLXE5bOhJH+DR8gErLaNL7Mae7xj4gBbK0TbTI4Su
-         wByupCSWG71SzyExMIE8aFPXwaDjSUgSY5KR/5Kl8teCzhy9M42Ccfde1wIIpRc14gyM
-         UzZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774670623; x=1775275423;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=B3Zdm9QRebXAcvnQwXWCkI4HeWD2IUP+mu0t1G2C/Dw=;
-        b=mBdBq4i4aw8jLql31iFFZ89QiaohEf1Zo3n+TUhj7gHiW5v9pXvDWmv2QMGAOtY48h
-         pqVGiNyAWapHyCewAwXp5LU/0PFVkpaFAsQuhHZUakYxoTEpsDrGekBUbeZb0FVdYuSw
-         nzhJm4QCk9caZMIyqJF3ZvARV1WyIJIB9B14nk5RltdCHdOSYyUAeqxViWVnRSt8IouJ
-         +BSYgmm/DXIycFtxnr7X3cbWvGmuXNHuKDFsv6useBcBELBxZMRKPYPBtzMLY+bgQoTJ
-         RuwRFb54S62ITTc/7yux0rLAVna8ddXyk61AjoiRe1+nN0pgt7ptlzsL+dD/PJDcUma5
-         vWFA==
-X-Forwarded-Encrypted: i=1; AJvYcCXU1VH1mITzgWQk8cxJJGWVCLgBcCVOoegeFBIv2Ni1xfIRP6DCLfAgsACIaogrwTeI6MP4p8pZ8w==@kvack.org
-X-Gm-Message-State: AOJu0YwqPjCpGyCLcQQAEzESAPZP1Vzyi/mEA4EPSjTxDrs7Iy2q4Ixl
-	9gZkbc5v9lyxgzyTD5QPtTHc5Ryu9+Udwd6rCAO4I8fdw6ds6bOPAzVz
-X-Gm-Gg: ATEYQzylpdfxg1hG10iUFAODTRWJkPmtzIzfsDwV721Wa25AjRSwWZfzJWY0xI86Zmy
-	ruTVU35jYvpzf8v/hbAucCpdVOdXZB8+KVX83jO/41JP/H+OgoscPlz/e0qOJk6k0M/nPxLkJ27
-	9L9Q9JKtip//6xk21RHNQojL2mBeXPn4K/Ye0qUxsMo8Acopjz6Wki4r2abJQFB0w61KNpNIxd/
-	xZEm+gjGk0lD1ZNtwA9gbUGXHb8fYA/PEwZDEEnTt59WnUcNRQ/u55j30K2gQnvO9UEcLmI6NqQ
-	ZW7DxzuPjPKHRCPxphJyWJJzDLl1goFbP96osHX4hsmR0hppln+FJP2rVlQ8eIu0OaXUmXA14LJ
-	Dgiu3s/4QexK2WQ9w+Olhfpr1IIe2sSkM7hfl9jlkYoFrr5OHxy2XJcKnpsYgQ4zghA3L2Nm6aP
-	6uwkW6c9kXod3Zkvv1wj8EtvOzcNjUaL8OvXiKqkFcmlhMSw1/Bm0=
-X-Received: by 2002:a17:90b:2e83:b0:35b:93d8:6aaf with SMTP id 98e67ed59e1d1-35c3005589fmr4818265a91.19.1774670622949;
-        Fri, 27 Mar 2026 21:03:42 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35d9509cf33sm621254a91.13.2026.03.27.21.03.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2026 21:03:42 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v6] mm/damon: add synchronous commit for commit_inputs
-Date: Sat, 28 Mar 2026 12:03:39 +0800
-Message-ID: <20260328040339.51871-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260327135939.4085-1-sj@kernel.org>
-References: <20260327135939.4085-1-sj@kernel.org>
+	b=NPeh4OFOq1IZk7f06flgPjKd7OSGX65McOlY74sVIgHoYc0xCUgMrZQE+Y40pG/oW3iTgx
+	SjuEprge7shHVdVxU+P3Wkqk71lYQmfVMW4rmHu5+7CRJwmsXZNj1fUwGI6MYkIhGSGyq2
+	8eylgzNyudx+oir+7h1iIP3xfworrGQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cZHIRaKd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Date: Sat, 28 Mar 2026 12:09:24 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1774670975;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tYR1gJ6M/Z6ak/fzYuriJiVP1fqhOV2XtXnkDDYeAFI=;
+	b=cZHIRaKdYHylWzqRzuEVjgXCIT34HtCUlx16WpIdv9ZQ7ZHGq+GByTN6sAO55DZI5pCmv2
+	Qa31Rs/b+mTyU8BN3sUi2ZgFnIq3y35Ju/kczSm0e5ScYB5mMT3C3jHNJqhluni060tuiw
+	HEHugFthSEkmOatsPcOGxqOpdD2Bh3M=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, osalvador@suse.de, akpm@linux-foundation.org, vbabka@suse.cz, 
+	harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-cxl@vger.kernel.org
+Subject: Re: [PATCH] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
+ hotplug
+Message-ID: <5omwfganlhwbmllrmab6f2v473rrgirvbtqrcouj6tz4karzjb@xiheplfxwap5>
+References: <20260327143823.3063541-1-joshua.hahnjy@gmail.com>
+ <2356614e-d9b8-4639-8e2a-96c5e4eaef61@kernel.org>
+ <c3b10a9b-d3a8-4e5a-8cf9-3ddb172d2c0e@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c3b10a9b-d3a8-4e5a-8cf9-3ddb172d2c0e@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: F2632A0006
+X-Stat-Signature: wb7ocfbpku5ddmfsoecox8tg4d4atpmc
 X-Rspam-User: 
-X-Stat-Signature: m15a45cieitjws4mqdna1675yoyyyq6k
-X-Rspamd-Queue-Id: 4846E1C0004
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774670624-997603
-X-HE-Meta: U2FsdGVkX1/Y4g8+49EooOcBdMjs+Zjn67Ucw/xFJ4XH0mxbv8K2vUAEePmW2l65jo8ZYqmaqOD0+lOtqWv+DLc6NN3DS0PtRLHPSPjmEFv1awlXG4HjJHKxVsGs1pwbirZO9SQYt/BcWVwp/O+8KZ70rzB8/ep0CJY1L6J0fcuiQ6nt1HP7/xD5lYvQ42qd83oIF6J+IMBBlRy9TozlFZxbCALsKkYkfu7Y0DAXoeAsUfqrUmaJg60KEwrv6h+lS+k21qaLkV0TGtpCDOzb62VcfOLtniZGqP6IT+In4HU3W4mTS9/a6eYwjEdmeBXJtW44q+15u0eKpmAi2l7mBmZJHlSkOraRGG4gKHxNNe7JtG5yIn5lYfDlSxMBQn5bG/Huwj+Pj80hZdaGtZZ1nEVE0sTyVJhBNrN/J9aW3+Qn9dCcpBGGHd5NX88jT79ZQGla6PGw6G4e3owmDoRQlAAuCb3MIMrTSCeV28/lvHIXbxo5DuOI7fHvlQysCH14z1YoRqClik6U6DN6+b15144qBsn2/iqJqJtookGI1lyiJ0jsrK6RzSTZb+GVH2OwyqRsdej1670ivbc+651yXWz3Qzl8xe+uaiRyyxb7g7A6p7P/YFiXNJRv6kDqq+wpBpnCLqezhNBtZjClG5MJypKNBMeOrAJO8gb30GFMDvpP1TsspSi29OUDxrHRP+nlWWydQTblCTvoUP4bHm4CaFKFri3D/Z0i6otISkR6oemnx9pK9kGY3sWEcFJDkDPSjXTOce8BDFbHQM07VeVfGMayQ6TBvmpvljRIVxjj4cMnmQcyyr9JPRyKR8kcxx4/XB70QZig2oQK7jWkPnOFN6+jGhwCKX3V5YkiUBCFVdZ77iJoSIeAObXIOO1fJyqajkPgie+m8KcnkWd9xt20Dpd7GiEzfQJcawSL1JxIcLMP0dm00MZZO7N8iIb8OD/jXzAkwY+eZqccio2ZQls
- 5o/KxrOa
- moqJo9q1cgdWfyyfErJgXq0PpREYx6+pHRb20hj3zNxDBs8I581zeQDeDBQkNnBeS3Fg948sCp/Xs4SmAkqwPaRrxhhQKVz8vyhcrNGrsVLmcPywguYCuSqqxAkcFjPFpsp4wd9RkQcpo0kVqQt1UVkUFPKEWyT6aCXK+qJ78I0sm466ik5VlJZm1hKEbH29E/14HIQcDzzRArSb2tyj8TURziYkSyHgxsaEb3/YQe8/QjiDLkod2Yrh0NCmmrMb6aQuKWWBdeOmID5krVRoEMWa3Xw7CquhXrL1I3aLRaNImr4D8B52RaZ8YdIeo6Xcq5VEeI6VhHTGcypmA6pR8LgJmJgNWHjijSnuZ1kUHqYqn7sX1CsQF+5U2xIHPh6v4/b2qqQ+LQLs/NTYOPBgtGdFcSk4hFjXEytVZf7j02G3ik2i3+SJja6YhnI3rflRtIoI1syYdT5z7Fp5Y/MZPkqQ1E/vSPGM8zWP1FJR/aknjcEY=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774670976-417387
+X-HE-Meta: U2FsdGVkX19ul+Iu+/tGrNNxeznNVFKNXM0c4VdXQjpPwJXBddRpOMAhVSkhKy2lqV10wNv82I6e3yojOw4Upqd6dqTNUDZKklwlq6Yl0oma8dxVkGjVGRqvQbvPU0ixyL5auuRGm/l4C/5GJaG3B3cLYB9rpyu7pu/53QSZ4XdFazCArr2Svgsp6nF6AF4zlKZ10dN4Ro94VTRd9JDQS1ghQRzTXFfDurn2JV+1PmMo8p2+UBx0FxE3iH+9dbihmm+mp8Pid6GuEYmlGPGNSf9WFfosgLdAJV6CcxgJxoaF1uzEaegXG9mga2K+eyL6h91FF4n9apAOqkqmPuWe4REG71lLKoT3wn0gFDdxetpqW1WyxoPH0C5MwlrdH49xUj7Z1mbjOJmPek0kRyFkXXr4NNpf7+4/x/i/Wpa8F67RDKEpQSq4ZD7dt+cddhDXiO+UVqhJnWh7YaasMQj4nBb0WUKmkBMnq49YBHdDsSh4/RZ/I3RLmr1MsoNfeFZHPBTmq9aGzj0LvPbwF+8hWl1+zJ1/Df4GH6tg4/y8iJ7W4v3swEtEU0mIyscTCVIJNx0PmjMOB76jvVvTR3h39AvLfKXaciF79qsoGgkulebxwFls7xLhqWbOIW/hn7QrwwcrvkBrGamUl2fijH/7T/1zih2SamHZ/FKfMNS4x2+eQYV3yfTKUdGAnAECmyippOdO+Vim2vlBUifxUKys6uRhi8BnvExVfyoZScFTXQupEobXbfK6/3bG2GjPlDXUo9F7TGbKxhR2UA77TyFUTpcjD9Kj0P8Y7QnknLfpDMgdmlVFEBX/gP1jErKWFmJkoCLGOelta9dk46WegUm4MFZEpIoHhiFXWIsViDpJlobudcc98tRlj3OZ12Cgfm/Nzp5GBgiFqnvXwCoa60MuvqMLu0VeuzbOwj9IA/kjdIFeiBiB/oe9W7CjzWtq3tKzxVZyf5JWIzwq1s0rh3A
+ ElTQFp/F
+ 0nx6kL46AlR9UlnBGB/0GL412V+EOGoCMae2Zz4VwBAEsxNGLLvx5fbtwixP1ObooRd5tMF1Gk5cYS+8pactl2z6yLvoA5wQtkXjTzcJ8hOTrFymP2/0AvYDY5N8wJlfAtIeWvjubtcuwlC90Bjbv8LOzk6uasyc7oc3PSPfl+fk3jozLCpuyxj5CVyjeBl8krv3M3eYJ68JsSPq/92BR5EWsYjmYHiK1dw7GrwPSXdPdNnJorlT+wpRz1h4QFpo1Hn6XURX58V8SrvIKLAYmk3IyeYpUlF+rLz2n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,38 +91,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +static int damon_lru_sort_commit_inputs_store(const char *val,
-> > +		const struct kernel_param *kp)
-> > +{
-> > +	bool commit_inputs_request;
-> >  	int err;
-> > +	struct damon_call_control control = {
-> > +		.fn = damon_lru_sort_commit_inputs_fn,
-> > +		.repeat = false,
+On Fri, Mar 27, 2026 at 04:22:52PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/27/26 15:44, Vlastimil Babka (SUSE) wrote:
+> > On 3/27/26 15:38, Joshua Hahn wrote:
+> >> On Fri, 27 Mar 2026 20:42:47 +0800 Hao Li <hao.li@linux.dev> wrote:
+> >>
+> >> Hello Hao,
+> >>
+> >> I hope you are doing well, thank you for the patch!
+> >>
+> >>> N_NORMAL_MEMORY is initialized from zone population at boot, but memory
+> >>> hotplug currently only updates N_MEMORY. As a result, a node that gains
+> >>> normal memory via hotplug can remain invisible to users iterating over
+> >>> N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
+> >>> incorrectly marked as such.
+> >>
+> >> The second part feels more important than the second part, doing a quick
+> >> glance through the code I can see a few N_NORMAL_MEMORY iterators that
+> > 
+> > Note in practice it's unlikely that a node would hotplug normal memory,
+> > start using it, and then manage to successfully hotremove it, due to
+> > unmovable allocations. Most likely only ZONE_MOVABLE memory can get hotremoved.
 > 
-> Undeclared fields are initialized to zero.  I don't think we need to explicitly
-> set repeat here.
+> Yes, hotunplug of all normal memory of a node is unlikely. Possible, but
+> nothing to optimize for.
 
-Agreed. This change can makes the code more clean.
+Yes, I agree that fully hot-unplugging the last normal-memory node is probably
+uncommon.
 
-> > +	return control.return_code;
-> 
-> Shouldn't we return err if it is not zero?
+That said, once we restore the set side, clearing it feels like the symmetric
+counterpart as well. If we leave the clear side as-is, it seems like it could
+be a bit confusing for others later on.
 
-Correct, I've noticed that as well [1]. But thank you for reminding me
-anyway.
-
-> > --- a/mm/damon/reclaim.c
-> > +++ b/mm/damon/reclaim.c
-> 
-> Same comments can be applied to changes for this file.
-
-I will apply these changes in the next version. I will remove the RFC
-tag because I believe the high-level design in now solid, and the
-low-level details have been mostly addressed. :>
-
-[1] https://lore.kernel.org/20260327071410.73642-1-aethernet65535@gmail.com
-
-Best regards,
-Rui Yan
+-- 
+Thanks,
+Hao
 
