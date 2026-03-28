@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A554610BA423
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:18:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73F3210BA423
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:20:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C4EB6B008C; Sat, 28 Mar 2026 15:18:30 -0400 (EDT)
+	id 9B7726B008C; Sat, 28 Mar 2026 15:20:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 174D36B0096; Sat, 28 Mar 2026 15:18:30 -0400 (EDT)
+	id 98F316B0095; Sat, 28 Mar 2026 15:20:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 069CF6B008C; Sat, 28 Mar 2026 15:18:30 -0400 (EDT)
+	id 8A4876B0096; Sat, 28 Mar 2026 15:20:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E6C3A6B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:18:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8FB8D1B70BA
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:18:29 +0000 (UTC)
-X-FDA: 84596433138.17.7F1CA43
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9B1D84000C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:18:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="U/lQd1um";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 765466B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:20:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 272451B6E14
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:20:47 +0000 (UTC)
+X-FDA: 84596438934.01.DFA4E87
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5D7781A000A
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:20:45 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=c1NTtrRW;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774725507; a=rsa-sha256;
-	cv=pass;
-	b=546K7BFW41pGQxhT/zOCLOzI/2siW6m35X1XVTWQ2uwAlg2OjcFHtMmZ0Iv+4uclws4Q6U
-	ldDDqdQ8rw2Z0I0XDjqta5h2PiCh1c1ntz6EQb+Cxb4h/Je7fTmVrrIkngtwNlpCMDLXbj
-	FoCDZewH+hEbc/u6ZF7vNNo+eExyAoE=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="U/lQd1um";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774725507;
+	s=arc-20220608; t=1774725645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WAIQbT/xVh9Td/jwbrsmWvx0zgLMuZbPJRxj+dqYV4E=;
-	b=maMcCSODqBSAMEVfq6PbqoNGb04MthWsN34HusQkwWSQd2BrXMGQbd6BzSaf7Ay8V7s1BU
-	06a59oPSM/E3qfoRMDS4JIIusRdLWvSmquT4/J6oraxw08aWc9epDr6d1vrweb9ou5shlV
-	GjiMruPN2AmwPb33CrLEfFIC/vhrVG8=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-509062d829dso438241cf.1
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 12:18:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774725507; cv=none;
+	bh=6eOMEVK0bdwhht/5qtx+gcLztltfoVY6LX/uhJq+m1s=;
+	b=GkMdxrXGrj5eozC1oOkroUUJdk7QlX1tNOgZx92/jW4E0F/zcqHn7I6RFScEDO+LXjOBFw
+	xH3UHdHiyzgBgo2iAIIDTLPP/E14kD3AeLl1CeTxjzbXudW/V2W3fLsFoOX4WpTD7Rni3y
+	X+59nu1k9UbRoy1BpuGoavLa09094mI=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774725645; a=rsa-sha256;
+	cv=pass;
+	b=kJkXuWB77kPxEVsDDBS5vTk7WD4/7AXdqTbThtcpjGHxYZfxCnwA4MM+gUEGVzQvd7u5ny
+	ZhXjr0++C368euqxEHauPbUerf6nmcbULhw7xxG6yVvyHtK3D83PnSbxFxqFU8vc0jE1Jw
+	nh0zcQRmFE6zxNeYUttoLPx/tIPnTvQ=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=c1NTtrRW;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-509062d829dso438661cf.1
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 12:20:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774725644; cv=none;
         d=google.com; s=arc-20240605;
-        b=BQmustwTjVSU5EBKUqiz0ARRdcmCzbPH9y3EtLmpbJJbvpEMEgHQARfLcv5Ng+Yot9
-         WTKzK9WkCB31mqD4dpC3eLfM9uFz9c4Fvkb4LgAwczESJVu9Gp7MXl7MZmifm+06LHrC
-         Gg2gOWN9C1PC5VAnu60vuZems7+ZGMPpePxL8/cW3rDlv/V02SjRqZgRl+WL7Lvat03y
-         q9Lx5H1utjMVt7uPMsnsBbtfGSE8tHiU6zPPguRliRoen1CfgLrjWQHBZoBoer0L1/1g
-         UZyvxsdMEvp0i32DvukIIgj8w/dWf67V6IClf8ils4JfPC+5qecejVA3gLCOpaKIUuTL
-         LeNA==
+        b=G3EoYe68JKodoW2K0Gsu27YLjZ9zEIFwFGqTliIesaZ//RLkyeHmHtAFX+Fi//H2mV
+         xjX8scrbvhWPQO4zQfu5fjk+zATMB5u+d34zy6XXM74+pXlRzp1QRsZUROWZp5LQbJ+v
+         FHcXnZ2gPBMJ8ZQjNgh+qVNV/vM3JpLCO69uXchoLruAin7kysELZMtEAjLBRX1m7ih+
+         20xO4GLnS3Zh7uUEisqv3dwNfACZpirvQ6DES2+AlAz+SOJD4dTQX+UNVZb4/UEy+Tw0
+         BEOoPk2/fDZNV0ix7azgWPCeIa0VCE3wPGd7XHxt+l1uEn0ftwsge8LojUZzwzI9wAIR
+         48GQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=WAIQbT/xVh9Td/jwbrsmWvx0zgLMuZbPJRxj+dqYV4E=;
-        fh=kC+yqWUWF1Q8djDdshELOVgV0iVzHxag+XsSnrRfchI=;
-        b=JQ4HPowmb4DUupf9H2adCYMrZ4c0ozzEJAbi7jArpsNfBw3eTK3CeoSRZqDI9mjC7+
-         kMs6ISQUvrYUzxadTVjxKSx/YygaGvP3utN34HvwQ8f6wi32huHTZ93PWDvfU2XyTLBQ
-         nUSBsVPCR/xbQ3iPjocBZhKhBop8M1s5wRDjYNiv4Sn77uILQNwuDevWbhn29CAHuazR
-         M+gtDlQrgTOCFsckUrTgzte3+Brjd7X3fc22zw+/CQPab/EqFqOV82zTxaux0egx3dHO
-         LHuJgCayu+VE5aD2dBF9DAsi7knhHGg6QtTdmQr61wJcRafECsrv21eXv1lPrujjZD/F
-         4fQg==;
+        bh=6eOMEVK0bdwhht/5qtx+gcLztltfoVY6LX/uhJq+m1s=;
+        fh=PMSgvhNDFY74qjPLeuJfjO0Pu09nzB/oEmyc6SBUpJI=;
+        b=YKwMjkQb6bhEEwELPv7FUamzhWRqn53ljUZi3IbISpt1NakzFZp/V/aOcB+a4ZJay7
+         nLpfYQr4ehDJzolkhjQb948SSHu8wo212H5klj7eudbgUslvvswBKDVuVwCgyUJaamNi
+         TiVV9LRxQ3PtjIEAHYcjv52TKuqaLVcfzM+jbNdQD8dC6Mv5UGFeCkir0G+kba8uH90B
+         +pyj4Yhjy3PupXG8XrDdl8Gwr6tZqXZfBE69+rHVb2zXwkWiP59Asjn4s1KC0bms9ZWr
+         oNn87mh28sIl6VHP9yF/7UzN/V1PEcnUyzEzPheEvNe38zv/I5q2YUZr0kU54DHgo5Uu
+         6XyQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774725507; x=1775330307; darn=kvack.org;
+        d=google.com; s=20251104; t=1774725644; x=1775330444; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WAIQbT/xVh9Td/jwbrsmWvx0zgLMuZbPJRxj+dqYV4E=;
-        b=U/lQd1um8lt3XvlHAoQhy7QdHUKp/bV41zuNPu3GxJIMvOOq3ZsSFkzQ/CNIbadm7M
-         p2iUgbRzQDr3LEqyFhDoABek3VhC+uVbXzfgkgF4WpX64l16Y+Zshe7tIyx04HdxVwcp
-         syggLLmCb810e7SSdf3XtoV6MmADpzRJlTK8flv5kiQyngsoH+0+V69l35uD+IF6vXak
-         5O/bDipuCcNLiv0+KiHcD57BRK6El/EQjLiN+MPn3O6JP9yKLYRdyO5xXO0WP7hdq0EE
-         nB7n3PUs9itfaJcIBYXNoNmWwvx1UGcVplgHyn7fBE7funBH9i450xhCDFwX0EwK/GCB
-         46wA==
+        bh=6eOMEVK0bdwhht/5qtx+gcLztltfoVY6LX/uhJq+m1s=;
+        b=c1NTtrRW58x/FzTDKiDzZI0eIH7ZJp6kshLB+JV639l1xGkD8SSjeOYs7fEzOGrFy0
+         yhcSSYw8Y7id1XjrflyO87mkzY5zAx9//j4NQTI4l/uYncovUbPM9vnZ8Gg7m2WAnh36
+         1iR5kyc/t0zm4pfNobO5C/Gf8LaVAw1dD8AEZl9t4X1n7m8elkW7yCAxk6DCPE7ixocR
+         ooNCwo4uB/0yyeit97DD1AdwZjtVrjBxcTlSDJLywiVptHq5A04ENtVJs2jdDpi818Av
+         Q3oCJ9hVPxHT2Dt9Ycg5sMFLS/pThdzYAjhVIQjZu9227uz6Hg4iGK7YppToUicTaFi9
+         pfUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774725507; x=1775330307;
+        d=1e100.net; s=20251104; t=1774725644; x=1775330444;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=WAIQbT/xVh9Td/jwbrsmWvx0zgLMuZbPJRxj+dqYV4E=;
-        b=ejR1y0KAVyDUqIjn1iJ9BQplOrNGF75kPACFuCMnE6VPDOt0SFePhQhXGo+6rsdysa
-         OyWuoNxtrvd90Q8Xby3HyArzIe+F8onBng7PPJ6LNs62lTchob9tcE2oirEpHZDRuXJT
-         AuLZsUnrehD82Of0lzrDDTYKNGyVM0wCQuYXUH2/4CYrdPKQnBPkL7/CR5mGq6UPhc49
-         aYL6Qec1i9/p2kQa5SApr2WdM+sE9/3L0xQQYTKQSxNssXKcCM4X34F/bFM1yUY0f6Oc
-         shTla9kkd0UW4QfzosBd1lSGrSp620BConCxmooKi0a+CKvuH+WFY5nMb2LIWzyRHeQH
-         1wTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsf0724gQ8ryDlXMEq9iO7F2RW+rFDY/GDCxJ2cfzQS4HpeZyTnXzWmZWdSWZXJ6WRKOkp/JZO6A==@kvack.org
-X-Gm-Message-State: AOJu0Yzbgz7wuNmkSmCiEGQ6F3pKa+bnu+jfQe+IrEe9XCG7PvrAnFne
-	z0rP0UfVt77xr3cYRPyv6rpTVk7hpaKbBQuy2LbYl6Sr1elq81RI5uN80uJw1JcprizXGP75OGc
-	t7JH+JbNCrMR3W90Gf9nKO3Fmi5xCrpfrHQsHfIDg
-X-Gm-Gg: ATEYQzyTkYdFoQ4KGJihawNU30ekUXV955gviVnY0uVgXTOQmVYQ7EDlwOdFmCzlVu2
-	kQS2sonrW+398eAu9vayWFKCV+x/gq7i5xDP0axOPi7vVTcdnkB2grXNjJ2hiGIMj6sNuosBjap
-	/oXZHmdxy/wQw5xvTjaBy8dQRq2igH/EwIUBeT0CUC7FN7ADijPepgPxUjp3KJs2MRZkmBO4mEE
-	NM0qHc562O+Sn7MCHk5o9LyUJAtRkNqHbd34nDB9PsLg1Wm9+TuIzv5H//6lTeL1CCydjvsRlS2
-	p2caBA==
-X-Received: by 2002:a05:622a:98d:b0:4e8:aa24:80ec with SMTP id
- d75a77b69052e-50bb27b5c43mr13532941cf.14.1774725506157; Sat, 28 Mar 2026
- 12:18:26 -0700 (PDT)
+        bh=6eOMEVK0bdwhht/5qtx+gcLztltfoVY6LX/uhJq+m1s=;
+        b=E4kjBOhAPwl4kU2r+tMwmXfpnqXFTClDkpTr9PBMNQLz5bien+S40l7IsorG++a7+s
+         hlQzoF0XESJHzlByni4xYEutF0JtxUlC19Qvnd34143BxD/pw9EQLg8EbXcI1ebU/wUy
+         rl6qxvndcyckXMHp+InfMM7bNd9SZUgo0guBTF0KINyWShOdRYjWs51LL/mhwHtR/Ufy
+         QbLk63CnoBa6ktYTtfiYw8FLwShW4ceBKah267VrGI9dE0Fah6mmO+6jE6k65UVNUt1p
+         44DWaQbrwxcejjT0E8491OucmuS85MLwMBIPot4SyTVMRdo5vVWrljtBLLsUZKRyRB2u
+         gVfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXfF1WIPMjmwHeFjNq+cM7hBtF/Bx0sg5LUWc76k6XaHwUqtmckLkW2jvX/7DTR/4BHvcrNeeWSUg==@kvack.org
+X-Gm-Message-State: AOJu0YxnPZFlXQz6RAw7BKLGKiKNWnEnxIW+fLoIJ1XhM5SXQQ5dyO7j
+	WzUReWMij1iVO50KlSLP3wJgZ/g3CeBGsA/EgLRx3rp8GpcssiXPbCAeMCwr90pIGM8+htUeucH
+	28Mwr8v7tp/tS1+Xu2AyBavWuwAajkUss/Dy2Ztrm
+X-Gm-Gg: ATEYQzx9I7X/Bw8o33SKFt5xDfJffkGh1WHE20XyMCYK6zFApF9Xa6VgwHMlEyyPMpf
+	H7wHS8DK6L1FJTZGUv7kZsvt6QYpp2aFYhyFNG9wU2oVZMToZdXSk96nMFt1JuFAq54xYEcNZWk
+	RMFsZA3l+cl/SeNBQh81pXHAeZXCuI7PHU/9t9OPf6C5iRrtLeguD+mh+eCcU9qN44l7o709o/L
+	Ob6ru28xK4vyyW1h0vmDV3rmolnbPlh2rcHePlg9RLR1AWOy874H7DFrerWIAmPdxDdFrb0QFfB
+	kRVUFtlORA8CNWQc
+X-Received: by 2002:ac8:7f90:0:b0:507:35b2:6b9 with SMTP id
+ d75a77b69052e-50bb3d40d81mr10237821cf.7.1774725643909; Sat, 28 Mar 2026
+ 12:20:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1774029655.git.ljs@kernel.org> <98104cde87e4b2aabeb16f236b8731591594457f.1774029655.git.ljs@kernel.org>
- <035bd66a-da28-45ad-9ced-c17a2f4e6806@linux.alibaba.com>
-In-Reply-To: <035bd66a-da28-45ad-9ced-c17a2f4e6806@linux.alibaba.com>
+References: <cover.1774029655.git.ljs@kernel.org> <6c4db67952f5529da4db102a6149b9050b5dda4e.1774029655.git.ljs@kernel.org>
+ <ce065f40-38a6-4601-845a-78021af80f04@linux.alibaba.com>
+In-Reply-To: <ce065f40-38a6-4601-845a-78021af80f04@linux.alibaba.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 28 Mar 2026 12:18:15 -0700
-X-Gm-Features: AQROBzBfRmY_lbYW2VdejKs3qABUczupFVXmVPSJNTuZfToa711GS-EKD7PJJic
-Message-ID: <CAJuCfpEZf1O-w-NJ5hLsNBqSbWk2xjyuBF44QyN_qpJ6us5rVQ@mail.gmail.com>
-Subject: Re: [PATCH v3 09/13] mm/huge_memory: use mm instead of tlb->mm
+Date: Sat, 28 Mar 2026 12:20:33 -0700
+X-Gm-Features: AQROBzAzePkeGMKplAF_r9bfI103zLkTA57Mnfe3m0ONDiP20z6QOCSUr8PJ7TQ
+Message-ID: <CAJuCfpFM7t33uEyMcLYuq0UTuWwriXhaOf4oOg7y_h52e3+J4w@mail.gmail.com>
+Subject: Re: [PATCH v3 10/13] mm/huge_memory: separate out the folio part of zap_huge_pmd()
 To: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
@@ -129,14 +129,14 @@ Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Andrew Morton <akpm@linux-found
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 14dr9esr8cqnsi6ihemd5xkmhdsn5463
-X-Rspamd-Queue-Id: 9B1D84000C
+X-Rspamd-Queue-Id: 5D7781A000A
+X-Stat-Signature: tj5n9iguxgur9u6w74o9wh59xzb14jdo
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774725507-986453
-X-HE-Meta: U2FsdGVkX1/+IOKEJI/zIxOtsG63NEMltBNvArp+1mgJvBYNowaV+YHFDe5W5S3CCAVR3AmJSdVs3ghAi0n4CVaGUFsoZwBzRpRWd0L8lz4yjdlsn9EX5GwEjeHqi4/Dfx2KbpMeGNr84HdObc0NN8QWS9O9stktbwXL+QHKzhiNOJz6Ee69otGvJvi6mpFH8Wp9HMRMGfwnxyaPhslZrDJxoYaDX3k9yzSfGZhAcM4JcRTue3xN2ddVDKiopHE7L3i7Bt+7bjNKLjHsa2h5NxgU5XALeOFAly00oziicMe9ard+myXau7lfFK5U8LuWUOV8qGb+CT5futhpbZHXgs5lw1jqE/urj0UL3SlcCl0nDTImwb+5Y7J9nUG1VwxEkNWrytZ+lXLZGm5HAEZ/0y8w+w5zVFUUKW3f2B2Pqg9asb8TNXHGmbQtn5xAJ9u160QMa3suozr8QosnZhfYZHeQmT4Vj4vlTnmjSnHjrc/kzphSCZOibkEmyR0gt48qJ1JUBZrbAgdFAwahwQB4Zqv4CWh31l1riKfMhT5GVQB5BVkoHbtFbiI+jMqun71W4dDbVC9oCcPMg2k1iHCEZBmsuUC+gFEtnOGWQrXK6UXJyPgohH3z+Tb8vE9DvsoO2xXEQ5TRHuP8oQllCNe17Iq64oytfLUcGu3kqio19vZQ/p+OHScKkidq/nCoHCNsMON36uoW5Hg5ZmxlLmqfswxL3coSUOHAdH2tuqedoLh8n3Jnv8I3jfCvBiCYYoUzFSAjUzygNIXxPPsaAwyaxEYyeT1NkL33vGF+dMw5HP6xo2VaTJWIZMcbda5Oc7nH8dh+zYP99Y3OKBxd1nkn84hDIZBXXeePT7j5yH+C6blG2VaXgDOFcDsmVWo9TiEn9re5PXZi+MqapTfCwpcR9P3Y5gIreubdFji2hUlSxL2qhnAQ/HLdNImKiL/0x//Eg8FLo/8RCdG42Inrby6
- z/2CUokD
- Rl7tYZFA4HwdqYUD86JrULmBxFNYHcKNWwdQKv6olg36+2FsDOEmaoruPxEO0XboZk8QUG9cauXS2VLhwXDIONy+zmyL1g2VFuWCZ4pQzVEzUY6V0oka4daxCueP2t+fkw50ulh2gVKBbPe1cxkRQIL1KNqDpffHmM33F2vpbiRIPOV0SNXThDbBW35sQaBuep8Qfiqf78Txuulc8mTgFPTcCA6fRFsY39JG1tt4XblGZAtdUfSzp2AOsz1wwRflkYXQi0+rTc019AjTFvt5FWqvQK7Zw16id1BGv1DNm6EobxL1k+kBIDPPqaji0ZsYQVV6Iv/b/58zlfkSfRUGmMBpBlOBOvMEe+Weapm+rlzbMFHM=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774725645-769152
+X-HE-Meta: U2FsdGVkX1++01ULuQJovX/gIQtrOjEwfNmjhIREkLiKKRpGHmGOEoXEjNmJM18q4i+n34hrSuT+DTYbnrBfLQGasMIQ5Xas1a3TlMITPYKB950BTRir/ebErUl/EYp9isqyZWoczx5IVYfYGad52HbxZpewG8XLopPTwHm01uUOr4CbnVfJb1MhN3oWyXzg7O8t7IJCk4PwjwdIlNp6Y8C/ioQtH7j+Ue5TCAOcaxO5JEpyZrx5gLs1wa9TyV5yDNDh7Wt2vCKXRir694FNf4TuGSLPCA40RSGBMI0yLtkYPEEAKhpfhWcq1Gtq7ZbA66yoFR11N8/i0vFijeJFAblLRmrUfxL2o3TNd9Jb6fb7uLuikQBqFD+FCqBaDvRBdU1LKpvBpA9ums4lDMtj1L5ElXbzLBTY0OGVxkBrmVd5TSSG1i9dyD/+zJObd3hrcD2zxFBfDfsC/uRME3prQqItxMt+4JGuSqZhViHtXAmmxvgsfbQZOsIJ6+JhtOWM1tdb9uBkT2Ki7lz2y+Lj01Sru+FPrEY1WfyP6b0YT98hYoy/Baftq30mvZJ04+wGiMPjqoJ0kEhO3vPHPl9uLxvr5BZm2aMjo96LenzQmlS9u8NMPKi3ZO6GDxCwsgvssi6JT3WIYMayavcBnhvPDrNCjc8QJyUHLnfJciRZm1bsVChxJdxfuf6q9gpkiP8uHXbfLIbHzjoDwfvPQWGdqgblEfRG2weQatUY7lilkhA9H4qJzdZWBE1uwI/2g4L4uGW7fIfuOPBbwBgaJT4ZvSLq5BWrfh3c032Bpj3XC9hHPinQbhP0sPgnt5lbthx+rZWM2Bo9mTMeXXocc+9HdFRSv0ixv9RYAtNnf6cUxh5ywqGO9f0cLQF0N5TM50mIK6CnsyWNUawbr6O3ioNENl66kk5dFxg2arRofyqTNWl7mnJnkkEluUppzmG+bP7/M47lqOLfzcS+3Nx+tag
+ SaBy+vMW
+ O4mCK/kh/+AYEl/2ev18QYOE0izrVhPJYWNsJYZZ0MnXOPW+ZZs+r8Uri8cFWHOAhuJ1f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,19 +144,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 10:42=E2=80=AFPM Baolin Wang
+On Fri, Mar 20, 2026 at 10:59=E2=80=AFPM Baolin Wang
 <baolin.wang@linux.alibaba.com> wrote:
 >
 >
 >
 > On 3/21/26 2:07 AM, Lorenzo Stoakes (Oracle) wrote:
-> > Reduce the repetition, and lay the ground for further refactorings by
-> > keeping this variable separate.
+> > Place the part of the logic that manipulates counters and possibly upda=
+tes
+> > the accessed bit of the folio into its own function to make zap_huge_pm=
+d()
+> > more readable.
+> >
+> > Also rename flush_needed to is_present as we only require a flush for
+> > present entries.
+> >
+> > Additionally add comments as to why we're doing what we're doing with
+> > respect to softleaf entries.
+> >
+> > This also lays the ground for further refactoring.
 > >
 > > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > > ---
+> >   mm/huge_memory.c | 61 +++++++++++++++++++++++++++--------------------=
+-
+> >   1 file changed, 35 insertions(+), 26 deletions(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 673d0c4734ad..9ddf38d68406 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -2325,6 +2325,37 @@ static inline void zap_deposited_table(struct mm=
+_struct *mm, pmd_t *pmd)
+> >       mm_dec_nr_ptes(mm);
+> >   }
+> >
+> > +static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_st=
+ruct *vma,
+> > +             pmd_t pmdval, struct folio *folio, bool is_present,
+> > +             bool *has_deposit)
+> > +{
+> > +     const bool is_device_private =3D folio_is_device_private(folio);
+> > +
+> > +     /* Present and device private folios are rmappable. */
+> > +     if (is_present || is_device_private)
+> > +             folio_remove_rmap_pmd(folio, &folio->page, vma);
+> > +
+> > +     if (folio_test_anon(folio)) {
+> > +             *has_deposit =3D true;
+> > +             add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
+> > +     } else {
+> > +             add_mm_counter(mm, mm_counter_file(folio),
+> > +                            -HPAGE_PMD_NR);
+> > +
+> > +             /*
+> > +              * Use flush_needed to indicate whether the PMD entry
+> > +              * is present, instead of checking pmd_present() again.
+> > +              */
+> > +             if (is_present && pmd_young(pmdval) &&
+> > +                 likely(vma_has_recency(vma)))
+> > +                     folio_mark_accessed(folio);
 >
-> LGTM.
+> Nit: these comments were added by me to explain why 'flush_needed' was
+> used:). Since it has been renamed to the more readable 'is_present',
+> these comments are now redundant and can be removed.
+>
+> With that,
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
