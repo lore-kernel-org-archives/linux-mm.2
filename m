@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E2F10F3DEE
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6250410F3DEE
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:09:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BF8E6B008C; Sat, 28 Mar 2026 15:08:57 -0400 (EDT)
+	id CDB4F6B008C; Sat, 28 Mar 2026 15:09:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6975B6B0095; Sat, 28 Mar 2026 15:08:57 -0400 (EDT)
+	id CB2756B0095; Sat, 28 Mar 2026 15:09:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ACC16B0096; Sat, 28 Mar 2026 15:08:57 -0400 (EDT)
+	id BC8506B0096; Sat, 28 Mar 2026 15:09:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 480716B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:08:57 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D2781B6F9A
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:08:56 +0000 (UTC)
-X-FDA: 84596409072.14.21A1C23
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4380C180005
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:08:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sEbxqwm8;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AC2916B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:09:49 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 52D221A01DE
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:09:49 +0000 (UTC)
+X-FDA: 84596411298.22.ABC41A1
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6285AC0004
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:09:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=aosbYqic;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774724934;
+	s=arc-20220608; t=1774724987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZeQgtsY95tJLXbmh4bHAGhhQnJn2Sav5FMf3jVrtoeI=;
-	b=sfSVvw2pGXhEARrLSAXbuC7JPwJAJ0rmzwayizi3P0JkeIBf7FrIBpgytjw/7HTiPuS0Pi
-	PXxKdBEQpqFYQBE1VotXO+x2ZNZsvfL6Ps2o55HYJucQRvUBGJyF0DEjSdvbWy4w0yAOX0
-	rmsN1N7EggW7t8qGS7gzju994n4HVD0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774724934; a=rsa-sha256;
+	bh=YfhzOsZFyHHFXU4xG0s+niXh0pPUFPC5R/oCQiT8O+8=;
+	b=up79jGblOmRYBjLNndpo6icXHxn3TDUKeNyFbh2KHzuGdbPHWr2rqfPmKm5rMhY99HH3GV
+	h93HNMGauR2sOJUZgVwT1Vsa1mbroddh8ycBBMoedikuGg7OyyIBE33K7x7a1eoJduoHS1
+	3B9rMSTWwiqEVpw62pEe4Oe4TUB2YlE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774724987; a=rsa-sha256;
 	cv=pass;
-	b=fobNXWpqMR63sRL4dsHcdZo3117BhHtEaYAR0OJpc0uEcYqFHapxUSrvbhzfrX8MS9YHsC
-	vni9ojJ3wDijHWT5thY2Zm+pDDjwod4D90rYxu+P+uBf8fdyugQRbkphgKfhVlgIvyWM2V
-	wbl2q6Gs8LYsvTkkM9otHxYoxcGP0Ys=
+	b=M22atU1e6w3g/FUaAmaAw4cBeSetJg3TlUwQ/0XZgiuhgbMNznqj6aNnfT4/e+MGs+2tDR
+	+MRE3KCygvJQHFzxgyA+JdlLkfuO4jLqfHjERYUtqRYFSK68j97sIWuJkiCyDGJcKCdmNl
+	4CPUvxvsV/Z65c2S7YuZieNlpjTn08Q=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sEbxqwm8;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50b6c45781aso500071cf.0
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 12:08:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774724933; cv=none;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=aosbYqic;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-50b6c45781aso500411cf.0
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 12:09:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774724986; cv=none;
         d=google.com; s=arc-20240605;
-        b=cfJ7iamH/HetU9zWhEzNCgTpavfTQUj68lB6kKaxgHh6NnaPVFw8x3Igb0eRApogtA
-         Nx7a+nOaZXZcN9cW0EPwDKfwDrTEi/m3KKK1OBpcr9QEs8dUx9S6Ifa8uTBMUlFXeeii
-         7ekbruQBWc5TN77Rht2a8Hethdm+m58faali3aseDmCoe/1IpqYytyp8VhJ2Bp/gOcPB
-         4VVc4n7oj7vf/rcrJFe74nNgnKXjoxGKqgO/GYw1sF4UIgZAl1OSc4rclkCRmcG6H2dF
-         X8ePRQQ2ODWPFALLPdC6laj0nLRhcXlWWA2gViwCTcoPN81dtbWV2A3VqWgMBZRsQiML
-         NZ5Q==
+        b=Bh2T7smhFosjbuhS5KIvpoQtlGM371kzFil+ARkpQhs9eBwUgx5YFESRly40SwlXiI
+         qMXqy+0tO9X92wSkHQ9eLcqXf0RTbnDIM6kzen+HybrFxkLUtv9noqt5u/FZZusZ0P3/
+         mF9BFljNri+U6sSYGTGc6v0vMGncpI0qFCo7o8qWAaT7mM1VuFiFQ9Q+vQHVrVKyrx2U
+         v7f2pzMkgkirlu9gWjZ7flq0kRSbfu8V1BlReWYglmiRH3uRiCn1wUPMkqICPXuhzX2x
+         dszj8rIqXiCQfbC6/BjDRLtsudPQJ0ZSj9Bs6BF8JQOEsuMZwKDBJVkek6tVnfENZpIY
+         csGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZeQgtsY95tJLXbmh4bHAGhhQnJn2Sav5FMf3jVrtoeI=;
-        fh=G36/o3KbK1HyupcqGHRhVSKE5eremDaaNpq51PfmUK0=;
-        b=O1AxbB46swy4qqluWuqoHC9d3K5iU2ecZ3kfiNQMja6hdkZCguUoG+MmhLPKeQkG7g
-         BB4la3bV6KwJqciQYE23FLRorrV/uM+si9+zxEwkm7lx9c7W36Zk7rbVHmkTP/aOcDGa
-         BVRDhPfI1j2g2BTVYKeuwyvAsyTbtvi8zi9gsiOqhs3bdso7iRsx+EAIMvR5vuTccN5H
-         eq9R3tf05I71kABNmmJ60RVnjhSUldBVW8jRS0f9iHFKttXPcqh1fAQYyg3qhXCsaHyi
-         qOAG8vLMNaCSWWv7dP8IAt2Yj3tABoEy7bSTRQa338+PFTVqkEtmifLWs+X/zhcw1hkr
-         iV4g==;
+        bh=YfhzOsZFyHHFXU4xG0s+niXh0pPUFPC5R/oCQiT8O+8=;
+        fh=ux3BI9jklNh5mSYyKKXIxz9wCsdpI4i50hDSU3mQbSs=;
+        b=lT3jiDHwlFX6xG19gwGHBZKK2tncNHF8bqnm80pIsmIVbXqNGafrjaDmfv7lPHwryA
+         sNOfefbJbXgkitZoW+BlFRX9sLGvWVsSUraGZvu1Xz9bpn3qUWFeMy9qY/LXCaaD++Me
+         /BC6vm4oaNLXcYNDAzDfklx3mEzvYxEw4XsmApVEOMf4MgQ77tHeSyRxs3CUXmtKnCs5
+         jQIe0VxEcFPh/7GwowwjZ0OKarcv7/5vwyzAY4uiuS3+RIM1EissbWL1+bnxRcxNkuue
+         bLX+7x7cD22pPjTk5gZX6SLaGa8xlDY35XJeAVZQCX2xmXDUb+ZiCr4QmKA62EtN1ye9
+         XBLA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774724933; x=1775329733; darn=kvack.org;
+        d=google.com; s=20251104; t=1774724986; x=1775329786; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZeQgtsY95tJLXbmh4bHAGhhQnJn2Sav5FMf3jVrtoeI=;
-        b=sEbxqwm8sYO9l8N/o1rIIfP2r/QjLRMqpFiRxKxIsCqtiGmDM9FqCVr5d0kNs9NC+m
-         nzZHO9yx7yNhAhtZVUxERrGZkGUJQAVa8n02hgP4kdRWHsJoPyFjN0g7hAosMzV6HaPC
-         aNWV0n44LWZ+dJxHmbCyrX7EmTWuW+eMvmmgBjyF7dXv0nhULmrFZMqKTflcdOKkFr2D
-         P4di2JSHT+0pKSWG2xO8GmRbVhSfDDa8Rap2at23jzYq2h3woNoz9qZ2KAkjYJTcU836
-         e9I2T3kM33FRpRT95RrliuCm7l0GYJK0Q8MEnwA6AZkBKgOqt89vXsMTa2NDyyxvcms6
-         BCmA==
+        bh=YfhzOsZFyHHFXU4xG0s+niXh0pPUFPC5R/oCQiT8O+8=;
+        b=aosbYqicD66A1cPjbOWWGxN+H1IqRYDNLFxq9jSjJMO0e65XVKho/FK9b1fQQoMwmD
+         MurX+SNjcJkX1IubM71XkDxvqS7eI2TBtAkta5hnojQI0+pu7hFoH6uMohb1fu7qrxGY
+         6bGB/7Bo8HdWOzXe9baHhnlQkMdKG/gg3UyDMB5GcZzrVO0t13HDLG1Np78kyBGsUvrE
+         6njHZWV7z71EVNKfxeFIXk+9YVgvBkN8Wo1XKohdpuRjQphwaQ+DL7GWim24zEXvziXV
+         ZQpBECBqJferpnfqDqlL8jmGU3T/ri2ievSRqEM9Duz7HX6rb7l3OrGgx9wJDAO/m3/0
+         rXNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774724933; x=1775329733;
+        d=1e100.net; s=20251104; t=1774724986; x=1775329786;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ZeQgtsY95tJLXbmh4bHAGhhQnJn2Sav5FMf3jVrtoeI=;
-        b=e8z/dD8SquMHBcweSz1z5Q4U+0+QT5rdE8Low464GecC/czhTxZYbAsG4/LncZFI5b
-         5zFiUUpmmiyoQGJ8GGAXH9EpaQuN1RPVGPFvafqiNFNw+17NtN6DOE3tj3nROPip0iyv
-         Z6Mks2RdEvOldtgYvdvCC+GDqhkiga6q7Xgr0KRJ0pOvQkOhpvR1AZvYYu1J4PxeZcDS
-         uDrmyuwTSxcF46KthqN2IY/cpeMSOVCS9fy8Y2Afi6IS379VvDbeCOvjlu8dVnicahdo
-         y31KMneEb6jgtA3Il3tyWMsO5kujiTo4KHa1w/3Nwv9CNDsRBiJxxZ5jq4Zu+DCOdPap
-         2Kxw==
-X-Forwarded-Encrypted: i=1; AJvYcCWONovy/3w+7DrOV4pM+qtg/oLqfI0Ppy8CyflX9ULcbQPxCLwnLgRx8vF2vPUt3Gg3IwaLleiAkA==@kvack.org
-X-Gm-Message-State: AOJu0YzPg0VylCOObfrvjZoYyWwwE07OOzyvsA3k8+A4vAi8bMDam0Bj
-	zv49oVuBhGhjXnZxp7go4DSZltHNLWcTzCCbkMhjKbZPG5nQEcXM3TRlvqcUPlzPFuT6XqiQfLc
-	WA+k5AOxrDMFUNtbzjbcHNCFhchW+QYhmyu6D0bCA
-X-Gm-Gg: ATEYQzz7YYzmf0wjZypNirEq21kl1B6KRGTwB9U4FyvJSlqvoE76KPuONgpyv+9XWEw
-	ifBxL+iDGN6wxwUUuOc9zx+TWyyWDxFe5nLrqUa6O5HE8zZ1xB+4+iZWmCiyb76ditXWi2mflGg
-	rVoZWDcd20euUMyHgdEfuTg2ugdclkuxPpDzrEVhFiwoXoxX2+S3JhQ3VnDFlSH+umj+fFb3uvS
-	E6CBxv7iFI7pZ1wpi0uEtn6E3ln/tsVoK9aVc1rfV+VzskjhrLjSzIGkgc9tT5dULf6SU5inGUg
-	sRNPFQ==
-X-Received: by 2002:ac8:7d4a:0:b0:509:21ff:cd49 with SMTP id
- d75a77b69052e-50bb2690bd9mr12246881cf.4.1774724932696; Sat, 28 Mar 2026
- 12:08:52 -0700 (PDT)
+        bh=YfhzOsZFyHHFXU4xG0s+niXh0pPUFPC5R/oCQiT8O+8=;
+        b=Z8949Q2lzj2L+1EFcq66PSQ8ofzPlX8QoYM+9Jqa43V2zCrPxdHo8/WXAE7HKUB3l8
+         ubWaiyiaD92UJw8i2OWoex9v4t76XAanPSrOw/wlRbT+BipkQ6UREGyiYibE1miyVmeD
+         KGXjv/HqDyLCeHaY3/2zKAshWzKX3vzNqYNq+L0bU8ExziugMY46v4rhuMY/oDOLrcuV
+         hjU1CzOm25d2Yl74IBtsCheXVfuYboXv/clAyDJ/urFdlC57j1VNYESRXM+pzIPAdAyq
+         xQbDqzCgGbXykPwEBykMI7lb68GxXXeTwG0PNT8s7WvdIvjRMbd7yR3rzk98Cxf77vte
+         7w6A==
+X-Forwarded-Encrypted: i=1; AJvYcCWQHboYddsmgLo8DnFNhqK3sgAt0zWHsmf/ZKXx2FvainwzVpkL3T57JestKVZiLpAuSojaX+5W8Q==@kvack.org
+X-Gm-Message-State: AOJu0YycofayzL6xSuq71xFGqBesPL4EVO/D2ovjwVB6HD/+0HwlargF
+	m6lX8joC6sp4fdkqLnuU5M415L2beojxTVqHpoA8JdDgwJunUelNyDLH1WdIL0wpoL4sMt9wuDI
+	pQZPRmXxW0dQPisi5lIqz/atc+NZVB9nGK+cr/Ab+
+X-Gm-Gg: ATEYQzxu9cVjRzLuci37DwXvU46JX9A6FQVxp2YZ5HjfxgJlQSdgUGdh7Zg5rDo/QwI
+	quti68iAHuYQQSYk4brpj4PlA0LyrpX6Bz2n0QFoWjbyZqleN5kLykP958pg7LxCYNJ0k5OYlZh
+	sTS9kTTCz9Yx/nc2tBoXYHtewq1ANFvtMgd+IJhM7QdRw4D68cveB8VpvZvqVHaRPpqrQfoIRnh
+	iyOfWBdh1ro+9eoA9Gnxw6AeDnvFCETTlQ47XFXVLTrVN+DSzsg+e2e1rtI3z3uMsJ/Xvu/u1g/
+	cyAc/A==
+X-Received: by 2002:a05:622a:1c11:b0:50b:bddf:14ee with SMTP id
+ d75a77b69052e-50bbddf3d81mr3919091cf.16.1774724986055; Sat, 28 Mar 2026
+ 12:09:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1774029655.git.ljs@kernel.org> <6b281d8ed972dff0e89bdcbdd810c96c7ae8c9dc.1774029655.git.ljs@kernel.org>
-In-Reply-To: <6b281d8ed972dff0e89bdcbdd810c96c7ae8c9dc.1774029655.git.ljs@kernel.org>
+References: <cover.1774029655.git.ljs@kernel.org> <f3fa8eb4634ccb2e78209f570cc1a769a02ce93e.1774029655.git.ljs@kernel.org>
+In-Reply-To: <f3fa8eb4634ccb2e78209f570cc1a769a02ce93e.1774029655.git.ljs@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 28 Mar 2026 12:08:41 -0700
-X-Gm-Features: AQROBzCAAUiYF5sZCpFHCnjZu5d1J2aVEPhQ6RielJgLYciEvEnS79tUwQZwEng
-Message-ID: <CAJuCfpEf239dKAW8iPPDn=nW3KrQ+LGnE8BzChuLrQc07_zXfg@mail.gmail.com>
-Subject: Re: [PATCH v3 05/13] mm/huge_memory: add a common exit path to zap_huge_pmd()
+Date: Sat, 28 Mar 2026 12:09:35 -0700
+X-Gm-Features: AQROBzBl9su1vAQBYpP244bM3XgFItdlR0kp8FIyCIhbs5-COOzgNctF8sx1cQc
+Message-ID: <CAJuCfpF0bm1zqW+aX8fevfZaqWe96s=XVrPe-i=F-PCUNC+6mw@mail.gmail.com>
+Subject: Re: [PATCH v3 06/13] mm/huge_memory: remove unnecessary VM_BUG_ON_PAGE()
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
 	Baolin Wang <baolin.wang@linux.alibaba.com>, 
@@ -128,14 +128,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 66wy65tmo7k91j19nn5o31twf8jy9cqq
-X-Rspamd-Queue-Id: 4380C180005
+X-Rspamd-Queue-Id: 6285AC0004
+X-Stat-Signature: xcqso79eizbfm371nfnp6i9bj1ok6cz7
 X-Rspam-User: 
-X-HE-Tag: 1774724934-494676
-X-HE-Meta: U2FsdGVkX18L5msBWb/X2gCMu4OQoLNZSq+/S/86BnAxfulJM02DNQjty0Mi9lI54JBCTUu7Yma2ab7w7UNUouIflghSnlyJxCiR/arvzLJout9rWy3rxbsaELDAuc73qD1cSqvzW3LMWu5NbKqSrvginNNPUqr11yK9+gHecHkatUARWUeNCi++g7Z1lRM7BLXL2N8bw94GH12s+RjK6X3ReZG9Ae5mjr47OdzeBq0fEcN44mgbv+g8rr7+RiH/S/cvZFjBKvgWV8cuK69IewiUQymtiR4gHGqkUNF0En1I00EMW/cf58Kd+s3GBd4g/iR2O0TvgfdA6DGGOHKpjj7+zImoi+5xXPhG3bqjbiNwHfDte4L1ggdG5GFpBwDhePtPD3O3vUk4qaPDma8aIdcG/g6RTlKaPD1C2pCAP14PGJCG/Ek/Dzfi6iBmc/B16huzuzpBpGUiNBteHCADnYW2ONeHzZyjLcCng9DzJRs4GzPk2HyOiWusmxrYjQzf6FHdc6xk8mw6uZQ1X+5FgqwjcclqrzuuUVU5/o0I4gJbh0edIrePnv8Q45XCYfhKQSDlmHIU2OgaNN4bvOYxFQnqmTwYPMpkiuVOntbjHz8H8wxLffud+o/RP8B2NdxnDRqIQNbekMX/QVpCNeSM/TFya3WuEBBN8OrRtnNWN4r4Kgd7EUz4JKh7yGgkbf2U4iVAvLNlePnw/LW+uji/o1V8t6u1r7/qDzVusvEdg1oqqUCvja4aJy4CQXjV68vhy9fmgROl8nNRMjSFfqfcMEXEsGK54QkGhsc7OfOulRxrCsk30KppvgcpkKUdLhe8n516uxMNI7zlNbgkWej/uhT15pL/c9gwLd7H3k5N7Q1uS8c+Yji+T/ZtvRYCw0AubUjU3Fqnt+nT+JTtw6TpHM5g7f2Qb+/GwlRzqRhUUivhvoXsVczPyQULWK2k/lBRytWpb22NWUtnqlJ9ikA
- SW8VjFzc
- jd73SkfbpBOs0hCPiDX9PVDq8H1uwkKao9Mwj5DU63uBGatdgcMsv/3CXkGqlKwp7AZg1ydHdWspFfzj7Fjx/pM5yAU1uzIV35FLpytTtL26k9X0IqqPrK4bijrocYLn7cW7wm6Nri4MsQIo0ZNtOivUEbCj37i9YBGE3va0AcgIlJhNbyon3IG18MK93mEUUA8liafJbsSohYVxdGxxBU2ptby6OepKbOYSTDPnUWXUCxBDyzk5/2fADYmBHakQVUQTyC/qbZ/w8GTAWQM+GSb6g0p8zAeJ51aEs0ImRmhc9CCINr5lgbD7JZVM5Dh7TWmfigvpZ7GrmPoZXyJS9gULdxVR7d9N3rK6y
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774724987-199360
+X-HE-Meta: U2FsdGVkX18I78uikZ+btRo6d5y7sUXV+hEbevZY20NDd2DrmLqS6nk+5jv8tDjbtQ397TCuFsTF+L/Nz6Mb2F1PBauusYKvnPuChRRsEorMltccTToxroA7yo9XIMJaGyC2BGd69VVmC57PZFe/n3iGbj59LkWCuGnoJuWlJ5wbvrx5aeAEKAoPyd3p4om1Ll+HLmpucLEhaeB8SplaX8jncYYjt6oSl4V+ZY7PW6XhnW6aCzVA/t6HrzCMFH1oEfj4IdCHXn9wHc8R+FuekUSWR1qfsHaDW0BfbuPkpBigJV+XxlwRbFYfJk01uXfqMmRa7HdPHcU/hBYQ6ObP+kgFRg4kYtW8vaZEijnbB7i/xqSE2doXcPDcqTdk/wXRH0ZQD+A3Ls9KxNxfK5PsNBT7WNyMy3JScAxDZVWjXgjMS8qAQhOICClhYmUifn9i6a+syRAyqr266XbnKp/lhE1f5kC6H4KbatbY5wQmTSkZgEuVAPoad9i2KPRx54QzuUzomQrWKGy87vs4FwbBZYQ+LkylF1ezpVcuPjRLWOtrqrot4+dSPJH7FL+CGceNFhToMNi0WoPNIRkHZlwJYR4fbIl86NrNNQ1LFND5snQ3zhEGJQ64zQvo3IoUogHHuGaZK8c7xuC2jJN2S7WnG7B1xva2toYntT/hjaOoxNSgAgB6slRMQb6iEqyvsalITlU+zejt1BEjcnOM0PY6JveJNUcV8XtLWNg2UIsOyS3qYu3cXIOYBCufXfhSNK/qBT0aEfpt44vP8PZzEl71mkWw0MNgUtLoRBO8HAJ0SgrHKjK31zWkInMkk1JVfnGv1/kqrd6YHq5iF2wkwKku7sahFXj/KqKEixtiWyamn2CTBbEVQ2OSxmTJrEeTdcjL4g3D2isGvbPktLm9og77vDNYaZKhWMZ1+hvqknWCom5r3jsljJ127U9NbPQkOoZMe+9H/wg1OoMB32dGIsg
+ EcobmTsm
+ SV7tc04VgBKaISAOVrBkP3g+OelSOS4YAWGTL02Kbmm9jeT48fCQ7Ku0yxBynfAXFenPj2hFAXX43mVsBkS1kHaWVmVTU1Bt30tYOL0X4PTARVz8TuAO0NIShGQeTrpI3Hf6x8HMo6AGpAdol6pl1x5leqygJnl0ZMVbaGf/TClXsHZqUtp1XMol0EmjrK1nsvmHhpKXKNqmApAcXLMmgqkMIy7OejTreK1Ts5bEorw5+llUq3Rx+OE/MpF83x0gResO69c/UC0ZoFBoQV2Dya8PwW3ncSvsRQqBbtdM1oJr9QyKPptvqiCs0q+tTTxqzuDligaJMHYN043yXUS3wF+zhkz3tkW4UqGu5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,17 +146,9 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Fri, Mar 20, 2026 at 11:07=E2=80=AFAM Lorenzo Stoakes (Oracle)
 <ljs@kernel.org> wrote:
 >
-> Other than when we acquire the PTL, we always need to unlock the PTL, and
-> optionally need to flush on exit.
->
-> The code is currently very duplicated in this respect, so default
-> flush_needed to false, set it true in the case in which it's required,
-> then share the same logic for all exit paths.
->
-> This also makes flush_needed make more sense as a function-scope value (w=
-e
-> don't need to flush for the PFN map/mixed map, zero huge, error cases for
-> instance).
+> This has been around since the beginnings of the THP implementation.  I
+> think we can safely assume that, if we have a THP folio, it will have a
+> head page.
 >
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
@@ -164,77 +156,21 @@ e
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 > ---
->  mm/huge_memory.c | 15 ++++++---------
->  1 file changed, 6 insertions(+), 9 deletions(-)
+>  mm/huge_memory.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
 > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 0056ac27ec9a..b9d9acfef147 100644
+> index b9d9acfef147..4add863cd18f 100644
 > --- a/mm/huge_memory.c
 > +++ b/mm/huge_memory.c
-> @@ -2338,7 +2338,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm=
+> @@ -2375,7 +2375,6 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm=
 _area_struct *vma,
->                  pmd_t *pmd, unsigned long addr)
->  {
->         struct folio *folio =3D NULL;
-> -       bool flush_needed =3D true;
-> +       bool flush_needed =3D false;
->         spinlock_t *ptl;
->         pmd_t orig_pmd;
->
-> @@ -2360,19 +2360,18 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct =
-vm_area_struct *vma,
->         if (vma_is_special_huge(vma)) {
->                 if (arch_needs_pgtable_deposit())
->                         zap_deposited_table(tlb->mm, pmd);
-> -               spin_unlock(ptl);
-> -               return true;
-> +               goto out;
->         }
->         if (is_huge_zero_pmd(orig_pmd)) {
->                 if (!vma_is_dax(vma) || arch_needs_pgtable_deposit())
->                         zap_deposited_table(tlb->mm, pmd);
-> -               spin_unlock(ptl);
-> -               return true;
-> +               goto out;
->         }
->
->         if (pmd_present(orig_pmd)) {
->                 struct page *page =3D pmd_page(orig_pmd);
->
-> +               flush_needed =3D true;
 >                 folio =3D page_folio(page);
 >                 folio_remove_rmap_pmd(folio, page, vma);
 >                 WARN_ON_ONCE(folio_mapcount(folio) < 0);
-> @@ -2381,14 +2380,12 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct =
-vm_area_struct *vma,
+> -               VM_BUG_ON_PAGE(!PageHead(page), page);
+>         } else if (pmd_is_valid_softleaf(orig_pmd)) {
 >                 const softleaf_t entry =3D softleaf_from_pmd(orig_pmd);
->
->                 folio =3D softleaf_to_folio(entry);
-> -               flush_needed =3D false;
->
->                 if (!thp_migration_supported())
->                         WARN_ONCE(1, "Non present huge pmd without pmd mi=
-gration enabled!");
->         } else {
->                 WARN_ON_ONCE(true);
-> -               spin_unlock(ptl);
-> -               return true;
-> +               goto out;
->         }
->
->         if (folio_test_anon(folio)) {
-> @@ -2415,10 +2412,10 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct =
-vm_area_struct *vma,
->                 folio_put(folio);
->         }
->
-> +out:
->         spin_unlock(ptl);
->         if (flush_needed)
->                 tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
-> -
->         return true;
->  }
 >
 > --
 > 2.53.0
