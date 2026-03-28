@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6E9010F3DF4
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B0610F3DF4
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:45:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F19BC6B008C; Sat, 28 Mar 2026 15:28:57 -0400 (EDT)
+	id 483F26B008C; Sat, 28 Mar 2026 15:45:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF1796B0095; Sat, 28 Mar 2026 15:28:57 -0400 (EDT)
+	id 45B886B0095; Sat, 28 Mar 2026 15:45:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E07036B0096; Sat, 28 Mar 2026 15:28:57 -0400 (EDT)
+	id 371616B0096; Sat, 28 Mar 2026 15:45:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CDFF26B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:28:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7B1DB14024B
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:28:57 +0000 (UTC)
-X-FDA: 84596459514.27.AC0BAD5
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 823F61A0002
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:28:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mdYbZ3MX;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2397B6B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:45:23 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B972456787
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:45:22 +0000 (UTC)
+X-FDA: 84596500884.24.12FC313
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C6635140009
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:45:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hhiefQEF;
+	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774726135;
+	s=arc-20220608; t=1774727120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TgKzpV0f8TiZbPqRGh80/zOiGEc0MqdhLqlMpC5tBoc=;
-	b=q2WABn2KQNRjuP88JtgPCyWPmrm2TJ95AqQlF+nUjM6xU5NdA2aCpTcadZ6udfCJt1vwOn
-	DmCRcsyier7/xppoaDwG/RHTVLR+DfUnEr59AiCIpVJ3iSJ3XYM1dNXVsVFxg/fGQVIJ31
-	2xn2Hf2jOI0R4EHHsRN8BWQF4v3xGIw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774726135; a=rsa-sha256;
-	cv=pass;
-	b=g0UXbW3+2gTL3NIsrtfstAO7ux9PmUJKPJK9lR4A9oBXq6DRkdWydNKT5ltQslZwHITBZO
-	Q+2uio1oFkw7RI6FG1OrmPgK3LRyppwcELGIU/G6uceXgkgqIDmm9n4Fefw/YpQRShVZQI
-	E/ruVqHjyjKaUBTq46XHz6O27SypQwM=
+	bh=wOT5aN6Yy5qJKZewfMWcjccfRN+5rZDXSfjUVT7TFfA=;
+	b=bbpiR0Yo04XSa7frQYOTFfHmhOWCGAB15afyvLGN2mFoGUWwt/bW94+3pDr7N3DWRsndN6
+	R/CVrTeXE+6/MY78YdZVbm1+TcocwzrilDw6i/G7Qht03mCM2yOzEiZfwj3fbGTq7m/h0t
+	SRKMFDgPG3NVkMp3mqo8HK5NZ/qH1BE=
 ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mdYbZ3MX;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5091ed02c54so408101cf.1
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 12:28:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774726134; cv=none;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hhiefQEF;
+	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774727120; a=rsa-sha256;
+	cv=pass;
+	b=yBgSp1Yw3VcQsd2HlxU9NUO3CqY3/x1sy4SyBjF6T1KBxHgCcYwOEmyC/oyHNacZchP3TU
+	NE0fQVdE3fCRzCUmLrTJ0Pm+b+KIrqQilXqtxHQFLmxBxLm2qktrbUR4ZaGFBcPIM0tNbq
+	zlyQw5pWaLL5o64MQbign+ve2+listM=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-509062d829dso442321cf.1
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 12:45:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774727120; cv=none;
         d=google.com; s=arc-20240605;
-        b=GpnC6al+nY8nErVAnaFODn+IWeIhiiPNou1FVgMCvMzubP5RRdA6KuHWAEzLLzwdnT
-         ta3o5EmJh86JJrDNa+XTnDhVB4a6F0Nx4TLjK66gPoj8XLQS/iTXP5aDbxXpRwmKPebQ
-         RBBKu+9KA010UXKeZuJmHQ2HQXUkfw16TjxdfJzzXRKjTNI1TFlWDl0piXfzMBF9lZCz
-         /8Zv1F84QI+9LMoCweKj/m42wgYJfSip8t36s1rZZMp7z+9Y7AcofdIsTRxPPZusA4IS
-         7FwCUz4wOldfaIMGQhLRIgV9KFfRr48aKLoE2k+27Qq8KrbwUDL2PHOH6uviEJzO3jHb
-         Y0sQ==
+        b=MlE0s1HGLTOYFGNrjnUwfYtqPDTc7EWiv9Not5amz2sSiu4UdHmhyjeIV7yAwHVS1z
+         kT7jWME2ez+G+vAAeKD4FMaWBjFaxLx/2uyShUupH/HTgdNCpmSN8VjHv3Kwmk5sRUeK
+         CvGCPLQHnOblmvpkXO40pb9UiQukdoUWw+SArsiQ/K7JvqbitfPCzzQZpWNynbnPMzEA
+         rvoKiTGfupeZrE6/Kggy+MS53XQv8MmU94954Z9eTmwYDcwDotXMW+uwGNOnNTPibZ8O
+         ShZjuvBKQrDLiY+fbFgpUsB5opcmhyvxs3iC1hc4/OmB2Mf5HlRX7ra5Tz1YcgI3nreg
+         I46A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=TgKzpV0f8TiZbPqRGh80/zOiGEc0MqdhLqlMpC5tBoc=;
-        fh=ykqp1Xzj6LLy07D+7IBjlmsiXZPX8nzGEaMLHRXPlxk=;
-        b=FWCJBsCxgHOf8Y9Xd6h2eDxQhK/9tXOa9B6wkE2Nm3yRh9LjPXK7+jxffBQhGD1/37
-         zqc4g1aV83w/GCm8PKSkWMvu/vmhVP1CMC+ddzqAg5q7cito3C50Qs2g5QmNMD+KZ7Un
-         tmZ03aICJ0PDq8++Xe+r9xmLZRiNYIzC8QvlgM001htcO3wMjUTXJhSgpa2Rp+cP61pS
-         p6pVRzKXtxa7OQXI1ftgydwL9KuO8pV+JEU0/KRF3HliWb8sAohwi1ep9Ek0XS9frk9Z
-         NOMJ1ej5vch3usGrVWGiErQYClfTdaF6X95YYbOvr/LxXNjN2yA5xyD6e9LuC1p8/l9C
-         xfjw==;
+        bh=wOT5aN6Yy5qJKZewfMWcjccfRN+5rZDXSfjUVT7TFfA=;
+        fh=ZrVCdPvH1JWhxOFrnbGtvq1lgO3m7Jv2vUJT56UcbMo=;
+        b=O80zHQUVgM2jE/WxIUDIxkwA5eVnaqJHABrdRsmuIeIW6Rs06MLKZqzVdQjg9DOH7M
+         AfVkyTNtOouJu33oDAU3oHE3EAZ9Yg9I2E7lbuEIgkaFb/GLSA1r2STnnyesgJLokvZ+
+         y9y8sTohNZrkgH0rp3DUNJ4SsB0L9ScnSJiPnM6ho3pywPPzfcmfeTyTXhunllHVQnx9
+         qs5cVkgV9w1ulhtKdzSgkG23F268xG10Xtk6vCD1kCgIwoL34ePYg31fh45Py/apUdf2
+         xAe4QfQKy1Wn/e/UyWFU6V9CLibGghCLgfr8rciH0crehRAFlRRoK1RylWx3IHiRx68M
+         guzQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774726134; x=1775330934; darn=kvack.org;
+        d=google.com; s=20251104; t=1774727120; x=1775331920; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TgKzpV0f8TiZbPqRGh80/zOiGEc0MqdhLqlMpC5tBoc=;
-        b=mdYbZ3MXqWDihxAlzA1IrZ3Cr8HaiXHnDI084evxqUsnjrI4y+x05ehrkH0MC8eGuj
-         8/Rey9g2BcLEEJvPJIDMSMt84crADb3yHx0wfYmaDP+8IB8oXJ8fOcns3Xmx5vFqCRS7
-         GTN7SQzmKkuQraUWel0bHD4TXPNNUMCgkYXFUTgNNu8sDN2kgvSI5wHHdYv9EDIpe++U
-         nn7bUQwEuggYGpD6wyJzTlWX0HdxGg8Zmoqqkc2BtWvrpIiWQAVKWfZk/HdZ+n23KO13
-         wXr8Zj9WcOfqMeL488ii4XIB3fjyCd7ofzclvuoFJmscm4y1OiyW6mhzH6O7YdQvaMMq
-         /d2A==
+        bh=wOT5aN6Yy5qJKZewfMWcjccfRN+5rZDXSfjUVT7TFfA=;
+        b=hhiefQEF/52sZXvkrAa/qIRR0Pd30VIwhlzfchIr5OR6flQ8tUNq05G0mAhOYD4EQe
+         Pqhhm9V/2RZ0gPHHK5/b2sPvLAGxTosNTJROswoIRbtXt6x9XwIJEW0iChfBUIVfqz+g
+         l3bchXdEUpW8a5swUt+4DeIde29YjpXNVybbojFjLvgVWY3o3D2RxNk+4zq+HXeSkVbm
+         b0xcmFDVL2j9cQd/OmUCSthU9SLHsF3/LFui+2A8ptR9l8Xs+r5EuEPU+r5yyHfLX3q/
+         d9ynSZBpE1tNR9EesvT+saEOQ1RO2JLZS9ey7d/50cPWWxFp1TC/DCv3JJTOjJvEY+33
+         XBRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774726134; x=1775330934;
+        d=1e100.net; s=20251104; t=1774727120; x=1775331920;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TgKzpV0f8TiZbPqRGh80/zOiGEc0MqdhLqlMpC5tBoc=;
-        b=Z+Jz1qf8yQN7Mv8/AFHuip7dVaeIBrzu1U99yA726vR3Ez9dWm4c/hmilXkZ0LmBtn
-         24+R7ohzD127PFw2fN+CNWyJL5TwiJNqjVRWtoS2t7GW3MzP+fp63n0iA8x6thdWrwYr
-         A2WjCkTQs3D05OR0VvqFVMUwuUdL8xFM5potJWGP7sO8loY5SEVEXGiBKAPBniouSFRV
-         6su3RwpgUpqZn6c1UQUb6z9gfN1oOT7+1FNTQB94QQRh4NAHcBXvFwtm3A42cMrvftXV
-         pbz1cdhHhlzwZ2YPwos/jcJc/QzJiYONC1qWPu5BS+GJCSiRTdrrGxXpZLKasAO/KB7f
-         h+EA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJbpEBV+xojLfkr+CeM88+mdf17ESmZURGDW8blFlI7oB84kRf1YOlgDQ+T6o7obuy6wu5gjDsig==@kvack.org
-X-Gm-Message-State: AOJu0Yy5MwI/oNoiY5E+P+AmyQXemo62vF5QkTZVHC72TRVa34hwRtPP
-	KXkN6bt1h6chXrMObdY18iBh5XL58ggKRs8nUGgbYH0THxGnJ5j9krb5EO9tVOcfjovxW3Xoe37
-	oRomYFKiv7b593g1YPAH3ssOd0QOIk5HQYGiLZj3I
-X-Gm-Gg: ATEYQzzlexoDQrDCyYnS9WBE46mcVZaEGqF2hjguaaHlwzW9cDzqbe8t8rmmQ0Ulsfm
-	yprRpEBd4Qt/pMCQojb6rlIzfxUF0haJr3pRD4i7flHV1JFOwn/ABvgFv7q0OAJxe+9RtaXAP6w
-	w3zNaAO+0Nishh4et6VMKeR/D+6jqwLlJwFn94pm0yqXF3+nDuaHj6rsb04hcuukggdnFw2GzGI
-	vDlDcYIAjDh9rZi/NJykJy2+SOpHQXyuAq2A10iBkgh4djiuiLNqVg4gZ2AJd4Ip/Dh+Ot0iKvw
-	Aea+cQ==
-X-Received: by 2002:a05:622a:4249:b0:4f3:54eb:f26e with SMTP id
- d75a77b69052e-50bb3c66284mr11091651cf.1.1774726133983; Sat, 28 Mar 2026
- 12:28:53 -0700 (PDT)
+        bh=wOT5aN6Yy5qJKZewfMWcjccfRN+5rZDXSfjUVT7TFfA=;
+        b=jl77O5v8d+OyvGtodHb8eIQebN//P0oN3lPjj1U3PBwOMtkKMxWzmYPsXHY53FqHrC
+         0qZBWyNkBDbQ+YgQdJsS4KOykvfS6wQuPESlIdv2VariJSDev0zGUTu6KlCfi09PCLY5
+         VElYaZ+Ex0akVYCsLNg/aM4ofRj1T7mssjvWfO2qY0X9gyeGi0ledXMAFSxqsCsmwhDv
+         x8WuxshKVPGWYNXk9FJiNsBezIEcz6T9uR6LCcJlhOoYfsFb+mt0WaV93Au3dtlDhI1b
+         Qv2kWtyXdxSeLnlh3jc9MLKUg3t65whLKR43fo5fNy1JT+DnD+3kC9Z3qwHp8oqT/APd
+         o4DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWP24aZ1ArXu3Pig+u2874aqsc8UAG7wCPMjIMcY0/rwj+DwzMgNK6fnfJxZwVW/8rkfhrM+cuEHQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx+wyoKQyae2gLys9kesXu7sUOeCiXCjjBO42BSFObSr6EI272C
+	qyJQCdfDeDZHFhQ3WsbZwVVD6XZLMR70gOf7bhE8S8zGr7kwAkIJvS5Q2xX2wxPC0LAh6bCudoj
+	ujqIPTedX3iTMOqjGkjbM+xvySKs9jpN/zojrecdv
+X-Gm-Gg: ATEYQzzQwKO8MykZ8KNYmRD7pgPKGSrKowbDi7h5zn90Z01vpACpqdj7Ni9ckshgM/P
+	dFXxORQL/yyxVvCpzPyBpaIyxvlgVagM+/xSy2UpJ1BdqEd3ucA7USESRPt9ayjXoZChImJ9y9A
+	c2vRkX9FsWQbkzoCUmRIrxuzV6YrE3nHaPkH5sxjbw1JqSOwLrNaFJCwOHAXm51k/+/OSvRf303
+	okgnwavuMkMfLv7I4A1RI0ad0WP/UnYakmjLQ1a1eEBcSMJIQXmXMXCafp3AYJWzH67r3iPOTVn
+	98IdZg==
+X-Received: by 2002:ac8:7f90:0:b0:507:35b2:6b9 with SMTP id
+ d75a77b69052e-50bb3d40d81mr10448451cf.7.1774727119188; Sat, 28 Mar 2026
+ 12:45:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1774029655.git.ljs@kernel.org> <b677592596274fa3fd701890497948e4b0e07cec.1774029655.git.ljs@kernel.org>
-In-Reply-To: <b677592596274fa3fd701890497948e4b0e07cec.1774029655.git.ljs@kernel.org>
+References: <cover.1774029655.git.ljs@kernel.org> <c2be872d64ef9573b80727d9ab5446cf002f17b5.1774029655.git.ljs@kernel.org>
+In-Reply-To: <c2be872d64ef9573b80727d9ab5446cf002f17b5.1774029655.git.ljs@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 28 Mar 2026 12:28:43 -0700
-X-Gm-Features: AQROBzDBQ3SPeGlkEFLJaoaPBwXp_hUaNTRANBZ7WzUX5ZmCUVer4SxAcxyLTgw
-Message-ID: <CAJuCfpHVHcqxmwvLUq6S_yEqBK3L15xia0XqhRBYzVOtjKRf4w@mail.gmail.com>
-Subject: Re: [PATCH v3 11/13] mm: add softleaf_is_valid_pmd_entry(), pmd_to_softleaf_folio()
+Date: Sat, 28 Mar 2026 12:45:08 -0700
+X-Gm-Features: AQROBzBe7wmE_LywvyOSjvh0vtGoVDqrkmnr6QHNpG3Sc1BM2A4FO5RBot8Ad3s
+Message-ID: <CAJuCfpGDWLtUHpXLyB7UA9wva9q7RjG7coOiFaL-Os_x8BNr-g@mail.gmail.com>
+Subject: Re: [PATCH v3 12/13] mm/huge_memory: add and use normal_or_softleaf_folio_pmd()
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
 	Baolin Wang <baolin.wang@linux.alibaba.com>, 
@@ -128,14 +128,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: s11tfcugnpreher93bnfgcfzrmsmxwyb
-X-Rspamd-Queue-Id: 823F61A0002
 X-Rspam-User: 
-X-HE-Tag: 1774726135-549488
-X-HE-Meta: U2FsdGVkX1/vXyuDbceoqdgzm9E/YZSDfZyDOAJgP/upUkf6AQrK9FT+QNeQGpOdqTqxCU7rIcoLTc0sswuNA75wfaHJHFPH1XaOOYc6Ga+Edm3LqREbdRMsfQpvjGimzimcDuw1Y0V4iE93CxybX/wsjgpImaardk6uii4ABos2jnekAr6Z7HPRIqDXDnPF/9Kdz1Pu5+wsAqmbn7bF+uSsH1KlEk4H65tpJIrcxlR6R84CE3TsVyikFBBOWO6w35YAcmu/y5aBYbUb574RRTvT1ISI66vfUVGAV6HHAQqetotY3j7XvmDx9p7WAW8Sh3OMXKkCI3zSmKRi8NlQGFidNRSFuk35/fY9tUZ0ldfVnTsrOy8q14mOXKS1sVBHFM1F/rG/PNQ42l5UtM4vGRNdzzemwCnXzMOgnIlJM+D89sMClQuCDrSO+hRBIxr9/HDk0YktyUdYycahv3rLQDvwxSJmXChTsZg36H9/oWSWMkmvSHN0afO/E9hetrnPOuhN9Yi44LNjb4Esl4Q2zejABbAOoJhUTC/5HtcPfy1PbSNnIa8lOsD4CHU6CknFvVegeDCWNCjCkzPJHusnhW0094jlhyP/tTXQV4Zwa0DIM2cXyXzqLdAyvQC+BFwf1myQ9CUqy3eaain+ycyMeL+pjlNcp0WSU7xgcWXvHhp77UsEkZtt5UkCzOkTjNsb7ntORqPk5USynqR/DFXjrK/9Q+dhpZry32q9fgkUoWnlS/8D2aN+famA2M+t3e8qOVZM5QiF3KPoB7UyAmpdQz8EWbn3mHKIEyOrjdlQxRBbTy15/H7L2oy1VRpwCxaE/FAS4bFtYzBltPOCxJPeTMPhvVBZ+zd+EWC58DdT5YTFRTdWF+w8i1acTiwItEoRDybCSVgdi0MS00vaa0+o9CaYDYjlC4cZaZiob0yYvIpVejsnAS4k/JNnWWvIYyamnZHouP4IUvm2unGsZ1u
- oErLGTWl
- 3A7GJqsz0im0NnOI8oubJoxxfYX7a11ZctGOMAxx8CF7SwkTs63BdohY9a5Koq9fqydAKhlH4sZPUoB9lomNArNbQpxlP0aMpeBx6vj1Hj6yB5NI9nFqO7IjDOcgPiWoRg+Li+c0cgjnpPtxQ8QI6/LBWL6qmzDJnu65LyTKiejqfXoW988bIkFNzqlxvA7mjWuCYf53/9R5H65OoFYWxX8N2BAmKxnQoGJjMiBPmj2R9vk0rzp1V1R+Np4yks4PEN5dYbcd7WNH72rvHzhCok852PF6ClDjCU+UILvZr+rmOAamsCV/fM6sYGNK77yFKqlrs/up6XmyaRRg=
+X-Stat-Signature: a4acramcs3q16oxc7hcay6fnyiqocaf7
+X-Rspamd-Queue-Id: C6635140009
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774727120-543719
+X-HE-Meta: U2FsdGVkX19pqvv4KZi5YCDCaHeLL7ot14EwT0oHCSP3vibtfESzWzhAvvlXi0F90x7uffyn9AjEBtukzLCfMk0JHyv9YaM51wwTWkg8MNV6bgSQPcRMykFrU5zGnqFRrMPEspeWcJagE1f0SarYDz5D1P+SN4DJSD1K2376C1SXxyAU0reZ18CKIMAYYOJSakVH3DD8U9bu31ncEM5Qt2ROu2L0q1G2RyZEO4oMVQ3sjlS0knp6mSF2Bc9itPyK/nrdYz8xyZp5DBZ6s8ood0NYINNyEaB1WTxQJpxNQ4E0uc5YQXbduOAIGHjyKJjODcV5H3NxP1DoSjwUOG6ukylOd9ZSZDJ58d90vD98022hhDxYp3Vy1okZ7KiKDuQ2o5ZOAYhIOva3ipULi+a9EnL5Bny6Bf8+oO4DSD/O8FxzJ8Mu+d883+t/oal/WPLmOLYnK8jBp8IeyMMCITeqBmPas6Sq6s3GKQwoGd1kbIyNT+d9oG0UMY7/o3WBk4/62NyYxPghy1h6bo34aj8TRsA5ethKJCoFxOgclzaiHr1nI8G61fCrLij090sBkdtqlDk8ehSKyKppEth0ofmkf49C/Lybytw13Y2iuuh0gGa+XLgi/1iCfS5UOmXoUKlV8gvDYOvYvrTy7hZlvhKcdx9FBb92bkYAqwmBoxV+6qWPTxeLMDo8L3RGaQnzFCw3WDmJiVZeqKT/A+JnscFn/hBXGMJMjcoRDmUlpoUjrcfgzI7AWB/ji/fxkU6TdTAbvDklynT8qK3z0rJysRJWRiMZUD8TSRG/yubumk1sBjYKggcPH6pdcSjd6qTZJanFtJosQbTyyWifUZOwmLOmUHxVQRAW9ixHGEam3K2qQiiwq4c6vPZ4WNwpi9hawXK6T7oTX4stXpDPSyOgQJM7bxxLGy95ecfa1wngVprxEkAvWHY6AFHl++Xd9144U01hWCQ0dyJTsD10buuXQ0b
+ xOOBDBLS
+ nFLsh8ucerfY02S7pxzXyVoCZcdr9THmRSk4hvqi1xIzv9JksD7a3JwvvjJWwBN5aQj2P+jP9JvatJAIkY+jpQkAByFhAwvJQUizK+1bN45gF5ixe2UgxXAbIrSujFURZCOhZkDOTN6jqvP3PxalxGDhEA2Xan7oyiJfwaA5E/VwwCQa1NwJcMwG4aMXY/9rdJIOFLzhAPWHTkm4Qr7rEuqBkm8Eh2zb8t+uTo8+kHPi75w9vmqnoq7isy7/YouyqsxZxFRGBM7Fxw1/JOJXkawcowcxdZ2SVvjccDEdxf4eI3NUQhgsmRqTxuIC5RMKRo4JBPGZPY9f/tBwGQSpXpbgoV5zIS1dR3c6ZvCkexYoaaQ2xZ59yysaZ1VPxyNHJiNz9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,92 +146,131 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Fri, Mar 20, 2026 at 11:08=E2=80=AFAM Lorenzo Stoakes (Oracle)
 <ljs@kernel.org> wrote:
 >
-> Separate pmd_is_valid_softleaf() into separate components, then use the
-> pmd_is_valid_softleaf() predicate to implement pmd_to_softleaf_folio().
-
-nit: I strongly suspect we'll find out why you need
-pmd_to_softleaf_folio() in one of the later patches. Not a big deal
-but it might be better to introduce it in the patch where you use it.
-Anyway, this is minor and not worth refactoring.
-
+> Now we have pmd_to_softleaf_folio() available to us which also raises a
+> CONFIG_DEBUG_VM warning if unexpectedly an invalid softleaf entry, we can
+> now abstract folio handling altogether.
 >
-> This returns the folio associated with a softleaf entry at PMD level. It
-> expects this to be valid for a PMD entry.
+> vm_normal_folio() deals with the huge zero page (which is present), as we=
+ll
+> as PFN map/mixed map mappings in both cases returning NULL.
 >
-> If CONFIG_DEBUG_VM is set, then assert on this being an invalid entry, an=
-d
-> either way return NULL in this case.
+> Otherwise, we try to obtain the softleaf folio.
 >
-> This lays the ground for further refactorings.
+> This makes the logic far easier to comprehend and has it use the standard
+> vm_normal_folio_pmd() path for decoding of present entries.
+>
+> Finally, we have to update the flushing logic to only do so if a folio is
+> established.
+>
+> This patch also makes the 'is_present' value more accurate - because PFN
+> map, mixed map and zero huge pages are present, just not present and
+> 'normal'.
 >
 > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
+One clarifying question below but I think I know the answer, just want
+to double-check.
+
 > ---
->  include/linux/leafops.h | 39 +++++++++++++++++++++++++++++++++++----
->  1 file changed, 35 insertions(+), 4 deletions(-)
+>  mm/huge_memory.c | 47 +++++++++++++++++++----------------------------
+>  1 file changed, 19 insertions(+), 28 deletions(-)
 >
-> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-> index dd4130b7cb7f..65957283fa9f 100644
-> --- a/include/linux/leafops.h
-> +++ b/include/linux/leafops.h
-> @@ -603,7 +603,20 @@ static inline bool pmd_is_migration_entry(pmd_t pmd)
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 9ddf38d68406..5831966391bd 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2342,10 +2342,6 @@ static void zap_huge_pmd_folio(struct mm_struct *m=
+m, struct vm_area_struct *vma,
+>                 add_mm_counter(mm, mm_counter_file(folio),
+>                                -HPAGE_PMD_NR);
+>
+> -               /*
+> -                * Use flush_needed to indicate whether the PMD entry
+> -                * is present, instead of checking pmd_present() again.
+> -                */
+>                 if (is_present && pmd_young(pmdval) &&
+>                     likely(vma_has_recency(vma)))
+>                         folio_mark_accessed(folio);
+> @@ -2356,6 +2352,17 @@ static void zap_huge_pmd_folio(struct mm_struct *m=
+m, struct vm_area_struct *vma,
+>                 folio_put(folio);
 >  }
 >
+> +static struct folio *normal_or_softleaf_folio_pmd(struct vm_area_struct =
+*vma,
+> +               unsigned long addr, pmd_t pmdval, bool is_present)
+> +{
+> +       if (is_present)
+> +               return vm_normal_folio_pmd(vma, addr, pmdval);
+> +
+> +       if (!thp_migration_supported())
+> +               WARN_ONCE(1, "Non present huge pmd without pmd migration =
+enabled!");
+> +       return pmd_to_softleaf_folio(pmdval);
+> +}
+> +
 >  /**
-> - * pmd_is_valid_softleaf() - Is this PMD entry a valid leaf entry?
-> + * softleaf_is_valid_pmd_entry() - Is the specified softleaf entry obtai=
-ned from
-> + * a PMD one that we support at PMD level?
-> + * @entry: Entry to check.
-> + * Returns: true if the softleaf entry is valid at PMD, otherwise false.
-> + */
-> +static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
-> +{
-> +       /* Only device private, migration entries valid for PMD. */
-> +       return softleaf_is_device_private(entry) ||
-> +               softleaf_is_migration(entry);
-> +}
-> +
-> +/**
-> + * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
->   * @pmd: PMD entry.
->   *
->   * PMD leaf entries are valid only if they are device private or migrati=
-on
-> @@ -616,9 +629,27 @@ static inline bool pmd_is_valid_softleaf(pmd_t pmd)
->  {
->         const softleaf_t entry =3D softleaf_from_pmd(pmd);
+>   * zap_huge_pmd - Zap a huge THP which is of PMD size.
+>   * @tlb: The MMU gather TLB state associated with the operation.
+> @@ -2390,36 +2397,20 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct =
+vm_area_struct *vma,
+>                                                 tlb->fullmm);
+>         arch_check_zapped_pmd(vma, orig_pmd);
+>         tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+> -       if (vma_is_special_huge(vma))
+> -               goto out;
+> -       if (is_huge_zero_pmd(orig_pmd)) {
+> -               if (!vma_is_dax(vma))
+> -                       has_deposit =3D true;
+> -               goto out;
+> -       }
 >
-> -       /* Only device private, migration entries valid for PMD. */
-> -       return softleaf_is_device_private(entry) ||
-> -               softleaf_is_migration(entry);
-> +       return softleaf_is_valid_pmd_entry(entry);
-> +}
-> +
-> +/**
-> + * pmd_to_softleaf_folio() - Convert the PMD entry to a folio.
-> + * @pmd: PMD entry.
-> + *
-> + * The PMD entry is expected to be a valid PMD softleaf entry.
-> + *
-> + * Returns: the folio the softleaf entry references if this is a valid s=
-oftleaf
-> + * entry, otherwise NULL.
-> + */
-> +static inline struct folio *pmd_to_softleaf_folio(pmd_t pmd)
-> +{
-> +       const softleaf_t entry =3D softleaf_from_pmd(pmd);
-> +
-> +       if (!softleaf_is_valid_pmd_entry(entry)) {
-> +               VM_WARN_ON_ONCE(true);
-> +               return NULL;
-> +       }
-> +       return softleaf_to_folio(entry);
+> -       if (pmd_present(orig_pmd)) {
+> -               folio =3D pmd_folio(orig_pmd);
+> -               is_present =3D true;
+> -       } else if (pmd_is_valid_softleaf(orig_pmd)) {
+> -               const softleaf_t entry =3D softleaf_from_pmd(orig_pmd);
+> +       is_present =3D pmd_present(orig_pmd);
+
+nit: With this you don't need to initialize is_present anymore when
+you define it.
+
+> +       folio =3D normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_pr=
+esent);
+> +       if (folio)
+> +               zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present,
+> +                                  &has_deposit);
+> +       else if (is_huge_zero_pmd(orig_pmd))
+> +               has_deposit =3D !vma_is_dax(vma);
+>
+> -               folio =3D softleaf_to_folio(entry);
+> -               if (!thp_migration_supported())
+> -                       WARN_ONCE(1, "Non present huge pmd without pmd mi=
+gration enabled!");
+> -       } else {
+> -               WARN_ON_ONCE(true);
+> -               goto out;
+> -       }
+> -
+> -       zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present, &has_dep=
+osit);
+> -
+> -out:
+>         if (has_deposit)
+>                 zap_deposited_table(mm, pmd);
+>
+>         spin_unlock(ptl);
+> -       if (is_present)
+> +       if (is_present && folio)
+
+In which case would you have a valid folio and !is_present? Is that
+the softleaf case?
+
+>                 tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
+>         return true;
 >  }
->
->  #endif  /* CONFIG_MMU */
 > --
 > 2.53.0
 >
