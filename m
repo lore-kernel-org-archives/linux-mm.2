@@ -4,113 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D660010F3DD9
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 10:51:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B588610F3DCE
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 11:38:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E0F66B008C; Sat, 28 Mar 2026 06:51:29 -0400 (EDT)
+	id D95526B008C; Sat, 28 Mar 2026 07:38:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8927C6B0095; Sat, 28 Mar 2026 06:51:29 -0400 (EDT)
+	id D462C6B0095; Sat, 28 Mar 2026 07:38:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A84B6B0096; Sat, 28 Mar 2026 06:51:29 -0400 (EDT)
+	id C5BF36B0096; Sat, 28 Mar 2026 07:38:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6621F6B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 06:51:29 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E74E4E1EA7
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:51:28 +0000 (UTC)
-X-FDA: 84595155456.29.5CD4425
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 272EEC0007
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 10:51:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="XxDEF/Tl";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774695087;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v6mIvddxM5IjpL3Qx7QZ8ftx4Ml3402nVTogMhOqdes=;
-	b=jkQS2VvrbKeCfeWpP4/xQCxu1606hncLNy1mec2uvahZYxgRFCpVQm3JrLuoagu/DaTshG
-	gXzPihUESP87mHMC/ZGLLwjtxduVq7YaekFrBh4RiAfAm270oCjSobkvZmMMUop7HgPKRx
-	LJn/lMRiLSSXSmoDk4UbTOkIl3cAYVs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774695087; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B63A76B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 07:38:33 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1AFA616011F
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 11:38:33 +0000 (UTC)
+X-FDA: 84595274106.22.3373301
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3164B1C0015
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 11:38:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MzGcj1EL;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774697911; a=rsa-sha256;
 	cv=none;
-	b=NvmPfDuPmbkfrCTtljjtDSHNJeZB8B03mWLGNnR61AkIHINUi85BiY8hFaBdVvRNoJBsMR
-	1GMesKnIrcE94l548NA9CB8bxXQnZxb4GrGMQpUSg6dMV24agsgxIWtXzeOmLwdIYfKPHZ
-	6tJ+wzUp8HVnS/TT3niztUCh97MsomU=
+	b=4+jSByiOrYz4o1Wy4qFWIccN9xcN8qA8nED2D6SES2IaMDYKMjz2VtCklzZqoF8+1BC/6b
+	ZvV4nqlLkNNeCJgSEptiEuuUm78ycxnb+c7FXX4Fhwnzt/tXan22d8gpto9Z9kq+TvNbPR
+	xMYKgdSN+nhjsV4Na92+dt9b7eGvnKQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="XxDEF/Tl";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cbc593a67aso320376085a.2
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 03:51:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774695086; x=1775299886; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v6mIvddxM5IjpL3Qx7QZ8ftx4Ml3402nVTogMhOqdes=;
-        b=XxDEF/Tl1OxXkRS39KxzuyFmmLYPup/k0DOivjS6VgCCUwnibRr3w/dcSCkQnRek0u
-         1Njo8PERqBhu1UCykMVhbKWkNEYd3mq3t1/X8Jg0USAKzGa2X7NMIdqr01mdbSI6QFah
-         freML/eBW0fFaNSDDicdAn/iLbI1UpX/SsjupEcpk+ABBAbNa1zTQ56rebnBf28xE486
-         sN7WwxxmruBay/0061CMlvcPKGIey8PamDqSDWIYQSfE+bQu7to4zX6EdJdvYnge87Uk
-         mXA/jbdWh1xFBtN96ILpRZrbXXIIMHqfYPn5CNbC3TMsZ0h9MZ82G3KTOI/WmKbpYpme
-         oZsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774695086; x=1775299886;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=v6mIvddxM5IjpL3Qx7QZ8ftx4Ml3402nVTogMhOqdes=;
-        b=dFaSD23b3dr6sftHK93y+VPQbE4QJEvHoBa9nAePPPGWSwhOVymUnmBoPlZW4BeZ1a
-         y1gUVlX7YsXNntZOarC6BaOJLotUJFtFjwcVhToPWuwOzw9k0fBS9mQzzzkXP2Nuh7X/
-         7ndSZxC1ZKq0FZPuM0vEFAIAszmtpRpnW2SpNnUiPkzbfdOKibzYVgJZ//bTbFjxVYm/
-         6KMdtBbKUzSLbo0K5vU3zbXKEn+1/VqBxAMK1YieBYowvtWPxtQ3vyBkSyec7LJV9i8e
-         Doi5vQ4SDSwdbi6uqXjaRn2BnFvOIXgmed8X2YZMKf/5hWOBuTq6ksT6fnd4Vj6nUGCh
-         sZSw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFGvX84/1+WAMJaCkRwvGbOJBhRz37oM1dDX6CHNXlT6QKzCWh0MSqPXCQdZhW8jplP7fngRcrVg==@kvack.org
-X-Gm-Message-State: AOJu0YyDJnS68BtRDt/PeIrct+glKLXJK2acqkUiGk60YrCy4vx7LbT3
-	G30vylaiE4Pm0yes2vj2dtjWEIR9mC7Cyyq0XUsJZTsKGRHVKdvbU0l3cGpz9Q==
-X-Gm-Gg: ATEYQzyQw7hPqfyMlMEXcaecKBxiG02yb7aQZLaTzH1ti6P9cZ2zhAcbfBNliK3QkIu
-	9pOxUSKGg8e6mOK/pKLGMplgNiT6mhFsxcbHhgyzAWSMqCXIgUwLqcSzrLgCDX0MsKKgVH9aEm6
-	QdFrFrQntFrZwv+4CqR/abdzeJRGpPESbDjBefIOy9VK9ugApCL5Fl6xr7VHRiKaSGQVSWB6Sur
-	B6Rljod1EEogDL+WWpM8ZryugndGDqnvHFYu2huwauABp+E7tb2u+g88b6TLM6YE5EVcVp6UbR2
-	ka/u5L1QpMcBrkY/g3mbwlW54Y3siRrl2NUjyl2L0ExSp7XknjGCWbVV9RPyhqFIXjokRztVAc8
-	tup/sM/hNaokxxB+oEKZIu6wD5Ku4x7KDC7ua5zOQC+t6Y/HLMn3dMe1scZNAkyDrxNwdyCBi3g
-	ZCSLaTmrTw/i8A6WZ5uv9pPKY5O0c=
-X-Received: by 2002:a17:90b:1850:b0:35b:b52d:f34d with SMTP id 98e67ed59e1d1-35c2ffaffdcmr6074190a91.5.1774694693018;
-        Sat, 28 Mar 2026 03:44:53 -0700 (PDT)
-Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c22a82231sm10415940a91.6.2026.03.28.03.44.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 03:44:52 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com,
-	sj@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH] mm/damon: add synchronous commit for commit_inputs
-Date: Sat, 28 Mar 2026 18:44:50 +0800
-Message-ID: <20260328104450.14719-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260328093603.10052-1-aethernet65535@gmail.com>
-References: <20260328093603.10052-1-aethernet65535@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 272EEC0007
-X-Stat-Signature: jjtpwmxaa84y1qfudxabotsjnh18egt7
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MzGcj1EL;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774697911;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=LF2CdVjlcjVcud/X95Bs9eYig4NF52XE4q7gRu0jEac=;
+	b=tkc0CEmBP27OPqmj8qUxM5yWDVqvJyIliw6hhobO33vo0AljyOLzThoHEg7uxiNnrgsbhk
+	CtVLQZ2nQaoemNhbAAvFsls53N41NhwTLqDIGebrb4XZzHUps3Bko5E4e3H4Su9X2PQJEC
+	mMDoBl15cly/YWQyEFJzkSl36Qj4E18=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774697910; x=1806233910;
+  h=date:from:to:cc:subject:message-id;
+  bh=5Rr4AooKKmfJgYDb66FBUnjjc6oJI+QMw2TI8Kc8uKQ=;
+  b=MzGcj1ELOsfjQ2r+/npyPPaajiEB7uZCXdpSAUyZ31ed1Ko6uG6cF2gZ
+   wRMh4zY2mOkb32g+1ctNVjB4tEWfuc6By65gkiwQigF+t2FpN3buD4r1k
+   xUfjUO8rCaT1SvP78Te3iNl3Lfl31wRVh2bVhj6OVJHznxan+zK4XGh7w
+   WuEZ52E1nUq3QsNA6gphEnxS21uEbnoKsz9G1xpo75DtXvs/g75TxOeNM
+   8R/ZrtPRqx8Go2pnX2yG/1U2A3CHy2A2ANXZciHhp7KPb20V4tjcg5/6J
+   Pi+zE4+8UuW5rowzccUNadq4cmZ7nrXmkEQ/WOC+hhKAJkMWYy1eG2fPj
+   g==;
+X-CSE-ConnectionGUID: jpXeQCulRdWveUVu895x/Q==
+X-CSE-MsgGUID: 0p7QDJNbR+mrCG7xngmUVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="75726242"
+X-IronPort-AV: E=Sophos;i="6.23,146,1770624000"; 
+   d="scan'208";a="75726242"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2026 04:38:28 -0700
+X-CSE-ConnectionGUID: qKA+b5gMQ+aazLXUe1E77Q==
+X-CSE-MsgGUID: AQ48FAU6RsCV8gO72pW0ng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,146,1770624000"; 
+   d="scan'208";a="224593753"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 28 Mar 2026 04:38:27 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w6Rzk-00000000BMl-0ryX;
+	Sat, 28 Mar 2026 11:38:24 +0000
+Date: Sat, 28 Mar 2026 19:37:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD SUCCESS WITH UNVERIFIED WARNING
+ 3b058d1aeeeff27a7289529c4944291613b364e9
+Message-ID: <202603281945.WmgE4oTf-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: 3164B1C0015
+X-Stat-Signature: qjcqkjxzoa9pg8mk4muwgqmdyu1x8ozo
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774695086-955793
-X-HE-Meta: U2FsdGVkX19xMfEXm5UFYNK0wfNND9U4OirZ+wM4mk+OlwHFy47SokOnLj/RQoM5jBfRADClbL2Sh9Zspsz9CS0sDrQWij934xuRSoefDfqFiUwld4WxdH4uXMf5HNZvwrjABSPWyJhZJ8IFLmmHpQGwZS4Tbnro9HtV8PwZAnY+NieWtXIV7trFLegsS1uWurXMad6WMJnG35kVaEe8KiFTzjKZXnUZEqVolws5MM/V6IxIFRIgEM0pAVzAuY2Sr2JOhbw/2k6Cto2T1bnvEyA+rI6XUtymZeNbNDSJTNXD1G2IBCgzbEGrYNjMUfNJ8Zv7zrvNAW6R+qwAutml0lS0InMLg2erIBMCxfLyMG4f6AGl9cb9eM4G6kQ385onR1f52hffORo8CMvbahi1XtE0ebjXOuQG1IxQlKfztVKqyyXGxtCmKPhNFhWk2O7LEW7QUavPhLkVziy0Nm8QLPpF2w75OwiYD91OdTBruCtdDHyPzqQtW1P1d+hk/aHreFdlsvXZRXM4mLhqoguD4b60Lx7z53aQZpERCOpEeyO8TFTNX4TO47wufNZ5sdskz7OqXqMPiVCdkxxUo5YKIiPtWxC8A1pPR3LbLBN5a/g8LjN9p8+o00EkOTVoV+0r67P5tReHZnZEI92lHm0fQRq/sNSoPt0/KoHnWxotcjYmuLg8GxAL8r4U6cmj8Nj9mq2Ircwv6JVdw7KvH1Ypx2wHvVea7S2MQJu5Tkgdlof1tVFuW2D1uMM6g6CWQSSblfi16y3FcY16tP+/n3RYGK+HPeJTvxbOJs6fVuoXIj7MnkItSi9HbfkigGqmaDAbiPHqFHHLkp/I4Ko1PBgHeiUzRQ1OWq8nOoufBgOmEbUPZ/uFIkGIqOVYVMDa8Gf8ZtN2NNXQRPlgyBzayVoA5Tkng8jmu9ei8a1rEQ/dT45yK7hWu3KMrBGFuRMgE6NcSb6+BTJYCj3vLp9JgQg
- 1v6+zuc5
- 65dU8mTEn8j7ddpq9WFE15hJdkpo9AW4PBlVAFAuaetgOnhXZyQdji4JttKCfcvp64ElBwKX+qWNfmQqabZ8Nrkru04t3kpXH2mlzL+8Ye7jYMdVi0XihYADY3MwlEPPw/RUoGhDFu1XfMsKcjok0FhgJ0NHBBpWIhitfmnbxtGAJl29QMH78gTTXupqB/9QvHmL1+vR2G1by4DKhDRQihXwoiCU0kvGVA67KCGJRDbqALcDjMb9MTNgBklfEWCRgLYhiVdZFvMZUcH0FWmQO2Yd+qp6axsoCHzKgJQFhm2kd6tn2M2zYRy/AL/4suq+2sNVkYUaY8JUhlLwe/PQOVjz/BzK6SuTLhv67Uz8+f09WSmmE0wdDeeXjv0xNwwALnmI6GvUg7+wvkqL7Ug/F1bwIH+LJgB7o7iOY+quzffk819UImyMVK87Ho6LpeEq4jQKezd/syOjQ9GZ7CweWZ80Lr2CaOiCPWhz4Y+rmXrK7h7Fz7TbkjLtcXS0tNCHYka1cd4Ih/sqCuGmB9VH8fsLK3EXu3fB3q5mQT29Ls6vXyOE0qerDUejeYIfwkE/ugLBfQwig/jVqBMTxszjN4BtkSg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774697909-136056
+X-HE-Meta: U2FsdGVkX1/H0pMBD2GocGyilYIWue70ugN0ZvOybUfxByaE9WLaP3Ohzo9FkuOXBJVP+hzC5w4h6t2xnTusmzTImJwKO6iIerKRVb2VyuHL9SvdPmNd+qggvQ5Oz4O65oXCS7kUEP1kQBZML9hnhcwa2Ohn68vUj2n65IXxU+5hqs63BGXHPzR1jXHaUL6GxnnnFZ6NDAMAmUlOZr7t2orfIjfcim6n1TpvuH5itskA6pjYZTRYixIE8Obk1zaVRSEWhdlMKWw8u1cZ22iVt543SpH9e7XWLK/zAX//OX/YOcrHzLuDOl+IAR3JPnFC9DnAIA4Dpujja3RVRdrOKktEpAI17f0Q1chDs3vB/Gi07BhlBvjkQZtiOQrnwW8YdBy3Qh6msibYid43ua+QOrB/sLL6flKlutifZfIIVz6zIKkq2aowVjObQXdik4cnAKUaNlD9iyvMYO9W1FMuAm7BE7MPLrBwXnjsOaQsNKVsjcFLWeHm38hiVYkGM5StOkm8Ul46M8DVTmGDPb/jwOct00RUrpqKqj75kfOWY/tU/ySB5Roklh5wn5OOGsiYDlKxY8JBIGBH80o8WDP9+loiKLZJGrUJonMc/YobJrXwbLg9JE9xjDJzSfSfAlxwFUT7C3ivkxF8U4BWXg2Fb0oUV0JNbIPVfRnMM4JtPnPCe6hDGn1t5kRyt8HR+Jqd3K4y1pqOHtOQFl35Qgzi9SVjS6pYC1OAdsAQRCv+zlC46QKcrIAcnAWnPYNrdddbItGauzho1+LCrw0ZhO9/bM1JQkK6xq3THhLjqdOXQoHzIGdV85Av0f6vmFYtVrj9dmLAm6XUjNeqnRbwc2H21zYRP2o3fmheLl7oIohWrh5xZ5pyOJkUGBEhjFlVvdfirHouJeluIUDl+bOqHnQsJvA4I5qqc8ueA++P4dFWwrZAJU8oU+pTLqLdYVsAR2g3imNHVlk1D3Ogqy9xd42
+ owPt/8g+
+ K4zgYUqOunT76s5yTU6WSlWS30inRa3ppe0lnIBWoInDIuy6fp3KhZOkuGSn1ij72ZNo6WZonE4kvbopy6zBrm8qf1g5TwJcgsqX11A69QKsOUfJsL65gcuhXyL8fq1dVumnUUk7p/4ZrQ4yjXwAQ34HJcBp5/cteretS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,105 +101,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +	/*
-> > +	* Skip damon_call() if ctx is not initialized to avoid
-> > +	* NULL pointer dereference.
-> > +	*/
-> > +	if (!ctx)
-> > +		return -EINVAL;
-> 
-> During kernel boot, start_kernel() uses parse_args() to evaluate the kernel
-> command line. If damon_lru_sort.commit_inputs=Y is passed, parse_args()
-> invokes this callback before the module init function runs, so ctx is NULL.
-> 
-> Since returning an error from parse_args() during boot causes it to skip
-> parsing remaining arguments, does this regression break the system boot
-> process by dropping after_dashes arguments intended for the init process?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 3b058d1aeeeff27a7289529c4944291613b364e9  Add linux-next specific files for 20260327
 
-This is a deliberate design choice. The 'commit_inputs' parameter is
-intended to function as a synchronous trigger (like a button) while the
-kdamond is running.
+Unverified Warning (likely false positive, kindly check if interested):
 
-Regarding the concerns about setting 'commit_inputs=Y' when 'enabled=N'
-(or during boot), I believe this is non-issue in practice. I plan to
-provide an update to the admin-guide after this patch is merged to
-clarify the proper usage sequence for users.
+    drivers/iommu/generic_pt/fmt/../iommu_pt.h:908 vtdss_map_range() warn: impossible condition '(paddr > 18446744073709551615) => (0-u64max > u64max)'
+    drivers/iommu/generic_pt/fmt/../iommu_pt.h:908 x86_64_map_range() warn: impossible condition '(paddr > 18446744073709551615) => (0-u64max > u64max)'
+    drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:476 mt7996_mcu_ie_countdown() warn: possible spectre second half.  'cdata.mphy'
+    drivers/pinctrl/renesas/pinctrl-rzt2h.c:518 rzt2h_pinctrl_pinconf_get() warn: subtract is higher precedence than shift
 
-> > +
-> > +	err = damon_call(ctx, &control);
-> 
-> Since this function acts as a module parameter .set callback, it is invoked
-> by param_attr_store() with the global param_lock held.
-> 
-> Could this cause a system-wide deadlock of module operations? If a sysfs
-> write occurs exactly during kdamond thread termination (when kdamond_fn()
-> cancels pending calls but before ctx->kdamond is set to NULL under
-> kdamond_lock), damon_is_running() can falsely return true. This would leave
-> the sysfs thread waiting forever on wait_for_completion() while holding
-> param_lock.
+Warning ids grouped by kconfigs:
 
-You are correct regarding the potential deadlock. But this is a known
-issue, and SeongJae Park is already working on a fix [1].
+recent_errors
+|-- arm64-randconfig-r073-20260328
+|   `-- drivers-pinctrl-renesas-pinctrl-rzt2h.c-rzt2h_pinctrl_pinconf_get()-warn:subtract-is-higher-precedence-than-shift
+|-- i386-randconfig-141-20260328
+|   |-- drivers-iommu-generic_pt-fmt-..-iommu_pt.h-vtdss_map_range()-warn:impossible-condition-(paddr-)-(-u64max-u64max)
+|   `-- drivers-iommu-generic_pt-fmt-..-iommu_pt.h-x86_64_map_range()-warn:impossible-condition-(paddr-)-(-u64max-u64max)
+|-- riscv-randconfig-r073-20260328
+|   `-- drivers-net-wireless-mediatek-mt76-mt7996-mcu.c-mt7996_mcu_ie_countdown()-warn:possible-spectre-second-half.-cdata.mphy
+|-- s390-randconfig-r111-20260328
+|   `-- drivers-fwctl-bnxt-main.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le16-usertype-error_code-got-int-assigned-rc
+`-- um-randconfig-r112-20260328
+    `-- include-linux-bitops.h:sparse:sparse:cast-truncates-bits-from-constant-value-(fffffffffff000-becomes-fffff000)
 
-> Additionally, prior to this patch, user scripts could configure parameters
-> and write 'Y' to commit_inputs even if the monitor was disabled, and they
-> would be applied when started.
-> 
-> Because damon_call() immediately returns -EINVAL if the kdamond thread is
-> not currently running, will this regression break existing userspace
-> configuration scripts that trigger a commit before enabling the monitor?
+elapsed time: 780m
 
-I understand your concern about backward compatibility. But providing a
-'commit_inputs' request while the kdamond is not running, is technically
-redundant. Since parameters are applied automatically at the next
-'enabled=Y', the new -EINVAL response serves as clearer feedback for
-userspace, ensuring that synchronous commits are only invoked when the
-kdamond is actually running.
+configs tested: 170
+configs skipped: 4
 
-> > +
-> > +	return err ? err : control.return_code;
-> >  }
-> >  
-> > +static const struct kernel_param_ops commit_inputs_param_ops = {
-> 
-> The previous module_param(..., bool) macro used param_ops_bool, which
-> includes the KERNEL_PARAM_OPS_FL_NOARG flag. This allows parameters to be
-> provided as a standalone flag without an explicit value.
-> 
-> By omitting this flag here, does providing the parameter without an explicit
-> value now produce a parsing error?
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260328    gcc-8.5.0
+arc                   randconfig-002-20260328    gcc-15.2.0
+arm                               allnoconfig    clang-23
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-23
+arm                   randconfig-001-20260328    gcc-12.5.0
+arm                   randconfig-002-20260328    gcc-8.5.0
+arm                   randconfig-003-20260328    gcc-8.5.0
+arm                   randconfig-004-20260328    gcc-8.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260328    gcc-14.3.0
+arm64                 randconfig-002-20260328    gcc-14.3.0
+arm64                 randconfig-003-20260328    gcc-8.5.0
+arm64                 randconfig-004-20260328    gcc-8.5.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260328    gcc-15.2.0
+csky                  randconfig-002-20260328    gcc-13.4.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-23
+hexagon                             defconfig    clang-23
+hexagon               randconfig-001-20260328    clang-23
+hexagon               randconfig-002-20260328    clang-23
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260328    clang-20
+i386        buildonly-randconfig-002-20260328    gcc-12
+i386        buildonly-randconfig-003-20260328    gcc-14
+i386        buildonly-randconfig-004-20260328    clang-20
+i386        buildonly-randconfig-005-20260328    clang-20
+i386        buildonly-randconfig-006-20260328    gcc-14
+i386                                defconfig    clang-20
+i386                  randconfig-001-20260328    clang-20
+i386                  randconfig-002-20260328    clang-20
+i386                  randconfig-003-20260328    gcc-14
+i386                  randconfig-004-20260328    gcc-14
+i386                  randconfig-005-20260328    clang-20
+i386                  randconfig-006-20260328    gcc-14
+i386                  randconfig-007-20260328    gcc-14
+i386                  randconfig-011-20260328    gcc-13
+i386                  randconfig-012-20260328    gcc-14
+i386                  randconfig-013-20260328    clang-20
+i386                  randconfig-014-20260328    gcc-14
+i386                  randconfig-015-20260328    gcc-13
+i386                  randconfig-016-20260328    gcc-13
+i386                  randconfig-017-20260328    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260328    clang-23
+loongarch             randconfig-002-20260328    gcc-15.2.0
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260328    gcc-11.5.0
+nios2                 randconfig-002-20260328    gcc-11.5.0
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260328    gcc-13.4.0
+parisc                randconfig-002-20260328    gcc-8.5.0
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc               randconfig-001-20260328    gcc-13.4.0
+powerpc               randconfig-002-20260328    gcc-10.5.0
+powerpc64             randconfig-001-20260328    gcc-13.4.0
+powerpc64             randconfig-002-20260328    gcc-12.5.0
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+riscv                               defconfig    gcc-15.2.0
+riscv                    nommu_virt_defconfig    clang-23
+riscv                 randconfig-001-20260328    gcc-11.5.0
+riscv                 randconfig-002-20260328    clang-17
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-23
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260328    clang-16
+s390                  randconfig-002-20260328    clang-23
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-15.2.0
+sh                    randconfig-001-20260328    gcc-15.2.0
+sh                    randconfig-002-20260328    gcc-15.2.0
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260328    gcc-14.3.0
+sparc                 randconfig-002-20260328    gcc-8.5.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20260328    clang-23
+sparc64               randconfig-002-20260328    gcc-8.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-23
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260328    gcc-14
+um                    randconfig-002-20260328    gcc-14
+um                           x86_64_defconfig    clang-23
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260328    gcc-14
+x86_64      buildonly-randconfig-002-20260328    clang-20
+x86_64      buildonly-randconfig-003-20260328    clang-20
+x86_64      buildonly-randconfig-004-20260328    clang-20
+x86_64      buildonly-randconfig-005-20260328    gcc-14
+x86_64      buildonly-randconfig-006-20260328    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260328    clang-20
+x86_64                randconfig-002-20260328    gcc-13
+x86_64                randconfig-003-20260328    gcc-14
+x86_64                randconfig-004-20260328    gcc-14
+x86_64                randconfig-005-20260328    clang-20
+x86_64                randconfig-006-20260328    gcc-14
+x86_64                randconfig-011-20260328    clang-20
+x86_64                randconfig-012-20260328    clang-20
+x86_64                randconfig-013-20260328    gcc-14
+x86_64                randconfig-014-20260328    gcc-14
+x86_64                randconfig-015-20260328    clang-20
+x86_64                randconfig-016-20260328    clang-20
+x86_64                randconfig-071-20260328    gcc-12
+x86_64                randconfig-072-20260328    clang-20
+x86_64                randconfig-073-20260328    gcc-14
+x86_64                randconfig-074-20260328    gcc-12
+x86_64                randconfig-075-20260328    gcc-14
+x86_64                randconfig-076-20260328    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260328    gcc-8.5.0
+xtensa                randconfig-002-20260328    gcc-10.5.0
 
-To be honest, I was not aware of the implications of omitting the NOARG
-flag. It was not a deliberate choice on my part.
-
-SeongJae, what are your thoughts on this? SHould we stick with the
-explicit 'commit_inputs=Y' requirement for the new synchronous behavior,
-or should we restore the NOARG compatibility?
-
-> > +	.set = damon_lru_sort_commit_inputs_store,
-> > +	.get = param_get_bool,
-> > +};
-> 
-> The commit_inputs_store function parses the input into a local variable
-> commit_inputs_request but never writes to the global commit_inputs variable.
-> 
-> Because param_get_bool reads the unmodified global commit_inputs variable,
-> will sysfs reads of commit_inputs unconditionally return 'N'?
-
-This is actually a design choice we discussed [2]. Since 'commit_inputs'
-is now a synchronous trigger (or a "button") rather than a persistent
-state, it doesn't necessarily need to store the 'Y' value.
-
-> [ ... ]
-> 
-> (Note: The same regressions appear to exist in mm/damon/reclaim.c)
-
-Thank you for your review. :>
-
-[1] https://lore.kernel.org/20260327233319.3528-1-sj@kernel.org (Lastest
-but may not the last fix)
-[2] https://lore.kernel.org/20260323150544.81042-1-sj@kernel.org
-
-Best regards,
-Rui Yan
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
