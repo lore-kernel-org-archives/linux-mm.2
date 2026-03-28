@@ -4,84 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1380F10F3DCE
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 04:12:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACECE10F3DCB
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 04:55:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72AAA6B008C; Sat, 28 Mar 2026 00:12:58 -0400 (EDT)
+	id A294E6B008C; Sat, 28 Mar 2026 00:55:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 701B86B0096; Sat, 28 Mar 2026 00:12:58 -0400 (EDT)
+	id 9DA096B0095; Sat, 28 Mar 2026 00:55:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63E6E6B0098; Sat, 28 Mar 2026 00:12:58 -0400 (EDT)
+	id 8EFA26B0096; Sat, 28 Mar 2026 00:55:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 519A96B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:12:58 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BFE5C48F6
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:12:58 +0000 (UTC)
-X-FDA: 84594151236.13.C56BF00
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 96EEE40006
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:12:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q5e5vjdl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D16A6B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 00:55:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B90801A06D1
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:55:57 +0000 (UTC)
+X-FDA: 84594259554.15.77BBEB2
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E373820008
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 04:55:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf13.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774671174;
+	s=arc-20220608; t=1774673755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jwH9djlM7EeldEvmT12J+amit/qHM19CLj9Hfcbnv6A=;
-	b=B3G1DZV6VYWx9H4IfiwoL2Yh9dWJY4qfP8CRYgLjFahvrxpctyERuTuR/XeG4Sw5rfiEG6
-	Bx4ClHWPg9leA3OYF8jaN9ZYWvY21HZWvqq0QhbdA8zhohzM5E/46Dy/0No8JqPsakjLS7
-	aUTbXNKfFZHig2BXc1fxiR6Yr0RYdI0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774671174; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=eaCqqasKi7zCq1H1d9DbIPUezQ/e8kSpQ5gpk0KsGnQ=;
+	b=54j1LEN7Hh0BEZLnijchMrhBu7qzOB/XRSHrH+O04JtktjBGKokp0SNON7ZjRoeeAjZ5I6
+	/09G5R1jslSAIFkxEWD9Fp0NbrHd7qP3yP5v4IpIi9iRlXXMK6VgZbKeUZKW+I2q0ZDlVb
+	kCwju1G1Q5AqQpL723IQTT0O+lJzZ38=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774673755; a=rsa-sha256;
 	cv=none;
-	b=g6k8dX/iwg4354HjIIMrsqCtwJ1oGpKBGOZTnu5ClNuOHhtf0VF1aX7iF+BPDjWmeeInNL
-	Ry+FRrmLXzFTuD41QcRUIuhXi3iCla5VPSZlGTOg8sWZihMtsOY/lY0qkZ00MmZNbLlttg
-	Ck5345odX/vfnqKbJQ6HjSLmjz4+dO8=
+	b=i/sV3f+TPHYx8hRxR9TF5d/zx3Nho+LSN673k05vjBiHxEQcVB4ygdlJiQBh3BZtEtKljr
+	j0t8N1vjtEV1PU26P048tQ4h37M/xGdEUdoN7JosAMD5HnAXnozVBVRd6C7j1cw4DWFnQh
+	C2IUth3l7n0Xld39ClE0I16REdK4+5I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q5e5vjdl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-Date: Sat, 28 Mar 2026 12:12:42 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774671173;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwH9djlM7EeldEvmT12J+amit/qHM19CLj9Hfcbnv6A=;
-	b=q5e5vjdlc+es4dIZkNqfTSQAgfkrqcruuQ7cX7MIYdTRgEU/AatvbRrFWGM4+yyb8rrFDD
-	9cA+t2kcLFKyRQ+fgcLAyDvOf3rhUNtOjUkPl1m5UpfJA/sR9dJJz3Ln70Ey3hlAVSR7LL
-	nje6uALOeF3MkyLtDwYv5dDAbUyxm4o=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, osalvador@suse.de, 
-	akpm@linux-foundation.org, vbabka@suse.cz, harry.yoo@oracle.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
-Subject: Re: [PATCH] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
- hotplug
-Message-ID: <2rzg3awmws2odvgysb4ty73nf4nrqfvpzosdlexttn7hsvyfkd@x7lkzb2y3ugs>
-References: <20260327143823.3063541-1-joshua.hahnjy@gmail.com>
- <c8d9fba0-a001-42b0-b0e3-323235cb652b@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c8d9fba0-a001-42b0-b0e3-323235cb652b@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 96EEE40006
-X-Stat-Signature: 65rgcao1tc7ozyt3zjx19q1duxjktw6f
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf13.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fjQFJ0wz1z5B10d;
+	Sat, 28 Mar 2026 12:55:48 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl1.zte.com.cn with SMTP id 62S4taXs044377;
+	Sat, 28 Mar 2026 12:55:36 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Sat, 28 Mar 2026 12:55:38 +0800 (CST)
+X-Zmail-TransId: 2afa69c75f4a4e6-2c208
+X-Mailer: Zmail v1.0
+Message-ID: <20260328125538341lvTGRpS62UNdRiAAz2gH3@zte.com.cn>
+Date: Sat, 28 Mar 2026 12:55:38 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>
+Cc: <hao.li@linux.dev>, <cl@gentwo.org>, <rientjes@google.com>,
+        <roman.gushchin@linux.dev>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <zhang.run@zte.com.cn>,
+        <xu.xin16@zte.com.cn>, <yang.tao172@zte.com.cn>,
+        <yang.yang29@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIXSBtbS9zbHViOiBza2lwIGZyZWVsaXN0IGNvbnN0cnVjdGlvbiBmb3Igd2hvbGUtc2xhYiBidWxrIHJlZmlsbA==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 62S4taXs044377
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.132 unknown Sat, 28 Mar 2026 12:55:48 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69C75F54.000/4fjQFJ0wz1z5B10d
+X-Rspamd-Queue-Id: E373820008
+X-Stat-Signature: 4xtegao49sbjnaanzqe9u494y1e8gy1h
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774671174-745741
-X-HE-Meta: U2FsdGVkX19aFYj3lBLf1ZHirCJVnA72hvIQxzRd3N9/5Laq/rDJXrGH9piQi1aI1dkxdS8ogXUQi8ULwqsnaJbm/iYFZo0rpuZdGo43N+A0vZ9SR0u+0mEdW08ilqQTplF+kWy0iTRCY2HbMLuwtzDmovtrK+K6XmiSPShJfiQx2H/5ia5BVZ5iNteZkHKZ31Y8eh7kbMQ+lLzn8Y88UZA9SXG88V9pGrLMdodY1qr/ym+EFGczqnwP2MSRLaYNq3Kx5c4b9hOeqY2BvDjGdfcL0HsZ6Jd8NSc9U2f9xwxRHV3cBCXb2LhbkiNIcjIf8UFudx1MRb77G5GS+VRwKICDliOT6r+9lWrOjZqsZKAIMd1GZAHeOY2OqLOC99Ww6UeMcY9MuO50pH35wQVVuSgQCq3xRfjeIQW/ufyfVGLYjdCmtqztAygdbKt3dQhrTwLhs/dZDzhb2WYqkp9XFd6H4NoXm2texvMMsWXTphdKnwwFlISSl2NV38BmaM0mPPGmjtU5VANvyD+PN8Tw+pUASIJltPrNcuxo8yTDBW9JCODcDrq1audLP70mw/l2TvRhfZIpO971Yj52U2l9fjcegKJyhzsCJN/a31aaqMwoyeq/Kz9pFdIABzjUkcdu7SWfGetH7+F4aBsdB/SGgoLrqP5JaJHf0vzw4qYLcBvkmQhYJpNazs1+tPB5Cx46OgqEfvIm1Ohg3sLZp/+4rwPa+XUkIvdOzMhHJOFEfN1wq+tGE29wRX4vXTe39BOh0ZctfLj2g1a02ghro8qavmTSjrChSLlbhCCZMKQkAULXaW+Exns+wsFTLae2HbA2E69r4y+FbMUlvMmb/Phv7e0jexDsj9ETd09aA50P5ediAFrerfKChtnNu1QS92oUBQVYZigLleiqYUoPY/h2rgTnVlBFJAew8U+o+GEJKF/JXA66icdn78XWCBm9nzPEKn5i62X+Uu9c9OQTcJ8
- o+mg3evE
- cCYFKcp5xrUD5r9ZADAZpVEExYfSiuKjopalPGAMIbJX1RM5mN1KUii62zpWnUiM/xk+ooUDeivLpD7/xOMtblx1Da6egYChG0HSGUVy266DwR+zYAU/h1TmgpcFgbLVDWe3IJFwYWePu/jRKD4ruOPumDdaAmjql+5YnJu7+AKyuEXNBkPhka21B2VCPLvCu8M5TxLXugFeiZJZdofYruECZjlzS1UX+riMzzDVYf1lDKECfZms+i2oZdYAfLEIfJ2oxnKj/07ULzj8sAcE9Bhe8FuxHcD93ptoz
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774673754-315572
+X-HE-Meta: U2FsdGVkX18yHoDO9pvtgmzrqdj5YfNBVCH1tBfJ32Um2sZtoJd+3lcLq9bXcd+QS67QO6Fc1NxJ/6ajVLXkwRogJl1S6o4K7eM6Eg8D/vY6oEi82f20nNhXHMmbQrJEUC5oZos8Wzigh4I9rejFYV/2vqmsRt184iZ9RbD3agJe2KK82OsD1Gu1X9Q1dfGgrp2pLTa6B9blyaCvpWjw+MqXDloKmhwfhPcUpFljMWTFoibvxF9lDZR66iVwcskE1e081UglwsMnJ2Z76oVdAjtvBSiNSzDn+lzfrPC3bsr3bCTltKdII1Un/71CuWzaWQ/Vb/3s0eYVPB6aijMC7mTLRXLtpj89ML81MOLx46uKGMtR5eoJTaLqA6fyESku0eBvMrNTgk0Afjn/2/fB7WZlMbSoqDmjbgwOWQo+eBv7F+/vPTbwXd195DRbOt50HO91XOYm/HiBrVAaLJM2ROJ4G3ll4g1Wqw0NEAW1Jq18lx3OzaqeaeVDiwaeeCm0oAwmcwnky+SA+iSA9hyyPPQSD3x9rbeDUp9u1sJ6A+ANMzLWPDdhfZFSmwDtaw+lAD82UwNS2BFEARKVJT7FO35m0d3tqQlMhMX+4L9IDayNb4R4BAnNGV7rYe4/W/Cr0NkSOdOobtN4JtSqXKgFcltTkuq8Zf40+slXq6I4WdiQyxOyG+seBGjS8vZJZSp/4zSTy3H3jk+NNBZcAAlw5b4D4NDTfUxewonTrv3m+TKC9jElxazhN9Yu6mi1TwbNos8V2rqUIoGVUiEiuV4PcaHqoVENpLtKT/M4D5FYf32X+VI2vmJTiiZtGywwkEjGwJBhU//g3t8AnKtcylw35YnNp5vaMrpzEBlCEzdkKfubN5yRnfxLBhPb6YiaOsa5sPI9tWhIDtOpRlGQp48VYlsPKAPREN+Dg+DEG9pxAdY2ayCtqin+03JusyUXNbCA7PKJ69Ya0A5GqXOChWf
+ +vLCAeSN
+ S6gndy0U0ZTNVTqhlVvWzT9JmXwz2zM+osiK+qwpkg2Epkt+QLDUhxh69rMelASnnuUcQ29DeS23DQeW1neUHoSt9Y3uFwJlYNwDkuj9yymPtqg9rwn8ud9v7WqSoRM9hEabAjBpy4RXgPU1LkWHrkPYLVzE3RneS4UEk6YHMW18iyYpkWTo6I/1q++pWU9OacEzGHtLai+kTkbl4RhJ45TbWr0XJSP9GAfUx6nj/+wXegiPzYWc7cFbY1gE6xG9Tf5u2TfhPcejkC+Jkclvi4Y0vQTXyuTCueQFqHDe7RZX2hZw2GUwbLbVvNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,137 +98,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 04:28:53PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/27/26 15:38, Joshua Hahn wrote:
-> > On Fri, 27 Mar 2026 20:42:47 +0800 Hao Li <hao.li@linux.dev> wrote:
-> > 
-> > Hello Hao,
-> > 
-> > I hope you are doing well, thank you for the patch!
-> > 
-> >> N_NORMAL_MEMORY is initialized from zone population at boot, but memory
-> >> hotplug currently only updates N_MEMORY. As a result, a node that gains
-> >> normal memory via hotplug can remain invisible to users iterating over
-> >> N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
-> >> incorrectly marked as such.
-> > 
-> > The second part feels more important than the second part, doing a quick
-> > glance through the code I can see a few N_NORMAL_MEMORY iterators that
-> > are in some hot paths like shrink_memcg. Iterating over nodes that don't
-> > contain any NORMAL memory seems like an inefficiency rather than a bug
-> > though. 
-> > 
-> >> Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
-> >> offline_pages(). Set the bit when a node that currently lacks normal
-> >> memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
-> >> offlining removes the last present pages from zones <= ZONE_NORMAL.
-> >>
-> >> This restores the intended semantics without bringing back the old
-> >> status_change_nid_normal notifier plumbing which was removed in
-> >> 8d2882a8edb8.
-> >>
-> >> Current users that benefit include list_lru, zswap, nfsd filecache,
-> >> hugetlb_cgroup, and has_normal_memory sysfs reporting.
-> >>
-> >> Signed-off-by: Hao Li <hao.li@linux.dev>
-> >> ---
-> >>
-> >> This patch also prepares for a subsequent SLUB change that makes
-> >> can_free_to_pcs() rely on N_NORMAL_MEMORY to decide whether an object can be
-> >> freed to the sheaf.
-> >>
-> >> ---
-> >>  mm/memory_hotplug.c | 22 ++++++++++++++++++++++
-> >>  1 file changed, 22 insertions(+)
-> >>
-> >> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> >> index bc805029da51..5498744aa1f1 100644
-> >> --- a/mm/memory_hotplug.c
-> >> +++ b/mm/memory_hotplug.c
-> >> @@ -1155,6 +1155,7 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
-> >>  	int need_zonelists_rebuild = 0;
-> >>  	unsigned long flags;
-> >>  	int ret;
-> >> +	bool need_set_normal_memory = false;
-> >>  
-> >>  	/*
-> >>  	 * {on,off}lining is constrained to full memory sections (or more
-> >> @@ -1180,6 +1181,9 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
-> >>  		if (ret)
-> >>  			goto failed_addition;
-> >>  	}
-> >> +	/* Adding normal memory to the node for the first time */
-> >> +	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
-> >> +		need_set_normal_memory = true;
-> >>  
-> >>  	ret = memory_notify(MEM_GOING_ONLINE, &mem_arg);
-> >>  	ret = notifier_to_errno(ret);
-> >> @@ -1209,6 +1213,8 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
-> >>  
-> >>  	if (node_arg.nid >= 0)
-> >>  		node_set_state(nid, N_MEMORY);
-> >> +	if (need_set_normal_memory)
-> >> +		node_set_state(nid, N_NORMAL_MEMORY);
-> >>  	if (need_zonelists_rebuild)
-> >>  		build_all_zonelists(NULL);
-> > 
-> > Do we need the flag here? As far as I can tell, we can just skip this and just
-> > directly check whether this is the first normal memory we are adding to the
-> > node here and set the bit. Then we can remove the flag and the extraneous
-> > check. We won't do any notifier work so I think it should be OK.
-> 
-> I assume you simply mean:
-> 
-> 
-> if (zone_idx(zone) <= ZONE_NORMAL && !node_state(nid, N_NORMAL_MEMORY))
-> 	node_set_state(nid, N_NORMAL_MEMORY);
-> 
-> That looks m uch better!
+From: Shengming Hu <hu.shengming@zte.com.cn>
 
-Yes, this approach is elegant! Thanks.
+refill_objects() still carries a long-standing note that a whole-slab
+bulk refill could avoid building a freelist that is immediately drained.
 
-> 
-> > 
-> >> @@ -1908,6 +1914,9 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
-> >>  	unsigned long flags;
-> >>  	char *reason;
-> >>  	int ret;
-> >> +	bool need_clear_normal_memory = false;
-> >> +	unsigned long node_normal_pages = 0;
-> >> +	enum zone_type zt;
-> >>  
-> >>  	/*
-> >>  	 * {on,off}lining is constrained to full memory sections (or more
-> >> @@ -1977,6 +1986,13 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
-> >>  			goto failed_removal_isolated;
-> >>  		}
-> >>  	}
-> >> +	/*
-> >> +	 * Check whether this operation removes the node's last normal memory.
-> >> +	 */
-> >> +	for (zt = 0; zt <= ZONE_NORMAL; zt++)
-> >> +		node_normal_pages += pgdat->node_zones[zt].present_pages;
-> >> +	if (nr_pages >= node_normal_pages && zone_idx(zone) <= ZONE_NORMAL)
-> >> +		need_clear_normal_memory = true;
-> >>  
-> >>  	ret = memory_notify(MEM_GOING_OFFLINE, &mem_arg);
-> >>  	ret = notifier_to_errno(ret);
-> >> @@ -2055,6 +2071,12 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
-> >>  	/* reinitialise watermarks and update pcp limits */
-> >>  	init_per_zone_wmark_min();
-> > 
-> > Same here, couldn't we just iterate through the paegs here and accumulate
-> > node_normal_pages and clear the memory here? We can get rid of the bool and
-> > also keep node_normal_pages defined inside an if (zone_idx(zone) <= ZONE_NORMAL)
-> > check as well.
-> 
-> Right, all we have to do is check for remaining present_pages in one of
-> the nodes IIUC.
+When the remaining bulk allocation is large enough to fully consume a
+new slab, constructing the freelist is unnecessary overhead. Instead,
+allocate the slab without building its freelist and hand out all objects
+directly to the caller. The slab is then initialized as fully in-use.
 
-Yes, we can simply sum up the remaining present_pages and check whether it
-comes out to 0. That feels more straightforward and direct.
+Keep the existing behavior when CONFIG_SLAB_FREELIST_RANDOM is enabled,
+as freelist construction is required to provide randomized object order.
 
+Additionally, mark setup_object() as inline. After introducing this
+optimization, the compiler no longer consistently inlines this helper,
+which can regress performance in this hot path. Explicitly marking it
+inline restores the expected code generation.
+
+This reduces per-object overhead in bulk allocation paths and improves
+allocation throughput significantly.
+
+Benchmark results (slub_bulk_bench):
+
+  Machine: qemu-system-x86_64 -m 1024M -smp 8
+  Kernel:  Linux 7.0.0-rc5-next-20260326
+  Config:  x86_64_defconfig
+  Rounds:  20
+  Total:   256MB
+
+  obj_size=16, batch=256:
+    before: 28.80 ± 1.20 ns/object
+    after:  17.95 ± 0.94 ns/object
+    delta:  -37.7%
+
+  obj_size=32, batch=128:
+    before: 33.00 ± 0.00 ns/object
+    after:  21.75 ± 0.44 ns/object
+    delta:  -34.1%
+
+  obj_size=64, batch=64:
+    before: 44.30 ± 0.73 ns/object
+    after:  30.60 ± 0.50 ns/object
+    delta:  -30.9%
+
+  obj_size=128, batch=32:
+    before: 81.40 ± 1.85 ns/object
+    after:  47.00 ± 0.00 ns/object
+    delta:  -42.3%
+
+  obj_size=256, batch=32:
+    before: 101.20 ± 1.28 ns/object
+    after:  52.55 ± 0.60 ns/object
+    delta:  -48.1%
+
+  obj_size=512, batch=32:
+    before: 109.40 ± 2.30 ns/object
+    after:  53.80 ± 0.62 ns/object
+    delta:  -50.8%
+
+Link: https://github.com/HSM6236/slub_bulk_test.git
+Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+---
+ mm/slub.c | 90 +++++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 71 insertions(+), 19 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index fb2c5c57bc4e..c0ecfb42b035 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2733,7 +2733,7 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
+ 	return *head != NULL;
+ }
+
+-static void *setup_object(struct kmem_cache *s, void *object)
++static inline void *setup_object(struct kmem_cache *s, void *object)
+ {
+ 	setup_object_debug(s, object);
+ 	object = kasan_init_slab_obj(s, object);
+@@ -3438,7 +3438,8 @@ static __always_inline void unaccount_slab(struct slab *slab, int order,
+ 			    -(PAGE_SIZE << order));
+ }
+
+-static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
++static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node,
++				  bool build_freelist)
+ {
+ 	bool allow_spin = gfpflags_allow_spinning(flags);
+ 	struct slab *slab;
+@@ -3446,7 +3447,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	gfp_t alloc_gfp;
+ 	void *start, *p, *next;
+ 	int idx;
+-	bool shuffle;
++	bool shuffle = false;
+
+ 	flags &= gfp_allowed_mask;
+
+@@ -3483,6 +3484,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	slab->frozen = 0;
+
+ 	slab->slab_cache = s;
++	slab->freelist = NULL;
+
+ 	kasan_poison_slab(slab);
+
+@@ -3497,9 +3499,10 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	alloc_slab_obj_exts_early(s, slab);
+ 	account_slab(slab, oo_order(oo), s, flags);
+
+-	shuffle = shuffle_freelist(s, slab, allow_spin);
++	if (build_freelist)
++		shuffle = shuffle_freelist(s, slab, allow_spin);
+
+-	if (!shuffle) {
++	if (build_freelist && !shuffle) {
+ 		start = fixup_red_left(s, start);
+ 		start = setup_object(s, start);
+ 		slab->freelist = start;
+@@ -3515,7 +3518,8 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	return slab;
+ }
+
+-static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
++static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node,
++			     bool build_freelist)
+ {
+ 	if (unlikely(flags & GFP_SLAB_BUG_MASK))
+ 		flags = kmalloc_fix_flags(flags);
+@@ -3523,7 +3527,7 @@ static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	WARN_ON_ONCE(s->ctor && (flags & __GFP_ZERO));
+
+ 	return allocate_slab(s,
+-		flags & (GFP_RECLAIM_MASK | GFP_CONSTRAINT_MASK), node);
++		flags & (GFP_RECLAIM_MASK | GFP_CONSTRAINT_MASK), node, build_freelist);
+ }
+
+ static void __free_slab(struct kmem_cache *s, struct slab *slab, bool allow_spin)
+@@ -4395,6 +4399,45 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
+ 	return allocated;
+ }
+
++static unsigned int alloc_whole_from_new_slab(struct kmem_cache *s,
++		struct slab *slab, void **p)
++{
++	unsigned int allocated = 0;
++	void *object;
++
++	object = fixup_red_left(s, slab_address(slab));
++	object = setup_object(s, object);
++
++	while (allocated < slab->objects - 1) {
++		p[allocated] = object;
++		maybe_wipe_obj_freeptr(s, object);
++
++		allocated++;
++		object += s->size;
++		object = setup_object(s, object);
++	}
++
++	p[allocated] = object;
++	maybe_wipe_obj_freeptr(s, object);
++	allocated++;
++
++	slab->freelist = NULL;
++	slab->inuse = slab->objects;
++	inc_slabs_node(s, slab_nid(slab), slab->objects);
++
++	return allocated;
++}
++
++static inline bool bulk_refill_consumes_whole_slab(struct kmem_cache *s,
++		unsigned int count)
++{
++#ifdef CONFIG_SLAB_FREELIST_RANDOM
++	return false;
++#else
++	return count >= oo_objects(s->oo);
++#endif
++}
++
+ /*
+  * Slow path. We failed to allocate via percpu sheaves or they are not available
+  * due to bootstrap or debugging enabled or SLUB_TINY.
+@@ -4441,7 +4484,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 	if (object)
+ 		goto success;
+
+-	slab = new_slab(s, pc.flags, node);
++	slab = new_slab(s, pc.flags, node, true);
+
+ 	if (unlikely(!slab)) {
+ 		if (node != NUMA_NO_NODE && !(gfpflags & __GFP_THISNODE)
+@@ -7244,18 +7287,27 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+
+ new_slab:
+
+-	slab = new_slab(s, gfp, local_node);
+-	if (!slab)
+-		goto out;
+-
+-	stat(s, ALLOC_SLAB);
+-
+ 	/*
+-	 * TODO: possible optimization - if we know we will consume the whole
+-	 * slab we might skip creating the freelist?
++	 * If the remaining bulk allocation is large enough to consume
++	 * an entire slab, avoid building the freelist only to drain it
++	 * immediately. Instead, allocate a slab without a freelist and
++	 * hand out all objects directly.
+ 	 */
+-	refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
+-					/* allow_spin = */ true);
++	if (bulk_refill_consumes_whole_slab(s, max - refilled)) {
++		slab = new_slab(s, gfp, local_node, false);
++		if (!slab)
++			goto out;
++		stat(s, ALLOC_SLAB);
++		refilled += alloc_whole_from_new_slab(s, slab, p + refilled);
++	} else {
++		slab = new_slab(s, gfp, local_node, true);
++		if (!slab)
++			goto out;
++		stat(s, ALLOC_SLAB);
++		refilled += alloc_from_new_slab(s, slab, p + refilled,
++						max - refilled,
++						/* allow_spin = */ true);
++	}
+
+ 	if (refilled < min)
+ 		goto new_slab;
+@@ -7587,7 +7639,7 @@ static void early_kmem_cache_node_alloc(int node)
+
+ 	BUG_ON(kmem_cache_node->size < sizeof(struct kmem_cache_node));
+
+-	slab = new_slab(kmem_cache_node, GFP_NOWAIT, node);
++	slab = new_slab(kmem_cache_node, GFP_NOWAIT, node, true);
+
+ 	BUG_ON(!slab);
+ 	if (slab_nid(slab) != node) {
 -- 
-Thanks,
-Hao
+2.25.1
 
