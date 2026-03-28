@@ -4,113 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55F9F10BA423
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 18:43:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0EE110BA423
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 18:49:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 565A16B008C; Sat, 28 Mar 2026 14:43:25 -0400 (EDT)
+	id 3BF946B008C; Sat, 28 Mar 2026 14:49:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EF3E6B0095; Sat, 28 Mar 2026 14:43:25 -0400 (EDT)
+	id 397E36B0095; Sat, 28 Mar 2026 14:49:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B6126B0096; Sat, 28 Mar 2026 14:43:25 -0400 (EDT)
+	id 2AD536B0096; Sat, 28 Mar 2026 14:49:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 261906B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 14:43:25 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0FE9B69E9
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:43:24 +0000 (UTC)
-X-FDA: 84596344728.24.DB815CC
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2677D140004
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:43:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DaFKQv2b;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774723403;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 19A626B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 14:49:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 92A191A01E3
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:49:31 +0000 (UTC)
+X-FDA: 84596360142.04.DFCDB3E
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 926B04000D
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:49:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qZttoJjT;
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774723769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EP2ckNKWBPmkFolP75nur6z6WVdO4BalIzs38VivV8o=;
-	b=ivArwrR/kS8czKSyXySeVOHhajGgTNTVuydn29B4MPwKVJBWUhuaH27gVJFlO1oQatadxu
-	cnYyxk7IF25KzHO35+L/3PH9BRh+XVtTYJjOE13qeR08keRpoKVoRv7r/0IpbH50qbE8si
-	zy5fALVwH34JktjogkY0rc2KzzxtPqM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774723403; a=rsa-sha256;
-	cv=none;
-	b=H9N8q3YJ9kP5Zar1GFXNHKMVNgjDLPWzrpM6xlD6lBxfp6Fadu0bVMns3rkm2ySe7uWNwB
-	0gZyTaxGhfycvS0gDcRz6+Cm/JfuXpGjVXUWfC/4AS/o1WJpDgMV+wHjXJ3p9viX264XYA
-	MuvA3F8+MDdD+ofK2bwF0Ht6HxWSK6A=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DaFKQv2b;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-35a1cc6e478so1891224a91.0
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 11:43:22 -0700 (PDT)
+	bh=hvBwZe6OAmUwW/qKvOnQ/88d+Y9b6bSQtv++afhsia0=;
+	b=7m4+jLMP6BBiNcTFdJ6Q4xUVT5jPGg/uqr/SsI3I+l2NUpDu/1rsdCroVWQaCIOUCQR3UP
+	Pu2DOX+F7SHA9KsTdbeP8jKYgq/BDXqgNR4XPkRQlV41hT0lIt5tTCJSIu8Zi6a/H+KMvh
+	ZtCkYrYazoKt1UABmMW8dzvrOndtL6Q=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qZttoJjT;
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774723769; a=rsa-sha256;
+	cv=pass;
+	b=zkOO9c6EeOyEk6J0D9k1crPK0HibCYm3/A8yW7h0jGmR4kbxEYYjNTJMnn7dTuBfVvw2vr
+	YOtqaFaQ/KSHGoe9q81uyqOIstnsqqrCQGbRZ69SR4tLOz89ESycQss1xYZwzriohcAaR2
+	347hgD4XDth1/ElKTKt6VwCWr42hPQ0=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50b6c45781aso493171cf.0
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 11:49:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774723768; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iHLyCV8qFCOEEaHJ8nYs3FEfzYtykhE3xXL75M3TlNsgOYX5rBIOcPtaWbNXRYXTo5
+         h3x2WHKeVrNPiloC01kBCIL/h8WEOfl9X0XgVE265LxUU1DugcWI6nMPRYZMqwMmBDi9
+         A1fF833VX+gZMdGAjVGtmhiii3nHuEzbuz+Tn882BIyehUEP+9icmGbuDML8s60y1a8F
+         W50C1Eo1/yfSP4hIj64UH6L1ntFNTMg4NNG3IKUEQPaF5L8s6XgX5x5WN98CHT5XOJVK
+         jS0RpS3q9K+G4KbCj7lMMqQX+5t2GdKB79n8flVgtkZvo8p6GrcMh/BhiCvcOxOxq3Uo
+         v3eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hvBwZe6OAmUwW/qKvOnQ/88d+Y9b6bSQtv++afhsia0=;
+        fh=9hjU2MVFtE4baMsbKE8Mwt/pPJt4420SC+pYdCqrs2Y=;
+        b=WgsmrDN+oG0yUGOczLESWCa+Pdadd+17+vVOshRZbKminsYx3XXjTt1SZS3CbMM/IM
+         SJXjvs6L/B1dygkt6P4r9qz2vqm7tMdfJD3wKiCb9zlIycnM3yqsG/bcsY6QET0YpyD2
+         +2HbLmSDOgXF3R8PJlW7iZyDcoPDgxRL3iLzOx4sy1qGWW4um/LR7m1PW+m/pMZSaT7L
+         nIE/nhgNbONpXEo+zgR7vh6g6lDMeSQwEi1naTHiwS3XIAt1DjldrS+TT3eoC4WUFuJ1
+         jUWXAJLHDVqp1Dcswak79Xwej+0ECOespeToZgCIeq2pB6QjrXNtd4BsLczfc/FHJrss
+         KKzA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774723402; x=1775328202; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1774723768; x=1775328568; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EP2ckNKWBPmkFolP75nur6z6WVdO4BalIzs38VivV8o=;
-        b=DaFKQv2bCziMHtU4TdAz1QQai6Npy47BZbnqqSTEWib1vxzpcXHnMaQLKLKCBYyRpD
-         5rnzfZ3+0DU3rWIpt6YR4dnYug3sQLiNZe0g8pFaa1PxOY5twkCWMmtdJpxilnxEwflV
-         2Od6ffcLnoqRZGR4r/Mr2dmFv74xpn1ZBbdYcYBks1bCGdBtz74XwrugU5fA3qfGIjRG
-         IuImOVrh6pb7L5PsQtZuVKY5TnT9PcuJg5hlXhP+x0X9f6ZezjJJXbvocTzIFJQI89/0
-         O/+ool4Bv9GvRpwHBbl/B28yDdsy1szYwmHHizg/zuLmfhhheqBC1nJ8T2IxXsMk5S4o
-         bPpA==
+        bh=hvBwZe6OAmUwW/qKvOnQ/88d+Y9b6bSQtv++afhsia0=;
+        b=qZttoJjTZa9hCJ2dQvDIuyp7PNm9VHUpmOzYhl47B1YSxWhbI6aDviQhauL47EP+h0
+         u+BC3qmtwmc8ZOJVsNyvwY5Xm/BnZX10O1Xmx+0xhUiiEEIrMYOXQZhpcwZHLojUlao/
+         zjzDSiDd/+JEybJ0gJlTyZ4xNFxaIpICFpVCBZQ8VzUMRYaJgLSoZ9deKiKxwfEgdfsn
+         4wuyKg3jwamXxexJUVknyVeKQHkmbW2SJqt6JIyVTVVRnyOkEHdVHbrdGBI/i05W3pB6
+         UZHBtE5aiqppgoHzSTxvag70+6Hhs03vqpPpLD7A3tXNhNq2jhFi+69XkP1ELbjyvfDf
+         YVGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774723402; x=1775328202;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1774723768; x=1775328568;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=EP2ckNKWBPmkFolP75nur6z6WVdO4BalIzs38VivV8o=;
-        b=bmJRY8AhuXM8J53AGjoO0I9qYL3PDAI2lnFpH6VZwkgiCqHW763IIm8PqXRCeSkkVT
-         W+3NLthZ9j6uePAe9jPTTmFTxqwgOXiziVewieXY806qSKLxKZAzz3nOVxeOPYlYyUCJ
-         VlxPNRc/YTTbEuAAEtZMViYPLIwE7SnoO/ZuuVF3i85Zao9K91B3K2bEuTDeehbWr8oW
-         TR1flExNz5AlDzsmn1vy7n7dcC/6HUBD+8D0EeOfr4p8fH9PgXJi8r2ASM2qf1tUx13Y
-         M47BezmO92ntU8j0EFxXQctXvcwxIt8c3ghH8hqToyvjTCXdLwKpc18DP3qjUcHYBOoo
-         Jy/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVM8c0eLKYWHbiCdihmnPz+mb8RpaQZJtKDjtvKemkzFgtg6rYq/p/o4E7oUVI+2Z9KUp0guj42iw==@kvack.org
-X-Gm-Message-State: AOJu0YyQ0AAkI9NS2SSIu0qAU5K8eS44UATC3md5geQTzl+1e5o6g+NL
-	W7VgThmWlf5BfR6orW0bPG0TapxC3KAGC6Jx3IEKSDLLBlK59hGuBJ2Y
-X-Gm-Gg: ATEYQzziIW2u4rx/XNgDnJI+IZoMfGF2YC4VuBP6SppsOfsooqbHrB6RCtz7JJ+Bi09
-	DX1zQDTMErJJvgVh02NJzXhvF2MlsbwMfYDjP2BB8O39G3hxwuLvA/kzNxbNybC72nbJKckMvNu
-	mIp62gly/EWs37TWS3v8SnpB6lunGF9WNDfkRBa7vpqIGVnlFOWcmgwx80P1KVUqvTxU6uwzN0R
-	jqFAhKzp80V0S8ah+gpgk/ibtVsNSHqDuPR7MqtHn/xu1/LvuR34t0PkVE+eD7KgovzFQjj1Goq
-	fe+JkkGxqx3B9F66wQzPnYJD4uDauWn+l9GXi5EKoArFi0HEGLNL5B5Iee7JcZoc0n+faAnDI8n
-	GoVA5vmZmu7vbBr6+R5Mybq7g0Glh3mRbR//GTRnKC7h+WeY//rYNQV0lpAS79pn/6HjfpOHH4A
-	QZZ5D/vJOW4AbuDPJJkebgPhajf9g=
-X-Received: by 2002:a17:90a:da8d:b0:35b:e550:e68a with SMTP id 98e67ed59e1d1-35c2ff1be42mr7049890a91.3.1774723401883;
-        Sat, 28 Mar 2026 11:43:21 -0700 (PDT)
-Received: from celestia ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c2ebe2c98sm2617321a91.6.2026.03.28.11.43.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 11:43:21 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
-Date: Sun, 29 Mar 2026 02:43:19 +0800
-Message-ID: <20260328184319.13176-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260328180629.55498-1-sj@kernel.org>
-References: <20260328180629.55498-1-sj@kernel.org>
+        bh=hvBwZe6OAmUwW/qKvOnQ/88d+Y9b6bSQtv++afhsia0=;
+        b=G2wYIRhPXnlQGVb9fP3u1A3CndCuuvdJK0vgtP8yLX/aJxeN9NsA+exNQ4ybH7orW8
+         PZtp/1624XYEkZsAGA4kmkPoCJ+fSWFbFn2JZmxkujhLX6q79zYBe/vhUMZy2PvpSWlL
+         GiXL0AGgqmSuvK3P2nYs3HppHUh3qaQjeSLywm9JvKOA3iqEfZHkRoiy5rSEkFuSVmqi
+         nXa2qnpeg0mYnnshUt6rzvmWFDwsg2625B4RBszDu1JOvVRPkm9+4DAonQ4PlTqq/F9A
+         2vMPaJotd8YZuGGk7JMgGNcvRiFiUSZYi+pDzmV3KJG6DPenUDOua3K+mcVe5YsmhH2k
+         aoag==
+X-Forwarded-Encrypted: i=1; AJvYcCW/rLKQIYv8S+z6N2GGFKVqgbish88bOyRvyIB75PTMX3psbvlrZawPA7TQxmX9QFT6Wa8I0b5b+g==@kvack.org
+X-Gm-Message-State: AOJu0Yx2R9btfe293hhYDW7HiPdUfyYod0M7OUpKj2RF+Sr43RF9gpot
+	PqQjAceTOA2BIVTJQWrOOATwnCR10eDFJgJkcOpGAqwk2+VHGxFc7X9QGWeXRg59NqRW9mX274C
+	2gYFSo06MHGWcNRfjUJBPyGBq5NwIzEJo1FRZFHRK
+X-Gm-Gg: ATEYQzyB0ubsIGUkbbQMjxNOq+Euxc8GR8EmGdRh8GR9y8mE+vdYzUyJPcHEZxP/Wn2
+	yvrZ5o0eCq39GHm7yYhGi0M0tiFq13LA6iOcRn4+k2kxzctaMnauOiQ4LuuYCQeWh6x5Mf4ItBX
+	fbZZKXtbGtCKz5N7qykN0VT2y+oRoBtD6Wpu//O+QK3dDhVAoimoNmpmOlgGTOnm7V2oQMmwkvI
+	F0jmP2Ttkw6BYL4oCzxnM/pL8sWg0yEY8858fVHxCkvf3veN6a/UHplTIduwngsIrvt9gj0hZqy
+	uerA2Q==
+X-Received: by 2002:a05:622a:247:b0:50b:6c6f:9ba6 with SMTP id
+ d75a77b69052e-50bb3d608f1mr10143251cf.0.1774723767910; Sat, 28 Mar 2026
+ 11:49:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2677D140004
-X-Stat-Signature: w9447i8aotnxyz66nmygdynj6837f134
+References: <cover.1774029655.git.ljs@kernel.org> <d2b65883dc4895f197c4b4a69fbf27a063463412.1774029655.git.ljs@kernel.org>
+In-Reply-To: <d2b65883dc4895f197c4b4a69fbf27a063463412.1774029655.git.ljs@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sat, 28 Mar 2026 11:49:17 -0700
+X-Gm-Features: AQROBzBdEWDwxPGuda-gZ28S-EX-AfB6_NSRFDtvf06b-OFXIblYAI4TAW9Gjg8
+Message-ID: <CAJuCfpEOwe7uYJFPt-R52u5+vRSaXADK9XktXDrGGtL1DTd9Zw@mail.gmail.com>
+Subject: Re: [PATCH v3 01/13] mm/huge_memory: simplify vma_is_specal_huge()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774723402-576048
-X-HE-Meta: U2FsdGVkX1/zI22i/XollW54bMjo77INT0LIEDuavAj44TaKnjTndsxhU/jvE414dY12GAScPDgwMWUzgiimKaCU8fcqe9jjwc0FxXHxk+1ZRX/Nd1rNVpNsygsVxdSWAlZeIeAVFVBoabIAwUcEj4t/6w08XmwSJo6AIaAVo2U9wT1xquRoGfzRSQsoGrnsxVig7kb6Fzi7mtJ9JEp01r3/eN8PCzUbCLPHKMuFcos4GV8FTiRey5CCPNF2Z8MZMxl67eC3J1ri1HCJneI75uD1/1mIDpMegL0/Ywv43HUpCBDaAHAZHV0S+r30XGf1FLIGJn1MENZxwp4q6BhoTiq93vLQ2NApQEvjHrAwIgzkP53y68UX573dNT+LFoXeN4vcK888o60nkPNqIkQ/sJR4BZmqUN/FnznAPfGzPb09CsGya6kyLW7hZ34dfFX9dtrbXJyoHFq+MMXzz2Zx0EhbQGbPQrgkH6t1X5ro3LWOzEMQNDEVyp3G9zAx7R5CzdL2Ti6GIyQppYp8y5+Ivs2yiy1yNUFdTjQXLk9E44l5GlUm1x4WUJ+mKS43NRn02R7olNC4f19UoVo1gqPp9HrDCgKqPqeMqDQ+vRFA2yHokY66ieDAuelaesDvZ/0nGb4s6A2YPo+qxcBNpL/zEVmGF/K4j46aLJUC8cF8nrjtmqkb0FvOTHK22ni+5lrRFQoEJcafADZ1lzBBcrfRwP9u74/VIVhXfQPyssj8aeH31+9Khnj9iAeX1M49SnXoX/7VaMDenyyTSBY8ZUJ5N88Al9ZVEisUKK5uS1HEnhKq/Qw5DI7iTsA9a1tZV6jl1/ahrKZJW5xxfEUTNZ9zez1YdoRoBs6nAaRBR+LoW+pto3QMppOIfmdbDusx1+iysK7QGlr7A4xrwolizgwtL9XLjPOzkno6u2DBSth+Hnjs16EATLVhtxgDuXcRWI4nWuL9ul4qXyuIsGUMBXQ
- 0eGBe2jq
- /NoN3akG0ktwDwtfHrkygbHFjYSMoE8cQ/k8NYwmsheOXytlsKPm2nibR4CyJW1RAOMMKV8fSR0Zs4JsHh0DeTtA+ZkgXMSlAHyFg
+X-Stat-Signature: e6muhwwc37dhffko1cwpqnugjarbc9qg
+X-Rspamd-Queue-Id: 926B04000D
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774723769-920099
+X-HE-Meta: U2FsdGVkX1/jcPLNDGSmA3ZxVaJ7YBCtuBUOO7X5d0jVuWle8zaIvB6vhBhYKak0+HFdaCe1axKXf6IoAW3K4jBa0G3dTJd5f3+w5eG3Sloq8kTjxoM54iUzbkKO/ot8VwrrgbHEy3zlQANpN7lB5fVbcBkSBwFOygJSrCg/WRPaXh5ZOH9sM4MiD/isvvmjtSxy2u6/q+LfEHOk5o10XRtlijAfhWcFtAzqAE43NRJQmaPZMtaSPDNkD0MxpK6//qf55uXzV+yjpfEjnbY5GIge3kpSbkB0bFU1NY6lcW/HhTYmdZoGMQdthxzohwQNv6Zx/notjSQILDE9ETTlbdWCghkI0wA3ABqneEz00HU4NCz7hZKdTt9rPfHo1H4sHXT/k7+gNQcTolRByzeaSnX4i11w6N9zcwVi04KJCUJRqYDL0WU3G2vZNPotynz2VFBjlXpkguQdLyWtW8ut2laKsBnfeMrMtNTmMzVljNTCzazMa+WqjQ5TXubb2lWTa2J0vMOU60JRJcPlBQJlYO30SXGgLPbODEvorZ22F6xAcFVV9btj8Uf0yYd+UqHHoANRdRsB/sc6/aWVdrtnWpw5gjsdM4LLWS/+jx8neulqv1l2HyxpcfRxPvEUvEk1ejS9SbGTlk8Khd0ZQ4ACqsUrG3aQwg4teXFnd2Okf0VdrjXuPIqt5OKyQxjFRSUujMdYHdmRr8XXeo8+W1BavDtNuIRVoNqXlzEWe/Kg135PPwBVm5R+mUFUJptaMHL90FmYCcBQ1O+dCk4P8pebJY5gsaqFQyvRpf5T76El07WHXbUhpsJKtq8sftlchKR6YJuMYkE+Bw6I7BVX3gfF4BOOEk442BYDVkBgJDSRaAQtgpjyba81z6U15cK7Sz/QQpQauAOsEQxTCwVHOxJ0AJIx1+IOp/4WuEQaGqTlDDseMmuHTx5tBVeGIjY2DLECkfLX2NrmG977xJzyaSV
+ 5pBIZ6Hk
+ zcGnPQiQEFoiIRErLMtGYZJcvtjDDqcQhxpnRK11jmKlCvhbtW7ZrTKMgesVVUnN4dvapEWEJ01fGSm3e7M4JRfBUAYGqYnXRp8rBIXlk/azzmbEoxhUwsbXpUzU704TDQgMSukMoYkCwN+tonm/ciPGG8KJkoVcoH6Rx3GO7S4nNGJjFpFIrdEeInO3kW5dB4YGuUOWYduvZOg6iKJvyZSKvnm87bp4906mzspqYPsew/a/+MiX/vu6mlGd8dmNclbKnS4giYjA8BPFXDIdlrFeIGVN09bd8eDQYTUX5Jpr7sx8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,33 +143,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Liew, I suggeted two options before.  But you are skipping providing your
-> opinion to those, and adding yet more options.  That makes me difficult to
-> follow the conversation.  Could you please answer to my suggestions and make a
-> consensus about those, first?
+On Fri, Mar 20, 2026 at 11:07=E2=80=AFAM Lorenzo Stoakes (Oracle)
+<ljs@kernel.org> wrote:
+>
+> This function is confused - it overloads the term 'special' yet again,
+> checks for DAX but in many cases the code explicitly excludes DAX before
+> invoking the predicate.
+>
+> It also unnecessarily checks for vma->vm_file - this has to be present fo=
+r
+> a driver to have set VMA_MIXEDMAP_BIT or VMA_PFNMAP_BIT.
+>
+> In fact, a far simpler form of this is to reverse the DAX predicate and
+> return false if DAX is set.
+>
+> This makes sense from the point of view of 'special' as in
+> vm_normal_page(), as DAX actually does potentially have retrievable
+> folios.
+>
+> Also there's no need to have this in mm.h so move it to huge_memory.c.
+>
+> No functional change intended.
+>
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-Apologize if my previous email was unclear. Let me directly address your
-two suggestion.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-1. DAMON_SYSFS Type [1]:
-   I fully agree with this. Centralizing the validation in
-   damon_commit_ctx() is the right approach to avoid "whack-a-mole"
-   problem. This is exactly what I am proposing.
-
-2. Adding a simple check on existing validation logic (in callers?) [2]:
-   While this is simpler to implement, I prefer avoiding it for the
-   "whack-a-mole".
-
-So, to clarify, I choose your first option (centralized check), and I
-believe my "Option 2" is the simple way to implement it.
-
-Does ths align with your expectation? If so, I will proceed with this
-approach.
-
-[1] https://lore.kernel.org/20260328132937.9580-1-sj@kernel.org
-[2] https://lore.kernel.org/20260328141323.10540-1-sj@kernel.org
-[3] https://lore.kernel.org/20260328174409.6786-1-aethernet65535@gmail.com
-
-Best regards,
-Rui Yan
+> ---
+>  include/linux/huge_mm.h |  4 ++--
+>  include/linux/mm.h      | 16 ----------------
+>  mm/huge_memory.c        | 30 +++++++++++++++++++++++-------
+>  3 files changed, 25 insertions(+), 25 deletions(-)
+>
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 8d801ed378db..af726f0aa30d 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -83,7 +83,7 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr=
+;
+>   * file is never split and the MAX_PAGECACHE_ORDER limit does not apply =
+to
+>   * it.  Same to PFNMAPs where there's neither page* nor pagecache.
+>   */
+> -#define THP_ORDERS_ALL_SPECIAL         \
+> +#define THP_ORDERS_ALL_SPECIAL_DAX     \
+>         (BIT(PMD_ORDER) | BIT(PUD_ORDER))
+>  #define THP_ORDERS_ALL_FILE_DEFAULT    \
+>         ((BIT(MAX_PAGECACHE_ORDER + 1) - 1) & ~BIT(0))
+> @@ -92,7 +92,7 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr=
+;
+>   * Mask of all large folio orders supported for THP.
+>   */
+>  #define THP_ORDERS_ALL \
+> -       (THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_SPECIAL | THP_ORDERS_ALL_FI=
+LE_DEFAULT)
+> +       (THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_SPECIAL_DAX | THP_ORDERS_AL=
+L_FILE_DEFAULT)
+>
+>  enum tva_type {
+>         TVA_SMAPS,              /* Exposing "THPeligible:" in smaps. */
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 8aadf115278e..6b07ee99b38b 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -5078,22 +5078,6 @@ long copy_folio_from_user(struct folio *dst_folio,
+>                            const void __user *usr_src,
+>                            bool allow_pagefault);
+>
+> -/**
+> - * vma_is_special_huge - Are transhuge page-table entries considered spe=
+cial?
+> - * @vma: Pointer to the struct vm_area_struct to consider
+> - *
+> - * Whether transhuge page-table entries are considered "special" followi=
+ng
+> - * the definition in vm_normal_page().
+> - *
+> - * Return: true if transhuge page-table entries should be considered spe=
+cial,
+> - * false otherwise.
+> - */
+> -static inline bool vma_is_special_huge(const struct vm_area_struct *vma)
+> -{
+> -       return vma_is_dax(vma) || (vma->vm_file &&
+> -                                  (vma->vm_flags & (VM_PFNMAP | VM_MIXED=
+MAP)));
+> -}
+> -
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_HUGETLBFS */
+>
+>  #if MAX_NUMNODES > 1
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index e90d08db219d..2775309b317a 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -103,6 +103,14 @@ static inline bool file_thp_enabled(struct vm_area_s=
+truct *vma)
+>         return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
+>  }
+>
+> +/* If returns true, we are unable to access the VMA's folios. */
+> +static bool vma_is_special_huge(const struct vm_area_struct *vma)
+> +{
+> +       if (vma_is_dax(vma))
+> +               return false;
+> +       return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
+> +}
+> +
+>  unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>                                          vm_flags_t vm_flags,
+>                                          enum tva_type type,
+> @@ -116,8 +124,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_ar=
+ea_struct *vma,
+>         /* Check the intersection of requested and supported orders. */
+>         if (vma_is_anonymous(vma))
+>                 supported_orders =3D THP_ORDERS_ALL_ANON;
+> -       else if (vma_is_special_huge(vma))
+> -               supported_orders =3D THP_ORDERS_ALL_SPECIAL;
+> +       else if (vma_is_dax(vma) || vma_is_special_huge(vma))
+> +               supported_orders =3D THP_ORDERS_ALL_SPECIAL_DAX;
+>         else
+>                 supported_orders =3D THP_ORDERS_ALL_FILE_DEFAULT;
+>
+> @@ -2338,7 +2346,7 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_=
+area_struct *vma,
+>                                                 tlb->fullmm);
+>         arch_check_zapped_pmd(vma, orig_pmd);
+>         tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+> -       if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
+> +       if (vma_is_special_huge(vma)) {
+>                 if (arch_needs_pgtable_deposit())
+>                         zap_deposited_table(tlb->mm, pmd);
+>                 spin_unlock(ptl);
+> @@ -2840,7 +2848,7 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_=
+area_struct *vma,
+>         orig_pud =3D pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fu=
+llmm);
+>         arch_check_zapped_pud(vma, orig_pud);
+>         tlb_remove_pud_tlb_entry(tlb, pud, addr);
+> -       if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
+> +       if (vma_is_special_huge(vma)) {
+>                 spin_unlock(ptl);
+>                 /* No zero page support yet */
+>         } else {
+> @@ -2991,7 +2999,7 @@ static void __split_huge_pmd_locked(struct vm_area_=
+struct *vma, pmd_t *pmd,
+>                  */
+>                 if (arch_needs_pgtable_deposit())
+>                         zap_deposited_table(mm, pmd);
+> -               if (!vma_is_dax(vma) && vma_is_special_huge(vma))
+> +               if (vma_is_special_huge(vma))
+>                         return;
+>                 if (unlikely(pmd_is_migration_entry(old_pmd))) {
+>                         const softleaf_t old_entry =3D softleaf_from_pmd(=
+old_pmd);
+> @@ -4517,8 +4525,16 @@ static void split_huge_pages_all(void)
+>
+>  static inline bool vma_not_suitable_for_thp_split(struct vm_area_struct =
+*vma)
+>  {
+> -       return vma_is_special_huge(vma) || (vma->vm_flags & VM_IO) ||
+> -                   is_vm_hugetlb_page(vma);
+> +       if (vma_is_dax(vma))
+> +               return true;
+> +       if (vma_is_special_huge(vma))
+> +               return true;
+> +       if (vma_test(vma, VMA_IO_BIT))
+> +               return true;
+> +       if (is_vm_hugetlb_page(vma))
+> +               return true;
+> +
+> +       return false;
+>  }
+>
+>  static int split_huge_pages_pid(int pid, unsigned long vaddr_start,
+> --
+> 2.53.0
+>
 
