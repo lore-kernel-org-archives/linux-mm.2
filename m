@@ -4,115 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6694010D148A
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 01:03:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A0510D1495
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 03:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37B916B008C; Sat, 28 Mar 2026 21:03:38 -0400 (EDT)
+	id C61266B008C; Sat, 28 Mar 2026 23:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32CDC6B0095; Sat, 28 Mar 2026 21:03:38 -0400 (EDT)
+	id C38A46B0095; Sat, 28 Mar 2026 23:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 242106B0096; Sat, 28 Mar 2026 21:03:38 -0400 (EDT)
+	id B75036B0096; Sat, 28 Mar 2026 23:20:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 12F816B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 21:03:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A0DC258616
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 01:03:37 +0000 (UTC)
-X-FDA: 84597302874.18.77C627F
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C9B5E1C000F
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 01:03:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HBI6exYr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id A6B4A6B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 23:20:59 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC5811A035A
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 03:20:58 +0000 (UTC)
+X-FDA: 84597648996.08.871D175
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5395714000E
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 03:20:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOrl0YH9;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774746215;
+	s=arc-20220608; t=1774754457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4NsleX9u5aPhbjAVr0Nezc/nBr+cao/tGbHhc5N7BqY=;
-	b=GNdGhFqrLJljVmwexuzcq25thPhWIwt8LVrM10414IUqdmvz/Eb09Mu3qJO/YhN0ozPn4I
-	EDak9l/3nR9Nkk1xtTAAhUvnVtRtMMhmt2z+yrVJs1hmdX9U1LCNu/pJrrT/6rLi7jc2Ea
-	kuL6PDNCj9YwietNjLHMjYYHh5Ocwsw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774746215; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QJjUinnPFfXol1bAHXd8odIBgjAlNsUj5csXY9CXKAk=;
+	b=MQXNiGaSJBJ58pNQSj6Tu4jyo7pL8qJZe/dUxbErg1dSj3N7qngnkZHogmha+fuakBblk7
+	6oa0Mdw7IHUVtzGtDOIGWCPkkLU8Yiq285umIurxP/bAEC2xlNAOM9wH6mTBqChRnhI4w2
+	ywjOotj+WlA9fBpgDo2Js8i4yqfX8B8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774754457; a=rsa-sha256;
 	cv=none;
-	b=nSF1SmeU9CI6kjgiMAhputgrkJ3wC872lyztColPQgPfBAXNkKWLM7V2Q7kTVoubXazyAF
-	PPt92MFA7sMtlnj1SIblJMz9AJsGQe1vZtiLf+FXOmCnfAeWVluLbfGjr2oLva9oomjZcM
-	DRGFoNjSaEyXxAzTFdNnVCFWzyMbf1s=
+	b=s2lIDF4vsKeJ27jTwcpFTjO2Rr4i5gTvPoujuFCAKlPNPsNFP8JR7aER6/bWk7HFVMwaA4
+	D+/aqCympeINWT+EpPw4QW51Vzlbf6Niruh1reNMzbH1d7IV5LhXdzpOxauTouEES95yBA
+	91ge4pALogZiFZPWQr3nYven3WKbt4w=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HBI6exYr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b052562254so83225ad.0
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:03:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774746214; x=1775351014; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4NsleX9u5aPhbjAVr0Nezc/nBr+cao/tGbHhc5N7BqY=;
-        b=HBI6exYrX9ZoSEeSNSwmzo0VtmiiAWnrDYfYnfmclDt3gp8gi4yBFQI6/eyG0kaQtU
-         i3d0znYXmYEbFJyWVbbRhr36ZHNukY21WDyP/TLXLgYNCVXI6DtAPkXBfXuX/5b3GwBV
-         CAYmxpFKKpst3DSWba+cFG4bmTM1UlvlG2JelWhyoCtojjhPSWITNGr3ABNQOnyiXcsl
-         s2chSBVIfXJ0ybieKtc90qRfPsCN0t1DE/AjfGgTAz3o9JdTO68Q57HItGwktKLBhzog
-         KtMe4BDFdBNaTxKKJmdCfKazU4owgCSjDo8z/22nd7H9NRUxkUNdn5oobeBXcsCx6/2X
-         BfnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774746214; x=1775351014;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4NsleX9u5aPhbjAVr0Nezc/nBr+cao/tGbHhc5N7BqY=;
-        b=hAZcYcFG142Ayfb0CmlsbRz6DzB6zT3R6VoQxfsWtGsQZqraOEAjoS+Tc/Je64Ujpv
-         fVGrpvVr5PC7SUbeG/ymDBkN7X6nLU3TQV6ANTRAoFL7vWM8fEwrTpsEcQSG9xPG1hWe
-         46JLvj6OdYRrMmviN50i4YSKhdlxNz3BtS0lMRFd1bg++mX4rvpq+abYC4ZH5FtcJYz0
-         2piVjHT6/yjE2/T66AqmoC1NFFcoiiPqvw8EKNJ/sCthxFZtHxdQxpp2Cc1f9ue17K2I
-         +FElnz/cMTQERLHyKPyif9k5mfzc6KWy1USMw0c7bK0uxx2O7oSmrSO0UNyBkQhbwM1C
-         YW7g==
-X-Gm-Message-State: AOJu0YxTlCHd2RO9DojJYVP7dK8bG0hENG3F8xemUmTwIgFba5xlAihM
-	Rv0G8EOF3S5ufU/AjNUazIVFJP2mqIfgo66VmaiaU5a2ARMsWSuuz4h61OhwV5W2eQ==
-X-Gm-Gg: ATEYQzw1L8cl/OKI/vpDqDSfA6/QdqVm6sIB0Uv7uKuijKgQ6GZcCFRJpgw3SAWm9Cz
-	ZUT9RQMAoqwWGukALmbp/P+dwXq8ai/YrNhP8Iy1yilLRvH8Bgua4Wf46jyxSKBu4WpoJVjosMm
-	RRpXeqw4fQckmKeH88Zqi6ThmnI+XxaK6Ij3wANQBC+tf71U/9dQ7MgssN0/jniLsfa3MRfOfJL
-	PnSw1VxENu4Oz32qrZoT8ofMVYXk8XLMwNv8MzLH8saczJAC6CHhaS9Fhyc520ZTPh485u+WOZL
-	ybK1IgBchsY8VZzzlerkNAi4JIjI1q12AelojIbeN3zP0hd4MveBtkMU6C+7CGR7tdkObRK36cW
-	aXxxRYIBuPMXfwVgdJ/MjvySa56mvnjFZnQyKpa5tTy1PXzYkkwBs6JM0vHC4fDVKD79TRuMkeU
-	hrC7ePsG23GmOODDeBcIvEbmS1Y5Uru1sNiqLF7xQssEb1quKLYwDpklZhN5YpHGk9zNmKLh6/I
-	0LQ7MjYbC+lO+Zljcfh5Y3A17hMk+8nP70XEnBwZ0Nl3qsfLHt3ng==
-X-Received: by 2002:a17:903:15cf:b0:2b0:b925:da98 with SMTP id d9443c01a7336-2b242ceb47cmr1976585ad.19.1774746213717;
-        Sat, 28 Mar 2026 18:03:33 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:a947:3e4f:679c:4c03] ([2a00:79e0:2eb0:8:a947:3e4f:679c:4c03])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca843d8e5sm3682786b3a.5.2026.03.28.18.03.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 18:03:32 -0700 (PDT)
-Date: Sat, 28 Mar 2026 18:03:31 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Alexander Graf <graf@amazon.com>, 
-    "Andersen, Tycho" <Tycho.Andersen@amd.com>, 
-    Anthony Yznaga <anthony.yznaga@oracle.com>, 
-    Baolu Lu <baolu.lu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
-    David Matlack <dmatlack@google.com>, James Gowans <jgowans@amazon.com>, 
-    Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-    Vishal Annapurve <vannapurve@google.com>, 
-    "Woodhouse, David" <dwmw@amazon.co.uk>
-cc: linux-mm@kvack.org, kexec@lists.infradead.org
-Subject: [Hypervisor Live Update] Notes from March 23, 2026
-Message-ID: <d07decf3-bd88-0ebc-1aeb-f91545318d3f@google.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOrl0YH9;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 39B5E40946;
+	Sun, 29 Mar 2026 03:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0284C116C6;
+	Sun, 29 Mar 2026 03:20:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774754456;
+	bh=piAqIhYDF/cuSRB4j6MpAtXLnQgECdf1z6Mkz3i4rhQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WOrl0YH99aD5bDVnGy2oGyWYyNFxNwvun/2UQfVFTfNc3d9GiKPzYJWdQv8B0wIHC
+	 uyj82oMyrNQumci0xX/dDa2J25cj94XJw0yfr9qlaKRqwzNgR8uz0fU7xcFEIF6mzs
+	 UyUmGwkmLMkjUI1GXi/uEHxFMDdI8fyoH+6LOM/lQ6+jeuWu4GZskXYb5z2xpQYmzF
+	 lPeUPkFU9ZoCSDzi0h4j9VRHfQdXUy3GTN8kB5qDipStfEjxBjM6e2g+XCMRp7S6l4
+	 wz81eZ/JNH57rzZ5onH/z3jbSjIiSfKA/DMjUsQP6GNLF2HCTCgcKKqglYF3AEwtVR
+	 hQ6AwOW0SY1nw==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
+Date: Sat, 28 Mar 2026 20:20:54 -0700
+Message-ID: <20260329032054.2443-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260328184319.13176-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: C9B5E1C000F
-X-Stat-Signature: 4res39wpakmo6k8e7ghum9yfjh86x4ad
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ashhx8nruek5dbzbna1eq5dfaei7bj1s
+X-Rspamd-Queue-Id: 5395714000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774746215-719389
-X-HE-Meta: U2FsdGVkX1+bdoT4i8ZuejI65A5CpqQrjIoeztvNuV/DT1sdFDqtYQ8S7yTj29i5fZiaTbBmv3mvRvHocvr50eZEDp6mlt8fENv6PAIbtnZKZZKKlLRw9hzArEkEs5y7t/LLEFsexIWSnTuQTMyt6id2uznziUjOr2FdxPki3xQ3HGj6IlzsEzxxCXZAqk+Jjw1Y2udQIbTMEKQeADCz6oTOBjL2z71Rwj6YmDfXx7cGGJyaMymhnK/oO3GZpwiAfitQDPkicSecVoC9UC3UpwyOmJSkDORSqgK2uevJOmW4cQxE1aakdUAVz1Dd9dzq8Vhex2Cc8DyAhQDFnRlmoCA5LW8Kpy/PLvHaybb0xNEID+yK65zWdC9ZDZe1Ign4vWluZEf2jwa8uF6ShVF5XFYAm4mtnFDEet3r5wGF/WlQj2bOmMtTM4GacYrhuWA6PDfQNYX7pEb0SoAOFT2eGctiBx9TwZqC1eLhg/LaD8TGT43POYmtwg81YZYpiiGpuTZIX6upTXsCGuR3gtOxONFbl3FyNhDIJu5JQQVZFRnCSx4JKhYUnXa/rGFXUoBOnIYjmLzoO0n8HMmwqjW1KJR61pqPYhzt3hRChHKiq3/tiuAxKVmV6HOrB8Jn2GvtVgX25gPhnWfx0dF+zva9PZWKHa6X2zE7yWcxFGu156oVu83SD7NL/mdzanW6rOFnTN6R2FEmdCu8UOA6IJ91pPWpueUAbsWxI1FA49K+hZACGOUyNi1H8Sup+1PPNEZ1V9VUSHk6FrNw9wm8GJnntyO2KA58eZM7u15ssOHk/uo+dmw2tOal8AKGL+Df/Gjy5Cl9HuvwvnRfpvrBAbSLhSh24izn5vTCYPscwNNSW9Ryd7uEE9ZOlJwt6hKi2p3qIUdu23ux+kGqP/9Xq29J+s5Gdq+XnATSaV1R6Xhp62+I5xxX1VqEfVyu1Rc9ud1z3GXiqjivIf4ePg7mYwn
- ucr+jjdQ
- y3zOWcIHcNXOlpTIOtGHXDSEx5wyRk7GL42tZPa7X31I9GOxgT8OHBCetzVy8TvcPSgQKHRdmB8cysYrLY7t5e37b3D5paLWy2Y5NFPJ75SVF+MkIoXTAHbQTNRnTG1YanN7uMFqzjvvSKo5vwDF5wwJL9H2GEKzXvuBwpaC8v4AunvdC5MzMdGPQvXClTjyhNbrvQkH/MwH5v0DvtDIH8MKRdXtA4Q09gwLWgUgaCdhN9K/2CXg0KHcLCMDz1AlHiVIn6SicZ1alSKX5Q+HKlHAoH7ukgQ0auSPEL2AG0VW5KDC7yHGy+Jbfn5nPa3nVWTeI5JhC8qYcIg6A9QmMg3qTPenFVj32HCm7KVl0lv+ClTh+WWk69vKbZUqI3IgyEx6MhHN2lv1IWNlcPGlX9SP12DrWu1W90o2AWJzCC6OQMCBHhqLX7OasjcVgogBc0pTwdLhdSpsP87hNTdgyU3EyTgxGDQjObSCR9x8nQevb2H/6C3dAuAt0dGE9mdhXNtsLNUpNm45MHUZRdtutioG3qZye6JLv0h9sB6HehEzlhOVTldn9vQdE+HwBKc+jg2IYbolD40wKme4x5reJPSxnPcCfG5ZaqOnJjJU4VQ7kUMlE3DtDIt6ygWSm6Jj1Ul7IwXLzljn+mphPt1aKsPoWLj6G7aWphTjw
+X-HE-Tag: 1774754457-456703
+X-HE-Meta: U2FsdGVkX19XtWR46Q2j43YV9kcrU19Aa34/0HFETdKBQe1Ucue0rWwZpyyhrS9KVLpWGNsUlHjwT10axWba6ayXnrZMOnl2p2+Dax7/UMfegYhM7GS5NgeNLZjd4nBpFZKhfhdUOj6ekVHM8hQ6g8nI02gAnMQzN72oMDk5rg1csmU1W5egQqjmhRe7dCgI3nwmwcy+OuGzegiNwXjlfnXAXpOORoRFMzTGZeOIxO+IskM1sRrqQpHA0Gb7y3mqexkZxX/kLrqS0J7M4miAGhPhHn+ZbYEdzQnMSeun2PrC0oERZBqVZ4OpzE3ssNRfbfVdgUceDwY4ODrOt+YhMjFjffztdzEM3zDl/kKlgvicJgLprjdXh5aZdK9rs7VBIhJw3xWXoHys9ovwl/LC8MKbuik8jirWL85+YuNRdFVcVSpbl/siMwOrUeZbOmX7v6xQcDC8x2TvudwkzTFUh7YrHe1Fugomx40F/M8uI7lr5/6TUsI/+tUiOeGdqEuHqDOyfZWW22+zK+m6U/msQft7EWQ9QTGD8dGKNUWG3K4EbHusIVNBzjtaS1nr3ogjdorAxdTaCFD8607S3G9CKzthuiphf6jp9r5TOfdSuQ7rh6xDKrrC6hQwSsEb2JqSPV1ijISIKJ2zm0d4BxrKhN7C+swl/HNH4t7ISOU34Z7zKZVCeYPF35+Fx/enJEKIvfzJSY73W52EVq22WWwZM1ngBlRL7iXVG5Lr/aGiZuPf96I4poFFimirLAp0rYyT64BPq51EtjwvIiHICY95kiGpevUAaU2fQ50VsVOyw0+QCD0nQLsfnukUerBkNHGDvuefMSeI2vi8uJYk770ZPmzEL6BPKWzVmMI6X2dlqjtNjy9f/7ohb0gkmVuP7w3fzry/Icw6Kxq6kFaa9JjSb31XzQxrJqtuK6sMzusuId8mLujZOiuJZWduEM48ttZhfg0oiIr4tJW5pcA1V+o
+ ulg/jbi6
+ PWPS8uRjkfPHrRNVifNi9Ny8DJ2sHMOo3SexP39H1f1vPAzEXHNtdKn+GiqGYoQle1JnwwZ5gkZFUyNruaYK/hvBiDZ1VflKr35mYFwwjTQVP4pb4XWRbGIfb7piapL5Fxmf23viPQaK8KYOGueLrjZsd4yDtHT74GA5rRuhLV9JeRgw1Rszf8TdpVvc1IQ5NiNJR3UR+G70PDqaBkFfJkS1JGWWGSBtfrhDfYQxyct/fx748UsUVczldLTTaNpmiQV14n7fYGpM1C7EbwZ1m9lLqsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,108 +91,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On Sun, 29 Mar 2026 02:43:19 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-Here are the notes from the last Hypervisor Live Update call that happened 
-on Monday, March 23.  Thanks to everybody who was involved!
+> > Liew, I suggeted two options before.  But you are skipping providing your
+> > opinion to those, and adding yet more options.  That makes me difficult to
+> > follow the conversation.  Could you please answer to my suggestions and make a
+> > consensus about those, first?
+> 
+> Apologize if my previous email was unclear. Let me directly address your
+> two suggestion.
+> 
+> 1. DAMON_SYSFS Type [1]:
+>    I fully agree with this. Centralizing the validation in
+>    damon_commit_ctx() is the right approach to avoid "whack-a-mole"
+>    problem. This is exactly what I am proposing.
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+Thank you for clarifying this.  Thanks to that I can show where you are coming
+from.  You are misunderstanding what I'm suggesting.  I should have explained
+it in more detail.  With this option, I'm not suggesting to update
+damon_copmmit_ctx() but the callers, in a way similar to that for DAMON_SYSFS.
 
------>o-----
-Pasha updated on the status of luod and a good conversation with Luca who 
-is interested in integration.  Luca had proposed to do it in phases with 
-the first phase being support for systemd logging during shutdown when 
-devices are unmounted.  Luod will require preserving the logs and passing 
-them to the next kernel and next systemd.  He was also interested in the 
-next LPC discussion on the topic.
+> 
+> 2. Adding a simple check on existing validation logic (in callers?) [2]:
+>    While this is simpler to implement, I prefer avoiding it for the
+>    "whack-a-mole".
 
-Pasha also updated that there are new tabs added to the design doc[1], 
-this will be expanded for systemd and its communication channel.  The plan 
-is to have 100% integration into systemd.
+I suggested option 1 as a way to avoid "whack-a-mole".  I didn't suggest
+updting damon_commit_ctx() as the way.
 
-Jork Loeser noted in his discussions that systemd was very adamant about 
-supporting fd store and asked to what extent we need multiple sessions per 
-service.  This would include the LUO client interface as well.  Pasha 
-noted there were discussions on how many files per session we can save, 
-for example, and added a limits tab to the design doc.  Right now, it's 
-about 128 files and a thousand sessions.  In the future, the file and 
-session count limits should be removed entirely.  Jork was asking about 
-whether systemd should expose an interface to the clients where the yget 
-explicitly tied and create multiple sessions, or whether the interface was 
-just fd store.  Pasha said the plan was that systemd would expose the 
-sessions interface so clients can create new sessions.
+But, the given problem is clear and local.  Validation of addr_unit in
+DAMON_RECLAIM and DAMON_LRU_SORT.  There is no problem in DAMON_SYSFS.  So I'd
+prefer simpler appraoch on local callers that having problem.
 
-Pasha said next steps include getting the design ready and then the first 
-implementation for systemd logging.  The latter would be implemented 
-before the next LPC.
+In future, we can make centuralized appraoch, in a way somewhat similar to what
+DAMON_SYSFS is doing.  But that's somewhat we can think in future.  For a given
+problem, let's fix it first.
 
------>o-----
-We chatted about deferred struct page initialization.  The patches are not 
-yet ready to be merged so we would follow up next time.
+> 
+> So, to clarify, I choose your first option (centralized check), and I
+> believe my "Option 2" is the simple way to implement it.
+> 
+> Does ths align with your expectation? If so, I will proceed with this
+> approach.
 
-Pasha noted that Pratyush and Jork had discussed scalability of memblock 
-reservations.  Jork said a couple approaches were discussed one of which 
-is to move the quadratic initialization or setup of the memblock list to 
-be linear.  This would allow us to interate over the struct pages as well 
-as the KHO tree to avoid restoring the memblock list.  There was also an 
-idea to side-step the memblock entirely and to use the buddy allocator.
+So, no, I think we were misunderstanding each other, and I think I understand
+you more now, thanks to your clarification.  Also, please don't hesitate at
+asking more questions to me if any of my suggestion is unclear.
 
-Pasha asked about the proposed changes to the radix tree: if we move the 
-order then the bit in the bitmap at the leaf levels would not represent 
-the order size but rather represent the page size.  So the memory overhead 
-could be much larger.
+In short, for this given specific issue, I'd prefer the option 2.  Is this
+clear?
 
-Pasha suggested allowing the scratch areas to grow when needed by finding 
-the biggest hole in the radix tree, this could help to solve some 
-scalability problems.
 
------>o-----
-David Matlack updated on VFIO v3 which is pretty much done and is going 
-through final testing for posting this week.  v4 should include a roadmap 
-for what comes next.  Starting at v4, the series may get split into two: 
-PCI patches are growing so it may make sense to split PCI and VFIO 
-patches.  Most of the code is behind config options that should help with 
-merging as well as the new documentation that should also move this along.
+Thanks,
+SJ
 
------>o-----
-Samiullah updated on IOMMU persistence: his series is getting reviews 
-upstream.  He's preparing for the next verison of the series.  There was 
-no update on the hitless replacement, this would be worked on next.  There 
-was a comment that we should standardize on naming in the tree between LU 
-shorthand and using liveupdate as a single word.
-
------>o-----
-Ackerley updated on the UAPI for guest_memfd HugeTLB enligthenment, he is 
-still working on the conversion support.  That work is pushing out into 
-April.
-
------>o-----
-Next meeting will be on Monday, April 6 at 8am PDT (UTC-7), everybody is
-welcome: https://meet.google.com/rjn-dmzu-hgq
-
-Topics for the next meeting:
-
- - luod design feedback and intersection with systemd; implementation and
-   next steps
- - KHO optimizations for boot time performance including initialization of
-   memblock list and deferred struct page initialization
- - HugeTLB preservation support including selftests
-   + debrief discussion from Linux MM Alignment Session
- - VFIO v3 patch series posting to the list and roadmap for v4
- - phase 1 of IOMMU persistence patch series, then phase 2 status and
-   updates
- - hitless replacement for iommu domains and patches from Intel
- - guest_memfd HugeTLB enlightenment: conversion support, HugeTLB support
-   without restructuring, and HugeTLB support with restructuring
- - later: versioning support for luod to negotiate
- - later: ordering issues when disabling interrupts based on feedback from
-   Nvidia
- - later: update on PCI preservation series and next steps
- - later: KHO enlightenment for ASI
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-[1] https://tinyurl.com/luoddesign
+[...]
 
