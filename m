@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7E47F3D5FB
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 14:53:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FECBF3D5FB
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 15:12:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF13E6B0092; Sun, 29 Mar 2026 10:53:23 -0400 (EDT)
+	id 3BFBD6B0092; Sun, 29 Mar 2026 11:12:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7AAC6B0095; Sun, 29 Mar 2026 10:53:23 -0400 (EDT)
+	id 349A36B0095; Sun, 29 Mar 2026 11:12:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6A3D6B0096; Sun, 29 Mar 2026 10:53:23 -0400 (EDT)
+	id 237D16B0096; Sun, 29 Mar 2026 11:12:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A1E1A6B0092
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 10:53:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 726031B7D08
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 14:53:23 +0000 (UTC)
-X-FDA: 84599393886.12.B837318
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F5456B0092
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:12:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A47A114047C
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:12:23 +0000 (UTC)
+X-FDA: 84599441766.10.48BB558
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DA5E3C0004
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 14:53:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jui8O7Fg;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0E4DB16000B
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:12:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s4T93kwb;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774796001; a=rsa-sha256;
-	cv=none;
-	b=1LVNaDttFnQzUsuL6g3+TCTF5L3AGh+3xOtrekx5+iXsy1Ro2xxXZVPomjB7qMPNV9Ww2T
-	taKZd/qMeTHrXNBbTnm5ysgOCQDRtZtfTFEBR4tVMpvV7fko1x2mobCTfU39eG8gJDTdDI
-	kkm+YbBNnm4sPrUDAGdFc7em4/UOyDw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774796001;
+	s=arc-20220608; t=1774797142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FyBMEBVF4VO18eKUw3tH04vxhl2TguWEgEoBE6E7omk=;
-	b=ltDuvo0MxHzmmh/ZIr3+XR05USDGCZwfRtGs+dK6CMWLVEDF03HYNyggGwUzVx9DxsVA1A
-	ItdvtJ8995TGSVkkjTBGlISBYkXjEhR664cOwZHidAVXYHG7/8Of80H0U526MiqdXZZWRl
-	D0WmoRMHo9WrzVee+K39ycRls91VxQY=
+	bh=PheHktpL3Rp91F5gOB0+0XeVD7Vocs4mgsoUPOfBDgY=;
+	b=Ir/uV4MPlxczQERYCv49l3B7bCYFnECT+I4gmma3Epeb95h23ScZuaI66O3TUs95HIGmcf
+	WidIISG5yZKOAYmF57BtZRpqmfOIFwL8r3EJY18lpB7/57XSX5yPFOqNNhTVER4jyv38Po
+	82mxqcc5nAkzFsJZp1nxb176hj0cNDg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jui8O7Fg;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s4T93kwb;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774797142; a=rsa-sha256;
+	cv=none;
+	b=WGXN7Fs/IlIpm9M4f57dTV/4KdpPYJR+ADB3P2hICEqo2cRYTp30xB7bhBdxXhfSt6grM7
+	lpLnXQC9rsmn4XRR9yetDYFMKujc2H7wSz8gONyvZCdZpvdwhgbgtYpWaqc+RYmzf8yb9c
+	rCbGVjCFSK2ke9CF8XjjHTQNEAQyycA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BE9B600AC;
-	Sun, 29 Mar 2026 14:53:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6BEC116C6;
-	Sun, 29 Mar 2026 14:53:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6352260054;
+	Sun, 29 Mar 2026 15:12:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00020C116C6;
+	Sun, 29 Mar 2026 15:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774796001;
-	bh=XKaT9syjyaCnbMPh9xU8yW2PFKGdVEwY+cGqHnzDB+o=;
+	s=k20201202; t=1774797141;
+	bh=9hextLtkAfjK6hXZX5ChQd5LrsN03XztqpNRxzi++H0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jui8O7FgvptlbXRZq73j9aMgokf476nbtGQfAayqrFGPM5M1rqd3PpYfp9BAMi6/C
-	 fL1eqbXYDifbXJ8uOXBFoP/6CRY0JlTE7WsCOXYv8Ql9LuLfyErLa7+KlLM2FglaGU
-	 qbE5Etji81WZiWyePGrLmECgunM4syabk01Xu1dgjjtuUczAsxEZBM5tqWAQc7x9Ag
-	 IaKBp8zyGiEw04kTG2hbFf5L5x/F5oyVogAqGad+/+NX1nwsqKQDDM5nPSRUd2vcIj
-	 4zjY/4Nq2TyBDizlHXcJYuS38zhF0RVFNBAb/WiGcUeD58vRzBqwh8uFdWKGlhl8Y5
-	 e/uWoPCGQRWBg==
+	b=s4T93kwbCo35X+oPgNmpQx/wx5boeQERvcZ+DQfyBj6bYfxXusrxZJXmV8KES8j3e
+	 ZuyQKCObwbUgEcB4zs5MU7ONT5sujNKGwKsy563/x2qGDN04XiwkXA44VHFnWlwc2C
+	 LLjTBlKTLTe2Z9LYTNirgNkeBJ2E8K4ZmJ2w64/RVwWa68331l1jWlsvI2vtqGz8Dt
+	 IKNyrkqatz8iTqpoYhWGy5rQLJpOWR3IMQQpoxDM1Xbyx7UEwxXjILV22XfslUB/0D
+	 IKYBsI3D7zPkIokzMVnR/vX5TJMA3629txKm02Da6RDkX4SviQs8J29F87kbjv9/E2
+	 +4mA/LO6y4pxw==
 From: SeongJae Park <sj@kernel.org>
 To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
 Subject: Re: [PATCH v2] mm/damon: add synchronous commit for commit_inputs
-Date: Sun, 29 Mar 2026 07:53:18 -0700
-Message-ID: <20260329145319.47226-1-sj@kernel.org>
+Date: Sun, 29 Mar 2026 08:12:18 -0700
+Message-ID: <20260329151219.44003-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260329095602.3471-1-aethernet65535@gmail.com>
+In-Reply-To: <20260329075415.36775-1-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DA5E3C0004
-X-Stat-Signature: 9j3o1dkd51tt4wshs69hxozpsj4kzyoa
-X-HE-Tag: 1774796001-5107
-X-HE-Meta: U2FsdGVkX1/CqxNsfb8QrYsttIsKLXTLvkPRXlaT+p7e9h1/QQ8r5w+HIWMru2kWEBMdxakEBTln5tL0MEPHfqWPJqcYfC/OeJBe9Yw3R44S6ys0en+iEjYX7hZL89FRBdGYbrdcvG9Bts4dMopM0gi4LcG1gIpJH/O1lq5e7FtmdPgZURRYeGpMTQUMA03QGEkFlJdCyseDay7yyeUv986Pma9bFAKzZqwitBpw79iawElsLUcDxvf9CArc5HGBV1l4Ej+NTf9qWR5ZP4FUN/KNov7t9fMgRtg5pwZo3qi0StvVsk3ChAPPILXcOQq/9TSD79nw3ARntSzqqDpUTeBYkDcx8IoDdruNPgyt6mkZrif4Fgin64zEnk73j0j0PKHW1EzzK3zgHFH0N2XLAviLUJJ5FzYsetwdd6hmhrO03EKdyCm6z6pGbE0NmIvxhGSbPVI2E96jOWdPXyuMhZRXBC1zlR0TqZAlRNgmtsD3kJxNCkmJ+wqKqwK3KevMcyqJjy92DsiMNqWO0dO9vFuKokhLoS8uJrTB7sBA1lwJvWcP8d7vXSSNVsqEYgy6t0Q4Nhfr5CFkog036c3UIGQOT2j2+ipfpwk815EavB4P+KQF8WS2DAWLCIRTukFpq5y7d+8vH+mPbLQchtozBpNhmCbrvVD5znhlzZ8fA1JTngkx+uPQHB/3tShMn3Bc0s6JmMSaFV1NKlqT/f4K8hRQCDR8SbLG/bka6Vz+WFgQd3PhvuycTahBOQu3WwAyRkrtpY+p/yruBcP10NwWB7FM1CaN1ZdCs3w56rFC3uvcPrNPG06W3jXHCOBuXdyoDKGjg5//wIScAES15+F4vS9KubihFAtSpYqC9RoB2uCMPpgXIdHdI4M5nb34egCpNkEXuie082wEMCsJDOt4oartoTWqANTxI3WMAyckQnH5hxSMY9QXkd2ymHOVqUj83z4GemmtmfZljz74bn8
- oAt+5d8d
- lbJm0JkctMy52G0BBlVKprVvuzrFaHW5D9Hgwek1tnE9m5jTh00y5ucmSDMQqZMJUVD90ZYXwaPkBMDqR0qc0GiOqx6Hnt26qwzR4AaG8K63Nl0H3KVKUE9oyuvdgIQ8+vbjTzlAmXEjr8/Zjs19hpuPszXRlieiQk87qmOWhnMCfGkAcMiH/zIFaRPfdKfAowbWDIwbrPX95zynZzcwOQkNLY/ShW4qvgHqGukc9kDBR4cE4hktEWLiVDkfGBw91xsnr9MccCiq4l+ED2+PBwpM2bw==
+X-Rspamd-Queue-Id: 0E4DB16000B
+X-Stat-Signature: 7fmex73hdprh8y6mhizpf5qbwe6not19
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1774797141-124382
+X-HE-Meta: U2FsdGVkX1/5zARB1knGvIJE0Wd8rN2tXx/3bliihCKLv5iq37fCFgPFt5lXLRuWPx7AOvSGatVAyrMmUScRUMzobLwfEFuLPdEYIxtxvsf7QKnqJHgEOYxRgEyekYwZQ2+gfkJsEpz0t1D3ELefysNpIYDeDnTSnAHsDzte6ZIIKs61E8ioQL3aKoa4yS1AoWrUnP/Iqo3efXGiZNbfg9j084FgaWl92ekpPCfKP0PPmHZkOFd8av1ui9U00Yg0ZJM0cgo12dxQmEreE+sh1rhAq3hn8QuHe8yfDrKLPyXfOlg3qVcmKo/ufZ5JQJlMU2XnhcYRd2Zr6P+MwcBSZpCXMHK0Lr6iU1oeZIL6MpM3D24SHFtwYQW2w7wGMkBmFx3rP6HsyT/Ts9SyolHIG3ang8IfNauv0bekYNBQXYbFVXHlvanqOuHsZyhQAeCmUvreW5d2MTNmq01Tkv6uedzt9iUHhArBixtUu7i+6WkcHHcoefetbZW8bRlkQo4SyJjraZVLHGQswsrfR3OxU/c8z2bGWEY9N/dgbvKwbw3wG0/1fCMAQRo0U/k/cqngyl+3keCXs+xkBKVIjJqL1Wq9MkITebkpTcd93IV/pMCF1v4MKqEbKCfuecCJZdqDVpMVZ9NFy8j7F1pzZgNn1xajvZRWnN9SlgK7kJCQMdWGqFPJi8DMOs+pm9aDit83prua/sEUrsmzt/gJS6hYArnI+pIHCqUzhJ9vHwkRskcW86ozX5Bm0dm/RmbHePjn8DwnbrKGUyNixFheuQ5lbHnVUy+lRRsGcp8Z3iRTToA8VbSUDwcoPEN56BH06FHK/cs06remIGVZYJlHmogB65G8GTE+OsYQWhHU8hHTBmboVZ8NBNAXJibTrqqyXYODSz+6nTuak5/ulCt57lYfS7xF4OeT6XS1m19zMYRiFT3qExq+8zoiNU8ZiXbLXtDOLMCzFNdhAoX1/ToXBZB
+ EKnuNKYr
+ dWaZV7dlo7fzr3RvRVW3BZKdtIjc/UKvpmudh0WsivkA4ElErvc8ArW2P35ga+OuYxZJug4YeNSK6xTgof/i0LAhsGCMyb5POgPLYfAsCOVL/KZkm+whuEbJYrxqYr/MOto7K2d6L6xsvct4ba0a35cCxfxW08ksmZL1c+K+hkTPvjMpf/SdydVEVWlMmrxl26vj2UU+otzOul7Qto15Y+BbO1L1U+Wks/Ez8kY9CI97umKxBLSPhHX6dmn7F4ZuPEWyLq5Kfb+EJCH33GiyjPRpoeAJIt8sLa4sV2y45IG99zUY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,12 +91,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 29 Mar 2026 17:56:02 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Sun, 29 Mar 2026 15:54:15 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-> Forwarding Sashiko review for doing discussions via mails.
+> Problem
+> =======
+> Writing invalid parameters to sysfs followed by 'commit_inputs=Y' fails
+> silently (no error returned to shell), because the validation happens
+> asynchronously in the kdamond.
+> 
+> Solution
+> ========
+> To fix this, the commit_inputs_store() callback now uses damon_call() to
+> synchronously commit parameters in the kdamond thread's safe context.
+> This ensures that validation errors are returned immediately to
+> userspace, following the pattern used by DAMON_SYSFS.
+> 
+> Changes
+> =======
+> 1. Added commit_inputs_store() and commit_inputs_fn() to commit
+>    synchronously.
+> 2. Removed handle_commit_inputs().
+> 
+> This change is motivated from another discussion [1].
+> 
+> [1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+> 
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 
-To my understanding, all the comments are same to those for v1, which we
-concluded to be no real issues.  Please let me know if I'm missing something.
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+Note that mm.git is nearly closed for non-hotfixes until 7.1-rc1 release.  I
+will add this to my tree now, and resubmit for mm.git merge after 7.1-rc1
+release.
 
 
 Thanks,
