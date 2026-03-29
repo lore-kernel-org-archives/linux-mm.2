@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65D61F3D60A
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 16:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CDEF3D612
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 16:43:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE68E6B0096; Sun, 29 Mar 2026 12:31:06 -0400 (EDT)
+	id 1AD5A6B0088; Sun, 29 Mar 2026 12:43:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBDAE6B0098; Sun, 29 Mar 2026 12:31:06 -0400 (EDT)
+	id 15E626B0092; Sun, 29 Mar 2026 12:43:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFA8D6B0099; Sun, 29 Mar 2026 12:31:06 -0400 (EDT)
+	id 074B46B0096; Sun, 29 Mar 2026 12:43:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ADA776B0096
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 12:31:06 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D934D13B0C9
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 16:31:05 +0000 (UTC)
-X-FDA: 84599640090.28.697A66A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5758F120002
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 16:31:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dHG7ShdT;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E81786B0092
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 12:43:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9051413B082
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 16:43:12 +0000 (UTC)
+X-FDA: 84599670624.01.1C1383F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A3DFB40006
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 16:43:10 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdpJPPWM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774801864;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+q5vekc2WltDoktuyDQG1fEbX/Pne8fCO9uTI0lic/Y=;
-	b=wIpz/xghAr3it5qtiXTLrsQd+VkNVgrr6MYLIy4zVASwr0R4iw7SGcTE/P+1RNOYigFZaH
-	pib4PeRN+IrrOl76YN69zo8LDh+7R/CZd9/BqnrBaKhRjq3QiCJqHjoUQIFa2jscCEVpbl
-	DuWuK3hjGrbsWlakhibFCuzY0dByBoo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774801864; a=rsa-sha256;
+	spf=pass (imf17.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774802590; a=rsa-sha256;
 	cv=none;
-	b=oUpJwznYhozAUryRvy4RuuEsTApf6nyn4q/RHNZRGihDn5C8U+mgjPIUG09ncelkH2SPet
-	0RnD4g/D+qwGRTxQLdKIuN84j13MerLKuTsOWOLjGxpvSo8BZmR3oYrBTHqYfrs1CXj6JT
-	kVWn1hki3NJtVjlBdoOjZrCuamk8nIU=
+	b=l+shpwvK4CA1yClwrPea66vawC9z+Zx4Av6M11N7r8r1YK9G7hPWOs9fvU8qGCPHiqyMAC
+	WQS7cR7I7es3TShpu6XJqFbtjNfCdv0d/7YNQhYyBO7onkF6vc79Enh9ItitheyuAvllx/
+	VEdq6b22hS9xzeH6Yj8xdbGTrG9AOYI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dHG7ShdT;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qdpJPPWM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774802590;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=umMP+xhxxJrHle7zZCwUXhC5gL4USzcP88jmZTDE2fw=;
+	b=YQbZudLkP2MKdxVqfdogYghHPnZBqxSNuLcQoxVK3ZRMk+6PBjNYEZ6Hw1MhXfNiKwzw2k
+	cs5x/sexyN0wPZWSlPmr2Pw2HQ2859X3Ptp6WlPeB0wWvCBOzpfuaxuKqhUsAnL37aDxp3
+	PjCchn8SVu6uElmgYAK6PMEXWbzhefE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D906460054;
-	Sun, 29 Mar 2026 16:31:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD00C116C6;
-	Sun, 29 Mar 2026 16:31:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A492342ABF;
+	Sun, 29 Mar 2026 16:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89916C116C6;
+	Sun, 29 Mar 2026 16:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774801863;
-	bh=jfomB9Uz3yQOLGJFFYlU4E/h6qSYhn0UQnLbpdiUXjE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHG7ShdTq4l3d6sHIW1dKby7NFGmjqzGd+TXp57D8BVzl/iJVCDKDzB0LI1tnyGxl
-	 siLf+hTFcVFIh/pMHqOdC1PcYNjRxbXsDjrf+6njnToTCRJp7j5DP/ghiyhDYQvQtR
-	 zjNa8XKhNh5twdNNd1cOdEGd8n0YLYgz8OFG0QuFx54mB+avi4B1uVaiuji9EKRmKQ
-	 OMcPOhhHK/BawZLeRvMH3KSoRRwM10J3FAyFsjCmCr7NRPUlw8qCTU03efBkaKpbkn
-	 figLIapySep2Ym99cd7Z8BkaK4EzHJVp+GHr6IEL82cg1Ptj7Mc/v1257RdRhn7C49
-	 XDfuDmqdwwvaQ==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"# 5 . 19 . x" <stable@vger.kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn commit_inputs vs other params race
-Date: Sun, 29 Mar 2026 09:31:01 -0700
-Message-ID: <20260329163102.58683-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260329154917.47598-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5758F120002
-X-Stat-Signature: 5sw4i1tr5fr6dosdf87t7ndttod3xap3
+	s=k20201202; t=1774802589;
+	bh=84gDbC7L/bu+sVbfFzM59BLcSHCoaYv4jdvcr0O6YKs=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=qdpJPPWMzlSl8o4WjeY3OuWIidMRaV0gI6ZhqoaKfwZ3jwFjYbdjq2RBeLTuFYWw6
+	 0b9vScg12qXt/aWXrkfNQHOp8eSBMDFNfyD2c+uLM9wN+jmB0Ty/0wk9TYR8JTNSAg
+	 Gmh6KGXCZa/QVwb2xcmZDmLyH5dWcS+Bs27gRUEdwH0iBQXw8PwQDbe4H/EcHq3tAQ
+	 bWzYxFckp6Lo+CqWB+8+OuoRlLYItWPYqmrpk/s+leFKxvio5UG85axhE5T0k9ohVG
+	 05GIEcQ7jL5LaVcLAJNoY9LrQ/f7oEz9HIuUCIae/SKHkyC3XF2YAqBn6+A26vjH7d
+	 5WRgSXRxgS0Tw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0CF393000F;
+	Sun, 29 Mar 2026 16:42:55 +0000 (UTC)
+Subject: Re: [GIT PULL] Additional hotfixes for 7.0-rc6
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260328104905.4f602f792bacc66ff1495ecd@linux-foundation.org>
+References: <20260328104905.4f602f792bacc66ff1495ecd@linux-foundation.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260328104905.4f602f792bacc66ff1495ecd@linux-foundation.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-03-28-10-45
+X-PR-Tracked-Commit-Id: 2697dd8ae721db4f6a53d4f4cbd438212a80f8dc
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 0bcb517f0a70ae4fc59ce87bd27573043416aa94
+Message-Id: <177480257400.408055.217569697494671186.pr-tracker-bot@kernel.org>
+Date: Sun, 29 Mar 2026 16:42:54 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+X-Stat-Signature: taq4sc4etzcjjoiuc89h9tbwoe45fp6q
+X-Rspamd-Queue-Id: A3DFB40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774801864-710261
-X-HE-Meta: U2FsdGVkX19kuEvL+2Y/q77fAXxnub8w89SLiW+utS5iT48lSiOAieE8e1Xk6tUd2Cdak3N/iJVt7sjNAQ/d8teETbSjzExlaH3Xqvi+7dvorJBlZ408d5dyUJZuuvZ3Y0iPDBtkd/fA3SW7Q8lcfD+44JWlN2xY5ltBsog5h7qJez1e2cxP/dB3OBp09uPFGyqcQD2BP5yO58uCzBShv1h4JVH/95t5wDrGgvwj1Pmb/PkGpG8FpXXR+RsWA42zr1e/FCOS4FrPmgwfrL0dKzUJjDA1nBYVXhVWwjY/1a9t9EFlGbMAcP60xtdPYk2ECjAHegSDAa4BSXqbKtjeCyqJx1WqOEfjBc2I8N86WJnBGoeemIp8yK1mqHuWxiQ+M294muV2t9xyVuNizAP31RMBvapNUGWLDmO5idJRYszxpFsvgJ9PO50LjHW1uAdxsaRHBWHwIRq4Fxk5ZByx2kUVpdlCEgiFaM5nFQWSAh/Aj+eMvTkmRRvJvPO7qPNbmpD+/llsg+Bj1lHrgAftq42db9QD2RYyVPTf5IkwTGYgFWVkKIbOnS/VJWDIx70hEo+Vgl6XvVWySxWfBm+u7i8mJtuvP5W+ITvN25t+8eY0LLlKahAymGThW2IT/kFDG5QH/KkkfQpWf4Ng+QU1oquWWZ7Oz2wEwHoxhgOqP/2kBKkBpLvoZRFro7T9nLorYui4Oake9ao8LWqSyys2IKushSgWQEhC0F1VempeFrW7uw6QICRp0lv0CvmdwDSlG+N414rLA2TPDFoDVAWdcNEY5lZTRbRR1e84c52A2HyUxisO34QlmVOl9IrQhtpginj+2GdLejy2F8fEcjjCOAlDc/H4v1LPtPP6zwZQvH+Jtbfa0aZDtgd1PA33jFCcaq/+wxoC7g/JyaNq3n0Oa4OitDEHTuOFOn7T8QfrRqq8NqZLSou6a4HSQ0mN6HmfNZ3lflBhTjE+FuOWd8s
- Sou1lNIg
- 6SLEl4HzS+OOsDb+6vhzD2gJxssFEP0lefk9j9X9k3yqUj4FrTUSGNeFMZjBTujXBFQRMe4eSq0scJfZFVxgEY8l2SGos1oojEK+oZE2TB3o1CEOz/tnKGFtAKo5GKf2HerJAZoJpLQxsgTD9qe4KUrSO/tmklCD/rjhvD9zfbNptH04db7y4Jx4tezvjLUnMFZdKq03Z3osFjT55BF/AEALo04f5FKUC85VQGAHkgncDtOM0aRMNWD6dtLYuadyaGgG+CZSvBTOthjkLKyruKKmgPGdJnsXQ3zanAHum0UqgVOngrD1xHcncs06QKVQEJeKlfE7rMbL3LsNsnaqFewmpkw==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774802590-247907
+X-HE-Meta: U2FsdGVkX1/Tt5SbtmagNICi04m3w0yWf7Krz4AnaZp6ZMHdXKIwhy2vxMjVpeyRF4uRCMnJ8+GAP+zRz8eFii85zQdIa4jkYdmg8wT1KNJlTlalImLykdGj16sciU9BCR0sWzk/AlXx9colv1wqR2hNVAZghykCmvMTIjIvJ1OshNgpiP+vvG7HNoe/L6vOkaqQ/vAELfr+Ehm2yodVsMeUe27bsWkER2t5Bos/pB0Xtol7JuKfBQp0+K7jT8kutjTPrECllU1ZQOmp7LnmevrXxBxH+c5L9boMF8IfEkTNmOoTqUPEKFHKgOYSSZC0q9faxL/jR2oqRSffvz/xkrIWtPEmv5Sf8gnqEcW9l9y9R8B9LNu2YQIaYOwnG1WMST6GivhT7648IESafNP6EPYtNbDt+/AeW3CLkM6qRL/46x/N72QlInPsP2QyfJkLeHFzlzHx7UXMSN4SYLDvuUc5Jw3bZLSnYtfgY5tisQ9QZPNwYkA1bitjnA0lfoxkfTiIROfG0KzxQGzOJo+eEpqQs5cKtmR3o5SFyc7g5OQhBDAmFmN6ZUSH4frkI6MqZUeBLE7RvQBV/yFjkAs30zjl4nSv5WdjusNv6c5gZX/JmPRLerU/upGhHjzZcttToVRveV8ZqJdTsVAkOmtcd5+PpgpdHFlMjVTSXQI25xE5Yy3xsFTR62NOOcuh9WQdnUiWC3IoUf2XB/FiAN2pCn2gnGwr27xHwAtOJa9EtBg5AdvB8zjEU7SLu84xaP33k/Uoq3MvZk95vl2XL/ThBwGdoZZKUhAAnQ0r4yNaEsYsp0HZwbxfj09UiGokCOoiOupeVGTd+kyXYUqZ29ZFHqjQZU9TAkf7kX3aXNj9CskLgboboBg4iYB+oIvURAfcFgE0CxcM7z3g8zRmL2uOKsBdPX4isFgilfuHoAvSr9DZ7kvYsut5Q1f94UYxMQ7xxsuzl/JAf834kKTujok
+ O3XcBgi6
+ uHSS63xWs0grWBBtuGRcAwUTULvnVFhBRrKkAHXmkq5T35K7pgjIYL7ahVK+O/0IXkI+k/QGbPsPNdx6bXHAuiu24bLXu50sE+6y5O91ir4EYrJNNs9DAlaQuzoA/FKv8pE9g/I7ycg3gyPTDu6A1ZBOdVNNV3/XYNikLiKlSWBFTgcCxoeWrSIXi+ntktH6r8x/J35L9UfYd/AjUOto0xbUPWIfKNAo25lTPNajn7rrWxdhRv/voAF+aUjIKSQeu3mtwnSlbS9JMET4r9pv7MZGdUum5xyIL3v2XCVnwFdMSvpM7Wk98hhl1CxT5eMLURs+lTPvbYeYebKEDhL0aKUGFs02J1AY7+0m8qiW31O3//hxLrtDmhNdIUG+d99YswujMQw2J93VavHc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,24 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 29 Mar 2026 08:49:16 -0700 SeongJae Park <sj@kernel.org> wrote:
+The pull request you sent on Sat, 28 Mar 2026 10:49:05 -0700:
 
-> Forwarding sashiko.dev review status for this thread.
-> 
-> # review url: https://sashiko.dev/#/patchset/20260329153052.46657-1-sj@kernel.org
-> 
-> - [PATCH 1/2] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
->   - status: Reviewed
->   - review: ISSUES MAY FOUND
-> - [PATCH 2/2] Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
->   - status: Reviewed
->   - review: ISSUES MAY FOUND
+> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-03-28-10-45
 
-TL; DR: I believe those are not issues.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/0bcb517f0a70ae4fc59ce87bd27573043416aa94
 
+Thank you!
 
-Thanks,
-SJ
-
-[...]
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
