@@ -4,139 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 766ED10F3DF9
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Mar 2026 19:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6694010D148A
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 01:03:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6B3E6B00AF; Sat, 28 Mar 2026 15:54:52 -0400 (EDT)
+	id 37B916B008C; Sat, 28 Mar 2026 21:03:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5286B00B1; Sat, 28 Mar 2026 15:54:52 -0400 (EDT)
+	id 32CDC6B0095; Sat, 28 Mar 2026 21:03:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBD006B00B2; Sat, 28 Mar 2026 15:54:52 -0400 (EDT)
+	id 242106B0096; Sat, 28 Mar 2026 21:03:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A844E6B00AF
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 15:54:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40793139B6F
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:54:52 +0000 (UTC)
-X-FDA: 84596524824.04.C32CED9
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 47FF740010
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 19:54:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=COpR6MdL;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774727690;
+	by kanga.kvack.org (Postfix) with ESMTP id 12F816B008C
+	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 21:03:38 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A0DC258616
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 01:03:37 +0000 (UTC)
+X-FDA: 84597302874.18.77C627F
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C9B5E1C000F
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 01:03:35 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HBI6exYr;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774746215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oSKx6JXbhORIwZf66NfAwmgqe5Ds34riezs2vNMTqS4=;
-	b=0jSFtX0HEpD+SZql0PwGvvMO9vY+Ul7PI9kJbP2Mn5glfunIh/NntaxdzERksch7MvLbAx
-	c19k0qSmlacvDNMgJ3rpWpA2aEIUaUGZsnt1SGYZpQJpoLfII0qeMKvinqh566iMz/uymd
-	pmntfXktWMLOsGC+FXeIoqftNzngGRs=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774727690; a=rsa-sha256;
-	cv=pass;
-	b=LVUmuWGlCUQcG1TVz88v2ORMeRXTeXee7TN9o2+QSGNBAGeVN1osLDU9bRy3aTJQRV1LLf
-	6OlQgNMPwUUpQWjXu6lA2ixb/FDI3g3+cBkQ/odxdjGLhtOw98JF+1S0tPm8P1a/35b4sx
-	+Met+LY+c11+R4VqVmhPJ0Bw4i68KgQ=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=COpR6MdL;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-509062d829dso444281cf.1
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 12:54:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774727689; cv=none;
-        d=google.com; s=arc-20240605;
-        b=d3C1BsaG1grSXjr8NJKaTXLaTvTRTjS/uSh+hzqv/edATqX70RoVS49E5Z7qO4U7/S
-         ittgPc8kb9lxFD7upJiZdsy+SYppL5K5PU9Gf/7VSDGBx/FKE+4BnlAC3r7DDc4g07Gu
-         R214LlLc8CK7byT0xIxW/OBSHu7Y6w0QxWAE4G9GgFkCB+MOHE/yEINfzf9QD81/tEi+
-         MJc7001jIyP5vICCVFI7Cvc5TtH1LwylA8kvk7+gnsumWcZYCt1v2ZUNxZNFmPK40uNI
-         SNIGBArI9uSFC7MmJxswC4rrmmwzxKwCs9X6qZOI8ZMXCikwL/4PIyLkSNTDJns6u22R
-         1e8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oSKx6JXbhORIwZf66NfAwmgqe5Ds34riezs2vNMTqS4=;
-        fh=EDwbUoSio9RG5CHV4NfQ5k6wefiUnzjTNzstcQoM9+4=;
-        b=hfVkiRykEI+BREuTLVEym4FnvIzVZHTg0PnWbY/8s6nsSheGJpCQY0SX9eQ4ACSrJC
-         xoIcPz6HYpD/hy9i9yj2IkTeite5nOOjz44FlaisUIzsXBOn5p+YZdPvOsLuKfpB6FEm
-         CLtR/Hga9oj/zG+YBpNJq21U5Z2WSSpSnaIcNu4rxY0H+mtBADa4FpKPqY4I068icLpX
-         07ygHh+d9DLv+SlH79kxPp60EIf3sj3nSFkUBbUrQPJilWnPuwTMLs/GVSDl/1X5tqg8
-         P0Km2HOVRpUe6GC5zy28VCGVjpF3Iya9pWleF3X2+76M78p6Nz6tjGcPOJiwy9+zukO6
-         W4Lg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4NsleX9u5aPhbjAVr0Nezc/nBr+cao/tGbHhc5N7BqY=;
+	b=GNdGhFqrLJljVmwexuzcq25thPhWIwt8LVrM10414IUqdmvz/Eb09Mu3qJO/YhN0ozPn4I
+	EDak9l/3nR9Nkk1xtTAAhUvnVtRtMMhmt2z+yrVJs1hmdX9U1LCNu/pJrrT/6rLi7jc2Ea
+	kuL6PDNCj9YwietNjLHMjYYHh5Ocwsw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774746215; a=rsa-sha256;
+	cv=none;
+	b=nSF1SmeU9CI6kjgiMAhputgrkJ3wC872lyztColPQgPfBAXNkKWLM7V2Q7kTVoubXazyAF
+	PPt92MFA7sMtlnj1SIblJMz9AJsGQe1vZtiLf+FXOmCnfAeWVluLbfGjr2oLva9oomjZcM
+	DRGFoNjSaEyXxAzTFdNnVCFWzyMbf1s=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HBI6exYr;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=rientjes@google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b052562254so83225ad.0
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 18:03:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774727689; x=1775332489; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oSKx6JXbhORIwZf66NfAwmgqe5Ds34riezs2vNMTqS4=;
-        b=COpR6MdL6J39eW/mRjUY82E/8mPB0fDwFVFCqvH/dpeLs3gmGSrsHfoSEDW7r3hGMb
-         u2ilm38YmSxOU2p0rn1CFdvqZJburH/wAFviGidr+gKGY2yYwozHfVjsY7EMLBPg4flm
-         NKbWJCNODmfOg7sqhhD7SomkveGc6H6gxuAbkmlBvXKbb9N26gfrZofaRQDdVMojvtrv
-         Oq/p1dMvD3JUZbt5s+kqljXCoNQN9SJgwk/JmsdVyjRZtRSH/4f94toOwuS0NqDArdwJ
-         ShM6q2fiQe85IC97uQ5xebfEe3OC5w5JLLgVl3OW7VmilU7WdD8+hE8x/0N9aAneGuVZ
-         Fv1g==
+        d=google.com; s=20251104; t=1774746214; x=1775351014; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4NsleX9u5aPhbjAVr0Nezc/nBr+cao/tGbHhc5N7BqY=;
+        b=HBI6exYrX9ZoSEeSNSwmzo0VtmiiAWnrDYfYnfmclDt3gp8gi4yBFQI6/eyG0kaQtU
+         i3d0znYXmYEbFJyWVbbRhr36ZHNukY21WDyP/TLXLgYNCVXI6DtAPkXBfXuX/5b3GwBV
+         CAYmxpFKKpst3DSWba+cFG4bmTM1UlvlG2JelWhyoCtojjhPSWITNGr3ABNQOnyiXcsl
+         s2chSBVIfXJ0ybieKtc90qRfPsCN0t1DE/AjfGgTAz3o9JdTO68Q57HItGwktKLBhzog
+         KtMe4BDFdBNaTxKKJmdCfKazU4owgCSjDo8z/22nd7H9NRUxkUNdn5oobeBXcsCx6/2X
+         BfnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774727689; x=1775332489;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oSKx6JXbhORIwZf66NfAwmgqe5Ds34riezs2vNMTqS4=;
-        b=IxFSLaXhMAirORUPRzDpim0PpPh/0iKLrrA4Q7Y/i+sTfwpHwT2jbqEP9vavUCYV+R
-         pEMZbxoboQ7c1QbhPX5V0odDieQCh3KEQRaD/eeBH+cG/2vGNd8/6KesH1yKJNaNQVCg
-         FkCIbJvWNt98Y0GeSNvXYZsH8UGSiezTHVP+7KEJ49cOpqLOzdyIQfJxm1S6xE+6dWo4
-         2KGbnedZO7MBGDPZuMkSYAUVopQ2jGfrVDLgJB5agnz6+L5cHvs2YEB7u4AF/L7/XmzB
-         Ua6QNgcAoJHNj7OIuJcf8gAbPPD4zs4lsSzHutFp/bcT4LE82bIimqgPqqak3igqIYTn
-         gfPA==
-X-Forwarded-Encrypted: i=1; AJvYcCW87JoUj/mGMCPlP7wBMYMRDied6XhxLfbqSMoWkVfXmtnb2rPqWX+MhSUISNPo+2vOFlMABxSw+g==@kvack.org
-X-Gm-Message-State: AOJu0YwjfZARln4C8GlQdxr/cBiZZ0D2KILZEyHd093ERsX0+roEMI10
-	Z0LHjinGX4YznvFyk+uYsC8x8Dxbnu0xrVt/MnlPK5QyBGHvn6x4sO9yWkuslPUaA2ypgpyKbDv
-	khui1VwKDCEr64DNCPo+tlj08qtv6WGCZN8+V2Yjq
-X-Gm-Gg: ATEYQzyNIzMukh0torK6qFCrhdUjkvY7JAM62LORrmGaHSJwTNdDLdz8UDuIm62KHBD
-	1LziiGSW54Mb3Q3hAmRTRmx0ZYXCyDl86Emv6wrFw5HSgvw2XKdrABwXeDW51Ma/gvdm7vA2eSv
-	UqgPPbVtHqYWx5ZHsyV1OMnPfUryrppeHEWFoAT1xWeEV7jy7T9Z3I9MJOj0qsHhwbxHgfE6wO7
-	srxbml0CrEUtPYcI4Lp3EJ8k67jx6yJGfuQ+JdwWvpHApjpkCOp1TTl+N2Nc7UyOGweLJ4LI12o
-	xXUMew==
-X-Received: by 2002:ac8:7f90:0:b0:507:35b2:6b9 with SMTP id
- d75a77b69052e-50bb3d40d81mr10514791cf.7.1774727688888; Sat, 28 Mar 2026
- 12:54:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774746214; x=1775351014;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4NsleX9u5aPhbjAVr0Nezc/nBr+cao/tGbHhc5N7BqY=;
+        b=hAZcYcFG142Ayfb0CmlsbRz6DzB6zT3R6VoQxfsWtGsQZqraOEAjoS+Tc/Je64Ujpv
+         fVGrpvVr5PC7SUbeG/ymDBkN7X6nLU3TQV6ANTRAoFL7vWM8fEwrTpsEcQSG9xPG1hWe
+         46JLvj6OdYRrMmviN50i4YSKhdlxNz3BtS0lMRFd1bg++mX4rvpq+abYC4ZH5FtcJYz0
+         2piVjHT6/yjE2/T66AqmoC1NFFcoiiPqvw8EKNJ/sCthxFZtHxdQxpp2Cc1f9ue17K2I
+         +FElnz/cMTQERLHyKPyif9k5mfzc6KWy1USMw0c7bK0uxx2O7oSmrSO0UNyBkQhbwM1C
+         YW7g==
+X-Gm-Message-State: AOJu0YxTlCHd2RO9DojJYVP7dK8bG0hENG3F8xemUmTwIgFba5xlAihM
+	Rv0G8EOF3S5ufU/AjNUazIVFJP2mqIfgo66VmaiaU5a2ARMsWSuuz4h61OhwV5W2eQ==
+X-Gm-Gg: ATEYQzw1L8cl/OKI/vpDqDSfA6/QdqVm6sIB0Uv7uKuijKgQ6GZcCFRJpgw3SAWm9Cz
+	ZUT9RQMAoqwWGukALmbp/P+dwXq8ai/YrNhP8Iy1yilLRvH8Bgua4Wf46jyxSKBu4WpoJVjosMm
+	RRpXeqw4fQckmKeH88Zqi6ThmnI+XxaK6Ij3wANQBC+tf71U/9dQ7MgssN0/jniLsfa3MRfOfJL
+	PnSw1VxENu4Oz32qrZoT8ofMVYXk8XLMwNv8MzLH8saczJAC6CHhaS9Fhyc520ZTPh485u+WOZL
+	ybK1IgBchsY8VZzzlerkNAi4JIjI1q12AelojIbeN3zP0hd4MveBtkMU6C+7CGR7tdkObRK36cW
+	aXxxRYIBuPMXfwVgdJ/MjvySa56mvnjFZnQyKpa5tTy1PXzYkkwBs6JM0vHC4fDVKD79TRuMkeU
+	hrC7ePsG23GmOODDeBcIvEbmS1Y5Uru1sNiqLF7xQssEb1quKLYwDpklZhN5YpHGk9zNmKLh6/I
+	0LQ7MjYbC+lO+Zljcfh5Y3A17hMk+8nP70XEnBwZ0Nl3qsfLHt3ng==
+X-Received: by 2002:a17:903:15cf:b0:2b0:b925:da98 with SMTP id d9443c01a7336-2b242ceb47cmr1976585ad.19.1774746213717;
+        Sat, 28 Mar 2026 18:03:33 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:a947:3e4f:679c:4c03] ([2a00:79e0:2eb0:8:a947:3e4f:679c:4c03])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca843d8e5sm3682786b3a.5.2026.03.28.18.03.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2026 18:03:32 -0700 (PDT)
+Date: Sat, 28 Mar 2026 18:03:31 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Alexander Graf <graf@amazon.com>, 
+    "Andersen, Tycho" <Tycho.Andersen@amd.com>, 
+    Anthony Yznaga <anthony.yznaga@oracle.com>, 
+    Baolu Lu <baolu.lu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
+    David Matlack <dmatlack@google.com>, James Gowans <jgowans@amazon.com>, 
+    Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
+    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+    Vishal Annapurve <vannapurve@google.com>, 
+    "Woodhouse, David" <dwmw@amazon.co.uk>
+cc: linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: [Hypervisor Live Update] Notes from March 23, 2026
+Message-ID: <d07decf3-bd88-0ebc-1aeb-f91545318d3f@google.com>
 MIME-Version: 1.0
-References: <cover.1774029655.git.ljs@kernel.org> <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
- <97a35411-3482-42d5-b0ea-31a5994956b2@lucifer.local> <0a917f80-902f-49b0-a75f-1bbaf23d7f94@lucifer.local>
-In-Reply-To: <0a917f80-902f-49b0-a75f-1bbaf23d7f94@lucifer.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 28 Mar 2026 12:54:38 -0700
-X-Gm-Features: AQROBzAA3LyJIWixUkc7gDku3V3tlSz_r89FgC4oXlFH-sUQPhOIFQnYXWfZhnY
-Message-ID: <CAJuCfpGe1TQ1Cv_ZtjQhjgQD-6bxk9uirJeDAZwhrSX=NqEw=A@mail.gmail.com>
-Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use has_deposited_pgtable()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 47FF740010
-X-Stat-Signature: 7cta3cyq6e1i5a7tbc1w1pqyym649moy
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: C9B5E1C000F
+X-Stat-Signature: 4res39wpakmo6k8e7ghum9yfjh86x4ad
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774727690-36544
-X-HE-Meta: U2FsdGVkX19ry9pFqxI2wLcOd0d4cw19N4NzdtVaw1lxb0D0JDnttx6z3zqq2SetDs58cT8ifWrw7ZhmhJ2tQx5o5YyXsh/ed7gU5HpyjfxtxJI7RqShmLc46E9mK2tp4G88zDTJ6b0nx8Y9/0gJO1fxbivM0RZLjvF5UlJ//tG/TCqdWMFWBq/jiUWOmCzzQ8Skgvc4AXpxyqqiLeI3igMhsKLBfDEm+BvS48QnsykdgN69XgLpXIFnOp0hoQkXyLIUHJHrXhHKAsIKdXNtB1gS1x3g2f6l5UqEduaeTE3hzgtcWL/bTTUO9zYsgvHVQjE8YyZ85fh1xa7Vdtppifjp1mBwDD81uWx7sXAiduqbSVMdeUPfT2mcsf+AH2YhZYiQQSO3p9+tybh/qtRfrloABxVXmP3YU19zoTrekrDxz/IpeqVbTGDofEOUtyoLmRqpTJ0DYt27TOBLxRGvl02Lk2+oG7VkkPsKe13Pk/sBeIUaZ8eY1LabVqTZdzpSR9CZzrVV3NwTMRwJkVT1MlNDus2eckh0nR6E/qLIUiQ+AFlT51SadKdB1MVErLEoJomyXXWfauCIcDQkzuna2Mv3UvZpk1S2uYEGUwnlW2Uzr5vh9rnSsVDU5kfK02Ht9215K8GLB26f7Jvey4u9MgzKqioqGaEQrAKv4xuQGy6JROCnAlCb2IVoXOkotYFgOWrashpMdFndVmWLEpe11gousjZWJk3fMlGu2Bsp2QCp/z/+BNlBVDc08UNPsqFJJvjDJT6eXnAlmNQ2pLOWZ+vlqI7BFG8fp1jeRdhvhhe5UxSXhP001eyTwWGF6+g61wCQEvEHnj708B7UekUj4SzaAw2xmxysaqbSuAjskBVsnYtyGrYa54dXyMq707Uuuc+JIGfl8SDp/55pPSC/qb8eIhxYlnBV0y4efekdU10hhH4uCE/zPZ91vtnixpiNiRbMrvp/754TlpmZ9NS
- H8wBXEt1
- S67dcXXM4ARMK2NoTzftE58iOH/+v5Co2d7Fxt6PMHSSiLbbMRvyDZxu72DTdpEBZlZLbrSaSuMndJsItjMFOmiTH1TGzNOQuvj0yqbUDwxZQPmO53WIStL+qu/FbdD7REi0nw6mLyjGOlzvHilHIu23fD4XvXKc2AqLuLfuOg3pwr90vu+Plvtckpi4e0MQ69jAY+mlLxu280BtEAjdimPz1MAxFQiA7ffbL4/taUb9QX5eg9S9rzQ5RA5lUfe/6cQ+/BvohE/dCrIugYLjMPaB5WyFO58/zlXNIlL5tugL5Qmt7SJpjxf2391Tnk30kISjq9UxV1S48BsM=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774746215-719389
+X-HE-Meta: U2FsdGVkX1+bdoT4i8ZuejI65A5CpqQrjIoeztvNuV/DT1sdFDqtYQ8S7yTj29i5fZiaTbBmv3mvRvHocvr50eZEDp6mlt8fENv6PAIbtnZKZZKKlLRw9hzArEkEs5y7t/LLEFsexIWSnTuQTMyt6id2uznziUjOr2FdxPki3xQ3HGj6IlzsEzxxCXZAqk+Jjw1Y2udQIbTMEKQeADCz6oTOBjL2z71Rwj6YmDfXx7cGGJyaMymhnK/oO3GZpwiAfitQDPkicSecVoC9UC3UpwyOmJSkDORSqgK2uevJOmW4cQxE1aakdUAVz1Dd9dzq8Vhex2Cc8DyAhQDFnRlmoCA5LW8Kpy/PLvHaybb0xNEID+yK65zWdC9ZDZe1Ign4vWluZEf2jwa8uF6ShVF5XFYAm4mtnFDEet3r5wGF/WlQj2bOmMtTM4GacYrhuWA6PDfQNYX7pEb0SoAOFT2eGctiBx9TwZqC1eLhg/LaD8TGT43POYmtwg81YZYpiiGpuTZIX6upTXsCGuR3gtOxONFbl3FyNhDIJu5JQQVZFRnCSx4JKhYUnXa/rGFXUoBOnIYjmLzoO0n8HMmwqjW1KJR61pqPYhzt3hRChHKiq3/tiuAxKVmV6HOrB8Jn2GvtVgX25gPhnWfx0dF+zva9PZWKHa6X2zE7yWcxFGu156oVu83SD7NL/mdzanW6rOFnTN6R2FEmdCu8UOA6IJ91pPWpueUAbsWxI1FA49K+hZACGOUyNi1H8Sup+1PPNEZ1V9VUSHk6FrNw9wm8GJnntyO2KA58eZM7u15ssOHk/uo+dmw2tOal8AKGL+Df/Gjy5Cl9HuvwvnRfpvrBAbSLhSh24izn5vTCYPscwNNSW9Ryd7uEE9ZOlJwt6hKi2p3qIUdu23ux+kGqP/9Xq29J+s5Gdq+XnATSaV1R6Xhp62+I5xxX1VqEfVyu1Rc9ud1z3GXiqjivIf4ePg7mYwn
+ ucr+jjdQ
+ y3zOWcIHcNXOlpTIOtGHXDSEx5wyRk7GL42tZPa7X31I9GOxgT8OHBCetzVy8TvcPSgQKHRdmB8cysYrLY7t5e37b3D5paLWy2Y5NFPJ75SVF+MkIoXTAHbQTNRnTG1YanN7uMFqzjvvSKo5vwDF5wwJL9H2GEKzXvuBwpaC8v4AunvdC5MzMdGPQvXClTjyhNbrvQkH/MwH5v0DvtDIH8MKRdXtA4Q09gwLWgUgaCdhN9K/2CXg0KHcLCMDz1AlHiVIn6SicZ1alSKX5Q+HKlHAoH7ukgQ0auSPEL2AG0VW5KDC7yHGy+Jbfn5nPa3nVWTeI5JhC8qYcIg6A9QmMg3qTPenFVj32HCm7KVl0lv+ClTh+WWk69vKbZUqI3IgyEx6MhHN2lv1IWNlcPGlX9SP12DrWu1W90o2AWJzCC6OQMCBHhqLX7OasjcVgogBc0pTwdLhdSpsP87hNTdgyU3EyTgxGDQjObSCR9x8nQevb2H/6C3dAuAt0dGE9mdhXNtsLNUpNm45MHUZRdtutioG3qZye6JLv0h9sB6HehEzlhOVTldn9vQdE+HwBKc+jg2IYbolD40wKme4x5reJPSxnPcCfG5ZaqOnJjJU4VQ7kUMlE3DtDIt6ygWSm6Jj1Ul7IwXLzljn+mphPt1aKsPoWLj6G7aWphTjw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,75 +120,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 5:25=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kerne=
-l.org> wrote:
->
-> On Mon, Mar 23, 2026 at 11:45:23AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > Hi Andrew,
-> >
-> > Could you apply the below fix-patch to resolve an issue with us perform=
-ing
-> > folio_put() on a folio before checking it again to see if a table was
-> > deposited, as per Sashiko.
-> >
-> > This patch resolves the issue by storing whether or not this is the cas=
-e in
-> > a has_deposit local variable (as used previously) before invoking
-> > zap_huge_pmd_folio(), then using this boolean to determine whether or n=
-ot
-> > to zap any deposited table.
->
-> Oops this is wrong...!
->
-> Please apply the below instead :)
->
-> Thanks, Lorenzo
+Hi everybody,
 
-With the fix LGTM. Overall very nice cleanup making the code much more
-readable. Thanks Lorenzo!
+Here are the notes from the last Hypervisor Live Update call that happened 
+on Monday, March 23.  Thanks to everybody who was involved!
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
->
-> ----8<----
-> From e6d58747d00dd954c605201e97f8b769b2ba8cf8 Mon Sep 17 00:00:00 2001
-> From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-> Date: Mon, 23 Mar 2026 11:42:01 +0000
-> Subject: [PATCH] fix
->
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-> ---
->  mm/huge_memory.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 610a6184e92c..b2a6060b3c20 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2397,6 +2397,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm=
-_area_struct *vma,
->         struct mm_struct *mm =3D tlb->mm;
->         struct folio *folio =3D NULL;
->         bool is_present =3D false;
-> +       bool has_deposit;
->         spinlock_t *ptl;
->         pmd_t orig_pmd;
->
-> @@ -2418,10 +2419,10 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct =
-vm_area_struct *vma,
->
->         is_present =3D pmd_present(orig_pmd);
->         folio =3D normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_pr=
-esent);
-> +       has_deposit =3D has_deposited_pgtable(vma, orig_pmd, folio);
->         if (folio)
->                 zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
-> -
-> -       if (has_deposited_pgtable(vma, orig_pmd, folio))
-> +       if (has_deposit)
->                 zap_deposited_table(mm, pmd);
->
->         spin_unlock(ptl);
-> --
-> 2.53.0
+----->o-----
+Pasha updated on the status of luod and a good conversation with Luca who 
+is interested in integration.  Luca had proposed to do it in phases with 
+the first phase being support for systemd logging during shutdown when 
+devices are unmounted.  Luod will require preserving the logs and passing 
+them to the next kernel and next systemd.  He was also interested in the 
+next LPC discussion on the topic.
+
+Pasha also updated that there are new tabs added to the design doc[1], 
+this will be expanded for systemd and its communication channel.  The plan 
+is to have 100% integration into systemd.
+
+Jork Loeser noted in his discussions that systemd was very adamant about 
+supporting fd store and asked to what extent we need multiple sessions per 
+service.  This would include the LUO client interface as well.  Pasha 
+noted there were discussions on how many files per session we can save, 
+for example, and added a limits tab to the design doc.  Right now, it's 
+about 128 files and a thousand sessions.  In the future, the file and 
+session count limits should be removed entirely.  Jork was asking about 
+whether systemd should expose an interface to the clients where the yget 
+explicitly tied and create multiple sessions, or whether the interface was 
+just fd store.  Pasha said the plan was that systemd would expose the 
+sessions interface so clients can create new sessions.
+
+Pasha said next steps include getting the design ready and then the first 
+implementation for systemd logging.  The latter would be implemented 
+before the next LPC.
+
+----->o-----
+We chatted about deferred struct page initialization.  The patches are not 
+yet ready to be merged so we would follow up next time.
+
+Pasha noted that Pratyush and Jork had discussed scalability of memblock 
+reservations.  Jork said a couple approaches were discussed one of which 
+is to move the quadratic initialization or setup of the memblock list to 
+be linear.  This would allow us to interate over the struct pages as well 
+as the KHO tree to avoid restoring the memblock list.  There was also an 
+idea to side-step the memblock entirely and to use the buddy allocator.
+
+Pasha asked about the proposed changes to the radix tree: if we move the 
+order then the bit in the bitmap at the leaf levels would not represent 
+the order size but rather represent the page size.  So the memory overhead 
+could be much larger.
+
+Pasha suggested allowing the scratch areas to grow when needed by finding 
+the biggest hole in the radix tree, this could help to solve some 
+scalability problems.
+
+----->o-----
+David Matlack updated on VFIO v3 which is pretty much done and is going 
+through final testing for posting this week.  v4 should include a roadmap 
+for what comes next.  Starting at v4, the series may get split into two: 
+PCI patches are growing so it may make sense to split PCI and VFIO 
+patches.  Most of the code is behind config options that should help with 
+merging as well as the new documentation that should also move this along.
+
+----->o-----
+Samiullah updated on IOMMU persistence: his series is getting reviews 
+upstream.  He's preparing for the next verison of the series.  There was 
+no update on the hitless replacement, this would be worked on next.  There 
+was a comment that we should standardize on naming in the tree between LU 
+shorthand and using liveupdate as a single word.
+
+----->o-----
+Ackerley updated on the UAPI for guest_memfd HugeTLB enligthenment, he is 
+still working on the conversion support.  That work is pushing out into 
+April.
+
+----->o-----
+Next meeting will be on Monday, April 6 at 8am PDT (UTC-7), everybody is
+welcome: https://meet.google.com/rjn-dmzu-hgq
+
+Topics for the next meeting:
+
+ - luod design feedback and intersection with systemd; implementation and
+   next steps
+ - KHO optimizations for boot time performance including initialization of
+   memblock list and deferred struct page initialization
+ - HugeTLB preservation support including selftests
+   + debrief discussion from Linux MM Alignment Session
+ - VFIO v3 patch series posting to the list and roadmap for v4
+ - phase 1 of IOMMU persistence patch series, then phase 2 status and
+   updates
+ - hitless replacement for iommu domains and patches from Intel
+ - guest_memfd HugeTLB enlightenment: conversion support, HugeTLB support
+   without restructuring, and HugeTLB support with restructuring
+ - later: versioning support for luod to negotiate
+ - later: ordering issues when disabling interrupts based on feedback from
+   Nvidia
+ - later: update on PCI preservation series and next steps
+ - later: KHO enlightenment for ASI
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1] https://tinyurl.com/luoddesign
 
