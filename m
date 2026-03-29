@@ -4,126 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0116F3D5FE
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 11:44:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7135F3D603
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 13:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B88BA6B008C; Sun, 29 Mar 2026 07:44:28 -0400 (EDT)
+	id D26416B0092; Sun, 29 Mar 2026 09:47:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B39936B0095; Sun, 29 Mar 2026 07:44:28 -0400 (EDT)
+	id CD7056B0095; Sun, 29 Mar 2026 09:47:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A28166B0096; Sun, 29 Mar 2026 07:44:28 -0400 (EDT)
+	id BC5A46B0096; Sun, 29 Mar 2026 09:47:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7006B008C
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 07:44:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EAE5816023A
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:44:27 +0000 (UTC)
-X-FDA: 84598917774.20.84C0421
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1467620003
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:44:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ya9ly2qO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A7B276B0092
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 09:47:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 474291AF5C7
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 13:47:30 +0000 (UTC)
+X-FDA: 84599227860.06.7463D51
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E58AA4000F
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 13:47:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hvYAsQt2;
+	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774784666;
+	s=arc-20220608; t=1774792048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Csdueb260dLL4KAw0AfvdDf024yqqfeIAyjh7nn3RU=;
-	b=UL4S+MIJj4iFf5VXcPvtxVP5TPpmRywDhJRjBI6ZQAULM5g8HXD6crY4FquMh8sOsNRRPD
-	mE0W19yNVDy+8P+M4v0TV8ROeQPH5TdNZyQ54PWXyGAEGg96sMJRgHIIOKPanbjSLA6f45
-	6314zp5BSVdo2UvnUjRUtsJosLrVjwg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774784666; a=rsa-sha256;
+	bh=T3SP4xM7YZbvuy6lJA/m9QOCLsbu+qkchYcys/aU6v8=;
+	b=BpUHGCR0pWLoWgyclPg6MgIldcFYBC7h+bo0g66p8lfvvpTpFRQjRcToJLc70vDVk+ZBWV
+	lCinFWqAAhSF29ri+zAyCWOO6va9GDYRTq+255ODaNCB+umnF4FLmQKGtnR+ZrMxIoXpuj
+	254NjSN/FgHCP1J7Z/3+de61k5KJ75U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774792048; a=rsa-sha256;
 	cv=none;
-	b=JGc4jQ6EkaE361IU5uGNG+CRbHz+XkLeg3TalACNxiBWQUFVZ+GNuvUCtmRA+rL+RvS37m
-	7rPxo6Xx88XrCBIHVXoTe7mcvsrsPBY0QWlhJox4Hey2hiLZzojTGBwfAwq341QGg31Z+A
-	5+mNjImKWxHTAwSBFrKL2xlIO+t2IDE=
+	b=tIgYc/2goP+T/c6KqTc0Q62gPazkz/nqd1UqQLXCR/xrxDwVR2cUQ2T/1KL5MwV2rDjgtL
+	psSo7cXMmNSSLbsu3qJ8cj613iAe49Mg/ICvKGlv0ZtQ1az41LIvJa2tq+IExU95UxLN9J
+	KnUvRtfQkgYIAgsTVbScBz4bcULKM2k=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ya9ly2qO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35da01fc0baso295481a91.2
-        for <linux-mm@kvack.org>; Sun, 29 Mar 2026 04:44:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774784665; x=1775389465; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1Csdueb260dLL4KAw0AfvdDf024yqqfeIAyjh7nn3RU=;
-        b=Ya9ly2qOwVND7O6nYbfUTds4LZOhFlqiRmQBk4nsytYrdvFCNDrlhEvHvp/nG0poOr
-         lWAGXXuYcu8DWCMhH8024jnSjFWEsPUzW5C1g51J8uPJTmC9ljjRMNEbWw2y0n2PHglB
-         l8/ba/ZhUkT+FpL/lcHPKiDePehsCRKOsz5hItS+Cgd/4YfL+/gHC8Vj48Dq+Y+g3F4E
-         3ki5HWK5aqCKyrT3TeHWEFPmZqH75b9fvPV8DgyWUHUAxMgLoA5fj366qzAxOmKAhXaz
-         2qPZHBzMfA6ua12rA+ouirJ5q0ZbKe73qYZSQfojTpXvoHJFImlcPLOtN1X2DNFFauEX
-         U8mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774784665; x=1775389465;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1Csdueb260dLL4KAw0AfvdDf024yqqfeIAyjh7nn3RU=;
-        b=QBN4mAstC48NZfDSdhooIhJSdYO2DT9s0oRvt9U4y4Sq6kA85LXd/u/Hy9KXktPaR1
-         W3AdcV8YZXtWmeqzjUe+hZvv+azKce3RT30JnBZr4C1DZ6Qx45lR6tvXZXlmVkCZA7dh
-         LKRdGsqdTz0xMWVdknseZfd9ewRLe2lNduixlp8JkAc17f67FA17KJB1xmS2NpvUTVdT
-         anvIyqcEFhC1ti/rRXiMf93z6P6y9QAS0Wv+QWfld4pK5ofRCz+J6RpNDszP6W+1TidD
-         3OIUP5Zjd0iy5UMkwaOGNuYZjQDMwAWqAbioL1N+PKP0UvA8GYq/Gci8LgJqidrcbkTq
-         OEog==
-X-Forwarded-Encrypted: i=1; AJvYcCXL4MvngQaX+dAMOjNNSijkcUyv1noYgvJQQQxVX6Wwuuj7y/plZBmUcFoDJPmj+UpSbtcgiixPfg==@kvack.org
-X-Gm-Message-State: AOJu0Yyjcl3etC4YoSOYZbu9OKfydlr4lt4SapfmVlQoWUP7xjZC+OAc
-	ZGVTI5qkQUAoGNlBWYBPW7UBYt1Pk/ld9eLFtkuo5DYKSSYVkL7SdS1H
-X-Gm-Gg: ATEYQzx6/au266jDUF8ORZkZEjSTdwLG1tDUG/3TVpgrRXUZskv4QwWUeGA9/ltaHdX
-	DK1VbhImFIDc/SCL1au6Ds0uqKtJtMGQ/szRqjSA0j+3LmADdMpI9NPiyi9NfSoB9F2hCYJcRMM
-	/0ZSX3MHiz2z9jaXXP+Cii5vqNsM1Y6/r3+95f5PcOzFqPP3TxeOKrLKQ8dmVQ02wFN+OqCOHF6
-	SFe9/z+aBVz1cmGt79ijkyGYfmYlCUa1Jr+mX7wfmS9vex36jeuMrX5TGE1zPvfZdVudA438jGp
-	bYSFM+iPCZXyB715pwqZ6G3tYP/s9qP0MPKnasy7BW70PypUkWU2wMrbcjhxMigPxJ/9R9/jXW0
-	P9zZEhrHXLdk7y2FOqKz6iFDUMXq7ad921jArjxle+8LFYUwxSYI5ponijDZue0rI4VXYjDkDg7
-	3TIrGX1/fVDTXbbtVTDcZLEiFewn/+BkhyMce4TV36wnhzvYaS52R07ScTsjranLm5uyPRro86l
-	BOgVQ==
-X-Received: by 2002:a17:90b:1e51:b0:35b:e4f8:7b3c with SMTP id 98e67ed59e1d1-35c2fffe870mr8867503a91.11.1774784664489;
-        Sun, 29 Mar 2026 04:44:24 -0700 (PDT)
-Received: from localhost.localdomain ([188.253.126.221])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c2d7df071sm3174591a91.0.2026.03.29.04.44.20
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 29 Mar 2026 04:44:23 -0700 (PDT)
-From: Barry Song <21cnbao@gmail.com>
-To: lkp@intel.com
-Cc: 21cnbao@gmail.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	bhe@redhat.com,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	llvm@lists.linux.dev,
-	nphamcs@gmail.com,
-	oe-kbuild-all@lists.linux.dev,
-	shikemeng@huaweicloud.com,
-	youngjun.park@lge.com
-Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
-Date: Sun, 29 Mar 2026 19:44:18 +0800
-Message-Id: <20260329114418.39732-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <202603291844.TWh2Ellp-lkp@intel.com>
-References: <202603291844.TWh2Ellp-lkp@intel.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hvYAsQt2;
+	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774792047; x=1806328047;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HxHwSqIXKIalnHUH4THevqlWy1d+jJeZ91RpHBQZutI=;
+  b=hvYAsQt2DgPcP4BmOkAHOLieA0mAmFQSIH2QHBoFUrAX92lisrol2Den
+   wyHwAMDiUGETe5nhufFHHBoVl6Q4J4CsXkv2yT2ZLXlNrTQODZ36dsSxL
+   df4oWmAFLGRjwsaBIHMd2s32WDaXxL/zriUYdt9npw55r12xPzNk4clIS
+   nlQ+mZwzO2hPB0IJqBaxdhB7ApI7ocV53GpTRLCeQv1ilAvHbLH01yoZu
+   7ps+D9k9OziYklvjcKY74GOsOO4hEhZ60hIOxPI8W3jyRaBb6aoJgmhvT
+   FVeWyh/P9AOQh9OcTXF/sVJ7J72E3fQqUlyX2ggX/u2KV1x47qUZezSOd
+   Q==;
+X-CSE-ConnectionGUID: gdF2jcNFSXGmLHkNgd5Sug==
+X-CSE-MsgGUID: OMKLX670SZiPIYtazz1Bow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="75818119"
+X-IronPort-AV: E=Sophos;i="6.23,148,1770624000"; 
+   d="scan'208";a="75818119"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2026 06:47:25 -0700
+X-CSE-ConnectionGUID: JmQ1czEGRdGH7uHasW2MIg==
+X-CSE-MsgGUID: vgLPKTFjTu2hGP5+E8WFmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,148,1770624000"; 
+   d="scan'208";a="219170287"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 29 Mar 2026 06:47:21 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w6qU1-00000000CPN-2Lmn;
+	Sun, 29 Mar 2026 13:47:17 +0000
+Date: Sun, 29 Mar 2026 21:46:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Youngjun Park <youngjun.park@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Chris Li <chrisl@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com
+Subject: Re: [PATCH v5 1/4] mm: swap: introduce swap tier infrastructure
+Message-ID: <202603292156.2V2nVz19-lkp@intel.com>
+References: <20260325175453.2523280-2-youngjun.park@lge.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1467620003
-X-Stat-Signature: ac4qihy7erj65qaf4atskz8agix7saqy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260325175453.2523280-2-youngjun.park@lge.com>
+X-Rspamd-Queue-Id: E58AA4000F
+X-Stat-Signature: izsakb6mcyuj51deiwai8wj1ik4o9dih
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774784665-510505
-X-HE-Meta: U2FsdGVkX1/g/rSJEtNkV0UUGePncrqpkrguLt1yuu/fy8KLFkdeymznMG872+TH0SnqYZLr9SmspF/MjDOAj//nB77jytMuTpqHjobyFfr432RTri7gSDlDcNA8NgW3yQrxLB1MjWntVjcU9kqFVB9rlKWf1rymui+eC5ywfniLyocfF6a+wFKz4IP64d94OPxGYSAllfDRhwTiQlvp0ouFjW7XFTxVJmUNVCxyhSXNFiUfldoNVlPnadb26oQsr6ywoY7cq7V82LU0lZ7oSWUp4BHj2qbXzfuUgS4LonTcxSUB266e/Pnqifo0uPNTvv74fB88+Eme8DpXiDloT1aJd4WK2mKvSS/3AgxTC4D09tZTuToGPXQo2h+F3VaiE3EaDi9Ybl8z5E8b5UPcXpfp0YcyyIh1HtjtUdwMr8pg/xkH/HWVUf4mrB5iabpkCs3+x04HWGoWj4KwbYCuCA2xzBeRoKrlvrT/5MFNv+2cZE72NfsJTT5DIzh8ifPiXIJc6fz1kYqyRitEtbbkLp68bD2ZhqFT8tVQZvBpc3fU2p27n1OHvKdH4Ec6DFgxCYvCQKE6eNThR+PON+SWYw83QzPtLUqhSEdQ+Bte+nozSlkCFiOveiwEuqr/fRN7MGoj7Y//sW2E8MBoOWXxRCrDdUFjf6hU3Y3KSVaOzFvkTuXKtelKpE7FC4AO8ra5sOijneEPUTbvnwFSXReXjibAkfNASrdVTu0osdBkis3Cz/Im3iIrBCqcJ+m3qc2lXSRgBZQobqkZtgimL7ThNDj7+ce7WULNzNyE+e2h81PT3tLpSPr2Jebe5GDHEtl6EAONHWuRjE76ek/Lvlq2K8VJy3seM9bIfzOfn30b92LssHl41M8O+HLMsevlrcrKXsEbeDgveufWZuwVTXRNQ/tYVZ7urAqprz/9pECIv5knb2QpObzYC+Zu8w0ECYTKhETNgc9X+G+pkED4lHF
- 5DGNjuhb
- /qn7cKoepnZOCLxHxtZOm2imj/Xx90ShK+vuduq5ZcxlIiGGuVGUyVacd+MIyaIsR5yAiZ5KX2tAqhRY3MSlG28UpSSuaz1StvDZo7SuuQjnefityaKzlgcsj6zfaK7BTpzlMUW8Dr6etOJqbiIwYZXd+LZftHkJWbu/pxeH9aHebMPbTWNFIFewY6xZapu3ZlS6NwqblWnwUjgDFWEnlzwnwghuPd5bGbjgK4AOcVReo1f/LHXbiL+raQRk8vO5ZtFLSsZOwUgvhrb8TF454cNPZfCjJji3INOK+mhqtMFCgrB6wbdiOXCAgxpsniTeHWEreLzNTiA1gnghdb2JLr7Wrv2gVKRqnA9bBax9mlQ4ACE9XGfS1iE4u01xLKkvdm5cqbW+/3wwRk1RwH6vmw5JBk1omJQM04rldl53iULXdrsiRGWavAN/MVSg6IFnkttce5M9wB9/vIEIITsCA648dMLd3peaXoF3P4xP0t27sktchUNpIbmYSBYITxlN1a8QItl0RFHcCzW1T/EvD7BQdrqkR3yPhPlsVi9655WThzsgYVjo7XwYYi4MP9JWocWDEB0V0Hf6vRbeEYihqJVEWGSHjhGKYsejhYQMscOk1vkyK9i20vWAW7Q==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774792046-691858
+X-HE-Meta: U2FsdGVkX1/Yzm6VXa859wSItX8SYuzfs8aObltHk0ACojgH8OEdWjiH8bH+1WyxgWANiF/eLFXym8TUrnMp/ZV4ppysaLy3/SHnwDUnqqtgnS+VBEWC7oAfd4MwiRkvkKiVliVbeXvXiady1qefntNiVQ/82KzPDdx8Mo1h5PXzDcJpNXEesqpFPhNmnTdJE4JtKv6e8eMDAEY0MTptitw4GmFmfVB0H756IsD/1w1YVmHBEvGfetDmgbUp33uUQQeFPh1iFV5OcymR87ojOpdDrBqPAql7NvAkkn2l3P6iAzP6sdCe8dI14Wq2Pc8tV1vhcIQPyfb90gn5FZ04Df86SV/fCF5ovNhFn0LVCgFKTf0iGsufCsgVbzguxKVpSYD/Ju8CFGKLXL3+wyMoRexulpJz1WAEX2yOpKLHPvHlR/u3IDmrf1OUXiJT32BbfufwiDsnZW3y96V4RBwNyqfpfRmq7Y79vlrxN244EfksHuWMI5V2AIAwH9PBORkSDq0KxBcYhmP540oqJ8QN28DqQ0Oq1+uTp4n4fKM8fdvvBCu1TNGr3Mu5wQRY6+mkSX/RWFnY/dPa7ARlFif+SkJ/0Jjy0EMP2LZu4JDLO5LjDu0Rxq6T2yj9/Siwq23hnGk1ZALtohXYVkqEJidwRmiT4xBT0hoY0XYpDwZtiV4p05TDbspkWejo61y9/KTCnpSrZVqiH9VkfSb2VsCakeBjQ+a6ujz5koD8kJhc27pDDsEtgu9g3lyxBMj3jtQZSkQGfgMJd/W5kYptP9sxo5zRuxIAnD/YqMGy+yJVrhtD5/ev0jfThfm5zOSR9q7s6ZDILGEQHx+Gd68r8hGD1a/UeDY/Vc5P1cNuzf0rhRakgoERI1O/j1+Te5jTj1jlW+84Aworfhts9g+5pNtr5T07O4JL+GKUhKvhqqxlFCUiAnKxVq3DJTifSYB29TCHGG9zpdYsHBPaEr2FQ4E
+ XrLDR2o5
+ T+QyTK5PpMIo0Kw8j3Q4hQI+lrCvewL83x1CBf57gymlKNkWKmW5rhIThGXlYyjRe7cYhTwpZFAk3n8+9f2GXdwqpz06Bb1WXH/DOKKsbmki6qkKGuiRMq2Ov7EGaU13pAgvu1HrU/UNsvEbk9p3xb4N5oLK5ycZaocgMpjyUEz8INFUVlDt7LiloWMOM/Lnj/3lMZN2GrfQ3Q1/vOEv6SeUQVWF2kQQIbY4IR1RjK2NFOdEZqAhmGiCo9uRVoW3lauzTzabcRjH4y3k6J3i4NmFcp+T79NVukPOYZhsbQuBM1udQV/xQkIbk3K0re4Kh8JxW+RiP1i/oih+b1TM1lT8ggmvw07JeZpHJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,64 +114,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 29, 2026 at 6:49 PM kernel test robot <lkp@intel.com> wrote:
->
-> Hi Barry,
->
-> kernel test robot noticed the following build errors:
->
-> [auto build test ERROR on akpm-mm/mm-everything]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Barry-Song/mm-swap-rename-mm-page_io-c-to-mm-swap_io-c/20260328-170852
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-> patch link:    https://lore.kernel.org/r/20260328075812.11060-3-21cnbao%40gmail.com
-> patch subject: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
-> config: arm-randconfig-001-20260329 (https://download.01.org/0day-ci/archive/20260329/202603291844.TWh2Ellp-lkp@intel.com/config)
-> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 054e11d1a17e5ba88bb1a8ef32fad3346e80b186)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603291844.TWh2Ellp-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202603291844.TWh2Ellp-lkp@intel.com/
->
-> All errors (new ones prefixed by >>):
->
-> >> mm/zswap.c:1057:19: error: use of undeclared identifier 'sis'; did you mean 'si'?
->     1057 |         VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
->          |                          ^~~
->          |                          si
->    include/linux/mmdebug.h:133:52: note: expanded from macro 'VM_WARN_ON_ONCE'
->      133 | #define VM_WARN_ON_ONCE(cond) BUILD_BUG_ON_INVALID(cond)
->          |                                                    ^~~~
->    include/linux/build_bug.h:30:63: note: expanded from macro 'BUILD_BUG_ON_INVALID'
->       30 | #define BUILD_BUG_ON_INVALID(e) ((void)(sizeof((__force long)(e))))
->          |                                                               ^
->    mm/zswap.c:995:27: note: 'si' declared here
->      995 |         struct swap_info_struct *si;
->          |                                  ^
->    mm/zswap.c:1057:32: error: use of undeclared identifier 'sis'; did you mean 'si'?
->     1057 |         VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
->          |                                       ^~~
->          |                                       si
+Hi Youngjun,
 
-Deeply sorry for the last-minute edit—I fat-fingered it.
-It should be si, not sis. My sincere apologies.
+kernel test robot noticed the following build warnings:
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 9bacb1733e1c..b60821758169 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1054,7 +1054,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	folio_set_reclaim(folio);
- 
- 	/* start writeback */
--	VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
-+	VM_WARN_ON_ONCE(!si->ops || !si->ops->write_folio);
- 	si->ops->write_folio(si, folio, NULL);
- 
- out:
+[auto build test WARNING on 6381a729fa7dda43574d93ab9c61cec516dd885b]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20260327-203639
+base:   6381a729fa7dda43574d93ab9c61cec516dd885b
+patch link:    https://lore.kernel.org/r/20260325175453.2523280-2-youngjun.park%40lge.com
+patch subject: [PATCH v5 1/4] mm: swap: introduce swap tier infrastructure
+config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20260329/202603292156.2V2nVz19-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603292156.2V2nVz19-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603292156.2V2nVz19-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   mm/swap_tier.c: In function 'swap_tiers_sysfs_show':
+>> mm/swap_tier.c:116:59: warning: format '%ld' expects argument of type 'long int', but argument 5 has type 'int' [-Wformat=]
+     116 |                 len += sysfs_emit_at(buf, len, "%-16s %-5ld %-11d %-11d\n",
+         |                                                       ~~~~^
+         |                                                           |
+         |                                                           long int
+         |                                                       %-5d
+
+
+vim +116 mm/swap_tier.c
+
+   105	
+   106	ssize_t swap_tiers_sysfs_show(char *buf)
+   107	{
+   108		struct swap_tier *tier;
+   109		ssize_t len = 0;
+   110	
+   111		len += sysfs_emit_at(buf, len, "%-16s %-5s %-11s %-11s\n",
+   112				 "Name", "Idx", "PrioStart", "PrioEnd");
+   113	
+   114		spin_lock(&swap_tier_lock);
+   115		for_each_active_tier(tier) {
+ > 116			len += sysfs_emit_at(buf, len, "%-16s %-5ld %-11d %-11d\n",
+   117					     tier->name,
+   118					     TIER_IDX(tier),
+   119					     tier->prio,
+   120					     TIER_END_PRIO(tier));
+   121		}
+   122		spin_unlock(&swap_tier_lock);
+   123	
+   124		return len;
+   125	}
+   126	
+
 -- 
-Best Regards
-Barry
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
