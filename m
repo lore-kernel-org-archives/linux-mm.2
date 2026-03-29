@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB19F3D5FB
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 15:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7EF2F3D60A
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 15:31:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 142B96B0092; Sun, 29 Mar 2026 11:30:59 -0400 (EDT)
+	id 429EB6B0095; Sun, 29 Mar 2026 11:30:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11A6A6B0095; Sun, 29 Mar 2026 11:30:59 -0400 (EDT)
+	id 3D9E46B0096; Sun, 29 Mar 2026 11:30:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F24746B0096; Sun, 29 Mar 2026 11:30:58 -0400 (EDT)
+	id 2C8DC6B0098; Sun, 29 Mar 2026 11:30:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DE55D6B0092
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:30:58 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 165756B0096
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:30:59 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A82F13A8CF
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD69FB99D1
 	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:30:58 +0000 (UTC)
-X-FDA: 84599488596.19.838B69A
+X-FDA: 84599488596.19.06A93B3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CB73340012
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:30:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OoMqxdD4;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 32D68A0005
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:30:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WJwtZg9K;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WJwtZg9K;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774798257; a=rsa-sha256;
+	cv=none;
+	b=H97lc3n+lHRECz9iWTYB6dvo/wPaFiUOhoT36pHDO7fh3/W4GF7ByIm1+AD637+BGoEJHI
+	TxYVa6vF8q06VxN4mAirdnLUUEfP1LqHkvrfrdp+dK6xha1HTfx7nw37/1Y0GyUFre/VNE
+	xHXCVvaM2JaC2xYCfr7gHQYLXVSotjo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774798256;
+	s=arc-20220608; t=1774798257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+VJ+lDaQo0WoQLAa9rP73UfABPA9Nbc9ubiAHVMnm1k=;
-	b=jLPhQ9pOViKLtZufggDa8sPWAGIo8PC/WoiOIMrl96AXnyEYEkC6v54hzl7Y7cjY8izghC
-	o8bL4DyR+AmiRi8BHpBM3gwOCWbbBqxJpG58tct1yUd2LZf74YJq1PW1ttmKVlMmRgGqjW
-	Pb9vTzWktKG8MbZgHrceXOd5BgrBqG8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774798256; a=rsa-sha256;
-	cv=none;
-	b=NXEiPyj7AHwq6F9ae+Ziupa/RgBD0jFUBEnlvB0xr5sU8KyPFI8TGEYOT/YRKeWRBfX0MF
-	1b9hHkRCyM/UZIXMHCyVV3TXqr1nChyfLJnrTGqdxwmc9c7h4YlmSP1J7XKLFnf9i1E2UG
-	KyEkyrmq94qK+HSrmpp/LPomThTYiiI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OoMqxdD4;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HFFnukuwe5Knh/bFFWGbSx8n+/Penm2UtDJqtuQpx28=;
+	b=A3jeUXXXUo/eBONB/ujqsUqzq0wVMipL/6Fmp7mIHRCezEu/AEkMgqot1GWbZu5MmuZo0s
+	c1Xpcot5U3WXzEMkPOW35EMk704LuS1So0kZPGrnkytt5Oc8+zp4V+zK2XVTOhjhYfTq5J
+	5CN6+2QvNc1Vzbpdy7brU96mbV/MrzI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D994440433;
-	Sun, 29 Mar 2026 15:30:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C75C116C6;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F95844569;
+	Sun, 29 Mar 2026 15:30:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96FFC2BCB3;
 	Sun, 29 Mar 2026 15:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774798255;
-	bh=F6rB/oSgunb1Uwn0bqw0CxoNAheCQwZDVnE4QMMy5W4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OoMqxdD4hnvNwAN+Z47Q+bFg6GC+0rO7D2sCDao2j87/P9P9HIT8Xb+pU77OCu0vj
-	 fmCTFc+aUORYySWRafg1YanIftfU8HBzPHj8qbqLey9pxOwZ9SfwRK2asFD77QkKH6
-	 8k+trMTJ2fzffR/wVXifCFEmhdTRVp632zkjIhWnGPxdeKhvclme8rh5r2heIDgwYU
-	 WOIEYdFHamiO+hHwSrIvO4lxvjHCt/7rvTCfWTjoXqXbxynbSDEZcGOSR8yKFolm+d
-	 ipg27t8KFMeK1IrDwZRFnPmgty/0vooOe9/zehTZPvuJRInBM4hFa9huywxLTJ3Gs1
-	 a7L/d1HmF62BQ==
+	s=k20201202; t=1774798256;
+	bh=+Vuu7wt+nGQlkJXcCrqmt/j27FT/vMyHTCViEQGR7sQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WJwtZg9K6U4VRZ0r2hlAY4XFRHBLim8dZ/Xvik762PO5eROJ4vVAY9eAhyBbz/arI
+	 fMNisW/OZZtsGuS9o4D0frWt10QP53N1BN5Q4SEBaNDZGkGG1Qhh9ld9HMIgwTfEVm
+	 gXwMWoTAWLeNfUOrOGwiKQxfGe1V2XhIPTGtie1eqtZled6tHQ5dtNw8O5PkZERXRM
+	 +LoRLFaXC2WmsT9uL+1kq/xXSiNhPl4XrXTRnS/F74XtW7U/6Jrdalc3kFyu3MVr22
+	 FfoS9cngIU+CD0ELQ6BPlPa1Vqm6fPZUJEZkcj5WBOypnC5edUUALCtzWVnvhGrvHu
+	 9YVJiIH8X0eTA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -80,20 +80,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/2] Docs/admin-guide/mm/damon: warn commit_inputs vs other params race
-Date: Sun, 29 Mar 2026 08:30:48 -0700
-Message-ID: <20260329153052.46657-1-sj@kernel.org>
+Subject: [PATCH 1/2] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
+Date: Sun, 29 Mar 2026 08:30:49 -0700
+Message-ID: <20260329153052.46657-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260329153052.46657-1-sj@kernel.org>
+References: <20260329153052.46657-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: owb9kobefp3orrrqgpgquwi4hoxs818n
-X-Rspamd-Queue-Id: CB73340012
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 32D68A0005
+X-Stat-Signature: bzgbag87cyzjm9fkw8jah9ipyayyd8ji
 X-Rspam-User: 
-X-HE-Tag: 1774798256-390504
-X-HE-Meta: U2FsdGVkX1/7FJdG4iBpeOgWF63fMCUhMEVKNPuT+la9aKg3uN8HjgWNk+BPa87ZewBalJp0ZoEmpsmqmip04ihE4h8u+ZSSgspJNVjA+aBJe+XE3gDtDyoDbv+WhByPBLS5HznrLLFHDpL0k8jkLtHOUVKWrOL6apkYhfGIbb4LjsgdfQiL2CBztL6djilovoRee5+8lqTgnA09tRdn6yHQ/uWXH0JkY6X4Nr8J/21dVzltA7VnIyyhCodlIB5Qrci0ijRNI9QYqpNKisCJ5fCP3H2oolCbDDY6CuC6L9mvEzb1D0m7CM6AoaEZzVnwcqtrx41vR+j7y5UbGCMqSHTwXajUB/O+a4uFuClEQrUaItOCKqJzmeVOKb4sz2VGgUroPMuZTefeXkQt6Zmt/NpF/LAtp6E8mhzNwC96PlKLlhquaWJ/mFH56saQv0LSgk49R6rK2knEav3dPYDgZAUhBtX5yhS5fvjoVKuRgGORe5pxImezlIntRDPknHb3GmTJbxFmjp14vymF66d/ni7dil+pg6dq0woinIpgzzyBK4cmfqdr/AUc8GT97Tsz1g3lTJeT9jF0ra4aJtdEZ3qUaNJALKtKAmJwZv/W/o0q73ShcQHUxeCfC4lvVRdCn1LkwEcfquD7QVPghtXe3GEmo0S0Oxtz+k0v5ieJaSi09bwOtUybfJcTv1OBwG+fRS3A95j5srf5WDrRC6TwmKIkaQrAGpoDD0qSz+RfTq9DSOstxGRDcS9dV9rU3xRw1+3029dRbU8TWRp5TgoE4v6Rkf3YDVnn7TxfqzP6KWlfNxPQhVossSNIWMXKYm6B3MN+1EVDEIX5CpW6z34zIIsnRzbb1AyxqCamgnmaJcizYGzgo3tflw9V6PLY4UOjt8sxIfP7qApmYw9iV01nTBf0k4QAABjvx+1Shi/8qcZRdQGGWdkGrgtm8GIci3YGmlk8a2N99I6QDMep7l+
- 2m1tAITm
- qDQqWv4MwRceynW7dV5ew4TEYcih132x26t+iGMkL1g2CFDKf9fJaIwh95Fe2KGOiFCLuuw/TC04gvWtcUv6g81nTZb4ytMKqGBuLLo4ly5RcAMekl6tQ8YkHsyACyHoeP6IvwL69zPnKEeBmbUqfgXY/4s8OGwvfJh7oh79ZikkTW9x/lNunVEwBxzcs4q1yT+2C0Lgia5guQhWR6OEGa7xYWwxS06YriCChA2CUhMjmumtGlR9EYa1RKBc/Kd4S7ofzkbNSslq9cHs3Bx2MJfYlXsw01Bb+YvArWuTwADYOrEeF3UFHGEA3Eyl9kiU7iUCkHkkZS101gNp3mjkuVXFTUQ==
+X-HE-Tag: 1774798257-348076
+X-HE-Meta: U2FsdGVkX1+KdGAVXrAjPe1MAmNXmM0lS9MdSjPFcLmHFLBRX9/kfQc/qG6Hx9Yr1A3Wo+aEjq0sxqBpR6ibj8nWVpyxzkOGbAmmd4gmw76d8oNDzBSTAb4Eg1Q8xHf9XoYcK4gPPfi2kp5adr6ytooxFLlVkXpfylknahonyDOyus6WE6yOh4O7AigDZ1mkcEI4xvj/EESjaUKwhcimb5k08HUqR8QFkCEQlL/zxj9xGHXzqLV5CG7QFTj3N1fUR3yZcjLz0c7MZOtZRhFclgctSjuk5VgCGzPKbR6F9x7xStx9lBO4cNsGM8nOQgWZIRBzqr9dWwtmmQINCPLAzHT0psEcSjOQDGHevIBm7ICacKxZUBpA+Ac9KDKsAlfeJxOuD7dV4rJNaDGf+W2EfUwT8MInaQRrWcDArJErTuk45elhkV34RV+77VCyPZi+HK+t5snQ6Pss1asYtlZOSAiiotS0TzDWsbe5orZx1Vo7CQDF1YxmFWR+E+9zoH/3EsMXzHnBGl5E/mBgUivuuIedC7OktnkESaRZuFZxvRtw1jL3FwvYKGVO6xErHL2/W9PdoHI2lVjnUB8SQyyYi4vrPrjNVxJO+nYBqu0+XYGmh9ig5OJhzaTWqN9BbCzVd3a8E9lVQ+0NEwfgBVzDX02NTIXch56ipf+aC8c4iM+5iQPwZ+u9DYHsdXcGnRNB/XF8UvSaP0S7H1NUQnz/22FYTXjHTJwlG/++Kd596rd5uA2unaV6EuAHVVkAbyVVIDPXCVznhg+RPPpEQ0QDo/m7t/C0d6SCVHeoBtAwx40NRImjFw9hKILpDy9X5aJ3FCRPVX80Mj1Fk+78SrohYOIWbkjk3CwRgQs/kvRnftyJUx1sWKatMzEQRRNPmnKTjreHYd7Zd1QaXpkcY04jpY5zaREE7tmzhjZlwHFoL+fJQOE9P2pgJjfVWuwrJRTrV00SSXy+Wy1olBZeUvG
+ s9lXdjA4
+ lfy7MsCgyjWL/I2kWncxIenDtexyD9LM4juhF4h5kP2ZAp9w6xdQdqzFCVJU7RM+4GPfAouq0APftawKZ17Uq0w41UbdEACSznKsapEM2eC3n6wtiu6a2tqoI4hdPaUG0UbGZ8mDNUeT0ktSz4thq7rU3x5xyUwVyxyRn/yQOI7hStZdrUfabPRPt1Ae6Y2YAuQXTNIPM79PqSBSaMG5PIZlfh+ay0+WgxvZl4XXb297RuG04NBpoLjczZMDNVD0rdWPjvW2vox7FmYl+0gBouG74lPcXXk73So2yGKrjYiJuvBFikZjhlFn9XRsg3+j1DXYqzT3NFO9hrc2I8zTRRFACsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,34 +103,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Writing 'Y' to the commit_inputs parameter of DAMON_RECLAIM and
-DAMON_LRU_SORT, and writing other parameters before the commit_inputs
-request is completely processed can cause race conditions.  While the
-consequence can be bad, the documentation is not clearly describing
-that.  Add clear warnings.
+DAMON_RECLAIM handles commit_inputs request inside kdamond thread,
+reading the module parameters.  If the user updates the module
+parameters while the kdamond thread is reading those, races can happen.
+To avoid this, the commit_inputs parameter shows whether it is still in
+the progress, assuming users wouldn't update parameters in the middle of
+the work.  Some users might ignore that.  Add a warning about the
+behavior.
 
-The issue was discovered [1,2] by sashiko.
+The issue was discovered [1] by sashiko.
 
 [1] https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org
-[2] https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org
 
-Changes from RFC
-(https://lore.kernel.org/20260328172415.49940-1-sj@kernel.org)
-- Wordsmith.
-- Rebase to latest mm-new.
+Fixes: 81a84182c343 ("Docs/admin-guide/mm/damon/reclaim: document 'commit_inputs' parameter")
+Cc: <stable@vger.kernel.org> # 5.19.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ Documentation/admin-guide/mm/damon/reclaim.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-SeongJae Park (2):
-  Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates
-    race
-  Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param
-    updates race
-
- Documentation/admin-guide/mm/damon/lru_sort.rst | 4 ++++
- Documentation/admin-guide/mm/damon/reclaim.rst  | 4 ++++
- 2 files changed, 8 insertions(+)
-
-
-base-commit: b761d53965a239abe1469f2e4e2d4f7d69fac9bd
+diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+index a100216f3a72..17e938c319e3 100644
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -71,6 +71,10 @@ of parameters except ``enabled`` again.  Once the re-reading is done, this
+ parameter is set as ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_RECLAIM will be disabled.
+ 
++Once ``Y`` is written to this parameter, the user must not write to any
++parameters until reading ``commit_inputs`` again returns ``N``.  If users
++violate this rule, the kernel may exhibit undefined behavior.
++
+ min_age
+ -------
+ 
 -- 
 2.47.3
 
