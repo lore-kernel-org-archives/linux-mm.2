@@ -4,113 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3CBBF3D5FE
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 09:56:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3CB3F3D600
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 10:49:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D4F36B0005; Sun, 29 Mar 2026 05:56:08 -0400 (EDT)
+	id A4CC96B008C; Sun, 29 Mar 2026 06:49:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05E756B0095; Sun, 29 Mar 2026 05:56:08 -0400 (EDT)
+	id 9D6776B0095; Sun, 29 Mar 2026 06:49:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8D2B6B0005; Sun, 29 Mar 2026 05:56:07 -0400 (EDT)
+	id 89E016B0096; Sun, 29 Mar 2026 06:49:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D27086B0005
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 05:56:07 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84991160456
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 09:56:07 +0000 (UTC)
-X-FDA: 84598644774.04.02BF2E0
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B06764000B
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 09:56:05 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=srlPc7wM;
-	spf=pass (imf27.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 74AC16B008C
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 06:49:51 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2ED1AE044A
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 10:49:51 +0000 (UTC)
+X-FDA: 84598780182.26.A27D7E5
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5F4841C0005
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 10:49:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hZ2SD1gv;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774778165;
+	s=arc-20220608; t=1774781389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p0Sqb6Fhd08Evxd/ft0GWEl2Yd/g++AIRyWxcaAdZr0=;
-	b=w15+VM9Y5ijQEhgwxElKAwZ4Tysdlh8JHThyu3ScRII+mxf3fVNDwd5rDeg9ExPn84LSzs
-	H99PI7d8LMT/aBSO29cpVDMsCyEB2hE5K/9XDdtalnpb+Anv83kknwF1Cq6Banh+jmDGvu
-	2M/fxn6iDum7nLmJeHsicSD6U3D3rLY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774778165; a=rsa-sha256;
+	bh=0X9tKwjIuG4Z8zXqeuqujENkVK2g4XF5McYtiClONhk=;
+	b=mLF9PTPF5Ph5X8/kcvKCAKS2hRcVtw7kWw+YG/54fbCTnNvlIejlnyDtZ2WOnDriWxO8/4
+	3gD406icaWNB5VsXtYa0gV2nKBubFXqPbsJ1e6XF4nREHhFcRPZipH5xDdQNfIhIw2uceF
+	W86XVU14MJ7EjugWwS7ureQ7QtNLi2g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774781389; a=rsa-sha256;
 	cv=none;
-	b=BXXXB6ChfsbG2/6zz1dKMure//6UcpwpnPll06Pan10bPUSkVHlYodS4CSdlwgTWwyXpyK
-	2d8YjvOveUoQhXTTVZDBqVLRA/ZZnq9tAjBnpTTpqZORJylYo5OOWdlmZ1rGEjpnvPVOWr
-	oYrBnS9AqJ7zUO5Nf59D+OOpa9+1LPo=
+	b=iegsAYDsrUQJe1iPkHzbX/FalZ2V/M/RrdEcO8ZVAbiumMxwdxr8Z4aYTA3qDL79XShsnu
+	1UiugXNI7e4GNDHUMIVWWhaPJG97CVXBvXZtbWPXjp54uQPDdP4umqgwT/ViECqMhrjIob
+	DgXGPhMfgAnkUjScuj4lGwRNLDo/xCo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=srlPc7wM;
-	spf=pass (imf27.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ad9a9be502so21813895ad.0
-        for <linux-mm@kvack.org>; Sun, 29 Mar 2026 02:56:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774778164; x=1775382964; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p0Sqb6Fhd08Evxd/ft0GWEl2Yd/g++AIRyWxcaAdZr0=;
-        b=srlPc7wMRx2JpJ6rcbpBcVIoqC+mVUvORxFh2N0e86BofLlAOS5d0c6rzZk/zXzAih
-         ElovW+8SbqcoQ8h1+rIYiiyaS8dOqGgrWYA06teD4DjzhiPrOKCesz5SXD0LKMNX+GY8
-         Rz/Anih15QCT/JCfe+bVwRBXFvY/eiDjF+3LjE9gXwnAg0raRzYbPjD12pZ/NVcUoKap
-         bSxwEi2YXpQFj+1E2SkbeKYt+00gp29msIUJV12H9N9skV659wg9/bHpSmKa4k8IQeZx
-         BfrcH81A3WOn4BY2g0apNAdIHml6nxxSqYD1hQbjwrY6qia+dB8wp/JArrApv4oJOEMR
-         PC+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774778164; x=1775382964;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=p0Sqb6Fhd08Evxd/ft0GWEl2Yd/g++AIRyWxcaAdZr0=;
-        b=Rz4UkU1eU9rGtN/AmRdPy8tlXsT7ZmKbYt5ZZ/6zZHgSvmXP5rt2KNNX4N2TYnWvw0
-         c9eJfxkCqpsDrK1ndU7DyItapLLiI9tWIffrHxNG9in7ZGj+2erUmUBABjqPgO3J1u3x
-         OPiGQimdrPEth5rAOIghKrjEXhoneb3jhO4pmT5wwlWH2ycWnGQ79qaJ7cSnBUAQzdoV
-         nYNUFseu1DPHzGrqFnj3vnxqIIwg4CeBymX/hmU2IrQ/E/hHaEzJiaBUPpWhzTMHQHHp
-         3aHNLE+4PoM/WuawoBO07Sov87aHPUb6WLYt0NMRuZaO2MrR+irfveG8/PQajSUbtkVF
-         kuXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWu+gOfV0UjMZTT+n88pu0z5lkzkGGwboHUl4y+11Oj1LDK8Z/NT1PMRL8OAetahTkqaQZfDN1gOg==@kvack.org
-X-Gm-Message-State: AOJu0YzG8YD9bWtwrvN0BoOAMsGTTCHDHX2bt2E3BdCVuZb9ZOX5vp+Q
-	WmH4mL25D3eDGDcZhVRDYx/nRolbgCWXNPtR+q09CNp/A1GgeHkhsgIA
-X-Gm-Gg: ATEYQzxlQTomOsyBKX5eErTkDu6IdUxFTzG8unEvS2OizZlxnuTzyOUw+zIlxZAXB1g
-	iNTnUXTYUx0JRoF10c6fr7DwRaKW8taW2GXWt2NEXG8qCMSvGMRiRjq/iJhWM9hU74ttMt7fMXq
-	D2anwk/qWzADxFex/frrXd1JC76rp5NZNlR+oBErXr5Fe5unVK10cc7/ALKpfLPPl7Jbxf3f3d2
-	o/ykr4FHU8bD9AY/xOfgidOv953efnK7v387Gx0WSPdhXv9F/gvCEsiG/86UBmLlkKsF0EcPoHb
-	f8hlJ/A4q+bukuXFJRpMGPgOvLmeVwPXI4bqNd4G9WpHETxqm7jFXKoQDV7Ee9JgqKqF6cCdHFE
-	7p9nEI+H6/ABh5Viqtq3kfy0YR2nWTpaHqnK3oVmbdmaWwWMudjEwJTbo8ZmBQCZMBpKy7B+Hdd
-	aSOIZS5TcSTnZda7/+dGfWrTSQZypsaum9M2YzmPFDYoKBn/+B5MpNBUsSdYygxA==
-X-Received: by 2002:a17:902:fc85:b0:2b0:c451:ae98 with SMTP id d9443c01a7336-2b0cdcf1958mr82436185ad.43.1774778164397;
-        Sun, 29 Mar 2026 02:56:04 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b242642956sm48385955ad.6.2026.03.29.02.56.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 02:56:04 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org
-Subject: Re: [PATCH v2] mm/damon: add synchronous commit for commit_inputs
-Date: Sun, 29 Mar 2026 17:56:02 +0800
-Message-ID: <20260329095602.3471-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260329075415.36775-1-aethernet65535@gmail.com>
-References: <20260329075415.36775-1-aethernet65535@gmail.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hZ2SD1gv;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774781389; x=1806317389;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0jS+lxhtNLNxmUvtXwaJU9vXoM22BiN5K4t003u6/vY=;
+  b=hZ2SD1gvvL4HCUry9iBgEAOQJDHLAHIFv509+7KCpR4ItcQo8UPnmxM9
+   tjD4trYjUsWfjHAsd6sXFrfL1nguu4YC9FVEf3ofgjQkk0cE/iNI3b9Jr
+   ceWAhLxHXKUPH0W7cuoiPRA9C7e0gLp9yCGVs2iMIuBN2dCsz92PnQVY1
+   MO4ic4n7tl8tiG20pYW7eXgLOq/+4mz09smHGfDWerK6tNUewmEU5+kmk
+   lnkj/4oDh/caKzd8gtPwMJRqCSjPwZJulYXnCSkPXX8TvLwxgHHmwBV+5
+   6hyyhGk0umwjElBnLrQz1HPJ4FOrJ5yTMgRY5C9S1TxsMg4MOciz/1lgf
+   Q==;
+X-CSE-ConnectionGUID: KaD+ZGzXSHq887JfHeQ0Xw==
+X-CSE-MsgGUID: PD0LVoHPQT+tCatF8qlM9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="86870758"
+X-IronPort-AV: E=Sophos;i="6.23,148,1770624000"; 
+   d="scan'208";a="86870758"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2026 03:49:47 -0700
+X-CSE-ConnectionGUID: xMZyIx/uQNi/bVUaLyn0PQ==
+X-CSE-MsgGUID: aNcT5voZTsq2WxuqnuWh7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,148,1770624000"; 
+   d="scan'208";a="224955420"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 29 Mar 2026 03:49:43 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w6ni8-00000000CID-0iui;
+	Sun, 29 Mar 2026 10:49:40 +0000
+Date: Sun, 29 Mar 2026 18:49:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, bhe@redhat.com,
+	baohua@kernel.org, chrisl@kernel.org, kasong@tencent.com,
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <202603291844.TWh2Ellp-lkp@intel.com>
+References: <20260328075812.11060-3-21cnbao@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fqs6b8m394z7ktshwzjuetriot7ojrh4
-X-Rspamd-Queue-Id: B06764000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260328075812.11060-3-21cnbao@gmail.com>
+X-Rspamd-Queue-Id: 5F4841C0005
+X-Stat-Signature: e8gf9zari7k66z8wzqzet365g8ujaraz
 X-Rspam-User: 
-X-HE-Tag: 1774778165-240956
-X-HE-Meta: U2FsdGVkX1+Qf94qPZaEx9f5QSSRfrmDEPfNGerb2GcS/Zmcyc3cstezSCh/jsKGwPXltwEla9EfgFqrcLFacNrUI4NsVDOIWwSWqhPF25TosP02h/TZj+RpIh811pGxXrO14LkppgsFZ64GSTWyyjM3N1XM0tFZhz74SpokawB8wxr2BiJ47/pwpmq9XJx1SvCP/4usgjssTkB09XnIN4xNvGv/tIPHqOw5qlSoMP+Db1RtIr1H4MoKyTTZy8q7OMBcsP6i+9kqjq7sbnVct8uq4Q3xDSYmHS1w+bbL5fN0y4rZyTKdSbj47bekwjFuYIZypLQ470apnCA8ytPBJ7sQ1MDzsFafQFJDwbq5+XjX1ty1MIDc3fnFkcsI4AOUMo9embFOZpaw37F6Ir6i9e64poBtJ9/hCVxzB0pWNloqK5Pk89IQ1yS1cLyjRAm4elq0fqxv4wIWU2Q4c0ESPw4tbgYE4ZJUrJZcu5pej2V9ZPttPlxRKdArIE8Gd1fYfUzXkAo7KKSA/rr0qgu9OoEGA7AoQuDEX5+A9FTpa2yhI4u3E0fxjHMRymRzWTlXnl/5SfyhWA1GRKxxL6WEO6S9rRqjZd5OFUsdd0HGjNamH+5zeNO3GzaGbF6f+jmOy7zkpAe70DK2mhk3mKRN4ViPBTVDO1/2pQMwQ+C9OEblI3AQWFBDJNLkPy0g3VNFDwtMNm5EOJ4L6JH5hwSqvztECbtkaKNbIBKBlBocjmO16cBUjS8o9j4mGq2vXZiCJ+XpEyXCwqCg45QgdqEw0uKQIAhc3UV+5aNFJIMAav/eDd8dA3WEdr0tluYAwLMxQciWTdiHMV8DDynvBRE9gpn79rh3R5TH/I/cb0Zs/35PwBqmc+dZHpS+7gGKkOOoaYB6eN18Kzo2dRmy0SCXDqE80bmYcDdgxuW+1FZqpOsJxYNx3TRzFYHOf4D36qEI0nd0usSgorD3tJ8kJxp
- tertTcPK
- 06KDQ5g+9G5xMJv74ar+opBia1PS+pFt+KUP5u2PbFxangmDV6qROcKyOjBjo0nTm3fzelHlbowh6CVfKRC2c4iTHyxupqUsubO1wqSxrWXm4TqT0x+r6nYSvoKTfbNcbAab+5UGkrN0C9KI/jWNS1EJWfPyYX2NnxY40yIK9PO4kl091WVCAtU6xyS7JAYOpul8MPK1JXc29yItntTyNck6YUjSk2kuXzvXxN2ZHl49ChhH5fI+Wg8a++yNHLmqQGI056uC9sLyX0A6GCsik4qp3emdpb9kBdAIpsbJ1z/9k6LtCRYa3eKNEblQfIkGwG7el4ydOe7gpzQIbY+/l+ufhRMsq3RiLXHKCLPiGNnqNC/dispzsujMGBxE9cmO0DbhRW4RNVgdGkF8UVd1eJwGi3pzKwpErEgPA2ahN/0GCqpJdRyi8Svq+zx/kUxz34z00pyiv8abfhROB+8XKbkrIYLffHCQ9A41bL1+lYHorz5bKJrbyKnWGJpAd5AWJ7epUdELnXsGhFNInBc1ZpecbwV4wWlkT1El+TD9LsyDm5yYmo4clxA3qiSfchJ4nxvOR
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774781388-183478
+X-HE-Meta: U2FsdGVkX18OUgTVmXPu6inAxIthNGiUJyqWqlAOkfS8eW7L0TCrsrfoKzv8QQF+pG9jeMJ1hXPieFG7o7AjDFOFbYFMbQIKxQiA203isNTi1E/KV/4aKhpJzm1dXVskyztRg8hhpfSn3q1dXR1WxuGCZVBz+NpxiZ3HwDzIFW/ywogPUyqX3A/jagJk2nqwINiVa8iklJvWD5c8jAc7XMjebuJ3H7GYdWpRpsH9ZJisILHTlRH0z5isxkQkGSrWyJaHu3ueO/fKqZ6ljtBPRu24CDEOkdduyE3CLf9NsFDtDND5Ev8ZxNgojMp9aifuPWnEW+FcG3mRLvm4y83q3qEwie2XntoA8PCI2owcc6ZLnICrVUsUy68B31Q7dtjBhJpSqwF+S1SGmqtwvB43Z8JNcwHMpDtPKcUvIIA1WhJeK9cnnzcB3UqgMHTg+mjPnMo0e7RLYc6bPmHrUZQthszRrP3pgEaLJF2yHG7MxbKS6cWMz+o2WGlr9TlZDT38EDfcTGhH65L0rSMZ+qnRP3WlXtkO6O+W18wrH/ha23lDN43nHma5QE+4plHLj+ynMy+DUkQyLeGrzcp2N0ODKJMgBYEUwaKjR7XZC8PhJTPQYeFVP/ZNQiF6FbJy8n3K79PamsrVqWjYq/fkP1mRbun2U9OFmNJgrM2ouJCr3MqvEGh1rOD67OFtphEyHHectlxyq7eaFmffpDiK8NFl9FuiAPlTDGhctoEzCAE4bgsYk/XApqFJCG/Pdic6RUvdeFZRMvbqQyuN5HH3eJdZgIUnPMMUDh6wsZ533lVqfJKOlZkIacYfTyNo9IdN2RUYevj9tq4jsyinm9AhCHXe0vPSH2vdUrNVp4gIPUCPU0e4Zls97ojmma4P1xFygFtiH17fevXVe4IUZyyulcY9khXXrCPVfmO4D1P0FGvuTocOExOuG9EvKFMEQOCUi6ea0g7udPtvGT8tjFPJyUk
+ yoi7HRnw
+ 4Eb6kxLaMFYH0CfugslpydCX04yzuATAj5NNbLlXGXHWqQtKYXWkTGXJQsNNoYACzntxo6nIksPyEWslQs1GZz2e6uWyPXFmSwX26rZtlWA6wa2sdiBPXNHLps82RBh0ZWFH0mJvzG7AxtXac+ecmcd9Wmg3MSoGyZB1yjaR0yaik6xi5JyJFxXwqjnoDloKfaTlL8/wNlAc3SwGcqjVdKyAGDr7WzFewSivj3ZrMX7Vvt3BvNGHCkFHiEy6z3Dulyaqs1eGd2Yrvbg/ZK5iAYm8UXBmbBd4w8/NFu/Jh65I+Pn+vP0EsdWM7vNWk9mQbw0pT8UYj/bOzeWfz1cIBw9r681zZYIlX+jvL3ZAWTIDifcFPSPpJQQshpEVaBQ+J1EwErB2gICNtAyI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,143 +110,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding Sashiko review for doing discussions via mails.
+Hi Barry,
 
-# review url: https://sashiko.dev/#/patchset/20260329075415.36775-1-aethernet65535@gmail.com
-# start of sashiko.dev inline review
-commit 2fe50c13aebc88839d89dd3cdd5944c18c25dc9b
-Author: Liew Rui Yan <aethernet65535@gmail.com>
+kernel test robot noticed the following build errors:
 
-mm/damon: add synchronous commit for commit_inputs
+[auto build test ERROR on akpm-mm/mm-everything]
 
-This commit modifies the commit_inputs module parameter callback to
-synchronously apply parameters using damon_call() instead of relying on
-asynchronous validation in the kdamond thread.
+url:    https://github.com/intel-lab-lkp/linux/commits/Barry-Song/mm-swap-rename-mm-page_io-c-to-mm-swap_io-c/20260328-170852
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260328075812.11060-3-21cnbao%40gmail.com
+patch subject: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
+config: arm-randconfig-001-20260329 (https://download.01.org/0day-ci/archive/20260329/202603291844.TWh2Ellp-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 054e11d1a17e5ba88bb1a8ef32fad3346e80b186)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603291844.TWh2Ellp-lkp@intel.com/reproduce)
 
-Link: https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603291844.TWh2Ellp-lkp@intel.com/
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-[ ... ]
-> @@ -349,18 +348,51 @@ static int damon_lru_sort_apply_parameters(void)
-[ ... ]
-> +static int damon_lru_sort_commit_inputs_store(const char *val,
-> +					     const struct kernel_param *kp)
-> +{
-> +	bool commit_inputs_request;
->  	int err;
-> +	struct damon_call_control control = {
-> +		.fn = damon_lru_sort_commit_inputs_fn,
-> +	};
->  
-> -	if (!commit_inputs)
-> +	if (!val) {
-> +		commit_inputs_request = true;
-> +	} else {
-> +		err = kstrtobool(val, &commit_inputs_request);
-> +		if (err)
-> +			return err;
-> +	}
->  
-> -	err = damon_lru_sort_apply_parameters();
-> -	commit_inputs = false;
-> -	return err;
-> +	if (!commit_inputs_request)
->  		return 0;
->  
-> +	/*
-> +	* Skip damon_call() if ctx is not initialized to avoid
-> +	* NULL pointer dereference.
-> +	*/
-> +	if (!ctx)
-> +		return -EINVAL;
+All errors (new ones prefixed by >>):
 
-Does this break module loading if commit_inputs=Y is provided as a boot
-parameter or via a modprobe configuration?
-
-During module initialization, parse_args() executes module parameter
-callbacks before the module's init function runs.
-
-Since ctx is initialized in the module's init function, won't ctx be NULL
-when this callback fires, causing an -EINVAL return that aborts the
-entire module load?
-
-> +
-> +	err = damon_call(ctx, &control);
-
-Could this synchronous call break backward compatibility for userspace
-scripts?
-
-Previously, writing Y to commit_inputs while the monitor was disabled
-(enabled=N) would silently succeed and apply the parameters on the next
-start.
-
-If the kdamond thread is not running, won't damon_call() detect
-!damon_is_running(ctx) and return -EINVAL, causing writes to fail when
-the monitor is off?
-
-Since this is a module parameter callback, the global param_lock mutex is
-held during its execution. Does calling damon_call() here cause system-wide
-latency spikes?
-
-damon_call() blocks on wait_for_completion() waiting for the kdamond thread,
-which only checks its call list once per sample interval.
-
-Will this stall all other tasks attempting to read or write built-in module
-parameters for up to the duration of the DAMON sampling interval?
-
-Is there a race condition here with the kdamond thread termination that
-could result in a permanent deadlock?
-
-When kdamond_fn() exits, it flushes pending controls and then sets
-ctx->kdamond to NULL.
-
-If a concurrent sysfs write triggers damon_call() after the controls are
-flushed but before ctx->kdamond is cleared, damon_is_running(ctx) will
-return true.
-
-Will damon_call() block indefinitely on wait_for_completion() because the
-thread is exiting and will never signal it, leaving the sysfs writer
-permanently stuck in D state while holding the system-wide param_lock?
-
-> +
-> +	return err ? err : control.return_code;
->  }
-
-[ ... ]
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-[ ... ]
-> +static int damon_reclaim_commit_inputs_store(const char *val,
-> +					    const struct kernel_param *kp)
-> +{
-[ ... ]
-> +	/*
-> +	* Skip damon_call() if ctx is not initialized to avoid
-> +	* NULL pointer dereference.
-> +	*/
-> +	if (!ctx)
-> +		return -EINVAL;
-> +
-> +	err = damon_call(ctx, &control);
-> +
-> +	return err ? err : control.return_code;
->  }
-
-Are these same regressions present here in damon_reclaim_commit_inputs_store()
-as well?
+>> mm/zswap.c:1057:19: error: use of undeclared identifier 'sis'; did you mean 'si'?
+    1057 |         VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
+         |                          ^~~
+         |                          si
+   include/linux/mmdebug.h:133:52: note: expanded from macro 'VM_WARN_ON_ONCE'
+     133 | #define VM_WARN_ON_ONCE(cond) BUILD_BUG_ON_INVALID(cond)
+         |                                                    ^~~~
+   include/linux/build_bug.h:30:63: note: expanded from macro 'BUILD_BUG_ON_INVALID'
+      30 | #define BUILD_BUG_ON_INVALID(e) ((void)(sizeof((__force long)(e))))
+         |                                                               ^
+   mm/zswap.c:995:27: note: 'si' declared here
+     995 |         struct swap_info_struct *si;
+         |                                  ^
+   mm/zswap.c:1057:32: error: use of undeclared identifier 'sis'; did you mean 'si'?
+    1057 |         VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
+         |                                       ^~~
+         |                                       si
+   include/linux/mmdebug.h:133:52: note: expanded from macro 'VM_WARN_ON_ONCE'
+     133 | #define VM_WARN_ON_ONCE(cond) BUILD_BUG_ON_INVALID(cond)
+         |                                                    ^~~~
+   include/linux/build_bug.h:30:63: note: expanded from macro 'BUILD_BUG_ON_INVALID'
+      30 | #define BUILD_BUG_ON_INVALID(e) ((void)(sizeof((__force long)(e))))
+         |                                                               ^
+   mm/zswap.c:995:27: note: 'si' declared here
+     995 |         struct swap_info_struct *si;
+         |                                  ^
+   2 errors generated.
 
 
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260329075415.36775-1-aethernet65535@gmail.com
-#
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260329075415.36775-1-aethernet65535@gmail.com
-#
-# [1] https://github.com/sjp38/hackermail
+vim +1057 mm/zswap.c
+
+   971	
+   972	/*********************************
+   973	* writeback code
+   974	**********************************/
+   975	/*
+   976	 * Attempts to free an entry by adding a folio to the swap cache,
+   977	 * decompressing the entry data into the folio, and issuing a
+   978	 * bio write to write the folio back to the swap device.
+   979	 *
+   980	 * This can be thought of as a "resumed writeback" of the folio
+   981	 * to the swap device.  We are basically resuming the same swap
+   982	 * writeback path that was intercepted with the zswap_store()
+   983	 * in the first place.  After the folio has been decompressed into
+   984	 * the swap cache, the compressed version stored by zswap can be
+   985	 * freed.
+   986	 */
+   987	static int zswap_writeback_entry(struct zswap_entry *entry,
+   988					 swp_entry_t swpentry)
+   989	{
+   990		struct xarray *tree;
+   991		pgoff_t offset = swp_offset(swpentry);
+   992		struct folio *folio;
+   993		struct mempolicy *mpol;
+   994		bool folio_was_allocated;
+   995		struct swap_info_struct *si;
+   996		int ret = 0;
+   997	
+   998		/* try to allocate swap cache folio */
+   999		si = get_swap_device(swpentry);
+  1000		if (!si)
+  1001			return -EEXIST;
+  1002	
+  1003		mpol = get_task_policy(current);
+  1004		folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, mpol,
+  1005					       NO_INTERLEAVE_INDEX, &folio_was_allocated);
+  1006		put_swap_device(si);
+  1007		if (!folio)
+  1008			return -ENOMEM;
+  1009	
+  1010		/*
+  1011		 * Found an existing folio, we raced with swapin or concurrent
+  1012		 * shrinker. We generally writeback cold folios from zswap, and
+  1013		 * swapin means the folio just became hot, so skip this folio.
+  1014		 * For unlikely concurrent shrinker case, it will be unlinked
+  1015		 * and freed when invalidated by the concurrent shrinker anyway.
+  1016		 */
+  1017		if (!folio_was_allocated) {
+  1018			ret = -EEXIST;
+  1019			goto out;
+  1020		}
+  1021	
+  1022		/*
+  1023		 * folio is locked, and the swapcache is now secured against
+  1024		 * concurrent swapping to and from the slot, and concurrent
+  1025		 * swapoff so we can safely dereference the zswap tree here.
+  1026		 * Verify that the swap entry hasn't been invalidated and recycled
+  1027		 * behind our backs, to avoid overwriting a new swap folio with
+  1028		 * old compressed data. Only when this is successful can the entry
+  1029		 * be dereferenced.
+  1030		 */
+  1031		tree = swap_zswap_tree(swpentry);
+  1032		if (entry != xa_load(tree, offset)) {
+  1033			ret = -ENOMEM;
+  1034			goto out;
+  1035		}
+  1036	
+  1037		if (!zswap_decompress(entry, folio)) {
+  1038			ret = -EIO;
+  1039			goto out;
+  1040		}
+  1041	
+  1042		xa_erase(tree, offset);
+  1043	
+  1044		count_vm_event(ZSWPWB);
+  1045		if (entry->objcg)
+  1046			count_objcg_events(entry->objcg, ZSWPWB, 1);
+  1047	
+  1048		zswap_entry_free(entry);
+  1049	
+  1050		/* folio is up to date */
+  1051		folio_mark_uptodate(folio);
+  1052	
+  1053		/* move it to the tail of the inactive list after end_writeback */
+  1054		folio_set_reclaim(folio);
+  1055	
+  1056		/* start writeback */
+> 1057		VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
+  1058		si->ops->write_folio(si, folio, NULL);
+  1059	
+  1060	out:
+  1061		if (ret && ret != -EEXIST) {
+  1062			swap_cache_del_folio(folio);
+  1063			folio_unlock(folio);
+  1064		}
+  1065		folio_put(folio);
+  1066		return ret;
+  1067	}
+  1068	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
