@@ -4,105 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39DCDF3D5FE
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 11:10:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9DEFF3D5FF
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 11:10:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64DD86B008C; Sun, 29 Mar 2026 07:10:52 -0400 (EDT)
+	id 0CFF56B0095; Sun, 29 Mar 2026 07:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 624A16B0095; Sun, 29 Mar 2026 07:10:52 -0400 (EDT)
+	id 031446B0096; Sun, 29 Mar 2026 07:10:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 513F86B0096; Sun, 29 Mar 2026 07:10:52 -0400 (EDT)
+	id E3C256B0098; Sun, 29 Mar 2026 07:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F6B86B008C
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 07:10:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5F291B7D7B
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:10:51 +0000 (UTC)
-X-FDA: 84598833102.10.0AF52FC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CEF6A6B0095
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 07:10:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 97F6D160457
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:10:53 +0000 (UTC)
+X-FDA: 84598833186.26.9E65FB0
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0D52C40003
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:10:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="aM/6fEeR";
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6BA7280013
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:10:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OL9KUyvS;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774782649;
+	s=arc-20220608; t=1774782651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c8MV1XKYQTUWDRvfn+9qcGV3cYnQe+ulFyWLoYGCFi8=;
-	b=AJ7z+Pg0UumHo8C8MG30sp3etkiRzDqwBHP/bVhtilRR1Zpiyb349zvb1cB3cCSp3aK6GW
-	8ckgErymSXGlR+FMEkGjDyF+X486gl9Ulur55LgdtjECyPcN0kwB4AP+LtuMhs8bN0awpH
-	Yvsehd9qaWSPKQv6bp4zGb+XiI7jvOE=
+	bh=ld21qlHZQ88yPOIxV7geSt0rjLvnET0oI3mtiSnvUqI=;
+	b=gtGYBwmnl5XRNLv075v2dd9BTWq4x+iTQxYCXb9C15d+0cRSL/ErO154zV9agHTrGcafMR
+	CmZncjgXxTemNGbMB8crQNL7ISE57YEuE5CZq192GVvlQkGlQJBACz0b3i4YrhxvnaegE6
+	Q41ViMePGzUfRJbRja/oNbEzORxy1q4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="aM/6fEeR";
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OL9KUyvS;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774782649; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774782651; a=rsa-sha256;
 	cv=none;
-	b=k7kMgGqdSIjKeRBx2vdBoUPg60EgUJxfSqIMH1G86TmXESSmQeDSBzrosmWcqFWoOorlHv
-	iKBwTNMlFWbvkQjGhSdnXZZB/P0+yCLjtdCX1DEOBW7WHZ5X3X9P1/yBUjaHsGNd9dFCFI
-	B+qAeRwBB8mEJwdXJJjV/JcPXRjcyNo=
+	b=Qzn1jXV8Sean3fTZaG22X6R11ygoPYBuFE3k8Xj7cnOhdivOKHnH+6lgsFEFNCi3hdpjuP
+	XJ+B5xuW2JPs6mdc8exWunUFfXp+juaVOz2EpocUVg/A6hOYBzzMeEAytSieFR2r3+NBk4
+	6r9qHXh1/X7vGBxaLsa9Ef/ZY87mqg4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774782649; x=1806318649;
+  t=1774782652; x=1806318652;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=MUWehC6zCYW4cAnKQsgp35esVCOepJrsC3TRNFKUwZE=;
-  b=aM/6fEeRplspTI/bXU4vvFhfPGbhIQPpM3aeHWfqkkdjVflWLb6pyf/6
-   VwJ3+cHYJK03GZbh8ONyWVl4D+V9Nfiv4URaOF35Z3hRIaYBZG6/cAHaO
-   dt2IIs9xe0dHF200XNeWDas/nSkARv+elpvixlIYTarNrfR2nzK/3RM8h
-   IeZQFKW0veR/zb6NRG4XzS1aFoSwXZcPK7ze9R8w8rNo+40tT3APsNM3z
-   2G6AouDgqJyzSJ/b3mqZ2FId+i0WwAGNMs4mdoIBjc5aAcFp45WQRFWgi
-   9mU6s9E3ESPsHLCW0PufFBLD8xOIr7kYwM4cUaLeydsxqUAHFGDH8eXgv
+  bh=HSIx2LO02QH/6HF5EjjOZpEuKotkH/5qG4AaR3HsyBQ=;
+  b=OL9KUyvSurZEl5dDi2D+6AKQuhCR/EaUYXRMQ8qFWtHf0h3dcYZLlRK2
+   U4nqwG+hBptUdZpBiomixEHqB37NLeWauuNofnOlsKN5izWHTzzoqV0Vm
+   IsK9aDTH/lUMDOfnHDdgDHIzNL9HeBuby00l9hXvtrcki635LMpa/IT2N
+   4eaP7DXptyj6JKonCOJPI3wzTaUJXq6px5IiQ4v9040+lhTsf04lh4mj+
+   FrqR8Km16D1sGZJ8GrA33DgmwKJTxHvFdlSCUVDB7Tj1ey6tIrokyLtQy
+   dhBObmKXhuAzSF/t/DXnYvPLNqabIFP1DX95yx5icWNNZc/SCw/NJt00Q
    A==;
-X-CSE-ConnectionGUID: EXyY/RlHTleIHlhWtVYmTw==
-X-CSE-MsgGUID: 1aq28PP2QmqD3SUFtXt73w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="93179805"
+X-CSE-ConnectionGUID: RkvkR4SqSICPyGrxsMG2QA==
+X-CSE-MsgGUID: eSvrBKsAQpaYOlG2+JPEkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="93179812"
 X-IronPort-AV: E=Sophos;i="6.23,148,1770624000"; 
-   d="scan'208";a="93179805"
+   d="scan'208";a="93179812"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2026 04:10:47 -0700
-X-CSE-ConnectionGUID: xg+7iKEOS1u5jqySaqKt+g==
-X-CSE-MsgGUID: Twpja17GSbSivtk87UES1g==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2026 04:10:50 -0700
+X-CSE-ConnectionGUID: TIhXxH2NTkiv3cMrceKMMQ==
+X-CSE-MsgGUID: Q79xZq8XQEujZC6TnehROw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,148,1770624000"; 
-   d="scan'208";a="229848129"
+   d="scan'208";a="229848130"
 Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 29 Mar 2026 04:10:44 -0700
+  by orviesa003.jf.intel.com with ESMTP; 29 Mar 2026 04:10:45 -0700
 Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1w6o2T-00000000CJ5-1PLT;
+	id 1w6o2T-00000000CJ7-1TfT;
 	Sun, 29 Mar 2026 11:10:41 +0000
-Date: Sun, 29 Mar 2026 19:10:18 +0800
+Date: Sun, 29 Mar 2026 19:10:20 +0800
 From: kernel test robot <lkp@intel.com>
-To: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, bhe@redhat.com, baohua@kernel.org,
-	chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
-	shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's
- methods
-Message-ID: <202603291919.Y8MwFsok-lkp@intel.com>
-References: <20260328075812.11060-3-21cnbao@gmail.com>
+To: Youngjun Park <youngjun.park@lge.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Chris Li <chrisl@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com
+Subject: Re: [PATCH v5 3/4] mm: memcontrol: add interfaces for swap tier
+ selection
+Message-ID: <202603291945.9q4pyvON-lkp@intel.com>
+References: <20260325175453.2523280-4-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260328075812.11060-3-21cnbao@gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0D52C40003
-X-Stat-Signature: xwrmmp18awrb89dqx7tn7tk5h6ftsj1i
+In-Reply-To: <20260325175453.2523280-4-youngjun.park@lge.com>
+X-Rspamd-Queue-Id: 6BA7280013
+X-Stat-Signature: g83mcf16qh86xnu6zfwzb1gtdsjxdzob
 X-Rspam-User: 
-X-HE-Tag: 1774782648-452765
-X-HE-Meta: U2FsdGVkX1/ZzDSq+oHKEfYjaIgu7fU5tQmYX4DtzlLQEkjxiqEzamJzQ7Ivou5nQexVmzYwmV7paPkG1DvpwpoBqxnX8TlwFqjOuSj5uWY7OwOCjbfu4Ptqz3pa7xesFp0Znhar9C3qIkwTELRg3E72GA8opXXV/hq58RVJ6WXwcUAmRVQ8bpXhOWk0e81kgiFc9P0++GNsPVpd26GDb585+I/EwYOY8n+8Oa2ofQlRs80Gnfd553rEdKX2t46qrCsyHb/rJmw0XRSjmPQwIQOeX/Ai7kB/OAN7ZVdhxLoYOB0lp4rVxuS5MapG2mYlMT/Eja+hO3v1NwTWRwL1Apg0gQa1/ey/cGycsM0Lzr1LzlI/pzTrGJn60B/TqispPPGG/B9qNcBWGI8LXLv3gIvDXxJCByrqzZjiPrf9piXMOf1IkC7yzqLTFSNgN0gokD1jN3sl0e1gbokuwSiuUGapilzeuZFmz/eNTvD3kr8e7MLUu/wyVcCRuFuG0CaP13JvBvVnkZIq6A4Gg/4g05sQ+pAKHXBXYlXATrqJD930I8qj6wCK4Scs2JC9NgvcYEFwF0PrlZOQOkDpPS1kfzNYwPJCN5jgKJzpv67xiGRvimDOLJWY4Fk5aTAhY5WJkVbnZtHk+/wRlod84yf6uX2ZT2KeKLC7//cn1a6hIP/k6fopcvua615DlwiqTUQ23qs7yHC/Cs+zG13k1XvrIYCg/kC2tiEPhrTnlbNDapTXVk0fNrddAng7XsF5Fn2Yec9H5xE3YMFZlwlwhSoXCSs0VRj85LOp8baIaDo2Y/PmyaQs/CmbEa4hvRBlE+fYhK/Aaa9KCvQV6rH1K62UVEajideoCN3vAhoI+4tylH0PL6mJead6IUtyXWSTkOTYXP8E4MCFeB8vmRA0fMa9cA7hxRqeURCot6oF4ofuhmc5efKk0k3B1vhAme4xq061mb0dqyZBaZEMrUl80FP
- 2D5TbnD3
- AmUgeVsgZRbotbQ0M39UEXLXXGxruFSuQsnyChLamYBjYizJ8nos/mDbbJv9NckCSEKSHLl7axKl+XH/mKJwlEi4LcGDnOdtRhXnI+NAfY6aCgoCiIpqolVBug8gyVDWTHm2lh/cirFXTCka+e1RR+2JyNzLdc7YfkkMVEL84Ki61YRhkAgHVK2LKD1hmGl/RymiX+DFY9BfsMUU+zQuxQMNioJX/eQfcsS26yF8pMYEsI1ZdR+5rCcqga5gqbyZK1UrMsHI1uIXsYx6yzkj0IFSgjoCt/8qsD8OGzq1WKSx8Kqfwd24NfSUbw8uRoPmSP7pY739rZoIVw3OrIAYtWaODAFd3wlEMd/3hmc2iwgzDpGF/LK3O+GAimZYTeFrMgPBrb+yWu+KM/nY=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774782651-166723
+X-HE-Meta: U2FsdGVkX1/qYaveqvvObRF2UMvxKvm0UZ4swyRIMsD5vCmgqkF9La6AelyNq3u+bqod6jtQSlFx7/ozrIpsLeNHpS3sb1h5vFbEd3SVECrpupkr0Ud16qYGGZnKfxtHd2qmEM5tkFcemaQ07lxOJoAG5zFnxr0nsx57pkmDjUXY3TBdiMiP31ZW0DpHi6EKRiNs/QWSrqDXyoFDZnvfE083KyPEqwMadX1FZAQsiFZ9qyb8BfCYbaL3Th1blLYoy/TRLaYa6UmR/njMeq+EVP3xVJd/9pQ+JV8q8oRUelGnGIPCNTOsyF8n1ZUgpgEvs2Uvj5gZAt9c4C7JGsZ49/I9aZGlT5If9z3X9s4VmpSnu/z1wRcSVprEQWUz20DRfXGpNCgWAtotGpodoNTvdyWo/U0yqQnOPEqEu0o/O3kcWheLb6FHJGvOj9Cpm4cnYJZSG3ajwhhUVIoCrMObtLXqh4ez2rRs0YKHc7/2eA344iN+GTP3G4e2yt6Uj8Fvae3/Ad7M6uz5blHlBPPk3x2o0hnkdC7dRvSJPq8Yh3K2goSQ7dDJeIONAq2syFWTi+qretO0+IY8fEC+R1P6SiFzw6v6omvRHWDKrp1+qhZuVRYTgMwcrxAnKWqybUmachjSms7/hlAIqwxLem0+z4pgVUsIPdwwW/KeAIZqZtneUezTDI8pTSkDI6faolY6AcBH+Ywi5Zr+exz9Vo7D7RQRGxYhKPcCIxA1HOXkzCTL6NLFPxhuB/XflKzLW8x81RE9xJWKuiYYxpBiH7LqOIQMnZ2+K0UFtDQqT23i0Vaut1tU+85zKzZ73Px3Lp92AxxA9c+PeG16gyR7Mfy6+Fb2MBJ2VQ9E4wCNurUmI8ynG6QNa1LWU/6me1iULfNSPONIU6bSB/ttyy8uBqA/k49n5ullTJ/QhQ5drUKO1YK41c3u4tCEwpUVg3F/IsJDVOrrOQ3HoP4V+qvdGQy
+ Hq2kzeXc
+ TbC81UPa7XcJaijScrcyhW2LeRiXKwlHFZVSXSFSt2bGwJ8IZnqh4eTw6FR6d40XrtyvytJUBJREjO/1I6nDxazx0/PRijtTdRwvWquOua6BETWppjLvrpktMeFCQERn+G4dTpDkG00CSv/B7lTkVxkpnZlMoCg7Pj/Er/wQYKc/vz+N2PunWpQpV4o7DqiPSMQ0dBLuXtO6aS/ctfsLr+dHa6YK/o4TwC5xhM19mQpMDyFXW5TxW4uT7HK2iptf99LRx+qNTYZpfhHSCoAaCHbAqtZaXdG+gcAGQjUvfw7jDUHmCYmNjep4gn1z3We+H9sodlNScsc0WKIUqP8tJZfBuznr3/vwJtZYq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,162 +115,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry,
+Hi Youngjun,
 
 kernel test robot noticed the following build errors:
 
-[auto build test ERROR on akpm-mm/mm-everything]
+[auto build test ERROR on 6381a729fa7dda43574d93ab9c61cec516dd885b]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Barry-Song/mm-swap-rename-mm-page_io-c-to-mm-swap_io-c/20260328-170852
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260328075812.11060-3-21cnbao%40gmail.com
-patch subject: [PATCH v2 2/3] mm/swap: use swap_ops to register swap device's methods
-config: um-randconfig-r072-20260329 (https://download.01.org/0day-ci/archive/20260329/202603291919.Y8MwFsok-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-smatch: v0.5.0-9004-gb810ac53
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603291919.Y8MwFsok-lkp@intel.com/reproduce)
+url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20260327-203639
+base:   6381a729fa7dda43574d93ab9c61cec516dd885b
+patch link:    https://lore.kernel.org/r/20260325175453.2523280-4-youngjun.park%40lge.com
+patch subject: [PATCH v5 3/4] mm: memcontrol: add interfaces for swap tier selection
+config: hexagon-randconfig-002-20260329 (https://download.01.org/0day-ci/archive/20260329/202603291945.9q4pyvON-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 054e11d1a17e5ba88bb1a8ef32fad3346e80b186)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603291945.9q4pyvON-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603291919.Y8MwFsok-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603291945.9q4pyvON-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   In file included from include/asm-generic/bug.h:7,
-                    from ./arch/um/include/generated/asm/bug.h:1,
-                    from arch/x86/include/asm/alternative.h:9,
-                    from arch/x86/um/asm/barrier.h:6,
-                    from include/linux/list.h:11,
-                    from include/linux/module.h:12,
-                    from mm/zswap.c:16:
-   mm/zswap.c: In function 'zswap_writeback_entry':
->> mm/zswap.c:1057:26: error: 'sis' undeclared (first use in this function); did you mean 'si'?
-    1057 |         VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
-         |                          ^~~
-   include/linux/once_lite.h:28:41: note: in definition of macro 'DO_ONCE_LITE_IF'
-      28 |                 bool __ret_do_once = !!(condition);                     \
-         |                                         ^~~~~~~~~
-   include/linux/mmdebug.h:123:37: note: in expansion of macro 'WARN_ON_ONCE'
-     123 | #define VM_WARN_ON_ONCE(cond) (void)WARN_ON_ONCE(cond)
-         |                                     ^~~~~~~~~~~~
-   mm/zswap.c:1057:9: note: in expansion of macro 'VM_WARN_ON_ONCE'
-    1057 |         VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
-         |         ^~~~~~~~~~~~~~~
-   mm/zswap.c:1057:26: note: each undeclared identifier is reported only once for each function it appears in
-    1057 |         VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
-         |                          ^~~
-   include/linux/once_lite.h:28:41: note: in definition of macro 'DO_ONCE_LITE_IF'
-      28 |                 bool __ret_do_once = !!(condition);                     \
-         |                                         ^~~~~~~~~
-   include/linux/mmdebug.h:123:37: note: in expansion of macro 'WARN_ON_ONCE'
-     123 | #define VM_WARN_ON_ONCE(cond) (void)WARN_ON_ONCE(cond)
-         |                                     ^~~~~~~~~~~~
-   mm/zswap.c:1057:9: note: in expansion of macro 'VM_WARN_ON_ONCE'
-    1057 |         VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
-         |         ^~~~~~~~~~~~~~~
+   mm/swap_tier.c:141:10: warning: format specifies type 'long' but the argument has type '__ptrdiff_t' (aka 'int') [-Wformat]
+     139 |                 len += sysfs_emit_at(buf, len, "%-16s %-5ld %-11d %-11d\n",
+         |                                                       ~~~~~
+         |                                                       %-5td
+     140 |                                      tier->name,
+     141 |                                      TIER_IDX(tier),
+         |                                      ^~~~~~~~~~~~~~
+   mm/swap_tier.c:33:24: note: expanded from macro 'TIER_IDX'
+      33 | #define TIER_IDX(tier)  ((tier) - swap_tiers)
+         |                         ^~~~~~~~~~~~~~~~~~~~~
+>> mm/swap_tier.c:342:8: error: incomplete definition of type 'struct mem_cgroup'
+     342 |                 child->tier_mask |= mask;
+         |                 ~~~~~^
+   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
+      36 | struct mem_cgroup;
+         |        ^
+   mm/swap_tier.c:343:8: error: incomplete definition of type 'struct mem_cgroup'
+     343 |                 child->tier_effective_mask |= mask;
+         |                 ~~~~~^
+   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
+      36 | struct mem_cgroup;
+         |        ^
+   mm/swap_tier.c:420:20: error: incomplete definition of type 'struct mem_cgroup'
+     420 |                 = parent ? parent->tier_effective_mask : TIER_ALL_MASK;
+         |                            ~~~~~~^
+   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
+      36 | struct mem_cgroup;
+         |        ^
+   mm/swap_tier.c:422:7: error: incomplete definition of type 'struct mem_cgroup'
+     422 |         memcg->tier_effective_mask
+         |         ~~~~~^
+   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
+      36 | struct mem_cgroup;
+         |        ^
+   mm/swap_tier.c:423:27: error: incomplete definition of type 'struct mem_cgroup'
+     423 |                 = effective_mask & memcg->tier_mask;
+         |                                    ~~~~~^
+   include/linux/mm_types.h:36:8: note: forward declaration of 'struct mem_cgroup'
+      36 | struct mem_cgroup;
+         |        ^
+   1 warning and 5 errors generated.
 
 
-vim +1057 mm/zswap.c
+vim +342 mm/swap_tier.c
 
-   971	
-   972	/*********************************
-   973	* writeback code
-   974	**********************************/
-   975	/*
-   976	 * Attempts to free an entry by adding a folio to the swap cache,
-   977	 * decompressing the entry data into the folio, and issuing a
-   978	 * bio write to write the folio back to the swap device.
-   979	 *
-   980	 * This can be thought of as a "resumed writeback" of the folio
-   981	 * to the swap device.  We are basically resuming the same swap
-   982	 * writeback path that was intercepted with the zswap_store()
-   983	 * in the first place.  After the folio has been decompressed into
-   984	 * the swap cache, the compressed version stored by zswap can be
-   985	 * freed.
-   986	 */
-   987	static int zswap_writeback_entry(struct zswap_entry *entry,
-   988					 swp_entry_t swpentry)
-   989	{
-   990		struct xarray *tree;
-   991		pgoff_t offset = swp_offset(swpentry);
-   992		struct folio *folio;
-   993		struct mempolicy *mpol;
-   994		bool folio_was_allocated;
-   995		struct swap_info_struct *si;
-   996		int ret = 0;
-   997	
-   998		/* try to allocate swap cache folio */
-   999		si = get_swap_device(swpentry);
-  1000		if (!si)
-  1001			return -EEXIST;
-  1002	
-  1003		mpol = get_task_policy(current);
-  1004		folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, mpol,
-  1005					       NO_INTERLEAVE_INDEX, &folio_was_allocated);
-  1006		put_swap_device(si);
-  1007		if (!folio)
-  1008			return -ENOMEM;
-  1009	
-  1010		/*
-  1011		 * Found an existing folio, we raced with swapin or concurrent
-  1012		 * shrinker. We generally writeback cold folios from zswap, and
-  1013		 * swapin means the folio just became hot, so skip this folio.
-  1014		 * For unlikely concurrent shrinker case, it will be unlinked
-  1015		 * and freed when invalidated by the concurrent shrinker anyway.
-  1016		 */
-  1017		if (!folio_was_allocated) {
-  1018			ret = -EEXIST;
-  1019			goto out;
-  1020		}
-  1021	
-  1022		/*
-  1023		 * folio is locked, and the swapcache is now secured against
-  1024		 * concurrent swapping to and from the slot, and concurrent
-  1025		 * swapoff so we can safely dereference the zswap tree here.
-  1026		 * Verify that the swap entry hasn't been invalidated and recycled
-  1027		 * behind our backs, to avoid overwriting a new swap folio with
-  1028		 * old compressed data. Only when this is successful can the entry
-  1029		 * be dereferenced.
-  1030		 */
-  1031		tree = swap_zswap_tree(swpentry);
-  1032		if (entry != xa_load(tree, offset)) {
-  1033			ret = -ENOMEM;
-  1034			goto out;
-  1035		}
-  1036	
-  1037		if (!zswap_decompress(entry, folio)) {
-  1038			ret = -EIO;
-  1039			goto out;
-  1040		}
-  1041	
-  1042		xa_erase(tree, offset);
-  1043	
-  1044		count_vm_event(ZSWPWB);
-  1045		if (entry->objcg)
-  1046			count_objcg_events(entry->objcg, ZSWPWB, 1);
-  1047	
-  1048		zswap_entry_free(entry);
-  1049	
-  1050		/* folio is up to date */
-  1051		folio_mark_uptodate(folio);
-  1052	
-  1053		/* move it to the tail of the inactive list after end_writeback */
-  1054		folio_set_reclaim(folio);
-  1055	
-  1056		/* start writeback */
-> 1057		VM_WARN_ON_ONCE(!sis->ops || !sis->ops->write_folio);
-  1058		si->ops->write_folio(si, folio, NULL);
-  1059	
-  1060	out:
-  1061		if (ret && ret != -EEXIST) {
-  1062			swap_cache_del_folio(folio);
-  1063			folio_unlock(folio);
-  1064		}
-  1065		folio_put(folio);
-  1066		return ret;
-  1067	}
-  1068	
+   330	
+   331	/*
+   332	 * When a tier is removed, set its bit in every memcg's tier_mask and
+   333	 * tier_effective_mask. This prevents stale tier indices from being
+   334	 * silently filtered out if the same index is reused later.
+   335	 */
+   336	static void swap_tier_memcg_propagate(int mask)
+   337	{
+   338		struct mem_cgroup *child;
+   339	
+   340		rcu_read_lock();
+   341		for_each_mem_cgroup_tree(child, root_mem_cgroup) {
+ > 342			child->tier_mask |= mask;
+   343			child->tier_effective_mask |= mask;
+   344		}
+   345		rcu_read_unlock();
+   346	}
+   347	
 
 -- 
 0-DAY CI Kernel Test Service
