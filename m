@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E601F3D5FB
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 15:49:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E9E4F3D5FB
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 15:49:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB9AD6B0096; Sun, 29 Mar 2026 11:49:21 -0400 (EDT)
+	id BBE846B0099; Sun, 29 Mar 2026 11:49:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6B026B0098; Sun, 29 Mar 2026 11:49:21 -0400 (EDT)
+	id B6F716B009B; Sun, 29 Mar 2026 11:49:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA7196B0099; Sun, 29 Mar 2026 11:49:21 -0400 (EDT)
+	id AAC4B6B009D; Sun, 29 Mar 2026 11:49:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA13F6B0096
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:49:21 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95AC11A04BD
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:49:21 +0000 (UTC)
-X-FDA: 84599534922.14.1AD9381
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 996F16B0099
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:49:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C730B99E2
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:49:41 +0000 (UTC)
+X-FDA: 84599535762.05.355F48C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EE037140003
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:49:19 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ER4wWjgc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774799360; a=rsa-sha256;
-	cv=none;
-	b=P1RgmmNvBdK1lby+ZVjYXFQHlwr7NNibzTBv4M1zLA+OwyxN1uHKXZ2Ihzp4bfUWo+A9jm
-	gj5hlDt3OGlodWuUjpV5f5vTZirQZ8jKhgFq3IOqmDS1uKeKxBEBPZLGaQ7j95YGWiKj9w
-	zEpCVX5WXCrjcZBb5HZ3cYkNArUpH4E=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ER4wWjgc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 976322000B
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:49:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MRAwzZcD;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774799360;
+	s=arc-20220608; t=1774799379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KN4bleyxxI+iPAAws/OtP95Os5wKC7hbfS0qVA64OpA=;
-	b=E7MhAv6m4NsmQhc19cDlHL1dxg1z4qbDVgjYaNtTSkhMEoC8uN2mz9qKY2+R9xIQHR/9Jp
-	D2j5ttscZihkpPKNfay0IgXTDOr6GP3rNcm4QVNZKMF9KM960Ysp7u4ghWThdw0d7Lxo3/
-	9DpJdNaPUK+bdUnrbHTXWXvvJK2jGWM=
+	bh=mS8WIPOMBQve06QAERNdielHHz71tVzZq+JMzw09EMw=;
+	b=udZ7KUA1TfJUnI2wQFUv3KbPPNoaPFRF34a7Akh58cY3TzPYNCGnrXdsUNq8HXnn9KlsW9
+	/nDTbb5ckDuvCF3aDCErXVopguoCG1gf3QjgdLF3/BeP6JylW5JTtl3ZPKELRWyZl2yJcy
+	GrSOIBkQQ99cZOyynBpdElOtegREDjQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MRAwzZcD;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774799379; a=rsa-sha256;
+	cv=none;
+	b=UKf/oDnIwwZLy41v4/Zcadwc7UcDWG4QbYlzR6N7fsc79/If9X8PcYclVQJb1hmXNTTWX9
+	wDY42cCfJFb+IKl7uG70rF9pqd4jQiN/G2CYUZqDCKVFf0roC+AkbSzkSwl++UWltkN0OY
+	uDWJAD2RYkJVBWZRYCLGQwsTR/E+/1k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10F5F4066C;
-	Sun, 29 Mar 2026 15:49:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871D8C116C6;
-	Sun, 29 Mar 2026 15:49:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C5792440C2;
+	Sun, 29 Mar 2026 15:49:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A184C116C6;
+	Sun, 29 Mar 2026 15:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774799358;
-	bh=6BPfdPDs7/l+xDR+dNdtis6DP9JbpaorqMtRKxNtuM4=;
+	s=k20201202; t=1774799378;
+	bh=ZlPTTq6A7hzTBwvtr1yc4gLjYsyrTWFBrDRXyxAL2rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ER4wWjgcXPZwscYw59MA7J/+z6DhevaDOFlgQJvNWEOta4P1bYnMv80z3lJKkfVcr
-	 zL7OA+tRbt6pZKJI9fOAGLb8RP5vDFBSmqQaFMkaQRvGv/8OMLzLiPzkg5ZI1iZqon
-	 OokRBc4q3wuMS6e9nAyKX5h9wl8y0qXj7y/5/p2Z16+jEoEEROIttf6TNYIWFf1UPI
-	 FcgoFP2iBp9/HmYX3EtGfaVPCGnTYCIMuIjjJ0kXGwagSLmOoSi5cnefcJIUTynL9r
-	 WLTf8aMu9c5QA4l4RjCeZbyLDwdNsjnp9b9IVLVEHCchNBLcTWnLqTdz9eORWFmaAU
-	 VksLT5PqSd6lA==
+	b=MRAwzZcDa4xWkzBPdlwJK55mF2P9NzFn+1tUk258au2qXsvaBVmC/XnB+pF945B07
+	 f4tkwLLa0OJThp56SIgkPhz0rMzz4d5GEksISRcVw9drEVIMfQNo+DI8AOKWln3nSB
+	 QWOAAo2mjg62anKWFvC1V5FryRgRjkpFXdwKdS795yW234UwoBEHHaBR8n7dcflbzE
+	 2ZbxgHyWnuR+tVo7qtwayL1g1ZKdJ6GVKcdPmXLoEQ150pUKPr8y7n8fJz380pZtBq
+	 o3gmRQx35K/LquBsgPJKLnt/NSmpPfIXi0/H1StNtG9XqxVFtRcBVFgZFZFqkbpcTa
+	 EaRoNMRVQrLUQ==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -80,22 +80,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn commit_inputs vs other params race
-Date: Sun, 29 Mar 2026 08:49:16 -0700
-Message-ID: <20260329154917.47598-1-sj@kernel.org>
+Subject: Re: (sashiko review) [PATCH 1/2] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
+Date: Sun, 29 Mar 2026 08:49:36 -0700
+Message-ID: <20260329154937.47706-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260329153052.46657-1-sj@kernel.org>
+In-Reply-To: <20260329153052.46657-2-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EE037140003
-X-Stat-Signature: xeo1sb7a8izpchc1wb4tx7g8n6r68mk6
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774799359-57092
-X-HE-Meta: U2FsdGVkX1+Y+p1Nux9s7LoTQ8i8jDTSBN9nAsBzdnyja5u86Cv6GiN/TZQ+TMzZ3c8Fdxrx4QJqFPIgj5MHsuNf/5ZpHbW7imx8OuD1eS/SF+yt3brNIR0IMjbXvw3xJQtlNtadJweHqrSWv3hjxAaXLWTdnAPhWqVyf66shxLBXegJZF0HkXafYecTN9V0selNE2yDKk5Fe94tkk7tKqSklXDmIuK8fKEqZfXeoVe7EhVng15Z4nrMkjF99R0ZxUTUjRP4xasEidRzV32u7RJIn699MmOSM2kJpc8NJv+xcfn+A5eo3reuQnhbe6i6HEPu+cgKqdgUNWU/dL2/CqbUNjSXEBf81LRTYRywNfWigwGNnpR2kCmn+ztjS6fX92texr2Pz82jVjWFafpPp6xJLrbsm22aECt9MJoU9A7AgstpZ6a9At1aLAHkfEbdNHEAqyZycq6Li1hfwhXHNRSfYKEeAj59rcbk6bqWFmBnqokQYQGhajfuUNW8hkB5DmtwS2zQnbGn4pslxArGBKC5t5NNI/y4OzeACsIC+nxBUVEa+E6Eb73sYVT8C/QeI0yfadsFd+0yFuls/lpLB2DqFLUP7odKa//Vg5E3+4TU2HNZG589/RftMJOmhvqQrXmGVllw7wGOaPlHlsKwObe/HXlmRVSwPC2tGX9XWR0uRJ6pak1GY17ED1oLnglmsX+CWRQKrwabCmbe6S74CJMwobi0An3LwytEppyiIWolihz5YeqhsalvlWZ2tVsE5HvauKMVJXONK+ok0lOgW7KQ1khWT7MXTWJ4YRHJwZbkTpl+UHKixhk6EPwx9z8Fn7DUjNGT2ExJ3PllIrgdyTVeqqgxB/6pH4m46eAaT4Rjl2MpDSbWZyEQ1NUhfpnqmON/jk9qFT+9wHV2vUVrjN/dWB5uVkXvM7/sojPW019qUKoKSyJLDGOLjPn3rRiPy1czAKdTj/RUST6f+GM
- K05qxZEw
- 1P3Ssgr1mLVF0a50FBfZzm5XZt7haaZQ1Kcu0Rov9CNmSZ/vlHP90DY70Gt1SHkwlDiRu2j+HpH2ATs20LjnKNeMFbmua1Yhs3puscGGU8dUIvZlaRFC0KJWyMly91yQI7Ubad2hPZGTdDMlwtjl8LuixkYZ5KHA8OBCYfrq2PhXCsSpPMmospSyCdfnALeJTTmBcSaifaNOMzgP+4rv5y/XhwjLEUgz+C7h2NHQ48qOGsqJtroosZ06JDO1UQcBYpn9K3x/ZhV+7x57yiH7M28QDE31HRflQ+4IB++GCDlOdCtfaVvea/GbZbxPhXSQVqfN9eMOZd9yZo2FwfYfqPsoOfjRPpYSv6+vtzFbJlpFGk8E=
+X-Stat-Signature: axjt45ey1uze3rkpmdyzc9djhm9fbti7
+X-Rspamd-Queue-Id: 976322000B
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774799379-846653
+X-HE-Meta: U2FsdGVkX1+biXWRSOqEbrzZ49LDhZaKFkcSXTE3TJszbBbgcM9mP/D/o+cbYdNm4hH4AnNPXyDMWpLBI69PosORdKCQfnCk64hozJoW/mOINtV99Ri2997MZ+9vIflnAs0XK26koQ2N/HfOYM3/GcNneQvPLpW5VEMQcTd8g5Vrpw27Wc941G9V7eeIaV3gxy5KoxyaQrm5c/ZOhSe/xq7hO18UB5jdoKjL1JVIpWQ0LgX+ZLSeBbtC2GaDFXRmd02FpzwgDTJfMXi/RYRIAVCA4B/zTRvOjrOsHIaA/yATQWo84+TE/cUi4lC0UTrRt1JAABUtpmWfsw7+HTOaZ3CERwdbY8JNhSYOF8xwmzebwjLfq5+jqeHszGGj2pP+LCYmhIG8KQukZ5FCwyQvflpWAr5KYXXt1SS6EfO5Rzvi1HVaejBHKoeUqm0Q3YT70B8dDss0joSPVk9JZ9bkb1Liy+DMltkIGYTrV8kyiHzhyHpM6uKAOUHceA9tisP+g2x6o8W5x6YWrKrhsStSYONp7Xppx8T60hbo3plN8luDfOFkD4oGFXu7aS+2f9PDY8NJTn6D/qhwJ7OJz2z55XqlnSXGWFySdv1CKOlCNRXSK1e8LWUiwfVzY38PgwB4S1Cgah8AYXwBmnlnQhlf8+2JdQzkN+myu/rLeCKyq3TDZD3kqZ081YufHPqzadOodKUNzJtJEPxxlshXpOhMqIe4TZL+BzMhV587PD9ewF+xQ111bydK7gFMa2Bhr00uuCzRll0ignEm5EFPxXTo73ERIUZ0lc2RkqPKfpSMI+qh734kdD+i6wtm9QbCBeMy9AxTlztIcQzdeOH1gO/eK24/8Qv8Ojn/1CKvPkUxjFXPJGIYOsbieRyuBlscskbdrd/q3FHbYIxr7xvYMwkXNMLImM4Cp7uFxssqEiYf3QuRfyX23qFu683FytA/d90WNZf3nIGD2D2oDynftsr
+ O305/iNy
+ il5rILdbpAGoTSCBoHhPVoyT4PFnDw0uMlamiE4+xzE6/nXTT2UDU3oJki9ZY1r5oewSg1rkG81aTSqyur/2eLLXKgKL677HBKCAXymZbUUTbh0ht9Tt5vk2nh5W1I19b2XZ/iqEvIO2aW7h9yB7C9hknmqUKTKkBTAdhtoqovwC38qQzZIoThKwfsjwKS741LHC67a/37F15qATUp6DvglE8GjVmbfVes3vo2tenkn+SnYjH0MNboRxZzuWkPmRC9TxaklnIUnrXVyPe9cZDpFWJbmfAAPUPFEkhL/HYAO6QpF4pUWjSRdjqSpL7PAlVqC0AEkbOPfOg9VlJhrmVR2x8Nnm+RyW3yQTDsdhwIbcJVYZ1rIUvCX74KIx8WQK5EIK5ItYOYCbTO/vcMtWTxKn0LaSQwub/JZpcLC6l05Q0pNw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,22 +103,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding sashiko.dev review status for this thread.
+Forwarding Sashiko review for doing discussions via mails.
 
-# review url: https://sashiko.dev/#/patchset/20260329153052.46657-1-sj@kernel.org
+# review url: https://sashiko.dev/#/patchset/20260329153052.46657-2-sj@kernel.org
+# start of sashiko.dev inline review
+commit 140a828ed89f6ed59d7b68f9bb0f1ec9b051eec7
+Author: SeongJae Park <sj@kernel.org>
 
-- [PATCH 1/2] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
-  - status: Reviewed
-  - review: ISSUES MAY FOUND
-- [PATCH 2/2] Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
-  - status: Reviewed
-  - review: ISSUES MAY FOUND
+Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
 
+This commit adds documentation warning users not to update DAMON reclaim
+module parameters while a commit_inputs request is in progress. It notes
+that doing so can cause undefined behavior due to races with the kdamond
+thread reading those parameters.
+
+Link: https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org
+
+> diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+> index 47854c461706..d7a0225b4950 100644
+> --- a/Documentation/admin-guide/mm/damon/reclaim.rst
+> +++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+[ ... ]
+> @@ -71,6 +71,10 @@ of parametrs except ``enabled`` again.  Once the re-reading is done, this
+>  parameter is set as ``N``.  If invalid parameters are found while the
+>  re-reading, DAMON_RECLAIM will be disabled.
+>  
+> +Once ``Y`` is written to this parameter, the user must not write to any
+> +parameters until reading ``commit_inputs`` again returns ``N``.  If users
+> +violate this rule, the kernel may exhibit undefined behavior.
+
+Is it acceptable to rely on documentation to prevent undefined behavior
+triggered by userspace?
+
+If users write to sysfs parameters concurrently, can it still crash the
+kernel? For example, in damon_reclaim_apply_parameters(), the code verifies
+if (!damon_reclaim_mon_attrs.aggr_interval) to prevent division by zero. If
+a user concurrently writes 0 to the parameter via sysfs immediately after
+this check but before damon_reclaim_new_scheme() executes, wouldn't the
+subsequent .min_age_region = min_age / damon_reclaim_mon_attrs.aggr_interval
+calculation result in a divide-by-zero kernel panic?
+
+Should this race be fixed in the code using synchronization primitives
+rather than adding a documentation warning?
+
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260329153052.46657-2-sj@kernel.org
+#
 # hkml [1] generated a draft of this mail.  It can be regenerated
 # using below command:
 #
-#     hkml patch sashiko_dev --thread_status --for_forwarding \
-#             20260329153052.46657-1-sj@kernel.org
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260329153052.46657-2-sj@kernel.org
 #
 # [1] https://github.com/sjp38/hackermail
 
