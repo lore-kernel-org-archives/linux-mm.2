@@ -4,86 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A0510D1495
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 03:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 906B0F3D5E9
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 04:08:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C61266B008C; Sat, 28 Mar 2026 23:20:59 -0400 (EDT)
+	id B49416B008C; Sun, 29 Mar 2026 00:08:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C38A46B0095; Sat, 28 Mar 2026 23:20:59 -0400 (EDT)
+	id B20CB6B0095; Sun, 29 Mar 2026 00:08:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B75036B0096; Sat, 28 Mar 2026 23:20:59 -0400 (EDT)
+	id A37A06B0096; Sun, 29 Mar 2026 00:08:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A6B4A6B008C
-	for <linux-mm@kvack.org>; Sat, 28 Mar 2026 23:20:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC5811A035A
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 03:20:58 +0000 (UTC)
-X-FDA: 84597648996.08.871D175
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5395714000E
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 03:20:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOrl0YH9;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9091A6B008C
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 00:08:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32C4F140399
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 04:08:35 +0000 (UTC)
+X-FDA: 84597768990.29.E22D237
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 14173140002
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 04:08:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=FHXsCm2y;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of r@hev.cc designates 209.85.214.174 as permitted sender) smtp.mailfrom=r@hev.cc
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774757313; a=rsa-sha256;
+	cv=none;
+	b=OavmsfDK6+hTt/YdSZf0WOfpc3I9dREDAaPnYNaGVp722pA/ofUQ/yq72vPznn6O/SWEXi
+	5pebF+rmaHYVMA1A6NzDZ3q94iHesS/XlaphbzIQl13BsxoNRpa0akeVRyB3melXKvRBm0
+	g7VlgBuAGZXuHfu5/piWCyy9go6NeB8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=FHXsCm2y;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of r@hev.cc designates 209.85.214.174 as permitted sender) smtp.mailfrom=r@hev.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774754457;
+	s=arc-20220608; t=1774757313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QJjUinnPFfXol1bAHXd8odIBgjAlNsUj5csXY9CXKAk=;
-	b=MQXNiGaSJBJ58pNQSj6Tu4jyo7pL8qJZe/dUxbErg1dSj3N7qngnkZHogmha+fuakBblk7
-	6oa0Mdw7IHUVtzGtDOIGWCPkkLU8Yiq285umIurxP/bAEC2xlNAOM9wH6mTBqChRnhI4w2
-	ywjOotj+WlA9fBpgDo2Js8i4yqfX8B8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774754457; a=rsa-sha256;
-	cv=none;
-	b=s2lIDF4vsKeJ27jTwcpFTjO2Rr4i5gTvPoujuFCAKlPNPsNFP8JR7aER6/bWk7HFVMwaA4
-	D+/aqCympeINWT+EpPw4QW51Vzlbf6Niruh1reNMzbH1d7IV5LhXdzpOxauTouEES95yBA
-	91ge4pALogZiFZPWQr3nYven3WKbt4w=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOrl0YH9;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 39B5E40946;
-	Sun, 29 Mar 2026 03:20:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0284C116C6;
-	Sun, 29 Mar 2026 03:20:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774754456;
-	bh=piAqIhYDF/cuSRB4j6MpAtXLnQgECdf1z6Mkz3i4rhQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOrl0YH99aD5bDVnGy2oGyWYyNFxNwvun/2UQfVFTfNc3d9GiKPzYJWdQv8B0wIHC
-	 uyj82oMyrNQumci0xX/dDa2J25cj94XJw0yfr9qlaKRqwzNgR8uz0fU7xcFEIF6mzs
-	 UyUmGwkmLMkjUI1GXi/uEHxFMDdI8fyoH+6LOM/lQ6+jeuWu4GZskXYb5z2xpQYmzF
-	 lPeUPkFU9ZoCSDzi0h4j9VRHfQdXUy3GTN8kB5qDipStfEjxBjM6e2g+XCMRp7S6l4
-	 wz81eZ/JNH57rzZ5onH/z3jbSjIiSfKA/DMjUsQP6GNLF2HCTCgcKKqglYF3AEwtVR
-	 hQ6AwOW0SY1nw==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
-Date: Sat, 28 Mar 2026 20:20:54 -0700
-Message-ID: <20260329032054.2443-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260328184319.13176-1-aethernet65535@gmail.com>
-References: 
+	bh=fcMba91l4VHF9piAdu7w9FJqozouFzyx+yXZRyx5X4k=;
+	b=pBBAz4kRYOBedCeKx2aiPYt42yEcrY/rG7iTmDeTZqU3LbKmbh+8CdtkXF7fGgOB30UKmK
+	6dtvuJbn3+gQddM0ENe/fuGimY2whzhbEOB7EgTrdcReJ3tMTviBYHYWw3G6hI01ApXuJ5
+	kuUSDizTTnNPKPwonBtnDMNMRafA0iA=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b2503753efso174655ad.0
+        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 21:08:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1774757312; x=1775362112; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fcMba91l4VHF9piAdu7w9FJqozouFzyx+yXZRyx5X4k=;
+        b=FHXsCm2yLXKuXTMVHjt7Shdxtt2ZOgqDdEgx3BUOBfDjBncg7F56B5BrxMYknSz8iD
+         4mquT+g4qzX3HToUE7+K16YLJQIz5qzeTrPoaZEIJwLHg87yok9wRjGUqj6UV7phqkKW
+         aoYeZLkb5kTOXh7W6A2JZHTSHuhJtLemNIPO8hF8U6gAVhy7H12tWmmuA5EIVpb8Ni08
+         Une/bArN2YwxDxK9bcA+7twlVzymc3KWZ1DCq3DelMDyzMnbx8Qq+utrMkxRkk47fLjN
+         YVYUDxsFO79bM4NRSFwDWuxK35HC8NH1R/9HKqaxkkE4yzTwjT3RcERqjHF4bnfvjEtN
+         QOUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774757312; x=1775362112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fcMba91l4VHF9piAdu7w9FJqozouFzyx+yXZRyx5X4k=;
+        b=GUuPkSbPLUKY5Pe0EJlajN3a5x/poYOyEsWKV3/oj/95UTc76nEETntY+dkpst+IjM
+         f4ezqgoS+o4o2oHEdDk8ANYW49+s+3m+GDQmWX7+DQ4sPstWt/j18GcYfoambMrBM06u
+         cI2g5hMQiwfnqLV7Oo+56jVT9IO1MoVqHWLfhRvN6118yd5tp793gbfGORidOYCy6OhJ
+         2DqnAwSIPsrh1jEElx1TYgpkyBBcYKLmQ+bP3KL0TcKZWE8Rhlhkr6EsRJIyngFhfV12
+         HPfhCt7u5i6jkVmscFCyVQHDh4JGTIHlE3XTr7+3rvXsEnvl85Q/QkOZpQoTJGLj+NQG
+         iucg==
+X-Forwarded-Encrypted: i=1; AJvYcCXApThVyjC+VDenb5JjG4gqRSYnh+0teOhTbiMcNZKBdrfjsazT+HlL6hiaFAH7acSHTk4MfmHNdg==@kvack.org
+X-Gm-Message-State: AOJu0YyXwyP0HastifjUsCxqw8/6zb3Yzemz3Xc4SOHvWNZhMMTUDRnY
+	9PRoN43IV6pfRhNy/reKgE1tun05XsbxMub7hqGGdj39q++ob/vahPOoTyJefUl1HCg=
+X-Gm-Gg: ATEYQzwnN4D9B/3Ob3XsAFVdZWmOkQSi2UTzbAYj5a/5wG/Lvfb9IsnC8v06BhNrmXm
+	lx+CxAN++GI1sVzyTeAL1dTr9YhGc9JMdctTGeX7ZzrUr7Rq2eZhzSUJKK6zas2LgBVWetrbhT0
+	jsnd/DuBpOqGZUYieH70efkmkAniGUDroB4f9lBKOtELVn6xpjFNuCG8lt62EsQSLulj5ogqFAy
+	Vz2UjfsxS2b2wEV2Os6aXlXEouqaqEHtGacws3j27fqYeNpG/NyLOXgM2hLa/85fcXhMrsmQzeI
+	ME6sLAU9NooU5x3T78BS9qj6/7EL7YlA4kG1wyMNMGB3TEE5YJXMc6MHQ3F4WyOunY4FvmRUgpv
+	RUbky7cA/ni6ThTlBP5nLcW07obNeyvNtpmJF/ngx2bxBsNw9xc7+OlOEC8Jhpd736Vy0LVmBMz
+	Sp
+X-Received: by 2002:a17:902:ced0:b0:2b0:c2d9:270a with SMTP id d9443c01a7336-2b0cdcf0019mr88952725ad.42.1774757311794;
+        Sat, 28 Mar 2026 21:08:31 -0700 (PDT)
+Received: from gpc ([2400:8902:e002:ded5:78c1:8178:95c1:6ca3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24b3a82f8sm11038575ad.63.2026.03.28.21.08.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Mar 2026 21:08:31 -0700 (PDT)
+From: WANG Rui <r@hev.cc>
+To: ziy@nvidia.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	brauner@kernel.org,
+	clm@fb.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	dsterba@suse.com,
+	jack@suse.cz,
+	lance.yang@linux.dev,
+	linux-btrfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	npache@redhat.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shuah@kernel.org,
+	songliubraving@fb.com,
+	surenb@google.com,
+	vbabka@kernel.org,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org,
+	WANG Rui <r@hev.cc>
+Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS from file_thp_enabled()
+Date: Sun, 29 Mar 2026 12:07:41 +0800
+Message-ID: <20260329040742.17269-1-r@hev.cc>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <52CACB9A-A782-4D11-8B6F-66DA8D345C78@nvidia.com>
+References: <52CACB9A-A782-4D11-8B6F-66DA8D345C78@nvidia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ashhx8nruek5dbzbna1eq5dfaei7bj1s
-X-Rspamd-Queue-Id: 5395714000E
+X-Stat-Signature: 64ud6zd9qrwfzbnz3aoiz39f9gmg4ro3
+X-Rspamd-Queue-Id: 14173140002
 X-Rspam-User: 
-X-HE-Tag: 1774754457-456703
-X-HE-Meta: U2FsdGVkX19XtWR46Q2j43YV9kcrU19Aa34/0HFETdKBQe1Ucue0rWwZpyyhrS9KVLpWGNsUlHjwT10axWba6ayXnrZMOnl2p2+Dax7/UMfegYhM7GS5NgeNLZjd4nBpFZKhfhdUOj6ekVHM8hQ6g8nI02gAnMQzN72oMDk5rg1csmU1W5egQqjmhRe7dCgI3nwmwcy+OuGzegiNwXjlfnXAXpOORoRFMzTGZeOIxO+IskM1sRrqQpHA0Gb7y3mqexkZxX/kLrqS0J7M4miAGhPhHn+ZbYEdzQnMSeun2PrC0oERZBqVZ4OpzE3ssNRfbfVdgUceDwY4ODrOt+YhMjFjffztdzEM3zDl/kKlgvicJgLprjdXh5aZdK9rs7VBIhJw3xWXoHys9ovwl/LC8MKbuik8jirWL85+YuNRdFVcVSpbl/siMwOrUeZbOmX7v6xQcDC8x2TvudwkzTFUh7YrHe1Fugomx40F/M8uI7lr5/6TUsI/+tUiOeGdqEuHqDOyfZWW22+zK+m6U/msQft7EWQ9QTGD8dGKNUWG3K4EbHusIVNBzjtaS1nr3ogjdorAxdTaCFD8607S3G9CKzthuiphf6jp9r5TOfdSuQ7rh6xDKrrC6hQwSsEb2JqSPV1ijISIKJ2zm0d4BxrKhN7C+swl/HNH4t7ISOU34Z7zKZVCeYPF35+Fx/enJEKIvfzJSY73W52EVq22WWwZM1ngBlRL7iXVG5Lr/aGiZuPf96I4poFFimirLAp0rYyT64BPq51EtjwvIiHICY95kiGpevUAaU2fQ50VsVOyw0+QCD0nQLsfnukUerBkNHGDvuefMSeI2vi8uJYk770ZPmzEL6BPKWzVmMI6X2dlqjtNjy9f/7ohb0gkmVuP7w3fzry/Icw6Kxq6kFaa9JjSb31XzQxrJqtuK6sMzusuId8mLujZOiuJZWduEM48ttZhfg0oiIr4tJW5pcA1V+o
- ulg/jbi6
- PWPS8uRjkfPHrRNVifNi9Ny8DJ2sHMOo3SexP39H1f1vPAzEXHNtdKn+GiqGYoQle1JnwwZ5gkZFUyNruaYK/hvBiDZ1VflKr35mYFwwjTQVP4pb4XWRbGIfb7piapL5Fxmf23viPQaK8KYOGueLrjZsd4yDtHT74GA5rRuhLV9JeRgw1Rszf8TdpVvc1IQ5NiNJR3UR+G70PDqaBkFfJkS1JGWWGSBtfrhDfYQxyct/fx748UsUVczldLTTaNpmiQV14n7fYGpM1C7EbwZ1m9lLqsQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774757312-204042
+X-HE-Meta: U2FsdGVkX18xLMK/kzN2CbK2V9MZLBU6zzYokD1INvWGRPBxmNvTEnpuiypqMoeprFFlrnaKuu+h5mvX1eQnMg6pS+gzD/qzWOSXkdsOC/SBwS+PtwDPmSgEIKdEQRDFbDiD5x8S8xDheqddAXiXfSBSDtMuA/X/cBqM2KxqHirW5zS1UEDlfc6dWjk/XWwQkreijv+QRnj4qfIeEV3UODqGdTlwLlbZiXJbxsLijTQye63L4Q5jMaJ8Vbzp70aACLs7oBCCV/DUSVST5/GWXJ7sfHBJPLqBpFC2n2Q5zpmDGteIFgFO4uREpNXmgHDlfypOeHmqdAkn/LTg56EvBu76FCIz1PrAz7gXiALT1r/60gC048TyiyQZw6UjnsHf/dvTzQYlk7CQLsb6Fj11rjT1auoEN2JfJ9N476IP4ou/eLZVkhYae/w2sffXWys0hczdezNu4GdVJ7PN8JqurHGIqBhMSUzRo9Jd0kc1lziQrpriPohz1Aje//TOUYDVWCNfqSLOUf3uhUIFwHYAx+C5AfJPUinlk1cZA7As0nwsj5HZpLIlL8Ah0FmoD6TkZTSbA6Z+YkXn6pRZwR8wmElLvJvGCOMD36GDM1LFyU9s3x2HlgLNN47KRpPi4vPEEuQwRWNvIjbg2dJkMubxdBnMYgYqB00rUpgsv4qxLwwS9wdPmjtkIuHxEn+Usf2gezJ3MRxKVKUnWJJO+060hI6wmfFB2uIT1PhN5Jj1HXn8sdRDrY86mlrKebuC1v7zQ5eSjC5iMXizXUos35pGQXf8zgx8r7il/1ult0/8OV7tsItP6VDbRvyehzqX6BKwmYM0TpbBpFlVaLu4mqXzj29sxO+eDP+uW8xCBqh4KHokeEHDcRZW07bRPTrtoBaM4Jlzr9nYnukifU5ecH+BI1tNt+qWJejMENDN9ly6GTv0KLcTV0kfRUrP3x+gLt7OeOdxX3E2pNHqh8OL2yc
+ krY1QhzS
+ YIewwrT8iwyw9Gzh8rjh5XR1QbsnjYNjbbG2DeLO/J0laTMsACuN2LNCjcP5d6FDuCqYDD3POkqWU4vxq/9qurqlmbEH4lRd4RL3/QgVDt/tFTbviysjryFNK5TNrbVbc/9OHe2Kl2MP/Y6MBlpw2qR8dzNqM/xFapAyrGXseB2b/c4xU1pLURivgCw9XBR3w0vMOCZLal0bCttX1ut2dTLlOBU4c6xXSooWhyFkUbGFEO8CYWjT18S+d6iAnThNfitygtz+Ch3VdrLLTUF+OVctogEiL0RmlSMsc6o4mi0sqU8XIc4iH0ixYkihQvcNuIoSLj9Y+clJ0G6+G6bCdYLpFMesOYW9TY2ByKclqr5xHWBhm/GSaNG7X95/Qlh+hE786Ln+k3XXyedB2GMPyFZiejxz01QZlq75bBGNQn5F1zqLaEYUMTNRYNZqTiYpeQcA1YfmNJk1aIPo65t+9Zvid3ddPd90106mHhI7PeyF0DrHjU8H6kN0OXoMARsRiRfiWDt0eJnMjG2Dq8OFfeuaSKUZB9Few3gGc9lypwLoEz2R+jJzbvGz4qDsndE9ZlDlXCnOnvW2/aeeO9DscmiiHa6cmbOgwdr8uHMrxnxZQgPmRsGD5gJbEO5/wPdomEaKTlWAt9Xec+hZTy1yGVgYFqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,59 +145,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 29 Mar 2026 02:43:19 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+Hi Zi,
 
-> > Liew, I suggeted two options before.  But you are skipping providing your
-> > opinion to those, and adding yet more options.  That makes me difficult to
-> > follow the conversation.  Could you please answer to my suggestions and make a
-> > consensus about those, first?
-> 
-> Apologize if my previous email was unclear. Let me directly address your
-> two suggestion.
-> 
-> 1. DAMON_SYSFS Type [1]:
->    I fully agree with this. Centralizing the validation in
->    damon_commit_ctx() is the right approach to avoid "whack-a-mole"
->    problem. This is exactly what I am proposing.
+>> Now without READ_ONLY_THP_FOR_FS you're going to:
+>>
+>>                        |    PF     | MADV_COLLAPSE | khugepaged |
+>> 		       |-----------|---------------|------------|
+>>  large folio fs        |     ✓     |       x       |      x     |
+>>  large folio + r/o     |     ✓     |       ✓       |      ✓     |
+>>
+>> And intentionally leaving behind the 'not large folio fs, r/o' case because
+>> those file systems need to implement large folio support.
+>>
+>> I guess we'll regress those users but we don't care?
+>
+> Yes. This also motivates FSes without large folio support to add large folio
+> support instead of relying on READ_ONLY_THP_FOR_FS hack.
 
-Thank you for clarifying this.  Thanks to that I can show where you are coming
-from.  You are misunderstanding what I'm suggesting.  I should have explained
-it in more detail.  With this option, I'm not suggesting to update
-damon_copmmit_ctx() but the callers, in a way similar to that for DAMON_SYSFS.
+Interesting, thanks for making this feature unconditional.
 
-> 
-> 2. Adding a simple check on existing validation logic (in callers?) [2]:
->    While this is simpler to implement, I prefer avoiding it for the
->    "whack-a-mole".
+From my experiments, this is going to be a performance regression.
 
-I suggested option 1 as a way to avoid "whack-a-mole".  I didn't suggest
-updting damon_commit_ctx() as the way.
+Before this patch, even when the filesystem (e.g. btrfs without experimental)
+didn't support large folios, READ_ONLY_THP_FOR_FS still allowed read-only
+file-backed code segments to be collapsed into huge page mappings via khugepaged.
 
-But, the given problem is clear and local.  Validation of addr_unit in
-DAMON_RECLAIM and DAMON_LRU_SORT.  There is no problem in DAMON_SYSFS.  So I'd
-prefer simpler appraoch on local callers that having problem.
+After this patch, FilePmdMapped will always be 0 unless the filesystem supports
+large folios up to PMD order, and it doesn't look like that support will arrive
+anytime soon [1].
 
-In future, we can make centuralized appraoch, in a way somewhat similar to what
-DAMON_SYSFS is doing.  But that's somewhat we can think in future.  For a given
-problem, let's fix it first.
+Is there a reason we can't keep this hack while continuing to push filesystems
+toward proper large folio support?
 
-> 
-> So, to clarify, I choose your first option (centralized check), and I
-> believe my "Option 2" is the simple way to implement it.
-> 
-> Does ths align with your expectation? If so, I will proceed with this
-> approach.
+I'm currently working on making the ELF loader more THP-friendly by adjusting
+the virtual address alignment of read-only code segments [2]. The data shows a
+noticeable drop in iTLB misses, especially for programs whose text size is just
+slightly larger than PMD_SIZE. That size profile is actually quite common for
+real-world binaries when using 2M huge pages. This optimization relies on
+READ_ONLY_THP_FOR_FS. If the availability of huge page mappings for code segments
+ends up depending on filesystem support, it will be much harder to take advantage
+of this in practice. [3]
 
-So, no, I think we were misunderstanding each other, and I think I understand
-you more now, thanks to your clarification.  Also, please don't hesitate at
-asking more questions to me if any of my suggestion is unclear.
-
-In short, for this given specific issue, I'd prefer the option 2.  Is this
-clear?
-
+[1] https://lore.kernel.org/linux-fsdevel/ab2IIwKzmK9qwIlZ@casper.infradead.org/
+[2] https://lore.kernel.org/linux-fsdevel/20260313005211.882831-1-r@hev.cc/
+[3] https://lore.kernel.org/linux-fsdevel/20260320160519.80962-1-r@hev.cc/
 
 Thanks,
-SJ
-
-[...]
+Rui
 
