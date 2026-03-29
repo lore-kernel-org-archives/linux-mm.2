@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4965EF3D605
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 14:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7E47F3D5FB
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 14:53:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B3536B0095; Sun, 29 Mar 2026 10:32:06 -0400 (EDT)
+	id CF13E6B0092; Sun, 29 Mar 2026 10:53:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88B046B0096; Sun, 29 Mar 2026 10:32:06 -0400 (EDT)
+	id C7AAC6B0095; Sun, 29 Mar 2026 10:53:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C8486B0098; Sun, 29 Mar 2026 10:32:06 -0400 (EDT)
+	id B6A3D6B0096; Sun, 29 Mar 2026 10:53:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C2E56B0095
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 10:32:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE09D140452
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 14:32:05 +0000 (UTC)
-X-FDA: 84599340210.02.36531D3
+	by kanga.kvack.org (Postfix) with ESMTP id A1E1A6B0092
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 10:53:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 726031B7D08
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 14:53:23 +0000 (UTC)
+X-FDA: 84599393886.12.B837318
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1D9F340011
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 14:32:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJATHEwg;
-	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id DA5E3C0004
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 14:53:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jui8O7Fg;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774796001; a=rsa-sha256;
+	cv=none;
+	b=1LVNaDttFnQzUsuL6g3+TCTF5L3AGh+3xOtrekx5+iXsy1Ro2xxXZVPomjB7qMPNV9Ww2T
+	taKZd/qMeTHrXNBbTnm5ysgOCQDRtZtfTFEBR4tVMpvV7fko1x2mobCTfU39eG8gJDTdDI
+	kkm+YbBNnm4sPrUDAGdFc7em4/UOyDw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774794724;
+	s=arc-20220608; t=1774796001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FncFNKz/F77bA6sXfCwdnVXgXnlVRG9GpjLF3kHXmq0=;
-	b=QkD7ZVTZ0XORzFcI8AImFcj8VjPFrJgqlIG5JBZBNUG5z5hJLSgTqgIDhczkj5SJL4li2K
-	HY0YBhN4OCMqD4SE2k48En0NjiAlGjRMxT+CkTummiyNKhm/RZoMvT9GW+5eAEMkWiG13A
-	P2Z2oh3P6zmzEhDGuPBeV+vDhW7PCQ0=
+	bh=FyBMEBVF4VO18eKUw3tH04vxhl2TguWEgEoBE6E7omk=;
+	b=ltDuvo0MxHzmmh/ZIr3+XR05USDGCZwfRtGs+dK6CMWLVEDF03HYNyggGwUzVx9DxsVA1A
+	ItdvtJ8995TGSVkkjTBGlISBYkXjEhR664cOwZHidAVXYHG7/8Of80H0U526MiqdXZZWRl
+	D0WmoRMHo9WrzVee+K39ycRls91VxQY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJATHEwg;
-	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jui8O7Fg;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774794724; a=rsa-sha256;
-	cv=none;
-	b=6p3zvVmKkDPsQjG2WF9c18UjRfTfpHl6yndJMB0NMDVqMbhV5/AWWTa70p39WvUuobLYvw
-	XRWBZBOs1AnSptK29NVQfHByFPmFUHV0Tpzj7jxv9cUBUONdwExcSvQ303SfOL0LVdueDH
-	vMy7mH874QW5mOt6P2j5ItdK0DLiR6c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 97EBB60103
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 14:32:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F43C2BCB4
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 14:32:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4BE9B600AC;
+	Sun, 29 Mar 2026 14:53:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6BEC116C6;
+	Sun, 29 Mar 2026 14:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774794722;
-	bh=B9jNQafOlH9J/Fp4ixtOwYT5niGHh6nII/fzFlJbeEw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mJATHEwgKaADqZX4n4+KW1J4vF5AaIxeMj5SqjKRsRn0T4QsjDv/IBGRLsyDvKYN9
-	 Mz3vdhqRnpQcMEgKgFeren7lJRpfx2Q+ROik+CreWD5waD7LMw9fYJxDR13aQYOY2c
-	 v3zGdVf1cgP1jtgnq0AxYDJon1J9mYwgceoG711OlYIuxEU4J5S3sxEdMaFJUDSPtX
-	 nv+ZAIzn7TyuOZq8MPzNWBgcLScbrMMCQdN3T7oN99CYQT9iZe8XbEbYPE3RDsrTD4
-	 Dv5meadncB1O5u1MwC4wxizp7Dk1LhdrierQObnCeck6t8+ZXTazQYs3obzHWsSlwf
-	 ZRV49nxqAQLtg==
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-6501c4857b2so26577d50.3
-        for <linux-mm@kvack.org>; Sun, 29 Mar 2026 07:32:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUXzrkHvNbrkKK+wUaGvNTyVDPyKAGwR1CQ/0kNmJHVqftS0O9anWEqVbmkhqxwqzItPaYcz6j+bg==@kvack.org
-X-Gm-Message-State: AOJu0Yx6UVVMp3vR8H7gqkQRBibQqC1lRprfaqk4VOYK6sIiCtqxLK6X
-	HSOLXKhbBQh9buo88oVyxa2KCcRqkmi3wyEi7v4/CYnlfSHdjjytmB9PB/BTCLOGWv7kiuqFY0c
-	zgq42MAcLqVabTdpx4Fb9EAVjZuoc9FZ0Hz1yOQtcSQ==
-X-Received: by 2002:a05:690e:16a1:b0:64e:8cde:814d with SMTP id
- 956f58d0204a3-64ff71edc43mr9846922d50.17.1774794721451; Sun, 29 Mar 2026
- 07:32:01 -0700 (PDT)
+	s=k20201202; t=1774796001;
+	bh=XKaT9syjyaCnbMPh9xU8yW2PFKGdVEwY+cGqHnzDB+o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jui8O7FgvptlbXRZq73j9aMgokf476nbtGQfAayqrFGPM5M1rqd3PpYfp9BAMi6/C
+	 fL1eqbXYDifbXJ8uOXBFoP/6CRY0JlTE7WsCOXYv8Ql9LuLfyErLa7+KlLM2FglaGU
+	 qbE5Etji81WZiWyePGrLmECgunM4syabk01Xu1dgjjtuUczAsxEZBM5tqWAQc7x9Ag
+	 IaKBp8zyGiEw04kTG2hbFf5L5x/F5oyVogAqGad+/+NX1nwsqKQDDM5nPSRUd2vcIj
+	 4zjY/4Nq2TyBDizlHXcJYuS38zhF0RVFNBAb/WiGcUeD58vRzBqwh8uFdWKGlhl8Y5
+	 e/uWoPCGQRWBg==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/damon: add synchronous commit for commit_inputs
+Date: Sun, 29 Mar 2026 07:53:18 -0700
+Message-ID: <20260329145319.47226-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260329095602.3471-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20260328075812.11060-1-21cnbao@gmail.com> <20260328075812.11060-4-21cnbao@gmail.com>
-In-Reply-To: <20260328075812.11060-4-21cnbao@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 29 Mar 2026 07:31:50 -0700
-X-Gmail-Original-Message-ID: <CACePvbW7eHoSfuezWrMyL-cxCN7Yp-dAOgL-=pf1wksX2HqJqA@mail.gmail.com>
-X-Gm-Features: AQROBzAlXWjS1Dh_SYJcGULTUB_PKufe_LIrKoJuO6UvPCYslbFpMkx8P35Udoo
-Message-ID: <CACePvbW7eHoSfuezWrMyL-cxCN7Yp-dAOgL-=pf1wksX2HqJqA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, bhe@redhat.com, 
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1D9F340011
-X-Stat-Signature: 8moqonfprebndakbhea5egxjstcbjbzd
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774794723-835704
-X-HE-Meta: U2FsdGVkX18y6iXU1zjgFksnNbjDwjKHkVRr1FSsPSpR0iMhUqnstQFjam8lxoBl7lDfus1YP6uD/rpsOcmutF2caqQD1gEQvFaoXIAJRSy8HAQPtLx/eOpcB+xnRYbut3Ko54HEkDYDsTGIIjRKdJif+8FiQ82i1ZZRL1kH/SLBn8sY0h1p045mUse20iZJjJF41uqk5F831psJILojDL24rpl8H6D657bf4BlXnOivM3zCGsaRW5qHsW7Fhva+HHIegpG7hVgKmbH9RoyQ7eNVhvDRPmu9hXDsRJBusQUA9y+9g6Q+HVcgXkKR454bOh5djzXk8FmJehPCtEIh6PSvoKSVHcmswHeDYE2NhqsGYxL8Oxc4XCQe2hH/J120QP6DcVR7OLrHEaffWykB4wckBe4D54qWzCxbF/zt4O59TXd3x55QJN83cOpJj45oOl9xma77hUrwPmUn23r9TvIH7xgy0vo6ho8R688aM6S178bGnkqkhL5Qqkv3ibgALbaueSZwq/EJqLUnqlaERhCIz7gSTCb79MeGaPOvUv6RdE7hyI7SSbKI78V6hQe8nTcoThoOIf8rgVCdnEbWppkuY9VOXTIO04uwGsstuCBiNDr7EsX6C47qHMrTsermOkT4tna96bJgZO6Q0F4/xSV+grWZN+ofTbKzVlYqQDHH9jp+T1UhME/OBEngvAG0xF8mCv3KZo5wxlLz7xMag3vV7GzatBh3+iUoTDSd9LN0I5OG9sBaUXRY5RoP4NvnNkzXCFsL2JOxhefNDu6LOLspBIeGMUkjg94ivhkBCplvltA8PIeK3EuVmOFHnuHkah5PUyq4Uun7m0Fhb/Qgvn/BuKDICsvlTC7IeOj7NxyV7qAzQgat0ARX2vvJwYouPIQgcEmml7dYUmT0mCBCRWgS5JDL8eYeC3cLJX7i46KCV0OTs1R97p2chGFSOERfr0EaMcHe3VDDIWcCs79
- OrECBKvN
- l8pU3F6QtblSJK/ANQr/Q2aPN/PcjGEk7lBtGVF4YzNojCgGgDUYX747LoRu0KkGsBuB0Nlv9OL0U6uG9wVkmVNxrgh79mZAF+QSQf80tvwjkdW2r9WTFV8EG7MZapiXi2rdPrJ28Fa+OB31VA2v1ILGJPXjrO3qou7OWFSP1xd+moQr7bI7G9IMQQdMpjX19+rstf6uIIu/ifihmUtc/Q9bNCaDyxirFB44jk8lLaRbgxwTqvcIGWKJIR88UGUk+1J9HtfdJF2WdLeVisnffo6G1bqc7AH8qmZ4pB+3U1+olVSkGJis6jQsW9Z49bpd5GWn75vo51iIouSYaX86RoJdqLnoJyb/0Yk9QdjkFERKvn+TFxwtSKsM7vqaYqGNocw95Oeeu6/OWlWoOKVcrtygpIw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DA5E3C0004
+X-Stat-Signature: 9j3o1dkd51tt4wshs69hxozpsj4kzyoa
+X-HE-Tag: 1774796001-5107
+X-HE-Meta: U2FsdGVkX1/CqxNsfb8QrYsttIsKLXTLvkPRXlaT+p7e9h1/QQ8r5w+HIWMru2kWEBMdxakEBTln5tL0MEPHfqWPJqcYfC/OeJBe9Yw3R44S6ys0en+iEjYX7hZL89FRBdGYbrdcvG9Bts4dMopM0gi4LcG1gIpJH/O1lq5e7FtmdPgZURRYeGpMTQUMA03QGEkFlJdCyseDay7yyeUv986Pma9bFAKzZqwitBpw79iawElsLUcDxvf9CArc5HGBV1l4Ej+NTf9qWR5ZP4FUN/KNov7t9fMgRtg5pwZo3qi0StvVsk3ChAPPILXcOQq/9TSD79nw3ARntSzqqDpUTeBYkDcx8IoDdruNPgyt6mkZrif4Fgin64zEnk73j0j0PKHW1EzzK3zgHFH0N2XLAviLUJJ5FzYsetwdd6hmhrO03EKdyCm6z6pGbE0NmIvxhGSbPVI2E96jOWdPXyuMhZRXBC1zlR0TqZAlRNgmtsD3kJxNCkmJ+wqKqwK3KevMcyqJjy92DsiMNqWO0dO9vFuKokhLoS8uJrTB7sBA1lwJvWcP8d7vXSSNVsqEYgy6t0Q4Nhfr5CFkog036c3UIGQOT2j2+ipfpwk815EavB4P+KQF8WS2DAWLCIRTukFpq5y7d+8vH+mPbLQchtozBpNhmCbrvVD5znhlzZ8fA1JTngkx+uPQHB/3tShMn3Bc0s6JmMSaFV1NKlqT/f4K8hRQCDR8SbLG/bka6Vz+WFgQd3PhvuycTahBOQu3WwAyRkrtpY+p/yruBcP10NwWB7FM1CaN1ZdCs3w56rFC3uvcPrNPG06W3jXHCOBuXdyoDKGjg5//wIScAES15+F4vS9KubihFAtSpYqC9RoB2uCMPpgXIdHdI4M5nb34egCpNkEXuie082wEMCsJDOt4oartoTWqANTxI3WMAyckQnH5hxSMY9QXkd2ymHOVqUj83z4GemmtmfZljz74bn8
+ oAt+5d8d
+ lbJm0JkctMy52G0BBlVKprVvuzrFaHW5D9Hgwek1tnE9m5jTh00y5ucmSDMQqZMJUVD90ZYXwaPkBMDqR0qc0GiOqx6Hnt26qwzR4AaG8K63Nl0H3KVKUE9oyuvdgIQ8+vbjTzlAmXEjr8/Zjs19hpuPszXRlieiQk87qmOWhnMCfGkAcMiH/zIFaRPfdKfAowbWDIwbrPX95zynZzcwOQkNLY/ShW4qvgHqGukc9kDBR4cE4hktEWLiVDkfGBw91xsnr9MccCiq4l+ED2+PBwpM2bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,84 +91,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Acked-by: Chris Li <chrisl@kernel.org>
+On Sun, 29 Mar 2026 17:56:02 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-Chris
+> Forwarding Sashiko review for doing discussions via mails.
 
-On Sat, Mar 28, 2026 at 12:58=E2=80=AFAM Barry Song <21cnbao@gmail.com> wro=
-te:
->
-> From: Baoquan He <bhe@redhat.com>
->
-> All these swap_writepage_* functions are hanlding passed in folio, but
-> not page. And this renaming make them consistent with the their
-> counterpart swap_read_folio_* functions.
->
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> Signed-off-by: Barry Song <baohua@kernel.org>
-> ---
->  mm/swap_io.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/swap_io.c b/mm/swap_io.c
-> index ad0895af6ed8..063cd005ca0d 100644
-> --- a/mm/swap_io.c
-> +++ b/mm/swap_io.c
-> @@ -375,7 +375,7 @@ static void sio_write_complete(struct kiocb *iocb, lo=
-ng ret)
->         mempool_free(sio, sio_pool);
->  }
->
-> -static void swap_writepage_fs(struct swap_info_struct *sis,
-> +static void swap_write_folio_fs(struct swap_info_struct *sis,
->                               struct folio *folio,
->                               struct swap_iocb **swap_plug)
->  {
-> @@ -412,7 +412,7 @@ static void swap_writepage_fs(struct swap_info_struct=
- *sis,
->                 *swap_plug =3D sio;
->  }
->
-> -static void swap_writepage_bdev_sync(struct swap_info_struct *sis,
-> +static void swap_write_folio_bdev_sync(struct swap_info_struct *sis,
->                                      struct folio *folio,
->                                      struct swap_iocb **plug)
->  {
-> @@ -433,7 +433,7 @@ static void swap_writepage_bdev_sync(struct swap_info=
-_struct *sis,
->         __end_swap_bio_write(&bio);
->  }
->
-> -static void swap_writepage_bdev_async(struct swap_info_struct *sis,
-> +static void swap_write_folio_bdev_async(struct swap_info_struct *sis,
->                                       struct folio *folio,
->                                       struct swap_iocb **plug)
->  {
-> @@ -595,17 +595,17 @@ static void swap_read_folio_bdev_async(struct swap_=
-info_struct *sis,
->
->  static const struct swap_ops bdev_fs_swap_ops =3D {
->         .read_folio =3D swap_read_folio_fs,
-> -       .write_folio =3D swap_writepage_fs,
-> +       .write_folio =3D swap_write_folio_fs,
->  };
->
->  static const struct swap_ops bdev_sync_swap_ops =3D {
->         .read_folio =3D swap_read_folio_bdev_sync,
-> -       .write_folio =3D swap_writepage_bdev_sync,
-> +       .write_folio =3D swap_write_folio_bdev_sync,
->  };
->
->  static const struct swap_ops bdev_async_swap_ops =3D {
->         .read_folio =3D swap_read_folio_bdev_async,
-> -       .write_folio =3D swap_writepage_bdev_async,
-> +       .write_folio =3D swap_write_folio_bdev_async,
->  };
->
->  void setup_swap_ops(struct swap_info_struct *sis)
-> --
-> 2.39.3 (Apple Git-146)
->
+To my understanding, all the comments are same to those for v1, which we
+concluded to be no real issues.  Please let me know if I'm missing something.
+
+
+Thanks,
+SJ
+
+[...]
 
