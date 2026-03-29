@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AFC1F3D60A
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 15:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA7B9F3D5FB
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 15:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0B256B009B; Sun, 29 Mar 2026 11:33:52 -0400 (EDT)
+	id 454AE6B009D; Sun, 29 Mar 2026 11:34:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABBC36B009D; Sun, 29 Mar 2026 11:33:52 -0400 (EDT)
+	id 405706B009E; Sun, 29 Mar 2026 11:34:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F8E06B009E; Sun, 29 Mar 2026 11:33:52 -0400 (EDT)
+	id 342BF6B009F; Sun, 29 Mar 2026 11:34:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A1416B009B
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:33:52 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED2758BA45
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:33:51 +0000 (UTC)
-X-FDA: 84599495862.08.E9190B1
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 246B06B009D
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 11:34:11 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DEBC11404C0
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:34:10 +0000 (UTC)
+X-FDA: 84599496660.07.5441662
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4FEC2160003
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:33:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PKlaSMtr;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 530FF140009
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 15:34:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BclJe7UX;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774798430; a=rsa-sha256;
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BclJe7UX;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774798449; a=rsa-sha256;
 	cv=none;
-	b=zHGeelJgffRgeuRl0hcoE7qO2ZLvBwhQeDPWpwd3k7MOYEMdExGGo6nDrcYX+3X0m5zu4F
-	s7nVK+BAuLproQ5erbVTUOwJfHziRMru2d0HSd2AKxu4CvW9f1IQkyuuk7hUyTMuY+np/g
-	xs0ng62sPCgRp5oANqaL8a6rZSdpPcg=
+	b=NS+8yx3B59z1XQ99F9B3KmvxTrl82Kl093wTli7e/nNgt1Qw4GmW+htUWVZ7Se2DXQfN6K
+	INdruaLYoOIUXq6qq4cVFcoU0witWbPo70vijHo9BnCh+5X4SJ3DMnaH8lTGcWT90MZeca
+	lS71anA8jJghm5Tt/oDxF1mv5GiN3tw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774798430;
+	s=arc-20220608; t=1774798449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CQpsATJo9rVSE5rH9KJl9ZT2m2ZZjhJOHbT7VxnZt+Y=;
-	b=wX7edrp+O+8P5eUjmOfhVb9PpFbjFRyVz2B/GA2dlYRTyhQJ1DADoQTLb3Yd6kNz8lVenv
-	RwItkM3Wm3Bf8SToraEhUm5e7Xw1pkdEw3uXS7dbETBlb1KBfIJS43Sgz8kVITlX003f+7
-	3DBbZr9rQhTaOhh/QUyue2NTGY+ce6E=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PKlaSMtr;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=bTTSFy3ooK8jjlea3QojN/WpY6b9EVd/Woi2IQOIKW8=;
+	b=eftf1i0gA84S0CsL2ou1KeZeNlgscPiDGMd6KHgwK5266PcZf/6XnHrrChQ4OJ+JL/DxIP
+	DOxS1vbFSVr7gG/W+Wej89pLOOUB2wTGZUhEwgpAowhj+GuNgi04Yw4t/yaIc6x/U2O82E
+	5gg0EkQ8sMx79y/kHTW8+pxIszFcIhw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 768AD60054;
-	Sun, 29 Mar 2026 15:33:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A57C116C6;
-	Sun, 29 Mar 2026 15:33:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C82CF600AC;
+	Sun, 29 Mar 2026 15:34:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFA9C116C6;
+	Sun, 29 Mar 2026 15:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774798429;
-	bh=UQZPnV7y0W6fAjqQLaYQLOo7olw+e+13QhFuEevENgE=;
+	s=k20201202; t=1774798448;
+	bh=O/uNR9JRfm9SAtj0sIMwVCHj3HMc0F+KuWfakAn3bz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKlaSMtraqBGZgzWHbvU99LPd9sjizXZe0IhKXcSdp1fbif3Si1gLR1s/HtZgkQXd
-	 l30rRvOe7odaVZ7xKzGkprRRMsSc8D0sizhMjPmmy5gj2Nj7ifMf+spoDIoDmVRzoG
-	 mJX8+WPxU3UsV0zlWpX42U2xcXYy/CkHMcx4x+wd7IH/1rWV7tWQ8kE/aizrrIRu5T
-	 ZVfVvUulLdddbFk+VIMaqDa5EvPk9ktDhmjJyRSbTL14FtnNley89Ve+deB7O5JSCT
-	 L8xWt/q4qdaLCCY3MHE1Yu6BXwnWi7/pfJZRJ7d0yO5HQyajtNA0PPS5YasnhVlVdZ
-	 Mhy6YSWGHkqag==
+	b=BclJe7UX4PJvoIUgHUpvGBjveSkdKutvAgrqYPN/Da+DQ3gjmhQdO28N4Exh1rYNE
+	 Y7O5dHFS4GkWE7k6XZwAFmAUCFwUDHmjhoExMrt52o5JXyZFwMjh/GlAyw6xCAXh++
+	 Yl7dVxasLJhVUOUtKmBOMj5WhTlrgHn4vf+G0k/r6eR49WQnj3+5Rwy7MYbdRqowEm
+	 5ojRUyrGR244pg300rfIhhOk5DxqKPV5ODOnQTCFsp1uBE30TNdS6khe7uEaabloaF
+	 cdPaS6d9WFTgVoJNCh9JW2ZSw8K+AHS55ztyf6L39F2ICY52F00l0aeTy8ryGFVo3D
+	 SfvjDEz7EbVQQ==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -70,22 +70,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko status) [PATCH 0/2] mm/damon/core: validate damos_quota_goal->nid
-Date: Sun, 29 Mar 2026 08:33:45 -0700
-Message-ID: <20260329153346.46881-1-sj@kernel.org>
+Subject: Re: (sashiko review) [PATCH 1/2] mm/damon/core: validate damos_quota_goal->nid for node_mem_{used,free}_bp
+Date: Sun, 29 Mar 2026 08:34:06 -0700
+Message-ID: <20260329153407.46989-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260329043902.46163-1-sj@kernel.org>
+In-Reply-To: <20260329043902.46163-2-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 530FF140009
+X-Stat-Signature: qdozqx6718do3z4bbjixgxapqrkfted4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4FEC2160003
-X-Stat-Signature: u48atk6atmhfjz4ds9f8qafk8mz3zzdi
-X-HE-Tag: 1774798430-195262
-X-HE-Meta: U2FsdGVkX1+i04tYwK6SBQvIL2nMVvnOCatOwXd/VhUcvbSJrnHBxAoEs0Nuamruf7o4c0M0fG5ozGk7oWwD2ndvKjqLIMsx2YLaG1E8zMC4oP8yY5wzH2i9xIEfnUL7AZ6UaQVjP3pO6Okp6xaNpCvwsZKveXDRMajFJkzySUcBHINRVvwLekEzigedYA/Tdr//DYMMOsLZL/X6jZUq8qNM02vBVJTx6DQVqLmRaYUbYO8dn7ixZyAgRBJd36rDWuonzfX8u6mzcOAYoP0N4c8ef3FXkphmgfgm0y5w9o1s1rCRQc3WTr4HeQXDoRXUwa50Jp7N1ss8hLXP8XbGC7luypjuDJeid4xB/JsHdZOsydnKsDHmUU01BFk+1lWXFYi2lD7aJUVkLPlxZVfbZil+2oY0BwjHXwf/AecnutxhPZAg98ul2jSZoR6MVW3Vols0oXzImtKuGwsdaB67xXNL+gm1Z+V3Tkydwxw95EwfcxQdRSc6zpkDMYEFJWGZWbtBykgEI86Cq111oZdVwpTqyijdKjmfzvXB8ZvfifqhIAUofcLIz6um62ZOCtRX8f16pkdO+A/kF8WmltgymWz3z782HKdJ0O/xB7uCNwd1GvjsVjy+Skpqn7DYMiLTiLBXQ3hvhy1ZxJ6SKj5l7j0sv114BRXTongVvouDf31t4dWC4oAMzVd8F0+acRNkvSXcGDxbLlNhHNFPQrST7CLDEjjU59DdqYQcXPQbYW8lec4tj6tYK3UWCBrhlJzhyp5BqQewl1paPm7N5jJfUr6inFusrSXVPBGxvFqv5FsbjMCzumDmx7TEpi+Or0j2nWirabcz3JkRxKf+DYRfErxUBrXPzcw1HDRuYiCTGe8+7HmUtx8HNGbJPU2bSpVbQwDrvkJxBkrTHTuCQXa1/OAAlXLs/bRGHjttsha74Nlxm5L4D7zk1faJPRXUWZckpM/POgzg0YWS8O4nV9l
- v5U97/jJ
- K6KIf32EdCh/yi/0UfKZx61Ekdl+SHF++PwbepVtxks4Ck9owm7GzuzC7o4oEvelNDxyuhiUIJ2WSOVIczp3MjUvfN7gP5pn0zvKQawkqEh75NjkclPwJATsREHKIJ6LsdsU3K1BC/6DQQ2OJFAsvMqKOF95bas/37Xftft8CPeC+IQSqJS90Xx5dWQ3PQrL/rbdiXWqnHj0N5mpSji5WwmcewBVNLfN3udqXchwO0N3cubCu+x+kb/KQIaQapdobXx75vLWj0UcjucnT4T3PKFo/GpcV5EmwF7riIl80g1P6nbK14ihWAPPeRRm4DjFyTu75xeCHskbh9WSGupMkYkih0DcEyFV9se74bvTbnT7QTPU=
+X-HE-Tag: 1774798449-494567
+X-HE-Meta: U2FsdGVkX1/99zauuN21lgfCP+fuYPTmI7d6a+wwHfMoLiq50mBO4+LE8VhJj0TMmRtjsMJ/xy/J/3xusxWBiC9IZq3YU1Gw6QdBqrnxta6ynBQLGPg7w7dGs8vBB7liRQNciLHX2GP0EKPm0/9heZeu8BsF1U0LPHbUtjH2/0UZ200vpOyM8NNp7NbyBUKF/otJoHM1pfuXpcsp4mk00vuhNJ+vHFdL1laeatPi2it5qvuu/mQhcNy92Jqk5zm2PHEwlFljseUgkcv7od7ZMCUeXU4cI4GrbEJ41VnnxtZlGhz+/BvFJLHpOdDoySDIZ3wAGWA9ovd6CPj2jjm80M9rW2GhIfmpwc/VUrWVLRZusAqlY2oow7qs5hSshEmx1xkZaI0bnmc2LL3O+YbdPSG01Lca2X+eeznjrGCqo1d5WiQk6qjRjP9+2TlVs84PLjRehdJLkfcMVgAXGx9m/mRpRkTf7Do/jljQp70b3q40wUgAmv64C0bxsUP8Aq45ttUm1KDvOge8vugs0zXUUNhGTSN5TCdvTCcNs9R2UdscnE4e0T8cRF5omUN8FU4Y8MFHcZFNflqM1wBUYoG6LH/fiFV3i9mQAsz5TRbdRlZiA4ROXqjSjYE1EV4MTx4IlMYgEPq52C4pW+n97MegDO+XYyqoVyasEROdq2YOlkOevtSULxWPPULLdjivACTqqoiHQjK7B5N2If/PKiRTgZWjxNngmZfdBU/qsfinXiOhX9KDBDkgot6GQRixEzP6RbseBcpG5KOWLdIliR6M+tBu7kWZ5F27TyObo5mvlUCfLsl42f8SoiYYni47e6sHo8xP4M8pdwF4iMrURtYQGmvwG1i5r7sLfYyj6x24q39B/pq0sM6A4ef5s5KOYV4BOwyYRernSrq8Nu5vIFzaM1uHc5yVykUEM5Wuu4GS58mOVdQUaVzBvompOach3FVmNF5WxZlEMXVDNutqDj5
+ lAzQiG5b
+ Pvd2K1xgeb1xcRn0vS9pm65rUIqvkAd0OogVpYiUnFHZwygXxTj2J6W2s1MupwV0s8bJn37OitjMRevBr+5glssTKlL1ebpl3/lwN9YQCEAwMFcZr8D+008wcbx2uCIj9KgsUOakojrATuOgyTp4Va5A6Gaep+z0PriRpL55hugYz34n27QoKEbx3huuj+B52Uz0Brlv9ShyoSGG1s4i0cU+OVUyZ3aT9hQC1F2DdEM9C2Sl9GwX4Adv4Yx+g9IpsV1FnAo0tOAJ3DCzBNknV3JdFwJU9V7VdSnNTL9OzZUYkmS5nYCS0SFSalcQX5NoFs5Ho66JQngZ7GlbBZ34nD9xLdsVVbFGfJ7rG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,22 +93,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding sashiko.dev review status for this thread.
+Forwarding Sashiko review for doing discussions via mails.
 
-# review url: https://sashiko.dev/#/patchset/20260329043902.46163-1-sj@kernel.org
+# review url: https://sashiko.dev/#/patchset/20260329043902.46163-2-sj@kernel.org
+# start of sashiko.dev inline review
+commit 8c40c45c57722526c25cf1114b386d19a693fc2d
+Author: SeongJae Park <sj@kernel.org>
 
-- [PATCH 1/2] mm/damon/core: validate damos_quota_goal->nid for node_mem_{used,free}_bp
-  - status: Reviewed
-  - review: ISSUES MAY FOUND
-- [PATCH 2/2] mm/damon/core: validate damos_quota_goal->nid for node_memcg_{used,free}_bp
-  - status: Reviewed
-  - review: ISSUES MAY FOUND
+mm/damon/core: validate damos_quota_goal->nid for node_mem_{used,free}_bp
 
+This commit adds validation for the node ID in damos_quota_goal to prevent
+out of bounds memory access when calling si_meminfo_node(). If an invalid
+node ID is given, it defaults to returning 0% for used memory and 100% for
+free memory.
+
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+
+[ ... ]
+
+>  static __kernel_ulong_t damos_get_node_mem_bp(
+>  		struct damos_quota_goal *goal)
+>  {
+>  	struct sysinfo i;
+>  	__kernel_ulong_t numerator;
+>  
+> +	if (invalid_mem_node(goal->nid)) {
+> +		if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
+> +			return 0;
+> +		else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
+> +			return 10000;
+> +	}
+> +
+>  	si_meminfo_node(&i, goal->nid);
+>  	if (goal->metric == DAMOS_QUOTA_NODE_MEM_USED_BP)
+>  		numerator = i.totalram - i.freeram;
+>  	else	/* DAMOS_QUOTA_NODE_MEM_FREE_BP */
+>  		numerator = i.freeram;
+>  	return mult_frac(numerator, 10000, i.totalram);
+
+Does this code still risk a divide-by-zero kernel panic if a memory node
+has zero managed pages?
+
+Even with the new invalid_mem_node() check ensuring node_state(nid, N_MEMORY)
+is true, a memory node can have present physical pages but zero managed pages
+if all its memory is reserved early in boot (for example, via memblock_reserve
+for crash kernels or firmware).
+
+In this scenario, si_meminfo_node() sets i.totalram to 0. Since the
+mult_frac() macro directly evaluates division and modulo, passing
+i.totalram as 0 will cause a hardware divide-by-zero exception.
+
+Should there be an explicit check for i.totalram == 0 before calling
+mult_frac() here and in other similar quota functions like
+damos_get_node_memcg_used_bp()?
+
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260329043902.46163-2-sj@kernel.org
+#
 # hkml [1] generated a draft of this mail.  It can be regenerated
 # using below command:
 #
-#     hkml patch sashiko_dev --thread_status --for_forwarding \
-#             20260329043902.46163-1-sj@kernel.org
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260329043902.46163-2-sj@kernel.org
 #
 # [1] https://github.com/sjp38/hackermail
 
