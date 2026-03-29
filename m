@@ -4,140 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 906B0F3D5E9
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 04:08:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AE5FF3D5EA
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 04:37:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B49416B008C; Sun, 29 Mar 2026 00:08:35 -0400 (EDT)
+	id 13B326B008C; Sun, 29 Mar 2026 00:37:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B20CB6B0095; Sun, 29 Mar 2026 00:08:35 -0400 (EDT)
+	id 113366B0095; Sun, 29 Mar 2026 00:37:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A37A06B0096; Sun, 29 Mar 2026 00:08:35 -0400 (EDT)
+	id 04FD86B0096; Sun, 29 Mar 2026 00:37:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9091A6B008C
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 00:08:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32C4F140399
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 04:08:35 +0000 (UTC)
-X-FDA: 84597768990.29.E22D237
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 14173140002
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 04:08:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=FHXsCm2y;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of r@hev.cc designates 209.85.214.174 as permitted sender) smtp.mailfrom=r@hev.cc
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774757313; a=rsa-sha256;
-	cv=none;
-	b=OavmsfDK6+hTt/YdSZf0WOfpc3I9dREDAaPnYNaGVp722pA/ofUQ/yq72vPznn6O/SWEXi
-	5pebF+rmaHYVMA1A6NzDZ3q94iHesS/XlaphbzIQl13BsxoNRpa0akeVRyB3melXKvRBm0
-	g7VlgBuAGZXuHfu5/piWCyy9go6NeB8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=FHXsCm2y;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of r@hev.cc designates 209.85.214.174 as permitted sender) smtp.mailfrom=r@hev.cc
+	by kanga.kvack.org (Postfix) with ESMTP id E6EC56B008C
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 00:37:30 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 207AC58842
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 04:37:30 +0000 (UTC)
+X-FDA: 84597841860.23.3DA3206
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0909040005
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 04:37:26 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=U1bcRAsx;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774757313;
+	s=arc-20220608; t=1774759048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fcMba91l4VHF9piAdu7w9FJqozouFzyx+yXZRyx5X4k=;
-	b=pBBAz4kRYOBedCeKx2aiPYt42yEcrY/rG7iTmDeTZqU3LbKmbh+8CdtkXF7fGgOB30UKmK
-	6dtvuJbn3+gQddM0ENe/fuGimY2whzhbEOB7EgTrdcReJ3tMTviBYHYWw3G6hI01ApXuJ5
-	kuUSDizTTnNPKPwonBtnDMNMRafA0iA=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b2503753efso174655ad.0
-        for <linux-mm@kvack.org>; Sat, 28 Mar 2026 21:08:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1774757312; x=1775362112; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fcMba91l4VHF9piAdu7w9FJqozouFzyx+yXZRyx5X4k=;
-        b=FHXsCm2yLXKuXTMVHjt7Shdxtt2ZOgqDdEgx3BUOBfDjBncg7F56B5BrxMYknSz8iD
-         4mquT+g4qzX3HToUE7+K16YLJQIz5qzeTrPoaZEIJwLHg87yok9wRjGUqj6UV7phqkKW
-         aoYeZLkb5kTOXh7W6A2JZHTSHuhJtLemNIPO8hF8U6gAVhy7H12tWmmuA5EIVpb8Ni08
-         Une/bArN2YwxDxK9bcA+7twlVzymc3KWZ1DCq3DelMDyzMnbx8Qq+utrMkxRkk47fLjN
-         YVYUDxsFO79bM4NRSFwDWuxK35HC8NH1R/9HKqaxkkE4yzTwjT3RcERqjHF4bnfvjEtN
-         QOUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774757312; x=1775362112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fcMba91l4VHF9piAdu7w9FJqozouFzyx+yXZRyx5X4k=;
-        b=GUuPkSbPLUKY5Pe0EJlajN3a5x/poYOyEsWKV3/oj/95UTc76nEETntY+dkpst+IjM
-         f4ezqgoS+o4o2oHEdDk8ANYW49+s+3m+GDQmWX7+DQ4sPstWt/j18GcYfoambMrBM06u
-         cI2g5hMQiwfnqLV7Oo+56jVT9IO1MoVqHWLfhRvN6118yd5tp793gbfGORidOYCy6OhJ
-         2DqnAwSIPsrh1jEElx1TYgpkyBBcYKLmQ+bP3KL0TcKZWE8Rhlhkr6EsRJIyngFhfV12
-         HPfhCt7u5i6jkVmscFCyVQHDh4JGTIHlE3XTr7+3rvXsEnvl85Q/QkOZpQoTJGLj+NQG
-         iucg==
-X-Forwarded-Encrypted: i=1; AJvYcCXApThVyjC+VDenb5JjG4gqRSYnh+0teOhTbiMcNZKBdrfjsazT+HlL6hiaFAH7acSHTk4MfmHNdg==@kvack.org
-X-Gm-Message-State: AOJu0YyXwyP0HastifjUsCxqw8/6zb3Yzemz3Xc4SOHvWNZhMMTUDRnY
-	9PRoN43IV6pfRhNy/reKgE1tun05XsbxMub7hqGGdj39q++ob/vahPOoTyJefUl1HCg=
-X-Gm-Gg: ATEYQzwnN4D9B/3Ob3XsAFVdZWmOkQSi2UTzbAYj5a/5wG/Lvfb9IsnC8v06BhNrmXm
-	lx+CxAN++GI1sVzyTeAL1dTr9YhGc9JMdctTGeX7ZzrUr7Rq2eZhzSUJKK6zas2LgBVWetrbhT0
-	jsnd/DuBpOqGZUYieH70efkmkAniGUDroB4f9lBKOtELVn6xpjFNuCG8lt62EsQSLulj5ogqFAy
-	Vz2UjfsxS2b2wEV2Os6aXlXEouqaqEHtGacws3j27fqYeNpG/NyLOXgM2hLa/85fcXhMrsmQzeI
-	ME6sLAU9NooU5x3T78BS9qj6/7EL7YlA4kG1wyMNMGB3TEE5YJXMc6MHQ3F4WyOunY4FvmRUgpv
-	RUbky7cA/ni6ThTlBP5nLcW07obNeyvNtpmJF/ngx2bxBsNw9xc7+OlOEC8Jhpd736Vy0LVmBMz
-	Sp
-X-Received: by 2002:a17:902:ced0:b0:2b0:c2d9:270a with SMTP id d9443c01a7336-2b0cdcf0019mr88952725ad.42.1774757311794;
-        Sat, 28 Mar 2026 21:08:31 -0700 (PDT)
-Received: from gpc ([2400:8902:e002:ded5:78c1:8178:95c1:6ca3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b24b3a82f8sm11038575ad.63.2026.03.28.21.08.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 21:08:31 -0700 (PDT)
-From: WANG Rui <r@hev.cc>
-To: ziy@nvidia.com
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	brauner@kernel.org,
-	clm@fb.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	dsterba@suse.com,
-	jack@suse.cz,
-	lance.yang@linux.dev,
-	linux-btrfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	npache@redhat.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shuah@kernel.org,
-	songliubraving@fb.com,
-	surenb@google.com,
-	vbabka@kernel.org,
-	viro@zeniv.linux.org.uk,
-	willy@infradead.org,
-	WANG Rui <r@hev.cc>
-Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS from file_thp_enabled()
-Date: Sun, 29 Mar 2026 12:07:41 +0800
-Message-ID: <20260329040742.17269-1-r@hev.cc>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <52CACB9A-A782-4D11-8B6F-66DA8D345C78@nvidia.com>
-References: <52CACB9A-A782-4D11-8B6F-66DA8D345C78@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 64ud6zd9qrwfzbnz3aoiz39f9gmg4ro3
-X-Rspamd-Queue-Id: 14173140002
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=LEbfRJKWzeTSm6rLBMhXMMc34VvctBC8WwB8RJ6S1JM=;
+	b=3fUzB6SV4KQmpSp1whtN5xBBaH5cmYCtfkgQamOPLL4Ap1wRKvMsIqxpnq/oBmLhSXDdeN
+	SIX+c8ke7SEy0s8bCwlXawVPHJFwR0D3WF5hqxntEd50WZBN1s22Uiq9HmgVOvK7CiAtdd
+	BvAWZ2tByYiR9trnqldBXinbUPDO+us=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774759048; a=rsa-sha256;
+	cv=none;
+	b=dlAV4eUA9ta5eZyjjy+r8SbLx49w8/X2YzeyJqAiZH8BcBSrk3HA7AffwvAbbxNVfJ3np4
+	hB/HdZOWdF9BO46oWSHJNTDaE7Q0b2Vz22+2jHZ88667izh4xdOzF5DedirMwDFXJUjo6/
+	YKrbUa8mCs+V8tjI4m7TF7uiWbkANeQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=U1bcRAsx;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774759047; x=1806295047;
+  h=date:from:to:cc:subject:message-id;
+  bh=hHLN7Ja3LQZLQWTHsYWN1jUeyvTU6JdbUM3DC4qpivw=;
+  b=U1bcRAsxGTMXpcF1UbQhkShQgfFVMoclJJk49rFvz0nvbJhfHehintFU
+   quzmVCcfIvjs3uf4OWty+TiIPgbHnAvCmawpnQGm+ma+02hJor97xnsLZ
+   R5drKoYrEteOG12OnI9Y+7UPIoBjS/buAF0PvPGIcKvjkqh/jW7QuebIi
+   AzOeWwUBs8CIp3y+nO4Cj1b3qWBMMLs9/tLN7rg+YqwqaMjj2Fh/3SUwn
+   s4ufTdTen3LjCPHfYRnHS5N3BLhxFnflhxv8YPLgnUMjCQfzKcwiehlNj
+   xihRAQky63vtG8V8GhnaECqqh4jCNQ4o12CbDP8X1U6nTE9tzq1LVz71G
+   w==;
+X-CSE-ConnectionGUID: WNxLbxetT3Wp6w7fzckWJg==
+X-CSE-MsgGUID: CwnVrJbZR8yPaNP0akiXKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="79646717"
+X-IronPort-AV: E=Sophos;i="6.23,147,1770624000"; 
+   d="scan'208";a="79646717"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2026 21:37:25 -0700
+X-CSE-ConnectionGUID: IwQuR/VvRLqziO7tz9LFkw==
+X-CSE-MsgGUID: verF6TuPTMaYnXjUyKIDlg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,147,1770624000"; 
+   d="scan'208";a="263650748"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 28 Mar 2026 21:37:24 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w6htp-00000000C4r-0LWi;
+	Sun, 29 Mar 2026 04:37:21 +0000
+Date: Sun, 29 Mar 2026 12:36:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 193/194] lib/alloc_tag.c:815:25: sparse:
+ sparse: cast removes address space '__rcu' of expression
+Message-ID: <202603291211.YhY0R0se-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: 0909040005
+X-Stat-Signature: b9qq7b5gwypeqptxsr3uqhau4yga8n11
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774757312-204042
-X-HE-Meta: U2FsdGVkX18xLMK/kzN2CbK2V9MZLBU6zzYokD1INvWGRPBxmNvTEnpuiypqMoeprFFlrnaKuu+h5mvX1eQnMg6pS+gzD/qzWOSXkdsOC/SBwS+PtwDPmSgEIKdEQRDFbDiD5x8S8xDheqddAXiXfSBSDtMuA/X/cBqM2KxqHirW5zS1UEDlfc6dWjk/XWwQkreijv+QRnj4qfIeEV3UODqGdTlwLlbZiXJbxsLijTQye63L4Q5jMaJ8Vbzp70aACLs7oBCCV/DUSVST5/GWXJ7sfHBJPLqBpFC2n2Q5zpmDGteIFgFO4uREpNXmgHDlfypOeHmqdAkn/LTg56EvBu76FCIz1PrAz7gXiALT1r/60gC048TyiyQZw6UjnsHf/dvTzQYlk7CQLsb6Fj11rjT1auoEN2JfJ9N476IP4ou/eLZVkhYae/w2sffXWys0hczdezNu4GdVJ7PN8JqurHGIqBhMSUzRo9Jd0kc1lziQrpriPohz1Aje//TOUYDVWCNfqSLOUf3uhUIFwHYAx+C5AfJPUinlk1cZA7As0nwsj5HZpLIlL8Ah0FmoD6TkZTSbA6Z+YkXn6pRZwR8wmElLvJvGCOMD36GDM1LFyU9s3x2HlgLNN47KRpPi4vPEEuQwRWNvIjbg2dJkMubxdBnMYgYqB00rUpgsv4qxLwwS9wdPmjtkIuHxEn+Usf2gezJ3MRxKVKUnWJJO+060hI6wmfFB2uIT1PhN5Jj1HXn8sdRDrY86mlrKebuC1v7zQ5eSjC5iMXizXUos35pGQXf8zgx8r7il/1ult0/8OV7tsItP6VDbRvyehzqX6BKwmYM0TpbBpFlVaLu4mqXzj29sxO+eDP+uW8xCBqh4KHokeEHDcRZW07bRPTrtoBaM4Jlzr9nYnukifU5ecH+BI1tNt+qWJejMENDN9ly6GTv0KLcTV0kfRUrP3x+gLt7OeOdxX3E2pNHqh8OL2yc
- krY1QhzS
- YIewwrT8iwyw9Gzh8rjh5XR1QbsnjYNjbbG2DeLO/J0laTMsACuN2LNCjcP5d6FDuCqYDD3POkqWU4vxq/9qurqlmbEH4lRd4RL3/QgVDt/tFTbviysjryFNK5TNrbVbc/9OHe2Kl2MP/Y6MBlpw2qR8dzNqM/xFapAyrGXseB2b/c4xU1pLURivgCw9XBR3w0vMOCZLal0bCttX1ut2dTLlOBU4c6xXSooWhyFkUbGFEO8CYWjT18S+d6iAnThNfitygtz+Ch3VdrLLTUF+OVctogEiL0RmlSMsc6o4mi0sqU8XIc4iH0ixYkihQvcNuIoSLj9Y+clJ0G6+G6bCdYLpFMesOYW9TY2ByKclqr5xHWBhm/GSaNG7X95/Qlh+hE786Ln+k3XXyedB2GMPyFZiejxz01QZlq75bBGNQn5F1zqLaEYUMTNRYNZqTiYpeQcA1YfmNJk1aIPo65t+9Zvid3ddPd90106mHhI7PeyF0DrHjU8H6kN0OXoMARsRiRfiWDt0eJnMjG2Dq8OFfeuaSKUZB9Few3gGc9lypwLoEz2R+jJzbvGz4qDsndE9ZlDlXCnOnvW2/aeeO9DscmiiHa6cmbOgwdr8uHMrxnxZQgPmRsGD5gJbEO5/wPdomEaKTlWAt9Xec+hZTy1yGVgYFqQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774759046-869194
+X-HE-Meta: U2FsdGVkX1/t9gT5vGmdCJGWaAOWcXilv07GQF8weU0624AuAwYwhbVa7guwsMeTM3z4ArIJ0byjjE7YgxfiQHF6RLUHXNQoVbm3SjfXtjfOKdt+8xTN+qYm4T0IP5fg+znD5sIlV8AnhyIoBuSCfS1xWQis4fwVBw1A5sW3hQRKhjR8niOUbjWvlGT2XppcqYUXmsLTxnOIEJgwJiGaPWt8Leg4j6YDx3Kyt8dVQfRarmxWtTYEPKpxIPDGsRT3ctuC0GkvcBxXnv07jaF6ck+zzM/6JeZ1HVhmGeBzXwGLKjwK6Q/wrJpUGzyOjSJFLfsUjyG0lXQ9CWHSLcku7x0hX4zyC8vJ5qpaGAi4s1M/TlozF1wbp6eJLrPkyd62VoBHpg6+Ez1D3/j8DX16CFFJKu2YXXrz5XQwTNzGIiwjkEKliO8YI0MqVAgzdMOJGGlAcz4XS9AG5yResV1Ygb2GRm76XWKXbrhMDhcwaN77Eegf6+7FTVow4Qq5a7d54tuHIhwBGOg730h6jA6dEi8jz268Y/FK1OklmveV+ogElpZWQfOeP1d/zjwZfVfrPYmZMpIGp7eH9oCxEqTjkOEYut/yHSIkYTSiW6X6c4e65ir/3Ab9zlOwA+m3IjM+/qkpNMb1UXNp6a/2dMDCrNKUNi+y8T+VjHHgz/VclWwcKQw3940xZtWoJ+NKFaMuisZwWjD3pr43eFkWHkkRSd5Y9Qszys344PuSeiuiGVcdbD7bS9OLfd52t/i8ImYW0BLrLOzDPCXSYuYwBwAN3KzAuzJ43BfGmhbHVVRcGYXScns6mKuH3wV7psYtIBi6WbLKTnUbS11F5eitwWzqAoCCPX3zcaPIeJwkhwrsLHNlhXPRb6cqSMq5SaHrphUjBWfcn5JGZSu3+/d2m3nNWl7f/GH6sgmjdbsBDDhxnX8+6/14DuPT+JOvT08Kg1MUei3FoMurwNosKgKJsrf
+ WwGrsz2l
+ xF75gMEuo3Uia7WkeRGtaSvjIsjjDkLE7jzkz0fJ649WQbYkVkrkcg23JmTMURLzDTKUxe9jeFpG47v9qUFADNXDfC0MMaTN0lXpCP+X+Y5dlcV1iII09ZNjZOUCAFCyf9pkcDZwbIqjwc1F6RxXQaOuf5qFrbCU+AGWYRxlgBOCdFhqykhlNIIzXETmI4NDVxVpiVVKiYsvrgpIT7KppDKesllFh3YGwp6jEzsDg1521hhhVoqcPynfos2zINMwk2vd4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,51 +102,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zi,
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   df2267b6380964f1305128001f05bc043ddf1f37
+commit: 8bee7b4b574f880ff2c7491212e2ef01cd82f2fd [193/194] mm/alloc_tag: clear codetag for pages allocated before page_ext initialization
+config: openrisc-randconfig-r121-20260329 (https://download.01.org/0day-ci/archive/20260329/202603291211.YhY0R0se-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 10.5.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603291211.YhY0R0se-lkp@intel.com/reproduce)
 
->> Now without READ_ONLY_THP_FOR_FS you're going to:
->>
->>                        |    PF     | MADV_COLLAPSE | khugepaged |
->> 		       |-----------|---------------|------------|
->>  large folio fs        |     ✓     |       x       |      x     |
->>  large folio + r/o     |     ✓     |       ✓       |      ✓     |
->>
->> And intentionally leaving behind the 'not large folio fs, r/o' case because
->> those file systems need to implement large folio support.
->>
->> I guess we'll regress those users but we don't care?
->
-> Yes. This also motivates FSes without large folio support to add large folio
-> support instead of relying on READ_ONLY_THP_FOR_FS hack.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603291211.YhY0R0se-lkp@intel.com/
 
-Interesting, thanks for making this feature unconditional.
+sparse warnings: (new ones prefixed by >>)
+>> lib/alloc_tag.c:815:25: sparse: sparse: cast removes address space '__rcu' of expression
+>> lib/alloc_tag.c:815:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   lib/alloc_tag.c:815:25: sparse:    void ( [noderef] __rcu * )( ... )
+   lib/alloc_tag.c:815:25: sparse:    void ( * )( ... )
+   lib/alloc_tag.c:828:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   lib/alloc_tag.c:828:9: sparse:    void ( [noderef] __rcu * )( ... )
+   lib/alloc_tag.c:828:9: sparse:    void ( * )( ... )
 
-From my experiments, this is going to be a performance regression.
+vim +/__rcu +815 lib/alloc_tag.c
 
-Before this patch, even when the filesystem (e.g. btrfs without experimental)
-didn't support large folios, READ_ONLY_THP_FOR_FS still allowed read-only
-file-backed code segments to be collapsed into huge page mappings via khugepaged.
+   802	
+   803	typedef void (*alloc_tag_add_func)(unsigned long pfn);
+   804	static alloc_tag_add_func __rcu alloc_tag_add_early_pfn_ptr __refdata =
+   805			__alloc_tag_add_early_pfn;
+   806	
+   807	void alloc_tag_add_early_pfn(unsigned long pfn)
+   808	{
+   809		alloc_tag_add_func alloc_tag_add;
+   810	
+   811		if (static_key_enabled(&mem_profiling_compressed))
+   812			return;
+   813	
+   814		rcu_read_lock();
+ > 815		alloc_tag_add = rcu_dereference(alloc_tag_add_early_pfn_ptr);
+   816		if (alloc_tag_add)
+   817			alloc_tag_add(pfn);
+   818		rcu_read_unlock();
+   819	}
+   820	
 
-After this patch, FilePmdMapped will always be 0 unless the filesystem supports
-large folios up to PMD order, and it doesn't look like that support will arrive
-anytime soon [1].
-
-Is there a reason we can't keep this hack while continuing to push filesystems
-toward proper large folio support?
-
-I'm currently working on making the ELF loader more THP-friendly by adjusting
-the virtual address alignment of read-only code segments [2]. The data shows a
-noticeable drop in iTLB misses, especially for programs whose text size is just
-slightly larger than PMD_SIZE. That size profile is actually quite common for
-real-world binaries when using 2M huge pages. This optimization relies on
-READ_ONLY_THP_FOR_FS. If the availability of huge page mappings for code segments
-ends up depending on filesystem support, it will be much harder to take advantage
-of this in practice. [3]
-
-[1] https://lore.kernel.org/linux-fsdevel/ab2IIwKzmK9qwIlZ@casper.infradead.org/
-[2] https://lore.kernel.org/linux-fsdevel/20260313005211.882831-1-r@hev.cc/
-[3] https://lore.kernel.org/linux-fsdevel/20260320160519.80962-1-r@hev.cc/
-
-Thanks,
-Rui
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
