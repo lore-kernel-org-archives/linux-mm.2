@@ -4,109 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7135F3D603
-	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 13:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE156F3D608
+	for <linux-mm@archiver.kernel.org>; Sun, 29 Mar 2026 13:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D26416B0092; Sun, 29 Mar 2026 09:47:30 -0400 (EDT)
+	id C96956B0092; Sun, 29 Mar 2026 09:55:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7056B0095; Sun, 29 Mar 2026 09:47:30 -0400 (EDT)
+	id C6E5A6B0096; Sun, 29 Mar 2026 09:55:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC5A46B0096; Sun, 29 Mar 2026 09:47:30 -0400 (EDT)
+	id BAA636B0099; Sun, 29 Mar 2026 09:55:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A7B276B0092
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 09:47:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 474291AF5C7
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 13:47:30 +0000 (UTC)
-X-FDA: 84599227860.06.7463D51
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E58AA4000F
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 13:47:26 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hvYAsQt2;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A23D66B0095
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 09:55:18 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 46A14160165
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 13:55:18 +0000 (UTC)
+X-FDA: 84599247516.17.227A2CF
+Received: from mail.parknet.co.jp (mail.parknet.co.jp [210.171.160.6])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8E54B80004;
+	Sun, 29 Mar 2026 13:55:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=parknet.co.jp header.s=20250114 header.b=xj+M8VDD;
+	dkim=pass header.d=parknet.co.jp header.s=20250114-ed25519 header.b=4mTxwXMe;
+	spf=pass (imf02.hostedemail.com: domain of hirofumi@parknet.co.jp designates 210.171.160.6 as permitted sender) smtp.mailfrom=hirofumi@parknet.co.jp;
+	dmarc=pass (policy=none) header.from=mail.parknet.co.jp
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774792048;
+	s=arc-20220608; t=1774792516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T3SP4xM7YZbvuy6lJA/m9QOCLsbu+qkchYcys/aU6v8=;
-	b=BpUHGCR0pWLoWgyclPg6MgIldcFYBC7h+bo0g66p8lfvvpTpFRQjRcToJLc70vDVk+ZBWV
-	lCinFWqAAhSF29ri+zAyCWOO6va9GDYRTq+255ODaNCB+umnF4FLmQKGtnR+ZrMxIoXpuj
-	254NjSN/FgHCP1J7Z/3+de61k5KJ75U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774792048; a=rsa-sha256;
-	cv=none;
-	b=tIgYc/2goP+T/c6KqTc0Q62gPazkz/nqd1UqQLXCR/xrxDwVR2cUQ2T/1KL5MwV2rDjgtL
-	psSo7cXMmNSSLbsu3qJ8cj613iAe49Mg/ICvKGlv0ZtQ1az41LIvJa2tq+IExU95UxLN9J
-	KnUvRtfQkgYIAgsTVbScBz4bcULKM2k=
+	bh=KIltfUA5+2NK3wdSivLBU62ecJ7gsJtG2EiE1X57dBI=;
+	b=OSy3ILeYZI1ldwgrdNtShC5C/TNDzLhkbqANeGtY4QvMqVAUb6GZK/xj5ul488Pf7qvrxE
+	nK9NzbINi0ZYzgMRGgB7BmSKz3Prw4BhT2Nx5Acysv17J83bgnE4xlERWrnLViJj97JyN2
+	WgANlJjVOYsv58/lXWUu5BmfaG7rY0E=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hvYAsQt2;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774792047; x=1806328047;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HxHwSqIXKIalnHUH4THevqlWy1d+jJeZ91RpHBQZutI=;
-  b=hvYAsQt2DgPcP4BmOkAHOLieA0mAmFQSIH2QHBoFUrAX92lisrol2Den
-   wyHwAMDiUGETe5nhufFHHBoVl6Q4J4CsXkv2yT2ZLXlNrTQODZ36dsSxL
-   df4oWmAFLGRjwsaBIHMd2s32WDaXxL/zriUYdt9npw55r12xPzNk4clIS
-   nlQ+mZwzO2hPB0IJqBaxdhB7ApI7ocV53GpTRLCeQv1ilAvHbLH01yoZu
-   7ps+D9k9OziYklvjcKY74GOsOO4hEhZ60hIOxPI8W3jyRaBb6aoJgmhvT
-   FVeWyh/P9AOQh9OcTXF/sVJ7J72E3fQqUlyX2ggX/u2KV1x47qUZezSOd
-   Q==;
-X-CSE-ConnectionGUID: gdF2jcNFSXGmLHkNgd5Sug==
-X-CSE-MsgGUID: OMKLX670SZiPIYtazz1Bow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11742"; a="75818119"
-X-IronPort-AV: E=Sophos;i="6.23,148,1770624000"; 
-   d="scan'208";a="75818119"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2026 06:47:25 -0700
-X-CSE-ConnectionGUID: JmQ1czEGRdGH7uHasW2MIg==
-X-CSE-MsgGUID: vgLPKTFjTu2hGP5+E8WFmA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,148,1770624000"; 
-   d="scan'208";a="219170287"
-Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 29 Mar 2026 06:47:21 -0700
-Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w6qU1-00000000CPN-2Lmn;
-	Sun, 29 Mar 2026 13:47:17 +0000
-Date: Sun, 29 Mar 2026 21:46:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Youngjun Park <youngjun.park@lge.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Chris Li <chrisl@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com,
-	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com
-Subject: Re: [PATCH v5 1/4] mm: swap: introduce swap tier infrastructure
-Message-ID: <202603292156.2V2nVz19-lkp@intel.com>
-References: <20260325175453.2523280-2-youngjun.park@lge.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=parknet.co.jp header.s=20250114 header.b=xj+M8VDD;
+	dkim=pass header.d=parknet.co.jp header.s=20250114-ed25519 header.b=4mTxwXMe;
+	spf=pass (imf02.hostedemail.com: domain of hirofumi@parknet.co.jp designates 210.171.160.6 as permitted sender) smtp.mailfrom=hirofumi@parknet.co.jp;
+	dmarc=pass (policy=none) header.from=mail.parknet.co.jp
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774792516; a=rsa-sha256;
+	cv=none;
+	b=swFtpZHED7z+58OGOkOsBo8ZrKnIESc4lI9MaZ3sThPNJoIrAPM/3MGwucim16dB9l0MMD
+	P4RcpEnPf5mcQGS+GVfteUq0UsixF3VN6Coz5R3jorkZWlxDDgj30Fo1x9MCLde8YGzdhx
+	mFHBaXgqTDASYbPKETS+LpcPOYWnkyU=
+Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
+	by mail.parknet.co.jp (Postfix) with ESMTPSA id 7E32126F768D;
+	Sun, 29 Mar 2026 22:55:10 +0900 (JST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=parknet.co.jp;
+	s=20250114; t=1774792510;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KIltfUA5+2NK3wdSivLBU62ecJ7gsJtG2EiE1X57dBI=;
+	b=xj+M8VDDMDYKnn0BJ+hNu63xwfdh96i8SzbyNPO5WVD8WO4XjKjtELvGfOzW7jb+BH9uof
+	KCKAEUdpjs7NKMXdiZ7771WfWUp6fYxK/zTu6kmli8JxLRGrQ6VechGHojzdVyK4komlfR
+	EMOqLFsFYoZl/dOphKK4iUSPzQArLpWSJ5jHPquS/W0LADwfyuX5/zQJrKXZJPcXNLSeO5
+	ZWnZAG6w/9mKgThTrvGOtDu3nGuTLIISot9XQN4y2QhNjO5WG6GYoI0f75rK/WiACFoiLw
+	mV323nsWGwcSr8xmLW5PZvuCGdwNGj0xQuk4gGxAiytp37umZPMuc1DooTrNZg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=parknet.co.jp;
+	s=20250114-ed25519; t=1774792510;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KIltfUA5+2NK3wdSivLBU62ecJ7gsJtG2EiE1X57dBI=;
+	b=4mTxwXMeeuLuGk+hT0eoHS+aiarZC147RAzUWMn12DyWrPq3K33cLpx1j3joSVY+LQsOGz
+	OgcvTa9LfZSIbDAQ==
+Received: from devron.myhome.or.jp (devron.myhome.or.jp [192.168.0.3])
+	by ibmpc.myhome.or.jp (Postfix) with ESMTPS id 03DD5E0029C;
+	Sun, 29 Mar 2026 22:55:10 +0900 (JST)
+Received: by devron.myhome.or.jp (Postfix, from userid 1000)
+	id E9EE322001A4; Sun, 29 Mar 2026 22:55:09 +0900 (JST)
+From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+To: Jan Kara <jack@suse.cz>
+Cc: <linux-fsdevel@vger.kernel.org>,  <linux-block@vger.kernel.org>,
+  Christian Brauner <brauner@kernel.org>,  Al Viro
+ <viro@ZenIV.linux.org.uk>,  <linux-ext4@vger.kernel.org>,  Ted Tso
+ <tytso@mit.edu>,  "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,  David
+ Sterba <dsterba@suse.com>,  Muchun Song <muchun.song@linux.dev>,  Oscar
+ Salvador <osalvador@suse.de>,  David Hildenbrand <david@kernel.org>,
+  linux-mm@kvack.org,  linux-aio@kvack.org,  Benjamin LaHaise
+ <bcrl@kvack.org>
+Subject: Re: [PATCH 15/42] fat: Sync and invalidate metadata buffers from
+ fat_evict_inode()
+In-Reply-To: <20260326095354.16340-57-jack@suse.cz>
+References: <20260326082428.31660-1-jack@suse.cz>
+	<20260326095354.16340-57-jack@suse.cz>
+Date: Sun, 29 Mar 2026 22:55:09 +0900
+Message-ID: <87ldfazqo2.fsf@mail.parknet.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325175453.2523280-2-youngjun.park@lge.com>
-X-Rspamd-Queue-Id: E58AA4000F
-X-Stat-Signature: izsakb6mcyuj51deiwai8wj1ik4o9dih
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 8E54B80004
+X-Stat-Signature: 4ma4t97jhdnn9cj174h49z3pnz6rapri
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774792046-691858
-X-HE-Meta: U2FsdGVkX1/Yzm6VXa859wSItX8SYuzfs8aObltHk0ACojgH8OEdWjiH8bH+1WyxgWANiF/eLFXym8TUrnMp/ZV4ppysaLy3/SHnwDUnqqtgnS+VBEWC7oAfd4MwiRkvkKiVliVbeXvXiady1qefntNiVQ/82KzPDdx8Mo1h5PXzDcJpNXEesqpFPhNmnTdJE4JtKv6e8eMDAEY0MTptitw4GmFmfVB0H756IsD/1w1YVmHBEvGfetDmgbUp33uUQQeFPh1iFV5OcymR87ojOpdDrBqPAql7NvAkkn2l3P6iAzP6sdCe8dI14Wq2Pc8tV1vhcIQPyfb90gn5FZ04Df86SV/fCF5ovNhFn0LVCgFKTf0iGsufCsgVbzguxKVpSYD/Ju8CFGKLXL3+wyMoRexulpJz1WAEX2yOpKLHPvHlR/u3IDmrf1OUXiJT32BbfufwiDsnZW3y96V4RBwNyqfpfRmq7Y79vlrxN244EfksHuWMI5V2AIAwH9PBORkSDq0KxBcYhmP540oqJ8QN28DqQ0Oq1+uTp4n4fKM8fdvvBCu1TNGr3Mu5wQRY6+mkSX/RWFnY/dPa7ARlFif+SkJ/0Jjy0EMP2LZu4JDLO5LjDu0Rxq6T2yj9/Siwq23hnGk1ZALtohXYVkqEJidwRmiT4xBT0hoY0XYpDwZtiV4p05TDbspkWejo61y9/KTCnpSrZVqiH9VkfSb2VsCakeBjQ+a6ujz5koD8kJhc27pDDsEtgu9g3lyxBMj3jtQZSkQGfgMJd/W5kYptP9sxo5zRuxIAnD/YqMGy+yJVrhtD5/ev0jfThfm5zOSR9q7s6ZDILGEQHx+Gd68r8hGD1a/UeDY/Vc5P1cNuzf0rhRakgoERI1O/j1+Te5jTj1jlW+84Aworfhts9g+5pNtr5T07O4JL+GKUhKvhqqxlFCUiAnKxVq3DJTifSYB29TCHGG9zpdYsHBPaEr2FQ4E
- XrLDR2o5
- T+QyTK5PpMIo0Kw8j3Q4hQI+lrCvewL83x1CBf57gymlKNkWKmW5rhIThGXlYyjRe7cYhTwpZFAk3n8+9f2GXdwqpz06Bb1WXH/DOKKsbmki6qkKGuiRMq2Ov7EGaU13pAgvu1HrU/UNsvEbk9p3xb4N5oLK5ycZaocgMpjyUEz8INFUVlDt7LiloWMOM/Lnj/3lMZN2GrfQ3Q1/vOEv6SeUQVWF2kQQIbY4IR1RjK2NFOdEZqAhmGiCo9uRVoW3lauzTzabcRjH4y3k6J3i4NmFcp+T79NVukPOYZhsbQuBM1udQV/xQkIbk3K0re4Kh8JxW+RiP1i/oih+b1TM1lT8ggmvw07JeZpHJ
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774792514-735263
+X-HE-Meta: U2FsdGVkX19R9IpWcPE84GEc/S+EqJRYfdZW9u7vGMaxf+B2P5az9ab2+yZ4N3Z43km9ti8ZN6Tu78xZDU87Q8XdvdcL2vIlmRs9M+aqtCtDSeCkTE8LRKRBhPh8Ew1BGk1CGnJQPAm56q2BFzRnigWySk6EcK11KaR1X/TmhzMSWhrjsNIvHJmkPYRbEIzUCcAwfsmCd+ccQpxFp4dlAiVaBu+EI6LQld+BzduROJvjRLfwjBTdobjq7RSzYd2ctdw3YkAU/fN82hvSeECVVBZ1KmhYwlPMFjCZ/M7ADgExHIoBYzZU2L1RHIzeX268aabRzZ7yy6XpKVx6RgHV84nnxV/bH1VqWidO4oNQilqZ+zg4bqWNJptbcOt8MybCT09qJIESYFca3gCJeaI+xGTrWC/IagPTkK4vFeECVuF0drm9v12BCKBpa3d8DnIRN3HfMJ8bzdAGgHrCSvJWVxIf2Ucr+s39yzQjTkNsI8XcFvdOXcpPL3Aaa4mgTPRaaciwV4KXb5rS9XNdBL8HpW9FvrBbg8qYc3pTNHcGr1LdElo1LQUhi3MOo/wfhVPnUXiaAHqw/E05IeBrZbMZ4OI2Am65SyAzjdGpxV4xsy6Zul+2gonVKbfsJ9wTgU5dI7hrPJan5UINfgl97MXqa6qHgPdYLRRYJNB8CZgFo814YsXHARa9/F7kNjLn8VjzwAPrPxtmVjgJIzEUgB5hj96PbPq3QbbKphcEUigsA6cSzep1Lvydvppji6TgpxdhZJqJyB6gm56PMUEseyD75KsXOLceFklv8zyqkxa8VTWRbM2tb2aZqC+PHHs1yOuqZ50S+G/0gHU9MEo2VJhTdEUQipWiriT6ZgZiYFH88ocYK703NDGYZYZ/WZb5/VZ70uqNFbQz4tUiH79KOyUwv3mkKgfsDwKrIA08BYznScdhA/sB+VJQrK0uVsk6ANoIrUWtH9cbv9Rge45B+zM
+ N4yB8II2
+ ZtIHE0vptDk0uT+i2RAgOoKnskwVy8uEO0hkxtXrVYYH/25WZGzIInEyU+iiNhBruipLFOZ6prpWlZBjfwYZTSs29JeaiV6WVgI+oEN13PUjnNcKWsKAdTkq/ymwOsmLuKHM7wBVDAD9TW8spHhtn1/safCv4KeZlEL89XDTSpYICnGRsgKHfivraijUGAUBXNZFBFRFjKif5MdAlsTDcIQTVXmBa9AfUVn5q2VlwcDlglNi4lX2Qmh1PrAKyHuL/Hwo82pNIbN27wibwgoQzLa45XuxteHnMB04NOpOKA4taKyamKvRtBobU2oA4iFrheNjB93nSNqnq5VLrz6m4N63baBT1jHdjcRY1KKtOnARsNsijyZ28Pw9dzlZXKISnQNYh+thMNHQqRxbrX+mla0+Cdklhd/bxrs3MWQTp+icJqqNMZQjG1IGkYd41BOsWSp/kWPryPvOh0syrMT+XhQIo0N6og08B4OAYtKFDF8iPrCw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,62 +112,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Youngjun,
+Jan Kara <jack@suse.cz> writes:
 
-kernel test robot noticed the following build warnings:
+> There are only very few filesystems using generic metadata buffer head
+> tracking and everybody is paying the overhead. When we remove this
+> tracking for inode reclaim code .evict will start to see inodes with
+> metadata buffers attached so write them out and prune them.
+>
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+>  fs/fat/inode.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/fat/inode.c b/fs/fat/inode.c
+> index 3cc5fb01afa1..ce88602b0d57 100644
+> --- a/fs/fat/inode.c
+> +++ b/fs/fat/inode.c
+> @@ -657,8 +657,10 @@ static void fat_evict_inode(struct inode *inode)
+>  	if (!inode->i_nlink) {
+>  		inode->i_size = 0;
+>  		fat_truncate_blocks(inode, 0);
+> -	} else
+> +	} else {
+> +		sync_mapping_buffers(inode->i_mapping);
 
-[auto build test WARNING on 6381a729fa7dda43574d93ab9c61cec516dd885b]
+Hm, why do we have to add this here? For FAT, if buffers are still
+dirty, buffers will be flushed via bdev flush?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20260327-203639
-base:   6381a729fa7dda43574d93ab9c61cec516dd885b
-patch link:    https://lore.kernel.org/r/20260325175453.2523280-2-youngjun.park%40lge.com
-patch subject: [PATCH v5 1/4] mm: swap: introduce swap tier infrastructure
-config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20260329/202603292156.2V2nVz19-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260329/202603292156.2V2nVz19-lkp@intel.com/reproduce)
+Thanks.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603292156.2V2nVz19-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   mm/swap_tier.c: In function 'swap_tiers_sysfs_show':
->> mm/swap_tier.c:116:59: warning: format '%ld' expects argument of type 'long int', but argument 5 has type 'int' [-Wformat=]
-     116 |                 len += sysfs_emit_at(buf, len, "%-16s %-5ld %-11d %-11d\n",
-         |                                                       ~~~~^
-         |                                                           |
-         |                                                           long int
-         |                                                       %-5d
-
-
-vim +116 mm/swap_tier.c
-
-   105	
-   106	ssize_t swap_tiers_sysfs_show(char *buf)
-   107	{
-   108		struct swap_tier *tier;
-   109		ssize_t len = 0;
-   110	
-   111		len += sysfs_emit_at(buf, len, "%-16s %-5s %-11s %-11s\n",
-   112				 "Name", "Idx", "PrioStart", "PrioEnd");
-   113	
-   114		spin_lock(&swap_tier_lock);
-   115		for_each_active_tier(tier) {
- > 116			len += sysfs_emit_at(buf, len, "%-16s %-5ld %-11d %-11d\n",
-   117					     tier->name,
-   118					     TIER_IDX(tier),
-   119					     tier->prio,
-   120					     TIER_END_PRIO(tier));
-   121		}
-   122		spin_unlock(&swap_tier_lock);
-   123	
-   124		return len;
-   125	}
-   126	
+>  		fat_free_eofblocks(inode);
+> +	}
+>  
+>  	invalidate_inode_buffers(inode);
+>  	clear_inode(inode);
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
