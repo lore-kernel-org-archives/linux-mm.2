@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A2E71061B04
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:38:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 008C31061B04
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:40:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5B4D6B00A5; Mon, 30 Mar 2026 10:38:55 -0400 (EDT)
+	id 6A30A6B00A6; Mon, 30 Mar 2026 10:40:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B334B6B00A6; Mon, 30 Mar 2026 10:38:55 -0400 (EDT)
+	id 67A246B00A7; Mon, 30 Mar 2026 10:40:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A21FA6B00A7; Mon, 30 Mar 2026 10:38:55 -0400 (EDT)
+	id 590F06B00A8; Mon, 30 Mar 2026 10:40:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 90A746B00A5
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:38:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 446731407F1
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:38:55 +0000 (UTC)
-X-FDA: 84602986230.14.2D0BD3F
+	by kanga.kvack.org (Postfix) with ESMTP id 477116B00A6
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:40:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 12BD61A07A3
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:40:15 +0000 (UTC)
+X-FDA: 84602989590.28.6CDA275
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8AF2512000B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:38:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WbBhdo3T;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5EBC140013
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:40:13 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mr0bhzOC;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774881533;
+	s=arc-20220608; t=1774881613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EzhSrELvkS6EdHXYD4ii5EkLO4SkEOW4vMbzXFfPuz4=;
-	b=RS1vrJVvHfYF2zgmBymZtjHu+R3pjCp0eBdTlfHfiy67DnSNeVKOyJWk1b0eZky5BVrLuy
-	oeJRkU7bQTgTgKvQI+gw60LKuumXXI6t4u47To6qkkZ/cuwceAhiINZ086sSOX9LGHWinx
-	kYiEHenUopnHa0uN4ROTCUDM6UizLmI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WbBhdo3T;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774881533; a=rsa-sha256;
+	bh=PQEwpAdOtErCs2uht+fY3XnhJaE4gKVVLvFBWhCjdJ4=;
+	b=BxLoHy8dFK8Aa5P0FxZjozbgA33XnZAa2Zq2NizlDTaZsX9suvyEURcnB6u+d6nS+4lXdF
+	A9FR6U8yCwnQJkLYImbmoWY/JbIPf+BP+aMg2nrEuHDeCAsNzx8iPBJyAiCJILiHlazV+Z
+	UyESrtmAWCMz0HOZqRn+rwbFly5JPX8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774881613; a=rsa-sha256;
 	cv=none;
-	b=6wXF/3MzNAXYAJcnIHBEj5AjwlyPdZWWOlOnnD4HW1+BP1irhnjV62Itk3ZgQegLm6XwC2
-	QamxRblBvwbdp3AJsxWRsonPAKILdHbEXPddSAKvSwTvSCK9y2qZRjuehnV/jCpdDOXnf+
-	EDnKvEXNgvBKrrQiyI1vMSfA+N2rvlo=
+	b=ynqVtGCif9CbaRGYSnG9C6YggZC/5KoXrNb2hqtPFmuWiLhAacNt9xZM/13CqD2sB+cTJA
+	dJWKFe+bms5gjNNY2ACI6yil9PyH7xijtclSFzyVKl5IIhu4XXfMmelm0BE9ety3/Torug
+	k9N9YnZY0f2KI+NHXc/e3kP3xXr4DXQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mr0bhzOC;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A00C0444F1;
-	Mon, 30 Mar 2026 14:38:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23E0C4CEF7;
-	Mon, 30 Mar 2026 14:38:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E68040A8C;
+	Mon, 30 Mar 2026 14:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D278C4CEF7;
+	Mon, 30 Mar 2026 14:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774881532;
-	bh=I+rybS26QbA/CWVyj7rYJDrSj5jkFXVL+QylIC4QFaQ=;
+	s=k20201202; t=1774881612;
+	bh=hPMlz0sv1WZCrJthrxFzLRZrCnBnLEucQe2yPiuFRrg=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=WbBhdo3TzUKG3gOPg/9iehVdD3VcXIHKHdkMjIaHQT1rWya4Mw8cVastwWfaiRa/p
-	 DKurw/bIvbH43yTwW2KsIeomTRuW+xNUZrXjHZj+iSi7PH8GQrotpoZQ8K5IpeZzP6
-	 SAbWVmKKb76Y7Aw1eZCbHzJM5VS+0ieylB6xwOteSv0byjrKKm/pp6HJKe1uaQC6Q0
-	 QFzjRUzGfszXg+XqgbOV9nezyCmsq+xD0kBTEp5kjxLmKf4vBSSlV94+sNRwWlP22M
-	 WhAWipsk/u8DkQURTKXyF4ARHJHX/76RdeFXzR6V704X1v3+clgLuw0RUT4gw7xDj+
-	 7+fN5UOdSgJMg==
-Message-ID: <82e4055c-2343-49ee-b772-d3f4d134f8d0@kernel.org>
-Date: Mon, 30 Mar 2026 16:38:47 +0200
+	b=Mr0bhzOCM+faC9EzaczJiL6lHFEuQLvIE2LzMyEKb59F549f5zAO6cuVNhef6Y94A
+	 umPWez+Ixm9KqUIJqr1N7eT7qvPVcNO0BnancIKCUdXWoWmnjMmdu4zTRgDNcGa+So
+	 tByUeZ1VuYCakPMojk+PaOavsW1BWYQWin9KayJWElqkPFkT/d27+pPXj3rqDLUfXi
+	 CJx/PsfdJ1HfHIX6SXBTh0SHoRIcdfNsUqfo1c0DEK1sph6cnv8yhFKdlZHnE/paUN
+	 vJP4VJdCDPU/YIaExzxqN0m6H+2P6YLGSQjsNtMsPYqIUsYJ1MZOBPTle+35kLw0Lg
+	 RCtsJ4z4zLMtw==
+Message-ID: <10888c66-add3-4142-939a-8f4557566bd9@kernel.org>
+Date: Mon, 30 Mar 2026 16:40:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] vmalloc: Optimize vfree
+Subject: Re: [PATCH v4 3/3] mm/page_alloc: Optimize
+ __free_contig_frozen_range()
 To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R . Howlett" <Liam.Howlett@oracle.com>,
@@ -81,7 +82,7 @@ To: Muhammad Usama Anjum <usama.anjum@arm.com>,
  linux-kernel@vger.kernel.org, bpf@vger.kernel.org, Ryan.Roberts@arm.com,
  david.hildenbrand@arm.com
 References: <20260327125720.2270651-1-usama.anjum@arm.com>
- <20260327125720.2270651-3-usama.anjum@arm.com>
+ <20260327125720.2270651-4-usama.anjum@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260327125720.2270651-3-usama.anjum@arm.com>
+In-Reply-To: <20260327125720.2270651-4-usama.anjum@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5EBC140013
+X-Stat-Signature: 43uth141r76ssbckr1i5tnur3pci4s19
 X-Rspam-User: 
-X-Stat-Signature: qkaiifp486rwj9hpyx9pq5upd11uz6ja
-X-Rspamd-Queue-Id: 8AF2512000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774881533-532983
-X-HE-Meta: U2FsdGVkX19wdGBskxxei/UQu0Am/TqmRqc5lpER5xRq94ajFLaEJ5o8VN+DmRDPCzYRAIyCwPqWLqiOxUwqa/KdMwtblA3oOjFNTnaqa5QMLhIx8UWeB56faKXA2iyj7170botmKz+mv/s+FGSI0EbX8snIhMrv6AaIEj12K9nwHTJWP6U86661o3O/DGnayhLHPoEbKa+TiYIYe07GANPBPEGjezpJt36vWEJpcgCLcGxELceslAEGIpXzBR7C/uo46EP3LBTzUqcHlXZNNwtYBlIGbszZOP5WybDpiuBDVix0zovlEzGc6Q6ov7HGICbpO/HBJStms4MDo1Y3BXDnwBlhId2X2y1nwnpJBtUenp+wI4Cg3qfvUo6wZzogRyhWGwUJ7ul8q1emFDEiP48vus4EfaIokhLVVWpANj3qw5dWR0Gl922XiLTcHuV7glQJbIfK1BOTvR9Q2em21SLb3v6TXD8XXGBddJOp4BUms9tExN8m2RUVjeAw8OqJcK8g9sO6+4+PP0VoxyJ/i+toRCB3YI71LW1+fBzfU7WmKqyuegwGCKJFXPWqX222iDsNWRIVU5c4Yw6f/xJ7S6RT3ZqeedUOgLyO8918F8y1dun8VyfyqSP9ApBSp7XVdt35BsZqOY1eHgf2MwsPSoOL0/babCPbxtiTARjcL0OoyV/4Z0HI/6jipTkmt/1gPZ05ElFae7SRPCI3AAwWP0JCxBPXcPogkt+MLwWFY0J+JmkHM0xqu2jc3Z5c5JbVv3863w/UeDbMuBU0bWpkBmTcmRPMx1Lq7Gs0lBBYBwVITm82LY3rdbE/V/o8kmZ3RC0zduCXvDVZWxdPvxoip9uW8jvidysWNTwi+3mxQiMqQsDKnHJmT7jkifgSnKPnuHb658YEDpWoit/XYSuUx5kymDDP1PNH298SldHdE+Qx80AXB1ArKok4Gy22ga0l/vGU3uEAwGYBHVC5/C1
- /YrgiLk8
- m0nvMWlNYN5WJ9NNAe8U4mT/FvhsAdGSeWC2b
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774881613-728906
+X-HE-Meta: U2FsdGVkX1+jDmQ4y7S+K3+HTnPZOygdvRx881HNWGUODIGbwlgsM9qBJqivusKii5MlHJeKQVzeLrmn7hdcYClWIFc5Fk8NS9F8ehnGV1FIOikaCPtpMhx91SnmsCVnOOSjl083RQPnFY3qhq36m2f8qGP+9O2WOuypBK4JotTfHSedesF5coDxOaNGXPXhpINAHG1NrQA5Nx5q7KNuOSxqsNizPfKk65j5HKV0MITGk3etAh/f+O4mVc+6z/9RGhJkV8w65zVX5Fe+F5UDkCGRa1f3xziaxO0wyroo7AcfUe6ovjM6Nxg5UlHPDJbQr/WeNMX0qdUSY1HAwVu5U7wg1EalG2YS2voDNIb/vqqHVNbh+UOnzhImaBmvwtFJkuYR4XjHUvaZh48av/414rp1M26maRDNKwtowjYzMiZMUj3bHIcCcxhUQEOX28It7mN4B528O2DNOBw/+BKz/4NyX10WSh1Q9YdlVnwLARdjQhaGo5rKDDE4TRUrXiib8pPqgAEm1chCf16ewoVOq31ozwNr0/VZh5juMBzRDQ7beaCqxF77NWmQKTLnfQcu5DEzE52IVvhzUQ7Zj9ORooMEpmN5LLyh3OcfwWoH+P1ooHUDltEb7n6FQYChZcM+m/OW7iG1ffSBwEt2pUKtboFvu4faqYsjxtxMdITQMzMrdirmx7OLhk4nLmgFdNwJLnT50OWb4HafZuRlbZPKuMLwyhqN4qmkk/JFvQigNM6hOJ1N8WacUvpYBMYtnmj7eHW7XsYLzn5RAAxHIgwVmWnU8MoYcsiz/ewiHZR0aaauR7GneHcYnkXDbmiG/qa9LEtieywUFZa0s4eMuXbD8UqcJvvwqhKIZpv7ulxM4HA34bLZZDP1j2pPLN5PHdkFZGtjhlaFAsL92+56pvYzm00Gzgk2kIeTET2m8z0KpnvUY5SAm7nEBBE7mguzQRY2wmf1wo2mrDLiZCggvsI
+ G7c1ezYy
+ reZpAuLsTa6MJg3ZyzBCBo/j7iQcIfNe+1XIXFXFegVWT/Za4Yfq9G7QUO1qJMBo4CTqIkviQBLmzgqg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,150 +148,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/27/26 13:57, Muhammad Usama Anjum wrote:
-> From: Ryan Roberts <ryan.roberts@arm.com>
+> Apply the same batch-freeing optimization from free_contig_range() to the
+> frozen page path. The previous __free_contig_frozen_range() freed each
+> order-0 page individually via free_frozen_pages(), which is slow for the
+> same reason the old free_contig_range() was: each page goes to the
+> order-0 pcp list rather than being coalesced into higher-order blocks.
 > 
-> Whenever vmalloc allocates high order pages (e.g. for a huge mapping) it
-> must immediately split_page() to order-0 so that it remains compatible
-> with users that want to access the underlying struct page.
-> Commit a06157804399 ("mm/vmalloc: request large order pages from buddy
-> allocator") recently made it much more likely for vmalloc to allocate
-> high order pages which are subsequently split to order-0.
+> Rewrite __free_contig_frozen_range() to call free_pages_prepare() for
+> each order-0 page, then batch the prepared pages into the largest
+> possible power-of-2 aligned chunks via free_prepared_contig_range().
+> If free_pages_prepare() fails (e.g. HWPoison, bad page) the page is
+> deliberately not freed; it should not be returned to the allocator.
 > 
-> Unfortunately this had the side effect of causing performance
-> regressions for tight vmalloc/vfree loops (e.g. test_vmalloc.ko
-> benchmarks). See Closes: tag. This happens because the high order pages
-> must be gotten from the buddy but then because they are split to
-> order-0, when they are freed they are freed to the order-0 pcp.
-> Previously allocation was for order-0 pages so they were recycled from
-> the pcp.
+> I've tested CMA through debugfs. The test allocates 16384 pages per
+> allocation for several iterations. There is 3.5x improvement.
 > 
-> It would be preferable if when vmalloc allocates an (e.g.) order-3 page
-> that it also frees that order-3 page to the order-3 pcp, then the
-> regression could be removed.
+> Before: 1406 usec per iteration
+> After:   402 usec per iteration
 > 
-> So let's do exactly that; update stats separately first as coalescing is
-> hard to do correctly without complexity. Use free_pages_bulk() which uses
-> the new __free_contig_range() API to batch-free contiguous ranges of pfns.
-> This not only removes the regression, but significantly improves
-> performance of vfree beyond the baseline.
+> Before:
 > 
-> A selection of test_vmalloc benchmarks running on arm64 server class
-> system. mm-new is the baseline. Commit a06157804399 ("mm/vmalloc: request
-> large order pages from buddy allocator") was added in v6.19-rc1 where we
-> see regressions. Then with this change performance is much better. (>0
-> is faster, <0 is slower, (R)/(I) = statistically significant
-> Regression/Improvement):
+>     70.89%     0.69%  cma              [kernel.kallsyms]      [.] free_contig_frozen_range
+>             |
+>             |--70.20%--free_contig_frozen_range
+>             |          |
+>             |          |--46.41%--__free_frozen_pages
+>             |          |          |
+>             |          |           --36.18%--free_frozen_page_commit
+>             |          |                     |
+>             |          |                      --29.63%--_raw_spin_unlock_irqrestore
+>             |          |
+>             |          |--8.76%--_raw_spin_trylock
+>             |          |
+>             |          |--7.03%--__preempt_count_dec_and_test
+>             |          |
+>             |          |--4.57%--_raw_spin_unlock
+>             |          |
+>             |          |--1.96%--__get_pfnblock_flags_mask.isra.0
+>             |          |
+>             |           --1.15%--free_frozen_page_commit
+>             |
+>              --0.69%--el0t_64_sync
 > 
-> +-----------------+----------------------------------------------------------+-------------------+--------------------+
-> | Benchmark       | Result Class                                             |   mm-new          |  this series       |
-> +=================+==========================================================+===================+====================+
-> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |        1331843.33 |         (I) 67.17% |
-> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         415907.33 |             -5.14% |
-> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         755448.00 |         (I) 53.55% |
-> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1591331.33 |         (I) 57.26% |
-> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1594345.67 |         (I) 68.46% |
-> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |        1071826.00 |         (I) 79.27% |
-> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |        1018385.00 |         (I) 84.17% |
-> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        3970899.67 |         (I) 77.01% |
-> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        3821788.67 |         (I) 89.44% |
-> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        7795968.00 |         (I) 82.67% |
-> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        6530169.67 |        (I) 118.09% |
-> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         626808.33 |             -0.98% |
-> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         532145.67 |             -1.68% |
-> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         537032.67 |             -0.96% |
-> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        8805069.00 |         (I) 74.58% |
-> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         500824.67 |              4.35% |
-> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |        1637554.67 |         (I) 76.99% |
-> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        4556288.67 |         (I) 72.23% |
-> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         107371.00 |             -0.70% |
-> +-----------------+----------------------------------------------------------+-------------------+--------------------+
+> After:
 > 
-> Fixes: a06157804399 ("mm/vmalloc: request large order pages from buddy allocator")
-> Closes: https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>     23.57%     0.00%  cma              [kernel.kallsyms]      [.] free_contig_frozen_range
+>             |
+>             ---free_contig_frozen_range
+>                |
+>                |--20.45%--__free_contig_frozen_range
+>                |          |
+>                |          |--17.77%--free_pages_prepare
+>                |          |
+>                |           --0.72%--free_prepared_contig_range
+>                |                     |
+>                |                      --0.55%--__free_frozen_pages
+>                |
+>                 --3.12%--free_pages_prepare
+> 
+> Suggested-by: Zi Yan <ziy@nvidia.com>
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > ---
-> Changes since v3:
-> - Add kerneldoc comment and update description
-> - Add tag
-> 
-> Changes since v2:
-> - Remove BUG_ON in favour of simple implementation as this has never
->   been seen to output any bug in the past as well
-> - Move the free loop to separate function, free_pages_bulk()
-> - Update stats, lruvec_stat in separate loop
-> 
-> Changes since v1:
-> - Rebase on mm-new
-> - Rerun benchmarks
-> ---
->  include/linux/gfp.h |  2 ++
->  mm/page_alloc.c     | 38 ++++++++++++++++++++++++++++++++++++++
->  mm/vmalloc.c        | 16 +++++-----------
->  3 files changed, 45 insertions(+), 11 deletions(-)
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 7c1f9da7c8e56..71f9097ab99a0 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -239,6 +239,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  				struct page **page_array);
->  #define __alloc_pages_bulk(...)			alloc_hooks(alloc_pages_bulk_noprof(__VA_ARGS__))
->  
-> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages);
-> +
->  unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
->  				unsigned long nr_pages,
->  				struct page **page_array);
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 18a96b51aa0be..64be8a9019dca 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5175,6 +5175,44 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  }
->  EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
->  
-> +/*
-> + * free_pages_bulk - Free an array of order-0 pages
-> + * @page_array: Array of pages to free
-> + * @nr_pages: The number of pages in the array
-> + *
-> + * Free the order-0 pages. Adjacent entries whose PFNs form a contiguous
-> + * run are released with a single __free_contig_range() call.
-> + *
-> + * This assumes page_array is sorted in ascending PFN order. Without that,
-> + * the function still frees all pages, but contiguous runs may not be
-> + * detected and the freeing pattern can degrade to freeing one page at a
-> + * time.
-> + *
-> + * Context: Sleepable process context only; calls cond_resched()
-> + */
-> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
-> +{
-> +	unsigned long start_pfn = 0, pfn;
-> +	unsigned long i, nr_contig = 0;
-> +
-> +	for (i = 0; i < nr_pages; i++) {
-> +		pfn = page_to_pfn(page_array[i]);
-> +		if (!nr_contig) {
-> +			start_pfn = pfn;
-> +			nr_contig = 1;
-> +		} else if (start_pfn + nr_contig != pfn) {
-> +			__free_contig_range(start_pfn, nr_contig);
-> +			start_pfn = pfn;
-> +			nr_contig = 1;
-> +			cond_resched();
-> +		} else {
-> +			nr_contig++;
-> +		}
-> +	}
 
-What happened to the idea of using num_pages_contiguous()? I think that
-should generate more efficient code (all we're doing is comparing
-pointers really on SPARSEMEM_VMEMMAP) and the end result looks more
-readable?
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
