@@ -4,125 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F24FC1061B09
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D78DD1061B09
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAC6F6B008A; Mon, 30 Mar 2026 10:56:14 -0400 (EDT)
+	id 0A36B6B008C; Mon, 30 Mar 2026 10:59:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C84286B0095; Mon, 30 Mar 2026 10:56:14 -0400 (EDT)
+	id 07B266B0095; Mon, 30 Mar 2026 10:59:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9A216B0096; Mon, 30 Mar 2026 10:56:14 -0400 (EDT)
+	id EF9D06B0096; Mon, 30 Mar 2026 10:59:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A81536B008A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:56:14 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53DDFC210E
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:56:14 +0000 (UTC)
-X-FDA: 84603029868.12.1E82D51
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6143020004
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:56:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DipxXDNX;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DF2E16B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:59:37 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 966BCBA56C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:59:37 +0000 (UTC)
+X-FDA: 84603038394.18.C9D206D
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6CBCB100004
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:59:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774882572;
+	s=arc-20220608; t=1774882775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XWKiqYjc9QcqJoKDuyruIGFZFhuWm0LaKPO8vIwd1A4=;
-	b=fwp1G/SMLzG5eDXNqdmXtLzmPtpFccAyKh72UY/ep3HEZXkz29/sIZo0BSHL/dFceEpq4v
-	6x26sIrpamgl8c/NlzAXNKnW32gzyBo0hg34YvnGK/t37wROlvUgrRdlQTKYca30kW77Bi
-	UAWqxYCYd/qtnOIIgVPGV+GqrDpoMIE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774882572; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=PTNxb6Etn5WzbggTULw5IA9naJw19ig+MxlkE2r34ZQ=;
+	b=rX2e2Rq4oFL9EdNVX0cgAvmqInee2eHiN46d02RsklP8NuOhDGjPDetXebI56irWZk1mZG
+	/NSqPwIQ0vvaXf4FjfA+KQzKtTOJ7Tw+Zfta7ZZvzy7pwjrrzffdeoTqQ0t4V8WddkUJE3
+	YJX7Bjrakd/Ut1ZV23R/MUTHGsXUWto=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774882775; a=rsa-sha256;
 	cv=none;
-	b=iVeL5NOA/YtazpVeQXSo70e5xuAoZT3DB2rLmqfXihQN4Ri/sizi+rkztsJ8eQCJz2B7Ia
-	93FjiEtmt4vt4cl16xyTo6YRBYSGQVMW2Q77WX1rEry7Nv2FfLcsYTisiShDAb5wdROQe+
-	+YeWrDyEsfLJ3+tTF0JDSwRRne06EGQ=
+	b=wpiRmtgHwKwypK59SJHXQ8U+qdWrZtZbUlB2cewQ8oYphd2/vZb1P8XHqi/nGNmKyCllZQ
+	zU998Wh9CpUJSNwiHySpR0ZLZA+pa7HXIYG4nOpfD6RzzCdzDkfSToOov9QuVmBSi8GMhf
+	msAchV6viStwcqgsqGOGdD1L5p1Y7xs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DipxXDNX;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7d4c383f2fcso4427813a34.0
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:56:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774882571; x=1775487371; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XWKiqYjc9QcqJoKDuyruIGFZFhuWm0LaKPO8vIwd1A4=;
-        b=DipxXDNXNy03jgUHK2W6Z9VmzYe16yzUXrRrdJsk1mBk7++vRkLoTMyg1GwWa+zpxI
-         vs+umZek+XYGa1QjEAJ2V0MbfwUCau1WrwphP+uQbdCQazwqxkEluMce9ntBZjqx3V0p
-         a97ZGl0yLyY/izKJCI4bGbdbPe1MYr51ymKf3qhtipCRziM/89wisgO93tuA46Pw0Eo+
-         EzH8MoDGc3hYNQ4dCb2pPgLsukka78kL9q84GHwG1pKjrE0CbZZSsbgiBMOR1RJWMhPF
-         U11Qf+4MQgVHSIVOewRwXJhCiIVidCU4wapfWGI0eOUn/bGID6Pn71BmGX3z5oQU0djL
-         kzSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774882571; x=1775487371;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XWKiqYjc9QcqJoKDuyruIGFZFhuWm0LaKPO8vIwd1A4=;
-        b=Ht+G8BmDHhW5aLnX6HKzYwWn00MOSCmHzgkDB6HDOW61U6hhwgNCGUXTTVIWqhti8T
-         lH7G0DrQ3NlC34X1o/DOs6CztWKMeQioQ6MaK3PEDCSOyfGPvrwwGgBssucwf+Z4wCqB
-         5feQgP2F//sndS09gBVHhsE4+WDxzJgHsMq5urDIxqwg4uKPsgIJUFZrkAZFI9CvtDMO
-         661lJwN+oslooGMZIobkLCz89NIuuxP7ii8H93FDWR14OWjG6rtaHzo2Nv2Rl7qLd2hR
-         CPZ/okUBr9mDVO2tPQi4tqlgCVIdStgPJHsAT4PYWTgq5gAM4bV1Ed0MVyfCj7gxZNmH
-         OZ4A==
-X-Forwarded-Encrypted: i=1; AJvYcCWQJ4r93a0dljYtt92GWTTFBrJGXDl+tRwBkrOj7kJ4IheG4w+eGTi59RMHewbso3yCD50hQ1zfWw==@kvack.org
-X-Gm-Message-State: AOJu0Yw5PMvoKJNWq0HhCfK8M8LR3KlYjR6ztLKweI0LqZbHRl1Gf83r
-	/cHhxogNAQ3vIqlNXNd2YS/d6gWlQyGThbZzb5e5F1tfeJtFqfvExQ2o
-X-Gm-Gg: ATEYQzzkq1U9kZtgLcGZygDcoBTNYTpcnWbEDORufQ/ckMwQUTb5Vf4GIfaDYYRiNO3
-	3Fy7BG2xWk48h/jhwEvnHuX8/BLcIO0n0HWzJxz7ypO+lKJheqJg00gjsJLbaND/6rvvLP5f1fX
-	RFMQnH9NFRSBQ4J5DSh52kQ5gwYpeJRPHONwtmBfOW3XCJnCLjbiH42KG2Wc836Y1YeaQ2msWCS
-	rWNrguAWbOEBwerdAp5sLcAPQIpZbPKr3xFbeQYGFK3yqxqG1SruoznqSlEC1p+zcVamaTdiZo6
-	wpUb6IN9NrGTGH3Hx/uALn1LOqg6BDSUTlaAJ+4y5qD2e0gN4RZI8eqpNdlplLzPGJjd08u6yxI
-	YbeqFt582hJeqzsoR/JHzVYvFzmGOLm8bcQ/n9pLXIejuoqVKHo1Kp9cosSvBu9oK68KUIcEJ42
-	6Adet+XycuLY7shUfO8kH5
-X-Received: by 2002:a05:6830:6a89:b0:7d7:d15a:ce8e with SMTP id 46e09a7af769-7d9fafafb09mr7526126a34.32.1774882571282;
-        Mon, 30 Mar 2026 07:56:11 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:7::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7da0a864514sm6135587a34.26.2026.03.30.07.56.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 07:56:10 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-Date: Mon, 30 Mar 2026 07:56:07 -0700
-Message-ID: <20260330145608.3574897-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <acqG2Mr5ekCn2HD0@tiehlicka>
-References: 
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fkvX506BTzHnH6r;
+	Mon, 30 Mar 2026 22:58:45 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 67DDC40572;
+	Mon, 30 Mar 2026 22:59:30 +0800 (CST)
+Received: from mscphis01197.huawei.com (10.123.65.218) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 30 Mar 2026 17:59:29 +0300
+From: <gutierrez.asier@huawei-partners.com>
+To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
+	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
+	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v1 1/1] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
+Date: Mon, 30 Mar 2026 14:57:58 +0000
+Message-ID: <20260330145758.2115502-1-gutierrez.asier@huawei-partners.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.123.65.218]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspamd-Server: rspam12
-X-Stat-Signature: obqqf3rmnt99tpads1ncdat8b4umbyb9
-X-Rspamd-Queue-Id: 6143020004
+X-Stat-Signature: je4hsdo8mkwcafiagwjuiraata5dtdtw
+X-Rspamd-Queue-Id: 6CBCB100004
 X-Rspam-User: 
-X-HE-Tag: 1774882572-440270
-X-HE-Meta: U2FsdGVkX1+GPtUNby4lj5y+UMMjbZT9ziHc+ggRSwuCLqFQF3WwLtkMGn9IciDw8DHz2epZF+W9UIyKn/bZQgwt43h9DsUsr0I0waSOy29BMQQ5zk8NE02x//J5XbjRliWkaDhPk51ov8lkWHqWGLShMxUcHUoo+Mbo8UISOHse8f8qBBvud58bymoACHtV0uVG6McVgb0uFyy3u4PyLTLEHAaUIvRIHrMPNLmQgrYeCT8f5xC7thB419o+HbGZ4kjk4eeAqxdNHiOIQptnOH2pnCglSeVHnrJiKMqQ1SCZXlabEZohNXuCvDPgsRcwTZKoK3Smzhg1Kf9ZxS7tALC1/9bl6Zh55fwo+lDXcIMh6Un+WTS1yx/N9IL6SvGO5wOA+/9vMtl5tldRySXlWDNwQGn3oov1vlZe6gBAgk/BQMkA52tCqlE2andHkVaVniuPPJyJCZEmvMkPuv8ZUp6RbdFYhA/TRkiZr9vVIH0eZQlMKYpJiQRWLOL57c1Lh0a8owdRLskOreDLPkzsyAVxA00MQKa4QRJhyMW9PdkiFWVic3yZsoW+8ldiKMOkcXbWa+7BfXhfzXu6rHuYI2PytSDzz6J5JbjDHb6op1eQJEvYVpaDLshIBFa3YK2arrhGHcQO2GGs0QBK/LGF2phx6zQ6gl9ou7UcmpiioyeKq7E0qDugIrdnr1uvo+fEvWaLnepXmdRkVDuHhYAj3mVcE6LpR9zIZjDWqKUY2/0O3ivD8TW/Dy7BqGPHfeYQ4rKIQp0evh8cgrUEyP6KMjk2OPCqqdUNZYdNWk177npa/SEm5Xxq6+8MFH3Ze6fnjjdzMCQOPJaTRwwWEVhaWy3ftPPNmeXVmPqSvxZNf3tHAsl/Qceok21rfQX+k3Trx/8RxXuosKB4Qg0j/pqkawFfOtF8UFvvashSMQSnHIc6IoHVIGlOAZ8LnLXIbE/d8RljQ/OcJ6PWJejkPk7
- dY5l508B
- sz1bW1P3Qw3YKezvOL1eT4FVou+TzrLTFHzPwF2gLqLWKeihUot+YFi+ti9Kj4IaVjUuCYlsuZFwxgr4LIGxcRKVTeXeiEvtO02YRyfSWFmmb+216XQtS2XZO/kR9sxe7ia71Nn3H5dKmoOYZgXg7kjQheOn2ot4l7lTZPRqpEgiezLaCInomerEa7l+BvgEZskIpx8/FSZ7mO8AIgBVw2BqvNYIkNVNdgqUxqAyzjwNHXBWvXMikR2ghYotVOdP0IyV0q9A5wTOmmIx+FPElWuHN9tQOOl6WwhYTO8Lj2LUCjOoGykqyILBB3D+wmpv6oRa83L+kxHgjnhwB5L+cpl6zCKSnLY30PXamjPAN0sqdZLvL1/99kTLsyV277ENZSKUaBWbmNxTA1aSC0HREOBHtZEtNbXejyP6xpElsOiFt8p2GQxe+1A+CINgZPFqJsFc5+JN0zfKUz33on+5sbv20wXb2AMuNuc4mlEcWxGXqhtGzXk3V0LT2mxQZhzYzkdxbwtgpmfJXQ9vQkS/sszdb/fmVK7VUpDLGlTf3hpRc4Zw=
+X-HE-Tag: 1774882774-927189
+X-HE-Meta: U2FsdGVkX191ZgXk4LJ05k9YEAENV1u8QmuEh4a9m/0ciVU56c7mpmps7LayG6SJM+KBBC6KOGEAzXPRjGw2nV87E8AbSNT4g8i4bD9oUrrwKXmXhwjlaewDrMfsa0R3+ya2Q5CIguon08/smrd88Fb1+ImqjC8zse5i+5FXSeINcNuheqYadugRGL4vOvFFZZ+kfGtjOdkPo5jg8ej3JfuxmZFe2YyMXbiw5sjRYu067IzH/l2j7h/s7ZPbFAszELWrB9dShWdtsNHJ/u5NICXNoESiZsBptHZNtOqfq3aOQW0uVG31hfP4BbKg+gGlxtW8kV5wbI3T55nnygYVqf9efePTopVmURVZh/Tt9UUWadlLf0hBSWK3rxYw44X9SdaqVeU/gK3h6aFhHzZ42ihCw7rbToK4er5SD89asJerCWru3gpm7iZzcuObJz3PRWlVeIZG0P0OjKvmUL6TjsW7ze34nM6mJFXt5xfhh20dXEB/QF9g1c8qgQMh3bu6/IwvIlt09UiHZ+rRdT6lT+01EQV7Q/E9Dzi0zjELmfSAuOKZunDFLjU6BSlFyhohsSQcvUmr5pVWUg/ICNof6UzkJ7v7o1OVMF2pIrxrH3l9OfXHMloOj1uv4Zn0X5koFA5DzzWV6qrB7wPKR3qw26GEqRCd2dkRHgexsje7JQymfkRLjPEfPEZP2PTAgdhQ8vrq8W8Emwvk1uekiM5tx3UF4UIFD1Y9EpoJiKc44hwQrdmPtiGxysgd3VbZ08ocMExiuZ6o6mvs2O7UxmSe6YxVsj47nG+HdERrsj23PWm20CHrU4zLLsaMYbHVhEogCXfNHKnoXXe44BUOiiGFmwPW4nHFkbvTL3lWAsG0L6qwZ8aJvKrG7clduW7ZdrxurrUquh61D4LLQsaCo+swUVizVk+1ff1UwR0uAhMNjqbw+jymQMgfH/PXSpUDwjqiEK37cUCOtoG007ztb6L
+ r3Pe+OGH
+ O7S6wFH/p/PsDXWYjfFAVduuA5Xxrpl9EOSXdaDnjVfVKKEp7emjrLwRgJzOIrfWf2QeWBD0xapn3oc0T8S1r1H6HeDVgBp8bkqvZDUXsZl47yCUg1n7SpUdZYrl/7J4YVyKQaQTA7VwEYLx3GT0ZV16SVWca6ujRalw9Rf6qP/k4TEwext+SKD7W4T8aoDgZ7f39PujdgG6QFX0F+MmaSvI8QSmWmc0Jifz3F2fSy3t4XetFy5ywMFgrCNGYhrljqoiN1hLM/YDwjBrS/ktA2CXs5XMCoQccWfWKeXpnsnsyTfA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,122 +89,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026 16:21:12 +0200 Michal Hocko <mhocko@suse.com> wrote:
+From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-> On Mon 30-03-26 07:10:10, Joshua Hahn wrote:
-> > On Mon, 30 Mar 2026 14:03:29 +0200 Michal Hocko <mhocko@suse.com> wrote:
-> > 
-> > > On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
-> > > > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-> > > > to give visibility into per-node breakdowns for percpu allocations and
-> > > > turn it into NR_PERCPU_B.
-> > > 
-> > > Why do we need/want this?
-> > 
-> > Hello Michal,
-> > 
-> > Thank you for reviewing my patch! I hope you are doing well.
-> > 
-> > You're right, I could have done a better job of motivating the patch.
-> > My intent with this patch is to give some more visibility into where
-> > memory is physically, once you know which memcg it is in.
-> 
-> Please keep in mind that WHY is very often much more important than HOW
-> in the patch so you should always start with the intention and
-> justification.
+This patch set introces a new action:  DAMOS_COLLAPSE.
 
-Ack, I'll keep in mind for the future!
+For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
+working, since it relies on hugepage_madvise to add a new slot. This
+slot should be picked up by khugepaged and eventually collapse (or
+not, if we are using DAMOS_NOHUGEPAGE) the pages. If THP is not
+enabled, khugepaged will not be working, and therefore no collapse
+will happen.
 
-> > Percpu memory could probably be seen as "trivial" when it comes to figuring
-> > out what node it is on, but I'm hoping to make similar transitions to the
-> > rest of enum memcg_stat_item as well (you can see my work for the zswap
-> > stats in [1]).
-> > 
-> > When all of the memory is moved from being tracked per-memcg to per-lruvec,
-> > then the final vision would be able to attribute node placement within
-> > each memcg, which can help with diagnosing things like asymmetric node
-> > pressure within a memcg, which is currently only partially accurate.
-> > 
-> > Getting per-node breakdowns of percpu memory orthogonal to memcgs also
-> > seems like a win to me. While unlikely, I think that we can benefit from
-> > some amount of visibility into whether percpu allocations are happening
-> > equally across all CPUs.
-> > 
-> > What do you think? Thank you again, I hope you have a great day!
+DAMOS_COLLAPSE eventually calls madvise_collapse, which will collapse
+the address range synchronously.
 
-Thank you for the feedback, Michal. Let me break down your questions so I
-can address them one-by-one:
+This new action may be required to support autotuning with hugepage
+as a goal[1].
 
-> I think that you should have started with this intended outcome first
-> rather than slicing it in pieces. Why do we want to shift to per-node
-> stats for other/all counters? What is the cost associated comparing to the
+[1]: https://lore.kernel.org/damon/20260313000816.79933-1-sj@kernel.org/
 
-Yup, ack here as well. Here is a bit more context on why I stumbled on this
-in the first place. As you are aware, I'm also working on another series
-whose goal is to make memory limits tier-aware [2]. While working on this,
-I realized that memory in the enum memcg_stat_item had no physical
-association, which meant that identifying (1) which node / tier they were on,
-and (2) which node / tier the memory should be migrated to was completely
-invisible.
+---------
+Benchmarks:
 
-That was the original motivation. Looking deeper I found that this is not
-even a tier problem but rather just a lack of visibility into node-level
-statistics for the user.
+Tests were performed in an ARM physical server with MariaDB 10.5 and 
+sysbench. Read only benchmark was perform with uniform row hitting,
+which means that all rows will be access with equal probability.
 
-As another example, recently I have seen an example of socket memory
-landing in CXL, which is really quite strange. (Was it demoted? Was it
-through a fallback allocation?) It was only visible after there was an OOM
-and I could use the vmcore to inspect the data manually and figure out
-the page placement.
+T n, D h: THP set to never, DAMON action set to hugepage
+T m, D h: THP set to madvise, DAMON action set to hugepage
+T n, D c: THP set to never, DAMON action set to collapse
 
-I was thinking that it would be very nice to have this level of node-level
-perspective along with the memcg association because IMO something like
-this has more value in being analyzed at runtime, rather than during a
-post-mortem with the vmcore, and there is more we can do by understanding
-what was happening at the system when this strange placement happened.
+Memory consumption. Lower is better.
 
-> What is the cost associated comparing to the
-> existing accounting (if any)? Please go into details on how do you plan
-> to use the data before we commit into a lot of code churn.
++------------------+----------+----------+----------+
+|                  | T n, D h | T m, D h | T n, D c |
++------------------+----------+----------+----------+
+| Total memory use | 2.07     | 2.09     | 2.07     |
+| Huge pages       | 0        | 1.3      | 1.25     |
++------------------+----------+----------+----------+
 
-For percpu specifically, I think the cost is minimal. Thankfully these
-changes also have minimal effects on single-NUMA machines as well.
-But let me get some concrete numbers and get back to you so that I can
-back these hypotheses up.
+Performance in TPS (Transactions Per Second). Higher is better.
 
-> TBH I do not see any fundamental reasons why this would be impossible
-> but I am not really sure this is worth the work and I also do not see
-> potential subtle issues that we might stumble over when getting there.
-> So I would appreciate if you could have a look into that deeper and
-> provide us with evaluation on how do you want to achieve your end goal
-> and what can we expect on the way. It is, of course, impossible to see
-> all potential problems without starting implementing the thing but a
-> high level evaluation would be really helpful.
+T n, D h: 18324.57
+T n, D h 18452.69
+T n, D c: 18432.17
 
-Great to hear that you think this is not impossible ; -)
+Performance counter
 
-Yes, I also definitely see that there can be some subtle issues. One thing
-I'm trying to be very mindful of is locking semantics, whether we are
-introducing any new bottlenecks for updates. I'll do some testing and
-come back with numbers, hopefully that can instill some more confidence
-with the side effects of these patches.
+I got the number of L1 D/I TLB accesses and the number a D/I TLB
+accesses that triggered a page walk. I divided the second by the
+first to get the percentage of page walkes per TLB access. The
+lower the better.
 
-As a note of concern I do believe that socket memory will be tough
-to track accurately since it uses a different model of memory accounting.
-I hope that there can be some steps to make it more accurate without
-introducing overhead in the socket hotpaths, since those are highly
-performance-sensitive.
++---------------+--------------+--------------+--------------+
+|               | T n, D h     | T m, D h     | T n, D c     |
++---------------+--------------+--------------+--------------+
+| L1 DTLB       | 127248242753 | 125431020479 | 125327001821 |
+| L1 ITLB       | 80332558619  | 79346759071  | 79298139590  |
+| DTLB walk     | 75011087     | 52800418     | 55895794     |
+| ITLB walk     | 71577076     | 71505137     | 67262140     |
+| DTLB % misses | 0.058948623  | 0.042095183  | 0.044599961  |
+| ITLB % misses | 0.089100954  | 0.090117275  | 0.084821839  |
++---------------+--------------+--------------+--------------+
 
-Another concern is what to do with MEMCG_SWAP, which is not really able
-to be associated with a node. But swap is unique in that it genuinely
-does not take up the memory in memory. So maybe at the end of all of this
-when there is only MEMCG_SWAP in memcg_stat_item, we can treat it as a
-single special case. 
+- We can see that DAMOS "hugepage" action works only when THP is set
+  to madvise. "collapse" action works even when THP is set to never.
+- Performance for "collapse" action is slightly lower than "hugepage"
+  action and THP madvise.
+- Memory consumption is slighly lower for "collapse" than "hugepage"
+  with THP madvise. This is due to the khugepage collapses all VMAs,
+  while "collapse" action only collapses the VMAs in the hot region.
+- There is an improvement in THP utilization when collapse through
+  "hugepage" or "collapse" actions are triggered.
+- "collapse" action is performance synchronously, which means that
+  page collapses happen earlier and more rapidly. This can be
+  useful or not, depending on the scenario.
 
-Thank you for your thoughts Michal, I greatly appreciate them.
-I hope you have a great day!
-Joshua
+Collapse action just adds a new option to chose the correct system
+balance.
 
-> > [1] https://lore.kernel.org/all/20260311195153.4013476-1-joshua.hahnjy@gmail.com/
-[2] https://lore.kernel.org/all/20260223223830.586018-1-joshua.hahnjy@gmail.com/
+Changes
+---------
+RFC v2 -> v1:
+Fixed a missing comma in the selftest python stript
+Added performance benchmarks
+
+RFC v1 -> RFC v2:
+Added benchmarks
+Added damos_filter_type documentation for new action to fix kernel-doc
+
+Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+---
+ Documentation/mm/damon/design.rst      |  4 ++++
+ include/linux/damon.h                  |  2 ++
+ mm/damon/sysfs-schemes.c               |  4 ++++
+ mm/damon/vaddr.c                       |  3 +++
+ tools/testing/selftests/damon/sysfs.py | 11 ++++++-----
+ 5 files changed, 19 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 838b14d22519..405142641e55 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -467,6 +467,10 @@ that supports each action are as below.
+    Supported by ``vaddr`` and ``fvaddr`` operations set. When
+    TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
+    fail.
++ - ``collapse``: Call ``madvise()`` for the region with ``MADV_COLLAPSE``.
++   Supported by ``vaddr`` and ``fvaddr`` operations set. When
++   TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
++   fail.
+  - ``lru_prio``: Prioritize the region on its LRU lists.
+    Supported by ``paddr`` operations set.
+  - ``lru_deprio``: Deprioritize the region on its LRU lists.
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index d9a3babbafc1..6941113968ec 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -121,6 +121,7 @@ struct damon_target {
+  * @DAMOS_PAGEOUT:	Reclaim the region.
+  * @DAMOS_HUGEPAGE:	Call ``madvise()`` for the region with MADV_HUGEPAGE.
+  * @DAMOS_NOHUGEPAGE:	Call ``madvise()`` for the region with MADV_NOHUGEPAGE.
++ * @DAMOS_COLLAPSE:	Call ``madvise()`` for the region with MADV_COLLAPSE.
+  * @DAMOS_LRU_PRIO:	Prioritize the region on its LRU lists.
+  * @DAMOS_LRU_DEPRIO:	Deprioritize the region on its LRU lists.
+  * @DAMOS_MIGRATE_HOT:  Migrate the regions prioritizing warmer regions.
+@@ -140,6 +141,7 @@ enum damos_action {
+ 	DAMOS_PAGEOUT,
+ 	DAMOS_HUGEPAGE,
+ 	DAMOS_NOHUGEPAGE,
++	DAMOS_COLLAPSE,
+ 	DAMOS_LRU_PRIO,
+ 	DAMOS_LRU_DEPRIO,
+ 	DAMOS_MIGRATE_HOT,
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 5186966dafb3..aa08a8f885fb 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2041,6 +2041,10 @@ static struct damos_sysfs_action_name damos_sysfs_action_names[] = {
+ 		.action = DAMOS_NOHUGEPAGE,
+ 		.name = "nohugepage",
+ 	},
++	{
++		.action = DAMOS_COLLAPSE,
++		.name = "collapse",
++	},
+ 	{
+ 		.action = DAMOS_LRU_PRIO,
+ 		.name = "lru_prio",
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index b069dbc7e3d2..dd5f2d7027ac 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -903,6 +903,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+ 	case DAMOS_NOHUGEPAGE:
+ 		madv_action = MADV_NOHUGEPAGE;
+ 		break;
++	case DAMOS_COLLAPSE:
++		madv_action = MADV_COLLAPSE;
++		break;
+ 	case DAMOS_MIGRATE_HOT:
+ 	case DAMOS_MIGRATE_COLD:
+ 		return damos_va_migrate(t, r, scheme, sz_filter_passed);
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index 3aa5c91548a5..72f53180c6a8 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -123,11 +123,12 @@ def assert_scheme_committed(scheme, dump):
+             'pageout': 2,
+             'hugepage': 3,
+             'nohugeapge': 4,
+-            'lru_prio': 5,
+-            'lru_deprio': 6,
+-            'migrate_hot': 7,
+-            'migrate_cold': 8,
+-            'stat': 9,
++            'collapse': 5,
++            'lru_prio': 6,
++            'lru_deprio': 7,
++            'migrate_hot': 8,
++            'migrate_cold': 9,
++            'stat': 10,
+             }
+     assert_true(dump['action'] == action_val[scheme.action], 'action', dump)
+     assert_true(dump['apply_interval_us'] == scheme. apply_interval_us,
+-- 
+2.43.0
+
 
