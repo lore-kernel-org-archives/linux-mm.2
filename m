@@ -4,93 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0486310F3DCD
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:06:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D63210F3DCD
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 364936B0095; Mon, 30 Mar 2026 10:06:50 -0400 (EDT)
+	id 9362B6B0098; Mon, 30 Mar 2026 10:10:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EE2C6B0099; Mon, 30 Mar 2026 10:06:50 -0400 (EDT)
+	id 90D916B0099; Mon, 30 Mar 2026 10:10:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 119CF6B0096; Mon, 30 Mar 2026 10:06:50 -0400 (EDT)
+	id 823706B009B; Mon, 30 Mar 2026 10:10:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED4EC6B0095
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:06:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 971E78C2C4
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:06:49 +0000 (UTC)
-X-FDA: 84602905338.09.848A8FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C1EF810001A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:06:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VjF61byP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774879607; a=rsa-sha256;
-	cv=none;
-	b=oVQGkluheVcy1yMUTWM3v64Q4nHOIcYYpy9NL7oIrS+08tg7gKAdrD8oDCD/+Qd7/U50/h
-	QvBLKlhAY7cQDC6tLpu3enccaZ8xjjuF7jPIbqY0ojZGGMRM7qipCFFke5PYDjlDyZYxNZ
-	OSWPTwbWqIuR9HznBwOHZLl6u6n9+qM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VjF61byP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FE436B0098
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:10:16 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DCAE2160582
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:10:15 +0000 (UTC)
+X-FDA: 84602913990.08.AD9F647
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E928512001D
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:10:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dczxyxg4;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774879607;
+	s=arc-20220608; t=1774879814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLam9CqhPAxt1VA0lcL0GTfwWBkG/lHpjmnoZERjlE0=;
-	b=x51XbrmZNI2SoN6IZTHJsEph8XRiQSZydbg7DKrYY+VqYbu7JPYL6vlFy2zrJH46ctqznZ
-	xvL/ZG1gY71oshnZbm3EtFMbQAN7gvYJ8bN95Swi+pR3ar5n7xLeBqUSv1SnLA8ViYvNTu
-	Ges6PJknQYtkn2mpI4fkDVCOlTQgrQI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3716D600AE;
-	Mon, 30 Mar 2026 14:06:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE23EC2BCB1;
-	Mon, 30 Mar 2026 14:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774879606;
-	bh=Jdvssgs4SUj8FpK4EW+j0eGP5POHJYlB3JEjjf7pwKE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VjF61byPNpNACgloARyQCdxaU3bR64V0AyqlD82R4yHO1rdr7/SMbsxbtKG7Lu1kg
-	 UnfTLrtU6/1UpVjaJfLtDp50xvBDSS1wR2dzLsj9Pm4EWEZ+hCWf7+Ux/DsdjRD5zt
-	 azrsAe71VXV8rDfn+7fg9i7b+avTXd9MVPtG/aIIfN7Iax59QHFcg8GXPG1z9qyzi2
-	 Yallxw8K9Amiqoc/YHw3RtavFx1BgBX0mEUAVjiBlKbWcN9sV+yRKw4y/+HuAvxGrE
-	 lctNJR8q1xAPO/bo//1vyD7q4dHy/Ml86Gjz2xUS1kAynHfLirFNGHnQCsbPqg0RqX
-	 daZe/aWslLjRg==
-Message-ID: <46a4a778-1ae8-44a5-b0cb-1b2c810d2683@kernel.org>
-Date: Mon, 30 Mar 2026 16:06:42 +0200
+	bh=/xL8uHHzuWMbBwJ5+3HtVtL72FNsO/9cgkReiuuiZMA=;
+	b=xTG8j4bKOlul3rubFRtXgbqDG2KBPLsCicnWfjw5sEUzbp0XJXDhFlCNdOsSbp01J6/0zP
+	T4UYunuNBTikdrCX2XqG0lq3C65jwmFwuXU0UP2g2XRV4jUjMGysi/carexdBkhRRvj2Ec
+	FTdtGrcGO65Y0TQPOdMukfHpOVfGXVA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dczxyxg4;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774879814; a=rsa-sha256;
+	cv=none;
+	b=OfOej59Dxr5Xkqx/4t/VVS5Vok9yImTYeKW1lR/s9sJ9jydi4FfjX4KYsb9VyS964VN1vL
+	j2QHQnpISusHGu8bwXjnYsSrI/fvjbvXWPsmb4lvBdlXmdOCtBguOdLXzxPN6rlgoMJvJ+
+	ABzir0baYD8oOKFPctLim3OR8P3A8zg=
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-40429b1d8baso1712894fac.0
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:10:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774879813; x=1775484613; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/xL8uHHzuWMbBwJ5+3HtVtL72FNsO/9cgkReiuuiZMA=;
+        b=Dczxyxg4TOjVfas3igVrngQBuoMzaOGAm03YoGzsw+/1oWqTTbfVtR4x2JH4b26mNu
+         NpKk3icQqzUl+sTWwPLT5LkMbZyV9V4gafZidAU7okf6K6nHTEjZxvjYMwpRr0WOxLmx
+         oFgANmlP4BhChKEOPjtxLwMUB8OE6pTYbUvgrOjqL+ogjbOH/OKDZC7fSMYvhf/C5XtT
+         /2qzJnyt9UlbinoIKiRPuUPosTYrrKHs6YEczStrDp/aEKtYFvX0LR3jJLxFYl/P4WJH
+         eRO5GDtDskCUFdTgW+4GDY+2u5edRnwyja9hEz2LZpeJZAUMk4fA7L1VhdiVl9J+H1A8
+         6j5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774879813; x=1775484613;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/xL8uHHzuWMbBwJ5+3HtVtL72FNsO/9cgkReiuuiZMA=;
+        b=aCqs/Zoq4/sNe84axy7nRefsRc3z1/B8ipP80IAl+9zEmvZ0j6upmFhPUg2XYZqmKu
+         +JsNZDFh2+zwmFUivsut5I1nGNfBWcxc+ObBL/Q3FHqueb9ZJSgkZQcMDb3w+dm+fj6P
+         R4c//crl9AmICV6XYEKuAYI+k+UhzpCXxo5Wep41+BGSk02Yf3h2kWQVL/NWDcYxlsYz
+         x/tZkjqKYo9X4AhFtv1FZA0kqnii9QBdnS5pPCfDLP4leintg/B5Xwk1LDyw9LHHBjPf
+         z7V4JcVPsd8xdhUTWOH4k+LORq7E7uj5yTUJYE8Eh5tXvvJ1HhgOiMA8qDSWUxRL2GJy
+         FRMA==
+X-Forwarded-Encrypted: i=1; AJvYcCXhZYoA8Z2nVw0CH7iBjX7ddE59xGma42EHulxaF+ywjANEbF3IitE1RgJFaWs9x3nhCNXx5KsFQQ==@kvack.org
+X-Gm-Message-State: AOJu0YwPWaCj4QYI2soGxbFMmvfIy8OlwGx4kKsfoZY609GFlwM+6kso
+	s2BRZMtAh5LdKbDh3WssTLMw+xAKQ0KyBuG2++cs/kdL8ABF0Cj/Zu9j
+X-Gm-Gg: ATEYQzye7Hw6ODkVk0A1cd9t/eTNnZK9dGM9AcXOhWm1QPbrYHJ0Cua5E9ngK5n+4Nu
+	DN9S6RBBvKdUQb/WQS8rk86Uc4TE/RzLLxDM+VehIiWYR7bFDNC9OJeLNU6DU5TOuOnQi9gLozz
+	HXjUFPEgAqdKekhajWvYU+Yasoc5QNxU2f4umKvRF/cLhfFZJ1AtPVnu0znWnnJeFLt0sC2lCZK
+	Q4SRLnUoyN0P0Cks0SKv05QGM9r7e+dkd9k/mkNmynymD8HnYE9dT4HwFppK54xT5FvC3nAy7sz
+	Hz6QGOyuBOGGyRRHsF5mlso0N7+BQcsN5eV2HAMztDVfPa5HsjpJ/OE/oL028FQtbnRVHFIel+b
+	3sudiqpLf3kqZ+3IPOJqoWUUE9lb3+4VW2yK/xBA6ou+s6EaNyALUy47NvPI2U17LNmJyMgDfga
+	/kjKJmmwXceWRPif5laLTI
+X-Received: by 2002:a05:6870:612c:b0:41b:e9c4:9778 with SMTP id 586e51a60fabf-41cec29a8eemr6470923fac.32.1774879812679;
+        Mon, 30 Mar 2026 07:10:12 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:7::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41d048e1961sm5508071fac.2.2026.03.30.07.10.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 07:10:12 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
+Date: Mon, 30 Mar 2026 07:10:10 -0700
+Message-ID: <20260330141010.3126996-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <acpmkY6_gWLdtJCB@tiehlicka>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [patch] mm, page_alloc: reintroduce page allocation stall warning
-To: Andrew Morton <akpm@linux-foundation.org>,
- David Rientjes <rientjes@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Petr Mladek <pmladek@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
- <231154f8-a3c3-229a-31a7-f91ab8ec1773@google.com>
- <20260329201733.6a4647ade4751e761034b9b9@linux-foundation.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260329201733.6a4647ade4751e761034b9b9@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ougufyc1z5b3xchbk31uiphe9jajmrjx
-X-Rspamd-Queue-Id: C1EF810001A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E928512001D
+X-Stat-Signature: c3mowftkco3m7gup7dbyj5oznq8fi5oi
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774879607-478874
-X-HE-Meta: U2FsdGVkX1/3auFi+HIMDmGYa3pDNfB/44IMGSobwgatkIseHPMzdG4Sdin2MC3hStOo6WeulrfXAFisbpvc5ALYx9D/gPt5cdw2SwA/zgq0ZfaHuIZH4T+pKnnMBCqYXqWA4RDWa/oG8U9AMefYVwlq6xzfDiOLwqDYHjD0v5oaQzxhbZw+a4lbYmmmohWKxkiiDQd2Pl65pvL4diTxYfSGoxbvN/hAhYwqirwvkP4uwjuS73tkOD7KhW2+I4NUEmz74w+Gxp5btHyv2c9/vXwVatMBDHEJax/qwE5F2WIgZV7f/51OJyIoBi6lhXa8Rn2J88LXG8TspfeTcrQxk8cxN9S0XqBKtvd3TYGEuX60Ik0g3dpTZdfZ16B/MNVZCLk+1SXlwkliXBxNgapH8dK9G02BmKWeiPN/fcTZDquRgWhYzyZaVfcoIdBX852XXb3YRnp/aQ38B/qJnGHwjQ7fPSprz0M26gwshkpo64MN0XaHInmLOP4IxMw4K9ZGilLIdAHV0V2Wo5tA2oYw5HQ+Y7qa91kL2KSt3G+/5+C4Mv7M/MuptVDN63G9D4ujAC96Ziqekfgjzv30dYxGzBJfeM87rfzuLYYqvfTV0msOMBorG3BT/NgFS0e0d435ee2RKD4vxut3eNwPFzi/1n/NyZ72rbcHlrz8Sj9zHOf7mRq5HF7ZF8S9upw17+hfcrB9g28Deup5bK66LS/FmUghItEb5RNO9kPL4Sla3rIfi9q6iB92wycYRBYR+5HKKgs6Y/xx7eFg0sh3mwQCRbD48Zb4w6sjVDWcsalfAnLmMrQRvHCRfSyJCrycVWPfvBvbW2yXbRoQ5EKw9ti+3zEmUWVannHOiZKqF6bgmK2DUH6AzFHI7PJpv9kGSD2dlizB2TB9hc/tffPAHa+N5MpMSNPdvy83LJPkrXhNrBV2rfURR+ukJ0QYQC/IEYxq/AY8FPnZhKE59O/1FhP
- 6FOB19Db
- qTJhRxd431FZdegRaGtqEblR6C0oEYbNQb7AZzIeRPfuZWjv8Z4ruoTMAkWr4HxMrGrDq/TAzUnBUv+UTpMPMWiC+6iAmEtFtjnO7JrFJeySzGot+8GG9zhLg4Xgri7VXNL5cFBeNdqSvAWWg4B6P8U/y3rhyE4c+MUfh77nNCn3ut8bI9mMM1K89Y7FQKc3Dqmr0S9/4F+qv0jWkhv1FvBlL7XrhGrprtLccA1hOAIAL/FzGrlUfTMdcrAQFQgOfL6LaKSf88gus6zxwsjkl/wyzTQ1vQgvaO8fiWySOeMoVTDseeC3Fq8+VeTtZFAOBkOjIAquH79Hcb8s=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774879813-355790
+X-HE-Meta: U2FsdGVkX19dQhOifA8aW8EK7v7wiCuztQGpVmYR1G0opjEf/wQtb9AJqhszZKBxcoyOLtBfFU0NKwPeYA570nRGVZo96FVwW/FrGqX5SHlJSQzQH6/GrRlLDx1+Xtdpufryj8g7yk/N/G6S6+pHes9HM8UzZzmA3lGfFKlnCIa5gD6sHoxDLUUeajqBIzYQquz1bcPoNIqcAYG2+sBprpHSudIRCRSzbdKze+osaVGVoYECvCmwUSegMcpEqWUEbzcU7iINLwRRVnw+hcpWSgMNI4EHU/wpexkLuzD05jVoIJfJgVx1xV4g4CEjhdBwIj3oYzUryazffZowlexSR2coRO3+DaBHH6wqVqe9KvMMci+46+wKNvDjewpiihbVkqJYbLX0+PBgxW+YuqsjbjAxuYMEoloURTOXbCGYrt56P92XoiOjPK7pzH5UkbBgEI2So6/6EhTLfkK3mPtyKfrN0kVMNER8h88I0bs1xyklxkFB7Kcyo9XIZcD7A4fNih3KRTF+/JmaZTlHq5rhw+CY6ji7SZkGDsZ+fLohFOVsUpZ/l3rJHlyN+v5xkOGpstKfyGBKBInZQo56R0xACkR+tm64HdB4MXZGvuz3dYK/ZzE1m+aRzBpBIOsTXksL6Y6ttm9NJHEOEo1DGh8ab0sFw4QnF4vYNkDZG+sD/Uw033IKlTxrmpmcxqgdfqWfHKILanaHwh5E9Y6aJOAV+XG/46mKhZHphTQ71ocV32+sHJfZyA9XtZpv7WsWa8/rRve16xMTW+tDxrlCVc5rV47q4CH1jf+g47P+9Bqag8Br6x+gzkwGQEZRPfQSuQca1/xIPb7kpYzna04RllpE2iTPTQ3CyHzkmzwRW7RZUbN4z7S8R+83FvPwv19Lqko3m271gKbjk/t1GM76P+xnFICYeBdKm5SVniGHRxuXB/Ju21zaPS8t9F50H9aWJzaReAFbdsoFD3minqD/82Y
+ kMou06E+
+ rxt0h7cYC8eia5z35bMy1LV7VmGIbl6UNUIt8wqPSy8L2dMlU/LBTK9CSgpbkOugIfYbjapFUoQ05R0ajjxZvZPYtdLJt5TmyersdOT7mHK41iGiO1pJQ3RRdlOt9kXr18dIRAq/NMTHjsbpnk9qLBSMbYkihPTie0giZnU1jexAwwiIpJqLdOgvZSNdPUDL/Exy1lMybWrPYQhSyOC2+FjhuBxK+VQS2LyFSJyEahR5qHgqL6IfoUYQvC0wGUpT7G2w0RvSRzvr631mWcDst9Q7gRxqTOqDhwXIw8Z0dukv0I8WyWVJlBha+RXRWCg8VDb+r6r1AWwS5qSmzmc5xjK8gCWzvJ5o3HkCo/nJ46PN2aj3TUR+if/wjFsGvOVhZl+S+hTHQacz2PePt6FxRgbIxwp2lQl7MAUos4VBtUe3gwxOTf6jwdFd5jJWIKtG80wlVIzorYrmXOeb9Jvwc/SnP7hOp+qyfrrV3R7ewYwF/0AQgkZsxkLFdoDCT/zvpJr/NTcjgu0zv6hEmw4EtGOhbYDzUeJ1NHK1Jv9PYhWS6WT1v7OdU8hna1JhBqiTsuWIkKsjCkphy+1w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,77 +130,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/30/26 05:17, Andrew Morton wrote:
-> On Sun, 29 Mar 2026 18:08:52 -0700 (PDT) David Rientjes <rientjes@google.com> wrote:
-> 
->> Previously, we had warnings when a single page allocation took longer
->> than reasonably expected.  This was introduced in commit 63f53dea0c98
->> ("mm: warn about allocations which stall for too long").
->> 
->> The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
->> warn about allocations which stall for too long") but for reasons
->> unrelated to the warning itself.
->> 
->> Page allocation stalls in excess of 10 seconds are always useful to debug
->> because they can result in severe userspace unresponsiveness.  Adding
->> this artifact can be used to correlate with userspace going out to lunch
->> and to understand the state of memory at the time.
->> 
->> There should be a reasonable expectation that this warning will never
->> trigger given it is very passive, it will only be emitted when a page
->> allocation takes longer than 10 seconds.  If it does trigger, this
->> reveals an issue that should be fixed: a single page allocation should
->> never loop for more than 10 seconds without oom killing to make memory
->> available.
->> 
->> Unlike the original implementation, this implementation only reports
->> stalls once for the system every 10 seconds.  Otherwise, many concurrent
->> reclaimers could spam the kernel log unnecessarily.  Stalls are only
->> reported when calling into direct reclaim.
->> 
->> ...
->>
->> +static void check_alloc_stall_warn(gfp_t gfp_mask, nodemask_t *nodemask,
->> +				unsigned int order, unsigned long alloc_start_time)
->> +{
->> +	static DEFINE_SPINLOCK(alloc_stall_lock);
->> +	unsigned long stall_msecs = jiffies_to_msecs(jiffies - alloc_start_time);
->> +
->> +	if (likely(stall_msecs < ALLOC_STALL_WARN_MSECS))
->> +		return;
->> +	if (time_before(jiffies, READ_ONCE(alloc_stall_warn_jiffies)))
->> +		return;
->> +	if (gfp_mask & __GFP_NOWARN)
->> +		return;
->> +
->> +	if (!spin_trylock(&alloc_stall_lock))
->> +		return;
->> +
->> +	if (time_after_eq(jiffies, alloc_stall_warn_jiffies)) {
->> +		WRITE_ONCE(alloc_stall_warn_jiffies,
->> +			   jiffies + msecs_to_jiffies(ALLOC_STALL_WARN_MSECS));
->> +		spin_unlock(&alloc_stall_lock);
->> +
->> +		pr_warn("%s: page allocation stall for %lu secs: order:%d, mode:%#x(%pGg) nodemask=%*pbl",
->> +			current->comm, stall_msecs / MSEC_PER_SEC, order, gfp_mask, &gfp_mask,
->> +			nodemask_pr_args(nodemask));
-> 
-> Snould we use dump_page() in here?  It prints more info, does the
-> snapshotting thing.
+On Mon, 30 Mar 2026 14:03:29 +0200 Michal Hocko <mhocko@suse.com> wrote:
 
-But we have no page to dump, or did you mean something else? Maybe some part
-of warn_alloc() (without its own ratelimit etc) could be extracted end reused.
-
->> +		cpuset_print_current_mems_allowed();
->> +		pr_cont("\n");
->> +		dump_stack();
->> +		warn_alloc_show_mem(gfp_mask, nodemask);
->> +		return;
->> +	}
->> +
->> +	spin_unlock(&alloc_stall_lock);
->> +}
->> +
+> On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
+> > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
+> > to give visibility into per-node breakdowns for percpu allocations and
+> > turn it into NR_PERCPU_B.
 > 
+> Why do we need/want this?
 
+Hello Michal,
+
+Thank you for reviewing my patch! I hope you are doing well.
+
+You're right, I could have done a better job of motivating the patch.
+My intent with this patch is to give some more visibility into where
+memory is physically, once you know which memcg it is in.
+
+Percpu memory could probably be seen as "trivial" when it comes to figuring
+out what node it is on, but I'm hoping to make similar transitions to the
+rest of enum memcg_stat_item as well (you can see my work for the zswap
+stats in [1]).
+
+When all of the memory is moved from being tracked per-memcg to per-lruvec,
+then the final vision would be able to attribute node placement within
+each memcg, which can help with diagnosing things like asymmetric node
+pressure within a memcg, which is currently only partially accurate.
+
+Getting per-node breakdowns of percpu memory orthogonal to memcgs also
+seems like a win to me. While unlikely, I think that we can benefit from
+some amount of visibility into whether percpu allocations are happening
+equally across all CPUs.
+
+What do you think? Thank you again, I hope you have a great day!
+Joshua
+
+[1] https://lore.kernel.org/all/20260311195153.4013476-1-joshua.hahnjy@gmail.com/
 
