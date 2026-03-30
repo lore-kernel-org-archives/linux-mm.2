@@ -4,122 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C4110F3DCD
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:21:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 598E910F3DFA
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:24:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C040F6B0095; Mon, 30 Mar 2026 10:21:18 -0400 (EDT)
+	id BE1B26B0098; Mon, 30 Mar 2026 10:24:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDC226B0096; Mon, 30 Mar 2026 10:21:18 -0400 (EDT)
+	id B92C56B0099; Mon, 30 Mar 2026 10:24:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACB576B0098; Mon, 30 Mar 2026 10:21:18 -0400 (EDT)
+	id A81916B009B; Mon, 30 Mar 2026 10:24:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 99E166B0095
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:21:18 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53FC6E0F71
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:21:18 +0000 (UTC)
-X-FDA: 84602941836.01.97D3D45
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4404F120012
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:21:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=QcA1y3WB;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=QcA1y3WB;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774880476; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 96DFB6B0098
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:24:42 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 101791607C9
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:24:42 +0000 (UTC)
+X-FDA: 84602950404.20.1795ECB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 207F040005
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:24:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KzLsfE7a;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774880680; a=rsa-sha256;
 	cv=none;
-	b=SvmE/0YRHQAPKcKhBwge/fDMbZGJrnDSWmoWQBNBh6wZ2P2ra3ZXmyFfzOABPi4Bk8lb+R
-	M1qgZLLCzXBYCdFmu8q99KRd9eFGTCVEriIEhZynPGqCpIyzOB8cu8sHMMdNKik9RREVw6
-	R4kJqigkbexCBRRwFbShGh2SgH3dzwg=
+	b=cQjGP8SphsOOCUGqGYrSJjI0HLxb0HZuiZW7lDMYJmF07uRBfUTcZaAPIzXX2ezmZoPyCs
+	AoYyg0ZlStBoDgzElZN8Sx8KZSxJUkjQZahlzBj3pMpXy2HXJUiNuW/uUmqdDhl0adVdek
+	TH49wAoutfQ6YdH8BWGqG/UbmxxODLI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KzLsfE7a;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774880476;
+	s=arc-20220608; t=1774880680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X/ozzOwDq7xepOmxDik1p69jmSO0OqDcfdyRDIq86y8=;
-	b=d/Jj66nixCwCuBdpww6Oe81CBk7g0/aAroMlNLGkqtYVTMJafAZ8nVTAvwWwS4rnq1jK4i
-	Ra9AsqTQ7BC2JOb9tY0seRsn2g0ob950W50n5TKVvp2+A/eKIvLkhdVBC9kVFlR9pyUWVZ
-	ilj8CtgxMmvkfi2y0BN647oGJkLbfic=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cfb723698so934372f8f.3
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:21:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774880475; x=1775485275; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X/ozzOwDq7xepOmxDik1p69jmSO0OqDcfdyRDIq86y8=;
-        b=QcA1y3WBj2zA8+Bbl3BZu7Edc1YjimhsNzgRHA5OgtuAPKWJakTen4HQhsFw8Y716/
-         1BD42t4Clmno9V4Gm2uf6/Z5OjX5yrV5+tI4ou8XZvJrCYidvdXUsVv/JZoG5YqjO9P+
-         beeCzNtV3PrXV9poTGCL+kraAdR8bgWWyHZvdz5Q7Ma66SUx3JeEZIO7WO79WJsSUEIt
-         1T5sNj2RnoXcMAKl2g87bp72ZpHDmxaCkF2XE0DoxtnPdf2XWDdsyZxuUCy6OQq9XIJU
-         LEW5eGRZ954lGhN7jVpoJ4rLgMtZEHN8qIaOvx6hTdQuwr3dqRGH25HYdMOKrhTF6y9a
-         zUOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774880475; x=1775485275;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X/ozzOwDq7xepOmxDik1p69jmSO0OqDcfdyRDIq86y8=;
-        b=qkFvllM1RdUyMf2KK2ai+/Ux0PHmMqopO9/MFnMW2G5ngJx5GOHR0Q50SaC82I2TQ1
-         Zpn9YkM57A+q1Ds7r7unS9RToOfwLFcVsiXRf5QO3y+HH5a6Y5i8+umN6uNYc51DYBxd
-         JriB8YdSskcDuF5Xx8eRkh97HrhIOwm0GKVfb+/RpNJavhce153eRnUlboAa3fp8nMEU
-         pEPD3IPlxjR8NDlG4Dsbp2NodrPc2QOGa0d2OrJib2/1rXATNvxUWQ2X7EbLAH9sPmCB
-         aRklJr4jTxiOItfkjrB4uJcCdfDk1MXAic7txpkNCtFMexIud8bqLV6uKtdUWmMe99B8
-         zKnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWv6b5c56QbIIvJFwvkC3fVhO53TEYECOm0aSYmWePA9Fbf2eUK1pEBW3WwHshkvRnQLNPAdYRJvQ==@kvack.org
-X-Gm-Message-State: AOJu0YyZJacjjwamrpZcHBLULd8eCva/HhUdbCrZ9fgL5Qcf3JJ6PNWZ
-	VF0YRR6UwK1/4QX/Pcy21epGBji4qz3bTG8W5v9otcKJt7j+rr36HbkLDxsxvtvkfOU=
-X-Gm-Gg: ATEYQzwEYfwP1SSk9Ic3sUZpWl/nKHBi751TYkULWfJ0oFPNCxQc72hBc3ht4iabcJW
-	MUZGGtyWfoxM3JKncSND3qLj2yoycW3zDRWutxGrsEv9SVMYu+xZtsevNOMKwyUUVgjtbyUfLzK
-	htSRuzGSJfs0PSV/OTF7oaY2WZ1FB1PemFW+6O20BzjNxE/RJtgO5DeL/sh9UfZtgyvxZSK+Rnj
-	K6GGFjtR1AqdTUZV9Yu1x5+dlsHzMFczoknXhR4MvuA+krnXWi8zwUFxWvXp2xJxl1NrRlaWiOX
-	X19OW5YAKstpWCoeV+h5N5kKXV8npmnZt4dSo9xyvREBqysb2M6bcFJNB5Is7pdg1y5Pao/M6gu
-	b8Nt3JCSRim7+WzbbIX56/aNK4GOO2itdi2eCBVsb/s5289ohaxI77Ol1XhIGbx0vBpWaVUl53G
-	ljPH5SQWXtRzrmqtM80EJfwAqGD1wmJ6Cn3zif
-X-Received: by 2002:a05:6000:290b:b0:43c:f976:b8de with SMTP id ffacd0b85a97d-43cf976b9famr9996886f8f.20.1774880474446;
-        Mon, 30 Mar 2026 07:21:14 -0700 (PDT)
-Received: from localhost (109-81-17-175.rct.o2.cz. [109.81.17.175])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf2580194sm17882325f8f.37.2026.03.30.07.21.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 07:21:14 -0700 (PDT)
-Date: Mon, 30 Mar 2026 16:21:12 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-Message-ID: <acqG2Mr5ekCn2HD0@tiehlicka>
-References: <acpmkY6_gWLdtJCB@tiehlicka>
- <20260330141010.3126996-1-joshua.hahnjy@gmail.com>
+	bh=KUkhYOcCDg4cERi3otgD9wa6MteE7mDqHjw1aUHHmgo=;
+	b=VtAXEfr9Nf7Q/zGgVpOKvPwCKg/UPvNFJIITD3EkE1LpRlpjlv9ivJYfUrdvtXblv8ahcR
+	mSc0orF8Lr0TCR+EzaL2FS0KGfzig03fRNy7QHqTgmVRL3t0fUDnKqmALq7rj9GV0UuSpK
+	AhByj83XOCrFxP8FwpdEhIPXVv965Og=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1159A41B13;
+	Mon, 30 Mar 2026 14:24:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234E3C2BCB4;
+	Mon, 30 Mar 2026 14:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774880678;
+	bh=3rj+sXJaZ9wh2XdFPjuo89ucmKl3UhlADlwbFbe84e0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KzLsfE7aN0NHA9dqLon8kGWP6B+Jr6CjqLLn3sB/uAb4ltieAjQaJ5+MKjtFbohHG
+	 7XbbIzlj0PEYR5lqPqjD6LpzCRCiB736dSKPlQFUpUIRM4Czre77YdW+LkTATUC/uY
+	 /iymHSY1xrykYRESNAL9rsiAj7O/gUs8JtE3Mcgd9oi5mYBtIVag++nrfnd6jDWnaL
+	 C7vMDZxsvzdu6vo+buwLfqczcNGfV8bdW9wTfXyAwT5c6IQHWfI1valyDj98tYeBqE
+	 SOdsmJYvkemiJ/il3FB6x/IpdQZz1ClYseUuWD+G5ahHV5Ca7378tYivD/iij73FtZ
+	 SgXzQXckkT8Lg==
+Message-ID: <96d14f27-ca0f-413d-8b61-768933ee70ba@kernel.org>
+Date: Mon, 30 Mar 2026 16:24:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330141010.3126996-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4404F120012
-X-Stat-Signature: x4gqp6cf9m35aokd96i9wxwswfbpzbsf
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] selftests/mm: skip hugetlb_dio tests when DIO
+ alignment is incompatible
+To: Li Wang <liwang@redhat.com>, akpm@linux-foundation.org, rppt@kernel.org,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Cc: aubaker@redhat.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20260330125307.98581-1-liwang@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260330125307.98581-1-liwang@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 207F040005
+X-Stat-Signature: z5ibnghojwrpots4m8dwhfixgp9fpyii
 X-Rspam-User: 
-X-HE-Tag: 1774880476-274432
-X-HE-Meta: U2FsdGVkX1+/JKede2Vis8x70Ul9KLQ5HWrJxtv8v1b39amJh6kAXyPLo5cYEoKr3DkKXFGjIomjoYWKNABvi/MrH+awgFM0oG3nk11rFQOqbTCOxhq4b+9+S8a5YTLhkZsrTZ7veVyJBdu2bz0o3xdyExyvtweTfzptZAQPFmdn9TVLGJaSCU+0q1aZD/5oxECv4EoMqlUaS/+9xaDXvLkinzvS3ycAdXUTimdQd9x7O402qpNX0/SLJvp+2/fUJB8fYkcxX2AhHzG5LRlUaVaHiettw/mwHQpjf6rLm/tKXlvl7wV6RI5bskZNDK8evhlWHf4DE3QqiGcrj2vKAQD6hHLFwtf0PWJOu/yeUn+uCruyNZVIMReHvNvFhiNAS79k8l0IqZr9OibLFONs7Ta5ttXC8eDGkkVTzcp+RdavNoIaZQxf4B9k/VSaXGvP5qYhXVWHo12Mp/c+WiuA3iQbaF9RrTK7GrZnVIA9O1nLUPSZ5UeIbchGSo7CbR45RmQj+5bKpisNnVzRooDLX0h0iIVj3CiUGq0nz6UfeMWXGeM3tgUVjficd+IqN9s1ROFFc7LaTQNfwgass9N2dapibAfhpzFjTAToSqe3N4DazSC0vmXt0L0LwAJsT2gvlZqGx6i5lUcRDnZnmh5RuYqezw/2i0FaAStrCH9opNvrrCQkMTDzWLT31opKcoHYGFLkq/ZlF6wN5iYrpbrny1fVRApYdVm4pTJe9ZQgSbJp9KzuyC/OMJbDNVEEVfxkLFf1b5PoD9hkbI+ZPtwyEzXGn4jnryPy6oNK+NOlmVkFR9UyJqCg9hfBEXnSMszI2bNJt1krHRrgbzizlSVVy4NBMNMgeUL63CHE8S6ZcCzVQJciEtgdP2wlAPd7pFVZnf+WADJwkAmMKfFdCalk/kumGuxXR/2+5DEuGXmWuo6i59htrQDcb68R6r0h2iQ2EsvBoKq/tUyL0PL1kF4
- BI5JYBBh
- QOn/Q/yh/uOxOPc+hwJz5Wz95g/9prhJ3mbPsRzkcMkaqYAl1fsiFNZEAoL+/6ktiW+dkD6mBn+U9+uBkz9KSLaVn22LfVuPJqCiAUbOgh0upkxEPFxtp/q83Z0dZVPtH9lrbjedzEji+/2LKaN5pEzLOyMdBGXPqP0gCmmnp49psHz2OCZO724UnNwYvQJBbu7Q0PeVErVFlB5BN8W6vjm9jtMZK98BLQYvbP6TT4ruJ2xXXYZikT7Ad6Ehup/K++lDeVW9npj5w6q9951gglezWW3LxXqMgsak4B4Bc5Azf+RX5w8jp45Og9SmYBu/8sN0QEbf/4VLX+sxjrRZC/OJlzrltXRAXJ7PT2vcsfdV5GLoeovnKpM+1wJHrYB8w6bfer8bhG/Xpp3/hqvzIGpdYb8f9q0NHL15ivzg9iqWFBtidcrzvk3TTHAltebTfXoYnwtiQr/lJsuvS9iU7S+4pGWl0wsG4DzkRpWCoMTkh1YFTaeK42gVcbV32g98RYMA03MDEGwhNau5ZTsH/GYM8YQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774880679-992607
+X-HE-Meta: U2FsdGVkX18NVuHiuL/op5k62L1yYLD80KdK3/zYe0QfwQy2ErivbuoJOmZdgI9WMQVDb2YIwpu4DyiBkC2dwznTzabui1A21Q0+sjd0ZJGPgX02jZjcKl1T0XxAWLO5fUs1ETaHO6o760SaRWIk8sV67o9fs6bGyYRDy3CTccY5FivUl2cOHmzBjPJMZff9+eG/vQvUpNdjhJrQ2SQ2bM9i6zqA1qBW1SzCRmbCocg+hF03krxDc/WwWBKh43ZRe4oeygWAZwCeKxy7oRHWwhZ0V8JRPrWJq6k94UcyzS9Yv7D/bXanfaQKBfu3gmu1YncZorxMTMGcEx1GW86NJReo21F4JLFV/rxSSuelwS8bIG+mNRvO4qtrRyPUI1MGNn4nPVl49zxb6FFHekkLvFx9i9M4eFir1/yg28Fu2pqKRagbDrgujGujILTCcD6lE579CGv5YtnhVOOIsbNWPeh0opGCuFI8cn4B8A4JP3YfxQNqpNLZmhiI+n715GTqzM7pbIQOzSg+6yjC6pDIPw/Phy/nlSr6DKVJxsY7aG/7/zfbbopm3NMdgbQrBjdneTCejX8g6VNRXjwiWbjhT9EMZa+v3TlB757lnD3PGZm3yP9YS0RBhO+JdBN+OioMM/l+QZJTdZmSDOEIAkcG22prTgzb8TIbWXMJuVPxfL44XsQZSR5naTSL6BAZOYmqMYY3SL1VPmrF8bch/qBfOfnwG9Wi5q2heZhsojW5umbRCCgpOnu68QvU7hv9wtT9AtPnJAWEmTgbHNn69C/C/4KhjYy68G6Y+HhVnN0rAW/AsGrKXcz0koG2gnB152QGPrdx80ntEzrVTkk5eVqQlR7hGqdK7PLO9Gs+FfQ8dDfAOcGXpJxiGVZXlVNemOvlTkcgiYw0/dHK2u2mYeX1PXK0hqQ7JwEULIntMQUGPQwMg6t0YM1WAh1QoOHC4DLgDAFrXdAythR1dH2E+/b
+ nn+4BcUt
+ q6vkUysL8zD3lzKnLRr1LmR/QbpZ6Zs3tc/aulxkMCraNpTpfRuQVz6Ck6KGmqQnhMzULgshbDepBCQDLhdZy+P05tFmP93tKg4/zovoC56cWIm+LI5i+85z2R344rLR+1NmnamIPDSYIsGj8sS7Fu/07p6aXM0C2sYNCJ5nK2Xq9JJQ7a6YL4QgVJUga2HZG3RR+UrthO2j8srLpf+WBRhL5iHoU6bP2Lyl7Nuk6U51YEPrXQP5SLnIteltSL8UXHNhxGhJyphtnDVQNgcwBfBDHBXt8d0oiZIGm/TBdjkqbNc5nwq91WY7goToRk49G+8ypkYN3dNwBx0+Bj4GrdO2KvZa9jc9kYAIx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,65 +140,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 30-03-26 07:10:10, Joshua Hahn wrote:
-> On Mon, 30 Mar 2026 14:03:29 +0200 Michal Hocko <mhocko@suse.com> wrote:
+On 3/30/26 14:53, Li Wang wrote:
+> hugetlb_dio test uses sub-page offsets (pagesize / 2) to verify that
+> hugepages used as DIO user buffers are correctly unpinned at completion.
 > 
-> > On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
-> > > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-> > > to give visibility into per-node breakdowns for percpu allocations and
-> > > turn it into NR_PERCPU_B.
-> > 
-> > Why do we need/want this?
+> However, on filesystems with a logical block size larger than half the
+> page size (e.g., 4K-sector block devices), these unaligned DIO writes
+> are rejected with -EINVAL, causing the test to fail unexpectedly.
 > 
-> Hello Michal,
+> Add get_dio_alignment() to query the filesystem's required DIO alignment
+> via statx(STATX_DIOALIGN) and skip individual test cases whose file
+> offset or write size is not a multiple of that alignment. Aligned cases
+> continue to run so the core coverage is preserved.
 > 
-> Thank you for reviewing my patch! I hope you are doing well.
+> While here, open the temporary file once in main() and share the fd
+> across all test cases instead of reopening it in each invocation.
 > 
-> You're right, I could have done a better job of motivating the patch.
-> My intent with this patch is to give some more visibility into where
-> memory is physically, once you know which memcg it is in.
+> === Reproduce Steps ===
+> 
+>   # dd if=/dev/zero of=/tmp/test.img bs=1M count=512
+>   # losetup --sector-size 4096 /dev/loop0 /tmp/test.img
+>   # mkfs.xfs /dev/loop0
+>   # mkdir -p /mnt/dio_test
+>   # mount /dev/loop0 /mnt/dio_test
+> 
+>   // Modify test to open /mnt/dio_test and rebuild it:
+>   -       fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+>   +       fd = open("/mnt/dio_test", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+> 
+>   # getconf PAGESIZE
+>   4096
+> 
+>   # echo 100 >/proc/sys/vm/nr_hugepages
+> 
+>   # ./hugetlb_dio
+>   TAP version 13
+>   1..4
+>   # No. Free pages before allocation : 100
+>   # No. Free pages after munmap : 100
+>   ok 1 free huge pages from 0-12288
+>   Bail out! Error writing to file
+>   : Invalid argument (22)
+>   # Planned tests != run tests (4 != 1)
+>   # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+> 
+> Signed-off-by: Li Wang <liwang@redhat.com>
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> ---
 
-Please keep in mind that WHY is very often much more important than HOW
-in the patch so you should always start with the intention and
-justification.
 
-> Percpu memory could probably be seen as "trivial" when it comes to figuring
-> out what node it is on, but I'm hoping to make similar transitions to the
-> rest of enum memcg_stat_item as well (you can see my work for the zswap
-> stats in [1]).
-> 
-> When all of the memory is moved from being tracked per-memcg to per-lruvec,
-> then the final vision would be able to attribute node placement within
-> each memcg, which can help with diagnosing things like asymmetric node
-> pressure within a memcg, which is currently only partially accurate.
-> 
-> Getting per-node breakdowns of percpu memory orthogonal to memcgs also
-> seems like a win to me. While unlikely, I think that we can benefit from
-> some amount of visibility into whether percpu allocations are happening
-> equally across all CPUs.
-> 
-> What do you think? Thank you again, I hope you have a great day!
+[...]
 
-I think that you should have started with this intended outcome first
-rather than slicing it in pieces. Why do we want to shift to per-node
-stats for other/all counters? What is the cost associated comparing to the
-existing accounting (if any)? Please go into details on how do you plan
-to use the data before we commit into a lot of code churn.
+> +static void run_dio_using_hugetlb(int fd, unsigned int start_off,
+> +				  unsigned int end_off)
+>  {
+> -	int fd;
+>  	char *buffer =  NULL;
+>  	char *orig_buffer = NULL;
+>  	size_t h_pagesize = 0;
+> @@ -39,10 +84,9 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+>  	if (!h_pagesize)
+>  		ksft_exit_fail_msg("Unable to determine huge page size\n");
+>  
+> -	/* Open the file to DIO */
+> -	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+> -	if (fd < 0)
+> -		ksft_exit_fail_perror("Error opening file\n");
+> +	/* Reset file position since fd is shared across tests */
+> +	if (lseek(fd, 0, SEEK_SET) < 0)
+> +		ksft_exit_fail_perror("lseek failed\n");
+>  
+>  	/* Get the free huge pages before allocation */
+>  	free_hpage_b = get_free_hugepages();
+> @@ -71,7 +115,6 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+>  
+>  	/* unmap the huge page */
+>  	munmap(orig_buffer, h_pagesize);
+> -	close(fd);
+>  
+>  	/* Get the free huge pages after unmap*/
+>  	free_hpage_a = get_free_hugepages();
+> @@ -87,39 +130,49 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+>  			 "free huge pages from %u-%u\n", start_off, end_off);
+>  }
+>  
+> +static void run_test(int fd, unsigned int start_off,
+> +		     unsigned int end_off, unsigned int align)
 
-TBH I do not see any fundamental reasons why this would be impossible
-but I am not really sure this is worth the work and I also do not see
-potential subtle issues that we might stumble over when getting there.
-So I would appreciate if you could have a look into that deeper and
-provide us with evaluation on how do you want to achieve your end goal
-and what can we expect on the way. It is, of course, impossible to see
-all potential problems without starting implementing the thing but a
-high level evaluation would be really helpful.
+Nit: prefer to-tab alignment in MM land.
 
-> Joshua
-> 
-> [1] https://lore.kernel.org/all/20260311195153.4013476-1-joshua.hahnjy@gmail.com/
+> +{
+> +	if (!check_dio_alignment(start_off, end_off, align))
+> +		return;
+
+Is there a reason we just perform that at the beginning of
+run_dio_using_hugetlb(), avoiding run_test() entirely?
+
+
+In general, LGTM, thanks!
+
+Feel free to add my
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
