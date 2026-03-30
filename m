@@ -4,91 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6580E1061B1A
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:51:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B21481061B18
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:52:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1A6C6B008C; Mon, 30 Mar 2026 14:51:46 -0400 (EDT)
+	id 11BAD6B008C; Mon, 30 Mar 2026 14:52:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CB1E6B0095; Mon, 30 Mar 2026 14:51:46 -0400 (EDT)
+	id 0F3626B0095; Mon, 30 Mar 2026 14:52:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E17B6B0096; Mon, 30 Mar 2026 14:51:46 -0400 (EDT)
+	id 031276B0096; Mon, 30 Mar 2026 14:52:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E7796B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:51:46 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDC9A1B82DD
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:51:45 +0000 (UTC)
-X-FDA: 84603623370.07.76A4BEE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2AAE480004
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:51:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w+9Chuki;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774896704; a=rsa-sha256;
-	cv=none;
-	b=5z//fGZ6HswdfJSj2mvhMSs6uySjNdosn5c4Ci1t2J2jrgUgsbgcJEqt/8ggpPw9w6kvIz
-	qaTjOGYp50g9v6N0me9/Y2yWVzEjgBMWcgon0hoj6tKUkBOMhSxH9LQFxz88Bnz3flcq7A
-	ylanWGvuKZE5ZsC03evcJTAwhOmEJCE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w+9Chuki;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E903E6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:52:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 891A4598FC
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:52:37 +0000 (UTC)
+X-FDA: 84603625554.23.A5F5842
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B289D1C0002
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:52:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KagYQeJO;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774896704;
+	s=arc-20220608; t=1774896755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tm3teSG3pAmdvhWs9khRblA/lQhM+PQ5vnDKUjygpCU=;
-	b=TreWFqi9e0h+ibm5FrdmD+9a9xdK94URXjcKJo9PRHmHunraV1sxUrfY4rOrIXAdrJOOM0
-	4uJuEQckrUOVSjPY+El4V1zPJPRUlGNEP95A6WhNsYGou+F57zHkj7XJwZ799af732yce3
-	0UWmmsxX6PABvrTENKL/UD/BmumGFGs=
+	bh=liIWWgh3PHR9mQyTHAhDipXMUbIjVFVPZYvEzlHWcPA=;
+	b=AdECAgr7Wq8MV/Y4R14FiuK33m4W64W01RWVACiWWLK4MVov4a8CEnWMIMrz/VnUr0R2uo
+	ptr7XLEChx2bNy4O0XgB7ZbfdSI7Le1vAa8EKySVnIFd3kB9QgI9fH3v+ZzSP9VC7Sc1Qa
+	fP0NEWov8aPUKKphUyA+xX9X+KaQOv4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774896755; a=rsa-sha256;
+	cv=none;
+	b=3ERX7ImSLQnIV2krHOH9y9zAEdWy5BTtxq60ppdTPTRjk/xRHvwn5zki4oi5dPd6z17pTm
+	K8AQEsD/TanJaap1k7UIa/3RrJnChMWeTHfsCRRuifj/0h+tqZSELG8MFA5aB8JqqF+dCc
+	cOjm48y/qMWRXBbLjIlDW7VzYyFOk8w=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KagYQeJO;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DDCB244397;
-	Mon, 30 Mar 2026 18:51:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0FEC4CEF7;
-	Mon, 30 Mar 2026 18:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774896702;
-	bh=npYuzIAJhTb8zaBgQI9wXMwtR9qZ1KMW1VtR57baf/M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=w+9Chukiy98wCQakcJYeG7xnclPuxLJVPdRtu74cbkYKj9tfCWsZIQ/5OLKnKdhZ1
-	 n1PQzjxFyoChnvyfNl4umzm35AVpAjeZX1P7G9/EZKxeSiDZ18Sxd8n3czmQer0edE
-	 0E34vqe7n2F0hD+WxROydSF98v8KFGaoIrnt+hcY=
-Date: Mon, 30 Mar 2026 11:51:41 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>,
- hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- herbert@gondor.apana.org.au, senozhatsky@chromium.org
-Subject: Re: [PATCH v2 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the
- pool.
-Message-Id: <20260330115141.997e29f96223da1e22c0f375@linux-foundation.org>
-In-Reply-To: <CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id 1BC116012A
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:52:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A39C2BCB3
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:52:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774896754;
+	bh=liIWWgh3PHR9mQyTHAhDipXMUbIjVFVPZYvEzlHWcPA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KagYQeJOlSGL3kfsOcc1wqmwJFO/SvRwu4RusSJKBcCwNB9g+SFyCuZk60NRljReS
+	 +ix7Upcou3dYQcQt5/8VPEYSxNSrtbqw3G00Y1FyIJIUy+LB55GgrIzs3sDMgUIeag
+	 7hGXvK7qlS0//TJHCbi4zZN1LXFS4WGoT6M8TqM6QUghVtepriWynI2yThZdErXDyo
+	 XamMJ1l84/ymUY2u5GZ1rSCCpsJdCtbFdT+D426H6N8BFYO+p+H2KTsGELYDhfzk6E
+	 hdRDGkcHz9bHI7vmHo9FLBuhCKzj3jF2XYIh6s8yy9/pLyd7BgBJLHGI73HwdvptVV
+	 OoKw4ZxbaOPxw==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-66a851e62c6so5076580a12.1
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:52:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVp3wU4g0SpvkejJLaI9gEye6Wc6QMvUbNF3dRKChrKFLB8HOz1WnMAYfUOoqVPxEFCbvKgAHc4Mw==@kvack.org
+X-Gm-Message-State: AOJu0YzYt3/nRHuV0UoBxnK8/QsZr+cZgEcEC1Ntk2pkSCcP9Uzj0/9O
+	W7VBMLUHTPm65IzWYDGHkDqIsuPaf0YbpP/SCe7+Fb8H9Eyh7wgh8rpubye7KzUbZWcBJ4bmffs
+	FJkUWT855nQHF39MfaOz9yDc++jcZgys=
+X-Received: by 2002:a17:907:8d8d:b0:b98:528b:844a with SMTP id
+ a640c23a62f3a-b9b5098b5d4mr835193666b.51.1774896753619; Mon, 30 Mar 2026
+ 11:52:33 -0700 (PDT)
+MIME-Version: 1.0
 References: <20260317014802.27591-1-kanchanapsridhar2026@gmail.com>
-	<20260317014802.27591-3-kanchanapsridhar2026@gmail.com>
-	<20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
-	<CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
-	<CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2AAE480004
-X-Stat-Signature: at5sk8ynoi5pnubc5b79ku13pfsu91k4
+ <20260317014802.27591-3-kanchanapsridhar2026@gmail.com> <20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
+ <CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
+ <CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com> <20260330115141.997e29f96223da1e22c0f375@linux-foundation.org>
+In-Reply-To: <20260330115141.997e29f96223da1e22c0f375@linux-foundation.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 30 Mar 2026 11:52:22 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNRcSBdBthR8Mk929pT2z_Ew_vc8_nLJns-2FygSX630w@mail.gmail.com>
+X-Gm-Features: AQROBzCxTWZ8u2aqB6rgkjfwFYtB9_zzffu3EkbHE4cRv_DbXnFzfRhDK4MAd_4
+Message-ID: <CAO9r8zNRcSBdBthR8Mk929pT2z_Ew_vc8_nLJns-2FygSX630w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 3inieqyhc5cyywecrnidy6sajbdw4kaa
+X-Rspamd-Queue-Id: B289D1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774896703-200057
-X-HE-Meta: U2FsdGVkX19/qtQu+Rt6xo6SPNa9E6yDsaJfQSy0hHLZfJeJQxZf9TkZ5P7i7DL0FmLUi3qQrJHB+AxCh5y1YYoi2Mtko4WJocAUxicM2J/uySh2oVuzxTQ4dqPyNGaMRnl0dPeBttNFhvmu6jljtiGDVwu6FeXgCKCyJmKgN+nllou8voE1DaFXkT6ZC0hhlyRnkK4yVhQ680WKFSNExn5zDABXkZYdO7DuQ0QhmXoxkR6c1O4WKUe/xmwQ/qrIx6fiBrf21zK6EitG8G8oji7C/yfeMltnihshHvIi3MLLE49tEmB50qw4rO477ptZTeQDU5WN+jUgBdyxioUOuzTG1gGe6+w3zwUAEJGkRTx0xf47Wwv6zohDl/WYJjmwdpNaj03QRXJQlWnKqp7TdyTnY+pE+ogZSd2Y+8rUUv2f4CE9lmf5pLRjsMepC07BSR3MPxtuzRqK1oKXpCokQBV8a4DFo+fJkx6RUIHqLCq21tiAefW/yWlfFBlI759qwZ1dh/GXDc1RVbIC76tKWVSK+oigqgphOntrJmXOA2OuiiGWf2faiTuLhiRSyT0sWASZQengFg2UH5CiASjBNH9Fv/jhpt602W+G7e1pJh8iVGuONZkJ8bc38PQyDJtypUar5Hoy9wLB0/VhCuiOrLI9bGiMSgYB6KThvTWaIujDXuIX8mi3XT2LUIjTXY0lg/mxKnGgrXDWo3IT60phYtc4JgfOG1514McuMmcxFC4dWFA/dlfpHg4/IM1RmcGbQ9ytTsX/671LOwhtrDv91e/gIcnmT5+Hu/EKAga4rYeHdUU5lw5nn9u2h/5f1rxZVFLX/QDLTwWnL8Y5thv24O9N8QGIFwndHWU18Yd50yynbYLVYSDEBZoJD9VhlRMlNYCWK8G+J6rfV8NTcBDDWr2HjplGuWVNjrPvillxLsGPSwGgwuJj6oKokaUPeAvB+/2tKC+i73l3hk2JFWE
- pX79pJDi
- 0tl44VQJW164cYtpMp4uVjCTXtcZ2sFKquuMDe1x3Zzdw3M9rtIW+aytRG4l9JrhD6y2CidZHEd7uM2jKFuOfhIdSr/2RWIkZoucnkCkQVREiR1QLRLGZM2/XEv4SRPuVTicBfXE7eQU+5IQgMz36haxEnIbAAlXns+1e971vWjPbvpy14TuOrZ68/olBYJiPY+XzW81AhLWAX1COvkbXJ2Xw8bdYQkulQENXkcpQfT7Ph5kmktv4Oi5oSAi54xw9Ygv2e+kbzB/uON/W2iU1+q773lrS+OkKDhJlk405jixSt1O/1/HUPAJb7I7G/Bd58zBT
+X-HE-Tag: 1774896755-218495
+X-HE-Meta: U2FsdGVkX18L+/j6Gsy00aX68IJ7+GYaPeJSyzhOCxXrhLEO9+EvdMj8tqwXM5jQBMUNB+hs0aQcNXgey6OumpM2Vo0DE947SOQMIKrm9BuMjnyic3WGp/zPuZ3uZaoiuwp4FayyKGkfiA8SeQUxcB/KD/IGpTbfQ0hjx1B/LZL1tz4J4wpgleeWy1ox+QrpPNz2labDVehKG/Ehl7OG3kXs713J3s6wNdcl/CyaWpJrM7h6XojEDWRXOnEBZv4LClgt5gRge0BW8uVYv2s54s4hSFOrT0Rj1YRS0Y3U9HvnhLhExEnGbIBjI/T1oPXOAK/w8DD8ajj2MkXXeRJHpR5MtRgi82Tbq8KtjlkP5TR024U5D8CdEJF4WfMtXoWRxPESuvMsyxbYhY9tbbdFFc+BSZ9sBomWbw8yhl8awbL6WmewVz6UVPnYztLBEJi+ZRXUjZdqyiXWW9hdMXcA1YgnNIIuiBg8Z5SwUR9U/OgtjoPNGi3EEnhCOnXuvh/KSijP9WpETXdl0XR/m66EX+REf6YkSGgtZTAvhx/zYJp89BSL+RRqt30IHZg6axYfVF6VYtnBkFZ8Tb4hDdfV1ES4yQBqT/IAagWLvvZdMHiZPiTViRx7PP8p74iJa0nWv17Tc6UmiOMG+8VMjqrasUdZBGljcfoXSkEpFfWYqEw66bilQpNSlM1R74GEZ3lXO/cmXT2zmYcHXzq3Y/+R8HQNoTqTayOYnUFWuJAFaJsDW/q+kxsGdmzWaE8vJBvGuVqhw/gaw6EtepOIslkQUxomuBpM4OPHMY3yAdep1YxzzwPS8Pu4INQTsJGWA5wtaaE1BGNzjeARMOVV9lC+49t1ylAx3MZ4txpTgKKfiF4acyc0TruRv9uEQoJDIYctdkeZvbksqu2sE7/oG/kZWux0ztxV9jp3iKtCq7BEPeCJ5dVSF9k+xm8lsU0iCWVwEtrFHyj6mSWl7OBuAyQ
+ gC0yPZqt
+ W2pYYgwdVByPtasaLDiPnveteu7LnD3VLU+oX4Be1EzG1gJModmieWpBdP6+6UUuh93K8y3CofZ1zoL4NC+SPdIaO0Y1DiGVubXjYbPDNMzMoytX+ME3AeCDiCagmnoEg+MNIa9HRzXXMOLTLQ5wBstCWiH73oqL48LRAUbfUzT9B7uQLI0nyU5tF5fgHraTTniM4VDguaDOXbN1xiyRZ6RjE35wAF+sbvsRYTDW9DW89mLnE9ZytM6EuQvfzno3HW0nHAvo0ACKmsG41MVHMKCOQn8kDSizDhbITCKnjEHuiqLREbAIv5pIL4dYTALaK08lqkHfDSU7qXqO8cnhc14NTca+au/psRygal8NSlcdZHEjT7wIfPjQkS300gyKhNId0gBP7ujihSgJ+L1ieAKJ3W1iCMPi7Kcw+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,21 +106,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026 11:32:07 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+On Mon, Mar 30, 2026 at 11:51=E2=80=AFAM Andrew Morton
+<akpm@linux-foundation.org> wrote:
+>
+> On Mon, 30 Mar 2026 11:32:07 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+>
+> > The patch looks good to me, feel free to add:
+> >
+> > Acked-by: Yosry Ahmed <yosry@kernel.org>
+>
+> Thanks.
+>
+> > That being said, it might be a good idea to resend the patches (new
+> > version for rebase + Ack?) to get Sashiko to take a look,
+>
+> Yes please.
+>
+> > hopefully it will be able to apply/review the patches this time.
+>
+> I expect so, but I don't understand why Sashiko is having trouble with
+> this.
 
-> The patch looks good to me, feel free to add:
-> 
-> Acked-by: Yosry Ahmed <yosry@kernel.org>
-
-Thanks.
-
-> That being said, it might be a good idea to resend the patches (new
-> version for rebase + Ack?) to get Sashiko to take a look,
-
-Yes please.
-
-> hopefully it will be able to apply/review the patches this time.
-
-I expect so, but I don't understand why Sashiko is having trouble with
-this.
+I think it was a transient failure.
 
