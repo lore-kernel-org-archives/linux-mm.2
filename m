@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 892D91061B1C
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 19:02:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF1061061B1B
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 19:03:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C75AF6B008C; Mon, 30 Mar 2026 15:02:53 -0400 (EDT)
+	id 3EA6B6B0095; Mon, 30 Mar 2026 15:03:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4D606B0095; Mon, 30 Mar 2026 15:02:53 -0400 (EDT)
+	id 39B2E6B0096; Mon, 30 Mar 2026 15:03:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B63416B0096; Mon, 30 Mar 2026 15:02:53 -0400 (EDT)
+	id 2D8D56B0098; Mon, 30 Mar 2026 15:03:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A2A176B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:02:53 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4039DE0C04
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:02:53 +0000 (UTC)
-X-FDA: 84603651426.19.D032418
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C4266B0095
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:03:23 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ADA018C58C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:03:22 +0000 (UTC)
+X-FDA: 84603652644.17.8C7843A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9430480005
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:02:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SOC1y4Yd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id D7E6416000C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:03:20 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SIPOM7xF;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SIPOM7xF;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774897401; a=rsa-sha256;
+	cv=none;
+	b=uGUaRfqEs0qjKU//Ww8cEfGbsraJ74pKMQwxAOuo7UQk0o+AqIDAfuob78qz0ZZS5bL53H
+	GX820w2I1TSzPGnALwRmVobiPdKhmIdjGMCgTP4gXgel2Z0kKpro7rEQJ4ICF+SFSWGWGh
+	XjL9GmSrFKMWRkUq5wtGxAkWTxDSpu0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774897370;
+	s=arc-20220608; t=1774897401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jD/E7d7j6MkqANMDt/AqL9jdwppuHxpcNjpbIzxXLog=;
-	b=CzSvqQ6T63X/fH9ax+S1HRew37VZRIneAmkKyJw5P8hF4jm6SHHupoSf2Pl+heOmISC3PG
-	ZuCirARRfAAEjXND+duHnmkMxQ3tJDDDS6N78Y//Fu+fX/GN66GymcIMkJyKZbG9l6ebXK
-	R8QbKc+ZHjhDEe0IGHX1x7PA5grDRUM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774897371; a=rsa-sha256;
-	cv=none;
-	b=3oAnMNOIrblroba1p8U1j1x+ltlvb6/uQ++B0tzdecgasuuiPxqe3qqDuwys1EP8FjSRrS
-	SOmNkMgrjGMctRaoqRQd8Uv+uKofPeLxs7eg0SZK2Al+Ia6X158aoZ/ZKbm0/+vMHEmnmW
-	/5JHvmusp7QrCM1V4SS4b9kKIsCFd9w=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SOC1y4Yd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	bh=378aud9Dh+FWd+8dwjv+cxpLPvlrAvdiIG7DVZAnOpQ=;
+	b=OyVbOaCYuirLiZKmVyp8SftHMDtvcXzJR3pT7KlOuLBDKOqoCsEUuJkwDpzikxN1LcnuDT
+	csDQ2sgtUMtT1ivnPnzeEV3VhARFxzv2Sz1ewx5nUTTt+CLpH7vZmVgdWnUVQi44U/J/Ft
+	7kwAio5EUPC5eVoQmuuXzsF53Cn9DP0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A59624455A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819D9C2BCC4
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:02:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774897369;
-	bh=V8UjiYxzfl/lZG1iwhIdVcgUjo7J2faQ/Wnx1HhOfRI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SOC1y4YdF+TE8yz5hNlXQ4JYtHhx8XCf13Ewvl3BZpJHD4HFntapHnOun+DQ1YiU6
-	 sRBl0hbkAjT6GAtlyFdkJJFbBPUMs0ZNO4G94SE7JQRcmzFdh7Nx3E3bHdTfE5NZRf
-	 eKDVMk038Ga0vDeZjdqbhQ2aVJ06JSxxuXgrJD98DVaGxArBW9tx40bADmb9Xqzl63
-	 HgX1XbA1e5oa9k5lcIEaEWS8uiE68t1s3i5BM+90h9MfNUy91SPs+yCUMU0WqJvGaw
-	 L26RWxif6II6ufNLGtCKuoT0XuQ6IXOYK9YUZwhjueZi8UgjGqwJHRfZuSRqOud4kO
-	 vRpBHAklN3S3Q==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-66c3635d758so88613a12.3
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:02:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX7knalo8xjK6GwflL+QEol2nbqXu32v3rYVgsTZFEstvrlxMfOOEoCU1y2eicAH5fopBpiGGAZmw==@kvack.org
-X-Gm-Message-State: AOJu0Yzi0ywunEJXPHtxu7qOs1ptBxg08538tjqHoz9+qRI2UAPRapVA
-	uZyKdP2B2gxmY4hunzVOLCohQmKyQnBOjrub/uaYLb2d2DQHnMnZhi4OVAnaFDb6ns7GOqA38ez
-	eiHeHu76pJSR1mzHyEiAZOltRyxumQZc=
-X-Received: by 2002:a17:907:cb13:b0:b96:e3db:9e04 with SMTP id
- a640c23a62f3a-b9b5094edf8mr570685066b.53.1774897368210; Mon, 30 Mar 2026
- 12:02:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAO9r8zOKaPocJYMKL=A=6=qpWgwCa=fMC8EZsSW+632M1q1sZg@mail.gmail.com>
- <20260330185947.2427740-1-joshua.hahnjy@gmail.com>
-In-Reply-To: <20260330185947.2427740-1-joshua.hahnjy@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 30 Mar 2026 12:02:35 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zM1My0cdMV4NomHL-zyconjjq6dP5iSqOyWm10Gnfe7fw@mail.gmail.com>
-X-Gm-Features: AQROBzD5Q4JVONjgLXuHQnh-7_hxGvOUjkM2GvDUWYmix-4crTfbUhCwaZZfCG4
-Message-ID: <CAO9r8zM1My0cdMV4NomHL-zyconjjq6dP5iSqOyWm10Gnfe7fw@mail.gmail.com>
-Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 9430480005
-X-Stat-Signature: nwsshmkknbx8dhi3udk8pwaag7khuabs
+	by sea.source.kernel.org (Postfix) with ESMTP id 066D641984;
+	Mon, 30 Mar 2026 19:03:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67614C4CEF7;
+	Mon, 30 Mar 2026 19:03:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774897399;
+	bh=bYoBpf9mMwP/A8V7PLvxT4p0yP3S1B/zELC0UR3Nn7o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SIPOM7xFPJM7CrHXXiyNKv84sJFnXFhGPo0qbVxnJG61dZY7p4Eb7Ci/76pw2+X7f
+	 E2hoUm9F5YJbTXrpgwLJBvEGXpCZ2fhj7BAAj6icy5xB1xulFPO9GwscEcy/c8C+69
+	 4XJlWIr0ODjMmsDi9uH5naeTYGTi7f5yFJcWbdL8=
+Date: Mon, 30 Mar 2026 12:03:18 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand
+ <david@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed
+ <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Usama Arif <usama.arif@linux.dev>, Kiryl
+ Shutsemau <kas@kernel.org>, Dave Chinner <david@fromorbit.com>, Roman
+ Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, Alexander
+ Egorenkov <egorenar@linux.ibm.com>
+Subject: Re: [PATCH v3 7/7] mm: switch deferred split shrinker to list_lru -
+ [s390] panic in __memcg_list_lru_alloc
+Message-Id: <20260330120318.3499796039de007752554cea@linux-foundation.org>
+In-Reply-To: <4d3f8d79-3593-47df-9de8-f94f7f09a403@linux.ibm.com>
+References: <20260318200352.1039011-1-hannes@cmpxchg.org>
+	<20260318200352.1039011-8-hannes@cmpxchg.org>
+	<4d3f8d79-3593-47df-9de8-f94f7f09a403@linux.ibm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D7E6416000C
+X-Stat-Signature: 515afbzus1pwbsscpr41coajxgo8ra4a
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774897370-672782
-X-HE-Meta: U2FsdGVkX1+gVXSihhtP0sze/EQzPwqSgu6zqggy1IIHtJTu96DVVAojvwEL4/vF7IutowIBi1HxafmuUdB3kRfn2WfsRlOJqNa/CyzQRXl4oiaHZMd2rXo9SgDC4KkKoQbf/Yb1XUqmtOAXMDWIrkYDvlYiDY6DnFVmPAITkVs3mCfEAXYuDAeHx5cjNuePA7Hds1sIi8gevI/PVlLNeU2KVZ2p1qx09ae6t0WWp/bM59T/k5NM8hrwlWpGyWjDcf0SBzi/f9qVigexF9L6g0oh+mEGTmiILzjyWJP+HtfHAeHl8m6+VQIpTpxP7+RdUKv2RQwCmWWb5FU9ubqvkZsyES/CDsUwd6MNcO9C2gcrocSPlBqfHM09bWOIGhk7GAHkqhjlAGl2oo4zyvXbhUlnQVoIr/BJCfG3wD5k6eAt5MkBfZFs4eHK8vhogFE0TZhENHk05eUhSx65ApfEvStirsuZ+zHKKWgDBycxOKfjjUUiPyl+wUnEbOvrYhEvocD7+1JIGAOOCi+SwKxEBXm1C5DQiOVyDPP/Q+AnRade/ZcraKBg66TgOU1FA6n4LNHFvtIdeWVmLbeHv2HbfOWHozWo0rB7AL8uKegXBs19Xpmw899sIILSy1A0c/UGa4lEDmxtGnDvlqLfrDLcLTp/X4DFE7LXOLuaxE7EKeP7uHJm+trKDithY+9VGLtcavj9CfY1qHvmbLtxnsvuhgmb4JLMvQZGMQmp95nKHJzcR8JH1LMi7D8tdjRsFVqTR2euO2qHZNosqU2ft029qJrVL8DgeXTFMMzQVqBOt4bKe13207AmbLpOLLzLwbZpxpq3+s9A9jtsS23aXKA7R398TmxGXVbvK+OYAb/AKHTBQ35lD/qQjY2ashJ/U8PXWW6RQjXac50m6BJapl/epUlPKjFBeSmPUyLxAUPvJf+GYULFAv1rHkDlVr+N7D6xxbGUiYl/H2c3Yd0u2ax
- lC4TGMhB
- vWx0uYTQVBAtyD7Alhx3sadT9RjaQ7h6exMjaxcL2Dw+u6Mdk2fSV06bYIol57fFX2MpVNIp+4AEjS5ylHM4+gNBAe8HApAedX55q4QoLvccaIjQIv9MFzPCd0FgTp7wpYgavwrD/xrHvRfMPo1AmpI+KbFudbjaSG60Gknrlv6CzAratVVcmXVSOcli3djCycd3MHMSEVC0t14m3VkLzgVdj1ulkva06h5W+8NZLH0gZoEz5oTyEoG4Vw4bpnwv5v+mGjU6prmQt5MRCH13bGJ4P1L+XWdq1GrglwTK/qYRAhwyfo/WHSPMk3/f8Lop6jws6
+X-HE-Tag: 1774897400-217158
+X-HE-Meta: U2FsdGVkX19CDvYKmICGEucJn7961EiZIdvaucUG+D7OCI1JdDR4qJ2XDHV6XvRkuSZ92MOGrwq9KrlN2kgkWSLUNhFCGbNF4jGecobf0lxsQde5xVy/ZaNqlKOmASwkBqAOxOK51TvSA9yjq1IEquQzvbFbhzM+fYr0xVbibgWYkzwaeryoLtCn/62FhtPaL1USADNVrHHnm0L1NAJUGcHJQQ8e3s6QGQUrgmQxxlzj/BVNAVWw3Uh/U2NHNChgxDzUKAKG4YRdagVwPCOpnJuVYgiaoGmHPUclqq7ggm8Cv5CIIhM/7cMndZiBGfKz7DYufdDd3IJxTE/wOIJW2Ud7MoKYPTJrMiOkT33e8H7EevUs8jarWPzd9eVQp/bIxwwTTFTmp12PgttpM855zumtIMsQNzeIYQS9p7HH5yj3PCFtLp97GTC7uzR4aoWCuOy4ar2/L0dLn2HbZ/3nxpYnwiOo0uL00hmSmXok/1e4MqQR+no/Y1d1lHnOVl6CYwG9kufeSnZMmMfgTICMn3QxFvwILoC8dLt7udUhc+RYR6xxtcw5VhVuAAlbz62Zu5AIyWMUQQrkVUV1GucyPFhEh3cdGr+MUrPkO5mXXlu6mg9KyHidmFNJoQalLg1GNQZmtU+OvixgiX7xZQFp0EeUR0oGfblamUnVVa9dqK4bVq3I1kxmnFMqj8wY78jePBrNznz/mbFQOEjV2uPsUjoU5b0DYIT7jPks+JkDqCq28iKR8yBrPn56u8WmCyUTDA/uPkk+imyYgaHrMfaFdd6XOkKOxc+HjMgEXbQEnEWucdRApmNwciD+yn8tODLW53Tn2l3tCdu/eQhIxSDDOZsq4KLawLFyvn5mzqx9+SoOiufqt1jy+G4GWqVeTAqvYVhMAbuF93g1+Pr8qCPzQlRcyq31wxy0ZipArtgSewV1a0ILJ7jB5Y/1inwZBiCwBU7/qgDBBHvlUg2NemY
+ JwDjeJTh
+ Z1ZdDvqmfeSjl5OD345/4D3pugykTsZeYsVgTSTcVYTF5LqyzYbKVwW5xi4MpktdwvWBEygZ4yCgRFb6ckdSTr6yqrrwqcMKk1is0Aq89mJHmvykcTVEGlcTA8G9g8Fhjv38eKcjAZ98DH7gyK4MPFcdkG5SPfEfYF3wlJXf7tR6F39NQ/OG8TiZG1te68tjxcwlmBh/IGKU6W0rsXFjmMUGe48PVHhiFveUAS1aW97aELuC7vMvLPRAfbRzSuOfYzUqdNaNPbf0FtHzqafhZFt/5+WLPXaLWOk6bORliPfAIm+e2lLqPJIRQL1g2DBroElfL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,30 +98,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > You should probably also speak to extra memory overhead to move all
-> > these stats from per-memcg to per-lruvec.
->
-> Hello Yosry,
->
-> Thank you for your feedback!
->
-> Here are the things that I cna see from my end:
-> - NR_PERCPU_B adds a byte per-node, per-cpu. I think this is manageable.
-> - lruvec_stats_percpu grows by 1 long in 2 arrays (state, state_prev) since
->   NR_MEMCG_NODE_STAT_ITEMS grows by 1 from ~30. This is +16 bytes per
->   cgroup x node x CPU. Even still, I'm not sure this is too concerning,
->   on a host with 300 CPUs across 2 nodes with 100 cgroups (theoretical)
->   we would see a 16 * 300 * 2 * 100 = 937 kB change, less than a mB (and
->   I think this would be considered a big machine).
->
-> What do you think? Do these numbers look acceptable?
+On Mon, 30 Mar 2026 18:37:01 +0200 Mikhail Zaslonko <zaslonko@linux.ibm.com> wrote:
 
-Oh I wasn't trying to say whether this is acceptable or not, just that
-this is a relevant context that should be included to help people see
-the tradeoff clearly and make a decision.
+> with this series in linux-next (since next-20260324) I see a reproducible panic on s390 in the
+> dump kernel when running NVMe standalone dump (ngdump).
+> This only happens in the 'capture kernel', normal boot of the same kernel works fine.
 
->
-> Thanks again for your insights, I hope you have a great day : -)
-> Joshua
->
+Thanks.  It seems that hannes is working on a significant respin, so
+I'll remove this version of the series from mm.git/linux-next.
+
 
