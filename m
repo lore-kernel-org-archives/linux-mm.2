@@ -4,107 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 911FAFF4947
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 05:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBB6FFF4946
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 05:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17066B0092; Mon, 30 Mar 2026 01:39:34 -0400 (EDT)
+	id 13C776B0092; Mon, 30 Mar 2026 01:48:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEFF46B0095; Mon, 30 Mar 2026 01:39:34 -0400 (EDT)
+	id 0EDBA6B0095; Mon, 30 Mar 2026 01:48:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C055D6B0096; Mon, 30 Mar 2026 01:39:34 -0400 (EDT)
+	id ED02C6B0096; Mon, 30 Mar 2026 01:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ADCB06B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 01:39:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3BB1813B93A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:39:34 +0000 (UTC)
-X-FDA: 84601627068.28.E56875E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8417540008
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:39:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hJncB3CH;
-	spf=pass (imf11.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D905E6B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 01:48:00 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 783C78C34E
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:48:00 +0000 (UTC)
+X-FDA: 84601648320.15.C068226
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EFBE58000E
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:47:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s6CxoxH0;
+	spf=pass (imf02.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774849172;
+	s=arc-20220608; t=1774849679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=g8MpXSBjxcDbsCgL0NjDYzsay2G5UIPAPIPiGXT17zc=;
-	b=1eyFRTExv5mDrwlEKGhZEs0T95/WpmY3mobCeamGgKuC369HW+Zf8D0mA/DdSWQn7/+ytP
-	QlDNI1WaV7eP6SjYh3N+x2cYqNI2sOfzLvldMPHSbHgUcWpcU4ILrsQQLwwToOk8LHakbO
-	g5nTPtZB+t/u+9bc+rHhFosq+4DlErY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P89ivFoRddOm1/L7DwzV63tbNNOcrWerngUhqcGSbgM=;
+	b=qacI07cNi7QCJp1OoxA/THm+LbEK3xqQxlMGjes8E+GVqUh0Yu/SL9ZGdAOvHxO+MGAKiT
+	CTvwCjCrzG9MhP6fCc9f1ny/2ny1hfJoe633rtCslJmzm9xg132LbVhpCxyKgjc+t4T/rr
+	pfePA6rsbUZMmQBEJ0VvDIZ/bYoAUsc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hJncB3CH;
-	spf=pass (imf11.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774849172; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s6CxoxH0;
+	spf=pass (imf02.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774849679; a=rsa-sha256;
 	cv=none;
-	b=taY9mosB4+TzW+QjyQVxm3SSuccAHs9ZmDVuzQziurCM7DWSvGa1UPkRK2BhqLJm7NxNws
-	3FefXY2+35GGFGlOhbnBzOCGCd4GulEbXsu3gAtOmBjOIwGTgXHtEXC4bX1LO6P2aOpmmq
-	EuiPDJRjSSKtMwjPgVGgMQq/3t8yx30=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774849171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=g8MpXSBjxcDbsCgL0NjDYzsay2G5UIPAPIPiGXT17zc=;
-	b=hJncB3CHwgTRKcIuZFlpuf7of4DIsKlVHVS7lFqFT1z4VFw4yebqkiK+sqYHq56o1QUk17
-	u+COZUgYZbA/pIlAKn9Bt/CfFyMnOEc2f3SMDaSn0GBuPD+Vm+t+gGW+p9QA1ubJOytRt8
-	8JEKQC1c+60snLOGZ/S+Yq4DZcqZhO4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-JrK4ZgNOO2yHfjrVqeG6yw-1; Mon,
- 30 Mar 2026 01:39:28 -0400
-X-MC-Unique: JrK4ZgNOO2yHfjrVqeG6yw-1
-X-Mimecast-MFC-AGG-ID: JrK4ZgNOO2yHfjrVqeG6yw_1774849166
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4FAF71956094;
-	Mon, 30 Mar 2026 05:39:26 +0000 (UTC)
-Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.53])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 58F9B18001FE;
-	Mon, 30 Mar 2026 05:39:19 +0000 (UTC)
-From: Li Wang <liwang@redhat.com>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Cc: aubaker@redhat.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v3] selftests/mm: skip hugetlb_dio tests when DIO alignment is incompatible
-Date: Mon, 30 Mar 2026 13:39:15 +0800
-Message-ID: <20260330053915.75442-1-liwang@redhat.com>
+	b=IaZ28wgZKc5nZCoLGotvOw9mi0m7Ich4ANE5xTDo5vlKoEVZ5SN8TOf4paqJ1EESNDLuMH
+	OPLucOq/D0sxhEU8+9usIRQd91xEvUeU21HxOCyHPNrwNP4FXqqOq2/EqoiQXfXAKqfj0J
+	tYfiaLOwYFS5BRLXp6AwiBy3x8DUGcQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 521E360054;
+	Mon, 30 Mar 2026 05:47:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F97C4CEF7;
+	Mon, 30 Mar 2026 05:47:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774849678;
+	bh=qyDqUEOyuGKVWNwH/c11TUyv3guz+h7W/2xYEx83qdg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s6CxoxH0HeeGjkoRHRYMsUCMx1bmeebfIP/QXjBDYhu3WBZcQ3seFDg7iH3ojeAsx
+	 NwHNs5oe8IiLJHe8it1Exk6k4SJArLYUlsGy9Lap4JOq4U0kUr1qApjqCXRPo0fClg
+	 /PzekReHjwvzt9G5P1YnFoF9TSvZqY3xrNKx1id0=
+Date: Mon, 30 Mar 2026 07:47:54 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, damon@lists.linux.dev,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: (sashiko status) [PATCH 0/2] Docs/admin-guide/mm/damon: warn
+ commit_inputs vs other params race
+Message-ID: <2026033013-drainage-stylized-43d6@gregkh>
+References: <2026032915-library-embolism-b48c@gregkh>
+ <20260329193226.59025-1-sj@kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: rBI8Ed1ftOqOBJM3yY5BywpJsC2Dcrv6mRWwRgTvFr0_1774849166
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8417540008
-X-Stat-Signature: 48cwwa9xgfebh1zu41n89z9wpnzujpn1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260329193226.59025-1-sj@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1774849172-57023
-X-HE-Meta: U2FsdGVkX1/iTnyZTct6UbvRGaO44GdgWzP3BqbC83lB78It98BmHnREmTisETHXI51xbf3KmrHFxK6Tm7Buda+81JGRMOBmTBBME95xH/0h8a7kX3FdSHWpwkmyhP5Vl6yrsqnEhD/82aeQJS8kw69g1xIBJA1IEJC+8rzYOK8PnnQDkA8emxyn4SQLtzIZbeopzJVhcrHF+Bw6oLS8c1Ht+FYNiHRI8cQCjJgKsEkXtDmjqQlbYAq9cZbLIwL5yUKGCnMZeCjJsVeujUXf0XLl5BQakCDBIQ+vS+n8twwxCvhxG8i/TBuTYtNRozTfD6FX7wqT2EUIIekn3jhMEGksMxzQ+v+MWnN9Di1vMyMx0x9s1gHk41zuUbq2WCoi1cDZDhnB8B9vrUF2pJ8da4rlJDUUS0FtjAdAx+Q/m38hk7S2d5unTANxCx3IqOGAU0F4anVJvAdAqkNiOdVYaCRQv/scymuTYV8udx+mIO3wFAboHkDihtrR2wUliIB54/9tGc9q7+YAjUeowxuzVIyBZMRX8yqXsdcT5jMhgrBCHI7+gFNUniw0W7+CEy/mwWXqeNC7Qb+QdllEuy0U2yp5MbY6Dq+USdWW9D+vOPOn0bh/m+jQhQc0NWY9nW+q+o6Ie3UnxPnX1JZkp/vlUIg9o0F69b/c7+18q9FJCf4TEvGod8F7rAq6JNiHnKDboFtlFaJeTMh+paYjpIZXJnjDJwqOe/OsOqGiJ+ZOYM3beg8z3YKt/JKgXNbUiuAd6LRkf7h8Xn/P9tsMBPpZ8Oaw9sqWhWPUQWkeHtGONU6flzhm7wDzRiWPtnarDSvd+3Bji3zT3jfV7Ejcqfmb+2EvMGpW4oHHtz2WJSEJARRPf0Ix2Jg9zdZu4uQkI4Ldfh55cBbt81fAafdS2hn1Iprtvk7beJCh3F7KyWA7O/V7bIM/H+008I112NhWqRfMrx5N+DQ8ThIU1X0Rf6j
- NZWF7kZj
- GHvW2yA9xb9F8+ahyLrdQ4pX6T5Z7MUg8+LcpOCPuIXPjyDmnASLBNr14KuhX6+srV8Br
+X-Stat-Signature: xm7rrkmxrnnu3wm8djcbekcyaog5dbw5
+X-Rspamd-Queue-Id: EFBE58000E
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774849678-175779
+X-HE-Meta: U2FsdGVkX19s+Qt8riydd/n3ycW2XLC0CK48JqR+RnExik9e38iVVonFz97PXMvorVnYix04EeP3rXGMG81PQKyGXw+IjD1G6IhdgGdxaBqLI7a4n4YT9TWBjrD7vdyINls3lT8HIuxMTChe8jcJl9XFyPRIjc07HD42MyyX6AZVGDB0WWTi243nNQvxYqOx8BZ6GlGnPD+orKVrkKeHmvnm020j6T1ZGerUo545RlNFqt0W9+u+p1vcRhQpMGp7pb1JO3oyec8yHiGwbEDKLV4zyuezsJrdRhN3OqS1Mh6HqglV4ak4A/NFNcfQq3mq0KyzHPkLyJ/wQsLcMQDvGOFDRTPEUUvYaxNepoFmcyKmU5RvqJpLCFdF7j+zpoyF+oJvk7diUdhMCFWgD6SsN+OQMmxoQVSiUcY+9AYP3uBraWoxCft2VW3d4mA775szRsNX9Kn03X+j7INJBAY/ypjP2opQ+Rpm9lKwk6jjvdgM2mhOqWOIONgUMWttmmH94ot5n1IVvYhp2S+IT7wj/VuL/zIljXqpsEt4B71V/3RZtHeRZdiydz+j+7EJ4CZuRfA0vGyhZzsfHvvz/swCFjN2T1HNGKQIgOwSbo1eWU5Qfxu1DsRRO5nZuxTC6xd+VRL1nc+GkQZ9nusc1MTsBezz9f2PvjZ8u1dDheOnui33dMDsxYnlLoxdrbY1yeyRux8yQg8j635g9VSNUgAfPdTDShGVUla6IJuEUtxMBUOQogdd04TzQaebWLmE6lZo1bN2IlN3pV8TCfZeQ9KlJy+7uX2GuL/6k9tgVVaTSLthVFEpCEzDyCza8ObjQQ13QQ3vs/rn4ZTACsc4RemPsvxvI+JakAp5ntQ/R458lsRdXEFIcm4HW3ljFRhjYhq0OLnFxLtN+/x6gtcWJesKmzvHsXcXeqWGwsN6wkJ18etyqZMqd5E9UqTB7NzsStezE+Z8dMvvC+lCShHqiIq
+ p3pzDAfy
+ vwTT2l8d2O6fQGJIm6EVakL+dtaMHhpKp630g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,176 +98,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb_dio test uses sub-page offsets (pagesize / 2) to verify that
-hugepages used as DIO user buffers are correctly unpinned at completion.
+On Sun, Mar 29, 2026 at 12:32:26PM -0700, SeongJae Park wrote:
+> + Roman for a case he has any opinion about my sashiko usage.
+> 
+> Hello Greg,
+> 
+> On Sun, 29 Mar 2026 20:05:53 +0200 Greg KH <gregkh@linuxfoundation.org> wrote:
+> 
+> > On Sun, Mar 29, 2026 at 08:49:16AM -0700, SeongJae Park wrote:
+> > > Forwarding sashiko.dev review status for this thread.
+> > > 
+> > > # review url: https://sashiko.dev/#/patchset/20260329153052.46657-1-sj@kernel.org
+> > 
+> > Why are you doing this?  If we want to see the review, can't we just go
+> > and look at the tool itself?
+> 
+> We can.  But it is bit cumbersome to opening web browser and moving my focus to
+> there.  Reading everything on the mailing tool is easier for some people like
+> me.  Like some test bots send reports are replying to patches, or we sometimes
+> forwarding bugzilla reports to mailing lists in a form of a plain text mail.
 
-However, on filesystems with a logical block size larger than half the
-page size (e.g., 4K-sector block devices), these unaligned DIO writes
-are rejected with -EINVAL, causing the test to fail unexpectedly.
+Sure, but are you going to now forward all random tool reviews that are
+run on your subsystem to all of these lists (your distribution cc: is
+quite large here)?
 
-Add get_dio_alignment() to query the filesystem's required DIO alignment
-via statx(STATX_DIOALIGN) and pass it to run_dio_using_hugetlb(). Skip
-individual test cases whose writesize/buf-offset is not a multiple of the
-alignment, so that aligned cases are still tested.
+> Secondly, I have to share my opinions about the reviews, as many times AI
+> reviews need human's opinions.  There is no good way to do that on the web ui
+> of the tool (sashiko) for now, and I think this mail based flow is the best.
 
-=== Reproduce Steps ===
+That is assuming that you can fix up the AI reviews, is that happening
+here?
 
-  # dd if=/dev/zero of=/tmp/test.img bs=1M count=512
-  # losetup --sector-size 4096 /dev/loop0 /tmp/test.img
-  # mkfs.xfs /dev/loop0
-  # mkdir -p /mnt/dio_test
-  # mount /dev/loop0 /mnt/dio_test
+> And anyway I'm supposed to share at least my review of AI reviews, in mm
+> community.  If I ignore, I will only make Andrew have to reply asking that.
+> 
+> I used to share only my review of the AI reviews as replies, instead of
+> forwarding AI reviews and then replies to those.  But it was
+> 1. cumbersome for me (should summarize AI review and then my review; feeling
+>    doing work twice), and
+> 2. feeling not optimal at sharing all concerning comments with others.  My
+>    summary might miss some points of AI review but other reviewers might just
+>    believe me and don't read the full review due to the additional web browser
+>    opening work.  Also some other reivewers might kindly review AI reviews
+>    before I do, and save my (or their) time.
+> 
+> Hence I ended up to do this bit odd workflow:  Forwarding the full AI review on
+> the mailing list first, then reply my responses.
+> 
+> > sending it back to all of us feels odd,
+> 
+> If this is polluting your inbox and/or distract you, I'm so sorry for that.
+> Please let me know if this is distracting you.  Maybe I can filtering people
+> who don't want this kind of replies out of the recipients for the forwarding
+> mails.  Or, if you have a suggestion about what need to be changed, please let
+> me know.
 
-  // Modify test to open /mnt/dio_test and rebuild it:
-  -       fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-  +       fd = open("/mnt/dio_test", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+It just seemed odd, and might get crazy over time if this happens for
+all random AI tools that happen to be popping up now, right?  If this is
+the "official" one for -mm, that's fine, but consider the distribution
+and intended audience a bit please.
 
-  # getconf PAGESIZE
-  4096
+thanks,
 
-  # echo 100 >/proc/sys/vm/nr_hugepages
-
-  # ./hugetlb_dio
-  TAP version 13
-  1..4
-  # No. Free pages before allocation : 100
-  # No. Free pages after munmap : 100
-  ok 1 free huge pages from 0-12288
-  Bail out! Error writing to file
-  : Invalid argument (22)
-  # Planned tests != run tests (4 != 1)
-  # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Signed-off-by: Li Wang <liwang@redhat.com>
----
-
-Notes:
-    v3:
-    	- Adopt statx raw syscall to build on older glibc.
-    	- add buf offset alignment check as well
-    v2:
-    	- Pass dio_align as a parameter to run_dio_using_hugetlb()
-    	  instead of generally page_size/2 alignment check.
-    	- Add O_DIRECT flag back to the first open().
-    	- Add stx_dio_offset_align zero check.
-
- tools/testing/selftests/mm/hugetlb_dio.c | 62 +++++++++++++++++-------
- 1 file changed, 45 insertions(+), 17 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
-index 9ac62eb4c97d..b125092fc6c1 100644
---- a/tools/testing/selftests/mm/hugetlb_dio.c
-+++ b/tools/testing/selftests/mm/hugetlb_dio.c
-@@ -17,10 +17,41 @@
- #include <unistd.h>
- #include <string.h>
- #include <sys/mman.h>
-+#include <sys/syscall.h>
- #include "vm_util.h"
- #include "kselftest.h"
- 
--void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
-+#define HP_DIO_TMPDIR "/tmp"
-+
-+#ifndef STATX_DIOALIGN
-+#define STATX_DIOALIGN		0x00002000U
-+#endif
-+
-+unsigned int get_dio_alignment(void)
-+{
-+	int fd, ret;
-+	struct statx stx;
-+	unsigned int dio_align = 1;
-+
-+	fd = open(HP_DIO_TMPDIR, O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-+	if (fd < 0)
-+		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
-+
-+	ret = syscall(__NR_statx, fd, "", AT_EMPTY_PATH, STATX_DIOALIGN, &stx);
-+	if (ret < 0) {
-+		ksft_perror("statx() failed");
-+	} else if ((stx.stx_mask & STATX_DIOALIGN) &&
-+			stx.stx_dio_offset_align) {
-+		dio_align = stx.stx_dio_offset_align;
-+	}
-+
-+	close(fd);
-+
-+	return dio_align;
-+}
-+
-+void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off,
-+			unsigned int dio_align)
- {
- 	int fd;
- 	char *buffer =  NULL;
-@@ -33,6 +64,12 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
- 	const int mmap_prot  = PROT_READ | PROT_WRITE;
- 
- 	writesize = end_off - start_off;
-+	if (start_off % dio_align != 0 || writesize % dio_align != 0) {
-+		ksft_test_result_skip("DIO alignment (%u) incompatible with "
-+				"buf offset %u and writesize %zu\n",
-+				dio_align, start_off, writesize);
-+		return;
-+	}
- 
- 	/* Get the default huge page size */
- 	h_pagesize = default_huge_page_size();
-@@ -40,7 +77,7 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
- 		ksft_exit_fail_msg("Unable to determine huge page size\n");
- 
- 	/* Open the file to DIO */
--	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-+	fd = open(HP_DIO_TMPDIR, O_TMPFILE | O_RDWR | O_DIRECT, 0664);
- 	if (fd < 0)
- 		ksft_exit_fail_perror("Error opening file\n");
- 
-@@ -89,37 +126,28 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
- 
- int main(void)
- {
--	size_t pagesize = 0;
--	int fd;
-+	size_t pagesize = psize();
-+	unsigned int dio_align = get_dio_alignment();
- 
- 	ksft_print_header();
- 
--	/* Open the file to DIO */
--	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
--	if (fd < 0)
--		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
--	close(fd);
--
- 	/* Check if huge pages are free */
- 	if (!get_free_hugepages())
- 		ksft_exit_skip("No free hugepage, exiting\n");
- 
- 	ksft_set_plan(4);
- 
--	/* Get base page size */
--	pagesize  = psize();
--
- 	/* start and end is aligned to pagesize */
--	run_dio_using_hugetlb(0, (pagesize * 3));
-+	run_dio_using_hugetlb(0, (pagesize * 3), dio_align);
- 
- 	/* start is aligned but end is not aligned */
--	run_dio_using_hugetlb(0, (pagesize * 3) - (pagesize / 2));
-+	run_dio_using_hugetlb(0, (pagesize * 3) - (pagesize / 2), dio_align);
- 
- 	/* start is unaligned and end is aligned */
--	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3));
-+	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3), dio_align);
- 
- 	/* both start and end are unaligned */
--	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3) + (pagesize / 2));
-+	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3) + (pagesize / 2), dio_align);
- 
- 	ksft_finished();
- }
--- 
-2.53.0
-
+greg k-h
 
