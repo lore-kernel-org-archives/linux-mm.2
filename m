@@ -4,93 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA735FF4946
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 06:22:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4EEFF494B
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 06:27:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 430616B0096; Mon, 30 Mar 2026 02:22:22 -0400 (EDT)
+	id DD5BB6B0095; Mon, 30 Mar 2026 02:27:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 407BC6B0098; Mon, 30 Mar 2026 02:22:22 -0400 (EDT)
+	id D865F6B0098; Mon, 30 Mar 2026 02:27:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3451B6B0099; Mon, 30 Mar 2026 02:22:22 -0400 (EDT)
+	id C74EA6B0099; Mon, 30 Mar 2026 02:27:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 274696B0096
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 02:22:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB49ABAE6E
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:22:21 +0000 (UTC)
-X-FDA: 84601734882.07.584499E
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 004564000B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:22:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="y9RrhRs/";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf27.hostedemail.com: domain of BATV+d52e2ffbe62236f4cc0e+8254+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d52e2ffbe62236f4cc0e+8254+infradead.org+hch@bombadil.srs.infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id ACCA56B0095
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 02:27:35 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4FE6916055F
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:27:35 +0000 (UTC)
+X-FDA: 84601748070.19.1B0470D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AA9B5A0008
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:27:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LoKeSaAm;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774851740;
+	s=arc-20220608; t=1774852053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A5kUGJxxpOGZLNxEaIQpqI55lXs8cjlZDGWoRqiSlsk=;
-	b=Xdjk9DR0i0nNfHHsR810+cimSIsgCVxGXJiq3E8s6bxT1oDkooHUXBOzA7vlskvVz0Rra0
-	4xq3jTbMlo2MVh778ly6HaeSXZD1dhJ6n8DYcK7A1GFHoWHLtvd8aISSzwGczz/acovNIR
-	evWjhxCyzOSG8tsJuGu+ZNVekckRnoM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774851740; a=rsa-sha256;
-	cv=none;
-	b=Rp7tYV66zLkd81dhxCLdwK07ubSVKNvCyJNI1aPrnyv77R0n8N2EL2jVXSl3dnCblRFtRi
-	zBDa/EmmB3NGJeQzDuIQUkkPFYrPtfFXIyfX5vF8pAi1Zt5dkaxwrNa8RVmIE4wGIFUS8C
-	t3HNMPvjIwi+7dWV+ygTmNxKpAN0z3M=
+	bh=LYgib5CfdBXKAU/89zClja5Ab59Hd0fPWa8vYVRdprY=;
+	b=FhdV1y0PeIG4wRXR+0mMYQfc8b+UC8UcNylgvBre5kS+NRVjqhc+ViBRxnVaPqKbjUERx6
+	9Vl/x8b1/2NyQZVOTxxh9h0YHL6pHPqfjxHk22clgeyqTCT4TBlICsQnoMD0x21fWQcluD
+	UOhWEUP3odRzAYkVMKcY3cAhzGtyH8Q=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="y9RrhRs/";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf27.hostedemail.com: domain of BATV+d52e2ffbe62236f4cc0e+8254+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d52e2ffbe62236f4cc0e+8254+infradead.org+hch@bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=A5kUGJxxpOGZLNxEaIQpqI55lXs8cjlZDGWoRqiSlsk=; b=y9RrhRs/Zry8zlwTPI1jczOx3d
-	xuCD9gV3XOiWO8LpJLz297O2TSydy7FSArlNaq+7mSQahDYV/tAG2QXbtUETOkH05JMwJQyzom3lG
-	LUIwG25Pc9bmFwY2+F/kM+1cyzrIoXn7B9D7jZ/h1Ys2daJmabCJjXScjMAsNSyA0y8yLo9DtgeFZ
-	LPxFmO/LLL5I9lWecbvZS3d5amIE7m/Z3IsAmnvmG0MyUfz8WMLCOLgo7xayrkA3IXgmi8dYkGcyn
-	VbBYo13aLpFjAPaitMlHibEV4aM/AVuCOdDnZdKS1vN1fJp8wRuAosgtvos2/6o0aIzkLTNGFDMnS
-	9K25sYFQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w760w-0000000Ag7m-46So;
-	Mon, 30 Mar 2026 06:22:18 +0000
-Date: Sun, 29 Mar 2026 23:22:18 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: mpenttil@redhat.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH v7 6/6] mm:/migrate_device.c: remove
- migrate_vma_collect_*()
-Message-ID: <acoWmpfXXCfOOJGJ@infradead.org>
-References: <20260330043017.251808-1-mpenttil@redhat.com>
- <20260330043017.251808-7-mpenttil@redhat.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LoKeSaAm;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774852053; a=rsa-sha256;
+	cv=none;
+	b=gpc3vf1c3HSb33bvo3VbwsbiDqNf7j1gY76HhhKHpCqI/PUER2tTm8pIYVNUC5uzjXiTUc
+	ds/IbxKzbPUEbXCybsWDCOeHgyA2GIRfZ2t8/VuJIlxIqyXVxgPLruLpNXeWGbgK9hNTZq
+	GctJse7jHGBz2xmz5n1nCUdGGDV3RIc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 178B260054;
+	Mon, 30 Mar 2026 06:27:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7ABC4CEF7;
+	Mon, 30 Mar 2026 06:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774852052;
+	bh=F6tQtOiqeL+/nkboi2AX5jGllzsbO3jm6gQrDf3DOT8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LoKeSaAmCVA/XvE5JWggK0zyIdnGXlJc9LLrGTTjArgZLcSx2ePiTjBciLjEwWcVM
+	 Ne85zdPxFykfERTY4g/qq615ou6ErEgGMQ8u3QEV/HAXSmvCz5LebVcCm3Lq/RB2da
+	 wKHdolV0IYHwXTSOWo3a7BSLWdnTyHEPtMMVa4eB01XDrbxlXUDldD9FUFTHeH/i80
+	 nSKEk4SfX4LfOsj5qv7Zg3hBskETErx4ySPHkTsqieQ6vn2KXwCAATozu3tIO/KfPB
+	 FsGmTqEeGKCpxzTIvmqf96Dffxv/ae4VEc+lobkZRUlYlHxPDR/8XRIcqUI/6syjHH
+	 hklJLwdk/Ss/g==
+Message-ID: <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
+Date: Mon, 30 Mar 2026 08:27:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260330043017.251808-7-mpenttil@redhat.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 004564000B
-X-Stat-Signature: rwfn9wok94umho3zjonktexs96yseyo4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
+ module
+To: Josh Law <objecting@objecting.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Josh Law <hlcj1234567@gmail.com>,
+ SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>
+References: <20260326072737.341964-1-objecting@objecting.org>
+ <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
+ <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
+ <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
+ <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
+ <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
+ <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
+ <b263a722-e9b8-4a43-a075-46e4a753871d@kernel.org>
+ <043CED5F-7014-4776-824E-07E027B7BDC3@objecting.org>
+ <cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local>
+ <E1A667AB-DCE4-4034-A36B-DAA458780A81@objecting.org>
+ <e5d45f3c-4f46-40d1-bb7a-0a2f930fd7ae@kernel.org>
+ <82256A72-42FD-475E-935C-629964FA80E7@objecting.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <82256A72-42FD-475E-935C-629964FA80E7@objecting.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AA9B5A0008
+X-Stat-Signature: i1yoaen6by5xwutgm4f13eodsin8g9kj
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774851739-218580
-X-HE-Meta: U2FsdGVkX18ajuI16qkCGcAdxwkKrx66sZyXEwQTWTZ+rroMLXu75ryiIUUVMnp/1GQkGWz3R8jSfiN7PVxBX74IR9+na5cjK7fMu/WE50VLyY6xIgHuuD8Sgh5xjyxWZ5Kw45PdpU2Q+p+7GgM6aROmIExq3p+HdacnWSz89hwFJv1bZQrSDybbNEtV/PDaZABpo8nCizHgD/FH7ZycozBDcx5d5sdlqcPsT2YGWI6hZcS2A7h1c88Jhc6PX3W1u4Z2T3gFKe14xP1bTxxIrONGU4/8dWeoULJpSB+ffBfet128RX+igmLy5VqhlChUG52hpzBwy+zf2oVJD3hb/TSXCc8+8XJSlmqwTw3/0aQATU/2lqPDLDED9AkEI7r2NnTCKxCb3vWWqGfinziJmRI7dPAWqpggTvHdI+7W9tMMPI1lENgqgaN9s37eno9gpj9yIR3c7Gx1PooK32djkXw7BN4Ga1oUO4XOYJ0bAhrU7whCQFexPBQJvbGVgR6xHn+c9WGwlBWiknBwVxnITwSiP5OHaL3RTjXFyKOHfbV1pixbzoL11u1RVOBhWz1nGKo2+WBrZcSInXeOftX/qJGc7N3D8cM6q8sUoYQPDl5WP53T2+T3rdcyaMQ7J/u97VbecWEGUY2S/a4pbTGSwJaCoAYt0tFc5VpvOganpx8MMdDUfQz/b6Cl0zj+m4oBR/v959OvtJREMlwf7bEyAVS9XZRb9ErrIW66hFcc/pG61TugwiFT4kLu+YRXtPoOYz2bLbZp2l7CMSbUV6caiZHqXX9Wm5I8ZMkT7oonyBjOtJTpGMsneeJ8YDmjY+1NSLZR8miv+9Lpt87zamR2YMBsKySRcP5aUagE5DDq1YSw+IvzDMJL/I7pZAqi8RJFuDMaK/IlSpDzf4xkp/dLpkLI6Fz6+S0KDabFawfwh5VLBipjxhyHQslyexjjFOC7HusmBi47L/yfeza3bQq
- YP23X0Tb
- xe6w8jP1dKiQ89w3TjWvSqwTgsUm3ArBEW7k6Gd21lmnlByzA9decR4lyYhbn5ulzcguzEEJ4TvMojK1h2a9mk//QV+HZd1r2kIbUdcviWUvO50WkMDPpUYE9o/oKinZkjpN/kFrI/GCovHGhdRHigG7YPRXUY1iqeAT3r/ih2qyPNFwfWsN0bUc1WOV+2+qS1vxNu5X0BuGxZCpMPqZrPOPdG0Ey6dt34ajejiG9+4BUUFb2JKGCV7UcHi0w6amHB+4QkUdKHgslw2QjciRwwGDyIEOfjUsJY8xSohP9XuIPD2kftbKRO664B+W/fP2Uxz4svgnKQHGrH1BlpZkEQjLKxnZue3PWzGLi0o6fJtXEb5ygdfhI9emLT/r6DQ4TvqiSa4sRZTCuTN3rT529gTrins9omP1dq/BB+kfQ3H6KmxpI6ALbJjK8Q9+ba6JRBR25NztQc4I8jnAt7aLNCvnbqRXLQrc5qwTwvpsqEBm8nCOu5HyBoNLAVljSIBlBcIs5pAPTEcMqlMh4xxC8Ef+SDYNwSXLnywtIKq17OTYe++ILa1v7tSOhfCS9kmjHd3GoeIkMhyF9nD3tGsKxwbwTxpK1ow56SjTnbsdqIO6WrMRR14fx83KWhg==
+X-HE-Tag: 1774852053-466309
+X-HE-Meta: U2FsdGVkX19C/U3A4LN6wt3EUEZoCN3qJTo967qUt83BUd3HK/GCDqGSObJ5+htJszFMAlH0VKX7B/OBXpCJwvwqeSj57jTU/IDrUFpvBzDB/RjoyzqK66agNjNbA/4pDfgi1FVOML2F5k+JI91sJkaGNPn0QsLusY4bcC3eo57OibEkd4+0ZHSC3hHMsTwMF2kI2GCFmLez2O7YzHCNsDFSpEfN4rdoaQckooOwN/YA5OpPYpBRLB+9cAdBXiDHY4Pvzl/Q7jwpqlgIMwCXzOLynBWRBHW6YiZy1OywOhLPl7q+z2NP5ly/K3sDy360kETY8ytTDX/JG4dLS52Yrenddw8nl7CIEx0ANLD6KQ/gBD8B4rxJkcnx7A5PsMMU4mwMFVmiZtxhOP2ihAdYj9Z8Y0LUm8GjtHziA9dBtqPC6Dgg39nrHl2gJBJU1graGUH2YfumuWUdpCRVXO/2D8DJQsPuPlk96az7aQCp9kLb8/7qm9h/TC2ZbhyOm6+6LFD/7Ha8YlyTl9k8/ubnw8GE7burfVH6HcS0oTwVH7MthpEcKGVg43CH4x9MVvrzCKVIlWoRilQUMsaZ436viKO28/1VZjigfQhm4DGrA931MexVcURipPNQ1Lrii9PrZjPCthDzuBwcoW+DhNsT7nm/WzIMOfQ99yc1fQLCB0uV0wJBXTPUp4zPVmJqh/ZdDpAyrZzjxrlqe38ntgjqWubR000mtHtw0XS4JIqIuIuJAVPvyxcDHgaxLYc5LGmFfgt+fYzVadpQU2bG9PQM3OWXpQ0NfSDgYHWUh/iJf7H1J/8nJuOZLrMMUt2xM4++BG7Dmq+pIk1jUFpvLmjEUfexARaJ7JyYo7VAZiOCPjTQDTjiWIUMg2bHpySdjIILVwIm/+9A4TJ0Zmok1hvkiTJBrHkLfARiwBiZALLdkil1aJ7bBOJxUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,13 +152,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 07:30:17AM +0300, mpenttil@redhat.com wrote:
-> From: Mika Penttilä <mpenttil@redhat.com>
+On 3/27/26 16:22, Josh Law wrote:
 > 
-> With the unified fault handling and migrate path,
-> the migrate_vma_collect_*() functions are unused,
-> let's remove them.
+> 
+>>
+>> Josh,
+>>
+>> in general we try to be a welcoming upstream community. Finding people
+>> that are willing to work on the low-level bits and stick around is rare.
+>>
+>> At the same time, we need people that are willing to get familiar with
+>> the code base and technology, so they can help out with review and
+>> provide long-term value to the project. AI use is only partially useful
+>> in that context. Certainly not for writing patches as a newbie. At best,
+>> to double-check your understanding (e.g., AI review), help you learn
+>> (e.g., explore the code base), or improve your writing if your English
+>> is really, really bad.
+>>
+>> I prefer someone trying to use their own words to compose a change log
+>> and actually learn something on the way over some AI slop that reads
+>> nicer any day. Often, when you write a changelog you actually realize
+>> which corner cases you might be missing, that the design might be overly
+>> complicated, that, maybe, the reasoning or motivation is bad etc. It
+>> takes time but you actually learn something and are forced to think
+>> (crazy, right?).
+>>
+>> The same is particularly true when it comes to writing documentation, as
+>> people raised earlier in other context.
+>>
+>> Having that said, your actions made a lot of people's alarms go off and
+>> there is pretty much 0 trust now. As Lorenzo says, even now we are not
+>> really sure if you are saying the truth right now, which is a big problem.
+>>
+>> If you are, in fact, a real person, and are passionate to work on the
+>> kernel, it would be best if you would start things very slowly and don't
+>> use any AI for crafting your patches (including patch descriptions).
+>> Stick to one subsystem and ask people what good starting tasks/projects
+>> could be.
+>>
+>> Ideally, you'd find someone people trust around here, that can verify
+>> your identity (i.e., have a video chat etc) and start mentoring you on
+>> how to start working in the kernel community and gain trust.
+>>
+>> Now, I am still not sure whether I am talking to a bot here (there are
+>> too many things Lorenzo points out above that are very suspicious), but
+>> I just wanted to say that there are ways to become a trusted
+>> contributor, and that information might be useful for other people that
+>> might be interested in working on the kernel.
+>>
+>> It's certainly not by flooding the list with AI slop.
+>>
+> 
+> 
+> Hello david, thanks for being polite about this whole thing!
+> 
+> 
+> so, you are talking to a real human, i promise you that now
 
-This should go into the patch removing the uses.
+That's exactly, what I would say if I were a bot ;)
 
+As a first step, fix the line wrapping. The following document was
+helpful to me in the past:
+
+	Documentation/process/email-clients.rst
+
+> 
+> 
+> I am looking for people to personally mentor me, so i succseed in the kernel
+> 
+> And, I know this is unprofessinal (and im sorry!), but my github is my best friend, i have a year worth of commits for you to see publicly, also i work with android custom roms. (Any questions, feel free to ask!)
+> 
+> 
+> 
+> So yes, this is my oppotunity to be honest,
+> 
+> 
+> (Yes. I do use AI!)
+> 
+> 
+> The reason why, is im a "perfectionist", i want to start human patches, but im scared i will get ripped apart, (or i wont get like reviewership!! Because im too slow) so i use claude (smartest ai in the market), and i regret it. Like seriously!
+
+There is this nice saying "we learn from our mistakes".
+
+I still remember the first time Linus ripped apart one of my patches. I
+learned something that day.
+
+> 
+> Additionally, i hate being slow, im scared that the community will ditch me if i do 1 human patch every 2-4 weeks, which is my expected time (because i need to understand the code!!!!!)
+>
+
+
+Well, doing 8 versions of one patch set a day is obviously the other
+extreme ;) For example, there is this unwritten rule to wait ~1 week
+(and before discussions slowed down) before sending another revision.
+There are exceptions of course.
+
+In general, we're lacking reviewers, not code contributors. So we really
+need people that can get familiar with the code and gain expertise, to
+help the project long term.
+
+Drive-by AI generated patches that mostly just consume more of the
+precious maintainer+reviewer time are rather counter-productive.
+
+> 
+> I would love to have a mentor to help me around, and when (if) somebody wants to, i promise you now, i will start making human patches, and i will benefit the community positively,
+> 
+
+I think you had some patches accepted my maintainers, you might want to
+consider reaching out to them to see if they would be willing to help.
+
+But be aware that most people are extremely busy.
+
+-- 
+Cheers,
+
+David
 
