@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 008C31061B04
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D231061B05
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A30A6B00A6; Mon, 30 Mar 2026 10:40:15 -0400 (EDT)
+	id 45A3B6B00A8; Mon, 30 Mar 2026 10:41:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67A246B00A7; Mon, 30 Mar 2026 10:40:15 -0400 (EDT)
+	id 431816B00A9; Mon, 30 Mar 2026 10:41:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 590F06B00A8; Mon, 30 Mar 2026 10:40:15 -0400 (EDT)
+	id 347B66B00AA; Mon, 30 Mar 2026 10:41:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 477116B00A6
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:40:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 12BD61A07A3
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:40:15 +0000 (UTC)
-X-FDA: 84602989590.28.6CDA275
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5EBC140013
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:40:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mr0bhzOC;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 22C206B00A8
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:41:09 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF4298C15D
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:41:08 +0000 (UTC)
+X-FDA: 84602991816.08.4A1EDEB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5081F14000C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:41:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ovkJLNeU;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ovkJLNeU;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774881667; a=rsa-sha256;
+	cv=none;
+	b=391LhyST9TbtMRn+eqXXJdNJkmTR+HDOBwlaL32h3ymumGEx3hZHz5j+qpzpk6FL4NR/AU
+	awhOda0cPng46Y5A1JuoAhGUGlY5wGZH6qSVUbbZ6Znj5kDbuVLwkntxLfQqZu61DCusOv
+	aqotZaCPNUwieqRcmOvySCN+GCJ9goU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774881613;
+	s=arc-20220608; t=1774881667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PQEwpAdOtErCs2uht+fY3XnhJaE4gKVVLvFBWhCjdJ4=;
-	b=BxLoHy8dFK8Aa5P0FxZjozbgA33XnZAa2Zq2NizlDTaZsX9suvyEURcnB6u+d6nS+4lXdF
-	A9FR6U8yCwnQJkLYImbmoWY/JbIPf+BP+aMg2nrEuHDeCAsNzx8iPBJyAiCJILiHlazV+Z
-	UyESrtmAWCMz0HOZqRn+rwbFly5JPX8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774881613; a=rsa-sha256;
-	cv=none;
-	b=ynqVtGCif9CbaRGYSnG9C6YggZC/5KoXrNb2hqtPFmuWiLhAacNt9xZM/13CqD2sB+cTJA
-	dJWKFe+bms5gjNNY2ACI6yil9PyH7xijtclSFzyVKl5IIhu4XXfMmelm0BE9ety3/Torug
-	k9N9YnZY0f2KI+NHXc/e3kP3xXr4DXQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mr0bhzOC;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=enynDUZrtMhGqKyV6X0I9lridgZlq7xPmjN8IrAI9oI=;
+	b=dd6vFaevckI0L4YK8WUIjQAPkNwQEly+iPrfvBAFL8JE0ly5Te1xclLjrmwDcVQKwHAWke
+	jn/txNdWGhCqTvNZpOg6E4SNlJBOJUoDyi2dSkCA3jjXiIoVMOsiqIKO06kzHnjxQ7C0JL
+	mrq3DhHtHWv5CTrkIZJq9044UwWhVYM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5E68040A8C;
-	Mon, 30 Mar 2026 14:40:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D278C4CEF7;
-	Mon, 30 Mar 2026 14:40:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B5256600CB;
+	Mon, 30 Mar 2026 14:41:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D04C19423;
+	Mon, 30 Mar 2026 14:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774881612;
-	bh=hPMlz0sv1WZCrJthrxFzLRZrCnBnLEucQe2yPiuFRrg=;
+	s=k20201202; t=1774881666;
+	bh=r8gBVMIG5Tt1MRP52sdyrMptt1JIP8UGDqO4QDt0jTE=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=Mr0bhzOCM+faC9EzaczJiL6lHFEuQLvIE2LzMyEKb59F549f5zAO6cuVNhef6Y94A
-	 umPWez+Ixm9KqUIJqr1N7eT7qvPVcNO0BnancIKCUdXWoWmnjMmdu4zTRgDNcGa+So
-	 tByUeZ1VuYCakPMojk+PaOavsW1BWYQWin9KayJWElqkPFkT/d27+pPXj3rqDLUfXi
-	 CJx/PsfdJ1HfHIX6SXBTh0SHoRIcdfNsUqfo1c0DEK1sph6cnv8yhFKdlZHnE/paUN
-	 vJP4VJdCDPU/YIaExzxqN0m6H+2P6YLGSQjsNtMsPYqIUsYJ1MZOBPTle+35kLw0Lg
-	 RCtsJ4z4zLMtw==
-Message-ID: <10888c66-add3-4142-939a-8f4557566bd9@kernel.org>
-Date: Mon, 30 Mar 2026 16:40:07 +0200
+	b=ovkJLNeUr84JiMtcI+5WAr2G8F9gn2hqEyL/gCPmtpLtQ6gvn7uHEmPCINHpwdSq1
+	 KHmm4LGAWVuLRn0b7szwZPb57qduv9hEYOqeFWt4CLxELU8w4Htq+jCRTm2Nr8spiM
+	 1c15EVpJovbdySZ8d9sjru/hyJX/3TakNznuSl9W/VkqqkzkFz//amHfdNGpP0K0Yn
+	 kb5OvZeE0vjs++B7E2w4qcWgwlfQmiwuKD/zm3yFho6Bl2m1lPU8XzBhK4OdMQVVu2
+	 TQp1+E+ZOWdO0voZ2Sh9Q86tCe36AY0ehu8bdV8/rQS+Wx35deYr69l9mRTH8nFVbj
+	 bKU6gxTjQibvA==
+Message-ID: <ff7c26b2-0714-47da-b3e1-785e62391cb8@kernel.org>
+Date: Mon, 30 Mar 2026 16:41:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 3/3] mm/page_alloc: Optimize
@@ -132,14 +132,14 @@ Autocrypt: addr=david@kernel.org; keydata=
 In-Reply-To: <20260327125720.2270651-4-usama.anjum@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5EBC140013
-X-Stat-Signature: 43uth141r76ssbckr1i5tnur3pci4s19
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5081F14000C
+X-Stat-Signature: q735nyjru15asgqxio4jm4ff157rebca
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774881613-728906
-X-HE-Meta: U2FsdGVkX1+jDmQ4y7S+K3+HTnPZOygdvRx881HNWGUODIGbwlgsM9qBJqivusKii5MlHJeKQVzeLrmn7hdcYClWIFc5Fk8NS9F8ehnGV1FIOikaCPtpMhx91SnmsCVnOOSjl083RQPnFY3qhq36m2f8qGP+9O2WOuypBK4JotTfHSedesF5coDxOaNGXPXhpINAHG1NrQA5Nx5q7KNuOSxqsNizPfKk65j5HKV0MITGk3etAh/f+O4mVc+6z/9RGhJkV8w65zVX5Fe+F5UDkCGRa1f3xziaxO0wyroo7AcfUe6ovjM6Nxg5UlHPDJbQr/WeNMX0qdUSY1HAwVu5U7wg1EalG2YS2voDNIb/vqqHVNbh+UOnzhImaBmvwtFJkuYR4XjHUvaZh48av/414rp1M26maRDNKwtowjYzMiZMUj3bHIcCcxhUQEOX28It7mN4B528O2DNOBw/+BKz/4NyX10WSh1Q9YdlVnwLARdjQhaGo5rKDDE4TRUrXiib8pPqgAEm1chCf16ewoVOq31ozwNr0/VZh5juMBzRDQ7beaCqxF77NWmQKTLnfQcu5DEzE52IVvhzUQ7Zj9ORooMEpmN5LLyh3OcfwWoH+P1ooHUDltEb7n6FQYChZcM+m/OW7iG1ffSBwEt2pUKtboFvu4faqYsjxtxMdITQMzMrdirmx7OLhk4nLmgFdNwJLnT50OWb4HafZuRlbZPKuMLwyhqN4qmkk/JFvQigNM6hOJ1N8WacUvpYBMYtnmj7eHW7XsYLzn5RAAxHIgwVmWnU8MoYcsiz/ewiHZR0aaauR7GneHcYnkXDbmiG/qa9LEtieywUFZa0s4eMuXbD8UqcJvvwqhKIZpv7ulxM4HA34bLZZDP1j2pPLN5PHdkFZGtjhlaFAsL92+56pvYzm00Gzgk2kIeTET2m8z0KpnvUY5SAm7nEBBE7mguzQRY2wmf1wo2mrDLiZCggvsI
- G7c1ezYy
- reZpAuLsTa6MJg3ZyzBCBo/j7iQcIfNe+1XIXFXFegVWT/Za4Yfq9G7QUO1qJMBo4CTqIkviQBLmzgqg=
+X-HE-Tag: 1774881667-345762
+X-HE-Meta: U2FsdGVkX19wAojdKFXLUh1uT7lI5NbamQIwiWZ42aL+eXFLlQzpk6zDdYB+taTFmbjeTvO/5gh7O2FLz3219/ydw8BVcP3ngu0De4gfv/j4U3iCK0Ev2C0J7cXDwfM9FDtiZTVpxDaN3Bm6ksBnlTMHDfm2IH02UtY6Vo3Mgwv8J0Cbn7muwMGowFbkKC3R+OLw8L8jmzKqiWwEGPVLi4u/M8e9KkeWENXek1xZOk/xzYwg7jySijL+yLuA1w8j6syXvU9Vf8HglP939g0D2oZ8S8vSZ354RacOGhsdMaHNuCYn4wgmrrRiH292jKvvtQKmvZxpY7njuTyhsTGiB4ySiU/EZjc4UC+GMDyDmT4P47WWTzcXxNgxPk0wRbFaonVSDitJw1RS8h4Dp+t8H0z6YMtLZ02DTva0E45isOCKohaswFzuqg+/1yfzSfKUXkH4Q8rp7lctYUMcjjeHgpqi6kZqv7OK27AAg8tXPvI9p/uFrsFbU7SkOD/VHxkr3vDhw9djK1GGOkdgkpqYtcWA5RvqT5Hq7Jv3Z+VEFm0O48MRw9RvHaP146LPjWTr+uXxUZuXZCH7U5USH0OTzR1OYD5A3wtjgKIvekTM+2jgxKlXpfmcJzXq60T8QrgXkOftfg34yq81I994S9BJyYUeBGuP/CfoUKgiU71u/DWoBVPsGuKQPc1OmrXzLFbokT0LIWIo0kjFTq/aKOxMUSj/wttroVZjekKdP4BlCW9ds719+BOVlmuIPZinY5Kwb/T6AWgG5OvtNh49ba8h+fxH4G19KWE2pXwIx4s1tDWpqO/q7MMFzs8uxyTjnuOqfiOv8Vgv3HjXqBrwcKmEJGQGSH8QzHMTXRTN/VQmqmGUVJUVdVHwmO09r4AvCr9fow71qKF9mo92K6KHKyMq+GBdYH0NJDQBZoH3H1W5m1Q5mU5TRBKts6TsxH2fxaInen0TyO+NTBc0scEIInc
+ fQpPk4Z6
+ ix9RivHIYv7zEM5kuwcG+t503vtsGjivH23zjEAGup/0DxMu5ApBVk2o6T5dK2yafAeG6WzOf7EPF60M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -209,9 +209,32 @@ On 3/27/26 13:57, Muhammad Usama Anjum wrote:
 > Suggested-by: Zi Yan <ziy@nvidia.com>
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > ---
+> Changes since v3:
+> - Use newly introduced __free_contig_range_common() as the pattern was
+>   very similar to __free_contig_range()
+> 
+> Changes since v2:
+> - Rework the loop to check for memory sections just like __free_contig_range()
+> - Didn't add reviewed-by tags because of rework
+> ---
+>  mm/page_alloc.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 64be8a9019dca..110e912fa785e 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7059,8 +7059,7 @@ static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
+>  
+>  static void __free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages)
+>  {
+> -	for (; nr_pages--; pfn++)
+> -		free_frozen_pages(pfn_to_page(pfn), 0);
+> +	__free_contig_range_common(pfn, nr_pages, true);
 
+Ah, might want to add a comment here as well
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+	/* is_frozen= */ true
 
 -- 
 Cheers,
