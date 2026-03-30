@@ -4,113 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B04FF494B
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5723FF494B
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A37E6B0092; Mon, 30 Mar 2026 03:17:42 -0400 (EDT)
+	id 43B026B0092; Mon, 30 Mar 2026 03:20:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854086B0095; Mon, 30 Mar 2026 03:17:42 -0400 (EDT)
+	id 3EB736B0095; Mon, 30 Mar 2026 03:20:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71C8D6B0096; Mon, 30 Mar 2026 03:17:42 -0400 (EDT)
+	id 2DA136B0096; Mon, 30 Mar 2026 03:20:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C4256B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:17:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E7B47E06EB
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:17:41 +0000 (UTC)
-X-FDA: 84601874322.18.3A27AD9
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1C29640005
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:17:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DCrpbJIC;
-	spf=pass (imf04.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 19AE86B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:20:23 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B7E378C3EA
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:20:22 +0000 (UTC)
+X-FDA: 84601881084.30.DBCFC16
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 32FE11C0004
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:20:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=SC4qUK59;
+	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=SC4qUK59;
+	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774855220; a=rsa-sha256;
+	cv=none;
+	b=H990gWL6vm1PLKP9f7p/8Ej8PQWEHnen3sdA5VKcbx3WfPv9AMcaKCuntMrzYE/+tfv3U6
+	fmkNHXH0LqznDUsjAjh7/uonfdvnie1sqdz8T5Cn9uHGiZ7myUFqRz73hHD1+w5J0AJtII
+	K7kMsM66pj9P/5PnYHPAb0TW4wlCTk0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774855060;
+	s=arc-20220608; t=1774855220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kGWPqeK9KiWv8GW7kijJn4MfGQ2Rs0APPG4sisBBxLM=;
-	b=J7rmVS4+uJ9I+4J878ATDOIvtyq60hcZZlAUFp0RxEnI/xJCIaV0BQ7uZULg6F5r+c+iBI
-	ncM71k6PF3I9AqOj2ZQ/TyleAJaqqgDp45woBhE8bZAVX/Uh2I+K+5tC312O+1LYuvRDLl
-	gV4MtLB6Hwnq/m80H7xLDkCR4L1Funw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DCrpbJIC;
-	spf=pass (imf04.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774855060; a=rsa-sha256;
-	cv=none;
-	b=eUpEPcf+aHrJJKijYZ5b7Rk06n2cRKKO7GBIaQO7JBJrxOwoFIH+h4MbOKz5n8pjzEHqaz
-	IpmA7eEkHZeebI8vcxM95sgg7BKmxngcaf5VcVhQR5mCnJXBob+Ok89bXe9xdMM9Vaeuet
-	KxcvcgAjt1RkEKlv8PqjqgzdiRAwSUY=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35691a231a7so2430156a91.3
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 00:17:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774855059; x=1775459859; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kGWPqeK9KiWv8GW7kijJn4MfGQ2Rs0APPG4sisBBxLM=;
-        b=DCrpbJICkuzy3+kuljjaA3DSeuL24qAZMmLT3oMjo0hJSjlT+mSAQ0pxM1mR46leuK
-         PDUQ62Ob6KWRMaLvQ5m6zAiYiv7OWdY02z58oMp8XHJTWUMpTZzwo1neCshJwXTWDaxd
-         Svy1PvmeC6+iRok95fGpT3gMIRWTKgcN8BEfGNr18dNUJx/TvUIlR7Ff+BlUXrROm7Gg
-         /HhRMKOrdfo/I5IBiax+OQbibnznpsaMDH8HGIeplK2G/RSezNif/fMhzcci80CCnFLT
-         j+vvp3bJHCgrIGQtOF5Y0xM9nwV2eJWYLb22uXXwFfACErkCB/ewmdW6bf99ZlGZsHi/
-         f2xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774855059; x=1775459859;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kGWPqeK9KiWv8GW7kijJn4MfGQ2Rs0APPG4sisBBxLM=;
-        b=iatp5F70P0swS//7I2ad0cMN/QUpAmQXImcuIMlmyS9Kp/KSzv6CW8XIYCxh+NbaKA
-         M4+WBxcVZ1ioabz5BthYcu31ym5sLFROm9ZwXa2ZpLmAru7D2V0XNMI4iQnOo/ozjq+W
-         Q7oohVxr6pH/ULkGPsUovBOjcjQSXZ+RvH1dve7XfGMgHESXBBSYfOQFGWbWLJpUDHOW
-         Sqxjy+lV+6ypjESg+lzFWBWzjvEGOAKNQj0LKUrQiB0bJTislbQ50T713eff/q351hp8
-         yGHxj6kckR8hrEbIqA/e0mu7u/7fN9pnFxYByfTM6Gf+A5xGEBYJQ2rrcZx/OrrBLKlB
-         wQ2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVMS+xNIufNtvzkiSBQliTX6kMpoR98eQ+luKfD+wm+5IDq/dsvmup8W5FdAab2PN7PQtWrm16uxg==@kvack.org
-X-Gm-Message-State: AOJu0Yy9hfWukPgup07WaqMm3K04CrqHfcuwFXJ/8CCREJP2IpyYaSmV
-	DXIVUDHLSEA7sIuf7GN6oQS0OJxGD5I3/cHXsd9akdlVOQZiPAbFJVX+
-X-Gm-Gg: ATEYQzznc+hMpV7xGyv0bM4cxADuu2mujuzxXzvx9dsHJrjLxdz+9JbA1ZBrJN6U05p
-	Uqa/9NFu7WmpvKb3qCWD6x45wf4/OVwk6Z8aloTmmr2R6B/9uGM00NC6I2XPAlOs3oD/D8raNz5
-	1fBvu6zNGprmUfXZGD92NtgWUTjBZJNAZKt4orXYi07GJm7tLeMqBXZ8//i3nNW51aqGH/yem0d
-	FIpVaMe867y6kGt2/CcZhCOoezjN7TAcLZptTgZ8pge7Mx33vk1TWA+hNb6nTE6wsouVqLfaPaR
-	oK1BVti9rqg0RggfWwuevmGx5oufzj2GraQfIlrMNSgbupMHh9No+l8mrR0rsizkGIA+znsKQFp
-	zIHjC08eV34Mj4ywOp3VfV5JW7n9UxwJLpqdR0AvR3RmHcZ7USTS2Bzrej1DHMFOCvmMEPeFTjk
-	qHAVl9n1Io8NLRHtjdmonL+HbIwY8BpWXRT3iis7AdSQv6di5YUfQ=
-X-Received: by 2002:a17:90b:4b0f:b0:35c:b02:b5c1 with SMTP id 98e67ed59e1d1-35c2ff1be37mr10325599a91.2.1774855058782;
-        Mon, 30 Mar 2026 00:17:38 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c2d8d47c6sm4624349a91.1.2026.03.30.00.17.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 00:17:38 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com,
-	sj@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
-Date: Mon, 30 Mar 2026 15:17:36 +0800
-Message-ID: <20260330071736.17143-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260330060851.4659-1-aethernet65535@gmail.com>
-References: <20260330060851.4659-1-aethernet65535@gmail.com>
+	bh=pepwZ3XKeQcMZ6zDSFXuBMobmmIw3darhFzDaJYBZvo=;
+	b=jsAez8iIC+2UDxg3MvFqguY24id44dF62S373vYTq9Mr6r5FiMB0tQ5pysGe3FRlbRHrah
+	dxF/Z8gvrO7NXce+LfFf1X8/JyY4rcjQQZsDZU/8j2O7Wc8ZC2hLPeiqU78WeMelsG5SuQ
+	FaH+JqJX46Gzpx8TaiBHtyjyeH6PI4o=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=pepwZ3XKeQcMZ6zDSFXuBMobmmIw3darhFzDaJYBZvo=;
+	b=SC4qUK59hXpDZXbq+rPtEwSr1lC+YENsS5x5oofEvIuSsoICbJPp57M5OelZoptVim7CiUqx/
+	r8nOFQmo2RwxP5Kmc4/H/PIQiN989RJVpw1UQeNNbHRb8snsbRJE0KvJWuq4NHwV8wN5XiIqjoA
+	SQbdFIIdffGVUQ4MTItX8dA=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4fkjCy0P0pz1prKb;
+	Mon, 30 Mar 2026 15:14:06 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6921D4056D;
+	Mon, 30 Mar 2026 15:20:17 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 30 Mar 2026 15:20:17 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 30 Mar 2026 15:20:15 +0800
+Subject: Re: [PATCH RFC v2 6/7] KVM: selftests: Add memory failure tests in
+ guest_memfd_test
+To: Lisa Wang <wyihan@google.com>
+CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
+	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
+	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
+	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+ <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-6-92c596402a7a@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <149c954e-dfe1-6bdd-295c-792642a9d915@huawei.com>
+Date: Mon, 30 Mar 2026 15:20:15 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1C29640005
-X-Stat-Signature: 3weqyc1k4o95t7y6m7exhpk3zi4mp7r7
+In-Reply-To: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-6-92c596402a7a@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 32FE11C0004
+X-Stat-Signature: diiqcwhmk8yo5haqtpus6dtdrs6g986f
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774855059-116218
-X-HE-Meta: U2FsdGVkX1+9nYdWEIK9TwfQ3ZXygDmNo+LaaO/nk7sRH3pebs7qMP/XLgoV5MkFyyS2GnHjXrh5bYjf+5wYkhGhabrBivShRqbEIrX0lA6EA7DALoW/RIq0/NlvbmM5PLYxdXoMBC3oJNgczj0yMUhyvLE/yWzzWMBWQJBLzkK83wOJEk30bEj7Dfpjd7N0HU4s98/VIeabtbolO+Sej0t5U5APSj+oAJUyTQ230H3NrNT4weFFpNcp8+RFZzS3xfrJ/l+5vfrc1AnTFlgUVdJTTE+sj+0kOnP/kFSHgcDravBkbHyNh3DhjIk5OjK4CBvUMqcDbB6yRMdxZGu9nQUPGbtTzS5OAjlRMxGQLc6jBcR9lm7LOMjImVQ2mXDpHuYfUK6F6yDag9oPuv2Fxea6WeUk2y95SLPy6gQ5fJpwHs6QR9ROtZ4vlwxgGfv7mzerohsFnX3T+T0rcc528jTjXJKRueskv22IVQwIwfB/9zo+ZwUXjAISRkHMjpDhKfDPyUFNMqwQdu6yHfCBdOX1mkLs9byOtZnc0LrCJuhSDlKp8HCL24/PfZAPWxDJVpX97GWKnv9o6vfyCY1xy+aJKsnRqxNS88yU9y6g4xrGzXVncXoDFPD9VJuDgRVKXwi1mcKY9+fKi+1q31eictNeBmMfTfTxSzvEKPrtgz2ncnKskdakAU6fIsTK8ZhObOSqIVyLP+ivj50xbKZyk1PlTMdZEtmOy7lJVbdnfIDAoBF5H5z5lpGya5h9imovXsG2GBLJGDUlWzS+7QOeAmvNiImjHbpmwjRCa0JoDPCDTt71QaT9Tc6bYVym7pJOBUPjNJOhhyWCn0wOss26wzpy0+N49JrJy/qGDnDN3KUl+W4RM2uaf6kdCeldeTbluYTdjZKLBj9TzG4dNTx/tx5X03f/AGXT8IZVRfa0MO9K0wtRihfG57UUl8w3raKruN3Ji1e3vi1+Y1WxhZO
- xIwGT6eE
- lLdppQ0Q8eRlZpJbAzBC4wTcz01tt4BV7SkyakwvJQ9ewO9Gy2Sb7EGZ4lJGuFSoQqcL0zF8SCFO/VV1JTme+4ByoTqfj1aAliToA78oocVuKd7lqrIBepNTLQZuX09dOowkOA/y///IM5cq2bTxgyudlVfLNhUHp59vBioHKhuATJHBJbfTAXoB0WGPqwYd9qeB6q2zJFe67j/XESNgVE1Om/7zO33gnSlk58oRWPxSJS3VVfrOaMbz85WZ08yH0NHEistV+JRoVXlIC6rmbYnx2AtLF6id6eXfVPKPEQcOAr046yA6z8OpBbj+NS2QSvjhihVpnuU83ekbGd2jMmHvTUTgYuuMqLq8g2Gv8FMe19XzsBrSfVKlXbDzmyAHBpCq1HU8zuPqmSv9u8Ti0Yf6U9+JJ0oyRedyR3MiKHAdrxsaQ3vDAvcNDD96KCJvhu25nkXDvneU4uURhPTbYYVeBwQ==
+X-HE-Tag: 1774855219-6084
+X-HE-Meta: U2FsdGVkX19Eg86a3p+drq1ccG1eVdHudxNB90PJNnF+PT0/HOOxNMFJmc1XZnu8O5P0ifNVmKqwUlTh9IvhicVGd9gkbs/bxPfXXQbpa3i0fIMC9kXob2GEFLEBhIGmQPOzafImS9FXw6nImzR8u6l83iUCNF9X+6TUgx3I4Q6O3nhsi8L9uz7BFqdJTSbwLvmm1TLO1aLu49ds4JednGmpfJ+vK31TwJ2sPTPQOL5sDVFocc3zb1BwJOdbd2qlOYBhDCzCBCTmWwAaKw1Dmi1Yz8B/96rEM/QZY+pREP9QS4+GKdNGZXAe/LxUicIymgnxrJl0/jJ/hPLtbAkBdn8yR0hYHtukiBZTUcUADHMvi0bkQSwHRJptKkjXpJAGYGoC4c5GMalVZkA5gvKqP1TBtTdO5TGPnZ8Z6SCmrmrOVWe2CPY/e/5kRlR7t4nrlWNQ2IU9otxrkubpEBotSNJtRK2gUBDeLbn7OrRWFNpXchZQLDOBbS798RVgTUhvU1jfvpirauhDJY9k4Y79+dOFfLk8zilgtGcPmYrH1lXAAMqIEU/MMvBOJeQylToK+IbGeESwOW72ziqxKiDCraa87VQL0lZ5SipqlM65ck8sDdzPw1QnOOq3f6lGsAaWC3Mgz2viiKZTy1QGi2xNFDRuigQD6r+Nvzq9WleNhrrN+xWwyNBIarWSZX/uvaCiVomz6mqaWfHAGbYot3Bs+u9Mc6ztmZQlfJD4q79Dtg8oUdrGgPwRi6kOcxt3ITTMc8rcSEoCsuFMRDgJmrXriOb8T14hVFUNYnM9hAQlz1puk7Dv9WNOc0pqxfPbSDtWqVibKD3wllQx4v5AIeZPEdBea5s4izy7De3ATC0r4Agqb6fCHeAHqhMh5FYXmD4rxiZ+QLZh3FZ9g/qzC5Ivsi6R75GoTrGWaFrABsHUQ3ALOMp1DNFPkTZY/uIbYIR8cHeeBjyDfgd5IcDRIjy
+ PQ+nsirY
+ DPqPCk/PkYK4qKWd+jVKm4+utqN+SvAZqqqEKPbKlkQv001ma/ES0emcHx1f6OjsnBfAwaMQ1VnCeOrQfnsDw6ME/pytbrGZp9SoVqy2w3GGPfvq8ZcpiFV7kJxv4F9EAKsRHScA4pxPTmzeDWmZQyVs7b9D0tefN8aozfXJJHIdLcklF0IgLPK7P28poah+jiAwenP2IRjVGAUJYyyz+OKepS0N9gYgQ5DY24E+wpr8UdvrVYOeciBDQ2Th83IerTmRKY1wkdHqYuvshHEZaIKv0BAbsCI/jIv0ag1tnBeqKl92/rwHI55kK1V8mxYShbafRnZTYKDPyI4CWj/NlcpU2zHsafhSL+KQQHIABbZUumwcOy+HQk8JucQ1685Z1/KAgeQ/Xt7+oTMvutbn1r2yhKIWVcywYtzpP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,24 +115,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026 14:08:51 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> [...]
->
->     min_region_sz = max(PAGE_SIZE / input_addr_unit, 1);
->     if (!is_power_of_2(min_region_sz))
->         return -EINVAL;
+On 2026/3/20 7:30, Lisa Wang wrote:
+> After modifying truncate_error_folio(), we expect memory_failure() will
+> return 0 instead of MF_FAILED. Also, we want to make sure memory_failure()
+> signaling function is same.
+> 
+> Test that memory_failure() returns 0 for guest_memfd, where
+> .error_remove_folio() is handled by not actually truncating, and returning
+> MF_DELAYED.
+> 
+> In addition, test that SIGBUS signaling behavior is not changed before
+> and after this modification.
+> 
+> There are two kinds of guest memory failure injections - madvise or
+> debugfs. When memory failure is injected using madvise, the
+> MF_ACTION_REQUIRED flag is set, and the page is mapped and dirty, the
+> process should get a SIGBUS. When memory is failure is injected using
+> debugfs, the KILL_EARLY machine check memory corruption kill policy is
+> set, and the page is mapped and dirty, the process should get a SIGBUS.
+> 
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
 
-Apologies, I just realized I made a silly typo in the code above.
+Should we add a testcase for hugetlbfs? It seems hugetlbfs_error_remove_folio() behaves same as shmem.
 
-I used PAGE_SIZE where I should have used DAMON_MIN_REGION_SZ. While
-they happen to share the same value in many cases, DAMON_MIN_REGION_SZ
-is the correct semantic constant for this context.
-
-The code should be:
-    min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
-
-Sorry for the confusion.
-
-Best regards,
-Rui Yan
+Thanks.
+.
 
