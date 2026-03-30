@@ -4,97 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E46D5FF4933
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 03:15:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F04C4FF4933
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 03:17:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BD986B0096; Sun, 29 Mar 2026 23:15:27 -0400 (EDT)
+	id 5423F6B0096; Sun, 29 Mar 2026 23:17:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 195766B0098; Sun, 29 Mar 2026 23:15:27 -0400 (EDT)
+	id 51FA76B0098; Sun, 29 Mar 2026 23:17:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0841F6B0099; Sun, 29 Mar 2026 23:15:27 -0400 (EDT)
+	id 430476B0099; Sun, 29 Mar 2026 23:17:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7FE66B0096
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 23:15:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81D01C2092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:15:26 +0000 (UTC)
-X-FDA: 84601263852.07.EA3BAF4
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BE96AA0008
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:15:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="MIR/7YSL";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774840524; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 327C26B0096
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 23:17:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C6CE81605FC
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:17:16 +0000 (UTC)
+X-FDA: 84601268472.03.EA9BA0A
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 689191C0003
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:17:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774840635; a=rsa-sha256;
 	cv=none;
-	b=AoWZdcsw9utZNoK2P1jXsZbDMx2Ps25CUvwx1i1a+EMrsIpsW2xK+STAsnj6Dk/yBWQFpG
-	pfypnGdb4a2rH0ISohv4Yz2HW7K85jg+1Njq1fnE+XHRzadJGiyjiNFzL1GizfYGAcAums
-	tgSDGinFaJPx8cC5ub4xb7XgeZXxEKY=
+	b=aJP2qnpUtE5p83rbtRp4hSx++jP//85xWHm3xGQW/xXs7UPYnkjnvkJ1tR12qmQZFEhyGp
+	S2j3aHDtshTmYMk++L2uODLAnjBXS2AbYl1cIg3K/ErJbrhBJRr9ko/rjjANqEuof575We
+	Lm5euHhq6iBzP3jrm9iW+5k8LXGfzqQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="MIR/7YSL";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774840524;
+	s=arc-20220608; t=1774840635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=ZhtVGB0mCFQZ5ER0VM0tXTAo0NsSqt8Wt9S+rJfdgys=;
-	b=dDeB9HCIEBWinTda9d39Dy3OpuADmEnr5XDBNQW3FUchqqo/cQFxCGdxUFvh5kfzV7Y0sD
-	gwWIa1Z6hPSQS3fTOCGsjo09DcnOuJ1k5jRP6i70DZgVmeFPG1WKTznNMUl5cblFmmiPAa
-	i3xSOVZtPZDu5kzCXep4Sii/5JA6tNo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774840523; x=1806376523;
-  h=date:from:to:cc:subject:message-id;
-  bh=9XXDiBBOdstSsctXLA/grLYAkXok6ua2OirS2KFL35o=;
-  b=MIR/7YSLzzFsaPmFuCd5+KaEAyI/bBypsYM8Uz/MJZwTHCOpw+8hecfZ
-   DRDHRsWRa7JCwYj3Z4aaF25JTI71moIFba/1xhnS9nmm1uvioCgUxa5RA
-   tRG367CGiBSZ1/TyZ1cBinjtsxKqzOr689yfSUnW5Pvr8exT1ex/4ZDNS
-   vIcUQE7osWDCbOq2qGnH+kM6YVbz2CEXgxnSFAe9A/1/vzczwGGXUGGks
-   wc4R+DqGEq03Yjpg5t07aZY+9dhgRUCt5LoqkhM3NX2JS0hbpl5FlQ8Fm
-   EeIkE1eB2w0TczmblHdXX6hXbUXhFJINf7c3enCniav8D0fY1RKXG8e6g
-   g==;
-X-CSE-ConnectionGUID: MzcSYyyRRuKVx88oY05g8Q==
-X-CSE-MsgGUID: iDa3/hsRRJiFvDmne8Pm2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11743"; a="75939815"
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
-   d="scan'208";a="75939815"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2026 20:15:22 -0700
-X-CSE-ConnectionGUID: iHbqDrBKTf+/753tAOshSA==
-X-CSE-MsgGUID: dhLUaD43TyWhVWjfRtR4XQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,149,1770624000"; 
-   d="scan'208";a="225818161"
-Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 29 Mar 2026 20:15:20 -0700
-Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w735x-000000000bB-1IhG;
-	Mon, 30 Mar 2026 03:15:17 +0000
-Date: Mon, 30 Mar 2026 11:14:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: mm/huge_memory.c:84:13: warning: variable
- 'anon_orders_configured' set but not used
-Message-ID: <202603301149.yXng4wfz-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: pttixyy8d4x3zx8ti3fdcb75x7xube6x
-X-Rspamd-Queue-Id: BE96AA0008
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=feszXcbqqUN0+tYjNZDv7pi/0VAVmM2+e2UTvKOyAG0=;
+	b=sd+VN4UO7IhhTCCcuZ07RJ+7rEYwoUIJIk/80+LhsLkiMQdMbT6GMKyXMjGXNlNhoCNksp
+	dRrT/89l8T0VAnNBtrjgaKCnQRV0Q3jqK1ZQMHphCRMJANQ3bBwUGhALwRxNc/837NeWsq
+	QF4aHVZQZ4CYnUfDgp5XpF3uxrP7ekA=
+X-AuditID: a67dfc5b-c2dff70000001609-5e-69c9eb386bfb
+From: Rakie Kim <rakie.kim@sk.com>
+To: Dave Jiang <dave.jiang@intel.com>
+Cc: akpm@linux-foundation.org,
+	gourry@gourry.net,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	dave@stgolabs.net,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	kernel_team@skhynix.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	Keith Busch <kbusch@kernel.org>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: Re: [LSF/MM/BPF TOPIC] [RFC PATCH 0/4] mm/mempolicy: introduce socket-aware weighted interleave
+Date: Mon, 30 Mar 2026 12:17:01 +0900
+Message-ID: <20260330031710.383-1-rakie.kim@sk.com>
+X-Mailer: git-send-email 2.52.0.windows.1
+In-Reply-To: <9d672ece-e67c-47ff-9978-db405c939f67@intel.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02RfUhTYRTGebe7e6/L4W0a3jkqHJQpaZaKr1AhRPFCEEJBoPYx2sUNtynz
+	OygVQ0priLpWm8VEc+WGq5X4kWGO+THRHI7EKdPEmZgYukpKDXOa4H8Pz/N7zjlwSDbfjoWR
+	MmUuo1KK5SKci3GXAuujkxYdsljjcVhnMePQM+vEYef4FajVOAEccJfi0OQ2AzjfugbgH08/
+	Abvn5jHYXD+Gw/7W5wSsto0B2FbyhYAjukEMujrrcDhl3uRAh+4VBlfVQjitToZ2SxsL1owa
+	cKgvVQM4UdXHgiazFOp7p4hkAerQeQhksOahynIXge7ZlziooWuBhazND3Bk9VUTaODJOoY6
+	ZpLQo7LvOFqZm8CQRl+MLO8+Y2jIYCfQD+uhlKBU7mkJI5flM6oTZ29ypYN1nVi2TlDo1WvY
+	JcAdXAECSJqKpzW/yvBdrTMNERWAJHFKRPd9SPfbIdQRetoyu4VwSTa1zKEXyu9j/iCYktJV
+	xk22X2NbkNbk2PZ5VBy9tFzL2pkZSbe8mdj2A6gzdOOsC/g1nwqkv73uBjv8ftrx1LvNsKnD
+	dFmrnu1fRlN/Cdpb6v1/nIDueTmOVYEg3Z6Obk/HAFjNgC9T5ivEMnl8jLRIKSuMuZWlsIKt
+	3zbd2UhrBz7nZRugSCAK5MXiDhmfI87PKVLYAE2yRSG8Sm2fjM+TiItuM6qsG6o8OZNjA0IS
+	E4XyTq0WSPhUhjiXyWSYbEa1m7LIgLASkNDWoBsraH+rVdqN6jBfhOHh47hPpoQWb23qxcRr
+	aVREwfDvr11yRVT6+bXJ3jzfvguTH68LM1TCkfehntClGSk6OJpytbhkTiVUvHBPRy/aUERl
+	3c+GzPWjjXfrm45lPQuoda4MF00eWHWVG3rOXYoM7zOGKBKjBOE1I5INjwjLkYpPRrFVOeJ/
+	MUMk/tcCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Ra0hTYRyHeXfOzjkuR8cpeLxQssjIyLSU3rTML9WLnyQEIQ0demrDqWPz
+	GmQzxXKambmm2xTFrk6yTDOHl5o2NxETZ95iWqktE00rhDIxLwR++/E8D/8vfwoTvMY9KUlK
+	GitPEUmFBA/nVRyIPQznrZIAu9EP6hsbCGifHiSgcSwKDpTrCKhRDwJoGc8loGG8AUBHyx8A
+	f9t7SfjzyzwGu2YdOKyvHSFgb0s1CctMIwB2V1m5sFX5kYTvtH04tBn1BJxsWOdCq/YJDldK
+	vOBUSTg0jTi4sKexlQPvDtUQUJdbAuBEqZkDDQ1iuPry8QZ6O0mG70FtWjuJaprSUVGBjUT5
+	PQtcVNc+x0FN9YUEavpRRiJLxSqO2j6dQLfyFgm0PDuBo5UPCNV9XeIgte4aamx+j6P+mh4y
+	0uUC72QiK5VksPIjYfE8cZ/eiMu0HlkzOjWmBOOuKuBEMXQQozX0kypAUQQtZMwdsZvYjd7P
+	TDVOEyrAozB6icvMFdzEN4UrLWZKH61jmxvfiDQG6xbn08eYhaVyzvbNg8zT5xNb3Ik+xdyf
+	toHNLaCdmW/PusB278JYK2e2Gozey+S16LBS4KzdobQ7VA3g1AM3SUpGskgiDfZXJImzUyRZ
+	/gmpyU1g468Pr/698wr8sp0zAZoCQmd+AGGVCLiiDEV2sgkwFCZ04xdpzBIBP1GUfYWVp8bJ
+	06WswgS8KFzozo+IZuMF9GVRGpvEsjJW/t9yKCdPJYg8PnY9p85S6Th/T62qOvPCt3lXiKa3
+	0Gf4TWdov13WHlURVzec6Fc9ZMvu9pCGFefEpPt63g7h3aha3+dukAdfiolWcS3LyR0o0vy5
+	8Ki3IcRnfc0rSPa9NmBRH+rReci4mHlWOeq1uy18NOLigwHlWprWW9mnjyxOOG0PzM8U4gqx
+	KNAPkytE/wBtP38J0wIAAA==
+X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: 689191C0003
+X-Stat-Signature: q3jhptq35rjcu49f6cuehktc8t5hazbu
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774840523-855359
-X-HE-Meta: U2FsdGVkX19StcuD1RuFPtnP6tM4WzN0y04WX5mTPw4ibB6uRMZKb7DLR1v4NQFwjCC2qFoAS1G9lxg+eC8H8mZTC7//ZWvpGAeIV4xY1hBLCY07Xrpr5QMo4dtMzyWQ++dxqaWeW0aiHVV/fwJNlVrNUuBz6HRJdu/zGhsHEtFQ5dWMI5c38YPGb81U4ZAnLpius3EDsHavub6pThkfloSTuFPnsWCTSr7dKKKiW6GG0phtXMWxsAZXlPnohXZg2BJOXFUz5StgULQwtd14KyEwB0zDQvEK9h0U3+zgX33f+4fF7ITzIMX/1/9c5cqZCUIVKXEF1SZENDpfUJYCn9QqU9v2JtW+wk9tFd92uNzGpLaX8JiXBvRA40tO0DoeXm3/QPsb+jSgh3SPi5YtYtn9YLlU8FEJtl1ZA60DPafZRMH81A9J1tlYtqQEbte0b8ORpQUTii/UZSSnOskRlt5rm0owqh3qbyxqU6k849htJYDS8nwYxinGQ9dG/FWhK9aIshbYPyoWBrByXVZtLPMsF/aMk6RX0EHqknJAvdHAKe2T/MJ+dHfAJidS2UNR2NSikEEkEuLO9gBMzEZgiesd9oGizZASmNfprYO4A4mYWvHjB3npVmFf71EJeiJHLlU6bZyFxaucLWthlOjYywGWtRPqPzf9sq33dC01QjLh1KMsOjY5n5MeyrtR6ScAR66OZXTTG49FPf436beWZEeGxKf2aiT7UXwnlUDBRVWK6TH9rL6nHkj0+pfqPb8hHmuiIyTtl40jz1wCTPBURpFHgpqs4NCIdOQzfo+zFTFaC8E0N34wb0JyuXie1bCnWX6yBmbFj4zC8oSq4L0bAejesj4wNDa3AgUKBcrVmPGLWy8DxPvo47JWy8qY/LCt7WZ5s5ejBJxBubogesTzznHtHCAfIL3Bho136wTXPDPMTNw8qJ36GqApNN31NwjZEV3KcE9a9MX8phV0zWm
- fsiBvjyE
- b0AFchhQdpl4XE0G4iuG1Gya/GIEuNoYzS+XF+QelaEMyBiPaP9v2rslC6Avqltp/FZhW3WZlND1ATXcyO/RF4v6W/jU1feqKu/Fq9HqaG/jtLCHQFVB/CW3+Qu7sNh/vwOiZF35Ch4AVACsXWqa8aLhC54iLA6mWETixJ6yMNlih4IsIQZpb2lXOOMf/Tf0tIT9t/dd7PBmdI+fy2tii7ptOXjbAkwCg/t4l8vaLM4tLwUL57vaOFiMFO46CX1TLzAesV63OBwPXZdsj/H6YM6yUsrKTp+s3Zjmk6ooRt6GdePoDYPJrQBP8KBQDXQCjoOlia+IgeCMYxhMvrviduPw1Z+JaQp/ipsHsOcGsfY5uegklYo0mVwvZ0Q==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774840634-638500
+X-HE-Meta: U2FsdGVkX19q+4krUTplvdRc+QfHj2qLJ4Rxbi0XsiKVxT0l5cD2YksKpauZpecqU+TOXUPK4DGDK3XxZSo5cCPs84x1uiqmkHL1Z/azwqBu1ZNeGjandVeuRGHyNyBI4ENOuIG9td0tH51cas22FtTSYJD2uYrUU1nUeW1dijoCiBJQIfDLfSEN0/uyuPndBYOSyf61U/mGkOpAubA7rU2ZLCOXKw1A1cDvom0cvbVj0cb3EFK3IvPV5dUHOjnAKYCPl2BYhWvlSdGlAp8R5UyGpgwzGqYpgMj2/35nSTmw6N5QtRKQQh3R21dZXHuAlpWfg3dyFCAXvQfh96O1zOA/bYHYst4+LZk9ObqtjQhqWYNFJBI0FjEMR5tMPIGz7snfV3nbLUuLwlBqyfFE1Qy+57yagAW9RnipmdeKUqW/4PrvLJI9SpKkssl3HkYzT5hXP0NFFfpqVxid7fUd7aMDy/3LNNheH4tHHjS/wbxoNrNJqYbJeKmzUvPmYXIrPN81pMCiJDqeLPq9Io/7vCB2+xoOL42b2iPv2jR3sFH1ZKqAcoRMSnGrB7pcTPXu+/C6+w0gSzfXYQSLzUfNEuh6r8nZ7Gq3vEXNWRfmu3vYPm04wODH/O8wQH1tw7KAUyX4hHzFR4Dw4cYinTPGpZHahFL8XMYUUDvnUBF8KwxQyKSaU+qiE7S07hX3nOOS9cgvS3P6x6rvLIQW+ZyybxNNbS30koC57tWB52G90o++awsEUSxNQfleKlspiLHPb5RT2BVF6PEFpWbVrhsmJWgY/RtpByRaDhcfxNKiXp4S48+i9Kc0yBb1YY3e56q97jbHpMY2HQGgh4EckW7VUkV19wKBVQuDOYz7hh7D96y8NxyhRYmKJ7weeK/N50NEpF5oeUS2wRIK/903cGLqmbnpvYwEXPANH6oh3Kfq84NbmrvcAt3Z2myet/xPULzRd4HA4sTUyeHI9fXDBD9
+ DnEohYEY
+ KwxY6QNQytC0d/KmOAg7ewPMPmwVmTtyL3LbM9ZQsYA2vfwIFQFt9LxRE9H/K/PFdNstXJttiKqAJdziIDe2H7X+yJTs1mYEqueODyq5av/uy0ppIOS8ODeGdAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,130 +130,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-commit: 4496e1c1354bd4837bcc1414f6e1a4d042857903 crash_dump, nvme: select CONFIGFS_FS as built-in
-date:   10 months ago
-config: loongarch-randconfig-002-20260330 (https://download.01.org/0day-ci/archive/20260330/202603301149.yXng4wfz-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 2cd67b8b69f78e3f95918204320c3075a74ba16c)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260330/202603301149.yXng4wfz-lkp@intel.com/reproduce)
+On Thu, 26 Mar 2026 15:19:49 -0700 Dave Jiang <dave.jiang@intel.com> wrote:
+> 
+> 
+> On 3/26/26 2:41 PM, Dave Jiang wrote:
+> > 
+> > 
+> > On 3/26/26 1:54 AM, Rakie Kim wrote:
+> >> On Wed, 25 Mar 2026 12:33:50 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+> >>> On Tue, 24 Mar 2026 14:35:45 +0900
+> >>> Rakie Kim <rakie.kim@sk.com> wrote:
+> >>>
+> >>>> On Fri, 20 Mar 2026 16:56:05 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+> > 
+> > <--snip-->
+> > 
+> >  
+> >> Hello Jonathan,
+> >>
+> >> Thank you for the deep insight into the HMAT parser code. As you
+> >> mentioned, considering the current state where node 1 is still
+> >> registered as the initiator in sysfs despite the flag being 0, it
+> >> seems highly likely that the kernel parser logic is not handling
+> >> this specific situation gracefully.
+> >>
+> >>>
+> >>>> Because both HMAT and sysfs are exposing abnormal values, it was
+> >>>> impossible for me to determine the true socket connections for CXL
+> >>>> using this data.
+> >>>>
+> >>>>>>
+> >>>>>> Even though the distance map shows node2 is physically closer to
+> >>>>>> Socket 0 and node3 to Socket 1, the HMAT incorrectly defines the
+> >>>>>> routing path strictly through Socket 1. Because the HMAT alone made it
+> >>>>>> difficult to determine the exact physical socket connections on these
+> >>>>>> systems, I ended up using the current CXL driver-based approach.  
+> >>>>>
+> >>>>> Are the HMAT latencies and bandwidths all there?  Or are some missing
+> >>>>> and you have to use SLIT (which generally is garbage for historical
+> >>>>> reasons of tuning SLIT to particular OS behaviour).
+> >>>>>   
+> >>>>
+> >>>> The HMAT latencies and bandwidths are present, but the values seem
+> >>>> broken. Here is the latency table:
+> >>>>
+> >>>> Init->Target | node0 | node1 | node2 | node3
+> >>>> node0        | 0x38B | 0x89F | 0x9C4 | 0x3AFC
+> >>>> node1        | 0x89F | 0x38B | 0x3AFC| 0x4268
+> >>>
+> >>> Yeah. That would do it...  Looks like that final value is garbage.
+> > 
+> > Hi Rakie,
+> > So I talked to the Intel BIOS folks and apparently for devices that are not hot-plugged (with memory ranges provided in SRAT), those HMAT values are the value for end to end and not just CPU to Gen Port. That's why they look so much bigger. So there are couple things we'll have to consider:
+> > 1. Make sure that Intel, AMD, and ARM HMATs are all created the same way and this is the agreed on way to do this. Hopefully someone from AMD and ARM vendors can comment. We all should get on the same page for the CXL kernel code to work properly.
+> > 
+> > 2. Add code in the CXL driver to detect whether the range is in SRAT and then skip the end to end perf calculation if that is the case. 
+> 
+> After further talking to Jonathan, I don't think at least this part is an issue. The devices that are attached at boot do not have Generic Ports in the SRAT.
+> 
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603301149.yXng4wfz-lkp@intel.com/
+Hello Dave,
 
-All warnings (new ones prefixed by >>):
+Understood. I'm glad that the discussion with Jonathan helped clarify
+the situation regarding the Generic Ports in the SRAT. Thank you for
+the quick update on this.
 
-   In file included from mm/huge_memory.c:44:
-   arch/loongarch/include/asm/tlb.h:142:24: warning: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
-     142 |         struct vm_area_struct vma;
-         |                               ^
-   include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
-     803 |                 const vm_flags_t vm_flags;
-         |                                  ^
->> mm/huge_memory.c:84:13: warning: variable 'anon_orders_configured' set but not used [-Wunused-but-set-global]
-      84 | static bool anon_orders_configured __initdata;
-         |             ^
-   2 warnings generated.
---
->> mm/ksm.c:255:22: warning: variable 'ksm_pages_scanned' set but not used [-Wunused-but-set-global]
-     255 | static unsigned long ksm_pages_scanned;
-         |                      ^
->> mm/ksm.c:258:22: warning: variable 'ksm_pages_shared' set but not used [-Wunused-but-set-global]
-     258 | static unsigned long ksm_pages_shared;
-         |                      ^
->> mm/ksm.c:261:22: warning: variable 'ksm_pages_sharing' set but not used [-Wunused-but-set-global]
-     261 | static unsigned long ksm_pages_sharing;
-         |                      ^
->> mm/ksm.c:264:22: warning: variable 'ksm_pages_unshared' set but not used [-Wunused-but-set-global]
-     264 | static unsigned long ksm_pages_unshared;
-         |                      ^
->> mm/ksm.c:270:22: warning: variable 'ksm_stable_node_chains' set but not used [-Wunused-but-set-global]
-     270 | static unsigned long ksm_stable_node_chains;
-         |                      ^
->> mm/ksm.c:273:22: warning: variable 'ksm_stable_node_dups' set but not used [-Wunused-but-set-global]
-     273 | static unsigned long ksm_stable_node_dups;
-         |                      ^
->> mm/ksm.c:301:22: warning: variable 'ksm_pages_skipped' set but not used [-Wunused-but-set-global]
-     301 | static unsigned long ksm_pages_skipped;
-         |                      ^
-   7 warnings generated.
---
-   In file included from mm/khugepaged.c:25:
-   arch/loongarch/include/asm/tlb.h:142:24: warning: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
-     142 |         struct vm_area_struct vma;
-         |                               ^
-   include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
-     803 |                 const vm_flags_t vm_flags;
-         |                                  ^
->> mm/khugepaged.c:73:21: warning: variable 'khugepaged_pages_collapsed' set but not used [-Wunused-but-set-global]
-      73 | static unsigned int khugepaged_pages_collapsed;
-         |                     ^
->> mm/khugepaged.c:74:21: warning: variable 'khugepaged_full_scans' set but not used [-Wunused-but-set-global]
-      74 | static unsigned int khugepaged_full_scans;
-         |                     ^
-   3 warnings generated.
---
->> drivers/of/fdt.c:463:12: warning: variable 'of_fdt_crc32' set but not used [-Wunused-but-set-global]
-     463 | static u32 of_fdt_crc32;
-         |            ^
-   1 warning generated.
+Thanks again for looking into this so thoroughly and keeping me in the loop.
 
+Rakie Kim
 
-vim +/anon_orders_configured +84 mm/huge_memory.c
-
-97ae17497e996f Kirill A. Shutemov      2012-12-12  43  
-71e3aac0724ffe Andrea Arcangeli        2011-01-13 @44  #include <asm/tlb.h>
-71e3aac0724ffe Andrea Arcangeli        2011-01-13  45  #include <asm/pgalloc.h>
-71e3aac0724ffe Andrea Arcangeli        2011-01-13  46  #include "internal.h"
-014bb1de4fc17d NeilBrown               2022-05-09  47  #include "swap.h"
-71e3aac0724ffe Andrea Arcangeli        2011-01-13  48  
-283fd6fe0528ae Anshuman Khandual       2022-03-24  49  #define CREATE_TRACE_POINTS
-283fd6fe0528ae Anshuman Khandual       2022-03-24  50  #include <trace/events/thp.h>
-283fd6fe0528ae Anshuman Khandual       2022-03-24  51  
-ba76149f47d8c9 Andrea Arcangeli        2011-01-13  52  /*
-b14d595aa29923 Michael DeGuzis         2017-05-17  53   * By default, transparent hugepage support is disabled in order to avoid
-b14d595aa29923 Michael DeGuzis         2017-05-17  54   * risking an increased memory footprint for applications that are not
-b14d595aa29923 Michael DeGuzis         2017-05-17  55   * guaranteed to benefit from it. When transparent hugepage support is
-b14d595aa29923 Michael DeGuzis         2017-05-17  56   * enabled, it is for all mappings, and khugepaged scans all mappings.
-8bfa3f9a012c40 Jianguo Wu              2013-11-12  57   * Defrag is invoked by khugepaged hugepage allocations and by page faults
-8bfa3f9a012c40 Jianguo Wu              2013-11-12  58   * for all hugepage allocations.
-ba76149f47d8c9 Andrea Arcangeli        2011-01-13  59   */
-71e3aac0724ffe Andrea Arcangeli        2011-01-13  60  unsigned long transparent_hugepage_flags __read_mostly =
-13ece886d99cd6 Andrea Arcangeli        2011-01-13  61  #ifdef CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS
-ba76149f47d8c9 Andrea Arcangeli        2011-01-13  62  	(1<<TRANSPARENT_HUGEPAGE_FLAG)|
-13ece886d99cd6 Andrea Arcangeli        2011-01-13  63  #endif
-13ece886d99cd6 Andrea Arcangeli        2011-01-13  64  #ifdef CONFIG_TRANSPARENT_HUGEPAGE_MADVISE
-13ece886d99cd6 Andrea Arcangeli        2011-01-13  65  	(1<<TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG)|
-13ece886d99cd6 Andrea Arcangeli        2011-01-13  66  #endif
-444eb2a449ef36 Mel Gorman              2016-03-17  67  	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG)|
-79da5407eeadc7 Kirill A. Shutemov      2012-12-12  68  	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
-79da5407eeadc7 Kirill A. Shutemov      2012-12-12  69  	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
-ba76149f47d8c9 Andrea Arcangeli        2011-01-13  70  
-54d917295b8366 Qi Zheng                2023-09-11  71  static struct shrinker *deferred_split_shrinker;
-54d917295b8366 Qi Zheng                2023-09-11  72  static unsigned long deferred_split_count(struct shrinker *shrink,
-54d917295b8366 Qi Zheng                2023-09-11  73  					  struct shrink_control *sc);
-54d917295b8366 Qi Zheng                2023-09-11  74  static unsigned long deferred_split_scan(struct shrinker *shrink,
-54d917295b8366 Qi Zheng                2023-09-11  75  					 struct shrink_control *sc);
-81d3ff3c6f7630 Usama Arif              2024-08-30  76  static bool split_underused_thp = true;
-f000565adb770b Andrea Arcangeli        2011-01-13  77  
-97ae17497e996f Kirill A. Shutemov      2012-12-12  78  static atomic_t huge_zero_refcount;
-5691753d73a233 Matthew Wilcox (Oracle  2024-03-26  79) struct folio *huge_zero_folio __read_mostly;
-3b77e8c8cde581 Hugh Dickins            2021-06-15  80  unsigned long huge_zero_pfn __read_mostly = ~0UL;
-3485b88390b0af Ryan Roberts            2023-12-07  81  unsigned long huge_anon_orders_always __read_mostly;
-3485b88390b0af Ryan Roberts            2023-12-07  82  unsigned long huge_anon_orders_madvise __read_mostly;
-3485b88390b0af Ryan Roberts            2023-12-07  83  unsigned long huge_anon_orders_inherit __read_mostly;
-dd4d30d1cdbe82 Ryan Roberts            2024-08-14 @84  static bool anon_orders_configured __initdata;
-3485b88390b0af Ryan Roberts            2023-12-07  85  
-
-:::::: The code at line 84 was first introduced by commit
-:::::: dd4d30d1cdbe826e6569b44453c2d9bb9424d234 mm: override mTHP "enabled" defaults at kernel cmdline
-
-:::::: TO: Ryan Roberts <ryan.roberts@arm.com>
-:::::: CC: Andrew Morton <akpm@linux-foundation.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
