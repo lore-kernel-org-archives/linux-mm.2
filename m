@@ -4,145 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428771061B24
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 22:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB111061B18
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 22:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F54C6B008C; Mon, 30 Mar 2026 18:46:35 -0400 (EDT)
+	id E485F6B008C; Mon, 30 Mar 2026 18:54:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97FB56B0095; Mon, 30 Mar 2026 18:46:35 -0400 (EDT)
+	id E1FE56B0095; Mon, 30 Mar 2026 18:54:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 846C36B0096; Mon, 30 Mar 2026 18:46:35 -0400 (EDT)
+	id D0EE66B0096; Mon, 30 Mar 2026 18:54:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FB826B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:46:35 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED1EAC2E48
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 22:46:34 +0000 (UTC)
-X-FDA: 84604215108.04.3EC6F3F
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 86BC98000E
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 22:46:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=OViIBhHT;
-	spf=pass (imf02.hostedemail.com: domain of gor@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=gor@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BF4C26B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:54:42 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5EE22C28AA
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 22:54:42 +0000 (UTC)
+X-FDA: 84604235604.28.C0AD8BD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9516BA0005
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 22:54:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B8syhKKs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774910792;
+	s=arc-20220608; t=1774911280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ZGxwe27utPhf3+oIGgSJ7l7bt2graX57AUsA5Vn4j0=;
-	b=2fUgRrz3pvfnZ94Abfc3Dgn/ynvQigK1VBRl8v5CfLitMJjIzrC6dl6DZe3kHn/sKOEo2w
-	wlHWIzxEIyl3ptj/Ib54Mvwli1GSa75mXQhTYytjrR9mVWEfLsYtbi0RQsnvIGB0x7Felo
-	eI2zlKZzAWNh7qBufNlqveRqi/d3diU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774910792; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=AsHMOe97xyJT3nr2JXGse7sRAJPfDYTkxClSq/c6RB4=;
+	b=BLFaH+1W2QzhW4DsO0r+e2m0yFSjMeXtZmK42U72npNABZQxHNeX74hDZBsWoAkTdsC3ex
+	Js4ieFuhRGou9eH7AcqQj7xyln1xkbcln8+U+BE9pmO9KeAVLwecN9cvpGQ2MJZo+EzH/1
+	vqSyjwc7Rj+BdZgAIyc6QsNcjUZbszk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774911280; a=rsa-sha256;
 	cv=none;
-	b=RhSPS3teXuxUzHjiQ2XMW3kUhjEjxdIMV7fq3qMc7VjHjw8UwZMwBqnPVKLjy+ZXWAGqNj
-	MTAGLPwC3Y4nL1o1w5c4L6xRfMRFLuHdjWkamPjRQJJYnzU3BgUO9GmNe8rFutfKRzRfxA
-	/vIGHLGFU5jjVuiJnJa0VpKT59DGHhA=
+	b=mT4V3xcw6pNJ80Be+dnkZFug2UQVVDdWeWm3zdrpT9pvrtfwufEUQDa799defRG5scslph
+	W1xA5sceZ5lFJY43BG6CjDB4SqYOUdTe0ijgzcCloRrCx4se6gxKi+YoT2ow8pjQ9OETsG
+	6CPyV58TWzyu6dWrMm/Mfa5IeGkv6HE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=OViIBhHT;
-	spf=pass (imf02.hostedemail.com: domain of gor@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=gor@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62UJp3KR2273702;
-	Mon, 30 Mar 2026 22:46:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=5ZGxwe27utPhf3+oIGgSJ7l7bt2gra
-	X57AUsA5Vn4j0=; b=OViIBhHTeTgMlOJQ7qKKJV9elSMnXSMyFfuWvwi99IfEWI
-	DUO26iQ6iaHiOACMUUMsAJ4rFE9sfszKdTlv5kbF5uvf/LYjx7cdhFF7vIbMJ4Al
-	mMjxO4S1zQUpj8gbTyt9qa1Ad1uE18LWgOH5WppSDwYgWASamOzpSYBMTr8/LVxZ
-	unWyqJWJUg2F+YVW196+FauHtzU0Y6gbjX078N7D431/PzmgdYuBBoAp8f/a78Ic
-	Equ2JbkR86+SjkNlRvjkd1ZEJ+egmu640oDvvpzSuRFRe4emkHfb2tlIXZugFam6
-	HlobbQ8ZYUt8RpV63F7TINCsBRfMeNMBSScz3Y2Q==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66nnguav-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Mar 2026 22:46:27 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62UI5pvU021631;
-	Mon, 30 Mar 2026 22:46:26 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4d6saseura-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Mar 2026 22:46:26 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62UMkMVX39518616
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Mar 2026 22:46:22 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C0B582004B;
-	Mon, 30 Mar 2026 22:46:22 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F0AC420040;
-	Mon, 30 Mar 2026 22:46:21 +0000 (GMT)
-Received: from localhost (unknown [9.111.25.211])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 30 Mar 2026 22:46:21 +0000 (GMT)
-Date: Tue, 31 Mar 2026 00:46:20 +0200
-From: Vasily Gorbik <gor@linux.ibm.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Mikhail Zaslonko <zaslonko@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-        Dave Chinner <david@fromorbit.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        Alexander Egorenkov <egorenar@linux.ibm.com>
-Subject: Re: [PATCH v3 7/7] mm: switch deferred split shrinker to list_lru -
- [s390] panic in __memcg_list_lru_alloc
-Message-ID: <ttcqhx8@ub.hpns>
-References: <20260318200352.1039011-1-hannes@cmpxchg.org>
- <20260318200352.1039011-8-hannes@cmpxchg.org>
- <4d3f8d79-3593-47df-9de8-f94f7f09a403@linux.ibm.com>
- <acrf5_rS7hO5Ec0Q@cmpxchg.org>
- <acrjmBx_hX-Aa_SH@cmpxchg.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B8syhKKs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 484A540591;
+	Mon, 30 Mar 2026 22:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35DFC4CEF7;
+	Mon, 30 Mar 2026 22:54:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774911279;
+	bh=D72YCLwgexObNKWUs+QMeapQr6cp2LwytErV3nWFNrI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=B8syhKKsyFZJp5ViyX++4WrxJjf/s9SAF7iygNRC2lm40WrFlLGTAnr0hFbEHEWpg
+	 ia0nmVOXtkUh3vhlhox571th3beaW/qiZ0UhWghrTL0ijZ1lHdbckIr1aHU9zAe5G0
+	 CvsSlIKv0lEt3fPrjfgSEPOeIVkS1hIVMfwLKgsEWB5ljchs42iEpW0WypBa1aNJds
+	 nbeHvJqpoSsA0leiKgJIfEu3KmnUNxL6DcREVydRzDquesl/x/Xq6CUf44WrwNt74U
+	 7/bdEe0ptuFtBXnFOID+jZrpG5MRU/isthWqPdqX6EOggBOF7qrB3M+2MOfD0eEOQv
+	 QGKQ7dkrgXF1g==
+Date: Mon, 30 Mar 2026 17:54:37 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+	Askar Safin <safinaskar@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Chris Li <chrisl@kernel.org>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
+	kexec@lists.infradead.org, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
+	Marco Elver <elver@google.com>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v3 02/24] PCI: Add API to track PCI devices preserved
+ across Live Update
+Message-ID: <20260330225437.GA111390@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acrjmBx_hX-Aa_SH@cmpxchg.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6ElUKQ1fMxYJidno01eGmkeyMmnHhvd8
-X-Authority-Analysis: v=2.4 cv=KslAGGWN c=1 sm=1 tr=0 ts=69cafd43 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=Pav0MyJ5xd6GPgW7jyoA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMwMDE5MSBTYWx0ZWRfX9EwLaQFaUtCh
- SV6mlHktBISOTYCdAdngZxGZ9pQiD64Kc3wDXURtmLnOwyCZ679U9wcXtUbzV2vbIet8OQD5Uo9
- 6jUCFqO9EEc4bfAOFe8RToM0PetcKrKB3A2wtx+syc7nYrwTZGW/A97JQjc7xsZQnAo7Pjv09o1
- 3FZ1bWJa6XuTwACd7UOvxlMcKUumrlTzI/wpkaVhGyQPlj9illdgzVmxeGHsEH8w2Rs2D2D5hTZ
- JFQqGnVLowrCU1WIXRZDkUwxJK5oFgHA5cyBxWY+O9zQs3HyNt9YQrBvXdg+kqkENchlzXr0lym
- BJbl9J5DZf+96IOOS28Y03gSD6oEmHy1qeiDz3a5aCOiX6PryawCs6MzMSa18f8y8KvwdHk+l0s
- Dwn/reKrDRmRdy/dXOtLi4DClySDEmS1qZohawuqmo57Pg2hvZXOeRBEFtOL+k5eSJUxIDzWrLi
- b2sdc6QTWXdSOkm4ETw==
-X-Proofpoint-ORIG-GUID: 6ElUKQ1fMxYJidno01eGmkeyMmnHhvd8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-30_01,2026-03-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- phishscore=0 adultscore=0 bulkscore=0 impostorscore=0 clxscore=1011
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603300191
-X-Rspamd-Server: rspam12
-X-Stat-Signature: o6u7kmiwhis4bmxxxn76qzsu8oncyk67
-X-Rspamd-Queue-Id: 86BC98000E
+In-Reply-To: <acWne_ZCcF4YQN25@google.com>
+X-Rspamd-Queue-Id: 9516BA0005
+X-Stat-Signature: pdbs7owhtob98ddk58ox5ijp3irsxthr
 X-Rspam-User: 
-X-HE-Tag: 1774910792-808695
-X-HE-Meta: U2FsdGVkX1+9bRSS+k7z2rIpvwYsOhCpDUql64baRA87+W5RWFMIx0CrQmq9VAXaypc38pdFWnNj6p6nwUvoK5987LdFQDVtwnRZMZxvOTJzVUlxGmQhYKD1pR2N4PHDE1Ko4qnRoQxmWsyGGQQ+uwnbQDF3pSFd7gTsXLprilBFYySsn9QziF9vP/XALWa93WX/URyx7Rtd+22Vx/NpVBWbT+AgiKnWvbXA+ShtRvJzmuX17lyQuTmmXDkRFOWiBXw8mM2aiwbz7UzJCNS4Foqe0ZDo8JKIQTLTzP3LOVjR+u9XGkI5vuDnLCwxyxQDwne0EvIjLcBKSlNfqDqzT2BJhLku9lvioqkX0kmQA5EJ/MfOtWrU3SmECQmxvxXyHinB+90qPCgLJ4l0lwOjjjQVJ3JdUBEeP9UEnEiGVdGx3NGLV77XkAL7e129FkXQUYaW4nw4774N9aQoHtA7uZCf99K1MHiCte/WO9lTNmlcPfqt4J5uzQYr4bRVbbHNUHXxuQ4hJhx6Zp5CTa8BIR90b8sMnNMivtqjXBMcuRbVpTDzcI7IvFXJyCd524fKEqTDlSdcnKSJF2DOHy9M9aPgGSXXi75p2Lm28hLQlZ6YwmczgbpI0ZW3kWkOE8q10HU+JJjfT28sZgyl7KAlrpCoI4kF+CatQ5+Wkj7n1D3kbeOq/8ukFrw5pSDi6Mw3rdH5fCPf194q8Z614TWKFC0s4lSnG0HCQPe0UI6avGFt4zCHdHu94+lML1HwrXG30LH49Ypk7V0SkDA326pSibXPam7IwU3fZmif0u00neVd4X7eMcw963/STiy0SAsgUnFKgiVIHXWaTiRspw/bOdVNlGqGodmvAC77WwI2leE5yM+UpsvBahGGGgd5Fst3dDypAOYFvo8q4VGTGcokjdDWxp4/ymA45lVjgtVOhCYEHBOrLbEStyOA64R5kBnx8Pr6LqoT19i+4U6qMVf
- lZvE02Jw
- b3Wi6VXgY7BjS+YHXKiLO62wd1nlOGDtvierq8TLcxegKHmRbcti0r0+gUA3RYim8DemjUZocJepa/tgGf9nI+m6wbHdV1NUjDhuyyQSMbYi4g/iGPTmVrYZkI0yQPCm99XzOWGdMP/M34QZUEpbJ7Qes8ScW9JfJnL34cmMDNhc8MQGuXWRKliwVP981gP+7CKDx4BtxGyjSuRxOoIIQIBsjRX6kkli2+Kg5uIiidUD9mibb+b7gPt1DOpCUn4ec42cSo4dOnUzCM4txChET3Yr4CEVztSEXqhACyfWZQGvc1/hb3Fs+YGBU6DxeA/ZiYTqwDf8xAlXV1vyTU3HZxATMviSxisLPmjK1zSolEqEJF5/VBBf9haZQ/Q==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774911280-150441
+X-HE-Meta: U2FsdGVkX1/g3safOcVasUR/u0U2rOstTTz6uO4U7sBaH4+NfNQTktkFizlCTerdY5CeWuvR8HT6cEcB8DxtzcCjXaJW+4tJUOH1dZKAnq7aC9fCgRrMVnfHdBjbCKEFSjORjhG3XY+U34sgY8T1x9sX0DFoPo+1nR6UkhPfE1iBvaUjEGMUhI0uf9mdgnVxwbYRgdUwQaaWkoRxzqzOAxswnYEq5qG1/7sd/YdgfyYLorx++Rqwxn9rYbDGjk4qxZPCXfFdOxz62JXia4N72Q87GVyQHsq3r1vNlC58xFiumizk5bsUBMe4g8/Hi76BgRyGEOsq/r92xNRYg/oVXkjlje6I/254xR6Fu88NLk/9rirojyEhpbyNUIQPB2k0oJh2hY6Pf6UOPyynQGL9461g1sGM7gWTyBBFI0GGPtHYakveAiUkcj0uszcR7aXuuamzXtyFDm/6Fr+6y7qTDxQc6ox25X2nRexJ/7e9+q1GMiyW4VnNTNBBW1kEbF5SJL7ioyURnRcYQ4fmyS/Nu7LMjev0ogdyaJw89bj4uwXWCIyBP+FjE3W6FBJPQQNrkr0tK3OKev8xHT1ieJF1bvl+dsQqm3JySvFkLLHjZVqSwxwFct57vsNmWutamX7GWmlIcVZH4VVSWUIFbklugZuEpvOWYpEUw5z3pUvoXysqHFygI4lMsk/kOCdzOTpk0pAJ+t4IvTGpPir0C+wHa9wdnpmm+ClHSIsPLm5Zq55cVAGfW96hXnAF3+AKCOZXoSr3qDIqornVkKYjqxT07IYVXIxzWgC2eIevFH8TGusAOB8af+2pgz8jMn6RD0d5OCVYF/0VyHA7BHXxhU1Wd/68yZmqeG7csOPLmcjqVfvNYHit4WOmlpA7KQ6oQk+ofOPiu+m5IPpmrenbF+fWvMXLdA97o9G7oaOrrXzmyjafoZdNGEMlqEt2M2DDcQY2zV+Ixphuoapmojwp8JZ
+ PPUxCFBD
+ 6U56xdRz3fxQM8Mz7euvmJ2imyfUkmMINYVVtB8PascYp4FqdoNZp3+bcHgZiDeL677WIbAww0HasbeDD7BUNKrj3tnFsewAvYMiHmd/jNdgHsgR8O4PjYArkNdBftyymiR3+nWQhdgzAXynC3L3NY9gP+x+smzKjAadfQcnjgISvnBSintql/9Cy/XSiIb8kEQdEb1ZLcCFtYS/8Vd/jCONu3zj5H1NtdAg015wzND4YzITfDmO2op3vIKfxBpRSpfkXp3oqBq1arzSDznFNfvT51TQAyOJWMYH3myy3wTtmbmw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,37 +128,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 04:56:56PM -0400, Johannes Weiner wrote:
-> On Mon, Mar 30, 2026 at 04:41:16PM -0400, Johannes Weiner wrote:
-> > Hello Mikhail,
+On Thu, Mar 26, 2026 at 09:39:07PM +0000, David Matlack wrote:
+> On 2026-03-25 06:12 PM, Bjorn Helgaas wrote:
+> > On Mon, Mar 23, 2026 at 11:57:54PM +0000, David Matlack wrote:
+> > > Add an API to enable the PCI subsystem to participate in a Live Update
+> > > and track all devices that are being preserved by drivers. Since this
+> > > support is still under development, hide it behind a new Kconfig
+> > > PCI_LIVEUPDATE that is marked experimental.
+> ...
+
+> > This sets "dev->liveupdate_incoming = false", and the only place we
+> > check that is in pci_liveupdate_retrieve().  In particular, there's
+> > nothing in the driver bind/unbind paths that seems related.  I guess
+> > pci_liveupdate_finish() just means the driver can't call
+> > pci_liveupdate_retrieve() any more?
+> 
+> liveupdate_incoming is used by VFIO in patch 10:
+> 
+>   https://lore.kernel.org/kvm/20260323235817.1960573-11-dmatlack@google.com/
+> 
+> Fundamentally, I think drivers will need to know that the device they
+> are dealing with was preserved across the Live Update so they can react
+> accordingly and this is how they know. This feels like an appropriate
+> responsibility to delegate to the PCI core since it can be common across
+> all PCI devices, rather than requiring drivers to store their own state
+> about which devices were preserved. I suspect PCI core will also use
+> liveupdate_incoming in the future (e.g. to avoid assigning new BARs) as
+> we implement more of the device preservation.
+
+Yes.  It's easier to review if this is added at the point where it is
+used.
+
+> And in case you are also wondering about liveupdate_outgoing, I forsee
+> that being used for things like skipping disabling bus mastering in
+> pci_device_shutdown().
+> 
+> I think it would be a good idea to try to split this patch up, so there
+> is more breathing room to explain this context in the commit messages.
+
+Sounds good.
+
+> > > +	 * Don't both accounting for VFs that could be created after this
+> > > +	 * since preserving VFs is not supported yet. Also don't account
+> > > +	 * for devices that could be hot-plugged after this since preserving
+> > > +	 * hot-plugged devices across Live Update is not yet an expected
+> > > +	 * use-case.
 > > 
-> > On Mon, Mar 30, 2026 at 06:37:01PM +0200, Mikhail Zaslonko wrote:
-> > > with this series in linux-next (since next-20260324) I see a reproducible panic on s390 in the
-> > > dump kernel when running NVMe standalone dump (ngdump).
-> > > This only happens in the 'capture kernel', normal boot of the same kernel works fine.
+> > s/Don't both accounting/Don't bother accounting/ ? not sure of intent
 > 
-> Can you verify whether the kdump kernel boots with
-> cgroup_disable=memory?
-
-Yes, that is the only special thing about that dump kernel.
-Sorry for not including the command line. x86 crashes more or less the
-same way with cgroup_disable=memory. But while I was doing the repro on
-x86, you already found the root cause.
-
-> Can you try the below on top of that -next checkout?
+> "Don't bother" was the intent.
 > 
-> diff --git a/mm/list_lru.c b/mm/list_lru.c
-> index 1ccdd45b1d14..7c7024e33653 100644
-> --- a/mm/list_lru.c
-> +++ b/mm/list_lru.c
-> @@ -637,7 +637,7 @@ int __list_lru_init(struct list_lru *lru, bool memcg_aware, struct shrinker *shr
->  	else
->  		lru->shrinker_id = -1;
->  
-> -	if (mem_cgroup_kmem_disabled())
-> +	if (mem_cgroup_disabled() || mem_cgroup_kmem_disabled())
->  		memcg_aware = false;
->  #endif
+> > I suspect the important thing here is that this allocates space for
+> > preserving X devices, and each subsequent pci_liveupdate_preserve()
+> > call from a driver uses up one of those slots.
+> > 
+> > My guess is this is just an allocation issue and from that point of
+> > view there's no actual problem with enabling VFs or hot-adding devices
+> > after this point; it's just that pci_liveupdate_preserve() will fail
+> > after X calls.
+> 
+> Yes that is correct.
 
-Yes, that fixes it for me on s390 and x86. Thank you!
+Mentioning VFs in the comment is a slight misdirection when the actual
+concern is just about the number of devices.
+
+> I see that a lot of your comments are about these WARN_ONs so do you
+> have any general guidance on how I should be handling them?
+
+If it's practical to arrange it so we dereference a NULL pointer or
+similar, that's my preference because it doesn't take extra code and
+it's impossible to ignore.  Sometimes people add "if (!ptr) return
+-EINVAL;" to internal functions where "ptr" should never be NULL.  IMO
+cases like that should just use assume "ptr" is valid and use it.
+Likely not a practical strategy in your case.
+
+> > > +	if (pci_WARN_ONCE(dev, !dev_ser, "Cannot find preserved device!"))
+> > 
+> > Seems like an every-time sort of message if this indicates a driver bug?
+> > 
+> > It's enough of a hassle to convince myself that pci_WARN_ONCE()
+> > returns the value that caused the warning that I would prefer:
+> > 
+> >   if (!dev_ser) {
+> >     pci_warn(...) or pci_WARN_ONCE(...)
+> >     return;
+> >   }
+> 
+> For "this should really never happen" warnings, which is the case here,
+> my preference is to use WARN_ON_ONCE() since you only need to see it
+> happen once to know there is a bug somewhere, and logging every time can
+> lead to overwhelmingly interleaved logs if it happens too many times.
+
+I'm objecting more to using the return value of pci_WARN_ONCE() than
+the warning itself.  It's not really obvious what WARN_ONCE() should
+return and kind of a hassle to figure it out, so I think it's clearer
+in this case to test dev_ser directly.
+
+> > > +	for (i = ser->nr_devices; i > 0; i--) {
+> > > +		struct pci_dev_ser *prev = &ser->devices[i - 1];
+> > > +		int cmp = pci_dev_ser_cmp(&new, prev);
+> > > +
+> > > +		/*
+> > > +		 * This should never happen unless there is a kernel bug or
+> > > +		 * corruption that causes the state in struct pci_ser to get out
+> > > +		 * of sync with struct pci_dev.
+> > 
+> > Huh.  Same comment as above.  I don't think this is telling me
+> > anything useful.  I guess what happened is we're trying to preserve X
+> > and X is already in "ser", but we should have returned -EBUSY above
+> > for that case.  If we're just saying memory corruption could cause
+> > bugs, I think that's pointless.
+> > 
+> > Actually I'm not even sure we should check for this.
+> > 
+> > > +		 */
+> > > +		if (WARN_ON_ONCE(!cmp))
+> > > +			return -EBUSY;
+> 
+> This is another "this should really never happen" check. I could just
+> return without warning but this is a sign that something is very wrong
+> somewhere in the kernel and it is trivial to just add WARN_ON_ONCE() so
+> that it gets flagged in dmesg. In my experience that can be very helpful
+> to track down logic bugs during developemt and rare race conditions at
+> scale in production environments.
+
+OK.  Maybe just remove the comment.  It's self-evident that
+WARN_ON_ONCE() is a "shouldn't happen" situation, and I don't think
+the comment contains useful information.
+
+> > > +u32 pci_liveupdate_incoming_nr_devices(void)
+> > > +{
+> > > +	struct pci_ser *ser;
+> > > +
+> > > +	if (pci_liveupdate_flb_get_incoming(&ser))
+> > > +		return 0;
+> > 
+> > Seems slightly overcomplicated to return various error codes from
+> > pci_liveupdate_flb_get_incoming(), only to throw them away here and
+> > special-case the "return 0".  I think you *could* set
+> > "ser->nr_devices" to zero at entry to
+> > pci_liveupdate_flb_get_incoming() and make this just:
+> > 
+> >   pci_liveupdate_flb_get_incoming(&ser);
+> >   return ser->nr_devices;
+> 
+> pci_liveupdate_flb_get_incoming() fetches the preserved pci_ser struct
+> from LUO (the struct that the previous kernel allocated and populated).
+> If pci_liveupdate_flb_get_incoming() returns an error, it means there
+> was no struct pci_ser preserved by the previous kernel (or at least not
+> that the current kernel is compatible with), so we return 0 here to
+> indicate that 0 devices were preserved.
+
+Right.  Here's what I was thinking:
+
+  pci_liveupdate_flb_get_incoming(...)
+  {
+    struct pci_ser *ser = *serp;
+
+    ser->nr_devices = 0;
+
+    ret = liveupdate_flb_get_incoming(...);
+    ...
+    if (ret == -ENOENT) {
+      pr_info_once("PCI: No incoming FLB data detected during Live Update");
+      return;
+    }
+
+    WARN_ONCE(ret, "PCI: Failed to retrieve incoming ...");
+  }
+
+  u32 pci_liveupdate_incoming_nr_devices(void)
+  {
+    pci_liveupdate_flb_get_incoming(&ser);
+    return ser->nr_devices;
+  }
+
+> > > +++ b/include/linux/kho/abi/pci.h
+> > 
+> > It seems like most of include/linux/ is ABI, so does kho/abi/ need to
+> > be separated out in its own directory?
+> 
+> include/linux/kho/abi/ contains all of the structs, enums, etc. that are
+> handed off between kernels during a Live Update. If almost anything
+> changes in this directory, it breaks our ability to upgrade/downgrade
+> via Live Update. That's why it's split off into its own directory.
+> 
+> include/linux/ is not part of the Live Update ABI. Changes to those
+> headers to not affect our ability to upgrade/downgrade via Live Update.
+> 
+> > It's kind of unusual for the hierarchy to be this deep, especially
+> > since abi/ is the only thing in include/linux/kho/.
+> 
+> Yes I agree, but that is outside the scope of this patchset I think.
+> This directory already exists.
+
+Agreed.
+
+Bjorn
 
