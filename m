@@ -4,82 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24CCCFF492B
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 00:31:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07909FF4923
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 00:54:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 184116B008C; Sun, 29 Mar 2026 20:31:59 -0400 (EDT)
+	id 290606B008C; Sun, 29 Mar 2026 20:54:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 134C86B0095; Sun, 29 Mar 2026 20:31:59 -0400 (EDT)
+	id 2689E6B0095; Sun, 29 Mar 2026 20:54:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 071B46B0096; Sun, 29 Mar 2026 20:31:59 -0400 (EDT)
+	id 1A5416B0096; Sun, 29 Mar 2026 20:54:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED61C6B008C
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 20:31:58 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67197BA84E
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 00:31:57 +0000 (UTC)
-X-FDA: 84600851874.11.808A350
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 875EA10000B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 00:31:55 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="jY/zQjSN";
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 093716B008C
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 20:54:51 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 940091B86D5
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 00:54:50 +0000 (UTC)
+X-FDA: 84600909540.03.7A6FD43
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8759A1C0003
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 00:54:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iJR71e4G;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774832088; a=rsa-sha256;
+	cv=none;
+	b=MmDLrIX+c/4UjQ8TOag3EcG76TtXZArZyS57oLMwH3O+YtBox/nvJJAd8RUwaarH7DHSn9
+	ecmKXwEmAIRjrV3Im9inqS7pyy74eS+mLZNO8/hbtGG9SNUQlen2w0f2j1KfSIIMp0L54W
+	SyHtorp39uu1qUeubOygrpcwHictbe0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iJR71e4G;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774830715;
+	s=arc-20220608; t=1774832088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p2icZm2yEGwYk11apPC2NCV3wohko97JViEVKbyQOpg=;
-	b=BXiTiiaT8gCRyx/XUNOzIyRu9wvmiXLIbwLA5He2kV6Nyd4e/bW4cgKN9DeWFY0oY4KUFp
-	9r8k0tbrvUzZKp4ik2i9QeLTd8AacsmUDFhvlluQg4CqRpY+J37HnmvoBHSZ0F0YxtvJn7
-	lM3IGwrVlysg74HNP0ewCH4eCUN0Vss=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="jY/zQjSN";
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774830715; a=rsa-sha256;
-	cv=none;
-	b=j3xKD4wqCP4NM+OVmmzX5VXmXFoawr9ulwMZUk/sPmvj9pny/S2oIwnHk3LpjU78y0mTVF
-	qXrvtkN9DuxTAwyIofeXl6E/2Ccxgsf3ohdT15lJEY8bc+u3AfzclHVqCTVmNIjcIIEd+5
-	xGgjAvyrGr/LsAuLmIUrHxzUyJqra60=
-Date: Sun, 29 Mar 2026 17:31:41 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774830712;
+	bh=VeBsHEzxlnMsna5xu42WJbgoECnsygSdobxRGWZZQRA=;
+	b=jHySGdTK04XmADdREmeiRWEf+gcQTJy2WVthOe6xbph/junZe/4HfA0ZFeGsmQbbsNwTaX
+	bBmWr72kq+ijKBLmMY39h8JkopWEEn2xV/yXRPONARZFam8evqoF4XN1JbYNutIxsDNjSo
+	wY+dkdE2peDEZQpzHxKlls+Zdqdmsic=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774832087;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p2icZm2yEGwYk11apPC2NCV3wohko97JViEVKbyQOpg=;
-	b=jY/zQjSNjUidoC62UBg0OA0sKrFsL+KCacqNbq6kXTm0lK+Lckqu0s9PXY9mQ1gOlTXtis
-	imQH2I5cUEis8dalola12yuStuWPcxZ+rcmfes7WwtW4j5J30xo+UdDq4mi0V8F2rWXwf+
-	0oXkj1u+gCadsTseo6DpYkh0DN9bIbg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-mm@kvack.org, 
+	bh=VeBsHEzxlnMsna5xu42WJbgoECnsygSdobxRGWZZQRA=;
+	b=iJR71e4GObChwPyPFlU3k/TkZbpllL5uYBvO0MPBue4ywA0EoNDY7/u6plk5JuwIGmwG+R
+	QrhxgV+jnBSskl9rEkWJHzXEVHoJGWGf8NCOM0iilaQS2eTktNkTEp2BklJI3ThAxDeB3H
+	9OQjvaD91vvAajI1yatY4YiknPtWYRU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-vBzK6CYLOJ2Dn-0RyBXYow-1; Sun,
+ 29 Mar 2026 20:54:42 -0400
+X-MC-Unique: vBzK6CYLOJ2Dn-0RyBXYow-1
+X-Mimecast-MFC-AGG-ID: vBzK6CYLOJ2Dn-0RyBXYow_1774832081
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 38731195608E;
+	Mon, 30 Mar 2026 00:54:39 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.11])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A3B641800361;
+	Mon, 30 Mar 2026 00:54:37 +0000 (UTC)
+Date: Mon, 30 Mar 2026 08:54:33 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baohua@kernel.org,
+	chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
+	shikemeng@huaweicloud.com, youngjun.park@lge.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: update MGLRU entry to reflect current status
-Message-ID: <20260330002340.GA116015@shakeel.butt@linux.dev>
-References: <20260326185629.355476-1-ljs@kernel.org>
+Subject: Re: [PATCH v2 0/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <acnJyXpI0e9oBRBf@fedora>
+References: <20260328075812.11060-1-21cnbao@gmail.com>
 MIME-Version: 1.0
+In-Reply-To: <20260328075812.11060-1-21cnbao@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: kMLnVoHTQGN-5cu7VbSpnifJpSTOk9Ytz58ikBjVzCA_1774832081
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260326185629.355476-1-ljs@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: eh9q9mw3a66oy7fdhczpfrqmh4jxokw8
+X-Rspamd-Queue-Id: 8759A1C0003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 875EA10000B
-X-Stat-Signature: k1np6y3883rszqzk96ymxfwz9yxudcqh
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774830715-611997
-X-HE-Meta: U2FsdGVkX1+ZLY5WJ40dqIkyBTvL3ezPD8u8xz1gzU0iCWW7z2xmDa4GHOh9ZVnRVUbvogMGI0A6fC7tfJB9goM0kLf2AYZUy7EO8Dt3K1jWUpeRp4CdcFuJ0wLDpOxVrSMsaua6CKzFtYWk3QWlY591M6eKGtAglyiSPOwgDT+qplpqXQUnknL3jCZ+qCCJXQPiadGDF4deSLztg6GE+4sGpn9/uq4jKt0gKnEIv0bMWx2JS0NHgVMstau9p9F1UxzcZ4QVCMfKX38fppaoUd9Su43AH+xDPni8aDYcGIp8pmD3T1RM/k0N+5blUqUOMACOKLglPkEVZw/7iQLOCocYPig6HfsZLHVMl4ETsPyYni9HffOdDvimx8sy9cIz6/89N0qoQpNvHAYMuUFMr9HiqrXcRVNZCcTQoHac8EmOmfmE/7A5G6aFuL1ppYokXHzO2Di1s+sDqTJC4l5dV40p+em1hVdsdCqAEnh11BZjb9zJuZCi5OO6rGHQeuNoVErhJRVU0SP/pyoqhQ/zq52bndXfYQEouNoEbKDhGf9Gh2sz4L+aq5SarOGCctpsU+cBmDJ97nTA4qiWpVhkjIjhVUVEFOuIV/CvrKLu54trlzle8218cSU04kSMRdv4chLneOGvXRjQlP9+0uCdWK3kDbIk7fAOQQZyn+8Rf2F73h4iy0esnKjX3TiNretCuBGWMIZa0xQWAL45XPoVT6YFhYnd3oro7UhZQnRuxWPZ7aDKtdqfqEwdJqss9yTvVhEahWiinr/GlQdT7daEXDRl6BuAdphfUZKBPyde5yZadeOboM7CjIolh4IFd31rFyGS3HJAOI8RD9GY84NYDD8Obis2Jw2IHPacBnpmq8QV5+qGjIpouQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774832088-92975
+X-HE-Meta: U2FsdGVkX182wvaO0+tr00ztg7MadD3AgP9kQJJww0XeW1FUeWorxS82Kg/Gwh9Us0voxq35ds6bK2ksZNaXab5X7hVrfsqx6LuZH46kxdgn1FIMZFTYyr8sPqFeObQQ3QPVN1tZKKDUKbEb+vRDNgEYvsd9F86kQrmcrJixqI8DTNpzjJTwt7saypnEd0SbahH5CFBkQAvN84XCkEuo+AI5jAQ/jatGXZf1nfCXeSQKFqpROc70r4So0O8KNTZN8UlJqqjwHcBAfOBC1xz1SRwarUDDkYztZ3yvJI34yRk0axepaBXSL+YSiDVuOJiF4NkNl/WduBmZ0c7VI71R68aK208fhG49R9I8iMDmiK/9v+FPdBf6ktcBVP74aleku6+UdcJH2V0r5JOtAnFC0ECztR5pTuTIDuFgulLVOobkQVms+irU/GBWan+9JgimH/UO1jGjYEyPysEB8+45g52g7TV4hOjDsdjEbFmybpM87KDJQ8wAoqFXFrQsimca964tIlpm9NhGhgnkH0qBY1W42FzoeduObQAjNyeiT3k0T6jXYxR+VEFZbOwd+CLKA/uc1LOOsLI3HJnTXmoNqNtObwq2AkLRGk5WDBFNzyYXhG1FniMFdxnyrW3Te9zr/jo22dUk1iYG+Medhpc1CerguNCODuIB0OfDG9hzb+qFjMT1cmN9+IJZI+r6t7+JqE66RD886lL3W4Xq0+AU9MZxOwrchGXxzhP9ne3KHLj86Shy1ukbK2txFHtFXRsS+cvqe7VfoAqL7wehEHmzZQQ+GgBnlkCnGr0kTkUuEGdAdjp1OTg7u7vvJoCZsV/W3dQr9AY7V+stqZbzaEnDXYhYxWr3kmu3EvTxXJ/eB/X8n2DmH9+jeYd8pqGjfpNYkVIeJ52oebA7LzN6OIiSsnrJnFM8BJC4hvuZS1tKeJTMxifjhW7eOkdHdMT/5iKj4jFdENfFzq7hjehyMq2
+ kS/ztzAk
+ i7nQV+D2tBG3XVpAa7AsaYOXluJ/553/evVjpYCTcyzmMl7sC0iz8/XCmrD6DLTAjRY2xAHc6GC2EV9QTeC80i0e4+fRtzkHJs2QwGOedm9ws+rhW9bXksgbsYZftSfTlmPz0OjdTfZhoAHnd8g91Y0XB8eqd0CnusdlMtypykUdR5k7r0UkAMfUGquLd0R6f3GBiTT8nE4RMBo+Ty2mT1X1ZzPIelZUw4YnnH2yA8sWiAFAjV/s74q/9fLiUONfjjfR6WNnfZZ9s7XYkCOI+21sm7w//yB0s9fcV1N+UuaOHQUK8N1j2OUsm7caO97XN1qon4nxVgxY9ghY015AbK/94jWJqI04BVn9xZkksMVW7rQxW0cHmNvyP66GHSytnf4V/gOnUaxH3y8/0Rh1RT83DHqfjecyrDZMh8rrVXWQAgc7mNpF/bM+J0sr5SyWhzhndZCG+d5yqr0Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,35 +106,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 06:56:29PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> We are moving to a far more proactive model of maintainership within mm and
-> thus put a great deal of emphasis on sub-maintainers being active within
-> the community both in terms of code contributions and review.
+On 03/28/26 at 03:58pm, Barry Song wrote:
+> From: Barry Song <baohua@kernel.org>
 > 
-> The MGLRU has not had much activity since being added to the kernel and the
-> current maintainers who kindly stepped up have unfortunately not been able
-> to contribute a great deal to it for over a year, nor engage all that
-> heavily in review.
-> 
-> As a result, and within no negative connotations implied whatsoever, it
-> seems appropriate to downgrade the current maintainers to reviewers.
-> 
-> At this time nobody is quite exercising the maintainer role in this area of
-> the kernel, but there is encouraging activity from a number of people who
-> are trusted elsewhere in the kernel, and who have contributed relevant work
-> or review.
-> 
-> Therefore add further reviewers, and at this stage - to reflect the reality
-> on the ground - we will not have any sub-maintainers listed at all.
-> 
-> Each of the files listed are shared with other sections in MAINTAINERS, so
-> this doesn't reduce sub-maintainer coverage.
-> 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> -v2:
+>  * lots of cleanup for patch 2/3: renaming, moving data
+>    structures, and using const properly
+>  * collected tags from Kairui, Nhat and Barry
 
-Haha, I feel like I am shooting myself in the foot, but if I plan to
-make drastic changes, then I need to step up and take some
-responsibility for it.
+Thanks a lot for taking care of this, Barry. I took several days off for
+family reason. Sorry for the inconvenience caused by my leave.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> 
+> -v1:
+>  https://lore.kernel.org/linux-mm/20260302104016.163542-1-bhe@redhat.com/
+> 
+> This can simplify the code logic and benefit any new type of swap device
+> added later.
+> 
+> And also do renaming in this patchset:
+> -------
+>    file renaming:
+>    ---
+>    mm/page_io.c to mm/swap_io.c
+> 
+>    function renaming:
+>    ---
+>    swap_writepage_* to swap_write_folio_* in file mm/swap_io.c
+> 
+> Baoquan He (3):
+>   mm/swap: rename mm/page_io.c to mm/swap_io.c
+>   mm/swap: use swap_ops to register swap device's methods
+>   mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
+> 
+>  MAINTAINERS                 |   2 +-
+>  include/linux/swap.h        |   2 +
+>  mm/Makefile                 |   2 +-
+>  mm/swap.h                   |  12 ++++-
+>  mm/{page_io.c => swap_io.c} | 101 ++++++++++++++++++++----------------
+>  mm/swapfile.c               |   1 +
+>  mm/zswap.c                  |   3 +-
+>  7 files changed, 73 insertions(+), 50 deletions(-)
+>  rename mm/{page_io.c => swap_io.c} (89%)
+> 
+> -- 
+> 2.39.3 (Apple Git-146)
+> 
+
 
