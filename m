@@ -4,93 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57CEAFC97F3
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:13:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D7C8FC97F3
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:14:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B66066B0096; Mon, 30 Mar 2026 11:13:35 -0400 (EDT)
+	id 8CE806B008C; Mon, 30 Mar 2026 11:14:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3D5E6B0098; Mon, 30 Mar 2026 11:13:35 -0400 (EDT)
+	id 8A6446B0098; Mon, 30 Mar 2026 11:14:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7A4B6B0099; Mon, 30 Mar 2026 11:13:35 -0400 (EDT)
+	id 7BC396B0099; Mon, 30 Mar 2026 11:14:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AB2C6B0096
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:13:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 444C71B8A91
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:13:35 +0000 (UTC)
-X-FDA: 84603073590.25.47372BE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A05281C0012
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:13:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JuqZdkyH;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 69FF06B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:14:08 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0683FC214C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:14:08 +0000 (UTC)
+X-FDA: 84603074976.14.1817344
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3F83140003
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:14:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DGgDu9yg;
+	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774883613;
+	s=arc-20220608; t=1774883646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZuI4WJhWffrbTsc6nDXsvC2yS7NlRzEAvjB7cBJ4RDQ=;
-	b=KzzhO4KZarAhCjKC+wP1HQMOlmB45AxaB8f9VWZc9mjVIXmchF7j/Jtd3PIaC7n8CJgY1J
-	G4ZafyVBqxBRqS5JtYqneDFEFgt5s0b/rKBdhP+lDSuj02JsLg/7ICq5zPXBNghe8+FA5h
-	N8Ew4o6V6jUEfxmx1gMZVPdx5J/Q0+0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883613; a=rsa-sha256;
-	cv=none;
-	b=m5ydRIQ8OML8DjXYli8ftmOi5DkL0mFOgdiddbPLOuYDlBFVAfB3C5T/bF0vdgU5ZkqOOK
-	EcsWG3n/0fr0Fxk0gVwaRJfpjWkIxMyJQsXqWdIFt6AqQeHm1GYCYEGeVm+fTI8KWIykk2
-	Af/GADftot3H+/0yhOwqrjHV8skEPRY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xETw+8gpCdkjsgRzeD0pmJ+bgMxkAEpJAG9tRxYLZUM=;
+	b=I0YpYdnOL8P5jb64GgDqvVOWmVgjTmrmI+RzBiO/SzwPAnyjfbj4lwvmTGy9OvkaZgcG6w
+	JFPOMUltJ8bTZYZQY0GWiNV1QQ+NUE4l8RVkSHzNHYmLFoDQloDbOCVMJuPqdrOqKGp/du
+	VcACHgs53VYdznpwL5HYt00LBWR583g=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JuqZdkyH;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC4FB433EB;
-	Mon, 30 Mar 2026 15:13:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0C8C4CEF7;
-	Mon, 30 Mar 2026 15:13:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774883612;
-	bh=mqYD+Aqa8t3eBRM1m/uNj7grHUFQp6kl4HtvJswkcMc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JuqZdkyHSo4IKRBvZHfbdfpQbQYWP2lxpq5AtmkwsyO9RCwpvVVx/HBO/bRltl7qW
-	 CT+dTrmR+0jUNRA/jXMxD+uzHSt+Uy5CC5ShUlkqTVhzCl/GQOCNmy/5E02ETuPCrX
-	 qnqa+an/8yoEJv7s8XrjIV+AHKmhPR2bVV0L5mzrjIUvx8hnNbV8o6NRHPLSKEqs+u
-	 cXWFPSO1iDHWbk6cKdsFExaH2ldI92IQAV3hjTvKQifxjCLLAucPevOSKHeKsXCkZx
-	 +rUXXxVNzSnm72KrfzvsoFBmvt6MF9pXjF+zaeJeuub76PJzwrDRsUaQiq73NdjMU/
-	 ZoaAfI6Q01w0Q==
-Message-ID: <fc4d2479-08f1-441e-a1ba-74fa6b50262d@kernel.org>
-Date: Mon, 30 Mar 2026 17:13:28 +0200
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DGgDu9yg;
+	spf=pass (imf12.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883646; a=rsa-sha256;
+	cv=none;
+	b=w128fwMFEwo3KjC5HSmA10C50mB0MAhkDdk8ndlrjihFo6nCJDrQPyLcYcU3XKaCS/9Ctc
+	79HAZS31iUYMfRMXjS0lPbF+PIOTfuZBsyMz5B6O5lJHi1iUOwu5xp+wAgwtVjh5Snfrgh
+	3RyQlRYgBD/f5tdCgVbgw2iIb96c6V4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774883645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xETw+8gpCdkjsgRzeD0pmJ+bgMxkAEpJAG9tRxYLZUM=;
+	b=DGgDu9yg+OPBKEn9VskrCaK0z2t5OH2boBrggh64U9T0VLTf5yBidogP/3kOPOc324AT6G
+	StuAFRevcIB3msNF7w2DvctIsQ+CrbA78P4W4ls5UAEqZcq69C0C1mms9jQFXom5pFn2Tj
+	Nd1BEcp+7VmCAaMN38qLruK/NQ96rX4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-zM3py8vJPpeXppRVtmLw2w-1; Mon,
+ 30 Mar 2026 11:14:00 -0400
+X-MC-Unique: zM3py8vJPpeXppRVtmLw2w-1
+X-Mimecast-MFC-AGG-ID: zM3py8vJPpeXppRVtmLw2w_1774883637
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A885E1956096;
+	Mon, 30 Mar 2026 15:13:56 +0000 (UTC)
+Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C4AAE30001A1;
+	Mon, 30 Mar 2026 15:13:47 +0000 (UTC)
+From: Chunyu Hu <chuhu@redhat.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	chuhu@redhat.com
+Subject: [PATCH v7 0/7] selftests/mm: skip several tests when thp is not available
+Date: Mon, 30 Mar 2026 23:13:36 +0800
+Message-ID: <20260330151343.670374-1-chuhu@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [patch] mm, page_alloc: reintroduce page allocation stall warning
-Content-Language: en-US
-To: Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Petr Mladek <pmladek@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
- <231154f8-a3c3-229a-31a7-f91ab8ec1773@google.com>
- <acqAnhmm6q2nKkPh@tiehlicka>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <acqAnhmm6q2nKkPh@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: pp3cp3usj3ess9ds9zx6wkpn5rhp9rr1
-X-Rspamd-Queue-Id: A05281C0012
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: upk7oMxo3vUpZrr8aRUl6ifs8aRaCCQMn-kw7GQuekc_1774883637
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Queue-Id: 3F83140003
+X-Stat-Signature: rc9a93rwgschkc77piw5esaotu1rnreu
 X-Rspam-User: 
-X-HE-Tag: 1774883613-105290
-X-HE-Meta: U2FsdGVkX1/49ho9TW/mw7z3eltr8lHidWjL0nY01pVULD5rF//JBODOciOIVcwGJ1K79PodxyzwedwXIQpN7ZauxFbVGGCsDzVFMU8gWJ+RogolUI5hJtn8X45/GTRWeCYkqzrru+zDufF14+aGiNxHVw37M6k43J69fU2WfgagwCmlhOTcsK2q8CYBNne0ZAFLmXrvPj4JtuqAxySkwVWN5MggaEeoEFYaU5EmmZUCit1Whn1VkchVOUUxzeACYTaGvF9Jkwm0aD0yLeuyPcTdVqd5vGpuAiet1Z4uZwXKQ9toE8mZkpbRcPHkZrsyK/KVq79U5qiSZx2TgB12PeGjryIq7nOGGrRtCtXD9KNAq1W6T8t2zGlg9fWhKP1JfE0HVgSSH6e6iilaDW9PRPF6b1U9b7Q/6hJO2ZOFHItL78+u3nyWDdQ2COnPkjGryLSli2GvuW6j5njhP0FNP38a91IqGLqQVU0i6Yxxakc7GM9muK9IFmBzqpQSRNAabuE6+AP51NYRgavxURsmuFefn/D56Vu+xeiSyc6hGGVyr6z1nFjB9bJaIue58b3WwYl9rcCjHbt7birR+Bx35t/LRKG34zmlK7YLqv4MNQBDP9lBcdDdylk5HKujSuOSlprlAVZKfEaWND/bBR/MLQ8NtkoxUty/hgxqd0btF8YitVfXPj1PhqAlHGNowx0iFP8Q+Nc9WDK8V5kuU8dsNCUoBpLwThOMzMYAiY55p4HXvKUadNvWGZyTCHoGTfP4VB0vp3s3Qzt00OAVk8AM9m4CdsSu+6e52UTxHPLL5vemuf7cEN75LqslfEFMFJy432Ice14hGq91cQkeTZzCXhKPtmwZixLSGgUbJvri6trWMoOBLqMAemTQJv7AqQac7rbZ5bgeEOkkHb8GEF06hi/5ZAp68+2iql9gzt4SGRGJAfVsyA14yEWX1leAUkffKzFlApyceAZZNs8a6tt
- 4A3/AxiY
- 2Kv36
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774883646-811408
+X-HE-Meta: U2FsdGVkX1+96ABRtBAYGQIKT4Cip66QWV2vHWP+nrn0fj5GyvDWxzjTH7Sl/QCbGQsFM2wIyEKkLkHW9rZUrrPGNkMq6Hs+0WSaWyVqN3826k4CWx5qumD6wYf5RuMfRyW+ubmE9vlfkTF8QApJKu6ZNvxxqUYQvYgYaUtOoWKi5TkBAadAvGyOCNBZFWKFFON2dwbh1x05fIomgwktN1FdqRkTDPXTjwaMBo3LEhh91uKk7n1FSt0mjai2/ikNavJh+xwHlzGcbA4X392yx8T6osaPy8Ku6K7VzYPX8hVnVR9+f5JsgI9lMzeJfbXHF1CekJeUb81Qv195cz+UVXiU1n43AHv4pbZeKNQEfS0lKxJitL0tRPV/HuMHW7jqdwmr6kSkiuHGJ+5C1QZoSCR/Svi8B25/ddEXYAcl3ce3uBOK3Pvj5X0kVq3KC9WgOKJQBzQMz+vYNvcU09RZnjp3bHPjlJJb4lUVlysBcuaMk9WItBHCPNsOg2sp7e4Kna8gIQBzjZLz5vBH/1kVeIIImrqAS4fkY0nXHPjM+BJsOYva5ZZtZ/dcVzWUlqiAdDTgf/o2qiwqyt3y/iNmQTC2uG9S22n55W2P1qRQJv92WU094VcD0zfmjW/Mihl0bdLZjUjp04DXEclKVIHNOIBXIRfPAIXNLuDc0Gxo1C1Pr7ReFWomHuP3OHR2UELsKsdNe7UA6yG9yOVdhiw+1W6fApusDkzp+Zjgi14X9jzW9iyNixIdgIOpJNGxKYiXNsVuBZjGc/zmgoh3AqUckJow+4eQzQCK7Mq5TGMI6Absmj9bxnAGvgsQfKqqkwgeMjgILhy1xMWdAPUGMbJVG0nbC5ffPnmRLcAQ3Gjr7bZ/2SlQeTBGUYJQaRzlJfw8NojuthE6gvXYDuxDAfNezZFHEqibu6dGHkYsBxzFloCkcWAw6T/GVW5iKDnFTSt7POBxF1LaLxg8x/ooMuc
+ TyP9PBix
+ yQRZfrVPjamVqd6ELf7m/rFaV8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,47 +119,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/30/26 15:54, Michal Hocko wrote:
-> On Sun 29-03-26 18:08:52, David Rientjes wrote:
->> Previously, we had warnings when a single page allocation took longer
->> than reasonably expected.  This was introduced in commit 63f53dea0c98
->> ("mm: warn about allocations which stall for too long").
->> 
->> The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
->> warn about allocations which stall for too long") but for reasons
->> unrelated to the warning itself.
-> 
-> I think it makes sense to summarize reasons for the revert. I would
-> propose to change the above to somehting like
-> "
-> The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
-> warn about allocations which stall for too long") because it was
-> possible to generate memory pressure that would effectivelly stall
-> further progress through printk execution.
-> "
->  
->> @@ -4841,6 +4884,9 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->>  	if (current->flags & PF_MEMALLOC)
->>  		goto nopage;
->>  
->> +	/* If allocation has taken excessively long, warn about it */
->> +	check_alloc_stall_warn(gfp_mask, ac->nodemask, order, alloc_start_time);
->> +
->>  	/* Try direct reclaim and then allocating */
->>  	if (!compact_first) {
->>  		page = __alloc_pages_direct_reclaim(gfp_mask, order, alloc_flags,
-> 
-> Is there any specific reason for this placement? Compaction can take
-> quite some time as well.
+There are several tests requires transprarent hugepages, when run on thp
+disabled kernel such as realtime kernel, there will be false negative.
+Mark those tests as skip when thp is not available.
 
-It seems fine to me - as longs as the slowpath is retrying for 10 seconds
-and still can't obtain a page, there's a warning.
+Changes in v7:
+  - patch 1 add reviewed-by from Lorenzo
+  - patch 4 new patch to make ksft_exit_fail_perror variable length
+    arguments
+  - patch 5 change to use %.*s to print the buf when error happened
+    Limit the buflen arg as 2 minimum. Check the error path (numwritten
+	< 0).
+    And use the ksft_exit_fail_perror to print the logs in error path
 
-We don't catch cases when either the get_page_from_freelist() attempt,
-direct compaction or direct reclaim attempt is what gets us over 10 seconds,
-and at the same time it results in success. If that's a concern, we should
-add another check_alloc_stall_warn() call under got_pg label (as the RFC
-had) - I'm not sure it's all achievable with a single place with the call.
+Chagnes in v6:
+  - patch 3 add reviewed-by from Lorenzo
+  - patch 4 handle the errno before and after close(), suggested by AI
 
+Changes in v5:
+  - patch 1, patch 3 updated reviwed-by and acked-by
+  - patch 4 adds new patch for robust write_file()
+
+Changes in v4:
+  - patch 1 update to use thp_available instead of thp_is_enabled,
+    suggested by ai review
+  - removed reviewed-by and acked-by
+
+Changes in v3:
+  - patch 1 update commit message to show the log snippet with where the
+    fail happens, change the 'false positive' to 'false negative'.
+    Update reviwed by
+  - patch 2 update reviewed-by
+  - patch 3 make write_file to void return
+  - patch 4 and patch 5 updated reviewed-by/acked-by
+
+Changes in v2:
+  - replace 'false postive' with 'false negative' in cover letter
+  - patch 1 and patch 2 add reviewed-by/acked-by
+  - new patch 3 to add write_file() in vm_util as a common helper
+  - patch 4 removed the {} in if block, removed the write_file helper
+    rename chunk in v1. Add reviewed-by
+  - patch 5 move the exit chunk to the front of ksft_print_headers() as
+    suggested by David.  Add review by.
+
+Chunyu Hu (7):
+  selftests/mm/guard-regions: skip collapse test when thp not enabled
+  selftests/mm: soft-dirty: skip two tests when thp is not available
+  selftests/mm: move write_file helper to vm_util
+  kselftest: make ksft_exit_fail_perror support va args
+  selftests/mm/vm_util: robust write_file()
+  selftests/mm: split_huge_page_test: skip the test when thp is not
+    available
+  selftests/mm: transhuge_stress: skip the test when thp not available
+
+ tools/testing/selftests/kselftest.h           | 21 +++++++++--
+ tools/testing/selftests/mm/guard-regions.c    |  4 +++
+ tools/testing/selftests/mm/soft-dirty.c       |  4 ++-
+ .../selftests/mm/split_huge_page_test.c       | 19 +++-------
+ tools/testing/selftests/mm/thp_settings.c     | 35 ++-----------------
+ tools/testing/selftests/mm/thp_settings.h     |  1 -
+ tools/testing/selftests/mm/transhuge-stress.c |  4 +++
+ tools/testing/selftests/mm/vm_util.c          | 24 +++++++++++++
+ tools/testing/selftests/mm/vm_util.h          |  2 ++
+ 9 files changed, 62 insertions(+), 52 deletions(-)
+
+
+base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+-- 
+2.53.0
 
 
