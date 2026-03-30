@@ -4,81 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C6A1061B03
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:31:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7DF1061B00
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:33:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 118A16B0096; Mon, 30 Mar 2026 10:31:48 -0400 (EDT)
+	id 0CB466B008A; Mon, 30 Mar 2026 10:33:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EF226B0098; Mon, 30 Mar 2026 10:31:48 -0400 (EDT)
+	id 07C096B008C; Mon, 30 Mar 2026 10:33:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02C196B0099; Mon, 30 Mar 2026 10:31:47 -0400 (EDT)
+	id ED4156B0096; Mon, 30 Mar 2026 10:33:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E29E96B0096
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:31:47 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 59CF98C118
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:31:47 +0000 (UTC)
-X-FDA: 84602968254.08.7823A6A
-Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 445DE1C0007
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:31:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=I4k7a4o5;
-	spf=pass (imf21.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.101 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=I4k7a4o5;
-	spf=pass (imf21.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.101 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774881105; a=rsa-sha256;
-	cv=none;
-	b=xKYnucRj8/E9N2KEbe1iNASe1QdOsvyhy2f+tRwkDzFiwHV++za1D6xRw3RuZtji7d3/E5
-	CXahRIctFlYsS4TPcjxkPJTg6v721llHk7Uf8J2jIB1GyNojtaXzP9dSe4X9AqjkETLTEq
-	gbcU/+B/x/sQC+Z+7qIQyvFMbk6jpSY=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E1CEC6B008A
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:33:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7EFD28C420
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:33:12 +0000 (UTC)
+X-FDA: 84602971824.18.DEF2806
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 92A194001A
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:33:10 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BkKntV3J;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774881105;
+	s=arc-20220608; t=1774881190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YuhIIBdMzY99YqkCYjPRykL5Y0w09W4UZQfuI4377O0=;
-	b=4hNKRDDljmJvMBsn9zjMutItmFvuhsIH34zXC9E3W8mvAE235jQedLnG8MlI0T2RMgDrXm
-	pWYk7Nvo2N9mpVJduWUeVLUEoBkbySQZxqEcnI3wuuSgbfjY9RH31epBGQrnHnSOO7jTK/
-	cntQG2Opu0A9f5OrEMH4UZP1h/49fsg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1774881101; x=1775140301;
-	bh=YuhIIBdMzY99YqkCYjPRykL5Y0w09W4UZQfuI4377O0=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=I4k7a4o5eYmgHMBRzWnnLimoLIjjVzLmQUQfdrS+kf6t8vzFXD5Q3/3WJ+M3FCq+w
-	 52yTOqI2gNGyI053WK2B2z3ZqeMxJgZU6wNKZCOEm+Cr8xH4cqg72vt32WfzLL7o+Q
-	 jeaFwIUIhO2SDm+bgwnPFWLgYSf4n1Am+Ewnc6Tj3UhCw9qHuow5wNgSvJHWaUnsV6
-	 QKCnr/4fP5ZrxFNcJ0yjlyvvzRnfY/g3CGaHDbe3BwQ59q1Y7mgV6v+NLPaxwyOSFq
-	 aBOTqHHL1K8Qg2IfMGuT47oqeEdKOwTBLQx3gQVNfZ6/9fDmUFQFYOVexeAojHnlYa
-	 fmPI/0BAktZsg==
-Date: Mon, 30 Mar 2026 14:31:30 +0000
-To: vbabka@kernel.org, glider@google.com, ryabinin.a.a@gmail.com, urezki@gmail.com, tglx@kernel.org, jeremy.linton@arm.com, osandov@fb.com, ritesh.list@gmail.com, morbo@google.com, axelrasmussen@google.com, ankur.a.arora@oracle.com, baohua@kernel.org, tabba@google.com, catalin.marinas@arm.com, surenb@google.com, maciej.wieczor-retman@intel.com, vincenzo.frascino@arm.com, will@kernel.org, kasong@tencent.com, qi.zheng@linux.dev, hsj0512@snu.ac.kr, shakeel.butt@linux.dev, weixugc@google.com, kees@kernel.org, akpm@linux-foundation.org, yeoreum.yun@arm.com, jgross@suse.com, justinstitt@google.com, trintaeoitogc@gmail.com, nick.desaulniers+lkml@gmail.com, corbet@lwn.net, samuel.holland@sifive.com, Liam.Howlett@oracle.com, rppt@kernel.org, mhocko@suse.com, jackmanb@google.com, mingo@redhat.com, linmag7@gmail.com, kas@kernel.org, ardb@kernel.org, leitao@debian.org, david@kernel.org, skhan@linuxfoundation.org, thuth@redhat.com, hpa@zytor.com, andreyknvl@gmail.com, luto@kernel.org,
-	maz@kernel.org, dvyukov@google.com, nsc@kernel.org, houwenlong.hwl@antgroup.com, bp@alien8.de, jan.kiszka@siemens.com, kevin.brodsky@arm.com, nathan@kernel.org, peterz@infradead.org, yuanchu@google.com, dave.hansen@linux.intel.com, kbingham@kernel.org, ljs@kernel.org
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, workflows@vger.kernel.org, llvm@lists.linux.dev, kasan-dev@googlegroups.com, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, m.wieczorretman@pm.me
-Subject: [PATCH v12 00/15] kasan: x86: arm64: KASAN tag-based mode for x86
-Message-ID: <cover.1774872838.git.m.wieczorretman@pm.me>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 84127dc8f96379008bce8ca2f54869711c804de6
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9gR8ZMmjK8wEzSBbZYciViEr6AK1vwCcyvb+gPoaisQ=;
+	b=Z4zepWwQW0PjN/T66Q4/rDYtYMh1tH06b1J3Yqo684crx1y5gmM/1FmGTv8kkN/SBjB4lA
+	qG/W8bemZi6QvIzFe9mc2CrfC1uNymQSC6vscUcpA2rRfCBdGp//7lRB2lXGHRBrjk5Jg8
+	Ru7sTb0qybCgmIgfe0Zbp8YiDD39fdY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774881190; a=rsa-sha256;
+	cv=none;
+	b=PAU1QX1YQ9/OZ+0mAP6yA0oY+2fLqhQUAQfGzbRW5m4gfwqahdB71SoSc6kvNM0qca2SPi
+	TyyF6V3xLrOaV6Ngz3qfGEKiCWxIoPvQxaCGj1CV/PWdtmNQoRGBEbWo9SfaPdSaR3ROhE
+	2ggR6uKq96cs7luyLzvtcdTeL47/QSI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BkKntV3J;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B4D344137;
+	Mon, 30 Mar 2026 14:33:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E102C19423;
+	Mon, 30 Mar 2026 14:33:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774881189;
+	bh=N9y0x55MeIUDuj/970TQa0+5Agph4ZoIsLckCPZfjMU=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=BkKntV3Jhvr98iWM1n5sF1FhzawD+hyCYgqy3kxQqXurscMFVhJ4nOzjkYhI5/5o4
+	 5hTIJioCL3gBueIHd1rgTeXJ9RrKUZEkgcEWnQcB2nBm4Bm6+nNeGFC+1/5P1mm3ah
+	 /H8ZpeTMmxS/Ir+wxi50m0aZOx2ZsbIIxKV5Dw7Pg7ZmLk16kXFfoN4ROaNgq8SADN
+	 bbQf/UEVBxtw54HjvPwmCkxQIxCHhZ2Apci2kV+9LYE26ekVZWAMdlCz3W2mcJjz2d
+	 qoPJQOxv6U0378A7rDyC5BDkZSk01m7/rxsx20wwEGkbuggXa02BIRF60ioyLciGEV
+	 od0GV0G/Zaskg==
+Message-ID: <8b3eae05-046a-4413-ae56-f70e1b1dfc83@kernel.org>
+Date: Mon, 30 Mar 2026 16:33:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 445DE1C0007
-X-Stat-Signature: fdzmpyqxw4kq5g68orjb9ctwf77xwepc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] mm/page_alloc: Optimize free_contig_range()
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>,
+ Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, Ryan.Roberts@arm.com,
+ david.hildenbrand@arm.com
+References: <20260327125720.2270651-1-usama.anjum@arm.com>
+ <20260327125720.2270651-2-usama.anjum@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260327125720.2270651-2-usama.anjum@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 92A194001A
+X-Stat-Signature: eobskowwnjw5hhq5ohkoekhr3p86zjtr
 X-Rspam-User: 
-X-HE-Tag: 1774881105-610643
-X-HE-Meta: U2FsdGVkX19qfLEMiqPns7YCmEduAHRAPgQEMlIts5k5TyoWt1vFH54IfQxxaXKZ8i8FWCbm2vHaNrM9zyOexF96QyvxLAdOJ1s+ypQyLGrcPz/5am3eBpF9qQGGBpbeBgmjiGAjFCzQ5IiGsWnvIR2qqqcxX6RHv7E+m7nrTG1ThTAWN3Lm+n7WGZLm3VHbWYOZb+TthMrMHfxR2WR4ug2HdeLVInyCXEAL3BpuYcUlwUGLo3RxNYCZohT8+cuD3tmerHSEZWqYdqqrtXq0QmJFPsERUwNpsSchm8CEx2U/22ns7q3oLmnl6EtlDTJfTcmKeuxuuOAf/DzzTV0i52oJyosyr9O8NFSVnBMN+ywjpkKKG8kB/7cXZfqUio87AE7KN5N1g7BNnvzGWt8ZLmfowMCVutVFS5Ow4ScJ51yf11HixHZP69Yln4iIJIT5bF+aNutJNoT9Glf1TbphLb1BgbnEJs5qxRP45xNB03yrR9esi9RzgAVsmuxxug7IivVM0yNAjTjKOVSbM/RzkWpdOoU4MAW3BF5pH7VuzfDZFwoem9Pls43KndNwzMaSyvY6T4fxNdCvWpz38fvA5KBY3piHWUK56qZREHa6ZV1LGvphOnU6d8kP5q/h88gaLzQxKcAXzfILi9V0S7gTkedgAlvjji6rG44n90J3Y7ZEFWg4tZI7hrdvppVWmghWqDplSzkZk4bzMm5/0aqQ1tfHXwYs2f5KeRbGOFO6F6W0ih+IhdKQ963+fL8lH4GlJqYWm7T+IiGh0IyDlI2lvb7xO35bpJnjX38LwNnVzrks3/wikmACu06KB2j73UqwOHbAbDjjpe+1TWyW/46a3c6pFrxpA66coko8QDEJlpKu3atjkpM0vbe3qdLaPGax6lcWGdvafZ+vQRboUNe/4YWi8A/Q+YH/OEVsFC8tZ1qP4poOSQ8tzBrmkrA8S/3QsNaT+yEgsk9AkZJmZPN
- 1HaJ3Q1e
- vAdR7b32NLReO52rWbU4DZsEzF0m9e5Pr3eKaGg6JtiHbAjmlkL8o069xNovU5FzidMCH2vXIndmS5GB9oXEm4TnLsvWTsBodsEnYejuhv1cLaJNPIuAsLBKVFouq79QgPmCMhaRevUqsPayNUGZqZOJ2YTUbBrIe7G6KMmlVbFw9l9mimWAQphbl/cg4uLPllWN1/CXfTIpmrh4ZrJWzvhYqroMRMsSyCIBJKI/S2hGkeVfHO/tB2IHqsFoUIY+eXpYrKNI+REdJNs73XVtcn1c9+0RPIvjnnC8aosYsL3rOjvSTiZ5XTrfUTkfzVsUC8fkvuuk/QAPMqO9m0d8nj39TosV6LYFR5ZQZ
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774881190-648274
+X-HE-Meta: U2FsdGVkX18r25WGNQ097RPuoanmOshEtM8LlHmSbzYtCWxbo8Guouj2xXyhocRlDVJtDUOSRjm7iswUe4dY1SvAz+BgjMYptCO0D8kWT4mOvlzBpPv+czSucxDDfJvDLedg0lrFxNAQVFWMva/XJsGZVeXIzuYMJJMsLF3TN4L92AUKXSyEmAypIff6w6ovrAcreXWuandooHMpjVvcbV5/B5IFgdrpuyVIsU2KsMVzA3GkRVPqPd3R7VOyVahJeLZGFB8Lc65mHslENrZHpwqkbNl4vKCPittAJg4nAWhZDBZLglx/k4WH+IaZsG+f+nck/JacwUu/qlsWjSDdCCJJ56uY5VTX5X5Mf00Y6eBmPKeb2c6jRkOTa1Gj1k2JYLu0odT9t1xoOlTtnSB+JqLDGoRN8jIq5Oh35HgFfQIK6U0UMVlWdQ7nOXYR9hRpBq4KKtAXQY+OX/DEOQgQRs+5qxb8xBFJfnqHxlG0TD6N+QLZGoDtdKFxypcNOxDE+J5BIOEkB4IiMyNyRWV+q0FIz2rmyc714XmdNURFBBJuJQxtpOX4tG95Q3FWtyWA9oYB1eYNrNktSAXmzSnPbfb804c95IWiu4hKcb2iI3wKVyXS+73uKkTBEO6oKWFwM/cuZQndQA0grZQcciOTlYryJkqLJs662sL5Y7hy2qrWNr9ibojmBYdnoozepJgqeNAOfMVLksuShEB7OEW9GflXFB3vkn4KcIFs+c4z4OiGsZugS+bwtO89BOrrDyZ0QhHz0kWm8Gmri9gUdQicrc6nPitNWZPcHCqr5o+4hMhp+AlAs6X+GD3lQuIbbRUl0TbLSm0JkfT2HCDLHK6G85RkzDZauYBfUgTMNLAWv7GCkNPkRIdBzpLZ5WNOApkKiyZ6KMvaDMClaFPrIng+i7M2Mu/UzbSmnzoj1rqqPbEFxr4JFKZhn364YlLOnqH4Q7sThOhPE3t7CbwlRn0
+ gZw5i4EX
+ Sp6PbWbYo41oFlLLWQWP5aPn+x4zrA7lJgoL5wR6FZEtgK+ugjTxykibAg47BPOz+PkvlOTZzu8YAkMCzuPqTN4wlkBwvLmWbPNQvMW3rp1xVpyn2Q/19r0D0CaihkWCmUx8esPtzrO6VjI6Zc649hoMy6Q2WzOLy455ZNiaxROUbDBK1TZNkEJqXSKIE5vXPBVjF8eRgfZpsItul867oQP1nL58TTeq6/+hq3dSDFLNOx4aSTlhcI3JgPYrMN3zXRWEbXRcvCaBlk2tCT+VWadGC1aoABGUbDA3R42iwalexE3c7oovupV0iX60N12E3dAG8YGic1N4A77BM9NdYKrNito27mppkSeQD5I6TMGVdYuR/EGjiCFAHEmWlVc2hLGxo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,340 +146,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-=3D=3D=3D=3D=3D=3D=3D Introduction
-The patchset aims to add a KASAN tag-based mode for the x86 architecture
-with the help of the new CPU feature called Linear Address Masking
-(LAM). Main improvement introduced by the series is 2x lower memory
-usage compared to KASAN's generic mode, the only currently available
-mode on x86. The tag based mode may also find errors that the generic
-mode couldn't because of differences in how these modes operate.
+>  
+> +static void free_prepared_contig_range(struct page *page,
+> +				       unsigned long nr_pages)
 
-=3D=3D=3D=3D=3D=3D=3D How does KASAN' tag-based mode work?
-When enabled, memory accesses and allocations are augmented by the
-compiler during kernel compilation. Instrumentation functions are added
-to each memory allocation and each pointer dereference.
+Prefer two-tab indent in MM land.
 
-The allocation related functions generate a random tag and save it in
-two places: in shadow memory that maps to the allocated memory, and in
-the top bits of the pointer that points to the allocated memory. Storing
-the tag in the top of the pointer is possible because of Top-Byte Ignore
-(TBI) on arm64 architecture and LAM on x86.
+> +{
+> +	while (nr_pages) {
+> +		unsigned int order;
+> +		unsigned long pfn;
+> +
+> +		pfn = page_to_pfn(page);
 
-The access related functions are performing a comparison between the tag
-stored in the pointer and the one stored in shadow memory. If the tags
-don't match an out of bounds error must have occurred and so an error
-report is generated.
+I'd just do above
 
-The general idea for the tag-based mode is very well explained in the
-series with the original implementation [1].
+	const unsigned long pfn = page_to_pfn(page);
+	unsigned long order;
 
-[1] https://lore.kernel.org/all/cover.1544099024.git.andreyknvl@google.com/
+> +		/* We are limited by the largest buddy order. */
+> +		order = pfn ? __ffs(pfn) : MAX_PAGE_ORDER;
+> +		/* Don't exceed the number of pages to free. */
+> +		order = min_t(unsigned int, order, ilog2(nr_pages));
+> +		order = min_t(unsigned int, order, MAX_PAGE_ORDER);
+> +
+> +		/*
+> +		 * Free the chunk as a single block. Our caller has already
+> +		 * called free_pages_prepare() for each order-0 page.
+> +		 */
+> +		__free_frozen_pages(page, order, FPI_PREPARED);
+> +
+> +		page += 1UL << order;
+> +		nr_pages -= 1UL << order;
+> +	}
+> +}
+> +
+> +static void __free_contig_range_common(unsigned long pfn, unsigned long nr_pages,
+> +				       bool is_frozen)
 
-=3D=3D=3D=3D=3D=3D=3D Differences summary compared to the arm64 tag-based m=
-ode
-- Tag width:
-=09- Tag width influences the chance of a tag mismatch due to two
-=09  tags from different allocations having the same value. The
-=09  bigger the possible range of tag values the lower the chance
-=09  of that happening.
-=09- Shortening the tag width from 8 bits to 4, while it can help
-=09  with memory usage, it also increases the chance of not
-=09  reporting an error. 4 bit tags have a ~7% chance of a tag
-=09  mismatch.
+Dito.
 
-- Address masking mechanism
-=09- TBI in arm64 allows for storing metadata in the top 8 bits of
-=09  the virtual address.
-=09- LAM in x86 allows storing tags in bits [62:57] of the pointer.
-=09  To maximize memory savings the tag width is reduced to bits
-=09  [60:57].
+> +{
+> +	struct page *page = pfn_to_page(pfn);
+> +	struct page *start = NULL;
+> +	unsigned long start_sec;
+> +	bool can_free = true;
+> +	unsigned long i;
+> +
+> +	/*
+> +	 * Contiguous PFNs might not have a contiguous "struct pages" in some
+> +	 * kernel config. Therefore, check memdesc_section(), and stop batching
+> +	 * once it changes, see num_pages_contiguous().
+> +	 */
+> +	for (i = 0; i < nr_pages; i++, page++) {
 
-- Inline mode mismatch reporting
-=09- Arm64 inserts a BRK instruction to pass metadata about a tag
-=09  mismatch to the KASAN report.
-=09- Right now on x86 the INT3 instruction is used for the same
-=09  purpose. The attempt to move it over to use UD1 is already
-=09  implemented and tested but relies on another series that needs
-=09  merging first. Therefore this patch will be posted separately
-=09  once the dependency is satisfied by being merged upstream.
+As Vlasta says, page++ needs a thought. (you have to redo the
+pfn_to_page with the next pfn in case the section changes).
 
-=3D=3D=3D=3D=3D=3D=3D Testing
-Checked all the kunits for both software tags and generic KASAN after
-making changes.
+> +		VM_WARN_ON_ONCE(PageHead(page));
+> +		VM_WARN_ON_ONCE(PageTail(page));
+> +
+> +		if (!is_frozen)
+> +			can_free = put_page_testzero(page);
+> +
+> +		if (can_free)
+> +			can_free = free_pages_prepare(page, 0);
+> +
+> +		if (!can_free) {
+> +			if (start) {
+> +				free_prepared_contig_range(start, page - start);
+> +				start = NULL;
+> +			}
+> +			continue;
+> +		}
+> +
+> +		if (start && memdesc_section(page->flags) != start_sec) {
+> +			free_prepared_contig_range(start, page - start);
+> +			start = page;
+> +			start_sec = memdesc_section(page->flags);
+> +		} else if (!start) {
+> +			start = page;
+> +			start_sec = memdesc_section(page->flags);
+> +		}
+> +	}
+> +
+> +	if (start)
+> +		free_prepared_contig_range(start, page - start);
+> +}
+> +
+> +/**
+> + * __free_contig_range - Free contiguous range of order-0 pages.
+> + * @pfn: Page frame number of the first page in the range.
+> + * @nr_pages: Number of pages to free.
+> + *
+> + * For each order-0 struct page in the physically contiguous range, put a
+> + * reference. Free any page who's reference count falls to zero. The
+> + * implementation is functionally equivalent to, but significantly faster than
+> + * calling __free_page() for each struct page in a loop.
+> + *
+> + * Memory allocated with alloc_pages(order>=1) then subsequently split to
+> + * order-0 with split_page() is an example of appropriate contiguous pages that
+> + * can be freed with this API.
+> + *
+> + * Context: May be called in interrupt context or while holding a normal
+> + * spinlock, but not in NMI context or while holding a raw spinlock.
 
-In generic mode (both with these patches and without) the results were:
-
-kasan: pass:61 fail:1 skip:14 total:76
-Totals: pass:61 fail:1 skip:14 total:76
-not ok 1 kasan
-
-and for software tags:
-
-kasan: pass:65 fail:1 skip:10 total:76
-Totals: pass:65 fail:1 skip:10 total:76
-not ok 1 kasan
-
-At the time of testing the one failing case is also present on generic
-mode without this patchset applied. This seems to point to something
-else being at fault for the one case not passing. The test case in
-question concerns strscpy() out of bounds error not getting caught.
-
-=3D=3D=3D=3D=3D=3D=3D Benchmarks [1]
-All tests were ran on a Sierra Forest server platform. The only
-differences between the tests were kernel options:
-=09- CONFIG_KASAN
-=09- CONFIG_KASAN_GENERIC
-=09- CONFIG_KASAN_SW_TAGS
-=09- CONFIG_KASAN_INLINE [1]
-=09- CONFIG_KASAN_OUTLINE
-
-Boot time (until login prompt):
-* 02:55 for clean kernel
-* 05:42 / 06:32 for generic KASAN (inline/outline)
-* 05:58 for tag-based KASAN (outline) [2]
-
-Total memory usage (512GB present on the system - MemAvailable just
-after boot):
-* 12.56 GB for clean kernel
-* 81.74 GB for generic KASAN
-* 44.39 GB for tag-based KASAN
-
-Kernel size:
-* 14 MB for clean kernel
-* 24.7 MB / 19.5 MB for generic KASAN (inline/outline)
-* 27.1 MB / 18.1 MB for tag-based KASAN (inline/outline)
-
-Work under load time comparison (compiling the mainline kernel) (200 cores)=
-:
-*  62s for clean kernel
-* 171s / 125s for generic KASAN (outline/inline)
-* 145s for tag-based KASAN (outline) [2]
-
-[1] Currently inline mode doesn't work on x86 due to things missing in
-the compiler. I have written a patch for clang that seems to fix the
-inline mode and I was able to boot and check that all patches regarding
-the inline mode work as expected. My hope is to post the patch to LLVM
-once this series is completed, and then make inline mode available in
-the kernel config.
-
-[2] While I was able to boot the inline tag-based kernel with my
-compiler changes in a simulated environment, due to toolchain
-difficulties I couldn't get it to boot on the machine I had access to.
-Also boot time results from the simulation seem too good to be true, and
-they're much too worse for the generic case to be believable. Therefore
-I'm posting only results from the physical server platform.
-
-=3D=3D=3D=3D=3D=3D=3D Compilation
-Clang was used to compile the series (make LLVM=3D1) since gcc doesn't
-seem to have support for KASAN tag-based compiler instrumentation on
-x86. Patchset does seem to compile with gcc without an issue but doesn't
-boot afterwards.
-
-=3D=3D=3D=3D=3D=3D=3D Dependencies
-The series is based on mm-new.
-
-=3D=3D=3D=3D=3D=3D=3D Previous versions
-v11: https://lore.kernel.org/all/cover.1773164688.git.m.wieczorretman@pm.me=
-/
-v10: https://lore.kernel.org/all/cover.1770232424.git.m.wieczorretman@pm.me=
-/
-v9:  https://lore.kernel.org/all/cover.1768845098.git.m.wieczorretman@pm.me=
-/
-v8:  https://lore.kernel.org/all/cover.1768233085.git.m.wieczorretman@pm.me=
-/
-v7:  https://lore.kernel.org/all/cover.1765386422.git.m.wieczorretman@pm.me=
-/
-v6:  https://lore.kernel.org/all/cover.1761763681.git.m.wieczorretman@pm.me=
-/
-v5:  https://lore.kernel.org/all/cover.1756151769.git.maciej.wieczor-retman=
-@intel.com/
-v4:  https://lore.kernel.org/all/cover.1755004923.git.maciej.wieczor-retman=
-@intel.com/
-v3:  https://lore.kernel.org/all/cover.1743772053.git.maciej.wieczor-retman=
-@intel.com/
-v2:  https://lore.kernel.org/all/cover.1739866028.git.maciej.wieczor-retman=
-@intel.com/
-v1:  https://lore.kernel.org/all/cover.1738686764.git.maciej.wieczor-retman=
-@intel.com/
-
-=3D=3D=3D (two fixes patches were split off after v6) (merged into mm-unsta=
-ble)
-v1: https://lore.kernel.org/all/cover.1762267022.git.m.wieczorretman@pm.me/
-v2: https://lore.kernel.org/all/cover.1764685296.git.m.wieczorretman@pm.me/
-v3: https://lore.kernel.org/all/cover.1764874575.git.m.wieczorretman@pm.me/
-v4: https://lore.kernel.org/all/cover.1764945396.git.m.wieczorretman@pm.me/
-
-Changes v12:
-- Put CC_IS_CLANG and ADDRESS_MASKING into one Kconfig option that
-  controls HAVE_ARCH_KASAN_SW_TAGS. (Peter Zijlstra)
-
-Changes v11:
-- Rebase series onto mm-new.
-- Split off and modify the documentation patch.
-- Split the pointer arithmetic reset tag patch in two. One patch for
-  slight rework of page_to_virt() and one for putting x -
-  __START_KERNEL_map into a tag reset helper.
-- Fix issue pointed out by Dave on copy_from_kernel_nofault_allowed().
-- Remove the arch_kasan_non_canonical_hook function scheme in favor of
-  Andrey Ryabinin's simpler arch independent implementation.
-
-Changes v10:
-- Rebase the series onto 6.19-rc8.
-- Add Mike Rapoport's acked-by to patch 6.
-- Modify Documentation/dev-tools/kasan.rst in patches 1 and 13.
-
-Changes v9:
-- Lock HAVE_ARCH_KASAN_SW_TAGS behind CC_IS_CLANG due to gcc not working
-  in practice.
-- Remove pr_info() from KASAN initialization.
-- Add paragraph to mm.rst explaining the alternative KASAN memory
-  ranges.
-- Move out arch based code from kasan_non_canonical_hook() into arch
-  subdirectories. arm64 and non-arch changes in patch 1, x86 changes in
-  patch 12.
-- Reset tag bits on arm64's non-canonical hook to allow inline mode to
-  work.
-- Revert modifying __is_canonical_address() since it can break KVM. Just
-  untag address in copy_from_kernel_no_fault_allowed().
-- Add a bunch of reviewed-by tags.
-
-Changes v8:
-- Detached the UD1/INT3 inline patch from the series so the whole
-  patchset can be merged without waiting on other dependency series. For
-  now with lack of compiler support for the inline mode that patch
-  didn't work anyway so this delay is not an issue.
-- Rebased patches onto 6.19-rc5.
-- Added acked-by tag to "kasan: arm64: x86: Make special tags arch
-  specific".
-
-Changes v7:
-- Rebased the series onto Peter Zijlstra's "WARN() hackery" v2 patchset.
-- Fix flipped memset arguments in "x86/kasan: KASAN raw shadow memory
-  PTE init".
-- Reorder tag width defines on arm64 to avoid redefinition warnings.
-- Split off the pcpu unpoison patches into a separate fix oriented
-  series.
-- Redid the canonicality checks so it works for KVM too (didn't change
-  the __canonical_address() function previously).
-- A lot of fixes pointed out by Alexander in his great review:
-=09- Fixed "x86/mm: Physical address comparisons in fill_p*d/pte"
-=09- Merged "Support tag widths less than 8 bits" and "Make special
-=09  tags arch specific".
-=09- Added comments and extended patch messages for patches
-=09  "x86/kasan: Make software tag-based kasan available" and
-=09  "mm/execmem: Untag addresses in EXECMEM_ROX related pointer arithmetic=
-",
-=09- Fixed KASAN_TAG_MASK definition order so all patches compile
-=09  individually.
-=09- Renamed kasan_inline.c to kasan_sw_tags.c.
-
-Changes v6:
-- Initialize sw-tags only when LAM is available.
-- Move inline mode to use UD1 instead of INT3
-- Remove inline multishot patch.
-- Fix the canonical check to work for user addresses too.
-- Revise patch names and messages to align to tip tree rules.
-- Fix vdso compilation issue.
-
-Changes v5:
-- Fix a bunch of arm64 compilation errors I didn't catch earlier.
-  Thank You Ada for testing the series!
-- Simplify the usage of the tag handling x86 functions (virt_to_page,
-  phys_addr etc.).
-- Remove within() and within_range() from the EXECMEM_ROX patch.
-
-Changes v4:
-- Revert x86 kasan_mem_to_shadow() scheme to the same on used in generic
-  KASAN. Keep the arithmetic shift idea for the KASAN in general since
-  it makes more sense for arm64 and in risc-v.
-- Fix inline mode but leave it unavailable until a complementary
-  compiler patch can be merged.
-- Apply Dave Hansen's comments on series formatting, patch style and
-  code simplifications.
-
-Changes v3:
-- Remove the runtime_const patch and setup a unified offset for both 5
-  and 4 paging levels.
-- Add a fix for inline mode on x86 tag-based KASAN. Add a handler for
-  int3 that is generated on inline tag mismatches.
-- Fix scripts/gdb/linux/kasan.py so the new signed mem_to_shadow() is
-  reflected there.
-- Fix Documentation/arch/arm64/kasan-offsets.sh to take new offsets into
-  account.
-- Made changes to the kasan_non_canonical_hook() according to upstream
-  discussion.
-- Remove patches 2 and 3 since they related to risc-v and this series
-  adds only x86 related things.
-- Reorder __tag_*() functions so they're before arch_kasan_*(). Remove
-  CONFIG_KASAN condition from __tag_set().
-
-Changes v2:
-- Split the series into one adding KASAN tag-based mode (this one) and
-  another one that adds the dense mode to KASAN (will post later).
-- Removed exporting kasan_poison() and used a wrapper instead in
-  kasan_init_64.c
-- Prepended series with 4 patches from the risc-v series and applied
-  review comments to the first patch as the rest already are reviewed.
-
-Maciej Wieczor-Retman (13):
-  kasan: Fix inline mode for x86 tag-based mode
-  x86/kasan: Add arch specific kasan functions
-  x86/mm: Reset pointer tag in x - __START_KERNEL_map instances
-  kasan: arm64: x86: Make page_to_virt() KASAN aware
-  mm/execmem: Untag addresses in EXECMEM_ROX related pointer arithmetic
-  x86/mm: Use physical address comparisons in fill_p*d/pte
-  x86/kasan: Initialize KASAN raw shadow memory
-  x86/mm: Reset tags in a canonical address helper call
-  x86/mm: Initialize LAM_SUP
-  x86: Increase minimal SLAB alignment for KASAN
-  x86/kasan: Use a logical bit shift for kasan_mem_to_shadow
-  x86/kasan: Make software tag-based kasan available
-  docs: Update KASAN and x86 memory map documentations
-
-Samuel Holland (2):
-  kasan: sw_tags: Use arithmetic shift for shadow computation
-  kasan: arm64: x86: Make special tags arch specific
-
- Documentation/arch/arm64/kasan-offsets.sh |  8 ++-
- Documentation/arch/x86/x86_64/mm.rst      | 21 +++++-
- Documentation/dev-tools/kasan.rst         | 79 ++++++++++++++++-------
- MAINTAINERS                               |  2 +-
- arch/arm64/Kconfig                        | 10 +--
- arch/arm64/include/asm/kasan-tags.h       | 14 ++++
- arch/arm64/include/asm/kasan.h            |  2 -
- arch/arm64/include/asm/memory.h           | 19 ++++--
- arch/arm64/include/asm/uaccess.h          |  1 +
- arch/arm64/mm/kasan_init.c                |  7 +-
- arch/x86/Kconfig                          |  9 +++
- arch/x86/boot/compressed/misc.h           |  1 +
- arch/x86/include/asm/cache.h              |  4 ++
- arch/x86/include/asm/kasan-tags.h         |  9 +++
- arch/x86/include/asm/kasan.h              | 62 +++++++++++++++++-
- arch/x86/include/asm/page_64.h            | 11 +++-
- arch/x86/kernel/head_64.S                 |  3 +
- arch/x86/mm/init.c                        |  3 +
- arch/x86/mm/init_64.c                     | 11 ++--
- arch/x86/mm/kasan_init_64.c               | 24 ++++++-
- arch/x86/mm/maccess.c                     |  1 +
- arch/x86/mm/physaddr.c                    |  4 +-
- include/linux/kasan-tags.h                | 21 ++++--
- include/linux/kasan.h                     | 23 +++++--
- include/linux/mm.h                        | 11 ++--
- include/linux/mmzone.h                    |  2 +-
- include/linux/page-flags-layout.h         |  9 +--
- lib/Kconfig.kasan                         |  4 +-
- mm/execmem.c                              |  9 ++-
- mm/kasan/report.c                         | 16 +++--
- mm/vmalloc.c                              |  7 +-
- scripts/Makefile.kasan                    |  3 +
- scripts/gdb/linux/kasan.py                |  5 +-
- scripts/gdb/linux/mm.py                   |  5 +-
- 34 files changed, 331 insertions(+), 89 deletions(-)
- create mode 100644 arch/arm64/include/asm/kasan-tags.h
- create mode 100644 arch/x86/include/asm/kasan-tags.h
-
---=20
-2.53.0
+Interesting that we didn't have a cond_resched() somewhere in there.
 
 
+-- 
+Cheers,
+
+David
 
