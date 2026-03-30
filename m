@@ -4,113 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E5621061B18
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6195F1061B1A
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:56:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D8656B008C; Mon, 30 Mar 2026 14:53:53 -0400 (EDT)
+	id BF66C6B0096; Mon, 30 Mar 2026 14:56:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AFE76B0095; Mon, 30 Mar 2026 14:53:53 -0400 (EDT)
+	id BA6816B0098; Mon, 30 Mar 2026 14:56:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ECFF6B0096; Mon, 30 Mar 2026 14:53:53 -0400 (EDT)
+	id B0B286B0099; Mon, 30 Mar 2026 14:56:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4253F6B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:53:53 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A44F1A085B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:53:53 +0000 (UTC)
-X-FDA: 84603628746.15.4FF1827
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2DF7820003
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:53:50 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HOylZcjc;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774896831; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A00F06B0096
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:56:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4FB691B8563
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:56:22 +0000 (UTC)
+X-FDA: 84603635004.02.35DD87D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8BF4D40007
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:56:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ysBOI21w;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774896980; a=rsa-sha256;
 	cv=none;
-	b=lQOz4LGohiHq1uXZ9o5pJGNOQ7FjjAAth2c3rwP5Jbtc25tWbGQ4u8V6UcgLbDqbzNKePt
-	mtCYQ9wAFS3yu+dxArKszb1bOR9YX7+Ajdb0ySSaIRM/9ZJRf5lfebFi7wjV5n79BDbIL8
-	JTg9WO+L5JGyDcst8tLewp94MZnLQc4=
+	b=E9G/eXc5mqalAhot7MIDDJ/Z3jxZQ4cxVNx9cVraZT13iKsZlGuTNtdajzkSBg22MxnaAK
+	yTtj0MxPQA2JuLuVUAoN4HprrE0HU3XI0yQsqM2AqERARjppHTMMZ9nQDukyaspQWpdDjy
+	2GQOeqvm626JU/UR5wiGqFe23sTOvgk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HOylZcjc;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ysBOI21w;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774896831;
+	s=arc-20220608; t=1774896980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gOPmx7D4lJnGv8mhfy1r+7P3JieUvPPQgAmz2i26ZRY=;
-	b=gUk5e1/O4r5KrcG16BcNoeOQeePkmhHxWF6U2wzWoL38kbJ7PKnG2OoWSiVtkO5TyOOhGy
-	D15e0yi0iqWoGX87WBIw5vsgDxhJb1dyT9hwj7d+nEgTceI16d6F3U5MAAiWiLUILp6YQw
-	AGTpLymZlwvTj6jKVINHK2fsO3CAZvk=
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c742882d2a4so2031090a12.0
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:53:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774896830; x=1775501630; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gOPmx7D4lJnGv8mhfy1r+7P3JieUvPPQgAmz2i26ZRY=;
-        b=HOylZcjcE9b0pcmnx3LCfN33TIvgDEIp+n0bdn1u4V3vHbX8W6pIbp0UDJMlHJGofG
-         jDZ1i+7cusaxiKLV0Ds0w/Az+YBpraFrK82b6MidcT1DqB6B5qQ3s8Q8zIJ1z4JOhCtR
-         TD7rvNDwUjl0CTlPPAkjMOx90TUNyNfOJkVwHpWt2VOYUX3LSpip3E5LXHJO0+9F/yZ4
-         xqwYW9FWxMc86Mh6cFKZaBFUp8fhGHz4lws27b3sPFGOyFNjK+GgKd/DSVqn70hE/Nnt
-         Wc+veYOrXtf8wqJ1w4CWQxHmalHLrJSNOgjEIezjzT9XDbGqKkahxkSGVb/uNrQjGuJm
-         gSPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774896830; x=1775501630;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gOPmx7D4lJnGv8mhfy1r+7P3JieUvPPQgAmz2i26ZRY=;
-        b=KWmZDqrwtZGsNr0O66GmYvh5r2er8/+ibWxulpOfNjbbGr7bXZxQVp6TDEfxlMYKXx
-         ZkE1GAp0yTO8WIZwcRxFifPciXQzBQwcPKfkWBMR08ikoWvlKFxtdnN3sG9qUGNMA/aF
-         yZOL2vf2eUVH8sjvvolUXvw1UhuXCF4XRGC+H8fs5+8DJ+nVaVOzQHJ5RJKVLRrUJAl8
-         5C+020h2fKvDb0Jeu2LJoFIFWuGyZ+tZsY/zECXtzOa4+aIdQaFJWb06LKQCql83QL/2
-         AmtzhtILOo3R1mTSQKeXroRIS/s484rleY0zqjbzX+bkUmt5gISsam6Rfbu0PkqiVPu5
-         2XPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrP6fLeSp5D9yVtzKegaTWBey4rQVbo+9Djp6CqAfZWjYalbIJD3SNCndz/KYrutGbeBOtR3/BfA==@kvack.org
-X-Gm-Message-State: AOJu0YwMcx9MJ4ogpQ2In/Evhm9MNqcaStPnwP6sTcA1Q5BYl41ap01h
-	xy5076SeH5+9CTdUnoct2SlmBxbmkwOIQVXIVo4BRhuxk0y6fdQ/SZUq
-X-Gm-Gg: ATEYQzw+l3UtNlrUkFa940zd26rLy5390WTz9sfjsJ5dIlygdhdYK5fsm3s6Yh5IY5e
-	7kJRCUEj6bmPORF0I8q30cXSk3J3v1WsKJuUElofOPEhc6f8ZS3suOZoeKjeA46W/xk71vAH2/i
-	n9MXrkuvvXhr2z5bHOAfdZCHU2DzFAaTK0wjN27qy9atTILtC5GA2umX1BRzfsfATK2h50Zf2mK
-	d64B9nSBR2GDtWUuyuNXJ0NX8O1qKfsioaNmood4jYXZZuqzh1cSyB8Ktx8vl7jIid+zRPi4WMa
-	fW5ndsDoU2c+KkcX+ZsgW6p4+FPlXZTMM56xCWWlRFRCf9wLLMOS/ZJI/JGNp9e7EP3H5Mf/K7j
-	Pr8e0U1uZ6k+QPi8KhbUMN6ue75uf9KGTJn7vw6Jm7I1cWWhzQRWOphLjIj0kskznUXJh1YJaa3
-	TraDoc+YiLWec2jd+DOkOHY6px4S5gx66+YS0JkBaiDGpOhv4XEJw=
-X-Received: by 2002:a05:6a20:938c:b0:389:8f3f:50ce with SMTP id adf61e73a8af0-39c87b5fb6fmr14525878637.56.1774896829730;
-        Mon, 30 Mar 2026 11:53:49 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76916baa6asm6708324a12.4.2026.03.30.11.53.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 11:53:49 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org
-Subject: Re: (sashiko review) [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
-Date: Tue, 31 Mar 2026 02:53:47 +0800
-Message-ID: <20260330185347.45872-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260330164347.12772-1-aethernet65535@gmail.com>
-References: <20260330164347.12772-1-aethernet65535@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k3xe3daq7dapfogeq9utfyjmnh11ka46
-X-Rspamd-Queue-Id: 2DF7820003
+	bh=DTcQbDxFgc1NSGYIiMPFlW+0wV99Pj2wc07/t6/rjB0=;
+	b=Eh/t7Y7nL9VxrTXowLbuuH0Q5lS9QLS5nbOwSz4KI0E3nvnQ7x4xXtNWyO/8a+0ev2iV7r
+	joqxHNXpzjePwq3NMzS7UZynacBsh6HobYEzthqhMTQSLiJBnrW7TbD6yTnjb8p4mKsMpM
+	O5BFQGk6bHqpED8k+Q+/dw3j0p/y5d8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7256241673;
+	Mon, 30 Mar 2026 18:56:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2775FC4CEF7;
+	Mon, 30 Mar 2026 18:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774896979;
+	bh=59JFEL/6YtbWchuoZOYX4CjEHVV67PqkA6uWzpMcbEk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ysBOI21wYxD8GcrME0utq+cQKbiY/9J62YP2177Wdqkv4Zro3jL97Kln2IraAHMIQ
+	 SU07hUqLBBLBxMYJ80zFoVkRoLYItJIfEG7EEURAJ59c86VON1R9cCTltAlSJvYyyk
+	 n6h84lxLYfOJrd29vIweJRw3JbuPCu8QYNauJNiE=
+Date: Mon, 30 Mar 2026 11:56:18 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Baoquan He <bhe@redhat.com>, LKML
+ <linux-kernel@vger.kernel.org>, lirongqing <lirongqing@baidu.com>
+Subject: Re: [PATCH v2] mm/vmalloc: Use dedicated unbound workqueue for vmap
+ purge/drain
+Message-Id: <20260330115618.62fb0d6bdf89cedd453035d0@linux-foundation.org>
+In-Reply-To: <20260330175824.2777270-1-urezki@gmail.com>
+References: <20260330175824.2777270-1-urezki@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: wtwcosfppwchihf9rbiz4puyzfees6p6
+X-Rspamd-Queue-Id: 8BF4D40007
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1774896830-458524
-X-HE-Meta: U2FsdGVkX1/L3b2c7vTRR1W6cvg7fmFeIHaQXxOiX+cCjkJIftDstr/wxaNwSo7DeLTnK9r6SKliwG5mX6OshCTIP/oxrC2AyFsKOuyFjJJivYY+PL54yqrWPjRmGlVw2NqZQ8B81r/CNNIKlYC337u6OTqW9YHW6gaQL2aZPaebbeaM8PlvB8Mt++AwFoCIxa4K6BEpguantMlcPcP9DlhbbbNz/XWFeLbo4I6O5AnerZlLOUiIAPfoU2Tcu4J04fDQ2hRX708Ww5w+asOAUvmHojlh13ym5qKftoyAfhOX6GVU+lMHNaaW8WdF4IfePRAj0vvE5rxb+BQ4j0AqkxWsmYjSQVQ9oZeTEmyHu8ffBi04KoOuD2kIZTif8HiDnML205ETO7ImIH5unmwogDvCrbrFKMIYx0mfQ9qAEf+mrKgwu0saC9OK6+QIhbRllI38jUMLvMYE5ocxmhxOq0WeyfJdIW2hn3YyrbU01yCsEwK+B0cYMA823ZT2BYYMVHEhhCn7yN45Kk7VP+TG8j4igPiTL10t7n6+C93WV7E8NAvkTIOWABorumkUHtn9CUiXmouABNokvX7xSxF+MVjzkaQp1KEtYO31DCkhRbHSnD0W8j0osL46tVfpToDNQK3ANejFxb+RkdwQYo7iSY/EGrwXsD2jtw8Tq9iudGaPhJHE7xrAE/FeaPiGWkZK9h75R6Rc8DjCWIzhvOzYORPh+jdDjogQSUY/w5QLVsOeeU0Lwcfeuv/jJJhkvGPRjzNXVNZEf6PLoyQJTEIqoLzLb/YQDuRJ6lGhF9mFTEnxlb2PY/3SrR39VfvJKHEAGvFva15xfDcUiHk4YDte8h0GXJaN8ASuXUwhLtZ1JHtiV4wKG/Wa0fcYN8YkYRbtD+THSiggr6LVMIW4XU+LX8g4z0UMhGn0J/n2XPQmvDbhSUj6x5g0EgT3/ZYIe2F8xvPAGjCY2xzYQpnE0tQ
- ZJnYghDQ
- Jdy09DV6h4zTtJNO2jXZ/x2knEB0n3QdQ0esaR+rx0w78Nc++f4PF1uSRkQBw8A+Z/Qv7DQZ/xViZivbrSosZDLfl8j0aSQJk77EqMyJTOnTbi3lrQYIY3bQFI9r2yOZgYlnM6BqI7Qae1YueSDVXxCwFvDHrOIRDnhF3YqsBYDjOmAZk7aGaIcym3ITV3hd3cGJz/ZCIr2zBLjqAF9IDTM0SAqFC6KtQP7MRl+e21oYjJtFG4DtxDVazbyxni6Qym8DYS9kZ+dXRZFXabb+4lOd3Jj7Hgw8xk6Um30cZvDNVoxirc+J5/0JV3RhiBJqiAp7QK4vKfZREK9wFH3ooH8qxl4GHx8VA88QgXDZef9Aoe+aOfCr8czBMvCmfznAcDgbk71f1+XW4msb1cbKNZfybQ8U59OzH1NO4rx2i9rQ2yhqq8pEDgrULfKdGtQC87WE4nEuSsMVnqAv1l8WMw97XNVN5xfDstD5sM7hL8cnw5CylNiREPl1IaQ==
+X-HE-Tag: 1774896980-175334
+X-HE-Meta: U2FsdGVkX19O4XrPUSLxQQ9p2rqXHr/RIuhQKG6purWhnoGmeW22X9swrTd3rzSo6LnWftQEz3shIckYTfboEB0dNTYtxw1S7148LOZMEbH3sr/5H58I5zMutNJ8Az+EuZRlG88XBLcWDe8GvkcbSxUhJXpKskZ2xYpG26vbCE7H4FYevXf5uu4YAagurb3goXI1AHbV8O/N16aKarcxoFV9VcqrAj2zTuVW0rWmXYSXL/HGwCAVNF3k95OLnrQwuqRY+ZP9PTQAk1kIB3of/AGNtbJWV1pKsfWTL4RmUid1xrWpiyBkYzHfPDHs+hM2//OHVZQuegxpGCiabC5EUWff7H3N5/ufvhTPRTPyyBhDHKhEhkPCMdH3ELvI5fGKx129DfHAKQEkarx8/aRpzCQogIYITxa0c8tiyhjuaDcbKd6IKEmgW08AVmSc+xUzY3Soj45auH7nETKjOVsyQphatXD9t5vyufKT1GnZNfVzSX3E1RdkccF55Bl0dZSbEBOUXA+5+ubt/jG0lIVaVnyPSzewfQuU5lbKDh9XYwCqhElDD/fkf77qEz3BIZkXPd/SiCg+OpoV30B2fUJEdA8i3Bf9JZiIHrLwOwn9DLO/CUdHqLTkmEaTG+FxvE0IVTGzVl48xqeYY5bCY7whn1KvYUoXzLfW9x85H0rMjSpAt8VPRl+s965oT7kMqGCMwItme8IjA+SgNHvLUYaOK0yGRjMT0Rwh47M9mcCXS73EWhb1MME3lhetQQwrDrWeFSxHo3YWslo1u6w0To05dsbduQlof67a9uo6ePfbg4uuidY+OS+3JtQoydl5/WthLz8FzeQvJSgMCrSxGqnlYT0sliGa3PbrePoMdKGqA+8HdTQn0umjrnE7OQlZR+Efa/OcST00SBHlV1Q5y2sPlGxxEnphwfJslTqP4/GT6dyr+ib18SJIKX8Eg+Q7nLdfR6j6KyxjgzfaGBjz2s2
+ oYJQPwoZ
+ +mgLFwhezWe3KEMtj9jqqRmvXv1hTmpb6Qnk2BC9k0cNpJZzQmvzLRH+UtugNzr6tMGH+s3JR2ExwazOepCRp7xjiD7Ggg6gEYUK69MmuZk64FZvdGt/lCSY+sxA+LFGJq9o2GeBK5VE/6iPRo49EhJBcej+9ovUXprNu+5qelPuVpOJyi+rNKBTPweT9copQPtBaZf8eEtcOoNb1E8mLDYygDABdNHR9qLixlBnYzENwK1TlWkbaIX+pHLO3cmQWDIRZ2ZNTLmnwBw+79pYUETTUhRh0xqF201C7H1FUFgkBAJAqTZ+NeKAyfL9vvfVkgJRn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,102 +90,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding Sashiko review for doing discussions via mails.
+On Mon, 30 Mar 2026 19:58:24 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
 
-# review url: https://sashiko.dev/#/patchset/20260330164347.12772-1-aethernet65535@gmail.com
-# start of sashiko.dev inline review
-commit 636b179cc5df5a638d7988bd9de56ce4d8602f4a
-Author: Liew Rui Yan <aethernet65535@gmail.com>
+> The drain_vmap_area_work() function can take >10ms to complete
+> when there are many accumulated vmap areas in a system with a
+> high CPU count, causing workqueue watchdog warnings when run
+> via schedule_work():
+> 
+> [ 2069.796205] workqueue: drain_vmap_area_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
+> [ 2192.823225] workqueue: drain_vmap_area_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
+> 
+> Switch to a dedicated WQ_UNBOUND workqueue to allow the scheduler to
+> run this background task on any available CPU, improving responsiveness.
+> Use WQ_MEM_RECLAIM to ensure forward progress under memory pressure.
+> 
+> If queuing work to the dedicated workqueue is not possible(during
+> early boot), fall back to processing locally to avoid losing progress.
+> 
+> Also simplify purge helper scheduling by removing cpumask-based
+> iteration in favour to iterating directly over vmap nodes with
+> pending work.
 
-mm/damon: reset thread status parameters upon kdamond termination
+Thanks, both.
 
-This commit introduces a thread status structure in the DAMON context to
-link the kdamond state with module parameters. It updates these parameters
-when the kdamond thread finishes to reflect its actual state.
+> Cc: lirongqing <lirongqing@baidu.com>
+> Link: https://lore.kernel.org/all/20260319074307.2325-1-lirongqing@baidu.com/
+> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index db6c67e52d2b..6c71203beec5 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
+We don't want to be scaring our users with kernel warnings.  Do you
+think a Fixes: or cc:stable are justified?
 
-[ ... ]
+And I wonder if that workqueue warning should be WARN_ON_ONCE.  That
+would mean that other, later call sites wouldn't get the report, but
+we'll still get to hear about those callsites from someone else.
 
-> @@ -2941,6 +2944,14 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
->  	}
->  }
->  
-> +static void damon_update_thread_status(struct damon_ctx *ctx)
-> +{
-> +	if (ctx->thread_status.kdamond_pid)
-> +		*ctx->thread_status.kdamond_pid = -1;
-> +	if (ctx->thread_status.enabled)
-> +		*ctx->thread_status.enabled = false;
-
-Can this write race with the user enabling the module? If a user writes 'Y'
-to 'enabled', the store function spawns kdamond and prepares to set 'enabled'
-to true. If kdamond exits immediately (e.g., due to invalid targets), could
-this line asynchronously set 'enabled' to false before the store function
-overwrites it with true?
-
-If so, the system would be left in a state where the thread is dead but
-'enabled' is true. Subsequent attempts to write 'N' to 'enabled' would fail
-on damon_stop(), leaving the module permanently locked.
-
-> +}
-> +
->  /*
->   * The monitoring daemon that runs as a kernel thread
->   */
-
-[ ... ]
-
-> @@ -3065,17 +3076,23 @@ static int kdamond_fn(void *data)
->  	kdamond_call(ctx, true);
->  	damos_walk_cancel(ctx);
->  
-> -	pr_debug("kdamond (%d) finishes\n", current->pid);
->  	mutex_lock(&ctx->kdamond_lock);
->  	ctx->kdamond = NULL;
->  	mutex_unlock(&ctx->kdamond_lock);
->  
-> +	if (ctx->thread_status.enabled && *ctx->thread_status.enabled)
-
-Can this access freed memory? If the kdamond_lock is dropped and
-ctx->kdamond is NULL, damon_is_running(ctx) becomes false. If a concurrent
-sysfs operation removes the context, could ctx be freed by damon_destroy_ctx()
-before these lines execute, causing a use-after-free and memory corruption in
-damon_update_thread_status(ctx)?
-
-> +		pr_debug("kdamond (%d) crashed\n", current->pid);
-
-Does this log normal user-requested shutdowns as crashes? When a user stops
-the module by writing 'N' to 'enabled', the parameter store blocks on
-damon_stop(). Since the global 'enabled' variable is still true at this
-point, won't this incorrectly print a crash message instead of finishing
-normally?
-
-> +	else
-> +		pr_debug("kdamond (%d) finishes\n", current->pid);
-> +
->  	mutex_lock(&damon_lock);
->  	nr_running_ctxs--;
->  	if (!nr_running_ctxs && running_exclusive_ctxs)
->  		running_exclusive_ctxs = false;
->  	mutex_unlock(&damon_lock);
->  
-> +	damon_update_thread_status(ctx);
-> +
->  	return 0;
->  }
-
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260330164347.12772-1-aethernet65535@gmail.com
-#
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260330164347.12772-1-aethernet65535@gmail.com
-#
-# [1] https://github.com/sjp38/hackermail
 
