@@ -4,83 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F1361061B0F
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:16:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4F0F1061B0F
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:21:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E29F46B0098; Mon, 30 Mar 2026 11:16:58 -0400 (EDT)
+	id D6D426B008C; Mon, 30 Mar 2026 11:21:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDB326B00A6; Mon, 30 Mar 2026 11:16:58 -0400 (EDT)
+	id D44286B0096; Mon, 30 Mar 2026 11:21:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA3936B00A7; Mon, 30 Mar 2026 11:16:58 -0400 (EDT)
+	id C5A656B00A6; Mon, 30 Mar 2026 11:21:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B7B686B0098
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:16:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63D741B8BDA
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:58 +0000 (UTC)
-X-FDA: 84603082116.24.D0EDDAA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 88623A0011
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M5YLUHTP;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B47026B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:21:11 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E21E1A0813
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:21:11 +0000 (UTC)
+X-FDA: 84603092742.19.751E019
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CA6EB100010
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:21:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hDSIuCfk;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774883816;
+	s=arc-20220608; t=1774884069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aalkHGg36oAhxvm4abduMNhyL+g+4nif6ZCHBlNRxFU=;
-	b=RPOoBdcPFGL6ZCkAHKTXQmNfyT1AtSrruChxMMfr12TT+lcZH+pGSny8UhdO40q9AHKFSW
-	UdXijmYNy4cBaknHBev4WYftzedTl/42KHcQr2cAAM2S7jKcCLxTnx273OyokgI8vAyJMg
-	GGogqE5uWwoCXP8fX6wwq60P9NtbJxc=
+	bh=NlKOpEqTNqEje3Zul4sX6LmrcIe/qmPERaPYlzjTE9Q=;
+	b=NGYkMuabQ93zHMufT3F1SuoBrk0M9lNH5IgEX+pVI9pDxrGO4aIVy3/6Ts1xpOEaEklth4
+	+AYkm6irxFAUGZBzTiYq4AZwNU2aXXujVUuQjZesOIJYUrFE4UGKjB3IYGvVolrR6sHgx5
+	MEV2/8+vSYghFsiGfl1NnazEi3ae6p8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M5YLUHTP;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hDSIuCfk;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883816; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774884069; a=rsa-sha256;
 	cv=none;
-	b=Zkm4tCOM0REhcF+FqJW4nJ+bGXgF4wyDJ2HAX/BD0/0KzLPbv5ufllOwZ7bkBMtCYyuyVE
-	174vKh4E4Om8z8HLhnBiPimqmIs3/OA4o7r6OnutISncLg8/3aSZHv1sTSVZQ1JMU0Yqei
-	mgEZEFTt9GgBp8H6Ch+/WFm8GECP4e4=
+	b=dT3F2HIp0ec07fjwS1o7venRuklZdqYrxt28mcNeZl9ivP5cmnxbtn3RT4YGCVSpGgBwqO
+	p0jG5p3GAj5JbRwHCoia3d2H4ip0wGpkcvu+iXE1BeMsG3NmY3MrlhF1C2mFQ0Nc6n+qxM
+	DkTTK+dSR/OE2qKa8SzHVs9hB8d2REE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 85A7144331;
-	Mon, 30 Mar 2026 15:16:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA90C19423;
-	Mon, 30 Mar 2026 15:16:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E8DAD600CB;
+	Mon, 30 Mar 2026 15:21:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0173C2BCB5;
+	Mon, 30 Mar 2026 15:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774883815;
-	bh=qRggfUYSMFyYosinS8dQnA8OwjJgvfCqMgEcNyPBSZw=;
+	s=k20201202; t=1774884068;
+	bh=8Mr8LmbAQHXIw91kkQv6DoQKiLML90z4qt/OEn+Vo/Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M5YLUHTPR0Zr87dAPlgooj2AUqUS4ilSBIlOIUk0+shH9LCpc7hJkNsS35FbbHJlg
-	 11vvFt94hMJ0rRBfYkrqplKmfFKFHCCNmihD9Bk9UIqm56Fpv2EnMcH7I48X9RjAT+
-	 8ZFRoQ37DHKHXECdFw/qGzfjceMRulnKYivXfc7JiapiNgMiJWfJjV6Z/yWzR9vjgp
-	 ErfxVQMsRZGnnfxA9E0ouHFGc48hL/2CZlxqVq50cXWck38aEngkPDXDhrUlVxlsv/
-	 GlTfmXo8BdNIPudQx+UU2vyfXLtH8ozNbDrt+ume6rWD1XtYOUdDgFOikImyYIWRMu
-	 W2HwMKUPHx5Xw==
-Message-ID: <a7a903bf-10c2-4d2c-872d-9b31fefb5d1f@kernel.org>
-Date: Mon, 30 Mar 2026 17:16:51 +0200
+	b=hDSIuCfkSqhjKhIj/dIr+M6EyMKTrX82OkMVJd7LReC5gL+tGgHmHlwQTNovr6VRO
+	 2HwJ9MoliLxoCjUXSfvX/91kp+lLD0bDAWT3m9HosmJNQgVALQSbbjR9WoPexRhJ1Z
+	 7+MAJFO4OH2aHy1msrMz80VqCiOLqhYcbx+1MaX+GWeskzcUL1kYFpInDf6wV5MvSk
+	 Eep/NXo6778WW7/AoV5viV/tthbWxGrcfYFjo6aodh2Dh/oXmQlqjCCPKjKbuwif4d
+	 dEyog/eUXkwJh/t1G3n92bLCZtAmtxBZytaKzDvwiItqQkP9aQeT0BfrzpAYOZtjWu
+	 7QbiMW/OAqrIA==
+Message-ID: <1ef9ed2a-ee3e-4b3e-9fa6-58875f96fb1d@kernel.org>
+Date: Mon, 30 Mar 2026 17:21:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/mprotect: special-case small folios when
- applying write permissions
-To: Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH v2 03/15] userfaultfd: introduce mfill_get_pmd() helper.
+To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
- <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Dev Jain <dev.jain@arm.com>,
- Luke Yang <luyang@redhat.com>, jhladky@redhat.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260324154342.156640-1-pfalcato@suse.de>
- <20260324154342.156640-3-pfalcato@suse.de>
- <fbabc728-a87b-48e2-87dc-68ac21eb02d4@kernel.org>
- <dccxy3i3kaprljloxbyo2u346bu6xwev42cpvt5lfbbli2hbap@6n2rd5mftffh>
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, James Houghton <jthoughton@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nikita Kalyazin <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260306171815.3160826-1-rppt@kernel.org>
+ <20260306171815.3160826-4-rppt@kernel.org>
+ <ac39f02d-ed00-4b8d-8156-1e999f5b0af3@kernel.org>
+ <ab_C2enJ5DTIH5aH@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <dccxy3i3kaprljloxbyo2u346bu6xwev42cpvt5lfbbli2hbap@6n2rd5mftffh>
+In-Reply-To: <ab_C2enJ5DTIH5aH@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CA6EB100010
+X-Stat-Signature: cfupny1pyaozzsnfk8fpmat85s9gyoxf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 88623A0011
-X-Stat-Signature: q1qf3d41urz5ehfpa1ehstsbqjipf437
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774883816-925975
-X-HE-Meta: U2FsdGVkX1/Ow23zKUVLokBbe9c9moFytF5UCgkGuj64FDRYdC0gv3I/AQj0A07lHw3kxr8a4zH3q5xr8JszuFGF+o+F+njTourZJerHOe9Gq/yvSh+lm9xnuIjLPdcUXRUXFBvF4b4ZTrMIegnlawdk3X37Ve3bWg6K8sAEgZT6F3EHrARiwE0az9Hy+xE6nHmCfvDZ9B4oSi54FJCxMX/fleHgTl5aIHJR9aOZbwG+HuFLB06eXOCSseHLY3y2gFoVmtE9QopL7nkTn83Y5bRnBZm7IhHxO6JNluYkm9NvC8EzHNOe5YH6qC+Thxf00B803xnhGFYq/4VwCajd9AbFH6xUIOqG2OBFfAaAIJPemIkSOUioidMLGK+qCleBMl8Xm0ff4zBFX1Oxe7kpBASB/Fefhav7o8wSPzdBld7+i77+4TE4Gd4gCDCg01bxsvMxPlMzOK8317JgZDCCJ1Y7yyuSHcahmw42xM0EuGrgJOBLRyH3JP8LfiQVBLf29z57t6RkZAvrFF2YuaaNTt+B4fC72WIe/8QIO4X2m1GKcuj1Wfy2vTo/Sr6mBLftcYtwFJT4almghFh8cRulTVS+lQsFBoX5BjnSBvvtDwK8XaNTce/oZu1WRr3CeVe+WK0B+7KXAOIoLy9bNXuHii6HUwcCSovfz8su3gMaKZE7DJJWps5+VklDSNjmX+4pD8e5EGHeVWY5Wd910Ji45ft9RHtG2G0FugLa/O/y0lFiNx6vuNaJUB6qYzqyWnUPgb9mo7lZfDcS3JHj+HfDUa1rimObdBp4QWn3u/n5A74mDb/Fo1VIFsM723CsGRjTOZLYqe021xR8OdoyUZFqbSvi4fkEegsErOMESV2riYHVpa80mday48gfc+mzcHGHQP2RFZFtV/kl5+hgI4QACV6g03TYOgvksVA2LyzVz9AlEPa3m4mAsELv9+LgTBGZvHf4GGJxaxv0Suu+K/u
- PPC5WL3r
- qmGotZP6MbbZOUc0oQf0zth1tk5dV1CT44iaWm5WT76oxZPZEpBm2sHNTiWmCJgeqapM1l6uGRcxLq3ypJjbn71u5ybNbCLl9CGG70f8Bjuk5do+p7nM1AWWEhA0kk6pI39/4Gg8F7k2VXe4eUJIedmo/p7XmuldnFL3pNbg/qXGDzkjTA0/wNXYerQWcXpoVhU21TWchGHqR8vnJo7TZhvcYV5kcxndc5j0QEnjzdXmHlkOtMZr6ivavi72o9jHJUIhbTjDZ7qgziG07jIMTpIyeErN/FIkj4dZ7jCYQYsaOTr1pY7NRMzirG+NgO6LvuivHSog2FNXBTfo=
+X-HE-Tag: 1774884069-174685
+X-HE-Meta: U2FsdGVkX18LGMDza2OT0MnrvnxwuSgeAVFNT9gf2na3KVboRwR9TOkacout4bsl3wy87xoq2FrNJA0NwtYuuM6rS0FvyDcNGKfvY5zE2WdJNkvnD1aqa6J+rpr108TVv+Eqimw+CclKAxM7yHDNhG/4V5ZiAUrdp2Xpyl7fYOoRy1Pih2/3iDqIBz0DGrNuQO+OVhQjB07Fyzr653MnaD1Elv04r7mLYCd+IfIgBVmxAP/Fg6agw3KExde6NE/us5VsqKp1r+FWBmOLx/pxuWWJqRRcAQmTEQ846jsMNdDwBI2qpg2wzsYkrORtXonOUXQbc22xPlvFMdh8m9ir77gSoh1E9LoLyh2g7qNqNihQbPx0a8GJK1Sz3uyskrdVyCZ76bCOVvMYj803TOlBrsksKBpDRnZ7bntn9SqLoL6YxQYw4hjXn6oklbg7WTjQ067XEE/onXgRdFlkTw4ysTg7pjSQTGNJG/DN7lQu7KJRXMGByZicPeegsvz0h3PeH6zZ8HVTAHZrQQzrTd8iWHDPcbU3ReXrkZBRtgo9L+H6QgSMoKFozj7jh1Ni0A/sTRgdOAlKPbvBXYnmJjsyBd963pbWnYcmJnnZzKCpPXGtkg4oq65Si3hxVZA470g5wwM+tN7r19Ln5vEt+ImuwjEwPSDPEpPR/p48efGlGNGUkuPbdYx2mf9T6/gxnFCerHA5gD/VSKiekjH56nIlY37DVeTh/ADNap2yG56AC1WroQDoIGPRzKJ4V4ZrKclGFRTgA/r+rd8jg5imx1Jn09d7cxqjK7MtlR9Oce/+fDZXukUPm5G+IqYdbkw4/XQWCy/kLxPqrc5JhXs8Ke2ZA3f8OXviFmDnDFutA0pH1i/jDM2zdCc9gHtvq4UAVs4hE1CdJ5oyj+zLZjoLSCbkmPqvVtRSXaTrmQS75xjWEKFeRWMEIJlyBDWvxfCOzId1iZNttD0Yf39cCutX190
+ 4pk5Pjr1
+ cbLoYyzRJtxgGXR3BPvZdqI5Jm/AOoglocn8DXWJY3NxMr1h2l+zcBAksWO3x1qhKepp+t45/yRBKhc6VJDFMj3gV5pVu178RHFgfIaSzAehHGYSQhj78HZSTVO6Aqy7ETRA0sPhU8tw1YmXJ2ucRqldPezAyw1bD8XRjsg3aY39rkUHZ/uSy9KlkW+nhiC1j+ekWSYWhpOEs2yry+++BFndWfGZ2OEN2X6kgo0jJ8ky7WPPjZt7ru+Ktu27UvOg/7nOl+UGCn46KGRj+HmYNoJi9Mrbs7dCOBH8sLaWgLC/9QiZcEZ3PJlQ2DA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,113 +154,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/25/26 12:37, Pedro Falcato wrote:
-> On Tue, Mar 24, 2026 at 09:18:42PM +0100, David Hildenbrand (Arm) wrote:
->> On 3/24/26 16:43, Pedro Falcato wrote:
->>> The common order-0 case is important enough to want its own branch, and
->>> avoids the hairy, large loop logic that the CPU does not seem to handle
->>> particularly well.
->>>
->>> While at it, encourage the compiler to inline batch PTE logic and resolve
->>> constant branches by adding __always_inline strategically.
->>>
->>> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
->>> ---
->>>  mm/mprotect.c | 17 ++++++++++++-----
->>>  1 file changed, 12 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/mm/mprotect.c b/mm/mprotect.c
->>> index 2eaf862e5734..2fda26107066 100644
->>> --- a/mm/mprotect.c
->>> +++ b/mm/mprotect.c
->>> @@ -103,7 +103,7 @@ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
->>>  	return can_change_shared_pte_writable(vma, pte);
->>>  }
->>>  
->>> -static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
->>> +static __always_inline int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
->>>  				    pte_t pte, int max_nr_ptes, fpb_t flags)
->>>  {
->>>  	/* No underlying folio, so cannot batch */
->>> @@ -117,9 +117,9 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
->>>  }
->>>  
->>>  /* Set nr_ptes number of ptes, starting from idx */
->>> -static void prot_commit_flush_ptes(struct vm_area_struct *vma, unsigned long addr,
->>> -		pte_t *ptep, pte_t oldpte, pte_t ptent, int nr_ptes,
->>> -		int idx, bool set_write, struct mmu_gather *tlb)
->>> +static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
->>> +		unsigned long addr, pte_t *ptep, pte_t oldpte, pte_t ptent,
->>> +		int nr_ptes, int idx, bool set_write, struct mmu_gather *tlb)
->>>  {
->>>  	/*
->>>  	 * Advance the position in the batch by idx; note that if idx > 0,
->>> @@ -169,7 +169,7 @@ static int page_anon_exclusive_sub_batch(int start_idx, int max_len,
->>>   * pte of the batch. Therefore, we must individually check all pages and
->>>   * retrieve sub-batches.
->>>   */
->>> -static void commit_anon_folio_batch(struct vm_area_struct *vma,
->>> +static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
->>>  		struct folio *folio, struct page *first_page, unsigned long addr, pte_t *ptep,
->>>  		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
->>>  {
->>> @@ -177,6 +177,13 @@ static void commit_anon_folio_batch(struct vm_area_struct *vma,
->>>  	int sub_batch_idx = 0;
->>>  	int len;
->>>  
->>> +	/* Optimize for the common order-0 case. */
->>> +	if (likely(nr_ptes == 1)) {
->>> +		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, 1,
->>> +				       0, PageAnonExclusive(first_page), tlb);
 >>
->> To optimize that one, inlining prot_commit_flush_ptes() would be
->> sufficient. Does inlining the other two really help? I don't think we
->> can optimize out loops etc. for them?
+>> mfill_prepare_pte_table() or alternatively mfill_alloc_pte_table() /
+>> mfill_alloc_dst_pte_table()
 > 
-> Well, I'm getting meaningful (smaller) wins from adding those
-> __always_inline's. (and I also get a small win for __always_inline on
-> set_write_prot_commit_flush_ptes, but I didn't realize that until now).
-> 
->>
->> I would have thought that specializing on nr_ptes==0 on an even higher
->> level--where we call
->> set_write_prot_commit_flush_ptes/prot_commit_flush_ptes() would allow
->> for optimizing the loops entirely for nr_ptes==0?
-> 
-> That could also work, but then set_write_prot_commit_flush_ptes (holy cow
-> what a long name) would definitely need inlining. And might be a little uglier
-> overall.
+> As it actually allocates the pte table once in 512 times, I'd prefer
+> mfill_establish_pmd().
 
-Right. The idea is that you __always__inline any code that has PTE
-loops, such that all loops for nr_pages == 1 gets optimized out.
-
-We do that for zap and fork logic.
-
-> 
-> This is the part where having data points other than my giga-fast-giga-powerful
-> zen5 could prove handy :/
-I just recently lost access to my reliably, well tunes, system ...
-
-Is it just the following benchmark?
-
-	https://gist.github.com/heatd/1450d273005aba91fa5744f44dfcd933
-
-?
-
-
-I can easily extending
-
-	https://gitlab.com/davidhildenbrand/scratchspace/-/blob/main/pte-mapped-folio-benchmarks.c
-
-to have an "mprotect" mode. I had that in the past bit discarded it.
-
-Then, we can easily measure the effect on various folio sizes when
-mprotect'ing a larger memory area.
-
-With order-0 we can then benchmark small folios exclusively.
-
-
+Replying only now (spotted v3 in my inbox)m sounds good to me.
 
 -- 
 Cheers,
