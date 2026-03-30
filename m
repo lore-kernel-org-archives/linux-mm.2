@@ -4,113 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A038FF4947
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 06:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68A11FF494B
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 06:20:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7767D6B0092; Mon, 30 Mar 2026 02:08:57 -0400 (EDT)
+	id 6EC586B0092; Mon, 30 Mar 2026 02:20:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 726FB6B0095; Mon, 30 Mar 2026 02:08:57 -0400 (EDT)
+	id 6C3D06B0095; Mon, 30 Mar 2026 02:20:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63CB56B0098; Mon, 30 Mar 2026 02:08:57 -0400 (EDT)
+	id 600DE6B0096; Mon, 30 Mar 2026 02:20:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 51BC86B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 02:08:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E5A431A06ED
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:08:56 +0000 (UTC)
-X-FDA: 84601701072.16.B88DAB9
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1C7EDC0008
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:08:54 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=i6nLqqhn;
-	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=i6nLqqhn;
-	spf=pass (imf28.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774850935; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 530516B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 02:20:48 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB737160562
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:20:47 +0000 (UTC)
+X-FDA: 84601730934.21.314AB79
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 51426160008
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:20:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ypJ2K2n3;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf08.hostedemail.com: domain of BATV+d52e2ffbe62236f4cc0e+8254+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d52e2ffbe62236f4cc0e+8254+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774851646; a=rsa-sha256;
 	cv=none;
-	b=BTPeRfeB0J0V1R6+7V1iQ6m1hO+LGnimKQxpmFXZXInNvDuRGCFr+sPJhW0Gec9p7Dx4h8
-	GVVkxlCa+lbd6RnMl6ueMy411FXWTrJrCKV7EGcY9tyEZ+yK90Ia9pWyOWNHmPpbOqHtk8
-	0Wk49FhO5TAWNn4vlKEyKZy/oSbGjM0=
+	b=PCE1iR/2CAUa0bfnA4APbLkXbmjEZBMLkuZsx1WETQ3ise1654w2qkdAyLxxX1niYoBnr3
+	hI8IQfT/dPz0DGejzHTrtNPIG5JrAspZhay9SSLKZVas56dBJ1SH5c1w6yYXo3Es2ODFVp
+	rEdd5qW4zHmt1s31HKNu0jGSUymNd+8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ypJ2K2n3;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf08.hostedemail.com: domain of BATV+d52e2ffbe62236f4cc0e+8254+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d52e2ffbe62236f4cc0e+8254+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774850935;
+	s=arc-20220608; t=1774851646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AYECvkLYIdqO7PMq8pUGmPwH0CV33XwnM84wxRtZNC0=;
-	b=GI0jYDv1jLk5+02pPG4dhLS0xwL4Z+wI73zGukF3a3vqSHUG4/fF4ZtIpi5wfG6KssXcn/
-	n4jYWQYmTeHXa557AIP1hnv2pTQqHm2B0od13TWXKeIfPD+b1V346m2KwweSBPj2iHBG+f
-	hGDT0vsQ/txK/dWE3aiDCjKSlALKvs8=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35d9749c26dso1139079a91.2
-        for <linux-mm@kvack.org>; Sun, 29 Mar 2026 23:08:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774850934; x=1775455734; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AYECvkLYIdqO7PMq8pUGmPwH0CV33XwnM84wxRtZNC0=;
-        b=i6nLqqhnA1VUcvnfj8SL/tlasiXT/KlbCDHAAessuUqxO8K2gri7yH3PoEDXmivyKO
-         XGot2qm2mpCXqOTNyQxEsMTgn+3wXSeby8fpH1A/DFJqN3NTPgoz+DIThDO2phZF0JZv
-         rly0K9bKhagjFD3FxTCZBVCGHYUea0SSPmz1BnpXbqgwuiMDVwuk5A7i9KSSjn1ydQFn
-         8oW37fsZd0zANzVuuGlCuIccjFh3Dg0+mM7ThU1hSffsNu6FM+nxOpZyFEkV53a5+zcO
-         fjC8Qw3XJTNbEzw47+xUG6xxbZnDltz9RGwOwQWQ72HK8BsHCszohD4nOfZXcmyDYtGG
-         94IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774850934; x=1775455734;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AYECvkLYIdqO7PMq8pUGmPwH0CV33XwnM84wxRtZNC0=;
-        b=QYXRnHPU7lBNYXCoUJPRsN/vhfgkkhO/F45NQl8+foucsr2an3oYKLHHL6pWEIAEUv
-         Jw24GPl6G/5f5LQ00LYpLy+1QlH4yHxZLcYv+sotKY+nlExNPvxD6GWeiYvBGO2I0LBA
-         xa9cl6lA/kAO3m4gLunNiqaA7ZMPjWOYshr+FJKZCYQ9NImFTa6Wap4QockZ6aV76ut3
-         eWTVKpbzWy1VgpN41cV7jG4AezTykVLOxTv83O5+h0xczm+ylWXhUeoqdOzThAc2nPQx
-         7P+NOo/ZMrl5BEwG60EQUwiNlpSUbH3a86bEVn+8ZqqgPg0usL2uAV6NA/Ux24NDU118
-         fZLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYQGw1NbXsPK6a+TpwCJjSrSI8JipqMrYjgmOepqZGO69Duf8oxkoX/ZnFUr+O4AUwq/h02q67Hw==@kvack.org
-X-Gm-Message-State: AOJu0YztfDe29JlD0W7mcDpUy6hCi7wpvHWw8bMtFjIlifqC3rkgEnlW
-	9KQdqIR8ZyAp4ViK3gcI6ayJEoU9tMqtGSKsWeehFfSEqxPujvlDp/L4
-X-Gm-Gg: ATEYQzwSx8gtPQnfmSV0kNeV0IfsUEeRfMsAE3z+8RW5RT6w+dkznvrQ0A9PtSdRkxT
-	WRqHBhrLKHo5K7xZEdODqw0gd1jqeGAFSF50r5/MYDlnqhRG/sfUk8N1c2XEFvNuQ0PGU3tpzXr
-	mVmpyYibiddmKktPj0CDCjd5SbEVessoNf0aDcMj97seLJz2GsDqEq0fZGKMOks8ZJlNzl6FGPt
-	c36/Pq37g6jjnXHl6/2SAdDkpgcrEPORk4yhbf5CxpGMoQE8smHPwPA9AfOrPkSZ7BQzUReqChu
-	/Dbys2C9JQoXhXyxBL/TRsUi/qN81K+VtI3ULoTTGbHGx2Or1gKCZbyAJ0ILRka8nZfB70oOc0d
-	6i4INOQGGvbwhWZ8xNTMaPC98ptjdqWe0SAPUSF2RtxMjooPUkFwvOd5Fk349PrXgOTQLAM5uDd
-	zpCdgLFy/Qhn8g7xsattBSVSbnFb26i7u/cKgWjzsvezlLySJhH+w=
-X-Received: by 2002:a17:90b:2d86:b0:35d:a3b4:2f00 with SMTP id 98e67ed59e1d1-35da3b4314bmr3334498a91.8.1774850933713;
-        Sun, 29 Mar 2026 23:08:53 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35d950b5583sm5840224a91.14.2026.03.29.23.08.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 23:08:53 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon: validate addr_unit to be power of 2
-Date: Mon, 30 Mar 2026 14:08:51 +0800
-Message-ID: <20260330060851.4659-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260329151507.44171-1-sj@kernel.org>
-References: <20260329151507.44171-1-sj@kernel.org>
+	bh=ETQSKJTY66rZCvnD09d1z8wM5Mh9Wrtt3bPMhswqLLQ=;
+	b=6B0m3IHiJ0cbs0BMxvYVPJ6nT2blMM8j7ujJ4AHxi6/5PSqlKoT1GlhxAYCSjqqeOzx7RP
+	P/y3HxFjinV05PbohHFeX03AfN2ZM1d+CkjvOy3pJw6x4NR6ZbLquOyqupO22Fm2t8R74+
+	RpA5wqyKd8iDV7XFmhf62wPtPzl+Rv8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=ETQSKJTY66rZCvnD09d1z8wM5Mh9Wrtt3bPMhswqLLQ=; b=ypJ2K2n3gJJ19uGuH2CbJAT/b8
+	1JVHZnv7DUznFgXYh7gro1fCYy2FPkhP8RWu+E407xZywIkSd5BI3nWgvL6uxYwBdPPrUvz0wklm8
+	jcZw4rbLeE/F92oOHi+Ns+rwwVuG65Eo84U6zsHHOq7piFjzi14sP+FI6/fugkri/J2JAWToB8kjp
+	IFkV1jGigYLnb4lNvL0yJAQZAdqgp14cxlIZXGRQvZDoH82zzzRNTBxpxfuAIPBdG0+VSRghmrmyw
+	Jv1G9XXWoluT+uYJ4Unt/WpCItYeIAM2+Rom/Ndp0vreVhixLkkhAsVA05t3rkPJJvQC5T1RTmkGK
+	5Q4eHRuQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w75zO-0000000Ag3t-3nza;
+	Mon, 30 Mar 2026 06:20:42 +0000
+Date: Sun, 29 Mar 2026 23:20:42 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: mpenttil@redhat.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v7 1/6] mm:/Kconfig changes for migrate on fault for
+ device pages
+Message-ID: <acoWOnZh1NpVerCR@infradead.org>
+References: <20260330043017.251808-1-mpenttil@redhat.com>
+ <20260330043017.251808-2-mpenttil@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1C7EDC0008
-X-Stat-Signature: cn78wncerra8z5yajep559w3jnkc9j4p
+In-Reply-To: <20260330043017.251808-2-mpenttil@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: 51426160008
+X-Stat-Signature: 8nad39bziyaxygnswxrce9nrn87mi4pw
 X-Rspam-User: 
-X-HE-Tag: 1774850934-754882
-X-HE-Meta: U2FsdGVkX18zMcHhUWdmCgMT1/kns2PEG/LzmmnWKxpUWfc1fQYwoPXHpVHx2OX0ILIcDbNn44MctKE/wFDf13FdSzcHxxlN4YMO3UrErRKN5f+2rRKaFsRHtgabFBVFC7Y9R+Dq7kgS7cJCilgrvPHL8kDbyyX7yDfayAlLa/8U9XqOxGkGjtAEPKGStif+qlv5T6gll53/YXyApQ3pOptRyVDTTM1OV/GK/gWg5PO8rF0Gg7fiYlPm0NjqtN/dHuBhLzsVPdlVPssmy/8oL+U7EYcNGrKa5MKq5/mzgceRDcw5qbZSDz/49mVmTzarW4JEieRhJ29MfUE14StlzKhS8rcis3l/YbC1D8dIXaCV4V8c0oSSxmCVcLOvyx0C/eVeptxYIPvC/NEotBF40qQPNZJKkbe4yA1OSpL1Mzg92T4n8yy6+aaVFPxM7DnauUcT22VXA0ZYxk8efnvY+hfBZIdQ2Ehbt1WQDYopzM8yp+GyqMcpkdHJOUQ1SPma3Tce1hHuQKtBvEuwp9atY5/B/mW8oEKP/kseZGFxvrrgfHL+J4OFJaTESmJPvkU+M5bNCyyn+H/cT7ahPz4Q4Q2pkTjPpBhjVBipGzTDDVzPosBh/CGssDDPv1+YrUS9N+QmDpUtCjnnS3/mtv08JCr8PMJyC14WZcGJG9F78xcQaL8a6dlemt7YeERyJoNTvnmsJK89uCIqtAZPWsVMwfjTFMuCQSHFHsf9GfjilVVDxw8sLqB9/49+Fa6zG/m6hOd2jTpevx47rGgoXhMpfb5WLLnuhmvcW7XZ4IMbIJ9Lv3tIBTLKlaqitD//VB4gSCKz2GgFpvkhTQsf5QK997yvvRZ2pxUEWF7bcLGM6Zc6kcAuLDfwEpdnhbTzYPxJGzbLOxUMbAQLjKmmYehXZSNycu0i4eXW1j4cckq8IUcB/4l+iMtPFB9AGeLpMHliZcLXtsS5HtRLJe3E2NN
- 3CfF3ug+
- lrsNRh86mviz1ucH2yfx6MiFVjx49+3ufl8JB1+FbdVLhA1QEMWxiEi5Aa4/blPOyyvl4MGBov9JDXrV1hN9h42qEgU08dIkd5YKg
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774851645-386913
+X-HE-Meta: U2FsdGVkX18ziPabdlaw93nzWywRdmKX9AUWcPc3tkjgsgDMNICYG3j3D9dcJeHTvElHMTnkphnflXIUHHH0BMRzYTwiGVktk0x2QZBIreYtaFDMpdiKtSQ10HPHIs0u3KRJGJt7yzUkXwxchfD+Z58Eg1Wfwy4l36p9K4ja4fluRSAfs4OECfPqTIEhvfzKK1jYwciYl3NAyjEbR83xrLc48r1njJLDIle8qS9hdURf2LtpV4gQxhKDnpXNware4162NpcqrcurGhgiRjGnABNVkq5puIhnws775fFMqm/USz0558oUnlqM1CwYKRCo8jLaPvyTawzMlswvJEWGo2kckPko/0aM2QzKm6xGgL9pMpCOeoYnn2JrhZ7khPbe4ieE+aZAN0aDDfPJ2CY+ysPQvIYPzeyWqHGnWaIiS+jdH4gsI/vwhjsIkuoeP/7fmUA0R13awG0KMd85+rqJ93KKfExxDdQVqzkzCKvAIeqzsbemEorWrPQXCz5+vEBJ4fAWZonAibggaM9QNbBbL5pSVTDnZp+clioFrjI+XUslR81TOT/rifBJ4jga1fWiqIAca6Y/4X2trx3OOxfvRN7RG9U3wRdCUnwLKLaB0FqY07vyfpxhXPacWc9fg07ZEtn+0yYq31FgOKtxs+t7/y/MtynnYDY9nrDSXZ1sQKnISxRg+vISgPXGdqyvLahemxNPMnYLaEQhKSWMG/ZMbJzyG+9K34N/br9hOnY4ZYWpuUGp+TV6DfreEFonKS4RxfsKouZQFsTIcq1Z5hf5wWiepJ4bVSF38Q69qnExwfxCR/yLa/B3fr+ltVltcMLtEUVeI2MC3gUw6uNoDuzu6uNQmTiELA+1ADsYuUbVn+GwFrvXxHPS101r+TOH72epcSQzoJWRMd2GZXWs39+a/6aqJefzzIGdWvcigJJ8+cevUo933JNem6I1+nuwW57CWdUg7eillddxRzYZZI6
+ 4EGqJFgL
+ sPf/m8DlQvMcMbuMqBDm90cvHDUmebxMyAyIP7MOUukjqKyom5ArYFNOkcXebleZ2Sm2YhOJopAu+DndJTUsAISVxKCv3S/6F9U0E38qL8ZWkC6AJ7f/gsN2Ovu7JJ40//TKiBqf6SbfqbnbQJt3iZyqgdTZuxnZRozuJKi7njmUqxI9SUBr+UsCr8rirKyJJvR7pqljArn54R1mqZ45QiKOXJ816aVWby+gUOeCGomb9a2UH7z1JWb0zmUo/iNboHCqQMNnsyUIIXOCJoGin9tZvZ70L9tHX/9yRvuQKA7TRacw6GNejAMHYzifXYPw/YGG1diuZJzWZr2MuNPgqZ4djzTfA84KLU9jBrX4wU3/nH4swO+gegt9YUKMhSWm4YNgNJWO7V7N5YfQ6mCQTGKKMTK+6t609SOYtCDZlW259QM4VakGBA8I7hnya+AVcLCWdtx8UEdXNv9akD6awkiSnFfd/iM5I/WDyDsy97Fui3IGX7OO07jJG/EEmrzjsnR1csTGWRTalTJ/3wydtsAB2ZJqU52SwAoHHV6sn831uBiEMJK5EgVcMYQbtuIkg3USZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,45 +99,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SeongJae,
-
-On Sun, 29 Mar 2026 08:15:07 -0700 SeongJae Park <sj@kernel.org> wrote:
-
-> On Sun, 29 Mar 2026 15:51:07 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> [...]
-> > To confirm, are you suggesting something like the first approach [1]?
-> > 
-> >     if (input_addr_unit < PAGE_SIZE && !is_power_of_2(input_addr_unit))
-> >         return -EINVAL;
+On Mon, Mar 30, 2026 at 07:30:12AM +0300, mpenttil@redhat.com wrote:
+> From: Mika Penttilä <mpenttil@redhat.com>
 > 
-> Yes.  But the real constraint is min_region_sz, so testing it would be more
-> simple and effective.  E.g.,
-> 
-> 	if (!is_power_of_2(param_ctx->min_region_sz))
-> 		return -EINVAL;
-> > 
-> > [1] https://lore.kernel.org/20260325071709.9699-1-aethernet65535@gmail.com
+> With the unified HMM/migrate_device page table walk
+> migrate_device needs HMM enabled and HMM needs
+> MMU notifiers. Enable them explicitly to avoid
+> breaking random configs.
 
-Thank you for the example.
+You can use a lot more space in your commit logs, ending the lines so
+early reads a bit weird.
 
-The 'param_ctx' you mentioned confused me for a moment, as it doesn't
-exist in the current addr_unit_store(). But I assume you are suggesting
-that we should validate the result of 'min_region_sz' rather than the
-'addr_unit' itself, and this check should happen within the
-addr_unit_store() callback.
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index ebd8ea353687..583d92bba2e8 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -647,6 +647,7 @@ config MIGRATION
+>  
+>  config DEVICE_MIGRATION
+>  	def_bool MIGRATION && ZONE_DEVICE
+> +	select HMM_MIRROR
+>  
+>  config ARCH_ENABLE_HUGEPAGE_MIGRATION
+>  	bool
+> @@ -1222,6 +1223,7 @@ config ZONE_DEVICE
+>  config HMM_MIRROR
+>  	bool
+>  	depends on MMU
+> +	select MMU_NOTIFIER
 
-So, would something like this in addr_uint_store() be what you expect?
+But either way this really should go into the patch that actually adds
+the code dependency anyway.
 
-    if (!input_addr_unit)
-        return -EINVAL;
-
-    min_region_sz = max(PAGE_SIZE / input_addr_unit, 1);
-    if (!is_power_of_2(min_region_sz))
-        return -EINVAL;
-
-This keeps the fix local to the modules, and directly enforces the
-power-of-2 constraint on the actual monitoring granularity.
-
-Best regards,
-Rui Yan
 
