@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5169010D14A4
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:45:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1294210D14A4
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:45:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E3E26B009E; Mon, 30 Mar 2026 07:45:19 -0400 (EDT)
+	id 7E84E6B009F; Mon, 30 Mar 2026 07:45:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BAF26B009F; Mon, 30 Mar 2026 07:45:19 -0400 (EDT)
+	id 7C02F6B00A0; Mon, 30 Mar 2026 07:45:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D1686B00A0; Mon, 30 Mar 2026 07:45:19 -0400 (EDT)
+	id 6D5D06B00A1; Mon, 30 Mar 2026 07:45:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D3A46B009E
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:45:19 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4355A140758
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:45:19 +0000 (UTC)
-X-FDA: 84602548758.16.6177179
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 51C1F40007
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:45:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rnMEZv2Z;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CF426B009F
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:45:48 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F144FC29EE
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:45:47 +0000 (UTC)
+X-FDA: 84602549934.17.D6C44C9
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0F141100008
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:45:45 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kqKMYz7V;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=realwujing@gmail.com
+	spf=pass (imf14.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=realwujing@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774871117;
+	s=arc-20220608; t=1774871146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kTACHKzRTTQTHv2BeEVVc+PV7wXJkipQOVm/vndnvSM=;
-	b=WuNI4gptd4X8qUuJ+xuyM1ZGEPEiI0mQhS8cyjABPOKxh9BR0ATV8wdwuwKkny2G/+Qzl5
-	wx023Qz8ISKrfXI2GXpLm3q2x9I8zIaQEmqZ5h0xpi25gh8RYfjxFlMyyHixjNtVcLRprj
-	otBiXArLJkBSsCLPsI+8yYbGHminesc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774871117; a=rsa-sha256;
+	bh=MnDbxuScG9Rm/YGh2qPYK61S3SeIJ/p/OHYJTOIzac4=;
+	b=sJ13qyYtM4GFBOHCkWKkj4r3EUR+aPTy0+cxQvBbHzw4frJW5Gaj0lz90L6vulHZy66z6E
+	ZM9iplNdZpEmkLYSfYzUf+i8JZ995/+aTk7KEIXPcqiYo91iVthiUa5MN0JbUBJfI1KeU8
+	dLcpHXoiVN/i9gT69Lb7+d6KCBDJjnA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774871146; a=rsa-sha256;
 	cv=none;
-	b=3EvhkZGX3Q5TOgeJFx7G4Oec53vOAonjfgbXjekLwnvllOTzBhKrb+t0BNWCfGYCMwHnT6
-	fkfxiTwAzO0HbEKA85Hah9h+LZ7VWb5IvihwsvJ0NqMvH3zN9XSVHJMw6VpahRG0S50Cg5
-	myZf3sH8+uClOmMAGle8Oy+B1qPRTkQ=
+	b=RpOQdKHNFeawqCHy/zxYJ00fhrFvxmn3a3mmfa5ZvvltgDVGcwf9Zt8Zer0+gBRAUGzzIs
+	wB/rEMEP5HaRjWKdHGexdq9dd9rlR/yue9gN3go6XBcC3n/9pHdZteQWbIe6cWSNFcoifn
+	akMBsKUdGEw5vW1yVCA9/XjxW07sOgM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rnMEZv2Z;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kqKMYz7V;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=realwujing@gmail.com
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2c0c955a481so723460eec.1
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 04:45:17 -0700 (PDT)
+	spf=pass (imf14.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=realwujing@gmail.com
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12a747e7b2fso2019281c88.0
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 04:45:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774871116; x=1775475916; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1774871145; x=1775475945; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kTACHKzRTTQTHv2BeEVVc+PV7wXJkipQOVm/vndnvSM=;
-        b=rnMEZv2ZX2Ith5BIcHtgBSfWqiwjLe8YeL7gCbDqsq9rx46xbQ3qddELl1Ug4aRehw
-         ZKQbBgiV5+eNa8aNwnGi3sgKpPUhR880vyOze7S2nmGpmZCRLO7D/9UdE58guG+KC0lk
-         NRjNAyEaNPZUT2A3nmMuQmgBwp54NM8Q4l+PS2ljCMBHyo9N6ybpNxUS3kw9dfIu/nuu
-         wS+uoXdV1B1PKOcwLIzRutOdVvgALA+i9i0gAHVrphgAn9K47w4aznrZstzKsPapgGAV
-         2RhE76KQ1KulP8UgC9FhTxjlCS3H4pYS3yksdmGQW2E0E76OopFb2cnf5eEMOupJ09Gg
-         g3hA==
+        bh=MnDbxuScG9Rm/YGh2qPYK61S3SeIJ/p/OHYJTOIzac4=;
+        b=kqKMYz7V6NJKl2SEPiimaXRD23QU+O82VXHPHgIY3aEk53Y1zWZVbqfAfS1G1+y2Hy
+         +nyn2ldxwA5b5WUERmcBllOw65dyNzD2m3CmS7Mw2TprFj6gyoDj1zIm/owy0qUzOfGn
+         FEtee9RWLSCCGhsMRO7YhTt5YymHfgqu2IyYK1SRJpjG8SciiEbi7WTOKybo2rItyGY3
+         xWcupwWhZrD3OmeFDU9qQHQYXlBvlWBdsu3ttiwt0Th7As/FKStJqygySnpvLyCPlmgH
+         G0L8N+PQcC8wn4+V7vyNGfDFc1rLm/8aXaMogLyph62jBQLnOfj9O9jg2pm+qwunp4xw
+         fwig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774871116; x=1775475916;
+        d=1e100.net; s=20251104; t=1774871145; x=1775475945;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kTACHKzRTTQTHv2BeEVVc+PV7wXJkipQOVm/vndnvSM=;
-        b=pUmSci7YMCbguCg2n5Iw3Z9PTZYMkNMvxwoZcGPXC45RMnzGMabFEJhsgWmSMlfHqJ
-         2BqDjjeNxuuFnZkzQ1ecCOqtVgiKtJl660r9gC0fkajz/YmVST/j2Mjh0Uz7IieH2nEk
-         B/0ziTYmGezHZR8jSIWA80GMw78ylGX6ONYQIQti4sHNah+uDRegPEob4TJ3EmH225no
-         FkSaOT277tDvkbU1TRQkS3SMgR9rq/xdtX8RqiRFqKmQ1SncaooZcXZAHjAMXq789Zu1
-         wZaWpu0Z4/9h6kGCxpxVEH9B3UaeV1aqJ7+Eyq7D8Pykj/QDAqobZtVdQyvM/yjvseqq
-         HtGw==
-X-Forwarded-Encrypted: i=1; AJvYcCWGtcQhfmpGNbZmRuBZhgCpEBnP/565NAi3U0dsLomu52w+jurc8SGryAvxJHKmHFbGPsIlG4tAlw==@kvack.org
-X-Gm-Message-State: AOJu0YyIrHZ1Bn+shIF6TUrZl1oZY0Fw9fRqS5+ZFtZRARggx05/SRXE
-	k7g7nlqE/bsP6l4qOPPXhDwlouWbjWaOswg4i0p7q4Th/Xp94c6BVO8/
-X-Gm-Gg: ATEYQzzVCaDDXlGPRXcA1mGJZjbmjXpr7sGeRjVYPt3LbccvXmAPLBfUb1jl4YU5k7G
-	mLR4ZbqNo/OmhL4lxsdc92QmVqwLCdgI7SJXdJjypQW1qgU9cSMkyZhecEp9ky9hMCjUc47d7DF
-	1gQVHeD3R0FWgrqmwy5GsCfYqn1VOP/PRuZDj1xJojJoPD+nh054amMvRdLLY7o4Om42yPW92DF
-	eW5TDpIZgGxth0WRAU1ZZIAXE9yegWnl6qFb6h8ikupy9eTw8cxO2HH2tNB5QN+sYh1Ag/KWSSK
-	lDdLqtU2i41mpiMRezmDB+ZdsLHJI/j9EHdh/xtjK6bZri2PjxWGoUDxzEQAlf2RXgT4dNU0oOY
-	00eFGiKyFKBuzlYtVgcrEPbiO5MZKi1AXtfu6h5+w1j9d5Ns5QyxXkRWX74+Im2EJhRhf3p/YqQ
-	qyerShhjDFj9VEPlqwDJ4E+J0BdtiTxncZDTg=
-X-Received: by 2002:a05:7300:dc90:b0:2c5:a6ce:e534 with SMTP id 5a478bee46e88-2c5a6cef339mr2202718eec.8.1774871115888;
-        Mon, 30 Mar 2026 04:45:15 -0700 (PDT)
+        bh=MnDbxuScG9Rm/YGh2qPYK61S3SeIJ/p/OHYJTOIzac4=;
+        b=N/gclUlVuon44S5dTbz9MT2KncnRD4oT6diS/ds8tRZZFNQw3bGbJOkJyOJVq1bEj5
+         VJeQFrceP4s7+aZM51lJ5tLJwrBGz0VrAT09l/VsHOxDsAqokTt5vfAf2anhN0p3i4XQ
+         UjytAOC4tHftPj8Rf+a+v8MmcIyW3kvnqIwUYpz4KGphhgVU7P16Ndwnjyv7tCoxatqp
+         6YyArBgDul6jFkzNXgLKfzR6fXP/5rVjgP/jsjp6qX/m97Ab685afVzR7UJG4jONPHex
+         p4hm2K0w3ucl5wB6QtMp3oNy95ZgXtYhRet4VpHSwS62ui+JyK6ynRFBt+QzPSXK4kKe
+         qQ2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXJvEB8iLzs18myAJooo1aANO+hMxmmNMS+zIhv9kN+zhmFLeO10/ceXngWSFmsbqTBBGHo855JMw==@kvack.org
+X-Gm-Message-State: AOJu0YxmRi20WpTwlTAVPd47Im1Y8ujq5jLFrv8YVHY9HmCCtMMRyq1w
+	JTmfB2TdtXRopGqQgFUl8deX8//zSuDy9ZzIGqdiVP3GZb0KitfmRp8n
+X-Gm-Gg: ATEYQzw1dJS5Bqvqo4Np/PeGp/gnkoitVxsj7yefL+AQIkCawYOsrMRkfmMmWUhPLqw
+	64K8KCswBdcd1afCLck/gbVZ3oxA67hIONmO6+x9IIu4hYzG4700GT4GTKmnxAw6YwRMakUTkla
+	nkCzyU3FtkjmPuI396noM+gyQYCD+D4FjMMr+Dd2hUplIjFiWOIPqng+P/QocLHaoCqd1nwu6SD
+	RBUuFN1Ju7zDPOWuBNXzEGqa72G0pGoC9YZQ9W3/uzwEF9Wm4W2aVTRbGyKOawQO+Mv6a7gV4C7
+	w+MUJHFniEr0FzbljBHB7nylgM99+8vHIOYRUFEaMVy0Jp2koclCOAgNZy7KcewA9Ktq91Ms1av
+	6VMKW7YdWAMHrrjgfN0k2bMwjnCZEGAHgB0kiVdsyuCDt/jljyuN+rUEIZ1Pgc9svDYuPoM4cNa
+	UfHvcxRwNY/ZUDOPaalIaWcUYOF8WdqtwZB+4=
+X-Received: by 2002:a05:7022:b91:b0:128:e0dc:6428 with SMTP id a92af1059eb24-12ab2897c4emr6271373c88.17.1774871144768;
+        Mon, 30 Mar 2026 04:45:44 -0700 (PDT)
 Received: from localhost.localdomain ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c3c41c1513sm7056897eec.8.2026.03.30.04.45.09
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ab97e7a57sm9176288c88.6.2026.03.30.04.45.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 04:45:15 -0700 (PDT)
+        Mon, 30 Mar 2026 04:45:44 -0700 (PDT)
 From: Qiliang Yuan <realwujing@gmail.com>
 To: peterz@infradead.org
 Cc: longman@redhat.com,
@@ -129,22 +129,22 @@ Cc: longman@redhat.com,
 	vincent.guittot@linaro.org,
 	vschneid@redhat.com,
 	ziy@nvidia.com
-Subject: Re: [PATCH 03/15] sched/isolation: Separate housekeeping types in enum hk_type
-Date: Mon, 30 Mar 2026 19:44:48 +0800
-Message-ID: <20260330114448.103086-1-realwujing@gmail.com>
+Subject: Re: [PATCH 06/15] sched/core: Dynamically update scheduler domain housekeeping mask
+Date: Mon, 30 Mar 2026 19:45:16 +0800
+Message-ID: <20260330114516.103451-1-realwujing@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260325135904.GB3738786@noisy.programming.kicks-ass.net>
-References: <20260325135904.GB3738786@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260325140053.GC3738786@noisy.programming.kicks-ass.net>
+References: <20260325140053.GC3738786@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 51C1F40007
-X-Stat-Signature: 7i9w4r4azyfkbycamdfwxrqboskabmmh
+X-Rspamd-Queue-Id: 0F141100008
+X-Stat-Signature: f96gf8gj1ks1ux7aa5sucw16ud3simdw
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774871117-928712
-X-HE-Meta: U2FsdGVkX1/PuVoaNwBlMHjKByCObxvz75zd35rRtlu47JCSclr6JlwcXZhpS5ePcbHi8+U68GwlN2RMyE7+F+zejY9rT6DUOCY2b6BctOkR9TKrilF05icz0fc60PC05NdIvblgCE3snb8TiM14i7XogrZgEyrjqHABY6iev4CPAxCYDc7LwKHeLHlGbkJqnW8O+PVn9GnLG/lHH0leE7R3s3Sy2UCjcSIkzffmNiEJOHTSn4nsidLdWF2WHmYpAhkHLuHSMiWKzdXLqCXhWrFU3qOKGyIFW3Ccuhly4vY1peN4xmJDGVG5U3w2agODDe8CFgG8YJh0/MJmKDZZzLHwPoHAoeFvBq4CRhcylSNi7q77B6LddQyhhIVscHXIYgMCX8k3IFGiuP0ROcVMxjClcPKmjILl9gDFo2GvEUepYyzuNSpgyRc3hZZ4/+y5CrTo+kft2bHB5rptH/vGuEv4+kocRMlzuETDbQlGnvD/NuD/WXXMB6gjjzEVm0xlDDq25bAdMSqEDpH0Al2dS+Luc0zV2EYF464gO7hipGEsFv9B1AmHYFwTEQRFIh7yYCITndkju3xAeb+rjYezriWQ7gTLrZOIAeAsA9gpY5KMA/60ERmfzxi5Duoa2lX5OvEnYve9ePz1K9TsZnBLO4je+WbJGlPaP/lBzMYoBwePnyaqVbX5tF0u7iiAqDj4o3xLBOKvsHEhYgiCQmGIjtYhoqk/BKgtmNLcuDQO8QQ0S2TGJSM6hYckJ9y2YKSXj9CqT36uMArAHK8crHZu3KaJ/OyqZijFd/gwydDdKj50B+bHWXg29h9ryT1dASC1qGc7OEWw+oB7SBTStI9H4MH7r7Kf3TqGThf2cIBRcjASuoz28LqtxDs8+rwXhTFteEWKEysf2dFSWGsmt7Mak4thFAt8RYfqNopP/nR/Dv94IR2YXs8x7KECTl3xHZHyVzf9a5S3uIgYUAryHsj
- Cs+H8Rlf
- uzE3Rm03mocAFFc60rmKReijnHMX5ThRxbMhcqtMhihBwn8VLZ6BtRb++/9d5GFr2ESqlr/bYY6tzLg+I01QoAQTyLlk1TUEJzpj4IQJXPzwfgnoHv7W4wClk4NmN9CMoS4rpFxJJ4nVADEXm3/apQugc1aA7/JoY1qOiKibVW4umFGq0XMTuZHx/96Y9RJbEs9nEG9Mj1zLXQl5ZeKcAbDXOp4atRrdeQvdMMnamNzqWMbtyjdzOhp0hFP7ki9iAwrod37a/bomHdBX+7fYzbETbvCXvyU5dSjykKvPyL3wJfGbM77maTSJkKr5RXH7aPYGIni6RQktx0e5rkGQ6aVauADC2nRRuuDn8OHSreN6NW6Q/6wOPqtjU0nWuQajp5rvKG+4JUXI9sIBjAzWW8FFzwq7NBdvr/eOgmE9Dv/EWjEC4P7nOdCPP+fa5eATI61pC+vlAoVCzU6XrXEFAc0AGEA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774871145-891084
+X-HE-Meta: U2FsdGVkX18CccrE4R9GMIhHMM7ZIhS37W2FMoCht5/7a8Pk8+E7w2AFEamsdvA//PJCovec4CDUy9Zy7UQm8taLoUvLCrK7sjPgeM8dHd2ljUJ0XbUUdQachwiJgwhPRkDgb6gs93yTAFBBJBWjT8ohRE1Q6ERu2IJ3NhvDo3XIpUQpUMPAsmobbFaaeFX1MeI/C6r+2f073QyoNnUFgr3Z4gbrfVqFaJznfkpYSgBhCKOST/G1MkPuLoGJJGREjihZY+Mdz5e7/a8xmyCVvfAmla738kk89Z8tK2keHB/8UYFYT8o2PcfmlyJvRnmUKh3qK0XtXkCi6lN3Wc6mCuUDjzCYoQ3b5D6ntX9o1uvOprSALhZNl1Z2Gpx2EwetJdyS0gRUrHAtpsTLUwzO3gJM5fCEYuQBTiwXjYcP9D9t3WtI0UIowPNRxjBA4ZPUWCEXe8ZA5GPE1oc9lbtRWqveydjAnz0M7JJ0FxvG/JHi4gdLSfo54zzz9TPenicgLB/HPBkccfMl2RFP7bKu49Wox/8viRG0QV9O7AqQhoLJiU78B0zFKjPfSpDxnyqDbRPboApAOei2/XjUdiOupRH0wig8jtt/zQ7LtchZ1YWcS04WJs9yd2V4z9/jl1sEquNG8+zMVSUGgU97wT8JAs/l+PX92lNFSRYRgRK3Ph0RqvnTOydFtg0p8vnq7bRNwFyI4nhP5wEf0Vynf2CpKX2p4u5j+stiWlz+ICWRZcYLEUz+4qwfQhSM7KZMkEYa9gJHZgDeZAYef/Eh/lv36HvwpuqDuzn3LH+mW/AHbpqjt61DzekFl4aFcBUPghgK7I/y5Y0rq4IRG02rTxaVWN+o4aCMu/6BEFIChOtVV5ZegoJqaJQ+xDAsZoNRIWp8gU50zgYC94W3B9klj0ClbyKOXA5HF1DPX62jM4GMKnSndSgBetFHYD3B7wZgJgdV3yp6QDLM9dHIBaKjhpx
+ I5Ty2yZ/
+ sz9KEKLsh6UJPayVg6lugrocHw12YI1Mwdsmw6TpT1CHOkVY982g3B0FG/8Fj2ba7jB2HPaSLpjbR6fGlpdh9nu9rmDoo9VrUfkv95i/epiLNX7wt8bsNS0RlXYfpfWqNC9mzkB3uuFUFNjt2RVW78SCaFCuOMLEem68g7NzltmaJBCXgBXog72q8jM0RuvrkMSVnQVe/sRDBBWBw2OQIEEM0EigCvyz2Sbq4zVZH1as374VxIRDlTcMpgEn219CvhCI5Syp3YHAJjElZ6G1u5kGptYqscNtFtnOOo2drna0wmhj92/KU6UA0O/4wlRw55Oseqnk9Zj18NoHI6v22miGc2JWxkcAae+AoGenjUDiCkK6ZZBOKue9v1J5VW6zFwZdhACQwH2wQy6oNm2JlosJgyv/DCxxTl/8eTNwgDlS1kRwoSaX2wQxC/weBg5KuYovE2zNamCdR+TKmCsO3N0V5zeWAE354UNOmyBWJ2EINYfPcKVviubNSWhgn0u9eaWsP9NBZERhyf7QpzV9VR+ugmUFe8w062nFf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,15 +152,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 25, 2026 at 02:59:04PM +0100, Peter Zijlstra wrote:
-> What the hell for?
+On Wed, Mar 25, 2026 at 03:00:53PM +0100, Peter Zijlstra wrote:
+> Sched domain boundaries are not static, they are easily changed by 
+> cpuset partition (v1 and v2 both support this).
 
-Direct and to the point. The original intent was to allow for asymmetric 
-isolation (e.g. offloading RCU callbacks while keeping specific timers 
-local for very specialized real-time monitoring).
+You're absolutely right. My description was imprecise. The goal of this 
+patch was to ensure that the housekeeping mask for scheduler domains 
+follows the partition boundaries dynamically as they are resized.
 
-However, I agree that for 99% of use cases, this is unnecessary 
-complexity. In V13, I will consolidate these independent enum types 
-into a unified housekeeping mask to simplify the configuration and 
-reduce the "insane configuration space" you mentioned earlier.
+In V13, I will explicitly integrate the housekeeping update logic 
+directly with `cpuset.cpus.partition` transitions. This way, any change 
+to the isolation level of a partition will automatically update 
+the kernel-internal housekeeping state, avoiding any parallel management 
+logic.
 
