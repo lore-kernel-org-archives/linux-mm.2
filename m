@@ -4,133 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B36FF495E
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:20:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C4110F3DCD
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:21:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61C66B008C; Mon, 30 Mar 2026 10:20:29 -0400 (EDT)
+	id C040F6B0095; Mon, 30 Mar 2026 10:21:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D130D6B0095; Mon, 30 Mar 2026 10:20:29 -0400 (EDT)
+	id BDC226B0096; Mon, 30 Mar 2026 10:21:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C012A6B0096; Mon, 30 Mar 2026 10:20:29 -0400 (EDT)
+	id ACB576B0098; Mon, 30 Mar 2026 10:21:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A91286B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:20:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F7F05AF70
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:20:29 +0000 (UTC)
-X-FDA: 84602939778.21.D32628B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 64239180009
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:20:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pXcZ+7fn;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 99E166B0095
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:21:18 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53FC6E0F71
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:21:18 +0000 (UTC)
+X-FDA: 84602941836.01.97D3D45
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4404F120012
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:21:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=QcA1y3WB;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=QcA1y3WB;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774880476; a=rsa-sha256;
+	cv=none;
+	b=SvmE/0YRHQAPKcKhBwge/fDMbZGJrnDSWmoWQBNBh6wZ2P2ra3ZXmyFfzOABPi4Bk8lb+R
+	M1qgZLLCzXBYCdFmu8q99KRd9eFGTCVEriIEhZynPGqCpIyzOB8cu8sHMMdNKik9RREVw6
+	R4kJqigkbexCBRRwFbShGh2SgH3dzwg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774880427;
+	s=arc-20220608; t=1774880476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DQOnBMo6myTBWuwwVXUejcUTlDnJXzgOth+SIio0eSo=;
-	b=WZBkbDpgJ7Tb2InoSl1aUJqUdPTNlrmXoW+xNOunOEAmye2mO4zXDRHoYAv6Ci0C0ovhs/
-	UYbS3rHseHj5lpm3Qaz9Zrt3IDoh5Dnz03gfxOTY+0q6a+yQv361pnCHmrAxW0mHKI1Voc
-	CSmvG+OGoMgNI9xcy2BfuXZ3r57SgPQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pXcZ+7fn;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774880427; a=rsa-sha256;
-	cv=none;
-	b=7/l+U0NBgMgl5Gc2ePUazYjcZakADgQne82uRw18UQm3il+VbnmHUBq94oDICDEGctEOx2
-	VvOXNJCec7+V5pFX62k63+36muTCbN5Ra6VxWgiTI8wEfEfa9C+GH0MyXuuZ3xdSFn18kO
-	CP5V1CAi6jgyPvPyeb7X3eYADP8dL2M=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD0FA60054;
-	Mon, 30 Mar 2026 14:20:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D420FC4CEF7;
-	Mon, 30 Mar 2026 14:20:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774880426;
-	bh=06bf5S3/WSaRWoCBlnC2mh9au4sOQz5mO11EQY3Buns=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pXcZ+7fncPEcnrzkSfN6YMN6OGr061xooYBr65rWkkI8sB/QKQ/qimT6UI5BQGz0r
-	 YXuf43myE3joGOPmz60hD2l8+GzzUiu85x93Cf9J2oZBZJG5h11ERYxW1+j6IeWFMv
-	 D8KERD1V78j0ECVlK0ByYkH5UkyBI5W8S77NkMVD/OVgzs7O/0S9kAUKM6oG2ArqvE
-	 eRSjC2TuVo2bykiLZmpPufFgHEvywx/YEYYj6TLH1bHsqEYAZ8CaJ9T5q7WdVlDHQR
-	 qT5gl++rEnuydu/LUPFKdINEFnkRqUgv4i7TBNDPFv/nthgbVhBI4+KrViH4VtuwAF
-	 GXMJozgEcc29g==
-Message-ID: <5de08585-fd2b-4395-b421-99c7b887aa8f@kernel.org>
-Date: Mon, 30 Mar 2026 16:20:23 +0200
+	bh=X/ozzOwDq7xepOmxDik1p69jmSO0OqDcfdyRDIq86y8=;
+	b=d/Jj66nixCwCuBdpww6Oe81CBk7g0/aAroMlNLGkqtYVTMJafAZ8nVTAvwWwS4rnq1jK4i
+	Ra9AsqTQ7BC2JOb9tY0seRsn2g0ob950W50n5TKVvp2+A/eKIvLkhdVBC9kVFlR9pyUWVZ
+	ilj8CtgxMmvkfi2y0BN647oGJkLbfic=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43cfb723698so934372f8f.3
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:21:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1774880475; x=1775485275; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=X/ozzOwDq7xepOmxDik1p69jmSO0OqDcfdyRDIq86y8=;
+        b=QcA1y3WBj2zA8+Bbl3BZu7Edc1YjimhsNzgRHA5OgtuAPKWJakTen4HQhsFw8Y716/
+         1BD42t4Clmno9V4Gm2uf6/Z5OjX5yrV5+tI4ou8XZvJrCYidvdXUsVv/JZoG5YqjO9P+
+         beeCzNtV3PrXV9poTGCL+kraAdR8bgWWyHZvdz5Q7Ma66SUx3JeEZIO7WO79WJsSUEIt
+         1T5sNj2RnoXcMAKl2g87bp72ZpHDmxaCkF2XE0DoxtnPdf2XWDdsyZxuUCy6OQq9XIJU
+         LEW5eGRZ954lGhN7jVpoJ4rLgMtZEHN8qIaOvx6hTdQuwr3dqRGH25HYdMOKrhTF6y9a
+         zUOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774880475; x=1775485275;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X/ozzOwDq7xepOmxDik1p69jmSO0OqDcfdyRDIq86y8=;
+        b=qkFvllM1RdUyMf2KK2ai+/Ux0PHmMqopO9/MFnMW2G5ngJx5GOHR0Q50SaC82I2TQ1
+         Zpn9YkM57A+q1Ds7r7unS9RToOfwLFcVsiXRf5QO3y+HH5a6Y5i8+umN6uNYc51DYBxd
+         JriB8YdSskcDuF5Xx8eRkh97HrhIOwm0GKVfb+/RpNJavhce153eRnUlboAa3fp8nMEU
+         pEPD3IPlxjR8NDlG4Dsbp2NodrPc2QOGa0d2OrJib2/1rXATNvxUWQ2X7EbLAH9sPmCB
+         aRklJr4jTxiOItfkjrB4uJcCdfDk1MXAic7txpkNCtFMexIud8bqLV6uKtdUWmMe99B8
+         zKnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWv6b5c56QbIIvJFwvkC3fVhO53TEYECOm0aSYmWePA9Fbf2eUK1pEBW3WwHshkvRnQLNPAdYRJvQ==@kvack.org
+X-Gm-Message-State: AOJu0YyZJacjjwamrpZcHBLULd8eCva/HhUdbCrZ9fgL5Qcf3JJ6PNWZ
+	VF0YRR6UwK1/4QX/Pcy21epGBji4qz3bTG8W5v9otcKJt7j+rr36HbkLDxsxvtvkfOU=
+X-Gm-Gg: ATEYQzwEYfwP1SSk9Ic3sUZpWl/nKHBi751TYkULWfJ0oFPNCxQc72hBc3ht4iabcJW
+	MUZGGtyWfoxM3JKncSND3qLj2yoycW3zDRWutxGrsEv9SVMYu+xZtsevNOMKwyUUVgjtbyUfLzK
+	htSRuzGSJfs0PSV/OTF7oaY2WZ1FB1PemFW+6O20BzjNxE/RJtgO5DeL/sh9UfZtgyvxZSK+Rnj
+	K6GGFjtR1AqdTUZV9Yu1x5+dlsHzMFczoknXhR4MvuA+krnXWi8zwUFxWvXp2xJxl1NrRlaWiOX
+	X19OW5YAKstpWCoeV+h5N5kKXV8npmnZt4dSo9xyvREBqysb2M6bcFJNB5Is7pdg1y5Pao/M6gu
+	b8Nt3JCSRim7+WzbbIX56/aNK4GOO2itdi2eCBVsb/s5289ohaxI77Ol1XhIGbx0vBpWaVUl53G
+	ljPH5SQWXtRzrmqtM80EJfwAqGD1wmJ6Cn3zif
+X-Received: by 2002:a05:6000:290b:b0:43c:f976:b8de with SMTP id ffacd0b85a97d-43cf976b9famr9996886f8f.20.1774880474446;
+        Mon, 30 Mar 2026 07:21:14 -0700 (PDT)
+Received: from localhost (109-81-17-175.rct.o2.cz. [109.81.17.175])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf2580194sm17882325f8f.37.2026.03.30.07.21.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 07:21:14 -0700 (PDT)
+Date: Mon, 30 Mar 2026 16:21:12 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
+Message-ID: <acqG2Mr5ekCn2HD0@tiehlicka>
+References: <acpmkY6_gWLdtJCB@tiehlicka>
+ <20260330141010.3126996-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
- hotplug
-To: Hao Li <hao.li@linux.dev>, osalvador@suse.de, akpm@linux-foundation.org
-Cc: vbabka@suse.cz, harry.yoo@oracle.com, joshua.hahnjy@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
-References: <20260330035941.518186-1-hao.li@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260330035941.518186-1-hao.li@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 64239180009
-X-Stat-Signature: dyn3w98attciwqjb54cdj7cpqzi1fb7x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330141010.3126996-1-joshua.hahnjy@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4404F120012
+X-Stat-Signature: x4gqp6cf9m35aokd96i9wxwswfbpzbsf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774880427-916411
-X-HE-Meta: U2FsdGVkX19/98Tc4iG4dD4M79hKwej8FlrvcMEpzamWUXM+Hqm8i76jp0c9uoZHCQnmJko6PJkh4HEhK7LgXsRf/aqYTBquTZdGrm2xJkVp3yi13ZOexP2VTJijk5fl24R8M2m0pO0D6XccxK3IHq5p6ExC0jKV0YckLkt6VzxLMBi7965K049iFB+gS+TATej2CkU8rwVNpSQYllpBag7nf4sPKtF5455b98oNmjsCExDNsbKVDisLDQu0tTvUisxw20iLRK6J/wUWN2l1DwdZheYGJFXE/VKWDXCMu4DXRCSeTnxGKQXaOLGOY3P/MqXk0R6TXB4dXB7OqRw6gd/tSftJME/MWb5ZdXmj55hWkRlTN/gu8j8TkN3AtY9fa5JrS2WQ/wdkLYILTQdNd7/7bsNP4mfQKbRGQ9cp0ImuQcbrzIfymMIW7Yyh+fCkHF04V6lRI6B/SJ++C5op5K32bFT7pLMOadnEi9/syJaRqWagpHkRrrebMLJLMLb/dTEgi7hwqe/9eTXwKFqa+znnlRLFQCFR57+JvZAe5X07QHI4Wr15jmy31WvZE0YZoAP3N1qD08ViLDXpu60PoZ4zBiuMuQweJH7R5gqrOfZLBQx7B2VtjpIJAYSChxD4Hj9ZsYSM3Oz6WW17sGCJpSlS5Ec8OPFN4ruNBl37asUMg03HJTWz6ofO3P2uVXHYIgFELXqvaM5eDEY2y/VuMcoJlSLW8DV25qVNBh6deu3b+iLGHsjHSC17f/emc4voMxnWSXg1uaIs6b9uCdsvpZR7SIq4ECrgnY6EIgQ5ZNmOKv1Q6VuuFaUV9h5Shw2bpoKidg8jordgq3Hx3h/B0GWemKgXUgaH/7bcTveEifUO3LxaPv1/F6n5ryU7aecTN7QoNC8rACFtZtJTzUmkTkyZsO9M+afW45DIXF0NRK4W3Ki6QMsg59NmPD5OnaM0nlzh5UhPasZ+UHzIvOk
- smrlQsyf
- m2rg83bUncckxmtoV1TGVUgZymY5SWeNb32nr6YHn2x17B5M5lZKzhrC/KbF23H2pR3x02swI0mn2w4DyG0lnLEVQRMWjKiPMZ5YbPxKXamjMEQ+A8f9bzr7TUjhHn428rBifHJtFj9XijxOniFySIA+p30EOysbjezTAulY3ULsgF36g8tToB3boRwgVQdOfBkA+TDCEVjwVBvOH8dWHTNt6qAjjRdisPyPCtMltZo5NCyBtg0584tfl5g7M0b0dcA4vX5aqvL3wQFWdQrkk2B/qBLTk12faxi+Kc7HhBr51+cUDcO+MtWAMWQtYwjir2hwcfawtMgTMFFQfxE6u2qk2aTqhazD/GohNnC7psbnCDH6IgsDCjXyH5o2CIRP+6RjbBDfsY6pc/JBVnmrixp9mXIcUSj+n3cxLAHkbFpYodt8kBNsiLFqoXQ==
+X-HE-Tag: 1774880476-274432
+X-HE-Meta: U2FsdGVkX1+/JKede2Vis8x70Ul9KLQ5HWrJxtv8v1b39amJh6kAXyPLo5cYEoKr3DkKXFGjIomjoYWKNABvi/MrH+awgFM0oG3nk11rFQOqbTCOxhq4b+9+S8a5YTLhkZsrTZ7veVyJBdu2bz0o3xdyExyvtweTfzptZAQPFmdn9TVLGJaSCU+0q1aZD/5oxECv4EoMqlUaS/+9xaDXvLkinzvS3ycAdXUTimdQd9x7O402qpNX0/SLJvp+2/fUJB8fYkcxX2AhHzG5LRlUaVaHiettw/mwHQpjf6rLm/tKXlvl7wV6RI5bskZNDK8evhlWHf4DE3QqiGcrj2vKAQD6hHLFwtf0PWJOu/yeUn+uCruyNZVIMReHvNvFhiNAS79k8l0IqZr9OibLFONs7Ta5ttXC8eDGkkVTzcp+RdavNoIaZQxf4B9k/VSaXGvP5qYhXVWHo12Mp/c+WiuA3iQbaF9RrTK7GrZnVIA9O1nLUPSZ5UeIbchGSo7CbR45RmQj+5bKpisNnVzRooDLX0h0iIVj3CiUGq0nz6UfeMWXGeM3tgUVjficd+IqN9s1ROFFc7LaTQNfwgass9N2dapibAfhpzFjTAToSqe3N4DazSC0vmXt0L0LwAJsT2gvlZqGx6i5lUcRDnZnmh5RuYqezw/2i0FaAStrCH9opNvrrCQkMTDzWLT31opKcoHYGFLkq/ZlF6wN5iYrpbrny1fVRApYdVm4pTJe9ZQgSbJp9KzuyC/OMJbDNVEEVfxkLFf1b5PoD9hkbI+ZPtwyEzXGn4jnryPy6oNK+NOlmVkFR9UyJqCg9hfBEXnSMszI2bNJt1krHRrgbzizlSVVy4NBMNMgeUL63CHE8S6ZcCzVQJciEtgdP2wlAPd7pFVZnf+WADJwkAmMKfFdCalk/kumGuxXR/2+5DEuGXmWuo6i59htrQDcb68R6r0h2iQ2EsvBoKq/tUyL0PL1kF4
+ BI5JYBBh
+ QOn/Q/yh/uOxOPc+hwJz5Wz95g/9prhJ3mbPsRzkcMkaqYAl1fsiFNZEAoL+/6ktiW+dkD6mBn+U9+uBkz9KSLaVn22LfVuPJqCiAUbOgh0upkxEPFxtp/q83Z0dZVPtH9lrbjedzEji+/2LKaN5pEzLOyMdBGXPqP0gCmmnp49psHz2OCZO724UnNwYvQJBbu7Q0PeVErVFlB5BN8W6vjm9jtMZK98BLQYvbP6TT4ruJ2xXXYZikT7Ad6Ehup/K++lDeVW9npj5w6q9951gglezWW3LxXqMgsak4B4Bc5Azf+RX5w8jp45Og9SmYBu/8sN0QEbf/4VLX+sxjrRZC/OJlzrltXRAXJ7PT2vcsfdV5GLoeovnKpM+1wJHrYB8w6bfer8bhG/Xpp3/hqvzIGpdYb8f9q0NHL15ivzg9iqWFBtidcrzvk3TTHAltebTfXoYnwtiQr/lJsuvS9iU7S+4pGWl0wsG4DzkRpWCoMTkh1YFTaeK42gVcbV32g98RYMA03MDEGwhNau5ZTsH/GYM8YQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,96 +127,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/30/26 05:57, Hao Li wrote:
-> N_NORMAL_MEMORY is initialized from zone population at boot, but memory
-> hotplug currently only updates N_MEMORY. As a result, a node that gains
-> normal memory via hotplug can remain invisible to users iterating over
-> N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
-> incorrectly marked as such.
+On Mon 30-03-26 07:10:10, Joshua Hahn wrote:
+> On Mon, 30 Mar 2026 14:03:29 +0200 Michal Hocko <mhocko@suse.com> wrote:
 > 
-> Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
-> offline_pages(). Set the bit when a node that currently lacks normal
-> memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
-> offlining removes the last present pages from zones <= ZONE_NORMAL.
+> > On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
+> > > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
+> > > to give visibility into per-node breakdowns for percpu allocations and
+> > > turn it into NR_PERCPU_B.
+> > 
+> > Why do we need/want this?
 > 
-> This restores the intended semantics without bringing back the old
-> status_change_nid_normal notifier plumbing which was removed in
-> 8d2882a8edb8.
+> Hello Michal,
 > 
-> Current users that benefit include list_lru, zswap, nfsd filecache,
-> hugetlb_cgroup, and has_normal_memory sysfs reporting.
+> Thank you for reviewing my patch! I hope you are doing well.
 > 
-> Fixes: 8d2882a8edb8 ("mm,memory_hotplug: remove status_change_nid_normal and update documentation")
+> You're right, I could have done a better job of motivating the patch.
+> My intent with this patch is to give some more visibility into where
+> memory is physically, once you know which memcg it is in.
 
-Agreed on CCing stable.
+Please keep in mind that WHY is very often much more important than HOW
+in the patch so you should always start with the intention and
+justification.
 
-> Signed-off-by: Hao Li <hao.li@linux.dev>
-> ---
-> Changes: simplify the code. (Thanks Joshua and David)
-> ---
->  mm/memory_hotplug.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+> Percpu memory could probably be seen as "trivial" when it comes to figuring
+> out what node it is on, but I'm hoping to make similar transitions to the
+> rest of enum memcg_stat_item as well (you can see my work for the zswap
+> stats in [1]).
 > 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index bc805029da51..05a47953ef21 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1209,6 +1209,13 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
->  
->  	if (node_arg.nid >= 0)
->  		node_set_state(nid, N_MEMORY);
-> +	/*
-> +	 * Check whether we are adding normal memory to the node for the first
-> +	 * time.
-> +	 */
-> +	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
-> +		node_set_state(nid, N_NORMAL_MEMORY);
-> +
->  	if (need_zonelists_rebuild)
->  		build_all_zonelists(NULL);
->  
-> @@ -1908,6 +1915,8 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->  	unsigned long flags;
->  	char *reason;
->  	int ret;
-> +	unsigned long normal_pages = 0;
-> +	enum zone_type zt;
->  
->  	/*
->  	 * {on,off}lining is constrained to full memory sections (or more
-> @@ -2055,6 +2064,17 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->  	/* reinitialise watermarks and update pcp limits */
->  	init_per_zone_wmark_min();
->  
-> +	/*
-> +	 * Check whether this operation removes the last normal memory from
-> +	 * the node. We do this before clearing N_MEMORY to avoid the possible
-> +	 * transient "!N_MEMORY && N_NORMAL_MEMORY" state.
-> +	 */
-> +	if (zone_idx(zone) <= ZONE_NORMAL) {
-> +		for (zt = 0; zt <= ZONE_NORMAL; zt++)
-> +			normal_pages += pgdat->node_zones[zt].present_pages;
-> +		if (!normal_pages)
-> +			node_clear_state(node, N_NORMAL_MEMORY);
-> +	}
+> When all of the memory is moved from being tracked per-memcg to per-lruvec,
+> then the final vision would be able to attribute node placement within
+> each memcg, which can help with diagnosing things like asymmetric node
+> pressure within a memcg, which is currently only partially accurate.
+> 
+> Getting per-node breakdowns of percpu memory orthogonal to memcgs also
+> seems like a win to me. While unlikely, I think that we can benefit from
+> some amount of visibility into whether percpu allocations are happening
+> equally across all CPUs.
+> 
+> What do you think? Thank you again, I hope you have a great day!
 
-Was wondering whether we could just do an early exit, like:
+I think that you should have started with this intended outcome first
+rather than slicing it in pieces. Why do we want to shift to per-node
+stats for other/all counters? What is the cost associated comparing to the
+existing accounting (if any)? Please go into details on how do you plan
+to use the data before we commit into a lot of code churn.
 
+TBH I do not see any fundamental reasons why this would be impossible
+but I am not really sure this is worth the work and I also do not see
+potential subtle issues that we might stumble over when getting there.
+So I would appreciate if you could have a look into that deeper and
+provide us with evaluation on how do you want to achieve your end goal
+and what can we expect on the way. It is, of course, impossible to see
+all potential problems without starting implementing the thing but a
+high level evaluation would be really helpful.
 
-for (zt = 0; zt <= ZONE_NORMAL; zt++) {
-	if (pgdat->node_zones[zt].present_pages)
-		break;
-}
-if (zt > ZONE_NORMAL)
-	node_clear_state(node, N_NORMAL_MEMORY);
-
-But ends up being harder to digest (incl. all variants I tried :) ), so
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
+> Joshua
+> 
+> [1] https://lore.kernel.org/all/20260311195153.4013476-1-joshua.hahnjy@gmail.com/
 
 -- 
-Cheers,
-
-David
+Michal Hocko
+SUSE Labs
 
