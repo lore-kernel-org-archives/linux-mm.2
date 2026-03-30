@@ -4,84 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D78DD1061B09
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:59:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7911A1061B07
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A36B6B008C; Mon, 30 Mar 2026 10:59:38 -0400 (EDT)
+	id D00516B0095; Mon, 30 Mar 2026 11:00:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07B266B0095; Mon, 30 Mar 2026 10:59:38 -0400 (EDT)
+	id CB11F6B0096; Mon, 30 Mar 2026 11:00:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF9D06B0096; Mon, 30 Mar 2026 10:59:37 -0400 (EDT)
+	id BEEA06B0098; Mon, 30 Mar 2026 11:00:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF2E16B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:59:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AEBC26B0095
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:00:33 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 966BCBA56C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:59:37 +0000 (UTC)
-X-FDA: 84603038394.18.C9D206D
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6CBCB100004
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:59:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774882775;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=PTNxb6Etn5WzbggTULw5IA9naJw19ig+MxlkE2r34ZQ=;
-	b=rX2e2Rq4oFL9EdNVX0cgAvmqInee2eHiN46d02RsklP8NuOhDGjPDetXebI56irWZk1mZG
-	/NSqPwIQ0vvaXf4FjfA+KQzKtTOJ7Tw+Zfta7ZZvzy7pwjrrzffdeoTqQ0t4V8WddkUJE3
-	YJX7Bjrakd/Ut1ZV23R/MUTHGsXUWto=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774882775; a=rsa-sha256;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 82AD214058C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:00:30 +0000 (UTC)
+X-FDA: 84603040620.18.A8DD257
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1197E140022
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:00:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dxba+iSI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774882828; a=rsa-sha256;
 	cv=none;
-	b=wpiRmtgHwKwypK59SJHXQ8U+qdWrZtZbUlB2cewQ8oYphd2/vZb1P8XHqi/nGNmKyCllZQ
-	zU998Wh9CpUJSNwiHySpR0ZLZA+pa7HXIYG4nOpfD6RzzCdzDkfSToOov9QuVmBSi8GMhf
-	msAchV6viStwcqgsqGOGdD1L5p1Y7xs=
+	b=fWLC/QLzQucQ/c73hyh6CjDJO2OnciKiLZnfFUHnrJrEBPn5Bu2pvbcKz7uM9o5XIxyFst
+	mibSzolPdyskY1r8l9EiwDAgbhsW9IGhFKQfRSMCTrrgdD3bCFztNohWwSBEfBTfXs6BJu
+	QO88XjjEj4KRE8MgUW9yJ2mXEgdqRIU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fkvX506BTzHnH6r;
-	Mon, 30 Mar 2026 22:58:45 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 67DDC40572;
-	Mon, 30 Mar 2026 22:59:30 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 30 Mar 2026 17:59:29 +0300
-From: <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v1 1/1] mm/damon: support MADV_COLLAPSE via DAMOS_COLLAPSE scheme action
-Date: Mon, 30 Mar 2026 14:57:58 +0000
-Message-ID: <20260330145758.2115502-1-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dxba+iSI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774882828;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EYUU1KvU8lLb0i6Ow26Om7j+lc5VGCWK6zWWACZlhzI=;
+	b=2vg3t9uBK+JRfaECdStSNXZhnPn+A6ZQHuKW/aHTIboYUP1aMYpSbOzj22ihwinpCRb8og
+	8C8uqDTlzx4rCEykip/9Ec93qdQAERu9W0pzxyhgbEzBrkzhN/ir1iPuhYGYk65wKUT4EF
+	4kTd9hJhgfP7QmF52UAKFIVbiGVpt3Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 34AFD600AE;
+	Mon, 30 Mar 2026 15:00:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD4AC4CEF7;
+	Mon, 30 Mar 2026 15:00:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774882826;
+	bh=ALCW94wbuSogxnAbtTw+nxjhUDLVX0cRyoDJHU2dn20=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Dxba+iSISY7aFU2yWaJ9zsY2iRii8l9TgsJux0sFGh5ImuoDNY9Pw6dMlA6kKsxwB
+	 CNx8ajzJlX3bT18xXFfCLDgd3XvubqCdyNPpFQvOsDdvhLVGlPjCxlLO/nvreiXoP2
+	 HHYZhVDJV8KUkQxXentQIO+5nUyemfVbEZAm9PBSZpSSbgy1QCDJ15jFLnd+r8fmO/
+	 ZIasr6HDHUq56pp4i4VpkpunGVeVNlV9hEFT7xMRs6BjOyAfnd3EY+TtexwkxnjxCc
+	 TfU4lj81sWZ/+R6WdGEbZ3+K4u2G6V6Yc0lLZ+bnI2VNFKJ4wA8PD4gCDqsnT0nXpM
+	 qObUQXgBwSd7Q==
+Message-ID: <bc146b2b-8d34-466a-84e6-d49eac9b66cf@kernel.org>
+Date: Mon, 30 Mar 2026 17:00:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam12
-X-Stat-Signature: je4hsdo8mkwcafiagwjuiraata5dtdtw
-X-Rspamd-Queue-Id: 6CBCB100004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [patch] mm, page_alloc: reintroduce page allocation stall warning
+Content-Language: en-US
+To: David Rientjes <rientjes@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Petr Mladek <pmladek@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <30945cc3-9c4d-94bb-e7e7-dde71483800c@google.com>
+ <231154f8-a3c3-229a-31a7-f91ab8ec1773@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <231154f8-a3c3-229a-31a7-f91ab8ec1773@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1197E140022
+X-Stat-Signature: ip1oru339tgab44z3foxrytk7xht4784
 X-Rspam-User: 
-X-HE-Tag: 1774882774-927189
-X-HE-Meta: U2FsdGVkX191ZgXk4LJ05k9YEAENV1u8QmuEh4a9m/0ciVU56c7mpmps7LayG6SJM+KBBC6KOGEAzXPRjGw2nV87E8AbSNT4g8i4bD9oUrrwKXmXhwjlaewDrMfsa0R3+ya2Q5CIguon08/smrd88Fb1+ImqjC8zse5i+5FXSeINcNuheqYadugRGL4vOvFFZZ+kfGtjOdkPo5jg8ej3JfuxmZFe2YyMXbiw5sjRYu067IzH/l2j7h/s7ZPbFAszELWrB9dShWdtsNHJ/u5NICXNoESiZsBptHZNtOqfq3aOQW0uVG31hfP4BbKg+gGlxtW8kV5wbI3T55nnygYVqf9efePTopVmURVZh/Tt9UUWadlLf0hBSWK3rxYw44X9SdaqVeU/gK3h6aFhHzZ42ihCw7rbToK4er5SD89asJerCWru3gpm7iZzcuObJz3PRWlVeIZG0P0OjKvmUL6TjsW7ze34nM6mJFXt5xfhh20dXEB/QF9g1c8qgQMh3bu6/IwvIlt09UiHZ+rRdT6lT+01EQV7Q/E9Dzi0zjELmfSAuOKZunDFLjU6BSlFyhohsSQcvUmr5pVWUg/ICNof6UzkJ7v7o1OVMF2pIrxrH3l9OfXHMloOj1uv4Zn0X5koFA5DzzWV6qrB7wPKR3qw26GEqRCd2dkRHgexsje7JQymfkRLjPEfPEZP2PTAgdhQ8vrq8W8Emwvk1uekiM5tx3UF4UIFD1Y9EpoJiKc44hwQrdmPtiGxysgd3VbZ08ocMExiuZ6o6mvs2O7UxmSe6YxVsj47nG+HdERrsj23PWm20CHrU4zLLsaMYbHVhEogCXfNHKnoXXe44BUOiiGFmwPW4nHFkbvTL3lWAsG0L6qwZ8aJvKrG7clduW7ZdrxurrUquh61D4LLQsaCo+swUVizVk+1ff1UwR0uAhMNjqbw+jymQMgfH/PXSpUDwjqiEK37cUCOtoG007ztb6L
- r3Pe+OGH
- O7S6wFH/p/PsDXWYjfFAVduuA5Xxrpl9EOSXdaDnjVfVKKEp7emjrLwRgJzOIrfWf2QeWBD0xapn3oc0T8S1r1H6HeDVgBp8bkqvZDUXsZl47yCUg1n7SpUdZYrl/7J4YVyKQaQTA7VwEYLx3GT0ZV16SVWca6ujRalw9Rf6qP/k4TEwext+SKD7W4T8aoDgZ7f39PujdgG6QFX0F+MmaSvI8QSmWmc0Jifz3F2fSy3t4XetFy5ywMFgrCNGYhrljqoiN1hLM/YDwjBrS/ktA2CXs5XMCoQccWfWKeXpnsnsyTfA=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774882827-287352
+X-HE-Meta: U2FsdGVkX18uQ06DTbMuac3lJNXWh8w66Z804RlmVGDNl8biB2SD8pHrr5hMTFLrJ1xpInpogDQSHIwgYGNriwZv0hEVM67jIgzR/BNYagdPyKb9Kuq16r5aTD9Zz/asA/xrTCiVgiFJBOp8WgdTp4TiT0J7ylTnpP9q4pA0NNXeBsn/CFJhliK4TlMMYSrEXE1kpYjxAlSql2JyHXauPF7ZNAcRR4OPkox6ZHittHHOJuxzQIg/Y40nzHiLImigjAAg+PkheZwav7JmhMz1XrW1m1DeXEeCVnQfDEA9mmPwgIm8VvU679guwbO3Z+xCrFp/psbcYD1VAzCbeSlQgbWDBUrnUM5UjgTwEunJ+AzaftBxBDw5I/VxsNTsaZC9CRSYP02INL76DRXi4Fn0c3ztQ5QOFfsdckAiA2fPfbISRqObh7YGCZnFQ193edb1qY8SEs+sCkJ2wxcROZoiN9Vb/WXwV7JEgHYckid6K50FyUEFYqBxLIrRZ35jPG/wkIvoKWZT/FJ9CUQr4Y8+YH2MfAgdK6HO1C7aSMFJe5qOw3q7PevKZKGMwXr4Xv1UwpUliaKETn6IfTvErIfs4yf0BxcmeNfGzukpNioVIKy90CLAc565azl5EVxj+VQtx23GeaEEa12pLLxp7rV8grzI1bnf8vcBE+hyMXk9XlQjsKLF6/g56FKa60hRA1ab4ySej/GAU0uScmOKEIWX70yFJXi0wiKTXlM8tOCT1sNgATZaOQ2rVhZHxOyiVTgQwdNbHcR0bVvD/I8NMk0+/tCzyoUI5r7/bYK3dZWJdcoCP1urzXq/lXoc+4x07gNvmpGD2GTOOxcBKdyPD/6giXxcnwTbxRykgpP59zwF5Us01/54WlxLVpf4MUvXal9lOfy05inJQiBl6IxO5vqhEj3Nozo9H0IZgBLX7J5fzZd3tGw2foFX+gWV4+nhteMwcdx3HqUKv4S6LTG5yBr
+ J3lEv2kx
+ Fel8izzgIr207qR7QMT9jJNH9YQX4ZJo5HshzelWDwwpi3uPI64juozUUkEKIt8yJpkzLPAQexwLv9yt+Ty3nVbFspOQbR3cIkCcLVu6hR0EpSFQhW0KhhsogysGj3I843gvUTvRVYBYTld7NGO9QZAZzG+LhAk0XNuH9Lymnyry0D0x6NC1Dldpmu7uKZuUcuUIw/6wbIvHzw+1U+2nkJOoIhuyYTHfhIrS23dW1hFZLymjy4Kr5IJyAHu32Kn3wxCJNu08M9CEbNRXplN0Qwy3eiHh7eTzOjkDfYQsVe2ZW1xecWmfxWECmyTqam790tfUxFDl7/2MU24Y3Vf/Scszv6Kb7ZqnzrGLe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,191 +97,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+On 3/30/26 03:08, David Rientjes wrote:
+> Previously, we had warnings when a single page allocation took longer
+> than reasonably expected.  This was introduced in commit 63f53dea0c98
+> ("mm: warn about allocations which stall for too long").
+> 
+> The warning was subsequently reverted in commit 400e22499dd9 ("mm: don't
+> warn about allocations which stall for too long") but for reasons
+> unrelated to the warning itself.
+> 
+> Page allocation stalls in excess of 10 seconds are always useful to debug
+> because they can result in severe userspace unresponsiveness.  Adding
+> this artifact can be used to correlate with userspace going out to lunch
+> and to understand the state of memory at the time.
+> 
+> There should be a reasonable expectation that this warning will never
+> trigger given it is very passive, it will only be emitted when a page
+> allocation takes longer than 10 seconds.  If it does trigger, this
+> reveals an issue that should be fixed: a single page allocation should
+> never loop for more than 10 seconds without oom killing to make memory
+> available.
+> 
+> Unlike the original implementation, this implementation only reports
+> stalls once for the system every 10 seconds.  Otherwise, many concurrent
+> reclaimers could spam the kernel log unnecessarily.  Stalls are only
+> reported when calling into direct reclaim.
+> 
+> Signed-off-by: David Rientjes <rientjes@google.com>
 
-This patch set introces a new action:  DAMOS_COLLAPSE.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-For DAMOS_HUGEPAGE and DAMOS_NOHUGEPAGE to work, khugepaged should be
-working, since it relies on hugepage_madvise to add a new slot. This
-slot should be picked up by khugepaged and eventually collapse (or
-not, if we are using DAMOS_NOHUGEPAGE) the pages. If THP is not
-enabled, khugepaged will not be working, and therefore no collapse
-will happen.
+Nit below:
 
-DAMOS_COLLAPSE eventually calls madvise_collapse, which will collapse
-the address range synchronously.
+> ---
+>  mm/page_alloc.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -316,6 +316,14 @@ EXPORT_SYMBOL(nr_node_ids);
+>  EXPORT_SYMBOL(nr_online_nodes);
+>  #endif
+>  
+> +/*
+> + * When page allocations stall for longer than a threshold,
+> + * ALLOC_STALL_WARN_MSECS, leave a warning in the kernel log.  Only one warning
+> + * will be printed during this duration for the entire system.
+> + */
+> +#define ALLOC_STALL_WARN_MSECS (10 * 1000UL)
+> +static unsigned long alloc_stall_warn_jiffies;
+> +
+>  static bool page_contains_unaccepted(struct page *page, unsigned int order);
+>  static bool cond_accept_memory(struct zone *zone, unsigned int order,
+>  			       int alloc_flags);
+> @@ -4706,6 +4714,40 @@ check_retry_cpuset(int cpuset_mems_cookie, struct alloc_context *ac)
+>  	return false;
+>  }
+>  
+> +static void check_alloc_stall_warn(gfp_t gfp_mask, nodemask_t *nodemask,
+> +				unsigned int order, unsigned long alloc_start_time)
+> +{
+> +	static DEFINE_SPINLOCK(alloc_stall_lock);
+> +	unsigned long stall_msecs = jiffies_to_msecs(jiffies - alloc_start_time);
+> +
+> +	if (likely(stall_msecs < ALLOC_STALL_WARN_MSECS))
+> +		return;
+> +	if (time_before(jiffies, READ_ONCE(alloc_stall_warn_jiffies)))
+> +		return;
+> +	if (gfp_mask & __GFP_NOWARN)
+> +		return;
+> +
+> +	if (!spin_trylock(&alloc_stall_lock))
+> +		return;
+> +
+> +	if (time_after_eq(jiffies, alloc_stall_warn_jiffies)) {
 
-This new action may be required to support autotuning with hugepage
-as a goal[1].
+This could also be an unlock+return if the opposite (time_before()) is true,
+reducing the indentation for the actual warning code.
 
-[1]: https://lore.kernel.org/damon/20260313000816.79933-1-sj@kernel.org/
-
----------
-Benchmarks:
-
-Tests were performed in an ARM physical server with MariaDB 10.5 and 
-sysbench. Read only benchmark was perform with uniform row hitting,
-which means that all rows will be access with equal probability.
-
-T n, D h: THP set to never, DAMON action set to hugepage
-T m, D h: THP set to madvise, DAMON action set to hugepage
-T n, D c: THP set to never, DAMON action set to collapse
-
-Memory consumption. Lower is better.
-
-+------------------+----------+----------+----------+
-|                  | T n, D h | T m, D h | T n, D c |
-+------------------+----------+----------+----------+
-| Total memory use | 2.07     | 2.09     | 2.07     |
-| Huge pages       | 0        | 1.3      | 1.25     |
-+------------------+----------+----------+----------+
-
-Performance in TPS (Transactions Per Second). Higher is better.
-
-T n, D h: 18324.57
-T n, D h 18452.69
-T n, D c: 18432.17
-
-Performance counter
-
-I got the number of L1 D/I TLB accesses and the number a D/I TLB
-accesses that triggered a page walk. I divided the second by the
-first to get the percentage of page walkes per TLB access. The
-lower the better.
-
-+---------------+--------------+--------------+--------------+
-|               | T n, D h     | T m, D h     | T n, D c     |
-+---------------+--------------+--------------+--------------+
-| L1 DTLB       | 127248242753 | 125431020479 | 125327001821 |
-| L1 ITLB       | 80332558619  | 79346759071  | 79298139590  |
-| DTLB walk     | 75011087     | 52800418     | 55895794     |
-| ITLB walk     | 71577076     | 71505137     | 67262140     |
-| DTLB % misses | 0.058948623  | 0.042095183  | 0.044599961  |
-| ITLB % misses | 0.089100954  | 0.090117275  | 0.084821839  |
-+---------------+--------------+--------------+--------------+
-
-- We can see that DAMOS "hugepage" action works only when THP is set
-  to madvise. "collapse" action works even when THP is set to never.
-- Performance for "collapse" action is slightly lower than "hugepage"
-  action and THP madvise.
-- Memory consumption is slighly lower for "collapse" than "hugepage"
-  with THP madvise. This is due to the khugepage collapses all VMAs,
-  while "collapse" action only collapses the VMAs in the hot region.
-- There is an improvement in THP utilization when collapse through
-  "hugepage" or "collapse" actions are triggered.
-- "collapse" action is performance synchronously, which means that
-  page collapses happen earlier and more rapidly. This can be
-  useful or not, depending on the scenario.
-
-Collapse action just adds a new option to chose the correct system
-balance.
-
-Changes
----------
-RFC v2 -> v1:
-Fixed a missing comma in the selftest python stript
-Added performance benchmarks
-
-RFC v1 -> RFC v2:
-Added benchmarks
-Added damos_filter_type documentation for new action to fix kernel-doc
-
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
----
- Documentation/mm/damon/design.rst      |  4 ++++
- include/linux/damon.h                  |  2 ++
- mm/damon/sysfs-schemes.c               |  4 ++++
- mm/damon/vaddr.c                       |  3 +++
- tools/testing/selftests/damon/sysfs.py | 11 ++++++-----
- 5 files changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 838b14d22519..405142641e55 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -467,6 +467,10 @@ that supports each action are as below.
-    Supported by ``vaddr`` and ``fvaddr`` operations set. When
-    TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
-    fail.
-+ - ``collapse``: Call ``madvise()`` for the region with ``MADV_COLLAPSE``.
-+   Supported by ``vaddr`` and ``fvaddr`` operations set. When
-+   TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
-+   fail.
-  - ``lru_prio``: Prioritize the region on its LRU lists.
-    Supported by ``paddr`` operations set.
-  - ``lru_deprio``: Deprioritize the region on its LRU lists.
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index d9a3babbafc1..6941113968ec 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -121,6 +121,7 @@ struct damon_target {
-  * @DAMOS_PAGEOUT:	Reclaim the region.
-  * @DAMOS_HUGEPAGE:	Call ``madvise()`` for the region with MADV_HUGEPAGE.
-  * @DAMOS_NOHUGEPAGE:	Call ``madvise()`` for the region with MADV_NOHUGEPAGE.
-+ * @DAMOS_COLLAPSE:	Call ``madvise()`` for the region with MADV_COLLAPSE.
-  * @DAMOS_LRU_PRIO:	Prioritize the region on its LRU lists.
-  * @DAMOS_LRU_DEPRIO:	Deprioritize the region on its LRU lists.
-  * @DAMOS_MIGRATE_HOT:  Migrate the regions prioritizing warmer regions.
-@@ -140,6 +141,7 @@ enum damos_action {
- 	DAMOS_PAGEOUT,
- 	DAMOS_HUGEPAGE,
- 	DAMOS_NOHUGEPAGE,
-+	DAMOS_COLLAPSE,
- 	DAMOS_LRU_PRIO,
- 	DAMOS_LRU_DEPRIO,
- 	DAMOS_MIGRATE_HOT,
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 5186966dafb3..aa08a8f885fb 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2041,6 +2041,10 @@ static struct damos_sysfs_action_name damos_sysfs_action_names[] = {
- 		.action = DAMOS_NOHUGEPAGE,
- 		.name = "nohugepage",
- 	},
-+	{
-+		.action = DAMOS_COLLAPSE,
-+		.name = "collapse",
-+	},
- 	{
- 		.action = DAMOS_LRU_PRIO,
- 		.name = "lru_prio",
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index b069dbc7e3d2..dd5f2d7027ac 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -903,6 +903,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
- 	case DAMOS_NOHUGEPAGE:
- 		madv_action = MADV_NOHUGEPAGE;
- 		break;
-+	case DAMOS_COLLAPSE:
-+		madv_action = MADV_COLLAPSE;
-+		break;
- 	case DAMOS_MIGRATE_HOT:
- 	case DAMOS_MIGRATE_COLD:
- 		return damos_va_migrate(t, r, scheme, sz_filter_passed);
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 3aa5c91548a5..72f53180c6a8 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -123,11 +123,12 @@ def assert_scheme_committed(scheme, dump):
-             'pageout': 2,
-             'hugepage': 3,
-             'nohugeapge': 4,
--            'lru_prio': 5,
--            'lru_deprio': 6,
--            'migrate_hot': 7,
--            'migrate_cold': 8,
--            'stat': 9,
-+            'collapse': 5,
-+            'lru_prio': 6,
-+            'lru_deprio': 7,
-+            'migrate_hot': 8,
-+            'migrate_cold': 9,
-+            'stat': 10,
-             }
-     assert_true(dump['action'] == action_val[scheme.action], 'action', dump)
-     assert_true(dump['apply_interval_us'] == scheme. apply_interval_us,
--- 
-2.43.0
-
+> +		WRITE_ONCE(alloc_stall_warn_jiffies,
+> +			   jiffies + msecs_to_jiffies(ALLOC_STALL_WARN_MSECS));
+> +		spin_unlock(&alloc_stall_lock);
+> +
+> +		pr_warn("%s: page allocation stall for %lu secs: order:%d, mode:%#x(%pGg) nodemask=%*pbl",
+> +			current->comm, stall_msecs / MSEC_PER_SEC, order, gfp_mask, &gfp_mask,
+> +			nodemask_pr_args(nodemask));
+> +		cpuset_print_current_mems_allowed();
+> +		pr_cont("\n");
+> +		dump_stack();
+> +		warn_alloc_show_mem(gfp_mask, nodemask);
+> +		return;
+> +	}
+> +
+> +	spin_unlock(&alloc_stall_lock);
+> +}
+> +
 
