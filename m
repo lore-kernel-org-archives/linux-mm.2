@@ -4,94 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90302FF495D
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:59:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A668FF4959
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 08:05:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3ED66B0092; Mon, 30 Mar 2026 03:59:23 -0400 (EDT)
+	id 913976B0092; Mon, 30 Mar 2026 04:05:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C16616B0095; Mon, 30 Mar 2026 03:59:23 -0400 (EDT)
+	id 8C4526B0095; Mon, 30 Mar 2026 04:05:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B53706B0096; Mon, 30 Mar 2026 03:59:23 -0400 (EDT)
+	id 7DA476B0096; Mon, 30 Mar 2026 04:05:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A3E036B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:59:23 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5254113BA0F
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:59:23 +0000 (UTC)
-X-FDA: 84601979406.14.8F556E0
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2601D40003
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:59:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AXPYtrdY;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AXPYtrdY;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774857561; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C54D6B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 04:05:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E7A5D1A07A1
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:05:48 +0000 (UTC)
+X-FDA: 84601995576.15.58B7A5A
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2C40540010
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:05:46 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Wz6QGvhX;
+	spf=pass (imf04.hostedemail.com: domain of 32S7KaQkKCLQUfcWYlsbfaiiafY.Wigfchor-ggepUWe.ila@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=32S7KaQkKCLQUfcWYlsbfaiiafY.Wigfchor-ggepUWe.ila@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774857947; a=rsa-sha256;
 	cv=none;
-	b=dRUXddH5l4/qfMQqkW0CoRpU9/GPFKUu5ztMkM8k5iR1T7K1up1V691UJUowMl8+GxMQ8Y
-	oCCvjkQOMAAg7Sq/Ahqvs9Oy+1QmBxipozv3bP7YX1KcJVwJrMLV0QLX9mAVYsCdKFEUWM
-	4iQTillAS8dEDqMRofrbl780QVA57ks=
+	b=6QeibVAfTcgxbLfHc03aSZ+RgmlBA+Q8HwP1dTcEqbo8Qhgf2V0ZUGEzN8Mff+H54QbI62
+	FhO7SKBpPSB4L9yIME0e63F54wYDJRUfTMvZ1nJ0Uxdh7ajyklnfrrtNb80/QGpNwE0Hh+
+	qnkVDF28OJ/OmXRNCC6JK4HTtc12hUQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774857560;
+	s=arc-20220608; t=1774857947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GDES+AFFgmGvx0gQMExZ60voHnnQ7hBjinDGrfhyCrA=;
-	b=ejCFoMAVAWssILka/47YEPw+xcA0E45IbxN31VuTClB8mLsdlaTzynCumo9bKlgwGAA5Su
-	2UoSzzyHNdrCE85B1VNwHhsI2jD+I3Rxfs1I9DUwo722XLTJXbrMRYVl1uGcZz5gBNzmKY
-	BGzVfZ0Lhs3oHLypbp9raG4AgEv7LpQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1774857555; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=GDES+AFFgmGvx0gQMExZ60voHnnQ7hBjinDGrfhyCrA=;
-	b=AXPYtrdYJjVwrUEDgO1lTwrWPcJwOhBTzzHouuhiCnHpIfb9xowiicMQwUZ5n4FUCHx7PvrhZl9EP7brAKF7G1jzwFhS9USv5x+N0+UwKc73DlbvccErHWYFC2s+mpUB9qrlgeEH0eN5cJW1ajhmEhEklU75k6ikKVXIE4TD14c=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R291e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X.wCb4S_1774857552;
-Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.wCb4S_1774857552 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 30 Mar 2026 15:59:13 +0800
-Message-ID: <dc97a330-b83a-4f32-9bc2-f996fdc33665@linux.alibaba.com>
-Date: Mon, 30 Mar 2026 15:59:12 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/12] mm/mglru: rename variables related to aging and
- rotation
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
- Qi Zheng <qi.zheng@linux.dev>
-References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
- <20260329-mglru-reclaim-v2-2-b53a3678513c@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260329-mglru-reclaim-v2-2-b53a3678513c@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2601D40003
-X-Stat-Signature: 93xie7qiy7ko31hwbybiupz1nyirbrjo
+	bh=SxrbijMaKAuewdVUb4A1KCDJ8qmmr9UD/wuwFSQmNlU=;
+	b=dv7dkswkFHHtivCcdKiqL4nROuW2SZwEtFZLG8vunjCd5E++t/GdGBamBqKtZBjzTnq/Mk
+	uvRgcw/Gke2efuegHrR2PwyV1Huw0Zq63FX7vtZEs4QReEvT1mNhALcsj9UWNmoWe5iJ9X
+	OCinJFqbS5n+iwAL0ILE/RFJYrk8Xkw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Wz6QGvhX;
+	spf=pass (imf04.hostedemail.com: domain of 32S7KaQkKCLQUfcWYlsbfaiiafY.Wigfchor-ggepUWe.ila@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=32S7KaQkKCLQUfcWYlsbfaiiafY.Wigfchor-ggepUWe.ila@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43d022974acso466301f8f.2
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 01:05:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774857945; x=1775462745; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SxrbijMaKAuewdVUb4A1KCDJ8qmmr9UD/wuwFSQmNlU=;
+        b=Wz6QGvhXQJq+vR2KvIJyy7SroLANw7kxKpSUrHzGj+6WzU5gkrmKCKOhksP823bOey
+         erZ2FfCOk1ldMn5/rVNah8+l97UDGm9QSf6oatckhymSCmHzx7243dQanoCx1Tz3ZR4K
+         5NitynOacChMF9iaFLKPYym+gL/dEfv1m33TuDVviOf0SA0Mr8ubx24yM7wZwEARPlTq
+         TKVnNe0tlB4TAE/sHjKjUvFThGxU8cISJ2t6S4frbZ+yfz0lk4FJzgQX2+I+KCa/Lt6+
+         1HuFwjdmtuTppRgvMbfO9Ek9vs2LNybuDz0cnTsmSQdI64HtmZdn8mPyaPm7DjYNq3Q9
+         uEYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774857945; x=1775462745;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SxrbijMaKAuewdVUb4A1KCDJ8qmmr9UD/wuwFSQmNlU=;
+        b=QR+ea3iYpXyIl4gFTYrcQcYv4zfRyZsEDO4HvraXjN6rsxORlYE9GAhVnmXgxvRgYF
+         FVTqusya0dDphE6pMArED37kz2NVP4GdXwE4NsmatZddJw23SvSglJ4Lv5USA/fKOPN0
+         f1BRwIxalvGrDalOzGx3CYbyXhe05woz3fHbtzKtASEUtRRPJSdQc0ZAXkGwO5xmER5f
+         B3D83HKhYUadN5LgP9Oi/hdgsU+c5XTwRD/Q5pGaK1UmNsg4K7Esu3yUmQbKGcUxWhCJ
+         P6K1NNn1r05zSBGL+Xf5r4alft0ANApRPe0JIXHYfFBBqAaVglrBPABUgiIOFzfyPWCP
+         4mbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUGMV7+XB3tAbRrkddnsyJNtx/BXKXlmWNUTIJ+iWj4alRGTu6hyozkPdyyqgXMzm5FCmV1C+sxg==@kvack.org
+X-Gm-Message-State: AOJu0YzVliPp3e9PxQN1xbmcP7Z1VL566KTlBK9Xy/LKRpMzkFE7Pj6N
+	wLaupUKMh6A48Zh7EEQaGEyiwTAmM9LNLqfZpxLrS9/0OxwRSROCP7zOTnbXAY8szdYPPyM4/6z
+	cwi/ef+ZHQygQoXqP+Q==
+X-Received: from wmby6.prod.google.com ([2002:a05:600c:c046:b0:485:3a2f:2f7e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:810b:b0:487:219e:41c with SMTP id 5b1f17b1804b1-48727f36da5mr169791385e9.28.1774857945322;
+ Mon, 30 Mar 2026 01:05:45 -0700 (PDT)
+Date: Mon, 30 Mar 2026 08:05:44 +0000
+In-Reply-To: <20260327113758.75f04588310a707b4d4b1aac@linux-foundation.org>
+Mime-Version: 1.0
+References: <20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in> <20260327113758.75f04588310a707b4d4b1aac@linux-foundation.org>
+Message-ID: <acou2CsZOUQPx5nW@google.com>
+Subject: Re: [PATCH v8 0/6] mm/vmalloc: free unused pages on vrealloc() shrink
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: shivamkalra98@zohomail.in, 
+	Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-HE-Tag: 1774857559-299280
-X-HE-Meta: U2FsdGVkX18hq+gFH9//tTfx1oZKnZye4MGdIagymcBwcB8Epq7C9NDeNRSFz/pAVUt6UV9iUTiE/qtFGtpcAbE0x0dSmiTKtZv9FUwEaL5/Lfy3ko3MoOmq7q9a7b+hG/IVOv6pX5E71fwu1EfZouH9BG5Xk4LPmvs/thmRNjuZbS8Y8O8vyEYb6E8qENEEJkvZFVJWHSRJZoWgXJuDjBexshEqR+lfFVz/yCk+AqRWvsTmhPxMgbo5AiC3HxNZMZ+ny7jcaatUxsOqLRoiNmYdMg6GSk3k8fgowl/Q16AvO/hD8ddvTyrPDRnbYwkJShsTmWKkPpMICIesy7V6YRg8zwhV6HAH79j0OXFfHJUvReCEhuKVAmr1LDsXU3nYF3RmSLlhNYaQrjohb2lVtDF5ld+XX9Ygbc7FomBr2v70Ieq7o2aYCF6feEbu2z69YeG6of8dSxTF+Ra9MWsQgrzk6d8V5lynsijI3S88LTvuNIEbdWbYolpdBUBNa4wr8tXeAuQwIF3PchpaUPhU1RTTDqF8re8WDFcq8skS6L2VI/49Pzk0KiyVTZOfcTUOKKQCgGhdx2E04FymYDi0bglr0Fd7ERejKJ8nFW5Ot2Jd1ZL1BAVlV35Y4EAZ5dZtHpKEOPCoN71sTvbzZusp8AqVeaJXT4AxctEWGyRlWcJh3P6p5u6T9pwjaKDa4LjtLvTM90iNoOx6e9rf/Lht9Zi0oKFJc5GiUuA7L3O/dFCYLMoZkFOUDyKOtzqot8o/zH1y4d6e/bIvB1fBUoDTGsDkRrowNIVk0sa8G5Ggcax2BmWqIzfPaGo4gLudwpGaI8IxvP2L6waV4MBxGqKq+oOYBMrroHmq6rWQS1eXcq/DPxf7U+2oXbVEY+yjCxEpUtheMZtQ2JmGOYA2pUbf9R3pbTld4ZgoJEeAOblemXLpfCrXo+mKNBAuKBp+Yc0P6PfMLgeh0ydjuFGtfeC
- n6vCS1Qs
- odZZoh6prcZlD0ac/Ac2cCADyVJiKrvqXt0wne34SNosn2SKKCybCvyslZc9i1BUfjTnyBmws/wbJbZktI2RHbtFWsB4V8nOGmqnW3n/nld5ytrLQku43nS9fr3CW9ArxKhdb18Z9pU2aIujKE+h2ZgkCAPSKLhUzS0HqBHyib5K923uQ9xU7KW7aNQ5bYyydIHs5ucNt/QUOfDNdj8Qzy1BSSHdt019ThvjnNBVb7ZyjFsRZ37eicJfB1WSbD+zqr+Wn3q0eIWky6QA6xzQq2zc28kNLxBKL7XfVEfBQrTPDnKrx2pzK6gW5cfmWfRvoXtAXLSn9of1+w/tWpP2ObL/pE3cPxvv7Yd50KWdtMlFV7wrlPp7xAscyIHm8omIPQKiBszPMkIVMnQlJ0tRTs58DsWmnFvVrvAaJ
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2C40540010
+X-Stat-Signature: j6k66d1pkdkkyaah6g5cg9qzdsqczy8w
+X-HE-Tag: 1774857946-945500
+X-HE-Meta: U2FsdGVkX1+pJ3bDkhlKw2RHqAGh/S8Og87woxxvTSGtjfybBqyg/y6AU3mHHoiR/6illO5rBBdP5i/wjy1hmDwg3WTMFMr6UjeNgrb4CRwxtv8ht+5sZfvegiup8HKjFfcNMzvypCGzpQ1FFRSeaWjCY9IHbe7b/0zB9mr54BDpsn2spcpyhthB+bohxoYN4S6QObYk3z02I/MCicxPrfnPLlLIUhLsYOERW01iS/vyuiN/L0I5ehkmBeNp92b1arlncTxIKse2tyiemkCU090MEUrX46VAYQAxwcktZIlEcJBX6EwD5kNntALReDqyqg1s0eYYjJPD06zUu+w1Nt4XKygs9d9LsWkcUNu05wMdRUNaWm97j3VtqHjl/P0xTOwtEizQZLTVER9HiiUuvBzgU6Z7VPxtTzx4rQZwjYc3Mj20g4Q3XTux6S7eFlrlX3trsdBevSuwIBROBSMn9z8ZdqhgnpnWODGRE2Th+8cdIxbHMx2yITBCdnMx0vUovnMGBqmHgVQ3JRtwPiUP13jHWrXxRslnk7YSX/oUwLEUF+qPBRaavs+2Pph2LCtMb8wjwC71XLCNNZSB8dahR/pOXKxZTwpKeUZYJ+/7qyMGTMifXJJB1+Kcon9a1NM1m6HEoqr0nlOfblMdLd1bQUc1E/6QGyK2mocvb+2C/wFTaNGDdPhI8yu0SMfxo7s2VeP7aXdOmxxZ+VxYJ3fcpfqB9Kiys3MQNj/DFvRPZpkkGrQnUlG9SPO/VojoziU10fsVeXGfi+jSfF0Dk/5UbA98uI+UnO8HvTZ6r4K2wSriDxS0dC/KdJL8VynrfoMFjl+5xAsAbjXxNkkN5wzdMvyRD8mSV14LBiRRRrg+X+2ajLQMn2dT6X2KJoTLI06STDbGSa0s5zkAO59KEcGME/6P4a6IE31SDwbNB1sMXkPRw5I5eX6r8sAp+vZ/aGzq2n+6h4XXgEJ5V5KVkV6
+ MTNJbgwb
+ AHnlmikLUhp6MIuItSFPkoaFji9RP/evpVPu0ThFT76vpTS8DTFpJYhm6PzzQ1+20QNE49+r8Wfr7bZxc5dbZa3ysDRPg8xx9jEGtZAf+/m5wy4VlydWgi/mLQsfe++fZay0Ywyzcbug/1Bkx4ErbAuQ1Y63G/EFy3LR6B+Iiew47FtmqCi70KexzBApBeZXTkK1WFvLIcDl5JpCQWYQqz8VeO6BNnAfRt8KJPRqnUpIeEarn08WfX534KDl2RyFx9ara8KBiEuZlTN/o4rzSwO+WJuWnWgxtqd+X2i7u6z4mLRDOVVr2ZsLPaB8urFAykz5H5C+/7nh581J2I7iEQoBqddK4cwIST5EzQeWGcz8HETyU+GW43vFYTYAV4omZ6RSFMmMSi8YcAovT4544zfjwnKLEQXxhZmjaN7MxdKZeuMvDNLIIbVipIPQAosa0+xxxIOag7dRObeMyXKekKN3rQkSrKkJ2kbj3eafpjXs0uOr4kOY0W0lWrS9oBRWhqX/GeZjbyHg6EusV77R19uqgwBZykBof5PNZhY3dqSb1tvSazeKqw4VexVXxvItEfZXF6xlE5wHqZ/XzEWdAyj+k8prGc8hbETiPPeILL23A4xJNcTTlXoTQ+O4PTRJs1LjytUJpt9DKMpDwURdIHa0gKlYyfGsi5tSTXZG1nfHk5kvun8fejqSQI2n9B+qG99ZemcI/F+R4GTnW4S85DxFJjGS4Lt4rJhzwa0zEy3gASYP7J3t/rhenXQ9Zd0jI+cp303ST8JDKL3bsy8g2KKAIvaAYiPx/mJLXbkH5AOhd4cG2CpqxLnNafQzsfVgtEikpOFzPdU+Ml35Wgu9MR4gKIXm5+QDN2b/Glmh+OMUdOXuU/lRHNRr+9WNrHkUw2Mnt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,20 +108,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On Fri, Mar 27, 2026 at 11:37:58AM -0700, Andrew Morton wrote:
+> On Fri, 27 Mar 2026 15:18:36 +0530 Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
 > 
-> The current variable name isn't helpful. Make the variable names more
-> meaningful.
+> > This series implements the TODO in vrealloc() to unmap and free unused
+> > pages when shrinking across a page boundary.
 > 
-> Only naming change, no behavior change.
-> 
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+> Thanks.  I'd prefer to defer this until the next -rc cycle
+> (https://lkml.kernel.org/r/20260323202941.08ddf2b0411501cae801ab4c@linux-foundation.org).
+> If Ulad would prefer that we push ahead then OK.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+That's fine. No rush from my side.
+
+> Are we able to describe how much memory this change might save under
+> various scenarios?  If the savings are impressively large then that
+> would get attention.
+
+The primary purpose of this is to ensure that this scenario is not
+possible:
+
+* There is a global list in the Binder driver. It's an array allocated
+  using kvmalloc and resized on demand using kvrealloc.
+* A process decides to add a bajillion elements to that global list.
+* The process exits, taking its entries with it.
+* The global list now remains extremely large for no good reason.
+
+I don't know if it would save a significant amount of memory for
+well-behaved programs.
+
+Alice
 
