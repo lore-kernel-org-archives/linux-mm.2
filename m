@@ -4,125 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D63210F3DCD
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:10:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BA8710F3DCD
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:13:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9362B6B0098; Mon, 30 Mar 2026 10:10:16 -0400 (EDT)
+	id DCE3E6B008C; Mon, 30 Mar 2026 10:13:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90D916B0099; Mon, 30 Mar 2026 10:10:16 -0400 (EDT)
+	id DA61D6B0099; Mon, 30 Mar 2026 10:13:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 823706B009B; Mon, 30 Mar 2026 10:10:16 -0400 (EDT)
+	id CE2A76B009B; Mon, 30 Mar 2026 10:13:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FE436B0098
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:10:16 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DCAE2160582
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:10:15 +0000 (UTC)
-X-FDA: 84602913990.08.AD9F647
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E928512001D
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:10:13 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dczxyxg4;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC9DB6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:13:37 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F0FB1407DB
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:13:37 +0000 (UTC)
+X-FDA: 84602922474.09.520ED9B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6EBD5A0017
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:13:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MEAQK5d5;
+	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774879814;
+	s=arc-20220608; t=1774880015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/xL8uHHzuWMbBwJ5+3HtVtL72FNsO/9cgkReiuuiZMA=;
-	b=xTG8j4bKOlul3rubFRtXgbqDG2KBPLsCicnWfjw5sEUzbp0XJXDhFlCNdOsSbp01J6/0zP
-	T4UYunuNBTikdrCX2XqG0lq3C65jwmFwuXU0UP2g2XRV4jUjMGysi/carexdBkhRRvj2Ec
-	FTdtGrcGO65Y0TQPOdMukfHpOVfGXVA=
+	bh=mo7Ykh1aeGd+6cOaYYAPKUIZQKgmSZS6b8ZnYB3h/BQ=;
+	b=TmNTA/dZQDBY7/DarZqtX58yu69tK92U1anPlnZP1ypluWyctdxFEYDNAm4Muspo/79VNA
+	rgwaDUQjkreSFlZ7bRzNAhxrgV8sC6ddetbq2Vdc5v48AUnud1PCjJFCPJHxUDdz/UhHDH
+	hFQ8aM3mpcmEjxfgFqwme+/KAvHCKCU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dczxyxg4;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774879814; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MEAQK5d5;
+	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774880015; a=rsa-sha256;
 	cv=none;
-	b=OfOej59Dxr5Xkqx/4t/VVS5Vok9yImTYeKW1lR/s9sJ9jydi4FfjX4KYsb9VyS964VN1vL
-	j2QHQnpISusHGu8bwXjnYsSrI/fvjbvXWPsmb4lvBdlXmdOCtBguOdLXzxPN6rlgoMJvJ+
-	ABzir0baYD8oOKFPctLim3OR8P3A8zg=
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-40429b1d8baso1712894fac.0
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:10:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774879813; x=1775484613; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/xL8uHHzuWMbBwJ5+3HtVtL72FNsO/9cgkReiuuiZMA=;
-        b=Dczxyxg4TOjVfas3igVrngQBuoMzaOGAm03YoGzsw+/1oWqTTbfVtR4x2JH4b26mNu
-         NpKk3icQqzUl+sTWwPLT5LkMbZyV9V4gafZidAU7okf6K6nHTEjZxvjYMwpRr0WOxLmx
-         oFgANmlP4BhChKEOPjtxLwMUB8OE6pTYbUvgrOjqL+ogjbOH/OKDZC7fSMYvhf/C5XtT
-         /2qzJnyt9UlbinoIKiRPuUPosTYrrKHs6YEczStrDp/aEKtYFvX0LR3jJLxFYl/P4WJH
-         eRO5GDtDskCUFdTgW+4GDY+2u5edRnwyja9hEz2LZpeJZAUMk4fA7L1VhdiVl9J+H1A8
-         6j5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774879813; x=1775484613;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/xL8uHHzuWMbBwJ5+3HtVtL72FNsO/9cgkReiuuiZMA=;
-        b=aCqs/Zoq4/sNe84axy7nRefsRc3z1/B8ipP80IAl+9zEmvZ0j6upmFhPUg2XYZqmKu
-         +JsNZDFh2+zwmFUivsut5I1nGNfBWcxc+ObBL/Q3FHqueb9ZJSgkZQcMDb3w+dm+fj6P
-         R4c//crl9AmICV6XYEKuAYI+k+UhzpCXxo5Wep41+BGSk02Yf3h2kWQVL/NWDcYxlsYz
-         x/tZkjqKYo9X4AhFtv1FZA0kqnii9QBdnS5pPCfDLP4leintg/B5Xwk1LDyw9LHHBjPf
-         z7V4JcVPsd8xdhUTWOH4k+LORq7E7uj5yTUJYE8Eh5tXvvJ1HhgOiMA8qDSWUxRL2GJy
-         FRMA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhZYoA8Z2nVw0CH7iBjX7ddE59xGma42EHulxaF+ywjANEbF3IitE1RgJFaWs9x3nhCNXx5KsFQQ==@kvack.org
-X-Gm-Message-State: AOJu0YwPWaCj4QYI2soGxbFMmvfIy8OlwGx4kKsfoZY609GFlwM+6kso
-	s2BRZMtAh5LdKbDh3WssTLMw+xAKQ0KyBuG2++cs/kdL8ABF0Cj/Zu9j
-X-Gm-Gg: ATEYQzye7Hw6ODkVk0A1cd9t/eTNnZK9dGM9AcXOhWm1QPbrYHJ0Cua5E9ngK5n+4Nu
-	DN9S6RBBvKdUQb/WQS8rk86Uc4TE/RzLLxDM+VehIiWYR7bFDNC9OJeLNU6DU5TOuOnQi9gLozz
-	HXjUFPEgAqdKekhajWvYU+Yasoc5QNxU2f4umKvRF/cLhfFZJ1AtPVnu0znWnnJeFLt0sC2lCZK
-	Q4SRLnUoyN0P0Cks0SKv05QGM9r7e+dkd9k/mkNmynymD8HnYE9dT4HwFppK54xT5FvC3nAy7sz
-	Hz6QGOyuBOGGyRRHsF5mlso0N7+BQcsN5eV2HAMztDVfPa5HsjpJ/OE/oL028FQtbnRVHFIel+b
-	3sudiqpLf3kqZ+3IPOJqoWUUE9lb3+4VW2yK/xBA6ou+s6EaNyALUy47NvPI2U17LNmJyMgDfga
-	/kjKJmmwXceWRPif5laLTI
-X-Received: by 2002:a05:6870:612c:b0:41b:e9c4:9778 with SMTP id 586e51a60fabf-41cec29a8eemr6470923fac.32.1774879812679;
-        Mon, 30 Mar 2026 07:10:12 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:7::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41d048e1961sm5508071fac.2.2026.03.30.07.10.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 07:10:12 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-Date: Mon, 30 Mar 2026 07:10:10 -0700
-Message-ID: <20260330141010.3126996-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <acpmkY6_gWLdtJCB@tiehlicka>
-References: 
+	b=wVaMwZpQ+zxPenmxdgaYnasgO3as39IMobFZOQtSAaZtRvBnEqQlwsnsqCZFEi2iBe1z9x
+	e7xSqYgSgAqb4IcA7gWKOcki+ZR+y0OoLWaRzmmHV3m+PgfXdpIPXLbbl1HA6X8vzOfDKB
+	fiDIQv+Cr8+TU2hODsBBfUP44yPEkS4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C7C7860121;
+	Mon, 30 Mar 2026 14:13:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C062DC2BCB2;
+	Mon, 30 Mar 2026 14:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774880014;
+	bh=jjLo/KYlHlqzqnNv0WJEH/7qGaF/R61RDSt36mroxZ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MEAQK5d5EB6gZI/XdoMH99WzaT0SQw895GgjMM2o44etPdaYMo8lRMr9kAZIY2NbA
+	 SO1cMXJRYUD3+HH25DF5VFA3K6lJajLHMItJxSRCuxUdnN0xPtR+eW1GZOt32v3K5n
+	 haVWFFlD7n5YHw0L6haPCVb1op2KzaUgV1N/sM4+inyRJ72UoikQsSQc6fn2Gftj3n
+	 U+z/PfV7vd+S/IoeQr652CyiHomAgwZysEosPxXuPuja69XH7dAfBNDEiaNje84dit
+	 9vKjC+d3cqFGeTzjNxwgoH11Wc1tuyuK6jno0RFy5X7VoBQ37f53sfWQY9bsbNhZN+
+	 GMab29MMkExgA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C1A88F40068;
+	Mon, 30 Mar 2026 10:13:32 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Mon, 30 Mar 2026 10:13:32 -0400
+X-ME-Sender: <xms:DIXKaUNo8x6eNHbeeDZrPNKYYCYRt0OVrzAoJgh21Ck-T_Mfa_mBEQ>
+    <xme:DIXKaRGBSKHVnr7Q9isa4JQgjjTUBwhCwPLDyGiwqzESPwEPO4X3jHpNkyc2z-90c
+    oMToV8ClUtLNC0kkMd3LOW0y7P6Zh3PYQMBDylDpqJxbIoVHHS60bs>
+X-ME-Received: <xmr:DIXKad-K24OQojUNBnEsHGs60TyyM8zE7h0c-5BRxWHRNh8Nq5ysCXjNmoLDAA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeeludelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepheekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehushgrmhgrrdgrrhhifheslhhinhhugidruggvvhdprhgtphhtthhopegrkhhpmh
+    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiuges
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehfvhgulhesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtohephhgrnhhnvghssegtmhhpgigthhhgrdhorhhgpdhrtghpthht
+    oheprhhivghlsehsuhhrrhhivghlrdgtohhm
+X-ME-Proxy: <xmx:DIXKaaiJLRt5GSlkdiUmhFjWhOZ4nb9mM6WyYioqjMYyVB3fjl7zZQ>
+    <xmx:DIXKaRl6F6N-NclA9PKNuHMnKIzG0RWjBeD5UGuU8RQ0Qx9rcJZM2Q>
+    <xmx:DIXKae0HwbXVQA6um0VLymaQDy3iQOYfdome4H8abIelI6UOy6KafA>
+    <xmx:DIXKab44LkdEFCFeip0pHXR6ZwEiGVu3SbVO6ZjPwnvL1WhiQsIDEA>
+    <xmx:DIXKaciiUno2X6usDVDLFhSMU3fWh6eS__6EOM0QIwEfusfWP-DriSDe>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Mar 2026 10:13:32 -0400 (EDT)
+Date: Mon, 30 Mar 2026 14:13:31 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	Lorenzo Stoakes <ljs@kernel.org>, willy@infradead.org, linux-mm@kvack.org, fvdl@google.com, 
+	hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, 
+	lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org
+Subject: Re: [v3 05/24] mm: thp: handle split failure in zap_pmd_range()
+Message-ID: <acqC010JLTfjHF0y@thinkstation>
+References: <20260327021403.214713-1-usama.arif@linux.dev>
+ <20260327021403.214713-6-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E928512001D
-X-Stat-Signature: c3mowftkco3m7gup7dbyj5oznq8fi5oi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327021403.214713-6-usama.arif@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6EBD5A0017
+X-Stat-Signature: zq9zxtk1eq87wi3j5q1uq31t8dmsfqfg
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774879813-355790
-X-HE-Meta: U2FsdGVkX19dQhOifA8aW8EK7v7wiCuztQGpVmYR1G0opjEf/wQtb9AJqhszZKBxcoyOLtBfFU0NKwPeYA570nRGVZo96FVwW/FrGqX5SHlJSQzQH6/GrRlLDx1+Xtdpufryj8g7yk/N/G6S6+pHes9HM8UzZzmA3lGfFKlnCIa5gD6sHoxDLUUeajqBIzYQquz1bcPoNIqcAYG2+sBprpHSudIRCRSzbdKze+osaVGVoYECvCmwUSegMcpEqWUEbzcU7iINLwRRVnw+hcpWSgMNI4EHU/wpexkLuzD05jVoIJfJgVx1xV4g4CEjhdBwIj3oYzUryazffZowlexSR2coRO3+DaBHH6wqVqe9KvMMci+46+wKNvDjewpiihbVkqJYbLX0+PBgxW+YuqsjbjAxuYMEoloURTOXbCGYrt56P92XoiOjPK7pzH5UkbBgEI2So6/6EhTLfkK3mPtyKfrN0kVMNER8h88I0bs1xyklxkFB7Kcyo9XIZcD7A4fNih3KRTF+/JmaZTlHq5rhw+CY6ji7SZkGDsZ+fLohFOVsUpZ/l3rJHlyN+v5xkOGpstKfyGBKBInZQo56R0xACkR+tm64HdB4MXZGvuz3dYK/ZzE1m+aRzBpBIOsTXksL6Y6ttm9NJHEOEo1DGh8ab0sFw4QnF4vYNkDZG+sD/Uw033IKlTxrmpmcxqgdfqWfHKILanaHwh5E9Y6aJOAV+XG/46mKhZHphTQ71ocV32+sHJfZyA9XtZpv7WsWa8/rRve16xMTW+tDxrlCVc5rV47q4CH1jf+g47P+9Bqag8Br6x+gzkwGQEZRPfQSuQca1/xIPb7kpYzna04RllpE2iTPTQ3CyHzkmzwRW7RZUbN4z7S8R+83FvPwv19Lqko3m271gKbjk/t1GM76P+xnFICYeBdKm5SVniGHRxuXB/Ju21zaPS8t9F50H9aWJzaReAFbdsoFD3minqD/82Y
- kMou06E+
- rxt0h7cYC8eia5z35bMy1LV7VmGIbl6UNUIt8wqPSy8L2dMlU/LBTK9CSgpbkOugIfYbjapFUoQ05R0ajjxZvZPYtdLJt5TmyersdOT7mHK41iGiO1pJQ3RRdlOt9kXr18dIRAq/NMTHjsbpnk9qLBSMbYkihPTie0giZnU1jexAwwiIpJqLdOgvZSNdPUDL/Exy1lMybWrPYQhSyOC2+FjhuBxK+VQS2LyFSJyEahR5qHgqL6IfoUYQvC0wGUpT7G2w0RvSRzvr631mWcDst9Q7gRxqTOqDhwXIw8Z0dukv0I8WyWVJlBha+RXRWCg8VDb+r6r1AWwS5qSmzmc5xjK8gCWzvJ5o3HkCo/nJ46PN2aj3TUR+if/wjFsGvOVhZl+S+hTHQacz2PePt6FxRgbIxwp2lQl7MAUos4VBtUe3gwxOTf6jwdFd5jJWIKtG80wlVIzorYrmXOeb9Jvwc/SnP7hOp+qyfrrV3R7ewYwF/0AQgkZsxkLFdoDCT/zvpJr/NTcjgu0zv6hEmw4EtGOhbYDzUeJ1NHK1Jv9PYhWS6WT1v7OdU8hna1JhBqiTsuWIkKsjCkphy+1w=
+X-HE-Tag: 1774880015-661056
+X-HE-Meta: U2FsdGVkX1+9fjwRIsmuZCZ/0/Y+Wlu7PV6J3xdLdomRAMYtH1OW/HhSKDxyh1wsxECJie66zN/93iV/W2JIMgJ6e8S81EYz8Al4smf4f7bNcFHBY5eIfnsxLoX3tBldPurndqXJ9Ghp5IM/A+BrA4o1+KaMWIemiF7syIZFFe0uOftNiRccYqS8hk61ir2YLZV9qr+rE3Wyvmt+SMxisiN9ccmTJoKfdzzTIDS9JKZ3G3aHE248zYUMgn4Ao5xbD463cE2omoeCfFQnwpgFAMoyOh6qCnojSzDUqL7WivQl4THHBGtjsThIDrlWCIUG8DLjn79SwU4IhwRB1BtoOaKQcXrf+3g5FfL/SAOURgWf6ihMZsZ5I7AiRjQLD0dOyfpRi8UGNJmr2tabkOec7L9QlgKpUHLNEj4D6AL+XMlDXIRSRo/VDe/xHkn0I/ATo3zDZBfme0SFCWuAc37IfefhTcmb87zgD+HwyusGCoU81UOoCaPpU0TOldZQA39K9l1MAJX9fXqUfODIlygTNUmzP/4EjBo5Ni9+F2Kl+8xTr3JyAdpcRPwGovP0qGxgSOoOQyI7YXyoXfVEvJnEVLa2o+W33KwSf+urGX9mxK2S2jxpp1QOEifcwc0yta8q6uaPfkOc5oXZPIBPSocD/YxLS9Ibf1Ejs0ICX+F1piPw3tSLO3Fho6CGo9rrWUG0qFA46vpV/x/t3BWC7dMTL4GeAYy2ANb9iGd57FUWF+0ekZ3uq3qi2jttkgypxbsEy6+fX1HOAW8vWxJisEmGlpTwcIL2fiW2jzi8wZmGrVNvy+o2maL9XWjaLI7joq3ARgWn38PN3bYePdvvy3//dgvGidu35KDvi491fBala1c0enq9A+yFsHhaiVLe1i23SgKN4iZZSN8aBl7INwnlToTd6s90OhHYVEG2kW5Z97s7RWyzCgDC8kFhe03OIazTDORIsf6llA4xInoHjIN
+ 8nSN/Rg1
+ fDtfFpUJizXmgBNJi04YcwaKwoovDfGtjYK1PzjdIj1hbXWbdP04otEevPTIWEJI/t24psh36Lybm6mwAVZUFdtaizu+GF6gD5RCi7j7JyXIt7yVbMg0Kq3no1mi2ryFeH2H06qCQarZfqXgeeWBfKVDR0LgpCKLPYevN2RpE/NAbQLk5qqtvs6RmeIyWu6GAxLP17pkHRywtzManv+61JNVHQ0dj+6iCE7ZTkiZlPVGnMvgoNkdLnd0BQtaUMWipYhKzW02utXzMuSzYJioHSk2xvE6tK45Xmatm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,40 +132,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026 14:03:29 +0200 Michal Hocko <mhocko@suse.com> wrote:
-
-> On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
-> > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-> > to give visibility into per-node breakdowns for percpu allocations and
-> > turn it into NR_PERCPU_B.
+On Thu, Mar 26, 2026 at 07:08:47PM -0700, Usama Arif wrote:
+> zap_pmd_range() splits a huge PMD when the zap range doesn't cover the
+> full PMD (partial unmap).  If the split fails, the PMD stays huge.
+> Falling through to zap_pte_range() would dereference the huge PMD entry
+> as a PTE page table pointer.
 > 
-> Why do we need/want this?
+> Skip the range covered by the PMD on split failure instead.
 
-Hello Michal,
+Ughh... This is hacky as hell.
 
-Thank you for reviewing my patch! I hope you are doing well.
+> The skip is safe across all call paths into zap_pmd_range():
+> 
+> - exit_mmap() and OOM reaper: the zap range covers entire VMAs, so
+>   every PMD is fully covered (next - addr == HPAGE_PMD_SIZE).  The
+>   zap_huge_pmd() branch handles these without splitting.  The split
+>   failure path is unreachable.
+> 
+> - munmap / mmap overlay: vma_adjust_trans_huge() (called from
+>   __split_vma) splits any PMD straddling the VMA boundary before the
+>   VMA is split.  If that PMD split fails, __split_vma() returns
+>   -ENOMEM and the munmap is aborted before reaching zap_pmd_range().
+>   The split failure path is unreachable.
+> 
+> - MADV_DONTNEED: advisory hint, the kernel is allowed to ignore it.
+>   The pages remain valid and accessible.  A subsequent access returns
+>   existing data without faulting.
 
-You're right, I could have done a better job of motivating the patch.
-My intent with this patch is to give some more visibility into where
-memory is physically, once you know which memcg it is in.
+Em, no. MADV_DONTNEED users expect memory to be zeroed after the
+"advise" is complete. At very least you need to zero the skipped range.
 
-Percpu memory could probably be seen as "trivial" when it comes to figuring
-out what node it is on, but I'm hoping to make similar transitions to the
-rest of enum memcg_stat_item as well (you can see my work for the zswap
-stats in [1]).
+And are you sure that the list of users is complete?
 
-When all of the memory is moved from being tracked per-memcg to per-lruvec,
-then the final vision would be able to attribute node placement within
-each memcg, which can help with diagnosing things like asymmetric node
-pressure within a memcg, which is currently only partially accurate.
+I am also worried about a possible new user that is not aware about this
+skip-on-split-failure semantics.
 
-Getting per-node breakdowns of percpu memory orthogonal to memcgs also
-seems like a win to me. While unlikely, I think that we can benefit from
-some amount of visibility into whether percpu allocations are happening
-equally across all CPUs.
+I think it hast o be opt-in. Maybe a ZAP_FLAG_WHATEVER?
 
-What do you think? Thank you again, I hope you have a great day!
-Joshua
-
-[1] https://lore.kernel.org/all/20260311195153.4013476-1-joshua.hahnjy@gmail.com/
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
