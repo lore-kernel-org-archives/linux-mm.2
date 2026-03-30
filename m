@@ -4,102 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 711EBFF495E
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60C50FF4958
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:51:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAEE76B0095; Mon, 30 Mar 2026 03:44:25 -0400 (EDT)
+	id A0F906B0092; Mon, 30 Mar 2026 03:51:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D85906B0096; Mon, 30 Mar 2026 03:44:25 -0400 (EDT)
+	id 999486B0095; Mon, 30 Mar 2026 03:51:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC2AF6B0098; Mon, 30 Mar 2026 03:44:25 -0400 (EDT)
+	id 860556B0096; Mon, 30 Mar 2026 03:51:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BC2496B0095
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:44:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 622BEE09C8
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:44:25 +0000 (UTC)
-X-FDA: 84601941690.29.238AFCD
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8C3E140007
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:44:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=YJrGmy8G;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf17.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774856663; a=rsa-sha256;
-	cv=none;
-	b=JhMHCPwlWCf5kwPb12DduVWIrP0w6DfLHbdjHaTFS1zWGUUBnz9DtqBhKYh94B5H0v09DI
-	us7UUh3PXrCg0Z8nCc6UFJ3mtmls+x9/NDdQ6Ko9/JSN0c4wzLZAQ2OjV5+X5zk5Ft7OWb
-	P60QYa/hRUCRp0/MMkn6rWZey7/yYxI=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 719436B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:51:07 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13DC25A780
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:51:07 +0000 (UTC)
+X-FDA: 84601958574.24.4D04B6B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 22633C0004
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:51:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDJnGaha;
+	spf=pass (imf10.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=YJrGmy8G;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf17.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDJnGaha;
+	spf=pass (imf10.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774857065; a=rsa-sha256;
+	cv=none;
+	b=smGd+Ejo2jdEDh+DSuxvuTaDzSLiPb3laUv90xvKLxOFbJaersfvXFi5oFyXLBAvqqQSCo
+	Yc/Wxsd2Kq6hgA7yXzTUUxpwmji1G2PNCS/oGOJOr+N60yPqB/hgnaQ8JBahO4VCxtIjMJ
+	r5H9gYVMpbNcXLBr9mFubHiNmyjvb/I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774856663;
+	s=arc-20220608; t=1774857065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9QPMkW/TQgAobnAcPDNit13NRu4FKkyV5RCLsq0khvk=;
-	b=Ojg9SzCqP4kGsuoSEU0XGWv6HXAcAcWiZmtVp7FszDR6+PpGvPTKLfO0Ono3FrOdca2hJ/
-	G8Xxo/jQnkeHkGI7E/OLG+6tgy5ky2k1K68S4qtZ5YrgKwQNJpJtLZGh69Surl0BKRC7Wj
-	qRF2CtSTQU66K8tJz5rD6S64Ic+epIA=
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260330074420euoutp0298f1dbf20d3d9826bc22b132e67508e8~hjrqWCVKJ3061430614euoutp02p
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:44:20 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260330074420euoutp0298f1dbf20d3d9826bc22b132e67508e8~hjrqWCVKJ3061430614euoutp02p
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1774856660;
-	bh=9QPMkW/TQgAobnAcPDNit13NRu4FKkyV5RCLsq0khvk=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=YJrGmy8GvOM3mmyK9kws4zdWGH1dA1A5Md3L+uoa7kf5NvPELnf3Rt57mYaxlDG6t
-	 2ozhEK1FoWFGq1mvVoca4CpOlr/ImI6n+8NjrlUk96uadGEUy3tWeR/tKpv7Ran/pu
-	 T8if3cS6Q8XI76uQgyu+XJnrqBi9AtDPw/6mAUHY=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260330074419eucas1p1cb351a1eec598b99842de25cb754e135~hjrqEFclI3155331553eucas1p1k;
-	Mon, 30 Mar 2026 07:44:19 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260330074418eusmtip14412bd6a1082ddac8ec5e8950d587f4f~hjrpFeoW32902829028eusmtip1T;
-	Mon, 30 Mar 2026 07:44:18 +0000 (GMT)
-Message-ID: <6270d4f0-85e4-496d-8db4-87ccb791ca4d@samsung.com>
-Date: Mon, 30 Mar 2026 09:44:18 +0200
+	bh=LybNHri57ibbB08+92BCF4qoN3iJ1KcFsIeYLRMzSc8=;
+	b=QnfKE+LZcnb/2Ka+AWDVFL0IqhE1DFWnSNsLjJ/rUo6cuXlnv7hXGADmj7VAi2zXJzGt82
+	y35gEIWW0nugcKQt7DGQ9TVAHxjhdugLGSm+ckesSeGVfeJQbuxMK1pi+KEhXdiNbFAjt4
+	LALOxTxukr0CPGaXoQ+dPDmzPQhn39c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C5ACF4173C;
+	Mon, 30 Mar 2026 07:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2510C4CEF7;
+	Mon, 30 Mar 2026 07:51:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774857063;
+	bh=aSND71WTHLvwOtpQkv4oV8DqBi3VtucNGh0c33HMhYo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HDJnGahahU80YqdZytEMzX0I8UW4i6n3ZkgbyjNQsrOgdjM4YMfDJg30J17MDVc5/
+	 EyodK7bHo21B1Nla+a28prw4dVZzKMUIf9L5x7shdm2YNPabz3lUjHyjiV+AClIJVf
+	 2bp1O2k71KJZzZKPtFVuK70h9hpfwSqrGd/+WqSNPIhAarcAxJxM0sL6/SC/KDIiPn
+	 OFdHXNtAFSqW0imHwpZUFAswh41KTVfpK/ZxMWfEnjJFElOg4CLMhQlJ0hjgsWJDQk
+	 23D/DqzwtbEN1emjkz2Vs+ZMMJ4DJLYqdDb74t3kS6bsUusHcAorxIJVv+L9NRAjng
+	 ZBiZysfzfnPGg==
+Message-ID: <6deb290e-b168-4de2-95f8-fc784ed31c27@kernel.org>
+Date: Mon, 30 Mar 2026 09:50:59 +0200
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v2] dma-debug: suppress cacheline overlap warning when
- arch has no DMA alignment requirement
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, robin.murphy@arm.com
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-mm@kvack.org, harry@kernel.org,
-	vbabka@kernel.org, akpm@linux-foundation.org, stern@rowland.harvard.edu,
-	linux@roeck-us.net, andy.shevchenko@gmail.com, hch@lst.de,
-	Jeff.kirsher@gmail.com, catalin.marinas@arm.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
+ module
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Josh Law <objecting@objecting.org>, "Lorenzo Stoakes (Oracle)"
+ <ljs@kernel.org>
+Cc: Josh Law <hlcj1234567@gmail.com>, SeongJae Park <sj@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>
+References: <20260326072737.341964-1-objecting@objecting.org>
+ <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
+ <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
+ <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
+ <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
+ <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
+ <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
+ <b263a722-e9b8-4a43-a075-46e4a753871d@kernel.org>
+ <043CED5F-7014-4776-824E-07E027B7BDC3@objecting.org>
+ <cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local>
+ <E1A667AB-DCE4-4034-A36B-DAA458780A81@objecting.org>
+ <e5d45f3c-4f46-40d1-bb7a-0a2f930fd7ae@kernel.org>
+ <82256A72-42FD-475E-935C-629964FA80E7@objecting.org>
+ <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20260327124156.24820-1-mikhail.v.gavrilov@gmail.com>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260330074419eucas1p1cb351a1eec598b99842de25cb754e135
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260327124211eucas1p10425a28f67736d2043e7e4dd77d58e72
-X-EPHeader: CA
-X-CMS-RootMailID: 20260327124211eucas1p10425a28f67736d2043e7e4dd77d58e72
-References: <CGME20260327124211eucas1p10425a28f67736d2043e7e4dd77d58e72@eucas1p1.samsung.com>
-	<20260327124156.24820-1-mikhail.v.gavrilov@gmail.com>
-X-Rspamd-Queue-Id: 8C3E140007
-X-Stat-Signature: ouakj7baqa8pyoxt6c8xk8mkms4qawqp
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 22633C0004
+X-Stat-Signature: n7qrjn8wem1ntnpdbspezaacfnapmnmq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1774856662-183833
-X-HE-Meta: U2FsdGVkX1/5qo8Q+iHT/oht87Dp18S97emXq2FpIaYMOoK/um02Z+ROgieMHmCeSW5kInbWO78SOFWGX187YOYSQYi9UYXZb4DUj5TnDT5XtcPQ9RY2WSAL6tFMqvDzHv/hwTMQgz+TNCDigle4r4TtAhD4KS/aeJrg21JphnHcm/klMwbuPgBLeQs/k9sXLVYuPzCO9s09LgdUw8tNEADp4ULt8sZWdEso7rhjzyMbMYM+pDyniAdmhP1hRwVI1ACiNFTdVfdnzl/j8qWOQFVpDcY0zFBTNUm6Xqra7ItD4EYJsEFjsUnc5SeHF1oGUaFvEQBQm2rOqe3lD74kvhnTr5hP3nJguXjEbgcNzXgCZz8TmscPlWpOWjn7yoUP/K1GEECXlvCfLdnw8lhrsPfRDkBRAszHgN3P0a451l5vd/VGbUTThY9/uMe+HpwrqGmv/7IWL+LmyiUhKTsDhHHje7MZYF7x2b9dn3MhtP8ukgG2JFEy8TuLG+bQaOYBrKTMiSg6En6/92EaNOb0ZUQR4Vfze9f9Vx3m3ZplDOqyLNdZtmGo9bkF+z0RP2Q+fPiHjX+c5iwdVUr9keHok1FHH2eoIIrN/BXnuLzSKesqb0pti5qNgVTRO0/of2M2UGSQz9n3+k7zi1vxc3XJ2J/hqYteOGzSfgaWzizjg/hkxZXTXWzU1zvkv2E2vBPpI8Fy22azC/QW2i5a49meR8S9vhM/zhK4IDpbgMMEfq4+NwtnB7w9fyT7shaCp6498uugPCb5eJ3IJdzBMM93zc5SGHD56xRSYFKz+8GgUPzjyu8Z6/SKru/Zf8HZ99m0nft3VaoRgyf9ebywyRDUao9zk6njNyxI8ADMCcwHVT20PET8/hDFvEFbpgu94tl709raYmopwJMyFiuCyy0EB5SNIfxo9KqbIJdPt28gyPFi7QJKMaWc8AnM04uljbp8AR29sxsarGNk0TH9TLX
- UsPjADVa
- FHqcMtU8S6wuU48pFn0B1FaLDUi7Poc61ZCUa2Abk2YM70efrt3ROGAaKMjnRcZhK3k3Fz912t2Z5OGSBlwapoiMeuS/vJDxD9SZl/o78Bp4oOQ9d2s7Cs3jLqDapbfmTYsVRvG5yaE6p+kaqGAPjLhNff5em/cIt4I1XqtuSZ/V0G+7pXWK9S3BID7jtslM8Lrj2RMHAbpLViQo=
+X-HE-Tag: 1774857064-214347
+X-HE-Meta: U2FsdGVkX18L6Ueij11hnm9IjpOzbIMgFijh2wH1nsyip79qmWZ+C3bEf+RUB+5QPaaQZgAQ3Oy8rwsJCXr4genpQnmo7QG3ffG8UtxsGDKid56u7nFnUXvhZugMFLAw6YNh/ElUuq2MQRgligx5E2dOc2HzS7TzsfxHO1by7ZoeYGC8IhP4reVynF5sRa2zsf1J4yN7OSJUuw/KTRKPDNtkLukv4URLp7fyKm2IsZzeIEskq0w+ZYEmiyiTn8a25NqYJ1PTu/k25RHykPLN24IXJekxOXMmNGLszUTPbEASg1uJbAQvOCA9Pxk+Uy8aC7q6N1uCLa6c4suLYtqU30mhPLs/3PVR4fb5WMVHspPczJIpZdmkt6Fba3zmGwv7TU/DQYuloBzHH9V6HPtanik8IyFrPiCbcAuRRSLhfX+CfYmxLpZQGpyP3atLQb9NLvq+TAUYrupNFW5oAZ/VGMu+wV+uiHPk9gw3siE9QC9dX84HppIIrFmP0ri23ZMijS5PUcmYcO5P3oG1QRsK71XRKTXfkSzmcfhd5/4+yVMaC+HvzJWx1Mw5pdTlSdzr1pMJoJzkPvPf2HqDvnVhGnE3efu3d1T21PWyI6zw/ekCGTcYCMoPnLv+wysHxJNRjRHy5v/I/O8Ml/egapLHuSjs+wmQjzGWntjW/pHgO66+HvZOxN40mZmPRnge3in0MvZ+TZLr8/Yqu0oJqFkTt+n7DNMAxQsi/8eoeAaDsoxs5BGnc3zwYSwK9m0fhyt69fqpAaYJ2Fpwk6HosvhhpYNLTi/Ggl+QrX7pDp80ovzxr+asj2dwWyEQ4xQnVYu8U71DeKIDOEhmSo8Kcqzx2RrZwXInwD/JIO40BwbWtWRj9G/7uBF+eIefrSFPT7Td7prGiVjcBXuV9t4UtT1IYld2ZQK62/9JblsLc/eQwKnXhw9YFzhJt41X8Tkzg4Y0wLYr6Mdjk9uUVDoUcev
+ s8gsQcP5
+ VhALIvR+q2p1ImE55HIlAx3Hjevk8UHK0IHlxkjauXkSRHJ6KK+vrWZn5IAZEonKWTeB0yWG9bk5KOy92BdA1/12WZyqS5vslg96f9+KBpIFBr7Oo0ZlzUgdUKW0Hf5eLAed1c76wILTqL2stDgUjcizWvEwefPHout3XRPH2jPAQfzCZJAeObe4XnqwuX+1EiEn/mUOYvZz3QbF9+BTtzCFCUe3lEABxI7EGefR3dolP4U9ErYHogLdbpEEgn8zza96f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,78 +155,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27.03.2026 13:41, Mikhail Gavrilov wrote:
-> When CONFIG_DMA_API_DEBUG is enabled, the DMA debug infrastructure
-> tracks active mappings per cacheline and warns if two different DMA
-> mappings share the same cacheline ("cacheline tracking EEXIST,
-> overlapping mappings aren't supported").
->
-> On x86_64, ARCH_KMALLOC_MINALIGN defaults to 8, so small kmalloc
-> allocations (e.g. the 8-byte hub->buffer and hub->status in the USB
-> hub driver) frequently land in the same 64-byte cacheline.  When both
-> are DMA-mapped, this triggers a false positive warning.
->
-> This has been reported repeatedly since v5.14 (when the EEXIST check
-> was added) across various USB host controllers and devices including
-> xhci_hcd with USB hubs, USB audio devices, and USB ethernet adapters.
->
-> The cacheline overlap is only a real concern on architectures that
-> require DMA buffer alignment to cacheline boundaries (i.e. where
-> ARCH_DMA_MINALIGN >= L1_CACHE_BYTES).  On architectures like x86_64
-> where dma_get_cache_alignment() returns 1, the hardware is
-> cache-coherent and overlapping cacheline mappings are harmless.
->
-> Suppress the EEXIST warning when dma_get_cache_alignment() is less
-> than L1_CACHE_BYTES, indicating the architecture does not require
-> cacheline-aligned DMA buffers.
->
-> Verified with a kernel module reproducer that performs two kmalloc(8)
-> allocations back-to-back and DMA-maps both:
->
->   Before: allocations share a cacheline, EEXIST fires within ~50 pairs
->   After:  same cacheline pair found, but no warning emitted
->
-> Fixes: 2b4bbc6231d7 ("dma-debug: report -EEXIST errors in add_dma_entry")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215740
-> Suggested-by: Harry Yoo <harry@kernel.org>
-> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+On 30/03/2026 08:27, David Hildenbrand (Arm) wrote:
+> On 3/27/26 16:22, Josh Law wrote:
+>>
+>>
+>>>
+>>> Josh,
+>>>
+>>> in general we try to be a welcoming upstream community. Finding people
+>>> that are willing to work on the low-level bits and stick around is rare.
+>>>
+>>> At the same time, we need people that are willing to get familiar with
+>>> the code base and technology, so they can help out with review and
+>>> provide long-term value to the project. AI use is only partially useful
+>>> in that context. Certainly not for writing patches as a newbie. At best,
+>>> to double-check your understanding (e.g., AI review), help you learn
+>>> (e.g., explore the code base), or improve your writing if your English
+>>> is really, really bad.
+>>>
+>>> I prefer someone trying to use their own words to compose a change log
+>>> and actually learn something on the way over some AI slop that reads
+>>> nicer any day. Often, when you write a changelog you actually realize
+>>> which corner cases you might be missing, that the design might be overly
+>>> complicated, that, maybe, the reasoning or motivation is bad etc. It
+>>> takes time but you actually learn something and are forced to think
+>>> (crazy, right?).
+>>>
+>>> The same is particularly true when it comes to writing documentation, as
+>>> people raised earlier in other context.
+>>>
+>>> Having that said, your actions made a lot of people's alarms go off and
+>>> there is pretty much 0 trust now. As Lorenzo says, even now we are not
+>>> really sure if you are saying the truth right now, which is a big problem.
+>>>
+>>> If you are, in fact, a real person, and are passionate to work on the
+>>> kernel, it would be best if you would start things very slowly and don't
+>>> use any AI for crafting your patches (including patch descriptions).
+>>> Stick to one subsystem and ask people what good starting tasks/projects
+>>> could be.
+>>>
+>>> Ideally, you'd find someone people trust around here, that can verify
+>>> your identity (i.e., have a video chat etc) and start mentoring you on
+>>> how to start working in the kernel community and gain trust.
+>>>
+>>> Now, I am still not sure whether I am talking to a bot here (there are
+>>> too many things Lorenzo points out above that are very suspicious), but
+>>> I just wanted to say that there are ways to become a trusted
+>>> contributor, and that information might be useful for other people that
+>>> might be interested in working on the kernel.
+>>>
+>>> It's certainly not by flooding the list with AI slop.
+>>>
+>>
+>>
+>> Hello david, thanks for being polite about this whole thing!
+>>
+>>
+>> so, you are talking to a real human, i promise you that now
+> 
+> That's exactly, what I would say if I were a bot ;)
+> 
+> As a first step, fix the line wrapping. The following document was
+> helpful to me in the past:
+> 
+> 	Documentation/process/email-clients.rst
 
-Applied to dma-mapping-fixes. Thanks!
+Yeah, good luck. Several people asked for that already, like 10 or 20
+times. Andrew asked that a few times.
 
-> ---
->
-> v1 -> v2:
->   - Moved fix from include/linux/slab.h (ARCH_KMALLOC_MINALIGN)
->     to kernel/dma/debug.c per Harry Yoo's suggestion.
->   - Instead of forcing cacheline-aligned allocations, suppress
->     the warning when the architecture has no DMA alignment
->     requirement (dma_get_cache_alignment() < L1_CACHE_BYTES).
->
-> v1: https://lore.kernel.org/all/20260327055846.248829-1-mikhail.v.gavrilov@gmail.com/
->
-> Reproducer module that triggers the bug reliably:
->   https://bugzilla.kernel.org/attachment.cgi?id=309769
->
->  kernel/dma/debug.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-> index 0677918f06a8..1a725edbbbf6 100644
-> --- a/kernel/dma/debug.c
-> +++ b/kernel/dma/debug.c
-> @@ -615,6 +615,7 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
->  	} else if (rc == -EEXIST &&
->  		   !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
->  		   !(entry->is_cache_clean && overlap_cache_clean) &&
-> +		   dma_get_cache_alignment() >= L1_CACHE_BYTES &&
->  		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
->  		     is_swiotlb_active(entry->dev))) {
->  		err_printk(entry->dev, entry,
+And yesterday we got another sloppy posting, so that would be it for
+having some time off to learn things and take slowly. 3 days after this
+AI slop which does not even build.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+Best regards,
+Krzysztof
 
