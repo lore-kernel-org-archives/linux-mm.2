@@ -4,108 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B42C10D14A3
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA40610D14A3
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:36:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8F3A6B0096; Mon, 30 Mar 2026 07:29:28 -0400 (EDT)
+	id 36D516B0092; Mon, 30 Mar 2026 07:36:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3F8B6B0098; Mon, 30 Mar 2026 07:29:28 -0400 (EDT)
+	id 3448F6B0095; Mon, 30 Mar 2026 07:36:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97B936B0099; Mon, 30 Mar 2026 07:29:28 -0400 (EDT)
+	id 281CD6B0096; Mon, 30 Mar 2026 07:36:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 830106B0098
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:29:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 267BD160759
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:29:28 +0000 (UTC)
-X-FDA: 84602508816.07.E1760F7
-Received: from mail.parknet.co.jp (mail.parknet.co.jp [210.171.160.6])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 86FBE40009;
-	Mon, 30 Mar 2026 11:29:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=parknet.co.jp header.s=20250114 header.b=WpiWpc3A;
-	dkim=pass header.d=parknet.co.jp header.s=20250114-ed25519 header.b=xzICJuwm;
-	spf=pass (imf17.hostedemail.com: domain of hirofumi@parknet.co.jp designates 210.171.160.6 as permitted sender) smtp.mailfrom=hirofumi@parknet.co.jp;
-	dmarc=pass (policy=none) header.from=mail.parknet.co.jp
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 193456B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:36:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2EF7BB98D
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:35:59 +0000 (UTC)
+X-FDA: 84602525238.11.581E1CB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8EFC8140003
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:35:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W3q54qRh;
+	spf=pass (imf09.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774870166;
+	s=arc-20220608; t=1774870557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=azxPziBoTu0EUy5OEpWIvHWwjmLYDV1JOaPD5UsQPw4=;
-	b=z5BePtsP+Lwq/ApGvvbsWPfdUiQwm5my3vCWydZpGy2JdvnInJKKamiDfQWvItVacxfLUZ
-	H8Z77zmnIGKrQUPq/l3XZGMU0f7TiqP0glpqSK+tbC6tjkjUKhEH5/cmy62ptx2/ZxIwwq
-	o13/l3yAQBALWaOeVmCp2pcjfQJDqGo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774870166; a=rsa-sha256;
-	cv=none;
-	b=ZmqfCtZShuN1nX+XHhIhv59dOggZ4tMOXtM/kxteCP6+dY+9IyMU2xwHNAMMLRatJZ5ZKU
-	GtcdzQBwvWfx+VVAxLSPRtYRCLFbotZQjjBGRc32xEewGrFDKtjFFhFFx3j9jAPZOp3kPS
-	8wtHFxjvZoiOgGZBRLctq+V+cFTwxWw=
+	bh=556GKtPgfbryfydv+tI3+PhJHtuBKVNgx90rfTV7vcs=;
+	b=09zRe3zIeTIMmvcwT9G+NQs4aLheKiwRLeW//sl5R00wxYTXflHzrT/Qq4RsfbHcRHhm1S
+	HWc8VdzTGaOKfD1+BdB3s9CQ+mb88Z6njamaJ6uBnxAfHZRwPBacouB0ppEtKsXvgCrFY8
+	/cQc05Qyn7AU8UYz+I/teyxF5ZxbPAk=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=parknet.co.jp header.s=20250114 header.b=WpiWpc3A;
-	dkim=pass header.d=parknet.co.jp header.s=20250114-ed25519 header.b=xzICJuwm;
-	spf=pass (imf17.hostedemail.com: domain of hirofumi@parknet.co.jp designates 210.171.160.6 as permitted sender) smtp.mailfrom=hirofumi@parknet.co.jp;
-	dmarc=pass (policy=none) header.from=mail.parknet.co.jp
-Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
-	by mail.parknet.co.jp (Postfix) with ESMTPSA id E8A60209679B;
-	Mon, 30 Mar 2026 20:29:19 +0900 (JST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=parknet.co.jp;
-	s=20250114; t=1774870160;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W3q54qRh;
+	spf=pass (imf09.hostedemail.com: domain of liwang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=liwang@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774870557; a=rsa-sha256;
+	cv=none;
+	b=zNBzY7/XtaWDBLq2ruNvKgOSYdEAjeJ6Ep0JJ+EvrQkiHEh1b/LoExUhEhMv/sYnPTbb5D
+	UeGPSZoS1me5nSDT47WLI4VMHd9SIeNMRnMazOzvJ7LJ0j44irRcnYNVKrJHPgtUrELpwz
+	/nl0lytgokJHY7bjSVoHLANqqj7w4Ho=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774870556;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=azxPziBoTu0EUy5OEpWIvHWwjmLYDV1JOaPD5UsQPw4=;
-	b=WpiWpc3A06BWRRTu1Eh7H4/yLh3+uexv5nVL92NTJyzJfbkFH6Oi0cN9FhimLmyIIOB6Ti
-	1QtJ1ATMAUR8PbQjSmcB0npyYgX2Z+H93FjcbUlAtNmqRk/uPpUEdnrHKDLhZn/na/pIqU
-	+RBBCVhwuNg+qVa2WWROA2U6hxBPXWE71phYBZEMU8HDAxFwc8Krvsq47HSLtCu8AS+0Rr
-	/V2TDpL1is/6n+GUyiVCfargkn2XXg4njcelY6rMuHDUEN+a8aMLgJAcXcSCNWG68LIAzU
-	ofL8yE2PEhLLdExxd71eTHVgYk9TsbNgQtIJTBLetAna/qw6zh/dkU0r/7m0TA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=parknet.co.jp;
-	s=20250114-ed25519; t=1774870160;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=azxPziBoTu0EUy5OEpWIvHWwjmLYDV1JOaPD5UsQPw4=;
-	b=xzICJuwmbd2bwkmG4vWdifwyTBCo3WXeI70K7QBDEAQkYke/2C2LgEn+vOCw1ctSx1do3f
-	1sOxI45CQB+75SAg==
-Received: from devron.myhome.or.jp (devron.myhome.or.jp [192.168.0.3])
-	by ibmpc.myhome.or.jp (Postfix) with ESMTPS id 75B19E000B8;
-	Mon, 30 Mar 2026 20:29:19 +0900 (JST)
-Received: by devron.myhome.or.jp (Postfix, from userid 1000)
-	id 697E7220007A; Mon, 30 Mar 2026 20:29:19 +0900 (JST)
-From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org,  linux-block@vger.kernel.org,  Christian
- Brauner <brauner@kernel.org>,  Al Viro <viro@zeniv.linux.org.uk>,
-  linux-ext4@vger.kernel.org,  Ted Tso <tytso@mit.edu>,  "Tigran A.
- Aivazian" <aivazian.tigran@gmail.com>,  David Sterba <dsterba@suse.com>,
-  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>,
-  David Hildenbrand <david@kernel.org>,  linux-mm@kvack.org,
-  linux-aio@kvack.org,  Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 15/42] fat: Sync and invalidate metadata buffers from
- fat_evict_inode()
-In-Reply-To: <3oh5cbnm6dwz6rikc6laably5nvu4c4wtxjqzuu3wymzhpqrtw@skopu327hd7a>
-References: <20260326082428.31660-1-jack@suse.cz>
-	<20260326095354.16340-57-jack@suse.cz>
-	<87ldfazqo2.fsf@mail.parknet.co.jp>
-	<3oh5cbnm6dwz6rikc6laably5nvu4c4wtxjqzuu3wymzhpqrtw@skopu327hd7a>
-Date: Mon, 30 Mar 2026 20:29:19 +0900
-Message-ID: <87jyutwo6o.fsf@mail.parknet.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=556GKtPgfbryfydv+tI3+PhJHtuBKVNgx90rfTV7vcs=;
+	b=W3q54qRh4t/X0K+wwABXaSkVesiuN0iKBvPQCHFJNUWRq9K5PhBM2p3LZtS0EkViARIBdB
+	hLEF1NNumBxYoTjy6JvA73p69U+UeVBEOKEmBrOnUlB4xtTXgltBeGuvVFbYTDwMxhTS5y
+	6JYZm/CcQkoB5IaknHRcbj0L+ePAxps=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-BjbIIjrcMvysDtTOka6pzg-1; Mon, 30 Mar 2026 07:35:55 -0400
+X-MC-Unique: BjbIIjrcMvysDtTOka6pzg-1
+X-Mimecast-MFC-AGG-ID: BjbIIjrcMvysDtTOka6pzg_1774870554
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2b2454fc131so47477965ad.3
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 04:35:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774870554; x=1775475354;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=556GKtPgfbryfydv+tI3+PhJHtuBKVNgx90rfTV7vcs=;
+        b=IC2fn3W/DRqfqDU2YxRvhaR/FlVRVQA92gJ8gq2i7+4jGduioctyIrTcygk6xfLJ7Q
+         7bYHKddO0EfmVKdjIWxC1tIJjPOy8zY9P0sMt9fz1u7lTAiyyyktJXbIdLCJMRkPUWYW
+         qLUCfIAtO9wLx/rgPJSgvoDlhTdpoa2FjSW+gychBG+k0ZiezsAKNTynJGUqFMBL2Uc0
+         k+EwMWxhXGnlbFfGy8Uus3a4lWiAqTOKqnXSi1vz4hHzAW1y8EiFm+4/oi9YWv8xLo9z
+         IoknWVG2n1CUw8DPo/i5fKMqhMTvCUtOB7f7AmG0BMoWdCQslrpn4vdpXdVty07EDbpe
+         4dBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUGVXFHHjbVONYL5usALkk2mIT5A7I5zBa1pKMkB3KlfVhXCjPIFQOYO3ZIt2aj+BeF4hdyhUDzoQ==@kvack.org
+X-Gm-Message-State: AOJu0YwvbSPlDZAZhzVEW+cgL9Ey4aF5t4RFn4oGpqjsBnT5Zcaelscb
+	kcjW6dLLGcGsClwfNASBbJkuNMGrCOlmFDqC1ugYkkWOJAGEBgTAx3eJx1GC3gyX2uWol/F/V2z
+	Sj/OJPIN6fYoBpgJjY3RUcZivCQ9PPxjAWI8SY30RNIkFfkja+1TP
+X-Gm-Gg: ATEYQzzdL36M1AN1uiDgGBWNKnGoawI14KijfpGB2RIzWGIfY0/MqAmsABhApgcEWCV
+	qKOzSj0BZlBI1Ve9iSB69z/9kuBbFcya74s/ueRotCaiDvCyz9JIpjiS7nMC/on8dOyRwaURj50
+	ChoeGiSkgDI2333QxBYX0qQ68dUWaY3qQC9512ZzDEwPlxXDgXalBeKu2BmaFNvn3OSD1U1LWQH
+	45RATJPUyey/E8OumnzqP0k+8y/GOlINFuFBCzfnaNJkydhnCUBSxTkAaep7J8ETeIeHshrzlEg
+	Dbyw91bKxW5AdKJYX3S+5i99iOKABFNrNsw0pnhCzrF7vryWxu6ro+hHBGnGnq9WMMq0Ic/xNHr
+	okAhVlw4ACM6ngxYYjw==
+X-Received: by 2002:a17:902:f70f:b0:2b2:4d36:7aa with SMTP id d9443c01a7336-2b24d3609ffmr53808645ad.35.1774870554455;
+        Mon, 30 Mar 2026 04:35:54 -0700 (PDT)
+X-Received: by 2002:a17:902:f70f:b0:2b2:4d36:7aa with SMTP id d9443c01a7336-2b24d3609ffmr53808365ad.35.1774870554017;
+        Mon, 30 Mar 2026 04:35:54 -0700 (PDT)
+Received: from redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2427acdb9sm80473665ad.68.2026.03.30.04.35.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 04:35:53 -0700 (PDT)
+Date: Mon, 30 Mar 2026 19:35:50 +0800
+From: Li Wang <liwang@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, ljs@kernel.org,
+	Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com,
+	mhocko@suse.com, shuah@kernel.org, aubaker@redhat.com,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3] selftests/mm: skip hugetlb_dio tests when DIO
+ alignment is incompatible
+Message-ID: <acpgFlG4qj646hYp@redhat.com>
+References: <20260330053915.75442-1-liwang@redhat.com>
+ <a5b7add7-0507-40c0-a324-81f243ffa261@kernel.org>
+ <acok3JY66OcV0Qab@redhat.com>
+ <acpMD8tRCJhgXHeg@redhat.com>
+ <a1054c28-b574-4fcc-afe9-5e902209a22c@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 86FBE40009
-X-Stat-Signature: hfqnqzjut9wo1sgjfh8mrdmq4yg7x8g6
+In-Reply-To: <a1054c28-b574-4fcc-afe9-5e902209a22c@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: J32ndUnhMSFSJXshmSBgJ-1hZV9S08qrYhDXkjXbyjI_1774870554
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 8EFC8140003
+X-Stat-Signature: whep7dy7qyratrnc4rrgmp9gkh5ti9jo
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1774870164-274060
-X-HE-Meta: U2FsdGVkX18x+ZBKzMowP8eWbj84ilqWeot3LWjGlLsNZaRRlDEJ1F72Pw+Ro5dYaQ0T0ukxVXj8OT+o684rXhXJEyC++Ciuc6+IvudXRkPxs07PoJd7zuds85pIB6BphHIbFXIj3UuRIbg0MZymwPbljsjY7bS2n3d9h42w+le4twy48qIjW+22kIrZ+DXFbQIKfAIv8u82J1cztyXLg7rEKQt8YnUTKtNKUsmvbM3vX0Lttr7xsF9fVxpRMhjiJBcQlZqXmkf1U/PXQsMj8I56LBz4g9MpAhepmOtiubWR6t8+YmXe+QyIAWqF7j48RVFXWWqlbTk92N1XYDFqMNEOjCjcyQVDmBcgs2k6p1JI8hmUB8VlfVxe69hufAlmpAQYuvTiiFix4fffV38Tu3IbAtudjIVNlNeqlhAnofivitIwaVkr2Wz2v4+oKXYys2ToMzpNBSSyBw3WIAq0cVtEv0BAZ744DH4KtJMFB25CBCi4ZQFOuDKiYOvADsECQra6Qot2XQnslsyk88/EWfQBhxQ+Js4BNE5yuBaq6mOlZkyTTuADavarpmk78Y+HKQmyhUjwc3V2/YjLFbudvlZX0As0C+LwU2pjhshrRmdG2vT6RWleo00SMGfHMKyYk0ylRr6gGG47Aicjmqd5cjoaekz5dZwesar2GkRSz8eZFwGQHxdNHq+rZBGoeK467otZPI6qBMrk7Q9/p2k+44tIH5Wib9Mh/Chdz8CY5jpLLny4X8dEeb8/B0rFyg/Aqta2XE3KDLHiDSkeYhmHk9ldybqi+g47MMfGUUf4lLHXR8LKJ80uP/T8E2iG7cIGcGxCBq4j/SQ5QToh7PrKpSJBmEE+sM5dNR6GtbYwe1LPMoyh/F84yyP05X76MWX3lEIsZrOySTHbc5dEiw6lzLaXJXu6bS2mLG7+zRQkttG86grVXAm7Zo1pZHOwhDBJ6Ktrs3piPP+xyHw75YF
- iQa5FH9S
- ZbSFlGBOQ9ll8qHuDhR05rITcKmGNUTDyao3G1KsqhWZgwKFHk5QoNdxiznFNednQtOwIACWHdRGyF+e/JkieeEbVosDK+KohCGU/sXWVRflleL6W9eOO31XsdX7DNwAL3ecbK4kAi2ZY59xu8vG496hM2eKMUEAG5N7zkVan/wutyxkBHmc8IqyqMX60FGPc6D2wySjvOeoryi9gpgdGTrmWZGTcx1YY7F4YzXWTU5Qzs7vjmoBEcyc2u69ivgyUB9RpZerwfhLDcS375MIVJtNcsPz3iraWEoehKt+fN7TsboSi0x/urVPhyory81qIHm+kxwGKBPq3keIBBlG2+pRp/8TG16ZyLidEKPF++j9YcGNHy8hxgV6aQAgQf8Pqb6T9kvDkoQWqB7JAb85LW8LBEtTvsZ2QXbqrtWXjvKhgjJIuROGb7qIZHC/2bC8u9Hc+Xvyy+LwaOfFiTW2KU+mcq6C29UJEmAfS9xYS2zduQcA=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774870557-809061
+X-HE-Meta: U2FsdGVkX1+UEuNdgK3KdSwOEExH1wZ/r8UwbpdGwGjuvVD0CEGyjaLdronkkEXRv6dSqYjY4JEZerLBw9kwpWfmpUWqKcM7UO3CKSq4pAYjh/0Yc6xeoVBGxVstUbshPjrQv7VjQuxLt3Kn+l0dcENUXZKOjFnMIy2AGFa9hTH3It4nGjoapgrKH1lxMvlJ3UNZy4T0r27Q0yGhlq/0qwJOFH17LyOklowtGR1wFZuDmsezTJKATkvqhB5ydjTNLudxjxGorDCRFIBmYNqY9X4SmKj6YGNfWmKbtDEknBrfAXMgxJNn/F/JY1KePVoBP0y69fIrHsytrZVJRm+Dt8f0y0HyVV1bYUPNxDLO5ZUzB9Po4PUuHdu7eHXzClAWexwAIENxsOPMXPVUgUfCKkZN5T66UL/SJrDmdmt6H2zORYfUgVi2ecw6mHI2n31FmoyjAkhAywlnh14ZKGjKJdYnCBtixJJKmK1uY+jaA3UF/a1k0YeZ3mEf+1+5jCXRNU5tQOXqffZSUFlgFIUTHdjgio1TlqwodU3kyjjwV+8aCFojiRtxUQOKOkSWn2W22Kvt/XL0FYqV8jFcvQ3bsW4Van77GDWh4GmZZ1uUCc8ZZehdNUSqZHKLzNhfcg7lN5u6qYJGUZtSiB6a8n1rHyYxLS1xiycPTSidihM7BnRhfYzh2F9V4Yh443lo2RRbSHy40NQZlddagROKl0WLZfr3asvxE6tLedhwDfjVbPUPy4TTQ/sgSdxVmghunfTkxh+FpNw+hb4S9OlApicCk4nekNks7mUgwFU2FElNdn9+HpWj43dbH2Q8/ZyucxgkPKnde4kTZWroOlwTf2gi6aBv4xCFAxoB7gkFoRfT9t1gBucWqCrDNSZeNF6WyQ+uX0HHJUIL9UTEXm5ONTw47dct1bdDU0HbvlI82U2x39eSkefXpvS9ogANvgzOb+f3CM42FfVOYrLgyxmdJVC
+ SdRaUNio
+ 2ClN/958jJNQrESn7jdSauoAIMK+GlO1MLbsTioHXS7fv/sKSG5bjPGoTxafHzxLqfu9eNLG+pk9624JFgTFYDbCEahZdyigsVHRoA+dgOJP2iMapz+OgX4fo6TAQImW1PRzwO7hAjMSHqoVTOVGFJ26zh8p2kZHBuTYdfCr1z8p1sH5PUNjOt9uoYUWNC8SEO2deE7IqqacI/vh+id7DjnsohKkcaetX5hp4f5xlGbhFbrhcTyxLG8ZNnfWDh1AQlD1Gv9MBf/3ve9456zDhYhT1g/7VCM2ILTGU6oijmaySM/FmTpNo5VrsxosrSna9/rE2Y4nyJlc1PLJHy+/m2klbGx6TsPk8n++WYlpnlwcSg8+/U6gOcPV+fyZVuQ2+e7DY0hZaY7VFPLV71t9vFPum7QRw2owgWxvJQ+iOeSTb5bB6tPyd6TB+a/8BL5zppHzqj9EQTQj2a9ylsLUnskPQe/q54Nsyl4l1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,56 +133,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Jan Kara <jack@suse.cz> writes:
+> >   int main(void)
+> >   {
+> >       ... 
+> >       fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+> >       if (fd < 0)
+> >           ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
+> >   
+> >       if (get_dio_alignment(fd) < 0)
+> 
+> I would suggest that you query the alignment only once, and forward it
+> to the test.
 
-> On Sun 29-03-26 22:55:09, OGAWA Hirofumi wrote:
->> Jan Kara <jack@suse.cz> writes:
->> > There are only very few filesystems using generic metadata buffer head
->> > tracking and everybody is paying the overhead. When we remove this
->> > tracking for inode reclaim code .evict will start to see inodes with
->> > metadata buffers attached so write them out and prune them.
->> >
->> > Signed-off-by: Jan Kara <jack@suse.cz>
->> > ---
->> >  fs/fat/inode.c | 4 +++-
->> >  1 file changed, 3 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/fs/fat/inode.c b/fs/fat/inode.c
->> > index 3cc5fb01afa1..ce88602b0d57 100644
->> > --- a/fs/fat/inode.c
->> > +++ b/fs/fat/inode.c
->> > @@ -657,8 +657,10 @@ static void fat_evict_inode(struct inode *inode)
->> >  	if (!inode->i_nlink) {
->> >  		inode->i_size = 0;
->> >  		fat_truncate_blocks(inode, 0);
->> > -	} else
->> > +	} else {
->> > +		sync_mapping_buffers(inode->i_mapping);
->> 
->> Hm, why do we have to add this here? For FAT, if buffers are still
->> dirty, buffers will be flushed via bdev flush?
->
-> The reason why I've put sync_mapping_buffers() here is the following
-> sequence:
->   fd = open("file")
->   write(fd)
->   close(fd)
->     - now data gets written out, dentry & inode can get evicted from memory
->   fd = open("file")
->   fsync(fd)
->     - this should flush all dirty metadata associated with "file" but if we
->       didn't call sync_mapping_buffers() during inode eviction we wouldn't
->       have a way to do that.
->
-> So in general I think sync_mapping_buffers() call is indeed needed.
+Sure thing, I declare a global variable 'dio_offset_align' to get the value
+only once via get_dio_alignment(fd).
 
-Hm, it looks like not new issue, isn't it? Why we have changed now in
-this series?
+(sorry for not posting in the above email)
 
-It is including trade off write amplification vs reliability (i.e. may
-not call fsync()), for example. So I think we should not add it easily.
+static unsigned int dio_offset_align;
 
-Thanks.
+static int get_dio_alignment(int fd)
+{
+	struct statx stx;
+	int ret;
+
+	ret = syscall(__NR_statx, fd, "", AT_EMPTY_PATH, STATX_DIOALIGN, &stx);
+	if (ret < 0)
+		return -1;
+
+	if (!(stx.stx_mask & STATX_DIOALIGN) || !stx.stx_dio_offset_align)
+		dio_offset_align = 1;
+	else
+		dio_offset_align = stx.stx_dio_offset_align;
+
+	return 0;
+}
+
+
 -- 
-OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Regards,
+Li Wang
+
 
