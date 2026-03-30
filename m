@@ -4,113 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 514821061B20
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 21:49:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE45C1061B22
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 21:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99FA46B008A; Mon, 30 Mar 2026 17:49:55 -0400 (EDT)
+	id 0567F6B008C; Mon, 30 Mar 2026 17:53:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 950366B0095; Mon, 30 Mar 2026 17:49:55 -0400 (EDT)
+	id F222F6B0095; Mon, 30 Mar 2026 17:53:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 865E66B0096; Mon, 30 Mar 2026 17:49:55 -0400 (EDT)
+	id DEA3B6B0096; Mon, 30 Mar 2026 17:53:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 77DB16B008A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 17:49:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 211FEE114D
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 21:49:55 +0000 (UTC)
-X-FDA: 84604072350.06.D327521
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4DC65100004
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 21:49:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HeQKWftY;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C57AF6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 17:53:34 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E688E114D
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 21:53:34 +0000 (UTC)
+X-FDA: 84604081548.24.1F20CB4
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6D9EF40005
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 21:53:32 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a4Ftlu67;
+	spf=pass (imf04.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=devnexen@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774907393;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774907612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oxxZkapCjdRGWxNFLnYw/4aXiwSuhxrTsuAMQ0/9xZ8=;
-	b=w48pIBBJcZJnjx5AGnY3IjBHEgkOFDQDwWgTbN7tKAFtJoESmZMdK19eCT8B+Xg0hdxWcU
-	XguV/Zg2DA+o1qM91MxV39ZFQEmjpbsN6yIyUuRKfHcFFTp0pOX9l996+DzoZIZWyJYNmU
-	pxqZ00pLk4w3jeU9TtTDZCibaEZKk/c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774907393; a=rsa-sha256;
-	cv=none;
-	b=TgCiUWbLmXbXo6uaTdANBhPS9DhOaMmFKy50IpAj9x8YixhRt7Jz6diZBxbBjyJGyHc8yO
-	eAyU8FI1Qes4DnBA6wZPXFUsRJbkoj3bSeJ6rur6yTGZUkO9e3W7F7FuQZ3DmumEscELxn
-	DGHBxyRjrY61AMe1zG8QT1boJxQnXVY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HeQKWftY;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+800wh0xLadVVDgVQkWiz6t2FN7ZV0MqxIhhbbqBwMI=;
+	b=0TJV9NnuSeqGtnZln7ANbn30Qt3HcmS8on+WH8ATmYP5jjGomOAzIl2/hB5RKHdQ5UhcRc
+	RmTSEXjc5c/rYKMNXqjS96ABvPe+gBPcW/DLmZV6wUx7lsLoqN42LsYEhB3Mk8HR2nlPRK
+	hLS20fiBzPYZ95CjXImA8eoUVTHeJ9E=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a4Ftlu67;
+	spf=pass (imf04.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=devnexen@gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43cfb723698so1248745f8f.3
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:49:52 -0700 (PDT)
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774907612; a=rsa-sha256;
+	cv=pass;
+	b=UycSFWDkQuKWUXOOEYS3P3xNCBP29i6fqj0P/Xq/A7yVsZd9xCWvoBR/ceqGu26ogV8LrV
+	neulxZyHcg9lHlYO/3uxgfkbcj+Q9a9uPZOaswrThPbBphUafV5ZK9/wngDMGk6DiVLimw
+	tg3IibEmSS5oBGYYfMHrReAMZvK9xF4=
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2c17d152c01so3808130eec.0
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:53:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774907611; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BCtUejGbHZqJO4awwApRaXUD9kb5cJltG1lL//G98hqMcstNoBs7qq16BYhHYsMUYw
+         O9DMCFFvE1DuTkjt9+JjfKzOMhCRoaVTDpiZ+bbsJynXXqOjaqAHIJ/fVXUHu5FaW/Q0
+         /vTKKDvZV4Po0zj5+QTVtuIlKNs/yH4H4Jh4MJqnEIMuWaLk/z0RNbt7PMrqeqXJpt8X
+         cPIOebxFYstUKa2A2p1jpqxUgiYjQ3EVE6b5jaSxroohBFxxybHAtdby6vNeiXfV65qo
+         RyDpdcR3aboxXXT43hRWNVNFabdYM8oL2aelxkAsv5kTOoyKdXef9qXI1ceYISqpIsJI
+         w7Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+800wh0xLadVVDgVQkWiz6t2FN7ZV0MqxIhhbbqBwMI=;
+        fh=CfTuLs+9oFTC+w1LRGRmaN3MxlVtD+jTDnRO37+JY+k=;
+        b=J6dxU3zUsAbfgNloq87Zgix2mVQWga5qH8OrRlnDEMgSDConBOG7f1MCGaRf9rWNiu
+         df0csKFNbUNtamEu4aLcU0/VSR/kA6oX+9z+l1f5k9N6TZ7RPTMdoFHI/VUfEvY1KDE3
+         8NRbk2m2tv1vvPzpNFfDJaebrAnD5N7Ergx+A7orXnUOUF3K+nt8JluQ9DcS3pAjqP63
+         N8+ilP8H4Cus8m7XFGXioMndF2dlzOxaJaGqAhtJ6a26WMwDAVZTRBhJFEcNtuLNfY5+
+         Kcpcc/5ztiO3tx4FsKvHZLHBRvF+7qP1bCp/EYung6zfsDF+wmO+aRkSrJvqWTiW3nn1
+         8+nw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774907392; x=1775512192; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oxxZkapCjdRGWxNFLnYw/4aXiwSuhxrTsuAMQ0/9xZ8=;
-        b=HeQKWftY0/ufToWOUablPofuYvwzzSZ8xwSueNWg83kWk/K4sI4q4H31tW+Bu/++2j
-         Wts0Bj7wkgwF8duhcFJ8c+mzvAnvC30SV8R4BP1QsnrzbyHYQMkjzPM59rEM7FGmqs5V
-         +p/w3W/1MNewW2UHdZ/JiKrU247kGQavcTD/oYxIsM3EkSHZogl72HJ7mDugWwPAcXt2
-         fnm8mDVgz1Hleh6UzJp7fPxe9w2V6SUIlcKVtj0fyMHDy+ZJ2EXULdNWcnbqxqYUzAXt
-         HQXoWe/vslbl7lH1AB5fU1t8fHLEnkZvI/lxMUwZGjv3jyUyxtaYZFehUjIupzMDwM7H
-         8wjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774907392; x=1775512192;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1774907611; x=1775512411; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oxxZkapCjdRGWxNFLnYw/4aXiwSuhxrTsuAMQ0/9xZ8=;
-        b=FGSUy0UaFj+l7RRiu33DWh+vbS9wyKhnN2CJjFRQvDtRPTgEtPvVbBHvHE0uGq5Luc
-         wVjjY3eeJvoAHRyBuw6BCtkoxApK+VbumIbMXSWbXuESAzOQLPKjk0G4OY6kSGZrLgUA
-         wNO1vjm9ICiCFv+HgCJTHxCF3kvswgfNg4xmAmih0cxebe3ZEnXA2HuHYRqcxcFyinaq
-         jpW9bHb3x6tuG5X+vydTZiFhi6Aoj4vNrd9JD/bGLZmW3kSERaTUqqoi7p5SJwglfuB2
-         lDMVJ1WkQlOCSuYvK5xsV58cCQuyH+dMcN0P1kgqLbI3xgUJLgl8dupWIEcYs+R0wupB
-         ocow==
-X-Forwarded-Encrypted: i=1; AJvYcCXYvvXG04Pe7MNqEBbGso/apRJWT1lO0ktfLc8MATSwAtxJCb3lOsPzNnoWgSEHDSynKbWsdOKV8w==@kvack.org
-X-Gm-Message-State: AOJu0YzxGd936c9HsAvIMwelEKRfC+1r/odihdfxeOPvYOHEGx0oER3y
-	DXAZq7Q/X+shiUF2eQvrisWrj6yD4V+M3lDScMQ/EJP3/etSsnAwhLKx
-X-Gm-Gg: ATEYQzzTam63fTqexJwCP4fW8PRdBuvno5u2gGCbjFwHn/aBooqeNthYWQ42aMkyHIt
-	uiSTeyTLN+aD83VdQx1GBJiRb3rc2Ph4q/8jYjAs7DjHyrY5xzV9ysLgTyPG4SPt1Je0SjIQoca
-	vmXrG2RSed0bTPv0mUIoRQtYq4zM2t8V9TJVjfpWZaPfcUdHQZ95HngManhc84adnZYU5IreVQV
-	97hIC8vGGulqR3roh/iZhr6uRpfaiLFJznHAa5qlJt8LkePgsXhS3OES8rzGW4aMtx/e5b3+lOF
-	u41eE0F4NK3VdYk5MoKvi4SoKeyO29gOSPQgDcM+hrF7fWRQ+Kngd1DsSj8JKaV6/E9JaPdOHEh
-	AgU+1FJY19e0zpMSzvhLuMoSk5P9d1JdJU4vbkr+ttQ1ch9dtBD11M5vG2IrUz0LNe05qjweR/J
-	L2k2WPCJCIDDHRtiVrYTlgISKi5CQTlZDQSMhosqw5nn3mHV+w9d1uBaK9GfDSACDc+BSz6XCee
-	yRGAd/duBS6
-X-Received: by 2002:a05:6000:4305:b0:43c:fb4b:d4a4 with SMTP id ffacd0b85a97d-43cfb4bd585mr12069867f8f.50.1774907391494;
-        Mon, 30 Mar 2026 14:49:51 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf245f87esm20936342f8f.22.2026.03.30.14.49.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 14:49:50 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH v3] mm/userfaultfd: detect VMA replacement after copy retry in mfill_copy_folio_retry()
-Date: Mon, 30 Mar 2026 22:49:48 +0100
-Message-ID: <20260330214948.148349-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=+800wh0xLadVVDgVQkWiz6t2FN7ZV0MqxIhhbbqBwMI=;
+        b=a4Ftlu672yT8ZWqJRAwcipySD3iB/IUTLJXLU0arK79VMXY7krB9geGd9A+opYoEHC
+         YEHtI4/HdmgbO8NZbO/s9OBO4P8uAAEwPkZ6NNkSrVbTASVO7pHnWDf170ryErEOGQZH
+         b3daXRwfll70yhU0U8hu/ZUZS2veRPNUmmXMSEA/rKXvp6zrICq+M+kyMIMbyt/axext
+         Mrsq8ozXBN8AxwBDbMXHKqoQst70IKp7A+3yDEdGxj/9SYYhgSChXXTsIbuNTwRsYkh+
+         vUCEUE3LG//wV2N8+BlNpTnvbHKvKC3nCGki9kEccXkjqmt9oH9Mm8yR+GfPaSJBZr38
+         /Uig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774907611; x=1775512411;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+800wh0xLadVVDgVQkWiz6t2FN7ZV0MqxIhhbbqBwMI=;
+        b=bs9qpBKIJRyI36dpaDM+8xL2p2ZMoiuwnRewY1WBgm/JF7vFkMImoTvQJHbJtJxJKx
+         h9u0qxJVRdJRVpZoVMYa9v9gf29Qs9V05wPydYzn5HIA5VRLtZdwePIFB9meC8tA9WhP
+         WiWXFsxmrCsUix4b+xWMk9zL03qmSp0MWDijsY7eAjoM1EAF+j1zm9hJeUIsIBQdpBw6
+         0DsEzJfl+YjQUPmDWfRanWEnhu9VxL8iD/t8+ln+/id9vFk5oKPlDB0t95Ayq2HM+yya
+         vA+1J+QximKZHPH5gbkDWtIinnrhAKJa81yBEStuQIOnPBFCVnN7LnGbmIUKY11GJ829
+         gbMA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBvaYvscWzGMrEPdGuZ18U9QolAr4CSVM2+mqLnxO0LDS/K5ANILTpCpiq6x+p2hL4ZxvJTS2qVg==@kvack.org
+X-Gm-Message-State: AOJu0YwGdPdkDMkbhftvrU9KZiz95vn8Z8Ug/+/KV/Hc6iPaZhkafvg3
+	V1B0yF/Av2BGMtuFpUuPGdZJs9PEC8rM1fIwHy348Dh9qiyLNpPeINzxa4SJl+Adv9jbbxBf+Oh
+	2KC9fShTGqekRgG0Jg3hL2gAC8J60gD0=
+X-Gm-Gg: ATEYQzy/dEEu9COeim8fVmzfB3MidRyE7SZaPIUZSICfXqkpMKPH1WEQ+jj/4kQcvjx
+	xXNnFMwIsD7NUbYNeD0QVDu/XtplyuZZFGOhJobbfkEyYZ0yThM1rcet+1je9sqq/vnIcKAlOrf
+	uMpKTzidQ1SwxIxclDvyQnGnqzk/1F9EaPiNRXUkAVCKR+0kLOcvyFK7n6bmOGFZQWVR2tp+3qr
+	HgGI+EigpY2+3RTpp4CF8S1pRukjWS3qp/mHRvuLauLo9hh6Lb81a76IL9rqYf9oIwbTgQ9i8fX
+	JNp1CA==
+X-Received: by 2002:a05:7301:169b:b0:2c0:f15a:ecbc with SMTP id
+ 5a478bee46e88-2c185f5e8d2mr7310944eec.33.1774907611112; Mon, 30 Mar 2026
+ 14:53:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4DC65100004
-X-Stat-Signature: aftiwear7es9b7onfa88y83ici9wuf7b
+References: <20260317014802.27591-1-kanchanapsridhar2026@gmail.com>
+ <20260317014802.27591-3-kanchanapsridhar2026@gmail.com> <20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
+ <CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
+ <CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com>
+ <20260330115141.997e29f96223da1e22c0f375@linux-foundation.org>
+ <CAO9r8zNRcSBdBthR8Mk929pT2z_Ew_vc8_nLJns-2FygSX630w@mail.gmail.com>
+ <CACpmpodFvA_DMmXBmgZfE4A=VnH3+0rVfmAr2qKP8o738qafbQ@mail.gmail.com>
+ <20260330121249.fc2cce8d2fb78ff2c68d3645@linux-foundation.org> <CAO9r8zNXqUd08zU-br_sNOQxQ_GyNRzPfQS1YZxYnk1WnyER9Q@mail.gmail.com>
+In-Reply-To: <CAO9r8zNXqUd08zU-br_sNOQxQ_GyNRzPfQS1YZxYnk1WnyER9Q@mail.gmail.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Mon, 30 Mar 2026 14:53:19 -0700
+X-Gm-Features: AQROBzBMXW7xVN_idGjhXJ6bHZU5OL9BDCXBq_y0IuWglGTlU3P3nWTPU7nGqSg
+Message-ID: <CACpmpodKm=_UqBrRdG0pt=rMzy4CnAENhdC1nC-_7vtzB7cTag@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6D9EF40005
+X-Stat-Signature: 3tko5743aj6ishcatet1xmphiiaser1f
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774907393-28007
-X-HE-Meta: U2FsdGVkX19iU/+m7eAEZOipKEiqozE+E3nPg15lpX4ftDaEuPl6OapPoXGz37RQ97VudfSfOlX7TnEdIAHi2zNREfy9DItRKUlbbfzJIkV7oZTdLynz/yrEx7UsSA4f2Mh+Q0EBb/eFbRACeqYCOjaQ4c1bdPOySuECs7xbRY1K6W2UFF90x9VDcFcRISSTy7mv3UmnSEC9rHFyuJLWBbn21SBB/DyiPeNGdQ6MvP/tWyyYrTZHJ9MDwa22PAreV0LQQgOUTRMCA1xV/lEjMIRq7RrxqbF8GgAUBlMnXM5ZrS3H4Fcd+zyHHhFQAvdWDEiEcJJGA8mUpuRfxVrf55XSj3fT56iK+9X9k0U8t7jQM1SdC+ej4cKeW5C0u6mExVuLYRuhbiyq7oJxW6W7YuCjcmiZ0y70vkTP1CmovIQ0QElVmz9gRB1RYsuqYTVd76M5bIPdFJTv9jyNzLkYdsWeVf1xTwpprqwxJbk14QGKXfh7j+oNBRtd0mX5eMRYJOyTKPnWkuvUdOFnZ7MywSa3fDJth2ZOd4T6redQZ3mP74BJlPX8xoLcL5DzAcICp7loUVhkU/VYieCP418UdBsFeslcQbXoRPc7ZI1dZVdyhkp6yxa184UclyzO+fqBameKO27G5aWvhqB9M0ttGUzGxUQ8a4tv1lPsCfyMYCHg3Jqq2q61CGQLkHj6zWsrZaV1bJwcqytmEmH3O7D5P8Nxmk4X7iTVdu8pqcpJqJUvv6u4ZVlJ0kodkEP8flP/HwVuL84npyhfT5efztibchmvrtTnm86RK26VzB07BKZm3pFDxqMhpESfzOgR/aQ7lG8g0e2YEPOkGznD5PV82NsBopyTPOGOGmDNm5k4qDTMCaFJlzIBQQduvgXUjRMRwfJy9xL/GaKU1cXTZM0QEGiiELgVLwfF/rIFhPTVbr0Ez1OzJ14mja5fhQgTcMhJqJbs1cJzR6twM6wsEhl
- ilyd+hu7
- Yj2INOSKvuOoWH3mH6tMyTrTNKF/2kA6fcz96LMhBx26WTXd1f5Cv0z9QJwC2LlGil5t0R6d+dc1QXqrWgoOeuq//+JOmlDVA2RGiPUAaB5D0tVFlaqzq18psOh2YsQKAmZ4Lp0rB5rXNmunetGHxjzHa02po0m48yhrAhX4Mj0RMf9f4R3unOr9UjiKmTc+hZ1G2almImfWqP2D9kCF9XecN90xZI4gC3eeqXsOq0ntEb8tajBGG5zY6q/Xn6UA8RdsQktxevQ1z4rhHVsWykN4vLWInFKxvphnB86Ah3P1jE0BKrtqsRzgfWayBdvu8FjtKv0zHZYOb+Tp5dN47feeF1hAQTbzJFD6H7dTkzX+Rs+06hq2dN7Nxt6lJ8doOla1vbVK+LW0W89nKZMRYJAAzLieFAHQlD9sVofAqysIQUiZAm4Y4IJJg1eMJ+BAwL90B75GsJz4FTU23joG51VV0tEWOEUmbsIWvrL8XVd2AGvvQhJWP4AOoBKcCI4POuAs1DZFRcmVLlgoBoUQMG/jMqarogfztp7DddGVB8oDoH1rFOouhWb7DHMHXKNR6VW7T
+X-HE-Tag: 1774907612-703669
+X-HE-Meta: U2FsdGVkX1+ZB6E5vir36HrJ7w2MYcF/5K9nhI8JHDjfhlMqCQVjDeI2uW9dAmxXRPJlr58kf+zvh4iJen+zVk7xx/V4ZoHE51qKDbco93n2LnD8P0zJ0Lm+QKdAnwXuHdTABxrcVIs8N6xiNa2saRSurL6UX2LeGGK1DJKY7M5qu/VEqoBQGhHN7+pFdEyhqfa6FGyHn4CpF+75KbaJDNDm/lpOawimgUka3qyfCNhxSDt7erlbGF5iNrVmbnsQ0zPdql2YJ97j5cW9snx4gUtRCXE6da8rkoAQVh6WuJ040I7kw+G3gdV5SDBrfv1D1fvTc8O81bwDiAmvQpW4Bxspo73ts0anh6oyxrzAjOJLuCaHmk+Y7pwDhULB12l2ODy9XQ/IfePjkEE0JvilyAxuedCTjMttdKsSgbAbiar7C1dOAXoyy9NrahVCvEnjLOLs/zS0lRLbGFpuFp+2FspxDUaH6owtvYVuGrlmwDLtb3pmYwq9LTTb4gr/CEJr3gAoll+N81KDdHF18u5JGre8tDLGdPaNT/oX/wvjLWm/g9iby9yHe3VvTAf9+PN8WrEr14pgk4oci+N9phV0FBZFbrK7R13zUQi8hvRUYWBotfj69heBQtkOO4tW3bnarLu7tfW55jc2VLrLofLFxU+3AGaDpO4AKFOaN+O9DHIqnNooCRMVFy8QJgoW+kNdwmKd0yAw+s5y27AfeaH9tgynHFtns4LOtAZF9jBdPLxaM2iaBVq35OcgNp8D1u4vTR7mVBGCqO5p3OwgJWVZsWP/yPfJRzB0wqQ5vM7ouXWr/1sdGnxx+7zMKhGuN/nBi+Mdwwb2D9BSotxzmPGx50KZ9WdRhHdVGBySvFsuAqCKCochHKtnXfIMCDqvXa9Fq8aGAd0Go7jwgpWMrKGtJfoaM878XwZmdn98yLhX9niDnzTDuoa0yy81tj2+vEazQw99lapV9mOQp9JO4dF
+ sIHl36jd
+ E43AzWxt0ZLhdNNKuag2qof7MJfNwLyflkiWmD6/badcSSlQoPKII2lH08L1W+zYR4ZmmzHGKoR6+hqgUQs6ajEBSFF3nrFn0tvKmGA6yx7CgM2BPDUo87Q/KsulP/VRDW4KjsGY8EXHJ3grRVjSDKJ3VzdZU9mDQlWbWgMN7SfI5BrvrVRjDVqmktCe0XxLY5UI/pzKjB9HgWSRsr5TT41D2zVUxeabtPE1ZbAmWNVF/e0njPuD4l2erhhn8GO+XTwjFig4FBL7JNF0vi509AAri9llNMqgRNPmYZ34BuBLIpUw0bVMpuzAvcMdmnlYni1jiKyR1RYqcBb/m3iTCy7KaI9wdDj5XImorFpAaz9628C+CmLwQl5txuZTZldb+fWBKo7MgrrlqHzrakl2ueioEg965BgrlTXMyL/usUpGmpVm9J/wfFFmPcT+bqt386GC2ei2L9Amdm1mHGP1h+ksCdqbN3wohHzJES8fvl4IjRcoddYOiIwIYJgzOpphVscuHnqkHvEJvb2yLxvjWlztwmMnPRbE6dzwPjbWX2XaNeB8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,121 +147,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In mfill_copy_folio_retry(), all locks are dropped to retry
-copy_from_user() with page faults enabled. During this window, the VMA
-can be replaced entirely (e.g. munmap + mmap + UFFDIO_REGISTER by
-another thread), but the caller proceeds with a folio allocated from the
-original VMA's backing store.
+On Mon, Mar 30, 2026 at 12:13=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+>
+> On Mon, Mar 30, 2026 at 12:12=E2=80=AFPM Andrew Morton
+> <akpm@linux-foundation.org> wrote:
+> >
+> > On Mon, 30 Mar 2026 11:59:04 -0700 "Kanchana P. Sridhar" <kanchanapsrid=
+har2026@gmail.com> wrote:
+> >
+> > > On Mon, Mar 30, 2026 at 11:52=E2=80=AFAM Yosry Ahmed <yosry@kernel.or=
+g> wrote:
+> > > >
+> > > > On Mon, Mar 30, 2026 at 11:51=E2=80=AFAM Andrew Morton
+> > > > <akpm@linux-foundation.org> wrote:
+> > > > >
+> > > > > On Mon, 30 Mar 2026 11:32:07 -0700 Yosry Ahmed <yosry@kernel.org>=
+ wrote:
+> > > > >
+> > > > > > The patch looks good to me, feel free to add:
+> > > > > >
+> > > > > > Acked-by: Yosry Ahmed <yosry@kernel.org>
+> > > > >
+> > > > > Thanks.
+> > > > >
+> > > > > > That being said, it might be a good idea to resend the patches =
+(new
+> > > > > > version for rebase + Ack?) to get Sashiko to take a look,
+> > > > >
+> > > > > Yes please.
+> > > > >
+> > > > > > hopefully it will be able to apply/review the patches this time=
+.
+> > > > >
+> > > > > I expect so, but I don't understand why Sashiko is having trouble=
+ with
+> > > > > this.
+> > > >
+> > > > I think it was a transient failure.
+> > >
+> > > Thanks Yosry and Andrew! Although, when I get the latest mm-unstable,
+> > > it already has the v2 patches :)
+> > > Should I still send a v3, with just the Acked-by added to patch 2?
+> >
+> > Yes please.  Just to retry the Sashiko scan.
+>
+> Sashiko tries to apply on mm-unstable, mm-new, mm-unstable, and
+> linux-next. So the patches need to apply to one of these branches.
 
-Checking ops alone is insufficient: the replacement VMA could be the
-same type (e.g. shmem -> shmem) with identical flags but a different
-backing inode. Take a snapshot of the VMA's inode and flags before
-dropping locks, and compare after re-acquiring them. If anything
-changed, bail out with -EAGAIN.
+Got it..
 
-Fixes: 56a3706fd7f9 ("shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops")
-Suggested-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/userfaultfd.c | 64 ++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 57 insertions(+), 7 deletions(-)
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 481ec7eb4442..d10eb81dc3b2 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -443,33 +443,83 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
- 	return ret;
- }
- 
-+struct vma_snapshot {
-+	struct inode *inode;
-+	vma_flags_t flags;
-+};
-+
-+static void vma_snapshot_take(struct vm_area_struct *vma,
-+			      struct vma_snapshot *s)
-+{
-+	memcpy(&s->flags, &vma->flags, sizeof(s->flags));
-+	if (vma->vm_file) {
-+		s->inode = vma->vm_file->f_inode;
-+		ihold(s->inode);
-+	} else {
-+		s->inode = NULL;
-+	}
-+}
-+
-+static bool vma_snapshot_changed(struct vm_area_struct *vma,
-+				 struct vma_snapshot *s)
-+{
-+	if (memcmp(&s->flags, &vma->flags, sizeof(s->flags)))
-+		return true;
-+
-+	if (s->inode && vma->vm_file->f_inode != s->inode)
-+		return true;
-+
-+	if (!s->inode && !vma_is_anonymous(vma))
-+		return true;
-+
-+	return false;
-+}
-+
-+static void vma_snapshot_release(struct vma_snapshot *s)
-+{
-+	if (s->inode) {
-+		iput(s->inode);
-+		s->inode = NULL;
-+	}
-+}
-+
- static int mfill_copy_folio_retry(struct mfill_state *state, struct folio *folio)
- {
- 	unsigned long src_addr = state->src_addr;
-+	struct vma_snapshot s;
- 	void *kaddr;
- 	int err;
- 
-+	/* Take a quick snapshot of the current vma */
-+	vma_snapshot_take(state->vma, &s);
-+
- 	/* retry copying with mm_lock dropped */
- 	mfill_put_vma(state);
- 
- 	kaddr = kmap_local_folio(folio, 0);
- 	err = copy_from_user(kaddr, (const void __user *) src_addr, PAGE_SIZE);
- 	kunmap_local(kaddr);
--	if (unlikely(err))
--		return -EFAULT;
-+	if (unlikely(err)) {
-+		err = -EFAULT;
-+		goto out;
-+	}
- 
- 	flush_dcache_folio(folio);
- 
- 	/* reget VMA and PMD, they could change underneath us */
- 	err = mfill_get_vma(state);
- 	if (err)
--		return err;
-+		goto out;
- 
--	err = mfill_establish_pmd(state);
--	if (err)
--		return err;
-+	if (vma_snapshot_changed(state->vma, &s)) {
-+		err = -EAGAIN;
-+		goto out;
-+	}
- 
--	return 0;
-+	err = mfill_establish_pmd(state);
-+out:
-+	vma_snapshot_release(&s);
-+	return err;
- }
- 
- static int __mfill_atomic_pte(struct mfill_state *state,
--- 
-2.53.0
-
+Thanks,
+Kanchana
 
