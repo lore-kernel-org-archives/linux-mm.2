@@ -4,97 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD2F1061B18
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CCD41061B1A
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:59:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D2656B008C; Mon, 30 Mar 2026 14:58:41 -0400 (EDT)
+	id DA94F6B0088; Mon, 30 Mar 2026 14:59:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28A856B0095; Mon, 30 Mar 2026 14:58:41 -0400 (EDT)
+	id D593E6B0096; Mon, 30 Mar 2026 14:59:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14E5F6B0096; Mon, 30 Mar 2026 14:58:41 -0400 (EDT)
+	id C48036B0098; Mon, 30 Mar 2026 14:59:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EEF256B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:58:40 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8F62013BB5E
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:58:40 +0000 (UTC)
-X-FDA: 84603640800.15.EB1128E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 01289A000F
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:58:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lDRIznEE;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774897118;
+	by kanga.kvack.org (Postfix) with ESMTP id AF3AD6B0088
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:59:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 74B06C20E0
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:59:19 +0000 (UTC)
+X-FDA: 84603642438.25.EB3785D
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 74435C0005
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:59:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pAVVGSpZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774897157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=NZ0KrhJpa7RGy+ZaIJAHOmnES8bmoOZLsF2p2Q1RNRg=;
-	b=J2q8/TxcV6KQwrsG4HoAvezIq9IQt0VyM/geEFrfo7TX2Oy1GXuQxup/r0SK4nLAdMJp+H
-	XKmbjRc1ICvwtS5qx7DyLEwnvnZdY5wHtm2mqK+xSVxJfryReWdWNZx67lF43QxcpU0AgT
-	Esz4g0RD7im9epYOyO1ZG/3pM3RvQBU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lDRIznEE;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774897118; a=rsa-sha256;
-	cv=none;
-	b=MJ/XWSTrtoPoMm6bdbPUlEivAL03B4Cd0JnTfE9BrEBjBBoBCJiA8aSwpVRe7aS56kXpnS
-	o9J7TNdNj6xY+/B1tFy6FzVudCCC/G0J6eIH2ic0i8iVAU5d4zFtOTVIzQNS1iluEyAXIo
-	t5Q6E7DErtMCSeLrJkgysRfKSIuNzb8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774897118; x=1806433118;
-  h=date:from:to:cc:subject:message-id;
-  bh=TCiuOVib0wNb4F6I5gmpYr/Ci5Yz/eB2swQ+rRI4eKc=;
-  b=lDRIznEEX+M0WKRxweqSzEew+NFLFYVuQhB2HB8jrJuADgiPoO8pdFmU
-   NwX3yoV3fjq+oGg9xKK6kTh+6aGSBLWbg1jK0QsxtQ240+zvG0KnP9rbZ
-   cGVgy0sbh1cdCW1xyicrb2yXYuG90Y1Dlkf0nQjBCTDr/gs4iqs72g2/s
-   tcdl7vuZS7okEWIu6fSL05mJY8K4lt66llhf2c1bdJ7ZCYOEOqiew7K/2
-   leUCP/WS20oEv/A/k8IBSh2M7suycptfBGkTm43g/j70yf6BzBoCj1GDV
-   wCVscoVdNJRSeQK7uqeNF7IGHkby3LEHhyNaTs6OV56GQjB4akByT1X5Y
-   A==;
-X-CSE-ConnectionGUID: bxGvTIIFTBaY3d3Wj709/A==
-X-CSE-MsgGUID: cICeYAn1SGKGwTLT77MnLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11744"; a="86591868"
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="86591868"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2026 11:58:36 -0700
-X-CSE-ConnectionGUID: 4QFd2bA1S5Cw0Pr3m0JNTg==
-X-CSE-MsgGUID: DckZ8NrsT/W0o9dLtI5faw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,150,1770624000"; 
-   d="scan'208";a="225149343"
-Received: from lkp-server01.sh.intel.com (HELO 283bf2e1b94a) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 30 Mar 2026 11:58:34 -0700
-Received: from kbuild by 283bf2e1b94a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1w7Hol-000000001Wb-0VWu;
-	Mon, 30 Mar 2026 18:58:31 +0000
-Date: Tue, 31 Mar 2026 02:58:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: arch/powerpc/mm/book3s64/hash_tlb.c:45:42: sparse: sparse:
- incorrect type in initializer (different address spaces)
-Message-ID: <202603310251.oTtJlApu-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Py8h5KWNDwvvZqpmJ1HkCrEJBDna/rcCea6Zwo0ThLA=;
+	b=tUrUhEPpiaR0lYt7nt6fe8UxAkRqn0bKRs8xfGREM+N5XXGA9P2hn4u8TOBi4p3zmA2jtF
+	6G6zWsoE6KWr66ohTED+Ta9tXe0WEhnaTCK+flIdMiQW8jqh2Iq57yLRTqg7ICraGrx+s9
+	JML/D+O2+Nhs9YX35+bqEXvRJVen4fw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774897157; a=rsa-sha256;
+	cv=pass;
+	b=kDpyrKQdKUBtyWYRGT5LE8JZ1PSyTzYieBbRBvD+GRBTS5eSrT6CnxDVgGA3KR7YXVD5fG
+	C9cyVR3clRRuJo919AhAR48twalgxv88+uTuNYKugpLqta7VGKgidjenaewHI4xKl6f46A
+	Mxmb7aecTLFTKhXjoudtxTmgyc89TIw=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pAVVGSpZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2c5b3d8eab1so305705eec.1
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:59:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774897156; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hn76k4faCZnDP7K9WzB6JyJuen30+cXTb039mRWirkGm8OS9KEWCGP+0sLePAG5MVN
+         /KH1ipqL8DTDG7mdRcR7b0hnc9asZj2fQzQq6rDeTp9dpvv8r/7iI7ASm9/AjKjRCZuk
+         8eiDzASJu9oRZLzud8QSxq8cTlcoX9NB1Avwjr99ptkmWP/DujM5wO4aFmtTdIv889pV
+         BvGrfFHCgT0oMirC4OXchxSZgYd/b14UH7Yige/dIUm4Vad3yjh+UOkfqBrsKlgDFnHx
+         H/tmEeS8qY213CiyWsZuyj4gdLXi/STweOr81ZieCy6gKz63WRS+dJDd6B+6cWty26ia
+         1ZXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Py8h5KWNDwvvZqpmJ1HkCrEJBDna/rcCea6Zwo0ThLA=;
+        fh=yb4x4T0VHVpkc+48tZUxw5BSRM6jIEZQ4V0RoATCqjQ=;
+        b=g+9V0CcvItJ7EfGN2V0a9r20tHpMRbOH9+wXpiAFOaIvwr5+yvMHpVrxsOc1VZ8yQB
+         kTmpDcdXZbVX7D3YEz7K5719n6alo5VsOarACU/c1Nc8ZYKBw3c4DEwTG/1DSo2UEsWh
+         5LZ7vvyJXlnS/96QQooaLGX7e2RI8UabujBz4hMBFCPDZ8t+oD/o1EyAmV2OtmAOiEdU
+         GrYxNRXqhgnpSjX5zy1+ewT2VwHtaHmWnQETyglXSRKxogXAGeafF509w2JAjwF+FbFY
+         Slf+OjZQgyM31yXNqcVt7GjVMuSjkCor4q6BoVtL/8bU9e6O4MQr31CDdj1E9ORp8ySE
+         e5Pg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774897156; x=1775501956; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Py8h5KWNDwvvZqpmJ1HkCrEJBDna/rcCea6Zwo0ThLA=;
+        b=pAVVGSpZIloDyr4nPfV/+n9v+6+MHH3RWWQYuQTDXFIBNUpgh/mkIEpJ+9RAHFR3vu
+         BSdhI4EHqYuaglMk5rylTbATN3+8tvi7BNt6n9deFrR0QDrpGsRggHR6MW8Rq9uvF6SS
+         Un+Gp87GzYV/3BUtRKQdjOnVhPpAt4C6GdnLmB8jxA/6QKk6bBm0sWRBqdFihRcn8z8F
+         DGRAZvrsZ6ah8YjOmBnDcxzXtywbwbjtZYAVEeghJOn2zJ08PREe2HJsrWhpDDKJTfEl
+         Tuj1h6uILxQgw3Qw27mYnGt3K/YIfFMPs39kaX3sI5UxSuzhPL9i8rXj7JneRZuOCOG/
+         Dmbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774897156; x=1775501956;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Py8h5KWNDwvvZqpmJ1HkCrEJBDna/rcCea6Zwo0ThLA=;
+        b=i7e2y1h5v25CRxy02h5ld3MWxwM+6YZjSCpelUk3b5LVeNzp/f06PIqN0ei2zcmOGx
+         f10C2X37iEZ2MsXZhzjXV52K2vcnTlFWlhWSYoyQTqQkPpRvDSf5+2bxyMwtwUpvhjm1
+         Q+55YuUmSMyyUa5doNJLQ7iW5ClZkptywRGUkgz6imeEw80R7NwNw9fqTPvcAaKRwzdN
+         FE7J2PQBqmu+4ZV1mfrijf1JugUv9HvNJa/62oWeE+P+AxjpHfO3+SuGbSo3Bf+ngudB
+         wEcdLsOFKmDzOHkzk7De7WMGsFaNOp9gir/fn6jqFbuJo/gaO1jjEDKqH5ns7UmpsByX
+         kw9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXxpPbng58avOmaoYqL1y7MM97Gy+6QttOyYFK66KBi1pZW7nlzOQCy7JVY9OnWblisOmviRMMxzw==@kvack.org
+X-Gm-Message-State: AOJu0Yzty4S2DRjPtfgEMm3i3r4zxiE0xIuQGU5mQwizIeMX83pVArMO
+	0YTABFMUdFA01wwoOPcWFsiVfS8azy/g6F3JPt0fDNTbMpdgG+G3jmAhOhc6o3anaktxDUBJ6TV
+	UGVcq/EWDs7cSvUK7DVuVZyecGoFRU6ipx0VWI28=
+X-Gm-Gg: ATEYQzwnrt8Kt5KXxyy/0btSiVJ9qxbzX7xWR0+Wn2iIwjytI2xo92QV6iV0Hnsjng0
+	eyM6fsJ4VlBdVcmu4X3vyrmmZm5xAf4uqUJOgART8jiTpi9B6cVaAK+8WpDRUCTp37Ns4ryCfD6
+	bdUxe+flBShDuNV8VUJUhfPgNYEuon/EGIVvC2TTkaaxUNKl1amrTLF0LSdTAHZrdn/uqhVxH2e
+	cs57OmrR2+il1lDUJEycRSvZ13t7xOh+Q58ywzQYugF5OyPsKuvyvRUlvbRGZgY0NOfmJIrbgNB
+	dRDKKd++CXgOc/hzrCTOXQM6n7w3TZfLbBF1TOBd
+X-Received: by 2002:a05:7300:5b89:b0:2c1:5b21:ddd6 with SMTP id
+ 5a478bee46e88-2c185e55550mr7788422eec.17.1774897156074; Mon, 30 Mar 2026
+ 11:59:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260317014802.27591-1-kanchanapsridhar2026@gmail.com>
+ <20260317014802.27591-3-kanchanapsridhar2026@gmail.com> <20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
+ <CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
+ <CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com>
+ <20260330115141.997e29f96223da1e22c0f375@linux-foundation.org> <CAO9r8zNRcSBdBthR8Mk929pT2z_Ew_vc8_nLJns-2FygSX630w@mail.gmail.com>
+In-Reply-To: <CAO9r8zNRcSBdBthR8Mk929pT2z_Ew_vc8_nLJns-2FygSX630w@mail.gmail.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Mon, 30 Mar 2026 11:59:04 -0700
+X-Gm-Features: AQROBzDO1REgxHagvNNTwyiCie8jqnQ5mT419DweEok8hdbdWPUcMjJVzXJ2EMo
+Message-ID: <CACpmpodFvA_DMmXBmgZfE4A=VnH3+0rVfmAr2qKP8o738qafbQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, hannes@cmpxchg.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 74435C0005
+X-Stat-Signature: w3yt6146ahwi47sz76jzswaqaycoqqu3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 01289A000F
-X-Stat-Signature: e6qfkf6oeckthyd9zx4cpd69m9oyo8g3
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774897117-520355
-X-HE-Meta: U2FsdGVkX19Jjym4ovMxTORtV1m0mgosm2c+D4O7b+bRshTZlcZa+TOnFbhwgNoLJnmyqDlkWEInpAq+e2c7NDE46WE2qYyPrvwsykLQI2kCz/xAq0a1fldbgnhyAbZxQj9IaUO/xwtJgnm6iJQn7VKygT+hmv4nhqGS/tJs2BkzECG5Ho7Dba+SCuE1e8O2eTpwT7zHCddg26bH8dSiwTIw7hECdqsc6hSFE34+gNEe5vwgeAPqopk5fcrzq4Bg8VHdGMXO2L/5u2/DwXxfF36oUPEDj7PKdgifdP9sRRnKWmsvSsbYlqIeGyOj/orVRl+XLBs5fqyjL/xuBj7Tuck2jD5qXRMYBxbY5jul8TEQDpZLsJoguicBnl/s83RLv1v+BYIaNJwrboPC19MxflO02A/PalEJE/12MoeBZrqAtGkcb21/Rzgyjy5/pItJrIDOJRbSsDowyQd1fEsVaw9k+trP0T7ceYkb6K+VfLNP51TqG3AmxpN1qO5eW15FWND7QE44uBrDxcvlVYo7fEJ6aieCyOYWe1Mp3ooHAfDBENhTogi1umUMnoJqY1sVfkFYj8vHHzZhWlge1M2ef3hTOgRmDt0Ge7Y87M37XdRWKGmoq2oQJR8Kj4zILTuuuuRa/WYoDa7IGsTI+r93TtN3F0wineGh8PiE2/QZRLGeLXVHtp+idLLQruaySzCz5TvS+mQK544SNVI6cFt53y7YH67zpAGbbNqJ5co54bV+mOubeVtbY2Qm/RY6PxAzG6SmOWyYPQcrZJmbpmXq5gmo/cFKk+XYzGj8o9/2iGXjpwTpMjWEmcE+qaUk8uqkf9rlB1NsGLhrCF351dQUCyNJxVyGDGeTYY7hxzux33jTLT6ykuKZ4VAhizOJghxVYFPw3VoApxYhrzXxFHywVAvYAYOam08TVaHPpzY+ggK2LSARLWtq6VvcXKxHaWXgAasV5fjHlyQ=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774897157-446805
+X-HE-Meta: U2FsdGVkX1/drwFoDZV2WBkDg7YMwtgTw3VYPk08dFAXv8J61KQ8X4yD7hv/l/KawWy/kkWXkF3DC12bdsXzfZcjM2Igz81/9fL10z3TvJJ+9tC25997U6xZ3BvOSWTILop5N/vQBPefeVxOx129IkyO+i+xQushLNoBlhlvWVkBmtYqfkk4a4a8fBvmggg4CMIc15Lb98APry0JEYwXNaXu0XsnMSbN5n1YqSwdy6AFzYcpHFVj0cNpFuEpY5lgSUMjO2kPFyW8vXWph6h3RJQGh94KcTJf80vuQ9FSkh/6zsnAro9f+KnbO+8Uwn1jZHttuiCuMTjqadUiNlJVVW9/UJ/ktAIkQiBGnzRAlAooRyM0KJk7Dz+f8mOPfanZIC+9XD1vewYjkvGPJOOjkoRvHFb5brnirFynWgii3cet8OUfB8lORV5+wC1MCQHJ8j3R8e/tuG7c7myMpa5JNpuskngCg/njEjb2mc+D5Jd6WDPp+u8ugFwsm2YMwjWp7d4u+HVgIN9YxpKDHBf5cGJGIUKZlMM4KrgAewePivgBMat9AqxyojiFwix+YsPCiEiJJHhiTX/1qZCCYX4hdLllUim/CF1ptmdlduDGWipRWaV4zh+iOLJ+WeNYnaTg+LDzhxSXk+NY/3u+N9DrKgvvuRnD2UDyPu18zrXc1kegwEcihoKKDFK7JAcS/bMPu7T5b8VO5Vxsr/2QrCVEWpqZWEZDIOr7wMKQEzW9E8d51rZPY9PCjleuoubeUTg1hTcgSxR+XpmqLGZ49TYTbAzGAhHTtjtbaDlh8GiHWwQg6wy5d6UIDDbvrOhN72BqkyNpBg+02BQy7Iv/QETHlaYqXPzeifLj07XoAqjE42B+dwTvkq3SbrtWnfFu9V/J2ZDQG0fsw9F3eAyb24yPs8wXH0KYA+1kAeGVEmFm2oSKrw+kjW5Svx2bJpz1sRIuptfXQb00RKezPlneyqT
+ BaCawTnr
+ f8iEqK31+Da7an8lvwInRFuUmfIJWRpLOxK0YZz706I67n58xcttioCc1SXTPrVXNebpKBOfIfxm5JDU36Yzs5zUzJeqWW2wjRe3ZNbI2gb8lTIKd9YyLJof6thjMAJJ8GJkW6sQSuSKZ5/byEat/gk9Wz0RPK4WnL2T5HWLGL9m1ZW4MZtKc9CIQ1rBHAdAyP8POAkxE5pR7EmbVBrpX4jgAsZebQpUMPZld+U0Wemy9betD3NC7F+z/BM9FXWN0LAf6xHCcSxnAhyccAryiRTkYG+PRe0jqrgFoyDoC39J1keTJabY25OxDXbDRjEEKKKQFRe5K1Fu0X4Dk4ay+eVI+HMWiWEmPw/X+sKrYYKvUzAWGUP4zzqtbWqtmNyVDA13nMirUwg5diP8e69Z9rOIb5m6BuRdrLi/MFhjgA0w2wyTgeSjcwJ4QQzkLxnJOWNgV7157l3FBOofQ6rGIYebvV0NIfhbuw/X+LZ+iEesUDfxfaCNv5S1aERSY8qpjZ7ccl812EKAobCIg74DxZ/BxFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,142 +144,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-commit: ee628d9cc8d5b96fdceeb270cf662efc4f85f2b6 mm: add basic tests for lazy_mmu
-date:   10 weeks ago
-config: powerpc64-randconfig-r113-20260330 (https://download.01.org/0day-ci/archive/20260331/202603310251.oTtJlApu-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 2cd67b8b69f78e3f95918204320c3075a74ba16c)
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260331/202603310251.oTtJlApu-lkp@intel.com/reproduce)
+On Mon, Mar 30, 2026 at 11:52=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+>
+> On Mon, Mar 30, 2026 at 11:51=E2=80=AFAM Andrew Morton
+> <akpm@linux-foundation.org> wrote:
+> >
+> > On Mon, 30 Mar 2026 11:32:07 -0700 Yosry Ahmed <yosry@kernel.org> wrote=
+:
+> >
+> > > The patch looks good to me, feel free to add:
+> > >
+> > > Acked-by: Yosry Ahmed <yosry@kernel.org>
+> >
+> > Thanks.
+> >
+> > > That being said, it might be a good idea to resend the patches (new
+> > > version for rebase + Ack?) to get Sashiko to take a look,
+> >
+> > Yes please.
+> >
+> > > hopefully it will be able to apply/review the patches this time.
+> >
+> > I expect so, but I don't understand why Sashiko is having trouble with
+> > this.
+>
+> I think it was a transient failure.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603310251.oTtJlApu-lkp@intel.com/
+Thanks Yosry and Andrew! Although, when I get the latest mm-unstable,
+it already has the v2 patches :)
+Should I still send a v3, with just the Acked-by added to patch 2?
 
-sparse warnings: (new ones prefixed by >>)
->> arch/powerpc/mm/book3s64/hash_tlb.c:45:42: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct ppc64_tlb_batch * @@
-   arch/powerpc/mm/book3s64/hash_tlb.c:45:42: sparse:     expected void const [noderef] __percpu *__vpp_verify
-   arch/powerpc/mm/book3s64/hash_tlb.c:45:42: sparse:     got struct ppc64_tlb_batch *
-   arch/powerpc/mm/book3s64/hash_tlb.c:162:45: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct ppc64_tlb_batch * @@
-   arch/powerpc/mm/book3s64/hash_tlb.c:162:45: sparse:     expected void const [noderef] __percpu *__vpp_verify
-   arch/powerpc/mm/book3s64/hash_tlb.c:162:45: sparse:     got struct ppc64_tlb_batch *
-
-vim +45 arch/powerpc/mm/book3s64/hash_tlb.c
-
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   34  
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   35  /*
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   36   * A linux PTE was changed and the corresponding hash table entry
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   37   * neesd to be flushed. This function will either perform the flush
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   38   * immediately or will batch it up if the current CPU has an active
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   39   * batch on it.
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   40   */
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   41  void hpte_need_flush(struct mm_struct *mm, unsigned long addr,
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   42  		     pte_t *ptep, unsigned long pte, int huge)
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   43  {
-5524a27d39b6877 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2012-09-10   44  	unsigned long vpn;
-f342552b917a18a arch/powerpc/mm/tlb_hash64.c        Peter Zijlstra         2011-02-24  @45  	struct ppc64_tlb_batch *batch = &get_cpu_var(ppc64_tlb_batch);
-5524a27d39b6877 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2012-09-10   46  	unsigned long vsid;
-bf72aeba2ffef59 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2006-06-15   47  	unsigned int psize;
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   48  	int ssize;
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   49  	real_pte_t rpte;
-ff31e105464d8c8 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   50  	int i, offset;
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   51  
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   52  	i = batch->index;
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16   53  
-47d99948eee48a8 arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   54  	/*
-47d99948eee48a8 arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   55  	 * Get page size (maybe move back to caller).
-16c2d4762325232 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   56  	 *
-16c2d4762325232 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   57  	 * NOTE: when using special 64K mappings in 4K environment like
-16c2d4762325232 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   58  	 * for SPEs, we obtain the page size from the slice, which thus
-16c2d4762325232 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   59  	 * must still exist (and thus the VMA not reused) at the time
-16c2d4762325232 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   60  	 * of this call
-16c2d4762325232 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   61  	 */
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   62  	if (huge) {
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   63  #ifdef CONFIG_HUGETLB_PAGE
-d258e64ef595792 arch/powerpc/mm/tlb_hash64.c        Joe Perches            2009-06-28   64  		psize = get_slice_psize(mm, addr);
-77058e1adcc4391 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   65  		/* Mask the address for the correct page size */
-77058e1adcc4391 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   66  		addr &= ~((1UL << mmu_psize_defs[psize].shift) - 1);
-ff31e105464d8c8 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   67  		if (unlikely(psize == MMU_PAGE_16G))
-ff31e105464d8c8 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   68  			offset = PTRS_PER_PUD;
-ff31e105464d8c8 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   69  		else
-ff31e105464d8c8 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   70  			offset = PTRS_PER_PMD;
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   71  #else
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   72  		BUG();
-16c2d4762325232 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   73  		psize = pte_pagesize_index(mm, addr, pte); /* shutup gcc */
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   74  #endif
-77058e1adcc4391 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   75  	} else {
-16c2d4762325232 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-05-08   76  		psize = pte_pagesize_index(mm, addr, pte);
-47d99948eee48a8 arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   77  		/*
-47d99948eee48a8 arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   78  		 * Mask the address for the standard page size.  If we
-77058e1adcc4391 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   79  		 * have a 64k page kernel, but the hardware does not
-77058e1adcc4391 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   80  		 * support 64k pages, this might be different from the
-47d99948eee48a8 arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   81  		 * hardware page size encoded in the slice table.
-47d99948eee48a8 arch/powerpc/mm/book3s64/hash_tlb.c Christophe Leroy       2019-03-29   82  		 */
-77058e1adcc4391 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   83  		addr &= PAGE_MASK;
-ff31e105464d8c8 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   84  		offset = PTRS_PER_PTE;
-77058e1adcc4391 arch/powerpc/mm/tlb_hash64.c        David Gibson           2010-02-08   85  	}
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07   86  
-f71dc176aa06359 arch/powerpc/mm/tlb_hash64.c        David Gibson           2009-10-26   87  
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   88  	/* Build full vaddr */
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   89  	if (!is_kernel_addr(addr)) {
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   90  		ssize = user_segment_size(addr);
-f384796c40dc55b arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-03-26   91  		vsid = get_user_vsid(&mm->context, addr, ssize);
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   92  	} else {
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   93  		vsid = get_kernel_vsid(addr, mmu_kernel_ssize);
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   94  		ssize = mmu_kernel_ssize;
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11   95  	}
-c60ac5693c47df3 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2013-03-13   96  	WARN_ON(vsid == 0);
-5524a27d39b6877 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2012-09-10   97  	vpn = hpt_vpn(addr, vsid, ssize);
-ff31e105464d8c8 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2018-02-11   98  	rpte = __real_pte(__pte(pte), ptep, offset);
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10   99  
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  100  	/*
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  101  	 * Check if we have an active batch on this CPU. If not, just
-c5cee6421cd6514 arch/powerpc/mm/tlb_hash64.c        Balbir Singh           2017-05-25  102  	 * flush now and return.
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  103  	 */
-313a05a15a1b29c arch/powerpc/mm/book3s64/hash_tlb.c Kevin Brodsky          2025-12-15  104  	if (!is_lazy_mmu_mode_active()) {
-c5cee6421cd6514 arch/powerpc/mm/tlb_hash64.c        Balbir Singh           2017-05-25  105  		flush_hash_page(vpn, rpte, psize, ssize, mm_is_thread_local(mm));
-f342552b917a18a arch/powerpc/mm/tlb_hash64.c        Peter Zijlstra         2011-02-24  106  		put_cpu_var(ppc64_tlb_batch);
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  107  		return;
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  108  	}
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  109  
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  110  	/*
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  111  	 * This can happen when we are in the middle of a TLB batch and
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  112  	 * we encounter memory pressure (eg copy_page_range when it tries
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  113  	 * to allocate a new pte). If we have to reclaim memory and end
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  114  	 * up scanning and resetting referenced bits then our batch context
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  115  	 * will change mid stream.
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07  116  	 *
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07  117  	 * We also need to ensure only one page size is present in a given
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07  118  	 * batch
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  119  	 */
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11  120  	if (i != 0 && (mm != batch->mm || batch->psize != psize ||
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11  121  		       batch->ssize != ssize)) {
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  122  		__flush_tlb_pending(batch);
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  123  		i = 0;
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  124  	}
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  125  	if (i == 0) {
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  126  		batch->mm = mm;
-3c726f8dee6f55e arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2005-11-07  127  		batch->psize = psize;
-1189be6508d4518 arch/powerpc/mm/tlb_64.c            Paul Mackerras         2007-10-11  128  		batch->ssize = ssize;
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  129  	}
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  130  	batch->pte[i] = rpte;
-5524a27d39b6877 arch/powerpc/mm/tlb_hash64.c        Aneesh Kumar K.V       2012-09-10  131  	batch->vpn[i] = vpn;
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  132  	batch->index = ++i;
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  133  	if (i >= PPC64_TLB_BATCH_NR)
-a741e6796957716 arch/powerpc/mm/tlb_64.c            Benjamin Herrenschmidt 2007-04-10  134  		__flush_tlb_pending(batch);
-f342552b917a18a arch/powerpc/mm/tlb_hash64.c        Peter Zijlstra         2011-02-24  135  	put_cpu_var(ppc64_tlb_batch);
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  136  }
-^1da177e4c3f415 arch/ppc64/mm/tlb.c                 Linus Torvalds         2005-04-16  137  
-
-:::::: The code at line 45 was first introduced by commit
-:::::: f342552b917a18a7a1fa2c10625df85fac828c36 powerpc/mm: Make hpte_need_flush() safe for preemption
-
-:::::: TO: Peter Zijlstra <a.p.zijlstra@chello.nl>
-:::::: CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Kanchana
 
