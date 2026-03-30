@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 418B11061B13
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 16:19:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E99F1061B0F
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 16:36:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F3DD6B008C; Mon, 30 Mar 2026 12:19:58 -0400 (EDT)
+	id 63C7B6B008C; Mon, 30 Mar 2026 12:36:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A4396B0095; Mon, 30 Mar 2026 12:19:58 -0400 (EDT)
+	id 613C66B0095; Mon, 30 Mar 2026 12:36:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86C1B6B0096; Mon, 30 Mar 2026 12:19:58 -0400 (EDT)
+	id 550366B0096; Mon, 30 Mar 2026 12:36:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F1986B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:19:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 830301407F1
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:19:57 +0000 (UTC)
-X-FDA: 84603240834.24.F1F08B5
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 93994140011
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:19:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZdozrY14;
-	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 46C3D6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:36:35 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DA50DBA3E8
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:36:34 +0000 (UTC)
+X-FDA: 84603282708.13.28839DA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 27AC918000F
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:36:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l2pglG4S;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774888593; a=rsa-sha256;
+	cv=none;
+	b=WLrkrRoE5PXg1qqKXhuA9VRm+qJxlCfprDhSXlIzccO0eTEIdUUnIgGVXa12nFRzg4GgrC
+	jMutz/6G8FggaY35t0FCa9YG1l0IEbBczXGpINMdM8tXs/LYIp2g2e+e6dZOfmeDyQRBTZ
+	v5eG+6PYBqQe9bnS3lUQnvGCbtJn3vQ=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l2pglG4S;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774887595;
+	s=arc-20220608; t=1774888593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z7YLDVYxqF/+f1DCCJKbVAIzX4V8YvHeDqe3ffDzeSI=;
-	b=NICK3KJPOKOXhjUtMC85kIANED0/eZrEiVYeFsJWllYu7dY1VUnbk3tFJKQ/cjTA4eznxD
-	s9SlzRW8XI9UISF/zntw7ML9OujJpskAc/92RP0xeozlRbjs6YlJrB9zGbHSfjSH7T4U2B
-	wt/p4gkOBasQZMFLstapr+8Gm7za8r0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZdozrY14;
-	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774887595; a=rsa-sha256;
-	cv=none;
-	b=twvPaUEnvdL+4pJDpM3dNZs6Cm0lROgJfwQKCmdClWC82+eJZ+pYiMSxEeCalCkBLxW5Hm
-	h+ml8rrKRNnEM5NB4dhwVIZUZktXftab0hNp5McEM8YV1SXNWgPsmFLVY8NWWyKa9o4KxS
-	i/QjuCnH3sEm7IeY7VkWiP+1RbA4kbg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=z7YLDVYxqF/+f1DCCJKbVAIzX4V8YvHeDqe3ffDzeSI=; b=ZdozrY14XCATmDIlNwlFmzEBwf
-	z/K5h87go5Bk2q/blH/hdo9V+pBArg3wPGmyDuHmF8uq/waJkppzeNH8Y45JHHAXDq0IWkHhCCggz
-	B8ACncOFhZP6rHi13nM5D3Y/NzwKbDJfwHj/oGAeLxXUv4FoslIrDe+ALSS28fL9hYULE9MgJeJRk
-	nd8T/a3GN0RzipUyfwxLfhvmzhSVaKkgq7Gvj8OnQRLkzr9k7V4tKomyIhhKCCiuglHJ5TvrctwId
-	CBfpXfmewANcXuQPzuQCftfN+xcZs4YrrvuPelV03TocJrCjQNLc5fnVbP+KbgNcADUZCWra+hNVe
-	wm7GzVZw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w7FL4-00000006wOx-3GNU;
-	Mon, 30 Mar 2026 16:19:42 +0000
-Date: Mon, 30 Mar 2026 17:19:42 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: WANG Rui <r@hev.cc>
-Cc: ziy@nvidia.com, ljs@kernel.org, Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, brauner@kernel.org, clm@fb.com,
-	david@kernel.org, dev.jain@arm.com, dsterba@suse.com, jack@suse.cz,
-	lance.yang@linux.dev, linux-btrfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	mhocko@suse.com, npache@redhat.com, rppt@kernel.org,
-	ryan.roberts@arm.com, shuah@kernel.org, songliubraving@fb.com,
-	surenb@google.com, vbabka@kernel.org, viro@zeniv.linux.org.uk
-Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
- from file_thp_enabled()
-Message-ID: <acqinu8H5jo3Zw7b@casper.infradead.org>
-References: <DDFEC0C1-3ECF-41CC-9630-A4A742F2B842@nvidia.com>
- <20260330160942.173324-1-r@hev.cc>
+	bh=mKsunyI8gz7jUrn930DICJgEkX1gHpshoiYpQmo1gys=;
+	b=G8LTAOCgvpQs2y7gItpe1IRjQCRzSgf37ORFXir2lFw1RxZPMTN61tIGsnrkVbt59OSULS
+	lSh8eLkI+VttWH7ZlaHiONVOWkXWp+zt+6vwfb/UH+WAa+ez5jwKe35C9JDGQduOoxDnUm
+	QfFu45MytpsubYQ0m91m9iT8Sr07/GE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F9E36011F;
+	Mon, 30 Mar 2026 16:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFCDC4CEF7;
+	Mon, 30 Mar 2026 16:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774888592;
+	bh=anKl0l7R5c+w69kw36S4RIdGWUZ6FVWmpssD4MxoZN4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=l2pglG4SHR9jCapiqjEkHhpE1dKCDO3YV4lDIYqtL0/kNMkYmLWUF9eGy21+sgmMY
+	 8AJIcgqeWayh13xWk9+pe+llp3FCMDF5VFRkvDtgtrFrSRFhXcM9rqGPWmJ1fQSW2M
+	 g4uOIORrHmqmH6VC28UgRJ9n26oSIwGQgBVHzL8qn3a2hBFi81D9+kJf3vnIleySgF
+	 O26CFWHzw2vPqymqR0FBk251Jz2iOMkJTcPREz9j55S/LIdB1XFUEWdNjBb+7DkCrI
+	 Q+8NZvtpUxzLrjXyj7+MMC/DcPJEdatv5q29U8LfulwQjZcLF+8ziR4uMGceW8AAUF
+	 ymbXZ35d8o5kA==
+Message-ID: <85f960e5-4988-4fef-9ad5-d5dba580b88d@kernel.org>
+Date: Mon, 30 Mar 2026 18:36:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260330160942.173324-1-r@hev.cc>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm, KMSAN: Add missing shadow memory initialization in
+ special allocation paths
+Content-Language: en-US
+To: Ke Zhao <ke.zhao.kernel@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ John Hubbard <jhubbard@nvidia.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Alexander Potapenko <glider@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzbot+2aee6839a252e612ce34@syzkaller.appspotmail.com,
+ Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ kasan-dev <kasan-dev@googlegroups.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>
+References: <20260330-fix-kmsan-v1-1-e9c672a4b9eb@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260330-fix-kmsan-v1-1-e9c672a4b9eb@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: gtdmjodi137gjwoh75fumhw97ko4rtiu
+X-Rspamd-Queue-Id: 27AC918000F
 X-Rspam-User: 
-X-Stat-Signature: 5dhew1ejxasipwsyz5p7r1zry1qui9g7
-X-Rspamd-Queue-Id: 93994140011
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774887594-513833
-X-HE-Meta: U2FsdGVkX1/2yGhJ1ruMXt3eh2OvDenvyFT3tLmynVy9JvLfUvlyBICHEy1aPu+UPI4LYE/UwiyQib0De59ewWl+Zoc4dO9A0vkAfrmMEoayv6+vOAEvChTUb3deOfbuwa90TwJjHNxEbyq5VE1LWJPACFfnZ6znTylWynJssUx8fkcgarBseV7IXwm2DOo/hZ+rFoOsrOdVG6w7c4l5g+tB8GSyYQU/g4hv5V+JsIKCf/2ex+QQVxwCuN0A9wDz/Cj1WS57Lno9B3z6XV65mXWU17McpqAx5itLEAV9FY99tec5aNYS9TDWBT0jH+5aPU5dOsf0WhsLJZIg7qBC5T/S7WR3ZuwPB5pN7K7I3gYnXVKk2bk3xXJLoXydea8Ih2ND1arhyenrGTOcIDqOsRvxqNyw37M1OH2McWkyZzfwlyDjxo45aN5ekplRI9vTX+BhQDjQmNGYc6Ye84+6z8XMow5zNCgugtM2vfZRVm/BwM5QaBxq9ZX5j5mQVWquyRSjmNxhJHgK9nKzP5t96JvqFI8GYx1F1I0YuoGKrau9NWGoxxprLOfy7elQkK8rlPw1pbCzFFU76xZaictuNpDB1hUSBjeejk5KbQHHbZPuoteOlxP/h7rXUaATgBM3jmcx+e8xnSPJ64qaKU9b9JwlLKjlUrg9Xj3mSLmAVHzYPpUJefgDAl4KH3TawQSWpMdEWMEWInwDa3uI4ai/SJjXMvUXTy3i554a05KO3PKbJQC2oSmyen6ea2N3P58qCRbYPOKODAufxkGv6B9VfZsT7OHq8PnIhZSOG1AKniGU0KqVCyfsNKjdeEw244z4/KAvnewQc3k3i4phYP0NsoIIexOlcL1yMVFGZ/7XWCLf4xKrvG808Fzxdf/fsxfvtgWkPxhtoLB5X47CrdKDuucMcKzwF/apUl1RAU94s7aYP/qvtHIOUQgr6Cb021Rz1+luMZPT7hsVlEDVR9j
- biYb0vZq
- qHojpujpy5V7i5EA0HOktTIRMqeBDmF2YQXk8D04J/M/y9ASCXndRXBVEEEHi8cIhPAEQVd1nBgK6HcJMGtZK61dcOgKsNQo4CqQ5KjhF15xR4aHu+qraMpmS+sT754fPKfLhquPjwKChlfnfCwvvplV2gH4GXxAhVIBP49W3+/K4uB1SFM/6G+MeYNhRT3sPsWIJbffrBMr6fuX11QcaR+NTjEnBZT9pZhYuEAl5v5GrHCt05fVBH/ug4vTHod7Q4F87iuuqjR3MSI0RwoQ2j3sxiWQSi0TBTEr9QzX6j3nNv1ktou161vjyrPr5Vg9ZgMwQ
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774888593-809275
+X-HE-Meta: U2FsdGVkX1+yxvMaHIMwrlCH5yWtXYun5grNm+XVz/xzw570GtDyT45l+eC7D7/Pam3MkuJmeTtPLRlKLQ96DOfUpq61dJEkjrGVZPLW/bAlwe09B84NpCgsrkIwVkVyG9fkMCbOygJ+A6pc13odrjkoQQKJgWPUyaX5H5PXJP68rkqtx967+6tCoBWFf9oaE9ifNALhyzFg1OO+ySQscZLmCFMYfhcA64bNlrJ+zyN1YTNS89J3oqClN03zbpFJ1nMbRIvdmqtPo7emlg2CrAnHOvmaeIdKmvRt4rLvQJ9gweSzT/dISaCF3gwMHcbHI493tNMNABqD/ApOC4cvR4Zd1O9Pf+lDLxozL24FadeYNr/G1iB6UfE+hw9B6pX0NVr7oVGhE8MPIee4eY2EQC9TQs579nSFhlk//pnSRwxMc4iQzYbAJJNWhZFou2AlN+FM6Gi1OypXiLYlaxc7Fn/3fJ/EgbYjZCIdleTir+POnX9+M86yOYwJ/9bsDe6Rc5yugUf8/St0FPL5z9+CEukU6Un8AlVizCoFZ1YyjuXvMTXCs4z0AnOOgy3oVP7Hyj2CUjmRQZbvoqmbHeFlcLL9XMhq/NySQPjW9Af8ohXJjrKhkmbY3bhYBAMDKDBTA3/v2xglqR3S+jZLdb81aWDxWaWiWvH15FasAUQj4jbM0TmgxGAOKimg4NZeuu3u7wKa8jLWMCE00IqNLae67CWSP6Q5P+xnHiNZ+b8XIT8gChLKkiXeBsUN1YeiHzb6oWMrx/+OkUDquijR1GSpW8+P8Fc/veQSNLqtALs9cIEDfZx4H62vmaiTBqQ20Y+md/rcQ2UltMp3Lx1PUZtlWFKLhH+UMk77c6jA89xUJ8xfKr59DGePLGazT94vPOAxhk0dnxffpWkKnm0Xy9NgVfTcAMHJXw2s6LAc6frigBc56nwzN1D6Ka1GWnQeyBQLIkY/2JNadUgue0ctW+r
+ TyN2d1Av
+ B+ZEmzwCNR7kfEL0ldKJ184s9P4NLeRM+4VsBOD3L2U0XoXJ+quwOR7uSIcThpC4NEHWuqIo6ox33axqcsmKxfVrHxjYAFuE89Dz5Fs8FCjn2KWO7JXeAORXVIYBKbP25ZNdJMb3dM6BLFtJtTjlDtF2inBgTf+ZeLoN1qiHc+NOrH3L3G6yk7HqsDYYLgXfpP86JQjDz3C2UMAdvQZnmZlzH4rM4elCvxoLTzX14RK2YlM2uEImTS6V/pJOCvb5Md24vQYxbunAZkw4Ge8q7H5EjIim9+woMqn2qLUtW/qMKLil1UYVjx/bUP02YWePtXH0hTAy2ctN7iq9zJeKdCSZDB1yYe6xWxQlFIESle6guOtE0MdwettoQi3XTJuAcBN2P8I7t3MZ9dohAHptLqpFGqsTh1EkRCoMz7/CV6hbvAEgIVERCvx5WQx2+4rGHjnIY//RTG89fwPl3kCgHii0Bk9BVK2XhJPC1WmBO8mnwDca0PgBuH+edwpimgqglL12SZ63a+m2xpYOeRYP97zkqSQauv5Q1qLuY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,29 +102,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 12:09:42AM +0800, WANG Rui wrote:
-> Given the diversity of filesystems in use, each one requires dedicated
-> engineering effort to implement and validate large folio support, and
-> that assumes both sufficient resources and prioritization on the
-> filesystem side. Even after support lands, coverage across different
-> base page sizes and configurations may take additional time to mature.
++Cc KMSAN folks, please review
+
+On 3/30/26 10:36, Ke Zhao wrote:
+> Some page allocation paths that call post_alloc_hook() but skip
+> kmsan_alloc_page(), leaving stale KMSAN shadow on allocated pages.
+> Fix this by explicitly calling kmsan_alloc_page() after they
+> successfully get new pages.
 > 
-> What I am really concerned about is the transition period: if filesystem
-> support is not yet broadly ready, while we have already removed the
-> fallback path, we may end up in a situation where PMD-sized mappings
-> become effectively unavailable on many systems for some time.
+> Reported-by: syzbot+2aee6839a252e612ce34@syzkaller.appspotmail.com
+
+FYI the report thread:
+https://lore.kernel.org/all/698f1877.a70a0220.2c38d7.00c2.GAE@google.com/
+
+> Closes: https://syzkaller.appspot.com/bug?extid=2aee6839a252e612ce34
+
+Did syzbot confirm it as fix? Wonder if this submission alone will trigger
+that check without some syz test command or whatnot.
+
 > 
-> This is not about the long-term direction, but about the timing and
-> practical readiness.
+> Signed-off-by: Ke Zhao <ke.zhao.kernel@gmail.com>
+> ---
+>  mm/page_alloc.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 2d4b6f1a554e..6435e8708ef4 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5189,6 +5189,10 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  
+>  		prep_new_page(page, 0, gfp, 0);
+>  		set_page_refcounted(page);
+> +
+> +		trace_mm_page_alloc(page, 0, gfp, ac.migratetype);
 
-If we leave this fallback in place, we'll never get filesystems to move
-forward.  It's time to rip off this bandaid; they've got eight months
-before the next stable kernel.  I've talked to them about it for years
+Probably makes sense to add that here, yeah.
 
-LSFMM 2022: https://lwn.net/Articles/893512/
-LSFMM 2023: https://lwn.net/Articles/931794/
-LSFMM 2024: https://lwn.net/Articles/973565/
-LSFMM 2025: https://lwn.net/Articles/1015320/
+> +		kmsan_alloc_page(page, 0, gfp);
+> +
+>  		page_array[nr_populated++] = page;
+>  	}
+>  
+> @@ -6911,6 +6915,12 @@ static void split_free_frozen_pages(struct list_head *list, gfp_t gfp_mask)
+>  			int i;
+>  
+>  			post_alloc_hook(page, order, gfp_mask);
+> +			/*
+> +			 * Initialize KMSAN state right after post_alloc_hook().
+> +			 * This prepares the pages for subsequent outer callers
+> +			 * that might free sub-pages after the split.
+> +			 */
+> +			kmsan_alloc_page(page, order, gfp_mask);
+>  			if (!order)
+>  				continue;
+>  
+> @@ -7117,6 +7127,9 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+>  
+>  		check_new_pages(head, order);
+>  		prep_new_page(head, order, gfp_mask, 0);
+> +
+> +		trace_mm_page_alloc(page, order, gfp_mask, get_pageblock_migratetype(page));
 
-(and earlier, but I think I've made my point)
+But I'm not sure we want to use this trace event here, minimally it would be
+inconsistent with the branch above using split_free_frozen_pages()?
+
+> +		kmsan_alloc_page(page, order, gfp_mask);
+>  	} else {
+>  		ret = -EINVAL;
+>  		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
+> 
+> ---
+> base-commit: bbeb83d3182abe0d245318e274e8531e5dd7a948
+> change-id: 20260325-fix-kmsan-e291f752a949
+> 
+> Best regards,
+
 
