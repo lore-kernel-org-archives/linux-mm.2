@@ -4,137 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37CE1061B20
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 21:09:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 275FC1061B22
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 21:18:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAA786B008C; Mon, 30 Mar 2026 17:09:19 -0400 (EDT)
+	id 63ECA6B008C; Mon, 30 Mar 2026 17:18:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5B7E6B0095; Mon, 30 Mar 2026 17:09:19 -0400 (EDT)
+	id 5EFDC6B0095; Mon, 30 Mar 2026 17:18:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4A236B0096; Mon, 30 Mar 2026 17:09:19 -0400 (EDT)
+	id 4E4586B0096; Mon, 30 Mar 2026 17:18:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B3B946B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 17:09:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 381D259AEE
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 21:09:19 +0000 (UTC)
-X-FDA: 84603970038.09.E0DD637
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4A0FD180007
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 21:09:17 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NsYiNxWj;
-	spf=pass (imf16.hostedemail.com: domain of chrisi.schrefl@gmail.com designates 209.85.221.177 as permitted sender) smtp.mailfrom=chrisi.schrefl@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A1676B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 17:18:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C2FA71A086D
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 21:18:12 +0000 (UTC)
+X-FDA: 84603992424.29.58C1CB8
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D8300C0003
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 21:18:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NBbLnNhu;
+	spf=pass (imf22.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774904957;
+	s=arc-20220608; t=1774905490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zlsVcWSeeIpbPnsSYMwOt0k3yfDPRs+s8ihr0jHypXY=;
-	b=hIYDkueb4oq7/4u2c1V+9WSq+EAajz8I1Si4joeNHYnxgdV2/d0v6XGV2UPy7JgX8DECi8
-	z0GAB0lioM6cUItGs3i/siXmnYKNu63oRm4q+J9+ZC3HjjsSblqRwoifZ+FIautUQODGh9
-	THedMezSZl9kasksede+GmL6TzZtFcQ=
+	bh=YpynBP+G3ZnDHhHUsVCEALCguQRacTThLF+4zfYVNbU=;
+	b=PN6IhR4RpaExHREwQYUIiVpvKgp52u6V/paTnL1PpOsj79OxyJWL+1nDl2+NJk1g+E9WCy
+	kAjD3iZptGrb5Gb/Uav+p29dhj/K6W2ssbaRz2hwX/f6D74V8U1XwQqarcFItjUheJMdey
+	1EsPqp07firdLpvg4axH4sMLZUEYIg4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NsYiNxWj;
-	spf=pass (imf16.hostedemail.com: domain of chrisi.schrefl@gmail.com designates 209.85.221.177 as permitted sender) smtp.mailfrom=chrisi.schrefl@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NBbLnNhu;
+	spf=pass (imf22.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774904957; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774905490; a=rsa-sha256;
 	cv=none;
-	b=I5FNAGiaAyJOVpzsA+8BuOIdifhLPIw6vvhT5jzCWMZ4ivRW/XTPue5HNojdOhNZINUdfV
-	1E1k2Dut1At7UOzgmh4+gf8Y/50QKxhnCuuKwlTanHcb6CUfI6vYqSCUNnTiFKmc7U2kLQ
-	cVJDOBisrAMNcZm1pBT1PRgV8qqutO4=
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-56cc6fe8815so2019767e0c.1
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:09:17 -0700 (PDT)
+	b=krOGjwa4+bOP7WZjqCCLJ4yU6SYWcPf2oDmGQLcjd4BLK42NTZ9xjoGnJaS0S+FGP6abTn
+	Ja/82fiueZyW5REXvXp4i2r+s+JNCb0SL9w46GExLNpfKOem5xAsWCxAc8JtiufSNl2FQ3
+	C50QrPS5BWh6XmDS4qHIQxevPdsnNeM=
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-409de4132b5so3109414fac.1
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774904956; x=1775509756; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zlsVcWSeeIpbPnsSYMwOt0k3yfDPRs+s8ihr0jHypXY=;
-        b=NsYiNxWje1Bb87agZWTyC7Py+Ud+aB0jLmBgwcl4su7fsAf8FXDztcRpmLfdx6yLFM
-         QjPrFSwFfnQJ24LzmOhaS81PznVdYEii3HvhCHNtD7tsjhXH/D9NccH01l2xhz3yTrdS
-         d3MhxBjk1k+8BaZIufE3/onVRPI6+lWNIqsOT3WY0zz/nEI84SPN8hE/WgX2Y0msVzHP
-         wAgphYoyKzIXByRpdEeN3zFLauK3GXa+2axgax9sT+dIGFb2+kHvehaleLg7M/QfeqND
-         RUKEYkcfZ/sjRAv97W4l7dMvmmFwqlyhmdQzi2qlMrInx2R568fUWnj+nLqXiIrIX3k9
-         BixA==
+        d=gmail.com; s=20251104; t=1774905490; x=1775510290; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YpynBP+G3ZnDHhHUsVCEALCguQRacTThLF+4zfYVNbU=;
+        b=NBbLnNhu9Vbuf6e8x8kpoyfa7wdf2jOnfNWRJzY8zMta0Ul0z1JlqBHJLCJbCexfPC
+         Qkqt+WoZ7mt466A9owmQQxHKNjan2tgpisur4y/+eDoVhb1lvR2jcNBpwA84/b8rliXK
+         O/IduosZTFQXU/Y83oHM5G0DBtp4a4Fl+BXqYib903KPE9TCwu82FcLNI2Oo+3GmyQFw
+         8pOQslaamdV9lyEx8ii9mvd0OUfMgVSI6zIP0ik0SpH5IFFxdVNuGnetMlDLSvNeJiI4
+         /Dnd0MXJdLv/wKq7DK73oJ/P1ltbFACpfOF04DXwivXm/XRRsJ+gvbD625g/ulEd1FLQ
+         eMlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774904956; x=1775509756;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zlsVcWSeeIpbPnsSYMwOt0k3yfDPRs+s8ihr0jHypXY=;
-        b=tMme4wXd2KIV50hluCFV1H9md8z+A+pBL5qtm/yQUk4K+wFweKfaXh56BQVoJD7Ee/
-         I/8HFCnRlNbnsdet8O44lNq2XJ/nVR59ki21d20i0DMX2zgwiYFkqcpsE+9YJcsGMR+o
-         ioNrzbafcynVliB6L/jfjicLGbUO5uTAg31pYIqg6wEcA8S8gRtiFKMCp6lVCl5jVSb2
-         p9/YL4budzz66za9EWscv6Wd2pteTv/+UV/U/AnZq7r2X5r+i3vCWiVKfjUbta3cHleG
-         tzww5f9LafHRNTvTLH6s8KjSI4hqflJIOuJl8/+jx11TS/MUpTgnV0hWbEPi1hd24u2c
-         7hAg==
-X-Forwarded-Encrypted: i=1; AJvYcCXmb1gb8BmeM+NoRuxlcjgzGn4i2dlcq1vz23O64atfO5khCBRQJDiXeS+AP7x5WjyRXqYMy4HpXg==@kvack.org
-X-Gm-Message-State: AOJu0Yzt6BvAqJK6JxkzN6+hNWB9OhVzLujOQRG4l7Zznzkn/OOJa5+Q
-	Hl1HwQ2rMcI1fwMFUvsT9V8MtyLmDBYfSfB4WxqcKZdsU1v3x2BnLxd/
-X-Gm-Gg: ATEYQzwSwHVnW+HP6bXE6ftOSFC7DBn+ot2FmZDah2H7tta6kQXu30DzGbJEVHwjcZ2
-	Sh1TO9G3oS80wb40sObGp2/11R4UwAZVnY+aqsoRbfR/caur5GqrI6tBM8A/T3+01AHZyRXClvm
-	SuGt0RQ2WJe/QYnpRfeLKIk+t27sxhyUeXnEgf21GpOTBnQ/cqdlVB6N8BQOBvaneuIuSSXJGEc
-	gtAHdUsLrya0OPWWJhLDa7uIqLjB4gS4QxLLNUZqrqPyPsVVQZVEH322zZSwY8Q2krhlOxgHHoa
-	f4WoyFORyNH1XelYTH1JcgezwFEAZii2b3IdyiOslZFkcb9iT8xLOa5h41glvYXAodWG4w7H2IE
-	yWQssIX7ozPXA8gVZ371sVs1rmMjmGBYfP4glAkxdyO2sUdwEfCHs1we1uwPo4dOGHWVBrE3zBl
-	aDLbVW2qbuHnWD3duDrUpqF2il6rJWeGTT+ZMN
-X-Received: by 2002:a05:6122:3c44:b0:56b:9ba4:1372 with SMTP id 71dfb90a1353d-56d4a5f8c0emr5672211e0c.9.1774904956234;
-        Mon, 30 Mar 2026 14:09:16 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:d2a7::cebd? ([2001:871:22a:d2a7::cebd])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56d58a333c9sm9989448e0c.13.2026.03.30.14.09.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Mar 2026 14:09:15 -0700 (PDT)
-Message-ID: <f159850d-5fe6-4329-9703-b355305fd106@gmail.com>
-Date: Mon, 30 Mar 2026 23:09:06 +0200
+        d=1e100.net; s=20251104; t=1774905490; x=1775510290;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YpynBP+G3ZnDHhHUsVCEALCguQRacTThLF+4zfYVNbU=;
+        b=gmkD352yBXTgD1FWmGLfLC60Qyn/a2Q+BJ4xTjeAGqBn0yy8VUKXf2LSjmRxGOk622
+         cHdvW4ffp9JQXx0pUZWEiuKgVBExltsz9xg9eUgQ8L8CBrhiWZudVV8B4J0wyFTJKoNi
+         oQZapYGmKZoJ/DMSCmf9I/oV4pCut6l1Jz+kMgeYfOsSIgSjowjVUySpll05NaqWY9RN
+         /3Gvz3N1DB7HuEMSZKdnhuxegUdgq0tP43KR43wV94LK/2RfQFElhR5p8/hp/a0tQfCG
+         91wH6A1GU/brC+kuVfQBi8FQXbGWM4pa5u02cPgw4MSw4V4PdMNDY6cJqVjDvBJIOleS
+         obmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXgjYrvXI/59KS9FklACpQcmfXn5rnXfuZLkdlhWNe44rcSM3bP9QplBQmgQjzmvgpJWhrLJffaYA==@kvack.org
+X-Gm-Message-State: AOJu0YzQxvAPK5NfvxNGYABg6zp/YxY2podz274xgPdFQx9WfaHHssKc
+	n7OTxNDjgXNlYZKnvrKkXZZKf/56+pnEorFIvv+/FDSOZsaEd9xae5lM
+X-Gm-Gg: ATEYQzwHOXTuFmSz0cxDL0PMKqMJgEwCUWEaWCv7d0ErLaU0LH8l6sOPBn/bUeT6/YH
+	mNe5gw4RNgjUkb3EjpwhWLBceSQaxnycLZ1rSfkb/es2W8WOps7t+O3NdoN25WvflV2m1j7DGtf
+	Zj5F73nxU1n1yRMLAYb7gZ9hEH3oAdAKVBbrZPlpc2t+GESbtzW0IEd2LFH5KjbQdZbjrOSCs3c
+	l4ayfRlcqrmpv/aBydP20k+eH+2CJwEmSvokKPBPOvrf0JDoZsCAcb89USv4VreYR3DYiUbFCK9
+	EaJ5PcKA8vXQKLHhw10e3I1R8DgPr4VuNUCve+b/Mwg+TvA9VAmBe2k2WXbugSm4QDabsDfHTD/
+	yv4R7FUP7DuRid2OnAZpbcXEBim7GSLXVxwxeVUOxRdQnYYtqCx+uWUKImxG2AqrjVQ8Lp1Vj9L
+	RP0YVN+/VhuAINXGKM3z/0yw==
+X-Received: by 2002:a05:6870:b30f:b0:41c:6512:8419 with SMTP id 586e51a60fabf-41cec27e409mr7957130fac.28.1774905489749;
+        Mon, 30 Mar 2026 14:18:09 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:5f::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41d048e1984sm5978777fac.4.2026.03.30.14.18.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 14:18:09 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
+Date: Mon, 30 Mar 2026 14:18:07 -0700
+Message-ID: <20260330211807.349539-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <acqG2Mr5ekCn2HD0@tiehlicka>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Inline helpers into Rust without full LTO
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Alice Ryhl <aliceryhl@google.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Jamie Cunliffe
- <Jamie.Cunliffe@arm.com>, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>,
- a.hindborg@kernel.org, acourbot@nvidia.com, akpm@linux-foundation.org,
- anton.ivanov@cambridgegreys.com, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, dakr@kernel.org, david@davidgow.net, gary@garyguo.net,
- johannes@sipsolutions.net, justinstitt@google.com,
- linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-um@lists.infradead.org, llvm@lists.linux.dev, lossin@kernel.org,
- mark.rutland@arm.com, mmaurer@google.com, morbo@google.com,
- nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
- nicolas.schier@linux.dev, nsc@kernel.org, peterz@infradead.org,
- richard@nod.at, rust-for-linux@vger.kernel.org, tmgross@umich.edu,
- urezki@gmail.com
-References: <20260322192159.88138-1-ojeda@kernel.org>
- <20260323000327.111235-1-ojeda@kernel.org>
- <acEP7tl8pqFA3tK8@shell.armlinux.org.uk> <acUGAsjYvNvTEO92@google.com>
- <CANiq72mzPpkELXis1CiSbKUmBXNQYMiMmjj-7-sYiLh4T_JSOQ@mail.gmail.com>
- <9cf5a94c-0f37-446c-b63d-ddac5674d220@gmail.com>
- <acVOL5Psz6kHlhq2@shell.armlinux.org.uk>
- <CANiq72=b+cr7Stxph_hXQTmD5crCvwWTqdaGKOJ7W1-66v4i_w@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <CANiq72=b+cr7Stxph_hXQTmD5crCvwWTqdaGKOJ7W1-66v4i_w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4A0FD180007
-X-Stat-Signature: m3qfhe7upedh8ksuc1f4r88kztkrpcjx
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D8300C0003
+X-Stat-Signature: eat7yfebi5stgntbfe75wyco8yaq5u17
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774904957-78583
-X-HE-Meta: U2FsdGVkX18GYiIkUnyWE6ctRwDj7uVQtuSRQFG9FgcjMKgu9AJMReGP5lL48VEdyq+yJKR8lk5ixHMsX8ET3jOnSwK8lfi4woCn2IazTSUf3zDQ2e01U6D5ogyChzHKXhjQ40qREm2md0ajeoSf+IiZ44dv4IbXzWIK9c2X/20eovyI54VGf2Y7/70G0TfVDs3MjLVZ9WLINe07GS/Scb+F5zCLtVGRbMXUXF/5hTqIev8/n1H8cYnk7y0fvN/UpMfbjcFmzDetTgVmuynClAuQeOuReoc+2p4yEOXRhwRfHnKYr4FRHPlpCCLmASdNCi7oSNOf9VTzQ9dfHNexvDWpbd9YFCpEtELJ8fWvUfRwyYiyaEkEAjL09kyjPvZXwByGfY0hV3HuhT6evz+pi/YabTqWEIK+4l4PiQa/vCP6a+u9oe+QfJao0yY1HYEBLCa3hcXiQLZ4Jc8ns7Q3zddfZa8Z7XbJHXqGvKO0DVy/IzMugCCXqYcUPyQGNYgY1vUNSeRPZqEbSIcz8TWMTpH3ZmBzu+hSI43gqeyJbZCpxo10lECT2A3mJ0lvSUmdyFCWFAqTrYu3f6dcjUYs/fqU2PgJtulO73yiRK70QkDcBi4yHBi9A+cw2zurZMMKEUhL6g/L2FvS02zLPXi/vjdfR+dR+ti/HnYuzI5sjSBFZ/vxfop1GcO+QWGF3l1IcwQH8T4oqyVle5398GCremj3aGWrteIrT8ZPtsBFq8T+WdA7KhI1l3jItmyplQZKUDxgWf76niCztQrCtbMoXm7VODj5g4m02Qoib1y+iZojiKVTKbl0VWDvt6HECy5YoS8vZLm9rH63VSNwUQlicYZqoyQ+2XWoqFY9XFM2Y/hTsTEaQFyojW6ZB/LPN9Zy95Apux/k8xiF4PkdUgikT0lnSX0doBX1wapb3qgRZGUEGOO/EizKjKjKaK7ZgW3S8ikyPhbDRF33Tgh9U2q
- fqnm437a
- UNRsMDBh4XnWprtfF0MejCQeeGwDk2wx+OgyrYT4KJPCvXBQVuMGI9jVJXThYer3vaVnRvjp4Kb/XrIN4p8oOzatPdKy62c9ePSB/U7utdFI29YVvAObrZUFJnunjgDGwxjjt5cvEyftSwknEs0XHVj6nHFJMX6EnQBR6LVCqL24bvmg8GBsTqhdgchK8A/eJJ25lsBxttqaQvwO5tfMBozqOs1sLrbwo0VIUY4owD9cxTeKOBdctRDlLzCSjJOhdc6b6mqNVyFXtK1BmknuI/4G4IT7nMPoURn4JdX8TCgxIuGwnZoXcNLVuLjt15ZjHi5Vm6QV2UQYD/Zh412lSRELZx57usS/+a3Uqu9VDIqYMqMqO2Q8rRxx6v64nmwRMpKomJ5YKqGxXie5lshch1Gm+jqHyyce917hFAqmij7LnP6MbpoOs3ygso+r+RPVcDmWNB15lMvJgmYUHnjyLd1ymorN7AEWELQBCop0oky6HoV0iXgmur/3A7FqS/vNNU897t3pg/E83bKXLjij1XSUQTXza6MGu/J4dSdxZ3n2+P/vr9Jbhx6tT44LspEQFJoZWrvtLnZDYNkI9hUtb4Ja4um1K8Rsf5lSA8eFcynmWXjEs+lCE20+g4AgJwrWyBAnql2q4g4M4++7dyOH612UzPJc6PIJyDDYzUrX3JrA7nlx78RPvBx2N8xaWWpLHdGnWo4DRsLyxIwt9zOm6cj4Z5uWskBnPxCm6/lLZj8xN07EUy8jPlBnlGvE0nDghj9AD
+X-HE-Tag: 1774905490-572223
+X-HE-Meta: U2FsdGVkX19a3SqsdwLBjIeOaMxw2VAMj7XcrjkagDfDm85mz35CQhul62MD/90UAUWkLphiBEpXdZAN3bUeEZ1Nxi8Ld8lzVICTRQ/DOM+w6VJP94STkbNnBl9m3PGLMfrDcjLkTNRLY4HunEelivoBtKv7kTYiQwo+b69863+rFL8SN33LhD95ByWGcTD/1oCQDaOb0C4bqdOSANWKLYHATxXSzJdxyWaJPQA8/4mE+ygGKwAR+vVtWzFYhasQH56OARd0lwYhki28fn69VLqIxt8i9EbFrBsEwLpjaGTN/XcdPFpLdLjmRqArKn+phGe+3ra6RHQrtgYd+/xrFCTjIdT4MQtNC/4Sp2D7Gx9SPtMyeWM0RQQq4DLD3DUTY7bJwINByIuW4R8ZiYK322/Rj+gRHVqHySKFL3NFe72sG4Jc0Xr8OIYetavKlyRjTYbBRrFPVYwLktB5LaAEEIpjj6ZmoRS9ZzlzzYWAqtjMGmQ6LbgsliyP+80wqSVArUOBGbyefpOnW5ZlDoIeQ4HxvzHl6P5LboXHLBmJQTpSGz/HllaBpBiT8kzYX4X4c3TrUhM3aj7Ok2JAMydFoQm1K2tEw3oLgf3CzsWBL5ZgygCJIHdygbainoBNSwEx9o5abfbgKd+ylmtKTKou2jHLyY/feK/3k0Bh63KnrpJSXpwKy6yJXvUbtQXCj5Fy7AosnT2gww3fEMBPmM/iu/09HLPaLlz9J+tiFyQtBO54++tjSZCyopPXAywgB7OWBBYJMO4mA7XHZYb6e2OkvFx35nathIBZW4JHKFdMcxDntlZ/+SawpG8e2BCAuHsEViXLPEay6PNuC5Ycz/Z/C4txjY4eqwz1hnJW0voLw0IW51BIelv3tSbCFYsCNAvf8zuA0sYbtVE5dYziMTxXPXtwpPnlzkmFYVIJSMfrvzcK7S++rq6Mz1HaOZjv5vZz18p/Z4Y32eA6F5iPuB9
+ BEHT1Kk0
+ igtlNDZcmh/za0cxVOhw7xFDhOTLqeDb6GSJcf7MEsRM2q2YdmCdXuzp7nGS3PytpbN8Umg6nJyu5u9b29lwuY7yn7vrG/3JMjcFeRdzjZem8cT080eVov1/AQBylpDYoXXb1MowkdXZwToxDFTm7xHLikkXoXgVKaVNiWK2gErMXm/8ZcKa9XQQNTKmRFN+czzgow7zbvEPO7ZYg+xpwV4WSIiEFL4iXYPyHnNmLSXmdqIGNWZyMlg1d3EZZIfNNJuR4d4paE0RilqWOSsFVJreg71hegHeAek1dwcdWDo34KF7DYozhj5CHiaqqqr4lhTcnkuJIybZDzQUU8QxfbQp0ouo+s3tVWZztK3m72q5Fm+3rztlWe3sTDRCAG0FpoGmtR7t+cTbp50Z7xIxpDlOdz/KaIkVtqLoIP13IWyRp43WlOdtwqfIXMAPwi8A/LZm8cR7BZN44pZG+UFtAyqY9yhcTZ4R8Y2jygkxDL4ZGnjIXe5dey+K0GUHvdlAqZGY+aEPX4atHTcaIu3OPKoUk9hQM0Euw8E0J5OSfL2wN9bLg4AtxAuq2g1x36l6XMXdIIZakJCYvM4NhnjSmKQ/8ZxtlIjld1fe7nFOqU4uBy7Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,38 +130,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/26/26 6:30 PM, Miguel Ojeda wrote:
-> On Thu, Mar 26, 2026 at 4:18 PM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
->>
->> I'm not sure if this is still true, but I believe it used to be the case
->> that the -linux-gnueabi target has one behaviour for enums (fixed size)
->> whereas -none-eabi, the size of the type depends on the range of values
->> included in the enum.
->>
->> Certianly, when Arm Ltd were proposing EABI, EABI had the latter
->> behaviour, and I think there were cases where Linux used "enum" in
->> its UAPI.
-> 
-> Short enums? I see `c-enum-min-bits` in the armv7a-none-eabi built-in
-> `rustc` target, and indeed:
-> 
->     #![no_std]
-> 
->     #[repr(C)]
->     enum T {
->         A,
->         B,
->     }
-> 
->     pub static S: usize = core::mem::size_of::<T>();
-> 
-> is 1 for that one, and 4 for the other.
+On Mon, 30 Mar 2026 16:21:12 +0200 Michal Hocko <mhocko@suse.com> wrote:
 
-I guess we could use a custom target spec, but I'm not
-sure if that is worth the hassle of adding another one.
+> On Mon 30-03-26 07:10:10, Joshua Hahn wrote:
+> > On Mon, 30 Mar 2026 14:03:29 +0200 Michal Hocko <mhocko@suse.com> wrote:
+> > 
+> > > On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
+> > > > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
+> > > > to give visibility into per-node breakdowns for percpu allocations and
+> > > > turn it into NR_PERCPU_B.
+> > > 
+> > > Why do we need/want this?
+> > 
+> > Hello Michal,
+> > 
+> > Thank you for reviewing my patch! I hope you are doing well.
+> > 
+> > You're right, I could have done a better job of motivating the patch.
+> > My intent with this patch is to give some more visibility into where
+> > memory is physically, once you know which memcg it is in.
+> 
+> Please keep in mind that WHY is very often much more important than HOW
+> in the patch so you should always start with the intention and
+> justification.
+> 
+> > Percpu memory could probably be seen as "trivial" when it comes to figuring
+> > out what node it is on, but I'm hoping to make similar transitions to the
+> > rest of enum memcg_stat_item as well (you can see my work for the zswap
+> > stats in [1]).
+> > 
+> > When all of the memory is moved from being tracked per-memcg to per-lruvec,
+> > then the final vision would be able to attribute node placement within
+> > each memcg, which can help with diagnosing things like asymmetric node
+> > pressure within a memcg, which is currently only partially accurate.
+> > 
+> > Getting per-node breakdowns of percpu memory orthogonal to memcgs also
+> > seems like a win to me. While unlikely, I think that we can benefit from
+> > some amount of visibility into whether percpu allocations are happening
+> > equally across all CPUs.
+> > 
+> > What do you think? Thank you again, I hope you have a great day!
+> 
+> I think that you should have started with this intended outcome first
+> rather than slicing it in pieces. Why do we want to shift to per-node
+> stats for other/all counters? What is the cost associated comparing to the
+> existing accounting (if any)?
 
-Cheers,
-Christian
+I went and ran a few tests, which seem to show rather negligible performance
+differences (phew). I wrote a kernel module that does 100k percpu allocations
+via __alloc_percpu_gfp with GFP_KERNEL | __GFP_ACCOUNT in a cgroup. I then
+measured how long each allocation takes across two trials, one where I do
+all 100k allocations and then free all of them at once, and another where I
+interleave the allocs and frees. Everything below is ns / alloc, and the
++/- is the standard deviation across 20 trials.
 
++-------------+----------------+--------------+--------------+
+|    Test     | linus-upstream |    patch     |     diff     |
++-------------+----------------+--------------+--------------+
+| Batched     | 6586 +/- 51    | 6595 +/- 35  | +9 (0.13%)   |
+| Interleaved | 1053 +/- 126   | 1085 +/- 113 | +32 (+0.85%) |
++-------------+----------------+--------------+--------------+
+
+I'll include this, as well as the additional memory overhead that Yosry
+suggested to include in a v2. I think we can get more accurate accounting
+by distributing the obj_cgroup pointer size across the CPUs, so I've
+gone ahead and made another iteration.
+
+Thank you again for your insight, Michal!
+Joshua
 
