@@ -4,120 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BA53FF494B
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:12:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4F1FF494B
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:12:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 604466B0092; Mon, 30 Mar 2026 03:12:40 -0400 (EDT)
+	id 20CBC6B0095; Mon, 30 Mar 2026 03:12:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E12F6B0095; Mon, 30 Mar 2026 03:12:40 -0400 (EDT)
+	id 1E4226B0096; Mon, 30 Mar 2026 03:12:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 517FD6B0096; Mon, 30 Mar 2026 03:12:40 -0400 (EDT)
+	id 120AF6B0098; Mon, 30 Mar 2026 03:12:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 43F996B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:12:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CAE1214056A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:12:39 +0000 (UTC)
-X-FDA: 84601861638.13.E375A3B
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F2C0140012
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:12:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q5a+UU7R;
-	spf=pass (imf11.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 03CB76B0095
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:12:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 661495A877
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:12:55 +0000 (UTC)
+X-FDA: 84601862310.30.75DC3E1
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 863AC18000D
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:12:52 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=p229gL7j;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774854773; a=rsa-sha256;
+	cv=none;
+	b=OiEeXTK0uOD9tVzDx7bmN3xdpSoxCiHXc0pNvbQSeWOdQgo22fO/wxcIMIQTRRi3pnJws3
+	ACbg1zikElumt0CjJn2EtpP4HtnZNSirg0iirqF5jOGmdYXDGRGMNGF9e+6K229xmfo21V
+	OKcyaK1EBjTfb72KhN/58ftEBE+HTMw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=p229gL7j;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774854758;
+	s=arc-20220608; t=1774854773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3Kvy/oAbDLA+l15BCHFb8YavWVhfw8+2oSg1bGG605I=;
-	b=ZQdX87ek5rRlFW9zJda3SrimV9gtlYWYrYgVYGZq8WJmL8gIIXVK8Zdhh+CzUXfELB0TWS
-	OSe20z+3XXje2y414bSYb54buSQCIFQ4dI9UGMwvg/ov1pJyjmRIAK7+RGVHwHgfmhUty8
-	4k/mm1kEdQXQFJlo5fVIQWpGPDvRiJE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q5a+UU7R;
-	spf=pass (imf11.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774854758; a=rsa-sha256;
-	cv=none;
-	b=vX+k5lP6r0e367l+vF2eFhiOvVIq23DqHOmqfL8fL7hpQj9XHFm0OXDQlWKfD4n/kxrSiN
-	8nXdJh1UHcxF7K3BGvjYYZvj2p8KLPyK4tNKV+6WGF921oHqzDfswt3lJQIfXasu4fg8xb
-	gis3qYFDF31HQg6Om+vfbb2L4oGumv4=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43cfd96354aso393986f8f.1
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 00:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774854756; x=1775459556; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Kvy/oAbDLA+l15BCHFb8YavWVhfw8+2oSg1bGG605I=;
-        b=q5a+UU7RO13A/tnpQEGxzThDL5t7+kQvMWrlJRoh016LK0ZWHW3iVb2KvEC58TA9UO
-         cWD6Yq41vyg+tTh7GR5m+XqtEA+s0ONtkK9lCKNd0DDg0OX0I5Da5KVxGqcFkC+KMvZq
-         hPag4Pz7dqYbugKecpRPdbDeTbs0whFAJ1uHPYSMWv0nb0ACsjrlJoV9CcFWjKwDF7i3
-         Ks7dplOXQ3/G9iICUtSVaTTvcbQB2TU3u6zGLK55njD0WRH64ZIeSBmBzS8XFhRtNP1k
-         CD6/Lzbez2bVTTwLPpxqmHDyJKb8YjirzsBx5PH5djtglisob5T57mn4dYwon/Z8Ekoj
-         pRNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774854756; x=1775459556;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3Kvy/oAbDLA+l15BCHFb8YavWVhfw8+2oSg1bGG605I=;
-        b=r5wNW5Iz0ZEU5airZYnIBGW3pkqf6dcB5+/1+GNHCoDEAj8dvH02vjBVbCXGlk/MNI
-         Gc1CBEY38s+hyTiJ9X4YugXQ6yO90oek3moAgxb9vIhWthWibaQiGWVPtyEV/W5w14CT
-         mk2+e/4DtEE2JfTYDv4UeIboTcaLkzJv4WlWri09FkYYFBlpA77onSnHOvPr1r0p3vSr
-         wG4qAyVoQ8gVZUXn1ehmNNEdqnS1ktXhtLqycmCKEnBs+El4zPAl+OvdGt2s07a4hauf
-         TKWkqxbynq3rcB+2zLZT5IpGBFtBpkTMD1uwVAVK+87ax084logR1OLL7TSXmQGZ6ko+
-         mW/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUGAS0oToWyjm0Udjx8u0r2RifLwhmqyDTmF+/5/FcgIlCKn/4emdB0wIh8tNH/FX6yJk6pvNWXeg==@kvack.org
-X-Gm-Message-State: AOJu0YyVIrAB8Mjqu3h6toagB9plYQRenPyLnzDz3/xGanvqvisf1nmL
-	AHaRff7imENyPL/vxZLDpUyi+hJVUPKi2gkn2nyrr9z4bS30JjLGirpe
-X-Gm-Gg: ATEYQzw5hCAL7lu+/SEmSh4kBYWBjqndjQURDVopkCoEGdwqUkb5O/ahSK1LZ7XzkFd
-	r4gLnNy9uznIv4IJir/cPzlw7svMjS1Le/nYEa2YXunDNM+8ufbUq65inArc4wDYrndLrN0/Lhd
-	5vbNlVwYV/RA+uDw+/BUf38W6KNADdD8W+PubyGe4B7cZ90HBIV6wGIzj72MFSTYzpl/YUeHJ9w
-	U0LtjOGrY8xPsemd5UPZkxuX6cHnLFs1ipdQgNU4duDCrRLXoNpPjo9gWMmoPROKto1k1mdt8oF
-	ohaURHwyoXwOZS9V3V91mfsjGA1vm3+DjYIOex9MThVYwvdQpAA21l8H0BWqtAEOLElubhZk5bj
-	CCiimZDrBp5qEAwzXucSNjSS58jSBtFErTECctABAv+TklmH6j8hVfPkXJqM8IRZrJoiBjhjhIp
-	I0DLzy/J6b0JXhP2RUdVuVt3sEGux6AjcIwQGXr1hLkKxkdoaHQtqXD0gpDZeii9RokcZdsSbDT
-	rEj7/EoDt5s
-X-Received: by 2002:a05:6000:3105:b0:43b:43ae:8c2e with SMTP id ffacd0b85a97d-43b9ea779d6mr16500509f8f.51.1774854755953;
-        Mon, 30 Mar 2026 00:12:35 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf90424fcsm11516290f8f.32.2026.03.30.00.12.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 00:12:35 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: David Hildenbrand <david@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Chris Li <chrisl@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	NeilBrown <neil@brown.name>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH v2] mm/page_io: fix PSWPIN undercount for large folios in sio_read_complete()
-Date: Mon, 30 Mar 2026 08:12:29 +0100
-Message-ID: <20260330071229.14614-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vxHhFY8CnfVycioBKVd9CORZwlMpeneq2TR+IbnwoHk=;
+	b=wm8NHIoxa0tQI6P/iJBa2mwoetMkQICQE/eVS5tolW295LMMFPqE4OsVcDNB1sSW1I6QtI
+	L9WztOZOx7499IJzi6vfFrLKf0SgIFr9hhWBBfuiRXz1u81yyGAPaCPqiYasatGgnREIRd
+	TU4ida6ZlCnEIdnQYSXxECTgxvaVXF8=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vxHhFY8CnfVycioBKVd9CORZwlMpeneq2TR+IbnwoHk=;
+	b=p229gL7j0wh9odCIlSr4SdDEvlLtoODBkFb+g8QtwXSNn7qpbpMOkxoprw60uisKi5It8Mleb
+	jpAMIeWBTgqRAVwstD5ooinNDY7bnJP2a7ur7uWYyGsDChMLOS/1doh9OYTq31EpQ2oKvksuq+5
+	jELvT8R9KL13EDZNkSqg5xQ=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4fkj3J3YzTz1prKT;
+	Mon, 30 Mar 2026 15:06:36 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id D383440561;
+	Mon, 30 Mar 2026 15:12:47 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 30 Mar 2026 15:12:47 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 30 Mar 2026 15:12:46 +0800
+Subject: Re: [PATCH RFC v2 5/7] mm: selftests: Add shmem memory failure test
+To: Lisa Wang <wyihan@google.com>
+CC: Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan
+	<shuah@kernel.org>, Hugh Dickins <hughd@google.com>, David Hildenbrand
+	<david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+	"Mike Rapoport" <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	"Michal Hocko" <mhocko@suse.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <rientjes@google.com>,
+	<seanjc@google.com>, <ackerleytng@google.com>, <vannapurve@google.com>,
+	<michael.roth@amd.com>, <jiaqiyan@google.com>, <tabba@google.com>,
+	<dave.hansen@linux.intel.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+ <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-5-92c596402a7a@google.com>
+ <78a855da-8fc2-4e85-90a0-6bf9af030c02@linux.alibaba.com>
+ <acHeLL0l948jRchK@google.com>
+ <52c26e05-5bbc-4f63-84bf-c4879a6de7d1@linux.alibaba.com>
+ <accjlG9lUyDQO_mz@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <f822616d-ad09-e408-147a-503381cd3333@huawei.com>
+Date: Mon, 30 Mar 2026 15:12:45 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <accjlG9lUyDQO_mz@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Stat-Signature: uabm71trtbtb9gcria67peq3jttonxgt
+X-Rspamd-Queue-Id: 863AC18000D
 X-Rspam-User: 
-X-Stat-Signature: hxyq5gkror5a4pr1hwe7gomc9emsz1w6
-X-Rspamd-Queue-Id: F2C0140012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774854757-329808
-X-HE-Meta: U2FsdGVkX18qQxh15f1ITIBJI3uhScgXGjrmrSM1eNR1pNDjALazqxmrrZ+fb6CEFwqy2R3H0VMO4Yzu7z9APzV+6Picf2XWKcxkk6cKd4ZG5OaCqDdjwRXw3U7sbO470JOn96ci9gTrIyaz8ZcZ+6EQ0tc7PfrHlcsD7sVedeY3wNuvWggPY0hq/a4+auiOXHE52ZIu5kB2M4jQtlJP/OshzGFu9X4/ffSdPK6e2alhOmzI0hr3igtv/mXHf1Kk34vtRGex9Je54daKFIZ5BiUlQx74FTNmKNO1W9kZQXuCxq+Y29PciqI0EE2rEa6V8uguPh6zq4Ev4fzX/mxGbykY6UlERiQ1XEq0Z86ZvvXN70hFnWt4KEBZ5KV9H+GidIGq/RWgVgjzhQStg44fwiGNsIavkvyDrkVm+57+dz8ynaOiMG0F6xxpv6SGdnsK+SCz9GS2+cgti4X7EOiKofa8DVprpFkLMFMSrFZSMPLkzBXPJ5FSimlOFq8/c7HvOn1S3IgxPHk6E0dvE1ABql2kTeVE0w+EJKByF52aCsYJG2hhX9tAmOXCpdyKs0ahivGZeC6gGWJ4DM7NPCe8L5qQjegfLzpKgi9zJfRenNmPb3P/1R/fbf/MHXP39OHH+WGQCMUkonP39sP9+zFpy/rsPzwIW/fE6/qOHn38DcRZvGq87hUyVUfX7QSgor54PMq8ecpNFLHHaSjDNC9TpEOPtiizIFOGt5p5zUj6Hco+cOAnLYu2dfhZ15bNSb5dvUNfCagnMRA5e4kvhqAlY1hOv7SH8W5CYsMMyBFB67ixP5uI+JeysMuOjB0MoMLeo1nK6HBIk2RhnGO+tXiAsDmKfa9iARtwLjLjuue44Jt8xGGUoJb2M/fKPI+5WzSI+RJPZrt2L0lk6lOQ4NAoXhU+LTJaKiCcufljisFDVi/ZCZMNiR/Dijdua10c2v36LePgro+NyFJDS40Hni9
- PwxkFh6s
- QsCCehrnfHxwzKlZmocyQrhJWH7UXc6pKjXUhZCiU13z80F9A8W/yab8MUTEmwoR2Zy5hNjz/GWFGpVws12s+n6liAbXB2IwQynZpgiXKx9eSgP3vk+MOBrCmP1iTtznod9/ftlCnFB8t3I3KyzuqzaO5T8RAciWY11fQUdWJg1dUcBlkiL6VX3aKZvV9veYapeSNslt5Abj6eGSjL7f8ubkNgsxXvNZVCIZ4eBz7/5oVkAT/LU3cFMgd1tCDI1VZsovCaV83kYcb30DbUX45IF/V8FnY64bGPo29OdxkdWzKXALG4fVYIOnFYAkHWx5zXptE8hYGNH4jg620aex6nlpqPwUfRj6XOgWGK06yt+n1slcyXtpQMDbhMImE/+6TVM5QY2hMTNlXzT7msAFOxSS9cglRAR/tRf06W+BPefX3rid0D88SHnicd9p66YtqGBPbd6wCMWiRx/w3asg0EeHXZ3x+ogFlyu52Vn72r14ZhvSqXu1bxJQa3Y/Dst74Vix+5WiDiUFvQf6wbmZgRJmMV8an6lvPKtjXzpY7/hwmsPg=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774854772-427427
+X-HE-Meta: U2FsdGVkX1+zlwFJBRSN+zpibF1twXDik4TSWdDX1iMKOmeXkSQDel2Y3KfqF6OdKtvAZEeh/QT3KFKJ4QmFXCAG5KfLoWVD7df+VL2CaKYP6FCQlpluGLnk8bp/h3aU3WNfdjHhbHyRWscSG0R8mUPeipaMmEcutafaJrEPY4zs46gUnQrtaiY/VGA7a+WyFIUoM1Io9v0FkEqQxzf3b+rcPpy9NwsA7Wadu3Qn0zvOHWE9OdWLNOOVB67Af56DsfuaA8SMBguli9/Wi6EsCGJsNTSNHrxQGmzaGEzmtNJpSxu7Q5GDb5gjxZB7fGa/DwP/LQSVp5aMYPXiMEf2TF2284T36Pfuwrzr5NIqN0zVNkU0FOAtZ3uNUbDSzrQqudQU0N9Xjgs94Z/a9ytsL9aRmGh6ctzPX84GFIviDVtLA6GquM2iu4G+23t+sLi40e4XJl9yiWdgDiJcPxADZUuHU7KDKFITGihW+QWMcxKwr6ACHq++hU7dD1QT8/w47NyONl2nyUJKHtPSS5xCL6XsDEzexnHdczcKWHyh+Ozqn6bRd5XoYwHOWgNovfPEUoPVZxdILSbc3xFB22zw3KV0e4rrTkQ97sypz1eeSVitic6mcN+zgN4hA7NhXVdK/pEvRdJ89gp9ezonEfHIufJK/J+9qWN7PXSMDIo9QlxpdEx8R7yknCLyDTkJVXHbmfuGfcs4zprxAeoHZbmJWz1858cf/GRETPchTCC5gRUQeQMBzq4i0htZ6EswBLd9lyWIVu4RBLJYxlPQS8bE9rxpUtpVWveaDFKDVE+XURbiURF6waTrzUmAQzMYk6B0ZQwDkYJQ2bYmLSttrpNz5/kzB+76O/tY1eLknijjxeGyxEW+js2di+CvQ0ntMKXoRUI1+f542+QmAroZy/tK1uQdwRski6V/JRmqu4Y+dueGXkFad5y4p8CtwitX9WbQF8L0CCcScWfE5ihs6aB
+ WV+9kcPV
+ TlfqszqVDDWuYzlUgQIHh6QF1wA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,35 +118,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sio_read_complete() uses sio->pages to account global PSWPIN vm events,
-but sio->pages tracks the number of bvec entries (folios), not base
-pages. For large folios this undercounts compared to the per-memcg path
-which correctly uses folio_nr_pages(), and compared to the bdev read
-paths which also use folio_nr_pages().
+On 2026/3/28 8:40, Lisa Wang wrote:
+> On Tue, Mar 24, 2026 at 08:36:36PM +0800, Baolin Wang wrote:
+>>
+>>
+>> On 3/24/26 8:43 AM, Lisa Wang wrote:
+>>> On Sat, Mar 21, 2026 at 02:30:04PM +0800, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 3/20/26 7:30 AM, Lisa Wang wrote:
+>>>>> Add a shmem memory failure selftest to test the shmem memory failure is
+>>>>> correct after modifying shmem return value.
+>>>>>
+>>>>> Test that
+>>>>> + madvise() call returns 0 at the first time
+>>>>> + trigger a SIGBUS when the poisoned shmem page is fault-in again.
+>>>>>
+>>>>> Signed-off-by: Lisa Wang <wyihan@google.com>
+>>>>> ---
+>>>>
+>>>> Why not move the shmem memory failure test into memory-failure.c?
+>>>
+>>> Do you mean let memory-failure.c kernel code check by itself?
+>>> The reason I write the selftest instead of combining in memory-failure.c
+>>> is because
+>>> + do not need extra checking code in kernel code
+>>> + make it easier to trace the entire execution flow, starting from the
+>>>    madvise() down through shmem_error_remove_folio() and into the
+>>>    truncate_error_folio() logic.
+>>>
+>>> Pleas let me know if I've missed something. Thanks!
+>>
+>> That's not quite what I meant. I mean, since there is already a
+>> memory-failure.c in mm selftests (see [1]), I think we should move the shmem
+>> memory failure test cases into that file.
+> 
+> Got it. Thank you for pointing out.
+> Is anyone currently working on the shmem memory failure test? If not, I
+> will merge it into my next version.
 
-Use sio->len >> PAGE_SHIFT instead, which gives the correct base page
-count since sio->len is accumulated via folio_size(folio).
+I'm working on shmem testcases. But please feel free to add it. I could move to
+work on other scenarios.
 
-Fixes: a1a0dfd56f97 ("mm: handle THP in swap_*page_fs()")
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/page_io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> I have a question regarding the current implementation:
+> ```
+> ret = sigsetjmp(signal_jmp_buf, 1);
+> if (!self->triggered) {
+> 	self->triggered = true;
+> 	ASSERT_EQ(variant->inject(self, addr), 0);
+> 	FORCE_READ(*addr);
+> }
+> ```
+> Here is difficult to distinguish whether the SIGBUS is triggered by the
+> injection or the read operation. I am considering splitting these into
+> two separate SIGBUS jump blocks. Is it reasonable for me to split them?
 
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 63b262f4c5a9..1389cd57ca88 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -497,7 +497,7 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
- 			folio_mark_uptodate(folio);
- 			folio_unlock(folio);
- 		}
--		count_vm_events(PSWPIN, sio->pages);
-+		count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
- 	} else {
- 		for (p = 0; p < sio->pages; p++) {
- 			struct folio *folio = page_folio(sio->bvec[p].bv_page);
--- 
-2.53.0
+It might be better to add two separate testcases, i.e. one for SIGBUS triggered
+by injection, another one for SIGBUS triggered by read operation if possible.
 
+Thanks.
+.
 
