@@ -4,124 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F240FB3CEB
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 09:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2336EFB3CEB
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 09:48:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDCEC6B0092; Mon, 30 Mar 2026 05:47:43 -0400 (EDT)
+	id 7D41E6B0096; Mon, 30 Mar 2026 05:48:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8D9F6B0095; Mon, 30 Mar 2026 05:47:43 -0400 (EDT)
+	id 784FE6B0098; Mon, 30 Mar 2026 05:48:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA2D86B0096; Mon, 30 Mar 2026 05:47:43 -0400 (EDT)
+	id 6C2616B0099; Mon, 30 Mar 2026 05:48:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A96B36B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:47:43 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 034711B89CE
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:47:42 +0000 (UTC)
-X-FDA: 84602252406.02.2E427B6
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DE8BD140007
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:47:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	spf=pass (imf09.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774864061; a=rsa-sha256;
-	cv=none;
-	b=4V4xYY+Kz/mJRJwvZG1oJIBywURZM84k7y7eXMCgY/WRMZQTMGyceSspNMgw1N+ubIZhZl
-	1D/DtyMvx7wv5c9rEvagZdSXKo7Fvqcgy2GB+NWm76XDRNL/eCFURYqReM/xqQcw8J/rX1
-	YkkM5J2UDf3KwxasJG0Iq23gE0kV1Hw=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of rakie.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=rakie.kim@sk.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C7286B0096
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:48:10 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EED741B8A1B
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:48:09 +0000 (UTC)
+X-FDA: 84602253498.14.D9F6AD0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5DEB71C0004
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:48:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OMReKoLU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774864061;
+	s=arc-20220608; t=1774864088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UV9ftCmFwMfCiDo0LKD1r/tvPVIbv9rCYHK7wqvtSeQ=;
-	b=8pFP/t8s1mn5XIs26tLn68+0KMpRr07vl0oLj5x3lv0wBvPtI4RBdvpQusFnLbL/7BW5qL
-	8S2dxq1u6QzZeqlpywhVkg4w1gTjO+aNtCanc82S9g+IWPEB7KpsiptTJkumtJTOjAKPs6
-	fHi1TwUNDz8LHebU+FBRAM/hN59Sy5s=
-X-AuditID: a67dfc5b-c2dff70000001609-3c-69ca46b88de5
-From: Rakie Kim <rakie.kim@sk.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: akpm@linux-foundation.org,
-	gourry@gourry.net,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	dave@stgolabs.net,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	kernel_team@skhynix.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	Rakie Kim <rakie.kim@sk.com>
-Subject: Re: [RFC PATCH 2/4] mm/memory-tiers: introduce socket-aware topology management for NUMA nodes
-Date: Mon, 30 Mar 2026 18:47:23 +0900
-Message-ID: <20260330094733.425-1-rakie.kim@sk.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <20260318122242.00004e0d@huawei.com>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5n3+vvPmzkZ+LKtOf+BXy0xsByrxP32ZMmrPyB31pwM=;
+	b=N9RPa2aX1KUnNvPAaJ776zDEsz7kIbX09eJn3d4w4ypCarOJR9mTfx4WRT5ZhIOPDAWguE
+	+O+ygHt28LeR+cJ9Ph+UMWYLmSXC+JNXIJT70WxPpVpqjEJ9ixvCNuqcSeqM0mEPythwmz
+	6EjZX2mWWtujGYkT3LVlTHv6Wx7M3Ws=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774864088; a=rsa-sha256;
+	cv=none;
+	b=jFlvPZ68iZLhUNngPc5wLdaqpO8FFCIfKRYbZ9hp0xEaBWxPeHuuY9ge+WniwXRBZhX4pb
+	w4G9uG0JRa9yBONYGTfGicd+r+YoN31vBJjIOL5xwKpjVKMCk1JCpj/0DlhV4tMCW+XOtJ
+	Zoj0Ogw4+TGLxRJkuh+zvz4G+Un9Z2U=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OMReKoLU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D694860054;
+	Mon, 30 Mar 2026 09:48:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AD2C4CEF7;
+	Mon, 30 Mar 2026 09:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774864087;
+	bh=L7TKWn2Q+ImhzxbGenUlYPf7P2gJHg98JdI2bl3bESY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OMReKoLUngDh1GvdLGC2cMwqAfgTJSZlKrJ2vhmNvrtwgynF43AQNXWWTBYG86brb
+	 wfwvLo8+0+TnB5qHCt1ArY2icGvw64fU9M2THJJfev8FL3J1cGfvhIVr2e1XIV7rzn
+	 Y1Ltz3syL1ZWE8n+sWIiyre0sa6L4CoQ3RmfM6ovO19RBpFDUL4V/xWxY5bMNSYKYd
+	 2HZNASNSb8dh6TUMUA2Iy3RZOizWVlbZMt/czBp7VfC2DaskMsv/rN+nPbouofs+IK
+	 ND2cT2TT/KVdoDEE+MrbACTJKeNywx3wCsP8u38VPv5c7TKi1uRqvk9eEBoYbIocEB
+	 BP0UhrqPucwfw==
+Date: Mon, 30 Mar 2026 10:48:01 +0100
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 12/13] mm/huge_memory: add and use
+ normal_or_softleaf_folio_pmd()
+Message-ID: <6ad6c2a6-463f-4e2c-824c-1c9cd02a6355@lucifer.local>
+References: <cover.1774029655.git.ljs@kernel.org>
+ <c2be872d64ef9573b80727d9ab5446cf002f17b5.1774029655.git.ljs@kernel.org>
+ <CAJuCfpGDWLtUHpXLyB7UA9wva9q7RjG7coOiFaL-Os_x8BNr-g@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrPIsWRmVeSWpSXmKPExsXC9ZZnke4Ot1OZBmumG1rMWb+GzeLu4wts
-	FrtuhFhMn3qB0eLEzUY2i9U31zBaPN/6i9Hi593j7Bb7nz5nsVi18BqbxfGt89gttjc8YLc4
-	P+sUi8XlXXPYLO6t+c9qcXLWShaLb33SFvf7HCyOrN/OZDH50gI2i9mNfYwWtyYcY7JYvSbD
-	YvbRe+wOEh47Z91l91iwqdSju+0yu0fLkbesHov3vGTy2LSqk81j06dJ7B4nZvxm8dj50NKj
-	t/kdm8fHp7dYPKbOrvdYv+Uqi8eZBUfYPT5vkgvgj+KySUnNySxLLdK3S+DK2LTkFVPBa4WK
-	Sy/3sjQwrpLqYuTgkBAwkdjQG9bFyAlm3pk+iRUkzCagJHFsbwxIWETASOJVzwHGLkYuDmaB
-	zawSD8/3sYAkhAXSJaZdmwxmswioSmzdcxHM5hUwlviw7zMzxExNiXUbb4HFOQUMJb5PaGUC
-	sYUEeCRebdjPCFEvKHFy5hOwGmYBeYnmrbOZQZZJCPxklzh75A0jxCBJiYMrbrBMYOSfhaRn
-	FpKeBYxMqxiFMvPKchMzc0z0MirzMiv0kvNzNzECo3VZ7Z/oHYyfLgQfYhTgYFTi4TVgO5kp
-	xJpYVlyZe4hRgoNZSYS3e/qxTCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8Rt/KU4QE0hNLUrNT
-	UwtSi2CyTBycUg2MStJX9pgu6V+aqzP3iHP4sbqX9z8efCO6JF1M+zz3EXkWt/UKJ9tP9dze
-	v4t7U/OSM3nmoRvv/Q7Y+8bxxZMvfrtqajtSrpw4PJ3zwf9rXRHL0gW0M9L9FB/vtdh34tu5
-	C14zzwn+FGWXM5/DJnuJ12rddi6jGrNtp7/w8zi8VbAzKRXtUZTdpsRSnJFoqMVcVJwIAGld
-	VcLSAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrNIsWRmVeSWpSXmKPExsXCNUM9RneH26lMg9d7FC3mrF/DZnH38QU2
-	i103QizOTZnNZjF96gVGixM3G9ksVt9cw2jxfOsvRoufd4+zW3x+9prZYv/T5ywWqxZeY7M4
-	vnUeu8XhuSdZLbY3PGC3OD/rFIvF5V1z2CzurfnPanFy1koWi2990hb3+xwsDl17zmpxZP12
-	JovJlxawWcxu7GO0uDXhGJPF6jUZFr+3rQAKHb3H7iDrsXPWXXaPBZtKPbrbLrN7tBx5y+qx
-	eM9LJo9NqzrZPDZ9msTucWLGbxaPnQ8tPXqb37F5fHx6i8Xj220Pj8UvPjB5TJ1d77F+y1UW
-	jzMLjrAHCEZx2aSk5mSWpRbp2yVwZWxa8oqp4LVCxaWXe1kaGFdJdTFyckgImEjcmT6JtYuR
-	g4NNQEni2N4YkLCIgJHEq54DjF2MXBzMAptZJR6e72MBSQgLpEtMuzYZzGYRUJXYuucimM0r
-	YCzxYd9nZoiZmhLrNt4Ci3MKGEp8n9DKBGILCfBIvNqwnxGiXlDi5MwnYDXMAvISzVtnM09g
-	5JmFJDULSWoBI9MqRpHMvLLcxMwcU73i7IzKvMwKveT83E2MwChdVvtn4g7GL5fdDzEKcDAq
-	8fAasJ3MFGJNLCuuzD3EKMHBrCTC2z39WKYQb0piZVVqUX58UWlOavEhRmkOFiVxXq/w1AQh
-	gfTEktTs1NSC1CKYLBMHp1QDY+uube5+X0o21y7n/T7p65Oa1XuuiFu9s18rcrta+TaTvmma
-	6kffN193FCTvvWN7kWnupF9Rn8QlHOdf/vFszZVL/P8rnKR+9AotvKZ+atnU5wJed+Nl38nV
-	Pv/xIoSx6TET07qTnwKcjml65m/+csaeMe6TfddxvxrVyAMrb8ucvc1+dIXUES8lluKMREMt
-	5qLiRAAqZ2b+zgIAAA==
-X-CFilter-Loop: Reflected
-X-Stat-Signature: 7n4ec9epfsmicxz8c8ryf1h7b54q1d7n
-X-Rspamd-Queue-Id: DE8BD140007
+In-Reply-To: <CAJuCfpGDWLtUHpXLyB7UA9wva9q7RjG7coOiFaL-Os_x8BNr-g@mail.gmail.com>
+X-Rspamd-Queue-Id: 5DEB71C0004
+X-Stat-Signature: egs4rmtic6fzpboz5u8yz69btdk8j97o
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774864058-184061
-X-HE-Meta: U2FsdGVkX1+D208bB7Z2EZAXX9Zs04VhU5wSEFR+Q5kEgNw2RDw1q9JmjOvli7+t0SjKEJe+OSuA3DWYCPaAg8I9qtf8n+ImLQcmx/WtcljNhwg3Kplj34CX5Mu4bSDw/xG7kK/niM/Mnxa6EXE+hcexE7YCez35DlHo1oyLs1Npc3HRJAyLvQ3YnZksfhC5TpXtk6y45N0Q3ozBVGHISYYhqCvOXIEgGsYpIBsLHl4WMHECm0RrVJGg93c25ynsz6P3qxdQgV094lfdzGKaGZqLk2IxYQjl+kskte8OLTFvyikSCK48nSgW+AHH+UNHTwv7aN3hyBj0ufEsLN7krVh+yS+Znx8zIs2JN/KwtiPaKP7PYrzoyq2P9VFRBiU5DWUV/sxyXu0FGlxsuZ+gKGnOFDE5g3dZ0S9v6lU9wUtimco8odeRFIlazDLTo+DWK20w1qYv99NHb2AAVdw+5oyypfmo2eWNcuuvypoILHjq/YpOve02WjvJua57RooRm7f5Qy+93tpbTy7R0zdXVISzoVOSoYFMkG6ulJlbgj9MgTtmNmzWjrKS1W8De3fVNYoB/wvm08tmhTAGdt61rqhKvdOu43UHC6JvYh23efAqO5+2DKjTP5OuDAJme3OqNaJ1sLWC7fLOcfTa1KJIxf4bPkQeh5KwBQ3E3RZtDSAr8Z4a6EhIWU5EdZkCeJ/Tejwhh6O8NkDmSbJtO15JoDXbvy2ORcLKEuMCrVf0oDQFkU7Qvbci54zVr0Udn5ApgRyIZZDpK/Xa8mBr7O5OYKPu69h28vpVQvKeBbniwolHxwH+W6nFF9NpNdWpVHrwHvJtVIBpgN9gtoxc1+AKnxsXa+y5WsDEZLctVSmekl14aSKy+zb+vzhi4ekPXSV1klGQcBzd4vPxlCmQ+QtKenL5tb6eep8zGRPPeD0Jm5ab0XlE7IxOX1HyUXuOAtGTkLRPS80ED5r8weHDlWZ
- jWdu7G6W
- 9dcoFh9h9EspL41mXFUGW4lD5wsFZH2oxsVPqesQhwPCwwReo7Wwa1xNqcsSPt7QlGX1N964uceQlABtdQ5fUiHbcb6yVq74UgPvc
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774864088-221681
+X-HE-Meta: U2FsdGVkX18YVswejBxSRRyM4tPjBE8oHCCgXMS0aYrjw2U4fuVu3WpdNwquvMSZ/tIVWA+eW27ePJhU0SlqgittM2ubygSZkf/uHvmxaaV0Z44BiOh+baPMeH9DqJ5WJfDTK3Zmdsp5rNmy8fFpC4yLL8xRC02aa5a1yROJiveB4Yy+Mp2rPrS6Jv6fk9caqZXoSl1yIiYcLj17aEGDuxWb1YjDrn8vrnFxOrUifmcgYN7UzKpJVJN2qYxKDcgSxzDw3Q1KQPgZA2yWEIB/C4eI78YnrlDY92zT2zrLul7VNtdg0xh1WhIqDyGTJMCzxJ9YNMQ8hnYm3RcFPgT2zH8MnKccdGuvzrJ0ZJBXz4D4BwHQ3lTByMIe0BETflclEQm97t5fxt/1s9YyRStVsPSEcY+Qbo0ncTnmMydhcaoRsmtMe0PuzHAG/3dnPFQVoxBsrSsyYamnfHwudbRIcCmYt3fylsUgXvguJFqBzpTJAngK/QX7fpGEFgCc4Xp0dRpMwjM4Z8vX4RWFnR30DqwH8XKiU039EEVWCfYe8K+4hHuoJhyYO64DVRosFJFVRWTHvvDNN8LHcxsLKglplhbttabBJeMpHpr5qoAVa/4syc5hR97cWthFnwqWafX5qxcwKxLTTNaD6ZJYc+eAun/HQQhVWotGLWcnfM88Kg+Nq2eAOXznlApn1WGSRErPKUf7o+AbdK0JrD+42S+ERhes2ZwLatX1rTvzaS8npKiwErRRS51jeh+78kejiz7mFxvemVW3/u3FX4wbIEUDo4sbosBSu7kKdArxLKeXGvRs1GPV0JTmm0hT3KiIjYGyuJDoqnZgaeodEju467tLrSByfrInJrNbq1qlIGa3lj34R5cmsmYCmV2ew8IJcyHF7w/SWfAorqc45IsL0SYlIZTKlTkP+K/xuRi1eKhoUH+aUa5EfC6byWOyi5+LdGGcezPN7Q2losJ3BP+H8Ct
+ ih5DJVt+
+ 5MAbI2gfWDjCIuIXG/pQf48IuT+AFnO4cVWlEu/VpNatd28/z95CoWZrYyDYqu4zNiiZKhNE5i3ujL0CJ86e+4XIm5mbt1V136asTpNDkRJJPDPks/QlkHF159uND/kemI8W3j/vyyjiq0hZES4XLnX0IZBea5eMs5F2uu9krR0XU/6ZzXBt3NNrf7vDzRvR3Ren81yVlrb6gV8gnckIddv8GdT4JsUEZdxWaNOdh+/IM5kBLD2DNAuOteuGyay1cUMv7sksg20a1yDWafrwUIYgh+drptRCWtv44x3Uj9utpobT76yT07i8QDNPIpsQQokYqR/OKZBf7lkw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,92 +100,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 18 Mar 2026 12:22:42 +0000 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
-> On Mon, 16 Mar 2026 14:12:50 +0900
-> Rakie Kim <rakie.kim@sk.com> wrote:
-> 
-> > The existing NUMA distance model provides only relative latency values
-> > between nodes and lacks any notion of structural grouping such as socket
-> > or package boundaries. As a result, memory policies based solely on
-> > distance cannot differentiate between nodes that are physically local
-> > to the same socket and those that belong to different sockets. This
-> > often leads to inefficient cross-socket demotion and suboptimal memory
-> > placement.
-> > 
-> > This patch introduces a socket-aware topology management layer that
-> > groups NUMA nodes according to their physical package (socket)
-> > association. Each group forms a "memory package" that explicitly links
-> > CPU and memory-only nodes (such as CXL or HBM) under the same socket.
-> > This structure allows the kernel to interpret NUMA topology in a way
-> > that reflects real hardware locality rather than relying solely on
-> > flat distance values.
-> > 
-> > By maintaining socket-level grouping, the kernel can:
-> >  - Enforce demotion and promotion policies that stay within the same
-> >    socket.
-> >  - Avoid unintended cross-socket migrations that degrade performance.
-> >  - Provide a structural abstraction for future policy and tiering logic.
-> > 
-> > Unlike ACPI-provided distance tables, which offer static and symmetric
-> > relationships, this socket-aware model captures the true hardware
-> > hierarchy and provides a flexible foundation for systems where the
-> > distance matrix alone cannot accurately express socket boundaries or
-> > asymmetric topologies.
-> 
-> Careful with the generalities in here. There is no way to derive the
-> 'true' hierarchy. What this is doing is applying a particular set
-> of heuristics to the data that ACPI provided and attempting to use
-> that to derive relationships. In simple cases that might work fine.0
-> 
-> Doing so is OK in an RFC for discussion but this will need testing
-> against a wide range of topologies to at least ensure it fails gracefully.
-> Note we've had to paper over quite a few topology assumptions in the
-> kernel and this feels like another one that will bite us later.
-> 
-> I'd avoid the socket terminology as multiple NUMA nodes in sockets
-> have been a thing for many years. Today there can even be multiple
-> IO dies with a complex 'distance' relationship wrt to the CPUs
-> in that socket. Topologies of memory controllers in those
-> packages are another level of complexity.
-> 
-> 
-> Otherwise a few general things from a quick look. 
-> 
-> I'd avoid goto out; where out just returns.  That just makes code
-> flow more complex and often makes for longer code. When you have
-> an error and there is nothing to cleanup just return immediately.
-> 
-> guard() / scoped_guard() will help simplify some of the locking.
-> 
-> Thanks,
-> 
-> Jonathan
+On Sat, Mar 28, 2026 at 12:45:08PM -0700, Suren Baghdasaryan wrote:
+> On Fri, Mar 20, 2026 at 11:08 AM Lorenzo Stoakes (Oracle)
+> <ljs@kernel.org> wrote:
+> >
+> > Now we have pmd_to_softleaf_folio() available to us which also raises a
+> > CONFIG_DEBUG_VM warning if unexpectedly an invalid softleaf entry, we can
+> > now abstract folio handling altogether.
+> >
+> > vm_normal_folio() deals with the huge zero page (which is present), as well
+> > as PFN map/mixed map mappings in both cases returning NULL.
+> >
+> > Otherwise, we try to obtain the softleaf folio.
+> >
+> > This makes the logic far easier to comprehend and has it use the standard
+> > vm_normal_folio_pmd() path for decoding of present entries.
+> >
+> > Finally, we have to update the flushing logic to only do so if a folio is
+> > established.
+> >
+> > This patch also makes the 'is_present' value more accurate - because PFN
+> > map, mixed map and zero huge pages are present, just not present and
+> > 'normal'.
+> >
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 >
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-Hello Jonathan,
+Thanks!
 
-First of all, I sincerely apologize for the delayed response. I completely 
-missed this email while I was highly focused on debugging the HMAT and 
-CDAT latency issues in the other threads.
+>
+> One clarifying question below but I think I know the answer, just want
+> to double-check.
+>
+> > ---
+> >  mm/huge_memory.c | 47 +++++++++++++++++++----------------------------
+> >  1 file changed, 19 insertions(+), 28 deletions(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 9ddf38d68406..5831966391bd 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -2342,10 +2342,6 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
+> >                 add_mm_counter(mm, mm_counter_file(folio),
+> >                                -HPAGE_PMD_NR);
+> >
+> > -               /*
+> > -                * Use flush_needed to indicate whether the PMD entry
+> > -                * is present, instead of checking pmd_present() again.
+> > -                */
+> >                 if (is_present && pmd_young(pmdval) &&
+> >                     likely(vma_has_recency(vma)))
+> >                         folio_mark_accessed(folio);
+> > @@ -2356,6 +2352,17 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
+> >                 folio_put(folio);
+> >  }
+> >
+> > +static struct folio *normal_or_softleaf_folio_pmd(struct vm_area_struct *vma,
+> > +               unsigned long addr, pmd_t pmdval, bool is_present)
+> > +{
+> > +       if (is_present)
+> > +               return vm_normal_folio_pmd(vma, addr, pmdval);
+> > +
+> > +       if (!thp_migration_supported())
+> > +               WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+> > +       return pmd_to_softleaf_folio(pmdval);
+> > +}
+> > +
+> >  /**
+> >   * zap_huge_pmd - Zap a huge THP which is of PMD size.
+> >   * @tlb: The MMU gather TLB state associated with the operation.
+> > @@ -2390,36 +2397,20 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >                                                 tlb->fullmm);
+> >         arch_check_zapped_pmd(vma, orig_pmd);
+> >         tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+> > -       if (vma_is_special_huge(vma))
+> > -               goto out;
+> > -       if (is_huge_zero_pmd(orig_pmd)) {
+> > -               if (!vma_is_dax(vma))
+> > -                       has_deposit = true;
+> > -               goto out;
+> > -       }
+> >
+> > -       if (pmd_present(orig_pmd)) {
+> > -               folio = pmd_folio(orig_pmd);
+> > -               is_present = true;
+> > -       } else if (pmd_is_valid_softleaf(orig_pmd)) {
+> > -               const softleaf_t entry = softleaf_from_pmd(orig_pmd);
+> > +       is_present = pmd_present(orig_pmd);
+>
+> nit: With this you don't need to initialize is_present anymore when
+> you define it.
 
-You are absolutely right about the terminology and the architectural 
-assumptions. Given modern complex architectures with multiple NUMA nodes 
-and IO dies within a single physical package, relying on the term "socket" 
-is outdated and misleading. I completely agree that this is just another 
-heuristic, not the "true" hierarchy. 
+Ah I think that's sorted out later.
 
-For the v2 patch, I will reword the commit messages to remove those 
-generalities and avoid using the strict "socket" terminology. I will 
-also make sure the logic is designed to fail gracefully and fall back 
-to the default behavior when it encounters complex topologies that it 
-cannot cleanly resolve.
+>
+> > +       folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
+> > +       if (folio)
+> > +               zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present,
+> > +                                  &has_deposit);
+> > +       else if (is_huge_zero_pmd(orig_pmd))
+> > +               has_deposit = !vma_is_dax(vma);
+> >
+> > -               folio = softleaf_to_folio(entry);
+> > -               if (!thp_migration_supported())
+> > -                       WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+> > -       } else {
+> > -               WARN_ON_ONCE(true);
+> > -               goto out;
+> > -       }
+> > -
+> > -       zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present, &has_deposit);
+> > -
+> > -out:
+> >         if (has_deposit)
+> >                 zap_deposited_table(mm, pmd);
+> >
+> >         spin_unlock(ptl);
+> > -       if (is_present)
+> > +       if (is_present && folio)
+>
+> In which case would you have a valid folio and !is_present? Is that
+> the softleaf case?
 
-Thank you so much for the detailed code review as well. I will definitely 
-remove the unnecessary `goto out;` statements and replace them with 
-direct returns. I will also adopt `guard()` and `scoped_guard()` to 
-simplify the locking mechanics. 
+Yes, as pmd_present() will return false for a softleaf entry. This is an easy
+way of figuring that out, kind of expressed a bit differently 'it's present so
+maybe we have to do a TLB operation, but make sure we have a folio to operate
+on'.
 
-Thanks again for your time and the valuable feedback.
+>
+> >                 tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
+> >         return true;
+> >  }
+> > --
+> > 2.53.0
+> >
 
-Rakie Kim
+Cheers, Lorenzo
 
