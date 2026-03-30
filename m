@@ -4,121 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8867810D14A6
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 12:03:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02B9510D14A6
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 12:05:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBE366B009F; Mon, 30 Mar 2026 08:03:35 -0400 (EDT)
+	id 6A6D96B0088; Mon, 30 Mar 2026 08:05:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C95C36B00A0; Mon, 30 Mar 2026 08:03:35 -0400 (EDT)
+	id 67E376B0099; Mon, 30 Mar 2026 08:05:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BABCE6B00A2; Mon, 30 Mar 2026 08:03:35 -0400 (EDT)
+	id 5BB566B009B; Mon, 30 Mar 2026 08:05:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A8B646B009F
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:03:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 306B316076B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:03:35 +0000 (UTC)
-X-FDA: 84602594790.06.7D0E4C5
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 07E024000B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:03:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Q5te9fK6;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A8C76B0088
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:05:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D8A04160799
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:05:29 +0000 (UTC)
+X-FDA: 84602599578.24.4D372BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5B6FE180010
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:05:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QLsx1xUI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774872213;
+	s=arc-20220608; t=1774872328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/pCkZp0kOo5osdLzRpybPSjj/VyMtaU3zoXyQksTzs=;
-	b=BU4hT0wV2G+GeYnCQJPOcPKajsb5DtfqgfosDJLUq3QFEUl+SZtcuiEAS0JmWwPBuxw/3Q
-	YUyDQmhVFdik+6t3QdeZywXMTpy4bvvskvwREBP6wNJZX6E/LCCeT/ePAmzkkRzKuO+r2b
-	b/B0xK16h38VNHPftYbtG8Qi7BT3s4c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774872213; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=i8dtSua8DnR+s6tAIdJT2aavCtb51f3jEiPJrQ5lvIU=;
+	b=2RmyaaDEwrmjecCB+p57Zh/jG28ZSJOIItRUsmQ+bno4g5CAAjl1fKFW0+0G08PlXBf6au
+	qntOpav//bPFFDQ4Ua7jdb4oEWNBrvrQNVzJBOw0VrEscvIxow/0RicD+Ehdba76zsWwwC
+	Sc6dXYfH8uZG05S6SD1JA8hNsnwSNBY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774872328; a=rsa-sha256;
 	cv=none;
-	b=FFgMazeBiiYHAarJrRb4vGpqArn2swguYbEpUoro1Io0BaoVp3829suyDEtxJ9Wdete7Wc
-	EcgRe3/iJ87ajsh1lsrYH5rFpppKTQJlHZvFy4N/6HrmV3bJ1iRyojrvwHPpraRq5T2b9l
-	rqGXkHDk5do5rEseL/5sB+nvv+uHeIE=
+	b=6sZsUJFlVykWOyEgy0xfchu0j3n942hUtcyM+TUxjyJkYmP+iM8vLd6JaZQIzGoaoIt4HT
+	s1/bfXiNCEhex+jWfRgDPYIqSkYucs78mdPIXGueDhSg8A/x0Rq7OC2LIELTXnlcr2oauC
+	7ZGwHMAzD2Kgd2fF9XJyOehLP00Ubro=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Q5te9fK6;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-486fba7ce4cso44173585e9.3
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:03:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774872211; x=1775477011; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=h/pCkZp0kOo5osdLzRpybPSjj/VyMtaU3zoXyQksTzs=;
-        b=Q5te9fK6m2bX9xE8HLNyq3FXH4XCtHl4ENCM3uKl+P6DGKawpYIbJSTcohH3YPUDKA
-         YCiyNwziXDoOBJY2H6ZPRHXsi8Aq8DpD99cNNaGralRIMPLozdLgGxBwSMlrvvi3fHfb
-         LXB1hvgk5B2acJjD+vR6pnxYJGbyMH5bR3Tt7iHjRIct/nSGvhbECmDCLCQ2K0m0iCWw
-         ow7fj3euCMWEEbJpiTGiRjsy0NE6DzN914cCeXsBh6IcUi9u1VL5kLk12G2Pu6qzXWrW
-         1LC+ycMi80nqBiTz7AbP5bp/rONcJ1G49EnE8V8GfvTqSs3kRYcvVYYTbaxOp3b/6Mkx
-         YRSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774872211; x=1775477011;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h/pCkZp0kOo5osdLzRpybPSjj/VyMtaU3zoXyQksTzs=;
-        b=VinU2be6Zvan/pwt1lmuGgTjCfxyJQkVXm1G1Cnt8cZPwPgJzloQyHZGzpkmpOR3w/
-         XGIbLxvouwoQaB54zbXnfT9KS/5ZdPZd7q8KBysc1kHEXogh9FFkbX55f5F/8SCxmCUU
-         rDLW/7ezMU+Set56ARcNWyjPCJhqljtkOsk4VPAArJVIXCcjRolmAdfq4qDoQr4c8r/s
-         joyWM47BCyNfAaxCemFTuP7QbZ87e0gaxbKNtFJwuSpb/TVEJwjxZvD1ocqkMENRJLzH
-         He1NAg3zFFKcAvtADJ+QVJJWIvkevdDfDY3bhIs95MyYoAzV2Qy6ukkNU7k52DbEHVd6
-         utng==
-X-Forwarded-Encrypted: i=1; AJvYcCWGSACqsz6EQtG36P0mp3MltLnu2p/yjZgr+i1t2zwpbysjS5NFuI2WkdwR++y4C/5JMkBXhAFAXQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz4Z5ZOs6TaU+BUJ45gIbLnRSKjDuyCmFMa6bVS1fGrj/kbhwUF
-	Y2qwcgpyqm1wivDPWRRGx5k+iIzxXk39Oji/Zy3mK5PEpt5EP6QaoBNWH/sxIVUrvcU=
-X-Gm-Gg: ATEYQzwQBMqqVlKSvoUjqxh3CiE5OCj9m1pFgBPdDMOF2D7mMB0mYb7Mcsf2Maiddpd
-	uCU4Dtmr3ts/ixKvgcjqoQ0fkFTaxm7N2LnUdysqjNkevn13eIDIqZ0HJXI6M2FFVCNMkJeLxw3
-	y66TGQ88dyExbobtmVp7rHEx0QYBy1PIAXxBTyeoMFoAMqV4+hpxLuGQhxk84F+HWPp/MpSJZFi
-	g5rmEw16NKldcKaT9rZb+LoqRIAuNwdtDjmFSYsyRYSzbyUjrD99bjxjs0jT3P3+Jrv/MTvIFo2
-	ho9cS7/mdAasoiXGIVp/fiiQy9Vujor/6xwXg9yngLjT/jycmIEALmSSuVGhRHequXV/Ol7R2Tq
-	NuL80sr46y1/SH/PTeMSpEZKb87QYypR5Wc3n/ndQhGYkG1GECUT3aH1hZBjqOD/CerNdc877XC
-	UcIZQ5Fliser0hEIEiq8EvOQZwdp2Ap5m3OiyC
-X-Received: by 2002:a05:600c:1d8c:b0:480:69b6:dfed with SMTP id 5b1f17b1804b1-48727efabf6mr230701685e9.24.1774872211429;
-        Mon, 30 Mar 2026 05:03:31 -0700 (PDT)
-Received: from localhost (109-81-17-175.rct.o2.cz. [109.81.17.175])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48727192012sm79669865e9.32.2026.03.30.05.03.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 05:03:31 -0700 (PDT)
-Date: Mon, 30 Mar 2026 14:03:29 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QLsx1xUI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C8E360054;
+	Mon, 30 Mar 2026 12:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B899C4CEF7;
+	Mon, 30 Mar 2026 12:05:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774872327;
+	bh=9bCx12bjazjLzKumIzbHh00Pgfuh2RWq835dYR5A924=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QLsx1xUISY1QGldWkVlvsB6hmjYcZnPICwI2+1k3fNnZwgTPLbUIQpMaCksxR94ZM
+	 kq8lTiKqDwnEElMXt+IOSS7Oj6hN1BTbjlogoQE/ncWf/R2EcKql34Mgpe5ENcwj25
+	 4qo93hVqAD0JiYIMdcmNX0jy4VFS2H0D0mfJk0a+hDjOh6VoDz+TDbbU3ysgaL0jPN
+	 vDmVXPflTgiUzC+XgPbWSGta+pE0lQbEAbziN19aRUG+05F1euR8IIC80a02vXxu56
+	 55/FaTDnrI9NCH2zCe7mVumGbKUbKrF2amhSgoA9zW0fWesHeBoBsancfRYReImu85
+	 6vNCiAVU7AU9g==
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-Message-ID: <acpmkY6_gWLdtJCB@tiehlicka>
-References: <20260327191936.1980054-1-joshua.hahnjy@gmail.com>
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	"Harry Yoo (Oracle)" <harry@kernel.org>
+Subject: [PATCH V1 0/2] slub_kunit: add a test case for {kmalloc,kfree}_nolock
+Date: Mon, 30 Mar 2026 21:05:14 +0900
+Message-ID: <20260330120517.104743-1-harry@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327191936.1980054-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Queue-Id: 07E024000B
-X-Stat-Signature: s6b9pxwzn88xmgyfm73z7bywo88h5hd8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5B6FE180010
+X-Stat-Signature: 5mr5656iwa7j58poihzdsxcrrgbt65n8
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774872212-625854
-X-HE-Meta: U2FsdGVkX1+ayz7IqsTmCOJ+uJ6Hrt18SVMss0Yj1F2l5TQgg/2C02jiAN5LqKGx6/+L5RE1eo7NILa6kisbdO9RkdKoAl/eDOxwwzvF5h6wTovN9LkHggi6nXQrgwBGwMVJJbHWf2xYyqVP3Z4Yba0CmPMR8dNlkT8lCZzH5jgBlL6GDYf+VGd4t0Y+1em2gmzAzX5D4pb+yQ4f4pM/Gr/dOUlFLtk2xBu5OQKu5a8PSSI7SXLS2KF7ewSmP+3pkTygFF/NWFs1Ws5A+3cSadLLJtL7lucBebu4W8irBGVDwIK1/BgRzEaxCQF2mp6G2nD1kCFQNQdBa/oKAhXt4C+Qx/hX48ULq6cVzwAKCVCpvXKpx9Uvc5ZdPvpAMaeIqwDv2zU3VuuG5Fc9Nyc38iVuQ2kfoB9bOlWpyhvQ/xvz6Fy6Lmkbh2REWzQYZ+uWKjTEpJD8HejFFPPPyiL2GC5LJj8kKlHlKs3xGqzJIQd7Msficognps6HYkZof6HcWyzsTb8tTq7P4Jqsqcm/lBBiMnyRbCpY7xA5dy4S3kHPAw+b4fohY2c4Mk7y4xOIonEAll1rYEzuUm4teF9PMNuemIgWz/rZxyoOmJMzHB0n06Pqc3dJx31ViIgiaG3ksGboTAUaPGtWZGdvwr/vXbKcNufXKUVNOt6Y0PX49kKdPZv4UEB8UeO77rwBOBN0op/2goHXzmykvdEBpwSKiHI9WZMzaJxlFVxynvqOxSzPXD7vxAR7+vqf0thTsqmYJTADWFxjebgA1EZV2w3xGhCs7CNfns+hQ9N8I2KRyNSU5CEkCiLnhPPfrjJVjgX0Pkkucsgy8sliv0UCurc1SZOD1vpHhm9B4qNA8qqkYWdLUfKvV7Yfyz2Abh6kWEM5iWsWSDqWzE5BIze8D/QRolzV/54tVfwNlTfQQ/ptVckIEQgaO5+jRi00uA2d8xzm8tbBrCiJ0rZWUrlsLFN
- gxyYTzex
- mHNklvcn1prt7T8jt86dPGH0iDGFKVjuRfOjVw3LAIWlH8cTRuY/YemSTTrlcbZIgBV9AwYAq7+9ToCa2fkjGmjWLzjmdIe2WmGd2/Wm2jOZHV64dcVYYjpdrmb9ZHrDPFf6b0alcB2HX80At1Whfi0tL+DiSTofuBSoDXYsuF6n2wi6BJc3cKTPBlQu2Wb43W+B5LeS9mLaLDcLFbJC86FQie9QgOpZRwz/jZGzoBUtNG78Bf6quP6qNed5CwoTmkSDcZglY1/bcAHL53giyuyW79HzYLdEWIwxSNeVMh7UzaYpjbCueaAXn8059pWFZPmxaoJKZF/ImSfw3Z24nQ4N0mRXQhqzAlFtlAEUPdTJcMSTVz+fCMsJMkTdEXaiikpJt3FCM5FNnxNnslwIPLrNm5e5FGcxP/P/Xpm7e5chxZOg=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774872328-558604
+X-HE-Meta: U2FsdGVkX1+Uvdg1X48EeRcmpLp0yLuh9JMZsK27C2cMWdFcYrFyhNbXTUFXw5Tb9n7ayctkXT6LFjHnPWhJArqLIGahEWCJOUhrt/2c6PQuUMEBOIdZRLTwA181zkGb8Q20WmlOfFFlBid2N1PlSaYnK+0sJhDy8txWtKWFf1kPf+1iVFqd4dE3DQTQ+kPLwc5/0g+CqvQegIskxC9fxz1nMYA1y9/V1n8zVFyIvcDpkncpeyaE1Gki8sj9j/JcVwJbMMtnTZrL95dQGWEQMZwTM/iXzHUi4UEDtQaCxgdLiNkb5DFJYZHdpiuhh49rc2cuSQOFuCaa8p+AUymhMJip0v7R+jx/+Ss2rsYLbyndWswxhW7+0WkCE0L5RnwSAr11cPifPCsw/vtfX8BzKCJDrp7JzTcxAXI2qLpcQ1Om6AXCJycJl2jip1NPLfUTx2QY2eSVhAGNXWmizEQGypwPkHPlq5rtBSHRRz3EG5wh4ZmHxu9LBUOQh175D1nLVsIVJPZlxLQ9pIYLuLUxHU8fQFixYmYYH4O6itZ9wU2F0Y4XkIq09crkylFgmpjQEAN1Dkz865+zfDNWpEIfaW256/UW/bRKvUGg0t8ptaGlVozXv7LThARNsVuAjBfzGrZEyWlCmbZ3UsZADi2/8w4UadoX8ZyiqtL8QxutNdbCxJNqKDQHJ2klKIlHDaYj+N9PvEMvo3c+wERHRBREa7a119ZfLPO1/XjuxZT1bSZ//Q/YfgDj8HpmSgbx8IrZjBnzQDgkLK3At23t3/yJ613LKr5oMHL0v0ZUENeDdYvw2BqLxbg3j0fXqd+hNiRJbATQmG0DFssagonPdXpYlnH/I6xCZRauF7YIjxfg6w44+j5q8C39ZFK6rQYZDiu6s4uDcbNxcSCAs4ASmszGfEywr4rbRDuZhCcGa1RYNtcIyStD9LD4i+r0yMXbd8CZCRZ3lebzYjVKlsv+unU
+ jS/sTumf
+ 6L8CtpXF/3xcgdf3W0ZLarudAhiWA9KntgnC0BRSGzlB6bHa61Dgq7JNw+jdcz59M685zhdrgbr6YmhIJqnNie9JCefVWDoaI0jTrY8Fb+HhoaKr5myS3V1ygDP9aWWsj2Rjty8gwNg/S1R1I80M///g13qSwgvedN8DQzaOY+VSxBuAzTS1GDlBZnaXid7OYU0QH/KkJzHJtHiRtxBoIZzdxcmwB7OAs6KuszJRjeu4ABX0RayZPjLh9/JNXWP93IyKK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,13 +94,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
-> Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-> to give visibility into per-node breakdowns for percpu allocations and
-> turn it into NR_PERCPU_B.
+This came up while developing kvfree_rcu_nolock(), but even without that
+it's worth adding a test case. Let's add it in advance.
 
-Why do we need/want this?
+Probably a similar test case for the page allocator is worth adding
+but I'm not sure where the right place would be.
+
+While at it, also add the missing MAINTAINERS entry for slub_kunit.c.
+
+Harry Yoo (Oracle) (2):
+  MAINTAINERS: add lib/tests/slub_kunit.c to SLAB ALLOCATOR section
+  lib/tests/slub_kunit: add a test case for {kmalloc,kfree}_nolock
+
+ MAINTAINERS            |  1 +
+ lib/tests/slub_kunit.c | 88 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
+
+
+base-commit: dbc785fb4d9cfa0115e69e614fe20b4ab90f8366
 -- 
-Michal Hocko
-SUSE Labs
+2.43.0
+
 
