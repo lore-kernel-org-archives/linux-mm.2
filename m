@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01FACFC97F3
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:16:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB7111061B09
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:16:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6124E6B009B; Mon, 30 Mar 2026 11:16:02 -0400 (EDT)
+	id 17EE46B009D; Mon, 30 Mar 2026 11:16:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EA046B009D; Mon, 30 Mar 2026 11:16:02 -0400 (EDT)
+	id 156486B009E; Mon, 30 Mar 2026 11:16:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 500226B009E; Mon, 30 Mar 2026 11:16:02 -0400 (EDT)
+	id 06CE06B009F; Mon, 30 Mar 2026 11:16:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B7266B009B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:16:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB4B61B8C44
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:01 +0000 (UTC)
-X-FDA: 84603079722.10.23001CD
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E8F296B009D
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:16:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2E891607EB
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:11 +0000 (UTC)
+X-FDA: 84603080142.03.B26F045
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F027D1C0015
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:15:59 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ebxAwGU5;
-	spf=pass (imf20.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ebxAwGU5;
-	spf=pass (imf20.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883760; a=rsa-sha256;
+	by imf21.hostedemail.com (Postfix) with ESMTP id BDC121C0011
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:09 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IVQRZlAy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883769; a=rsa-sha256;
 	cv=none;
-	b=lMavcAAh8Wrb3ajC9J9XjaBGx4fraTjO1y/p5mfqGF9pSQdteS771j74PJejmiThUZEuNn
-	rjGnxqy6Rw6q/oC4O1U5j7g9A9q8K98epxxs5NGT9Qb0abhoZGkAdMZrpYPMOsrXqL4Duk
-	YhCNlD1eQiS+byZtQb14ePrp5P6e9Qs=
+	b=WHYptkeC4lcvd8Ao4GzjAUEuh6L/+oY7OkOOpVsY0W899rWX50tkATyTxHVk/8TxUtAlD1
+	ju9vcue2SWR7fEA+vjL7p1hSz3xGE7m5OwzOipergY7/Z5nm49iKBUPdwcwT41FoTjaxY8
+	bS7917c85YJxom1tiltrMqBiBSw0L+w=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IVQRZlAy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774883760;
+	s=arc-20220608; t=1774883769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ie9j02dRCYKPPj+cFCU+BtD494a7hZlu7MrIBbhAVwo=;
-	b=TsDAVPiW3IrYCK1TpOdI3vysy7BEigzKZMrKl/2YBaAPXWaT6u3HjRlVtcXLtCBSuBeQNb
-	4JwZsvuibBTYJcUN9N6aDrhHTczUe+akzDiZr/WmGINiRZi1CBg32a/3OsmS6J47fVwd/B
-	bxSWoiMjJPG9/IA1Ai6Up3jo3cBPeCw=
+	bh=l1tErw3apD+S1FQUsZ/S4dLljpIAMgHXSr6sgIoc4Ns=;
+	b=ZulYNvJ6c9aISmC/YbnD7J509Uq8T84Zt0Rru032vz0Qf7txtbbuIoVc1a9T7Niquopcql
+	TFQravyYCyA1/z5MUV5tBv6C4M15FHARDE3dP/xtCGo8TOT+7GMo1DRTDi2ctl91MrA0ma
+	bNUrV+8GGV2vvZHS6nclyYbdo19yeuk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774883759;
+	s=mimecast20190719; t=1774883769;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ie9j02dRCYKPPj+cFCU+BtD494a7hZlu7MrIBbhAVwo=;
-	b=ebxAwGU5YenEcIwdYT8hxgXGixqYJV3eT6yd3JqlBrMUW++o/P26WukaVrPTpXXc2jpPI7
-	gH2IAA2sf5RJGALrA1U89Ypqnx2fZrIp7C7ks7TqkcvZMY2z1yfI/PEwpLb8Qtwsj6mTJF
-	Hv32mPM3V+hGsg7iBcFBTiJavxuMSao=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=l1tErw3apD+S1FQUsZ/S4dLljpIAMgHXSr6sgIoc4Ns=;
+	b=IVQRZlAya4PVieTfrVWdbFPLrBa/DNW9qi2XaN92EgAYJBTcJ5GQ/9rBfwZFs1P63G9Z7L
+	uwmvKgw2nYs3GHRxEicDCUfyQGySxt7WMq34PcfttFnlmkYhWhjXIskp1vdXdXkIMYjzPD
+	d2qX2uEUGraaQU5ncqG3cg4+1rQjH54=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-Plyn5C7LNeaQvCTlucDj4Q-1; Mon,
- 30 Mar 2026 11:15:54 -0400
-X-MC-Unique: Plyn5C7LNeaQvCTlucDj4Q-1
-X-Mimecast-MFC-AGG-ID: Plyn5C7LNeaQvCTlucDj4Q_1774883752
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-D_PY-4v-O-iwOZ2SptaFdw-1; Mon,
+ 30 Mar 2026 11:16:03 -0400
+X-MC-Unique: D_PY-4v-O-iwOZ2SptaFdw-1
+X-Mimecast-MFC-AGG-ID: D_PY-4v-O-iwOZ2SptaFdw_1774883760
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E13B318002E9;
-	Mon, 30 Mar 2026 15:15:51 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8442419560A7;
+	Mon, 30 Mar 2026 15:16:00 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E440719560AB;
-	Mon, 30 Mar 2026 15:15:43 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8F8C419560AB;
+	Mon, 30 Mar 2026 15:15:52 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -97,25 +97,25 @@ Cc: linux-kselftest@vger.kernel.org,
 	baohua@kernel.org,
 	lance.yang@linux.dev,
 	chuhu@redhat.com
-Subject: [PATCH v7 4/7] selftests: ksft_exit_fail_perror: support printf style arguments
-Date: Mon, 30 Mar 2026 23:15:00 +0800
-Message-ID: <20260330151503.670415-5-chuhu@redhat.com>
+Subject: [PATCH v7 5/7] selftests/mm/vm_util: robust write_file()
+Date: Mon, 30 Mar 2026 23:15:01 +0800
+Message-ID: <20260330151503.670415-6-chuhu@redhat.com>
 In-Reply-To: <20260330151503.670415-1-chuhu@redhat.com>
 References: <20260330151503.670415-1-chuhu@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: AgyYv5zO3-WjLRFQUp56GzRXzczo0cL10AlM_06U1kk_1774883752
+X-Mimecast-MFC-PROC-ID: PU2y-J5m6tb4DwoQTiQNf1R7pjYx88YGcq4Uldkfbl0_1774883760
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F027D1C0015
-X-Stat-Signature: morhgjynur36k5ytbf4sp543tufnz3yo
+X-Stat-Signature: 6z1n455yoymghksjg5tfokrh9hqtqi37
+X-Rspamd-Queue-Id: BDC121C0011
 X-Rspam-User: 
-X-HE-Tag: 1774883759-890798
-X-HE-Meta: U2FsdGVkX1+vW9FockGk18QI5iZyaTJp8T2zp47NgoN4iSq4PpWCL88PnbNMtSbWoRO6bJG2fWgXY3JGUgygN/YFHuzCj5ZM2jQ2ilcRaGd/B8Tm9FcVwizIZjIo8V0VrUZddZHeoSxKzG9L3Lji15q3bc1d6TyUl+QuPeBYHlKIKsKvFrkPzqgqim+CP3lnz85WtcFUEZmvI9iLVdbIkhRhXXes0mRGx+aCy5f93b8hhgYV7441uJoehOntJ9rhJZoCkgkB5zlP6hlIw3nng5hra3X/rtgDcS1iQQiXT/8aHz9iAB/XgleXW25a1pBtXjcP7TVZh8phnwxZEvvtYZregCTibN2yYB69xKzVbPwdzhQO7ZxdR/h9nbkiqR15KrI07LP9uRUKRa2vOJQI/hRrIex7fHo9aPHk7tjSKH2gKWWNynwvCqHsUfLOPwoFsWN2WQRCoPXiQFKLTsMPDvOVj5T4LfNgGNSGjpyFWZ3KcuAbhGcrpLnsntEZA0T2iGZNxmP1Sd9/X34uaoFMNczoS9Uv8F+wy23vdCKUtaGec0BOrC/SQ+moEVOtr2bxJxk6asc3bj9Sep9OfR+0tMLXwPPY2Y4FRLM8g0RCQOQzcgQqK3llU6WyF5VVeF/0Xbg6opJdlgLTfw1dHn5Zu9D8BbxIFN6NCDwpqkHHQr01hzPdErsDd5xyrk4uuzy+2qztV02UG4QbwHMZS/hIRQkB2YouW7QDWZb7QVKEaKDj2b6JFetvEmyGHmdgWBMP6dofekToxhA1ttpAe4yB/guLYr91YgS+WEmP5p1Unzmkju8yDlwfpAzqW95tvRlJlNP71V29SfdrIiDjYh6MRxEJ+pdYOJ563tpxjCzYBV3QCTPJBs6TVz5PhX8LJKL5f9d07mMkfsMwE31yb0BbfD7UoZMx0joJRyd7Sl/YndX/+vIhgnw6JGGzGeirfIn01iRrOy5KtHf248sIjCp
- y+mD4r4/
- Hggm105XLXUUsYXjR2ckzAZ9co/8wR5XUJNMu/AUS1Og4jmRkXyPH/hAto7bKG8MEazNKUSohm4901mOAetAwv614/CakOXdBHTHBmOTI+QaFbUQn4G5p3irO4nKm4ivMWqyS1dY1qb72cyQNhQ1Mr/c6rShNpkii3n2JbBkWM6o6zshqmE4TtI4tae9BSft2k/5QOKH1OHQOIRFHcitHzJ3q8sHhiEEPPPfONAyGAZ5Bh9ibSwWnk0UCPbOXs35Z0Ur24CKhht3SgeClv6ax4LaysbuTQGYfWXFiIi0xA8oJZVej9fAjsGt6/O5ODVLojq48o4pyKHw1XQ4AulY9aEfwAgnPQKWmE8nd/bbVK2ZLI0NJidsAZTyBeaNHJMIvm/jua5hAuiBK3tQ=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774883769-402344
+X-HE-Meta: U2FsdGVkX1/w2FwVOhSbUTFq+N4fUxLjrcduW4C3t3WbVITR20q8IZoj0795Ng2t5LDmJ4XHH7roRC12rZJ2wN0aDKujQRjl8AI2+WCVH1x97H5DJSmDe+u8MvFLFpvDvATowzGGSoBhDC/nzYqFwezUJCdN92x/iC64pe3u3nEeInjM7anBad6Z1rGBAtcemQEqJmbgUYYqb2k4IjX1ZQV23g1yfPqMjRPOfZsFLJNc14q4x+CPNWPFM8GYUr+odpQKiwjGyxD7H7W6XRnArjvQSF7nqegAZ6JEYotcG0eY28XP+q9pZoefK0h9KU0anDBWuKq5T4AF4E1MXNCtFhOKbqSbadWvrXOJ8/dvZ/wfsC6gYSDQOS+ppCrygQ999hLio8QK3PJKWsAPkUQf28722oh3n6JdQ2gxuJAN8tJCNQuo2fi5sqdyyHiQsxHk11fXEM9961hjfL0k474nDp5ZCGUBy1XaRLEvG4dFZYT7UdWvs1FPTgch5LdatpDOkU/u2f84M8K+Y07vHafJ+LYZQFhaYaYL9JwzWiuYLEVXk9fgfaR9NDQfEMZzD8OK/IO6ZvocX9R2W6laY0bnGG+zY62fR1TnHPaaJSjHGVLuqOuFiU2Buxv40WwTl0Z6vVcP+CqASSjONdG/XiyoHuiLDMQqnciFzGd7WDuYtkZBs82zAOC8wZGUqp6BqVELqMLgOMoHcoDxPSJnocFmmTEOIALSo2Iinw0VvXt4qn6WAHFSW3MB99HcHCvxuLCyLAk5Fh6QzAt/yc8oZ03uhOnHzLxUhIWMnL0sisNhRCXnfFucxZfCRKhfe+wH6h+UxQ6sxfkJk1AKS8krYCgZaFVIDbTf01J1FZ+29aFSQoe9H3uUAO56+fUaskIlROxkUbNBgcyN41IpT8PWJJNr/bZdCWb3AkXEfcMCIvc7+n4ITKLR+ZV/xVaX3YEi4OAhU4wb0wBs+aevxkRO7h3
+ 55f3euF6
+ bC0t9StFZOwAluZ1fLATUeTrIcaSMcDtHN54xQMeX9Aip+77nNruGPafPPTHDKBFBKz8tw4VP7rCLsaFZFTPVKb7k/B6HWtfy60La+sBJMvaGtIzUsj6w4TSXghmNGQUZPOXCyqNOWHVyNidguelmRqkQ2LWxXPQtSmwf/d3WWDXjmkVzeFWZI/ofBDLAnWKaNlviiZLn9qeu5c6DeUGl/bSU+/18iNHtxZiRg3hR7izGXwIt/C4Djkh/6VZrMKTlB+Ul/CA2NsMIYkSirAkWiKqu+Rc89rLKHNGQhfNKrRVwNWmW0fom25xQbyeEDc0I/GAA0oiKAQmA+sRCD3Ey0nRWRRju2wm5j56SRMbMt+vECKC+zsqtDEYWXjZ7egH+s0XWw42MtTxcMi8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,62 +123,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The ksft_exit_fail_perror function previously only accepted a single string
-argument, which limited its flexibility for providing specific context to
-failure messages.
+Add three more checks for buflen and numwritten. The buflen should be at
+least two, that means at least one char and the null-end. The error case
+check is added by checking numwriten < 0 instead of numwritten < 1. And the
+truncate case is checked. The test will exit if any of these conditions
+aren't met.
 
-This change updates ksft_exit_fail_perror to support variable arguments,
-similar to ksft_exit_fail_msg.  Adding the __printf(1, 2) attribute enables
-compile-time checking for format string correctness.
+Additionally, add more print information when a write failure occurs or
+a truncated write happens, providing clearer diagnostics.
 
 Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 ---
 Changes in v7:
-  - new patch to convert ksft_exit_fail_perror support variable arguments
+  - add an empty line before the 'buflen < 1' line.  And change to
+   'buflen < 2 to limit the buflen at least to be 2, so at least one char
+    is allowed.
+  - handle the numwriten < 0 case, which is the error path.
+  - use ksft_exit_fail_perror in error exit path.
+  - use %.*s to print the buf when error happened
+Changes in v6:
+  - save/restore errno before and after the close(), so the log could show
+    the correct error info on failure. Suggested by AI.
+Chagnes in v5:
+  - new patch for making improve on write_file. Add more safety checks and
+    diagnostics info in log
 ---
- tools/testing/selftests/kselftest.h | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/vm_util.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
-index afbcf8412ae5..11cabdabb3f6 100644
---- a/tools/testing/selftests/kselftest.h
-+++ b/tools/testing/selftests/kselftest.h
-@@ -43,7 +43,7 @@
-  * the program is aborting before finishing all tests):
-  *
-  *    ksft_exit_fail_msg(fmt, ...);
-- *    ksft_exit_fail_perror(msg);
-+ *    ksft_exit_fail_perror(fmt, ...);
-  *
-  */
- #ifndef __KSELFTEST_H
-@@ -417,9 +417,24 @@ static inline __noreturn __printf(1, 2) void ksft_exit_fail_msg(const char *msg,
- 	exit(KSFT_FAIL);
- }
+diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+index ad96d19d1b85..00aaf33387f5 100644
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -767,15 +767,24 @@ int unpoison_memory(unsigned long pfn)
  
--static inline __noreturn void ksft_exit_fail_perror(const char *msg)
-+static inline __noreturn __printf(1, 2) void ksft_exit_fail_perror(const char *msg, ...)
+ void write_file(const char *path, const char *buf, size_t buflen)
  {
--	ksft_exit_fail_msg("%s: %s (%d)\n", msg, strerror(errno), errno);
-+	va_list args;
-+	char *buf = NULL;
-+	int saved_errno = errno;
-+
-+	va_start(args, msg);
-+	if (vasprintf(&buf, msg, args) == -1) {
-+		va_end(args);
-+		ksft_exit_fail_msg("vasprintf failed: %s (%d)\n", strerror(saved_errno),
-+				saved_errno);
-+	}
-+	va_end(args);
-+
-+	errno = saved_errno;
-+	ksft_exit_fail_msg("%s: %s (%d)\n", buf, strerror(errno), errno);
-+
-+	free(buf);
- }
+-	int fd;
++	int fd, saved_errno;
+ 	ssize_t numwritten;
  
- static inline __noreturn void ksft_exit_xfail(void)
++	if (buflen < 2)
++		ksft_exit_fail_msg("Incorrect buffer len: %zu\n", buflen);
++
+ 	fd = open(path, O_WRONLY);
+ 	if (fd == -1)
+-		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
++		ksft_exit_fail_perror("%s open failed", path);
+ 
+ 	numwritten = write(fd, buf, buflen - 1);
++	saved_errno = errno;
+ 	close(fd);
+-	if (numwritten < 1)
+-		ksft_exit_fail_msg("Write failed\n");
++	errno = saved_errno;
++	if (numwritten < 0)
++		ksft_exit_fail_perror("%s write(%.*s) failed", path, (int)(buflen - 1),
++				buf);
++	if (numwritten != buflen - 1)
++		ksft_exit_fail_msg("%s write(%.*s) is truncated, expected %zu bytes, got %zd bytes\n",
++				path, (int)(buflen - 1), buf, buflen - 1, numwritten);
+ }
 -- 
 2.53.0
 
