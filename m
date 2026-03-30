@@ -4,102 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ADC3FF4956
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:55:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90302FF495D
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:59:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 581126B0092; Mon, 30 Mar 2026 03:55:13 -0400 (EDT)
+	id C3ED66B0092; Mon, 30 Mar 2026 03:59:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531EE6B0095; Mon, 30 Mar 2026 03:55:13 -0400 (EDT)
+	id C16616B0095; Mon, 30 Mar 2026 03:59:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447E06B0096; Mon, 30 Mar 2026 03:55:13 -0400 (EDT)
+	id B53706B0096; Mon, 30 Mar 2026 03:59:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F4C16B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:55:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7BA41B897A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:55:12 +0000 (UTC)
-X-FDA: 84601968864.06.89426B9
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9EF951C0006
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:55:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=kdRyhgPo;
-	spf=pass (imf18.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A3E036B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:59:23 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5254113BA0F
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:59:23 +0000 (UTC)
+X-FDA: 84601979406.14.8F556E0
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2601D40003
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:59:19 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AXPYtrdY;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AXPYtrdY;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774857561; a=rsa-sha256;
+	cv=none;
+	b=dRUXddH5l4/qfMQqkW0CoRpU9/GPFKUu5ztMkM8k5iR1T7K1up1V691UJUowMl8+GxMQ8Y
+	oCCvjkQOMAAg7Sq/Ahqvs9Oy+1QmBxipozv3bP7YX1KcJVwJrMLV0QLX9mAVYsCdKFEUWM
+	4iQTillAS8dEDqMRofrbl780QVA57ks=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774857310;
+	s=arc-20220608; t=1774857560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gxL/nLHtk8yzJElgrCWa2G5swCzIh9KhW/8g+WYobqw=;
-	b=jr4IKPm7tebO5wpO+AN4sw1sXDF0+yPIeFBrgnL3taaQmEIaeLuOexK7xGB+zzYWT2U8GS
-	E2ktUprB4wmMUUh9J0pK6GX0bmv5/XvYlbIlK+kd5/M2ICzm3uuL2dA2uS+V/om7kYDl37
-	6miLQKuTet0o9cnaFLiFiLXbOmWAo5Q=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=kdRyhgPo;
-	spf=pass (imf18.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774857310; a=rsa-sha256;
-	cv=none;
-	b=O75F9ySFksXS/WJnEXqgzLmw1Ys0b3CnoAqHstb15iAN3SuXWwjconRFKOetUY3XvxAN+g
-	AQlWUHSVxovLejoDGE3XMF5qklFTqWEsoKKaFJua41FXXzJuDHaWKsjMBpmz0KwT9ffTLE
-	7xpcR2uP36tk0SmpeZy/FalJlfS9fIs=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=gxL/nLHtk8yzJElgrCWa2G5swCzIh9KhW/8g+WYobqw=;
-	b=kdRyhgPoF6ynd8J8zQDabTun7D67+34eRkJ+/9iQPVyI8ywedL6hVtwVCtLr2aJawq8obtW0M
-	fDXTp5Rn5dZSgRVNcskaQDvbTVawHpsxDvrQs271E4xMZiR5R3hQYnqv74YWERC1dGFxW6JJJaR
-	yw7yOw1NLjkcMAarT8N7KUg=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fkk0x160sznTW1;
-	Mon, 30 Mar 2026 15:49:37 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 00A104048B;
-	Mon, 30 Mar 2026 15:55:02 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 30 Mar 2026 15:55:01 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 30 Mar 2026 15:55:01 +0800
-Subject: Re: [PATCH 1/2] mm/memory-failure: add
- panic_on_unrecoverable_memory_failure sysctl
-To: Breno Leitao <leitao@debian.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <kernel-team@meta.com>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260323-ecc_panic-v1-0-72a1921726c5@debian.org>
- <20260323-ecc_panic-v1-1-72a1921726c5@debian.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <a88d62ee-530c-1a6e-c05f-de324f940b8f@huawei.com>
-Date: Mon, 30 Mar 2026 15:55:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=GDES+AFFgmGvx0gQMExZ60voHnnQ7hBjinDGrfhyCrA=;
+	b=ejCFoMAVAWssILka/47YEPw+xcA0E45IbxN31VuTClB8mLsdlaTzynCumo9bKlgwGAA5Su
+	2UoSzzyHNdrCE85B1VNwHhsI2jD+I3Rxfs1I9DUwo722XLTJXbrMRYVl1uGcZz5gBNzmKY
+	BGzVfZ0Lhs3oHLypbp9raG4AgEv7LpQ=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1774857555; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=GDES+AFFgmGvx0gQMExZ60voHnnQ7hBjinDGrfhyCrA=;
+	b=AXPYtrdYJjVwrUEDgO1lTwrWPcJwOhBTzzHouuhiCnHpIfb9xowiicMQwUZ5n4FUCHx7PvrhZl9EP7brAKF7G1jzwFhS9USv5x+N0+UwKc73DlbvccErHWYFC2s+mpUB9qrlgeEH0eN5cJW1ajhmEhEklU75k6ikKVXIE4TD14c=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R291e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X.wCb4S_1774857552;
+Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X.wCb4S_1774857552 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 30 Mar 2026 15:59:13 +0800
+Message-ID: <dc97a330-b83a-4f32-9bc2-f996fdc33665@linux.alibaba.com>
+Date: Mon, 30 Mar 2026 15:59:12 +0800
 MIME-Version: 1.0
-In-Reply-To: <20260323-ecc_panic-v1-1-72a1921726c5@debian.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/12] mm/mglru: rename variables related to aging and
+ rotation
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>
+References: <20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com>
+ <20260329-mglru-reclaim-v2-2-b53a3678513c@tencent.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260329-mglru-reclaim-v2-2-b53a3678513c@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9EF951C0006
-X-Stat-Signature: ypajet7ytyuk35ojrywi65iui6s68hk7
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2601D40003
+X-Stat-Signature: 93xie7qiy7ko31hwbybiupz1nyirbrjo
 X-Rspam-User: 
-X-HE-Tag: 1774857307-868977
-X-HE-Meta: U2FsdGVkX1+k/xL1ljqeD5NeHcbkZAOuFnMPjTkqFycQw4NMAYsaf0rjs5o+CqsaXJkILmqGuZBJpJo4IzBQIDiwo7GZBlDBzqePOxOCS4S+Z8G9M4lozNd/qunOWBkdvLPGmT37dbFYWan5MQUZfvEE180/UhmQWNXVcWh5hxL6kAIL0tsHx9dNilIpGCoXIiPoLGI11uOwSEauF6NlqdGi4Ek4AGAdWmncX64e/WaLuIXg3+lzKkZGFHai4nJGFiUfmE9lpn6r3ghFLiug02JoOeIPj9JEa6yxcr30QPdo8CZ+RI5+RFPhs1IYmxD6c5DQ104GqC7nAyvJZB0bvTufaAWtl/d/AeMi84Ie1ITD6+RXqz+uOAZNncwia/CLgalP1qqnEQr1qAqgBVJpwUL7nD09xK7I2zlwhICxNHoNtx6cB/rZVloVHsP86dV00QRAhIoCBPHLiHE2iDfmJcvHA2faPZuu6b4XVDOzuA25ipFP3mgP6DQ6qfxMYGtev7ACk2jNrbJaEMb6wc2i/aG7qUEqkuw+fSnTaXLjTHOuPEgdqnD91MvQFk2OIIX9tKMX17y+v9Oc8Ny4KUHITM6ozAVcAD2r2nXzmRw9GfVr8d6ViDNgzvV9QnGHJuEU2wyLN0e9NIADzoabdK10Wwz0ahNrDR/2uHBXKvMo6+6s7PcMnfapGdQtxvYVLNaQlmNC8NFsMGChm3apk+e6h5QvFpgAsdD7gn/OR7jNAfSwWP+8sJ2Oohj4L7sDsXAhEc2pc7ZBFgwboA0Wui3TzSyarZVPfoF03i1zWwnb+4uwCkVPJuS5acOHkrs3P02smQxZFj6xFxaRGNZRYSwKoOEvdnVKh8be04NRAYoQQROapTuGh/YYY9+FzvctNhJZwVqX1LCxSXGnMaXhGw5mZxtQt4LO0Zdt5N0+wmyZgSJ5eAtf35u+hNSSDgrQ+JilPe1pcxAY3Z3hgrkkF63
- rPr78cyo
- yT7/svMnTex4/hwODxQmYJazIxE+k9wemmV2MGcJih+sWj/dxIrgq9DAaSGELLtxwlN7tGeINfXn5ltuZwvoGMgNuknuSLQ8cjlTP0wK33xQcTT779qbqZ0kO1fiMAIiL2x9ATJDM/ofGpjyZ0Px0T2TcAA3Q3spe4yv6APFDF0jE/AQiXjhP6k+SukYad7zrUFkYKufYymyIkCT7bS7Ipd272hTRD31bT+uA6qJuEktirbWkiCTAgtGgguRCFJvwrP1UaHxEWFriSET5UI3Hg559wj10Z8po4oJFToZAc4QAACQPK3RQYjp/rJ/e99PxfJ7f1kl5XXnUcDzvJXkJBhB8qN97K6PikpunuTDjmaSWELIK1/fUADs6Zfx/rXw5f1uJpeOi3S4QnjX9gWRI/Nm0XeIwt6krKHGm
+X-HE-Tag: 1774857559-299280
+X-HE-Meta: U2FsdGVkX18hq+gFH9//tTfx1oZKnZye4MGdIagymcBwcB8Epq7C9NDeNRSFz/pAVUt6UV9iUTiE/qtFGtpcAbE0x0dSmiTKtZv9FUwEaL5/Lfy3ko3MoOmq7q9a7b+hG/IVOv6pX5E71fwu1EfZouH9BG5Xk4LPmvs/thmRNjuZbS8Y8O8vyEYb6E8qENEEJkvZFVJWHSRJZoWgXJuDjBexshEqR+lfFVz/yCk+AqRWvsTmhPxMgbo5AiC3HxNZMZ+ny7jcaatUxsOqLRoiNmYdMg6GSk3k8fgowl/Q16AvO/hD8ddvTyrPDRnbYwkJShsTmWKkPpMICIesy7V6YRg8zwhV6HAH79j0OXFfHJUvReCEhuKVAmr1LDsXU3nYF3RmSLlhNYaQrjohb2lVtDF5ld+XX9Ygbc7FomBr2v70Ieq7o2aYCF6feEbu2z69YeG6of8dSxTF+Ra9MWsQgrzk6d8V5lynsijI3S88LTvuNIEbdWbYolpdBUBNa4wr8tXeAuQwIF3PchpaUPhU1RTTDqF8re8WDFcq8skS6L2VI/49Pzk0KiyVTZOfcTUOKKQCgGhdx2E04FymYDi0bglr0Fd7ERejKJ8nFW5Ot2Jd1ZL1BAVlV35Y4EAZ5dZtHpKEOPCoN71sTvbzZusp8AqVeaJXT4AxctEWGyRlWcJh3P6p5u6T9pwjaKDa4LjtLvTM90iNoOx6e9rf/Lht9Zi0oKFJc5GiUuA7L3O/dFCYLMoZkFOUDyKOtzqot8o/zH1y4d6e/bIvB1fBUoDTGsDkRrowNIVk0sa8G5Ggcax2BmWqIzfPaGo4gLudwpGaI8IxvP2L6waV4MBxGqKq+oOYBMrroHmq6rWQS1eXcq/DPxf7U+2oXbVEY+yjCxEpUtheMZtQ2JmGOYA2pUbf9R3pbTld4ZgoJEeAOblemXLpfCrXo+mKNBAuKBp+Yc0P6PfMLgeh0ydjuFGtfeC
+ n6vCS1Qs
+ odZZoh6prcZlD0ac/Ac2cCADyVJiKrvqXt0wne34SNosn2SKKCybCvyslZc9i1BUfjTnyBmws/wbJbZktI2RHbtFWsB4V8nOGmqnW3n/nld5ytrLQku43nS9fr3CW9ArxKhdb18Z9pU2aIujKE+h2ZgkCAPSKLhUzS0HqBHyib5K923uQ9xU7KW7aNQ5bYyydIHs5ucNt/QUOfDNdj8Qzy1BSSHdt019ThvjnNBVb7ZyjFsRZ37eicJfB1WSbD+zqr+Wn3q0eIWky6QA6xzQq2zc28kNLxBKL7XfVEfBQrTPDnKrx2pzK6gW5cfmWfRvoXtAXLSn9of1+w/tWpP2ObL/pE3cPxvv7Yd50KWdtMlFV7wrlPp7xAscyIHm8omIPQKiBszPMkIVMnQlJ0tRTs58DsWmnFvVrvAaJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,83 +99,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/3/23 23:29, Breno Leitao wrote:
-> When memory_failure() encounters an in-use kernel page that cannot be
-> recovered (slab, page tables, kernel stacks, reserved, vmalloc, etc.),
-> it currently logs MF_IGNORED and continues. This leaves corrupted data
-> accessible to the kernel, risking silent data corruption or a delayed
-> crash when the poisoned cache line is next accessed.
+
+
+On 3/29/26 3:52 AM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> For example, a multi-bit ECC error on a dentry cache slab page was
-> ignored by memory_failure(), and 67 seconds later d_lookup() accessed
-> the poisoned cache line, causing a synchronous external abort:
+> The current variable name isn't helpful. Make the variable names more
+> meaningful.
 > 
->   [88690.479680] [Hardware Error]: error_type: 3, multi-bit ECC
->   [88690.498473] Memory failure: 0x40272d: unhandlable page.
->   [88690.498619] Memory failure: 0x40272d: recovery action for
->                  get hwpoison page: Ignored
->   ...
->   [88757.847126] Internal error: synchronous external abort:
->                  0000000096000410 [#1] SMP
->   [88758.061075] pc : d_lookup+0x5c/0x220
+> Only naming change, no behavior change.
 > 
-> Add a new sysctl vm.panic_on_unrecoverable_memory_failure (default 0)
-> that, when set to 1, panics immediately on unrecoverable memory
-> failures. This provides a clean crash dump at the time of the error
-> rather than a delayed crash with potential silent corruption in between.
-> 
-> The panic is placed in action_result() so that all call sites that log
-> MF_MSG_GET_HWPOISON with MF_IGNORED are covered, including the hugetlb
-> path in try_memory_failure_hugetlb().
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  mm/memory-failure.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index ee42d43613097..25bd043497195 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -74,6 +74,8 @@ static int sysctl_memory_failure_recovery __read_mostly = 1;
->  
->  static int sysctl_enable_soft_offline __read_mostly = 1;
->  
-> +static int sysctl_panic_on_unrecoverable_mf __read_mostly;
-> +
->  atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
->  
->  static bool hw_memory_failure __read_mostly = false;
-> @@ -155,6 +157,15 @@ static const struct ctl_table memory_failure_table[] = {
->  		.proc_handler	= proc_dointvec_minmax,
->  		.extra1		= SYSCTL_ZERO,
->  		.extra2		= SYSCTL_ONE,
-> +	},
-> +	{
-> +		.procname	= "panic_on_unrecoverable_memory_failure",
-> +		.data		= &sysctl_panic_on_unrecoverable_mf,
-> +		.maxlen		= sizeof(sysctl_panic_on_unrecoverable_mf),
-> +		.mode		= 0644,
-> +		.proc_handler	= proc_dointvec_minmax,
-> +		.extra1		= SYSCTL_ZERO,
-> +		.extra2		= SYSCTL_ONE,
->  	}
->  };
->  
-> @@ -1298,6 +1309,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
->  	pr_err("%#lx: recovery action for %s: %s\n",
->  		pfn, action_page_types[type], action_name[result]);
->  
-> +	if (sysctl_panic_on_unrecoverable_mf &&
-> +	    type == MF_MSG_GET_HWPOISON && result == MF_IGNORED)
-> +		panic("Memory failure: %#lx: unrecoverable page", pfn);
 
-MF_MSG_GET_HWPOISON contains some other scenarios. For example, an isolated folio will
-make get_hwpoison_page return -EIO so we will see MF_MSG_GET_HWPOISON and MF_IGNORED in
-action_result. But that's recoverable if folio is used by userspace thus panic will be
-unacceptable.
-Will it better to check type against MF_MSG_KERNEL_HIGH_ORDER?
-
-Thanks.
-.
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
