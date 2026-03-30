@@ -4,100 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE1291061B1A
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:32:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A20D1061B1B
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:35:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1F1C6B008C; Mon, 30 Mar 2026 14:32:24 -0400 (EDT)
+	id 98AA26B008C; Mon, 30 Mar 2026 14:35:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF71A6B0095; Mon, 30 Mar 2026 14:32:24 -0400 (EDT)
+	id 93B636B0095; Mon, 30 Mar 2026 14:35:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B33416B0096; Mon, 30 Mar 2026 14:32:24 -0400 (EDT)
+	id 8513C6B0096; Mon, 30 Mar 2026 14:35:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A44D36B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:32:24 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4043D59664
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:32:24 +0000 (UTC)
-X-FDA: 84603574608.21.B02C32F
+	by kanga.kvack.org (Postfix) with ESMTP id 77BDB6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:35:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D1D81A089B
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:35:00 +0000 (UTC)
+X-FDA: 84603581160.03.D5568C0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 516DBA0012
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:32:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NqwkCXBT;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id BBB6D180008
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:34:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ivqQcR2d;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774895542;
+	s=arc-20220608; t=1774895698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7U8IN7wNWKroVVksH0qLml7e1xdOOXEyrhaS/+jQV0o=;
-	b=mJdjE+juqKKJXohcKcsYJYNK1LqNdR9OZdMfajsWHwqm4sgZ0DQM0j9XLeZjSYoOu6fAq+
-	lidAeflAt6Oc9upXJuzZrDEtorouIyWr1OXjrzWqpkh85clM4QA1DShGnHvwQhRgJLtmbX
-	kbJ18suKuvozbP4r/2T/Yf7g8fcDZyg=
+	bh=0srGn2dABzRcKE8nwhfShv226eZoihYStg7rmxnUhdY=;
+	b=N/NQ6EOEAVXLOsQ2JPXuIGSWX3nAHBMVLgntK8HCdloRi9/muk0sA/RTD+vbFIzjR9d573
+	PaCNcKdwzhGTcwxxzcb9Myt8kzVwr+G/9mHpcNFrssdKowU4JAok/eY1gPJ+NWar4rO8IZ
+	1RQmwbzaZKsTaYsgju8UgiyWVmSY6D4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NqwkCXBT;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ivqQcR2d;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774895542; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774895698; a=rsa-sha256;
 	cv=none;
-	b=VNDWSbxo+IM0QgcN8pAQStbDlT/CeZFGW8e0Duzl3vo+fooyDruCLiQv2FML07vCBKnFTs
-	3s3rPYAAxnOqPKzgUY8VmS5BDDkVArVPxBnEfE79LY/Y54RP9oCsMOG1UltOs6EHQgB8LL
-	OSE15lve1s0WA6+4yixzwNTjw8G173Y=
+	b=DHuOYs8ieoB50if1z3ynzEaMCNHXnfYzXawByrxUs+tXSeeAuD6920OkVAu8lmKm0MwYF9
+	K0zrgHbFYf1p58p3+dvwI7h7JT7bOPRGOPp5wPkBzBGH0EAeAh2snDYWOvhvI3++11jKum
+	s1joEd/bkd9iMyfUKSXsLf2Xz6qtKSY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 637AD600CB
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108DEC4AF09
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:32:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E78AF60121;
+	Mon, 30 Mar 2026 18:34:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4F7C4CEF7;
+	Mon, 30 Mar 2026 18:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774895541;
-	bh=7U8IN7wNWKroVVksH0qLml7e1xdOOXEyrhaS/+jQV0o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NqwkCXBTBuv+p9v2yhSRvIW7NTpOQK57WUnMHx8/jXyFAqTTlN9/t72xL3RFf8Rcp
-	 Yy3Bmhzf4VwKi5/jsXKXANg8RuF2OpGZJLJ8LzEiIXL1jzESbv8j6XbQWPA/KpC+M4
-	 AA+mvWcTFsh9gPlnGR1CdBE1NIaSQdqpsj+a/dXV/PiwA6tB4bk5hFRcEocwJ+zg2e
-	 IqFIc4CeWvdqm4xva3YU1WqbAJOR75ZHLSOjsCAFWsDz7UFwc0siLH4wLdqFKSHOcV
-	 1nZJDrpfaVWfmqPEIR0+FWVjNAK/nXuEln5BuMppg3sgZYg3xmVKhFEkP2M5jVjYVN
-	 O02CII+6TqzXQ==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b8d7f22d405so743646566b.0
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:32:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWoBRMdFaS7SvgouAYShm4XtrBUTYyQ46c5x4MeFgSh/LMHqs99KRLih6hJlt+Z8TgRSAKk9wSagw==@kvack.org
-X-Gm-Message-State: AOJu0YxhcC3uAw7h1WYnxs23M0pOkFIUxRT0NJ0o5EXU7LKyecvocBZh
-	gUBlfpetvKcsepa17t0Ds85F1TEerJ8oUEaUYB/mOBJK9nJ9Sb2XKJluD2LiE951JOte75o9sUB
-	A6MxtyEoq8l+t3jip+UCGGeFeYn6Mi2A=
-X-Received: by 2002:a17:906:8d8d:b0:b9b:1b9e:e4c9 with SMTP id
- a640c23a62f3a-b9b5094517emr850819266b.48.1774895539751; Mon, 30 Mar 2026
- 11:32:19 -0700 (PDT)
+	s=k20201202; t=1774895697;
+	bh=SRxxpeb3qYoWl6+GAc/aO0wc0VXuHzggDRH/rnKg21Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ivqQcR2dZy35lYabU0BBXKzj+XDUwkDqyBwMEtaqaUyM3k21UuHgbvPrCu7ZusHVr
+	 ytprZXkVMFgMLhdj/VGJQHTMTI2piW0GLLVtC7zskwte6Gqc6C/CnEF7tuvFbzhrBg
+	 xrQ1g0uibn4nPEwbmuA1ac4GkOIoIRESGZV7ygQIMR+2IGaHmvf4XdPXA9gbXaPbIn
+	 mwoAaZFuHHvrcSHkVwbeuDpNtuJe4fKFqLNzVJZnheiBaNnYd+kgSH6jIbHUfvZ9Jc
+	 HEN41kioO7XOqaqChUh0oT+h8cM3NYpOzyF82zaFJrB6WAlTFd+2ek6RAWvTp38BtX
+	 3Kykii1gy2Ebw==
+Date: Mon, 30 Mar 2026 08:34:56 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Qiliang Yuan <realwujing@gmail.com>
+Cc: peterz@infradead.org, longman@redhat.com, cgroups@vger.kernel.org,
+	akpm@linux-foundation.org, anna-maria@linutronix.de,
+	boqun.feng@gmail.com, bsegall@google.com, dietmar.eggemann@arm.com,
+	frederic@kernel.org, hannes@cmpxchg.org, jackmanb@google.com,
+	jiangshanlai@gmail.com, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, juri.lelli@redhat.com,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, mathieu.desnoyers@efficios.com, mgorman@suse.de,
+	mhocko@suse.com, mingo@kernel.org, mingo@redhat.com,
+	neeraj.upadhyay@kernel.org, paulmck@kernel.org,
+	qiang.zhang@linux.dev, rcu@vger.kernel.org, rostedt@goodmis.org,
+	shuah@kernel.org, surenb@google.com, tglx@kernel.org,
+	urezki@gmail.com, vbabka@suse.cz, vincent.guittot@linaro.org,
+	vschneid@redhat.com, ziy@nvidia.com
+Subject: Re: [PATCH 13/15] sched/isolation: Implement sysfs interface for
+ dynamic housekeeping
+Message-ID: <acrCUEsH5wi2qAx_@slm.duckdns.org>
+References: <20260325140432.GE3738786@noisy.programming.kicks-ass.net>
+ <20260330114620.104027-1-realwujing@gmail.com>
 MIME-Version: 1.0
-References: <20260317014802.27591-1-kanchanapsridhar2026@gmail.com>
- <20260317014802.27591-3-kanchanapsridhar2026@gmail.com> <20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
- <CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
-In-Reply-To: <CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 30 Mar 2026 11:32:07 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com>
-X-Gm-Features: AQROBzCHwD3OfJxXspZczrUTdSkO5cz6USi_6cE0wWRiGGWQYjxEIrT-q5whFUQ
-Message-ID: <CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	herbert@gondor.apana.org.au, senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260330114620.104027-1-realwujing@gmail.com>
+X-Rspamd-Queue-Id: BBB6D180008
+X-Stat-Signature: 859ybh3r6agq1yax9ggnpjyi469afqkw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 516DBA0012
-X-Stat-Signature: isu85sau8zx6kqu4jpoy9mtsxoceq4n6
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1774895542-925965
-X-HE-Meta: U2FsdGVkX19gdxtGA+ZoI5aMsLrpzK2i8KpsOS8mgLvzRK8ggw91bErmKclVtfHfiPkndALXVY6AQOfft5ebG8a4YvqW7evf6bi+YSTbHI4dqfl/m0b4nRUbwDQ7hVBZeyQKNTibp6B16zXzKs8CV+jxWCluG4C1hn1rqTWsTBRy+VmolaXQiF4Vzw08y5QXehXvtzbY4NOKp9ycNqF6NfeZoOpB06ZNNHhSXtZLoPMrWo4wgAlx1y/tBdrVbGIxC8crG8nllnaLRwqwRPrbE92ZEhgyfvic+xIEkeaZcFWgutoC0eNjQzhDydBun87BuF7NH6mTQUPDCoF9txGUe33J1fO/9WDl1HKOsnn47mNHnF0TYoFEMGYnQs+NlEmfM7H6ULOFPKYZ2uQ9WaNecZAR/lwv8rCbftykH3bzZsKI+V0oF5b/63t8IF/n8sLtf2els0n7IZN5hby7Sl4J5UMrUIHUPl738QIQm3HnMEBDn964sZ8GbVl0w5DPg7ZZ/ix2DdQUFiQJ4IYkHQw/AdMsFoytf0Gv0jkbuwstDAHy3q3lFlerHI5dzOz+cgg+INh+vUsmD763xGzRJC8O6C407SVIEr89P7K5NYDaz7rkwl7Fn2JLTd/HlGxPgNKA4EKost65Wrdu2S+IrhiLVG2XGqSPxNvyljL2XhvtUnXNMm++y52S2+8k7IirbL6jqWVJoLrzBG9UQ4lmTO6fOci42VnGtxMSpcjYcmZCwUR2QTMHpWGiNfTXwT0O9G1ufaBGs6PnbZfnqQ6EZTRDq64xiEL+byudXheCfngBK5vOs5hmkGuUWn3xAU8KJoRcdbm5RxfDOecRv1gMFIbkGpPCLJcC9rZ40KpFHV3Bg+ZOFj38Ew7M5mCZHZFNUFzA80tCK5dVGifVhDh9RIQY4IcsTTILkKFyIwbMT9fltQtN+R9kQSuoBK5YiNUCct5r/Kd8OJrUODlOi+lpP8W
- zC+Lkhxw
- sij6J9gE4e7i8Da//MWNqSxTGdbPzr6P+0CdJTmkrusUc+yXe4CW1EJKVKa7Po6o2OhljW2yUKaR1FHx4AwUuYakTvxu56BHhRsjRrkSfV6XtZ81PgORh+y7IMlhIeOXONvxKv6hMjFzjUBMdZOcx+g1ydumtqUmbULAiSXDFrr2vRA2AtFEa3Pg41jFBXmWxx8Ir3eM2JkEmXYD1wZ9KTBdlurCHx5gcau9SogMnd4eogFWrhZKonvlcouO5QryNsWjhrhPtJj40m9qLBydHAgGnsU/ljF2X2zCx4jp5wgxvG+Td+Bno7qVqfTn/X1sO2ndB04tI4WJG607e4V1wE2u9ZSdie+iyn6GXM2U+X/rAwizBIVoOVxTEOpAJCA5Yfy97eAC8YeQyol4JXd814X3pWk99EsXkhqWt7jXUst5LHN4mvphVbPlhVQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1774895698-307222
+X-HE-Meta: U2FsdGVkX1+kVUdeQqWvUdRSDsYhBxTC6iwe27vsCeVXjtOtXpW3sEJP6VZHZPZz/bpJ5GrCyDpXN7o/Cs6qUdTxRuj8bGoIp/P6taRy5bEqJYGFFQURGVR1S4Tv3aNn6ajBst844RccLtkVz4u63vnnLCK47cJM6e2q/oUHNR4JZ6o2H3CMuIWb0ziYbc1SCavrg+B+0k+2WD98Qoly0wU/qDqqHfNaiRiWB8G7VGCqBwz2PAinegcCTkX6Iu8KBQvA0i6qD9GCzgzy20wi9wWXe2Ai/sX+Fv0SutmyJ2liDZVaxBxfJZgKe4Tz4XsAj/HbhI3hSGpkEttc5Vhb+WBEgybs4Jwx9yxPHLb0MHItjjmvJAWV4LjFEcFC7tvDTWVaEOQpKzcewBLn9eQTuNIeOX6EsJhi+id8DPcMQAFJ0sAjtWYLDfFVzJ8DZQjhg8lu72LicY1y4xku9j73hclli/3e6jsDUsQcUdMZ9pdXTLWdOzfeb73dEhMjI8ufc6dz6OtUERlmXfBJvhL+KvLhZwKG0tyi0IJbl74SRKptRWTNLRm/ksp6cvtp3xuxZcG5bLzIoe7xQ2C6sK+rt4kyFz591HdCwQKbhOtSmUTQcEWgolggEQJVA8uBDxnOI6lshUmmHhS3j1GNwe2esiF8LaR9m9ZzW5b1GN3uA/6D9v7bsGWs9E6/pGmRg25G7RsTvJ2uxDLKia6fvUdmymvbYuOhBVd2jx0HYPmvJOxRZslpgApxidNipKNiX1IQa7Z4Rz9AUMjBK3ygpvlkMjdWEPmE/QcC9EYSlaXVvCC7MZioLrF+ukrwKad3u0Fm3u9d2kMrHffTOZPmXwGkJuWDAklPaP5LCp2CnstmDrHh7Ja8vXvsQ9JzqO6+FG4UVuoQNcmoD7hvrEwPc8HSGx1a+xl8GoQRcjrvdhVD6LlOIXcBlSHDC/wX/3lajW4Yh1sByWfFWiVc2oebQZT
+ 22X29VOn
+ jojUSvBPnq5jNhszgXdQ1y6HU62B8n8mgdXSX1WalgzD1nMdWnMW8flhDVsKPf+4dRMFHwPVsxjFo2gm2cLS3GpNClPo9EQJHGd3/U87Pcv+S6hzUARq/99EVq9bFg6OHgtWgHjmcJXF/ACnjKVnPa1WqbppiMK8hmaAgTxOop2UPpvMeVveSQqsazIYhwo5AB2HbgJhkyXyfvCG/KPtGig1Z9i26F92fOU0doM37B33j1jT8hbLs0nw2/HiEozHnykFApJhLk9DSnr4a4YhRtldYdtjLiKclNXad
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,48 +104,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 12:30=E2=80=AFPM Kanchana P. Sridhar
-<kanchanapsridhar2026@gmail.com> wrote:
->
-> On Thu, Mar 26, 2026 at 7:23=E2=80=AFPM Andrew Morton <akpm@linux-foundat=
-ion.org> wrote:
-> >
-> > On Mon, 16 Mar 2026 18:48:02 -0700 "Kanchana P. Sridhar" <kanchanapsrid=
-har2026@gmail.com> wrote:
-> >
-> > > Currently, per-CPU acomp_ctx are allocated on pool creation and/or CP=
-U
-> > > hotplug, and destroyed on pool destruction or CPU hotunplug. This
-> > > complicates the lifetime management to save memory while a CPU is
-> > > offlined, which is not very common.
-> > >
-> > > Simplify lifetime management by allocating per-CPU acomp_ctx once on
-> > > pool creation (or CPU hotplug for CPUs onlined later), and keeping th=
-em
-> > > allocated until the pool is destroyed.
-> > >
-> > > ...
-> > >
-> >
-> > This is a tricky-looking patch and I haven't yet recorded any reviews,
-> > so could someone please dig in?
->
-> Hi Andrew, Yosry,
->
-> To provide some background, this patch [1] in my v14 patch-series was
-> Acked-by Yosry, with a minor change requested [2] that is addressed by
-> the current patch.
->
-> Since Sashiko flagged the same issue as [2], I did not automatically
-> carry forward the Acked-by.
-> Yosry, can you please confirm if your Acked-by and comments in [2] are
-> addressed in this current patch?
+cc'ing Waiman.
 
-The patch looks good to me, feel free to add:
+On Mon, Mar 30, 2026 at 07:46:20PM +0800, Qiliang Yuan wrote:
+> On Wed, Mar 25, 2026 at 03:04:32PM +0100, Peter Zijlstra wrote:
+> > Why? What was wrong with cpusets?
+> 
+> This is the central point of the architecture. The distinction I was 
+> trying to address is:
+> 
+> 1. Task Isolation (Current CPUSets):
+>    The `cpuset` subsystem (especially `cpuset.cpus.partition = isolated`) 
+>    is excellent at managing task placement and load balancing. It 
+>    ensures no user tasks are pushed to isolated CPUs.
+> 
+> 2. Kernel Overhead Isolation (Housekeeping):
+>    Currently, `cpusets` do not manage kernel-internal overhead like RCU 
+>    callbacks, timers, or unbound workqueues. These are managed by the 
+>    global `housekeeping_cpumask`, which is settled at boot via 
+>    `isolcpus`/`nohz_full` and is static.
+> 
+> DHEI fills this second gap by making the housekeeping mask dynamic. 
+> However, I agree that a parallel sysfs interface is redundant.
+> 
+> In V13, I will move the control interface to `cpuset`. The root cpuset 
+> will serve as the primary interface, allowing changes in the cpuset 
+> partition state to automatically trigger the migration of kernel 
+> housekeeping overhead. This achieves "Full Dynamic Isolation" (both tasks 
+> and kernel overhead) through a single, unified interface.
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Please discuss with Frederic and Waiman first because they have been working
+towards making cpuset to cover what cpuisol does. I don't think we want two
+separate mechanisms for the same thing and don't see why this would need to
+be its own thing when it has to be coupled with task isolation anyway.
 
-That being said, it might be a good idea to resend the patches (new
-version for rebase + Ack?) to get Sashiko to take a look, hopefully it
-will be able to apply/review the patches this time.
+Thanks.
+
+-- 
+tejun
 
