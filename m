@@ -4,125 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 649B910D14AA
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 12:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E133FF494F
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 12:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B61D46B0092; Mon, 30 Mar 2026 08:31:03 -0400 (EDT)
+	id 281EA6B0092; Mon, 30 Mar 2026 08:53:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B38996B0095; Mon, 30 Mar 2026 08:31:03 -0400 (EDT)
+	id 232A96B0095; Mon, 30 Mar 2026 08:53:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A75F06B0096; Mon, 30 Mar 2026 08:31:03 -0400 (EDT)
+	id 121896B0096; Mon, 30 Mar 2026 08:53:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9992B6B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:31:03 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 32E2313BBB6
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:31:03 +0000 (UTC)
-X-FDA: 84602664006.20.00DFAD3
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 376B880017
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:31:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=an7m4W1v;
-	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F25D16B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:53:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 70655E0DDD
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:53:32 +0000 (UTC)
+X-FDA: 84602720664.17.DD4B80C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 850AC40008
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:53:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=F0fdZ5dl;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf11.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774875210; a=rsa-sha256;
+	cv=none;
+	b=MYwPd/GNv0qCMesdyJRWsH2zGzw3/aj2wbLswACwaeJLRW2aNtXRELLq/+cpVLsaqMbaBA
+	j/8Uf2D1gM0y7MX+W75of/WE13aBcyiY2PgfsyLhW4U02DBpnZM8o5X8oVh/c62KLMSSIu
+	P260WKgIrgJUGhRCLzSlE2ouMCyLB40=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=F0fdZ5dl;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf11.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774873861;
+	s=arc-20220608; t=1774875210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tHeubX3+pOYegU1tnp4ax8+OXv2EqUmQq1HgXTpbPNE=;
-	b=7ch8WafRg3OTpnl4HySlJzOZNS3kxLWh7KuOuwsUADbcNfaDkXRJHdQllOM1PWLgR4BE6J
-	/mcOHCuJoo1HXTHilZjVod8ydYcrOwo0Ptu8pxCCDr14MOrATnIeVBV2pjchFaenmb5sQ7
-	sDryZbhoVOtGlLEF8I9LG0NscggeSqw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774873861; a=rsa-sha256;
-	cv=none;
-	b=6QnAb/iCkZT1IwJrdEWqPgTTUFd4/CnG2679bIpfYZ76KRczEjcYZVyJZq8063tYuSFtS+
-	7O+rO36oyIwH0AImu8LBhKAEau6yC/xNsWfeVGQIOaVynLQWRNM3CAbqWktrumro8miNqJ
-	B/Wrm+FyHu2NTi6ZPfotpkCBswL1dHg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=an7m4W1v;
-	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-38b13652c87so37234171fa.0
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:31:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774873860; x=1775478660; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tHeubX3+pOYegU1tnp4ax8+OXv2EqUmQq1HgXTpbPNE=;
-        b=an7m4W1vjA1vwZ5LfG/7Z/YVH3uViZgeewrUgzA36mXyrmh1Exo64DcGPxn/pNt073
-         Eyp/ct0NdviZ9X7huha3BZCQUOkeI7ctaIRwPeSw66zFnwDKYXipbvGjUo3vRjmRyISV
-         jPy5dpgYuDrJ1WiPLU8MPv6Lqs6z13PzMIqbCzuiQeCPlx2jYCmiqjhShoaZGEFgkyaR
-         ltg+x1m91sXzFNJXUsh/lvb0YtJsraCbVTlYvKHXt+ckygOEa75T6iLeVeHUPLSofRGD
-         KggWQRqjmsA/U7U99PrGf8YMXeCFCRkRiYs/JpELG7SlUsTYGXTk1sYq9R3KCpJW+h4D
-         6GjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774873860; x=1775478660;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tHeubX3+pOYegU1tnp4ax8+OXv2EqUmQq1HgXTpbPNE=;
-        b=sTUTKj+rokSCj9tIJ/7QkfoYiz2zSHJOWzROOw+h+bakqRoWJeYvIibeLdwiYGTrdA
-         ta6JFKpMseRluOb42URv3N9z3V48IzHfz5j9oNH1reQGnBLg+4yRnH6bOO/963hf+ouu
-         KxmzOqigWMZtjMnjTlVwEjkgCGN7UJqgF2AB+SesyK3bwn9kB1jRDY/MznYz80FAT3lS
-         xT73m9NT0GdlkrY2Q+IgenZXeNrJYgz6VW+W8xpA1nfGnPUXltW5I7Ma2iHqwfE3hyxf
-         Vm+Fl7CxYuelDfRFmEsk4xYtF2HErNfqciWZb4ceOA3VXbWREuhJKsF/C20jqvvtKYRj
-         l/xg==
-X-Forwarded-Encrypted: i=1; AJvYcCWV2eZ9MNmTTvpX8qnZwSikbUeFwE9XC5mhD2DlzFUE0vBs195kgI9PUQwFk4s8advkB+yzUDeAqA==@kvack.org
-X-Gm-Message-State: AOJu0Yw7D6NGxJZrEeHLGE0TFjqQ5hSZSqRqPrA/ol/Wtq0E8tfFGPi+
-	3f36W1yqug2LpgbODNFDwRJbeWquzQ6sREhCqtHPbCH1PV+TFAASChTM
-X-Gm-Gg: ATEYQzy+YKTX56SmqNOpm0ZpU04X5PFk91OLmIUxIEBmfktWA1FpbhYfLo8Zo5bdk0f
-	9yuztVu1RIaVTdkk6cVek4ny5cbkc7A5XNF4bx1ZqZIoHUM9nVyDFtWdP8sabgjA8+ojiQcUDoC
-	tAykERHsC4f/RajKj4yoXcDRQEOvDjcDofznPLnbkcKvnSYOD1479ry8iKKwVy+3AOCJhh+k2DF
-	VdxD1ff35FtVAhYecRfe5c6OQw66JBcJZm3hCzg46LzmYl8xoQhoV22oewT1pY+Y60LyhTXNDpw
-	YLSakxYuuVCj3KCL696XMYQqY7i7QzoYLUc07WajIDfpOizqGAd8A5hUoXWkL+8YnH6Aky3+gYW
-	F6rds2o0GObmUNgiDjCbjy5Hk0rDTBHAMY/RTbvXwMQDsU9Dv2wXgBPSxNxBdfE61
-X-Received: by 2002:a05:6512:2308:b0:5a2:afba:65ee with SMTP id 2adb3069b0e04-5a2afba67abmr3252197e87.42.1774873859116;
-        Mon, 30 Mar 2026 05:30:59 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38c836d3f31sm16408931fa.3.2026.03.30.05.30.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 05:30:58 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 30 Mar 2026 14:30:56 +0200
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	Ryan.Roberts@arm.com, david.hildenbrand@arm.com
-Subject: Re: [PATCH v4 2/3] vmalloc: Optimize vfree
-Message-ID: <acptAMZrCKz3Y7O3@milan>
-References: <20260327125720.2270651-1-usama.anjum@arm.com>
- <20260327125720.2270651-3-usama.anjum@arm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wDzMvwa7hHQR0J91vvkERkkKwoQTKWjm2iHbf3ig1ak=;
+	b=nRzupnmK+0x/IgRNZWhRWhS0QDF+0Dw/cjl4B1NAiFZyv+XFs49gx0/PYq1sjPSE8Izw19
+	r4YJOAgSoBC/IUC/AlRnyafIDP9Dlfoz2tvD1kvHArwOYv9bjbod+tdYcwmV/XxsW2+oUP
+	Qed2Z73iaoeM6Njf1fX3++xlt7kvXiY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774875209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wDzMvwa7hHQR0J91vvkERkkKwoQTKWjm2iHbf3ig1ak=;
+	b=F0fdZ5dlEEH0KQWijM4eEgu1RCh7uviI5hZzlnyyfRUaqVNGWdcroCB8uSdpqVVA1UV4FH
+	A5zXEQoWhrmVd2ItAXhP+c+PaaUVGr8iIxshZCluk0x5kuyeoNtgSf9OfZAAro3kxtejj6
+	Nm3psSTk2lHHOSqQCDvk6DgIxoErGQ4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-YP-4SDj_P5mGu4L44vaIfQ-1; Mon,
+ 30 Mar 2026 08:53:26 -0400
+X-MC-Unique: YP-4SDj_P5mGu4L44vaIfQ-1
+X-Mimecast-MFC-AGG-ID: YP-4SDj_P5mGu4L44vaIfQ_1774875204
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5B69C195396B;
+	Mon, 30 Mar 2026 12:53:18 +0000 (UTC)
+Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.10])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 80E5C1955D96;
+	Mon, 30 Mar 2026 12:53:12 +0000 (UTC)
+From: Li Wang <liwang@redhat.com>
+To: akpm@linux-foundation.org,
+	rppt@kernel.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: aubaker@redhat.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v4] selftests/mm: skip hugetlb_dio tests when DIO alignment is incompatible
+Date: Mon, 30 Mar 2026 20:53:07 +0800
+Message-ID: <20260330125307.98581-1-liwang@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260327125720.2270651-3-usama.anjum@arm.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 5s6xsho74hg5xyr5jrqwb3p9jnr51bzi
-X-Rspamd-Queue-Id: 376B880017
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: AO-zziibAmWtdkBv5-v6R3jf3ADKjHnBdeGJQnDm9jA_1774875204
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Stat-Signature: aqhn8xw3bte3mbygicxffmo3yiakxx7f
+X-Rspamd-Queue-Id: 850AC40008
 X-Rspam-User: 
-X-HE-Tag: 1774873860-643225
-X-HE-Meta: U2FsdGVkX1+VFR+Qr1cAS9yFojcTH2WY+RKwucngZNSp4Bf6ALvb01voeZ7HmTRXyYcRwQolJ9wUavca8ONBOamvHcEamR4AW6tGpD/0iT2MmKCyfYm54RwhmU+YKqe2zQKhaJRo0yUc/nK36tE4xOe4lXnhkteO10dwZTNrdKQrOZiWEJ/PH1CtJNWA5diy1CVuyPiD50/5XYvq8Y/N+ZYqzzwEfh8moDlf0Ss2VWm5jbLIAdEloYAEcN7lyxf82Gas7mWIoAu4VfNva5xuwDYycUd+1giChephvJHAoqb8IXM869cVZefhfwZNIbF8q1lTLMdz4S8yMOT76Zrv6d7XuFE7gghOfRv69Rbti/LeC0NIPMmVqyOOGprE/QL0lKhPkU/psMDKvjtkzEvael7kl1/46OyE/axg/bGI7kXnhooprSmaSmDmQr5LnrBv0EflemEYJYxVIDZis2zkF467e9FNbmIwvc59Fl/ZAKv8gWR1CWkaAstIWW+ERxYyE9zlT8HvZdBQcUmJ7VCb0Aj03m6uXzkpCHwU5rqKPT5uWSVbbkXycw4oJBI0kNA8tNN3aGCc1nZ8BbifynrEm5DRKfL0rUKec1W53st4/drbfQTvq/47FAckzyji40Dc860EeUvIgWtOnpDwU1N2GsXIIoyIGsLEtzE52ZR4v4sp/0io8i+tQqlq3IQOY47MyIKd6R9xYK4IUhHt4+9EzNF5MhkweSgJmIhksZThWhk+P6YzMS1A6xIhKbVwDgKDUsOdfmHDwCVgQQ+z0BJPmf4Na2XLpblX5WDM9n3uEZgGbSNxEr+BFnJ7EQ4+dCnQdjA0PiiAK5c+RdJ0l10E5nD/DWPAcp1QK2PUpJmy4CrQs9oxDakCWpYndMfFgtEtV8VfqlPZ45/fjVypxEPKbUZoZWHOJlYkT1WF5MBjfyCy0KySEM52m51g7t46Lt8Jya5IitfeMoJ81Vhetio
- Rf88vzj0
- 7SRIy1pM67wcSk+AlLrSEu6ES4sFgDnLQ8w8ewhUy3pyUTFMpV9YALXpQVMttvRAR7eR8nnaH9i842bU7wmzfO1BeWxpuVs9u6NrBBzTgb3dvf2EfksuQE5pl3QhwtL2fuBKsEPUqf9oz0bg7wg0NThvxy8lHoB014zaFfgHEuHcAE19kWz792qJTWL7B4agkm1JCsAuawv33ylWUKCd35Kb52Lip5BSYsQnycBEu9TmZFJ3OnhKnZEsqAxToQgqI15UoKUFwwZTaP2UO8WMWtDFVadezzGPktmoS0UZ5ddjtIf3AxBKb9PfpOf2tuNlD4L2uFjVMz5Of/1wJNv7AvZpFmqLvhqhohFPfYGUuE3JSzG4OKY0kJ9xNIwFQIk0adOcSSApvZ/HJX7Ho7l+vPm4iZcbh8a0dZbgzLF076hMuNenKUvo5gYYM+Y9VG1AN5o+LLQrbP1V/Pkf4fm3uxshbqgH9j8ALGhKyPSIWr5YiQSORYaqYxHZACcstsRKSN9pkxafNjmZ9By+1ZJ3bzJBWcI22h91n85nKwxqG24y4IDWdPDwFRJ4fcRfp+90ANQ+gqH3dD3J6clUfHlLyLvaSeMPNvnF1wHXn0J1CJ0oK+E+1NlcK881j8v3AaoLLa1H7
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774875210-520120
+X-HE-Meta: U2FsdGVkX1+4PGW/23EmSJAXlna4FZGU448M1w1009v5sC2f/s8u3AXcK8qjznUQCzlMOGrwb1Biloiv08r5WI7N6HKU/FHBurZdVvCA5h3p6aN126zREf69EMcWxsfSEZUBfnzzPoFtnReKzn5ueZALCij6IwMbLk93Yq7+QziRZnrt+5AVg0a5bqSoRna2FuFm4cuCF3QwjdkOjiff4b7VEHe4pgQ0OxtgoQw8n1oEgpG63ykYEIj7Zlq+aigqNSrgzgBJ1sVqZqPXREa3vMyhtDwM7JAGKVBVdYWMjuR3ZKyMJTmOgAQ2LQBvPjdgBD6NMics2Vq6oFuR0r2AXdHgTo0I+KXkDgRFHuE50fXunSZu58UJaoy2TtsGi0rwnLV7FYNSSOlpWWRGLXc+IhuG9bnOkg4l/bC6pod8UnbfZkT5SU0skKIrdX1k+OXmGGwDXL2teGmg5aFbWyZgtsv62uTHh3OprwzHX1dHQRmhi1dQfoig6A4L4eY5RL1dvy/Xn+qoM9o8k72HBBSaDMfagHb7DeCZ9/RxStQiyFWke0aTEvBXcFKy3Ux2eFHH6oCIAM+DhKuAqF3vwpWygbqeP09oHpGlnrEgDpTMq592UV3AZqqTcDIsSixsEjrSOiIRJ4lrlCO/xZLJSvws0K9+8Dis2WQqIMcbHszTPXJKzgc2Z7/ASsXkn2668lExyY3iFS0i8LyfrGBKVl6rfMe7JpTTEVgJPJoiflnbEk6By5OrxkQNV66kwzVlVCSalvuLXRENjKuv5BZKkPja76Qgdg/uEHGKMdkC4tRahr2J79FPc6A74vvgNJsAfhgpn6UkztecUWg++3CMl38I5xg6uzdStlyqDEstdWqBEQFFB/dPq/gq8v0vuZ0ndZTqUN5dsfzcDbWebN6k+DFoDzrabkVYwpkbuh1GrNi+s0pGPxR32EV0gdKRRMO/ZXrSE3U4dqIPKuCUuW1BHzf
+ I1Q+3l0D
+ 5I8JAsw8nk4CghecZ3aIPWr6SH0T0WnlRyf4r3fgz6vw/IBHapg+Al21UQ4RXpgX7q2q+c4c0pSRyB6QooyDaCcbhVYQCIE1CjnfqAktSFjnwC/GF3SDzWn0LStK4K7vqeGoGwPeLZfAd3o/B/wtVrvP/wolrqRy52AKGr21yx++5b1Q9vdZoCMpv5SSXQTlqIdKCXvo1t/mavy3q4yC6YABERfYMqrLqXdE1KMkuVXnzpDqwAS0ePl7A4rO6pY0l80GY4XXP1wVbcXG4RfU5gaYlB9z/rYZr/D+b5mROJrCFXczgc8r6+LeeKdP64Ein2ZUFE+FbFJEzhO6zkNpJQyDNsc+x17VwQMk77oGIe01ln6gkqzeisy/aXgjwTsudwq+yIOL67+ZvMaRR+oWIr+GgY2HmWHgV8X2D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,189 +112,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 12:57:14PM +0000, Muhammad Usama Anjum wrote:
-> From: Ryan Roberts <ryan.roberts@arm.com>
-> 
-> Whenever vmalloc allocates high order pages (e.g. for a huge mapping) it
-> must immediately split_page() to order-0 so that it remains compatible
-> with users that want to access the underlying struct page.
-> Commit a06157804399 ("mm/vmalloc: request large order pages from buddy
-> allocator") recently made it much more likely for vmalloc to allocate
-> high order pages which are subsequently split to order-0.
-> 
-> Unfortunately this had the side effect of causing performance
-> regressions for tight vmalloc/vfree loops (e.g. test_vmalloc.ko
-> benchmarks). See Closes: tag. This happens because the high order pages
-> must be gotten from the buddy but then because they are split to
-> order-0, when they are freed they are freed to the order-0 pcp.
-> Previously allocation was for order-0 pages so they were recycled from
-> the pcp.
-> 
-> It would be preferable if when vmalloc allocates an (e.g.) order-3 page
-> that it also frees that order-3 page to the order-3 pcp, then the
-> regression could be removed.
-> 
-> So let's do exactly that; update stats separately first as coalescing is
-> hard to do correctly without complexity. Use free_pages_bulk() which uses
-> the new __free_contig_range() API to batch-free contiguous ranges of pfns.
-> This not only removes the regression, but significantly improves
-> performance of vfree beyond the baseline.
-> 
-> A selection of test_vmalloc benchmarks running on arm64 server class
-> system. mm-new is the baseline. Commit a06157804399 ("mm/vmalloc: request
-> large order pages from buddy allocator") was added in v6.19-rc1 where we
-> see regressions. Then with this change performance is much better. (>0
-> is faster, <0 is slower, (R)/(I) = statistically significant
-> Regression/Improvement):
-> 
-> +-----------------+----------------------------------------------------------+-------------------+--------------------+
-> | Benchmark       | Result Class                                             |   mm-new          |  this series       |
-> +=================+==========================================================+===================+====================+
-> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |        1331843.33 |         (I) 67.17% |
-> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         415907.33 |             -5.14% |
-> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         755448.00 |         (I) 53.55% |
-> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1591331.33 |         (I) 57.26% |
-> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1594345.67 |         (I) 68.46% |
-> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |        1071826.00 |         (I) 79.27% |
-> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |        1018385.00 |         (I) 84.17% |
-> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        3970899.67 |         (I) 77.01% |
-> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        3821788.67 |         (I) 89.44% |
-> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        7795968.00 |         (I) 82.67% |
-> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        6530169.67 |        (I) 118.09% |
-> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         626808.33 |             -0.98% |
-> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         532145.67 |             -1.68% |
-> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         537032.67 |             -0.96% |
-> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        8805069.00 |         (I) 74.58% |
-> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         500824.67 |              4.35% |
-> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |        1637554.67 |         (I) 76.99% |
-> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        4556288.67 |         (I) 72.23% |
-> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         107371.00 |             -0.70% |
-> +-----------------+----------------------------------------------------------+-------------------+--------------------+
-> 
-> Fixes: a06157804399 ("mm/vmalloc: request large order pages from buddy allocator")
-> Closes: https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com/
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
-> Changes since v3:
-> - Add kerneldoc comment and update description
-> - Add tag
-> 
-> Changes since v2:
-> - Remove BUG_ON in favour of simple implementation as this has never
->   been seen to output any bug in the past as well
-> - Move the free loop to separate function, free_pages_bulk()
-> - Update stats, lruvec_stat in separate loop
-> 
-> Changes since v1:
-> - Rebase on mm-new
-> - Rerun benchmarks
-> ---
->  include/linux/gfp.h |  2 ++
->  mm/page_alloc.c     | 38 ++++++++++++++++++++++++++++++++++++++
->  mm/vmalloc.c        | 16 +++++-----------
->  3 files changed, 45 insertions(+), 11 deletions(-)
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 7c1f9da7c8e56..71f9097ab99a0 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -239,6 +239,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  				struct page **page_array);
->  #define __alloc_pages_bulk(...)			alloc_hooks(alloc_pages_bulk_noprof(__VA_ARGS__))
->  
-> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages);
-> +
->  unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
->  				unsigned long nr_pages,
->  				struct page **page_array);
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 18a96b51aa0be..64be8a9019dca 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5175,6 +5175,44 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  }
->  EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
->  
-> +/*
-> + * free_pages_bulk - Free an array of order-0 pages
-> + * @page_array: Array of pages to free
-> + * @nr_pages: The number of pages in the array
-> + *
-> + * Free the order-0 pages. Adjacent entries whose PFNs form a contiguous
-> + * run are released with a single __free_contig_range() call.
-> + *
-> + * This assumes page_array is sorted in ascending PFN order. Without that,
-> + * the function still frees all pages, but contiguous runs may not be
-> + * detected and the freeing pattern can degrade to freeing one page at a
-> + * time.
-> + *
-> + * Context: Sleepable process context only; calls cond_resched()
-> + */
-> +void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
-> +{
-> +	unsigned long start_pfn = 0, pfn;
-> +	unsigned long i, nr_contig = 0;
-> +
-> +	for (i = 0; i < nr_pages; i++) {
-> +		pfn = page_to_pfn(page_array[i]);
-> +		if (!nr_contig) {
-> +			start_pfn = pfn;
-> +			nr_contig = 1;
-> +		} else if (start_pfn + nr_contig != pfn) {
-> +			__free_contig_range(start_pfn, nr_contig);
-> +			start_pfn = pfn;
-> +			nr_contig = 1;
-> +			cond_resched();
-> +		} else {
-> +			nr_contig++;
-> +		}
-> +	}
-> +	if (nr_contig)
-> +		__free_contig_range(start_pfn, nr_contig);
-> +}
-> +
->  /*
->   * This is the 'heart' of the zoned buddy allocator.
->   */
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index c607307c657a6..e9b3d6451e48b 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3459,19 +3459,13 @@ void vfree(const void *addr)
->  
->  	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
->  		vm_reset_perms(vm);
-> -	for (i = 0; i < vm->nr_pages; i++) {
-> -		struct page *page = vm->pages[i];
->  
-> -		BUG_ON(!page);
-> -		/*
-> -		 * High-order allocs for huge vmallocs are split, so
-> -		 * can be freed as an array of order-0 allocations
-> -		 */
-> -		if (!(vm->flags & VM_MAP_PUT_PAGES))
-> -			mod_lruvec_page_state(page, NR_VMALLOC, -1);
-> -		__free_page(page);
-> -		cond_resched();
-> +	if (!(vm->flags & VM_MAP_PUT_PAGES)) {
-> +		for (i = 0; i < vm->nr_pages; i++)
-> +			mod_lruvec_page_state(vm->pages[i], NR_VMALLOC, -1);
->  	}
-> +	free_pages_bulk(vm->pages, vm->nr_pages);
-> +
->  	kvfree(vm->pages);
->  	kfree(vm);
->  }
-> -- 
-> 2.47.3
-> 
-LGTM:
+hugetlb_dio test uses sub-page offsets (pagesize / 2) to verify that
+hugepages used as DIO user buffers are correctly unpinned at completion.
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+However, on filesystems with a logical block size larger than half the
+page size (e.g., 4K-sector block devices), these unaligned DIO writes
+are rejected with -EINVAL, causing the test to fail unexpectedly.
 
---
-Uladzislau Rezki
+Add get_dio_alignment() to query the filesystem's required DIO alignment
+via statx(STATX_DIOALIGN) and skip individual test cases whose file
+offset or write size is not a multiple of that alignment. Aligned cases
+continue to run so the core coverage is preserved.
+
+While here, open the temporary file once in main() and share the fd
+across all test cases instead of reopening it in each invocation.
+
+=== Reproduce Steps ===
+
+  # dd if=/dev/zero of=/tmp/test.img bs=1M count=512
+  # losetup --sector-size 4096 /dev/loop0 /tmp/test.img
+  # mkfs.xfs /dev/loop0
+  # mkdir -p /mnt/dio_test
+  # mount /dev/loop0 /mnt/dio_test
+
+  // Modify test to open /mnt/dio_test and rebuild it:
+  -       fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+  +       fd = open("/mnt/dio_test", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+
+  # getconf PAGESIZE
+  4096
+
+  # echo 100 >/proc/sys/vm/nr_hugepages
+
+  # ./hugetlb_dio
+  TAP version 13
+  1..4
+  # No. Free pages before allocation : 100
+  # No. Free pages after munmap : 100
+  ok 1 free huge pages from 0-12288
+  Bail out! Error writing to file
+  : Invalid argument (22)
+  # Planned tests != run tests (4 != 1)
+  # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+Signed-off-by: Li Wang <liwang@redhat.com>
+Suggested-by: Mike Rapoport <rppt@kernel.org>
+Suggested-by: David Hildenbrand <david@kernel.org>
+---
+
+Notes:
+    v4:
+    	- Open the file once and pass the fd to functions.
+    	- Add check_dio_alignment dedicated to alignment checking.
+    v3:
+    	- Adopt statx raw syscall to build on older glibc.
+    	- add buf offset alignment check as well.
+    v2:
+    	- Pass dio_align as a parameter to run_dio_using_hugetlb().
+    	  instead of generally page_size/2 alignment check.
+    	- Add O_DIRECT flag back to the first open().
+    	- Add stx_dio_offset_align zero check.
+
+ tools/testing/selftests/mm/hugetlb_dio.c | 97 ++++++++++++++++++------
+ 1 file changed, 75 insertions(+), 22 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
+index 9ac62eb4c97d..1c673c6c685e 100644
+--- a/tools/testing/selftests/mm/hugetlb_dio.c
++++ b/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -17,12 +17,57 @@
+ #include <unistd.h>
+ #include <string.h>
+ #include <sys/mman.h>
++#include <sys/syscall.h>
+ #include "vm_util.h"
+ #include "kselftest.h"
+ 
+-void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
++#ifndef STATX_DIOALIGN
++#define STATX_DIOALIGN		0x00002000U
++#endif
++
++static int get_dio_alignment(int fd)
++{
++	struct statx stx;
++	int ret;
++
++	ret = syscall(__NR_statx, fd, "", AT_EMPTY_PATH, STATX_DIOALIGN, &stx);
++	if (ret < 0)
++		return -1;
++
++	/*
++	 * If STATX_DIOALIGN is unsupported, assume no alignment
++	 * constraint and let the test proceed.
++	 */
++	if (!(stx.stx_mask & STATX_DIOALIGN) || !stx.stx_dio_offset_align)
++		return 1;
++
++	return stx.stx_dio_offset_align;
++}
++
++static bool check_dio_alignment(unsigned int start_off,
++			        unsigned int end_off, unsigned int align)
++{
++	unsigned int writesize = end_off - start_off;
++
++	/*
++	 * The kernel's DIO path checks that file offset, length, and
++	 * buffer address are all multiples of dio_offset_align.  When
++	 * this test case's parameters don't satisfy that, the write
++	 * would fail with -EINVAL before exercising the hugetlb unpin
++	 * path, so skip.
++	 */
++	if (start_off % align != 0 || writesize % align != 0) {
++		ksft_test_result_skip("DIO align=%u incompatible with offset %u writesize %u\n",
++				align, start_off, writesize);
++		return false;
++	}
++
++	return true;
++}
++
++static void run_dio_using_hugetlb(int fd, unsigned int start_off,
++				  unsigned int end_off)
+ {
+-	int fd;
+ 	char *buffer =  NULL;
+ 	char *orig_buffer = NULL;
+ 	size_t h_pagesize = 0;
+@@ -39,10 +84,9 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+ 	if (!h_pagesize)
+ 		ksft_exit_fail_msg("Unable to determine huge page size\n");
+ 
+-	/* Open the file to DIO */
+-	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+-	if (fd < 0)
+-		ksft_exit_fail_perror("Error opening file\n");
++	/* Reset file position since fd is shared across tests */
++	if (lseek(fd, 0, SEEK_SET) < 0)
++		ksft_exit_fail_perror("lseek failed\n");
+ 
+ 	/* Get the free huge pages before allocation */
+ 	free_hpage_b = get_free_hugepages();
+@@ -71,7 +115,6 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+ 
+ 	/* unmap the huge page */
+ 	munmap(orig_buffer, h_pagesize);
+-	close(fd);
+ 
+ 	/* Get the free huge pages after unmap*/
+ 	free_hpage_a = get_free_hugepages();
+@@ -87,39 +130,49 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+ 			 "free huge pages from %u-%u\n", start_off, end_off);
+ }
+ 
++static void run_test(int fd, unsigned int start_off,
++		     unsigned int end_off, unsigned int align)
++{
++	if (!check_dio_alignment(start_off, end_off, align))
++		return;
++
++	run_dio_using_hugetlb(fd, start_off, end_off);
++}
++
+ int main(void)
+ {
+-	size_t pagesize = 0;
+-	int fd;
++	int fd, align;
++	const size_t pagesize = psize();
+ 
+ 	ksft_print_header();
+ 
+-	/* Open the file to DIO */
+-	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
+-	if (fd < 0)
+-		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
+-	close(fd);
+-
+ 	/* Check if huge pages are free */
+ 	if (!get_free_hugepages())
+ 		ksft_exit_skip("No free hugepage, exiting\n");
+ 
+-	ksft_set_plan(4);
++	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
++	if (fd < 0)
++		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
+ 
+-	/* Get base page size */
+-	pagesize  = psize();
++	align = get_dio_alignment(fd);
++	if (align < 0)
++		ksft_exit_skip("Unable to obtain DIO alignment: %s\n",
++				strerror(errno));
++	ksft_set_plan(4);
+ 
+ 	/* start and end is aligned to pagesize */
+-	run_dio_using_hugetlb(0, (pagesize * 3));
++	run_test(fd, 0, (pagesize * 3), align);
+ 
+ 	/* start is aligned but end is not aligned */
+-	run_dio_using_hugetlb(0, (pagesize * 3) - (pagesize / 2));
++	run_test(fd, 0, (pagesize * 3) - (pagesize / 2), align);
+ 
+ 	/* start is unaligned and end is aligned */
+-	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3));
++	run_test(fd, pagesize / 2, (pagesize * 3), align);
+ 
+ 	/* both start and end are unaligned */
+-	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3) + (pagesize / 2));
++	run_test(fd, pagesize / 2, (pagesize * 3) + (pagesize / 2), align);
++
++	close(fd);
+ 
+ 	ksft_finished();
+ }
+-- 
+2.53.0
+
 
