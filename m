@@ -4,145 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F6F21061B16
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 16:37:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 711061061B0F
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 16:38:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 727F06B008C; Mon, 30 Mar 2026 12:37:22 -0400 (EDT)
+	id C315B6B0095; Mon, 30 Mar 2026 12:38:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D8326B0095; Mon, 30 Mar 2026 12:37:22 -0400 (EDT)
+	id BE22C6B0096; Mon, 30 Mar 2026 12:38:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59FFA6B0096; Mon, 30 Mar 2026 12:37:22 -0400 (EDT)
+	id A82766B0098; Mon, 30 Mar 2026 12:38:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46B976B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:37:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E839E0E3F
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:37:22 +0000 (UTC)
-X-FDA: 84603284724.11.7AAFF8A
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9AEEE160003
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:37:19 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ktQC2QPy;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf08.hostedemail.com: domain of zaslonko@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=zaslonko@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774888639; a=rsa-sha256;
-	cv=none;
-	b=l+Zizx4sjtBvDSxmpYyjkeR6KDnYer31gpd6yS86iuNCJNPmhIdcuNHg7TqbM6b/IOsoxy
-	3VSOgNdyPtmU/9SEzgZAfV5GaVoS2MEc5hiWX5rA+4UvhbNzSFKGaoMINimyZ88dj3hCGJ
-	sBHkFIpRkG2+Mwsxx21lXTtrxXkWl1I=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ktQC2QPy;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf08.hostedemail.com: domain of zaslonko@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=zaslonko@linux.ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774888639;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 944866B0095
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:38:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 320F513BA78
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:38:02 +0000 (UTC)
+X-FDA: 84603286404.22.D6B283B
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010015.outbound.protection.outlook.com [52.101.69.15])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 26853180004
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 16:37:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=GrJA2We+;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=GrJA2We+;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf16.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.69.15 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1774888678; a=rsa-sha256;
+	cv=pass;
+	b=h0qceBNHbqf9ZOwGsnOFpYZ1iNuwJXZ7V5XMn7lXuZrNoZ/V9N5XsZNQl2WMTM10JFw+vv
+	eA4VMOXfJNrw5RmQHW5sLPv70DhhnMWOPGji2kAusWDhUMkZUC6Ys5RK04sF3lzceSzI+H
+	IhChc66pPTHF/WM7L74BDduv1GkHoKM=
+ARC-Authentication-Results: i=3;
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=GrJA2We+;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=GrJA2We+;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf16.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.69.15 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774888678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s6XzCHUCYy0063Hw4rkyZJE4koDVmdyQJ2vzf9wYqFc=;
-	b=fEAbYTWgdtPknclx+9U9X+lvEY4NuKOMkpWTJAyAai0fm4RZqbsPav1Lwq7XdKXBjPqVpg
-	iVBc/z5+TqQ3dDmH22Hqwfu++Fp3tGVKuqwOuYyJY4MGCfiTXy+2kJodbkQUiZReSMWrVU
-	s4ln1T/5PDqViwDvhxd41sWUv24fYmw=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62UEJFGS169440;
-	Mon, 30 Mar 2026 16:37:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=s6XzCH
-	UCYy0063Hw4rkyZJE4koDVmdyQJ2vzf9wYqFc=; b=ktQC2QPyN3HT1A8XqF6euf
-	Np8GGf26Tld5RzE4EpHokMUcFdXKm/42RiNzGONVu00z5KITe5Z6kTLi58q1VUUe
-	NP9rlc1gUBVbt42Al/9vXegsJp6bIvs7Wr22bvw4w7k+ptlym5GOiMRChaKDuqYo
-	LxqowoPbX8m69Q+G/xkQsHgieIZUVt5Bk3arkiqWnuhZvmMjJu7Op4EYvk4jgako
-	Esw/LhpUO0jCShaXGBQ5px9+/poM+8ulUMW0BZbAJV4ooNNnPUBUb3Qy1POqmrNP
-	qtKgDxJBSW9X2jJUsRXtxhb0VeQTXIKkV29pQf9PK5DTA67t7VNWAHkAAaO0zAiA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4d66q2yr1b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Mar 2026 16:37:09 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62UEBftn005977;
-	Mon, 30 Mar 2026 16:37:07 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4d6spxwr5v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Mar 2026 16:37:07 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62UGb6TF30802624
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Mar 2026 16:37:07 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF0345804B;
-	Mon, 30 Mar 2026 16:37:06 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5204A58065;
-	Mon, 30 Mar 2026 16:37:04 +0000 (GMT)
-Received: from [9.52.221.31] (unknown [9.52.221.31])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 30 Mar 2026 16:37:04 +0000 (GMT)
-Message-ID: <4d3f8d79-3593-47df-9de8-f94f7f09a403@linux.ibm.com>
-Date: Mon, 30 Mar 2026 18:37:01 +0200
-MIME-Version: 1.0
+	bh=E5WuJnllT7q7Nqh41kIUJY6DVgaQyF1no6/rOpIbybc=;
+	b=aa00WRrPwNMuKtkJHneqfg+H8BTHVaoGACsBAcRDRPLe/yP+GxulCkhmYPpzRNkFkrzZS2
+	67JJMaKRj/SuJneKjP6AfJiwsQ25om/r5djhtaCFypBW4kQmYRLKS1DtshywaTKAJo7hy1
+	qebFo/TIaoshuShbMPM1ttgj7Nw0JMc=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=FDSj8H5ozhqXhAjh9HSGAAs6epVxztoRZnQ7l0RAPEMswfiRAUDj22sdvcfVRDJp8M1nUsuAO7pyBbqMOEOM135thLQQPAJ6QaMGiEpZ58NGF7i8aFT09jVMXPlsBax6+AjGhN4ffd1/ySBzJjwAuQG4Zo6waxzrX56EuZ0MpAf+LI5L/7eDsHHW4u7h6uwrqy+tGOY8yDqxl2WwJwZWtrXPHG+51mam9pC0us6g2uy0YldTtthWaBv6SlG9n2b8WWcBzBr6PpdQMDhzJOZlJGA0KbF0E5jSqA7UM8Y5oIjuyg4pmmEbFArQIcB+AQtggoWOFPtr9j4xwl7BHpdkVQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E5WuJnllT7q7Nqh41kIUJY6DVgaQyF1no6/rOpIbybc=;
+ b=qEZ+8vdsLfD0rZPdWVSK2bnmsYmw+6pntfICV3KXbsR2KtOMsxFWE6Ty/XoNlwpTL/hNLzHi5AyInBWsKoH3LtHOUulNwb940KWcfYLhAmAYqEneS3Yz/l1OCPJn55tTqdP2VxqowzKAgUauKraI9UJ3HGQzkIsTH5vfbxd76EgwxO2UsMqb7NNzaaZFTAniOxu3P1uUiPoQdQ+LXPe+klfkmaXdX2ZJEgZ57wrSQ5xD+bjTJc+MEvbrP93E9QhV5V1kg4RG8H6JOVFV/5l0XwShTNudfP6Faqlm8YOjGWjCPWa9BHaxAA9hreeqP1g2sTy/eV7RTLVYSCCeC/WfxQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E5WuJnllT7q7Nqh41kIUJY6DVgaQyF1no6/rOpIbybc=;
+ b=GrJA2We+35WMiwUr4IKCqgBS5+hmf0Id607OvZfmlJJqc5TKvwWnD4KEoa9Iz0o46rcFQf5MKEQFLEa26lvcLOLAKmEDtHgjHR2qawfpdtTURKlJvlmuVKhlv1x6c18o+14nAkCZA0YIa8foaUEakxCOZiWbTQznXMBDVe2aq/A=
+Received: from CWLP123CA0129.GBRP123.PROD.OUTLOOK.COM (2603:10a6:401:87::21)
+ by PAXPR08MB6560.eurprd08.prod.outlook.com (2603:10a6:102:12d::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Mon, 30 Mar
+ 2026 16:37:51 +0000
+Received: from AM4PEPF00027A5F.eurprd04.prod.outlook.com
+ (2603:10a6:401:87:cafe::54) by CWLP123CA0129.outlook.office365.com
+ (2603:10a6:401:87::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.28 via Frontend Transport; Mon,
+ 30 Mar 2026 16:37:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM4PEPF00027A5F.mail.protection.outlook.com (10.167.16.74) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9745.21
+ via Frontend Transport; Mon, 30 Mar 2026 16:37:50 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DO6iBG2qgtHY506w8QOC7lZQ0wd/m0LqGY2TfoSNdEP7sLu6e3X33HVGuCXu7USlAN2Z11Iw2LWUH8iH0cSmjU8LuxAvRCLM+444HB+ds6GqHmyF3csgUDPiI/JYVyCmTwN3Z7aAkIZ5QlLDky15jEiLyTmoCW9mrM9YVqz9XOkYlYoVJDh0cnnix8cZ6LGm8NhgvMuTmAT7AaRhBckrt7HejbMRsfVtfZpanIMmJZRI63i4tNoinTx+QEfoi1Bpr3Vw2yrh6gZeyHKrBClm8RgQZzxZfikxKqJXE+6hFNdp78SIINeA3Vol5GZ5ul6BtAqLxreblH0ljkpScgxkIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E5WuJnllT7q7Nqh41kIUJY6DVgaQyF1no6/rOpIbybc=;
+ b=B8Dyf529sXpEvnHq+uQNC/SqFMvRXivHDcx/IbUw/RBQNKxBfCoXGSHet2haxSmF6wfYTDxHOFVevvakBmvnp3Lz0KxcJNeQM8FjAEUqWZy9eAU6IcZPELipJrQbFwWjj6AA9Z2V7R8hvnqduZ1XP7p3SfZ0xatN4m99RVaY07Pr3W0CFSL1kyteR1FqX7leyuxzCIFQ3VZ0eUML8q7x8zuHyWQon5h4gP5hzjk4rhDXlaV/irYE5FkcGXvG4cUcBEvxy1JG556o1lhwV/T/kaNoTniWEOdtBBF2RGZiM6mFcrxE/sdTPQV84rt/d6hmIRchoEcsk4aKs5/bK7i71A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E5WuJnllT7q7Nqh41kIUJY6DVgaQyF1no6/rOpIbybc=;
+ b=GrJA2We+35WMiwUr4IKCqgBS5+hmf0Id607OvZfmlJJqc5TKvwWnD4KEoa9Iz0o46rcFQf5MKEQFLEa26lvcLOLAKmEDtHgjHR2qawfpdtTURKlJvlmuVKhlv1x6c18o+14nAkCZA0YIa8foaUEakxCOZiWbTQznXMBDVe2aq/A=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
+ by VI1PR08MB5311.eurprd08.prod.outlook.com (2603:10a6:803:13a::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Mon, 30 Mar
+ 2026 16:36:46 +0000
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4%4]) with mapi id 15.20.9745.019; Mon, 30 Mar 2026
+ 16:36:46 +0000
+Message-ID: <3ca98546-d123-4d6c-8b19-4e07af03ee2e@arm.com>
+Date: Mon, 30 Mar 2026 17:36:45 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/7] mm: switch deferred split shrinker to list_lru -
- [s390] panic in __memcg_list_lru_alloc
-To: Johannes Weiner <hannes@cmpxchg.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Yosry Ahmed <yosry.ahmed@linux.dev>, Zi Yan <ziy@nvidia.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-        Dave Chinner <david@fromorbit.com>,
-        Roman Gushchin
- <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        Alexander Egorenkov <egorenar@linux.ibm.com>
-References: <20260318200352.1039011-1-hannes@cmpxchg.org>
- <20260318200352.1039011-8-hannes@cmpxchg.org>
+Cc: usama.anjum@arm.com
+Subject: Re: [PATCH v4 1/3] mm/page_alloc: Optimize free_contig_range()
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
+ David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ Ryan.Roberts@arm.com, david.hildenbrand@arm.com
+References: <20260327125720.2270651-1-usama.anjum@arm.com>
+ <20260327125720.2270651-2-usama.anjum@arm.com>
+ <b8bac0eb-17cc-4e0d-b7f0-a8e7e0da0d67@kernel.org>
 Content-Language: en-US
-From: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-In-Reply-To: <20260318200352.1039011-8-hannes@cmpxchg.org>
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+In-Reply-To: <b8bac0eb-17cc-4e0d-b7f0-a8e7e0da0d67@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RtBz-yBpIESA1MQsj7Rs__MxNrlVWA7g
-X-Authority-Analysis: v=2.4 cv=frzRpV4f c=1 sm=1 tr=0 ts=69caa6b5 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=ufHFDILaAAAA:8
- a=ZF9803qmpQwKPYjtCbQA:9 a=QEXdDO2ut3YA:10 a=ZmIg1sZ3JBWsdXgziEIF:22
-X-Proofpoint-ORIG-GUID: RtBz-yBpIESA1MQsj7Rs__MxNrlVWA7g
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzMwMDEzMSBTYWx0ZWRfX1vzJKkfdf0yR
- 3jDe5/grP2zuisvztQhPX3CjTbHYgWfJu8pgspAEQwC0RodjJ3S9xShjmZZJwhSsdRaynaN8pa+
- guQKnPaO/fRJb+iIjNSZ5uYB2K6swuftLEKH8qNztT2dV7fOgPHpt+ZJWs6LqwjsvKIolcGpM75
- RNdCCLAeeV1RdhN5hpJr0UECyJp+niTKvDwAIZc8694+Clu/TwwXFbEFztMt6Mv/mwWUcJj5hpJ
- +cpcvk2BQKVn/u7hI9p7LgTLqfoIhU3P+lmoYN9z6fx9olxgRJWzI7EyJ4hZ15fXCVycFXRsDEJ
- 31wX2Y6s+GUSn7E1UHBV6d1vWIuWqt5Av3+q0mYPykYP04zpKOqm5Ii9DGzLyWAG/1/puN/yo5V
- QpxbBAq8rg0PnMoMLoZdV0Gnw/XyXOAtdK3dCcrEiW/nK4KnLr5TWNy208l82YwlNoIY7G23s1O
- pUVJX+qjcxtlBhCZSlA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-29_05,2026-03-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1011
- lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603300131
-X-Stat-Signature: ah1n93xobpprao16175m8ybig5nn17bm
-X-Rspamd-Queue-Id: 9AEEE160003
+X-ClientProxiedBy: LO4P265CA0132.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c6::13) To VI1PR08MB3421.eurprd08.prod.outlook.com
+ (2603:10a6:803:80::16)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic:
+	VI1PR08MB3421:EE_|VI1PR08MB5311:EE_|AM4PEPF00027A5F:EE_|PAXPR08MB6560:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7d7365e8-65aa-40ba-e0f6-08de8e7aaf42
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|7416014|376014|366016|1800799024|921020|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ 1NB6LVSNHnywYGgL+DpH8nRiyFbJn0F/PWz/iTgIGJirfWPR2JSkbYbJ2wWETBZkywbxF3672VMJr7GNjggEeJ95Vghm3KaLYkz6+kBYa12889nq7iEJusZd54mWfPAudWfj7g12Oi1Kc+yKrbeTm6nVRMW6pmKKgEqOvAKiQAKq/O7mInZQ9CcKiOKdP9w+PwzeUA1ZOyEH7MD0OnMP3cXM0wV1t+577KkiyLO5Qo3a81uk44N/Kra1t0Tzt/gDq0g4DJT1u1hnNZESY9u3mOnQ5U89xU6Ozhje3jyaBLSBbgnSGkxXWhfBq92iy3BRFT3tLr3QQ5YBUHTwPkt4zCnfkmq3AaTOsDXG2h8yRrv8MiJ3TmG9BhUMoLGhAn6znEXeovtYLh3EiTezHRqEU57W9lYEk8FA8l3qye8rEJacK0QEybGbREw64wDpTvVrNR4Ckf3KPVU/7Qaky+LpRM2nEuo9jmjPtfITUX/As22WUt9gMEetY7YQaHovEF4Q9xEoTTnyvhzsihIQYBFvkYNoGWlR0Z/MOO/PpZeGha+0tphuerd5qfn6drIjnun3Ek2ACDGTqBBV22CzDqWBELC9dMlP5V3wr+q8byd32WJRKu8sicr5x/TXpihfOSSJMk3UFFF/bIVj1mFufkwt7FQaW+F5b75PuaVuqeX5ewFUkuXWaqFsVCOBWpLgkXl1zHRmKehdXGM9YqThHE63sHxCFCvhTbeVvXZk9U0viW3I+n4vcYgp4H45R9jR78N0CiHdiBAH33bNjvXqhMS9Gg==
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(921020)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ utp7mXkQTaeMRsUcYI5ur70iQsaC1u7HUUcc3i+hquhKnQfwCsswy7JYOHyQ8iPMi+OTfDijZs1RuOMLOkRetxj2jxWbHIIEnBYlgHoG1IcSx44RAGMOnCkiTO3bWXU6mKh4sfVd7AIVdej/y8fsYQshrgPE8xWclExmhou7EAFLsdzhHiZ+8OY6NyubMcJ8QXtHjzMW05bl6RzvQLRYZu8MJwDBwIAFuiCDNB+GFSNdrmzJGvupAiMO93qQboM3+9Qdnfrz0qgdUUE9uDa9dpfdl7KrdG7qqcyYSUZLCXvTaU7g6XsCclXPnAX/fdRSU93+jvEVvdGH0ikSlowssA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR08MB5311
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM4PEPF00027A5F.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	0adbecc1-d1b2-4b75-3166-08de8e7a88d9
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|36860700016|35042699022|376014|7416014|1800799024|82310400026|56012099003|18002099003|22082099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	D9erQmhZi1NJiIVS0bGCQVK6g59bgFZOZx8FJMOj4/Abyc++3J+8FwQJhqRhhxVgerRnrbGH6EcPFUjzyDZw8DxrgrCHRNFkmMduNd7aTjsCjOhIB5GOKYOh3wYxY3LrKVylcdW8L4Ay4dQp9CIURKHb1WGRUqARjH+ur5/L62P1lnhTxPF9TZGngvzXPKFoeOzhaWjSvXr+oTSgZGNuyLnJILN9Uflb40FEkHzsoObUvtamB8AF7OwbgFAcD/GXCxob29SnxayuJd32aIlfj1aZrltWrtAAqxh4n8+E5HEcKUZl9dgqwOVijq8jogc9B5lVq9h3PuS0wD0NbtfGctvHK+BDu/K2jkm+CCRT6v4cDHWwSBezdyBfCQzHT4piIzVWr3lz6dTBTz3E3jgmnXEtiA0PonR0w1lZCip60ula7K8C8n/85I4NIIRcx5kkh6vHEMAwEsa1i/F5GCFhqqtkXuKFkeSrnDwW5qhhyMT76zdWfGccvVGJxPhI9nokO7s6qvm0KXO8kaowce6kZfNiISdKqbbrcJ+5m8QzO/KNDKTRek/V4YOjYSLsOSmRQYxaiCYImbG1ZEUW17S99CEQFQjTsvYE4JNO5nsNYU8X7wvUnvRGAYPCG48jjqWTwcMDyLF18wBV3bB12SqA74m0PHub17dBmHyfDP3XHajvkMmWDjeDWgKsRTmHwaIz/x1wdhUOM3OmaAx5yljv6kTfUYXjzDynezpCMVNbH+4hEtSr6H/6KEgGW7DFRaXvGF69qW2LeeR4enlWYDAnW4JVV3Ma80lXk6pQYemRZaviD0rUYGQHQy+W59emEXnU
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(36860700016)(35042699022)(376014)(7416014)(1800799024)(82310400026)(56012099003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	lFcnSIDPlldy8JTBYb7opH9wGAWaHAxhID88CvAQ6HGC80Kd1IBxyi5YLvz+ZpTbRk1LeUa/QqEO2jl2DT26AJvHToZltP5xP4GnfAgfzkQrQpvcrw/kZXNn+qrKr2YdntOsl5ZO8GE42Mcc9i/Gu7xzdpcw3XK+pusm3d951pNNaTaaZXiWY0wV6zx/fpx3wkqQQ0VOgF0znWzPF6cSakqlgz93UARrJJosuX9YSXmtrdAf5ixTI0sSfwFF1ORGUWAROKSAHiTVFp7Rp8zpIE4qKzwRDpfhyatuwqEqRwwebOmdihQEe74DVi0wR7DCFaJEG/WyiYk43dn0FpdHuvti9mB+lC+AhHBf/2NNPkc2kxLKuCXTzChHOB/NeH35FXvuHANfr5DRpTa3giKjh4N8SwF1DKxkx6NOoQYA/HiM8PImxXml020J8Mpq3dsd
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 16:37:50.9694
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d7365e8-65aa-40ba-e0f6-08de8e7aaf42
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00027A5F.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6560
+X-Stat-Signature: 1rzgbsnanoghdg68cesqu7tprfhdc3i9
+X-Rspamd-Queue-Id: 26853180004
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1774888639-869546
-X-HE-Meta: U2FsdGVkX193q6nQHV1PzoVxnEI2WsM5yY7DGgIPL0uB6C3GRkIc7MhBYORoRdkMY4irAF7KXn0vESvm1Iuzgodz1drYJ7vdnkHkTdAD8eX3//Z5GUzrYQ/1dkbcxBjVnrKXZBV7v2kvS9i5KEtfXf1eiyfP9a2z0AzFwYxpW45AmS5jD308283vsflt8h+rO02jlvSTCtXPY6tExPdveT694DevbyTcsH48dCOBboR66S8vofBdkJdRxajarUEjPwQV8wd4rBV80Qyh+TvyDTygklPXdDQfcvPYyreOeMhVknWEW7p+dLLBOxJQqz3vu3Clvz6ViOZuuqaC/flO8u1YAyDL/3mmppWOirsS9oPi8zt2b3Xrq3wzOrA03JFOpzo1fCbtRN4E/xnoQUbPdOv54vtaTSnu8DaAv8/CrzKMuVAEblKxmi92UqGYkgRsLX4vZjcLtvzNe+wXd28fA36qBvOouwNXC/+0pD1OpxDhWK4oVUKRG1p19T9yNgc6vMMuJnT93gCfRlow8846jruj9lZD7rsoKd90E6JuyStX1vanjvtZMqlTOdFOSoV4OS5cPHFil9abiIOQYPI4Abhd80eoDN1SAdntdlD33CQNTz1ug2bPGC8Ne+lobx2XuA5Qa8pGo3hxtJONgPr4U2C06YdfEqS8fS7LQ9nYJbUybcNMGLUKSqVmUOjQpOvcBHX9wPDMAYsdsCtamZN633gYjS24uKiYbwmAPaaRMpBePaKJSMqSiPVibwMDBwbg7/crXmgu6V8SBa+e5JFmqtsNYfOz+/falCGBJnmeZuKoO6IzhSL297MvC6ld7TgL76ZpvYlovYZwaYc0AvHeD1xfyNnDjiVepHu4tvLO9JJJS6on4uue6P4lzdvT5311vU6T/nveLHCW/v5eGxx/uNi0vHlurdqkSRXnuEt2tpr4EGbIT8Zrsm+3m01WwHZsuFrVn3hZjj3IRsyjz7J
- MkF5COkw
- ooSuXaUGGhDjMqsmTW4bvBeflzXGvqf5oanGUQI2DRO1p6/RA1IBwxlmzRYic8m3IV77IDbIePbIwbdoxeabRs893rAA6CLk7YKWOQyeI62T2goaOUrLLClE5dxtC0eCnW5RxV1KH5nNJrtBPKRnOKJGW9Lvojy2X3aE+pv/0BCn41hAFpW8/hLZrlQcp1h6lMTnOCj9r77WdPJg6XPmXc7vcheqx4PLy8dH42ynnt/kd1qticS+wMfRaWU11rysYx//uDpAV5k4s+l/NETGYDNbEtYHfST/1WBcbonJkbySCfWld0S2wlGTofZvG7KOMfC6IfA12sjf92JjMNIjO8WjlcQ==
+X-HE-Tag: 1774888677-131378
+X-HE-Meta: U2FsdGVkX18wGqdQGQb5+uEf3Z3i7AVz7LtMHJqM2uC19BjHC/UVWPzzaysyZevIR0Jjn86KUVjpttlwX/qGzk6oIjn4yiup2iHz107M1ej2GJ7i1yI6lV/cEWh2l0UyZ0ZG1HyDn9UOqLuL1A/l/9DEqQPNDy1c0K5oasgRrV8DFgwYjiJrdIXpmt7Tq5ekTOyrc0fCv1q04Mc8v7HjnhQdo7LJ0JLvMgOVSO+vRo6lyGGvN1WzAkNSLcp0WHoywIYX8lEjDAOMF9NHLuUQYm1zqDXQCxkdZPjdXWhhwdkBsVIYf+mvHWdmDUPDNoVcYDMBk3yvFsqQtfNqxolqThfwKgPEhKJbB8SCYoNvi16AKnxtc8unMhN/dtywIN5IOkGJ3BTcBwjK6Hs88dFSXdIa8i4K7wI9l8KVEqdwW/evsbVvaK+ICBFfLlu3oxMDlFNGNiSroQBQ8C2Dgqp9TZrILkXD+VxxpeoDX30xAXjXZ+72ZUkdKAuD8NDxEdcabc4gybg9jUAYNuPJ6meEsU/BEjzPFwm5rhrEAXFxA6m8rDB332MsWPmX8rWzjL5wztr7oJIFDFpf9cDbwcTWwrdgfU6w6h8ZokinP6YEIPhQO1jR8itvJiv8ziOe/In8GQ2G7vpInTKmPDeE8oxkXyYNhtP5H/ySjOmcQ4n5MJJ/4hVHHMLD8/vG23RQfEHTUmImiSqyC6Si//awKcKUZb3OSmgRvIBNYFi5b857YOhL3tyCNYADyfYEO1J/+5n1vbPux483AkIQ98gIR5P0fZiLF1NhSm2l7Un+9YyoxCS/dcwwrTiydi9hphNOKjhyw4rbh3ydrg6rMFPtFSA4/Ytdc0A6awgaV++q98l9MGI8X6zRIsOKSl0EjWq4c0307m9HM2kLv2TZ9tNIQPTXDieN8B2KAC0xiJ6HK+8uAkNB/m7ZXsDzmRNZgoVrsVIZjFc8CiVPVvZzkuNNRfv
+ SSi30REw
+ 1KcqWxZc+/6PxAEk5Y6GXimvHl7MS2QVieahzvzamnGNKokNtmnZDub02ledDHXM3P+5MM4Ff88cMuSzAkkgzjhLfNqN62oxhzT4B7H2zklhTvVmzncRVVherjqyWeU0J8Zv2DtgBZtnJp/57ufgXE5tS/PCUi/Z43TaH/bblvYnd0DUqExZVKwYq3pWeRtvywSlzt87UlAfoIgkqV2d1y0i+b1qPYC5Z3vdI1xuYatkE3PGWNSA/RCijMfHI+4POVXPhPCHIAJLhGoW97U4ac6TKBOrriIz0Z7tDyN2Kdx5KlnSKnBx3Lzu0qYc6SsSeL4Jm+48vIRa5d1bft9e7UETPs35wuGYefV2QGlC3tEOHuB5Qq+zYMR1ftUupp7yxbDNA+k4RDDwOrN1tFz2tFqBYrQz1kLEhpUvVO1uucDnJaBy3ja4WtF7S2+8BtIkgGz6eUNEkGLUau29qPeXgIUauTb+bpQ5eyWKIiLHN1qzEghGXkSDjMsrQjrD0W3BgsOR9SXZ0Ed3wm7Eve8MJc+0oNrJo38XwwlqU1NMWa3mG7MAHlv3PMEp8kR8xF5vrWuVKfZP8b7nTFCLO97m1bL7+eXBHrhozrGQXKrizLsWYDaxB7xxW2ph56W8iXkXXAQK6QdNon7uQcBKcTXw9fEPu3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,116 +200,237 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 18-Mar-26 20:53, Johannes Weiner wrote:
-> The deferred split queue handles cgroups in a suboptimal fashion. 
-> The queue is per-NUMA node or per-cgroup, not the intersection. That 
-> means on a cgrouped system, a node-restricted allocation entering 
-> reclaim can end up splitting large pages on other nodes:
+On 30/03/2026 3:30 pm, Vlastimil Babka (SUSE) wrote:
+> On 3/27/26 13:57, Muhammad Usama Anjum wrote:
+>> From: Ryan Roberts <ryan.roberts@arm.com>
+>>
+>> Decompose the range of order-0 pages to be freed into the set of largest
+>> possible power-of-2 size and aligned chunks and free them to the pcp or
+>> buddy. This improves on the previous approach which freed each order-0
+>> page individually in a loop. Testing shows performance to be improved by
+>> more than 10x in some cases.
+>>
+>> Since each page is order-0, we must decrement each page's reference
+>> count individually and only consider the page for freeing as part of a
+>> high order chunk if the reference count goes to zero. Additionally
+>> free_pages_prepare() must be called for each individual order-0 page
+>> too, so that the struct page state and global accounting state can be
+>> appropriately managed. But once this is done, the resulting high order
+>> chunks can be freed as a unit to the pcp or buddy.
+>>
+>> This significantly speeds up the free operation but also has the side
+>> benefit that high order blocks are added to the pcp instead of each page
+>> ending up on the pcp order-0 list; memory remains more readily available
+>> in high orders.
+>>
+>> vmalloc will shortly become a user of this new optimized
+>> free_contig_range() since it aggressively allocates high order
+>> non-compound pages, but then calls split_page() to end up with
+>> contiguous order-0 pages. These can now be freed much more efficiently.
+>>
+>> The execution time of the following function was measured in a server
+>> class arm64 machine:
+>>
+>> static int page_alloc_high_order_test(void)
+>> {
+>> 	unsigned int order = HPAGE_PMD_ORDER;
+>> 	struct page *page;
+>> 	int i;
+>>
+>> 	for (i = 0; i < 100000; i++) {
+>> 		page = alloc_pages(GFP_KERNEL, order);
+>> 		if (!page)
+>> 			return -1;
+>> 		split_page(page, order);
+>> 		free_contig_range(page_to_pfn(page), 1UL << order);
+>> 	}
+>>
+>> 	return 0;
+>> }
+>>
+>> Execution time before: 4097358 usec
+>> Execution time after:   729831 usec
+>>
+>> Perf trace before:
+>>
+>>     99.63%     0.00%  kthreadd         [kernel.kallsyms]      [.] kthread
+>>             |
+>>             ---kthread
+>>                0xffffb33c12a26af8
+>>                |
+>>                |--98.13%--0xffffb33c12a26060
+>>                |          |
+>>                |          |--97.37%--free_contig_range
+>>                |          |          |
+>>                |          |          |--94.93%--___free_pages
+>>                |          |          |          |
+>>                |          |          |          |--55.42%--__free_frozen_pages
+>>                |          |          |          |          |
+>>                |          |          |          |           --43.20%--free_frozen_page_commit
+>>                |          |          |          |                     |
+>>                |          |          |          |                      --35.37%--_raw_spin_unlock_irqrestore
+>>                |          |          |          |
+>>                |          |          |          |--11.53%--_raw_spin_trylock
+>>                |          |          |          |
+>>                |          |          |          |--8.19%--__preempt_count_dec_and_test
+>>                |          |          |          |
+>>                |          |          |          |--5.64%--_raw_spin_unlock
+>>                |          |          |          |
+>>                |          |          |          |--2.37%--__get_pfnblock_flags_mask.isra.0
+>>                |          |          |          |
+>>                |          |          |           --1.07%--free_frozen_page_commit
+>>                |          |          |
+>>                |          |           --1.54%--__free_frozen_pages
+>>                |          |
+>>                |           --0.77%--___free_pages
+>>                |
+>>                 --0.98%--0xffffb33c12a26078
+>>                           alloc_pages_noprof
+>>
+>> Perf trace after:
+>>
+>>      8.42%     2.90%  kthreadd         [kernel.kallsyms]         [k] __free_contig_range
+>>             |
+>>             |--5.52%--__free_contig_range
+>>             |          |
+>>             |          |--5.00%--free_prepared_contig_range
+>>             |          |          |
+>>             |          |          |--1.43%--__free_frozen_pages
+>>             |          |          |          |
+>>             |          |          |           --0.51%--free_frozen_page_commit
+>>             |          |          |
+>>             |          |          |--1.08%--_raw_spin_trylock
+>>             |          |          |
+>>             |          |           --0.89%--_raw_spin_unlock
+>>             |          |
+>>             |           --0.52%--free_pages_prepare
+>>             |
+>>              --2.90%--ret_from_fork
+>>                        kthread
+>>                        0xffffae1c12abeaf8
+>>                        0xffffae1c12abe7a0
+>>                        |
+>>                         --2.69%--vfree
+>>                                   __free_contig_range
+>>
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> Co-developed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>> ---
+>> Changes since v3:
+>> - Move __free_contig_range() to more generic __free_contig_range_common()
+>>   which will used to free frozen pages as well
+>> - Simplify the loop in __free_contig_range_common()
+>> - Rewrite the comment
+>>
+>> Changes since v2:
+>> - Handle different possible section boundries in __free_contig_range()
+>> - Drop the TODO
+>> - Remove return value from __free_contig_range()
+>> - Remove non-functional change from __free_pages_ok()
+>>
+>> Changes since v1:
+>> - Rebase on mm-new
+>> - Move FPI_PREPARED check inside __free_pages_prepare() now that
+>>   fpi_flags are already being passed.
+>> - Add todo (Zi Yan)
+>> - Rerun benchmarks
+>> - Convert VM_BUG_ON_PAGE() to VM_WARN_ON_ONCE()
+>> - Rework order calculation in free_prepared_contig_range() and use
+>>   MAX_PAGE_ORDER as high limit instead of pageblock_order as it must
+>>   be up to internal __free_frozen_pages() how it frees them
+>> ---
+>>  include/linux/gfp.h |   2 +
+>>  mm/page_alloc.c     | 103 +++++++++++++++++++++++++++++++++++++++++++-
+>>  2 files changed, 103 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+>> index f82d74a77cad8..7c1f9da7c8e56 100644
+>> --- a/include/linux/gfp.h
+>> +++ b/include/linux/gfp.h
+>> @@ -467,6 +467,8 @@ void free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages);
+>>  void free_contig_range(unsigned long pfn, unsigned long nr_pages);
+>>  #endif
+>>  
+>> +void __free_contig_range(unsigned long pfn, unsigned long nr_pages);
+>> +
+>>  DEFINE_FREE(free_page, void *, free_page((unsigned long)_T))
+>>  
+>>  #endif /* __LINUX_GFP_H */
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 75ee81445640b..18a96b51aa0be 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -91,6 +91,9 @@ typedef int __bitwise fpi_t;
+>>  /* Free the page without taking locks. Rely on trylock only. */
+>>  #define FPI_TRYLOCK		((__force fpi_t)BIT(2))
+>>  
+>> +/* free_pages_prepare() has already been called for page(s) being freed. */
+>> +#define FPI_PREPARED		((__force fpi_t)BIT(3))
+>> +
+>>  /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
+>>  static DEFINE_MUTEX(pcp_batch_high_lock);
+>>  #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
+>> @@ -1310,6 +1313,9 @@ __always_inline bool __free_pages_prepare(struct page *page,
 > 
-> alloc/unmap deferred_split_folio() list_add_tail(memcg-
-> >split_queue) set_shrinker_bit(memcg, node, deferred_shrinker_id)
+> Hm I noticed the function isn't static, but it should be, and this is a good
+> oportunity to make it so.
+I'll make it static in the v5.
+
 > 
-> for_each_zone_zonelist_nodemask(restricted_nodes) mem_cgroup_iter() 
-> shrink_slab(node, memcg) shrink_slab_memcg(node, memcg) if 
-> test_shrinker_bit(memcg, node, deferred_shrinker_id) 
-> deferred_split_scan() walks memcg->split_queue
+>>  	bool compound = PageCompound(page);
+>>  	struct folio *folio = page_folio(page);
+>>  
+>> +	if (fpi_flags & FPI_PREPARED)
+>> +		return true;
+>> +
+>>  	VM_BUG_ON_PAGE(PageTail(page), page);
+>>  
+>>  	trace_mm_page_free(page, order);
 > 
-> The shrinker bit adds an imperfect guard rail. As soon as the
-> cgroup has a single large page on the node of interest, all large
-> pages owned by that memcg, including those on other nodes, will be
-> split.
+> ...
 > 
-> list_lru properly sets up per-node, per-cgroup lists. As a bonus,
-> it streamlines a lot of the list operations and reclaim walks. It's 
-> used widely by other major shrinkers already. Convert the deferred 
-> split queue as well.
+>> +/**
+>> + * __free_contig_range - Free contiguous range of order-0 pages.
+>> + * @pfn: Page frame number of the first page in the range.
+>> + * @nr_pages: Number of pages to free.
+>> + *
+>> + * For each order-0 struct page in the physically contiguous range, put a
+>> + * reference. Free any page who's reference count falls to zero. The
+>> + * implementation is functionally equivalent to, but significantly faster than
+>> + * calling __free_page() for each struct page in a loop.
+>> + *
+>> + * Memory allocated with alloc_pages(order>=1) then subsequently split to
+>> + * order-0 with split_page() is an example of appropriate contiguous pages that
+>> + * can be freed with this API.
+>> + *
+>> + * Context: May be called in interrupt context or while holding a normal
+>> + * spinlock, but not in NMI context or while holding a raw spinlock.
+>> + */
+>> +void __free_contig_range(unsigned long pfn, unsigned long nr_pages)
+>> +{
+>> +	__free_contig_range_common(pfn, nr_pages, false);
+>> +}
+>> +EXPORT_SYMBOL(__free_contig_range);
 > 
-> The list_lru per-memcg heads are instantiated on demand when the 
-> first object of interest is allocated for a cgroup, by calling 
-> folio_memcg_list_lru_alloc(). Add calls to where splittable pages 
-> are created: anon faults, swapin faults, khugepaged collapse.
+> I don't think the export is necessary for anything? Please drop.
+No, I'll drop it.
+
 > 
-> These calls create all possible node heads for the cgroup at once, 
-> so the migration code (between nodes) doesn't need any special care.
+>> +
+>>  #ifdef CONFIG_CONTIG_ALLOC
+>>  /* Usage: See admin-guide/dynamic-debug-howto.rst */
+>>  static void alloc_contig_dump_pages(struct list_head *page_list)
+>> @@ -7330,8 +7430,7 @@ void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+>>  	if (WARN_ON_ONCE(PageHead(pfn_to_page(pfn))))
+>>  		return;
+>>  
+>> -	for (; nr_pages--; pfn++)
+>> -		__free_page(pfn_to_page(pfn));
+>> +	__free_contig_range(pfn, nr_pages);
+>>  }
+>>  EXPORT_SYMBOL(free_contig_range);
+>>  #endif /* CONFIG_CONTIG_ALLOC */
 > 
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org> --- include/ 
-> linux/huge_mm.h    |   6 +- include/linux/memcontrol.h |   4 - 
-> include/linux/mmzone.h     |  12 -- mm/huge_memory.c           | 342 
-> ++++++++++++------------------------- mm/internal.h              | 2
-> +- mm/khugepaged.c            |   7 + mm/memcontrol.c |  12 +- mm/
-> memory.c                |  52 +++--- mm/ mm_init.c               |
-> 15 -- 9 files changed, 151 insertions(+), 301 deletions(-)
-> 
-
-Hi,
-
-with this series in linux-next (since next-20260324) I see a reproducible panic on s390 in the
-dump kernel when running NVMe standalone dump (ngdump).
-This only happens in the 'capture kernel', normal boot of the same kernel works fine.
-
-[   14.350676] Unable to handle kernel pointer dereference in virtual kernel address space
-[   14.350682] Failing address: 4000000000000000 TEID: 4000000000000803 ESOP-2 FSI
-[   14.350686] Fault in home space mode while using kernel ASCE.
-[   14.350689] AS:0000000002798007 R3:000000002d2c4007 S:000000002d2c3001 P:000000000000013d 
-[   14.350730] Oops: 0038 ilc:3 [#1]SMP 
-[   14.350735] Modules linked in: dm_service_time zfcp scsi_transport_fc uvdevice diag288_wdt nvme prng aes_s390 nvme_core des_s390 libdes zcrypt_cex4 dm_mirror dm_region_hash dm_log scsi_dh_rdac scsi_dh_emc scsi_dh_alua paes_s390 crypto_engine pkey_cca pkey_ep11 zcrypt rng_core pkey_pckmo pkey dm_multipath autofs4
-[   14.350760] CPU: 0 UID: 0 PID: 32 Comm: khugepaged Not tainted 7.0.0-rc5-next-20260324 
-[   14.350762] Hardware name: IBM 3931 A01 704 (LPAR)
-[   14.350764] Krnl PSW : 0704d00180000000 000003ffe0443a82 (__memcg_list_lru_alloc+0x52/0x1d0)
-[   14.350774]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:1 PM:0 RI:0 EA:3
-[   14.350776] Krnl GPRS: 0000000000000402 00000000000bece0 0000000000000000 000003ffe1c17928
-[   14.350778]            00000000001c24ca 0000000000000000 0000000000000000 000003ffe1c17948
-[   14.350780]            0000000000000000 00000000000824c0 0000037200098000 4000000000000000
-[   14.350782]            0000000000782400 0000000000000001 0000037fe00f39b8 0000037fe00f3918
-[   14.350788] Krnl Code: 000003ffe0443a72: a7690000            lghi    %r6,0
-[   14.350788]            000003ffe0443a76: e380f0a00004        lg      %r8,160(%r15)
-[   14.350788]           *000003ffe0443a7c: e3b080b80004        lg      %r11,184(%r8)
-[   14.350788]           >000003ffe0443a82: e330b9400012        lt      %r3,2368(%r11)
-[   14.350788]            000003ffe0443a88: a7a40065            brc     10,000003ffe0443b52
-[   14.350788]            000003ffe0443a8c: e3b0f0a00004        lg      %r11,160(%r15)
-[   14.350788]            000003ffe0443a92: ec68006f007c        cgij    %r6,0,8,000003ffe0443b70
-[   14.350788]            000003ffe0443a98: e300b9400014        lgf     %r0,2368(%r11)
-[   14.350825] Call Trace:
-[   14.350826]  [<000003ffe0443a82>] __memcg_list_lru_alloc+0x52/0x1d0 
-[   14.350831]  [<000003ffe044529a>] folio_memcg_list_lru_alloc+0xba/0x150 
-[   14.350834]  [<000003ffe04f279a>] alloc_charge_folio+0x18a/0x250 
-[   14.350839]  [<000003ffe04f34dc>] collapse_huge_page+0x8c/0x890 
-[   14.350841]  [<000003ffe04f4222>] collapse_scan_pmd+0x542/0x690 
-[   14.350844]  [<000003ffe04f65b4>] collapse_single_pmd+0x144/0x240 
-[   14.350847]  [<000003ffe04f69ce>] collapse_scan_mm_slot.constprop.0+0x31e/0x480 
-[   14.350849]  [<000003ffe04f6d3c>] khugepaged+0x20c/0x210 
-[   14.350852]  [<000003ffe019b0a8>] kthread+0x148/0x170 
-[   14.350856]  [<000003ffe0119fec>] __ret_from_fork+0x3c/0x240 
-[   14.350860]  [<000003ffe0ffa4b2>] ret_from_fork+0xa/0x30 
-[   14.350865] Last Breaking-Event-Address:
-[   14.350865]  [<000003ffe0445294>] folio_memcg_list_lru_alloc+0xb4/0x150
-[   14.350870] Kernel panic - not syncing: Fatal exception: panic_on_oops
-
-
-Environment:
-Arch: s390x (IBM LPAR)
-Kernel: next-20260324
-Config: (can provide if needed)
-Reproducible: always
-Steps to Reproduce: 
-  Install ngdump to an NVMe device partition via 'zipl -d' and initiate a dump (same issue with DASD ldipl-dump).
-
-I have bisected to this specific commit. 
-  good: 230bbdc110b3 ("mm: list_lru: introduce folio_memcg_list_lru_alloc()")
-  bad:  b0f512f6e36c ("mm: switch deferred split shrinker to list_lru")
-Reverting it on top of linux-next <next-20260327> restores normal Standalone Dump operation.
- 
-Let me know if I can provide any other data.
-
-Thanks,
-Mikhail
-
-
-
-
-
-
 
 
