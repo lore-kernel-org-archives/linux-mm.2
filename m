@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C29AFB3CF8
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 10:11:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 717FDFB3CF7
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 10:11:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 118726B0095; Mon, 30 Mar 2026 06:11:37 -0400 (EDT)
+	id DC23C6B0092; Mon, 30 Mar 2026 06:11:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C87F6B0096; Mon, 30 Mar 2026 06:11:37 -0400 (EDT)
+	id D4BB96B0095; Mon, 30 Mar 2026 06:11:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED3376B0098; Mon, 30 Mar 2026 06:11:36 -0400 (EDT)
+	id C3A696B0096; Mon, 30 Mar 2026 06:11:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D92C06B0095
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:11:36 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85460140606
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:11:36 +0000 (UTC)
-X-FDA: 84602312592.10.53B5A4C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C0ED98000A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:11:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNyD+lRi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AE1326B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:11:29 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 344041B8A8A
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:11:29 +0000 (UTC)
+X-FDA: 84602312298.01.AD23C04
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B0124160003
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:11:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oz3RaLZ4;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oz3RaLZ4;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774865487; a=rsa-sha256;
+	cv=none;
+	b=07KcwqefMplmWKAA9Dls98ekw/gns2LHX7x/xiolWDrHyDqmUQtX5H+41JlESDF2Tfi6cN
+	fOtUy8uRtsAXZfkJ7nK31cCbl1rF5e4nEwOKjGFlloPZX3e+JXT1p1lAxoDTnreale8WfH
+	uxzluYdLCoet25v/mZ48i4II8TL5Kwk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774865494;
+	s=arc-20220608; t=1774865487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/fVNQITXaKPhp1TvGhahEVbTKg2c4l7V/Wc6cTAIBa0=;
-	b=ZIpGGldSHrRLfS3CprqiU3fPz+OM4T8gDm6nyyz8MJtjBihmKHBO96FvQX5SBAYNao0Xgr
-	tzCe99by8BC5wAoLo9iWao2VPUnmxCQoHTk1H1vuH0y3xE5LwH7L1dji46XaExUqQUERGa
-	1XeZ3Px5msYrSxON47zMlZQ8fzTLSd8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774865494; a=rsa-sha256;
-	cv=none;
-	b=KlTKVhdDRaQ45yQ+WjSGVh8R1MAIrUKreaCZ07rQF47yRMRcYrMh9+B/GQkdPu7nv7EzQh
-	EBV2ATtxLsEhcHYR3vB+o84vCdmzkJ48e5ud7cH1Tp1sxJYQ19YXvsRwfs7k17lswNXVN/
-	apoXGjsG2YwXJDp1UBdbkuxvCObAX+c=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNyD+lRi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	 in-reply-to:references:dkim-signature;
+	bh=0T2cnc65nQE2tgFt6eRp1tbZ4DwxSTvivMSPY1771hM=;
+	b=wvdudYiUQOGd/3s//6A3drkGjpFOjMuoynul6bkHpee0Aljnrzp31pZWs9azOQ9tw2drzh
+	9oyQwAfKE+L8pKFeQRLeLO48gWFit3xy/3vH4zrhmwZndYVy0OTOMzfdqm1neOdpUW8MYh
+	FVMshM0DyIA0kAKxGMNvbRDbQlnFydw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B44AF432E6;
-	Mon, 30 Mar 2026 10:11:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E06C4AF09;
+	by tor.source.kernel.org (Postfix) with ESMTP id 320E960126;
 	Mon, 30 Mar 2026 10:11:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05F4C2BCB1;
+	Mon, 30 Mar 2026 10:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774865493;
-	bh=QyXpu9HXbfbZXv1V/Q6cFWUb/O2hxT2SCUEnl/mL9Tg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNyD+lRitJL6FQ08aJ2Ko9YEkn9XcqCTCToMIMy6KXBGYHirerrqpnx9wQJ/lbQUf
-	 jrjAH/939HGIiB+8//xJ6BkneVvgQgOOgrdOykR4LH2DxFcm84JgXOdgO6R6qN3eI1
-	 fvzfe5DRsDPoqMPWtX4PgjizstOvrWWqRw4kYAJ+vnLsPYo02rCuCY0ghBouNvClfw
-	 nbZvA/MDezrrO0jmOynPpaB4RfA6Zm3JCOPztbjhB2LpcahiUwF/LJkbKbNDyoO0zo
-	 S7kU7amZbd7ez6V+LWcgIvyX25AoJjwsorPuTIcrD46phatb3RO/99PEaJpHoDmI9f
-	 AG1AA5cDImkQA==
+	s=k20201202; t=1774865486;
+	bh=GgKA5DKfE0J6C86Pd58sBvtyWfrHRhL+cDnuFJprFXI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oz3RaLZ4XqTIWA/YrlmEslKtMgjjzZUSf4/xnt5q9aPl5HExKWwVBg3skiD1JgDEc
+	 CF3Rpp229qlD1QYeyZo3hcEN6wHUVlMny1H+HiOqHCuZIj2lfzkQW4kCE8suuUFC9m
+	 +1lDQDpxmPbKzCEZw8l1FsNCAYq+fKRbyjBxu/NMgDFBYTMWx38HfNXla2kPCp4KcC
+	 5sz3bn1qyjvp6w+/V7eKKJ1KCz+rrUybjpPdUM2kzPIAWQ9rVfx1uoI84wjSJ0mxFm
+	 5FKaKj7HppkUc0triJODgpx/rn6uKvJgtF6w9bU+g9qiD1BkO8LoPN8fZxV8Vjob02
+	 SUlzlK9XoqDnA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -92,22 +92,20 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 01/15] userfaultfd: introduce mfill_copy_folio_locked() helper
-Date: Mon, 30 Mar 2026 13:11:02 +0300
-Message-ID: <20260330101116.1117699-2-rppt@kernel.org>
+Subject: [PATCH v3 00/15] mm, kvm: allow uffd support in guest_memfd
+Date: Mon, 30 Mar 2026 13:11:01 +0300
+Message-ID: <20260330101116.1117699-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260330101116.1117699-1-rppt@kernel.org>
-References: <20260330101116.1117699-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C0ED98000A
-X-Stat-Signature: r1fyhma1tbdfi1kn3zbanz5cin53q7t1
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B0124160003
+X-Stat-Signature: 5srzx79phjxt7zezcwpzre863db8udf5
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1774865494-380945
-X-HE-Meta: U2FsdGVkX18K30bwXG5BiZCMGsvZskMLTdRg1phD0Ly2ywzg/efl6/HmktumKXK8pHju3cSOcqS06Omsyhs/PN3OtdYCh0/8kvAIHgOU9pbHLem/94TT1nFYd+HHmXWfCLdDhIsOCaU1oFsQzd0i7Cl1WLq1bEafU+t24Dy3AybmgfMJaipmIr2GuLJUa339b/IFSm9mFLXX1bo35SR2bwwXwVbiLdxXkuiE9CijBubM2TAPEwNA8R4LcFkjzU+BPC8dHazk0lJPy3We6s6jzDuk1CMkc06PDtMT9r6eab3mofkWyB1QhQYxFboR86hXQLicA9WIa/xKsZtW0QGvcVgiatVPuDS3Zz0tZNA6hl3NQZdWbeKqN/hL9fBQ7UfvD/67pCT+WVA83tLdPBXBZgvjqRjWk1vF+hRGfWzi86P20cbh7I9+iqJZhG1BBN01nCp88pK73GtTFQ+2wqc5bs4LzI04wIz+xSbqWZb4DHC4ddMCazXZg4IpFMPUgSXdUlMRv1P0sZvCmL9tUWlyJU4gswfqyGXINW5LYGEyxKN/hA/CdAQsW1b8sfXN39yyLDcxg3ad01Dg9ragRn9LQ6IqkxgHYDk/yO20qYBg2XIJkXcAflYQWomE4jhNQRs8v/Y2w4Qk3JFDvTK0TbAytlwHGm0LrBBz4bLqJQL9L7Xi+TGHo3HuZWW/ICXbnNJqJT8ZeFIFGABVuDD7wl9N+XveinePYzcZ6V3uCxnk3sH0aSiKYxD7yjHEZzxnljv6z1JAOYqsb/e3ZdI01UfIcoF51rLDZnrDCRdvHr8sSX+SHmx5YZhGu1d/bP9JGNV0K1Q9ifPb9eKNZB+XI/QoTVm/8pSjtt7J+tVq+SvaN65HfXu4lZEIeQN5bzQs484uKp0kUDw0z3acGzO8u6flMn8LMcxJi+uXAoAnU++PPVPShPOuaaozEJDx2c50WxXJTGY8pQf438kGn9fVpY8
- 5wYyJaty
- qukpHpBs7soXzXnXeSwsZyOKQGC4xb+lU9Bi462HoxBV/WkS3X+sauqm+XyhyrBVh5Gs6A3Y3CLlECovMyfPopPgB45alYLvndhhaPdyju6B0W7XvGv9tvjd1i67N4oAkVuF74qIjMbDllXURc01S0ivkiKwHn4BnIDQ9p0j0sFsGoFpX3C7r2B7nKeKgowqc3P09u+xSoJDlGw9CIgGs1E9gdoyBFd7Q9ndiGSFVuQxqzDClzAU+Xa6Ic3OCJc5kJ9ak6igVHLgfRCx/zFDSNDXq8rUsY6EXUEbeuaBbcBuKYZMLSbp8jiG7BA==
+X-HE-Tag: 1774865487-181673
+X-HE-Meta: U2FsdGVkX19SeqScTu+BAsQvL3gPJl5k1HPrZEnTRLOrKlQ/pA1KeGZiTQ0rKrDY5GPcy44xbvVC9wpv9D6iqGbbGKlVmjYYNslaZXqKeNDweBdNx+DkNB+3ewhc8cWMUKNhEDT0GUzVX7EJ3cmP+v9gkICt1N2WM0m4qMvMiJn7uvfqtdmTvkpKzaBrRKFz5uoA8qhW3IyATcP6B4MxALt+7kcYmsaSm1aa0oR7EK74qp9vhH7IPwLvM5I++cNIgO/Mevwfq2Nn5udCh6K/jXRRP6TKz+J6vNXFdtGfUmoJ2M/NBdE/Fc1DbdbbSLVyZheP4RRdlrml+0TYg18xCWsGwA3Vij64Y6NSg+tOcRshi2JUsvb+ko4mw2N5uSeOQy/U9ffo2ioYDhd82eTrt5vsCUUTM/6BySXK661jIawDD+umGAYgq+o7gbGCVKFHlv95Vx2mQrQXtGXvdbqiJnxZ28OWakHGS4ajbVp35QhbCuvRKVFEBHiiIeeUq+xbUDuMVU5mji2qlEpI+vQcXdTmnkCXLH4AUOXM7+5ZQ5+IsoUcQHMQCACWVzlyk13xIfgCu8yp4ONUav2dQB3WZyTqTEJedrGa5pliyguWvYMU/jNP9C8/3MbikVXIyW8yqDiWkUCwpbzg/sxHM/35Cc/Id6HTdYGiwsLEHqGsCSY8va+1JYoxd6lpTJcPFf1lIR+IZaofdXRlAyrJdH1cvHvMu36BDq0/hLCoK22zAnAs+K6kBHyV5Jy1YuqjRnBe/y5mW5XS2bKW6A1nPjI+DLy3e26oZ4MUQE8mIqHW+yFY0POuY6o8AC90DjHBGMNHohHhrs60CGo8t/BUbHqnCILP7/Y8RsCwTXPDb9dNIgdI7PWDaSTyYbs63atJLIeP0aA5rFZdLtDjX8pNmaLOdzOXP2zuQt1wVCnzw1AIzjI4/Ar3H4ZxZuCYq/GilYHOS0m3eQhj/+vsUAcOLyz
+ r9SD0QUq
+ 28aItm++sy3woKfFMoEXVQFQeWyxSuUgVxMZ74znP4/EeQAKb4EbZ7MVuErujFbMhtbYq6qiX+vf0C6phdaqPy9CFewV5S+tKrRdSN9OreNwdZiL52jvGwo8ES2JGVdMREpgPTtR1BL3eGUagL666AIcH41v1UZZtpWCCYb7pUFCACKpTiB1P3+h7mtgoIJd8kp5y4+nHpjFKng4CqXbaTU0pO12TXI/swMzMZAf7XlByucJn223ZceerBSx0Y0Lx4LlGSyK4TIx5fzzIN+kIpVPuTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,113 +115,89 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Split copying of data when locks held from mfill_atomic_pte_copy() into a
-helper function mfill_copy_folio_locked().
+Hi,
 
-This makes improves code readability and makes complex
-mfill_atomic_pte_copy() function easier to comprehend.
+These patches enable support for userfaultfd in guest_memfd.
 
-No functional change.
+As the ground work I refactored userfaultfd handling of PTE-based memory types
+(anonymous and shmem) and converted them to use vm_uffd_ops for allocating a
+folio or getting an existing folio from the page cache. shmem also implements
+callbacks that add a folio to the page cache after the data passed in
+UFFDIO_COPY was copied and remove the folio from the page cache if page table
+update fails.
 
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/userfaultfd.c | 59 ++++++++++++++++++++++++++++--------------------
- 1 file changed, 35 insertions(+), 24 deletions(-)
+In order for guest_memfd to notify userspace about page faults, there are new
+VM_FAULT_UFFD_MINOR and VM_FAULT_UFFD_MISSING that a ->fault() handler can
+return to inform the page fault handler that it needs to call
+handle_userfault() to complete the fault.
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 927086bb4a3c..32637d557c95 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -238,6 +238,40 @@ int mfill_atomic_install_pte(pmd_t *dst_pmd,
- 	return ret;
- }
- 
-+static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
-+{
-+	void *kaddr;
-+	int ret;
-+
-+	kaddr = kmap_local_folio(folio, 0);
-+	/*
-+	 * The read mmap_lock is held here.  Despite the
-+	 * mmap_lock being read recursive a deadlock is still
-+	 * possible if a writer has taken a lock.  For example:
-+	 *
-+	 * process A thread 1 takes read lock on own mmap_lock
-+	 * process A thread 2 calls mmap, blocks taking write lock
-+	 * process B thread 1 takes page fault, read lock on own mmap lock
-+	 * process B thread 2 calls mmap, blocks taking write lock
-+	 * process A thread 1 blocks taking read lock on process B
-+	 * process B thread 1 blocks taking read lock on process A
-+	 *
-+	 * Disable page faults to prevent potential deadlock
-+	 * and retry the copy outside the mmap_lock.
-+	 */
-+	pagefault_disable();
-+	ret = copy_from_user(kaddr, (const void __user *) src_addr,
-+			     PAGE_SIZE);
-+	pagefault_enable();
-+	kunmap_local(kaddr);
-+
-+	if (ret)
-+		return -EFAULT;
-+
-+	flush_dcache_folio(folio);
-+	return ret;
-+}
-+
- static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
- 				 struct vm_area_struct *dst_vma,
- 				 unsigned long dst_addr,
-@@ -245,7 +279,6 @@ static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
- 				 uffd_flags_t flags,
- 				 struct folio **foliop)
- {
--	void *kaddr;
- 	int ret;
- 	struct folio *folio;
- 
-@@ -256,27 +289,7 @@ static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
- 		if (!folio)
- 			goto out;
- 
--		kaddr = kmap_local_folio(folio, 0);
--		/*
--		 * The read mmap_lock is held here.  Despite the
--		 * mmap_lock being read recursive a deadlock is still
--		 * possible if a writer has taken a lock.  For example:
--		 *
--		 * process A thread 1 takes read lock on own mmap_lock
--		 * process A thread 2 calls mmap, blocks taking write lock
--		 * process B thread 1 takes page fault, read lock on own mmap lock
--		 * process B thread 2 calls mmap, blocks taking write lock
--		 * process A thread 1 blocks taking read lock on process B
--		 * process B thread 1 blocks taking read lock on process A
--		 *
--		 * Disable page faults to prevent potential deadlock
--		 * and retry the copy outside the mmap_lock.
--		 */
--		pagefault_disable();
--		ret = copy_from_user(kaddr, (const void __user *) src_addr,
--				     PAGE_SIZE);
--		pagefault_enable();
--		kunmap_local(kaddr);
-+		ret = mfill_copy_folio_locked(folio, src_addr);
- 
- 		/* fallback to copy_from_user outside mmap_lock */
- 		if (unlikely(ret)) {
-@@ -285,8 +298,6 @@ static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
- 			/* don't free the page */
- 			goto out;
- 		}
--
--		flush_dcache_folio(folio);
- 	} else {
- 		folio = *foliop;
- 		*foliop = NULL;
--- 
+Nikita helped to plumb these new goodies into guest_memfd and provided basic
+tests to verify that guest_memfd works with userfaultfd.
+The handling of UFFDIO_MISSING in guest_memfd requires ability to remove a
+folio from page cache, the best way I could find was exporting
+filemap_remove_folio() to KVM.
+
+I deliberately left hugetlb out, at least for the most part.
+hugetlb handles acquisition of VMA and more importantly establishing of parent
+page table entry differently than PTE-based memory types. This is a different
+abstraction level than what vm_uffd_ops provides and people objected to
+exposing such low level APIs as a part of VMA operations.
+
+Also, to enable uffd in guest_memfd refactoring of hugetlb is not needed and I
+prefer to delay it until the dust settles after the changes in this set.
+
+v3 changes:
+* add fixes from Harry and Andrei
+* fix handling of WP-only mode for WP_ASYNC contexts in vma_can_userfault()
+* address David's comments about mfill_get_pmd() and rename it to
+  mfill_establish_pmd()
+* add VM_WARN()s for unsupported operations (James)
+* update comments using James' suggestions
+
+v2: https://lore.kernel.org/all/20260306171815.3160826-1-rppt@kernel.org
+* instead of returning uffd-specific values from ->fault() handlers add
+  __do_userfault() helper to resolve user faults in __do_fault()
+* address comments from Peter
+* rebased on v7.0-c1
+
+RFC: https://lore.kernel.org/all/20260127192936.1250096-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (11):
+  userfaultfd: introduce mfill_copy_folio_locked() helper
+  userfaultfd: introduce struct mfill_state
+  userfaultfd: introduce mfill_establish_pmd() helper
+  userfaultfd: introduce mfill_get_vma() and mfill_put_vma()
+  userfaultfd: retry copying with locks dropped in
+    mfill_atomic_pte_copy()
+  userfaultfd: move vma_can_userfault out of line
+  userfaultfd: introduce vm_uffd_ops
+  shmem, userfaultfd: use a VMA callback to handle UFFDIO_CONTINUE
+  userfaultfd: introduce vm_uffd_ops->alloc_folio()
+  shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops
+  userfaultfd: mfill_atomic(): remove retry logic
+
+Nikita Kalyazin (3):
+  KVM: guest_memfd: implement userfaultfd operations
+  KVM: selftests: test userfaultfd minor for guest_memfd
+  KVM: selftests: test userfaultfd missing for guest_memfd
+
+Peter Xu (1):
+  mm: generalize handling of userfaults in __do_fault()
+
+ include/linux/mm.h                            |   5 +
+ include/linux/shmem_fs.h                      |  14 -
+ include/linux/userfaultfd_k.h                 |  73 +-
+ mm/filemap.c                                  |   1 +
+ mm/hugetlb.c                                  |  15 +
+ mm/memory.c                                   |  43 ++
+ mm/shmem.c                                    | 188 ++---
+ mm/userfaultfd.c                              | 694 ++++++++++--------
+ .../testing/selftests/kvm/guest_memfd_test.c  | 191 +++++
+ virt/kvm/guest_memfd.c                        |  84 ++-
+ 10 files changed, 860 insertions(+), 448 deletions(-)
+
+
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+--
 2.53.0
-
 
