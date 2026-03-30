@@ -4,107 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E133FF494F
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 12:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADFC210D14AD
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 12:56:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 281EA6B0092; Mon, 30 Mar 2026 08:53:33 -0400 (EDT)
+	id 08AA86B0092; Mon, 30 Mar 2026 08:56:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 232A96B0095; Mon, 30 Mar 2026 08:53:33 -0400 (EDT)
+	id 03B886B0095; Mon, 30 Mar 2026 08:56:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 121896B0096; Mon, 30 Mar 2026 08:53:33 -0400 (EDT)
+	id EBADA6B0096; Mon, 30 Mar 2026 08:56:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F25D16B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:53:32 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 70655E0DDD
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:53:32 +0000 (UTC)
-X-FDA: 84602720664.17.DD4B80C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 850AC40008
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:53:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=F0fdZ5dl;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774875210; a=rsa-sha256;
-	cv=none;
-	b=MYwPd/GNv0qCMesdyJRWsH2zGzw3/aj2wbLswACwaeJLRW2aNtXRELLq/+cpVLsaqMbaBA
-	j/8Uf2D1gM0y7MX+W75of/WE13aBcyiY2PgfsyLhW4U02DBpnZM8o5X8oVh/c62KLMSSIu
-	P260WKgIrgJUGhRCLzSlE2ouMCyLB40=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=F0fdZ5dl;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of liwang@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=liwang@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DA4116B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:56:31 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77A0A1605FB
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:56:31 +0000 (UTC)
+X-FDA: 84602728182.18.331E961
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E266A140004
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:56:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HIqM33CR;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774875210;
+	s=arc-20220608; t=1774875390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=wDzMvwa7hHQR0J91vvkERkkKwoQTKWjm2iHbf3ig1ak=;
-	b=nRzupnmK+0x/IgRNZWhRWhS0QDF+0Dw/cjl4B1NAiFZyv+XFs49gx0/PYq1sjPSE8Izw19
-	r4YJOAgSoBC/IUC/AlRnyafIDP9Dlfoz2tvD1kvHArwOYv9bjbod+tdYcwmV/XxsW2+oUP
-	Qed2Z73iaoeM6Njf1fX3++xlt7kvXiY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774875209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wDzMvwa7hHQR0J91vvkERkkKwoQTKWjm2iHbf3ig1ak=;
-	b=F0fdZ5dlEEH0KQWijM4eEgu1RCh7uviI5hZzlnyyfRUaqVNGWdcroCB8uSdpqVVA1UV4FH
-	A5zXEQoWhrmVd2ItAXhP+c+PaaUVGr8iIxshZCluk0x5kuyeoNtgSf9OfZAAro3kxtejj6
-	Nm3psSTk2lHHOSqQCDvk6DgIxoErGQ4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-YP-4SDj_P5mGu4L44vaIfQ-1; Mon,
- 30 Mar 2026 08:53:26 -0400
-X-MC-Unique: YP-4SDj_P5mGu4L44vaIfQ-1
-X-Mimecast-MFC-AGG-ID: YP-4SDj_P5mGu4L44vaIfQ_1774875204
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5B69C195396B;
-	Mon, 30 Mar 2026 12:53:18 +0000 (UTC)
-Received: from fedora-laptop-x1.redhat.com (unknown [10.72.112.10])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 80E5C1955D96;
-	Mon, 30 Mar 2026 12:53:12 +0000 (UTC)
-From: Li Wang <liwang@redhat.com>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Cc: aubaker@redhat.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v4] selftests/mm: skip hugetlb_dio tests when DIO alignment is incompatible
-Date: Mon, 30 Mar 2026 20:53:07 +0800
-Message-ID: <20260330125307.98581-1-liwang@redhat.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6ABb3mCmxINvfC74mwIx/aFMr/5W/YrJg7LRCk/iB4A=;
+	b=5w08ywH9392hBMBP0TdeAYd2aiua+TxTHCGfL6XQH80tJyAE4Rpkhk2FITiZQ6vhvr5qpj
+	lJR0vclmAcF4SWZ4zFJJaf/K0KwS4bOY8UU12fSrGYoM8/+SCJKmMRiDJ5lfmJbWr2q17A
+	Ey2i0QTpCguaDfdrWkD6U1xouZfpi40=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HIqM33CR;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774875390; a=rsa-sha256;
+	cv=none;
+	b=AQ8dgDdXlKM4d8knNlgUDoVY1au40HX0yn2CfMmuKFFWjfdoiBxHy/VtRsS72kMdCzshcF
+	8HSWzIkMTHmpKPsh/pMl1687Qef6HRPhUVhWzpBLxUH+OAA6uA7zVruAIYsIHT5EPrIBfx
+	cYWxHmYS5pmR3hi3kcwl9WRS4HYK48w=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6ABb3mCmxINvfC74mwIx/aFMr/5W/YrJg7LRCk/iB4A=; b=HIqM33CROqAhISIXKTEGIZr+1O
+	bfqwa7rBYHRXXoGMNNncKV7ZqE/BQVqqNEY1+Vb4vLrFrpdabkJVms6fUnwJr5c1yMrzTIJgWV0ZK
+	DVffrdyimh2J265xgwjnUlEkVa9ZyAomWfYJ8bsS3b097CgBA8e568vhSyMBl2xIvtO8GHH8XQJuF
+	7v6bhdX97EaFCxpQ/pFgL14hRrYowpHKUF4Vi0v2DaDbugPZsiwh7a3MNLMG9ODGO9r6TOjOPdn4c
+	MOiUJ8nhTS2w3wDLH0/nHuIO5uPc1MYZHLHeyFhK5ECQN/DF0+yLRGlim+PAOoYcVwpAXSARgi+X+
+	/r/DNaEA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w7CA4-00000006gVN-2Qj0;
+	Mon, 30 Mar 2026 12:56:08 +0000
+Date: Mon, 30 Mar 2026 13:56:08 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: WANG Rui <r@hev.cc>
+Cc: usama.arif@linux.dev, Liam.Howlett@oracle.com, ajd@linux.ibm.com,
+	akpm@linux-foundation.org, apopple@nvidia.com, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, brauner@kernel.org,
+	catalin.marinas@arm.com, david@kernel.org, dev.jain@arm.com,
+	jack@suse.cz, kees@kernel.org, kevin.brodsky@arm.com,
+	lance.yang@linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
+	npache@redhat.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
+	rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com,
+	vbabka@kernel.org, viro@zeniv.linux.org.uk
+Subject: Re: [PATCH v2 3/4] elf: align ET_DYN base to max folio size for PTE
+ coalescing
+Message-ID: <acpy6DLjPVXXzwJX@casper.infradead.org>
+References: <0725ce97-b8a3-47c9-952f-7b512873cc35@linux.dev>
+ <20260329043700.19355-1-r@hev.cc>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: AO-zziibAmWtdkBv5-v6R3jf3ADKjHnBdeGJQnDm9jA_1774875204
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: aqhn8xw3bte3mbygicxffmo3yiakxx7f
-X-Rspamd-Queue-Id: 850AC40008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260329043700.19355-1-r@hev.cc>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774875210-520120
-X-HE-Meta: U2FsdGVkX1+4PGW/23EmSJAXlna4FZGU448M1w1009v5sC2f/s8u3AXcK8qjznUQCzlMOGrwb1Biloiv08r5WI7N6HKU/FHBurZdVvCA5h3p6aN126zREf69EMcWxsfSEZUBfnzzPoFtnReKzn5ueZALCij6IwMbLk93Yq7+QziRZnrt+5AVg0a5bqSoRna2FuFm4cuCF3QwjdkOjiff4b7VEHe4pgQ0OxtgoQw8n1oEgpG63ykYEIj7Zlq+aigqNSrgzgBJ1sVqZqPXREa3vMyhtDwM7JAGKVBVdYWMjuR3ZKyMJTmOgAQ2LQBvPjdgBD6NMics2Vq6oFuR0r2AXdHgTo0I+KXkDgRFHuE50fXunSZu58UJaoy2TtsGi0rwnLV7FYNSSOlpWWRGLXc+IhuG9bnOkg4l/bC6pod8UnbfZkT5SU0skKIrdX1k+OXmGGwDXL2teGmg5aFbWyZgtsv62uTHh3OprwzHX1dHQRmhi1dQfoig6A4L4eY5RL1dvy/Xn+qoM9o8k72HBBSaDMfagHb7DeCZ9/RxStQiyFWke0aTEvBXcFKy3Ux2eFHH6oCIAM+DhKuAqF3vwpWygbqeP09oHpGlnrEgDpTMq592UV3AZqqTcDIsSixsEjrSOiIRJ4lrlCO/xZLJSvws0K9+8Dis2WQqIMcbHszTPXJKzgc2Z7/ASsXkn2668lExyY3iFS0i8LyfrGBKVl6rfMe7JpTTEVgJPJoiflnbEk6By5OrxkQNV66kwzVlVCSalvuLXRENjKuv5BZKkPja76Qgdg/uEHGKMdkC4tRahr2J79FPc6A74vvgNJsAfhgpn6UkztecUWg++3CMl38I5xg6uzdStlyqDEstdWqBEQFFB/dPq/gq8v0vuZ0ndZTqUN5dsfzcDbWebN6k+DFoDzrabkVYwpkbuh1GrNi+s0pGPxR32EV0gdKRRMO/ZXrSE3U4dqIPKuCUuW1BHzf
- I1Q+3l0D
- 5I8JAsw8nk4CghecZ3aIPWr6SH0T0WnlRyf4r3fgz6vw/IBHapg+Al21UQ4RXpgX7q2q+c4c0pSRyB6QooyDaCcbhVYQCIE1CjnfqAktSFjnwC/GF3SDzWn0LStK4K7vqeGoGwPeLZfAd3o/B/wtVrvP/wolrqRy52AKGr21yx++5b1Q9vdZoCMpv5SSXQTlqIdKCXvo1t/mavy3q4yC6YABERfYMqrLqXdE1KMkuVXnzpDqwAS0ePl7A4rO6pY0l80GY4XXP1wVbcXG4RfU5gaYlB9z/rYZr/D+b5mROJrCFXczgc8r6+LeeKdP64Ein2ZUFE+FbFJEzhO6zkNpJQyDNsc+x17VwQMk77oGIe01ln6gkqzeisy/aXgjwTsudwq+yIOL67+ZvMaRR+oWIr+GgY2HmWHgV8X2D
+X-Stat-Signature: cgakqrfjabuwmfwa7xxt6na7kxwm3fkn
+X-Rspamd-Queue-Id: E266A140004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1774875388-230183
+X-HE-Meta: U2FsdGVkX19geAebuQK6Cu9L1g+MqYBBtiPchTvw5FrCccxj7m/peZcMJxIKE0xSWVlh88UJGZyPI/a+vUreBeiI3MP6BxP9zM7cwGz7062zDRE2cVhP58Sb88PR4QRBXPedt6Wp9xmnHhr7hEC7sY5PvFmZ5CA4M9g2etCua6b8rjlTe10uorm+59Gd/NMESwcdPaKvtFuzgPzZwWPDBMpZQJqeYp8MbtKHuWNQ4a75AF4wNay6+97u3EVOvFcdA4aoxzawYC4idjInUIp5yuFAkalkw28zNs0Z1t2VUAf7GWPpyYibv4yqoBZIrr6CAQLAduPYQ17yRQqY5kHflTaL0NyjXOMB04c831xkaFg+Y8o39pG2EDSfXDtmN3991Y8GaH1fsU/+V34CrB9WBF/Yyos2t0H2JUtHECS/X7rPls4yPTXJDS+MSDNKYkHonKuE0Wit3xIaYKtpPbP6luzTsauPEGKy/Mn4Bq85b6+WiU3g1j3944A393XbWUshZMt8lnuLAu0P1TrFjPeDtOJLISlaqbJONIwIVh5vucD5mY1rLKfF7YW8038xwr56eSKhlapVsNsnFI22TP+W3O3kOa71gCFYVAiz5pKzAbPt1Hya/UoIUj1mjbthxvzRE3YFN9KKsFUAIzBLCdEDQH5i19AbSioBsVDqKwpGHZNsZvOZAdftB/OiDa/X05+nzfEJNrX3qTaqge4zHKsWM3eY+zR1kV0FNScxO+4U9UcF0t0dJ7yFVVx8+tY1H4qepzzuZgrc7fNANzIgyplyyU03twugpCcxSoal6S/oqdDTjYdNnVHph7ZiXjPJ7y64SWc07KWBUe/895lmIVYjgMP7ZIMDGD8YeZNfbDO0yktNsfXREghZsqqCm+ScX3WECkIVklTk5sH1pZXEyFi4In12cwdpu2Zg+2xHWf8qrMeTdZcPVB7JppvDxwdQykLF57qK2kuqbvXzYG5zxSU
+ FRH6o95Z
+ 4zVaBawcjkNHD9aFITeoqY8k3hLl4QTo6R2EF6tNs55N1ecUFOvCg6hd9kqOIdPesPrFiRdNcKHyL7VBwJBTJDD888nwuvW/L7xZ4tIGzLENcuYAHM2WEEcS3eK8fMi9Xg4S2UQrWHWKG00Cwb7kFCILEAUupMbZtT5PNecLC9KMr/u4k0r/M/pERSZJBH2NVKTceaWhuw2SSdNG7xwFijc37IxK4zALOuU0ODmzTW2CKNgpPFGA4O2oHzY8DrcMekUjL1UCEzj26L75X1GjQR7MYDbhNnQeZlKefwSuIMts3V+U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,222 +99,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb_dio test uses sub-page offsets (pagesize / 2) to verify that
-hugepages used as DIO user buffers are correctly unpinned at completion.
+On Sun, Mar 29, 2026 at 12:37:00PM +0800, WANG Rui wrote:
+> > mapping_max_folio_size() reflects what the page cache will actually
+> > allocate for a given filesystem, since readahead caps folio allocation
+> > at mapping_max_folio_order() (in page_cache_ra_order()). If btrfs
+> > reports PAGE_SIZE, readahead won't allocate large folios for it, so
+> > there are no large folios to coalesce PTEs for, aligning the binary
+> > beyond that would only reduce ASLR entropy for no benefit.
+> > 
+> > I don't think we should over-align binaries on filesystems that can't
+> > take advantage of it.
+> 
+> Ah, it looks like this might be overlooking another path that can create
+> huge page mappings for read-only code segments: even when the filesystem
+> (e.g. btrfs without experimental) didn't support large folios,
+> READ_ONLY_THP_FOR_FS still allowed read-only file-backed code segments
+> to be collapsed into huge page mappings via khugepaged.
+> 
+> As Wilcox pointed out, it may take quite some time for many filesystems
+> to gain full large folio support? So what I'm trying to clarify is that
+> using mapping_max_folio_size() on this path is not favorable for
+> khugepaged-based optimizations.
 
-However, on filesystems with a logical block size larger than half the
-page size (e.g., 4K-sector block devices), these unaligned DIO writes
-are rejected with -EINVAL, causing the test to fail unexpectedly.
-
-Add get_dio_alignment() to query the filesystem's required DIO alignment
-via statx(STATX_DIOALIGN) and skip individual test cases whose file
-offset or write size is not a multiple of that alignment. Aligned cases
-continue to run so the core coverage is preserved.
-
-While here, open the temporary file once in main() and share the fd
-across all test cases instead of reopening it in each invocation.
-
-=== Reproduce Steps ===
-
-  # dd if=/dev/zero of=/tmp/test.img bs=1M count=512
-  # losetup --sector-size 4096 /dev/loop0 /tmp/test.img
-  # mkfs.xfs /dev/loop0
-  # mkdir -p /mnt/dio_test
-  # mount /dev/loop0 /mnt/dio_test
-
-  // Modify test to open /mnt/dio_test and rebuild it:
-  -       fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-  +       fd = open("/mnt/dio_test", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-
-  # getconf PAGESIZE
-  4096
-
-  # echo 100 >/proc/sys/vm/nr_hugepages
-
-  # ./hugetlb_dio
-  TAP version 13
-  1..4
-  # No. Free pages before allocation : 100
-  # No. Free pages after munmap : 100
-  ok 1 free huge pages from 0-12288
-  Bail out! Error writing to file
-  : Invalid argument (22)
-  # Planned tests != run tests (4 != 1)
-  # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Signed-off-by: Li Wang <liwang@redhat.com>
-Suggested-by: Mike Rapoport <rppt@kernel.org>
-Suggested-by: David Hildenbrand <david@kernel.org>
----
-
-Notes:
-    v4:
-    	- Open the file once and pass the fd to functions.
-    	- Add check_dio_alignment dedicated to alignment checking.
-    v3:
-    	- Adopt statx raw syscall to build on older glibc.
-    	- add buf offset alignment check as well.
-    v2:
-    	- Pass dio_align as a parameter to run_dio_using_hugetlb().
-    	  instead of generally page_size/2 alignment check.
-    	- Add O_DIRECT flag back to the first open().
-    	- Add stx_dio_offset_align zero check.
-
- tools/testing/selftests/mm/hugetlb_dio.c | 97 ++++++++++++++++++------
- 1 file changed, 75 insertions(+), 22 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
-index 9ac62eb4c97d..1c673c6c685e 100644
---- a/tools/testing/selftests/mm/hugetlb_dio.c
-+++ b/tools/testing/selftests/mm/hugetlb_dio.c
-@@ -17,12 +17,57 @@
- #include <unistd.h>
- #include <string.h>
- #include <sys/mman.h>
-+#include <sys/syscall.h>
- #include "vm_util.h"
- #include "kselftest.h"
- 
--void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
-+#ifndef STATX_DIOALIGN
-+#define STATX_DIOALIGN		0x00002000U
-+#endif
-+
-+static int get_dio_alignment(int fd)
-+{
-+	struct statx stx;
-+	int ret;
-+
-+	ret = syscall(__NR_statx, fd, "", AT_EMPTY_PATH, STATX_DIOALIGN, &stx);
-+	if (ret < 0)
-+		return -1;
-+
-+	/*
-+	 * If STATX_DIOALIGN is unsupported, assume no alignment
-+	 * constraint and let the test proceed.
-+	 */
-+	if (!(stx.stx_mask & STATX_DIOALIGN) || !stx.stx_dio_offset_align)
-+		return 1;
-+
-+	return stx.stx_dio_offset_align;
-+}
-+
-+static bool check_dio_alignment(unsigned int start_off,
-+			        unsigned int end_off, unsigned int align)
-+{
-+	unsigned int writesize = end_off - start_off;
-+
-+	/*
-+	 * The kernel's DIO path checks that file offset, length, and
-+	 * buffer address are all multiples of dio_offset_align.  When
-+	 * this test case's parameters don't satisfy that, the write
-+	 * would fail with -EINVAL before exercising the hugetlb unpin
-+	 * path, so skip.
-+	 */
-+	if (start_off % align != 0 || writesize % align != 0) {
-+		ksft_test_result_skip("DIO align=%u incompatible with offset %u writesize %u\n",
-+				align, start_off, writesize);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+static void run_dio_using_hugetlb(int fd, unsigned int start_off,
-+				  unsigned int end_off)
- {
--	int fd;
- 	char *buffer =  NULL;
- 	char *orig_buffer = NULL;
- 	size_t h_pagesize = 0;
-@@ -39,10 +84,9 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
- 	if (!h_pagesize)
- 		ksft_exit_fail_msg("Unable to determine huge page size\n");
- 
--	/* Open the file to DIO */
--	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
--	if (fd < 0)
--		ksft_exit_fail_perror("Error opening file\n");
-+	/* Reset file position since fd is shared across tests */
-+	if (lseek(fd, 0, SEEK_SET) < 0)
-+		ksft_exit_fail_perror("lseek failed\n");
- 
- 	/* Get the free huge pages before allocation */
- 	free_hpage_b = get_free_hugepages();
-@@ -71,7 +115,6 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
- 
- 	/* unmap the huge page */
- 	munmap(orig_buffer, h_pagesize);
--	close(fd);
- 
- 	/* Get the free huge pages after unmap*/
- 	free_hpage_a = get_free_hugepages();
-@@ -87,39 +130,49 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
- 			 "free huge pages from %u-%u\n", start_off, end_off);
- }
- 
-+static void run_test(int fd, unsigned int start_off,
-+		     unsigned int end_off, unsigned int align)
-+{
-+	if (!check_dio_alignment(start_off, end_off, align))
-+		return;
-+
-+	run_dio_using_hugetlb(fd, start_off, end_off);
-+}
-+
- int main(void)
- {
--	size_t pagesize = 0;
--	int fd;
-+	int fd, align;
-+	const size_t pagesize = psize();
- 
- 	ksft_print_header();
- 
--	/* Open the file to DIO */
--	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
--	if (fd < 0)
--		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
--	close(fd);
--
- 	/* Check if huge pages are free */
- 	if (!get_free_hugepages())
- 		ksft_exit_skip("No free hugepage, exiting\n");
- 
--	ksft_set_plan(4);
-+	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
-+	if (fd < 0)
-+		ksft_exit_skip("Unable to allocate file: %s\n", strerror(errno));
- 
--	/* Get base page size */
--	pagesize  = psize();
-+	align = get_dio_alignment(fd);
-+	if (align < 0)
-+		ksft_exit_skip("Unable to obtain DIO alignment: %s\n",
-+				strerror(errno));
-+	ksft_set_plan(4);
- 
- 	/* start and end is aligned to pagesize */
--	run_dio_using_hugetlb(0, (pagesize * 3));
-+	run_test(fd, 0, (pagesize * 3), align);
- 
- 	/* start is aligned but end is not aligned */
--	run_dio_using_hugetlb(0, (pagesize * 3) - (pagesize / 2));
-+	run_test(fd, 0, (pagesize * 3) - (pagesize / 2), align);
- 
- 	/* start is unaligned and end is aligned */
--	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3));
-+	run_test(fd, pagesize / 2, (pagesize * 3), align);
- 
- 	/* both start and end are unaligned */
--	run_dio_using_hugetlb(pagesize / 2, (pagesize * 3) + (pagesize / 2));
-+	run_test(fd, pagesize / 2, (pagesize * 3) + (pagesize / 2), align);
-+
-+	close(fd);
- 
- 	ksft_finished();
- }
--- 
-2.53.0
-
+Nono, that's not what I'm pointing out!  btrfs is simply not putting
+in the effort to support large folios, and that needs to change.
+READ_ONLY_THP_FOR_FS unnecessaily burdens the rest of the kernel.
+It was a great hack for its time and paved the path for a lot of what
+we have today, but it's time to remove it.
 
