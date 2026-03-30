@@ -4,104 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F2341061B1B
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 19:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C941061B1B
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 19:16:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBE726B008C; Mon, 30 Mar 2026 15:13:55 -0400 (EDT)
+	id C3B776B008C; Mon, 30 Mar 2026 15:16:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D95A06B0095; Mon, 30 Mar 2026 15:13:55 -0400 (EDT)
+	id BC4E76B0095; Mon, 30 Mar 2026 15:16:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD3816B0096; Mon, 30 Mar 2026 15:13:55 -0400 (EDT)
+	id AB8F76B0096; Mon, 30 Mar 2026 15:16:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C06F76B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:13:55 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6652F1A0887
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:13:55 +0000 (UTC)
-X-FDA: 84603679230.07.1164C98
+	by kanga.kvack.org (Postfix) with ESMTP id 9624D6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:28 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B9A814047E
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:16:28 +0000 (UTC)
+X-FDA: 84603685656.29.4F8E295
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8FFA880011
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:13:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M5omcdyG;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id C0ADD2000B
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:16:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="wNT35w/v";
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774898033;
+	s=arc-20220608; t=1774898186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bIrVS86cRvIeIcosCbrm7cWN2wVrDYpF585sFe9oeMk=;
-	b=SixKEMy8muYL5jbK0hfMO3NUVgpc6tfyHccTl7yXIgssGj9nLMKkCPiD1TCm+3TiuN5Ibk
-	bEoBiR6QMmFciofyVNrEaZqamif/70y6IV9VxpdWlUI3z8ydUx2ntemPTablhDoVSbvIj1
-	skxgl0V0rXl71dTglM+TVb4YNO86A4c=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M5omcdyG;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774898033; a=rsa-sha256;
+	bh=5BmKqMFPxOMui3FOF0MKai4rthaBCuKHznDj4Nw7m2A=;
+	b=hrlsZT+6SXKqMAe7fAXqwkvRK7Mok3uQ4RD5mSNxCGMNvxZDbIlCebrfxMMlhcSAjXgOJK
+	FYQrmYkeHtzMDV/j1eoNuQ3dgRnZAjnIwwQl78MjWw380P6uJ4y8pqRIcP1iFgRHSnQLfp
+	bwmR6/o5tayXLUHMGjKcY/ei31V336Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774898186; a=rsa-sha256;
 	cv=none;
-	b=YghWVFPHmAqgCH6oUkV85P7/8bp/6R08r0LJeGNXxwipMhhvA3tD7jLdr+UT2F/dvZYrhg
-	6SklL+UTYKzW4hfwZU40ulmpiu6budAkqXs16NjQXk6go4R4D0wBdEgBQFTZT8nQMxRuqV
-	M6BfHIBA2ufd7dL430a5e862xiG+K+M=
+	b=3R1iDhhAuiHwCyA566Np7YWrZXXdSGsafgjVhOrjKSlP3seiwl+nqWgEppsVNZVptE/Z13
+	BzfTG3Rehq4E037uI49lpPA2FJy/SEZDA6Y+nw6aJYihM/PAOWThVKKeu1XD+uW8cOAxJ8
+	YCiwhucuKqfNCGtGk4aT7grApWTh+1Q=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="wNT35w/v";
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F67460132
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83A6C2BCB5
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774898032;
-	bh=tPjTZlKHtboB1hQQvFLO2OBk6hnMtL/G1+OE4bnyXnM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=M5omcdyGFNmjR8XnslY3vHJteO9ACXpqj5UETA0ewBkU9910YBLs7pId/Bkt5mc5h
-	 YlXUodxa16q4vKsFK8kj5NwTjKAUl/PiAnLCMLGPDSd/QmOgJ2RCHLTU2OTViTVoPS
-	 b4yFp2mVvFz5jgtYUzSUeETaGA/Wd0zj9sqB3cxiYNdIQ+dK9BTYiw+SRxxZE/1zuu
-	 8zV7j0EY2LpEbFj/qElJ1jrrfF4l3NRR6UZ4BEhzTSpxhwAhahFFzPAsY/54xbBG0z
-	 /RMrLkd5grlvgmrOD2SfAjaieZScF0Cw8JT1vWj/IZ6nmlvpisslqmZZKUUVk04Elm
-	 eMbV+f6jnsYmA==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b97ed4ad579so769523066b.3
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:13:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXBocKJKyOgj89KRdsz8DMZUDMte9ZoxugmwUV2ckev9X712Sm1jNwNqjsjNCk8JbS+YqJnWpUdqw==@kvack.org
-X-Gm-Message-State: AOJu0Yz3Har6IPVvInQX4MXFe5Dkc7a9oXRgiBqzTMxRE/CzxQH5Hjmt
-	TArVAxgzyIxOvgTLMHBtICs2lgz+Gkr7lSaZTxKoFC4YYwNa7wdxSWxMBByBztk6Vmr8nSfRSmQ
-	Agfon/pULTWY8gyQcJw/kW7zOCQKwPgM=
-X-Received: by 2002:a17:907:d02:b0:b9b:e687:7ca7 with SMTP id
- a640c23a62f3a-b9be68791f0mr61496766b.50.1774898031504; Mon, 30 Mar 2026
- 12:13:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260317014802.27591-1-kanchanapsridhar2026@gmail.com>
- <20260317014802.27591-3-kanchanapsridhar2026@gmail.com> <20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
- <CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
- <CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com>
- <20260330115141.997e29f96223da1e22c0f375@linux-foundation.org>
- <CAO9r8zNRcSBdBthR8Mk929pT2z_Ew_vc8_nLJns-2FygSX630w@mail.gmail.com>
- <CACpmpodFvA_DMmXBmgZfE4A=VnH3+0rVfmAr2qKP8o738qafbQ@mail.gmail.com> <20260330121249.fc2cce8d2fb78ff2c68d3645@linux-foundation.org>
-In-Reply-To: <20260330121249.fc2cce8d2fb78ff2c68d3645@linux-foundation.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 30 Mar 2026 12:13:38 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNXqUd08zU-br_sNOQxQ_GyNRzPfQS1YZxYnk1WnyER9Q@mail.gmail.com>
-X-Gm-Features: AQROBzBjpRE4EjoZ-iBabkbyiWViaB6E-hwRmna-ByP4FkHFwUW1GAAijWJTup0
-Message-ID: <CAO9r8zNXqUd08zU-br_sNOQxQ_GyNRzPfQS1YZxYnk1WnyER9Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	herbert@gondor.apana.org.au, senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A13060126;
+	Mon, 30 Mar 2026 19:16:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9871C4CEF7;
+	Mon, 30 Mar 2026 19:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774898185;
+	bh=oXQolb1yAb0DgfmX0q35ABD3ZFnm55kI9pf0oMncHE8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=wNT35w/vw8xWsD/40fdXn5qc9f0rBOKnU6X48i8mSooOyOfijeLu3kEYts46pIyKe
+	 ei6FPh3502BrQiCMZOvAc7esofUiL4PysrOwbE1Qw4vhTO24C2li4kwdUnNSzkRC1r
+	 taTbKOXEtY28t2ZBhhL+VepThvLN2OnPxzQSIpEI=
+Date: Mon, 30 Mar 2026 12:16:25 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Baoquan He <bhe@redhat.com>, LKML
+ <linux-kernel@vger.kernel.org>, lirongqing <lirongqing@baidu.com>
+Subject: Re: [PATCH v2] mm/vmalloc: Use dedicated unbound workqueue for vmap
+ purge/drain
+Message-Id: <20260330121625.c69f46a63c86c9540b823398@linux-foundation.org>
+In-Reply-To: <20260330175824.2777270-1-urezki@gmail.com>
+References: <20260330175824.2777270-1-urezki@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C0ADD2000B
+X-Stat-Signature: bwfhbs7ph7ze4cji4pcyg865nt9tr4s4
 X-Rspam-User: 
-X-Stat-Signature: 4rg49egxfmawzybnwpjzzkixi3ws1zoi
-X-Rspamd-Queue-Id: 8FFA880011
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1774898033-560787
-X-HE-Meta: U2FsdGVkX1/5fOGakgR5SxgtfyagJS94BFFO1PKGTiOvF3sXICYPXrmXlZc9bUe5LUL5RJw8cps2cEygvVeChcW9Hy3hhq9P5j31OWBqq5aE02rev2v0PcdUM/VGJJIow2Ree12NbH8xqYZsioJXM2tuab2Xxp3zmiElVTYv0a7lXThV/+pHAacLFYQBIa8gnk58f3YD7yjijqPERawFcflNIh2RkPqG7M78d+oCSY8kn1oWN9/xbF7UOCzkrxavHhEgX1QsLnyGPtjDPiToN8V0JkF44NbYgnrIONr+OvTwtu1qs3H8ExjjDK517avBkg03nt5401Cob/MsDrnLcci/OdyRzF53awi+xH/vWBVg1/z8hw60nsqO/r7Ake2qGRFlJWqGG61pCSyuFRUhqXxS9g08blfeULCxJST5ipCPVSwUM3Ok2COyPPD/MXncp9W2qUr7TORQYJdvGzhNaOiZ1sFo1fnyVmJ6f22E1zsGHZ7wCF5Ud6LxHCF7WODW5hPjr130rctrLv8R0bWC3tTLxeCLIImzi3qFbdmBu8nDShkdkzJdDGaDAWE4NOJaA4lW9V51Ep6zmuPjny++xPNiDdB38lgdKLob5jyjqzRqbK79zPl6F5IK03pmu33kuQcRTi33HUErDPvd7bXvHowUFuUrp0VYUIx6bHrkEyvaINroUduscNom8gXVT2OwWdDkHyxbYjAZIbPh5uTQCtWt2G1xM3KlFYkMQmDeiAOkiZzyaoI61kNC/bAKYkTEPDEDLL5apQQ6MC4TZxyba8E31ERW9ZEGkYn5CSpEMnV2EcNJlHTOiTpq0zUQyTgxhI9oA6tWdKKu2kvoyJpXKoj3LrtBl5xhRhrVFAAJ3Z2HWltpDkRnDvtHN+fX/qVlc7dKaSYIKQksnHBn21xC9MZdrF7XQNKffPIAumADwdOyAYT/2FxMTXCwSplfTmNb0xSwBxyoMFQLbUziQvh
- hXsK/DeZ
- w2GWblzKinnE3qc3pEfEFMHvP1HofVquNQ0omwZZHkbbvb6qaMw4erJ8Fq2JsQjIyZk0Ev2ypHqwJcz3KbKkQr2JBsvU3mJEGclg2zqiVSYbljo00Bd5izR6BkqMnjcwGlucMyFRaVGglhZyFrudLoB3WsWTVK4PIwdFOASdpyjderiNGnF9Wv9rH8YvOrLAITMc/RrFVA6itqgPtN2Ke+m1T16KHj5IKx63RIAsXkvxTd6DeCBZwaFIFN3P3QSp30Z+TL1kkc0PfvSFt2c5gioKNI2+RlUCivucd+ez8s+PwDjNQwOjlcrhVnjQLq2TsPPgnoLOzY67JYjJU3HP8h9dpD9R9s36xM1iax3KFru3NhO6jXeztQ9E9yd2k8dD+3aFgQ/7yYnk1IuX74RrsX+nf4eSY6J1qe6zhyaH3kvit8a8N6/qOU7Q/oA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774898186-169355
+X-HE-Meta: U2FsdGVkX1+/j5hb+DCYLB+Icd1BwFrTCvb/T6VRTwrHhxMppr5FTnZW2V+mInxrTqYVgWf95twsLjmMTqxZmGw3eoErRu30CM8Rm2uBT9D9ZMwy8WoQhCpLCxJWaf6qb9TmbeM3I/OCqS4Z6ouQK/R3Y6ygpB1t2+njm0CpYgkfHxRJf9WHRJh34sYauUQMtVsJSRwY7S6RMtosDLiEFs6WjL4vEsl81GTVY61flu7N1heItIN9OCyu723rbuAdIjHnmI/Ml0eOjZuuFhabMZtLn/yj9IFo44MT7ca1jHEhcYM6o0PzOyikqydrzHjTNAe8QOkgAVjl3j0fJZ3QeU0cV/IyWg1/SRnkgpzZnrw477Uhszc5OSiMRCRDejytpbqCs0E4DpNR9W0Ml994E2y0LQX0v9Q7Y6+efXVeqqXD/VEvpMe+D7pHZQw/yVkLG9tl7nYhZo36+EA8gRQtSn5mGKUdpwpQfCKyJ6v07+pVtk4WubNY+8LK6jUewc6QwSSdjPb8WKDZfsvwVcJx7mgOW0k0lwLinF10DiVMgwYcVdWmMoO4DcWg8LKo6KlnlKcI0FB/lmNY7rWAmsKbGHvbhEEg+lDhqbWPGjhFA55/XeDf97Vxn44WfhsZ+JnymvyahaZwoZkpzpQlI7b5PoLSvEuJqnqitBe6unC8MLSlUEECSobNSv7DyxprzgQKCZX2zQ2cw0DEGTpnpKq5rwTzfPcGxzOBoAQNpPI0iUvsWkl7vVkmqmWuReq7xU0nCgIEVE0pmlK2lN7hCSS2dg3g6T9E9n8IAaEqYr/Wm4INnaw6HIYhor8MGCjSDer3eRHzt68efD2oCQttW1WdvS+AzOiVTgv2VvTht+lOVE/5lFyej5FMUqv8qEl5Y12ET/pzj+WNoV1XtF7DxZ4Ziu7lvPsOeZ5hmdCGFA5hsu0d8hV5SBa2AQUBZcDptgM9U1w84WSHDsFme4OCKr8
+ NtlkQjug
+ a881d9aLxNOH5jIzWGYGCzZUTxwlOMDBFQ2tqxHod5NHeTzS3kYzbY//p1JmBr1rkljwm47rdsCN0YKWzrW3wEjy0HI/WYMPls87IYhtw+26+BVYPvOUkvurKPCpfJjnrVNfkGKSvY4Nc5FxV/nl6kHbEtu2J1BzNt8LLX8lp5hYdaBtmZFD+u0xhhYHKMI6CLaUr9U6DOKKX8Cv2xYXHr+RYnwPcPwNQRzfjSAv4aX100EfLa59qs5ubQeda7PjtHa4fE2i/50Utgo829FlG6s2Ti/vAxBy7YW8CznHyxtrL9nAbaB5dHNHB8JMTNmyhGBP6xmW15xtlpDg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,47 +90,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 12:12=E2=80=AFPM Andrew Morton
-<akpm@linux-foundation.org> wrote:
->
-> On Mon, 30 Mar 2026 11:59:04 -0700 "Kanchana P. Sridhar" <kanchanapsridha=
-r2026@gmail.com> wrote:
->
-> > On Mon, Mar 30, 2026 at 11:52=E2=80=AFAM Yosry Ahmed <yosry@kernel.org>=
- wrote:
-> > >
-> > > On Mon, Mar 30, 2026 at 11:51=E2=80=AFAM Andrew Morton
-> > > <akpm@linux-foundation.org> wrote:
-> > > >
-> > > > On Mon, 30 Mar 2026 11:32:07 -0700 Yosry Ahmed <yosry@kernel.org> w=
-rote:
-> > > >
-> > > > > The patch looks good to me, feel free to add:
-> > > > >
-> > > > > Acked-by: Yosry Ahmed <yosry@kernel.org>
-> > > >
-> > > > Thanks.
-> > > >
-> > > > > That being said, it might be a good idea to resend the patches (n=
-ew
-> > > > > version for rebase + Ack?) to get Sashiko to take a look,
-> > > >
-> > > > Yes please.
-> > > >
-> > > > > hopefully it will be able to apply/review the patches this time.
-> > > >
-> > > > I expect so, but I don't understand why Sashiko is having trouble w=
-ith
-> > > > this.
-> > >
-> > > I think it was a transient failure.
-> >
-> > Thanks Yosry and Andrew! Although, when I get the latest mm-unstable,
-> > it already has the v2 patches :)
-> > Should I still send a v3, with just the Acked-by added to patch 2?
->
-> Yes please.  Just to retry the Sashiko scan.
+On Mon, 30 Mar 2026 19:58:24 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
 
-Sashiko tries to apply on mm-unstable, mm-new, mm-unstable, and
-linux-next. So the patches need to apply to one of these branches.
+> The drain_vmap_area_work() function can take >10ms to complete
+> when there are many accumulated vmap areas in a system with a
+> high CPU count, causing workqueue watchdog warnings when run
+> via schedule_work():
+> 
+> [ 2069.796205] workqueue: drain_vmap_area_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
+> [ 2192.823225] workqueue: drain_vmap_area_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
+> 
+> Switch to a dedicated WQ_UNBOUND workqueue to allow the scheduler to
+> run this background task on any available CPU, improving responsiveness.
+> Use WQ_MEM_RECLAIM to ensure forward progress under memory pressure.
+> 
+> If queuing work to the dedicated workqueue is not possible(during
+> early boot), fall back to processing locally to avoid losing progress.
+> 
+> Also simplify purge helper scheduling by removing cpumask-based
+> iteration in favour to iterating directly over vmap nodes with
+> pending work.
+
+Thanks.  AI review flagged a couple of possible issues.  Do they look
+real to you?
+	https://sashiko.dev/#/patchset/20260330175824.2777270-1-urezki@gmail.com
 
