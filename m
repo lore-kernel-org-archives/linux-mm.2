@@ -4,117 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E038FB3CF5
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 10:15:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C70FB3CED
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 10:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F27296B00A5; Mon, 30 Mar 2026 06:15:09 -0400 (EDT)
+	id 38FA86B00B2; Mon, 30 Mar 2026 06:15:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED8166B00A9; Mon, 30 Mar 2026 06:15:09 -0400 (EDT)
+	id 366D06B00B7; Mon, 30 Mar 2026 06:15:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DED866B00B5; Mon, 30 Mar 2026 06:15:09 -0400 (EDT)
+	id 27E8A6B00B8; Mon, 30 Mar 2026 06:15:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C90906B00A5
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:15:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 95DE7140644
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:15:09 +0000 (UTC)
-X-FDA: 84602321538.13.0075686
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 60F9A180009
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:15:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=LbTb25hB;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	spf=pass (imf24.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774865707;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 127566B00B2
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:15:50 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B75D9E0DF9
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:15:49 +0000 (UTC)
+X-FDA: 84602323218.17.DC09EA7
+Received: from mail132-14.atl131.mandrillapp.com (mail132-14.atl131.mandrillapp.com [198.2.132.14])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 976ADA0012
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:15:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=mandrillapp.com header.s=mte1 header.b=zAunaEDM;
+	dkim=pass header.d=vates.tech header.s=mte1 header.b=jI2M4JuX;
+	dmarc=pass (policy=none) header.from=vates.tech;
+	spf=pass (imf15.hostedemail.com: domain of bounce-md_30504962.69ca4d52.v1-a22664c6aab44df5ba4ea5e449193360@bounce.vates.tech designates 198.2.132.14 as permitted sender) smtp.mailfrom=bounce-md_30504962.69ca4d52.v1-a22664c6aab44df5ba4ea5e449193360@bounce.vates.tech
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774865747; a=rsa-sha256;
+	cv=none;
+	b=wlKZf9vTmU5lyPwpVVtr8zsX88qFEYveVfYXGEnjivrdvIPxhc1M2Sj2s1xAh3yLPD/AUb
+	bAGbLLAjta6/goCBdcHNqSCFCrLlfBCSyk3ryfRICpZt9rFtN5Bs/1x3a/WCTeBW0BGNgk
+	yhFHeofu6+jsfi8gxvE44Q8tzteuHOc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=mandrillapp.com header.s=mte1 header.b=zAunaEDM;
+	dkim=pass header.d=vates.tech header.s=mte1 header.b=jI2M4JuX;
+	dmarc=pass (policy=none) header.from=vates.tech;
+	spf=pass (imf15.hostedemail.com: domain of bounce-md_30504962.69ca4d52.v1-a22664c6aab44df5ba4ea5e449193360@bounce.vates.tech designates 198.2.132.14 as permitted sender) smtp.mailfrom=bounce-md_30504962.69ca4d52.v1-a22664c6aab44df5ba4ea5e449193360@bounce.vates.tech
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774865747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VFMJ46N9qMdCvcsjoGJqP/bweEV5DGEGreIBFziMe8k=;
-	b=TRsHMoXTp10O2Ph8I+N//Mlz2PjAKb9FqASsbQOtIrLdM7ev9xPW7ag0ZW276PTQO8jW7y
-	XV834HVx2McGytOVtXlViRxL9AQIIdUTIKWCCatwKWfv3KlMA/WmELbLLnmIrvRQSJKiEP
-	lNFVVwlD1a9aCjZE2wUcGC3DVG1SZ1Q=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774865707; a=rsa-sha256;
-	cv=pass;
-	b=4qMdFkPEmDziOXHwMwZ4iJ8A66w3QxJ/8QU2/R0nxFDuLF2zqj/k+PKcXqvTPQo6qPDkKj
-	sExp7mHRDkUaEVCY7QUzCqVLVUjTvxfErSXqKMnfGSBHytQ7q2GiE2BmtAWT6c2gQx47qG
-	GmBswTYxeIj3nxEU9FYkMVhkCJ/pj3Q=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=LbTb25hB;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	spf=pass (imf24.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=1; a=rsa-sha256; t=1774865691; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=BqBNPlsbzpkZ+nAmQue2nRCOWhYiEPqo7AWEzt5CvcaDmEdA9uNaeqyrNf4VU+o3WJ7+BwKWB8wiKPSqhKtfwEHXxupP0qJGmSm84MYPq3cd5E5EFL5yLtQ29/H0odCUL7T4IsIm8lGnMShijCzH8s9Ae8xXqi1Sxhf8CyMg6kE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774865691; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=VFMJ46N9qMdCvcsjoGJqP/bweEV5DGEGreIBFziMe8k=; 
-	b=CV2gAapZAm2PUzu9fJF5VwFJi6zo2YJcBvN/sNok7fvgYxoHzszCVXqMnfrP7V6Z5WlfoR2/VDzRX0s9Bkg5uLXxQ8QhkQ11JsKu6BpUXi1h+D0+aJ62lI4mJrXGA41x6sX+8lvp+J+p7ASK3WsDRdZhWmnkl+WasP+cc2Bah5I=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774865691;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=VFMJ46N9qMdCvcsjoGJqP/bweEV5DGEGreIBFziMe8k=;
-	b=LbTb25hBZBzpC8Z5NKK0i433O5MjyarWBNGLh7xmSmMPfdrIlbw8fKdN+RJ1G+dM
-	W6veJs4XGnVfxhWAnjyPbdpqmsn8CQ52Qhx3RYDHcNF2v0AM/H22G6VMulNp8vRcZtw
-	de1+BwDrIhXgk+92kQHN2VjPe+uOHkiE+0dVWBrQ=
-Received: from mail.zoho.com by mx.zoho.eu
-	with SMTP id 1774865691675946.9053187433396; Mon, 30 Mar 2026 12:14:51 +0200 (CEST)
-Received: from mail.zoho.eu by mx.zoho.eu
-	with SMTP id 1774865691288564.2940483954262; Mon, 30 Mar 2026 12:14:51 +0200 (CEST)
-Date: Mon, 30 Mar 2026 11:14:51 +0100
-From: Herbert <objecting@objecting.org>
-To: <david@kernel.org>
-Cc: <krzk@kernel.org>, <ljs@kernel.org>, <hlcj1234567@gmail.com>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>,
-	<damon@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-	<kees@kernel.org>, <gregkh@linuxfoundation.org>,
-	<brauner@kernel.org>
-Message-ID: <19d3e3d3297.190bc89f62053.5899613485100180781@objecting.org>
-In-Reply-To: <25688dbc-cd11-4137-bad4-a215198feee6@kernel.org>
-References: <20260326072737.341964-1-objecting@objecting.org>
- <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
- <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
- <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
- <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
- <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
- <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
- <b263a722-e9b8-4a43-a075-46e4a753871d@kernel.org>
- <043CED5F-7014-4776-824E-07E027B7BDC3@objecting.org>
- <cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local>
- <E1A667AB-DCE4-4034-A36B-DAA458780A81@objecting.org>
- <e5d45f3c-4f46-40d1-bb7a-0a2f930fd7ae@kernel.org>
- <82256A72-42FD-475E-935C-629964FA80E7@objecting.org>
- <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
- <6deb290e-b168-4de2-95f8-fc784ed31c27@kernel.org> <25688dbc-cd11-4137-bad4-a215198feee6@kernel.org>
-Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
- module
+	bh=4ftzqy59DoR80wgnd7UbR3KsoDNOo82PR4o/Q/pNvFk=;
+	b=FdQ+YVBzKDRxiFgBTuoVzPy5Z463MDsAKJwlTWQusm0rlVh2VpQvkrRPhc4L/cGl6xXLG0
+	a7vFeXUiEvD30WiJHVxnSbcPHd0UUfYwtkBSu7eMt6Yu/BkW4Tf3t4GXE/fauXXdYjo7wq
+	RlWfHDBfjHpA+9SnNGk/o0N+ykKkags=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+	s=mte1; t=1774865746; x=1775135746;
+	bh=4ftzqy59DoR80wgnd7UbR3KsoDNOo82PR4o/Q/pNvFk=;
+	h=From:Subject:Message-Id:To:References:In-Reply-To:Feedback-ID:
+	 Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+	 Subject:From;
+	b=zAunaEDMh9/YaluxSVYm/LbBfNkwZdAWDDxMInhP8qlK4tgUKH72JncQLkeTFNjfx
+	 r8eZlKsgbPb5yN1Trg6xGvUlF99OdiV660Mmcy8RQTfyWeAKHWnAQoai5mHeNlwpzZ
+	 m6i7TJ1pRJLpzjR12c4DJx2IueaQJlXZ0yWdBY9c7BvZQ5jdJ5ib7iv8zPMNil5trx
+	 W/5LmDl2Vc/teqwzR6B/IM8XDKLsq8ZJZOPTXIKtrDT3nGvaPCG4i68yEth9MpEA/G
+	 VgDUVSf9MqvDFej0rMvWlNYKaIOoc/qoZSLw4rRUnj/s84VkWOkeqjCI+IA/CRAAI+
+	 l21DhC9yAGDbg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+	t=1774865746; x=1775126246; i=teddy.astie@vates.tech;
+	bh=4ftzqy59DoR80wgnd7UbR3KsoDNOo82PR4o/Q/pNvFk=;
+	h=From:Subject:Message-Id:To:References:In-Reply-To:Feedback-ID:
+	 Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+	 Subject:From;
+	b=jI2M4JuXtzdviGXc3SgG/8H7DsUure+J+CuF316hFxaEkomdKq8pGWY8jUWUHVCcV
+	 VCd5SeraVdhFe7faKY/x9N08aTGYmh3K6AtsnMWHd8vl0ideBc0QKMw4WnuCzs4d5G
+	 dkjm6VLQbnSyRjvUf51vGcpOGjS9ba+XfHPXAvosZFsOTdsZDDMc3srKC2/TZC81YW
+	 K7ApGsDXWAhzBix7m6vgq9PwTXF26TmdNZCAp/TnykoYKZWSD5WkBswZwxLx708f8R
+	 ZK5g46Mxl1XyffPjlR7JN4khsn407MdW8hO3ZzGHHNvapmTEQxMpwWdiVfnTFJgtV0
+	 MebEzFjIV9qdQ==
+Received: from pmta09.mandrill.prod.atl01.rsglab.com (localhost [127.0.0.1])
+	by mail132-14.atl131.mandrillapp.com (Mailchimp) with ESMTP id 4fknFZ3vmvz8XS0Tx
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:15:46 +0000 (GMT)
+From: "Teddy Astie" <teddy.astie@vates.tech>
+Subject: =?utf-8?Q?Re:=20Why=20memory=20lending=20is=20needed=20for=20GPU=20acceleration?=
+Received: from [37.26.189.201] by mandrillapp.com id a22664c6aab44df5ba4ea5e449193360; Mon, 30 Mar 2026 10:15:46 +0000
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1774865745207
+Message-Id: <ce114f02-f45e-4638-84ee-a8fd86ce1c5d@vates.tech>
+To: "Demi Marie Obenour" <demiobenour@gmail.com>, "Xen developer discussion" <xen-devel@lists.xenproject.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, "Jan Beulich" <jbeulich@suse.com>, "Val Packett" <val@invisiblethingslab.com>, "Ariadne Conill" <ariadne@ariadne.space>, "Andrew Cooper" <andrew.cooper3@citrix.com>, "Juergen Gross" <jgross@suse.com>
+References: <84462c4b-7813-4ad1-aeb2-862ae4f3a627@gmail.com> <c38387fe-beef-4f50-b928-74f96b881b7a@gmail.com>
+In-Reply-To: <c38387fe-beef-4f50-b928-74f96b881b7a@gmail.com>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.a22664c6aab44df5ba4ea5e449193360?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20260330:md
+Date: Mon, 30 Mar 2026 10:15:46 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Importance: Normal
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Rspamd-Queue-Id: 60F9A180009
-X-Stat-Signature: xaiy76jbeg7preg664bk6bb1jta74gu4
+X-Stat-Signature: pgwjx34n5ar5dbzamq4bf7kr7ps6a4kk
+X-Rspamd-Queue-Id: 976ADA0012
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774865707-383325
-X-HE-Meta: U2FsdGVkX1+HaJi3qQXRp3NX7ghqNsHfMAWJTTtt79Js6HCFdwlHOEiv0RaAoEEnxcGMFNgrHzO7EJwI9BrKISVQeRBZiKXUqZpqhxSeGs7te1JaaxVbXgN3LirYoQloCjRn5DsGGEPO4vr+3n9jrQvYy5EweeSNS/HACw+ah6aoY8m9TtuUiR0YmXDIhny049HBmkcEOVK2sO4KW6cGnT2iGt0Xb/ufrWEUKevAu5MGuMrtHaQFDPD0GA0ToGCqCc09GG1UmUEt6VT6vXXE7/StRSAGOUeanuhuoMZ3RB7JYAutGh60U4+qrS0X5Ga0JW4bEG9ooWtHBeVvFDzYuSZqF983aBOCTB3i5JuAijBvGi+5u57tM14Ba8wuYrxOtv3j8lzc+Pfeur+j4+9TymCBy278P/oRASqtLii/Ouf5zlqtPr4DRDHxhTjJVFZTwgQY9lt+dtrXmDlkXlxJgvm7k9MlvUBaS5PlawjnVpAcTvXV9+N5iFy+riO9zDTQgEe1UNON+xgOu/RJCBuB8Nc3KMgMrYQM58Bdp0uE6JnKkEs8FxybFJ4b1bT0GJMm1fvK8qVDYquBbFhg6TE4R6tpzU4JZLNP/UBcwIEac8fv3gWn7DJtuxm4/fsnlRFsEGujy0SKKKqNxHWx5zCfEzIQGkApqWHOLIwudwJWuQIex/Q9P2Se2fHMG6Mncam8GmCx0KingVd6+WYQIQmJHLW90bFjA/+sc9xcuIedwIOg15oyhWOwNvJGVcF0gF6hbC/ayTnOgnMOdvID5hQyX0ZPEvD6VzE5bW+myAvaobOmFEFWJIhLI/3Dnum833KgFwMRH+TZ1FdfajoseRVrkjBI13/ZpJn3B4spXsmYqr1p+Ulo/IOLtkLBdnE53M+lk+b/wMHVtyKzeDYveGr6wsdrPkqnGs0CcHIndkLbMb9KsJa6d4mg+wYPqfatmJLMhVPqPYN7gjjoP2ejgoa
- rV7YOhAb
- n+BZNPKKDsRA6zZkiWZ3LyF3cmLxepo+LfTbndXrjrZLGnIyO0/0Oddk+B+wUEL2leJpLir2eZ/aOHNG4ArcqiAP79IsGqZTYlyOmKLa3PrJD6wXHU1MTwkEG0+FxfoaBp6fWAg6Cls93Bvk9KmalWXquQRZxhy1DTuebotxQNCqf5hZaXRa/b7m1xisCyqmiJx4BsmIRLjpUBzV3xDMnCKkgf6zqahdAPVe79wbtahGBk1rzwbh2lvtI+mUZJgf4ugQYol2An7ogUBXMDmL4JmTnNlSoPaCJIJwMgUrcpWOUpuOKGsPDp1h+iZ3wWoIRpP0u7vn75Ig+XuqmX7ePh1Q/dPNJZPQETilPET+wTXeXMZfPy8itOO/W9w==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774865747-688110
+X-HE-Meta: U2FsdGVkX19hUnsbDXGcmsFq6SRGsVthLYR0h3qatmzmJsV3uGbGP7yjYah3vOeKvV8MLs7TZeSU3uO7DGdPwNQqyaGmFq4mp9O0P1dEup/kkrCgEGKYmU0cxrDtbi/NxWIrfOQY58Po8FkZJP5bJRIldI5TgApP2L8hRaefuv1bcJnl1UJm5APEoBaZ9eA9YrSfuqxDAmg81Nt0HGjUEqcQKvEwSsmq1TxYMre0Gk8QkUBAimOpW/N188YrFRc7WAoucCVB1XlAfu1TR1cAH4UH/Ij0KUYdJGNHWSzu778z0kzfWza+Et+HPoSImaSOVOwZ4m9cFTkuyHgRbTd00yI9hrXyNJ/wRAsI07i4zUXvvomlNxt+oE2xzAB3d0gizzJ600gLnj+tai9FRiNxj8O9EKm20e17qTJThC2iDp6V3gbX6iwNVgDGwKBgx5Tx9lUX+sj/f7+akpCGZbxJJag6/BR+fLETykcOMOxJTqnhFYM2F6QMCRYDP4kHcTPE5CV29haEgBgWH5GyUePDSFQFCrRcFc8tVIL+qlBgryWXPZecushQoMRwx+DO40Z9LqnfQZKlmCyDwbGCdnfXM03i4ctdPil42/742YNvw2hkHQwMhSaXorGrRNSpJ66exyzk59bNKRoO/iIhLXOLgijhqjr9UMk/CA4MTPL0N2rd2u+BeGEWIWI4oOyINLpDk9ix958ls5Yg4nIPFqC3n7LrcGhJqL+d66rGwXFhQaZceMNW/P2vnr4/iE7d6BJ+xpZsbVO/je4GjWqHheQNXcktAWCl67oFZUt33qeY9Riq7n3jqCYKrWd6WaH71c5/tpy6VSBUZuGLDnvo61H+jNplU15CoCpeDACxEPhxp3dpT8kMNFJTkkvjz3lmWLqqjEFMsBWUs925ys0KItPaUpe1Zui8a3kSb3/m1W0rwbCQOe0SYxA0gYjNlwNrGFbELIZ6GF/om4hwOExYvJ7
+ 8ilxisV6
+ cA3HGEKBQLH0en+5aEatDyNinZmaWKadekuUvvNGb8d2KC+9TQj0tVdSV2VdRBFsJmNLbQAJEa+bCRTJbHWhCiYK4w8b9CoAeXJvi7pqYl0Cj2B2Es9bC/FdC5RKHinvhuFnXHcmtPrFLrCSHp+/6DoEnnccnDu7UyJV951WmeUw6Et8KbhU/bVrzilYgyMHF1udDgtMrLI6qbPEb6U23wLXqgzf4sWlxKoloVoWco6Sg2MY9bzm0k5FovgoyBNjbokSAkC+7qU9csPOPznOOlupOvGSB67BZ0Ofj5os7J+oOz0ai6J4YjtcPrNeLtpFwhy/MjlvjtDNZPannTmxcn0u1rGLsPGI001OEwMwJuEu56GG+3y3r3HopKaUj0hj9eeoYafpVHbyDkAi/rZ+W3fXTbbzo9eOSBA9qeby8Jb5sYEzLPA04mT4JnobazcUAkKkhvFfiozwRwZn+OcHEIbzQIkNuFM8YdmQTAp21LgUoYgOhl4Yc6MxwiRuSeuX0VUDb4pwRstDMu87zR7DdlzOU/PbJuz/XVa/0SKNDLbugjnGqSSDaEf/NmQ4Whq3j+pzdBAFxxKpE94MAAtPy1okaXgki7fDavyyxVfpXuYRtqUy+SuMFGUICOgB9uFXxrxcMJOwUiZ6dPbUatSnAXtt4tLJqbYYIm2CJhx+L7I2xFHVEZp2SYLxlktJv4nuSzBK8eshlpHswIGryAzNA8NPw+cNax7CHmpcT0h/jWowomhhXD4bXhkDB8iV52lkFdclV8hhhJjvtuIG8UVzlwMz9/Miw2S8iUJG1THLH3jDF3KTVk1TMEpvXSuaRi8kfyGcSbt1gb+hj2Ehd7n+yQV3FwVv77Th67Ieef9CmAYjhXZrS8KLITsIdOWAO3JH8CLdycQ04IWDXYTiH6WIsYX1G65YQaSGMUbEMqtamyfnzrgTdcXIV8PqOBOqTmQqwRFcRMpQacdRrEtHYGFKSa9f62SgW
+ NiBRzNc3
+ gSJHJAdfMnwWrQoXNh6XU65sc1/0kUk+8i6GBY4oWBfdeqjnTJ9Kj8HEIjwO0roLtDDsIXTg6FK1mlah6WUENxKOMIApLCOBuqSmtyKNovl/3dDS6ta1Tv+X/mFvnlY/3TmA/7ucPKrFgKu7zlG81pUuyuPb/YggGF7rmj/YL7X2Bcklc0NJpJhebcsTmbf/OqtZUKJQyDBYdyB8bytG3sXJym8ZDvWkw73vwdtF23ZKj4C1rAsaTG6hMD6uLaftG+sVnhkeK4H8KrkA9SntEjDUQxZh8UkWvFMXePhNITg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,72 +113,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Le 29/03/2026 =C3=A0 19:32, Demi Marie Obenour a =C3=A9crit=C2=A0:
+> On 3/24/26 10:17, Demi Marie Obenour wrote:
+>> Here is a proposed design document for supporting mapping GPU VRAM
+>> and/or file-backed memory into other domains.  It's not in the form of
+>> a patch because the leading + characters would just make it harder to
+>> read for no particular gain, and because this is still RFC right now.
+>> Once it is ready to merge, I'll send a proper patch.  Nevertheless,
+>> you can consider this to be
+>>
+>> Signed-off-by: Demi Marie Obenour <demiobenour@gmail.com>
+>>
+>> This approach is very different from the "frontend-allocates"
+>> approach used elsewhere in Xen.  It is very much Linux-centric,
+>> rather than Xen-centric.  In fact, MMU notifiers were invented for
+>> KVM, and this approach is exactly the same as the one KVM implements.
+>> However, to the best of my understanding, the design described here is
+>> the only viable one.  Linux MM and GPU drivers require it, and changes
+>> to either to relax this requirement will not be accepted upstream.
+> 
+> Teddy Astie (CCd) proposed a couple of alternatives on Matrix:
+> 
+> 1. Create dma-bufs for guest pages and import them into the host.
+> 
+>     This is a win not only for Xen, but also for KVM.  Right now, shared
+>     (CPU) memory buffers must be copied from the guest to the host,
+>     which is pointless.  So fixing that is a good thing!  That said,
+>     I'm still concerned about triggering GPU driver code-paths that
+>     are not tested on bare metal.
+>     
+> 2. Use PASID and 2-stage translation so that the GPU can operate in
+>     guest physical memory.
+>     
+>     This is also a win.  AMD XDNA absolutely requires PASID support,
+>     and apparently AMD GPUs can also use PASID.  So being able to use
+>     PASID is certainly helpful.
+> 
+> However, I don't think either approach is sufficient for two reasons.
+> 
+> First, discrete GPUs have dedicated VRAM, which Xen knows nothing about.
+> Only dom0's GPU drivers can manage VRAM, and they will insist on being
+> able to migrate it between the CPU and the GPU.  Furthermore, VRAM
+> can only be allocated using GPU driver ioctls, which will allocate
+> it from dom0-owned memory.
+> 
+> Second, Certain Wayland protocols, such as screencapture, require program=
+s
+> to be able to import dmabufs.  Both of the above solutions would
+> require that the pages be pinned.  I don't think this is an option,
+> as IIUC pin_user_pages() fails on mappings of these dmabufs.  It's why
+> direct I/O to dmabufs doesn't work.
+> 
+
+I suppose it fails because of the RAM/VRAM constraint you said 
+previously. If the location of the memory stays the same (i.e guest 
+memory mapping), pin should be almost "no-op".
+
+(though, having dma-buf buffers coming from GPU drivers failing to pin 
+is probably not a good thing in term of stability; some stuff like 
+cameras probably break as a result; but I'm not a expert on that subject)
+
+> To the best of my knowledge, these problems mean that lending memory
+> is the only way to get robust GPU acceleration for both graphics and
+> compute workloads under Xen.  Simpler approaches might work for pure
+> compute workloads, for iGPUs, or for drivers that have Xen-specific
+> changes.  None of them, however, support graphics workloads on dGPUs
+> while using the GPU driver the same way bare metal workloads do.
+> 
+> Linux's graphics stack is massive, and trying to adapt it to work with
+> Xen isn't going to be sustainable in the long term.  Adapting Xen to
+> fit the graphics stack is probably more work up front, but it has the
+> advantage of working with all GPU drivers, including ones that have not
+> been written yet.  It also means that the testing done on bare metal is
+> still applicable, and that bugs found when using this driver can either
+> be reproduced on bare metal or can be fixed without driver changes.
+
+One of my main concerns was about whether dma-buf can be used as 
+"general purpose" GPU buffers; what I read in driver code suggest it 
+should be fine, but it's a bit on the edge.
+
+> 
+> Finally, I'm not actually attached to memory lending at all.  It's a
+> lot of complexity, and it's not at all similar to how the rest of
+> Xen works.  If someone else can come up with a better solution that
+> doesn't require GPU driver changes, I'd be all for it.  Unfortunately,
+> I suspect none exists.  One can make almost anything work if one is
+> willing to patch the drivers, but I am virtually certain that this
+> will not be long-term sustainable.
+> 
+
+There's also the virtio-gpu side to consider. Blob mechanism appears to 
+insist that GPU memory to come from the host by allowing buffers that 
+aren't bound to virtio-gpu BAR yet (that also complexifies the KVM 
+situation).
+
+You can have GPU memory that exists in virtio-gpu, without being 
+guest-visible, then the guest can map it on its own BAR.
+
+> If Xen had its own GPU drivers, the situation would be totally
+> different.  However, Xen must rely on Linux's GPU drivers, and that
+> means it must play by their rules.
 
 
 
 
+--
+Teddy Astie | Vates XCP-ng Developer
 
+XCP-ng & Xen Orchestra - Vates solutions
 
+web: https://vates.tech
 
-
----- On Mon, 30 Mar 2026 09:16:44 +0100 david@kernel.org wrote ----
-
-
-> On 3/30/26 09:50, Krzysztof Kozlowski wrote:
-> > On 30/03/2026 08:27, David Hildenbrand (Arm) wrote:
-> >> On 3/27/26 16:22, Josh Law wrote:
-> >>>
-> >>>
-> >>>
-> >>>
-> >>> Hello david, thanks for being polite about this whole thing!
-> >>>
-> >>>
-> >>> so, you are talking to a real human, i promise you that now
-> >>
-> >> That's exactly, what I would say if I were a bot ;)
-> >>
-> >> As a first step, fix the line wrapping. The following document was
-> >> helpful to me in the past:
-> >>
-> >> =C2=A0=C2=A0=C2=A0=C2=A0Documentation/process/email-clients.rst
-> >
-> > Yeah, good luck. Several people asked for that already, like 10 or 20
-> > times. Andrew asked that a few times.
-> >
-> > And yesterday we got another sloppy posting, so that would be it for
-> > having some time off to learn things and take slowly. 3 days after this
-> > AI slop which does not even build.
->
-> Bot confirmed, I guess :)
-> --
-> Cheers,
->
-> David
-
-
-
-
-
-
-
-
-? That was me learning the ropes, by making a patch to the QCOM subsystem
-
-
-and it was a genuinely "ok" patch.
-
-
-May you please tell me what I did wrong here.
-
-
-
-
-V/R
-
-
-
-
-Josh Law
 
 
