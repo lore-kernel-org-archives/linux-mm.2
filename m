@@ -4,128 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 368B81061B18
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:59:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 892D91061B1C
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 19:02:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93D096B0088; Mon, 30 Mar 2026 14:59:52 -0400 (EDT)
+	id C75AF6B008C; Mon, 30 Mar 2026 15:02:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ED746B008C; Mon, 30 Mar 2026 14:59:52 -0400 (EDT)
+	id C4D606B0095; Mon, 30 Mar 2026 15:02:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DC306B0096; Mon, 30 Mar 2026 14:59:52 -0400 (EDT)
+	id B63416B0096; Mon, 30 Mar 2026 15:02:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C7756B0088
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:59:52 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2107E13BBE8
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:59:52 +0000 (UTC)
-X-FDA: 84603643824.29.D74E306
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2EAD34000F
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:59:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aDlgCBvb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A2A176B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:02:53 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4039DE0C04
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:02:53 +0000 (UTC)
+X-FDA: 84603651426.19.D032418
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9430480005
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:02:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SOC1y4Yd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774897190;
+	s=arc-20220608; t=1774897370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cFGS6w31Laz9Ddur1i7GLVmK/pVD2soBNffdP6C8TRo=;
-	b=eLeJN7wNOf+qPAfm0tDuz9AIhEucysBH+wSQMFV9CwxVk8FNRcnzZ3SZhxqu3XmwYEw3Qe
-	jBrxn4VU60K/aGSLX9dHsdKNa8Z2CH5D6qJEaL+8LVPG6d2GLGmzdVjlKFp4OtC14yLYqG
-	ObPtP/HYLrkTK0DcBk5OOGcMKU0rNS0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774897190; a=rsa-sha256;
+	bh=jD/E7d7j6MkqANMDt/AqL9jdwppuHxpcNjpbIzxXLog=;
+	b=CzSvqQ6T63X/fH9ax+S1HRew37VZRIneAmkKyJw5P8hF4jm6SHHupoSf2Pl+heOmISC3PG
+	ZuCirARRfAAEjXND+duHnmkMxQ3tJDDDS6N78Y//Fu+fX/GN66GymcIMkJyKZbG9l6ebXK
+	R8QbKc+ZHjhDEe0IGHX1x7PA5grDRUM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774897371; a=rsa-sha256;
 	cv=none;
-	b=3p7lxDyrGOTcenIZNO7BwoMwGsZihm/UGnle6K+xfnoHi8puBoDZzoRUCiXNdTOwDRA2mu
-	Fk0xENDpI8m58CJEaSPxjaFpADUIIXF6W8qF8O0O6FAIt03hBuVuPzT7KG1XRy+A/w9qmW
-	DidUQIOZIvIpUjl37uO/wQCunlIS9EU=
+	b=3oAnMNOIrblroba1p8U1j1x+ltlvb6/uQ++B0tzdecgasuuiPxqe3qqDuwys1EP8FjSRrS
+	SOmNkMgrjGMctRaoqRQd8Uv+uKofPeLxs7eg0SZK2Al+Ia6X158aoZ/ZKbm0/+vMHEmnmW
+	/5JHvmusp7QrCM1V4SS4b9kKIsCFd9w=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aDlgCBvb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-41c5a81d4b1so3986854fac.1
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:59:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774897189; x=1775501989; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cFGS6w31Laz9Ddur1i7GLVmK/pVD2soBNffdP6C8TRo=;
-        b=aDlgCBvb8FQC5bc156y2Y8AMNRL3+d8tA/sx2INimxm3evfNQnQcL1ikyAg3Bii53U
-         WxuP1nU1eKJkanbohCFw7s7jHyjul/n4L/OlMg2jKqW7UvXH+L50tV+d+jXGg4WB7FMB
-         mOp72tBHKw8TdY2T/pkESO/5+kTxoBMwZtAAwgnE1/fOj/+7bBhIYfvaSV31WVFZw5aZ
-         d+SifvWmwd8qt6S63ODIhqU1c4PhA43Qp15rStpjkFNEYmx8D/eM8tcSQ85gDus7yKuS
-         Jog0nEKlPZxayb+b0NpTCfT49S7hFOS8uCRf+eZ2PsXVF9dq4O7iVxyCrLDw3RHWTsya
-         1gwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774897189; x=1775501989;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cFGS6w31Laz9Ddur1i7GLVmK/pVD2soBNffdP6C8TRo=;
-        b=Ikoyfb4LEs4bRfwOmuu2Yz5MAYsywvDa7+RqOc7b+im7d58uR2Ba4G8GsLpyu9NJ7x
-         OHUH/HXLQHaKm9um+CRC2VzrfoLl0Rv7pCaR6r0Z9dLTm38KOF2wiQSQiCNhCD0La7NJ
-         gGq0z9sWaX44x2QbYgPuQ1X8qC/JUhE4A1yowMqoHvrP5baWxu8Zwe4EbmpcAh07X2Q/
-         Ytbi5burmDm0D8DITWvJ/qJYiT/AnfFHSO9NeMPso6Dd58paD4ATXIaFEoddFCRn+bmY
-         FCmXmYuiRFw4z5cAR3IRJ3Pr4eJi8sifKg0OcBQcCrHQcyt5nZXazQo/3ACCwAQ9F3c5
-         SCag==
-X-Forwarded-Encrypted: i=1; AJvYcCX34njsm2RaBGtXQwKVXHDlAd5tR0ULPgmViXORbQwopPXD1NCCaYjf2fxYYJWEs18H6TYxPYRJew==@kvack.org
-X-Gm-Message-State: AOJu0YxyTrQtJmoaB/ST4pb9BBOp3C9Dulaa/X7PYzWgwRgNLasqlmZH
-	yridNqIaArDWgApIdCucx0w4KpsWWcn5CCeoNTmUF3AT++vRkBFIopzF
-X-Gm-Gg: ATEYQzwdp00IF0iMwFtRu20uRli3j6haGJlQS49e83QTOtEnXg+wnpG3yFigwgFSIwJ
-	LLRfTGjtAcHfgxSAfLMs//cIsTPuqNKN8KJ7cMuPVBLPSDam5rQzO7t8lUOReHUVbGMpcRzaYxo
-	zC28bVjlzMLyNQtMab9rB5J5GaLFdzbSXwUCXvB6t2QukK/LCDAcoAo5OiHgW1ZfuyjbVGNWlJz
-	ZjgTWbmnkHTCyy7U8cNnULdaFMgqfheSU4s8gBGdfuBPnq7g6/P6eg+/vbup0PqBGOD9c4R9kAT
-	HHdEMzvwXidWLoUPv43n7vK+b/YEZuPlanrsAIQlKcv1nUlTuuOIzMMlHmM65ih10ygLXmfHZcC
-	aqcvMLeLpCkQYDiyHJt+Cp3MxsEYs+/k5tq6v1hRGlzTGa6gcmKcKJJ9HRF56RDYNXpRgkVZCsb
-	MyeBSlF6QlFh0JCV0P+1qCOw==
-X-Received: by 2002:a05:6808:2f09:b0:467:f1e5:a294 with SMTP id 5614622812f47-46acdb4b61cmr444228b6e.4.1774897188917;
-        Mon, 30 Mar 2026 11:59:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:73::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-46aa03656e2sm5180605b6e.11.2026.03.30.11.59.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 11:59:48 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-Date: Mon, 30 Mar 2026 11:59:45 -0700
-Message-ID: <20260330185947.2427740-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <CAO9r8zOKaPocJYMKL=A=6=qpWgwCa=fMC8EZsSW+632M1q1sZg@mail.gmail.com>
-References: 
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SOC1y4Yd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A59624455A
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819D9C2BCC4
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774897369;
+	bh=V8UjiYxzfl/lZG1iwhIdVcgUjo7J2faQ/Wnx1HhOfRI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SOC1y4YdF+TE8yz5hNlXQ4JYtHhx8XCf13Ewvl3BZpJHD4HFntapHnOun+DQ1YiU6
+	 sRBl0hbkAjT6GAtlyFdkJJFbBPUMs0ZNO4G94SE7JQRcmzFdh7Nx3E3bHdTfE5NZRf
+	 eKDVMk038Ga0vDeZjdqbhQ2aVJ06JSxxuXgrJD98DVaGxArBW9tx40bADmb9Xqzl63
+	 HgX1XbA1e5oa9k5lcIEaEWS8uiE68t1s3i5BM+90h9MfNUy91SPs+yCUMU0WqJvGaw
+	 L26RWxif6II6ufNLGtCKuoT0XuQ6IXOYK9YUZwhjueZi8UgjGqwJHRfZuSRqOud4kO
+	 vRpBHAklN3S3Q==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-66c3635d758so88613a12.3
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:02:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX7knalo8xjK6GwflL+QEol2nbqXu32v3rYVgsTZFEstvrlxMfOOEoCU1y2eicAH5fopBpiGGAZmw==@kvack.org
+X-Gm-Message-State: AOJu0Yzi0ywunEJXPHtxu7qOs1ptBxg08538tjqHoz9+qRI2UAPRapVA
+	uZyKdP2B2gxmY4hunzVOLCohQmKyQnBOjrub/uaYLb2d2DQHnMnZhi4OVAnaFDb6ns7GOqA38ez
+	eiHeHu76pJSR1mzHyEiAZOltRyxumQZc=
+X-Received: by 2002:a17:907:cb13:b0:b96:e3db:9e04 with SMTP id
+ a640c23a62f3a-b9b5094edf8mr570685066b.53.1774897368210; Mon, 30 Mar 2026
+ 12:02:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2EAD34000F
-X-Stat-Signature: hyz5t7z7e5r4wza3s3g7wkh4m5mgqbgf
+References: <CAO9r8zOKaPocJYMKL=A=6=qpWgwCa=fMC8EZsSW+632M1q1sZg@mail.gmail.com>
+ <20260330185947.2427740-1-joshua.hahnjy@gmail.com>
+In-Reply-To: <20260330185947.2427740-1-joshua.hahnjy@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 30 Mar 2026 12:02:35 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zM1My0cdMV4NomHL-zyconjjq6dP5iSqOyWm10Gnfe7fw@mail.gmail.com>
+X-Gm-Features: AQROBzD5Q4JVONjgLXuHQnh-7_hxGvOUjkM2GvDUWYmix-4crTfbUhCwaZZfCG4
+Message-ID: <CAO9r8zM1My0cdMV4NomHL-zyconjjq6dP5iSqOyWm10Gnfe7fw@mail.gmail.com>
+Subject: Re: [PATCH] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 9430480005
+X-Stat-Signature: nwsshmkknbx8dhi3udk8pwaag7khuabs
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1774897189-899584
-X-HE-Meta: U2FsdGVkX1/y3pVJlms5KdEIQ4DXrG3bH1J3/Q/QyJz2NNGvB0ykmulwqI5X9Wo3xOzfF6CpRrGAiWwi/6Ayo8QvZYm/+MALA9i/wUO6WXvQBL2X3YvmI5WxhlyO7bceSsV8p/9zTAidfFdLuwD9OizvtI92v/OqAZjxvGWb/wNHYivaQ+wj+IHjnROGaiXyN7LLIhtaMddfVHuY5LZ+xWmFFK+TB+MMTGtXyN90ncUEsd33dJai86tkGrmfSPa2qv8a8idJUPSdml0MJDCkdIsTCiA5LoF3HrTFOAGkDImmjl1npxrzjVCgmaMTQpBwPieD5c/ZhzGVd2fe4s61R+9tMkzJDhVkUCj+sI40q7umLC9OkjUyh3KwLx5YOIZUhcShi59FRIUb+c+e5Vz5cP7uWEhgNPn3TPNmLhiqiszqDbkXZRtLpp6rga36dhfFt9r/cKk+K5UVyF99c52I5ZrjovvfsuA6nDMpfEB6UedYF0r4ACxIUi4EIhkS/JXWA9IUB0v0xwPQfPGYBCulBtCpBYe0KhQRwZVQJVHjFx56U3mSyhXo7q2hSbCC8wHmHqxSx0lMqF32ZH0xM5i5jiCkEtzLqlPehw9K8IJNfG7C3gAPg42K/5AMD711tPA4146CAlHdShSEnZexUqwbhVQkgHLB/EODdiZwfw6g3zdbNVTb9JUWd46mYxlfloofciDYtup9kVGDQjdX7c3ZW0gXNciNZT5tpI1UVmirWJnHADIU/malVkR6H8jyT12dm4jj/4dVEIQtUA28UekIg3O7BXmCmX+GdnqnhLi3gFOajE5kXpsuvyAvOMxQ6riiN5HWopzrvsXz+2DMzIihl0jR+WHDBT0lZE/zLzxiD5+SLRxhsJIRjLNSVVgIlFQ7GNyp94+6iSOGK0BBVLftP/5nAICJPdIXtZY+qTOlemFEN/D+JHQOMwvv6x3h1t+OdOTh7am8fPPvto2xfeX
- XtSuZ8Fx
- 53B0+OJnU2SLrDucYi0Z0/6I347MH9J6A0Z7xzjXlBR7daWJSjTyb4t8p2co67BOVKUUlk2/bLxjeaaQ7mFceYFvIGRlIABe3/cK2WRHU7a4yHgzOCT56cSj5PFnH9NzIoVijpr6JM3NAVMF47ORGJWhhV2D8FYQj2k2Rkn0j1B29u8d6N3Bs3dHACAEcNTf7wFhiCV6HxaXIKnnLiGqHrBP1AaE1dqK5y92xdQTHftEmRd4oduhOAxP6EvZE5Osv8vvT3IU6bo159Iju6ui6MHY7ZbrgOi5tHXdCuHFXHcOWLE8sPaCGpqLtWAjRUym+KFmeri/dsOkoidJk0vH++wi5iuwD1YJQGlwCFUNCAjMBkhiT4W8sKZvqzJhG49A2mFLy1qjos8sqTxJoHLBua7x1YMeBmSDPuq507ttXTKgzEm9RZKzb9Nr5YU/ED1uxm2DqsIRnfOiugJnWJwVJwtPS+BGLCtys3P0BeYqQgyfuUYu9blp8+RhyhQduoNHTdSM5Sd0tR05UwPfiOxQHZvTyGGxKu6ZWW8XF3e5SweSZJHujJomb5bpjGLrXmUGyqMdMtuNapgHnNlsj3q5R7RZmqNvS09j804I9FYqsrsWoIPpOK1ziEy78JPblyVg0M6fW
+X-HE-Tag: 1774897370-672782
+X-HE-Meta: U2FsdGVkX1+gVXSihhtP0sze/EQzPwqSgu6zqggy1IIHtJTu96DVVAojvwEL4/vF7IutowIBi1HxafmuUdB3kRfn2WfsRlOJqNa/CyzQRXl4oiaHZMd2rXo9SgDC4KkKoQbf/Yb1XUqmtOAXMDWIrkYDvlYiDY6DnFVmPAITkVs3mCfEAXYuDAeHx5cjNuePA7Hds1sIi8gevI/PVlLNeU2KVZ2p1qx09ae6t0WWp/bM59T/k5NM8hrwlWpGyWjDcf0SBzi/f9qVigexF9L6g0oh+mEGTmiILzjyWJP+HtfHAeHl8m6+VQIpTpxP7+RdUKv2RQwCmWWb5FU9ubqvkZsyES/CDsUwd6MNcO9C2gcrocSPlBqfHM09bWOIGhk7GAHkqhjlAGl2oo4zyvXbhUlnQVoIr/BJCfG3wD5k6eAt5MkBfZFs4eHK8vhogFE0TZhENHk05eUhSx65ApfEvStirsuZ+zHKKWgDBycxOKfjjUUiPyl+wUnEbOvrYhEvocD7+1JIGAOOCi+SwKxEBXm1C5DQiOVyDPP/Q+AnRade/ZcraKBg66TgOU1FA6n4LNHFvtIdeWVmLbeHv2HbfOWHozWo0rB7AL8uKegXBs19Xpmw899sIILSy1A0c/UGa4lEDmxtGnDvlqLfrDLcLTp/X4DFE7LXOLuaxE7EKeP7uHJm+trKDithY+9VGLtcavj9CfY1qHvmbLtxnsvuhgmb4JLMvQZGMQmp95nKHJzcR8JH1LMi7D8tdjRsFVqTR2euO2qHZNosqU2ft029qJrVL8DgeXTFMMzQVqBOt4bKe13207AmbLpOLLzLwbZpxpq3+s9A9jtsS23aXKA7R398TmxGXVbvK+OYAb/AKHTBQ35lD/qQjY2ashJ/U8PXWW6RQjXac50m6BJapl/epUlPKjFBeSmPUyLxAUPvJf+GYULFAv1rHkDlVr+N7D6xxbGUiYl/H2c3Yd0u2ax
+ lC4TGMhB
+ vWx0uYTQVBAtyD7Alhx3sadT9RjaQ7h6exMjaxcL2Dw+u6Mdk2fSV06bYIol57fFX2MpVNIp+4AEjS5ylHM4+gNBAe8HApAedX55q4QoLvccaIjQIv9MFzPCd0FgTp7wpYgavwrD/xrHvRfMPo1AmpI+KbFudbjaSG60Gknrlv6CzAratVVcmXVSOcli3djCycd3MHMSEVC0t14m3VkLzgVdj1ulkva06h5W+8NZLH0gZoEz5oTyEoG4Vw4bpnwv5v+mGjU6prmQt5MRCH13bGJ4P1L+XWdq1GrglwTK/qYRAhwyfo/WHSPMk3/f8Lop6jws6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,82 +106,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026 11:35:38 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+> > You should probably also speak to extra memory overhead to move all
+> > these stats from per-memcg to per-lruvec.
+>
+> Hello Yosry,
+>
+> Thank you for your feedback!
+>
+> Here are the things that I cna see from my end:
+> - NR_PERCPU_B adds a byte per-node, per-cpu. I think this is manageable.
+> - lruvec_stats_percpu grows by 1 long in 2 arrays (state, state_prev) since
+>   NR_MEMCG_NODE_STAT_ITEMS grows by 1 from ~30. This is +16 bytes per
+>   cgroup x node x CPU. Even still, I'm not sure this is too concerning,
+>   on a host with 300 CPUs across 2 nodes with 100 cgroups (theoretical)
+>   we would see a 16 * 300 * 2 * 100 = 937 kB change, less than a mB (and
+>   I think this would be considered a big machine).
+>
+> What do you think? Do these numbers look acceptable?
 
-> On Mon, Mar 30, 2026 at 7:21 AM Michal Hocko <mhocko@suse.com> wrote:
-> >
-> > On Mon 30-03-26 07:10:10, Joshua Hahn wrote:
-> > > On Mon, 30 Mar 2026 14:03:29 +0200 Michal Hocko <mhocko@suse.com> wrote:
-> > >
-> > > > On Fri 27-03-26 12:19:35, Joshua Hahn wrote:
-> > > > > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-> > > > > to give visibility into per-node breakdowns for percpu allocations and
-> > > > > turn it into NR_PERCPU_B.
-> > > >
-> > > > Why do we need/want this?
-> > >
-> > > Hello Michal,
-> > >
-> > > Thank you for reviewing my patch! I hope you are doing well.
-> > >
-> > > You're right, I could have done a better job of motivating the patch.
-> > > My intent with this patch is to give some more visibility into where
-> > > memory is physically, once you know which memcg it is in.
-> >
-> > Please keep in mind that WHY is very often much more important than HOW
-> > in the patch so you should always start with the intention and
-> > justification.
-> >
-> > > Percpu memory could probably be seen as "trivial" when it comes to figuring
-> > > out what node it is on, but I'm hoping to make similar transitions to the
-> > > rest of enum memcg_stat_item as well (you can see my work for the zswap
-> > > stats in [1]).
-> > >
-> > > When all of the memory is moved from being tracked per-memcg to per-lruvec,
-> > > then the final vision would be able to attribute node placement within
-> > > each memcg, which can help with diagnosing things like asymmetric node
-> > > pressure within a memcg, which is currently only partially accurate.
-> > >
-> > > Getting per-node breakdowns of percpu memory orthogonal to memcgs also
-> > > seems like a win to me. While unlikely, I think that we can benefit from
-> > > some amount of visibility into whether percpu allocations are happening
-> > > equally across all CPUs.
-> > >
-> > > What do you think? Thank you again, I hope you have a great day!
-> >
-> > I think that you should have started with this intended outcome first
-> > rather than slicing it in pieces. Why do we want to shift to per-node
-> > stats for other/all counters? What is the cost associated comparing to the
-> > existing accounting (if any)? Please go into details on how do you plan
-> > to use the data before we commit into a lot of code churn.
-> >
-> > TBH I do not see any fundamental reasons why this would be impossible
-> > but I am not really sure this is worth the work and I also do not see
-> > potential subtle issues that we might stumble over when getting there.
-> > So I would appreciate if you could have a look into that deeper and
-> > provide us with evaluation on how do you want to achieve your end goal
-> > and what can we expect on the way. It is, of course, impossible to see
-> > all potential problems without starting implementing the thing but a
-> > high level evaluation would be really helpful.
-> 
-> You should probably also speak to extra memory overhead to move all
-> these stats from per-memcg to per-lruvec.
+Oh I wasn't trying to say whether this is acceptable or not, just that
+this is a relevant context that should be included to help people see
+the tradeoff clearly and make a decision.
 
-Hello Yosry,
-
-Thank you for your feedback!
-
-Here are the things that I cna see from my end:
-- NR_PERCPU_B adds a byte per-node, per-cpu. I think this is manageable.
-- lruvec_stats_percpu grows by 1 long in 2 arrays (state, state_prev) since
-  NR_MEMCG_NODE_STAT_ITEMS grows by 1 from ~30. This is +16 bytes per
-  cgroup x node x CPU. Even still, I'm not sure this is too concerning,
-  on a host with 300 CPUs across 2 nodes with 100 cgroups (theoretical)
-  we would see a 16 * 300 * 2 * 100 = 937 kB change, less than a mB (and
-  I think this would be considered a big machine).
-
-What do you think? Do these numbers look acceptable?
-
-Thanks again for your insights, I hope you have a great day : -)
-Joshua
+>
+> Thanks again for your insights, I hope you have a great day : -)
+> Joshua
+>
 
