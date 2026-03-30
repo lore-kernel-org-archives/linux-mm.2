@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 988E01061B09
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:16:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 949B4FC97F3
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 15:16:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC52E6B00A0; Mon, 30 Mar 2026 11:16:18 -0400 (EDT)
+	id 047576B00A1; Mon, 30 Mar 2026 11:16:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9D636B00A1; Mon, 30 Mar 2026 11:16:18 -0400 (EDT)
+	id 01E9D6B00A2; Mon, 30 Mar 2026 11:16:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8C146B00A2; Mon, 30 Mar 2026 11:16:18 -0400 (EDT)
+	id E764F6B00A3; Mon, 30 Mar 2026 11:16:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C3E906B00A0
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:16:18 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 58474534EC
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:18 +0000 (UTC)
-X-FDA: 84603080436.18.5F0D197
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 688A140011
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SFPvP8ju;
-	spf=pass (imf17.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D49266B00A1
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:16:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DEE3B9FAE
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:27 +0000 (UTC)
+X-FDA: 84603080814.27.C3A7C17
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C2D3F14000D
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:16:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="XQz4/fJ/";
+	spf=pass (imf26.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774883776;
+	s=arc-20220608; t=1774883785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cP9CaaUU0YGWeU606cF4HfEnHjH3cqBLv/sm6TUkYWs=;
-	b=DC/2NBU238J4cDXrMXtOxbZP2eIhWrSpH3hWSg9jBvwIwi9KNVl3m2kNH9GxxJ3Z/+GIj+
-	eefYVhX/47Tc2RM2vjYWHikii9j6IXODOnAjOLC+e28lE1YC/FqAxRplmM9hRoiARA2e0m
-	MIeQxLJ5tRri11l3m1oGvZWt1+K/t40=
+	bh=Z5cQUZey16cto7EAHb0l8lICJnDidIXEapbKPGxTzr4=;
+	b=5Zjz7vKJHzhnDUWf2il3KvpluiNjWGgOoo4Pu2vvRl3mn3x5ZlJSluYUKZdUF3DBjUGMpT
+	qM7arTNChTHZKoEyAbbrPsV74efLZTzka07+Z53sN7b+kAzKnlCv15FGMedtN2IDgUcoYi
+	l1PdipV6BdHo5n6sKALlKBj3640+sxs=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SFPvP8ju;
-	spf=pass (imf17.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="XQz4/fJ/";
+	spf=pass (imf26.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883776; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774883785; a=rsa-sha256;
 	cv=none;
-	b=K0OVkBfBYrTRBHcC7m2M3mMxMHoQ6S/iA+rkdVcIj7oSyiaSodO928YFrg+yveB3kz8CPA
-	EbRv5wwe73mI6aLLZ0EorKrkqxVKTP6TfOcvO85CcFVAvgqqnQ8zy45rpgl8MvG6Xdtl4L
-	1tWlXWrHG1NqdvcEn9DFxGN2nnlUpeg=
+	b=KT+I+ggrMWXv4/a2x7t1S3bBjZq27eDg8pTxjE9eNNmLKHmJ/Rd44dQ2ZimtiNL80LL0PG
+	rg2NEQQSB/tZB38t0U2lWPSEJABBiyCV5uSeHo+IjrVervrFa5WTlvFH1Hz4lSm78K5XQK
+	cy0Qsqb2P8tvT/DTOX08rfmxf9SZBGg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774883775;
+	s=mimecast20190719; t=1774883785;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cP9CaaUU0YGWeU606cF4HfEnHjH3cqBLv/sm6TUkYWs=;
-	b=SFPvP8ju7rWMkNTLgkIqpEzkkL256S4glbxKQv7pjqFdsp1Y3G9CrCYuxX4r6oODaYuayy
-	7+u5wVN0YRHuJHwrPuNwGf9pHNfm5lJsHnaNUoItyAjJkzqvjl2rJB7t75bdvi7WFy1/cs
-	kdSgxus/i2bStviwKdUwxl1ccesP6DM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=Z5cQUZey16cto7EAHb0l8lICJnDidIXEapbKPGxTzr4=;
+	b=XQz4/fJ/8Im/L9Ny0cI88lbp727bqrVXiswL3ivLkDwUkYR2J+KppdEWzToCwEdKzRvuXU
+	VhCRdurh5AOddNfYfVI3BgG99XTk8eh++QswP/qCHLFMf5FGdbZpemimAKJXDvfhrTyVwY
+	tVNsCjngEUMS8kGk3+ev07KuhHkLoAU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-ABViVErMMFeM-sRTo1Aqlw-1; Mon,
- 30 Mar 2026 11:16:12 -0400
-X-MC-Unique: ABViVErMMFeM-sRTo1Aqlw-1
-X-Mimecast-MFC-AGG-ID: ABViVErMMFeM-sRTo1Aqlw_1774883770
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-qA_E6RabNDW0a_EPyd5sZg-1; Mon,
+ 30 Mar 2026 11:16:21 -0400
+X-MC-Unique: qA_E6RabNDW0a_EPyd5sZg-1
+X-Mimecast-MFC-AGG-ID: qA_E6RabNDW0a_EPyd5sZg_1774883779
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 90BBF19560A2;
-	Mon, 30 Mar 2026 15:16:09 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D4B301800623;
+	Mon, 30 Mar 2026 15:16:18 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3403119560AB;
-	Mon, 30 Mar 2026 15:16:00 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 88E8F19560AB;
+	Mon, 30 Mar 2026 15:16:09 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -98,25 +98,25 @@ Cc: linux-kselftest@vger.kernel.org,
 	lance.yang@linux.dev,
 	chuhu@redhat.com,
 	Li Wang <liwang@redhat.com>
-Subject: [PATCH v7 6/7] selftests/mm: split_huge_page_test: skip the test when thp is not available
-Date: Mon, 30 Mar 2026 23:15:02 +0800
-Message-ID: <20260330151503.670415-7-chuhu@redhat.com>
+Subject: [PATCH v7 7/7] selftests/mm: transhuge_stress: skip the test when thp not available
+Date: Mon, 30 Mar 2026 23:15:03 +0800
+Message-ID: <20260330151503.670415-8-chuhu@redhat.com>
 In-Reply-To: <20260330151503.670415-1-chuhu@redhat.com>
 References: <20260330151503.670415-1-chuhu@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: z9AhDslo8SSQOrlMg4VBMm92Hzt_iGrvznnHTCiEx5g_1774883770
+X-Mimecast-MFC-PROC-ID: LZyO39DdXJeebaMNS5GUsCDkrnBrDgZgcoellGcftxk_1774883779
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 688A140011
-X-Stat-Signature: xm38uk7fk8x97d7brfsgcokz75xons4c
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C2D3F14000D
+X-Stat-Signature: u63dpqgwf6hmro969n8q1hz8z4u3iqh8
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774883776-704369
-X-HE-Meta: U2FsdGVkX1/y2JDUWAc4KNAOq0FyquQwxBd6/T4viTi/RxgzGQyncZpGRvzDNIxOFDirQR8HuxpclkeQ4VvdFXww6yaP/P0Pp8O+USLTPDfRfYcrg3PyfY4kWTihyUnIlPoNn/21ye40jdbHH25Ww+gWHG5QC8+KnKCl1IM128+OcyqEBfDJqn84x8adQKNGAO16YqPImZppy8vjW5T6MyicoVqsuwpdroDf5NSGAGIDKvI5Ix8W4Djz1kFcb9smaB6Y55NPyOH/70NHE8XtSLURvBIb6JlSiUs0rBYxQCSgvWTugsHY222vs0gzyRTlTdAj5V4Pj2NoPd98uWFr7cbT3oiqzG+1PG9OFb9NYIx8IjnMttrWjjrWoQnVCQuQZ1N2hZ4pNd6NnD6NHS5IdRQRKvm3WLVecu9emXDk9ANYnaGFvadGrMtGtZ0qdOtGc1CYun2NI03nm4I6qW9qmmwRq3e4edNON5kuC9oSr/80c0Dr6s7G1O2eRsLceOh8FuMCVTXZr9lPOkQ5HA0U3vUvMohX93kYaPGCWf1eacpc9myKK1K3LjWOi293GC1FUEd2L5keifa71vsHS9S5HAWGYFBIzl4tLvCcVR3ejZi3lbFR/mCqojvRsulTW4vF/eD7jY5NbhkqcMBmSxz/+COrRBmhRKvMhypH/MO1kCaFkouSHCZUg6BSrrVSIyFyAgMxqg+TDLqGMOMeu/exSY+eYNO6bcMfuO3fkz2vvzzwsLFE7VZ1NNu4gTv1Vw8+WGXGbeBKADKm28SYHSb0skSo7wNf3ZQ/N7U6gIdCe/LfVkrE4AHDraTXdZq2au03bsmJmWzfo586hTcLSCvCkV3afbpeOsr6e7HqZ2S2sflK9dUpexvu60dsIpXywgXKB0lGVXquWM266OIytFP/VlkRcZhZz4s2mEq6vc8fC26kyiXUSnXAe6hAPKLvFN7BbeuNrLrcPkh/FBKYiQa
- MjU1mWna
- 1LogESojyLvuxKOAKeKU/OgTV9TxGR64rjuU3CZnZxMWbW1g1fxeRhAn4KHJHrc3YE1TbTGz/GF6N1V377dUV+ZxXzfpEmdAjgtrtKi3A3pLhDrLE081Xcw6JtXX1dsgot/0CQVwxAqZKQ3Tus/60ahOB/jZshxncLsSD24v7wfBln5k0UYgIPa2nEQcRLIQT+58J6G2cfyB3fWIO5fO6JkNgPPEFTdyqEVlLhwjSpE9YdFvbt4VQa/YCf/8dB+e4RpXh0h99xrR3uT8/1tOguYgeM0XoMzxejIH7lgcszC3p/R7aGy6uiQNOFRfk7YdNzUBIeKo5WykUoxaT3LrwOcSk0dqYvA52cc4enm630hF3J3IV3WlbUPfg4WaJxbOKLYYDw/bHzsKFbghCjZTCsg3t0pWu74ySJerzlaRM4IF2MmLa3vvZqZPUGQ==
+X-HE-Tag: 1774883785-127779
+X-HE-Meta: U2FsdGVkX18SlQMJ798cbZbZrPNGgyunLn0LnSr9A0bBRPdU56YIHNjbHOsQ4AM5jh1BNcyzZbtc/hPXJ3vueDXUXdnwzzpWDMrnXrnL+HjkoVmdd1YmR3/J4NoaOTCHNM+PIYNjSp92fQQf5nMGl7I8yPVj41Ko3Moo+m5S/dvHLMn1lry9P4yFqBuuQF72zEakJR96qcK+0M7H4Oe6WMBELPXYK2zHhgtwpT3tk0b9r3uqC1C6MWSOiO/PLQsThXAKJKHSanNHok714zPmXJphCaqlim8FamSx+ce0Mz4w+1LafQwjlncafn/u8kKFdeqKCs8yRSly4YZoXf0j/Ol0XvhBIdFZOY7OoZKLTkgmvyRORzDjMwDvhHfYHp+abvWw2RcjFdcTSQuZEWyBEJ4Pk7lfXrYbDdTcNjWTiTu+WgbgwqEMuv9A3olBPSLXOyHMH0ZuNf7cOocW0gXmxjE32MODjeoU9R6hcSt7x893iBFQ4MvnMoxljRMfcwhrQ2HGeW5YlPNSMRQisRiFJFpNcFTt1hshfaT6HA4HKNzahnqybrDbgg/1ZYyERAirtFbqBoHfs6OsbpemRTDzorTaSJsgnsi4kAbATQkf5Mh1xkYWwK9aS7i2knZ9CZrJplHahDeM4oKV2uIj/w6Mqo0pD3zjkyfUAknnKSLtCrvWPHlUjUl8d2hzBw17iJymKrOlgIZ+erLi5DQm5kuHEZAxHtYKNl9LnmNSiMzkAGIF12UF2eroLhXuCj2Zcut9NHc5kfEmZ+1VOJY/InGdBS4R8knbqMgHzEOe0oQ7uy2dx6R1R6TNRtnw1OZhs7UgotjUDNgQBxItksufm3rCJEymVgOSIsn/KNo3MXhrBNcY3cZphfU6N8CA2wTLFhN/0ahLs+uooPbMkJZ32o7UexPLTiA4usISC4ZwJrQIWloBdhK27hUCwTBcVPhJJ8jEIBICXbqBcS6ahHQI/gi
+ UfKczauZ
+ +Sug1wPjetj4sXR8hQE4tPEqCp2ytp9QZQ6r8fhtQbneD3yA0Qil1PXD4e9sBC+c54gHX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,29 +124,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When thp is not enabled on some kernel config such as realtime kernel, the
-test will report failure. Fix the false positive by skipping the test
-directly when thp is not enabled.
+The test requires thp, skip the test when thp is not available to avoid
+false positive.
 
-Tested with thp disabled kernel:
-Before The fix:
-  # --------------------------------------------------
-  # running ./split_huge_page_test /tmp/xfs_dir_Ywup9p
-  # --------------------------------------------------
+Tested with thp disabled kernel.
+Before the fix:
+  # --------------------------------
+  # running ./transhuge-stress -d 20
+  # --------------------------------
   # TAP version 13
-  # Bail out! Reading PMD pagesize failed
+  # 1..1
+  # transhuge-stress: allocate 1453 transhuge pages, using 2907 MiB virtual memory and 11 MiB of ram
+  # Bail out! MADV_HUGEPAGE# Planned tests != run tests (1 != 0)
   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
   # [FAIL]
-  not ok 61 split_huge_page_test /tmp/xfs_dir_Ywup9p # exit=1
+  not ok 60 transhuge-stress -d 20 # exit=1
 
 After the fix:
-  # --------------------------------------------------
-  # running ./split_huge_page_test /tmp/xfs_dir_YHPUPl
-  # --------------------------------------------------
+  # --------------------------------
+  # running ./transhuge-stress -d 20
+  # --------------------------------
   # TAP version 13
   # 1..0 # SKIP Transparent Hugepages not available
   # [SKIP]
-  ok 6 split_huge_page_test /tmp/xfs_dir_YHPUPl # SKIP
+  ok 5 transhuge-stress -d 20 # SKIP
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
@@ -155,40 +156,39 @@ Reviewed-by: Zi Yan <ziy@nvidia.com>
 CC: Li Wang <liwang@redhat.com>
 Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 ---
-V3 chagnes:
-  - add acked-by from David
-  - add reviewed by from Mike
+V3 changes:
+  - Add review by from Mike
+  - Add acked-by from David
 V2 changes:
-  - removed the {} in if block
-  - removed the write_file helper rename chunk, as there's a new patch 3 to
-    resolve the conflict with thp_settings.h by moving it to vm_util.
+  - Move the exit chunk to the front of ksft_print_headers() as suggested
+    by David.
   - Add reviewed by from Zi and Lorenzo
 ---
- tools/testing/selftests/mm/split_huge_page_test.c | 4 ++++
+ tools/testing/selftests/mm/transhuge-stress.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 93f205327b84..500d07c4938b 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -21,6 +21,7 @@
- #include <time.h>
+diff --git a/tools/testing/selftests/mm/transhuge-stress.c b/tools/testing/selftests/mm/transhuge-stress.c
+index bcad47c09518..7a9f1035099b 100644
+--- a/tools/testing/selftests/mm/transhuge-stress.c
++++ b/tools/testing/selftests/mm/transhuge-stress.c
+@@ -17,6 +17,7 @@
+ #include <sys/mman.h>
  #include "vm_util.h"
  #include "kselftest.h"
 +#include "thp_settings.h"
  
- uint64_t pagesize;
- unsigned int pageshift;
-@@ -757,6 +758,9 @@ int main(int argc, char **argv)
- 		ksft_finished();
- 	}
+ int backing_fd = -1;
+ int mmap_flags = MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE;
+@@ -37,6 +38,9 @@ int main(int argc, char **argv)
+ 
+ 	ksft_print_header();
  
 +	if (!thp_is_enabled())
 +		ksft_exit_skip("Transparent Hugepages not available\n");
 +
- 	if (argc > 1)
- 		optional_xfs_path = argv[1];
- 
+ 	ram = sysconf(_SC_PHYS_PAGES);
+ 	if (ram > SIZE_MAX / psize() / 4)
+ 		ram = SIZE_MAX / 4;
 -- 
 2.53.0
 
