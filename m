@@ -4,96 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 376871061B1F
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 19:54:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42A161061B20
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 19:56:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B4316B008C; Mon, 30 Mar 2026 15:54:28 -0400 (EDT)
+	id 8F37E6B008C; Mon, 30 Mar 2026 15:56:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98C676B0095; Mon, 30 Mar 2026 15:54:28 -0400 (EDT)
+	id 8CB066B0095; Mon, 30 Mar 2026 15:56:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8CA6B0096; Mon, 30 Mar 2026 15:54:28 -0400 (EDT)
+	id 7E0C76B0096; Mon, 30 Mar 2026 15:56:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A84E6B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:54:28 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CDD8613BBA5
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:54:27 +0000 (UTC)
-X-FDA: 84603781374.04.8FCAE36
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 27D68A0011
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:54:25 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mmH6caD6;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mmH6caD6;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774900466; a=rsa-sha256;
-	cv=none;
-	b=QxjB0jd1J+UkaqhADkv5BLgalEg/vkqQEMDsRUe54FmegkqkdDr6Sbzfwsv9OsrnUyNOFr
-	BlFx6dfhWWpfXR3IwEYThfVFWe9G3T/uX2FGmma4TXa4Jj2cmUv4sgXg/kZcp4FoTVzCT3
-	ACI2sDVYsqAgjWYuobvzyTdRNWG/Zq8=
+	by kanga.kvack.org (Postfix) with ESMTP id 690046B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 15:56:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2890C1408AD
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:56:10 +0000 (UTC)
+X-FDA: 84603785700.18.2B28EC3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CEEBB40010
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 19:56:07 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FY5cD7JU;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of luyang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luyang@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774900466;
+	s=arc-20220608; t=1774900568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DlxZdB4vJ6qSPBcJ7ScIZuh/mIwRyixeLuiUfji1Cxc=;
-	b=GNXvRBU7nXOSXdV/XfCFRHcsJK+yV3SCudNo3YVzY/WcOgMGQFnYug/OVeMCaUFDPZ9fx5
-	YQJJXUlmymdM48tSqn9pM1VnwUCSceJKqTkNbGBHbiP2Yb4Tt6hIFvsHGnxlGC80TahynH
-	UupwC3hQ1FeGEC13iSxclwIwSFq9DFc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 322CD60121;
-	Mon, 30 Mar 2026 19:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19772C4CEF7;
-	Mon, 30 Mar 2026 19:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774900464;
-	bh=PVggmHFroeTCysyxMzuB1gpR33ZPKG+IwSLIbZBkreE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mmH6caD6cf5ZzhC0rQz1KMrVf2wx+yEwqntoWzM87S8JUIu+KlW5rT2ui/qXnKvz5
-	 GGCdaqeYY+TcWZ7rJNCO7bjpaNo8naiq2FqdOn63pssh5xZlFSNEP0PUjY8dVIZd9b
-	 ZInP9Szdi2A1JQQXjXLO2fJ1oCYmTHfcC/voVBJQ=
-Date: Mon, 30 Mar 2026 12:54:23 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, Andrei Vagin
- <avagin@google.com>, Axel Rasmussen <axelrasmussen@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>,
- Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, James
- Houghton <jthoughton@google.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin
- <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 00/15] mm, kvm: allow uffd support in guest_memfd
-Message-Id: <20260330125423.90bc3c6b0e9164d19e8a3995@linux-foundation.org>
-In-Reply-To: <20260330101116.1117699-1-rppt@kernel.org>
-References: <20260330101116.1117699-1-rppt@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 27D68A0011
-X-Stat-Signature: uu9dmy78z3wpstqfpxdaaowsz63xjq8z
+	bh=12ccQsmGElhf26rhTcqNi+T5PgU8apQ7aXMoNwewgDY=;
+	b=RafpTGy7UDnzjaLMdn21DHoAXwPgQwk1tT/9EG/pJii8FT0L0OFQ4wL9IZbhp7Pt48llNw
+	c3ww3eNSHpdwODbDX6QS2QQIkT5BAR4zL/mAxgwVROoSTH1PBoXuBqdgEOKwyTcoUn2N6f
+	3yFEF73AWuptFvyKT/AgWagVNVksonE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774900568; a=rsa-sha256;
+	cv=none;
+	b=yS3t5htIbhWiXzgtMdwxxvxydXCs0NsXwijYFt/kGE/rkW9PCgPYPL57XBJvfeh+Arf9aL
+	A1wdON2VuV/fs1rdUF2YNkNTm6RD87/TaH8BBMl1rxDZVfa1s0lFlUrCV++U8NcAalHKIZ
+	hN7AJA/yvXEy2lScA6ehv7qiQ+0GzgY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FY5cD7JU;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of luyang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luyang@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774900567;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=12ccQsmGElhf26rhTcqNi+T5PgU8apQ7aXMoNwewgDY=;
+	b=FY5cD7JU0+drHd3G7bMWsTTGlFCk17WIjSN/1HeHIMAhdvZrOY1PM1LzTAjXAN8knb3IqD
+	OhmUnDL1LqMSSZWmhwbdhCHQKE2yZSSvaOuHrdS5gB0Fqm1cKrXXhXBaMu8d6s3ODNumCI
+	L0D6a1PBtan57CxDctCP4CWgSOK1KXA=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-686-cT0tHJRvPEqEryLMeW0Qsg-1; Mon, 30 Mar 2026 15:56:03 -0400
+X-MC-Unique: cT0tHJRvPEqEryLMeW0Qsg-1
+X-Mimecast-MFC-AGG-ID: cT0tHJRvPEqEryLMeW0Qsg_1774900563
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-6501c35bb62so2416165d50.0
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:56:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774900563; x=1775505363;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=12ccQsmGElhf26rhTcqNi+T5PgU8apQ7aXMoNwewgDY=;
+        b=INmG0wT8KVIH28k47xBY3oJKF87YUJsV5jI8reiCzJI90Ks7ov4zwe5Yk4JWqe3hlp
+         bno8dtCYXUDbXSqM1dQsKs4Z4DQp+sm6mfEGuThP9dTw1iy5bRnZVmFBrcYHg1Zuu8WO
+         8eIWGU+GKyIPu7PgMdhAOp5nk+A4UMRBfNhJ7RQCK7tWBBpOfLwPvV+AwQjMZNm9EFB5
+         A2Bj2Li1jhYVcBARCIDxkMftaR8N794/4YDge+FATtAmDDqgJF1D21AoJ85+bAzqteC2
+         gkoZDIJh9pJlOPiLjVvnTJ3VzUUQIZSPJfJ9p2pw9kVjhzhAYQQW2jgfKbDi2H3vMOWF
+         HcWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiLFNdRAHc0Dy8hwdJ+MtRFs2ZuEutvggDR9W5teEhEevitxWj7PH/L9xIc8IRhV26qIB8qU/sdg==@kvack.org
+X-Gm-Message-State: AOJu0Yxu5S+ypGbTRZBCyu5jXcc5phTcm8EQuBpKkVvxAabSOu5vp0Yp
+	HxjCeZQLGtVeg6o+tF6EWTL5H8HOU1UfqddoImRkD/D6oaaV47V0VSTZKfah4TeAfTsD9lITA/W
+	Ca/0jIJSr/HndEqzpmbpsDcVx0dH8FXccUQ5lJJwPwmHavztLEE4A/77zTig72Jgujd+SRu9aLp
+	JGeaBTyV0dPFOYQfR/kbMPRKJP4cM=
+X-Gm-Gg: ATEYQzxqdaAmm2h/EzPEds+irz154oJuJQCyz891scAsNSQnNWMiG9nMEfUL7EBSTJe
+	oGtAk+gBKk2ZXhQIjXgA8U2y3jAaZn2mDWz/PdE5gVofZp/8q8FSpWBmhSAtaQdtc3lRdf+75Qi
+	XUF4FQqpySLRhF4UrYAXNCydHo9pnJ6ejr6r0Ff9ACE73t65Kiz2zKZKypIbrb92GkjXM4RMMjq
+	eEoGQQ=
+X-Received: by 2002:a05:690c:16:b0:79a:ca70:a20b with SMTP id 00721157ae682-79bde0de989mr140952897b3.42.1774900563163;
+        Mon, 30 Mar 2026 12:56:03 -0700 (PDT)
+X-Received: by 2002:a05:690c:16:b0:79a:ca70:a20b with SMTP id
+ 00721157ae682-79bde0de989mr140952557b3.42.1774900562609; Mon, 30 Mar 2026
+ 12:56:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260324154342.156640-1-pfalcato@suse.de>
+In-Reply-To: <20260324154342.156640-1-pfalcato@suse.de>
+From: Luke Yang <luyang@redhat.com>
+Date: Mon, 30 Mar 2026 15:55:51 -0400
+X-Gm-Features: AQROBzAByid42AP3TCQ4_zufnJX_cKTm4LDwH3SGL1r2VGvRbi7o7aoxpfGw7B4
+Message-ID: <CAL2CeBxT4jtJ+LxYb6=BNxNMGinpgD_HYH5gGxOP-45Q2OncqQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] mm/mprotect: micro-optimization work
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, jhladky@redhat.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Nico Pache <npache@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: W4Z6r5UpXpV0aXGyrAzjPGyCcnodQtP-eUeA7Co66rQ_1774900563
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: CEEBB40010
+X-Stat-Signature: khbfcysr4iks3n4fkmkrer1r1e19gwdi
 X-Rspam-User: 
-X-HE-Tag: 1774900465-104311
-X-HE-Meta: U2FsdGVkX19rcDD+++hKEB0g2Nze+PqXNtmBwkKe9crHzoaahrTKhIRQKZxY2JpfQ0V5i/7oCXipLWqPezKBFceKOrX11uG2CHlG271HUiRnGZ9891UnvF4nxYphfoYIkCI4xcqQhDb0oyRbCEBCrnVuYwSypQByOTvUifKVPcbrN5HcmmrXrYECzq1SL/+J78eEU166lrH7A8qxK3BXdOCd/QPUbITt15axwhy/eUhzfbpuQh/laqVCdbpLgc3zRPBJ4KrCnS9FpwWa+E0hgMvY2PvRPDHgCiGBARo/D7A+KVOwymZY08HHDulBpus0xmHuBFkR+WZkFIR3a9m62SCCNambfcn01V4miAGy2k2P+11J4tUaloa0GqeixXs5pIGMpUyzWhgwYzkqy1Jy4DjR2rr7pTNobg8fiBQi33ye8Qla5DWWZkwIKjWkJ5may6gymoeoD4kWdgB3i4zpz0qLCi8uUp520ZjZSrmrXqG4Txa6bemqjLghHdy84v+vmj/ITKMmEmdeatLS3oOzeBNH/R2kEPJvu+wLYSGh71H/AY2gQRlW9tVjGPwlQVJiOV0rrFtfZMCa29ZS15AbtwmGJHJapvyG53hmRFz4khqEedzIFdcK//kRo2Mw0kq+qu/zEiovB5npz/eEfnUfJjEdsjs9CmcoagaE2irXz0QUY+GW++G2vw5QaC3tH3RQ4jdKO16TY+QVndz30/nSHYW7xq7Vy5Hnc2PsYu+8/LgrB+4LEBEg98ThltKadm5T2/hyYIuDeT+elvhc5slpOamk3zpcPEMHfnrL3XypopU5dVsVJbBtTvda7HKskw6OaHNTtoxE4jjSsMLvshH16rK4EmOujkR/tJkZ7hDfP4Azs/A0dITswzgwR7LwWNGp96OjWfqGam5CgVXO5b/k16X04ui43G52pgQw7WgRFhuzb2Mhl0EZByFMjqWSc7pJUsD3WTDHmxddWe5gNnP
- Bj0PQdPh
- eWaech6+gbbS6hDNektA8CnktQieeumKb6EIsRSOjsqK2NeNfO1VgHRzBLGVRWdTho6P2pbfqtV5/gtHNmSh7d36OcA1kyQ4oequPlNsRJxFauopeix4L+r6R2BxQWQ5d2czV4XPn3nNmFCgumeQTCaWjTortg2DL71HO9UykWq/gHluV0PTrw/ztGq5LL1abD4w6aQFqu4qTx0lx6UTIEUu5HiiNvhLaF3mtsZ6ZrnhEKcd6+5OM/w4hzkedyCp4okK5TYM3X/ubF0/0d4vFcYWBtJ0XQVyZjl77Ix0sTE+6+bPcxr2DOGDCk5U/8DS5v8Rt
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1774900567-968980
+X-HE-Meta: U2FsdGVkX19NJfQ1yCXWyB3pIUV+0EMEFLu6MoEVU2S9TXVGA+EGAVUj0zegoTt1HwU4Y/Nh7+PV8BKQvw+G/xtoBiht78zv0w1lPgj/bvU51Wd5mRtvFJ6MII+Z+E5OsE+bb6hEqOF00rU36PCxgbhmZrBaQTWLXY+5lBmtAj1fs07YNUK1ewhGMtFPyExrvEHkQcfWbYJPEGjXHQeCAFsSW243kfU9fE0yET44d1IoB/cQh0Z33hgSMg0zfSSWnkDCCiTjJ5syAe9dGUfwWG4m221gvLd1yhaE58zXFblzcNm88ltIWkCYQjWjT2rUME6xWE3ja7/VkjE/MQ29o+bVRePu4RtaarzXGUBkegK+4cut4ao+IVw1sWnUlVHSKOqZ0iYn8XJ/jwtRtWuOt3VeD8t7nqLBaRMiP8df4/QFe0S6XribZ5VjCiX95lGFMFo6vsRMZsJ9uKF5GhBDpccb72e2q/w7fLQ1XL0ocw6JV6LTR4UVvfys+4QGx0cocYFrF2lQ4qTKKmu+sH98wAZTrS7RMJDnBoDlXNoupc6NGq1o45iRg07hnkgPCniOJUOW39uMOJesxoPx/B/jAsf92ig6t91YXHX1zeLOTAJpDpLTtgbZmrFyo9q2xfnK6g1CkFMD1vvZXGUexkYNBWBgTnvBJnpSAC1RdKPPljnGEutcK8PYlBAFzST2lsynZadDzlo9Ye7Fom2ag43vPWiXW6aioCFzC0Kl7V2NbzLNmY5Fky3xtW7UZSzO1EB0VX8YQRMoDstitEgNQS3c3xyhlW90SKZUiHhCjIYabeu3+sDXHgrHuJc+QQ0CRxfutMXsvuR/+e0IRQNJHjtEzr5TTwUUjcVsTdOg5hoJWqul4f2klVwUlFzJqNH0blH1a/WHdnkAdKbXwpCtw4pJxs6ovzJBIayF2vnBarDqgsGdyw85pLJUbkaIVcf6itj2U5Jd6gwGgiBNnD1rr+j
+ Tz06mcuB
+ rK5dQjkiHKVpFfPTOuoHeIlDSfixBG33XxeCjkb3TsNjWGYh/cTB3sWnS3fzYC0DIvtkbzpevBysAAZHXhLghs7umho/1TUTPMx5Ahw0tYB9T3WeEtK/RsvcTfhXciSO2EB3Z8VnxIFoA6ghBxBMt3G3CCPEkl5wHC4smkuo4ZFL6Bg3K5I7rHonPDm/LmfNG8mikwYREjHcIESzE/pYo5zNCQ+t9jbmR+pqikUA6STa+AixZZRp2qaGvd6ltN9Q25NNoOZ4QzvDt04PeHySrg/jTG61Qc1MlG9GIIUMrYrt+hZc1U4c2/Wfd8sRItvaSiQvb4ENU54JeQTv3xIEn8WOiH07Z+a8m3w+7y5aHBIWhcblh6Zvexa5DHNo1uTCH5HMipav97GUbLuygC339G6cyBUVw5AdC/SRhYvkrVE9y9FtBPcfkFTnNJ/fNnap9pBAERyvrmFfqsyEsCCx65t7pK2d9ZiWYsZBViMcADkljkFHsCFkrmMEPvdNGcqj9YQhuhjMep39O6lAV0LOuTadK9UQ2gVkNX6l9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,111 +127,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 30 Mar 2026 13:11:01 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+Hi Pedro,
 
-> These patches enable support for userfaultfd in guest_memfd.
+Thanks for working on this. I just wanted to share that we've created a
+test kernel with your patches and tested on the following CPUs:
 
-Thanks, I've updated mm.git's mm-unstable branch to this version.  I
-added a little note-to-self to keep tabs on willy's [07/15] comment.
+--- aarch64 ---
+Ampere Altra
+Ampere Altra Max
 
-The series seems to be converging nicely.  Several of the patches
-aren't showing R-b/A-b at this time.
+--- x86_64 ---
+AMD EPYC 7713
+AMD EPYC 7351
+AMD EPYC 7542
+AMD EPYC 7573X
+AMD EPYC 7702
+AMD EPYC 9754
+Intel Xeon Gold 6126
+Into Xeon Gold 6330
+Intel Xeon Gold 6530
+Intel Xeon Platinum 8351N
+Intel Core i7-6820HQ
 
-I've moved this series even further down-queue, so it's definitely in
-the second-week-of-merge-window batch.  So I'll be looking to move it
-into mm-stable around Monday of that week (Apr 27?).  Four weeks for
-testing, review and little touchups.
+--- ppc64le ---
+IBM Power 10
 
-> v3 changes:
-> * add fixes from Harry and Andrei
-> * fix handling of WP-only mode for WP_ASYNC contexts in vma_can_userfault()
-> * address David's comments about mfill_get_pmd() and rename it to
->   mfill_establish_pmd()
-> * add VM_WARN()s for unsupported operations (James)
-> * update comments using James' suggestions
+On average, we see improvements ranging from a minimum of 5% to a
+maximum of 55%, with most improvements showing around a 25% speed up in
+the libmicro/mprot_tw4m micro benchmark.
 
-Here's how v3 altered mm.git:
+Thanks,
+Luke
 
-
- include/linux/userfaultfd_k.h |    6 +++---
- mm/memory.c                   |    2 +-
- mm/userfaultfd.c              |   12 ++++++++----
- 3 files changed, 12 insertions(+), 8 deletions(-)
-
---- a/include/linux/userfaultfd_k.h~b
-+++ a/include/linux/userfaultfd_k.h
-@@ -96,14 +96,14 @@ struct vm_uffd_ops {
- 	struct folio *(*get_folio_noalloc)(struct inode *inode, pgoff_t pgoff);
- 	/*
- 	 * Called during resolution of UFFDIO_COPY request.
--	 * Should allocate and return a folio or NULL if allocation
--	 * fails.
-+	 * Should allocate and return a folio or NULL if allocation fails.
- 	 */
- 	struct folio *(*alloc_folio)(struct vm_area_struct *vma,
- 				     unsigned long addr);
- 	/*
- 	 * Called during resolution of UFFDIO_COPY request.
--	 * Should lock the folio and add it to VMA's page cache.
-+	 * Should only be called with a folio returned by alloc_folio() above.
-+	 * The folio will be set to locked.
- 	 * Returns 0 on success, error code on failure.
- 	 */
- 	int (*filemap_add)(struct folio *folio, struct vm_area_struct *vma,
---- a/mm/memory.c~b
-+++ a/mm/memory.c
-@@ -5493,7 +5493,7 @@ static vm_fault_t __do_fault(struct vm_f
- 	}
- 
- 	/*
--	 * If this is an userfaultfd trap, process it in advance before
-+	 * If this is a userfault trap, process it in advance before
- 	 * triggering the genuine fault handler.
- 	 */
- 	ret = __do_userfault(vmf);
---- a/mm/userfaultfd.c~b
-+++ a/mm/userfaultfd.c
-@@ -502,7 +502,7 @@ static int __mfill_atomic_pte(struct mfi
- 	} else if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE)) {
- 		clear_user_highpage(&folio->page, state->dst_addr);
- 	} else {
--		VM_WARN_ONCE(1, "unknown UFFDIO operation");
-+		VM_WARN_ONCE(1, "Unknown UFFDIO operation, flags: %x", flags);
- 	}
- 
- 	/*
-@@ -612,8 +612,10 @@ static int mfill_atomic_pte_continue(str
- 	struct page *page;
- 	int ret;
- 
--	if (!ops)
-+	if (!ops) {
-+		VM_WARN_ONCE(1, "UFFDIO_CONTINUE for unsupported VMA");
- 		return -EOPNOTSUPP;
-+	}
- 
- 	folio = ops->get_folio_noalloc(inode, pgoff);
- 	/* Our caller expects us to return -EFAULT if we failed to find folio */
-@@ -864,6 +866,7 @@ static __always_inline ssize_t mfill_ato
- 	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE))
- 		return mfill_atomic_pte_zeropage(state);
- 
-+	VM_WARN_ONCE(1, "Unknown UFFDIO operation, flags: %x", flags);
- 	return -EOPNOTSUPP;
- }
- 
-@@ -2044,8 +2047,9 @@ bool vma_can_userfault(struct vm_area_st
- 		return false;
- 
- 	/*
--	 * File backed memory with PTE level mappigns must implement
--	 * ops->get_folio_noalloc()
-+	 * File backed VMAs (except HugeTLB) must implement
-+	 * ops->get_folio_noalloc() because it's required by __do_userfault()
-+	 * in page fault handling.
- 	 */
- 	if (!vma_is_anonymous(vma) && !is_vm_hugetlb_page(vma) &&
- 	    !ops->get_folio_noalloc)
-_
+On Tue, Mar 24, 2026 at 11:44=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> w=
+rote:
+>
+> Micro-optimize the change_protection functionality and the
+> change_pte_range() routine. This set of functions works in an incredibly
+> tight loop, and even small inefficiencies are incredibly evident when spu=
+n
+> hundreds, thousands or hundreds of thousands of times.
+>
+> There was an attempt to keep the batching functionality as much as possib=
+le,
+> which introduced some part of the slowness, but not all of it. Removing i=
+t
+> for !arm64 architectures would speed mprotect() up even further, but coul=
+d
+> easily pessimize cases where large folios are mapped (which is not as rar=
+e
+> as it seems, particularly when it comes to the page cache these days).
+>
+> The micro-benchmark used for the tests was [0] (usable using google/bench=
+mark
+> and g++ -O2 -lbenchmark repro.cpp)
+>
+> This resulted in the following (first entry is baseline):
+>
+> ---------------------------------------------------------
+> Benchmark               Time             CPU   Iterations
+> ---------------------------------------------------------
+> mprotect_bench      85967 ns        85967 ns         6935
+> mprotect_bench      73374 ns        73373 ns         9602
+>
+>
+> After the patchset we can observe a 14% speedup in mprotect. Wonderful
+> for the elusive mprotect-based workloads!
+>
+> Testing & more ideas welcome. I suspect there is plenty of improvement po=
+ssible
+> but it would require more time than what I have on my hands right now. Th=
+e
+> entire inlined function (which inlines into change_protection()) is gigan=
+tic
+> - I'm not surprised this is so finnicky.
+>
+> Note: per my profiling, the next _big_ bottleneck here is modify_prot_sta=
+rt_ptes,
+> exactly on the xchg() done by x86. ptep_get_and_clear() is _expensive_. I=
+ don't think
+> there's a properly safe way to go about it since we do depend on the D bi=
+t
+> quite a lot. This might not be such an issue on other architectures.
+>
+>
+> [0]: https://gist.github.com/heatd/1450d273005aba91fa5744f44dfcd933
+> Link: https://lore.kernel.org/all/aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.=
+toromso.csb/
+>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Jann Horn <jannh@google.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Luke Yang <luyang@redhat.com>
+> Cc: jhladky@redhat.com
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+>
+> v2:
+>  - Addressed Sashiko's concerns
+>  - Picked up Lorenzo's R-b's (thank you!)
+>  - Squashed patch 1 and 4 into a single one (David)
+>  - Renamed the softleaf leaf function (David)
+>  - Dropped controversial noinlines & patch 3 (Lorenzo & David)
+>
+> v1:
+> https://lore.kernel.org/linux-mm/20260319183108.1105090-1-pfalcato@suse.d=
+e/
+>
+> Pedro Falcato (2):
+>   mm/mprotect: move softleaf code out of the main function
+>   mm/mprotect: special-case small folios when applying write permissions
+>
+>  mm/mprotect.c | 146 ++++++++++++++++++++++++++++----------------------
+>  1 file changed, 81 insertions(+), 65 deletions(-)
+>
+> --
+> 2.53.0
+>
 
 
