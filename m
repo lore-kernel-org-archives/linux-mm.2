@@ -4,77 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A7A1FB3D04
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 10:36:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CFDEFB3D17
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 10:40:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 388AC6B00AB; Mon, 30 Mar 2026 06:36:47 -0400 (EDT)
+	id 849D66B00A9; Mon, 30 Mar 2026 06:40:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 339446B00AD; Mon, 30 Mar 2026 06:36:47 -0400 (EDT)
+	id 821C56B00AC; Mon, 30 Mar 2026 06:40:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2282C6B00AF; Mon, 30 Mar 2026 06:36:47 -0400 (EDT)
+	id 737CB6B00AF; Mon, 30 Mar 2026 06:40:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 115DE6B00AB
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:36:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC548140638
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:36:46 +0000 (UTC)
-X-FDA: 84602376012.30.2C98654
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0BF591A0002
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:36:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtDeGNfV;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774867005;
+	by kanga.kvack.org (Postfix) with ESMTP id 63D6C6B00A9
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:40:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 312CD1A0805
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:40:40 +0000 (UTC)
+X-FDA: 84602385840.14.0447474
+Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F3A8940012
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:40:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=jwyttnHn;
+	spf=pass (imf04.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=objecting.org header.s=zmail header.b=jwyttnHn;
+	spf=pass (imf04.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass (policy=quarantine) header.from=objecting.org;
+	arc=pass ("zohomail.eu:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774867238; a=rsa-sha256;
+	cv=pass;
+	b=ICPM9qu9PC7uS8PGeyLMnwEC6IKkiwMl2ucH9A1Siq3/C5L4BnXOjexb9ybrqVxydMfTsf
+	f1JS7WhJh4H2hYH1LR8KMtgeYWrcWAEH3pzsrhx2fITwwcpBJwF22u24TApFM+Ru/Z8569
+	oaU2pPQKjuCdO4u5xlzY6fBU1/BPM8g=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774867238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R5WlQ2IszGP/nLaPNydK8Rqax5dSO63nPYJeSxxpPzo=;
-	b=XsZI7K2c/bnuzgLzkeWlP4BN47jOZ2AJ4u+U9s701nBsgRw4kB1YvECXteuue+vWnJqgpX
-	21hz7+bc5zvasR3RFnx17+Y+2uCVUAFmtzTCtCFAtz4NdY4nO9g8swf/LDfwKw1vjpmx52
-	o3bCjivLhaQwcDTso/2+D0xJqDoFgxk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774867005; a=rsa-sha256;
-	cv=none;
-	b=k7ioYH9MuXCxDrKYxwnZ5vRXz/xeUHeC4KMJEh8s5BDhJM/fTVg/nPgH++hSFB8JIphBp4
-	uix5Z0wtg9ceV5gcb9LW5oSbV6l/27pXrRLQQWe/QxoIOnyFAY4IIIomAtA7KKT1vCPXrf
-	GNdDFt1zgyQkxdDGTn2onZiCqOfUs4s=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtDeGNfV;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B298600AE;
-	Mon, 30 Mar 2026 10:36:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4D5C4CEF7;
-	Mon, 30 Mar 2026 10:36:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774867004;
-	bh=MixoYkFf2wzXKJK9Qx6XjivQgGj19kVLUbw1/lKX6T4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jtDeGNfVsoV4zvqOqmm1eMhhnBUDMcRTrBKhkEcM/YMoqDJ3v/4mRB0mbTNGRlLGK
-	 H5htgs+yrNqxdt0EtJwISSV1kQWbHtOUYZQHZoxTC6AqrOwPsqPdvCcj0tqqQ1xomF
-	 K3qx+Wj1oR5NKALElonasgdCbhS087QQvESdVKs2IY4T0V3/29Rh/LXV/yh9f69llR
-	 9/gs5wO3/bfsUSLMaFz6VnPerNkLHg4IWMC225/uK9LaZ4E0DBNov/6yGeU1SgGi7U
-	 FXhj0nqbtzu5Y+yLWeNOr8C6WoPi2ZuLOTsPUNjPjG5ulLSE5izW25bnoT6XK7hjOG
-	 3ZBs6sk9wzSsQ==
-Message-ID: <6f045727-91ff-45ea-842b-c78ea61ae4d1@kernel.org>
-Date: Mon, 30 Mar 2026 12:36:39 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
- module
-To: Herbert <objecting@objecting.org>
-Cc: krzk@kernel.org, ljs@kernel.org, hlcj1234567@gmail.com, sj@kernel.org,
- akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- kees@kernel.org, gregkh@linuxfoundation.org, brauner@kernel.org
+	bh=9Edy05rDK+VJ+h+lw45MSlJhZR2FiDSi1wwiaoCifMY=;
+	b=vGIljXTsP9dzpStN+2aNSeh3Vtt7y8U9E9gEmdjskyFVSSn5K4EMiHYwnaiiIaUaMfL7s+
+	kW/2yXhQm2xqlX57jq4UZqX4JitN9mTspRYMEez6qSStjK8GdkVW+u5QPV3QUdbNm4zkmD
+	NlJZN3b6o4vS5K2MbIl4TKHK5bO95TE=
+ARC-Seal: i=1; a=rsa-sha256; t=1774867224; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=eq4Wv8xt4X8syBzo9UMoC3bJasr0riZjh8SlZm+zFEW8htVw2kh7tiMwyDTJCppGeAAV+OM4Mhs1oDG+Csr+2Ipir9t/XeJsiJql5amHJry9PfJoLt/xEG06p7UmPOd4SfHAaJ3eP1mo7kP/jbN4EV3Sp2syasMyj8f/1Pi2Q5c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1774867224; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=9Edy05rDK+VJ+h+lw45MSlJhZR2FiDSi1wwiaoCifMY=; 
+	b=XKivTI3VEcLg8LgXTLjmg2ya0JaTdeQkUqNLUoluU1y67laYou5+Q7dcSofxJP5uTagqaoKW1Wqnv6fLwTVwOTqhO/ixsCyqgTiKk+wtuZGg2Gy6tdNB0/6jQLfReDWU8322UkxrlLWuhIaDNN8KiekYYW0NmlujgyDMLpahreI=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=objecting.org;
+	spf=pass  smtp.mailfrom=objecting@objecting.org;
+	dmarc=pass header.from=<objecting@objecting.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774867224;
+	s=zmail; d=objecting.org; i=objecting@objecting.org;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=9Edy05rDK+VJ+h+lw45MSlJhZR2FiDSi1wwiaoCifMY=;
+	b=jwyttnHnxf2MyQUg6+ia7gbgq32UQ8dpxRDCLIGySrL1Audr2xnaljxT2vfGlP/J
+	JOhutnqCHFOZqtQQ5qITC7YZC5Ztcb03go8dXDygJ8lXRGHpta37wjbvDu6en5OHCW3
+	3GRg0KVAOZ8G/EIZnm96kLo0Vff9ZwinG2nHdPY4=
+Received: from mail.zoho.com by mx.zoho.eu
+	with SMTP id 1774867224395603.3742700239171; Mon, 30 Mar 2026 12:40:24 +0200 (CEST)
+Received: from mail.zoho.eu by mx.zoho.eu
+	with SMTP id 1774867223428968.7644276226767; Mon, 30 Mar 2026 12:40:23 +0200 (CEST)
+Date: Mon, 30 Mar 2026 11:40:23 +0100
+From: Herbert <objecting@objecting.org>
+To: <david@kernel.org>
+Cc: <ljs@kernel.org>, <krzk@kernel.org>, <hlcj1234567@gmail.com>,
+	<sj@kernel.org>, <akpm@linux-foundation.org>,
+	<damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+	<kees@kernel.org>, <gregkh@linuxfoundation.org>,
+	<brauner@kernel.org>
+Message-ID: <19d3e549383.7e0593a963940.1231119311770329278@objecting.org>
+In-Reply-To: <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
 References: <20260326072737.341964-1-objecting@objecting.org>
  <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
  <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
@@ -87,68 +96,23 @@ References: <20260326072737.341964-1-objecting@objecting.org>
  <cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local>
  <E1A667AB-DCE4-4034-A36B-DAA458780A81@objecting.org>
  <e5d45f3c-4f46-40d1-bb7a-0a2f930fd7ae@kernel.org>
- <82256A72-42FD-475E-935C-629964FA80E7@objecting.org>
- <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
- <6deb290e-b168-4de2-95f8-fc784ed31c27@kernel.org>
- <25688dbc-cd11-4137-bad4-a215198feee6@kernel.org>
- <19d3e3d3297.190bc89f62053.5899613485100180781@objecting.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <19d3e3d3297.190bc89f62053.5899613485100180781@objecting.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: yjthcgiuik4m7gpopdzr9afkyft1dnz6
-X-Rspamd-Queue-Id: 0BF591A0002
+ <82256A72-42FD-475E-935C-629964FA80E7@objecting.org> <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
+Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
+ module
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Normal
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F3A8940012
+X-Stat-Signature: 5qoou18tpo4ft1fh379k8coey8z4fqyp
 X-Rspam-User: 
-X-HE-Tag: 1774867004-438479
-X-HE-Meta: U2FsdGVkX197HmfsN9+BC9uhOaPw2/dAuoX+qy8z5mLiLja8lJjUXPEEPV07scAGS8000kk8n6tPKU3DvMVC75tKjHGDG2K82sYiIFSUwQ4cwa/GA1Xe/LIMiO7sjUwY66M7YsVACj81Mlmc+oTnH0Y6h5Qf2mSN/IkCIcUofnsydO1JxbXfGOxTyTikALw31OSbeZZcVVMFJwFbnpcM4FdeObb15bJmWwRARJgz8SBA+FiKTyAvPyIwCZYZ33UGGNtMRn5ZqGXK6V4f+KBfP+oqCIzGhJEsKqDuSFXR0gBBUrcSo3sP4OhWJKrDx09I46kUgUrPjjT2S6v+VathzV7Sb5/AO/SVlQVeIfD/Gl5MoRp3ePWaF5GM2cA3V0txzPajAxo9dlKAgg3+7DDt7ccwWlyFX7YIxaRzmib6okb4G8d5og598sKrNrjKOWintyyUsldIeiQegG4kDyps2kavZzN3zkmp2fzzVPbAruITn3EkQGil03KURE7EZXSR9yyMCz/hcy9Z1h02EUVkH99qknJbHfYOSSYYu1+YQzU6+f5A3W49LJp+wsn8J10WV2YBFCJKO6X6mPngENonMdz+2aI9Y7vNkPTSrjG/NI4bVt9rAcPBt966yt2NuY1+us6tfigSqlQlr7Rj+uoegd6rD8mBfdqfnyA+cPR3UZnVRb+emlPrvt5DrDSQLmsMtH2pn0nUxhM+HjAwYQ9F7sp3xrT9KaeogRzjB44Ti06Acl3Po9hw5jqJXj97gWE8Go8DEInYJWPSLfC9o+7N2TDL2ulL6I0G5D8WvKKXi0z0qmFvgijqWE7Sik80gnXqrVZcC5bqks0zhAjhxSxuhaEx7FRDG2ogtUQL/7cwkiFeiEKtm2J4u+AkTrbldck6934BzWSoIlpinnPw71Xvx1G7bF5MFvkLSeFf9zGrkQQlwKhV7vVMnrlLlCDGpjdw/TRous1xFGi4Ft4QuMf
- iSoA18Aw
- VtqDhhNhLG+FOOvG967J7FaEUKxQAw/L9WKiZ+4HoJA+PON8a5GvwC37Pot4hBUy3ehnGHyXeT3cztU3ugZB5ZUkGF3Ukx/kKtrP7xmUKVR0xC3B/IXcZNf/UpVp0g7eQgvuN5z5kM5tt1MkNScvvngypvep7wYXzBinxJ4Hv3mnWnpyN3dPpk+swewCDFWvGUimkFT3YwHSdjgmoWIAFaOvyFUvmoj7QoL3MkJ0JwFx+Wn0v9jSJFz39GVvF12ETy+xjusqnvoi3GHbyt1w6lxHBfQ==
+X-HE-Tag: 1774867237-149489
+X-HE-Meta: U2FsdGVkX18Gbm93EZsTM7o2aVxxOmeRW4GL/+fe8ctpLBtMiQg5GUL6NaKYpZU9rpGvMA41PWRFJwn35L1ityZcomT6FLBpT22o4HjVIB+hOYIcyOkuJQsZTwYA9Nj78rlm7Y1NsRJ6Z9uuktY3/AwOxF3Q5OxIoJhtHYPP4JsLe7j3pDTNmNQ8/1tWyyz0oW7SldCyWOXGVH8SjzCrsmr7ZkZTZeWDkncv85Gtxy0+J+j+vxv/7W/6RBsxw4kT+QXXPeYSk9wFDyuXXdKBlVi7ePeCjBmag7wmXOoXnkvTXq32f/kx7MgDGYVUYMGlfiigTZXGV+MVZ3K8RJUeAwryecFZPZnAlplOu4YaOVc7OE/YXHaOiLBQSeVjqpJHJV1l9ITdjUFt+CIRUKRuPYySv/xxthoBaeaHNAR5dXvnpKPVdNeqdbdxExmt6YZYAzNdOzgKvILIEqzY2pfTi5mY+kbPG5y2zyNdjQxsco5O22TRUfSvCjrW9sr02DsaRLWuJSdc89EiI4it9kRJRDxb4GvyNGVKnzGOJJ/NO3cyV6T1tlQUi9HgFibGFYa6/DD/tkj3A6375VK5Wgs8DUMKYH6sU20v39RJnhctVX60Qxc8yj1ZYxrVqUrL0F4dMRLu2O7DaflfMAKK5RrTVmH06f+x67eTIDVqgpGsRjsts4cgFEmNSyl9c9yjSBkLOLVSHMsABTWk0GZQNXXi5z7qb82Lx9a1EhLwOhBTseF+gB/UALk1xMtPoQ3IuunpJWCBGdnEvIHDWOR/KJ0F17O39+5Y6BL5Qr5wwF8GGFrHxLrkNpUjbFVGMchDhutTKVay1SpwJPuCxY/rLNPinnvc9jwlOXKpPrRFWRIiMucO5qlJ6XDeYdJPGgFoPDwDdmX9ofx83rJnFexHLbE5Kdo26lZPKxlW9eF+iNXVWdduAq2uOHVd/Rl8Ct91tPNMiMGPl55zbivQVhXe2XC
+ HFHujwyq
+ HThEVVkGyMcaUfZamlCrtAtcvBRSno8HpUhfVfvsmSjEqYbZjXfXf3ic/dQWP79Lv4wVRXOvNQf7PM9bXlZ07hXm1iY8j5iYEqxo4dD90vptgPOtKwkCnKsmey+uamkaPVDfrpd7ec+zd6b7qsMpXsoq+06j5qcBUT4E4PRNn54ZAbH+l+4HZDW5k8hwtBAAXX0bCG3t4gxq1tDAYA+TDeH0/tW2+oyTvizmzsMmXGRq8p0aKtdFlROtUcy3pM6FjfPq+X7a8MiDw2aYWvYWMOCVxSkfX/8ensyZUWIXJPU1rMgPhrKCcyzFBTNkp0K5SKQqa7d/ZbbNiJRTZ8tn/nQwj5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,54 +120,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/30/26 12:14, Herbert wrote:
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> ---- On Mon, 30 Mar 2026 09:16:44 +0100 david@kernel.org wrote ----
-> 
-> 
->> On 3/30/26 09:50, Krzysztof Kozlowski wrote:
->>>
->>> Yeah, good luck. Several people asked for that already, like 10 or 20
->>> times. Andrew asked that a few times.
->>>
->>> And yesterday we got another sloppy posting, so that would be it for
->>> having some time off to learn things and take slowly. 3 days after this
->>> AI slop which does not even build.
->>
->> Bot confirmed, I guess :)
->> --
->> Cheers,
->>
->> David
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> ? That was me learning the ropes, by making a patch to the QCOM subsystem
-> 
-> 
-> and it was a genuinely "ok" patch.
-> 
-> 
-> May you please tell me what I did wrong here.
-I thought you wanted to "take a couple months break"? And I suggested
-getting a mentor first.
 
-Anyhow, this mail was sent from "Herbert", which is quite ... confusing.
 
--- 
-Cheers,
+Ll> >>
+> >
+> >
+> > Hello david, thanks for being polite about this whole thing!
+> >
+> >
+> > so, you are talking to a real human, i promise you that now
+>
+> That's exactly, what I would say if I were a bot ;)
 
-David
+Well, I don't know what else to say. I have matrix and irc I guess, I can p=
+rove I'm human
+
+> As a first step, fix the line wrapping. The following document was
+> helpful to me in the past:
+>
+> =C2=A0=C2=A0=C2=A0=C2=A0Documentation/process/email-clients.rst
+
+Yeah.. mobile clients hurt me, I tried thunderbird and it didn't come with =
+word wrapping (I was a bit angry at that), I am mostly away from my pc, (th=
+e place I do patches!)
+
+
+> >
+> >
+> > I am looking for people to personally mentor me, so i succseed in the k=
+ernel
+> >
+> > And, I know this is unprofessinal (and im sorry!), but my github is my =
+best
+> friend, i have a year worth of commits for you to see publicly, also i wo=
+rk
+> with android custom roms. (Any questions, feel free to ask!)
+> >
+> >
+> >
+> > So yes, this is my oppotunity to be honest,
+> >
+> >
+> > (Yes. I do use AI!)
+> >
+> >
+> > The reason why, is im a "perfectionist", i want to start human patches,=
+ but
+> im scared i will get ripped apart, (or i wont get like reviewership!! Bec=
+ause
+> im too slow) so i use claude (smartest ai in the market), and i regret it=
+.
+> Like seriously!
+>
+> There is this nice saying "we learn from our mistakes".
+>
+> I still remember the first time Linus ripped apart one of my patches. I
+> learned something that day.
+
+
+Exactly! Mistakes happen, you learn from them, (I was stupid for breaking m=
+y break...)
+
+> >
+> > Additionally, i hate being slow, im scared that the community will ditc=
+h me
+> if i do 1 human patch every 2-4 weeks, which is my expected time (because=
+ i
+> need to understand the code!!!!!)
+> >
+>
+>
+> Well, doing 8 versions of one patch set a day is obviously the other
+> extreme ;) For example, there is this unwritten rule to wait ~1 week
+> (and before discussions slowed down) before sending another revision.
+> There are exceptions of course.
+
+Yeah, was stupid of me ngl
+
+> In general, we're lacking reviewers, not code contributors. So we really
+> need people that can get familiar with the code and gain expertise, to
+> help the project long term.
+
+I sure can review code. I do review code for people who ask for my custom R=
+OM stuff, basically they need kernel trees for it to build and stuff basica=
+lly.
+
+
+> Drive-by AI generated patches that mostly just consume more of the
+> precious maintainer+reviewer time are rather counter-productive.
+
+Yeah. Very stupid of me
+
+
+> >
+> > I would love to have a mentor to help me around, and when (if) somebody
+> wants to, i promise you now, i will start making human patches, and i wil=
+l
+> benefit the community positively,
+> >
+>
+> I think you had some patches accepted my maintainers, you might want to
+> consider reaching out to them to see if they would be willing to help.
+
+To be fair, Masami is extremely busy, so is seong, Andrew is "Stupidly busy=
+" (his words), which is understandable because he maintains lib/ and some o=
+f mm/
+
+
+> But be aware that most people are extremely busy.
+
+
+Same point ^
+
+> --
+> Cheers,
+>
+> David
+
+
+
+
+V/R
+
+
+
+
+Josh Law
+
 
