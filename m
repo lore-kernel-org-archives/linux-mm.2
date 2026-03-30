@@ -4,101 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B21481061B18
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:52:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E5621061B18
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 18:53:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11BAD6B008C; Mon, 30 Mar 2026 14:52:38 -0400 (EDT)
+	id 5D8656B008C; Mon, 30 Mar 2026 14:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F3626B0095; Mon, 30 Mar 2026 14:52:38 -0400 (EDT)
+	id 5AFE76B0095; Mon, 30 Mar 2026 14:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 031276B0096; Mon, 30 Mar 2026 14:52:37 -0400 (EDT)
+	id 4ECFF6B0096; Mon, 30 Mar 2026 14:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E903E6B008C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:52:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 891A4598FC
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:52:37 +0000 (UTC)
-X-FDA: 84603625554.23.A5F5842
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B289D1C0002
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:52:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KagYQeJO;
-	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4253F6B008C
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:53:53 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A44F1A085B
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:53:53 +0000 (UTC)
+X-FDA: 84603628746.15.4FF1827
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2DF7820003
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:53:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HOylZcjc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774896831; a=rsa-sha256;
+	cv=none;
+	b=lQOz4LGohiHq1uXZ9o5pJGNOQ7FjjAAth2c3rwP5Jbtc25tWbGQ4u8V6UcgLbDqbzNKePt
+	mtCYQ9wAFS3yu+dxArKszb1bOR9YX7+Ajdb0ySSaIRM/9ZJRf5lfebFi7wjV5n79BDbIL8
+	JTg9WO+L5JGyDcst8tLewp94MZnLQc4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HOylZcjc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774896755;
+	s=arc-20220608; t=1774896831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=liIWWgh3PHR9mQyTHAhDipXMUbIjVFVPZYvEzlHWcPA=;
-	b=AdECAgr7Wq8MV/Y4R14FiuK33m4W64W01RWVACiWWLK4MVov4a8CEnWMIMrz/VnUr0R2uo
-	ptr7XLEChx2bNy4O0XgB7ZbfdSI7Le1vAa8EKySVnIFd3kB9QgI9fH3v+ZzSP9VC7Sc1Qa
-	fP0NEWov8aPUKKphUyA+xX9X+KaQOv4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774896755; a=rsa-sha256;
-	cv=none;
-	b=3ERX7ImSLQnIV2krHOH9y9zAEdWy5BTtxq60ppdTPTRjk/xRHvwn5zki4oi5dPd6z17pTm
-	K8AQEsD/TanJaap1k7UIa/3RrJnChMWeTHfsCRRuifj/0h+tqZSELG8MFA5aB8JqqF+dCc
-	cOjm48y/qMWRXBbLjIlDW7VzYyFOk8w=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KagYQeJO;
-	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1BC116012A
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A39C2BCB3
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 18:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774896754;
-	bh=liIWWgh3PHR9mQyTHAhDipXMUbIjVFVPZYvEzlHWcPA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KagYQeJOlSGL3kfsOcc1wqmwJFO/SvRwu4RusSJKBcCwNB9g+SFyCuZk60NRljReS
-	 +ix7Upcou3dYQcQt5/8VPEYSxNSrtbqw3G00Y1FyIJIUy+LB55GgrIzs3sDMgUIeag
-	 7hGXvK7qlS0//TJHCbi4zZN1LXFS4WGoT6M8TqM6QUghVtepriWynI2yThZdErXDyo
-	 XamMJ1l84/ymUY2u5GZ1rSCCpsJdCtbFdT+D426H6N8BFYO+p+H2KTsGELYDhfzk6E
-	 hdRDGkcHz9bHI7vmHo9FLBuhCKzj3jF2XYIh6s8yy9/pLyd7BgBJLHGI73HwdvptVV
-	 OoKw4ZxbaOPxw==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-66a851e62c6so5076580a12.1
-        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:52:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVp3wU4g0SpvkejJLaI9gEye6Wc6QMvUbNF3dRKChrKFLB8HOz1WnMAYfUOoqVPxEFCbvKgAHc4Mw==@kvack.org
-X-Gm-Message-State: AOJu0YzYt3/nRHuV0UoBxnK8/QsZr+cZgEcEC1Ntk2pkSCcP9Uzj0/9O
-	W7VBMLUHTPm65IzWYDGHkDqIsuPaf0YbpP/SCe7+Fb8H9Eyh7wgh8rpubye7KzUbZWcBJ4bmffs
-	FJkUWT855nQHF39MfaOz9yDc++jcZgys=
-X-Received: by 2002:a17:907:8d8d:b0:b98:528b:844a with SMTP id
- a640c23a62f3a-b9b5098b5d4mr835193666b.51.1774896753619; Mon, 30 Mar 2026
- 11:52:33 -0700 (PDT)
+	bh=gOPmx7D4lJnGv8mhfy1r+7P3JieUvPPQgAmz2i26ZRY=;
+	b=gUk5e1/O4r5KrcG16BcNoeOQeePkmhHxWF6U2wzWoL38kbJ7PKnG2OoWSiVtkO5TyOOhGy
+	D15e0yi0iqWoGX87WBIw5vsgDxhJb1dyT9hwj7d+nEgTceI16d6F3U5MAAiWiLUILp6YQw
+	AGTpLymZlwvTj6jKVINHK2fsO3CAZvk=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c742882d2a4so2031090a12.0
+        for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:53:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774896830; x=1775501630; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gOPmx7D4lJnGv8mhfy1r+7P3JieUvPPQgAmz2i26ZRY=;
+        b=HOylZcjcE9b0pcmnx3LCfN33TIvgDEIp+n0bdn1u4V3vHbX8W6pIbp0UDJMlHJGofG
+         jDZ1i+7cusaxiKLV0Ds0w/Az+YBpraFrK82b6MidcT1DqB6B5qQ3s8Q8zIJ1z4JOhCtR
+         TD7rvNDwUjl0CTlPPAkjMOx90TUNyNfOJkVwHpWt2VOYUX3LSpip3E5LXHJO0+9F/yZ4
+         xqwYW9FWxMc86Mh6cFKZaBFUp8fhGHz4lws27b3sPFGOyFNjK+GgKd/DSVqn70hE/Nnt
+         Wc+veYOrXtf8wqJ1w4CWQxHmalHLrJSNOgjEIezjzT9XDbGqKkahxkSGVb/uNrQjGuJm
+         gSPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774896830; x=1775501630;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gOPmx7D4lJnGv8mhfy1r+7P3JieUvPPQgAmz2i26ZRY=;
+        b=KWmZDqrwtZGsNr0O66GmYvh5r2er8/+ibWxulpOfNjbbGr7bXZxQVp6TDEfxlMYKXx
+         ZkE1GAp0yTO8WIZwcRxFifPciXQzBQwcPKfkWBMR08ikoWvlKFxtdnN3sG9qUGNMA/aF
+         yZOL2vf2eUVH8sjvvolUXvw1UhuXCF4XRGC+H8fs5+8DJ+nVaVOzQHJ5RJKVLRrUJAl8
+         5C+020h2fKvDb0Jeu2LJoFIFWuGyZ+tZsY/zECXtzOa4+aIdQaFJWb06LKQCql83QL/2
+         AmtzhtILOo3R1mTSQKeXroRIS/s484rleY0zqjbzX+bkUmt5gISsam6Rfbu0PkqiVPu5
+         2XPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrP6fLeSp5D9yVtzKegaTWBey4rQVbo+9Djp6CqAfZWjYalbIJD3SNCndz/KYrutGbeBOtR3/BfA==@kvack.org
+X-Gm-Message-State: AOJu0YwMcx9MJ4ogpQ2In/Evhm9MNqcaStPnwP6sTcA1Q5BYl41ap01h
+	xy5076SeH5+9CTdUnoct2SlmBxbmkwOIQVXIVo4BRhuxk0y6fdQ/SZUq
+X-Gm-Gg: ATEYQzw+l3UtNlrUkFa940zd26rLy5390WTz9sfjsJ5dIlygdhdYK5fsm3s6Yh5IY5e
+	7kJRCUEj6bmPORF0I8q30cXSk3J3v1WsKJuUElofOPEhc6f8ZS3suOZoeKjeA46W/xk71vAH2/i
+	n9MXrkuvvXhr2z5bHOAfdZCHU2DzFAaTK0wjN27qy9atTILtC5GA2umX1BRzfsfATK2h50Zf2mK
+	d64B9nSBR2GDtWUuyuNXJ0NX8O1qKfsioaNmood4jYXZZuqzh1cSyB8Ktx8vl7jIid+zRPi4WMa
+	fW5ndsDoU2c+KkcX+ZsgW6p4+FPlXZTMM56xCWWlRFRCf9wLLMOS/ZJI/JGNp9e7EP3H5Mf/K7j
+	Pr8e0U1uZ6k+QPi8KhbUMN6ue75uf9KGTJn7vw6Jm7I1cWWhzQRWOphLjIj0kskznUXJh1YJaa3
+	TraDoc+YiLWec2jd+DOkOHY6px4S5gx66+YS0JkBaiDGpOhv4XEJw=
+X-Received: by 2002:a05:6a20:938c:b0:389:8f3f:50ce with SMTP id adf61e73a8af0-39c87b5fb6fmr14525878637.56.1774896829730;
+        Mon, 30 Mar 2026 11:53:49 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c76916baa6asm6708324a12.4.2026.03.30.11.53.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 11:53:49 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org
+Subject: Re: (sashiko review) [RFC PATCH] mm/damon: reset thread status parameters upon kdamond termination
+Date: Tue, 31 Mar 2026 02:53:47 +0800
+Message-ID: <20260330185347.45872-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260330164347.12772-1-aethernet65535@gmail.com>
+References: <20260330164347.12772-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
-References: <20260317014802.27591-1-kanchanapsridhar2026@gmail.com>
- <20260317014802.27591-3-kanchanapsridhar2026@gmail.com> <20260326192351.7fc8c27d87c60ab5f7de5395@linux-foundation.org>
- <CACpmpofW2hcmQ5srg=a_WT2fXNhvY0pp20rjxxL=n0jGGUEi2Q@mail.gmail.com>
- <CAO9r8zMSnRq02b68Tjf_yi+_Wg6TBgyM53gaxmfbXhXJ59Om6Q@mail.gmail.com> <20260330115141.997e29f96223da1e22c0f375@linux-foundation.org>
-In-Reply-To: <20260330115141.997e29f96223da1e22c0f375@linux-foundation.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 30 Mar 2026 11:52:22 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNRcSBdBthR8Mk929pT2z_Ew_vc8_nLJns-2FygSX630w@mail.gmail.com>
-X-Gm-Features: AQROBzCxTWZ8u2aqB6rgkjfwFYtB9_zzffu3EkbHE4cRv_DbXnFzfRhDK4MAd_4
-Message-ID: <CAO9r8zNRcSBdBthR8Mk929pT2z_Ew_vc8_nLJns-2FygSX630w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	herbert@gondor.apana.org.au, senozhatsky@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 3inieqyhc5cyywecrnidy6sajbdw4kaa
-X-Rspamd-Queue-Id: B289D1C0002
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: k3xe3daq7dapfogeq9utfyjmnh11ka46
+X-Rspamd-Queue-Id: 2DF7820003
 X-Rspam-User: 
-X-HE-Tag: 1774896755-218495
-X-HE-Meta: U2FsdGVkX18L+/j6Gsy00aX68IJ7+GYaPeJSyzhOCxXrhLEO9+EvdMj8tqwXM5jQBMUNB+hs0aQcNXgey6OumpM2Vo0DE947SOQMIKrm9BuMjnyic3WGp/zPuZ3uZaoiuwp4FayyKGkfiA8SeQUxcB/KD/IGpTbfQ0hjx1B/LZL1tz4J4wpgleeWy1ox+QrpPNz2labDVehKG/Ehl7OG3kXs713J3s6wNdcl/CyaWpJrM7h6XojEDWRXOnEBZv4LClgt5gRge0BW8uVYv2s54s4hSFOrT0Rj1YRS0Y3U9HvnhLhExEnGbIBjI/T1oPXOAK/w8DD8ajj2MkXXeRJHpR5MtRgi82Tbq8KtjlkP5TR024U5D8CdEJF4WfMtXoWRxPESuvMsyxbYhY9tbbdFFc+BSZ9sBomWbw8yhl8awbL6WmewVz6UVPnYztLBEJi+ZRXUjZdqyiXWW9hdMXcA1YgnNIIuiBg8Z5SwUR9U/OgtjoPNGi3EEnhCOnXuvh/KSijP9WpETXdl0XR/m66EX+REf6YkSGgtZTAvhx/zYJp89BSL+RRqt30IHZg6axYfVF6VYtnBkFZ8Tb4hDdfV1ES4yQBqT/IAagWLvvZdMHiZPiTViRx7PP8p74iJa0nWv17Tc6UmiOMG+8VMjqrasUdZBGljcfoXSkEpFfWYqEw66bilQpNSlM1R74GEZ3lXO/cmXT2zmYcHXzq3Y/+R8HQNoTqTayOYnUFWuJAFaJsDW/q+kxsGdmzWaE8vJBvGuVqhw/gaw6EtepOIslkQUxomuBpM4OPHMY3yAdep1YxzzwPS8Pu4INQTsJGWA5wtaaE1BGNzjeARMOVV9lC+49t1ylAx3MZ4txpTgKKfiF4acyc0TruRv9uEQoJDIYctdkeZvbksqu2sE7/oG/kZWux0ztxV9jp3iKtCq7BEPeCJ5dVSF9k+xm8lsU0iCWVwEtrFHyj6mSWl7OBuAyQ
- gC0yPZqt
- W2pYYgwdVByPtasaLDiPnveteu7LnD3VLU+oX4Be1EzG1gJModmieWpBdP6+6UUuh93K8y3CofZ1zoL4NC+SPdIaO0Y1DiGVubXjYbPDNMzMoytX+ME3AeCDiCagmnoEg+MNIa9HRzXXMOLTLQ5wBstCWiH73oqL48LRAUbfUzT9B7uQLI0nyU5tF5fgHraTTniM4VDguaDOXbN1xiyRZ6RjE35wAF+sbvsRYTDW9DW89mLnE9ZytM6EuQvfzno3HW0nHAvo0ACKmsG41MVHMKCOQn8kDSizDhbITCKnjEHuiqLREbAIv5pIL4dYTALaK08lqkHfDSU7qXqO8cnhc14NTca+au/psRygal8NSlcdZHEjT7wIfPjQkS300gyKhNId0gBP7ujihSgJ+L1ieAKJ3W1iCMPi7Kcw+
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1774896830-458524
+X-HE-Meta: U2FsdGVkX1/L3b2c7vTRR1W6cvg7fmFeIHaQXxOiX+cCjkJIftDstr/wxaNwSo7DeLTnK9r6SKliwG5mX6OshCTIP/oxrC2AyFsKOuyFjJJivYY+PL54yqrWPjRmGlVw2NqZQ8B81r/CNNIKlYC337u6OTqW9YHW6gaQL2aZPaebbeaM8PlvB8Mt++AwFoCIxa4K6BEpguantMlcPcP9DlhbbbNz/XWFeLbo4I6O5AnerZlLOUiIAPfoU2Tcu4J04fDQ2hRX708Ww5w+asOAUvmHojlh13ym5qKftoyAfhOX6GVU+lMHNaaW8WdF4IfePRAj0vvE5rxb+BQ4j0AqkxWsmYjSQVQ9oZeTEmyHu8ffBi04KoOuD2kIZTif8HiDnML205ETO7ImIH5unmwogDvCrbrFKMIYx0mfQ9qAEf+mrKgwu0saC9OK6+QIhbRllI38jUMLvMYE5ocxmhxOq0WeyfJdIW2hn3YyrbU01yCsEwK+B0cYMA823ZT2BYYMVHEhhCn7yN45Kk7VP+TG8j4igPiTL10t7n6+C93WV7E8NAvkTIOWABorumkUHtn9CUiXmouABNokvX7xSxF+MVjzkaQp1KEtYO31DCkhRbHSnD0W8j0osL46tVfpToDNQK3ANejFxb+RkdwQYo7iSY/EGrwXsD2jtw8Tq9iudGaPhJHE7xrAE/FeaPiGWkZK9h75R6Rc8DjCWIzhvOzYORPh+jdDjogQSUY/w5QLVsOeeU0Lwcfeuv/jJJhkvGPRjzNXVNZEf6PLoyQJTEIqoLzLb/YQDuRJ6lGhF9mFTEnxlb2PY/3SrR39VfvJKHEAGvFva15xfDcUiHk4YDte8h0GXJaN8ASuXUwhLtZ1JHtiV4wKG/Wa0fcYN8YkYRbtD+THSiggr6LVMIW4XU+LX8g4z0UMhGn0J/n2XPQmvDbhSUj6x5g0EgT3/ZYIe2F8xvPAGjCY2xzYQpnE0tQ
+ ZJnYghDQ
+ Jdy09DV6h4zTtJNO2jXZ/x2knEB0n3QdQ0esaR+rx0w78Nc++f4PF1uSRkQBw8A+Z/Qv7DQZ/xViZivbrSosZDLfl8j0aSQJk77EqMyJTOnTbi3lrQYIY3bQFI9r2yOZgYlnM6BqI7Qae1YueSDVXxCwFvDHrOIRDnhF3YqsBYDjOmAZk7aGaIcym3ITV3hd3cGJz/ZCIr2zBLjqAF9IDTM0SAqFC6KtQP7MRl+e21oYjJtFG4DtxDVazbyxni6Qym8DYS9kZ+dXRZFXabb+4lOd3Jj7Hgw8xk6Um30cZvDNVoxirc+J5/0JV3RhiBJqiAp7QK4vKfZREK9wFH3ooH8qxl4GHx8VA88QgXDZef9Aoe+aOfCr8czBMvCmfznAcDgbk71f1+XW4msb1cbKNZfybQ8U59OzH1NO4rx2i9rQ2yhqq8pEDgrULfKdGtQC87WE4nEuSsMVnqAv1l8WMw97XNVN5xfDstD5sM7hL8cnw5CylNiREPl1IaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,26 +118,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 30, 2026 at 11:51=E2=80=AFAM Andrew Morton
-<akpm@linux-foundation.org> wrote:
->
-> On Mon, 30 Mar 2026 11:32:07 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
->
-> > The patch looks good to me, feel free to add:
-> >
-> > Acked-by: Yosry Ahmed <yosry@kernel.org>
->
-> Thanks.
->
-> > That being said, it might be a good idea to resend the patches (new
-> > version for rebase + Ack?) to get Sashiko to take a look,
->
-> Yes please.
->
-> > hopefully it will be able to apply/review the patches this time.
->
-> I expect so, but I don't understand why Sashiko is having trouble with
-> this.
+Forwarding Sashiko review for doing discussions via mails.
 
-I think it was a transient failure.
+# review url: https://sashiko.dev/#/patchset/20260330164347.12772-1-aethernet65535@gmail.com
+# start of sashiko.dev inline review
+commit 636b179cc5df5a638d7988bd9de56ce4d8602f4a
+Author: Liew Rui Yan <aethernet65535@gmail.com>
+
+mm/damon: reset thread status parameters upon kdamond termination
+
+This commit introduces a thread status structure in the DAMON context to
+link the kdamond state with module parameters. It updates these parameters
+when the kdamond thread finishes to reflect its actual state.
+
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index db6c67e52d2b..6c71203beec5 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+
+[ ... ]
+
+> @@ -2941,6 +2944,14 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
+>  	}
+>  }
+>  
+> +static void damon_update_thread_status(struct damon_ctx *ctx)
+> +{
+> +	if (ctx->thread_status.kdamond_pid)
+> +		*ctx->thread_status.kdamond_pid = -1;
+> +	if (ctx->thread_status.enabled)
+> +		*ctx->thread_status.enabled = false;
+
+Can this write race with the user enabling the module? If a user writes 'Y'
+to 'enabled', the store function spawns kdamond and prepares to set 'enabled'
+to true. If kdamond exits immediately (e.g., due to invalid targets), could
+this line asynchronously set 'enabled' to false before the store function
+overwrites it with true?
+
+If so, the system would be left in a state where the thread is dead but
+'enabled' is true. Subsequent attempts to write 'N' to 'enabled' would fail
+on damon_stop(), leaving the module permanently locked.
+
+> +}
+> +
+>  /*
+>   * The monitoring daemon that runs as a kernel thread
+>   */
+
+[ ... ]
+
+> @@ -3065,17 +3076,23 @@ static int kdamond_fn(void *data)
+>  	kdamond_call(ctx, true);
+>  	damos_walk_cancel(ctx);
+>  
+> -	pr_debug("kdamond (%d) finishes\n", current->pid);
+>  	mutex_lock(&ctx->kdamond_lock);
+>  	ctx->kdamond = NULL;
+>  	mutex_unlock(&ctx->kdamond_lock);
+>  
+> +	if (ctx->thread_status.enabled && *ctx->thread_status.enabled)
+
+Can this access freed memory? If the kdamond_lock is dropped and
+ctx->kdamond is NULL, damon_is_running(ctx) becomes false. If a concurrent
+sysfs operation removes the context, could ctx be freed by damon_destroy_ctx()
+before these lines execute, causing a use-after-free and memory corruption in
+damon_update_thread_status(ctx)?
+
+> +		pr_debug("kdamond (%d) crashed\n", current->pid);
+
+Does this log normal user-requested shutdowns as crashes? When a user stops
+the module by writing 'N' to 'enabled', the parameter store blocks on
+damon_stop(). Since the global 'enabled' variable is still true at this
+point, won't this incorrectly print a crash message instead of finishing
+normally?
+
+> +	else
+> +		pr_debug("kdamond (%d) finishes\n", current->pid);
+> +
+>  	mutex_lock(&damon_lock);
+>  	nr_running_ctxs--;
+>  	if (!nr_running_ctxs && running_exclusive_ctxs)
+>  		running_exclusive_ctxs = false;
+>  	mutex_unlock(&damon_lock);
+>  
+> +	damon_update_thread_status(ctx);
+> +
+>  	return 0;
+>  }
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260330164347.12772-1-aethernet65535@gmail.com
+#
+# hkml [1] generated a draft of this mail.  It can be regenerated
+# using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260330164347.12772-1-aethernet65535@gmail.com
+#
+# [1] https://github.com/sjp38/hackermail
 
