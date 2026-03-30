@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B27A510D14A4
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 12:05:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A45910D14A4
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 12:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C249E6B009B; Mon, 30 Mar 2026 08:05:33 -0400 (EDT)
+	id C75DA6B00A5; Mon, 30 Mar 2026 08:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFCEF6B00A0; Mon, 30 Mar 2026 08:05:33 -0400 (EDT)
+	id C4DBF6B00A6; Mon, 30 Mar 2026 08:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEBE36B00A1; Mon, 30 Mar 2026 08:05:33 -0400 (EDT)
+	id B8AC66B00A7; Mon, 30 Mar 2026 08:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E67C6B009B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:05:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3B3A28BFC4
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:05:33 +0000 (UTC)
-X-FDA: 84602599746.08.A26DA97
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 99D0D40011
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:05:31 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jkF2qVAb;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id A7B736B00A5
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 08:07:39 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7AAEE1B8A09
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:07:39 +0000 (UTC)
+X-FDA: 84602605038.11.49C590C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AF7D3A0013
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 12:07:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hjv8PEX9;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jkF2qVAb;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hjv8PEX9;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774872331; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774872457; a=rsa-sha256;
 	cv=none;
-	b=F7PMp9LTzM5tJYN4riFe/tDFEKOdzxtuNPE+PxRrEvOU6tognr1cIDGceFdpXUASwWxMHD
-	YTmTcMnxNWKU4kqEEkHf2NOz0BZ96GFOaLzf9QxP2nirAplcEJr691UgI60MzLK0Jqay99
-	woXgCpri9mT+XIXTK6SiMS9M/YRou1E=
+	b=g4lod2MDzjWcUf/Ul0YtUTO6cyouKYlmSSpSIAlKIeKFXy7yH5cEUcydlrYVtZB8cjNZaP
+	aCNaKQ32os09gCR8YvdRbOkFE/Y2G8nk9+f1msg5h7ZGO4lB/6WQF2iGgM/l3aD1sbQrhl
+	tklkihiEO4YrsiKTE7/GIKJn8kE8sQ8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774872331;
+	s=arc-20220608; t=1774872457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SF7gTb5qGcoTEjjBPXj0s6BCFat+ERh82G7vrVOY3B0=;
-	b=Bju4SFfNCifKZd+MVCOEEqVGAJnd8TSs+TwmU17hJJLCVrZhZe7qt5Gqm0Z93HJl8tj2jr
-	TeVwPyDCu8KOfjqYBdBPDBJaf9cWhVl9Y6ikkNkMVjWYeocEINLMSAXkiPzXyeNxLixqhk
-	WBvj/09Qw1w1CVfLTzMFQSa4AdXzp/Q=
+	bh=yon6I7H+AmbODvBSH4+Z9N39DqMYvOLohefrFoQS5x4=;
+	b=yDICs4mZdFEVDnszqYbgjQR72OnLNK3kEHhqP+oTLaYhIBPHDhHZUYUcH78mDLkXDfH2yD
+	ZCB8syszVoV/SoBFcc9c/LilEwMdLVtdNVOUY8HEx9U3HWipGB5DAVDSG5WLki9vq+QnKm
+	1NTJ7N9F83zQriAM/BdCxk6JzIo450s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2160C60131;
-	Mon, 30 Mar 2026 12:05:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692A4C4CEF7;
-	Mon, 30 Mar 2026 12:05:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C9B4940A69;
+	Mon, 30 Mar 2026 12:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CC2C4CEF7;
+	Mon, 30 Mar 2026 12:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774872330;
-	bh=fckQad9uvkMGEVwpEwBUucO8q9GVwf03fWoMEZuJ4qg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkF2qVAby3PLCcJIBHq4PWILtfQMfwG08dYFVhw1GptuD9n+phFpXUGV94tU5Nrq5
-	 SbTznRAbDuMicT15KDPSwYjGWMzaxz5UAYtGUgF6dWvY1/vzcibjdyCnWn/hh4VmkC
-	 BEcXI4ihirWdu/bmJDjF8YTUsXCfaBCQUIRTkn6JONO0crrxH40AydNsN6w4fHekjY
-	 RAkMQ6TZXof0e+FOPAq7GY7EemT3t5MdMr1Qbe4m5iQ99AXOVPTi+LfrYz28d5uojZ
-	 dShI5jczLuZ9ad2S/3prVgwOz8qxwEijqfSQBpv55Yq6BU7w+EfyHe8Zu1yo1iJkV5
-	 I+mq9U994CyPA==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	"Harry Yoo (Oracle)" <harry@kernel.org>
-Subject: [PATCH V1 2/2] lib/tests/slub_kunit: add a test case for {kmalloc,kfree}_nolock
-Date: Mon, 30 Mar 2026 21:05:16 +0900
-Message-ID: <20260330120517.104743-3-harry@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260330120517.104743-1-harry@kernel.org>
-References: <20260330120517.104743-1-harry@kernel.org>
+	s=k20201202; t=1774872456;
+	bh=707pXg4kFYwnKMDw1UsxIG7pl099kIwm4pedIii4hAw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Hjv8PEX9pAaBGbwydHervhfg035qz+u6hQdSLmYCqE9K2f8pjFBJ0zMFPyvUv9QSH
+	 ph2dmLzBDDoDkTPh2/jGvX0FG7VgMzBFrtsB5scJa9bYhkmOux/IWwm9f9tyHv+BHl
+	 vw4OJrTAImUx0pOlQ8Zu6sqt9VadIu02c0YjQjDsBjt0c2+3W4hnPTrfcn1SR31N9d
+	 fJGBHvu1WtpaPnUl2AoLbIGeet3rZnVcTi89Ax4UghTV9zvfTI2STvR0OdaNymchVH
+	 Skjz8VOsqPGWpD9BKHdbpzZlnuksjI0lX+UJcOF+gimQB/8p1d0UiLGuG6nO0ILkaJ
+	 fQX3AzZehe2kg==
+Message-ID: <8b6d4c2b-91fd-4e2a-9f4b-e90cb134219e@kernel.org>
+Date: Mon, 30 Mar 2026 14:07:32 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/memory_hotplug: maintain N_NORMAL_MEMORY during
+ hotplug
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>, david@kernel.org, osalvador@suse.de,
+ akpm@linux-foundation.org
+Cc: vbabka@suse.cz, harry.yoo@oracle.com, joshua.hahnjy@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+References: <20260330035941.518186-1-hao.li@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260330035941.518186-1-hao.li@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 99D0D40011
-X-Stat-Signature: skrjfnf7g5hguarcge5c34hn5duk65pa
+X-Rspamd-Queue-Id: AF7D3A0013
+X-Stat-Signature: k3a1orh6hb8ex7uohserdfpswhmgg6x1
 X-Rspam-User: 
-X-HE-Tag: 1774872331-31994
-X-HE-Meta: U2FsdGVkX1/HEoX1x7cepow26DWIwAZNlgBs4Okv35riH+ndCfk0MxLRO2v7ss6SMfJHjPpIgIvsRvr0LTZoHKTearmXRvgpzh6UgpsoXTeO8QKxhhm0yAFImqHlyKUVPmVkU29JUETxrZEvOeesDf2P0pXT3hzqJwE9tThobCaPmKffZTp9VCiJJ+4P2okmb7WYrd5YYlKrb9nlenPAMRQP85bxPhC/TC98QKrXTVI2x/Qpthz9otwNZ90iChVOUhts8Da2IHRSLo2JZA4v6DZc/LSFSxKWOfjxM+CdGmwFclnMErR8cbCdC/T2CEE5Taw2TF/vRpH6x0yVnAeTEmnzAVxtimHG61zWCo5wGjV589XqvLZyYUIqrRA/HNiefF7ZqLrbDHp1rimHtQdmcYMMBX6nMsLZWjit6gbSTt/mR4k0HVgNhFRGXEWRpCCFPWthgZSfsDaAfdY6W8qRhdK/GkzXJRtCPvJd5veN44bvR8oDGcF2hf59kVTOCnaUsUH8bsLCohaSiupDAYPlfFhRDGSA9aXhQhPNxlUasOnpRtGL/10L3aVccVLvp5yiXWlk+jVlIZK/zMPNlY455jwXlHOns295GGH+9vvoWR8wvjjoheYAJL4TN5vtbf6gy2c2ptYJAQMv/PyZyZF//FlkgWCdiRh8kkIKzKY1e8dKndKDVkJJSY85gcBXZm7ZxoI/Qln/PXGVJ0ikRtz9Tls/EVfJl//I88iGFggJYNFzBeREgd76T2uwtIixraskg+XImuFwaOjyNjmtWD0zncZZejc5x5EibuFLFugXhf/D5gWPLzQOwnQLOGg7l2DLKLNwEXWF948ePWHbDsM6K34i2XD+AJiko66gRgHY57yIJ89EzxZB2qjr2F1urTMimvnkVKqw59cq73g1E2DOsSWBO/VKZaiNdcibglIxogzA2LEm/r34yeF2nI9/bGHNco/v48dRnneDJR+1Mxu
- kFlKaLyk
- FOe+Q62UODj/juiTkIuPyjd97fyIuEyDH+4OYSVKHS6QKUm8q9RJC4W4qb9QF5HsWWnnKyFhhSQnDdkBuYJsfHhxSzb+xvxGMtlrxES6vi/vjywG6N6WvxzXssk4JiD4MS9Rdhqs6zTE9FztSWDi//p+roYoHUbH4OQZXtvxv5LX7J8A8wTquklwOFYockoUktFqs8zzUfNf4gaaxx0m/BSoJHyYveOvfHDEeQtjDYlxi65Lr8dp+5x7Cy7K9IPiXgu/8nF2D+oVFo/3oHEcvE9/WuA==
+X-HE-Tag: 1774872457-909765
+X-HE-Meta: U2FsdGVkX19xauoA1R1xceCgu9vGuARflyKERPW3C+e6C2zH4SAB+MgbB6H8CH8TDQY29tI8GJda3yZrL8dSRoU+xDsvyq/1Oq/L2iJBG+g1GDrNkiQJmJLW99JT9arqmNbtGz1j4TNheov1qx5+PWOyLrLmUJ5hMmQU17b7Sg8dOgBjxX5V1D1AkJJnqkIh30yq+YB5CSZmmJKlDcvlXt8pev+ef+Xrd6jsT7uFZTQvpjFx8B9K8mduRLtez2CjrCKHqsg3yQAt3oXUaIJwKzW5AdkEfb3npMU3WUkVInSTOvrk3zHvXABF+cT1THaM8Maph6hKPP6whG2mK73sPZJonw2ceb2lyE5qPuvjSXDIiWu8a19Oo5Hv1qltD+TcafI65vWYm7vwWMfmkUK45SR2pm/jyYCp3SqiZy34A8PhPQJ8w/Rp18wClA0vUNoi8eubxSi0o5ndYYL+ooZqKMK8Ky+KUFqMI2sKkjz2SGkJNeD7Y6jpvcKp47BAAMGm6maem8z8hw6xY7d6r7ml08kMlP1YCxW0sIF6ilDxWehp3NiAAdjBAJDjgbcVAkYY6avI4zO1SNZnuzNf/csh/jJHpd+GFA9d7YSFl79D21+mIxcNbL0DIfmuyqCbRbFr1rz76cHqsJ7jEnFngxOHdC3PSnynp+hJYhnLdTo8LVgWPi9VK4EUN9Z/g3ZoQE7moSyba1dCzBUusfwSq9dDXO1OOaWKnlJIysUDikXeWskqk9oOX3kNSnEmZgAfahm2Pkmln7uIdDQgX8dUQ+jKXO1r3uoJzNvkxHu84OCcKZ3bwohstv5TuYll+htJsG2FM/9umLtYhgWracB47D91Kq/zBhWv4eLc7rwhRq3iSAgF77/8tN8aHvim20b+vHNkWJv9umry9r9eAuF1xtLJwsAm2NwqKiMRFA4CjcRUwWrn3d3YFJ8tFbYKwPe8F5xOksVSJPUAtPv+uQVFu69
+ ibgztAAC
+ YE+YA+hgr2fm0RZRoDtEzqGVoRKVQd1PamnCpv1UQd7F9FNxaytLS9vyb3e2R0MrEnJ0u833EPCuAREkj7JJ++DGi3U1dVrEOj/R0iIrB1JKiQZe9NMOS5sKQ/CGgBJzop3GCfNMKIK9G8cI4k/Dt2QuW2eMjHmZFu5nGw1OE/cm4uFKT9CxXBhsJ9Wzby7hhL3+P4KK15K8c48XUK51EpAjeRzXMVX8Mui+7D7mngTLimX8WAyA5Ca6R+uVfaqrSAH9MgUS8mNqvS4CgGy4vpYBszgIZsynXwXnet4odUi7aqgJ7+ldumyOQQ6W9UIXEeBhwYohBwX5BzMbjcW0Yo7qQN6u2tbz/ZEqFKyxIwC35dZcuspYB+SgpwkuB9ttzymMslOwkayqkuEkN2lo5fJ+JwzJnU1CEIb3JEf22EEV/hJv0pypsUBSVzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,135 +95,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Testing invocation of {kmalloc,kfree}_nolock() during kmalloc() or
-kfree() is tricky, and it is even harder to ensure that slowpaths are
-properly tested. Lack of such testing has led to late discovery of
-the bug fixed by commit a1e244a9f177 ("mm/slab: use prandom if
-!allow_spin").
+On 3/30/26 05:57, Hao Li wrote:
+> N_NORMAL_MEMORY is initialized from zone population at boot, but memory
+> hotplug currently only updates N_MEMORY. As a result, a node that gains
+> normal memory via hotplug can remain invisible to users iterating over
+> N_NORMAL_MEMORY, while a node that loses its last normal memory can stay
+> incorrectly marked as such.
+> 
+> Restore N_NORMAL_MEMORY maintenance directly in online_pages() and
+> offline_pages(). Set the bit when a node that currently lacks normal
+> memory onlines pages into a zone <= ZONE_NORMAL, and clear it when
+> offlining removes the last present pages from zones <= ZONE_NORMAL.
+> 
+> This restores the intended semantics without bringing back the old
+> status_change_nid_normal notifier plumbing which was removed in
+> 8d2882a8edb8.
+> 
+> Current users that benefit include list_lru, zswap, nfsd filecache,
+> hugetlb_cgroup, and has_normal_memory sysfs reporting.
+> 
+> Fixes: 8d2882a8edb8 ("mm,memory_hotplug: remove status_change_nid_normal and update documentation")
+> Signed-off-by: Hao Li <hao.li@linux.dev>
 
-Add a slub_kunit test that allocates and frees objects in a tight loop
-while a perf event triggers NMIs on the same task, invoking
-{kmalloc,kfree}_nolock() from the NMI handler.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
----
- lib/tests/slub_kunit.c | 88 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
+Thanks!
 
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index 848b682a2d70..2ed5f90a748a 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -7,6 +7,7 @@
- #include <linux/kernel.h>
- #include <linux/rcupdate.h>
- #include <linux/delay.h>
-+#include <linux/perf_event.h>
- #include "../mm/slab.h"
- 
- static struct kunit_resource resource;
-@@ -291,6 +292,92 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
- 	kmem_cache_destroy(s);
- }
- 
-+#define REPEAT_TIMES 1000
-+#define LOOP_SIZE 1000
-+static void *objects[LOOP_SIZE];
-+
-+struct nmi_context {
-+	struct kunit *test;
-+	int callback_count;
-+	int alloc_ok;
-+	int alloc_fail;
-+	struct perf_event *event;
-+};
-+
-+static struct perf_event_attr nmi_hw_attr = {
-+	.type = PERF_TYPE_HARDWARE,
-+	.config = PERF_COUNT_HW_CPU_CYCLES,
-+	.size = sizeof(struct perf_event_attr),
-+	.pinned = 1,
-+	.disabled = 1,
-+	.freq = 1,
-+	.sample_freq = 100000,
-+};
-+
-+static void kmalloc_kfree_nolock_in_nmi(struct perf_event *event,
-+					struct perf_sample_data *data,
-+					struct pt_regs *regs)
-+{
-+	void *objp;
-+	gfp_t gfp;
-+	struct nmi_context *ctx = event->overflow_handler_context;
-+
-+	/* __GFP_ACCOUNT to test kmalloc_nolock() in alloc_slab_obj_exts() */
-+	gfp = (ctx->callback_count % 2) ? 0 : __GFP_ACCOUNT;
-+	objp = kmalloc_nolock(64, gfp, NUMA_NO_NODE);
-+
-+	if (objp)
-+		ctx->alloc_ok++;
-+	else
-+		ctx->alloc_fail++;
-+
-+	kfree_nolock(objp);
-+	ctx->callback_count++;
-+}
-+
-+static void test_kmalloc_kfree_nolock(struct kunit *test)
-+{
-+	int i, j;
-+	struct nmi_context ctx = { .test = test };
-+	struct perf_event *event;
-+	bool alloc_fail = false;
-+
-+	event = perf_event_create_kernel_counter(&nmi_hw_attr, -1, current,
-+						 kmalloc_kfree_nolock_in_nmi,
-+						 &ctx);
-+	if (IS_ERR(event))
-+		kunit_skip(test, "Failed to create perf event");
-+	ctx.event = event;
-+	perf_event_enable(ctx.event);
-+	for (i = 0; i < REPEAT_TIMES; i++) {
-+		for (j = 0; j < LOOP_SIZE; j++) {
-+			gfp_t gfp = (i % 2) ? 0 : __GFP_ACCOUNT;
-+
-+			objects[j] = kmalloc(64, gfp);
-+			if (!objects[j]) {
-+				j--;
-+				while (j >= 0)
-+					kfree(objects[j--]);
-+				alloc_fail = true;
-+				goto cleanup;
-+			}
-+		}
-+		for (j = 0; j < LOOP_SIZE; j++)
-+			kfree(objects[j]);
-+	}
-+
-+cleanup:
-+	perf_event_disable(ctx.event);
-+	perf_event_release_kernel(ctx.event);
-+
-+	kunit_info(test, "callback_count: %d, alloc_ok: %d, alloc_fail: %d\n",
-+		   ctx.callback_count, ctx.alloc_ok, ctx.alloc_fail);
-+
-+	if (alloc_fail)
-+		kunit_skip(test, "Allocation failed");
-+	KUNIT_EXPECT_EQ(test, 0, slab_errors);
-+}
-+
- static int test_init(struct kunit *test)
- {
- 	slab_errors = 0;
-@@ -315,6 +402,7 @@ static struct kunit_case test_cases[] = {
- 	KUNIT_CASE(test_kfree_rcu_wq_destroy),
- 	KUNIT_CASE(test_leak_destroy),
- 	KUNIT_CASE(test_krealloc_redzone_zeroing),
-+	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock),
- 	{}
- };
- 
--- 
-2.43.0
+> ---
+> Changes: simplify the code. (Thanks Joshua and David)
+> ---
+>  mm/memory_hotplug.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index bc805029da51..05a47953ef21 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1209,6 +1209,13 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+>  
+>  	if (node_arg.nid >= 0)
+>  		node_set_state(nid, N_MEMORY);
+> +	/*
+> +	 * Check whether we are adding normal memory to the node for the first
+> +	 * time.
+> +	 */
+> +	if (!node_state(nid, N_NORMAL_MEMORY) && zone_idx(zone) <= ZONE_NORMAL)
+> +		node_set_state(nid, N_NORMAL_MEMORY);
+> +
+>  	if (need_zonelists_rebuild)
+>  		build_all_zonelists(NULL);
+>  
+> @@ -1908,6 +1915,8 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
+>  	unsigned long flags;
+>  	char *reason;
+>  	int ret;
+> +	unsigned long normal_pages = 0;
+> +	enum zone_type zt;
+>  
+>  	/*
+>  	 * {on,off}lining is constrained to full memory sections (or more
+> @@ -2055,6 +2064,17 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
+>  	/* reinitialise watermarks and update pcp limits */
+>  	init_per_zone_wmark_min();
+>  
+> +	/*
+> +	 * Check whether this operation removes the last normal memory from
+> +	 * the node. We do this before clearing N_MEMORY to avoid the possible
+> +	 * transient "!N_MEMORY && N_NORMAL_MEMORY" state.
+> +	 */
+> +	if (zone_idx(zone) <= ZONE_NORMAL) {
+> +		for (zt = 0; zt <= ZONE_NORMAL; zt++)
+> +			normal_pages += pgdat->node_zones[zt].present_pages;
+> +		if (!normal_pages)
+> +			node_clear_state(node, N_NORMAL_MEMORY);
+> +	}
+>  	/*
+>  	 * Make sure to mark the node as memory-less before rebuilding the zone
+>  	 * list. Otherwise this node would still appear in the fallback lists.
 
 
