@@ -4,174 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F881061B04
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E614D1061B04
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 14:36:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC7C16B00A1; Mon, 30 Mar 2026 10:36:00 -0400 (EDT)
+	id 5649C6B00A4; Mon, 30 Mar 2026 10:36:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D78C26B00A4; Mon, 30 Mar 2026 10:36:00 -0400 (EDT)
+	id 4EDEC6B00A5; Mon, 30 Mar 2026 10:36:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C40BD6B00A5; Mon, 30 Mar 2026 10:36:00 -0400 (EDT)
+	id 3E3736B00A6; Mon, 30 Mar 2026 10:36:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AF4296B00A1
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:36:00 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B74E5B7C5
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:36:00 +0000 (UTC)
-X-FDA: 84602978880.28.FD1FE3C
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012022.outbound.protection.outlook.com [52.101.43.22])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 65C21120012
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:35:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NnQ2V4cN;
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774881357;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E0216B00A4
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:36:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED30CC2AA0
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:36:43 +0000 (UTC)
+X-FDA: 84602980686.20.D0081CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 27A85140002
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 14:36:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oUjt9ek5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774881402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MTErkZp9JOLe2ljP6FkXRd3RM+smjuwhPvBXlr7H2AU=;
-	b=Hwje+nBbyXCkM+FJ6aQ/NxaBKxcUB3b0s0Gs78KjFvgNQJ36uI8cVjnhglrzhU1SgR4kju
-	37JmhKp8HvWMFiEwEFVqZL+dIYDRQ5/vPW6kynRhBsIikrz8wpjEQqx5FLQrsFHlyrmkxP
-	3V6ldY0VHgydlU9l8bNBzHxb+4ClWuU=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NnQ2V4cN;
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.22 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774881357; a=rsa-sha256;
-	cv=pass;
-	b=uCG5ZxSVKedUxjLBbFahZ+gw2AIXtKE2yeEGv5e1iWqoeKUS2joBPaAU5bn5c5hPgfldic
-	IyKAzhQwouAMYf+B9T32Z5FL4H7izmnZV25DVIvtxdSpIzRGo+bYWDqOmQ3fPRKLTTk+E9
-	usOK+1gYn0tPbSk8rJ0gV0civkfmswg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IzAYBYXPFiyQul6qzykQzD3ADOcN3d9OkXDKMlk9uCCAeiw9XaIwtqBAOmIucvHUV0kTanq9jTOf7wGbmFYHUlt2VJFlUpRpz0xnhP6vLWLVONPtJskMNCqmlltM0hdaqdRIAmB6OyWplW5lhSMEGHulU4w0vRRczr8vBuSsnaJYd6dmeBAqZNQkYHhcZUv1H7HRoG6NWsufGtfW8LedQyeIdHaT6Hrrav0w0eDLAAICqYXsTXm20Jsns4a5oYlnd1T2gWzEI2M8CbF9jI052hEZPwlOH08Aa5WDtybHktz4nlCPWHu4TlqpgLXqBO8hYTjVJBx+tkW35q0XFqVkzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MTErkZp9JOLe2ljP6FkXRd3RM+smjuwhPvBXlr7H2AU=;
- b=HYnCxlI04fY066k3Cr6SGftla/hAz/Kt+qma5fcbLiiTYbyRVoZLGGl/4dGq6loNQKJ3OWVY2P5lU2A56o5hp42upoEE+GsetwNtbBCzxsK+N3yXRf1dCrZ0zfsIMyzmdKE+mXOK8lJFidnrMw3POKHQdXWCuuWn/OHTsU8IEWalSIzxHbCsGzLVCtckJg7PuNoIlZf50t0JKnusZhkKav62Sv8eBNkU1g7sMYJARVJhc9Jt+bRKnbYElD1+thP3nV+zCW/ApE6bGMnNzD/jBQGXJMW1Vx2pLg3behEObQ6RCg93iFZWjzYrGYv6Hvnpis0doAfMZJa9ZpiPEmGfiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MTErkZp9JOLe2ljP6FkXRd3RM+smjuwhPvBXlr7H2AU=;
- b=NnQ2V4cNxiMQpKG9DybsGd6B22GOnqPmFXWjncTzP962Po8EQlEDlaZunE0h89Z473zQyzRB8bjVxeQ3CtfWPFnOlJLIcVogIBK8zcEkVmeQ53Tv5bS3QK8sG74KM7tjSe3czmFECpXm/n1LRfFwsEVLZWNaRE9P9Voo5YHYgJoJjTBzGewziYeVI2gZBQ3FkyvWu58bSMYtHD1gKj1ex3gkRrtMpBPkp7fAHlyplOb2TYHhXwc3Zqgm2gFIM7jLn+Ogn3jzqG7UfLcOaQ+ydPu2kxQsBsgoV7CmE4ueJFRYFjYmkpdAY3K/1yb1eKn7brzwFttWaAl6n9Wb/xkLxQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- MN2PR12MB4047.namprd12.prod.outlook.com (2603:10b6:208:1de::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.15; Mon, 30 Mar
- 2026 14:35:52 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.014; Mon, 30 Mar 2026
- 14:35:52 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: WANG Rui <r@hev.cc>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, brauner@kernel.org, clm@fb.com,
- david@kernel.org, dev.jain@arm.com, dsterba@suse.com, jack@suse.cz,
- lance.yang@linux.dev, linux-btrfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
- npache@redhat.com, rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org,
- songliubraving@fb.com, surenb@google.com, vbabka@kernel.org,
- viro@zeniv.linux.org.uk, willy@infradead.org
-Subject: Re: [PATCH v1 05/10] mm/huge_memory: remove READ_ONLY_THP_FOR_FS from
- file_thp_enabled()
-Date: Mon, 30 Mar 2026 10:35:49 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <DDFEC0C1-3ECF-41CC-9630-A4A742F2B842@nvidia.com>
-In-Reply-To: <32679321-b2d3-44d7-be2e-f7a6a166a510@lucifer.local>
-References: <52CACB9A-A782-4D11-8B6F-66DA8D345C78@nvidia.com>
- <20260329040742.17269-1-r@hev.cc>
- <32679321-b2d3-44d7-be2e-f7a6a166a510@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BLAPR03CA0045.namprd03.prod.outlook.com
- (2603:10b6:208:32d::20) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=X9xe30BZq01+2FB9ob3pz1h+4NHF1TrtXSqU8UoZZ/I=;
+	b=bzn5Kp0yhNvc5EnEwYc5wiO0x2waSb6snM+dqU9IfvnoaEK+MJugUsj+vBFK2qcCcVMiu3
+	dMQIqxDPkWx5U8u46ZZBMxqTuCofPJEif7UtO8ebngPhnORxWeIUzNwSk8YjYzV8d68sYH
+	c14d4Fwiwn4haz4VuaxINNIMroLGh2k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774881402; a=rsa-sha256;
+	cv=none;
+	b=mEG1N03bg18G8W2oupMa6193HNsjIwfnbkk0KaMOTKEeV9PM+MEMMjh140GCVK4K5R+xty
+	2j6Tu5BlCOEgBUKnLow9iLVBQm+ZpN0QzzAWyfl4hnKZUZjiVO7JXi5yJ2MuhH+I8w23lB
+	i8CakZoq0QKqHn1jHd6xsYzPx3HbxDc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oUjt9ek5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 36EB0434BA;
+	Mon, 30 Mar 2026 14:36:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC07C19423;
+	Mon, 30 Mar 2026 14:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774881401;
+	bh=UUzXjb9asDBbFYQ/P+S6mXqciBQgW6rkek8EtvcnmEA=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=oUjt9ek5UytYIOgdx2VGoInarZWYBW/OInxfrQunSF4g0xgDSRG8tL1vJ1MMYLx09
+	 znAh9a8Dg0WHt5KE0ZhCVD9hZ0EVoluGrE9kiHzt+LyqXcxOIE8WHwnwwAI1HDbmfl
+	 yHCYmwYJRFTPzbBzS8FelbBewo6uH1RBI5riq+upPasi9sfo6bxDCr87JYIH14yQTh
+	 OgAzqm94Ppz79bio8sBysAt1qiAuY1OfwloOGfAUwzQmFnVv/uqQn2l6JZO5ziM/F8
+	 L9cJCYqXaPv3H19VygcorNBXydcIE+NCeXaGyMXAAgJF4vxnL5BkEgy4dUTqZhjFgt
+	 eUAGSj1iIyiOw==
+Message-ID: <d6db5b93-8bcb-4a34-9e44-3ff948e64ce8@kernel.org>
+Date: Mon, 30 Mar 2026 16:36:35 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MN2PR12MB4047:EE_
-X-MS-Office365-Filtering-Correlation-Id: afc1af38-5677-4ef3-f058-08de8e69a4d0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	vO2UnCmXsZAZKs60p/m22LTpYYa823xp+EgCA+ZnHevXgrJjxr7ymMG68pkju0lNHHhyHmLxfj01qjUCaWRNqR8PUBX5lXBst2i8pb26ejrIDKsjh7kvhhGyrGPCSY4/h1/qo7OB5IxGSPszV3gJTU34rXK7gWrUYu/yu8h+P5InBVw5LYoTQusP3oSS803MNTeZTiHHdCpG7lL0DCPQd3X8NM8CBHePCiCv+JxZJNrS1AwgZSEWnIjWjl2wN12R0GkaCgWv10CzWkq9EBsYNh9A1tTRjyz65WIxGd/KE1pgtrNW1mAWG68gmOnnoDD9rvHjb2kQMjlOB27LAHlBH/GnwIK5WsTNwWFihF0VA1HdW0rkVJb3DfK1rwihQQTg60ynNTGe5KdLKyNrJ2JcaKWA1hCLL4HFKUvMJ/tQgrARx/JYXNf8FDt9CyCdJCtm+aWhFqSneBtnMqXdVLT72iRPFtOdcFV0jLWdPvIhuUAMHkmTm1hbOQZWdSY4jZ0gYy2JgyvEtWr0ysE20MUC/NamyIz111hAxKPtlfdKoF4ZccFOWovMGsDcUVTGlrPC9tVduNYxD+0Nltq0LR5flPSK+DzUYonL7ZDEBWynH6fw2vjsZXNWhU8VuLSJbStVyyy635uMYdzbw/AGoP/QBxJh4a3LUlmgd/IjRojAfB7VEjxAvb9zhY0QgtANeUvXOuOCc8xWetTZ4neeliVXX/idz8nyp8D/C2v/GfxIV6a3wKhLduVzvfhNWJp5IU9B
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VktjZ09tQjdDdGdRYitFLzFzZXZwY3FMaUlvMHkxT00xUlB4TnltRk5HOEFW?=
- =?utf-8?B?NityV29Pa1dZY2dTc2krSWdSWlN3M1p0cTNrYXVKZlgxazRyOEtpM3owT2Qy?=
- =?utf-8?B?ZmNSRHlNUlNlcVFtbGo3bk9tSTJHanRCaXg1SU1MYk5nRzRUVWpVejVsTGRF?=
- =?utf-8?B?N05HclVXb0pxMGN1RlF2d0t0a1o1Uyt3a09FU3NKRHVOMUlEaFRWZ1gzTi9K?=
- =?utf-8?B?b09SYTdPYXhFclhqbG80T1ZTdHQxdDNDRk1GT1c1VlczZTFKSSs4a1VzblU5?=
- =?utf-8?B?NjloZkIwamdOdkUrSFN3Qk0wbFljODIvVTY5R1IzZk9wN1U5Z1RkdTduK2Jt?=
- =?utf-8?B?TU1SaDc0NG9zWHZ6L2plMVVQQ3FqOHFaUDBpdGMyTExtbG84NTA4SGtWc1Uv?=
- =?utf-8?B?NzVjeVR3dmxuQ0tVVGlpelhicjB1c1RhcEMxVVFhOXBlVk5EMkFDWFB5Uzkv?=
- =?utf-8?B?UTNDQVB2WkdrNTRsR1hHZWdSSzdIUHRmbzBVVTJRL2hvaEFGejFKU2g3WFds?=
- =?utf-8?B?VUQzNmlNaXRKU1ZzNVp5OTN2TDE3Ynh2elhCMCt3cUxYRzNkSkQ2aTdPMjBl?=
- =?utf-8?B?dGJwNGNOeHlqSmRYU0NrWlRlNndGMUoySy94bU03V1NPNENmaW9rY20xME9y?=
- =?utf-8?B?V2F1ZGxUd2lyZ2U0MWtXWXg4bVorV0ZuRHNJRFBoNlZKcnJVdVhNUStsWVpl?=
- =?utf-8?B?aEU0RTJhYm1OZldIbnFBRmxJeE5RZFljSFROeER3SldSNGlUQVY1a0ovb0d5?=
- =?utf-8?B?YVNhQ2sxaWs5bjVkc0s4RWk3R2hzNnJkdmJ2MU9waGRLNmhTUDJoMU9ZZVpK?=
- =?utf-8?B?SDRIK1dUZ0ltU3lMS1d4cmowc0VEalVPME1udFROQ3lZSEtjSmM2c2V1TC9M?=
- =?utf-8?B?N25qbUlkK081b043SC9BRXJ0YVNOR0F1L2JQT3hZZkJvVTNpRDQxUlluU2VO?=
- =?utf-8?B?MjJnM0ZRcDlYaW9EQlQ4U1p1SElOSzVYMTFBbXFnSXR4aXQvSUNwU0JieE5M?=
- =?utf-8?B?THNLdTNSR2ZvSGtVaGoxRmdBTVlmSWRXNGJ4VERYbmZqWG1zWUhJTm16bVRx?=
- =?utf-8?B?SDBpanZXRmFQU2ZMR0xaM08rYzJ3blMyb1UrTTErMW9JQVVTNWdsR252ZGRt?=
- =?utf-8?B?SEpLa29nckVRcUpMU0R2YkhDK2FBV1FLU2NJSGRNQmxtSG1WSDU1N09md00v?=
- =?utf-8?B?a3ZRME1RejJhMTVDaVNQUWx3WTgvNEYvVTZ2YzNIRUlFNERrc0txYnZqNjE2?=
- =?utf-8?B?ZVRPR3NXZmdCNXRtbTRuTHVWVjNKTWRyUCs1eUpKMVZtSHRFVTFnODJWeHBH?=
- =?utf-8?B?NXhGSjhJNlh0cnpFbS9wbXE4d2dURjRJSVNpTEpmaUdFWkxLSTQxVkdUN0JB?=
- =?utf-8?B?UzArS3FaU2xYK1pYZkxvSDJIdkNYK2FPSVBUNThHaVhkSzA2Q2c0UEJiLzhy?=
- =?utf-8?B?NGhYa3JKbTFkRW5Pb1dUdnB3RktuRWlTSmEzUTZXVC9BQ0FpWFdUUnhma0lz?=
- =?utf-8?B?VWVpazU5bVhFQnkxZDVqWE5mcTJtOXpoaDZ6WHZIaVBSQmlWVktMMFVFc28y?=
- =?utf-8?B?TmdkTjFlaURMTXkzdmFQQWdBRWhrbVRSMFhqekdSZHFmTlVUUWpCN1UxU0g2?=
- =?utf-8?B?R0VDb2w1UytYMm83N1gwWkVvK1JPSklFTWxOQWgvaXRnMFZOWDJoR3k3Ukxx?=
- =?utf-8?B?b2cycDBHVktsZ2N0d081V0VCUkhNNUozM1FXdUlHL1htZWp2R3ZwYmVXZEZO?=
- =?utf-8?B?MG1jQytzbWIzVWQ0aUUyYUZHd09Ka0VxNXlEWHFNV2FBb2h6NS9BaU9mRHEy?=
- =?utf-8?B?OHBpSzdqQ3BEMTNXWUVMZUU4TVE4c2lGOWl4dWV3d3phRWZwSlVzNXR3aThn?=
- =?utf-8?B?NTdFK2g1WDRqbklkNVpPMDdsSlltSjBxUHRGZVlwbjUyL0xoZDlPVnQ0K1dx?=
- =?utf-8?B?Ri9xV053MDFNM09MT2tqSzFVdHlQb0NjNlZqMUV6VE1tanRpQWdpRkl0Z3Fs?=
- =?utf-8?B?RURGcFRBQWU4UzVkUDhOQVVDbkIzWXZvVHp3SjdzSFV5TDFNQ3RCUE53NzV3?=
- =?utf-8?B?eFJxeGdZdjN0NHRWUTNlQ1FzUXhjaFJpWlNWNnU5ZkF3UDFvSDBjZTVXcUJW?=
- =?utf-8?B?YnhwZ3hGNG1qN0ZScGdrenBkaWJGUGozMWxxVElZMkdvdzhNUWEvUVpRVkVp?=
- =?utf-8?B?WGppd2ttcXlHZ1p4NXpJTXY0M2E0ZzAyTE0ybi9DZDdrZ1Rkd1JBYURLSnZh?=
- =?utf-8?B?ZnFmdWlVZDlzMmdJUWNvK0VwZnk4MXNGa2Q3WjFPZzBWcXlkbnhYa3UvQlJy?=
- =?utf-8?Q?BBbXoj/jEsbhGV/dVn?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: afc1af38-5677-4ef3-f058-08de8e69a4d0
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2026 14:35:52.2854
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ftYMZYclWaWuLrKa4MTX84e1SXtvemjBguiWUzjfNtbxVA1XZjtI2Mznsu3qGGWz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4047
-X-Rspamd-Queue-Id: 65C21120012
-X-Stat-Signature: jmt9kkjurhyoqaep4zo6n56oaxw5uqxb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] mm/page_alloc: Optimize
+ __free_contig_frozen_range()
+Content-Language: en-US
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Nick Terrell <terrelln@fb.com>,
+ David Sterba <dsterba@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ Ryan.Roberts@arm.com, david.hildenbrand@arm.com
+References: <20260327125720.2270651-1-usama.anjum@arm.com>
+ <20260327125720.2270651-4-usama.anjum@arm.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260327125720.2270651-4-usama.anjum@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 27A85140002
+X-Stat-Signature: awgectfq3setwzdgu55bc8pcxnqqqg4b
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1774881357-222405
-X-HE-Meta: U2FsdGVkX18BRRUNGVA+oYKuskWWpTQQ9f5ykEN6srCI+3g6hovgLOdEHypMRiV9MSQciEfB0+sY6EEuyhGOhjhOCzGZw2Cf0m8xOAd/bXneHRX1OamMGjOU4WxHXdT2kKuB3FsmbGkU3q67o8BMa+HqyDCqqly259XK4sCs9bVrXbQMV18yTLjDK4mUFgwteJU0GR0KF3I8HZegbMTBhrXZjZb1AsMFmtSZT+hGdxX4h/hjsytmlTqt9xHc/ZthLee/bKvOENQDBCytvTQlZN+SawSXlUNx/6dgr22vEWYn+flZJqz7l7gbJl73XqvW+HIPNWNT4vLiwEvhcWg7FnEMXg7gaNo7UkouVPNRkeRxLCWflVp6ia06u7ybIBMEFjFqLOvq+273PD8nTutkErkxZ1/TbgEMbJPJQKDoMBmSmttRH6VCESD7If0EZ8sC034UemyUv4i8lDNlxvDnYXI5BlK9whBL6D+Qu0wnm5m3xih6Ajalvp/s1N3DoNx4K+t1dqNy3rwpX3/9QDQ/BqweG5fjhciMpyRA0rNZ5NsDEmHIes1mV11pD/d4ZP0Pmq0hgRgBqHFbkiUsWua1Wd+RMoEeN07N3VBYKe1gpX202cGDAtPpJn2kTik1Up9WIO9GRcM3SMRnRNXkcDmaS3mq6iQgOrj8dUwB0++SHmqtnmckGt0GFh369c2hN7HHt0PSDKZ8d8JjNKrLnNwUvu/KRUe97Q6tdUnnLsBKyH3CfKjA6f+21A94b1PrFjZKXE/aiTMnHwwfK1L6pfuSF1mWz7QeFLT26p9TwSAc8nSkr9cOUWgvL3IDJ/Gdaj+PCfByKf/eDGBd+MPv2W8WfaHCZksNoM6EyJCUf5qYyNhZvADIVe7XuH1Fx9xbx1Jz8BjcD0wGfUbhvFNHFiQuPx7jBC1vydlXvr8EeOr0+6iz5pnPqW2GgTik+VKQmvw6KaDtYa4f7Tg/g92eVKR
- FW3QJhZC
- DtAYkmJOrBVwY28ngVrO8pIsaIzD6hZWRSl6U5ZaEfYVS8wemkyZz/bd8OoHeTRdOiOYrmgWfXlDPfk5hOexgfVrKmifcTKBy6Lyh8R54lk5QsIixXonMFZM/aa288yNqhjhP3/BYy8sR/ju5/cBjZGB8Ppa6BiZNiW894Cz79WITz+gk2wQe8v4+SWnpnxZIwseuPLipFe2ZR7USQ1akxIw+T/hcG1wevG8pGjAh+GplX82IaOmgcyO5+khl+iiCfbXEAYZ5JrtVs6WcFjHCMgqNmdCbNUjFjqlAtMXaOUUgwKQuXXmxyIqh9FKstHZe37g4enFyyn9SRl3ItihJuxtKC8e8IzmB1A8IfpKwquiV2uz6SrEweU/g16U871TJO4PU8bVlcbE3+rh1JzF+FWwlV5rZRKFDZGUtj1fqVbGax00DZ5aErTi7sC6mhSrt/xtJI7lfHir8YSWepFxQsfxlS7rMcQyhjSTF2dUWBMrOeCvjeugjVUHp/YRvMAmbakJd
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1774881401-763113
+X-HE-Meta: U2FsdGVkX19kd4JC4T6y+DGfWuWyl+xjYN2gdqFzFL5+5UU3L5YreDz8A/gTsXg2hoZP4sd1PQkzQS/c8IDSYoYXL6fFwL8rHSbdSfY/qdJVhKEkUUuslxODDMlCH3JAsMEwhvfthvb911HhqR+aPuPo0JmWT8pGm5SNEqkkQbQR2Wd6/d+ZgOeMd3ku1fHHpHMP/6aLQMocCQrASYJRK+cnttyrpSHGnCoJqJavcVCPo1OR/pcaRQwFBqyw5cmVGndoVpmeM872wk6F5lbx6Aiw7IU3UEMBp8b5CJoMVXSAYEuEDXyHL2qX6N7QvcLNzhX7bbax7jZnSsWY/mwoLt2VStxcXoRM8l7XRT4ga/dUaQtfr4DfsFm3U+BgkTv6rEOhld2O6EMp6k/uUTCUzKLdXHHU47z5weyZ/T2ONK9nMHmgEYUBRBGy9SPUsPAEjJCy6cXSwTVCjpkamSh4NcvpXtLtRFMdJc5Iwd4T1X52x8k0dFicf8wirpod9X6TBlP4PJl+XjW/+69RtOr9O+t46tlvgcv6Xx07wCVa/rxnAA2pFHeLMTW0UCPYAzwEnm6MqWhaANWMzQeH2jwpxWOtcuCLJhFcKLpe/IssehsFfvkvKB5CyhMyq7RfiqNcBO2AMb+xwuCeTOdTVghQtM8c9M4hde9FUBHgOB/Ni/LPs+yPmvV6BqRs3LuHHQAMscXnKoJVBQPkTXRGuVdxRGw0pPSfi9DdcLbqdZ8sNRmWFKpTixHTW+TLHKqWIEtiWXnl+7lkJIvs+Csf8gEpgkWB6WIvQXGM6FJI8FX3xHHewCr3qzgSvCU0X27+Sq2BeIvVaYf+QxKf7Pu0TI1uE+wmVUCsHKPb4Yq3unAg7VPKSuV8i9nK462x9x65VgctoIRXkXL8odfx+3PzFK67bbIxNCNfb2H1FJA/NdCriE0cXqe9/YjoonsGDi4KvIiqai+PXzySkVqwVS5nA3j
+ bM03/Kbd
+ rS6EmlUVYpin8MG/Ge2WkMxYIJ6DczL70WRYc3Zf3NmFORBqawZGC2bYiMiW9HPOXiPUMWJsaRVX8R5+S1FJj/Ya21nfbQYBUev1WkO4umJQvjwqQiLgTbuxBmZzGe/n/4ojYTX7ZEIBBQqC6m3M1rBcxSx3mcyMqmd6Z6aouHR2TLhb7oqjH7ztdoAPdM6CKZiaw67A9v81awScZpb+HxvrmvmzGg/WDmCYyiUZc4740V75n43pYP6Pf7+293fPhOCK2peQZOOxLh8PzN90c2AFI/p+FZleOre3avP44iEvl6yQDbwqhbDuuwEmXaUtWCkRvPW0HFMjcQ2DyVwQrPmlPBTUtcF8a+Pv7W+/kWy6VIpLe0FcSUK74+durebDaGH+NM0Ew1Z12OcvcduFOSpI1hQKU8Ya/i17aZe0C3ErdOpCm7/85/HfV9kbtFAegYpypUjgc/mN7wzYv/B6iw1Blo8Q1blPH+Pv4VPmkUa+o1SM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,128 +103,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30 Mar 2026, at 7:17, Lorenzo Stoakes (Oracle) wrote:
+On 3/27/26 13:57, Muhammad Usama Anjum wrote:
+> Apply the same batch-freeing optimization from free_contig_range() to the
+> frozen page path. The previous __free_contig_frozen_range() freed each
+> order-0 page individually via free_frozen_pages(), which is slow for the
+> same reason the old free_contig_range() was: each page goes to the
+> order-0 pcp list rather than being coalesced into higher-order blocks.
+> 
+> Rewrite __free_contig_frozen_range() to call free_pages_prepare() for
+> each order-0 page, then batch the prepared pages into the largest
+> possible power-of-2 aligned chunks via free_prepared_contig_range().
+> If free_pages_prepare() fails (e.g. HWPoison, bad page) the page is
+> deliberately not freed; it should not be returned to the allocator.
+> 
+> I've tested CMA through debugfs. The test allocates 16384 pages per
+> allocation for several iterations. There is 3.5x improvement.
+> 
+> Before: 1406 usec per iteration
+> After:   402 usec per iteration
+> 
+> Before:
+> 
+>     70.89%     0.69%  cma              [kernel.kallsyms]      [.] free_contig_frozen_range
+>             |
+>             |--70.20%--free_contig_frozen_range
+>             |          |
+>             |          |--46.41%--__free_frozen_pages
+>             |          |          |
+>             |          |           --36.18%--free_frozen_page_commit
+>             |          |                     |
+>             |          |                      --29.63%--_raw_spin_unlock_irqrestore
+>             |          |
+>             |          |--8.76%--_raw_spin_trylock
+>             |          |
+>             |          |--7.03%--__preempt_count_dec_and_test
+>             |          |
+>             |          |--4.57%--_raw_spin_unlock
+>             |          |
+>             |          |--1.96%--__get_pfnblock_flags_mask.isra.0
+>             |          |
+>             |           --1.15%--free_frozen_page_commit
+>             |
+>              --0.69%--el0t_64_sync
+> 
+> After:
+> 
+>     23.57%     0.00%  cma              [kernel.kallsyms]      [.] free_contig_frozen_range
+>             |
+>             ---free_contig_frozen_range
+>                |
+>                |--20.45%--__free_contig_frozen_range
+>                |          |
+>                |          |--17.77%--free_pages_prepare
+>                |          |
+>                |           --0.72%--free_prepared_contig_range
+>                |                     |
+>                |                      --0.55%--__free_frozen_pages
+>                |
+>                 --3.12%--free_pages_prepare
+> 
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-> On Sun, Mar 29, 2026 at 12:07:41PM +0800, WANG Rui wrote:
->> Hi Zi,
->>
->>>> Now without READ_ONLY_THP_FOR_FS you're going to:
->>>>
->>>>                        |    PF     | MADV_COLLAPSE | khugepaged |
->>>> 		       |-----------|---------------|------------|
->>>>  large folio fs        |     =E2=9C=93     |       x       |      x   =
-  |
->>>>  large folio + r/o     |     =E2=9C=93     |       =E2=9C=93       |  =
-    =E2=9C=93     |
->>>>
->>>> And intentionally leaving behind the 'not large folio fs, r/o' case be=
-cause
->>>> those file systems need to implement large folio support.
->>>>
->>>> I guess we'll regress those users but we don't care?
->>>
->>> Yes. This also motivates FSes without large folio support to add large =
-folio
->>> support instead of relying on READ_ONLY_THP_FOR_FS hack.
->>
->> Interesting, thanks for making this feature unconditional.
->>
->> From my experiments, this is going to be a performance regression.
->>
->> Before this patch, even when the filesystem (e.g. btrfs without experime=
-ntal)
->> didn't support large folios, READ_ONLY_THP_FOR_FS still allowed read-onl=
-y
->> file-backed code segments to be collapsed into huge page mappings via kh=
-ugepaged.
->>
->> After this patch, FilePmdMapped will always be 0 unless the filesystem s=
-upports
->> large folios up to PMD order, and it doesn't look like that support will=
- arrive
->> anytime soon [1].
->
-> I think Matthew was being a little sarcastic there ;) but I suppose it's
-> hinting at the fact they need to get a move on.
->
->>
->> Is there a reason we can't keep this hack while continuing to push files=
-ystems
->> toward proper large folio support?
->
-> IMO - It's time for us to stop allowing filesystems to fail to implement =
-what
-> mm requires of them, while still providing a hack to improve performance.
->
-> Really this hack shouldn't have been there in the first place, but it was=
- a
-> 'putting on notice' that filesystems need to support large folios, which
-> has been made amply clear to them for some time.
->
-> So yes there will be regressions for filesystems which _still_ do not
-> implement this, I'd suggest you focus on trying to convince them to do so
-> (or send patches :)
->
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Thank Lorenzo for clarifying the intention of this patchset.
+> ---
+> Changes since v3:
+> - Use newly introduced __free_contig_range_common() as the pattern was
+>   very similar to __free_contig_range()
+> 
+> Changes since v2:
+> - Rework the loop to check for memory sections just like __free_contig_range()
+> - Didn't add reviewed-by tags because of rework
+> ---
+>  mm/page_alloc.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 64be8a9019dca..110e912fa785e 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7059,8 +7059,7 @@ static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
+>  
+>  static void __free_contig_frozen_range(unsigned long pfn, unsigned long nr_pages)
+>  {
+> -	for (; nr_pages--; pfn++)
+> -		free_frozen_pages(pfn_to_page(pfn), 0);
+> +	__free_contig_range_common(pfn, nr_pages, true);
+>  }
+>  
+>  /**
 
-
-Hi Rui,
-
-READ_ONLY_THP_FOR_FS is an experimental feature since 2019 and that means t=
-he
-feature can go away at any time.
-
-In addition, Matthew has made a heads-up on its removal [1] several months =
-ago.
-We have not heard any objection since.
-
-It seems that you care about btrfs with large folio support. Have you
-talked to btrfs people on the timeline of moving the large folio support ou=
-t
-of the experimental state?
-
-
-[1] https://lore.kernel.org/all/aTJg9vOijOGVTnVt@casper.infradead.org/
-
-
->>
->> I'm currently working on making the ELF loader more THP-friendly by adju=
-sting
->> the virtual address alignment of read-only code segments [2]. The data s=
-hows a
->> noticeable drop in iTLB misses, especially for programs whose text size =
-is just
->> slightly larger than PMD_SIZE. That size profile is actually quite commo=
-n for
->> real-world binaries when using 2M huge pages. This optimization relies o=
-n
->> READ_ONLY_THP_FOR_FS. If the availability of huge page mappings for code=
- segments
->> ends up depending on filesystem support, it will be much harder to take =
-advantage
->> of this in practice. [3]
->
-> Yeah, again IMO - sorry, but tough.
->
-> This is something filesystems need to implement, if they fail to do so,
-> that's on them.
->
->>
->> [1] https://lore.kernel.org/linux-fsdevel/ab2IIwKzmK9qwIlZ@casper.infrad=
-ead.org/
->> [2] https://lore.kernel.org/linux-fsdevel/20260313005211.882831-1-r@hev.=
-cc/
->> [3] https://lore.kernel.org/linux-fsdevel/20260320160519.80962-1-r@hev.c=
-c/
->>
->> Thanks,
->> Rui
->
-> Cheers, Lorenzo
-
-
---
-Best Regards,
-Yan, Zi
 
