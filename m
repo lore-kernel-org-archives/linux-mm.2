@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 119CBFF4923
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 01:14:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08AA8FF4927
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 01:25:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C08B6B0092; Sun, 29 Mar 2026 21:14:46 -0400 (EDT)
+	id 3AB6F6B0092; Sun, 29 Mar 2026 21:25:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 398706B0095; Sun, 29 Mar 2026 21:14:46 -0400 (EDT)
+	id 35B9A6B0095; Sun, 29 Mar 2026 21:25:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D4DB6B0096; Sun, 29 Mar 2026 21:14:46 -0400 (EDT)
+	id 22AF46B0096; Sun, 29 Mar 2026 21:25:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AD106B0092
-	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 21:14:46 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C28C2BA901
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 01:14:45 +0000 (UTC)
-X-FDA: 84600959730.23.D72CBDF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 339B1C0003
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 01:14:44 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IYiJrErn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774833284; a=rsa-sha256;
-	cv=none;
-	b=fyAUqUaTkhA54AIfR3H1187FwCKXRgT2aDBA11QAqj5nX8dnIjlwMzEv/6Dn/aSK19X2zc
-	desM2rKcNvdxigIxC8ecX7BJTmNLpLE+3OXLM7BYiDdWbjYkCCLLbGdhcPkunCEdeS+zk/
-	5qcuZd9HlAb6We9zO9b95tUCRafBTMg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IYiJrErn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E3EB6B0092
+	for <linux-mm@kvack.org>; Sun, 29 Mar 2026 21:25:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8EB3C1B8053
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 01:25:39 +0000 (UTC)
+X-FDA: 84600987198.29.B9B544A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D0BA3100005
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 01:25:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZH7CN959;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774833284;
+	s=arc-20220608; t=1774833938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q51MN9+ThAL+8FspZX5BqRE5XvkacQFVt9GFPA/wdFg=;
-	b=4X0gbWHRB6jyaOXyHRxy2i0fBABA9Zbs25nA/4Lqb7Ib3ADcHWXpHspbJ4Gbp2B3x2Mc0X
-	mAHs93CIZ4GpKdttfJaZcMU8K3mTbvzTleinx9gUtBBYVrx34PN0LwTeNsLVmAGGBRREFG
-	PbmzFngIve1ojc6wmH5ThL+igQufZ8Y=
+	bh=y6Oxj4jXwFMe7UiFMVb5EpDKjnwAJqhPqOQIPnVUfBQ=;
+	b=TSZbN1c5TGu3OuJlcrxgQVu0K0VXVzDNjTo+TTitn3iLsRA/vLwU88yXMUDIbCi+6SlCtF
+	c25gyhf8qDe7uVkfMOasEWxUTvcTBREVTUT7dlpDUAplKNcbVY6VhSalARwQyot8RShTVO
+	ek/MKuDdFh2+Hs/wlqGuAsdWSJ9AONs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774833938; a=rsa-sha256;
+	cv=none;
+	b=4XSInTQEw2xH28hpfmRVk9RE5CKRYXavYmjrAEdkL6Z5oV+y/orw+FAnpQztaPsfAitLDx
+	tu0Fef7NVPBoKC/PGI3Y/4j0YdHwz4d5ujEHHavsOkhMTkzBNDbvNAGJzGmvLsiMoYB8kI
+	v3Zr1xNp2dzWY3JdlvhTMjkNcw2sWSo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZH7CN959;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F41560054;
-	Mon, 30 Mar 2026 01:14:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F4DC116C6;
-	Mon, 30 Mar 2026 01:14:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9939F40AE3;
+	Mon, 30 Mar 2026 01:25:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1EAC116C6;
+	Mon, 30 Mar 2026 01:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774833282;
-	bh=/7Ah5Z1SHMv8GNRrUzsyDmEAabM4k91FZBwln3xVPjo=;
+	s=k20201202; t=1774833936;
+	bh=QtbwGcQO/wcZZuRBp5gT6Lg9A1uakp8JwUHtWhFR+vk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IYiJrErnEQtj4VKVHg9arGLvc5YcEblwezF0skuNGBch+e+dPjfRzy2zGe/vKAE8n
-	 oBb2fhlNZcR2TBRYJEz0+Wm5I96MNdyRxpy/idA5zk4qt5LuO7uWYaTBSlk0ZOP+Fv
-	 V45XM3qLh8wPrVYSjNDL1eVBPyzCYQ4Xh+YVCG82SRrEMNdx3iAOpsjI/LlUBR4D+4
-	 V+yTRtkCDD/WGA4Y84PwmO30LPadgjoFeTPdm505StBqZzNYrkaPum9Mv90LSzaCf1
-	 VOVnKXMwNImqT6rdsH4uYXqyIhNiIBH466qgL4O4JOAYU03YH/oEEjvOMNqBoOj9Hc
-	 7myEjjq3zafag==
-Date: Mon, 30 Mar 2026 10:14:40 +0900
+	b=ZH7CN959O/UCUttT+rAmnTcDabGv8rmF4GAfRkbtFbrvozjuijYT2iEk0/traecfs
+	 fcvmoZWTH3i76Zk0BhsMvPhE15pPuoYxYD2c1Dv+KJWovnXaGvtY1S7i1xczSf9Wj4
+	 74OYcx7avu+hxYPudjdl8CpmH87zfbmqvH/yiJPVrYjKr6Gw3D6Nz4VDlIannkMQ6k
+	 47LgN9vgRIFD69KmDo41UbqcLYCX3xObcTTY5s6ZxLiEkRc5qbcE8sSiv9nLpJP9tl
+	 ieDepI/b2F/YJFbDHX3d63+yyECxW1w40L/xhfl23CJKjoehhn4NvpUYNCX/om1dNX
+	 hI5rzfElOS3pQ==
+Date: Mon, 30 Mar 2026 10:25:34 +0900
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
 To: Qi Zheng <qi.zheng@linux.dev>
 Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
@@ -77,23 +77,23 @@ Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
 	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 1/3] mm: memcontrol: correct the type of stats_updates
- to unsigned long
-Message-ID: <acnOgEK3KMLiF5wg@hyeyoo>
+Subject: Re: [PATCH v3 2/3] mm: memcontrol: change val type to long in
+ __mod_memcg_{lruvec_}state()
+Message-ID: <acnRDhkGy4JXb_74@hyeyoo>
 References: <cover.1774604356.git.zhengqi.arch@bytedance.com>
- <a5b0b468e7b4fe5f26c50e36d5d016f16d92f98f.1774604356.git.zhengqi.arch@bytedance.com>
+ <70a9440e49c464b4dca88bcabc6b491bd335c9f0.1774604356.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a5b0b468e7b4fe5f26c50e36d5d016f16d92f98f.1774604356.git.zhengqi.arch@bytedance.com>
-X-Stat-Signature: htip33dr1mkbep1a6mjm7wthqw4k3eco
-X-Rspamd-Queue-Id: 339B1C0003
+In-Reply-To: <70a9440e49c464b4dca88bcabc6b491bd335c9f0.1774604356.git.zhengqi.arch@bytedance.com>
+X-Rspamd-Queue-Id: D0BA3100005
+X-Stat-Signature: tmrdnrfedst18tggecyamq9z5d3tjz4c
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1774833284-837716
-X-HE-Meta: U2FsdGVkX1/nuYOFQnp98S/87QamJYUDjdPpwkHaoWyhpS6u4ty/YTuRdV3P6Dr8am2x+pjYxeX7DHkW1loHcdU3HKpzZqKsdPZSXiRIiBCkU9pKWnOiMFopqoaI59pPVNR1Tok+2wKBcTfGvhnu/p/6X69D+zp8S1G5+gJZEKIXg2Qo1IHjuD791xspGbsw0qixpcRiu8ZI8kRb2YVZ7aMi0wTzzAXdE5D4DxtbtwSRtTCa4y/nIfpHpEnHtY3B57QlP3U7UeKo1szE57isl+ejkQVg6M+Zq8orALxEPn2CzZ7ZaBHmivF6pg4wcS9NZvEqiXCr6Rm2ur4smmzkXrUww5torU4nxlSncH/8UNEG9+BuqRyAcoxLHOkVEI7vW8UAMzTzsA94f3niiegWesR7lXoZ73WYxobVZ/wXUcFbDsGZPV33jn6ti50DzwbrLjgOfoeajAAlQr4EAW/2HmIWU0vJFdg+STqGtjUvGHUUe2vtjvHmsa2dw3J2q6BE//YTTosrtZgkJNq8V5Z1Zh4Y8VY4Upe+OgHG7tPez1CMjJYIRyH7M97RN3mXTotENXWCk8U0neoabVcwtNVAB4FHeCXgBaxWv0/PK9iNndiubHJ/w6ny+SyuiqAIE7XyB/U9huEb2AxOae4tmRAfzx40pL89nS0lvNPxNWc6Ib9AYg9eJlZalM7rOzk/EDEJ38KdCDZvS4dsYRxN/q08NUwzlMzceWKtsTmOLX/xEwxYw5JASk3GniKzjbdBD0fJ89ldtboBpCv1Vw1e+/Xi6D5GsKkxmL2NS/iuEWkEs1Ur1M77B0uej6R6CbvCsBAdvYsy713o1+6WV+rpcfPCP5L30lOkwOh+gYaarC+qxTS7Td83NdrmtSAL5igPuGrRRa7xlDs6lkV+eF17uA9QpxXEz32stDKvWZbqN0pQnjhsrndjgdYF59lWeC0JRN0lRZZkgQ0z4Wd6dPrVSyU
- g4SaMImD
- MUwHuTta99dk5KNUEIdKJGA/HXPBxLZ3kuraSsTTzfZinT/dSzId7RLEXsI8usHvfUMrjp45PhPC9yWzE9oRIX6tiZ25gNtXbppoLJuPLCu5BVuqoR74tb7Cp19thxZyv+XeYLC750ZJOCtPHcXs6rWQcDh4ZSxbufpy341RB+UdOcy+gnW0njYx6JEFExZX1Lia4ybz6BKyyF4WJaznlqOQorXrGrqfjYmeXz0OyFp+ATkXJH5NVOUEDuvmSFui0jfqcWzwJUFuG4HeQoKD8hsE2MzhLqr9nlVNkhTGqvSjbQW4eQvr1wNJ2LdDGzIGMd/zlvSW05a7pZne11VUrmZzcVg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1774833937-633475
+X-HE-Meta: U2FsdGVkX1+BitCmMDK4mI4yCjeWpzxrJgAOZsuKe1Q+xv0fMS/7qpyBaOL6RXU/vHqyQmPZKqS5odjeNUGUGZ2M7/i6p0us8W8cSvJntXuYcOwEGAAnruBeadF4ceXooWR4WypQfheX7QraFdUmpdnU1ctOOOCnX/DPl0en732/miPdWlLsfEVxksWmd1fBIaYHV3dzKvghJ3vi/GxlBcMg4UgI99KUM/cupRcDC+FI1NANgKS/0HUgTcBL3u59a2Zpl30I/VNFi6C/E6IarX4NWLesJnd9k9QnGOIkUFr/sObvfdbzsh3vEb6TL7MoT0TwBJoapHomyDB9ealvn6ctdzc4U1SBaGfhZaBYRljBAZYbVv9/D9nBCPJetnwe579vQkoddozduA+DdrgaMXz1r4qD/amFMdcw4/Fr4dzH723V4iTqfqnSt7OJ1NU0pp+4WGG3if/kbjD2bAzEKmSJRVRx4Ed8byU348D0KCeJAqXd/0kKelW1qhwZmpPF5ei6QXpvYjQXNvvREduJ4aiUeyXAEpONiaA5Qr1lILIa2+0eJAWhEJu218Ja11xg15hKFsP5quXSELpq2geQIp0dKjFTchCGuSHj76H+nb794WhmM/3keAGMoiBJfUAtqp44eI9x0ngYgj8zrqNU5AyAQ+qQuO3U+/b6gySXFE3o5eCU4Wk/LHTYYbpi+CmNYnRt9r2CmyMkOH9KXScjRVjVRLzHXsBFzkukZxuOrr1G/V+U8Oa6lyUnw+bVAldpKgnbmv/fmG1FIEsBmldZol3t/mjhyJ2k3FMjrIkwnVPGoLnrOEEOuAQJyPegAm2psP24OBtpHqoJSCY4uj/qZ/3N3jiuyd8428PbLCufgYxCnZgt4GK2iCj7Sp5ejJK4No+iTaNsTEXpCC3xxN3cu+vrPCQQKqYf3l76ng8/xQ44eMoHILcfte2d97eMPOZsuER7S0NlkpcLhwUlxR1
+ H6+YXSgX
+ v4cSud8hN+e6BUu8a5sSEgve22LjirriB0InKBkiKc+apj3stQaKU/e1QFO55gXb8YCKp8MYZwDrnMFz6jz8C35oXafQjxPKWGnrhws6VxvwiIUirlCYm15eG9gyqk6YsYQF306HNRc9AuL1Yzs1+XNSDzgb5IORL4INVRuHnNqhb34hE52cHjFZswxzc3UVVFPqsyVBF9PVsL8RTy2CLlHh+VHtLOKJauvOg5LudTYJWEaOtcbmFuF6eZrgFojJOzm3m7LZ5g2UdX2xZyOjiWiUGs6U4oxEoS/9g+P6q7pmaY6W780nIR5uQcrFCoaKxZd5Xr7vX19Xj2vND72j8H7ItqaDzVbA5KNO3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,25 +101,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 27, 2026 at 06:16:28PM +0800, Qi Zheng wrote:
+On Fri, Mar 27, 2026 at 06:16:29PM +0800, Qi Zheng wrote:
 > From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> The memcg_rstat_updated() tracks updates for vmstats_percpu->state
-> and lruvec_stats_percpu->state. Since these state values are of type long,
-> change the val parameter passed to memcg_rstat_updated() to long as well.
+> The __mod_memcg_state() and __mod_memcg_lruvec_state() functions are also
+> used to reparent non-hierarchical stats. In this scenario, the values
+> passed to them are accumulated statistics that might be extremely large
+> and exceed the upper limit of a 32-bit integer.
 > 
-> Correspondingly, change the type of stats_updates in struct
-> memcg_vmstats_percpu and struct memcg_vmstats from unsigned int and
-> atomic_t to unsigned long and atomic_long_t respectively to prevent
-> potential overflow when handling large state updates during the
-> reparenting of LRU folios.
+> Change the val parameter type from int to long in these functions and
+> their corresponding tracepoints (memcg_rstat_stats) to prevent potential
+> overflow issues.
 > 
+> After that, in memcg_state_val_in_pages(), if the passed val is negative,
+> the expression val * unit / PAGE_SIZE could be implicitly converted to a
+> massive positive number when compared with 1UL in the max() macro.
+> This leads to returning an incorrect massive positive value.
+> 
+> Fix this by using abs(val) to calculate the magnitude first, and then
+> restoring the sign of the value before returning the result. Additionally,
+> use mult_frac() to prevent potential overflow during the multiplication of
+> val and unit.
+> 
+> Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > ---
 
 Looks good to me,
 Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+> @@ -831,7 +837,7 @@ static inline void get_non_dying_memcg_end(void)
+>  #endif
+>  
+>  static void __mod_memcg_state(struct mem_cgroup *memcg,
+> -			      enum memcg_stat_item idx, int val)
+> +			      enum memcg_stat_item idx, long val)
+>  {
+>  	int i = memcg_stats_index(idx);
+>  	int cpu;
+> @@ -896,7 +902,7 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
+>  #endif
+>  
+>  static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+> -				     enum node_stat_item idx, int val)
+> +				     enum node_stat_item idx, long val)
+>  {
+>  	struct mem_cgroup *memcg = pn->memcg;
+>  	int i = memcg_stats_index(idx);
+
+Some of code paths that calls mod_memcg{,_lruvec}_state still passes
+int values (which is quite subtle to notice), but it should be fine
+as reparenting is not involved in the path and could be cleaned up later.
 
 -- 
 Cheers,
