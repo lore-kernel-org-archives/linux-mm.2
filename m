@@ -4,150 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60C50FF4958
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:51:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ADC3FF4956
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 07:55:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0F906B0092; Mon, 30 Mar 2026 03:51:07 -0400 (EDT)
+	id 581126B0092; Mon, 30 Mar 2026 03:55:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 999486B0095; Mon, 30 Mar 2026 03:51:07 -0400 (EDT)
+	id 531EE6B0095; Mon, 30 Mar 2026 03:55:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 860556B0096; Mon, 30 Mar 2026 03:51:07 -0400 (EDT)
+	id 447E06B0096; Mon, 30 Mar 2026 03:55:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 719436B0092
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:51:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13DC25A780
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:51:07 +0000 (UTC)
-X-FDA: 84601958574.24.4D04B6B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 22633C0004
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:51:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDJnGaha;
-	spf=pass (imf10.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDJnGaha;
-	spf=pass (imf10.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774857065; a=rsa-sha256;
-	cv=none;
-	b=smGd+Ejo2jdEDh+DSuxvuTaDzSLiPb3laUv90xvKLxOFbJaersfvXFi5oFyXLBAvqqQSCo
-	Yc/Wxsd2Kq6hgA7yXzTUUxpwmji1G2PNCS/oGOJOr+N60yPqB/hgnaQ8JBahO4VCxtIjMJ
-	r5H9gYVMpbNcXLBr9mFubHiNmyjvb/I=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F4C16B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 03:55:13 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7BA41B897A
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:55:12 +0000 (UTC)
+X-FDA: 84601968864.06.89426B9
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9EF951C0006
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:55:07 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=kdRyhgPo;
+	spf=pass (imf18.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774857065;
+	s=arc-20220608; t=1774857310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LybNHri57ibbB08+92BCF4qoN3iJ1KcFsIeYLRMzSc8=;
-	b=QnfKE+LZcnb/2Ka+AWDVFL0IqhE1DFWnSNsLjJ/rUo6cuXlnv7hXGADmj7VAi2zXJzGt82
-	y35gEIWW0nugcKQt7DGQ9TVAHxjhdugLGSm+ckesSeGVfeJQbuxMK1pi+KEhXdiNbFAjt4
-	LALOxTxukr0CPGaXoQ+dPDmzPQhn39c=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C5ACF4173C;
-	Mon, 30 Mar 2026 07:51:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2510C4CEF7;
-	Mon, 30 Mar 2026 07:51:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774857063;
-	bh=aSND71WTHLvwOtpQkv4oV8DqBi3VtucNGh0c33HMhYo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HDJnGahahU80YqdZytEMzX0I8UW4i6n3ZkgbyjNQsrOgdjM4YMfDJg30J17MDVc5/
-	 EyodK7bHo21B1Nla+a28prw4dVZzKMUIf9L5x7shdm2YNPabz3lUjHyjiV+AClIJVf
-	 2bp1O2k71KJZzZKPtFVuK70h9hpfwSqrGd/+WqSNPIhAarcAxJxM0sL6/SC/KDIiPn
-	 OFdHXNtAFSqW0imHwpZUFAswh41KTVfpK/ZxMWfEnjJFElOg4CLMhQlJ0hjgsWJDQk
-	 23D/DqzwtbEN1emjkz2Vs+ZMMJ4DJLYqdDb74t3kS6bsUusHcAorxIJVv+L9NRAjng
-	 ZBiZysfzfnPGg==
-Message-ID: <6deb290e-b168-4de2-95f8-fc784ed31c27@kernel.org>
-Date: Mon, 30 Mar 2026 09:50:59 +0200
+	bh=gxL/nLHtk8yzJElgrCWa2G5swCzIh9KhW/8g+WYobqw=;
+	b=jr4IKPm7tebO5wpO+AN4sw1sXDF0+yPIeFBrgnL3taaQmEIaeLuOexK7xGB+zzYWT2U8GS
+	E2ktUprB4wmMUUh9J0pK6GX0bmv5/XvYlbIlK+kd5/M2ICzm3uuL2dA2uS+V/om7kYDl37
+	6miLQKuTet0o9cnaFLiFiLXbOmWAo5Q=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=kdRyhgPo;
+	spf=pass (imf18.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774857310; a=rsa-sha256;
+	cv=none;
+	b=O75F9ySFksXS/WJnEXqgzLmw1Ys0b3CnoAqHstb15iAN3SuXWwjconRFKOetUY3XvxAN+g
+	AQlWUHSVxovLejoDGE3XMF5qklFTqWEsoKKaFJua41FXXzJuDHaWKsjMBpmz0KwT9ffTLE
+	7xpcR2uP36tk0SmpeZy/FalJlfS9fIs=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=gxL/nLHtk8yzJElgrCWa2G5swCzIh9KhW/8g+WYobqw=;
+	b=kdRyhgPoF6ynd8J8zQDabTun7D67+34eRkJ+/9iQPVyI8ywedL6hVtwVCtLr2aJawq8obtW0M
+	fDXTp5Rn5dZSgRVNcskaQDvbTVawHpsxDvrQs271E4xMZiR5R3hQYnqv74YWERC1dGFxW6JJJaR
+	yw7yOw1NLjkcMAarT8N7KUg=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fkk0x160sznTW1;
+	Mon, 30 Mar 2026 15:49:37 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 00A104048B;
+	Mon, 30 Mar 2026 15:55:02 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 30 Mar 2026 15:55:01 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 30 Mar 2026 15:55:01 +0800
+Subject: Re: [PATCH 1/2] mm/memory-failure: add
+ panic_on_unrecoverable_memory_failure sysctl
+To: Breno Leitao <leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <kernel-team@meta.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+References: <20260323-ecc_panic-v1-0-72a1921726c5@debian.org>
+ <20260323-ecc_panic-v1-1-72a1921726c5@debian.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <a88d62ee-530c-1a6e-c05f-de324f940b8f@huawei.com>
+Date: Mon, 30 Mar 2026 15:55:00 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
- module
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Josh Law <objecting@objecting.org>, "Lorenzo Stoakes (Oracle)"
- <ljs@kernel.org>
-Cc: Josh Law <hlcj1234567@gmail.com>, SeongJae Park <sj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, Kees Cook <kees@kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>
-References: <20260326072737.341964-1-objecting@objecting.org>
- <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
- <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
- <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
- <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
- <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
- <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
- <b263a722-e9b8-4a43-a075-46e4a753871d@kernel.org>
- <043CED5F-7014-4776-824E-07E027B7BDC3@objecting.org>
- <cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local>
- <E1A667AB-DCE4-4034-A36B-DAA458780A81@objecting.org>
- <e5d45f3c-4f46-40d1-bb7a-0a2f930fd7ae@kernel.org>
- <82256A72-42FD-475E-935C-629964FA80E7@objecting.org>
- <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20260323-ecc_panic-v1-1-72a1921726c5@debian.org>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 22633C0004
-X-Stat-Signature: n7qrjn8wem1ntnpdbspezaacfnapmnmq
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9EF951C0006
+X-Stat-Signature: ypajet7ytyuk35ojrywi65iui6s68hk7
 X-Rspam-User: 
-X-HE-Tag: 1774857064-214347
-X-HE-Meta: U2FsdGVkX18L6Ueij11hnm9IjpOzbIMgFijh2wH1nsyip79qmWZ+C3bEf+RUB+5QPaaQZgAQ3Oy8rwsJCXr4genpQnmo7QG3ffG8UtxsGDKid56u7nFnUXvhZugMFLAw6YNh/ElUuq2MQRgligx5E2dOc2HzS7TzsfxHO1by7ZoeYGC8IhP4reVynF5sRa2zsf1J4yN7OSJUuw/KTRKPDNtkLukv4URLp7fyKm2IsZzeIEskq0w+ZYEmiyiTn8a25NqYJ1PTu/k25RHykPLN24IXJekxOXMmNGLszUTPbEASg1uJbAQvOCA9Pxk+Uy8aC7q6N1uCLa6c4suLYtqU30mhPLs/3PVR4fb5WMVHspPczJIpZdmkt6Fba3zmGwv7TU/DQYuloBzHH9V6HPtanik8IyFrPiCbcAuRRSLhfX+CfYmxLpZQGpyP3atLQb9NLvq+TAUYrupNFW5oAZ/VGMu+wV+uiHPk9gw3siE9QC9dX84HppIIrFmP0ri23ZMijS5PUcmYcO5P3oG1QRsK71XRKTXfkSzmcfhd5/4+yVMaC+HvzJWx1Mw5pdTlSdzr1pMJoJzkPvPf2HqDvnVhGnE3efu3d1T21PWyI6zw/ekCGTcYCMoPnLv+wysHxJNRjRHy5v/I/O8Ml/egapLHuSjs+wmQjzGWntjW/pHgO66+HvZOxN40mZmPRnge3in0MvZ+TZLr8/Yqu0oJqFkTt+n7DNMAxQsi/8eoeAaDsoxs5BGnc3zwYSwK9m0fhyt69fqpAaYJ2Fpwk6HosvhhpYNLTi/Ggl+QrX7pDp80ovzxr+asj2dwWyEQ4xQnVYu8U71DeKIDOEhmSo8Kcqzx2RrZwXInwD/JIO40BwbWtWRj9G/7uBF+eIefrSFPT7Td7prGiVjcBXuV9t4UtT1IYld2ZQK62/9JblsLc/eQwKnXhw9YFzhJt41X8Tkzg4Y0wLYr6Mdjk9uUVDoUcev
- s8gsQcP5
- VhALIvR+q2p1ImE55HIlAx3Hjevk8UHK0IHlxkjauXkSRHJ6KK+vrWZn5IAZEonKWTeB0yWG9bk5KOy92BdA1/12WZyqS5vslg96f9+KBpIFBr7Oo0ZlzUgdUKW0Hf5eLAed1c76wILTqL2stDgUjcizWvEwefPHout3XRPH2jPAQfzCZJAeObe4XnqwuX+1EiEn/mUOYvZz3QbF9+BTtzCFCUe3lEABxI7EGefR3dolP4U9ErYHogLdbpEEgn8zza96f
+X-HE-Tag: 1774857307-868977
+X-HE-Meta: U2FsdGVkX1+k/xL1ljqeD5NeHcbkZAOuFnMPjTkqFycQw4NMAYsaf0rjs5o+CqsaXJkILmqGuZBJpJo4IzBQIDiwo7GZBlDBzqePOxOCS4S+Z8G9M4lozNd/qunOWBkdvLPGmT37dbFYWan5MQUZfvEE180/UhmQWNXVcWh5hxL6kAIL0tsHx9dNilIpGCoXIiPoLGI11uOwSEauF6NlqdGi4Ek4AGAdWmncX64e/WaLuIXg3+lzKkZGFHai4nJGFiUfmE9lpn6r3ghFLiug02JoOeIPj9JEa6yxcr30QPdo8CZ+RI5+RFPhs1IYmxD6c5DQ104GqC7nAyvJZB0bvTufaAWtl/d/AeMi84Ie1ITD6+RXqz+uOAZNncwia/CLgalP1qqnEQr1qAqgBVJpwUL7nD09xK7I2zlwhICxNHoNtx6cB/rZVloVHsP86dV00QRAhIoCBPHLiHE2iDfmJcvHA2faPZuu6b4XVDOzuA25ipFP3mgP6DQ6qfxMYGtev7ACk2jNrbJaEMb6wc2i/aG7qUEqkuw+fSnTaXLjTHOuPEgdqnD91MvQFk2OIIX9tKMX17y+v9Oc8Ny4KUHITM6ozAVcAD2r2nXzmRw9GfVr8d6ViDNgzvV9QnGHJuEU2wyLN0e9NIADzoabdK10Wwz0ahNrDR/2uHBXKvMo6+6s7PcMnfapGdQtxvYVLNaQlmNC8NFsMGChm3apk+e6h5QvFpgAsdD7gn/OR7jNAfSwWP+8sJ2Oohj4L7sDsXAhEc2pc7ZBFgwboA0Wui3TzSyarZVPfoF03i1zWwnb+4uwCkVPJuS5acOHkrs3P02smQxZFj6xFxaRGNZRYSwKoOEvdnVKh8be04NRAYoQQROapTuGh/YYY9+FzvctNhJZwVqX1LCxSXGnMaXhGw5mZxtQt4LO0Zdt5N0+wmyZgSJ5eAtf35u+hNSSDgrQ+JilPe1pcxAY3Z3hgrkkF63
+ rPr78cyo
+ yT7/svMnTex4/hwODxQmYJazIxE+k9wemmV2MGcJih+sWj/dxIrgq9DAaSGELLtxwlN7tGeINfXn5ltuZwvoGMgNuknuSLQ8cjlTP0wK33xQcTT779qbqZ0kO1fiMAIiL2x9ATJDM/ofGpjyZ0Px0T2TcAA3Q3spe4yv6APFDF0jE/AQiXjhP6k+SukYad7zrUFkYKufYymyIkCT7bS7Ipd272hTRD31bT+uA6qJuEktirbWkiCTAgtGgguRCFJvwrP1UaHxEWFriSET5UI3Hg559wj10Z8po4oJFToZAc4QAACQPK3RQYjp/rJ/e99PxfJ7f1kl5XXnUcDzvJXkJBhB8qN97K6PikpunuTDjmaSWELIK1/fUADs6Zfx/rXw5f1uJpeOi3S4QnjX9gWRI/Nm0XeIwt6krKHGm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,78 +107,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30/03/2026 08:27, David Hildenbrand (Arm) wrote:
-> On 3/27/26 16:22, Josh Law wrote:
->>
->>
->>>
->>> Josh,
->>>
->>> in general we try to be a welcoming upstream community. Finding people
->>> that are willing to work on the low-level bits and stick around is rare.
->>>
->>> At the same time, we need people that are willing to get familiar with
->>> the code base and technology, so they can help out with review and
->>> provide long-term value to the project. AI use is only partially useful
->>> in that context. Certainly not for writing patches as a newbie. At best,
->>> to double-check your understanding (e.g., AI review), help you learn
->>> (e.g., explore the code base), or improve your writing if your English
->>> is really, really bad.
->>>
->>> I prefer someone trying to use their own words to compose a change log
->>> and actually learn something on the way over some AI slop that reads
->>> nicer any day. Often, when you write a changelog you actually realize
->>> which corner cases you might be missing, that the design might be overly
->>> complicated, that, maybe, the reasoning or motivation is bad etc. It
->>> takes time but you actually learn something and are forced to think
->>> (crazy, right?).
->>>
->>> The same is particularly true when it comes to writing documentation, as
->>> people raised earlier in other context.
->>>
->>> Having that said, your actions made a lot of people's alarms go off and
->>> there is pretty much 0 trust now. As Lorenzo says, even now we are not
->>> really sure if you are saying the truth right now, which is a big problem.
->>>
->>> If you are, in fact, a real person, and are passionate to work on the
->>> kernel, it would be best if you would start things very slowly and don't
->>> use any AI for crafting your patches (including patch descriptions).
->>> Stick to one subsystem and ask people what good starting tasks/projects
->>> could be.
->>>
->>> Ideally, you'd find someone people trust around here, that can verify
->>> your identity (i.e., have a video chat etc) and start mentoring you on
->>> how to start working in the kernel community and gain trust.
->>>
->>> Now, I am still not sure whether I am talking to a bot here (there are
->>> too many things Lorenzo points out above that are very suspicious), but
->>> I just wanted to say that there are ways to become a trusted
->>> contributor, and that information might be useful for other people that
->>> might be interested in working on the kernel.
->>>
->>> It's certainly not by flooding the list with AI slop.
->>>
->>
->>
->> Hello david, thanks for being polite about this whole thing!
->>
->>
->> so, you are talking to a real human, i promise you that now
+On 2026/3/23 23:29, Breno Leitao wrote:
+> When memory_failure() encounters an in-use kernel page that cannot be
+> recovered (slab, page tables, kernel stacks, reserved, vmalloc, etc.),
+> it currently logs MF_IGNORED and continues. This leaves corrupted data
+> accessible to the kernel, risking silent data corruption or a delayed
+> crash when the poisoned cache line is next accessed.
 > 
-> That's exactly, what I would say if I were a bot ;)
+> For example, a multi-bit ECC error on a dentry cache slab page was
+> ignored by memory_failure(), and 67 seconds later d_lookup() accessed
+> the poisoned cache line, causing a synchronous external abort:
 > 
-> As a first step, fix the line wrapping. The following document was
-> helpful to me in the past:
+>   [88690.479680] [Hardware Error]: error_type: 3, multi-bit ECC
+>   [88690.498473] Memory failure: 0x40272d: unhandlable page.
+>   [88690.498619] Memory failure: 0x40272d: recovery action for
+>                  get hwpoison page: Ignored
+>   ...
+>   [88757.847126] Internal error: synchronous external abort:
+>                  0000000096000410 [#1] SMP
+>   [88758.061075] pc : d_lookup+0x5c/0x220
 > 
-> 	Documentation/process/email-clients.rst
+> Add a new sysctl vm.panic_on_unrecoverable_memory_failure (default 0)
+> that, when set to 1, panics immediately on unrecoverable memory
+> failures. This provides a clean crash dump at the time of the error
+> rather than a delayed crash with potential silent corruption in between.
+> 
+> The panic is placed in action_result() so that all call sites that log
+> MF_MSG_GET_HWPOISON with MF_IGNORED are covered, including the hugetlb
+> path in try_memory_failure_hugetlb().
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/memory-failure.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index ee42d43613097..25bd043497195 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -74,6 +74,8 @@ static int sysctl_memory_failure_recovery __read_mostly = 1;
+>  
+>  static int sysctl_enable_soft_offline __read_mostly = 1;
+>  
+> +static int sysctl_panic_on_unrecoverable_mf __read_mostly;
+> +
+>  atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
+>  
+>  static bool hw_memory_failure __read_mostly = false;
+> @@ -155,6 +157,15 @@ static const struct ctl_table memory_failure_table[] = {
+>  		.proc_handler	= proc_dointvec_minmax,
+>  		.extra1		= SYSCTL_ZERO,
+>  		.extra2		= SYSCTL_ONE,
+> +	},
+> +	{
+> +		.procname	= "panic_on_unrecoverable_memory_failure",
+> +		.data		= &sysctl_panic_on_unrecoverable_mf,
+> +		.maxlen		= sizeof(sysctl_panic_on_unrecoverable_mf),
+> +		.mode		= 0644,
+> +		.proc_handler	= proc_dointvec_minmax,
+> +		.extra1		= SYSCTL_ZERO,
+> +		.extra2		= SYSCTL_ONE,
+>  	}
+>  };
+>  
+> @@ -1298,6 +1309,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
+>  	pr_err("%#lx: recovery action for %s: %s\n",
+>  		pfn, action_page_types[type], action_name[result]);
+>  
+> +	if (sysctl_panic_on_unrecoverable_mf &&
+> +	    type == MF_MSG_GET_HWPOISON && result == MF_IGNORED)
+> +		panic("Memory failure: %#lx: unrecoverable page", pfn);
 
-Yeah, good luck. Several people asked for that already, like 10 or 20
-times. Andrew asked that a few times.
+MF_MSG_GET_HWPOISON contains some other scenarios. For example, an isolated folio will
+make get_hwpoison_page return -EIO so we will see MF_MSG_GET_HWPOISON and MF_IGNORED in
+action_result. But that's recoverable if folio is used by userspace thus panic will be
+unacceptable.
+Will it better to check type against MF_MSG_KERNEL_HIGH_ORDER?
 
-And yesterday we got another sloppy posting, so that would be it for
-having some time off to learn things and take slowly. 3 days after this
-AI slop which does not even build.
-
-Best regards,
-Krzysztof
+Thanks.
+.
 
