@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2336EFB3CEB
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 09:48:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D09F7FB3CE5
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 09:54:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D41E6B0096; Mon, 30 Mar 2026 05:48:10 -0400 (EDT)
+	id 1E9A36B0092; Mon, 30 Mar 2026 05:54:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 784FE6B0098; Mon, 30 Mar 2026 05:48:10 -0400 (EDT)
+	id 173D26B0095; Mon, 30 Mar 2026 05:54:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C2616B0099; Mon, 30 Mar 2026 05:48:10 -0400 (EDT)
+	id 03BDA6B0096; Mon, 30 Mar 2026 05:54:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C7286B0096
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:48:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EED741B8A1B
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:48:09 +0000 (UTC)
-X-FDA: 84602253498.14.D9F6AD0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E24636B0092
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 05:54:45 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BA2313BA13
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:54:45 +0000 (UTC)
+X-FDA: 84602270130.04.A626696
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5DEB71C0004
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:48:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OMReKoLU;
+	by imf13.hostedemail.com (Postfix) with ESMTP id E262E20007
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 09:54:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=omqfLIJ3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774864483; a=rsa-sha256;
+	cv=none;
+	b=papIj3n3faWJ6Rx0B8loviOHPek6JBRcKp7dXfgoIe66eWZN+Z3B5g0pDG0CaT0LnKpVHB
+	6hH4vKUIMonNMooAqOFZ9y/twymc4E2Prgx0O6yTJvAlkZyJ0AJeLLJEJMTzA666Jn2WO1
+	PbblKFD6NUO6XSr5Xp5EHQbXBK4fu5s=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=omqfLIJ3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774864088;
+	s=arc-20220608; t=1774864483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5n3+vvPmzkZ+LKtOf+BXy0xsByrxP32ZMmrPyB31pwM=;
-	b=N9RPa2aX1KUnNvPAaJ776zDEsz7kIbX09eJn3d4w4ypCarOJR9mTfx4WRT5ZhIOPDAWguE
-	+O+ygHt28LeR+cJ9Ph+UMWYLmSXC+JNXIJT70WxPpVpqjEJ9ixvCNuqcSeqM0mEPythwmz
-	6EjZX2mWWtujGYkT3LVlTHv6Wx7M3Ws=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774864088; a=rsa-sha256;
-	cv=none;
-	b=jFlvPZ68iZLhUNngPc5wLdaqpO8FFCIfKRYbZ9hp0xEaBWxPeHuuY9ge+WniwXRBZhX4pb
-	w4G9uG0JRa9yBONYGTfGicd+r+YoN31vBJjIOL5xwKpjVKMCk1JCpj/0DlhV4tMCW+XOtJ
-	Zoj0Ogw4+TGLxRJkuh+zvz4G+Un9Z2U=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OMReKoLU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=bnC+8UUy4jr5ZHc3ab22DTsvcHDSAcjADdaDl16S2sM=;
+	b=DESx+XPvppJ9NU+00lo9hliN6BueXwRrmpkxCu7JxJaJV15Q7gdTqnChk/zQX1qjvsAgU5
+	KszQvC+EYxht7+ptHwGqInyZ292eMUcTcDjm0ubpnkRTc7dsXD8L7Zp9gelkSfkc8qu2xF
+	bR0jWdgPDcfFJTyNVkymYv5L4qozpCc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D694860054;
-	Mon, 30 Mar 2026 09:48:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AD2C4CEF7;
-	Mon, 30 Mar 2026 09:48:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5FDA960128;
+	Mon, 30 Mar 2026 09:54:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F84C4CEF7;
+	Mon, 30 Mar 2026 09:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774864087;
-	bh=L7TKWn2Q+ImhzxbGenUlYPf7P2gJHg98JdI2bl3bESY=;
+	s=k20201202; t=1774864483;
+	bh=P5+O18KEaXJRb7s7QQUjjetgg5oimgVFhgzsPVOEJoc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OMReKoLUngDh1GvdLGC2cMwqAfgTJSZlKrJ2vhmNvrtwgynF43AQNXWWTBYG86brb
-	 wfwvLo8+0+TnB5qHCt1ArY2icGvw64fU9M2THJJfev8FL3J1cGfvhIVr2e1XIV7rzn
-	 Y1Ltz3syL1ZWE8n+sWIiyre0sa6L4CoQ3RmfM6ovO19RBpFDUL4V/xWxY5bMNSYKYd
-	 2HZNASNSb8dh6TUMUA2Iy3RZOizWVlbZMt/czBp7VfC2DaskMsv/rN+nPbouofs+IK
-	 ND2cT2TT/KVdoDEE+MrbACTJKeNywx3wCsP8u38VPv5c7TKi1uRqvk9eEBoYbIocEB
-	 BP0UhrqPucwfw==
-Date: Mon, 30 Mar 2026 10:48:01 +0100
+	b=omqfLIJ3ogwBfKm/f9OK3gZb5PqY39BCCkmDJBraM0O2KAKgWnPYmXJbyWP3HA84x
+	 c0k7yMJXYZqmdqwqt+fHBpkDebzwf8JpggFU1Fo42qt2zNh/8T6HeEK0QjnL6hBche
+	 yiqX21c1tFAX7ZIPX3emaK2v7BRxMrYRvjv6tEsAL+4Zqrkme8YuVZhHwlrLdaDKyU
+	 PfUTSLnyvNdivcZIFAoVC2Kr7wZZdH04cVnuvv1oHn2OevCMzwPznp1Xr3vkR+LgJb
+	 BhEVUl/nPoQKlMykLef1y0RIYsvWunrcaHl1Fcsjr1b7HmctEYy1Kcw97RvGsgJ8u2
+	 2QsasUoU2dt4Q==
+Date: Mon, 30 Mar 2026 10:54:37 +0100
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Suren Baghdasaryan <surenb@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -74,25 +74,27 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
 	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 12/13] mm/huge_memory: add and use
- normal_or_softleaf_folio_pmd()
-Message-ID: <6ad6c2a6-463f-4e2c-824c-1c9cd02a6355@lucifer.local>
+Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use
+ has_deposited_pgtable()
+Message-ID: <9679449b-1078-4a23-95b7-e92e26259816@lucifer.local>
 References: <cover.1774029655.git.ljs@kernel.org>
- <c2be872d64ef9573b80727d9ab5446cf002f17b5.1774029655.git.ljs@kernel.org>
- <CAJuCfpGDWLtUHpXLyB7UA9wva9q7RjG7coOiFaL-Os_x8BNr-g@mail.gmail.com>
+ <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
+ <97a35411-3482-42d5-b0ea-31a5994956b2@lucifer.local>
+ <0a917f80-902f-49b0-a75f-1bbaf23d7f94@lucifer.local>
+ <CAJuCfpGe1TQ1Cv_ZtjQhjgQD-6bxk9uirJeDAZwhrSX=NqEw=A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpGDWLtUHpXLyB7UA9wva9q7RjG7coOiFaL-Os_x8BNr-g@mail.gmail.com>
-X-Rspamd-Queue-Id: 5DEB71C0004
-X-Stat-Signature: egs4rmtic6fzpboz5u8yz69btdk8j97o
+In-Reply-To: <CAJuCfpGe1TQ1Cv_ZtjQhjgQD-6bxk9uirJeDAZwhrSX=NqEw=A@mail.gmail.com>
+X-Rspamd-Queue-Id: E262E20007
+X-Stat-Signature: jixh9x5hqrua39agk6dp8n6ojamx465h
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1774864088-221681
-X-HE-Meta: U2FsdGVkX18YVswejBxSRRyM4tPjBE8oHCCgXMS0aYrjw2U4fuVu3WpdNwquvMSZ/tIVWA+eW27ePJhU0SlqgittM2ubygSZkf/uHvmxaaV0Z44BiOh+baPMeH9DqJ5WJfDTK3Zmdsp5rNmy8fFpC4yLL8xRC02aa5a1yROJiveB4Yy+Mp2rPrS6Jv6fk9caqZXoSl1yIiYcLj17aEGDuxWb1YjDrn8vrnFxOrUifmcgYN7UzKpJVJN2qYxKDcgSxzDw3Q1KQPgZA2yWEIB/C4eI78YnrlDY92zT2zrLul7VNtdg0xh1WhIqDyGTJMCzxJ9YNMQ8hnYm3RcFPgT2zH8MnKccdGuvzrJ0ZJBXz4D4BwHQ3lTByMIe0BETflclEQm97t5fxt/1s9YyRStVsPSEcY+Qbo0ncTnmMydhcaoRsmtMe0PuzHAG/3dnPFQVoxBsrSsyYamnfHwudbRIcCmYt3fylsUgXvguJFqBzpTJAngK/QX7fpGEFgCc4Xp0dRpMwjM4Z8vX4RWFnR30DqwH8XKiU039EEVWCfYe8K+4hHuoJhyYO64DVRosFJFVRWTHvvDNN8LHcxsLKglplhbttabBJeMpHpr5qoAVa/4syc5hR97cWthFnwqWafX5qxcwKxLTTNaD6ZJYc+eAun/HQQhVWotGLWcnfM88Kg+Nq2eAOXznlApn1WGSRErPKUf7o+AbdK0JrD+42S+ERhes2ZwLatX1rTvzaS8npKiwErRRS51jeh+78kejiz7mFxvemVW3/u3FX4wbIEUDo4sbosBSu7kKdArxLKeXGvRs1GPV0JTmm0hT3KiIjYGyuJDoqnZgaeodEju467tLrSByfrInJrNbq1qlIGa3lj34R5cmsmYCmV2ew8IJcyHF7w/SWfAorqc45IsL0SYlIZTKlTkP+K/xuRi1eKhoUH+aUa5EfC6byWOyi5+LdGGcezPN7Q2losJ3BP+H8Ct
- ih5DJVt+
- 5MAbI2gfWDjCIuIXG/pQf48IuT+AFnO4cVWlEu/VpNatd28/z95CoWZrYyDYqu4zNiiZKhNE5i3ujL0CJ86e+4XIm5mbt1V136asTpNDkRJJPDPks/QlkHF159uND/kemI8W3j/vyyjiq0hZES4XLnX0IZBea5eMs5F2uu9krR0XU/6ZzXBt3NNrf7vDzRvR3Ren81yVlrb6gV8gnckIddv8GdT4JsUEZdxWaNOdh+/IM5kBLD2DNAuOteuGyay1cUMv7sksg20a1yDWafrwUIYgh+drptRCWtv44x3Uj9utpobT76yT07i8QDNPIpsQQokYqR/OKZBf7lkw=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1774864483-980198
+X-HE-Meta: U2FsdGVkX19xfXGz3H/mUKeuRtcvR4eFaxd3F6ynss5HnwnLpQialUsbwwM44upYgbdPB9J8HlzubxAvp3uJBE86EzdWoYxcMinJGcyWmE2qef34Z3Ot0cG3eQEueHQQFYQaYwv734pEARBADU1cXqFTtwexoiKB875exviemxSN3AL51Vh+1UdCKjc62NJwPyErlvFTYfHR+CzhSSC2X3YWBfhoyARKfN+e0+wDXArIoseaYeFP4WyiNK/GqzuwdGu4WoFWSyib/gOCsUSJ28HCpW4AgY4bEFP95dx+D+gs/9siD6Lf9G6Mpg74va7GQkZ38LOdZbJIOssaV/mWL+SuXVaMxuiBnXYMTp+lOCkPk1B3rEF9EjaAYl1ccjHBOLIQbjZCK5iIijogyypHBbpHA0l/cjPmMNPmAkyyiXR2w/gA8xHnVCSdZpftEAozhaojl/dgT8s/W2Ch0PKW/wXGnmYwXQJvLsVYOngE1slFRAdymxi7YLU6OID/78qAwOOkeksKHRlgHpS1z99TDBBDjnEmazXNVTBrKggDKS663CTOIWAI/fntuCadm4m2sdsE+1r0TWzrjKwZXRsRL7dXy/YkyyIB6cr0zsYjgqE+dJSuNujseI8novbNmr1R0h8PtXEo/0fc5xv5VcWG5mnLC60x6w7Mrs6zBShBL9yA2tVlIirGmxgq3u9BhlHEDGeLiDNxJcRwBMlsjfnHYx4iukDfGb5rBDlNJL/xTeMmQll/+GLWcfI9PuA3XXFfKbouj+Iop8KSnOd07KoSoeVkj8h9R0+4ZLqe7pnJXsA73MA28I6qnaxkUmhVZthqXNhFejguPUG2+vsk7vh3TAYHGGbEPIFuqDBntI0sAaP42Amm8B3167DvhDWsTIrpIEZKXk9LP1ThTJBEeXDfo9F3JQqdKeHWKAI5fkL8kI5AXkikmNS9EXFe5tqD71rQ+Q4ESjZIndyp0WpKumb
+ 8VY+IjCr
+ +7RVsc8E0UGOQNd/XZ/XH9fL3lklGbtvfaoRjxn0A+BdVOCHt20V6WL++KZ3CZK3SFIwnor9PzXLYL5bTJOoqNcKRwMRZeXL2xhtDjPmvP0o7fYNURL0ygJGrbfluu/AqGPgfYHsexDXAQTkZSX50yb6DXWjIfjzmjdf7IVn3YCwhc3aPUrlLhGBWFc99Tjt9JTH09a7jkLGVoMjz4ThkKOwkmmYYqFtqRSD1dEKs4MVXgu9Lw6iEc9C705Vn+qVQp/sxwszpdBGDiTJw/H2hRZoUH6XQQbAVvcS94gXppwqNPtIGDzcCpC2CmFtjWkQya/B3H+VaCrAhgP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,141 +102,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 28, 2026 at 12:45:08PM -0700, Suren Baghdasaryan wrote:
-> On Fri, Mar 20, 2026 at 11:08 AM Lorenzo Stoakes (Oracle)
-> <ljs@kernel.org> wrote:
+On Sat, Mar 28, 2026 at 12:54:38PM -0700, Suren Baghdasaryan wrote:
+> On Mon, Mar 23, 2026 at 5:25 AM Lorenzo Stoakes (Oracle) <ljs@kernel.org> wrote:
 > >
-> > Now we have pmd_to_softleaf_folio() available to us which also raises a
-> > CONFIG_DEBUG_VM warning if unexpectedly an invalid softleaf entry, we can
-> > now abstract folio handling altogether.
+> > On Mon, Mar 23, 2026 at 11:45:23AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> > > Hi Andrew,
+> > >
+> > > Could you apply the below fix-patch to resolve an issue with us performing
+> > > folio_put() on a folio before checking it again to see if a table was
+> > > deposited, as per Sashiko.
+> > >
+> > > This patch resolves the issue by storing whether or not this is the case in
+> > > a has_deposit local variable (as used previously) before invoking
+> > > zap_huge_pmd_folio(), then using this boolean to determine whether or not
+> > > to zap any deposited table.
 > >
-> > vm_normal_folio() deals with the huge zero page (which is present), as well
-> > as PFN map/mixed map mappings in both cases returning NULL.
+> > Oops this is wrong...!
 > >
-> > Otherwise, we try to obtain the softleaf folio.
+> > Please apply the below instead :)
 > >
-> > This makes the logic far easier to comprehend and has it use the standard
-> > vm_normal_folio_pmd() path for decoding of present entries.
-> >
-> > Finally, we have to update the flushing logic to only do so if a folio is
-> > established.
-> >
-> > This patch also makes the 'is_present' value more accurate - because PFN
-> > map, mixed map and zero huge pages are present, just not present and
-> > 'normal'.
-> >
-> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> > Thanks, Lorenzo
+>
+> With the fix LGTM. Overall very nice cleanup making the code much more
+> readable. Thanks Lorenzo!
+
+Thanks :)
+
 >
 > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-Thanks!
+Thanks for the review!
+
+Cheers, Lorenzo
 
 >
-> One clarifying question below but I think I know the answer, just want
-> to double-check.
->
+> >
+> > ----8<----
+> > From e6d58747d00dd954c605201e97f8b769b2ba8cf8 Mon Sep 17 00:00:00 2001
+> > From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+> > Date: Mon, 23 Mar 2026 11:42:01 +0000
+> > Subject: [PATCH] fix
+> >
+> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > > ---
-> >  mm/huge_memory.c | 47 +++++++++++++++++++----------------------------
-> >  1 file changed, 19 insertions(+), 28 deletions(-)
+> >  mm/huge_memory.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
 > >
 > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 9ddf38d68406..5831966391bd 100644
+> > index 610a6184e92c..b2a6060b3c20 100644
 > > --- a/mm/huge_memory.c
 > > +++ b/mm/huge_memory.c
-> > @@ -2342,10 +2342,6 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
-> >                 add_mm_counter(mm, mm_counter_file(folio),
-> >                                -HPAGE_PMD_NR);
+> > @@ -2397,6 +2397,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >         struct mm_struct *mm = tlb->mm;
+> >         struct folio *folio = NULL;
+> >         bool is_present = false;
+> > +       bool has_deposit;
+> >         spinlock_t *ptl;
+> >         pmd_t orig_pmd;
 > >
-> > -               /*
-> > -                * Use flush_needed to indicate whether the PMD entry
-> > -                * is present, instead of checking pmd_present() again.
-> > -                */
-> >                 if (is_present && pmd_young(pmdval) &&
-> >                     likely(vma_has_recency(vma)))
-> >                         folio_mark_accessed(folio);
-> > @@ -2356,6 +2352,17 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
-> >                 folio_put(folio);
-> >  }
+> > @@ -2418,10 +2419,10 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
 > >
-> > +static struct folio *normal_or_softleaf_folio_pmd(struct vm_area_struct *vma,
-> > +               unsigned long addr, pmd_t pmdval, bool is_present)
-> > +{
-> > +       if (is_present)
-> > +               return vm_normal_folio_pmd(vma, addr, pmdval);
-> > +
-> > +       if (!thp_migration_supported())
-> > +               WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
-> > +       return pmd_to_softleaf_folio(pmdval);
-> > +}
-> > +
-> >  /**
-> >   * zap_huge_pmd - Zap a huge THP which is of PMD size.
-> >   * @tlb: The MMU gather TLB state associated with the operation.
-> > @@ -2390,36 +2397,20 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> >                                                 tlb->fullmm);
-> >         arch_check_zapped_pmd(vma, orig_pmd);
-> >         tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
-> > -       if (vma_is_special_huge(vma))
-> > -               goto out;
-> > -       if (is_huge_zero_pmd(orig_pmd)) {
-> > -               if (!vma_is_dax(vma))
-> > -                       has_deposit = true;
-> > -               goto out;
-> > -       }
-> >
-> > -       if (pmd_present(orig_pmd)) {
-> > -               folio = pmd_folio(orig_pmd);
-> > -               is_present = true;
-> > -       } else if (pmd_is_valid_softleaf(orig_pmd)) {
-> > -               const softleaf_t entry = softleaf_from_pmd(orig_pmd);
-> > +       is_present = pmd_present(orig_pmd);
->
-> nit: With this you don't need to initialize is_present anymore when
-> you define it.
-
-Ah I think that's sorted out later.
-
->
-> > +       folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
-> > +       if (folio)
-> > +               zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present,
-> > +                                  &has_deposit);
-> > +       else if (is_huge_zero_pmd(orig_pmd))
-> > +               has_deposit = !vma_is_dax(vma);
-> >
-> > -               folio = softleaf_to_folio(entry);
-> > -               if (!thp_migration_supported())
-> > -                       WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
-> > -       } else {
-> > -               WARN_ON_ONCE(true);
-> > -               goto out;
-> > -       }
+> >         is_present = pmd_present(orig_pmd);
+> >         folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
+> > +       has_deposit = has_deposited_pgtable(vma, orig_pmd, folio);
+> >         if (folio)
+> >                 zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
 > > -
-> > -       zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present, &has_deposit);
-> > -
-> > -out:
-> >         if (has_deposit)
+> > -       if (has_deposited_pgtable(vma, orig_pmd, folio))
+> > +       if (has_deposit)
 > >                 zap_deposited_table(mm, pmd);
 > >
 > >         spin_unlock(ptl);
-> > -       if (is_present)
-> > +       if (is_present && folio)
->
-> In which case would you have a valid folio and !is_present? Is that
-> the softleaf case?
-
-Yes, as pmd_present() will return false for a softleaf entry. This is an easy
-way of figuring that out, kind of expressed a bit differently 'it's present so
-maybe we have to do a TLB operation, but make sure we have a folio to operate
-on'.
-
->
-> >                 tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
-> >         return true;
-> >  }
 > > --
 > > 2.53.0
-> >
-
-Cheers, Lorenzo
 
