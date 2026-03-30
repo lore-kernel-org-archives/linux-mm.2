@@ -4,117 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B15CFB3D15
-	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 10:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1709DFB3D15
+	for <linux-mm@archiver.kernel.org>; Mon, 30 Mar 2026 11:02:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95FE86B00AC; Mon, 30 Mar 2026 06:43:37 -0400 (EDT)
+	id 44C1B6B0099; Mon, 30 Mar 2026 07:02:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 911036B00B1; Mon, 30 Mar 2026 06:43:37 -0400 (EDT)
+	id 3FC886B009B; Mon, 30 Mar 2026 07:02:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84DD96B00B2; Mon, 30 Mar 2026 06:43:37 -0400 (EDT)
+	id 2EBD66B009D; Mon, 30 Mar 2026 07:02:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 77CAB6B00AC
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 06:43:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 146E48BF99
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:43:37 +0000 (UTC)
-X-FDA: 84602393274.06.F742534
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 11B911C000C
-	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 10:43:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=inyzmS2l;
-	spf=pass (imf20.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1774867415;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2148E6B0099
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 07:02:39 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CB0F1160730
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:02:38 +0000 (UTC)
+X-FDA: 84602441196.01.68AF9F6
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B869C20018
+	for <linux-mm@kvack.org>; Mon, 30 Mar 2026 11:02:36 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="B /8uwKI";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=GW7cqoMA;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1774868557; a=rsa-sha256;
+	cv=none;
+	b=6uvDIT3zgEBWU1lYOx1LuJPFZZLdrpZfrkvh/s8UskY80Qb26Z8Xj74ef6uYns0q4/4BmD
+	LmeFaHBwk0JRGXJVKlc1A4m8wTjuFKOceMB7rp+2Kn0r3xvwQ178zr8OMaL8i8xhQyfz4i
+	AcHO5WMCLcfwB+LP3h4bMVo6KrvfgDY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1774868557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0M2PvO2IGHSsGVFLO031ug2eNQ21UmBDdP6VF2BoU94=;
-	b=facvlSiiJa4k+HuRjW7as+Uh80a0WosaaiEXTZpOd8SZlByRB9trKXaUH+jd9qAFC/VOWm
-	WCbcD2iaWtYQ445IABQKOBCKWdv2t/3lWKDP0HffFzMoFiyR2faq97eUkdPd8e0qVbkUGF
-	9ZzMXLkhkjV/ZOHyG9XJAxNwh3OScYY=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=objecting.org header.s=zmail header.b=inyzmS2l;
-	spf=pass (imf20.hostedemail.com: domain of objecting@objecting.org designates 136.143.169.57 as permitted sender) smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass (policy=quarantine) header.from=objecting.org;
-	arc=pass ("zohomail.eu:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1774867415; a=rsa-sha256;
-	cv=pass;
-	b=cJUYc300EL/uPowbxDatDPvRm0+2pXzoy3fqBQCtWPYDKUNDiOrDtsVbLGtESt/72+LLwb
-	qJsoyXqd/5MWYy7a2aLb2z0VxwSps/C8xWsL3MPh3q6/HmNu37bQJJ0MPhVCiNwV9Kujdz
-	kWQJM5bYol0iJoBekx+OWF9TiJFkS1c=
-ARC-Seal: i=1; a=rsa-sha256; t=1774867403; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=jdzs1KElWh8NOTADADaQEBUj0tyCVnwTCfUey8i14MqN3RSdUPYe9imoWIs+OP/gApOHfXcLGzVBWiTvucHvZflw1EGBosLSK7qtuM0D2JFU1aldxa7u9uLxqvaY/A60ZnRoUHpDYMOfwIpRBzARyeedSGN0q2t7WxzqB7ZC8ns=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774867403; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0M2PvO2IGHSsGVFLO031ug2eNQ21UmBDdP6VF2BoU94=; 
-	b=GcGfMgKjzxdJN/HaH4YW3wHu/Nef80RrazHFdWjLOTd0Yz38iPXJQckJKjTw+hlb9FQyJ0VYlhYDXCQx5Rv5D5HWVL2IZIUycQuJ54h7Lpveu40nS2mhIl+LWVKskNC8UgmsjQzCmdXcbKSCfkb1EuXeQ5P6x1MZ7E+vNfPg3Gk=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774867403;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=0M2PvO2IGHSsGVFLO031ug2eNQ21UmBDdP6VF2BoU94=;
-	b=inyzmS2lM9XSxS9XwDaVqUzFPgpRp45pnGt6j6n9f0jYK/EpFch2OYuHRC6GI1CB
-	vj3aXXNxgvSl4ueBSQJ4NhdmihryfmLFTAziY4asUAtrdeffQDjuTpGSbcfo/O4Ya+L
-	Q5VdiplQxjz9oJDmL4ar60+rXgTOdw+TrbJHQ1EI=
-Received: from mail.zoho.com by mx.zoho.eu
-	with SMTP id 1774867402919224.40128047328892; Mon, 30 Mar 2026 12:43:22 +0200 (CEST)
-Received: from mail.zoho.eu by mx.zoho.eu
-	with SMTP id 1774867400674237.14834366991977; Mon, 30 Mar 2026 12:43:20 +0200 (CEST)
-Date: Mon, 30 Mar 2026 11:43:20 +0100
-From: Herbert <objecting@objecting.org>
-To: <david@kernel.org>
-Cc: <krzk@kernel.org>, <ljs@kernel.org>, <hlcj1234567@gmail.com>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>,
-	<damon@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-	<kees@kernel.org>, <gregkh@linuxfoundation.org>,
-	<brauner@kernel.org>
-Message-ID: <19d3e5747e1.83b0f66f64051.6129386944586321569@objecting.org>
-In-Reply-To: <6f045727-91ff-45ea-842b-c78ea61ae4d1@kernel.org>
-References: <20260326072737.341964-1-objecting@objecting.org>
- <cbd0aafa-bd45-4f4d-a2dd-440473657dba@lucifer.local>
- <b2cdda38-1007-41a7-a992-de953a088a08@kernel.org>
- <ae7dc7de-966e-4e04-bb55-318d97c61909@lucifer.local>
- <a9f267d5-b0a3-4118-a1c2-5caa8a3b638d@kernel.org>
- <14366e29-4ee2-490e-8e4a-0c5cace1f313@lucifer.local>
- <04B79050-4353-4FD2-A596-1474BDB94B3F@objecting.org>
- <b263a722-e9b8-4a43-a075-46e4a753871d@kernel.org>
- <043CED5F-7014-4776-824E-07E027B7BDC3@objecting.org>
- <cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local>
- <E1A667AB-DCE4-4034-A36B-DAA458780A81@objecting.org>
- <e5d45f3c-4f46-40d1-bb7a-0a2f930fd7ae@kernel.org>
- <82256A72-42FD-475E-935C-629964FA80E7@objecting.org>
- <11429699-81b4-4c1e-b247-480136fd1faf@kernel.org>
- <6deb290e-b168-4de2-95f8-fc784ed31c27@kernel.org>
- <25688dbc-cd11-4137-bad4-a215198feee6@kernel.org>
- <19d3e3d3297.190bc89f62053.5899613485100180781@objecting.org> <6f045727-91ff-45ea-842b-c78ea61ae4d1@kernel.org>
-Subject: Re: [PATCH] mm/damon: introduce DAMON-based NUMA memory tiering
- module
+	bh=g/67MWgGUdmljuD5f6QhqYFY+e0sYT43Y1m/UXREOxU=;
+	b=auDSQZsz3WILKEDyb7Sv+54rm9Rp/YFXZcdhiYomffF5tYsbOq66iEK9UeNbahlq7sGOX6
+	IAb8AxEPizN86Yp/+XMxSNXCHYaFdM19glKEjTcdpXAHheB7s2HZVZ8gb3ZV8q2kyiw43h
+	phhl3ZwGad0Qomn0sUqDfA2F24r1Ghw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="B /8uwKI";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=GW7cqoMA;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5A1057A0373;
+	Mon, 30 Mar 2026 07:02:35 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 30 Mar 2026 07:02:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1774868555; x=
+	1774954955; bh=g/67MWgGUdmljuD5f6QhqYFY+e0sYT43Y1m/UXREOxU=; b=B
+	/8uwKIFVNngeNbOXk+XF89ixBFS+d4ZMeiPtTs226X1iogvmPMpKxQJnlfQy0CW9
+	E+GjAPbjpOVc24bRdldwDe0rgudDErEQ+JSfX9p8OkUEPw0fDv9ZdnOh9U2XWn2L
+	9jHxyaJ8UosG4nnVJleUOIpA5aPpMvCN8vIp18gXVfstGW2k6MihmUxqPK/z9pvK
+	pvTOhd6DO0rOkH2TCKB3J1mZVDI/qFjAnMD64QKxXQD02kggrWOTyHMXLutCOXcy
+	DDR9nu9eHcC0gN67PJvcoKhgyeg2dCLds/4xlXGCckQihkgP4fqjmtVB4liDoaF4
+	CavXSmlQ+EX5fOH9MHYQQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1774868555; x=1774954955; bh=g/67MWgGUdmljuD5f6QhqYFY+e0sYT43Y1m
+	/UXREOxU=; b=GW7cqoMAoAOvE8FIV5i068p6BVR65CPHidEdAr6Brfl+F0p7Lbo
+	fAlTFdxqhqAy+OGfSzPXdlIlwXlmDZROaJZNdVSB/X3X0vHr3qmZozRBe6yJZ7xv
+	JEMXQYN6fT3UG/HHojFNlVlAUEUIV0RtW4bIPxkpFvvOGrayCCMMtxwH2vb9Dmjp
+	gtjw8M/BZDF6rCfRzFUS/UQqD44BhaqMuBKiV9fkZuBfaIl+OGcHeNqKCacEPb+r
+	o01bsBSf7FPj3oHOjrM9a8M47Gca5nNAEREkqPb4H5Mx/qXseYwv+oMlI+DRP+Nf
+	ddJsbQBYUqvFlCxVqHf1skQf38YqQFE+aPA==
+X-ME-Sender: <xms:SljKaXqkn5lN0T-bEP-BiyPpjZkC_-6v1Ov47hPcjrkWZT3pWWMPxQ>
+    <xme:SljKaQLivCKu2H3oTp8j8I6B7BfH1CEo_b7xecEhoTA5AAv2pzVqH5vJsUQYISwOq
+    Yf1-Iv-lCtjzrP08h9J89KYPXkKbHtsPt33jXd8-XtjuGDL-zrPEQ>
+X-ME-Received: <xmr:SljKabAiTgk7BSKaiZ8MxV7gPzLl3lT0un_TSG0UqD6cxGfpZfyX5G4UTO2NzA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeffeekkeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepfeetheejudeujeeikeetudelvdevkeefuddtkedvtdehtdetieeu
+    ieetjeeugedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedu
+    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptggrrhhgvghssegtlhhouhgufh
+    hlrghrvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhg
+    pdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprh
+    gtphhtthhopeifihhllhhirghmrdhkuhgthhgrrhhskhhisehorhgrtghlvgdrtghomhdp
+    rhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epkhgvrhhnvghlqdhtvggrmhestghlohhuughflhgrrhgvrdgtohhm
+X-ME-Proxy: <xmx:SljKaa4wFZV91l0PWEXN7tbF_OlkNNk_iFQqnmbX-F_jJs2L0UBZig>
+    <xmx:SljKafFLKRjRD5o-5Ps6-VkKMA5Jk8qiCSFPx5f4GtdC2btsDo8FRA>
+    <xmx:SljKadRZNKCeqSUbAQM9O81Z86DFmb_8Gb3RgmwlaQMMf7wLuiFgtQ>
+    <xmx:SljKaRe9G8Wos7j3YSupnHQH9M0zLZtLFenj_3n_FjPBdpRj2u3BCQ>
+    <xmx:S1jKaVIq5Sqk1U1NujGtHNPT7s8ys_eaRUqGBxgg9VZJ-DWvv6ye0_aw>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Mar 2026 07:02:33 -0400 (EDT)
+Date: Mon, 30 Mar 2026 11:02:31 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Chris Arges <carges@cloudflare.com>
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
+	william.kucharski@oracle.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
+Subject: Re: [PATCH RFC 1/1] mm/filemap: handle large folio split race in
+ page cache lookups
+Message-ID: <acpX8iUEjNT6Kz25@thinkstation>
+References: <20260305183438.1062312-1-carges@cloudflare.com>
+ <20260305183438.1062312-2-carges@cloudflare.com>
+ <aanYdvdJVG6f5WL2@casper.infradead.org>
+ <aarVMrFptdXhHsX1@thinkstation>
+ <aasAo8qRCV9XSuax@casper.infradead.org>
+ <aas06mfCrJuzZd0-@20HS2G4>
+ <aas3E9P0BP03O8ma@thinkstation>
+ <acFr4JJgaXsD9gtQ@20HS2G4>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Normal
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 11B911C000C
-X-Stat-Signature: t4wwkww5g37w546g3x1chjc4qaqx79fq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acFr4JJgaXsD9gtQ@20HS2G4>
 X-Rspam-User: 
-X-HE-Tag: 1774867414-943124
-X-HE-Meta: U2FsdGVkX18UvQxFchTLjwCq1Y7mtObU8HmdUelY0PZw9pvfvrOyvDmmLiBq9Uihm2VNGoy0BmviqGjch7Upxz/OuvcTcKGGg/uMU4x/nwCGqgRgrLMz+gFBF6pad+Nyc1nXUiYaLJApcH/qmY5i+bZ55l1TGUg7BVjrlNIRyucbBFhHrS22sDJfww+G37VfNIotFd2jTHJ8zWwGYgGhSeTuYDKF0fR9jCE9KoL+cUCIXNBPMQ18t+eLpkyKQlq8/RXMnk4snCFyTmfNc8IwLGL/jivr0IqYor1CaDSbhGeS3hUVWkez5hN809u8mMPw+1lOCyuhvggT2V30NOgLgkSqodS++fyOHCNY12GBgvbwNAV/Qn/1JhHjORKhDbVVmeWkyyTsSjE4jEuvmsvIy7ZN+VS/GPMy2SSIeBlur5O0EgHOKeEynkKIyAp2AOBgKMkCoAnB5QBJKPYyRSDDYdtignL5I/Jr6UjqkvZb4alnBuPbkD46jLOiqY4BPSpLXnexsQlnBB/jQl5HWWAKnPebo1WTHKJEhCIXKuxki/9RtPJs/haukkeQ4I2JepRE1RRQAzq7QEYvFDlxBaEfVZVPiTNm7O9YP269MmfeYxeQnYFb/7VS8iDhVqEU01Gqpzjr6tRPHc72plbRct29rZypFAjhsFCIzyq0rP7+hkD+HCoMKndf7ZTS5Pdk3SaN6+To5h/d2Q3LJi2zVeoqt1P8CLtmfUZZlmOOArVo4YGylPOgmfiwc3nGbSEPAFxOmgZIqd7zeF1NWPxAetaifZVXih8QZnSgcV6G3EjrGLY0mJwV+eyxYG5MesDNXm84ZsuFdjWo2MidJjYWPa92IgvF2ckF8278gaJiV4MoJQVKv4Q/5GVbC592V2pk1ucNC338C1lane0oeozgUB5+1hVDu/44Sv3Q0iKmVsm8qhFS8SG9Tlmscr04OcBxMd5G
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B869C20018
+X-Stat-Signature: euhytyiz4t17n3daetje8nhtrxw7ziy6
+X-HE-Tag: 1774868556-575544
+X-HE-Meta: U2FsdGVkX18lf0peI6kV2JLyDuoH7XfJfnBj96MUxR4Hsp95isHDYGLERLFI3MfyFEf3KCSXXmsf7sZhxOtA/HYIUmJVCwFLWGlU2hUS2kGKHJyQzHFEFyiUo5VhXM5odmKRl7+TG1b7D/H+vDM1iMb+8vI/avuBwcxBNLj/dICko+vNDBahIxo5uDye36rQusmpthFFmbRKoz5KBXnXh0hAoy7PJo+iWee5cQoLiM1Sc/AYDZ4IVVGySNjIc9ydoXjE4kAcw1WI9s3lxMCft1Ba6y5sn1ohCAzt9HBBiVGOl5qAzEyaSd4KApTrK5vytRt0Jwte0pYha4YofIOsQyPPj1MsRIbQ9Ut9qS7EJBSjQ7e/sc4zGMjjP6ZMqkLsBTZIjaHI5CKuHbC9q2Ci8AhWJAb8AIrnOsorpaC1OeJ7a8wJBeTUb+CDbTeY9/vGh001SLYGbGcOQFm3U9h/KHwncYRLQ05iTfssUDvD6ZUQlUcKyETmXHxerUZ6HYYBwbxeo5I594tmmPiXaZPI7MfOnXZH1Wj8bqCTvSU2tJdqdcQNirmS62YNED1v3gTpfOKYemUu53LurcYzAclYa8lUTouvk+2HNNNA9jqY/KVP+sP0+42/5P9Fe8OOhhLryETrHdBZaKaQbtAcgfhJNBO39SngFgKRu5tYs/k5wQWr2lKqKWyfDq5IdXJb7u/C4pMFnTAuxut/NTGQevSQS4VoHjZP7XXhlb6E4hcXVHWkQaYYMmU+StkoWITHeZmUjib97u3CDAcA3MMQMc7ScxQNLeFQ3lUC75Dp3ukKSwzbWnotXzd3WzAQC1YQIK0ft3kMZ7dQ1sNek0IcJnMFnKd3s6Ilix5PuXk/ENwcOeD/jJCwFnfbV/XmbVCrLOHBIkHSGsXo/FmIP0F6Tlosgp/8hhHYYKSGuizkyX/bU8h0H79rX8qRNsSxVJbA8xO10jtpcoVQAxUuGoFDaTm
+ wCukhiS/
+ AH1q0YmyT5QtkUXt0vHYRPM6AMX92XsVj27C+HIH7ic0gLdk+S13S1jha0WnoJu19UISzPtu2jWn00z6TkkHvvTLi4m9JOdWlJj9yDOiUCnLWJGE7a9qURvqeu9EyoJXCIGq9fbR/Xl6RkfKL6bvqaiyEAo4Yp6KKEx4mcY5aQdL6gHaadyCI+Iz/wooKv6HPf+ID8cnYUnsiUD/0MrBpCdY5outQFwN4m3s4VbmodnkGFbPTV42oRvuTbZUEVRWeQrMyCQZe6SbPvS4qFtjuTUvEQq/XXdlL03M5MDUGs285sYttFDH6LsKbnpdDW0R8Rggn2r2aTNsLBPwEcaDtCW6VVDbTq85wiVKugSBWDfnUBqIw6XDZr0TjjXAjWmbopDBN/bStayrMhGbT/eHnzzieIsRlwoDe2EkN0zomgHS9UOGUXJDIGtgDpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,80 +142,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Mar 23, 2026 at 11:35:44AM -0500, Chris Arges wrote:
+> On 2026-03-06 20:21:59, Kiryl Shutsemau wrote:
+> > On Fri, Mar 06, 2026 at 02:11:22PM -0600, Chris Arges wrote:
+> > > On 2026-03-06 16:28:19, Matthew Wilcox wrote:
+> > > > On Fri, Mar 06, 2026 at 02:13:26PM +0000, Kiryl Shutsemau wrote:
+> > > > > On Thu, Mar 05, 2026 at 07:24:38PM +0000, Matthew Wilcox wrote:
+> > > > > > folio_split() needs to be sure that it's the only one holding a reference
+> > > > > > to the folio.  To that end, it calculates the expected refcount of the
+> > > > > > folio, and freezes it (sets the refcount to 0 if the refcount is the
+> > > > > > expected value).  Once filemap_get_entry() has incremented the refcount,
+> > > > > > freezing will fail.
+> > > > > > 
+> > > > > > But of course, we can race.  filemap_get_entry() can load a folio first,
+> > > > > > the entire folio_split can happen, then it calls folio_try_get() and
+> > > > > > succeeds, but it no longer covers the index we were looking for.  That's
+> > > > > > what the xas_reload() is trying to prevent -- if the index is for a
+> > > > > > folio which has changed, then the xas_reload() should come back with a
+> > > > > > different folio and we goto repeat.
+> > > > > > 
+> > > > > > So how did we get through this with a reference to the wrong folio?
+> > > > > 
+> > > > > What would xas_reload() return if we raced with split and index pointed
+> > > > > to a tail page before the split?
+> > > > > 
+> > > > > Wouldn't it return the folio that was a head and check will pass?
+> > > > 
+> > > > It's not supposed to return the head in this case.  But, check the code:
+> > > > 
+> > > >         if (!node)
+> > > >                 return xa_head(xas->xa);
+> > > >         if (IS_ENABLED(CONFIG_XARRAY_MULTI)) {
+> > > >                 offset = (xas->xa_index >> node->shift) & XA_CHUNK_MASK;
+> > > >                 entry = xa_entry(xas->xa, node, offset);
+> > > >                 if (!xa_is_sibling(entry))
+> > > >                         return entry;
+> > > >                 offset = xa_to_sibling(entry);
+> > > >         }
+> > > >         return xa_entry(xas->xa, node, offset);
+> > > > 
+> > > > (obviously CONFIG_XARRAY_MULTI is enabled)
+> > > >
+> > > Yes we have this CONFIG enabled.
+> > > 
+> > > Also FWIW, happy to run some additional experiments or more debugging. We _can_
+> > > reproduce this, as a machine hits this about every day on a sample of ~128
+> > > machines. We also do get crashdumps so we can poke around there as needed.
+> > > 
+> > > I was going to deploy this patch onto a subset of machines, but reading through
+> > > this thread I'm a bit concerned if a retry doesn't actually fix the problem,
+> > > then we will just loop on this condition and hang.
+> > 
+> > I would be useful to know if the condition is persistent or if retry
+> > "fixes" the problem.
+> 
+> I was able to deploy my patch into a set of machines and test from March 11th
+> until now. So far it seems like this patch addresses this issue. While removing
+> the BUG_ON means that we will no longer see the call trace messages, I looked
+> for any lockups that would be related folio/filesystem activities and did not
+> find any.
+> 
+> Let me know what else would be useful here, I am happy to re-propose my patch
+> without the RFC, unless more verification/analysis is needed.
 
+I wounder if 577a1f495fd7 ("mm/huge_memory: fix a folio_split() race
+condition with folio_try_get()") is relevant here.
 
+Do you have it applied on the tree where the problem triggers?
 
-
-
-
-
-
----- On Mon, 30 Mar 2026 11:36:39 +0100 david@kernel.org wrote ----
-
-
-> On 3/30/26 12:14, Herbert wrote:
-> >
-> >
-> >
-> >
-> >
-> >
-> >
-> >
-> > ---- On Mon, 30 Mar 2026 09:16:44 +0100
-> david@kernel.org[mailto:david@kernel.org] wrote ----
-> >
-> >
-> >> On 3/30/26 09:50, Krzysztof Kozlowski wrote:
-> >>>
-> >>> Yeah, good luck. Several people asked for that already, like 10 or 20
-> >>> times. Andrew asked that a few times.
-> >>>
-> >>> And yesterday we got another sloppy posting, so that would be it for
-> >>> having some time off to learn things and take slowly. 3 days after th=
-is
-> >>> AI slop which does not even build.
-> >>
-> >> Bot confirmed, I guess :)
-> >> --
-> >> Cheers,
-> >>
-> >> David
-> >
-> >
-> >
-> >
-> >
-> >
-> >
-> >
-> > ? That was me learning the ropes, by making a patch to the QCOM subsyst=
-em
-> >
-> >
-> > and it was a genuinely "ok" patch.
-> >
-> >
-> > May you please tell me what I did wrong here.
-> I thought you wanted to "take a couple months break"? And I suggested
-> getting a mentor first.
-
-Yeah, that again, was a bit stupid of me, but sorry for breaking my break, =
-but I wanted to try doing a human patch, to see if I am capable=C2=A0
-
-
-
-
-> Anyhow, this mail was sent from "Herbert", which is quite ... confusing.
-
-=C2=A0
-Changed, it was a display name for some reason.
-
-
-=C2=A0=C2=A0
-> --
-> Cheers,
->
-> David
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
